@@ -1,0 +1,14 @@
+---
+- name: Ensure rabbitmq user
+  rabbitmq_user: 
+    user: "{{ rabbit_userid }}"
+    password: "{{ rabbit_password }}"
+    vhost: "/"
+    configure_priv: ".*"
+    read_priv: ".*"
+    write_priv: ".*"
+    state: present
+  tags:
+    - users
+    - rabbit_config
+    - rabbit_user

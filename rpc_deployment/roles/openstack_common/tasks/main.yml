@@ -1,0 +1,24 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- include: install_git_source.yml
+- include: pip_install.yml
+
+# TODO(kevin) This should go away sooner than later
+- name: Laydown the example files
+  shell: >
+    chdir="/opt/{{ service_name }}_{{ git_install_branch | replace('/', '_') }}/{{ git_etc_example }}"
+    for i in *; do if [ ! -f "/etc/{{ service_name }}/$i" ]; then cp -R $i /etc/{{ service_name }}/; fi; done;
+  when: git_etc_example is defined

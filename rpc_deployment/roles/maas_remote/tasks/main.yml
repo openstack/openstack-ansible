@@ -1,0 +1,64 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Entity {{ entity_name }} count
+  shell: "raxmon-entities-list | grep ' label={{ entity_name }} provider=Rackspace Monitoring ...>$' | wc -l"
+  register: entity_count
+  delegate_to: "{{ physical_host }}"
+
+- name: At most one {{ entity_name }} entity exists
+  fail:
+    msg: "Entity count of {{ entity_count.stdout }} != 1 for entity with the label {{ entity_name }}"
+  when: entity_count.stdout|int != 1
+
+- name: Get entity {{ entity_name }}
+  shell: "raxmon-entities-list | grep ' label={{ entity_name }} provider=Rackspace Monitoring ...>$' | awk '{print $2}' | cut -d= -f2"
+  register: entity
+  delegate_to: "{{ physical_host }}"
+
+- name: Check {{ check_name }} count
+  shell: "raxmon-checks-list --entity-id {{ entity.stdout }} | grep ' label={{ check_name }}...>$' | wc -l"
+  register: check_count
+  delegate_to: "{{ physical_host }}"
+
+- name: At most one {{ check_name }} check exists
+  fail:
+    msg: "Please make sure there is only one check for the entity {{ entity.stdout }} with the name {{ check_name }}"
+  when: check_count.stdout|int > 1
+
+- name: Create check {{ check_name }}
+  shell: raxmon-checks-create --entity-id {{ entity.stdout }} --label {{ check_name }} --type {{ check_type }} --details url={{ url }} --monitoring-zones "{{ monitoring_zones|join(',') }}" --target-alias {{ target_alias }} --period {{ check_period }} --timeout {{ check_timeout }}
+  when: check_count.stdout|int == 0
+  delegate_to: "{{ physical_host }}"
+
+- name: Get check {{ check_name }}
+  shell: "raxmon-checks-list --entity-id {{ entity.stdout }} | grep ' label={{ check_name }}...>$' | awk '{print $2}' | cut -d= -f2"
+  register: check
+  delegate_to: "{{ physical_host }}"
+
+- name: Alarm {{ alarm_name }} count
+  shell: "raxmon-alarms-list --entity-id {{ entity.stdout }} | grep ' label={{ alarm_name }} ...>' | wc -l"
+  register: alarm_count
+  delegate_to: "{{ physical_host }}"
+
+- name: At most one {{ alarm_name }} alarm exists
+  fail:
+    msg:  "Please make sure there is only one alarm for the check {{ check.stdout }} with the name {{ alarm_name }} on entity {{ entity.stdout }}"
+  when: alarm_count.stdout|int > 1
+
+- name: Create alarm {{ alarm_name }}
+  shell: "raxmon-alarms-create --entity-id {{ entity.stdout }} --label {{ alarm_name }} --check-id {{ check.stdout }} --notification-plan-id {{ notification_plan }} --criteria {{ criteria|quote }}"
+  when: alarm_count.stdout|int == 0
+  delegate_to: "{{ physical_host }}"

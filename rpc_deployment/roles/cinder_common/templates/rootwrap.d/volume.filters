@@ -1,0 +1,115 @@
+# cinder-rootwrap command filters for volume nodes
+# This file should be owned by (and only-writeable by) the root user
+
+[Filters]
+# cinder/volume/iscsi.py: iscsi_helper '--op' ...
+ietadm: CommandFilter, ietadm, root
+tgtadm: CommandFilter, tgtadm, root
+tgt-admin: CommandFilter, tgt-admin, root
+cinder-rtstool: CommandFilter, cinder-rtstool, root
+
+# LVM related show commands
+pvs: EnvFilter, env, root, LC_ALL=C, pvs
+vgs: EnvFilter, env, root, LC_ALL=C, vgs
+lvs: EnvFilter, env, root, LC_ALL=C, lvs
+lvdisplay: EnvFilter, env, root, LC_ALL=C, lvdisplay
+
+# cinder/volume/driver.py: 'lvcreate', '-L', sizestr, '-n', volume_name,..
+# cinder/volume/driver.py: 'lvcreate', '-L', ...
+lvcreate: CommandFilter, lvcreate, root
+
+# cinder/volume/driver.py: 'dd', 'if=%s' % srcstr, 'of=%s' % deststr,...
+dd: CommandFilter, dd, root
+
+# cinder/volume/driver.py: 'lvremove', '-f', %s/%s % ...
+lvremove: CommandFilter, lvremove, root
+
+# cinder/volume/driver.py: 'lvrename', '%(vg)s', '%(orig)s' '(new)s'...
+lvrename: CommandFilter, lvrename, root
+
+# cinder/volume/driver.py: 'lvextend', '-L' '%(new_size)s', '%(lv_name)s' ...
+lvextend: CommandFilter, lvextend, root
+
+# cinder/brick/local_dev/lvm.py: 'lvchange -a y -K <lv>'
+lvchange: CommandFilter, lvchange, root
+
+# cinder/volume/driver.py: 'iscsiadm', '-m', 'discovery', '-t',...
+# cinder/volume/driver.py: 'iscsiadm', '-m', 'node', '-T', ...
+iscsiadm: CommandFilter, iscsiadm, root
+
+# cinder/volume/drivers/lvm.py: 'shred', '-n3'
+# cinder/volume/drivers/lvm.py: 'shred', '-n0', '-z', '-s%dMiB'
+shred: CommandFilter, shred, root
+
+#cinder/volume/.py: utils.temporary_chown(path, 0), ...
+chown: CommandFilter, chown, root
+ionice_1: RegExpFilter, ionice, root, ionice, -c[0-3]( -n[0-7])?, dd, if=\S+, of=\S+, count=\d+, bs=\S+
+ionice_2: RegExpFilter, ionice, root, ionice, -c[0-3]( -n[0-7])?, dd, if=\S+, of=\S+, count=\d+, bs=\S+, iflag=direct, oflag=direct
+ionice_3: RegExpFilter, ionice, root, ionice, -c[0-3]( -n[0-7])?, dd, if=\S+, of=\S+, count=\d+, bs=\S+, conv=fdatasync
+
+# cinder/volume/driver.py
+dmsetup: CommandFilter, dmsetup, root
+ln: CommandFilter, ln, root
+
+# cinder/image/image_utils.py
+qemu-img: EnvFilter, env, root, LC_ALL=C, qemu-img
+qemu-img_convert: CommandFilter, qemu-img, root
+
+udevadm: CommandFilter, udevadm, root
+
+# cinder/volume/driver.py: utils.read_file_as_root()
+cat: CommandFilter, cat, root
+
+# cinder/volume/nfs.py
+stat: CommandFilter, stat, root
+mount: CommandFilter, mount, root
+df: CommandFilter, df, root
+du: CommandFilter, du, root
+truncate: CommandFilter, truncate, root
+chmod: CommandFilter, chmod, root
+rm: CommandFilter, rm, root
+
+# cinder/volume/drivers/netapp/nfs.py:
+netapp_nfs_find: RegExpFilter, find, root, find, ^[/]*([^/\0]+(/+)?)*$, -maxdepth, \d+, -name, img-cache.*, -amin, \+\d+
+
+# cinder/volume/drivers/glusterfs.py
+chgrp: CommandFilter, chgrp, root
+
+# cinder/volumes/drivers/hds/hds.py:
+hus-cmd: CommandFilter, hus-cmd, root
+hus-cmd_local: CommandFilter, /usr/local/bin/hus-cmd, root
+
+# cinder/brick/initiator/connector.py:
+ls: CommandFilter, ls, root
+tee: CommandFilter, tee, root
+multipath: CommandFilter, multipath, root
+systool: CommandFilter, systool, root
+
+# cinder/volume/drivers/block_device.py
+blockdev: CommandFilter, blockdev, root
+
+# cinder/volume/drivers/ibm/gpfs.py
+mv: CommandFilter, mv, root
+mmgetstate: CommandFilter, /usr/lpp/mmfs/bin/mmgetstate, root
+mmclone: CommandFilter, /usr/lpp/mmfs/bin/mmclone, root
+mmlsattr: CommandFilter, /usr/lpp/mmfs/bin/mmlsattr, root
+mmchattr: CommandFilter, /usr/lpp/mmfs/bin/mmchattr, root
+mmlsconfig: CommandFilter, /usr/lpp/mmfs/bin/mmlsconfig, root
+mmlsfs: CommandFilter, /usr/lpp/mmfs/bin/mmlsfs, root
+mmlspool: CommandFilter, /usr/lpp/mmfs/bin/mmlspool, root
+mkfs: CommandFilter, mkfs, root
+
+# cinder/volume/drivers/ibm/gpfs.py
+# cinder/volume/drivers/ibm/ibmnas.py
+find_maxdepth_inum: RegExpFilter, find, root, find, ^[/]*([^/\0]+(/+)?)*$, -maxdepth, \d+, -inum, \d+
+
+# cinder/brick/initiator/connector.py:
+aoe-revalidate: CommandFilter, aoe-revalidate, root
+aoe-discover: CommandFilter, aoe-discover, root
+aoe-flush: CommandFilter, aoe-flush, root
+
+# cinder/brick/initiator/linuxscsi.py:
+sg_scan: CommandFilter, sg_scan, root
+
+#cinder/backup/services/tsm.py
+dsmc:CommandFilter,/usr/bin/dsmc,root

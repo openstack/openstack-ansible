@@ -1,0 +1,21 @@
+# neutron-rootwrap command filters for nodes on which neutron is
+# expected to control network
+#
+# This file should be owned by (and only-writeable by) the root user
+
+# format seems to be
+# cmd-name: filter-name, raw-command, user, args
+
+[Filters]
+
+# ryu-agent
+# unclear whether both variants are necessary, but I'm transliterating
+# from the old mechanism
+
+# neutron/plugins/ryu/agent/ryu_neutron_agent.py:
+#   "ovs-vsctl", "--timeout=2", ...
+ovs-vsctl: CommandFilter, ovs-vsctl, root
+
+# neutron/plugins/ryu/agent/ryu_neutron_agent.py:
+#   "xe", "vif-param-get", ...
+xe: CommandFilter, xe, root

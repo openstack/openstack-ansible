@@ -1,0 +1,169 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- hosts: cinder_api_container
+  vars:
+    check_name: cinder_api_local_check
+    check_details: file={{ check_name }}.py,args={{ ansible_ssh_host }}
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'cinder_api_local_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["cinder_api_local_status"] != 1) { return new AlarmStatus(CRITICAL, "API unavailable"); }' }
+  user: root
+  roles:
+    - maas_local
+
+- hosts: glance_api
+  vars:
+    check_name: glance_api_local_check
+    check_details: file={{ check_name }}.py,args={{ ansible_ssh_host }}
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'glance_api_local_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["glance_api_local_status"] != 1) { return new AlarmStatus(CRITICAL, "API unavailable"); }' }
+  user: root
+  roles:
+    - maas_local
+
+- hosts: glance_registry
+  vars:
+    check_name: glance_registry_local_check
+    check_details: file={{ check_name }}.py,args={{ ansible_ssh_host }}
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'glance_registry_local_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["glance_registry_local_status"] != 1) { return new AlarmStatus(CRITICAL, "API unavailable"); }' }
+  user: root
+  roles:
+    - maas_local
+
+- hosts: heat_apis_container
+  vars:
+    check_name: heat_api_local_check
+    check_details: file={{ check_name }}.py,args={{ ansible_ssh_host }}
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'heat_api_local_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["heat_api_local_status"] != 1) { return new AlarmStatus(CRITICAL, "API unavailable"); }' }
+  user: root
+  roles:
+    - maas_local
+
+- hosts: heat_apis_container
+  vars:
+    check_name: heat_cfn_api_check
+    check_details: file=service_api_local_check.py,args=heat_cfn,args={{ ansible_ssh_host }},args=8000
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'heat_cfn_api_local_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["nova_spice_api_local_status"] != 1) { return new AlarmStatus(CRITICAL, "API unavailable"); }' }
+  user: root
+  roles:
+    - maas_local
+
+- hosts: heat_apis_container
+  vars:
+    check_name: heat_cw_api_check
+    check_details: file=service_api_local_check.py,args=heat_cw,args={{ ansible_ssh_host }},args=8003
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'heat_cw_api_local_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["nova_spice_api_local_status"] != 1) { return new AlarmStatus(CRITICAL, "API unavailable"); }' }
+  user: root
+  roles:
+    - maas_local
+
+- hosts: keystone
+  vars:
+    check_name: keystone_api_local_check
+    check_details: file={{ check_name }}.py,args={{ ansible_ssh_host }}
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'keystone_api_local_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["keystone_api_local_status"] != 1) { return new AlarmStatus(CRITICAL, "API unavailable"); }' }
+  user: root
+  roles:
+    - maas_local
+
+- hosts: neutron_server
+  vars:
+    check_name: neutron_api_local_check
+    check_details: file={{ check_name }}.py,args={{ ansible_ssh_host }}
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'neutron_api_local_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["neutron_api_local_status"] != 1) { return new AlarmStatus(CRITICAL, "API unavailable"); }' }
+  user: root
+  roles:
+    - maas_local
+
+- hosts: nova_api_os_compute
+  vars:
+    check_name: nova_api_local_check
+    check_details: file={{ check_name }}.py,args={{ ansible_ssh_host }}
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'nova_api_local_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["nova_api_local_status"] != 1) { return new AlarmStatus(CRITICAL, "API unavailable"); }' }
+  user: root
+  roles:
+    - maas_local
+
+- hosts: nova_spice_console
+  vars:
+    check_name: nova_spice_console_check
+    check_details: file=service_api_local_check.py,args=nova_spice,args={{ ansible_ssh_host }},args=6082
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'nova_spice_api_local_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["nova_spice_api_local_status"] != 1) { return new AlarmStatus(CRITICAL, "API unavailable"); }' }
+  user: root
+  roles:
+    - maas_local
+
+- hosts: rabbit
+  vars:
+    check_name: rabbitmq_status
+    check_details: file={{ check_name }}.py,args=-H,args={{ ansible_ssh_host }},args=-n,args={{ ansible_hostname }}
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'disk_free_alarm', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["disk_free_alarm"] != 1) { return new AlarmStatus(CRITICAL, "disk_free_alarm triggered"); }' }
+      - { 'name': 'mem_alarm', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["mem_alarm"] != 1) { return new AlarmStatus(CRITICAL, "mem_alarm triggered"); }' }
+  user: root
+  roles:
+    - maas_local
+
+- hosts: galera
+  vars:
+    check_name: galera_check
+    check_details: file={{ check_name }}.py,args=-H,args={{ ansible_ssh_host }}
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+  user: root
+  roles:
+    - maas_local
+
+- hosts: memcached
+  vars:
+    check_name: memcached_status
+    check_details: file={{ check_name }}.py,args={{ ansible_ssh_host }}
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'memcache_api_local_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["memcache_api_local_status"] != 1) { return new AlarmStatus(CRITICAL, "memcached unavailable"); }' }
+  user: root
+  roles:
+    - maas_local

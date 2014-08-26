@@ -1,0 +1,50 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Ensure extra inner directories
+  file: >
+    path={{ item }}
+    state=directory
+  with_items: required_inner_dirs
+  when: required_inner_dirs is defined
+  register: inner_extra_changed
+
+- name: Ensure extra local directories
+  file: >
+    path={{ item }}
+    state=directory
+  when: required_outer_dirs is defined
+  with_items: required_outer_dirs
+  register: local_extra_changed
+  delegate_to: "{{ physical_host }}"
+
+- name: Ensure extra container config options
+  lxc: >
+    name={{ container_name }}
+    command=config
+    options="{{ container_config_options }}"
+    state=running
+  when: container_config_options is defined and is_metal != true
+  register: config_extra_changed
+  delegate_to: "{{ physical_host }}"
+
+- name: Wait for networking
+  wait_for: >
+    port=22
+    search_regex=OpenSSH
+    timeout=60
+    host={{ container_address }}
+  delegate_to: localhost
+  when: inner_extra_changed|changed or local_extra_changed|changed or config_extra_changed|changed

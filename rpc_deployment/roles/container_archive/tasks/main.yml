@@ -1,0 +1,48 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Create tar archive from Container
+  lxc: >
+    name={{ container_name }}
+    command=createtar
+    tarpath={{ remote_store_path }}/{{ container_name }}
+
+- name: set lxc archive
+  set_fact:
+    archive:
+      name: "{{ lxc_facts[container_name]['archive'] | basename }}"
+      path: "{{ lxc_facts[container_name]['archive'] }}"
+
+- name: Upload archive to swift
+  include: swift_upload.yml
+  when: swift_archive_store is defined
+  vars:
+    src: "{{ archive.path }}"
+    swift_container: "{{ swift_archive_store.container }}"
+    swift_object: "{{ archive.name }}"
+    creds_file: "{{ swift_archive_store.creds_file }}"
+    section: "{{ swift_archive_store.section }}"
+
+- name: Retrieve container archive locally
+  fetch: >
+    dest={{ local_store_path }}/{{ archive.name }}
+    src={{ archive.path }}
+    flat=true
+  when: swift_archive_store is not defined
+
+- name: Remove container archive from the host
+  file: >
+    path={{ archive.path }}
+    state=absent

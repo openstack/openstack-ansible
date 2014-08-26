@@ -1,0 +1,29 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# The variables file used by the playbooks in the Cinder-API group.
+# These don't have to be explicitly imported by vars_files: they are autopopulated.
+
+## Service Type and Data
+service_type: volumev2
+service_description: "Cinder Volume Service V2"
+service_password: "{{ cinder_v2_service_password }}"
+
+service_publicurl: "http://{{ external_vip_address }}:{{ cinder_service_port }}/v2/%(tenant_id)s"
+service_adminurl: "http://{{ internal_vip_address }}:{{ cinder_service_port }}/v2/%(tenant_id)s"
+service_internalurl: "http://{{ internal_vip_address }}:{{ cinder_service_port }}/v2/%(tenant_id)s"
+
+service_name: cinderv2
+program_name: cinder-api

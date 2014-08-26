@@ -1,0 +1,62 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: get container info
+  lxc: > 
+    command=info
+    name="{{ container_name }}"
+
+- name: store_original_ip
+  set_fact:
+    orig_ip: "{{ lxc_facts[container_name]['ip_1'] }}"
+  when: "lxc_facts[container_name]['state'] == 'running'"
+
+- name: Clone Container
+  lxc: > 
+    command=clone
+    orig="{{ container_name }}"
+    new="{{ new_name }}"
+    backingstore="{{ bdev }}"
+    fssize="{{ fssize }}"
+    snapshot="{{ snapshot }}"
+    state="{{ state }}"
+
+- name: Ensure clean config
+  lineinfile: >
+    dest="{{ lxcpath }}/{{ new_name }}/config"
+    regexp="{{ item }}"
+    state=absent
+    backup=yes
+  with_items:
+    - "^lxc.network.hwaddr"
+    - "^lxc.mount.entry"
+
+- name: restart new container
+  lxc: >
+    command=start
+    name="{{ new_name }}"
+
+- name: Update networking
+  lxc: >
+    command=attach
+    name="{{ new_name }}"
+    container_command="sed -i 's/{{ orig_ip }}/{{ address }}/g' /etc/network/interfaces"
+  when: orig_ip is defined
+  register: result
+
+- name: restart new container
+  lxc: >
+    command=restart
+    name="{{ new_name }}"

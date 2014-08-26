@@ -1,0 +1,15 @@
+# Do not edit, changes will be overwritten
+
+# COMMON CINDER ENVS
+export CINDER_ENDPOINT_TYPE=internalURL
+
+# COMMON NOVA ENVS
+export NOVA_ENDPOINT_TYPE=internalURL
+
+# COMMON OPENSTACK ENVS
+export OS_ENDPOINT_TYPE=internalURL
+export OS_USERNAME={{ auth_admin_username }}
+export OS_PASSWORD={{ auth_admin_password }}
+export OS_TENANT_NAME={{ auth_admin_tenant }}
+export OS_AUTH_URL={{ auth_identity_uri }}
+export OS_NO_CACHE=1

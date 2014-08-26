@@ -1,0 +1,94 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Add apt key for rabbit
+  apt_key:
+    url: "{{ item }}"
+    state: present
+  with_items: rabbitmq_key
+  tags:
+    - package_install
+    - rabbit_install
+
+- name: Configure rabbit repo
+  apt_repository:
+    repo: "{{ item.repo }}"
+    state: "{{ item.state }}"
+  with_items: rabbit_repos
+  tags:
+    - package_install
+    - rabbit_install
+
+- name: Install rabbit packages
+  apt:
+    pkg: "{{ item }}"
+    state: latest
+    update_cache: yes
+    cache_valid_time: 600
+  with_items:
+    - rabbitmq-server
+  tags:
+    - package_install
+    - rabbit_install
+
+- name: Fix /etc/hosts
+  lineinfile:
+    dest: /etc/hosts
+    state: present
+    line: "{{ hostvars[item]['container_address'] }} {{ hostvars[item]['container_name'] }} {{ hostvars[item]['container_name'].split('.')[0] }}"
+  with_items: groups['rabbit']
+  tags:
+    - hosts
+    - rabbit_config
+
+- include: restart_rabbit.yml
+
+- name: Read rabbit cookie
+  shell: |
+    cat /var/lib/rabbitmq/.erlang.cookie
+  register: tmp_rabbit_cookie
+  tags:
+    - rabbit_config
+
+- include: set_cookie.yml
+  when: tmp_rabbit_cookie.stdout != rabbit_cookie
+
+- name: Create rabbitmq config
+  template:
+    src: rabbitmq.config
+    dest: /etc/rabbitmq/rabbitmq.config
+  tags:
+    - rabbit_config
+
+- name: Enable management plugin
+  rabbitmq_plugin:
+    names: rabbitmq_management
+    state: enabled
+  when: enable_management_plugin
+  tags:
+    - rabbit_config
+
+- include: restart_rabbit.yml
+
+- name: Enable queue mirroring
+  rabbitmq_policy: >
+    name="HA"
+    pattern='^(?!amq\.).*'
+  args:
+    tags:
+      "ha-mode": all
+  tags:
+    - rabbit_config
+    - rabbit_cluster

@@ -1,0 +1,25 @@
+{%- set used_interfaces = [] %}
+{%- for net in provider_networks %}
+  {%- if net.network.container_interface not in used_interfaces %}
+    {%- for group in net.network.group_binds if group in hostvars[inventory_hostname]['group_names'] %}
+      {%- if net.network.container_interface not in used_interfaces %}
+        {%- if used_interfaces.append(net.network.container_interface) %}{%- endif %}
+      {%- endif %}
+    {%- endfor %}
+{% if net.network.container_interface in used_interfaces %}
+{% if net.network.container_bridge != management_bridge %}
+auto {{ net.network.container_interface }}
+  {% if 'ip_from_q' in net.network and hostvars[inventory_hostname][net.network.ip_from_q + '_address'] is defined %}
+iface {{ net.network.container_interface }} inet static
+    address {{ hostvars[inventory_hostname][net.network.ip_from_q + '_address'] }}
+    netmask {{ net.network.subnetmask|default(hostvars[inventory_hostname][net.network.ip_from_q + '_netmask']) }}
+  {% else %}
+iface {{ net.network.container_interface }} inet manual
+  {% endif %}
+{% endif %}
+{% endif %}
+
+{% endif %}
+{% endfor %}
+
+# Used Devices: {{ used_interfaces }}

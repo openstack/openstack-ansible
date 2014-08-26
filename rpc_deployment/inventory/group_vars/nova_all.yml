@@ -1,0 +1,103 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# The variables file used by the playbooks in the nova group.
+# These don't have to be explicitly imported by vars_files: they are autopopulated.
+
+## Service Name
+service_name: nova
+
+# Verbosity Options
+debug: False
+verbose: True
+
+# only used when the lxc vg is present on the target
+container_lvm_fstype: ext4
+container_lvm_fssize: 5GB
+
+# General configuration
+volume_driver: cinder.volume.drivers.lvm.LVMISCSIDriver
+
+## DB
+container_mysql_user: nova
+container_mysql_password: "{{ nova_container_mysql_password }}"
+container_database: nova
+
+## RPC
+rpc_backend: nova.openstack.common.rpc.impl_kombu
+
+## Nova virtualization Type, set to KVM if supported
+virt_type: "{{ nova_virt_type|default('qemu') }}"
+
+## Nova Auth
+service_admin_tenant_name: "service"
+service_admin_username: "nova"
+service_admin_password: "{{ nova_service_password }}"
+
+## Nova User / Group
+system_user: nova
+system_group: nova
+
+## Service Names
+service_names:
+  - nova-api-metadata
+  - nova-api-os-compute
+  - nova-api-ec2
+  - nova-compute
+  - nova-conductor
+  - nova-scheduler
+
+# Endpoint used throughout various services, including nova
+nova_metadata_ip: "{{ internal_vip_address }}"
+nova_metadata_proxy_shared_secret: "{{ nova_metadata_proxy_secret }}"
+
+
+## Nova global config
+nova_cpu_mode: host-model
+nova_linuxnet_interface_driver: nova.network.linux_net.NeutronLinuxBridgeInterfaceDriver
+nova_libvirt_vif_driver: nova.virt.libvirt.vif.NeutronLinuxBridgeVIFDriver
+nova_firewall_driver: nova.virt.firewall.NoopFirewallDriver
+nova_compute_driver: libvirt.LibvirtDriver
+nova_max_age: 0
+
+## Git Source
+git_repo: https://git.openstack.org/openstack/nova
+git_fallback_repo: https://github.com/openstack/nova
+git_etc_example: etc/nova/
+git_install_branch: stable/icehouse
+
+service_pip_dependencies:
+  - MySQL-python
+  - python-memcached
+  - pycrypto
+  - python-keystoneclient
+  - python-novaclient
+  - keystonemiddleware
+
+container_directories:
+  - /var/log/nova
+  - /var/lib/nova
+  - /var/lib/nova/cache/api
+  - /etc/nova
+  - /etc/nova/rootwrap.d
+  - /var/cache/nova
+  - /var/lock/nova
+  - /var/run/nova
+
+container_packages:
+  - libpq-dev
+  - open-iscsi
+  - vlan
+  - kpartx

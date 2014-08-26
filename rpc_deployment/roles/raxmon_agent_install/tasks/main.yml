@@ -1,0 +1,89 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Add apt key for the raxmon agent
+  apt_key:
+    url: "{{ item }}"
+    state: present
+  with_items: raxmon_agent_key
+
+- name: Configure raxmon agent repo
+  apt_repository: >
+    repo="{{ item.repo }}"
+    state="{{ item.state }}"
+  with_items: raxmon_agent_repos
+
+- name: Install raxmon agent packages
+  apt:
+    pkg: "{{ item }}"
+    state: latest
+    update_cache: yes
+    cache_valid_time: 600
+  with_items:
+    - rackspace-monitoring-agent
+
+- name: Clone plugins repo
+  git:
+    repo: https://github.com/rcbops/rpc-maas.git
+    dest: /usr/lib/rackspace-monitoring-agent/plugins/
+    version: "{{ maas_repo_version }}"
+
+- name: Chmod plugins
+  file: path={{ item }} mode=0755
+  with_fileglob:
+    - /usr/lib/rackspace-monitoring-agent/plugins/*.py
+
+- name: Create openrc file
+  template: >
+    src=openrc
+    dest=/root/openrc-maas
+    owner=root
+    group=root
+    mode=0600
+
+- name: Install python dependencies
+  pip:
+    requirements: /usr/lib/rackspace-monitoring-agent/plugins/requirements.txt
+
+- name: Entity {{ entity_name }} count
+  shell: "raxmon-entities-list | grep ' label={{ entity_name }} provider=Rackspace Monitoring ...>$' | wc -l"
+  register: entity_count
+
+- name: At most one {{ entity_name }} entity exists
+  fail:
+    msg: "Entity count of {{ entity_count.stdout }} != 1 for entity with the label {{ entity_name }}"
+  when: entity_count.stdout|int != 1
+
+- name: Get entity {{ entity_name }}
+  shell: "raxmon-entities-list | grep ' label={{ entity_name }} provider=Rackspace Monitoring ...>$' | awk '{print $2}' | cut -d= -f2"
+  register: entity
+
+- name: Assign agent ID to entity
+  shell: "raxmon-entities-update --id {{ entity.stdout }} --agent-id {{ entity_name }}"
+
+- name: Generate raxmon agent config
+  template:
+    src: rackspace-monitoring-agent.cfg
+    dest: /etc/rackspace-monitoring-agent.cfg
+    mode: 0600
+    owner: root
+    group: root
+  notify: Restart raxmon agent
+
+- name: Start raxmon agent
+  service:
+    name: rackspace-monitoring-agent
+    state: started
+    enabled: yes

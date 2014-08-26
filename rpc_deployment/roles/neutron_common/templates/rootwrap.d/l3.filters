@@ -1,0 +1,41 @@
+# neutron-rootwrap command filters for nodes on which neutron is
+# expected to control network
+#
+# This file should be owned by (and only-writeable by) the root user
+
+# format seems to be
+# cmd-name: filter-name, raw-command, user, args
+
+[Filters]
+
+# arping
+arping: CommandFilter, arping, root
+
+# l3_agent
+sysctl: CommandFilter, sysctl, root
+route: CommandFilter, route, root
+
+# metadata proxy
+metadata_proxy: CommandFilter, neutron-ns-metadata-proxy, root
+metadata_proxy_quantum: CommandFilter, quantum-ns-metadata-proxy, root
+# If installed from source (say, by devstack), the prefix will be
+# /usr/local instead of /usr/bin.
+metadata_proxy_local: CommandFilter, /usr/local/bin/neutron-ns-metadata-proxy, root
+metadata_proxy_local_quantum: CommandFilter, /usr/local/bin/quantum-ns-metadata-proxy, root
+# RHEL invocation of the metadata proxy will report /usr/bin/python
+kill_metadata: KillFilter, root, /usr/bin/python, -9
+kill_metadata7: KillFilter, root, /usr/bin/python2.7, -9
+kill_metadata6: KillFilter, root, /usr/bin/python2.6, -9
+
+# ip_lib
+ip: IpFilter, ip, root
+ip_exec: IpNetnsExecFilter, ip, root
+
+# ovs_lib (if OVSInterfaceDriver is used)
+ovs-vsctl: CommandFilter, ovs-vsctl, root
+
+# iptables_manager
+iptables-save: CommandFilter, iptables-save, root
+iptables-restore: CommandFilter, iptables-restore, root
+ip6tables-save: CommandFilter, ip6tables-save, root
+ip6tables-restore: CommandFilter, ip6tables-restore, root

@@ -1,0 +1,179 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# The variables file used by the playbooks in the dbservers group.
+# These don't have to be explicitly imported by vars_files: they are autopopulated.
+
+# Defined required kernel. presently 3.13.0-32-generic
+required_kernel: 3.13.0-34-generic
+
+## Container Template Config
+container_template: rpc
+container_release: trusty
+
+# Parameters on what the conatiner will be built with
+container_config: /etc/lxc/lxc-rpc.conf
+
+
+## Base Ansible config for all plays
+ansible_ssh_port: 22
+
+
+## Virtual IP address
+# Internal Management vip address
+internal_vip_address: "{{ internal_lb_vip_address }}"
+
+# External DMZ VIP address
+external_vip_address: "{{ external_lb_vip_address }}"
+
+
+## URL for the frozen rpc repo
+rpc_repo_url: "http://dc0e2a2ef0676c3453b1-31bb9324d3aeab0d08fa434012c1e64d.r5.cf1.rackcdn.com"
+
+
+## GPG Keys
+gpg_keys:
+  - { key_name: 'mariadb', keyserver: 'hkp://keyserver.ubuntu.com:80', hash_id: '0xcbcb082a1bb943db' }
+
+
+## Repositories
+apt_common_repos:
+  - { repo: "deb http://mirror.jmu.edu/pub/mariadb/repo/5.5/ubuntu {{ ansible_distribution_release }} main", state: "present" }
+
+apt_lxc_common_repos:
+  - { repo: "ppa:ubuntu-lxc/stable", state: "present" }
+
+get_pip_url: "https://bootstrap.pypa.io/get-pip.py"
+
+
+## Users that will not be created via container_common
+excluded_user_create:
+  - mysql
+  - rabbitmq
+
+
+## Base Packages
+apt_common_packages:
+  - vlan
+  - python-software-properties
+  - python-dev
+  - build-essential
+  - git-core
+  - rsyslog
+  - lvm2
+  - libssl-dev
+  - bridge-utils
+  - cgroup-lite
+  - sqlite3
+  - iptables
+  - sshpass
+  - libffi-dev
+  - libxml2-dev
+  - libxslt1-dev
+  - mariadb-client
+  - libmariadbclient-dev
+
+
+# Util packages that are installed when repos are put in place
+common_util_packages:
+  - curl
+  - wget
+  - time
+  - rsync
+
+
+## MySQL Information
+mysql_port: 3306
+mysql_user: root
+mysql_password: "{{ mysql_root_password }}"
+mysql_address: "{{ internal_vip_address }}"
+
+
+## RPC Backend
+rpc_thread_pool_size: 64
+rpc_conn_pool_size: 30
+rpc_response_timeout: 60
+rpc_cast_timeout: 30
+rpc_backend: rabbit
+
+
+## RabbitMQ
+rabbit_port: 5672
+rabbit_hosts: "{% for host in groups['rabbit'] %}{{ hostvars[host]['container_address'] }}:{{ rabbit_port }}{% if not loop.last %},{% endif %}{% endfor %}"
+rabbit_use_ssl: false
+rabbit_virtual_host: /
+rabbit_retry_interval: 1
+rabbit_retry_backoff: 2
+rabbit_max_retries: 0
+rabbit_ha_queues: false
+rabbit_userid: openstack
+rabbit_password: "{{ rabbitmq_password }}"
+
+
+## Auth
+auth_admin_username: admin
+auth_admin_password: "{{ keystone_auth_admin_password }}"
+auth_admin_token: "{{ keystone_auth_admin_password }}"
+auth_admin_tenant: admin
+auth_identity_uri: "http://{{ internal_vip_address }}:5000/v2.0"
+auth_admin_uri: "http://{{ internal_vip_address }}:35357/v2.0"
+auth_host: "{{ internal_vip_address }}"
+auth_port: 35357
+auth_public_port: 5000
+auth_protocol: http
+
+
+## Openstack Region
+service_region: RegionOne
+
+
+## Container User
+container_username: openstack
+container_password: "{{ container_openstack_password }}"
+
+
+## Memcached
+memcached_memory: 8192
+memcached_port: 11211
+memcached_user: memcache
+memcached_secret_key: "{{ memcached_encryption_key }}"
+
+
+## Haproxy Configuration
+hap_rise: 3
+hap_fall: 3
+hap_interval: 12000
+
+# Default haproxy backup nodes to empty list so this doesn't have to be
+# defined for each service.
+hap_backup_nodes: []
+
+
+## Swift credentials for Swift Container image store
+swift_archive_store:
+  creds_file: /root/swiftcreds
+  section: default
+  container: poc_lxc_containers
+
+## Remote logging common configuration
+elasticsearch_http_port: 9200
+elasticsearch_tcp_port: 9300
+elasticsearch_mode: transport
+elasticsearch_cluster: openstack
+elasticsearch_vip: "{{ external_vip_address }}"
+logstash_port: 5544
+
+# Directory where serverspec is installed to on utility container
+serverspec_install_dir: /opt/serverspec

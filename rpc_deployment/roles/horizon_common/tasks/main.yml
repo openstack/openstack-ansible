@@ -1,0 +1,65 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: create self-signed SSL cert
+  command: >
+    openssl req -new -nodes -x509 -subj
+    "/C=US/ST=Texas/L=San Antonio/O=IT/CN={{ horizon_server_name }}"
+    -days 3650
+    -keyout /etc/ssl/private/apache.key
+    -out /etc/ssl/certs/apache.cert
+    -extensions v3_ca
+    creates=/etc/ssl/certs/apache.cert
+  when: horizon_self_signed is defined and horizon_self_signed == true
+
+- name: Setup Horizon config
+  template: >
+    src=local_settings.py
+    dest={{ install_lib_dir }}/openstack_dashboard/local/local_settings.py
+    owner={{ system_user }}
+    group={{ system_group }}
+
+- name: Copy manage.py
+  command: >
+    creates={{ install_lib_dir }}/manage.py
+    cp -a "/opt/{{ service_name }}_{{ git_install_branch | replace('/', '_') }}/manage.py" "{{ install_lib_dir }}"
+
+- name: Collect static files
+  command: python /opt/horizon/lib/python2.7/site-packages/manage.py collectstatic --noinput
+
+
+- name: Fix missing file issues (1 of 2)
+  file: >
+    src={{ install_lib_dir }}/horizon/static/bootstrap/js
+    dest={{ install_lib_dir }}/openstack_dashboard/static/bootstrap/js
+    owner={{ system_group }}
+    group={{ system_group }}
+    state=link
+
+- name: Fix missing file issues (2 of 2)
+  file: >
+    src={{ install_lib_dir }}/horizon/static/horizon
+    dest={{ install_lib_dir }}/openstack_dashboard/static/horizon
+    owner={{ system_group }}
+    group={{ system_group }}
+    state=link
+
+- name: Set horizon permissions
+  file: >
+    state=directory
+    dest={{ install_root_dir }}
+    recurse=yes
+    owner={{ system_group }}
+    group={{ system_group }}

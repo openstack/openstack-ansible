@@ -1,0 +1,42 @@
+frontend {{ item.service.hap_service_name }}-front
+bind {{ item.service.hap_bind|default('*') }}:{{ item.service.hap_port }}
+{% if item.service.hap_balance_type == "http" %}
+    option  httplog
+    option  forwardfor except 127.0.0.0/8
+    option  http-server-close
+    
+    {% set request_option = "http" %}
+{% else %}
+    option  tcplog
+    {% set request_option = "tcp" %}
+{% endif %}
+
+{% if item.service.hap_whitelist_hosts is defined and item.service.hap_whitelist_hosts == true %}
+    acl white_list src 127.0.0.1/8 {{ container_cidr }} {% for host_name in groups['hosts'] %} {{ hostvars[host_name]['ansible_ssh_host'] }} {% endfor %}
+
+    {{ request_option }}-request content accept if white_list
+    {{ request_option }}-request content reject
+{% endif %}
+
+    mode {{ item.service.hap_balance_type }}
+    default_backend {{ item.service.hap_service_name }}-back
+
+
+{% if item.service.hap_backend_port is not defined %}
+  {% set hap_backend_port = item.service.hap_port %}
+{% else %}
+  {% set hap_backend_port = item.service.hap_backend_port %}
+{% endif %}
+
+backend {{ item.service.hap_service_name }}-back
+    mode {{ item.service.hap_balance_type }}
+    balance {{ item.service.hap_balance_alg|default("leastconn") }}
+{% for option in item.service.hap_backend_options|default([]) %}
+    option {{ option }}
+{% endfor %}
+{% for host_name in item.service.hap_backend_nodes %}
+    server {{ hostvars[host_name]['container_name']|default(host_name) }} {{ hostvars[host_name]['ansible_ssh_host'] }}:{{ hap_backend_port }} check port {{ hap_backend_port }} inter {{ hap_interval }} rise {{ item.service.hap_backend_nodes|count }} fall {{ item.service.hap_backend_nodes|count }}
+{% endfor %}
+{% for host_name in item.service.hap_backup_nodes|default([]) %}
+    server {{ hostvars[host_name]['container_name']|default(host_name) }} {{ hostvars[host_name]['ansible_ssh_host'] }}:{{ hap_backend_port }} check port {{ hap_backend_port }} inter {{ hap_interval }} rise {{ item.service.hap_backend_nodes|count }} fall {{ item.service.hap_backend_nodes|count }} backup
+{% endfor %}

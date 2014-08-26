@@ -1,0 +1,113 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+## Keystone
+- hosts: keystone[0]
+  user: root
+  roles:
+    - keystone_add_service
+  vars_files:
+    - inventory/group_vars/keystone_all.yml
+    - vars/openstack_service_vars/keystone_endpoint.yml
+
+
+## Cinder
+- hosts: keystone[0]
+  user: root
+  roles:
+    - keystone_add_service
+  vars_files:
+    - inventory/group_vars/cinder_all.yml
+    - vars/openstack_service_vars/cinder_api_endpoint.yml
+
+- hosts: keystone[0]
+  user: root
+  roles:
+    - keystone_add_service
+  vars_files:
+    - inventory/group_vars/cinder_all.yml
+    - vars/openstack_service_vars/cinder_apiv2_endpoint.yml
+
+
+## Glance
+- hosts: keystone[0]
+  user: root
+  roles:
+    - keystone_add_service
+  vars_files:
+    - inventory/group_vars/glance_all.yml
+    - vars/openstack_service_vars/glance_api_endpoint.yml
+
+
+## Heat
+- hosts: keystone[0]
+  user: root
+  roles:
+    - keystone_add_service
+  vars_files:
+    - inventory/group_vars/heat_all.yml
+    - vars/openstack_service_vars/heat_api_endpoint.yml
+
+- hosts: keystone[0]
+  user: root
+  roles:
+    - keystone_add_service
+  vars_files:
+    - inventory/group_vars/heat_all.yml
+    - vars/openstack_service_vars/heat_api_cfn_endpoint.yml
+
+
+## Neutron
+- hosts: keystone[0]
+  user: root
+  roles:
+    - keystone_add_service
+  vars_files:
+    - inventory/group_vars/neutron_all.yml
+    - vars/openstack_service_vars/neutron_server_endpoint.yml
+
+
+## Nova
+- hosts: keystone[0]
+  user: root
+  roles:
+    - keystone_add_service
+  vars_files:
+    - inventory/group_vars/nova_all.yml
+    - vars/openstack_service_vars/nova_api_os_compute_endpoint.yml
+
+- hosts: keystone[0]
+  user: root
+  roles:
+    - keystone_add_service
+  vars_files:
+    - inventory/group_vars/nova_all.yml
+    - vars/openstack_service_vars/nova_api_os_computev3_endpoint.yml
+
+- hosts: keystone[0]
+  user: root
+  roles:
+    - keystone_add_service
+  vars_files:
+    - inventory/group_vars/nova_all.yml
+    - vars/openstack_service_vars/nova_api_ec2_endpoint.yml
+
+- hosts: keystone[0]
+  user: root
+  roles:
+    - keystone_add_service
+  vars_files:
+    - inventory/group_vars/nova_all.yml
+    - vars/openstack_service_vars/nova_api_s3_endpoint.yml

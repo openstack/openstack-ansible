@@ -1,0 +1,45 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Prevent mysql from starting on install
+  copy:
+    src: "policy-rc.d"
+    dest: "/usr/sbin/policy-rc.d"
+    mode: 0744
+    backup: yes
+
+- name: Preseed mysql root password
+  debconf:
+    name: "{{ mariadb_server_package }}"
+    question: "mysql-server/{{ item }}"
+    value: "{{ mysql_password }}"
+    vtype: string
+  with_items:
+    - root_password
+    - root_password_again
+
+- name: Install galera packages
+  apt:
+    pkg: "{{ item }}"
+    state: latest
+    update_cache: yes
+    cache_valid_time: 600
+  with_items: galera_packages
+
+# Remove the file that prevents the services from starting
+- name: Remove /usr/sbin/policy-rc.d
+  file:
+    path: "/usr/sbin/policy-rc.d"
+    state: absent

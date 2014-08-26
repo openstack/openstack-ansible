@@ -1,0 +1,41 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Deploy rsyslog config generator
+  template: >
+    src={{ item }}
+    dest=/opt/{{ item }}
+    owner=root
+    group=root
+    mode=0755
+  with_items:
+    - genlog.py
+
+- name: Stop rsyslog
+  service: name=rsyslog state=stopped pattern=rsyslog
+
+- name: Generate Config Files
+  shell: >
+    /opt/genlog.py > /etc/rsyslog.d/51-openstack.conf
+
+- name: Ensure ownership on /var/spool/rsyslog
+  file: >
+    path=/var/spool/rsyslog
+    state=directory
+    owner=syslog
+    group=syslog
+
+- name: Start rsyslog
+  service: name=rsyslog state=restarted pattern=rsyslog

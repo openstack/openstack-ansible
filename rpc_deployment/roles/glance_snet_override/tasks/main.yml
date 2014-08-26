@@ -1,0 +1,13 @@
+---
+- name: Add hosts entry if glance_swift_enable_snet is True
+  lineinfile:
+    dest: /etc/hosts
+    regexp: "{{ cf_snet_endpoints[glance_swift_store_region]['hostname'] }}"
+    line: "{{ cf_snet_endpoints[glance_swift_store_region]['ip'] }} {{ cf_snet_endpoints[glance_swift_store_region]['hostname'] }}"
+  when: glance_swift_enable_snet
+- name: Remove hosts entry if glance_swift_enable_snet is False
+  lineinfile:
+    dest: /etc/hosts
+    regexp: "{{ cf_snet_endpoints[glance_swift_store_region]['hostname'] }}"
+    state: absent
+  when: not glance_swift_enable_snet

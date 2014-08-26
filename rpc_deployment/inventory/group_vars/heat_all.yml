@@ -1,0 +1,92 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# The variables file used by the playbooks in the Heat-api group.
+# These don't have to be explicitly imported by vars_files: they are autopopulated.
+
+## Service Name
+service_name: heat
+
+# Verbosity Options
+debug: False
+verbose: True
+
+# only used when the lxc vg is present on the target
+container_lvm_fstype: ext4
+container_lvm_fssize: 5GB
+
+
+## DB
+container_mysql_user: heat
+container_mysql_password: "{{ heat_container_mysql_password }}"
+container_database: heat
+
+## RPC
+rpc_backend: heat.openstack.common.rpc.impl_kombu
+
+## Auth
+service_admin_tenant_name: "service"
+service_admin_username: "heat"
+service_admin_password: "{{ heat_service_password }}"
+
+## Heat User / Group
+system_user: heat
+system_group: heat
+
+## Service Names
+service_names:
+  - heat-api
+  - heat-api-cfn
+  - heat-api-cloudwatch
+  - heat-engine
+
+## Stack 
+stack_domain_admin_password: "{{ heat_stack_domain_admin_password }}"
+stack_domain_admin: heat_domain_admin
+deferred_auth_method: trusts
+
+auth_encryption_key: "{{ heat_auth_encryption_key }}"
+
+heat_watch_server_url: "http://{{ external_vip_address }}:8003"
+heat_waitcondition_server_url: "http://{{ internal_vip_address }}:8000/v1/waitcondition"
+heat_metadata_server_url: "http://{{ internal_vip_address }}:8000"
+
+## Git Source
+git_repo: https://git.openstack.org/openstack/heat
+git_fallback_repo: https://github.com/openstack/heat
+git_etc_example: etc/heat
+git_install_branch: stable/icehouse
+
+service_pip_dependencies:
+  - MySQL-python
+  - python-memcached
+  - pycrypto
+  - python-heatclient
+  - python-keystoneclient
+  - python-troveclient
+  - python-ceilometerclient
+  - keystonemiddleware
+
+container_directories:
+  - /etc/heat
+  - /etc/heat/environment.d
+  - /etc/heat/templates
+  - /var/cache/heat
+  - /var/lib/heat
+  - /var/log/heat
+
+container_packages:
+  - rsync
+  - libxslt1.1 

@@ -1,0 +1,282 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+component_skel:
+  cinder_api:
+    belongs_to:
+    - cinder_all
+  cinder_scheduler:
+    belongs_to:
+    - cinder_all
+  cinder_volume:
+    belongs_to:
+    - cinder_all
+  elasticsearch:
+    belongs_to:
+    - elasticsearch_all
+  galera:
+    belongs_to:
+    - galera_all
+  glance_api:
+    belongs_to:
+    - glance_all
+  glance_registry:
+    belongs_to:
+    - glance_all
+  heat_api:
+    belongs_to:
+    - heat_all
+  heat_api_cfn:
+    belongs_to:
+    - heat_all
+  heat_api_cloudwatch:
+    belongs_to:
+    - heat_all
+  heat_engine:
+    belongs_to:
+    - heat_all
+  horizon:
+    belongs_to:
+    - horizon_all
+  keystone:
+    belongs_to:
+    - keystone_all
+  kibana:
+    belongs_to:
+    - kibana_all
+  logstash:
+    belongs_to:
+    - logstash_all
+  memcached:
+    belongs_to:
+    - memcached_all
+  neutron_agent:
+    belongs_to:
+    - neutron_all
+  neutron_dhcp_agent:
+    belongs_to:
+    - neutron_all
+  neutron_linuxbridge_agent:
+    belongs_to:
+    - neutron_all
+  neutron_metering_agent:
+    belongs_to:
+    - neutron_all
+  neutron_l3_agent:
+    belongs_to:
+    - neutron_all
+  neutron_metadata_agent:
+    belongs_to:
+    - neutron_all
+  neutron_server:
+    belongs_to:
+    - neutron_all
+  nova_api_ec2:
+    belongs_to:
+    - nova_all
+  nova_api_metadata:
+    belongs_to:
+    - nova_all
+  nova_api_os_compute:
+    belongs_to:
+    - nova_all
+  nova_compute:
+    belongs_to:
+    - nova_all
+  nova_conductor:
+    belongs_to:
+    - nova_all
+  nova_scheduler:
+    belongs_to:
+    - nova_all
+  nova_spice_console:
+    belongs_to:
+    - nova_all
+  rabbit:
+    belongs_to:
+    - rabbit_all
+  rsyslog:
+    belongs_to:
+    - rsyslog_all
+  utility:
+    belongs_to:
+    - utility_all
+container_skel:
+  cinder_api_container:
+    belongs_to:
+    - infra_containers
+    contains:
+    - cinder_api
+  cinder_volumes_container:
+    belongs_to:
+    - storage_containers
+    contains:
+    - cinder_scheduler
+    - cinder_volume
+  elasticsearch_container:
+    belongs_to:
+    - log_containers
+    contains:
+    - elasticsearch
+  galera_container:
+    belongs_to:
+    - infra_containers
+    contains:
+    - galera
+  glance_container:
+    belongs_to:
+    - infra_containers
+    contains:
+    - glance_api
+    - glance_registry
+  heat_apis_container:
+    belongs_to:
+    - infra_containers
+    contains:
+    - heat_api_cloudwatch
+    - heat_api_cfn
+    - heat_api
+  heat_engine_container:
+    belongs_to:
+    - infra_containers
+    contains:
+    - heat_engine
+  horizon_container:
+    belongs_to:
+    - infra_containers
+    contains:
+    - horizon
+  keystone_container:
+    belongs_to:
+    - infra_containers
+    contains:
+    - keystone
+  kibana_container:
+    belongs_to:
+    - log_containers
+    contains:
+    - kibana
+  logstash_container:
+    belongs_to:
+    - log_containers
+    contains:
+    - logstash
+  memcached_container:
+    belongs_to:
+    - infra_containers
+    contains:
+    - memcached
+  neutron_agents_container:
+    belongs_to:
+    - network_containers
+    contains:
+    - neutron_agent
+    - neutron_metadata_agent
+    - neutron_metering_agent
+    - neutron_linuxbridge_agent
+    - neutron_l3_agent
+    - neutron_dhcp_agent
+  neutron_server_container:
+    belongs_to:
+    - network_containers
+    contains:
+    - neutron_server
+  nova_api_ec2_container:
+    belongs_to:
+    - infra_containers
+    contains:
+    - nova_api_ec2
+  nova_api_metadata_container:
+    belongs_to:
+    - infra_containers
+    contains:
+    - nova_api_metadata
+  nova_api_os_compute_container:
+    belongs_to:
+    - infra_containers
+    contains:
+    - nova_api_os_compute
+  nova_compute_container:
+    is_metal: true
+    belongs_to:
+    - compute_containers
+    contains:
+    - neutron_linuxbridge_agent
+    - nova_compute
+  nova_conductor_container:
+    belongs_to:
+    - infra_containers
+    contains:
+    - nova_conductor
+  nova_scheduler_container:
+    belongs_to:
+    - infra_containers
+    contains:
+    - nova_scheduler
+  nova_spice_console_container:
+    belongs_to:
+    - infra_containers
+    contains:
+    - nova_spice_console
+  rabbit_mq_container:
+    belongs_to:
+    - infra_containers
+    contains:
+    - rabbit
+  rsyslog_container:
+    belongs_to:
+    - infra_containers
+    - compute_containers
+    - storage_containers
+    - log_containers
+    - network_containers
+    contains:
+    - rsyslog
+  utility_container:
+    belongs_to:
+    - infra_containers
+    contains:
+    - utility
+physical_skel:
+  network_containers:
+    belongs_to:
+    - all_containers
+  network_hosts:
+    belongs_to:
+    - hosts
+  compute_containers:
+    belongs_to:
+    - all_containers
+  compute_hosts:
+    belongs_to:
+    - hosts
+  infra_containers:
+    belongs_to:
+    - all_containers
+  infra_hosts:
+    belongs_to:
+    - hosts
+  log_containers:
+    belongs_to:
+    - all_containers
+  log_hosts:
+    belongs_to:
+    - hosts
+  storage_containers:
+    belongs_to:
+    - all_containers
+  storage_hosts:
+    belongs_to:
+    - hosts

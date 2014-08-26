@@ -1,0 +1,117 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# The variables file used by the playbooks in the Glance-api group.
+# These don't have to be explicitly imported by vars_files: they are autopopulated.
+
+## Service Name
+service_name: glance
+
+service_publicurl: "http://{{ external_vip_address }}:9292"
+service_adminurl: "http://{{ internal_vip_address }}:9292"
+service_internalurl: "http://{{ internal_vip_address }}:9292"
+
+# Verbosity Options
+debug: False
+verbose: True
+
+# only used when the lxc vg is present on the target
+container_lvm_fstype: ext4
+container_lvm_fssize: 5GB
+
+# General configuration
+registry_host: "{{ internal_vip_address }}"
+
+## DB
+container_mysql_user: glance
+container_mysql_password: "{{ glance_container_mysql_password }}"
+container_database: glance
+
+## RPC
+rpc_backend: glance.openstack.common.rpc.impl_kombu
+
+## Backend
+default_store: "{{ glance_default_store|default('file') }}"
+
+## Swift Options
+swift_store_auth_address: "{{ glance_swift_store_auth_address | default('NoAuthAddress') }}"
+swift_store_user: "{{ glance_swift_store_user | default('NoUser') }}"
+swift_store_key: "{{ glance_swift_store_key | default('NoKey') }}"
+swift_store_region: "{{ glance_swift_store_region | default('NoRegion') }}"
+swift_store_container: "{{ glance_swift_store_container | default('NoContainer')}}"
+
+## Auth
+service_admin_tenant_name: "service"
+service_admin_username: "glance"
+service_admin_password: "{{ glance_service_password }}"
+
+## Glance User / Group
+system_user: glance
+system_group: glance
+
+## Service Names
+service_names:
+  - glance-api
+  - glance-registry
+
+flavor: "keystone+cachemanagement"
+
+## Git Source
+git_repo: https://git.openstack.org/openstack/glance
+git_fallback_repo: https://github.com/openstack/glance
+git_etc_example: etc/
+git_install_branch: stable/icehouse
+
+service_pip_dependencies:
+  - warlock
+  - MySQL-python
+  - python-memcached
+  - pycrypto
+  - python-glanceclient
+  - python-keystoneclient
+  - keystonemiddleware
+
+container_directories:
+  - /var/log/glance
+  - /var/lib/glance
+  - /var/lib/glance/cache
+  - /var/lib/glance/cache/api
+  - /var/lib/glance/cache/registry
+  - /var/lib/glance/scrubber
+  - /etc/glance
+  - /var/cache/glance
+
+container_packages:
+  - rsync
+
+cf_snet_endpoints:
+  DFW:
+    hostname: storage101.dfw1.clouddrive.com
+    ip: 10.191.208.30
+  HKG:
+    hostname: storage101.hkg1.clouddrive.com
+    ip: 10.191.208.34
+  IAD:
+    hostname: storage101.iad3.clouddrive.com
+    ip: 10.191.208.34
+  LON:
+    hostname: storage101.lon3.clouddrive.com
+    ip: 10.191.209.30
+  ORD:
+    hostname: storage101.ord1.clouddrive.com
+    ip: 10.191.208.30
+  SYD:
+    hostname: storage101.syd2.clouddrive.com
+    ip: 10.191.208.34

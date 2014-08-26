@@ -1,0 +1,136 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Ensure supporting holland packages are installed
+  apt:
+    pkg: "{{ item }}"
+    state: present
+    update_cache: yes
+    cache_valid_time: 600
+  with_items:
+    - mariadb-client
+    - xtrabackup
+  register: rpc_support_packages
+  until: rpc_support_packages|success
+  retries: 3
+  tags:
+    - holland_supporting_packages
+    - holland_all
+
+- name: Create rpc_support backup user
+  mysql_user:
+    name: "{{ item.name }}"
+    host: "{{ item.host }}"
+    password: "{{ item.password }}"
+    priv: "{{ item.priv }}"
+    state: "{{ item.state }}"
+  with_items:
+    - name: "rpc_support"
+      host: "%"
+      password: "{{ rpc_support_holland_password }}"
+      priv: "*.*:ALL"
+      state: present
+    - name: "rpc_support"
+      host: "localhost"
+      password: "{{ rpc_support_holland_password }}"
+      priv: "*.*:ALL"
+      state: present
+  tags:
+    - holland_sql_user
+    - holland_all
+
+- name: Get holland from git
+  git:
+    repo: https://github.com/holland-backup/holland
+    dest: "/opt/holland_{{ holland_release }}"
+    version: "{{ holland_release }}"
+  register: holland_clone
+  until: holland_clone|success 
+  retries: 5
+  tags:
+    - holland_source
+    - holland_all
+
+- name: Install holland source
+  pip: 
+    name: "{{ item }}"
+  with_items:
+    - "mysql-python"
+    - "/opt/holland_{{ holland_release }}"
+    - "/opt/holland_{{ holland_release }}/plugins/holland.lib.common"
+    - "/opt/holland_{{ holland_release }}/plugins/holland.lib.mysql"
+    - "/opt/holland_{{ holland_release }}/plugins/holland.backup.xtrabackup"
+  tags:
+    - holland_source
+    - holland_all
+
+- name: Create supporting holland directories
+  file:
+    state: directory
+    path: "{{ item }}"
+  with_items:
+    - "/var/lib/mysql/holland_backups"
+    - "/etc/holland"
+  tags:
+    - holland_dir
+    - holland_all
+
+- name: Create links to point to holland config files
+  file:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    state: link
+  with_items:
+    - { src: "/opt/holland_{{ holland_release }}/config/providers", dest: "/etc/holland/providers" }
+    - { src: "/opt/holland_{{ holland_release }}/config/backupsets", dest: "/etc/holland/backupsets" }
+  tags:
+    - holland_conf
+    - holland_all
+
+- name: Setup holland backup
+  template:
+    owner: root
+    group: root
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items:
+    - { src: "holland-xtrabackup.conf.j2", dest: "/etc/holland/backupsets/rpc_support.conf" }
+    - { src: "holland.conf.j2", dest: "/etc/holland/holland.conf" }
+  tags:
+    - holland_conf
+    - holland_all
+
+- name: Check for holland cron file
+  command: ls /etc/cron.d/holland_backups
+  failed_when: false
+  changed_when: holland_cron.rc != 0
+  register: holland_cron
+  tags:
+    - holland_cron
+    - holland_all
+
+- name: Create holland backup cron job
+  cron:
+    name: "holland-backup"
+    minute: "{{ 59|random }}"
+    weekday: "{{ 6|random }}"
+    state: present
+    job: "holland bk"
+    user: root
+    cron_file: holland_backups
+  when: holland_cron.rc != 0
+  tags:
+    - holland_cron
+    - holland_all

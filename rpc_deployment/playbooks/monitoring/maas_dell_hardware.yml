@@ -1,0 +1,53 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- hosts: hosts
+  vars:
+    check_name: openmanage-memory
+    file_name: openmanage
+    check_details: file={{ file_name }}.py,args=chassis,args=memory
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'hardware_memory_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["hardware_memory_status"] != 1) { return new AlarmStatus(CRITICAL, "Physical Memory Error"); }' }
+  user: root
+  roles:
+    - maas_dell_hardware
+
+- hosts: hosts
+  vars:
+    check_name: openmanage-processors
+    file_name: openmanage
+    check_details: file={{ file_name }}.py,args=chassis,args=processors
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'hardware_processors_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["hardware_processors_status"] != 1) { return new AlarmStatus(CRITICAL, "Physical Processor Error"); }' }
+  user: root
+  roles:
+    - maas_dell_hardware
+
+- hosts: hosts
+  vars:
+    check_name: openmanage-vdisk
+    file_name: openmanage
+    check_details: file={{ file_name }}.py,args=storage,args=vdisk
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'hardware_vdisk_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["hardware_vdisk_status"] != 1) { return new AlarmStatus(CRITICAL, "Physical Disk Error"); }' }
+  user: root
+  roles:
+    - maas_dell_hardware

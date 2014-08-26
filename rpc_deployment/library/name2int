@@ -1,0 +1,80 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+# (c) 2014, Kevin Carter <kevin.carter@rackspace.com>
+#
+# This file is part of Ansible
+#
+# Ansible is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Ansible is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
+
+DOCUMENTATION = """
+---
+module: name2int
+version_added: "1.6.6"
+short_description:
+   - hash a host name and return an integer
+description:
+   - hash a host name and return an integer
+options:
+    name:
+        description:
+            - login username
+        required: true
+author: Kevin Carter
+"""
+
+EXAMPLES = """
+# Create a new container
+- name2int:
+    name: "Some-hostname.com"
+"""
+
+import hashlib
+import platform
+
+
+class HashHostname(object):
+    def __init__(self, module):
+        """Generate an integer from a name."""
+        self.module = module
+
+    def return_hashed_host(self, name):
+        hashed_name = hashlib.md5(name).hexdigest()
+        hash_int = int(hashed_name, 32)
+        real_int = int(hash_int % 300)
+        return real_int
+
+
+def main():
+    module = AnsibleModule(
+        argument_spec=dict(
+            name=dict(
+                required=True
+            )
+        ),
+        supports_check_mode=False
+    )
+    try:
+        sm = HashHostname(module=module)
+        int_value = sm.return_hashed_host(platform.node())
+        resp = {'int_value': int_value}
+        module.exit_json(changed=True, **resp)
+    except Exception as exp:
+        resp = {'stderr': exp}
+        module.fail_json(msg='Failed Process', **resp)
+
+# import module snippets
+from ansible.module_utils.basic import *
+if __name__ == '__main__':
+    main()

@@ -1,0 +1,84 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# The variables file used by the playbooks in the Horizon group.
+# These don't have to be explicitly imported by vars_files: they are autopopulated.
+
+# Enable containerization of services
+containerize: true
+
+## Service Name
+service_name: apache2
+
+# Verbosity Options
+debug: False
+
+# only used when the lxc vg is present on the target
+container_lvm_fstype: ext4
+container_lvm_fssize: 5GB
+
+
+## DB
+container_mysql_user: dash
+container_mysql_password: "{{ horizon_container_mysql_password }}"
+container_database: dash
+
+
+## Horizon User / Group
+system_user: www-data
+system_group: www-data
+
+## Git Source
+git_repo: https://git.openstack.org/openstack/horizon
+git_fallback_repo: https://github.com/openstack/horizon
+git_install_branch: stable/icehouse
+
+# Installation directories
+install_root_dir: /opt/horizon
+install_lib_dir: /opt/horizon/lib/python2.7/site-packages
+
+service_pip_dependencies:
+  - oslo.config
+  - MySQL-python
+  - python-memcached
+  - django-appconf
+  - pycrypto
+  - ply
+  - greenlet
+
+container_directories:
+  - "{{ install_root_dir }}"
+  - "{{ install_lib_dir }}"
+
+container_packages:
+  - apache2
+  - apache2-utils
+  - libapache2-mod-wsgi
+  - libssl-dev
+  - libxslt1.1
+  - openssl
+
+horizon_fqdn: "{{ external_vip_address }}"
+horizon_server_name: "{{ container_name }}"
+horizon_self_signed: true
+
+pip_install_options: "--install-option='--prefix={{ install_root_dir }}'"
+service_name: horizon
+
+## Optional certification options
+# horizon_cacert_pem: /path/to/cacert.pem
+# horizon_ssl_cert: /etc/ssl/certs/apache.cert
+# horizon_ssl_key: /etc/ssl/private/apache.key
+# horizon_ssl_cert_path: /etc/ssl/certs

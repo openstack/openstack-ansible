@@ -1,0 +1,127 @@
+HeatTemplateFormatVersion: '2012-12-12'
+Description: 'Builtin AWS::RDS::DBInstance'
+Parameters:
+  AllocatedStorage:
+    Type: String
+  DBInstanceClass:
+    Type: String
+  DBName:
+    Type: String
+  DBSecurityGroups:
+    Type: CommaDelimitedList
+    Default: ''
+  Engine:
+    Type: String
+    AllowedValues: ['MySQL']
+  MasterUsername:
+    Type: String
+  MasterUserPassword:
+    Type: String
+  Port:
+    Type: String
+    Default: '3306'
+  KeyName:
+    Type: String
+    Default: ''
+
+Mappings:
+  DBInstanceToInstance:
+    db.m1.small: {Instance: m1.small}
+    db.m1.large: {Instance: m1.large}
+    db.m1.xlarge: {Instance: m1.xlarge}
+    db.m2.xlarge: {Instance: m2.xlarge}
+    db.m2.2xlarge: {Instance: m2.2xlarge}
+    db.m2.4xlarge: {Instance: m2.4xlarge}
+
+Resources:
+  ServerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: 'Enable SSH access'
+      SecurityGroupIngress:
+      - IpProtocol: icmp
+        FromPort: '-1'
+        ToPort: '-1'
+        CidrIp: '0.0.0.0/0'
+      - IpProtocol: tcp
+        FromPort: '22'
+        ToPort : '22'
+        CidrIp : '0.0.0.0/0'
+      - IpProtocol: tcp
+        FromPort: {Ref: Port}
+        ToPort : {Ref: Port}
+        CidrIp : '0.0.0.0/0'
+  DatabaseInstance:
+    Type: AWS::EC2::Instance
+    Metadata:
+      AWS::CloudFormation::Init:
+        config:
+          files:
+            /tmp/db_setup.sql:
+              content:
+                'Fn::Replace':
+                - DBName: {Ref: DBName}
+                  MasterUserPassword: {Ref: MasterUserPassword}
+                  MasterUsername: {Ref: MasterUsername}
+                - |
+                  CREATE DATABASE DBName;
+                  GRANT ALL PRIVILEGES ON DBName.* TO "MasterUsername"@"%"
+                  IDENTIFIED BY "MasterUserPassword";
+                  FLUSH PRIVILEGES;
+                  EXIT
+              mode: '000644'
+              owner: root
+              group: root
+          packages:
+            yum:
+              mariadb: []
+              mariadb-server: []
+          services:
+            systemd:
+              mysqld:
+                enabled: true
+                ensureRunning: true
+    Properties:
+      ImageId: F19-x86_64-cfntools
+      InstanceType: {'Fn::FindInMap': [DBInstanceToInstance,
+                                       {Ref: DBInstanceClass}, Instance]}
+      KeyName: {Ref: KeyName}
+      SecurityGroups: [{"Ref" : "ServerSecurityGroup"}]
+      UserData:
+        Fn::Base64:
+          Fn::Replace:
+          - 'AWS::StackName': {Ref: 'AWS::StackName'}
+            'AWS::Region': {Ref: 'AWS::Region'}
+            MasterUserPassword: {Ref: MasterUserPassword}
+            WaitHandle: {Ref: WaitHandle}
+          - |
+            #!/bin/bash -v
+            #
+            iptables -F
+
+            # Helper function
+            function error_exit
+            {
+              /opt/aws/bin/cfn-signal -e 1 -r \"$1\" 'WaitHandle'
+              exit 1
+            }
+            /opt/aws/bin/cfn-init -s AWS::StackName -r DatabaseInstance --region AWS::Region || error_exit 'Failed to run cfn-init'
+            # Setup MySQL root password and create a user
+            mysqladmin -u root password 'MasterUserPassword'
+            mysql -u root --password='MasterUserPassword' < /tmp/db_setup.sql || error_exit 'Failed to setup mysql'
+
+            # Database setup completed, signal success
+            /opt/aws/bin/cfn-signal -e 0 -r "MySQL server setup complete" 'WaitHandle'
+
+  WaitHandle:
+    Type: AWS::CloudFormation::WaitConditionHandle
+  WaitCondition:
+    Type: AWS::CloudFormation::WaitCondition
+    DependsOn: DatabaseInstance
+    Properties:
+      Handle: {Ref: WaitHandle}
+      Timeout: "600"
+
+Outputs:
+  Endpoint.Address: {'Fn::GetAtt': [DatabaseInstance, PublicIp]}
+  Endpoint.Port: {Ref: Port}

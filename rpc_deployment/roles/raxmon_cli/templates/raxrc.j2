@@ -1,0 +1,17 @@
+{% if maas_auth_method == "password" %}
+[credentials]
+username={{ maas_username }}
+api_key={{ maas_api_key }}
+
+[auth_api]
+url={{ maas_auth_url }}/tokens
+
+{% endif %}
+{% if maas_auth_method == "token" %}
+[api]
+url={{ maas_api_url }}
+token={{ maas_auth_token }}
+
+{% endif %}
+[ssl]
+verify=true

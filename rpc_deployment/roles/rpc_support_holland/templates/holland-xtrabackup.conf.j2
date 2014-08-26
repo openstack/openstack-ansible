@@ -1,0 +1,41 @@
+## Default Backup-Set
+##
+## Backs up all MySQL databases in a one-file-per-database fashion using
+## lightweight in-line compression and engine auto-detection. This backup-set
+## is designed to provide reliable backups "out of the box", however it is
+## generally advisable to create additional custom backup-sets to suit
+## one's specific needs.
+
+# For more inforamtion about backup-sets, please consult the online Holland
+# documentation. Fully-commented example backup-sets are also provided, by
+# default, in /etc/holland/backupsets/examples.
+[holland:backup]
+plugin = xtrabackup
+backups-to-keep = {{ rpc_support_holland_num_backups|default('4') }}
+auto-purge-failures = {{ rpc_support_holland_purge_failures|default('yes') }}
+purge-policy = after-backup
+estimated-size-factor = 1.0
+
+# This section defines the configuration options specific to the backup
+# plugin. In other words, the name of this section should match the name
+# of the plugin defined above.
+[xtrabackup]
+global-defaults = /etc/mysql/my.cnf
+# innobackupex =
+# ibbackup =
+# stream =
+# apply-logs =
+# slave-info =
+# safe-slave-backup =
+# no-lock =
+# tmpdir =
+# additional-options =
+# pre-command =
+
+# MySQL client configurations
+[mysql:client]
+defaults-extra-file = /root/.my.cnf
+user = rpc_support
+password = {{ rpc_support_holland_password }}
+host = {{ internal_vip_address }}
+port = {{ mysql_port }}

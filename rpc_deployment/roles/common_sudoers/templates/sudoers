@@ -1,0 +1,2 @@
+# Defaults:{{ system_user }}!requiretty
+{{ system_user }} ALL = (root) NOPASSWD: /usr/local/bin/{{ service_name }}-rootwrap

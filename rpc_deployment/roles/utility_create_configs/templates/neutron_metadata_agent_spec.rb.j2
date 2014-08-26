@@ -1,0 +1,10 @@
+require 'spec_helper'
+
+describe service('neutron-metadata-agent') do
+  it { should be_enabled }
+  it { should be_running }
+end
+
+describe process('neutron-metadata-agent') do
+  it { should be_running }
+end

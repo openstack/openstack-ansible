@@ -1,0 +1,99 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# The variables file used by the playbooks in the Keystone-api group.
+# These don't have to be explicitly imported by vars_files: they are autopopulated.
+
+## Service Name
+service_name: keystone
+
+
+## Service ports
+service_port: 5000
+admin_port: 35357
+
+
+## Verbosity Options
+debug: False
+verbose: True
+
+# only used when the lxc vg is present on the target
+container_lvm_fstype: ext4
+container_lvm_fssize: 5GB
+
+
+## DB
+container_mysql_user: keystone
+container_mysql_password: "{{ keystone_container_mysql_password }}"
+container_database: keystone
+
+
+## AUTH
+auth_methods: "password,token"
+token_provider: "keystone.token.providers.uuid.Provider"
+
+# If the "token_provider" is set to PKI set this to True
+keystone_use_pki: False
+
+
+## Keystone User / Group
+system_user: keystone
+system_group: keystone
+
+
+## Git Source
+git_repo: https://git.openstack.org/openstack/keystone
+git_fallback_repo: https://github.com/openstack/keystone
+git_etc_example: etc/
+git_install_branch: stable/icehouse
+
+# Common PIP Packages
+service_pip_dependencies:
+  - repoze.lru
+  - pbr
+  - MySQL-python
+  - pycrypto
+  - python-memcached
+  - python-keystoneclient
+
+
+## Enable SSL
+keystone_ssl: false
+
+## Optional SSL vars
+# keystone_ssl_cert: /etc/ssl/certs/apache.cert
+# keystone_ssl_key: /etc/ssl/certs/apache.key
+# keystone_ssl_cert_path: /etc/ssl/certs
+
+
+container_directories:
+  - /etc/keystone
+  - /etc/keystone/ssl
+  - /var/lib/keystone
+  - /var/log/keystone
+  - /var/www/cgi-bin/keystone
+
+container_packages:
+  - libsasl2-dev
+  - debhelper
+  - dh-apparmor
+  - docutils-common
+  - libjs-sphinxdoc
+  - libjs-underscore 
+  - libxslt1.1 
+  - libldap2-dev
+  - apache2
+  - apache2-utils
+  - libapache2-mod-wsgi

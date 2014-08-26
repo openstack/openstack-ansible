@@ -1,0 +1,83 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Ensure service tenant
+  keystone: >
+    command=ensure_tenant
+    token="{{ auth_admin_token }}"
+    endpoint="{{ auth_admin_uri }}"
+    tenant_name=service
+    description="Service Tenant"
+  tags:
+    - neutron_config
+
+- name: Get nova admin endpoint
+  shell: |
+    . /root/openrc
+    SERVICE_ID="$(keystone service-list | grep -w 'compute' | awk '{print $2}')"
+    keystone endpoint-list | grep -w "${SERVICE_ID}" | awk '{print $10}'
+  register: novaendpoint
+  changed_when: false
+  failed_when: novaendpoint.rc != 0
+  tags:
+    - neutron_config
+
+- name: Get nova admin user
+  shell: |
+    . /root/openrc
+    keystone service-list | grep -w compute | awk '{print $4}'
+  register: novauser
+  changed_when: false
+  failed_when: novauser.rc != 0
+  tags:
+    - neutron_config
+
+- name: Set variable data
+  set_fact:
+    nova_admin_username: "{{ novauser.stdout }}"
+    nova_admin_tenant_id: "{{ keystone_facts['id'] }}"
+    nova_service_adminurl: "{{ novaendpoint.stdout|replace('/$(tenant_id)s', '') }}"
+    nova_admin_password: "{{ nova_service_password }}"
+    nova_admin_auth_url: "{{ auth_identity_uri }}"
+  tags:
+    - neutron_config
+
+- name: Setup Neutron Config
+  template: >
+    src={{ item }}
+    dest=/etc/neutron/{{ item }}
+    owner={{ system_group }}
+    group={{ system_user }}
+  with_items:
+    - neutron.conf
+    - metadata_agent.ini
+    - l3_agent.ini
+    - dhcp_agent.ini
+    - api-paste.ini
+    - policy.json
+    - plugins/ml2/ml2_conf.ini
+    - rootwrap.d/debug.filters
+    - rootwrap.d/dhcp.filters
+    - rootwrap.d/iptables-firewall.filters
+    - rootwrap.d/l3.filters
+    - rootwrap.d/lbaas-haproxy.filters
+    - rootwrap.d/linuxbridge-plugin.filters
+    - rootwrap.d/nec-plugin.filters
+    - rootwrap.d/openvswitch-plugin.filters
+    - rootwrap.d/ryu-plugin.filters
+    - rootwrap.d/vpnaas.filters
+  notify: Restart os service
+  tags:
+    - neutron_config

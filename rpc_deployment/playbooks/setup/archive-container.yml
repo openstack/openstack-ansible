@@ -1,0 +1,39 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Example usage:
+# ansible-playbook -i inventory/dynamic_inventory.py -e "host_name=infra1,container_name=horizon_container" setup/archive-container.yml
+
+# This will create a new archive of an existing container and then retreve 
+# the container storing the archive on the local system. Once the archive 
+# has been retrieved the archive is removed from the source system.
+- hosts: "{{ host_group|default('hosts') }}"
+  user: root
+  tasks:
+    # Set facts on containers
+    - name: Get info on a given container
+      lxc: >
+        command=info
+        name={{ container_name }}
+    - name: Print information on all containers
+      debug: var=lxc_facts
+
+- hosts: "{{ host_name|default('hosts') }}"
+  user: root
+  roles:
+    - container_archive
+  vars:
+    local_store_path: /tmp
+    remote_store_path: /tmp

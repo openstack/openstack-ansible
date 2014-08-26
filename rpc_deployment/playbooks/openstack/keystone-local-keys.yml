@@ -1,0 +1,53 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Setup Keystone
+- hosts: keystone[0]
+  user: root
+  tasks:
+    - name: Perform a Keystone PKI Setup
+      command: >
+        keystone-manage pki_setup --keystone-user "{{ system_user }}" --keystone-group "{{ system_group }}"
+        creates=/etc/keystone/ssl/private/signing_key.pem
+    - name: Create Key directory
+      file: >
+        path=/tmp/keystone/ssl/
+        state=directory
+        group="{{ ansible_ssh_user }}"
+        owner="{{ ansible_ssh_user }}"
+        recurse=true
+      delegate_to: localhost
+    - name: Sync keys from keystone
+      command: "rsync -az root@{{ ansible_ssh_host }}:/etc/keystone/ssl/ /tmp/keystone/ssl/"
+      delegate_to: localhost
+
+# Setup all keystone nodes
+- hosts: keystone:!keystone[0]
+  user: root
+  tasks:
+    - name: Sync keys to keystone
+      command: "rsync -az /tmp/keystone/ssl/ root@{{ ansible_ssh_host }}:/etc/keystone/ssl/"
+      delegate_to: localhost
+
+# Remove temp Key Directory
+- hosts: local
+  gather_facts: false
+  user: root
+  tasks:
+    - name: Remove Key directory
+      file: >
+        path=/tmp/keystone/
+        state=absent
+      delegate_to: localhost

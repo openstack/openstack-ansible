@@ -1,0 +1,28 @@
+[mysqld]
+# Path to Galera library
+wsrep_provider=/usr/lib/galera/libgalera_smm.so
+wsrep_provider_options="gcache.size={{ galera_gcache_size|default('1G') }}"
+
+# Cluster connection URL contains the IPs of node#1, node#2 and node#3
+wsrep_cluster_address=gcomm://{% for host in groups['galera'] %}{{ hostvars[host]['container_address'] }}{% if not loop.last %},{% endif %}{% endfor %}
+
+# In order for Galera to work correctly binlog format should be ROW
+binlog_format=ROW
+
+# MyISAM storage engine has only experimental support
+default_storage_engine=InnoDB
+
+# This changes how InnoDB autoincrement locks are managed and is a requirement for Galera
+innodb_autoinc_lock_mode=2
+
+# This should be the IP and DNS name for the current system on which you're editing the file.
+wsrep_node_address={{ container_address }}
+wsrep_node_name={{ ansible_hostname }}
+
+# SST method
+wsrep_sst_method=xtrabackup
+wsrep_sst_auth=root:{{ mysql_password }}
+wsrep_slave_threads=16
+
+# Cluster name
+wsrep_cluster_name="rpc_galera_cluster"

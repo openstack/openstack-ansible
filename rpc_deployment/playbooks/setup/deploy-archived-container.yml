@@ -1,0 +1,163 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Example usage:
+# ansible-playbook -i inventory/hosts -M library/lxc -e "group=infra1-keystone name=keystone address=192.168.18.120 archive_name=keystone.tar.bz2" deploy-archived-container.yml
+
+# This will create a new container from an archive of an existing container.
+- hosts: "{{ host_group|default('hosts') }}"
+  user: root
+  tasks:
+    # Create container directory
+    - name: Create container directory
+      file: >
+        path="{{ lxcpath }}/{{ name }}"
+        state=directory 
+        group="root"
+        owner="root"
+        recurse=true
+    # If check for the lxc VG
+    - name: Check for lxc volume group
+      shell: >
+        (which vgs > /dev/null && vgs | grep -o "{{ vg_name }}") || false
+      register: vg_result
+      ignore_errors: True
+
+    # If lxc vg create new lv
+    - name: Create new LV
+      lvol: >
+        vg="{{ vg_name }}"
+        lv="{{ name }}"
+        size="{{ lv_size }}"
+      when: vg_result.rc == 0
+
+    # If lxc vg format new lv
+    - name: Format the new LV
+      filesystem: >
+        fstype="{{ fstype }}"
+        dev="/dev/{{ vg_name }}/{{ name }}"
+      when: vg_result.rc == 0
+
+    # If lxc vg mount new lv at $container/rootfs
+    - name: Mount Container LV
+      mount: >
+        name="{{ lxcpath }}/{{ name }}/rootfs"
+        src="/dev/{{ vg_name }}/{{ name }}"
+        fstype="{{ fstype }}"
+        state=mounted
+      when: vg_result.rc == 0
+
+    # upload new archive to host
+    - name: Upload Archive to host
+      synchronize: >
+        src="{{ local_store_path }}/{{ archive_name }}"
+        dest="{{ remote_store_path }}/{{ archive_name }}"
+        archive=yes
+        mode=push
+
+    # Unarchive container
+    - name: Unarchive a container
+      unarchive: >
+        src="{{ remote_store_path }}/{{ archive_name }}"
+        dest="{{ lxcpath }}/{{ name }}"
+      register: result
+
+    # If lxc vg unmount new lv
+    - name: Unmount Container LV
+      mount: >
+        name="{{ lxcpath }}/{{ name }}/rootfs"
+        src="/dev/{{ vg_name }}/{{ name }}"
+        fstype="{{ fstype }}"
+        state=unmounted
+      when: vg_result.rc == 0
+
+    # Delete archive directory
+    - name: Cleanup archive
+      file: >
+        path="{{ remote_store_path }}/{{ archive_name }}"
+        state=absent
+      when: result|changed
+
+    # Ensure config is without old cruft
+    - name: Ensure clean config
+      lineinfile: >
+        dest="{{ lxcpath }}/{{ name }}/config"
+        regexp="{{ item.regexp }}"
+        state=absent
+        backup=yes
+      with_items:
+        - { regexp: "^lxc.network.hwaddr" }
+        - { regexp: "^lxc.mount.entry" }
+
+    # If not lxc vg set the rootfs
+    - name: Set rootfs to localfs
+      lineinfile: >
+        dest="{{ lxcpath }}/{{ name }}/config" 
+        regexp="^lxc.rootfs"
+        line="lxc.rootfs = {{ lxcpath }}/{{ name }}/rootfs"
+        state=present
+      when: vg_result.rc != 0
+
+    # If lxc vg set the rootfs
+    - name: Set rootfs to lvm
+      lineinfile: >
+        dest="{{ lxcpath }}/{{ name }}/config" 
+        regexp="^lxc.rootfs"
+        line="lxc.rootfs = /dev/{{ vg_name }}/{{ name }}"
+        state=present
+      when: vg_result.rc == 0
+
+    # Ensure the configuration is complete
+    - name: Ensure config updated
+      lineinfile: >
+        dest="{{ lxcpath }}/{{ name }}/config"
+        regexp="^lxc.utsname"
+        line="lxc.utsname = {{ name }}"
+        state=present
+
+    # Ensure the mount point is correct
+    - name: Ensure mount point updated updated
+      lineinfile: >
+        dest="{{ lxcpath }}/{{ name }}/config" 
+        regexp="^lxc.mount"
+        line="lxc.mount = /var/lib/lxc/{{ name }}/fstab"
+        state=present
+
+    # Start the new container
+    - name: Start new Container
+      lxc: >
+        command=start
+        name="{{ name }}"
+
+    # If address is set update it in the network script
+    - name: Update networking
+      lxc: > 
+        command=attach
+        name="{{ name }}"
+        container_command="sed -i 's/address.*/address\ {{ address }}/g' /etc/network/interfaces"
+      when: address is defined
+
+    # Restart the new container
+    - name: Restart new container
+      lxc: >
+        command=restart
+        name="{{ name }}"
+  vars:
+    local_store_path: /tmp
+    remote_store_path: /tmp
+    lv_size: 5g
+    vg_name: lxc
+    fstype: ext4
+    lxcpath: /var/lib/lxc

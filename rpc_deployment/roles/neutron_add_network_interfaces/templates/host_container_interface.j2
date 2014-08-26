@@ -1,0 +1,21 @@
+{% set used_interfaces = [] %}
+{% for net in provider_networks %}
+{% if net.network.container_interface not in used_interfaces %}
+  {% if used_interfaces.append(net.network.container_interface) %}{% endif %}
+
+# Create a veth pair within the container
+lxc.network.type = veth
+# Network device within the container
+lxc.network.name = {{ net.network.container_interface }}
+# Host link to attach to, this should be a bridge
+lxc.network.link = {{ net.network.container_bridge }}
+# Hardware Address
+lxc.network.hwaddr = 00:16:3e:xx:xx:xx
+# enable the device on boot
+lxc.network.flags = up
+
+{% endif %}
+{% endfor %}
+
+# All used IP addresses built from the provider_networks array
+# Devices: {{ used_interfaces }}

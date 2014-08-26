@@ -1,0 +1,832 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+# (c) 2014, Kevin Carter <kevin.carter@rackspace.com>
+#
+# This file is part of Ansible
+#
+# Ansible is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Ansible is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
+
+# Based on Jimmy Tang's implementation
+
+DOCUMENTATION = """
+---
+module: keystone
+version_added: "1.6.2"
+short_description:
+   - Manage OpenStack Identity (keystone) users, tenants, roles, and endpoints.
+description:
+   - Manage OpenStack Identity (keystone) users, tenants, roles, and endpoints.
+options:
+    return_code:
+        description:
+            - Allow for return Codes other than 0 when executing commands.
+            - This is a comma separated list of acceptable return codes.
+        default: 0
+    login_user:
+        description:
+            - login username to authenticate to keystone
+        required: false
+        default: admin
+    login_password:
+        description:
+            - Password of login user
+        required: false
+        default: 'yes'
+    login_tenant_name:
+        description:
+            - The tenant login_user belongs to
+        required: false
+        default: None
+    token:
+        description:
+            - The token to be uses in case the password is not specified
+        required: false
+        default: None
+    endpoint:
+        description:
+            - The keystone url for authentication
+        required: false
+    password:
+        description:
+            - The password to be assigned to the user
+        required: false
+        default: None
+    user_name:
+        description:
+            - The name of the user that has to added/removed from OpenStack
+        required: false
+        default: None
+    tenant_name:
+        description:
+            - The tenant name that has be added/removed
+        required: false
+        default: None
+    role_name:
+        description:
+            - The name of the role to be assigned or created
+        required: false
+    service_name:
+        description:
+            - Name of the service.
+        required: false
+        default: None
+    region_name:
+        description:
+            - Name of the region.
+        required: false
+        default: None
+    description:
+        description:
+            - A description for the tenant
+        required: false
+        default: None
+    email:
+        description:
+            - Email address for the user, this is only used in "ensure_user"
+        required: false
+        default: None
+    service_type:
+        description:
+            - Type of service.
+        required: false
+        default: None
+    publicurl:
+        description:
+            - Public URL.
+        required: false
+        default: None
+    adminurl:
+        description:
+            - Admin URL.
+        required: false
+        default: None
+    internalurl:
+        description:
+            - Internal URL.
+        required: false
+        default: None
+    command:
+        description:
+            - Indicate desired state of the resource
+        choices: ['get_tenant', 'get_user', 'get_role', 'ensure_service',
+                  'ensure_endpoint', 'ensure_role', 'ensure_user',
+                  'ensure_user_role', 'ensure_tenant']
+        required: true
+requirements: [ python-keystoneclient ]
+author: Kevin Carter
+"""
+
+EXAMPLES = """
+# Create an admin tenant
+- keystone: >
+    command=ensure_tenant
+    tenant_name=admin
+    description="Admin Tenant"
+
+# Create a service tenant
+- keystone: >
+    command=ensure_tenant
+    tenant_name=service
+    description="Service Tenant"
+
+# Create an admin user
+- keystone: >
+    command=ensure_user
+    user_name=admin
+    tenant_name=admin
+    password=secrete
+    email="admin@some-domain.com"
+
+# Create an admin role
+- keystone: >
+    command=ensure_role
+    role_name=admin
+
+# Create a user
+- keystone: >
+    command=ensure_user
+    user_name=glance
+    tenant_name=service
+    password=secrete
+    email="glance@some-domain.com"
+
+# Add a role to a user
+- keystone: >
+    command=ensure_user_role
+    user_name=glance
+    tenant_name=service
+    role_name=admin
+
+# Create a service
+- keystone: >
+    command=ensure_service
+    service_name=glance
+    service_type=image
+    description="Glance Image Service"
+
+# Create an endpoint
+- keystone: >
+    command=ensure_endpoint
+    region_name=RegionOne
+    service_name=glance
+    service_type=image
+    publicurl=http://127.0.0.1:9292
+    adminurl=http://127.0.0.1:9292
+    internalurl=http://127.0.0.1:9292
+
+# Get tenant id
+- keystone: >
+    command=get_tenant
+    tenant_name=admin
+
+# Get user id
+- keystone: >
+    command=get_user
+    user_name=admin
+
+# Get role id
+- keystone: >
+    command=get_role
+    user_name=admin
+
+"""
+
+COMMAND_MAP = {
+    'get_tenant': {
+        'variables': [
+            'tenant_name'
+        ]
+    },
+    'get_user': {
+        'variables': [
+            'user_name'
+        ]
+    },
+    'get_role': {
+        'variables': [
+            'role_name',
+            'tenant_name',
+            'user_name'
+        ]
+    },
+    'ensure_service': {
+        'variables': [
+            'service_name',
+            'service_type',
+            'description'
+        ]
+    },
+    'ensure_endpoint': {
+        'variables': [
+            'region_name',
+            'service_name',
+            'service_type',
+            'publicurl',
+            'adminurl',
+            'internalurl'
+        ]
+    },
+    'ensure_role': {
+        'variables': [
+            'role_name'
+        ]
+    },
+    'ensure_user': {
+        'variables': [
+            'tenant_name',
+            'user_name',
+            'password',
+            'email'
+        ]
+    },
+    'ensure_user_role': {
+        'variables': [
+            'user_name',
+            'tenant_name',
+            'role_name'
+        ]
+    },
+    'ensure_tenant': {
+        'variables': [
+            'tenant_name',
+            'description'
+        ]
+    }
+}
+
+try:
+    from keystoneclient.v2_0 import client
+except ImportError:
+    keystoneclient_found = False
+else:
+    keystoneclient_found = True
+
+
+class ManageKeystone(object):
+    def __init__(self, module):
+        """Manage Keystone via Ansible."""
+        self.state_change = False
+        self.keystone = None
+
+        # Load AnsibleModule
+        self.module = module
+
+    def command_router(self):
+        """Run the command as its provided to the module."""
+        command_name = self.module.params['command']
+        if command_name not in COMMAND_MAP:
+            self.failure(
+                error='No Command Found',
+                rc=2,
+                msg='Command [ %s ] was not found.' % command_name
+            )
+
+        action_command = COMMAND_MAP[command_name]
+        if hasattr(self, '%s' % command_name):
+            action = getattr(self, '%s' % command_name)
+            facts = action(variables=action_command['variables'])
+            if facts is None:
+                self.module.exit_json(changed=self.state_change)
+            else:
+                self.module.exit_json(
+                    changed=self.state_change,
+                    ansible_facts=facts
+                )
+        else:
+            self.failure(
+                error='Command not in ManageKeystone class',
+                rc=2,
+                msg='Method [ %s ] was not found.' % command_name
+            )
+
+    @staticmethod
+    def _facts(facts):
+        """Return a dict for our Ansible facts.
+
+        :param facts: ``dict``  Dict with data to return
+        """
+        return {'keystone_facts': facts}
+
+    def _get_vars(self, variables, required=None):
+        """Return a dict of all variables as found within the module.
+
+        :param variables: ``list``  List of all variables that are available to
+                                    use within the Keystone Command.
+        :param required: ``list``  Name of variables that are required.
+        """
+        return_dict = {}
+        for variable in variables:
+            return_dict[variable] = self.module.params.get(variable)
+        else:
+            if isinstance(required, list):
+                for var_name in required:
+                    check = return_dict.get(var_name)
+                    if check is None:
+                        self.failure(
+                            error='Missing [ %s ] from Task or found a None'
+                                  ' value' % var_name,
+                            rc=000,
+                            msg='variables %s - available params [ %s ]'
+                                % (variables, self.module.params)
+                        )
+            return return_dict
+
+    def failure(self, error, rc, msg):
+        """Return a Failure when running an Ansible command.
+
+        :param error: ``str``  Error that occurred.
+        :param rc: ``int``     Return code while executing an Ansible command.
+        :param msg: ``str``    Message to report.
+        """
+        self.module.fail_json(msg=msg, rc=rc, err=error)
+
+    def _authenticate(self):
+        """Return a keystone client object."""
+        required_vars = ['endpoint']
+        variables = [
+            'endpoint',
+            'login_user',
+            'login_password',
+            'login_tenant_name',
+            'token'
+        ]
+        variables_dict = self._get_vars(variables, required=required_vars)
+
+        endpoint = variables_dict.pop('endpoint')
+        login_user = variables_dict.pop('login_user')
+        login_password = variables_dict.pop('login_password')
+        login_tenant_name = variables_dict.pop('login_tenant_name')
+        token = variables_dict.pop('token')
+
+        if token is None:
+            if login_tenant_name is None:
+                self.failure(
+                    error='Missing Tenant Name',
+                    rc=2,
+                    msg='If you do not specify a token you must use a tenant'
+                        ' name for authentication. Try adding'
+                        ' [ login_tenant_name ] to the task'
+                )
+            if login_password is None:
+                self.failure(
+                    error='Missing Password',
+                    rc=2,
+                    msg='If you do not specify a token you must use a password'
+                        ' name for authentication. Try adding'
+                        ' [ login_password ] to the task'
+                )
+
+        if token:
+            self.keystone = client.Client(endpoint=endpoint, token=token)
+        else:
+            self.keystone = client.Client(
+                auth_url=endpoint,
+                username=login_user,
+                password=login_password,
+                tenant_name=login_tenant_name
+            )
+
+    def _get_tenant(self, name):
+        """Return tenant information.
+
+        :param name: ``str``  Name of the tenant.
+        """
+        for entry in self.keystone.tenants.list():
+            if entry.name == name:
+                return entry
+        else:
+            return None
+
+    def get_tenant(self, variables):
+        """Return a tenant id.
+
+        This will return `None` if the ``name`` is not found.
+
+        :param variables: ``list``  List of all variables that are available to
+                                    use within the Keystone Command.
+        """
+        self._authenticate()
+        variables_dict = self._get_vars(variables, required=['tenant_name'])
+        tenant_name = variables_dict.pop('tenant_name')
+        tenant = self._get_tenant(name=tenant_name)
+        if tenant is None:
+            self.failure(
+                error='tenant [ %s ] was not found.' % tenant_name,
+                rc=2,
+                msg='tenant was not found, does it exist?'
+            )
+
+        return self._facts(facts={'id': tenant.id})
+
+    def ensure_tenant(self, variables):
+        """Create a new tenant within Keystone if it does not exist.
+
+        Returns the tenant ID on a successful run.
+
+        :param variables: ``list``  List of all variables that are available to
+                                    use within the Keystone Command.
+        """
+        self._authenticate()
+        variables_dict = self._get_vars(variables, required=['tenant_name'])
+        tenant_name = variables_dict.pop('tenant_name')
+        tenant_description = variables_dict.pop('description')
+        if tenant_description is None:
+            tenant_description = 'Tenant %s' % tenant_name
+
+        tenant = self._get_tenant(name=tenant_name)
+        if tenant is None:
+            self.state_change = True
+            tenant = self.keystone.tenants.create(
+                tenant_name=tenant_name,
+                description=tenant_description,
+                enabled=True
+            )
+
+        return self._facts(facts={'id': tenant.id})
+
+    def _get_user(self, name):
+        """Return a user information.
+
+        This will return `None` if the ``name`` is not found.
+
+        :param name: ``str``  Name of the user.
+        """
+        for entry in self.keystone.users.list():
+            if entry.name == name:
+                return entry
+        else:
+            return None
+
+    def get_user(self, variables):
+        """Return a tenant id.
+
+        This will return `None` if the ``name`` is not found.
+
+        :param variables: ``list``  List of all variables that are available to
+                                    use within the Keystone Command.
+        """
+        self._authenticate()
+        variables_dict = self._get_vars(variables, required=['user_name'])
+        user_name = variables_dict.pop('user_name')
+        user = self._get_user(name=user_name)
+        if user is None:
+            self.failure(
+                error='user [ %s ] was not found.' % user_name,
+                rc=2,
+                msg='user was not found, does it exist?'
+            )
+
+        return self._facts(facts={'id': user.id})
+
+    def ensure_user(self, variables):
+        """Create a new user within Keystone if it does not exist.
+
+        Returns the user ID on a successful run.
+
+        :param variables: ``list``  List of all variables that are available to
+                                    use within the Keystone Command.
+        """
+        self._authenticate()
+        required_vars = ['tenant_name', 'user_name', 'password']
+        variables_dict = self._get_vars(variables, required=required_vars)
+        tenant_name = variables_dict.pop('tenant_name')
+        password = variables_dict.pop('password')
+        user_name = variables_dict.pop('user_name')
+        email = variables_dict.pop('email')
+
+        tenant = self._get_tenant(name=tenant_name)
+        if tenant is None:
+            self.failure(
+                error='tenant [ %s ] was not found.' % tenant_name,
+                rc=2,
+                msg='tenant was not found, does it exist?'
+            )
+
+        user = self._get_user(name=user_name)
+        if user is None:
+            self.state_change = True
+            user = self.keystone.users.create(
+                name=user_name,
+                password=password,
+                email=email,
+                tenant_id=tenant.id
+            )
+
+        return self._facts(facts={'id': user.id})
+
+    def _get_role(self, name):
+        """Return a tenant by name.
+
+        This will return `None` if the ``name`` is not found.
+
+        :param name: ``str``  Name of the role.
+        """
+        for entry in self.keystone.roles.list():
+            if entry.name == name:
+                return entry
+        else:
+            return None
+
+    def get_role(self, variables):
+        """Return a tenant by name.
+
+        This will return `None` if the ``name`` is not found.
+
+        :param variables: ``list``  List of all variables that are available to
+                                    use within the Keystone Command.
+        """
+        self._authenticate()
+        variables_dict = self._get_vars(variables, required=['role_name'])
+        role_name = variables_dict.pop('role_name')
+        role_data = self._get_role(name=role_name)
+        if role_data is None:
+            self.failure(
+                error='role [ %s ] was not found.' % role_name,
+                rc=2,
+                msg='role was not found, does it exist?'
+            )
+
+        return self._facts(facts={'id': role_data.id})
+
+    def _get_role_data(self, user_name, tenant_name, role_name):
+        user = self._get_user(name=user_name)
+        if user is None:
+            self.failure(
+                error='user [ %s ] was not found.' % user_name,
+                rc=2,
+                msg='User was not found, does it exist?'
+            )
+
+        tenant = self._get_tenant(name=tenant_name)
+        if tenant is None:
+            self.failure(
+                error='tenant [ %s ] was not found.' % tenant_name,
+                rc=2,
+                msg='tenant was not found, does it exist?'
+            )
+
+        role = self._get_role(name=role_name)
+        if role is None:
+            self.failure(
+                error='role [ %s ] was not found.' % role_name,
+                rc=2,
+                msg='role was not found, does it exist?'
+            )
+
+        return user, tenant, role
+
+    def ensure_role(self, variables):
+        """Create a new role within Keystone if it does not exist.
+
+        Returns the user ID on a successful run.
+
+        :param variables: ``list``  List of all variables that are available to
+                                    use within the Keystone Command.
+        """
+        self._authenticate()
+        variables_dict = self._get_vars(variables, required=['role_name'])
+        role_name = variables_dict.pop('role_name')
+
+        role = self._get_role(name=role_name)
+        if role is None:
+            self.state_change = True
+            role = self.keystone.roles.create(role_name)
+
+        return self._facts(facts={'id': role.id})
+
+    def _get_user_roles(self, name, user, tenant):
+        for entry in self.keystone.users.list_roles(user, tenant.id):
+            if entry.name == name:
+                return entry
+        else:
+            return None
+
+    def ensure_user_role(self, variables):
+        self._authenticate()
+        required_vars = ['user_name', 'tenant_name', 'role_name']
+        variables_dict = self._get_vars(variables, required=required_vars)
+        user_name = variables_dict.pop('user_name')
+        tenant_name = variables_dict.pop('tenant_name')
+        role_name = variables_dict.pop('role_name')
+
+        user, tenant, role = self._get_role_data(
+            user_name=user_name, tenant_name=tenant_name, role_name=role_name
+        )
+
+        user_role = self._get_user_roles(
+            name=role_name, user=user, tenant=tenant
+        )
+
+        if user_role is None:
+            self.keystone.roles.add_user_role(
+                user=user, role=role, tenant=tenant
+            )
+            user_role = self._get_user_roles(
+                name=role_name, user=user, tenant=tenant
+            )
+
+        return self._facts(facts={'id': user_role.id})
+
+    def _get_service(self, name, srv_type=None):
+        for entry in self.keystone.services.list():
+            if srv_type is not None:
+                if entry.type == srv_type and name == entry.name:
+                    return entry
+            elif entry.name == name:
+                return entry
+        else:
+            return None
+
+    def ensure_service(self, variables):
+        """Create a new service within Keystone if it does not exist.
+
+        Returns the service ID on a successful run.
+
+        :param variables: ``list``  List of all variables that are available to
+                                    use within the Keystone Command.
+        """
+        self._authenticate()
+        required_vars = ['service_name', 'service_type']
+        variables_dict = self._get_vars(variables, required=required_vars)
+
+        service_name = variables_dict.pop('service_name')
+        description = variables_dict.pop('description')
+        service_type = variables_dict.pop('service_type')
+
+        service = self._get_service(name=service_name, srv_type=service_type)
+        if service is None or service.type != service_type:
+            self.state_change = True
+            service = self.keystone.services.create(
+                name=service_name,
+                service_type=service_type,
+                description=description
+            )
+
+        return self._facts(facts={'id': service.id})
+
+    def _get_endpoint(self, region, publicurl, adminurl, internalurl):
+        for entry in self.keystone.endpoints.list():
+            check = [
+                entry.region == region,
+                entry.publicurl == publicurl,
+                entry.adminurl == adminurl,
+                entry.internalurl == internalurl
+            ]
+            if all(check):
+                return entry
+        else:
+            return None
+
+    def ensure_endpoint(self, variables):
+        """Create a new endpoint within Keystone if it does not exist.
+
+        Returns the endpoint ID on a successful run.
+
+        :param variables: ``list``  List of all variables that are available to
+                                    use within the Keystone Command.
+        """
+        self._authenticate()
+        required_vars = [
+            'region_name',
+            'service_name',
+            'service_type',
+            'publicurl',
+            'adminurl',
+            'internalurl'
+        ]
+        variables_dict = self._get_vars(variables, required=required_vars)
+
+        service_name = variables_dict.pop('service_name')
+        service_type = variables_dict.pop('service_type')
+        region = variables_dict.pop('region_name')
+        publicurl = variables_dict.pop('publicurl')
+        adminurl = variables_dict.pop('adminurl')
+        internalurl = variables_dict.pop('internalurl')
+
+        service = self._get_service(name=service_name, srv_type=service_type)
+        if service is None:
+            self.failure(
+                error='service [ %s ] was not found.' % service_name,
+                rc=2,
+                msg='Service was not found, does it exist?'
+            )
+
+        endpoint = self._get_endpoint(
+            region=region,
+            publicurl=publicurl,
+            adminurl=adminurl,
+            internalurl=internalurl
+        )
+        if endpoint is None:
+            self.state_change = True
+            endpoint = self.keystone.endpoints.create(
+                region=region,
+                service_id=service.id,
+                publicurl=publicurl,
+                adminurl=adminurl,
+                internalurl=internalurl
+            )
+
+        return self._facts(facts={'id': endpoint.id})
+
+
+def main():
+    module = AnsibleModule(
+        argument_spec=dict(
+            login_user=dict(
+                required=False
+            ),
+            login_password=dict(
+                required=False
+            ),
+            login_tenant_name=dict(
+                required=False
+            ),
+            token=dict(
+                required=False
+            ),
+            password=dict(
+                required=False
+            ),
+            endpoint=dict(
+                required=True,
+            ),
+            user_name=dict(
+                required=False
+            ),
+            tenant_name=dict(
+                required=False
+            ),
+            role_name=dict(
+                required=False
+            ),
+            service_name=dict(
+                required=False
+            ),
+            region_name=dict(
+                required=False
+            ),
+            description=dict(
+                required=False
+            ),
+            email=dict(
+                required=False
+            ),
+            service_type=dict(
+                required=False
+            ),
+            publicurl=dict(
+                required=False
+            ),
+            adminurl=dict(
+                required=False
+            ),
+            internalurl=dict(
+                required=False
+            ),
+            command=dict(
+                required=True,
+                choices=COMMAND_MAP.keys()
+            ),
+            return_code=dict(
+                type='str',
+                default='0'
+            )
+        ),
+        supports_check_mode=False,
+        mutually_exclusive=[
+            ['token', 'login_user'],
+            ['token', 'login_password'],
+            ['token', 'login_tenant_name']
+        ]
+    )
+
+    km = ManageKeystone(module=module)
+    if not keystoneclient_found:
+        km.failure(
+            error='python-keystoneclient is missing',
+            rc=2,
+            msg='keystone client was not importable, is it installed?'
+        )
+
+    return_code = module.params.get('return_code', '').split(',')
+    module.params['return_code'] = return_code
+    km.command_router()
+
+
+# import module snippets
+from ansible.module_utils.basic import *
+if __name__ == '__main__':
+    main()
