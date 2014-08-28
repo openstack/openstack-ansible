@@ -255,17 +255,16 @@ def _append_to_host_groups(inventory, container_type, assignment, host_type,
                         # Copy the options dictionary for manipulation
                         options = _vars.copy()
 
-                        for _k, _v in options.items():
-                            limit = None
-                            # If a limit is set use the limit string as a filter
-                            # for the container name and see if it matches.
-                            if 'limit_container_types' in _v:
-                                limit = _v.pop(
-                                    'limit_container_types', None
-                                )
+                        limit = None
+                        # If a limit is set use the limit string as a filter
+                        # for the container name and see if it matches.
+                        if 'limit_container_types' in options:
+                            limit = options.pop(
+                                'limit_container_types', None
+                            )
 
-                            if limit is None or limit in container:
-                                hdata[_keys] = {_k: _v}
+                        if limit is None or limit in container:
+                            hdata[_keys] = options
 
 
 def _add_container_hosts(assignment, config, container_name, container_type,
@@ -296,7 +295,7 @@ def _add_container_hosts(assignment, config, container_name, container_type,
         affinity = host_options.get('affinity', {})
 
         container_affinity = affinity.get(container_name, 1)
-        # Ensures that container names are not longer than 64 
+        # Ensures that container names are not longer than 64
         name_length = len(host_type)
         if name_length > 25:
             name_diff = name_length - 25
@@ -714,7 +713,6 @@ def main():
             ' repository. Found MD5: [ %s ] expected MD5 [ %s ]'
             % (env_version, version)
         )
-
 
     # Load existing inventory file if found
     dynamic_inventory_file = os.path.join(local_path, 'rpc_inventory.json')
