@@ -13,6 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- hosts: nova_compute[0]
+  user: root
+  roles:
+    - nova_compute_sshkey_create
+
 - hosts: nova_compute
   user: root
   roles:
@@ -28,6 +33,7 @@
     - nova_libvirt
     - galera_client_cnf
     - init_script
+    - nova_compute_sshkey_setup
   vars_files:
     - inventory/group_vars/nova_all.yml
     - vars/config_vars/container_config_nova_compute.yml
