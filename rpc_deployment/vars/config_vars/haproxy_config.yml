@@ -81,6 +81,8 @@ haproxy_config:
       hap_backend_nodes: "{{ groups['nova_spice_console'] }}"
       hap_port: 6082
       hap_balance_type: http
+      hap_timeout_client: 60m
+      hap_timeout_server: 60m
   - service:
       hap_service_name: cinder_api
       hap_backend_nodes: "{{ groups['cinder_api'] }}"

@@ -11,6 +11,10 @@ bind {{ item.service.hap_bind|default('*') }}:{{ item.service.hap_port }}
     {% set request_option = "tcp" %}
 {% endif %}
 
+{% if item.service.hap_timeout_client is defined %}
+    timeout client {{ item.service.hap_timeout_client }}
+{% endif %}
+
 {% if item.service.hap_whitelist_hosts is defined and item.service.hap_whitelist_hosts == true %}
     acl white_list src 127.0.0.1/8 {{ container_cidr }} {% for host_name in groups['hosts'] %} {{ hostvars[host_name]['ansible_ssh_host'] }} {% endfor %}
 
@@ -34,6 +38,9 @@ backend {{ item.service.hap_service_name }}-back
 {% for option in item.service.hap_backend_options|default([]) %}
     option {{ option }}
 {% endfor %}
+{% if item.service.hap_timeout_server is defined %}
+    timeout server {{ item.service.hap_timeout_server }}
+{% endif %}
 {% for host_name in item.service.hap_backend_nodes %}
     server {{ hostvars[host_name]['container_name']|default(host_name) }} {{ hostvars[host_name]['ansible_ssh_host'] }}:{{ hap_backend_port }} check port {{ hap_backend_port }} inter {{ hap_interval }} rise {{ item.service.hap_backend_nodes|count }} fall {{ item.service.hap_backend_nodes|count }}
 {% endfor %}
