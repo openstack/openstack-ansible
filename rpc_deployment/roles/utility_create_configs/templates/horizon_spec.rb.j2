@@ -8,7 +8,7 @@ pip_packages = %w( oslo.config MySQL-python )
 
 directories  = %w( /opt/horizon /opt/horizon/lib/python2.7/site-packages)
 
-conf_files   = %w( /etc/apache2/conf-enabled/openstack-dashboard.conf
+conf_files   = %w( /etc/apache2/sites-available/openstack-dashboard.conf
                    /opt/horizon/lib/python2.7/site-packages/openstack_dashboard/local/local_settings.py )
 
 os_packages.each do |os|
@@ -45,6 +45,10 @@ conf_files.each do |f|
     it { should be_owned_by 'www-data' }
     it { should be_grouped_into 'www-data' }
   end
+end
+
+describe file('/etc/apache2/sites-enabled/openstack-dashboard.conf') do
+  it { be_linked_to '/etc/apache2/sites-available/openstack-dashboard.conf' }
 end
 
 describe service('apache2') do

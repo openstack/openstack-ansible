@@ -8,7 +8,3 @@ end
 describe process('cinder-volume') do
   it { should be_running }
 end
-
-describe kernel_module('dm_snapshot') do
-  it { should be_loaded }
-end
