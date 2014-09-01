@@ -55,7 +55,7 @@ glance_api_conf:
     swift_store_large_object_size: 5120
     swift_store_large_object_chunk_size: 200
     swift_store_retry_get_count: 5
-    swift_enable_snet: "{{ glance_swift_enable_snet }}"
+    swift_store_endpoint_type: "{{ glance_swift_store_endpoint_type }}"
 
     filesystem_store_datadir: /var/lib/glance/images/
     delayed_delete: False
