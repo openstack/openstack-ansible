@@ -93,6 +93,13 @@ def args():
         required=True,
         default=None
     )
+    parser.add_argument(
+        '-s',
+        '--sort',
+        help='Sort items based on given key i.e. physical_host',
+        required=False,
+        default='component'
+    )
 
     exclusive_action = parser.add_mutually_exclusive_group(required=True)
     exclusive_action.add_argument(
@@ -114,7 +121,7 @@ def args():
     return vars(parser.parse_args())
 
 
-def print_inventory(inventory):
+def print_inventory(inventory, sort_key):
     _meta_data = inventory['_meta']['hostvars']
     required_list = [
         'container_name',
@@ -142,7 +149,7 @@ def print_inventory(inventory):
                 table.add_row(row)
     for tbl in table.align.keys():
         table.align[tbl] = 'l'
-    table.sortby = 'component'
+    table.sortby = sort_key
     return table
 
 
@@ -157,7 +164,7 @@ def main():
         inventory = json.loads(f.read())
 
     if user_args['list_host'] is True:
-        print(print_inventory(inventory))
+        print(print_inventory(inventory, user_args['sort']))
     else:
         recursive_dict_removal(inventory, user_args['remove_item'])
         with open(environment_file, 'wb') as f:
