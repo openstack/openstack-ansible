@@ -14,7 +14,7 @@
 # limitations under the License.
 
 # This playbook deploys All Containers.
-- hosts: hosts
+- hosts: "{{ host_group|default('hosts') }}"
   user: root
   gather_facts: false
   roles:

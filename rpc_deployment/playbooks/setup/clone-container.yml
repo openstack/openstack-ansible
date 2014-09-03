@@ -14,8 +14,8 @@
 # limitations under the License.
 
 # Example usage:
-# ansible-playbook -i inventory/hosts -M library/lxc -e "group=infra1-keystone name=keystone new_name=keystone2 address=192.168.18.149" clone-container.yml
-- hosts: "{{ group }}"
+# ansible-playbook -i inventory/hosts -M library/lxc -e "host_group=infra1-keystone name=keystone new_name=keystone2 address=192.168.18.149" clone-container.yml
+- hosts: "{{ host_group }}"
   user: root
   roles:
     - container_clone
