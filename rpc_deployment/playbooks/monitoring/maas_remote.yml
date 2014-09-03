@@ -130,7 +130,6 @@
     check_timeout: "{{ maas_check_timeout }}"
     monitoring_zones: "{{ maas_monitoring_zones }}"
     notification_plan: "{{ maas_notification_plan }}"
-    scheme: "{{ maas_scheme }}"
     scheme: "{{ maas_horizon_scheme | default(maas_scheme)}}"
     ip_address: "{{ external_vip_address }}"
     port: 443
@@ -173,7 +172,6 @@
     check_name: lb_api_check_heat_cfn
     monitoring_zones: "{{ maas_monitoring_zones }}"
     notification_plan: "{{ maas_notification_plan }}"
-    scheme: "{{ maas_scheme }}"
     scheme: "{{ maas_heat_cfn_scheme | default(maas_scheme)}}"
     ip_address: "{{ external_vip_address }}"
     port: 8000
