@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- hosts: cinder_api_container
+- hosts: cinder_api
   vars:
     check_name: cinder_api_local_check
     check_details: file={{ check_name }}.py,args={{ ansible_ssh_host }}
@@ -49,7 +49,7 @@
   roles:
     - maas_local
 
-- hosts: heat_apis_container
+- hosts: heat_apis
   vars:
     check_name: heat_api_local_check
     check_details: file={{ check_name }}.py,args={{ ansible_ssh_host }}
@@ -61,7 +61,7 @@
   roles:
     - maas_local
 
-- hosts: heat_apis_container
+- hosts: heat_apis
   vars:
     check_name: heat_cfn_api_check
     check_details: file=service_api_local_check.py,args=heat_cfn,args={{ ansible_ssh_host }},args=8000
@@ -73,7 +73,7 @@
   roles:
     - maas_local
 
-- hosts: heat_apis_container
+- hosts: heat_apis
   vars:
     check_name: heat_cw_api_check
     check_details: file=service_api_local_check.py,args=heat_cw,args={{ ansible_ssh_host }},args=8003
