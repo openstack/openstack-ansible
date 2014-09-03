@@ -68,7 +68,7 @@
     check_period: "{{ maas_check_period }}"
     check_timeout: "{{ maas_check_timeout }}"
     alarms:
-      - { 'name': 'heat_cfn_api_local_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["nova_spice_api_local_status"] != 1) { return new AlarmStatus(CRITICAL, "API unavailable"); }' }
+      - { 'name': 'heat_cfn_api_local_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["heat_cfn_api_local_status"] != 1) { return new AlarmStatus(CRITICAL, "API unavailable"); }' }
   user: root
   roles:
     - maas_local
@@ -80,7 +80,7 @@
     check_period: "{{ maas_check_period }}"
     check_timeout: "{{ maas_check_timeout }}"
     alarms:
-      - { 'name': 'heat_cw_api_local_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["nova_spice_api_local_status"] != 1) { return new AlarmStatus(CRITICAL, "API unavailable"); }' }
+      - { 'name': 'heat_cw_api_local_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["heat_cw_api_local_status"] != 1) { return new AlarmStatus(CRITICAL, "API unavailable"); }' }
   user: root
   roles:
     - maas_local
