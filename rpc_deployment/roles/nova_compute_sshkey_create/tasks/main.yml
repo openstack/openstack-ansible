@@ -13,7 +13,43 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- name: Create the keys directory for the nova user
+  file:
+    state: "directory"
+    path: "/var/lib/nova/.ssh"
+    group: "nova"
+    owner: "nova"
+    mode: "0700"
+
+- name: Remove old key if found
+  file:
+    path: "{{ item }}"
+    state: "absent"
+  with_items:
+    - "/var/lib/nova/.ssh/nova"
+    - "/var/lib/nova/.ssh/nova.pub"
+
 - name: Create the nova SSH key if it doesnt exist
-  shell: >
-    ls ~/.ssh/nova 2>/dev/null || ssh-keygen -f ~/.ssh/nova -t rsa -q -N ""
+  shell: ssh-keygen -f /var/lib/nova/.ssh/nova -t rsa -q -N ""
+
+- name: Change permissions on the generated keys
+  file:
+    path: "{{ item.path }}"
+    group: "nova"
+    owner: "nova"
+    mode: "{{ item.mode }}"
+  with_items:
+    - { path: "/var/lib/nova/.ssh/nova", mode: "0600" }
+    - { path: "/var/lib/nova/.ssh/nova.pub", mode: "0644" }
+
+- name: Get public key contents
+  command: cat /var/lib/nova/.ssh/nova.pub
+  register: nova_pub
+  changed_when: false
+
+- name: Build authorized keys
+  lineinfile: 
+    dest: "/tmp/authorized_keys"
+    line: "{{ nova_pub.stdout }}"
+    create: "yes"
   delegate_to: localhost

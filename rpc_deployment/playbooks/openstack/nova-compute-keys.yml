@@ -13,22 +13,30 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Prevent known_hosts from causing an issue
-  copy:
-    src: "ssh_config"
-    dest: "/var/lib/nova/.ssh/config"
-    owner: "nova"
-    group: "nova"
-    mode: "0644"
+- hosts: localhost
+  user: root
+  gather_facts: false
+  tasks:
+    - name: Remove [ /tmp/authorized_keys ] file if found
+      file:
+        path: "/tmp/authorized_keys"
+        state: "absent"
 
-- name: Sync authorized_keys file
-  synchronize:
-    src: /tmp/authorized_keys
-    dest: /var/lib/nova/.ssh/authorized_keys
+- hosts: nova_compute
+  user: root
+  roles:
+    - nova_compute_sshkey_create
 
-- name: Set authorized_keys permissions
-  file:
-    path: "/var/lib/nova/.ssh/authorized_keys"
-    owner: "nova"
-    group: "nova"
-    mode: "0600"
+- hosts: nova_compute
+  user: root
+  roles:
+    - nova_compute_sshkey_setup
+
+- hosts: localhost
+  user: root
+  gather_facts: false
+  tasks:
+    - name: Remove [ /tmp/authorized_keys ] file if found
+      file:
+        path: "/tmp/authorized_keys"
+        state: "absent"
