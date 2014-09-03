@@ -26,6 +26,10 @@ haproxy_config:
       hap_backend_nodes: "{{ groups['glance_api'] }}"
       hap_port: 9292
       hap_balance_type: http
+      hap_backend_options:
+        - "forwardfor"
+        - "httpchk"
+        - "httplog"
   - service:
       hap_service_name: glance_registry
       hap_backend_nodes: "{{ groups['glance_registry'] }}"
@@ -36,31 +40,55 @@ haproxy_config:
       hap_backend_nodes: "{{ groups['heat_api_cfn'] }}"
       hap_port: 8000
       hap_balance_type: http
+      hap_backend_options:
+       - "forwardfor"
+       - "httpchk"
+       - "httplog"
   - service:
       hap_service_name: heat_api_cloudwatch
       hap_backend_nodes: "{{ groups['heat_api_cloudwatch'] }}"
       hap_port: 8003
       hap_balance_type: http
+      hap_backend_options:
+       - "forwardfor"
+       - "httpchk"
+       - "httplog"
   - service:
       hap_service_name: heat_api
       hap_backend_nodes: "{{ groups['heat_api'] }}"
       hap_port: 8004
       hap_balance_type: http
+      hap_backend_options:
+       - "forwardfor"
+       - "httpchk"
+       - "httplog"
   - service:
       hap_service_name: keystone_admin
       hap_backend_nodes: "{{ groups['keystone'] }}"
       hap_port: 35357
       hap_balance_type: http
+      hap_backend_options:
+       - "forwardfor"
+       - "httpchk"
+       - "httplog"
   - service:
       hap_service_name: keystone_service
       hap_backend_nodes: "{{ groups['keystone'] }}"
       hap_port: 5000
       hap_balance_type: http
+      hap_backend_options:
+       - "forwardfor"
+       - "httpchk"
+       - "httplog"
   - service:
       hap_service_name: neutron_server
       hap_backend_nodes: "{{ groups['neutron_server'] }}"
       hap_port: 9696
       hap_balance_type: http
+      hap_backend_options:
+       - "forwardfor"
+       - "httpchk"
+       - "httplog"
   - service:
       hap_service_name: nova_api_ec2
       hap_backend_nodes: "{{ groups['nova_api_ec2'] }}"
@@ -71,33 +99,52 @@ haproxy_config:
       hap_backend_nodes: "{{ groups['nova_api_metadata'] }}"
       hap_port: 8775
       hap_balance_type: http
+      hap_backend_options:
+       - "httpchk"
+       - "httplog"
   - service:
       hap_service_name: nova_api_os_compute
       hap_backend_nodes: "{{ groups['nova_api_os_compute'] }}"
       hap_port: 8774
       hap_balance_type: http
+      hap_backend_options:
+       - "forwardfor"
+       - "httpchk"
+       - "httplog"
   - service:
       hap_service_name: nova_spice_console
       hap_backend_nodes: "{{ groups['nova_spice_console'] }}"
       hap_port: 6082
-      hap_balance_type: http
+      hap_balance_type: tcp
       hap_timeout_client: 60m
       hap_timeout_server: 60m
+      hap_balance_alg: source
   - service:
       hap_service_name: cinder_api
       hap_backend_nodes: "{{ groups['cinder_api'] }}"
       hap_port: 8776
       hap_balance_type: http
+      hap_backend_options:
+       - "forwardfor"
+       - "httpchk"
+       - "httplog"
   - service:
       hap_service_name: horizon
       hap_backend_nodes: "{{ groups['horizon'] }}"
       hap_port: 80
       hap_balance_type: http
+      hap_backend_options:
+       - "forwardfor"
+       - "httpchk"
+       - "httplog"
   - service:
       hap_service_name: horizon_ssl
       hap_backend_nodes: "{{ groups['horizon'] }}"
       hap_port: 443
       hap_balance_type: tcp
+      hap_backend_alg: source
+      hap_backend_options:
+       - "ssl-hello-chk"
   - service:
       hap_service_name: memcached
       hap_backend_nodes: "{{ [groups['memcached'][0]] }}"  # list expected
@@ -116,9 +163,16 @@ haproxy_config:
       hap_port: 8080
       hap_backend_port: 80
       hap_balance_type: http
+      hap_backend_alg: source
+      hap_backend_options:
+        - "forwardfor"
+        - "httpchk"
+        - "httplog"
   - service:
       hap_service_name: kibana_ssl
       hap_backend_nodes: "{{ [groups['kibana'][0]] }}"
       hap_port: 8443
       hap_balance_type: tcp
-
+      hap_backend_alg: source
+      hap_backend_options:
+        - "ssl-hello-chk"
