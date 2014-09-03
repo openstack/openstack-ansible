@@ -35,7 +35,7 @@
     - "/var/lib/nova/.ssh/id_rsa.pub"
 
 - name: Create the nova SSH key if it doesnt exist
-  shell: shell: su - nova -c 'ssh-keygen -f /var/lib/nova/.ssh/id_rsa -t rsa -q -N ""'
+  shell: su - nova -c 'ssh-keygen -f /var/lib/nova/.ssh/id_rsa -t rsa -q -N ""'
 
 - name: Change permissions on the generated keys
   file:
