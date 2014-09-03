@@ -136,7 +136,7 @@
 - hosts: rabbit
   vars:
     check_name: rabbitmq_status
-    check_details: file={{ check_name }}.py,args=-H,args={{ ansible_ssh_host }},args=-n,args={{ ansible_hostname }}
+    check_details: file={{ check_name }}.py,args=-H,args={{ ansible_ssh_host }},args=-n,args={{ inventory_hostname.split('.')[0] }}
     check_period: "{{ maas_check_period }}"
     check_timeout: "{{ maas_check_timeout }}"
     alarms:
