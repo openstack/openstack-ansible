@@ -19,5 +19,5 @@
   roles:
     - container_destroy
   vars:
-    default_container_groups: "{{ groups[hostvars[inventory_hostname]['container_types']] }}"
-    container_groups: "{{ groups[container_group]|default(default_container_groups) }}"
+    default_container_groups: "{{ hostvars[inventory_hostname]['container_types'] }}"
+    container_groups: "{{ groups[container_group|default(default_container_groups)] }}"
