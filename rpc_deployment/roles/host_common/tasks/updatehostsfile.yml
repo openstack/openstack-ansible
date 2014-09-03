@@ -13,6 +13,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- name: Update hosts file remove stale IP entries
+  lineinfile:
+    dest: /etc/hosts
+    regexp: "^{{ hostvars[item]['ansible_ssh_host'] }} (?!{{ item }}$)"
+    state: absent
+  with_items:
+    - "{{ groups['all_containers'] }}"
+    - "{{ groups['hosts'] }}"
+
+- name: Update hosts file remove stale Host entries
+  lineinfile:
+    dest: /etc/hosts
+    regexp: "(?<!^{{ hostvars[item]['ansible_ssh_host'] }}) {{ item }}$"
+    state: absent
+  with_items:
+    - "{{ groups['all_containers'] }}"
+    - "{{ groups['hosts'] }}"
+
 - name: Update hosts file from ansible inventory
   lineinfile:
     dest: /etc/hosts
