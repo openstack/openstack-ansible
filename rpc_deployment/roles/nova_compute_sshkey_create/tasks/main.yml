@@ -53,8 +53,5 @@
   changed_when: false
 
 - name: Build authorized keys
-  lineinfile:
-    dest: "/tmp/authorized_keys"
-    line: "{{ nova_pub.stdout }}"
-    create: "yes"
+  shell: echo "{{ nova_pub.stdout }}" | tee -a /tmp/authorized_keys
   delegate_to: localhost
