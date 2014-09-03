@@ -31,6 +31,16 @@
     - package_install
     - rabbit_install
 
+- name: Fix /etc/hosts
+  lineinfile:
+    dest: /etc/hosts
+    state: present
+    line: "{{ hostvars[item]['container_address'] }} {{ hostvars[item]['container_name'] }} {{ hostvars[item]['container_name'].split('.')[0] }}"
+  with_items: groups['rabbit']
+  tags:
+    - hosts
+    - rabbit_config
+
 - name: Install rabbit packages
   apt:
     pkg: "{{ item }}"
@@ -42,16 +52,6 @@
   tags:
     - package_install
     - rabbit_install
-
-- name: Fix /etc/hosts
-  lineinfile:
-    dest: /etc/hosts
-    state: present
-    line: "{{ hostvars[item]['container_address'] }} {{ hostvars[item]['container_name'] }} {{ hostvars[item]['container_name'].split('.')[0] }}"
-  with_items: groups['rabbit']
-  tags:
-    - hosts
-    - rabbit_config
 
 - include: restart_rabbit.yml
 
