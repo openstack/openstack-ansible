@@ -19,4 +19,5 @@
   roles:
     - container_restart
   vars:
-    container_groups: "{{ groups[hostvars[inventory_hostname]['container_types']] }}"
+    default_container_groups: "{{ groups[hostvars[inventory_hostname]['container_types']] }}"
+    container_groups: "{{ container_group|default(default_container_groups) }}"

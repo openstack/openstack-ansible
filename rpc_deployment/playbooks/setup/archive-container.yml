@@ -14,7 +14,7 @@
 # limitations under the License.
 
 # Example usage:
-# ansible-playbook -i inventory/dynamic_inventory.py -e "host_name=infra1,container_name=horizon_container" setup/archive-container.yml
+# ansible-playbook -i inventory/dynamic_inventory.py -e "host_group=infra1,container_name=horizon_container" setup/archive-container.yml
 
 # This will create a new archive of an existing container and then retreve 
 # the container storing the archive on the local system. Once the archive 
@@ -30,7 +30,7 @@
     - name: Print information on all containers
       debug: var=lxc_facts
 
-- hosts: "{{ host_name|default('hosts') }}"
+- hosts: "{{ host_group|default('hosts') }}"
   user: root
   roles:
     - container_archive
