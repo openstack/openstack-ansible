@@ -13,29 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- hosts: horizon_all
-  user: root
-  roles:
-    - common
-    - container_common
-    - galera_client_cnf
+# The variables file used by the playbooks in the nova-api-ec2 group.
+# These don't have to be explicitly imported by vars_files: they are autopopulated.
 
-- hosts: horizon_all
-  user: root
-  roles:
-    - openstack_common
-    - openstack_openrc
-    - horizon_common
-  vars_files:
-    - vars/openstack_service_vars/horizon.yml
-
-- hosts: horizon_all[0]
-  user: root
-  roles:
-    - galera_db_setup
-    - horizon_setup
-
-- hosts: horizon_all
-  user: root
-  roles:
-    - horizon_apache
+horizon_endpoint_type: internalURL
