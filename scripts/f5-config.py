@@ -29,7 +29,7 @@ SNAT_POOL = (
 )
 
 MONITORS = (
-    'create ltm monitor mysql RPC_MON_GALERA { count 0 database'
+    'create ltm monitor mysql %(prefix_name)s_MON_GALERA { count 0 database'
     ' information_schema debug yes defaults-from mysql destination *:*'
     ' interval 30 time-until-up 0 timeout 91 username haproxy }'
 )
@@ -57,6 +57,8 @@ VIRTUAL_ENTRIES = (
     ' pool RPC_SNATPOOL type snat } }'
 )
 
+
+# This is a dict of all groups and their respected values / requirements
 POOL_PARTS = {
     'galera': {
         'port': 3306,
@@ -303,6 +305,14 @@ def args():
     )
 
     parser.add_argument(
+        '--limit-source',
+        help='Limit available connections to the source IP for all source'
+             ' limited entries.',
+        required=False,
+        default=None
+    )
+
+    parser.add_argument(
         '-e',
         '--export',
         help='Export the generated F5 configuration script.'
@@ -399,8 +409,7 @@ def main():
     script = [
         '#!/usr/bin/bash\n',
         snat_pool,
-        '# Monitors\n',
-        '%s\n' % MONITORS
+        '%s\n' % MONITORS % {'prefix_name': PREFIX_NAME}
     ]
     script.extend(nodes)
     script.extend(pools)
