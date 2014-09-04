@@ -5,7 +5,7 @@
 plugin_dirs = /usr/share/holland/plugins
 
 ## Top level directory where backups are held
-backup_directory = /var/lib/mysql/holland_backups
+backup_directory = /var/backup/holland_backups
 
 ## List of enabled backup sets. Can be comma separated.
 ## Read from <config_dir>/backupsets/<name>.conf
@@ -20,7 +20,7 @@ path = /usr/local/bin:/usr/local/sbin:/bin:/sbin:/usr/bin:/usr/sbin
 
 [logging]
 ## where to write the log
-filename = /var/log/mysql/holland.log
+filename = /var/log/backup/holland_backups/holland.log
 
 ## debug, info, warning, error, critical (case insensitive)
 level = info

@@ -81,14 +81,16 @@
     command=attach
     container_command="mkdir -p {{ item.0 }}"
   with_nested:
-    - [ "/monitoring", "/etc/network/interfaces.d" ]
+    - [ "/monitoring", "/etc/network/interfaces.d", "/var/backup" ]
     - container_groups
 
 - name: Create Required local log directories
   file: >
-    path=/openstack/log/{{ hostvars[item]['container_name'] }}
+    path="{{ item.0 }}/{{ hostvars[item.1]['container_name'] }}"
     state=directory
-  with_items: container_groups
+  with_nested:
+    - [ "/openstack/backup", "/openstack/log" ]
+    - container_groups
 
 - name: Create Required local monitoring directories
   file: >

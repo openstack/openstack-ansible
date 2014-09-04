@@ -24,4 +24,5 @@
     container_groups: "{{ groups[container_group|default(default_container_groups)] }}"
     required_container_config_options:
       - "lxc.mount.entry=/openstack/log/{{ hostvars[item]['container_name'] }} var/log/{{ hostvars[item]['service_name'] }} none defaults,bind,rw 0 0"
+      - "lxc.mount.entry=/openstack/backup/{{ hostvars[item]['container_name'] }} var/backup none defaults,bind,rw 0 0"
       - "lxc.mount.entry=/openstack/monitoring monitoring none defaults,bind,rw 0 0"
