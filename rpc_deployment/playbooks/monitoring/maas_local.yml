@@ -25,6 +25,30 @@
   roles:
     - maas_local
 
+- hosts: cinder_scheduler
+  vars:
+    check_name: cinder_scheduler_check
+    check_details: file=cinder_service_check.py,args=--host,args={{ ansible_hostname }},args={{ internal_vip_address }}
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'cinder_scheduler_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["cinder-scheduler_status"] != 1) { return new AlarmStatus(CRITICAL, "cinder-scheduler down"); }' }
+  user: root
+  roles:
+    - maas_local
+
+- hosts: cinder_volume
+  vars:
+    check_name: cinder_volume_check
+    check_details: file=cinder_service_check.py,args=--host,args={{ ansible_hostname }},args={{ internal_vip_address }}
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'cinder_volume_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["cinder-volume_status"] != 1) { return new AlarmStatus(CRITICAL, "cinder-volume down"); }' }
+  user: root
+  roles:
+    - maas_local
+
 - hosts: glance_api
   vars:
     check_name: glance_api_local_check
@@ -109,6 +133,54 @@
   roles:
     - maas_local
 
+- hosts: neutron_dhcp_agent
+  vars:
+    check_name: neutron_dhcp_agent_check
+    check_details: file=neutron_service_check.py,args=--host,args={{ ansible_hostname }},args={{ internal_vip_address }}
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'neutron_dhcp_agent_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["neutron-dhcp-agent_status"] != 1) { return new AlarmStatus(CRITICAL, "neutron-dhcp-agent down"); }' }
+  user: root
+  roles:
+    - maas_local
+
+- hosts: neutron_l3_agent
+  vars:
+    check_name: neutron_l3_agent_check
+    check_details: file=neutron_service_check.py,args=--host,args={{ ansible_hostname }},args={{ internal_vip_address }}
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'neutron_l3_agent_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["neutron-l3-agent_status"] != 1) { return new AlarmStatus(CRITICAL, "neutron-l3-agent down"); }' }
+  user: root
+  roles:
+    - maas_local
+
+- hosts: neutron_linuxbridge_agent
+  vars:
+    check_name: neutron_linuxbridge_agent_check
+    check_details: file=neutron_service_check.py,args=--host,args={{ ansible_hostname }},args={{ internal_vip_address }}
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'neutron_linuxbridge_agent_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["neutron-linuxbridge-agent_status"] != 1) { return new AlarmStatus(CRITICAL, "neutron-linuxbridge-agent down"); }' }
+  user: root
+  roles:
+    - maas_local
+
+- hosts: neutron_metadata_agent
+  vars:
+    check_name: neutron_metadata_agent_check
+    check_details: file=neutron_service_check.py,args=--host,args={{ ansible_hostname }},args={{ internal_vip_address }}
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'neutron_metadata_agent_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["neutron-metadata-agent_status"] != 1) { return new AlarmStatus(CRITICAL, "neutron-metadata-agent down"); }' }
+  user: root
+  roles:
+    - maas_local
+
 - hosts: nova_api_os_compute
   vars:
     check_name: nova_api_local_check
@@ -117,6 +189,54 @@
     check_timeout: "{{ maas_check_timeout }}"
     alarms:
       - { 'name': 'nova_api_local_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["nova_api_local_status"] != 1) { return new AlarmStatus(CRITICAL, "API unavailable"); }' }
+  user: root
+  roles:
+    - maas_local
+
+- hosts: nova_compute
+  vars:
+    check_name: nova_compute_check
+    check_details: file=nova_service_check.py,args=--host,args={{ ansible_hostname }},args={{ internal_vip_address }}
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'nova_compute_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["nova-compute_status"] != 1) { return new AlarmStatus(CRITICAL, "nova-compute down"); }' }
+  user: root
+  roles:
+    - maas_local
+
+- hosts: nova_conductor
+  vars:
+    check_name: nova_conductor_check
+    check_details: file=nova_service_check.py,args=--host,args={{ ansible_hostname }},args={{ internal_vip_address }}
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'nova_conductor_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["nova-conductor_status"] != 1) { return new AlarmStatus(CRITICAL, "nova-conductor down"); }' }
+  user: root
+  roles:
+    - maas_local
+
+- hosts: nova_scheduler
+  vars:
+    check_name: nova_scheduler_check
+    check_details: file=nova_service_check.py,args=--host,args={{ ansible_hostname }},args={{ internal_vip_address }}
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'nova_scheduler_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["nova-scheduler_status"] != 1) { return new AlarmStatus(CRITICAL, "nova-scheduler down"); }' }
+  user: root
+  roles:
+    - maas_local
+
+- hosts: nova_spice_console
+  vars:
+    check_name: nova_consoleauth_check
+    check_details: file=nova_service_check.py,args=--host,args={{ ansible_hostname }},args={{ internal_vip_address }}
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'nova_consoleauth_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["nova-consoleauth_status"] != 1) { return new AlarmStatus(CRITICAL, "nova-consoleauth down"); }' }
   user: root
   roles:
     - maas_local
