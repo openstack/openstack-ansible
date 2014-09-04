@@ -18,12 +18,14 @@ import argparse
 import json
 import os
 
+import netaddr
+
 
 PREFIX_NAME = 'RPC'
 
 SNAT_POOL = (
-    'create ltm snatpool RPC_SNATPOOL { members replace-all-with {'
-    ' %(snat_pool_address)s } }'
+    'create ltm snatpool %(prefix_name)s_SNATPOOL { members replace-all-with {'
+    ' %(snat_pool_addresses)s } }'
 )
 
 MONITORS = (
@@ -175,6 +177,7 @@ POOL_PARTS = {
         'mon_type': 'tcp',
         'group': 'memcached',
         'priority': True,
+        'limit_source': True,
         'hosts': []
     },
     'elasticsearch': {
@@ -291,8 +294,12 @@ def args():
     parser.add_argument(
         '-s',
         '--snat-pool-address',
-        help='LB Main SNAT pool address for [ RPC_SNATPOOL ]',
-        required=True
+        help='LB Main SNAT pool address for [ RPC_SNATPOOL ], for'
+             ' multiple snat pool addresses comma seperate the ip'
+             ' addresses. By default this IP will be .15 from within your'
+             ' containers_cidr as found within inventory.',
+        required=False,
+        default=None
     )
 
     parser.add_argument(
@@ -376,21 +383,31 @@ def main():
         pool_node.append(POOL_NODE['end'] % value)
         pools.append('%s\n' % ' '.join(pool_node))
 
+    # define the SNAT pool address
+    snat_pool_adds = user_args.get('snat_pool_address')
+    if snat_pool_adds is None:
+        container_cidr = inventory_json['all']['vars']['container_cidr']
+        network = netaddr.IPNetwork(container_cidr)
+        snat_pool_adds = str(network[15])
+
+    snat_pool_addresses = ' '.join(snat_pool_adds.split(','))
+    snat_pool = '%s\n' % SNAT_POOL % {
+        'prefix_name': PREFIX_NAME,
+        'snat_pool_addresses': snat_pool_addresses
+    }
 
     script = [
-        '#!/usr/bin/bash\n\n',
-        '# F5 Base configuration script\n',
-        '# Snet pools\n',
-        '%s\n' % SNAT_POOL % user_args,
-        '# Monitors',
+        '#!/usr/bin/bash\n',
+        snat_pool,
+        '# Monitors\n',
         '%s\n' % MONITORS
     ]
+    script.extend(nodes)
+    script.extend(pools)
+    script.extend(virts)
 
     with open(user_args['export'], 'wb') as f:
         f.writelines(script)
-        f.writelines(nodes),
-        f.writelines(pools),
-        f.writelines(virts)
 
 
 if __name__ == "__main__":
