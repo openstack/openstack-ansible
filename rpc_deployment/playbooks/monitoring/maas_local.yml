@@ -201,6 +201,15 @@
     check_timeout: "{{ maas_check_timeout }}"
     alarms:
       - { 'name': 'neutron_metering_agent_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["neutron-metering-agent_status"] != 1) { return new AlarmStatus(CRITICAL, "neutron-metering-agent down"); }' }
+
+- hosts: nova_api_metadata
+  vars:
+    check_name: nova_api_metadata_local_check
+    check_details: file={{ check_name }}.py,args={{ ansible_ssh_host }}
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'nova_api_metadata_local_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["nova_api_metadata_local_status"] != 1) { return new AlarmStatus(CRITICAL, "API (metadata) unavailable"); }' }
   user: root
   roles:
     - maas_local
@@ -212,7 +221,7 @@
     check_period: "{{ maas_check_period }}"
     check_timeout: "{{ maas_check_timeout }}"
     alarms:
-      - { 'name': 'nova_api_local_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["nova_api_local_status"] != 1) { return new AlarmStatus(CRITICAL, "API unavailable"); }' }
+      - { 'name': 'nova_api_local_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["nova_api_local_status"] != 1) { return new AlarmStatus(CRITICAL, "API (os-compute) unavailable"); }' }
   user: root
   roles:
     - maas_local
