@@ -13,12 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: nova-api-os-compute.yml
-- include: nova-api-ec2.yml
-- include: nova-api-metadata.yml
-- include: nova-scheduler.yml
-- include: nova-conductor.yml
-- include: nova-cert.yml
-- include: nova-compute.yml
-- include: nova-compute-keys.yml
-- include: nova-spice-console.yml
+# The variables file used by the playbooks in the nova-conductor group.
+# These don't have to be explicitly imported by vars_files: they are autopopulated.
+
+program_name: nova-cert

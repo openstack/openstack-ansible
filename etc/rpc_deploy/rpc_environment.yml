@@ -92,6 +92,9 @@ component_skel:
   nova_api_os_compute:
     belongs_to:
     - nova_all
+  nova_cert:
+    belongs_to:
+    - nova_all
   nova_compute:
     belongs_to:
     - nova_all
@@ -208,6 +211,11 @@ container_skel:
     - infra_containers
     contains:
     - nova_api_os_compute
+  nova_cert_container:
+    belongs_to:
+    - infra_containers
+    contains:
+    - nova_cert
   nova_compute_container:
     is_metal: true
     belongs_to:

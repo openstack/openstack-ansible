@@ -13,12 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: nova-api-os-compute.yml
-- include: nova-api-ec2.yml
-- include: nova-api-metadata.yml
-- include: nova-scheduler.yml
-- include: nova-conductor.yml
-- include: nova-cert.yml
-- include: nova-compute.yml
-- include: nova-compute-keys.yml
-- include: nova-spice-console.yml
+- hosts: nova_cert
+  user: root
+  roles:
+    - common
+    - common_sudoers
+    - container_common
+    - openstack_common
+    - openstack_openrc
+    - nova_common
+    - galera_client_cnf
+    - init_script
+  vars_files:
+    - inventory/group_vars/nova_all.yml
+    - vars/openstack_service_vars/nova_cert.yml
+    - vars/openstack_service_vars/nova_spice_console_endpoint.yml
+  handlers:
+    - include: handlers/services.yml
