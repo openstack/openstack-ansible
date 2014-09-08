@@ -59,11 +59,6 @@ service_names:
   - nova-conductor
   - nova-scheduler
 
-# Endpoint used throughout various services, including nova
-nova_metadata_ip: "{{ internal_vip_address }}"
-nova_metadata_proxy_shared_secret: "{{ nova_metadata_proxy_secret }}"
-
-
 ## Nova global config
 nova_cpu_mode: host-model
 nova_linuxnet_interface_driver: nova.network.linux_net.NeutronLinuxBridgeInterfaceDriver

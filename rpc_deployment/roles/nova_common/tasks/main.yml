@@ -25,7 +25,7 @@
 
 - name: Set variable data
   set_fact:
-    neutron_service_adminurl: "{{ neutronendpoint.stdout }}"    
+    neutron_service_adminurl: "{{ neutronendpoint.stdout }}"
     glance_service_adminurl: "{{ glanceendpoint.stdout }}"
 
 - name: Setup nova config
