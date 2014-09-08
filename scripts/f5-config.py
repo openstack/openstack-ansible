@@ -358,7 +358,7 @@ def main():
             node['node_name'] = '%s_NODE_%s' % (PREFIX_NAME, node['hostname'])
             nodes.append('%s\n' % NODES % node)
 
-            virts.append(
+            virt = (
                 '%s\n' % VIRTUAL_ENTRIES % {
                     'port': value['port'],
                     'vs_name': value['vs_name'],
@@ -366,6 +366,8 @@ def main():
                     'internal_lb_vip_address': lb_vip_address
                 }
             )
+            if virt not in virts:
+                virts.append(virt)
 
             if value.get('priority') is True:
                 node_data.append(
