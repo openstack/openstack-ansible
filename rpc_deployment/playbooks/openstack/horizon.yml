@@ -13,29 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- hosts: horizon_all
-  user: root
-  roles:
-    - common
-    - container_common
-    - galera_client_cnf
-
-- hosts: horizon_all
-  user: root
-  roles:
-    - openstack_common
-    - openstack_openrc
-    - horizon_common
-  vars_files:
-    - vars/openstack_service_vars/horizon.yml
-
 - hosts: horizon_all[0]
   user: root
   roles:
+    - horizon_common
     - galera_db_setup
     - horizon_setup
+    - horizon_apache
+  vars_files:
+    - vars/openstack_service_vars/horizon.yml
 
-- hosts: horizon_all
+- hosts: horizon_all:!horizon_all[0]
   user: root
   roles:
+    - horizon_common
     - horizon_apache
+  vars_files:
+    - vars/openstack_service_vars/horizon.yml

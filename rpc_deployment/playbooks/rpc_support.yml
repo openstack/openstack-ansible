@@ -25,6 +25,38 @@
   roles:
      - rpc_support_api
 
+- hosts: utility[0]
+  user: root
+  gather_facts: false
+  tasks:
+    - name: Distribute authorized keys for cluster consumption
+      memcached:
+        name: "{{ item.name }}"
+        file_path: "{{ item.src }}"
+        state: "present"
+        server: "{{ hostvars[groups['memcached'][0]]['ansible_ssh_host'] }}:11211"
+        encrypt_string: "{{ memcached_encryption_key }}"
+      with_items:
+        - { src: "/root/.ssh/rpc_support", name: "rpc_support" }
+        - { src: "/root/.ssh/rpc_support.pub", name: "rpc_support_pub" }
+
+- hosts: utility:utility[0]
+  user: root
+  gather_facts: false
+  tasks:
+    - name: Retrieve authorized keys
+      memcached:
+        name: "{{ item.name }}"
+        file_path: "{{ item.src }}"
+        state: "retrieve"
+        file_mode: "{{ item.file_mode }}"
+        dir_mode: "{{ item.dir_mode }}"
+        server: "{{ hostvars[groups['memcached'][0]]['ansible_ssh_host'] }}:11211"
+        encrypt_string: "{{ memcached_encryption_key }}"
+      with_items:
+        - { src: "/root/.ssh/rpc_support", name: "rpc_support", file_mode: "0600", dir_mode: "0755" }
+        - { src: "/root/.ssh/rpc_support.pub", name: "rpc_support_pub", file_mode: "0640", dir_mode: "0755" }
+
 # Setup holland backup
 - hosts: galera
   user: root

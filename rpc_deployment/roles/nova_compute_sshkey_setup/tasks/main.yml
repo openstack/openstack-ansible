@@ -21,11 +21,6 @@
     group: "nova"
     mode: "0644"
 
-- name: Sync authorized_keys file
-  synchronize:
-    src: /tmp/authorized_keys
-    dest: /var/lib/nova/.ssh/authorized_keys
-
 - name: Set authorized_keys permissions
   file:
     path: "/var/lib/nova/.ssh/authorized_keys"

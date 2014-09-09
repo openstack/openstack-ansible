@@ -13,53 +13,50 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: create self-signed SSL cert
-  command: >
-    openssl req -new -nodes -x509 -subj
-    "/C=US/ST=Texas/L=San Antonio/O=IT/CN={{ horizon_server_name }}"
-    -days 3650
-    -keyout /etc/ssl/private/apache.key
-    -out /etc/ssl/certs/apache.cert
-    -extensions v3_ca
-    creates=/etc/ssl/certs/apache.cert
-  when: horizon_self_signed is defined and horizon_self_signed == true
+- name: Add horizon etc dir
+  file:
+    dest: "/etc/horizon"
+    recurse: "yes"
+    owner: "{{ system_group }}"
+    group: "{{ system_group }}"
+    state: "directory"
 
-- name: Setup Horizon config
-  template: >
-    src=local_settings.py
-    dest={{ install_lib_dir }}/openstack_dashboard/local/local_settings.py
-    owner={{ system_user }}
-    group={{ system_group }}
+# The Horizon config files should be replaced for the JUNO release
+# juno_revision: true
+- name: Setup Horizon config(s)
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ system_user }}"
+    group: "{{ system_group }}"
+    mode: "{{ item.mode }}"
+  with_items:
+    - { src: "local_settings.py", dest: "/etc/horizon/local_settings.py", mode: "0644" }
+    - { src: "horizon-manage.py", dest: "/usr/local/bin/horizon-manage.py", mode: "0755" }
 
-- name: Copy manage.py
-  command: >
-    creates={{ install_lib_dir }}/manage.py
-    cp -a "/opt/{{ service_name }}_{{ git_install_branch | replace('/', '_') }}/manage.py" "{{ install_lib_dir }}"
-
+# /opt/horizon/lib/python2.7/site-packages/manage.py
 - name: Collect static files
-  command: python /opt/horizon/lib/python2.7/site-packages/manage.py collectstatic --noinput
+  command: horizon-manage.py collectstatic --noinput
 
-
-- name: Fix missing file issues (1 of 2)
-  file: >
-    src={{ install_lib_dir }}/horizon/static/bootstrap/js
-    dest={{ install_lib_dir }}/openstack_dashboard/static/bootstrap/js
-    owner={{ system_group }}
-    group={{ system_group }}
-    state=link
-
-- name: Fix missing file issues (2 of 2)
-  file: >
-    src={{ install_lib_dir }}/horizon/static/horizon
-    dest={{ install_lib_dir }}/openstack_dashboard/static/horizon
-    owner={{ system_group }}
-    group={{ system_group }}
-    state=link
+- name: Create hoirzon links
+  file:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ system_group }}"
+    group: "{{ system_group }}"
+    state: "link"
+  with_items:
+    - { src: "/etc/horizon/local_settings.py", dest: "{{ install_lib_dir }}/openstack_dashboard/local/local_settings.py" }
+    - { src: "{{ install_lib_dir }}/horizon/static/bootstrap/js", dest: "{{ install_lib_dir }}/openstack_dashboard/static/bootstrap/js" }
+    - { src: "{{ install_lib_dir }}/horizon/static/horizon", dest: "{{ install_lib_dir }}/openstack_dashboard/static/horizon" }
 
 - name: Set horizon permissions
-  file: >
-    state=directory
-    dest={{ install_root_dir }}
-    recurse=yes
-    owner={{ system_group }}
-    group={{ system_group }}
+  file:
+    dest: "{{ item }}"
+    recurse: "yes"
+    owner: "{{ system_group }}"
+    group: "{{ system_group }}"
+    state: "directory"
+  with_items:
+    - "{{ install_lib_dir }}/horizon"
+    - "{{ install_lib_dir }}/openstack_dashboard"

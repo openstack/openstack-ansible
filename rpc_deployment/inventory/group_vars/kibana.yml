@@ -37,3 +37,7 @@ kibana_fqdn: "{{ external_vip_address }}"
 kibana_server_name: "{{ container_name }}"
 kibana_self_signed: true
 kibana_ssl_port: 8443
+
+service_pip_dependencies:
+  - python-memcached
+  - pycrypto
