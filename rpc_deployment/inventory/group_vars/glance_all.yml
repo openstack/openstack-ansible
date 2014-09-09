@@ -40,6 +40,7 @@ container_mysql_password: "{{ glance_container_mysql_password }}"
 container_database: glance
 
 ## RPC
+notification_driver: "{{ glance_notification_driver|default('noop') }}"
 rpc_backend: glance.openstack.common.rpc.impl_kombu
 
 ## Backend
@@ -51,6 +52,7 @@ swift_store_user: "{{ glance_swift_store_user | default('NoUser') }}"
 swift_store_key: "{{ glance_swift_store_key | default('NoKey') }}"
 swift_store_region: "{{ glance_swift_store_region | default('NoRegion') }}"
 swift_store_container: "{{ glance_swift_store_container | default('NoContainer')}}"
+swift_store_endpoint_type: "{{ glance_swift_store_endpoint_type | default('internalURL') }}"
 
 ## Auth
 service_admin_tenant_name: "service"
