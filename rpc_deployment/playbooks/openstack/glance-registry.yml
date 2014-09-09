@@ -26,7 +26,6 @@
     - galera_client_cnf
     - init_script
   vars_files:
-    - vars/config_vars/glance_config.yml
     - vars/openstack_service_vars/glance_registry.yml
   handlers:
     - include: handlers/services.yml
