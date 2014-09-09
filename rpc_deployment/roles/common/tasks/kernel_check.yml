@@ -14,14 +14,11 @@
 # limitations under the License.
 
 # This will check for kernel as defined in the required kernel hash
-- name: Get kernel release
-  command: uname -r
-  register: kernel_release
 
-- name: Check kernel version
+- name: Check Kernel Version
   fail:
     msg: >
       Wrong kernel Version found
-      [ {{ kernel_release.stdout }} != {{ required_kernel }} ]
+      [ {{ ansible_kernel }} < {{ required_kernel }} ]
       Resolve this issue before continuing.
-  when: kernel_release.stdout != required_kernel
+  when: ansible_kernel | version_compare(required_kernel, '<')
