@@ -13,7 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: sysstat.yml
-- include: updatehostsfile.yml
-- include: authorized_keys.yml
-- include: kernel_modules.yml
+- name: "Ensure kernel module(s)"
+  modprobe:
+    name: "{{ item }}"
+  with_items: host_kernel_modules
+  when: host_kernel_modules is defined
+
+- name: "Ensure kernel module(s) loaded at boot"
+  lineinfile:
+    dest: /etc/modules
+    line: "{{ item }}"
+  with_items: host_kernel_modules
+  when: host_kernel_modules is defined

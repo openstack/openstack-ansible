@@ -64,6 +64,13 @@ excluded_user_create:
   - rabbitmq
 
 
+## Kernel modules loaded on all hosts
+host_kernel_modules:
+  - scsi_dh
+  - dm_multipath
+  - dm_snapshot
+
+
 ## Base Packages
 apt_common_packages:
   - vlan
@@ -73,6 +80,9 @@ apt_common_packages:
   - git-core
   - rsyslog
   - lvm2
+  - dmeventd
+  - libkmod-dev
+  - libkmod2
   - libssl-dev
   - bridge-utils
   - cgroup-lite

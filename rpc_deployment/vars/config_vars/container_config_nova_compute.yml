@@ -50,6 +50,9 @@ kernel_modules:
   - nf_conntrack
   - x_tables
   - iscsi_tcp
+  - scsi_dh
+  - dm_multipath
+  - dm_snapshot
 
 sysctl_options:
   - { key: 'net.ipv4.conf.all.rp_filter', value: 0 }
