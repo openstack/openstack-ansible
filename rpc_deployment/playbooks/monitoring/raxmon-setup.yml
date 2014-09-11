@@ -20,7 +20,7 @@
     - raxmon_cli
     - raxmon_agent_install
   vars:
-    entity_name: "{{ inventory_hostname }}"
+    entity_name: "{{ inventory_hostname }}{{ maas_fqdn_extension|default('') }}"
 
 - hosts: keystone[0]
   user: root

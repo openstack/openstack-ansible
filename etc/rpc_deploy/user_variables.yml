@@ -112,7 +112,10 @@ maas_monitoring_zones:
   - mzlon
   - mzhkg
 maas_repo_version: v9.0.0
-
+# Specify the maas_fqdn_extension, defaults to empty string.
+# This will be appended to the inventory_name of a host for MaaS purposes.
+# The inventory name + maas_fqdn_extension must match the entity name in MaaS
+# maas_fqdn_extension: .example.com
 
 ## Neutron Options
 neutron_container_mysql_password:
