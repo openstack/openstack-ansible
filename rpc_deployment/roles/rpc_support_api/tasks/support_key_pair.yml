@@ -13,14 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- name: Check for key file
+  shell: ls /root/.ssh/rpc_support
+  failed_when: false
+  changed_when: key_check.rc != 0
+  register: key_check
+
 - name: Create rpc_support SSH key
-  user:
-    name: root
-    generate_ssh_key: yes
-    ssh_key_bits: 2048
-    ssh_key_comment: "rpc_support key added for Openstack Instances"
-    ssh_key_file: "/root/.ssh/rpc_support"
+  shell: ssh-keygen -f "/root/.ssh/rpc_support" -t rsa -q -N ""
   register: support_key
+  when: key_check|changed
   tags:
     - support_key
     - support_keypair
@@ -29,8 +31,18 @@
   shell: |
     . /root/openrc
     nova keypair-list | grep rpc_support
+  failed_when: false
   register: rpc_support_key
-  when: support_key|changed
+  tags:
+    - support_keypair
+
+- name: Delete rpc_support keypair in nova
+  shell: |
+    . /root/openrc
+    nova keypair-keypair-delete rpc_support
+  failed_when: false
+  register: rpc_support_key_delete
+  when: support_key|changed and rpc_support_key.rc == 0
   tags:
     - support_keypair
 
@@ -38,6 +50,6 @@
   shell: |
     . /root/openrc
     nova keypair-add --pub-key /root/.ssh/rpc_support.pub rpc_support
-  when: support_key|changed and rpc_support_key.rc != 0
+  when: rpc_support_key.rc != 0 or rpc_support_key_delete|changed
   tags:
     - support_keypair

@@ -159,7 +159,6 @@ def _build_container_hosts(container_affinity, container_hosts, type_and_name,
                 cuuid = cuuid.split('-')[0]
                 container_host_name = '%s-%s' % (type_and_name, cuuid)
                 hostvars_options = hostvars[container_host_name] = {}
-
                 if container_host_type not in inventory:
                     inventory[container_host_type] = {
                         "hosts": [],
@@ -295,14 +294,21 @@ def _add_container_hosts(assignment, config, container_name, container_type,
         affinity = host_options.get('affinity', {})
 
         container_affinity = affinity.get(container_name, 1)
-        # Ensures that container names are not longer than 64
-        name_length = len(host_type)
-        if name_length > 25:
-            name_diff = name_length - 25
-            host_name = host_type[:-name_diff]
-        else:
-            host_name = host_type
-        type_and_name = '%s_%s' % (host_name, container_name)
+        # Ensures that container names are not longer than 63
+        # This section will ensure that we are not it by the following bug:
+        # https://bugzilla.mindrot.org/show_bug.cgi?id=2239
+        type_and_name = '%s_%s' % (host_type, container_name)
+        max_hostname_len = 52
+        if len(type_and_name) > max_hostname_len:
+            raise SystemExit(
+                'The resulting combination of [ "%s" + "%s" ] is longer than'
+                ' 52 characters. This combination will result in a container'
+                ' name that is longer than the maximum allowable hostname of'
+                ' 63 characters. Before this process can continue please'
+                ' adjust the host entries in your "rpc_user_config.yml" to use'
+                ' a short hostname. The recommended hostname length is < 20'
+                ' characters long.' % (host_type, container_name)
+            )
 
         physical_host = inventory['_meta']['hostvars'][host_type]
         container_host_type = '%s_containers' % host_type
@@ -323,7 +329,7 @@ def _add_container_hosts(assignment, config, container_name, container_type,
             physical_host_type,
             config,
             is_metal,
-            assignment
+            assignment,
         )
 
         # Add the physical host type to all containers from the built inventory

@@ -20,7 +20,7 @@
 containerize: true
 
 ## Service Name
-service_name: apache2
+service_name: horizon
 
 # Verbosity Options
 debug: False
@@ -40,42 +40,22 @@ container_database: dash
 system_user: www-data
 system_group: www-data
 
-## Git Source
-git_repo: https://git.openstack.org/openstack/horizon
-git_fallback_repo: https://github.com/openstack/horizon
-git_install_branch: stable/icehouse
 
 # Installation directories
-install_root_dir: /opt/horizon
-install_lib_dir: /opt/horizon/lib/python2.7/site-packages
-
-service_pip_dependencies:
-  - oslo.config
-  - MySQL-python
-  - python-memcached
-  - django-appconf
-  - pycrypto
-  - ply
-  - greenlet
+install_lib_dir: /usr/local/lib/python2.7/dist-packages
 
 container_directories:
-  - "{{ install_root_dir }}"
+  - "/etc/horizon"
   - "{{ install_lib_dir }}"
 
-container_packages:
-  - apache2
-  - apache2-utils
-  - libapache2-mod-wsgi
-  - libssl-dev
-  - libxslt1.1
-  - openssl
+service_pip_dependencies:
+  - MySQL-python
+  - python-memcached
+  - pycrypto
 
 horizon_fqdn: "{{ external_vip_address }}"
 horizon_server_name: "{{ container_name }}"
 horizon_self_signed: true
-
-pip_install_options: "--install-option='--prefix={{ install_root_dir }}'"
-service_name: horizon
 
 ## Optional certification options
 # horizon_cacert_pem: /path/to/cacert.pem

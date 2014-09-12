@@ -31,3 +31,7 @@ rabbit_cookie: "{{ rabbitmq_cookie_token }}"
 enable_management_plugin: true
 
 rabbit_cluster_name: rpc
+
+service_pip_dependencies:
+  - python-memcached
+  - pycrypto

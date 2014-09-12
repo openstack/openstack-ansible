@@ -13,25 +13,33 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Variables for the logstash containers
-service_name: elasticsearch
+repo_package_name: horizon
 
-debug: False
-verbose: True
+repo_path: "{{ repo_package_name }}_{{ git_install_branch | replace('/', '_') }}"
 
-container_lvm_fstype: ext4
-container_lvm_fssize: 5GB
+## Git Source
+git_repo: https://git.openstack.org/openstack/horizon
+git_fallback_repo: https://github.com/openstack/horizon
+git_dest: "/opt/{{ repo_path }}"
+git_install_branch: e53cc81fe554ac27c9c3797336f62f9da7d96226
 
-apt_container_keys:
-  - { url: "http://packages.elasticsearch.org/GPG-KEY-elasticsearch", state: "present" }
-
-apt_container_repos:
-  - { repo: "deb http://packages.elasticsearch.org/elasticsearch/1.2/debian stable  main", state: "present"}
+pip_wheel_name: horizon
 
 container_packages:
-  - elasticsearch
+  - apache2
+  - apache2-utils
+  - libapache2-mod-wsgi
+  - libssl-dev
+  - libxslt1.1
+  - openssl
 
 service_pip_dependencies:
-  - requests
+  - oslo.config
+  - MySQL-python
   - python-memcached
+  - django-appconf
   - pycrypto
+  - ply
+  - greenlet
+  - python-keystoneclient
+  - keystonemiddleware
