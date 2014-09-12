@@ -41,7 +41,6 @@
     - init_script
     - glance_cache_crons
   vars_files:
-    - vars/config_vars/glance_config.yml
     - vars/openstack_service_vars/glance_api.yml
   handlers:
     - include: handlers/services.yml
@@ -54,7 +53,6 @@
     - init_script
     - glance_cache_crons
   vars_files:
-    - vars/config_vars/glance_config.yml
     - vars/openstack_service_vars/glance_api.yml
   handlers:
     - include: handlers/services.yml

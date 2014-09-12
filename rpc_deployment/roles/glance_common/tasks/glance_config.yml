@@ -13,29 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Drop Glance Config
-  template: >
-    src={{ item }}
-    dest=/etc/glance/{{ item }}
-    owner={{ system_user }}
-    group={{ system_group }}
+- name: Drop Glance Config(s)
+  template:
+    src: "{{ item }}"
+    dest: "/etc/glance/{{ item }}"
+    owner: "{{ system_user }}"
+    group: "{{ system_group }}"
   with_items:
-      - policy.json
-      - schema.json
-      - schema-image.json
-  notify: Restart os service
-
-- name: Generate Glance Config
-  template: >
-    src=template_gen
-    dest=/etc/glance/{{ item.file }}
-    owner={{ system_user }}
-    group={{ system_group }}
-  with_items:
-      - { file: glance-registry-paste.ini, var: "{{ glance_registry_paste_ini }}" }
-      - { file: glance-api-paste.ini, var: "{{ glance_api_paste_ini }}" }
-      - { file: glance-registry.conf, var: "{{ glance_registry_conf }}" }
-      - { file: glance-api.conf, var: "{{ glance_api_conf }}" }
-      - { file: glance-cache.conf, var: "{{ glance_cache_conf }}" }
-      - { file: glance-scrubber.conf, var: "{{ glance_scrubber_conf }}" }
+    - glance-api-paste.ini
+    - glance-api.conf
+    - glance-cache.conf
+    - glance-registry-paste.ini
+    - glance-registry.conf
+    - glance-scrubber.conf
+    - policy.json
+    - schema-image.json
+    - schema.json
   notify: Restart os service
