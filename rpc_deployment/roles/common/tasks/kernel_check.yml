@@ -15,6 +15,14 @@
 
 # This will check for kernel as defined in the required kernel hash
 
+- name: Check Kernel Variant
+  fail:
+    msg: >
+      Wrong kernel Variant found
+      [ {{ ansible_kernel.split('-')[2] }} != generic ]
+      Resolve this issue before continuing.
+  when: ansible_kernel.split('-')[2] != 'generic'
+
 - name: Check Kernel Version
   fail:
     msg: >
