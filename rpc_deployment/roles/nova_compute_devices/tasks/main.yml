@@ -43,10 +43,25 @@
     udevadm trigger
   when: nova_virt_type == 'kvm'
 
+- name: Create log directory
+  file:
+    path: "/openstack/log/{{ physical_host}}"
+    state: directory
+    owner: nova
+    group: nova
+    mode: 0755
+    force: true
+  when: is_metal == true
+
+- name: Remove old log dir on metal
+  shell: >
+    ls /openstack/log/{{ physical_host }}/nova-compute.log 2>/dev/null || rm -rf /var/log/nova/
+  when: is_metal == true
+
 - name: Create log aggregation links
   file:
-    src: "/var/log/nova"
-    dest: "/openstack/log/nova"
+    src: "/openstack/log/{{ physical_host}}"
+    dest: "/var/log/nova"
     state: "link"
   when: is_metal == true
 
