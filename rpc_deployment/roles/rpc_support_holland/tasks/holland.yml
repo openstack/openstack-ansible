@@ -81,7 +81,7 @@
     state: directory
     path: "{{ item }}"
   with_items:
-    - "/var/lib/mysql/holland_backups"
+    - "/var/backup/holland_backups"
     - "/etc/holland"
   tags:
     - holland_dir
