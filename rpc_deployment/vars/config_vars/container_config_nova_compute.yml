@@ -58,3 +58,4 @@ sysctl_options:
   - { key: 'net.ipv4.conf.all.rp_filter', value: 0 }
   - { key: 'net.ipv4.conf.default.rp_filter', value: 0 }
   - { key: 'net.ipv4.ip_forward', value: 1 }
+  - { key: 'net.netfilter.nf_conntrack_max', value: 262144 }
