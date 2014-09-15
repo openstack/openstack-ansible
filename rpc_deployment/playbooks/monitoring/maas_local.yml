@@ -109,6 +109,18 @@
   roles:
     - maas_local
 
+- hosts: horizon
+  vars:
+    check_name: horizon_local_check
+    check_details: file=horizon_check.py,args={{ ansible_ssh_host }}
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'horizon_local_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["horizon_local_status"] != 1) { return new AlarmStatus(CRITICAL, "Horizon unavailable"); }' }
+  user: root
+  roles:
+    - maas_local
+
 - hosts: keystone
   vars:
     check_name: keystone_api_local_check
