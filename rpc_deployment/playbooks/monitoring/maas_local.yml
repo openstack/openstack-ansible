@@ -229,6 +229,18 @@
   roles:
     - maas_local
 
+- hosts: nova_cert
+  vars:
+    check_name: nova_cert_check
+    check_details: file=nova_service_check.py,args=--host,args={{ ansible_hostname }},args={{ internal_vip_address }}
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'nova_cert_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["nova-cert_status"] != 1) { return new AlarmStatus(CRITICAL, "nova-cert down"); }' }
+  user: root
+  roles:
+    - maas_local
+
 - hosts: nova_conductor
   vars:
     check_name: nova_conductor_check
