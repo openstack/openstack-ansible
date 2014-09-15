@@ -13,13 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Install service source
-  pip: >
-    name="/opt/{{ service_name }}_{{ git_install_branch | replace('/', '_') }}"
-    extra_args="{{ pip_install_options|default('') }} --allow-all-external"
-  register: pip_install
-  until: pip_install|success
-  retries: 5
-  async: 1800
-  delay: 5
-  poll: 5
+repo_package_name: kibana
+
+kibana_url: "{{ rpc_repo_url }}/downloads/kibana-3.1.0.tar.gz"
+kibana_sha256sum: "059a4b6b507b9ff771901d12035e499b0e8d1cae7d9e5284633e19da6c294e07"
+
+container_packages:
+  - apache2
+  - python-passlib
+  - openjdk-7-jre

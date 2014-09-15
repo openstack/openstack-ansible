@@ -64,10 +64,12 @@ heat_waitcondition_server_url: "http://{{ internal_vip_address }}:8000/v1/waitco
 heat_metadata_server_url: "http://{{ internal_vip_address }}:8000"
 
 ## Git Source
+## ALL of this has been relocated to vars/repo_packages
+## TODO(someone) this should be removed once the repo bits are all figured out.
 git_repo: https://git.openstack.org/openstack/heat
 git_fallback_repo: https://github.com/openstack/heat
 git_etc_example: etc/heat
-git_install_branch: stable/icehouse
+git_install_branch: 93f3c78a8bd9ecb79fa3d719468b371e67519969
 
 service_pip_dependencies:
   - MySQL-python

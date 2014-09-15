@@ -13,31 +13,33 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Variables for the logstash containers
-service_name: kibana
+repo_package_name: cinder
 
-debug: False
-verbose: True
+repo_path: "{{ repo_package_name }}_{{ git_install_branch | replace('/', '_') }}"
 
-container_lvm_fstype: ext4
-container_lvm_fssize: 5GB
+## Git Source
+git_repo: https://git.openstack.org/openstack/cinder
+git_fallback_repo: https://github.com/openstack/cinder
+git_dest: "/opt/{{ repo_path }}"
+git_install_branch: 36406c9bb0bac99b5daf1b8194df73685cbe49ea
 
-kibana_url: http://rpc-slushee.rackspace.com/downloads/kibana-3.1.0.tar.gz
-
-kibana_root: /opt/kibana
-
-container_packages:
-  - apache2
-  - python-passlib
-
-system_user: www-user
-system_group: www-data
-
-kibana_fqdn: "{{ external_vip_address }}"
-kibana_server_name: "{{ container_name }}"
-kibana_self_signed: true
-kibana_ssl_port: 8443
+pip_wheel_name: cinder
 
 service_pip_dependencies:
+  - pywbem
+  - ecdsa
+  - MySQL-python
   - python-memcached
   - pycrypto
+  - python-cinderclient
+  - python-keystoneclient
+  - keystonemiddleware
+
+container_packages:
+  - libpq-dev
+  - libkmod-dev
+  - libkmod2
+  - dmeventd
+  - tgt
+  - parted
+  - qemu-utils

@@ -13,31 +13,31 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Variables for the logstash containers
-service_name: kibana
+repo_package_name: neutron
 
-debug: False
-verbose: True
+repo_path: "{{ repo_package_name }}_{{ git_install_branch | replace('/', '_') }}"
 
-container_lvm_fstype: ext4
-container_lvm_fssize: 5GB
-
-kibana_url: http://rpc-slushee.rackspace.com/downloads/kibana-3.1.0.tar.gz
-
-kibana_root: /opt/kibana
+## Git Source
+git_repo: https://git.openstack.org/openstack/neutron
+git_fallback_repo: https://github.com/openstack/neutron
+git_dest: "/opt/{{ repo_path }}"
+git_etc_example: etc/
+git_install_branch: fd1221124b8f53a61731e51b5f923af44ec5598f
+pip_wheel_name: neutron
 
 container_packages:
-  - apache2
-  - python-passlib
-
-system_user: www-user
-system_group: www-data
-
-kibana_fqdn: "{{ external_vip_address }}"
-kibana_server_name: "{{ container_name }}"
-kibana_self_signed: true
-kibana_ssl_port: 8443
+  - libpq-dev
+  - dnsmasq-base
+  - dnsmasq-utils
 
 service_pip_dependencies:
+  - MySQL-python
   - python-memcached
   - pycrypto
+  - repoze.lru
+  - configobj
+  - cliff
+  - python-novaclient
+  - python-neutronclient
+  - python-keystoneclient
+  - keystonemiddleware
