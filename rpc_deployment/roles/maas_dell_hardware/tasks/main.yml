@@ -14,7 +14,7 @@
 # limitations under the License.
 
 - name: Get entity ID for physical_host
-  shell: raxmon-entities-list  | grep "label={{ inventory_hostname|quote }} " | sed -e 's/^.* id=\(.*\) label=.*$/\1/g'
+  shell: raxmon-entities-list  | grep "label={{ inventory_hostname|quote }}{{ maas_fqdn_extension|default('') }} " | sed -e 's/^.* id=\(.*\) label=.*$/\1/g'
   register: entity_id
 
 - name: Validate if check exists
