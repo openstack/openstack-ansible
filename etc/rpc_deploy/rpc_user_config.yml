@@ -145,8 +145,8 @@ storage_hosts:
         limit_container_types: cinder_volume
         lvm:
           volume_group: cinder-volumes
-          driver: cinder.volume.drivers.lvm.LVMISCSIDriver
-          backend_name: LVM_iSCSI
+          volume_driver: cinder.volume.drivers.lvm.LVMISCSIDriver
+          volume_backend_name: LVM_iSCSI
 
 # User defined Logging Hosts, this should be a required group
 log_hosts:

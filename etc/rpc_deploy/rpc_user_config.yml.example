@@ -165,8 +165,8 @@ storage_hosts:
         limit_container_types: cinder_volume
         lvm:
           volume_group: cinder-volumes
-          driver: cinder.volume.drivers.lvm.LVMISCSIDriver
-          backend_name: LVM_iSCSI
+          volume_driver: cinder.volume.drivers.lvm.LVMISCSIDriver
+          volume_backend_name: LVM_iSCSI
   cinder2:
     ip: 172.29.236.105
     container_vars:
@@ -174,8 +174,8 @@ storage_hosts:
         limit_container_types: cinder_volume
         lvm_ssd:
           volume_group: cinder-volumes
-          driver: cinder.volume.drivers.lvm.LVMISCSIDriver
-          backend_name: LVM_SSD_iSCSI
+          volume_driver: cinder.volume.drivers.lvm.LVMISCSIDriver
+          volume_backend_name: LVM_SSD_iSCSI
   cinder3:
     ip: 172.29.236.106
     container_vars:
@@ -188,8 +188,8 @@ storage_hosts:
           netapp_server_port: 80
           netapp_login: "{{ cinder_netapp_username }}"
           netapp_password: "{{ cinder_netapp_password }}"
-          driver: cinder.volume.drivers.netapp.common.NetAppDriver
-          backend_name: NETAPP_iSCSI
+          volume_driver: cinder.volume.drivers.netapp.common.NetAppDriver
+          volume_backend_name: NETAPP_iSCSI
 
 # User defined Logging Hosts, this should be a required group
 log_hosts:

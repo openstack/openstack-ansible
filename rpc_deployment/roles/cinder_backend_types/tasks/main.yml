@@ -24,6 +24,6 @@
   shell: |
     . ~/openrc
     cinder type-create "{{ item.0 }}"
-    cinder type-key "{{ item.0 }}" set volume_backend_name="{{ cinder_backends[item.0]['backend_name'] }}"
+    cinder type-key "{{ item.0 }}" set volume_backend_name="{{ cinder_backends[item.0]['volume_backend_name'] }}"
   with_items: cinder_backends|dictsort
   when: cinder_backends is defined
