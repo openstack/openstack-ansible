@@ -13,13 +13,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Install service source
-  pip: >
-    name="/opt/{{ service_name }}_{{ git_install_branch | replace('/', '_') }}"
-    extra_args="{{ pip_install_options|default('') }} --allow-all-external"
-  register: pip_install
-  until: pip_install|success
-  retries: 5
-  async: 1800
-  delay: 5
-  poll: 5
+repo_package_name: heat
+
+repo_path: "{{ repo_package_name }}_{{ git_install_branch | replace('/', '_') }}"
+
+## Git Source
+git_repo: https://git.openstack.org/openstack/heat
+git_fallback_repo: https://github.com/openstack/heat
+git_dest: "/opt/{{ repo_path }}"
+git_install_branch: 93f3c78a8bd9ecb79fa3d719468b371e67519969
+
+pip_wheel_name: heat
+
+container_packages:
+  - rsync
+  - libxslt1.1
+
+service_pip_dependencies:
+  - MySQL-python
+  - python-memcached
+  - pycrypto
+  - python-heatclient
+  - python-keystoneclient
+  - python-troveclient
+  - python-ceilometerclient
+  - keystonemiddleware

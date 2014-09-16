@@ -13,31 +13,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Variables for the logstash containers
-service_name: kibana
+repo_package_name: holland
 
-debug: False
-verbose: True
+repo_path: "holland_{{ git_install_branch | replace('/', '_') }}"
 
-container_lvm_fstype: ext4
-container_lvm_fssize: 5GB
+git_repo: https://github.com/holland-backup/holland
+git_install_branch: "v1.0.10"
+git_dest: "/opt/{{ repo_path }}"
+# git_repo_plugins are other installable packages contained within the same git repo
+git_repo_plugins:
+  - { path: "plugins", package: "holland.lib.common" }
+  - { path: "plugins", package: "holland.lib.mysql" }
+  - { path: "plugins", package: "holland.backup.xtrabackup" }
 
-kibana_url: http://rpc-slushee.rackspace.com/downloads/kibana-3.1.0.tar.gz
-
-kibana_root: /opt/kibana
+pip_wheel_name: holland
 
 container_packages:
-  - apache2
-  - python-passlib
-
-system_user: www-user
-system_group: www-data
-
-kibana_fqdn: "{{ external_vip_address }}"
-kibana_server_name: "{{ container_name }}"
-kibana_self_signed: true
-kibana_ssl_port: 8443
+  - mariadb-client
+  - xtrabackup
 
 service_pip_dependencies:
-  - python-memcached
-  - pycrypto
+  - MySQL-python

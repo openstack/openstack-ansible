@@ -13,31 +13,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Variables for the logstash containers
-service_name: kibana
+repo_package_name: raxmon
 
-debug: False
-verbose: True
+git_repo: https://github.com/rcbops/rpc-maas
+git_install_branch: "v9.0.0"
+git_dest: /usr/lib/rackspace-monitoring-agent/plugins/
 
-container_lvm_fstype: ext4
-container_lvm_fssize: 5GB
+apt_container_keys:
+  - { url: "https://monitoring.api.rackspacecloud.com/pki/agent/linux.asc", state: "present" }
 
-kibana_url: http://rpc-slushee.rackspace.com/downloads/kibana-3.1.0.tar.gz
-
-kibana_root: /opt/kibana
+apt_container_repos:
+  - { repo: "deb http://stable.packages.cloudmonitoring.rackspace.com/ubuntu-14.04-x86_64 cloudmonitoring main", state: "present" }
 
 container_packages:
-  - apache2
-  - python-passlib
-
-system_user: www-user
-system_group: www-data
-
-kibana_fqdn: "{{ external_vip_address }}"
-kibana_server_name: "{{ container_name }}"
-kibana_self_signed: true
-kibana_ssl_port: 8443
+  - rackspace-monitoring-agent
 
 service_pip_dependencies:
-  - python-memcached
-  - pycrypto
+  - rackspace-monitoring-cli
+
+pip_requirements_file: "/usr/lib/rackspace-monitoring-agent/plugins/requirements.txt"

@@ -13,13 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Install service source
-  pip: >
-    name="/opt/{{ service_name }}_{{ git_install_branch | replace('/', '_') }}"
-    extra_args="{{ pip_install_options|default('') }} --allow-all-external"
-  register: pip_install
-  until: pip_install|success
-  retries: 5
-  async: 1800
-  delay: 5
-  poll: 5
+repo_package_name: logstash
+
+# Apt repos for ELK
+apt_container_keys:
+  - { url: "http://packages.elasticsearch.org/GPG-KEY-elasticsearch", state: "present" }
+
+apt_container_repos:
+  - { repo: "deb http://packages.elasticsearch.org/logstash/1.4/debian stable main", state: "present"}
+
+container_packages:
+  - logstash
+  - logstash-contrib
+  - openjdk-7-jre

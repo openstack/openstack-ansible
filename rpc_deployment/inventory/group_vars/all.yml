@@ -40,8 +40,8 @@ external_vip_address: "{{ external_lb_vip_address }}"
 
 
 ## URL for the frozen rpc repo
-rpc_repo_url: "http://dc0e2a2ef0676c3453b1-31bb9324d3aeab0d08fa434012c1e64d.r5.cf1.rackcdn.com"
-
+rpc_repo_url: "http://rpc-slushee.rackspace.com"
+rpc_release: "9.0.0"
 
 ## GPG Keys
 gpg_keys:
@@ -55,7 +55,7 @@ apt_common_repos:
 apt_lxc_common_repos:
   - { repo: "ppa:ubuntu-lxc/stable", state: "present" }
 
-get_pip_url: "https://bootstrap.pypa.io/get-pip.py"
+get_pip_url: "http://rpc-slushee.rackspace.com/downloads/get-pip.py"
 
 
 ## Users that will not be created via container_common
@@ -92,6 +92,7 @@ apt_common_packages:
   - libffi-dev
   - libxml2-dev
   - libxslt1-dev
+  - libsqlite3-dev
   - mariadb-client
   - libmariadbclient-dev
 

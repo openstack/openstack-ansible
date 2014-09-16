@@ -77,10 +77,12 @@ service_names:
   - neutron-server
 
 ## Git Source
+## ALL of this has been relocated to vars/repo_packages
+## TODO(someone) this should be removed once the repo bits are all figured out.
 git_repo: https://git.openstack.org/openstack/neutron
 git_fallback_repo: https://github.com/openstack/neutron
 git_etc_example: etc/
-git_install_branch: stable/icehouse
+git_install_branch: fd1221124b8f53a61731e51b5f923af44ec5598f
 
 service_pip_dependencies:
   - MySQL-python
