@@ -27,6 +27,16 @@ verbose: True
 container_lvm_fstype: ext4
 container_lvm_fssize: 5GB
 
+# (StrOpt) Method used to wipe old voumes (valid options are: none, zero,
+# shred)
+cinder_volume_clear: zero
+# (StrOpt) The flag to pass to ionice to alter the i/o priority of the process
+# used to zero a volume after deletion, for example "-c3" for idle only
+# priority.
+# cinder_volume_clear_ionice: -c3
+# (IntOpt) Size in MiB to wipe at start of old volumes. 0 => all
+cinder_volume_clear_size: 0
+
 ## General configuration
 ## Set this in rpc_user_config.yml UNLESS you want all hosts to use the same
 ## Cinder backends.  See the rpc_user_config example for more on how this is done.
