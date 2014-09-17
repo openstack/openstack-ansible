@@ -1,0 +1,622 @@
+[DEFAULT]
+bind_ip = {{ inventory_host }}
+bind_port = 8080
+# bind_timeout = 30
+# backlog = 4096
+# swift_dir = /etc/swift
+user = {{ user }}
+
+# Enables exposing configuration settings via HTTP GET /info.
+# expose_info = true
+
+# Key to use for admin calls that are HMAC signed.  Default is empty,
+# which will disable admin calls to /info.
+# admin_key = secret_admin_key
+#
+# Allows the ability to withhold sections from showing up in the public calls
+# to /info.  You can withhold subsections by separating the dict level with a
+# ".".  The following would cause the sections 'container_quotas' and 'tempurl'
+# to not be listed, and the key max_failed_deletes would be removed from
+# bulk_delete.  Default is empty, allowing all registered fetures to be listed
+# via HTTP GET /info.
+# disallowed_sections = container_quotas, tempurl, bulk_delete.max_failed_deletes
+
+# Use an integer to override the number of pre-forked processes that will
+# accept connections.  Should default to the number of effective cpu
+# cores in the system.  It's worth noting that individual workers will
+# use many eventlet co-routines to service multiple concurrent requests.
+# workers = auto
+#
+# Maximum concurrent requests per worker
+# max_clients = 1024
+#
+# Set the following two lines to enable SSL. This is for testing only.
+# cert_file = /etc/swift/proxy.crt
+# key_file = /etc/swift/proxy.key
+#
+# expiring_objects_container_divisor = 86400
+# expiring_objects_account_name = expiring_objects
+#
+# You can specify default log routing here if you want:
+# log_name = swift
+# log_facility = LOG_LOCAL0
+# log_level = INFO
+# log_headers = false
+# log_address = /dev/log
+# The following caps the length of log lines to the value given; no limit if
+# set to 0, the default.
+# log_max_line_length = 0
+#
+# This optional suffix (default is empty) that would be appended to the swift transaction
+# id allows one to easily figure out from which cluster that X-Trans-Id belongs to.
+# This is very useful when one is managing more than one swift cluster.
+# trans_id_suffix =
+#
+# comma separated list of functions to call to setup custom log handlers.
+# functions get passed: conf, name, log_to_console, log_route, fmt, logger,
+# adapted_logger
+# log_custom_handlers =
+#
+# If set, log_udp_host will override log_address
+# log_udp_host =
+# log_udp_port = 514
+#
+# You can enable StatsD logging here:
+# log_statsd_host = localhost
+# log_statsd_port = 8125
+# log_statsd_default_sample_rate = 1.0
+# log_statsd_sample_rate_factor = 1.0
+# log_statsd_metric_prefix =
+#
+# Use a comma separated list of full url (http://foo.bar:1234,https://foo.bar)
+# cors_allow_origin =
+# strict_cors_mode = True
+#
+# client_timeout = 60
+# eventlet_debug = false
+
+[pipeline:main]
+{% if authtoken_active %}
+pipeline = catch_errors gatekeeper healthcheck proxy-logging cache container_sync bulk tempurl ratelimit authtoken keystoneauth container-quotas account-quotas slo dlo proxy-logging proxy-server
+{% else %}
+pipeline = catch_errors gatekeeper healthcheck proxy-logging cache container_sync bulk tempurl ratelimit tempauth container-quotas account-quotas slo dlo proxy-logging proxy-server
+{% endif %}
+[app:proxy-server]
+use = egg:swift#proxy
+log_facility = LOG_LOCAL0
+# You can override the default log routing for this app here:
+# set log_name = proxy-server
+# set log_facility = LOG_LOCAL0
+# set log_level = INFO
+# set log_address = /dev/log
+#
+# log_handoffs = true
+# recheck_account_existence = 60
+# recheck_container_existence = 60
+# object_chunk_size = 65536
+# client_chunk_size = 65536
+#
+# How long the proxy server will wait on responses from the a/c/o servers.
+node_timeout = 60
+#
+# How long the proxy server will wait for an initial response and to read a
+# chunk of data from the object servers while serving GET / HEAD requests.
+# Timeouts from these requests can be recovered from so setting this to
+# something lower than node_timeout would provide quicker error recovery
+# while allowing for a longer timeout for non-recoverable requests (PUTs).
+# Defaults to node_timeout, should be overriden if node_timeout is set to a
+# high number to prevent client timeouts from firing before the proxy server
+# has a chance to retry.
+# recoverable_node_timeout = node_timeout
+#
+conn_timeout = 3.5
+#
+# How long to wait for requests to finish after a quorum has been established.
+# post_quorum_timeout = 0.5
+#
+# How long without an error before a node's error count is reset. This will
+# also be how long before a node is reenabled after suppression is triggered.
+# error_suppression_interval = 60
+#
+# How many errors can accumulate before a node is temporarily ignored.
+# error_suppression_limit = 10
+#
+# If set to 'true' any authorized user may create and delete accounts; if
+# 'false' no one, even authorized, can.
+# allow_account_management = false
+#
+# Set object_post_as_copy = false to turn on fast posts where only the metadata
+# changes are stored anew and the original data file is kept in place. This
+# makes for quicker posts; but since the container metadata isn't updated in
+# this mode, features like container sync won't be able to sync posts.
+# object_post_as_copy = true
+#
+# If set to 'true' authorized accounts that do not yet exist within the Swift
+# cluster will be automatically created.
+account_autocreate = true
+#
+# If set to a positive value, trying to create a container when the account
+# already has at least this maximum containers will result in a 403 Forbidden.
+# Note: This is a soft limit, meaning a user might exceed the cap for
+# recheck_account_existence before the 403s kick in.
+# max_containers_per_account = 0
+#
+# This is a comma separated list of account hashes that ignore the
+# max_containers_per_account cap.
+# max_containers_whitelist =
+#
+# Comma separated list of Host headers to which the proxy will deny requests.
+# deny_host_headers =
+#
+# Prefix used when automatically creating accounts.
+# auto_create_account_prefix = .
+#
+# Depth of the proxy put queue.
+# put_queue_depth = 10
+#
+# Storage nodes can be chosen at random (shuffle), by using timing
+# measurements (timing), or by using an explicit match (affinity).
+# Using timing measurements may allow for lower overall latency, while
+# using affinity allows for finer control. In both the timing and
+# affinity cases, equally-sorting nodes are still randomly chosen to
+# spread load.
+# The valid values for sorting_method are "affinity", "shuffle", and "timing".
+# sorting_method = shuffle
+#
+# If the "timing" sorting_method is used, the timings will only be valid for
+# the number of seconds configured by timing_expiry.
+# timing_expiry = 300
+#
+# The maximum time (seconds) that a large object connection is allowed to last.
+# max_large_object_get_time = 86400
+#
+# Set to the number of nodes to contact for a normal request. You can use
+# '* replicas' at the end to have it use the number given times the number of
+# replicas for the ring being used for the request.
+# request_node_count = 2 * replicas
+#
+# Which backend servers to prefer on reads. Format is r<N> for region
+# N or r<N>z<M> for region N, zone M. The value after the equals is
+# the priority; lower numbers are higher priority.
+#
+# Example: first read from region 1 zone 1, then region 1 zone 2, then
+# anything in region 2, then everything else:
+# read_affinity = r1z1=100, r1z2=200, r2=300
+# Default is empty, meaning no preference.
+# read_affinity =
+#
+# Which backend servers to prefer on writes. Format is r<N> for region
+# N or r<N>z<M> for region N, zone M. If this is set, then when
+# handling an object PUT request, some number (see setting
+# write_affinity_node_count) of local backend servers will be tried
+# before any nonlocal ones.
+#
+# Example: try to write to regions 1 and 2 before writing to any other
+# nodes:
+# write_affinity = r1, r2
+# Default is empty, meaning no preference.
+# write_affinity =
+#
+# The number of local (as governed by the write_affinity setting)
+# nodes to attempt to contact first, before any non-local ones. You
+# can use '* replicas' at the end to have it use the number given
+# times the number of replicas for the ring being used for the
+# request.
+# write_affinity_node_count = 2 * replicas
+#
+# These are the headers whose values will only be shown to swift_owners. The
+# exact definition of a swift_owner is up to the auth system in use, but
+# usually indicates administrative responsibilities.
+# swift_owner_headers = x-container-read, x-container-write, x-container-sync-key, x-container-sync-to, x-account-meta-temp-url-key, x-account-meta-temp-url-key-2, x-account-access-control
+
+[filter:tempauth]
+use = egg:swift#tempauth
+# You can override the default log routing for this filter here:
+# set log_name = tempauth
+# set log_facility = LOG_LOCAL0
+# set log_level = INFO
+# set log_headers = false
+# set log_address = /dev/log
+#
+# The reseller prefix will verify a token begins with this prefix before even
+# attempting to validate it. Also, with authorization, only Swift storage
+# accounts with this prefix will be authorized by this middleware. Useful if
+# multiple auth systems are in use for one Swift cluster.
+# reseller_prefix = AUTH
+#
+# The auth prefix will cause requests beginning with this prefix to be routed
+# to the auth subsystem, for granting tokens, etc.
+# auth_prefix = /auth/
+# token_life = 86400
+#
+# This allows middleware higher in the WSGI pipeline to override auth
+# processing, useful for middleware such as tempurl and formpost. If you know
+# you're not going to use such middleware and you want a bit of extra security,
+# you can set this to false.
+# allow_overrides = true
+#
+# This specifies what scheme to return with storage urls:
+# http, https, or default (chooses based on what the server is running as)
+# This can be useful with an SSL load balancer in front of a non-SSL server.
+# storage_url_scheme = default
+#
+# Lastly, you need to list all the accounts/users you want here. The format is:
+#   user_<account>_<user> = <key> [group] [group] [...] [storage_url]
+# or if you want underscores in <account> or <user>, you can base64 encode them
+# (with no equal signs) and use this format:
+#   user64_<account_b64>_<user_b64> = <key> [group] [group] [...] [storage_url]
+# There are special groups of:
+#   .reseller_admin = can do anything to any account for this auth
+#   .admin = can do anything within the account
+# If neither of these groups are specified, the user can only access containers
+# that have been explicitly allowed for them by a .admin or .reseller_admin.
+# The trailing optional storage_url allows you to specify an alternate url to
+# hand back to the user upon authentication. If not specified, this defaults to
+# $HOST/v1/<reseller_prefix>_<account> where $HOST will do its best to resolve
+# to what the requester would need to use to reach this host.
+# Here are example entries, required for running the tests:
+{% if not authtoken_active %}
+user_admin_admin = admin .admin .reseller_admin
+user_test_tester = testing .admin
+user_test2_tester2 = testing2 .admin
+user_test_tester3 = testing3
+{% endif %}
+
+# To enable Keystone authentication you need to have the auth token
+# middleware first to be configured. Here is an example below, please
+# refer to the keystone's documentation for details about the
+# different settings.
+#
+# You'll need to have as well the keystoneauth middleware enabled
+# and have it in your main pipeline so instead of having tempauth in
+# there you can change it to: authtoken keystoneauth
+#
+{% if authtoken_active %}
+[filter:authtoken]
+paste.filter_factory = keystonemiddleware.auth_token:filter_factory
+auth_host = {{ auth_host }}
+auth_port = {{ auth_port }}
+auth_protocol = {{ auth_protocol }}
+auth_uri = {{ auth_uri }}
+admin_tenant_name = {{ admin_tenant_name }}
+admin_user = {{ admin_user }}
+admin_password = {{ admin_password }}
+delay_auth_decision = {{ delay_auth_decision }}
+# cache = swift.cache
+# include_service_catalog = False
+#
+[filter:keystoneauth]
+use = egg:swift#keystoneauth
+# Operator roles is the role which user would be allowed to manage a
+# tenant and be able to create container or give ACL to others.
+operator_roles = admin, swiftoperator
+# The reseller admin role has the ability to create and delete accounts
+reseller_admin_role = reseller_admin
+
+[filter:healthcheck]
+use = egg:swift#healthcheck
+# An optional filesystem path, which if present, will cause the healthcheck
+# URL to return "503 Service Unavailable" with a body of "DISABLED BY FILE".
+# This facility may be used to temporarily remove a Swift node from a load
+# balancer pool during maintenance or upgrade (remove the file to allow the
+# node back into the load balancer pool).
+# disable_path =
+
+[filter:cache]
+use = egg:swift#memcache
+# You can override the default log routing for this filter here:
+# set log_name = cache
+# set log_facility = LOG_LOCAL0
+# set log_level = INFO
+# set log_headers = false
+# set log_address = /dev/log
+#
+# If not set here, the value for memcache_servers will be read from
+# memcache.conf (see memcache.conf-sample) or lacking that file, it will
+# default to the value below. You can specify multiple servers separated with
+# commas, as in: 10.1.2.3:11211,10.1.2.4:11211
+memcache_servers = {{ memcache_servers }}
+#
+# Sets how memcache values are serialized and deserialized:
+# 0 = older, insecure pickle serialization
+# 1 = json serialization but pickles can still be read (still insecure)
+# 2 = json serialization only (secure and the default)
+# If not set here, the value for memcache_serialization_support will be read
+# from /etc/swift/memcache.conf (see memcache.conf-sample).
+# To avoid an instant full cache flush, existing installations should
+# upgrade with 0, then set to 1 and reload, then after some time (24 hours)
+# set to 2 and reload.
+# In the future, the ability to use pickle serialization will be removed.
+memcache_serialization_support = 2
+#
+# Sets the maximum number of connections to each memcached server per worker
+# memcache_max_connections = 2
+
+[filter:ratelimit]
+use = egg:swift#ratelimit
+# You can override the default log routing for this filter here:
+# set log_name = ratelimit
+# set log_facility = LOG_LOCAL0
+# set log_level = INFO
+# set log_headers = false
+# set log_address = /dev/log
+#
+# clock_accuracy should represent how accurate the proxy servers' system clocks
+# are with each other. 1000 means that all the proxies' clock are accurate to
+# each other within 1 millisecond.  No ratelimit should be higher than the
+# clock accuracy.
+# clock_accuracy = 1000
+#
+# max_sleep_time_seconds = 60
+#
+# log_sleep_time_seconds of 0 means disabled
+# log_sleep_time_seconds = 0
+#
+# allows for slow rates (e.g. running up to 5 sec's behind) to catch up.
+# rate_buffer_seconds = 5
+#
+# account_ratelimit of 0 means disabled
+# account_ratelimit = 0
+
+# these are comma separated lists of account names
+# account_whitelist = a,b
+# account_blacklist = c,d
+
+# with container_limit_x = r
+# for containers of size x limit write requests per second to r.  The container
+# rate will be linearly interpolated from the values given. With the values
+# below, a container of size 5 will get a rate of 75.
+# container_ratelimit_0 = 100
+# container_ratelimit_10 = 50
+# container_ratelimit_50 = 20
+
+# Similarly to the above container-level write limits, the following will limit
+# container GET (listing) requests.
+# container_listing_ratelimit_0 = 100
+# container_listing_ratelimit_10 = 50
+# container_listing_ratelimit_50 = 20
+
+[filter:domain_remap]
+use = egg:swift#domain_remap
+# You can override the default log routing for this filter here:
+# set log_name = domain_remap
+# set log_facility = LOG_LOCAL0
+# set log_level = INFO
+# set log_headers = false
+# set log_address = /dev/log
+#
+# storage_domain = example.com
+# path_root = v1
+# reseller_prefixes = AUTH
+
+[filter:catch_errors]
+use = egg:swift#catch_errors
+# You can override the default log routing for this filter here:
+# set log_name = catch_errors
+# set log_facility = LOG_LOCAL0
+# set log_level = INFO
+# set log_headers = false
+# set log_address = /dev/log
+
+[filter:cname_lookup]
+# Note: this middleware requires python-dnspython
+use = egg:swift#cname_lookup
+# You can override the default log routing for this filter here:
+# set log_name = cname_lookup
+# set log_facility = LOG_LOCAL0
+# set log_level = INFO
+# set log_headers = false
+# set log_address = /dev/log
+#
+# Specify the storage_domain that match your cloud, multiple domains
+# can be specified separated by a comma
+# storage_domain = example.com
+#
+# lookup_depth = 1
+
+# Note: Put staticweb just after your auth filter(s) in the pipeline
+[filter:staticweb]
+use = egg:swift#staticweb
+
+# Note: Put tempurl before dlo, slo and your auth filter(s) in the pipeline
+[filter:tempurl]
+use = egg:swift#tempurl
+# The methods allowed with Temp URLs.
+# methods = GET HEAD PUT POST DELETE
+#
+# The headers to remove from incoming requests. Simply a whitespace delimited
+# list of header names and names can optionally end with '*' to indicate a
+# prefix match. incoming_allow_headers is a list of exceptions to these
+# removals.
+# incoming_remove_headers = x-timestamp
+#
+# The headers allowed as exceptions to incoming_remove_headers. Simply a
+# whitespace delimited list of header names and names can optionally end with
+# '*' to indicate a prefix match.
+# incoming_allow_headers =
+#
+# The headers to remove from outgoing responses. Simply a whitespace delimited
+# list of header names and names can optionally end with '*' to indicate a
+# prefix match. outgoing_allow_headers is a list of exceptions to these
+# removals.
+# outgoing_remove_headers = x-object-meta-*
+#
+# The headers allowed as exceptions to outgoing_remove_headers. Simply a
+# whitespace delimited list of header names and names can optionally end with
+# '*' to indicate a prefix match.
+# outgoing_allow_headers = x-object-meta-public-*
+
+# Note: Put formpost just before your auth filter(s) in the pipeline
+[filter:formpost]
+use = egg:swift#formpost
+
+# Note: Just needs to be placed before the proxy-server in the pipeline.
+[filter:name_check]
+use = egg:swift#name_check
+# forbidden_chars = '"`<>
+# maximum_length = 255
+# forbidden_regexp = /\./|/\.\./|/\.$|/\.\.$
+
+[filter:list-endpoints]
+use = egg:swift#list_endpoints
+# list_endpoints_path = /endpoints/
+
+[filter:proxy-logging]
+use = egg:swift#proxy_logging
+# If not set, logging directives from [DEFAULT] without "access_" will be used
+# access_log_name = swift
+# access_log_facility = LOG_LOCAL0
+# access_log_level = INFO
+# access_log_address = /dev/log
+#
+# If set, access_log_udp_host will override access_log_address
+# access_log_udp_host =
+# access_log_udp_port = 514
+#
+# You can use log_statsd_* from [DEFAULT] or override them here:
+# access_log_statsd_host = localhost
+# access_log_statsd_port = 8125
+# access_log_statsd_default_sample_rate = 1.0
+# access_log_statsd_sample_rate_factor = 1.0
+# access_log_statsd_metric_prefix =
+# access_log_headers = false
+#
+# If access_log_headers is True and access_log_headers_only is set only
+# these headers are logged. Multiple headers can be defined as comma separated
+# list like this: access_log_headers_only = Host, X-Object-Meta-Mtime
+# access_log_headers_only =
+#
+# By default, the X-Auth-Token is logged. To obscure the value,
+# set reveal_sensitive_prefix to the number of characters to log.
+# For example, if set to 12, only the first 12 characters of the
+# token appear in the log. An unauthorized access of the log file
+# won't allow unauthorized usage of the token. However, the first
+# 12 or so characters is unique enough that you can trace/debug
+# token usage. Set to 0 to suppress the token completely (replaced
+# by '...' in the log).
+# Note: reveal_sensitive_prefix will not affect the value
+# logged with access_log_headers=True.
+# reveal_sensitive_prefix = 16
+#
+# What HTTP methods are allowed for StatsD logging (comma-sep); request methods
+# not in this list will have "BAD_METHOD" for the <verb> portion of the metric.
+# log_statsd_valid_http_methods = GET,HEAD,POST,PUT,DELETE,COPY,OPTIONS
+#
+# Note: The double proxy-logging in the pipeline is not a mistake. The
+# left-most proxy-logging is there to log requests that were handled in
+# middleware and never made it through to the right-most middleware (and
+# proxy server). Double logging is prevented for normal requests. See
+# proxy-logging docs.
+
+# Note: Put before both ratelimit and auth in the pipeline.
+[filter:bulk]
+use = egg:swift#bulk
+# max_containers_per_extraction = 10000
+# max_failed_extractions = 1000
+# max_deletes_per_request = 10000
+# max_failed_deletes = 1000
+
+# In order to keep a connection active during a potentially long bulk request,
+# Swift may return whitespace prepended to the actual response body. This
+# whitespace will be yielded no more than every yield_frequency seconds.
+# yield_frequency = 10
+
+# Note: The following parameter is used during a bulk delete of objects and
+# their container. This would frequently fail because it is very likely
+# that all replicated objects have not been deleted by the time the middleware got a
+# successful response. It can be configured the number of retries. And the
+# number of seconds to wait between each retry will be 1.5**retry
+
+# delete_container_retry_count = 0
+
+# Note: Put after auth in the pipeline.
+[filter:container-quotas]
+use = egg:swift#container_quotas
+
+# Note: Put after auth and staticweb in the pipeline.
+[filter:slo]
+use = egg:swift#slo
+# max_manifest_segments = 1000
+# max_manifest_size = 2097152
+# min_segment_size = 1048576
+# Start rate-limiting SLO segment serving after the Nth segment of a
+# segmented object.
+# rate_limit_after_segment = 10
+#
+# Once segment rate-limiting kicks in for an object, limit segments served
+# to N per second. 0 means no rate-limiting.
+# rate_limit_segments_per_sec = 0
+#
+# Time limit on GET requests (seconds)
+# max_get_time = 86400
+
+# Note: Put after auth and staticweb in the pipeline.
+# If you don't put it in the pipeline, it will be inserted for you.
+[filter:dlo]
+use = egg:swift#dlo
+# Start rate-limiting DLO segment serving after the Nth segment of a
+# segmented object.
+# rate_limit_after_segment = 10
+#
+# Once segment rate-limiting kicks in for an object, limit segments served
+# to N per second. 0 means no rate-limiting.
+# rate_limit_segments_per_sec = 1
+#
+# Time limit on GET requests (seconds)
+# max_get_time = 86400
+
+[filter:account-quotas]
+use = egg:swift#account_quotas
+
+[filter:gatekeeper]
+use = egg:swift#gatekeeper
+# You can override the default log routing for this filter here:
+# set log_name = gatekeeper
+# set log_facility = LOG_LOCAL0
+# set log_level = INFO
+# set log_headers = false
+# set log_address = /dev/log
+
+[filter:container_sync]
+use = egg:swift#container_sync
+# Set this to false if you want to disallow any full url values to be set for
+# any new X-Container-Sync-To headers. This will keep any new full urls from
+# coming in, but won't change any existing values already in the cluster.
+# Updating those will have to be done manually, as knowing what the true realm
+# endpoint should be cannot always be guessed.
+# allow_full_urls = true
+# Set this to specify this clusters //realm/cluster as "current" in /info
+# current = //REALM/CLUSTER
+
+# Note: Put it at the beginning of the pipleline to profile all middleware. But
+# it is safer to put this after catch_errors, gatekeeper and healthcheck.
+[filter:xprofile]
+use = egg:swift#xprofile
+# This option enable you to switch profilers which should inherit from python
+# standard profiler. Currently the supported value can be 'cProfile',
+# 'eventlet.green.profile' etc.
+# profile_module = eventlet.green.profile
+#
+# This prefix will be used to combine process ID and timestamp to name the
+# profile data file.  Make sure the executing user has permission to write
+# into this path (missing path segments will be created, if necessary).
+# If you enable profiling in more than one type of daemon, you must override
+# it with an unique value like: /var/log/swift/profile/proxy.profile
+# log_filename_prefix = /tmp/log/swift/profile/default.profile
+#
+# the profile data will be dumped to local disk based on above naming rule
+# in this interval.
+# dump_interval = 5.0
+#
+# Be careful, this option will enable profiler to dump data into the file with
+# time stamp which means there will be lots of files piled up in the directory.
+# dump_timestamp = false
+#
+# This is the path of the URL to access the mini web UI.
+# path = /__profile__
+#
+# Clear the data when the wsgi server shutdown.
+# flush_at_shutdown = false
+#
+# unwind the iterator of applications
+# unwind = false

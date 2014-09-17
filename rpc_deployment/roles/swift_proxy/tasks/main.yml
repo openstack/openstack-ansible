@@ -1,0 +1,11 @@
+---
+- name: "install the keystone auth_token middleware"
+  pip: name=keystonemiddleware
+
+- name: "swift object server configuration"
+  template: src=proxy-server.conf.j2 dest=/etc/swfit/proxy-server.conf.j2 owner={{ swift }} mode=0644
+  notfiy: 
+    - (re)start proxy server
+
+- name: "Set proxy server to start at boot"
+  cron: special_time=reboot job="swift-init proxy-server start"

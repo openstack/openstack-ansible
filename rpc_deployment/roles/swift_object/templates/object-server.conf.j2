@@ -1,0 +1,281 @@
+[DEFAULT]
+bind_ip = {{ inverntory_host }}
+bind_port = 6000
+# bind_timeout = 30
+# backlog = 4096
+user = {{ user }}
+swift_dir = /etc/swift
+devices = {{ drive }}
+# mount_check = true
+# disable_fallocate = false
+# expiring_objects_container_divisor = 86400
+# expiring_objects_account_name = expiring_objects
+#
+# Use an integer to override the number of pre-forked processes that will
+# accept connections.
+# workers = auto
+#
+# Maximum concurrent requests per worker
+# max_clients = 1024
+#
+# You can specify default log routing here if you want:
+# log_name = swift
+# log_facility = LOG_LOCAL0
+# log_level = INFO
+# log_address = /dev/log
+# The following caps the length of log lines to the value given; no limit if
+# set to 0, the default.
+# log_max_line_length = 0
+#
+# comma separated list of functions to call to setup custom log handlers.
+# functions get passed: conf, name, log_to_console, log_route, fmt, logger,
+# adapted_logger
+# log_custom_handlers =
+#
+# If set, log_udp_host will override log_address
+# log_udp_host =
+# log_udp_port = 514
+#
+# You can enable StatsD logging here:
+# log_statsd_host = localhost
+# log_statsd_port = 8125
+# log_statsd_default_sample_rate = 1.0
+# log_statsd_sample_rate_factor = 1.0
+# log_statsd_metric_prefix =
+#
+# eventlet_debug = false
+#
+# You can set fallocate_reserve to the number of bytes you'd like fallocate to
+# reserve, whether there is space for the given file size or not.
+# fallocate_reserve = 0
+#
+# Time to wait while attempting to connect to another backend node.
+# conn_timeout = 0.5
+# Time to wait while sending each chunk of data to another backend node.
+# node_timeout = 3
+# Time to wait while receiving each chunk of data from a client or another
+# backend node.
+# client_timeout = 60
+#
+# network_chunk_size = 65536
+# disk_chunk_size = 65536
+
+[pipeline:main]
+pipeline = healthcheck recon object-server
+
+[app:object-server]
+use = egg:swift#object
+log_facility = LOG_LOCAL1
+# You can override the default log routing for this app here:
+# set log_name = object-server
+# set log_facility = LOG_LOCAL0
+# set log_level = INFO
+# set log_requests = true
+# set log_address = /dev/log
+#
+# max_upload_time = 86400
+# slow = 0
+#
+# Objects smaller than this are not evicted from the buffercache once read
+# keep_cache_size = 5424880
+#
+# If true, objects for authenticated GET requests may be kept in buffer cache
+# if small enough
+# keep_cache_private = false
+#
+# on PUTs, sync data every n MB
+# mb_per_sync = 512
+mb_per_sync = 64
+#
+# Comma separated list of headers that can be set in metadata on an object.
+# This list is in addition to X-Object-Meta-* headers and cannot include
+# Content-Type, etag, Content-Length, or deleted
+# allowed_headers = Content-Disposition, Content-Encoding, X-Delete-At, X-Object-Manifest, X-Static-Large-Object
+#
+# auto_create_account_prefix = .
+#
+# A value of 0 means "don't use thread pools". A reasonable starting point is
+# 4.
+# threads_per_disk = 0
+#
+# Configure parameter for creating specific server
+# To handle all verbs, including replication verbs, do not specify
+# "replication_server" (this is the default). To only handle replication,
+# set to a True value (e.g. "True" or "1"). To handle only non-replication
+# verbs, set to "False". Unless you have a separate replication network, you
+# should not specify any value for "replication_server".
+# replication_server = false
+#
+# Set to restrict the number of concurrent incoming REPLICATION requests
+# Set to 0 for unlimited
+# Note that REPLICATION is currently an ssync only item
+# replication_concurrency = 4
+#
+# Restricts incoming REPLICATION requests to one per device,
+# replication_currency above allowing. This can help control I/O to each
+# device, but you may wish to set this to False to allow multiple REPLICATION
+# requests (up to the above replication_concurrency setting) per device.
+# replication_one_per_device = True
+#
+# Number of seconds to wait for an existing replication device lock before
+# giving up.
+# replication_lock_timeout = 15
+#
+# These next two settings control when the REPLICATION subrequest handler will
+# abort an incoming REPLICATION attempt. An abort will occur if there are at
+# least threshold number of failures and the value of failures / successes
+# exceeds the ratio. The defaults of 100 and 1.0 means that at least 100
+# failures have to occur and there have to be more failures than successes for
+# an abort to occur.
+# replication_failure_threshold = 100
+# replication_failure_ratio = 1.0
+
+[filter:healthcheck]
+use = egg:swift#healthcheck
+# An optional filesystem path, which if present, will cause the healthcheck
+# URL to return "503 Service Unavailable" with a body of "DISABLED BY FILE"
+# disable_path =
+
+[filter:recon]
+use = egg:swift#recon
+log_facility = LOG_LOCAL2
+recon_cache_path = /var/cache/swift
+recon_lock_path = /var/lock/swift
+
+[object-replicator]
+# You can override the default log routing for this app here (don't use set!):
+# log_name = object-replicator
+log_facility = LOG_LOCAL2
+# log_level = INFO
+# log_address = /dev/log
+#
+# vm_test_mode = no
+# daemonize = on
+# run_pause = 30
+concurrency = 6
+# stats_interval = 300
+#
+# The sync method to use; default is rsync but you can use ssync to try the
+# EXPERIMENTAL all-swift-code-no-rsync-callouts method. Once ssync is verified
+# as having performance comparable to, or better than, rsync, we plan to
+# deprecate rsync so we can move on with more features for replication.
+# sync_method = rsync
+#
+# max duration of a partition rsync
+# rsync_timeout = 900
+#
+# bandwidth limit for rsync in kB/s. 0 means unlimited
+# rsync_bwlimit = 0
+#
+# passed to rsync for io op timeout
+# rsync_io_timeout = 30
+#
+# node_timeout = <whatever's in the DEFAULT section or 10>
+# max duration of an http request; this is for REPLICATE finalization calls and
+# so should be longer than node_timeout
+# http_timeout = 60
+#
+# attempts to kill all workers if nothing replicates for lockup_timeout seconds
+# lockup_timeout = 1800
+#
+# The replicator also performs reclamation
+# reclaim_age = 604800
+#
+# ring_check_interval = 15
+# recon_cache_path = /var/cache/swift
+#
+# limits how long rsync error log lines are
+# 0 means to log the entire line
+# rsync_error_log_line_length = 0
+#
+# handoffs_first and handoff_delete are options for a special case
+# such as disk full in the cluster. These two options SHOULD NOT BE
+# CHANGED, except for such an extreme situations. (e.g. disks filled up
+# or are about to fill up. Anyway, DO NOT let your drives fill up)
+# handoffs_first is the flag to replicate handoffs prior to canonical
+# partitions. It allows to force syncing and deleting handoffs quickly.
+# If set to a True value(e.g. "True" or "1"), partitions
+# that are not supposed to be on the node will be replicated first.
+# handoffs_first = False
+#
+# handoff_delete is the number of replicas which are ensured in swift.
+# If the number less than the number of replicas is set, object-replicator
+# could delete local handoffs even if all replicas are not ensured in the
+# cluster. Object-replicator would remove local handoff partition directories
+# after syncing partition when the number of successful responses is greater
+# than or equal to this number. By default(auto), handoff partitions will be
+# removed  when it has successfully replicated to all the canonical nodes.
+# handoff_delete = auto
+
+[object-updater]
+# You can override the default log routing for this app here (don't use set!):
+# log_name = object-updater
+log_facility = LOG_LOCAL2
+# log_level = INFO
+# log_address = /dev/log
+#
+# interval = 300
+concurrency = 3
+# node_timeout = <whatever's in the DEFAULT section or 10>
+# slowdown will sleep that amount between objects
+# slowdown = 0.01
+#
+# recon_cache_path = /var/cache/swift
+concurrency = 3
+node_timeout = 60
+conn_timeout = 5
+
+[object-auditor]
+# You can override the default log routing for this app here (don't use set!):
+# log_name = object-auditor
+log_facility = LOG_LOCAL2
+# log_level = INFO
+# log_address = /dev/log
+#
+# You can set the disk chunk size that the auditor uses making it larger if
+# you like for more efficient local auditing of larger objects
+# disk_chunk_size = 65536
+# files_per_second = 20
+# concurrency = 1
+# bytes_per_second = 10000000
+# log_time = 3600
+# zero_byte_files_per_second = 50
+# recon_cache_path = /var/cache/swift
+
+# Takes a comma separated list of ints. If set, the object auditor will
+# increment a counter for every object whose size is <= to the given break
+# points and report the result after a full scan.
+# object_size_stats =
+
+# Note: Put it at the beginning of the pipleline to profile all middleware. But
+# it is safer to put this after healthcheck.
+[filter:xprofile]
+use = egg:swift#xprofile
+# This option enable you to switch profilers which should inherit from python
+# standard profiler. Currently the supported value can be 'cProfile',
+# 'eventlet.green.profile' etc.
+# profile_module = eventlet.green.profile
+#
+# This prefix will be used to combine process ID and timestamp to name the
+# profile data file.  Make sure the executing user has permission to write
+# into this path (missing path segments will be created, if necessary).
+# If you enable profiling in more than one type of daemon, you must override
+# it with an unique value like: /var/log/swift/profile/object.profile
+# log_filename_prefix = /tmp/log/swift/profile/default.profile
+#
+# the profile data will be dumped to local disk based on above naming rule
+# in this interval.
+# dump_interval = 5.0
+#
+# Be careful, this option will enable profiler to dump data into the file with
+# time stamp which means there will be lots of files piled up in the directory.
+# dump_timestamp = false
+#
+# This is the path of the URL to access the mini web UI.
+# path = /__profile__
+#
+# Clear the data when the wsgi server shutdown.
+# flush_at_shutdown = false
+#
+# unwind the iterator of applications
+# unwind = false

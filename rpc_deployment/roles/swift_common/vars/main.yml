@@ -1,0 +1,22 @@
+---
+swift_repo: https://github.com/openstack/swift.git
+swift_repo_tag: master
+
+swift_common_packages:
+  debian:
+    - curl
+    - python-pip
+    - rsync
+    - openssh-server
+    - git-core
+    - python-setuptools
+    - python-dev
+    - gcc
+
+  redhat:
+    - curl
+    - gcc
+    - rsync
+    - git-core
+    - python-setuptools
+    - python-pip

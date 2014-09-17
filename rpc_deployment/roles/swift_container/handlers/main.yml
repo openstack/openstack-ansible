@@ -1,0 +1,12 @@
+---
+- name: (re)start container server
+  command: swift-init container-server restart
+
+- name: (re)start container auditor
+  command: swift-init container-auditor restart
+
+- name: (re)start container replicator
+  command: swift-init container-replicator restart
+
+- name: (re)start container updater
+  command: swift-init container-updater restart

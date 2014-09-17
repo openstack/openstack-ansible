@@ -1,0 +1,100 @@
+---
+# This swift setup file, is used as a simple way of managing your swift
+# ring configuration. The swift_inventory binary  will generate the ansible
+# iventory file for you based of this file. Giving you one place to manage your
+# cluster.
+#
+# NOTE: The swift ansible configuration has other variables that can be tweeked,
+#       see group_vars/ and roles/*/vars/ for other areas to tweek.
+local:
+  ansible_connection=local
+
+# Swift settings are global through out the cluster.
+swift:
+  part_power: 8
+  output_directory: /tmp/swift
+  output_filename: hosts
+  user: swift
+  hash_path_suffix: changeme
+  hash_path_prefix: changeme
+  syslog_host: 10.1.1.1:514
+
+proxy:
+  memcache_servers:
+    - 127.0.0.1:11211
+  authtoken: 
+    active: true
+    delay_auth_decision: true
+    auth_version: v2.0
+    auth_host: keystone.local.lan
+    auth_port: 35357
+    auth_protocol: https
+    auth_uri: http://keystonehost:5000/
+    admin_tenant_name: service
+    admin_user: swift
+    admin_password: ADMIN
+  hosts:
+    - host: 10.0.0.1
+
+account:
+  repl_number: 3
+  hosts:
+    - host: 10.0.0.2
+      drive: /srv/disk
+      region: 0
+      zone: 0
+      weight: 100
+
+container:
+  repl_number: 3
+  hosts:
+    - host: 10.0.0.3
+      drive: /srv/disk
+      region: 0
+      zone: 0
+      weight: 100
+
+storage_policies:
+  default: gold
+  policies:
+    - name: gold
+      index: 0
+      type: replication
+      repl_number: 3
+      hosts:
+        - host: 10.0.0.4
+          drive: /srv/disk
+          region: 0
+          zone: 0
+          weight: 100
+        - host: 10.0.0.5
+          drive: /srv/disk
+          region: 0
+          zone: 1
+          weight: 100
+        - host: 10.0.0.6
+          drive: /srv/disk
+          region: 1
+          zone: 0
+          weight: 50
+        - host: 10.0.0.7
+          drive: /srv/disk
+          region: 1
+          zone: 1
+          weight: 50
+    - name: silver
+      index: 1
+      type: replication
+      repl_number: 2
+      depricated: True
+      hosts:
+        - host: 10.0.0.4
+          drive: /srv/disk
+          region: 0
+          zone: 0
+          weight: 100
+        - host: 10.0.0.5
+          drive: /srv/disk
+          region: 0
+          zone: 1
+          weight: 100

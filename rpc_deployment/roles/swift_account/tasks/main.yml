@@ -1,0 +1,20 @@
+---
+- name: "swift account server configuration"
+  template: src=account-server.conf.j2 dest=/etc/swfit/account-server.conf.j2 owner={{ swift }} mode=0644
+  notfiy: 
+    - (re)start account server
+    - (re)start account auditor
+    - (re)start account replicator
+    - (re)start account reaper
+
+- name: "Set account server to start at boot"
+  cron: special_time=reboot job="swift-init account-server start"
+
+- name: "Set account auditor to start at boot"
+  cron: special_time=reboot job="swift-init account-auditor start"
+
+- name: "Set account replicator to start at boot"
+  cron: special_time=reboot job="swift-init account-replicator start"
+
+- name: "Set account reaper to start at boot"
+  cron: special_time=reboot job="swift-init account-reaper start"

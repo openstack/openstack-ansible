@@ -1,0 +1,194 @@
+[DEFAULT]
+bind_ip = {{ inventory_hostname }}
+bind_port = 6002
+# bind_timeout = 30
+# backlog = 4096
+user = {{ user }}
+# swift_dir = /etc/swift
+devices = {{ drive }}
+# mount_check = true
+# disable_fallocate = false
+#
+# Use an integer to override the number of pre-forked processes that will
+# accept connections.
+# workers = auto
+#
+# Maximum concurrent requests per worker
+# max_clients = 1024
+#
+# You can specify default log routing here if you want:
+# log_name = swift
+# log_facility = LOG_LOCAL0
+# log_level = INFO
+# log_address = /dev/log
+# The following caps the length of log lines to the value given; no limit if
+# set to 0, the default.
+# log_max_line_length = 0
+#
+# comma separated list of functions to call to setup custom log handlers.
+# functions get passed: conf, name, log_to_console, log_route, fmt, logger,
+# adapted_logger
+# log_custom_handlers =
+#
+# If set, log_udp_host will override log_address
+# log_udp_host =
+# log_udp_port = 514
+#
+# You can enable StatsD logging here:
+# log_statsd_host = localhost
+# log_statsd_port = 8125
+# log_statsd_default_sample_rate = 1.0
+# log_statsd_sample_rate_factor = 1.0
+# log_statsd_metric_prefix =
+#
+# If you don't mind the extra disk space usage in overhead, you can turn this
+# on to preallocate disk space with SQLite databases to decrease fragmentation.
+# db_preallocation = off
+#
+# eventlet_debug = false
+#
+# You can set fallocate_reserve to the number of bytes you'd like fallocate to
+# reserve, whether there is space for the given file size or not.
+# fallocate_reserve = 0
+
+[pipeline:main]
+pipeline = healthcheck recon account-server
+
+[app:account-server]
+use = egg:swift#account
+log_facility = LOG_LOCAL1
+# You can override the default log routing for this app here:
+# set log_name = account-server
+# set log_facility = LOG_LOCAL0
+# set log_level = INFO
+# set log_requests = true
+# set log_address = /dev/log
+#
+# auto_create_account_prefix = .
+#
+# Configure parameter for creating specific server
+# To handle all verbs, including replication verbs, do not specify
+# "replication_server" (this is the default). To only handle replication,
+# set to a True value (e.g. "True" or "1"). To handle only non-replication
+# verbs, set to "False". Unless you have a separate replication network, you
+# should not specify any value for "replication_server".
+# replication_server = false
+
+[filter:healthcheck]
+use = egg:swift#healthcheck
+# An optional filesystem path, which if present, will cause the healthcheck
+# URL to return "503 Service Unavailable" with a body of "DISABLED BY FILE"
+# disable_path =
+
+[filter:recon]
+use = egg:swift#recon
+log_facility = LOG_LOCAL2
+recon_cache_path = /var/cache/swift
+recon_lock_path = /var/lock/swift
+
+[account-replicator]
+# You can override the default log routing for this app here (don't use set!):
+# log_name = account-replicator
+log_facility = LOG_LOCAL2
+# log_level = INFO
+# log_address = /dev/log
+#
+# vm_test_mode = no
+per_diff = 10000
+# max_diffs = 100
+# concurrency = 8
+# interval = 30
+#
+# How long without an error before a node's error count is reset. This will
+# also be how long before a node is reenabled after suppression is triggered.
+# error_suppression_interval = 60
+#
+# How many errors can accumulate before a node is temporarily ignored.
+# error_suppression_limit = 10
+#
+# node_timeout = 10
+# conn_timeout = 0.5
+#
+# The replicator also performs reclamation
+# reclaim_age = 604800
+#
+# Time in seconds to wait between replication passes
+# Note: if the parameter 'interval' is defined then it will be used in place
+# of run_pause.
+# run_pause = 30
+#
+# recon_cache_path = /var/cache/swift
+
+[account-auditor]
+# You can override the default log routing for this app here (don't use set!):
+# log_name = account-auditor
+log_facility = LOG_LOCAL2
+# log_level = INFO
+# log_address = /dev/log
+#
+# Will audit each account at most once per interval
+# interval = 1800
+#
+# log_facility = LOG_LOCAL0
+# log_level = INFO
+# accounts_per_second = 200
+# recon_cache_path = /var/cache/swift
+
+[account-reaper]
+# You can override the default log routing for this app here (don't use set!):
+# log_name = account-reaper
+log_facility = LOG_LOCAL2
+# log_level = INFO
+# log_address = /dev/log
+#
+# concurrency = 25
+# interval = 3600
+# node_timeout = 10
+# conn_timeout = 0.5
+#
+# Normally, the reaper begins deleting account information for deleted accounts
+# immediately; you can set this to delay its work however. The value is in
+# seconds; 2592000 = 30 days for example.
+delay_reaping = 604800
+#
+# If the account fails to be be reaped due to a persistent error, the
+# account reaper will log a message such as:
+#     Account <name> has not been reaped since <date>
+# You can search logs for this message if space is not being reclaimed
+# after you delete account(s).
+# Default is 2592000 seconds (30 days). This is in addition to any time
+# requested by delay_reaping.
+# reap_warn_after = 2592000
+
+# Note: Put it at the beginning of the pipleline to profile all middleware. But
+# it is safer to put this after healthcheck.
+[filter:xprofile]
+use = egg:swift#xprofile
+# This option enable you to switch profilers which should inherit from python
+# standard profiler. Currently the supported value can be 'cProfile',
+# 'eventlet.green.profile' etc.
+# profile_module = eventlet.green.profile
+#
+# This prefix will be used to combine process ID and timestamp to name the
+# profile data file.  Make sure the executing user has permission to write
+# into this path (missing path segments will be created, if necessary).
+# If you enable profiling in more than one type of daemon, you must override
+# it with an unique value like: /var/log/swift/profile/account.profile
+# log_filename_prefix = /tmp/log/swift/profile/default.profile
+#
+# the profile data will be dumped to local disk based on above naming rule
+# in this interval.
+# dump_interval = 5.0
+#
+# Be careful, this option will enable profiler to dump data into the file with
+# time stamp which means there will be lots of files piled up in the directory.
+# dump_timestamp = false
+#
+# This is the path of the URL to access the mini web UI.
+# path = /__profile__
+#
+# Clear the data when the wsgi server shutdown.
+# flush_at_shutdown = false
+#
+# unwind the iterator of applications
+# unwind = false

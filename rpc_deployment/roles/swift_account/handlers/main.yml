@@ -1,0 +1,12 @@
+---
+- name: (re)start account server
+  command: swift-init account-server restart
+
+- name: (re)start account auditor
+  command: swift-init account-auditor restart
+
+- name: (re)start account replicator
+  command: swift-init account-replicator restart
+
+- name: (re)start account reaper
+  command: swift-init account-reaper restart

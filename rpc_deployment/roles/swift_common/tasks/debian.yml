@@ -1,0 +1,4 @@
+---
+- name: "Install Debian/Ubuntu common swift packages"
+  apt: pkg={{ item }} state=installed update_cache=yes
+  with_items: ${swift_common_packages.debian}

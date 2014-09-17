@@ -1,0 +1,20 @@
+---
+- name: "swift container server configuration"
+  template: src=container-server.conf.j2 dest=/etc/swfit/container-server.conf.j2 owner={{ swift }} mode=0644
+  notfiy: 
+    - (re)start container server
+    - (re)start container auditor
+    - (re)start container replicator
+    - (re)start container updater
+
+- name: "Set container server to start at boot"
+  cron: special_time=reboot job="swift-init container-server start"
+
+- name: "Set container auditor to start at boot"
+  cron: special_time=reboot job="swift-init container-auditor start"
+
+- name: "Set container replicator to start at boot"
+  cron: special_time=reboot job="swift-init container-replicator start"
+
+- name: "Set container updater to start at boot"
+  cron: special_time=reboot job="swift-init container-updater start"

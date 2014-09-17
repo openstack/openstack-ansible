@@ -1,0 +1,6 @@
+---
+- name: "Install swift dependencies"
+  pip: requirements=/opt/swift/swift/requirements.txt
+
+- name: "Install swift"
+  shell: chdir=/opt/swift/swift python setup.py install
