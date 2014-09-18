@@ -332,3 +332,17 @@
   user: root
   roles:
     - maas_local
+
+- hosts: hosts
+  vars:
+    check_name: disk_utilisation
+    check_details: file={{ check_name }}.py
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'percentage_disk_utilisation_sda', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["disk_utilisation_sda"] >= 90.0) { return new AlarmStatus(WARNING, "Disk utilisation for sda >= 90%"); }' }
+      - { 'name': 'percentage_disk_utilisation_sdb', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["disk_utilisation_sdb"] >= 90.0) { return new AlarmStatus(WARNING, "Disk utilisation for sdb >= 90%"); }' }
+      - { 'name': 'percentage_disk_utilisation_sdc', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["disk_utilisation_sdc"] >= 90.0) { return new AlarmStatus(WARNING, "Disk utilisation for sdc >= 90%"); }' }
+  user: root
+  roles:
+    - maas_local

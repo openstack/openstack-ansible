@@ -1,0 +1,47 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- include: cdm.yml
+  vars:
+    check_name: cpu
+    check_details: "{}"
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    agent_type: "agent.cpu"
+    alarms:
+      - { 'name': 'idle_percent_average', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["idle_percent_average"] <= 10.0) { return new AlarmStatus(WARNING, "CPU time spent idle has dropped to <= 10%"); }' }
+  user: root
+
+- include: cdm.yml
+  vars:
+    check_name: filesystem
+    check_details: "target=/"
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    agent_type: "agent.filesystem"
+    alarms:
+      - { 'name': 'Disk space used on /', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (percentage(metric["used"], metric["total"]) >= 95.0) { return new AlarmStatus(WARNING, "Root filesystem is >= 95% full."); }' }
+  user: root
+
+- include: cdm.yml
+  vars:
+    check_name: memory
+    check_details: "{}"
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    agent_type: "agent.memory"
+    alarms:
+      - { 'name': 'Memory used', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (percentage(metric["actual_used"], metric["total"]) >= 95.0) { return new AlarmStatus(WARNING, "Memory is 95%+ in use."); }' }
+  user: root
