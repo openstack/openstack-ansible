@@ -21,6 +21,6 @@ repo_path: "{{ repo_package_name }}_{{ git_install_branch | replace('/', '_') }}
 git_repo: https://git.openstack.org/openstack/swift
 git_fallback_repo: https://github.com/openstack/swift
 git_dest: "/opt/{{ repo_path }}"
-git_install_branch: 8d02147d04a41477383de8e13bea6ac3fd2cade0
+git_install_branch: master
 
 pip_wheel_name: swift

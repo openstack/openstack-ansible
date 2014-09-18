@@ -19,7 +19,7 @@ repo_path: "{{ pip_wheel_name }}_{{ git_install_branch | replace('/', '_') }}"
 git_repo: "https://git.openstack.org/openstack/requirements"
 git_fallback_repo: "https://github.com/openstack/requirements"
 git_dest: "/opt/{{ repo_path }}"
-git_install_branch: c99cbdc7d3a1e5f5b29b9f1507fad2e62e09485c
+git_install_branch: master
 requirements_file: global-requirements.txt
 
 pip_wheel_name: requirements

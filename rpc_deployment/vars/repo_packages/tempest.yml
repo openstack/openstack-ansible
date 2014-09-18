@@ -21,6 +21,6 @@ repo_path: "{{ repo_package_name }}_{{ git_install_branch | replace('/', '_') }}
 git_repo: https://git.openstack.org/openstack/tempest
 git_fallback_repo: https://github.com/openstack/tempest
 git_dest: "/opt/{{ repo_path }}"
-git_install_branch: 9d7d28b66f9aa3fe1220f418cc2d13dd19984429
+git_install_branch: master
 
 pip_wheel_name: tempest
