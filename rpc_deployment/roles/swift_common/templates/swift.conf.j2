@@ -10,17 +10,17 @@ swift_hash_path_prefix = {{ hash_path_prefix }}
 
 # Storage Policies
 {% for group in groups %}
-  {% if group.startswith("storagepolicy") %}
-    {% vars = hostvars[groups[group].pop] %}
+{% if group.startswith("storagepolicy_") %}
+{% set vars = hostvars[groups[group].pop()] %}
 [storage-policy:{{ vars["index"] }}]
-name = {{ vars["policy_name"] }} 
-    {% if "depricated" in  vars %}
-depricated = {{ var["depricated"] }}
-    {% endif %}
-    {% if "default" in  vars %}
-default = {{ var["default"] }}
-    {% endif %}
-  {% endif %}
+name = {{ vars["policy_name"] }}
+{% if "depricated" in  vars %}
+depricated = {{ vars["depricated"] }}
+{% endif %}
+{% if "default" in vars and vars["default"] == vars["policy_name"] %}
+default = Yes
+{% endif %}
+{% endif %}
 {% endfor %}
 
 [swift-constraints]

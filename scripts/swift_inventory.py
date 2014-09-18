@@ -31,7 +31,7 @@ localhost ansible_connection=local
 
 CATCH_ALL_GROUPS = """
 [object:children]
-storagepolocy
+storagepolicy
 
 [swift:children]
 proxy
@@ -120,8 +120,8 @@ def main(setup, verbose=False, dry_run=False, overwrite=True):
         "part_power=%s" % (_swift['swift'].get('part_power',
                                                DEFAULT_PART_POWER)),
         "user=%s" % (_swift['swift'].get('user', 'swift')),
-        "swift_hash_path_suffix=%s" % (_swift['swift'].get("hash_path_suffix")),
-        "swift_hash_path_prefix=%s" % (_swift['swift'].get("hash_path_prefix")),
+        "hash_path_suffix=%s" % (_swift['swift'].get("hash_path_suffix")),
+        "hash_path_prefix=%s" % (_swift['swift'].get("hash_path_prefix")),
         "syslog_host=%s" % (_swift['swift'].get('syslog_host',
                                                 'localhost:514')),
     ]
