@@ -42,7 +42,7 @@ object
 [swift:vars]"""
 
 DRIVE_FORMAT = "%(host)s drive=%(drive)s region=%(region)s zone=%(zone)s "
-DRIVE_FORMAT += "weight=%(weight)s"
+DRIVE_FORMAT += "weight=%(weight)s extra_data=%(extra_data)s"
 
 DEFAULT_AUTHTOKEN_SETTINGS = {
     'auth_version': 'v2.0',
@@ -53,6 +53,18 @@ DEFAULT_AUTHTOKEN_SETTINGS = {
     'admin_user': 'swift',
     'admin_password': 'ADMIN',
 }
+
+DATA_ORDER = [
+    NAME,
+    INDEX,
+    DEPRICATED,
+    TYPE,
+] = [
+    'name',
+    'index',
+    'depricated',
+    'type',
+]
 
 
 def main(setup, verbose=False, dry_run=False, overwrite=True):
@@ -93,24 +105,35 @@ def main(setup, verbose=False, dry_run=False, overwrite=True):
             fd.write(data)
             fd.flush()
 
-    def _get_drive(drive):
+    def _get_drive(drive, extra_data={}):
         _drive = {
             'drive': DEFAULT_DRIVE,
             'region': DEFAULT_REGION,
             'zone': DEFAULT_ZONE,
-            'weight': DEFAULT_WEIGHT}
+            'weight': DEFAULT_WEIGHT,
+            'extra_data': ''}
 
         if "drive" not in drive:
             drive["drive"] = DEFAULT_DRIVE
 
+        if extra_data:
+            data_str = ":".join([str(extra_data.get(i, '')) for i in
+                                 DATA_ORDER])
+        else:
+            data_str = ""
+
         key = "%(host)s%(drive)s" % drive
         if key in _drives:
+            if not _drives[key]['extra_data'] and extra_data:
+                _drives[key]['extra_data'] = data_str
+            elif _drives[key]['extra_data'] and extra_data:
+                _drives[key]['extra_data'] += ";%s" % (data_str)
             return _drives[key]
         else:
             _drive.update(drive)
-            data = DRIVE_FORMAT % _drive
-            _drives[key] = data
-            return data
+            _drive['extra_data'] = data_str
+            _drives[key] = _drive
+            return _drive
 
     # First attempt to get swift settings
     if not _section_defined("swift"):
@@ -185,7 +208,7 @@ def main(setup, verbose=False, dry_run=False, overwrite=True):
 
     for account in _swift["account"]["hosts"]:
         data = _get_drive(account)
-        _write_to_file(output_fd, data)
+        _write_to_file(output_fd, DRIVE_FORMAT % data)
 
     _write_to_file(output_fd, "\n[account:vars]")
     repl_num = _swift["account"].get("repl_number", DEFAULT_REPL_NUM)
@@ -199,7 +222,7 @@ def main(setup, verbose=False, dry_run=False, overwrite=True):
 
     for container in _swift["container"]["hosts"]:
         data = _get_drive(container)
-        _write_to_file(output_fd, data)
+        _write_to_file(output_fd, DRIVE_FORMAT % data)
 
     _write_to_file(output_fd, "\n[container:vars]")
     repl_num = _swift["container"].get("repl_number", DEFAULT_REPL_NUM)
@@ -215,6 +238,7 @@ def main(setup, verbose=False, dry_run=False, overwrite=True):
         print("ERROR: No storage policies defined")
         return 4
 
+    policy_hosts = {}
     for policy in _swift["storage_policies"]["policies"]:
         if policy["name"] in _storage_policies:
             print("ERROR: Storage policy '%s' already defined" % policy["name"])
@@ -228,32 +252,35 @@ def main(setup, verbose=False, dry_run=False, overwrite=True):
         _storage_policies[policy['name']] = "storagepolicy_%(name)s" % policy
         _storage_policies_idx[policy['index']] = policy["name"]
 
-        _write_to_file(output_fd,
-                       "\n[%s]" % (_storage_policies[policy['name']]))
-
+        policy_type = policy.get("type", 'replication')
+        _host_data = {
+            NAME: policy['name'],
+            INDEX: policy['index'],
+            TYPE: policy_type,
+            DEPRICATED: policy.get("depricated", False),
+        }
         # print the storage policy hosts.
         for drive in policy.get("hosts", []):
-            data = _get_drive(drive)
-            _write_to_file(output_fd, data)
+            _get_drive(drive, _host_data)
 
+        policy_hosts[policy['name']] = policy.get("hosts")
         _write_to_file(output_fd,
                        "\n[%s:vars]" % (_storage_policies[policy['name']]))
-        _write_to_file(output_fd, "index=%d" % (policy['index']))
-        _write_to_file(output_fd, "policy_name=%s" % (policy['name']))
-        policy_type = policy.get("type", 'replication')
-        _write_to_file(output_fd, "type=%s" % (policy_type))
-
-        depricated = policy.get("depricated", False)
-        if depricated:
-            _write_to_file(output_fd, "depricated=True")
-
         default = policy.get("default", False)
         if default:
-            _write_to_file(output_fd, "default=True")
+            _write_to_file(output_fd, "default=%s" % (policy['name']))
 
         if policy_type == 'replication':
             repl_num = policy.get("repl_number", DEFAULT_REPL_NUM)
             _write_to_file(output_fd, "repl_num=%d" % (repl_num))
+
+    # now write out the drives.
+    for policy in _swift["storage_policies"]["policies"]:
+        _write_to_file(output_fd,
+                       "\n[%s]" % (_storage_policies[policy['name']]))
+        for drive in policy_hosts[policy['name']]:
+            data = _get_drive(drive)
+            _write_to_file(output_fd, DRIVE_FORMAT % data)
 
     # Write out the storage policy catch all group
     _write_to_file(output_fd, "\n[storagepolicy:children]")

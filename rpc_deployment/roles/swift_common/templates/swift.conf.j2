@@ -10,19 +10,24 @@ swift_hash_path_prefix = {{ hash_path_prefix }}
 
 # Storage Policies
 {% for group in groups %}
-{% if group.startswith("storagepolicy_") %}
-{% set vars = hostvars[groups[group].pop()] %}
-[storage-policy:{{ vars["index"] }}]
-name = {{ vars["policy_name"] }}
-{% if "depricated" in  vars %}
-depricated = {{ vars["depricated"] }}
-{% endif %}
-{% if "default" in vars and vars["default"] == vars["policy_name"] %}
+{%   if group.startswith("storagepolicy_") %}
+{%     set vars = hostvars[groups[group].pop()] %}
+{%     for proxy_settings in vars["extra_data"].split(';') %}
+{%       set items = proxy_settings.split(':') %}
+{%       if group.endswith(items[0]) %}
+[storage-policy:{{ items[1] }}]
+name = {{ items[0] }}
+{%         if items[2] == 'True' %}
+depricated = Yes
+{%         endif %}
+{%         if items[0] == vars["default"] %}
 default = Yes
-{% endif %}
-{% endif %}
-{% endfor %}
+{%         endif %}
 
+{%       endif %}
+{%     endfor %}
+{%   endif %}
+{% endfor %}
 [swift-constraints]
 
 # max_file_size is the largest "normal" object that can be saved in
