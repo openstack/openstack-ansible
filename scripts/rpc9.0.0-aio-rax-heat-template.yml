@@ -53,7 +53,7 @@ outputs:
     value: secrete
 resources:
   RPCAIO:
-    type: OS::Nova::Server
+    type: "Rackspace::Cloud::Server"
     properties:
       flavor: { get_param: flavor_name }
       image: { get_param: image_name }
