@@ -22,6 +22,9 @@
     - Install swift dependencies
     - Install swift
 
+- name: "Setup swift.conf"
+  template: src=swift.conf.j2 dest=/etc/swift/swift.conf owner={{ swift }} mode=0644
+
 - name: "Swift directory"
   file: path=/etc/swift owner={{ user }} group={{ user }} state=directory 
 
@@ -30,5 +33,3 @@
 
 - name: "Swift log directory"
   file: path=/var/log/swift owner={{ user }} group=adm state=directory
-
-
