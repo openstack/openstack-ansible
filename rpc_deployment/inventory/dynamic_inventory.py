@@ -435,7 +435,7 @@ def _add_additional_networks(key, inventory, ip_q, k_name, netmask):
     """
     base_hosts = inventory['_meta']['hostvars']
     addr_name = '%s_address' % k_name
-    lookup = inventory[key]
+    lookup = inventory.get(key, list())
 
     if 'children' in lookup and lookup['children']:
         for group in lookup['children']:
