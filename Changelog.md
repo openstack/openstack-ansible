@@ -1,5 +1,5 @@
 # Changelog
 
-## 9.0.0rc3 - 2014-08-xx
+## 9.0.0 - 2014-09-25
 
-- Added Changelog
+- Initial Release
