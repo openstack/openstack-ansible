@@ -47,8 +47,6 @@
     state: "link"
   with_items:
     - { src: "/etc/horizon/local_settings.py", dest: "{{ install_lib_dir }}/openstack_dashboard/local/local_settings.py" }
-    - { src: "{{ install_lib_dir }}/horizon/static/bootstrap/js", dest: "{{ install_lib_dir }}/openstack_dashboard/static/bootstrap/js" }
-    - { src: "{{ install_lib_dir }}/horizon/static/horizon", dest: "{{ install_lib_dir }}/openstack_dashboard/static/horizon" }
 
 - name: Set horizon permissions
   file:
@@ -60,3 +58,4 @@
   with_items:
     - "{{ install_lib_dir }}/horizon"
     - "{{ install_lib_dir }}/openstack_dashboard"
+    - "{{ install_lib_dir }}/static"
