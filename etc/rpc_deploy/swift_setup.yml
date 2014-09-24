@@ -19,6 +19,28 @@ swift:
   hash_path_prefix: changeme
   syslog_host: 10.1.1.1:514
 
+# Global hosts
+# Hosts can be defined in the sections below or here, the advantage of
+# defining them here is that they can be reused in multiple sections below.
+#
+# When need to reference a global host use the form:
+#   - name: <host>/<drive>
+hosts:
+  - host: 10.0.0.4
+    drive: sda
+    drives: /srv/disk
+    region: 0
+    zone: 0
+    weight: 100
+    repl_ip: 192.168.0.4
+    repl_port: 55555
+  - host: 10.0.0.5
+    drive: sda
+    drives: /srv/disk
+    region: 0
+    zone: 1
+    weight: 100
+
 proxy:
   memcache_servers:
     - 127.0.0.1:11211
@@ -38,47 +60,44 @@ proxy:
 
 account:
   repl_number: 3
+  min_part_hours: 1
+  port: 6002
   hosts:
     - host: 10.0.0.2
-      drive: /srv/disk
+      drive: sdba
       region: 0
       zone: 0
       weight: 100
 
 container:
   repl_number: 3
+  port: 6001
   hosts:
     - host: 10.0.0.3
-      drive: /srv/disk
+      drive: sda
       region: 0
       zone: 0
       weight: 100
 
 storage_policies:
   default: gold
+  port: 6000
   policies:
     - name: gold
       index: 0
       type: replication
       repl_number: 3
+      min_part_hours: 1
       hosts:
-        - host: 10.0.0.4
-          drive: /srv/disk
-          region: 0
-          zone: 0
-          weight: 100
-        - host: 10.0.0.5
-          drive: /srv/disk
-          region: 0
-          zone: 1
-          weight: 100
+        - name: 10.0.0.4/sda
+        - name: 10.0.0.5/sda
         - host: 10.0.0.6
-          drive: /srv/disk
+          drive: sdb
           region: 1
           zone: 0
           weight: 50
         - host: 10.0.0.7
-          drive: /srv/disk
+          drive: sdb
           region: 1
           zone: 1
           weight: 50
@@ -88,13 +107,5 @@ storage_policies:
       repl_number: 2
       depricated: True
       hosts:
-        - host: 10.0.0.4
-          drive: /srv/disk
-          region: 0
-          zone: 0
-          weight: 100
-        - host: 10.0.0.5
-          drive: /srv/disk
-          region: 0
-          zone: 1
-          weight: 100
+        - name: 10.0.0.4/sda
+        - name: 10.0.0.5/sda

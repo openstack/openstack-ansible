@@ -16,7 +16,8 @@ DEFAULT_REPL_NUM = 3
 DEFAULT_REGION = 0
 DEFAULT_ZONE = 0
 DEFAULT_WEIGHT = 100
-DEFAULT_DRIVE = "/srv/disk"
+DEFAULT_DRIVE = "sda"
+DEFAULT_DRIVES = "/srv/disk"
 DEFAULT_OUTPUT_DIR = "/etc/ansible"
 DEFAULT_OUTPUT_FILENAME = "hosts"
 
@@ -42,7 +43,7 @@ object
 [swift:vars]"""
 
 DRIVE_FORMAT = "%(host)s drive=%(drive)s region=%(region)s zone=%(zone)s "
-DRIVE_FORMAT += "weight=%(weight)s extra_data=%(extra_data)s"
+DRIVE_FORMAT += "weight=%(weight)s drives=%(drives)s extra_data=%(extra_data)s"
 
 DEFAULT_AUTHTOKEN_SETTINGS = {
     'auth_version': 'v2.0',
@@ -65,6 +66,10 @@ DATA_ORDER = [
     'depricated',
     'type',
 ]
+
+
+class DriveException(Exception):
+    pass
 
 
 def main(setup, verbose=False, dry_run=False, overwrite=True):
@@ -106,23 +111,31 @@ def main(setup, verbose=False, dry_run=False, overwrite=True):
             fd.flush()
 
     def _get_drive(drive, extra_data={}):
-        _drive = {
-            'drive': DEFAULT_DRIVE,
-            'region': DEFAULT_REGION,
-            'zone': DEFAULT_ZONE,
-            'weight': DEFAULT_WEIGHT,
-            'extra_data': ''}
+        if 'name' in drive:
+            # We are dealing with a global host reference
+            key = drive['name']
+            if key not in _drives:
+                raise DriveException("Drive referenced doesn't exist")
+        else:
+            # Not a referenced host.
+            _drive = {
+                'drive': DEFAULT_DRIVE,
+                'region': DEFAULT_REGION,
+                'zone': DEFAULT_ZONE,
+                'weight': DEFAULT_WEIGHT,
+                'drives': DEFAULT_DRIVES,
+                'extra_data': ''}
 
-        if "drive" not in drive:
-            drive["drive"] = DEFAULT_DRIVE
+            if "drive" not in drive:
+                drive["drive"] = DEFAULT_DRIVE
+
+            key = "%(host)s/%(drive)s" % drive
 
         if extra_data:
             data_str = ":".join([str(extra_data.get(i, '')) for i in
                                  DATA_ORDER])
         else:
             data_str = ""
-
-        key = "%(host)s%(drive)s" % drive
         if key in _drives:
             if not _drives[key]['extra_data'] and extra_data:
                 _drives[key]['extra_data'] = data_str
@@ -160,6 +173,11 @@ def main(setup, verbose=False, dry_run=False, overwrite=True):
 
     n = datetime.datetime.now()
     _write_to_file(output_fd, HEADER % (__file__, VERSION, n.ctime()))
+
+    # Global hosts
+    if _section_defined("hosts"):
+        for host in _swift["hosts"]:
+            _get_drive(host)
 
     if not _section_defined("proxy"):
         return RETURN_NOT_DEFINED
@@ -213,6 +231,8 @@ def main(setup, verbose=False, dry_run=False, overwrite=True):
     _write_to_file(output_fd, "\n[account:vars]")
     repl_num = _swift["account"].get("repl_number", DEFAULT_REPL_NUM)
     _write_to_file(output_fd, "repl_number=%d" % (repl_num))
+    port = _swift["account"].get("port", 6002)
+    _write_to_file(output_fd, "account_server_port=%d" % (port))
 
     # Container section
     _write_to_file(output_fd, "\n[container]")
@@ -227,6 +247,8 @@ def main(setup, verbose=False, dry_run=False, overwrite=True):
     _write_to_file(output_fd, "\n[container:vars]")
     repl_num = _swift["container"].get("repl_number", DEFAULT_REPL_NUM)
     _write_to_file(output_fd, "repl_number=%d" % (repl_num))
+    port = _swift["container"].get("port", 6001)
+    _write_to_file(output_fd, "container_server_port=%d" % (port))
 
     # Objects / Storage polices
     _storage_policies = {}
@@ -298,6 +320,8 @@ def main(setup, verbose=False, dry_run=False, overwrite=True):
         else:
             print("ERROR: Default storage policy '%s' doesn't exist",
                   default_sp)
+    port = _swift["storage_policies"].get("port", 6000)
+    _write_to_file(output_fd, "object_server_port=%d" % (port))
 
     # Write out the object and swift catchall groups
     _write_to_file(output_fd, CATCH_ALL_GROUPS)

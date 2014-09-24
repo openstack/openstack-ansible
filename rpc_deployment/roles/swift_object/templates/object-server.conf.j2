@@ -1,11 +1,11 @@
 [DEFAULT]
 bind_ip = {{ inverntory_host }}
-bind_port = 6000
+bind_port = {{ object_server_port }}
 # bind_timeout = 30
 # backlog = 4096
 user = {{ user }}
 swift_dir = /etc/swift
-devices = {{ drive }}
+devices = {{ drives }}
 # mount_check = true
 # disable_fallocate = false
 # expiring_objects_container_divisor = 86400

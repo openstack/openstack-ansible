@@ -1,11 +1,11 @@
 [DEFAULT]
 bind_ip = {{ inventory_hostname }}
-bind_port = 6002
+bind_port = {{ account_server_port }}
 # bind_timeout = 30
 # backlog = 4096
 user = {{ user }}
 # swift_dir = /etc/swift
-devices = {{ drive }}
+devices = {{ drives }}
 # mount_check = true
 # disable_fallocate = false
 #
