@@ -1,0 +1,23 @@
+---
+- hosts: local
+  user: root
+  roles:
+    - swift_common
+
+- hosts: local
+  user: root
+  tasks:
+    - name: "make sure rings directory exists"
+      file: state=directory path=/etc/swift/rings/ owner=root group=root mode=0755
+    - name: "build rings"
+      command: /usr/bin/python /etc/ansible/scripts/swift_rings.py -s /etc/ansible/swift_setup.yml
+      args:
+        chdir: /etc/swift/rings/
+
+- hosts: swift
+  user: root
+  tasks:
+    - name: "Make sure /etc/swift exists"
+      file: state=directory path=/etc/swift/ mode=0755
+    - name: "Copy the rings over"
+      copy: src=/etc/swift/rings/ dest=/etc/swift/ mode=644

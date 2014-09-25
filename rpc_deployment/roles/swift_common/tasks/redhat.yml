@@ -2,4 +2,4 @@
 
 - name: "install Redhat/CentOS common swift packages"
   yum: pkg={{ item }} state=installed 
-  with_items: ${swift_common_packages.redhat}
+  with_items: "{{ swift_common_packages.redhat }}"

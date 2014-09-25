@@ -39,6 +39,7 @@ proxy
 account
 container
 object
+local
 
 [swift:vars]"""
 

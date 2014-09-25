@@ -1,4 +1,5 @@
 ---
+user: swift
 swift_repo: https://github.com/openstack/swift.git
 swift_repo_tag: master
 
@@ -12,6 +13,7 @@ swift_common_packages:
     - python-setuptools
     - python-dev
     - gcc
+    - libffi-dev
 
   redhat:
     - curl
