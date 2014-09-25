@@ -1,20 +1,36 @@
 ---
 - name: "swift container server configuration"
-  template: src=container-server.conf.j2 dest=/etc/swift/container-server.conf.j2 owner={{ swift }} mode=0644
-  notfiy: 
-    - (re)start container server
-    - (re)start container auditor
-    - (re)start container replicator
-    - (re)start container updater
+  template: >
+    src="container-server.conf.j2"
+    dest="/etc/swift/container-server.conf"
+    owner={{ system_user }}
+    mode=0644
+  notify:
+    - Restart container server
+    - Restart container auditor
+    - Restart container replicator
+    - Restart container updater
 
 - name: "Set container server to start at boot"
-  cron: special_time=reboot job="swift-init container-server start"
+  cron: >
+    name="Restart container-server on boot"
+    special_time=reboot
+    job="swift-init container-server start"
 
 - name: "Set container auditor to start at boot"
-  cron: special_time=reboot job="swift-init container-auditor start"
+  cron: >
+    name="Restart container-auditor at boot"
+    special_time=reboot
+    job="swift-init container-auditor start"
 
 - name: "Set container replicator to start at boot"
-  cron: special_time=reboot job="swift-init container-replicator start"
+  cron: >
+    name="Restart container-replicator at boot"
+    special_time=reboot
+    job="swift-init container-replicator start"
 
 - name: "Set container updater to start at boot"
-  cron: special_time=reboot job="swift-init container-updater start"
+  cron: >
+    name="Restart container-updater at boot"
+    special_time=reboot
+    job="swift-init container-updater start"

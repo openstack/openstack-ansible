@@ -119,13 +119,13 @@ component_skel:
   swift_proxy:
     belongs_to:
     - swift_all
-  swift_account:
+  swift_acc:
     belongs_to:
     - swift_all
-  swift_object:
+  swift_obj:
     belongs_to:
     - swift_all
-  swift_container:
+  swift_cont:
     belongs_to:
     - swift_all
 container_skel:
@@ -262,6 +262,7 @@ container_skel:
     - storage_containers
     - log_containers
     - network_containers
+    - swift_containers
     contains:
     - rsyslog
   utility_container:
@@ -274,24 +275,24 @@ container_skel:
     - infra_containers
     contains:
     - swift_proxy
-  swift_account_container:
+  swift_acc_container:
     is_metal: true
     belongs_to: 
     - swift_containers
     contains:
-    - swift_account
-  swift_object_container:
+    - swift_acc
+  swift_obj_container:
     is_metal: true
     belongs_to:
     - swift_containers
     contains:
-    - swift_object
-  swift_container_container:
+    - swift_obj
+  swift_cont_container:
     is_metal: true
     belongs_to:
     - swift_containers
     contains:
-    - swift_container
+    - swift_cont
 physical_skel:
   network_containers:
     belongs_to:

@@ -15,7 +15,7 @@
 
 # This is the md5 of the environment file
 # this will ensure consistency when deploying.
-environment_version: 16faeb1250d4119c507f18f3f74e0653
+environment_version: 21de6ac181f7f9d5d950709928ccded8
 
 # User defined CIDR used for containers
 # Global cidr/s used for everything.
@@ -157,3 +157,23 @@ log_hosts:
 network_hosts:
   network1:
     ip: 172.29.236.108
+
+# User defined Object Storage Hosts - this is not a required group
+# object_storage1:
+#   ip: 172.29.236.108
+#   container_vars:
+#     swift_vars:
+#       policy: gold
+#       region: 0
+#       zone: 0
+#       drives: /srv/node
+#
+# object_storage2:
+#   ip: 172.29.236.109
+#   container_vars:
+#     swift_vars:
+#       policy: silver
+#       region: 0
+#       zone: 1
+#       drives: /srv/node
+#

@@ -1,40 +1,7 @@
 ---
-#- name: "Setup hosts file"
-#  lineinfile: dest=/etc/hosts regexp='.*{{ item }}$' line="{{ hostvars[item].ansible_default_ipv4.address }} {{item}}" state=present
-#  when: hostvars[item].ansible_default_ipv4.address is defined
-#  with_items: groups['all']
-
-#- name: "Install Debian/Ubuntu common swift packages"
-#  apt: pkg={{ item }} state=installed update_cache=yes
-#  with_items: ${container_packages}
-
-- name: "Create a swift Group"
-  group: name={{ system_group }} state=present system=yes
-
-- name: "Create a swift user"
-  user: name={{ system_user }} state=present shell=/bin/false home=/opt/swift system=yes
-
 - name: "Drop swift.conf temaplte"
   template: >
     src="swift.conf.j2"
     dest="/etc/swift/swift.conf"
-    owner={{ service_admin_username }}
+    owner={{ system_user }}
     mode=0644
-
-#- name: "Checkout git repo"
-#  git: repo={{ swift_repo }} version={{ git_tag }} dest=/opt/swift/swift update=yes
-#  notifiy:
-#    - Install swift dependencies
-#    - Install swift
-
-#- name: "Swift directory"
-#  file: path=/etc/swift owner={{ user }} group={{ user }} state=directory 
-
-#- name: "Swift lock directory"
-#  file: path=/var/lock/swift owner={{ user }} group={{ user }} state=directory 
-
-#- name: "Swift log directory"
-#  file: path=/var/log/swift owner={{ user }} group=adm state=directory
-
-- name: "Setup swift.conf"
-  template: src=swift.conf.j2 dest=/etc/swift/swift.conf owner={{ user }} mode=0644
