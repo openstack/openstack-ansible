@@ -116,6 +116,18 @@ component_skel:
   utility:
     belongs_to:
     - utility_all
+  swift_proxy:
+    belongs_to:
+    - swift_all
+  swift_account:
+    belongs_to:
+    - swift_all
+  swift_object:
+    belongs_to:
+    - swift_all
+  swift_container:
+    belongs_to:
+    - swift_all
 container_skel:
   cinder_api_container:
     belongs_to:
@@ -257,6 +269,29 @@ container_skel:
     - infra_containers
     contains:
     - utility
+  swift_proxy_container:
+    belongs_to:
+    - infra_containers
+    contains:
+    - swift_proxy
+  swift_account_container:
+    is_metal: true
+    belongs_to: 
+    - swift_containers
+    contains:
+    - swift_account
+  swift_object_container:
+    is_metal: true
+    belongs_to:
+    - swift_containers
+    contains:
+    - swift_object
+  swift_container_container:
+    is_metal: true
+    belongs_to:
+    - swift_containers
+    contains:
+    - swift_container
 physical_skel:
   network_containers:
     belongs_to:
@@ -286,5 +321,11 @@ physical_skel:
     belongs_to:
     - all_containers
   storage_hosts:
+    belongs_to:
+    - hosts
+  swift_containers:
+    belongs_to:
+    - all_containers
+  swift_hosts:
     belongs_to:
     - hosts

@@ -1,0 +1,97 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# The variables file used by the playbooks in the Cinder-api group.
+# These don't have to be explicitly imported by vars_files: they are autopopulated.
+
+## Service Name
+service_name: swift
+
+# Verbosity Options
+debug: False
+verbose: True
+
+# only used when the lxc vg is present on the target
+container_lvm_fstype: ext4
+container_lvm_fssize: 5GB
+
+## General configuration
+## Set this in rpc_user_config.yml UNLESS you want all hosts to use the same
+## Cinder backends.  See the rpc_user_config example for more on how this is done.
+# cinder_backends:
+#   lvm:
+#     volume_group: cinder-volumes
+#     driver: cinder.volume.drivers.lvm.LVMISCSIDriver
+#     backend_name: LVM_iSCSI
+
+swift_proxy_port: "{{ swift_proxy_port|default('8080') }}"
+swift_object_port: "{{ swift_object_port|default('6000') }}"
+swift_container_port: "{{ swift_container_port|default('6001') }}"
+swift_account_port: "{{ swift_account_port|default('6002') }}"
+
+## DB
+container_mysql_user: swift
+container_mysql_password: "{{ swift_container_mysql_password }}"
+container_database: swift
+
+## Cinder Auth
+service_admin_tenant_name: "service"
+service_admin_username: "swiftr"
+service_admin_password: "{{ swift_service_password }}"
+
+## Cinder User / Group
+system_user: swift
+system_group: swift
+
+## Service Names
+service_names:
+  - swift-object
+  - swift-account
+  - swift-container
+  - swift-proxy
+
+## Git Source
+## ALL of this has been relocated to vars/repo_packages
+## TODO(someone) this should be removed once the repo bits are all figured out.
+git_repo: https://git.openstack.org/openstack/swift
+git_fallback_repo: https://github.com/openstack/swift
+git_etc_example: etc/
+git_install_branch: b223322ed1ef44f61490f820240aa01f1047ae2e
+
+service_pip_dependencies:
+  - pywbem
+  - ecdsa
+  - MySQL-python
+  - python-memcached
+  - pycrypto
+  - python-cinderclient
+  - python-keystoneclient
+  - keystonemiddleware
+
+container_directories:
+  - /var/log/swift
+  - /tmp/swift
+  - /var/lock/swift
+  - /etc/swift
+
+container_packages:
+  - curl
+  - python-pip
+  - rsync
+  - openssh-server
+  - git-core
+  - python-setuptools
+  - python-dev
+  - gcc

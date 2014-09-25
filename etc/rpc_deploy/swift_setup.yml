@@ -43,20 +43,20 @@ hosts:
 
 proxy:
   memcache_servers:
-    - 127.0.0.1:11211
+    - 192.168.100.7:11211
   authtoken: 
     active: true
     delay_auth_decision: true
     auth_version: v2.0
-    auth_host: keystone.local.lan
+    auth_host: 192.168.100.7
     auth_port: 35357
     auth_protocol: https
-    auth_uri: http://keystonehost:5000/
+    auth_uri: http://192.168.100.7:5000/
     admin_tenant_name: service
     admin_user: swift
     admin_password: ADMIN
   hosts:
-    - host: 10.0.0.1
+    - host: 
 
 account:
   repl_number: 3
