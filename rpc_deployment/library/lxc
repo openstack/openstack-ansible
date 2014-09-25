@@ -493,12 +493,12 @@ class LxcManagement(object):
         This output is returned as `return_code`, `stdout`, `stderr`.
 
         Prior to running the command the method will look to see if the LXC
-        lockfile is present. If the lockfile "/var/locksubsys/lxc" the method
+        lockfile is present. If the lockfile "/var/lock/subsys/lxc" the method
         will wait upto 10 minutes for it to be gone; polling every 5 seconds.
 
         :param build_command: ``list``  Used for the command and all options.
         """
-        lockfile = '/var/locksubsys/lxc'
+        lockfile = '/var/lock/subsys/lxc'
         command = self._construct_command(build_list=build_command)
 
         for _ in xrange(timeout):
