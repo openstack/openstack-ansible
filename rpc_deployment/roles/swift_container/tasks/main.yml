@@ -1,6 +1,6 @@
 ---
 - name: "swift container server configuration"
-  template: src=container-server.conf.j2 dest=/etc/swfit/container-server.conf.j2 owner={{ swift }} mode=0644
+  template: src=container-server.conf.j2 dest=/etc/swift/container-server.conf.j2 owner={{ swift }} mode=0644
   notfiy: 
     - (re)start container server
     - (re)start container auditor

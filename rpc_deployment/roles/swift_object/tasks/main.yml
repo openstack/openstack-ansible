@@ -1,6 +1,6 @@
 ---
 - name: "swift object server configuration"
-  template: src=object-server.conf.j2 dest=/etc/swfit/object-server.conf.j2 owner={{ swift }} mode=0644
+  template: src=object-server.conf.j2 dest=/etc/swift/object-server.conf.j2 owner={{ swift }} mode=0644
   notfiy: 
     - (re)start object server
     - (re)start object auditor

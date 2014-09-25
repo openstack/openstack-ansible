@@ -1,11 +1,28 @@
 ---
-- name: "install the keystone auth_token middleware"
-  pip: name=keystonemiddleware
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
-- name: "swift object server configuration"
-  template: src=proxy-server.conf.j2 dest=/etc/swfit/proxy-server.conf.j2 owner={{ swift }} mode=0644
-  notfiy: 
-    - (re)start proxy server
+- name: swift proxy server configuration
+  template: >
+    src="proxy-server.conf.j2"
+    dest="/etc/swift/proxy-server.conf"
+    owner={{ service_admin_username }}
+    mode=0644
+  notify: Restart proxy server
 
-- name: "Set proxy server to start at boot"
-  cron: special_time=reboot job="swift-init proxy-server start"
+- name: Set proxy server to start at boot
+  cron: >
+    name="Restart swift proxy at boot"
+    special_time=reboot
+    job="swift-init proxy-server start"

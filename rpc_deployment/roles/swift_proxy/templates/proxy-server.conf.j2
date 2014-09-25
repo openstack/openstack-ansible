@@ -1,10 +1,10 @@
 [DEFAULT]
-bind_ip = {{ inventory_host }}
-bind_port = 8080
+bind_ip = 0.0.0.0
+bind_port = {{ swift_proxy_port }}
 # bind_timeout = 30
 # backlog = 4096
 # swift_dir = /etc/swift
-user = {{ user }}
+user = {{ system_user }}
 
 # Enables exposing configuration settings via HTTP GET /info.
 # expose_info = true
@@ -277,13 +277,14 @@ paste.filter_factory = keystonemiddleware.auth_token:filter_factory
 auth_host = {{ auth_host }}
 auth_port = {{ auth_port }}
 auth_protocol = {{ auth_protocol }}
-auth_uri = {{ auth_uri }}
-admin_tenant_name = {{ admin_tenant_name }}
-admin_user = {{ admin_user }}
-admin_password = {{ admin_password }}
+auth_uri = {{ auth_protocol }}://{{ auth_host }}:{{ auth_port }}
+admin_tenant_name = {{ service_admin_tenant_name }}
+admin_user = {{ service_admin_username }}
+admin_password = {{ service_admin_password }}
 delay_auth_decision = {{ delay_auth_decision }}
 # cache = swift.cache
 # include_service_catalog = False
+{% endif %}
 #
 [filter:keystoneauth]
 use = egg:swift#keystoneauth
@@ -315,7 +316,7 @@ use = egg:swift#memcache
 # memcache.conf (see memcache.conf-sample) or lacking that file, it will
 # default to the value below. You can specify multiple servers separated with
 # commas, as in: 10.1.2.3:11211,10.1.2.4:11211
-memcache_servers = {{ memcache_servers }}
+memcache_servers = {{ internal_vip_address }}:{{ memcached_port }}
 #
 # Sets how memcache values are serialized and deserialized:
 # 0 = older, insecure pickle serialization

@@ -16,6 +16,11 @@
 # The variables file used by the playbooks in the Cinder-api group.
 # These don't have to be explicitly imported by vars_files: they are autopopulated.
 
+####### TODO: ADDING BOGUS VARS THAT SHOULD BE CONFIGURABLE VIA RPC_USER_CONFIG 
+
+authtoken_active: True
+delay_auth_decision: true
+
 ## Service Name
 service_name: swift
 
@@ -36,10 +41,10 @@ container_lvm_fssize: 5GB
 #     driver: cinder.volume.drivers.lvm.LVMISCSIDriver
 #     backend_name: LVM_iSCSI
 
-swift_proxy_port: "{{ swift_proxy_port|default('8080') }}"
-swift_object_port: "{{ swift_object_port|default('6000') }}"
-swift_container_port: "{{ swift_container_port|default('6001') }}"
-swift_account_port: "{{ swift_account_port|default('6002') }}"
+swift_proxy_port: "8000"
+swift_object_port: "6000"
+swift_container_port: "6001"
+swift_account_port: "6002"
 
 ## DB
 container_mysql_user: swift
@@ -48,7 +53,7 @@ container_database: swift
 
 ## Cinder Auth
 service_admin_tenant_name: "service"
-service_admin_username: "swiftr"
+service_admin_username: "swift"
 service_admin_password: "{{ swift_service_password }}"
 
 ## Cinder User / Group

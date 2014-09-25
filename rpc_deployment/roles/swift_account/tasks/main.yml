@@ -1,6 +1,6 @@
 ---
 - name: "swift account server configuration"
-  template: src=account-server.conf.j2 dest=/etc/swfit/account-server.conf.j2 owner={{ swift }} mode=0644
+  template: src=account-server.conf.j2 dest=/etc/swift/account-server.conf.j2 owner={{ swift }} mode=0644
   notfiy: 
     - (re)start account server
     - (re)start account auditor
