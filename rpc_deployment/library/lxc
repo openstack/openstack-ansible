@@ -40,12 +40,12 @@ options:
           - Name of a container.
         required: false
     return_code:
-        description: 
-          - Allow for return Codes other than 0 when executing commands. 
+        description:
+          - Allow for return Codes other than 0 when executing commands.
             This is a comma separated list of acceptable return codes.
         default: 0
     backingstore:
-        description: 
+        description:
           - Options 'dir', 'lvm', 'loop', 'btrfs', 'best'. The default is
             'none'.
         required: false
@@ -96,11 +96,11 @@ options:
           - Create zfs under given zfsroot (Default tank/lxc).
         required: false
     container_command:
-        description: 
+        description:
           - Run a command in a container. Only used in the "attach" operation.
         required: false
     return_facts:
-        description: 
+        description:
           - Return stdout after an attach command. Only used in the "attach"
             operation.
         required: false
@@ -219,7 +219,7 @@ container_config_options:
 - lxc: orig=test-container
        new=test-container-new
        command=clone
-       state=started
+       state=running
 
 # Destroy a container.
 - lxc: name=test-container
@@ -546,7 +546,7 @@ class LxcManagement(object):
 
         rc, return_data, err = self._run_command(build_command)
         if rc not in self.rc:
-            msg = 'Failed to get container Information.'
+            msg = 'Failed to get container Information'
             self.failure(err, rc, msg)
 
         ip_count = 0
@@ -560,6 +560,19 @@ class LxcManagement(object):
                     cstate[key.lower().strip()] = value.lower().strip()
         else:
             return cstate
+
+    def _container_exists(self, name, variables_dict):
+        """Return True or False based on whether or not the container exists
+
+        :param name: ``str``    name of the container
+        """
+        containers = self._list(variables_dict=variables_dict)
+
+        for container in containers.splitlines():
+            if container == name:
+                return True
+
+        return False
 
     @staticmethod
     def _construct_command(build_list):
@@ -679,21 +692,19 @@ class LxcManagement(object):
         name = variables_dict.pop('name')
         state = variables_dict.pop('state', 'running')
 
-        containers = self._list(variables_dict=variables_dict)
-        for container in containers.splitlines():
-            if container == name:
-                container_info = self._get_container_info(
-                    name=name, variables_dict=variables_dict
-                )
-                return self._lxc_facts(facts={name: container_info})
+        if self._container_exists(name, variables_dict):
+            container_info = self._get_container_info(
+                name=name, variables_dict=variables_dict
+            )
         else:
-            created_container_info = self._create(name, state, variables_dict)
-            return self._lxc_facts(facts={name: created_container_info})
+            container_info = self._create(name, state, variables_dict)
+
+        return self._lxc_facts(facts={name: container_info})
 
     def _destroy(self, name):
         """Destroy an LXC container.
 
-        :param name: ``str`  Name of the container to destroy
+        :param name: ``str``  Name of the container to destroy
         """
         build_command = [
             self.module.get_bin_path('lxc-destroy', True),
@@ -720,10 +731,8 @@ class LxcManagement(object):
         variables_dict = self._get_vars(variables, required=['name'])
         name = variables_dict.pop('name')
 
-        containers = self._list(variables_dict=variables_dict)
-        for container in containers.splitlines():
-            if container == name:
-                self._destroy(name=name)
+        if self._container_exists(name, variables_dict):
+            self._destroy(name=name)
 
     def _local_clone(self, orig, new, variables_dict):
         """Clone a local container.
@@ -787,6 +796,13 @@ class LxcManagement(object):
         variables_dict = self._get_vars(variables, required=['orig', 'new'])
         orig = variables_dict.pop('orig')
         new = variables_dict.pop('new')
+
+        # Check to see if new container already exists
+        if self._container_exists(new, variables_dict):
+            new_container_info = self._get_container_info(
+                name=new, variables_dict=variables_dict
+            )
+            return self._lxc_facts(facts={new: new_container_info})
 
         container_data = self._get_container_info(
             name=orig, variables_dict=variables_dict
