@@ -55,6 +55,7 @@ service_names:
 ## Stack 
 stack_domain_admin_password: "{{ heat_stack_domain_admin_password }}"
 stack_domain_admin: heat_domain_admin
+stack_user_domain_name: heat
 deferred_auth_method: trusts
 
 auth_encryption_key: "{{ heat_auth_encryption_key }}"
