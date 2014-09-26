@@ -109,6 +109,18 @@ global_overrides:
         type: "vlan"
         range: "1:1"
         net_name: "vlan"
+  # For Swift Set Storage Policies
+  #  storage_policies:
+  #    - policy:
+  #        name: "gold"
+  #        index: 0
+  #        repl_number: 3
+  #        default: "Yes"
+  #    - policy:
+  #        name: "silver"
+  #        index: 1
+  #        repl_number: 2
+  #        deprecated: "Yes"
   # Name of load balancer
   lb_name: lb_name_in_core
 
@@ -159,21 +171,22 @@ network_hosts:
     ip: 172.29.236.108
 
 # User defined Object Storage Hosts - this is not a required group
-# object_storage1:
-#   ip: 172.29.236.108
-#   container_vars:
-#     swift_vars:
-#       policy: gold
-#       region: 0
-#       zone: 0
-#       drives: /srv/node
+# swift_hosts: 
+#   object_storage1:
+#    ip: 172.29.236.108
+#    container_vars:
+#      swift_vars:
+#        policy: gold
+#        region: 0
+#        zone: 0
+#        drives: /srv/node
 #
-# object_storage2:
-#   ip: 172.29.236.109
-#   container_vars:
-#     swift_vars:
-#       policy: silver
-#       region: 0
-#       zone: 1
-#       drives: /srv/node
+#   object_storage2:
+#    ip: 172.29.236.109
+#    container_vars:
+#      swift_vars:
+#        policy: silver
+#        region: 0
+#        zone: 1
+#        drives: /srv/node
 #

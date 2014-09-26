@@ -5,28 +5,20 @@
 # These values should remain secret and MUST NOT change
 # once a cluster has been deployed.
 
-swift_hash_path_suffix = {{ hash_path_suffix }}
-swift_hash_path_prefix = {{ hash_path_prefix }}
+swift_hash_path_suffix = {{ swift_hash_path_suffix }}
+swift_hash_path_prefix = {{ swift_hash_path_prefix }}
 
 # Storage Policies
-{% for group in groups %}
-{%   if group.startswith("storagepolicy_") %}
-{%     set vars = hostvars[groups[group].pop()] %}
-{%     for proxy_settings in vars["extra_data"].split(';') %}
-{%       set items = proxy_settings.split(':') %}
-{%       if group.endswith(items[0]) %}
-[storage-policy:{{ items[1] }}]
-name = {{ items[0] }}
-{%         if items[2] == 'True' %}
-depricated = Yes
-{%         endif %}
-{%         if items[0] == vars["default"] %}
-default = Yes
-{%         endif %}
-
-{%       endif %}
-{%     endfor %}
+{% for policy in storage_policies %}
+[storage-policy:{{ policy.policy.index }}]
+name = {{ policy.policy.name }}
+{%   if policy.policy.deprecated is defined %}
+deprecated = {{ policy.policy.deprecated }}
 {%   endif %}
+{%   if policy.policy.default is defined %}
+default = {{ policy.policy.default }}
+{%   endif %}
+
 {% endfor %}
 [swift-constraints]
 
