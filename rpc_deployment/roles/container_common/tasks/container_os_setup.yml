@@ -22,3 +22,5 @@
     recurse=true
   when: container_directories is defined
   with_items: container_directories
+  tags:
+    - directories

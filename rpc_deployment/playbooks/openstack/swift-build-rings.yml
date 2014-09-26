@@ -1,10 +1,14 @@
 ---
-- hosts: swift_all[0]
+- hosts: local
   user: root
   roles:
+    - { role: container_common, tags: [ 'directories' ] }
+    - openstack_common
     - swift_ring_builder
+  vars_files:
+    - inventory/group_vars/swift_all.yml
 
-- hosts: swift_all:!swift_all[0]
+- hosts: swift_hosts:swift_proxy
   user: root
   roles:
     - swift_ring_distribute
