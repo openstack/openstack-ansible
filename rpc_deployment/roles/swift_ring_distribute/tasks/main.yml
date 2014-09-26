@@ -1,0 +1,6 @@
+---
+- name: "Copy the rings over"
+  copy: >
+    src=/tmp/swift/rings/
+    dest=/etc/swift/rings/
+    mode=0644

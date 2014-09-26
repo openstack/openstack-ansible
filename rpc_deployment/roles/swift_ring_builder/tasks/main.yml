@@ -1,0 +1,29 @@
+---
+- name: "make sure scripts directory exists"
+  file: >
+    state=directory
+    path=/etc/swift/scripts/
+    owner=root
+    group=root
+    mode=0755
+
+- name: "Retrieve the swift_rings.py file"
+  copy: >
+    src=swift_rings.py
+    dest="/etc/swift/scripts/swift_rings.py"
+
+#- name: "build rings"
+#  command: /usr/bin/python /etc/swift/scripts/swift_rings.py -s /etc/rpc_deploy/rpc_user_config.yml
+#  args:
+#    chdir: /etc/swift/rings/
+
+- name: "List ring files to copy over"
+  command: "/bin/ls /etc/swift/rings/"
+  register: ringfiles
+
+- name: "Fetch rings to local server"
+  fetch: >
+    src="/etc/swift/rings/{{ item }}"
+    dest=/tmp/swift/rings/
+    flat=yes
+  with_items: ringfiles.stdout_lines

@@ -90,6 +90,7 @@ container_directories:
   - /tmp/swift
   - /var/lock/swift
   - /etc/swift
+  - /etc/swift/rings/
 
 container_packages:
   - curl
@@ -100,3 +101,4 @@ container_packages:
   - python-setuptools
   - python-dev
   - gcc
+  - libffi-dev

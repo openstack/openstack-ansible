@@ -1,0 +1,10 @@
+---
+- hosts: swift_all[0]
+  user: root
+  roles:
+    - swift_ring_builder
+
+- hosts: swift_all:!swift_all[0]
+  user: root
+  roles:
+    - swift_ring_distribute
