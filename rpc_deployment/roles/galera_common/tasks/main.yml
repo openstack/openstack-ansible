@@ -30,6 +30,11 @@
     - root_password
     - root_password_again
 
+- name: Drop limits config
+  template:
+    src: "limits.conf"
+    dest: "/etc/security/limits.conf"
+
 - name: Install galera packages
   apt:
     pkg: "{{ item }}"
