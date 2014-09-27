@@ -128,7 +128,9 @@ neutron_service_password:
 
 
 ## Nova Options
-nova_virt_type: qemu
+# This defaults to KVM, if you are deploying on a host that is not KVM capable
+# change this to your hypervisor type: IE "qemu", "lxc".
+# nova_virt_type: kvm
 nova_container_mysql_password:
 nova_metadata_proxy_secret:
 nova_ec2_service_password:
