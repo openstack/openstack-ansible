@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: sysstat.yml
-- include: updatehostsfile.yml
-- include: authorized_keys.yml
-- include: kernel_modules.yml
-- include: irqbalance.yml
+- name: Drop irqbalance default
+  template:
+    src: "irqbalance"
+    dest: "/etc/default/irqbalance"
+  notify: Restart irqbalance
