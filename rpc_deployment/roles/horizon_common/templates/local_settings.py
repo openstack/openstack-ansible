@@ -59,7 +59,7 @@ HORIZON_CONFIG = {
         'fade_duration': 1500,
         'types': ['alert-success', 'alert-info']
     },
-    'help_url': "http://docs.openstack.org",
+    'help_url': "{{ horizon_help_url|default('http://docs.openstack.org') }}",
     'exceptions': {
         'recoverable': exceptions.RECOVERABLE,
         'not_found': exceptions.NOT_FOUND,
