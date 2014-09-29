@@ -35,8 +35,11 @@
     - { src: "horizon-manage.py", dest: "/usr/local/bin/horizon-manage.py", mode: "0755" }
 
 # /opt/horizon/lib/python2.7/site-packages/manage.py
-- name: Collect static files
-  command: horizon-manage.py collectstatic --noinput
+- name: Collect and Compress static files
+  command: "{{ item }}"
+  with_items:
+    - horizon-manage.py collectstatic --noinput
+    - horizon-manage.py compress --force
 
 - name: Create hoirzon links
   file:
