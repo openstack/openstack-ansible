@@ -14,50 +14,50 @@
 # limitations under the License.
 
 - name: Drop apache2 ports file
-  template: >
-    src=keystone-ports.conf
-    dest=/etc/apache2/ports.conf
-    owner="root"
-    group="root"
+  template:
+    src: "keystone-ports.conf"
+    dest: "/etc/apache2/ports.conf"
+    owner: "root"
+    group: "root"
   notify: Restart Apache
 
 - name: Drop keystone vhost file
-  template: >
-    src=keystone-httpd.conf
-    dest=/etc/apache2/sites-available/keystone-httpd.conf
-    owner="root"
-    group="root"
+  template:
+    src: "keystone-httpd.conf"
+    dest: "/etc/apache2/sites-available/keystone-httpd.conf"
+    owner: "root"
+    group: "root"
   notify: Restart Apache
 
 - name: Disable default apache site
-  file: >
-    path=/etc/apache2/sites-enabled/000-default.conf
-    state="absent"
+  file:
+    path: "/etc/apache2/sites-enabled/000-default.conf"
+    state: "absent"
   notify: Restart Apache
 
 - name: Enabled keystone vhost
-  file: >
-    src=/etc/apache2/sites-available/keystone-httpd.conf
-    dest=/etc/apache2/sites-enabled/keystone-httpd.conf
-    state=link
+  file:
+    src: "/etc/apache2/sites-available/keystone-httpd.conf"
+    dest: "/etc/apache2/sites-enabled/keystone-httpd.conf"
+    state: "link"
   notify: Restart Apache
 
 - name: Link keystone wsgi admin file
-  file: >
-    src="/opt/{{ service_name }}_{{ git_install_branch | replace('/', '_') }}/httpd/keystone.py"
-    dest=/var/www/cgi-bin/keystone/admin
-    state=link
+  file:
+    src: "/opt/{{ service_name }}_{{ git_install_branch | replace('/', '_') }}/httpd/keystone.py"
+    dest: "/var/www/cgi-bin/keystone/admin"
+    state: "link"
   notify: Restart Apache
 
 - name: Link keystone wsgi main file
-  file: >
-    src="/opt/{{ service_name }}_{{ git_install_branch | replace('/', '_') }}/httpd/keystone.py"
-    dest=/var/www/cgi-bin/keystone/main
-    state=link
+  file:
+    src: "/opt/{{ service_name }}_{{ git_install_branch | replace('/', '_') }}/httpd/keystone.py"
+    dest: "/var/www/cgi-bin/keystone/main"
+    state: "link"
   notify: Restart Apache
 
 - name: Ensure Apache ServerName
-  lineinfile: >
-    dest=/etc/apache2/apache2.conf
-    line="ServerName {{ container_name }}"
+  lineinfile:
+    dest: "/etc/apache2/apache2.conf"
+    line: "ServerName {{ container_name }}"
   notify: Restart Apache

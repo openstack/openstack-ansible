@@ -14,10 +14,10 @@
 # limitations under the License.
 
 - name: Download lxc cache
-  get_url: >
-    url="{{ rpc_repo_url }}/rpc-trusty-container.tgz"
-    dest=/var/cache/lxc/rpc-trusty-container.tgz
-    mode=0440
+  get_url:
+    url: "{{ rpc_repo_url }}/rpc-trusty-container.tgz"
+    dest: "/var/cache/lxc/rpc-trusty-container.tgz"
+    mode: "0440"
   register: cache_download
   async: 600
   poll: 15
@@ -25,8 +25,8 @@
   until: cache_download|success
 
 - name: Move lxc cached image into place
-  unarchive: >
-    src=/var/cache/lxc/rpc-trusty-container.tgz
-    dest=/var/cache/lxc/
-    copy=no
+  unarchive:
+    src: "/var/cache/lxc/rpc-trusty-container.tgz"
+    dest: "/var/cache/lxc/"
+    copy: "no"
   when: cache_download|changed
