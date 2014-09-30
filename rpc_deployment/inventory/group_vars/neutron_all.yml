@@ -42,7 +42,7 @@ service_plugins:
 dhcp_driver: neutron.agent.linux.dhcp.Dnsmasq
 neutron_config: /etc/neutron/neutron.conf
 neutron_plugin: /etc/neutron/plugins/ml2/ml2_conf.ini
-neutron_revision: icehouse
+neutron_revision: head
 
 ## Neutron downtime
 neutron_agent_down_time: 120
