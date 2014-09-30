@@ -14,17 +14,17 @@
 # limitations under the License.
 
 - name: add apt-keys
-  apt_key: >
-    id="{{ item.hash_id }}"
-    keyserver="{{ item.keyserver }}"
-    state=present
+  apt_key:
+    id: "{{ item.hash_id }}"
+    keyserver: "{{ item.keyserver }}"
+    state: "present"
   with_items: gpg_keys
   when: "ansible_distribution_version in ['12.04', '13.04', '13.10', '14.04']"
 
 - name: Add Common repos
-  apt_repository: >
-    repo="{{ item.repo }}"
-    state="{{ item.state }}"
+  apt_repository:
+    repo: "{{ item.repo }}"
+    state: "{{ item.state }}"
   with_items: apt_common_repos
   when: "ansible_distribution_version in ['12.04', '13.04', '13.10', '14.04']"
   register: add_repos
@@ -32,12 +32,12 @@
   retries: 3
 
 - name: Add mariadb priority file
-  template: >
-    src=mariadb-priority
-    dest=/etc/apt/preferences.d/mariadb.pref
-    owner=root
-    group=root
-    mode=0644
+  template:
+    src: "mariadb-priority"
+    dest: "/etc/apt/preferences.d/mariadb.pref"
+    owner: "root"
+    group: "root"
+    mode: "0644"
 
 - name: Ensure common Packages are Installed
   apt:

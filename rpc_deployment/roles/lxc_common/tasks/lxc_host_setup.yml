@@ -14,22 +14,22 @@
 # limitations under the License.
 
 - name: set base lxc template
-  template: >
-    src={{ item.src }}
-    dest={{ item.dest }}
-    owner=root
-    group=root 
-    mode={{ item.mode }}
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "root"
+    group: "root"
+    mode: "{{ item.mode }}"
   with_items:
     - { src: lxc-rpc.conf, dest: "/etc/lxc/lxc-rpc.conf", mode: "0644" }
     - { src: lxc-rpc, dest: "/usr/share/lxc/templates/lxc-rpc", mode: "0755" }
 
 - name: Set apparmor profile for nova-compute
-  copy: >
-    src=lxc-openstack
-    dest=/etc/apparmor.d/lxc/lxc-openstack
-    owner="root"
-    group="root"
+  copy:
+    src: "lxc-openstack"
+    dest: "/etc/apparmor.d/lxc/lxc-openstack"
+    owner: "root"
+    group: "root"
   register: apparmor_update
   notify: Reindex apparmor profiles for lxc
 
