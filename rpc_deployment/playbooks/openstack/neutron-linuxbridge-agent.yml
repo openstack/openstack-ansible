@@ -17,13 +17,7 @@
   user: root
   roles:
     - container_extra_setup
-    - common
-    - common_sudoers
-    - container_common
     - neutron_common
-    - openstack_common
-    - openstack_openrc
-    - galera_client_cnf
     - init_script
   vars_files:
     - inventory/group_vars/neutron_all.yml

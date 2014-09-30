@@ -83,3 +83,13 @@
   notify: Restart os service
   tags:
     - neutron_config
+
+# TODO(someone) This Should be removed in Kilo
+# kilo_revision: true
+- name: Remove AT&T Neutron ha tool if found
+  file:
+    path: "{{ item }}"
+    state: "absent"
+  with_items:
+    - /etc/cron.d/l3_agent_migrate
+    - /etc/cron.d/replicate_dhcp

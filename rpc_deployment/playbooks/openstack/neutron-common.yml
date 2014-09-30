@@ -13,10 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: neutron-common.yml
-- include: neutron-server.yml
-- include: neutron-metadata-agent.yml
-- include: neutron-dhcp-agent.yml
-- include: neutron-linuxbridge-agent.yml
-- include: neutron-l3-agent.yml
-- include: neutron-metering-agent.yml
+- hosts: neutron_all
+  user: root
+  roles:
+    - common
+    - common_sudoers
+    - container_common
+    - openstack_common
+    - openstack_openrc
+    - galera_client_cnf
+  vars_files:
+    - vars/repo_packages/neutron.yml
