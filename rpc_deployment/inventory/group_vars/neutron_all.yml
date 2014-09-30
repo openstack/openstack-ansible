@@ -76,26 +76,6 @@ service_names:
   - neutron-l3-agent
   - neutron-server
 
-## Git Source
-## ALL of this has been relocated to vars/repo_packages
-## TODO(someone) this should be removed once the repo bits are all figured out.
-git_repo: https://git.openstack.org/openstack/neutron
-git_fallback_repo: https://github.com/openstack/neutron
-git_etc_example: etc/
-git_install_branch: fd1221124b8f53a61731e51b5f923af44ec5598f
-
-service_pip_dependencies:
-  - MySQL-python
-  - python-memcached
-  - pycrypto
-  - repoze.lru
-  - configobj
-  - cliff
-  - python-novaclient
-  - python-neutronclient
-  - python-keystoneclient
-  - keystonemiddleware
-
 container_directories:
   - /etc/neutron
   - /etc/neutron/plugins
@@ -103,11 +83,8 @@ container_directories:
   - /etc/neutron/rootwrap.d
   - /var/cache/neutron
   - /var/lib/neutron
+  - /var/lib/neutron/ha_confs
   - /var/lock/neutron
   - /var/log/neutron
   - /var/run/neutron
 
-container_packages:
-  - libpq-dev
-  - dnsmasq-base
-  - dnsmasq-utils

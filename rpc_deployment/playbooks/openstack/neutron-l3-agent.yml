@@ -16,15 +16,9 @@
 - hosts: neutron_l3_agent
   user: root
   roles:
-    - common
-    - common_sudoers
-    - container_common
     - neutron_common
-    - openstack_common
-    - openstack_openrc
     - galera_client_cnf
     - init_script
-    - neutron_l3_ha
   vars_files:
     - inventory/group_vars/neutron_all.yml
     - vars/openstack_service_vars/neutron_l3_agent.yml

@@ -13,25 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- hosts: neutron_all
-  user: root
-  roles:
-    - common
-    - common_sudoers
-    - container_common
-    - openstack_common
-    - openstack_openrc
-    - galera_client_cnf
-  vars_files:
-    - inventory/group_vars/neutron_all.yml
-
-- hosts: neutron_server[0]
-  user: root
-  roles:
-    - keystone_add_service
-  vars_files:
-    - vars/openstack_service_vars/neutron_server_endpoint.yml
-
 - hosts: neutron_server[0]
   user: root
   roles:
@@ -55,4 +36,3 @@
     - vars/openstack_service_vars/neutron_server.yml
   handlers:
     - include: handlers/services.yml
-
