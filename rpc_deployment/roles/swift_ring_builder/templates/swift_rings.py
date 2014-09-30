@@ -8,18 +8,17 @@ import sys
 import threading
 import yaml
 
-USAGE = "usage: %prog -s <swift setup yaml>"
+USAGE = "usage: %prog -s <rpc_user_config.yml>"
 
 DEFAULT_PART_POWER = 10
 DEFAULT_REPL = 3
 DEFAULT_MIN_PART_HOURS = 1
-DEFAULT_HOST_DRIVES = '/srv/drive/'
-DEFAULT_HOST_DRIVE = '/sdb'
+DEFAULT_HOST_DRIVE = 'sdb'
 DEFAULT_HOST_ZONE = 0
-DEFAULT_HOST_WEIGHT = 1
-DEFAULT_ACCOUNT_PORT = 6002
-DEFAULT_CONTAINER_PORT = 6001
-DEFAULT_OBJECT_PORT = 6000
+DEFAULT_HOST_WEIGHT = 100
+DEFAULT_ACCOUNT_PORT = {{ swift_account_port }}
+DEFAULT_CONTAINER_PORT = {{ swift_container_port }}
+DEFAULT_OBJECT_PORT = {{ swift_object_port }}
 DEFAULT_SECTION_PORT = {
     'account': DEFAULT_ACCOUNT_PORT,
     'container': DEFAULT_CONTAINER_PORT,
@@ -37,11 +36,11 @@ def add_host_to_ring(build_file, host):
     if host.get('region') is not None:
         host_str += 'r%(region)d' % host
     host_str += "z%d" % (host.get('zone', DEFAULT_HOST_ZONE))
-    host_str += "-%(host)s:%(port)d" % host
+    host_str += "-%(ip)s:%(port)d" % host
     if host.get('repl_port'):
         r_ip = host.get('repl_ip', host['host'])
         host_str += "R%s:%d" % (r_ip, host['repl_port'])
-    host_str += "/%(drive)s" % host
+    host_str += "/%(name)s" % host
 
     weight = host.get('weight', DEFAULT_HOST_WEIGHT)
     run_and_wait(rb_main, ["swift-ring-builder", build_file, 'add',
@@ -72,24 +71,12 @@ def build_ring(section, conf, part_power, hosts):
                               DEFAULT_MIN_PART_HOURS)
     create_buildfile(build_file, part_power, repl, min_part_hours)
 
-    # Add the hosts
-    if not has_section(conf, 'hosts') or len(conf.get('hosts')) == 0:
-        print("No hosts/drives assigned to the %s ring" % section)
-        sys.exit(3)
-
     section_key = section.split('-')[0]
     service_port = conf.get('port', DEFAULT_SECTION_PORT[section_key])
-    for host in conf['hosts']:
-        if 'name' in host:
-            if host['name'] not in hosts:
-                print("Host %(name) reference not found." % host)
-                sys.exit(3)
-            host = hosts[host['name']]
-        else:
-            if 'drive' not in host:
-                host['drive'] = DEFAULT_HOST_DRIVE
-        host['port'] = service_port
-        add_host_to_ring(build_file, host)
+    for host in hosts:
+        host_vars = hosts[host]
+        host_vars['port'] = service_port
+        add_host_to_ring(build_file, host_vars)
 
     # Rebalance ring
     run_and_wait(rb_main, ["swift-ring-builder", build_file, "rebalance"])
@@ -106,48 +93,59 @@ def main(setup):
         return 1
 
     _hosts = {}
-
-    if _swift.get("hosts"):
-        for host in _swift['hosts']:
-            if not host.get('drive'):
-                host['drive'] = DEFAULT_HOST_DRIVE
-            key = "%(host)s/%(drive)s" % host
-            if key in _hosts:
-                print("%(host)s already definined" % host)
-                return 1
-            _hosts[key] = host
-
-    check_section(_swift, 'swift')
-    part_power = _swift['swift'].get('part_power', DEFAULT_PART_POWER)
+    if _swift.get("swift_hosts"):
+        for host in _swift['swift_hosts']:
+            host_vars = _swift['swift_hosts'][host]['container_vars']['swift_vars']
+            if not host_vars.get('drive'):
+                host_vars['drive'] = DEFAULT_HOST_DRIVE
+            host_ip = _swift['swift_hosts'][host]['ip']
+            host_drives = host_vars.get('drive')
+            for host_drive in host_drives:
+                host_drive['ip'] = host_drive.get('ip', host_ip)
+                if host_vars.get('repl_ip'):
+                   host_drive['repl_ip'] = host_drives[host_drive].get('repl_ip', host_vars['repl_ip'])
+                if host_vars.get('repl_port'):
+                   host_drive['repl_port'] = host_drives[host_drive].get('repl_port', host_vars['repl_port'])
+                if host_vars.get('weight'):
+                   host_drive['weight'] = host_drives[host_drive].get('weight', host_vars['weight'])
+                key = "%s/%s" % (host_drive['ip'], host_drive['name'])
+                if key in _hosts:
+                    print("%(host)s already definined" % host)
+                    return 1
+                _hosts[key] = host_drive
+    
+    global_vars  = _swift['global_overrides']
+    check_section(global_vars, 'swift')
+    swift_vars = global_vars['swift']
+    part_power = swift_vars.get('part_power', DEFAULT_PART_POWER)
 
     # Create account ring
-    check_section(_swift, 'account')
-    build_ring('account', _swift['account'], part_power, _hosts)
+    check_section(swift_vars, 'account')
+    build_ring('account', swift_vars['account'], part_power, _hosts)
 
     # Create container ring
-    check_section(_swift, 'container')
-    build_ring('container', _swift['container'], part_power, _hosts)
+    check_section(swift_vars, 'container')
+    build_ring('container', swift_vars['container'], part_power, _hosts)
 
     # Create object rings (storage policies)
-    check_section(_swift, 'storage_policies')
-    check_section(_swift['storage_policies'], 'policies')
+    check_section(swift_vars, 'storage_policies')
     indexes = set()
-    for sp in _swift['storage_policies']['policies']:
-        if sp['index'] in indexes:
-            print("Storage Policy index %d already in use" % (sp['index']))
+    for policy in swift_vars['storage_policies']:
+        policy = policy['policy']
+        if policy['index'] in indexes:
+            print("Storage Policy index %d already in use" % (policy['index']))
             return 4
-        buildfilename = 'object-%d' % (sp['index'])
-        indexes.add(sp['index'])
-        if 'port' not in sp:
-            sp['port'] = _swift['storage_policies'].get('port',
-                                                        DEFAULT_OBJECT_PORT)
-        build_ring(buildfilename, sp, part_power, _hosts)
+        buildfilename = 'object-%d' % (policy['index'])
+        indexes.add(policy['index'])
+        if 'port' not in policy:
+            policy['port'] = policy.get('port', DEFAULT_OBJECT_PORT)
+        build_ring(buildfilename, policy, part_power, _hosts)
 
 if __name__ == "__main__":
     parser = OptionParser(USAGE)
     parser.add_option("-s", "--setup", dest="setup",
                       help="Specify the swift setup file.", metavar="FILE",
-                      default="/etc/swift/swift_inventory.yml")
+                      default="/etc/rpc_deploy/rpc_user_config.yml")
 
     options, args = parser.parse_args(sys.argv[1:])
     if options.setup and not exists(options.setup):
