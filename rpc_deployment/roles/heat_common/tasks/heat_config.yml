@@ -13,19 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Ensure Heat Domain User
-  keystone: >
-    command=ensure_user
-    token="{{ auth_admin_token }}"
-    endpoint="{{ auth_admin_uri }}"
-    user_name="{{ stack_domain_admin }}"
-    tenant_name=admin
-    password="{{ stack_domain_admin_password }}"
-
-- name: set fact for heat domain admin id
-  set_fact:
-    stack_user_domain: "{{ keystone_facts['id'] }}"
-
 - name: Setup Heat Config
   template: >
     src={{ item }}
