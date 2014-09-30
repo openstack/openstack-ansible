@@ -29,6 +29,9 @@ container_packages:
   - libpq-dev
   - dnsmasq-base
   - dnsmasq-utils
+  - keepalived
+  - conntrackd
+  - ipset
 
 service_pip_dependencies:
   - MySQL-python
