@@ -13,14 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- hosts: nova_api_metadata
+- hosts: nova_all
   user: root
   roles:
-    - nova_common
-    - init_script
+    - common
+    - common_sudoers
+    - container_common
+    - openstack_common
+    - openstack_openrc
+    - galera_client_cnf
   vars_files:
     - inventory/group_vars/nova_all.yml
-    - vars/openstack_service_vars/nova_api_metadata.yml
-    - vars/openstack_service_vars/nova_spice_console_endpoint.yml
-  handlers:
-    - include: handlers/services.yml
+    - vars/repo_packages/nova.yml
