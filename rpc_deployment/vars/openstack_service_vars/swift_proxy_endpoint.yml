@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: swift-build-rings.yml
-- include: swift-proxy.yml
-- include: swift-storage.yml
+service_type: object-store
+service_description: "Object Storage Service"
+service_password: "{{ swift_service_password }}"
+
+service_publicurl: "http://{{ external_vip_address }}:{{ swift_proxy_port }}/v1/AUTH_%(tenant_id)s"
+service_adminurl: "http://{{ internal_vip_address }}:{{ swift_proxy_port }}/v1/AUTH_%(tenant_id)s"
+service_internalurl: "http://{{ internal_vip_address }}:{{ swift_proxy_port }}/v1/AUTH_%(tenant_id)s"

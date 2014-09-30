@@ -13,7 +13,7 @@
 
 - name: "Set account server to start at boot"
   cron: >
-    name="Restart account-sever on boot"
+    name="Restart account-server on boot"
     special_time=reboot
     job="swift-init account-server start"
 

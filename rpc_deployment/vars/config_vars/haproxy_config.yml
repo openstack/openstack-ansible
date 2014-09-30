@@ -181,7 +181,7 @@ haproxy_config:
   - service:
       hap_service_name: swift_proxy
       hap_backend_nodes: "{{ groups['swift_proxy'] }}"
-      hap_port: 8000
+      hap_port: 8888
       hap_balance_type: http
       hap_backend_alg: source
       hap_backend_options:

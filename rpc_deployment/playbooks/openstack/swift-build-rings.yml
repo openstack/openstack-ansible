@@ -4,6 +4,7 @@
   roles:
     - { role: container_common, tags: [ 'directories' ] }
     - openstack_common
+    - swift_common
     - swift_ring_builder
   vars_files:
     - inventory/group_vars/swift_all.yml
