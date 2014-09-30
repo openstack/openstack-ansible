@@ -183,7 +183,3 @@ haproxy_config:
       hap_backend_nodes: "{{ groups['swift_proxy'] }}"
       hap_port: 8888
       hap_balance_type: http
-      hap_backend_options:
-       - "forwardfor"
-       - "httpchk"
-       - "httplog"
