@@ -67,8 +67,11 @@
 
 - name: Create rabbitmq config
   template:
-    src: rabbitmq.config
-    dest: /etc/rabbitmq/rabbitmq.config
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items:
+    - { src: "rabbitmq.config", dest: "/etc/rabbitmq/rabbitmq.config" }
+    - { src: "rabbitmq-server", dest: "/etc/default/rabbitmq-server" }
   tags:
     - rabbit_config
 
