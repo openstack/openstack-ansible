@@ -15,3 +15,6 @@
 
 - name: Restart sysstat
   service: name=sysstat state=restarted pattern=sysstat enabled=yes
+
+- name: Restart irqbalance
+  service: name=irqbalance state=restarted pattern=irqbalance enabled=yes
