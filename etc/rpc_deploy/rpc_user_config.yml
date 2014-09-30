@@ -109,18 +109,31 @@ global_overrides:
         type: "vlan"
         range: "1:1"
         net_name: "vlan"
-  # For Swift Set Storage Policies
-  #  storage_policies:
+  #
+  # Setup swift group variables when using swift
+  # For account/container speciying min_part_hours and repl_number is all thats required
+  # Alternatively defaults will be used.
+  # For storage policies, a name and unique index is required as well as repl_number and
+  # min_part_hours which will be set to a default value if not specified.
+  # swift:
+  #   part_power: 8
+  #   account:
+  #     repl_number: 3
+  #     min_part_hours: 1
+  #   container:
+  #     repl_number: 3
+  #   storage_policies:
   #    - policy:
-  #        name: "gold"
+  #        name: gold
   #        index: 0
   #        repl_number: 3
-  #        default: "Yes"
+  #        default: yes
   #    - policy:
-  #        name: "silver"
+  #        name: silver
   #        index: 1
   #        repl_number: 2
-  #        deprecated: "Yes"
+  #        deprecated: yes
+  #
   # Name of load balancer
   lb_name: lb_name_in_core
 
@@ -176,17 +189,31 @@ network_hosts:
 #    ip: 172.29.236.108
 #    container_vars:
 #      swift_vars:
-#        policy: gold
 #        region: 0
 #        zone: 0
+       # Specify where the drives are mounted
 #        drives: /srv/node
+       # Specify the drives in use
+#        drive:
+#          - name: sdb
+           # weight can be specified at a host level - this will override it
+#            weight: 100
+           # ip will default to host_ip if not specified
+#            ip: 172.10.100.100
+           # repl_ip & port are not required, but if there is a specific network/ip for replication specify it here
+#            repl_ip: 10.10.0.1
+#            repl_port: 54321
+#          - name: sdc
+#          - name: sdd
+#          - name: sde
 #
 #   object_storage2:
 #    ip: 172.29.236.109
 #    container_vars:
 #      swift_vars:
-#        policy: silver
 #        region: 0
 #        zone: 1
 #        drives: /srv/node
-#
+#        drive:
+#          - name: sdb
+#          - name: sdc
