@@ -38,7 +38,7 @@
 - name: Collect static files
   command: horizon-manage.py collectstatic --noinput
 
-- name: Create hoirzon links
+- name: Create horizon links
   file:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
