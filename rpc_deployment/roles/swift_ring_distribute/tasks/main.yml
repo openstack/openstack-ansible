@@ -1,8 +1,11 @@
 ---
 - name: "Copy the rings over"
   copy: >
-    src=/tmp/swift/rings/
-    dest=/etc/swift/rings/
+    src={{ item }}
+    dest=/etc/swift/
     mode=0644
     owner={{ system_user }}
     group={{ system_group }}
+  with_fileglob:
+    - /tmp/swift/rings/*.ring.gz
+    - /tmp/swift/rings/*.builder

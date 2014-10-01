@@ -103,11 +103,11 @@ def main(setup):
             for host_drive in host_drives:
                 host_drive['ip'] = host_drive.get('ip', host_ip)
                 if host_vars.get('repl_ip'):
-                   host_drive['repl_ip'] = host_drives[host_drive].get('repl_ip', host_vars['repl_ip'])
+                   host_drive['repl_ip'] = host_drive.get('repl_ip', host_vars.get['repl_ip'])
                 if host_vars.get('repl_port'):
-                   host_drive['repl_port'] = host_drives[host_drive].get('repl_port', host_vars['repl_port'])
+                   host_drive['repl_port'] = host_drive.get('repl_port', host_vars['repl_port'])
                 if host_vars.get('weight'):
-                   host_drive['weight'] = host_drives[host_drive].get('weight', host_vars['weight'])
+                   host_drive['weight'] = host_drive.get('weight', host_vars['weight'])
                 key = "%s/%s" % (host_drive['ip'], host_drive['name'])
                 if key in _hosts:
                     print("%(host)s already definined" % host)
