@@ -135,7 +135,10 @@ def main(setup):
         if policy['index'] in indexes:
             print("Storage Policy index %d already in use" % (policy['index']))
             return 4
-        buildfilename = 'object-%d' % (policy['index'])
+        if policy['index'] == 0:
+            buildfilename = 'object'
+        else:
+            buildfilename = 'object-%d' % (policy['index'])
         indexes.add(policy['index'])
         if 'port' not in policy:
             policy['port'] = policy.get('port', DEFAULT_OBJECT_PORT)
