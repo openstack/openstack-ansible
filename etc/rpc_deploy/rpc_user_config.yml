@@ -192,8 +192,9 @@ network_hosts:
 # Under swift_vars you can specify the host specific swift_vars.
 # region - the swift region, this isn't required.
 # zone - the swift zone, this isn't required either, will default to 0
-# drives - where the drives are mounted on the server
-# Above 3 vars are "host specific"
+# mount_point - where the drives are mounted on the server
+# drives - A list of drives in the server (Must have a name as a minimum)
+# Above 4 vars are "host specific"
 # weight: a disks weight (defaults to 100 if not specified)
 # repl_ip: IP specific for object replication (not required)
 # repl_port: Port specific for object replication (not required)
@@ -212,8 +213,8 @@ network_hosts:
 #        groups:
 #          - silver
 #          - account
-#        drives: /srv/node
-#        drive:
+#        mount_point: /srv/node
+#        drives:
 #          - name: sdb
 #            ip: 172.10.100.100
 #            repl_ip: 10.10.0.1
@@ -233,7 +234,7 @@ network_hosts:
 #      swift_vars:
 #        region: 0
 #        zone: 1
-#        drives: /srv/node
-#        drive:
+#        mount_point: /srv/node
+#        drives:
 #          - name: sdb
 #          - name: sdc

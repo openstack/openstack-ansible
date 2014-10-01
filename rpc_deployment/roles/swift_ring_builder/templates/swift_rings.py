@@ -114,9 +114,9 @@ def main(setup):
         for host in _swift['swift_hosts']:
             host_vars = _swift['swift_hosts'][host]['container_vars']['swift_vars']
             host_ip = host_vars.get('ip', _swift['swift_hosts'][host]['ip'])
-            if not host_vars.get('drive'):
+            if not host_vars.get('drives'):
                 continue
-            host_drives = host_vars.get('drive')
+            host_drives = host_vars.get('drives')
             for host_drive in host_drives:
                 host_drive['ip'] = host_drive.get('ip', host_ip)
                 if host_vars.get('groups'):
