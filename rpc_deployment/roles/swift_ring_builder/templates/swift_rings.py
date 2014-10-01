@@ -38,7 +38,7 @@ DEFAULT_SECTION_PORT = {
 }
 DEFAULT_GROUP_MAP = {
     'account': 'account',
-{% for policy in storage_policies %}
+{% for policy in swift.storage_policies %}
 {%   if policy.policy.index == 0 %}
     'object': '{{ policy.policy.name }}',
 {%   else %}
@@ -49,7 +49,7 @@ DEFAULT_GROUP_MAP = {
 }
 DEFAULT_GROUPS= [
     'account',
-{% for policy in storage_policies %}
+{% for policy in swift.storage_policies %}
     '{{ policy.policy.name }}',
 {% endfor %}
     'container'

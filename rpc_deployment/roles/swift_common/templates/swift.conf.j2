@@ -9,7 +9,7 @@ swift_hash_path_suffix = {{ swift_hash_path_suffix }}
 swift_hash_path_prefix = {{ swift_hash_path_prefix }}
 
 # Storage Policies
-{% for policy in storage_policies %}
+{% for policy in swift.storage_policies %}
 [storage-policy:{{ policy.policy.index }}]
 name = {{ policy.policy.name }}
 {%   if policy.policy.deprecated is defined %}
