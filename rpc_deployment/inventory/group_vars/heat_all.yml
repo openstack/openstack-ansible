@@ -27,7 +27,6 @@ verbose: True
 container_lvm_fstype: ext4
 container_lvm_fssize: 5GB
 
-
 ## DB
 container_mysql_user: heat
 container_mysql_password: "{{ heat_container_mysql_password }}"
@@ -64,24 +63,6 @@ heat_watch_server_url: "http://{{ external_vip_address }}:8003"
 heat_waitcondition_server_url: "http://{{ internal_vip_address }}:8000/v1/waitcondition"
 heat_metadata_server_url: "http://{{ internal_vip_address }}:8000"
 
-## Git Source
-## ALL of this has been relocated to vars/repo_packages
-## TODO(someone) this should be removed once the repo bits are all figured out.
-git_repo: https://git.openstack.org/openstack/heat
-git_fallback_repo: https://github.com/openstack/heat
-git_etc_example: etc/heat
-git_install_branch: 93f3c78a8bd9ecb79fa3d719468b371e67519969
-
-service_pip_dependencies:
-  - MySQL-python
-  - python-memcached
-  - pycrypto
-  - python-heatclient
-  - python-keystoneclient
-  - python-troveclient
-  - python-ceilometerclient
-  - keystonemiddleware
-
 container_directories:
   - /etc/heat
   - /etc/heat/environment.d
@@ -89,7 +70,3 @@ container_directories:
   - /var/cache/heat
   - /var/lib/heat
   - /var/log/heat
-
-container_packages:
-  - rsync
-  - libxslt1.1 

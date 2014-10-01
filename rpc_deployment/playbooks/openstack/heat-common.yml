@@ -13,8 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: heat-common.yml
-- include: heat-api.yml
-- include: heat-api-cfn.yml
-- include: heat-api-cloudwatch.yml
-- include: heat-engine.yml
+- hosts: heat_all
+  user: root
+  roles:
+    - common
+    - common_sudoers
+    - container_common
+    - openstack_common
+    - openstack_openrc
+    - galera_client_cnf
+  vars_files:
+    - vars/openstack_service_vars/heat_api.yml
+    - vars/repo_packages/heat.yml
