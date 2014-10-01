@@ -21,20 +21,15 @@
 - hosts: nova_compute
   user: root
   roles:
-    - common
-    - common_sudoers
     - container_extra_setup
     - neutron_add_network_interfaces
-    - container_common
-    - openstack_common
-    - openstack_openrc
     - nova_compute_devices
     - nova_common
     - nova_libvirt
-    - galera_client_cnf
     - init_script
   vars_files:
     - inventory/group_vars/nova_all.yml
+    - vars/repo_packages/nova_libvirt.yml
     - vars/config_vars/container_config_nova_compute.yml
     - vars/openstack_service_vars/nova_compute.yml
     - vars/openstack_service_vars/nova_spice_console_endpoint.yml

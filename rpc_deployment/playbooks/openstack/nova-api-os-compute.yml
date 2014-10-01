@@ -13,18 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- hosts: nova_all
-  user: root
-  roles:
-    - common
-    - common_sudoers
-    - container_common
-    - openstack_common
-    - openstack_openrc
-    - galera_client_cnf
-  vars_files:
-    - inventory/group_vars/nova_all.yml
-
 - hosts: nova_api_os_compute[0]
   user: root
   roles:

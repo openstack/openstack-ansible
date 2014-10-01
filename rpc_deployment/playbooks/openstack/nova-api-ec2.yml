@@ -30,13 +30,7 @@
 - hosts: nova_api_ec2
   user: root
   roles:
-    - common
-    - common_sudoers
-    - container_common
-    - openstack_common
-    - openstack_openrc
     - nova_common
-    - galera_client_cnf
     - init_script
   vars_files:
     - inventory/group_vars/nova_all.yml
