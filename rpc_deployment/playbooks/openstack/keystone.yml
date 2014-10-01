@@ -13,21 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# This playbook deploys Keystone-API.
-- hosts: keystone
-  user: root
-  roles:
-    - common
-    - common_sudoers
-    - container_common
-    - keystone_common
-    - openstack_common
-    - openstack_openrc
-    - galera_client_cnf
-  vars_files:
-    - vars/config_vars/keystone_config.yml
-    - vars/openstack_service_vars/keystone.yml
-
 # Setup Keystone
 - hosts: keystone[0]
   user: root
@@ -39,6 +24,7 @@
   vars:
     auth_admin_uri: "{{ auth_protocol }}://{{ container_address }}:{{ auth_port }}/v2.0"
   vars_files:
+    - vars/repo_packages/keystone.yml
     - vars/openstack_service_vars/keystone.yml
     - vars/openstack_service_vars/keystone_endpoint.yml
 
@@ -48,4 +34,5 @@
   roles:
     - keystone_apache
   vars_files:
+    - vars/repo_packages/keystone.yml
     - vars/openstack_service_vars/keystone.yml

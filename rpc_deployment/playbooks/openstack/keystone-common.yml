@@ -13,14 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: openstack-common.yml
-- include: keystone-all.yml
-- include: glance-all.yml
-- include: heat-all.yml
-- include: nova-all.yml
-- include: neutron-all.yml
-- include: cinder-all.yml
-- include: horizon-all.yml
-- include: utility.yml
-- include: rpc-support.yml
-- include: ../infrastructure/rsyslog-config.yml
+- hosts: keystone
+  user: root
+  roles:
+    - common
+    - common_sudoers
+    - container_common
+    - keystone_common
+    - openstack_common
+    - openstack_openrc
+    - galera_client_cnf
+  vars_files:
+    - vars/repo_packages/keystone.yml
+    - vars/config_vars/keystone_config.yml
+    - vars/openstack_service_vars/keystone.yml
