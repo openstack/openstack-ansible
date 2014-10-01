@@ -14,37 +14,37 @@
 # limitations under the License.
 
 - name: Ensure extra inner directories
-  file: >
-    path={{ item }}
-    state=directory
+  file:
+    path: "{{ item }}"
+    state: "directory"
   with_items: required_inner_dirs
   when: required_inner_dirs is defined
   register: inner_extra_changed
 
 - name: Ensure extra local directories
-  file: >
-    path={{ item }}
-    state=directory
+  file:
+    path: "{{ item }}"
+    state: "directory"
   when: required_outer_dirs is defined
   with_items: required_outer_dirs
   register: local_extra_changed
   delegate_to: "{{ physical_host }}"
 
 - name: Ensure extra container config options
-  lxc: >
-    name={{ container_name }}
-    command=config
-    options="{{ container_config_options }}"
-    state=running
+  lxc:
+    name: "{{ container_name }}"
+    command: "config"
+    options: "{{ container_config_options }}"
+    state: "running"
   when: container_config_options is defined and is_metal != true
   register: config_extra_changed
   delegate_to: "{{ physical_host }}"
 
 - name: Wait for networking
-  wait_for: >
-    port=22
-    search_regex=OpenSSH
-    timeout=60
-    host={{ container_address }}
+  wait_for:
+    port: "22"
+    search_regex: "OpenSSH"
+    timeout: "60"
+    host: "{{ container_address }}"
   delegate_to: localhost
   when: inner_extra_changed|changed or local_extra_changed|changed or config_extra_changed|changed

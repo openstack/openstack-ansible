@@ -14,21 +14,21 @@
 # limitations under the License.
 
 - name: Setup Keystone Config
-  template: >
-    src={{ item }}
-    dest=/etc/keystone/{{ item }}
-    owner={{ system_user }}
-    group={{ system_group }}
+  template:
+    src: "{{ item }}"
+    dest: "/etc/keystone/{{ item }}"
+    owner: "{{ system_user }}"
+    group: "{{ system_group }}"
   with_items:
     - default_catalog.templates
     - policy.json
 
 - name: Generate Keystone Config
-  template: >
-    src=template_gen
-    dest=/etc/keystone/{{ item.file }}
-    owner={{ system_user }}
-    group={{ system_group }}
+  template:
+    src: "template_gen"
+    dest: "/etc/keystone/{{ item.file }}"
+    owner: "{{ system_user }}"
+    group: "{{ system_group }}"
   with_items:
       - { file: keystone.conf, var: "{{ keystone_conf }}" }
       - { file: keystone-paste.ini, var: "{{ keystone_paste_ini }}" }

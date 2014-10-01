@@ -14,8 +14,8 @@
 # limitations under the License.
 
 - name: Drop rpc version file
-  template: >
-    src=rpc-release
-    dest=/etc/rpc-release
-    owner="root"
-    group="root"
+  template:
+    src: "rpc-release"
+    dest: "/etc/rpc-release"
+    owner: "root"
+    group: "root"
