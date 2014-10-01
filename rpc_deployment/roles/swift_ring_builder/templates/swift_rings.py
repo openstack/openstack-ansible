@@ -10,10 +10,8 @@ import yaml
 
 USAGE = "usage: %prog -s <rpc_user_config.yml>"
 
-DEFAULT_PART_POWER = 10
 DEFAULT_REPL = 3
 DEFAULT_MIN_PART_HOURS = 1
-DEFAULT_HOST_DRIVE = 'sdb'
 DEFAULT_HOST_ZONE = 0
 DEFAULT_HOST_WEIGHT = 100
 DEFAULT_ACCOUNT_PORT = {{ swift_account_port }}
@@ -24,7 +22,24 @@ DEFAULT_SECTION_PORT = {
     'container': DEFAULT_CONTAINER_PORT,
     'object': DEFAULT_OBJECT_PORT,
 }
-
+DEFAULT_GROUP_MAP = {
+    'account': 'account',
+{% for policy in storage_policies %}
+{%   if policy.policy.index == 0 %}
+    'object': '{{ policy.policy.name }}',
+{%   else %}
+    'object-{{ policy.policy.index}}': '{{ policy.policy.name }}',
+{%   endif %}
+{% endfor %}
+    'container': 'container'
+}
+DEFAULT_GROUPS= [
+    'account',
+{% for policy in storage_policies %}
+    '{{ policy.policy.name }}',
+{% endfor %}
+    'container'
+]
 
 def create_buildfile(build_file, part_power, repl, min_part_hours):
     run_and_wait(rb_main, ["swift-ring-builder", build_file, "create",
@@ -76,7 +91,9 @@ def build_ring(section, conf, part_power, hosts):
     for host in hosts:
         host_vars = hosts[host]
         host_vars['port'] = service_port
-        add_host_to_ring(build_file, host_vars)
+        host_vars['groups'] = host_vars.get('groups', DEFAULT_GROUPS)
+        if DEFAULT_GROUP_MAP[section] in host_vars['groups']:
+            add_host_to_ring(build_file, host_vars)
 
     # Rebalance ring
     run_and_wait(rb_main, ["swift-ring-builder", build_file, "rebalance"])
@@ -96,14 +113,16 @@ def main(setup):
     if _swift.get("swift_hosts"):
         for host in _swift['swift_hosts']:
             host_vars = _swift['swift_hosts'][host]['container_vars']['swift_vars']
-            if not host_vars.get('drive'):
-                host_vars['drive'] = DEFAULT_HOST_DRIVE
             host_ip = _swift['swift_hosts'][host]['ip']
+            if not host_vars.get('drive'):
+                continue
             host_drives = host_vars.get('drive')
             for host_drive in host_drives:
                 host_drive['ip'] = host_drive.get('ip', host_ip)
+                if host_vars.get('groups'):
+                   host_drive['groups'] = host_drive.get('groups', host_vars['groups'])
                 if host_vars.get('repl_ip'):
-                   host_drive['repl_ip'] = host_drive.get('repl_ip', host_vars.get['repl_ip'])
+                   host_drive['repl_ip'] = host_drive.get('repl_ip', host_vars['repl_ip'])
                 if host_vars.get('repl_port'):
                    host_drive['repl_port'] = host_drive.get('repl_port', host_vars['repl_port'])
                 if host_vars.get('weight'):
@@ -117,7 +136,10 @@ def main(setup):
     global_vars  = _swift['global_overrides']
     check_section(global_vars, 'swift')
     swift_vars = global_vars['swift']
-    part_power = swift_vars.get('part_power', DEFAULT_PART_POWER)
+    if not swift_vars.get('part_power'):
+        print('No part_power specified - please set a part_power value')
+        return 1
+    part_power = swift_vars.get('part_power')
 
     # Create account ring
     check_section(swift_vars, 'account')
