@@ -16,7 +16,7 @@
 - name: Test Container Networking
   wait_for: >
     port=22
-    timeout=10
+    timeout=20
     search_regex=OpenSSH
     host={{ hostvars[item]['container_address'] }}
   with_items: container_groups
