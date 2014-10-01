@@ -35,7 +35,6 @@ metering_driver: neutron.services.metering.drivers.iptables.iptables_driver.Ipta
 service_plugins: 
   - neutron.services.l3_router.l3_router_plugin.L3RouterPlugin
   - neutron.services.loadbalancer.plugin.LoadBalancerPlugin
-  - neutron.services.firewall.fwaas_plugin.FirewallPlugin
   - neutron.services.vpn.plugin.VPNDriverPlugin
   - neutron.services.metering.metering_plugin.MeteringPlugin
 
