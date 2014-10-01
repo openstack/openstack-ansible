@@ -15,7 +15,7 @@
 
 # This is the md5 of the environment file
 # this will ensure consistency when deploying.
-environment_version: 21de6ac181f7f9d5d950709928ccded8
+environment_version: dc4cd5fe9c07eee223e8bbb1c5bbaad5
 
 # User defined CIDR used for containers
 # Global cidr/s used for everything.
@@ -110,7 +110,7 @@ global_overrides:
         range: "1:1"
         net_name: "vlan"
   #
-  # Setup swift group variables when using swift
+  # Setup swift group variables when using swift (Not required if not using swift)
   # part power is required under swift.
   # For account/container speciying min_part_hours and repl_number is all thats required
   # Alternatively defaults will be used (repl_number of 3, and min_part_hours of 1).
@@ -187,6 +187,17 @@ log_hosts:
 network_hosts:
   network1:
     ip: 172.29.236.108
+
+# User defined Swift Proxy hosts - not required when not using swift
+# Will deploy a swift-proxy container on these hosts.
+# Recommend mirroring the infra_hosts
+# swift-proxy_hosts:
+#   infra1:
+#     ip: 172.29.236.100
+#   infra2:
+#     ip: 172.29.236.101
+#   infra3:
+#     ip: 172.29.236.102
 
 # User defined Object Storage Hosts - this is not a required group
 # Under swift_vars you can specify the host specific swift_vars.

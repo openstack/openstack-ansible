@@ -330,3 +330,9 @@ physical_skel:
   swift_hosts:
     belongs_to:
     - hosts
+  swift-proxy_containers:
+    belongs_to:
+    - all_containers
+  swift-proxy_hosts:
+    belongs_to:
+    - hosts
