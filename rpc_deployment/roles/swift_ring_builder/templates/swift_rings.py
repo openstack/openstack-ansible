@@ -113,7 +113,7 @@ def main(setup):
     if _swift.get("swift_hosts"):
         for host in _swift['swift_hosts']:
             host_vars = _swift['swift_hosts'][host]['container_vars']['swift_vars']
-            host_ip = _swift['swift_hosts'][host]['ip']
+            host_ip = host_vars.get('ip', _swift['swift_hosts'][host]['ip'])
             if not host_vars.get('drive'):
                 continue
             host_drives = host_vars.get('drive')

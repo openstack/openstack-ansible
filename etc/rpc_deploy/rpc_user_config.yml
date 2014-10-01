@@ -111,10 +111,15 @@ global_overrides:
         net_name: "vlan"
   #
   # Setup swift group variables when using swift
+  # part power is required under swift.
   # For account/container speciying min_part_hours and repl_number is all thats required
-  # Alternatively defaults will be used.
+  # Alternatively defaults will be used (repl_number of 3, and min_part_hours of 1).
   # For storage policies, a name and unique index is required as well as repl_number and
   # min_part_hours which will be set to a default value if not specified.
+  # There MUST be a storage policy with index 0 configured which will be the default for legacy containers (created pre-storage policies).
+  # You can set one policy to be "default: yes" this will be the default storage policy for non-legacy containers that are created.
+  # The index value must be unique.
+  # Storage policies can be set to "deprecated: yes" which will mean they are not used
   # swift:
   #   part_power: 8
   #   account:
@@ -184,6 +189,19 @@ network_hosts:
     ip: 172.29.236.108
 
 # User defined Object Storage Hosts - this is not a required group
+# Under swift_vars you can specify the host specific swift_vars.
+# region - the swift region, this isn't required.
+# zone - the swift zone, this isn't required either, will default to 0
+# drives - where the drives are mounted on the server
+# Above 3 vars are "host specific"
+# weight: a disks weight (defaults to 100 if not specified)
+# repl_ip: IP specific for object replication (not required)
+# repl_port: Port specific for object replication (not required)
+# groups: A list of groups to add the drive to. A group is either a storage policy or the account or container servers. (If not specified defaults to all groups, so container/account/all storage policies).
+# The above 4 can be specified on a per host or per drive basis
+# Or both, in which case "per drive" will take precedence for the specific drive.
+# ip can be specified in swift_vars to override the hosts ip
+# or per drive to override all for that specific drive.
 # swift_hosts: 
 #   object_storage1:
 #    ip: 172.29.236.108
@@ -191,19 +209,21 @@ network_hosts:
 #      swift_vars:
 #        region: 0
 #        zone: 0
-       # Specify where the drives are mounted
+#        groups:
+#          - silver
+#          - account
 #        drives: /srv/node
-       # Specify the drives in use
 #        drive:
 #          - name: sdb
-           # weight can be specified at a host level - this will override it
-#            weight: 100
-           # ip will default to host_ip if not specified
 #            ip: 172.10.100.100
-           # repl_ip & port are not required, but if there is a specific network/ip for replication specify it here
 #            repl_ip: 10.10.0.1
 #            repl_port: 54321
+#            groups:
+#              - gold
+#              - account
+#              - container
 #          - name: sdc
+#            weight: 150
 #          - name: sdd
 #          - name: sde
 #
