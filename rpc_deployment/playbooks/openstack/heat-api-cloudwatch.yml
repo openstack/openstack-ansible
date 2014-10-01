@@ -16,13 +16,7 @@
 - hosts: heat_api_cloudwatch
   user: root
   roles:
-    - common
-    - common_sudoers
-    - container_common
     - heat_common
-    - openstack_common
-    - openstack_openrc
-    - galera_client_cnf
     - init_script
   vars_files:
     - vars/openstack_service_vars/heat_api_cloudwatch.yml
