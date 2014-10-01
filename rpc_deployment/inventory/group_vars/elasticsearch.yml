@@ -21,17 +21,3 @@ verbose: True
 
 container_lvm_fstype: ext4
 container_lvm_fssize: 5GB
-
-apt_container_keys:
-  - { url: "http://packages.elasticsearch.org/GPG-KEY-elasticsearch", state: "present" }
-
-apt_container_repos:
-  - { repo: "deb http://packages.elasticsearch.org/elasticsearch/1.2/debian stable  main", state: "present"}
-
-container_packages:
-  - elasticsearch
-
-service_pip_dependencies:
-  - requests
-  - python-memcached
-  - pycrypto
