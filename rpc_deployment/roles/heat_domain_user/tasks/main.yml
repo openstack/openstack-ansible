@@ -13,25 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Ensure stack_owner role
+# This is the role assigned to users created within Heat stacks themselves
+- name: Ensure stack_user role
   keystone: >
     command=ensure_role
     login_tenant_name="{{ auth_admin_tenant }}"
-    login_user="{{ auth_admin_username }}" 
+    login_user="{{ auth_admin_username }}"
     login_password="{{ auth_admin_password }}"
     endpoint="{{ auth_admin_uri }}"
-    role_name="heat_stack_owner"
-
-- name: Ensure admin has stack_owner role
-  keystone: >
-    command=ensure_user_role
-    login_tenant_name="{{ auth_admin_tenant }}"
-    login_user="{{ auth_admin_username }}" 
-    login_password="{{ auth_admin_password }}"
-    endpoint="{{ auth_admin_uri }}"
-    user_name="admin"
-    tenant_name="admin"
-    role_name="heat_stack_owner"
+    role_name="heat_stack_user"
 
 - name: Create heat domain and domain user
   shell: |

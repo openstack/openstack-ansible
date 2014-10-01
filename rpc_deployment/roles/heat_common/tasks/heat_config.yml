@@ -13,6 +13,30 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# We add the keystone role used by heat to delegate to the heat service user
+# (for performing deferred operations via trusts)
+- name: Ensure stack_owner role
+  keystone: >
+    command=ensure_role
+    login_tenant_name="{{ auth_admin_tenant }}"
+    login_user="{{ auth_admin_username }}"
+    login_password="{{ auth_admin_password }}"
+    endpoint="{{ auth_admin_uri }}"
+    role_name="heat_stack_owner"
+
+# Any user creating stacks needs to have the 'heat_stack_owner' role assigned,
+# we add to admin user here for testing purposes
+- name: Ensure admin has stack_owner role
+  keystone: >
+    command=ensure_user_role
+    login_tenant_name="{{ auth_admin_tenant }}"
+    login_user="{{ auth_admin_username }}"
+    login_password="{{ auth_admin_password }}"
+    endpoint="{{ auth_admin_uri }}"
+    user_name="admin"
+    tenant_name="admin"
+    role_name="heat_stack_owner"
+
 - name: Setup Heat Config
   template: >
     src={{ item }}
