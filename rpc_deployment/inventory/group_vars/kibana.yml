@@ -22,14 +22,6 @@ verbose: True
 container_lvm_fstype: ext4
 container_lvm_fssize: 5GB
 
-kibana_url: http://rpc-slushee.rackspace.com/downloads/kibana-3.1.0.tar.gz
-
-kibana_root: /opt/kibana
-
-container_packages:
-  - apache2
-  - python-passlib
-
 system_user: www-user
 system_group: www-data
 
@@ -37,7 +29,3 @@ kibana_fqdn: "{{ external_vip_address }}"
 kibana_server_name: "{{ container_name }}"
 kibana_self_signed: true
 kibana_ssl_port: 8443
-
-service_pip_dependencies:
-  - python-memcached
-  - pycrypto

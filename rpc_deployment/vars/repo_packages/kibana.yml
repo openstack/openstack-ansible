@@ -15,6 +15,7 @@
 
 repo_package_name: kibana
 
+kibana_root: /opt/kibana
 kibana_url: "{{ rpc_repo_url }}/downloads/kibana-3.1.0.tar.gz"
 kibana_sha256sum: "059a4b6b507b9ff771901d12035e499b0e8d1cae7d9e5284633e19da6c294e07"
 
@@ -22,3 +23,7 @@ container_packages:
   - apache2
   - python-passlib
   - openjdk-7-jre
+
+service_pip_dependencies:
+  - python-memcached
+  - pycrypto
