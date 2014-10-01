@@ -139,6 +139,7 @@ auth_admin_password: "{{ keystone_auth_admin_password }}"
 auth_admin_token: "{{ keystone_auth_admin_password }}"
 auth_admin_tenant: admin
 auth_identity_uri: "http://{{ internal_vip_address }}:5000/v2.0"
+auth_identity_uri_v3: "http://{{ internal_vip_address }}:5000/v3"
 auth_admin_uri: "http://{{ internal_vip_address }}:35357/v2.0"
 auth_host: "{{ internal_vip_address }}"
 auth_port: 35357

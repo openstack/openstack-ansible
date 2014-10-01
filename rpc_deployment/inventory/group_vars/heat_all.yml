@@ -52,9 +52,10 @@ service_names:
   - heat-api-cloudwatch
   - heat-engine
 
-## Stack 
+## Stack
 stack_domain_admin_password: "{{ heat_stack_domain_admin_password }}"
-stack_domain_admin: heat_domain_admin
+stack_domain_admin: stack_domain_admin
+stack_domain: heat
 deferred_auth_method: trusts
 
 auth_encryption_key: "{{ heat_auth_encryption_key }}"
@@ -69,7 +70,7 @@ heat_metadata_server_url: "http://{{ internal_vip_address }}:8000"
 git_repo: https://git.openstack.org/openstack/heat
 git_fallback_repo: https://github.com/openstack/heat
 git_etc_example: etc/heat
-git_install_branch: 93f3c78a8bd9ecb79fa3d719468b371e67519969
+git_install_branch: 830534149aea02a0435bf86565e91b4652032bcd
 
 service_pip_dependencies:
   - MySQL-python
@@ -79,6 +80,7 @@ service_pip_dependencies:
   - python-keystoneclient
   - python-troveclient
   - python-ceilometerclient
+  - python-openstackclient
   - keystonemiddleware
 
 container_directories:
@@ -91,4 +93,4 @@ container_directories:
 
 container_packages:
   - rsync
-  - libxslt1.1 
+  - libxslt1.1
