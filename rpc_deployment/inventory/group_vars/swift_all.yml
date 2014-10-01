@@ -13,10 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# The variables file used by the playbooks in the Cinder-api group.
+# The variables file used by the playbooks in the swift-hosts & swift-proxy groups.
 # These don't have to be explicitly imported by vars_files: they are autopopulated.
-
-####### TODO: ADDING BOGUS VARS THAT SHOULD BE CONFIGURABLE VIA RPC_USER_CONFIG 
 
 authtoken_active: True
 delay_auth_decision: true
@@ -32,31 +30,29 @@ verbose: True
 container_lvm_fstype: ext4
 container_lvm_fssize: 5GB
 
-## General configuration
-## Set this in rpc_user_config.yml UNLESS you want all hosts to use the same
-## Cinder backends.  See the rpc_user_config example for more on how this is done.
-# cinder_backends:
-#   lvm:
-#     volume_group: cinder-volumes
-#     driver: cinder.volume.drivers.lvm.LVMISCSIDriver
-#     backend_name: LVM_iSCSI
-
+# Swift default ports
 swift_proxy_port: "8888"
 swift_object_port: "6000"
 swift_container_port: "6001"
 swift_account_port: "6002"
+
+# Swift default variables
+swift_default_replication_number: 3
+swift_default_min_part_hours: 1
+swift_default_host_zone: 0
+swift_default_drive_weight: 100
 
 ## DB
 container_mysql_user: swift
 container_mysql_password: "{{ swift_container_mysql_password }}"
 container_database: swift
 
-## Cinder Auth
+## Swift Auth
 service_admin_tenant_name: "service"
 service_admin_username: "swift"
 service_admin_password: "{{ swift_service_password }}"
 
-## Cinder User / Group
+## Swift User / Group
 system_user: swift
 system_group: swift
 

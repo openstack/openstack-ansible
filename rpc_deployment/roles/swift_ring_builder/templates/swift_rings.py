@@ -10,10 +10,10 @@ import yaml
 
 USAGE = "usage: %prog -s <rpc_user_config.yml>"
 
-DEFAULT_REPL = 3
-DEFAULT_MIN_PART_HOURS = 1
-DEFAULT_HOST_ZONE = 0
-DEFAULT_HOST_WEIGHT = 100
+DEFAULT_REPL = {{ swift_default_replication_number }}
+DEFAULT_MIN_PART_HOURS = {{ swift_default_min_part_hours }}
+DEFAULT_HOST_ZONE = {{ swift_default_host_zone }}
+DEFAULT_HOST_WEIGHT = {{ swift_default_drive_weight }}
 DEFAULT_ACCOUNT_PORT = {{ swift_account_port }}
 DEFAULT_CONTAINER_PORT = {{ swift_container_port }}
 DEFAULT_OBJECT_PORT = {{ swift_object_port }}
