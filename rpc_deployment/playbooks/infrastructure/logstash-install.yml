@@ -13,19 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Setup supporting services
 - hosts: logstash
   user: root
   roles:
     - container_extra_setup
-  vars_files:
-    - vars/config_vars/container_config_logstash.yml
-
-
-- hosts: logstash
-  user: root
-  roles:
     - common
     - container_common
     - logging_common
     - logstash
+  vars_files:
+    - vars/repo_packages/logstash.yml
+    - vars/config_vars/container_config_logstash.yml
