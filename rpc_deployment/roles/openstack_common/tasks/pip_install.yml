@@ -14,12 +14,23 @@
 # limitations under the License.
 
 - name: Install service source
-  pip: >
-    name="/opt/{{ service_name }}_{{ git_install_branch | replace('/', '_') }}"
-    extra_args="{{ pip_install_options|default('') }} --allow-all-external"
+  pip:
+    name: "/opt/{{ service_name }}_{{ git_install_branch | replace('/', '_') }}"
+    extra_args: "{{ pip_install_options|default('') }} --allow-all-external"
   register: pip_install
   until: pip_install|success
   retries: 5
   async: 1800
   delay: 5
   poll: 5
+
+- name: Install pip repo plugins
+  pip:
+    name: "{{ git_dest }}/{{ item.path }}/{{ item.package }}"
+    extra_args: "{{ pip_install_options|default('') }} --allow-all-external"
+  when: git_dest is defined and git_repo_plugins is defined
+  with_items: git_repo_plugins
+  register: pip_install
+  until: pip_install|success
+  retries: 5
+  delay: 10

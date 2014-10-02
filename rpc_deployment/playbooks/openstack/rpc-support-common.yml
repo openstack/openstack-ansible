@@ -13,22 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Ensure rpc support packages are installed
-  apt:
-    pkg: "{{ item }}"
-    state: present
-    update_cache: yes
-    cache_valid_time: 600
-  with_items:
-    - vim
-    - linux-crashdump
-    - iotop
-    - dstat
-    - tcpdump
-    - lsof
-    - htop
-  register: rpc_support_packages
-  until: rpc_support_packages|success
-  retries: 3
-  tags:
-    - support_packages
+# Add all support options to all hosts
+- hosts: hosts:all_containers
+  user: root
+  roles:
+    - common
+    - container_common
+    - rpc_support_common
+  vars_files:
+    - vars/repo_packages/rpc_support.yml

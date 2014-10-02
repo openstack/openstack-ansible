@@ -13,17 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- hosts: utility_all
-  user: root
-  roles:
-    - common
-    - container_common
-    - utility_common
-    - openstack_openrc
-    - galera_client_cnf
-  vars_files:
-    - vars/config_vars/utility_config.yml
-
 - hosts: all_containers:!utility_all
   user: root
   roles:

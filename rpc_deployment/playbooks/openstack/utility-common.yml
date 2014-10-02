@@ -13,20 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-repo_package_name: utility
-
-container_packages:
-  - ruby1.9.1
-  - openjdk-7-jre
-
-service_pip_dependencies:
-  - python-openstackclient
-  - python-cinderclient
-  - python-glanceclient
-  - python-heatclient
-  - python-keystoneclient
-  - python-neutronclient
-  - python-novaclient
-  - python-swiftclient
-  - python-memcached
-  - pycrypto
+- hosts: utility_all
+  user: root
+  roles:
+    - common
+    - container_common
+    - utility_common
+    - openstack_openrc
+    - galera_client_cnf
+  vars_files:
+    - vars/config_vars/utility_config.yml
+    - vars/repo_packages/utility.yml

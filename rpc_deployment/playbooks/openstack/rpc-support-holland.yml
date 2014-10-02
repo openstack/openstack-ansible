@@ -13,20 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-repo_package_name: utility
-
-container_packages:
-  - ruby1.9.1
-  - openjdk-7-jre
-
-service_pip_dependencies:
-  - python-openstackclient
-  - python-cinderclient
-  - python-glanceclient
-  - python-heatclient
-  - python-keystoneclient
-  - python-neutronclient
-  - python-novaclient
-  - python-swiftclient
-  - python-memcached
-  - pycrypto
+# Setup holland backup
+- hosts: galera
+  user: root
+  roles:
+    - common
+    - container_common
+    - openstack_common
+    - rpc_support_holland
+  vars_files:
+    - vars/repo_packages/holland.yml

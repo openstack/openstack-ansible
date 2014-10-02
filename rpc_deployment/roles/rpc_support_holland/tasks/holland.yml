@@ -13,22 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Ensure supporting holland packages are installed
-  apt:
-    pkg: "{{ item }}"
-    state: present
-    update_cache: yes
-    cache_valid_time: 600
-  with_items:
-    - mariadb-client
-    - xtrabackup
-  register: rpc_support_packages
-  until: rpc_support_packages|success
-  retries: 3
-  tags:
-    - holland_supporting_packages
-    - holland_all
-
 - name: Create rpc_support backup user
   mysql_user:
     name: "{{ item.name }}"
@@ -51,31 +35,6 @@
     - holland_sql_user
     - holland_all
 
-- name: Get holland from git
-  git:
-    repo: https://github.com/holland-backup/holland
-    dest: "/opt/holland_{{ holland_release }}"
-    version: "{{ holland_release }}"
-  register: holland_clone
-  until: holland_clone|success 
-  retries: 5
-  tags:
-    - holland_source
-    - holland_all
-
-- name: Install holland source
-  pip: 
-    name: "{{ item }}"
-  with_items:
-    - "mysql-python"
-    - "/opt/holland_{{ holland_release }}"
-    - "/opt/holland_{{ holland_release }}/plugins/holland.lib.common"
-    - "/opt/holland_{{ holland_release }}/plugins/holland.lib.mysql"
-    - "/opt/holland_{{ holland_release }}/plugins/holland.backup.xtrabackup"
-  tags:
-    - holland_source
-    - holland_all
-
 - name: Create supporting holland directories
   file:
     state: directory
@@ -93,8 +52,8 @@
     dest: "{{ item.dest }}"
     state: link
   with_items:
-    - { src: "/opt/holland_{{ holland_release }}/config/providers", dest: "/etc/holland/providers" }
-    - { src: "/opt/holland_{{ holland_release }}/config/backupsets", dest: "/etc/holland/backupsets" }
+    - { src: "{{ git_dest }}/config/providers", dest: "/etc/holland/providers" }
+    - { src: "{{ git_dest }}/config/backupsets", dest: "/etc/holland/backupsets" }
   tags:
     - holland_conf
     - holland_all
