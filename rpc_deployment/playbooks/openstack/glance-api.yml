@@ -13,18 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- hosts: glance_all
-  user: root
-  roles:
-    - common
-    - common_sudoers
-    - container_common
-    - openstack_common
-    - openstack_openrc
-    - galera_client_cnf
-  vars_files:
-    - vars/openstack_service_vars/glance_api.yml
-
 - hosts: glance_api[0]
   user: root
   roles:
