@@ -20,7 +20,10 @@ repo_package_name: galera
 # "galera_common" role.
 mariadb_server_package: "mariadb-galera-server-5.5"
 
-container_packages:
+# NB This is specifically galera_packages as these packages only get installed
+# during the galera play - this is because of the preseed task and the service
+# startup control used when installing mariadb-galera-server and galera.
+galera_packages:
   - mariadb-client
   - "{{ mariadb_server_package }}"
   - galera
