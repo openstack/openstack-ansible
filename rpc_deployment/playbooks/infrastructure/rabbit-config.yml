@@ -16,7 +16,10 @@
 - hosts: rabbit
   user: root
   roles:
+    - container_extra_setup
     - common
     - container_common
-    - container_extra_setup
     - rabbit_common
+  vars_files:
+    - vars/config_vars/container_config_rabbitmq.yml
+    - vars/repo_packages/rabbitmq.yml

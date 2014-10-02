@@ -13,24 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Add apt key for rabbit
-  apt_key:
-    url: "{{ item }}"
-    state: present
-  with_items: rabbitmq_key
-  tags:
-    - package_install
-    - rabbit_install
-
-- name: Configure rabbit repo
-  apt_repository:
-    repo: "{{ item.repo }}"
-    state: "{{ item.state }}"
-  with_items: rabbit_repos
-  tags:
-    - package_install
-    - rabbit_install
-
 - name: Fix /etc/hosts
   lineinfile:
     dest: /etc/hosts
@@ -40,18 +22,6 @@
   tags:
     - hosts
     - rabbit_config
-
-- name: Install rabbit packages
-  apt:
-    pkg: "{{ item }}"
-    state: latest
-    update_cache: yes
-    cache_valid_time: 600
-  with_items:
-    - rabbitmq-server
-  tags:
-    - package_install
-    - rabbit_install
 
 - include: restart_rabbit.yml
 
