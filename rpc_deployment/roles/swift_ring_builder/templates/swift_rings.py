@@ -143,10 +143,10 @@ def main(setup):
                    host_drive['weight'] = host_drive.get('weight', host_vars['weight'])
                 key = "%s/%s" % (host_drive['ip'], host_drive['name'])
                 if key in _hosts:
-                    print("%(host)s already definined" % host)
+                    print("%s already definined - duplicate device" % key)
                     return 1
                 _hosts[key] = host_drive
-    
+
     global_vars  = _swift['global_overrides']
     check_section(global_vars, 'swift')
     swift_vars = global_vars['swift']
@@ -155,12 +155,14 @@ def main(setup):
         return 1
     part_power = swift_vars.get('part_power')
 
-    # Create account ring
-    check_section(swift_vars, 'account')
+    # Create account ring - if the section is empty create an empty dict so defaults are used
+    if not has_section(swift_vars, 'account'):
+        swift_vars['account'] = {}
     build_ring('account', swift_vars['account'], part_power, _hosts)
 
-    # Create container ring
-    check_section(swift_vars, 'container')
+    # Create container ring - if the section is empty create an empty dict so defaults are use
+    if not has_section(swift_vars, 'container'):
+        swift_vars['container'] = {}
     build_ring('container', swift_vars['container'], part_power, _hosts)
 
     # Create object rings (storage policies)
