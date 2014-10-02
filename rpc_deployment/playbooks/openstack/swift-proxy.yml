@@ -16,13 +16,15 @@
 - hosts: swift_proxy
   user: root
   roles:
-    - common
-    - common_sudoers
-    - container_common
-    - openstack_common
-    - openstack_openrc
-    - galera_client_cnf
     - swift_common
     - swift_proxy
   vars_files:
     - inventory/group_vars/swift_all.yml
+
+- hosts: swift_proxy[0]
+  user: root
+  roles:
+    - keystone_add_service
+  vars_files:
+    - vars/openstack_service_vars/swift_proxy_endpoint.yml
+

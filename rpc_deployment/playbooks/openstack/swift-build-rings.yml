@@ -8,6 +8,7 @@
     - swift_ring_builder
   vars_files:
     - inventory/group_vars/swift_all.yml
+    - vars/repo_packages/swift.yml
 
 - hosts: swift_hosts:swift_proxy
   user: root

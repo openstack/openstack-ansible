@@ -111,12 +111,3 @@
   vars_files:
     - inventory/group_vars/nova_all.yml
     - vars/openstack_service_vars/nova_api_s3_endpoint.yml
-
-# Swift endpoint
-- hosts: keystone[0]
-  user: root
-  roles:
-    - keystone_add_service
-  vars_files:
-    - inventory/group_vars/swift_all.yml
-    - vars/openstack_service_vars/swift_proxy_endpoint.yml

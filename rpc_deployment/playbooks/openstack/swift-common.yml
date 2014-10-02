@@ -13,12 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- hosts: swift_hosts
+- hosts: swift_proxy:swift_hosts
   user: root
   roles:
-    - swift_common
-    - swift_container
-    - swift_object
-    - swift_account
+    - common
+    - common_sudoers
+    - container_common
+    - openstack_common
+    - openstack_openrc
+    - galera_client_cnf
   vars_files:
-    - inventory/group_vars/swift_all.yml
+    - vars/repo_packages/swift.yml
