@@ -13,18 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Install memcached
-  apt:
-    pkg: memcached
-    state: latest
-    update_cache: yes
-    cache_valid_time: 600
-
 - name: Drop memcached config
-  template: >
-    src="memcached.conf"
-    dest="/etc/memcached.conf"
-    owner=root
-    group=root 
-    mode=0644
+  template:
+    src: "memcached.conf"
+    dest: "/etc/memcached.conf"
+    owner: "root"
+    group: "root"
+    mode: "0644"
   notify: Restart memcached
