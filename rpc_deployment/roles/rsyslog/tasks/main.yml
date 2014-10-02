@@ -14,11 +14,11 @@
 # limitations under the License.
 
 - name: Rsyslog Setup
-  template: >
-    src={{ item }}
-    dest=/etc/rsyslog.d/{{ item }}
-    owner=root
-    group=root
+  template:
+    src: "{{ item }}"
+    dest: "/etc/rsyslog.d/{{ item }}"
+    owner: "root"
+    group: "root"
   register: results
   with_items:
     - 50-default.conf

@@ -22,10 +22,3 @@ verbose: True
 
 container_lvm_fstype: ext4
 container_lvm_fssize: 5GB
-
-apt_container_repos:
-  - { repo: "ppa:adiscon/v8-stable", state: "present" }
-
-service_pip_dependencies:
-  - python-memcached
-  - pycrypto

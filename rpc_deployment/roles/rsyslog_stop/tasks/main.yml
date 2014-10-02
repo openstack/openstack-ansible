@@ -14,4 +14,7 @@
 # limitations under the License.
 
 - name: stop rsyslog
-  service: name=rsyslog state=stopped pattern=rsyslog
+  service: 
+    name: "rsyslog"
+    state: "stopped"
+    pattern: "rsyslog"
