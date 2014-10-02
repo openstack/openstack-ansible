@@ -20,18 +20,6 @@ container_lvm_fssize: 5GB
 
 debian_sys_maint_password: "{{ mysql_debian_sys_maint_password }}"
 
-mariadb_server_package: mariadb-galera-server-5.5
-
-galera_packages:
-  - mariadb-client
-  - "{{ mariadb_server_package }}"
-  - galera
-  - python-software-properties
-  - software-properties-common
-  - debconf-utils
-  - rsync
-  - xtrabackup
-
 # Size of the galera cache
 galera_gcache_size: 1G
 
