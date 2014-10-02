@@ -15,16 +15,8 @@
 
 service_name: rabbitmq
 
-rabbitmq_key:
-  - "http://www.rabbitmq.com/rabbitmq-signing-key-public.asc"
-
-rabbit_repos:
-  - { repo: "deb http://www.rabbitmq.com/debian/ testing main", state: "present" }
-
 container_lvm_fstype: ext4
 container_lvm_fssize: 5GB
-container_config_options:
-  - "lxc.aa_profile=lxc-openstack"
 
 rabbit_cookie: "{{ rabbitmq_cookie_token }}"
 
@@ -32,6 +24,3 @@ enable_management_plugin: true
 
 rabbit_cluster_name: rpc
 
-service_pip_dependencies:
-  - python-memcached
-  - pycrypto

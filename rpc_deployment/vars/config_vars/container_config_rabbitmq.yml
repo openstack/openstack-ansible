@@ -13,18 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-repo_package_name: rabbitmq
+# Set the options that we want for the container, these are config options.
+# The option is set as a YAML list which translates into "key = value" in config
 
-apt_container_keys:
-  - { url: "http://www.rabbitmq.com/rabbitmq-signing-key-public.asc", state: "present" }
-
-apt_container_repos:
-  - { repo: "deb http://www.rabbitmq.com/debian/ testing main", state: "present" }
-
-container_packages:
-  - rabbitmq-server
-  - erlang
-
-service_pip_dependencies:
-  - python-memcached
-  - pycrypto
+container_config_options:
+  - "lxc.aa_profile=lxc-openstack"
