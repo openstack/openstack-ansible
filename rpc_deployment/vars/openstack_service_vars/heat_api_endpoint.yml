@@ -18,6 +18,6 @@ service_type: orchestration
 service_description: "Heat Orchestration Service"
 service_password: "{{ heat_service_password }}"
 
-service_publicurl: "http://{{ external_vip_address }}:8004/v1/$(tenant_id)s"
-service_adminurl: "http://{{ internal_vip_address }}:8004/v1/$(tenant_id)s"
-service_internalurl: "http://{{ internal_vip_address }}:8004/v1/$(tenant_id)s"
+service_publicurl: "http://{{ external_vip_address }}:8004/v1/%(tenant_id)s"
+service_adminurl: "http://{{ internal_vip_address }}:8004/v1/%(tenant_id)s"
+service_internalurl: "http://{{ internal_vip_address }}:8004/v1/%(tenant_id)s"
