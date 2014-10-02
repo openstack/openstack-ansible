@@ -14,23 +14,23 @@
 # limitations under the License.
 
 - name: Create DB for service
-  mysql_db: >
-    login_user="{{ mysql_user }}"
-    login_password="{{ mysql_password }}"
-    login_host="{{ mysql_address }}"
-    name="{{ container_database }}"
-    state=present
+  mysql_db:
+    login_user: "{{ mysql_user }}"
+    login_password: "{{ mysql_password }}"
+    login_host: "{{ mysql_address }}"
+    name: "{{ container_database }}"
+    state: "present"
 
 - name: Grant access to the DB for the service
-  mysql_user: >
-    login_user="{{ mysql_user }}"
-    login_password="{{ mysql_password }}"
-    login_host="{{ mysql_address }}"
-    name="{{ container_mysql_user }}"
-    password="{{ container_mysql_password }}"
-    host="{{ item }}"
-    state=present
-    priv={{ container_database }}.*:ALL
+  mysql_user:
+    login_user: "{{ mysql_user }}"
+    login_password: "{{ mysql_password }}"
+    login_host: "{{ mysql_address }}"
+    name: "{{ container_mysql_user }}"
+    password: "{{ container_mysql_password }}"
+    host: "{{ item }}"
+    state: "present"
+    priv: "{{ container_database }}.*:ALL"
   with_items:
     - "localhost"
     - "%"

@@ -14,9 +14,9 @@
 # limitations under the License.
 
 - name: Drop local .my.cnf file
-  template: >
-    src=client_my.cnf
-    dest=/root/.my.cnf
-    owner=root
-    group=root 
-    mode=0600
+  template:
+    src: "client_my.cnf"
+    dest: "/root/.my.cnf"
+    owner: "root"
+    group: "root"
+    mode: "0600"
