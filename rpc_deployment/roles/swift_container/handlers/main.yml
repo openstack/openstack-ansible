@@ -13,14 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# TODO: Replace these with init scripts
 - name: Restart container server
-  command: swift-init container-server restart
+  shell: swift-init container-server restart || swift-init container-server restart
 
 - name: Restart container auditor
-  command: swift-init container-auditor restart
+  shell: swift-init container-auditor restart || swift-init container-auditor restart
 
 - name: Restart container replicator
-  command: swift-init container-replicator restart
+  shell: swift-init container-replicator restart || swift-init container-replicator restart 
 
 - name: Restart container updater
-  command: swift-init container-updater restart
+  shell: swift-init container-updater restart || swift-init container-updater restart

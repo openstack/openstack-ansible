@@ -13,5 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# TODO: Replace this with init scripts
 - name: Restart proxy server
-  command: swift-init proxy-server restart
+  shell: swift-init proxy-server restart || swift-init proxy-server restart

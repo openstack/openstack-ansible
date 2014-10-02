@@ -13,14 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# TODO: Replace these with init scripts
 - name: Restart object server
-  command: swift-init object-server restart
+  shell: swift-init object-server restart || swift-init object-server restart
 
 - name: Restart object auditor
-  command: swift-init object-auditor restart
+  shell: swift-init object-auditor restart || swift-init object-auditor restart
 
 - name: Restart object replicator
-  command: swift-init object-replicator restart
+  shell: swift-init object-replicator restart || swift-init object-replicator restart
 
 - name: Restart object updater
-  command: swift-init object-updater restart
+  shell: swift-init object-updater restart || swift-init object-updater restart

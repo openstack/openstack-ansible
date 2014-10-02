@@ -13,14 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# TODO: Replace these with init scripts
 - name: Restart account server
-  command: swift-init account-server restart
+  shell: swift-init account-server restart || swift-init account-server restart
 
 - name: Restart account auditor
-  command: swift-init account-auditor restart
+  shell: swift-init account-auditor restart || swift-init account-auditor restart
 
 - name: Restart account replicator
-  command: swift-init account-replicator restart
+  shell: swift-init account-replicator restart || swift-init account-replicator restart
 
 - name: Restart account reaper
-  command: swift-init account-reaper restart
+  shell: swift-init account-reaper restart || swift-init account-reaper restart
