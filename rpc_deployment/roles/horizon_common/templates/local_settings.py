@@ -32,6 +32,7 @@ SESSION_COOKIE_SECURE = True
 # service API. For example, The identity service APIs have inconsistent
 # use of the decimal point, so valid options would be "2.0" or "3".
 # OPENSTACK_API_VERSIONS = {
+#     "data_processing": 1.1,
 #     "identity": 3,
 #     "volume": 2
 # }
@@ -45,7 +46,8 @@ SESSION_COOKIE_SECURE = True
 # OPENSTACK_KEYSTONE_DEFAULT_DOMAIN = 'Default'
 
 # Set Console type:
-# valid options would be "AUTO", "VNC", "SPICE" or "RDP"
+# valid options would be "AUTO"(default), "VNC", "SPICE", "RDP" or None
+# Set to None explicitly if you want to deactivate the console.
 # CONSOLE_TYPE = "AUTO"
 
 # Default OpenStack Dashboard configuration.
@@ -60,10 +62,11 @@ HORIZON_CONFIG = {
         'types': ['alert-success', 'alert-info']
     },
     'help_url': "{{ horizon_help_url|default('http://docs.openstack.org') }}",
-    'exceptions': {
-        'recoverable': exceptions.RECOVERABLE,
-        'not_found': exceptions.NOT_FOUND,
-        'unauthorized': exceptions.UNAUTHORIZED},
+    'exceptions': {'recoverable': exceptions.RECOVERABLE,
+                   'not_found': exceptions.NOT_FOUND,
+                   'unauthorized': exceptions.UNAUTHORIZED},
+    'angular_modules': [],
+    'js_files': [],
 }
 
 # Specify a regular expression to validate user passwords.
@@ -76,13 +79,14 @@ HORIZON_CONFIG = {
 # multiple floating IP pools or complex network requirements.
 # HORIZON_CONFIG["simple_ip_management"] = False
 
-# Turn off browser autocompletion for the login form if so desired.
+# Turn off browser autocompletion for forms including the login form and
+# the database creation workflow if so desired.
 # HORIZON_CONFIG["password_autocomplete"] = "off"
 
 LOCAL_PATH = os.path.dirname(os.path.abspath(__file__))
 
 # Set custom secret key:
-# You can either set it to a specific value or you can let horizion generate a
+# You can either set it to a specific value or you can let horizon generate a
 # default secret key that is unique on this machine, e.i. regardless of the
 # amount of Python WSGI workers (if used behind Apache+mod_wsgi): However, there
 # may be situations where you would want to set this explicitly, e.g. when
@@ -176,19 +180,33 @@ OPENSTACK_HYPERVISOR_FEATURES = {
     'can_set_password': False,
 }
 
+# The OPENSTACK_CINDER_FEATURES settings can be used to enable optional
+# services provided by cinder that is not exposed by its extension API.
+OPENSTACK_CINDER_FEATURES = {
+    'enable_backup': False,
+}
+
 # The OPENSTACK_NEUTRON_NETWORK settings can be used to enable optional
 # services provided by neutron. Options currently available are load
 # balancer service, security groups, quotas, VPN service.
 OPENSTACK_NEUTRON_NETWORK = {
+    'enable_router': True,
+    'enable_quotas': True,
+    'enable_ipv6': False,
+    'enable_distributed_router': False,
+    'enable_ha_router': False,
     'enable_lb': False,
     'enable_firewall': False,
-    'enable_quotas': True,
     'enable_vpn': False,
     # The profile_support option is used to detect if an external router can be
     # configured via the dashboard. When using specific plugins the
     # profile_support can be turned on if needed.
     'profile_support': None,
     #'profile_support': 'cisco',
+    # Set which provider network types are supported. Only the network types
+    # in this list will be available to choose from when creating a network.
+    # Network types include local, flat, vlan, gre, and vxlan.
+    'supported_provider_types': ['flat', 'vlan', 'vxlan'],
 }
 
 # The OPENSTACK_IMAGE_BACKEND settings can be used to customize features
@@ -219,6 +237,11 @@ IMAGE_CUSTOM_PROPERTY_TITLES = {
     "project_id": _("Project ID"),
     "image_type": _("Image Type")
 }
+
+# The IMAGE_RESERVED_CUSTOM_PROPERTIES setting is used to specify which image
+# custom properties should not be displayed in the Image Custom Properties
+# table.
+IMAGE_RESERVED_CUSTOM_PROPERTIES = []
 
 # OPENSTACK_ENDPOINT_TYPE specifies the endpoint type to use for the endpoints
 # in the Keystone service catalog. Use this setting when Horizon is running
@@ -268,6 +291,8 @@ TIME_ZONE = "UTC"
 #    'compute': 'nova_policy.json',
 #    'volume': 'cinder_policy.json',
 #    'image': 'glance_policy.json',
+#    'orchestration': 'heat_policy.json',
+#    'network': 'neutron_policy.json',
 #}
 
 # Trove user and database extension support. By default support for
@@ -380,6 +405,10 @@ LOGGING = {
             'handlers': ['null'],
             'propagate': False,
         },
+        'scss': {
+            'handlers': ['null'],
+            'propagate': False,
+        },
     }
 }
 
@@ -387,19 +416,19 @@ LOGGING = {
 # It is specified in the form.
 SECURITY_GROUP_RULES = {
     'all_tcp': {
-        'name': 'ALL TCP',
+        'name': _('All TCP'),
         'ip_protocol': 'tcp',
         'from_port': '1',
         'to_port': '65535',
     },
     'all_udp': {
-        'name': 'ALL UDP',
+        'name': _('All UDP'),
         'ip_protocol': 'udp',
         'from_port': '1',
         'to_port': '65535',
     },
     'all_icmp': {
-        'name': 'ALL ICMP',
+        'name': _('All ICMP'),
         'ip_protocol': 'icmp',
         'from_port': '-1',
         'to_port': '-1',
@@ -490,13 +519,10 @@ SECURITY_GROUP_RULES = {
     },
 }
 
-FLAVOR_EXTRA_KEYS = {
-    'flavor_keys': [
-        ('quota:read_bytes_sec', _('Quota: Read bytes')),
-        ('quota:write_bytes_sec', _('Quota: Write bytes')),
-        ('quota:cpu_quota', _('Quota: CPU')),
-        ('quota:cpu_period', _('Quota: CPU period')),
-        ('quota:inbound_average', _('Quota: Inbound average')),
-        ('quota:outbound_average', _('Quota: Outbound average')),
-    ]
-}
+# Indicate to the Sahara data processing service whether or not
+# automatic floating IP allocation is in effect.  If it is not
+# in effect, the user will be prompted to choose a floating IP
+# pool for use in their cluster.  False by default.  You would want
+# to set this to True if you were running Nova Networking with
+# auto_assign_floating_ip = True.
+# SAHARA_AUTO_IP_ALLOCATION_ENABLED = False
