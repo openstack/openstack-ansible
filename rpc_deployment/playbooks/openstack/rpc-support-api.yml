@@ -13,12 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Add all support options to all hosts
-- hosts: hosts:all_containers
-  user: root
-  roles:
-    - rpc_support_common
-
 # Ensure security groups and keys are within the openstack api
 - hosts: utility[0]
   user: root
@@ -40,7 +34,7 @@
         - { src: "/root/.ssh/rpc_support", name: "rpc_support" }
         - { src: "/root/.ssh/rpc_support.pub", name: "rpc_support_pub" }
 
-- hosts: utility:utility[0]
+- hosts: utility:neutron_all:!utility[0]
   user: root
   gather_facts: false
   tasks:
@@ -56,11 +50,3 @@
       with_items:
         - { src: "/root/.ssh/rpc_support", name: "rpc_support", file_mode: "0600", dir_mode: "0755" }
         - { src: "/root/.ssh/rpc_support.pub", name: "rpc_support_pub", file_mode: "0640", dir_mode: "0755" }
-
-# Setup holland backup
-- hosts: galera
-  user: root
-  roles:
-     - rpc_support_holland
-  vars:
-    holland_release: "{{ rpc_support_holland_branch|default('v1.0.10') }}"

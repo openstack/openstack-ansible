@@ -22,18 +22,3 @@ service_name: utility
 # Only used when the lxc vg is present on the target
 container_lvm_fstype: ext4
 container_lvm_fssize: 5GB
-
-service_pip_dependencies:
-  - python-openstackclient
-  - python-cinderclient
-  - python-glanceclient
-  - python-heatclient
-  - python-keystoneclient
-  - python-neutronclient
-  - python-novaclient
-  - python-swiftclient
-  - python-memcached
-  - pycrypto
-
-container_packages:
-  - ruby1.9.1

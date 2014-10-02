@@ -14,20 +14,20 @@
 # limitations under the License.
 
 - name: Get package from git
-  git: >
-    repo={{ git_repo }}
-    dest="/opt/{{ service_name }}_{{ git_install_branch | replace('/', '_') }}"
-    version={{ git_install_branch }}
+  git:
+    repo: "{{ git_repo }}"
+    dest: "{{ git_dest }}"
+    version: "{{ git_install_branch }}"
   register: git_clone
   ignore_errors: yes
   until: git_clone|success
   retries: 5
 
 - name: Get package from fallback git repo
-  git: >
-    repo={{ git_fallback_repo }}
-    dest="/opt/{{ service_name }}_{{ git_install_branch | replace('/', '_') }}"
-    version={{ git_install_branch }}
+  git:
+    repo: "{{ git_fallback_repo }}"
+    dest: "{{ git_dest }}"
+    version: "{{ git_install_branch }}"
   register: git_fallback_clone
   when: git_clone|failed
   until: git_fallback_clone|success 
