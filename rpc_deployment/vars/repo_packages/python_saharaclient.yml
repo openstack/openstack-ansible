@@ -19,6 +19,6 @@ repo_path: "{{ pip_wheel_name }}_{{ git_install_branch | replace('/', '_') }}"
 git_repo: "https://git.openstack.org/openstack/python-saharaclient"
 git_fallback_repo: "https://github.com/openstack/python-saharaclient"
 git_dest: "/opt/{{ repo_path }}"
-git_install_branch: 0.7.1
+git_install_branch: 0.7.4
 
 pip_wheel_name: python-saharaclient
