@@ -21,6 +21,6 @@ service_type: compute
 service_description: "Nova Compute Service"
 service_password: "{{ nova_service_password }}"
 
-service_publicurl: "http://{{ external_vip_address }}:8774/v2/$(tenant_id)s"
-service_adminurl: "http://{{ internal_vip_address }}:8774/v2/$(tenant_id)s"
-service_internalurl: "http://{{ internal_vip_address }}:8774/v2/$(tenant_id)s"
+service_publicurl: "http://{{ external_vip_address }}:8774/v2/%(tenant_id)s"
+service_adminurl: "http://{{ internal_vip_address }}:8774/v2/%(tenant_id)s"
+service_internalurl: "http://{{ internal_vip_address }}:8774/v2/%(tenant_id)s"
