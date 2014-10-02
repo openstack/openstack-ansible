@@ -17,3 +17,7 @@ repo_package_name: memcached
 
 container_packages:
   - memcached
+
+service_pip_dependencies:
+  - python-memcached
+  - pycrypto
