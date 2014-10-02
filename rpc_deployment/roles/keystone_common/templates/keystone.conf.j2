@@ -1,0 +1,105 @@
+[DEFAULT]
+verbose = {{ verbose }}
+debug = {{ debug }}
+admin_token = {{ auth_admin_token }}
+bind_host = 0.0.0.0
+# The port number which the public service listens on
+public_port = {{ auth_public_port }}
+# The port number which the public admin listens on
+admin_port = {{ auth_port }}
+public_endpoint = {{ auth_protocol }}://{{ internal_vip_address }}:{{ auth_public_port }}/
+admin_endpoint = {{ auth_protocol }}://{{ internal_vip_address }}:{{ auth_port }}/
+log_file = keystone.log
+log_dir = /var/log/keystone
+rabbit_hosts = {{ rabbit_hosts }}
+rabbit_userid = {{ rabbit_userid }}
+rabbit_password = {{ rabbit_password }}
+rpc_backend = {{ rpc_backend }}
+
+[memcache]
+servers = {{ internal_vip_address }}:{{ memcached_port }}
+max_compare_and_set_retry = 16
+
+[cache]
+backend = dogpile.cache.memcached
+backend_argument = url:{{ internal_vip_address }}:{{ memcached_port }}
+config_prefix = cache.keystone
+distributed_lock = True
+expiration_time = 5400
+enabled = true
+
+[revoke]
+expiration_buffer = 1800
+caching = true
+
+[auth]
+methods = {{ auth_methods }}
+
+[database]
+connection = mysql://{{ container_mysql_user }}:{{ container_mysql_password }}@{{ mysql_address }}/{{ container_database }}?charset=utf8
+idle_timeout = 200
+min_pool_size = 5
+max_pool_size = 10
+pool_timeout = 200
+
+[identity]
+driver = {{ keystone_identity_driver|default('keystone.identity.backends.sql.Identity') }}
+
+[assignment]
+driver = keystone.assignment.backends.sql.Assignment
+caching = true
+
+[ldap]
+url = ldap://{{ keystone_ldap_server|default('localhost') }}
+user = {{ keystone_ldap_user_bind|default('root') }}
+password = {{ keystone_ldap_user_bind_password|default('secrete') }}
+suffix = {{ keystone_ldap_suffix|default('cn=example,cn=com') }}
+use_dumb_member = {{ keystone_ldap_use_dumb_member|default('false') }}
+dumb_member = {{ keystone_ldap_dumb_member|default('cn=dumb,dc=nonexistent') }}
+allow_subtree_delete = {{ keystone_ldap_allow_subtree_delete|default('false') }}
+query_scope = {{ keystone_ldap_query_scope|default('one') }}
+page_size = {{ keystone_ldap_page_size|default('0') }}
+debug_level = {{ keystone_ldap_debug_level|default('') }}
+chase_referrals = {{ keystone_ldap_chase_referrals|default('True') }}
+user_tree_dn = {{ keystone_ldap_user_tree_dn|default('') }}
+user_filter = {{ keystone_ldap_user_filter|default('') }}
+user_objectclass = {{ keystone_ldap_user_objectclass|default('inetOrgPerson') }}
+user_id_attribute = {{ keystone_ldap_user_id_attribute|default('cn') }}
+user_name_attribute = {{ keystone_ldap_user_name_attribute|default('sn') }}
+user_mail_attribute = {{ keystone_ldap_user_mail_attribute|default('email') }}
+user_pass_attribute = {{ keystone_ldap_user_pass_attribute|default('userPassword')}}
+user_enabled_attribute = {{ keystone_ldap_user_enabled_attribute|default('enabled') }}
+user_enabled_mask = {{ keystone_ldap_user_enabled_mask|default('0') }}
+user_enabled_default = {{ keystone_ldap_user_enabled_default|default('True') }}
+user_attribute_ignore = {{ keystone_ldap_user_attribute_ignore|default('default_project_id,tenants') }}
+user_default_project_id_attribute = {{ keystone_ldap_user_default_project_id_attribute|default('') }}
+user_allow_create = {{ keystone_ldap_user_allow_create|default('true') }}
+user_allow_update = {{ keystone_ldap_user_allow_update|default('true') }}
+user_allow_delete = {{ keystone_ldap_user_allow_delete|default('true') }}
+user_enabled_emulation = {{ keystone_ldap_user_enabled_emulation|default('false') }}
+user_enabled_emulation_dn = {{ keystone_ldap_user_enabled_emulation_dn|default('') }}
+user_additional_attribute_mapping = {{ keystone_ldap_user_additional_attribute_mapping|default('') }}
+group_tree_dn = {{ keystone_ldap_|default('') }}
+group_filter = {{ keystone_ldap_group_filter|default('') }}
+group_objectclass = {{ keystone_ldap_group_objectclass|default('groupOfNames') }}
+group_id_attribute = {{ keystone_ldap_group_id_attribute|default('cn') }}
+group_name_attribute = {{ keystone_ldap_group_name_attribute|default('ou') }}
+group_member_attribute = {{ keystone_ldap_group_member_attribute|default('member') }}
+group_desc_attribute = {{ keystone_ldap_group_desc_attribute|default('description') }}
+group_attribute_ignore = {{ keystone_ldap_group_attribute_ignore|default('') }}
+group_allow_create = {{ keystone_ldap_group_allow_create|default('true') }}
+group_allow_update = {{ keystone_ldap_group_allow_update|default('true') }}
+group_allow_delete = {{ keystone_ldap_group_allow_delete|default('true') }}
+group_additional_attribute_mapping = {{ keystone_ldap_group_additional_attribute_mapping|default('') }}
+tls_cacertfile = {{ keystone_ldap_tls_cacertfile|default('') }}
+tls_cacertdir = {{ keystone_ldap_tls_cacertdir|default('') }}
+use_tls = {{ keystone_ldap_use_tls|default('false') }}
+tls_req_cert = {{ keystone_ldap_tls_req_cert|default('demand') }}
+
+[token]
+enforce_token_bind = permissive
+revocation_cache_time = 3600
+expiration = 43200
+caching = true
+cache_time = 5400
+provider = {{ token_provider }}
