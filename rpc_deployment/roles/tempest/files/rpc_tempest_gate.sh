@@ -1,4 +1,4 @@
----
+#!/usr/bin/env bash
 # Copyright 2014, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,19 +13,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-repo_package_name: tempest
+# Script for running gate tests. Initially very sparse
+# additional projects and test types will be added over time.
 
-repo_path: "{{ repo_package_name }}_{{ git_install_branch | replace('/', '_') }}"
+set -e
+set -x
 
-## Git Source
-git_repo: https://git.openstack.org/openstack/tempest
-git_fallback_repo: https://github.com/openstack/tempest
-git_dest: "/opt/{{ repo_path }}"
-git_install_branch: master
+API_TESTS="identity"
 
-pip_wheel_name: tempest
+pushd /opt/tempest_*
+source /root/openrc
 
-service_pip_dependencies:
-  - nose
-  - testrepository
-  - testtools
+for project in $API_TESTS
+do
+  echo "Running API tests for $project"
+  nosetests -v tempest/api/$project
+done
+
+popd
+echo "GATE PASS"
+
