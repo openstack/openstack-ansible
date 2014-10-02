@@ -13,18 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Setup supporting services
 - hosts: elasticsearch
   user: root
   roles:
     - container_extra_setup
-  vars_files:
-    - vars/config_vars/container_config_elasticsearch.yml
-
-- hosts: elasticsearch
-  user: root
-  roles:
     - common
     - container_common
     - logging_common
     - elasticsearch
+  vars_files:
+    - vars/config_vars/container_config_elasticsearch.yml
+    - vars/repo_packages/elasticsearch.yml
