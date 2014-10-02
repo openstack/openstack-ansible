@@ -28,5 +28,5 @@
       done
     fi
   with_items: cinder_backends|dictsort
-  when: cinder_backends is defined and is_metal != true
+  when: cinder_backends is defined and is_metal != true and cinder_backends[item.0]['volume_group'] is defined
   delegate_to: "{{ physical_host }}"
