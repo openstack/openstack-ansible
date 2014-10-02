@@ -13,13 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# This playbook deploys Glance-Registry.
-- hosts: glance_registry
+- hosts: glance_all
   user: root
   roles:
-    - glance_common
-    - init_script
+    - common
+    - common_sudoers
+    - container_common
+    - openstack_common
+    - openstack_openrc
+    - galera_client_cnf
   vars_files:
-    - vars/openstack_service_vars/glance_registry.yml
-  handlers:
-    - include: handlers/services.yml
+    - vars/repo_packages/glance.yml
+    - vars/openstack_service_vars/glance_api.yml
