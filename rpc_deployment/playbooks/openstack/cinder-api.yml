@@ -13,18 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- hosts: cinder_all
-  user: root
-  roles:
-    - common
-    - common_sudoers
-    - container_common
-    - openstack_common
-    - openstack_openrc
-    - galera_client_cnf
-  vars_files:
-    - vars/openstack_service_vars/cinder_api.yml
-
 - hosts: cinder_api[0]
   user: root
   roles:

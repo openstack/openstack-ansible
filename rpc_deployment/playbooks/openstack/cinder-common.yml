@@ -13,7 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: cinder-common.yml
-- include: cinder-api.yml
-- include: cinder-scheduler.yml
-- include: cinder-volume.yml
+- hosts: cinder_all
+  user: root
+  roles:
+    - common
+    - common_sudoers
+    - container_common
+    - openstack_common
+    - openstack_openrc
+    - galera_client_cnf
+  vars_files:
+    - vars/repo_packages/cinder.yml
+    - vars/openstack_service_vars/cinder_api.yml

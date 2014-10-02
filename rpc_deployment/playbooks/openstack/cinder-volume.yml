@@ -16,17 +16,11 @@
 - hosts: cinder_volume
   user: root
   roles:
-    - common
-    - common_sudoers
     - container_extra_setup
-    - container_common
-    - openstack_common
-    - openstack_openrc
     - cinder_common
     - cinder_volume
     - cinder_device_add
     - cinder_backend_types
-    - galera_client_cnf
     - init_script
   vars_files:
     - vars/config_vars/container_config_cinder_volume.yml
