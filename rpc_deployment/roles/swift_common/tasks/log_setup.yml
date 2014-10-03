@@ -15,10 +15,13 @@
 
 - name: "Create logging directory"
   file:
-    path: "/openstack/log/{{ inventory_hostname }}"
+    path: "{{ item }}"
     state: "directory"
     owner: "syslog"
     group: "syslog"
+  with_items:
+    - /var/log/swift
+    - /openstack/log/{{ inventory_hostname }}
 
 - name: "Drop swift rsyslog conf"
   template:
