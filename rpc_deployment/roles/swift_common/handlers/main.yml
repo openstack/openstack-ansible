@@ -13,11 +13,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: log_setup.yml
-
-- name: "Drop swift.conf template"
-  template: >
-    src="swift.conf.j2"
-    dest="/etc/swift/swift.conf"
-    owner={{ system_user }}
-    mode=0644
+- name: restart rsyslog
+  service: name=rsyslog state=restarted

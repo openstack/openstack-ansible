@@ -13,11 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: log_setup.yml
+- name: "Create logging directory"
+  file:
+    path: "/openstack/log/{{ inventory_hostname }}"
+    state: "directory"
+    owner: "syslog"
+    group: "syslog"
 
-- name: "Drop swift.conf template"
-  template: >
-    src="swift.conf.j2"
-    dest="/etc/swift/swift.conf"
-    owner={{ system_user }}
-    mode=0644
+- name: "Drop swift rsyslog conf"
+  template:
+    src: "swift-rsyslog.conf.j2"
+    dest: "/etc/rsyslog.d/10-swift.conf"
+  notify:
+    - restart rsyslog
