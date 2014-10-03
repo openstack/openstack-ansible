@@ -36,12 +36,12 @@
   shell: >
     lxc-device -n {{ container_name }} add /dev/kvm /dev/kvm
   delegate_to: "{{ physical_host }}"
-  when: nova_virt_type == 'kvm' and is_metal != true
+  when: virt_type == 'kvm' and is_metal != true
 
 - name: Ensure kvm permissions
   shell: >
     udevadm trigger
-  when: nova_virt_type == 'kvm'
+  when: virt_type == 'kvm'
 
 - name: Create log directory
   file:
