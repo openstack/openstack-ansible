@@ -13,18 +13,67 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Ensure Heat Domain User
+- name: Ensure stack_owner role
   keystone: >
-    command=ensure_user
-    token="{{ auth_admin_token }}"
+    command=ensure_role
+    login_tenant_name="{{ auth_admin_tenant }}"
+    login_user="{{ auth_admin_username }}"
+    login_password="{{ auth_admin_password }}"
     endpoint="{{ auth_admin_uri }}"
-    user_name="{{ stack_domain_admin }}"
-    tenant_name=admin
-    password="{{ stack_domain_admin_password }}"
+    role_name="heat_stack_owner"
 
-- name: set fact for heat domain admin id
-  set_fact:
-    stack_user_domain: "{{ keystone_facts['id'] }}"
+- name: Ensure admin has stack_owner role
+  keystone: >
+    command=ensure_user_role
+    login_tenant_name="{{ auth_admin_tenant }}"
+    login_user="{{ auth_admin_username }}"
+    login_password="{{ auth_admin_password }}"
+    endpoint="{{ auth_admin_uri }}"
+    user_name="admin"
+    tenant_name="admin"
+    role_name="heat_stack_owner"
+
+- name: Ensure stack_user role
+  keystone: >
+    command=ensure_role
+    login_tenant_name="{{ auth_admin_tenant }}"
+    login_user="{{ auth_admin_username }}"
+    login_password="{{ auth_admin_password }}"
+    endpoint="{{ auth_admin_uri }}"
+    role_name="heat_stack_user"
+
+- name: Ensure old heat_domain_admin is not present (this user is superseded by stack_domain_admin)
+  shell: |
+    . /root/openrc
+    keystone user-delete heat_domain_admin
+  ignore_errors: true
+
+- name: Create heat domain
+  shell: |
+    . /root/openrc
+    openstack --os-identity-api-version=3 --os-auth-url={{ auth_identity_uri_v3 }} \
+              domain create {{ stack_domain }} --description "Owns users and projects created by heat"
+  ignore_errors: true
+
+- name: Create heat domain admin user
+  shell: |
+    . /root/openrc
+    openstack --os-identity-api-version=3 --os-auth-url={{ auth_identity_uri_v3 }} \
+              user create --domain {{ stack_domain }} --password {{ stack_domain_admin_password }} {{ stack_domain_admin }}
+  ignore_errors: true
+
+- name: Retrieve heat domain id
+  shell: |
+    . /root/openrc
+    openstack --os-identity-api-version=3 --os-auth-url={{ auth_identity_uri_v3 }} \
+                    domain show {{ stack_domain }} | grep -oE -m 1 "[0-9a-f]{32}"
+  register: stack_domain_id
+
+- name: Assign admin role to heat domain admin user
+  shell: |
+    . /root/openrc
+    openstack --os-identity-api-version=3 --os-auth-url={{ auth_identity_uri_v3 }} \
+              role add --user {{ stack_domain_admin }} --domain {{ stack_domain_id.stdout }} admin
 
 - name: Setup Heat Config
   template: >
