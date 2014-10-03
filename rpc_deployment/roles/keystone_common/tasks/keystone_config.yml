@@ -13,22 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Setup Keystone Config
-  template:
-    src: "{{ item }}"
-    dest: "/etc/keystone/{{ item }}"
-    owner: "{{ system_user }}"
-    group: "{{ system_group }}"
-  with_items:
-    - default_catalog.templates
-    - policy.json
-
 - name: Generate Keystone Config
   template:
-    src: "template_gen"
-    dest: "/etc/keystone/{{ item.file }}"
+    src: "{{ item.src }}"
+    dest: "/etc/keystone/{{ item.dest }}"
     owner: "{{ system_user }}"
     group: "{{ system_group }}"
   with_items:
-      - { file: keystone.conf, var: "{{ keystone_conf }}" }
-      - { file: keystone-paste.ini, var: "{{ keystone_paste_ini }}" }
+    - { dest: "keystone.conf", src: "keystone.conf.j2" }
+    - { dest: "policy.json", src: "policy.json.j2" }
+    - { dest: "keystone-paste.ini", src: "keystone-paste.ini.j2" }
