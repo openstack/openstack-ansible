@@ -13,13 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- hosts: swift_hosts
-  user: root
-  roles:
-    - swift_common
-    - swift_storage_setup
-    - swift_container
-    - swift_object
-    - swift_account
-  vars_files:
-    - inventory/group_vars/swift_all.yml
+- name: "Set ownership on mounted drives"
+  file:
+    dest: "{{ swift_vars.mount_point }}/{{ item.name }}"
+    owner: "{{ system_user }}"
+    group: "{{ system_group }}"
+    state: "directory"
+  with_items: swift_vars.drives
