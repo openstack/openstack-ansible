@@ -18,8 +18,8 @@ repo_package_name: tempest
 repo_path: "{{ repo_package_name }}_{{ git_install_branch | replace('/', '_') }}"
 
 ## Git Source
-git_repo: https://git.openstack.org/openstack/tempest
-git_fallback_repo: https://github.com/openstack/tempest
+git_repo: https://github.com/openstack/tempest
+git_fallback_repo: https://git.openstack.org/openstack/tempest
 git_dest: "/opt/{{ repo_path }}"
 git_install_branch: master
 
