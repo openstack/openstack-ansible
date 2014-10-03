@@ -70,23 +70,6 @@ service_names:
 
 flavor: "keystone+cachemanagement"
 
-## Git Source
-## ALL of this has been relocated to vars/repo_packages
-## TODO(someone) this should be removed once the repo bits are all figured out.
-git_repo: https://git.openstack.org/openstack/glance
-git_fallback_repo: https://github.com/openstack/glance
-git_etc_example: etc/
-git_install_branch: master
-
-service_pip_dependencies:
-  - warlock
-  - MySQL-python
-  - python-memcached
-  - pycrypto
-  - python-glanceclient
-  - python-keystoneclient
-  - keystonemiddleware
-
 container_directories:
   - /var/log/glance
   - /var/lib/glance
