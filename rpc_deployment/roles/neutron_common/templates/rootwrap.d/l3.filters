@@ -14,6 +14,7 @@ arping: CommandFilter, arping, root
 # l3_agent
 sysctl: CommandFilter, sysctl, root
 route: CommandFilter, route, root
+radvd: CommandFilter, radvd, root
 
 # metadata proxy
 metadata_proxy: CommandFilter, neutron-ns-metadata-proxy, root
@@ -23,9 +24,11 @@ metadata_proxy_quantum: CommandFilter, quantum-ns-metadata-proxy, root
 metadata_proxy_local: CommandFilter, /usr/local/bin/neutron-ns-metadata-proxy, root
 metadata_proxy_local_quantum: CommandFilter, /usr/local/bin/quantum-ns-metadata-proxy, root
 # RHEL invocation of the metadata proxy will report /usr/bin/python
-kill_metadata: KillFilter, root, /usr/bin/python, -9
-kill_metadata7: KillFilter, root, /usr/bin/python2.7, -9
-kill_metadata6: KillFilter, root, /usr/bin/python2.6, -9
+kill_metadata: KillFilter, root, python, -9
+kill_metadata7: KillFilter, root, python2.7, -9
+kill_metadata6: KillFilter, root, python2.6, -9
+kill_radvd_usr: KillFilter, root, /usr/sbin/radvd, -9, -HUP
+kill_radvd: KillFilter, root, /sbin/radvd, -9, -HUP
 
 # ip_lib
 ip: IpFilter, ip, root
@@ -39,3 +42,10 @@ iptables-save: CommandFilter, iptables-save, root
 iptables-restore: CommandFilter, iptables-restore, root
 ip6tables-save: CommandFilter, ip6tables-save, root
 ip6tables-restore: CommandFilter, ip6tables-restore, root
+
+# Keepalived
+keepalived: CommandFilter, keepalived, root
+kill_keepalived: KillFilter, root, /usr/sbin/keepalived, -HUP, -15, -9
+
+# l3 agent to delete floatingip's conntrack state
+conntrack: CommandFilter, conntrack, root
