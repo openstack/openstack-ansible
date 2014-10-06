@@ -35,10 +35,13 @@ from cloudlib import logger
 
 
 PYTHON_PACKAGES = {
-    'base_release': {},
-    'known_release': {},
-    'from_git': {}
+    'base_release': dict(),
+    'known_release': dict(),
+    'from_git': dict(),
+    'required_packages': dict()
 }
+
+GIT_REPOS = []
 
 GIT_REQUIREMENTS_MAP = {
     'github.com': 'https://raw.githubusercontent.com/%(path)s/%(branch)s'
@@ -129,6 +132,12 @@ def requirements_parse(pkgs):
     """
     for pkg in pkgs:
         LOG.debug('Parsing python dependencies: %s', pkg)
+        if '==' in pkg:
+            required_packages = PYTHON_PACKAGES['required_packages']
+            pkg_name = '-'.join(pkg.split('=='))
+            if pkg_name not in required_packages:
+                required_packages[pkg_name] = pkg
+
         split_pkg = pkg.split(',')
         for version_descriptor in VERSION_DESCRIPTORS:
             if version_descriptor in split_pkg[0]:
@@ -181,6 +190,9 @@ def package_dict(var_file):
 
     git_repo = package_vars.get('git_repo')
     if git_repo:
+        if git_repo not in GIT_REPOS:
+            GIT_REPOS.append(git_repo)
+
         LOG.debug('Building git type package [ %s ]', git_repo)
         git_url = urlparse.urlsplit(git_repo)
         repo_name = os.path.basename(git_url.path)
@@ -289,16 +301,20 @@ def retryloop(attempts, timeout=None, delay=None, backoff=1, obj=None):
     _error_handler(msg=error)
 
 
-def build_wheel(wheel_dir, build_dir, dist, quiet=False, make_opts=None):
+def build_wheel(wheel_dir, build_dir, dist=None, pkg_name=None, quiet=False,
+                make_opts=None):
     """Execute python wheel build command.
 
     :param wheel_dir: ``str`` $PATH to local save directory
     :param build_dir: ``str`` $PATH to temp build directory
     :param dist: ``str`` $PATH to requirements file
+    :param pkg_name: ``str`` name of package to build
     """
     command = [
         'pip',
         'wheel',
+        '--find-links',
+        wheel_dir,
         '--timeout',
         '120',
         '--wheel-dir',
@@ -312,7 +328,13 @@ def build_wheel(wheel_dir, build_dir, dist, quiet=False, make_opts=None):
         for make_opt in make_opts:
             command.append(make_opt)
 
-    command.extend(['--requirement', dist])
+    if dist is not None:
+        command.extend(['--requirement', dist])
+    elif pkg_name is not None:
+        command.append(pkg_name)
+    else:
+        raise SyntaxError('neither "dist" or "pkg_name" was specified')
+
     build_command = ' '.join(command)
     LOG.info('Command: %s' % build_command)
     for retry in retryloop(3, obj=build_command, delay=2, backoff=1):
@@ -358,7 +380,8 @@ def remove_dirs(directory):
             pass
 
 
-def _requirements_maker(name, wheel_dir, release, build_dir, quiet, make_opts):
+def _requirements_maker(name, wheel_dir, release, build_dir, quiet, make_opts,
+                        iterate=False):
     requirements_file_lines = []
     for value in sorted(release.values()):
         requirements_file_lines.append('%s\n' % value)
@@ -367,13 +390,26 @@ def _requirements_maker(name, wheel_dir, release, build_dir, quiet, make_opts):
     with open(requirements_file, 'wb') as f:
         f.writelines(requirements_file_lines)
 
-    build_wheel(
-        wheel_dir=wheel_dir,
-        build_dir=build_dir,
-        dist=requirements_file,
-        quiet=quiet,
-        make_opts=make_opts
-    )
+    if iterate is True:
+        for pkg in sorted(release.values()):
+            build_wheel(
+                wheel_dir=wheel_dir,
+                build_dir=build_dir,
+                dist=None,
+                pkg_name=pkg,
+                quiet=quiet,
+                make_opts=make_opts
+            )
+            remove_dirs(directory=build_dir)
+    else:
+        build_wheel(
+            wheel_dir=wheel_dir,
+            build_dir=build_dir,
+            dist=requirements_file,
+            quiet=quiet,
+            make_opts=make_opts
+        )
+        remove_dirs(directory=build_dir)
 
 
 def make_wheels(wheel_dir, build_dir, quiet):
@@ -393,6 +429,16 @@ def make_wheels(wheel_dir, build_dir, quiet):
     )
 
     _requirements_maker(
+        name='rpc_required_requirements.txt',
+        wheel_dir=wheel_dir,
+        release=PYTHON_PACKAGES['required_packages'],
+        build_dir=build_dir,
+        quiet=quiet,
+        make_opts=None,
+        iterate=True
+    )
+
+    _requirements_maker(
         name='rpc_known_requirements.txt',
         wheel_dir=wheel_dir,
         release=PYTHON_PACKAGES['known_release'],
@@ -401,7 +447,6 @@ def make_wheels(wheel_dir, build_dir, quiet):
         make_opts=['--no-deps']
     )
 
-    remove_dirs(directory=build_dir)
     remove_dirs(
         directory=os.path.join(
             tempfile.gettempdir(),
@@ -512,6 +557,13 @@ def _user_args():
         default=None
     )
     parser.add_argument(
+        '-g',
+        '--git-repos',
+        help='Path to where to store all of the git repositories.',
+        required=False,
+        default=None
+    )
+    parser.add_argument(
         '--build-dir',
         help='Path to temporary build directory. If unset a auto generated'
              ' temporary directory will be used.',
@@ -565,6 +617,52 @@ def _mkdirs(path):
             _error_handler(msg=error)
 
 
+def _store_git_repos(git_repos_path, quiet):
+    """Clone and or update all git repos.
+
+    :param git_repos_path: ``str`` Path to where to store the git repos
+    :param quiet: ``bol`` Enable quiet mode.
+    """
+    _mkdirs(git_repos_path)
+    for retry in retryloop(3, delay=2, backoff=1):
+        for git_repo in GIT_REPOS:
+            with IndicatorThread(debug=quiet):
+                repo_name = os.path.basename(git_repo)
+                if repo_name.endswith('.git'):
+                    repo_name = repo_name.rstrip('git')
+
+                repo_path_name = os.path.join(git_repos_path, repo_name)
+                if os.path.isdir(repo_path_name):
+                    os.chdir(repo_path_name)
+                    LOG.debug('Updating git repo [ %s ]', repo_path_name)
+                    commands = [
+                        ['git', 'fetch', '-p', 'origin'],
+                        ['git', 'pull']
+                    ]
+                else:
+                    LOG.debug('Cloning into git repo [ %s ]', repo_path_name)
+                    commands = [
+                        ['git', 'clone', git_repo, repo_path_name]
+                    ]
+
+                for command in commands:
+                    try:
+                        ret_data = subprocess.check_call(
+                            command,
+                            stdout=LoggerWriter(),
+                            stderr=LoggerWriter()
+                        )
+                        if ret_data:
+                            raise subprocess.CalledProcessError(
+                                ret_data, command
+                            )
+                    except subprocess.CalledProcessError as exp:
+                        LOG.warn('Process failure. Error: [ %s ]', str(exp))
+                        retry()
+                    else:
+                        LOG.debug('Command return code: [ %s ]', ret_data)
+
+
 def main():
     """Run the main app.
 
@@ -578,7 +676,7 @@ def main():
 
     # Load the logging
     _logging = logger.LogSetup(debug_logging=user_args['debug'])
-    if user_args['quiet'] is True:
+    if user_args['quiet'] is True or user_args['debug'] is False:
         stream = False
     else:
         stream = True
@@ -617,15 +715,21 @@ def main():
                 user_args=user_args,
                 input_path=input_path,
                 output_path=output_path,
-                quiet=user_args['quiet']
+                quiet=stream
             )
 
         # Create all of the python package wheels
         make_wheels(
             wheel_dir=output_path,
             build_dir=build_path,
-            quiet=user_args['quiet']
+            quiet=stream
         )
+
+    # if git_repos was defined save all of the sources to the defined location
+    git_repos_path = user_args.get('git_repos')
+    if git_repos_path:
+        _store_git_repos(git_repos_path, quiet=stream)
+
 
 
 if __name__ == "__main__":
