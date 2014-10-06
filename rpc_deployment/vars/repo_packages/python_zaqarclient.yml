@@ -16,8 +16,8 @@
 repo_path: "{{ pip_wheel_name }}_{{ git_install_branch | replace('/', '_') }}"
 
 ## Git Source
-git_repo: "https://git.openstack.org/openstack/python-zaqarclient"
-git_fallback_repo: "https://github.com/openstack/python-zaqarclient"
+git_repo: https://github.com/openstack/python-zaqarclient
+git_fallback_repo: https://git.openstack.org/openstack/python-zaqarclient
 git_dest: "/opt/{{ repo_path }}"
 git_install_branch: 0.0.2
 

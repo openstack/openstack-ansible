@@ -18,8 +18,8 @@ repo_package_name: heat
 repo_path: "{{ repo_package_name }}_{{ git_install_branch | replace('/', '_') }}"
 
 ## Git Source
-git_repo: https://git.openstack.org/openstack/heat
-git_fallback_repo: https://github.com/openstack/heat
+git_repo: https://github.com/openstack/heat
+git_fallback_repo: https://git.openstack.org/openstack/heat
 git_dest: "/opt/{{ repo_path }}"
 git_etc_example: etc/heat
 git_install_branch: proposed/juno
