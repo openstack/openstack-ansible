@@ -29,9 +29,9 @@ metadata_proxy_quantum: CommandFilter, quantum-ns-metadata-proxy, root
 metadata_proxy_local: CommandFilter, /usr/local/bin/neutron-ns-metadata-proxy, root
 metadata_proxy_local_quantum: CommandFilter, /usr/local/bin/quantum-ns-metadata-proxy, root
 # RHEL invocation of the metadata proxy will report /usr/bin/python
-kill_metadata: KillFilter, root, /usr/bin/python, -9
-kill_metadata7: KillFilter, root, /usr/bin/python2.7, -9
-kill_metadata6: KillFilter, root, /usr/bin/python2.6, -9
+kill_metadata: KillFilter, root, python, -9
+kill_metadata7: KillFilter, root, python2.7, -9
+kill_metadata6: KillFilter, root, python2.6, -9
 
 # ip_lib
 ip: IpFilter, ip, root

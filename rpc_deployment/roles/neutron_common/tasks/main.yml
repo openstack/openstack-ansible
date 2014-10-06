@@ -80,6 +80,7 @@
     - rootwrap.d/openvswitch-plugin.filters
     - rootwrap.d/ryu-plugin.filters
     - rootwrap.d/vpnaas.filters
+    - rootwrap.d/ipset-firewall.filters
   notify: Restart os service
   tags:
     - neutron_config
