@@ -35,3 +35,18 @@
   with_items:
     - demo
     - alt_demo
+
+- name: Ensure tempest users
+  keystone:
+    command: ensure_user
+    tenant_name: "{{ item }}"
+    user_name: "{{ item }}"
+    password: "{{ item }}"
+    description: "{{ item }} User"
+    endpoint: "{{ auth_identity_uri }}"
+    login_tenant_name: "{{ auth_admin_tenant }}"
+    login_user: "{{ auth_admin_username }}"
+    login_password: "{{ auth_admin_password }}"
+  with_items:
+    - demo
+    - alt_demo
