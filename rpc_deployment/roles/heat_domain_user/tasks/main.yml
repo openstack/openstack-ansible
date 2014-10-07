@@ -27,7 +27,7 @@
   shell: |
     . /root/openrc
     openstack --os-identity-api-version=3 --os-auth-url={{ auth_identity_uri_v3 }} \
-              domain create {{ stack_domain }} --description "Owns users and projects created by heat"
+              domain create {{ stack_user_domain_name }} --description "Owns users and projects created by heat"
   ignore_errors: true
 
 - name: Create heat domain admin user
