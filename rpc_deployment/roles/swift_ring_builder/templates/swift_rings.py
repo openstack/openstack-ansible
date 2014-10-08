@@ -74,8 +74,8 @@ def create_buildfile(build_file, part_power, repl, min_part_hours,
             run_and_wait(rb_main, ["swift-ring-builder", build_file,
                                    "set_min_part_hours", min_part_hours])
         if part_power != data.get('part_power'):
-            print('Part power cannot be changed.. you must rebuild the ring "
-                  "if you need to change it.')
+            print('Part power cannot be changed.. you must rebuild the ring '
+                  'if you need to change it.')
 
     else:
         run_and_wait(rb_main, ["swift-ring-builder", build_file, "create",
@@ -87,7 +87,7 @@ def change_host_weight(build_file, host_search_str, weight):
 
 def remove_host_from_ring(build_file, host):
     run_and_wait(rb_main, ["swift-ring-builder", build_file, "remove",
-                 DEV_KEY % host])
+                 host])
 
 def update_host_in_ring(build_file, new_host, old_host):
     r_ip = new_host.get('repl_ip', new_host['ip'])
@@ -96,8 +96,8 @@ def update_host_in_ring(build_file, new_host, old_host):
     if r_ip != old_host['replication_ip'] or \
         r_port != old_host['replication_port']:
         host_d = {'r_ip': r_ip, 'r_port': r_port}
-        host_d.update(host)
-        host_str = "%(ip)s:%(port)dR%(r_ip)s:%(d_port)d/%(name)s" % host_d
+        host_d.update(new_host)
+        host_str = "%(ip)s:%(port)dR%(r_ip)s:%(r_port)d/%(name)s" % host_d
         run_and_wait(rb_main, ["swift-ring-builder", build_file, "set_info",
                                DEV_KEY % new_host, host_str])
 
@@ -157,7 +157,7 @@ def build_ring(section, conf, part_power, hosts):
     repl = conf.get('repl_number', DEFAULT_REPL)
     min_part_hours = conf.get('min_part_hours',
                               DEFAULT_MIN_PART_HOURS)
-    update = build_file_data not None
+    update = build_file_data is not None
     create_buildfile(build_file, part_power, repl, min_part_hours, update,
                      data=build_file_data)
 
