@@ -163,8 +163,9 @@ def build_ring(section, conf, part_power, hosts):
 
     old_hosts = {}
     if update:
-        old_hosts = dict([(DEV_KEY % dev, i)
-                          for i, dev in enumerate(build_file_data['devs'])])
+        for i, dev in enumerate(build_file_data['devs']):
+            if dev is not None:
+                old_hosts[DEV_KEY % dev] = i
     section_key = section.split('-')[0]
     service_port = conf.get('port', DEFAULT_SECTION_PORT[section_key])
     for host in hosts:
