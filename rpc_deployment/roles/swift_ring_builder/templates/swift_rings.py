@@ -236,16 +236,24 @@ def main(setup):
         return 1
     part_power = swift_vars.get('part_power')
 
+    # If the repl_number or min_part hours are set on a "global" level in the
+    # conf lets set them here - otherwise use the overall default.
+    default_repl_num = swift_vars.get('repl_number', DEFAULT_REPL)
+    default_min_part_hours = swift_vars.get('min_part_hours',
+                                            DEFAULT_MIN_PART_HOURS)
+
     # Create account ring - if the section is empty create an empty dict
     # so defaults are used
     if not has_section(swift_vars, 'account'):
-        swift_vars['account'] = {}
+        swift_vars['account'] = {'repl_number': default_repl_num,
+                                 'min_part_hours': default_min_part_hours}
     build_ring('account', swift_vars['account'], part_power, _hosts)
 
     # Create container ring - if the section is empty create an empty dict
     # so defaults are used
     if not has_section(swift_vars, 'container'):
-        swift_vars['container'] = {}
+        swift_vars['container'] = {'repl_number': default_repl_num,
+                                  'min_part_hours': default_min_part_hours}
     build_ring('container', swift_vars['container'], part_power, _hosts)
 
     # Create object rings (storage policies)
@@ -261,6 +269,11 @@ def main(setup):
         else:
             buildfilename = 'object-%d' % (policy['index'])
         indexes.add(policy['index'])
+        # Set default port/min_part_hours/repl_number
+        if 'min_part_hours' not in policy:
+            policy['min_part_hours'] = default_min_part_hours
+        if 'repl_number' not in policy:
+            policy['repl_number'] = default_repl_num
         if 'port' not in policy:
             policy['port'] = policy.get('port', DEFAULT_OBJECT_PORT)
         build_ring(buildfilename, policy, part_power, _hosts)
