@@ -79,7 +79,9 @@ def create_buildfile(build_file, part_power, repl, min_part_hours,
         if part_power != data.get('part_power'):
             raise RingValidationError('Part power cannot be changed! '
                                       'you must rebuild the ring if you need '
-                                      'to change it.')
+                                      'to change it.\nRing part power: %s '
+                                      'Inventory part power: %s'
+                                      %(data.get('part_power'), part_power))
 
     elif not validate:
         run_and_wait(rb_main, ["swift-ring-builder", build_file, "create",
@@ -307,15 +309,15 @@ def main(setup):
     kargs = {'validate': True, 'hosts': _hosts}
     for ring_call in ring_calls:
         try:
-            build_rings(*ring_call, **kargs)
+            build_ring(*ring_call, **kargs)
         except RingValidationError as ex:
-            print ex
+            print(ex)
             return 2
 
     # If the validation passes lets go ahead and build the rings.
     kargs.pop('validate')
     for ring_call in ring_calls:
-        build_rings(*ring_call, **kargs)
+        build_ring(*ring_call, **kargs)
 
 if __name__ == "__main__":
     parser = OptionParser(USAGE)
