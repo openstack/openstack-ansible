@@ -39,7 +39,7 @@ container_database: nova
 rpc_backend: nova.openstack.common.rpc.impl_kombu
 
 ## Nova virtualization Type, set to KVM if supported
-virt_type: "{{ nova_virt_type|default('qemu') }}"
+virt_type: "{{ nova_virt_type|default('kvm') }}"
 
 ## Nova Auth
 service_admin_tenant_name: "service"
