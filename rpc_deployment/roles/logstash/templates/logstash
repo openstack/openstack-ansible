@@ -9,7 +9,7 @@
 #LS_HOME=/var/lib/logstash
 
 # Arguments to pass to logstash agent
-LS_OPTS="-w 40 --verbose"
+LS_OPTS="-w 40 {{ logstash_verbose|default() }}"
 
 # Arguments to pass to java
 {% set host_ram = hostvars[inventory_hostname]['ansible_memtotal_mb']|int * 0.5 %}
