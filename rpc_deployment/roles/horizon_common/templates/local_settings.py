@@ -5,7 +5,7 @@ from openstack_dashboard import exceptions
 DEBUG = {{ debug|default('False') }}
 TEMPLATE_DEBUG = DEBUG
 COMPRESS_ENABLED = True
-COMPRESS_ROOT = '{{ install_lib_dir }}/openstack_dashboard/static'
+COMPRESS_ROOT = '{{ install_lib_dir }}/static'
 
 # Required for Django 1.5.
 # If horizon is running in production (DEBUG is False), set this

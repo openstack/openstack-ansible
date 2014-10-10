@@ -32,11 +32,25 @@
     mode: "{{ item.mode }}"
   with_items:
     - { src: "local_settings.py", dest: "/etc/horizon/local_settings.py", mode: "0644" }
-    - { src: "horizon-manage.py", dest: "/usr/local/bin/horizon-manage.py", mode: "0755" }
+
+- name: Copy manage.py to /usr/local/bin/horizon-manage.py
+  file:
+    src: "{{ git_dest }}/manage.py"
+    dest: /usr/local/bin/horizon-manage.py
+    mode: 0755
+
+- name: Remove old links deployed in RPC 9.0.0
+  file: path={{ item }} state=absent
+  with_items:
+    - "{{ install_lib_dir }}/openstack_dashboard/static/bootstrap/js"
+    - "{{ install_lib_dir }}/openstack_dashboard/static/horizon"
 
 # /opt/horizon/lib/python2.7/site-packages/manage.py
-- name: Collect static files
-  command: horizon-manage.py collectstatic --noinput
+- name: Collect and compress static files
+  command: "{{ item }}"
+  with_items:
+    - horizon-manage.py collectstatic --noinput
+    - horizon-manage.py compress --force
 
 - name: Create horizon links
   file:
@@ -56,6 +70,4 @@
     group: "{{ system_group }}"
     state: "directory"
   with_items:
-    - "{{ install_lib_dir }}/horizon"
-    - "{{ install_lib_dir }}/openstack_dashboard"
     - "{{ install_lib_dir }}/static"
