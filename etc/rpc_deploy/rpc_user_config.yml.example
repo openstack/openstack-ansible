@@ -40,7 +40,7 @@ used_ips:
 # specified here will take precedence over anything else any where.
 global_overrides:
   # Internal Management vip address
-  internal_lb_vip_address: 172.29.236.1
+  internal_lb_vip_address: 172.29.236.10
   # External DMZ VIP address
   external_lb_vip_address: 192.168.1.1
   # Bridged interface to use with tunnel type networks
@@ -125,16 +125,16 @@ global_overrides:
 # User defined Infrastructure Hosts, this should be a required group
 infra_hosts:
   infra1:
-    ip: 172.29.236.100
+    ip: 10.240.0.100
   infra2:
-    ip: 172.29.236.101
+    ip: 10.240.0.101
   infra3:
-    ip: 172.29.236.102
+    ip: 10.240.0.102
 
 # User defined Compute Hosts, this should be a required group
 compute_hosts:
   compute1:
-    ip: 172.29.236.103
+    ip: 10.240.0.103
     host_vars:
       host_networks:
         - { type: raw, device_name: eth0, bond_master: bond0, bond_primary: true }
@@ -149,7 +149,7 @@ compute_hosts:
 # User defined Storage Hosts, this should be a required group
 storage_hosts:
   cinder1:
-    ip: 172.29.236.104
+    ip: 10.240.0.104
     # "container_vars" can be set outside of all other options as 
     # host specific optional variables.
     container_vars:
@@ -168,7 +168,7 @@ storage_hosts:
           volume_driver: cinder.volume.drivers.lvm.LVMISCSIDriver
           volume_backend_name: LVM_iSCSI
   cinder2:
-    ip: 172.29.236.105
+    ip: 10.240.0.105
     container_vars:
       cinder_backends:
         limit_container_types: cinder_volume
@@ -177,7 +177,7 @@ storage_hosts:
           volume_driver: cinder.volume.drivers.lvm.LVMISCSIDriver
           volume_backend_name: LVM_SSD_iSCSI
   cinder3:
-    ip: 172.29.236.106
+    ip: 10.240.0.106
     container_vars:
       cinder_backends:
         limit_container_type: cinder_volume
@@ -194,12 +194,12 @@ storage_hosts:
 # User defined Logging Hosts, this should be a required group
 log_hosts:
   logger1:
-    ip: 172.29.236.107
+    ip: 10.240.0.107
 
 # User defined Networking Hosts, this should be a required group
 network_hosts:
   network1:
-    ip: 172.29.236.108
+    ip: 10.240.0.108
     host_vars:
       host_networks:
         - { type: raw, device_name: eth0, bond_master: bond0, bond_primary: true }
