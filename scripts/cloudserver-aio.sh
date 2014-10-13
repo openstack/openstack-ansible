@@ -156,8 +156,6 @@ required_kernel: 3.13.0-30-generic
 ## Rackspace Cloud Details
 rackspace_cloud_auth_url: https://identity.api.rackspacecloud.com/v2.0
 rackspace_cloud_tenant_id: SomeTenantID
-# The cloudfiles_tenant_id is the long MossoCloudFS tenantID only required
-rackspace_cloudfiles_tenant_id: SomeTenantID
 rackspace_cloud_username: SomeUserName
 rackspace_cloud_password: SomeUsersPassword
 rackspace_cloud_api_key: SomeAPIKey
@@ -185,7 +183,7 @@ glance_default_store: file
 glance_container_mysql_password: secrete
 glance_service_password: secrete
 glance_swift_store_auth_address: "{{ rackspace_cloud_auth_url }}"
-glance_swift_store_user: "{{ rackspace_cloudfiles_tenant_id }}:{{ rackspace_cloud_username }}"
+glance_swift_store_user: "{{ rackspace_cloud_tenant_id }}:{{ rackspace_cloud_username }}"
 glance_swift_store_key: "{{ rackspace_cloud_password }}"
 glance_swift_store_container: SomeContainerName
 glance_swift_store_region: SomeRegion
