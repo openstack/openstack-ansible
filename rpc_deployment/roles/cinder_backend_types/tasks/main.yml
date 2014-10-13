@@ -13,12 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Ensure cinder is online
+- name: Ensure cinder api ip/port are responsive
   wait_for: >
     port={{ cinder_service_port }}
-    delay=1
+    delay=10
     host="{{ internal_vip_address }}"
 
+- name: check cinder api service is available
+  uri: >
+    url=http://"{{ internal_vip_address }}":"{{ cinder_service_port }}"
+    method=GET
+    return_content=true
+  register: cinder_get
+  failed_when: "'CURRENT' not in cinder_get.content"
 
 - name: Add in cinder devices types
   shell: |
