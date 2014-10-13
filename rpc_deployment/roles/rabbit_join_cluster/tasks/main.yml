@@ -18,7 +18,7 @@
 # if node is clustered or not
 - name: Check cluster status
   shell: |
-    rabbitmqctl -q cluster_status | grep {{ rabbit_cluster_name }}
+    rabbitmqctl -q cluster_status | grep '{cluster_name,<<"{{ rabbit_cluster_name }}">>}'
   changed_when: result.rc != 0
   failed_when: false
   register: result
