@@ -209,7 +209,9 @@ maas_api_key: "{{ rackspace_cloud_api_key }}"
 maas_auth_token: some_token
 maas_api_url: https://monitoring.api.rackspacecloud.com/v1.0/{{ rackspace_cloud_tenant_id }}
 maas_notification_plan: npTechnicalContactsEmail
-maas_agent_token: some_token
+# By default we will create an agent token for each entity, however if you'd
+# prefer to use the same agent token for all entities then specify it here
+#maas_agent_token: some_token
 maas_target_alias: public0_v4
 maas_scheme: https
 # Override scheme for specific service remote monitor by specifying here: E.g.
