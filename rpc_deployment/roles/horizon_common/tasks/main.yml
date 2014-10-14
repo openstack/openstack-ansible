@@ -17,7 +17,7 @@
   file:
     dest: "/etc/horizon"
     recurse: "yes"
-    owner: "{{ system_group }}"
+    owner: "{{ system_user }}"
     group: "{{ system_group }}"
     state: "directory"
 
@@ -34,9 +34,15 @@
     - { src: "local_settings.py", dest: "/etc/horizon/local_settings.py", mode: "0644" }
 
 - name: Copy manage.py to /usr/local/bin/horizon-manage.py
+  command: rsync -ci {{ git_dest }}/manage.py /usr/local/bin/horizon-manage.py
+  register: rsync_result
+  changed_when: rsync_result.stdout != ""
+
+- name: Set permissions on /usr/local/bin/horizon-manage.py
   file:
-    src: "{{ git_dest }}/manage.py"
-    dest: /usr/local/bin/horizon-manage.py
+    path: /usr/local/bin/horizon-manage.py
+    owner: root
+    group: root
     mode: 0755
 
 - name: Remove old links deployed in RPC 9.0.0
@@ -56,7 +62,7 @@
   file:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
-    owner: "{{ system_group }}"
+    owner: "{{ system_user }}"
     group: "{{ system_group }}"
     state: "link"
   with_items:
@@ -66,7 +72,7 @@
   file:
     dest: "{{ item }}"
     recurse: "yes"
-    owner: "{{ system_group }}"
+    owner: "{{ system_user }}"
     group: "{{ system_group }}"
     state: "directory"
   with_items:
