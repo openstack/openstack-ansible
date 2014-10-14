@@ -19,6 +19,8 @@ haproxy_config:
       hap_backup_nodes: "{{ groups['galera'][1:] }}"
       hap_port: 3306
       hap_balance_type: tcp
+      hap_timeout_client: 5000
+      hap_timeout_server: 5000
       hap_backend_options:
         - "mysql-check user haproxy"
   - service:
