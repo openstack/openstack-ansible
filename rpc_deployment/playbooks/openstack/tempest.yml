@@ -13,19 +13,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-repo_package_name: tempest
+# Configure tempest on the utility containers
 
-repo_path: "{{ repo_package_name }}_{{ git_install_branch | replace('/', '_') }}"
+- hosts: utility_all
+  vars:
+    service_name: tempest
+  vars_files:
+    - vars/repo_packages/tempest.yml
+  roles:
+    - common
+    - openstack_common
+    - openstack_openrc
 
-## Git Source
-git_repo: https://git.openstack.org/openstack/tempest
-git_fallback_repo: https://github.com/openstack/tempest
-git_dest: "/opt/{{ repo_path }}"
-git_install_branch: 9d7d28b66f9aa3fe1220f418cc2d13dd19984429
+# Openstack resources only need to be created once
+- hosts: utility_all[0]
+  roles:
+    - tempest_resources
 
-pip_wheel_name: tempest
+# Tempest is installed and configured in all utility containers
+- hosts: utility_all
+  vars_files:
+    - vars/repo_packages/tempest.yml
+  roles:
+    - tempest
 
-service_pip_dependencies:
-  - nose
-  - testrepository
-  - testtools
+

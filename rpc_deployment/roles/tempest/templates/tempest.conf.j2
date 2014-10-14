@@ -1,0 +1,161 @@
+[DEFAULT]
+debug = True
+log_file = tempest.log
+use_stderr = False
+lock_path = /opt/{{ repo_path }}/locks
+
+[auth]
+
+[boto]
+ssh_user = cirros
+instance_type = m1.nano
+aki_manifest = cirros-0.3.2-x86_64-vmlinuz.manifest.xml
+ami_manifest = cirros-0.3.2-x86_64-blank.img.manifest.xml
+ari_manifest = cirros-0.3.2-x86_64-initrd.manifest.xml
+s3_materials_path = /opt/stack/devstack/files/images/s3-materials/cirros-0.3.2
+s3_url = http://134.213.136.181:3333
+ec2_url = http://134.213.136.181:8773/services/Cloud
+http_socket_timeout = 30
+build_timeout = 196
+
+[cli]
+cli_dir = /usr/local/bin
+has_manage=false
+
+
+
+[compute]
+ssh_connect_method = fixed
+flavor_ref_alt = 3
+flavor_ref = 2
+image_alt_ssh_user = cirros
+image_ref_alt = {{ hostvars[groups['utility_all'][0]]['glance_images']['cirros']['id'] }}
+image_ssh_user = cirros
+image_ref = {{ hostvars[groups['utility_all'][0]]['glance_images']['cirros']['id'] }}
+ssh_timeout = 196
+ip_version_for_ssh = 4
+network_for_ssh = private
+ssh_user = cirros
+allow_tenant_isolation = True
+build_timeout = 196
+
+[compute-admin]
+tenant_name = {{ auth_admin_tenant }}
+password = {{ auth_admin_password }}
+username = {{ auth_admin_username }}
+
+[compute-feature-enabled]
+api_v3_extensions = all
+api_extensions = all
+block_migration_for_live_migration = False
+change_password = False
+live_migration = False
+resize = True
+api_v3 = False
+
+
+[dashboard]
+login_url = http://{{ external_vip_address }}/auth/login/
+dashboard_url = http://{{ external_vip_address }}/
+
+
+[identity]
+auth_version = v2
+admin_domain_name = Default
+admin_tenant_id = {{ keystone_admin_tenant_id }}
+admin_tenant_name = {{ auth_admin_tenant }}
+admin_password = {{ auth_admin_password }}
+admin_username = {{ auth_admin_username }}
+alt_tenant_name = alt_demo
+alt_password = alt_demo
+alt_username = alt_demo
+tenant_name = demo
+password = demo
+username = demo
+uri_v3 = http://{{ external_vip_address }}:5000/v3/
+uri = http://{{ external_vip_address }}:5000/v2.0/
+
+
+
+[identity-feature-enabled]
+
+[image]
+
+
+[image-feature-enabled]
+[input-scenario]
+[negative]
+
+[network]
+default_network = 10.0.0.0/24
+public_router_id =
+public_network_id =
+tenant_networks_reachable = false
+api_version = 2.0
+
+[network-feature-enabled]
+api_extensions = all
+ipv6_subnet_attributes = True
+ipv6 = True
+
+[object-storage]
+
+
+
+[object-storage-feature-enabled]
+discoverable_apis = all
+
+
+[orchestration]
+build_timeout = 900
+instance_type = m1.heat
+image_ref = Fedora-x86_64-20-20140618-sda
+
+[queuing]
+[scenario]
+large_ops_number = 0
+aki_img_file = cirros-0.3.2-x86_64-vmlinuz
+ari_img_file = cirros-0.3.2-x86_64-initrd
+ami_img_file = cirros-0.3.2-x86_64-blank.img
+img_dir = /opt/stack/devstack/files/images/cirros-0.3.2-x86_64-uec
+
+[service_available]
+neutron = True
+heat = True
+ceilometer = False
+swift = False
+cinder = True
+nova = True
+glance = True
+horizon = True
+sahara = False
+ironic = False
+
+[stress]
+
+
+[telemetry]
+too_slow_to_test = False
+
+
+[volume]
+build_timeout = 196
+
+
+[volume-feature-enabled]
+backup = False
+api_extensions = all
+
+
+[compute-feature-disabled]
+api_v3_extensions =
+api_extensions =
+
+[network-feature-disabled]
+api_extensions =
+
+[object-storage-feature-disabled]
+discoverable_apis =
+
+[volume-feature-disabled]
+api_extensions =
