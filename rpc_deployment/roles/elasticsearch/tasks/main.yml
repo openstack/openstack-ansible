@@ -14,22 +14,22 @@
 # limitations under the License.
 
 - name: ElasticSearch Setup
-  template: >
-    src={{ item }}
-    dest=/etc/elasticsearch/{{ item }}
-    owner=root
-    group=root
+  template:
+    src: "{{ item }}"
+    dest: "/etc/elasticsearch/{{ item }}"
+    owner: "root"
+    group: "root"
   register: results
   with_items:
     - elasticsearch.yml
     - logging.yml
 
 - name: ElasticSearch Tuning
-  template: >
-    src={{ item }}
-    dest=/etc/default/{{ item }}
-    owner=root
-    group=root
+  template:
+    src: "{{ item }}"
+    dest: "/etc/default/{{ item }}"
+    owner: "root"
+    group: "root"
   register: results
   with_items:
     - elasticsearch
@@ -71,22 +71,19 @@
   when: results|changed
 
 - name: Wait for elasticsearch port
-  wait_for: >
-    host={{ ansible_ssh_host }}
-    port=9200
+  wait_for:
+    host: "{{ ansible_ssh_host }}"
+    port: "9200"
 
 - name: Deploy mapping script
-  template: >
-    src={{ item }}
-    dest=/opt/{{ item }}
-    owner=root
-    group=root
-    mode=0755
+  template:
+    src: "{{ item }}"
+    dest: "/opt/{{ item }}"
+    owner: "root"
+    group: "root"
+    mode: "0755"
   with_items:
     - mapping.sh
 
 - name: Add logging template
-  shell: >
-    ./mapping.sh
-    chdir=/opt
-
+  shell: /opt/mapping.sh

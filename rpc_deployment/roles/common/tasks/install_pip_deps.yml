@@ -14,9 +14,9 @@
 # limitations under the License.
 
 - name: Install pip dependencies
-  pip: >
-    name={{ item }}
-    extra_args="--allow-all-external"
+  pip:
+    name: "{{ item }}"
+    extra_args: "--allow-all-external"
   with_items: service_pip_dependencies
   when: service_pip_dependencies is defined
   register: pip_install

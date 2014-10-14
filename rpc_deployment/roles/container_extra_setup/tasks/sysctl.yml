@@ -14,12 +14,12 @@
 # limitations under the License.
 
 - name: Adding new system tuning
-  sysctl: >
-    name="{{ item.key }}" 
-    value="{{ item.value }}"
-    sysctl_set="{{ item.set|default('yes') }}"
-    state="{{ item.state|default('present') }}"
-    reload="{{ item.reload|default('yes') }}"
+  sysctl:
+    name: "{{ item.key }}" 
+    value: "{{ item.value }}"
+    sysctl_set: "{{ item.set|default('yes') }}"
+    state: "{{ item.state|default('present') }}"
+    reload: "{{ item.reload|default('yes') }}"
   when: sysctl_options is defined
   with_items: sysctl_options
   delegate_to: "{{ physical_host }}"
