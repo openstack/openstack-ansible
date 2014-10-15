@@ -73,6 +73,30 @@
 - name: Assign agent ID to entity
   shell: "raxmon-entities-update --id {{ entity.stdout }} --agent-id {{ entity_name }}"
 
+- name: Agent token {{ entity_name }} count
+  shell: "raxmon-agent-tokens-list | grep ' label={{ entity_name }}, ' | wc -l"
+  register: agent_token_count
+  when: maas_agent_token is not defined
+
+- name: At most one {{ entity_name }} agent token should exist
+  fail:
+    msg: "Agent token count of {{ agent_token_count.stdout }} > 1 for entity with the label {{ entity_name }}"
+  when: maas_agent_token is not defined and agent_token_count.stdout|int > 1
+
+- name: Create agent token
+  shell: "raxmon-agent-tokens-create --label={{ entity_name }}"
+  register: agent_token
+  when: maas_agent_token is not defined and agent_token_count.stdout|int == 0
+
+- name: Get agent token
+  shell: "raxmon-agent-tokens-list | grep '<AgentToken: id=.* label={{ entity_name }}, .*>' | awk '{print $2}' | sed -e 's/id=\\(.*\\),/\\1/g'"
+  register: maas_agent_token_id
+  when: maas_agent_token is not defined
+
+- name: Set agent token fact
+  set_fact: maas_agent_token={{ maas_agent_token_id.stdout }}
+  when: maas_agent_token is not defined
+
 - name: Generate raxmon agent config
   template:
     src: rackspace-monitoring-agent.cfg
