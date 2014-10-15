@@ -31,7 +31,9 @@ container_packages:
   - dnsmasq-utils
   - keepalived
   - conntrackd
+  - conntrack
   - ipset
+  - iputils-arping
 
 service_pip_dependencies:
   - MySQL-python
