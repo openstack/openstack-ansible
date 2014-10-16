@@ -71,25 +71,15 @@
     - holland_conf
     - holland_all
 
-- name: Check for holland cron file
-  command: ls /etc/cron.d/holland_backups
-  failed_when: false
-  changed_when: holland_cron.rc != 0
-  register: holland_cron
-  tags:
-    - holland_cron
-    - holland_all
-
 - name: Create holland backup cron job
   cron:
     name: "holland-backup"
-    minute: "{{ 59|random }}"
-    weekday: "{{ 6|random }}"
+    minute: "{{ (ansible_eth0['ipv4']['address']|replace('.', '')|int)%60}}"
+    hour: 23
     state: present
-    job: "holland bk"
+    job: "/usr/local/bin/holland bk"
     user: root
     cron_file: holland_backups
-  when: holland_cron.rc != 0
   tags:
     - holland_cron
     - holland_all
