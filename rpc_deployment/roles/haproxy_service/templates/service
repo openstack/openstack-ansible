@@ -16,7 +16,7 @@ bind {{ item.service.hap_bind|default('*') }}:{{ item.service.hap_port }}
 {% endif %}
 
 {% if item.service.hap_whitelist_hosts is defined and item.service.hap_whitelist_hosts == true %}
-    acl white_list src 127.0.0.1/8 10.0.3.0/24 {{ container_cidr }} {% for host_name in groups['hosts'] %} {{ hostvars[host_name]['ansible_ssh_host'] }} {% endfor %}
+    acl white_list src 127.0.0.1/8 10.0.3.0/24 {{ container_cidr }}
 
     {{ request_option }}-request content accept if white_list
     {{ request_option }}-request content reject
