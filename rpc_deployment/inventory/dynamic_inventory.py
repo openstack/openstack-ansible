@@ -734,6 +734,14 @@ def main():
     if os.path.isdir(base_dir):
         _extra_config(user_defined_config, base_dir)
 
+    # Exit if no user_config was found and loaded
+    if not user_defined_config:
+        raise SystemExit(
+            'No user config loadaed\n'
+            'No rpc_user_config files are available in either the base'
+            ' location or the conf.d directory'
+        )
+
     # Get the contents of the system environment json
     environment_file = os.path.join(local_path, 'rpc_environment.yml')
 
