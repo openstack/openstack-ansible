@@ -48,7 +48,7 @@ options:
         required: true
     content:
         description:
-            - Add content to memcahced. Only used when state is 'present'.
+            - Add content to memcached. Only used when state is 'present'.
         required: false
     file_path:
         description:
@@ -274,7 +274,7 @@ class Memcached(object):
                 rc=1,
                 msg='Failed to remove an item from memcached please check your'
                     ' memcached server for issues. If you are load balancing'
-                    ' memcahced, attempt to connect to a single node.'
+                    ' memcached, attempt to connect to a single node.'
             )
 
     @staticmethod
@@ -466,7 +466,7 @@ class Memcached(object):
                 error='Memcache key not found',
                 rc=1,
                 msg='The key you specified was not found within memcached. '
-                    'If you are load balancing memcahced, attempt to connect'
+                    'If you are load balancing memcached, attempt to connect'
                     ' to a single node.'
             )
 
@@ -536,7 +536,7 @@ class Memcached(object):
                 rc=1,
                 msg='The content you attempted to place within memcached'
                     ' was not created. If you are load balancing'
-                    ' memcahced, attempt to connect to a single node.'
+                    ' memcached, attempt to connect to a single node.'
                     ' Returned a value of unstored keys [ %s ].' % value
             )
 
