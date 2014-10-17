@@ -21,9 +21,9 @@ from swift.cli.ringbuilder import main as rb_main
 import pickle
 import sys
 import threading
-import yaml
+import json
 
-USAGE = "usage: %prog -s <rpc_user_config.yml>"
+USAGE = "usage: %prog -s <rpc_inventory.json>"
 
 DEV_KEY = "%(ip)s:%(port)d/%(device)s"
 
@@ -216,44 +216,44 @@ def build_ring(section, conf, part_power, hosts, validate=False):
         run_and_wait(rb_main, ["swift-ring-builder", build_file, "rebalance"])
 
 def main(setup):
-    # load the yaml file
+    # load the json file
     try:
-        with open(setup) as yaml_stream:
-            _swift = yaml.load(yaml_stream)
+        with open(setup) as json_stream:
+            _inventory = json.load(json_stream)
     except Exception as ex:
-        print("Failed to load yaml string %s" % (ex))
+        print("Failed to load json string %s" % (ex))
         return 1
 
     _hosts = {}
-    if _swift.get("swift_hosts"):
-        for host in _swift['swift_hosts']:
-            host_vars = \
-                _swift['swift_hosts'][host]['container_vars']['swift_vars']
-            host_ip = host_vars.get('ip', _swift['swift_hosts'][host]['ip'])
+    if _inventory.get("swift_hosts"):
+        for host in _inventory['swift_hosts']['hosts']:
+            host_config = _inventory['_meta']['hostvars'][host]
+            host_vars = host_config['swift_vars']
+            host_ip = host_vars.get('ip', host_config['container_address'])
             if not host_vars.get('drives'):
                 continue
             host_drives = host_vars.get('drives')
             for host_drive in host_drives:
                 host_drive['ip'] = host_drive.get('ip', host_ip)
                 if host_vars.get('groups'):
-                   host_drive['groups'] = host_drive.get('groups',
-                                                         host_vars['groups'])
+                   host_drive['groups'] = \
+                       host_drive.get('groups', host_vars['groups'])
                 if host_vars.get('repl_ip'):
-                   host_drive['repl_ip'] = host_drive.get('repl_ip',
-                                                          host_vars['repl_ip'])
+                   host_drive['repl_ip'] = \
+                       host_drive.get('repl_ip', host_vars['repl_ip'])
                 if host_vars.get('repl_port'):
                    host_drive['repl_port'] = \
                        host_drive.get('repl_port', host_vars['repl_port'])
                 if host_vars.get('weight'):
-                   host_drive['weight'] = host_drive.get('weight',
-                                                         host_vars['weight'])
+                   host_drive['weight'] = \
+                       host_drive.get('weight', host_vars['weight'])
                 key = "%s/%s" % (host_drive['ip'], host_drive['name'])
                 if key in _hosts:
                     print("%s already definined - duplicate device" % key)
                     return 1
                 _hosts[key] = host_drive
 
-    global_vars  = _swift['global_overrides']
+    global_vars  = _inventory['all']['vars']
     check_section(global_vars, 'swift')
     swift_vars = global_vars['swift']
     if not swift_vars.get('part_power'):
@@ -323,7 +323,7 @@ if __name__ == "__main__":
     parser = OptionParser(USAGE)
     parser.add_option("-s", "--setup", dest="setup",
                       help="Specify the swift setup file.", metavar="FILE",
-                      default="/etc/rpc_deploy/rpc_user_config.yml")
+                      default="/etc/rpc_deploy/rpc_inventory.json")
 
     options, args = parser.parse_args(sys.argv[1:])
     if options.setup and not exists(options.setup):

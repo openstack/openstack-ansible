@@ -31,6 +31,6 @@
     mode=0700
 
 - name: "build rings"
-  command: /usr/bin/python /tmp/swift/scripts/swift_rings.py -s /etc/rpc_deploy/rpc_user_config.yml
+  command: /usr/bin/python /tmp/swift/scripts/swift_rings.py -s /etc/rpc_deploy/rpc_inventory.json
   args:
     chdir: /tmp/swift/rings/
