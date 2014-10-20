@@ -1,6 +1,6 @@
 # Changelog
 
-## 9.0.2 - 2014-11-05
+## 9.0.2 - 2014-11-06
 
 - Increase delay and retries for lxc cache download [#449]
 - Updated cinder.conf to allow for AZ setup [#458]
@@ -15,6 +15,7 @@
 - Changed release version to match the branch [#421]
 - Changed maas_notification_plan to npManaged [#402]
 - Added galera alarms [#403]
+- Added repo_package variable file to nova-spice-console [#347]
 - Resolved issue with neutron HA failover cron clobbering other crons [#383,#378]
 
 ## 9.0.1 - 2014-10-17
