@@ -50,3 +50,17 @@
   with_items:
     - demo
     - alt_demo
+
+- name: Ensure tempest users have heat_stack_owners role
+  keystone:
+    command: ensure_user_role
+    tenant_name: "{{ item }}"
+    user_name: "{{ item }}"
+    role_name: heat_stack_owner
+    endpoint: "{{ auth_identity_uri }}"
+    login_tenant_name: "{{ auth_admin_tenant }}"
+    login_user: "{{ auth_admin_username }}"
+    login_password: "{{ auth_admin_password }}"
+  with_items:
+    - demo
+    - alt_demo
