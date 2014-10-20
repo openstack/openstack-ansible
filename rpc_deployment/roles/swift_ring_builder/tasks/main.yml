@@ -21,16 +21,16 @@
     group=root
     mode=0755
   with_items:
-    - /tmp/swift/rings
-    - /tmp/swift/scripts
+    - /etc/swift/rings
+    - /etc/swift/scripts
 
 - name: "Copy the swift_rings.py file"
   template: >
     src=swift_rings.py
-    dest="/tmp/swift/scripts/swift_rings.py"
+    dest="/etc/swift/scripts/swift_rings.py"
     mode=0700
 
 - name: "build rings"
-  command: /usr/bin/python /tmp/swift/scripts/swift_rings.py -s /etc/rpc_deploy/rpc_inventory.json
+  command: /usr/bin/python /etc/swift/scripts/swift_rings.py -s /etc/rpc_deploy/rpc_inventory.json
   args:
-    chdir: /tmp/swift/rings/
+    chdir: /etc/swift/rings/

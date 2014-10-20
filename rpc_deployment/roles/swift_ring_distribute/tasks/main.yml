@@ -21,5 +21,5 @@
     owner={{ system_user }}
     group={{ system_group }}
   with_fileglob:
-    - /tmp/swift/rings/*.ring.gz
-    - /tmp/swift/rings/*.builder
+    - /etc/swift/rings/*.ring.gz
+    - /etc/swift/rings/*.builder
