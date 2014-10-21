@@ -24,7 +24,8 @@
     description="{{ service_description }}"
   register: add_service
   until: add_service|success
-  retries: 3
+  retries: 30
+  delay: 2
 
 # Create an admin user
 - name: Ensure Keystone user
