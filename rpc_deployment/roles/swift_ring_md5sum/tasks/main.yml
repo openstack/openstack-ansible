@@ -13,26 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: check_ring.yml
+- name: Get md5sum of builder files
+  shell: cat /etc/swift/*.builder 2>/dev/null | md5sum | cut -d " " -f1
+  register: md5sum
 
-- name: "make sure scripts directory exists"
-  file: >
-    state=directory
-    path={{ item }}
-    owner=root
-    group=root
-    mode=0755
-  with_items:
-    - /etc/swift/rings
-    - /etc/swift/scripts
-
-- name: "Copy the swift_rings.py file"
-  template: >
-    src=swift_rings.py
-    dest="/etc/swift/scripts/swift_rings.py"
-    mode=0700
-
-- name: "build rings"
-  command: /usr/bin/python /etc/swift/scripts/swift_rings.py -s /etc/rpc_deploy/rpc_inventory.json
-  args:
-    chdir: /etc/swift/rings/
+- name: Register a fact for the md5sum
+  set_fact:
+     builder_md5sum: "{{ md5sum.stdout }}"
