@@ -13,14 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Create the local directories
-  file: >
-    path={{ item }}
-    state=directory
-    group={{ system_group|default('root') }}
-    owner={{ system_user|default('root') }}
-    recurse=true
-  when: container_directories is defined
-  with_items: container_directories
-  tags:
-    - directories
+- name: "Create logging directory"
+  file:
+    path: "{{ item }}"
+    state: "directory"
+    owner: "syslog"
+    group: "syslog"
+  with_items:
+    - /var/log/swift
+    - /openstack/log/{{ inventory_hostname }}
+
+- name: "Drop swift rsyslog conf"
+  template:
+    src: "swift-rsyslog.conf.j2"
+    dest: "/etc/rsyslog.d/10-swift.conf"
+  notify:
+    - restart rsyslog

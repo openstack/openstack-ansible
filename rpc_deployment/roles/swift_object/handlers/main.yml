@@ -13,14 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Create the local directories
-  file: >
-    path={{ item }}
-    state=directory
-    group={{ system_group|default('root') }}
-    owner={{ system_user|default('root') }}
-    recurse=true
-  when: container_directories is defined
-  with_items: container_directories
-  tags:
-    - directories
+# TODO: Replace these with init scripts
+- name: Restart object server
+  shell: swift-init object-server restart || swift-init object-server restart
+
+- name: Restart object auditor
+  shell: swift-init object-auditor restart || swift-init object-auditor restart
+
+- name: Restart object replicator
+  shell: swift-init object-replicator restart || swift-init object-replicator restart
+
+- name: Restart object updater
+  shell: swift-init object-updater restart || swift-init object-updater restart

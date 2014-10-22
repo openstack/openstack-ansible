@@ -13,14 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Create the local directories
-  file: >
-    path={{ item }}
-    state=directory
-    group={{ system_group|default('root') }}
-    owner={{ system_user|default('root') }}
-    recurse=true
-  when: container_directories is defined
-  with_items: container_directories
-  tags:
-    - directories
+- name: swift proxy server configuration
+  template: >
+    src="proxy-server.conf.j2"
+    dest="/etc/swift/proxy-server.conf"
+    owner={{ service_admin_username }}
+    mode=0644
+  notify: Restart proxy server
+
+- name: Set proxy server to start at boot
+  cron: >
+    name="Restart swift proxy at boot"
+    special_time=reboot
+    job="swift-init proxy-server start"

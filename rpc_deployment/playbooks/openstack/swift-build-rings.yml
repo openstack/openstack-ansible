@@ -13,14 +13,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Create the local directories
-  file: >
-    path={{ item }}
-    state=directory
-    group={{ system_group|default('root') }}
-    owner={{ system_user|default('root') }}
-    recurse=true
-  when: container_directories is defined
-  with_items: container_directories
-  tags:
-    - directories
+- hosts: swift_hosts:swift_proxy
+  user: root
+  roles:
+    - swift_ring_md5sum
+
+- hosts: local
+  user: root
+  roles:
+    - { role: container_common, tags: [ 'directories' ] }
+    - openstack_common
+    - swift_common
+    - swift_ring_builder
+  vars_files:
+    - inventory/group_vars/swift_all.yml
+    - vars/repo_packages/swift.yml
+
+- hosts: swift_hosts:swift_proxy
+  user: root
+  roles:
+    - swift_ring_distribute

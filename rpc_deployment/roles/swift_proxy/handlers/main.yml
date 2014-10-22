@@ -13,14 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Create the local directories
-  file: >
-    path={{ item }}
-    state=directory
-    group={{ system_group|default('root') }}
-    owner={{ system_user|default('root') }}
-    recurse=true
-  when: container_directories is defined
-  with_items: container_directories
-  tags:
-    - directories
+# TODO: Replace this with init scripts
+- name: Restart proxy server
+  shell: swift-init proxy-server restart || swift-init proxy-server restart

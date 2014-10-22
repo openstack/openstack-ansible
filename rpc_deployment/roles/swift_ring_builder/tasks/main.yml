@@ -13,14 +13,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Create the local directories
+- include: check_ring.yml
+
+- name: "make sure scripts directory exists"
   file: >
-    path={{ item }}
     state=directory
-    group={{ system_group|default('root') }}
-    owner={{ system_user|default('root') }}
-    recurse=true
-  when: container_directories is defined
-  with_items: container_directories
-  tags:
-    - directories
+    path={{ item }}
+    owner=root
+    group=root
+    mode=0755
+  with_items:
+    - /etc/swift/rings
+    - /etc/swift/scripts
+
+- name: "Copy the swift_rings.py file"
+  template: >
+    src=swift_rings.py
+    dest="/etc/swift/scripts/swift_rings.py"
+    mode=0700
+
+- name: "build rings"
+  command: /usr/bin/python /etc/swift/scripts/swift_rings.py -s /etc/rpc_deploy/rpc_inventory.json
+  args:
+    chdir: /etc/swift/rings/

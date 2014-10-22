@@ -13,14 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Create the local directories
-  file: >
-    path={{ item }}
-    state=directory
-    group={{ system_group|default('root') }}
-    owner={{ system_user|default('root') }}
-    recurse=true
-  when: container_directories is defined
-  with_items: container_directories
-  tags:
-    - directories
+- hosts: swift_proxy
+  user: root
+  roles:
+    - swift_common
+    - swift_proxy
+  vars_files:
+    - inventory/group_vars/swift_all.yml
+
+- hosts: swift_proxy[0]
+  user: root
+  roles:
+    - keystone_add_service
+  vars_files:
+    - vars/openstack_service_vars/swift_proxy_endpoint.yml
+

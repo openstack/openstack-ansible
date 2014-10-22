@@ -13,14 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Create the local directories
-  file: >
-    path={{ item }}
-    state=directory
-    group={{ system_group|default('root') }}
-    owner={{ system_user|default('root') }}
-    recurse=true
-  when: container_directories is defined
-  with_items: container_directories
-  tags:
-    - directories
+- name: "Copy the rings over"
+  copy: >
+    src={{ item }}
+    dest=/etc/swift/
+    mode=0644
+    owner={{ system_user }}
+    group={{ system_group }}
+  with_fileglob:
+    - /etc/swift/rings/*.ring.gz
+    - /etc/swift/rings/*.builder

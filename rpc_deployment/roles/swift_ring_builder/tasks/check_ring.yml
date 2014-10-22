@@ -1,0 +1,30 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Get md5sum of local builder files
+  shell: cat /etc/swift/rings/*.builder 2>/dev/null | md5sum | cut -d " " -f1
+  register: md5sum
+
+- name: Get empty md5sum
+  shell: echo -n | md5sum | cut -d " " -f1
+  register: empty_md5sum
+
+# Fail if the remote hosts builder files is not empty AND
+# does not match the md5sum of the local host.
+- name: Check md5sum of builder files
+  fail:
+    msg: "The builder files on the remote host {{ item }} do not match the local host, and are not empty on the remote host"
+  when: ("{{ hostvars[item]['builder_md5sum'] }}" != "{{ empty_md5sum.stdout }}") and ("{{ hostvars[item]['builder_md5sum'] }}" != "{{ md5sum.stdout }}")
+  with_items: groups['swift_proxy'] + groups['swift_hosts']

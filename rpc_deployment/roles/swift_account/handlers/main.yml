@@ -13,14 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Create the local directories
-  file: >
-    path={{ item }}
-    state=directory
-    group={{ system_group|default('root') }}
-    owner={{ system_user|default('root') }}
-    recurse=true
-  when: container_directories is defined
-  with_items: container_directories
-  tags:
-    - directories
+# TODO: Replace these with init scripts
+- name: Restart account server
+  shell: swift-init account-server restart || swift-init account-server restart
+
+- name: Restart account auditor
+  shell: swift-init account-auditor restart || swift-init account-auditor restart
+
+- name: Restart account replicator
+  shell: swift-init account-replicator restart || swift-init account-replicator restart
+
+- name: Restart account reaper
+  shell: swift-init account-reaper restart || swift-init account-reaper restart

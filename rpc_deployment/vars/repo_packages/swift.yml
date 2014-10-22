@@ -21,6 +21,28 @@ repo_path: "{{ repo_package_name }}_{{ git_install_branch | replace('/', '_') }}
 git_repo: https://github.com/openstack/swift
 git_fallback_repo: https://git.openstack.org/openstack/swift
 git_dest: "/opt/{{ repo_path }}"
-git_install_branch: master
+git_etc_example: etc/
+git_install_branch: stable/juno
+
+service_pip_dependencies:
+  - pywbem
+  - ecdsa
+  - MySQL-python
+  - python-memcached
+  - pycrypto
+  - python-cinderclient
+  - python-keystoneclient
+  - keystonemiddleware
+
+container_packages:
+  - curl
+  - python-pip
+  - rsync
+  - openssh-server
+  - git-core
+  - python-setuptools
+  - python-dev
+  - gcc
+  - libffi-dev
 
 pip_wheel_name: swift
