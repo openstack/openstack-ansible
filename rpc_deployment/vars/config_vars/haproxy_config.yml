@@ -180,6 +180,6 @@ haproxy_config:
         - "ssl-hello-chk"
   - service:
       hap_service_name: swift_proxy
-      hap_backend_nodes: "{{ groups['swift_proxy']|default('no_swift-proxy_servers') }}"
+      hap_backend_nodes: "{{ groups['swift_proxy'] }}"
       hap_port: 8888
       hap_balance_type: http
