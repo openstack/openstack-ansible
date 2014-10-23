@@ -431,17 +431,15 @@ pushd /opt/ansible-lxc-rpc/rpc_deployment
   # Install all of the infra bits
   install_bits infrastructure/infrastructure-setup.yml
   # install all of the Openstack Bits
-  install_bits openstack/openstack-common.yml
-  install_bits openstack/keystone.yml
-  install_bits openstack/keystone-add-all-services.yml
+  install_bits openstack/keystone-all.yml
   install_bits openstack/glance-all.yml
   install_bits openstack/heat-all.yml
   install_bits openstack/nova-all.yml
   install_bits openstack/neutron-all.yml
   install_bits openstack/cinder-all.yml
   install_bits openstack/horizon-all.yml
-  install_bits openstack/utility.yml
-  install_bits openstack/rpc-support.yml
+  install_bits openstack/utility-all.yml
+  install_bits openstack/rpc-support-all.yml
   # Stop rsyslog container(s)
   for i in $(lxc-ls | grep "rsyslog"); do 
       lxc-stop -k -n $i; lxc-start -d -n $i
