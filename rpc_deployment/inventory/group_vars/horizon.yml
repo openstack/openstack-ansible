@@ -50,6 +50,7 @@ install_lib_dir: /usr/local/lib/python2.7/dist-packages
 
 container_directories:
   - "/etc/horizon"
+  - "/var/lib/horizon"
 
 horizon_fqdn: "{{ external_vip_address }}"
 horizon_server_name: "{{ container_name }}"
