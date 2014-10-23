@@ -228,7 +228,7 @@ maas_monitoring_zones:
   - mzord
   - mzlon
   - mzhkg
-maas_repo_version: v9.0.0
+maas_repo_version: 10.0.0rc1
 ## Neutron Options
 neutron_container_mysql_password: secrete
 neutron_service_password: secrete
