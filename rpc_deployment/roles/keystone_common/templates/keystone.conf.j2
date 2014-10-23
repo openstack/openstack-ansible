@@ -17,7 +17,8 @@ rabbit_password = {{ rabbit_password }}
 rpc_backend = {{ rpc_backend }}
 
 [memcache]
-servers = {{ internal_vip_address }}:{{ memcached_port }}
+servers = {% for host in groups['memcached'] %}{{ hostvars[host]['container_address'] }}:{{ memcached_port|default('11211') }}{% if not loop.last %},{% endif %}{% endfor %}
+
 max_compare_and_set_retry = 16
 
 [cache]

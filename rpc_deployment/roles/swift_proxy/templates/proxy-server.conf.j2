@@ -316,7 +316,7 @@ use = egg:swift#memcache
 # memcache.conf (see memcache.conf-sample) or lacking that file, it will
 # default to the value below. You can specify multiple servers separated with
 # commas, as in: 10.1.2.3:11211,10.1.2.4:11211
-memcache_servers = {{ internal_vip_address }}:{{ memcached_port }}
+memcache_servers = {% for host in groups['memcached'] %}{{ hostvars[host]['container_address'] }}:{{ memcached_port|default('11211') }}{% if not loop.last %},{% endif %}{% endfor %}
 #
 # Sets how memcache values are serialized and deserialized:
 # 0 = older, insecure pickle serialization
