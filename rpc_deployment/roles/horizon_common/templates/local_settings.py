@@ -103,7 +103,10 @@ SECRET_KEY = secret_key.generate_or_read_from_file('/var/lib/horizon/.secret_key
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-        'LOCATION': '{{ internal_vip_address }}:{{ memcached_port }}',
+        'LOCATION': [
+        {% for host in groups['memcached'] %}'{{ hostvars[host]['container_address'] }}:{{ memcached_port|default('11211') }}'{% if not loop.last %},{% endif %}{% endfor %}
+
+        ]
     }
 }
 

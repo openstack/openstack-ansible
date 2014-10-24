@@ -148,13 +148,6 @@ haproxy_config:
       hap_backend_options:
        - "ssl-hello-chk"
   - service:
-      hap_service_name: memcached
-      hap_backend_nodes: "{{ [groups['memcached'][0]] }}"  # list expected
-      hap_backup_nodes: "{{ groups['memcached'][1:] }}"
-      hap_port: 11211
-      hap_balance_type: tcp
-      hap_whitelist_hosts: true
-  - service:
       hap_service_name: elasticsearch
       hap_backend_nodes: "{{ [groups['elasticsearch'][0]] }}"
       hap_port: 9200
