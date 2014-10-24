@@ -13,12 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-repo_package_name: raxmon
-
-git_repo: https://github.com/rcbops/rpc-maas
-git_install_branch: "master"
-git_dest: /usr/lib/rackspace-monitoring-agent/plugins/
-
 apt_container_keys:
   - { url: "https://monitoring.api.rackspacecloud.com/pki/agent/linux.asc", state: "present" }
 
@@ -28,7 +22,7 @@ apt_container_repos:
 container_packages:
   - rackspace-monitoring-agent
 
-service_pip_dependencies:
-  - rackspace-monitoring-cli
-
 pip_requirements_file: "/usr/lib/rackspace-monitoring-agent/plugins/requirements.txt"
+
+git_repo: https://github.com/rcbops/rpc-maas.git
+git_install_branch: master
