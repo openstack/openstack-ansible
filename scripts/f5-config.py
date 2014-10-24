@@ -173,15 +173,6 @@ POOL_PARTS = {
         'group': 'horizon',
         'hosts': []
     },
-    'memcached': {
-        'port': 11211,
-        'backend_port': 11211,
-        'mon_type': 'tcp',
-        'group': 'memcached',
-        'priority': True,
-        'limit_source': True,
-        'hosts': []
-    },
     'elasticsearch': {
         'port': 9200,
         'backend_port': 9200,
