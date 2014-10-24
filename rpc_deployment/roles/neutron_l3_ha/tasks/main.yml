@@ -26,17 +26,38 @@
     name: "{{ inventory_hostname }}"
   register: hashed_name
 
+# These are used in the Neutron HA Cron job script
+- name: Creating Job Facts
+  set_fact:
+    do_job: ". /root/openrc && /opt/neutron-ha-tool.py --l3-agent-migrate"
+    sleep_time: "{{ hashed_name.int_value }}"
+
+- name: "Drop Neutron HA job script"
+  template:
+    src: "neutron_ha_tool.sh.j2"
+    dest: "/opt/neutron-ha-tool.sh"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+
 - name: Create Neutron HA
   cron:
-    name: "{{ item.name }}"
+    name: "neutron-ha-tool"
     minute: "*/1"
     day: "*"
     hour: "*"
     month: "*"
     state: present
-    job: "sleep {{ hashed_name.int_value }} && . /root/openrc && /opt/neutron-ha-tool.py {{ item.command }}"
+    job: "/opt/neutron-ha-tool.sh"
     user: root
-    cron_file: "{{ item.name }}"
+    cron_file: "neutron-ha-tool"
+
+# This should be revised in Kilo
+# kilo_revision: true
+- name: Remove old cronjobs if found.
+  file:
+    path: "{{ item }}"
+    state: "absent"
   with_items:
-    - { name: "l3_agent_migrate", command: "--l3-agent-migrate" }
-    - { name: "replicate_dhcp", command: "--replicate-dhcp" }
+    - /etc/cron.d/replicate_dhcp
+    - /etc/cron.d/l3_agent_migrate
