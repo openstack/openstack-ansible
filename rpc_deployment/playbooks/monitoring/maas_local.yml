@@ -317,6 +317,9 @@
     check_details: file={{ check_name }}.py,args=-H,args={{ ansible_ssh_host }}
     check_period: "{{ maas_check_period }}"
     check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'wsrep_cluster_size', 'criteria': ':set consecutiveCount=3 if (metric["WSREP_CLUSTER_SIZE"] < 3) { return new AlarmStatus(CRITICAL, "Galera cluster size less than expected"); }' }
+      - { 'name': 'wsrep_local_state', 'criteria': ':set consecutiveCount=3 if (metric["WSREP_LOCAL_STATE_COMMENT"] != "Synced" ) { return new AlarmStatus(CRITICAL, "Galera cluster node not syncd"); }' }
   user: root
   roles:
     - maas_local
