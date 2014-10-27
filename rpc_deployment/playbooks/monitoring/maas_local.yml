@@ -318,8 +318,8 @@
     check_period: "{{ maas_check_period }}"
     check_timeout: "{{ maas_check_timeout }}"
     alarms:
-      - { 'name': 'wsrep_cluster_size', 'criteria': ':set consecutiveCount=3 if (metric["WSREP_CLUSTER_SIZE"] < 3) { return new AlarmStatus(CRITICAL, "Galera cluster size less than expected"); }' }
-      - { 'name': 'wsrep_local_state', 'criteria': ':set consecutiveCount=3 if (metric["WSREP_LOCAL_STATE_COMMENT"] != "Synced" ) { return new AlarmStatus(CRITICAL, "Galera cluster node not syncd"); }' }
+      - { 'name': 'wsrep_cluster_size', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["WSREP_CLUSTER_SIZE"] < {{ groups["galera"] | length }}) { return new AlarmStatus(CRITICAL, "Galera cluster size less than expected"); }' }
+      - { 'name': 'wsrep_local_state', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["WSREP_LOCAL_STATE_COMMENT"] != "Synced" ) { return new AlarmStatus(CRITICAL, "Galera cluster node not syncd"); }' }
   user: root
   roles:
     - maas_local
