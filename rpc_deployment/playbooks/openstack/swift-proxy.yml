@@ -17,9 +17,13 @@
   user: root
   roles:
     - swift_common
+    - swift_init_scripts
     - swift_proxy
   vars_files:
     - inventory/group_vars/swift_all.yml
+    - vars/openstack_service_vars/swift_proxy.yml
+  handlers:
+    - include: handlers/swift_services.yml
 
 - hosts: swift_proxy[0]
   user: root
@@ -27,4 +31,3 @@
     - keystone_add_service
   vars_files:
     - vars/openstack_service_vars/swift_proxy_endpoint.yml
-

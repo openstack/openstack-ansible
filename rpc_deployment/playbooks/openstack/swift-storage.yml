@@ -18,8 +18,9 @@
   roles:
     - swift_common
     - swift_storage_setup
-    - swift_container
-    - swift_object
-    - swift_account
   vars_files:
     - inventory/group_vars/swift_all.yml
+
+- include: swift-object.yml
+- include: swift-account.yml
+- include: swift-container.yml

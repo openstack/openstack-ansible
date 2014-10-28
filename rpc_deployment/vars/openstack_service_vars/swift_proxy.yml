@@ -13,15 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# TODO: Replace these with init scripts
-- name: Restart account server
-  shell: swift-init account-server restart || swift-init account-server restart
+# The variables file used by the playbooks in the Heat-API group.
+# These don't have to be explicitly imported by vars_files: they are autopopulated.
 
-- name: Restart account auditor
-  shell: swift-init account-auditor restart || swift-init account-auditor restart
+program_names:
+  - swift-proxy-server
 
-- name: Restart account replicator
-  shell: swift-init account-replicator restart || swift-init account-replicator restart
-
-- name: Restart account reaper
-  shell: swift-init account-reaper restart || swift-init account-reaper restart
+service_conf: proxy-server.conf
