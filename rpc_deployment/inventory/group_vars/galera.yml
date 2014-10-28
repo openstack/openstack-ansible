@@ -15,6 +15,11 @@
 
 service_name: mysql
 
+# Defaults to mysql_address (VIP) when unset.
+# Should only be set for the galera group so that they always connect to
+# their own instance.
+mysql_client_host: 127.0.0.1
+
 container_lvm_fstype: ext4
 container_lvm_fssize: 5GB
 
