@@ -13,8 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-raxmon_agent_key:
-  - "https://monitoring.api.rackspacecloud.com/pki/agent/linux.asc"
-
-raxmon_agent_repos:
-  - { repo: "deb http://stable.packages.cloudmonitoring.rackspace.com/ubuntu-14.04-x86_64 cloudmonitoring main", state: "present" }
+- hosts: hosts
+  user: root
+  roles:
+    - common
+    - raxmon_cli
+  vars_files:
+    - vars/repo_packages/raxmon_cli.yml

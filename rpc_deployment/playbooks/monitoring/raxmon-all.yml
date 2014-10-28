@@ -13,10 +13,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Drop .raxrc file
-  template:
-    src: raxrc.j2
-    dest: /root/.raxrc
-    mode: 0600
-    owner: root
-    group: root
+- include: raxmon_cli.yml
+- include: raxmon_agent.yml

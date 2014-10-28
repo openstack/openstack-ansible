@@ -13,32 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Add apt key for the raxmon agent
-  apt_key:
-    url: "{{ item }}"
-    state: present
-  with_items: raxmon_agent_key
-
-- name: Configure raxmon agent repo
-  apt_repository: >
-    repo="{{ item.repo }}"
-    state="{{ item.state }}"
-  with_items: raxmon_agent_repos
-
-- name: Install raxmon agent packages
-  apt:
-    pkg: "{{ item }}"
-    state: latest
-    update_cache: yes
-    cache_valid_time: 600
-  with_items:
-    - rackspace-monitoring-agent
-
 - name: Clone plugins repo
   git:
-    repo: https://github.com/rcbops/rpc-maas.git
+    repo: "{{ git_repo }}"
     dest: /usr/lib/rackspace-monitoring-agent/plugins/
-    version: "{{ maas_repo_version }}"
+    version: "{{ git_install_branch }}"
 
 - name: Chmod plugins
   file: path={{ item }} mode=0755
@@ -55,7 +34,7 @@
 
 - name: Install python dependencies
   pip:
-    requirements: /usr/lib/rackspace-monitoring-agent/plugins/requirements.txt
+    requirements: "{{ pip_requirements_file }}"
 
 - name: Entity {{ entity_name }} count
   shell: "raxmon-entities-list | grep ' label={{ entity_name }} provider=Rackspace Monitoring ...>$' | wc -l"

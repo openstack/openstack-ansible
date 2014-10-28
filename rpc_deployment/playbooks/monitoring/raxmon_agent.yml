@@ -16,11 +16,13 @@
 - hosts: hosts
   user: root
   roles:
+    - container_common
     - galera_client_cnf
-    - raxmon_cli
     - raxmon_agent_install
   vars:
     entity_name: "{{ inventory_hostname }}{{ maas_fqdn_extension|default('') }}"
+  vars_files:
+    - vars/repo_packages/raxmon_agent.yml
 
 - hosts: keystone[0]
   user: root
