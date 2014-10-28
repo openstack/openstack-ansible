@@ -31,11 +31,14 @@ for log in matches:
         container = log.split('/')[3]
         service = log.split('/')[4].split('.')[0]
         if 'horizon' in container:
-                service = container + '_' + service
+            service = container + '_' + service
+
+        if 'logstash' in container:
+            continue
 
         print "$InputFileName {}".format(log)
-        print "$InputFileTag {}:".format(container)
-        print "$InputFileStateFile state-{}".format(service)
+        print "$InputFileTag {}.{}:".format(container, service)
+        print "$InputFileStateFile state-{}-{}".format(container, service)
         print "$InputFileFacility local7"
         print "$InputRunFileMonitor\n"
 
