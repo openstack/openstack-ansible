@@ -34,7 +34,7 @@
 - name: Wait for container networking
   wait_for: >
     port=22
-    timeout=60
+    timeout={{ container_start_timeout }}
     search_regex=OpenSSH
     host={{ container_address }}
   when: restarted_container|changed and is_metal != true
