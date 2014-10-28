@@ -16,7 +16,7 @@
 - name: Install service source
   pip:
     name: "/opt/{{ service_name }}_{{ git_install_branch | replace('/', '_') }}"
-    extra_args: "{{ pip_install_options|default('') }} --allow-all-external"
+    extra_args: "{{ pip_install_options|default('') }}"
   register: pip_install
   until: pip_install|success
   retries: 5
@@ -27,7 +27,7 @@
 - name: Install pip repo plugins
   pip:
     name: "{{ git_dest }}/{{ item.path }}/{{ item.package }}"
-    extra_args: "{{ pip_install_options|default('') }} --allow-all-external"
+    extra_args: "{{ pip_install_options|default('') }}"
   when: git_dest is defined and git_repo_plugins is defined
   with_items: git_repo_plugins
   register: pip_install
