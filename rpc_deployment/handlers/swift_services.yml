@@ -13,10 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: swift proxy server configuration
-  template: >
-    src="proxy-server.conf.j2"
-    dest="/etc/swift/proxy-server.conf"
-    owner={{ service_admin_username }}
-    mode=0644
-  notify: Restart swift service
+- name: Restart swift service
+  service: name={{ item }} state=restarted pattern={{ item }}
+  register: service_restart
+  with_items: program_names
+  notify: Fail if swift restart fails
+
+- name: Fail if swift restart fails
+  fail:
+    msg: 'Service {{ item.cmd }} Failed'
+  when: "'msg' in item and 'FAIL' in item.msg|upper"
+  with_items: service_restart.results
+  notify: Ensure swift service running
+
+- name: Ensure swift service running
+  service: name={{ item }} state=started pattern={{ item }}
+  with_items: service_names

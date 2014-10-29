@@ -19,32 +19,4 @@
     dest="/etc/swift/object-server.conf"
     owner={{ system_user }}
     mode=0644
-  notify:
-    - Restart object server
-    - Restart object auditor
-    - Restart object replicator
-    - Restart object updater
-
-- name: "Set object server to start at boot"
-  cron: >
-    name="Restart object-server on boot"
-    special_time=reboot
-    job="swift-init object-server start"
-
-- name: "Set object auditor to start at boot"
-  cron: >
-    name="Restart object-auditor on boot"
-    special_time=reboot
-    job="swift-init object-auditor start"
-
-- name: "Set object replicator to start at boot"
-  cron: >
-    name="Restart object-replicator on boot"
-    special_time=reboot
-    job="swift-init object-replicator start"
-
-- name: "Set object updater to start at boot"
-  cron: >
-    name="Restart object-updater on boot"
-    special_time=reboot
-    job="swift-init object-updater start"
+  notify: Restart swift service

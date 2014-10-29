@@ -13,6 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# TODO: Replace this with init scripts
-- name: Restart proxy server
-  shell: swift-init proxy-server restart || swift-init proxy-server restart
+- hosts: swift_hosts
+  user: root
+  roles:
+    - swift_init_scripts
+    - swift_container
+  vars_files:
+    - vars/openstack_service_vars/swift_container.yml
+  handlers:
+    - include: handlers/swift_services.yml

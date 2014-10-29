@@ -13,10 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: swift proxy server configuration
-  template: >
-    src="proxy-server.conf.j2"
-    dest="/etc/swift/proxy-server.conf"
-    owner={{ service_admin_username }}
-    mode=0644
-  notify: Restart swift service
+- hosts: swift_hosts
+  user: root
+  roles:
+    - swift_init_scripts
+    - swift_account
+  vars_files:
+    - vars/openstack_service_vars/swift_account.yml
+  handlers:
+    - include: handlers/swift_services.yml

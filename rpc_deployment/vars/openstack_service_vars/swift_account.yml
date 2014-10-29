@@ -13,15 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# TODO: Replace these with init scripts
-- name: Restart object server
-  shell: swift-init object-server restart || swift-init object-server restart
+# The variables file used by the playbooks in the Heat-API group.
+# These don't have to be explicitly imported by vars_files: they are autopopulated.
 
-- name: Restart object auditor
-  shell: swift-init object-auditor restart || swift-init object-auditor restart
+program_names:
+  - swift-account-server
+  - swift-account-auditor
+  - swift-account-replicator
+  - swift-account-reaper
 
-- name: Restart object replicator
-  shell: swift-init object-replicator restart || swift-init object-replicator restart
-
-- name: Restart object updater
-  shell: swift-init object-updater restart || swift-init object-updater restart
+service_conf: account-server.conf

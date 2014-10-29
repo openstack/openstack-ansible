@@ -13,10 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: swift proxy server configuration
-  template: >
-    src="proxy-server.conf.j2"
-    dest="/etc/swift/proxy-server.conf"
-    owner={{ service_admin_username }}
-    mode=0644
-  notify: Restart swift service
+# The variables file used by the playbooks in the Heat-API group.
+# These don't have to be explicitly imported by vars_files: they are autopopulated.
+
+program_names:
+  - swift-object-server
+  - swift-object-auditor
+  - swift-object-replicator
+  - swift-object-reaper
+
+service_conf: object-server.conf
