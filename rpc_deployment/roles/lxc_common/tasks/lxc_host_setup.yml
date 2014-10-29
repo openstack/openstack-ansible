@@ -35,3 +35,11 @@
 
 # Ensure apparmor reindex runs before other things that may fail
 - meta: flush_handlers
+
+- name: Drop lxc-system-manage script
+  copy:
+    src: "lxc-system-manage"
+    dest: "/usr/local/bin/lxc-system-manage"
+    owner: "root"
+    group: "root"
+    mode: "0755"
