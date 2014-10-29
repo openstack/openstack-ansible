@@ -13,9 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Debian-sys-maint account is used to start/stop mysql. The password is auto
-# generated but must be the same otherwise once data is synced, two nodes
-# will not be able to start/stop mysql.
 - name: Create mysql users
   mysql_user:
     name: "{{ item.name }}"
@@ -35,12 +32,6 @@
       password: ""
       priv: "*.*:ALL"
       state: absent
-
-    - name: "debian-sys-maint"
-      host: 'localhost'
-      password: "{{ debian_sys_maint_password }}"
-      priv: "*.*:ALL"
-      state: present
 
     - name: haproxy
       host: '%'
