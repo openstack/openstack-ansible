@@ -16,7 +16,7 @@
 - name: Install pip dependencies
   pip:
     name: "{{ item }}"
-    extra_args: "--allow-all-external"
+    extra_args: "{{ pip_install_options|default('') }}"
   with_items: service_pip_dependencies
   when: service_pip_dependencies is defined
   register: pip_install
