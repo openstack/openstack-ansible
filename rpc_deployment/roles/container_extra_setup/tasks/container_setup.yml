@@ -44,7 +44,7 @@
   wait_for:
     port: "22"
     search_regex: "OpenSSH"
-    timeout: "60"
+    timeout: "{{ container_start_timeout }}"
     host: "{{ container_address }}"
   delegate_to: localhost
   when: inner_extra_changed|changed or local_extra_changed|changed or config_extra_changed|changed

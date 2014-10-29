@@ -189,3 +189,6 @@ logstash_port: 5544
 
 # Directory where serverspec is installed to on utility container
 serverspec_install_dir: /opt/serverspec
+
+# How long to wait for a container after a (re)start
+container_start_timeout: 180

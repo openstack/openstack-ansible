@@ -34,7 +34,7 @@
 - name: Check Networking After Restart
   wait_for: >
     port=22
-    timeout=60
+    timeout={{ container_start_timeout }}
     search_regex=OpenSSH
     host={{ hostvars[item]['container_address'] }}
   with_items: container_groups
