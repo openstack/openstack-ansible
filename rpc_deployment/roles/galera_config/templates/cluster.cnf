@@ -22,7 +22,7 @@ wsrep_node_name={{ ansible_hostname }}
 # SST method
 wsrep_sst_method=xtrabackup
 wsrep_sst_auth=root:{{ mysql_password }}
-wsrep_slave_threads=16
+wsrep_slave_threads={{ galera_wsrep_slave_threads | default(ansible_processor_vcpus) }}
 
 # Cluster name
 wsrep_cluster_name="rpc_galera_cluster"
