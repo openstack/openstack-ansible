@@ -133,6 +133,12 @@ storage_hosts:
     # "container_vars" can be set outside of all other options as 
     # host specific optional variables.
     container_vars:
+      # If you would like to define a cinder availablility zone this can
+      # be done with the namespaced variable.
+      cinder_storage_availability_zone: cinderAZ_1
+      # When creating more than ONE availablity zone you should define a
+      # sane default for the system to use when schedulng volume creation.
+      cinder_default_availability_zone: cinderAZ_1
       # In this example we are defining what cinder volumes are 
       # on a given host.
       cinder_backends:
@@ -147,6 +153,17 @@ storage_hosts:
           volume_group: cinder-volumes
           volume_driver: cinder.volume.drivers.lvm.LVMISCSIDriver
           volume_backend_name: LVM_iSCSI
+  cinder2:
+    ip: 172.29.236.105
+    container_vars:
+      cinder_storage_availability_zone: cinderAZ_2
+      cinder_default_availability_zone: cinderAZ_1
+      cinder_backends:
+        limit_container_types: cinder_volume
+        lvm_ssd:
+          volume_group: cinder-volumes
+          volume_driver: cinder.volume.drivers.lvm.LVMISCSIDriver
+          volume_backend_name: LVM_iSCSI_SSD
 
 # User defined Logging Hosts, this should be a required group
 log_hosts:
