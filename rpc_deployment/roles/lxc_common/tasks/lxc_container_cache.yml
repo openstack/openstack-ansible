@@ -21,7 +21,8 @@
   register: cache_download
   async: 600
   poll: 15
-  retries: 3
+  retries: 10
+  delay: 120
   until: cache_download|success
 
 - name: Move lxc cached image into place
