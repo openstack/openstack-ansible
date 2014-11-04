@@ -150,18 +150,10 @@ compute_hosts:
 storage_hosts:
   cinder1:
     ip: 172.29.236.104
-    # "container_vars" can be set outside of all other options as 
-    # host specific optional variables.
     container_vars:
-      # In this example we are defining what cinder volumes are 
-      # on a given host.
+      cinder_storage_availability_zone: cinderAZ_1
+      cinder_default_availability_zone: cinderAZ_1
       cinder_backends:
-        # if the "limit_container_types" argument is set, within 
-        # the top level key of the provided option the inventory
-        # process will perform a string match on the container name with
-        # the value found within the "limit_container_types" argument.
-        # If any part of the string found within the container 
-        # name the options are appended as host_vars inside of inventory.
         limit_container_types: cinder_volume
         lvm:
           volume_group: cinder-volumes
@@ -170,15 +162,19 @@ storage_hosts:
   cinder2:
     ip: 172.29.236.105
     container_vars:
+      cinder_storage_availability_zone: cinderAZ_2
+      cinder_default_availability_zone: cinderAZ_1
       cinder_backends:
         limit_container_types: cinder_volume
         lvm_ssd:
           volume_group: cinder-volumes
           volume_driver: cinder.volume.drivers.lvm.LVMISCSIDriver
-          volume_backend_name: LVM_SSD_iSCSI
+          volume_backend_name: LVM_iSCSI_SSD
   cinder3:
     ip: 172.29.236.106
     container_vars:
+      cinder_storage_availability_zone: cinderAZ_3
+      cinder_default_availability_zone: cinderAZ_1
       cinder_backends:
         limit_container_type: cinder_volume
         netapp:
