@@ -28,7 +28,7 @@
 - hosts: cinder_scheduler
   vars:
     check_name: cinder_scheduler_check
-    check_details: file=cinder_service_check.py,args=--host,args={{ ansible_hostname }},args={{ internal_vip_address }}
+    check_details: file=cinder_service_check.py,args=--host,args={{ ansible_fqdn }},args={{ internal_vip_address }}
     check_period: "{{ maas_check_period }}"
     check_timeout: "{{ maas_check_timeout }}"
     alarms:
@@ -40,7 +40,7 @@
 - hosts: cinder_volume
   vars:
     check_name: cinder_volume_check
-    check_details: file=cinder_service_check.py,args=--host,args={{ ansible_hostname }},args={{ internal_vip_address }}
+    check_details: file=cinder_service_check.py,args=--host,args={{ ansible_fqdn }},args={{ internal_vip_address }}
     check_period: "{{ maas_check_period }}"
     check_timeout: "{{ maas_check_timeout }}"
     alarms:
@@ -148,7 +148,7 @@
 - hosts: neutron_dhcp_agent
   vars:
     check_name: neutron_dhcp_agent_check
-    check_details: file=neutron_service_check.py,args=--host,args={{ ansible_hostname }},args={{ internal_vip_address }}
+    check_details: file=neutron_service_check.py,args=--host,args={{ ansible_fqdn }},args={{ internal_vip_address }}
     check_period: "{{ maas_check_period }}"
     check_timeout: "{{ maas_check_timeout }}"
     alarms:
@@ -160,7 +160,7 @@
 - hosts: neutron_l3_agent
   vars:
     check_name: neutron_l3_agent_check
-    check_details: file=neutron_service_check.py,args=--host,args={{ ansible_hostname }},args={{ internal_vip_address }}
+    check_details: file=neutron_service_check.py,args=--host,args={{ ansible_fqdn }},args={{ internal_vip_address }}
     check_period: "{{ maas_check_period }}"
     check_timeout: "{{ maas_check_timeout }}"
     alarms:
@@ -172,7 +172,7 @@
 - hosts: neutron_linuxbridge_agent
   vars:
     check_name: neutron_linuxbridge_agent_check
-    check_details: file=neutron_service_check.py,args=--host,args={{ ansible_hostname }},args={{ internal_vip_address }}
+    check_details: file=neutron_service_check.py,args=--host,args={{ ansible_fqdn }},args={{ internal_vip_address }}
     check_period: "{{ maas_check_period }}"
     check_timeout: "{{ maas_check_timeout }}"
     alarms:
@@ -184,7 +184,7 @@
 - hosts: neutron_metadata_agent
   vars:
     check_name: neutron_metadata_agent_check
-    check_details: file=neutron_service_check.py,args=--host,args={{ ansible_hostname }},args={{ internal_vip_address }}
+    check_details: file=neutron_service_check.py,args=--host,args={{ ansible_fqdn }},args={{ internal_vip_address }}
     check_period: "{{ maas_check_period }}"
     check_timeout: "{{ maas_check_timeout }}"
     alarms:
@@ -196,7 +196,7 @@
 - hosts: neutron_l3_agent
   vars:
     check_name: neutron_metering_agent_check
-    check_details: file=neutron_service_check.py,args=--host,args={{ ansible_hostname }},args={{ internal_vip_address }}
+    check_details: file=neutron_service_check.py,args=--host,args={{ ansible_fqdn }},args={{ internal_vip_address }}
     check_period: "{{ maas_check_period }}"
     check_timeout: "{{ maas_check_timeout }}"
     alarms:
@@ -229,7 +229,7 @@
 - hosts: nova_compute
   vars:
     check_name: nova_compute_check
-    check_details: file=nova_service_check.py,args=--host,args={{ ansible_hostname }},args={{ internal_vip_address }}
+    check_details: file=nova_service_check.py,args=--host,args={{ ansible_fqdn }},args={{ internal_vip_address }}
     check_period: "{{ maas_check_period }}"
     check_timeout: "{{ maas_check_timeout }}"
     alarms:
@@ -241,7 +241,7 @@
 - hosts: nova_cert
   vars:
     check_name: nova_cert_check
-    check_details: file=nova_service_check.py,args=--host,args={{ ansible_hostname }},args={{ internal_vip_address }}
+    check_details: file=nova_service_check.py,args=--host,args={{ ansible_fqdn }},args={{ internal_vip_address }}
     check_period: "{{ maas_check_period }}"
     check_timeout: "{{ maas_check_timeout }}"
     alarms:
@@ -253,7 +253,7 @@
 - hosts: nova_conductor
   vars:
     check_name: nova_conductor_check
-    check_details: file=nova_service_check.py,args=--host,args={{ ansible_hostname }},args={{ internal_vip_address }}
+    check_details: file=nova_service_check.py,args=--host,args={{ ansible_fqdn }},args={{ internal_vip_address }}
     check_period: "{{ maas_check_period }}"
     check_timeout: "{{ maas_check_timeout }}"
     alarms:
@@ -265,7 +265,7 @@
 - hosts: nova_scheduler
   vars:
     check_name: nova_scheduler_check
-    check_details: file=nova_service_check.py,args=--host,args={{ ansible_hostname }},args={{ internal_vip_address }}
+    check_details: file=nova_service_check.py,args=--host,args={{ ansible_fqdn }},args={{ internal_vip_address }}
     check_period: "{{ maas_check_period }}"
     check_timeout: "{{ maas_check_timeout }}"
     alarms:
@@ -277,7 +277,7 @@
 - hosts: nova_spice_console
   vars:
     check_name: nova_consoleauth_check
-    check_details: file=nova_service_check.py,args=--host,args={{ ansible_hostname }},args={{ internal_vip_address }}
+    check_details: file=nova_service_check.py,args=--host,args={{ ansible_fqdn }},args={{ internal_vip_address }}
     check_period: "{{ maas_check_period }}"
     check_timeout: "{{ maas_check_timeout }}"
     alarms:
