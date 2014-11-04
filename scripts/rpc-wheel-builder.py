@@ -38,7 +38,8 @@ PYTHON_PACKAGES = {
     'base_release': dict(),
     'known_release': dict(),
     'from_git': dict(),
-    'required_packages': dict()
+    'required_packages': dict(),
+    'built_files': list()
 }
 
 GIT_REPOS = []
@@ -54,28 +55,31 @@ VERSION_DESCRIPTORS = [
     '>=', '<=', '==', '!=', '<', '>'
 ]
 
+# Defines constant for use later.
+LOG = None
+
 
 class IndicatorThread(object):
     """Creates a visual indicator while normally performing actions."""
 
-    def __init__(self, work_q=None, system=True, debug=False):
-        """System Operations Available on Load.
+    def __init__(self, note=None, system=True, debug=False, quiet=False):
+        """System Operations Available on Load."""
 
-        :param work_q:
-        :param system:
-        """
-
+        self.quiet = quiet
         self.debug = debug
-        self.work_q = work_q
         self.system = system
+        self.note = note
+        if self.note is None:
+            self.note = 'Please Wait... '
         self.job = None
 
     def __enter__(self):
-        if self.debug is False:
-            self.indicator_thread()
+        if all([self.debug is False, self.quiet is False]):
+            return self.indicator_thread()
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        if self.debug is False:
+        self.system = False
+        if all([self.debug is False, self.quiet is False]):
             print('Done.')
             self.job.terminate()
 
@@ -85,7 +89,7 @@ class IndicatorThread(object):
         while self.system:
             busy_chars = ['|', '/', '-', '\\']
             for bc in busy_chars:
-                note = 'Please Wait... '
+                note = self.note
                 sys.stdout.write('\rProcessing - [ %s ] - %s' % (bc, note))
                 sys.stdout.flush()
                 time.sleep(.1)
@@ -113,7 +117,7 @@ def get_file_names(path, ext=None):
     """
 
     paths = os.walk(os.path.abspath(path))
-    files = []
+    files = list()
     for fpath, _, afiles in paths:
         for afile in afiles:
             if ext is not None:
@@ -301,7 +305,7 @@ def retryloop(attempts, timeout=None, delay=None, backoff=1, obj=None):
     _error_handler(msg=error)
 
 
-def build_wheel(wheel_dir, build_dir, dist=None, pkg_name=None, quiet=False,
+def build_wheel(wheel_dir, build_dir, link_dir, dist=None, pkg_name=None,
                 make_opts=None):
     """Execute python wheel build command.
 
@@ -314,7 +318,7 @@ def build_wheel(wheel_dir, build_dir, dist=None, pkg_name=None, quiet=False,
         'pip',
         'wheel',
         '--find-links',
-        wheel_dir,
+        link_dir,
         '--timeout',
         '120',
         '--wheel-dir',
@@ -337,24 +341,36 @@ def build_wheel(wheel_dir, build_dir, dist=None, pkg_name=None, quiet=False,
 
     build_command = ' '.join(command)
     LOG.info('Command: %s' % build_command)
+    output, unused_err = None, None
     for retry in retryloop(3, obj=build_command, delay=2, backoff=1):
         try:
-            with IndicatorThread(debug=quiet):
-                ret_data = subprocess.check_call(
-                    command,
-                    stdout=LoggerWriter(),
-                    stderr=LoggerWriter()
-                )
+            process = subprocess.Popen(
+                command,
+                stdout=subprocess.PIPE,
+                stderr=LoggerWriter()
+            )
+            output, unused_err = process.communicate()
+            retcode = process.poll()
 
-            LOG.info('Command return code: [ %s ]', ret_data)
-            if ret_data:
-                raise subprocess.CalledProcessError(ret_data, build_command)
+            LOG.info('Command return code: [ %s ]', retcode)
+            if retcode:
+                raise subprocess.CalledProcessError(
+                    retcode, build_command, output=output
+                )
         except subprocess.CalledProcessError as exp:
             LOG.warn(
-                'Process failure. Error: [ %s ]. Removing build directory'
-                ' for retry. Check log for more detauls.', str(exp)
+                'Process failure. stderr: [ %s ], stdout [ %s ], Exception'
+                ' [ %s ]. Removing build directory for retry. Check log for'
+                ' more details.',
+                unused_err,
+                output,
+                str(exp)
             )
+            remove_dirs(directory=build_dir)
             retry()
+        finally:
+            # Ensure the build directories are clean
+            remove_dirs(directory=build_dir)
 
 
 def remove_dirs(directory):
@@ -380,79 +396,123 @@ def remove_dirs(directory):
             pass
 
 
-def _requirements_maker(name, wheel_dir, release, build_dir, quiet, make_opts,
-                        iterate=False):
-    requirements_file_lines = []
-    for value in sorted(release.values()):
-        requirements_file_lines.append('%s\n' % value)
+def copy_file(src, dst):
+    LOG.debug('Copying [ %s ] -> [ %s ]', src, dst)
+    with open(src, 'rb') as open_src:
+        with open(dst, 'wb') as open_dst:
+            while True:
+                buf = open_src.read(24 * 1024)
+                if not buf:
+                    break
+                else:
+                    open_dst.write(buf)
 
-    requirements_file = os.path.join(wheel_dir, name)
-    with open(requirements_file, 'wb') as f:
-        f.writelines(requirements_file_lines)
+
+def _requirements_maker(name, wheel_dir, release, build_dir, make_opts,
+                        link_dir=None, iterate=False):
+
+    if link_dir is None:
+        link_dir = wheel_dir
 
     if iterate is True:
         for pkg in sorted(release.values()):
             build_wheel(
                 wheel_dir=wheel_dir,
                 build_dir=build_dir,
-                dist=None,
+                link_dir=link_dir,
                 pkg_name=pkg,
-                quiet=quiet,
                 make_opts=make_opts
             )
-            remove_dirs(directory=build_dir)
     else:
+        requirements_file_lines = []
+        for value in sorted(set(release.values())):
+            requirements_file_lines.append('%s\n' % value)
+
+        requirements_file = os.path.join(wheel_dir, name)
+        with open(requirements_file, 'wb') as f:
+            f.writelines(requirements_file_lines)
+
         build_wheel(
             wheel_dir=wheel_dir,
             build_dir=build_dir,
+            link_dir=link_dir,
             dist=requirements_file,
-            quiet=quiet,
             make_opts=make_opts
         )
-        remove_dirs(directory=build_dir)
 
 
-def make_wheels(wheel_dir, build_dir, quiet):
+def _make_wheels(wheel_dir, build_dir, temp_store_dir):
+    LOG.info('Building base packages')
+    _requirements_maker(
+        name='rpc_base_requirements.txt',
+        wheel_dir=temp_store_dir,
+        release=PYTHON_PACKAGES['base_release'],
+        build_dir=build_dir,
+        make_opts=None,
+        link_dir=wheel_dir
+    )
+
+    LOG.info('Building known absolute packages')
+    _requirements_maker(
+        name='rpc_known_requirements.txt',
+        wheel_dir=temp_store_dir,
+        release=PYTHON_PACKAGES['known_release'],
+        build_dir=build_dir,
+        make_opts=['--no-deps'],
+        link_dir=wheel_dir
+    )
+
+    LOG.info('Building required packages')
+    _requirements_maker(
+        name='rpc_required_requirements.txt',
+        wheel_dir=temp_store_dir,
+        release=PYTHON_PACKAGES['required_packages'],
+        build_dir=build_dir,
+        make_opts=None,
+        link_dir=wheel_dir,
+        iterate=True
+    )
+
+    built_wheels = get_file_names(temp_store_dir)
+    PYTHON_PACKAGES['built_files'] = [
+        os.path.basename(i) for i in built_wheels
+    ]
+
+    LOG.info('Moving built packages into place')
+    for built_wheel in built_wheels:
+        wheel_file = os.path.join(wheel_dir, os.path.basename(built_wheel))
+        if os.path.exists(wheel_file):
+            if os.path.getsize(wheel_file) != os.path.getsize(built_wheel):
+                copy_file(src=built_wheel, dst=wheel_file)
+        else:
+            copy_file(src=built_wheel, dst=wheel_file)
+
+
+def make_wheels(wheel_dir, build_dir):
     """Build wheels of all installed packages that don't already have one.
 
     :param wheel_dir: ``str`` $PATH to local save directory
     :param build_dir: ``str`` $PATH to temp build directory
     """
 
-    _requirements_maker(
-        name='rpc_base_requirements.txt',
-        wheel_dir=wheel_dir,
-        release=PYTHON_PACKAGES['base_release'],
-        build_dir=build_dir,
-        quiet=quiet,
-        make_opts=None
+    temp_store_dir = os.path.join(
+        tempfile.mkdtemp(prefix='rpc_wheels_temp_storage')
     )
-
-    _requirements_maker(
-        name='rpc_required_requirements.txt',
-        wheel_dir=wheel_dir,
-        release=PYTHON_PACKAGES['required_packages'],
-        build_dir=build_dir,
-        quiet=quiet,
-        make_opts=None,
-        iterate=True
-    )
-
-    _requirements_maker(
-        name='rpc_known_requirements.txt',
-        wheel_dir=wheel_dir,
-        release=PYTHON_PACKAGES['known_release'],
-        build_dir=build_dir,
-        quiet=quiet,
-        make_opts=['--no-deps']
-    )
-
-    remove_dirs(
-        directory=os.path.join(
-            tempfile.gettempdir(),
-            'pip_build_root'
+    _mkdirs(path=temp_store_dir)
+    try:
+        _make_wheels(
+            wheel_dir=wheel_dir,
+            build_dir=build_dir,
+            temp_store_dir=temp_store_dir
         )
-    )
+    finally:
+        remove_dirs(directory=temp_store_dir)
+        remove_dirs(
+            directory=os.path.join(
+                tempfile.gettempdir(),
+                'pip_build_root'
+            )
+        )
 
 
 def ensure_consistency():
@@ -463,7 +523,7 @@ def ensure_consistency():
         PYTHON_PACKAGES['base_release'].pop(key, None)
 
 
-def new_setup(user_args, input_path, output_path, quiet):
+def new_setup(user_args, input_path):
     """Discover all yaml files in the input directory."""
 
     LOG.info('Discovering input file(s)')
@@ -483,34 +543,11 @@ def new_setup(user_args, input_path, output_path, quiet):
 
     # Populate the package dict
     LOG.info('Building the package list')
-    with IndicatorThread(debug=quiet):
-        for var_file in var_files:
-            package_dict(var_file=var_file)
+    for var_file in var_files:
+        package_dict(var_file=var_file)
 
     # Ensure no general packages take precedence over the explicit ones
     ensure_consistency()
-
-    # Get a timestamp and create a report file
-    utctime = datetime.datetime.utcnow()
-    utctime = utctime.strftime("%Y%m%d_%H%M%S")
-    backup_name = 'python-build-report-%s.json' % utctime
-    output_report_file = os.path.join(
-        output_path,
-        'json-reports',
-        backup_name
-    )
-    _mkdirs(os.path.dirname(output_report_file))
-
-    # Generate a timestamped report file
-    LOG.info('Generating packaging report [ %s ]', output_report_file)
-    with open(output_report_file, 'wb') as f:
-        f.write(
-            json.dumps(
-                PYTHON_PACKAGES,
-                indent=2,
-                sort_keys=True
-            )
-        )
 
 
 def _error_handler(msg, system_exit=True):
@@ -570,6 +607,19 @@ def _user_args():
         required=False,
         default=None
     )
+    parser.add_argument(
+        '--link-dir',
+        help='Path to the build links for all built wheels.',
+        required=False,
+        default=None
+    )
+    parser.add_argument(
+        '-r',
+        '--release',
+        help='Name of the release. Used for generating the json report.',
+        required=True,
+        default=None
+    )
     opts = parser.add_mutually_exclusive_group()
     opts.add_argument(
         '--debug',
@@ -617,50 +667,48 @@ def _mkdirs(path):
             _error_handler(msg=error)
 
 
-def _store_git_repos(git_repos_path, quiet):
+def _store_git_repos(git_repos_path):
     """Clone and or update all git repos.
 
     :param git_repos_path: ``str`` Path to where to store the git repos
-    :param quiet: ``bol`` Enable quiet mode.
     """
     _mkdirs(git_repos_path)
     for retry in retryloop(3, delay=2, backoff=1):
         for git_repo in GIT_REPOS:
-            with IndicatorThread(debug=quiet):
-                repo_name = os.path.basename(git_repo)
-                if repo_name.endswith('.git'):
-                    repo_name = repo_name.rstrip('git')
+            repo_name = os.path.basename(git_repo)
+            if repo_name.endswith('.git'):
+                repo_name = repo_name.rstrip('git')
 
-                repo_path_name = os.path.join(git_repos_path, repo_name)
-                if os.path.isdir(repo_path_name):
-                    os.chdir(repo_path_name)
-                    LOG.debug('Updating git repo [ %s ]', repo_path_name)
-                    commands = [
-                        ['git', 'fetch', '-p', 'origin'],
-                        ['git', 'pull']
-                    ]
-                else:
-                    LOG.debug('Cloning into git repo [ %s ]', repo_path_name)
-                    commands = [
-                        ['git', 'clone', git_repo, repo_path_name]
-                    ]
+            repo_path_name = os.path.join(git_repos_path, repo_name)
+            if os.path.isdir(repo_path_name):
+                os.chdir(repo_path_name)
+                LOG.debug('Updating git repo [ %s ]', repo_path_name)
+                commands = [
+                    ['git', 'fetch', '-p', 'origin'],
+                    ['git', 'pull']
+                ]
+            else:
+                LOG.debug('Cloning into git repo [ %s ]', repo_path_name)
+                commands = [
+                    ['git', 'clone', git_repo, repo_path_name]
+                ]
 
-                for command in commands:
-                    try:
-                        ret_data = subprocess.check_call(
-                            command,
-                            stdout=LoggerWriter(),
-                            stderr=LoggerWriter()
+            for command in commands:
+                try:
+                    ret_data = subprocess.check_call(
+                        command,
+                        stdout=LoggerWriter(),
+                        stderr=LoggerWriter()
+                    )
+                    if ret_data:
+                        raise subprocess.CalledProcessError(
+                            ret_data, command
                         )
-                        if ret_data:
-                            raise subprocess.CalledProcessError(
-                                ret_data, command
-                            )
-                    except subprocess.CalledProcessError as exp:
-                        LOG.warn('Process failure. Error: [ %s ]', str(exp))
-                        retry()
-                    else:
-                        LOG.debug('Command return code: [ %s ]', ret_data)
+                except subprocess.CalledProcessError as exp:
+                    LOG.warn('Process failure. Error: [ %s ]', str(exp))
+                    retry()
+                else:
+                    LOG.debug('Command return code: [ %s ]', ret_data)
 
 
 def main():
@@ -696,40 +744,109 @@ def main():
 
     # Create the build path
     LOG.info('Getting build path')
-    if user_args['build_dir'] is not None:
-        build_path = _get_abs_path(path=user_args['build_dir'])
-        _mkdirs(path=build_path)
-    else:
-        build_path = tempfile.mkdtemp(prefix='rpc_wheels_build_')
-        pre_input = user_args['pre_input']
-        if pre_input:
-            pre_input_path = _get_abs_path(path=user_args['pre_input'])
-            with open(pre_input_path, 'rb') as f:
-                global PYTHON_PACKAGES
-                PYTHON_PACKAGES = json.loads(f.read())
+    indicator_kwargs = {
+        'debug': user_args['debug'],
+        'quiet': user_args['quiet'],
+        'note': 'Gather dependencies... '
+    }
+    with IndicatorThread(**indicator_kwargs):
+        if user_args['build_dir'] is not None:
+            build_path = _get_abs_path(path=user_args['build_dir'])
+            _mkdirs(path=build_path)
         else:
-            # Get the input path
-            LOG.info('Getting input path')
-            input_path = _get_abs_path(path=user_args['input'])
-            new_setup(
-                user_args=user_args,
-                input_path=input_path,
-                output_path=output_path,
-                quiet=stream
-            )
+            build_path = tempfile.mkdtemp(prefix='rpc_wheels_build_')
+            pre_input = user_args['pre_input']
+            if pre_input:
+                pre_input_path = _get_abs_path(path=user_args['pre_input'])
+                with open(pre_input_path, 'rb') as f:
+                    global PYTHON_PACKAGES
+                    PYTHON_PACKAGES = json.loads(f.read())
+            else:
+                # Get the input path
+                LOG.info('Getting input path')
+                new_setup(
+                    user_args=user_args,
+                    input_path=_get_abs_path(path=user_args['input'])
+                )
 
+    indicator_kwargs['note'] = 'Building wheels... '
+    with IndicatorThread(**indicator_kwargs):
         # Create all of the python package wheels
         make_wheels(
             wheel_dir=output_path,
-            build_dir=build_path,
-            quiet=stream
+            build_dir=build_path
         )
+
+    indicator_kwargs['note'] = 'Generating build log... '
+    with IndicatorThread(**indicator_kwargs):
+        # Get a timestamp and create a report file
+        utctime = datetime.datetime.utcnow()
+        utctime = utctime.strftime("%Y%m%d_%H%M%S")
+        backup_name = '%s-build-report-%s.json' % (
+            user_args['release'],
+            utctime
+        )
+        output_report_file = os.path.join(
+            output_path,
+            'json-reports',
+            backup_name
+        )
+
+        # Make the directory if needed
+        _mkdirs(path=os.path.dirname(output_report_file))
+
+        # Generate a timestamped report file
+        LOG.info('Generating packaging report [ %s ]', output_report_file)
+        with open(output_report_file, 'wb') as f:
+            f.write(
+                json.dumps(
+                    PYTHON_PACKAGES,
+                    indent=2,
+                    sort_keys=True
+                )
+            )
+
+    # If link_dir is defined create a link to all built wheels.
+    links_path = user_args.get('link_dir')
+    if links_path:
+        indicator_kwargs['note'] = 'Creating file links... '
+        with IndicatorThread(**indicator_kwargs):
+            links_path = _get_abs_path(path=links_path)
+            LOG.info('Creating Links at [ %s ]', links_path)
+            _mkdirs(path=links_path)
+
+            # Change working directory.
+            os.chdir(links_path)
+
+            # Create all the links
+            for inode in PYTHON_PACKAGES['built_files']:
+                try:
+                    dest_link = os.path.join(links_path, inode)
+
+                    # Remove the destination inode if it exists
+                    if os.path.exists(dest_link):
+                        os.remove(dest_link)
+
+                    # Create the link using the relative path
+                    os.symlink(os.path.relpath(
+                        os.path.join(output_path, inode)), dest_link
+                    )
+                except OSError as exp:
+                    LOG.warn(
+                        'Error Creating Link: [ %s ] Error: [ %s ]',
+                        inode,
+                        exp
+                    )
+                else:
+                    LOG.debug('Link Created: [ %s ]', dest_link)
 
     # if git_repos was defined save all of the sources to the defined location
     git_repos_path = user_args.get('git_repos')
     if git_repos_path:
-        _store_git_repos(git_repos_path, quiet=stream)
-
+        indicator_kwargs['note'] = 'Storing updated git sources...'
+        with IndicatorThread(**indicator_kwargs):
+            LOG.info('Updating git sources [ %s ]', links_path)
+            _store_git_repos(_get_abs_path(path=git_repos_path))
 
 
 if __name__ == "__main__":
