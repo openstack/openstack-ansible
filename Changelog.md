@@ -1,9 +1,26 @@
 # Changelog
 
+## 9.0.2 - 2014-11-05
+
+- Increase delay and retries for lxc cache download [#449]
+- Updated cinder.conf to allow for AZ setup [#458]
+- Use {{ ansible_fqdn }} for service checks [#452]
+- Allow for more galera/mysql tuning [#410,#429]
+- Increase ssh timeout in ansible.cfg [#358]
+- Updated pip installation/wheel building process
+- Created lxc-system-manage script for common operational tasks [#434]
+- Added missing comma which caused Kibana dashboard to not load
+- Updated rpc_release/maas_repo_version versions [#370]
+- Ensure that rsyslog state files are unique [#205]
+- Changed release version to match the branch [#421]
+- Changed maas_notification_plan to npManaged [#402]
+- Added galera alarms [#403]
+- Resolved issue with neutron HA failover cron clobbering other crons [#383,#378]
+
 ## 9.0.1 - 2014-10-17
 
 - Ensure temptest installs a bootable cirros image [#333]
-- Reference updated rpc-maas repo tag 
+- Reference updated rpc-maas repo tag
 - Templated out iscsi options in the cinder.conf [#328]
 - AggregateDiskFilter should not be included in Icehouse default filters [#326]
 - HAproxy memcached acl line too long on big cluster [#142]
@@ -42,7 +59,7 @@
 - Removed duplicate scheduler_driver from nova.conf
 - Changed default hypervisor to KVM [#147]
 - Fix heat domain configuration [#195]
-- Added check to make sure that the volume group variable exists [#231] 
+- Added check to make sure that the volume group variable exists [#231]
 - Changed ansible install from the package name to a URL as a tarball [#148]
 - Offline compress CSS and JS files [#176]
 - Added heat template for use with RPC9.0.0 and RAX
