@@ -176,7 +176,7 @@ storage_hosts:
       cinder_storage_availability_zone: cinderAZ_3
       cinder_default_availability_zone: cinderAZ_1
       cinder_backends:
-        limit_container_type: cinder_volume
+        limit_container_types: cinder_volume
         netapp:
           netapp_storage_family: ontap_7mode
           netapp_storage_protocol: iscsi
