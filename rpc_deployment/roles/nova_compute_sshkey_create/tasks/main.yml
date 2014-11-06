@@ -38,6 +38,9 @@
 - name: Create the nova SSH key if it doesnt exist
   shell: su - nova -c 'ssh-keygen -f /var/lib/nova/.ssh/id_rsa -t rsa -q -N ""'
 
+- name: Create empty 'authorized_keys' file
+  file: path="/var/lib/nova/.ssh/authorized_keys" state="touch"
+
 - name: Change permissions on the generated keys
   file:
     path: "{{ item.path }}"
@@ -45,6 +48,7 @@
     owner: "nova"
     mode: "{{ item.mode }}"
   with_items:
+    - { path: "/var/lib/nova/.ssh/authorized_keys", mode: "0700" }
     - { path: "/var/lib/nova/.ssh/id_rsa", mode: "0600" }
     - { path: "/var/lib/nova/.ssh/id_rsa.pub", mode: "0644" }
 
