@@ -26,6 +26,7 @@
     - init_script
   vars_files:
     - inventory/group_vars/nova_all.yml
+    - vars/repo_packages/nova_spice_console.yml
     - vars/openstack_service_vars/nova_spice_console.yml
     - vars/openstack_service_vars/nova_spice_console_endpoint.yml
   handlers:
