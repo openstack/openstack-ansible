@@ -4,6 +4,7 @@
 
 - Increase delay and retries for lxc cache download [#449]
 - Updated cinder.conf to allow for AZ setup [#458]
+- Create empty 'authorized_keys' file [#478]
 - Use {{ ansible_fqdn }} for service checks [#452]
 - Allow for more galera/mysql tuning [#410,#429]
 - Increase ssh timeout in ansible.cfg [#358]
