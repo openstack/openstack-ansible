@@ -252,7 +252,10 @@ def _append_to_host_groups(inventory, container_type, assignment, host_type,
                 if isinstance(container_vars, dict):
                     for _keys, _vars in container_vars.items():
                         # Copy the options dictionary for manipulation
-                        options = _vars.copy()
+                        if isinstance(_vars, dict):
+                            options = _vars.copy()
+                        else:
+                            options = _vars
 
                         limit = None
                         # If a limit is set use the limit string as a filter
