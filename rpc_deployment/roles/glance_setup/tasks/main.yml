@@ -15,3 +15,5 @@
 
 - name: Perform a Glance DB sync
   command: glance-manage db_sync
+  sudo: yes
+  sudo_user: "{{ system_user }}"
