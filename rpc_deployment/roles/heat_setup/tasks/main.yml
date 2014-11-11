@@ -15,3 +15,5 @@
 
 - name: Perform a Heat DB sync
   command: heat-manage db_sync
+  sudo: yes
+  sudo_user: "{{ system_user }}"
