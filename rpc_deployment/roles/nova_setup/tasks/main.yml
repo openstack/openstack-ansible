@@ -15,3 +15,5 @@
 
 - name: Perform a Nova DB sync
   command: nova-manage db sync
+  sudo: yes
+  sudo_user: "{{ system_user }}"

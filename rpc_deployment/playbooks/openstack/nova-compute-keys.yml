@@ -17,6 +17,8 @@
   user: root
   roles:
     - nova_compute_sshkey_create
+  vars_files:
+    - inventory/group_vars/nova_all.yml
 
 - hosts: nova_compute[0]
   user: root

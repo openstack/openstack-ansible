@@ -18,6 +18,8 @@
     neutron-db-manage --config-file {{ neutron_config }}
                       --config-file {{ neutron_plugin }}
                       upgrade {{ neutron_revision }}
+  sudo: yes
+  sudo_user: "{{ system_user }}"
   tags:
     - neutron_upgrade
 
@@ -25,6 +27,8 @@
   shell: "neutron-db-manage history | grep -w 'Revision ID: {{ neutron_revision }}'"
   register: neutron_dbmanage
   ignore_errors: True
+  sudo: yes
+  sudo_user: "{{ system_user }}"
   tags:
     - neutron_stamp
 
@@ -34,5 +38,7 @@
                       --config-file {{ neutron_plugin }}
                       stamp {{ neutron_revision }}
   when: neutron_dbmanage.rc != 0
+  sudo: yes
+  sudo_user: "{{ system_user }}"
   tags:
     - neutron_stamp
