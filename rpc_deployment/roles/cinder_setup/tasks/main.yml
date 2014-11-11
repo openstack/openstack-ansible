@@ -15,3 +15,5 @@
 
 - name: Perform a Cinder DB sync
   command: cinder-manage db sync
+  sudo: yes
+  sudo_user: "{{ system_user }}"
