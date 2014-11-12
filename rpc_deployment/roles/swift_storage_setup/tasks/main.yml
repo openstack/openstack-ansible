@@ -15,7 +15,7 @@
 
 - name: "Set ownership on mounted drives"
   file:
-    dest: "{{ swift_vars.mount_point }}/{{ item.name }}"
+    dest: "{{ swift_vars.mount_point | default(swift.mount_point) }}/{{ item.name }}"
     owner: "{{ system_user }}"
     group: "{{ system_group }}"
     state: "directory"
@@ -24,7 +24,7 @@
 
 - name: "Set ownership on default mounted drives"
   file:
-    dest: "{{ swift_vars.mount_point }}/{{ item.name }}"
+    dest: "{{ swift_vars.mount_point | default(swift.mount_point) }}/{{ item.name }}"
     owner: "{{ system_user }}"
     group: "{{ system_group }}"
     state: "directory"
