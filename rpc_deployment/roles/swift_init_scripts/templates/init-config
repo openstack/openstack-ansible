@@ -9,6 +9,16 @@ stop on runlelvel [016]
 
 respawn
 
+# If this is a replicator service and we have a repl network adjust the conf
+{% if swift.replication_network is defined and 'replicator' in item %}
+{% set repl_conf = '-replicator' %}
+{% endif %}
+# If this is a server-replicator and we have a repl network adjust the name/conf
+{% if swift.replication_network is defined and 'server-replicator' in item %}
+{% set repl_conf = '-replicator' %}
+{% set item = 'swift-' + service_conf_loc %}
+{% endif %}
+
 # Set the RUNBIN environment variable
 env RUNBIN="/usr/local/bin/{{ item }}"
 
@@ -26,14 +36,14 @@ end script
 
 # Post stop actions
 post-stop script
-  rm "/var/run/{{ item }}/{{ item }}.pid"
+  rm "/var/run/{{ item }}/{{ item }}{{ repl_conf | default('') }}.pid"
 end script
 
 # Run the start up job
 exec start-stop-daemon --start \
                        --chuid {{ system_user }} \
                        --make-pidfile \
-                       --pidfile /var/run/{{ item }}/{{ item }}.pid \
+                       --pidfile /var/run/{{ item }}/{{ item }}{{ repl_conf | default('') }}.pid \
                        --exec "{{ program_override|default('$RUNBIN') }}" \
-                       /etc/{{ service_name }}/{{ service_conf }} \
+                       /etc/{{ service_name }}/{{ service_conf_loc }}/{{ service_conf_loc }}{{ repl_conf | default('') }}.conf \
                        -- {{ program_config_options|default('') }}

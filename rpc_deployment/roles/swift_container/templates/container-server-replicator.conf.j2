@@ -1,0 +1,37 @@
+[DEFAULT]
+{% set repl_bridge = 'ansible_' + swift.replication_network|replace('-', '_') %}
+bind_ip = {{ hostvars[inventory_hostname][repl_bridge]['ipv4']['address'] }}
+bind_port = {{ swift_container_port }}
+workers = 2
+
+[pipeline:main]
+pipeline = container-server
+
+[app:container-server]
+use = egg:swift#container
+replication_server = True
+
+[container-replicator]
+# You can override the default log routing for this app here (don't use set!):
+# log_name = container-replicator
+log_facility = LOG_LOCAL2
+# log_level = INFO
+# log_address = /dev/log
+#
+# vm_test_mode = no
+# per_diff = 1000
+# max_diffs = 100
+# concurrency = 8
+# interval = 30
+# node_timeout = 10
+# conn_timeout = 0.5
+#
+# The replicator also performs reclamation
+# reclaim_age = 604800
+#
+# Time in seconds to wait between replication passes
+# Note: if the parameter 'interval' is defined then it will be used in place
+# of run_pause.
+# run_pause = 30
+#
+# recon_cache_path = /var/cache/swift

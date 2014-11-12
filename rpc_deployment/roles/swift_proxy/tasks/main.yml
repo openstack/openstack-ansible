@@ -16,7 +16,7 @@
 - name: swift proxy server configuration
   template: >
     src="proxy-server.conf.j2"
-    dest="/etc/swift/proxy-server.conf"
+    dest="/etc/swift/proxy-server/proxy-server.conf"
     owner={{ service_admin_username }}
     mode=0644
   notify: Restart swift service

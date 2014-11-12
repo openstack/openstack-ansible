@@ -20,6 +20,7 @@ program_names:
   - swift-object-server
   - swift-object-auditor
   - swift-object-replicator
-  - swift-object-reaper
+  - swift-object-updater
+  - swift-object-server-replicator
 
-service_conf: object-server.conf
+service_conf_loc: object-server

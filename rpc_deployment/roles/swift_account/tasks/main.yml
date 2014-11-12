@@ -13,10 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: "swift account server configuration"
+- name: "swift account server config with replication"
   template: >
     src="account-server.conf.j2"
-    dest="/etc/swift/account-server.conf"
+    dest="/etc/swift/account-server/account-server.conf"
     owner={{ system_user }}
     mode=0644
   notify: Restart swift service
+
+- name: "swift account server replication config"
+  template: >
+    src="account-server-replicator.conf.j2"
+    dest="/etc/swift/account-server/account-server-replicator.conf"
+    owner={{ system_user }}
+    mode=0644
+  notify: Restart swift service
+  when: swift.replication_network is defined

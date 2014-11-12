@@ -86,6 +86,7 @@ log_facility = LOG_LOCAL2
 recon_cache_path = /var/cache/swift
 recon_lock_path = /var/lock/swift
 
+{% if swift.replication_network is not defined %}
 [account-replicator]
 # You can override the default log routing for this app here (don't use set!):
 # log_name = account-replicator
@@ -118,6 +119,7 @@ per_diff = 10000
 # run_pause = 30
 #
 # recon_cache_path = /var/cache/swift
+{% endif %}
 
 [account-auditor]
 # You can override the default log routing for this app here (don't use set!):

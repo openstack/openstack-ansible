@@ -20,6 +20,8 @@ program_names:
   - swift-container-server
   - swift-container-auditor
   - swift-container-replicator
-  - swift-container-reaper
+  - swift-container-sync
+  - swift-container-updater
+  - swift-container-server-replicator
 
-service_conf: container-server.conf
+service_conf_loc: container-server
