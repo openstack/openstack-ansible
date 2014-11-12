@@ -16,7 +16,16 @@
 - name: "swift container server configuration"
   template: >
     src="container-server.conf.j2"
-    dest="/etc/swift/container-server.conf"
+    dest="/etc/swift/container-server/container-server.conf"
     owner={{ system_user }}
     mode=0644
   notify: Restart swift service
+
+- name: "swift container server replication config"
+  template: >
+    src="container-server-replicator.conf.j2"
+    dest="/etc/swift/container-server/container-server-replicator.conf"
+    owner={{ system_user }}
+    mode=0644
+  notify: Restart swift service
+  when: swift.replication_network is defined

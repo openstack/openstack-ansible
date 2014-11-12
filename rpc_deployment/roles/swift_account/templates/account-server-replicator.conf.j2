@@ -1,0 +1,45 @@
+[DEFAULT]
+{% set repl_bridge = 'ansible_' + swift.replication_network|replace('-', '_') %}
+bind_ip = {{ hostvars[inventory_hostname][repl_bridge]['ipv4']['address'] }}
+bind_port = {{ swift_account_port }}
+workers = 2
+
+[pipeline:main]
+pipeline = account-server
+
+[app:account-server]
+use = egg:swift#account
+replication_server = True
+
+[account-replicator]
+# You can override the default log routing for this app here (don't use set!):
+# log_name = account-replicator
+log_facility = LOG_LOCAL2
+# log_level = INFO
+# log_address = /dev/log
+#
+# vm_test_mode = no
+per_diff = 10000
+# max_diffs = 100
+# concurrency = 8
+# interval = 30
+#
+# How long without an error before a node's error count is reset. This will
+# also be how long before a node is reenabled after suppression is triggered.
+# error_suppression_interval = 60
+#
+# How many errors can accumulate before a node is temporarily ignored.
+# error_suppression_limit = 10
+#
+# node_timeout = 10
+# conn_timeout = 0.5
+#
+# The replicator also performs reclamation
+# reclaim_age = 604800
+#
+# Time in seconds to wait between replication passes
+# Note: if the parameter 'interval' is defined then it will be used in place
+# of run_pause.
+# run_pause = 30
+#
+# recon_cache_path = /var/cache/swift

@@ -95,6 +95,7 @@ log_facility = LOG_LOCAL2
 recon_cache_path = /var/cache/swift
 recon_lock_path = /var/lock/swift
 
+{% if swift.replication_network is not defined %}
 [container-replicator]
 # You can override the default log routing for this app here (don't use set!):
 # log_name = container-replicator
@@ -119,6 +120,7 @@ log_facility = LOG_LOCAL2
 # run_pause = 30
 #
 # recon_cache_path = /var/cache/swift
+{% endif %}
 
 [container-updater]
 # You can override the default log routing for this app here (don't use set!):

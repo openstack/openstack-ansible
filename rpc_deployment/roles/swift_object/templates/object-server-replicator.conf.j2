@@ -1,0 +1,77 @@
+[DEFAULT]
+{% set repl_bridge = 'ansible_' + swift.replication_network|replace('-', '_') %}
+bind_ip = {{ hostvars[inventory_hostname][repl_bridge]['ipv4']['address'] }}
+bind_port = {{ swift_object_port }}
+workers = 2
+
+[pipeline:main]
+pipeline = object-server
+
+[app:object-server]
+use = egg:swift#object
+replication_server = True
+
+[object-replicator]
+# You can override the default log routing for this app here (don't use set!):
+# log_name = object-replicator
+log_facility = LOG_LOCAL2
+# log_level = INFO
+# log_address = /dev/log
+#
+# vm_test_mode = no
+# daemonize = on
+# run_pause = 30
+concurrency = 6
+# stats_interval = 300
+#
+# The sync method to use; default is rsync but you can use ssync to try the
+# EXPERIMENTAL all-swift-code-no-rsync-callouts method. Once ssync is verified
+# as having performance comparable to, or better than, rsync, we plan to
+# deprecate rsync so we can move on with more features for replication.
+# sync_method = rsync
+#
+# max duration of a partition rsync
+# rsync_timeout = 900
+#
+# bandwidth limit for rsync in kB/s. 0 means unlimited
+# rsync_bwlimit = 0
+#
+# passed to rsync for io op timeout
+# rsync_io_timeout = 30
+#
+# node_timeout = <whatever's in the DEFAULT section or 10>
+# max duration of an http request; this is for REPLICATE finalization calls and
+# so should be longer than node_timeout
+# http_timeout = 60
+#
+# attempts to kill all workers if nothing replicates for lockup_timeout seconds
+# lockup_timeout = 1800
+#
+# The replicator also performs reclamation
+# reclaim_age = 604800
+#
+# ring_check_interval = 15
+# recon_cache_path = /var/cache/swift
+#
+# limits how long rsync error log lines are
+# 0 means to log the entire line
+# rsync_error_log_line_length = 0
+#
+# handoffs_first and handoff_delete are options for a special case
+# such as disk full in the cluster. These two options SHOULD NOT BE
+# CHANGED, except for such an extreme situations. (e.g. disks filled up
+# or are about to fill up. Anyway, DO NOT let your drives fill up)
+# handoffs_first is the flag to replicate handoffs prior to canonical
+# partitions. It allows to force syncing and deleting handoffs quickly.
+# If set to a True value(e.g. "True" or "1"), partitions
+# that are not supposed to be on the node will be replicated first.
+# handoffs_first = False
+#
+# handoff_delete is the number of replicas which are ensured in swift.
+# If the number less than the number of replicas is set, object-replicator
+# could delete local handoffs even if all replicas are not ensured in the
+# cluster. Object-replicator would remove local handoff partition directories
+# after syncing partition when the number of successful responses is greater
+# than or equal to this number. By default(auto), handoff partitions will be
+# removed  when it has successfully replicated to all the canonical nodes.
+# handoff_delete = auto

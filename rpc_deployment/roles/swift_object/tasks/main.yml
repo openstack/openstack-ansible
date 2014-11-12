@@ -16,7 +16,16 @@
 - name: "swift object server configuration"
   template: >
     src="object-server.conf.j2"
-    dest="/etc/swift/object-server.conf"
+    dest="/etc/swift/object-server/object-server.conf"
     owner={{ system_user }}
     mode=0644
   notify: Restart swift service
+
+- name: "swift object server replication config"
+  template: >
+    src="object-server-replicator.conf.j2"
+    dest="/etc/swift/object-server/object-server-replicator.conf"
+    owner={{ system_user }}
+    mode=0644
+  notify: Restart swift service
+  when: swift.replication_network is defined

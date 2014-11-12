@@ -142,6 +142,7 @@ log_facility = LOG_LOCAL2
 recon_cache_path = /var/cache/swift
 recon_lock_path = /var/lock/swift
 
+{% if swift.replication_network is not defined %}
 [object-replicator]
 # You can override the default log routing for this app here (don't use set!):
 # log_name = object-replicator
@@ -206,6 +207,7 @@ concurrency = 6
 # than or equal to this number. By default(auto), handoff partitions will be
 # removed  when it has successfully replicated to all the canonical nodes.
 # handoff_delete = auto
+{% endif %}
 
 [object-updater]
 # You can override the default log routing for this app here (don't use set!):
