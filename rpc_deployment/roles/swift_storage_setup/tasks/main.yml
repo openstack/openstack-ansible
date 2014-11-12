@@ -20,3 +20,13 @@
     group: "{{ system_group }}"
     state: "directory"
   with_items: swift_vars.drives
+  when: swift_vars.drives is defined
+
+- name: "Set ownership on default mounted drives"
+  file:
+    dest: "{{ swift_vars.mount_point }}/{{ item.name }}"
+    owner: "{{ system_user }}"
+    group: "{{ system_group }}"
+    state: "directory"
+  with_items: swift.drives
+  when: swift_vars.drives is not defined

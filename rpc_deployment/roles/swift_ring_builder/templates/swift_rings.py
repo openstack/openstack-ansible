@@ -22,6 +22,7 @@ import pickle
 import sys
 import threading
 import json
+import copy
 
 USAGE = "usage: %prog -s <rpc_inventory.json>"
 
@@ -225,13 +226,20 @@ def main(setup):
         return 1
 
     _hosts = {}
+    # Get the swift specific global vars
+    global_vars  = _inventory['all']['vars']
+    check_section(global_vars, 'swift')
+    swift_vars = global_vars['swift']
     if _inventory.get("swift_hosts"):
         for host in _inventory['swift_hosts']['hosts']:
             host_config = _inventory['_meta']['hostvars'][host]
             host_vars = host_config['swift_vars']
             host_ip = host_vars.get('ip', host_config['container_address'])
             if not host_vars.get('drives'):
-                continue
+                if not swift_vars.get('drives'):
+                    continue
+                else:
+                    host_vars['drives'] = copy.deepcopy(swift_vars.get('drives'))
             host_drives = host_vars.get('drives')
             for host_drive in host_drives:
                 host_drive['ip'] = host_drive.get('ip', host_ip)
