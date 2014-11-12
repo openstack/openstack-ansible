@@ -10,6 +10,9 @@
 # You can set one policy to be "default: yes" this will be the default storage policy for non-legacy containers that are created.
 # The index value must be unique.
 # Storage policies can be set to "deprecated: yes" which will mean they are not used
+# You can specify default drives in the global_overrides section, these drives will be used
+# if no other drives are specified per device. These work in the same way as the per node
+# drives, so the same settings can be used.
 
 # global_overrides:
 #   swift:
@@ -30,6 +33,9 @@
 #          index: 1
 #          repl_number: 2
 #          deprecated: yes
+#     drives:
+#       - name: sdb
+#       - name: sdc
 
 # User defined Swift Proxy hosts - not required when not using swift
 # Will deploy a swift-proxy container on these hosts.
