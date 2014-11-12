@@ -5,7 +5,7 @@ bind_port = {{ swift_account_port }}
 # backlog = 4096
 user = {{ system_user }}
 # swift_dir = /etc/swift
-devices = {{ swift_vars.mount_point }}
+devices = {{ swift_vars.mount_point | default(swift.mount_point) }}
 # mount_check = true
 # disable_fallocate = false
 #

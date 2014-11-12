@@ -10,6 +10,8 @@
 # You can set one policy to be "default: yes" this will be the default storage policy for non-legacy containers that are created.
 # The index value must be unique.
 # Storage policies can be set to "deprecated: yes" which will mean they are not used
+# You can specify a default mount_point to avoid having to specify it for each node.
+# This can be overridden by specifying it for a specific node.
 # You can specify default drives in the global_overrides section, these drives will be used
 # if no other drives are specified per device. These work in the same way as the per node
 # drives, so the same settings can be used.
@@ -33,6 +35,7 @@
 #          index: 1
 #          repl_number: 2
 #          deprecated: yes
+#     mount_point: /mnt
 #     drives:
 #       - name: sdb
 #       - name: sdc
