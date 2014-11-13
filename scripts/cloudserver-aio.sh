@@ -16,7 +16,7 @@ set -e -u -v -x
 
 REPO_URL=${REPO_URL:-"https://github.com/rcbops/ansible-lxc-rpc.git"}
 REPO_BRANCH=${REPO_BRANCH:-"master"}
-FROZEN_REPO_URL=${FROZEN_REPO_URL:-"http://rpc-slushee.rackspace.com"}
+FROZEN_REPO_URL=${FROZEN_REPO_URL:-"http://mirror.rackspace.com/rackspaceprivatecloud"}
 MAX_RETRIES=${MAX_RETRIES:-5}
 
 apt-get update
