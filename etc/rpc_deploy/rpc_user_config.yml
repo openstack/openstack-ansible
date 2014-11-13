@@ -43,6 +43,8 @@ global_overrides:
   internal_lb_vip_address: 172.29.236.1
   # External DMZ VIP address
   external_lb_vip_address: 192.168.1.1
+  # Name of load balancer
+  lb_name: lb_name_in_core
   # Bridged interface to use with tunnel type networks
   tunnel_bridge: "br-vxlan"
   # Bridged interface to build containers with
@@ -109,8 +111,6 @@ global_overrides:
         type: "vlan"
         range: "1:1"
         net_name: "vlan"
-  # Name of load balancer
-  lb_name: lb_name_in_core
 
 # User defined Infrastructure Hosts, this should be a required group
 infra_hosts:
