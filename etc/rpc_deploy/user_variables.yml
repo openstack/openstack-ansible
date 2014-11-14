@@ -120,6 +120,8 @@ maas_repo_version: 10.0.0rc1
 # This will be appended to the inventory_name of a host for MaaS purposes.
 # The inventory name + maas_fqdn_extension must match the entity name in MaaS
 # maas_fqdn_extension: .example.com
+# Set the following to skip creating alarms for this device
+#maas_excluded_devices: ['xvde']
 
 ## Neutron Options
 neutron_container_mysql_password:
