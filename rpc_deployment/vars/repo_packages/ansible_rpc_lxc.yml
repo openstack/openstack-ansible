@@ -18,6 +18,6 @@ repo_path: "{{ pip_wheel_name }}_{{ git_install_branch | replace('/', '_') }}"
 ## Git Source
 git_repo: "https://github.com/rcbops/ansible-lxc-rpc"
 git_dest: "/opt/{{ repo_path }}"
-git_install_branch: master
+git_install_branch: 10.0.0rc4
 
 pip_wheel_name: ansible-lxc-rpc
