@@ -38,6 +38,9 @@ container_openstack_password:
 ## Galera Options
 mysql_root_password:
 
+# Defined in group_vars/galera, but can overriden here.
+# galera_wait_timeout: 3600
+
 
 ## Keystone Options
 keystone_container_mysql_password:
