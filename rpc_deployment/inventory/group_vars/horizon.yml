@@ -50,7 +50,6 @@ install_lib_dir: /usr/local/lib/python2.7/dist-packages
 
 container_directories:
   - "/etc/horizon"
-  - "{{ install_lib_dir }}"
 
 service_pip_dependencies:
   - MySQL-python
