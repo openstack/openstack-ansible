@@ -26,6 +26,9 @@ container_lvm_fssize: 5GB
 # Size of the galera cache
 galera_gcache_size: 1G
 
+# Connection timeout https://mariadb.com/kb/en/mariadb/documentation/optimization-and-tuning/system-variables/server-system-variables/#wait_timeout
+galera_wait_timeout: 28800
+
 service_pip_dependencies:
   - MySQL-python
   - python-memcached
