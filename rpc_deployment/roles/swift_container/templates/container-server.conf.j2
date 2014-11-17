@@ -62,10 +62,10 @@ pipeline = healthcheck recon container-server
 
 [app:container-server]
 use = egg:swift#container
-log_facility = LOG_LOCAL1
+log_facility = LOG_LOCAL3
 # You can override the default log routing for this app here:
 # set log_name = container-server
-# set log_facility = LOG_LOCAL0
+# set log_facility = LOG_LOCAL3
 # set log_level = INFO
 # set log_requests = true
 # set log_address = /dev/log
@@ -91,7 +91,7 @@ use = egg:swift#healthcheck
 
 [filter:recon]
 use = egg:swift#recon
-log_facility = LOG_LOCAL2
+log_facility = LOG_LOCAL3
 recon_cache_path = /var/cache/swift
 recon_lock_path = /var/lock/swift
 
@@ -99,7 +99,7 @@ recon_lock_path = /var/lock/swift
 [container-replicator]
 # You can override the default log routing for this app here (don't use set!):
 # log_name = container-replicator
-log_facility = LOG_LOCAL2
+log_facility = LOG_LOCAL3
 # log_level = INFO
 # log_address = /dev/log
 #
@@ -125,7 +125,7 @@ log_facility = LOG_LOCAL2
 [container-updater]
 # You can override the default log routing for this app here (don't use set!):
 # log_name = container-updater
-log_facility = LOG_LOCAL2
+log_facility = LOG_LOCAL3
 # log_level = INFO
 # log_address = /dev/log
 #
@@ -145,7 +145,7 @@ conn_timeout = 5
 [container-auditor]
 # You can override the default log routing for this app here (don't use set!):
 # log_name = container-auditor
-log_facility = LOG_LOCAL2
+log_facility = LOG_LOCAL3
 # log_level = INFO
 # log_address = /dev/log
 #
@@ -158,7 +158,7 @@ log_facility = LOG_LOCAL2
 [container-sync]
 # You can override the default log routing for this app here (don't use set!):
 # log_name = container-sync
-# log_facility = LOG_LOCAL0
+# log_facility = LOG_LOCAL3
 # log_level = INFO
 # log_address = /dev/log
 #

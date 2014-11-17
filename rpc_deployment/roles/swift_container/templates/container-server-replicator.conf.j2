@@ -4,6 +4,7 @@ bind_ip = {{ hostvars[inventory_hostname][repl_bridge]['ipv4']['address'] }}
 bind_port = {{ swift_container_port }}
 devices = {{ swift_vars.mount_point | default(swift.mount_point) }}
 workers = 2
+log_facility = LOG_LOCAL3
 
 [pipeline:main]
 pipeline = container-server

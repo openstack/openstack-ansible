@@ -65,10 +65,10 @@ pipeline = healthcheck recon object-server
 
 [app:object-server]
 use = egg:swift#object
-log_facility = LOG_LOCAL1
+log_facility = LOG_LOCAL4
 # You can override the default log routing for this app here:
 # set log_name = object-server
-# set log_facility = LOG_LOCAL0
+# set log_facility = LOG_LOCAL4
 # set log_level = INFO
 # set log_requests = true
 # set log_address = /dev/log
@@ -138,7 +138,7 @@ use = egg:swift#healthcheck
 
 [filter:recon]
 use = egg:swift#recon
-log_facility = LOG_LOCAL2
+log_facility = LOG_LOCAL4
 recon_cache_path = /var/cache/swift
 recon_lock_path = /var/lock/swift
 
@@ -146,7 +146,7 @@ recon_lock_path = /var/lock/swift
 [object-replicator]
 # You can override the default log routing for this app here (don't use set!):
 # log_name = object-replicator
-log_facility = LOG_LOCAL2
+log_facility = LOG_LOCAL4
 # log_level = INFO
 # log_address = /dev/log
 #
@@ -212,7 +212,7 @@ concurrency = 6
 [object-updater]
 # You can override the default log routing for this app here (don't use set!):
 # log_name = object-updater
-log_facility = LOG_LOCAL2
+log_facility = LOG_LOCAL4
 # log_level = INFO
 # log_address = /dev/log
 #
@@ -230,7 +230,7 @@ conn_timeout = 5
 [object-auditor]
 # You can override the default log routing for this app here (don't use set!):
 # log_name = object-auditor
-log_facility = LOG_LOCAL2
+log_facility = LOG_LOCAL4
 # log_level = INFO
 # log_address = /dev/log
 #
