@@ -274,10 +274,8 @@ user_test_tester3 = testing3
 {% if authtoken_active %}
 [filter:authtoken]
 paste.filter_factory = keystonemiddleware.auth_token:filter_factory
-auth_host = {{ auth_host }}
-auth_port = {{ auth_port }}
-auth_protocol = {{ auth_protocol }}
-auth_uri = {{ auth_protocol }}://{{ auth_host }}:{{ auth_port }}
+identity_uri = {{ auth_protocol }}://{{ auth_host }}:{{ auth_port }}
+auth_uri = {{ auth_identity_uri }}
 admin_tenant_name = {{ service_admin_tenant_name }}
 admin_user = {{ service_admin_username }}
 admin_password = {{ service_admin_password }}
