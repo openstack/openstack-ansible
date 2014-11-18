@@ -188,6 +188,10 @@ storage_hosts:
           netapp_password: "{{ cinder_netapp_password }}"
           volume_driver: cinder.volume.drivers.netapp.common.NetAppDriver
           volume_backend_name: NETAPP_iSCSI
+      nfs_client:
+        nfs_shares_config: /etc/cinder/nfs_shares
+        shares:
+          - { ip: "{{ cinder_netapp_hostname }}", share: "/vol/cinder" }
 
 # User defined Logging Hosts, this should be a required group
 log_hosts:
