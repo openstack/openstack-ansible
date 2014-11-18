@@ -1,0 +1,3 @@
+{% for share in nfs_client.shares %}
+{{ share.ip }}: {{ share.share }}
+{% endfor %}
