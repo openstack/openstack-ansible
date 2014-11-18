@@ -15,8 +15,8 @@
 set -e -u -v -x
 
 REPO_URL=${REPO_URL:-"https://github.com/rcbops/ansible-lxc-rpc.git"}
-REPO_BRANCH=${REPO_BRANCH:-"stable/icehouse"}
-FROZEN_REPO_URL=${FROZEN_REPO:-"http://rpc-slushee.rackspace.com"}
+REPO_BRANCH=${REPO_BRANCH:-"9.0.3"}
+FROZEN_REPO_URL=${FROZEN_REPO:-"http://mirror.rackspace.com/rackspaceprivatecloud"}
 MAX_RETRIES=${MAX_RETRIES:-5}
 
 apt-get update
@@ -230,7 +230,7 @@ maas_monitoring_zones:
   - mzord
   - mzlon
   - mzhkg
-maas_repo_version: 9.0.2
+maas_repo_version: 9.0.3
 ## Neutron Options
 neutron_container_mysql_password: secrete
 neutron_service_password: secrete

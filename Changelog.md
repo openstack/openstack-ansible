@@ -1,5 +1,15 @@
 # Changelog
 
+## 9.0.3 - 2014-11-18
+
+- Do not recursively chown {{ install_lib_dir }} [#367]
+- Create alarms for discovered devices [$430]
+- This commit adds a check to the dynamic inventory script when parsing extra values [#458]
+- Increase galera startup timeout [#411,#413]
+- Specialize galera client config [#411,#413]
+- Use local socket for mysql client connection [#411,#413]
+- Use root pass for galera init script [#411,#413]
+
 ## 9.0.2 - 2014-11-06
 
 - Increase delay and retries for lxc cache download [#449]
