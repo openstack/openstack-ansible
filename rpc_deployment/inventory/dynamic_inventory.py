@@ -260,10 +260,11 @@ def _append_to_host_groups(inventory, container_type, assignment, host_type,
                         limit = None
                         # If a limit is set use the limit string as a filter
                         # for the container name and see if it matches.
-                        if 'limit_container_types' in options:
-                            limit = options.pop(
-                                'limit_container_types', None
-                            )
+                        if isinstance(options, (str, dict, list)):
+                            if 'limit_container_types' in options:
+                                limit = options.pop(
+                                    'limit_container_types', None
+                                )
 
                         if limit is None or limit in container:
                             hdata[_keys] = options
