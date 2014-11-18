@@ -19,7 +19,7 @@
 set -e
 set -x
 
-API_TESTS="identity image"
+API_TESTS="identity image volume"
 
 pushd /opt/tempest_*
 source /root/openrc

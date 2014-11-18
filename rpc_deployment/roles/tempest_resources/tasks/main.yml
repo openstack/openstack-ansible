@@ -64,3 +64,10 @@
   with_items:
     - demo
     - alt_demo
+
+- name: Ensure tempest network exists
+  neutron:
+    command: create_network_with_subnet
+    openrc_path: /root/openrc
+    name: tempest
+    cidr: "192.168.74.0/24"
