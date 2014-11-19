@@ -68,11 +68,11 @@ nova_compute_driver: libvirt.LibvirtDriver
 nova_max_age: 0
 
 # Nova Scheduler
-nova_cpu_allocation_ratio: 5.0
+nova_cpu_allocation_ratio: 2.0
 nova_disk_allocation_ratio: 1.0
 nova_max_instances_per_host: 50
 nova_max_io_ops_per_host: 10
-nova_ram_allocation_ratio: 1.5
+nova_ram_allocation_ratio: 1.0
 nova_ram_weight_multiplier: 5.0
 nova_reserved_host_disk_mb: 2048
 nova_reserved_host_memory_mb: 2048
