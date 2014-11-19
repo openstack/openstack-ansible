@@ -74,6 +74,8 @@ global_overrides:
           - cinder_api
           - cinder_volume
           - nova_compute
+          # If you are using the storage network for swift_proxy add it to the group_binds
+          # - swift_proxy
         type: "raw"
         container_bridge: "br-storage"
         container_interface: "eth2"
