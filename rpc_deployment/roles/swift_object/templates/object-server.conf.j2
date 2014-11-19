@@ -1,5 +1,9 @@
 [DEFAULT]
-bind_ip = {{ container_address }}
+{% if is_metal == true and storage_network is defined %}
+{% set storage_bridge = 'ansible_' + swift.storage_network|replace('-', '_') %}
+{% set storage_address = hostvars[inventory_hostname][storage_bridge]['ipv4']['address'] %}
+{% endif %}
+bind_ip = {{ storage_address | default(container_address) }}
 bind_port = {{ swift_object_port }}
 # bind_timeout = 30
 # backlog = 4096

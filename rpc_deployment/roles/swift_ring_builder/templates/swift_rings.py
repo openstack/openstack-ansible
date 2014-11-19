@@ -239,7 +239,7 @@ def main(setup):
         for host in _inventory['swift_hosts']['hosts']:
             host_config = _inventory['_meta']['hostvars'][host]
             host_vars = host_config['swift_vars']
-            host_ip = host_vars.get('ip', host_config['container_address'])
+            host_ip = host_vars.get('storage_ip', host_config['container_address'])
             if not host_vars.get('drives'):
                 if not swift_vars.get('drives'):
                     continue
@@ -247,7 +247,7 @@ def main(setup):
                     host_vars['drives'] = copy.deepcopy(swift_vars.get('drives'))
             host_drives = host_vars.get('drives')
             for host_drive in host_drives:
-                host_drive['ip'] = host_drive.get('ip', host_ip)
+                host_drive['ip'] = host_drive.get('storage_ip', host_ip)
                 if host_vars.get('groups'):
                    host_drive['groups'] = \
                        host_drive.get('groups', host_vars['groups'])
