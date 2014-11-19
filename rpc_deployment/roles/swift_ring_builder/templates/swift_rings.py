@@ -133,9 +133,14 @@ def add_host_to_ring(build_file, host, validate=False):
             host_str += 'r%(region)d' % host
         host_str += "z%d" % (host.get('zone', DEFAULT_HOST_ZONE))
         host_str += "-%(ip)s:%(port)d" % host
-        if host.get('repl_port'):
+        if host.get('repl_ip'):
+            r_ip = host['repl_ip']
+            r_port = host.get('repl_port', host['port'])
+            host_str += "R%s:%d" % (r_ip, r_port)
+        elif host.get('repl_port'):
             r_ip = host.get('repl_ip', host['ip'])
-            host_str += "R%s:%d" % (r_ip, host['repl_port'])
+            r_port = host['repl_port']
+            host_str += "R%s:%d" % (r_ip, r_port)
         host_str += "/%(name)s" % host
         weight = host.get('weight', DEFAULT_HOST_WEIGHT)
     except Exception as ex:
