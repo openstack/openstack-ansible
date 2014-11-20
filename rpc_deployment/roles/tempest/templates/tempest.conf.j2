@@ -16,7 +16,7 @@ s3_materials_path = /opt/stack/devstack/files/images/s3-materials/cirros-0.3.2
 s3_url = http://134.213.136.181:3333
 ec2_url = http://134.213.136.181:8773/services/Cloud
 http_socket_timeout = 30
-build_timeout = 196
+build_timeout = 600
 
 [cli]
 cli_dir = /usr/local/bin
@@ -37,7 +37,7 @@ ip_version_for_ssh = 4
 network_for_ssh = private
 ssh_user = cirros
 allow_tenant_isolation = True
-build_timeout = 196
+build_timeout = 600
 
 [compute-admin]
 tenant_name = {{ auth_admin_tenant }}
@@ -139,7 +139,7 @@ too_slow_to_test = False
 
 
 [volume]
-build_timeout = 196
+build_timeout = 600
 
 
 [volume-feature-enabled]
