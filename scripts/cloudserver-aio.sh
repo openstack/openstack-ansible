@@ -102,6 +102,10 @@ if [ -f "/opt/swap.sh" ];then
 fi
 
 # Make the system key used for bootstrapping self
+if [ ! -d /root/.ssh ];then
+    mkdir -p /root/.ssh
+    chmod 700 /root/.ssh
+fi
 pushd /root/.ssh/
   if [ ! -f "id_rsa" ];then
       key_create
