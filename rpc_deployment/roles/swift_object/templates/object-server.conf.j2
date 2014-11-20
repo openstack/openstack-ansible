@@ -1,5 +1,5 @@
 [DEFAULT]
-{% if is_metal == true and storage_network is defined %}
+{% if is_metal == true and swift.storage_network is defined %}
 {% set storage_bridge = 'ansible_' + swift.storage_network|replace('-', '_') %}
 {% set storage_address = hostvars[inventory_hostname][storage_bridge]['ipv4']['address'] %}
 {% endif %}
