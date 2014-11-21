@@ -32,7 +32,33 @@
     dest="/etc/swift/scripts/swift_rings.py"
     mode=0700
 
-- name: "build rings"
-  command: /usr/bin/python /etc/swift/scripts/swift_rings.py -s /etc/rpc_deploy/rpc_inventory.json
+- name: "Build ring-contents files"
+  template: >
+    src=ring.contents.j2
+    dest="/etc/swift/scripts/{{ item.type }}.contents"
+  with_items:
+    - { item: "{{ swift.account }}", port: "{{ swift_account_port }}", type: "account" }
+    - { item: "{{ swift.container }}", port: "{{ swift_container_port}}", type: "container" }
+
+- name: "Build ring-contents files for storage policies"
+  template: >
+    src=ring.contents.j2
+    dest="/etc/swift/scripts/object-{{ item[0].policy.index }}.contents"
+  with_nested:
+    - "{{ swift.storage_policies }}"
+    - [{ type: 'object', port: "{{ swift_object_port }}" }]
+
+- name: "build rings for account/container from contents files"
+  command: /usr/bin/python /etc/swift/scripts/swift_rings.py -f /etc/swift/scripts/{{ item }}.contents
+  with_items:
+    - account
+    - container
+  args:
+    chdir: /etc/swift/rings/
+
+- name: "build rings for storage policies from contents files"
+  command: /usr/bin/python /etc/swift/scripts/swift_rings.py -f /etc/swift/scripts/object-{{ item.policy.index }}.contents
+  with_items:
+    - "{{ swift.storage_policies }}"
   args:
     chdir: /etc/swift/rings/

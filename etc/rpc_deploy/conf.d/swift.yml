@@ -66,7 +66,7 @@
 ## all swift settings are set under swift_vars.
 ##
 ## The storage_ip and repl_ip represent the IP that will go in the ring for storage and replication.
-## E.g. for swift-node1 the IP string added to the ring would be 198.51.100.4:(service_port)R203.0.113.4:(service_port)
+## These will be pulled from the server's interface (specified by storage_network & replication_network), but can be overriden by specifying them at the node or drive level.
 ## If only the storage_ip is specified then the repl_ip will default to the storage_ip
 ## If only the repl_ip is specified then the storage_ip will default to the host ip above.
 ## If neither are specified both will default to the host ip above.
@@ -83,29 +83,21 @@
 #     ip: 192.0.2.4
 #     container_vars:
 #       swift_vars:
-#         storage_ip: 198.51.100.4
-#         repl_ip: 203.0.113.4
 #         zone: 0
 #   swift-node2:
 #     ip: 192.0.2.5
 #     container_vars:
 #       swift_vars:
-#         storage_ip: 198.51.100.5
-#         repl_ip: 203.0.113.5
 #         zone: 1
 #   swift-node3:
 #     ip: 192.0.2.6
 #     container_vars:
 #       swift_vars:
-#         storage_ip: 198.51.100.6
-#         repl_ip: 203.0.113.6
 #         zone: 2
 #   swift-node4:
 #     ip: 192.0.2.7
 #     container_vars:
 #       swift_vars:
-#         storage_ip: 198.51.100.7
-#         repl_ip: 203.0.113.7
 #         zone: 3
 #   swift-node5:
 #     ip: 192.0.2.8
