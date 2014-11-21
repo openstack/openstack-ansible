@@ -1,0 +1,35 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# The variables file used by the playbooks in the Cinder-api group.
+# These don't have to be explicitly imported by vars_files: they are autopopulated.
+
+
+# Note, most cinder settings sare set in cinder_all,
+# this file is just to override the lvm size for the volumes container.
+
+# The volumes container needs a larger FS as it must have tmp space for
+# converting glnace imges to volumes.
+# https://github.com/rcbops/ansible-lxc-rpc/issues/166
+
+# Default is 5GB (same as other containers).
+# Space must be added for cinder image conversion to work.
+# For example, to be able to convert 100GB images, set this to 105GB.
+cinder_volume_lv_size_gb: 5GB
+
+# only used when the lxc vg is present on the target
+container_lvm_fssize: "{{cinder_volume_lv_size_gb}}"
+
+
