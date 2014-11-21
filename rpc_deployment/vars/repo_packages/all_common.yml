@@ -14,7 +14,7 @@
 # limitations under the License.
 
 ## URL for the frozen rpc repo
-rpc_repo_url: "http://rpc-slushee.rackspace.com"
+rpc_repo_url: "http://mirror.rackspace.com/rackspaceprivatecloud"
 
 ## GPG Keys
 gpg_keys:
@@ -31,9 +31,9 @@ apt_common_repos:
 # Hyphens and periods replaced with underlines. This will ensure that when ansible 
 # runs into the ``apt_common_repos`` option is set correctly.
 # apt_common_repos:
-#   - { repo: "deb [arch=amd64] {{ rpc_repo_url }} rpc-LA main", state: "present", name: "rpc_slushee_rackspace_com" }
-#   - { repo: "deb [arch=amd64] {{ rpc_repo_url }} LA main", state: "present", name: "rpc_slushee_rackspace_com" }
-#   - { repo: "deb [arch=amd64] {{ rpc_repo_url }} universe-LA universe", state: "present", name: "rpc_slushee_rackspace_com" }
+#   - { repo: "deb [arch=amd64] {{ rpc_repo_url }} rpc-LA main", state: "present", name: "mirror_rackspace_com" }
+#   - { repo: "deb [arch=amd64] {{ rpc_repo_url }} LA main", state: "present", name: "mirror_rackspace_com" }
+#   - { repo: "deb [arch=amd64] {{ rpc_repo_url }} universe-LA universe", state: "present", name: "mirror_rackspace_com" }
 
 ## Python pip
 get_pip_url: "{{ rpc_repo_url }}/downloads/get-pip.py"
