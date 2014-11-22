@@ -17,16 +17,18 @@
 # this will ensure consistency when deploying.
 environment_version: 5e7155d022462c5a82384c1b2ed8b946
 
-# User defined CIDR used for containers
-# Global cidr/s used for everything.
+# User defined container networks in CIDR notation. The inventory generator
+# assigns IP addresses to network interfaces inside containers from these
+# ranges.
 cidr_networks:
-  # Cidr used in the Management network
+  # Management (same range as br-mgmt on the target hosts)
   container: 172.29.236.0/22
-  # Cidr used in the Service network
+  # Service (optional, same range as br-snet on the target hosts)
   snet: 172.29.248.0/22
-  # Cidr used in the VM network
+  # Tunnel endpoints for VXLAN tenant networks
+  # (same range as br-vxlan on the target hosts)
   tunnel: 172.29.240.0/22
-  # Cidr used in the Storage network
+  # Storage (same range as br-storage on the target hosts)
   storage: 172.29.244.0/22
 
 # User defined list of consumed IP addresses that may intersect 
