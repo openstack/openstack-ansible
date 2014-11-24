@@ -170,6 +170,9 @@ def main():
             elif entry.endswith('key'):
                 changed = True
                 user_vars[entry] = generator.generator(pw_type='key')
+            elif entry.startswith('swift_hash_path'):
+                changed = True
+                user_vars[entry] = generator.generator(pw_type='key')
 
     # If changed is set to True, this will archive the old passwords
     if changed is True:
