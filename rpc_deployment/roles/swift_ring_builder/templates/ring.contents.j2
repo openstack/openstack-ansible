@@ -65,7 +65,7 @@
 {###     Build an empty device which we'll update with the appropriate details #}
 {%       set device = {} %}
 {%       set weight = drive.weight | default(hostvars[host]['swift_vars']['weight'] | default(swift.weight | default(swift_default_drive_weight))) %}
-{%       set region = drive.region | default(hostvars[host]['swift_vars']['region'] | default(swift.region | default(1))) %}
+{%       set region = drive.region | default(hostvars[host]['swift_vars']['region'] | default(swift.region | default(swift_default_host_region))) %}
 {%       set zone = drive.zone | default(hostvars[host]['swift_vars']['zone'] | default(swift.zone | default(swift_default_host_zone))) %}
 {%       set repl_ip = drive.repl_ip | default( hostvars[host]['swift_vars']['repl_ip'] | default(def_repl_ip)) %}
 {%       set repl_port = drive.repl_port | default((hostvars[host]['swift_vars']['repl_port']) | default(port)) %}
