@@ -53,7 +53,7 @@
 - hosts: swift_proxy
   vars:
     check_name: swift_proxy_server_check
-    check_details: file=service_api_local_check.py,args=swift_proxy_server,args=--path,args=/healtcheck,args={{ ansible_ssh_host }},args=8888
+    check_details: file=service_api_local_check.py,args=swift_proxy_server,args=--path,args=/healtcheck,args={{ ansible_ssh_host }},args=8080
     check_period: "{{ maas_check_period }}"
     check_timeout: "{{ maas_check_timeout }}"
     alarms:
@@ -78,7 +78,7 @@
     notification_plan: "{{ maas_notification_plan }}"
     scheme: "{{ maas_swift_proxy_scheme | default(maas_scheme)}}"
     ip_address: "{{ external_vip_address }}"
-    port: 8888
+    port: 8080
     path: "/healthcheck"
     url: "{{ scheme }}://{{ ip_address }}:{{ port }}{{ path }}"
     alarm_name: lb_api_alarm_swift_proxy
