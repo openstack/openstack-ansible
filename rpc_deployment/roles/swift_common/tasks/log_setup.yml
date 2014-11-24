@@ -26,6 +26,6 @@
 - name: "Drop swift rsyslog conf"
   template:
     src: "swift-rsyslog.conf.j2"
-    dest: "/etc/rsyslog.d/10-swift.conf"
+    dest: "/etc/rsyslog.d/52-swift.conf"
   notify:
     - restart rsyslog
