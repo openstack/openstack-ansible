@@ -288,7 +288,7 @@ delay_auth_decision = {{ delay_auth_decision }}
 use = egg:swift#keystoneauth
 # Operator roles is the role which user would be allowed to manage a
 # tenant and be able to create container or give ACL to others.
-{% if swift_allow_all_users is defined and swift_allow_all_users == True %
+{% if swift_allow_all_users is defined and swift_allow_all_users == True %}
 operator_roles = admin, swiftoperator, _member_
 {% else %}
 operator_roles = admin, swiftoperator
