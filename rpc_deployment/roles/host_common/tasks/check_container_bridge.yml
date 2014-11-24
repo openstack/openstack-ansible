@@ -13,10 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- hosts: "{{ host_group|default('all_containers') }}"
-  gather_facts: False
-  user: root
-  roles:
-    - container_create
-
-- include: containers-setup.yml
+- name: Fail if Container Bridge doesnt exist
+  file:
+    state: file
+    path: "/sys/class/net/{{ management_bridge }}/bridge/bridge_id"

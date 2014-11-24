@@ -16,43 +16,35 @@
 # Create an LXC container.
 
 - name: Check for lxc volume group
-  shell: >
-    (which vgs > /dev/null && vgs | grep -o "lxc") || false
+  shell: "vgs | grep -o '{{ container_vg|default('lxc') }}'"
   register: vg_result
-  ignore_errors: True
+  failed_when: false
+  changed_when: false
+  delegate_to: "{{ physical_host }}"
 
 - name: Create Container Local
-  lxc: >
-    name={{ hostvars[item]['container_name'] }}
-    template={{ container_template }}
-    config={{ hostvars[item]['container_config'] }}
-    command=create
-    state=running
-    template_options="
-      --release {{ container_release }}
-    "
+  lxc:
+    name: "{{ container_name }}"
+    template: "{{ container_template }}"
+    config: "{{ container_config }}"
+    command: create
+    state: running
+    template_options: "--release {{ container_release }}"
   when: vg_result.rc == 1
-  with_items: container_groups
-
-- name: Check Container Bridge exists
-  file: >
-    state=file
-    path="/sys/class/net/{{ management_bridge }}/bridge/bridge_id"
+  delegate_to: "{{ physical_host }}"
 
 - name: Create Container LVM
-  lxc: >
-    name={{ hostvars[item]['container_name'] }}
-    template={{ container_template }}
-    config={{ hostvars[item]['container_config'] }}
-    command=create
-    state=running
-    bdev=lvm
-    lvname={{ hostvars[item]['container_name'] }}
-    vgname=lxc
-    fstype={{ hostvars[item]['container_lvm_fstype'] }}
-    fssize={{ hostvars[item]['container_lvm_fssize'] }}
-    template_options="
-      --release {{ container_release }}
-    "
+  lxc:
+    name: "{{ container_name }}"
+    template: "{{ container_template }}"
+    config: "{{ container_config }}"
+    command: "create"
+    state: "running"
+    bdev: "lvm"
+    lvname: "{{ container_name }}"
+    vgname: "{{ container_vg|default('lxc') }}"
+    fstype: "{{ container_lvm_fstype }}"
+    fssize: "{{ container_lvm_fssize }}"
+    template_options: " --release {{ container_release }}"
   when: vg_result.rc == 0
-  with_items: container_groups
+  delegate_to: "{{ physical_host }}"
