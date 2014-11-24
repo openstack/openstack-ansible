@@ -14,6 +14,7 @@
 # limitations under the License.
 
 - include: rsync_setup.yml
+- include: swift_recon_cron.yml
 
 - name: "Set ownership on mounted drives"
   file:
