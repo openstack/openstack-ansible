@@ -173,6 +173,13 @@ POOL_PARTS = {
         'group': 'horizon',
         'hosts': []
     },
+    'swift_proxy': {
+        'port': 8080,
+        'backend_port': 8080,
+        'mon_type': 'http',
+        'group': 'swift_proxy',
+        'hosts': []
+    },
     'elasticsearch': {
         'port': 9200,
         'backend_port': 9200,
@@ -181,7 +188,7 @@ POOL_PARTS = {
         'hosts': []
     },
     'kibana': {
-        'port': 8080,
+        'port': 8888,
         'backend_port': 80,
         'mon_type': 'http',
         'group': 'kibana',
