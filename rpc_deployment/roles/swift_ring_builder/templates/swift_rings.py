@@ -178,7 +178,10 @@ def build_ring(build_name, repl, min_part_hours, part_power, hosts, validate=Fal
 
     # Rebalance ring
     if not validate:
-        run_and_wait(rb_main, ["swift-ring-builder", build_file, "rebalance"])
+        if not hosts:
+            run_and_wait(rb_main, ["swift-ring-builder", build_file, "write_ring"])
+        else:
+            run_and_wait(rb_main, ["swift-ring-builder", build_file, "rebalance"])
 
 def main(setup):
     # load the json file
