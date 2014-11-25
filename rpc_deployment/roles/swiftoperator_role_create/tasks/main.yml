@@ -22,16 +22,3 @@
     login_password="{{ auth_admin_password }}"
     endpoint="{{ auth_admin_uri }}"
     role_name="swiftoperator"
-
-# Ensure glance user has the swiftoperator role when glance is using swift
-- name: Ensure Glance User has swiftoperator Role
-  keystone: >
-    command=ensure_user_role
-    login_tenant_name="{{ auth_admin_tenant }}"
-    login_user="{{ auth_admin_username }}"
-    login_password="{{ auth_admin_password }}"
-    endpoint="{{ auth_admin_uri }}"
-    user_name="glance"
-    tenant_name="{{ auth_admin_tenant }}"
-    role_name="swiftoperator"
-  when: glance_default_store is defined and glance_default_store == "swift"
