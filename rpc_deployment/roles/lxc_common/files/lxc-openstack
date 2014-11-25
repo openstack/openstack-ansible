@@ -16,6 +16,7 @@ profile lxc-openstack flags=(attach_disconnected,mediate_deleted) {
   mount fstype=fuseblk -> /**,
   mount fstype=nbd* -> /**,
   mount fstype=nfs* -> /var/lib/cinder/mnt/**,
+  mount fstype=nfs* -> /var/lib/glance/images/**,
   mount fstype=devpts,
   
 # allow System access.
