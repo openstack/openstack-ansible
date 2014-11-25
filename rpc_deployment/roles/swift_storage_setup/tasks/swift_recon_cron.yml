@@ -13,10 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# We need the location of swift-recon-cron
+- name: "Get location of swift-recon-cron"
+  shell: which swift-recon-cron
+  register: recon_cron_path
+
 - name: "Setup swift-recon-cron cron job"
   cron: >
     name="swift-recon-cron run"
     minute=*/5
     user="swift"
-    job="/usr/bin/swift-recon-cron /etc/swift/object-server/object-server.conf"
+    job="{{ recon_cron_path.stdout }} /etc/swift/object-server/object-server.conf"
     cron_file="swift_recon_cron"
