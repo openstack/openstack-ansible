@@ -13,14 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Add horizon etc dir
-  file:
-    dest: "/etc/horizon"
-    recurse: "yes"
-    owner: "{{ system_user }}"
-    group: "{{ system_group }}"
-    state: "directory"
-
 # The Horizon config files should be replaced for the JUNO release
 # juno_revision: true
 - name: Setup Horizon config(s)
@@ -54,6 +46,8 @@
 # /opt/horizon/lib/python2.7/site-packages/manage.py
 - name: Collect and compress static files
   command: "{{ item }}"
+  sudo: yes
+  sudo_user: "{{ system_user }}"
   with_items:
     - horizon-manage.py collectstatic --noinput
     - horizon-manage.py compress --force
@@ -67,13 +61,3 @@
     state: "link"
   with_items:
     - { src: "/etc/horizon/local_settings.py", dest: "{{ install_lib_dir }}/openstack_dashboard/local/local_settings.py" }
-
-- name: Set horizon permissions
-  file:
-    dest: "{{ item }}"
-    recurse: "yes"
-    owner: "{{ system_user }}"
-    group: "{{ system_group }}"
-    state: "directory"
-  with_items:
-    - "{{ install_lib_dir }}/static"
