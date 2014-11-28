@@ -298,6 +298,78 @@
   roles:
     - maas_local
 
+- hosts: swift_obj
+  vars:
+    check_name: swift_account_replication_check
+    check_details: file=swift-recon.py,args=--ring-type,args=account,args=replication
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'swift_account_replication_check', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["swift_account_replication_check"] != 1) { return new AlarmStatus(CRITICAL, "API unavailable"); }' }
+  user: root
+  roles:
+    - maas_local
+
+- hosts: swift_obj
+  vars:
+    check_name: swift_async_check
+    check_details: file=swift-recon.py,args=async-pendings
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'swift_async_check', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["swift_async_check"] != 1) { return new AlarmStatus(CRITICAL, "API unavailable"); }' }
+  user: root
+  roles:
+    - maas_local
+
+- hosts: swift_obj
+  vars:
+    check_name: swift_container_replication_check
+    check_details: file=swift-recon.py,args=--ring-type,args=container,args=replication
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'swift_container_replication_check', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["swift_container_replication_check"] != 1) { return new AlarmStatus(CRITICAL, "API unavailable"); }' }
+  user: root
+  roles:
+    - maas_local
+
+- hosts: swift_obj
+  vars:
+    check_name: swift_md5_check
+    check_details: file=swift-recon.py,args=md5
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'swift_md5_check', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["swift_md5_check"] != 1) { return new AlarmStatus(CRITICAL, "API unavailable"); }' }
+  user: root
+  roles:
+    - maas_local
+
+- hosts: swift_obj
+  vars:
+    check_name: swift_object_replication_check
+    check_details: file=swift-recon.py,args=--ring-type,args=object,args=replication
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'swift_object_replication_check', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["swift_object_replication_check"] != 1) { return new AlarmStatus(CRITICAL, "API unavailable"); }' }
+  user: root
+  roles:
+    - maas_local
+
+- hosts: swift_obj
+  vars:
+    check_name: swift_quarantine_check
+    check_details: file=swift-recon.py,args=quarantine
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'swift_quarantine_check', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["swift_quarantine_check"] != 1) { return new AlarmStatus(CRITICAL, "API unavailable"); }' }
+  user: root
+  roles:
+    - maas_local
+
 - hosts: rabbit
   vars:
     check_name: rabbitmq_status
