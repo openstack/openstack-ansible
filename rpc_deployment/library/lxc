@@ -965,7 +965,7 @@ class LxcManagement(object):
             self.module.get_bin_path('lxc-stop', True),
             '--logfile /tmp/lxc-ansible-%s-stop.log' % name,
             '--logpriority INFO',
-            '--timeout 10',
+            '--timeout 120',
             '--name %s' % name
         ]
 
