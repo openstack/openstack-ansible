@@ -13,16 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- hosts: "{{ host_group|default('hosts') }}"
+- hosts: "{{ host_group|default('all_containers') }}"
   user: root
+  gather_facts: false
   roles:
     - container_setup
   vars_files:
     - vars/config_vars/container_interfaces.yml
-  vars:
-    default_container_groups: "{{ hostvars[inventory_hostname]['container_types'] }}"
-    container_groups: "{{ groups[container_group|default(default_container_groups)] | default('') }}"
-    required_container_config_options:
-      - "lxc.mount.entry=/openstack/log/{{ hostvars[item]['container_name'] }} var/log/{{ hostvars[item]['service_name'] }} none defaults,bind,rw 0 0"
-      - "lxc.mount.entry=/openstack/backup/{{ hostvars[item]['container_name'] }} var/backup none defaults,bind,rw 0 0"
-      - "lxc.mount.entry=/openstack/monitoring monitoring none defaults,bind,rw 0 0"

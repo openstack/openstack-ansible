@@ -17,6 +17,7 @@
 
 - name: Destroy Containers
   lxc:
-    name: "{{ hostvars[item]['container_name'] }}"
+    name: "{{ container_name }}"
     command: "destroy"
-  with_items: container_groups
+  delegate_to: "{{ physical_host }}"
+
