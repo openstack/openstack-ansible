@@ -88,10 +88,12 @@ class ManageNeutron(object):
 
     def _init_neutron(self):
         """ Create neutron client object using token and url from keystone """
+        openrc = self._parse_openrc()
         self.neutron = nclient.Client(
             '2.0',
             endpoint_url=self.keystone.service_catalog.url_for(
-                service_type='network'),
+                service_type='network',
+                endpoint_type=openrc['OS_ENDPOINT_TYPE']),
             token=self.keystone.get_token(self.keystone.session))
 
     def route(self):
