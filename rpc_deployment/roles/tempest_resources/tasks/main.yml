@@ -69,5 +69,6 @@
   neutron:
     command: create_network_with_subnet
     openrc_path: /root/openrc
-    name: tempest
+    net_name: tempest-net
+    subnet_name: tempest-subnet
     cidr: "192.168.74.0/24"
