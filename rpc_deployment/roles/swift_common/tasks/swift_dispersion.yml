@@ -13,12 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: log_setup.yml
-- include: swift_dispersion.yml
-
-- name: "Drop swift.conf template"
+- name: "Place dispersion.conf in swift dir"
   template:
-    src: "swift.conf.j2"
-    dest: "/etc/swift/swift.conf"
+    src: "swift-dispersion.conf.j2"
+    dest: "/etc/swift/dispersion.conf"
     owner: "{{ system_user }}"
     mode: "0644"
