@@ -451,8 +451,11 @@ pushd /opt/ansible-lxc-rpc/rpc_deployment
   install_bits infrastructure/rsyslog-config.yml
 popd
 
-if [ ! "$(dpkg -l | grep linux-image-extra-3.13.0-35-generic)" ];then
-    apt-get install -y linux-image-extra-3.13.0-35-generic
+if ! modprobe vxlan; then
+    MINIMUM_KERNEL_VERSION=$(awk '/required_kernel/ {print $2}' /opt/ansible-lxc-rpc/rpc_deployment/inventory/group_vars/all.yml)
+    apt-get install -y linux-headers-${MINIMUM_KERNEL_VERSION} \
+                       linux-image-${MINIMUM_KERNEL_VERSION} \
+                       linux-image-extra-${MINIMUM_KERNEL_VERSION}
     rm /etc/update-motd.d/*
 cat > /etc/update-motd.d/00-rpc-notice<< EOF
 #!/usr/bin/env bash
