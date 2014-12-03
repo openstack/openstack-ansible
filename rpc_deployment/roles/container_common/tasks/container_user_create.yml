@@ -14,18 +14,18 @@
 # limitations under the License.
 
 - name: create the system group
-  group: >
-    name={{ system_group }}
-    state=present
-    system=yes
+  group:
+    name: "{{ system_group }}"
+    state: "present"
+    system: "yes"
   when: system_group is defined
 
 - name: create system user
-  user: >
-    name={{ system_user }}
-    shell=/bin/false
-    group={{ system_group }}
-    home=/var/lib/{{ system_user }}
-    system=yes 
-    createhome=yes
+  user:
+    name: "{{ system_user }}"
+    shell: "/bin/false"
+    group: "{{ system_group }}"
+    home: "/var/lib/{{ system_user }}"
+    system: "yes"
+    createhome: "yes"
   when: system_group is defined and system_user is defined

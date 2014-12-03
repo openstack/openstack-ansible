@@ -14,21 +14,22 @@
 # limitations under the License.
 
 - name: Ensude motd is not printed in ssh
-  lineinfile: 
+  lineinfile:
     dest: /etc/ssh/sshd_config
     regexp: "^PrintMotd"
     line: "PrintMotd yes"
-    state: present
+    state: "present"
   notify: SSH restart
   tags:
     - set_motd
 
 - name: Setup support motd
   template:
-    owner: root
-    group: root
-    mode: 0755
-    src: 20-openstack.j2
+    owner: "root"
+    group: "root"
+    mode: "0755"
+    src: "20-openstack.j2"
     dest: "/etc/update-motd.d/20-openstack"
   tags:
     - set_motd
+

@@ -15,8 +15,8 @@
 
 - name: Restart rabbitmq-server
   service:
-    name: rabbitmq-server
-    enabled: yes 
-    state: restarted
+    name: "rabbitmq-server"
+    enabled: "yes"
+    state: "restarted"
   tags:
     - rabbit_restart

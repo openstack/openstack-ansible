@@ -34,8 +34,8 @@
 
 - name: Perform a Neutron DB Stamp
   command: >
-    neutron-db-manage --config-file {{ neutron_config }} 
-                      --config-file {{ neutron_plugin }} 
+    neutron-db-manage --config-file {{ neutron_config }}
+                      --config-file {{ neutron_plugin }}
                       stamp {{ neutron_revision }}
   when: neutron_dbmanage.rc != 0
   sudo: yes
