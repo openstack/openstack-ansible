@@ -43,12 +43,12 @@ function successerator() {
   RETRY=0
   # Set the initial return value to failure
   false
- 
+
   while [ $? -ne 0 -a ${RETRY} -lt ${MAX_RETRIES} ];do
     RETRY=$((${RETRY}+1))
     $@
   done
- 
+
   if [ ${RETRY} -eq ${MAX_RETRIES} ];then
     echo "Hit maximum number of retries, giving up..."
     exit 1
@@ -64,8 +64,8 @@ function install_bits() {
 if [ ! -d "/opt" ];then
   mkdir /opt
 fi
- 
- 
+
+
 if [ ! "$(swapon -s | grep -v Filename)" ];then
   cat > /opt/swap.sh <<EOF
 #!/usr/bin/env bash
@@ -80,24 +80,24 @@ mkswap \${SWAPFILE}
 swapon \${SWAPFILE}
 fi
 EOF
- 
+
   chmod +x /opt/swap.sh
   /opt/swap.sh
 fi
- 
+
 if [ -f "/opt/swap.sh" ];then
   if [ ! -f "/etc/rc.local" ];then
     touch /etc/rc.local
   fi
- 
+
   if [ "$(grep 'exit 0' /etc/rc.local)" ];then
     sed -i '/exit\ 0/ s/^/#\ /' /etc/rc.local
   fi
-  
+
   if [ ! "$(grep 'swap.sh' /etc/rc.local)" ];then 
     echo "/opt/swap.sh" | tee -a /etc/rc.local
   fi
-  
+
   chmod +x /etc/rc.local
 fi
 
