@@ -30,7 +30,7 @@ parameters:
     description: The Instance Name
   install_script_url:
     type: string
-    default: https://raw.githubusercontent.com/rcbops/ansible-lxc-rpc/master/scripts/cloudserver-aio.sh
+    default: https://raw.githubusercontent.com/stackforge/os-ansible-deployment/master/scripts/cloudserver-aio.sh
     description: The aio script installation URL
   frozen_repo_url:
     type: string
@@ -38,7 +38,7 @@ parameters:
     description: URL to the frozen
   repo_url:
     type: string
-    default: https://github.com/rcbops/ansible-lxc-rpc.git
+    default: https://github.com/stackforge/os-ansible-deployment.git
     description: The repository URL
   repo_branch:
     type: string

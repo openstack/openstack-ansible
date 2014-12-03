@@ -55,8 +55,8 @@ set -e -o -v
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 # Defined variables
-GIT_REPO="${GIT_REPO:-https://github.com/rcbops/ansible-lxc-rpc}"
-GITHUB_API_ENDPOINT="${GITHUB_API_ENDPOINT:-https://api.github.com/repos/rcbops/ansible-lxc-rpc}"
+GIT_REPO="${GIT_REPO:-https://github.com/stackforge/os-ansible-deployment}"
+GITHUB_API_ENDPOINT="${GITHUB_API_ENDPOINT:-https://api.github.com/repos/stackforge/os-ansible-deployment}"
 
 WORK_DIR="${WORK_DIR:-/opt/ansible-lxc-rpc}"
 REPO_PACKAGES_PATH="${WORK_DIR}/rpc_deployment/vars/repo_packages/"
