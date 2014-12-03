@@ -57,14 +57,14 @@
     dest: "/opt/holland_{{ holland_release }}"
     version: "{{ holland_release }}"
   register: holland_clone
-  until: holland_clone|success 
+  until: holland_clone|success
   retries: 5
   tags:
     - holland_source
     - holland_all
 
 - name: Install holland source
-  pip: 
+  pip:
     name: "{{ item }}"
   with_items:
     - "mysql-python"

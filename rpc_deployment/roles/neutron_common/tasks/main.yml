@@ -27,7 +27,7 @@
   shell: |
     . /root/openrc
     SERVICE_ID="$(keystone service-list | grep -w 'compute' | awk '{print $2}')"
-    keystone endpoint-list | grep -w "${SERVICE_ID}" | awk '{print $10}'
+    keystone endpoint-list | grep -w "$SERVICE_ID" | awk '{print $10}'
   register: novaendpoint
   changed_when: false
   failed_when: novaendpoint.rc != 0

@@ -31,18 +31,18 @@
   notify: Restart libvirt-bin
 
 - name: Set libvirt-bin upstart script
-  copy: >
-    src=libvirt-bin.conf
-    dest=/etc/init/libvirt-bin.conf
-    owner="root"
-    group="root"
-    mode=0644
+  copy:
+    src: "libvirt-bin.conf"
+    dest: "/etc/init/libvirt-bin.conf"
+    owner: "root"
+    group: "root"
+    mode: "0644"
   notify: Restart libvirt-bin
 
 - name: Add nova user to libvirtd group
-  user: >
-    name="{{ system_user }}" 
-    groups=libvirtd 
-    append=yes
+  user:
+    name: "{{ system_user }}"
+    groups: "libvirtd"
+    append: "yes"
 
 - include: virsh_net_remove.yml

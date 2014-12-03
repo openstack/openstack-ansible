@@ -25,6 +25,6 @@
     src="memcached.conf"
     dest="/etc/memcached.conf"
     owner=root
-    group=root 
+    group=root
     mode=0644
   notify: Restart memcached

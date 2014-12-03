@@ -15,7 +15,7 @@
 
 - name: Adding new system tuning
   sysctl:
-    name: "{{ item.key }}" 
+    name: "{{ item.key }}"
     value: "{{ item.value }}"
     sysctl_set: "{{ item.set|default('yes') }}"
     state: "{{ item.state|default('present') }}"

@@ -16,7 +16,7 @@
 # destroy an LXC container.
 
 - name: Destroy Containers
-  lxc: >
-    name={{ hostvars[item]['container_name'] }} 
-    command=destroy
+  lxc:
+    name: "{{ hostvars[item]['container_name'] }}"
+    command: "destroy"
   with_items: container_groups

@@ -14,13 +14,13 @@
 # limitations under the License.
 
 - name: Create the local directories
-  file: >
-    path={{ item }}
-    state=directory
-    group=root
-    owner=root
-    recurse=true
-  with_items: 
+  file:
+    path: "{{ item }}"
+    state: "directory"
+    group: "root"
+    owner: "root"
+    recurse: "true"
+  with_items:
     - /etc/mysql/conf.d
 
 - name: Drop mariadb configs

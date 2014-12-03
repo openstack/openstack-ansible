@@ -53,6 +53,6 @@
     line: "ServerName {{ container_name }}"
 
 - name: Ensure Apache is running
-  service: 
+  service:
     name: "apache2"
     state: "restarted"

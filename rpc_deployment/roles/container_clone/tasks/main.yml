@@ -14,9 +14,9 @@
 # limitations under the License.
 
 - name: get container info
-  lxc: > 
-    command=info
-    name="{{ container_name }}"
+  lxc:
+    command: "info"
+    name: "{{ container_name }}"
 
 - name: store_original_ip
   set_fact:
@@ -24,39 +24,39 @@
   when: "lxc_facts[container_name]['state'] == 'running'"
 
 - name: Clone Container
-  lxc: > 
-    command=clone
-    orig="{{ container_name }}"
-    new="{{ new_name }}"
-    backingstore="{{ bdev }}"
-    fssize="{{ fssize }}"
-    snapshot="{{ snapshot }}"
-    state="{{ state }}"
+  lxc:
+    command: "clone"
+    orig: "{{ container_name }}"
+    new: "{{ new_name }}"
+    backingstore: "{{ bdev }}"
+    fssize: "{{ fssize }}"
+    snapshot: "{{ snapshot }}"
+    state: "{{ state }}"
 
 - name: Ensure clean config
-  lineinfile: >
-    dest="{{ lxcpath }}/{{ new_name }}/config"
-    regexp="{{ item }}"
-    state=absent
-    backup=yes
+  lineinfile:
+    dest: "{{ lxcpath }}/{{ new_name }}/config"
+    regexp: "{{ item }}"
+    state: "absent"
+    backup: "yes"
   with_items:
     - "^lxc.network.hwaddr"
     - "^lxc.mount.entry"
 
 - name: restart new container
-  lxc: >
-    command=start
-    name="{{ new_name }}"
+  lxc:
+    command: "start"
+    name: "{{ new_name }}"
 
 - name: Update networking
-  lxc: >
-    command=attach
-    name="{{ new_name }}"
-    container_command="sed -i 's/{{ orig_ip }}/{{ address }}/g' /etc/network/interfaces"
+  lxc:
+    command: "attach"
+    name: "{{ new_name }}"
+    container_command: "sed -i 's/{{ orig_ip }}/{{ address }}/g' /etc/network/interfaces"
   when: orig_ip is defined
   register: result
 
 - name: restart new container
-  lxc: >
-    command=restart
-    name="{{ new_name }}"
+  lxc:
+    command: "restart"
+    name: "{{ new_name }}"
