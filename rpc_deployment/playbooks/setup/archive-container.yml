@@ -16,17 +16,17 @@
 # Example usage:
 # ansible-playbook -i inventory/dynamic_inventory.py -e "host_group=infra1,container_name=horizon_container" setup/archive-container.yml
 
-# This will create a new archive of an existing container and then retreve 
-# the container storing the archive on the local system. Once the archive 
+# This will create a new archive of an existing container and then retrieve
+# the container storing the archive on the local system. Once the archive
 # has been retrieved the archive is removed from the source system.
 - hosts: "{{ host_group|default('hosts') }}"
   user: root
   tasks:
     # Set facts on containers
     - name: Get info on a given container
-      lxc: >
-        command=info
-        name={{ container_name }}
+      lxc:
+        command: "info"
+        name: "{{ container_name }}"
     - name: Print information on all containers
       debug: var=lxc_facts
 

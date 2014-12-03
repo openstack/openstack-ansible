@@ -22,7 +22,7 @@
     group=root
   with_items: program_names
   notify: Restart service
-  
+
 - name: Ensure init scripts are loaded
   shell: >
     initctl list | grep -w "{{ item }}"
