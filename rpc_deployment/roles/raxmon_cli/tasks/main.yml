@@ -13,9 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Install rackspace-monitoring-cli
-  pip: name=rackspace-monitoring-cli
-
 - name: Drop .raxrc file
   template:
     src: raxrc.j2

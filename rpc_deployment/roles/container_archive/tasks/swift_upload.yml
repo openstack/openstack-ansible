@@ -14,38 +14,37 @@
 # limitations under the License.
 
 - name: Check for local swift creds file
-  shell: >
-    [ -f "{{ creds_file }}" ]
+  shell: "[ -f '{{ creds_file }}' ]"
   register: swift_creds
   delegate_to: localhost
   ignore_errors: True
 
 - name: Copy swift credentials to host
-  copy: >
-    src="{{ creds_file }}"
-    dest="{{ creds_file }}"
-    owner=root 
-    group=root 
-    mode=0600
+  copy:
+    src: "{{ creds_file }}"
+    dest: "{{ creds_file }}"
+    owner: "root"
+    group: "root"
+    mode: "0600"
   register: copy_swift
   when: swift_creds|success
 
 - name: Create container
-  swift: >
-    command=create
-    container="{{ swift_container }}"
-    config_file="{{ creds_file }}"
-    section="{{ section }}"
+  swift:
+    command: "create"
+    container: "{{ swift_container }}"
+    config_file: "{{ creds_file }}"
+    section: "{{ section }}"
   register: container_create
   when: copy_swift|success
   ignore_errors: True
 
 - name: Upload object
-  swift: >
-    command=upload
-    src="{{ src }}"
-    container="{{ swift_container }}"
-    object="{{ swift_object }}"
-    config_file="{{ creds_file }}"
-    section="{{ section }}"
+  swift:
+    command: "upload"
+    src: "{{ src }}"
+    container: "{{ swift_container }}"
+    object: "{{ swift_object }}"
+    config_file: "{{ creds_file }}"
+    section: "{{ section }}"
   when: container_create|success

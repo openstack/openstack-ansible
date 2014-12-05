@@ -30,5 +30,5 @@
     version: "{{ git_install_branch }}"
   register: git_fallback_clone
   when: git_clone|failed
-  until: git_fallback_clone|success 
+  until: git_fallback_clone|success
   retries: 5

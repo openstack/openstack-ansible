@@ -148,13 +148,6 @@ haproxy_config:
       hap_backend_options:
        - "ssl-hello-chk"
   - service:
-      hap_service_name: memcached
-      hap_backend_nodes: "{{ [groups['memcached'][0]] }}"  # list expected
-      hap_backup_nodes: "{{ groups['memcached'][1:] }}"
-      hap_port: 11211
-      hap_balance_type: tcp
-      hap_whitelist_hosts: true
-  - service:
       hap_service_name: elasticsearch
       hap_backend_nodes: "{{ [groups['elasticsearch'][0]] }}"
       hap_port: 9200
@@ -162,7 +155,7 @@ haproxy_config:
   - service:
       hap_service_name: kibana
       hap_backend_nodes: "{{ [groups['kibana'][0]] }}"
-      hap_port: 8080
+      hap_port: 8888
       hap_backend_port: 80
       hap_balance_type: http
       hap_backend_alg: source
@@ -178,3 +171,8 @@ haproxy_config:
       hap_backend_alg: source
       hap_backend_options:
         - "ssl-hello-chk"
+  - service:
+      hap_service_name: swift_proxy
+      hap_backend_nodes: "{{ groups['swift_proxy'] }}"
+      hap_port: 8080
+      hap_balance_type: http

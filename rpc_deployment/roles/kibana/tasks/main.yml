@@ -108,7 +108,7 @@
     path: "/etc/apache2/sites-enabled/000-default.conf"
 
 - name: Create kibana http_auth user
-  htpasswd: 
+  htpasswd:
     path: "/etc/apache2/users"
     name: "kibana"
     password: "{{ kibana_password }}"

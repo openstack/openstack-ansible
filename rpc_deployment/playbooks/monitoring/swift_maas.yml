@@ -1,0 +1,85 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Setup Swift Server healthchecks
+- hosts: swift_hosts
+  vars:
+    check_name: swift_object_server_check
+    check_details: file=service_api_local_check.py,args=swift_object_server,args=--path,args=/healtcheck,args={{ ansible_ssh_host }},args=6000
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'swift_object_server_api_local_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["swift_object_server_api_local_status"] != 1) { return new AlarmStatus(CRITICAL, "API unavailable"); }' }
+  user: root
+  roles:
+    - maas_local
+
+- hosts: swift_hosts
+  vars:
+    check_name: swift_container_server_check
+    check_details: file=service_api_local_check.py,args=swift_container_server,args=--path,args=/healtcheck,args={{ ansible_ssh_host }},args=6001
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'swift_container_server_api_local_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["swift_container_server_api_local_status"] != 1) { return new AlarmStatus(CRITICAL, "API unavailable"); }' }
+  user: root
+  roles:
+    - maas_local
+
+- hosts: swift_hosts
+  vars:
+    check_name: swift_account_server_check
+    check_details: file=service_api_local_check.py,args=swift_account_server,args=--path,args=/healtcheck,args={{ ansible_ssh_host }},args=6002
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'swift_account_server_api_local_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["swift_account_server_api_local_status"] != 1) { return new AlarmStatus(CRITICAL, "API unavailable"); }' }
+  user: root
+  roles:
+    - maas_local
+
+- hosts: swift_proxy
+  vars:
+    check_name: swift_proxy_server_check
+    check_details: file=service_api_local_check.py,args=swift_proxy_server,args=--path,args=/healtcheck,args={{ ansible_ssh_host }},args=8080
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'swift_proxy_server_api_local_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["swift_proxy_server_api_local_status"] != 1) { return new AlarmStatus(CRITICAL, "API unavailable"); }' }
+  user: root
+  roles:
+    - maas_local
+
+# Setup swift-proxy remote LB API healthcheck
+- hosts: swift_proxy[0]
+  user: root
+  roles:
+    - maas_remote
+  vars:
+    entity_name: "{{ lb_name }}"
+    target_alias: "{{ maas_target_alias }}"
+    check_type: remote.http
+    check_name: lb_api_check_swift_proxy
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    monitoring_zones: "{{ maas_monitoring_zones }}"
+    notification_plan: "{{ maas_notification_plan }}"
+    scheme: "{{ maas_swift_proxy_scheme | default(maas_scheme)}}"
+    ip_address: "{{ external_vip_address }}"
+    port: 8080
+    path: "/healthcheck"
+    url: "{{ scheme }}://{{ ip_address }}:{{ port }}{{ path }}"
+    alarm_name: lb_api_alarm_swift_proxy
+    criteria: ":set consecutiveCount={{ maas_alarm_remote_consecutive_count }} if (metric['code'] != '200') { return new AlarmStatus(CRITICAL, 'API unavailable.'); }"

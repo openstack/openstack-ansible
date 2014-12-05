@@ -1,4 +1,4 @@
 [client]
-host={{ mysql_address }}
+host={{ mysql_client_host|default(mysql_address) }}
 user=root
 password={{ mysql_password }}

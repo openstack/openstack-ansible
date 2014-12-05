@@ -32,5 +32,7 @@ pushd /root/ansible-lxc-rpc
 
       # Openstack Service Setup
       ansible-playbook -e @/etc/rpc_deploy/user_variables.yml playbooks/openstack/openstack-setup.yml
+
+      ansible-playbook -e @/etc/rpc_deploy/user_variables.yml playbooks/openstack/swift-all.yml
     popd
 popd

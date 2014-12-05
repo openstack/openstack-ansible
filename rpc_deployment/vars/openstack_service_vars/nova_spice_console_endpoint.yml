@@ -13,6 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-nova_html5proxy_base_url: "http://{{ external_vip_address }}:6082/spice_auto.html"
+nova_html5proxy_base_url: "http://{{ nova_console_endpoint|default(external_vip_address) }}:6082/spice_auto.html"
 nova_console_keymap: en-us
 nova_console_agent_enabled: True

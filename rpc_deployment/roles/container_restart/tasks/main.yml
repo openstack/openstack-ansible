@@ -13,31 +13,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Test Container Networking
-  wait_for: >
-    port=22
-    timeout=20
-    search_regex=OpenSSH
-    host={{ hostvars[item]['container_address'] }}
-  with_items: container_groups
-  delegate_to: localhost
-  register: network_check
-  ignore_errors: yes
-
-- name: Restart containers
-  lxc: >
-    name={{ hostvars[item]['container_name'] }}
-    command=restart
-  with_items: container_groups
-  when: network_check|failed
-
-- name: Check Networking After Restart
-  wait_for: >
-    port=22
-    timeout=60
-    search_regex=OpenSSH
-    host={{ hostvars[item]['container_address'] }}
-  with_items: container_groups
-  delegate_to: localhost
-  when: network_check|failed
-
+- include: container_restart.yml
+  when: container_groups|length > 0

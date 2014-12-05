@@ -1,0 +1,64 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- include: check_ring.yml
+
+- name: "make sure scripts directory exists"
+  file: >
+    state=directory
+    path={{ item }}
+    owner=root
+    group=root
+    mode=0755
+  with_items:
+    - /etc/swift/rings
+    - /etc/swift/scripts
+
+- name: "Copy the swift_rings.py file"
+  template: >
+    src=swift_rings.py
+    dest="/etc/swift/scripts/swift_rings.py"
+    mode=0700
+
+- name: "Build ring-contents files"
+  template: >
+    src=ring.contents.j2
+    dest="/etc/swift/scripts/{{ item.type }}.contents"
+  with_items:
+    - { item: "{{ swift.account }}", port: "{{ swift_account_port }}", type: "account" }
+    - { item: "{{ swift.container }}", port: "{{ swift_container_port}}", type: "container" }
+
+- name: "Build ring-contents files for storage policies"
+  template: >
+    src=ring.contents.j2
+    dest="/etc/swift/scripts/object-{{ item[0].policy.index }}.contents"
+  with_nested:
+    - "{{ swift.storage_policies }}"
+    - [{ type: 'object', port: "{{ swift_object_port }}" }]
+
+- name: "build rings for account/container from contents files"
+  command: /usr/bin/python /etc/swift/scripts/swift_rings.py -f /etc/swift/scripts/{{ item }}.contents
+  with_items:
+    - account
+    - container
+  args:
+    chdir: /etc/swift/rings/
+
+- name: "build rings for storage policies from contents files"
+  command: /usr/bin/python /etc/swift/scripts/swift_rings.py -f /etc/swift/scripts/object-{{ item.policy.index }}.contents
+  with_items:
+    - "{{ swift.storage_policies }}"
+  args:
+    chdir: /etc/swift/rings/

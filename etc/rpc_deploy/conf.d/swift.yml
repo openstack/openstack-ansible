@@ -1,0 +1,126 @@
+---
+## Swift group variables are required only when using swift.
+## Below is a sample configuration.
+##
+## part_power value is required at the swift_level and cannot be changed once the ring has been built without removing the rings manually and rerunning the ring_builder.
+##
+## The weight value is not required, and will default to 100 if not specified. This value will apply to all drives setup, but can be overriden on a drive or node basis by setting this value in the node or drive config.
+##
+## The min_part_hours and repl_number values are not required, and will default to "1" and "3" respectively. Setting these at the swift level will apply this value as a default for all rings (including account/container). These can be overriden on a per ring basis by adjusting the value for account/container or specific storage_policy.
+##
+## If you are using a storage_network specify the interface that the storage_network is setup on. If this value isn't specified the swift services will listen on the default management ip. NB If the storage_network isn't set but storage_ip's per host are set (or the storage_ip is not on the storage_network interface) the proxy server will not be able to connect to the storage services as this directly changes the IP address the storage hosts are listening on.
+##
+## If you are using a dedicated replication network specify the interface that the storage_network is setup on. If this value isn't specified no dedicated replication_network will be set. As with the storage_network this impacts the IP that the replication service listens on, if the repl_ip isn't set on that interface replication will not work properly.
+##
+## Set the default drives per host. This is useful when all hosts have the exact same drives. This can be overridden on a "per host" basis.
+##
+## Set the default mount_point - which is the location where your swift drives are mounted. For example with a mount point of /mnt and a drive of sdc there should be a drive mounted at /mnt/sdc on the swift_host. This can be overriden on a per host basis if required.
+##
+## For account and container rings, min_part_hours and repl_number are the only values that can be set. Setting them here will override the defaults for the specific ring.
+##
+## Specify your storage_policies, there must be atleast one storage policy, and atleast one storage policy with index of 0 for legacy containers created before storage policies were instituted. At least one storage policy must have "default: True" set. The options that can be set for storage_policies are name (str), index (int), default (bool), deprecated (bool), repl_number (int) and min_part_hours (int) - with the last 2 overriding the default if specified.
+##
+
+# global_overrides:
+#   swift:
+#     part_power: 8
+#     weight: 100
+#     min_part_hours: 1
+#     repl_number: 3
+#     storage_network: 'br-storage'
+#     replication_network: 'br-repl'
+#     drives:
+#       - name: sdc
+#       - name: sdd
+#       - name: sde
+#       - name: sdf
+#     mount_point: /mnt
+#     account:
+#     container:
+#     storage_policies:
+#       - policy:
+#           name: gold
+#           index: 0
+#           default: True
+#       - policy:
+#           name: silver
+#           index: 1
+#           repl_number: 3
+#           deprecated: True
+
+## Specify the swift-proxy_hosts - these will typically be your infra nodes and are where your swift_proxy containers will be created.
+## All that is required is the IP address of the host that ansible will connect to.
+
+# swift-proxy_hosts:
+#   infra-node1:
+#     ip: 192.0.2.1
+#   infra-node2:
+#     ip: 192.0.2.2
+#   infra-node3:
+#     ip: 192.0.2.3
+
+## Specify the swift_hosts which will be the swift storage nodes.
+##
+## The ip is the address of the host that ansible will connect to.
+##
+## all swift settings are set under swift_vars.
+##
+## The storage_ip and repl_ip represent the IP that will go in the ring for storage and replication.
+## These will be pulled from the server's interface (specified by storage_network & replication_network), but can be overriden by specifying them at the node or drive level.
+## If only the storage_ip is specified then the repl_ip will default to the storage_ip
+## If only the repl_ip is specified then the storage_ip will default to the host ip above.
+## If neither are specified both will default to the host ip above.
+##
+## zone and region can be specified for swift when building the ring.
+##
+## groups can be set to list which rings a host's drive should belong to. This can be set on a per drive basis which will override the host setting.
+##
+## swift-node5 is an example of overriding the values. Where the groups are set, and overridden on drive sdb. The weight is overriden for the host, and specifically adjusted on drive sdb, and the storage/repl_ip's are different for sdb.
+##
+
+# swift_hosts:
+#   swift-node1:
+#     ip: 192.0.2.4
+#     container_vars:
+#       swift_vars:
+#         zone: 0
+#   swift-node2:
+#     ip: 192.0.2.5
+#     container_vars:
+#       swift_vars:
+#         zone: 1
+#   swift-node3:
+#     ip: 192.0.2.6
+#     container_vars:
+#       swift_vars:
+#         zone: 2
+#   swift-node4:
+#     ip: 192.0.2.7
+#     container_vars:
+#       swift_vars:
+#         zone: 3
+#   swift-node5:
+#     ip: 192.0.2.8
+#     container_vars:
+#       swift_vars:
+#         storage_ip: 198.51.100.8
+#         repl_ip: 203.0.113.8
+#         zone: 4
+#         region: 3
+#         weight: 200
+#         groups:
+#           - account
+#           - container
+#           - silver
+#         drives:
+#           - name: sdb
+#             storage_ip: 198.51.100.9
+#             repl_ip: 203.0.113.9
+#             weight: 75
+#             groups:
+#               - gold
+#           - name: sdc
+#           - name: sdd
+#           - name: sde
+#           - name: sdf
+

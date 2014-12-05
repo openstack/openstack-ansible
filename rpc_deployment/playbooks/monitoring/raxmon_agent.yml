@@ -1,0 +1,49 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- hosts: hosts
+  user: root
+  roles:
+    - container_common
+    - galera_client_cnf
+    - raxmon_agent_install
+  vars:
+    entity_name: "{{ inventory_hostname }}{{ maas_fqdn_extension|default('') }}"
+  vars_files:
+    - vars/repo_packages/raxmon_agent.yml
+
+- hosts: keystone[0]
+  user: root
+  tasks:
+  # TODO (mattt): Modify openstack_openrc role to allow us to pass in arbitrary
+  #               details.  This is a refactor which will need to wait until a
+  #               later date.
+  - name: Create keystone user for monitoring
+    keystone: >
+      command=ensure_user
+      token="{{ auth_admin_token }}"
+      endpoint="{{ auth_admin_uri }}"
+      user_name="{{ maas_keystone_user }}"
+      tenant_name="{{ auth_admin_tenant }}"
+      password="{{ maas_keystone_password }}"
+
+  - name: Add monitoring keystone user to admin role
+    keystone: >
+      command=ensure_user_role
+      token="{{ auth_admin_token }}"
+      endpoint="{{ auth_admin_uri }}"
+      user_name="{{ maas_keystone_user }}"
+      tenant_name=admin
+      role_name=admin

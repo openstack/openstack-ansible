@@ -37,7 +37,9 @@ container_openstack_password:
 
 ## Galera Options
 mysql_root_password:
-mysql_debian_sys_maint_password:
+
+# Defined in group_vars/galera, but can overriden here.
+# galera_wait_timeout: 3600
 
 
 ## Keystone Options
@@ -115,7 +117,6 @@ maas_monitoring_zones:
   - mzord
   - mzlon
   - mzhkg
-maas_repo_version: 10.0.0
 # Specify the maas_fqdn_extension, defaults to empty string.
 # This will be appended to the inventory_name of a host for MaaS purposes.
 # The inventory name + maas_fqdn_extension must match the entity name in MaaS
@@ -132,12 +133,18 @@ neutron_service_password:
 # This defaults to KVM, if you are deploying on a host that is not KVM capable
 # change this to your hypervisor type: IE "qemu", "lxc".
 # nova_virt_type: kvm
+# nova_cpu_allocation_ratio: 2.0
+# nova_ram_allocation_ratio: 1.0
 nova_container_mysql_password:
 nova_metadata_proxy_secret:
 nova_ec2_service_password:
 nova_service_password:
 nova_v3_service_password:
 nova_s3_service_password:
+
+# Uncomment "nova_console_endpoint" to define a specific nova console URI or 
+# IP address this will construct the specific proxy endpoint for the console.
+# nova_console_endpoint: console.company_domain.name
 
 
 ## RPC Support
@@ -147,3 +154,14 @@ rpc_support_holland_password:
 ## Kibana Options
 kibana_password:
 
+# Swift Options:
+swift_service_password:
+swift_container_mysql_password:
+# Once the swift cluster has been setup DO NOT change these hash values!
+swift_hash_path_suffix:
+swift_hash_path_prefix:
+# This will allow all users to create containers and upload to swift if set to True
+swift_allow_all_users: False
+# The dispersion user is for swift-dispersion-report
+swift_dispersion_user: dispersion
+swift_dispersion_password:

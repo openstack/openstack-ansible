@@ -19,6 +19,6 @@
     - container_create
   vars:
     default_container_groups: "{{ hostvars[inventory_hostname]['container_types'] }}"
-    container_groups: "{{ groups[container_group|default(default_container_groups)] }}"
+    container_groups: "{{ groups[container_group|default(default_container_groups)] | default('') }}"
 
 - include: containers-setup.yml

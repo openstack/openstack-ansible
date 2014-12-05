@@ -26,6 +26,9 @@
     return_content=true
   register: cinder_get
   failed_when: "'CURRENT' not in cinder_get.content"
+  until: cinder_get|success
+  retries: 20
+  delay: 2
 
 - name: Add in cinder devices types
   shell: |

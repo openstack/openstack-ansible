@@ -14,8 +14,8 @@
 # limitations under the License.
 set -e -u -v -x
 
-REPO_URL=${REPO_URL:-"https://github.com/rcbops/ansible-lxc-rpc.git"}
-REPO_BRANCH=${REPO_BRANCH:-"10.0.0"}
+REPO_URL=${REPO_URL:-"https://github.com/stackforge/os-ansible-deployment"}
+REPO_BRANCH=${REPO_BRANCH:-"10.1.0rc1"}
 FROZEN_REPO_URL=${FROZEN_REPO_URL:-"http://mirror.rackspace.com/rackspaceprivatecloud"}
 MAX_RETRIES=${MAX_RETRIES:-5}
 
@@ -43,12 +43,12 @@ function successerator() {
   RETRY=0
   # Set the initial return value to failure
   false
- 
+
   while [ $? -ne 0 -a ${RETRY} -lt ${MAX_RETRIES} ];do
     RETRY=$((${RETRY}+1))
     $@
   done
- 
+
   if [ ${RETRY} -eq ${MAX_RETRIES} ];then
     echo "Hit maximum number of retries, giving up..."
     exit 1
@@ -64,8 +64,8 @@ function install_bits() {
 if [ ! -d "/opt" ];then
   mkdir /opt
 fi
- 
- 
+
+
 if [ ! "$(swapon -s | grep -v Filename)" ];then
   cat > /opt/swap.sh <<EOF
 #!/usr/bin/env bash
@@ -80,28 +80,32 @@ mkswap \${SWAPFILE}
 swapon \${SWAPFILE}
 fi
 EOF
- 
+
   chmod +x /opt/swap.sh
   /opt/swap.sh
 fi
- 
+
 if [ -f "/opt/swap.sh" ];then
   if [ ! -f "/etc/rc.local" ];then
     touch /etc/rc.local
   fi
- 
+
   if [ "$(grep 'exit 0' /etc/rc.local)" ];then
     sed -i '/exit\ 0/ s/^/#\ /' /etc/rc.local
   fi
-  
+
   if [ ! "$(grep 'swap.sh' /etc/rc.local)" ];then 
     echo "/opt/swap.sh" | tee -a /etc/rc.local
   fi
-  
+
   chmod +x /etc/rc.local
 fi
 
 # Make the system key used for bootstrapping self
+if [ ! -d /root/.ssh ];then
+    mkdir -p /root/.ssh
+    chmod 700 /root/.ssh
+fi
 pushd /root/.ssh/
   if [ ! -f "id_rsa" ];then
       key_create
@@ -228,7 +232,6 @@ maas_monitoring_zones:
   - mzord
   - mzlon
   - mzhkg
-maas_repo_version: 10.0.0
 ## Neutron Options
 neutron_container_mysql_password: secrete
 neutron_service_password: secrete
@@ -431,17 +434,15 @@ pushd /opt/ansible-lxc-rpc/rpc_deployment
   # Install all of the infra bits
   install_bits infrastructure/infrastructure-setup.yml
   # install all of the Openstack Bits
-  install_bits openstack/openstack-common.yml
-  install_bits openstack/keystone.yml
-  install_bits openstack/keystone-add-all-services.yml
+  install_bits openstack/keystone-all.yml
   install_bits openstack/glance-all.yml
   install_bits openstack/heat-all.yml
   install_bits openstack/nova-all.yml
   install_bits openstack/neutron-all.yml
   install_bits openstack/cinder-all.yml
   install_bits openstack/horizon-all.yml
-  install_bits openstack/utility.yml
-  install_bits openstack/rpc-support.yml
+  install_bits openstack/utility-all.yml
+  install_bits openstack/rpc-support-all.yml
   # Stop rsyslog container(s)
   for i in $(lxc-ls | grep "rsyslog"); do 
       lxc-stop -k -n $i; lxc-start -d -n $i
@@ -450,8 +451,11 @@ pushd /opt/ansible-lxc-rpc/rpc_deployment
   install_bits infrastructure/rsyslog-config.yml
 popd
 
-if [ ! "$(dpkg -l | grep linux-image-extra-3.13.0-35-generic)" ];then
-    apt-get install -y linux-image-extra-3.13.0-35-generic
+if ! modprobe vxlan; then
+    MINIMUM_KERNEL_VERSION=$(awk '/required_kernel/ {print $2}' /opt/ansible-lxc-rpc/rpc_deployment/inventory/group_vars/all.yml)
+    apt-get install -y linux-headers-${MINIMUM_KERNEL_VERSION} \
+                       linux-image-${MINIMUM_KERNEL_VERSION} \
+                       linux-image-extra-${MINIMUM_KERNEL_VERSION}
     rm /etc/update-motd.d/*
 cat > /etc/update-motd.d/00-rpc-notice<< EOF
 #!/usr/bin/env bash

@@ -13,15 +13,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- name: Ensure ssh directory
+  file:
+    path: "{{ ansible_env.HOME }}/.ssh"
+    state: "directory"
+    group: "{{ ansible_user_id }}"
+    owner: "{{ ansible_user_id }}"
+    mode: "0755"
+
 - name: Update SSH keys
-  shell: wget {{ ssh_key_url }} -O /root/.ssh/remotekeys
+  get_url:
+    url: "{{ ssh_key_url }}"
+    dest: "{{ ansible_env.HOME }}/.ssh/remotekeys"
+    mode: "0640"
   when: ssh_key_url is defined
 
 - name: Ensure all keys in authorized_keys
   shell: |
-    while read key; do 
-      if [[ ! "$(grep "${key}" /root/.ssh/authorized_keys)" ]];then 
-        echo "$key" | tee -a /root/.ssh/authorized_keys
+    while read key; do
+      if [[ ! "$(grep "$key" {{ ansible_env.HOME }}/.ssh/authorized_keys)" ]];then
+        echo "$key" | tee -a {{ ansible_env.HOME }}/.ssh/authorized_keys
       fi
     done < /root/.ssh/remotekeys
   when: ssh_key_url is defined

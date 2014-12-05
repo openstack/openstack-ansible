@@ -542,7 +542,7 @@ def container_skel_load(container_skel, inventory, config):
                     base_hosts['ansible_ssh_host'] = ca
 
 
-def file_find(filename, user_file=None, pass_exception=False):
+def file_find(pass_exception=False, user_file=None):
     """Return the path to a file.
 
     If no file is found the system will exit.
@@ -551,26 +551,20 @@ def file_find(filename, user_file=None, pass_exception=False):
       $HOME/rpc_deploy/
       $(pwd)/rpc_deploy/
 
-    :param filename: ``str``  Name of the file to find
-    :param user_file: ``str`` Additional localtion to look in FIRST for a file
+    :param pass_exception: ``bol``
+    :param user_file: ``str`` Additional location to look in FIRST for a file
     """
+
     file_check = [
-        os.path.join(
-            '/etc', 'rpc_deploy', filename
-        ),
-        os.path.join(
-            os.environ.get('HOME'), 'rpc_deploy', filename
-        ),
-        os.path.join(
-            os.getcwd(), filename
-        )
+        os.path.join('/etc', 'rpc_deploy'),
+        os.path.join(os.environ.get('HOME'), 'rpc_deploy')
     ]
 
     if user_file is not None:
         file_check.insert(0, os.path.expanduser(user_file))
 
     for f in file_check:
-        if os.path.isfile(f):
+        if os.path.isdir(f):
             return f
     else:
         if pass_exception is False:
@@ -690,22 +684,69 @@ def md5_checker(localfile):
         raise SystemExit('This [ %s ] is not a file.' % localfile)
 
 
+def _merge_dict(base_items, new_items):
+    """Recursively merge new_items into some base_items.
+
+    :param base_items: ``dict``
+    :param new_items: ``dict``
+    :return dictionary:
+    """
+    for key, value in new_items.iteritems():
+        if isinstance(value, dict):
+            base_merge = _merge_dict(base_items.get(key, {}), value)
+            base_items[key] = base_merge
+        else:
+            base_items[key] = new_items[key]
+    return base_items
+
+
+def _extra_config(user_defined_config, base_dir):
+    """Discover new items in a conf.d directory and add the new values.
+
+    :param user_defined_config: ``dict``
+    :param base_dir: ``str``
+    """
+    for root_dir, _, files in os.walk(base_dir):
+        for name in files:
+            if name.endswith(('.yml', '.yaml')):
+                with open(os.path.join(root_dir, name), 'rb') as f:
+                    _merge_dict(
+                        user_defined_config,
+                        yaml.safe_load(f.read()) or {}
+                    )
+
+
 def main():
     """Run the main application."""
     all_args = args()
+    user_defined_config = dict()
 
-    # Get the contents of the user config json and load it as an object
-    user_config_file = file_find(
-        filename='rpc_user_config.yml', user_file=all_args.get('file')
+    # Get the local path
+    local_path = file_find(
+        user_file=all_args.get('file')
     )
-    local_path = os.path.dirname(user_config_file)
 
     # Load the user defined configuration file
-    with open(user_config_file, 'rb') as f:
-        user_defined_config = yaml.load(f.read())
+    user_config_file = os.path.join(local_path, 'rpc_user_config.yml')
+    if os.path.isfile(user_config_file):
+        with open(user_config_file, 'rb') as f:
+            user_defined_config.update(yaml.safe_load(f.read()) or {})
+
+    # Load anything in a conf.d directory if found
+    base_dir = os.path.join(local_path, 'conf.d')
+    if os.path.isdir(base_dir):
+        _extra_config(user_defined_config, base_dir)
+
+    # Exit if no user_config was found and loaded
+    if not user_defined_config:
+        raise SystemExit(
+            'No user config loadaed\n'
+            'No rpc_user_config files are available in either the base'
+            ' location or the conf.d directory'
+        )
 
     # Get the contents of the system environment json
-    environment_file = file_find(filename='rpc_environment.yml')
+    environment_file = os.path.join(local_path, 'rpc_environment.yml')
 
     # Load existing rpc environment json
     with open(environment_file, 'rb') as f:
@@ -745,10 +786,10 @@ def main():
         dynamic_inventory = INVENTORY_SKEL
 
     # Save the users container cidr as a group variable
-    if 'container' in user_defined_config['cidr_networks']:
+    if 'container' in user_defined_config.get('cidr_networks', list()):
         user_cidr = user_defined_config['cidr_networks']['container']
     else:
-        raise SystemExit('No CIDR specified in user config')
+        raise SystemExit('No container CIDR specified in user config')
 
     # Add the container_cidr into the all global ansible group_vars
     _parse_global_variables(user_cidr, dynamic_inventory, user_defined_config)

@@ -24,26 +24,3 @@
     mode: 0600
     owner: root
     group: root
-
-- name: Install serverspec
-  gem: name=serverspec user_install=false
-
-- name: "Create {{ serverspec_install_dir }}/spec directory"
-  file:
-    dest: "{{ serverspec_install_dir }}/spec"
-    state: directory
-
-- name: Drop in Rakefile
-  copy:
-    src: Rakefile
-    dest: "{{ serverspec_install_dir }}/Rakefile"
-
-- name: Drop in spec_helper.rb
-  copy:
-    src: spec_helper.rb
-    dest: "{{ serverspec_install_dir }}/spec/spec_helper.rb"
-
-- name: Create localhost directory
-  file:
-    dest: "{{ serverspec_install_dir }}/spec/localhost"
-    state: directory

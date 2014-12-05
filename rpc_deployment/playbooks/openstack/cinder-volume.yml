@@ -16,14 +16,17 @@
 - hosts: cinder_volume
   user: root
   roles:
+    - container_common
     - container_extra_setup
     - cinder_common
     - cinder_volume
     - cinder_device_add
     - cinder_backend_types
+    - nfs_client
     - init_script
   vars_files:
     - vars/config_vars/container_config_cinder_volume.yml
     - vars/openstack_service_vars/cinder_volume.yml
+    - vars/repo_packages/cinder.yml
   handlers:
     - include: handlers/services.yml

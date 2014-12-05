@@ -1,0 +1,124 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Obtain the Systems SSH-Key
+  set_fact:
+    container_ssh_key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+
+- name: Fail when empty or non-existent SSH pub key
+  fail: >
+    msg="Failing - ~/.ssh/id_rsa.pub file doesn't exist or is empty"
+  when: container_ssh_key == ""
+
+- name: Set the SSH key in place
+  lxc: >
+    name={{ hostvars[item]['container_name'] }}
+    command=attach
+    container_command="
+      mkdir -p ~/.ssh/;
+      if [ ! -f \"~/.ssh/authorized_keys\" ];then
+        touch ~/.ssh/authorized_keys;
+      fi;
+      grep '{{ container_ssh_key }}' ~/.ssh/authorized_keys ||
+      echo '{{ container_ssh_key }}' | tee -a ~/.ssh/authorized_keys;
+    "
+  with_items: container_groups
+
+- name: Set base network interface
+  lxc: >
+    name={{ hostvars[item]['container_name'] }}
+    command=attach
+    container_command="
+      echo -e '{{ container_interface }}' | tee /etc/network/interfaces;
+    "
+  with_items: container_groups
+
+- name: Set management network interface
+  lxc: >
+    name={{ hostvars[item]['container_name'] }}
+    command=attach
+    container_command="
+      echo -e '{{ management_interface }}' | tee /etc/network/interfaces.d/management.cfg;
+    "
+  with_items: container_groups
+
+- name: Ensure SSH is avail at boot
+  lxc: >
+    name={{ hostvars[item]['container_name'] }}
+    command=attach
+    container_command="update-rc.d ssh defaults"
+  with_items: container_groups
+
+- name: Ensure SSH is available for root
+  lxc: >
+    name={{ hostvars[item]['container_name'] }}
+    command=attach
+    container_command="sed -i 's/PermitRootLogin.*/PermitRootLogin\ yes/g' /etc/ssh/sshd_config"
+  with_items: container_groups
+
+- name: Ensure SSH started
+  lxc: >
+    name={{ hostvars[item]['container_name'] }}
+    command=attach
+    container_command="service ssh restart"
+  with_items: container_groups
+
+- name: Ensure required inner directories
+  lxc: >
+    name={{ hostvars[item.1]['container_name'] }}
+    command=attach
+    container_command="mkdir -p {{ item.0 }}"
+  with_nested:
+    - [ "/monitoring", "/etc/network/interfaces.d", "/var/backup" ]
+    - container_groups
+
+- name: Create Required local log directories
+  file: >
+    path="{{ item.0 }}/{{ hostvars[item.1]['container_name'] }}"
+    state=directory
+  with_nested:
+    - [ "/openstack/backup", "/openstack/log" ]
+    - container_groups
+
+- name: Create Required local monitoring directories
+  file: >
+    path={{ item }}
+    state=directory
+  with_items:
+    - "/openstack/monitoring"
+
+- name: Ensure required inner service directories
+  lxc: >
+    name={{ hostvars[item.1]['container_name'] }}
+    command=attach
+    container_command="mkdir -p {{ item.0 }}/{{ hostvars[item.1]['service_name'] }}"
+  with_nested:
+    - [ "/etc", "/var/log" ]
+    - container_groups
+
+- name: Ensure python2.7 installed
+  lxc: >
+    name={{ hostvars[item]['container_name'] }}
+    command=attach
+    container_command="apt-get -y install python2.7; rm /usr/bin/python; ln -s /usr/bin/python2.7 /usr/bin/python"
+  with_items: container_groups
+
+- name: Ensure Required container config options
+  lxc: >
+    name={{ hostvars[item]['container_name'] }}
+    command=config
+    options="{{ required_container_config_options }}"
+    state=running
+  with_items: container_groups

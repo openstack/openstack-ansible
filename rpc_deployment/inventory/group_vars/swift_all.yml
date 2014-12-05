@@ -1,0 +1,75 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# The variables file used by the playbooks in the swift-hosts & swift-proxy groups.
+# These don't have to be explicitly imported by vars_files: they are autopopulated.
+
+authtoken_active: True
+delay_auth_decision: true
+
+## Service Name
+service_name: swift
+
+# Verbosity Options
+debug: False
+verbose: True
+
+# only used when the lxc vg is present on the target
+container_lvm_fstype: ext4
+container_lvm_fssize: 5GB
+
+# Swift default ports
+swift_proxy_port: "8080"
+swift_object_port: "6000"
+swift_container_port: "6001"
+swift_account_port: "6002"
+
+# Swift default variables
+swift_default_replication_number: 3
+swift_default_min_part_hours: 1
+swift_default_host_zone: 0
+swift_default_host_region: 1
+swift_default_drive_weight: 100
+
+## DB
+container_mysql_user: swift
+container_mysql_password: "{{ swift_container_mysql_password }}"
+container_database: swift
+
+## Swift Auth
+service_admin_tenant_name: "service"
+service_admin_username: "swift"
+service_admin_password: "{{ swift_service_password }}"
+
+## Swift User / Group
+system_user: swift
+system_group: swift
+
+## Service Names
+service_names:
+  - swift-object
+  - swift-account
+  - swift-container
+  - swift-proxy
+
+container_directories:
+  - /var/lock/swift
+  - /var/cache/swift
+  - /etc/swift
+  - /etc/swift/rings/
+  - /etc/swift/object-server
+  - /etc/swift/container-server
+  - /etc/swift/account-server
+  - /etc/swift/proxy-server

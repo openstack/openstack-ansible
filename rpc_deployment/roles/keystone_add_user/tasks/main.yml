@@ -15,53 +15,53 @@
 
 # Create an admin tenant
 - name: Ensure Additional Tenants
-  keystone: >
-    command=ensure_tenant
-    login_tenant_name="{{ auth_admin_tenant }}"
-    login_user="{{ auth_admin_username }}" 
-    login_password="{{ auth_admin_password }}"
-    endpoint="{{ auth_admin_uri }}"
-    tenant_name="{{ item.tenant }}"
-    description="{{ item.description }}"
+  keystone:
+    command: "ensure_tenant"
+    login_tenant_name: "{{ auth_admin_tenant }}"
+    login_user: "{{ auth_admin_username }}"
+    login_password: "{{ auth_admin_password }}"
+    endpoint: "{{ auth_admin_uri }}"
+    tenant_name: "{{ item.tenant }}"
+    description: "{{ item.description }}"
   with_items: additional_keystone_users
   when: additional_keystone_users is defined
 
 # Create an admin user
 - name: Ensure Additional Users
-  keystone: >
-    command=ensure_user
-    login_tenant_name="{{ auth_admin_tenant }}"
-    login_user="{{ auth_admin_username }}" 
-    login_password="{{ auth_admin_password }}"
-    endpoint="{{ auth_admin_uri }}"
-    user_name="{{ item.user }}"
-    tenant_name="{{ item.tenant }}"
-    password="{{ item.password }}"
+  keystone:
+    command: "ensure_user"
+    login_tenant_name: "{{ auth_admin_tenant }}"
+    login_user: "{{ auth_admin_username }}"
+    login_password: "{{ auth_admin_password }}"
+    endpoint: "{{ auth_admin_uri }}"
+    user_name: "{{ item.user }}"
+    tenant_name: "{{ item.tenant }}"
+    password: "{{ item.password }}"
   with_items: additional_keystone_users
   when: additional_keystone_users is defined
 
 # Create an admin role
 - name: Ensure Admin role
-  keystone: >
-    command=ensure_role
-    login_tenant_name="{{ auth_admin_tenant }}"
-    login_user="{{ auth_admin_username }}" 
-    login_password="{{ auth_admin_password }}"
-    endpoint="{{ auth_admin_uri }}"
-    role_name="{{ item.role }}"
+  keystone:
+    command: "ensure_role"
+    login_tenant_name: "{{ auth_admin_tenant }}"
+    login_user: "{{ auth_admin_username }}"
+    login_password: "{{ auth_admin_password }}"
+    endpoint: "{{ auth_admin_uri }}"
+    role_name: "{{ item.role }}"
   with_items: additional_keystone_users
   when: additional_keystone_users is defined
 
 # Add a role to the user
 - name: Ensure User has Role
-  keystone: >
-    command=ensure_user_role
-    login_tenant_name="{{ auth_admin_tenant }}"
-    login_user="{{ auth_admin_username }}" 
-    login_password="{{ auth_admin_password }}"
-    endpoint="{{ auth_admin_uri }}"
-    user_name="{{ item.user }}"
-    tenant_name="{{ item.tenant }}"
-    role_name="{{ item.role }}"
+  keystone:
+    command: ensure_user_role
+    login_tenant_name: "{{ auth_admin_tenant }}"
+    login_user: "{{ auth_admin_username }}"
+    login_password: "{{ auth_admin_password }}"
+    endpoint: "{{ auth_admin_uri }}"
+    user_name: "{{ item.user }}"
+    tenant_name: "{{ item.tenant }}"
+    role_name: "{{ item.role }}"
   with_items: additional_keystone_users
   when: additional_keystone_users is defined

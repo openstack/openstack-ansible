@@ -173,13 +173,11 @@ POOL_PARTS = {
         'group': 'horizon',
         'hosts': []
     },
-    'memcached': {
-        'port': 11211,
-        'backend_port': 11211,
-        'mon_type': 'tcp',
-        'group': 'memcached',
-        'priority': True,
-        'limit_source': True,
+    'swift_proxy': {
+        'port': 8080,
+        'backend_port': 8080,
+        'mon_type': 'http',
+        'group': 'swift_proxy',
         'hosts': []
     },
     'elasticsearch': {
@@ -190,7 +188,7 @@ POOL_PARTS = {
         'hosts': []
     },
     'kibana': {
-        'port': 8080,
+        'port': 8888,
         'backend_port': 80,
         'mon_type': 'http',
         'group': 'kibana',
