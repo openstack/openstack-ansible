@@ -18,7 +18,7 @@ When submitting a bug, or working on a bug, please ensure the following criteria
 Changes to the project should be submitted for review via the Gerrit tool, following
 the workflow documented at:
 
-   https://wiki.openstack.org/GerritWorkflow
+   http://docs.openstack.org/infra/manual/developers.html#development-workflow
 
 Pull requests submitted through GitHub will be ignored.
 
