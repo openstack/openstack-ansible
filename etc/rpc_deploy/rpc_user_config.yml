@@ -41,6 +41,10 @@ used_ips:
 # override from within the rpc_deploy configuration file. Anything 
 # specified here will take precedence over anything else any where.
 global_overrides:
+  # Size of cinder volumes container. Default is 5GB.
+  # Space must be added for cinder to have enough space to convert images.
+  # For example, to be able to convert 100GB images, set this value to 105.
+  #cinder_volume_lv_size_gb: 105GB
   # Internal Management vip address
   internal_lb_vip_address: 172.29.236.1
   # External DMZ VIP address
