@@ -112,10 +112,11 @@ class ManageGlance(object):
 
     def _init_glance(self):
         """ Create glance client object using token and url from keystone """
+        openrc = self._parse_openrc()
         self.glance = glclient.Client(
             version='1',
             endpoint=self.keystone.service_catalog.url_for(
-                service_type='image'),
+                service_type='image', endpoint_type=openrc['OS_ENDPOINT_TYPE']),
             token=self.keystone.get_token(self.keystone.session))
 
     def route(self):
