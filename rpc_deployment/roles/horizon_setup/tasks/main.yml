@@ -13,8 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Unlike the 'db sync' command run in other projects, we do not run this under
-# horizon's {{ system_user }} as horizon is run through Apache and logs are
-# written to as root
+# This will create /var/lib/horizon/.secret_key_store, which needs to be owned
+# by {{ system_user }}, otherwise horizon logins will fail
 - name: Run syncdb
   command: horizon-manage.py syncdb --noinput
+  sudo: yes
+  sudo_user: "{{ system_user }}"
