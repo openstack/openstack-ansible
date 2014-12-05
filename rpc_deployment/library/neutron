@@ -29,12 +29,15 @@ options:
     openrc_path:
         decription:
             - Path to openrc file from which credentials and keystone endpoint will be extracted
-    network_name:
+    net_name:
         description:
-            - Name of the image to create
+            - Name of the net to create
+    subnet_name:
+        description:
+            - Name of the subnet to create
     cidr:
         description:
-            - cidr to use for the subnet
+            - CIDR to use for the subnet
 author: Hugh Saunders
 '''
 
@@ -101,28 +104,30 @@ class ManageNeutron(object):
         getattr(self, COMMAND_MAP[self.module.params['command']])()
 
     def create_network(self):
-        name = self.module.params['name']
-        if not self.neutron.list_networks(name=name)['networks']:
+        net_name = self.module.params['net_name']
+        if not self.neutron.list_networks(name=net_name)['networks']:
             # network doesn't exist, create it
             self.state_change = True
             self.neutron.create_network(
-                    {"network": {"name": name, "admin_state_up": True}})
+                    {"network": {"name": net_name, "admin_state_up": True}})
 
-    def _get_network_by_name(self, name):
-        return self.neutron.list_networks(name=name)['networks'][0]
+    def _get_network_by_name(self, net_name):
+        return self.neutron.list_networks(name=net_name)['networks'][0]
 
     def create_subnet(self, network_id=None):
-        name = self.module.params['name']
+        net_name = self.module.params['net_name']
+        subnet_name = self.module.params['subnet_name']
         cidr = self.module.params['cidr']
         if network_id is None:
             self.create_network()
-            network_id = self._get_network_by_name(name)['id']
+            network_id = self._get_network_by_name(net_name)['id']
         if not self.neutron.list_subnets(
                 cidr=cidr, network_id=network_id)['subnets']:
             # subnet doesn't exist, create it
             self.state_change = True
             self.neutron.create_subnet(
-                    {"subnet": {"cidr": cidr,
+                    {"subnet": {"name": subnet_name,
+                                "cidr": cidr,
                                 "ip_version": 4,
                                 "network_id": network_id}})
         self.module.exit_json(
@@ -141,7 +146,8 @@ def main():
         argument_spec=dict(
             command=dict(required=True, choices=COMMAND_MAP.keys()),
             openrc_path=dict(required=True),
-            name=dict(required=True),
+            net_name=dict(required=True),
+            subnet_name=dict(required=True),
             cidr=dict(required=True),
         ),
         supports_check_mode=False
