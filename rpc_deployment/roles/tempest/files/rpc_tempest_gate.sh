@@ -33,6 +33,8 @@ testr list-tests > full_test_list
 # filter test list to produce list of tests to use.
 egrep 'tempest\.api\.(identity|image|volume)' < full_test_list \
   |grep -vi xml \
+  |grep -v compute \
+  |grep -v VolumesV.ActionsTest \
   > test_list
 
 # execute chosen tests with pretty output
