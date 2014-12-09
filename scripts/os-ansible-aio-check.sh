@@ -31,6 +31,24 @@ apt-get install -y python-dev \
                    lvm2 \
                    linux-image-extra-$(uname -r)
 
+# Flush all the iptables rules set by openstack-infra
+iptables -F
+iptables -X
+iptables -t nat -F
+iptables -t nat -X
+iptables -t mangle -F
+iptables -t mangle -X
+iptables -P INPUT ACCEPT
+iptables -P FORWARD ACCEPT
+iptables -P OUTPUT ACCEPT
+
+# Ensure that sshd permits root login, or ansible won't be able to connect
+if grep "^PermitRootLogin" /etc/ssh/sshd_config > null; then
+  sed -i 's/^PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config
+else
+  echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
+fi
+
 function key_create(){
   ssh-keygen -t rsa -f /root/.ssh/id_rsa -N ''
 }
