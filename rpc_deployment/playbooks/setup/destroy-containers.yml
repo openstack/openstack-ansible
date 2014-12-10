@@ -14,10 +14,8 @@
 # limitations under the License.
 
 # This playbook destroys all known containers.
-- hosts: "{{ host_group|default('hosts') }}"
+- hosts: "{{ host_group|default('all_containers') }}"
   user: root
+  gather_facts: false
   roles:
     - container_destroy
-  vars:
-    default_container_groups: "{{ hostvars[inventory_hostname]['container_types'] }}"
-    container_groups: "{{ groups[container_group|default(default_container_groups)] }}"

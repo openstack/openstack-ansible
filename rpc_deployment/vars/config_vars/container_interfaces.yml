@@ -13,19 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-container_interface: |
+default_interfaces: |
   # The loopback network interface
   auto lo
   iface lo inet loopback
-
+  # LXC interface
   auto eth0
   iface eth0 inet dhcp
-
+  # Load any additional configs
   source /etc/network/interfaces.d/*.cfg
 
-
 management_interface: |
-  auto {{ hostvars[item]['container_network']['container_interface'] }}
-  iface {{ hostvars[item]['container_network']['container_interface'] }} inet static
-      address {{ hostvars[item]['container_address'] }}
-      netmask {{ hostvars[item]['container_network']['container_netmask']|default(hostvars[item]['container_netmask']) }}
+  auto {{ container_network['container_interface'] }}
+  iface {{ container_network['container_interface'] }} inet static
+      address {{ container_address }}
+      netmask {{ container_network['container_netmask']|default(container_netmask) }}
