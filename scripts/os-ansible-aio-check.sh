@@ -43,7 +43,7 @@ iptables -P FORWARD ACCEPT
 iptables -P OUTPUT ACCEPT
 
 # Ensure that sshd permits root login, or ansible won't be able to connect
-if grep "^PermitRootLogin" /etc/ssh/sshd_config > null; then
+if grep "^PermitRootLogin" /etc/ssh/sshd_config > /dev/null; then
   sed -i 's/^PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config
 else
   echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
