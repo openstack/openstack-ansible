@@ -87,11 +87,11 @@ nova_scheduler_max_attempts: 5
 nova_scheduler_weight_classes: nova.scheduler.weights.all_weighers
 
 container_directories:
-  - /var/log/nova
-  - /var/lib/nova
-  - /var/lib/nova/cache/api
-  - /etc/nova
-  - /etc/nova/rootwrap.d
-  - /var/cache/nova
-  - /var/lock/nova
-  - /var/run/nova
+   - { name: /var/log/nova }
+   - { name: /var/lib/nova, mode: 755 }
+   - { name: /var/lib/nova/cache/api }
+   - { name: /etc/nova }
+   - { name: /etc/nova/rootwrap.d }
+   - { name: /var/cache/nova }
+   - { name: /var/lock/nova }
+   - { name: /var/run/nova }

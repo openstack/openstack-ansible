@@ -69,11 +69,11 @@ service_names:
   - cinder-volume
 
 container_directories:
-  - /var/log/cinder
-  - /var/lib/cinder
-  - /var/lib/cinder/volumes
-  - /etc/cinder
-  - /etc/cinder/rootwrap.d
-  - /var/cache/cinder
-  - /var/lock/cinder
-  - /var/run/cinder
+  - { name: /var/log/cinder }
+  - { name: /var/lib/cinder }
+  - { name: /var/lib/cinder/volumes }
+  - { name: /etc/cinder }
+  - { name: /etc/cinder/rootwrap.d }
+  - { name: /var/cache/cinder }
+  - { name: /var/lock/cinder }
+  - { name: /var/run/cinder }

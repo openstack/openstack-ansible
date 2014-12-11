@@ -65,11 +65,11 @@ service_names:
   - swift-proxy
 
 container_directories:
-  - /var/lock/swift
-  - /var/cache/swift
-  - /etc/swift
-  - /etc/swift/rings/
-  - /etc/swift/object-server
-  - /etc/swift/container-server
-  - /etc/swift/account-server
-  - /etc/swift/proxy-server
+  - { name: /var/lock/swift }
+  - { name: /var/cache/swift }
+  - { name: /etc/swift }
+  - { name: /etc/swift/rings/ }
+  - { name: /etc/swift/object-server }
+  - { name: /etc/swift/container-server }
+  - { name: /etc/swift/account-server }
+  - { name: /etc/swift/proxy-server }

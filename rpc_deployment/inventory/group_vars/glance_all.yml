@@ -71,14 +71,14 @@ service_names:
 flavor: "keystone+cachemanagement"
 
 container_directories:
-  - /var/log/glance
-  - /var/lib/glance
-  - /var/lib/glance/cache
-  - /var/lib/glance/cache/api
-  - /var/lib/glance/cache/registry
-  - /var/lib/glance/scrubber
-  - /etc/glance
-  - /var/cache/glance
+   - { name: /var/log/glance }
+   - { name: /var/lib/glance }
+   - { name: /var/lib/glance/cache }
+   - { name: /var/lib/glance/cache/api }
+   - { name: /var/lib/glance/cache/registry }
+   - { name: /var/lib/glance/scrubber }
+   - { name: /etc/glance }
+   - { name: /var/cache/glance }
 
 container_packages:
   - rsync

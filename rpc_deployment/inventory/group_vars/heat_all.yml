@@ -64,9 +64,9 @@ heat_waitcondition_server_url: "http://{{ internal_vip_address }}:8000/v1/waitco
 heat_metadata_server_url: "http://{{ internal_vip_address }}:8000"
 
 container_directories:
-  - /etc/heat
-  - /etc/heat/environment.d
-  - /etc/heat/templates
-  - /var/cache/heat
-  - /var/lib/heat
-  - /var/log/heat
+   - { name: /etc/heat }
+   - { name: /etc/heat/environment.d }
+   - { name: /etc/heat/templates }
+   - { name: /var/cache/heat }
+   - { name: /var/lib/heat }
+   - { name: /var/log/heat }
