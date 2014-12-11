@@ -16,8 +16,10 @@
 # Setup Swift Server healthchecks
 - hosts: swift_hosts
   vars:
+    storage_bridge: "{{ 'ansible_' + swift.storage_network|replace('-', '_') }}"
+    storage_address: "{{ hostvars[inventory_hostname][storage_bridge]['ipv4']['address'] }}"
     check_name: swift_object_server_check
-    check_details: file=service_api_local_check.py,args=swift_object_server,args=--path,args=/healtcheck,args={{ ansible_ssh_host }},args=6000
+    check_details: file=service_api_local_check.py,args=swift_object_server,args=--path,args=/healthcheck,args={{ storage_address | default(container_address) }},args=6000
     check_period: "{{ maas_check_period }}"
     check_timeout: "{{ maas_check_timeout }}"
     alarms:
@@ -28,8 +30,10 @@
 
 - hosts: swift_hosts
   vars:
+    storage_bridge: "{{ 'ansible_' + swift.storage_network|replace('-', '_') }}"
+    storage_address: "{{ hostvars[inventory_hostname][storage_bridge]['ipv4']['address'] }}"
     check_name: swift_container_server_check
-    check_details: file=service_api_local_check.py,args=swift_container_server,args=--path,args=/healtcheck,args={{ ansible_ssh_host }},args=6001
+    check_details: file=service_api_local_check.py,args=swift_container_server,args=--path,args=/healthcheck,args={{ storage_address | default(container_address) }},args=6001
     check_period: "{{ maas_check_period }}"
     check_timeout: "{{ maas_check_timeout }}"
     alarms:
@@ -40,8 +44,10 @@
 
 - hosts: swift_hosts
   vars:
+    storage_bridge: "{{ 'ansible_' + swift.storage_network|replace('-', '_') }}"
+    storage_address: "{{ hostvars[inventory_hostname][storage_bridge]['ipv4']['address'] }}"
     check_name: swift_account_server_check
-    check_details: file=service_api_local_check.py,args=swift_account_server,args=--path,args=/healtcheck,args={{ ansible_ssh_host }},args=6002
+    check_details: file=service_api_local_check.py,args=swift_account_server,args=--path,args=/healthcheck,args={{ storage_address | default(container_address) }},args=6002
     check_period: "{{ maas_check_period }}"
     check_timeout: "{{ maas_check_timeout }}"
     alarms:
@@ -53,7 +59,7 @@
 - hosts: swift_proxy
   vars:
     check_name: swift_proxy_server_check
-    check_details: file=service_api_local_check.py,args=swift_proxy_server,args=--path,args=/healtcheck,args={{ ansible_ssh_host }},args=8080
+    check_details: file=service_api_local_check.py,args=swift_proxy_server,args=--path,args=/healthcheck,args={{ ansible_ssh_host }},args=8080
     check_period: "{{ maas_check_period }}"
     check_timeout: "{{ maas_check_timeout }}"
     alarms:
