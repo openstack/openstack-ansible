@@ -49,10 +49,10 @@ horizon_help_url: http://docs.rackspace.com/rpc/api/v9/rpc-faq-v9/content/rpc-co
 install_lib_dir: /usr/local/lib/python2.7/dist-packages
 
 container_directories:
-  - "/etc/horizon"
-  - "/var/lib/horizon"
-  - "/usr/local/lib/python2.7/dist-packages/static"
-  - "/usr/local/lib/python2.7/dist-packages/openstack_dashboard/local"
+  - { name: /etc/horizon }
+  - { name: /var/lib/horizon }
+  - { name: /usr/local/lib/python2.7/dist-packages/static }
+  - { name: /usr/local/lib/python2.7/dist-packages/openstack_dashboard/local }
 
 horizon_fqdn: "{{ external_vip_address }}"
 horizon_server_name: "{{ container_name }}"

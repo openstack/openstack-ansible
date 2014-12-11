@@ -76,14 +76,13 @@ service_names:
   - neutron-server
 
 container_directories:
-  - /etc/neutron
-  - /etc/neutron/plugins
-  - /etc/neutron/plugins/ml2
-  - /etc/neutron/rootwrap.d
-  - /var/cache/neutron
-  - /var/lib/neutron
-  - /var/lib/neutron/ha_confs
-  - /var/lock/neutron
-  - /var/log/neutron
-  - /var/run/neutron
-
+  - { name: /etc/neutron }
+  - { name: /etc/neutron/plugins }
+  - { name: /etc/neutron/plugins/ml2 }
+  - { name: /etc/neutron/rootwrap.d }
+  - { name: /var/cache/neutron }
+  - { name: /var/lib/neutron, mode: 755 }
+  - { name: /var/lib/neutron/ha_confs }
+  - { name: /var/lock/neutron }
+  - { name: /var/log/neutron }
+  - { name: /var/run/neutron }
