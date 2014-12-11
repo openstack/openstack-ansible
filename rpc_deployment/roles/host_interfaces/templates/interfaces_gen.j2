@@ -26,7 +26,7 @@ iface {{ net.device_name }} inet manual
 {% endif %}
 
 {% elif net.type == "vlan_tagged" %}
-iface {{ net.tagged_device_name }} inet static
+iface {{ net.tagged_device_name }} inet manual
     vlan-raw-device {{ net.device_name }}
 
 {% elif net.type == "bonded" %}
@@ -37,6 +37,21 @@ iface {{ net.device_name }} inet static
     bond-miimon {{ net.miimon|default('100') }}
     bond-downdelay {{ net.downdelay|default('200') }}
     bond-updelay {{ net.updelay|default('200') }}
+{% if net.address is defined %}
+    address {{ net.address }}
+{% endif %}
+{% if net.gateway is defined %}
+    gateway {{ net.gateway }}
+{% endif %}
+{% if net.netmask is defined %}
+    netmask {{ net.netmask }}
+{% endif %}
+{% if net.dns_nameservers is defined %}
+    dns-nameservers {{ net.dns_nameservers|join(' ') }}
+{% endif %}
+{% if net.dns_search is defined %}
+    dns-search {{ net.dns_search|join(' ') }}
+{% endif %}
 
 {% elif net.type == "bridged" %}
 auto {{ net.device_name }}
