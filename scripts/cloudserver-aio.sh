@@ -15,7 +15,7 @@
 set -e -u -v -x
 
 REPO_URL=${REPO_URL:-"https://github.com/stackforge/os-ansible-deployment"}
-REPO_BRANCH=${REPO_BRANCH:-"10.1.0rc1"}
+REPO_BRANCH=${REPO_BRANCH:-"10.1.0rc2"}
 FROZEN_REPO_URL=${FROZEN_REPO_URL:-"http://mirror.rackspace.com/rackspaceprivatecloud"}
 MAX_RETRIES=${MAX_RETRIES:-5}
 
