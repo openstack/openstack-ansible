@@ -9,7 +9,7 @@ tempest_roles = remote_image
 
 [boto]
 ssh_user = cirros
-instance_type = m1.nano
+instance_type = tempest1
 aki_manifest = cirros-0.3.2-x86_64-vmlinuz.manifest.xml
 ami_manifest = cirros-0.3.2-x86_64-blank.img.manifest.xml
 ari_manifest = cirros-0.3.2-x86_64-initrd.manifest.xml
@@ -26,9 +26,9 @@ has_manage=false
 
 
 [compute]
-ssh_connect_method = fixed
-flavor_ref_alt = 3
-flavor_ref = 2
+ssh_connect_method = floating
+flavor_ref_alt = 202
+flavor_ref = 201
 image_alt_ssh_user = cirros
 image_ref_alt = {{ hostvars[groups['utility_all'][0]]['glance_images']['cirros']['id'] }}
 image_ssh_user = cirros
@@ -89,24 +89,27 @@ xml_api = False
 [negative]
 
 [network]
-default_network = 10.0.0.0/24
+default_network = 192.168.74.0/24
 public_router_id =
-public_network_id =
+public_network_id = {{ hostvars[groups['utility_all'][0]]['neutron_networks']['public']['id'] }}
 tenant_networks_reachable = false
 api_version = 2.0
 
 [network-feature-enabled]
-api_extensions = all
+api_extensions = agent, allowed-address-pairs, binding, dhcp_agent_scheduler, ext-gw-mode, external-net, extra_dhcp_opt, extra_dhcp_optagent, extraroute, l3_agent_scheduler, metering, provider, quotas, router, security-group, service-type
 ipv6_subnet_attributes = True
 ipv6 = True
 xml_api = False
 
 [object-storage]
+operator_role = swiftoperator
+reseller_admin_role = reseller_admin
 
 
 
 [object-storage-feature-enabled]
 discoverable_apis = all
+object_versioning = false
 
 
 [orchestration]
@@ -126,7 +129,11 @@ img_dir = /opt/stack/devstack/files/images/cirros-0.3.2-x86_64-uec
 neutron = True
 heat = True
 ceilometer = False
+{% if hostvars[groups['utility_all'][0]]['tempest_run_swift_tests'] == True %}
+swift = True
+{% else %}
 swift = False
+{% endif %}
 cinder = True
 nova = True
 glance = True
@@ -148,17 +155,3 @@ build_timeout = 600
 [volume-feature-enabled]
 backup = False
 api_extensions = all
-
-
-[compute-feature-disabled]
-api_v3_extensions =
-api_extensions =
-
-[network-feature-disabled]
-api_extensions =
-
-[object-storage-feature-disabled]
-discoverable_apis =
-
-[volume-feature-disabled]
-api_extensions =

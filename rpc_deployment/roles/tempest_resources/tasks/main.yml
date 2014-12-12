@@ -65,6 +65,15 @@
     - demo
     - alt_demo
 
+- name: Ensure reseller_admin role
+  keystone:
+    command: ensure_role
+    login_tenant_name: "{{ auth_admin_tenant }}"
+    login_user: "{{ auth_admin_username }}"
+    login_password: "{{ auth_admin_password }}"
+    endpoint: "{{ auth_admin_uri }}"
+    role_name: "reseller_admin"
+
 - name: Ensure remote_image role exists
   keystone:
     command: ensure_role
@@ -74,10 +83,99 @@
     login_user: "{{ auth_admin_username }}"
     login_password: "{{ auth_admin_password }}"
 
-- name: Ensure tempest network exists
+- name: Get demo tenant id
+  keystone:
+    command: get_tenant
+    tenant_name: demo
+    endpoint: "{{ auth_identity_uri }}"
+    login_tenant_name: "{{ auth_admin_tenant }}"
+    login_user: "{{ auth_admin_username }}"
+    login_password: "{{ auth_admin_password }}"
+
+- name: Store demo tenant id
+  set_fact:
+    keystone_demo_tenant_id: "{{ keystone_facts.id }}"
+
+- name: Ensure private network exists
   neutron:
-    command: create_network_with_subnet
+    command: create_network
     openrc_path: /root/openrc
-    net_name: tempest-net
-    subnet_name: tempest-subnet
+    net_name: private
+    tenant_id: "{{ keystone_demo_tenant_id }}"
+
+- name: Ensure public network exists
+  neutron:
+    command: create_network
+    openrc_path: /root/openrc
+    net_name: public
+    provider_network_type: flat
+    provider_physical_network: vlan
+    router_external: true
+
+- name: Ensure private subnet exists
+  neutron:
+    command: create_subnet
+    openrc_path: /root/openrc
+    net_name: private
+    subnet_name: private-subnet
     cidr: "192.168.74.0/24"
+    tenant_id: "{{ keystone_demo_tenant_id }}"
+
+- name: Ensure public subnet exists
+  neutron:
+    command: create_subnet
+    openrc_path: /root/openrc
+    net_name: public
+    subnet_name: public-subnet
+    cidr: "10.1.13.0/24"
+
+- name: Create router
+  neutron:
+    command: create_router
+    openrc_path: /root/openrc
+    router_name: router
+    external_gateway_info: public
+    tenant_id: "{{ keystone_demo_tenant_id }}"
+
+- name: Add private subnet to router
+  neutron:
+    command: add_router_interface
+    openrc_path: /root/openrc
+    router_name: router
+    subnet_name: private-subnet
+
+- name: Check if tempest flavor 201 exists
+  shell: |
+    . /root/openrc
+    nova flavor-show tempest1
+  register: tempest1
+  ignore_errors: True
+
+- name: Check if tempest flavor 202 exists
+  shell: |
+    . /root/openrc
+    nova flavor-show tempest2
+  register: tempest2
+  ignore_errors: True
+
+- name: Create tempest flavor 201
+  shell: |
+    . /root/openrc
+    nova flavor-create tempest1 201 256 1 1
+  when: tempest1|failed
+
+- name: Create tempest flavor 202
+  shell: |
+    . /root/openrc
+    nova flavor-create tempest2 202 512 1 1
+  when: tempest2|failed
+
+- name: Set tempest_run_swift_tests to True when tempest_swift_enabled is True
+  set_fact:
+    tempest_run_swift_tests: True
+  when: (tempest_swift_enabled is defined and tempest_swift_enabled == True) or groups['swift_all']|length > 0
+
+- name: Set tempest_run_swift_tests to False when tempest_swift_enabled == False
+  set_fact:
+    tempest_run_swift_tests: False
+  when: (tempest_swift_enabled is defined and tempest_swift_enabled == False) or groups['swift_all']|length == 0
