@@ -13,27 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Configure tempest on the utility containers
+# The variables file used by the playbooks in the Glance-api group.
+# These don't have to be explicitly imported by vars_files: they are autopopulated.
 
-- hosts: utility_all
-  roles:
-    - common
-    - openstack_common
-    - openstack_openrc
-  vars_files:
-    - vars/repo_packages/tempest.yml
-    - inventory/group_vars/tempest_all.yml
+## Service Name
+service_name: tempest
 
-# Openstack resources only need to be created once
-- hosts: utility_all[0]
-  roles:
-    - tempest_resources
-  vars_files:
-    - inventory/group_vars/tempest_all.yml
-
-# Tempest is installed and configured in all utility containers
-- hosts: utility_all
-  vars_files:
-    - vars/repo_packages/tempest.yml
-  roles:
-    - tempest
+tempest_swift_enabled: True
