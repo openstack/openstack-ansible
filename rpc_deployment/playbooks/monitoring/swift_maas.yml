@@ -89,3 +89,83 @@
     url: "{{ scheme }}://{{ ip_address }}:{{ port }}{{ path }}"
     alarm_name: lb_api_alarm_swift_proxy
     criteria: ":set consecutiveCount={{ maas_alarm_remote_consecutive_count }} if (metric['code'] != '200') { return new AlarmStatus(CRITICAL, 'API unavailable.'); }"
+
+# Setup swift host local swift-recon checks
+- hosts: swift_hosts
+  vars:
+    check_name: swift_md5_check
+    check_details: file=swift-recon.py,args=md5
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'swift_ring_md5_check', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["ring_errors"] > 0) { return new AlarmStatus(CRITICAL, "Ring md5sum Inconsistent"); }' }
+      - { 'name': 'swift_conf_md5_check', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["swift_conf_errors"] > 0) { return new AlarmStatus(CRITICAL, "Swift conf md5sum inconsistent"); }' }
+  user: root
+  roles:
+    - maas_local
+
+- hosts: swift_hosts
+  vars:
+    check_name: swift_quarantine_check
+    check_details: file=swift-recon.py,args=quarantine
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'swift_quarantine_object_failed', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["objects_failed"] > 5.0) { return new AlarmStatus(CRITICAL, "Swift Object Quarantine Percentage Above Threshold"); }' }
+      - { 'name': 'swift_quarantine_object_avg', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["objects_avg"] > 25.0) { return new AlarmStatus(CRITICAL, "Swift Object Quarantine Average Above Threshold"); }' }
+      - { 'name': 'swift_quarantine_account_failed', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["accounts_failed"] > 5.0) { return new AlarmStatus(CRITICAL, "Swift Account Quarantine Percentage Above Threshold"); }' }
+      - { 'name': 'swift_quarantine_account_avg', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["accounts_avg"] > 25.0) { return new AlarmStatus(CRITICAL, "Swift Account Quarantine Average Above Threshold"); }' }
+      - { 'name': 'swift_quarantine_container_failed', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["containers_failed"] > 5.0) { return new AlarmStatus(CRITICAL, "Swift Container Quarantine Percentage Above Threshold"); }' }
+      - { 'name': 'swift_quarantine_container_avg', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["containers_avg"] > 25.0) { return new AlarmStatus(CRITICAL, "Swift Container Quarantine Average Above Threshold"); }' }
+  user: root
+  roles:
+    - maas_local
+
+- hosts: swift_hosts
+  vars:
+    check_name: swift_async_check
+    check_details: file=swift-recon.py,args=async-pendings
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'swift_async_failure_check', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["async_failed"] > 5.0) { return new AlarmStatus(CRITICAL, "Swift Async Pending Failure Percentage Above Threshold"); }' }
+      - { 'name': 'swift_async_avg_check', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["async_avg"] > 25.0) { return new AlarmStatus(CRITICAL, "Swift Async Pending Average above threshold"); }' }
+  user: root
+  roles:
+    - maas_local
+
+- hosts: swift_obj
+  vars:
+    check_name: swift_object_replication_check
+    check_details: file=swift-recon.py,args=--ring-type,args=object,args=replication
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'swift_object_replication_check', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["time_failed"] > 5.0) { return new AlarmStatus(CRITICAL, "Swift Object Replication Failure Percentage Above Threshold"); }' }
+  user: root
+  roles:
+    - maas_local
+
+- hosts: swift_acc
+  vars:
+    check_name: swift_account_replication_check
+    check_details: file=swift-recon.py,args=--ring-type,args=account,args=replication
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'swift_account_replication_check', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["time_failed"] > 5.0) { return new AlarmStatus(CRITICAL, "Swift Account Replication Failure Percentage Above Threshold"); }' }
+  user: root
+  roles:
+    - maas_local
+
+- hosts: swift_cont
+  vars:
+    check_name: swift_container_replication_check
+    check_details: file=swift-recon.py,args=--ring-type,args=container,args=replication
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'swift_container_replication_check', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["time_failed"] > 5.0) { return new AlarmStatus(CRITICAL, "Swift Container Replication Failure Percentage Above Threshold"); }' }
+  user: root
+  roles:
+    - maas_local
