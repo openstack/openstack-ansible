@@ -34,6 +34,5 @@ Defaults processed by the **package_source_archive**,
   * pip_wheel_name: ``string`` pip package name to FIRST attempt installation of.
   * service_pip_dependencies: ``list`` of ``strings``.
   * container_packages: ``list`` of ``strings``.
-  * pip_common_packages: ``list`` of ``strings``.
   * apt_common_packages: ``list`` of ``strings``.
   * common_util_packages: ``list`` of ``strings``.
