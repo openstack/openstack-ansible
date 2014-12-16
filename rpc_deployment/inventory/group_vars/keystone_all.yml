@@ -63,8 +63,8 @@ keystone_ssl: false
 
 
 container_directories:
-  - /etc/keystone
-  - /etc/keystone/ssl
-  - /var/lib/keystone
-  - /var/log/keystone
-  - /var/www/cgi-bin/keystone
+  - { name: /etc/keystone }
+  - { name: /etc/keystone/ssl }
+  - { name: /var/lib/keystone }
+  - { name: /var/log/keystone }
+  - { name: /var/www/cgi-bin/keystone, mode: 755 }
