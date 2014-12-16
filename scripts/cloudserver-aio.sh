@@ -24,6 +24,19 @@ apt-get update && apt-get install -y git
 # fetch the repo
 git clone -b ${REPO_BRANCH} ${REPO_URL} ${WORKING_FOLDER}/
 
+# put an motd in place to help the user know how to restart galera after reboot
+cat > /etc/update-motd.d/20-openstack<< EOF
+#!/usr/bin/env bash
+echo ""
+echo "############ ansible-os-deployment all-in-one build #############"
+echo "If this server has been rebooted, you will need to re-bootstrap"
+echo "Galera to get the cluster operational. To do this execute:"
+echo ""
+echo "cd /opt/ansible-lxc-rpc/rpc_deployment"
+echo "ansible-playbook -e @/etc/rpc_deploy/user_variables.yml playbooks/infrastructure/galera-startup.yml"
+EOF
+chmod +x /etc/update-motd.d/00-rpc-notice
+
 # run the same aio build script that is used in the OpenStack CI pipeline
 cd ${WORKING_FOLDER}
 ./scripts/os-ansible-aio-check.sh
