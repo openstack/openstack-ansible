@@ -35,7 +35,7 @@ echo ""
 echo "cd /opt/ansible-lxc-rpc/rpc_deployment"
 echo "ansible-playbook -e @/etc/rpc_deploy/user_variables.yml playbooks/infrastructure/galera-startup.yml"
 EOF
-chmod +x /etc/update-motd.d/00-rpc-notice
+chmod +x /etc/update-motd.d/20-openstack
 
 # run the same aio build script that is used in the OpenStack CI pipeline
 cd ${WORKING_FOLDER}
