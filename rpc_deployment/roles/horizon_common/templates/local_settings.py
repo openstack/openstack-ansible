@@ -90,8 +90,12 @@ LOCAL_PATH = os.path.dirname(os.path.abspath(__file__))
 # behind a load-balancer). Either you have to make sure that a session gets all
 # requests routed to the same dashboard instance or you set the same SECRET_KEY
 # for all of them.
+{% if horizon_secret_key %}
+SECRET_KEY = "{{ horizon_secret_key }}"
+{% else %}
 from horizon.utils import secret_key
 SECRET_KEY = secret_key.generate_or_read_from_file(os.path.join(LOCAL_PATH, '.secret_key_store'))
+{% endif %}
 
 # We recommend you use memcached for development; otherwise after every reload
 # of the django development server, you will have to login again. To use
