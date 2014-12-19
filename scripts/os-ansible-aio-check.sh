@@ -218,7 +218,7 @@ used_ips:
 global_overrides:
   rpc_repo_url: ${FROZEN_REPO_URL}
   internal_lb_vip_address: 172.29.236.100
-  external_lb_vip_address: 192.168.10.10
+  external_lb_vip_address: $(ip -o -4 addr show dev eth0 | awk -F '[ /]+' '/global/ {print $4}')
   tunnel_bridge: "br-vxlan"
   management_bridge: "br-mgmt"
 infra_hosts:
