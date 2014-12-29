@@ -399,7 +399,9 @@ pushd /opt/ansible-lxc-rpc/rpc_deployment
   install_bits infrastructure/rsyslog-config.yml
   # install all of the Openstack Bits
   install_bits openstack/keystone-all.yml
-  install_bits openstack/swift-all.yml
+  if [ "${DEPLOY_SWIFT}" == "yes" ]; then
+    install_bits openstack/swift-all.yml
+  fi
   install_bits openstack/glance-all.yml
   install_bits openstack/heat-all.yml
   install_bits openstack/nova-all.yml
