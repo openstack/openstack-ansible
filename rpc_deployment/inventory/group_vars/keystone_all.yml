@@ -66,5 +66,5 @@ container_directories:
   - { name: /etc/keystone }
   - { name: /etc/keystone/ssl }
   - { name: /var/lib/keystone }
-  - { name: /var/log/keystone }
+  - { name: /var/log/keystone, mode: 755 }
   - { name: /var/www/cgi-bin/keystone, mode: 755 }

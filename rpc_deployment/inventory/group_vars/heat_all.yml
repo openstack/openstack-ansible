@@ -69,4 +69,4 @@ container_directories:
    - { name: /etc/heat/templates }
    - { name: /var/cache/heat }
    - { name: /var/lib/heat }
-   - { name: /var/log/heat }
+   - { name: /var/log/heat, mode: 755 }

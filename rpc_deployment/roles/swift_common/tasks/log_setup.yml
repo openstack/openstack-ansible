@@ -18,7 +18,7 @@
     path: "{{ item }}"
     state: "directory"
     owner: "syslog"
-    group: "syslog"
+    group: "adm"
   with_items:
     - /var/log/swift
     - /openstack/log/{{ inventory_hostname }}

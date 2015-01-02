@@ -69,7 +69,7 @@ service_names:
   - cinder-volume
 
 container_directories:
-  - { name: /var/log/cinder }
+  - { name: /var/log/cinder, mode: 755 }
   - { name: /var/lib/cinder }
   - { name: /var/lib/cinder/volumes }
   - { name: /etc/cinder }

@@ -71,7 +71,7 @@ service_names:
 flavor: "keystone+cachemanagement"
 
 container_directories:
-   - { name: /var/log/glance }
+   - { name: /var/log/glance, mode: 755 }
    - { name: /var/lib/glance }
    - { name: /var/lib/glance/cache }
    - { name: /var/lib/glance/cache/api }
