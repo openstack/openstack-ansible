@@ -33,3 +33,7 @@ service_pip_dependencies:
   - MySQL-python
   - python-memcached
   - pycrypto
+
+# Directories to create
+container_directories:
+  - { name: '/var/log/mysql', mode: 755 }

@@ -5,6 +5,11 @@
 #$template HourlyProxyLog,"/openstack/log/{{ inventory_hostname }}/hourly/%$YEAR%%$MONTH%%$DAY%%$HOUR%"
 #local1.*;local1.!notice ?HourlyProxyLog
 
+# Even if rsyslog is a member of the adm group, rsyslogd cannot read the
+# account/container/object logs. To work around this we need to ensure that
+# the logs are readable by all users.
+$FileCreateMode 0644
+
 local1.*;local1.!notice /var/log/swift/proxy.log
 local1.notice           /var/log/swift/proxy-error.log
 local1.*                ~
@@ -20,3 +25,6 @@ local3.*                ~
 local4.*;local4.!notice /openstack/log/{{ inventory_hostname }}/object.log
 local4.notice           /openstack/log/{{ inventory_hostname }}/object-error.log
 local4.*                ~
+
+# Set the file create mode back to the default
+$FileCreateMode 0640

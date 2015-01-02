@@ -29,3 +29,7 @@ kibana_fqdn: "{{ external_vip_address }}"
 kibana_server_name: "{{ container_name }}"
 kibana_self_signed: true
 kibana_ssl_port: 8443
+
+# Directories to create
+container_directories:
+  - { name: /var/log/kibana, mode: 755 }

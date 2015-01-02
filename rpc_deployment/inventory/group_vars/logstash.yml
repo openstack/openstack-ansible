@@ -28,3 +28,7 @@ container_lvm_fssize: 5GB
 # Change this with caution, anything other than 1 will currently
 # break multiline filtering
 logstash_workers: 1
+
+# Directories to create
+container_directories:
+  - { name: /var/log/logstash, mode: 755 }

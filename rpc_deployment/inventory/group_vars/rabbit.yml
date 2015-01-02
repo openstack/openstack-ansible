@@ -24,3 +24,6 @@ enable_management_plugin: true
 
 rabbit_cluster_name: rpc
 
+# Directories to create
+container_directories:
+  - { name: '/var/log/rabbitmq', mode: 755 }

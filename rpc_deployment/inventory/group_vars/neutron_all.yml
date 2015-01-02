@@ -84,5 +84,5 @@ container_directories:
   - { name: /var/lib/neutron, mode: 755 }
   - { name: /var/lib/neutron/ha_confs }
   - { name: /var/lock/neutron }
-  - { name: /var/log/neutron }
+  - { name: /var/log/neutron, mode: 755 }
   - { name: /var/run/neutron }
