@@ -47,9 +47,9 @@
   file:
     path: "/openstack/log/{{ physical_host}}"
     state: directory
-    owner: nova
-    group: nova
-    mode: 0755
+    owner: "{{ system_user|default('root') }}"
+    group: "{{ system_group|default('root') }}"
+    mode: '0755'
     force: true
   when: is_metal == true
 
@@ -64,4 +64,14 @@
     dest: "/var/log/nova"
     state: "link"
   when: is_metal == true
+
+- name: Create nova log dir
+  file:
+    path: "/var/log/nova"
+    state: directory
+    group: "{{ system_group|default('root') }}"
+    owner: "{{ system_user|default('root') }}"
+    mode: '0755'
+    recurse: no
+  when: is_metal == false
 

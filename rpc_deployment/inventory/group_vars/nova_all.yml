@@ -87,7 +87,7 @@ nova_scheduler_max_attempts: 5
 nova_scheduler_weight_classes: nova.scheduler.weights.all_weighers
 
 container_directories:
-   - { name: /var/log/nova }
+   - { name: /var/log/nova, skip_group: nova_compute }
    - { name: /var/lib/nova, mode: 755 }
    - { name: /var/lib/nova/instances, mode: 755 }
    - { name: /var/lib/nova/cache }
