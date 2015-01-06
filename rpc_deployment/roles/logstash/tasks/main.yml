@@ -22,12 +22,16 @@
   register: results
   with_items:
     - 01-input.conf
-    - 02-rsyslog.conf
-    - 03-generic.conf
+    - 02-general.conf
+    - 03-openstack.conf
     - 04-routes.conf
     - 05-cinder.conf
     - 06-nova.conf
     - 07-sqlalchemy.conf
+    - 09-apache.conf
+    - 10-mysql.conf
+    - 11-neutron.conf
+    - 98-mutate.conf
     - 99-output.conf
 
 - name: Logstash Extra Patterns
@@ -49,6 +53,12 @@
   register: results
   with_items:
     - logstash
+
+- name: Delete old filter files if they exist
+  file: name=/etc/logstash/conf.d/{{ item }} state=absent
+  with_items:
+    - 02-rsyslog.conf
+    - 03-generic.conf
 
 - name: restart logstash
   service: name=logstash state=restarted pattern=logstash
