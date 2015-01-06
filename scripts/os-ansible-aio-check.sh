@@ -46,6 +46,11 @@ iptables -P INPUT ACCEPT
 iptables -P FORWARD ACCEPT
 iptables -P OUTPUT ACCEPT
 
+# Ensure newline at end of file (missing on Rackspace public cloud Trusty image)
+if ! cat -E /etc/ssh/sshd_config | tail -1 | grep -q "\$$"; then
+  echo >> /etc/ssh/sshd_config
+fi
+
 # Ensure that sshd permits root login, or ansible won't be able to connect
 if grep "^PermitRootLogin" /etc/ssh/sshd_config > /dev/null; then
   sed -i 's/^PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config
