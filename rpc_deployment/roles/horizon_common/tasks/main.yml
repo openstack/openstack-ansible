@@ -43,15 +43,6 @@
     - "{{ install_lib_dir }}/openstack_dashboard/static/bootstrap/js"
     - "{{ install_lib_dir }}/openstack_dashboard/static/horizon"
 
-# /opt/horizon/lib/python2.7/site-packages/manage.py
-- name: Collect and compress static files
-  command: "{{ item }}"
-  sudo: yes
-  sudo_user: "{{ system_user }}"
-  with_items:
-    - horizon-manage.py collectstatic --noinput
-    - horizon-manage.py compress --force
-
 - name: Create horizon links
   file:
     src: "{{ item.src }}"
@@ -61,3 +52,12 @@
     state: "link"
   with_items:
     - { src: "/etc/horizon/local_settings.py", dest: "{{ install_lib_dir }}/openstack_dashboard/local/local_settings.py" }
+
+# /opt/horizon/lib/python2.7/site-packages/manage.py
+- name: Collect and compress static files
+  command: "{{ item }}"
+  sudo: yes
+  sudo_user: "{{ system_user }}"
+  with_items:
+    - horizon-manage.py collectstatic --noinput
+    - horizon-manage.py compress --force
