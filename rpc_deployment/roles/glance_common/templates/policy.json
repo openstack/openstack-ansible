@@ -1,13 +1,14 @@
 {
     "context_is_admin":  "role:admin",
+    "user_is_owner": "user:%(target.image.owner) OR tenant:%(target.image.owner.tenant)",
     "default": "",
 
     "add_image": "",
-    "delete_image": "",
+    "delete_image": "role:admin OR rule:user_is_owner",
     "get_image": "",
     "get_images": "",
-    "modify_image": "",
-    "publicize_image": "role:admin",
+    "modify_image": "role:admin OR rule:user_is_owner",
+    "publicize_image": "role:admin OR rule:user_is_owner",
     "copy_from": "",
 
     "download_image": "",
@@ -17,11 +18,11 @@
     "get_image_location": "",
     "set_image_location": "",
 
-    "add_member": "",
-    "delete_member": "",
+    "add_member": "role:admin OR rule:user_is_owner",
+    "delete_member": "role:admin OR rule:user_is_owner",
     "get_member": "",
     "get_members": "",
-    "modify_member": "",
+    "modify_member": "role:admin OR rule:user_is_owner",
 
     "manage_image_cache": "role:admin",
 
