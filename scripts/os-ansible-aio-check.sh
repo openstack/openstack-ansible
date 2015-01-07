@@ -12,51 +12,50 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+
+## Shell Opts ----------------------------------------------------------------
 set -e -u -v -x
 
+## Vars
 FROZEN_REPO_URL=${FROZEN_REPO_URL:-"http://mirror.rackspace.com/rackspaceprivatecloud"}
 MAX_RETRIES=${MAX_RETRIES:-5}
 ADMIN_PASSWORD=${ADMIN_PASSWORD:-"secrete"}
 DEPLOY_SWIFT=${DEPLOY_SWIFT:-"yes"}
 
-# update the package cache and install required packages
-apt-get update
-apt-get install -y python-dev \
-                   python2.7 \
-                   build-essential \
-                   curl \
-                   git-core \
-                   ipython \
-                   tmux \
-                   vim \
-                   vlan \
-                   bridge-utils \
-                   lvm2 \
-                   xfsprogs \
-                   linux-image-extra-$(uname -r)
+## Functions -----------------------------------------------------------------
 
-# Flush all the iptables rules set by openstack-infra
-iptables -F
-iptables -X
-iptables -t nat -F
-iptables -t nat -X
-iptables -t mangle -F
-iptables -t mangle -X
-iptables -P INPUT ACCEPT
-iptables -P FORWARD ACCEPT
-iptables -P OUTPUT ACCEPT
+# Get instance info
+function get_instance_info(){
+  free -mt
+  df -h
+  mount
+  lsblk
+  fdisk -l /dev/xv* /dev/sd* /dev/vd*
+  uname -a
+  pvs
+  vgs
+  lvs
+  which lscpu && lscpu
+  ip a
+  ip r
+  tracepath 8.8.8.8 -m 5
+  which xenstore-read && xenstore-read vm-data/provider_data/provider ||:
+}
 
-# Ensure newline at end of file (missing on Rackspace public cloud Trusty image)
-if ! cat -E /etc/ssh/sshd_config | tail -1 | grep -q "\$$"; then
-  echo >> /etc/ssh/sshd_config
-fi
-
-# Ensure that sshd permits root login, or ansible won't be able to connect
-if grep "^PermitRootLogin" /etc/ssh/sshd_config > /dev/null; then
-  sed -i 's/^PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config
-else
-  echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
-fi
+function configure_hp_diskspace(){
+  # hp instances arrive with a 470GB drive (vdb) mounted at /mnt
+  # this function repurposes that for the lxc vg then creates a
+  # 50GB lv for /opt
+  mount |grep "/dev/vdb on /mnt" || return 0 # skip if not on hp
+  umount /mnt
+  pvcreate -ff -y /dev/vdb
+  vgcreate lxc /dev/vdb
+  lvcreate -n opt -L50g lxc
+  mkfs.ext4 /dev/lxc/opt
+  mount /dev/lxc/opt /opt
+  get_instance_info
+}
 
 function key_create(){
   ssh-keygen -t rsa -f /root/.ssh/id_rsa -N ''
@@ -96,6 +95,50 @@ function loopback_create() {
   fi
 }
 
+## Main ----------------------------------------------------------------------
+
+# update the package cache and install required packages
+apt-get update
+apt-get install -y python-dev \
+                   python2.7 \
+                   build-essential \
+                   curl \
+                   git-core \
+                   ipython \
+                   tmux \
+                   vim \
+                   vlan \
+                   bridge-utils \
+                   lvm2 \
+                   xfsprogs \
+                   linux-image-extra-$(uname -r)
+
+get_instance_info
+
+# Flush all the iptables rules set by openstack-infra
+iptables -F
+iptables -X
+iptables -t nat -F
+iptables -t nat -X
+iptables -t mangle -F
+iptables -t mangle -X
+iptables -P INPUT ACCEPT
+iptables -P FORWARD ACCEPT
+iptables -P OUTPUT ACCEPT
+
+# Ensure newline at end of file (missing on Rackspace public cloud Trusty image)
+if ! cat -E /etc/ssh/sshd_config | tail -1 | grep -q "\$$"; then
+  echo >> /etc/ssh/sshd_config
+fi
+
+# Ensure that sshd permits root login, or ansible won't be able to connect
+if grep "^PermitRootLogin" /etc/ssh/sshd_config > /dev/null; then
+  sed -i 's/^PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config
+else
+  echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
+fi
+
+
 # ensure that the current kernel can support vxlan
 if ! modprobe vxlan; then
   MINIMUM_KERNEL_VERSION=$(awk '/required_kernel/ {print $2}' rpc_deployment/inventory/group_vars/all.yml)
@@ -108,6 +151,8 @@ fi
 if [ ! -d "/opt" ];then
   mkdir /opt
 fi
+
+configure_hp_diskspace
 
 # create /etc/rc.local if it doesn't already exist
 if [ ! -f "/etc/rc.local" ];then
@@ -420,3 +465,4 @@ pushd /opt/ansible-lxc-rpc/rpc_deployment
   # Reconfigure Rsyslog
   install_bits infrastructure/rsyslog-config.yml
 popd
+get_instance_info
