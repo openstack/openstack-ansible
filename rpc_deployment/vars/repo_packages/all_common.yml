@@ -21,7 +21,7 @@ gpg_keys:
   - { key_name: 'mariadb', keyserver: 'hkp://keyserver.ubuntu.com:80', hash_id: '0xcbcb082a1bb943db' }
 
 apt_common_repos:
-  - { repo: "deb http://mirror.jmu.edu/pub/mariadb/repo/5.5/ubuntu {{ ansible_distribution_release }} main", state: "present" }
+  - { repo: "deb http://ftp.osuosl.org/pub/mariadb/mariadb-5.5.41/repo/ubuntu/ {{ ansible_distribution_release }} main", state: "present" }
 
 # apt_container_keys:
 #   - { url: "{{ rpc_repo_url }}/repo.gpg", state: "present" }
