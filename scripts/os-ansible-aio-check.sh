@@ -12,24 +12,50 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+
+## Shell Opts ----------------------------------------------------------------
 set -e -u -v -x
 
+## Vars
 FROZEN_REPO_URL=${FROZEN_REPO_URL:-"http://mirror.rackspace.com/rackspaceprivatecloud"}
 MAX_RETRIES=${MAX_RETRIES:-5}
+ADMIN_PASSWORD=${ADMIN_PASSWORD:-"secrete"}
+DEPLOY_SWIFT=${DEPLOY_SWIFT:-"yes"}
 
-apt-get update
-apt-get install -y python-dev \
-                   python2.7 \
-                   build-essential \
-                   curl \
-                   git-core \
-                   ipython \
-                   tmux \
-                   vim \
-                   vlan \
-                   bridge-utils \
-                   lvm2 \
-                   linux-image-extra-$(uname -r)
+## Functions -----------------------------------------------------------------
+
+# Get instance info
+function get_instance_info(){
+  free -mt
+  df -h
+  mount
+  lsblk
+  fdisk -l /dev/xv* /dev/sd* /dev/vd*
+  uname -a
+  pvs
+  vgs
+  lvs
+  which lscpu && lscpu
+  ip a
+  ip r
+  tracepath 8.8.8.8 -m 5
+  which xenstore-read && xenstore-read vm-data/provider_data/provider ||:
+}
+
+function configure_hp_diskspace(){
+  # hp instances arrive with a 470GB drive (vdb) mounted at /mnt
+  # this function repurposes that for the lxc vg then creates a
+  # 50GB lv for /opt
+  mount |grep "/dev/vdb on /mnt" || return 0 # skip if not on hp
+  umount /mnt
+  pvcreate -ff -y /dev/vdb
+  vgcreate lxc /dev/vdb
+  lvcreate -n opt -L50g lxc
+  mkfs.ext4 /dev/lxc/opt
+  mount /dev/lxc/opt /opt
+  get_instance_info
+}
 
 function key_create(){
   ssh-keygen -t rsa -f /root/.ssh/id_rsa -N ''
@@ -59,6 +85,61 @@ function install_bits() {
                                  playbooks/$@
 }
 
+function loopback_create() {
+  LOOP_FILENAME=${1}
+  LOOP_FILESIZE=${2}
+  if ! losetup -a | grep "(${LOOP_FILENAME})$" > /dev/null; then
+    LOOP_DEVICE=$(losetup -f)
+    dd if=/dev/zero of=${LOOP_FILENAME} bs=1 count=0 seek=${LOOP_FILESIZE}
+    losetup ${LOOP_DEVICE} ${LOOP_FILENAME}
+  fi
+}
+
+## Main ----------------------------------------------------------------------
+
+# update the package cache and install required packages
+apt-get update
+apt-get install -y python-dev \
+                   python2.7 \
+                   build-essential \
+                   curl \
+                   git-core \
+                   ipython \
+                   tmux \
+                   vim \
+                   vlan \
+                   bridge-utils \
+                   lvm2 \
+                   xfsprogs \
+                   linux-image-extra-$(uname -r)
+
+get_instance_info
+
+# Flush all the iptables rules set by openstack-infra
+iptables -F
+iptables -X
+iptables -t nat -F
+iptables -t nat -X
+iptables -t mangle -F
+iptables -t mangle -X
+iptables -P INPUT ACCEPT
+iptables -P FORWARD ACCEPT
+iptables -P OUTPUT ACCEPT
+
+# Ensure newline at end of file (missing on Rackspace public cloud Trusty image)
+if ! cat -E /etc/ssh/sshd_config | tail -1 | grep -q "\$$"; then
+  echo >> /etc/ssh/sshd_config
+fi
+
+# Ensure that sshd permits root login, or ansible won't be able to connect
+if grep "^PermitRootLogin" /etc/ssh/sshd_config > /dev/null; then
+  sed -i 's/^PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config
+else
+  echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
+fi
+
+
+# ensure that the current kernel can support vxlan
 if ! modprobe vxlan; then
   MINIMUM_KERNEL_VERSION=$(awk '/required_kernel/ {print $2}' rpc_deployment/inventory/group_vars/all.yml)
   echo "A minimum kernel version of ${MINIMUM_KERNEL_VERSION} is required for vxlan support."
@@ -66,43 +147,16 @@ if ! modprobe vxlan; then
   exit 1
 fi
 
+# create /opt if it doesn't already exist
 if [ ! -d "/opt" ];then
   mkdir /opt
 fi
 
+configure_hp_diskspace
 
-if [ ! "$(swapon -s | grep -v Filename)" ];then
-  cat > /opt/swap.sh <<EOF
-#!/usr/bin/env bash
-if [ ! "\$(swapon -s | grep -v Filename)" ];then
-SWAPFILE="/tmp/SwapFile"
-if [ -f "\${SWAPFILE}" ];then
-  swapoff -a
-  rm \${SWAPFILE}
-fi
-dd if=/dev/zero of=\${SWAPFILE} bs=1M count=512
-mkswap \${SWAPFILE}
-swapon \${SWAPFILE}
-fi
-EOF
-
-  chmod +x /opt/swap.sh
-  /opt/swap.sh
-fi
-
-if [ -f "/opt/swap.sh" ];then
-  if [ ! -f "/etc/rc.local" ];then
-    touch /etc/rc.local
-  fi
-
-  if [ "$(grep 'exit 0' /etc/rc.local)" ];then
-    sed -i '/exit\ 0/ s/^/#\ /' /etc/rc.local
-  fi
-
-  if [ ! "$(grep 'swap.sh' /etc/rc.local)" ];then
-    echo "/opt/swap.sh" | tee -a /etc/rc.local
-  fi
-
+# create /etc/rc.local if it doesn't already exist
+if [ ! -f "/etc/rc.local" ];then
+  touch /etc/rc.local
   chmod +x /etc/rc.local
 fi
 
@@ -127,14 +181,45 @@ pushd /root/.ssh/
   fi
 popd
 
-CINDER="/opt/cinder.img"
-if [ ! "$(losetup -a | grep /opt/cinder.img)" ];then
-  LOOP=$(losetup -f)
-  dd if=/dev/zero of=${CINDER} bs=1 count=0 seek=1000G
-  losetup ${LOOP} ${CINDER}
-  pvcreate ${LOOP}
-  vgcreate cinder-volumes ${LOOP}
+# build the loopback drive for swap to use
+if [ ! "$(swapon -s | grep -v Filename)" ]; then
+  dd if=/dev/zero of=/opt/swap.img bs=512M count=1
+  mkswap /opt/swap.img
+  echo '/opt/swap.img none swap loop 0 0' >> /etc/fstab
+  swapon -a
+fi
+
+# build the loopback drive for cinder to use
+CINDER="cinder.img"
+loopback_create /opt/${CINDER} 1000G
+CINDER_DEVICE=$(losetup -a | awk -F: "/${CINDER}/ {print \$1}")
+if ! pvs ${CINDER_DEVICE} > /dev/null; then
+  pvcreate ${CINDER_DEVICE}
   pvscan
+fi
+if ! vgs cinder-volumes > /dev/null; then
+  vgcreate cinder-volumes ${CINDER_DEVICE}
+fi
+
+# ensure that the cinder loopback is enabled after reboot
+if ! grep ${CINDER} /etc/rc.local; then
+  sed -i "\$i losetup \$(losetup -f) /opt/${CINDER}" /etc/rc.local
+fi
+
+if [ "${DEPLOY_SWIFT}" == "yes" ]; then
+  # build the loopback drives for swift to use
+  for SWIFT in swift1.img swift2.img swift3.img; do
+    loopback_create /opt/${SWIFT} 1000G
+    SWIFT_DEVICE=$(losetup -a | awk -F: "/${SWIFT}/ {print \$1}")
+    if ! grep "${SWIFT}" /etc/fstab > /dev/null; then
+      echo "/opt/${SWIFT} /srv/${SWIFT} xfs loop,noatime,nodiratime,nobarrier,logbufs=8 0 0" >> /etc/fstab
+    fi
+    if ! grep "${SWIFT}" /proc/mounts > /dev/null; then
+      mkfs.xfs -f ${SWIFT_DEVICE}
+      mkdir -p /srv/${SWIFT}
+      mount /srv/${SWIFT}
+    fi
+  done
 fi
 
 # Copy the gate's repo to the expected location
@@ -155,194 +240,43 @@ pushd /opt/ansible-lxc-rpc
   /opt/ansible-lxc-rpc/scripts/pw-token-gen.py --file /etc/rpc_deploy/user_variables.yml
 popd
 
-cat > /etc/rpc_deploy/user_variables.yml <<EOF
----
-rpc_repo_url: ${FROZEN_REPO_URL}
-required_kernel: 3.13.0-30-generic
-## Rackspace Cloud Details
-rackspace_cloud_auth_url: https://identity.api.rackspacecloud.com/v2.0
-rackspace_cloud_tenant_id: SomeTenantID
-rackspace_cloud_username: SomeUserName
-rackspace_cloud_password: SomeUsersPassword
-rackspace_cloud_api_key: SomeAPIKey
-## Rabbit Options
-rabbitmq_password: secrete
-rabbitmq_cookie_token: secrete
-## Tokens
-memcached_encryption_key: secrete
-## Container default user
-container_openstack_password: secrete
-## Galera Options
-mysql_root_password: secrete
-mysql_debian_sys_maint_password: secrete
-## Keystone Options
-keystone_container_mysql_password: secrete
-keystone_auth_admin_token: secrete
-keystone_auth_admin_password: secrete
-keystone_service_password: secrete
-## Cinder Options
-cinder_container_mysql_password: secrete
-cinder_service_password: secrete
-cinder_v2_service_password: secrete
-# Set default_store to "swift" if using Cloud Files or swift backend
-glance_default_store: file
-glance_container_mysql_password: secrete
-glance_service_password: secrete
-glance_swift_store_auth_address: "{{ rackspace_cloud_auth_url }}"
-glance_swift_store_user: "{{ rackspace_cloud_tenant_id }}:{{ rackspace_cloud_username }}"
-glance_swift_store_key: "{{ rackspace_cloud_password }}"
-glance_swift_store_container: SomeContainerName
-glance_swift_store_region: SomeRegion
-glance_swift_store_endpoint_type: internalURL
-glance_notification_driver: noop
-## Heat Options
-heat_stack_domain_admin_password: secrete
-heat_container_mysql_password: secrete
-### THE HEAT AUTH KEY NEEDS TO BE 32 CHARACTERS LONG ##
-heat_auth_encryption_key: 12345678901234567890123456789012
-### THE HEAT AUTH KEY NEEDS TO BE 32 CHARACTERS LONG ##
-heat_service_password: secrete
-heat_cfn_service_password: secrete
-## Horizon Options
-horizon_container_mysql_password: secrete
-## MaaS Options
-maas_auth_method: password
-maas_auth_url: "{{ rackspace_cloud_auth_url }}"
-maas_username: "{{ rackspace_cloud_username }}"
-maas_api_key: "{{ rackspace_cloud_api_key }}"
-maas_auth_token: some_token
-maas_api_url: https://monitoring.api.rackspacecloud.com/v1.0/{{ rackspace_cloud_tenant_id }}
-maas_notification_plan: npManaged
-# By default we will create an agent token for each entity, however if you'd
-# prefer to use the same agent token for all entities then specify it here
-#maas_agent_token: some_token
-maas_target_alias: public0_v4
-maas_scheme: https
-# Override scheme for specific service remote monitor by specifying here: E.g.
-# maas_nova_scheme: http
-maas_keystone_user: maas
-maas_keystone_password: secrete
-# Check this number of times before registering state change
-maas_alarm_local_consecutive_count: 3
-maas_alarm_remote_consecutive_count: 1
-# Timeout must be less than period
-maas_check_period: 60
-maas_check_timeout: 30
-maas_monitoring_zones:
-  - mzdfw
-  - mziad
-  - mzord
-  - mzlon
-  - mzhkg
-## Neutron Options
-neutron_container_mysql_password: secrete
-neutron_service_password: secrete
-## Nova Options
-nova_virt_type: qemu
-nova_container_mysql_password: secrete
-nova_metadata_proxy_secret: secrete
-nova_ec2_service_password: secrete
-nova_service_password: secrete
-nova_v3_service_password: secrete
-nova_s3_service_password: secrete
-## RPC Support
-rpc_support_holland_password: secrete
-## Kibana Options
-kibana_password: secrete
-EOF
+# change the generated passwords for the OpenStack (admin) and Kibana (kibana) accounts
+sed -i "s/keystone_auth_admin_password:.*/keystone_auth_admin_password: ${ADMIN_PASSWORD}/" /etc/rpc_deploy/user_variables.yml
+sed -i "s/kibana_password:.*/kibana_password: ${ADMIN_PASSWORD}/" /etc/rpc_deploy/user_variables.yml
 
+if [ "${DEPLOY_SWIFT}" == "yes" ]; then
+  # ensure that glance is configured to use swift
+  sed -i "s/glance_default_store:.*/glance_default_store: swift/" /etc/rpc_deploy/user_variables.yml
+  sed -i "s/glance_swift_store_auth_address:.*/glance_swift_store_auth_address: '{{ auth_identity_uri }}'/" /etc/rpc_deploy/user_variables.yml
+  sed -i "s/glance_swift_store_container:.*/glance_swift_store_container: glance_images/" /etc/rpc_deploy/user_variables.yml
+  sed -i "s/glance_swift_store_key:.*/glance_swift_store_key: '{{ glance_service_password }}'/" /etc/rpc_deploy/user_variables.yml
+  sed -i "s/glance_swift_store_region:.*/glance_swift_store_region: RegionOne/" /etc/rpc_deploy/user_variables.yml
+  sed -i "s/glance_swift_store_user:.*/glance_swift_store_user: 'service:glance'/" /etc/rpc_deploy/user_variables.yml
+fi
 
+# build the required user configuration
 cat > /etc/rpc_deploy/rpc_user_config.yml <<EOF
 ---
-# This is the md5 of the environment file
 environment_version: $(md5sum /etc/rpc_deploy/rpc_environment.yml | awk '{print $1}')
-# User defined CIDR used for containers
 cidr_networks:
-  # Cidr used in the Management network
   container: 172.29.236.0/22
-  # Cidr used in the Service network
-  snet: 172.29.248.0/22
-  # Cidr used in the VM network
   tunnel: 172.29.240.0/22
-  # Cidr used in the Storage network
   storage: 172.29.244.0/22
 used_ips:
   - 172.29.236.1,172.29.236.50
   - 172.29.244.1,172.29.244.50
 global_overrides:
   rpc_repo_url: ${FROZEN_REPO_URL}
-  # Internal Management vip address
   internal_lb_vip_address: 172.29.236.100
-  # External DMZ VIP address
-  external_lb_vip_address: 10.200.200.146
-  # Bridged interface to use with tunnel type networks
+  external_lb_vip_address: $(ip -o -4 addr show dev eth0 | awk -F '[ /]+' '/global/ {print $4}')
   tunnel_bridge: "br-vxlan"
-  # Bridged interface to build containers with
   management_bridge: "br-mgmt"
-  # Define your Add on container networks.
-  provider_networks:
-    - network:
-        group_binds:
-          - all_containers
-          - hosts
-        type: "raw"
-        container_bridge: "br-mgmt"
-        container_interface: "eth1"
-        ip_from_q: "container"
-    - network:
-        group_binds:
-          - glance_api
-          - cinder_api
-          - cinder_volume
-          - nova_compute
-        type: "raw"
-        container_bridge: "br-storage"
-        container_interface: "eth2"
-        ip_from_q: "storage"
-    - network:
-        group_binds:
-          - glance_api
-          - nova_compute
-          - neutron_linuxbridge_agent
-        type: "raw"
-        container_bridge: "br-snet"
-        container_interface: "eth3"
-        ip_from_q: "snet"
-    - network:
-        group_binds:
-          - neutron_linuxbridge_agent
-        container_bridge: "br-vxlan"
-        container_interface: "eth10"
-        ip_from_q: "tunnel"
-        type: "vxlan"
-        range: "1:1000"
-        net_name: "vxlan"
-    - network:
-        group_binds:
-          - neutron_linuxbridge_agent
-        container_bridge: "br-vlan"
-        container_interface: "eth11"
-        type: "flat"
-        net_name: "vlan"
-    - network:
-        group_binds:
-          - neutron_linuxbridge_agent
-        container_bridge: "br-vlan"
-        container_interface: "eth11"
-        type: "vlan"
-        range: "1:1"
-        net_name: "vlan"
-  # Name of load balancer
-  lb_name: lb_name_in_core
-# User defined Infrastructure Hosts, this should be a required group
 infra_hosts:
   aio1:
     ip: 172.29.236.100
-# User defined Compute Hosts, this should be a required group
 compute_hosts:
   aio1:
     ip: 172.29.236.100
-# User defined Storage Hosts, this should be a required group
 storage_hosts:
   aio1:
     ip: 172.29.236.100
@@ -353,11 +287,9 @@ storage_hosts:
           volume_group: cinder-volumes
           volume_driver: cinder.volume.drivers.lvm.LVMISCSIDriver
           volume_backend_name: LVM_iSCSI
-# User defined Logging Hosts, this should be a required group
 log_hosts:
   aio1:
     ip: 172.29.236.100
-# User defined Networking Hosts, this should be a required group
 network_hosts:
   aio1:
     ip: 172.29.236.100
@@ -366,6 +298,88 @@ haproxy_hosts:
     ip: 172.29.236.100
 EOF
 
+cat > /etc/rpc_deploy/conf.d/provider_networks.yml <<EOF
+---
+global_overrides:
+  provider_networks:
+    - network:
+        container_bridge: "br-mgmt"
+        container_interface: "eth1"
+        ip_from_q: "container"
+        type: "raw"
+        group_binds:
+          - all_containers
+          - hosts
+    - network:
+        container_bridge: "br-vxlan"
+        container_interface: "eth10"
+        ip_from_q: "tunnel"
+        type: "vxlan"
+        range: "1:1000"
+        net_name: "vxlan"
+        group_binds:
+          - neutron_linuxbridge_agent
+    - network:
+        container_bridge: "br-vlan"
+        container_interface: "eth11"
+        type: "flat"
+        net_name: "vlan"
+        group_binds:
+          - neutron_linuxbridge_agent
+    - network:
+        container_bridge: "br-vlan"
+        container_interface: "eth11"
+        type: "vlan"
+        range: "1:1"
+        net_name: "vlan"
+        group_binds:
+          - neutron_linuxbridge_agent
+    - network:
+        container_bridge: "br-storage"
+        container_interface: "eth2"
+        ip_from_q: "storage"
+        type: "raw"
+        group_binds:
+          - glance_api
+          - cinder_api
+          - cinder_volume
+          - nova_compute
+EOF
+
+if [ "${DEPLOY_SWIFT}" == "yes" ]; then
+  # add the swift bits
+  cat >> /etc/rpc_deploy/conf.d/provider_networks.yml <<EOF
+          - swift_proxy
+EOF
+
+  cat > /etc/rpc_deploy/conf.d/swift.yml <<EOF
+---
+global_overrides:
+  swift:
+    part_power: 8
+    storage_network: 'br-storage'
+    replication_network: 'br-storage'
+    drives:
+      - name: swift1.img
+      - name: swift2.img
+      - name: swift3.img
+    mount_point: /srv
+    storage_policies:
+      - policy:
+          name: default
+          index: 0
+          default: True
+swift-proxy_hosts:
+  aio1:
+    ip: 172.29.236.100
+swift_hosts:
+  aio1:
+    ip: 172.29.236.100
+    # workaround for https://bugs.launchpad.net/openstack-ansible/+bug/1402594
+    container_vars:
+      swift_vars:
+EOF
+fi
 
 cat > /etc/network/interfaces.d/aio-bridges.cfg <<EOF
 ## Required network bridges; br-vlan, br-vxlan, br-mgmt.
@@ -404,16 +418,6 @@ iface br-storage inet static
     bridge_ports none
     address 172.29.244.100
     netmask 255.255.252.0
-
-auto br-snet
-iface br-snet inet static
-    bridge_stp off
-    bridge_waitport 0
-    bridge_fd 0
-    bridge_ports none
-    # Notice there is NO physical interface in this bridge!
-    address 172.29.248.100
-    netmask 255.255.252.0
 EOF
 
 # Ensure the network source is in place
@@ -422,7 +426,7 @@ if [ ! "$(grep -Rni '^source\ /etc/network/interfaces.d/\*.cfg' /etc/network/int
 fi
 
 # Bring up the new interfaces
-for i in br-snet br-storage br-vlan br-vxlan br-mgmt; do
+for i in br-storage br-vlan br-vxlan br-mgmt; do
     /sbin/ifup $i || true
 done
 
@@ -434,9 +438,18 @@ pushd /opt/ansible-lxc-rpc/rpc_deployment
   # Install haproxy for dev purposes only
   install_bits infrastructure/haproxy-install.yml
   # Install all of the infra bits
-  install_bits infrastructure/infrastructure-setup.yml
+  install_bits infrastructure/memcached-install.yml
+  install_bits infrastructure/galera-install.yml
+  install_bits infrastructure/rabbit-install.yml
+  install_bits infrastructure/rsyslog-install.yml
+  install_bits infrastructure/elasticsearch-install.yml
+  install_bits infrastructure/logstash-install.yml
+  install_bits infrastructure/kibana-install.yml
+  install_bits infrastructure/es2unix-install.yml
+  install_bits infrastructure/rsyslog-config.yml
   # install all of the Openstack Bits
   install_bits openstack/keystone-all.yml
+  install_bits openstack/swift-all.yml
   install_bits openstack/glance-all.yml
   install_bits openstack/heat-all.yml
   install_bits openstack/nova-all.yml
@@ -452,3 +465,4 @@ pushd /opt/ansible-lxc-rpc/rpc_deployment
   # Reconfigure Rsyslog
   install_bits infrastructure/rsyslog-config.yml
 popd
+get_instance_info
