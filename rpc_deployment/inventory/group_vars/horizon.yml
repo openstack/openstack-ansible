@@ -51,6 +51,8 @@ install_lib_dir: /usr/local/lib/python2.7/dist-packages
 container_directories:
   - "/etc/horizon"
   - "/var/lib/horizon"
+  - "/usr/local/lib/python2.7/dist-packages/static"
+  - "/usr/local/lib/python2.7/dist-packages/openstack_dashboard/local"
 
 horizon_fqdn: "{{ external_vip_address }}"
 horizon_server_name: "{{ container_name }}"
