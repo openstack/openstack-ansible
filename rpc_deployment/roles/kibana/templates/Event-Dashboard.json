@@ -1,5 +1,5 @@
 {
-  "title": "Next Gen RPC",
+  "title": "Event Dashboard",
   "services": {
     "query": {
       "list": {
@@ -10,7 +10,7 @@
           "pin": false,
           "type": "lucene",
           "enable": true,
-          "query": "tags:neutron*"
+          "query": "tags:nova*"
         },
         "1": {
           "id": 1,
@@ -28,7 +28,7 @@
           "pin": false,
           "type": "lucene",
           "enable": true,
-          "query": "tags:nova*"
+          "query": "tags:neutron*"
         },
         "3": {
           "id": 3,
@@ -41,54 +41,54 @@
         },
         "4": {
           "id": 4,
-          "color": "#E24D42",
-          "alias": "",
-          "pin": false,
-          "type": "lucene",
-          "enable": true,
-          "query": "tags:routes*"
-        },
-        "5": {
-          "id": 5,
           "color": "#1F78C1",
           "alias": "",
           "pin": false,
           "type": "lucene",
           "enable": true,
-          "query": "tags:sqlalchemy*"
+          "query": "tags:swift*"
         },
-        "6": {
-          "id": 6,
+        "5": {
+          "id": 5,
           "color": "#BA43A9",
           "alias": "",
           "pin": false,
           "type": "lucene",
           "enable": true,
-          "query": "tags:rsyslog*"
+          "query": "tags:horizon*"
         },
-        "7": {
-          "id": 7,
-          "color": "#BA43A9",
+        "6": {
+          "id": 6,
+          "color": "#C15C17",
           "alias": "",
           "pin": false,
           "type": "lucene",
           "enable": true,
           "query": "tags:heat*"
         },
-        "8": {
+        "7": {
           "id": 7,
-          "color": "#705DA0",
+          "color": "#629E51",
           "alias": "",
           "pin": false,
           "type": "lucene",
           "enable": true,
-          "query": "tags:horizon*"
+          "query": "tags:openstack AND httptime:*"
+        },
+        "8": {
+          "id": 8,
+          "color": "#EAB839",
+          "alias": "",
+          "pin": false,
+          "type": "lucene",
+          "enable": true,
+          "query": "tags:infrastructure"
         }
       },
       "ids": [
-        2,
         0,
         1,
+        2,
         3,
         4,
         5,
@@ -118,13 +118,13 @@
   "rows": [
     {
       "title": "Graph",
-      "height": "350px",
+      "height": "150px",
       "editable": true,
       "collapse": false,
       "collapsable": true,
       "panels": [
         {
-          "span": 12,
+          "span": 4,
           "editable": true,
           "group": [
             "default"
@@ -133,25 +133,25 @@
           "mode": "count",
           "time_field": "@timestamp",
           "value_field": null,
-          "auto_int": true,
+          "auto_int": false,
           "resolution": 100,
-          "interval": "1s",
+          "interval": "10s",
           "fill": 3,
           "linewidth": 3,
           "timezone": "browser",
           "spyable": true,
-          "zoomlinks": true,
-          "bars": false,
-          "stack": false,
+          "zoomlinks": false,
+          "bars": true,
+          "stack": true,
           "points": false,
-          "lines": true,
-          "legend": true,
+          "lines": false,
+          "legend": false,
           "x-axis": true,
           "y-axis": true,
           "percentage": false,
           "interactive": true,
           "queries": {
-            "mode": "all",
+            "mode": "selected",
             "ids": [
               0,
               1,
@@ -162,10 +162,10 @@
               6
             ]
           },
-          "title": "Events over time",
+          "title": "OpenStack Events",
           "intervals": [
             "auto",
-            "1s",
+            "10s",
             "1m",
             "5m",
             "10m",
@@ -178,9 +178,9 @@
             "1M",
             "1y"
           ],
-          "options": true,
+          "options": false,
           "tooltip": {
-            "value_type": "cumulative",
+            "value_type": "individual",
             "query_as_alias": true
           },
           "scale": 1,
@@ -204,13 +204,159 @@
           "legend_counts": true,
           "zerofill": true,
           "derivative": false
+        },
+        {
+          "span": 4,
+          "editable": true,
+          "type": "histogram",
+          "loadingEditor": false,
+          "mode": "mean",
+          "time_field": "@timestamp",
+          "value_field": "httptime",
+          "x-axis": true,
+          "y-axis": true,
+          "scale": "1000",
+          "y_format": "none",
+          "grid": {
+            "max": null,
+            "min": 0
+          },
+          "queries": {
+            "mode": "selected",
+            "ids": [
+              7
+            ]
+          },
+          "annotate": {
+            "enable": false,
+            "query": "*",
+            "size": 20,
+            "field": "_type",
+            "sort": [
+              "_score",
+              "desc"
+            ]
+          },
+          "auto_int": false,
+          "resolution": 100,
+          "interval": "10s",
+          "intervals": [
+            "auto",
+            "10s",
+            "1m",
+            "5m",
+            "10m",
+            "30m",
+            "1h",
+            "3h",
+            "12h",
+            "1d",
+            "1w",
+            "1y"
+          ],
+          "lines": true,
+          "fill": 1,
+          "linewidth": 2,
+          "points": false,
+          "pointradius": 3,
+          "bars": false,
+          "stack": true,
+          "spyable": true,
+          "zoomlinks": false,
+          "options": false,
+          "legend": false,
+          "show_query": false,
+          "interactive": true,
+          "legend_counts": true,
+          "timezone": "browser",
+          "percentage": false,
+          "zerofill": true,
+          "derivative": false,
+          "tooltip": {
+            "value_type": "individual",
+            "query_as_alias": true
+          },
+          "title": "OpenStack API Response (ms)"
+        },
+        {
+          "span": 4,
+          "editable": true,
+          "type": "histogram",
+          "loadingEditor": false,
+          "mode": "count",
+          "time_field": "@timestamp",
+          "value_field": null,
+          "x-axis": true,
+          "y-axis": true,
+          "scale": 1,
+          "y_format": "none",
+          "grid": {
+            "max": null,
+            "min": 0
+          },
+          "queries": {
+            "mode": "selected",
+            "ids": [
+              8
+            ]
+          },
+          "annotate": {
+            "enable": false,
+            "query": "*",
+            "size": 20,
+            "field": "_type",
+            "sort": [
+              "_score",
+              "desc"
+            ]
+          },
+          "auto_int": false,
+          "resolution": 100,
+          "interval": "10s",
+          "intervals": [
+            "auto",
+            "10s",
+            "1m",
+            "5m",
+            "10m",
+            "30m",
+            "1h",
+            "3h",
+            "12h",
+            "1d",
+            "1w",
+            "1y"
+          ],
+          "lines": false,
+          "fill": 0,
+          "linewidth": 3,
+          "points": false,
+          "pointradius": 5,
+          "bars": true,
+          "stack": true,
+          "spyable": true,
+          "zoomlinks": false,
+          "options": false,
+          "legend": false,
+          "show_query": true,
+          "interactive": true,
+          "legend_counts": true,
+          "timezone": "browser",
+          "percentage": false,
+          "zerofill": true,
+          "derivative": false,
+          "tooltip": {
+            "value_type": "cumulative",
+            "query_as_alias": true
+          },
+          "title": "Infrastructure Events"
         }
       ],
       "notice": false
     },
     {
       "title": "Services",
-      "height": "250px",
+      "height": "150px",
       "editable": true,
       "collapse": false,
       "collapsable": true,
@@ -230,8 +376,8 @@
           "style": {
             "font-size": "10pt"
           },
-          "donut": true,
-          "tilt": true,
+          "donut": false,
+          "tilt": false,
           "labels": true,
           "arrangement": "horizontal",
           "chart": "pie",
@@ -246,13 +392,15 @@
               3,
               4,
               5,
-              6
+              6,
+              7,
+              8
             ]
           },
           "tmode": "terms",
           "tstat": "total",
           "valuefield": "",
-          "title": "Level"
+          "title": "Severity"
         },
         {
           "error": false,
@@ -264,52 +412,13 @@
           "exclude": [],
           "missing": false,
           "other": false,
-          "size": 10,
+          "size": 5,
           "order": "count",
           "style": {
             "font-size": "10pt"
           },
-          "donut": true,
-          "tilt": true,
-          "labels": true,
-          "arrangement": "vertical",
-          "chart": "pie",
-          "counter_pos": "above",
-          "spyable": true,
-          "queries": {
-            "mode": "all",
-            "ids": [
-              0,
-              1,
-              2,
-              3,
-              4,
-              5,
-              6
-            ]
-          },
-          "tmode": "terms",
-          "tstat": "total",
-          "valuefield": "",
-          "title": "Service"
-        },
-        {
-          "error": false,
-          "span": 4,
-          "editable": true,
-          "type": "terms",
-          "loadingEditor": false,
-          "field": "host.raw",
-          "exclude": [],
-          "missing": false,
-          "other": false,
-          "size": 10,
-          "order": "count",
-          "style": {
-            "font-size": "10pt"
-          },
-          "donut": true,
-          "tilt": true,
+          "donut": false,
+          "tilt": false,
           "labels": true,
           "arrangement": "horizontal",
           "chart": "pie",
@@ -324,13 +433,56 @@
               3,
               4,
               5,
-              6
+              6,
+              7,
+              8
             ]
           },
           "tmode": "terms",
           "tstat": "total",
           "valuefield": "",
-          "title": "Logging Host"
+          "title": "Top 5 Event Sources"
+        },
+        {
+          "error": false,
+          "span": 4,
+          "editable": true,
+          "type": "terms",
+          "loadingEditor": false,
+          "field": "verb",
+          "exclude": [],
+          "missing": false,
+          "other": false,
+          "size": 10,
+          "order": "count",
+          "style": {
+            "font-size": "10pt"
+          },
+          "donut": false,
+          "tilt": false,
+          "labels": true,
+          "arrangement": "horizontal",
+          "chart": "pie",
+          "counter_pos": "above",
+          "spyable": true,
+          "queries": {
+            "mode": "all",
+            "ids": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ]
+          },
+          "tmode": "terms",
+          "tstat": "total",
+          "valuefield": "",
+          "title": "API Operations"
         }
       ],
       "notice": false
@@ -385,7 +537,9 @@
               3,
               4,
               5,
-              6
+              6,
+              7,
+              8
             ]
           },
           "field_list": true,
@@ -415,25 +569,14 @@
       "notice": false,
       "query": "*",
       "pinned": true,
-      "history": [
-        "tags:rsyslog*",
-        "tags:sqlalchemy*",
-        "tags:routes*",
-        "tags:keystone*",
-        "tags:nova*",
-        "tags:cinder*",
-        "tags:neutron*",
-        "tags:neutron",
-        "*",
-        ""
-      ],
+      "history": [],
       "remember": 10,
       "enable": true
     },
     {
       "type": "filtering",
-      "collapse": false,
-      "notice": true,
+      "collapse": true,
+      "notice": false,
       "enable": true
     }
   ],
@@ -486,5 +629,5 @@
     "load_local": true,
     "hide": false
   },
-  "refresh": false
+  "refresh": "5s"
 }
