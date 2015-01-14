@@ -42,7 +42,7 @@ function (Settings) {
      *
      * default_route: '/dashboard/elasticsearch/WebLogs',
      */
-    default_route     : '/dashboard/file/Next-Gen-RPC.json',
+    default_route     : '/dashboard/file/Event-Dashboard.json',
 
     /** @scratch /configuration/config.js/5
      *
