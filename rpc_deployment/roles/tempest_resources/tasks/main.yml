@@ -65,6 +65,15 @@
     - demo
     - alt_demo
 
+- name: Ensure remote_image role exists
+  keystone:
+    command: ensure_role
+    role_name: remote_image
+    endpoint: "{{ auth_identity_uri }}"
+    login_tenant_name: "{{ auth_admin_tenant }}"
+    login_user: "{{ auth_admin_username }}"
+    login_password: "{{ auth_admin_password }}"
+
 - name: Ensure tempest network exists
   neutron:
     command: create_network_with_subnet
