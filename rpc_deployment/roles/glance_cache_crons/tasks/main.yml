@@ -24,8 +24,8 @@
     job: "{{ item.name }}"
     user: glance
   with_items:
-    - name: glance-cache-pruner
+    - name: /usr/local/bin/glance-cache-pruner
       hour: "*"
-    - name: glance-cache-cleaner
+    - name: /usr/local/bin/glance-cache-cleaner
       hour: "{{ 23|random }}"
   when: flavor | search("cache")
