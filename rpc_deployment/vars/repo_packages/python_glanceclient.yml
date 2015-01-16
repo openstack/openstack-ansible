@@ -19,6 +19,6 @@ repo_path: "{{ pip_wheel_name }}_{{ git_install_branch | replace('/', '_') }}"
 git_repo: https://github.com/openstack/python-glanceclient
 git_fallback_repo: https://git.openstack.org/openstack/python-glanceclient
 git_dest: "/opt/{{ repo_path }}"
-git_install_branch: b126351d9d61fac777b72707620583dcb516e8d5
+git_install_branch: 0.15.0
 
 pip_wheel_name: python-glanceclient
