@@ -28,4 +28,4 @@
     owner={{ system_user }}
     mode=0644
   notify: Restart swift service
-  when: swift.replication_network is defined
+  when: swift.replication_network is defined and swift.replication_network != swift.storage_network
