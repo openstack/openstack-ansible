@@ -50,7 +50,7 @@ gpg_keys:
 
 ## Repositories
 apt_common_repos:
-  - { repo: "deb http://mirror.jmu.edu/pub/mariadb/repo/5.5/ubuntu {{ ansible_distribution_release }} main", state: "present" }
+  - { repo: "deb http://mirror.rackspace.com/rackspaceprivatecloud/mirror/mariadb/mariadb-5.5.41/repo/ubuntu/ {{ ansible_distribution_release }} main", state: "present" }
 
 apt_lxc_common_repos:
   - { repo: "ppa:ubuntu-lxc/stable", state: "present" }
