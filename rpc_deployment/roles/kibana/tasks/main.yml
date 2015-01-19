@@ -118,14 +118,14 @@
     create: "yes"
     state: "present"
 
-- name: Install Next Gen RPC Dashboard
+- name: Install Dashboards
   template:
     src: "{{ item }}"
     dest: "/opt/kibana/app/dashboards/{{ item }}"
     owner: "root"
     group: "root"
   with_items:
-    - Next-Gen-RPC.json
+    - Event-Dashboard.json
 
 - name: Restart Apache
   service: name=apache2 state=restarted
