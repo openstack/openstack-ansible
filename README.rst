@@ -9,6 +9,14 @@ Official Documentation
 
 Comprehensive installation guides, including FAQs and release notes, can be found at http://docs.rackspace.com
 
+Bug tracking and release management can be found in Launchpad_
+
+.. _launchpad: https://launchpad.net/openstack-ansible
+
+Code reviews will be managed in Gerrit_
+
+.. _gerrit: https://review.openstack.org/#/q/os-ansible-deployment,n,z
+
 Playbook Support
 ----------------
 
@@ -76,12 +84,12 @@ Example usage from the `rpc_deployment` directory in the ``ansible-rpc-lxc`` rep
 
 .. code-block:: bash
 
-    # Run setup on all hosts: 
+    # Run setup on all hosts:
     ansible-playbook -e @vars/user_variables.yml playbooks/setup/host-setup.yml
-    
+
     # Run infrastructure on all hosts
     ansible-playbook -e @vars/user_variables.yml playbooks/infrastructure/infrastructure-setup.yml
-    
+
     # Setup and configure openstack within your spec'd containers
     ansible-playbook -e @vars/user_variables.yml playbooks/openstack/openstack-setup.yml
 
@@ -89,7 +97,7 @@ Example usage from the `rpc_deployment` directory in the ``ansible-rpc-lxc`` rep
 About Inventory
 ---------------
 
-All things that Ansible cares about are located in inventory. In the Rackspace Private Cloud all 
+All things that Ansible cares about are located in inventory. In the Rackspace Private Cloud all
 inventory is dynamically generated using the previously mentioned configuration files. While this is a dynamically generated inventory, it is not 100% generated on every run.  The inventory is saved in a file named `rpc_inventory.json` and is located in the directory where you've located your user configuration files. On every run a backup of the inventory json file is created in both the current working directory as well as the location where the user configuration files exist.  The inventory json file is a living document and is intended to grow as the environment scales in infrastructure. This means that the inventory file will be appended to as you add more nodes and or change the container affinity from within the `rpc_user_config.yml` file. It is recommended that the base inventory file be backed up to a safe location upon the completion of a deployment operation. While the dynamic inventory processor has guards in it to ensure that the built inventory is not adversely effected by programmatic operations this does not guard against user error and/or catastrophic failure.
 
 
