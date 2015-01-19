@@ -20,7 +20,7 @@
     group={{ system_group|default('root') }}
     owner={{ system_user|default('root') }}
     mode={{ item.mode|default(700) }}
-    recurse=true
+    recurse=no
   when: container_directories is defined
   with_items: container_directories
   tags:
