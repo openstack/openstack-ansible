@@ -14,23 +14,26 @@
 # limitations under the License.
 
 - name: Add Container apt keys
-  apt_key: >
-    url="{{ item.url }}"
-    state="{{ item.state }}"
+  apt_key:
+    url: "{{ item.url }}"
+    state: "{{ item.state }}"
   with_items: apt_container_keys
   when: "ansible_distribution_version in ['12.04', '13.04', '13.10', '14.04'] and apt_container_keys is defined"
 
 - name: Add Container GPG Keys
-  apt_key: >
-    id="{{ item.hash_id }}"
-    keyserver="{{ item.keyserver }}"
-    state=present
+  apt_key:
+    id: "{{ item.hash_id }}"
+    keyserver: "{{ item.keyserver }}"
+    state: present
   with_items: container_gpg_keys
   when: "ansible_distribution_version in ['12.04', '13.04', '13.10', '14.04'] and container_gpg_keys is defined"
 
 - name: Add Container repos
-  apt_repository: >
-    repo="{{ item.repo }}"
-    state="{{ item.state }}"
+  apt_repository:
+    repo: "{{ item.repo }}"
+    state: "{{ item.state }}"
   with_items: apt_container_repos
   when: "ansible_distribution_version in ['12.04', '13.04', '13.10', '14.04'] and apt_container_repos is defined"
+  register: add_repos
+  until: add_repos|success
+  retries: 3
