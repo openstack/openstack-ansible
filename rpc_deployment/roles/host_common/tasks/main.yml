@@ -19,3 +19,12 @@
 - include: kernel_modules.yml
 - include: irqbalance.yml
 - include: check_container_bridge.yml
+
+- name: Create /openstack hierachy
+  file:
+    path: "{{item}}"
+    state: directory
+  with_items:
+    - "/openstack"
+    - "/openstack/backup"
+    - "/openstack/log"
