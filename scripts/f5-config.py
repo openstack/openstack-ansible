@@ -211,6 +211,9 @@ def recursive_host_get(inventory, group_name, host_dict=None):
         host_dict = {}
 
     inventory_group = inventory.get(group_name)
+    if inventory_group is None:
+        return host_dict
+
     if 'children' in inventory_group and inventory_group['children']:
         for child in inventory_group['children']:
             recursive_host_get(
