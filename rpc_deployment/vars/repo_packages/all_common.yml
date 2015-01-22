@@ -16,6 +16,25 @@
 ## URL for the frozen rpc repo
 rpc_repo_url: "https://mirror.rackspace.com/rackspaceprivatecloud"
 
+## GPG Keys
+gpg_keys:
+  - { key_name: 'mariadb', keyserver: 'hkp://keyserver.ubuntu.com:80', hash_id: '0xcbcb082a1bb943db' }
+
+apt_common_repos:
+  - { repo: "deb http://ftp.osuosl.org/pub/mariadb/mariadb-5.5.41/repo/ubuntu/ {{ ansible_distribution_release }} main", state: "present" }
+
+# apt_container_keys:
+#   - { url: "{{ rpc_repo_url }}/repo.gpg", state: "present" }
+
+## Repositories. the name: key value is only used in the ``containers-setup.yml`` play
+# Set the name to whatever the domain name is of the ``rpc_repo_url`` value with any
+# Hyphens and periods replaced with underlines. This will ensure that when ansible 
+# runs into the ``apt_common_repos`` option is set correctly.
+# apt_common_repos:
+#   - { repo: "deb [arch=amd64] {{ rpc_repo_url }} rpc-LA main", state: "present", name: "mirror_rackspace_com" }
+#   - { repo: "deb [arch=amd64] {{ rpc_repo_url }} LA main", state: "present", name: "mirror_rackspace_com" }
+#   - { repo: "deb [arch=amd64] {{ rpc_repo_url }} universe-LA universe", state: "present", name: "mirror_rackspace_com" }
+
 ## Python pip
 get_pip_url: "{{ rpc_repo_url }}/downloads/get-pip.py"
 get_pip_sha256sum: "d43dc33a5670d69dd14a9be1f2b2fa27ebf124ec1b212a47425331040f742a9b"

@@ -18,7 +18,7 @@
 set -e -u -v -x
 
 ## Vars
-FROZEN_REPO_URL=${FROZEN_REPO_URL:-"https://mirror.rackspace.com/rackspaceprivatecloud"}
+FROZEN_REPO_URL=${FROZEN_REPO_URL:-"http://mirror.rackspace.com/rackspaceprivatecloud"}
 MAX_RETRIES=${MAX_RETRIES:-5}
 ADMIN_PASSWORD=${ADMIN_PASSWORD:-"secrete"}
 DEPLOY_SWIFT=${DEPLOY_SWIFT:-"yes"}

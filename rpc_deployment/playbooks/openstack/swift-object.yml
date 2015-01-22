@@ -19,7 +19,6 @@
     - swift_init_scripts
     - swift_object
   vars_files:
-    - inventory/group_vars/swift_all.yml
     - vars/openstack_service_vars/swift_object.yml
   handlers:
     - include: handlers/swift_services.yml

@@ -54,30 +54,23 @@
 {%     set repl_bridge = 'ansible_' + swift.replication_network|replace('-', '_') %}
 {%     set def_repl_ip = hostvars[host][repl_bridge]['ipv4']['address'] | default(def_storage_ip) %}
 {%   endif %}
-{### Default swift_vars to an empty dict if not defined #}
-{### swift_vars needs to exist for swift_vars[setting] checks to wrok #}
-{%   if hostvars[host]['swift_vars'] is defined %}
-{%     set swift_vars = hostvars[host]['swift_vars'] %}
-{%   else %}
-{%     set swift_vars = {} %}
-{%   endif %}
 {### Get the drives use swift global as default #}
-{%   set drives = swift_vars.drives | default(swift.drives | default([])) %}
+{%   set drives = hostvars[host]['swift_vars']['drives'] | default(swift.drives | default([])) %}
 {### Loop through the drives #}
 {%   for drive in drives %}
 {###   Check if groups is defined per host or drive #}
-{%     set groups =  drive.groups | default(swift_vars.groups | default(swift.groups | default(def_groups))) %}
+{%     set groups =  drive.groups | default(hostvars[host]['swift_vars']['groups'] | default(swift.groups | default(def_groups))) %}
 {###   Only build the device if it is part of the group we're building the ring for #}
 {%     if name in groups %}
 {###     Build an empty device which we'll update with the appropriate details #}
 {%       set device = {} %}
-{%       set weight = drive.weight | default(swift_vars.weight | default(swift.weight | default(swift_default_drive_weight))) %}
-{%       set region = drive.region | default(swift_vars.region | default(swift.region | default(swift_default_host_region))) %}
-{%       set zone = drive.zone | default(swift_vars.zone | default(swift.zone | default(swift_default_host_zone))) %}
-{%       set repl_ip = drive.repl_ip | default(swift_vars.repl_ip | default(def_repl_ip)) %}
-{%       set repl_port = drive.repl_port | default(swift_vars.repl_port | default(port)) %}
-{%       set storage_ip = drive.storage_ip | default(swift_vars.storage_ip | default(def_storage_ip)) %}
-{%       set storage_port = drive.storage_port | default(swift_vars.storage_port | default(port)) %}
+{%       set weight = drive.weight | default(hostvars[host]['swift_vars']['weight'] | default(swift.weight | default(swift_default_drive_weight))) %}
+{%       set region = drive.region | default(hostvars[host]['swift_vars']['region'] | default(swift.region | default(swift_default_host_region))) %}
+{%       set zone = drive.zone | default(hostvars[host]['swift_vars']['zone'] | default(swift.zone | default(swift_default_host_zone))) %}
+{%       set repl_ip = drive.repl_ip | default( hostvars[host]['swift_vars']['repl_ip'] | default(def_repl_ip)) %}
+{%       set repl_port = drive.repl_port | default((hostvars[host]['swift_vars']['repl_port']) | default(port)) %}
+{%       set storage_ip = drive.storage_ip | default(hostvars[host]['swift_vars']['storage_ip'] | default(def_storage_ip)) %}
+{%       set storage_port = drive.storage_port | default((hostvars[host]['swift_vars']['storage_port']) | default(port)) %}
 {###     Update the device with the appropriate values #}
 {%       set _update = device.update({'device':drive.name}) %}
 {%       set _update = device.update({'weight': weight}) %}
