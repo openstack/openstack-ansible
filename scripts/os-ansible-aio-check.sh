@@ -271,36 +271,6 @@ global_overrides:
   external_lb_vip_address: $(ip -o -4 addr show dev eth0 | awk -F '[ /]+' '/global/ {print $4}')
   tunnel_bridge: "br-vxlan"
   management_bridge: "br-mgmt"
-infra_hosts:
-  aio1:
-    ip: 172.29.236.100
-compute_hosts:
-  aio1:
-    ip: 172.29.236.100
-storage_hosts:
-  aio1:
-    ip: 172.29.236.100
-    container_vars:
-      cinder_backends:
-        limit_container_types: cinder_volume
-        lvm:
-          volume_group: cinder-volumes
-          volume_driver: cinder.volume.drivers.lvm.LVMISCSIDriver
-          volume_backend_name: LVM_iSCSI
-log_hosts:
-  aio1:
-    ip: 172.29.236.100
-network_hosts:
-  aio1:
-    ip: 172.29.236.100
-haproxy_hosts:
-  aio1:
-    ip: 172.29.236.100
-EOF
-
-cat > /etc/rpc_deploy/conf.d/provider_networks.yml <<EOF
----
-global_overrides:
   provider_networks:
     - network:
         container_bridge: "br-mgmt"
@@ -348,7 +318,7 @@ EOF
 
 if [ "${DEPLOY_SWIFT}" == "yes" ]; then
   # add the swift bits
-  cat >> /etc/rpc_deploy/conf.d/provider_networks.yml <<EOF
+  cat >> /etc/rpc_deploy/rpc_user_config.yml <<EOF
           - swift_proxy
 EOF
 
@@ -375,11 +345,36 @@ swift-proxy_hosts:
 swift_hosts:
   aio1:
     ip: 172.29.236.100
-    # workaround for https://bugs.launchpad.net/openstack-ansible/+bug/1402594
-    container_vars:
-      swift_vars:
 EOF
 fi
+
+cat >> /etc/rpc_deploy/rpc_user_config.yml <<EOF
+infra_hosts:
+  aio1:
+    ip: 172.29.236.100
+compute_hosts:
+  aio1:
+    ip: 172.29.236.100
+storage_hosts:
+  aio1:
+    ip: 172.29.236.100
+    container_vars:
+      cinder_backends:
+        limit_container_types: cinder_volume
+        lvm:
+          volume_group: cinder-volumes
+          volume_driver: cinder.volume.drivers.lvm.LVMISCSIDriver
+          volume_backend_name: LVM_iSCSI
+log_hosts:
+  aio1:
+    ip: 172.29.236.100
+network_hosts:
+  aio1:
+    ip: 172.29.236.100
+haproxy_hosts:
+  aio1:
+    ip: 172.29.236.100
+EOF
 
 cat > /etc/network/interfaces.d/aio-bridges.cfg <<EOF
 ## Required network bridges; br-vlan, br-vxlan, br-mgmt.
@@ -448,7 +443,18 @@ pushd /opt/ansible-lxc-rpc/rpc_deployment
   install_bits infrastructure/es2unix-install.yml
   install_bits infrastructure/rsyslog-config.yml
   # install all of the Openstack Bits
-  install_bits openstack/keystone-all.yml
+  if [ -f playbooks/openstack/openstack-common.yml ]; then
+    # cater for 9.x.x release (icehouse)
+    install_bits openstack/openstack-common.yml
+  fi
+  if [ -f playbooks/openstack/keystone-all.yml ]; then
+    # cater for 10.x.x release (juno) onwards
+    install_bits openstack/keystone-all.yml
+  else
+    # cater for 9.x.x release (icehouse)
+    install_bits openstack/keystone.yml
+    install_bits openstack/keystone-add-all-services.yml
+  fi
   if [ "${DEPLOY_SWIFT}" == "yes" ]; then
     install_bits openstack/swift-all.yml
   fi
@@ -458,8 +464,20 @@ pushd /opt/ansible-lxc-rpc/rpc_deployment
   install_bits openstack/neutron-all.yml
   install_bits openstack/cinder-all.yml
   install_bits openstack/horizon-all.yml
-  install_bits openstack/utility-all.yml
-  install_bits openstack/rpc-support-all.yml
+  if [ -f playbooks/openstack/utility-all.yml ]; then
+    # cater for 10.x.x release (juno) onwards
+    install_bits openstack/utility-all.yml
+  else
+    # cater for 9.x.x release (icehouse)
+    install_bits openstack/utility.yml
+  fi
+  if [ -f playbooks/openstack/rpc-support-all.yml ]; then
+    # cater for 10.x.x release (juno) onwards
+    install_bits openstack/rpc-support-all.yml
+  else
+    # cater for 9.x.x release (icehouse)
+    install_bits openstack/rpc-support.yml
+  fi
   # Stop rsyslog container(s)
   for i in $(lxc-ls | grep "rsyslog"); do
       lxc-stop -k -n $i; lxc-start -d -n $i
