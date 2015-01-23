@@ -5,6 +5,7 @@ use_stderr = False
 lock_path = /opt/{{ repo_path }}/locks
 
 [auth]
+tempest_roles = remote_image
 
 [boto]
 ssh_user = cirros
@@ -75,7 +76,6 @@ password = demo
 username = demo
 uri_v3 = http://{{ external_vip_address }}:5000/v3/
 uri = http://{{ external_vip_address }}:5000/v2.0/
-
 
 
 [identity-feature-enabled]
