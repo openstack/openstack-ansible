@@ -21,3 +21,7 @@ verbose: True
 
 container_lvm_fstype: ext4
 container_lvm_fssize: 5GB
+
+# Directories to create
+container_directories:
+  - { name: /var/log/elasticsearch, mode: 755 }

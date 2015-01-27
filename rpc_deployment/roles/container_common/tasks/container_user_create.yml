@@ -25,6 +25,7 @@
     name: "{{ system_user }}"
     shell: "/bin/false"
     group: "{{ system_group }}"
+    groups: adm
     home: "/var/lib/{{ system_user }}"
     system: "yes"
     createhome: "yes"
