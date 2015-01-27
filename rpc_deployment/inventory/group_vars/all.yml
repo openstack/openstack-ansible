@@ -43,6 +43,16 @@ external_vip_address: "{{ external_lb_vip_address }}"
 rpc_repo_url: "https://mirror.rackspace.com/rackspaceprivatecloud"
 rpc_release: 10.1.2rc1
 
+## URLs for package repos
+mariadb_repo_url: "http://mirror.rackspace.com/rackspaceprivatecloud/mirror/mariadb/mariadb-5.5.41/repo/ubuntu/"
+ubuntu_lxc_repo_url: "ppa:ubuntu-lxc/stable"
+elasticsearch_repo_url: "http://packages.elasticsearch.org/elasticsearch/1.2/debian"
+logstash_repo_url: "http://packages.elasticsearch.org/logstash/1.4/debian"
+rabbitmq_repo_url: "http://www.rabbitmq.com/debian/"
+rsyslog_repo_url: "ppa:adiscon/v8-stable"
+raxmon_repo_url: "http://stable.packages.cloudmonitoring.rackspace.com/ubuntu-14.04-x86_64"
+
+
 ## GPG Keys
 gpg_keys:
   - { key_name: 'mariadb', keyserver: 'hkp://keyserver.ubuntu.com:80', hash_id: '0xcbcb082a1bb943db' }
@@ -50,12 +60,12 @@ gpg_keys:
 
 ## Repositories
 apt_common_repos:
-  - { repo: "deb http://mirror.rackspace.com/rackspaceprivatecloud/mirror/mariadb/mariadb-5.5.41/repo/ubuntu/ {{ ansible_distribution_release }} main", state: "present" }
+  - { repo: "deb {{ mariadb_repo_url }} {{ ansible_distribution_release }} main", state: "present" }
 
 apt_lxc_common_repos:
-  - { repo: "ppa:ubuntu-lxc/stable", state: "present" }
+  - { repo: "{{ ubuntu_lxc_repo_url }}", state: "present" }
 
-get_pip_url: "https://mirror.rackspace.com/rackspaceprivatecloud/downloads/get-pip.py"
+get_pip_url: "{{ rpc_repo_url }}/downloads/get-pip.py"
 
 
 ## Users that will not be created via container_common

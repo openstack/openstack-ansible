@@ -17,7 +17,7 @@ apt_container_keys:
   - { url: "https://monitoring.api.rackspacecloud.com/pki/agent/linux.asc", state: "present" }
 
 apt_container_repos:
-  - { repo: "deb http://stable.packages.cloudmonitoring.rackspace.com/ubuntu-14.04-x86_64 cloudmonitoring main", state: "present" }
+  - { repo: "deb {{ raxmon_repo_url }} cloudmonitoring main", state: "present" }
 
 container_packages:
   - rackspace-monitoring-agent
