@@ -123,6 +123,15 @@ maas_monitoring_zones:
 # maas_fqdn_extension: .example.com
 # Set the following to skip creating alarms for this device
 #maas_excluded_devices: ['xvde']
+# Set the threshold for filesystem monitoring when you are not specifying specific filesystems.
+maas_filesystem_threshold: 90.0
+# Explicitly set the filesystems to set up monitors/alerts for.
+# NB You can override these in rpc_user_config per device using "maas_filesystem_overrides"
+#maas_filesystem_monitors:
+#  - filesystem: /
+#    threshold: 90.0
+#  - filesystem: /boot
+#    threshold: 90.0
 
 ## Neutron Options
 neutron_container_mysql_password:
