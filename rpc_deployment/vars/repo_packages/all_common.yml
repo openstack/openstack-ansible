@@ -20,12 +20,6 @@ rpc_repo_url: "https://mirror.rackspace.com/rackspaceprivatecloud"
 get_pip_url: "{{ rpc_repo_url }}/downloads/get-pip.py"
 get_pip_sha256sum: "d43dc33a5670d69dd14a9be1f2b2fa27ebf124ec1b212a47425331040f742a9b"
 
-pip_common_packages:
-  - wheel
-  - setuptools
-  - pip
-
-
 ## Base Packages
 apt_common_packages:
   - aptitude
