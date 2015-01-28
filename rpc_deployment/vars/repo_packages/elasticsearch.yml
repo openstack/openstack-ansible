@@ -19,7 +19,7 @@ apt_container_keys:
   - { url: "http://packages.elasticsearch.org/GPG-KEY-elasticsearch", state: "present" }
 
 apt_container_repos:
-  - { repo: "deb http://packages.elasticsearch.org/elasticsearch/1.2/debian stable main", state: "present"}
+  - { repo: "deb {{ elasticsearch_repo_url }} stable main", state: "present"}
 
 container_packages:
   - elasticsearch
