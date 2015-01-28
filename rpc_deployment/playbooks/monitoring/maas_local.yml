@@ -305,8 +305,8 @@
     check_period: "{{ maas_check_period }}"
     check_timeout: "{{ maas_check_timeout }}"
     alarms:
-      - { 'name': 'disk_free_alarm', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["disk_free_alarm"] != 1) { return new AlarmStatus(CRITICAL, "disk_free_alarm triggered"); }' }
-      - { 'name': 'mem_alarm', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["mem_alarm"] != 1) { return new AlarmStatus(CRITICAL, "mem_alarm triggered"); }' }
+      - { 'name': 'rabbitmq_disk_free_alarm_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["rabbitmq_disk_free_alarm_status"] != 1) { return new AlarmStatus(CRITICAL, "rabbitmq_disk_free_alarm_status triggered"); }' }
+      - { 'name': 'rabbitmq_mem_alarm_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["rabbitmq_mem_alarm_status"] != 1) { return new AlarmStatus(CRITICAL, "rabbitmq_mem_alarm_status triggered"); }' }
   user: root
   roles:
     - maas_local
@@ -318,8 +318,8 @@
     check_period: "{{ maas_check_period }}"
     check_timeout: "{{ maas_check_timeout }}"
     alarms:
-      - { 'name': 'wsrep_cluster_size', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["WSREP_CLUSTER_SIZE"] < {{ groups["galera"] | length }}) { return new AlarmStatus(CRITICAL, "Galera cluster size less than expected"); }' }
-      - { 'name': 'wsrep_local_state', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["WSREP_LOCAL_STATE_COMMENT"] != "Synced" ) { return new AlarmStatus(CRITICAL, "Galera cluster node not syncd"); }' }
+      - { 'name': 'wsrep_cluster_size', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["wsrep_cluster_size"] < {{ groups["galera"] | length }}) { return new AlarmStatus(CRITICAL, "Galera cluster size less than expected"); }' }
+      - { 'name': 'wsrep_local_state', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["wsrep_local_state_comment"] != "Synced" ) { return new AlarmStatus(CRITICAL, "Galera cluster node not synced"); }' }
   user: root
   roles:
     - maas_local
