@@ -62,3 +62,9 @@
 
 - name: restart logstash
   service: name=logstash state=restarted pattern=logstash
+
+- name: prevent logstash-web from starting on boot
+  copy: dest=/etc/init/logstash-web.override content="manual\n" owner=root group=root mode=644
+
+- name: stop logstash-web
+  service: name=logstash-web state=stopped
