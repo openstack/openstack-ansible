@@ -2,8 +2,6 @@ AUDITLOGLEVEL ([C|c]ritical|CRITICAL[A|a]udit|AUDIT|[D|d]ebug|DEBUG|[N|n]otice|N
 
 APACHE_LOG_LEVEL (?:emerg|alert|crit|error|warn|notice|info|debug)
 
-APACHE_DATETIME_ERROR %{DAY} %{MONTH} %{MONTHDAY} %{TIME} %{YEAR}
-
 RABBITMQ_DATE %{MONTHDAY}-%{MONTH}-%{YEAR}::%{TIME}
 
 RSYSLOG_DATE %{MONTH} %{MONTHDAY} %{TIME}
@@ -14,12 +12,16 @@ OPENSTACK_CODE (?:\[.*\])
 
 CONTAINER_STRIP (?:(\w+)(?=_container-\S+))
 
-FOUR_YEAR (?>=d){4}
+APACHE_ERROR_TIMESTAMP %{DAY} %{MONTH} %{MONTHDAY} %{TIME} %{YEAR}
 
-ERROR_STAMP %{DAY} %{MONTH} %{MONTHDAY} %{TIME} %{FOUR_YEAR}
+APACHE_PIDTID pid %{POSINT:apache_pid}:tid %{POSINT:apache_tid}
 
-APACHE_PIDTID %{WORD:pid} %{POSINT:APACHE_PID}:%{WORD:tid} %{POSINT:APACHE_TID}
+APACHE_CLIENT client %{IP:clientip}:%{POSINT:clientport}
 
-APACHE_CLIENT %{WORD:client} %{IP}:%{POSINT:PORT}
+APACHE_ERROR \[%{APACHE_ERROR_TIMESTAMP}\] \[%{DATA:apache_module}:%{DATA:apache_severity}\] \[%{APACHE_PIDTID}\] ?(?:\[%{APACHE_CLIENT}\])? %{GREEDYDATA:openstack_message}
 
-APACHE_ERROR \[%{ERROR_STAMP}\] \[%{DATA:MODULE}:%{DATA:SEVERITY}\] \[%{APACHE_PIDTID}\] \[%{APACHE_CLIENT}\] %{GREEDYDATA:ERROR_MESSAGE}
+SWIFTPROXY_DATE %{MONTHDAY}/%{MONTH}/%{YEAR}/%{HOUR}/%{MINUTE}/%{SECOND}
+
+SWIFTPROXY_ACCESS %{IPORHOST:clientip} %{IPORHOST:serverip} %{SWIFTPROXY_DATE:os_timestamp} %{WORD:verb} %{NOTSPACE:request} HTTP/%{NUMBER:httpversion} %{NUMBER:response} %{DATA:referrer} %{DATA:agent} %{DATA:swift_auth_token} %{DATA:swift_request_bytes} %{DATA:swift_response_bytes} %{DATA:swift_etag} %{DATA:swift_txn} %{DATA:swift_logged_headers} %{BASE10NUM:swift_trans_time}
+
+OPENSTACK_TIMESTAMP %{MONTHDAY}/%{MONTH}/%{YEAR} %{TIME}
