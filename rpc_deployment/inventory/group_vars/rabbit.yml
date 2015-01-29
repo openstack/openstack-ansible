@@ -15,6 +15,10 @@
 
 service_name: rabbitmq
 
+rabbitmq_version: "3.4.3"
+rabbitmq_repo_url: "http://www.rabbitmq.com/releases/rabbitmq-server"
+rabbitmq_package_url: "{{ rabbitmq_repo_url }}/v{{ rabbitmq_version }}/rabbitmq-server_{{ rabbitmq_version }}-1_all.deb"
+
 container_lvm_fstype: ext4
 container_lvm_fssize: 5GB
 
