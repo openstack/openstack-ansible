@@ -13,14 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# The variables file used by the playbooks in the Heat-API group.
-# These don't have to be explicitly imported by vars_files: they are autopopulated.
-
-program_names:
-  - swift-container-server
-  - swift-container-auditor
-  - swift-container-replicator
-  - swift-container-sync
-  - swift-container-updater
-
-service_conf_loc: container-server
+- name: Add server-replicator to program_names
+  set_fact:
+    program_names:"{{ program_names }} + [ 'swift-{{ service_conf_loc }}-replicator' ]"
+  when: swift.replication_network is defined and swift.replication_network != swift.storage_network
