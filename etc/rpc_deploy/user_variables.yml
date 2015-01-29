@@ -165,3 +165,8 @@ swift_allow_all_users: False
 # The dispersion user is for swift-dispersion-report
 swift_dispersion_user: dispersion
 swift_dispersion_password:
+
+# This variables is used to set haproxy's timeout client and timeout server
+# values, they are set in the main config file and are only used by services
+# that don't set their own values (default: 90)
+#haproxy_timeout: 90
