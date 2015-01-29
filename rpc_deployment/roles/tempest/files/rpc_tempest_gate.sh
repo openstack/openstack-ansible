@@ -16,20 +16,35 @@
 # Script for running gate tests. Initially very sparse
 # additional projects and test types will be added over time.
 
-set -e
 set -x
 
-API_TESTS="identity image volume"
-
+# work in tempest directory
 pushd /opt/tempest_*
+
+# read creds into environment
 source /root/openrc
 
-for project in $API_TESTS
-do
-  echo "Running API tests for $project"
-  nosetests -v tempest/api/$project
-done
+# create testr trepo - required for testr to do anything
+testr init &>/dev/null ||:
 
+# Get list of available tests
+testr list-tests > full_test_list
+
+# filter test list to produce list of tests to use.
+egrep 'tempest\.api\.(identity|image|volume)' < full_test_list \
+  |grep -vi xml \
+  > test_list
+
+# execute chosen tests with pretty output
+./run_tempest.sh --no-virtual-env -- --load-list test_list;
+result=$?
 popd
-echo "GATE PASS"
+
+if [[ $result == 0 ]]; then
+  echo "GATE PASS"
+else
+  echo "GATE FAIL"
+fi
+
+exit $result
 
