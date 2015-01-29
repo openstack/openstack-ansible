@@ -13,11 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-repo_path: "{{ pip_wheel_name }}_{{ git_install_branch | replace('/', '_') }}"
-
-## Git Source
-git_repo: "https://github.com/stackforge/os-ansible-deployment"
-git_dest: "/opt/{{ repo_path }}"
-git_install_branch: master
-
-pip_wheel_name: ansible-lxc-rpc
+- name: Add server-replicator to program_names
+  set_fact:
+    program_names:"{{ program_names }} + [ 'swift-{{ service_conf_loc }}-replicator' ]"
+  when: swift.replication_network is defined and swift.replication_network != swift.storage_network

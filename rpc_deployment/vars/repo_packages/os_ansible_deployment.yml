@@ -13,14 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# The variables file used by the playbooks in the Heat-API group.
-# These don't have to be explicitly imported by vars_files: they are autopopulated.
+repo_path: "{{ pip_wheel_name }}_{{ git_install_branch | replace('/', '_') }}"
 
-program_names:
-  - swift-container-server
-  - swift-container-auditor
-  - swift-container-replicator
-  - swift-container-sync
-  - swift-container-updater
+## Git Source
+git_repo: "https://github.com/stackforge/os-ansible-deployment"
+git_dest: "/opt/{{ repo_path }}"
+git_install_branch: master
 
-service_conf_loc: container-server
+pip_wheel_name: os-ansible-deployment
