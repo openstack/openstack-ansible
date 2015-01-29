@@ -13,16 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-repo_package_name: rabbitmq
-
-apt_container_keys:
-  - { url: "http://www.rabbitmq.com/rabbitmq-signing-key-public.asc", state: "present" }
-
-apt_container_repos:
-  - { repo: "deb {{ rabbitmq_repo_url }} testing main", state: "present" }
-
 container_packages:
-  - rabbitmq-server
   - erlang
 
 service_pip_dependencies:
