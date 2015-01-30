@@ -80,6 +80,11 @@ host_kernel_modules:
   - dm_multipath
   - dm_snapshot
 
+host_kernel_tuning:
+  - { key: 'vm.dirty_background_ratio', value: 5 }
+  - { key: 'vm.dirty_ratio', value: 10 }
+  - { key: 'vm.swappiness', value: 10 }
+
 
 ## Base Packages
 apt_common_packages:

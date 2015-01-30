@@ -20,6 +20,16 @@
 - include: irqbalance.yml
 - include: check_container_bridge.yml
 
+- name: Set basic kernel optimization
+  sysctl:
+    name: "{{ item.key }}"
+    value: "{{ item.value }}"
+    sysctl_set: "{{ item.set|default('yes') }}"
+    state: "{{ item.state|default('present') }}"
+    reload: "{{ item.reload|default('yes') }}"
+  with_items: host_kernel_tuning
+  when: host_kernel_tuning is defined
+
 - name: Create /openstack hierachy
   file:
     path: "{{item}}"
