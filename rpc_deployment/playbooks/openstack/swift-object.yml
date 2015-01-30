@@ -16,6 +16,7 @@
 - hosts: swift_hosts
   user: root
   roles:
+    - swift_set_program_names
     - swift_init_scripts
     - swift_object
   vars_files:
