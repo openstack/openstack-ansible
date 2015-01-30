@@ -13,25 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- hosts: cinder_volume
-  user: root
-  roles:
-    - common
-    - common_sudoers
-    - container_extra_setup
-    - container_common
-    - openstack_common
-    - openstack_openrc
-    - cinder_common
-    - cinder_volume
-    - cinder_device_add
-    - cinder_backend_types
-    - galera_client_cnf
-    - nfs_client
-    - init_script
-  vars_files:
-    - vars/config_vars/container_config_cinder_volume.yml
-    - vars/openstack_service_vars/cinder_volume.yml
-    - vars/repo_packages/cinder.yml
-  handlers:
-    - include: handlers/services.yml
+- name: Create nfs_shares file
+  template:
+    src: nfs_shares.j2
+    dest: "{{ nfs_client.nfs_shares_config }}"
+  when: nfs_client is defined
