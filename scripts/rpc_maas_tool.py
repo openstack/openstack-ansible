@@ -6,6 +6,7 @@ from rackspace_monitoring.types import Provider
 
 import ConfigParser
 import argparse
+import re
 import sys
 
 
@@ -26,6 +27,10 @@ def main(args):
         check(args, conn)
     elif args.command == 'delete':
         delete(args, conn)
+    elif args.command == 'remove-defunct-checks':
+        remove_defunct_checks(args, conn)
+    elif args.command == 'remove-defunct-alarms':
+        remove_defunct_alarms(args, conn)
 
 
 def alarms(args, conn):
@@ -80,6 +85,35 @@ def delete(args, conn):
     print "Number of checks deleted: %s" % count
 
 
+def remove_defunct_checks(args, conn):
+    check_count = 0
+
+    for entity in _get_entities(args, conn):
+        for check in conn.list_checks(entity):
+            if re.match('filesystem--.*', check.label):
+                conn.delete_check(check)
+                check_count += 1
+
+    print "Number of checks deleted: %s" % check_count
+
+
+def remove_defunct_alarms(args, conn):
+    alarm_count = 0
+    defunct_alarms = {'rabbit_mq_container': ['disk_free_alarm', 'mem_alarm'],
+                      'galera_container': ['WSREP_CLUSTER_SIZE',
+                                           'WSREP_LOCAL_STATE_COMMENT']}
+
+    for entity in _get_entities(args, conn):
+        for alarm in conn.list_alarms(entity):
+            for container in defunct_alarms:
+                for defunct_alarm in defunct_alarms[container]:
+                    if re.match('%s--.*%s' % (defunct_alarm, container), alarm.label):
+                        conn.delete_alarm(alarm)
+                        alarm_count += 1
+
+    print "Number of alarms deleted: %s" % alarm_count
+
+
 def _get_conn(config, driver):
     conn = None
 
@@ -118,7 +152,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Test MaaS checks')
     parser.add_argument('command',
                         type=str,
-                        choices=['alarms', 'check', 'delete'],
+                        choices=['alarms', 'check', 'delete',
+                                 'remove-defunct-checks',
+                                 'remove-defunct-alarms'],
                         help='Command to execute')
     parser.add_argument('--force',
                         action="store_true",
