@@ -31,7 +31,7 @@
   register: check_id
 
 - name: Validate if alarm exists
-  shell: raxmon-alarms-list --entity-id {{ entity_id.stdout|quote }} | grep "label={{ item.name|quote }}--{{ inventory_hostname|quote }}"
+  shell: raxmon-alarms-list --entity-id {{ entity_id.stdout|quote }} | grep "label={{ item.name }}--{{ inventory_hostname|quote }}"
   register: alarm_exists
   ignore_errors: True
   when: alarms is defined
