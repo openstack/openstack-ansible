@@ -14,18 +14,16 @@
 # limitations under the License.
 #
 # (c) 2014, Kevin Carter <kevin.carter@rackspace.com>
+
 import argparse
 import json
 import os
 
 import netaddr
 
-
-PREFIX_NAME = 'RPC'
-
 SNAT_POOL = (
     'create ltm snatpool %(prefix_name)s_SNATPOOL { members replace-all-with {'
-    ' %(snat_pool_addresses)s } }'
+    ' %(snat_pool_addresses)s%(route_domain)s } }'
 )
 
 MONITORS = (
@@ -35,7 +33,8 @@ MONITORS = (
 )
 
 NODES = (
-    'create ltm node %(node_name)s { address %(container_address)s }'
+    'create ltm node %(node_name)s {'
+    'address %(container_address)s%(route_domain)s }'
 )
 
 PRIORITY_ENTRY = '{ priority-group %(priority_int)s }'
@@ -50,10 +49,10 @@ POOL_NODE = {
 
 VIRTUAL_ENTRIES = (
     'create ltm virtual %(vs_name)s {'
-    ' destination %(internal_lb_vip_address)s:%(port)s'
+    ' destination %(internal_lb_vip_address)s%(route_domain)s:%(port)s'
     ' ip-protocol tcp mask 255.255.255.255'
     ' pool %(pool_name)s profiles replace-all-with { fastL4 { } }'
-    ' source 0.0.0.0/0 source-address-translation {'
+    ' source 0.0.0.0%(route_domain)s/0 source-address-translation {'
     ' pool RPC_SNATPOOL type snat } }'
 )
 
@@ -324,6 +323,24 @@ def args():
         )
     )
 
+    parser.add_argument(
+        '-r',
+        '--route-domain',
+        help="Route domain modifier."
+             " Default: [ %(default)s ]",
+        required=False,
+        default=''
+    )
+
+    parser.add_argument(
+        '-p',
+        '--prefix-name',
+        help="Prefix for node, pool, and virtual pools."
+             " Default: [ %(default)s ]",
+        required=False,
+        default='RPC'
+    )
+
     return vars(parser.parse_args())
 
 
@@ -331,6 +348,13 @@ def main():
     """Run the main application."""
     # Parse user args
     user_args = args()
+
+    # Get prefix name
+    PREFIX_NAME = user_args.get('prefix_name')
+
+    # if route_domain is set, add % modifier
+    if user_args.get('route_domain') is not '':
+        user_args['route_domain'] = "%{}".format(user_args.get('route_domain'))
 
     # Get the contents of the system environment json
     environment_file = file_find(filename=user_args['file'])
@@ -357,6 +381,7 @@ def main():
         priority = 100
         for node in value['hosts']:
             node['node_name'] = '%s_NODE_%s' % (PREFIX_NAME, node['hostname'])
+            node['route_domain'] = user_args.get('route_domain')
             nodes.append('%s\n' % NODES % node)
 
             virt = (
@@ -364,7 +389,8 @@ def main():
                     'port': value['port'],
                     'vs_name': value['vs_name'],
                     'pool_name': value['pool_name'],
-                    'internal_lb_vip_address': lb_vip_address
+                    'internal_lb_vip_address': lb_vip_address,
+                    'route_domain': user_args.get('route_domain')
                 }
             )
             if virt not in virts:
@@ -387,7 +413,6 @@ def main():
                     )
                 )
 
-
         value['nodes'] = ' '.join(node_data)
         pool_node = [POOL_NODE['beginning'] % value]
         if value.get('priority') is True:
@@ -406,7 +431,8 @@ def main():
     snat_pool_addresses = ' '.join(snat_pool_adds.split(','))
     snat_pool = '%s\n' % SNAT_POOL % {
         'prefix_name': PREFIX_NAME,
-        'snat_pool_addresses': snat_pool_addresses
+        'snat_pool_addresses': snat_pool_addresses,
+        'route_domain': user_args.get('route_domain')
     }
 
     script = [
