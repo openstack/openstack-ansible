@@ -13,9 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-container_packages:
-  - erlang
+repo_package_name: oslo.messaging
 
-service_pip_dependencies:
-  - python-memcached
-  - pycrypto
+repo_path: "{{ pip_wheel_name }}_{{ git_install_branch | replace('/', '_') }}"
+
+## Git Source
+git_repo: https://github.com/openstack/oslo.messaging
+git_fallback_repo: https://git.openstack.org/openstack/oslo.messaging
+git_dest: "/opt/{{ repo_path  }}"
+git_install_branch: 1.4.1
+
+pip_wheel_name: oslo.messaging

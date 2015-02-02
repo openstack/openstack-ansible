@@ -1,0 +1,47 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Get entity ID for physical_host
+  shell: raxmon-entities-list  | grep "label={{ inventory_hostname|quote }}{{ maas_fqdn_extension|default('') }} " | sed -e 's/^.* id=\(.*\) label=.*$/\1/g'
+  register: entity_id
+
+- name: Validate if check exists
+  shell: raxmon-checks-list --entity-id {{ entity_id.stdout|quote }} | grep "label={{ check_name|quote }}_{{ item.filesystem|quote }}--{{ inventory_hostname|quote }}"
+  register: check_exists
+  with_items: drives
+  ignore_errors: True
+
+- name: Create check if it does not exist
+  command: raxmon-checks-create --entity-id {{ entity_id.stdout }} --type {{ agent_type }} --label {{ check_name }}_{{ item.item.filesystem }}--{{ inventory_hostname }} --details target={{ item.item.filesystem }} --period {{ check_period }} --timeout {{ check_timeout }}
+  with_items: check_exists.results
+  when: item.rc != 0
+
+- name: Get check ID for newly created check
+  shell: raxmon-checks-list --entity-id {{ entity_id.stdout|quote }} | grep "label={{ check_name|quote }}_{{ item.item.filesystem|quote }}--{{ inventory_hostname|quote }}" | sed -e 's/^.* id=\(.*\) label=.*$/\1/g'
+  with_items: check_exists.results
+  register: check_id
+
+- name: Validate if alarm exists
+  shell: raxmon-alarms-list --entity-id {{ entity_id.stdout|quote }} | grep "label=Disk space used on {{ item.item.filesystem|quote }}--{{ inventory_hostname|quote }}"
+  register: alarm_exists
+  ignore_errors: True
+  with_items: check_exists.results
+
+- name: Create alarm if it does not exist
+  shell: raxmon-alarms-create --entity-id {{ entity_id.stdout|quote }} --check-id {{ item[1].stdout|quote }} --notification-plan {{ maas_notification_plan }} --label "Disk space used on {{ item[1].item.item.filesystem|quote }}--{{ inventory_hostname|quote }}" --criteria ":set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (percentage(metric['used'], metric['total']) >= {{ item[1].item.item.threshold }}) { return new AlarmStatus(WARNING, '{{ item[1].item.item.filesystem }} filesystem is >= {{ item[1].item.item.threshold }}% full.'); }"
+  when: item[0].rc != 0 and item[0].item.item.filesystem == item[1].item.item.filesystem
+  with_nested:
+    - alarm_exists.results
+    - check_id.results
