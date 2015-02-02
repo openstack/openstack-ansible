@@ -26,11 +26,11 @@ parameters:
     description: Name Flavor to use for server
   server_name:
     type: string
-    default: RPCv9.0.0-AIO
+    default: RPC-AIO
     description: The Instance Name
   install_script_url:
     type: string
-    default: https://raw.githubusercontent.com/stackforge/os-ansible-deployment/10.1.1/scripts/cloudserver-aio.sh
+    default: https://raw.githubusercontent.com/stackforge/os-ansible-deployment/juno/scripts/cloudserver-aio.sh
     description: The aio script installation URL
   frozen_repo_url:
     type: string
@@ -42,7 +42,7 @@ parameters:
     description: The repository URL
   repo_branch:
     type: string
-    default: 10.1.1
+    default: juno
     description: The repository branch
 outputs:
   RPCAIO_public_ip:
