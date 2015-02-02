@@ -125,7 +125,7 @@ def _build_container_hosts(container_affinity, container_hosts, type_and_name,
                            inventory, host_type, container_type,
                            container_host_type, physical_host_type, config,
                            is_metal, assignment):
-    """Add in all of hte host associations into inventory.
+    """Add in all of the host associations into inventory.
 
     This will add in all of the hosts into the inventory based on the given
     affinity for a container component and its subsequent type groups.
