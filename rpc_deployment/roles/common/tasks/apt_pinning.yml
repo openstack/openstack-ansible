@@ -13,16 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Ensure common LXC Packages are Installed
-  apt:
-    pkg: "{{ item }}"
-    state: latest
-    update_cache: yes
-    cache_valid_time: 600
-  with_items:
-    - python3-lxc
-    - lxc-templates
-    - liblxc1
-    - libssl-dev
-    - libffi-dev
-    - debootstrap
+- name: Add apt pin preferences
+  template:
+    src: apt_pinned_packages.j2
+    dest: /etc/apt/preferences.d/openstack_pinned_packages.pref
+  when: apt_pinned_packages is defined
