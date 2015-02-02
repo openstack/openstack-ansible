@@ -13,11 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: kernel_check.yml
-- include: apt_pinning.yml
-- include: repos.yml
-- include: utils.yml
-- include: get_pip.yml
-- include: install_pip_deps.yml
-- include: rpc_release.yml
-- include: lvm_conf.yml
+- name: Add apt pin preferences
+  template:
+    src: apt_pinned_packages.j2
+    dest: /etc/apt/preferences.d/openstack_pinned_packages.pref
+  when: apt_pinned_packages is defined
