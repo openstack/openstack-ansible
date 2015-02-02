@@ -21,9 +21,30 @@ parameters:
   image_name:
     type: string
     description: Name of image to use for server
+    default: Ubuntu 12.04 LTS (Precise Pangolin) (PVHVM)
+    constraints:
+    - allowed_values:
+      - Ubuntu 12.04 LTS (Precise Pangolin) (PVHVM)
+      - Ubuntu 12.04 LTS (Precise Pangolin)
+      description: Must be a supported operating system.
   flavor_name:
     type: string
     description: Name Flavor to use for server
+    default: 8 GB Performance
+    constraints:
+    - allowed_values:
+      - 8 GB General Purpose v1
+      - 15 GB General Purpose v1
+      - 30 GB General Purpose v1
+      - 15 GB I/O v1
+      - 30 GB I/O v1
+      - 8 GB Standard Instance
+      - 15 GB Standard Instance
+      - 30 GB Standard Instance
+      - 8 GB Performance
+      - 15 GB Performance
+      - 30 GB Performance
+      description: Must be a valid flavor.
   server_name:
     type: string
     default: RPCv9.0.0-AIO
