@@ -124,6 +124,13 @@ global_overrides:
 infra_hosts:
   infra1:
     ip: 172.29.236.100
+    ## You can override the maas_filesystem_monitors here
+    # container_vars:
+    #   maas_filesystem_overrides:
+    #     - filesystem: /
+    #       threshold: 85.0
+    #     - filesystem: /boot
+    #       threshold: 90.0
   infra2:
     ip: 172.29.236.101
   infra3:

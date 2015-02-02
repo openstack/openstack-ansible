@@ -26,17 +26,6 @@
 
 - include: cdm.yml
   vars:
-    check_name: filesystem
-    check_details: "target=/"
-    check_period: "{{ maas_check_period }}"
-    check_timeout: "{{ maas_check_timeout }}"
-    agent_type: "agent.filesystem"
-    alarms:
-      - { 'name': 'Disk space used on /', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (percentage(metric["used"], metric["total"]) >= 95.0) { return new AlarmStatus(WARNING, "Root filesystem is >= 95% full."); }' }
-  user: root
-
-- include: cdm.yml
-  vars:
     check_name: memory
     check_details: "{}"
     check_period: "{{ maas_check_period }}"
@@ -45,3 +34,39 @@
     alarms:
       - { 'name': 'Memory used', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (percentage(metric["actual_used"], metric["total"]) >= 95.0) { return new AlarmStatus(WARNING, "Memory is 95%+ in use."); }' }
   user: root
+
+- name: Gathering facts for mounted drives
+  set_fact:
+    mounted_drives: "{% for item in ansible_mounts %}{% if 'xfs' in item.fstype or 'ext' in item.fstype %}{{ item.mount }}{% if not loop.last %},{% endif %}{% endif %}{% endfor %}"
+  when: maas_filesystem_overrides is not defined and maas_filesystem_monitors is not defined
+
+- include: filesystem_auto.yml
+  vars:
+    check_name: filesystem
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    agent_type: "agent.filesystem"
+    drives: "{{ mounted_drives.split(',') }}"
+    threshold: "{{ maas_filesystem_threshold }}"
+  user: root
+  when: maas_filesystem_overrides is not defined and maas_filesystem_monitors is not defined
+
+- include: filesystem.yml
+  vars:
+    check_name: filesystem
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    agent_type: "agent.filesystem"
+    drives: "{{ maas_filesystem_monitors }}"
+  user: root
+  when: maas_filesystem_overrides is not defined and maas_filesystem_monitors is defined
+
+- include: filesystem.yml
+  vars:
+    check_name: filesystem
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    agent_type: "agent.filesystem"
+    drives: "{{ maas_filesystem_overrides }}"
+  user: root
+  when: maas_filesystem_overrides is defined
