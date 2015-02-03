@@ -23,7 +23,7 @@
 - name: Drop Horizon config
   template:
     src: "openstack-dashboard.conf"
-    dest: "/etc/apache2/sites-available"
+    dest: "/etc/apache2/sites-available/openstack-dashboard.conf"
     owner: "{{ system_user }}"
     group: "{{ system_group }}"
 
