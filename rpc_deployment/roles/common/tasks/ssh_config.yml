@@ -13,12 +13,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: kernel_check.yml
-- include: apt_pinning.yml
-- include: repos.yml
-- include: utils.yml
-- include: get_pip.yml
-- include: install_pip_deps.yml
-- include: rpc_release.yml
-- include: lvm_conf.yml
-- include: ssh_config.yml
+- name: set max sessions
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: 'MaxSessions'
+    line: "MaxSessions 500"
+  notify:
+    - restart ssh
+- name: set max startups
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: 'MaxStartups'
+    line: "MaxStartups 500"
+  notify:
+    - restart ssh
+- name: configure sshd to log to /var/log/sshd
+  lineinfile:
+    dest: /etc/init/ssh.conf
+    regexp: 'exec /usr/sbin/sshd'
+    line: "exec /usr/sbin/sshd -D -E /var/log/sshd"
+  notify:
+  - restart ssh
