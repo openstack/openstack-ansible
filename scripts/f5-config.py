@@ -14,18 +14,16 @@
 # limitations under the License.
 #
 # (c) 2014, Kevin Carter <kevin.carter@rackspace.com>
+
 import argparse
 import json
 import os
 
 import netaddr
 
-
-PREFIX_NAME = 'RPC'
-
 SNAT_POOL = (
     'create ltm snatpool %(prefix_name)s_SNATPOOL { members replace-all-with {'
-    ' %(snat_pool_addresses)s } }'
+    ' %(snat_pool_addresses)s%(route_domain)s } }'
 )
 
 MONITORS = (
@@ -35,7 +33,8 @@ MONITORS = (
 )
 
 NODES = (
-    'create ltm node %(node_name)s { address %(container_address)s }'
+    'create ltm node %(node_name)s {'
+    'address %(container_address)s%(route_domain)s }'
 )
 
 PRIORITY_ENTRY = '{ priority-group %(priority_int)s }'
@@ -50,11 +49,11 @@ POOL_NODE = {
 
 VIRTUAL_ENTRIES = (
     'create ltm virtual %(vs_name)s {'
-    ' destination %(internal_lb_vip_address)s:%(port)s'
+    ' destination %(internal_lb_vip_address)s%(route_domain)s:%(port)s'
     ' ip-protocol tcp mask 255.255.255.255'
     ' pool %(pool_name)s profiles replace-all-with { fastL4 { } }'
-    ' source 0.0.0.0/0 source-address-translation {'
-    ' pool RPC_SNATPOOL type snat } }'
+    ' source 0.0.0.0%(route_domain)s/0 source-address-translation {'
+    ' pool %(prefix_name)s_SNATPOOL type snat } }'
 )
 
 
@@ -216,9 +215,9 @@ def recursive_host_get(inventory, group_name, host_dict=None):
 
     if 'children' in inventory_group and inventory_group['children']:
         for child in inventory_group['children']:
-            recursive_host_get(
-                inventory=inventory, group_name=child, host_dict=host_dict
-            )
+            recursive_host_get(inventory=inventory,
+                               group_name=child,
+                               host_dict=host_dict)
 
     if inventory_group.get('hosts'):
         for host in inventory_group['hosts']:
@@ -235,9 +234,9 @@ def recursive_host_get(inventory, group_name, host_dict=None):
 
 def build_pool_parts(inventory):
     for key, value in POOL_PARTS.iteritems():
-        recursive_host_get(
-            inventory, group_name=value['group'], host_dict=value
-        )
+        recursive_host_get(inventory,
+                           group_name=value['group'],
+                           host_dict=value)
 
     return POOL_PARTS
 
@@ -324,6 +323,24 @@ def args():
         )
     )
 
+    parser.add_argument(
+        '-r',
+        '--route-domain',
+        help="Route domain modifier."
+             " Default: [ %(default)s ]",
+        required=False,
+        default=''
+    )
+
+    parser.add_argument(
+        '-p',
+        '--prefix-name',
+        help="Prefix for node, pool, and virtual pools."
+             " Default: [ %(default)s ]",
+        required=False,
+        default='RPC'
+    )
+
     return vars(parser.parse_args())
 
 
@@ -331,6 +348,13 @@ def main():
     """Run the main application."""
     # Parse user args
     user_args = args()
+
+    # Get prefix name
+    prefix_name = user_args.get('prefix_name')
+
+    # if route_domain is set, add % modifier
+    if user_args.get('route_domain') is not '':
+        user_args['route_domain'] = "%{}".format(user_args.get('route_domain'))
 
     # Get the contents of the system environment json
     environment_file = file_find(filename=user_args['file'])
@@ -342,21 +366,26 @@ def main():
     virts = []
 
     pool_parts = build_pool_parts(inventory=inventory_json)
+
+    # Have to override galera pool parts mont_type to match prefix
+    pool_parts['galera']['mon_type'] = '%s_MON_GALERA' % prefix_name
+
     lb_vip_address = inventory_json['all']['vars']['internal_lb_vip_address']
 
     for key, value in pool_parts.iteritems():
         value['group_name'] = key.upper()
         value['vs_name'] = '%s_VS_%s' % (
-            PREFIX_NAME, value['group_name']
+            prefix_name, value['group_name']
         )
         value['pool_name'] = '%s_POOL_%s' % (
-            PREFIX_NAME, value['group_name']
+            prefix_name, value['group_name']
         )
 
         node_data = []
         priority = 100
         for node in value['hosts']:
-            node['node_name'] = '%s_NODE_%s' % (PREFIX_NAME, node['hostname'])
+            node['node_name'] = '%s_NODE_%s' % (prefix_name, node['hostname'])
+            node['route_domain'] = user_args.get('route_domain')
             nodes.append('%s\n' % NODES % node)
 
             virt = (
@@ -364,7 +393,9 @@ def main():
                     'port': value['port'],
                     'vs_name': value['vs_name'],
                     'pool_name': value['pool_name'],
-                    'internal_lb_vip_address': lb_vip_address
+                    'internal_lb_vip_address': lb_vip_address,
+                    'route_domain': user_args.get('route_domain'),
+                    'prefix_name': prefix_name
                 }
             )
             if virt not in virts:
@@ -387,7 +418,6 @@ def main():
                     )
                 )
 
-
         value['nodes'] = ' '.join(node_data)
         pool_node = [POOL_NODE['beginning'] % value]
         if value.get('priority') is True:
@@ -405,14 +435,15 @@ def main():
 
     snat_pool_addresses = ' '.join(snat_pool_adds.split(','))
     snat_pool = '%s\n' % SNAT_POOL % {
-        'prefix_name': PREFIX_NAME,
-        'snat_pool_addresses': snat_pool_addresses
+        'prefix_name': prefix_name,
+        'snat_pool_addresses': snat_pool_addresses,
+        'route_domain': user_args.get('route_domain')
     }
 
     script = [
         '#!/usr/bin/bash\n',
         snat_pool,
-        '%s\n' % MONITORS % {'prefix_name': PREFIX_NAME}
+        '%s\n' % MONITORS % {'prefix_name': prefix_name}
     ]
     script.extend(nodes)
     script.extend(pools)
