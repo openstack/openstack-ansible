@@ -30,7 +30,7 @@ parameters:
     description: The Instance Name
   install_script_url:
     type: string
-    default: https://raw.githubusercontent.com/rcbops/ansible-lxc-rpc/master/scripts/cloudserver-aio.sh
+    default: https://raw.githubusercontent.com/rcbops/ansible-lxc-rpc/icehouse/scripts/cloudserver-aio.sh
     description: The aio script installation URL
   frozen_repo_url:
     type: string
@@ -42,7 +42,7 @@ parameters:
     description: The repository URL
   repo_branch:
     type: string
-    default: master
+    default: icehouse
     description: The repository branch
 outputs:
   RPCAIO_public_ip:
