@@ -84,3 +84,24 @@
   notify: Restart os service
   tags:
     - neutron_config
+
+- name: Drop iptables checksum fix
+  copy:
+    src: "post-up-checksum-rules.sh"
+    dest: "/etc/network/if-up.d/post-up-checksum-rules.sh"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+  when: >
+    inventory_hostname in groups['neutron_linuxbridge_agent']
+  tags:
+    - neutron_config
+    - neutron_checksum_fix
+
+- name: Run iptables checksum fix
+  command: /etc/network/if-up.d/post-up-checksum-rules.sh
+  when: >
+    inventory_hostname in groups['neutron_linuxbridge_agent']
+  tags:
+    - neutron_config
+    - neutron_checksum_fix
