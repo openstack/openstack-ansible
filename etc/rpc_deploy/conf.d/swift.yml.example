@@ -1,0 +1,294 @@
+---
+# Copyright 2015, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Overview
+# ========
+#
+# This file contains the configuration for the Object Storage (swift)
+# service. Only enable these options for environments that contain the
+# Object Storage service. For more information on Object Storage options,
+# see the documentation at
+#
+# http://docs.openstack.org/developer/swift/index.html
+#
+# The hierarchical structure of this file supports overrides for most
+# options. However, for typical deployments, defining options closest
+# to the top level provides a functional configuration.
+#
+# Configuration reference
+# =======================
+#
+# Level: swift (required)
+# Contains global options.
+#
+#   Option: storage_network (optional, string)
+#   Network to use for object storage operations. Defaults to the management
+#   network if omitted.
+#   If using a storage network, specify the network bridge containing it,
+#   typically 'br-storage'.
+#
+#   Option: repl_network (optional, string)
+#   Network to use for object replication operations. Defaults to the
+#   'storage_network' value if omitted.
+#   If using a replication network, specify the network bridge containing it,
+#   typically 'br-repl'.
+#
+#   Option: part_power (required, integer)
+#   Partition power. Immutable without rebuilding the rings.
+#   Applies to all rings unless overridden at the 'account' or 'container'
+#   levels or within a policy under the 'storage_policies' level.
+#
+#   Option: repl_number (optional, integer)
+#   Number of replicas for each partition. Defaults to 3.
+#   Applies to all rings unless overridden at the 'account' or 'container'
+#   levels or within a policy under the 'storage_policies' level.
+#
+#   Option: min_part_hours (optional, integer)
+#   Minimum time in hours between multiple moves of the same partition.
+#   Defaults to 1.
+#   Applies to all rings unless overridden at the 'account' or 'container'
+#   levels or within a policy under the 'storage_policies' level.
+#
+#   Option: region (optional, integer)
+#   Region of a disk. Defaults to 1.
+#   Applies to all disks in all hosts unless overridden deeper in the
+#   structure.
+#
+#   Option: zone (optional, integer)
+#   Zone of a disk. Defaults to 0.
+#   Applies to all disks in all hosts unless overridden deeper in the
+#   structure.
+#
+#   Option: weight (optional, integer)
+#   Weight of a disk. Defaults to 100.
+#   Applies to all disks in all hosts unless overridden deeper in the
+#   structure.
+#
+#   Option: mount_point (required, string)
+#   Top-level directory for mount points of disks. Defaults to /mnt.
+#   Applies to all hosts unless overridden deeper in the structure.
+#
+#   Level: drives (required)
+#   Contains the mount points of disks.
+#   Applies to all hosts unless overridden deeper in the structure.
+#
+#     Option: name (required, string)
+#     Mount point of a disk. Use one entry for each disk.
+#     Applies to all hosts unless overridden deeper in the structure.
+#
+#     The following example shows disks mounted at /mnt/sda and /mnt/sdb
+#     on all storage hosts:
+#       mount_point: /mnt
+#       drives:
+#         - name: sda
+#         - name: sdb
+#
+#   Level: account (optional)
+#   Contains 'min_part_hours' and 'repl_number' options specific to the
+#   account ring.
+#
+#   Level: container (optional)
+#   Contains 'min_part_hours' and 'repl_number' options specific to the
+#   container ring.
+#
+#   Level: storage_policies (required)
+#   Contains storage policies. Minimum one policy. One policy must include
+#   the 'index: 0' and 'default: True' options.
+#
+#     Level: policy (required)
+#     Contains a storage policy.
+#
+#       Option: name (required, string)
+#       Policy name.
+#
+#       Option: index (required, integer)
+#       Policy index. One policy must include this option with a '0'
+#       value.
+#
+#       Option: default (optional, boolean)
+#       Defines the default policy. One policy must include this option
+#       with a 'True' value.
+#
+#       Option: deprecated (optional, boolean)
+#       Defines a deprecated policy.
+#
+#       Note: The following levels and options override any values higher
+#       in the structure and generally apply to advanced deployments.
+#
+#       Option: repl_number (optional, integer)
+#       Number of replicas of each partition in this policy.
+#
+#       Option: min_part_hours (optional, integer)
+#       Minimum time between multiple moves of the same partition in this
+#       policy.
+#
+# Level: swift_proxy-hosts (required)
+# Contains definitions for proxy hosts.
+#
+#   Level: <value> (optional, string)
+#   Name of a proxy host. Typical deployments require at least three
+#   proxy hosts.
+#
+#     Option: ip (required, string)
+#     IP address of the host.
+#
+# Level: swift_hosts (required)
+# Contains definitions for storage hosts.
+#
+#   Level: <value> (required, string)
+#   Name of a storage host. Typical deployments require at least three
+#   storage hosts.
+#
+#     Option: ip (required, string)
+#     IP address of the host.
+#
+#     Note: The following levels and options override any values higher
+#     in the structure and generally apply to advanced deployments.
+#
+#     Level: container_vars (optional)
+#     Contains options specific to this host.
+#
+#       Level: swift_vars (optional)
+#       Contains swift options specific to this host.
+#
+#         Option: region (optional, integer)
+#         Region of all disks in this host.
+#
+#         Option: zone (optional, integer)
+#         Zone of all disks in this host.
+#
+#         Option: weight (optional, integer)
+#         Weight of all disks in this host.
+#
+#         Level: groups (optional)
+#         Contains groups specific to this host.
+#         The following example shows a storage host with the account ring,
+#         container ring, and 'silver' storage policy:
+#           groups:
+#             - account
+#             - container
+#             - silver
+#
+#         Level: drives (optional)
+#         Contains the mount points of disks specific to this host.
+#
+#         Level or option: name (optional, string)
+#         Mount point of a disk specific to this host. Use one entry for
+#         each disk. Functions as a level for disks that contain additional
+#         options.
+#
+#           Option: region (optional, integer)
+#           Region of a disk in this host.
+#
+#           Option: zone (optional, integer)
+#           Zone of a disk in this host.
+#
+#           Option: weight (optional, integer)
+#           Weight of a disk in this host.
+#
+#           Level: groups (optional)
+#           Contains groups for a disk in this host.
+#           The following example shows a disk with the account ring,
+#           container ring, and 'silver' storage policy:
+#             groups:
+#               - account
+#               - container
+#               - silver
+
+# Default (example) configuration
+# ===============================
+
+# Global options
+
+# global_overrides:
+#   swift:
+#     storage_network: 'br-storage'
+#     replication_network: 'br-repl'
+#     part_power: 8
+#     repl_number: 3
+#     min_part_hours: 1
+#     region: 1
+#     zone: 0
+#     weight: 100
+#     mount_point: /mnt
+#     drives:
+#       - name: sdc
+#       - name: sdd
+#       - name: sde
+#       - name: sdf
+#     account:
+#     container:
+#     storage_policies:
+#       - policy:
+#           name: gold
+#           index: 0
+#           default: True
+#       - policy:
+#           name: silver
+#           index: 1
+#           repl_number: 3
+#           deprecated: True
+
+# Proxy hosts
+
+# swift-proxy_hosts:
+#   infra-node1:
+#     ip: 192.0.2.1
+#   infra-node2:
+#     ip: 192.0.2.2
+#   infra-node3:
+#     ip: 192.0.2.3
+
+# Storage hosts
+#
+# The first three hosts contain options for typical deployments. Hosts
+# four and five show options for more advanced deployments.
+
+# swift_hosts:
+#   swift-node1:
+#     ip: 192.0.2.4
+#   swift-node2:
+#     ip: 192.0.2.5
+#   swift-node3:
+#     ip: 192.0.2.6
+#   swift-node4:
+#     ip: 192.0.2.7
+#     container_vars:
+#       swift_vars:
+#         zone: 3
+#   swift-node5:
+#     ip: 192.0.2.8
+#     container_vars:
+#       swift_vars:
+#         storage_ip: 198.51.100.8
+#         repl_ip: 203.0.113.8
+#         region: 3
+#         zone: 4
+#         weight: 200
+#         groups:
+#           - account
+#           - container
+#           - silver
+#         drives:
+#           - name: sdb
+#             storage_ip: 198.51.100.9
+#             repl_ip: 203.0.113.9
+#             weight: 75
+#             groups:
+#               - gold
+#           - name: sdc
+#           - name: sdd
+#           - name: sde
+#           - name: sdf
