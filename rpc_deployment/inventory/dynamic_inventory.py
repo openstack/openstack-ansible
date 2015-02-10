@@ -19,21 +19,14 @@ import argparse
 import datetime
 import hashlib
 import json
+import netaddr
 import os
 import Queue
 import random
 import tarfile
 import uuid
+import yaml
 
-try:
-    import yaml
-except ImportError:
-    print('Missing Dependency, "PyYAML"')
-
-try:
-    import netaddr
-except ImportError:
-    print('Missing Dependency, "netaddr"')
 
 USED_IPS = []
 INVENTORY_SKEL = {
