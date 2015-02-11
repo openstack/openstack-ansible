@@ -1,0 +1,50 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+## Python pip
+get_pip_url: "{{ openstack_repo_url }}/downloads/get-pip.py"
+get_pip_sha256sum: "d43dc33a5670d69dd14a9be1f2b2fa27ebf124ec1b212a47425331040f742a9b"
+
+## Base Packages
+apt_common_packages:
+  - aptitude
+  - vlan
+  - python-software-properties
+  - python-dev
+  - build-essential
+  - git-core
+  - rsyslog
+  - lvm2
+  - dmeventd
+  - libkmod-dev
+  - libkmod2
+  - libssl-dev
+  - bridge-utils
+  - cgroup-lite
+  - sqlite3
+  - iptables
+  - sshpass
+  - libffi-dev
+  - libxml2-dev
+  - libxslt1-dev
+  - mariadb-client
+  - libmariadbclient-dev
+
+# Util packages that are installed when repos are put in place
+common_util_packages:
+  - curl
+  - wget
+  - time
+  - rsync

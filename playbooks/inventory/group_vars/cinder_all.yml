@@ -1,0 +1,79 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# The variables file used by the playbooks in the Cinder-api group.
+# These don't have to be explicitly imported by vars_files: they are autopopulated.
+
+## Service Name
+service_name: cinder
+
+# Verbosity Options
+debug: False
+verbose: True
+
+# only used when the lxc vg is present on the target
+container_lvm_fstype: ext4
+container_lvm_fssize: 5GB
+
+# (StrOpt) Method used to wipe old voumes (valid options are: none, zero,
+# shred)
+cinder_volume_clear: zero
+# (StrOpt) The flag to pass to ionice to alter the i/o priority of the process
+# used to zero a volume after deletion, for example "-c3" for idle only
+# priority.
+# cinder_volume_clear_ionice: -c3
+# (IntOpt) Size in MiB to wipe at start of old volumes. 0 => all
+cinder_volume_clear_size: 0
+
+## General configuration
+## Set this in openstack_user_config.yml UNLESS you want all hosts to use the same
+## Cinder backends.  See the openstack_user_config example for more on how this is done.
+# cinder_backends:
+#   lvm:
+#     volume_group: cinder-volumes
+#     driver: cinder.volume.drivers.lvm.LVMISCSIDriver
+#     backend_name: LVM_iSCSI
+
+cinder_service_port: "{{ cinder_port|default('8776') }}"
+
+## DB
+container_mysql_user: cinder
+container_mysql_password: "{{ cinder_container_mysql_password }}"
+container_database: cinder
+
+## Cinder Auth
+service_admin_tenant_name: "service"
+service_admin_username: "cinder"
+service_admin_password: "{{ cinder_service_password }}"
+
+## Cinder User / Group
+system_user: cinder
+system_group: cinder
+
+## Service Names
+service_names:
+  - cinder-api
+  - cinder-scheduler
+  - cinder-volume
+
+container_directories:
+  - { name: /var/log/cinder, mode: 755 }
+  - { name: /var/lib/cinder }
+  - { name: /var/lib/cinder/volumes }
+  - { name: /etc/cinder }
+  - { name: /etc/cinder/rootwrap.d }
+  - { name: /var/cache/cinder }
+  - { name: /var/lock/cinder }
+  - { name: /var/run/cinder }

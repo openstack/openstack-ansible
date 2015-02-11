@@ -1,7 +1,7 @@
-Ansible Openstack Networking
+Ansible OpenStack Networking
 ============================
 :date: 2013-09-05 09:51
-:tags: rackspace, rpc, openstack, cloud, ansible, networking, bond, interfaces
+:tags: openstack, cloud, ansible, networking, bond, interfaces
 :category: \*nix
 
 This directory contains some base interface files that will allow you to see what 

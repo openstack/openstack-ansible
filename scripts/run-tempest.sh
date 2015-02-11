@@ -19,10 +19,10 @@ set -e -u -v +x
 
 ## Variables -----------------------------------------------------------------
 
-TEMPEST_SCRIPT_PATH=${TEMPEST_SCRIPT_PATH:-/root/rpc_tempest_gate.sh}
+CONFIG_PREFIX=${CONFIG_PREFIX:-"openstack"}
+TEMPEST_SCRIPT_PATH=${TEMPEST_SCRIPT_PATH:-/root/${CONFIG_PREFIX}_tempest_gate.sh}
 TEMPEST_SCRIPT_PARAMETERS=${TEMPEST_SCRIPT_PARAMETERS:-commit_aio}
-CONFIG_PREFIX=${CONFIG_PREFIX:-"rpc"}
-PLAYBOOK_DIRECTORY_PARENT=${PLAYBOOK_DIRECTORY_PARENT:-"${CONFIG_PREFIX}_deployment"}
+PLAYBOOK_DIRECTORY=${PLAYBOOK_DIRECTORY:-"playbooks"}
 
 ## Functions -----------------------------------------------------------------
 
@@ -42,7 +42,7 @@ if [ ! -d "etc" -a ! -d "scripts" -a ! -f "requirements.txt" ]; then
   exit 1
 fi
 
-pushd ${PLAYBOOK_DIRECTORY_PARENT}
+pushd ${PLAYBOOK_DIRECTORY}
   # Check that there are utility containers
   if ! ansible 'utility[0]' --list-hosts; then
     info_block "ERROR: No utility containers have been deployed in your environment."

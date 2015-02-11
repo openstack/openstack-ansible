@@ -20,7 +20,7 @@ set -e -u -v +x
 ## Variables -----------------------------------------------------------------
 
 BOOTSTRAP_ANSIBLE=${BOOTSTRAP_ANSIBLE:-"yes"}
-PLAYBOOK_PATH=${PLAYBOOK_PATH:-"rpc_deployment/playbooks"}
+PLAYBOOK_PATH=${PLAYBOOK_PATH:-"playbooks"}
 
 ## Functions -----------------------------------------------------------------
 
@@ -61,13 +61,11 @@ echo -e '[all]\nlocalhost ansible_connection=local' | tee local_only_inventory
 # Do a basic syntax check on all playbooks and roles
 info_block "Running Syntax Check"
 ansible-playbook -i local_only_inventory --syntax-check \
-                 $(find ${PLAYBOOK_PATH} -type f -name "*.yml" \
-                        ! -name "os-service-config-update.yml" \
-                        ! -name "host-network-setup.yml")
+                 $(find ${PLAYBOOK_PATH} -maxdepth 1 -type f \
+                   -name "*.yml" ! -name "os-service-config-update.yml")
 
 # Perform a lint check on all playbooks and roles
 info_block "Running Lint Check"
 ansible-lint --version
-ansible-lint $(find ${PLAYBOOK_PATH} -type f -name "*.yml" \
-                    ! -name "os-service-config-update.yml" \
-                    ! -name "host-network-setup.yml")
+ansible-lint $(find ${PLAYBOOK_PATH} -maxdepth 1 -type f \
+               -name "*.yml" ! -name "os-service-config-update.yml")

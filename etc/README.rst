@@ -1,28 +1,28 @@
-Ansible Openstack LXC Configuration
+Ansible OpenStack LXC Configuration
 ===================================
 :date: 2013-09-05 09:51
-:tags: rackspace, lxc, rpc, openstack, cloud, ansible
+:tags: lxc, openstack, cloud, ansible
 :category: \*nix
 
-This directory contains the files needed to make the rpc_deployment process work.
-The inventory is generated from a user configuration file named ``rpc_user_config.yml``.
-To load inventory you MUST copy the directory ``rpc_deploy`` to either  ``$HOME/`` or ``/etc/``.
-With this folder in place, you will need to enter the folder and edit the file ``rpc_user_config.yml``.
+This directory contains the files needed to make the openstack_deployment process work.
+The inventory is generated from a user configuration file named ``openstack_user_config.yml``.
+To load inventory you MUST copy the directory ``openstack_deploy`` to either  ``$HOME/`` or ``/etc/``.
+With this folder in place, you will need to enter the folder and edit the file ``openstack_user_config.yml``.
 The file will contain all of the IP addresses/hostnames that your infrastructure will exist on
 as well as a CIDR that your containers will have IP addresses assigned from. This allows for easy 
 scaling as new nodes and or affinity for containers is all set within this file. 
 
-Please see the ``rpc_user_config.yml`` file in the provided ``/etc`` directory for more details on how 
+Please see the ``openstack_user_config.yml`` file in the provided ``/etc`` directory for more details on how 
 that file is setup.
 
 If you need some assistance defining the CIDR for a given ip address range check out http://www.ipaddressguide.com/cidr
 
 
 
-Words on rpc_user_config.yml
-############################
+Words on openstack_user_config.yml
+##################################
 
-While the ``rpc_user_config.yml`` file is noted fairly heavily with examples and information regarding the options, here's some more information on what the file consists of and how to use it.
+While the ``openstack_user_config.yml`` file is noted fairly heavily with examples and information regarding the options, here's some more information on what the file consists of and how to use it.
 
 
 Global options
@@ -79,7 +79,7 @@ Here's the ``global_overrides`` syntax
 Predefined host groups
 ----------------------
 
-The user configuration file has 4 defined groups which have mapping found within the ``rpc_environment.yml`` file. 
+The user configuration file has 4 defined groups which have mapping found within the ``openstack_environment.yml`` file. 
 
 The predefined groups are: 
   * infra_hosts: 
@@ -88,7 +88,7 @@ The predefined groups are:
   * log_hosts:
 
 
-Any host specified within these groups will have containers built within them automatically. The containers that will be build are all mapped out within the rpc_environment.json file.
+Any host specified within these groups will have containers built within them automatically. The containers that will be build are all mapped out within the openstack_environment.json file.
 
 When specifying hosts inside of any of the known groups the syntax is as follows: 
 

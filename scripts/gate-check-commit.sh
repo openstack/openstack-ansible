@@ -26,8 +26,8 @@ DEPLOY_SWIFT=${DEPLOY_SWIFT:-"yes"}
 DEPLOY_TEMPEST=${DEPLOY_TEMPEST:-"no"}
 RUN_PLAYBOOKS=${RUN_PLAYBOOKS:-"yes"}
 RUN_TEMPEST=${RUN_TEMPEST:-"no"}
-CONFIG_PREFIX=${CONFIG_PREFIX:-"rpc"}
-PLAYBOOK_DIRECTORY=${PLAYBOOK_DIRECTORY:-"${CONFIG_PREFIX}_deployment"}
+CONFIG_PREFIX=${CONFIG_PREFIX:-"openstack"}
+PLAYBOOK_DIRECTORY=${PLAYBOOK_DIRECTORY:-"playbooks"}
 ANSIBLE_PARAMETERS=${ANSIBLE_PARAMETERS:-"--forks 10 -vvvv"}
 
 ## Functions -----------------------------------------------------------------
@@ -74,8 +74,8 @@ if [ ! -d "/etc/${CONFIG_PREFIX}_deploy" ];then
   # happen prior.
   sed -i "s/# nova_virt_type:.*/nova_virt_type: qemu/" ${USER_VARS_PATH}
 
+  # generate random passwords and tokens
   ./scripts/pw-token-gen.py --file ${USER_VARS_PATH}
-
 
   # change the generated passwords for the OpenStack (admin) and Kibana (kibana) accounts
   sed -i "s/keystone_auth_admin_password:.*/keystone_auth_admin_password: ${ADMIN_PASSWORD}/" ${USER_VARS_PATH}

@@ -1,4 +1,4 @@
-Openstack Deployment with Ansible
+OpenStack Deployment with Ansible
 #################################
 :date: 2014-09-25 09:00
 :tags: lxc, openstack, cloud, ansible
@@ -58,13 +58,13 @@ Assumptions
 This repo assumes that you have setup the host servers that will be running the OpenStack infrastructure with three bridged network devices named: ``br-mgmt``, ``br-vxlan``, ``br-vlan``. These bridges will be used throughout the OpenStack infrastructure.
 
 The repo also relies on configuration files found in the `/etc` directory of this repo.
-If you are running Ansible from an "unprivileged" host, you can place the contents of the /etc/ directory in your home folder; this would be in a directory similar to `/home/<myusername>/rpc_deploy/`. Once you have the file in place, you will have to enter the details of your environment in the `rpc_user_config.yml` file; please see the file for how this should look. After you have a bridged network and the files/directory in place, continue on to _`Base Usage`.
+If you are running Ansible from an "unprivileged" host, you can place the contents of the /etc/ directory in your home folder; this would be in a directory similar to `/home/<myusername>/openstack_deploy/`. Once you have the file in place, you will have to enter the details of your environment in the `openstack_user_config.yml` file; please see the file for how this should look. After you have a bridged network and the files/directory in place, continue on to _`Base Usage`.
 
 
 Base Usage
 ----------
 
-All commands must be executed from the ``rpc_deployment`` directory. From this directory you will have access to all of the playbooks, roles, and variables.  It is recommended that you create an override file to contain any and all variables that you wish to override for the deployment. While the override file is is not required it will make life a bit easier. The default override file for the RPC environment is the ``user_variables.yml`` file.
+All commands must be executed from the ``playbooks`` directory. From this directory you will have access to all of the playbooks, roles, and variables.  It is recommended that you create an override file to contain any and all variables that you wish to override for the deployment. While the override file is is not required it will make life a bit easier. The default override file for the environment is the ``user_variables.yml`` file.
 
 All of the variables that you may wish to update are in the ``vars/`` directory, however you should also be aware that services will pull in base group variables as found in ``inventory/group_vars``.
 
@@ -77,28 +77,27 @@ manually or use the script ``pw-token-gen.py``. Example:
 .. code-block::
 
     # Generate the tokens
-    scripts/pw-token-gen.py --file /etc/rpc_deploy/user_variables.yml
+    scripts/pw-token-gen.py --file /etc/openstack_deploy/user_variables.yml
 
 
-Example usage from the `rpc_deployment` directory in the ``ansible-rpc-lxc`` repository
+Example usage from the `playbooks` directory in the ``os-ansible-deployment`` repository
 
 .. code-block:: bash
 
     # Run setup on all hosts:
-    ansible-playbook -e @vars/user_variables.yml playbooks/setup/host-setup.yml
+    ansible-playbook -e @vars/user_variables.yml playbooks/host-setup.yml
 
     # Run infrastructure on all hosts
-    ansible-playbook -e @vars/user_variables.yml playbooks/infrastructure/infrastructure-setup.yml
+    ansible-playbook -e @vars/user_variables.yml playbooks/infrastructure-setup.yml
 
     # Setup and configure openstack within your spec'd containers
-    ansible-playbook -e @vars/user_variables.yml playbooks/openstack/openstack-setup.yml
+    ansible-playbook -e @vars/user_variables.yml playbooks/openstack-setup.yml
 
 
 About Inventory
 ---------------
 
-All things that Ansible cares about are located in inventory. In the Rackspace Private Cloud all
-inventory is dynamically generated using the previously mentioned configuration files. While this is a dynamically generated inventory, it is not 100% generated on every run.  The inventory is saved in a file named `rpc_inventory.json` and is located in the directory where you've located your user configuration files. On every run a backup of the inventory json file is created in both the current working directory as well as the location where the user configuration files exist.  The inventory json file is a living document and is intended to grow as the environment scales in infrastructure. This means that the inventory file will be appended to as you add more nodes and or change the container affinity from within the `rpc_user_config.yml` file. It is recommended that the base inventory file be backed up to a safe location upon the completion of a deployment operation. While the dynamic inventory processor has guards in it to ensure that the built inventory is not adversely effected by programmatic operations this does not guard against user error and/or catastrophic failure.
+All things that Ansible cares about are located in inventory. The whole inventory is dynamically generated using the previously mentioned configuration files. While this is a dynamically generated inventory, it is not 100% generated on every run.  The inventory is saved in a file named `openstack_inventory.json` and is located in the directory where you've located your user configuration files. On every run a backup of the inventory json file is created in both the current working directory as well as the location where the user configuration files exist.  The inventory json file is a living document and is intended to grow as the environment scales in infrastructure. This means that the inventory file will be appended to as you add more nodes and or change the container affinity from within the `openstack_user_config.yml` file. It is recommended that the base inventory file be backed up to a safe location upon the completion of a deployment operation. While the dynamic inventory processor has guards in it to ensure that the built inventory is not adversely effected by programmatic operations this does not guard against user error and/or catastrophic failure.
 
 
 Scaling

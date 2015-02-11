@@ -58,8 +58,8 @@ echo ""
 echo "If this server has been rebooted, you will need to re-bootstrap"
 echo "Galera to get the cluster operational. To do this execute:"
 echo ""
-echo "cd /opt/ansible-lxc-rpc/rpc_deployment"
-echo "ansible-playbook -e @/etc/rpc_deploy/user_variables.yml playbooks/infrastructure/galera-startup.yml"
+echo "cd $(pwd)/playbooks"
+echo "ansible-playbook -e @/etc/openstack_deploy/user_variables.yml galera-startup.yml"
 echo ""
 EOF
 chmod +x /etc/update-motd.d/21-galera

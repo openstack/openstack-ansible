@@ -110,7 +110,7 @@ def args():
     """Setup argument Parsing."""
     parser = argparse.ArgumentParser(
         usage='%(prog)s',
-        description='Rackspace Openstack, Token Password and Key Generator',
+        description='OpenStack Token Password and Key Generator',
         epilog='Inventory Generator Licensed "Apache 2.0"'
     )
     parser.add_argument(

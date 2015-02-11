@@ -26,19 +26,19 @@ def file_find(filename, user_file=None, pass_exception=False):
 
     If no file is found the system will exit.
     The file lookup will be done in the following directories:
-      /etc/rpc_deploy/
-      $HOME/rpc_deploy/
-      $(pwd)/rpc_deploy/
+      /etc/openstack_deploy/
+      $HOME/openstack_deploy/
+      $(pwd)/openstack_deploy/
 
     :param filename: ``str``  Name of the file to find
     :param user_file: ``str`` Additional localtion to look in FIRST for a file
     """
     file_check = [
         os.path.join(
-            '/etc', 'rpc_deploy', filename
+            '/etc', 'openstack_deploy', filename
         ),
         os.path.join(
-            os.environ.get('HOME'), 'rpc_deploy', filename
+            os.environ.get('HOME'), 'openstack_deploy', filename
         ),
         os.path.join(
             os.getcwd(), filename
@@ -83,7 +83,7 @@ def args():
     """Setup argument Parsing."""
     parser = argparse.ArgumentParser(
         usage='%(prog)s',
-        description='Rackspace Openstack, Inventory Generator',
+        description='OpenStack Inventory Generator',
         epilog='Inventory Generator Licensed "Apache 2.0"')
 
     parser.add_argument(

@@ -87,7 +87,7 @@ cat > /usr/local/bin/openstack-ansible <<EOF
 #
 # (c) 2014, Kevin Carter <kevin.carter@rackspace.com>
 
-# Openstack wrapper tool to ease the use of ansible with multiple variable files.
+# OpenStack wrapper tool to ease the use of ansible with multiple variable files.
 
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
