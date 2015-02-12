@@ -19,11 +19,12 @@
     state: present
     update_cache: yes
     cache_valid_time: 600
-  ignore_errors: yes
   with_items:
     - haproxy
     - hatop
     - vim-haproxy
+  register: pkgs
+  until: pkgs|success
 
 - name: Replace haproxy DEFAULT file
   copy:

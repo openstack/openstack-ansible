@@ -21,6 +21,8 @@
     cache_valid_time: 600
   with_items: container_packages
   when: container_packages is defined
+  register: pkgs
+  until: pkgs|success
 
 - name: Ensure apt common Packages are installed
   apt:
@@ -30,3 +32,5 @@
     cache_valid_time: 600
   with_items: apt_common_packages
   when: apt_common_packages is defined
+  register: pkgs
+  until: pkgs|success
