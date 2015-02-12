@@ -16,5 +16,8 @@
 - name: Install OpenJDK
   apt:
     pkg: openjdk-7-jre
-    state: latest
+    state: present
     update_cache: yes
+    cache_valid_time: 600
+  register: pkgs
+  until: pkgs|success

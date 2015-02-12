@@ -53,4 +53,3 @@
   when: "ansible_distribution_version in ['12.04', '13.04', '13.10', '14.04']"
   register: common_packages
   until: common_packages|success
-  retries: 3

@@ -38,10 +38,12 @@
 - name: Install galera packages
   apt:
     pkg: "{{ item }}"
-    state: latest
+    state: present
     update_cache: yes
     cache_valid_time: 600
   with_items: galera_packages
+  register: pkgs
+  until: pkgs|success
 
 # Remove the file that prevents the services from starting
 - name: Remove /usr/sbin/policy-rc.d
