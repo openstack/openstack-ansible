@@ -55,6 +55,10 @@
     group: "root"
     mode: "0644"
 
+- name: Update apt cache
+  apt:
+    update_cache: yes
+
 - name: Ensure common Packages are Installed
   apt:
     pkg: "{{ item }}"
