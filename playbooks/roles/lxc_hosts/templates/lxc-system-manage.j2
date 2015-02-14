@@ -1,0 +1,357 @@
+#!/usr/bin/env bash
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# This sciprt was built for the express purpose of managing LXC on a 
+# host. The functions within this script provide for common operations 
+# that may be required when working with LXC in production.
+
+# {{ ansible_managed }}
+
+export USE_LXC_BRIDGE="true"
+export LXC_BRIDGE="{{ lxc_net_bridge }}"
+export LXC_ADDR="{{ lxc_net_address }}"
+export LXC_NETMASK="{{ lxc_net_netmask }}"
+export LXC_NETWORK="${LXC_ADDR}/${LXC_NETMASK}"
+export LXC_DHCP_RANGE="{{ lxc_net_dhcp_range }}"
+export LXC_DHCP_MAX="{{ lxc_net_dhcp_max }}"
+export LXC_DHCP_CONFILE="{{ lxc_net_dhcp_config }}"
+export LXC_DNSMASQ_USER="{{ lxc_net_dnsmasq_user }}"
+export VARRUN="/run/lxc"
+export LXC_DOMAIN="{{ lxc_net_domain }}"
+
+function warn() {
+    echo -e "\e[0;35m${@}\e[0m"
+}
+
+function info() {
+    echo -e "\e[0;33m${@}\e[0m"
+}
+
+function success() {
+    echo -e "\e[0;32m${@}\e[0m"
+}
+
+function remove_rules() {
+    info "Removing LXC IPtables rules."
+    # Remove rules from the INPUT chain
+    iptables ${USE_IPTABLES_LOCK} -D INPUT -i "${LXC_BRIDGE}" -p udp --dport 67 -j ACCEPT
+    iptables ${USE_IPTABLES_LOCK} -D INPUT -i "${LXC_BRIDGE}" -p tcp --dport 67 -j ACCEPT
+    iptables ${USE_IPTABLES_LOCK} -D INPUT -i "${LXC_BRIDGE}" -p udp --dport 53 -j ACCEPT
+    iptables ${USE_IPTABLES_LOCK} -D INPUT -i "${LXC_BRIDGE}" -p tcp --dport 53 -j ACCEPT
+
+    # Remove rules from the FORWARDING chain
+    iptables ${USE_IPTABLES_LOCK} -D FORWARD -i "${LXC_BRIDGE}" -j ACCEPT
+    iptables ${USE_IPTABLES_LOCK} -D FORWARD -o "${LXC_BRIDGE}" -j ACCEPT
+
+    # Remove rules from the nat POSTROUTING chain
+    iptables ${USE_IPTABLES_LOCK} -t nat \
+                                  -D POSTROUTING \
+                                  -s "${LXC_NETWORK}" ! \
+                                  -d "${LXC_NETWORK}" \
+                                  -j MASQUERADE || true
+
+    # Remove rules from the mangle POSTROUTING chain
+    iptables ${USE_IPTABLES_LOCK} -t mangle \
+                                  -D POSTROUTING \
+                                  -s "${LXC_NETWORK}" \
+                                  -o "${LXC_BRIDGE}" \
+                                  -p udp \
+                                  -m udp \
+                                  --dport 68 \
+                                  -j CHECKSUM \
+                                  --checksum-fill
+    success "IPtables rules removed."
+}
+
+function add_rules() {
+    info "Creating LXC IPtables rules."
+    set -e
+    # Set ip_prwarding
+    sysctl -w net.ipv4.ip_forward=1 > /dev/null 2>&1
+
+    # Add rules from the INPUT chain
+    iptables ${USE_IPTABLES_LOCK} -I INPUT -i "${LXC_BRIDGE}" -p udp --dport 67 -j ACCEPT
+    iptables ${USE_IPTABLES_LOCK} -I INPUT -i "${LXC_BRIDGE}" -p tcp --dport 67 -j ACCEPT
+    iptables ${USE_IPTABLES_LOCK} -I INPUT -i "${LXC_BRIDGE}" -p udp --dport 53 -j ACCEPT
+    iptables ${USE_IPTABLES_LOCK} -I INPUT -i "${LXC_BRIDGE}" -p tcp --dport 53 -j ACCEPT
+
+    # Add rules from the FORWARDING chain
+    iptables ${USE_IPTABLES_LOCK} -I FORWARD -i "${LXC_BRIDGE}" -j ACCEPT
+    iptables ${USE_IPTABLES_LOCK} -I FORWARD -o "${LXC_BRIDGE}" -j ACCEPT
+
+    # Add rules from the nat POSTROUTING chain
+    iptables ${USE_IPTABLES_LOCK} -t nat \
+                                  -A POSTROUTING \
+                                  -s "${LXC_NETWORK}" ! \
+                                  -d "${LXC_NETWORK}" \
+                                  -j MASQUERADE
+
+    # Add rules from the mangle POSTROUTING chain
+    iptables ${USE_IPTABLES_LOCK} -t mangle \
+                                  -A POSTROUTING \
+                                  -s "${LXC_NETWORK}" \
+                                  -o "${LXC_BRIDGE}" \
+                                  -p udp \
+                                  -m udp \
+                                  --dport 68 \
+                                  -j CHECKSUM \
+                                  --checksum-fill
+    success "IPtables rules created."
+}
+
+function cleanup() {
+    # Clean up everything
+    remove_rules
+
+    # Set the lxc bridge interface down
+    ip link set "${LXC_BRIDGE}" down || true
+
+    # Remove the lxc bridge interface
+    brctl delbr "${LXC_BRIDGE}" || true
+}
+
+function pre_up() {
+    # Create the run directory if needed.
+    if [[ ! -d "${VARRUN}" ]];then
+        mkdir -p "${VARRUN}"
+    fi
+
+    # Source the lxc defaults
+    if [[ -f "/etc/default/lxc" ]]; then
+      source "/etc/default/lxc"
+    fi
+
+    # Set the lock type where applicable
+    use_iptables_lock="-w"
+    iptables -w -L -n > /dev/null 2>&1 || use_iptables_lock=""
+}
+
+function start_dnsmasq() {
+    set -e
+    info "Starting LXC dnsmasq."
+    dnsmasq "${LXC_DOMAIN_ARG}" --user="${LXC_DNSMASQ_USER}" \
+                                --pid-file="${VARRUN}/dnsmasq.pid" \
+                                --conf-file="${LXC_DHCP_CONFILE}" \
+                                --listen-address="${LXC_ADDR}" \
+                                --dhcp-range="${LXC_DHCP_RANGE}" \
+                                --dhcp-lease-max="${LXC_DHCP_MAX}" \
+                                --except-interface="lo" \
+                                --interface="${LXC_BRIDGE}" \
+                                --dhcp-leasefile="${DHCP_LEASE_FILE}" \
+                                --dhcp-no-override \
+                                --strict-order \
+                                --bind-interfaces \
+                                --dhcp-authoritative
+    success "dnsmasq started."
+}
+
+function start_containers_nicely() {
+    set -e
+    # Stop all containers on a host
+    success "Starting all containers."
+    for container in $(lxc-ls); do lxc-start -d -n "${container}"; done
+}
+
+function stop_containers_nicely() {
+    # Stop all containers on a host
+    warn "Stopping all containers."
+    for container in $(lxc-ls); do lxc-stop -n "${container}"; done
+}
+
+function stop_containers_with_fire() {
+    # Stop all containers on a host
+    warn "Stopping all containers with fire."
+    for container in $(lxc-ls); do lxc-stop -k -n "${container}"; done
+}
+
+function start_networks() {
+    set -e
+    info "Building the LXC container network."
+
+    # Create lxc bridge
+    brctl addbr "${LXC_BRIDGE}"
+
+    # Set the lxc bridge up
+    ip link set "${LXC_BRIDGE}" up || true
+
+    # Assign an address to the lxc bridge
+    ip addr add "${LXC_ADDR}"/"${LXC_NETMASK}" dev "${LXC_BRIDGE}"
+
+    add_rules
+
+    LXC_DOMAIN_ARG=""
+    if [ -n "$LXC_DOMAIN" ]; then
+        LXC_DOMAIN_ARG="-s $LXC_DOMAIN -S /$LXC_DOMAIN/"
+    fi
+
+    # Start DNS mask
+    DHCP_LEASE_FILE="/var/lib/misc/dnsmasq.${LXC_BRIDGE}.leases"
+    start_dnsmasq
+    success "LXC container network has been created."
+}
+
+function stop_dnsmasq() {
+    if [[ -f "${VARRUN}/dnsmasq.pid" ]];then
+        PID="$(cat ${VARRUN}/dnsmasq.pid)"
+        if [[ "${PID}" ]];then
+            warn "Stopping LXC dnsmasq."
+            kill -9 "${PID}" || true
+        fi
+        rm -f "${VARRUN}/dnsmasq.pid"
+    fi
+}
+
+function stop_networks() {
+    warn "Destroying the LXC container network."
+    cleanup
+    stop_dnsmasq
+}
+
+function remove_down_veth() {
+    info "Getting a list of all DOWN veth interfaces"
+    VETHPAIRS="$(ip link list | grep veth | grep "state DOWN" | awk '/veth/ {print $2}' | sed 's/\://g')"
+    if [[ "$VETHPAIRS" ]];then
+        warn "Removing all DOWN veth interfaces"
+        for veth in $VETHPAIRS; do ip link delete dev "${veth}"; done
+    else
+        success "No DOWN veth interfaces to remove"
+    fi
+}
+
+function flush_cache() {
+    warn "Flushing network cache"
+    ip -s -s neigh flush all
+}
+
+# Run through the base app setup
+pre_up
+
+# Check function
+case "$1" in
+    containers-start)
+        start_containers_nicely
+    ;;
+    containers-stop)
+        stop_containers_nicely
+    ;;
+    containers-force-stop)
+        stop_containers_with_fire
+    ;;
+    containers-restart)
+        stop_containers_nicely
+        start_containers_nicely
+    ;;
+    containers-force-restart)
+        stop_containers_with_fire
+        start_containers_nicely
+    ;;
+    system-tear-down)
+        stop_containers_nicely
+        remove_down_veth
+        stop_networks
+        flush_cache
+    ;;
+    system-force-tear-down)
+        stop_containers_with_fire
+        remove_down_veth
+        stop_networks
+        flush_cache
+    ;;
+    system-start-up)
+        start_networks
+        start_containers_nicely
+    ;;
+    system-rebuild)
+        stop_containers_nicely
+        remove_down_veth
+        stop_networks
+        flush_cache
+        start_networks
+        start_containers_nicely
+    ;;
+    system-force-rebuild)
+        stop_containers_with_fire
+        remove_down_veth
+        stop_networks
+        flush_cache
+        start_networks
+        start_containers_nicely
+    ;;
+    dnsmasq-start)
+        start_dnsmasq
+    ;;
+    dnsmasq-stop)
+        stop_dnsmasq
+    ;;
+    dnsmasq-restart)
+        stop_dnsmasq
+        start_dnsmasq
+    ;;
+    iptables-create)
+        add_rules
+    ;;
+    iptables-remove)
+        remove_rules
+    ;;
+    iptables-recreate)
+        remove_rules
+        add_rules
+    ;;
+    veth-cleanup)
+        remove_down_veth
+    ;;
+    flush-net-cache)
+        flush_cache
+    ;;
+    *)
+        info 'Management of internal LXC systems and processes:'
+        echo '
+        containers-start          Start all containers.
+        containers-stop           Stop all containers.
+        containers-restart        Stop all containers and then Start them.
+        containers-force-stop     Force Stop all containers.
+        containers-force-restart  Force Stop all containers and then Start them.
+        system-start-up           Start up everything that LXC needs to
+                                  operate, including the containers, dnsmasq,
+                                  LXC bridge, and IPtables.
+        system-tear-down          Tear down everything LXC on this system. 
+                                  This will remove all all IPtables rules, kill
+                                  dnsmasq, remove the LXC bridge, stops all
+                                  containers, removes DOWN veth interfaces, 
+                                  and flushes the net cache.
+        system-force-tear-down    Force tear down everything LXC on this system. 
+                                  This will remove all all IPtables rules, kill
+                                  dnsmasq, remove the LXC bridge, stops all
+                                  containers, removes DOWN veth interfaces, 
+                                  and flushes the net cache.
+        system-rebuild            Rebuild the LXC network, IPtables, dnsmasq,
+                                  removes DOWN veth interfaces, flushes the 
+                                  net cache, and restarts all conatiners.
+        system-force-rebuild      Force rebuild the LXC network, IPtables, dnsmasq,
+                                  removes DOWN veth interfaces, flushes the 
+                                  net cache, and restarts all conatiners.
+        dnsmasq-start             Start the LXC dnsmasq process.
+        dnsmasq-stop              Stop the LXC dnsmasq process.
+        dnsmasq-restart           Restart the LXC dnsmasq process.
+        iptables-create           Create the LXC IPtables rules for NAT.
+        iptables-remove           Remove the LXC IPtables rules for NAT.
+        iptables-recreate         Recreate the LXC IPtables rules for NAT.
+        veth-cleanup              Remove all DOWN veth interfaces from a system.
+        flush-net-cache           Flush the hosts network cache. This is usful if 
+                                  IP addresses are being recycled on to containers
+                                  from other hosts.
+        '
+    ;;
+esac

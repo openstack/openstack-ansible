@@ -1,0 +1,46 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Read rabbit cookie
+  shell: "cat /var/lib/rabbitmq/.erlang.cookie"
+  register: tmp_rabbit_cookie
+  changed_when: tmp_rabbit_cookie.rc != 0
+  failed_when: false
+  tags:
+    - rabbitmq-config
+
+- name: Stop rabbitmq-server
+  service:
+    name: rabbitmq-server
+    state: stopped
+  when: tmp_rabbit_cookie.stdout != rabbitmq_cookie_token
+  tags:
+    - rabbitmq-config
+    - rabbitmq-stop
+
+- name: Set rabbit cookie
+  copy:
+    content: "{{ rabbitmq_cookie_token }}"
+    dest: /var/lib/rabbitmq/.erlang.cookie
+    mode: "0400"
+    owner: rabbitmq
+    group: rabbitmq
+  when: tmp_rabbit_cookie.stdout != rabbitmq_cookie_token
+  register: cookie_set
+  tags:
+    - rabbitmq-config
+
+- include: rabbitmq_restart.yml
+  when: tmp_rabbit_cookie.stdout != rabbitmq_cookie_token

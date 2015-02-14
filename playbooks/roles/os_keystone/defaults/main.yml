@@ -1,0 +1,133 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Defines that the role will be deployed on a host machine
+is_metal: true
+
+## Verbosity Options
+debug: False
+verbose: True
+
+## System info
+keystone_system_user_name: keystone
+keystone_system_group_name: keystone
+keystone_system_service_name: apache2
+keystone_system_shell: /bin/false
+keystone_system_comment: keystone system user
+keystone_system_user_home: "/var/lib/{{ keystone_system_user_name }}"
+
+keystone_rpc_backend: rabbit
+
+## Drivers
+keystone_auth_methods: "password,token"
+keystone_identity_driver: "keystone.identity.backends.sql.Identity"
+# For a sql backed token storage use: "keystone.token.backends.sql.Token"
+keystone_token_driver: "keystone.token.persistence.backends.memcache.Token"
+keystone_token_provider: "keystone.token.providers.uuid.Provider"
+
+keystone_bind_address: 0.0.0.0
+
+## Memcached servers used within keystone.
+# String or Comma separated list of servers.
+keystone_memcached_servers: 127.0.0.1
+
+## DB info
+keystone_galera_user: keystone
+keystone_galera_database: keystone
+
+## Role info
+keystone_role_name: admin
+
+## Admin info
+keystone_admin_port: 35357
+keystone_admin_user_name: admin
+keystone_admin_tenant_name: admin
+keystone_admin_description: Admin Tenant
+
+## Service Type and Data
+keystone_service_region: RegionOne
+keystone_service_name: keystone
+keystone_service_port: 5000
+keystone_service_proto: http
+keystone_service_type: identity
+keystone_service_description: "Keystone Identity Service"
+keystone_service_user_name: keystone
+keystone_service_tenant_name: service
+
+keystone_service_publicuri: "{{ keystone_service_proto }}://{{ external_lb_vip_address }}:{{ keystone_service_port }}"
+keystone_service_publicurl: "{{ keystone_service_publicuri }}/v2.0"
+keystone_service_internaluri: "{{ keystone_service_proto }}://{{ internal_lb_vip_address }}:{{ keystone_service_port }}"
+keystone_service_internalurl: "{{ keystone_service_internaluri }}/v2.0"
+keystone_service_adminuri: "{{ keystone_service_proto }}://{{ internal_lb_vip_address }}:{{ keystone_admin_port }}"
+keystone_service_adminurl: "{{ keystone_service_adminuri }}/v2.0"
+
+keystone_service_publicuri_v3: "{{ keystone_service_proto }}://{{ external_lb_vip_address }}:{{ keystone_service_port }}"
+keystone_service_publicurl_v3: "{{ keystone_service_publicuri_v3 }}/v3"
+keystone_service_internaluri_v3: "{{ keystone_service_proto }}://{{ internal_lb_vip_address }}:{{ keystone_service_port }}"
+keystone_service_internalurl_v3: "{{ keystone_service_internaluri_v3 }}/v3"
+keystone_service_adminuri_v3: "{{ keystone_service_proto }}://{{ internal_lb_vip_address }}:{{ keystone_admin_port }}"
+keystone_service_adminurl_v3: "{{ keystone_service_adminuri_v3 }}/v3"
+
+## Apache setup
+keystone_apache_log_level: info
+
+keystone_ssl_enabled: false
+keystone_ssl_cert: /etc/ssl/certs/apache.cert
+keystone_ssl_key: /etc/ssl/private/apache.key
+keystone_ssl_cert_path: /etc/ssl/certs
+
+## Caching
+# If set this will enable dog pile cache for keystone.
+# keystone_cache_backend_argument: url:127.0.0.1:11211
+
+## LDAP section
+# Define keystone ldap information here.
+# See the http://docs.openstack.org/admin-guide-cloud/content/configuring-keystone-for-ldap-backend.html
+# for more information on available options. The sections here are defined as key: value pairs. Each
+# top level key bellow ``keystone_ldap`` is a section.
+# (EXAMPLE LAYOUT)
+# keystone_ldap:
+#   ldap:
+#     url: "ldap://127.0.0.1"
+#     user: "root"
+#     password: "secrete"
+#     ...
+
+# Common apt packages
+keystone_apt_packages:
+  - apache2
+  - apache2-utils
+  - debhelper
+  - dh-apparmor
+  - docutils-common
+  - git
+  - libapache2-mod-wsgi
+  - libjs-sphinxdoc
+  - libjs-underscore
+  - libldap2-dev
+  - libsasl2-dev
+  - libxslt1.1
+
+# Common pip packages
+keystone_pip_packages:
+  - repoze.lru
+  - pbr
+  - MySQL-python
+  - pycrypto
+  - python-memcached
+  - python-keystoneclient
+  - keystonemiddleware
+  - lxml
+  - keystone

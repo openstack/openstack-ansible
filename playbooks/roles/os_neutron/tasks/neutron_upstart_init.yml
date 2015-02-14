@@ -1,0 +1,98 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- include: neutron_upstart_common_init.yml
+  vars:
+    program_name: "{{ neutron_service_program_name }}"
+    program_config_options: "{{ neutron_service_program_config_options }}"
+    service_name: "{{ neutron_service_name }}"
+    system_user: "{{ neutron_system_user_name }}"
+    system_group: "{{ neutron_system_group_name }}"
+    service_home: "{{ neutron_system_home_folder }}"
+  when: >
+    inventory_hostname in groups['neutron_server'] and
+    neutron_service_program_enabled == true
+  tags:
+    - upstart-init
+
+- include: neutron_upstart_common_init.yml
+  vars:
+    program_name: "{{ neutron_service_dhcp_program_name }}"
+    program_config_options: "{{ neutron_service_dhcp_program_config_options }}"
+    service_name: "{{ neutron_service_name }}"
+    system_user: "{{ neutron_system_user_name }}"
+    system_group: "{{ neutron_system_group_name }}"
+    service_home: "{{ neutron_system_home_folder }}"
+  when: >
+    inventory_hostname in groups['neutron_agent'] and
+    neutron_service_dhcp_program_enabled == true
+  tags:
+    - upstart-init
+
+- include: neutron_upstart_common_init.yml
+  vars:
+    program_name: "{{ neutron_service_l3_program_name }}"
+    program_config_options: "{{ neutron_service_l3_program_config_options }}"
+    service_name: "{{ neutron_service_name }}"
+    system_user: "{{ neutron_system_user_name }}"
+    system_group: "{{ neutron_system_group_name }}"
+    service_home: "{{ neutron_system_home_folder }}"
+  when: >
+    inventory_hostname in groups['neutron_agent'] and
+    neutron_service_l3_program_enabled == true
+  tags:
+    - upstart-init
+
+- include: neutron_upstart_common_init.yml
+  vars:
+    program_name: "{{ neutron_service_linuxbridge_program_name }}"
+    program_config_options: "{{ neutron_service_linuxbridge_program_config_options }}"
+    service_name: "{{ neutron_service_name }}"
+    system_user: "{{ neutron_system_user_name }}"
+    system_group: "{{ neutron_system_group_name }}"
+    service_home: "{{ neutron_system_home_folder }}"
+  when: >
+    inventory_hostname in groups['neutron_linuxbridge_agent'] and
+    neutron_service_linuxbridge_program_enabled == true
+  tags:
+    - upstart-init
+
+- include: neutron_upstart_common_init.yml
+  vars:
+    program_name: "{{ neutron_service_metadata_program_name }}"
+    program_config_options: "{{ neutron_service_metadata_program_config_options }}"
+    service_name: "{{ neutron_service_name }}"
+    system_user: "{{ neutron_system_user_name }}"
+    system_group: "{{ neutron_system_group_name }}"
+    service_home: "{{ neutron_system_home_folder }}"
+  when: >
+    inventory_hostname in groups['neutron_agent'] and
+    neutron_service_metadata_program_enabled == true
+  tags:
+    - upstart-init
+
+- include: neutron_upstart_common_init.yml
+  vars:
+    program_name: "{{ neutron_service_metering_program_name }}"
+    program_config_options: "{{ neutron_service_metering_program_config_options }}"
+    service_name: "{{ neutron_service_name }}"
+    system_user: "{{ neutron_system_user_name }}"
+    system_group: "{{ neutron_system_group_name }}"
+    service_home: "{{ neutron_system_home_folder }}"
+  when: >
+    inventory_hostname in groups['neutron_agent'] and
+    neutron_service_metering_program_enabled == true
+  tags:
+    - upstart-init

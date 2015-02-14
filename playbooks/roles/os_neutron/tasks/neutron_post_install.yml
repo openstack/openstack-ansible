@@ -1,0 +1,93 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Ensure service tenant
+  shell: |
+    . {{ ansible_env.HOME }}/openrc && keystone tenant-list | awk '/service/ {print $2}'
+  register: service_id
+  tags:
+    - neutron-config
+
+- name: Set service tenant id
+  set_fact:
+    nova_admin_tenant_id: "{{ service_id.stdout }}"
+  tags:
+    - neutron-config
+
+- name: Generate neutron Config
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ neutron_system_user_name }}"
+    group: "{{ neutron_system_group_name }}"
+  with_items:
+    - { src: "dhcp_agent.ini.j2", dest: "/etc/neutron/dhcp_agent.ini" }
+    - { src: "dnsmasq-neutron.conf.j2", dest: "/etc/neutron/dnsmasq-neutron.conf" }
+    - { src: "l3_agent.ini.j2", dest: "/etc/neutron/l3_agent.ini" }
+    - { src: "metadata_agent.ini.j2", dest: "/etc/neutron/metadata_agent.ini" }
+    - { src: "metering_agent.ini.j2", dest: "/etc/neutron/metering_agent.ini" }
+    - { src: "neutron.conf.j2", dest: "/etc/neutron/neutron.conf" }
+    - { src: "plugins/ml2/ml2_conf.ini.j2", dest: "/etc/neutron/plugins/ml2/ml2_conf.ini" }
+  notify:
+    - Restart neutron services
+  tags:
+    - neutron-config
+
+- name: Drop neutron Configs
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ neutron_system_user_name }}"
+    group: "{{ neutron_system_group_name }}"
+  with_items:
+    - { src: "api-paste.ini", dest: "/etc/neutron/api-paste.ini" }
+    - { src: "policy.json", dest: "/etc/neutron/policy.json" }
+    - { src: "rootwrap.conf", dest: "/etc/neutron/rootwrap.conf" }
+    - { src: "rootwrap.d/debug.filters", dest: "/etc/neutron/rootwrap.d/debug.filters" }
+    - { src: "rootwrap.d/dhcp.filters", dest: "/etc/neutron/rootwrap.d/dhcp.filters" }
+    - { src: "rootwrap.d/ipset-firewall.filters", dest: "/etc/neutron/rootwrap.d/ipset-firewall.filters" }
+    - { src: "rootwrap.d/iptables-firewall.filters", dest: "/etc/neutron/rootwrap.d/iptables-firewall.filters" }
+    - { src: "rootwrap.d/nec-plugin.filters", dest: "/etc/neutron/rootwrap.d/nec-plugin.filters" }
+    - { src: "rootwrap.d/openvswitch-plugin.filters", dest: "/etc/neutron/rootwrap.d/openvswitch-plugin.filters" }
+    - { src: "rootwrap.d/ryu-plugin.filters", dest: "/etc/neutron/rootwrap.d/ryu-plugin.filters" }
+    - { src: "rootwrap.d/lbaas-haproxy.filters", dest: "/etc/neutron/rootwrap.d/lbaas-haproxy.filters" }
+    - { src: "rootwrap.d/linuxbridge-plugin.filters", dest: "/etc/neutron/rootwrap.d/linuxbridge-plugin.filters" }
+    - { src: "rootwrap.d/l3.filters", dest: "/etc/neutron/rootwrap.d/l3.filters" }
+    - { src: "rootwrap.d/vpnaas.filters", dest: "/etc/neutron/rootwrap.d/vpnaas.filters" }
+  notify:
+    - Restart neutron services
+  tags:
+    - neutron-config
+
+- name: Drop iptables checksum fix
+  copy:
+    src: "post-up-checksum-rules"
+    dest: "/etc/network/if-up.d/post-up-checksum-rules"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+  when: >
+    inventory_hostname in groups['neutron_linuxbridge_agent']
+  tags:
+    - neutron-config
+    - neutron-checksum-fix
+
+- name: Run iptables checksum fix
+  command: /etc/network/if-up.d/post-up-checksum-rules
+  when: >
+    inventory_hostname in groups['neutron_linuxbridge_agent']
+  tags:
+    - neutron-config
+    - neutron-checksum-fix

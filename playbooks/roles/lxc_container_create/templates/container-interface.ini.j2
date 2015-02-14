@@ -1,0 +1,12 @@
+# {{ ansible_managed }}
+
+# Create a veth pair within the container
+lxc.network.type = {{ item.value.type|default('veth') }}
+# Network device within the container
+lxc.network.name = {{ item.value.interface }}
+# Host link to attach to, this should be a bridge
+lxc.network.link = {{ item.value.bridge }}
+# Hardware Address
+lxc.network.hwaddr = 00:16:3e:xx:xx:xx
+# enable the device on boot
+lxc.network.flags = up

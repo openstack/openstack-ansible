@@ -1,0 +1,19 @@
+# {{ ansible_managed }}
+
+[swift-hash]
+swift_hash_path_suffix = {{ swift_hash_path_suffix }}
+swift_hash_path_prefix = {{ swift_hash_path_prefix }}
+
+# Storage Policies
+{% for policy in swift.storage_policies %}
+[storage-policy:{{ policy.policy.index }}]
+name = {{ policy.policy.name }}
+{%   if policy.policy.deprecated is defined %}
+deprecated = {{ policy.policy.deprecated }}
+{%   endif %}
+{%   if policy.policy.default is defined %}
+default = {{ policy.policy.default }}
+{%   endif %}
+
+{% endfor %}
+[swift-constraints]

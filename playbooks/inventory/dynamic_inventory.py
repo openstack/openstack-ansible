@@ -39,10 +39,12 @@ INVENTORY_SKEL = {
 # Any new item added to inventory that will used as a default argument in the
 # inventory setup should be added to this list.
 REQUIRED_HOSTVARS = [
-    'is_metal',
+    'properties',
     'ansible_ssh_host',
+    'physical_host_group',
     'container_address',
     'container_name',
+    'container_networks',
     'physical_host',
     'component'
 ]
@@ -79,6 +81,8 @@ def get_ip_address(name, ip_q):
         else:
             append_if(array=USED_IPS, item=ip_addr)
             return str(ip_addr)
+    except AttributeError:
+        return None
     except Queue.Empty:
         raise SystemExit(
             'Cannot retrieve requested amount of IP addresses. Increase the %s'
@@ -117,7 +121,7 @@ def _parse_belongs_to(key, belongs_to, inventory):
 def _build_container_hosts(container_affinity, container_hosts, type_and_name,
                            inventory, host_type, container_type,
                            container_host_type, physical_host_type, config,
-                           is_metal, assignment):
+                           properties, assignment):
     """Add in all of the host associations into inventory.
 
     This will add in all of the hosts into the inventory based on the given
@@ -132,10 +136,14 @@ def _build_container_hosts(container_affinity, container_hosts, type_and_name,
     :param container_host_type: ``str`` Type of host
     :param physical_host_type: ``str``  Name of physical host group
     :param config: ``dict``  User defined information
-    :param is_metal: ``bol``  If true, a container entry will not be built
+    :param properties: ``dict``  Container properties
     :param assignment: ``str`` Name of container component target
     """
     container_list = []
+    is_metal = False
+    if properties:
+        is_metal = properties.get('is_metal', False)
+
     for make_container in range(container_affinity):
         for i in container_hosts:
             if '%s-' % type_and_name in i:
@@ -176,11 +184,12 @@ def _build_container_hosts(container_affinity, container_hosts, type_and_name,
             append_if(array=container_mapping, item=host_type_containers)
 
             hostvars_options.update({
-                'is_metal': is_metal,
+                'properties': properties,
                 'ansible_ssh_host': address,
                 'container_address': address,
                 'container_name': container_host_name,
                 'physical_host': host_type,
+                'physical_host_group': physical_host_type,
                 'component': assignment
             })
 
@@ -217,6 +226,11 @@ def _append_to_host_groups(inventory, container_type, assignment, host_type,
     iph = inventory[physical_group_type]['hosts']
     iah = inventory[assignment]['hosts']
     for hname, hdata in inventory['_meta']['hostvars'].iteritems():
+        is_metal = False
+        properties = hdata.get('properties')
+        if properties:
+            is_metal = properties.get('is_metal', False)
+
         if 'container_types' in hdata or 'container_name' in hdata:
             if 'container_name' not in hdata:
                 container = hdata['container_name'] = hname
@@ -230,13 +244,13 @@ def _append_to_host_groups(inventory, container_type, assignment, host_type,
 
                 if container.startswith('%s-' % type_and_name):
                     append_if(array=iah, item=container)
-                elif hdata.get('is_metal') is True:
+                elif is_metal is True:
                     if component == assignment:
                         append_if(array=iah, item=container)
 
                 if container.startswith('%s-' % type_and_name):
                     append_if(array=iph, item=container)
-                elif hdata.get('is_metal') is True:
+                elif is_metal is True:
                     if container.startswith(host_type):
                         append_if(array=iph, item=container)
 
@@ -264,7 +278,7 @@ def _append_to_host_groups(inventory, container_type, assignment, host_type,
 
 
 def _add_container_hosts(assignment, config, container_name, container_type,
-                         inventory, is_metal):
+                         inventory, properties):
     """Add a given container name and type to the hosts.
 
     :param assignment: ``str`` Name of container component target
@@ -272,7 +286,7 @@ def _add_container_hosts(assignment, config, container_name, container_type,
     :param container_name: ``str``  Name fo container
     :param container_type: ``str``  Type of container
     :param inventory: ``dict``  Living dictionary of inventory
-    :param is_metal: ``bol``  If true, a container entry will not be built
+    :param properties: ``dict``  Dict of container properties
     """
     physical_host_type = '%s_hosts' % container_type.split('_')[0]
     # If the physical host type is not in config return
@@ -302,9 +316,9 @@ def _add_container_hosts(assignment, config, container_name, container_type,
                 ' 52 characters. This combination will result in a container'
                 ' name that is longer than the maximum allowable hostname of'
                 ' 63 characters. Before this process can continue please'
-                ' adjust the host entries in your "openstack_user_config.yml" to use'
-                ' a short hostname. The recommended hostname length is < 20'
-                ' characters long.' % (host_type, container_name)
+                ' adjust the host entries in your "openstack_user_config.yml"'
+                ' to use a short hostname. The recommended hostname length is'
+                ' < 20 characters long.' % (host_type, container_name)
             )
 
         physical_host = inventory['_meta']['hostvars'][host_type]
@@ -325,7 +339,7 @@ def _add_container_hosts(assignment, config, container_name, container_type,
             container_host_type,
             physical_host_type,
             config,
-            is_metal,
+            properties,
             assignment,
         )
 
@@ -348,6 +362,7 @@ def user_defined_setup(config, inventory, is_metal):
     :param inventory: ``dict``  Living dictionary of inventory
     :param is_metal: ``bol``  If true, a container entry will not be built
     """
+    hvs = inventory['_meta']['hostvars']
     for key, value in config.iteritems():
         if key.endswith('hosts'):
             if key not in inventory:
@@ -360,15 +375,23 @@ def user_defined_setup(config, inventory, is_metal):
                 if _key not in inventory['_meta']['hostvars']:
                     inventory['_meta']['hostvars'][_key] = {}
 
-                inventory['_meta']['hostvars'][_key].update({
+                hvs[_key].update({
                     'ansible_ssh_host': _value['ip'],
                     'container_address': _value['ip'],
                     'is_metal': is_metal,
+                    'physical_host_group': key
                 })
+
+                # If the entry is missing the properties key add it.
+                properties = hvs[_key].get('properties')
+                if not properties or not isinstance(properties, dict):
+                    hvs[_key]['properties'] = dict()
+
+                hvs[_key]['properties'].update({'is_metal': is_metal})
 
                 if 'host_vars' in _value:
                     for _k, _v in _value['host_vars'].items():
-                        inventory['_meta']['hostvars'][_key][_k] = _v
+                        hvs[_key][_k] = _v
 
                 append_if(array=USED_IPS, item=_value['ip'])
                 append_if(array=inventory[key]['hosts'], item=_key)
@@ -419,41 +442,6 @@ def skel_load(skeleton, inventory):
         )
 
 
-def _add_additional_networks(key, inventory, ip_q, k_name, netmask):
-    """Process additional ip adds and append then to hosts as needed.
-
-    If the host is found to be "is_metal" it will be marked as "on_metal"
-    and will not have an additionally assigned IP address.
-
-    :param key: ``str`` Component key name
-    :param inventory: ``dict``  Living dictionary of inventory
-    :param ip_q: ``object`` build queue of IP addresses
-    :param k_name: ``str`` key to use in host vars for storage
-    """
-    base_hosts = inventory['_meta']['hostvars']
-    addr_name = '%s_address' % k_name
-    lookup = inventory.get(key, list())
-
-    if 'children' in lookup and lookup['children']:
-        for group in lookup['children']:
-            _add_additional_networks(group, inventory, ip_q, k_name, netmask)
-
-    if 'hosts' in lookup and lookup['hosts']:
-        for chost in lookup['hosts']:
-            container = base_hosts[chost]
-            if not container.get(addr_name):
-                if ip_q is None:
-                    container[addr_name] = None
-                else:
-                    container[addr_name] = get_ip_address(
-                        name=k_name, ip_q=ip_q
-                    )
-
-            netmask_name = '%s_netmask' % k_name
-            if netmask_name not in container:
-                container[netmask_name] = netmask
-
-
 def _load_optional_q(config, cidr_name):
     """Load optional queue with ip addresses.
 
@@ -466,6 +454,167 @@ def _load_optional_q(config, cidr_name):
         ip_q = Queue.Queue()
         _load_ip_q(cidr=cidr, ip_q=ip_q)
     return ip_q
+
+
+def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
+                             bridge, net_type, user_config, is_ssh_address,
+                             is_container_address):
+    """Process additional ip adds and append then to hosts as needed.
+
+    If the host is found to be "is_metal" it will be marked as "on_metal"
+    and will not have an additionally assigned IP address.
+
+    :param key: ``str`` Component key name.
+    :param inventory: ``dict``  Living dictionary of inventory.
+    :param ip_q: ``object`` build queue of IP addresses.
+    :param q_name: ``str`` key to use in host vars for storage.
+    :param netmask: ``str`` netmask to use.
+    :param interface: ``str`` interface name to set for the network.
+    :param user_config: ``dict`` user defined configuration details.
+    :param is_ssh_address: ``bol`` set this address as ansible_ssh_host.
+    :param is_container_address: ``bol`` set this address to container_address.
+    """
+    def network_entry():
+        """Return a network entry for a container."""
+
+        # TODO(cloudnull) After a few releases this conditional should be
+        # simplified. The container address checking that is ssh address
+        # is only being done to support old inventory.
+
+        if is_metal:
+            _network = dict()
+        else:
+            _network = {'interface': interface}
+
+        if bridge:
+            _network['bridge'] = bridge
+
+        if net_type:
+            _network['type'] = net_type
+
+        return _network
+
+    def return_netmask():
+        """Return the netmask for a container."""
+        # TODO(cloudnull) After a few releases this conditional should be
+        # simplified. The container address checking that is ssh address
+        # is only being done to support old inventory.
+        _old_netmask = container.get(old_netmask)
+        if _old_netmask:
+            return container.pop(old_netmask)
+        elif netmask:
+            return netmask
+
+    base_hosts = inventory['_meta']['hostvars']
+    lookup = inventory.get(key, list())
+
+    if 'children' in lookup and lookup['children']:
+        for group in lookup['children']:
+            _add_additional_networks(
+                group,
+                inventory,
+                ip_q,
+                q_name,
+                netmask,
+                interface,
+                bridge,
+                net_type,
+                user_config,
+                is_ssh_address,
+                is_container_address
+            )
+
+    # Make sure the lookup object has a value.
+    if lookup:
+        hosts = lookup.get('hosts')
+        if not hosts:
+            return
+    else:
+        return
+
+    # TODO(cloudnull) after a few releases this should be removed.
+    if q_name:
+        old_address = '%s_address' % q_name
+    else:
+        old_address = '%s_address' % interface
+    old_netmask = '%s_netmask' % q_name
+
+    for container_host in hosts:
+        container = base_hosts[container_host]
+
+        # TODO(cloudnull) after a few releases this should be removed.
+        # This removes the old container network value that now serves purpose.
+        container.pop('container_network', None)
+
+        if 'container_networks' in container:
+            networks = container['container_networks']
+        else:
+            networks = container['container_networks'] = dict()
+
+        is_metal = False
+        properties = container.get('properties')
+        if properties:
+            is_metal = properties.get('is_metal', False)
+
+        ## This should convert found addresses based on q_name + "_address"
+        #  and then build the network if its not found.
+        if not is_metal and old_address not in networks:
+            network = networks[old_address] = network_entry()
+            if old_address in container and container[old_address]:
+                network['address'] = container.pop(old_address)
+            elif not is_metal:
+                address = get_ip_address(name=q_name, ip_q=ip_q)
+                if address:
+                    network['address'] = address
+
+            network['netmask'] = return_netmask()
+        elif is_metal:
+            network = networks[old_address] = network_entry()
+            network['netmask'] = return_netmask()
+            # TODO(cloudnull) After a few releases this conditional should be
+            # simplified. The container address checking that is ssh address
+            # is only being done to support old inventory.
+            if old_address in container and container[old_address]:
+                network['address'] = container.pop(old_address)
+            else:
+                if is_ssh_address or is_container_address:
+                    # Container physical host group
+                    cphg = container.get('physical_host_group')
+
+                    # user_config data from the container physical host group
+                    phg = user_config[cphg][container_host]
+                    network['address'] = phg['ip']
+
+        if is_ssh_address is True:
+            container['ansible_ssh_host'] = networks[old_address]['address']
+
+        if is_container_address is True:
+            container['container_address'] = networks[old_address]['address']
+
+
+def _net_address_search(provider_networks, main_netowrk, key):
+    """Set the key netwokr type to the main network if not specified.
+
+    :param provider_networks: ``list`` Network list of ``dict``s
+    :param main_netowrk: ``str`` The name of the main network bridge.
+    :param key: ``str`` The name of the key to set true.
+    """
+    for pn in provider_networks:
+        # p_net are the provider_network values
+        p_net = pn.get('network')
+        if p_net:
+            # Check for the key
+            if p_net.get(key):
+                break
+    else:
+        for pn in provider_networks:
+            p_net = pn.get('network')
+            if p_net:
+                if p_net.get('container_bridge') == main_netowrk:
+                    print p_net
+                    p_net[key] = True
+
+    return provider_networks
 
 
 def container_skel_load(container_skel, inventory, config):
@@ -484,7 +633,7 @@ def container_skel_load(container_skel, inventory, config):
                     key,
                     container_type,
                     inventory,
-                    value.get('is_metal', False)
+                    value.get('properties')
                 )
     else:
         cidr_networks = config.get('cidr_networks')
@@ -499,41 +648,47 @@ def container_skel_load(container_skel, inventory, config):
                 provider_queues['%s_netmask' % net_name] = str(net.netmask)
 
         overrides = config['global_overrides']
-        mgmt_bridge = overrides['management_bridge']
-        mgmt_dict = {}
-        if cidr_networks:
-            for pn in overrides['provider_networks']:
-                network = pn['network']
-                if 'ip_from_q' in network and 'group_binds' in network:
-                    q_name = network['ip_from_q']
-                    for group in network['group_binds']:
-                        _add_additional_networks(
-                            key=group,
-                            inventory=inventory,
-                            ip_q=provider_queues[q_name],
-                            k_name=q_name,
-                            netmask=provider_queues['%s_netmask' % q_name]
-                        )
+        # iterate over a list of provider_networks, var=pn
+        pns = overrides.get('provider_networks', list())
+        pns = _net_address_search(
+            provider_networks=pns,
+            main_netowrk=config['global_overrides']['management_bridge'],
+            key='is_ssh_address'
+        )
 
-                if mgmt_bridge == network['container_bridge']:
-                    nci = network['container_interface']
-                    ncb = network['container_bridge']
-                    ncn = network.get('ip_from_q')
-                    mgmt_dict['container_interface'] = nci
-                    mgmt_dict['container_bridge'] = ncb
-                    if ncn:
-                        cidr_net = netaddr.IPNetwork(cidr_networks.get(ncn))
-                        mgmt_dict['container_netmask'] = str(cidr_net.netmask)
+        pns = _net_address_search(
+            provider_networks=pns,
+            main_netowrk=config['global_overrides']['management_bridge'],
+            key='is_container_address'
+        )
 
-        for host, hostvars in inventory['_meta']['hostvars'].iteritems():
-            base_hosts = inventory['_meta']['hostvars'][host]
-            if 'container_network' not in base_hosts:
-                base_hosts['container_network'] = mgmt_dict
+        for pn in pns:
+            # p_net are the provider_network values
+            p_net = pn.get('network')
+            if not p_net:
+                continue
 
-            for _key, _value in hostvars.iteritems():
-                if _key == 'ansible_ssh_host' and _value is None:
-                    ca = base_hosts['container_address']
-                    base_hosts['ansible_ssh_host'] = ca
+            q_name = p_net.get('ip_from_q')
+            ip_from_q = provider_queues.get(q_name)
+            if ip_from_q:
+                netmask = provider_queues['%s_netmask' % q_name]
+            else:
+                netmask = None
+
+            for group in p_net.get('group_binds', list()):
+                _add_additional_networks(
+                    key=group,
+                    inventory=inventory,
+                    ip_q=ip_from_q,
+                    q_name=q_name,
+                    netmask=netmask,
+                    interface=p_net['container_interface'],
+                    bridge=p_net['container_bridge'],
+                    net_type=p_net.get('container_type'),
+                    user_config=config,
+                    is_ssh_address=p_net.get('is_ssh_address'),
+                    is_container_address=p_net.get('is_container_address')
+                )
 
 
 def file_find(pass_exception=False, user_file=None):
@@ -548,7 +703,6 @@ def file_find(pass_exception=False, user_file=None):
     :param pass_exception: ``bol``
     :param user_file: ``str`` Additional location to look in FIRST for a file
     """
-
     file_check = [
         os.path.join('/etc', 'openstack_deploy'),
         os.path.join(os.environ.get('HOME'), 'openstack_deploy')
@@ -590,15 +744,14 @@ def _set_used_ips(user_defined_config, inventory):
 
     # Find all used IP addresses and ensure that they are not used again
     for host_entry in inventory['_meta']['hostvars'].values():
-        if 'ansible_ssh_host' in host_entry:
-            append_if(array=USED_IPS, item=host_entry['ansible_ssh_host'])
+        networks = host_entry.get('container_networks', dict())
+        for network_entry in networks.values():
+            address = network_entry.get('address')
+            if address:
+                append_if(array=USED_IPS, item=address)
 
-        for key, value in host_entry.iteritems():
-            if key.endswith('address'):
-                append_if(array=USED_IPS, item=value)
 
-
-def _ensure_inventory_uptodate(inventory):
+def _ensure_inventory_uptodate(inventory, container_skel):
     """Update inventory if needed.
 
     Inspect the current inventory and ensure that all host items have all of
@@ -613,6 +766,15 @@ def _ensure_inventory_uptodate(inventory):
         for rh in REQUIRED_HOSTVARS:
             if rh not in value:
                 value[rh] = None
+
+    for key, value in container_skel.iteritems():
+        item = inventory.get(key)
+        hosts = item.get('hosts')
+        if hosts:
+            for host in hosts:
+                container = inventory['_meta']['hostvars'][host]
+                if 'properties' in value:
+                    container['properties'] = value['properties']
 
 
 def _parse_global_variables(user_cidr, inventory, user_defined_config):
@@ -759,7 +921,9 @@ def main():
         )
 
     # Load existing inventory file if found
-    dynamic_inventory_file = os.path.join(local_path, 'openstack_inventory.json')
+    dynamic_inventory_file = os.path.join(
+        local_path, 'openstack_inventory.json'
+    )
     if os.path.isfile(dynamic_inventory_file):
         with open(dynamic_inventory_file, 'rb') as f:
             dynamic_inventory = json.loads(f.read())
@@ -780,10 +944,16 @@ def main():
         dynamic_inventory = INVENTORY_SKEL
 
     # Save the users container cidr as a group variable
-    if 'container' in user_defined_config.get('cidr_networks', list()):
-        user_cidr = user_defined_config['cidr_networks']['container']
-    else:
+    cidr_networks = user_defined_config.get('cidr_networks')
+    if not cidr_networks:
         raise SystemExit('No container CIDR specified in user config')
+
+    if 'container' in cidr_networks:
+        user_cidr = cidr_networks['container']
+    elif 'management' in cidr_networks:
+        user_cidr = cidr_networks['management']
+    else:
+        raise SystemExit('No container or management network specified')
 
     # Add the container_cidr into the all global ansible group_vars
     _parse_global_variables(user_cidr, dynamic_inventory, user_defined_config)
@@ -797,7 +967,8 @@ def main():
         dynamic_inventory
     )
     skel_load(
-        environment.get('component_skel'), dynamic_inventory
+        environment.get('component_skel'),
+        dynamic_inventory
     )
     container_skel_load(
         environment.get('container_skel'),
@@ -806,10 +977,17 @@ def main():
     )
 
     # Look at inventory and ensure all entries have all required values.
-    _ensure_inventory_uptodate(inventory=dynamic_inventory)
+    _ensure_inventory_uptodate(
+        inventory=dynamic_inventory,
+        container_skel=environment.get('container_skel'),
+    )
 
     # Load the inventory json
-    dynamic_inventory_json = json.dumps(dynamic_inventory, indent=4)
+    dynamic_inventory_json = json.dumps(
+        dynamic_inventory,
+        indent=4,
+        sort_keys=True
+    )
 
     # Generate a list of all hosts and their used IP addresses
     hostnames_ips = {}
@@ -820,7 +998,8 @@ def main():
                 host_hash[_key] = _value
 
     # Save a list of all hosts and their given IP addresses
-    with open(os.path.join(local_path, 'openstack_hostnames_ips.yml'), 'wb') as f:
+    hostnames_ip_file = os.path.join(local_path, 'openstack_hostnames_ips.yml')
+    with open(hostnames_ip_file, 'wb') as f:
         f.write(
             json.dumps(
                 hostnames_ips,

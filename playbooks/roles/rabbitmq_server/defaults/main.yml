@@ -1,0 +1,43 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Defines that the role will be deployed on a host machine
+is_metal: true
+
+rabbitmq_primary_cluster_node: "{{ groups['rabbitmq_all'][0] }}"
+
+rabbitmq_package_url: http://www.rabbitmq.com/releases/rabbitmq-server/v3.4.3/rabbitmq-server_3.4.3-1_all.deb
+rabbitmq_package_sha256: "e514012a210b4ed5b77d726329ce027c50e8629c396bcde451ac16aaff07d047"
+rabbitmq_package_path: "/opt/rabbitmq-server.deb"
+
+rabbitmq_apt_packages:
+  - erlang-nox
+
+rabbitmq_pip_packages:
+  - python-memcached
+  - pycrypto
+
+rabbitmq_userid: rabbitmq
+
+# Name of the rabbitmq cluster
+rabbitmq_cluster_name: rabbitmq_cluster1
+
+# Rabbitmq open file limits
+rabbitmq_ulimit: 4096
+
+# Enable the management plugin in rabbitmq
+rabbitmq_plugins:
+  - names: rabbitmq_management
+    state: enabled

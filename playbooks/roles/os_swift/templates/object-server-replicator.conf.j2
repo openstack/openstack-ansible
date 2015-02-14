@@ -1,0 +1,23 @@
+# {{ ansible_managed }}
+
+{% set _api_threads = ansible_processor_vcpus|default(2) // 2 %}
+{% set api_threads = _api_threads if _api_threads > 0 else 1 %}
+
+[DEFAULT]
+{% set repl_bridge = 'ansible_' + swift.replication_network|replace('-', '_') %}
+bind_ip = {{ hostvars[inventory_hostname][repl_bridge]['ipv4']['address'] }}
+bind_port = {{ swift_object_port }}
+devices = {{ swift_vars.mount_point | default(swift.mount_point) }}
+workers = {{ swift_object_replicator_workers | default(api_threads) }}
+log_facility = LOG_LOCAL4
+
+[pipeline:main]
+pipeline = object-server
+
+[app:object-server]
+use = egg:swift#object
+replication_server = True
+
+[object-replicator]
+log_facility = LOG_LOCAL4
+concurrency = 6

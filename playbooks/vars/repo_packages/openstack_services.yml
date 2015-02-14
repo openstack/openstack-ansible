@@ -1,0 +1,82 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
+## NOTICE on items in this file:
+##   * If you use anything in the *._git_install_branch field that is not a TAG
+##     make sure to leave an in-line comment as to "why".
+
+## For the sake of anyone else editing this file:
+##   * If you add services to this file please do so in alphabetical order.
+##   * Every entry should be name spaced with the name of the client followed by an "_"
+##   * All items with this file should be separated by `name_` note that the name of the
+##     package should be one long name with no additional `_` separating it.
+
+
+### Before this is shipped all of these services should have a tag set as the branch,
+### or have a comment / reason attached to them as to why a tag can not work.
+
+## Cinder service
+cinder_git_repo: https://github.com/openstack/cinder
+cinder_git_install_branch: 2014.2.2
+cinder_git_dest: "/opt/cinder_{{ cinder_git_install_branch | replace('/', '_') }}"
+
+
+## Glance service
+glance_git_repo: https://github.com/openstack/glance
+glance_git_install_branch: 2014.2.2
+glance_git_dest: "/opt/glance_{{ glance_git_install_branch | replace('/', '_') }}"
+
+
+## Heat service
+heat_git_repo: https://github.com/openstack/heat
+heat_git_install_branch: 2014.2.2
+heat_git_dest: "/opt/heat_{{ heat_git_install_branch | replace('/', '_') }}"
+
+
+## Horizon service
+horizon_git_repo: https://github.com/openstack/horizon
+horizon_git_install_branch: 2014.2.2
+horizon_git_dest: "/opt/horizon_{{ horizon_git_install_branch | replace('/', '_') }}"
+
+
+## Keystone service
+keystone_git_repo: https://github.com/openstack/keystone
+keystone_git_install_branch: 2014.2.2
+keystone_git_dest: "/opt/keystone_{{ keystone_git_install_branch | replace('/', '_') }}"
+
+
+## Neutron service
+neutron_git_repo: https://github.com/openstack/neutron
+neutron_git_install_branch: 2014.2.2
+neutron_git_dest: "/opt/neutron_{{ neutron_git_install_branch | replace('/', '_') }}"
+
+
+## Nova service
+nova_git_repo: https://github.com/openstack/nova
+nova_git_install_branch: 2014.2.2
+nova_git_dest: "/opt/nova_{{ nova_git_install_branch | replace('/', '_') }}"
+
+
+## Swift service
+swift_git_repo: https://github.com/openstack/swift
+swift_git_install_branch: 2.2.1
+swift_git_dest: "/opt/swift_{{ swift_git_install_branch | replace('/', '_') }}"
+
+
+## Tempest service
+tempest_git_repo: https://github.com/openstack/tempest
+tempest_git_install_branch: 3
+tempest_git_dest: "/opt/tempest_{{ tempest_git_install_branch | replace('/', '_') }}"

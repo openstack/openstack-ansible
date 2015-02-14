@@ -1,0 +1,16 @@
+# {{ ansible_managed }}
+
+[DEFAULT]
+verbose = {{ verbose }}
+debug = {{ debug }}
+admin_password = {{ glance_service_password }}
+admin_user = glance
+admin_tenant_name = service
+use_syslog = False
+image_cache_dir = {{ glance_system_user_home }}/cache/
+image_cache_stall_time = 86400
+image_cache_max_size = {{ glance_image_cache_max_size }}
+registry_host = {{ glance_registry_host }}
+registry_port = 9191
+auth_url = {{ keystone_service_internaluri }}
+filesystem_store_datadir = {{ glance_system_user_home }}/images/

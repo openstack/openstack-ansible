@@ -1,0 +1,90 @@
+{%- set all_calculated_max_connections = [] %}
+{%- for galera_node in groups['galera_all'] %}
+    {%- if all_calculated_max_connections.append(hostvars[galera_node]['ansible_processor_vcpus'] * 100) %}
+    {%- endif %}
+{%- endfor %}
+{%- set calculated_max_connections = all_calculated_max_connections|sort %}
+
+# {{ ansible_managed }}
+
+[client]
+port = 3306
+socket = /var/run/mysqld/mysqld.sock
+default-character-set = utf8
+
+
+[mysqld_safe]
+socket = /var/run/mysqld/mysqld.sock
+nice = 0
+
+
+[mysql]
+default-character-set = utf8
+
+
+[mysqld]
+user = mysql
+collation-server = utf8_unicode_ci
+init-connect = 'SET NAMES utf8'
+character-set-server = utf8
+datadir = /var/lib/mysql
+
+# LOGGING #
+log-queries-not-using-indexes = 1
+slow-query-log = 1
+slow-query-log-file = /var/log/mysql/mysql-slow.log
+log_error = /var/log/mysql/galera_server_error.log
+log-bin = /var/lib/mysql/mariadb-bin
+log-bin-index = /var/lib/mysql/mariadb-bin.index
+expire-logs-days = 7
+
+# SAFETY #
+max-allowed-packet = 16M
+max-connect-errors = 1000000
+
+# NOTE: The number of max connections is defined by ( host_vcpus * 100 ). This value
+# is the lowest integer based on the ansible facts gathered from every galera node.
+# Computing the connections value using the lowest denominator maintains cluster integrity
+# by not attempting to over commit to a less capable machine.
+# These are the computed max_connections based on cluster data {{ calculated_max_connections }}
+max_connections = {{ galera_max_connections | default(calculated_max_connections[0]) }}
+
+wait_timeout = {{ galera_wait_timeout }}
+
+# CACHES AND LIMITS #
+tmp-table-size = {{ galera_max_heap_table_size }}
+max-heap-table-size = {{ galera_tmp_table_size }}
+query-cache-type = 0
+query-cache-size = 0M
+thread-cache-size = 50
+open-files-limit = 65535
+table-definition-cache = 4096
+table-open-cache = 10240
+
+# INNODB #
+innodb-flush-method = O_DIRECT
+innodb-additional-mem-pool-size = {{ galera_innodb_additional_mem_pool_size }}
+innodb-log-file-size = {{ galera_innodb_log_file_size }}
+innodb-flush-log-at-trx-commit = 1
+innodb-file-per-table = 1
+innodb-buffer-pool-size = {{ galera_innodb_buffer_pool_size }}
+
+# Depending on number of cores and disk sub
+innodb-read-io-threads = 4
+innodb-write-io-threads = 4
+innodb-doublewrite = 1
+innodb-log-buffer-size = {{ galera_innodb_log_buffer_size }}
+innodb-buffer-pool-instances = 8
+innodb-log-files-in-group = 2
+innodb-thread-concurrency = 64
+
+# avoid statistics update when doing e.g show tables
+innodb_stats_on_metadata = 0
+
+[mysqldump]
+quick
+quote-names
+max_allowed_packet = 16M
+
+
+!includedir /etc/mysql/conf.d/

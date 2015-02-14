@@ -1,0 +1,183 @@
+# {{ ansible_managed }}
+
+{% set _api_threads = ansible_processor_vcpus|default(2) // 2 %}
+{% set api_threads = _api_threads if _api_threads > 0 else 1 %}
+
+[DEFAULT]
+# Logs / State
+debug = {{ debug }}
+verbose = {{ verbose }}
+log_dir = /var/log/nova
+state_path = {{ nova_system_home_folder }}
+lock_path = /var/lock/nova
+rootwrap_config = /etc/nova/rootwrap.conf
+service_down_time = 120
+
+# Quota
+quota_injected_file_content_bytes = {{ nova_quota_injected_file_content_bytes }}
+quota_injected_file_path_length = {{ nova_quota_injected_file_path_length }}
+quota_injected_files = {{ nova_quota_injected_files }}
+
+# Scheduler
+cpu_allocation_ratio = {{ nova_cpu_allocation_ratio }}
+disk_allocation_ratio = {{ nova_disk_allocation_ratio }}
+max_instances_per_host = {{ nova_max_instances_per_host }}
+max_io_ops_per_host = {{ nova_max_io_ops_per_host }}
+ram_allocation_ratio = {{ nova_ram_allocation_ratio }}
+ram_weight_multiplier = {{ nova_ram_weight_multiplier }}
+reserved_host_disk_mb = {{ nova_reserved_host_disk_mb }}
+reserved_host_memory_mb = {{ nova_reserved_host_memory_mb }}
+scheduler_driver = {{ nova_scheduler_driver }}
+scheduler_available_filters = {{ nova_scheduler_available_filters }}
+scheduler_default_filters = {{ nova_scheduler_default_filters }}
+scheduler_driver_task_period = {{ nova_scheduler_driver_task_period }}
+scheduler_host_manager = {{ nova_scheduler_host_manager }}
+scheduler_host_subset_size = {{ nova_scheduler_host_subset_size }}
+scheduler_manager = {{ nova_scheduler_manager }}
+scheduler_max_attempts = {{ nova_scheduler_max_attempts }}
+scheduler_weight_classes = {{ nova_scheduler_weight_classes }}
+
+# Compute
+compute_driver = {{ nova_compute_driver }}
+instance_name_template = instance-%08x
+instances_path = {{ nova_system_home_folder }}/instances
+api_paste_config = /etc/nova/api-paste.ini
+allow_resize_to_same_host = True
+
+# Api's
+enabled_apis = osapi_compute,metadata,ec2
+osapi_compute_workers = {{ nova_osapi_compute_workers | default(api_threads) }}
+ec2_workers = {{ nova_ec2_workers | default(api_threads) }}
+ec2_dmz_host = {{ external_lb_vip_address }}
+s3_port = {{ nova_s3_service_port }}
+s3_host = {{ ansible_ssh_host }}
+
+# Rpc all
+amqp_auto_delete = False
+rpc_backend = {{ nova_rpc_backend }}
+
+# RabbitMQ
+rabbit_port = {{ rabbitmq_port }}
+rabbit_userid = {{ rabbitmq_userid }}
+rabbit_password = {{ rabbitmq_password }}
+rabbit_hosts = {{ rabbitmq_servers }}
+
+# Metadata
+metadata_host = {{ internal_lb_vip_address }}
+metadata_port = {{ nova_metadata_port }}
+metadata_workers = {{ nova_metadata_workers | default(api_threads) }}
+
+# Network
+force_dhcp_release = True
+dhcpbridge_flagfile = /etc/nova/nova.conf
+firewall_driver = {{ nova_firewall_driver }}
+my_ip = {{ ansible_ssh_host }}
+default_floating_pool = public
+security_group_api = neutron
+network_api_class = nova.network.neutronv2.api.API
+
+# VNC disabled, see spice section
+vnc_enabled = False
+
+# Authentication
+auth_strategy = keystone
+
+## Vif
+linuxnet_interface_driver = {{ nova_linuxnet_interface_driver }}
+libvirt_vif_driver = {{ nova_libvirt_vif_driver }}
+libvirt_vif_type = ethernet
+vif_plugging_timeout = 10
+vif_plugging_is_fatal = False
+
+# Hypervisor
+default_ephemeral_format = ext4
+
+# Configdrive
+force_config_drive = always
+
+# Policy
+max_age = {{ nova_max_age }}
+
+# Common
+memcached_servers = {{ memcached_servers }}
+
+# Cinder
+[cinder]
+catalog_info = volume:cinder:internalURL
+
+
+{% if nova_spice_html5proxy_base_url is defined %}
+[spice]
+agent_enabled = {{ nova_console_agent_enabled }}
+enabled = {{ nova_console_agent_enabled }}
+keymap = {{ nova_console_keymap }}
+# Console Url and binds
+html5proxy_base_url = {{ nova_spice_html5proxy_base_url }}
+server_listen = {{ ansible_ssh_host }}
+server_proxyclient_address = {{ ansible_ssh_host }}
+{% endif %}
+
+
+# Glance
+[glance]
+api_servers = {{ glance_api_servers }}
+
+
+# Neutron
+[neutron]
+url = {{ neutron_service_adminurl }}
+region_name = {{ neutron_service_region }}
+auth_strategy = keystone
+admin_auth_url = {{ keystone_service_adminurl }}
+admin_password = {{ neutron_service_password }}
+admin_username = {{ neutron_service_user_name }}
+admin_tenant_name = {{ neutron_service_tenant_name }}
+metadata_proxy_shared_secret = {{ nova_metadata_proxy_secret }}
+service_metadata_proxy = {{ nova_metadata_proxy_enabled }}
+
+
+[conductor]
+use_local = false
+topic = conductor
+manager = nova.conductor.manager.ConductorManager
+workers = {{ nova_conductor_workers | default(api_threads) }}
+
+
+[osapi_v3]
+enabled = True
+
+
+[keystone_authtoken]
+signing_dir = {{ nova_system_home_folder }}/cache/api
+identity_uri = {{ keystone_service_internaluri }}
+auth_uri = {{ keystone_service_internaluri }}
+admin_tenant_name = {{ nova_service_tenant_name }}
+admin_user = {{ nova_service_user_name }}
+admin_password = {{ nova_service_password }}
+
+memcached_servers = {{ memcached_servers }}
+
+token_cache_time = 300
+revocation_cache_time = 60
+
+# if your memcached server is shared, use these settings to avoid cache poisoning
+memcache_security_strategy = ENCRYPT
+memcache_secret_key = {{ memcached_encryption_key }}
+
+# if your keystone deployment uses PKI, and you value security over performance:
+check_revocations_for_cached = False
+
+
+{% if inventory_hostname not in groups['nova_compute'] %}
+[database]
+connection = mysql://{{ nova_galera_user }}:{{ nova_container_mysql_password }}@{{ galera_address }}/{{ nova_galera_database }}?charset=utf8
+{% endif %}
+
+
+[libvirt]
+vif_driver = {{ nova_libvirt_vif_driver }}
+inject_partition = -2
+use_usb_tablet = False
+use_virtio_for_bridges = True
+cpu_mode = {{ nova_cpu_mode }}
+virt_type = {{ nova_virt_type }}

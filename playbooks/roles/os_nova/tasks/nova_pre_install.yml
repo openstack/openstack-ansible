@@ -1,0 +1,95 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: create the system group
+  group:
+    name: "{{ nova_system_group_name }}"
+    state: "present"
+    system: "yes"
+  tags:
+    - nova-group
+
+- name: Create the nova system user
+  user:
+    name: "{{ nova_system_user_name }}"
+    group: "{{ nova_system_group_name }}"
+    comment: "{{ nova_system_comment }}"
+    shell: "{{ nova_system_shell }}"
+    system: "yes"
+    createhome: "yes"
+    home: "{{ nova_system_home_folder }}"
+  tags:
+    - nova-user
+
+- name: Create nova dir
+  file:
+    path: "{{ item.path }}"
+    state: directory
+    owner: "{{ item.owner|default(nova_system_user_name) }}"
+    group: "{{ item.group|default(nova_system_group_name) }}"
+    mode: "{{ item.mode|default('0755') }}"
+  with_items:
+    - { path: "/etc/nova" }
+    - { path: "/etc/nova/rootwrap.d" }
+    - { path: "/etc/sudoers.d", mode: "0750", owner: "root", group: "root" }
+    - { path: "/var/cache/nova" }
+    - { path: "{{ nova_system_home_folder }}" }
+    - { path: "{{ nova_system_home_folder }}/.ssh", mode: "0700" }
+    - { path: "{{ nova_system_home_folder }}/cache/api" }
+    - { path: "{{ nova_system_home_folder }}/instances" }
+    - { path: "/var/lock/nova" }
+    - { path: "/var/run/nova" }
+  tags:
+    - nova-dirs
+
+- name: Test for log directory or link
+  shell: |
+    if [ -h "/var/log/nova"  ]; then
+      chown -h {{ nova_system_user_name }}:{{ nova_system_group_name }} "/var/log/nova"
+      chown -R {{ nova_system_user_name }}:{{ nova_system_group_name }} "$(readlink /var/log/nova)"
+    else
+      exit 1
+    fi
+  register: log_dir
+  failed_when: false
+  changed_when: log_dir.rc != 0
+  tags:
+    - nova-dirs
+    - nova-logs
+
+- name: Create nova log dir
+  file:
+    path: "{{ item.path }}"
+    state: directory
+    owner: "{{ item.owner|default(nova_system_user_name) }}"
+    group: "{{ item.group|default(nova_system_group_name) }}"
+    mode: "{{ item.mode|default('0755') }}"
+  with_items:
+    - { path: "/var/log/nova" }
+  when: log_dir.rc != 0
+  tags:
+    - nova-dirs
+    - nova-logs
+
+- name: Drop sudoers file
+  template:
+    src: "sudoers.j2"
+    dest: "/etc/sudoers.d/{{ nova_system_user_name }}_sudoers"
+    mode: "0440"
+    owner: "root"
+    group: "root"
+  tags:
+    - sudoers
+    - nova-sudoers

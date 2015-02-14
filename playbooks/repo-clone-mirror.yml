@@ -1,0 +1,38 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# This play was built to seed an environment with packages that may be used
+# from within the environment as found from a given mirror_source_host.
+# Currently the mirror source host is set to the Rackspace build servers but
+# could be targeted to wherever you'd like.
+- name: Cloning the upstream repo mirror
+  hosts: repo_all[0]
+  max_fail_percentage: 20
+  gather_facts: false
+  user: root
+  tasks:
+    - name: Sync the upstream repo(s)
+      shell: |
+        rsync -rz \
+              --exclude="repos/* mirror/* rpcgit/* openstackgit/*" \
+              --links \
+              {{ mirror_source_host }}::{{ mirror_name }} {{ mirror_path }}
+      sudo: yes
+      sudo_user: "{{ repo_service_user_name }}"
+  vars:
+    mirror_path: /var/www/repo/
+    mirror_name: openstack_mirror
+    mirror_source_host: "rpc-repo.rackspace.com"
+    is_metal: "{{ properties.is_metal|default(false) }}"

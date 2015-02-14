@@ -1,0 +1,55 @@
+# {{ ansible_managed }}
+
+{% set _api_threads = ansible_processor_vcpus|default(2) // 2 %}
+{% set api_threads = _api_threads if _api_threads > 0 else 1 %}
+
+{% if is_metal == true or is_metal == "True" and swift.storage_network is defined %}
+{% set storage_bridge = 'ansible_' + swift.storage_network|replace('-', '_') %}
+{% set swift_storage_address = hostvars[inventory_hostname][storage_bridge]['ipv4']['address'] %}
+{% endif %}
+
+[DEFAULT]
+bind_ip = {{ swift_storage_address | default(ansible_ssh_host) }}
+bind_port = {{ swift_object_port }}
+workers = {{ swift_object_server_workers | default(api_threads) }}
+
+user = {{ swift_system_user_name }}
+swift_dir = /etc/swift
+devices = {{ swift_vars.mount_point | default(swift.mount_point) }}
+log_facility = LOG_LOCAL4
+
+[pipeline:main]
+pipeline = healthcheck recon object-server
+
+[app:object-server]
+use = egg:swift#object
+log_facility = LOG_LOCAL4
+mb_per_sync = 64
+
+[filter:healthcheck]
+use = egg:swift#healthcheck
+
+[filter:recon]
+use = egg:swift#recon
+log_facility = LOG_LOCAL4
+recon_cache_path = /var/cache/swift
+recon_lock_path = /var/lock/swift
+
+{% if swift.replication_network is not defined %}
+[object-replicator]
+log_facility = LOG_LOCAL4
+concurrency = 6
+{% endif %}
+
+[object-updater]
+log_facility = LOG_LOCAL4
+concurrency = 3
+concurrency = 3
+node_timeout = 60
+conn_timeout = 5
+
+[object-auditor]
+log_facility = LOG_LOCAL4
+
+[filter:xprofile]
+use = egg:swift#xprofile

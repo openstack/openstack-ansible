@@ -1,120 +1,60 @@
-OpenStack Deployment with Ansible
-#################################
-:date: 2014-09-25 09:00
+OpenStack Ansible Deployment
+############################
+:date: 2015-02-02 22:00
 :tags: lxc, openstack, cloud, ansible
 :category: \*nix
 
-Official Documentation
-----------------------
 
-Comprehensive installation guides, including FAQs and release notes, can be found at http://docs.rackspace.com
+Playbooks
+---------
 
-Bug tracking and release management can be found in Launchpad_
+There are several playbooks within that will setup hosts for use in OpenStack Cloud. The playbooks will enable LXC on hosts and provides the ability to deploy LXC containers for use within openstack.
 
-.. _launchpad: https://launchpad.net/openstack-ansible
+Plays:
+  * ``setup-hosts.yml``  Performs host setup for use with LXC in the OpenStack hosts.
+  * ``setup-infrastructure.yml`` Performs all of the setup for all infrastructure components.
+  * ``setup-openstack.yml`` Performs all of the setup for all of the OpenStack components.
 
-Code reviews will be managed in Gerrit_
+* If you dont want to run plays individually you can simply run ``setup-everything.yml`` which will perform all of the setup and installation for you.
 
-.. _gerrit: https://review.openstack.org/#/q/os-ansible-deployment,n,z
+Basic Setup:
+  1. If you have any roles that you'd like to have pulled in that are outside the scope and or replace modules within this repository please add them to the ``ansible-role-requirements.yml`` file. In this file you will want to fill in the details for the role you want to pull in using standard ansible galaxy format.
 
-Playbook Support
-----------------
+  .. code-block:: yaml
 
-OpenStack:
-  * keystone
-  * glance-api
-  * glance-registry
-  * cinder-api
-  * cinder-scheduler
-  * cinder-volume
-  * nova-api
-  * nova-api-ec2
-  * nova-api-metadata
-  * nova-api-os-compute
-  * nova-compute
-  * nova-conductor
-  * nova-scheduler
-  * heat-api
-  * heat-api-cfn
-  * heat-api-cloudwatch
-  * heat-engine
-  * horizon
-  * neutron-server
-  * neutron-dhcp-agent
-  * neutron-metadata-agent
-  * neutron-linuxbridge-agent
+    - name: SuperAwesomeModule
+      src: https://github.com/super-user/SuperAwesomeModule
+      version: master
 
+  2. Run the ``./scripts/os-ansible-bootstrap.sh`` script, which will install, pip, ansible 1.8.x, all of the required python packages, and bring in any third part ansible roles that you may want to add to the deployment.
+  3. Copy the ``etc/openstack_deploy`` directory to ``/etc/openstack_deploy`` or if you are executing all of this as an unprivileged user you can add the ``openstack_deploy`` bits into your home directory as ``${HOME}/.openstack_deploy``.
+  4. Fill in your ``openstack_deploy/openstack_user_config.yml``, ``openstack_deploy/user_secrets.yml`` and ``openstack_deploy/user_variables.yml`` files which you've just copied to your ``/etc/`` directory or your ``${HOME}`` folder.
+  5. Generate all of your random passwords executing ``scripts/pw-token-gen.py --file /etc/openstack_deploy/user_secrets.yml``.
+  6. Accomplish all of the host networking that you want to use within the deployment. See the ``etc/network`` directory in this repository for an example network setup.
+  7. When ready change to the ``playbooks/`` directory and execute your desired plays.  IE: 
 
-Infrastructure:
-  * galera
-  * rabbitmq
-  * logstash
-  * elastic-search
-  * kibana
+  .. code-block:: bash
 
-Assumptions
------------
-
-This repo assumes that you have setup the host servers that will be running the OpenStack infrastructure with three bridged network devices named: ``br-mgmt``, ``br-vxlan``, ``br-vlan``. These bridges will be used throughout the OpenStack infrastructure.
-
-The repo also relies on configuration files found in the `/etc` directory of this repo.
-If you are running Ansible from an "unprivileged" host, you can place the contents of the /etc/ directory in your home folder; this would be in a directory similar to `/home/<myusername>/openstack_deploy/`. Once you have the file in place, you will have to enter the details of your environment in the `openstack_user_config.yml` file; please see the file for how this should look. After you have a bridged network and the files/directory in place, continue on to _`Base Usage`.
-
-
-Base Usage
-----------
-
-All commands must be executed from the ``playbooks`` directory. From this directory you will have access to all of the playbooks, roles, and variables.  It is recommended that you create an override file to contain any and all variables that you wish to override for the deployment. While the override file is is not required it will make life a bit easier. The default override file for the environment is the ``user_variables.yml`` file.
-
-All of the variables that you may wish to update are in the ``vars/`` directory, however you should also be aware that services will pull in base group variables as found in ``inventory/group_vars``.
-
-All playbooks exist in the ``playbooks/`` directory and are grouped in different sub-directories.
-
-All of the keys, tokens, and passwords are in the ``user_variables.yml`` file. This file contains no
-preset passwords. To setup your keys, passwords, and tokens you will need to either edit this file
-manually or use the script ``pw-token-gen.py``. Example:
-
-.. code-block::
-
-    # Generate the tokens
-    scripts/pw-token-gen.py --file /etc/openstack_deploy/user_variables.yml
-
-
-Example usage from the `playbooks` directory in the ``os-ansible-deployment`` repository
-
-.. code-block:: bash
-
-    # Run setup on all hosts:
-    ansible-playbook -e @vars/user_variables.yml playbooks/host-setup.yml
-
-    # Run infrastructure on all hosts
-    ansible-playbook -e @vars/user_variables.yml playbooks/infrastructure-setup.yml
-
-    # Setup and configure openstack within your spec'd containers
-    ansible-playbook -e @vars/user_variables.yml playbooks/openstack-setup.yml
-
-
-About Inventory
----------------
-
-All things that Ansible cares about are located in inventory. The whole inventory is dynamically generated using the previously mentioned configuration files. While this is a dynamically generated inventory, it is not 100% generated on every run.  The inventory is saved in a file named `openstack_inventory.json` and is located in the directory where you've located your user configuration files. On every run a backup of the inventory json file is created in both the current working directory as well as the location where the user configuration files exist.  The inventory json file is a living document and is intended to grow as the environment scales in infrastructure. This means that the inventory file will be appended to as you add more nodes and or change the container affinity from within the `openstack_user_config.yml` file. It is recommended that the base inventory file be backed up to a safe location upon the completion of a deployment operation. While the dynamic inventory processor has guards in it to ensure that the built inventory is not adversely effected by programmatic operations this does not guard against user error and/or catastrophic failure.
-
-
-Scaling
--------
-
-If you are scaling the environment using the dynamically generated inventory you should know that the inventory was designed to generate new entries in inventory and not remove entries from inventory.  These playbooks will build an environment to spec so if container affinity is changed and or a node is added or removed from an environment the user configuration file will need to be modified as well as the inventory json.  For this reason it is recommended that should a physical node need replacing it should be renamed the same as the previous one. This will make things easier when rebuilding the environment. Additionally if a container is needing to be replaced it is better to simply remove the misbehaving container and rebuild it using the existing inventory.
+    openstack-ansible setup-everything.yml
 
 
 Notes
 -----
 
-* Library has an experimental `keystone` module which adds ``keystone:`` support to Ansible.
-* Library has an experimental `swift` module which adds ``swift:`` support to Ansible.
-* Library has an experimental `neutron` module which adds ``keystone:`` support to Ansible.
-* Library has an experimental `glance` module which adds ``keystone:`` support to Ansible.
-* Library has an experimental `lxc` module which adds ``lxc:`` support to Ansible.
-* Library has an experimental `memcached` module which adds ``lxc:`` support to Ansible.
-* Library has an experimental `name2int` module which adds ``lxc:`` support to Ansible.
+* If you run the ``./scripts/bootstrap-ansible.sh`` script a wrapper script will be added to your system that wraps the ansible-playbook command to simplify the arguments required to run openstack ansible plays. The name of the wrapper script is **openstack-ansible**.
+* The lxc network is created within the *lxcbr0* interface. This supports both NAT networks as well as more traditional networking. If NAT is enabled (default) the IPtables rules will be created along with the interface as a post-up processes. If you ever need to recreate the rules and or restart the dnsmask process you can bounce the interface IE: ``ifdown lxcb0; ifup lxcbr0`` or you can use the ``lxc-system-manage`` command.
+* The tool ``lxc-system-manage`` is available on all lxc hosts and can assist in recreating parts of the LXC system whenever its needed.
+* Our repository uses a custom `LXC` module which adds ``lxc:`` support to Ansible. The module within this repository is presently pending in upstream ansible at "https://github.com/ansible/ansible-modules-extras/pull/123".
+* Inventory is generated by executing the ``playbooks/inventory/dynamic_inventory.py`` script. This is configured in the ``playbooks/ansible.cfg`` file.
 
 
+Bugs and Blueprints
+-------------------
+
+Everything we do is in launchpad and gerrit. If you'd like to raise a bug, feature request, or are looking for ways to contribute please go to "https://launchpad.net/openstack-ansible".
+
+
+Official Documentation
+----------------------
+
+Comprehensive installation guides, including FAQs and release notes, can be found at "http://docs.rackspace.com/rpc/api/v9/bk-rpc-installation/content/rpc-common-front.html" < Note that these docs may not be up-to-date with the current release of this repository however they are still a good source of documentation.

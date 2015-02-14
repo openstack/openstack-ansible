@@ -1,0 +1,149 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# This is the role assigned to users created within Heat stacks themselves
+- name: Ensure stack_user role
+  keystone:
+    command: "ensure_role"
+    token: "{{ keystone_auth_admin_token }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    role_name: "heat_stack_user"
+  register: add_service
+  until: add_service|success
+  retries: 5
+  delay: 10
+  tags:
+    - heat-domain
+    - heat-domain-role
+    - heat-domain-setup
+    - heat-config
+
+- name: check for heat domain
+  shell: |
+    . {{ ansible_env.HOME }}/openrc
+    openstack --os-identity-api-version=3 \
+              --os-auth-url={{ keystone_service_adminurl_v3 }} \
+              --os-project-name={{ heat_project_name }} \
+              --os-project-domain-id={{ heat_project_domain_id }} \
+              --os-user-domain-id={{ heat_user_domain_id }} \
+              domain \
+              show \
+              "{{ heat_stack_user_domain_name }}" | grep -w "{{ heat_stack_user_domain_name }}"
+  failed_when: false
+  changed_when: stack_user_domain.rc == 1
+  register: stack_user_domain
+  tags:
+    - heat-domain
+    - heat-domain-setup
+    - heat-config
+
+- name: Create heat domain
+  shell: |
+    . {{ ansible_env.HOME }}/openrc
+    openstack --os-identity-api-version=3 \
+              --os-auth-url={{ keystone_service_adminurl_v3 }} \
+              --os-project-name={{ heat_project_name }} \
+              --os-project-domain-id={{ heat_project_domain_id }} \
+              --os-user-domain-id={{ heat_user_domain_id }} \
+              domain \
+              create \
+              --description "{{ heat_stack_domain_description }}" \
+              "{{ heat_stack_user_domain_name }}"
+  when: stack_user_domain.rc == 1
+  tags:
+    - heat-domain
+    - heat-domain-setup
+    - heat-config
+
+- name: Check for heat user
+  shell: |
+    . {{ ansible_env.HOME }}/openrc
+    openstack --os-identity-api-version=3 \
+              --os-auth-url={{ keystone_service_adminurl_v3 }} \
+              --os-project-name={{ heat_project_name }} \
+              --os-project-domain-id={{ heat_project_domain_id }} \
+              --os-user-domain-id={{ heat_user_domain_id }} \
+              user \
+              list | grep -w "{{ heat_stack_domain_admin }}"
+  failed_when: false
+  changed_when: stack_user.rc == 1
+  register: stack_user
+  tags:
+    - heat-domain
+    - heat-domain-setup
+    - heat-config
+
+- name: Create heat domain admin user
+  shell: |
+    . {{ ansible_env.HOME }}/openrc
+    openstack --os-identity-api-version=3 \
+              --os-auth-url={{ keystone_service_adminurl_v3 }} \
+              --os-project-name={{ heat_project_name }} \
+              --os-project-domain-id={{ heat_project_domain_id }} \
+              --os-user-domain-id={{ heat_user_domain_id }} \
+              user \
+              create \
+              --domain {{ heat_stack_user_domain_name }} \
+              --password {{ heat_stack_domain_admin_password }} \
+              "{{ heat_stack_domain_admin }}"
+  when: stack_user.rc == 1
+  tags:
+    - heat-domain
+    - heat-domain-setup
+    - heat-config
+
+- name: Retrieve heat domain id
+  shell: |
+    . {{ ansible_env.HOME }}/openrc
+    openstack --os-identity-api-version=3 \
+              --os-auth-url={{ keystone_service_adminurl_v3 }} \
+              --os-project-name={{ heat_project_name }} \
+              --os-project-domain-id={{ heat_project_domain_id }} \
+              --os-user-domain-id={{ heat_user_domain_id }} \
+              domain \
+              show \
+              {{ heat_stack_user_domain_name }} | grep -oE -m 1 "[0-9a-f]{32}"
+  register: stack_user_domain_id
+  tags:
+    - heat-domain
+    - heat-domain-setup
+    - heat-config
+
+- name: Set fact for heat domain id
+  set_fact:
+    stack_user_domain_id: "{{ stack_user_domain_id.stdout }}"
+  tags:
+    - heat-domain
+    - heat-domain-setup
+    - heat-config
+
+- name: Assign admin role to heat domain admin user
+  shell: |
+    . {{ ansible_env.HOME }}/openrc
+    openstack --os-identity-api-version=3 \
+              --os-auth-url={{ keystone_service_adminurl_v3 }} \
+              --os-project-name={{ heat_project_name }} \
+              --os-project-domain-id={{ heat_project_domain_id }} \
+              --os-user-domain-id={{ heat_user_domain_id }} \
+              role \
+              add \
+              --user {{ heat_stack_domain_admin }} \
+              --domain {{ stack_user_domain_id }} \
+              admin
+  tags:
+    - heat-domain
+    - heat-domain-setup
+    - heat-config
+

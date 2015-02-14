@@ -13,14 +13,36 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- hosts: rsyslog
+- name: Install rsyslog
+  hosts: rsyslog
+  max_fail_percentage: 20
   user: root
+  pre_tasks:
+    - name: Rsyslog extra lxc config
+      lxc-container:
+        name: "{{ container_name }}"
+        container_command: |
+          [[ ! -d "/openstack/log" ]] && mkdir -p "/openstack/log"
+        container_config:
+          - "lxc.mount.entry=/openstack/log openstack/log none bind 0 0"
+      delegate_to: "{{ physical_host }}"
+      when: is_metal == false or is_metal == "False"
+      tags:
+        - rsyslog-dir
+    - name: Flush net cache
+      command: /usr/local/bin/lxc-system-manage flush-net-cache
+      delegate_to: "{{ physical_host }}"
+      tags:
+        - flush-net-cache
+    - name: Wait for container ssh
+      wait_for:
+        port: "22"
+        delay: 5
+        host: "{{ ansible_ssh_host }}"
+      tags:
+        - rsyslog-ssh-wait
   roles:
-    - container_extra_setup
-    - common
-    - container_common
-    - safe_upgrade
-    - rsyslog
-  vars_files:
-    - vars/config_vars/container_config_rsyslog.yml
-    - vars/repo_packages/rsyslog.yml
+    - { role: "rsyslog_setup", tags: [ "rsyslog-setup" ] }
+  vars:
+    ansible_hostname: "{{ container_name }}"
+    is_metal: "{{ properties.is_metal|default(false) }}"

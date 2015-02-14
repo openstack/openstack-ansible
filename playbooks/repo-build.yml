@@ -1,0 +1,89 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# The purpose here is to allow for the environment to update/build the
+# python wheel files from the CURRENT release, as set in the openstack_release
+# variable.
+- name: Build new repo packages for a given release
+  hosts: repo_all[0]
+  max_fail_percentage: 20
+  gather_facts: false
+  user: root
+  tasks:
+    - name: Create a build report for all known packages within a release
+      shell: |
+        yaprt --quiet \
+              create-report \
+              --report-file {{ repo_service_home_folder }}/repo/reports/release-{{ openstack_release }}-report.json \
+              --git-install-repos {{ item['remote_packages'] }} \
+              --packages {{ item['packages'] }}
+      with_py_pkgs: ../
+      sudo: yes
+      sudo_user: "{{ repo_service_user_name }}"
+      tags:
+        - repo-create-report
+
+    - name: Build all known python packages requirements
+      shell: |
+        yaprt --quiet \
+              build-wheels \
+              --report-file {{ repo_service_home_folder }}/repo/reports/release-{{ openstack_release }}-report.json \
+              --storage-pool "{{ repo_service_home_folder }}/repo/pools" \
+              --link-dir "{{ repo_service_home_folder }}/repo/os-releases/{{ openstack_release }}" \
+              --pip-extra-link-dirs "{{ repo_service_home_folder }}/repo/links" \
+              --pip-index "{{ repo_pip_default_index }}" \
+              --pip-extra-index "https://pypi.python.org/simple/" \
+              --pip-bulk-operation \
+              --build-output "{{ repo_build_output }}" \
+              --build-dir "{{ repo_build_dir }}" \
+              --build-requirements \
+              --force-clean
+      sudo: yes
+      sudo_user: "{{ repo_service_user_name }}"
+      tags:
+        - repo-build-requirements
+
+    - name: Build all known python packages git sources
+      shell: |
+        yaprt --quiet \
+              build-wheels \
+              --report-file {{ repo_service_home_folder }}/repo/reports/release-{{ openstack_release }}-report.json \
+              --storage-pool "{{ repo_service_home_folder }}/repo/pools" \
+              --link-dir "{{ repo_service_home_folder }}/repo/os-releases/{{ openstack_release }}" \
+              --pip-extra-link-dirs "{{ repo_service_home_folder }}/repo/links" \
+              --pip-no-deps \
+              --build-output "{{ repo_build_output }}" \
+              --build-dir "{{ repo_build_dir }}" \
+              --build-branches \
+              --build-releases \
+              --force-clean
+      sudo: yes
+      sudo_user: "{{ repo_service_user_name }}"
+      tags:
+        - repo-build-git-sources
+
+    - name: Create html indexes
+      shell: |
+        yaprt --quiet \
+              create-html-indexes \
+              --repo-dir "{{ repo_service_home_folder }}/repo" \
+              --dir-exclude "{{ repo_service_home_folder }}/repo/openstackgit" "{{ repo_service_home_folder }}/repo/rpcgit"
+      sudo: yes
+      sudo_user: "{{ repo_service_user_name }}"
+      tags:
+        - repo-html-indexes
+  vars:
+    repo_build_dir: "/tmp/openstack-builder"
+    repo_build_output: "/tmp/openstack-wheel-output"

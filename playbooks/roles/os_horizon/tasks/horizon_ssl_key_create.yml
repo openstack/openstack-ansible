@@ -1,0 +1,39 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Remove self signed cert for regen
+  file:
+    dest: "{{ horizon_ssl_cert }}"
+    state: "absent"
+  when: >
+    horizon_self_signed_regen == true or
+    horizon_self_signed_regen == "True"
+
+- name: Create self-signed ssl cert
+  command: >
+    openssl req -new -nodes -x509 -subj
+    "/C=US/ST=Texas/L=San Antonio/O=IT/CN={{ horizon_server_name }}"
+    -days 3650
+    -keyout {{ horizon_ssl_key }}
+    -out {{ horizon_ssl_cert }}
+    -extensions v3_ca
+    creates={{ horizon_ssl_cert }}
+  when: >
+    horizon_self_signed == true or
+    horizon_self_signed == "True"
+  notify: Restart apache2
+  tags:
+    - horizon-apache-self-ssl
+    - horizon-ssl

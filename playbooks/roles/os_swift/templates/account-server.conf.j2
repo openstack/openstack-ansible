@@ -1,0 +1,50 @@
+# {{ ansible_managed }}
+
+{% set _api_threads = ansible_processor_vcpus|default(2) // 2 %}
+{% set api_threads = _api_threads if _api_threads > 0 else 1 %}
+
+{% if is_metal == true or is_metal == "True" and swift.storage_network is defined %}
+{% set storage_bridge = 'ansible_' + swift.storage_network|replace('-', '_') %}
+{% set swift_storage_address = hostvars[inventory_hostname][storage_bridge]['ipv4']['address'] %}
+{% endif %}
+
+[DEFAULT]
+bind_ip = {{ swift_storage_address | default(ansible_ssh_host) }}
+bind_port = {{ swift_account_port }}
+workers = {{ swift_account_server_workers | default(api_threads) }}
+
+user = {{ swift_system_user_name }}
+devices = {{ swift_vars.mount_point | default(swift.mount_point) }}
+log_facility = LOG_LOCAL2
+
+[pipeline:main]
+pipeline = healthcheck recon account-server
+
+[app:account-server]
+use = egg:swift#account
+log_facility = LOG_LOCAL2
+
+[filter:healthcheck]
+use = egg:swift#healthcheck
+
+[filter:recon]
+use = egg:swift#recon
+log_facility = LOG_LOCAL2
+recon_cache_path = /var/cache/swift
+recon_lock_path = /var/lock/swift
+
+{% if swift.replication_network is not defined %}
+[account-replicator]
+log_facility = LOG_LOCAL2
+per_diff = 10000
+{% endif %}
+
+[account-auditor]
+log_facility = LOG_LOCAL2
+
+[account-reaper]
+log_facility = LOG_LOCAL2
+delay_reaping = 604800
+
+[filter:xprofile]
+use = egg:swift#xprofile

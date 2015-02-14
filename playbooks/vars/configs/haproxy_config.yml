@@ -1,0 +1,184 @@
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+haproxy_service_configs:
+  - service:
+      haproxy_service_name: galera
+      haproxy_backend_nodes: "{{ [groups['galera_all'][0]] }}"  # list expected
+      haproxy_backup_nodes: "{{ groups['galera_all'][1:] }}"
+      haproxy_port: 3306
+      haproxy_balance_type: tcp
+      haproxy_timeout_client: 5000s
+      haproxy_timeout_server: 5000s
+      haproxy_backend_options:
+        - "mysql-check user {{ galera_monitoring_user }}"
+  - service:
+      haproxy_service_name: glance_api
+      haproxy_backend_nodes: "{{ groups['glance_api'] }}"
+      haproxy_port: 9292
+      haproxy_balance_type: http
+      haproxy_backend_options:
+        - "forwardfor"
+        - "httpchk"
+        - "httplog"
+  - service:
+      haproxy_service_name: glance_registry
+      haproxy_backend_nodes: "{{ groups['glance_registry'] }}"
+      haproxy_port: 9191
+      haproxy_balance_type: http
+  - service:
+      haproxy_service_name: heat_api_cfn
+      haproxy_backend_nodes: "{{ groups['heat_api_cfn'] }}"
+      haproxy_port: 8000
+      haproxy_balance_type: http
+      haproxy_backend_options:
+       - "forwardfor"
+       - "httpchk"
+       - "httplog"
+  - service:
+      haproxy_service_name: heat_api_cloudwatch
+      haproxy_backend_nodes: "{{ groups['heat_api_cloudwatch'] }}"
+      haproxy_port: 8003
+      haproxy_balance_type: http
+      haproxy_backend_options:
+       - "forwardfor"
+       - "httpchk"
+       - "httplog"
+  - service:
+      haproxy_service_name: heat_api
+      haproxy_backend_nodes: "{{ groups['heat_api'] }}"
+      haproxy_port: 8004
+      haproxy_balance_type: http
+      haproxy_backend_options:
+       - "forwardfor"
+       - "httpchk"
+       - "httplog"
+  - service:
+      haproxy_service_name: keystone_admin
+      haproxy_backend_nodes: "{{ groups['keystone_all'] }}"
+      haproxy_port: 35357
+      haproxy_balance_type: http
+      haproxy_backend_options:
+       - "forwardfor"
+       - "httpchk"
+       - "httplog"
+  - service:
+      haproxy_service_name: keystone_service
+      haproxy_backend_nodes: "{{ groups['keystone_all'] }}"
+      haproxy_port: 5000
+      haproxy_balance_type: http
+      haproxy_backend_options:
+       - "forwardfor"
+       - "httpchk"
+       - "httplog"
+  - service:
+      haproxy_service_name: neutron_server
+      haproxy_backend_nodes: "{{ groups['neutron_server'] }}"
+      haproxy_port: 9696
+      haproxy_balance_type: http
+      haproxy_backend_options:
+       - "forwardfor"
+       - "httpchk"
+       - "httplog"
+  - service:
+      haproxy_service_name: nova_api_ec2
+      haproxy_backend_nodes: "{{ groups['nova_api_ec2'] }}"
+      haproxy_port: 8773
+      haproxy_balance_type: http
+  - service:
+      haproxy_service_name: nova_api_metadata
+      haproxy_backend_nodes: "{{ groups['nova_api_metadata'] }}"
+      haproxy_port: 8775
+      haproxy_balance_type: http
+      haproxy_backend_options:
+       - "httpchk"
+       - "httplog"
+  - service:
+      haproxy_service_name: nova_api_os_compute
+      haproxy_backend_nodes: "{{ groups['nova_api_os_compute'] }}"
+      haproxy_port: 8774
+      haproxy_balance_type: http
+      haproxy_backend_options:
+       - "forwardfor"
+       - "httpchk"
+       - "httplog"
+  - service:
+      haproxy_service_name: nova_spice_console
+      haproxy_backend_nodes: "{{ groups['nova_spice_console'] }}"
+      haproxy_port: 6082
+      haproxy_balance_type: tcp
+      haproxy_timeout_client: 60m
+      haproxy_timeout_server: 60m
+      haproxy_balance_alg: source
+  - service:
+      haproxy_service_name: cinder_api
+      haproxy_backend_nodes: "{{ groups['cinder_api'] }}"
+      haproxy_port: 8776
+      haproxy_balance_type: http
+      haproxy_backend_options:
+       - "forwardfor"
+       - "httpchk"
+       - "httplog"
+  - service:
+      haproxy_service_name: horizon
+      haproxy_backend_nodes: "{{ groups['horizon_all'] }}"
+      haproxy_port: 80
+      haproxy_balance_type: http
+      haproxy_backend_options:
+       - "forwardfor"
+       - "httpchk"
+       - "httplog"
+  - service:
+      haproxy_service_name: horizon_ssl
+      haproxy_backend_nodes: "{{ groups['horizon_all'] }}"
+      haproxy_port: 443
+      haproxy_balance_type: tcp
+      haproxy_backend_alg: source
+      haproxy_backend_options:
+       - "ssl-hello-chk"
+  - service:
+      haproxy_service_name: elasticsearch
+      haproxy_backend_nodes: "{{ [groups['elasticsearch'][0]] }}"
+      haproxy_port: 9200
+      haproxy_balance_type: tcp
+  - service:
+      haproxy_service_name: kibana
+      haproxy_backend_nodes: "{{ [groups['kibana'][0]] }}"
+      haproxy_port: 8888
+      haproxy_backend_port: 80
+      haproxy_balance_type: http
+      haproxy_backend_alg: source
+      haproxy_backend_options:
+        - "forwardfor"
+        - "httpchk"
+        - "httplog"
+  - service:
+      haproxy_service_name: kibana_ssl
+      haproxy_backend_nodes: "{{ [groups['kibana'][0]] }}"
+      haproxy_port: 8443
+      haproxy_balance_type: tcp
+      haproxy_backend_alg: source
+      haproxy_backend_options:
+        - "ssl-hello-chk"
+  - service:
+      haproxy_service_name: swift_proxy
+      haproxy_backend_nodes: "{{ groups['swift_proxy'] }}"
+      haproxy_port: 8080
+      haproxy_balance_type: http
+  - service:
+      haproxy_service_name: repo_all
+      haproxy_backend_nodes: "{{ groups['pkg_repo'] }}"
+      haproxy_port: 8181
+      haproxy_backend_port: 8181
+      haproxy_balance_type: http

@@ -1,0 +1,186 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Defines that the role will be deployed on a host machine
+is_metal: true
+
+## Verbosity Options
+debug: False
+verbose: True
+
+## neutron User / Group
+neutron_system_user_name: neutron
+neutron_system_group_name: neutron
+neutron_system_comment: neutron system user
+neutron_system_shell: /bin/false
+neutron_system_home_folder: "/var/lib/{{ neutron_system_user_name }}"
+
+## DB
+neutron_galera_user: neutron
+neutron_galera_password: "{{ neutron_container_mysql_password }}"
+neutron_galera_database: neutron
+neutron_db_revision: head
+neutron_db_config: /etc/neutron/neutron.conf
+neutron_db_plugin: /etc/neutron/plugins/ml2/ml2_conf.ini
+
+## Plugins
+neutron_plugin_core: neutron.plugins.ml2.plugin.Ml2Plugin
+neutron_plugin_base:
+  - neutron.services.l3_router.l3_router_plugin.L3RouterPlugin
+  - neutron.services.loadbalancer.plugin.LoadBalancerPlugin
+  - neutron.services.vpn.plugin.VPNDriverPlugin
+  - neutron.services.metering.metering_plugin.MeteringPlugin
+neutron_plugin_loaded_base: "{% for plugin in neutron_plugin_base %}{{ plugin }}{% if not loop.last %},{% endif %}{% endfor %}"
+
+## Drivers
+neutron_driver_network_scheduler: neutron.scheduler.dhcp_agent_scheduler.ChanceScheduler
+neutron_driver_router_scheduler: neutron.scheduler.l3_agent_scheduler.LeastRoutersScheduler
+neutron_driver_loadbalancer_pool_scheduler: neutron.services.loadbalancer.agent_scheduler.ChanceScheduler
+neutron_driver_interface: neutron.agent.linux.interface.BridgeInterfaceDriver
+neutron_driver_metering: neutron.services.metering.drivers.iptables.iptables_driver.IptablesMeteringDriver
+neutron_driver_dhcp: neutron.agent.linux.dhcp.Dnsmasq
+neutron_driver_notification: neutron.openstack.common.notifier.rpc_notifier
+neutron_driver_quota: neutron.db.quota_db.DbQuotaDriver
+
+## General Neutron configuration
+# If ``neutron_api_workers`` is unset the system will use half the number of available VCPUS to
+# compute the number of api workers to use.
+# neutron_api_workers: 16
+
+# If ``neutron_rpc_workers`` is unset the system will use half the number of ``neutron_api_workers`` to
+# compute the number of api workers to use.
+# neutron_rpc_workers: 16
+
+# If ``neutron_metadata_workers`` is unset the system will use half the number of available VCPUS to
+# compute the number of api workers to use.
+# neutron_metadata_workers: 16
+neutron_metadata_backlog: 128
+
+
+## Auth
+neutron_service_tenant_name: service
+neutron_service_role_name: admin
+neutron_service_user_name: neutron
+neutron_service_name: neutron
+neutron_service_type: network
+neutron_service_description: "OpenStack Networking"
+neutron_service_port: 9696
+neutron_service_proto: http
+neutron_service_publicuri: "{{ neutron_service_proto }}://{{ external_lb_vip_address }}:{{ neutron_service_port }}"
+neutron_service_publicurl: "{{ neutron_service_publicuri }}"
+neutron_service_adminuri: "{{ neutron_service_proto }}://{{ internal_lb_vip_address }}:{{ neutron_service_port }}"
+neutron_service_adminurl: "{{ neutron_service_adminuri }}"
+neutron_service_internaluri: "{{ neutron_service_proto }}://{{ internal_lb_vip_address }}:{{ neutron_service_port }}"
+neutron_service_internalurl: "{{ neutron_service_internaluri }}"
+neutron_service_region: RegionOne
+
+neutron_service_program_name: neutron-server
+neutron_service_program_config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini
+neutron_service_program_enabled: false
+
+neutron_service_dhcp_program_name: neutron-dhcp-agent
+neutron_service_dhcp_program_config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/dhcp_agent.ini
+neutron_service_dhcp_program_enabled: false
+
+neutron_service_l3_program_name: neutron-l3-agent
+neutron_service_l3_program_config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/l3_agent.ini
+neutron_service_l3_program_enabled: false
+
+neutron_service_linuxbridge_program_name: neutron-linuxbridge-agent
+neutron_service_linuxbridge_program_config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini
+neutron_service_linuxbridge_program_enabled: false
+
+neutron_service_metadata_program_name: neutron-metadata-agent
+neutron_service_metadata_program_config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/metadata_agent.ini
+neutron_service_metadata_program_enabled: false
+
+neutron_service_metering_program_name: neutron-metering-agent
+neutron_service_metering_program_config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/metering_agent.ini
+neutron_service_metering_program_enabled: false
+
+## Agent
+neutron_external_network_bridge: ""
+neutron_gateway_external_network_id: ""
+
+neutron_agent_mode: legacy
+neutron_agent_down_time: 120
+neutron_agent_polling_interval: 5
+neutron_report_interval: "{{ neutron_agent_down_time | int / 2 | int }}"
+neutron_network_device_mtu: 1450
+
+# L3HA configuration options.
+neutron_ha_vrrp_advert_int: 2
+neutron_ha_vrrp_auth_password: None
+neutron_ha_vrrp_auth_type: PASS
+neutron_handle_internal_only_routers: True
+neutron_l3_ha_enabled: False
+neutron_l3_ha_net_cidr: 169.254.192.0/18
+
+# If ``neutron_min_l3_agents_per_router`` is unset the system will use half the number of hosts in the
+# "neutron_agent" group to determine the min agents per routers.
+# neutron_min_l3_agents_per_router: 3
+
+# If ``neutron_max_l3_agents_per_router`` is unset the system will use the number of hosts in the
+# "neutron_agent" group to determine the max agents per routers.
+# neutron_max_l3_agents_per_router: 3
+
+# DHCP AGENT CONFIG
+neutron_dhcp_config:
+  dhcp-option-force: "26,1450"
+  log-facility: "/var/log/neutron/neutron-dnsmasq.log"
+
+neutron_dhcp_domain: openstacklocal
+neutron_dhcp_delete_namespaces: True
+# Comma-separated list of DNS servers which will be used by dnsmasq as forwarders.
+neutron_dnsmasq_dns_servers: ""
+# Limit number of leases to prevent a denial-of-service.
+neutron_dnsmasq_lease_max: 16777216
+
+## RPC
+neutron_rpc_backend: rabbit
+
+neutron_apt_packages:
+  - conntrackd
+  - conntrack
+  - dnsmasq-base
+  - dnsmasq-utils
+  - ipset
+  - iputils-arping
+  - keepalived
+  - libpq-dev
+
+neutron_pip_packages:
+  - configobj
+  - cliff
+  - keystonemiddleware
+  - MySQL-python
+  - neutron
+  - pycrypto
+  - python-glanceclient
+  - python-keystoneclient
+  - python-memcached
+  - python-neutronclient
+  - python-novaclient
+  - repoze.lru
+
+## Service Names
+neutron_service_names:
+  - neutron-agent
+  - neutron-dhcp-agent
+  - neutron-linuxbridge-agent
+  - neutron-l3-agent
+  - neutron-metadata-agent
+  - neutron-metering-agent
+  - neutron-server

@@ -1,0 +1,94 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Create the system group
+  group:
+    name: "{{ neutron_system_group_name }}"
+    state: "present"
+    system: "yes"
+  tags:
+    - neutron-group
+
+- name: Create the neutron system user
+  user:
+    name: "{{ neutron_system_user_name }}"
+    group: "{{ neutron_system_group_name }}"
+    comment: "{{ neutron_system_comment }}"
+    shell: "{{ neutron_system_shell }}"
+    system: "yes"
+    createhome: "yes"
+    home: "/var/lib/{{ neutron_system_user_name }}"
+  tags:
+    - neutron-user
+
+- name: Create neutron dir
+  file:
+    path: "{{ item.path }}"
+    state: directory
+    owner: "{{ item.owner|default(neutron_system_user_name) }}"
+    group: "{{ item.group|default(neutron_system_group_name) }}"
+  with_items:
+    - { path: "/etc/neutron" }
+    - { path: "/etc/neutron/plugins" }
+    - { path: "/etc/neutron/plugins/ml2" }
+    - { path: "/etc/neutron/rootwrap.d" }
+    - { path: "/etc/sudoers.d", mode: "0750", owner: "root", group: "root" }
+    - { path: "/var/cache/neutron" }
+    - { path: "/var/lock/neutron" }
+    - { path: "/var/run/neutron" }
+    - { path: "{{ neutron_system_home_folder }}" }
+    - { path: "{{ neutron_system_home_folder }}/ha_confs" }
+  tags:
+    - neutron-dirs
+
+- name: Test for log directory or link
+  shell: |
+    if [ -h "/var/log/neutron"  ]; then
+      chown -h {{ neutron_system_user_name }}:{{ neutron_system_group_name }} "/var/log/neutron"
+      chown -R {{ neutron_system_user_name }}:{{ neutron_system_group_name }} "$(readlink /var/log/neutron)"
+    else
+      exit 1
+    fi
+  register: log_dir
+  failed_when: false
+  changed_when: log_dir.rc != 0
+  tags:
+    - neutron-dirs
+    - neutron-logs
+
+- name: Create neutron log dir
+  file:
+    path: "{{ item.path }}"
+    state: directory
+    owner: "{{ item.owner|default(neutron_system_user_name) }}"
+    group: "{{ item.group|default(neutron_system_group_name) }}"
+    mode: "{{ item.mode|default('0755') }}"
+  with_items:
+    - { path: "/var/log/neutron" }
+  when: log_dir.rc != 0
+  tags:
+    - neutron-dirs
+    - neutron-logs
+
+- name: Drop sudoers file
+  template:
+    src: "sudoers.j2"
+    dest: "/etc/sudoers.d/{{ neutron_system_user_name }}_sudoers"
+    mode: "0440"
+    owner: "root"
+    group: "root"
+  tags:
+    - sudoers
+    - neutron-sudoers

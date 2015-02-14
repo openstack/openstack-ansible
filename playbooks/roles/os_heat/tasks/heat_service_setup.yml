@@ -1,0 +1,83 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- include: heat_service_add.yml
+  vars:
+    service_user_name: "{{ heat_service_user_name }}"
+    service_tenant_name: "{{ heat_service_tenant_name }}"
+    service_name: "{{ heat_service_name }}"
+    service_type: "{{ heat_service_type }}"
+    service_region: "{{ heat_service_region }}"
+    service_description: "{{ heat_service_description }}"
+    service_password: "{{ heat_service_password }}"
+    service_publicurl: "{{ heat_service_publicurl }}"
+    service_internalurl: "{{ heat_service_internalurl }}"
+    service_adminurl: "{{ heat_service_adminurl }}"
+    role_name: "{{ heat_service_role_name }}"
+  tags:
+    - heat-api
+
+- include: heat_service_add.yml
+  vars:
+    service_user_name: "{{ heat_service_user_name }}"
+    service_tenant_name: "{{ heat_service_tenant_name }}"
+    service_name: "{{ heat_cfn_service_name }}"
+    service_type: "{{ heat_cfn_service_type }}"
+    service_region: "{{ heat_service_region }}"
+    service_description: "{{ heat_cfn_service_description }}"
+    service_password: "{{ heat_cfn_service_password }}"
+    service_publicurl: "{{ heat_cfn_service_publicurl }}"
+    service_internalurl: "{{ heat_cfn_service_internalurl }}"
+    service_adminurl: "{{ heat_cfn_service_adminurl }}"
+    role_name: "{{ heat_service_role_name }}"
+  tags:
+    - heat-api
+    - heat-api-cfn
+
+# We add the keystone role used by heat to delegate to the heat service user
+# (for performing deferred operations via trusts)
+- name: Ensure stack_owner role
+  keystone:
+    command: "ensure_role"
+    token: "{{ keystone_auth_admin_token }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    user_name: "{{ heat_service_user_name }}"
+    tenant_name: "{{ heat_service_tenant_name }}"
+    role_name: "{{ heat_stack_owner_name }}"
+  register: add_service
+  until: add_service|success
+  retries: 5
+  delay: 10
+  tags:
+    - heat-api
+    - heat-api-cfn
+
+# Any user creating stacks needs to have the 'heat_stack_owner' role assigned,
+# we add to admin user here for testing purposes
+- name: Ensure admin has stack_owner role
+  keystone:
+    command: ensure_user_role
+    token: "{{ keystone_auth_admin_token }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    user_name: "{{ keystone_admin_user_name }}"
+    tenant_name: "{{ keystone_admin_tenant_name }}"
+    role_name: "{{ heat_stack_owner_name }}"
+  register: add_service
+  until: add_service|success
+  retries: 5
+  delay: 10
+  tags:
+    - heat-api
+    - heat-api-cfn

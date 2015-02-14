@@ -1,0 +1,5 @@
+# {{ ansible_managed }}
+
+{% for key, value in neutron_dhcp_config.items() %}
+{{ key }}={{ value }}
+{% endfor %}

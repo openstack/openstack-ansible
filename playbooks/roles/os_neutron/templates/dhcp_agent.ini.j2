@@ -1,0 +1,22 @@
+# {{ ansible_managed }}
+
+{% set _api_threads = ansible_processor_vcpus|default(2) // 2 %}
+{% set api_threads = _api_threads if _api_threads > 0 else 1 %}
+
+[DEFAULT]
+verbose = {{ verbose }}
+debug = {{ debug }}
+
+interface_driver = {{ neutron_driver_interface }}
+dhcp_driver = {{ neutron_driver_dhcp }}
+use_namespaces = True
+enable_isolated_metadata = True
+
+num_sync_threads = {{ neutron_api_workers | default(api_threads) }}
+
+dhcp_domain = {{ neutron_dhcp_domain }}
+dhcp_delete_namespaces = {{ neutron_dhcp_delete_namespaces }}
+
+dnsmasq_config_file = /etc/neutron/dnsmasq-neutron.conf
+dnsmasq_dns_servers = {{ neutron_dnsmasq_dns_servers }}
+dnsmasq_lease_max = {{ neutron_dnsmasq_lease_max }}

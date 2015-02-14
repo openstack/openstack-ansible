@@ -1,0 +1,57 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Install horizon server
+  hosts: horizon_all
+  max_fail_percentage: 20
+  user: root
+  pre_tasks:
+    - name: Sort the rabbitmq servers
+      dist_sort:
+        value_to_lookup: "{{ container_name }}"
+        ref_list: "{{ groups['horizon_all'] }}"
+        src_list: "{{ rabbitmq_servers }}"
+      register: servers
+    - name: Set rabbitmq servers
+      set_fact:
+        rabbitmq_servers: "{{ servers.sorted_list }}"
+    - name: Create log dir
+      file:
+        path: "{{ item.path }}"
+        state: directory
+      with_items:
+        - { path: "/openstack/log/{{ inventory_hostname }}-horizon" }
+      when: is_metal == true or is_metal == "True"
+      tags:
+        - horizon-logs
+        - horizon-log-dirs
+    - name: Create log aggregation links
+      file:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        state: "{{ item.state }}"
+        force: "yes"
+      with_items:
+        - { src: "/openstack/log/{{ inventory_hostname }}-horizon", dest: "/var/log/horizon", state: "link" }
+      when: is_metal == true or is_metal == "True"
+      tags:
+        - horizon-logs
+  roles:
+    - { role: "os_horizon", tags: [ "os-horizon" ] }
+  vars:
+    galera_address: "{{ internal_lb_vip_address }}"
+    ansible_hostname: "{{ container_name }}"
+    horizon_server_name: "{{ container_name }}"
+    is_metal: "{{ properties.is_metal|default(false) }}"

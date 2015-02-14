@@ -14,9 +14,11 @@
 # limitations under the License.
 
 - name: Create openrc file
-  template: >
-    src=openrc
-    dest=/root/openrc
-    owner=root
-    group=root
-    mode=0600
+  template:
+    src: openrc
+    dest: "{{ openrc_file_dest }}"
+    owner: "{{ openrc_file_owner }}"
+    group: "{{ openrc_file_group }}"
+    mode: "0600"
+  tags:
+    - openstack-openrc-file

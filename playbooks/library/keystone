@@ -1,22 +1,19 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
-
 # (c) 2014, Kevin Carter <kevin.carter@rackspace.com>
 #
-# This file is part of Ansible
+# Copyright 2014, Rackspace US, Inc.
 #
-# Ansible is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
 #
-# Ansible is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
-# You should have received a copy of the GNU General Public License
-# along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
 # Based on Jimmy Tang's implementation
 
@@ -130,76 +127,76 @@ author: Kevin Carter
 
 EXAMPLES = """
 # Create an admin tenant
-- keystone: >
-    command=ensure_tenant
-    tenant_name=admin
-    description="Admin Tenant"
+- keystone:
+    command: "ensure_tenant"
+    tenant_name: "admin"
+    description: "Admin Tenant"
 
 # Create a service tenant
-- keystone: >
-    command=ensure_tenant
-    tenant_name=service
-    description="Service Tenant"
+- keystone:
+    command: "ensure_tenant"
+    tenant_name: "service"
+    description: "Service Tenant"
 
 # Create an admin user
-- keystone: >
-    command=ensure_user
-    user_name=admin
-    tenant_name=admin
-    password=secrete
-    email="admin@some-domain.com"
+- keystone:
+    command: "ensure_user"
+    user_name: "admin"
+    tenant_name: "admin"
+    password: "secrete"
+    email: "admin@some-domain.com"
 
 # Create an admin role
-- keystone: >
-    command=ensure_role
-    role_name=admin
+- keystone:
+    command: "ensure_role"
+    role_name: "admin"
 
 # Create a user
-- keystone: >
-    command=ensure_user
-    user_name=glance
-    tenant_name=service
-    password=secrete
-    email="glance@some-domain.com"
+- keystone:
+    command: "ensure_user"
+    user_name: "glance"
+    tenant_name: "service"
+    password: "secrete"
+    email: "glance@some-domain.com"
 
 # Add a role to a user
-- keystone: >
-    command=ensure_user_role
-    user_name=glance
-    tenant_name=service
-    role_name=admin
+- keystone:
+    command: "ensure_user_role"
+    user_name: "glance"
+    tenant_name: "service"
+    role_name: "admin"
 
 # Create a service
-- keystone: >
-    command=ensure_service
-    service_name=glance
-    service_type=image
-    description="Glance Image Service"
+- keystone:
+    command: "ensure_service"
+    service_name: "glance"
+    service_type: "image"
+    description: "Glance Image Service"
 
 # Create an endpoint
-- keystone: >
-    command=ensure_endpoint
-    region_name=RegionOne
-    service_name=glance
-    service_type=image
-    publicurl=http://127.0.0.1:9292
-    adminurl=http://127.0.0.1:9292
-    internalurl=http://127.0.0.1:9292
+- keystone:
+    command: "ensure_endpoint"
+    region_name: "RegionOne"
+    service_name: "glance"
+    service_type: "image"
+    publicurl: "http://127.0.0.1:9292"
+    adminurl: "http://127.0.0.1:9292"
+    internalurl: "http://127.0.0.1:9292"
 
 # Get tenant id
-- keystone: >
-    command=get_tenant
-    tenant_name=admin
+- keystone:
+    command: "get_tenant"
+    tenant_name: "admin"
 
 # Get user id
-- keystone: >
-    command=get_user
-    user_name=admin
+- keystone:
+    command: "get_user"
+    user_name: "admin"
 
 # Get role id
-- keystone: >
-    command=get_role
-    user_name=admin
+- keystone:
+    command: "get_role"
+    user_name: "admin"
 
 """
 

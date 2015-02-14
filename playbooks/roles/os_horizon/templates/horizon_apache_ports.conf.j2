@@ -1,0 +1,5 @@
+# {{ ansible_managed }}
+
+{% for horizon_listen_port in horizon_listen_ports %}
+Listen {{ horizon_listen_port }}
+{% endfor %}

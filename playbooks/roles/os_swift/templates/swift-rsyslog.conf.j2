@@ -1,0 +1,24 @@
+# {{ ansible_managed }}
+
+# Uncomment the following to have a log containing all logs together
+#local1,local2,local3,local4.*   /openstack/log/{{ inventory_hostname }}/all.log
+
+# Uncomment the following to have hourly proxy logs for stats processing
+#$template HourlyProxyLog,"/openstack/log/{{ inventory_hostname }}/hourly/%$YEAR%%$MONTH%%$DAY%%$HOUR%"
+#local1.*;local1.!notice ?HourlyProxyLog
+
+local1.*;local1.!notice /var/log/swift/proxy.log
+local1.notice           /var/log/swift/proxy-error.log
+local1.*                ~
+
+local2.*;local2.!notice /openstack/log/{{ inventory_hostname }}/account.log
+local2.notice           /openstack/log/{{ inventory_hostname }}/account-error.log
+local2.*                ~
+
+local3.*;local3.!notice /openstack/log/{{ inventory_hostname }}/container.log
+local3.notice           /openstack/log/{{ inventory_hostname }}/container-error.log
+local3.*                ~
+
+local4.*;local4.!notice /openstack/log/{{ inventory_hostname }}/object.log
+local4.notice           /openstack/log/{{ inventory_hostname }}/object-error.log
+local4.*                ~

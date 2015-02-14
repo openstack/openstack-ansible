@@ -13,13 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- hosts: memcached
+- name: Install memcached
+  hosts: memcached
+  max_fail_percentage: 20
   user: root
   roles:
-    - container_extra_setup
-    - common
-    - container_common
-    - memcached
-  vars_files:
-    - vars/config_vars/container_config_memcached.yml
-    - vars/repo_packages/memcached.yml
+    - { role: "memcached_server", tags: [ "memcached-server" ] }
+  vars:
+    is_metal: "{{ properties.is_metal|default(false) }}"

@@ -1,0 +1,34 @@
+# {{ ansible_managed }}
+
+{% if is_metal == true or is_metal == "True" and swift.replication_network is defined %}
+{% set repl_bridge = 'ansible_' + swift.replication_network|replace('-', '_') %}
+{% set bind_ip = hostvars[inventory_hostname][repl_bridge]['ipv4']['address'] %}
+
+{% elif is_metal == true or is_metal == "True" and swift.storage_network is defined %}
+{% set storage_bridge = 'ansible_' + swift.storage_network|replace('-', '_') %}
+{% set bind_ip = hostvars[inventory_hostname][storage_bridge]['ipv4']['address'] %}
+{% endif %}
+
+uid = {{ swift_system_user_name }}
+gid = {{ swift_system_group_name }}
+log file = /var/log/rsyncd.log
+pid file = /var/run/rsyncd.pid
+address = {{ bind_ip | default(ansible_ssh_host) }}
+
+[account]
+max connections = 2
+path = {{ swift_vars.mount_point | default(swift.mount_point) }}
+read only = false
+lock file = /var/lock/account.lock
+
+[container]
+max connections = 2
+path = {{ swift_vars.mount_point | default(swift.mount_point) }}
+read only = false
+lock file = /var/lock/container.lock
+
+[object]
+max connections = 2
+path = {{ swift_vars.mount_point | default(swift.mount_point) }}
+read only = false
+lock file = /var/lock/object.lock

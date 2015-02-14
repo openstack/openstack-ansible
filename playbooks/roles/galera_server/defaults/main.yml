@@ -1,0 +1,89 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Defines that the role will be deployed on a host machine
+is_metal: true
+
+galera_cluster_name: openstack_galera_cluster
+
+galera_monitoring_user: monitoring
+galera_monitoring_user_password: ""
+galera_root_user: root
+
+galera_gcache_size: 1024M
+
+galera_max_heap_table_size: 32M
+galera_tmp_table_size: 32M
+
+galera_file_limits: 16384
+galera_wait_timeout: 28800
+
+## innodb options
+galera_innodb_buffer_pool_size: 4096M
+galera_innodb_additional_mem_pool_size: 24M
+galera_innodb_log_file_size: 1024M
+galera_innodb_log_buffer_size: 128M
+
+## wsrep configuration
+galera_wsrep_address: "127.0.0.1"
+galera_wsrep_cluster_address: "{{ galera_wsrep_address }}"
+galera_wsrep_node_incoming_address: "{{ galera_wsrep_address }}"
+galera_wsrep_slave_threads: "{{ ansible_processor_vcpus }}"
+galera_wsrep_retry_autocommit: 3
+galera_wsrep_debug: 0
+
+# Galera GPG Keys
+galera_gpg_keys:
+  - { key_name: 'mariadb', keyserver: 'hkp://keyserver.ubuntu.com:80', hash_id: '0xcbcb082a1bb943db' }
+
+# Repositories
+galera_apt_repos:
+  - { repo: "deb http://mirror.rackspace.com/mariadb/repo/5.5/ubuntu {{ ansible_distribution_release }} main", state: "present" }
+
+galera_pip_packages:
+  - MySQL-python
+  - python-memcached
+  - pycrypto
+
+galera_pre_apt_packages:
+  - python-software-properties
+  - software-properties-common
+  - debconf-utils
+
+# The package name for mariaDB is set as a variable
+# so that it can be used in debconf later in the
+# "galera_common" role.
+galera_mariadb_server_package: "mariadb-galera-server-5.5"
+
+# NB This is specifically galera_packages as these packages only get installed
+# during the galera play - this is because of the preseed task and the service
+# startup control used when installing mariadb-galera-server and galera.
+galera_apt_packages:
+  - mariadb-client
+  - "{{ galera_mariadb_server_package }}"
+  - galera
+  - rsync
+  - xtrabackup
+  - socat
+
+galera_debconf_items:
+  - question: "mysql-server/root_password"
+    name: "{{ galera_mariadb_server_package }}"
+    value: "{{ galera_root_password }}"
+    vtype: "string"
+  - question: "mysql-server/root_password_again"
+    name: "{{ galera_mariadb_server_package }}"
+    value: "{{ galera_root_password }}"
+    vtype: "string"

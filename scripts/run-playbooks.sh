@@ -14,11 +14,10 @@
 # limitations under the License.
 
 ## Shell Opts ----------------------------------------------------------------
+set -e -u -v -x
 
-set -e -u -v +x
 
 ## Variables -----------------------------------------------------------------
-
 DEPLOY_HOST=${DEPLOY_HOST:-"yes"}
 DEPLOY_LB=${DEPLOY_LB:-"yes"}
 DEPLOY_INFRASTRUCTURE=${DEPLOY_INFRASTRUCTURE:-"yes"}
@@ -26,81 +25,103 @@ DEPLOY_LOGGING=${DEPLOY_LOGGING:-"yes"}
 DEPLOY_OPENSTACK=${DEPLOY_OPENSTACK:-"yes"}
 DEPLOY_SWIFT=${DEPLOY_SWIFT:-"yes"}
 DEPLOY_TEMPEST=${DEPLOY_TEMPEST:-"no"}
-ANSIBLE_PARAMETERS=${ANSIBLE_PARAMETERS:-"--forks 10"}
-PLAYBOOK_DIRECTORY=${PLAYBOOK_DIRECTORY:-"playbooks"}
+
 
 ## Functions -----------------------------------------------------------------
+info_block "Checking for required libraries." 2> /dev/null || source $(dirname ${0})/scripts-library.sh
 
-info_block "Checking for required libraries." || source $(dirname ${0})/scripts-library.sh
-
-function install_bits() {
-  successerator openstack-ansible ${ANSIBLE_PARAMETERS} $@
-}
 
 ## Main ----------------------------------------------------------------------
-
 # Initiate the deployment
-pushd ${PLAYBOOK_DIRECTORY}
+pushd "playbooks"
   if [ "${DEPLOY_HOST}" == "yes" ]; then
     # Install all host bits
-    install_bits host-setup.yml
+    install_bits openstack-hosts-setup.yml
+    install_bits lxc-hosts-setup.yml
+
+    # Bring the lxc bridge down and back up to ensures the iptables rules are in-place
+    # This also will ensure that the lxc dnsmasq rules are active.
+    ansible hosts -m shell -a '(ifdown lxcbr0 || true); ifup lxcbr0'
+
+    # Restart any containers that may already exist
+    ansible hosts -m shell -a 'for i in $(lxc-ls); do lxc-stop -n $i; lxc-start -d -n $i; done'
+
+    # Create the containers.
+    install_bits lxc-containers-create.yml
+
+    # Make sure there are no dead veth(s)
+    # This is good when using a host with multiple times, IE: Rebuilding.
+    ansible hosts -m shell -a 'lxc-system-manage veth-cleanup'
+
+    # Flush the net cache
+    # This is good when using a host with multiple times, IE: Rebuilding.
+    ansible hosts -m shell -a 'lxc-system-manage flush-net-cache'
+
+    # Get host information post initial setup and reset verbosity
+    set +x && get_instance_info && set -x
   fi
 
   if [ "${DEPLOY_LB}" == "yes" ]; then
     # Install haproxy for dev purposes only
     install_bits haproxy-install.yml
   fi
+
   if [ "${DEPLOY_INFRASTRUCTURE}" == "yes" ]; then
     # Install all of the infra bits
     install_bits memcached-install.yml
+
+    # For the purposes of gating the repository of python wheels are built within
+    # the environment. Normal installation would simply clone the upstream mirror.
+    install_bits repo-server.yml
+    install_bits repo-build.yml
+
     install_bits galera-install.yml
-    install_bits rabbit-install.yml
+    install_bits rabbitmq-install.yml
+    install_bits utility-install.yml
+
     if [ "${DEPLOY_LOGGING}" == "yes" ]; then
-      install_bits rsyslog-install.yml
-      install_bits elasticsearch-install.yml
-      install_bits logstash-install.yml
-      install_bits kibana-install.yml
-      install_bits es2unix-install.yml
+      info_block "Logging has not been galaxified yet..."
     fi
   fi
 
-  if [ "${DEPLOY_OPENSTACK}" == "yes" ]; then
-    # install all of the OpenStack Bits
-    if [ -f openstack-common.yml ]; then
-      # cater for 9.x.x release (icehouse)
-      install_bits openstack-common.yml
-    fi
-    if [ -f keystone-all.yml ]; then
-      # cater for 10.x.x release (juno) onwards
-      install_bits keystone-all.yml
-    else
-      # cater for 9.x.x release (icehouse)
-      install_bits keystone.yml
-      install_bits keystone-add-all-services.yml
-    fi
-    if [ "${DEPLOY_SWIFT}" == "yes" ]; then
-      install_bits swift-all.yml
-    fi
-    install_bits glance-all.yml
-    install_bits heat-all.yml
-    install_bits nova-all.yml
-    install_bits neutron-all.yml
-    install_bits cinder-all.yml
-    install_bits horizon-all.yml
-    if [ -f utility-all.yml ]; then
-      # cater for 10.x.x release (juno) onwards
-      install_bits utility-all.yml
-    elif [ -f utility.yml ]; then
-      # cater for 9.x.x release (icehouse)
-      install_bits utility.yml
-    fi
-    if [ "${DEPLOY_TEMPEST}" == "yes" ]; then
-      # Deploy tempest
-      install_bits tempest.yml
-    fi
+  if [ "${DEPLOY_SWIFT}" == "yes" ] || [ "${DEPLOY_OPENSTACK}" == "yes" ]; then
+    # Install all of rsyslog
+    install_bits rsyslog-install.yml
+
+    # Hard restart the rsyslog container(s)
+    ansible hosts -m shell -a 'for i in $(lxc-ls | grep "rsyslog"); do lxc-stop -kn $i; lxc-start -d -n $i; done'
   fi
+
+  if [ "${DEPLOY_OPENSTACK}" == "yes" ]; then
+    # install all of the compute Bits
+    install_bits os-keystone-install.yml
+    install_bits os-glance-install.yml
+    install_bits os-cinder-install.yml
+    install_bits os-nova-install.yml
+    install_bits os-neutron-install.yml
+    install_bits os-heat-install.yml
+    install_bits os-horizon-install.yml
+  fi
+
+  if [ "${DEPLOY_SWIFT}" == "yes" ]; then
+    if [ "${DEPLOY_OPENSTACK}" == "no" ]; then
+      # When os install is no, make sure we still have keystone for use in swift.
+      install_bits os-keystone-install.yml
+    fi
+    # install all of the swift Bits
+    install_bits os-swift-install.yml
+  fi
+
+  if [ "${DEPLOY_TEMPEST}" == "yes" ]; then
+    # Deploy tempest
+    install_bits os-tempest-install.yml
+  fi
+
   if [ "${DEPLOY_INFRASTRUCTURE}" == "yes" ] && [ "${DEPLOY_LOGGING}" == "yes" ]; then
-    # Configure Rsyslog
-    install_bits rsyslog-config.yml
+    # Reconfigure Rsyslog
+    install_bits rsyslog-install.yml
   fi
 popd
+
+# print the report data
+set +x && print_report

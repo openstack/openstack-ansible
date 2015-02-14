@@ -13,6 +13,39 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: galera-config.yml
-- include: galera-startup.yml
-- include: galera-post-config.yml
+- name: Install galera server
+  hosts: galera_all
+  max_fail_percentage: 20
+  user: root
+  pre_tasks:
+    - name: Galera extra lxc config
+      lxc-container:
+        name: "{{ container_name }}"
+        container_command: |
+          [[ ! -d "/var/lib/mysql" ]] && mkdir -p "/var/lib/mysql"
+        container_config:
+          - "lxc.mount.entry=/openstack/{{ container_name }} var/lib/mysql none bind 0 0"
+      delegate_to: "{{ physical_host }}"
+      when: is_metal == false or is_metal == "False"
+      tags:
+        - galera-mysql-dir
+    - name: Flush net cache
+      command: /usr/local/bin/lxc-system-manage flush-net-cache
+      delegate_to: "{{ physical_host }}"
+      tags:
+        - flush-net-cache
+    - name: Wait for container ssh
+      wait_for:
+        port: "22"
+        delay: 5
+        host: "{{ ansible_ssh_host }}"
+      delegate_to: "{{ physical_host }}"
+      tags:
+        - galera-ssh-wait
+  roles:
+    - { role: "galera_server", tags: [ "galera-server" ] }
+  vars:
+    galera_wsrep_node_name: "{{ container_name }}"
+    ansible_hostname: "{{ container_name }}"
+    ansible_ssh_host: "{{ container_address }}"
+    is_metal: "{{ properties.is_metal|default(false) }}"

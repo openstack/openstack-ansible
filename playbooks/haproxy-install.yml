@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Setup supporting services
-- hosts: haproxy_hosts
+- name: Install haproxy
+  hosts: haproxy_hosts
+  max_fail_percentage: 20
   user: root
   roles:
-    - common
-    - haproxy_common
-    - haproxy_service
+    - { role: "haproxy_server", tags: [ "haproxy-server" ] }
   vars_files:
-    - vars/config_vars/haproxy_config.yml
+    - vars/configs/haproxy_config.yml
+  vars:
+    is_metal: "{{ properties.is_metal|default(false) }}"

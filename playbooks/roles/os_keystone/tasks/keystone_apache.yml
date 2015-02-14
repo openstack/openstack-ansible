@@ -1,0 +1,58 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Drop apache2 ports file
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "root"
+    group: "root"
+  with_items:
+    - { src: "keystone-ports.conf.j2", dest: "/etc/apache2/ports.conf" }
+    - { src: "keystone-httpd.conf.j2", dest: "/etc/apache2/sites-available/keystone-httpd.conf" }
+  notify:
+    - Restart Apache
+  tags:
+    - keystone-httpd
+
+- name: Disable default apache site
+  file:
+    path: "/etc/apache2/sites-enabled/000-default.conf"
+    state: "absent"
+  notify:
+    - Restart Apache
+  tags:
+    - keystone-httpd
+
+- name: Enabled keystone vhost
+  file:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    state: "{{ item.state }}"
+  with_items:
+    - { src: "/etc/apache2/sites-available/keystone-httpd.conf", dest: "/etc/apache2/sites-enabled/keystone-httpd.conf", state: "link" }
+  notify:
+    - Restart Apache
+  tags:
+    - keystone-httpd
+
+- name: Ensure Apache ServerName
+  lineinfile:
+    dest: "/etc/apache2/apache2.conf"
+    line: "ServerName {{ inventory_hostname }}"
+  notify:
+    - Restart Apache
+  tags:
+    - keystone-httpd

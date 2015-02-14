@@ -1,0 +1,36 @@
+# {{ ansible_managed }}
+
+[DEFAULT]
+verbose = {{ verbose }}
+debug = {{ debug }}
+# Log to this file. Make sure you do not set the same log file for both the API
+# and registry servers!
+#
+# If `log_file` is omitted and `use_syslog` is false, then log messages are
+# sent to stdout as a fallback.
+log_file = /var/log/glance/scrubber.log
+
+# Send logs to syslog (/dev/log) instead of to file specified by `log_file`
+#use_syslog: False
+
+# Should we run our own loop or rely on cron/scheduler to run us
+daemon = False
+
+# Loop time between checking for new items to schedule for delete
+wakeup_time = 300
+
+# Directory that the scrubber will use to remind itself of what to delete
+# Make sure this is also set in glance-api.conf
+scrubber_datadir = {{ glance_system_user_home }}/scrubber
+
+# Only one server in your deployment should be designated the cleanup host
+cleanup_scrubber = False
+
+# pending_delete items older than this time are candidates for cleanup
+cleanup_scrubber_time = 86400
+
+# Address to find the registry server for cleanups
+registry_host = {{ glance_registry_bind_address }}
+
+# Port the registry server is listening on
+registry_port = {{ glance_registry_service_port }}

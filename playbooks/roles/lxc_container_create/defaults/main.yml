@@ -1,0 +1,58 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+lxc_container_config: /etc/lxc/lxc-openstack.conf
+
+# Default container template to build from
+lxc_container_template: openstack
+
+# container_fs.* is only used with building on an LVM backend
+lxc_container_fs_size: 5G
+lxc_container_fs_type: ext4
+
+# Default store is lvm, however will fall back to dir if the
+# container_volume_group is not found.
+lxc_container_backing_store: lvm
+lxc_container_vg_name: lxc
+
+# Default image to build from
+lxc_container_release: trusty
+
+lxc_container_default_interfaces: |
+  # The loopback network interface
+  auto lo
+  iface lo inet loopback
+  # LXC interface, this is ALWAYS assumed to be DHCP.
+  auto eth0
+  iface eth0 inet dhcp
+  # Load any additional configs
+  source /etc/network/interfaces.d/*.cfg
+
+# The container interface variable is a a default object that assume the 
+# Ansible iterator type is `with_dict`.
+lxc_container_interface: |
+  ### start generated network for [ {{ item.value.interface }} ] ###
+  auto {{ item.value.interface }}
+  {% if item.value.address is defined %}
+  iface {{ item.value.interface }} inet static
+      address {{ item.value.address }}
+      netmask {{ item.value.netmask }}
+  {% if item.value.gateway is defined %}
+      gateway {{ item.value.gateway }}
+  {% endif %}
+  {% else %}
+  iface {{ item.value.interface }} inet manual
+  {% endif %}
+  ### end generated network for [ {{ item.value.interface }} ] ###

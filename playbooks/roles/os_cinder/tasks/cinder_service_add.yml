@@ -1,0 +1,89 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Create a service
+- name: Ensure cinder service
+  keystone:
+    command: "ensure_service"
+    token: "{{ keystone_auth_admin_token }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    service_name: "{{ service_name }}"
+    service_type: "{{ service_type }}"
+    description: "{{ service_description }}"
+  register: add_service
+  until: add_service|success
+  retries: 5
+  delay: 10
+  tags:
+    - cinder-api-setup
+    - cinder-service-add
+    - cinder-setup
+
+# Create an admin user
+- name: Ensure cinder user
+  keystone:
+    command: "ensure_user"
+    token: "{{ keystone_auth_admin_token }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    user_name: "{{ service_user_name }}"
+    tenant_name: "{{ service_tenant_name }}"
+    password: "{{ service_password }}"
+  register: add_service
+  until: add_service|success
+  retries: 5
+  delay: 10
+  tags:
+    - cinder-api-setup
+    - cinder-service-add
+    - cinder-setup
+
+# Add a role to the user
+- name: Ensure cinder user to admin role
+  keystone:
+    command: "ensure_user_role"
+    token: "{{ keystone_auth_admin_token }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    user_name: "{{ service_user_name }}"
+    tenant_name: "{{ service_tenant_name }}"
+    role_name: "{{ role_name }}"
+  register: add_service
+  until: add_service|success
+  retries: 5
+  delay: 10
+  tags:
+    - cinder-api-setup
+    - cinder-service-add
+    - cinder-setup
+
+# Create an endpoint
+- name: Ensure cinder endpoint
+  keystone:
+    command: "ensure_endpoint"
+    token: "{{ keystone_auth_admin_token }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    region_name: "{{ service_region }}"
+    service_name: "{{ service_name }}"
+    service_type: "{{ service_type }}"
+    publicurl: "{{ service_publicurl }}"
+    adminurl: "{{ service_internalurl }}"
+    internalurl: "{{ service_adminurl }}"
+  register: add_service
+  until: add_service|success
+  retries: 5
+  delay: 10
+  tags:
+    - cinder-api-setup
+    - cinder-service-add
+    - cinder-setup

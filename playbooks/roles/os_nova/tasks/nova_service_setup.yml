@@ -1,0 +1,82 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- include: nova_service_add.yml
+  vars:
+    service_user_name: "{{ nova_service_user_name }}"
+    service_tenant_name: "{{ nova_service_tenant_name }}"
+    service_name: "{{ nova_service_name }}"
+    service_type: "{{ nova_service_type }}"
+    service_region: "{{ nova_service_region }}"
+    service_description: "{{ nova_service_description }}"
+    service_password: "{{ nova_service_password }}"
+    service_publicurl: "{{ nova_service_publicurl }}"
+    service_internalurl: "{{ nova_service_internalurl }}"
+    service_adminurl: "{{ nova_service_adminurl }}"
+    role_name: "{{ nova_service_role_name }}"
+  tags:
+    - nova-api
+    - nova-api-v2
+
+- include: nova_service_add.yml
+  vars:
+    service_user_name: "{{ nova_service_user_name }}"
+    service_tenant_name: "{{ nova_service_tenant_name }}"
+    service_name: "{{ nova_v3_service_name }}"
+    service_type: "{{ nova_v3_service_type }}"
+    service_region: "{{ nova_service_region }}"
+    service_description: "{{ nova_v3_service_description }}"
+    service_password: "{{ nova_v3_service_password }}"
+    service_publicurl: "{{ nova_v3_service_publicurl }}"
+    service_internalurl: "{{ nova_v3_service_internalurl }}"
+    service_adminurl: "{{ nova_v3_service_adminurl }}"
+    role_name: "{{ nova_service_role_name }}"
+  tags:
+    - nova-api
+    - nova-api-v3
+
+- include: nova_service_add.yml
+  vars:
+    service_user_name: "{{ nova_service_user_name }}"
+    service_tenant_name: "{{ nova_service_tenant_name }}"
+    service_name: "{{ nova_s3_service_name }}"
+    service_type: "{{ nova_s3_service_type }}"
+    service_region: "{{ nova_service_region }}"
+    service_description: "{{ nova_s3_service_description }}"
+    service_password: "{{ nova_s3_service_password }}"
+    service_publicurl: "{{ nova_s3_service_publicurl }}"
+    service_internalurl: "{{ nova_s3_service_internalurl }}"
+    service_adminurl: "{{ nova_s3_service_adminurl }}"
+    role_name: "{{ nova_service_role_name }}"
+  tags:
+    - nova-api
+    - nova-api-s3
+
+- include: nova_service_add.yml
+  vars:
+    service_user_name: "{{ nova_service_user_name }}"
+    service_tenant_name: "{{ nova_service_tenant_name }}"
+    service_name: "{{ nova_ec2_service_name }}"
+    service_type: "{{ nova_ec2_service_type }}"
+    service_region: "{{ nova_service_region }}"
+    service_description: "{{ nova_ec2_service_description }}"
+    service_password: "{{ nova_ec2_service_password }}"
+    service_publicurl: "{{ nova_ec2_service_publicurl }}"
+    service_internalurl: "{{ nova_ec2_service_internalurl }}"
+    service_adminurl: "{{ nova_ec2_service_adminurl }}"
+    role_name: "{{ nova_service_role_name }}"
+  tags:
+    - nova-api
+    - nova-api-ec2
