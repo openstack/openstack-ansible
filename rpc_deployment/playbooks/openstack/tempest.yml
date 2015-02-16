@@ -35,5 +35,6 @@
 - hosts: utility_all
   vars_files:
     - vars/repo_packages/tempest.yml
+    - inventory/group_vars/tempest_all.yml
   roles:
     - tempest

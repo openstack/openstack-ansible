@@ -28,25 +28,15 @@
 # Iptables path, used for ipv4 firewall.
 IPTABLES=$(which iptables)
 if [ ! -z "${IPTABLES}" ];then
-    if [ ! "$(${IPTABLES} -t mangle -nL | awk '$4 == "0.0.0.0/0" && $5 == "0.0.0.0/0" && $9 == "fill"')" ];then
-        ${IPTABLES} -A POSTROUTING \
-                    -t mangle \
-                    -p udp \
-                    --dport 68 \
-                    -j CHECKSUM \
-                    --checksum-fill
+    if ! ${IPTABLES} -C POSTROUTING -t mangle -p udp --dport 68 -j CHECKSUM --checksum-fill 2> /dev/null; then
+        ${IPTABLES} -A POSTROUTING -t mangle -p udp --dport 68 -j CHECKSUM --checksum-fill
     fi
 fi
 
 # Ip6tables path, used for ipv6 firewall.
 IP6TABLES=$(which ip6tables)
 if [ ! -z "${IP6TABLES}" ];then
-    if [ ! "$(${IP6TABLES} -t mangle -nL | awk '$3 == "::/0" && $4 == "::/0" && $8 == "fill"')" ];then
-        ${IP6TABLES} -A POSTROUTING \
-                     -t mangle \
-                     -p udp \
-                     --dport 68 \
-                     -j CHECKSUM \
-                     --checksum-fill
+    if ! ${IP6TABLES} -C POSTROUTING -t mangle -p udp --dport 68 -j CHECKSUM --checksum-fill 2> /dev/null; then
+        ${IP6TABLES} -A POSTROUTING -t mangle -p udp --dport 68 -j CHECKSUM --checksum-fill
     fi
 fi

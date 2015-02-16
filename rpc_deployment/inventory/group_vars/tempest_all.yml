@@ -20,3 +20,17 @@
 service_name: tempest
 
 tempest_swift_enabled: True
+tempest_cirros_image_url: 'http://download.cirros-cloud.net/0.3.3/cirros-0.3.3-x86_64-disk.img'
+
+tempest_private_subnet_cidr: "192.168.0.0/24"
+tempest_public_subnet_cidr: "10.0.0.0/24"
+tempest_public_gateway_ip: "10.0.0.1"
+
+tempest_image_dir: "/opt/images"
+tempest_images:
+  - url: "http://download.cirros-cloud.net/0.3.2/cirros-0.3.2-x86_64-uec.tar.gz"
+    sha256: "f462729fc2f071081dbc55932e07437e265263ef2e688306c353a1f152162b03"
+    name: "cirros-0.3.2-x86_64-uec.tar.gz"
+  - url: "http://download.cirros-cloud.net/0.3.3/cirros-0.3.3-x86_64-disk.img"
+    sha256: "f11286e2bd317ee1a1d0469a6b182b33bda4af6f35ba224ca49d75752c81e20a"
+    name: "cirros-0.3.3-x86_64-disk.img"
