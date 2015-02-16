@@ -58,9 +58,16 @@ options:
     router_external:
         description:
             - Specify router:external' when creating network
-    external_gateway_info
+    external_gateway_info:
         description:
             - Specify external_gateway_info when creating router
+    enable_dhcp:
+        description:
+            - Enable dhcp when creating a subnet
+        default: True
+    gateway_ip:
+        description:
+            - IP of gateway when creating a subnet
 author: Hugh Saunders
 '''
 
@@ -310,6 +317,8 @@ class ManageNeutron(object):
         cidr = variables_dict.pop('cidr')
         network_id = self._get_resource_by_name('networks', net_name)
         tenant_id = variables_dict.pop('tenant_id')
+        enable_dhcp = variables_dict.get('enable_dhcp', True)
+        gateway_ip = variables_dict.get('gateway_ip', None)
 
         if not network_id:
             self.failure(
@@ -321,9 +330,12 @@ class ManageNeutron(object):
                                          network_id=network_id)['subnets']:
             self.state_change = True
             s = {"name": subnet_name, "cidr": cidr, "ip_version": 4,
-                 "network_id": network_id}
+                 "network_id": network_id,
+                 "enable_dhcp": enable_dhcp}
             if tenant_id:
                 s["tenant_id"] = tenant_id
+            if gateway_ip:
+                s["gateway_ip"] = gateway_ip
             self.neutron.create_subnet({"subnet": s})
         return self._facts('subnets', self.neutron.list_subnets())
 
@@ -397,7 +409,9 @@ def main():
             router_external=dict(required=False),
             router_name=dict(required=False),
             external_gateway_info=dict(required=False),
-            tenant_id=dict(required=False)
+            tenant_id=dict(required=False),
+            enable_dhcp=dict(required=False),
+            gateway_ip=dict(required=False)
         ),
         supports_check_mode=False
     )

@@ -90,7 +90,7 @@ function get_instance_info() {
     # the block device in question is unpartitioned or has an invalid
     # partition. In this case, parted returns 'unrecognised disk label'
     # and the bash script exits due to the -e environment setting.
-    parted /dev/$blk_dev print || true
+    parted --script /dev/$blk_dev print || true
   done
   info_block 'PV Information'
   pvs
@@ -235,11 +235,11 @@ function loopback_create() {
   if [ "${LOOP_MOUNT_METHOD}" = "swap" ]; then
     if ! swapon -s | grep -q ${LOOP_FILENAME}; then
       mkswap ${LOOP_FILENAME}
-      swapon -a
     fi
     if ! grep -q "^${LOOP_FILENAME} " /etc/fstab; then
       echo "${LOOP_FILENAME} none swap loop 0 0" >> /etc/fstab
     fi
+    swapon -a
   fi
 }
 

@@ -87,8 +87,8 @@
 
 - name: Drop iptables checksum fix
   copy:
-    src: "post-up-checksum-rules.sh"
-    dest: "/etc/network/if-up.d/post-up-checksum-rules.sh"
+    src: "post-up-checksum-rules"
+    dest: "/etc/network/if-up.d/post-up-checksum-rules"
     owner: "root"
     group: "root"
     mode: "0755"
@@ -99,7 +99,7 @@
     - neutron_checksum_fix
 
 - name: Run iptables checksum fix
-  command: /etc/network/if-up.d/post-up-checksum-rules.sh
+  command: /etc/network/if-up.d/post-up-checksum-rules
   when: >
     inventory_hostname in groups['neutron_linuxbridge_agent']
   tags:

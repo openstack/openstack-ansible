@@ -1,59 +1,95 @@
 [DEFAULT]
-debug = True
-log_file = tempest.log
-use_stderr = False
+disable_process_locking = false
 lock_path = /opt/{{ repo_path }}/locks
+debug = False
+verbose = True
+log_file = /opt/tempest.log
+use_stderr = False
+fatal_deprecations = true
+
 
 [auth]
 tempest_roles = remote_image
+allow_tenant_isolation = True
+
+
+[baremetal]
+
 
 [boto]
-ssh_user = cirros
-instance_type = tempest1
 aki_manifest = cirros-0.3.2-x86_64-vmlinuz.manifest.xml
 ami_manifest = cirros-0.3.2-x86_64-blank.img.manifest.xml
 ari_manifest = cirros-0.3.2-x86_64-initrd.manifest.xml
-s3_materials_path = /opt/stack/devstack/files/images/s3-materials/cirros-0.3.2
-s3_url = http://134.213.136.181:3333
-ec2_url = http://134.213.136.181:8773/services/Cloud
-http_socket_timeout = 30
 build_timeout = 600
+ec2_url = http://134.213.136.181:8773/services/Cloud
+instance_type = tempest1
+http_socket_timeout = 30
+s3_url = http://134.213.136.181:3333
+s3_materials_path = {{ tempest_image_dir }}
+
 
 [cli]
+enabled = true
 cli_dir = /usr/local/bin
-has_manage=false
-
+has_manage = false
+timeout = 15
 
 
 [compute]
-ssh_connect_method = floating
-flavor_ref_alt = 202
+build_interval = 1
+build_timeout = 600
+catalog_type = compute
+catalog_v3_type = computev3
+endpoint_type = internalURL
+fixed_network_name = private
 flavor_ref = 201
+flavor_ref_alt = 202
+floating_ip_range = 10.0.10.0/29
+image_alt_ssh_password = cubswin:)
 image_alt_ssh_user = cirros
-image_ref_alt = {{ hostvars[groups['utility_all'][0]]['glance_images']['cirros']['id'] }}
-image_ssh_user = cirros
 image_ref = {{ hostvars[groups['utility_all'][0]]['glance_images']['cirros']['id'] }}
-ssh_timeout = 196
+image_ref_alt = {{ hostvars[groups['utility_all'][0]]['glance_images']['cirros']['id'] }}
+image_ssh_password = cubswin:)
+image_ssh_user = cirros
 ip_version_for_ssh = 4
 network_for_ssh = private
+ping_timeout = 240
+run_ssh = false
+ssh_auth_method = configured
+ssh_connect_method = floating
+ssh_timeout = 196
 ssh_user = cirros
-allow_tenant_isolation = True
-build_timeout = 600
+use_floatingip_for_ssh = true
+volume_device_name = vdb
+
 
 [compute-admin]
 tenant_name = {{ auth_admin_tenant }}
 password = {{ auth_admin_password }}
 username = {{ auth_admin_username }}
 
+
 [compute-feature-enabled]
-api_v3_extensions = all
 api_extensions = all
-block_migration_for_live_migration = False
-change_password = False
-live_migration = False
-resize = True
-api_v3 = False
-xml_api_v2 = False
+api_v3 = false
+api_v3_extensions = all
+block_migrate_cinder_iscsi = false
+block_migration_for_live_migration = false
+change_password = false
+console_output = false
+disk_config = true
+enable_instance_password = false
+interface_attach = false
+live_migration = false
+pause = false
+rdp_console = false
+rescue = false
+resize = false
+shelve = false
+snapshot = false
+spice_console = true
+suspend = false
+vnc_console = false
 
 
 [dashboard]
@@ -61,69 +97,119 @@ login_url = http://{{ external_vip_address }}/auth/login/
 dashboard_url = http://{{ external_vip_address }}/
 
 
+[data_processing]
+
+
+[database]
+
+
+[debug]
+enable = true
+
+
 [identity]
-auth_version = v2
 admin_domain_name = Default
-admin_tenant_id = {{ keystone_admin_tenant_id }}
-admin_tenant_name = {{ auth_admin_tenant }}
 admin_password = {{ auth_admin_password }}
+admin_role = admin
+admin_tenant_name = {{ auth_admin_tenant }}
 admin_username = {{ auth_admin_username }}
+admin_tenant_id = {{ keystone_admin_tenant_id }}
 alt_tenant_name = alt_demo
 alt_password = alt_demo
 alt_username = alt_demo
-tenant_name = demo
+auth_version = v2
+catalog_type = identity
+disable_ssl_certificate_validation = false
+endpoint_type = internalURL
 password = demo
-username = demo
+tenant_name = demo
 uri_v3 = http://{{ external_vip_address }}:5000/v3/
 uri = http://{{ external_vip_address }}:5000/v2.0/
+username = demo
 
 
 [identity-feature-enabled]
-xml_api = False
+api_v2 = true
+api_v3 = false
+trust = false
+
 
 [image]
+catalog_type = image
+endpoint_type = internalURL
+http_image = http://download.cirros-cloud.net/0.3.1/cirros-0.3.1-x86_64-uec.tar.gz
 
 
 [image-feature-enabled]
+api_v1 = true
+api_v2 = false
+
+
 [input-scenario]
+
+
 [negative]
 
+
+[messaging]
+
+
 [network]
-default_network = 192.168.74.0/24
-public_router_id =
+build_interval = 1
+build_timeout = 300
+catalog_type = network
+dns_servers = 8.8.8.8,8.8.4.4
+endpoint_type = internalURL
+public_router_id = {{ hostvars[groups['utility_all'][0]]['neutron_routers']['router']['id'] }}
 public_network_id = {{ hostvars[groups['utility_all'][0]]['neutron_networks']['public']['id'] }}
+tenant_network_cidr = {{ tempest_private_subnet_cidr }}
 tenant_networks_reachable = false
-api_version = 2.0
+
 
 [network-feature-enabled]
-api_extensions = agent, allowed-address-pairs, binding, dhcp_agent_scheduler, ext-gw-mode, external-net, extra_dhcp_opt, extra_dhcp_optagent, extraroute, l3_agent_scheduler, metering, provider, quotas, router, security-group, service-type
-ipv6_subnet_attributes = True
-ipv6 = True
-xml_api = False
+api_extensions = agent,allowed-address-pairs,binding,dhcp_agent_scheduler,ext-gw-mode,external-net,extra_dhcp_opt,extra_dhcp_optagent,extraroute,l3_agent_scheduler,metering,provider,quotas,router,security-group,service-type
+ipv6_subnet_attributes = false
+ipv6 = false
+
 
 [object-storage]
+catalog_type = object-store
+container_sync_interval = 5
+container_sync_timeout = 120
+endpoint_type = internalURL
 operator_role = swiftoperator
 reseller_admin_role = reseller_admin
 
 
-
 [object-storage-feature-enabled]
-discoverable_apis = all
+container_sync = false
 object_versioning = false
+discoverable_apis = all
 
 
 [orchestration]
+build_interval = 1
 build_timeout = 900
-instance_type = m1.heat
-image_ref = Fedora-x86_64-20-20140618-sda
+catalog_type = orchestration
+endpoint_type = internalURL
+image_ref = {{ hostvars[groups['utility_all'][0]]['glance_images']['cirros']['id'] }}
+instance_type = tempest1
+
 
 [queuing]
+
+
 [scenario]
 large_ops_number = 0
 aki_img_file = cirros-0.3.2-x86_64-vmlinuz
 ari_img_file = cirros-0.3.2-x86_64-initrd
 ami_img_file = cirros-0.3.2-x86_64-blank.img
-img_dir = /opt/stack/devstack/files/images/cirros-0.3.2-x86_64-uec
+img_container_format = bare
+img_dir = {{ tempest_image_dir }}
+img_disk_format = qcow2
+img_file = cirros-0.3.2-x86_64-disk.img
+ssh_user = cirros
+
 
 [service_available]
 neutron = True
@@ -141,17 +227,29 @@ horizon = True
 sahara = False
 ironic = False
 
+
 [stress]
 
 
 [telemetry]
-too_slow_to_test = False
 
 
 [volume]
+backend1_name = lvm
+build_interval = 1
 build_timeout = 600
+catalog_type = volume
+disk_format = raw
+endpoint_type = internalURL
+storage_protocol = iSCSI
+vendor_name = Open Source
+volume_size = 1
 
 
 [volume-feature-enabled]
-backup = False
 api_extensions = all
+api_v1 = true
+api_v2 = false
+backup = false
+multi_backend = false
+snapshot = false

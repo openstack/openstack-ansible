@@ -18,10 +18,61 @@
     command: 'image-create'
     openrc_path: /root/openrc
     image_name: cirros
-    image_url: 'http://download.cirros-cloud.net/0.3.3/cirros-0.3.3-x86_64-disk.img'
+    image_url: "{{ tempest_cirros_image_url }}"
     image_container_format: bare
     image_disk_format: qcow2
     image_is_public: True
+
+- name: Download cirros image for basic ops test
+  get_url:
+    url: "{{ tempest_cirros_image_url }}"
+    dest: '/tmp/cirros.img'
+  retries: 3
+  delay:
+
+- name: Create tempest image dir
+  file:
+    path: "{{ item.path }}"
+    state: directory
+    owner: "root"
+    group: "root"
+    mode: "{{ item.mode|default('0755') }}"
+  with_items:
+    - { path: "{{ tempest_image_dir }}" }
+  tags:
+    - tempest-dirs
+    - tempest-config
+    - tempest-image
+
+- name: Image(s) download
+  get_url:
+    url: "{{ item.url }}"
+    dest: "{{ tempest_image_dir }}"
+    sha256sum: "{{ item.sha256 }}"
+  with_items: tempest_images
+  tags:
+    - tempest-config
+    - tempest-image
+
+- name: Locate archives
+  shell: |
+    ls -1 {{ tempest_image_dir }} | grep '.gz'
+  register: tempest_archives
+  tags:
+    - tempest-config
+    - tempest-image
+    - tempest-image-unarchive
+
+- name: Image(s) unarchive
+  unarchive:
+    src: "{{ tempest_image_dir }}/{{ item }}"
+    dest: "{{ tempest_image_dir }}"
+    copy: "no"
+  with_items: tempest_archives.stdout
+  tags:
+    - tempest-config
+    - tempest-image
+    - tempest-image-unarchive
 
 - name: Ensure tempest tenants
   keystone:
@@ -96,30 +147,14 @@
   set_fact:
     keystone_demo_tenant_id: "{{ keystone_facts.id }}"
 
-- name: Ensure private network exists
-  neutron:
-    command: create_network
-    openrc_path: /root/openrc
-    net_name: private
-    tenant_id: "{{ keystone_demo_tenant_id }}"
-
 - name: Ensure public network exists
   neutron:
     command: create_network
     openrc_path: /root/openrc
     net_name: public
     provider_network_type: flat
-    provider_physical_network: vlan
+    provider_physical_network: flat
     router_external: true
-
-- name: Ensure private subnet exists
-  neutron:
-    command: create_subnet
-    openrc_path: /root/openrc
-    net_name: private
-    subnet_name: private-subnet
-    cidr: "192.168.74.0/24"
-    tenant_id: "{{ keystone_demo_tenant_id }}"
 
 - name: Ensure public subnet exists
   neutron:
@@ -127,7 +162,23 @@
     openrc_path: /root/openrc
     net_name: public
     subnet_name: public-subnet
-    cidr: "10.1.13.0/24"
+    cidr: "{{ tempest_public_subnet_cidr }}"
+
+- name: Ensure private network exists
+  neutron:
+    command: create_network
+    openrc_path: /root/openrc
+    net_name: private
+    tenant_id: "{{ keystone_demo_tenant_id }}"
+
+- name: Ensure private subnet exists
+  neutron:
+    command: create_subnet
+    openrc_path: /root/openrc
+    net_name: private
+    subnet_name: private-subnet
+    cidr: "{{ tempest_private_subnet_cidr }}"
+    tenant_id: "{{ keystone_demo_tenant_id }}"
 
 - name: Create router
   neutron:
