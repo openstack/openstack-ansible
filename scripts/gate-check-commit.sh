@@ -66,7 +66,6 @@ pip2 install -r requirements.txt || pip install -r requirements.txt
 if [ ! -d "/etc/${CONFIG_PREFIX}_deploy" ];then
   cp -R etc/${CONFIG_PREFIX}_deploy /etc/
 
-  # Generate the passwords
   USER_VARS_PATH="/etc/${CONFIG_PREFIX}_deploy/user_variables.yml"
 
   # Adjust any defaults to suit the AIO
@@ -74,8 +73,15 @@ if [ ! -d "/etc/${CONFIG_PREFIX}_deploy" ];then
   # happen prior.
   sed -i "s/# nova_virt_type:.*/nova_virt_type: qemu/" ${USER_VARS_PATH}
 
+  # Generate random passwords and tokens 
   ./scripts/pw-token-gen.py --file ${USER_VARS_PATH}
 
+  # Reduce galera gcache size in an attempt to fit into an 8GB cloudserver
+  if grep -q galera_gcache_size ${USER_VARS_PATH}; then
+    sed -i 's/galera_gcache_size:.*/galera_gcache_size: 50M/'
+  else
+    echo 'galera_gcache_size: 50M' >> ${USER_VARS_PATH}
+  fi
 
   # change the generated passwords for the OpenStack (admin) and Kibana (kibana) accounts
   sed -i "s/keystone_auth_admin_password:.*/keystone_auth_admin_password: ${ADMIN_PASSWORD}/" ${USER_VARS_PATH}
