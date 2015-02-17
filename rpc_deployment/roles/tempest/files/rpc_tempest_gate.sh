@@ -46,7 +46,7 @@ gen_test_list_commit_multinode(){
 
 # Run smoke tests
 gen_test_list_commit_aio(){
-  egrep 'test_minimum_basic|test_swift_basic_ops'
+  egrep 'tempest\.scenario\.test_(minimum|swift|server)_basic(_ops)?'
 }
 
 # Run smoke tests
