@@ -13,20 +13,40 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Add Container apt keys
+- name: Add Container apt-keys from URL
   apt_key:
     url: "{{ item.url }}"
     state: "{{ item.state }}"
   with_items: apt_container_keys
-  when: "ansible_distribution_version in ['12.04', '13.04', '13.10', '14.04'] and apt_container_keys is defined"
+  when: apt_container_keys is defined
+  register: add_keys_url
+  until: add_keys_url|success
+  retries: 3
+  delay: 10
 
-- name: Add Container GPG Keys
+- name: Add Container apt-keys from keyserver
   apt_key:
     id: "{{ item.hash_id }}"
     keyserver: "{{ item.keyserver }}"
     state: present
   with_items: container_gpg_keys
-  when: "ansible_distribution_version in ['12.04', '13.04', '13.10', '14.04'] and container_gpg_keys is defined"
+  when: container_gpg_keys is defined
+  register: add_keys
+  ignore_errors: True
+  retries: 3
+  delay: 10
+
+- name: Add Container apt-keys from fallback keyserver
+  apt_key:
+    id: "{{ item.hash_id }}"
+    keyserver: "{{ item.fallback_keyserver }}"
+    state: "present"
+  with_items: gpg_keys
+  when: add_keys|failed and item.fallback_keyserver is defined
+  register: add_keys_fallback
+  until: add_keys_fallback|success
+  retries: 3
+  delay: 10
 
 - name: Add Container repos
   apt_repository:

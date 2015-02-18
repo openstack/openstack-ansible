@@ -13,20 +13,36 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: add apt-keys
+- name: Add apt-keys from keyserver
   apt_key:
     id: "{{ item.hash_id }}"
     keyserver: "{{ item.keyserver }}"
     state: "present"
   with_items: gpg_keys
-  when: "ansible_distribution_version in ['12.04', '13.04', '13.10', '14.04']"
+  when: gpg_keys is defined
+  register: add_keys
+  until: add_keys|success
+  ignore_errors: True
+  retries: 3
+  delay: 10
+
+- name: Add apt-keys using fallback keyserver
+  apt_key:
+    id: "{{ item.hash_id }}"
+    keyserver: "{{ item.fallback_keyserver }}"
+    state: "present"
+  with_items: gpg_keys
+  when: add_keys|failed and item.fallback_keyserver is defined
+  register: add_keys_fallback
+  until: add_keys_fallback|success
+  retries: 3
+  delay: 10
 
 - name: Add Common repos
   apt_repository:
     repo: "{{ item.repo }}"
     state: "{{ item.state }}"
   with_items: apt_common_repos
-  when: "ansible_distribution_version in ['12.04', '13.04', '13.10', '14.04']"
   register: add_repos
   until: add_repos|success
   retries: 3
