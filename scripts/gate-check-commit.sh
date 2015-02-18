@@ -74,6 +74,8 @@ if [ ! -d "/etc/${CONFIG_PREFIX}_deploy" ];then
   # commented lines are removed by pw-token gen, so this substitution must
   # happen prior.
   sed -i "s/# nova_virt_type:.*/nova_virt_type: qemu/" ${USER_VARS_PATH}
+  sed -i "s/# logstash_heap_size_mb:/logstash_heap_size_mb:/" ${USER_VARS_PATH}
+  sed -i "s/# elasticsearch_heap_size_mb:/elasticsearch_heap_size_mb:/" ${USER_VARS_PATH}
 
   # Generate random passwords and tokens 
   ./scripts/pw-token-gen.py --file ${USER_VARS_PATH}
