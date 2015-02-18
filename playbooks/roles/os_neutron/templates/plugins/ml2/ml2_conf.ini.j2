@@ -1,4 +1,7 @@
 # {{ ansible_managed }}
+{%- macro append(target_list, item) %}
+{%- set _ = target_list.append(item) %}
+{%- endmacro %}
 
 {%- set network_vlan_ranges = [] %}
 {%- set network_vxlan_ranges = [] %}
@@ -9,46 +12,45 @@
 {%- for net in provider_networks %}
   {%- if net.network.type == "vlan" %}
     {%- if "vlan" not in network_types %}
-      {%- if network_types.append("vlan") %}{%- endif %}
+      {{ append(network_types, "vlan") }}
     {%- endif %}
     {%- set vlan_pair = [] %}
-    {%- if vlan_pair.append(net.network.net_name) %}{%- endif %}
-    {%- if vlan_pair.append(net.network.range) %}{%- endif %}
+    {{ append(vlan_pair, net.network.net_name) }}
+    {{ append(vlan_pair, net.network.range) }}
     {%- if vlan_pair|join(':') not in network_vlan_ranges%}
-      {%- if network_vlan_ranges.append(vlan_pair|join(':')) %}{%- endif %}
+      {{ append(network_vlan_ranges, vlan_pair|join(':')) }}
     {%- endif %}
   {%- elif net.network.type == "vxlan" %}
     {%- if "vxlan" not in network_types %}
-      {%- if network_types.append("vxlan") %}{%- endif %}
+      {{ append(network_types, "vxlan") }}
     {%- endif %}
     {%- if net.network.range not in network_vxlan_ranges %}
-      {%- if network_vxlan_ranges.append(net.network.range) %}{%- endif %}
+      {{ append(network_vxlan_ranges, net.network.range) }}
     {%- endif %}
   {%- elif net.network.type == "flat" %}
     {%- if "flat" not in network_types %}
-      {%- if network_types.append("flat") %}{%- endif %}
+      {{ append(network_types, "flat") }}
     {%- endif %}
     {%- if net.network.net_name not in network_flat_networks %}
-      {%- if network_flat_networks.append(net.network.net_name) %}{%- endif %}
+      {{ append(network_flat_networks, net.network.net_name) }}
     {%- endif %}
   {%- endif %}
   {% if net.network.type != 'raw' and net.network.type != 'vxlan' %}
     {%- set map_pair = [] %}
     {%- if 'net_name' in net.network %}
-      {%- if map_pair.append(net.network.net_name) %}{%- endif %}
+      {{ append(map_pair, net.network.net_name) }}
     {%- endif %}
     {%- if is_metal == true or is_metal == "True" %}
       {%- if net.network.host_bind_override is defined %}
-        {%- if map_pair.append(net.network.host_bind_override) %}{%- endif %}
+        {{ append(map_pair, net.network.host_bind_override) }}
       {%- else %}
-        {%- if map_pair.append(net.network.container_bridge) %}{%- endif %}
+        {{ append(map_pair, net.network.container_bridge) }}
       {%- endif %}
     {%- else %}
-      {%- if map_pair.append(net.network.container_interface) %}{%- endif %}
+      {{ append(map_pair, net.network.container_interface) }}
     {%- endif %}
-
     {%- if map_pair|join(':') not in network_mappings %}
-      {%- if network_mappings.append(map_pair|join(':')) %}{%- endif %}
+      {{ append(network_mappings, map_pair|join(':')) }}
     {%- endif %}
   {%- endif %}
 {%- endfor %}
