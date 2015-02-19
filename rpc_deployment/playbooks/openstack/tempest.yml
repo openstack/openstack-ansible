@@ -16,6 +16,7 @@
 # Configure tempest on the utility containers
 
 - hosts: utility_all
+  user: root
   roles:
     - common
     - openstack_common
@@ -26,6 +27,7 @@
 
 # Openstack resources only need to be created once
 - hosts: utility_all[0]
+  user: root
   roles:
     - tempest_resources
   vars_files:
@@ -33,6 +35,7 @@
 
 # Tempest is installed and configured in all utility containers
 - hosts: utility_all
+  user: root
   vars_files:
     - vars/repo_packages/tempest.yml
     - inventory/group_vars/tempest_all.yml
