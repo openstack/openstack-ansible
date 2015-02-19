@@ -32,7 +32,7 @@ core_plugin: neutron.plugins.ml2.plugin.Ml2Plugin
 interface_driver: neutron.agent.linux.interface.BridgeInterfaceDriver
 metering_driver: neutron.services.metering.drivers.iptables.iptables_driver.IptablesMeteringDriver
 
-service_plugins: 
+service_plugins:
   - neutron.services.l3_router.l3_router_plugin.L3RouterPlugin
   - neutron.services.loadbalancer.plugin.LoadBalancerPlugin
   - neutron.services.vpn.plugin.VPNDriverPlugin
@@ -78,8 +78,8 @@ service_names:
 ## Git Source
 ## ALL of this has been relocated to vars/repo_packages
 ## TODO(someone) this should be removed once the repo bits are all figured out.
-git_repo: https://git.openstack.org/openstack/neutron
-git_fallback_repo: https://github.com/openstack/neutron
+git_fallback_repo: https://git.openstack.org/openstack/neutron
+git_repo: https://github.com/openstack/neutron
 git_etc_example: etc/
 git_install_branch: fd1221124b8f53a61731e51b5f923af44ec5598f
 
