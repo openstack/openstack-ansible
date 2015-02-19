@@ -1,0 +1,75 @@
+# {{ ansible_managed }}
+
+[DEFAULT]
+verbose = {{ verbose }}
+debug = {{ debug }}
+admin_token = {{ keystone_auth_admin_token }}
+bind_host = {{ keystone_bind_address }}
+public_port = {{ keystone_service_port }}
+public_endpoint = {{ keystone_service_publicuri }}
+admin_port = {{ keystone_admin_port }}
+admin_endpoint = {{ keystone_service_adminuri }}
+
+log_file = keystone.log
+log_dir = /var/log/keystone
+rabbit_hosts = {{ rabbitmq_servers }}
+rabbit_userid = {{ rabbitmq_userid }}
+rabbit_password = {{ rabbitmq_password }}
+rpc_backend = {{ keystone_rpc_backend }}
+
+
+[memcache]
+servers = {{ keystone_memcached_servers }}
+
+
+max_compare_and_set_retry = 16
+
+{% if keystone_cache_backend_argument is defined %}
+[cache]
+backend = dogpile.cache.memcached
+backend_argument = {{ keystone_cache_backend_argument }}
+config_prefix = cache.keystone
+distributed_lock = True
+expiration_time = 5400
+enabled = true
+{% endif %}
+
+[revoke]
+expiration_buffer = 1800
+caching = true
+
+[auth]
+methods = {{ keystone_auth_methods }}
+
+[database]
+connection = mysql://{{ keystone_galera_user }}:{{ keystone_container_mysql_password }}@{{ galera_address }}/{{ keystone_galera_database }}?charset=utf8
+idle_timeout = 200
+min_pool_size = 5
+max_pool_size = 10
+pool_timeout = 200
+
+[identity]
+driver = {{ keystone_identity_driver }}
+
+[assignment]
+driver = keystone.assignment.backends.sql.Assignment
+caching = true
+
+{% if keystone_ldap is defined %}
+{% for section in keystone_ldap|dictsort %}
+[{{ section.0 }}]
+{% for key, value in section.1.items() %}
+{{ key }} = {{ value }}
+{% endfor %}
+{% endfor %}
+{% endif %}
+
+
+[token]
+enforce_token_bind = permissive
+revocation_cache_time = 3600
+expiration = 43200
+caching = true
+cache_time = 5400
+provider = {{ keystone_token_provider }}
+driver = {{ keystone_token_driver }}

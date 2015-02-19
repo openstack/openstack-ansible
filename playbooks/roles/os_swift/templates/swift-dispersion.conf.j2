@@ -1,0 +1,8 @@
+# {{ ansible_managed }}
+
+[dispersion]
+auth_url = {{ keystone_service_internalurl }}
+auth_user = {{ keystone_admin_tenant_name }}:{{ swift_dispersion_user }}
+auth_key = {{ swift_dispersion_password }}
+auth_version = 2.0
+endpoint_type = internalURL

@@ -1,0 +1,54 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- include: heat_upstart_common_init.yml
+  vars:
+    program_name: "{{ heat_service_program_name }}"
+    service_name: "{{ heat_service_name }}"
+    system_user: "{{ heat_system_user_name }}"
+    system_group: "{{ heat_system_group_name }}"
+    service_home: "{{ heat_system_home_folder }}"
+  when: >
+    inventory_hostname in groups['heat_api']
+
+- include: heat_upstart_common_init.yml
+  vars:
+    program_name: "{{ heat_cfn_service_program_name }}"
+    service_name: "{{ heat_service_name }}"
+    system_user: "{{ heat_system_user_name }}"
+    system_group: "{{ heat_system_group_name }}"
+    service_home: "{{ heat_system_home_folder }}"
+  when: >
+    inventory_hostname in groups['heat_api_cfn']
+
+- include: heat_upstart_common_init.yml
+  vars:
+    program_name: "{{ heat_cloudwatch_program_name }}"
+    service_name: "{{ heat_service_name }}"
+    system_user: "{{ heat_system_user_name }}"
+    system_group: "{{ heat_system_group_name }}"
+    service_home: "{{ heat_system_home_folder }}"
+  when: >
+    inventory_hostname in groups['heat_api_cloudwatch']
+
+- include: heat_upstart_common_init.yml
+  vars:
+    program_name: "{{ heat_engine_program_name }}"
+    service_name: "{{ heat_service_name }}"
+    system_user: "{{ heat_system_user_name }}"
+    system_group: "{{ heat_system_group_name }}"
+    service_home: "{{ heat_system_home_folder }}"
+  when: >
+    inventory_hostname in groups['heat_engine']

@@ -1,0 +1,33 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Ensure cinder api ip/port are responsive
+  wait_for:
+    port: "{{ cinder_service_port }}"
+    delay: 10
+    host: "{{ internal_lb_vip_address }}"
+  tags:
+    - cinder-backends
+
+- name: Add in cinder devices types
+  shell: |
+    . {{ ansible_env.HOME }}/openrc
+    cinder type-create "{{ item.0 }}"
+    cinder type-key "{{ item.0 }}" set volume_backend_name="{{ item.1.volume_backend_name }}"
+  with_items: cinder_backends|dictsort
+  when: cinder_backends is defined
+  tags:
+    - cinder-backends
+    - cinder-backends-types

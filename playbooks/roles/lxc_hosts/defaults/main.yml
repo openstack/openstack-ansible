@@ -1,0 +1,62 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# lxc container net network
+lxc_net_bridge: lxcbr0
+lxc_net_bridge_port: none
+lxc_net_address: 10.0.3.1
+lxc_net_netmask: 255.255.255.0
+lxc_net_gateway: none  ## if "none" no gateway will on the LXC bridge, nat must be "false" to use a gateway.
+
+# lxc container nat enabled
+lxc_net_nat: true  ## If "true" nat rules will be created with the lxc network.
+
+# lxc container dhcp settings
+lxc_net_dhcp_range: 10.0.3.2,10.0.3.253
+lxc_net_dhcp_max: 253
+lxc_net_dhcp_config: ''
+lxc_net_dnsmasq_user: lxc-dnsmasq
+lxc_net_domain: ''
+
+# lxc_container_net_link variable should be set to the lxc-net bridge.
+lxc_container_net_link: "{{ lxc_net_bridge }}"  ## name of the host bridge to attach to
+lxc_container_net_type: veth  ## lxc network interface type (veth, phys, vlan, macvlan, empty)
+lxc_container_net_name: eth0  ## name of the interface inside the container.
+
+# System control kernel tuning
+lxc_kernel_options:
+  - { key: 'fs.inotify.max_user_instances', value: 1024 }
+  - { key: 'vm.swappiness', value: 10 }
+
+# Required apt packages.
+lxc_apt_packages:
+  - apparmor-utils
+  - bridge-utils
+  - cgmanager
+  - cgroup-lite
+  - debootstrap
+  - dnsmasq
+  - git
+  - liblxc1
+  - lxc
+  - lxc-dev
+  - lxc-templates
+  - python-dev
+  - python3-lxc
+
+# Prebuilt images to deploy onto hosts for use in containers.
+# lxc_container_caches: 
+#   - url: "{{ openstack_upstream_url }}/container_images/rpc-trusty-container.tgz"
+#     name: "trusty.tgz"

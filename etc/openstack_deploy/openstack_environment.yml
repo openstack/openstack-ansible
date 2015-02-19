@@ -16,322 +16,475 @@
 component_skel:
   cinder_api:
     belongs_to:
-    - cinder_all
+      - cinder_all
   cinder_scheduler:
     belongs_to:
-    - cinder_all
+      - cinder_all
   cinder_volume:
     belongs_to:
-    - cinder_all
+      - cinder_all
   elasticsearch:
     belongs_to:
-    - elasticsearch_all
+      - elasticsearch_all
   galera:
     belongs_to:
-    - galera_all
+      - galera_all
   glance_api:
     belongs_to:
-    - glance_all
+      - glance_all
   glance_registry:
     belongs_to:
-    - glance_all
+      - glance_all
   heat_api:
     belongs_to:
-    - heat_all
+      - heat_all
   heat_api_cfn:
     belongs_to:
-    - heat_all
+      - heat_all
   heat_api_cloudwatch:
     belongs_to:
-    - heat_all
+      - heat_all
   heat_engine:
     belongs_to:
-    - heat_all
+      - heat_all
   horizon:
     belongs_to:
-    - horizon_all
+      - horizon_all
   keystone:
     belongs_to:
-    - keystone_all
+      - keystone_all
   kibana:
     belongs_to:
-    - kibana_all
+      - kibana_all
   logstash:
     belongs_to:
-    - logstash_all
+      - logstash_all
   memcached:
     belongs_to:
-    - memcached_all
+      - memcached_all
   neutron_agent:
     belongs_to:
-    - neutron_all
+      - neutron_all
   neutron_dhcp_agent:
     belongs_to:
-    - neutron_all
+      - neutron_all
   neutron_linuxbridge_agent:
     belongs_to:
-    - neutron_all
+      - neutron_all
   neutron_metering_agent:
     belongs_to:
-    - neutron_all
+      - neutron_all
   neutron_l3_agent:
     belongs_to:
-    - neutron_all
+      - neutron_all
   neutron_metadata_agent:
     belongs_to:
-    - neutron_all
+      - neutron_all
   neutron_server:
     belongs_to:
-    - neutron_all
+      - neutron_all
   nova_api_ec2:
     belongs_to:
-    - nova_all
+      - nova_all
   nova_api_metadata:
     belongs_to:
-    - nova_all
+      - nova_all
   nova_api_os_compute:
     belongs_to:
-    - nova_all
+      - nova_all
   nova_cert:
     belongs_to:
-    - nova_all
+      - nova_all
   nova_compute:
     belongs_to:
-    - nova_all
+      - nova_all
   nova_conductor:
     belongs_to:
-    - nova_all
+      - nova_all
   nova_scheduler:
     belongs_to:
-    - nova_all
+      - nova_all
   nova_spice_console:
     belongs_to:
-    - nova_all
-  rabbit:
+      - nova_all
+  pkg_repo:
     belongs_to:
-    - rabbit_all
+      - repo_all
+  rabbitmq:
+    belongs_to:
+      - rabbitmq_all
   rsyslog:
     belongs_to:
-    - rsyslog_all
-  utility:
-    belongs_to:
-    - utility_all
+      - rsyslog_all
   swift_proxy:
     belongs_to:
-    - swift_all
+      - swift_all
   swift_acc:
     belongs_to:
-    - swift_all
+      - swift_all
   swift_obj:
     belongs_to:
-    - swift_all
+      - swift_all
   swift_cont:
     belongs_to:
-    - swift_all
+      - swift_all
+  utility:
+    belongs_to:
+      - utility_all
+
+
 container_skel:
   cinder_api_container:
     belongs_to:
-    - infra_containers
+      - infra_containers
+      - storage-infra_containers
     contains:
-    - cinder_api
+      - cinder_api
+    properties:
+      service_name: cinder
+      container_release: trusty
   cinder_volumes_container:
     belongs_to:
-    - storage_containers
+      - storage_containers
     contains:
-    - cinder_scheduler
-    - cinder_volume
+      - cinder_scheduler
+      - cinder_volume
+    properties:
+      service_name: cinder
+      container_release: trusty
   elasticsearch_container:
     belongs_to:
-    - log_containers
+      - log_containers
     contains:
-    - elasticsearch
+      - elasticsearch
+    properties:
+      service_name: elasticsearch
+      container_release: trusty
   galera_container:
     belongs_to:
-    - infra_containers
+      - infra_containers
+      - shared-infra_containers
     contains:
-    - galera
+      - galera
+    properties:
+      service_name: galera
+      container_release: trusty
   glance_container:
     belongs_to:
-    - infra_containers
+      - infra_containers
+      - os-infra_containers
     contains:
-    - glance_api
-    - glance_registry
+      - glance_api
+      - glance_registry
+    properties:
+      service_name: glance
+      container_release: trusty
   heat_apis_container:
     belongs_to:
-    - infra_containers
+      - infra_containers
+      - os-infra_containers
     contains:
-    - heat_api_cloudwatch
-    - heat_api_cfn
-    - heat_api
+      - heat_api_cloudwatch
+      - heat_api_cfn
+      - heat_api
+    properties:
+      service_name: heat
+      container_release: trusty
   heat_engine_container:
     belongs_to:
-    - infra_containers
+      - infra_containers
+      - os-infra_containers
     contains:
-    - heat_engine
+      - heat_engine
+    properties:
+      service_name: heat
+      container_release: trusty
   horizon_container:
     belongs_to:
-    - infra_containers
+      - infra_containers
+      - os-infra_containers
     contains:
-    - horizon
+      - horizon
+    properties:
+      service_name: horizon
+      container_release: trusty
   keystone_container:
     belongs_to:
-    - infra_containers
+      - infra_containers
+      - identity_containers
     contains:
-    - keystone
+      - keystone
+    properties:
+      service_name: keystone
+      container_release: trusty
   kibana_container:
     belongs_to:
-    - log_containers
+      - log_containers
     contains:
-    - kibana
+      - kibana
+    properties:
+      service_name: kibana
+      container_release: trusty
   logstash_container:
     belongs_to:
-    - log_containers
+      - log_containers
     contains:
-    - logstash
+      - logstash
+    properties:
+      service_name: logstash
+      container_release: trusty
   memcached_container:
     belongs_to:
-    - infra_containers
+      - infra_containers
+      - shared-infra_containers
     contains:
-    - memcached
+      - memcached
+    properties:
+      service_name: memcached
+      container_release: trusty
   neutron_agents_container:
     belongs_to:
-    - network_containers
+      - network_containers
     contains:
-    - neutron_agent
-    - neutron_metadata_agent
-    - neutron_metering_agent
-    - neutron_linuxbridge_agent
-    - neutron_l3_agent
-    - neutron_dhcp_agent
+      - neutron_agent
+      - neutron_metadata_agent
+      - neutron_metering_agent
+      - neutron_linuxbridge_agent
+      - neutron_l3_agent
+      - neutron_dhcp_agent
+    properties:
+      service_name: neutron
+      container_release: trusty
   neutron_server_container:
     belongs_to:
-    - network_containers
+      - network_containers
     contains:
-    - neutron_server
+      - neutron_server
+    properties:
+      service_name: neutron
+      container_release: trusty
   nova_api_ec2_container:
     belongs_to:
-    - infra_containers
+      - infra_containers
+      - os-infra_containers
     contains:
-    - nova_api_ec2
+      - nova_api_ec2
+    properties:
+      service_name: nova
+      container_release: trusty
   nova_api_metadata_container:
     belongs_to:
-    - infra_containers
+      - infra_containers
+      - os-infra_containers
     contains:
-    - nova_api_metadata
+      - nova_api_metadata
+    properties:
+      service_name: nova
+      container_release: trusty
   nova_api_os_compute_container:
     belongs_to:
-    - infra_containers
+      - infra_containers
+      - os-infra_containers
     contains:
-    - nova_api_os_compute
+      - nova_api_os_compute
+    properties:
+      service_name: nova
+      container_release: trusty
   nova_cert_container:
     belongs_to:
-    - infra_containers
+      - infra_containers
+      - os-infra_containers
     contains:
-    - nova_cert
+      - nova_cert
+    properties:
+      service_name: nova
+      container_release: trusty
   nova_compute_container:
-    is_metal: true
     belongs_to:
-    - compute_containers
+      - compute_containers
     contains:
-    - neutron_linuxbridge_agent
-    - nova_compute
+      - neutron_linuxbridge_agent
+      - nova_compute
+    properties:
+      is_metal: true
+      service_name: nova
+      container_release: trusty
   nova_conductor_container:
     belongs_to:
-    - infra_containers
+      - infra_containers
+      - os-infra_containers
     contains:
-    - nova_conductor
+      - nova_conductor
+    properties:
+      service_name: nova
+      container_release: trusty
   nova_scheduler_container:
     belongs_to:
-    - infra_containers
+      - infra_containers
+      - os-infra_containers
     contains:
-    - nova_scheduler
+      - nova_scheduler
+    properties:
+      service_name: nova
+      container_release: trusty
   nova_spice_console_container:
     belongs_to:
-    - infra_containers
+      - infra_containers
+      - os-infra_containers
     contains:
-    - nova_spice_console
+      - nova_spice_console
+    properties:
+      service_name: nova
+      container_release: trusty
   rabbit_mq_container:
     belongs_to:
-    - infra_containers
+      - infra_containers
+      - shared-infra_containers
     contains:
-    - rabbit
+      - rabbitmq
+    properties:
+      service_name: rabbitmq
+      container_release: trusty
+  repo_container:
+    belongs_to:
+      - repo-infra_containers
+    contains:
+      - pkg_repo
+    properties:
+      service_name: repo
+      container_release: trusty
   rsyslog_container:
     belongs_to:
-    - infra_containers
-    - compute_containers
-    - storage_containers
-    - log_containers
-    - network_containers
+      - infra_containers
+      - os-infra_containers
+      - shared-infra_containers
+      - identity_containers
+      - compute_containers
+      - storage_containers
+      - log_containers
+      - network_containers
+      - repo-infra_containers
     contains:
-    - rsyslog
-  utility_container:
-    belongs_to:
-    - infra_containers
-    contains:
-    - utility
+      - rsyslog
+    properties:
+      service_name: rsyslog
+      container_release: trusty
   swift_proxy_container:
     belongs_to:
-    - swift-proxy_containers
+      - swift-proxy_containers
     contains:
-    - swift_proxy
+      - swift_proxy
+    properties:
+      service_name: swift
+      container_release: trusty
   swift_acc_container:
-    is_metal: true
-    belongs_to: 
-    - swift_containers
+    belongs_to:
+      - swift_containers
     contains:
-    - swift_acc
+      - swift_acc
+    properties:
+      is_metal: true
+      service_name: swift
+      container_release: trusty
   swift_obj_container:
-    is_metal: true
     belongs_to:
-    - swift_containers
+      - swift_containers
     contains:
-    - swift_obj
+      - swift_obj
+    properties:
+      is_metal: true
+      service_name: swift
+      container_release: trusty
   swift_cont_container:
-    is_metal: true
     belongs_to:
-    - swift_containers
+      - swift_containers
     contains:
-    - swift_cont
+      - swift_cont
+    properties:
+      is_metal: true
+      service_name: swift
+      container_release: trusty
+  utility_container:
+    belongs_to:
+      - infra_containers
+      - shared-infra_containers
+    contains:
+      - utility
+    properties:
+      service_name: utility
+      container_release: trusty
+
+
 physical_skel:
-  network_containers:
-    belongs_to:
-    - all_containers
-  network_hosts:
-    belongs_to:
-    - hosts
   compute_containers:
     belongs_to:
-    - all_containers
+      - all_containers
   compute_hosts:
     belongs_to:
-    - hosts
+      - hosts
   infra_containers:
     belongs_to:
-    - all_containers
+      - all_containers
   infra_hosts:
     belongs_to:
-    - hosts
+      - hosts
+  identity_containers:
+    belongs_to:
+      - all_containers
+  identity_hosts:
+    belongs_to:
+      - hosts
   log_containers:
     belongs_to:
-    - all_containers
+      - all_containers
   log_hosts:
     belongs_to:
-    - hosts
+      - hosts
+  network_containers:
+    belongs_to:
+      - all_containers
+  network_hosts:
+    belongs_to:
+      - hosts
+  os-infra_containers:
+    belongs_to:
+      - all_containers
+  os-infra_hosts:
+    belongs_to:
+      - hosts
+  repo-infra_hosts:
+    belongs_to:
+      - hosts
+  repo-infra_containers:
+    belongs_to:
+      - all_containers
+  shared-infra_containers:
+    belongs_to:
+      - all_containers
+  shared-infra_hosts:
+    belongs_to:
+      - hosts
+  storage-infra_containers:
+    belongs_to:
+      - all_containers
+  storage-infra_hosts:
+    belongs_to:
+      - hosts
   storage_containers:
     belongs_to:
-    - all_containers
+      - all_containers
   storage_hosts:
     belongs_to:
-    - hosts
+      - hosts
   swift_containers:
     belongs_to:
-    - all_containers
+      - all_containers
   swift_hosts:
     belongs_to:
-    - hosts
+      - hosts
   swift-proxy_containers:
     belongs_to:
-    - all_containers
+      - all_containers
   swift-proxy_hosts:
     belongs_to:
-    - hosts
+      - hosts

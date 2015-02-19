@@ -1,0 +1,41 @@
+# {{ ansible_managed }}
+
+# vim:set ft=upstart ts=2 et:
+
+description "{{ program_name }}"
+author "Kevin Carter <kevin.carter@rackspace.com>"
+
+start on runlevel [2345]
+stop on runlelvel [016]
+
+respawn
+respawn limit 10 5
+
+# Set the RUNBIN environment variable
+env RUNBIN="/usr/local/bin/{{ program_name }}"
+
+# Change directory to service users home
+chdir "{{ service_home }}"
+
+# Pre start actions
+pre-start script
+  mkdir -p "/var/run/{{ program_name }}"
+  chown {{ system_user }}:{{ system_group }} "/var/run/{{ program_name }}"
+
+  mkdir -p "/var/lock/{{ program_name }}"
+  chown {{ system_user }}:{{ system_group }} "/var/lock/{{ program_name }}"
+end script
+
+# Post stop actions
+post-stop script
+  rm "/var/run/{{ program_name }}/{{ program_name }}.pid"
+end script
+
+# Run the start up job
+exec start-stop-daemon --start \
+                       --chuid {{ system_user }} \
+                       --make-pidfile \
+                       --pidfile /var/run/{{ program_name }}/{{ program_name }}.pid \
+                       --exec "{{ program_override|default('$RUNBIN') }}" \
+                       -- {{ program_config_options|default('') }} \
+                       --log-file=/var/log/{{ service_name }}/{{ program_name }}.log

@@ -1,0 +1,42 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Restart glance api
+  service:
+    name: "glance-api"
+    state: "restarted"
+    pattern: "glance-api"
+
+- name: Restart glance registry
+  service:
+    name: "glance-registry"
+    state: "restarted"
+    pattern: "glance-registry"
+
+- name: Restart glance services
+  service:
+    name: "{{ item }}"
+    state: "restarted"
+    pattern: "{{ item }}"
+  with_items: glance_service_names
+
+- name: Glance mount nfs
+  mount:
+    name: "{{ item.server }}:{{ item.remote_path }}"
+    src: "{{ item.local_path }}"
+    fstype: "{{ item.type }}"
+    opts: "{{ item.options }}"
+    state: "present"
+  with_items: glance_nfs_client

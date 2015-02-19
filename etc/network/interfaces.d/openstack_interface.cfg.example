@@ -1,10 +1,14 @@
-#EXAMPLE INTERFACE FILE
-#
-#1293 - HOST_NET (Ignore This. It's the native VLAN.)
-#2176 - CONTAINER_NET
-#1998 - OVERLAY_NET
-#2144 - STORAGE_NET
-#2146 - GATEWAY_NET (VM Provider Network. Ignore this. OpenStack will tag for us.)
+## The default networking requires several bridges. These bridges were named to be informative
+## however they can be named what ever you like and is adaptable to any network infrastructure
+## environment. This file serves as an example of how to setup basic networking and was ONLY
+## built for the purpose of being an example.
+
+# EXAMPLE INTERFACE FILE
+# 1293 - HOST_NET (Ignore This. It's the native VLAN.)
+# 2176 - CONTAINER_NET
+# 1998 - OVERLAY_NET
+# 2144 - STORAGE_NET
+# 2146 - GATEWAY_NET (VM Provider Network. Ignore this. OpenStack will tag for us.)
 
 ## Physical interface, could be bond. This only needs to be set once for the physical device
 auto eth0

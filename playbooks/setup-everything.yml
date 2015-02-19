@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: host-setup.yml
-- include: infrastructure-setup.yml
-- include: openstack-setup.yml
-
+- include: setup-hosts.yml
+- include: setup-infrastructure.yml
+- include: setup-openstack.yml

@@ -1,0 +1,83 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Defines that the role will be deployed on a host machine
+is_metal: true
+
+## Verbosity Options
+debug: False
+verbose: True
+
+## System info
+horizon_system_user_name: horizon
+horizon_system_group_name: www-data
+horizon_system_shell: /bin/false
+horizon_system_comment: horizon system user
+horizon_system_user_home: "/var/lib/{{ horizon_system_user_name }}"
+
+## Service Type and Data
+horizon_service_region: RegionOne
+horizon_service_name: horizon
+
+## DB info
+horizon_galera_database: dash
+horizon_galera_user: dash
+
+
+## Horizon Help URL Path
+horizon_help_url: http://docs.openstack.org
+
+## Installation directories
+horizon_lib_dir: /usr/local/lib/python2.7/dist-packages
+
+horizon_endpoint_type: internalURL
+
+horizon_fqdn: "{{ external_vip_address }}"
+horizon_server_name: "horizon"
+horizon_log_level: info
+horizon_self_signed: true
+horizon_self_signed_regen: false
+horizon_time_zone: UTC
+
+## Horizon SSL
+### Set the cacert pem if you'd like horizon to verify it.
+# horizon_cacert_pem: /path/to/cacert.pem
+horizon_ssl_cert: /etc/ssl/certs/apache.cert
+horizon_ssl_key: /etc/ssl/private/apache.key
+horizon_ssl_cert_path: /etc/ssl/certs
+
+horizon_listen_ports:
+  - "80"
+  - "443"
+
+horizon_apt_packages:
+  - apache2
+  - apache2-utils
+  - libapache2-mod-wsgi
+  - libssl-dev
+  - libxslt1.1
+  - openssl
+
+horizon_pip_packages:
+  - django-appconf
+  - greenlet
+  - horizon
+  - keystonemiddleware
+  - MySQL-python
+  - oslo.config
+  - ply
+  - pycrypto
+  - python-memcached
+  - python-keystoneclient

@@ -1,0 +1,51 @@
+# {{ ansible_managed }}
+
+{% set threads = ansible_processor_vcpus|default(2) // 2 %}
+
+WSGIDaemonProcess keystone user={{ keystone_system_user_name }} group=nogroup processes={{ ansible_processor_cores|default(1) }} threads={{ threads if threads > 0 else 1 }}
+
+<VirtualHost *:{{ keystone_service_port }}>
+    LogLevel  {{  keystone_apache_log_level }}
+    ErrorLog  /var/log/keystone/keystone-apache-error.log
+    CustomLog /var/log/keystone/ssl_access.log combined
+    Options +FollowSymLinks
+
+    {% if keystone_ssl_enabled == true %}
+    SSLEngine on
+    SSLCertificateFile    {{ keystone_ssl_cert }}
+    SSLCertificateKeyFile {{ keystone_ssl_key }}
+    SSLCACertificatePath  {{ keystone_ssl_cert_path }}
+    SSLCARevocationPath   {{ keystone_ssl_cert_path }}
+    SSLVerifyClient optional
+    SSLVerifyDepth 10
+    SSLProtocol all -SSLv2
+    SSLCipherSuite ALL:!ADH:!EXPORT:!SSLv2:RC4+RSA:+HIGH:+MEDIUM:+LOW
+    SSLOptions +StdEnvVars +ExportCertData
+    {% endif %}
+
+    WSGIScriptAlias /  /var/www/cgi-bin/keystone/main
+    WSGIProcessGroup keystone
+</VirtualHost>
+
+<VirtualHost *:{{ keystone_admin_port }}>
+    LogLevel  {{  keystone_apache_log_level }}
+    ErrorLog  /var/log/keystone/keystone-apache-error.log
+    CustomLog /var/log/keystone/ssl_access.log combined
+    Options +FollowSymLinks
+
+    {% if keystone_ssl_enabled == true %}
+    SSLEngine on
+    SSLCertificateFile    {{ keystone_ssl_cert }}
+    SSLCertificateKeyFile {{ keystone_ssl_key }}
+    SSLCACertificatePath  {{ keystone_ssl_cert_path }}
+    SSLCARevocationPath   {{ keystone_ssl_cert_path }}
+    SSLVerifyClient optional
+    SSLVerifyDepth 10
+    SSLProtocol all -SSLv2
+    SSLCipherSuite ALL:!ADH:!EXPORT:!SSLv2:RC4+RSA:+HIGH:+MEDIUM:+LOW
+    SSLOptions +StdEnvVars +ExportCertData
+    {% endif %}
+
+    WSGIScriptAlias / /var/www/cgi-bin/keystone/admin
+    WSGIProcessGroup keystone
+</VirtualHost>

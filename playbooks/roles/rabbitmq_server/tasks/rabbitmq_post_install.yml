@@ -1,0 +1,48 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Enable management plugin
+  rabbitmq_plugin:
+    names: rabbitmq_management
+    state: enabled
+  with_items: rabbitmq_plugins
+  register: rabbitmq_plugin
+  tags:
+    - rabbitmq-config
+
+- name: Enable queue mirroring
+  rabbitmq_policy:
+    name: "HA"
+    pattern: '^(?!amq\.).*'
+    tags: "ha-mode=all"
+  register: rabbitmq_queue_mirror
+  tags:
+    - rabbitmq-config
+    - rabbitmq-cluster
+
+- include: rabbitmq_restart.yml
+  when: rabbitmq_plugin|changed or rabbitmq_queue_mirror|changed
+
+- name: Ensure rabbitmq user
+  rabbitmq_user:
+    user: "{{ rabbitmq_userid }}"
+    password: "{{ rabbitmq_password }}"
+    vhost: "/"
+    configure_priv: ".*"
+    read_priv: ".*"
+    write_priv: ".*"
+    state: "present"
+  tags:
+    - rabbitmq-user

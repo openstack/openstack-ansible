@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 # Copyright 2014, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,137 +14,102 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-## Variables -----------------------------------------------------------------
-LINE='-----------------------------------------------------------------------'
-STARTTIME=${STARTTIME:-"$(date +%s)"}
-REPORT_DATA=""
-MAX_RETRIES=${MAX_RETRIES:-0}
 
-# Export known paths
-export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+## Vars ----------------------------------------------------------------------
+LINE='----------------------------------------------------------------------'
+MAX_RETRIES=${MAX_RETRIES:-5}
+MIN_LXC_VG_SIZE_GB=${MIN_LXC_VG_SIZE_GB:-250}
+REPORT_DATA=${REPORT_DATA:-""}
+FORKS=${FORKS:-25}
+ANSIBLE_PARAMETERS=${ANSIBLE_PARAMETERS:-""}
+STARTTIME="${STARTTIME:-$(date +%s)}"
 
-# Override the current HOME directory
-export HOME="/root"
 
 ## Functions -----------------------------------------------------------------
-
-# Output details provided as parameters
-function print_info() {
-  set +x
-  PROC_NAME="- [ $@ ] -"
-  printf "\n%s%s\n" "$PROC_NAME" "${LINE:${#PROC_NAME}}"
-}
-
-# Output a formatted block around a message
-function info_block(){
-  set +x
-  echo "${LINE}"
-  print_info "$@"
-  echo "${LINE}"
-}
-
-# Output a formatted block of information about the run on exit
-function exit_state() {
-  set +x
-  info_block "Run time reports"
-  echo -e "${REPORT_DATA}"
-  TOTALSECONDS="$[$(date +%s) - $STARTTIME]"
-  info_block "Run Time = ${TOTALSECONDS} seconds || $(($TOTALSECONDS / 60)) minutes"
-  if [ "${1}" == 0 ];then
-    info_block "Status: Build Success"
-  else
-    info_block "Status: Build Failure"
-  fi
-  exit ${1}
-}
-
-# Exit with error details
-function exit_fail() {
-  set +x
-  get_instance_info
-  info_block "Error Info - $@"
-  exit_state 1
-}
-
-# Output diagnostic information
-function get_instance_info() {
-  set +x
-  info_block 'Path'
-  echo ${PATH}
-  info_block 'Current User'
-  whoami
-  info_block 'Home Directory'
-  echo ${HOME}
-  info_block 'Available Memory'
-  free -mt
-  info_block 'Available Disk Space'
-  df -h
-  info_block 'Mounted Devices'
-  mount
-  info_block 'Block Devices'
-  lsblk -i
-  info_block 'Block Devices Information'
-  blkid
-  info_block 'Block Device Partitions'
-  for blk_dev in $(lsblk -nrdo NAME,TYPE | awk '/disk/ {print $1}'); do
-    # Ignoring errors for the below command is important as sometimes
-    # the block device in question is unpartitioned or has an invalid
-    # partition. In this case, parted returns 'unrecognised disk label'
-    # and the bash script exits due to the -e environment setting.
-    parted /dev/$blk_dev print || true
-  done
-  info_block 'PV Information'
-  pvs
-  info_block 'VG Information'
-  vgs
-  info_block 'LV Information'
-  lvs
-  info_block 'Contents of /etc/fstab'
-  cat /etc/fstab
-  info_block 'CPU Information'
-  which lscpu && lscpu
-  info_block 'Kernel Information'
-  uname -a
-  info_block 'Container Information'
-  which lxc-ls && lxc-ls --fancy
-  info_block 'Firewall Information'
-  iptables -vnL
-  iptables -t nat -vnL
-  iptables -t mangle -vnL
-  info_block 'Network Devices'
-  ip a
-  info_block 'Network Routes'
-  ip r
-  info_block 'Trace Path from google'
-  tracepath 8.8.8.8 -m 5
-  info_block 'XEN Server Information'
-  which xenstore-read && xenstore-read vm-data/provider_data/provider ||:
-}
-
-# Used to retry a process that may fail due to transient issues
+# Used to retry a process that may fail due to random issues.
 function successerator() {
-  set +e +x
+  set +e
   # Get the time that the method was started.
   OP_START_TIME="$(date +%s)"
-  MAX_ATTEMPTS=$((${MAX_RETRIES}+1))
-
-  for ATTEMPT in $(seq ${MAX_ATTEMPTS}); do
-    $@ && { report_success; return 0; }
+  RETRY=0
+  # Set the initial return value to failure.
+  false
+  while [ $? -ne 0 -a ${RETRY} -lt ${MAX_RETRIES} ];do
+    RETRY=$((${RETRY}+1))
+    if [ ${RETRY} -gt 1 ];then
+      $@ -vvvv
+    else
+      $@
+    fi
   done
-
-  exit_fail "Hit maximum number of retries, giving up..."
-  set -e -x
-}
-
-# Report success
-function report_success() {
+  # If max retires were hit, fail.
+  if [ $? -ne 0 ] && [ ${RETRY} -eq ${MAX_RETRIES} ];then
+    echo -e "\nHit maximum number of retries, giving up...\n"
+    exit_fail
+  fi
+  # Print the time that the method completed.
   OP_TOTAL_SECONDS="$[$(date +%s) - $OP_START_TIME]"
   REPORT_OUTPUT="${OP_TOTAL_SECONDS} seconds"
-  REPORT_DATA+="- Operation: [ $@ ]\t${REPORT_OUTPUT}\tNumber of Attempts [ ${ATTEMPT} ]\n"
-  print_info "Run Time = ${REPORT_OUTPUT}"
+  REPORT_DATA+="- Operation: [ $@ ]\t${REPORT_OUTPUT}\tNumber of Attempts [ ${RETRY} ]\n"
+  echo -e "Run Time = ${REPORT_OUTPUT}"
+  set -e
 }
 
-function ssh_key_create(){
+function install_bits() {
+  # The number of forks has been limited to 10 by default (2x ansible default)
+  # This will also run ansible in 3x verbose mode
+  successerator openstack-ansible ${ANSIBLE_PARAMETERS} --forks ${FORKS} $@
+}
+
+function configure_diskspace() {
+  # If there are any block devices available other than the one
+  # used for the root disk, repurpose it for our needs.
+  MIN_LXC_VG_SIZE_B=$((${MIN_LXC_VG_SIZE_GB} * 1024 * 1024 * 1024))
+
+  # only do this if the lxc vg doesn't already exist
+  if ! vgs lxc > /dev/null 2>&1; then
+    blk_devices=$(lsblk -nrdo NAME,TYPE | awk '/d[b-z]+ disk/ {print $1}')
+    for blk_dev in ${blk_devices}; do
+      # dismount any mount points on the device
+      mount_points=$(awk "/^\/dev\/${blk_dev}[0-9]* / {print \$2}" /proc/mounts)
+      for mount_point in ${mount_points}; do
+        umount ${mount_point}
+        sed -i ":${mount_point}:d" /etc/fstab
+      done
+
+      # add a vg for lxc
+      blk_dev_size_b=$(lsblk -nrdbo NAME,TYPE,SIZE | awk "/^${blk_dev} disk/ {print \$3}")
+      if [ "${blk_dev_size_b}" -gt "${MIN_LXC_VG_SIZE_B}" ]; then
+        if ! vgs lxc > /dev/null 2>&1; then
+          parted --script /dev/${blk_dev} mklabel gpt
+          parted --align optimal --script /dev/${blk_dev} mkpart lxc 0% 80%
+          part_num=$(parted /dev/${blk_dev} print --machine | awk -F':' '/lxc/ {print $1}')
+          pvcreate -ff -y /dev/${blk_dev}${part_num}
+          vgcreate lxc /dev/${blk_dev}${part_num}
+        fi
+        # add a vg for cinder volumes, but only if it doesn't already exist
+        if ! vgs cinder-volumes > /dev/null 2>&1; then
+          parted --align optimal --script /dev/${blk_dev} mkpart cinder 80% 100%
+          part_num=$(parted /dev/${blk_dev} print --machine | awk -F':' '/cinder/ {print $1}')
+          pvcreate -ff -y /dev/${blk_dev}${part_num}
+          vgcreate cinder-volumes /dev/${blk_dev}${part_num}
+        fi
+      else
+        if ! grep '/var/lib/lxc' /proc/mounts 2>&1; then
+          parted --script /dev/${blk_dev} mklabel gpt
+          parted --script /dev/${blk_dev} mkpart lxc ext4 0% 100%
+          part_num=$(parted /dev/${blk_dev} print --machine | awk -F':' '/lxc/ {print $1}')
+          # Format, Create, and Mount it all up.
+          mkfs.ext4 /dev/${blk_dev}${part_num}
+          mkdir -p /var/lib/lxc
+          mount /dev/${blk_dev}${part_num} /var/lib/lxc
+        fi
+      fi
+    done
+  fi
+}
+
+function ssh_key_create() {
   # Ensure that the ssh key exists and is an authorized_key
   key_path="${HOME}/.ssh"
   key_file="${key_path}/id_rsa"
@@ -153,7 +119,7 @@ function ssh_key_create(){
     mkdir -p ${key_path}
     chmod 700 ${key_path}
   fi
-  if [ ! -f "${key_file}" ] || [ ! -f "${key_file}.pub" ]; then
+  if [ ! -f "${key_file}" -a ! -f "${key_file}.pub" ]; then
     rm -f ${key_file}*
     ssh-keygen -t rsa -f ${key_file} -N ''
   fi
@@ -166,59 +132,19 @@ function ssh_key_create(){
   fi
 }
 
-function configure_diskspace(){
-  # If there are any block devices available other than the one
-  # used for the root disk, repurpose it for our needs.
-
-  # the disk we use needs to have at least 60GB of space
-  min_disk_size_b=$((60 * 1024 * 1024 * 1024))
-
-  blk_devices=$(lsblk -nrdo NAME,TYPE | awk '/d[b-z]+ disk/ {print $1}')
-  for blk_dev in ${blk_devices}; do
-    # only do this if the cinder-volumes vg doesn't already exist
-    if ! vgs cinder-volumes > /dev/null 2>&1; then
-
-      blk_dev_size_b=$(lsblk -nrdbo NAME,TYPE,SIZE | awk "/^${blk_dev} disk/ {print \$3}")
-      if [ "${blk_dev_size_b}" -gt "${min_disk_size_b}" ]; then
-        # dismount any mount points on the device
-        mount_points=$(awk "/^\/dev\/${blk_dev}[0-9]* / {print \$2}" /proc/mounts)
-        for mount_point in ${mount_points}; do
-          umount ${mount_point}
-        done
-
-        #add a vg for cinder volumes
-        parted --script /dev/${blk_dev} mklabel gpt
-        parted --align optimal --script /dev/${blk_dev} mkpart cinder 0% 100%
-        pvcreate -ff -y /dev/${blk_dev}1
-        vgcreate cinder-volumes /dev/${blk_dev}1
-
-        # add an lv for lxc to use
-        # it does not use it's own vg to ensure that the container disk usage
-        # is thin-provisioned in the simplest way as openstack-infra instances
-        # do not have enough disk space to handle thick-provisioned containers
-        lvcreate -n lxc -L50g cinder-volumes
-
-        # prepare the file system and mount it
-        mkfs.ext4 /dev/cinder-volumes/lxc
-        mkdir -p /var/lib/lxc
-        mount /dev/cinder-volumes/lxc /var/lib/lxc
-      fi
-
-    fi
-  done
-}
-
 function loopback_create() {
   LOOP_FILENAME=${1}
   LOOP_FILESIZE=${2}
-  LOOP_FILE_TYPE=${3}    # thin, thick
-  LOOP_MOUNT_METHOD=${4} # swap, rc, none
+  LOOP_FILE_TYPE=${3}  # thin, thick
+  LOOP_MOUNT_METHOD=${4}  # swap, rc, none
 
   if [ ! -f "${LOOP_FILENAME}" ]; then
     if [ "${LOOP_FILE_TYPE}" = "thin" ]; then
       truncate -s ${LOOP_FILESIZE} ${LOOP_FILENAME}
     elif [ "${LOOP_FILE_TYPE}" = "thick" ]; then
       dd if=/dev/zero of=${LOOP_FILENAME} bs=${LOOP_FILESIZE} count=1
+    else
+      exit_fail 'No valid option ${LOOP_FILE_TYPE} found.'
     fi
   fi
 
@@ -243,18 +169,121 @@ function loopback_create() {
   fi
 }
 
-# Exit if the script is not being run as root
-if [ ! "$(whoami)" == "root" ]; then
-  info_block "This script must be run as root."
-  exit 1
-fi
+function exit_state() {
+  set +x
+  TOTALSECONDS="$[$(date +%s) - $STARTTIME]"
+  info_block "Run Time = ${TOTALSECONDS} seconds || $(($TOTALSECONDS / 60)) minutes"
+  if [ "${1}" == 0 ];then
+    info_block "Status: Success"
+  else
+    info_block "Status: Failure"
+  fi
+  exit ${1}
+}
 
-# Check that we are in the root path of the cloned repo
-if [ ! -d "etc" -a ! -d "scripts" -a ! -f "requirements.txt" ]; then
-  info_block "ERROR: Please execute this script from the root directory of the cloned source code."
-  exit 1
-fi
+function exit_success() {
+  set +x
+  exit_state 0
+}
 
+function exit_fail() {
+  set +x
+  get_instance_info
+  info_block "Error Info - $@"
+  exit_state 1
+}
+
+function print_info() {
+  PROC_NAME="- [ $@ ] -"
+  printf "\n%s%s\n" "$PROC_NAME" "${LINE:${#PROC_NAME}}"
+}
+
+function info_block(){
+  echo "${LINE}"
+  print_info "$@"
+  echo "${LINE}"
+}
+
+# Get instance info
+function get_instance_info() {
+  set +x
+  info_block 'Available Memory'
+  free -mt
+  info_block 'Available Disk Space'
+  df -h
+  info_block 'Mounted Devices'
+  mount
+  info_block 'Block Devices'
+  lsblk
+  info_block 'Block Devices Information'
+  blkid
+  info_block 'Block Device Partitions'
+  for i in /dev/xv* /dev/sd* /dev/vd*; do
+    if [ -b "$i" ];then
+      parted --script $i print || true
+    fi
+  done
+  info_block 'PV Information'
+  pvs
+  info_block 'VG Information'
+  vgs
+  info_block 'LV Information'
+  lvs
+  info_block 'CPU Information'
+  which lscpu && lscpu
+  info_block 'Kernel Information'
+  uname -a
+  info_block 'Container Information'
+  which lxc-ls && lxc-ls --fancy
+  info_block 'Firewall Information'
+  iptables -vnL
+  iptables -t nat -vnL
+  iptables -t mangle -vnL
+  info_block 'Network Devices'
+  ip a
+  info_block 'Network Routes'
+  ip r
+  info_block 'Trace Path from google'
+  tracepath 8.8.8.8 -m 5
+  info_block 'XEN Server Information'
+  if (which xenstore-read);then
+    xenstore-read vm-data/provider_data/provider || echo "\nxenstore Read Failed - Skipping\n"
+  else
+    echo -e "\nNo xenstore Information\n"
+  fi
+}
+
+function print_report() {
+  # Print the stored report data
+  echo -e "${REPORT_DATA}"
+}
+
+
+## Signal traps --------------------------------------------------------------
 # Trap all Death Signals and Errors
 trap "exit_fail ${LINENO} $? 'Received STOP Signal'" SIGHUP SIGINT SIGTERM
 trap "exit_fail ${LINENO} $?" ERR
+
+
+## Pre-flight check ----------------------------------------------------------
+# Make sure only root can run our script
+if [ "$(id -u)" != "0" ]; then
+  info_block "This script must be run as root"
+  exit_state 1
+fi
+
+# Check that we are in the root path of the cloned repo
+if [ ! -d "etc" -a ! -d "scripts" -a ! -d "playbooks" ]; then
+  info_block "** ERROR **"
+  echo "Please execute this script from the root directory of the cloned source code."
+  echo -e "Example: /opt/os-ansible-deployment/\n"
+  exit_state 1
+fi
+
+
+## Exports -------------------------------------------------------------------
+# Export known paths
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+# Export the home directory just in case it's not set
+export HOME="/root"

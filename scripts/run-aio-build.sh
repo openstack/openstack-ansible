@@ -18,11 +18,12 @@
 set -e -u -v +x
 
 ## Variables -----------------------------------------------------------------
-
 export REPO_URL=${REPO_URL:-"https://github.com/stackforge/os-ansible-deployment.git"}
 export REPO_BRANCH=${REPO_BRANCH:-"master"}
 export WORKING_FOLDER=${WORKING_FOLDER:-"/opt/stackforge/os-ansible-deployment"}
-export ANSIBLE_PARAMETERS=${ANSIBLE_ANSIBLE_PARAMETERS:-"--forks 10"}
+# On normal AIO build the script should do everything possible to try for success
+export MAX_RETRIES=${MAX_RETRIES:-"5"}
+
 
 ## Main ----------------------------------------------------------------------
 
@@ -33,7 +34,7 @@ set -x
 apt-get update && apt-get install -y git
 
 # fetch the repo
-git clone -b ${REPO_BRANCH} ${REPO_URL} ${WORKING_FOLDER}/
+git clone -b ${REPO_BRANCH} ${REPO_URL} ${WORKING_FOLDER}
 
 # run the same aio build script that is used in the OpenStack CI pipeline
 cd ${WORKING_FOLDER}
@@ -59,7 +60,7 @@ echo "If this server has been rebooted, you will need to re-bootstrap"
 echo "Galera to get the cluster operational. To do this execute:"
 echo ""
 echo "cd $(pwd)/playbooks"
-echo "ansible-playbook -e @/etc/openstack_deploy/user_variables.yml galera-startup.yml"
+echo "openstack-ansible galera-install --tags galera-bootstrap"
 echo ""
 EOF
 chmod +x /etc/update-motd.d/21-galera

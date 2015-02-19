@@ -1,0 +1,172 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Defines that the role will be deployed on a host machine
+is_metal: true
+
+cinder_storage_availability_zone: nova
+cinder_default_availability_zone: "{{ cinder_storage_availability_zone }}"
+
+cinder_storage_address: 127.0.0.1
+
+cinder_nova_catalog_info: compute:nova:internalURL
+cinder_nova_catalog_admin_info: compute:nova:adminURL
+
+## DB
+cinder_galera_user: cinder
+cinder_galera_database: cinder
+
+## Cinder User / Group
+cinder_system_user_name: cinder
+cinder_system_group_name: cinder
+cinder_system_comment: cinder system user
+cinder_system_shell: /bin/false
+cinder_system_home_folder: "/var/lib/{{ cinder_system_user_name }}"
+
+## Cinder Auth
+cinder_service_admin_tenant_name: "service"
+cinder_service_admin_username: "cinder"
+
+## Cinder api service type and data
+cinder_service_name: cinder
+cinder_service_user_name: cinder
+cinder_service_tenant_name: service
+cinder_service_role_name: admin
+cinder_service_region: RegionOne
+cinder_service_description: "Cinder Volume Service"
+cinder_service_port: 8776
+cinder_service_proto: http
+cinder_service_type: volume
+cinder_service_publicuri: "{{ cinder_service_proto }}://{{ external_lb_vip_address }}:{{ cinder_service_port }}"
+cinder_service_publicurl: "{{ cinder_service_publicuri }}/v1/%(tenant_id)s"
+cinder_service_adminuri: "{{ cinder_service_proto }}://{{ internal_lb_vip_address }}:{{ cinder_service_port }}"
+cinder_service_adminurl: "{{ cinder_service_adminuri }}/v1/%(tenant_id)s"
+cinder_service_internaluri: "{{ cinder_service_proto }}://{{ internal_lb_vip_address }}:{{ cinder_service_port }}"
+cinder_service_internalurl: "{{ cinder_service_internaluri }}/v1/%(tenant_id)s"
+cinder_service_program_name: cinder-api
+
+cinder_service_v2_name: cinderv2
+cinder_service_v2_port: 8776
+cinder_service_v2_proto: http
+cinder_service_v2_type: volumev2
+cinder_service_v2_description: "Cinder Volume Service V2"
+cinder_service_v2_publicuri: "{{ cinder_service_proto }}://{{ external_lb_vip_address }}:{{ cinder_service_port }}"
+cinder_service_v2_publicurl: "{{ cinder_service_publicuri }}/v2/%(tenant_id)s"
+cinder_service_v2_adminuri: "{{ cinder_service_proto }}://{{ internal_lb_vip_address }}:{{ cinder_service_port }}"
+cinder_service_v2_adminurl: "{{ cinder_service_adminuri }}/v2/%(tenant_id)s"
+cinder_service_v2_internaluri: "{{ cinder_service_proto }}://{{ internal_lb_vip_address }}:{{ cinder_service_port }}"
+cinder_service_v2_internalurl: "{{ cinder_service_internaluri }}/v2/%(tenant_id)s"
+
+## In order to enable the cinder backup you MUST set ``cinder_backup_program_enabled`` to "true"
+## Additionally the configuration section will not be put in the `cinder.conf` file unless the
+## following variables are defined:
+#   * cinder_service_backup_swift_user
+#   * cinder_service_backup_swift_user
+#   * cinder_service_backup_swift_key
+cinder_service_backup_program_enabled: false
+cinder_service_backup_program_name: cinder-volume
+cinder_service_backup_driver: cinder.backup.drivers.swift
+cinder_service_backup_swift_url: http://127.0.0.1:8080/v1/AUTH
+cinder_service_backup_swift_user: admin
+cinder_service_backup_swift_key: secrete
+cinder_service_backup_swift_auth: per_user
+cinder_service_backup_swift_container: volumebackups
+cinder_service_backup_swift_object_size: 52428800
+cinder_service_backup_swift_retry_attempts: 3
+cinder_service_backup_swift_retry_backoff: 2
+cinder_service_backup_compression_algorithm: zlib
+
+cinder_service_volume_program_name: cinder-volume
+
+cinder_service_scheduler_program_name: cinder-scheduler
+
+# If ``cinder_osapi_volume_workers`` is unset the system will use half the number of
+# available VCPUS to compute the number of api workers to use.
+# cinder_osapi_volume_workers: 16
+
+## Cinder iscsi
+cinder_iscsi_helper: tgtadm
+cinder_iscsi_iotype: fileio
+cinder_iscsi_num_targets: 100
+cinder_iscsi_port: 3260
+
+## Cinder RPC
+cinder_rpc_backend: rabbit
+
+# (StrOpt) Method used to wipe old voumes (valid options are: none, zero,
+# shred)
+cinder_volume_clear: shred
+# (StrOpt) The flag to pass to ionice to alter the i/o priority of the process
+# used to zero a volume after deletion, for example "-c3" for idle only
+# priority.
+cinder_volume_clear_ionice: -c3
+
+# (IntOpt) Size in MiB to wipe at start of old volumes. 0 => all
+cinder_volume_clear_size: 0
+
+cinder_volume_name_template: volume-%s
+
+## General configuration
+## Set this in rpc_user_config.yml UNLESS you want all hosts to use the same
+## Cinder backends.  See the rpc_user_config example for more on how this is done.
+# cinder_backends:
+#   lvm:
+#     volume_group: cinder-volumes
+#     volume_driver: cinder.volume.drivers.lvm.LVMISCSIDriver
+#     volume_backend_name: LVM_iSCSI
+
+## Define nfs information for cinder. When the cinder_nfs_client dictionary is defined,
+## it will enable nfs shares.  The value ``nfs_shares_config`` is the path on the disk
+## where the NFS export will live. The ``shares`` value is a list of dictionaries that
+## must have the IP address of the NFS server and the location where the export will be.
+# cinder_nfs_client:
+#   nfs_shares_config: /etc/cinder/nfs_shares
+#   shares:
+#     - ip: "127.0.0.1"
+#       share: "/vol/cinder"
+
+# Common apt packages
+cinder_apt_packages:
+  - dmeventd
+  - libpq-dev
+  - libkmod-dev
+  - libkmod2
+  - nfs-common
+  - parted
+  - qemu-utils
+  - rpcbind
+  - tgt
+  - zlib1g
+  - zlibc
+
+# Common pip packages
+cinder_pip_packages:
+  - cinder
+  - ecdsa
+  - httplib2
+  - keystonemiddleware
+  - MySQL-python
+  - python-memcached
+  - pycrypto
+  - python-cinderclient
+  - python-keystoneclient
+  - pywbem
+
+# Service Names
+cinder_service_names:
+  - cinder-api
+  - cinder-scheduler
+  - cinder-volume
+  - cinder-backup

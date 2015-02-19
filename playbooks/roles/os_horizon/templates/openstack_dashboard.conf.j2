@@ -1,0 +1,49 @@
+# {{ ansible_managed }}
+
+{% set threads = ansible_processor_vcpus // 2 %}
+
+<VirtualHost *:80>
+    ServerName {{ horizon_server_name }}
+    RewriteEngine On
+    RewriteCond %{HTTPS} !=on
+    RewriteRule ^/?(.*) https://%{HTTP_HOST}/$1 [R,L]
+</VirtualHost>
+
+<VirtualHost *:443>
+    ServerName {{ horizon_server_name }}
+
+    LogLevel  {{ horizon_log_level }}
+    ErrorLog  /var/log/horizon/horizon-error.log
+    CustomLog /var/log/horizon/ssl_access.log combined
+    Options +FollowSymLinks
+
+    SSLEngine on
+    SSLCertificateFile    {{ horizon_ssl_cert }}
+    SSLCertificateKeyFile {{ horizon_ssl_key }}
+    SSLCACertificatePath  {{ horizon_ssl_cert_path }}
+    SSLCARevocationPath   {{ horizon_ssl_cert_path }}
+    SSLProtocol All -SSLv2 -SSLv3
+    SSLHonorCipherOrder On
+    SSLCipherSuite "EECDH+ECDSA+AESGCM EECDH+aRSA+AESGCM EECDH+ECDSA+SHA384 EECDH+ECDSA+SHA256 EECDH+aRSA+SHA384 EECDH+aRSA+SHA256 EECDH+aRSA+RC4 EECDH EDH+aRSA !aNULL !eNULL !LOW !3DES !MD5 !EXP !PSK !SRP !DSS !RC4"
+    SetEnvIf User-Agent ".*MSIE.*" nokeepalive ssl-unclean-shutdown
+
+    WSGIScriptAlias / {{ horizon_lib_dir }}/openstack_dashboard/wsgi/django.wsgi
+    WSGIDaemonProcess horizon user={{ horizon_system_user_name }} group={{ horizon_system_group_name }} processes={{ ansible_processor_cores }} threads={{ threads if threads > 0 else 1 }}
+
+    Alias /static {{ horizon_lib_dir }}/static/
+    <Directory /usr/local/lib/python2.7/dist-packages/openstack_dashboard/wsgi/>
+      <Files django.wsgi>
+        Order allow,deny
+        allow from all
+        Require all granted
+      </Files>
+    </Directory>
+
+    <Directory {{ horizon_lib_dir }}/static/>
+      Options -FollowSymlinks
+      AllowOverride None
+      Order allow,deny
+      allow from all
+      Require all granted
+    </Directory>
+</VirtualHost>

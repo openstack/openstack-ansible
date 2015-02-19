@@ -1,0 +1,92 @@
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+heat_template_version: 2013-05-23
+description: Heat template to deploy OS-Ansible-Deployment
+parameters:
+  ssh_key_name:
+    type: string
+    description: Name of a Key Pair to enable SSH access to the instance
+  image_name:
+    type: string
+    description: Name of image to use for server
+  flavor_name:
+    type: string
+    description: Name Flavor to use for server
+  server_name:
+    type: string
+    default: OSAD-AIO
+    description: The Instance Name
+  install_script_url:
+    type: string
+    default: https://raw.githubusercontent.com/stackforge/os-ansible-deployment/master/scripts/run-aio-build.sh
+    description: The aio script installation URL
+  frozen_repo_url:
+    type: string
+    default: http://rpc-repo.rackspace.com
+    description: URL to the frozen
+  repo_url:
+    type: string
+    default: https://github.com/stackforge/os-ansible-deployment.git
+    description: The repository URL
+  repo_branch:
+    type: string
+    default: master
+    description: The repository branch
+  net_id:
+    type: string
+    description: ID of Neutron network into which servers get deployed
+  sec_group:
+    type: string
+    description: Name of the security group
+outputs:
+  OSADAIO_public_ip:
+    description: The public IP address of the newly configured Server.
+    value: { get_attr: [ OSADAIO, first_address ] }
+  OSADAIO_password:
+    description: The password for all the things.
+    value: secrete
+resources:
+  OSADAIO_port:
+    type: OS::Neutron::Port
+    properties:
+      network_id: { get_param: net_id }
+      security_groups: [{ get_param: sec_group }]
+  OSADAIO:
+    type: OS::Nova::Server
+    properties:
+      flavor: { get_param: flavor_name }
+      image: { get_param: image_name }
+      name: { get_param: server_name }
+      key_name: { get_param: ssh_key_name }
+      networks:
+        - port: { get_resource: OSADAIO_port }
+      user_data:
+        str_replace:
+          params:
+            "%install_script_url%": { get_param: install_script_url }
+            "%repo_url%": { get_param: repo_url }
+            "%repo_branch%": { get_param: repo_branch }
+            "%frozen_repo_url%": { get_param: frozen_repo_url }
+          template: |
+            #!/usr/bin/env bash
+            export REPO_URL="%repo_url%"
+            export REPO_BRANCH="%repo_branch%"
+            export FROZEN_REPO_URL="%frozen_repo_url%"
+            apt-get update
+            apt-get -y install wget
+            pushd /opt
+              bash <(wget -O- "%install_script_url%")
+            popd
+

@@ -1,0 +1,36 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Distribute self signed ssl
+  memcached:
+    name: "{{ item.name }}"
+    file_path: "{{ item.src }}"
+    state: "retrieve"
+    file_mode: "{{ item.file_mode }}"
+    dir_mode: "{{ item.dir_mode }}"
+    server: "{{ memcached_servers }}"
+    encrypt_string: "{{ memcached_encryption_key }}"
+  with_items:
+    - { src: "{{ horizon_ssl_cert }}", name: "apache_cert", file_mode: "0640", dir_mode: "0750" }
+    - { src: "{{ horizon_ssl_key }}", name: "apache_key", file_mode: "0640", dir_mode: "0750" }
+  register: memcache_keys
+  until: memcache_keys|success
+  retries: 5
+  delay: 2
+  notify: Restart apache2
+  tags:
+    - horizon-key
+    - horizon-key-distribute
+    - horizon-ssl

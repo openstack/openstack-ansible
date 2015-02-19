@@ -1,0 +1,25 @@
+server {
+    listen {{ repo_server_port }};
+    server_name {{ repo_server_name }};
+
+    # Logging
+    access_log /var/log/{{ repo_service_user_name }}/{{ repo_server_name }}.access.log gzip buffer=32k;
+    error_log /var/log/{{ repo_service_user_name }}/{{ repo_server_name }}.error.log notice;
+
+    location / {
+        root {{ repo_service_home_folder }}/repo/;
+        autoindex on;
+        expires 5h;
+    }
+
+    location ~ /openstackgit(/.*) {
+        gzip off;
+        fastcgi_param SCRIPT_FILENAME /usr/lib/git-core/git-http-backend;
+        fastcgi_param SCRIPT_NAME git-http-backend;
+        fastcgi_param GIT_HTTP_EXPORT_ALL "";
+        fastcgi_param GIT_PROJECT_ROOT {{ repo_service_home_folder }}/repo/openstackgit;
+        fastcgi_param PATH_INFO $1;
+        include /etc/nginx/fastcgi_params;
+        fastcgi_pass unix:/var/run/fcgiwrap.socket;
+    }
+}

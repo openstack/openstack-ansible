@@ -1,0 +1,77 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: "Swift account server config with replication"
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ swift_system_user_name }}"
+    group: "{{ swift_system_group_name }}"
+    mode: "0644"
+  with_items:
+    - { src: "account-server.conf.j2", dest: "/etc/swift/account-server/account-server.conf" }
+    - { src: "account-server-replicator.conf.j2", dest: "/etc/swift/account-server/account-server-replicator.conf" }
+  notify: Restart swift services
+
+- include: swift_upstart_common_init.yml
+  vars:
+    program_name: "swift-account-server-replicator"
+    program_config_options: "{{ swift_account_server_replicator_program_config_options }}"
+    service_name: "{{ swift_service_name }}"
+    system_user: "{{ swift_system_user_name }}"
+    system_group: "{{ swift_system_group_name }}"
+    service_home: "{{ swift_system_home_folder }}"
+  when: >
+    swift.replication_network is defined and
+    swift.replication_network != swift.storage_network
+
+- include: swift_upstart_common_init.yml
+  vars:
+    program_name: "swift-account-replicator"
+    program_config_options: "{{ swift_account_server_replicator_program_config_options }}"
+    service_name: "{{ swift_service_name }}"
+    system_user: "{{ swift_system_user_name }}"
+    system_group: "{{ swift_system_group_name }}"
+    service_home: "{{ swift_system_home_folder }}"
+  when: >
+    swift.replication_network is defined and
+    swift.replication_network != swift.storage_network
+
+- include: swift_upstart_common_init.yml
+  vars:
+    program_name: "swift-account-server"
+    program_config_options: "{{ swift_account_server_program_config_options }}"
+    service_name: "{{ swift_service_name }}"
+    system_user: "{{ swift_system_user_name }}"
+    system_group: "{{ swift_system_group_name }}"
+    service_home: "{{ swift_system_home_folder }}"
+
+- include: swift_upstart_common_init.yml
+  vars:
+    program_name: "swift-account-auditor"
+    program_config_options: "{{ swift_account_server_program_config_options }}"
+    service_name: "{{ swift_service_name }}"
+    system_user: "{{ swift_system_user_name }}"
+    system_group: "{{ swift_system_group_name }}"
+    service_home: "{{ swift_system_home_folder }}"
+
+- include: swift_upstart_common_init.yml
+  vars:
+    program_name: "swift-account-reaper"
+    program_config_options: "{{ swift_account_server_program_config_options }}"
+    service_name: "{{ swift_service_name }}"
+    system_user: "{{ swift_system_user_name }}"
+    system_group: "{{ swift_system_group_name }}"
+    service_home: "{{ swift_system_home_folder }}"

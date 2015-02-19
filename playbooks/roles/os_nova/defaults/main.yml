@@ -1,0 +1,221 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Defines that the role will be deployed on a host machine
+is_metal: true
+
+## Verbosity Options
+debug: False
+verbose: True
+
+## System info
+nova_system_user_name: nova
+nova_system_group_name: nova
+nova_system_shell: /bin/bash
+nova_system_comment: nova system user
+nova_system_home_folder: "/var/lib/{{ nova_system_user_name }}"
+
+## DB
+nova_galera_user: nova
+nova_galera_database: nova
+
+## RPC
+nova_rpc_backend: nova.openstack.common.rpc.impl_kombu
+
+## Nova virtualization Type, set to KVM if supported
+nova_virt_type: kvm
+
+## Nova Auth
+nova_service_region: RegionOne
+nova_service_tenant_name: "service"
+nova_service_user_name: "nova"
+nova_service_role_name: "admin"
+
+## Nova s3
+nova_s3_service_name: s3
+nova_s3_service_type: s3
+nova_s3_service_proto: http
+nova_s3_service_port: 3333
+nova_s3_service_description: "S3 Compatibility Layer"
+nova_s3_service_publicuri: "{{ nova_s3_service_proto }}://{{ external_lb_vip_address }}:{{ nova_s3_service_port }}"
+nova_s3_service_publicurl: "{{ nova_s3_service_publicuri }}"
+nova_s3_service_adminuri: "{{ nova_s3_service_proto }}://{{ internal_lb_vip_address }}:{{ nova_s3_service_port }}"
+nova_s3_service_adminurl: "{{ nova_s3_service_adminuri }}"
+nova_s3_service_internaluri: "{{ nova_s3_service_proto }}://{{ internal_lb_vip_address }}:{{ nova_s3_service_port }}"
+nova_s3_service_internalurl: "{{ nova_s3_service_internaluri }}"
+nova_s3_program_name: nova-api-ec2
+
+## Nova v3
+nova_v3_service_name: novav3
+nova_v3_service_type: computev3
+nova_v3_service_proto: http
+nova_v3_service_port: 8774
+nova_v3_service_description: "Nova Compute Service V3"
+nova_v3_service_publicuri: "{{ nova_v3_service_proto }}://{{ external_lb_vip_address }}:{{ nova_v3_service_port }}"
+nova_v3_service_publicurl: "{{ nova_v3_service_publicuri }}/v3"
+nova_v3_service_adminuri: "{{ nova_v3_service_proto }}://{{ internal_lb_vip_address }}:{{ nova_v3_service_port }}"
+nova_v3_service_adminurl: "{{ nova_v3_service_adminuri }}/v3"
+nova_v3_service_internaluri: "{{ nova_v3_service_proto }}://{{ internal_lb_vip_address }}:{{ nova_v3_service_port }}"
+nova_v3_service_internalurl: "{{ nova_v3_service_internaluri }}/v3"
+
+## Nova v2
+nova_service_name: nova
+nova_service_type: compute
+nova_service_proto: http
+nova_service_port: 8774
+nova_service_description: "Nova Compute Service"
+nova_service_publicuri: "{{ nova_service_proto }}://{{ external_lb_vip_address }}:{{ nova_service_port }}"
+nova_service_publicurl: "{{ nova_service_publicuri }}/v2/%(tenant_id)s"
+nova_service_adminuri: "{{ nova_service_proto }}://{{ internal_lb_vip_address }}:{{ nova_service_port }}"
+nova_service_adminurl: "{{ nova_service_adminuri }}/v2/%(tenant_id)s"
+nova_service_internaluri: "{{ nova_service_proto }}://{{ internal_lb_vip_address }}:{{ nova_service_port }}"
+nova_service_internalurl: "{{ nova_service_internaluri }}/v2/%(tenant_id)s"
+nova_program_name: nova-api-os-compute
+
+## Nova ec2
+nova_ec2_service_name: ec2
+nova_ec2_service_type: ec2
+nova_ec2_service_proto: http
+nova_ec2_service_port: 8773
+nova_ec2_service_description: "EC2 Compatibility Layer"
+nova_ec2_service_publicuri: "{{ nova_ec2_service_proto }}://{{ external_lb_vip_address }}:{{ nova_ec2_service_port }}"
+nova_ec2_service_publicurl: "{{ nova_ec2_service_publicuri }}/services/Cloud"
+nova_ec2_service_adminuri: "{{ nova_ec2_service_proto }}://{{ internal_lb_vip_address }}:{{ nova_ec2_service_port }}"
+nova_ec2_service_adminurl: "{{ nova_ec2_service_adminuri }}/services/Admin"
+nova_ec2_service_internaluri: "{{ nova_ec2_service_proto }}://{{ internal_lb_vip_address }}:{{ nova_ec2_service_port }}"
+nova_ec2_service_internalurl: "{{ nova_ec2_service_internaluri }}/services/Cloud"
+nova_ec2_program_name: nova-api-ec2
+
+## Nova spice
+nova_spice_html5proxy_base_proto: http
+nova_spice_html5proxy_base_port: 6082
+nova_spice_html5proxy_base_uri: "{{ nova_spice_html5proxy_base_proto }}://{{ external_lb_vip_address}}:{{ nova_spice_html5proxy_base_port }}"
+nova_spice_html5proxy_base_url: "{{ nova_spice_html5proxy_base_uri }}/spice_auto.html"
+nova_spice_console_keymap: en-us
+nova_spice_console_agent_enabled: True
+nova_spice_program_name: nova-spicehtml5proxy
+
+## Nova metadata
+nova_metadata_proxy_enabled: True
+nova_metadata_port: 8775
+nova_metadata_program_name: nova-api-metadata
+
+## Nova cert
+nova_cert_program_name: nova-cert
+
+## Nova compute
+nova_compute_program_name: nova-compute
+
+## Nova conductor
+nova_conductor_program_name: nova-conductor
+
+## Nova console
+nova_console_agent_enabled: True
+nova_consoleauth_program_name: nova-consoleauth
+nova_console_agent_enabled: True
+nova_console_keymap: en-us
+
+## Nova global config
+nova_cpu_mode: host-model
+nova_linuxnet_interface_driver: nova.network.linux_net.NeutronLinuxBridgeInterfaceDriver
+nova_libvirt_vif_driver: nova.virt.libvirt.vif.NeutronLinuxBridgeVIFDriver
+nova_firewall_driver: nova.virt.firewall.NoopFirewallDriver
+nova_compute_driver: libvirt.LibvirtDriver
+nova_max_age: 0
+
+# Nova quota
+nova_quota_injected_file_content_bytes: 10240
+nova_quota_injected_file_path_length: 255
+nova_quota_injected_files: 5
+
+# Nova Scheduler
+nova_cpu_allocation_ratio: 2.0
+nova_disk_allocation_ratio: 1.0
+nova_max_instances_per_host: 50
+nova_max_io_ops_per_host: 10
+nova_ram_allocation_ratio: 1.0
+nova_ram_weight_multiplier: 5.0
+nova_reserved_host_disk_mb: 2048
+nova_reserved_host_memory_mb: 2048
+nova_scheduler_driver_task_period: 60
+nova_scheduler_host_subset_size: 10
+nova_scheduler_max_attempts: 5
+nova_scheduler_default_filters: "RetryFilter,AvailabilityZoneFilter,RamFilter,ComputeFilter,ComputeCapabilitiesFilter,ImagePropertiesFilter,ServerGroupAntiAffinityFilter,ServerGroupAffinityFilter,AggregateCoreFilter,AggregateDiskFilter"
+nova_scheduler_driver: nova.scheduler.filter_scheduler.FilterScheduler
+nova_scheduler_available_filters: nova.scheduler.filters.all_filters
+nova_scheduler_host_manager: nova.scheduler.host_manager.HostManager
+nova_scheduler_manager: nova.scheduler.manager.SchedulerManager
+nova_scheduler_weight_classes: nova.scheduler.weights.all_weighers
+nova_scheduler_program_name: nova-scheduler
+
+## General Neutron configuration
+# If ``nova_osapi_compute_workers`` is unset the system will use half the number of available VCPUS to
+# compute the number of api workers to use.
+# nova_osapi_compute_workers: 16
+
+# If ``nova_conductor_workers`` is unset the system will use half the number of available VCPUS to
+# compute the number of api workers to use.
+# nova_conductor_workers: 16
+
+# If ``nova_ec2_workers`` is unset the system will use half the number of available VCPUS to
+# compute the number of api workers to use.
+# nova_ec2_workers: 16
+
+# If ``nova_metadata_workers`` is unset the system will use half the number of available VCPUS to
+# compute the number of api workers to use.
+# nova_metadata_workers: 16
+
+
+## Service Names
+nova_service_names:
+  - "{{ nova_metadata_program_name }}"
+  - "{{ nova_cert_program_name }}"
+  - "{{ nova_conductor_program_name }}"
+  - "{{ nova_s3_program_name }}"
+  - "{{ nova_program_name }}"
+  - "{{ nova_ec2_program_name }}"
+  - "{{ nova_scheduler_program_name }}"
+  - "{{ nova_compute_program_name }}"
+  - "{{ nova_spice_program_name }}"
+  - "{{ nova_consoleauth_program_name }}"
+
+# Common apt packages
+nova_apt_packages:
+  - genisoimage
+  - git
+  - libpq-dev
+  - spice-html5
+
+nova_compute_kvm_apt_packages:
+  - bridge-utils
+  - genisoimage
+  - kpartx
+  - libvirt-bin
+  - open-iscsi
+  - python-libvirt
+  - qemu
+  - qemu-utils
+  - sysfsutils
+  - vlan
+
+# Common pip packages
+nova_pip_packages:
+  - MySQL-python
+  - python-memcached
+  - pycrypto
+  - python-keystoneclient
+  - python-novaclient
+  - keystonemiddleware
+  - nova

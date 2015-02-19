@@ -1,0 +1,4 @@
+# {{ ansible_managed }}
+
+# Defaults:{{ nova_system_user_name }}!requiretty
+{{ nova_system_user_name }} ALL = (root) NOPASSWD: /usr/local/bin/{{ nova_service_name }}-rootwrap

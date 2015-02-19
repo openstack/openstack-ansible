@@ -1,0 +1,85 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+openstack_code_name: 1AndOne=11
+openstack_release: master
+
+openstack_host_systat_enabled: true
+openstack_host_systat_interval: 1
+openstack_host_systat_statistics_hour: 23
+
+openstack_host_disbale_auto_updates: true
+
+## Defined required kernel. presently 3.13.0-32-generic
+openstack_host_required_kernel: 3.13.0-34-generic
+
+## Kernel modules loaded on hosts
+openstack_host_kernel_modules:
+  - 8021q
+  - dm_multipath
+  - dm_snapshot
+  - ip6table_filter
+  - ip6_tables
+  - ip_tables
+  - ipt_MASQUERADE
+  - ipt_REJECT
+  - iptable_filter
+  - iptable_mangle
+  - iptable_nat
+  - iscsi_tcp
+  - nbd
+  - nf_conntrack
+  - nf_conntrack_ipv4
+  - nf_defrag_ipv4
+  - nf_nat
+  - nf_nat_ipv4
+  - scsi_dh
+  - vhost_net
+  - x_tables
+
+## Base packages
+openstack_host_apt_packages:
+  - apparmor-utils
+  - bridge-utils
+  - build-essential
+  - cgroup-lite
+  - curl
+  - dmeventd
+  - dstat
+  - htop
+  - iptables
+  - libkmod-dev
+  - libkmod2
+  - lvm2
+  - python-software-properties
+  - python-dev
+  - rsync
+  - rsyslog
+  - sshpass
+  - sysstat
+  - time
+  - vlan
+  - wget
+
+# System control kernel tuning
+openstack_kernel_options:
+  - { key: 'fs.inotify.max_user_watches', value: 36864 }
+  - { key: 'net.ipv4.conf.all.rp_filter', value: 0 }
+  - { key: 'net.ipv4.conf.default.rp_filter', value: 0 }
+  - { key: 'net.ipv4.ip_forward', value: 1 }
+  - { key: 'net.netfilter.nf_conntrack_max', value: 262144 }
+  - { key: 'vm.dirty_background_ratio', value: 5 }
+  - { key: 'vm.dirty_ratio', value: 10 }
+  - { key: 'vm.swappiness', value: 5 }

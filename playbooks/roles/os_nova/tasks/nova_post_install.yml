@@ -1,0 +1,47 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Generate nova config
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ nova_system_user_name }}"
+    group: "{{ nova_system_group_name }}"
+  with_items:
+    - { src: "rootwrap.conf", dest: "/etc/nova/rootwrap.conf" }
+    - { src: "rootwrap.d/api-metadata.filters", dest: "/etc/nova/rootwrap.d/api-metadata.filters" }
+    - { src: "rootwrap.d/baremetal-compute-ipmi.filters", dest: "/etc/nova/rootwrap.d/baremetal-compute-ipmi.filters" }
+    - { src: "rootwrap.d/baremetal-deploy-helper.filters", dest: "/etc/nova/rootwrap.d/baremetal-deploy-helper.filters" }
+    - { src: "rootwrap.d/compute.filters", dest: "/etc/nova/rootwrap.d/compute.filters" }
+    - { src: "rootwrap.d/network.filters", dest: "/etc/nova/rootwrap.d/network.filters" }
+    - { src: "policy.json", dest: "/etc/nova/policy.json" }
+    - { src: "api-paste.ini", dest: "/etc/nova/api-paste.ini" }
+  notify: Restart nova services
+  tags:
+    - nova-config
+    - nova-post-install
+
+- name: Copy nova config
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ nova_system_user_name }}"
+    group: "{{ nova_system_group_name }}"
+  with_items:
+    - { src: "nova.conf.j2", dest: "/etc/nova/nova.conf" }
+  notify: Restart nova services
+  tags:
+    - nova-config
+    - nova-post-install

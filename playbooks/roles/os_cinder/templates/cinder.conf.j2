@@ -1,0 +1,109 @@
+# {{ ansible_managed }}
+
+{% set _api_threads = ansible_processor_vcpus|default(2) // 2 %}
+{% set api_threads = _api_threads if _api_threads > 0 else 1 %}
+
+[DEFAULT]
+verbose = {{ verbose }}
+debug = {{ debug }}
+my_ip = {{ cinder_storage_address }}
+
+osapi_volume_workers = {{ cinder_osapi_volume_workers | default(api_threads) }}
+
+lock_path = /var/lock/cinder
+rootwrap_config = /etc/cinder/rootwrap.conf
+api_paste_config = /etc/cinder/api-paste.ini
+auth_strategy = keystone
+
+{% if inventory_hostname not in groups['cinder_volume'] %}
+{% if cinder_service_backup_program_enabled == true %}
+{% if cinder_service_backup_swift_url is defined and cinder_service_backup_swift_user is defined and cinder_service_backup_swift_key is defined %}
+## Cinder Backup
+backup_driver = {{ cinder_backup_driver }}
+backup_swift_url = {{ cinder_service_backup_swift_url }}
+backup_swift_auth = {{ cinder_service_backup_swift_auth }}
+backup_swift_user = {{ cinder_service_backup_swift_user }}
+backup_swift_key = {{ cinder_service_backup_swift_key }}
+backup_swift_container = {{ cinder_service_backup_swift_container }}
+backup_swift_object_size = {{ cinder_service_backup_swift_object_size }}
+backup_swift_retry_attempts = {{ cinder_service_backup_swift_retry_attempts }}
+backup_swift_retry_backoff = {{ cinder_service_backup_swift_retry_backoff }}
+backup_compression_algorithm = {{ cinder_service_backup_compression_algorithm }}
+{% endif %}
+{% endif %}
+{% endif %}
+
+## RabbitMQ
+rpc_backend = {{ cinder_rpc_backend }}
+rabbit_port = {{ rabbitmq_port }}
+rabbit_userid = {{ rabbitmq_userid }}
+rabbit_password = {{ rabbitmq_password }}
+rabbit_hosts = {{ rabbitmq_servers }}
+
+## Nova
+nova_catalog_info = {{ cinder_nova_catalog_info }}
+nova_catalog_admin_info = {{ cinder_nova_catalog_admin_info }}
+
+## Glance
+glance_host = {{ glance_host }}
+glance_port = {{ glance_service_port }}
+glance_num_retries = 0
+glance_api_servers = {{ glance_api_servers }}
+
+volume_clear = {{ cinder_volume_clear }}
+volume_clear_size = {{ cinder_volume_clear_size }}
+volume_clear_ionice = {{ cinder_volume_clear_ionice }}
+volume_name_template = {{ cinder_volume_name_template }}
+
+storage_availability_zone = {{ cinder_storage_availability_zone }}
+default_availability_zone = {{ cinder_default_availability_zone }}
+
+iscsi_helper = {{ cinder_iscsi_helper }}
+iscsi_iotype = {{ cinder_iscsi_iotype }}
+iscsi_ip_address = $my_ip
+iscsi_num_targets = {{ cinder_iscsi_num_targets }}
+iscsi_port = {{ cinder_iscsi_port }}
+
+{% if cinder_default_volume_type is defined %}
+default_volume_type = {{ cinder_default_volume_type }}
+{% endif %}
+
+{% if cinder_backends is defined %}
+enabled_backends={% for backend in cinder_backends|dictsort %}{{ backend.0 }}{% if not loop.last %},{% endif %}{% endfor %}
+
+# All given backend(s)
+{% for backend_section in cinder_backends|dictsort %}
+[{{ backend_section.0 }}]
+{% for key, value in backend_section.1.items() %}
+{{ key }}={{ value }}
+{% endfor %}
+{% if cinder_nfs_client is defined %}
+nfs_shares_config={{ cinder_nfs_client.nfs_shares_config }}
+{% endif %}
+
+{% endfor %}
+{% endif %}
+
+[database]
+connection = mysql://{{ cinder_galera_user }}:{{ cinder_container_mysql_password }}@{{ galera_address }}/{{ cinder_galera_database }}?charset=utf8
+
+
+[keystone_authtoken]
+signing_dir = /var/cache/cinder
+identity_uri = {{ keystone_service_internaluri }}
+auth_uri = {{ keystone_service_internaluri }}
+admin_tenant_name = {{ cinder_service_tenant_name }}
+admin_user = {{ cinder_service_user_name }}
+admin_password = {{ cinder_service_password }}
+
+memcached_servers = {{ memcached_servers }}
+
+token_cache_time = 300
+revocation_cache_time = 60
+
+# if your memcached server is shared, use these settings to avoid cache poisoning
+memcache_security_strategy = ENCRYPT
+memcache_secret_key = {{ memcached_encryption_key }}
+
+# if your keystone deployment uses PKI, and you value security over performance:
+check_revocations_for_cached = False

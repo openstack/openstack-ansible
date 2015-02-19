@@ -1,0 +1,60 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Download the RabbitMQ package
+  get_url:
+    url: "{{ rabbitmq_package_url }}"
+    dest: "{{ rabbitmq_package_path }}"
+    mode: "0644"
+    sha256sum: "{{ rabbitmq_package_sha256 }}"
+  register: package_download
+  retries: 3
+  delay: 10
+  until: package_download|success
+  tags:
+    - rabbitmq-package-deb
+    - rabbitmq-package-deb-get
+
+- name: Fix /etc/hosts
+  lineinfile:
+    dest: /etc/hosts
+    state: present
+    line: "{{ hostvars[item]['ansible_ssh_host'] }} {{ hostvars[item]['ansible_hostname'] }} {{ hostvars[item]['ansible_hostname'].split('.')[0] }}"
+  with_items: groups['rabbitmq_all']
+  tags:
+    - rabbitmq-config
+
+- name: Create the local directories
+  file:
+    path: "{{ item.path }}"
+    state: "directory"
+    group: "{{ item.owner|default('root') }}"
+    owner: "{{ item.group|default('root') }}"
+    mode: "{{ item.mode|default('0755') }}"
+    recurse: "{{ item.recurse|default('false') }}"
+  with_items:
+    - { path: "/etc/rabbitmq/" }
+  tags:
+    - rabbitmq-config
+
+- name: Create rabbitmq config
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items:
+    - { src: "rabbitmq.config.j2", dest: "/etc/rabbitmq/rabbitmq.config" }
+    - { src: "rabbitmq-server.j2", dest: "/etc/default/rabbitmq-server" }
+  tags:
+    - rabbitmq-config

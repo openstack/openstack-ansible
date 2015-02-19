@@ -15,14 +15,14 @@
 
 # This is the md5 of the environment file
 # this will ensure consistency when deploying.
-environment_version: 5e7155d022462c5a82384c1b2ed8b946
+environment_version: 35946eced47eb8461f1eea62fa01bcf0
 
 # User defined container networks in CIDR notation. The inventory generator
 # assigns IP addresses to network interfaces inside containers from these
 # ranges.
 cidr_networks:
   # Management (same range as br-mgmt on the target hosts)
-  container: 172.29.236.0/22
+  management: 172.29.236.0/22
   # Service (optional, same range as br-snet on the target hosts)
   snet: 172.29.248.0/22
   # Tunnel endpoints for VXLAN tenant networks
@@ -31,22 +31,22 @@ cidr_networks:
   # Storage (same range as br-storage on the target hosts)
   storage: 172.29.244.0/22
 
-# User defined list of consumed IP addresses that may intersect 
-# with the provided CIDR.
+# User defined list of consumed IP addresses that may intersect
+# with the provided CIDR. If you want to use a range, split the
+# desired range with the lower and upper IP address in the range
+# using a comma. IE "10.0.0.1,10.0.0.100".
 used_ips:
-  - 172.29.236.1,172.29.236.50
+  - 10.240.0.1,10.240.0.50
   - 172.29.244.1,172.29.244.50
 
 # As a user you can define anything that you may wish to "globally"
-# override from within the openstack_deploy configuration file. Anything 
+# override from within the openstack_deploy configuration file. Anything
 # specified here will take precedence over anything else any where.
 global_overrides:
   # Internal Management vip address
-  internal_lb_vip_address: 172.29.236.10
+  internal_lb_vip_address: 10.240.0.1
   # External DMZ VIP address
   external_lb_vip_address: 192.168.1.1
-  # Name of load balancer
-  lb_name: lb_name_in_core
   # Bridged interface to use with tunnel type networks
   tunnel_bridge: "br-vxlan"
   # Bridged interface to build containers with
@@ -69,17 +69,20 @@ global_overrides:
         type: "raw"
         container_bridge: "br-mgmt"
         container_interface: "eth1"
-        ip_from_q: "container"
+        container_type: "veth"
+        ip_from_q: "management"
+        is_container_address: true
+        is_ssh_address: true
     - network:
         group_binds:
           - glance_api
           - cinder_api
           - cinder_volume
           - nova_compute
-          # If you are using the storage network for swift_proxy add it to the group_binds
-          # - swift_proxy
+          # - swift_proxy ## If you are using the storage network for swift_proxy add it to the group_binds
         type: "raw"
         container_bridge: "br-storage"
+        container_type: "veth"
         container_interface: "eth2"
         ip_from_q: "storage"
     - network:
@@ -89,12 +92,14 @@ global_overrides:
           - neutron_linuxbridge_agent
         type: "raw"
         container_bridge: "br-snet"
+        container_type: "veth"
         container_interface: "eth3"
         ip_from_q: "snet"
     - network:
         group_binds:
           - neutron_linuxbridge_agent
         container_bridge: "br-vxlan"
+        container_type: "veth"
         container_interface: "eth10"
         ip_from_q: "tunnel"
         type: "vxlan"
@@ -104,30 +109,50 @@ global_overrides:
         group_binds:
           - neutron_linuxbridge_agent
         container_bridge: "br-vlan"
+        container_type: "veth"
         container_interface: "eth11"
-        type: "flat"
+        type: "vlan"
+        range: "1:1"
         net_name: "vlan"
     - network:
         group_binds:
           - neutron_linuxbridge_agent
         container_bridge: "br-vlan"
-        container_interface: "eth11"
-        type: "vlan"
-        range: "1:1"
-        net_name: "vlan"
-  # Other options you may want
-  debug: True
-  ### Cinder default volume type option
-  # # This can be set to use a specific volume type. This is 
-  # # an optional variable because you may have different volume
-  # # types on different hosts named different things. For this 
-  # # Reason if you choose to set this variable please set it 
-  # # to the name of one of your setup volume types
-  # cinder_default_volume_type: lvm
-  ### Cinder default volume type option
+        container_type: "veth"
+        container_interface: "eth12"
+        host_bind_override: "eth12"
+        type: "flat"
+        net_name: "flat"
 
-# User defined Infrastructure Hosts, this should be a required group
-infra_hosts:
+# Shared infrastructure parts
+shared-infra_hosts:
+  infra1:
+    ip: 10.240.0.100
+  infra2:
+    ip: 10.240.0.101
+  infra3:
+    ip: 10.240.0.102
+
+# OpenStack Compute infrastructure parts
+os-infra_hosts:
+  infra1:
+    ip: 10.240.0.100
+  infra2:
+    ip: 10.240.0.101
+  infra3:
+    ip: 10.240.0.102
+
+# OpenStack Compute infrastructure parts
+storage-infra_hosts:
+  infra1:
+    ip: 10.240.0.100
+  infra2:
+    ip: 10.240.0.101
+  infra3:
+    ip: 10.240.0.102
+
+# Keystone Identity infrastructure parts
+identity_hosts:
   infra1:
     ip: 10.240.0.100
   infra2:
@@ -139,32 +164,43 @@ infra_hosts:
 compute_hosts:
   compute1:
     ip: 10.240.0.103
-    host_vars:
-      host_networks:
-        - { type: raw, device_name: eth0, bond_master: bond0, bond_primary: true }
-        - { type: raw, device_name: eth4, bond_master: bond0, bond_primary: false }
-        - { type: vlan_tagged, device_name: bond0, tagged_device_name: bond0.2176 }
-        - { type: vlan_tagged, device_name: bond0, tagged_device_name: bond1.1998 }
-        - { type: bonded, device_name: bond0 }
-        - { type: bridged, device_name: br-mgmt, bridge_ports: ["bond0.2176"], address: "172.29.236.103", netmask: "255.255.255.0", gateway: "172.29.236.1", dns_nameservers: ["69.20.0.164", "69.20.0.196"] }
-        - { type: bridged, device_name: br-vxlan, bridge_ports: ["bond1.1998"], address: "172.29.240.103", netmask: "255.255.255.0" }
-        - { type: bridged, device_name: br-vlan, bridge_ports: ["bond1"] }
 
 # User defined Storage Hosts, this should be a required group
 storage_hosts:
   cinder1:
-    ip: 172.29.236.104
+    ip: 10.240.0.104
+    # "container_vars" can be set outside of all other options as
+    # host specific optional variables.
     container_vars:
+      # If you would like to define a cinder availability zone this can
+      # be done with the name spaced variable.
       cinder_storage_availability_zone: cinderAZ_1
+      # When creating more than ONE availability zone you should define a
+      # sane default for the system to use when scheduling volume creation.
       cinder_default_availability_zone: cinderAZ_1
+      # In this example we are defining what cinder volumes are
+      # on a given host.
       cinder_backends:
+        # if the "limit_container_types" argument is set, within
+        # the top level key of the provided option the inventory
+        # process will perform a string match on the container name with
+        # the value found within the "limit_container_types" argument.
+        # If any part of the string found within the container
+        # name the options are appended as host_vars inside of inventory.
         limit_container_types: cinder_volume
         lvm:
           volume_group: cinder-volumes
           volume_driver: cinder.volume.drivers.lvm.LVMISCSIDriver
           volume_backend_name: LVM_iSCSI
+        # The ``cinder_nfs_client`` values is an optional component available
+        # when configuring cinder.
+        cinder_nfs_client:
+          nfs_shares_config: /etc/cinder/nfs_shares
+          shares:
+            - { ip: "{{ ip_nfs_server }}", share: "/vol/cinder" }
+
   cinder2:
-    ip: 172.29.236.105
+    ip: 10.240.0.105
     container_vars:
       cinder_storage_availability_zone: cinderAZ_2
       cinder_default_availability_zone: cinderAZ_1
@@ -174,26 +210,6 @@ storage_hosts:
           volume_group: cinder-volumes
           volume_driver: cinder.volume.drivers.lvm.LVMISCSIDriver
           volume_backend_name: LVM_iSCSI_SSD
-  cinder3:
-    ip: 10.240.0.106
-    container_vars:
-      cinder_storage_availability_zone: cinderAZ_3
-      cinder_default_availability_zone: cinderAZ_1
-      cinder_backends:
-        limit_container_types: cinder_volume
-        netapp:
-          netapp_storage_family: ontap_7mode
-          netapp_storage_protocol: iscsi
-          netapp_server_hostname: "{{ cinder_netapp_hostname }}"
-          netapp_server_port: 80
-          netapp_login: "{{ cinder_netapp_username }}"
-          netapp_password: "{{ cinder_netapp_password }}"
-          volume_driver: cinder.volume.drivers.netapp.common.NetAppDriver
-          volume_backend_name: NETAPP_iSCSI
-      nfs_client:
-        nfs_shares_config: /etc/cinder/nfs_shares
-        shares:
-          - { ip: "{{ cinder_netapp_hostname }}", share: "/vol/cinder" }
 
 # User defined Logging Hosts, this should be a required group
 log_hosts:
@@ -204,21 +220,13 @@ log_hosts:
 network_hosts:
   network1:
     ip: 10.240.0.108
-    host_vars:
-      host_networks:
-        - { type: raw, device_name: eth0, bond_master: bond0, bond_primary: true }
-        - { type: raw, device_name: eth4, bond_master: bond0, bond_primary: false }
-        - { type: vlan_tagged, device_name: bond0, tagged_device_name: bond0.2176 }
-        - { type: vlan_tagged, device_name: bond0, tagged_device_name: bond1.1998 }
-        - { type: bonded, device_name: bond0 }
-        - { type: bridged, device_name: br-mgmt, bridge_ports: ["bond0.2176"], address: "172.29.236.108", netmask: "255.255.255.0", gateway: "172.29.236.1", dns_nameservers: ["69.20.0.164", "69.20.0.196"] }
-        - { type: bridged, device_name: br-vxlan, bridge_ports: ["bond1.1998"], address: "172.29.240.108", netmask: "255.255.255.0" }
-        - { type: bridged, device_name: br-vlan, bridge_ports: ["bond1"] }
 
-# Other hosts can be added whenever needed. Note that containers will not be 
-# assigned to "other" hosts by default.  If you would like to have containers
-# assigned to hosts that are outside of the predefined groups, you will need to
-# make an edit to the openstack_environment.yml file.
-# haproxy_hosts:
-#   haproxy1:
-#     ip: 10.0.0.12
+# User defined Repository Hosts, this is an optional group
+repo_hosts:
+  infra1:
+    ip: 10.240.0.100
+  infra2:
+    ip: 10.240.0.101
+  infra3:
+    ip: 10.240.0.102
+

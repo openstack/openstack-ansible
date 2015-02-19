@@ -1,0 +1,45 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Defines that the role will be deployed on a host machine
+is_metal: true
+
+haproxy_apt_packages:
+  - haproxy
+  - hatop
+  - vim-haproxy
+
+## Haproxy Configuration
+haproxy_rise: 3
+haproxy_fall: 3
+haproxy_interval: 12000
+
+# Default haproxy backup nodes to empty list so this doesn't have to be
+# defined for each service.
+haproxy_backup_nodes: []
+
+# haproxy_service_configs:
+#   - service:
+#       hap_service_name: haproxy_all
+#       hap_backend_nodes: "{{ groups['haproxy_all'][0] }}"
+#       # hap_backup_nodes: "{{ groups['haproxy_all'][1:] }}"
+#       hap_port: 80
+#       hap_balance_type: http
+#       hap_backend_options:
+#         - "forwardfor"
+#         - "httpchk"
+#         - "httplog"
+
+galera_monitoring_user: monitoring

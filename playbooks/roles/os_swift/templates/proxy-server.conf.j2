@@ -1,0 +1,116 @@
+# {{ ansible_managed }}
+
+{% set _api_threads = ansible_processor_vcpus|default(2) // 2 %}
+{% set api_threads = _api_threads if _api_threads > 0 else 1 %}
+
+[DEFAULT]
+bind_ip = 0.0.0.0
+bind_port = {{ swift_proxy_port }}
+workers = {{ swift_proxy_server_workers | default(api_threads) }}
+
+user = {{ swift_system_user_name }}
+log_facility = LOG_LOCAL1
+
+[pipeline:main]
+{% if swift_authtoken_active %}
+pipeline = catch_errors gatekeeper healthcheck proxy-logging cache container_sync bulk tempurl ratelimit authtoken keystoneauth container-quotas account-quotas slo dlo proxy-logging proxy-server
+{% else %}
+pipeline = catch_errors gatekeeper healthcheck proxy-logging cache container_sync bulk tempurl ratelimit tempauth container-quotas account-quotas slo dlo proxy-logging proxy-server
+{% endif %}
+[app:proxy-server]
+use = egg:swift#proxy
+log_facility = LOG_LOCAL1
+node_timeout = 60
+conn_timeout = 3.5
+account_autocreate = true
+
+[filter:tempauth]
+use = egg:swift#tempauth
+{% if not swift_authtoken_active %}
+user_admin_admin = admin .admin .reseller_admin
+user_test_tester = testing .admin
+user_test2_tester2 = testing2 .admin
+user_test_tester3 = testing3
+
+{% elif swift_authtoken_active %}
+[filter:authtoken]
+paste.filter_factory = keystonemiddleware.auth_token:filter_factory
+identity_uri = {{ keystone_service_internaluri }}
+auth_uri = {{ keystone_service_internaluri }}
+admin_tenant_name = {{ swift_service_tenant_name }}
+admin_user = {{ swift_service_user_name }}
+admin_password = {{ swift_service_password }}
+delay_auth_decision = {{ swift_delay_auth_decision }}
+{% endif %}
+
+[filter:keystoneauth]
+use = egg:swift#keystoneauth
+{% if swift_allow_all_users is defined and swift_allow_all_users == True %}
+operator_roles = admin, swiftoperator, _member_
+{% else %}
+operator_roles = admin, swiftoperator
+{% endif %}
+# The reseller admin role has the ability to create and delete accounts
+reseller_admin_role = reseller_admin
+
+[filter:healthcheck]
+use = egg:swift#healthcheck
+
+[filter:cache]
+use = egg:swift#memcache
+memcache_servers = {{ memcached_servers }}
+memcache_serialization_support = 2
+
+[filter:ratelimit]
+use = egg:swift#ratelimit
+
+[filter:domain_remap]
+use = egg:swift#domain_remap
+
+[filter:catch_errors]
+use = egg:swift#catch_errors
+
+[filter:cname_lookup]
+use = egg:swift#cname_lookup
+
+[filter:staticweb]
+use = egg:swift#staticweb
+
+[filter:tempurl]
+use = egg:swift#tempurl
+
+[filter:formpost]
+use = egg:swift#formpost
+
+[filter:name_check]
+use = egg:swift#name_check
+
+[filter:list-endpoints]
+use = egg:swift#list_endpoints
+
+[filter:proxy-logging]
+use = egg:swift#proxy_logging
+
+[filter:bulk]
+use = egg:swift#bulk
+
+[filter:container-quotas]
+use = egg:swift#container_quotas
+
+[filter:slo]
+use = egg:swift#slo
+
+[filter:dlo]
+use = egg:swift#dlo
+
+[filter:account-quotas]
+use = egg:swift#account_quotas
+
+[filter:gatekeeper]
+use = egg:swift#gatekeeper
+
+[filter:container_sync]
+use = egg:swift#container_sync
+
+[filter:xprofile]
+use = egg:swift#xprofile

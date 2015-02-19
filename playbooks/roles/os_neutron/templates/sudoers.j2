@@ -1,0 +1,4 @@
+# {{ ansible_managed }}
+
+# Defaults:{{ neutron_system_user_name }}!requiretty
+{{ neutron_system_user_name }} ALL = (root) NOPASSWD: /usr/local/bin/{{ neutron_service_name }}-rootwrap

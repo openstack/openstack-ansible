@@ -13,110 +13,31 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-## Rabbit Options
-rabbitmq_password:
-rabbitmq_cookie_token:
-
-
-## Tokens
-memcached_encryption_key:
-
-
-## Container default user
-container_openstack_password:
-
-
-## Galera Options
-mysql_root_password:
-
-# Defined in group_vars/galera, but can overriden here.
-# galera_wait_timeout: 3600
-
-
-## Keystone Options
-keystone_container_mysql_password:
-keystone_auth_admin_token:
-keystone_auth_admin_password:
-keystone_service_password:
-
-
-## Cinder Options
-cinder_container_mysql_password:
-cinder_service_password:
-cinder_v2_service_password:
-
-
 ## Glance Options
 # Set default_store to "swift" if using Cloud Files or swift backend
 glance_default_store: file
-glance_container_mysql_password:
-glance_service_password:
-#glance_swift_store_auth_address:
-#glance_swift_store_user:
-#glance_swift_store_key:
-#glance_swift_store_container: SomeContainerName
-#glance_swift_store_region: SomeRegion
+glance_notification_driver: noop
+
 # `internalURL` will cause glance to speak to swift via ServiceNet, use
 # `publicURL` to communicate with swift over the public network
 glance_swift_store_endpoint_type: internalURL
-glance_notification_driver: noop
-# Set glance cache size in bytes, should be less than container size. Defaults to 10GiB
-#glance_image_cache_max_size: 4294967296
-
-## Heat Options
-heat_stack_domain_admin_password:
-heat_container_mysql_password:
-### THE HEAT AUTH KEY NEEDS TO BE 32 CHARACTERS LONG ##
-heat_auth_encryption_key:
-### THE HEAT AUTH KEY NEEDS TO BE 32 CHARACTERS LONG ##
-heat_service_password:
-heat_cfn_service_password:
 
 
-## Horizon Options
-horizon_container_mysql_password:
-horizon_secret_key:
+## Nova
+# Uncomment "nova_console_endpoint" to define a specific nova console URI or
+# IP address this will construct the specific proxy endpoint for the console.
+# nova_console_endpoint: console.company_domain.name
 
-
-## Neutron Options
-neutron_container_mysql_password:
-neutron_service_password:
-
-
-## Nova Options
 # This defaults to KVM, if you are deploying on a host that is not KVM capable
 # change this to your hypervisor type: IE "qemu", "lxc".
 # nova_virt_type: kvm
 # nova_cpu_allocation_ratio: 2.0
 # nova_ram_allocation_ratio: 1.0
-nova_container_mysql_password:
-nova_metadata_proxy_secret:
-nova_ec2_service_password:
-nova_service_password:
-nova_v3_service_password:
-nova_s3_service_password:
-
-# Uncomment "nova_console_endpoint" to define a specific nova console URI or
-# IP address this will construct the specific proxy endpoint for the console.
-# nova_console_endpoint: console.company_domain.name
 
 
-## Kibana Options
-kibana_password:
-
-# Swift Options:
-swift_service_password:
-swift_container_mysql_password:
+## Swift
 # Once the swift cluster has been setup DO NOT change these hash values!
 swift_hash_path_suffix:
 swift_hash_path_prefix:
 # This will allow all users to create containers and upload to swift if set to True
 swift_allow_all_users: False
-# The dispersion user is for swift-dispersion-report
-swift_dispersion_user: dispersion
-swift_dispersion_password:
-
-# This variables is used to set haproxy's timeout client and timeout server
-# values, they are set in the main config file and are only used by services
-# that don't set their own values (default: 90s)
-#haproxy_timeout: 90s

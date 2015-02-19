@@ -1,0 +1,76 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# This should be revised in Kilo
+# kilo_revision: true
+
+- name: "Drop AT&T neutron ha tool"
+  copy:
+    src: "neutron-ha-tool.py"
+    dest: "/opt/neutron-ha-tool.py"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+  tags:
+    - neutron-ha-tool
+
+- name: Convert the hostname to an int
+  name2int:
+    name: "{{ inventory_hostname }}"
+  register: hashed_name
+  tags:
+    - neutron-ha-tool
+
+# These are used in the Neutron HA Cron job script, and processed in the template.
+- name: Creating Job Facts
+  set_fact:
+    do_job: ". /root/openrc && /opt/neutron-ha-tool.py --l3-agent-migrate"
+    sleep_time: "{{ hashed_name.int_value }}"
+  tags:
+    - neutron-ha-tool
+
+- name: "Drop Neutron HA job script"
+  template:
+    src: "neutron_ha_tool.sh.j2"
+    dest: "/opt/neutron-ha-tool.sh"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+  tags:
+    - neutron-ha-tool
+
+- name: Create Neutron HA
+  cron:
+    name: "neutron-ha-tool"
+    minute: "*/1"
+    day: "*"
+    hour: "*"
+    month: "*"
+    state: present
+    job: "/opt/neutron-ha-tool.sh"
+    user: root
+    cron_file: "neutron-ha-tool"
+  tags:
+    - neutron-ha-tool
+
+- name: Remove old cronjobs if found.
+  file:
+    path: "{{ item }}"
+    state: "absent"
+  with_items:
+    - /etc/cron.d/replicate_dhcp
+    - /etc/cron.d/l3_agent_migrate
+  tags:
+    - neutron-ha-tool

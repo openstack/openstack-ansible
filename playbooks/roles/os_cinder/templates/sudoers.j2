@@ -1,0 +1,4 @@
+# {{ ansible_managed }}
+
+# Defaults:{{ cinder_system_user_name }}!requiretty
+{{ cinder_system_user_name }} ALL = (root) NOPASSWD: /usr/local/bin/{{ cinder_service_name }}-rootwrap

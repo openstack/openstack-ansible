@@ -1,0 +1,252 @@
+# {{ ansible_managed }}
+
+[DEFAULT]
+disable_process_locking = false
+lock_path = {{ tempest_git_dest }}/locks
+debug = {{ debug }}
+verbose = {{ verbose }}
+log_file = {{ tempest_git_dest }}/tempest.log
+use_stderr = False
+fatal_deprecations = true
+
+
+[auth]
+tempest_roles = remote_image
+allow_tenant_isolation = True
+
+
+[baremetal]
+
+
+[boto]
+aki_manifest = cirros-0.3.2-x86_64-vmlinuz.manifest.xml
+ami_manifest = cirros-0.3.2-x86_64-blank.img.manifest.xml
+ari_manifest = cirros-0.3.2-x86_64-initrd.manifest.xml
+build_timeout = 600
+ec2_url = {{ tempest_boto_ec2_url }}
+instance_type = tempest1
+http_socket_timeout = 30
+s3_url = {{ tempest_boto_s3_url }}
+s3_materials_path = /opt/images/s3-materials/cirros-0.3.2
+
+
+[cli]
+enabled = true
+cli_dir = /usr/local/bin
+has_manage = false
+timeout = 15
+
+
+[compute]
+build_interval = 1
+build_timeout = 600
+catalog_type = compute
+catalog_v3_type = computev3
+endpoint_type = internalURL
+fixed_network_name = private
+flavor_ref = 201
+flavor_ref_alt = 202
+floating_ip_range = 10.0.0.0/29
+image_alt_ssh_password = {{ tempest_compute_image_alt_ssh_password }}
+image_alt_ssh_user = {{ tempest_compute_image_alt_ssh_user }}
+image_ref = {{ tempest_glance_image_id }}
+image_ref_alt = {{ tempest_glance_image_id }}
+image_ssh_password = {{ tempest_compute_image_ssh_password }}
+image_ssh_user = {{ tempest_compute_image_ssh_user }}
+ip_version_for_ssh = 4
+network_for_ssh = private
+ping_timeout = 240
+run_ssh = {{ tempest_compute_run_ssh }}
+ssh_auth_method = configured
+ssh_connect_method = floating
+ssh_timeout = 196
+ssh_user = {{ tempest_compute_image_ssh_user }}
+use_floatingip_for_ssh = true
+volume_device_name = vdb
+
+
+[compute-admin]
+password = {{ keystone_auth_admin_password }}
+tenant_name = {{ keystone_service_tenant_name }}
+username = {{ keystone_service_user_name }}
+
+
+[compute-feature-enabled]
+api_extensions = all
+api_v3 = false
+api_v3_extensions = all
+block_migrate_cinder_iscsi = false
+block_migration_for_live_migration = false
+change_password = false
+console_output = false
+disk_config = true
+enable_instance_password = false
+interface_attach = false
+live_migration = false
+pause = false
+rdp_console = false
+rescue = false
+resize = false
+shelve = false
+snapshot = false
+spice_console = true
+suspend = false
+vnc_console = false
+
+
+[dashboard]
+login_url = {{ tempest_dashboard_login_url }}
+dashboard_url = {{ tempest_dashboard_url }}
+
+
+[data_processing]
+
+
+[database]
+
+
+[debug]
+enable = true
+
+
+[identity]
+admin_domain_name = Default
+admin_password = {{ keystone_auth_admin_password }}
+admin_role = admin
+admin_tenant_name = {{ keystone_service_tenant_name }}
+admin_username = {{ keystone_service_user_name }}
+admin_tenant_id = {{ tempest_admin_tenant_id }}
+alt_tenant_name = alt_demo
+alt_password = alt_demo
+alt_username = alt_demo
+auth_version = v2
+catalog_type = identity
+disable_ssl_certificate_validation = false
+endpoint_type = internalURL
+password = demo
+tenant_name = demo
+uri_v3 = {{ keystone_service_internalurl_v3 }}
+uri = {{ keystone_service_internalurl }}
+username = demo
+
+
+[identity-feature-enabled]
+api_v2 = true
+api_v3 = false
+trust = false
+
+
+[image]
+catalog_type = image
+endpoint_type = internalURL
+http_image = http://download.cirros-cloud.net/0.3.1/cirros-0.3.1-x86_64-uec.tar.gz
+
+
+[image-feature-enabled]
+api_v1 = true
+api_v2 = false
+
+
+[input-scenario]
+
+
+[negative]
+
+
+[messaging]
+
+
+[network]
+build_interval = 1
+build_timeout = 300
+catalog_type = network
+dns_servers = 8.8.8.8,8.8.4.4
+endpoint_type = internalURL
+public_router_id = {{ tempest_neutron_router_id }}
+public_network_id = {{ tempest_neutron_public_network_id }}
+tenant_network_cidr = {{ tempest_private_subnet_cidr }}
+tenant_networks_reachable = false
+
+
+[network-feature-enabled]
+api_extensions = agent,allowed-address-pairs,binding,dhcp_agent_scheduler,ext-gw-mode,external-net,extra_dhcp_opt,extra_dhcp_optagent,extraroute,l3_agent_scheduler,metering,provider,quotas,router,security-group,service-type
+ipv6_subnet_attributes = false
+ipv6 = false
+
+
+[object-storage]
+catalog_type = object-store
+container_sync_interval = 5
+container_sync_timeout = 120
+endpoint_type = internalURL
+operator_role = swiftoperator
+reseller_admin_role = reseller_admin
+
+
+[object-storage-feature-enabled]
+container_sync = false
+object_versioning = false
+discoverable_apis = all
+
+
+[orchestration]
+build_interval = 1
+build_timeout = 900
+catalog_type = orchestration
+endpoint_type = internalURL
+image_ref = {{ tempest_glance_image_id }}
+instance_type = tempest1
+
+
+[scenario]
+large_ops_number = 0
+aki_img_file = cirros-0.3.2-x86_64-vmlinuz
+ari_img_file = cirros-0.3.2-x86_64-initrd
+ami_img_file = cirros-0.3.2-x86_64-blank.img
+img_container_format = bare
+img_dir = {{ tempest_image_dir }}
+img_disk_format = qcow2
+img_file = cirros-0.3.2-x86_64-disk.img
+ssh_user = {{ tempest_compute_image_ssh_user }}
+
+
+[service_available]
+ceilometer = {{ tempest_service_available_ceilometer }}
+cinder = {{ tempest_service_available_cinder }}
+glance = {{ tempest_service_available_glance }}
+heat = {{ tempest_service_available_heat }}
+horizon = {{ tempest_service_available_horizon }}
+ironic = {{ tempest_service_available_ironic }}
+neutron = {{ tempest_service_available_neutron }}
+nova = {{ tempest_service_available_nova }}
+sahara = {{ tempest_service_available_sahara }}
+swift = {{ tempest_service_available_swift }}
+trove = {{ tempest_service_available_trove }}
+zaqar = {{ tempest_service_available_zaqar }}
+
+
+[stress]
+
+
+[telemetry]
+
+
+[volume]
+backend1_name = lvm
+build_interval = 1
+build_timeout = 600
+catalog_type = volume
+disk_format = raw
+endpoint_type = internalURL
+storage_protocol = iSCSI
+vendor_name = Open Source
+volume_size = 1
+
+
+[volume-feature-enabled]
+api_extensions = all
+api_v1 = true
+api_v2 = false
+backup = false
+multi_backend = false
+snapshot = false
