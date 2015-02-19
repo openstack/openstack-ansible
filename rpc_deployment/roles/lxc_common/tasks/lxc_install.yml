@@ -13,13 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Add LXC repos
-  apt_repository:
-    repo: "{{ item.repo }}"
-    state: "{{ item.state }}"
-  with_items: apt_lxc_common_repos
-  when: "ansible_distribution_version in ['12.04', '13.04', '13.10']"
-
 - name: Ensure common LXC Packages are Installed
   apt:
     pkg: "{{ item }}"
