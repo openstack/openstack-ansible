@@ -13,24 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Add apt key for rabbit
-  apt_key:
-    url: "{{ item }}"
-    state: present
-  with_items: rabbitmq_key
-  tags:
-    - package_install
-    - rabbit_install
-
-- name: Configure rabbit repo
-  apt_repository:
-    repo: "{{ item.repo }}"
-    state: "{{ item.state }}"
-  with_items: rabbit_repos
-  tags:
-    - package_install
-    - rabbit_install
-
 - name: Fix /etc/hosts
   lineinfile:
     dest: /etc/hosts
@@ -41,29 +23,36 @@
     - hosts
     - rabbit_config
 
-- name: Install rabbit packages
-  apt:
-    pkg: "{{ item }}"
-    state: latest
-    update_cache: yes
-    cache_valid_time: 600
-  with_items:
-    - rabbitmq-server
-  tags:
-    - package_install
-    - rabbit_install
-
-- include: restart_rabbit.yml
-
-- name: Read rabbit cookie
+- name: Remove RabbitMQ testing apt source (important for upgrades)
   shell: |
-    cat /var/lib/rabbitmq/.erlang.cookie
-  register: tmp_rabbit_cookie
-  tags:
-    - rabbit_config
+    find /etc/apt/sources.list.d/ -name "*_rabbit_*.list" -exec cat {} \;
+  changed_when: result.rc != 0
+  failed_when: false
+  register: result
 
-- include: set_cookie.yml
-  when: tmp_rabbit_cookie.stdout != rabbit_cookie
+- name: Update the apt cache after the apt source removal
+  apt:
+    update_cache: yes
+
+- name: Download the RabbitMQ package
+  get_url:
+    url: "{{ rabbitmq_package_url }}"
+    dest: "/tmp/rabbitmq-server.deb"
+    mode: "0644"
+  register: package_download
+  retries: 3
+  delay: 10
+  until: package_download|success
+
+- name: Install the RabbitMQ package
+  apt:
+    deb: "/tmp/rabbitmq-server.deb"
+    update_cache: yes
+
+- name: Remove the RabbitMQ deb file
+  file:
+    path: "/tmp/rabbitmq-server.deb"
+    state: absent
 
 - name: Create rabbitmq config
   template:
@@ -74,6 +63,16 @@
     - { src: "rabbitmq-server", dest: "/etc/default/rabbitmq-server" }
   tags:
     - rabbit_config
+
+- name: Read rabbit cookie
+  shell: |
+    cat /var/lib/rabbitmq/.erlang.cookie
+  register: tmp_rabbit_cookie
+  tags:
+    - rabbit_config
+
+- include: set_cookie.yml
+  when: tmp_rabbit_cookie.stdout != rabbit_cookie
 
 - name: Enable management plugin
   rabbitmq_plugin:
