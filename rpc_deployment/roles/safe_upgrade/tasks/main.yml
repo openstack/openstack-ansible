@@ -13,15 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Update cache
-  apt: >
-    update_cache=yes
-    cache_valid_time=10800
-
 - name: Ensure Aptitude
-  apt: >
-    pkg=aptitude
-    state=present
+  apt:
+    pkg: aptitude
+    state: present
+    update_cache: yes
+    cache_valid_time: 600
+  register: pkgs
+  until: pkgs|success
 
 - name: Do safe upgrade
-  apt: upgrade=safe
+  apt:
+    upgrade: safe
+    update_cache: yes
+    cache_valid_time: 600
+  register: pkgs
+  until: pkgs|success

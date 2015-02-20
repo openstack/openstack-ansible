@@ -30,10 +30,6 @@
   failed_when: false
   register: result
 
-- name: Update the apt cache after the apt source removal
-  apt:
-    update_cache: yes
-
 - name: Download the RabbitMQ package
   get_url:
     url: "{{ rabbitmq_package_url }}"
@@ -47,7 +43,12 @@
 - name: Install the RabbitMQ package
   apt:
     deb: "/tmp/rabbitmq-server.deb"
+    state: installed
     update_cache: yes
+    cache_valid_time: 600
+  register: pkgs
+  # This until is for the benefit of update_cache
+  until: pkgs|success
 
 - name: Remove the RabbitMQ deb file
   file:
