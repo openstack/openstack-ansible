@@ -29,6 +29,9 @@ container_lvm_fssize: 5GB
 # break multiline filtering
 logstash_workers: 1
 
+# Change this to override the default value (which is 50% of total memory)
+# logstash_heap_size_mb: 512
+
 # Directories to create
 container_directories:
   - { name: /var/log/logstash, mode: 755 }

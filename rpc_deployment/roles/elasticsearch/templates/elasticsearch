@@ -2,14 +2,16 @@
 #ES_USER=elasticsearch
 #ES_GROUP=elasticsearch
 
-# Heap Size (defaults to 256m min, 1g max)
-{% set host_ram = hostvars[inventory_hostname]['ansible_memtotal_mb']|int * 0.5 %}
-{% set host_ram_int = host_ram // 1 %}
-{% if host_ram > 16384 %}
-ES_HEAP_SIZE=16g
-{% else %}
-ES_HEAP_SIZE={{ host_ram_int|int }}m
+# Heap Size
+{% if elasticsearch_heap_size_mb is not defined %}
+{%   set memtotal_mb = hostvars[inventory_hostname]['ansible_memtotal_mb']|int %}
+{%   if memtotal_mb <= 32768 %}
+{%     set elasticsearch_heap_size_mb = memtotal_mb // 2 %}
+{%   else %}
+{%     set elasticsearch_heap_size_mb = 16384 %}
+{%   endif %}
 {% endif %}
+ES_HEAP_SIZE={{ elasticsearch_heap_size_mb|int }}m
 
 # Heap new generation
 #ES_HEAP_NEWSIZE=

@@ -12,13 +12,15 @@
 LS_OPTS="-w {{ logstash_workers }} {{ logstash_verbose|default() }}"
 
 # Arguments to pass to java
-{% set host_ram = hostvars[inventory_hostname]['ansible_memtotal_mb']|int * 0.5 %}
-{% set host_ram_int = host_ram // 1 %}
-{% if host_ram > 16384 %}
-LS_HEAP_SIZE=16g
-{% else %}
-LS_HEAP_SIZE={{ host_ram_int|int }}m
+{% if logstash_heap_size_mb is not defined %}
+{%   set memtotal_mb = hostvars[inventory_hostname]['ansible_memtotal_mb']|int %}
+{%   if memtotal_mb <= 32768 %}
+{%     set logstash_heap_size_mb = memtotal_mb // 2 %}
+{%   else %}
+{%     set logstash_heap_size_mb = 16384 %}
+{%   endif %}
 {% endif %}
+LS_HEAP_SIZE={{ logstash_heap_size_mb|int }}m
 
 #LS_JAVA_OPTS="-Djava.io.tmpdir=$HOME"
 
