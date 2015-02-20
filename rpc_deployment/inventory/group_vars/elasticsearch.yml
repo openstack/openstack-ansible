@@ -35,3 +35,6 @@ service_pip_dependencies:
   - requests
   - python-memcached
   - pycrypto
+
+# Change this to override the default value (which is 50% of total memory)
+# elasticsearch_heap_size_mb: 1024
