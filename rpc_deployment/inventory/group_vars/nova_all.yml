@@ -67,6 +67,11 @@ nova_firewall_driver: nova.virt.firewall.NoopFirewallDriver
 nova_compute_driver: libvirt.LibvirtDriver
 nova_max_age: 0
 
+# Nova quota
+nova_quota_injected_file_content_bytes: 10240
+nova_quota_injected_file_path_length: 255
+nova_quota_injected_files: 5
+
 # Nova Scheduler
 nova_cpu_allocation_ratio: 2.0
 nova_disk_allocation_ratio: 1.0
