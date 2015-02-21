@@ -7,7 +7,9 @@ cidr_networks:
 
 used_ips:
   - 172.29.236.1,172.29.236.50
+  - 172.29.240.1,172.29.240.50
   - 172.29.244.1,172.29.244.50
+  - 172.29.248.1,172.29.248.50
 
 global_overrides:
   internal_lb_vip_address: 172.29.236.100
@@ -34,7 +36,8 @@ global_overrides:
           - neutron_linuxbridge_agent
     - network:
         container_bridge: "br-vlan"
-        container_interface: "eth11"
+        container_interface: "eth12"
+        host_bind_override: "eth12"
         type: "flat"
         net_name: "flat"
         group_binds:

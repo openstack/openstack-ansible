@@ -22,10 +22,12 @@ set -e -u -v +x
 ADMIN_PASSWORD=${ADMIN_PASSWORD:-"secrete"}
 BOOTSTRAP_ANSIBLE=${BOOTSTRAP_ANSIBLE:-"yes"}
 BOOTSTRAP_AIO=${BOOTSTRAP_AIO:-"yes"}
-DEPLOY_TEMPEST=${DEPLOY_TEMPEST:-"no"}
+DEPLOY_TEMPEST=${DEPLOY_TEMPEST:-"yes"}
 RUN_PLAYBOOKS=${RUN_PLAYBOOKS:-"yes"}
-RUN_TEMPEST=${RUN_TEMPEST:-"no"}
+RUN_TEMPEST=${RUN_TEMPEST:-"yes"}
 CONFIG_PREFIX=${CONFIG_PREFIX:-"rpc"}
+TEMPEST_FLAT_CIDR=${TEMPEST_FLAT_CIDR:-"172.29.248.0/22"}
+TEMPEST_FLAT_GATEWAY=${TEMPEST_FLAT_GATEWAY:-"172.29.248.100"}
 PLAYBOOK_DIRECTORY=${PLAYBOOK_DIRECTORY:-"${CONFIG_PREFIX}_deployment"}
 ANSIBLE_PARAMETERS=${ANSIBLE_PARAMETERS:-"--forks 10 -vvvv"}
 
@@ -83,6 +85,14 @@ if [ ! -d "/etc/${CONFIG_PREFIX}_deploy" ];then
   else
     echo 'galera_gcache_size: 50M' >> ${USER_VARS_PATH}
   fi
+
+  if [ "${DEPLOY_TEMPEST}" == "yes" ]; then
+    echo "tempest_public_subnet_cidr: ${TEMPEST_FLAT_CIDR}" | tee -a ${USER_VARS_PATH}
+    echo "tempest_public_gateway_ip: ${TEMPEST_FLAT_GATEWAY}" | tee -a ${USER_VARS_PATH}
+  fi
+
+  # Set the minimum kernel version to our specific kernel release because it passed the vxlan test.
+  echo "required_kernel: $(uname --kernel-release)" | tee -a ${USER_VARS_PATH}
 
   # change the generated passwords for the OpenStack (admin) and Kibana (kibana) accounts
   sed -i "s/keystone_auth_admin_password:.*/keystone_auth_admin_password: ${ADMIN_PASSWORD}/" ${USER_VARS_PATH}
