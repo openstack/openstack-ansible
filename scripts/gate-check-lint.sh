@@ -25,24 +25,26 @@ info_block "Checking for required libraries." 2> /dev/null || source $(dirname $
 info_block "Running Basic Ansible Lint Check"
 
 
-# Install the development requirements
+# Install the development requirements.
 if [ -f "dev-requirements.txt" ]; then
   pip2 install -r dev-requirements.txt || pip install -r dev-requirements.txt
 else
   pip2 install ansible-lint || pip install ansible-lint
 fi
 
-# Perform our simple sanity checks
+# Create keys if they don't already exist.
+ssh_key_create
+
+# Perform our simple sanity checks.
 pushd playbooks
   echo -e '[all]\nlocalhost ansible_connection=local' | tee local_only_inventory
 
-  # Do a basic syntax check on all playbooks and roles
+  # Do a basic syntax check on all playbooks and roles.
   info_block "Running Syntax Check"
   ansible-playbook -i local_only_inventory --syntax-check *.yml --list-tasks
 
-  # Perform a lint check on all playbooks and roles
+  # Perform a lint check on all playbooks and roles.
   info_block "Running Lint Check"
   ansible-lint --version
   ansible-lint *.yml
 popd
-
