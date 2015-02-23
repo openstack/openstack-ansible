@@ -19,12 +19,26 @@
     keyserver: "{{ item.keyserver }}"
     state: "present"
   with_items: galera_client_gpg_keys
-  register: add_repos
-  until: add_repos|success
+  register: add_keys
+  until: add_keys|success
   retries: 5
   delay: 2
   tags:
-    - galera-client-gpg-keys
+    - galera-client-apt-keys
+
+- name: Add galera apt-keys using fallback keyserver
+  apt_key:
+    id: "{{ item.hash_id }}"
+    keyserver: "{{ item.fallback_keyserver }}"
+    state: "present"
+  register: add_keys_fallback
+  until: add_keys_fallback|success
+  retries: 5
+  delay: 2
+  with_items: galera_client_gpg_keys
+  when: add_keys|failed and item.fallback_keyserver is defined
+  tags:
+    - galera-client-apt-keys
 
 - name: Add galera repo(s)
   apt_repository:

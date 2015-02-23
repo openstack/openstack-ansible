@@ -46,7 +46,10 @@ galera_wsrep_debug: 0
 
 # Galera GPG Keys
 galera_gpg_keys:
-  - { key_name: 'mariadb', keyserver: 'hkp://keyserver.ubuntu.com:80', hash_id: '0xcbcb082a1bb943db' }
+  - key_name: 'mariadb'
+    keyserver: 'hkp://keyserver.ubuntu.com:80'
+    fallback_keyserver: 'hkp://p80.pool.sks-keyservers.net:80'
+    hash_id: '0xcbcb082a1bb943db'
 
 # Repositories
 galera_apt_repos:
