@@ -9,7 +9,7 @@ Building a development stack
 ----------------------------
 
 If you are wanting to build a development stack for testing or otherwise contributing to this repository you can do so using the
-``cloudserver-aio.sh`` script in the script directory. To execute the ``cloudserver-aio.sh`` script please do so from the ``os-ansible-deployment`` directory that was created when you cloned the repository.
+``gate-check-commit.sh`` script in the scripts directory. To execute this script please do so from the ``os-ansible-deployment`` directory that was created when you cloned the repository.
 
 Example AIO build process:
 
@@ -25,10 +25,16 @@ Example AIO build process:
   git checkout master
 
   # Run the script from the root directory of the cloned repository.
-  ./scripts/run-aio-build.sh
+  ./scripts/gate-check-commit.sh
+
+Alternatively, you can curl/wget the ``run-aio-build.sh`` script:
+
+.. code-block:: bash
+
+  curl http://git.openstack.org/cgit/stackforge/os-ansible-deployment/plain/scripts/run-aio-build.sh | bash
 
 
-To use this script successfully please make sure that you have the following:
+To use these scripts successfully please make sure that you have the following:
   * At least **60GB** of available storage on "/" when using local file system containers. Containers are built into ``/var/lib/lxc`` and will consume up-to 40GB on their own.
     * If you would like to test building containers using LVM simply create an **lxc** volume group before executing the script. Be aware that each container will be built with a minimum of 5GB of storage.
   * 2.4GHZ quad-core processor with that is KVM capable is required.
