@@ -160,7 +160,6 @@ build_timeout = 300
 catalog_type = network
 dns_servers = 8.8.8.8,8.8.4.4
 endpoint_type = internalURL
-public_router_id = {{ hostvars[groups['utility_all'][0]]['neutron_routers']['router']['id'] }}
 public_network_id = {{ hostvars[groups['utility_all'][0]]['neutron_networks']['public']['id'] }}
 tenant_network_cidr = {{ tempest_private_subnet_cidr }}
 tenant_networks_reachable = false
