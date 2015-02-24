@@ -44,7 +44,7 @@ function gen_test_list_commit_multinode() {
     |grep -v VolumesV.ActionsTest
 }
 
-# Run smoke tests
+# Run selected scenario tests
 function gen_test_list_commit_aio() {
   egrep 'tempest\.scenario\.test_(minimum|swift|server)_basic(_ops)?'
 }
