@@ -90,8 +90,8 @@ connection = mysql://{{ cinder_galera_user }}:{{ cinder_container_mysql_password
 
 [keystone_authtoken]
 signing_dir = /var/cache/cinder
-identity_uri = {{ keystone_service_internaluri }}
-auth_uri = {{ keystone_service_internaluri }}
+identity_uri = {{ keystone_service_adminuri }}
+auth_uri = {{ keystone_service_internalurl }}
 admin_tenant_name = {{ cinder_service_tenant_name }}
 admin_user = {{ cinder_service_user_name }}
 admin_password = {{ cinder_service_password }}

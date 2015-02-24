@@ -97,7 +97,7 @@ root_helper = sudo /usr/local/bin/neutron-rootwrap /etc/neutron/rootwrap.conf
 
 [keystone_authtoken]
 signing_dir = /var/cache/neutron
-identity_uri = {{ keystone_service_internaluri }}
+identity_uri = {{ keystone_service_adminuri }}
 auth_uri = {{ keystone_service_internalurl }}
 admin_tenant_name = {{ neutron_service_tenant_name }}
 admin_user = {{ neutron_service_user_name }}
