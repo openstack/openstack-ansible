@@ -149,8 +149,8 @@ enabled = True
 
 [keystone_authtoken]
 signing_dir = {{ nova_system_home_folder }}/cache/api
-identity_uri = {{ keystone_service_internaluri }}
-auth_uri = {{ keystone_service_internaluri }}
+identity_uri = {{ keystone_service_adminuri }}
+auth_uri = {{ keystone_service_internalurl }}
 admin_tenant_name = {{ nova_service_tenant_name }}
 admin_user = {{ nova_service_user_name }}
 admin_password = {{ nova_service_password }}
