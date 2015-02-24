@@ -212,13 +212,6 @@
   tags:
     - tempest-setup
 
-- name: Store neutron router id
-  set_fact:
-    tempest_neutron_router_id: "{{ neutron_routers.router.id }}"
-  tags:
-    - tempest-setup
-    - tempest-config
-
 - name: Add private subnet to router
   neutron:
     command: add_router_interface
