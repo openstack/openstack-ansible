@@ -35,7 +35,7 @@ fi
 
 # Ip6tables path, used for ipv6 firewall.
 IP6TABLES=$(which ip6tables)
-if [ ! -z "${IP6TABLES}" ];then
+if [ ! -z "${IP6TABLES}" ] && [ "$(lsmod | grep -w '^ip6_tables')" ];then
     if ! ${IP6TABLES} -C POSTROUTING -t mangle -p udp --dport 68 -j CHECKSUM --checksum-fill 2> /dev/null; then
         ${IP6TABLES} -A POSTROUTING -t mangle -p udp --dport 68 -j CHECKSUM --checksum-fill
     fi
