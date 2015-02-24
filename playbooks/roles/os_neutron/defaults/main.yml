@@ -120,6 +120,9 @@ neutron_agent_polling_interval: 5
 neutron_report_interval: "{{ neutron_agent_down_time | int / 2 | int }}"
 neutron_network_device_mtu: 1450
 
+# L3 configuration options
+neutron_l3_router_delete_namespaces: True
+
 # L3HA configuration options.
 neutron_ha_vrrp_advert_int: 2
 neutron_ha_vrrp_auth_password: None

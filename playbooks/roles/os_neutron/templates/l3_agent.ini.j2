@@ -25,6 +25,9 @@ max_l3_agents_per_router = {{ neutron_max_l3_agents_per_router | default(groups[
 min_l3_agents_per_router = {{ neutron_min_l3_agents_per_router | default(min_l3_router) }}
 send_arp_for_ha = 3
 
+# L3 configuration options
+router_delete_namespaces = {{ neutron_l3_router_delete_namespaces }}
+
 # L3 Agent interfaces
 interface_driver = {{ neutron_driver_interface }}
 handle_internal_only_routers = True
