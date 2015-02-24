@@ -231,6 +231,9 @@ echo "tempest_public_subnet_cidr: ${TEMPEST_FLAT_CIDR}" | tee -a /etc/openstack_
 # Minimize galera cache
 echo 'galera_gcache_size: 50M' | tee -a /etc/openstack_deploy/user_variables.yml
 
+# Set the running kernel as the required kernel
+echo "required_kernel: $(uname --kernel-release)" | tee -a /etc/openstack_deploy/user_variables.yml
+
 # Add in swift vars if needed
 if [ "${DEPLOY_SWIFT}" == "yes" ]; then
   # ensure that glance is configured to use swift
