@@ -28,6 +28,7 @@ set -x
 # If a name is not supplied commit_multinode will be used.
 
 test_list_name=${1:-commit_multinode}
+testr_ouput_lines=${testr_output_lines:-100}
 
 
 # -------------------- Functions -------------------------
@@ -59,16 +60,18 @@ function gen_test_list_all() {
   cat
 }
 
+exit_msg(){
+  echo $1
+  exit $2
+}
+
 
 # -------------------- Main -------------------------
 
 available_test_lists=$(compgen -A function|sed -n '/^gen_test_list_/s/gen_test_list_//p')
 
-grep $test_list_name <<<$available_test_lists || {
-  echo "$test_list_name is not a valid test list, available test lists: "
-  echo $available_test_lists
-  exit 1
-}
+grep $test_list_name <<<$available_test_lists ||\
+  exit_msg "$test_list_name is not a valid test list, available test lists: $available_test_lists" 1
 
 # work in tempest directory
 pushd {{ tempest_git_dest }}
@@ -79,11 +82,24 @@ source /root/openrc
 # create testr repo - required for testr to do anything
 testr init &>/dev/null ||:
 
-# Get list of available tests
-testr list-tests > full_test_list
+# Get list of available tests.
+# lines 1-$testr_ouput_lines are output to stdout, all lines are written to
+# full_test_list.
+set -o pipefail
+testr list-tests |tee >(sed -n 1,${testr_ouput_lines}p) >full_test_list ||\
+  exit_msg "Failed to generate test list" $?
+set +o pipefail
 
-# Write filter test list using selected function
-gen_test_list_$test_list_name <full_test_list >test_list
+# Check the full test list is not empty
+[[ -s full_test_list ]] || exit_msg "No tests found" 1
+
+# Write filter test list using selected function. The full test list is
+# pre-filtered to only include test lines, this saves adding that filter to
+# every test list function.
+grep '^tempest\.' < full_test_list | gen_test_list_${test_list_name} > test_list
+
+# Check the filtered test list is not empty
+[[ -s test_list ]] || exit_msg "No tests remain after filtering" 1
 
 test_list_summary="${test_list_name} ($(wc -l <test_list) tests)"
 
