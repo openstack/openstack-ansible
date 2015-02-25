@@ -43,6 +43,7 @@ instance_name_template = instance-%08x
 instances_path = {{ nova_system_home_folder }}/instances
 api_paste_config = /etc/nova/api-paste.ini
 allow_resize_to_same_host = True
+image_cache_manager_interval = {{ nova_image_cache_manager_interval }}
 
 # Api's
 enabled_apis = osapi_compute,metadata,ec2
@@ -181,3 +182,4 @@ use_usb_tablet = False
 use_virtio_for_bridges = True
 cpu_mode = {{ nova_cpu_mode }}
 virt_type = {{ nova_virt_type }}
+remove_unused_resized_minimum_age_seconds = {{ nova_remove_unused_resized_minimum_age_seconds }}
