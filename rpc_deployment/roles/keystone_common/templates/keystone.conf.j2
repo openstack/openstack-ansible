@@ -7,7 +7,9 @@ bind_host = 0.0.0.0
 public_port = {{ auth_public_port }}
 # The port number which the public admin listens on
 admin_port = {{ auth_port }}
-public_endpoint = {{ auth_protocol }}://{{ internal_vip_address }}:{{ auth_public_port }}/
+{% if keystone_public_endpoint is defined %}
+public_endpoint = {{ keystone_public_endpoint }}
+{% endif %}
 admin_endpoint = {{ auth_protocol }}://{{ internal_vip_address }}:{{ auth_port }}/
 log_file = keystone.log
 log_dir = /var/log/keystone
