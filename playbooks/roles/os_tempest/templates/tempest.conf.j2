@@ -78,7 +78,7 @@ api_v3_extensions = all
 block_migrate_cinder_iscsi = false
 block_migration_for_live_migration = false
 change_password = false
-console_output = false
+console_output = {{ tempest_compute_console_output_enabled }}
 disk_config = true
 enable_instance_password = false
 interface_attach = false
@@ -86,9 +86,9 @@ live_migration = false
 pause = false
 rdp_console = false
 rescue = false
-resize = false
+resize = {{ tempest_compute_resize_enabled }}
 shelve = false
-snapshot = false
+snapshot = {{ tempest_compute_resize_enabled }}
 spice_console = true
 suspend = false
 vnc_console = false
@@ -144,7 +144,7 @@ http_image = http://download.cirros-cloud.net/0.3.1/cirros-0.3.1-x86_64-uec.tar.
 
 [image-feature-enabled]
 api_v1 = true
-api_v2 = false
+api_v2 = {{ tempest_image_api_v2_enabled }}
 
 
 [input-scenario]
@@ -184,7 +184,7 @@ reseller_admin_role = reseller_admin
 
 [object-storage-feature-enabled]
 container_sync = false
-object_versioning = false
+object_versioning = {{ tempest_swift_object_versioning }}
 discoverable_apis = all
 
 
