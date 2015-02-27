@@ -30,6 +30,10 @@ rabbit_password = {{ rabbitmq_password }}
 rabbit_hosts = {{ rabbitmq_servers }}
 
 
+## Plugin dirs
+plugin_dirs = {{ heat_plugin_dirs | join(',') }}
+
+
 [clients]
 endpoint_type = {{ heat_client_endpoint }}
 

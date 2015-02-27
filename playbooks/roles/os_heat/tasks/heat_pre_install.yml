@@ -49,6 +49,16 @@
   tags:
     - heat-dirs
 
+- name: Create heat plugin dirs
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ heat_system_user_name }}"
+    group: "{{ heat_system_group_name }}"
+  with_items: heat_plugin_dirs
+  tags:
+    - heat-dirs
+
 - name: Test for log directory or link
   shell: |
     if [ -h "/var/log/heat"  ]; then
