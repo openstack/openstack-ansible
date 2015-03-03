@@ -31,6 +31,7 @@ TEMPEST_FLAT_CIDR=${TEMPEST_FLAT_CIDR:-"172.29.248.0/22"}
 TEMPEST_FLAT_GATEWAY=${TEMPEST_FLAT_GATEWAY:-"172.29.248.100"}
 PLAYBOOK_DIRECTORY=${PLAYBOOK_DIRECTORY:-"${CONFIG_PREFIX}_deployment"}
 ANSIBLE_PARAMETERS=${ANSIBLE_PARAMETERS:-"--forks 10 -vvvv"}
+SYMLINK_DIR=${SYMLINK_DIR:-"$(pwd)/logs"}
 
 ## Functions -----------------------------------------------------------------
 
@@ -132,3 +133,5 @@ fi
 if [ "${RUN_TEMPEST}" == "yes" ]; then
   source $(dirname ${0})/run-tempest.sh
 fi
+
+ln -s /openstack/log $SYMLINK_DIR
