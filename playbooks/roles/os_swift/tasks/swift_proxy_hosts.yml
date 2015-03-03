@@ -13,14 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: swift proxy server configuration
-  template:
-    src: "proxy-server.conf.j2"
-    dest: "/etc/swift/proxy-server/proxy-server.conf"
-    owner: "{{ swift_system_user_name }}"
-    mode: "0644"
-  notify: Restart swift services
-
 - include: swift_upstart_common_init.yml
   vars:
     program_name: "swift-proxy-server"
@@ -29,3 +21,11 @@
     system_user: "{{ swift_system_user_name }}"
     system_group: "{{ swift_system_group_name }}"
     service_home: "{{ swift_system_home_folder }}"
+
+- name: swift proxy server configuration
+  template:
+    src: "proxy-server.conf.j2"
+    dest: "/etc/swift/proxy-server/proxy-server.conf"
+    owner: "{{ swift_system_user_name }}"
+    mode: "0644"
+  notify: Restart swift services
