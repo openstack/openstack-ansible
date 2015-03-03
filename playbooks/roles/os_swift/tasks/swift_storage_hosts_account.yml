@@ -75,7 +75,7 @@
     mode: "0644"
   with_items:
     - { src: "account-server.conf.j2", dest: "/etc/swift/account-server/account-server.conf" }
-  notify: Restart swift services
+  notify: Restart swift account services
 
 # We only create the dedicated replicator configuration when using a dedicated replication_network
 - name: "Swift account server replicator configuration"
@@ -90,4 +90,4 @@
   when: >
     swift.replication_network is defined and
     swift.replication_network != swift.storage_network
-  notify: Restart swift services
+  notify: Restart swift account services

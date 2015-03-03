@@ -13,13 +13,40 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Restart swift services
+- name: Restart swift account services
   service:
     name: "{{ item }}"
     state: "restarted"
     pattern: "{{ item }}"
   register: service_restart
-  with_items: swift_program_names
+  with_items: swift_account_program_names
+  failed_when: false
+
+- name: Restart swift container services
+  service:
+    name: "{{ item }}"
+    state: "restarted"
+    pattern: "{{ item }}"
+  register: service_restart
+  with_items: swift_container_program_names
+  failed_when: false
+
+- name: Restart swift object services
+  service:
+    name: "{{ item }}"
+    state: "restarted"
+    pattern: "{{ item }}"
+  register: service_restart
+  with_items: swift_object_program_names
+  failed_when: false
+
+- name: Restart swift proxy services
+  service:
+    name: "{{ item }}"
+    state: "restarted"
+    pattern: "{{ item }}"
+  register: service_restart
+  with_items: swift_proxy_program_names
   failed_when: false
 
 - name: Restart service

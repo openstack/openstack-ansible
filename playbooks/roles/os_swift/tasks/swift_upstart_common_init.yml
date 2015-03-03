@@ -20,8 +20,7 @@
     mode: "0644"
     owner: "root"
     group: "root"
-  notify:
-    - Restart swift services
+  register: init_script
   tags:
     - upstart-init
     - swift-init
@@ -29,8 +28,7 @@
 - name: Reload init scripts
   shell: |
     initctl reload-configuration
-  notify:
-    - Restart swift services
+  when: init_script|changed
   tags:
     - upstart-init
     - swift-init
@@ -39,8 +37,8 @@
   service:
    name: "{{ program_name }}"
    enabled: "yes"
-  notify:
-    - Restart swift services
+   state: restarted
+  when: init_script|changed
   tags:
     - upstart-init
     - swift-init
