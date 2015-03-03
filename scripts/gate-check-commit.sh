@@ -16,7 +16,6 @@
 ## Shell Opts ----------------------------------------------------------------
 set -e -u -v +x
 
-
 ## Variables -----------------------------------------------------------------
 export ANSIBLE_DISABLE_COLOR=${ANSIBLE_DISABLE_COLOR:-"yes"}
 export BOOTSTRAP_ANSIBLE=${BOOTSTRAP_ANSIBLE:-"yes"}
@@ -39,11 +38,11 @@ export TEMPEST_SCRIPT_PARAMETERS=${TEMPEST_SCRIPT_PARAMETERS:-"commit_aio"}
 export MAX_RETRIES=${MAX_RETRIES:-"1"}
 # limit forks for gate check
 export FORKS=${FORKS:-10}
+export SYMLINK_DIR=${SYMLINK_DIR:-"$(pwd)/logs"}
 
 
 ## Functions -----------------------------------------------------------------
 info_block "Checking for required libraries." 2> /dev/null || source $(dirname ${0})/scripts-library.sh
-
 
 ## Main ----------------------------------------------------------------------
 # Get initial host information and reset verbosity
@@ -78,5 +77,7 @@ fi
 if [ "${RUN_TEMPEST}" == "yes" ]; then
   source $(dirname ${0})/run-tempest.sh
 fi
+
+ln -s /openstack/log $SYMLINK_DIR
 
 exit_success
