@@ -20,7 +20,8 @@ set -e -u -v +x
 ## Vars ----------------------------------------------------------------------
 export TEMPEST_SCRIPT_PATH=${TEMPEST_SCRIPT_PATH:-/opt/openstack_tempest_gate.sh}
 export TEMPEST_SCRIPT_PARAMETERS=${TEMPEST_SCRIPT_PARAMETERS:-""}
-
+export RUN_TEMPEST_OPTS=${RUN_TEMPEST_OPTS:-''}
+export TESTR_OPTS=${TESTR_OPTS:-''}
 
 ## Library Check -------------------------------------------------------------
 info_block "Checking for required libraries." 2> /dev/null || source $(dirname ${0})/scripts-library.sh
@@ -43,5 +44,7 @@ pushd playbooks
   fi
 
   # Execute the tempest tests
-  ansible 'utility[0]' -m shell -a "${TEMPEST_SCRIPT_PATH} ${TEMPEST_SCRIPT_PARAMETERS}"
+  ansible 'utility[0]' -m shell -a "export RUN_TEMPEST_OPTS=${RUN_TEMPEST_OPTS}; \
+                                    export TESTR_OPTS=${TESTR_OPTS}; \
+                                    ${TEMPEST_SCRIPT_PATH} ${TEMPEST_SCRIPT_PARAMETERS}"
 popd
