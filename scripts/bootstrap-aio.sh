@@ -33,6 +33,12 @@ mkdir -p /openstack/log
 # Implement the log directory link for openstack-infra log publishing
 ln -s /openstack/log $SYMLINK_DIR
 
+# Create ansible logging directory and add in a log file entry into ansible.cfg
+if [ -f "playbooks/ansible.cfg" ];then
+  mkdir -p /openstack/log/ansible-logging
+  sed -i '/\[defaults\]/a log_path = /openstack/log/ansible-logging/ansible.log' playbooks/ansible.cfg
+fi
+
 # Check that the link creation was successful
 [[ -d $SYMLINK_DIR ]] || exit_fail
 if ! [ -d $SYMLINK_DIR ] ; then
