@@ -27,6 +27,19 @@ info_block "Checking for required libraries." || source $(dirname ${0})/scripts-
 
 ## Main ----------------------------------------------------------------------
 
+# Make the /openstack/log directory for openstack-infra gate check log publishing
+mkdir -p /openstack/log
+
+# Implement the log directory link for openstack-infra log publishing
+ln -s /openstack/log $SYMLINK_DIR
+
+# Check that the link creation was successful
+[[ -d $SYMLINK_DIR ]] || exit_fail
+if ! [ -d $SYMLINK_DIR ] ; then
+    echo "Could not create a link from /openstack/log to ${SYMLINK_DIR}"
+    exit_fail
+fi
+
 # Enable logging of all commands executed
 set -x
 
