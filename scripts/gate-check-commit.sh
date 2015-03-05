@@ -78,6 +78,4 @@ if [ "${RUN_TEMPEST}" == "yes" ]; then
   source $(dirname ${0})/run-tempest.sh
 fi
 
-ln -s /openstack/log $SYMLINK_DIR
-
 exit_success

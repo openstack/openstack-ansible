@@ -35,6 +35,20 @@ info_block "Checking for required libraries." 2> /dev/null || source $(dirname $
 
 
 ## Main ----------------------------------------------------------------------
+
+# Make the /openstack/log directory for openstack-infra gate check log publishing
+mkdir -p /openstack/log
+
+# Implement the log directory link for openstack-infra log publishing
+ln -s /openstack/log $SYMLINK_DIR
+
+# Check that the link creation was successful
+[[ -d $SYMLINK_DIR ]] || exit_fail
+if ! [ -d $SYMLINK_DIR ] ; then
+    echo "Could not create a link from /openstack/log to ${SYMLINK_DIR}"
+    exit_fail
+fi
+
 # Ensure that the current kernel can support vxlan
 if ! modprobe vxlan; then
   MINIMUM_KERNEL_VERSION=$(awk '/openstack_host_required_kernel/ {print $2}' playbooks/inventory/group_vars/all.yml)
