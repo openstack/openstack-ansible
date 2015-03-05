@@ -31,6 +31,9 @@ TEMPEST_FLAT_GATEWAY=${TEMPEST_FLAT_GATEWAY:-"172.29.248.100"}
 PLAYBOOK_DIRECTORY=${PLAYBOOK_DIRECTORY:-"${CONFIG_PREFIX}_deployment"}
 ANSIBLE_PARAMETERS=${ANSIBLE_PARAMETERS:-"--forks 10 -vvvv"}
 SYMLINK_DIR=${SYMLINK_DIR:-"$(pwd)/logs"}
+# tempest and testr options, default is to run tempest in serial
+export RUN_TEMPEST_OPTS=${RUN_TEMPEST_OPTS:-'--serial'}
+export TESTR_OPTS=${TESTR_OPTS:-''}
 
 ## Functions -----------------------------------------------------------------
 

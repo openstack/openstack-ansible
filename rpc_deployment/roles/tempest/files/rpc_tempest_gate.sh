@@ -29,6 +29,8 @@ set -x
 
 test_list_name=${1:-commit_multinode}
 testr_ouput_lines=${testr_output_lines:-100}
+RUN_TEMPEST_OPTS=${RUN_TEMPEST_OPTS:-''}
+TESTR_OPTS=${TESTR_OPTS:-''}
 
 
 # -------------------- Functions -------------------------
@@ -106,7 +108,7 @@ test_list_summary="${test_list_name} ($(wc -l <test_list) tests)"
 echo "Using test list $test_list_summary"
 
 # execute chosen tests with pretty output
-./run_tempest.sh --no-virtual-env -- --load-list test_list;
+./run_tempest.sh --no-virtual-env ${RUN_TEMPEST_OPTS} -- --load-list test_list ${TESTR_OPTS};
 result=$?
 popd
 
