@@ -66,6 +66,8 @@ nova_libvirt_vif_driver: nova.virt.libvirt.vif.NeutronLinuxBridgeVIFDriver
 nova_firewall_driver: nova.virt.firewall.NoopFirewallDriver
 nova_compute_driver: libvirt.LibvirtDriver
 nova_max_age: 0
+nova_remove_unused_resized_minimum_age_seconds: 3600
+nova_image_cache_manager_interval: 0
 
 # Nova quota
 nova_quota_injected_file_content_bytes: 10240
