@@ -23,6 +23,7 @@ pipeline = healthcheck recon container-server
 [app:container-server]
 use = egg:swift#container
 log_facility = LOG_LOCAL3
+allow_versions = {{ swift_allow_versions }}
 
 [filter:healthcheck]
 use = egg:swift#healthcheck
