@@ -13,25 +13,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: heat_pre_install.yml
-- include: heat_install.yml
+- name: Clone heat repo
+  git:
+    repo: "{{ heat_git_repo }}"
+    dest: "{{ heat_git_dest }}"
+    version: "{{ heat_git_install_branch }}"
+  register: git_clone
+  until: git_clone|success
+  retries: 5
+  delay: 2
+  tags:
+    - heat-git-clone
 
-- include: heat_install_plugins.yml
-  when: >
-    inventory_hostname in groups['heat_engine']
-
-- include: heat_domain_setup.yml
-  when: >
-    inventory_hostname == groups['heat_all'][0]
-
-- include: heat_post_install.yml
-
-- include: heat_db_setup.yml
-  when: >
-    inventory_hostname == groups['heat_all'][0]
-
-- include: heat_service_setup.yml
-  when: >
-    inventory_hostname == groups['heat_all'][0]
-
-- include: heat_upstart_init.yml
+- name: Install git repo plugins
+  shell: |
+    python setup.py install
+  args:
+    chdir: "{{ heat_git_dest }}/{{ item.path }}/{{ item.package }}"
+  with_items: heat_repo_plugins
+  register: pip_install
+  until: pip_install|success
+  retries: 5
+  delay: 2
+  notify:
+    - Restart heat services
+  tags:
+    - heat-plugin-install
