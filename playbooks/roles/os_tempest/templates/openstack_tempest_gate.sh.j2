@@ -60,6 +60,36 @@ function gen_test_list_all() {
   cat
 }
 
+# Generate test list from official defcore/refstack spec
+# Note that unlike the other test list functions, this one isn't a filter
+# it ignores its stdin and pulls the test list from github.
+function gen_test_list_defcore(){
+  branch=${1:-juno}
+  python <<END
+import json
+import requests
+branch="$branch"
+url=("https://raw.githubusercontent.com/stackforge/"
+     "refstack/master/defcore/%(branch)score.json"
+     % {'branch': branch}
+     )
+response = requests.get(url)
+for capability in response.json()['capabilities'].values():
+  for test in capability['tests']:
+    print test
+END
+}
+
+# defcore tests for juno
+function gen_test_list_defcore_juno(){
+  gen_test_list_defcore juno
+}
+
+# defcore tests for icehouse
+function gen_test_list_defcore_icehouse(){
+  gen_test_list_defcore icehouse
+}
+
 exit_msg(){
   echo $1
   exit $2
@@ -96,7 +126,9 @@ set +o pipefail
 # Write filter test list using selected function. The full test list is
 # pre-filtered to only include test lines, this saves adding that filter to
 # every test list function.
-grep '^tempest\.' < full_test_list | gen_test_list_${test_list_name} > test_list
+grep '^tempest\.' < full_test_list \
+  | gen_test_list_${test_list_name} > test_list \
+  || exit_msg "Filter $test_list_name failed. Output: $(cat test_list)" 1
 
 # Check the filtered test list is not empty
 [[ -s test_list ]] || exit_msg "No tests remain after filtering" 1
