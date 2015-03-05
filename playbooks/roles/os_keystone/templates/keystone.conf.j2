@@ -6,7 +6,9 @@ debug = {{ debug }}
 admin_token = {{ keystone_auth_admin_token }}
 bind_host = {{ keystone_bind_address }}
 public_port = {{ keystone_service_port }}
-public_endpoint = {{ keystone_service_publicuri }}
+{% if keystone_public_endpoint is defined %}
+public_endpoint = {{ keystone_public_endpoint }}
+{% endif %}
 admin_port = {{ keystone_admin_port }}
 admin_endpoint = {{ keystone_service_adminuri }}
 

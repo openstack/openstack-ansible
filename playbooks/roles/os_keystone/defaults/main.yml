@@ -80,6 +80,9 @@ keystone_service_internalurl_v3: "{{ keystone_service_internaluri_v3 }}/v3"
 keystone_service_adminuri_v3: "{{ keystone_service_proto }}://{{ internal_lb_vip_address }}:{{ keystone_admin_port }}"
 keystone_service_adminurl_v3: "{{ keystone_service_adminuri_v3 }}/v3"
 
+## Set this value to override the "public_endpoint" keystone.conf variable
+#keystone_public_endpoint:
+
 ## Apache setup
 keystone_apache_log_level: info
 
