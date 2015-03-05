@@ -123,8 +123,8 @@ disable_ssl_certificate_validation = false
 endpoint_type = internalURL
 password = demo
 tenant_name = demo
-uri_v3 = http://{{ external_vip_address }}:5000/v3/
-uri = http://{{ external_vip_address }}:5000/v2.0/
+uri_v3 = {{ auth_identity_uri_v3 }}
+uri = {{ auth_identity_uri }}
 username = demo
 
 
