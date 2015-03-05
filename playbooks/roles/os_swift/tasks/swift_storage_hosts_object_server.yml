@@ -75,7 +75,7 @@
     mode: "0644"
   with_items:
     - { src: "object-server.conf.j2", dest: "/etc/swift/object-server/object-server.conf" }
-  notify: Restart swift services
+  notify: Restart swift object services
 
 # We only create the dedicated replicator configuration when using a dedicated replication_network
 - name: "Swift object server configuration"
@@ -90,4 +90,4 @@
   when: >
     swift.replication_network is defined and
     swift.replication_network != swift.storage_network
-  notify: Restart swift services
+  notify: Restart swift object services

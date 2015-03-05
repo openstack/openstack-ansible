@@ -127,21 +127,24 @@ swift_apt_packages:
   - python-dev
   - rsync
 
-swift_program_names:
-  - swift-proxy-server
-  - swift-object-server
-  - swift-object-auditor
-  - swift-object-replicator
-  - swift-object-updater
-  - swift-object-server-replicator
+swift_account_program_names:
+  - swift-account-server
+  - swift-account-auditor
+  - swift-account-replicator
+  - swift-account-reaper
+
+swift_container_program_names:
   - swift-container-server
   - swift-container-auditor
   - swift-container-replicator
   - swift-container-sync
   - swift-container-updater
-  - swift-container-server-replicator
-  - swift-account-server
-  - swift-account-auditor
-  - swift-account-replicator
-  - swift-account-reaper
-  - swift-account-server-replicator
+
+swift_object_program_names:
+  - swift-object-server
+  - swift-object-auditor
+  - swift-object-replicator
+  - swift-object-updater
+
+swift_proxy_program_names:
+  - swift-proxy-server

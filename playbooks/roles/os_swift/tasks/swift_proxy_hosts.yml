@@ -28,4 +28,4 @@
     dest: "/etc/swift/proxy-server/proxy-server.conf"
     owner: "{{ swift_system_user_name }}"
     mode: "0644"
-  notify: Restart swift services
+  notify: Restart swift proxy services
