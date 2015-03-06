@@ -25,6 +25,17 @@
     - nova-key
     - nova-key-create
 
+- name: Create the nova SSH config file
+  copy:
+    src: "ssh_config"
+    dest: "/var/lib/nova/.ssh/config"
+    owner: "{{ nova_system_user_name }}"
+    group: "{{ nova_system_user_name }}"
+    mode: "0644"
+  tags:
+    - nova-key
+    - nova-key-create
+
 - name: Create the nova SSH key if it doesnt exist
   command: |
     ssh-keygen -f {{ nova_system_home_folder }}/.ssh/id_rsa -t rsa -q -N ""
