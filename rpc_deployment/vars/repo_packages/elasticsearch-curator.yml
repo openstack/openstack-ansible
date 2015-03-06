@@ -13,21 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-repo_package_name: elasticsearch
+repo_path: "{{ pip_wheel_name }}_{{ git_install_branch | replace('/', '_') }}"
 
-apt_container_keys:
-  - { url: "http://packages.elasticsearch.org/GPG-KEY-elasticsearch", state: "present" }
+# Git Source
+git_repo: https://github.com/elasticsearch/curator
+git_dest: "/opt/{{ repo_path }}"
+git_install_branch: "2.x"
 
-apt_container_repos:
-  - { repo: "deb {{ elasticsearch_repo_url }} stable main", state: "present"}
-
-container_packages:
-  - elasticsearch
-  - openjdk-7-jre
-
-service_pip_dependencies:
-  - requests
-  - python-memcached
-  - pycrypto
-  - elasticsearch
-  - elasticsearch-curator
+pip_wheel_name: curator

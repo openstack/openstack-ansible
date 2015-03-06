@@ -22,3 +22,5 @@ required_inner_dirs:
 
 required_outer_dirs:
   - "/openstack/{{ container_name }}/var/lib/elasticsearch"
+
+elasticsearch_prune_days: 90

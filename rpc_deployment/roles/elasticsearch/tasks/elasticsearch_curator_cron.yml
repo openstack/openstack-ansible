@@ -13,21 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-repo_package_name: elasticsearch
-
-apt_container_keys:
-  - { url: "http://packages.elasticsearch.org/GPG-KEY-elasticsearch", state: "present" }
-
-apt_container_repos:
-  - { repo: "deb {{ elasticsearch_repo_url }} stable main", state: "present"}
-
-container_packages:
-  - elasticsearch
-  - openjdk-7-jre
-
-service_pip_dependencies:
-  - requests
-  - python-memcached
-  - pycrypto
-  - elasticsearch
-  - elasticsearch-curator
+- name: "Setup the Elasticsearch Curator cron job"
+  cron:
+    name: "Elasticsearch Curator"
+    minute: 0
+    hour: 0
+    user: "root"
+    job: "/usr/local/bin/curator --host {{ hostvars[groups['elasticsearch'][0]]['container_address' ]}} delete --older_than {{ elasticsearch_prune_days }}"
+    cron_file: "elasticsearch_curator"
