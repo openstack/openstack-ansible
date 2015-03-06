@@ -73,7 +73,18 @@ set +x && get_instance_info && set -x
 
 # Run the ansible playbooks if required
 if [ "${RUN_PLAYBOOKS}" == "yes" ]; then
-  source $(dirname ${0})/run-playbooks.sh
+  # Set-up our tiny awk script.
+  strip_debug="
+    !/(^[ 0-9|:.-]+<[0-9.]|localhost+>)|Extracting/ {
+      gsub(/{.*/, \"\");
+      gsub(/\\n.*/, \"\");
+      gsub(/\=\>.*/, \"\");
+      print
+    }
+  "
+  source $(dirname ${0})/run-playbooks.sh > ansible-logs.tmp
+  awk "${strip_debug}" < ansible-logs.tmp
+  rm -f ansible-logs.tmp
 fi
 
 # Run the tempest tests if required
