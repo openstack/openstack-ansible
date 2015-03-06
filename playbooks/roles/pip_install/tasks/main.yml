@@ -42,6 +42,7 @@
   get_url:
     url: "{{ pip_get_pip_url }}"
     dest: "/opt/get-pip.py"
+    force: "yes"
     validate_certs: "no"
   register: get_pip
   until: get_pip|success
