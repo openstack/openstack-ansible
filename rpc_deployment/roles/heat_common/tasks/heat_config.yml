@@ -37,6 +37,14 @@
     tenant_name="admin"
     role_name="heat_stack_owner"
 
+- name: Create heat plugin directories
+  file: >
+    path="{{ item }}"
+    state=directory
+    owner="{{ system_user }}"
+    group="{{ system_group }}"
+  with_items: heat_plugin_dirs
+
 - name: Setup Heat Config
   template: >
     src={{ item }}
