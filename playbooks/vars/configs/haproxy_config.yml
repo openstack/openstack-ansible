@@ -144,7 +144,7 @@ haproxy_service_configs:
       haproxy_backend_nodes: "{{ groups['horizon_all'] }}"
       haproxy_port: 443
       haproxy_balance_type: tcp
-      haproxy_backend_alg: source
+      haproxy_balance_alg: source
       haproxy_backend_options:
        - "ssl-hello-chk"
   - service:
@@ -158,7 +158,7 @@ haproxy_service_configs:
       haproxy_port: 8888
       haproxy_backend_port: 80
       haproxy_balance_type: http
-      haproxy_backend_alg: source
+      haproxy_balance_alg: source
       haproxy_backend_options:
         - "forwardfor"
         - "httpchk"
@@ -168,13 +168,13 @@ haproxy_service_configs:
       haproxy_backend_nodes: "{{ [groups['kibana'][0]] }}"
       haproxy_port: 8443
       haproxy_balance_type: tcp
-      haproxy_backend_alg: source
+      haproxy_balance_alg: source
       haproxy_backend_options:
         - "ssl-hello-chk"
   - service:
       haproxy_service_name: swift_proxy
       haproxy_backend_nodes: "{{ groups['swift_proxy'] }}"
-      haproxy_backend_alg: source
+      haproxy_balance_alg: source
       haproxy_port: 8080
       haproxy_balance_type: http
   - service:
