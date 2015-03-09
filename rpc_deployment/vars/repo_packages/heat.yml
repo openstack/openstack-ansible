@@ -26,6 +26,13 @@ git_install_branch: 2014.2.1
 
 pip_wheel_name: heat
 
+heat_plugin_dirs:
+  - /usr/lib/heat
+  - /usr/local/lib/heat
+
+git_repo_plugins:
+  - { path: 'contrib',  package: 'extraroute' }
+
 container_packages:
   - rsync
   - libxslt1.1

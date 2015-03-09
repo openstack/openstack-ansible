@@ -20,6 +20,7 @@
     - init_script
   vars_files:
     - vars/openstack_service_vars/heat_api_cfn.yml
+    - vars/repo_packages/heat.yml
   handlers:
     - include: handlers/services.yml
 

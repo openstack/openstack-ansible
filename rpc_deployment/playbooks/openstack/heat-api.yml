@@ -25,6 +25,7 @@
   vars_files:
     - vars/openstack_service_vars/heat_api.yml
     - vars/openstack_service_vars/heat_api_endpoint.yml
+    - vars/repo_packages/heat.yml
   handlers:
     - include: handlers/services.yml
 
@@ -35,5 +36,6 @@
     - init_script
   vars_files:
     - vars/openstack_service_vars/heat_api.yml
+    - vars/repo_packages/heat.yml
   handlers:
     - include: handlers/services.yml
