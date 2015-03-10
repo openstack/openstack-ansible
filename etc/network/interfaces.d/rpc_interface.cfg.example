@@ -97,7 +97,7 @@ iface br-vxlan inet static
 
 # Bridge for vlan network
 auto br-vlan
-iface br-vlan inet static
+iface br-vlan inet manual
     bridge_stp off
     bridge_waitport 0
     bridge_fd 0
