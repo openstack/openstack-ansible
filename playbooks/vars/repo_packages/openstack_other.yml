@@ -53,3 +53,9 @@ oslomiddleware_git_dest: "/opt/oslo_middleware{{ oslomiddleware_git_install_bran
 requirements_git_repo: https://github.com/openstack/requirements
 requirements_git_install_branch: stable/juno  ## Uses a branch because there are no stable tags
 requirements_git_dest: "/opt/requirements_{{ requirements_git_install_branch | replace('/', '_') }}"
+
+
+## Tempest Library
+tempestlib_git_repo: https://github.com/openstack/tempest-lib
+tempestlib_git_install_branch: 0.2.1
+tempestlib_git_dest: "/opt/tempest-lib_{{ requirements_git_install_branch | replace('/', '_') }}"

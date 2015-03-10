@@ -76,7 +76,7 @@ galera_mariadb_server_package: "mariadb-galera-server-5.5"
 galera_apt_packages:
   - mariadb-client
   - "{{ galera_mariadb_server_package }}"
-  - galera
+  - galera-3
   - rsync
   - xtrabackup
   - socat
