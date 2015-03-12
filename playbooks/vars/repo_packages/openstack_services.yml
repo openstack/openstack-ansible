@@ -80,5 +80,5 @@ swift_git_dest: "/opt/swift_{{ swift_git_install_branch | replace('/', '_') }}"
 ## Tempest service
 # using a sha to match the other branches and also include fixes after the tag '3'
 tempest_git_repo: https://github.com/openstack/tempest
-tempest_git_install_branch: 7c73dd5b18d29f0f3f3be0088514121dade53c8f
+tempest_git_install_branch: 17f81d4cc83569438fe11b1ee6ee2afe74c0b501
 tempest_git_dest: "/opt/tempest_{{ tempest_git_install_branch | replace('/', '_') }}"
