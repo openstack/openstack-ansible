@@ -22,7 +22,8 @@ set -e -u -v +x
 export REPO_URL=${REPO_URL:-"https://github.com/stackforge/os-ansible-deployment.git"}
 export REPO_BRANCH=${REPO_BRANCH:-"juno"}
 export WORKING_FOLDER=${WORKING_FOLDER:-"/opt/stackforge/os-ansible-deployment"}
-export ANSIBLE_PARAMETERS=${ANSIBLE_ANSIBLE_PARAMETERS:-"--forks 10"}
+# On normal AIO build the script should do everything possible to try for success
+export MAX_RETRIES=${MAX_RETRIES:-"5"}
 
 ## Main ----------------------------------------------------------------------
 
@@ -58,7 +59,7 @@ echo ""
 echo "If this server has been rebooted, you will need to re-bootstrap"
 echo "Galera to get the cluster operational. To do this execute:"
 echo ""
-echo "cd /opt/ansible-lxc-rpc/rpc_deployment"
+echo "cd $(pwd)/rpc_deployment"
 echo "ansible-playbook -e @/etc/rpc_deploy/user_variables.yml playbooks/infrastructure/galera-startup.yml"
 echo ""
 EOF

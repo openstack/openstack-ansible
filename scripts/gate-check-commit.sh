@@ -26,13 +26,19 @@ export DEPLOY_SWIFT=${DEPLOY_SWIFT:-"yes"}
 export DEPLOY_TEMPEST=${DEPLOY_TEMPEST:-"yes"}
 export RUN_PLAYBOOKS=${RUN_PLAYBOOKS:-"yes"}
 export RUN_TEMPEST=${RUN_TEMPEST:-"yes"}
-export TEMPEST_FLAT_CIDR=${TEMPEST_FLAT_CIDR:-"172.29.248.0/22"}
-export TEMPEST_FLAT_GATEWAY=${TEMPEST_FLAT_GATEWAY:-"172.29.248.100"}
-export ANSIBLE_PARAMETERS=${ANSIBLE_PARAMETERS:-"--forks 10 -vvvv"}
+# Ansible options
+export ANSIBLE_PARAMETERS=${ANSIBLE_PARAMETERS:-"-v"}
+# limit Ansible forks for gate check
+export FORKS=${FORKS:-10}
+# set the directory to store logs in
 export SYMLINK_DIR=${SYMLINK_DIR:-"$(pwd)/logs"}
 # tempest and testr options, default is to run tempest in serial
 export RUN_TEMPEST_OPTS=${RUN_TEMPEST_OPTS:-'--serial'}
 export TESTR_OPTS=${TESTR_OPTS:-''}
+export TEMPEST_FLAT_CIDR=${TEMPEST_FLAT_CIDR:-"172.29.248.0/22"}
+export TEMPEST_FLAT_GATEWAY=${TEMPEST_FLAT_GATEWAY:-"172.29.248.100"}
+# Limit the gate check to only performing one attempt, unless already set
+export MAX_RETRIES=${MAX_RETRIES:-"1"}
 
 ## Functions -----------------------------------------------------------------
 

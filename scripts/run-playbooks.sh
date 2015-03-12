@@ -33,10 +33,6 @@ ANSIBLE_PARAMETERS=${ANSIBLE_PARAMETERS:-"--forks 10"}
 
 info_block "Checking for required libraries." || source $(dirname ${0})/scripts-library.sh
 
-function install_bits() {
-  successerator openstack-ansible ${ANSIBLE_PARAMETERS} playbooks/$@
-}
-
 ## Main ----------------------------------------------------------------------
 
 # Initiate the deployment

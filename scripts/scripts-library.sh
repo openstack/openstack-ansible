@@ -15,9 +15,11 @@
 
 ## Variables -----------------------------------------------------------------
 LINE='-----------------------------------------------------------------------'
-STARTTIME=${STARTTIME:-"$(date +%s)"}
-REPORT_DATA=""
-MAX_RETRIES=${MAX_RETRIES:-0}
+MAX_RETRIES=${MAX_RETRIES:-5}
+REPORT_DATA=${REPORT_DATA:-""}
+FORKS=${FORKS:-25}
+ANSIBLE_PARAMETERS=${ANSIBLE_PARAMETERS:-""}
+STARTTIME="${STARTTIME:-$(date +%s)}"
 
 # Export known paths
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
@@ -122,25 +124,37 @@ function get_instance_info() {
 
 # Used to retry a process that may fail due to transient issues
 function successerator() {
-  set +e +x
+  set +e
   # Get the time that the method was started.
   OP_START_TIME="$(date +%s)"
-  MAX_ATTEMPTS=$((${MAX_RETRIES}+1))
-
-  for ATTEMPT in $(seq ${MAX_ATTEMPTS}); do
-    $@ && { report_success; return 0; }
+  RETRY=0
+  # Set the initial return value to failure.
+  false
+  while [ $? -ne 0 -a ${RETRY} -lt ${MAX_RETRIES} ];do
+    RETRY=$((${RETRY}+1))
+    if [ ${RETRY} -gt 1 ];then
+      $@ -vvvv
+    else
+      $@
+    fi
   done
-
-  exit_fail "Hit maximum number of retries, giving up..."
-  set -e -x
-}
-
-# Report success
-function report_success() {
+  # If max retires were hit, fail.
+  if [ $? -ne 0 ] && [ ${RETRY} -eq ${MAX_RETRIES} ];then
+    echo -e "\nHit maximum number of retries, giving up...\n"
+    exit_fail
+  fi
+  # Print the time that the method completed.
   OP_TOTAL_SECONDS="$[$(date +%s) - $OP_START_TIME]"
   REPORT_OUTPUT="${OP_TOTAL_SECONDS} seconds"
-  REPORT_DATA+="- Operation: [ $@ ]\t${REPORT_OUTPUT}\tNumber of Attempts [ ${ATTEMPT} ]\n"
-  print_info "Run Time = ${REPORT_OUTPUT}"
+  REPORT_DATA+="- Operation: [ $@ ]\t${REPORT_OUTPUT}\tNumber of Attempts [ ${RETRY} ]\n"
+  echo -e "Run Time = ${REPORT_OUTPUT}"
+  set -e
+}
+
+function install_bits() {
+  # The number of forks has been limited to 10 by default (2x ansible default)
+  # This will also run ansible in 3x verbose mode
+  successerator openstack-ansible ${ANSIBLE_PARAMETERS} --forks ${FORKS} playbooks/$@
 }
 
 function ssh_key_create(){
