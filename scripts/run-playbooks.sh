@@ -27,7 +27,6 @@ DEPLOY_OPENSTACK=${DEPLOY_OPENSTACK:-"yes"}
 DEPLOY_RPC_SUPPORT=${DEPLOY_RPC_SUPPORT:-"yes"}
 DEPLOY_TEMPEST=${DEPLOY_TEMPEST:-"no"}
 ANSIBLE_PARAMETERS=${ANSIBLE_PARAMETERS:-"--forks 10"}
-PLAYBOOK_DIRECTORY=${PLAYBOOK_DIRECTORY:-"rpc_deployment"}
 
 ## Functions -----------------------------------------------------------------
 
@@ -40,7 +39,7 @@ function install_bits() {
 ## Main ----------------------------------------------------------------------
 
 # Initiate the deployment
-pushd ${PLAYBOOK_DIRECTORY}
+pushd "rpc_deployment"
   if [ "${DEPLOY_HOST}" == "yes" ]; then
     # Install all host bits
     install_bits setup/host-setup.yml
@@ -66,44 +65,23 @@ pushd ${PLAYBOOK_DIRECTORY}
 
   if [ "${DEPLOY_OPENSTACK}" == "yes" ]; then
     # install all of the OpenStack Bits
-    if [ -f playbooks/openstack/openstack-common.yml ]; then
-      # cater for 9.x.x release (icehouse)
-      install_bits openstack/openstack-common.yml
-    fi
-    if [ -f playbooks/openstack/keystone-all.yml ]; then
-      # cater for 10.x.x release (juno) onwards
-      install_bits openstack/keystone-all.yml
-    else
-      # cater for 9.x.x release (icehouse)
-      install_bits openstack/keystone.yml
-      install_bits openstack/keystone-add-all-services.yml
-    fi
+    install_bits openstack/openstack-common.yml
+    install_bits openstack/keystone.yml
+    install_bits openstack/keystone-add-all-services.yml
     install_bits openstack/glance-all.yml
     install_bits openstack/heat-all.yml
     install_bits openstack/nova-all.yml
     install_bits openstack/neutron-all.yml
     install_bits openstack/cinder-all.yml
     install_bits openstack/horizon-all.yml
-    if [ -f playbooks/openstack/utility-all.yml ]; then
-      # cater for 10.x.x release (juno) onwards
-      install_bits openstack/utility-all.yml
-    elif [ -f playbooks/openstack/utility.yml ]; then
-      # cater for 9.x.x release (icehouse)
-      install_bits openstack/utility.yml
-    fi
+    install_bits openstack/utility.yml
     if [ "${DEPLOY_TEMPEST}" == "yes" ]; then
       # Deploy tempest
       install_bits openstack/tempest.yml
     fi
   fi
   if [ "${DEPLOY_RPC_SUPPORT}" == "yes" ]; then
-    if [ -f playbooks/openstack/rpc-support-all.yml ]; then
-      # cater for 10.x.x release (juno) onwards
-      install_bits openstack/rpc-support-all.yml
-    elif [ -f playbooks/openstack/rpc-support.yml ]; then
-      # cater for 9.x.x release (icehouse)
-      install_bits openstack/rpc-support.yml
-    fi
+    install_bits openstack/rpc-support.yml
   fi
   if [ "${DEPLOY_INFRASTRUCTURE}" == "yes" ] && [ "${DEPLOY_LOGGING}" == "yes" ]; then
     # Configure Rsyslog

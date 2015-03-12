@@ -19,8 +19,8 @@ set -e -u -v +x
 
 ## Variables -----------------------------------------------------------------
 
-BOOTSTRAP_ANSIBLE=${BOOTSTRAP_ANSIBLE:-"yes"}
-PLAYBOOK_PATH=${PLAYBOOK_PATH:-"rpc_deployment/playbooks"}
+export BOOTSTRAP_ANSIBLE=${BOOTSTRAP_ANSIBLE:-"yes"}
+export PLAYBOOK_PATH=${PLAYBOOK_PATH:-"rpc_deployment/playbooks"}
 
 ## Functions -----------------------------------------------------------------
 
@@ -33,7 +33,7 @@ set -x
 
 # Bootstrap ansible if required
 if [ "${BOOTSTRAP_ANSIBLE}" == "yes" ]; then
-  source $(dirname ${0})/bootstrap-ansible.sh
+  bash $(dirname ${0})/bootstrap-ansible.sh
 fi
 
 # Check whether pip or pip2 is available

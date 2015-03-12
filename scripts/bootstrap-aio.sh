@@ -18,7 +18,7 @@
 set -e -u -v +x
 
 ## Vars
-FLUSH_IPTABLES=${FLUSH_IPTABLES:-"yes"}
+export FLUSH_IPTABLES=${FLUSH_IPTABLES:-"yes"}
 
 ## Functions -----------------------------------------------------------------
 
