@@ -19,11 +19,7 @@ set -e -u -v +x
 
 ## Variables -----------------------------------------------------------------
 
-ANSIBLE_DEPLOY_METHOD="pip"
-ANSIBLE_GIT_REPO="https://github.com/ansible/ansible"
-ANSIBLE_GIT_RELEASE="${ANSIBLE_GIT_RELEASE:-1.6.10}"
-ANSIBLE_WORKING_DIR="/opt/ansible_v${ANSIBLE_GIT_RELEASE}"
-GET_PIP_URL="${GET_PIP_URL:-https://mirror.rackspace.com/rackspaceprivatecloud/downloads/get-pip.py}"
+export GET_PIP_URL="${GET_PIP_URL:-https://mirror.rackspace.com/rackspaceprivatecloud/downloads/get-pip.py}"
 
 ## Functions -----------------------------------------------------------------
 
@@ -43,27 +39,8 @@ if [ ! "$(which pip)" ];then
     python2 /opt/get-pip.py || python /opt/get-pip.py
 fi
 
-if [ "${ANSIBLE_DEPLOY_METHOD}" == "git" ]; then
-  # If the working directory exists remove it
-  if [ -d "${ANSIBLE_WORKING_DIR}" ];then
-    rm -rf "${ANSIBLE_WORKING_DIR}"
-  fi
-  # Clone down the base ansible source
-  git clone "${ANSIBLE_GIT_REPO}" "${ANSIBLE_WORKING_DIR}"
-  pushd "${ANSIBLE_WORKING_DIR}"
-    git checkout "v${ANSIBLE_GIT_RELEASE}"
-    git submodule update --init --recursive
-  popd
-  # Install requirements if there are any
-  if [ -f "${ANSIBLE_WORKING_DIR}/requirements.txt" ];then
-    pip2 install -r "${ANSIBLE_WORKING_DIR}/requirements.txt" || pip install -r "${ANSIBLE_WORKING_DIR}/requirements.txt"
-  fi
-  # Install ansible
-  pip2 install "${ANSIBLE_WORKING_DIR}" || pip install "${ANSIBLE_WORKING_DIR}"
-else
-  # Use pip to install ansible
-  pip install ansible==${ANSIBLE_GIT_RELEASE}
-fi
+# Use pip to install ansible
+pip install ansible==1.6.10
 
 set +x
 info_block "Ansible is now bootstrapped and ready for use."

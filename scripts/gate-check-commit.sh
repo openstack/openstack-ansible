@@ -19,19 +19,17 @@ set -e -u -v +x
 
 ## Variables -----------------------------------------------------------------
 
-ADMIN_PASSWORD=${ADMIN_PASSWORD:-"secrete"}
-BOOTSTRAP_ANSIBLE=${BOOTSTRAP_ANSIBLE:-"yes"}
-BOOTSTRAP_AIO=${BOOTSTRAP_AIO:-"yes"}
-DEPLOY_SWIFT=${DEPLOY_SWIFT:-"yes"}
-DEPLOY_TEMPEST=${DEPLOY_TEMPEST:-"yes"}
-RUN_PLAYBOOKS=${RUN_PLAYBOOKS:-"yes"}
-RUN_TEMPEST=${RUN_TEMPEST:-"yes"}
-CONFIG_PREFIX=${CONFIG_PREFIX:-"rpc"}
-TEMPEST_FLAT_CIDR=${TEMPEST_FLAT_CIDR:-"172.29.248.0/22"}
-TEMPEST_FLAT_GATEWAY=${TEMPEST_FLAT_GATEWAY:-"172.29.248.100"}
-PLAYBOOK_DIRECTORY=${PLAYBOOK_DIRECTORY:-"${CONFIG_PREFIX}_deployment"}
-ANSIBLE_PARAMETERS=${ANSIBLE_PARAMETERS:-"--forks 10 -vvvv"}
-SYMLINK_DIR=${SYMLINK_DIR:-"$(pwd)/logs"}
+export ADMIN_PASSWORD=${ADMIN_PASSWORD:-"secrete"}
+export BOOTSTRAP_ANSIBLE=${BOOTSTRAP_ANSIBLE:-"yes"}
+export BOOTSTRAP_AIO=${BOOTSTRAP_AIO:-"yes"}
+export DEPLOY_SWIFT=${DEPLOY_SWIFT:-"yes"}
+export DEPLOY_TEMPEST=${DEPLOY_TEMPEST:-"yes"}
+export RUN_PLAYBOOKS=${RUN_PLAYBOOKS:-"yes"}
+export RUN_TEMPEST=${RUN_TEMPEST:-"yes"}
+export TEMPEST_FLAT_CIDR=${TEMPEST_FLAT_CIDR:-"172.29.248.0/22"}
+export TEMPEST_FLAT_GATEWAY=${TEMPEST_FLAT_GATEWAY:-"172.29.248.100"}
+export ANSIBLE_PARAMETERS=${ANSIBLE_PARAMETERS:-"--forks 10 -vvvv"}
+export SYMLINK_DIR=${SYMLINK_DIR:-"$(pwd)/logs"}
 # tempest and testr options, default is to run tempest in serial
 export RUN_TEMPEST_OPTS=${RUN_TEMPEST_OPTS:-'--serial'}
 export TESTR_OPTS=${TESTR_OPTS:-''}
@@ -44,7 +42,7 @@ info_block "Checking for required libraries." || source $(dirname ${0})/scripts-
 
 # ensure that the current kernel can support vxlan
 if ! modprobe vxlan; then
-  MINIMUM_KERNEL_VERSION=$(awk '/required_kernel/ {print $2}' ${PLAYBOOK_DIRECTORY}/inventory/group_vars/all.yml)
+  MINIMUM_KERNEL_VERSION=$(awk '/required_kernel/ {print $2}' rpc_deployment/inventory/group_vars/all.yml)
   info_block "A minimum kernel version of ${MINIMUM_KERNEL_VERSION} is required for vxlan support."
   exit 1
 fi
@@ -54,12 +52,12 @@ set +x && get_instance_info && set -x
 
 # Bootstrap ansible if required
 if [ "${BOOTSTRAP_ANSIBLE}" == "yes" ]; then
-  source $(dirname ${0})/bootstrap-ansible.sh
+  bash $(dirname ${0})/bootstrap-ansible.sh
 fi
 
 # Bootstrap an AIO setup if required
 if [ "${BOOTSTRAP_AIO}" == "yes" ]; then
-  source $(dirname ${0})/bootstrap-aio.sh
+  bash $(dirname ${0})/bootstrap-aio.sh
 fi
 
 # Get initial host information and reset verbosity
@@ -69,10 +67,10 @@ set +x && get_instance_info && set -x
 pip2 install -r requirements.txt || pip install -r requirements.txt
 
 # Copy the base etc files
-if [ ! -d "/etc/${CONFIG_PREFIX}_deploy" ];then
-  cp -R etc/${CONFIG_PREFIX}_deploy /etc/
+if [ ! -d "/etc/rpc_deploy" ];then
+  cp -R etc/rpc_deploy /etc/
 
-  USER_VARS_PATH="/etc/${CONFIG_PREFIX}_deploy/user_variables.yml"
+  USER_VARS_PATH="/etc/rpc_deploy/user_variables.yml"
 
   # Adjust any defaults to suit the AIO
   # commented lines are removed by pw-token gen, so this substitution must
@@ -115,8 +113,8 @@ if [ ! -d "/etc/${CONFIG_PREFIX}_deploy" ];then
 
   if [ "${BOOTSTRAP_AIO}" == "yes" ]; then
     # adjust the default user configuration for the AIO
-    USER_CONFIG_PATH="/etc/${CONFIG_PREFIX}_deploy/${CONFIG_PREFIX}_user_config.yml"
-    ENV_CONFIG_PATH="/etc/${CONFIG_PREFIX}_deploy/${CONFIG_PREFIX}_environment.yml"
+    USER_CONFIG_PATH="/etc/rpc_deploy/rpc_user_config.yml"
+    ENV_CONFIG_PATH="/etc/rpc_deploy/rpc_environment.yml"
     sed -i "s/environment_version: .*/environment_version: $(md5sum ${ENV_CONFIG_PATH} | awk '{print $1}')/" ${USER_CONFIG_PATH}
     SERVER_IP_ADDRESS="$(ip -o -4 addr show dev eth0 | awk -F '[ /]+' '/global/ {print $4}')"
     sed -i "s/external_lb_vip_address: .*/external_lb_vip_address: ${SERVER_IP_ADDRESS}/" ${USER_CONFIG_PATH}
@@ -145,5 +143,5 @@ fi
 
 # Run the tempest tests if required
 if [ "${RUN_TEMPEST}" == "yes" ]; then
-  source $(dirname ${0})/run-tempest.sh
+  bash $(dirname ${0})/run-tempest.sh
 fi

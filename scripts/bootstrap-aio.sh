@@ -18,8 +18,8 @@
 set -e -u -v +x
 
 ## Vars
-DEPLOY_SWIFT=${DEPLOY_SWIFT:-"yes"}
-FLUSH_IPTABLES=${FLUSH_IPTABLES:-"yes"}
+export DEPLOY_SWIFT=${DEPLOY_SWIFT:-"yes"}
+export FLUSH_IPTABLES=${FLUSH_IPTABLES:-"yes"}
 
 ## Functions -----------------------------------------------------------------
 
