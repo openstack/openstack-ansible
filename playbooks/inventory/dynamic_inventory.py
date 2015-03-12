@@ -766,6 +766,8 @@ def _ensure_inventory_uptodate(inventory, container_skel):
         for rh in REQUIRED_HOSTVARS:
             if rh not in value:
                 value[rh] = None
+                if rh == 'container_networks':
+                    value[rh] = {}
 
     for key, value in container_skel.iteritems():
         item = inventory.get(key)
