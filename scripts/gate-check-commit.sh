@@ -82,9 +82,7 @@ if [ "${RUN_PLAYBOOKS}" == "yes" ]; then
       print
     }
   "
-  source $(dirname ${0})/run-playbooks.sh > ansible-logs.tmp
-  awk "${strip_debug}" < ansible-logs.tmp
-  rm -f ansible-logs.tmp
+  bash $(dirname ${0})/run-playbooks.sh | awk "${strip_debug}"
 fi
 
 # Run the tempest tests if required
