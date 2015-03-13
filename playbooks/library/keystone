@@ -461,7 +461,7 @@ class ManageKeystone(object):
         :param name: ``str``  Name of the user.
         """
         for entry in self.keystone.users.list():
-            if entry.name == name:
+            if getattr(entry, 'name', None) == name:
                 return entry
         else:
             return None
