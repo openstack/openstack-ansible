@@ -14,7 +14,7 @@
 # limitations under the License.
 
 ## Shell Opts ----------------------------------------------------------------
-set -e -u -v -x
+set -e -u -x
 
 
 ## Variables -----------------------------------------------------------------
@@ -57,8 +57,8 @@ pushd "playbooks"
     # This is good when using a host with multiple times, IE: Rebuilding.
     ansible hosts -m shell -a 'lxc-system-manage flush-net-cache'
 
-    # Get host information post initial setup and reset verbosity
-    set +x && get_instance_info && set -x
+    # Log some data about the instance and the rest of the system
+    log_instance_info
   fi
 
   if [ "${DEPLOY_LB}" == "yes" ]; then

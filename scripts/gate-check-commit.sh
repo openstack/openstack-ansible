@@ -14,7 +14,7 @@
 # limitations under the License.
 
 ## Shell Opts ----------------------------------------------------------------
-set -e -u -v +x
+set -e -u +x
 
 ## Variables -----------------------------------------------------------------
 export ANSIBLE_DISABLE_COLOR=${ANSIBLE_DISABLE_COLOR:-"yes"}
@@ -48,8 +48,6 @@ export TESTR_OPTS=${TESTR_OPTS:-''}
 info_block "Checking for required libraries." 2> /dev/null || source $(dirname ${0})/scripts-library.sh
 
 ## Main ----------------------------------------------------------------------
-# Get initial host information and reset verbosity
-set +x && get_instance_info && set -x
 
 # Remove color options
 if [ "${ANSIBLE_DISABLE_COLOR}" == "yes" ]; then
@@ -67,9 +65,6 @@ fi
 if [ "${BOOTSTRAP_ANSIBLE}" == "yes" ]; then
   source $(dirname ${0})/bootstrap-ansible.sh
 fi
-
-# Get initial host information and reset verbosity
-set +x && get_instance_info && set -x
 
 # Run the ansible playbooks if required
 if [ "${RUN_PLAYBOOKS}" == "yes" ]; then

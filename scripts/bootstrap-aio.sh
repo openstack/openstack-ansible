@@ -15,7 +15,7 @@
 # limitations under the License.
 
 ## Shell Opts ----------------------------------------------------------------
-set -e -u -v -x
+set -e -u -x
 
 
 ## Vars ----------------------------------------------------------------------
@@ -54,6 +54,9 @@ if ! [ -d $SYMLINK_DIR ] ; then
     echo "Could not create a link from /openstack/log to ${SYMLINK_DIR}"
     exit_fail
 fi
+
+# Log some data about the instance and the rest of the system
+log_instance_info
 
 # Ensure that the current kernel can support vxlan
 if ! modprobe vxlan; then
@@ -265,5 +268,7 @@ if [ "${DEPLOY_SWIFT}" == "yes" ]; then
   sed -i "s/glance_swift_store_user:.*/glance_swift_store_user: '{{ keystone_admin_user_name }}:{{ keystone_admin_tenant_name }}'/" /etc/openstack_deploy/user_secrets.yml
 fi
 
-set +x +v
+# Log some data about the instance and the rest of the system
+log_instance_info
+
 info_block "The system has been prepared for an all-in-one build."

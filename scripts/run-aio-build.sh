@@ -15,7 +15,7 @@
 
 ## Shell Opts ----------------------------------------------------------------
 
-set -e -u -v +x
+set -e -u +x
 
 ## Variables -----------------------------------------------------------------
 export REPO_URL=${REPO_URL:-"https://github.com/stackforge/os-ansible-deployment.git"}

@@ -204,19 +204,29 @@ function info_block(){
   echo "${LINE}"
 }
 
+function log_instance_info() {
+  set +x
+  # Get host information post initial setup and reset verbosity
+  if [ ! -d "/openstack/log/instance-info" ];then
+    mkdir -p "/openstack/log/instance-info"
+  fi
+  get_instance_info &> /openstack/log/instance-info/host_info_$(date +%s).log
+  set -x
+}
+
 # Get instance info
 function get_instance_info() {
   set +x
   info_block 'Available Memory'
-  free -mt
+  free -mt || true
   info_block 'Available Disk Space'
-  df -h
+  df -h || true
   info_block 'Mounted Devices'
-  mount
+  mount || true
   info_block 'Block Devices'
-  lsblk
+  lsblk || true
   info_block 'Block Devices Information'
-  blkid
+  blkid || true
   info_block 'Block Device Partitions'
   for i in /dev/xv* /dev/sd* /dev/vd*; do
     if [ -b "$i" ];then
@@ -224,27 +234,27 @@ function get_instance_info() {
     fi
   done
   info_block 'PV Information'
-  pvs
+  pvs || true
   info_block 'VG Information'
-  vgs
+  vgs || true
   info_block 'LV Information'
-  lvs
+  lvs || true
   info_block 'CPU Information'
-  which lscpu && lscpu
+  which lscpu && lscpu || true
   info_block 'Kernel Information'
-  uname -a
+  uname -a || true
   info_block 'Container Information'
-  which lxc-ls && lxc-ls --fancy
+  which lxc-ls && lxc-ls --fancy || true
   info_block 'Firewall Information'
-  iptables -vnL
-  iptables -t nat -vnL
-  iptables -t mangle -vnL
+  iptables -vnL || true
+  iptables -t nat -vnL || true
+  iptables -t mangle -vnL || true
   info_block 'Network Devices'
-  ip a
+  ip a || true
   info_block 'Network Routes'
-  ip r
+  ip r || true
   info_block 'Trace Path from google'
-  tracepath 8.8.8.8 -m 5
+  tracepath 8.8.8.8 -m 5 || true
   info_block 'XEN Server Information'
   if (which xenstore-read);then
     xenstore-read vm-data/provider_data/provider || echo "\nxenstore Read Failed - Skipping\n"
