@@ -13,9 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: memcached-install.yml
-- include: repo-install.yml
-- include: galera-install.yml
-- include: rabbitmq-install.yml
-- include: utility-install.yml
-- include: rsyslog-install.yml
+- include: rsyslog_server_pre_install.yml
+- include: rsyslog_server_install.yml
+- include: rsyslog_server_post_install.yml

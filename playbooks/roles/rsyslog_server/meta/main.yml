@@ -13,9 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: memcached-install.yml
-- include: repo-install.yml
-- include: galera-install.yml
-- include: rabbitmq-install.yml
-- include: utility-install.yml
-- include: rsyslog-install.yml
+galaxy_info:
+  author: rcbops
+  description: Rsyslog server install
+  company: Rackspace
+  license: Apache2
+  min_ansible_version: 1.6.6
+  platforms:
+    - name: Ubuntu
+      versions:
+        - trusty
+  categories:
+    - cloud
+    - rsyslog
+    - development
+    - openstack
+dependencies: []

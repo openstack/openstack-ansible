@@ -13,9 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: memcached-install.yml
-- include: repo-install.yml
-- include: galera-install.yml
-- include: rabbitmq-install.yml
-- include: utility-install.yml
-- include: rsyslog-install.yml
+- name: Ensure ownership on working directories are correct
+  file:
+    path: "{{ item }}"
+    state: "directory"
+    owner: "syslog"
+    group: "adm"
+  with_items:
+    - "{{ rsyslog_server_storage_directory }}"
+    - "{{ rsyslog_server_spool_directory }}"
+  tags:
+    - rsyslog-server-dirs
