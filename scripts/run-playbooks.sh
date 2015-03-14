@@ -84,14 +84,6 @@ pushd "playbooks"
     fi
   fi
 
-  if [ "${DEPLOY_SWIFT}" == "yes" ] || [ "${DEPLOY_OPENSTACK}" == "yes" ]; then
-    # Install all of rsyslog
-    install_bits rsyslog-install.yml
-
-    # Hard restart the rsyslog container(s)
-    ansible hosts -m shell -a 'for i in $(lxc-ls | grep "rsyslog"); do lxc-stop -kn $i; lxc-start -d -n $i; done'
-  fi
-
   if [ "${DEPLOY_OPENSTACK}" == "yes" ]; then
     # install all of the compute Bits
     install_bits os-keystone-install.yml
@@ -117,10 +109,6 @@ pushd "playbooks"
     install_bits os-tempest-install.yml
   fi
 
-  if [ "${DEPLOY_INFRASTRUCTURE}" == "yes" ] && [ "${DEPLOY_LOGGING}" == "yes" ]; then
-    # Reconfigure Rsyslog
-    install_bits rsyslog-install.yml
-  fi
 popd
 
 # print the report data

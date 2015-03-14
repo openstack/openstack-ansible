@@ -23,9 +23,6 @@ component_skel:
   cinder_volume:
     belongs_to:
       - cinder_all
-  elasticsearch:
-    belongs_to:
-      - elasticsearch_all
   galera:
     belongs_to:
       - galera_all
@@ -53,12 +50,6 @@ component_skel:
   keystone:
     belongs_to:
       - keystone_all
-  kibana:
-    belongs_to:
-      - kibana_all
-  logstash:
-    belongs_to:
-      - logstash_all
   memcached:
     belongs_to:
       - memcached_all
@@ -152,14 +143,6 @@ container_skel:
     properties:
       service_name: cinder
       container_release: trusty
-  elasticsearch_container:
-    belongs_to:
-      - log_containers
-    contains:
-      - elasticsearch
-    properties:
-      service_name: elasticsearch
-      container_release: trusty
   galera_container:
     belongs_to:
       - infra_containers
@@ -216,22 +199,6 @@ container_skel:
       - keystone
     properties:
       service_name: keystone
-      container_release: trusty
-  kibana_container:
-    belongs_to:
-      - log_containers
-    contains:
-      - kibana
-    properties:
-      service_name: kibana
-      container_release: trusty
-  logstash_container:
-    belongs_to:
-      - log_containers
-    contains:
-      - logstash
-    properties:
-      service_name: logstash
       container_release: trusty
   memcached_container:
     belongs_to:
@@ -355,15 +322,7 @@ container_skel:
       container_release: trusty
   rsyslog_container:
     belongs_to:
-      - infra_containers
-      - os-infra_containers
-      - shared-infra_containers
-      - identity_containers
-      - compute_containers
-      - storage_containers
       - log_containers
-      - network_containers
-      - repo-infra_containers
     contains:
       - rsyslog
     properties:

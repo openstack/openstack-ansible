@@ -148,30 +148,6 @@ haproxy_service_configs:
       haproxy_backend_options:
        - "ssl-hello-chk"
   - service:
-      haproxy_service_name: elasticsearch
-      haproxy_backend_nodes: "{{ [groups['elasticsearch'][0]] }}"
-      haproxy_port: 9200
-      haproxy_balance_type: tcp
-  - service:
-      haproxy_service_name: kibana
-      haproxy_backend_nodes: "{{ [groups['kibana'][0]] }}"
-      haproxy_port: 8888
-      haproxy_backend_port: 80
-      haproxy_balance_type: http
-      haproxy_balance_alg: source
-      haproxy_backend_options:
-        - "forwardfor"
-        - "httpchk"
-        - "httplog"
-  - service:
-      haproxy_service_name: kibana_ssl
-      haproxy_backend_nodes: "{{ [groups['kibana'][0]] }}"
-      haproxy_port: 8443
-      haproxy_balance_type: tcp
-      haproxy_balance_alg: source
-      haproxy_backend_options:
-        - "ssl-hello-chk"
-  - service:
       haproxy_service_name: swift_proxy
       haproxy_backend_nodes: "{{ groups['swift_proxy'] }}"
       haproxy_balance_alg: source
