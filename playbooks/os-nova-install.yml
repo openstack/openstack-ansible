@@ -77,6 +77,11 @@
   roles:
     - { role: "os_nova", tags: [ "os-nova" ] }
     - { role: "openstack_openrc", tags: [ "openstack-openrc" ] }
+    - role: "rsyslog_client"
+      rsyslog_client_log_dir: "/var/log/nova"
+      rsyslog_client_config_name: "99-nova-rsyslog-client.conf"
+      tags:
+        - "nova-rsyslog-client"
   vars:
     galera_address: "{{ internal_lb_vip_address }}"
     ansible_hostname: "{{ container_name }}"

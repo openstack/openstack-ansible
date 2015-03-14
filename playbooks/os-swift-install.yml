@@ -47,6 +47,11 @@
         - swift-logs
   roles:
     - { role: "os_swift", tags: [ "os-swift" ] }
+    - role: "rsyslog_client"
+      rsyslog_client_log_dir: "/var/log/swift"
+      rsyslog_client_config_name: "99-swift-rsyslog-client.conf"
+      tags:
+        - "swift-rsyslog-client"
   vars:
     ansible_hostname: "{{ container_name }}"
     ansible_ssh_host: "{{ container_address }}"

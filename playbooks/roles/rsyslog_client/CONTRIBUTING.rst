@@ -1,6 +1,6 @@
-OpenStack rsyslog client
+OpenStack rsyslog server
 ########################
-:tags: openstack, rsyslog, client, cloud, ansible
+:tags: openstack, rsyslog, server, cloud, ansible
 :category: \*nix
 
 contributor guidelines

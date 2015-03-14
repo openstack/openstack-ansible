@@ -50,6 +50,11 @@
         - heat-logs
   roles:
     - { role: "os_heat", tags: [ "os-heat" ] }
+    - role: "rsyslog_client"
+      rsyslog_client_log_dir: "/var/log/heat"
+      rsyslog_client_config_name: "99-heat-rsyslog-client.conf"
+      tags:
+        - "heat-rsyslog-client"
   vars:
     galera_address: "{{ internal_lb_vip_address }}"
     ansible_hostname: "{{ container_name }}"

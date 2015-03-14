@@ -77,6 +77,11 @@
   roles:
     - { role: "os_neutron", tags: [ "os-neutron" ] }
     - { role: "openstack_openrc", tags: [ "openstack-openrc" ] }
+    - role: "rsyslog_client"
+      rsyslog_client_log_dir: "/var/log/neutron"
+      rsyslog_client_config_name: "99-neutron-rsyslog-client.conf"
+      tags:
+        - "neutron-rsyslog-client"
   vars:
     galera_address: "{{ internal_lb_vip_address }}"
     ansible_hostname: "{{ container_name }}"

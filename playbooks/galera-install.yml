@@ -44,6 +44,14 @@
         - galera-ssh-wait
   roles:
     - { role: "galera_server", tags: [ "galera-server" ] }
+    - role: "rsyslog_client"
+      rsyslog_client_log_dir: "/var/log/mysql"
+      rsyslog_client_log_files:
+        - /var/log/mysql.log
+        - /var/log/mysql.err
+      rsyslog_client_config_name: "99-galera-rsyslog-client.conf"
+      tags:
+        - "galera-rsyslog-client"
   vars:
     galera_wsrep_node_name: "{{ container_name }}"
     ansible_hostname: "{{ container_name }}"

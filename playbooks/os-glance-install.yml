@@ -75,6 +75,11 @@
   roles:
     - { role: "os_glance", tags: [ "os-glance" ] }
     - { role: "openstack_openrc", tags: [ "openstack-openrc" ] }
+    - role: "rsyslog_client"
+      rsyslog_client_log_dir: "/var/log/glance"
+      rsyslog_client_config_name: "99-glance-rsyslog-client.conf"
+      tags:
+        - "glance-rsyslog-client"
   vars:
     galera_address: "{{ internal_lb_vip_address }}"
     ansible_hostname: "{{ container_name }}"

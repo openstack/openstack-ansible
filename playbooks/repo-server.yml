@@ -44,6 +44,14 @@
         - repo-ssh-wait
   roles:
     - { role: "repo_server", tags: [ "repo-server" ] }
+    - role: "rsyslog_client"
+      rsyslog_client_log_dir: "/var/log/nginx"
+      rsyslog_client_log_files:
+        - /var/www/repo_builder.log
+        - /var/log/rsyncd.log
+      rsyslog_client_config_name: "99-repo-rsyslog-client.conf"
+      tags:
+        - "repo-rsyslog-client"
   vars:
     pip_no_index: false
     ansible_hostname: "{{ container_name }}"

@@ -1,0 +1,91 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Stop rsyslog
+  service:
+    name: "rsyslog"
+    state: "stopped"
+  failed_when: false
+  tags:
+    - rsyslog-client-config
+
+- name: Rsyslog Setup
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "root"
+    group: "root"
+  with_items:
+    - { src: "50-default.conf", dest: "/etc/rsyslog.d/50-default.conf" }
+  tags:
+    - rsyslog-client-config
+
+- name: Find all log files
+  shell: |
+    find -L '{{ rsyslog_client_log_dir }}' -type f -name '*.log'
+  register: log_files
+  when: >
+    rsyslog_client_log_dir is defined
+  tags:
+    - rsyslog-client-config
+
+- name: Set fact for combined log files list and found logs
+  set_fact:
+    rsyslog_client_log_files: "{{ log_files.stdout_lines | union(rsyslog_client_log_files) }}"
+  when: >
+    rsyslog_client_log_files is defined and
+    log_files | success
+  tags:
+    - rsyslog-client-config
+
+- name: Set fact for found log files list
+  set_fact:
+    rsyslog_client_log_files: "{{ log_files.stdout_lines }}"
+  when: >
+    rsyslog_client_log_files is not defined and
+    log_files | success
+  tags:
+    - rsyslog-client-config
+
+- name: Check rsyslog_client_log_files is defined
+  fail:
+    msg: >
+      There were no log files defined in `rsyslog_client_log_files`. Please use that
+      variable to set the files that you want rsyslog to begin shipping logs for. This
+      variable is a list that requires the full path to all log files. You can also set
+      `rsyslog_client_log_dir` which will find all "*.log" files using the path
+      provided.
+  when: >
+    rsyslog_client_log_files is not defined
+
+- name: Write rsyslog config for found log files
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "root"
+    group: "root"
+  with_items:
+    - { src: "99-rsyslog.conf.j2", dest: "/etc/rsyslog.d/{{ rsyslog_client_config_name }}" }
+    - { src: "os_aggregate_storage.j2", dest: "/etc/logrotate.d/os_aggregate_storage" }
+    - { src: "rsyslog.conf.j2", dest: "/etc/rsyslog.conf" }
+  tags:
+    - rsyslog-client-config
+
+- name: Start rsyslog
+  service:
+    name: "rsyslog"
+    state: "started"
+  tags:
+    - rsyslog-client-config

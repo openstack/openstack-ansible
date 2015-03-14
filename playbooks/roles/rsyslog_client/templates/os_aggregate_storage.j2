@@ -1,0 +1,14 @@
+{% for log_file in rsyslog_client_log_files %}
+{{ log_file }}
+{% endfor %}
+{
+        copytruncate
+        weekly
+        missingok
+        rotate 14
+        compress
+        dateext
+        maxage 60
+        notifempty
+        nocreate
+}
