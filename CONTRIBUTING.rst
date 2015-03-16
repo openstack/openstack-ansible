@@ -43,8 +43,17 @@ Submitting Code
 * Patches should be focused on solving one problem at a time. If the review is overly complex or generally large the initial commit will receive a "**-2**" and the contributor will be asked to split the patch up across multiple reviews. In the case of complex feature additions the design and implementation of the feature should be done in such a way that it can be submitted in multiple patches using dependencies. Using dependent changes should always aim to result in a working build throughout the dependency chain. More information on `advanced gerrit usage and dependent changes can be found here`_.
 * All patch sets should adhere to the Ansible Style Guide listed here as well as adhere to the Ansible best practices when possible. `Ansible best practices can be found here`_.
 * All changes should be clearly listed in the commit message, with an associated bug id/blueprint along with any extra information where applicable.
-* When cherry-picking a commit from one branch to another the commit message should be amended with any files that may have been in conflict while performing the cherry-pick operation. Additionally, cherry-pick commit messages should contain the original commit *SHA* at the bottom of the new commit message. This can be done with ``cherry-pick -x``. Here's more information on `Submitting a change to a branch for review`_.
-* Refactoring work will never be backported to a "released" branch. Additionally, refactoring work should never include additional "rider" features. Features that may pertain to something that was re-factored should be raised as an issue and submitted in subsequent patches.
+* Refactoring work should never include additional "rider" features. Features that may pertain to something that was re-factored should be raised as an issue and submitted in prior or subsequent patches.
+
+Backporting
+-----------
+* Backporting is defined as the act of reproducing a change from another branch. Unclean/squashed/modified cherry-picks and complete reimplementations are OK.
+* Backporting is often done by using the same code (via cherry picking), but this is not always the case. This method is preferred when the cherry-pick provides a complete solution for the targeted problem.
+* When cherry-picking a commit from one branch to another the commit message should be amended with any files that may have been in conflict while performing the cherry-pick operation. Additionally, cherry-pick commit messages should contain the original commit *SHA* near the bottom of the new commit message. This can be done with ``cherry-pick -x``. Here's more information on `Submitting a change to a branch for review`_.
+* Every backport commit must still only solve one problem, as per the guidelines in `Submitting Code`_.
+* If a backport is a squashed set of cherry-picked commits, the original SHAs should be referenced in the commit message and the reason for squashing the commits should be clearly explained.
+* When a cherry-pick is modified in any way, the changes made and the reasons for them must be explicitly expressed in the commit message.
+* Refactoring work must not be backported to a "released" branch.
 
 
 Style Guide
