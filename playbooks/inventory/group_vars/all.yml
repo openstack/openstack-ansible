@@ -25,6 +25,11 @@ repo_server_port: 8181
 repo_pip_default_index: "http://rpc-repo.rackspace.com/pools"
 
 
+## Rsyslog server
+rsyslog_server_spool_directory: /var/spool/rsyslog
+rsyslog_server_storage_directory: /var/log/log-storage
+
+
 ## OpenStack Source Code Release
 openstack_release: master
 # URL for the frozen internal openstack repo.
