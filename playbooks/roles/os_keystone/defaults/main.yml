@@ -125,12 +125,13 @@ keystone_apt_packages:
 
 # Common pip packages
 keystone_pip_packages:
-  - repoze.lru
-  - pbr
-  - MySQL-python
-  - pycrypto
-  - python-memcached
-  - python-keystoneclient
-  - keystonemiddleware
-  - lxml
   - keystone
+  - keystonemiddleware
+  - ldappool
+  - lxml
+  - MySQL-python
+  - pbr
+  - pycrypto
+  - python-keystoneclient
+  - python-memcached
+  - repoze.lru
