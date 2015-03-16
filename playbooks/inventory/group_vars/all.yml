@@ -57,10 +57,6 @@ galera_root_user: root
 # Repositories
 
 
-## Logstash
-logstash_port: 5544
-
-
 ## Pip install
 # Lock down pip to only a specific version of pip
 pip_get_pip_options:  "--no-index --find-links={{ openstack_upstream_url }}/os-releases/{{ openstack_release }}"
