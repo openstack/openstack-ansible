@@ -121,7 +121,9 @@ if [ "${RUN_PLAYBOOKS}" == "yes" ]; then
       print
     }
   "
+  set -o pipefail
   bash $(dirname ${0})/run-playbooks.sh | awk "${strip_debug}"
+  set +o pipefail
 fi
 
 # Run the tempest tests if required
