@@ -43,6 +43,14 @@ export SYMLINK_DIR=${SYMLINK_DIR:-"$(pwd)/logs"}
 export RUN_TEMPEST_OPTS=${RUN_TEMPEST_OPTS:-'--serial'}
 export TESTR_OPTS=${TESTR_OPTS:-''}
 
+# enable fatal deprecation warnings
+export CINDER_FATAL_DEPRECATIONS=yes
+export GLANCE_FATAL_DEPRECATIONS=yes
+export HEAT_FATAL_DEPRECATIONS=yes
+export KEYSTONE_FATAL_DEPRECATIONS=yes
+export NEUTRON_FATAL_DEPRECATIONS=yes
+export NOVA_FATAL_DEPRECATIONS=yes
+export TEMPEST_FATAL_DEPRECATIONS=yes
 
 ## Functions -----------------------------------------------------------------
 info_block "Checking for required libraries." 2> /dev/null || source $(dirname ${0})/scripts-library.sh

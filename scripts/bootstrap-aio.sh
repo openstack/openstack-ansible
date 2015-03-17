@@ -29,6 +29,15 @@ export NOVA_VIRT_TYPE=${NOVA_VIRT_TYPE:-"qemu"}
 export TEMPEST_FLAT_CIDR=${TEMPEST_FLAT_CIDR:-"172.29.248.0/22"}
 export FLUSH_IPTABLES=${FLUSH_IPTABLES:-"yes"}
 
+# Default disabled fatal deprecation warnings
+export CINDER_FATAL_DEPRECATIONS=${CINDER_FATAL_DEPRECATIONS:-"no"}
+export GLANCE_FATAL_DEPRECATIONS=${GLANCE_FATAL_DEPRECATIONS:-"no"}
+export HEAT_FATAL_DEPRECATIONS=${HEAT_FATAL_DEPRECATIONS:-"no"}
+export KEYSTONE_FATAL_DEPRECATIONS=${KEYSTONE_FATAL_DEPRECATIONS:-"no"}
+export NEUTRON_FATAL_DEPRECATIONS=${NEUTRON_FATAL_DEPRECATIONS:-"no"}
+export NOVA_FATAL_DEPRECATIONS=${NOVA_FATAL_DEPRECATIONS:-"no"}
+export TEMPEST_FATAL_DEPRECATIONS=${TEMPEST_FATAL_DEPRECATIONS:-"no"}
+
 
 ## Library Check -------------------------------------------------------------
 info_block "Checking for required libraries." 2> /dev/null || source $(dirname ${0})/scripts-library.sh
@@ -265,6 +274,35 @@ if [ "${DEPLOY_SWIFT}" == "yes" ]; then
   sed -i "s/glance_swift_store_key:.*/glance_swift_store_key: '{{ keystone_auth_admin_password }}'/" /etc/openstack_deploy/user_secrets.yml
   sed -i "s/glance_swift_store_region:.*/glance_swift_store_region: ${SERVICE_REGION}/" /etc/openstack_deploy/user_secrets.yml
   sed -i "s/glance_swift_store_user:.*/glance_swift_store_user: '{{ keystone_admin_user_name }}:{{ keystone_admin_tenant_name }}'/" /etc/openstack_deploy/user_secrets.yml
+fi
+
+# Update fatal_deprecations settings
+if [ "${CINDER_FATAL_DEPRECATIONS}" == "yes" ]; then
+  echo "cinder_fatal_deprecations: True" | tee -a /etc/openstack_deploy/user_variables.yml
+fi
+
+if [ "${GLANCE_FATAL_DEPRECATIONS}" == "yes" ]; then
+  echo "glance_fatal_deprecations: True" | tee -a /etc/openstack_deploy/user_variables.yml
+fi
+
+if [ "${HEAT_FATAL_DEPRECATIONS}" == "yes" ]; then
+  echo "heat_fatal_deprecations: True" | tee -a /etc/openstack_deploy/user_variables.yml
+fi
+
+if [ "${KEYSTONE_FATAL_DEPRECATIONS}" == "yes" ]; then
+  echo "keystone_fatal_deprecations: True" | tee -a /etc/openstack_deploy/user_variables.yml
+fi
+
+if [ "${NEUTRON_FATAL_DEPRECATIONS}" == "yes" ]; then
+  echo "neutron_fatal_deprecations: True" | tee -a /etc/openstack_deploy/user_variables.yml
+fi
+
+if [ "${NOVA_FATAL_DEPRECATIONS}" == "yes" ]; then
+  echo "nova_fatal_deprecations: True" | tee -a /etc/openstack_deploy/user_variables.yml
+fi
+
+if [ "${TEMPEST_FATAL_DEPRECATIONS}" == "yes" ]; then
+  echo "tempest_fatal_deprecations: True" | tee -a /etc/openstack_deploy/user_variables.yml
 fi
 
 # Log some data about the instance and the rest of the system
