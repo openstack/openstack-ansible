@@ -25,35 +25,33 @@ set -x
 # The only parameter this script takes is the name of a test list to use:
 # ./$0 <test_list_name>
 #
-# If a name is not supplied commit_multinode will be used.
+# If a name is not supplied scenario will be used.
 
-test_list_name=${1:-commit_multinode}
+test_list_name=${1:-scenario}
 testr_ouput_lines=${testr_output_lines:-100}
 RUN_TEMPEST_OPTS=${RUN_TEMPEST_OPTS:-''}
 TESTR_OPTS=${TESTR_OPTS:-''}
 
 
 # -------------------- Functions -------------------------
-# Test list functions. Each tempest test scenario (eg commit gate, nightly,
-# pre release) should have a function here to generate the list of tests that
+# Test list functions. Each tempest test scenario (eg scenario, api, smoke,
+# defcore) should have a function here to generate the list of tests that
 # should be run. Each function takes in the full list of tempest tests and
 # should output a filtered list.
 
-function gen_test_list_commit_multinode() {
+function gen_test_list_api() {
   # filter test list to produce list of tests to use.
-  egrep 'tempest\.api\.(identity|image|volume)'\
-    |grep -vi xml \
-    |grep -v compute \
-    |grep -v VolumesV.ActionsTest
+  egrep 'tempest\.api\.(identity|image|volume|network|compute|object_storage)'\
+    |grep -vi xml
 }
 
 # Run selected scenario tests
-function gen_test_list_commit_aio() {
+function gen_test_list_scenario() {
   egrep 'tempest\.scenario\.test_(minimum|swift|server|network)_basic(_ops)?'
 }
 
 # Run smoke tests
-function gen_test_list_nightly_heat_multinode() {
+function gen_test_list_smoke() {
   grep smoke
 }
 
