@@ -13,17 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Basic lxc host setup
-  hosts: "{{ host_group|default('hosts') }}"
-  max_fail_percentage: 20
-  user: root
-  roles:
-    - { role: "lxc_hosts", tags: [ "lxc-host", "host-setup" ] }
-    - { role: "py_from_git", tags: [ "lxc-libs" ] }
-    - role: "rsyslog_client"
-      rsyslog_client_log_dir: "/var/log/lxc"
-      rsyslog_client_config_name: "99-lxc-rsyslog-client.conf"
-      tags:
-        - "lxc-rsyslog-client"
-  vars_files:
-    - vars/repo_packages/python2_lxc.yml
+galaxy_info:
+  author: rcbops
+  description: Rsyslog log client setup
+  company: Rackspace
+  license: Apache2
+  min_ansible_version: 1.6.6
+  platforms:
+    - name: Ubuntu
+      versions:
+        - trusty
+  categories:
+    - client
+    - rsyslog
+    - development
+    - openstack
+dependencies: []

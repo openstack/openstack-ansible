@@ -87,6 +87,11 @@
         - cinder-logs
   roles:
     - { role: "os_cinder", tags: [ "os-cinder" ] }
+    - role: "rsyslog_client"
+      rsyslog_client_log_dir: "/var/log/cinder"
+      rsyslog_client_config_name: "99-cinder-rsyslog-client.conf"
+      tags:
+        - "cinder-rsyslog-client"
   vars:
     galera_address: "{{ internal_lb_vip_address }}"
     glance_host: "{{ internal_lb_vip_address }}"

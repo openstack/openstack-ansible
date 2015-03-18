@@ -50,6 +50,11 @@
         - horizon-logs
   roles:
     - { role: "os_horizon", tags: [ "os-horizon" ] }
+    - role: "rsyslog_client"
+      rsyslog_client_log_dir: "/var/log/apache2"
+      rsyslog_client_config_name: "99-horizon-rsyslog-client.conf"
+      tags:
+        - "horizon-rsyslog-client"
   vars:
     galera_address: "{{ internal_lb_vip_address }}"
     ansible_hostname: "{{ container_name }}"

@@ -1,0 +1,57 @@
+# {{ ansible_managed }}
+
+$WorkDirectory {{ rsyslog_client_spool_directory }}
+$template RFC3164fmt,"<%PRI%>%TIMESTAMP% %HOSTNAME% %syslogtag%%msg%"
+
+{% if groups['rsyslog_all'] is defined and groups['rsyslog_all'] %}
+# Log shipment rsyslog target servers
+{% for server in groups['rsyslog_all'] %}
+$ActionQueueFileName {{ server }}
+$ActionQueueSaveOnShutdown on
+$ActionQueueType LinkedList
+$ActionResumeRetryCount 250
+{% if rsyslog_client_tcp_reception == true %}
+*.* @@{{ hostvars[server]['ansible_ssh_host'] }}:{{ rsyslog_client_tcp_port }};RFC3164fmt
+{% endif %}
+{% if rsyslog_client_udp_reception == true %}
+*.* @{{ hostvars[server]['ansible_ssh_host'] }}:{{ rsyslog_client_udp_port }};RFC3164fmt
+{% endif %}
+
+{% endfor %}
+{% endif %}
+
+{% if rsyslog_client_user_defined_targets is defined %}
+# Log shipment user defined target servers
+{% for target in rsyslog_client_user_defined_targets %}
+$ActionQueueFileName {{ target.name }}
+$ActionQueueSaveOnShutdown on
+$ActionQueueType LinkedList
+$ActionResumeRetryCount 250
+{% if target.template is defined %}
+{{ target.template }}
+{% endif %}
+{% if target.proto == "udp" %}
+{% set action_sting = '*.* @@' %}
+{% elif target.proto == "tcp" %}
+{% set action_sting = '*.* @' %}
+{% endif %}
+{% if target.action_options is defined %}
+{{ action_sting }}{{ target.hostname }}:{{ target.port }};{{ target.action_options }}
+{% else %}
+{{ action_sting }}{{ target.hostname }}:{{ target.port }}
+{% endif %}
+
+{% endfor %}
+{% endif %}
+
+# Log files
+{% for log_file in rsyslog_client_log_files %}
+$InputFileName {{ log_file }}
+$InputFileTag {{ log_file.split('.log')[0] | basename }}:
+$InputFileStateFile state-{{ log_file.split('.log')[0] | basename }}
+$InputFileFacility local7
+$InputFilePollInterval 1
+$InputFilePersistStateInterval 1
+$InputRunFileMonitor
+
+{% endfor %}

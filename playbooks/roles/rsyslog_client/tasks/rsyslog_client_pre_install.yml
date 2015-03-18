@@ -13,17 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Basic lxc host setup
-  hosts: "{{ host_group|default('hosts') }}"
-  max_fail_percentage: 20
-  user: root
-  roles:
-    - { role: "lxc_hosts", tags: [ "lxc-host", "host-setup" ] }
-    - { role: "py_from_git", tags: [ "lxc-libs" ] }
-    - role: "rsyslog_client"
-      rsyslog_client_log_dir: "/var/log/lxc"
-      rsyslog_client_config_name: "99-lxc-rsyslog-client.conf"
-      tags:
-        - "lxc-rsyslog-client"
-  vars_files:
-    - vars/repo_packages/python2_lxc.yml
+- name: Ensure ownership on working directory is correct
+  file:
+    path: "{{ rsyslog_client_spool_directory }}"
+    state: "directory"
+    owner: "syslog"
+    group: "adm"
+  tags:
+    - rsyslog-client-dirs

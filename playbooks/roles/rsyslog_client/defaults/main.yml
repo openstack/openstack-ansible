@@ -1,0 +1,64 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+rsyslog_client_apt_repos:
+  - { repo: "ppa:adiscon/v8-stable", state: "present" }
+
+rsyslog_client_apt_packages:
+  - rsyslog
+
+rsyslog_client_spool_directory: /var/spool/rsyslog
+
+# Set the `rsyslog_client_log_dir` variable in to override log file
+# discovery process. This will force the logs from a given directory
+# to be shipped using rsyslog.
+# rsyslog_client_log_dir: /var/log/project
+
+# Set the `rsyslog_client_log_files` variable in list format to skip
+# log discovery all together and ship only log files that are explicitly
+# stated.
+# rsyslog_client_log_files:
+#   - /var/log/project/logfile1.log
+#   - /var/log/project/logfile2.log
+
+# Name of the configuration file that will be used client side.
+rsyslog_client_config_name: 99-rsyslog-client.conf
+
+# provides UDP syslog reception
+rsyslog_client_udp_reception: true
+rsyslog_client_udp_port: 514
+
+# provides TCP syslog reception
+rsyslog_client_tcp_reception: false
+rsyslog_client_tcp_port: 514
+
+# Set the `rsyslog_client_user_defined_targets` to define specific log targets.
+# This option will allow you to define multiple log targets with different templates
+# and options. The value of this variable is a list of hashes with the following
+# required options: name, proto, port, hostname. This variable also has the following
+# optional options: template, action_options. If you set `action_options` make sure you
+# separate options inline with a ";".
+## Example
+# rsyslog_client_user_defined_targets:
+#   - name: "splunk1"
+#     proto: "tcp"
+#     port: "20000"
+#     hostname: "tcp.hostname.data.splunkstorm.com"
+#   - name: "loggly1"
+#     proto: "udp"
+#     port: "514"
+#     hostname: "logs-01.loggly.com"
+#     template: '$template LogglyFormat,"<%pri%>%protocol-version% %timestamp:::date-rfc3339% %HOSTNAME% %app-name% %procid% %msgid% [TOKEN@41058 tag=\"TAG\"] %msg%\n"'
+#     action_options: 'LogglyFormat'

@@ -19,6 +19,11 @@
   user: root
   roles:
     - { role: "rabbitmq_server", tags: [ "rabbitmq-server" ] }
+    - role: "rsyslog_client"
+      rsyslog_client_log_dir: "/var/log/rabbitmq"
+      rsyslog_client_config_name: "99-rabbitmq-rsyslog-client.conf"
+      tags:
+        - "rabbitmq-rsyslog-client"
   vars:
     ansible_hostname: "{{ container_name }}"
     ansible_ssh_host: "{{ container_address }}"

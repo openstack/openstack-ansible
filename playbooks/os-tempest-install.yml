@@ -19,6 +19,11 @@
   user: root
   roles:
     - { role: "os_tempest", tags: [ "os-tempest" ] }
+    - role: "rsyslog_client"
+      rsyslog_client_log_dir: "/var/log/utility"
+      rsyslog_client_config_name: "99-tempest-rsyslog-client.conf"
+      tags:
+        - "tempest-rsyslog-client"
   vars_files:
     - vars/repo_packages/openstack_services.yml
   vars:
