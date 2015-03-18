@@ -6,6 +6,7 @@
 [DEFAULT]
 verbose = {{ verbose }}
 debug = {{ debug }}
+fatal_deprecations = {{ cinder_fatal_deprecations }}
 my_ip = {{ cinder_storage_address }}
 
 osapi_volume_workers = {{ cinder_osapi_volume_workers | default(api_threads) }}
