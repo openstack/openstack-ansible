@@ -30,6 +30,9 @@ lxc_container_vg_name: lxc
 # Default image to build from
 lxc_container_release: trusty
 
+lxc_container_template_main_apt_repo: "http://archive.ubuntu.com/ubuntu"
+lxc_container_template_security_apt_repo: "http://security.ubuntu.com/ubuntu"
+
 lxc_container_default_interfaces: |
   # The loopback network interface
   auto lo
@@ -40,7 +43,7 @@ lxc_container_default_interfaces: |
   # Load any additional configs
   source /etc/network/interfaces.d/*.cfg
 
-# The container interface variable is a a default object that assume the 
+# The container interface variable is a a default object that assume the
 # Ansible iterator type is `with_dict`.
 lxc_container_interface: |
   ### start generated network for [ {{ item.value.interface }} ] ###

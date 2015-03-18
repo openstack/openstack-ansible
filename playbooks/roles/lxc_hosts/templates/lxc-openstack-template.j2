@@ -242,8 +242,8 @@ EOF
 
     case $2 in
       amd64|i386)
-            MIRROR=${MIRROR:-{{ lxc_container_template_main_apt_repo }}}
-            SECURITY_MIRROR=${SECURITY_MIRROR:-{{ lxc_container_template_security_apt_repo }}}
+            MIRROR=${MIRROR:-http://archive.ubuntu.com/ubuntu}
+            SECURITY_MIRROR=${SECURITY_MIRROR:-http://security.ubuntu.com/ubuntu}
             ;;
       *)
             MIRROR=${MIRROR:-http://ports.ubuntu.com/ubuntu-ports}
