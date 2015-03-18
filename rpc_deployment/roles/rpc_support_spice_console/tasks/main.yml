@@ -13,7 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: rpc-support-common.yml
-- include: rpc-support-api.yml
-- include: rpc-support-holland.yml
-- include: rpc-support-spice.yml
+- name: Add ctrl_alt_del to spice_auto
+  template:
+    dest: "/usr/share/spice-html5/spice_auto.html"
+    src: "spice_auto.html.j2"
+
+- name: Add ctrl_alt_del to spice css
+  template:
+    dest: "/usr/share/spice-html5/spice.css"
+    src: "spice.css.j2"

@@ -13,7 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: rpc-support-common.yml
-- include: rpc-support-api.yml
-- include: rpc-support-holland.yml
-- include: rpc-support-spice.yml
+# Configure spice console
+- hosts: nova_spice_console
+  user: root
+  roles:
+    - rpc_support_spice_console
