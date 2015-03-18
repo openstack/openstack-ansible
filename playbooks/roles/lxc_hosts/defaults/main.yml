@@ -40,6 +40,10 @@ lxc_kernel_options:
   - { key: 'fs.inotify.max_user_instances', value: 1024 }
   - { key: 'vm.swappiness', value: 10 }
 
+lxc_container_template_main_apt_repo: "http://archive.ubuntu.com/ubuntu"
+lxc_container_template_security_apt_repo: "http://security.ubuntu.com/ubuntu"
+
+
 # Required apt packages.
 lxc_apt_packages:
   - apparmor-utils
@@ -57,6 +61,6 @@ lxc_apt_packages:
   - python3-lxc
 
 # Prebuilt images to deploy onto hosts for use in containers.
-# lxc_container_caches: 
+# lxc_container_caches:
 #   - url: "{{ openstack_upstream_url }}/container_images/rpc-trusty-container.tgz"
 #     name: "trusty.tgz"

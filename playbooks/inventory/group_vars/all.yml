@@ -39,6 +39,10 @@ lxc_container_caches:
   - url: "{{ openstack_upstream_url }}/container_images/rpc-trusty-container.tgz"
     name: "trusty.tgz"
 
+# In container APT repository settings
+lxc_container_template_main_apt_repo: "http://mirror.rackspace.com/ubuntu"
+lxc_container_template_security_apt_repo: "http://mirror.rackspace.com/ubuntu"
+
 
 ## RabbitMQ
 rabbitmq_userid: openstack
