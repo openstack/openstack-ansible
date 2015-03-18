@@ -40,9 +40,5 @@ service_pip_dependencies:
 # Uncomment this to enable verbose logging for logstash
 # logstash_verbose: --verbose
 
-# Change this with caution, anything other than 1 will currently
-# break multiline filtering
-logstash_workers: 1
-
 # Change this to override the default value (which is 50% of total memory)
 # logstash_heap_size_mb: 512
