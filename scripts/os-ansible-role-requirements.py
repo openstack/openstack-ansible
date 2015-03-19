@@ -253,8 +253,8 @@ def requirements_file(args):
         )
     )
 
-    if not os.path.isdir(os.path.dirname(args['requirement_file'])):
-        os.makedirs(os.path.dirname(args['requirement_file']))
+    if not os.path.isdir(os.path.dirname(requirement_file)):
+        os.makedirs(os.path.dirname(requirement_file))
 
     return requirement_file
 

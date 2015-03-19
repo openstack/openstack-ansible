@@ -70,7 +70,7 @@ fi
 pip2 install "${ANSIBLE_WORKING_DIR}" || pip install "${ANSIBLE_WORKING_DIR}"
 
 # Update dependent roles
-if [ -f "ansible-role-requirements.yml" ];then
+if [ -f "${ANSIBLE_ROLE_FILE}" ];then
     # Update or create the roles manifest
     if [ "${UPDATE_ANSIBLE_REQUIREMENTS}" == "yes" ];then
         ./scripts/os-ansible-role-requirements.py --requirement-file ${ANSIBLE_ROLE_FILE} update
