@@ -54,6 +54,7 @@ neutron_driver_metering: neutron.services.metering.drivers.iptables.iptables_dri
 neutron_driver_dhcp: neutron.agent.linux.dhcp.Dnsmasq
 neutron_driver_notification: neutron.openstack.common.notifier.rpc_notifier
 neutron_driver_quota: neutron.db.quota_db.DbQuotaDriver
+neutron_driver_firewall: neutron.agent.linux.iptables_firewall.IptablesFirewallDriver
 
 ## General Neutron configuration
 # If ``neutron_api_workers`` is unset the system will use half the number of available VCPUS to
@@ -68,7 +69,6 @@ neutron_rpc_workers: 0
 # compute the number of api workers to use.
 # neutron_metadata_workers: 16
 neutron_metadata_backlog: 128
-
 
 ## Auth
 neutron_service_tenant_name: service
@@ -115,6 +115,9 @@ neutron_service_metering_program_enabled: false
 neutron_external_network_bridge: ""
 neutron_gateway_external_network_id: ""
 
+# Enable l2 population
+neutron_l2_population: True
+
 neutron_agent_mode: legacy
 neutron_agent_down_time: 120
 neutron_agent_polling_interval: 5
@@ -144,6 +147,38 @@ neutron_l3_ha_net_cidr: 169.254.192.0/18
 neutron_dhcp_config:
   dhcp-option-force: "26,1450"
   log-facility: "/var/log/neutron/neutron-dnsmasq.log"
+
+# Types of networks supported by the ml2 plugin
+neutron_ml2_drivers_type: "flat,vlan,vxlan,local"
+neutron_ml2_mechanism_drivers: "linuxbridge,l2population"
+
+## Set this to configure overlay networks. The default is set as an empty hash.
+# neutron_overlay_network:
+#   address: "172.29.241.248"
+#   bridge: "br-vxlan"
+#   interface: "eth10"
+#   netmask: "255.255.252.0"
+#   type: "veth"
+neutron_overlay_network: {}
+
+# Set the vxlan udp port. This is only used when neutron_tunnel_address is defined.
+neutron_vxlan_udp_port: 4789
+
+## The neutron multicast group address. This should be set as a host variable if used.
+## This defaults to an empty string
+# neutron_vxlan_group: 239.1.1.100
+neutron_vxlan_group: ""
+
+## Set this variable to configure the provider networks that will be available
+## When setting up networking in things like the ml2_conf.ini file. Normally
+## this will be defined as a host variable used within neutron as network configuration
+## are likely to differ in between hosts.
+# neutron_provider_networks:
+#   network_flat_networks: "flat"
+#   network_mappings: "flat:eth12,vlan:eth11"
+#   network_types: "vxlan,flat,vlan"
+#   network_vlan_ranges: "vlan:1:1,vlan:1024:1025"
+#   network_vxlan_ranges: "1:1000"
 
 neutron_dhcp_domain: openstacklocal
 neutron_dhcp_delete_namespaces: True

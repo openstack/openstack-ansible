@@ -1,101 +1,46 @@
 # {{ ansible_managed }}
-{%- macro append(target_list, item) %}
-{%- set _ = target_list.append(item) %}
-{%- endmacro %}
-
-{%- set network_vlan_ranges = [] %}
-{%- set network_vxlan_ranges = [] %}
-{%- set network_flat_networks = [] %}
-{%- set network_mappings = [] %}
-{%- set network_types = [] %}
-{%- set used_interfaces = [] %}
-{%- for net in provider_networks %}
-  {%- if net.network.type == "vlan" %}
-    {%- if "vlan" not in network_types %}
-      {{ append(network_types, "vlan") }}
-    {%- endif %}
-    {%- set vlan_pair = [] %}
-    {{ append(vlan_pair, net.network.net_name) }}
-    {{ append(vlan_pair, net.network.range) }}
-    {%- if vlan_pair|join(':') not in network_vlan_ranges%}
-      {{ append(network_vlan_ranges, vlan_pair|join(':')) }}
-    {%- endif %}
-  {%- elif net.network.type == "vxlan" %}
-    {%- if "vxlan" not in network_types %}
-      {{ append(network_types, "vxlan") }}
-    {%- endif %}
-    {%- if net.network.range not in network_vxlan_ranges %}
-      {{ append(network_vxlan_ranges, net.network.range) }}
-    {%- endif %}
-  {%- elif net.network.type == "flat" %}
-    {%- if "flat" not in network_types %}
-      {{ append(network_types, "flat") }}
-    {%- endif %}
-    {%- if net.network.net_name not in network_flat_networks %}
-      {{ append(network_flat_networks, net.network.net_name) }}
-    {%- endif %}
-  {%- endif %}
-  {% if net.network.type != 'raw' and net.network.type != 'vxlan' %}
-    {%- set map_pair = [] %}
-    {%- if 'net_name' in net.network %}
-      {{ append(map_pair, net.network.net_name) }}
-    {%- endif %}
-    {%- if is_metal == true or is_metal == "True" %}
-      {%- if net.network.host_bind_override is defined %}
-        {{ append(map_pair, net.network.host_bind_override) }}
-      {%- else %}
-        {{ append(map_pair, net.network.container_bridge) }}
-      {%- endif %}
-    {%- else %}
-      {{ append(map_pair, net.network.container_interface) }}
-    {%- endif %}
-    {%- if map_pair|join(':') not in network_mappings %}
-      {{ append(network_mappings, map_pair|join(':')) }}
-    {%- endif %}
-  {%- endif %}
-{%- endfor %}
 
 [ml2]
-type_drivers = flat,vlan,vxlan,local
-tenant_network_types = {{ network_types|join(',') }}
-mechanism_drivers = linuxbridge,l2population
+type_drivers = {{ neutron_ml2_drivers_type }}
+tenant_network_types = {{ neutron_provider_networks.network_types }}
+mechanism_drivers = {{ neutron_ml2_mechanism_drivers }}
 
 
-{% if network_flat_networks %}
+{% if neutron_provider_networks.network_flat_networks %}
 [ml2_type_flat]
-flat_networks = {{ network_flat_networks|join(',') }}
+flat_networks = {{ neutron_provider_networks.network_flat_networks }}
 {% endif %}
 
 
-{% if network_vlan_ranges %}
+{% if neutron_provider_networks.network_vlan_ranges %}
 [ml2_type_vlan]
-network_vlan_ranges = {{ network_vlan_ranges|join(',') }}
+network_vlan_ranges = {{ neutron_provider_networks.network_vlan_ranges }}
+
 
 [vlans]
 tenant_network_type = vlan
-network_vlan_ranges = {{ network_vlan_ranges|join(',') }}
+network_vlan_ranges = {{ neutron_provider_networks.network_vlan_ranges }}
 {% endif %}
 
 
-{% if network_vxlan_ranges %}
+{% if neutron_provider_networks.network_vxlan_ranges is defined %}
 [ml2_type_vxlan]
 vxlan_group = {{ neutron_vxlan_group|default('') }}
-vni_ranges = {{ network_vxlan_ranges|join(',') }}
+vni_ranges = {{ neutron_provider_networks.network_vxlan_ranges }}
+{% endif %}
 
 
-{% if container_networks.tunnel_address is defined %}
+{% if neutron_overlay_network %}
 [vxlan]
 enable_vxlan = True
 vxlan_group = {{ neutron_vxlan_group|default('') }}
-{% if is_metal == true or is_metal == "True" %}
-{% set on_metal_tunnel_bridge = 'ansible_' + container_networks.tunnel_address.bridge|replace('-', '_') %}
+{% if (is_metal == true or is_metal == "True") and neutron_overlay_network.bridge is defined %}
+{% set on_metal_tunnel_bridge = 'ansible_' + neutron_overlay_network.bridge|replace('-', '_') %}
 local_ip = {{ hostvars[inventory_hostname][on_metal_tunnel_bridge]['ipv4']['address'] }}
 {% else %}
-local_ip = {{ container_networks.tunnel_address.address }}
+local_ip = {{ neutron_overlay_network.address }}
 {% endif %}
-l2_population = True
-{% endif %}
-
+l2_population = {{ neutron_l2_population }}
 {% endif %}
 
 
@@ -105,19 +50,21 @@ tunnel_types = vxlan
 # This is set for the vxlan port and while this
 # is being set here it's ignored because
 # the port is assigned by the kernel
-vxlan_udp_port = 4789
+vxlan_udp_port = {{ neutron_vxlan_udp_port }}
 
 
-{% if network_mappings is defined %}
+{% if neutron_provider_networks.network_mappings is defined %}
 [linux_bridge]
-physical_interface_mappings = {{ network_mappings|join(',') }}
+physical_interface_mappings = {{ neutron_provider_networks.network_mappings }}
 {% endif %}
 
 
 [l2pop]
 agent_boot_time = 180
 
+
 [securitygroup]
 enable_security_group = True
 enable_ipset = True
-firewall_driver = neutron.agent.linux.iptables_firewall.IptablesFirewallDriver
+firewall_driver = {{ neutron_driver_firewall }}
+

@@ -1,0 +1,280 @@
+#!/usr/bin/python
+# (c) 2014, Kevin Carter <kevin.carter@rackspace.com>
+#
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+DOCUMENTATION = """
+---
+module: provider_networks
+version_added: "1.8.4"
+short_description:
+    - Parse a list of networks and return data that Ansible can use
+description:
+    - Parse a list of networks and return data that Ansible can use
+options:
+    provider_networks:
+        description:
+            - List of networks to parse
+        required: true
+    is_metal:
+        description:
+            - Enable handling of on metal hosts
+        required: false
+    bind_prefix:
+        description:
+            - Add a prefix to all network interfaces.
+        required: false
+author: Kevin Carter
+"""
+
+EXAMPLES = """
+## This is what the provider_networks list should look like.
+# provider_networks:
+# - network:
+#     container_bridge: "br-mgmt"
+#     container_type: "veth"
+#     container_interface: "eth1"
+#     ip_from_q: "container"
+#     type: "raw"
+#     group_binds:
+#       - all_containers
+#       - hosts
+#     is_container_address: true
+#     is_ssh_address: true
+# - network:
+#     container_bridge: "br-vxlan"
+#     container_type: "veth"
+#     container_interface: "eth10"
+#     ip_from_q: "tunnel"
+#     type: "vxlan"
+#     range: "1:1000"
+#     net_name: "vxlan"
+#     group_binds:
+#       - neutron_linuxbridge_agent
+# - network:
+#     container_bridge: "br-vlan"
+#     container_type: "veth"
+#     container_interface: "eth12"
+#     host_bind_override: "eth12"
+#     type: "flat"
+#     net_name: "flat"
+#     group_binds:
+#       - neutron_linuxbridge_agent
+# - network:
+#     container_bridge: "br-vlan"
+#     container_type: "veth"
+#     container_interface: "eth11"
+#     host_bind_override: "eth11"
+#     type: "vlan"
+#     range: "1:1, 101:101"
+#     net_name: "vlan"
+#     group_binds:
+#       - neutron_linuxbridge_agent
+# - network:
+#     container_bridge: "br-storage"
+#     container_type: "veth"
+#     container_interface: "eth2"
+#     ip_from_q: "storage"
+#     type: "raw"
+#     group_binds:
+#       - glance_api
+#       - cinder_api
+#       - cinder_volume
+#       - nova_compute
+#       - swift_proxy
+
+
+- name: Test provider networks
+  provider_networks:
+    provider_networks: "{{ provider_networks }}"
+  register: pndata1
+
+- name: Test provider networks is metal
+  provider_networks:
+    provider_networks: "{{ provider_networks }}"
+    is_metal: true
+  register: pndata2
+
+- name: Test provider networks with prfix
+  provider_networks:
+    provider_networks: "{{ provider_networks }}"
+    bind_prefix: "brx"
+    is_metal: true
+  register: pndata3
+
+## Module output:
+# {
+#         "network_flat_networks": "flat",
+#         "network_flat_networks_list": [
+#             "flat"
+#         ],
+#         "network_mappings": "flat:brx-eth12,vlan:brx-eth11",
+#         "network_mappings_list": [
+#             "flat:brx-eth12",
+#             "vlan:brx-eth11"
+#         ],
+#         "network_types": "vxlan,flat,vlan",
+#         "network_types_list": [
+#             "vxlan",
+#             "flat",
+#             "vlan"
+#         ],
+#         "network_vlan_ranges": "vlan:1:1,vlan:1024:1025",
+#         "network_vlan_ranges_list": [
+#             "vlan:1:1",
+#             "vlan:1024:1025"
+#         ],
+#         "network_vxlan_ranges": "1:1000",
+#         "network_vxlan_ranges_list": [
+#             "1:1000"
+#         ]
+# }
+"""
+
+
+class ProviderNetworksParsing(object):
+    def __init__(self, module):
+        """Generate an integer from a name.
+
+        :param module: Load the ansible module
+        :type module: ``object``
+        """
+        self.module = module
+        self.network_vlan_ranges = list()
+        self.network_vxlan_ranges = list()
+        self.network_flat_networks = list()
+        self.network_mappings = list()
+        self.network_types = list()
+
+    def load_networks(self, provider_networks, is_metal=False,
+                      bind_prefix=None):
+        """Load the lists of network and network data types.
+
+        :param provider_networks: list of networks defined in user_config
+        :type provider_networks: ``list``
+        :param is_metal: Enable of disable handling of on metal nodes
+        :type is_metal: ``bol``
+        :param bind_prefix: Pre-interface prefix forced within the network map
+        :type bind_prefix: ``str``
+        """
+
+        for net in provider_networks:
+            if net['network']['type'] == "vlan":
+                if "vlan" not in self.network_types:
+                    self.network_types.append('vlan')
+                    for vlan_range in net['network']['range'].split(','):
+                        self.network_vlan_ranges.append(
+                            '%s:%s' % (
+                                net['network']['net_name'], vlan_range.strip()
+                            )
+                        )
+            elif net['network']['type'] == "vxlan":
+                if "vxlan" not in self.network_types:
+                    self.network_types.append('vxlan')
+                    self.network_vxlan_ranges.append(net['network']['range'])
+            elif net['network']['type'] == "flat":
+                if "flat" not in self.network_types:
+                    self.network_types.append('flat')
+                    self.network_flat_networks.append(
+                        net['network']['net_name']
+                    )
+
+            # Create the network mappings
+            if net['network']['type'] not in ['raw', 'vxlan']:
+                if 'net_name' in net['network']:
+                    if is_metal:
+                        if 'host_bind_override' in net['network']:
+                            bind_device = net['network']['host_bind_override']
+                        else:
+                            bind_device = net['network']['container_bridge']
+                    else:
+                        bind_device = net['network']['container_interface']
+
+                    if bind_prefix:
+                        bind_device = '%s-%s' % (bind_prefix, bind_device)
+
+                    self.network_mappings.append(
+                        '%s:%s' % (
+                            net['network']['net_name'],
+                            bind_device
+                        )
+                    )
+
+
+def main():
+
+    # Add in python True False
+    BOOLEANS.extend(['False', 'True'])
+    BOOLEANS_TRUE.append('True')
+    BOOLEANS_FALSE.append('False')
+
+    module = AnsibleModule(
+        argument_spec=dict(
+            provider_networks=dict(
+                type='list',
+                required=True
+            ),
+            is_metal=dict(
+                choices=BOOLEANS,
+                default='false'
+            ),
+            bind_prefix=dict(
+                type='str',
+                required=False,
+                default=None
+            )
+        ),
+        supports_check_mode=False
+    )
+
+    try:
+        is_metal = module.params.get('is_metal')
+        if is_metal in BOOLEANS_TRUE:
+            module.params['is_metal'] = True
+        else:
+            module.params['is_metal'] = False
+
+        pnp = ProviderNetworksParsing(module=module)
+        pnp.load_networks(
+            provider_networks=module.params.get('provider_networks'),
+            is_metal=module.params.get('is_metal'),
+            bind_prefix=module.params.get('bind_prefix')
+        )
+
+        # Response dictionary, this adds commas to all list items in string
+        # format as well as preserves the list functionality for future data
+        # processing.
+        resp = {
+            'network_vlan_ranges': ','.join(pnp.network_vlan_ranges),
+            'network_vlan_ranges_list': pnp.network_vlan_ranges,
+            'network_vxlan_ranges': ','.join(pnp.network_vxlan_ranges),
+            'network_vxlan_ranges_list': pnp.network_vxlan_ranges,
+            'network_flat_networks': ','.join(pnp.network_flat_networks),
+            'network_flat_networks_list': pnp.network_flat_networks,
+            'network_mappings': ','.join(pnp.network_mappings),
+            'network_mappings_list': pnp.network_mappings,
+            'network_types': ','.join(pnp.network_types),
+            'network_types_list': pnp.network_types
+        }
+
+        module.exit_json(changed=True, **resp)
+    except Exception as exp:
+        resp = {'stderr': exp}
+        module.fail_json(msg='Failed Process', **resp)
+
+# import module snippets
+from ansible.module_utils.basic import *
+if __name__ == '__main__':
+    main()
