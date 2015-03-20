@@ -60,9 +60,9 @@ neutron_driver_quota: neutron.db.quota_db.DbQuotaDriver
 # compute the number of api workers to use.
 # neutron_api_workers: 16
 
-# If ``neutron_rpc_workers`` is unset the system will use half the number of ``neutron_api_workers`` to
-# compute the number of api workers to use.
-# neutron_rpc_workers: 16
+# ``neutron_rpc_workers`` is an experimental feature in neutron master (as of 03/2015) and
+# the value will be 0 by default.
+neutron_rpc_workers: 0
 
 # If ``neutron_metadata_workers`` is unset the system will use half the number of available VCPUS to
 # compute the number of api workers to use.

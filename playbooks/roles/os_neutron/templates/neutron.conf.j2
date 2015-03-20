@@ -2,8 +2,6 @@
 
 {% set _api_threads = ansible_processor_vcpus|default(2) // 2 %}
 {% set api_threads = _api_threads if _api_threads > 0 else 1 %}
-{% set _rpc_threads = api_threads // 2 %}
-{% set rpc_threads = _rpc_threads if _rpc_threads > 0 else 1 %}
 
 [DEFAULT]
 verbose = {{ verbose }}
@@ -44,7 +42,7 @@ bind_host = 0.0.0.0
 
 ## Workers
 api_workers = {{ neutron_api_workers | default(api_threads) }}
-rpc_workers = {{ neutron_rpc_workers | default(rpc_threads) }}
+rpc_workers = {{ neutron_rpc_workers }}
 
 
 ## Plugins

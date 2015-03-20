@@ -265,6 +265,11 @@ echo 'galera_gcache_size: 50M' | tee -a /etc/openstack_deploy/user_variables.yml
 # Set the running kernel as the required kernel
 echo "required_kernel: $(uname --kernel-release)" | tee -a /etc/openstack_deploy/user_variables.yml
 
+# Set the running neutron workers to 0/1
+echo "neutron_api_workers: 0" | tee -a /etc/openstack_deploy/user_variables.yml
+echo "neutron_rpc_workers: 0" | tee -a /etc/openstack_deploy/user_variables.yml
+echo "neutron_metadata_workers: 1" | tee -a /etc/openstack_deploy/user_variables.yml
+
 # Add in swift vars if needed
 if [ "${DEPLOY_SWIFT}" == "yes" ]; then
   # ensure that glance is configured to use swift
