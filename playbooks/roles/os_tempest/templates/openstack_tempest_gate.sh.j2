@@ -70,10 +70,13 @@ function gen_test_list_defcore(){
   python <<END
 import json
 import requests
+
 branch="$branch"
-url=("https://raw.githubusercontent.com/stackforge/"
-     "refstack/master/defcore/%(branch)score.json"
-     % {'branch': branch}
+map = {'juno': '2015.next', 'icehouse': '2015.03'}
+
+url=("https://raw.githubusercontent.com/openstack/"
+     "defcore/master/%(version).json"
+     % {'version': map[branch]}
      )
 response = requests.get(url)
 for capability in response.json()['capabilities'].values():
