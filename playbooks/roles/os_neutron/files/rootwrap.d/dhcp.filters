@@ -9,7 +9,7 @@
 [Filters]
 
 # dhcp-agent
-dnsmasq: EnvFilter, dnsmasq, root, NEUTRON_NETWORK_ID=
+dnsmasq: CommandFilter, dnsmasq, root
 # dhcp-agent uses kill as well, that's handled by the generic KillFilter
 # it looks like these are the only signals needed, per
 # neutron/agent/linux/dhcp.py
@@ -23,16 +23,14 @@ dhcp_release: CommandFilter, dhcp_release, root
 
 # metadata proxy
 metadata_proxy: CommandFilter, neutron-ns-metadata-proxy, root
-metadata_proxy_quantum: CommandFilter, quantum-ns-metadata-proxy, root
 # If installed from source (say, by devstack), the prefix will be
 # /usr/local instead of /usr/bin.
 metadata_proxy_local: CommandFilter, /usr/local/bin/neutron-ns-metadata-proxy, root
-metadata_proxy_local_quantum: CommandFilter, /usr/local/bin/quantum-ns-metadata-proxy, root
 # RHEL invocation of the metadata proxy will report /usr/bin/python
 kill_metadata: KillFilter, root, python, -9
 kill_metadata7: KillFilter, root, python2.7, -9
-kill_metadata6: KillFilter, root, python2.6, -9
 
 # ip_lib
 ip: IpFilter, ip, root
+find: RegExpFilter, find, root, find, /sys/class/net, -maxdepth, 1, -type, l, -printf, %.*
 ip_exec: IpNetnsExecFilter, ip, root

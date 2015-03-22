@@ -50,6 +50,17 @@ function gen_test_list_scenario() {
   egrep 'tempest\.scenario\.test_(minimum|swift|server|network)_basic(_ops)?'
 }
 
+function gen_test_list_commit_aio() {
+  ## This is only checking the API.
+  ## TODO(someone) this needs to be changed back to the normal tests once someone
+  ## is able to dig into tempest/the updated/deprecated config(s). This test should
+  ## go back to being the scenario tests.
+  egrep 'tempest\.api\.(identity|image|swift)'\
+    |grep -vi xml \
+    |grep -v compute \
+    |grep -v VolumesV.ActionsTest
+}
+
 # Run smoke tests
 function gen_test_list_smoke() {
   grep smoke

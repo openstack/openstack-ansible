@@ -56,7 +56,9 @@
     system_user: "{{ nova_system_user_name }}"
     system_group: "{{ nova_system_group_name }}"
     service_home: "{{ nova_system_home_folder }}"
-  when: inventory_hostname in groups['nova_api_ec2']
+  when: >
+    inventory_hostname in groups['nova_api_ec2'] and
+    (nova_ec2_deprecated_but_enabled == true or nova_ec2_deprecated_but_enabled == 'True')
 
 - include: nova_upstart_common_init.yml
   vars:
@@ -65,7 +67,9 @@
     system_user: "{{ nova_system_user_name }}"
     system_group: "{{ nova_system_group_name }}"
     service_home: "{{ nova_system_home_folder }}"
-  when: inventory_hostname in groups['nova_api_ec2']
+  when: >
+    inventory_hostname in groups['nova_api_ec2'] and
+    (nova_ec2_deprecated_but_enabled == true or nova_ec2_deprecated_but_enabled == 'True')
 
 - include: nova_upstart_common_init.yml
   vars:

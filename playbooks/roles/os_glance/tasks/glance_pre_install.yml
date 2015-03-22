@@ -39,12 +39,13 @@
     state: directory
     owner: "{{ item.owner|default(glance_system_user_name) }}"
     group: "{{ item.group|default(glance_system_group_name) }}"
+    mode: "{{ item.mode|default('0755') }}"
   with_items:
     - { path: "/etc/glance" }
-    - { path: "/etc/sudoers.d", mode: "0750", owner: "root", group: "root" }
+    - { path: "/etc/sudoers.d", mode: "0755", owner: "root", group: "root" }
     - { path: "/var/cache/glance" }
     - { path: "{{ glance_system_user_home }}" }
-    - { path: "{{ glance_system_user_home }}/cache/api" }
+    - { path: "{{ glance_system_user_home }}/cache/api", mode: "0700" }
     - { path: "{{ glance_system_user_home }}/cache/registry" }
     - { path: "{{ glance_system_user_home }}/images/" }
     - { path: "{{ glance_system_user_home }}/scrubber" }

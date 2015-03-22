@@ -8,6 +8,7 @@
     "cloudformation:DescribeStacks": "rule:deny_stack_user",
     "cloudformation:DeleteStack": "rule:deny_stack_user",
     "cloudformation:UpdateStack": "rule:deny_stack_user",
+    "cloudformation:CancelUpdateStack": "rule:deny_stack_user",
     "cloudformation:DescribeStackEvents": "rule:deny_stack_user",
     "cloudformation:ValidateTemplate": "rule:deny_stack_user",
     "cloudformation:GetTemplate": "rule:deny_stack_user",
@@ -50,7 +51,13 @@
     "stacks:show": "rule:deny_stack_user",
     "stacks:template": "rule:deny_stack_user",
     "stacks:update": "rule:deny_stack_user",
+    "stacks:update_patch": "rule:deny_stack_user",
     "stacks:validate_template": "rule:deny_stack_user",
+    "stacks:snapshot": "rule:deny_stack_user",
+    "stacks:show_snapshot": "rule:deny_stack_user",
+    "stacks:delete_snapshot": "rule:deny_stack_user",
+    "stacks:list_snapshots": "rule:deny_stack_user",
+    "stacks:restore_snapshot": "rule:deny_stack_user",
 
     "software_configs:create": "rule:deny_stack_user",
     "software_configs:show": "rule:deny_stack_user",
@@ -60,5 +67,7 @@
     "software_deployments:show": "rule:deny_stack_user",
     "software_deployments:update": "rule:deny_stack_user",
     "software_deployments:delete": "rule:deny_stack_user",
-    "software_deployments:metadata": ""
+    "software_deployments:metadata": "",
+
+    "service:index": "rule:context_is_admin"
 }

@@ -4,12 +4,9 @@
 verbose = {{ verbose }}
 debug = {{ debug }}
 admin_token = {{ keystone_auth_admin_token }}
-bind_host = {{ keystone_bind_address }}
-public_port = {{ keystone_service_port }}
 {% if keystone_public_endpoint is defined %}
 public_endpoint = {{ keystone_public_endpoint }}
 {% endif %}
-admin_port = {{ keystone_admin_port }}
 admin_endpoint = {{ keystone_service_adminuri }}
 fatal_deprecations = {{ keystone_fatal_deprecations }}
 
@@ -23,9 +20,8 @@ rpc_backend = {{ keystone_rpc_backend }}
 
 [memcache]
 servers = {{ keystone_memcached_servers }}
+max_compare_and_set_retry = {{ keystone_memcached_max_compare_and_set_retry }}
 
-
-max_compare_and_set_retry = 16
 
 {% if keystone_cache_backend_argument is defined %}
 [cache]
@@ -33,30 +29,43 @@ backend = dogpile.cache.memcached
 backend_argument = {{ keystone_cache_backend_argument }}
 config_prefix = cache.keystone
 distributed_lock = True
-expiration_time = 5400
+expiration_time = {{ keystone_cache_expiration_time }}
 enabled = true
 {% endif %}
 
+
 [revoke]
-expiration_buffer = 1800
 caching = true
+driver = {{ keystone_revocation_driver }}
+expiration_buffer = {{ keystone_revocation_expiration_buffer }}
+cache_time = {{ keystone_revocation_cache_time }}
+
 
 [auth]
 methods = {{ keystone_auth_methods }}
 
+
 [database]
 connection = mysql://{{ keystone_galera_user }}:{{ keystone_container_mysql_password }}@{{ galera_address }}/{{ keystone_galera_database }}?charset=utf8
-idle_timeout = 200
-min_pool_size = 5
-max_pool_size = 10
-pool_timeout = 200
+idle_timeout = {{ keystone_database_idle_timeout }}
+min_pool_size = {{ keystone_database_min_pool_size }}
+max_pool_size = {{ keystone_database_max_pool_size }}
+pool_timeout = {{ keystone_database_pool_timeout }}
+
 
 [identity]
 driver = {{ keystone_identity_driver }}
 
+
 [assignment]
-driver = keystone.assignment.backends.sql.Assignment
+driver = {{ keystone_assignment_driver }}
+
+
+[resource]
+cache_time = {{ keystone_resource_cache_time }}
 caching = true
+driver = {{ keystone_resource_driver }}
+
 
 {% if keystone_ldap is defined %}
 {% for section in keystone_ldap|dictsort %}
@@ -70,9 +79,14 @@ caching = true
 
 [token]
 enforce_token_bind = permissive
-revocation_cache_time = 3600
-expiration = 43200
+expiration = {{ keystone_token_expiration }}
 caching = true
-cache_time = 5400
+cache_time = {{ keystone_token_cache_time }}
 provider = {{ keystone_token_provider }}
 driver = {{ keystone_token_driver }}
+
+
+[eventlet_server]
+admin_bind_host = {{ keystone_bind_address }}
+admin_port = {{ keystone_admin_port }}
+public_port = {{ keystone_service_port }}
