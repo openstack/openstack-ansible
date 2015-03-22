@@ -12,7 +12,6 @@ use_syslog = False
 
 log_file = /var/log/neutron/neutron.log
 auth_strategy = keystone
-lock_path = /var/lock/neutron
 network_device_mtu = {{ neutron_network_device_mtu }}
 allow_overlapping_ips = True
 
@@ -60,13 +59,6 @@ dhcp_agent_notification = True
 dhcp_agents_per_network = {{ groups['neutron_agent'] | length }}
 dhcp_delete_namespaces = True
 dhcp_lease_duration = 86400
-
-
-## RabbitMQ
-rabbit_port = {{ rabbitmq_port }}
-rabbit_userid = {{ rabbitmq_userid }}
-rabbit_password = {{ rabbitmq_password }}
-rabbit_hosts = {{ rabbitmq_servers }}
 
 
 ## Notifications
@@ -117,6 +109,17 @@ check_revocations_for_cached = False
 
 [database]
 connection = mysql://{{ neutron_galera_user }}:{{ neutron_container_mysql_password }}@{{ galera_address }}/{{ neutron_galera_database }}?charset=utf8
+
+
+[oslo_messaging_rabbit]
+rabbit_port = {{ rabbitmq_port }}
+rabbit_userid = {{ rabbitmq_userid }}
+rabbit_password = {{ rabbitmq_password }}
+rabbit_hosts = {{ rabbitmq_servers }}
+
+
+[oslo_concurrency]
+lock_path = /var/lock/neutron
 
 
 [service_providers]

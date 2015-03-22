@@ -37,16 +37,36 @@ keystone_identity_driver: "keystone.identity.backends.sql.Identity"
 # For a sql backed token storage use: "keystone.token.backends.sql.Token"
 keystone_token_driver: "keystone.token.persistence.backends.memcache.Token"
 keystone_token_provider: "keystone.token.providers.uuid.Provider"
+keystone_token_expiration: 43200
+keystone_token_cache_time: 3600
+
+# Set the revocation driver used within keystone.
+keystone_revocation_driver: keystone.contrib.revoke.backends.sql.Revoke
+keystone_revocation_cache_time: 3600
+keystone_revocation_expiration_buffer: 1800
+
+keystone_cache_expiration_time: 5400
+
+keystone_assignment_driver: keystone.assignment.backends.sql.Assignment
+
+keystone_resource_cache_time: 3600
+keystone_resource_driver: keystone.resource.backends.sql.Resource
 
 keystone_bind_address: 0.0.0.0
 
 ## Memcached servers used within keystone.
 # String or Comma separated list of servers.
 keystone_memcached_servers: 127.0.0.1
+keystone_memcached_max_compare_and_set_retry: 16
 
 ## DB info
 keystone_galera_user: keystone
 keystone_galera_database: keystone
+# Database tuning
+keystone_database_idle_timeout: 200
+keystone_database_min_pool_size: 5
+keystone_database_max_pool_size: 10
+keystone_database_pool_timeout: 200
 
 ## Role info
 keystone_role_name: admin
@@ -131,8 +151,10 @@ keystone_pip_packages:
   - ldappool
   - lxml
   - MySQL-python
+  - oslo.middleware
   - pbr
   - pycrypto
+  - pysaml2
   - python-keystoneclient
   - python-memcached
   - repoze.lru

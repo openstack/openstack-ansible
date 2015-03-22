@@ -49,17 +49,18 @@
   tags:
     - glance-config
 
-- name: Drop Glance Config(s)
+- name: Drop Glance static Config(s)
   copy:
-    src: "{{ item }}"
-    dest: "/etc/glance/{{ item }}"
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
     owner: "{{ glance_system_user_name }}"
     group: "{{ glance_system_group_name }}"
   with_items:
-    - glance-api-paste.ini
-    - glance-registry-paste.ini
-    - policy.json
-    - schema.json
+    - { src: "glance-api-paste.ini", dest: "/etc/glance/glance-api-paste.ini" }
+    - { src: "glance-registry-paste.ini", dest: "/etc/glance/glance-registry-paste.ini" }
+    - { src: "policy.json", dest: "/etc/glance/policy.json" }
+    - { src: "schema.json", dest: "/etc/glance/schema.json" }
+    - { src: "schema.json", dest: "/etc/glance/schema-image.json" }
   notify:
     - Restart glance api
     - Restart glance registry

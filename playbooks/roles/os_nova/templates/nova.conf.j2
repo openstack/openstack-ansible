@@ -10,7 +10,6 @@ verbose = {{ verbose }}
 fatal_deprecations = {{ nova_fatal_deprecations }}
 log_dir = /var/log/nova
 state_path = {{ nova_system_home_folder }}
-lock_path = /var/lock/nova
 rootwrap_config = /etc/nova/rootwrap.conf
 service_down_time = 120
 
@@ -47,22 +46,19 @@ allow_resize_to_same_host = True
 image_cache_manager_interval = {{ nova_image_cache_manager_interval }}
 
 # Api's
-enabled_apis = osapi_compute,metadata,ec2
+enabled_apis = {{ nova_enabled_apis }}
 osapi_compute_workers = {{ nova_osapi_compute_workers | default(api_threads) }}
+{% if nova_ec2_deprecated_but_enabled == true or nova_ec2_deprecated_but_enabled == 'True' %}
 ec2_workers = {{ nova_ec2_workers | default(api_threads) }}
 ec2_dmz_host = {{ external_lb_vip_address }}
+{% endif %}
+{% if nova_s3_deprecated_but_enabled == true or nova_s3_deprecated_but_enabled == 'True' %}
 s3_port = {{ nova_s3_service_port }}
 s3_host = {{ ansible_ssh_host }}
+{% endif %}
 
 # Rpc all
-amqp_auto_delete = False
 rpc_backend = {{ nova_rpc_backend }}
-
-# RabbitMQ
-rabbit_port = {{ rabbitmq_port }}
-rabbit_userid = {{ rabbitmq_userid }}
-rabbit_password = {{ rabbitmq_password }}
-rabbit_hosts = {{ rabbitmq_servers }}
 
 # Metadata
 metadata_host = {{ internal_lb_vip_address }}
@@ -174,6 +170,18 @@ check_revocations_for_cached = False
 [database]
 connection = mysql://{{ nova_galera_user }}:{{ nova_container_mysql_password }}@{{ galera_address }}/{{ nova_galera_database }}?charset=utf8
 {% endif %}
+
+
+[oslo_concurrency]
+lock_path = /var/lock/nova
+
+
+[oslo_messaging_rabbit]
+amqp_auto_delete = False
+rabbit_port = {{ rabbitmq_port }}
+rabbit_userid = {{ rabbitmq_userid }}
+rabbit_password = {{ rabbitmq_password }}
+rabbit_hosts = {{ rabbitmq_servers }}
 
 
 [libvirt]

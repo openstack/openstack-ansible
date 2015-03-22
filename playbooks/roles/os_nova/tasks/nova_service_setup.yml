@@ -60,6 +60,8 @@
     service_internalurl: "{{ nova_s3_service_internalurl }}"
     service_adminurl: "{{ nova_s3_service_adminurl }}"
     role_name: "{{ nova_service_role_name }}"
+  when: >
+    nova_s3_deprecated_but_enabled == true or nova_s3_deprecated_but_enabled == 'True'
   tags:
     - nova-api
     - nova-api-s3
@@ -77,6 +79,8 @@
     service_internalurl: "{{ nova_ec2_service_internalurl }}"
     service_adminurl: "{{ nova_ec2_service_adminurl }}"
     role_name: "{{ nova_service_role_name }}"
+  when: >
+    nova_ec2_deprecated_but_enabled == true or nova_ec2_deprecated_but_enabled == 'True'
   tags:
     - nova-api
     - nova-api-ec2
