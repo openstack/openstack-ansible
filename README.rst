@@ -26,7 +26,7 @@ Basic Setup:
       src: https://github.com/super-user/SuperAwesomeModule
       version: master
 
-  2. Run the ``./scripts/os-ansible-bootstrap.sh`` script, which will install, pip, ansible 1.8.x, all of the required python packages, and bring in any third part ansible roles that you may want to add to the deployment.
+  2. Run the ``./scripts/bootstrap-ansible.sh`` script, which will install, pip, ansible 1.8.x, all of the required python packages, and bring in any third part ansible roles that you may want to add to the deployment.
   3. Copy the ``etc/openstack_deploy`` directory to ``/etc/openstack_deploy`` or if you are executing all of this as an unprivileged user you can add the ``openstack_deploy`` bits into your home directory as ``${HOME}/.openstack_deploy``.
   4. Fill in your ``openstack_deploy/openstack_user_config.yml``, ``openstack_deploy/user_secrets.yml`` and ``openstack_deploy/user_variables.yml`` files which you've just copied to your ``/etc/`` directory or your ``${HOME}`` folder.
   5. Generate all of your random passwords executing ``scripts/pw-token-gen.py --file /etc/openstack_deploy/user_secrets.yml``.
