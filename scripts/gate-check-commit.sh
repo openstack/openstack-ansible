@@ -32,8 +32,6 @@ export DEPLOY_LOGGING=${DEPLOY_LOGGING:-"yes"}
 export DEPLOY_OPENSTACK=${DEPLOY_OPENSTACK:-"yes"}
 export DEPLOY_SWIFT=${DEPLOY_SWIFT:-"yes"}
 export DEPLOY_TEMPEST=${DEPLOY_TEMPEST:-"yes"}
-# Set the level of tempest testing, default is unset which uses `commit_multinode`
-export TEMPEST_SCRIPT_PARAMETERS=${TEMPEST_SCRIPT_PARAMETERS:-"commit_aio"}
 # Limit the gate check to only performing one attempt, unless already set
 export MAX_RETRIES=${MAX_RETRIES:-"1"}
 # limit forks for gate check
