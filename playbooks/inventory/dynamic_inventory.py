@@ -697,7 +697,6 @@ def file_find(pass_exception=False, user_file=None):
     If no file is found the system will exit.
     The file lookup will be done in the following directories:
       /etc/openstack_deploy/
-      $HOME/openstack_deploy/
       $(pwd)/openstack_deploy/
 
     :param pass_exception: ``bol``
@@ -705,7 +704,6 @@ def file_find(pass_exception=False, user_file=None):
     """
     file_check = [
         os.path.join('/etc', 'openstack_deploy'),
-        os.path.join(os.environ.get('HOME'), 'openstack_deploy')
     ]
 
     if user_file is not None:
