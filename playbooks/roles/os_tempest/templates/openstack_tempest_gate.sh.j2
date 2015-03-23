@@ -73,7 +73,7 @@ branch="$branch"
 map = {'juno': '2015.next', 'icehouse': '2015.03'}
 
 url=("https://raw.githubusercontent.com/openstack/"
-     "defcore/master/%(version).json"
+     "defcore/master/%(version)s.json"
      % {'version': map[branch]}
      )
 response = requests.get(url)
