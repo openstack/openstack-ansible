@@ -65,7 +65,7 @@ function gen_test_list_all() {
 # it ignores its stdin and pulls the test list from github.
 function gen_test_list_defcore(){
   branch=${1:-juno}
-  python <<END
+  string=$(python <<END
 import json
 import requests
 
@@ -80,7 +80,13 @@ response = requests.get(url)
 for capability in response.json()['capabilities'].values():
   for test in capability['tests']:
     print test
-END
+END)
+
+  read -a test_list <<<$string
+  parse_cmd="grep "
+  for item in ${test_list[@]}; do parse_cmd+="-e $item "; done
+
+  $parse_cmd
 }
 
 # defcore tests for juno
