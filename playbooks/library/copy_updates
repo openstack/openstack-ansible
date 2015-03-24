@@ -1,0 +1,221 @@
+#!/usr/bin/python
+# (c) 2015, Sudarshan Acharya <sudarshan.acharya@gmail.com>
+#           Daniel Curran <daniel.curran@rackspace.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
+import ast
+import base64
+import collections
+import os
+
+DOCUMENTATION = """
+---
+module: copy_updates
+short_description: Copies source file (or content) with updates to dest
+location.
+description:
+     - The M(copy_updates) module copies a source file or content, applies
+     somes updates  and copies it to  dest location.
+options:
+  src:
+    description:
+      - Local path to a source file; can be absolute or relative.
+    required: false
+  content:
+    description:
+      - When used instead of src, sets the contents of the file to specified
+        value.
+    required: false
+  updates:
+    description:
+      - List of key-values to update src file with.
+    required: false
+  dest:
+    description:
+      - Dest absolute path where the file and updates should be copied to.
+    required: true
+  backup:
+    description:
+      - Create a backup file of the dest file so you can get the original file
+        back just in case.
+    required: false
+    choices: [ "yes", "no" ]
+    default: "no"
+"""
+
+EXAMPLES = """
+# Get the src, apply the updates and copy to dest if it differs from copied
+version
+- copy_updates:
+    src=/src/config.json
+    updates={"key1": "val1"}
+    dest=/dest/config.json
+    owner=foo
+    group=foo
+    mode=0644
+
+# Get the content, apply the updates and copy to dest if it differs from
+copied version
+- copy_updates:
+    content={"key1": "val1"}
+    updates={"key1": "val2"}
+    dest=/dest/config.json
+    owner=foo
+    group=foo
+    mode=0644
+
+# Back up the original dest and copy the updated src to dest if it differs
+from copied version
+- copy_updates:
+    src=/src/config.json
+    dest=/etc/ntp.conf
+    owner=root
+    group=root
+    mode=644
+    backup=yes
+"""
+
+
+def get_json_from_file(module, file_path):
+    check_file(module, file_path)
+    try:
+        with open(file_path) as infile:
+            json_obj = json.loads(infile.read(),
+                                  object_pairs_hook=collections.OrderedDict)
+            return json_obj
+    except Exception, e:
+        module.fail_json(
+            msg="Error reading from file %s: %s" % (file_path, str(e)))
+
+
+def dump_json_to_file(module, file_path, json_obj):
+    try:
+        with open(file_path, 'w') as outfile:
+            json.dump(json_obj, outfile, indent=4)
+    except Exception, e:
+        module.fail_json(
+            msg="Error writing to file %s: %s" % (file_path, str(e)))
+
+
+def check_file(module, file_path):
+    if not os.access(file_path, os.R_OK):
+        module.fail_json(msg="%s not readable" % (file_path))
+    elif not os.path.isfile(file_path):
+        module.fail_json(msg="%s is not a file" % (file_path))
+
+
+def str_to_json(module, json_str):
+    try:
+        try:
+            return json.loads(json_str,
+                              object_pairs_hook=collections.OrderedDict)
+        except:
+            return ast.literal_eval(json_str)
+    except:
+        module.fail_json(msg="JSON format expected for: %s " % (json_str))
+
+
+def main():
+
+    module = AnsibleModule(
+        argument_spec=dict(
+            src=dict(required=False),
+            content=dict(required=False, no_log=True),
+            content_type=dict(default="json", choices=['json'], type="str"),
+            updates=dict(required=False),
+            dest=dict(required=True),
+            backup=dict(default=False, type='bool'),
+            force=dict(default=True, aliases=['thirsty'], type='bool'),
+        ),
+        add_file_common_args=True,
+    )
+    src = None
+    if module.params['src'] is not None:
+        src = os.path.expanduser(module.params['src'])
+
+    content = module.params['content']
+    content_type = module.params['content_type']
+    dest = os.path.expanduser(module.params['dest'])
+    updates = module.params['updates']
+    backup = module.params['backup']
+
+    if (src is None and content is None) or dest is None:
+        module.fail_json(msg="src (or content) and dest are required")
+
+    if (src is not None and content is not None):
+        module.fail_json(msg="provide src or content")
+
+    if content_type != "json":
+        module.fail_json(msg="content_type %s not supported" % (content_type))
+
+    # Working around an Ansible bug by using binary content for json
+    # https://github.com/ansible/ansible/issues/10659
+    if content_type == "json":
+        content = base64.b64decode(content)
+
+    src_json = None
+    if src and os.path.exists(src):
+        src_json = get_json_from_file(module, src)
+    elif(content is not None):
+        src_json = str_to_json(module, content)
+    else:
+        module.fail_json(msg="Source %s failed to transfer" % (src))
+
+    if updates:
+        # Read src and replace src vals with new vals from updates
+        updates = str_to_json(module, updates)
+        for key, val in updates.iteritems():
+            src_json[key] = val
+
+    changed = False
+    backup_file = None
+    if os.path.exists(dest):
+        # Check if the src and dest are different and replace the dest.
+        dest_json = get_json_from_file(module, dest)
+
+        # Check if the src and dest and replace the dest.
+        if src_json != dest_json:
+            if backup:
+                backup_file = module.backup_local(dest)
+            dump_json_to_file(module, dest, src_json)
+            changed = True
+        else:
+            changed = False
+    else:
+        # Create the dest if it doens't exist already
+        dest_file_loc = os.path.split(dest)[0]
+        if not os.path.exists(dest_file_loc):
+            os.makedirs(dest_file_loc)
+        dump_json_to_file(module, dest, src_json)
+        changed = True
+
+    if src:
+        os.remove(src)
+
+    res_args = dict(
+        dest=dest, src=src, changed=changed
+    )
+    if backup_file:
+        res_args['backup_file'] = backup_file
+
+    module.params['dest'] = dest
+    file_args = module.load_file_common_arguments(module.params)
+    res_args['changed'] = module.set_fs_attributes_if_different(
+        file_args, res_args['changed'])
+
+    module.exit_json(**res_args)
+
+from ansible.module_utils.basic import *
+main()

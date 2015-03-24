@@ -134,6 +134,13 @@ keystone_ssl_cipher_suite: "{{ ssl_cipher_suite }}"
 #     password: "secrete"
 #     ...
 
+## Policy vars
+# Provide a list of access controls to update the default policy.json with. These changes will be merged
+# with the access controls in the default policy.json. E.g.
+#keystone_policy_overrides:
+#  identity:create_region: "rule:admin_required"
+#  identity:update_region: "rule:admin_required"
+
 # Common apt packages
 keystone_apt_packages:
   - apache2
