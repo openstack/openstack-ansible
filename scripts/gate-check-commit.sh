@@ -30,8 +30,6 @@ export RUN_TEMPEST=${RUN_TEMPEST:-"yes"}
 export ANSIBLE_PARAMETERS=${ANSIBLE_PARAMETERS:-"-v"}
 # limit Ansible forks for gate check
 export FORKS=${FORKS:-10}
-# set the directory to store logs in
-export SYMLINK_DIR=${SYMLINK_DIR:-"$(pwd)/logs"}
 # tempest and testr options, default is to run tempest in serial
 export RUN_TEMPEST_OPTS=${RUN_TEMPEST_OPTS:-'--serial'}
 export TESTR_OPTS=${TESTR_OPTS:-''}
