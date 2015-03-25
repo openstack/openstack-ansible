@@ -74,6 +74,22 @@
       when: is_metal == true or is_metal == "True"
       tags:
         - neutron-logs
+    - name: Create the neutron provider networks facts
+      provider_networks:
+        provider_networks: "{{ provider_networks }}"
+        bind_prefix: "{{ bind_prefix }}"
+        is_metal: "{{ is_metal }}"
+      register: pndata
+      tags:
+        - neutron-provider-networks
+        - neutron-config
+    - name: Set provider network fact(s)
+      set_fact:
+        neutron_provider_networks: "{{ pndata }}"
+        neutron_overlay_network: "{{ container_networks.tunnel_address|default({}) }}"
+      tags:
+        - neutron-provider-networks
+        - neutron-config
   roles:
     - { role: "os_neutron", tags: [ "os-neutron" ] }
     - { role: "openstack_openrc", tags: [ "openstack-openrc" ] }
@@ -86,3 +102,4 @@
     galera_address: "{{ internal_lb_vip_address }}"
     ansible_hostname: "{{ container_name }}"
     is_metal: "{{ properties.is_metal|default(false) }}"
+    bind_prefix: "{{ provider_network_bind_prefix|default('') }}"
