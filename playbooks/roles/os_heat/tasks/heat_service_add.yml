@@ -77,8 +77,8 @@
     service_name: "{{ service_name }}"
     service_type: "{{ service_type }}"
     publicurl: "{{ service_publicurl }}"
-    adminurl: "{{ service_internalurl }}"
-    internalurl: "{{ service_adminurl }}"
+    internalurl: "{{ service_internalurl }}"
+    adminurl: "{{ service_adminurl }}"
   register: add_service
   until: add_service|success
   retries: 5
