@@ -28,6 +28,7 @@ export PUBLIC_ADDRESS=${PUBLIC_ADDRESS:-$(ip -o -4 addr show dev ${PUBLIC_INTERF
 export NOVA_VIRT_TYPE=${NOVA_VIRT_TYPE:-"qemu"}
 export TEMPEST_FLAT_CIDR=${TEMPEST_FLAT_CIDR:-"172.29.248.0/22"}
 export FLUSH_IPTABLES=${FLUSH_IPTABLES:-"yes"}
+export RABBITMQ_PACKAGE_URL=${RABBITMQ_PACKAGE_URL:-""}
 
 # Default disabled fatal deprecation warnings
 export CINDER_FATAL_DEPRECATIONS=${CINDER_FATAL_DEPRECATIONS:-"no"}
@@ -274,6 +275,10 @@ if [ "${DEPLOY_SWIFT}" == "yes" ]; then
   sed -i "s/glance_swift_store_key:.*/glance_swift_store_key: '{{ keystone_auth_admin_password }}'/" /etc/openstack_deploy/user_secrets.yml
   sed -i "s/glance_swift_store_region:.*/glance_swift_store_region: ${SERVICE_REGION}/" /etc/openstack_deploy/user_secrets.yml
   sed -i "s/glance_swift_store_user:.*/glance_swift_store_user: '{{ keystone_admin_user_name }}:{{ keystone_admin_tenant_name }}'/" /etc/openstack_deploy/user_secrets.yml
+fi
+
+if [ ! -z "${RABBITMQ_PACKAGE_URL}" ]; then
+  echo "rabbitmq_package_url: ${RABBITMQ_PACKAGE_URL}" | tee -a /etc/openstack_deploy/user_variables.yml
 fi
 
 # Update fatal_deprecations settings
