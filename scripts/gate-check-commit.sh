@@ -43,15 +43,6 @@ export TESTR_OPTS=${TESTR_OPTS:-''}
 # Temporarily override rabbitmq_package_url (see bug #1436240)
 export RABBITMQ_PACKAGE_URL="http://rpc.cloudnull.io/downloads/rabbitmq-server_3.4.3-1_all.deb"
 
-# enable fatal deprecation warnings
-export CINDER_FATAL_DEPRECATIONS=yes
-export GLANCE_FATAL_DEPRECATIONS=yes
-export HEAT_FATAL_DEPRECATIONS=yes
-export KEYSTONE_FATAL_DEPRECATIONS=yes
-export NEUTRON_FATAL_DEPRECATIONS=yes
-export NOVA_FATAL_DEPRECATIONS=yes
-export TEMPEST_FATAL_DEPRECATIONS=yes
-
 ## Functions -----------------------------------------------------------------
 info_block "Checking for required libraries." 2> /dev/null || source $(dirname ${0})/scripts-library.sh
 
