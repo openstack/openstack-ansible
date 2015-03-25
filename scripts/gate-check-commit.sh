@@ -40,8 +40,6 @@ export SYMLINK_DIR=${SYMLINK_DIR:-"$(pwd)/logs"}
 # tempest and testr options, default is to run tempest in serial
 export RUN_TEMPEST_OPTS=${RUN_TEMPEST_OPTS:-'--serial'}
 export TESTR_OPTS=${TESTR_OPTS:-''}
-# Temporarily override rabbitmq_package_url (see bug #1436240)
-export RABBITMQ_PACKAGE_URL="http://rpc.cloudnull.io/downloads/rabbitmq-server_3.4.3-1_all.deb"
 
 # enable fatal deprecation warnings
 export CINDER_FATAL_DEPRECATIONS=yes
