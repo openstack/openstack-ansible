@@ -19,6 +19,7 @@ is_metal: true
 ## Verbosity Options
 debug: False
 verbose: True
+glance_profiler_enabled: False
 glance_fatal_deprecations: False
 
 ## System info
@@ -93,6 +94,14 @@ glance_image_cache_max_size: 10737418240
 # compute the number of api workers to use.
 # glance_registry_workers: 16
 
+glance_task_executor: taskflow
+glance_digest_algorithm: sha1
+glance_http_keepalive: True
+
+## Glance policy
+glance_policy_file: policy.json
+glance_policy_default_rule: default
+glance_policy_dirs: policy.d
 
 ## Define nfs information for glance. When the glance_nfs_client dictionary is
 ## defined it will enable nfs shares as mounted directories. The
