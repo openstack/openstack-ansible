@@ -64,3 +64,5 @@
      - rpc_support_holland
   vars:
     holland_release: "{{ rpc_support_holland_branch|default('v1.0.10') }}"
+
+- include: rpc-support-spice.yml
