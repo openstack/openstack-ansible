@@ -54,6 +54,7 @@ rabbitmq_userid: openstack
 rabbitmq_cluster_name: openstack
 rabbitmq_port: 5672
 rabbitmq_servers: "{% for host in groups['rabbitmq_all'] %}{{ hostvars[host]['container_address'] }}:{{ rabbitmq_port }}{% if not loop.last %},{% endif %}{% endfor %}"
+rabbitmq_package_url: "https://mirror.rackspace.com/rackspaceprivatecloud/downloads/rabbitmq-server_3.4.3-1_all.deb"
 
 
 ## Galera
