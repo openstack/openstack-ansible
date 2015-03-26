@@ -22,7 +22,6 @@
     mode: "{{ item.mode }}"
   with_items:
     - { src: lxc-rpc.conf, dest: "/etc/lxc/lxc-rpc.conf", mode: "0644" }
-    - { src: lxc-rpc, dest: "/usr/share/lxc/templates/lxc-rpc", mode: "0755" }
 
 - name: Set apparmor profile for nova-compute
   copy:
