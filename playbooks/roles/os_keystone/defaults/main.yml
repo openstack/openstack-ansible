@@ -111,6 +111,9 @@ keystone_ssl_enabled: false
 keystone_ssl_cert: /etc/ssl/certs/apache.cert
 keystone_ssl_key: /etc/ssl/private/apache.key
 keystone_ssl_cert_path: /etc/ssl/certs
+keystone_ssl_protocol: "ALL -SSLv2 -SSLv3"
+# Cipher suite string from https://hynek.me/articles/hardening-your-web-servers-ssl-ciphers/
+keystone_ssl_cipher_suite: "ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:ECDH+3DES:DH+3DES:RSA+AESGCM:RSA+AES:RSA+3DES:!aNULL:!MD5:!DSS"
 
 ## Caching
 # If set this will enable dog pile cache for keystone.
