@@ -39,6 +39,19 @@
     swift.replication_network is defined and
     swift.replication_network != swift.storage_network
 
+# When using a replication network use a second server for dedicated replicator configuration
+# This will be a blank file if not using dedicated replication network to prevent errors
+# when the service attempts to start.
+- include: swift_upstart_common_init.yml
+  vars:
+    program_name: "swift-account-replicator-server"
+    program_binary: "swift-account-server"
+    program_config_options: "{{ swift_account_replicator_program_config_options }}"
+    service_name: "{{ swift_service_name }}"
+    system_user: "{{ swift_system_user_name }}"
+    system_group: "{{ swift_system_group_name }}"
+    service_home: "{{ swift_system_home_folder }}"
+
 - include: swift_upstart_common_init.yml
   vars:
     program_name: "swift-account-server"
@@ -91,3 +104,12 @@
     swift.replication_network is defined and
     swift.replication_network != swift.storage_network
   notify: Restart swift account services
+
+# Remove the dedicated replicator configuration when no dedicated replication network in use
+- name: "Remove dedicated replicator configuration"
+  file:
+    state: absent
+    path: "/etc/swift/account-server/account-server-replicator.conf"
+  when: >
+    swift.replication_network is not defined or
+    swift.replication_network == swift.storage_network
