@@ -77,7 +77,7 @@ heat_service_program_name: heat-api
 ## Heat wait and metadata server
 heat_waitcondition_server_uri: "{{ heat_service_proto }}://{{ external_lb_vip_address }}:{{ heat_cfn_service_port }}"
 heat_waitcondition_server_url: "{{ heat_waitcondition_server_uri }}/v1/waitcondition"
-heat_metadata_server_url: "{{ heat_service_proto }}://{{ internal_lb_vip_address }}:{{ heat_cfn_service_port }}"
+heat_metadata_server_url: "{{ heat_service_proto }}://{{ external_lb_vip_address }}:{{ heat_cfn_service_port }}"
 
 ## Heat api cfn service type and data
 heat_cfn_service_name: heat-cfn
