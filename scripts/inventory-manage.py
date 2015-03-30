@@ -27,7 +27,6 @@ def file_find(filename, user_file=None, pass_exception=False):
     If no file is found the system will exit.
     The file lookup will be done in the following directories:
       /etc/openstack_deploy/
-      $HOME/openstack_deploy/
       $(pwd)/openstack_deploy/
 
     :param filename: ``str``  Name of the file to find
@@ -36,9 +35,6 @@ def file_find(filename, user_file=None, pass_exception=False):
     file_check = [
         os.path.join(
             '/etc', 'openstack_deploy', filename
-        ),
-        os.path.join(
-            os.environ.get('HOME'), 'openstack_deploy', filename
         ),
         os.path.join(
             os.getcwd(), filename
