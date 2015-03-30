@@ -29,6 +29,7 @@ export NOVA_VIRT_TYPE=${NOVA_VIRT_TYPE:-"qemu"}
 export TEMPEST_FLAT_CIDR=${TEMPEST_FLAT_CIDR:-"172.29.248.0/22"}
 export FLUSH_IPTABLES=${FLUSH_IPTABLES:-"yes"}
 export RABBITMQ_PACKAGE_URL=${RABBITMQ_PACKAGE_URL:-""}
+export SYMLINK_DIR=${SYMLINK_DIR:-"$(pwd)/logs"}
 
 # Default disabled fatal deprecation warnings
 export CINDER_FATAL_DEPRECATIONS=${CINDER_FATAL_DEPRECATIONS:-"no"}

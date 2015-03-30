@@ -36,7 +36,6 @@ export DEPLOY_TEMPEST=${DEPLOY_TEMPEST:-"yes"}
 export MAX_RETRIES=${MAX_RETRIES:-"1"}
 # limit forks for gate check
 export FORKS=${FORKS:-10}
-export SYMLINK_DIR=${SYMLINK_DIR:-"$(pwd)/logs"}
 # tempest and testr options, default is to run tempest in serial
 export RUN_TEMPEST_OPTS=${RUN_TEMPEST_OPTS:-'--serial'}
 export TESTR_OPTS=${TESTR_OPTS:-''}
