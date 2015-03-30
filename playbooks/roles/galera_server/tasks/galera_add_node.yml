@@ -13,6 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- name: Check if mysql is running
+  shell: "pgrep -fl mysqld"
+  register: mysql_running
+  changed_when: mysql_running.rc != 0
+  tags:
+    - galera-bootstrap
+
 - name: Get incoming addresses from cluster
   shell: |
     mysql -e 'show status like "wsrep_incoming_addresses"\G'|awk '/Value/{print $2}'
@@ -26,7 +33,9 @@
   service:
     name: mysql
     state: restarted
-  when: "not wsrep_incoming_addresses.stdout|search('{{ ansible_ssh_host }}')"
+  when: >
+    "not wsrep_incoming_addresses.stdout|search('{{ ansible_ssh_host }}')" or
+    mysql_running != 0
   tags:
     - galera-add-node
     - galera-bootstrap
