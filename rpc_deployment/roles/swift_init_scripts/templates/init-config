@@ -1,6 +1,8 @@
 # {{ ansible_managed }}
 # vim:set ft=upstart ts=2 et:
-
+{% if (swift.replication_network is not defined or swift.replication_network == swift.storage_network) and 'server-replicator' in item %}
+# Blank script - dedicated replication network not in use
+{% else %}
 description "{{ item }}"
 author "Kevin Carter <kevin.carter@rackspace.com>"
 
@@ -10,11 +12,11 @@ stop on runlelvel [016]
 respawn
 
 # If this is a replicator service and we have a repl network adjust the conf
-{% if swift.replication_network is defined and 'replicator' in item %}
+{% if swift.replication_network is defined and 'replicator' in item and swift.replication_network != swift.storage_network %}
 {% set repl_conf = '-replicator' %}
 {% endif %}
 # If this is a server-replicator and we have a repl network adjust the name/conf
-{% if swift.replication_network is defined and 'server-replicator' in item %}
+{% if swift.replication_network is defined and 'server-replicator' in item and swift.replication_network != swift.storage_network %}
 {% set repl_conf = '-replicator' %}
 {% set item = 'swift-' + service_conf_loc %}
 {% endif %}
@@ -47,3 +49,4 @@ exec start-stop-daemon --start \
                        --exec "{{ program_override|default('$RUNBIN') }}" \
                        /etc/{{ service_name }}/{{ service_conf_loc }}/{{ service_conf_loc }}{{ repl_conf | default('') }}.conf \
                        -- {{ program_config_options|default('') }}
+{% endif %}

@@ -29,3 +29,9 @@
     mode=0644
   notify: Restart swift service
   when: swift.replication_network is defined and swift.replication_network != swift.storage_network
+
+- name: "Ensure dedicated replicator config isnt present when no dedicated replication network is in use"
+  file: >
+    state=absent
+    path="/etc/swift/container-server/container-server-replicator.conf"
+  when: swift.replication_network is not defined or swift.replication_network == swift.storage_network
