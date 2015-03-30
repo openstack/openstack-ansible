@@ -9,7 +9,10 @@
 #LS_HOME=/var/lib/logstash
 
 # Arguments to pass to logstash agent
-LS_OPTS="-w {{ logstash_workers }} {{ logstash_verbose|default() }}"
+{% if logstash_workers is not defined %}
+{%   set logstash_workers = hostvars[inventory_hostname]['ansible_processor_vcpus'] %}
+{% endif %}
+LS_OPTS="-w {{ logstash_workers|int }} {{ logstash_verbose|default() }}"
 
 # Arguments to pass to java
 {% if logstash_heap_size_mb is not defined %}
