@@ -34,7 +34,7 @@
     - include: handlers/services.yml
 
 
-- hosts: glance_api!:glance_api[0]
+- hosts: glance_api:!glance_api[0]
   user: root
   roles:
     - glance_common
