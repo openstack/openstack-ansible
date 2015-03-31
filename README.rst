@@ -31,7 +31,7 @@ Basic Setup:
   4. Fill in your ``openstack_deploy/openstack_user_config.yml``, ``openstack_deploy/user_secrets.yml`` and ``openstack_deploy/user_variables.yml`` files which you've just copied to your ``/etc/`` directory.
   5. Generate all of your random passwords executing ``scripts/pw-token-gen.py --file /etc/openstack_deploy/user_secrets.yml``.
   6. Accomplish all of the host networking that you want to use within the deployment. See the ``etc/network`` directory in this repository for an example network setup.
-  7. When ready change to the ``playbooks/`` directory and execute your desired plays.  IE: 
+  7. When ready change to the ``playbooks/`` directory and execute your desired plays.  IE:
 
   .. code-block:: bash
 
@@ -54,7 +54,10 @@ Bugs and Blueprints
 Everything we do is in launchpad and gerrit. If you'd like to raise a bug, feature request, or are looking for ways to contribute please go to "https://launchpad.net/openstack-ansible".
 
 
-Official Documentation
-----------------------
+Documentation
+-------------
 
-Comprehensive installation guides, including FAQs and release notes, can be found at "http://docs.rackspace.com/rpc/api/v9/bk-rpc-installation/content/rpc-common-front.html" < Note that these docs may not be up-to-date with the current release of this repository however they are still a good source of documentation.
+While no os-ansible-deployment community documentation exists (yet), other than the .rst files present in this repository, comprehensive installation guides for Rackspace Private Cloud (an opinionated version of os-ansible-deployment) are available at "http://www.rackspace.com/knowledge_center/getting-started/rackspace-private-cloud".
+
+Note:
+  These docs may not be up-to-date with the current release of this repository however they are still a good source of documentation.
