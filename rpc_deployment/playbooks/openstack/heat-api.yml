@@ -39,7 +39,7 @@
   handlers:
     - include: handlers/services.yml
 
-- hosts: heat_api!:heat_api[0]
+- hosts: heat_api:!heat_api[0]
   user: root
   roles:
     - heat_common
