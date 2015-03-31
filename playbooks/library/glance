@@ -48,7 +48,13 @@ options:
             - Should the image be visible to all tenants?
         choices:
             - true (public)
-            - flase (private)
+            - false (private)
+    api_version:
+        description:
+            - which version of the glance api to use
+        choices:
+            - 1 (default)
+            - 2
 author: Hugh Saunders
 '''
 
@@ -73,7 +79,7 @@ EXAMPLES = '''
 
 import re
 import keystoneclient.v2_0.client as ksclient
-import glanceclient.v1.client as glclient
+import glanceclient.client as glclient
 
 COMMAND_MAP = {'image-list': 'list_images',
                'image-create': 'create_image'}
@@ -113,10 +119,12 @@ class ManageGlance(object):
     def _init_glance(self):
         """ Create glance client object using token and url from keystone """
         openrc = self._parse_openrc()
-        self.glance = glclient.Client(
-            version='1',
-            endpoint=self.keystone.service_catalog.url_for(
-                service_type='image', endpoint_type=openrc['OS_ENDPOINT_TYPE']),
+        p = self.module.params
+        v = p['api_version']
+        ep = self.keystone.service_catalog.url_for(service_type='image',
+        endpoint_type=openrc['OS_ENDPOINT_TYPE'])
+
+        self.glance = glclient.Client(endpoint='%s/v%s' % (ep, v),
             token=self.keystone.get_token(self.keystone.session))
 
     def route(self):
@@ -125,11 +133,16 @@ class ManageGlance(object):
 
     def _get_image_facts(self):
         """ Helper function to format image list as a dictionary """
-        return dict((i.name, i.to_dict()) for i in self.glance.images.list())
+        p = self.module.params
+        v = p['api_version']
+        if v == '1':
+            return dict((i.name, i.to_dict()) for i in self.glance.images.list())
+        elif v == '2':
+            return dict((i.name, i) for i in self.glance.images.list())
 
     def list_images(self):
         """ Get information about available glance images and return
-        as a fact dictionary glance_iamges
+        as a fact dictionary glance_images
         """
         self.module.exit_json(
             changed=self.state_change,
@@ -138,17 +151,27 @@ class ManageGlance(object):
     def create_image(self):
         """ Create a glance image that references a remote url """
         p = self.module.params
+        v = p['api_version']
         name = p['image_name']
+        image_opts=dict(name=name,
+                         disk_format=p['image_disk_format'],
+                         container_format=p['image_container_format'],
+                         copy_from=p['image_url'])
+        if v == '1':
+            image_opts['is_public'] = p['image_is_public']
+        elif v == '2':
+            if p['image_is_public'] == True:
+                vis = 'public'
+            else:
+                vis = 'private'
+            image_opts['visibility'] = vis
+
         images = {i.name for i in self.glance.images.list()}
         if name in images:
             self.module.exit_json(changed=self.state_change,
                 ansible_facts=dict(glance_images=self._get_image_facts()))
         else:
-            self.glance.images.create(name=name,
-                                 is_public=p['image_is_public'],
-                                 disk_format=p['image_disk_format'],
-                                 container_format=p['image_container_format'],
-                                 copy_from=p['image_url'])
+            self.glance.images.create(**image_opts)
             self.state_change = True
             self.module.exit_json(
                 changed=self.state_change,
@@ -164,7 +187,8 @@ def main():
             image_url=dict(required=False),
             image_container_format=dict(required=False),
             image_disk_format=dict(required=False),
-            image_is_public=dict(required=False, choices=BOOLEANS)
+            image_is_public=dict(required=False, choices=BOOLEANS),
+            api_version=dict(default='1', required=False, choices=['1', '2'])
         ),
         supports_check_mode=False
     )
