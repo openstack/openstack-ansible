@@ -57,7 +57,7 @@ neutron_driver_quota: neutron.db.quota_db.DbQuotaDriver
 neutron_driver_firewall: neutron.agent.linux.iptables_firewall.IptablesFirewallDriver
 
 ## General Neutron configuration
-# If ``neutron_api_workers`` is unset the system will use half the number of available VCPUS to
+# If ``neutron_api_workers`` is unset the system will use half the number of available VCPUs to
 # compute the number of api workers to use.
 # neutron_api_workers: 16
 
@@ -65,7 +65,7 @@ neutron_driver_firewall: neutron.agent.linux.iptables_firewall.IptablesFirewallD
 # the value will be 0 by default.
 neutron_rpc_workers: 0
 
-# If ``neutron_metadata_workers`` is unset the system will use half the number of available VCPUS to
+# If ``neutron_metadata_workers`` is unset the system will use half the number of available VCPUs to
 # compute the number of api workers to use.
 # neutron_metadata_workers: 16
 neutron_metadata_backlog: 128
@@ -186,6 +186,9 @@ neutron_dhcp_delete_namespaces: True
 neutron_dnsmasq_dns_servers: ""
 # Limit number of leases to prevent a denial-of-service.
 neutron_dnsmasq_lease_max: 16777216
+# If ``neutron_num_sync_threads`` is unset, the system will use the value of api_workers calculated
+# in templates/dhcp_agent.ini.j2 for num_sync_threads.
+# neutron_num_sync_threads: 4
 
 ## RPC
 neutron_rpc_backend: rabbit
