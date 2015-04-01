@@ -80,8 +80,8 @@ swift_store_key = {{ glance_swift_store_key }}
 swift_store_region = {{ glance_swift_store_region }}
 swift_store_container = {{ glance_swift_store_container }}
 swift_store_create_container_on_put = True
-swift_store_large_object_size = 5120
-swift_store_large_object_chunk_size = 200
+swift_store_large_object_size = {{ glance_swift_store_large_object_size }}
+swift_store_large_object_chunk_size = {{ glance_swift_store_large_object_chunk_size }}
 swift_store_retry_get_count = 5
 swift_store_endpoint_type = {{ glance_swift_store_endpoint_type }}
 {% endif %}

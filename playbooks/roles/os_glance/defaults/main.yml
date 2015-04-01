@@ -41,6 +41,9 @@ glance_swift_store_key: NoKey
 glance_swift_store_region: NoRegion
 glance_swift_store_container: NoContainer
 glance_swift_store_endpoint_type: internalURL
+# Set the swift_store_large_objects variables in MB
+glance_swift_store_large_object_size: 5120
+glance_swift_store_large_object_chunk_size: 200
 
 ## DB info
 glance_galera_database: glance
