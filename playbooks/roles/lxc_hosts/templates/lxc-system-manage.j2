@@ -178,28 +178,34 @@ function stop_containers_with_fire() {
 
 function start_networks() {
     set -e
-    info "Building the LXC container network."
+    if [ -f "/sys/class/net/${LXC_BRIDGE}/bridge/bridge_id" ];then
+        success "LXC container network is already online."
+    else
+        if [ ! "$(ifup ${LXC_BRIDGE})" ];then
+            info "Building the LXC container network."
 
-    # Create lxc bridge
-    brctl addbr "${LXC_BRIDGE}"
+            # Create lxc bridge
+            brctl addbr "${LXC_BRIDGE}" || true
 
-    # Set the lxc bridge up
-    ip link set "${LXC_BRIDGE}" up || true
+            # Set the lxc bridge up
+            ip link set "${LXC_BRIDGE}" up || true
 
-    # Assign an address to the lxc bridge
-    ip addr add "${LXC_ADDR}"/"${LXC_NETMASK}" dev "${LXC_BRIDGE}"
+            # Assign an address to the lxc bridge
+            ip addr add "${LXC_ADDR}"/"${LXC_NETMASK}" dev "${LXC_BRIDGE}"
 
-    add_rules
+            add_rules
 
-    LXC_DOMAIN_ARG=""
-    if [ -n "$LXC_DOMAIN" ]; then
-        LXC_DOMAIN_ARG="-s $LXC_DOMAIN -S /$LXC_DOMAIN/"
+            LXC_DOMAIN_ARG=""
+            if [ -n "$LXC_DOMAIN" ]; then
+                LXC_DOMAIN_ARG="-s $LXC_DOMAIN -S /$LXC_DOMAIN/"
+            fi
+
+            # Start DNS mask
+            DHCP_LEASE_FILE="/var/lib/misc/dnsmasq.${LXC_BRIDGE}.leases"
+            start_dnsmasq
+            success "LXC container network has been created."
+        fi
     fi
-
-    # Start DNS mask
-    DHCP_LEASE_FILE="/var/lib/misc/dnsmasq.${LXC_BRIDGE}.leases"
-    start_dnsmasq
-    success "LXC container network has been created."
 }
 
 function stop_dnsmasq() {
