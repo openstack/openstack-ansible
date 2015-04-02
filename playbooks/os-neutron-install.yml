@@ -96,6 +96,9 @@
     - role: "rsyslog_client"
       rsyslog_client_log_dir: "/var/log/neutron"
       rsyslog_client_config_name: "99-neutron-rsyslog-client.conf"
+      rsyslog_client_log_files:
+        - /var/log/conntrackd.log
+        - /var/log/conntrackd-stats.log
       tags:
         - "neutron-rsyslog-client"
   vars:
