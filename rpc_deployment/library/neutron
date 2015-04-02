@@ -383,9 +383,7 @@ class ManageNeutron(object):
 
         found = False
 
-        for port in self.neutron.list_ports()['ports']:
-            if port['device_id'] != router_id:
-                next
+        for port in self.neutron.list_ports(device_id=router_id)['ports']:
             for fixed_ips in port['fixed_ips']:
                 if fixed_ips['subnet_id'] == subnet_id:
                     found = True
