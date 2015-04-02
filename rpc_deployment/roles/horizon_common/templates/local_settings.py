@@ -4,6 +4,7 @@ from openstack_dashboard import exceptions
 
 DEBUG = {{ debug|default('False') }}
 TEMPLATE_DEBUG = DEBUG
+COMPRESS_OFFLINE = True
 COMPRESS_ENABLED = True
 COMPRESS_ROOT = '{{ install_lib_dir }}/static'
 
