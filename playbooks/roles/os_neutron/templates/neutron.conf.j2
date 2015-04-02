@@ -76,7 +76,7 @@ send_events_interval = 2
 
 
 ## Nova
-nova_url = {{ nova_service_adminurl|replace('/$(tenant_id)s', '') }}
+nova_url = {{ nova_service_adminurl|replace('/%(tenant_id)s', '') }}
 nova_admin_username = {{ nova_service_user_name }}
 nova_admin_tenant_id = {{ nova_admin_tenant_id }}
 nova_admin_password = {{ nova_service_password }}
