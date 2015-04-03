@@ -44,6 +44,9 @@ nova_service_tenant_name: "service"
 nova_service_user_name: "nova"
 nova_service_role_name: "admin"
 
+## Nova enabled apis
+nova_enabled_apis: "osapi_compute,metadata"
+
 ## Nova s3
 nova_s3_service_name: s3
 nova_s3_service_type: s3
@@ -57,6 +60,7 @@ nova_s3_service_adminurl: "{{ nova_s3_service_adminuri }}"
 nova_s3_service_internaluri: "{{ nova_s3_service_proto }}://{{ internal_lb_vip_address }}:{{ nova_s3_service_port }}"
 nova_s3_service_internalurl: "{{ nova_s3_service_internaluri }}"
 nova_s3_program_name: nova-api-ec2
+nova_s3_deprecated_but_enabled: false
 
 ## Nova v3
 nova_v3_service_name: novav3
@@ -86,6 +90,8 @@ nova_service_internalurl: "{{ nova_service_internaluri }}/v2/%(tenant_id)s"
 nova_program_name: nova-api-os-compute
 
 ## Nova ec2
+# WARNNING: The EC2 api in the nova tree has been deprecated. To consume this API you'll need to
+# uncomment the EC2 section found within the nova `api-paste.ini` file.
 nova_ec2_service_name: ec2
 nova_ec2_service_type: ec2
 nova_ec2_service_proto: http
@@ -98,6 +104,7 @@ nova_ec2_service_adminurl: "{{ nova_ec2_service_adminuri }}/services/Admin"
 nova_ec2_service_internaluri: "{{ nova_ec2_service_proto }}://{{ internal_lb_vip_address }}:{{ nova_ec2_service_port }}"
 nova_ec2_service_internalurl: "{{ nova_ec2_service_internaluri }}/services/Cloud"
 nova_ec2_program_name: nova-api-ec2
+nova_ec2_deprecated_but_enabled: false
 
 ## Nova spice
 nova_spice_html5proxy_base_proto: http
@@ -207,6 +214,7 @@ nova_compute_kvm_apt_packages:
   - kpartx
   - libvirt-bin
   - open-iscsi
+  - python-libguestfs
   - python-libvirt
   - qemu
   - qemu-utils

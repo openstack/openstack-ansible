@@ -39,12 +39,13 @@
     state: directory
     owner: "{{ item.owner|default(heat_system_user_name) }}"
     group: "{{ item.group|default(heat_system_group_name) }}"
+    mode: "{{ item.mode|default('0755') }}"
   with_items:
     - { path: "/etc/heat" }
     - { path: "/etc/heat/environment.d" }
     - { path: "/etc/heat/templates" }
-    - { path: "/etc/sudoers.d", mode: "0750", owner: "root", group: "root" }
-    - { path: "/var/cache/heat" }
+    - { path: "/etc/sudoers.d", owner: "root", group: "root" }
+    - { path: "/var/cache/heat", mode: "0700" }
     - { path: "{{ heat_system_home_folder }}" }
   tags:
     - heat-dirs

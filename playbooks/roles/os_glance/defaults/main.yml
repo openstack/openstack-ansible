@@ -34,6 +34,14 @@ glance_notification_driver: noop
 glance_rpc_backend: glance.openstack.common.rpc.impl_kombu
 glance_default_store: file
 
+
+## API options
+glance_enable_v1_api: True
+glance_enable_v1_registry: True
+glance_enable_v2_api: True
+glance_enable_v2_registry: True
+
+
 ## Swift Options
 glance_swift_store_auth_address: NoAuthAddress
 glance_swift_store_user: NoUser
