@@ -556,7 +556,7 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
         if properties:
             is_metal = properties.get('is_metal', False)
 
-        ## This should convert found addresses based on q_name + "_address"
+        # This should convert found addresses based on q_name + "_address"
         #  and then build the network if its not found.
         if not is_metal and old_address not in networks:
             network = networks[old_address] = network_entry()
@@ -857,7 +857,7 @@ def _merge_dict(base_items, new_items):
 
 
 def _extra_config(user_defined_config, base_dir):
-    """Discover new items in a conf.d directory and add the new values.
+    """Discover new items in any extra directories and add the new values.
 
     :param user_defined_config: ``dict``
     :param base_dir: ``str``
@@ -919,6 +919,11 @@ def main():
             ' repository. Found MD5: [ %s ] expected MD5 [ %s ]'
             % (env_version, version)
         )
+
+    # Load anything in an env.d directory if found
+    env_plugins = os.path.join(local_path, 'env.d')
+    if os.path.isdir(env_plugins):
+        _extra_config(user_defined_config=environment, base_dir=env_plugins)
 
     # Load existing inventory file if found
     dynamic_inventory_file = os.path.join(
