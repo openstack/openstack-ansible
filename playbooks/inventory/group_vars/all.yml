@@ -109,7 +109,9 @@ neutron_service_metering_program_enabled: true
 glance_service_port: 9292
 glance_service_proto: http
 glance_service_user_name: glance
-glance_service_tenant_name: service
+glance_service_project_name: service
+glance_service_project_domain_id: default
+glance_service_user_domain_id: default
 glance_service_adminurl: "{{ glance_service_proto }}://{{ internal_lb_vip_address }}:{{ glance_service_port }}"
 glance_service_region: RegionOne
 glance_api_servers: "{% for host in groups['glance_all'] %}{{ hostvars[host]['container_address'] }}:{{ glance_service_port }}{% if not loop.last %},{% endif %}{% endfor %}"
