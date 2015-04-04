@@ -55,6 +55,8 @@
     group: "root"
     mode: "0644"
 
+- include: apt_pinning.yml
+
 - name: Update apt cache
   apt:
     update_cache: yes
