@@ -11,10 +11,13 @@ my_ip = {{ cinder_storage_address }}
 
 osapi_volume_workers = {{ cinder_osapi_volume_workers | default(api_threads) }}
 
-lock_path = /var/lock/cinder
 rootwrap_config = /etc/cinder/rootwrap.conf
 api_paste_config = /etc/cinder/api-paste.ini
 auth_strategy = keystone
+
+## Cinder API's enabled
+enable_v1_api = {{ cinder_enable_v1_api }}
+enable_v2_api = {{ cinder_enable_v2_api }}
 
 {% if inventory_hostname not in groups['cinder_volume'] %}
 {% if cinder_service_backup_program_enabled == true %}
@@ -30,16 +33,13 @@ backup_swift_object_size = {{ cinder_service_backup_swift_object_size }}
 backup_swift_retry_attempts = {{ cinder_service_backup_swift_retry_attempts }}
 backup_swift_retry_backoff = {{ cinder_service_backup_swift_retry_backoff }}
 backup_compression_algorithm = {{ cinder_service_backup_compression_algorithm }}
+backup_metadata_version = {{ cinder_service_backup_metadata_version }}
 {% endif %}
 {% endif %}
 {% endif %}
 
 ## RabbitMQ
 rpc_backend = {{ cinder_rpc_backend }}
-rabbit_port = {{ rabbitmq_port }}
-rabbit_userid = {{ rabbitmq_userid }}
-rabbit_password = {{ rabbitmq_password }}
-rabbit_hosts = {{ rabbitmq_servers }}
 
 ## Nova
 nova_catalog_info = {{ cinder_nova_catalog_info }}
@@ -65,6 +65,8 @@ iscsi_ip_address = $my_ip
 iscsi_num_targets = {{ cinder_iscsi_num_targets }}
 iscsi_port = {{ cinder_iscsi_port }}
 
+client_socket_timeout = {{ cinder_client_socket_timeout }}
+
 {% if cinder_default_volume_type is defined %}
 default_volume_type = {{ cinder_default_volume_type }}
 {% endif %}
@@ -88,6 +90,18 @@ nfs_shares_config={{ cinder_nfs_client.nfs_shares_config }}
 [database]
 connection = mysql://{{ cinder_galera_user }}:{{ cinder_container_mysql_password }}@{{ galera_address }}/{{ cinder_galera_database }}?charset=utf8
 
+[oslo_messaging_rabbit]
+rabbit_port = {{ rabbitmq_port }}
+rabbit_userid = {{ rabbitmq_userid }}
+rabbit_password = {{ rabbitmq_password }}
+rabbit_hosts = {{ rabbitmq_servers }}
+
+[oslo_concurrency]
+lock_path = /var/lock/cinder
+
+[profiler]
+profiler_enabled = {{ cinder_profiler_enabled }}
+trace_sqlalchemy = {{ cinder_profiler_trace_sqlalchemy }}
 
 [keystone_authtoken]
 signing_dir = /var/cache/cinder

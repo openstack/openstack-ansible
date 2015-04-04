@@ -115,7 +115,7 @@ storage_hosts:
         limit_container_types: cinder_volume
         lvm:
           volume_group: cinder-volumes
-          volume_driver: cinder.volume.drivers.lvm.LVMISCSIDriver
+          volume_driver: cinder.volume.drivers.lvm.LVMVolumeDriver
           volume_backend_name: LVM_iSCSI
 
 log_hosts:

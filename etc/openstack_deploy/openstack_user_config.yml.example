@@ -190,7 +190,7 @@ storage_hosts:
         limit_container_types: cinder_volume
         lvm:
           volume_group: cinder-volumes
-          volume_driver: cinder.volume.drivers.lvm.LVMISCSIDriver
+          volume_driver: cinder.volume.drivers.lvm.LVMVolumeDriver
           volume_backend_name: LVM_iSCSI
         # The ``cinder_nfs_client`` values is an optional component available
         # when configuring cinder.
@@ -208,7 +208,7 @@ storage_hosts:
         limit_container_types: cinder_volume
         lvm_ssd:
           volume_group: cinder-volumes
-          volume_driver: cinder.volume.drivers.lvm.LVMISCSIDriver
+          volume_driver: cinder.volume.drivers.lvm.LVMVolumeDriver
           volume_backend_name: LVM_iSCSI_SSD
 
 # User defined Logging Hosts, this should be a required group
