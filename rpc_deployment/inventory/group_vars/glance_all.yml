@@ -53,6 +53,8 @@ swift_store_key: "{{ glance_swift_store_key | default('NoKey') }}"
 swift_store_region: "{{ glance_swift_store_region | default('NoRegion') }}"
 swift_store_container: "{{ glance_swift_store_container | default('NoContainer')}}"
 swift_store_endpoint_type: "{{ glance_swift_store_endpoint_type | default('internalURL') }}"
+swift_store_large_object_size: "{{ glance_swift_store_large_object_size | default('5120') }}"
+swift_store_large_object_chunk_size: "{{ glance_swift_store_large_object_chunk_size | default('200') }}"
 
 ## Auth
 service_admin_tenant_name: "service"

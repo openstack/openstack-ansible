@@ -62,6 +62,9 @@ glance_swift_store_user: "{{ rackspace_cloud_tenant_id }}:{{ rackspace_cloud_use
 glance_swift_store_key: "{{ rackspace_cloud_password }}"
 glance_swift_store_container: SomeContainerName
 glance_swift_store_region: SomeRegion
+# Set the glance swift_store large object variables in MB
+#glance_swift_store_large_object_size: 5120
+#glance_swift_store_large_object_chunk_size: 200
 # `internalURL` will cause glance to speak to swift via ServiceNet, use
 # `publicURL` to communicate with swift over the public network
 glance_swift_store_endpoint_type: internalURL
