@@ -16,6 +16,9 @@
 # Defines that the role will be deployed on a host machine
 is_metal: true
 
+# Enable/Disable Ceilometer
+swift_ceilometer_enabled: False
+
 ## Verbosity Options
 debug: False
 verbose: True
@@ -73,6 +76,13 @@ swift_allow_versions: True
 # This will allow all users to create containers and upload to swift if set to True
 swift_allow_all_users: False
 
+## Swift ceilometer variables
+swift_reselleradmin_role: ResellerAdmin
+
+## Swift Auth
+swift_service_admin_tenant_name: "service"
+swift_service_admin_username: "swift"
+
 swift_account_server_program_config_options: /etc/swift/account-server/account-server.conf
 swift_account_replicator_program_config_options: /etc/swift/account-server/account-server-replicator.conf
 
@@ -114,6 +124,7 @@ swift_proxy_server_program_config_options: /etc/swift/proxy-server/proxy-server.
 # swift_proxy_server_workers: 16
 
 swift_pip_packages:
+  - ceilometermiddleware
   - dnspython
   - ecdsa
   - keystonemiddleware

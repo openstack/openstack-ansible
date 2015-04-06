@@ -13,12 +13,30 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: os-keystone-install.yml
-- include: os-swift-install.yml
-- include: os-glance-install.yml
-- include: os-cinder-install.yml
-- include: os-nova-install.yml
-- include: os-neutron-install.yml
-- include: os-heat-install.yml
-- include: os-ceilometer-install.yml
-- include: os-horizon-install.yml
+- name: Install apt packages
+  apt:
+    pkg: "{{ item }}"
+    state: latest
+    update_cache: yes
+    cache_valid_time: 600
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 2
+  with_items: ceilometer_apt_packages
+  tags:
+    - ceilometer-apt-packages
+
+
+- name: Install pip packages
+  pip:
+    name: "{{ item }}"
+    state: present
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 2
+  with_items:
+    - "{{ ceilometer_pip_packages }}"
+  tags:
+    - ceilometer-pip-packages

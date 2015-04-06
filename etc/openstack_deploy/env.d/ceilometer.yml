@@ -1,0 +1,68 @@
+---
+component_skel:
+  ceilometer_agent_compute:
+    belongs_to:
+    - ceilometer_all
+  ceilometer_agent_central:
+    belongs_to:
+    - ceilometer_all
+  ceilometer_agent_notification:
+    belongs_to:
+    - ceilometer_all
+  ceilometer_collector:
+    belongs_to:
+    - ceilometer_all
+  ceilometer_alarm_evaluator:
+    belongs_to:
+    - ceilometer_all
+  ceilometer_alarm_notifier:
+    belongs_to:
+    - ceilometer_all
+  ceilometer_api:
+    belongs_to:
+    - ceilometer_all
+
+container_skel:
+  ceilometer_api_container:
+    belongs_to:
+      - metering-infra_containers
+    contains:
+      - ceilometer_agent_central
+      - ceilometer_agent_notification
+      - ceilometer_alarm_evaluator
+      - ceilometer_alarm_notifier
+      - ceilometer_api
+    properties:
+      service_name: ceilometer
+      container_release: trusty
+  ceilometer_collector_container:
+    belongs_to:
+      - metering-infra_containers
+    contains:
+      - ceilometer_collector
+    properties:
+      service_name: ceilometer
+      container_release: trusty
+  metering-compute_container:
+    belongs_to:
+    - metering-compute_containers
+    contains:
+    - ceilometer_agent_compute
+    properties:
+      is_metal: true
+      service_name: ceilometer
+      container_release: trusty
+
+physical_skel:
+  metering-compute_containers:
+    belongs_to:
+    - all_containers
+  metering-compute_hosts:
+    belongs_to:
+    - hosts
+  metering-infra_containers:
+    belongs_to:
+    - all_containers
+  metering-infra_hosts:
+    belongs_to:
+    - hosts

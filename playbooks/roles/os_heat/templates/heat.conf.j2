@@ -27,6 +27,11 @@ rpc_backend = {{ heat_rpc_backend }}
 ## Plugin dirs
 plugin_dirs = {{ heat_plugin_dirs | join(',') }}
 
+# Ceilometer options
+{% if heat_ceilometer_enabled %}
+notification_driver = heat.openstack.common.notifier.rpc_notifier
+{% endif %}
+
 
 [clients]
 endpoint_type = {{ heat_clients_endpoint }}

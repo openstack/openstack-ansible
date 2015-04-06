@@ -78,6 +78,11 @@ default_volume_type = {{ cinder_default_volume_type }}
 {% if cinder_backends is defined %}
 enabled_backends={% for backend in cinder_backends|dictsort %}{{ backend.0 }}{% if not loop.last %},{% endif %}{% endfor %}
 
+#Ceilometer configurations
+{% if cinder_ceilometer_enabled %}
+notification_driver = cinder.openstack.common.notifier.rpc_notifier
+{% endif %}
+
 # All given backend(s)
 {% for backend_section in cinder_backends|dictsort %}
 [{{ backend_section.0 }}]

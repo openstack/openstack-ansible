@@ -75,6 +75,15 @@ service_region: RegionOne
 #openstack_service_internaluri_proto: http
 
 
+## Ceilometer
+ceilometer_service_port: 8777
+ceilometer_service_proto: http
+ceilometer_service_user_name: ceilometer
+ceilometer_service_tenant_name: service
+ceilometer_service_adminuri: "{{ ceilometer_service_proto }}://{{ internal_lb_vip_address }}:{{ ceilometer_service_port }}"
+ceilometer_service_adminurl: "{{ ceilometer_service_adminuri }}/"
+ceilometer_service_region: "{{ service_region }}"
+
 ## Nova
 nova_service_port: 8774
 nova_service_proto: http
@@ -167,3 +176,10 @@ tempest_pip_instructions: >
   --extra-index-url https://pypi.python.org/simple
   --trusted-host pypi.python.org
   --trusted-host {{ openstack_upstream_domain }}
+
+## Swift
+swift_system_user_name: swift
+swift_system_group_name: swift
+swift_system_shell: /bin/bash
+swift_system_comment: swift system user
+swift_system_home_folder: "/var/lib/{{ swift_system_user_name }}"

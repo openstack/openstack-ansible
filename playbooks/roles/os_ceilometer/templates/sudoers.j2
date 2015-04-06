@@ -1,0 +1,3 @@
+# {{ ansible_managed }}
+# Defaults:{{ ceilometer_system_user_name }}!requiretty
+{{ ceilometer_system_user_name }} ALL = (root) NOPASSWD: /usr/local/bin/{{ ceilometer_service_name }}-rootwrap
