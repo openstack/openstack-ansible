@@ -13,28 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: nova_pre_install.yml
-- include: nova_install.yml
-
-- include: nova_spice_console_install.yml
-  when: >
-    inventory_hostname in groups['nova_console'] and
-    nova_console_type == "spice"
-
-- include: nova_post_install.yml
-- include: nova_upstart_init.yml
-
-- include: nova_db_setup.yml
-  when: >
-    inventory_hostname == groups['nova_api_os_compute'][0]
-
-- include: nova_service_setup.yml
-  when: >
-    inventory_hostname == groups['nova_api_os_compute'][0]
-
-- include: nova_compute.yml
-  when: >
-    inventory_hostname in groups['nova_compute']
+- name: Install apt packages
+  apt:
+    pkg: "{{ item }}"
+    state: latest
+    update_cache: yes
+    cache_valid_time: 600
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 2
+  with_items: nova_spice_apt_packages
   tags:
-    - nova-compute
+    - nova-spice-apt-packages
 
