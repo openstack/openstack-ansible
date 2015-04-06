@@ -1,0 +1,51 @@
+#{{ ansible_managed}}
+
+[DEFAULT]
+auth_strategy = keystone
+collector_workers = 10
+notification_topics = notifications
+rpc_backend = rabbit
+
+[oslo_policy]
+policy_file = /etc/ceilometer/policy.json
+
+[oslo_messaging_rabbit]
+rpc_backend = rabbit
+rabbit_port = {{ rabbitmq_port }}
+rabbit_userid = {{ rabbitmq_userid }}
+rabbit_password = {{ rabbitmq_password }}
+rabbit_hosts = {{ rabbitmq_servers }}
+
+[api]
+port = 8777
+
+[database]
+metering_connection = {{ ceilometer_connection_string }}
+event_connection = {{ ceilometer_connection_string }}
+alarm_connection = {{ ceilometer_connection_string }}
+
+[keystone_authtoken]
+signing_dir = /var/cache/ceilometer
+identity_uri = {{ keystone_service_adminuri }}
+auth_uri = {{ keystone_service_internaluri }}
+auth_url = {{ keystone_service_adminuri }}
+admin_tenant_name = {{ ceilometer_service_tenant_name }}
+admin_user = {{ ceilometer_service_user_name }}
+admin_password = {{ ceilometer_service_password }}
+
+memcached_servers = {{ memcached_servers }}
+
+token_cache_time = 300
+revocation_cache_time = 60
+
+memcache_security_strategy = ENCRYPT
+memcache_secret_key = {{ memcached_encryption_key }}
+
+[publisher]
+telemetry_secret = {{ ceilometer_telemetry_secret }}
+
+[service_credentials]
+os_auth_url = {{ keystone_service_internalurl }}
+os_username = {{ ceilometer_service_user_name }}
+os_tenant_name = {{ ceilometer_service_tenant_name }}
+os_password = {{ ceilometer_service_password }}

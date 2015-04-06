@@ -28,6 +28,12 @@
 ### Before this is shipped all of these services should have a tag set as the branch,
 ### or have a comment / reason attached to them as to why a tag can not work.
 
+## Ceilometer service
+ceilometer_git_repo: https://github.com/openstack/ceilometer
+ceilometer_git_install_branch: 6ea8dd113a3fe1f19b792a9012c17a3386893361# HEAD of "stable/kilo" as of 16.07.2015
+ceilometer_git_dest: "/opt/ceilometer_{{ceilometer_git_install_branch | replace('/', '_') }}"
+
+
 ## Cinder service
 cinder_git_repo: https://github.com/openstack/cinder
 cinder_git_install_branch: 6c055943e70675585ef45301318c47ccc1139ce9 # HEAD of "stable/kilo" as of 07.07.2015

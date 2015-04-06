@@ -1,0 +1,31 @@
+- name: Place the init script
+  template:
+    src: "ceilometer-upstart-init.j2"
+    dest: "/etc/init/{{ program_name }}.conf"
+    mode: "0644"
+    owner: "root"
+    group: "root"
+  notify:
+    - Restart ceilometer services
+  tags:
+    - upstart-init
+    - ceilometer-init
+
+- name: Reload init scripts
+  shell: |
+    initctl reload-configuration
+  notify:
+    - Restart ceilometer services
+  tags:
+    - upstart-init
+    - ceilometer-init
+
+- name: Load service
+  service:
+    name: "{{ program_name }}"
+    enabled: "yes"
+  notify:
+    - Restart ceilometer services
+  tags:
+    - upstart-init
+    - ceilometer-init

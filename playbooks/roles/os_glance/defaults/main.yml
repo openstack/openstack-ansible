@@ -16,6 +16,9 @@
 # Defines that the role will be deployed on a host machine
 is_metal: true
 
+# Enable/Disable Ceilometer
+glance_ceilometer_enabled: False
+
 ## Verbosity Options
 debug: False
 verbose: True
@@ -31,6 +34,7 @@ glance_system_user_home: "/var/lib/{{ glance_system_user_name }}"
 
 glance_flavor: "keystone+cachemanagement"
 glance_registry_host: "{{ internal_lb_vip_address }}"
+glance_ceilometer_notification_driver: messagingv2
 glance_notification_driver: noop
 glance_rpc_backend: glance.openstack.common.rpc.impl_kombu
 glance_default_store: file

@@ -13,12 +13,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: os-keystone-install.yml
-- include: os-swift-install.yml
-- include: os-glance-install.yml
-- include: os-cinder-install.yml
-- include: os-nova-install.yml
-- include: os-neutron-install.yml
-- include: os-heat-install.yml
-- include: os-ceilometer-install.yml
-- include: os-horizon-install.yml
+galaxy_info:
+  author: rcbops
+  description: Installation and setup of ceilometer
+  company: Rackspace
+  license: Apache2
+  min_ansible_version: 1.6.6
+  platforms:
+    - name: Ubuntu
+      versions:
+        - trusty
+  categories:
+    - cloud
+    - python
+    - ceilometer
+    - development
+    - openstack
+dependencies:
+  - galera_client
+  - openstack_openrc
+  - pip_lock_down
