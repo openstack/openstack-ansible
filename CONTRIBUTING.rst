@@ -35,6 +35,7 @@ Triaging bugs:
 Submitting Code
 ---------------
 
+* Write good commit messages. We follow the OpenStack "`Git Commit Good Practice`_" guide. if you have any questions regarding how to write good commit messages please review the upstream OpenStack documentation.
 * Changes to the project should be submitted for review via the Gerrit tool, following the `workflow documented here`_.
 * Pull requests submitted through GitHub will be ignored and closed without regard.
 * All feature additions/deletions should be accompanied by a blueprint/spec. IE: adding additional active agents to neutron, developing a new service role, etc...
@@ -92,6 +93,7 @@ Example what **NOT** to do:
 Usage of the ">" and "|" operators should be limited to Ansible conditionals and command modules such as the Ansible ``shell`` or ``command``.
 
 
+.. _Git Commit Good Practice: https://wiki.openstack.org/wiki/GitCommitMessages
 .. _workflow documented here: http://docs.openstack.org/infra/manual/developers.html#development-workflow
 .. _upstream OpenStack Blueprint documentation: https://wiki.openstack.org/wiki/Blueprints
 .. _advanced gerrit usage and dependent changes can be found here: http://www.mediawiki.org/wiki/Gerrit/Advanced_usage
