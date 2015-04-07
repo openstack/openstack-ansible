@@ -1,0 +1,45 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Get entity ID for physical_host
+  shell: raxmon-entities-list  | grep "label={{ inventory_hostname|quote }}{{ maas_fqdn_extension|default('') }} " | sed -e 's/^.* id=\(.*\) label=.*$/\1/g'
+  register: entity_id
+
+- name: Validate if check exists
+  shell: raxmon-checks-list --entity-id {{ entity_id.stdout|quote }} | grep "label={{ check_name|quote }}--{{ inventory_hostname|quote }}"
+  register: check_exists
+  ignore_errors: True
+
+- name: Create check if it does not exist
+  command: raxmon-checks-create --entity-id {{ entity_id.stdout }} --type agent.plugin --label {{ check_name }}--{{ inventory_hostname }} --details {{ check_details }} --period {{ check_period }} --timeout {{ check_timeout }}
+  when: check_exists|failed
+
+- name: Get check ID for newly created check
+  shell: raxmon-checks-list --entity-id {{ entity_id.stdout|quote }} | grep "label={{ check_name|quote }}--{{ inventory_hostname|quote }}" | sed -e 's/^.* id=\(.*\) label=.*$/\1/g'
+  register: check_id
+
+- name: Validate if alarm exists
+  shell: raxmon-alarms-list --entity-id {{ entity_id.stdout|quote }} | grep "label={{ item.name|quote }}--{{ inventory_hostname|quote }}"
+  register: alarm_exists
+  ignore_errors: True
+  when: alarms is defined
+  with_items: alarms
+
+- name: Create alarm if it does not exist
+  shell: raxmon-alarms-create --entity-id {{ entity_id.stdout|quote }} --check-id {{ check_id.stdout|quote }} --notification-plan {{ maas_notification_plan }} --label {{ item[1].name|quote }}--{{ inventory_hostname|quote }} --criteria {{ item[1].criteria|quote }}
+  when: item[0]|failed and alarms is defined
+  with_together:
+    - alarm_exists.results
+    - alarms
