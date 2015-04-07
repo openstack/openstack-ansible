@@ -24,7 +24,8 @@ debug: False
 verbose: True
 heat_fatal_deprecations: False
 
-heat_client_endpoint: internalURL
+heat_clients_endpoint: internalURL
+heat_clients_heat_endpoint: externalURL
 
 ## DB
 heat_galera_user: heat
@@ -52,7 +53,15 @@ heat_stack_domain_description: Owns users and projects created by heat
 heat_stack_user_domain_name: heat
 heat_stack_admin_user_name: admin
 heat_stack_admin_tenant_name: admin
+heat_max_nested_stack_depth: 5
+
 heat_deferred_auth_method: trusts
+heat_trusts_delegated_roles: []
+
+# osprofiler
+heat_profiler_enabled: false
+# heat_profiler_hmac_key is set in user_secrets.yml
+heat_profiler_trace_sqlalchemy: false
 
 ## Auth
 heat_service_tenant_name: "service"
