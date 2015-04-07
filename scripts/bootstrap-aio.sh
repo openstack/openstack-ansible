@@ -267,6 +267,11 @@ echo 'galera_gcache_size: 50M' | tee -a /etc/openstack_deploy/user_variables.yml
 # Set the running kernel as the required kernel
 echo "required_kernel: $(uname --kernel-release)" | tee -a /etc/openstack_deploy/user_variables.yml
 
+# Set the Ubuntu apt repository used for containers to the same as the host
+UBUNTU_REPO=$(awk '/^deb .*ubuntu trusty main/ {print $2}' /etc/apt/sources.list)
+echo "lxc_container_template_main_apt_repo: ${UBUNTU_REPO}" | tee -a /etc/openstack_deploy/user_variables.yml
+echo "lxc_container_template_security_apt_repo: ${UBUNTU_REPO}" | tee -a /etc/openstack_deploy/user_variables.yml
+
 # Set the running neutron workers to 0/1
 echo "neutron_api_workers: 0" | tee -a /etc/openstack_deploy/user_variables.yml
 echo "neutron_rpc_workers: 0" | tee -a /etc/openstack_deploy/user_variables.yml
