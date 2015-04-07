@@ -18,12 +18,9 @@
 import os
 import traceback
 
-from distutils import version
-
 import yaml
 
 from cloudlib import arguments
-from cloudlib import indicator
 from cloudlib import shell
 
 
@@ -50,7 +47,7 @@ BUILT_IN_PIP_PACKAGE_VARS = [
 
 class DependencyFileProcessor(object):
     def __init__(self, local_path):
-        """
+        """Find and process dependent files from a local_path.
 
         :type local_path: ``str``
         :return:
@@ -166,7 +163,6 @@ class DependencyFileProcessor(object):
         """Process files.
 
         :type ext: ``tuple``
-        :type lower_priority: ``bol``
         """
         file_names = self._filter_files(
             file_names=self.file_names,
@@ -389,7 +385,6 @@ def main():
                 '--force-clean'
             ]
             _run_command(requirements_command)
-
 
             # Create HTML index for all files in the release directory
             index_command = [
