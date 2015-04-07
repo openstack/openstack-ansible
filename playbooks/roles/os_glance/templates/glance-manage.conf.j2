@@ -1,0 +1,9 @@
+[DEFAULT]
+verbose = {{ verbose }}
+debug = {{ debug }}
+log_file = /var/log/glance/glance-manage.log
+fatal_deprecations = {{ glance_fatal_deprecations }}
+use_syslog = False
+
+[database]
+connection = mysql://{{ glance_galera_user }}:{{ glance_container_mysql_password }}@{{ galera_address }}/{{ glance_galera_database }}?charset=utf8

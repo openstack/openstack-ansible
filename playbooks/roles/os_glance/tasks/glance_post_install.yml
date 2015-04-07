@@ -39,8 +39,11 @@
     owner: "{{ glance_system_user_name }}"
     group: "{{ glance_system_group_name }}"
   with_items:
+    - { src: "glance-api-paste.ini.j2", dest: "/etc/glance/glance-api-paste.ini" }
+    - { src: "glance-registry-paste.ini.j2", dest: "/etc/glance/glance-registry-paste.ini" }
     - { src: "glance-api.conf.j2", dest: "/etc/glance/glance-api.conf" }
     - { src: "glance-cache.conf.j2", dest: "/etc/glance/glance-cache.conf" }
+    - { src: "glance-manage.conf.j2", dest: "/etc/glance/glance-manage.conf" }
     - { src: "glance-registry.conf.j2", dest: "/etc/glance/glance-registry.conf" }
     - { src: "glance-scrubber.conf.j2", dest: "/etc/glance/glance-scrubber.conf" }
   notify:
@@ -56,8 +59,6 @@
     owner: "{{ glance_system_user_name }}"
     group: "{{ glance_system_group_name }}"
   with_items:
-    - { src: "glance-api-paste.ini", dest: "/etc/glance/glance-api-paste.ini" }
-    - { src: "glance-registry-paste.ini", dest: "/etc/glance/glance-registry-paste.ini" }
     - { src: "policy.json", dest: "/etc/glance/policy.json" }
     - { src: "schema.json", dest: "/etc/glance/schema.json" }
     - { src: "schema.json", dest: "/etc/glance/schema-image.json" }

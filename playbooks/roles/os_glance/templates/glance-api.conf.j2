@@ -11,6 +11,8 @@ fatal_deprecations = {{ glance_fatal_deprecations }}
 use_syslog = False
 bind_host = {{ glance_api_bind_address }}
 bind_port = {{ glance_api_service_port }}
+http_keepalive = {{ glance_http_keepalive }}
+digest_algorithm = {{ glance_digest_algorithm }}
 backlog = 4096
 workers = {{ glance_api_workers | default(api_threads) }}
 registry_host = {{ glance_registry_host }}
@@ -43,6 +45,9 @@ scrub_time = 43200
 scrubber_datadir = {{ glance_system_user_home }}/scrubber/
 image_cache_dir = {{ glance_system_user_home }}/cache/
 
+[task]
+task_executor = {{ glance_task_executor }}
+
 [database]
 connection = mysql://{{ glance_galera_user }}:{{ glance_container_mysql_password }}@{{ galera_address }}/{{ glance_galera_database }}?charset=utf8
 
@@ -66,6 +71,11 @@ memcache_secret_key = {{ memcached_encryption_key }}
 # if your keystone deployment uses PKI, and you value security over performance:
 check_revocations_for_cached = False
 
+[oslo_policy]
+policy_file = {{ glance_policy_file }}
+policy_default_rule = {{ glance_policy_default_rule }}
+policy_dirs = {{ glance_policy_dirs }}
+
 [paste_deploy]
 flavor = {{ glance_flavor }}
 
@@ -88,3 +98,6 @@ swift_store_large_object_chunk_size = {{ glance_swift_store_large_object_chunk_s
 swift_store_retry_get_count = 5
 swift_store_endpoint_type = {{ glance_swift_store_endpoint_type }}
 {% endif %}
+
+[profiler]
+enabled = {{ glance_profiler_enabled }}

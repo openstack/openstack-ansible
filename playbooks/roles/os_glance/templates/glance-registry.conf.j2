@@ -11,6 +11,7 @@ log_file = /var/log/glance/glance-registry.log
 use_syslog = False
 bind_host = {{ glance_registry_bind_address }}
 bind_port = {{ glance_registry_service_port }}
+http_keepalive = {{ glance_http_keepalive }}
 backlog = 4096
 workers = {{ glance_registry_workers | default(api_threads) }}
 api_limit_max = 1000
@@ -39,5 +40,13 @@ memcache_secret_key = {{ memcached_encryption_key }}
 # if your keystone deployment uses PKI, and you value security over performance:
 check_revocations_for_cached = False
 
+[oslo_policy]
+policy_file = {{ glance_policy_file }}
+policy_default_rule = {{ glance_policy_default_rule }}
+policy_dirs = {{ glance_policy_dirs }}
+
 [paste_deploy]
 flavor = keystone
+
+[profiler]
+enabled = {{ glance_profiler_enabled }}
