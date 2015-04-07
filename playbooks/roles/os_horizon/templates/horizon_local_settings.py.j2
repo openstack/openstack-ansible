@@ -1,12 +1,22 @@
 import os
 from django.utils.translation import ugettext_lazy as _
-from openstack_dashboard import exceptions
 
 DEBUG = {{ debug }}
 TEMPLATE_DEBUG = DEBUG
 COMPRESS_OFFLINE = True
 COMPRESS_ENABLED = True
 COMPRESS_ROOT = '{{ horizon_lib_dir }}/static'
+
+# WEBROOT is the location relative to Webserver root
+# should end with a slash.
+WEBROOT = '{{ horizon_webroot }}'
+# LOGIN_URL = WEBROOT + 'auth/login/'
+# LOGOUT_URL = WEBROOT + 'auth/logout/'
+#
+# LOGIN_REDIRECT_URL can be used as an alternative for
+# HORIZON_CONFIG.user_home, if user_home is not set.
+# Do not set it to '/home/', as this will cause circular redirect loop
+# LOGIN_REDIRECT_URL = WEBROOT
 
 # Required for Django 1.5.
 # If horizon is running in production (DEBUG is False), set this
@@ -47,14 +57,12 @@ SESSION_COOKIE_SECURE = True
 # OPENSTACK_KEYSTONE_DEFAULT_DOMAIN = 'Default'
 
 # Set Console type:
-# valid options would be "AUTO"(default), "VNC", "SPICE", "RDP" or None
+# valid options would be "AUTO"(default), "VNC", "SPICE", "RDP", "SERIAL" or None
 # Set to None explicitly if you want to deactivate the console.
 # CONSOLE_TYPE = "AUTO"
 
 # Default OpenStack Dashboard configuration.
 HORIZON_CONFIG = {
-    'dashboards': ('project', 'admin', 'settings',),
-    'default_dashboard': 'project',
     'user_home': 'openstack_dashboard.views.get_user_home',
     'ajax_queue_limit': 10,
     'auto_fade_alerts': {
@@ -63,11 +71,10 @@ HORIZON_CONFIG = {
         'types': ['alert-success', 'alert-info']
     },
     'help_url': "{{ horizon_help_url|default('http://docs.openstack.org') }}",
-    'exceptions': {'recoverable': exceptions.RECOVERABLE,
-                   'not_found': exceptions.NOT_FOUND,
-                   'unauthorized': exceptions.UNAUTHORIZED},
+    'modal_backdrop': 'static',
     'angular_modules': [],
     'js_files': [],
+    'js_spec_files': [],
 }
 
 # Specify a regular expression to validate user passwords.
@@ -83,6 +90,10 @@ HORIZON_CONFIG = {
 # Turn off browser autocompletion for forms including the login form and
 # the database creation workflow if so desired.
 # HORIZON_CONFIG["password_autocomplete"] = "off"
+
+# Setting this to True will disable the reveal button for password fields,
+# including on the login form.
+HORIZON_CONFIG["disable_password_reveal"] = {{ horizon_disable_password_reveal }}
 
 LOCAL_PATH = os.path.dirname(os.path.abspath(__file__))
 
@@ -146,6 +157,22 @@ OPENSTACK_HOST = "{{ internal_lb_vip_address }}"
 OPENSTACK_KEYSTONE_URL = "{{ keystone_service_internalurl }}"
 OPENSTACK_KEYSTONE_DEFAULT_ROLE = "_member_"
 
+# Enables keystone web single-sign-on if set to True.
+#WEBSSO_ENABLED = False
+
+# Determines which authentication choice to show as default.
+#WEBSSO_INITIAL_CHOICE = "credentials"
+
+# The list of authentication mechanisms
+# which include keystone federation protocols.
+# Current supported protocol IDs are 'saml2' and 'oidc'
+# which represent SAML 2.0, OpenID Connect respectively.
+# Do not remove the mandatory credentials mechanism.
+#WEBSSO_CHOICES = (
+#    ("credentials", _("Keystone Credentials")),
+#    ("oidc", _("OpenID Connect")),
+#    ("saml2", _("Security Assertion Markup Language")))
+
 # Disable SSL certificate checks (useful for self-signed certificates):
 {% if horizon_self_signed == true %}
 OPENSTACK_SSL_NO_VERIFY = True
@@ -175,7 +202,21 @@ OPENSTACK_KEYSTONE_BACKEND = {
 
 #Setting this to True, will add a new "Retrieve Password" action on instance,
 #allowing Admin session password retrieval/decryption.
-#OPENSTACK_ENABLE_PASSWORD_RETRIEVE = False
+OPENSTACK_ENABLE_PASSWORD_RETRIEVE = {{ horizon_enable_password_retrieve }}
+
+# The Launch Instance user experience has been significantly enhanced.
+# You can choose whether to enable the new launch instance experience,
+# the legacy experience, or both. The legacy experience will be removed
+# in a future release, but is available as a temporary backup setting to ensure
+# compatibility with existing deployments. Further development will not be
+# done on the legacy experience. Please report any problems with the new
+# experience via the Launchpad tracking system.
+#
+# Toggle LAUNCH_INSTANCE_LEGACY_ENABLED and LAUNCH_INSTANCE_NG_ENABLED to
+# determine the experience to enable.  Set them both to true to enable
+# both.
+LAUNCH_INSTANCE_LEGACY_ENABLED = {{ horizon_launch_instance_legacy }}
+LAUNCH_INSTANCE_NG_ENABLED = {{ horizon_launch_instance_ng }}
 
 # The Xen Hypervisor has the ability to set the mount point for volumes
 # attached to instances (other Hypervisors currently do not). Setting
@@ -213,6 +254,12 @@ OPENSTACK_NEUTRON_NETWORK = {
     # in this list will be available to choose from when creating a network.
     # Network types include local, flat, vlan, gre, and vxlan.
     'supported_provider_types': ['flat', 'vlan', 'vxlan'],
+
+    # Set which VNIC types are supported for port binding. Only the VNIC
+    # types in this list will be available to choose from when creating a
+    # port.
+    # VNIC types include 'normal', 'macvtap' and 'direct'.
+    'supported_vnic_types': ['*']
 }
 
 # The OPENSTACK_IMAGE_BACKEND settings can be used to customize features
@@ -267,6 +314,12 @@ OPENSTACK_ENDPOINT_TYPE = '{{ horizon_endpoint_type }}'
 API_RESULT_LIMIT = 1000
 API_RESULT_PAGE_SIZE = 20
 
+# The size of chunk in bytes for downloading objects from Swift
+SWIFT_FILE_TRANSFER_CHUNK_SIZE = {{ horizon_swift_file_transfer_chunk_size }}
+
+# Specify a maximum number of items to display in a dropdown.
+DROPDOWN_MAX_ITEMS = {{ horizon_dropdown_max_items }}
+
 # The timezone of the server. This should correspond with the timezone
 # of your entire OpenStack installation, and hopefully be in UTC.
 TIME_ZONE = "{{ horizon_time_zone }}"
@@ -283,6 +336,18 @@ TIME_ZONE = "{{ horizon_time_zone }}"
 #     'key': my_awesome_callback_method,
 #     'reverse': False,
 # }
+
+# Set this to True to display an 'Admin Password' field on the Change Password
+# form to verify that it is indeed the admin logged-in who wants to change
+# the password.
+ENFORCE_PASSWORD_CHECK = {{ horizon_enforce_password_check }}
+
+# Modules that provide /auth routes that can be used to handle different types
+# of user authentication. Add auth plugins that require extra route handling to
+# this list.
+#AUTHENTICATION_URLS = [
+#    'openstack_auth.urls',
+#]
 
 # The Horizon Policy Enforcement engine uses these values to load per service
 # policy rule files. The content of these files should match the files the
@@ -307,6 +372,10 @@ TIME_ZONE = "{{ horizon_time_zone }}"
 # unusable such as ["!"].
 # TROVE_ADD_USER_PERMS = []
 # TROVE_ADD_DATABASE_PERMS = []
+
+# Change this patch to the appropriate static directory containing
+# two files: _variables.scss and _styles.scss
+#CUSTOM_THEME_PATH = 'static/themes/default'
 
 LOGGING = {
     'version': 1,
@@ -525,6 +594,20 @@ SECURITY_GROUP_RULES = {
     },
 }
 
+# Deprecation Notice:
+#
+# The setting FLAVOR_EXTRA_KEYS has been deprecated.
+# Please load extra spec metadata into the Glance Metadata Definition Catalog.
+#
+# The sample quota definitions can be found in:
+# <glance_source>/etc/metadefs/compute-quota.json
+#
+# The metadata definition catalog supports CLI and API:
+#  $glance --os-image-api-version 2 help md-namespace-import
+#  $glance-manage db_load_metadefs <directory_with_definition_files>
+#
+# See Metadata Definitions on: http://docs.openstack.org/developer/glance/
+
 # Indicate to the Sahara data processing service whether or not
 # automatic floating IP allocation is in effect.  If it is not
 # in effect, the user will be prompted to choose a floating IP
@@ -532,3 +615,9 @@ SECURITY_GROUP_RULES = {
 # to set this to True if you were running Nova Networking with
 # auto_assign_floating_ip = True.
 # SAHARA_AUTO_IP_ALLOCATION_ENABLED = False
+
+# The hash algorithm to use for authentication tokens. This must
+# match the hash algorithm that the identity server and the
+# auth_token middleware are using. Allowed values are the
+# algorithms supported by Python's hashlib library.
+#OPENSTACK_TOKEN_HASH_ALGORITHM = 'md5'

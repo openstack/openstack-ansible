@@ -48,7 +48,11 @@ horizon_server_name: "horizon"
 horizon_log_level: info
 horizon_self_signed: true
 horizon_self_signed_regen: false
+horizon_dropdown_max_items: 30
 horizon_time_zone: UTC
+horizon_enforce_password_check: False
+horizon_disable_password_reveal: False
+horizon_enable_password_retrieve: False
 
 ## Horizon SSL
 ### Set the cacert pem if you'd like horizon to verify it.
@@ -56,6 +60,15 @@ horizon_time_zone: UTC
 horizon_ssl_cert: /etc/ssl/certs/apache.cert
 horizon_ssl_key: /etc/ssl/private/apache.key
 horizon_ssl_cert_path: /etc/ssl/certs
+
+## Launch instance
+horizon_launch_instance_legacy: True
+horizon_launch_instance_ng: False
+
+## Swift
+horizon_swift_file_transfer_chunk_size: 524288
+
+horizon_webroot: /
 
 horizon_listen_ports:
   - "80"
