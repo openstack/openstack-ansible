@@ -20,6 +20,7 @@ set -e -u -v +x
 ## Vars
 export DEPLOY_SWIFT=${DEPLOY_SWIFT:-"yes"}
 export FLUSH_IPTABLES=${FLUSH_IPTABLES:-"yes"}
+export SYMLINK_DIR=${SYMLINK_DIR:-"$(pwd)/logs"}
 
 ## Functions -----------------------------------------------------------------
 
