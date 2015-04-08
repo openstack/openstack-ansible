@@ -193,7 +193,7 @@
   roles:
     - maas_local
 
-- hosts: neutron_l3_agent
+- hosts: neutron_metering_agent
   vars:
     check_name: neutron_metering_agent_check
     check_details: file=neutron_service_check.py,args=--host,args={{ ansible_nodename }},args={{ internal_vip_address }}
@@ -201,6 +201,9 @@
     check_timeout: "{{ maas_check_timeout }}"
     alarms:
       - { 'name': 'neutron_metering_agent_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["neutron-metering-agent_status"] != 1) { return new AlarmStatus(CRITICAL, "neutron-metering-agent down"); }' }
+  user: root
+  roles:
+    - maas_local
 
 - hosts: nova_api_metadata
   vars:
