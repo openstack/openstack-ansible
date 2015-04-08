@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-DOCUMENTATION='''
+DOCUMENTATION = """
 ---
 module: glance
 short_description:
@@ -56,16 +56,16 @@ options:
             - 1 (default)
             - 2
 author: Hugh Saunders
-'''
+"""
 
-EXAMPLES = '''
+EXAMPLES = """
 # Create an image
 - name: Ensure cirros image
   glance:
     command: 'image-create'
     openrc_path: /root/openrc
     image_name: cirros
-    image_url: 'https://launchpad.net/cirros/trunk/0.3.2/+download/cirros-0.3.2-source.tar.gz'
+    image_url: 'https://example-domain.com/cirros-0.3.2-source.tar.gz'
     image_container_format: bare
     image_disk_format: qcow2
     image_is_public: True
@@ -75,14 +75,16 @@ EXAMPLES = '''
   glance:
     command: 'image-list'
     openrc_path: /root/openrc
-'''
+"""
 
-import re
-import keystoneclient.v2_0.client as ksclient
+
 import glanceclient.client as glclient
+import keystoneclient.v2_0.client as ksclient
+
 
 COMMAND_MAP = {'image-list': 'list_images',
                'image-create': 'create_image'}
+
 
 class ManageGlance(object):
     def __init__(self, module):
@@ -99,17 +101,18 @@ class ManageGlance(object):
                 rc=2, msg=str(e))
 
     def _parse_openrc(self):
-        """ Get credentials from an openrc file """
+        """Get credentials from an openrc file."""
         openrc_path = self.module.params['openrc_path']
         line_re = re.compile('^export (?P<key>OS_\w*)=(?P<value>[^\n]*)')
         with open(openrc_path) as openrc:
             matches = [line_re.match(l) for l in openrc]
             return dict(
                 (g.groupdict()['key'], g.groupdict()['value'])
-                    for g in matches if g)
+                for g in matches if g
+            )
 
     def _keystone_authenticate(self):
-        """ Authenticate with Keystone """
+        """Authenticate with Keystone."""
         openrc = self._parse_openrc()
         self.keystone = ksclient.Client(username=openrc['OS_USERNAME'],
                                         password=openrc['OS_PASSWORD'],
@@ -117,65 +120,83 @@ class ManageGlance(object):
                                         auth_url=openrc['OS_AUTH_URL'])
 
     def _init_glance(self):
-        """ Create glance client object using token and url from keystone """
+        """Create glance client object using token and url from keystone."""
         openrc = self._parse_openrc()
         p = self.module.params
         v = p['api_version']
-        ep = self.keystone.service_catalog.url_for(service_type='image',
-        endpoint_type=openrc['OS_ENDPOINT_TYPE'])
+        ep = self.keystone.service_catalog.url_for(
+            service_type='image',
+            endpoint_type=openrc['OS_ENDPOINT_TYPE']
+        )
 
-        self.glance = glclient.Client(endpoint='%s/v%s' % (ep, v),
-            token=self.keystone.get_token(self.keystone.session))
+        self.glance = glclient.Client(
+            endpoint='%s/v%s' % (ep, v),
+            token=self.keystone.get_token(self.keystone.session)
+        )
 
     def route(self):
-        """ Run the command specified by the command parameter """
+        """Run the command specified by the command parameter."""
         getattr(self, COMMAND_MAP[self.module.params['command']])()
 
     def _get_image_facts(self):
-        """ Helper function to format image list as a dictionary """
+        """Helper function to format image list as a dictionary."""
         p = self.module.params
         v = p['api_version']
         if v == '1':
-            return dict((i.name, i.to_dict()) for i in self.glance.images.list())
+            return dict(
+                (i.name, i.to_dict()) for i in self.glance.images.list()
+            )
         elif v == '2':
-            return dict((i.name, i) for i in self.glance.images.list())
+            return dict(
+                (i.name, i) for i in self.glance.images.list()
+            )
 
     def list_images(self):
-        """ Get information about available glance images and return
-        as a fact dictionary glance_images
+        """Get information about available glance images.
+
+        Returns as a fact dictionary glance_images
         """
         self.module.exit_json(
             changed=self.state_change,
             ansible_facts=dict(glance_images=self._get_image_facts()))
 
     def create_image(self):
-        """ Create a glance image that references a remote url """
+        """Create a glance image that references a remote url."""
         p = self.module.params
         v = p['api_version']
-        name = p['image_name']
-        image_opts=dict(name=name,
-                         disk_format=p['image_disk_format'],
-                         container_format=p['image_container_format'],
-                         copy_from=p['image_url'])
+        image_name = p['image_name']
+        image_opts = dict(
+            name=image_name,
+            disk_format=p['image_disk_format'],
+            container_format=p['image_container_format'],
+            copy_from=p['image_url']
+        )
         if v == '1':
             image_opts['is_public'] = p['image_is_public']
         elif v == '2':
-            if p['image_is_public'] == True:
+            if p['image_is_public']:
                 vis = 'public'
             else:
                 vis = 'private'
             image_opts['visibility'] = vis
 
         images = {i.name for i in self.glance.images.list()}
-        if name in images:
-            self.module.exit_json(changed=self.state_change,
-                ansible_facts=dict(glance_images=self._get_image_facts()))
+        if image_name in images:
+            self.module.exit_json(
+                changed=self.state_change,
+                ansible_facts=dict(
+                    glance_images=self._get_image_facts()
+                )
+            )
         else:
             self.glance.images.create(**image_opts)
             self.state_change = True
             self.module.exit_json(
                 changed=self.state_change,
-                ansible_facts=dict(glance_images=self._get_image_facts()))
+                ansible_facts=dict(
+                    glance_images=self._get_image_facts()
+                )
+            )
 
 
 def main():
