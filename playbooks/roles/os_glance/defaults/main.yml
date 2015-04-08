@@ -75,13 +75,18 @@ glance_service_proto: http
 glance_service_type: image
 glance_service_description: "Glance Image Service"
 glance_service_user_name: glance
-glance_service_tenant_name: service
+glance_service_project_name: service
+glance_service_project_domain_id: default
+glance_service_user_domain_id: default
 glance_service_publicuri: "{{ glance_service_proto }}://{{ external_lb_vip_address }}:{{ glance_service_port }}"
 glance_service_publicurl: "{{ glance_service_publicuri }}"
 glance_service_internaluri: "{{ glance_service_proto }}://{{ internal_lb_vip_address }}:{{ glance_service_port }}"
 glance_service_internalurl: "{{ glance_service_internaluri }}"
 glance_service_adminuri: "{{ glance_service_proto }}://{{ internal_lb_vip_address }}:{{ glance_service_port }}"
 glance_service_adminurl: "{{ glance_service_adminuri }}"
+
+## Keystone authentication middleware
+glance_keystone_auth_plugin: password
 
 ## Glance config
 glance_image_cache_max_size: 10737418240
