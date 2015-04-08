@@ -19,7 +19,7 @@
   user: root
   pre_tasks:
     - name: Neutron extra lxc config
-      lxc-container:
+      lxc_container:
         name: "{{ container_name }}"
         container_command: |
           [[ ! -d "/lib/modules" ]] && mkdir -p "/lib/modules"
