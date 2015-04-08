@@ -24,9 +24,6 @@ from cloudlib import arguments
 from cloudlib import shell
 
 
-VERSION_DESCRIPTORS = ['>=', '<=', '==', '!=', '<', '>']
-
-
 REQUIREMENTS_FILE_TYPES = [
     'requirements.txt',
     'global-requirements.txt',
@@ -393,6 +390,17 @@ def main():
                 'create-html-indexes',
                 '--repo-dir',
                 _abs_path(user_vars['release_directory'])
+            ]
+            _run_command(index_command)
+
+            # Store the git repositories
+            index_command = [
+                'yaprt',
+                'store-repos',
+                '--report-file',
+                _abs_path(user_vars['report_file']),
+                '--git-repo-path',
+                '/var/www/repo/openstackgit'
             ]
             _run_command(index_command)
 

@@ -79,7 +79,7 @@
         yaprt --quiet \
               create-html-indexes \
               --repo-dir "{{ repo_service_home_folder }}/repo" \
-              --dir-exclude "{{ repo_service_home_folder }}/repo/openstackgit" "{{ repo_service_home_folder }}/repo/rpcgit"
+              --dir-exclude "{{ repo_service_home_folder }}/repo/openstackgit"
       sudo: yes
       sudo_user: "{{ repo_service_user_name }}"
       tags:
