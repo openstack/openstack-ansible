@@ -60,6 +60,8 @@ horizon_enable_password_retrieve: False
 horizon_ssl_cert: /etc/ssl/certs/apache.cert
 horizon_ssl_key: /etc/ssl/private/apache.key
 horizon_ssl_cert_path: /etc/ssl/certs
+horizon_ssl_protocol: "{{ ssl_protocol }}"
+horizon_ssl_cipher_suite: "{{ ssl_cipher_suite }}"
 
 ## Launch instance
 horizon_launch_instance_legacy: True

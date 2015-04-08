@@ -22,9 +22,10 @@
     SSLCertificateKeyFile {{ horizon_ssl_key }}
     SSLCACertificatePath  {{ horizon_ssl_cert_path }}
     SSLCARevocationPath   {{ horizon_ssl_cert_path }}
+    SSLCompression Off
     SSLProtocol All -SSLv2 -SSLv3
     SSLHonorCipherOrder On
-    SSLCipherSuite "EECDH+ECDSA+AESGCM EECDH+aRSA+AESGCM EECDH+ECDSA+SHA384 EECDH+ECDSA+SHA256 EECDH+aRSA+SHA384 EECDH+aRSA+SHA256 EECDH+aRSA+RC4 EECDH EDH+aRSA !aNULL !eNULL !LOW !3DES !MD5 !EXP !PSK !SRP !DSS !RC4"
+    SSLCipherSuite {{ horizon_ssl_cipher_suite }}
     SetEnvIf User-Agent ".*MSIE.*" nokeepalive ssl-unclean-shutdown
 
     WSGIScriptAlias / {{ horizon_lib_dir }}/openstack_dashboard/wsgi/django.wsgi
