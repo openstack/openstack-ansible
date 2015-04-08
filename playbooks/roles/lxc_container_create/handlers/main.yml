@@ -14,7 +14,7 @@
 # limitations under the License.
 
 - name: Lxc container restart
-  lxc-container:
+  lxc_container:
     name: "{{ inventory_hostname }}"
     state: "stopped"
   notify:
@@ -22,7 +22,7 @@
   delegate_to: "{{ physical_host }}"
 
 - name: Start Container
-  lxc-container:
+  lxc_container:
     name: "{{ inventory_hostname }}"
     state: "started"
   delegate_to: "{{ physical_host }}"

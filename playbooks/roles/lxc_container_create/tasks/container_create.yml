@@ -50,7 +50,7 @@
     - lxc-container-directories
 
 - name: Create container
-  lxc-container:
+  lxc_container:
     name: "{{ inventory_hostname }}"
     container_log: "true"
     config: "{{ lxc_container_config }}"
@@ -92,7 +92,7 @@
     - lxc-container-create
 
 - name: Container network interfaces
-  lxc-container:
+  lxc_container:
     name: "{{ inventory_hostname }}"
     container_command: |
         echo -e '{{ lxc_container_interface }}' | tee /etc/network/interfaces.d/{{ item.value.interface }}.cfg
@@ -130,7 +130,7 @@
     - lxc-container-networks
 
 - name: Create container service directories
-  lxc-container:
+  lxc_container:
     name: "{{ inventory_hostname }}"
     container_command: |
       mkdir -p '/var/log/{{ properties.service_name }}'

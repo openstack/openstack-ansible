@@ -37,7 +37,7 @@
       tags:
         - cinder-lxc-devices
     - name: Cinder extra lxc config
-      lxc-container:
+      lxc_container:
         name: "{{ container_name }}"
         container_config:
           - "lxc.aa_profile=unconfined"
