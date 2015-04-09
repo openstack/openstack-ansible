@@ -18,18 +18,20 @@ from optparse import OptionParser
 from os.path import exists
 from swift.cli.ringbuilder import main as rb_main
 
+import json
 import pickle
 import sys
 import threading
-import json
-import copy
+
 
 USAGE = "usage: %prog -f <swift_ring.contents>"
 
 DEVICE_KEY = "%(ip)s:%(port)d/%(device)s"
 
+
 class RingValidationError(Exception):
     pass
+
 
 def create_buildfile(build_file, part_power, repl, min_part_hours,
                      update=False, data=None, validate=False):
@@ -51,39 +53,47 @@ def create_buildfile(build_file, part_power, repl, min_part_hours,
                                       'you must rebuild the ring if you need '
                                       'to change it.\nRing part power: %s '
                                       'Inventory part power: %s'
-                                      %(data.get('part_power'), part_power))
+                                      % (data.get('part_power'), part_power))
 
     elif not validate:
         run_and_wait(rb_main, ["swift-ring-builder", build_file, "create",
                      part_power, repl, min_part_hours])
 
+
 def change_host_weight(build_file, host_search_str, weight):
     run_and_wait(rb_main, ["swift-ring-builder", build_file, "set_weight",
                  host_search_str, weight])
+
 
 def remove_host_from_ring(build_file, host):
     run_and_wait(rb_main, ["swift-ring-builder", build_file, "remove",
                  host])
 
+
 def update_host_in_ring(build_file, new_host, old_host, validate=False):
     if new_host.get('zone', 0) != old_host['zone']:
         devstr = DEVICE_KEY % new_host
         raise RingValidationError('Cannot update zone on %s, this can only be '
-                                  'done when the drive is added' % (devstr))
+                                  'done when the drive is added' % devstr)
     if new_host.get('region', 1) != old_host['region']:
         devstr = DEVICE_KEY % new_host
         raise RingValidationError('Cannot update region on %s, this can only '
-                                  'be done when the drive is added' % (devstr))
+                                  'be done when the drive is added' % devstr)
 
     try:
         r_ip = new_host.get('repl_ip', new_host['ip'])
         r_port = new_host.get('repl_port', new_host['port'])
         weight = new_host.get('weight')
-        if r_ip != old_host['replication_ip'] or \
-            r_port != old_host['replication_port']:
+
+        old_r_ip = old_host['replication_ip']
+        old_r_port = old_host['replication_port']
+
+        if r_ip != old_r_ip or r_port != old_r_port:
             host_d = {'r_ip': r_ip, 'r_port': r_port}
             host_d.update(new_host)
-            host_str = "%(ip)s:%(port)dR%(r_ip)s:%(r_port)d/%(device)s" % host_d
+            host_str = (
+                "%(ip)s:%(port)dR%(r_ip)s:%(r_port)d/%(device)s" % host_d
+            )
             if not validate:
                 run_and_wait(rb_main, ["swift-ring-builder", build_file,
                                        "set_info", DEVICE_KEY % new_host,
@@ -118,6 +128,7 @@ def add_host_to_ring(build_file, host, validate=False):
         run_and_wait(rb_main, ["swift-ring-builder", build_file, 'add',
                                host_str, str(weight)])
 
+
 def run_and_wait(func, *args):
     t = threading.Thread(target=func, args=args)
     t.start()
@@ -130,7 +141,7 @@ def has_section(conf, section):
 
 def check_section(conf, section):
     if not has_section(conf, section):
-        print("Section %s doesn't exist" % (section))
+        print("Section %s doesn't exist" % section)
         sys.exit(2)
 
 
@@ -147,14 +158,22 @@ def get_build_file_data(build_file):
     return build_file_data
 
 
-def build_ring(build_name, repl, min_part_hours, part_power, hosts, validate=False):
+def build_ring(build_name, repl, min_part_hours, part_power, hosts,
+               validate=False):
     # Create the build file
-    build_file = "%s.builder" % (build_name)
+    build_file = "%s.builder" % build_name
     build_file_data = get_build_file_data(build_file)
 
     update = build_file_data is not None
-    create_buildfile(build_file, part_power, repl, min_part_hours, update,
-                           data=build_file_data, validate=validate)
+    create_buildfile(
+        build_file,
+        part_power,
+        repl,
+        min_part_hours,
+        update,
+        data=build_file_data,
+        validate=validate
+    )
 
     old_hosts = {}
     if update:
@@ -179,9 +198,14 @@ def build_ring(build_name, repl, min_part_hours, part_power, hosts, validate=Fal
     # Rebalance ring
     if not validate:
         if not hosts:
-            run_and_wait(rb_main, ["swift-ring-builder", build_file, "write_ring"])
+            run_and_wait(
+                rb_main, ["swift-ring-builder", build_file, "write_ring"]
+            )
         else:
-            run_and_wait(rb_main, ["swift-ring-builder", build_file, "rebalance"])
+            run_and_wait(
+                rb_main, ["swift-ring-builder", build_file, "rebalance"]
+            )
+
 
 def main(setup):
     # load the json file
@@ -189,15 +213,17 @@ def main(setup):
         with open(setup) as json_stream:
             _contents_file = json.load(json_stream)
     except Exception as ex:
-        print("Failed to load json string %s" % (ex))
+        print("Failed to load json string %s" % ex)
         return 1
 
     hosts = _contents_file['drives']
     kargs = {'validate': True, 'hosts': hosts}
-    ring_call = [ _contents_file['builder_file'],
-                  _contents_file['repl_number'],
-                  _contents_file['min_part_hours'],
-                  _contents_file['part_power']]
+    ring_call = [
+        _contents_file['builder_file'],
+        _contents_file['repl_number'],
+        _contents_file['min_part_hours'],
+        _contents_file['part_power']
+    ]
 
     try:
         build_ring(*ring_call, **kargs)
@@ -212,10 +238,15 @@ def main(setup):
 
 if __name__ == "__main__":
     parser = OptionParser(USAGE)
-    parser.add_option("-f", "--file", dest="setup",
-                      help="Specify the swift ring contents file.", metavar="FILE")
+    parser.add_option(
+        "-f",
+        "--file",
+        dest="setup",
+        help="Specify the swift ring contents file.",
+        metavar="FILE"
+    )
 
-    options, args = parser.parse_args(sys.argv[1:])
+    options, _args = parser.parse_args(sys.argv[1:])
     if options.setup and not exists(options.setup):
         print("Swift ring contents file not found or doesn't exist")
         parser.print_help()
