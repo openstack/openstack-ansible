@@ -104,7 +104,7 @@ memcached_servers = {{ memcached_servers }}
 catalog_info = volume:cinder:internalURL
 
 
-{% if nova_spice_html5proxy_base_url is defined %}
+{% if nova_spice_html5proxy_base_url is defined and nova_console_type == "spice" %}
 [spice]
 agent_enabled = {{ nova_console_agent_enabled }}
 enabled = {{ nova_console_agent_enabled }}
@@ -142,7 +142,7 @@ workers = {{ nova_conductor_workers | default(api_threads) }}
 
 
 [osapi_v3]
-enabled = True
+enabled = False
 
 
 [keystone_authtoken]
