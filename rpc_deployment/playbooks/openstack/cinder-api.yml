@@ -51,7 +51,7 @@
   handlers:
     - include: handlers/services.yml
 
-- hosts: cinder_api!:cinder_api[0]
+- hosts: cinder_api:!cinder_api[0]
   user: root
   roles:
     - cinder_common
