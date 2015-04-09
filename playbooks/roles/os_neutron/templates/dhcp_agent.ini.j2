@@ -9,7 +9,6 @@ debug = {{ debug }}
 
 interface_driver = {{ neutron_driver_interface }}
 dhcp_driver = {{ neutron_driver_dhcp }}
-use_namespaces = True
 enable_isolated_metadata = True
 
 num_sync_threads = {{ neutron_num_sync_threads | default(api_threads) }}
