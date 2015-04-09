@@ -51,12 +51,14 @@ info_block "Checking for required libraries." 2> /dev/null || source $(dirname $
 mkdir -p /openstack/log
 
 # Implement the log directory link for openstack-infra log publishing
-ln -s /openstack/log $SYMLINK_DIR
+ln -sf /openstack/log $SYMLINK_DIR
 
 # Create ansible logging directory and add in a log file entry into ansible.cfg
 if [ -f "playbooks/ansible.cfg" ];then
   mkdir -p /openstack/log/ansible-logging
-  sed -i '/\[defaults\]/a log_path = /openstack/log/ansible-logging/ansible.log' playbooks/ansible.cfg
+  if [ ! "$(grep -e '^log_path\ =\ /openstack/log/ansible-logging/ansible.log' playbooks/ansible.cfg)" ];then
+    sed -i '/\[defaults\]/a log_path = /openstack/log/ansible-logging/ansible.log' playbooks/ansible.cfg
+  fi
 fi
 
 # Check that the link creation was successful
@@ -80,7 +82,9 @@ fi
 info_block "Running AIO Setup"
 
 # Set base DNS to google, ensuring consistent DNS in different environments
-echo -e 'nameserver 8.8.8.8\nnameserver 8.8.4.4' | tee /etc/resolv.conf
+if [ ! "$(grep -e '^nameserver 8.8.8.8' -e '^nameserver 8.8.4.4' /etc/resolv.conf)" ];then
+  echo -e '\n# Adding google name servers\nnameserver 8.8.8.8\nnameserver 8.8.4.4' | tee -a /etc/resolv.conf
+fi
 
 # Update the package cache and install required packages
 apt-get update

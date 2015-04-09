@@ -217,6 +217,8 @@ function log_instance_info() {
 # Get instance info
 function get_instance_info() {
   set +x
+  info_block 'Current User'
+  whoami
   info_block 'Available Memory'
   free -mt || true
   info_block 'Available Disk Space'
@@ -224,7 +226,7 @@ function get_instance_info() {
   info_block 'Mounted Devices'
   mount || true
   info_block 'Block Devices'
-  lsblk || true
+  lsblk -i || true
   info_block 'Block Devices Information'
   blkid || true
   info_block 'Block Device Partitions'
@@ -253,6 +255,8 @@ function get_instance_info() {
   ip a || true
   info_block 'Network Routes'
   ip r || true
+  info_block 'DNS Configuration'
+  cat /etc/resolv.conf
   info_block 'Trace Path from google'
   tracepath 8.8.8.8 -m 5 || true
   info_block 'XEN Server Information'
