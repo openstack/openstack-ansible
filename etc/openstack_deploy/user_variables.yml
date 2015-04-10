@@ -38,3 +38,16 @@ glance_swift_store_endpoint_type: internalURL
 ## Swift
 # This will allow all users to create containers and upload to swift if set to True
 swift_allow_all_users: False
+
+## Apache SSL Settings
+# These do not need to be configured unless you're creating certificates for
+# services running behind Apache (currently, Horizon and Keystone).
+ssl_protocol: "ALL -SSLv2 -SSLv3"
+# Cipher suite string from https://hynek.me/articles/hardening-your-web-servers-ssl-ciphers/
+ssl_cipher_suite: "ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:ECDH+3DES:DH+3DES:RSA+AESGCM:RSA+AES:RSA+3DES:!aNULL:!MD5:!DSS"
+# To override for Keystone only:
+#   - keystone_ssl_protocol
+#   - keystone_ssl_cipher_suite
+# To override for Horizon only:
+#   - horizon_ssl_protocol
+#   - horizon_ssl_cipher_suite
