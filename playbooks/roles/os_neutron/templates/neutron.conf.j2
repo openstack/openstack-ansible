@@ -69,10 +69,16 @@ send_events_interval = 2
 
 ## Nova
 nova_url = {{ nova_service_adminurl|replace('/%(tenant_id)s', '') }}
-nova_admin_username = {{ nova_service_user_name }}
-nova_admin_tenant_id = {{ nova_admin_tenant_id }}
-nova_admin_password = {{ nova_service_password }}
-nova_admin_auth_url = {{ keystone_service_internalurl }}
+
+[nova]
+auth_plugin = {{ nova_keystone_auth_plugin }}
+auth_url = {{ keystone_service_adminuri }}
+region_name = {{ nova_service_region }}
+project_domain_id = {{ nova_service_project_domain_id }}
+user_domain_id = {{ nova_service_user_domain_id }}
+project_name = {{ nova_service_project_name }}
+username = {{ nova_service_user_name }}
+password = {{ nova_service_password }}
 
 
 [quotas]
@@ -87,12 +93,15 @@ root_helper = sudo /usr/local/bin/neutron-rootwrap /etc/neutron/rootwrap.conf
 
 
 [keystone_authtoken]
+auth_plugin = {{ neutron_keystone_auth_plugin }}
 signing_dir = /var/cache/neutron
-identity_uri = {{ keystone_service_adminuri }}
-auth_uri = {{ keystone_service_internalurl }}
-admin_tenant_name = {{ neutron_service_tenant_name }}
-admin_user = {{ neutron_service_user_name }}
-admin_password = {{ neutron_service_password }}
+auth_url = {{ keystone_service_adminuri }}
+auth_uri = {{ keystone_service_internaluri }}
+project_domain_id = {{ neutron_service_project_domain_id }}
+user_domain_id = {{ neutron_service_user_domain_id }}
+project_name = {{ neutron_service_project_name }}
+username = {{ neutron_service_user_name }}
+password = {{ neutron_service_password }}
 
 memcached_servers = {{ memcached_servers }}
 

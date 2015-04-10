@@ -75,7 +75,9 @@ neutron_rpc_workers: 0
 neutron_metadata_backlog: 128
 
 ## Auth
-neutron_service_tenant_name: service
+neutron_service_project_name: service
+neutron_service_project_domain_id: default
+neutron_service_user_domain_id: default
 neutron_service_role_name: admin
 neutron_service_user_name: neutron
 neutron_service_name: neutron
@@ -90,6 +92,9 @@ neutron_service_adminurl: "{{ neutron_service_adminuri }}"
 neutron_service_internaluri: "{{ neutron_service_proto }}://{{ internal_lb_vip_address }}:{{ neutron_service_port }}"
 neutron_service_internalurl: "{{ neutron_service_internaluri }}"
 neutron_service_region: RegionOne
+
+## Keystone authentication middleware
+neutron_keystone_auth_plugin: password
 
 neutron_service_program_name: neutron-server
 neutron_service_program_config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini

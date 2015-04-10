@@ -129,7 +129,7 @@ auth_strategy = keystone
 admin_auth_url = {{ keystone_service_adminurl }}
 admin_password = {{ neutron_service_password }}
 admin_username = {{ neutron_service_user_name }}
-admin_tenant_name = {{ neutron_service_tenant_name }}
+admin_tenant_name = {{ neutron_service_project_name }}
 metadata_proxy_shared_secret = {{ nova_metadata_proxy_secret }}
 service_metadata_proxy = {{ nova_metadata_proxy_enabled }}
 
