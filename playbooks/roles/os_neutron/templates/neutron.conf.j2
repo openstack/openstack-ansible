@@ -15,6 +15,7 @@ auth_strategy = keystone
 lock_path = /var/lock/neutron
 network_device_mtu = {{ neutron_network_device_mtu }}
 allow_overlapping_ips = True
+vlan_transparent = False
 
 
 ## Drivers
@@ -60,7 +61,7 @@ dhcp_agent_notification = True
 dhcp_agents_per_network = {{ groups['neutron_agent'] | length }}
 dhcp_delete_namespaces = True
 dhcp_lease_duration = 86400
-
+advertise_mtu = False
 
 ## RabbitMQ
 rabbit_port = {{ rabbitmq_port }}
