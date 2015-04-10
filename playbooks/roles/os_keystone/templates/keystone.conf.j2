@@ -10,11 +10,12 @@ public_endpoint = {{ keystone_public_endpoint }}
 admin_endpoint = {{ keystone_service_adminuri }}
 fatal_deprecations = {{ keystone_fatal_deprecations }}
 
+{% if keystone_ssl_enabled == true and  keystone_secure_proxy_ssl_header is defined %}
+secure_proxy_ssl_header = {{ keystone_secure_proxy_ssl_header }}
+{% endif %}
+
 log_file = keystone.log
 log_dir = /var/log/keystone
-rabbit_hosts = {{ rabbitmq_servers }}
-rabbit_userid = {{ rabbitmq_userid }}
-rabbit_password = {{ rabbitmq_password }}
 rpc_backend = {{ keystone_rpc_backend }}
 
 
@@ -85,8 +86,12 @@ cache_time = {{ keystone_token_cache_time }}
 provider = {{ keystone_token_provider }}
 driver = {{ keystone_token_driver }}
 
-
 [eventlet_server]
 admin_bind_host = {{ keystone_bind_address }}
 admin_port = {{ keystone_admin_port }}
 public_port = {{ keystone_service_port }}
+
+[oslo_messaging_rabbit]
+rabbit_hosts = {{ rabbitmq_servers }}
+rabbit_userid = {{ rabbitmq_userid }}
+rabbit_password = {{ rabbitmq_password }}
