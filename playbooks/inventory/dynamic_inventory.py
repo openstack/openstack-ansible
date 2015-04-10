@@ -556,7 +556,7 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
         if properties:
             is_metal = properties.get('is_metal', False)
 
-        ## This should convert found addresses based on q_name + "_address"
+        # This should convert found addresses based on q_name + "_address"
         #  and then build the network if its not found.
         if not is_metal and old_address not in networks:
             network = networks[old_address] = network_entry()
@@ -611,7 +611,6 @@ def _net_address_search(provider_networks, main_netowrk, key):
             p_net = pn.get('network')
             if p_net:
                 if p_net.get('container_bridge') == main_netowrk:
-                    print p_net
                     p_net[key] = True
 
     return provider_networks
