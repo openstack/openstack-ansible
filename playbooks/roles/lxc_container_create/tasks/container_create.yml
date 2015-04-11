@@ -53,13 +53,13 @@
   lxc_container:
     name: "{{ inventory_hostname }}"
     container_log: "true"
-    config: "{{ lxc_container_config }}"
-    template: "{{ lxc_container_template }}"
+    config: "{{ properties.container_config|default(lxc_container_config) }}"
+    template: "{{ properties.container_template|default(lxc_container_template) }}"
     state: started
-    backing_store: "{{ lxc_container_backing_store }}"
-    fs_size: "{{ lxc_container_fs_size }}"
-    fs_type: "{{ lxc_container_fs_type }}"
-    vg_name: "{{ lxc_container_vg_name }}"
+    backing_store: "{{ properties.container_backing_store|default(lxc_container_backing_store) }}"
+    fs_size: "{{ properties.container_fs_size|default(lxc_container_fs_size) }}"
+    fs_type: "{{ properties.container_fs_type|default(lxc_container_fs_type) }}"
+    vg_name: "{{ properties.container_vg_name|default(lxc_container_vg_name) }}"
     template_options: "--release {{ properties.container_release|default(lxc_container_release) }}"
     container_command: |
       mkdir -p ~/.ssh/
