@@ -159,6 +159,7 @@ container_skel:
     properties:
       service_name: glance
       container_release: trusty
+      container_fs_size: 12G
   heat_apis_container:
     belongs_to:
       - infra_containers
