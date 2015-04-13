@@ -40,9 +40,14 @@ nova_virt_type: kvm
 
 ## Nova Auth
 nova_service_region: RegionOne
-nova_service_tenant_name: "service"
+nova_service_project_name: "service"
+nova_service_project_domain_id: default
+nova_service_user_domain_id: default
 nova_service_user_name: "nova"
 nova_service_role_name: "admin"
+
+## Keystone authentication middleware
+nova_keystone_auth_plugin: password
 
 ## Nova enabled apis
 nova_enabled_apis: "osapi_compute,metadata"

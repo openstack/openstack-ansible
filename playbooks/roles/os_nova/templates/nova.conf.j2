@@ -146,12 +146,15 @@ enabled = False
 
 
 [keystone_authtoken]
+auth_plugin = {{ nova_keystone_auth_plugin }}
 signing_dir = {{ nova_system_home_folder }}/cache/api
-identity_uri = {{ keystone_service_adminuri }}
-auth_uri = {{ keystone_service_internalurl }}
-admin_tenant_name = {{ nova_service_tenant_name }}
-admin_user = {{ nova_service_user_name }}
-admin_password = {{ nova_service_password }}
+auth_url = {{ keystone_service_adminuri }}
+auth_uri = {{ keystone_service_internaluri }}
+project_domain_id = {{ nova_service_project_domain_id }}
+user_domain_id = {{ nova_service_user_domain_id }}
+project_name = {{ nova_service_project_name }}
+username = {{ nova_service_user_name }}
+password = {{ nova_service_password }}
 
 memcached_servers = {{ memcached_servers }}
 

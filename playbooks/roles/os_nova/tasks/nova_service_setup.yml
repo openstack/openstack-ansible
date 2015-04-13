@@ -16,7 +16,7 @@
 - include: nova_service_add.yml
   vars:
     service_user_name: "{{ nova_service_user_name }}"
-    service_tenant_name: "{{ nova_service_tenant_name }}"
+    service_tenant_name: "{{ nova_service_project_name }}"
     service_name: "{{ nova_service_name }}"
     service_type: "{{ nova_service_type }}"
     service_region: "{{ nova_service_region }}"
@@ -34,7 +34,7 @@
 - include: nova_service_add.yml
   vars:
     service_user_name: "{{ nova_service_user_name }}"
-    service_tenant_name: "{{ nova_service_tenant_name }}"
+    service_tenant_name: "{{ nova_service_project_name }}"
     service_name: "{{ nova_v21_service_name }}"
     service_type: "{{ nova_v21_service_type }}"
     service_region: "{{ nova_service_region }}"
@@ -51,7 +51,7 @@
 - include: nova_service_add.yml
   vars:
     service_user_name: "{{ nova_service_user_name }}"
-    service_tenant_name: "{{ nova_service_tenant_name }}"
+    service_tenant_name: "{{ nova_service_project_name }}"
     service_name: "{{ nova_v3_service_name }}"
     service_type: "{{ nova_v3_service_type }}"
     service_region: "{{ nova_service_region }}"
@@ -70,7 +70,7 @@
 - include: nova_service_add.yml
   vars:
     service_user_name: "{{ nova_service_user_name }}"
-    service_tenant_name: "{{ nova_service_tenant_name }}"
+    service_tenant_name: "{{ nova_service_project_name }}"
     service_name: "{{ nova_s3_service_name }}"
     service_type: "{{ nova_s3_service_type }}"
     service_region: "{{ nova_service_region }}"
@@ -89,7 +89,7 @@
 - include: nova_service_add.yml
   vars:
     service_user_name: "{{ nova_service_user_name }}"
-    service_tenant_name: "{{ nova_service_tenant_name }}"
+    service_tenant_name: "{{ nova_service_project_name }}"
     service_name: "{{ nova_ec2_service_name }}"
     service_type: "{{ nova_ec2_service_type }}"
     service_region: "{{ nova_service_region }}"
