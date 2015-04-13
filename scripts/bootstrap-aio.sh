@@ -167,7 +167,13 @@ mount -a || true
 
 # Build the loopback drive for swap to use
 if [ ! "$(swapon -s | grep -v Filename)" ]; then
-  loopback_create "/opt/swap.img" 1024M thick swap
+  memory_kb=$(awk '/MemTotal/ {print $2}' /proc/meminfo)
+  if [ "${memory_kb}" -lt "8388608" ]; then
+    swap_size="4G"
+  else
+    swap_size="8G"
+  fi
+  loopback_create "/opt/swap.img" ${swap_size} thick swap
   # Ensure swap will be used on the host
   if [ ! $(sysctl vm.swappiness | awk '{print $3}') == "10" ];then
     sysctl -w vm.swappiness=10 | tee -a /etc/sysctl.conf
