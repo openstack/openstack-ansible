@@ -811,34 +811,6 @@ def append_if(array, item):
     return array
 
 
-def md5_checker(localfile):
-    """Check for different Md5 in CloudFiles vs Local File.
-
-    If the md5 sum is different, return True else False
-
-    :param localfile:
-    :return True|False:
-    """
-
-    def calc_hash():
-        """Read the hash.
-
-        :return data_hash.read():
-        """
-
-        return data_hash.read(128 * md5.block_size)
-
-    if os.path.isfile(localfile) is True:
-        md5 = hashlib.md5()
-        with open(localfile, 'rb') as data_hash:
-            for chk in iter(calc_hash, ''):
-                md5.update(chk)
-
-        return md5.hexdigest()
-    else:
-        raise SystemExit('This [ %s ] is not a file.' % localfile)
-
-
 def _merge_dict(base_items, new_items):
     """Recursively merge new_items into some base_items.
 
@@ -906,18 +878,6 @@ def main():
     # Load existing openstack environment json
     with open(environment_file, 'rb') as f:
         environment = yaml.safe_load(f.read())
-
-    # Check the version of the environment file
-    env_version = md5_checker(localfile=environment_file)
-    version = user_defined_config.get('environment_version')
-    if env_version != version:
-        raise SystemExit(
-            'The MD5 sum of the environment file does not match the expected'
-            ' value. To ensure that you are using the proper environment'
-            ' please repull the correct environment file from the upstream'
-            ' repository. Found MD5: [ %s ] expected MD5 [ %s ]'
-            % (env_version, version)
-        )
 
     # Load anything in an env.d directory if found
     env_plugins = os.path.join(local_path, 'env.d')
