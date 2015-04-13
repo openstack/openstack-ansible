@@ -254,8 +254,6 @@ scripts/pw-token-gen.py --file /etc/openstack_deploy/user_secrets.yml
 
 # change the generated passwords for the OpenStack (admin)
 sed -i "s/keystone_auth_admin_password:.*/keystone_auth_admin_password: ${ADMIN_PASSWORD}/" /etc/openstack_deploy/user_secrets.yml
-ENV_VERSION="$(md5sum /etc/openstack_deploy/openstack_environment.yml | awk '{print $1}')"
-sed -i "s/environment_version:.*/environment_version: ${ENV_VERSION}/" /etc/openstack_deploy/openstack_user_config.yml
 sed -i "s/external_lb_vip_address:.*/external_lb_vip_address: ${PUBLIC_ADDRESS}/" /etc/openstack_deploy/openstack_user_config.yml
 
 # Service region set
