@@ -47,8 +47,10 @@ cinder_enable_v2_api: true
 
 ## Cinder api service type and data
 cinder_service_name: cinder
+cinder_service_project_domain_id: default
+cinder_service_user_domain_id: default
 cinder_service_user_name: cinder
-cinder_service_tenant_name: service
+cinder_service_project_name: service
 cinder_service_role_name: admin
 cinder_service_region: RegionOne
 cinder_service_description: "Cinder Volume Service"
@@ -74,6 +76,9 @@ cinder_service_v2_adminuri: "{{ cinder_service_proto }}://{{ internal_lb_vip_add
 cinder_service_v2_adminurl: "{{ cinder_service_adminuri }}/v2/%(tenant_id)s"
 cinder_service_v2_internaluri: "{{ cinder_service_proto }}://{{ internal_lb_vip_address }}:{{ cinder_service_port }}"
 cinder_service_v2_internalurl: "{{ cinder_service_internaluri }}/v2/%(tenant_id)s"
+
+## Keystone authentication middleware
+cinder_keystone_auth_plugin: password
 
 ## In order to enable the cinder backup you MUST set ``cinder_backup_program_enabled`` to "true"
 ## Additionally the configuration section will not be put in the `cinder.conf` file unless the

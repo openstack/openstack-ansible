@@ -104,12 +104,15 @@ profiler_enabled = {{ cinder_profiler_enabled }}
 trace_sqlalchemy = {{ cinder_profiler_trace_sqlalchemy }}
 
 [keystone_authtoken]
+auth_plugin = {{ cinder_keystone_auth_plugin }}
 signing_dir = /var/cache/cinder
-identity_uri = {{ keystone_service_adminuri }}
-auth_uri = {{ keystone_service_internalurl }}
-admin_tenant_name = {{ cinder_service_tenant_name }}
-admin_user = {{ cinder_service_user_name }}
-admin_password = {{ cinder_service_password }}
+auth_url = {{ keystone_service_adminuri }}
+auth_uri = {{ keystone_service_internaluri }}
+project_domain_id = {{ cinder_service_project_domain_id }}
+user_domain_id = {{ cinder_service_user_domain_id }}
+project_name = {{ cinder_service_project_name }}
+username = {{ cinder_service_user_name }}
+password = {{ cinder_service_password }}
 
 memcached_servers = {{ memcached_servers }}
 
