@@ -10,27 +10,32 @@ use = call:cinder.api:root_app_factory
 
 [composite:openstack_volume_api_v1]
 use = call:cinder.api.middleware.auth:pipeline_factory
-noauth = request_id faultwrap sizelimit noauth apiv1
-keystone = request_id faultwrap sizelimit authtoken keystonecontext apiv1
-keystone_nolimit = request_id faultwrap sizelimit authtoken keystonecontext apiv1
+noauth = request_id faultwrap sizelimit osprofiler noauth apiv1
+keystone = request_id faultwrap sizelimit osprofiler authtoken keystonecontext apiv1
+keystone_nolimit = request_id faultwrap sizelimit osprofiler authtoken keystonecontext apiv1
 
 [composite:openstack_volume_api_v2]
 use = call:cinder.api.middleware.auth:pipeline_factory
-noauth = request_id faultwrap sizelimit noauth apiv2
-keystone = request_id faultwrap sizelimit authtoken keystonecontext apiv2
-keystone_nolimit = request_id faultwrap sizelimit authtoken keystonecontext apiv2
+noauth = request_id faultwrap sizelimit osprofiler noauth apiv2
+keystone = request_id faultwrap sizelimit osprofiler authtoken keystonecontext apiv2
+keystone_nolimit = request_id faultwrap sizelimit osprofiler authtoken keystonecontext apiv2
 
 [filter:request_id]
-paste.filter_factory = cinder.openstack.common.middleware.request_id:RequestIdMiddleware.factory
+paste.filter_factory = oslo_middleware.request_id:RequestId.factory
 
 [filter:faultwrap]
 paste.filter_factory = cinder.api.middleware.fault:FaultWrapper.factory
+
+[filter:osprofiler]
+paste.filter_factory = osprofiler.web:WsgiMiddleware.factory
+hmac_keys = {{ cinder_profiler_hmac_key }}
+enabled = yes
 
 [filter:noauth]
 paste.filter_factory = cinder.api.middleware.auth:NoAuthMiddleware.factory
 
 [filter:sizelimit]
-paste.filter_factory = cinder.api.middleware.sizelimit:RequestBodySizeLimiter.factory
+paste.filter_factory = oslo_middleware:RequestBodySizeLimiter.factory
 
 [app:apiv1]
 paste.app_factory = cinder.api.v1.router:APIRouter.factory

@@ -5,14 +5,35 @@
 # cinder/volume/iscsi.py: iscsi_helper '--op' ...
 ietadm: CommandFilter, ietadm, root
 tgtadm: CommandFilter, tgtadm, root
+iscsictl: CommandFilter, iscsictl, root
 tgt-admin: CommandFilter, tgt-admin, root
 cinder-rtstool: CommandFilter, cinder-rtstool, root
+scstadmin: CommandFilter, scstadmin, root
 
 # LVM related show commands
 pvs: EnvFilter, env, root, LC_ALL=C, pvs
 vgs: EnvFilter, env, root, LC_ALL=C, vgs
 lvs: EnvFilter, env, root, LC_ALL=C, lvs
 lvdisplay: EnvFilter, env, root, LC_ALL=C, lvdisplay
+
+# LVM conf var
+pvs_lvmconf: EnvFilter, env, root, LVM_SYSTEM_DIR=, LC_ALL=C, pvs
+vgs_lvmconf: EnvFilter, env, root, LVM_SYSTEM_DIR=, LC_ALL=C, vgs
+lvs_lvmconf: EnvFilter, env, root, LVM_SYSTEM_DIR=, LC_ALL=C, lvs
+lvdisplay_lvmconf: EnvFilter, env, root, LVM_SYSTEM_DIR=, LC_ALL=C, lvdisplay
+
+# cinder/volumes/drivers/srb.py: 'pvresize', '--setphysicalvolumesize', sizestr, pvname
+pvresize: CommandFilter, pvresize, root
+
+# cinder/brick/local_dev/lvm.py: 'vgcreate', vg_name, pv_list
+vgcreate: CommandFilter, vgcreate, root
+
+# cinder/volumes/drivers/srb.py: 'vgremove', '-f', vgname
+vgremove: CommandFilter, vgremove, root
+
+# cinder/volumes/drivers/srb.py: 'vgchange', '-an', vgname
+# cinder/volumes/drivers/srb.py: 'vgchange', '-ay', vgname
+vgchange: CommandFilter, vgchange, root
 
 # cinder/volume/driver.py: 'lvcreate', '-L', sizestr, '-n', volume_name,..
 # cinder/volume/driver.py: 'lvcreate', '-L', ...
@@ -28,6 +49,7 @@ lvremove: CommandFilter, lvremove, root
 lvrename: CommandFilter, lvrename, root
 
 # cinder/volume/driver.py: 'lvextend', '-L' '%(new_size)s', '%(lv_name)s' ...
+# cinder/volume/driver.py: 'lvextend', '-L' '%(new_size)s', '%(thin_pool)s' ...
 lvextend: CommandFilter, lvextend, root
 
 # cinder/brick/local_dev/lvm.py: 'lvchange -a y -K <lv>'
@@ -93,12 +115,14 @@ ssc: CommandFilter, ssc, root
 ls: CommandFilter, ls, root
 tee: CommandFilter, tee, root
 multipath: CommandFilter, multipath, root
+multipathd: CommandFilter, multipathd, root
 systool: CommandFilter, systool, root
 
 # cinder/volume/drivers/block_device.py
 blockdev: CommandFilter, blockdev, root
 
 # cinder/volume/drivers/ibm/gpfs.py
+cp: CommandFilter, cp, root
 mv: CommandFilter, mv, root
 mmgetstate: CommandFilter, /usr/lpp/mmfs/bin/mmgetstate, root
 mmclone: CommandFilter, /usr/lpp/mmfs/bin/mmclone, root
@@ -108,6 +132,12 @@ mmlsconfig: CommandFilter, /usr/lpp/mmfs/bin/mmlsconfig, root
 mmlsfs: CommandFilter, /usr/lpp/mmfs/bin/mmlsfs, root
 mmlspool: CommandFilter, /usr/lpp/mmfs/bin/mmlspool, root
 mkfs: CommandFilter, mkfs, root
+mmcrfileset: CommandFilter, /usr/lpp/mmfs/bin/mmcrfileset, root
+mmlinkfileset: CommandFilter, /usr/lpp/mmfs/bin/mmlinkfileset, root
+mmunlinkfileset: CommandFilter, /usr/lpp/mmfs/bin/mmunlinkfileset, root
+mmdelfileset: CommandFilter, /usr/lpp/mmfs/bin/mmdelfileset, root
+mmcrsnapshot: CommandFilter, /usr/lpp/mmfs/bin/mmcrsnapshot, root
+mmdelsnapshot: CommandFilter, /usr/lpp/mmfs/bin/mmdelsnapshot, root
 
 # cinder/volume/drivers/ibm/gpfs.py
 # cinder/volume/drivers/ibm/ibmnas.py

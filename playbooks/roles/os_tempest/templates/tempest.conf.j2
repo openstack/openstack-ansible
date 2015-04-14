@@ -1,8 +1,6 @@
 # {{ ansible_managed }}
 
 [DEFAULT]
-disable_process_locking = false
-lock_path = {{ tempest_git_dest }}/locks
 debug = {{ debug }}
 verbose = {{ verbose }}
 fatal_deprecations = {{ tempest_fatal_deprecations }}
@@ -66,16 +64,8 @@ use_floatingip_for_ssh = true
 volume_device_name = vdb
 
 
-[compute-admin]
-password = {{ keystone_auth_admin_password }}
-tenant_name = {{ keystone_service_tenant_name }}
-username = {{ keystone_service_user_name }}
-
-
 [compute-feature-enabled]
 api_extensions = all
-api_v3 = false
-api_v3_extensions = all
 block_migrate_cinder_iscsi = false
 block_migration_for_live_migration = false
 change_password = false
@@ -107,7 +97,6 @@ dashboard_url = {{ tempest_dashboard_url }}
 
 
 [debug]
-enable = true
 
 
 [identity]
@@ -144,7 +133,7 @@ http_image = http://download.cirros-cloud.net/0.3.1/cirros-0.3.1-x86_64-uec.tar.
 
 
 [image-feature-enabled]
-api_v1 = true
+api_v1 = {{ tempest_image_api_v1_enabled }}
 api_v2 = {{ tempest_image_api_v2_enabled }}
 
 
@@ -176,8 +165,6 @@ ipv6 = false
 
 [object-storage]
 catalog_type = object-store
-container_sync_interval = 5
-container_sync_timeout = 120
 endpoint_type = internalURL
 operator_role = swiftoperator
 reseller_admin_role = reseller_admin
@@ -190,11 +177,7 @@ discoverable_apis = all
 
 
 [orchestration]
-build_interval = 1
-build_timeout = 900
-catalog_type = orchestration
 endpoint_type = internalURL
-image_ref = {{ tempest_glance_image_id }}
 instance_type = tempest1
 
 
@@ -250,3 +233,16 @@ api_v2 = false
 backup = false
 multi_backend = false
 snapshot = false
+
+
+[oslo_concurrency]
+# Enables or disables inter-process locks. (boolean value)
+# Deprecated group/name - [DEFAULT]/disable_process_locking
+disable_process_locking = false
+
+# Directory to use for lock files.  For security, the specified
+# directory should only be writable by the user running the processes
+# that need locking. Defaults to environment variable OSLO_LOCK_PATH.
+# If external locks are used, a lock path must be set. (string value)
+# Deprecated group/name - [DEFAULT]/lock_path
+lock_path = {{ tempest_git_dest }}/locks

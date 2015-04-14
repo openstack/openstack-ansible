@@ -40,9 +40,17 @@ nova_virt_type: kvm
 
 ## Nova Auth
 nova_service_region: RegionOne
-nova_service_tenant_name: "service"
+nova_service_project_name: "service"
+nova_service_project_domain_id: default
+nova_service_user_domain_id: default
 nova_service_user_name: "nova"
 nova_service_role_name: "admin"
+
+## Keystone authentication middleware
+nova_keystone_auth_plugin: password
+
+## Nova enabled apis
+nova_enabled_apis: "osapi_compute,metadata"
 
 ## Nova s3
 nova_s3_service_name: s3
@@ -57,6 +65,7 @@ nova_s3_service_adminurl: "{{ nova_s3_service_adminuri }}"
 nova_s3_service_internaluri: "{{ nova_s3_service_proto }}://{{ internal_lb_vip_address }}:{{ nova_s3_service_port }}"
 nova_s3_service_internalurl: "{{ nova_s3_service_internaluri }}"
 nova_s3_program_name: nova-api-ec2
+nova_s3_deprecated_but_enabled: false
 
 ## Nova v3
 nova_v3_service_name: novav3
@@ -70,6 +79,20 @@ nova_v3_service_adminuri: "{{ nova_v3_service_proto }}://{{ internal_lb_vip_addr
 nova_v3_service_adminurl: "{{ nova_v3_service_adminuri }}/v3"
 nova_v3_service_internaluri: "{{ nova_v3_service_proto }}://{{ internal_lb_vip_address }}:{{ nova_v3_service_port }}"
 nova_v3_service_internalurl: "{{ nova_v3_service_internaluri }}/v3"
+nova_v3_deprecated_but_enabled: false
+
+## Nova v2.1
+nova_v21_service_name: novav21
+nova_v21_service_type: computev21
+nova_v21_service_proto: http
+nova_v21_service_port: 8774
+nova_v21_service_description: "Nova Compute Service V2.1"
+nova_v21_service_publicuri: "{{ nova_v21_service_proto }}://{{ external_lb_vip_address }}:{{ nova_v21_service_port }}"
+nova_v21_service_publicurl: "{{ nova_v21_service_publicuri }}/v2.1"
+nova_v21_service_adminuri: "{{ nova_v21_service_proto }}://{{ internal_lb_vip_address }}:{{ nova_v21_service_port }}"
+nova_v21_service_adminurl: "{{ nova_v21_service_adminuri }}/v2.1"
+nova_v21_service_internaluri: "{{ nova_v21_service_proto }}://{{ internal_lb_vip_address }}:{{ nova_v21_service_port }}"
+nova_v21_service_internalurl: "{{ nova_v21_service_internaluri }}/v2.1"
 
 ## Nova v2
 nova_service_name: nova
@@ -86,6 +109,8 @@ nova_service_internalurl: "{{ nova_service_internaluri }}/v2/%(tenant_id)s"
 nova_program_name: nova-api-os-compute
 
 ## Nova ec2
+# WARNNING: The EC2 api in the nova tree has been deprecated. To consume this API you'll need to
+# uncomment the EC2 section found within the nova `api-paste.ini` file.
 nova_ec2_service_name: ec2
 nova_ec2_service_type: ec2
 nova_ec2_service_proto: http
@@ -98,6 +123,7 @@ nova_ec2_service_adminurl: "{{ nova_ec2_service_adminuri }}/services/Admin"
 nova_ec2_service_internaluri: "{{ nova_ec2_service_proto }}://{{ internal_lb_vip_address }}:{{ nova_ec2_service_port }}"
 nova_ec2_service_internalurl: "{{ nova_ec2_service_internaluri }}/services/Cloud"
 nova_ec2_program_name: nova-api-ec2
+nova_ec2_deprecated_but_enabled: false
 
 ## Nova spice
 nova_spice_html5proxy_base_proto: http
@@ -127,6 +153,8 @@ nova_console_agent_enabled: True
 nova_consoleauth_program_name: nova-consoleauth
 nova_console_agent_enabled: True
 nova_console_keymap: en-us
+# Set the console type. Presently the only option is ["spice"].
+nova_console_type: spice
 
 ## Nova global config
 nova_cpu_mode: host-model
@@ -199,6 +227,9 @@ nova_apt_packages:
   - genisoimage
   - git
   - libpq-dev
+
+# Spice console apt packages
+nova_spice_apt_packages:
   - spice-html5
 
 nova_compute_kvm_apt_packages:
@@ -207,6 +238,7 @@ nova_compute_kvm_apt_packages:
   - kpartx
   - libvirt-bin
   - open-iscsi
+  - python-libguestfs
   - python-libvirt
   - qemu
   - qemu-utils

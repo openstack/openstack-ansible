@@ -556,7 +556,7 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
         if properties:
             is_metal = properties.get('is_metal', False)
 
-        ## This should convert found addresses based on q_name + "_address"
+        # This should convert found addresses based on q_name + "_address"
         #  and then build the network if its not found.
         if not is_metal and old_address not in networks:
             network = networks[old_address] = network_entry()
@@ -611,7 +611,6 @@ def _net_address_search(provider_networks, main_netowrk, key):
             p_net = pn.get('network')
             if p_net:
                 if p_net.get('container_bridge') == main_netowrk:
-                    print p_net
                     p_net[key] = True
 
     return provider_networks
@@ -812,34 +811,6 @@ def append_if(array, item):
     return array
 
 
-def md5_checker(localfile):
-    """Check for different Md5 in CloudFiles vs Local File.
-
-    If the md5 sum is different, return True else False
-
-    :param localfile:
-    :return True|False:
-    """
-
-    def calc_hash():
-        """Read the hash.
-
-        :return data_hash.read():
-        """
-
-        return data_hash.read(128 * md5.block_size)
-
-    if os.path.isfile(localfile) is True:
-        md5 = hashlib.md5()
-        with open(localfile, 'rb') as data_hash:
-            for chk in iter(calc_hash, ''):
-                md5.update(chk)
-
-        return md5.hexdigest()
-    else:
-        raise SystemExit('This [ %s ] is not a file.' % localfile)
-
-
 def _merge_dict(base_items, new_items):
     """Recursively merge new_items into some base_items.
 
@@ -857,7 +828,7 @@ def _merge_dict(base_items, new_items):
 
 
 def _extra_config(user_defined_config, base_dir):
-    """Discover new items in a conf.d directory and add the new values.
+    """Discover new items in any extra directories and add the new values.
 
     :param user_defined_config: ``dict``
     :param base_dir: ``str``
@@ -908,17 +879,10 @@ def main():
     with open(environment_file, 'rb') as f:
         environment = yaml.safe_load(f.read())
 
-    # Check the version of the environment file
-    env_version = md5_checker(localfile=environment_file)
-    version = user_defined_config.get('environment_version')
-    if env_version != version:
-        raise SystemExit(
-            'The MD5 sum of the environment file does not match the expected'
-            ' value. To ensure that you are using the proper environment'
-            ' please repull the correct environment file from the upstream'
-            ' repository. Found MD5: [ %s ] expected MD5 [ %s ]'
-            % (env_version, version)
-        )
+    # Load anything in an env.d directory if found
+    env_plugins = os.path.join(local_path, 'env.d')
+    if os.path.isdir(env_plugins):
+        _extra_config(user_defined_config=environment, base_dir=env_plugins)
 
     # Load existing inventory file if found
     dynamic_inventory_file = os.path.join(

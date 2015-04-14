@@ -24,14 +24,16 @@ the list of strings.
 
 Example Usage:
 ~$ # Endpoint
-~$ GITHUB_API_ENDPOINT="https://api.github.com/repos/stackforge/os-ansible-deployment"
+~$ ENDPOINT="https://api.github.com/repos/stackforge/os-ansible-deployment"
 ~$ # Exclusions
 ~$ EXCLUDE_RELEASES="v9.0.0 gh-pages revert"
 ~$ # Run script
-~$ /opt/openstack-branch-grabber.py "${GITHUB_API_ENDPOINT}" "${EXCLUDE_RELEASES}"
+~$ /opt/openstack-branch-grabber.py "${ENDPOINT}" "${EXCLUDE_RELEASES}"
 
 Example Library Usage:
->>> endpoint_url = "https://api.github.com/repos/stackforge/os-ansible-deployment"
+>>> endpoint_url = (
+...     "https://api.github.com/repos/stackforge/os-ansible-deployment"
+... )
 >>> exclude_list = ["v9.0.0", "gh-pages", "revert"]
 >>> print(main(endpoint_url, exclude_list))
 9.0.0 9.0.1 9.0.2 9.0.3 stable/icehouse proposed/juno master

@@ -38,10 +38,14 @@ neutron_db_plugin: /etc/neutron/plugins/ml2/ml2_conf.ini
 
 ## Plugins
 neutron_plugin_core: neutron.plugins.ml2.plugin.Ml2Plugin
+# Other plugins can be added to the system by simply extending the list `neutron_plugin_base`.
+# neutron_plugin_base:
+#   - neutron.services.l3_router.l3_router_plugin.L3RouterPlugin
+#   - neutron.services.metering.metering_plugin.MeteringPlugin
+#   - neutron.services.loadbalancer.plugin.LoadBalancerPlugin
+#   - neutron.services.vpn.plugin.VPNDriverPlugin
 neutron_plugin_base:
   - neutron.services.l3_router.l3_router_plugin.L3RouterPlugin
-  - neutron.services.loadbalancer.plugin.LoadBalancerPlugin
-  - neutron.services.vpn.plugin.VPNDriverPlugin
   - neutron.services.metering.metering_plugin.MeteringPlugin
 neutron_plugin_loaded_base: "{% for plugin in neutron_plugin_base %}{{ plugin }}{% if not loop.last %},{% endif %}{% endfor %}"
 
@@ -57,7 +61,7 @@ neutron_driver_quota: neutron.db.quota_db.DbQuotaDriver
 neutron_driver_firewall: neutron.agent.linux.iptables_firewall.IptablesFirewallDriver
 
 ## General Neutron configuration
-# If ``neutron_api_workers`` is unset the system will use half the number of available VCPUS to
+# If ``neutron_api_workers`` is unset the system will use half the number of available VCPUs to
 # compute the number of api workers to use.
 # neutron_api_workers: 16
 
@@ -65,7 +69,7 @@ neutron_driver_firewall: neutron.agent.linux.iptables_firewall.IptablesFirewallD
 # the value will be 0 by default.
 neutron_rpc_workers: 0
 
-# If ``neutron_metadata_workers`` is unset the system will use half the number of available VCPUS to
+# If ``neutron_metadata_workers`` is unset the system will use half the number of available VCPUs to
 # compute the number of api workers to use.
 # neutron_metadata_workers: 16
 neutron_metadata_backlog: 128
@@ -186,6 +190,9 @@ neutron_dhcp_delete_namespaces: True
 neutron_dnsmasq_dns_servers: ""
 # Limit number of leases to prevent a denial-of-service.
 neutron_dnsmasq_lease_max: 16777216
+# If ``neutron_num_sync_threads`` is unset, the system will use the value of api_workers calculated
+# in templates/dhcp_agent.ini.j2 for num_sync_threads.
+# neutron_num_sync_threads: 4
 
 ## RPC
 neutron_rpc_backend: rabbit

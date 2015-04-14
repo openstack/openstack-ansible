@@ -154,6 +154,7 @@
     tenant_id: "{{ keystone_demo_tenant_id }}"
   tags:
     - tempest-setup
+    - tempest-config
 
 - name: Store neutron private network id
   set_fact:

@@ -20,11 +20,15 @@
   pre_tasks:
     - name: Add volume group block device to cinder
       shell: |
+        {% if item.1.volume_group is defined %}
         if [ "$(pvdisplay | grep -B1 {{ item.1.volume_group }} | awk '/PV/ {print $3}')" ];then
           for device in `pvdisplay | grep -B1 {{ item.1.volume_group }} | awk '/PV/ {print $3}'`
             do lxc-device -n {{ container_name }} add $device
           done
         fi
+        {% else %}
+        echo "{{ item.1 }} volume_group not defined"
+        {% endif %}
       with_items: cinder_backends|dictsort
       when: >
         cinder_backends is defined and
@@ -33,7 +37,7 @@
       tags:
         - cinder-lxc-devices
     - name: Cinder extra lxc config
-      lxc-container:
+      lxc_container:
         name: "{{ container_name }}"
         container_config:
           - "lxc.aa_profile=unconfined"

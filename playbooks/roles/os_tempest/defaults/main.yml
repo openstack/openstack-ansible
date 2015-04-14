@@ -28,7 +28,7 @@ tempest_compute_image_ssh_user: cirros
 tempest_compute_image_alt_ssh_user: cirros
 tempest_compute_image_ssh_password: cubswin:)
 tempest_compute_image_alt_ssh_password: cubswin:)
-tempest_compute_run_ssh: false
+tempest_compute_run_ssh: True
 tempest_compute_console_output_enabled: True
 tempest_compute_resize_enabled: True
 tempest_compute_snapshot_enabled: True
@@ -49,6 +49,7 @@ tempest_service_available_swift: True
 tempest_service_available_trove: False
 tempest_service_available_zaqar: False
 
+tempest_image_api_v1_enabled: true
 tempest_image_api_v2_enabled: True
 
 tempest_boto_s3_url: "http://{{ external_lb_vip_address }}:3333"

@@ -167,7 +167,13 @@ mount -a || true
 
 # Build the loopback drive for swap to use
 if [ ! "$(swapon -s | grep -v Filename)" ]; then
-  loopback_create "/opt/swap.img" 1024M thick swap
+  memory_kb=$(awk '/MemTotal/ {print $2}' /proc/meminfo)
+  if [ "${memory_kb}" -lt "8388608" ]; then
+    swap_size="4G"
+  else
+    swap_size="8G"
+  fi
+  loopback_create "/opt/swap.img" ${swap_size} thick swap
   # Ensure swap will be used on the host
   if [ ! $(sysctl vm.swappiness | awk '{print $3}') == "10" ];then
     sysctl -w vm.swappiness=10 | tee -a /etc/sysctl.conf
@@ -248,8 +254,6 @@ scripts/pw-token-gen.py --file /etc/openstack_deploy/user_secrets.yml
 
 # change the generated passwords for the OpenStack (admin)
 sed -i "s/keystone_auth_admin_password:.*/keystone_auth_admin_password: ${ADMIN_PASSWORD}/" /etc/openstack_deploy/user_secrets.yml
-ENV_VERSION="$(md5sum /etc/openstack_deploy/openstack_environment.yml | awk '{print $1}')"
-sed -i "s/environment_version:.*/environment_version: ${ENV_VERSION}/" /etc/openstack_deploy/openstack_user_config.yml
 sed -i "s/external_lb_vip_address:.*/external_lb_vip_address: ${PUBLIC_ADDRESS}/" /etc/openstack_deploy/openstack_user_config.yml
 
 # Service region set
@@ -262,10 +266,17 @@ echo "nova_virt_type: ${NOVA_VIRT_TYPE}" | tee -a /etc/openstack_deploy/user_var
 echo "tempest_public_subnet_cidr: ${TEMPEST_FLAT_CIDR}" | tee -a /etc/openstack_deploy/user_variables.yml
 
 # Minimize galera cache
-echo 'galera_gcache_size: 50M' | tee -a /etc/openstack_deploy/user_variables.yml
+echo 'galera_gcache_size: 32M' | tee -a /etc/openstack_deploy/user_variables.yml
+echo 'galera_innodb_buffer_pool_size: 512M' | tee -a /etc/openstack_deploy/user_variables.yml
+echo 'galera_innodb_log_buffer_size: 32M' | tee -a /etc/openstack_deploy/user_variables.yml
 
 # Set the running kernel as the required kernel
 echo "required_kernel: $(uname --kernel-release)" | tee -a /etc/openstack_deploy/user_variables.yml
+
+# Set the Ubuntu apt repository used for containers to the same as the host
+UBUNTU_REPO=$(awk '/^deb .*ubuntu trusty main/ {print $2}' /etc/apt/sources.list)
+echo "lxc_container_template_main_apt_repo: ${UBUNTU_REPO}" | tee -a /etc/openstack_deploy/user_variables.yml
+echo "lxc_container_template_security_apt_repo: ${UBUNTU_REPO}" | tee -a /etc/openstack_deploy/user_variables.yml
 
 # Set the running neutron workers to 0/1
 echo "neutron_api_workers: 0" | tee -a /etc/openstack_deploy/user_variables.yml

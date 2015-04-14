@@ -19,7 +19,7 @@
   user: root
   pre_tasks:
     - name: Glance extra lxc config
-      lxc-container:
+      lxc_container:
         name: "{{ container_name }}"
         container_command: |
           [[ ! -d "/var/lib/glance/images" ]] && mkdir -p "/var/lib/glance/images"

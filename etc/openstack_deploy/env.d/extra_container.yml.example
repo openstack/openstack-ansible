@@ -1,0 +1,44 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+# #
+# # Licensed under the Apache License, Version 2.0 (the "License");
+# # you may not use this file except in compliance with the License.
+# # You may obtain a copy of the License at
+# #
+# #     http://www.apache.org/licenses/LICENSE-2.0
+# #
+# # Unless required by applicable law or agreed to in writing, software
+# # distributed under the License is distributed on an "AS IS" BASIS,
+# # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# # See the License for the specific language governing permissions and
+# # limitations under the License.
+
+component_skel:
+  example_api:
+    belongs_to:
+      # This is a meta group of a given component type.
+      - example_all
+
+container_skel:
+  example_api_container:
+    belongs_to:
+      # This is a group of containers mapped to a physical host.
+      - example-infra_containers
+    contains:
+      # This maps back to an item in the component_skel.
+      - example_api
+    properties:
+      # These are arbitrary key value pairs.
+      service_name: example_service
+      # This is the image that the lxc container will be built from.
+      container_release: trusty
+
+physical_skel:
+  # This maps back to items in the container_skel.
+  example-infra_containers:
+    belongs_to:
+      - all_containers
+  # This is a required pair for the container physical entry.
+  example-infra_hosts:
+    belongs_to:
+      - hosts

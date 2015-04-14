@@ -14,7 +14,7 @@
 # limitations under the License.
 
 - name: Destroy a container
-  lxc-container:
+  lxc_container:
     name: "{{ container_name }}"
     state: "absent"
   delegate_to: "{{ physical_host }}"

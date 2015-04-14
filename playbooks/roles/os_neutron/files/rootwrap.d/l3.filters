@@ -18,11 +18,9 @@ radvd: CommandFilter, radvd, root
 
 # metadata proxy
 metadata_proxy: CommandFilter, neutron-ns-metadata-proxy, root
-metadata_proxy_quantum: CommandFilter, quantum-ns-metadata-proxy, root
 # If installed from source (say, by devstack), the prefix will be
 # /usr/local instead of /usr/bin.
 metadata_proxy_local: CommandFilter, /usr/local/bin/neutron-ns-metadata-proxy, root
-metadata_proxy_local_quantum: CommandFilter, /usr/local/bin/quantum-ns-metadata-proxy, root
 # RHEL invocation of the metadata proxy will report /usr/bin/python
 kill_metadata: KillFilter, root, python, -9
 kill_metadata7: KillFilter, root, python2.7, -9

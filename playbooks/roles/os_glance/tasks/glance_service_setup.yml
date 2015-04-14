@@ -38,7 +38,7 @@
     token: "{{ keystone_auth_admin_token }}"
     endpoint: "{{ keystone_service_adminurl }}"
     user_name: "{{ glance_service_user_name }}"
-    tenant_name: "{{ glance_service_tenant_name }}"
+    tenant_name: "{{ glance_service_project_name }}"
     password: "{{ glance_service_password }}"
   register: add_service
   until: add_service|success
@@ -56,7 +56,7 @@
     token: "{{ keystone_auth_admin_token }}"
     endpoint: "{{ keystone_service_adminurl }}"
     user_name: "{{ glance_service_user_name }}"
-    tenant_name: "{{ glance_service_tenant_name }}"
+    tenant_name: "{{ glance_service_project_name }}"
     role_name: "{{ glance_role_name }}"
   register: add_service
   until: add_service|success

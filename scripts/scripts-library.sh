@@ -142,7 +142,7 @@ function loopback_create() {
     if [ "${LOOP_FILE_TYPE}" = "thin" ]; then
       truncate -s ${LOOP_FILESIZE} ${LOOP_FILENAME}
     elif [ "${LOOP_FILE_TYPE}" = "thick" ]; then
-      dd if=/dev/zero of=${LOOP_FILENAME} bs=${LOOP_FILESIZE} count=1
+      fallocate -l ${LOOP_FILESIZE} ${LOOP_FILENAME}
     else
       exit_fail 'No valid option ${LOOP_FILE_TYPE} found.'
     fi

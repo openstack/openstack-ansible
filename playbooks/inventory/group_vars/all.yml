@@ -82,7 +82,9 @@ memcached_servers: "{% for host in groups['memcached'] %}{{ hostvars[host]['cont
 nova_service_port: 8774
 nova_service_proto: http
 nova_service_user_name: nova
-nova_service_tenant_name: service
+nova_service_project_name: service
+nova_service_project_domain_id: default
+nova_service_user_domain_id: default
 nova_service_adminuri: "{{ nova_service_proto }}://{{ internal_lb_vip_address }}:{{ nova_service_port }}"
 nova_service_adminurl: "{{ nova_service_adminuri }}/v2/%(tenant_id)s"
 nova_service_region: RegionOne
@@ -109,7 +111,9 @@ neutron_service_metering_program_enabled: true
 glance_service_port: 9292
 glance_service_proto: http
 glance_service_user_name: glance
-glance_service_tenant_name: service
+glance_service_project_name: service
+glance_service_project_domain_id: default
+glance_service_user_domain_id: default
 glance_service_adminurl: "{{ glance_service_proto }}://{{ internal_lb_vip_address }}:{{ glance_service_port }}"
 glance_service_region: RegionOne
 glance_api_servers: "{% for host in groups['glance_all'] %}{{ hostvars[host]['container_address'] }}:{{ glance_service_port }}{% if not loop.last %},{% endif %}{% endfor %}"

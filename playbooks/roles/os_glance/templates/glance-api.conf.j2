@@ -11,12 +11,19 @@ fatal_deprecations = {{ glance_fatal_deprecations }}
 use_syslog = False
 bind_host = {{ glance_api_bind_address }}
 bind_port = {{ glance_api_service_port }}
+http_keepalive = {{ glance_http_keepalive }}
+digest_algorithm = {{ glance_digest_algorithm }}
 backlog = 4096
 workers = {{ glance_api_workers | default(api_threads) }}
 registry_host = {{ glance_registry_host }}
 registry_port = {{ glance_registry_service_port }}
 registry_client_protocol = {{ glance_service_proto }}
 cinder_catalog_info = volume:cinder:internalURL
+
+enable_v1_api = {{ glance_enable_v1_api }}
+enable_v1_registry = {{ glance_enable_v1_registry }}
+enable_v2_api = {{ glance_enable_v2_api }}
+enable_v2_registry = {{ glance_enable_v2_registry }}
 
 notification_driver = {{ glance_notification_driver }}
 {% if glance_notification_driver == "messaging" %}
@@ -38,16 +45,22 @@ scrub_time = 43200
 scrubber_datadir = {{ glance_system_user_home }}/scrubber/
 image_cache_dir = {{ glance_system_user_home }}/cache/
 
+[task]
+task_executor = {{ glance_task_executor }}
+
 [database]
 connection = mysql://{{ glance_galera_user }}:{{ glance_container_mysql_password }}@{{ galera_address }}/{{ glance_galera_database }}?charset=utf8
 
 [keystone_authtoken]
+auth_plugin = {{ glance_keystone_auth_plugin }}
 signing_dir = {{ glance_system_user_home }}/cache/api
-identity_uri = {{ keystone_service_adminuri }}
-auth_uri = {{ keystone_service_internalurl }}
-admin_tenant_name = {{ glance_service_tenant_name }}
-admin_user = {{ glance_service_user_name }}
-admin_password = {{ glance_service_password }}
+auth_url = {{ keystone_service_adminuri }}
+auth_uri = {{ keystone_service_internaluri }}
+project_domain_id = {{ glance_service_project_domain_id }}
+user_domain_id = {{ glance_service_user_domain_id }}
+project_name = {{ glance_service_project_name }}
+username = {{ glance_service_user_name }}
+password = {{ glance_service_password }}
 
 memcached_servers = {{ memcached_servers }}
 
@@ -61,18 +74,21 @@ memcache_secret_key = {{ memcached_encryption_key }}
 # if your keystone deployment uses PKI, and you value security over performance:
 check_revocations_for_cached = False
 
+[oslo_policy]
+policy_file = {{ glance_policy_file }}
+policy_default_rule = {{ glance_policy_default_rule }}
+policy_dirs = {{ glance_policy_dirs }}
+
 [paste_deploy]
 flavor = {{ glance_flavor }}
 
 [glance_store]
 default_store = {{ glance_default_store }}
-stores = glance.store.filesystem.Store,
-         glance.store.http.Store,
-         glance.store.cinder.Store,
-         glance.store.swift.Store
 {% if glance_default_store == "file" %}
+stores = glance.store.filesystem.Store,glance.store.http.Store,glance.store.cinder.Store
 filesystem_store_datadir = {{ glance_system_user_home }}/images/
 {% elif glance_default_store == "swift" %}
+stores = glance.store.swift.Store,glance.store.http.Store,glance.store.cinder.Store
 swift_store_auth_version = 2
 swift_store_auth_address = {{ glance_swift_store_auth_address }}
 swift_store_user = {{ glance_swift_store_user }}
@@ -80,8 +96,11 @@ swift_store_key = {{ glance_swift_store_key }}
 swift_store_region = {{ glance_swift_store_region }}
 swift_store_container = {{ glance_swift_store_container }}
 swift_store_create_container_on_put = True
-swift_store_large_object_size = 5120
-swift_store_large_object_chunk_size = 200
+swift_store_large_object_size = {{ glance_swift_store_large_object_size }}
+swift_store_large_object_chunk_size = {{ glance_swift_store_large_object_chunk_size }}
 swift_store_retry_get_count = 5
 swift_store_endpoint_type = {{ glance_swift_store_endpoint_type }}
 {% endif %}
+
+[profiler]
+enabled = {{ glance_profiler_enabled }}
