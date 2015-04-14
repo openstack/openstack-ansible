@@ -17,7 +17,6 @@
 
 import argparse
 import datetime
-import hashlib
 import json
 import netaddr
 import os
