@@ -110,6 +110,12 @@ function cleanup() {
     rm -rf "${WORK_DIR}"
 }
 
+# Check for releases
+if [ -z "${RELEASES}" ];then
+    echo "No releases specified. Provide a space separated list branches to build for."
+    exit 1
+fi
+
 # Check for system lock file.
 if [ ! -f "${LOCKFILE}" ]; then
     echo $$ | tee "${LOCKFILE}"
@@ -125,18 +131,6 @@ else
         exit 1
     fi
 fi
-
-# Grab releases
-if [[ ! "${RELEASES}" ]];then
-    # From the GITHUB API pull a list of all branches/tags
-    if [ -f "/opt/openstack-branch-grabber.py" ];then
-        RELEASES=$(/opt/openstack-branch-grabber.py "${GITHUB_API_ENDPOINT}" "${EXCLUDE_RELEASES}")
-    else
-        echo "No releases specified and the openstack-branch-grabber.py script was not found."
-        exit 1
-    fi
-fi
-
 
 # Iterate through the list of releases and build everything that's needed
 logger "Building Python Wheels for ${RELEASES}"

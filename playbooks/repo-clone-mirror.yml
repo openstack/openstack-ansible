@@ -25,14 +25,14 @@
   tasks:
     - name: Sync the upstream repo(s)
       shell: |
-        rsync -rz \
-              --exclude="repos/* mirror/* rpcgit/* openstackgit/*" \
-              --links \
+        rsync -avzlHAX \
+              --exclude="{{ mirror_excludes }}" \
               {{ mirror_source_host }}::{{ mirror_name }} {{ mirror_path }}
       sudo: yes
       sudo_user: "{{ repo_service_user_name }}"
   vars:
-    mirror_path: /var/www/repo/
-    mirror_name: openstack_mirror
-    mirror_source_host: "rpc-repo.rackspace.com"
+    mirror_excludes: "{{ repo_mirror_excludes|default('repos/* mirror/* rpcgit/* openstackgit/*') }}"
+    mirror_path: "{{ repo_service_home_folder }}/repo"
+    mirror_name: "{{ repo_mirror_name|default('openstack_mirror') }}"
+    mirror_source_host: "{{ repo_mirror_source_host|default('rpc-repo.rackspace.com') }}"
     is_metal: "{{ properties.is_metal|default(false) }}"
