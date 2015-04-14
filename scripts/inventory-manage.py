@@ -15,9 +15,8 @@
 #
 # (c) 2014, Kevin Carter <kevin.carter@rackspace.com>
 import argparse
-import os
 import json
-
+import os
 import prettytable
 
 

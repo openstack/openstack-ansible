@@ -22,6 +22,7 @@
     mode: "{{ item.mode }}"
   with_items:
     - { src: "horizon_local_settings.py.j2", dest: "/etc/horizon/local_settings.py", mode: "0644" }
+  notify: Restart apache2
   tags:
     - horizon-configs
 

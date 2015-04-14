@@ -74,9 +74,6 @@ component_skel:
   neutron_server:
     belongs_to:
       - neutron_all
-  nova_api_ec2:
-    belongs_to:
-      - nova_all
   nova_api_metadata:
     belongs_to:
       - nova_all
@@ -95,7 +92,7 @@ component_skel:
   nova_scheduler:
     belongs_to:
       - nova_all
-  nova_spice_console:
+  nova_console:
     belongs_to:
       - nova_all
   pkg_repo:
@@ -162,6 +159,7 @@ container_skel:
     properties:
       service_name: glance
       container_release: trusty
+      container_fs_size: 12G
   heat_apis_container:
     belongs_to:
       - infra_containers
@@ -230,15 +228,6 @@ container_skel:
     properties:
       service_name: neutron
       container_release: trusty
-  nova_api_ec2_container:
-    belongs_to:
-      - infra_containers
-      - os-infra_containers
-    contains:
-      - nova_api_ec2
-    properties:
-      service_name: nova
-      container_release: trusty
   nova_api_metadata_container:
     belongs_to:
       - infra_containers
@@ -294,12 +283,12 @@ container_skel:
     properties:
       service_name: nova
       container_release: trusty
-  nova_spice_console_container:
+  nova_console_container:
     belongs_to:
       - infra_containers
       - os-infra_containers
     contains:
-      - nova_spice_console
+      - nova_console
     properties:
       service_name: nova
       container_release: trusty

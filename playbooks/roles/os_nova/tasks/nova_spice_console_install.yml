@@ -13,7 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-## Git source for turbolift client
-git_repo: "https://github.com/cloudnull/turbolift"
-git_install_branch: v2.1.3  
-git_dest: "/opt/turbolift_{{ git_install_branch | replace('/', '_') }}"
+- name: Install apt packages
+  apt:
+    pkg: "{{ item }}"
+    state: latest
+    update_cache: yes
+    cache_valid_time: 600
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 2
+  with_items: nova_spice_apt_packages
+  tags:
+    - nova-spice-apt-packages
+

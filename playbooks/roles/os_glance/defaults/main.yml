@@ -19,6 +19,7 @@ is_metal: true
 ## Verbosity Options
 debug: False
 verbose: True
+glance_profiler_enabled: False
 glance_fatal_deprecations: False
 
 ## System info
@@ -34,6 +35,14 @@ glance_notification_driver: noop
 glance_rpc_backend: glance.openstack.common.rpc.impl_kombu
 glance_default_store: file
 
+
+## API options
+glance_enable_v1_api: True
+glance_enable_v1_registry: True
+glance_enable_v2_api: True
+glance_enable_v2_registry: True
+
+
 ## Swift Options
 glance_swift_store_auth_address: NoAuthAddress
 glance_swift_store_user: NoUser
@@ -41,6 +50,9 @@ glance_swift_store_key: NoKey
 glance_swift_store_region: NoRegion
 glance_swift_store_container: NoContainer
 glance_swift_store_endpoint_type: internalURL
+# Set the swift_store_large_objects variables in MB
+glance_swift_store_large_object_size: 5120
+glance_swift_store_large_object_chunk_size: 200
 
 ## DB info
 glance_galera_database: glance
@@ -63,13 +75,18 @@ glance_service_proto: http
 glance_service_type: image
 glance_service_description: "Glance Image Service"
 glance_service_user_name: glance
-glance_service_tenant_name: service
+glance_service_project_name: service
+glance_service_project_domain_id: default
+glance_service_user_domain_id: default
 glance_service_publicuri: "{{ glance_service_proto }}://{{ external_lb_vip_address }}:{{ glance_service_port }}"
 glance_service_publicurl: "{{ glance_service_publicuri }}"
 glance_service_internaluri: "{{ glance_service_proto }}://{{ internal_lb_vip_address }}:{{ glance_service_port }}"
 glance_service_internalurl: "{{ glance_service_internaluri }}"
 glance_service_adminuri: "{{ glance_service_proto }}://{{ internal_lb_vip_address }}:{{ glance_service_port }}"
 glance_service_adminurl: "{{ glance_service_adminuri }}"
+
+## Keystone authentication middleware
+glance_keystone_auth_plugin: password
 
 ## Glance config
 glance_image_cache_max_size: 10737418240
@@ -82,6 +99,14 @@ glance_image_cache_max_size: 10737418240
 # compute the number of api workers to use.
 # glance_registry_workers: 16
 
+glance_task_executor: taskflow
+glance_digest_algorithm: sha1
+glance_http_keepalive: True
+
+## Glance policy
+glance_policy_file: policy.json
+glance_policy_default_rule: default
+glance_policy_dirs: policy.d
 
 ## Define nfs information for glance. When the glance_nfs_client dictionary is
 ## defined it will enable nfs shares as mounted directories. The

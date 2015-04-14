@@ -16,7 +16,7 @@
 - include: nova_service_add.yml
   vars:
     service_user_name: "{{ nova_service_user_name }}"
-    service_tenant_name: "{{ nova_service_tenant_name }}"
+    service_tenant_name: "{{ nova_service_project_name }}"
     service_name: "{{ nova_service_name }}"
     service_type: "{{ nova_service_type }}"
     service_region: "{{ nova_service_region }}"
@@ -30,10 +30,28 @@
     - nova-api
     - nova-api-v2
 
+
 - include: nova_service_add.yml
   vars:
     service_user_name: "{{ nova_service_user_name }}"
-    service_tenant_name: "{{ nova_service_tenant_name }}"
+    service_tenant_name: "{{ nova_service_project_name }}"
+    service_name: "{{ nova_v21_service_name }}"
+    service_type: "{{ nova_v21_service_type }}"
+    service_region: "{{ nova_service_region }}"
+    service_description: "{{ nova_v21_service_description }}"
+    service_password: "{{ nova_v21_service_password }}"
+    service_publicurl: "{{ nova_v21_service_publicurl }}"
+    service_internalurl: "{{ nova_v21_service_internalurl }}"
+    service_adminurl: "{{ nova_v21_service_adminurl }}"
+    role_name: "{{ nova_service_role_name }}"
+  tags:
+    - nova-api
+    - nova-api-v21
+
+- include: nova_service_add.yml
+  vars:
+    service_user_name: "{{ nova_service_user_name }}"
+    service_tenant_name: "{{ nova_service_project_name }}"
     service_name: "{{ nova_v3_service_name }}"
     service_type: "{{ nova_v3_service_type }}"
     service_region: "{{ nova_service_region }}"
@@ -43,6 +61,8 @@
     service_internalurl: "{{ nova_v3_service_internalurl }}"
     service_adminurl: "{{ nova_v3_service_adminurl }}"
     role_name: "{{ nova_service_role_name }}"
+  when: >
+    nova_v3_deprecated_but_enabled == true or nova_v3_deprecated_but_enabled == 'True'
   tags:
     - nova-api
     - nova-api-v3
@@ -50,7 +70,7 @@
 - include: nova_service_add.yml
   vars:
     service_user_name: "{{ nova_service_user_name }}"
-    service_tenant_name: "{{ nova_service_tenant_name }}"
+    service_tenant_name: "{{ nova_service_project_name }}"
     service_name: "{{ nova_s3_service_name }}"
     service_type: "{{ nova_s3_service_type }}"
     service_region: "{{ nova_service_region }}"
@@ -60,6 +80,8 @@
     service_internalurl: "{{ nova_s3_service_internalurl }}"
     service_adminurl: "{{ nova_s3_service_adminurl }}"
     role_name: "{{ nova_service_role_name }}"
+  when: >
+    nova_s3_deprecated_but_enabled == true or nova_s3_deprecated_but_enabled == 'True'
   tags:
     - nova-api
     - nova-api-s3
@@ -67,7 +89,7 @@
 - include: nova_service_add.yml
   vars:
     service_user_name: "{{ nova_service_user_name }}"
-    service_tenant_name: "{{ nova_service_tenant_name }}"
+    service_tenant_name: "{{ nova_service_project_name }}"
     service_name: "{{ nova_ec2_service_name }}"
     service_type: "{{ nova_ec2_service_type }}"
     service_region: "{{ nova_service_region }}"
@@ -77,6 +99,8 @@
     service_internalurl: "{{ nova_ec2_service_internalurl }}"
     service_adminurl: "{{ nova_ec2_service_adminurl }}"
     role_name: "{{ nova_service_role_name }}"
+  when: >
+    nova_ec2_deprecated_but_enabled == true or nova_ec2_deprecated_but_enabled == 'True'
   tags:
     - nova-api
     - nova-api-ec2

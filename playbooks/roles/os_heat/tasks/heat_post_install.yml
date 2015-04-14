@@ -21,6 +21,7 @@
     group: "{{ heat_system_group_name }}"
   with_items:
     - { src: "heat.conf.j2", dest: "/etc/heat/heat.conf" }
+    - { src: "api-paste.ini.j2", dest: "/etc/heat/api-paste.ini" }
   notify:
     - Restart heat services
   tags:
@@ -33,7 +34,6 @@
     owner: "{{ heat_system_user_name }}"
     group: "{{ heat_system_group_name }}"
   with_items:
-    - { src: "api-paste.ini", dest: "/etc/heat/api-paste.ini" }
     - { src: "environment.d/default.yaml", dest: "/etc/heat/environment.d/default.yaml" }
     - { src: "policy.json", dest: "/etc/heat/policy.json" }
     - { src: "templates/AWS_CloudWatch_Alarm.yaml", dest: "/etc/heat/templates/AWS_CloudWatch_Alarm.yaml" }

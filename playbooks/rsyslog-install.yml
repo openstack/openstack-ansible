@@ -27,7 +27,7 @@
       tags:
         - rsyslog-storage-dirs
     - name: Rsyslog server extra lxc config
-      lxc-container:
+      lxc_container:
         name: "{{ container_name }}"
         container_command: |
           [[ ! -d "{{ storage_directory }}" ]] && mkdir -p "{{ storage_directory }}"

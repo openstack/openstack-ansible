@@ -15,25 +15,24 @@
 
 
 ## NOTICE on items in this file:
-##   * If you use anything in the *._git_install_branch field that is not a TAG 
+##   * If you use anything in the *._git_install_branch field that is not a TAG
 ##     make sure to leave an in-line comment as to "why".
 
-## For the sake of anyone else editing this file: 
+## For the sake of anyone else editing this file:
 ##   * If you add clients to this file please do so in alphabetical order.
 ##   * Every entry should be name spaced with the name of the client followed by an "_"
 ##   * All items with this file should be separated by `name_` note that the name of the
 ##     package should be one long name with no additional `_` separating it.
 
-
 ## Barbican client
 barbicanclient_git_repo: https://github.com/openstack/python-barbicanclient
-barbicanclient_git_install_branch: 2.2.1
+barbicanclient_git_install_branch: 3.0.2
 barbicanclient_git_dest: "/opt/barbicanclient_{{ barbicanclient_git_install_branch | replace('/', '_') }}"
 
 
 ## Ceilometer client
 ceilometerclient_git_repo: https://github.com/openstack/python-ceilometerclient
-ceilometerclient_git_install_branch: 1.0.9
+ceilometerclient_git_install_branch: 1.0.13
 ceilometerclient_git_dest: "/opt/ceilometerclient_{{ ceilometerclient_git_install_branch | replace('/', '_') }}"
 
 
@@ -45,55 +44,55 @@ cinderclient_git_dest: "/opt/cinderclient_{{ cinderclient_git_install_branch | r
 
 ## Designate client
 designateclient_git_repo: https://github.com/openstack/python-designateclient
-designateclient_git_install_branch: 1.0.3
+designateclient_git_install_branch: 1.1.1
 designateclient_git_dest: "/opt/designateclient_{{ designateclient_git_install_branch | replace('/', '_') }}"
 
 
 ## Glance client
 glanceclient_git_repo: https://github.com/openstack/python-glanceclient
-glanceclient_git_install_branch: 0.15.0
+glanceclient_git_install_branch: 0.16.0
 glanceclient_git_dest: "/opt/glanceclient_{{ glanceclient_git_install_branch | replace('/', '_') }}"
 
 
 ## Heat client
 heatclient_git_repo: https://github.com/openstack/python-heatclient
-heatclient_git_install_branch: 0.2.12
+heatclient_git_install_branch: 0.3.0
 heatclient_git_dest: "/opt/heatclient_{{ heatclient_git_install_branch | replace('/', '_') }}"
 
 
 # Ironic client
 ironicclient_git_repo: https://github.com/openstack/python-ironicclient
-ironicclient_git_install_branch: 0.2.1
+ironicclient_git_install_branch: 0.4.1
 ironicclient_git_dest: "/opt/ironicclient_{{ ironicclient_git_install_branch | replace('/', '_') }}"
 
 
 # Keystone client
 keystoneclient_git_repo: https://github.com/openstack/python-keystoneclient
-keystoneclient_git_install_branch: 1.0.0
+keystoneclient_git_install_branch: 1.2.0
 keystoneclient_git_dest: "/opt/keystoneclient_{{ keystoneclient_git_install_branch | replace('/', '_') }}"
 
 
 ## Neutron client
 neutronclient_git_repo: https://github.com/openstack/python-neutronclient
-neutronclient_git_install_branch: 2.3.10
+neutronclient_git_install_branch: 2.3.11
 neutronclient_git_dest: "/opt/neutronclient_{{ neutronclient_git_install_branch | replace('/', '_') }}"
 
 
 ## Nova client
 novaclient_git_repo: https://github.com/openstack/python-novaclient
-novaclient_git_install_branch: 2.20.0
+novaclient_git_install_branch: 2.22.0
 novaclient_git_dest: "/opt/novaclient_{{ novaclient_git_install_branch | replace('/', '_') }}"
 
 
 ## OpenStack client
 openstackclient_git_repo: https://github.com/openstack/python-openstackclient
-openstackclient_git_install_branch: 1.0.1
+openstackclient_git_install_branch: 1.0.2
 openstackclient_git_dest: "/opt/openstackclient_{{ openstackclient_git_install_branch | replace('/', '_') }}"
 
 
 ## Sahara client
 saharaclient_git_repo: https://github.com/openstack/python-saharaclient
-saharaclient_git_install_branch: 0.7.6
+saharaclient_git_install_branch: 0.7.7
 saharaclient_git_dest: "/opt/saharaclient_{{ saharaclient_git_install_branch | replace('/', '_') }}"
 
 
@@ -111,7 +110,7 @@ troveclient_git_dest: "/opt/troveclient_{{ troveclient_git_install_branch | repl
 
 ## Tuskar client
 tuskarclient_git_repo: https://github.com/openstack/python-tuskarclient
-tuskarclient_git_install_branch: 0.1.8
+tuskarclient_git_install_branch: 0.1.15
 tuskarclient_git_dest: "/opt/tuskarclient_{{ tuskarclient_git_install_branch | replace('/', '_') }}"
 
 

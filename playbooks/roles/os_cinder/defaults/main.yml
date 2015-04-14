@@ -41,6 +41,10 @@ cinder_system_home_folder: "/var/lib/{{ cinder_system_user_name }}"
 cinder_service_admin_tenant_name: "service"
 cinder_service_admin_username: "cinder"
 
+## Cinder API's enabled
+cinder_enable_v1_api: true
+cinder_enable_v2_api: true
+
 ## Cinder api service type and data
 cinder_service_name: cinder
 cinder_service_user_name: cinder
@@ -89,6 +93,7 @@ cinder_service_backup_swift_object_size: 52428800
 cinder_service_backup_swift_retry_attempts: 3
 cinder_service_backup_swift_retry_backoff: 2
 cinder_service_backup_compression_algorithm: zlib
+cinder_service_backup_metadata_version: 2
 
 cinder_service_volume_program_name: cinder-volume
 
@@ -120,13 +125,20 @@ cinder_volume_clear_size: 0
 
 cinder_volume_name_template: volume-%s
 
+# osprofiler
+cinder_profiler_enabled: false
+# cinder_profiler_hmac_key is set in user_secrets.yml
+cinder_profiler_trace_sqlalchemy: false
+
+cinder_client_socket_timeout: 900
+
 ## General configuration
 ## Set this in rpc_user_config.yml UNLESS you want all hosts to use the same
 ## Cinder backends.  See the rpc_user_config example for more on how this is done.
 # cinder_backends:
 #   lvm:
 #     volume_group: cinder-volumes
-#     volume_driver: cinder.volume.drivers.lvm.LVMISCSIDriver
+#     volume_driver: cinder.volume.drivers.lvm.LVMVolumeDriver
 #     volume_backend_name: LVM_iSCSI
 
 ## Define nfs information for cinder. When the cinder_nfs_client dictionary is defined,

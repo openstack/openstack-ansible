@@ -18,8 +18,10 @@ WSGIDaemonProcess keystone user={{ keystone_system_user_name }} group=nogroup pr
     SSLCARevocationPath   {{ keystone_ssl_cert_path }}
     SSLVerifyClient optional
     SSLVerifyDepth 10
-    SSLProtocol all -SSLv2
-    SSLCipherSuite ALL:!ADH:!EXPORT:!SSLv2:RC4+RSA:+HIGH:+MEDIUM:+LOW
+    SSLCompression Off
+    SSLProtocol {{ keystone_ssl_protocol }}
+    SSLHonorCipherOrder On
+    SSLCipherSuite {{ keystone_ssl_cipher_suite }}
     SSLOptions +StdEnvVars +ExportCertData
     {% endif %}
 
@@ -41,8 +43,10 @@ WSGIDaemonProcess keystone user={{ keystone_system_user_name }} group=nogroup pr
     SSLCARevocationPath   {{ keystone_ssl_cert_path }}
     SSLVerifyClient optional
     SSLVerifyDepth 10
-    SSLProtocol all -SSLv2
-    SSLCipherSuite ALL:!ADH:!EXPORT:!SSLv2:RC4+RSA:+HIGH:+MEDIUM:+LOW
+    SSLCompression Off
+    SSLProtocol {{ keystone_ssl_protocol }}
+    SSLHonorCipherOrder On
+    SSLCipherSuite {{ keystone_ssl_cipher_suite }}
     SSLOptions +StdEnvVars +ExportCertData
     {% endif %}
 

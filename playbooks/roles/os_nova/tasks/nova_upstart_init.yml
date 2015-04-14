@@ -56,7 +56,9 @@
     system_user: "{{ nova_system_user_name }}"
     system_group: "{{ nova_system_group_name }}"
     service_home: "{{ nova_system_home_folder }}"
-  when: inventory_hostname in groups['nova_api_ec2']
+  when: >
+    inventory_hostname in groups['nova_api_os_compute'] and
+    (nova_ec2_deprecated_but_enabled == true or nova_ec2_deprecated_but_enabled == 'True')
 
 - include: nova_upstart_common_init.yml
   vars:
@@ -65,7 +67,9 @@
     system_user: "{{ nova_system_user_name }}"
     system_group: "{{ nova_system_group_name }}"
     service_home: "{{ nova_system_home_folder }}"
-  when: inventory_hostname in groups['nova_api_ec2']
+  when: >
+    inventory_hostname in groups['nova_api_os_compute'] and
+    (nova_ec2_deprecated_but_enabled == true or nova_ec2_deprecated_but_enabled == 'True')
 
 - include: nova_upstart_common_init.yml
   vars:
@@ -85,6 +89,7 @@
     service_home: "{{ nova_system_home_folder }}"
   when: inventory_hostname in groups['nova_compute']
 
+# Upstart init script for spice console.
 - include: nova_upstart_common_init.yml
   vars:
     program_name: "{{ nova_spice_program_name }}"
@@ -92,7 +97,9 @@
     system_user: "{{ nova_system_user_name }}"
     system_group: "{{ nova_system_group_name }}"
     service_home: "{{ nova_system_home_folder }}"
-  when: inventory_hostname in groups['nova_spice_console']
+  when: >
+    inventory_hostname in groups ['nova_console'] and
+    nova_console_type == "spice"
 
 - include: nova_upstart_common_init.yml
   vars:
@@ -101,4 +108,5 @@
     system_user: "{{ nova_system_user_name }}"
     system_group: "{{ nova_system_group_name }}"
     service_home: "{{ nova_system_home_folder }}"
-  when: inventory_hostname in groups['nova_spice_console']
+  when: inventory_hostname in groups['nova_console']
+

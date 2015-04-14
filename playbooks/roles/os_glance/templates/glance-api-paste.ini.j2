@@ -1,38 +1,38 @@
 # Use this pipeline for no auth or image caching - DEFAULT
 [pipeline:glance-api]
-pipeline = versionnegotiation unauthenticated-context rootapp
+pipeline = versionnegotiation osprofiler unauthenticated-context rootapp
 
 # Use this pipeline for image caching and no auth
 [pipeline:glance-api-caching]
-pipeline = versionnegotiation unauthenticated-context cache rootapp
+pipeline = versionnegotiation osprofiler unauthenticated-context cache rootapp
 
 # Use this pipeline for caching w/ management interface but no auth
 [pipeline:glance-api-cachemanagement]
-pipeline = versionnegotiation unauthenticated-context cache cachemanage rootapp
+pipeline = versionnegotiation osprofiler unauthenticated-context cache cachemanage rootapp
 
 # Use this pipeline for keystone auth
 [pipeline:glance-api-keystone]
-pipeline = versionnegotiation authtoken context rootapp
+pipeline = versionnegotiation osprofiler authtoken context rootapp
 
 # Use this pipeline for keystone auth with image caching
 [pipeline:glance-api-keystone+caching]
-pipeline = versionnegotiation authtoken context cache rootapp
+pipeline = versionnegotiation osprofiler authtoken context cache rootapp
 
 # Use this pipeline for keystone auth with caching and cache management
 [pipeline:glance-api-keystone+cachemanagement]
-pipeline = versionnegotiation authtoken context cache cachemanage rootapp
+pipeline = versionnegotiation osprofiler authtoken context cache cachemanage rootapp
 
 # Use this pipeline for authZ only. This means that the registry will treat a
 # user as authenticated without making requests to keystone to reauthenticate
 # the user.
 [pipeline:glance-api-trusted-auth]
-pipeline = versionnegotiation context rootapp
+pipeline = versionnegotiation osprofiler context rootapp
 
 # Use this pipeline for authZ only. This means that the registry will treat a
 # user as authenticated without making requests to keystone to reauthenticate
 # the user and uses cache management
 [pipeline:glance-api-trusted-auth+cachemanagement]
-pipeline = versionnegotiation context cache cachemanage rootapp
+pipeline = versionnegotiation osprofiler context cache cachemanage rootapp
 
 [composite:rootapp]
 paste.composite_factory = glance.api:root_app_factory
@@ -70,3 +70,8 @@ delay_auth_decision = true
 
 [filter:gzip]
 paste.filter_factory = glance.api.middleware.gzip:GzipMiddleware.factory
+
+[filter:osprofiler]
+paste.filter_factory = osprofiler.web:WsgiMiddleware.factory
+hmac_keys = {{ glance_profiler_hmac_key }}
+enabled = yes

@@ -11,59 +11,28 @@ log_file = /var/log/heat/heat.log
 stack_domain_admin_password = {{ heat_stack_domain_admin_password }}
 stack_domain_admin = {{ heat_stack_domain_admin }}
 stack_user_domain_id = {{ hostvars[groups['heat_api'][0]]['stack_user_domain_id'] }}
-deferred_auth_method = {{ heat_deferred_auth_method }}
-
-auth_encryption_key = {{ heat_auth_encryption_key }}
-
+max_nested_stack_depth = {{ heat_max_nested_stack_depth }}
 heat_watch_server_url = {{ heat_watch_server_url }}
 heat_waitcondition_server_url = {{ heat_waitcondition_server_url }}
 heat_metadata_server_url = {{ heat_metadata_server_url }}
 
+deferred_auth_method = {{ heat_deferred_auth_method }}
+trusts_delegated_roles = {{ heat_trusts_delegated_roles | join(',') }}
+
+auth_encryption_key = {{ heat_auth_encryption_key }}
 
 ## RPC Backend
 rpc_backend = {{ heat_rpc_backend }}
-
-
-## RabbitMQ
-rabbit_port = {{ rabbitmq_port }}
-rabbit_userid = {{ rabbitmq_userid }}
-rabbit_password = {{ rabbitmq_password }}
-rabbit_hosts = {{ rabbitmq_servers }}
-
 
 ## Plugin dirs
 plugin_dirs = {{ heat_plugin_dirs | join(',') }}
 
 
 [clients]
-endpoint_type = {{ heat_client_endpoint }}
-
-[clients_ceilometer]
-endpoint_type = {{ heat_client_endpoint }}
-
-[clients_cinder]
-endpoint_type = {{ heat_client_endpoint }}
-
-[clients_glance]
-endpoint_type = {{ heat_client_endpoint }}
+endpoint_type = {{ heat_clients_endpoint }}
 
 [clients_heat]
-endpoint_type = {{ heat_client_endpoint }}
-
-[clients_keystone]
-endpoint_type = {{ heat_client_endpoint }}
-
-[clients_neutron]
-endpoint_type = {{ heat_client_endpoint }}
-
-[clients_nova]
-endpoint_type = {{ heat_client_endpoint }}
-
-[clients_swift]
-endpoint_type = {{ heat_client_endpoint }}
-
-[clients_trove]
-endpoint_type = {{ heat_client_endpoint }}
+endpoint_type = {{ heat_clients_heat_endpoint }}
 
 [database]
 connection = mysql://{{ heat_galera_user }}:{{ heat_container_mysql_password }}@{{ galera_address }}/{{ heat_galera_database }}?charset=utf8
@@ -79,6 +48,19 @@ bind_port = {{ heat_cfn_service_port }}
 
 [heat_api_cloudwatch]
 bind_port = {{ heat_watch_port }}
+
+
+[oslo_messaging_rabbit]
+rabbit_port = {{ rabbitmq_port }}
+rabbit_userid = {{ rabbitmq_userid }}
+rabbit_password = {{ rabbitmq_password }}
+rabbit_hosts = {{ rabbitmq_servers }}
+
+
+[profiler]
+profiler_enabled = {{ heat_profiler_enabled }}
+trace_sqlalchemy = {{ heat_profiler_trace_sqlalchemy }}
+
 
 [keystone_authtoken]
 signing_dir = /var/cache/heat

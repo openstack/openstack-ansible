@@ -13,10 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# This is the md5 of the environment file
-# this will ensure consistency when deploying.
-environment_version: 35946eced47eb8461f1eea62fa01bcf0
-
 # User defined container networks in CIDR notation. The inventory generator
 # assigns IP addresses to network interfaces inside containers from these
 # ranges.
@@ -190,7 +186,7 @@ storage_hosts:
         limit_container_types: cinder_volume
         lvm:
           volume_group: cinder-volumes
-          volume_driver: cinder.volume.drivers.lvm.LVMISCSIDriver
+          volume_driver: cinder.volume.drivers.lvm.LVMVolumeDriver
           volume_backend_name: LVM_iSCSI
         # The ``cinder_nfs_client`` values is an optional component available
         # when configuring cinder.
@@ -208,7 +204,7 @@ storage_hosts:
         limit_container_types: cinder_volume
         lvm_ssd:
           volume_group: cinder-volumes
-          volume_driver: cinder.volume.drivers.lvm.LVMISCSIDriver
+          volume_driver: cinder.volume.drivers.lvm.LVMVolumeDriver
           volume_backend_name: LVM_iSCSI_SSD
 
 # User defined Logging Hosts, this should be a required group

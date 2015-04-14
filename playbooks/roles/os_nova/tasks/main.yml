@@ -15,6 +15,12 @@
 
 - include: nova_pre_install.yml
 - include: nova_install.yml
+
+- include: nova_spice_console_install.yml
+  when: >
+    inventory_hostname in groups['nova_console'] and
+    nova_console_type == "spice"
+
 - include: nova_post_install.yml
 - include: nova_upstart_init.yml
 
@@ -31,3 +37,4 @@
     inventory_hostname in groups['nova_compute']
   tags:
     - nova-compute
+

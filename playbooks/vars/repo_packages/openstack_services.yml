@@ -30,55 +30,67 @@
 
 ## Cinder service
 cinder_git_repo: https://github.com/openstack/cinder
-cinder_git_install_branch: 2014.2.2
+cinder_git_install_branch: master
 cinder_git_dest: "/opt/cinder_{{ cinder_git_install_branch | replace('/', '_') }}"
 
 
 ## Glance service
 glance_git_repo: https://github.com/openstack/glance
-glance_git_install_branch: 2014.2.2
+glance_git_install_branch: master
 glance_git_dest: "/opt/glance_{{ glance_git_install_branch | replace('/', '_') }}"
 
 
 ## Heat service
 heat_git_repo: https://github.com/openstack/heat
-heat_git_install_branch: 2014.2.2
+heat_git_install_branch: master
 heat_git_dest: "/opt/heat_{{ heat_git_install_branch | replace('/', '_') }}"
 heat_repo_plugins:
   - { path: "contrib", package: "extraroute" }
 
+
 ## Horizon service
 horizon_git_repo: https://github.com/openstack/horizon
-horizon_git_install_branch: 2014.2.2
+horizon_git_install_branch: master
 horizon_git_dest: "/opt/horizon_{{ horizon_git_install_branch | replace('/', '_') }}"
 
 
 ## Keystone service
 keystone_git_repo: https://github.com/openstack/keystone
-keystone_git_install_branch: 2014.2.2
+keystone_git_install_branch: master
 keystone_git_dest: "/opt/keystone_{{ keystone_git_install_branch | replace('/', '_') }}"
 
 
 ## Neutron service
 neutron_git_repo: https://github.com/openstack/neutron
-neutron_git_install_branch: 2014.2.2
+neutron_git_install_branch: master
 neutron_git_dest: "/opt/neutron_{{ neutron_git_install_branch | replace('/', '_') }}"
+
+neutron_lbaas_git_repo: https://github.com/openstack/neutron-lbaas
+neutron_lbaas_git_install_branch: master
+neutron_lbaas_git_dest: "/opt/neutron_lbaas_{{ neutron_lbaas_git_install_branch | replace('/', '_') }}"
+
+neutron_vpnaas_git_repo: https://github.com/openstack/neutron-vpnaas
+neutron_vpnaas_git_install_branch: master
+neutron_vpnaas_git_dest: "/opt/neutron_vpnaas_{{ neutron_vpnaas_git_install_branch | replace('/', '_') }}"
+
+neutron_fwaas_git_repo: https://github.com/openstack/neutron-fwaas
+neutron_fwaas_git_install_branch: master
+neutron_fwaas_git_dest: "/opt/neutron_fwaas_{{ neutron_fwaas_git_install_branch | replace('/', '_') }}"
 
 
 ## Nova service
 nova_git_repo: https://github.com/openstack/nova
-nova_git_install_branch: 2014.2.2
+nova_git_install_branch: master
 nova_git_dest: "/opt/nova_{{ nova_git_install_branch | replace('/', '_') }}"
 
 
 ## Swift service
 swift_git_repo: https://github.com/openstack/swift
-swift_git_install_branch: 2.2.1
+swift_git_install_branch: 2.2.2
 swift_git_dest: "/opt/swift_{{ swift_git_install_branch | replace('/', '_') }}"
 
 
 ## Tempest service
-# using a sha to match the other branches and also include fixes after the tag '3'
 tempest_git_repo: https://github.com/openstack/tempest
-tempest_git_install_branch: 17f81d4cc83569438fe11b1ee6ee2afe74c0b501
+tempest_git_install_branch: d1a391a55482d64b9014e7b41219af195722d990  # SHA at the head of master as of 20.3.2015
 tempest_git_dest: "/opt/tempest_{{ tempest_git_install_branch | replace('/', '_') }}"

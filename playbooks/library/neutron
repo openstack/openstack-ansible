@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-DOCUMENTATION = '''
+DOCUMENTATION = """
 ---
 module: neutron
 short_description:
@@ -62,9 +62,9 @@ options:
         description:
             - Specify external_gateway_info when creating router
 author: Hugh Saunders
-'''
+"""
 
-EXAMPLES = '''
+EXAMPLES = """
 - name: Create private network
   neutron:
     command: create_network
@@ -104,11 +104,12 @@ EXAMPLES = '''
     openrc_path: /root/openrc
     router_name: router
     subnet_name: private-subnet
-'''
+"""
 
-import re
+
 import keystoneclient.v2_0.client as ksclient
 from neutronclient.neutron import client as nclient
+
 
 COMMAND_MAP = {
     'create_network': {
@@ -189,16 +190,13 @@ class ManageNeutron(object):
 
     @staticmethod
     def _facts(resource_type, resource_data):
-        """Return a dict for our Ansible facts.
-
-        :param facts: ``dict``  Dict with data to return
-        """
+        """Return a dict for our Ansible facts."""
         key = 'neutron_%s' % resource_type
         facts = {key: {}}
         for f in resource_data[resource_type]:
-            name = f['name']
+            res_name = f['name']
             del f['name']
-            facts[key][name] = f
+            facts[key][res_name] = f
 
         return facts
 
@@ -236,17 +234,18 @@ class ManageNeutron(object):
         self.module.fail_json(msg=msg, rc=rc, err=error)
 
     def _parse_openrc(self):
-        """ Get credentials from an openrc file """
+        """Get credentials from an openrc file."""
         openrc_path = self.module.params['openrc_path']
         line_re = re.compile('^export (?P<key>OS_\w*)=(?P<value>[^\n]*)')
         with open(openrc_path) as openrc:
             matches = [line_re.match(l) for l in openrc]
             return dict(
                 (g.groupdict()['key'], g.groupdict()['value'])
-                    for g in matches if g)
+                for g in matches if g
+            )
 
     def _keystone_authenticate(self):
-        """ Authenticate with Keystone """
+        """Authenticate with Keystone."""
         openrc = self._parse_openrc()
         self.keystone = ksclient.Client(username=openrc['OS_USERNAME'],
                                         password=openrc['OS_PASSWORD'],
@@ -254,7 +253,7 @@ class ManageNeutron(object):
                                         auth_url=openrc['OS_AUTH_URL'])
 
     def _init_neutron(self):
-        """ Create neutron client object using token and url from keystone """
+        """Create neutron client object using token and url from keystone."""
         openrc = self._parse_openrc()
         self.neutron = nclient.Client(
             '2.0',
@@ -280,7 +279,9 @@ class ManageNeutron(object):
             'provider_physical_network'
         )
         provider_network_type = variables_dict.pop('provider_network_type')
-        provider_segmentation_id = variables_dict.pop('provider_segmentation_id')
+        provider_segmentation_id = variables_dict.pop(
+            'provider_segmentation_id'
+        )
         router_external = variables_dict.pop('router_external')
         tenant_id = variables_dict.pop('tenant_id')
 
@@ -371,9 +372,7 @@ class ManageNeutron(object):
 
         found = False
 
-        for port in self.neutron.list_ports()['ports']:
-            if port['device_id'] != router_id:
-                next
+        for port in self.neutron.list_ports(device_id=router_id)['ports']:
             for fixed_ips in port['fixed_ips']:
                 if fixed_ips['subnet_id'] == subnet_id:
                     found = True
