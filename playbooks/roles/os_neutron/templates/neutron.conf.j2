@@ -14,6 +14,7 @@ log_file = /var/log/neutron/neutron.log
 auth_strategy = keystone
 network_device_mtu = {{ neutron_network_device_mtu }}
 allow_overlapping_ips = True
+vlan_transparent = False
 
 
 ## Drivers
@@ -59,7 +60,7 @@ dhcp_agent_notification = True
 dhcp_agents_per_network = {{ groups['neutron_agent'] | length }}
 dhcp_delete_namespaces = True
 dhcp_lease_duration = 86400
-
+advertise_mtu = False
 
 ## Notifications
 notify_nova_on_port_status_changes = True
