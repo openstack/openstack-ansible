@@ -47,7 +47,7 @@
     - { path: "/etc/swift/object-server" }
     - { path: "/etc/swift/proxy-server" }
     - { path: "/etc/swift/scripts" }
-    - { path: "/etc/swift/rings" }
+    - { path: "/etc/swift/ring_build_files" }
     - { path: "/openstack/log/{{ inventory_hostname }}", owner: "syslog", group: "syslog" }
     - { path: "/var/cache/swift" }
     - { path: "/var/lock/swift" }
