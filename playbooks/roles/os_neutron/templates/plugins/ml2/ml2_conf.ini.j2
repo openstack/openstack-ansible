@@ -4,6 +4,8 @@
 type_drivers = {{ neutron_ml2_drivers_type }}
 tenant_network_types = {{ neutron_provider_networks.network_types }}
 mechanism_drivers = {{ neutron_ml2_mechanism_drivers }}
+path_mtu = 0
+segment_mtu = 0
 
 
 {% if neutron_provider_networks.network_flat_networks %}
