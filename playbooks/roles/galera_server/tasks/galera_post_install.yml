@@ -17,8 +17,8 @@
   file:
     path: "{{ item.path }}"
     state: "directory"
-    group: "{{ item.owner|default('root') }}"
-    owner: "{{ item.group|default('root') }}"
+    owner: "{{ item.owner|default('root') }}"
+    group: "{{ item.group|default('root') }}"
     mode: "{{ item.mode|default('0755') }}"
     recurse: "{{ item.recurse|default('false') }}"
   with_items:
