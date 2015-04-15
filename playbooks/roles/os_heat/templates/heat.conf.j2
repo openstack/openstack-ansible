@@ -38,7 +38,7 @@ endpoint_type = {{ heat_clients_heat_endpoint }}
 connection = mysql://{{ heat_galera_user }}:{{ heat_container_mysql_password }}@{{ galera_address }}/{{ heat_galera_database }}?charset=utf8
 
 [ec2authtoken]
-auth_uri = {{ keystone_service_internalurl }}
+auth_uri = {{ keystone_service_internaluri }}
 
 [heat_api]
 bind_port = {{ heat_service_port }}
@@ -63,12 +63,15 @@ trace_sqlalchemy = {{ heat_profiler_trace_sqlalchemy }}
 
 
 [keystone_authtoken]
+auth_plugin = {{ heat_keystone_auth_plugin }}
 signing_dir = /var/cache/heat
-identity_uri = {{ keystone_service_adminuri }}
-auth_uri = {{ keystone_service_internalurl }}
-admin_tenant_name = {{ heat_service_tenant_name }}
-admin_user = {{ heat_service_user_name }}
-admin_password = {{ heat_service_password }}
+auth_url = {{ keystone_service_adminuri }}
+auth_uri = {{ keystone_service_internaluri }}
+project_domain_id = {{ heat_service_project_domain_id }}
+user_domain_id = {{ heat_service_user_domain_id }}
+project_name = {{ heat_service_project_name }}
+username = {{ heat_service_user_name }}
+password = {{ heat_service_password }}
 
 memcached_servers = {{ memcached_servers }}
 

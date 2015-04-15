@@ -16,7 +16,7 @@
 - include: heat_service_add.yml
   vars:
     service_user_name: "{{ heat_service_user_name }}"
-    service_tenant_name: "{{ heat_service_tenant_name }}"
+    service_tenant_name: "{{ heat_service_project_name }}"
     service_name: "{{ heat_service_name }}"
     service_type: "{{ heat_service_type }}"
     service_region: "{{ heat_service_region }}"
@@ -32,7 +32,7 @@
 - include: heat_service_add.yml
   vars:
     service_user_name: "{{ heat_service_user_name }}"
-    service_tenant_name: "{{ heat_service_tenant_name }}"
+    service_tenant_name: "{{ heat_service_project_name }}"
     service_name: "{{ heat_cfn_service_name }}"
     service_type: "{{ heat_cfn_service_type }}"
     service_region: "{{ heat_service_region }}"
@@ -54,7 +54,7 @@
     token: "{{ keystone_auth_admin_token }}"
     endpoint: "{{ keystone_service_adminurl }}"
     user_name: "{{ heat_service_user_name }}"
-    tenant_name: "{{ heat_service_tenant_name }}"
+    tenant_name: "{{ heat_service_project_name }}"
     role_name: "{{ heat_stack_owner_name }}"
   register: add_service
   until: add_service|success
