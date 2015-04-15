@@ -19,7 +19,7 @@
 
 - include: neutron_db_setup.yml
   when: >
-    inventory_hostname == groups['neutron_all'][0]
+    inventory_hostname == groups['neutron_server'][0]
 
 - include: neutron_service_setup.yml
   when: >
