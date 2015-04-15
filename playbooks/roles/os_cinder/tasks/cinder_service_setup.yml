@@ -16,7 +16,7 @@
 - include: cinder_service_add.yml
   vars:
     service_user_name: "{{ cinder_service_user_name }}"
-    service_tenant_name: "{{ cinder_service_tenant_name }}"
+    service_tenant_name: "{{ cinder_service_project_name }}"
     service_name: "{{ cinder_service_name }}"
     service_type: "{{ cinder_service_type }}"
     service_region: "{{ cinder_service_region }}"
@@ -32,7 +32,7 @@
 - include: cinder_service_add.yml
   vars:
     service_user_name: "{{ cinder_service_user_name }}"
-    service_tenant_name: "{{ cinder_service_tenant_name }}"
+    service_tenant_name: "{{ cinder_service_project_name }}"
     service_name: "{{ cinder_service_v2_name }}"
     service_type: "{{ cinder_service_v2_type }}"
     service_region: "{{ cinder_service_region }}"
