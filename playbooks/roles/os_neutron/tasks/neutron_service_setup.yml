@@ -16,7 +16,7 @@
 - include: neutron_service_add.yml
   vars:
     service_user_name: "{{ neutron_service_user_name }}"
-    service_tenant_name: "{{ neutron_service_tenant_name }}"
+    service_tenant_name: "{{ neutron_service_project_name }}"
     service_name: "{{ neutron_service_name }}"
     service_type: "{{ neutron_service_type }}"
     service_region: "{{ neutron_service_region }}"

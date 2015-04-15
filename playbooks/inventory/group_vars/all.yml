@@ -89,13 +89,16 @@ nova_service_adminuri: "{{ nova_service_proto }}://{{ internal_lb_vip_address }}
 nova_service_adminurl: "{{ nova_service_adminuri }}/v2/%(tenant_id)s"
 nova_service_region: RegionOne
 nova_metadata_port: 8775
+nova_keystone_auth_plugin: password
 
 
 ## Neutron
 neutron_service_port: 9696
 neutron_service_proto: http
 neutron_service_user_name: neutron
-neutron_service_tenant_name: service
+neutron_service_project_name: service
+neutron_service_project_domain_id: default
+neutron_service_user_domain_id: default
 neutron_service_adminuri: "{{ neutron_service_proto }}://{{ internal_lb_vip_address }}:{{ neutron_service_port }}"
 neutron_service_adminurl: "{{ neutron_service_adminuri }}"
 neutron_service_region: RegionOne

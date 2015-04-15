@@ -8,18 +8,20 @@ verbose = {{ verbose }}
 debug = {{ debug }}
 
 # The Neutron user information for accessing the Neutron API.
-auth_url = {{ keystone_service_adminurl }}
+auth_plugin = {{ neutron_keystone_auth_plugin }}
+auth_url = {{ keystone_service_adminuri }}
+auth_uri = {{ keystone_service_internaluri }}
 auth_region = {{ keystone_service_region }}
+project_domain_id = {{ neutron_service_project_domain_id }}
+user_domain_id = {{ neutron_service_user_domain_id }}
+project_name = {{ neutron_service_project_name }}
+username = {{ neutron_service_user_name }}
+password = {{ neutron_service_password }}
 endpoint_type = adminURL
 
 # TCP Port used by Nova metadata server
 nova_metadata_ip = {{ internal_lb_vip_address }}
 nova_metadata_port = {{ nova_metadata_port }}
-
-# Admin authentication
-admin_tenant_name = {{ neutron_service_tenant_name }}
-admin_user = {{ neutron_service_user_name }}
-admin_password = {{ neutron_service_password }}
 
 # Number of backlog requests to configure the metadata server socket with
 metadata_proxy_shared_secret = {{ nova_metadata_proxy_secret }}
