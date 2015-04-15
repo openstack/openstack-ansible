@@ -36,12 +36,10 @@
 - name: Ensure tempest tenants
   keystone:
     command: ensure_tenant
+    token: "{{ keystone_auth_admin_token }}"
     tenant_name: "{{ item }}"
     description: "{{ item }} Tenant"
-    endpoint: "{{ keystone_service_internalurl }}"
-    login_tenant_name: "{{ keystone_service_tenant_name }}"
-    login_user: "{{ keystone_service_user_name }}"
-    login_password: "{{ keystone_auth_admin_password }}"
+    endpoint: "{{ keystone_service_adminurl }}"
   register: add_service
   until: add_service|success
   retries: 5
@@ -55,14 +53,12 @@
 - name: Ensure tempest users
   keystone:
     command: ensure_user
+    token: "{{ keystone_auth_admin_token }}"
     tenant_name: "{{ item }}"
     user_name: "{{ item }}"
     password: "{{ item }}"
     description: "{{ item }} User"
-    endpoint: "{{ keystone_service_internalurl }}"
-    login_tenant_name: "{{ keystone_service_tenant_name }}"
-    login_user: "{{ keystone_service_user_name }}"
-    login_password: "{{ keystone_auth_admin_password }}"
+    endpoint: "{{ keystone_service_adminurl }}"
   register: add_service
   until: add_service|success
   retries: 5
@@ -76,13 +72,11 @@
 - name: Ensure tempest users have heat_stack_owners role
   keystone:
     command: ensure_user_role
+    token: "{{ keystone_auth_admin_token }}"
     tenant_name: "{{ item }}"
     user_name: "{{ item }}"
     role_name: heat_stack_owner
-    endpoint: "{{ keystone_service_internalurl }}"
-    login_tenant_name: "{{ keystone_service_tenant_name }}"
-    login_user: "{{ keystone_service_user_name }}"
-    login_password: "{{ keystone_auth_admin_password }}"
+    endpoint: "{{ keystone_service_adminurl }}"
   register: add_service
   until: add_service|success
   retries: 5
@@ -96,10 +90,8 @@
 - name: Ensure reseller_admin role
   keystone:
     command: ensure_role
-    endpoint: "{{ keystone_service_internalurl }}"
-    login_tenant_name: "{{ keystone_service_tenant_name }}"
-    login_user: "{{ keystone_service_user_name }}"
-    login_password: "{{ keystone_auth_admin_password }}"
+    token: "{{ keystone_auth_admin_token }}"
+    endpoint: "{{ keystone_service_adminurl }}"
     role_name: "reseller_admin"
   register: add_service
   until: add_service|success
@@ -111,11 +103,9 @@
 - name: Ensure remote_image role exists
   keystone:
     command: ensure_role
+    token: "{{ keystone_auth_admin_token }}"
     role_name: remote_image
-    endpoint: "{{ keystone_service_internalurl }}"
-    login_tenant_name: "{{ keystone_service_tenant_name }}"
-    login_user: "{{ keystone_service_user_name }}"
-    login_password: "{{ keystone_auth_admin_password }}"
+    endpoint: "{{ keystone_service_adminurl }}"
   register: add_service
   until: add_service|success
   retries: 5
@@ -126,11 +116,9 @@
 - name: Get demo tenant id
   keystone:
     command: get_tenant
+    token: "{{ keystone_auth_admin_token }}"
     tenant_name: demo
-    endpoint: "{{ keystone_service_internalurl }}"
-    login_tenant_name: "{{ keystone_service_tenant_name }}"
-    login_user: "{{ keystone_service_user_name }}"
-    login_password: "{{ keystone_auth_admin_password }}"
+    endpoint: "{{ keystone_service_adminurl }}"
   register: add_service
   until: add_service|success
   retries: 5
