@@ -141,7 +141,7 @@
     - keystone-service-add
     - keystone-setup
 
-# Create an admin user
+# Create a service user
 - name: Ensure Keystone user
   keystone:
     command: "ensure_user"
@@ -149,7 +149,7 @@
     endpoint: "{{ keystone_service_adminurl }}"
     user_name: "{{ keystone_service_user_name }}"
     tenant_name: "{{ keystone_service_tenant_name }}"
-    password: "{{ keystone_auth_admin_password }}"
+    password: "{{ keystone_service_password }}"
   register: add_service
   until: add_service|success
   retries: 5
