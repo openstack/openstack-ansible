@@ -97,6 +97,7 @@
       rsyslog_client_config_name: "99-nova-rsyslog-client.conf"
       tags:
         - "nova-rsyslog-client"
+        - "rsyslog-client"
   vars:
     galera_address: "{{ internal_lb_vip_address }}"
     ansible_hostname: "{{ container_name }}"

@@ -24,6 +24,7 @@
       rsyslog_client_config_name: "99-rabbitmq-rsyslog-client.conf"
       tags:
         - "rabbitmq-rsyslog-client"
+        - "rsyslog-client"
   vars:
     ansible_hostname: "{{ container_name }}"
     ansible_ssh_host: "{{ container_address }}"

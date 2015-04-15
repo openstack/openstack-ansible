@@ -80,6 +80,7 @@
       rsyslog_client_config_name: "99-glance-rsyslog-client.conf"
       tags:
         - "glance-rsyslog-client"
+        - "rsyslog-client"
   vars:
     galera_address: "{{ internal_lb_vip_address }}"
     ansible_hostname: "{{ container_name }}"

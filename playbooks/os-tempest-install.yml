@@ -24,6 +24,7 @@
       rsyslog_client_config_name: "99-tempest-rsyslog-client.conf"
       tags:
         - "tempest-rsyslog-client"
+        - "rsyslog-client"
   vars_files:
     - vars/repo_packages/openstack_services.yml
   vars:

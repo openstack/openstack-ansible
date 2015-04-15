@@ -52,6 +52,7 @@
       rsyslog_client_config_name: "99-swift-rsyslog-client.conf"
       tags:
         - "swift-rsyslog-client"
+        - "rsyslog-client"
   vars:
     ansible_hostname: "{{ container_name }}"
     ansible_ssh_host: "{{ container_address }}"

@@ -55,6 +55,7 @@
       rsyslog_client_config_name: "99-heat-rsyslog-client.conf"
       tags:
         - "heat-rsyslog-client"
+        - "rsyslog-client"
   vars:
     galera_address: "{{ internal_lb_vip_address }}"
     ansible_hostname: "{{ container_name }}"

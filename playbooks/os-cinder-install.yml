@@ -96,6 +96,7 @@
       rsyslog_client_config_name: "99-cinder-rsyslog-client.conf"
       tags:
         - "cinder-rsyslog-client"
+        - "rsyslog-client"
   vars:
     galera_address: "{{ internal_lb_vip_address }}"
     glance_host: "{{ internal_lb_vip_address }}"
