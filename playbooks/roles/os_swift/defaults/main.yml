@@ -40,7 +40,9 @@ swift_account_port: "6002"
 ## Swift service defaults
 swift_service_name: swift
 swift_service_user_name: swift
-swift_service_tenant_name: service
+swift_service_project_name: service
+swift_service_project_domain_id: "default"
+swift_service_user_domain_id: "default"
 swift_service_role_name: "admin"
 swift_service_type: object-store
 swift_service_proto: http
@@ -52,6 +54,9 @@ swift_service_adminurl: "{{ swift_service_adminuri }}/v1/AUTH_%(tenant_id)s"
 swift_service_internaluri: "{{ swift_service_proto }}://{{ internal_lb_vip_address }}:{{ swift_proxy_port }}"
 swift_service_internalurl: "{{ swift_service_internaluri }}/v1/AUTH_%(tenant_id)s"
 swift_service_region: RegionOne
+
+## Keystone authentication middleware
+swift_keystone_auth_plugin: "password"
 
 ## Swift default variables
 swift_dispersion_user: dispersion
