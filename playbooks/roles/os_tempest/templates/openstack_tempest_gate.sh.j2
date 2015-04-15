@@ -55,7 +55,10 @@ function gen_test_list_scenario() {
 
 # Run smoke tests
 function gen_test_list_smoke() {
-  grep smoke
+  # this specific test fails frequently and is making our multi node nightly
+  # job unstable (see bug in gen_test_list_scenario function)
+  # TODO: re-add back in once the specific issue is identified and corrected
+  grep smoke | grep -v tempest.scenario.test_network_basic_ops.TestNetworkBasicOps.test_update_router_admin_state
 }
 
 # Run all tests
