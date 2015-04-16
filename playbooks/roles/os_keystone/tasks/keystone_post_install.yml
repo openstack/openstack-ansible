@@ -34,7 +34,6 @@
     group: "{{ keystone_system_group_name }}"
     mode: "{{ item.mode|default('0644') }}"
   with_items:
-    - { src: "policy.json", dest: "/etc/keystone/policy.json" }
     - { src: "keystone-paste.ini", dest: "/etc/keystone/keystone-paste.ini" }
     - { src: "keystone-wsgi.py", dest: "/var/www/cgi-bin/keystone/admin", mode: "0755" }
     - { src: "keystone-wsgi.py", dest: "/var/www/cgi-bin/keystone/main", mode: "0755" }
@@ -42,3 +41,19 @@
     - Restart Apache
   tags:
     - keystone-config
+
+- name: Apply updates to Policy file
+  copy_updates:
+    content="{{ item.content }}"
+    updates="{{ item.policy_data }}"
+    dest="{{ item.dest }}"
+    owner="{{ keystone_system_user_name }}"
+    group="{{ keystone_system_group_name }}"
+    mode="{{ item.mode|default('0644') }}"
+  with_items:
+    - { content: "{{ lookup('file', 'policy.json') | b64encode }}", policy_data: "{{ keystone_policy_overrides|default('') }}", dest: "/etc/keystone/policy.json" }
+  notify:
+    - Restart Apache
+  tags:
+    - keystone-config
+
