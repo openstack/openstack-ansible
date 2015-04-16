@@ -241,8 +241,11 @@ if [ -d "/etc/openstack_deploy" ];then
   rm -rf "/etc/openstack_deploy"
 fi
 
-# Copy the base etc files
+# Move the *.aio files into place for use within the AIO build.
 cp -R etc/openstack_deploy /etc/
+for i in $(find /etc/openstack_deploy/ -type f -name '*.aio');do
+  rename 's/\.aio$//g' $i
+done
 
 # Ensure the conf.d directory exists
 if [ ! -d "/etc/openstack_deploy/conf.d" ];then
