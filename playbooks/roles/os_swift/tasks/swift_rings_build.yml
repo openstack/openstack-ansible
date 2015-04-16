@@ -58,7 +58,7 @@
   sudo: yes
   sudo_user: "{{ swift_system_user_name }}"
   args:
-    chdir: /etc/swift/rings/
+    chdir: /etc/swift/ring_build_files/
   tags:
     - swift-rings
     - swift-rings-build
@@ -70,7 +70,7 @@
   sudo: yes
   sudo_user: "{{ swift_system_user_name }}"
   args:
-    chdir: /etc/swift/rings/
+    chdir: /etc/swift/ring_build_files/
   tags:
     - swift-rings
     - swift-rings-build
