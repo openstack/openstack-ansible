@@ -142,7 +142,7 @@ workers = {{ nova_conductor_workers | default(api_threads) }}
 
 
 [osapi_v3]
-enabled = False
+enabled = {{ nova_v3_deprecated_but_enabled }}
 
 
 [keystone_authtoken]
