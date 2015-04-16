@@ -14,9 +14,10 @@
 # limitations under the License.
 
 - name: Check if mysql is running
-  shell: "pgrep -fl mysqld"
+  shell: "pgrep -fl [m]ysqld"
   register: mysql_running
   changed_when: mysql_running.rc != 0
+  ignore_errors: True
   tags:
     - galera-bootstrap
 
@@ -25,7 +26,7 @@
     mysql -e 'show status like "wsrep_cluster_size%"\G'|awk '/Value/{print $2}'
   register: wsrep_cluster_size
   changed_when: wsrep_cluster_size.stdout|search("1")
-  when: mysql_running.rc == 0
+  when: not mysql_running|changed
   tags:
     - galera-bootstrap
 
@@ -36,15 +37,16 @@
     pattern: mysqld
   register: mysqlstopped
   when: >
-    mysql_running.rc == 0 and
-    (wsrep_cluster_size.stdout | search("1") or wsrep_cluster_size.stderr | search("ERROR"))
+    (not mysql_running|changed) and
+    (wsrep_cluster_size|changed or wsrep_cluster_size.stderr | search("ERROR"))
   tags:
     - galera-bootstrap
 
 - name: Check if mysql is running
-  shell: "pgrep -fl mysqld"
+  shell: "pgrep -fl [m]ysqld"
   register: mysql_running
   changed_when: mysql_running.rc != 0
+  ignore_errors: True
   tags:
     - galera-bootstrap
 
@@ -53,6 +55,6 @@
     name: mysql
     state: restarted
     args: --wsrep-new-cluster
-  when: wsrep_cluster_size.stdout|search("1") or mysqlstopped|changed or mysql_running != 0
+  when: wsrep_cluster_size|changed or mysqlstopped|changed or mysql_running|changed
   tags:
     - galera-bootstrap

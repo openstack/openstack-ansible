@@ -14,9 +14,10 @@
 # limitations under the License.
 
 - name: Check if mysql is running
-  shell: "pgrep -fl mysqld"
+  shell: "pgrep -fl [m]ysqld"
   register: mysql_running
   changed_when: mysql_running.rc != 0
+  ignore_errors: True
   tags:
     - galera-bootstrap
 
@@ -33,9 +34,7 @@
   service:
     name: mysql
     state: restarted
-  when: >
-    "not wsrep_incoming_addresses.stdout|search('{{ ansible_ssh_host }}')" or
-    mysql_running != 0
+  when: wsrep_incoming_addresses|changed or mysql_running|changed
   tags:
     - galera-add-node
     - galera-bootstrap
