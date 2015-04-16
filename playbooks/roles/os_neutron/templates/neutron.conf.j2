@@ -116,10 +116,12 @@ memcache_secret_key = {{ memcached_encryption_key }}
 # if your keystone deployment uses PKI, and you value security over performance:
 check_revocations_for_cached = False
 
+{% if inventory_hostname in groups['neutron_server'] %}
 
 [database]
 connection = mysql://{{ neutron_galera_user }}:{{ neutron_container_mysql_password }}@{{ galera_address }}/{{ neutron_galera_database }}?charset=utf8
 
+{% endif %}
 
 [oslo_messaging_rabbit]
 rabbit_port = {{ rabbitmq_port }}

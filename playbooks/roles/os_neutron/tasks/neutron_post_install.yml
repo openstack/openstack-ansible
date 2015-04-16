@@ -33,15 +33,29 @@
     owner: "{{ neutron_system_user_name }}"
     group: "{{ neutron_system_group_name }}"
   with_items:
+    - { src: "neutron.conf.j2", dest: "/etc/neutron/neutron.conf" }
+    - { src: "plugins/ml2/ml2_conf.ini.j2", dest: "/etc/neutron/plugins/ml2/ml2_conf.ini" }
+  notify:
+    - Restart neutron services
+  tags:
+    - neutron-config
+
+- name: Generate neutron agent only Config
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ neutron_system_user_name }}"
+    group: "{{ neutron_system_group_name }}"
+  with_items:
     - { src: "dhcp_agent.ini.j2", dest: "/etc/neutron/dhcp_agent.ini" }
     - { src: "dnsmasq-neutron.conf.j2", dest: "/etc/neutron/dnsmasq-neutron.conf" }
     - { src: "l3_agent.ini.j2", dest: "/etc/neutron/l3_agent.ini" }
     - { src: "metadata_agent.ini.j2", dest: "/etc/neutron/metadata_agent.ini" }
     - { src: "metering_agent.ini.j2", dest: "/etc/neutron/metering_agent.ini" }
-    - { src: "neutron.conf.j2", dest: "/etc/neutron/neutron.conf" }
-    - { src: "plugins/ml2/ml2_conf.ini.j2", dest: "/etc/neutron/plugins/ml2/ml2_conf.ini" }
   notify:
     - Restart neutron services
+  when: >
+      inventory_hostname in groups['neutron_agents_container']
   tags:
     - neutron-config
 
