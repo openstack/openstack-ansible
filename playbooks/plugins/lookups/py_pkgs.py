@@ -134,7 +134,7 @@ class DependencyFileProcessor(object):
         if git_item.split('_')[0] == 'git':
             var_name = 'git'
         else:
-            var_name = git_item.split('_')[0]
+            var_name = git_item.split('_git_repo')[0]
 
         git_data['repo'] = loaded_yaml.get(git_item)
         git_data['branch'] = loaded_yaml.get(
@@ -164,7 +164,6 @@ class DependencyFileProcessor(object):
         """Process files.
 
         :type ext: ``tuple``
-        :type lower_priority: ``bol``
         """
         file_names = self._filter_files(
             file_names=self.file_names,
@@ -185,12 +184,14 @@ class DependencyFileProcessor(object):
                 if [i for i in BUILT_IN_PIP_PACKAGE_VARS if i in key]:
                     self.pip['py_package'].extend(values)
 
+
 def _abs_path(path):
     return os.path.abspath(
         os.path.expanduser(
             path
         )
     )
+
 
 class LookupModule(object):
 
