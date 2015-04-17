@@ -20,7 +20,7 @@ set -e -u -v +x
 ## Variables -----------------------------------------------------------------
 
 export TEMPEST_SCRIPT_PATH=${TEMPEST_SCRIPT_PATH:-/root/rpc_tempest_gate.sh}
-export TEMPEST_SCRIPT_PARAMETERS=${TEMPEST_SCRIPT_PARAMETERS:-commit_aio}
+export TEMPEST_SCRIPT_PARAMETERS=${TEMPEST_SCRIPT_PARAMETERS:-scenario}
 export RUN_TEMPEST_OPTS=${RUN_TEMPEST_OPTS:-''}
 export TESTR_OPTS=${TESTR_OPTS:-''}
 

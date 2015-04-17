@@ -25,41 +25,84 @@ set -x
 # The only parameter this script takes is the name of a test list to use:
 # ./$0 <test_list_name>
 #
-# If a name is not supplied commit_multinode will be used.
+# If a name is not supplied scenario will be used.
 
-test_list_name=${1:-commit_multinode}
-testr_ouput_lines=${testr_output_lines:-100}
+test_list_name=${1:-scenario}
+testr_ouput_lines=${testr_output_lines:-5}
 RUN_TEMPEST_OPTS=${RUN_TEMPEST_OPTS:-''}
 TESTR_OPTS=${TESTR_OPTS:-''}
 
 
 # -------------------- Functions -------------------------
-# Test list functions. Each tempest test scenario (eg commit gate, nightly,
-# pre release) should have a function here to generate the list of tests that
+# Test list functions. Each tempest test scenario (eg scenario, api, smoke,
+# defcore) should have a function here to generate the list of tests that
 # should be run. Each function takes in the full list of tempest tests and
 # should output a filtered list.
 
-gen_test_list_commit_multinode(){
+function gen_test_list_api() {
   # filter test list to produce list of tests to use.
-  egrep 'tempest\.api\.(identity|image|volume)'\
-    |grep -vi xml \
-    |grep -v compute \
-    |grep -v VolumesV.ActionsTest
+  egrep 'tempest\.api\.(identity|image|volume|network|compute|object_storage)'\
+    |grep -vi xml
 }
 
-# Run smoke tests
-gen_test_list_commit_aio(){
+# Run selected scenario tests
+function gen_test_list_scenario() {
+  # network tests have been removed due to
+  # https://bugs.launchpad.net/openstack-ansible/+bug/1425255
+  # TODO: add them back once the bug has been fixed
   egrep 'tempest\.scenario\.test_(minimum|swift|server)_basic(_ops)?'
 }
 
 # Run smoke tests
-gen_test_list_nightly_heat_multinode(){
-  grep smoke
+function gen_test_list_smoke() {
+  # this specific test fails frequently and is making our multi node nightly
+  # job unstable (see bug in gen_test_list_scenario function)
+  # TODO: re-add back in once the specific issue is identified and corrected
+  grep smoke | grep -v tempest.scenario.test_network_basic_ops.TestNetworkBasicOps.test_update_router_admin_state
 }
 
 # Run all tests
-gen_test_list_all(){
+function gen_test_list_all() {
   cat
+}
+
+# Generate test list from official defcore/refstack spec
+# Note that unlike the other test list functions, this one isn't a filter
+# it ignores its stdin and pulls the test list from github.
+function gen_test_list_defcore(){
+  branch=${1:-juno}
+  string=$(python <<END
+import json
+import requests
+
+branch="$branch"
+map = {'juno': '2015.next', 'icehouse': '2015.03'}
+
+url=("https://raw.githubusercontent.com/openstack/"
+     "defcore/master/%(version)s.json"
+     % {'version': map[branch]}
+     )
+response = requests.get(url)
+for capability in response.json()['capabilities'].values():
+  for test in capability['tests']:
+    print test
+END)
+
+  read -a test_list <<<$string
+  parse_cmd="grep "
+  for item in ${test_list[@]}; do parse_cmd+="-e $item "; done
+
+  $parse_cmd
+}
+
+# defcore tests for juno
+function gen_test_list_defcore_juno(){
+  gen_test_list_defcore juno
+}
+
+# defcore tests for icehouse
+function gen_test_list_defcore_icehouse(){
+  gen_test_list_defcore icehouse
 }
 
 exit_msg(){
@@ -98,7 +141,9 @@ set +o pipefail
 # Write filter test list using selected function. The full test list is
 # pre-filtered to only include test lines, this saves adding that filter to
 # every test list function.
-grep '^tempest\.' < full_test_list | gen_test_list_${test_list_name} > test_list
+grep '^tempest\.' < full_test_list \
+  | gen_test_list_${test_list_name} > test_list \
+  || exit_msg "Filter $test_list_name failed. Output: $(cat test_list)" 1
 
 # Check the filtered test list is not empty
 [[ -s test_list ]] || exit_msg "No tests remain after filtering" 1
