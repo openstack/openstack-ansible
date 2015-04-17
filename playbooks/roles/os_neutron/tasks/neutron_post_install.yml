@@ -67,7 +67,6 @@
     group: "{{ neutron_system_group_name }}"
   with_items:
     - { src: "api-paste.ini", dest: "/etc/neutron/api-paste.ini" }
-    - { src: "policy.json", dest: "/etc/neutron/policy.json" }
     - { src: "rootwrap.conf", dest: "/etc/neutron/rootwrap.conf" }
     - { src: "rootwrap.d/debug.filters", dest: "/etc/neutron/rootwrap.d/debug.filters" }
     - { src: "rootwrap.d/dhcp.filters", dest: "/etc/neutron/rootwrap.d/dhcp.filters" }
@@ -80,6 +79,21 @@
     - { src: "rootwrap.d/linuxbridge-plugin.filters", dest: "/etc/neutron/rootwrap.d/linuxbridge-plugin.filters" }
     - { src: "rootwrap.d/l3.filters", dest: "/etc/neutron/rootwrap.d/l3.filters" }
     - { src: "rootwrap.d/vpnaas.filters", dest: "/etc/neutron/rootwrap.d/vpnaas.filters" }
+  notify:
+    - Restart neutron services
+  tags:
+    - neutron-config
+
+- name: Apply updates to Policy file
+  copy_updates:
+    content="{{ item.content }}"
+    updates="{{ item.policy_data }}"
+    dest="{{ item.dest }}"
+    owner="{{ neutron_system_user_name }}"
+    group="{{ neutron_system_group_name }}"
+    mode="{{ item.mode|default('0644') }}"
+  with_items:
+    - { content: "{{ lookup('file', 'policy.json') | b64encode }}", policy_data: "{{ neutron_policy_overrides|default('') }}", dest: "/etc/neutron/policy.json" }
   notify:
     - Restart neutron services
   tags:

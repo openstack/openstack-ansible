@@ -35,9 +35,23 @@
     group: "{{ heat_system_group_name }}"
   with_items:
     - { src: "environment.d/default.yaml", dest: "/etc/heat/environment.d/default.yaml" }
-    - { src: "policy.json", dest: "/etc/heat/policy.json" }
     - { src: "templates/AWS_CloudWatch_Alarm.yaml", dest: "/etc/heat/templates/AWS_CloudWatch_Alarm.yaml" }
     - { src: "templates/AWS_RDS_DBInstance.yaml", dest: "/etc/heat/templates/AWS_RDS_DBInstance.yaml" }
+  notify:
+    - Restart heat services
+  tags:
+    - heat-config
+
+- name: Apply updates to Policy file
+  copy_updates:
+    content="{{ item.content }}"
+    updates="{{ item.policy_data }}"
+    dest="{{ item.dest }}"
+    owner="{{ heat_system_user_name }}"
+    group="{{ heat_system_group_name }}"
+    mode="{{ item.mode|default('0644') }}"
+  with_items:
+    - { content: "{{ lookup('file', 'policy.json') | b64encode }}", policy_data: "{{ heat_policy_overrides|default('') }}", dest: "/etc/heat/policy.json" }
   notify:
     - Restart heat services
   tags:

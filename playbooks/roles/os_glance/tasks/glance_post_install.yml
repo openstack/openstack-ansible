@@ -59,9 +59,24 @@
     owner: "{{ glance_system_user_name }}"
     group: "{{ glance_system_group_name }}"
   with_items:
-    - { src: "policy.json", dest: "/etc/glance/policy.json" }
     - { src: "schema.json", dest: "/etc/glance/schema.json" }
     - { src: "schema.json", dest: "/etc/glance/schema-image.json" }
+  notify:
+    - Restart glance api
+    - Restart glance registry
+  tags:
+    - glance-config
+
+- name: Apply updates to Policy file
+  copy_updates:
+    content="{{ item.content }}"
+    updates="{{ item.policy_data }}"
+    dest="{{ item.dest }}"
+    owner="{{ glance_system_user_name }}"
+    group="{{ glance_system_group_name }}"
+    mode="{{ item.mode|default('0644') }}"
+  with_items:
+    - { content: "{{ lookup('file', 'policy.json') | b64encode }}", policy_data: "{{ glance_policy_overrides|default('') }}", dest: "/etc/glance/policy.json" }
   notify:
     - Restart glance api
     - Restart glance registry

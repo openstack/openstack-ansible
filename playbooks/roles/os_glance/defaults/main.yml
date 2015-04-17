@@ -119,6 +119,13 @@ glance_policy_dirs: policy.d
 #     type: "nfs"                           ## This can be nfs or nfs4
 #     options: "_netdev,auto"               ## Mount options
 
+## Policy vars
+# Provide a list of access controls to update the default policy.json with. These changes will be merged
+# with the access controls in the default policy.json. E.g.
+#glance_policy_overrides:
+#  "add_image": ""
+#  "delete_image": ""
+
 # Common apt packages
 glance_apt_packages:
   - rpcbind
