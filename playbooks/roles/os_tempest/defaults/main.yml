@@ -33,8 +33,8 @@ tempest_compute_console_output_enabled: True
 tempest_compute_resize_enabled: True
 tempest_compute_snapshot_enabled: True
 
-tempest_dashboard_login_url: "http://{{ external_lb_vip_address }}/auth/login/"
-tempest_dashboard_url: "http://{{ external_lb_vip_address }}/"
+tempest_dashboard_login_url: "https://{{ external_lb_vip_address }}/auth/login/"
+tempest_dashboard_url: "https://{{ external_lb_vip_address }}/"
 
 tempest_service_available_ceilometer: False
 tempest_service_available_cinder: True
