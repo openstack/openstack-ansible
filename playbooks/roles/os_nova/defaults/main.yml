@@ -210,6 +210,14 @@ nova_scheduler_program_name: nova-scheduler
 # nova_metadata_workers: 16
 
 
+## Policy vars
+# Provide a list of access controls to update the default policy.json with. These changes will be merged
+# with the access controls in the default policy.json. E.g.
+#nova_policy_overrides:
+#  "compute:create": ""
+#  "compute:create:attach_network": ""
+
+
 ## Service Names
 nova_service_names:
   - "{{ nova_metadata_program_name }}"

@@ -156,6 +156,13 @@ cinder_client_socket_timeout: 900
 #     - ip: "127.0.0.1"
 #       share: "/vol/cinder"
 
+## Policy vars
+# Provide a list of access controls to update the default policy.json with. These changes will be merged
+# with the access controls in the default policy.json. E.g.
+#cinder_policy_overrides:
+#  "volume:create": ""
+#  "volume:delete": ""
+
 # Common apt packages
 cinder_apt_packages:
   - dmeventd
