@@ -86,7 +86,7 @@ nova_git_dest: "/opt/nova_{{ nova_git_install_branch | replace('/', '_') }}"
 
 ## Swift service
 swift_git_repo: https://github.com/openstack/swift
-swift_git_install_branch: 2.2.2
+swift_git_install_branch: master
 swift_git_dest: "/opt/swift_{{ swift_git_install_branch | replace('/', '_') }}"
 
 
