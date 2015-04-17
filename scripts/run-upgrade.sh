@@ -184,7 +184,7 @@ EOF
 
 # Create the horizon secret key if not found.
 if ! grep '^horizon_secret_key\:' /etc/openstack_deploy/user_secrets.yml;then
-  echo 'horizon_secret_key:' /etc/openstack_deploy/user_secrets.yml
+  echo 'horizon_secret_key:' | tee -a /etc/openstack_deploy/user_secrets.yml
 fi
 
 # Regenerate secrets for the new entries
