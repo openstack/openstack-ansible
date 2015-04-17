@@ -44,6 +44,8 @@
     service_internalurl: "{{ nova_v21_service_internalurl }}"
     service_adminurl: "{{ nova_v21_service_adminurl }}"
     role_name: "{{ nova_service_role_name }}"
+  when: >
+    nova_v21_enabled == true or nova_v21_enabled == 'True'
   tags:
     - nova-api
     - nova-api-v21

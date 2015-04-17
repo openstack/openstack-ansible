@@ -93,6 +93,7 @@ nova_v21_service_adminuri: "{{ nova_v21_service_proto }}://{{ internal_lb_vip_ad
 nova_v21_service_adminurl: "{{ nova_v21_service_adminuri }}/v2.1"
 nova_v21_service_internaluri: "{{ nova_v21_service_proto }}://{{ internal_lb_vip_address }}:{{ nova_v21_service_port }}"
 nova_v21_service_internalurl: "{{ nova_v21_service_internaluri }}/v2.1"
+nova_v21_enabled: true
 
 ## Nova v2
 nova_service_name: nova

@@ -142,7 +142,12 @@ workers = {{ nova_conductor_workers | default(api_threads) }}
 
 
 [osapi_v3]
-enabled = {{ nova_v3_deprecated_but_enabled }}
+# note that this setting enables both the v3 and v2.1 APIs in kilo
+{% if nova_v3_deprecated_but_enabled == true or nova_v3_deprecated_but_enabled == 'True' or nova_v21_enabled == true or nova_v21_enabled == 'True' %}
+enabled = true
+{% else %}
+enabled = false
+{% endif %}
 
 
 [keystone_authtoken]
