@@ -70,13 +70,17 @@ function gen_test_list_all() {
 # Note that unlike the other test list functions, this one isn't a filter
 # it ignores its stdin and pulls the test list from github.
 function gen_test_list_defcore(){
-  branch=${1:-juno}
+  branch=${1:-master}
   string=$(python <<END
 import json
 import requests
 
 branch="$branch"
-map = {'juno': '2015.next', 'icehouse': '2015.03'}
+map = {
+    'master': '2015.next',
+    'juno': '2015.04',
+    'icehouse': '2015.04'
+}
 
 url=("https://raw.githubusercontent.com/openstack/"
      "defcore/master/%(version)s.json"
