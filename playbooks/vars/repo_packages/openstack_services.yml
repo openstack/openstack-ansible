@@ -74,7 +74,7 @@ neutron_vpnaas_git_install_branch: stable/kilo
 neutron_vpnaas_git_dest: "/opt/neutron_vpnaas_{{ neutron_vpnaas_git_install_branch | replace('/', '_') }}"
 
 neutron_fwaas_git_repo: https://github.com/openstack/neutron-fwaas
-neutron_fwaas_git_install_branch: proposed-kilo
+neutron_fwaas_git_install_branch: stable/kilo
 neutron_fwaas_git_dest: "/opt/neutron_fwaas_{{ neutron_fwaas_git_install_branch | replace('/', '_') }}"
 
 
