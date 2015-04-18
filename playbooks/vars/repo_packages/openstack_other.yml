@@ -32,7 +32,7 @@ glancestore_git_dest: "/opt/glancestore_{{ glancestore_git_repo | replace('/', '
 
 ## Global Requirements
 requirements_git_repo: https://github.com/openstack/requirements
-requirements_git_install_branch: stable/kilo
+requirements_git_install_branch: 72681aacfc19f3a85b714ce684ee7fe5babbac31 # HEAD of "stable/kilo" as of 17.04.2015
 requirements_git_dest: "/opt/requirements_{{ requirements_git_install_branch | replace('/', '_') }}"
 
 
