@@ -80,7 +80,7 @@ pushd "playbooks"
     install_bits utility-install.yml
 
     if [ "${DEPLOY_LOGGING}" == "yes" ]; then
-      info_block "Logging has not been galaxified yet..."
+      install_bits rsyslog-install.yml
     fi
   fi
 
