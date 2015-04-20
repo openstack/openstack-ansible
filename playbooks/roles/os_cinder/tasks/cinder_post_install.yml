@@ -34,9 +34,23 @@
     owner: "{{ cinder_system_user_name }}"
     group: "{{ cinder_system_group_name }}"
   with_items:
-    - { src: "policy.json", dest: "/etc/cinder/policy.json" }
     - { src: "volume.filters", dest: "/etc/cinder/rootwrap.d/volume.filters" }
     - { src: "rootwrap.conf", dest: "/etc/cinder/rootwrap.conf" }
+  notify:
+    - Restart cinder services
+  tags:
+    - cinder-config
+
+- name: Apply updates to Policy file
+  copy_updates:
+    content="{{ item.content }}"
+    updates="{{ item.policy_data }}"
+    dest="{{ item.dest }}"
+    owner="{{ cinder_system_user_name }}"
+    group="{{ cinder_system_group_name }}"
+    mode="{{ item.mode|default('0644') }}"
+  with_items:
+    - { content: "{{ lookup('file', 'policy.json') | b64encode }}", policy_data: "{{ cinder_policy_overrides|default('') }}", dest: "/etc/cinder/policy.json" }
   notify:
     - Restart cinder services
   tags:

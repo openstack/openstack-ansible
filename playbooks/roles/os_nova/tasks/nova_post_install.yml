@@ -26,7 +26,6 @@
     - { src: "rootwrap.d/baremetal-deploy-helper.filters", dest: "/etc/nova/rootwrap.d/baremetal-deploy-helper.filters" }
     - { src: "rootwrap.d/compute.filters", dest: "/etc/nova/rootwrap.d/compute.filters" }
     - { src: "rootwrap.d/network.filters", dest: "/etc/nova/rootwrap.d/network.filters" }
-    - { src: "policy.json", dest: "/etc/nova/policy.json" }
     - { src: "api-paste.ini", dest: "/etc/nova/api-paste.ini" }
   notify: Restart nova services
   tags:
@@ -45,3 +44,20 @@
   tags:
     - nova-config
     - nova-post-install
+
+- name: Apply updates to Policy file
+  copy_updates:
+    content="{{ item.content }}"
+    updates="{{ item.policy_data }}"
+    dest="{{ item.dest }}"
+    owner="{{ nova_system_user_name }}"
+    group="{{ nova_system_group_name }}"
+    mode="{{ item.mode|default('0644') }}"
+  with_items:
+    - { content: "{{ lookup('file', 'policy.json') | b64encode }}", policy_data: "{{ nova_policy_overrides|default('') }}", dest: "/etc/nova/policy.json" }
+  notify:
+    - Restart nova services
+  tags:
+    - nova-config
+    - nova-post-install
+
