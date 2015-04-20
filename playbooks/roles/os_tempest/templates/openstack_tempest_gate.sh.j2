@@ -50,7 +50,7 @@ function gen_test_list_scenario() {
   # network tests have been removed due to
   # https://bugs.launchpad.net/openstack-ansible/+bug/1425255
   # TODO: add them back once the bug has been fixed
-  egrep 'tempest\.scenario\.test_(minimum|swift|server)_basic(_ops)?'
+  egrep 'tempest\.scenario\.test_(minimum|swift|server|dashboard)_basic(_ops)?'
 }
 
 # Run smoke tests
