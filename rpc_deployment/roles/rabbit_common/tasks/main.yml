@@ -80,10 +80,9 @@
     names: rabbitmq_management
     state: enabled
   when: enable_management_plugin
+  register: rabbitmq_plugin
   tags:
     - rabbit_config
-
-- include: restart_rabbit.yml
 
 - name: Enable queue mirroring
   rabbitmq_policy: >
@@ -92,6 +91,10 @@
   args:
     tags:
       "ha-mode": all
+  register: rabbitmq_queue_mirror
   tags:
     - rabbit_config
     - rabbit_cluster
+
+- include: restart_rabbit.yml
+  when: rabbitmq_plugin|changed or rabbitmq_queue_mirror|changed
