@@ -122,6 +122,13 @@ heat_plugin_dirs:
   - /usr/lib/heat
   - /usr/local/lib/heat
 
+## Policy vars
+# Provide a list of access controls to update the default policy.json with. These changes will be merged
+# with the access controls in the default policy.json. E.g.
+#heat_policy_overrides:
+#  "cloudformation:ListStacks": "rule:deny_stack_user"
+#  "cloudformation:CreateStack": "rule:deny_stack_user"
+
 heat_apt_packages:
   - rsync
   - libxslt1.1
