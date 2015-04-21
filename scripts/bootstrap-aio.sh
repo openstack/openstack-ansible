@@ -30,6 +30,7 @@ export TEMPEST_FLAT_CIDR=${TEMPEST_FLAT_CIDR:-"172.29.248.0/22"}
 export FLUSH_IPTABLES=${FLUSH_IPTABLES:-"yes"}
 export RABBITMQ_PACKAGE_URL=${RABBITMQ_PACKAGE_URL:-""}
 export SYMLINK_DIR=${SYMLINK_DIR:-"$(pwd)/logs"}
+export UBUNTU_REPO=$(awk "/^deb .*ubuntu $(lsb_release -sc) main/ {print \$2}" /etc/apt/sources.list)
 
 # Default disabled fatal deprecation warnings
 export CINDER_FATAL_DEPRECATIONS=${CINDER_FATAL_DEPRECATIONS:-"no"}
@@ -86,8 +87,19 @@ if [ ! "$(grep -e '^nameserver 8.8.8.8' -e '^nameserver 8.8.4.4' /etc/resolv.con
   echo -e '\n# Adding google name servers\nnameserver 8.8.8.8\nnameserver 8.8.4.4' | tee -a /etc/resolv.conf
 fi
 
-# Update the package cache and install required packages
+# Ensure that the ubuntu backports repo is in place
+# ref: https://bugs.launchpad.net/openstack-ansible/+bug/1448152
+if ! grep -qrni "^deb .* $(lsb_release -sc)-backports" /etc/apt/sources.list*; then
+  echo "deb ${UBUNTU_REPO} $(lsb_release -sc)-backports main restricted universe multiverse" > /etc/apt/sources.list.d/ubuntu-backports.list
+fi
+
+# Update the package cache
 apt-get update
+
+# Remove known conflicting packages in the base image
+apt-get purge -y libmysqlclient18 mysql-common
+
+# Install required packages
 apt-get install -y python-dev \
                    python2.7 \
                    build-essential \
@@ -281,7 +293,6 @@ echo 'galera_innodb_log_buffer_size: 32M' | tee -a /etc/openstack_deploy/user_va
 echo "required_kernel: $(uname --kernel-release)" | tee -a /etc/openstack_deploy/user_variables.yml
 
 # Set the Ubuntu apt repository used for containers to the same as the host
-UBUNTU_REPO=$(awk '/^deb .*ubuntu trusty main/ {print $2}' /etc/apt/sources.list)
 echo "lxc_container_template_main_apt_repo: ${UBUNTU_REPO}" | tee -a /etc/openstack_deploy/user_variables.yml
 echo "lxc_container_template_security_apt_repo: ${UBUNTU_REPO}" | tee -a /etc/openstack_deploy/user_variables.yml
 

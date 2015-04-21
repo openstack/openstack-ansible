@@ -55,11 +55,20 @@
   tags:
     - galera-apt-keys
 
+- name: Drop galera repo pin
+  template:
+    src: "galera_pin.pref.j2"
+    dest: "/etc/apt/preferences.d/galera_pin.pref"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  tags:
+    - galera-repo-pin
+
 - name: Add galera repo(s)
   apt_repository:
-    repo: "{{ item.repo }}"
-    state: "{{ item.state }}"
-  with_items: galera_apt_repos
+    repo: "{{ galera_apt_repo.repo }}"
+    state: "{{ galera_apt_repo.state }}"
   register: add_repos
   until: add_repos|success
   retries: 5
