@@ -86,8 +86,13 @@ if [ ! "$(grep -e '^nameserver 8.8.8.8' -e '^nameserver 8.8.4.4' /etc/resolv.con
   echo -e '\n# Adding google name servers\nnameserver 8.8.8.8\nnameserver 8.8.4.4' | tee -a /etc/resolv.conf
 fi
 
-# Update the package cache and install required packages
+# Update the package cache
 apt-get update
+
+# Remove known conflicting packages in the base image
+apt-get purge -y libmysqlclient18 mysql-common
+
+# Install required packages
 apt-get install -y python-dev \
                    python2.7 \
                    build-essential \
