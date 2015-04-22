@@ -16,7 +16,7 @@
 - name: Create glance cache management cron jobs
   cron:
     name: "{{ item.name }}"
-    minute: "{{ 59 |random }}"
+    minute: "{{ 59 |random(start=1) }}"
     day: "*"
     hour: "{{ item.hour }}"
     month: "*"
@@ -27,7 +27,7 @@
     - name: /usr/local/bin/glance-cache-pruner
       hour: "*"
     - name: /usr/local/bin/glance-cache-cleaner
-      hour: "{{ 23|random }}"
+      hour: "*/5"
   when: glance_flavor | search("cache")
   tags:
     - glance-cron
