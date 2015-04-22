@@ -58,6 +58,9 @@ cinder_v2_service_password:
 
 
 ## Glance Options
+# To disable Glance's cache, remove the +cachemanagement portion of default
+# value below.
+#glance_flavor: keystone+cachemanagement
 # Set default_store to "swift" if using Cloud Files or swift backend
 glance_default_store: file
 glance_container_mysql_password:

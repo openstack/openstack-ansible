@@ -70,7 +70,7 @@ service_names:
   - glance-api
   - glance-registry
 
-flavor: "keystone+cachemanagement"
+flavor: "{{ glance_flavor | default('keystone+cachemanagement') }}"
 
 container_directories:
    - { name: /var/log/glance, mode: 755 }
