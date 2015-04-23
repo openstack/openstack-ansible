@@ -53,6 +53,19 @@
   with_items:
     - { src: "/etc/horizon/local_settings.py", dest: "{{ install_lib_dir }}/openstack_dashboard/local/local_settings.py" }
 
+# In icehouse the content of /usr/local/lib/python2.7/dist-packages/static was owned by root,
+# in juno we create these as {{ system_user }}:{{ system_group }}.  This task is necessary
+# to allow upgrades from icehouse -> juno to succeed.
+# NOTE: In future os-ansible-deployment releases, one-off tasks like this should ideally go
+#       into scripts/run-upgrade.sh.
+- name: Fix horizon static content ownership
+  file:
+    path: /usr/local/lib/python2.7/dist-packages/static
+    owner: "{{ system_user }}"
+    group: "{{ system_group }}"
+    state: directory
+    recurse: yes
+
 # /opt/horizon/lib/python2.7/site-packages/manage.py
 - name: Collect and compress static files
   command: "{{ item }}"
