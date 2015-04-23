@@ -48,9 +48,14 @@ fi
 # Enable logging of all commands executed
 set -x
 
-# update the package cache and install required packages
-apt-get update && apt-get install -y \
-                   python-dev \
+# Update the package cache
+apt-get update
+
+# Remove known conflicting packages in the base image
+apt-get purge -y libmysqlclient18 mysql-common
+
+# Install required packages
+apt-get install -y python-dev \
                    python2.7 \
                    build-essential \
                    curl \
