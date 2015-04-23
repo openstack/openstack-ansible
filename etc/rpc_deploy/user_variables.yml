@@ -162,3 +162,23 @@ rpc_support_holland_password:
 ## Kibana Options
 kibana_password:
 
+
+## Repositories for pinned / extra repos. Adding any of these variables will override the default
+## and set the repository for the given services to what has been defined.
+# mariadb_repo_url: "http://mirror.rackspace.com/rackspaceprivatecloud/mirror/mariadb/mariadb-5.5.41/repo/ubuntu/"
+# elasticsearch_repo_url: "http://packages.elasticsearch.org/elasticsearch/1.2/debian"
+# logstash_repo_url: "http://packages.elasticsearch.org/logstash/1.4/debian"
+# rsyslog_repo_url: "ppa:adiscon/v8-stable"
+# raxmon_repo_url: "http://stable.packages.cloudmonitoring.rackspace.com/ubuntu-14.04-x86_64"
+
+
+## Additional pinning generator that will allow for more packages to be pinned as you see fit.
+## All pins allow for the a package and version to be defined. Be careful using this as versions
+## are always subject to change and updates regarding security will become your problem from this
+## point on.
+# apt_pinned_packages:
+#   - { package: "lxc", version: "1.0.7-0ubuntu0.1" }
+#   - { package: "libvirt-bin", version: "1.2.2-0ubuntu13.1.9" }
+#   - { package: "logstash", version: "1.4.2-1-2c0f5a1" }
+#   - { package: "logstash-contrib", version: "1.4.2-1-efd53ef" }
+#   - { package: "elasticsearch", version: "1.2.4" }

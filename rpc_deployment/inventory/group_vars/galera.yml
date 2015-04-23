@@ -28,7 +28,7 @@ mariadb_server_package: mariadb-galera-server-5.5
 galera_packages:
   - mariadb-client
   - "{{ mariadb_server_package }}"
-  - galera
+  - galera-3
   - python-software-properties
   - software-properties-common
   - debconf-utils

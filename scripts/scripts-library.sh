@@ -17,7 +17,7 @@
 LINE='-----------------------------------------------------------------------'
 STARTTIME=${STARTTIME:-"$(date +%s)"}
 REPORT_DATA=""
-MAX_RETRIES=${MAX_RETRIES:-0}
+MAX_RETRIES=${MAX_RETRIES:-1}
 
 # Export known paths
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
