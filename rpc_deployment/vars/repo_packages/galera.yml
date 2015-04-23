@@ -15,8 +15,8 @@
 
 repo_package_name: galera
 
-# The package name for mariaDB is set as a variable 
-# so that it can be used in debconf later in the 
+# The package name for mariaDB is set as a variable
+# so that it can be used in debconf later in the
 # "galera_common" role.
 mariadb_server_package: "mariadb-galera-server-5.5"
 
@@ -26,7 +26,7 @@ mariadb_server_package: "mariadb-galera-server-5.5"
 galera_packages:
   - mariadb-client
   - "{{ mariadb_server_package }}"
-  - galera
+  - galera-3
   - python-software-properties
   - software-properties-common
   - debconf-utils
@@ -36,8 +36,10 @@ galera_packages:
 
 service_pip_dependencies:
   - MySQL-python
+  - python-memcached
+  - pycrypto
 
-# When installing container packages this bol will drop a 
+# When installing container packages this bol will drop a
 # run level policy to ensure that no services are started
 # upon installation.
 run_policy_deny: true
