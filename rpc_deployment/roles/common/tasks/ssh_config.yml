@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- name: Append newline to sshd_config if necessary
+  shell: >
+    cat -E /etc/ssh/sshd_config | tail -1 | grep -q "\$$" || echo >> /etc/ssh/sshd_config
 - name: set max sessions
   lineinfile:
     dest: /etc/ssh/sshd_config
