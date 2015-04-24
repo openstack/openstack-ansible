@@ -16,7 +16,7 @@
 repo_path: "{{ pip_wheel_name }}_{{ git_install_branch | replace('/', '_') }}"
 
 ## Git Source
-git_repo: https://github.com/elasticsearch/elasticsearch-py
+git_repo: https://github.com/elastic/elasticsearch-py
 git_dest: "/opt/{{ repo_path }}"
 git_install_branch: "1.1.X"
 

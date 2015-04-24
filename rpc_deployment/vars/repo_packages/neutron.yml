@@ -22,7 +22,7 @@ git_repo: https://github.com/openstack/neutron
 git_fallback_repo: https://git.openstack.org/openstack/neutron
 git_dest: "/opt/{{ repo_path }}"
 git_etc_example: etc/
-git_install_branch: 2014.2.1
+git_install_branch: 1fafe42342aaa5f1f297437185a3c3ac30ccc749 # HEAD of "stable/juno" as of 24.04.2015
 pip_wheel_name: neutron
 
 container_packages:
