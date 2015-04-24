@@ -1,6 +1,8 @@
 import os
 from django.utils.translation import ugettext_lazy as _
 
+from openstack_dashboard import exceptions
+
 DEBUG = {{ debug }}
 TEMPLATE_DEBUG = DEBUG
 COMPRESS_OFFLINE = True
@@ -71,6 +73,9 @@ HORIZON_CONFIG = {
         'types': ['alert-success', 'alert-info']
     },
     'help_url': "{{ horizon_help_url|default('http://docs.openstack.org') }}",
+    'exceptions': {'recoverable': exceptions.RECOVERABLE,
+                   'not_found': exceptions.NOT_FOUND,
+                   'unauthorized': exceptions.UNAUTHORIZED},
     'modal_backdrop': 'static',
     'angular_modules': [],
     'js_files': [],
@@ -364,6 +369,7 @@ ENFORCE_PASSWORD_CHECK = {{ horizon_enforce_password_check }}
 #    'image': 'glance_policy.json',
 #    'orchestration': 'heat_policy.json',
 #    'network': 'neutron_policy.json',
+#    'telemetry': 'ceilometer_policy.json',
 #}
 
 # Trove user and database extension support. By default support for
@@ -621,3 +627,24 @@ SECURITY_GROUP_RULES = {
 # auth_token middleware are using. Allowed values are the
 # algorithms supported by Python's hashlib library.
 #OPENSTACK_TOKEN_HASH_ALGORITHM = 'md5'
+
+# AngularJS requires some settings to be made available to
+# the client side. Some settings are required by in-tree / built-in horizon
+# features. These settings must be added to REST_API_REQUIRED_SETTINGS in the
+# form of ['SETTING_1','SETTING_2'], etc.
+#
+# You may remove settings from this list for security purposes, but do so at
+# the risk of breaking a built-in horizon feature. These settings are required
+# for horizon to function properly. Only remove them if you know what you
+# are doing. These settings may in the future be moved to be defined within
+# the enabled panel configuration.
+# You should not add settings to this list for out of tree extensions.
+# See: https://wiki.openstack.org/wiki/Horizon/RESTAPI
+REST_API_REQUIRED_SETTINGS = ['OPENSTACK_HYPERVISOR_FEATURES']
+
+# Additional settings can be made available to the client side for
+# extensibility by specifying them in REST_API_ADDITIONAL_SETTINGS
+# !! Please use extreme caution as the settings are transferred via HTTP/S
+# and are not encrypted on the browser. This is an experimental API and
+# may be deprecated in the future without notice.
+#REST_API_ADDITIONAL_SETTINGS = []
