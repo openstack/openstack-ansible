@@ -96,6 +96,9 @@ if [ ! -d "/etc/rpc_deploy" ];then
   # Set the minimum kernel version to our specific kernel release because it passed the vxlan test.
   echo "required_kernel: $(uname --kernel-release)" | tee -a ${USER_VARS_PATH}
 
+  # Set the development repo location
+  echo 'rpc_repo_url: "http://rpc-repo.rackspace.com"' | tee -a ${USER_VARS_PATH}
+
   # change the generated passwords for the OpenStack (admin) and Kibana (kibana) accounts
   sed -i "s/keystone_auth_admin_password:.*/keystone_auth_admin_password: ${ADMIN_PASSWORD}/" ${USER_VARS_PATH}
   sed -i "s/kibana_password:.*/kibana_password: ${ADMIN_PASSWORD}/" ${USER_VARS_PATH}

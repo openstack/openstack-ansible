@@ -21,7 +21,7 @@ repo_path: "{{ repo_package_name }}_{{ git_install_branch | replace('/', '_') }}
 git_repo: https://github.com/openstack/glance
 git_fallback_repo: https://git.openstack.org/openstack/glance
 git_dest: "/opt/{{ repo_path }}"
-git_install_branch: d0453ae453adeacf19d121f08f8f9691f11f435a
+git_install_branch: fa6b3ad919390db036158f9a5799dd2c0d63a5e0 # HEAD of "stable/icehouse" as of 24.04.2015
 
 pip_wheel_name: glance
 

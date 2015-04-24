@@ -22,7 +22,7 @@ git_repo: https://github.com/openstack/keystone
 git_fallback_repo: https://git.openstack.org/openstack/keystone
 git_dest: "/opt/{{ repo_path }}"
 git_etc_example: etc/
-git_install_branch: 7c2bee76936461043671adc6d100f20775c4212f
+git_install_branch: 905e14800269f05256695a5a19e845e45a685af9 # HEAD of "stable/icehouse" as of 24.04.2015
 
 pip_wheel_name: keystone
 
@@ -32,8 +32,8 @@ container_packages:
   - dh-apparmor
   - docutils-common
   - libjs-sphinxdoc
-  - libjs-underscore 
-  - libxslt1.1 
+  - libjs-underscore
+  - libxslt1.1
   - libldap2-dev
   - apache2
   - apache2-utils

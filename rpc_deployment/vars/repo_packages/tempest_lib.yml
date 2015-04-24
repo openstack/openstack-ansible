@@ -13,22 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-repo_package_name: raxmon
+repo_package_name: tempest-lib
 
-git_repo: https://github.com/rcbops/rpc-maas
-git_install_branch: icehouse
-git_dest: /usr/lib/rackspace-monitoring-agent/plugins/
+repo_path: "{{ pip_wheel_name }}_{{ git_install_branch | replace('/', '_') }}"
 
-apt_container_keys:
-  - { url: "https://monitoring.api.rackspacecloud.com/pki/agent/linux.asc", state: "present" }
+## Git Source
+git_repo: https://github.com/openstack/tempest-lib
+git_fallback_repo: https://git.openstack.org/openstack/tempest-lib
+git_dest: "/opt/{{ repo_path  }}"
+git_install_branch: 0.2.1
 
-apt_container_repos:
-  - { repo: "deb {{ raxmon_repo_url }} cloudmonitoring main", state: "present" }
-
-container_packages:
-  - rackspace-monitoring-agent
-
-service_pip_dependencies:
-  - rackspace-monitoring-cli
-
-pip_requirements_file: "/usr/lib/rackspace-monitoring-agent/plugins/requirements.txt"
+pip_wheel_name: tempest-lib
