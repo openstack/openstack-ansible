@@ -188,7 +188,7 @@ function exit_success() {
 
 function exit_fail() {
   set +x
-  get_instance_info
+  log_instance_info
   info_block "Error Info - $@"
   exit_state 1
 }
@@ -212,6 +212,13 @@ function log_instance_info() {
   fi
   get_instance_info &> /openstack/log/instance-info/host_info_$(date +%s).log
   set -x
+}
+
+function get_repos_info() {
+  for i in /etc/apt/sources.list /etc/apt/sources.list.d/*; do
+    echo -e "\n$i"
+    cat $i
+  done
 }
 
 # Get instance info
@@ -265,6 +272,8 @@ function get_instance_info() {
   else
     echo -e "\nNo xenstore Information\n"
   fi
+  get_repos_info &> /openstack/log/instance-info/host_repo_info_$(date +%s).log || true
+  dpkg-query --list &> /openstack/log/instance-info/host_packages_info_$(date +%s).log
 }
 
 function print_report() {
