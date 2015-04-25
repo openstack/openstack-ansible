@@ -77,7 +77,6 @@ if [ -f "${ANSIBLE_ROLE_FILE}" ];then
     fi
     # Pull all required roles.
     ansible-galaxy install --role-file=${ANSIBLE_ROLE_FILE} \
-                           --roles-path=playbooks/roles/ \
                            --ignore-errors \
                            --force
 fi
