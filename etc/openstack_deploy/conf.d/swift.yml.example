@@ -117,6 +117,28 @@
 #       Policy index. One policy must include this option with a '0'
 #       value.
 #
+#       Option: policy_type (optional, string)
+#       Policy type. Defines if this type of policy, possible values:
+#         - replication (default); or
+#         - erasure_coding
+#
+#       Option: ec_type (optional, string)
+#       Defines the erasure code algorithm to use. This option is required
+#       when policy_type == erasure_coding.
+#
+#       Option: ec_num_data_fragments (optional, integer)
+#       Defines the  number of data fragments to break object into. This
+#       option is required when policy_type == erasure_coding.
+#
+#       Option: ec_num_parity_fragments (optional, integer)
+#       Defines the  number of parity fragments to break object into. This
+#       option is required when policy_type == erasure_coding.
+#
+#       Option: ec_object_segment_size (optional, integer)
+#       Defines the segment size (btyes). Swift will send the incoming object
+#       data a segment size at a time in to the erasure code encoder.
+#       This option is required when policy_type == erasure_coding.
+#
 #       Option: default (optional, boolean)
 #       Defines the default policy. One policy must include this option
 #       with a 'True' value.
@@ -240,6 +262,14 @@
 #           index: 1
 #           repl_number: 3
 #           deprecated: True
+#       - policy:
+#           name: ec10-4
+#           index: 2
+#           policy_type: erasure_coding
+#           ec_type: jerasure_rs_vand
+#           ec_num_data_fragments: 10
+#           ec_num_parity_fragments: 4
+#           ec_object_segment_size: 1048576
 
 # Proxy hosts
 

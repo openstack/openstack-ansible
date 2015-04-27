@@ -22,7 +22,11 @@
 {### Lets get the min_part_hours, part_power and repl_number vals #}
 {% set min_part_hours = item.min_part_hours | default(swift.min_part_hours | default(swift_default_min_part_hours)) %}
 {% set part_power = item.part_power | default(swift.part_power) %}
-{% set repl_number = item.repl_number | default(swift.repl_number | default(swift_default_replication_number)) %}
+{% if (item.policy_type is defined) and (item.policy_type == "erasure_coding") %}
+{%   set repl_number = item.ec_num_data_fragments + item.ec_num_parity_fragments %}
+{% else %}
+{%   set repl_number = item.repl_number | default(swift.repl_number | default(swift_default_replication_number)) %}
+{% endif %}
 {### Create the builder dict #}
 {% set builder = {} %}
 {### This is a hacky way of updating the builder dict #}
