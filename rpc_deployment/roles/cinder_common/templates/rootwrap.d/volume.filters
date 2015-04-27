@@ -41,11 +41,17 @@ iscsiadm: CommandFilter, iscsiadm, root
 # cinder/volume/drivers/lvm.py: 'shred', '-n0', '-z', '-s%dMiB'
 shred: CommandFilter, shred, root
 
-#cinder/volume/.py: utils.temporary_chown(path, 0), ...
+# cinder/volume/utils.py: utils.temporary_chown(path, 0)
 chown: CommandFilter, chown, root
-ionice_1: RegExpFilter, ionice, root, ionice, -c[0-3]( -n[0-7])?, dd, if=\S+, of=\S+, count=\d+, bs=\S+
-ionice_2: RegExpFilter, ionice, root, ionice, -c[0-3]( -n[0-7])?, dd, if=\S+, of=\S+, count=\d+, bs=\S+, iflag=direct, oflag=direct
-ionice_3: RegExpFilter, ionice, root, ionice, -c[0-3]( -n[0-7])?, dd, if=\S+, of=\S+, count=\d+, bs=\S+, conv=fdatasync
+
+# cinder/volume/utils.py: copy_volume(..., ionice='...')
+ionice_1: ChainingRegExpFilter, ionice, root, ionice, -c[0-3], -n[0-7]
+ionice_2: ChainingRegExpFilter, ionice, root, ionice, -c[0-3]
+
+# cinder/volume/utils.py: setup_blkio_cgroup()
+cgcreate: CommandFilter, cgcreate, root
+cgset: CommandFilter, cgset, root
+cgexec: ChainingRegExpFilter, cgexec, root, cgexec, -g, blkio:\S+
 
 # cinder/volume/driver.py
 dmsetup: CommandFilter, dmsetup, root
@@ -74,10 +80,14 @@ netapp_nfs_find: RegExpFilter, find, root, find, ^[/]*([^/\0]+(/+)?)*$, -maxdept
 
 # cinder/volume/drivers/glusterfs.py
 chgrp: CommandFilter, chgrp, root
+umount: CommandFilter, umount, root
 
 # cinder/volumes/drivers/hds/hds.py:
 hus-cmd: CommandFilter, hus-cmd, root
 hus-cmd_local: CommandFilter, /usr/local/bin/hus-cmd, root
+
+# cinder/volumes/drivers/hds/hnas_backend.py
+ssc: CommandFilter, ssc, root
 
 # cinder/brick/initiator/connector.py:
 ls: CommandFilter, ls, root
@@ -113,3 +123,35 @@ sg_scan: CommandFilter, sg_scan, root
 
 #cinder/backup/services/tsm.py
 dsmc:CommandFilter,/usr/bin/dsmc,root
+
+# cinder/volume/drivers/hitachi/hbsd_horcm.py
+raidqry: CommandFilter, raidqry, root
+raidcom: CommandFilter, raidcom, root
+pairsplit: CommandFilter, pairsplit, root
+paircreate: CommandFilter, paircreate, root
+pairdisplay: CommandFilter, pairdisplay, root
+pairevtwait: CommandFilter, pairevtwait, root
+horcmstart.sh: CommandFilter, horcmstart.sh, root
+horcmshutdown.sh: CommandFilter, horcmshutdown.sh, root
+horcmgr: EnvFilter, env, root, HORCMINST=, /etc/horcmgr
+
+# cinder/volume/drivers/hitachi/hbsd_snm2.py
+auman: EnvFilter, env, root, LANG=, STONAVM_HOME=, LD_LIBRARY_PATH=, STONAVM_RSP_PASS=, STONAVM_ACT=, /usr/stonavm/auman
+auluref: EnvFilter, env, root, LANG=, STONAVM_HOME=, LD_LIBRARY_PATH=, STONAVM_RSP_PASS=, STONAVM_ACT=, /usr/stonavm/auluref
+auhgdef: EnvFilter, env, root, LANG=, STONAVM_HOME=, LD_LIBRARY_PATH=, STONAVM_RSP_PASS=, STONAVM_ACT=, /usr/stonavm/auhgdef
+aufibre1: EnvFilter, env, root, LANG=, STONAVM_HOME=, LD_LIBRARY_PATH=, STONAVM_RSP_PASS=, STONAVM_ACT=, /usr/stonavm/aufibre1
+auhgwwn: EnvFilter, env, root, LANG=, STONAVM_HOME=, LD_LIBRARY_PATH=, STONAVM_RSP_PASS=, STONAVM_ACT=, /usr/stonavm/auhgwwn
+auhgmap: EnvFilter, env, root, LANG=, STONAVM_HOME=, LD_LIBRARY_PATH=, STONAVM_RSP_PASS=, STONAVM_ACT=, /usr/stonavm/auhgmap
+autargetmap: EnvFilter, env, root, LANG=, STONAVM_HOME=, LD_LIBRARY_PATH=, STONAVM_RSP_PASS=, STONAVM_ACT=, /usr/stonavm/autargetmap
+aureplicationvvol: EnvFilter, env, root, LANG=, STONAVM_HOME=, LD_LIBRARY_PATH=, STONAVM_RSP_PASS=, STONAVM_ACT=, /usr/stonavm/aureplicationvvol
+auluadd: EnvFilter, env, root, LANG=, STONAVM_HOME=, LD_LIBRARY_PATH=, STONAVM_RSP_PASS=, STONAVM_ACT=, /usr/stonavm/auluadd
+auludel: EnvFilter, env, root, LANG=, STONAVM_HOME=, LD_LIBRARY_PATH=, STONAVM_RSP_PASS=, STONAVM_ACT=, /usr/stonavm/auludel
+auluchgsize: EnvFilter, env, root, LANG=, STONAVM_HOME=, LD_LIBRARY_PATH=, STONAVM_RSP_PASS=, STONAVM_ACT=, /usr/stonavm/auluchgsize
+auchapuser: EnvFilter, env, root, LANG=, STONAVM_HOME=, LD_LIBRARY_PATH=, STONAVM_RSP_PASS=, STONAVM_ACT=, /usr/stonavm/auchapuser
+autargetdef: EnvFilter, env, root, LANG=, STONAVM_HOME=, LD_LIBRARY_PATH=, STONAVM_RSP_PASS=, STONAVM_ACT=, /usr/stonavm/autargetdef
+autargetopt: EnvFilter, env, root, LANG=, STONAVM_HOME=, LD_LIBRARY_PATH=, STONAVM_RSP_PASS=, STONAVM_ACT=, /usr/stonavm/autargetopt
+autargetini: EnvFilter, env, root, LANG=, STONAVM_HOME=, LD_LIBRARY_PATH=, STONAVM_RSP_PASS=, STONAVM_ACT=, /usr/stonavm/autargetini
+auiscsi: EnvFilter, env, root, LANG=, STONAVM_HOME=, LD_LIBRARY_PATH=, STONAVM_RSP_PASS=, STONAVM_ACT=, /usr/stonavm/auiscsi
+audppool: EnvFilter, env, root, LANG=, STONAVM_HOME=, LD_LIBRARY_PATH=, STONAVM_RSP_PASS=, STONAVM_ACT=, /usr/stonavm/audppool
+aureplicationlocal: EnvFilter, env, root, LANG=, STONAVM_HOME=, LD_LIBRARY_PATH=, STONAVM_RSP_PASS=, STONAVM_ACT=, /usr/stonavm/aureplicationlocal
+aureplicationmon: EnvFilter, env, root, LANG=, STONAVM_HOME=, LD_LIBRARY_PATH=, STONAVM_RSP_PASS=, STONAVM_ACT=, /usr/stonavm/aureplicationmon
