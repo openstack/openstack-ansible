@@ -23,7 +23,7 @@ enable_v2_api = {{ cinder_enable_v2_api }}
 {% if cinder_service_backup_program_enabled == true %}
 {% if cinder_service_backup_swift_url is defined and cinder_service_backup_swift_user is defined and cinder_service_backup_swift_key is defined %}
 ## Cinder Backup
-backup_driver = {{ cinder_backup_driver }}
+backup_driver = {{ cinder_service_backup_driver }}
 backup_swift_url = {{ cinder_service_backup_swift_url }}
 backup_swift_auth = {{ cinder_service_backup_swift_auth }}
 backup_swift_user = {{ cinder_service_backup_swift_user }}
