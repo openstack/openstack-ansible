@@ -21,6 +21,7 @@
     group: "{{ keystone_system_group_name }}"
   with_items:
     - { src: "keystone.conf.j2", dest: "/etc/keystone/keystone.conf" }
+    - { src: "keystone.Default.conf.j2", dest: "{{ keystone_ldap_domain_config_dir }}/keystone.Default.conf" }
   notify:
     - Restart Apache
   tags:
