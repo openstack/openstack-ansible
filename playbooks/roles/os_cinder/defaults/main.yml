@@ -87,7 +87,7 @@ cinder_keystone_auth_plugin: password
 #   * cinder_service_backup_swift_user
 #   * cinder_service_backup_swift_key
 cinder_service_backup_program_enabled: false
-cinder_service_backup_program_name: cinder-volume
+cinder_service_backup_program_name: cinder-backup
 cinder_service_backup_driver: cinder.backup.drivers.swift
 cinder_service_backup_swift_url: http://127.0.0.1:8080/v1/AUTH
 cinder_service_backup_swift_user: admin
