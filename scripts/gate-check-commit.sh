@@ -36,7 +36,7 @@ export TESTR_OPTS=${TESTR_OPTS:-''}
 export TEMPEST_FLAT_CIDR=${TEMPEST_FLAT_CIDR:-"172.29.248.0/22"}
 export TEMPEST_FLAT_GATEWAY=${TEMPEST_FLAT_GATEWAY:-"172.29.248.100"}
 # Limit the gate check to only performing one attempt, unless already set
-export MAX_RETRIES=${MAX_RETRIES:-"1"}
+export MAX_RETRIES=${MAX_RETRIES:-"2"}
 
 ## Functions -----------------------------------------------------------------
 
@@ -83,7 +83,7 @@ if [ ! -d "/etc/rpc_deploy" ];then
   sed -i "s/# logstash_heap_size_mb:/logstash_heap_size_mb:/" ${USER_VARS_PATH}
   sed -i "s/# elasticsearch_heap_size_mb:/elasticsearch_heap_size_mb:/" ${USER_VARS_PATH}
 
-  # Generate random passwords and tokens 
+  # Generate random passwords and tokens
   ./scripts/pw-token-gen.py --file ${USER_VARS_PATH}
 
   # Reduce galera gcache size in an attempt to fit into an 8GB cloudserver
@@ -100,6 +100,9 @@ if [ ! -d "/etc/rpc_deploy" ];then
 
   # Set the minimum kernel version to our specific kernel release because it passed the vxlan test.
   echo "required_kernel: $(uname --kernel-release)" | tee -a ${USER_VARS_PATH}
+
+  # Set the development repo location
+  echo 'rpc_repo_url: "http://rpc-repo.rackspace.com"' | tee -a ${USER_VARS_PATH}
 
   # change the generated passwords for the OpenStack (admin) and Kibana (kibana) accounts
   sed -i "s/keystone_auth_admin_password:.*/keystone_auth_admin_password: ${ADMIN_PASSWORD}/" ${USER_VARS_PATH}

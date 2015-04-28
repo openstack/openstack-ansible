@@ -13,16 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apt_container_keys:
-  - { url: "https://monitoring.api.rackspacecloud.com/pki/agent/linux.asc", state: "present" }
+repo_package_name: oslo.context
 
-apt_container_repos:
-  - { repo: "deb {{ raxmon_repo_url }} cloudmonitoring main", state: "present" }
+repo_path: "{{ pip_wheel_name }}_{{ git_install_branch | replace('/', '_') }}"
 
-container_packages:
-  - rackspace-monitoring-agent
+## Git Source
+git_repo: https://github.com/openstack/oslo.context
+git_fallback_repo: https://git.openstack.org/openstack/oslo.context
+git_dest: "/opt/{{ repo_path  }}"
+git_install_branch: 0.2.0
 
-pip_requirements_file: "/usr/lib/rackspace-monitoring-agent/plugins/requirements.txt"
-
-git_repo: https://github.com/rcbops/rpc-maas
-git_install_branch: juno
+pip_wheel_name: oslo.context
