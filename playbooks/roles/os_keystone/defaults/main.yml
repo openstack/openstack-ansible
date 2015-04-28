@@ -134,6 +134,9 @@ keystone_ssl_cipher_suite: "{{ ssl_cipher_suite }}"
 #     password: "secrete"
 #     ...
 
+keystone_ldap_identity_driver: keystone.identity.backends.ldap.Identity
+keystone_ldap_domain_config_dir: /etc/keystone/domains
+
 ## Policy vars
 # Provide a list of access controls to update the default policy.json with. These changes will be merged
 # with the access controls in the default policy.json. E.g.
