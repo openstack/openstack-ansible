@@ -157,6 +157,12 @@ def main():
     with open(user_vars_file, 'rb') as f:
         user_vars = yaml.safe_load(f.read())
 
+    if not user_vars:
+        raise SystemExit(
+            'FAIL: The variable file provided [ %s ] is empty.'
+            % user_vars_file
+        )
+
     changed = False
     generator = CredentialGenerator()
     for entry, value in user_vars.iteritems():
