@@ -18,8 +18,8 @@ is_metal: true
 
 rabbitmq_primary_cluster_node: "{{ groups['rabbitmq_all'][0] }}"
 
-rabbitmq_package_url: http://www.rabbitmq.com/releases/rabbitmq-server/v3.4.3/rabbitmq-server_3.4.3-1_all.deb
-rabbitmq_package_sha256: "e514012a210b4ed5b77d726329ce027c50e8629c396bcde451ac16aaff07d047"
+rabbitmq_package_url: http://www.rabbitmq.com/releases/rabbitmq-server/v3.5.1/rabbitmq-server_3.5.1-1_all.deb
+rabbitmq_package_sha256: "9b58fda5221cc64f41d5170a4bfe9a0c33f542155e8781f397b80af3e95358ec"
 rabbitmq_package_path: "/opt/rabbitmq-server.deb"
 
 rabbitmq_apt_packages:
