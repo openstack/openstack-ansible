@@ -310,6 +310,8 @@ if [ "${DEPLOY_SWIFT}" == "yes" ]; then
   sed -i "s/glance_swift_store_key:.*/glance_swift_store_key: '{{ keystone_auth_admin_password }}'/" /etc/openstack_deploy/user_secrets.yml
   sed -i "s/glance_swift_store_region:.*/glance_swift_store_region: ${SERVICE_REGION}/" /etc/openstack_deploy/user_secrets.yml
   sed -i "s/glance_swift_store_user:.*/glance_swift_store_user: '{{ keystone_admin_user_name }}:{{ keystone_admin_tenant_name }}'/" /etc/openstack_deploy/user_secrets.yml
+  echo "cinder_service_backup_program_enabled: True" | tee -a /etc/openstack_deploy/user_variables.yml
+  echo "tempest_volume_backup_enabled: True" | tee -a /etc/openstack_deploy/user_variables.yml
 fi
 
 if [ ! -z "${RABBITMQ_PACKAGE_URL}" ]; then
