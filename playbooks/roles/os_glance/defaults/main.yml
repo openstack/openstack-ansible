@@ -42,18 +42,6 @@ glance_enable_v1_registry: True
 glance_enable_v2_api: True
 glance_enable_v2_registry: True
 
-
-## Swift Options
-glance_swift_store_auth_address: NoAuthAddress
-glance_swift_store_user: NoUser
-glance_swift_store_key: NoKey
-glance_swift_store_region: NoRegion
-glance_swift_store_container: NoContainer
-glance_swift_store_endpoint_type: internalURL
-# Set the swift_store_large_objects variables in MB
-glance_swift_store_large_object_size: 5120
-glance_swift_store_large_object_chunk_size: 200
-
 ## DB info
 glance_galera_database: glance
 glance_galera_user: glance
@@ -84,6 +72,17 @@ glance_service_internaluri: "{{ glance_service_proto }}://{{ internal_lb_vip_add
 glance_service_internalurl: "{{ glance_service_internaluri }}"
 glance_service_adminuri: "{{ glance_service_proto }}://{{ internal_lb_vip_address }}:{{ glance_service_port }}"
 glance_service_adminurl: "{{ glance_service_adminuri }}"
+
+## Swift Options
+glance_swift_store_auth_address: "{{ keystone_service_internalurl }}"
+glance_swift_store_user: "service:{{ glance_service_user_name }}"
+glance_swift_store_key: "{{ glance_service_password }}"
+glance_swift_store_region: "{{ glance_service_region }}"
+glance_swift_store_container: glance_images
+glance_swift_store_endpoint_type: internalURL
+# Set the swift_store_large_objects variables in MB
+glance_swift_store_large_object_size: 5120
+glance_swift_store_large_object_chunk_size: 200
 
 ## Keystone authentication middleware
 glance_keystone_auth_plugin: password

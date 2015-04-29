@@ -320,11 +320,6 @@ echo "neutron_metadata_workers: 1" | tee -a /etc/openstack_deploy/user_variables
 if [ "${DEPLOY_SWIFT}" == "yes" ]; then
   # ensure that glance is configured to use swift
   sed -i "s/glance_default_store:.*/glance_default_store: swift/" /etc/openstack_deploy/user_variables.yml
-  sed -i "s/glance_swift_store_auth_address:.*/glance_swift_store_auth_address: '{{ keystone_service_internalurl }}'/" /etc/openstack_deploy/user_secrets.yml
-  sed -i "s/glance_swift_store_container:.*/glance_swift_store_container: glance_images/" /etc/openstack_deploy/user_secrets.yml
-  sed -i "s/glance_swift_store_key:.*/glance_swift_store_key: '{{ keystone_auth_admin_password }}'/" /etc/openstack_deploy/user_secrets.yml
-  sed -i "s/glance_swift_store_region:.*/glance_swift_store_region: ${SERVICE_REGION}/" /etc/openstack_deploy/user_secrets.yml
-  sed -i "s/glance_swift_store_user:.*/glance_swift_store_user: '{{ keystone_admin_user_name }}:{{ keystone_admin_tenant_name }}'/" /etc/openstack_deploy/user_secrets.yml
   echo "cinder_service_backup_program_enabled: True" | tee -a /etc/openstack_deploy/user_variables.yml
   echo "tempest_volume_backup_enabled: True" | tee -a /etc/openstack_deploy/user_variables.yml
 fi
