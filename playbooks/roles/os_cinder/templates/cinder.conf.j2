@@ -19,7 +19,7 @@ auth_strategy = keystone
 enable_v1_api = {{ cinder_enable_v1_api }}
 enable_v2_api = {{ cinder_enable_v2_api }}
 
-{% if inventory_hostname not in groups['cinder_volume'] %}
+{% if inventory_hostname in groups['cinder_volume'] %}
 {% if cinder_service_backup_program_enabled == true %}
 {% if cinder_service_backup_swift_url is defined and cinder_service_backup_swift_user is defined and cinder_service_backup_swift_key is defined %}
 ## Cinder Backup
