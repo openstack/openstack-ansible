@@ -30,7 +30,6 @@ export TEMPEST_FLAT_CIDR=${TEMPEST_FLAT_CIDR:-"172.29.248.0/22"}
 export FLUSH_IPTABLES=${FLUSH_IPTABLES:-"yes"}
 export RABBITMQ_PACKAGE_URL=${RABBITMQ_PACKAGE_URL:-""}
 export SYMLINK_DIR=${SYMLINK_DIR:-"$(pwd)/logs"}
-export UBUNTU_REPO=$(awk "/^deb .*ubuntu $(lsb_release -sc) main/ {print \$2}" /etc/apt/sources.list)
 
 # Default disabled fatal deprecation warnings
 export CINDER_FATAL_DEPRECATIONS=${CINDER_FATAL_DEPRECATIONS:-"no"}
@@ -40,6 +39,11 @@ export KEYSTONE_FATAL_DEPRECATIONS=${KEYSTONE_FATAL_DEPRECATIONS:-"no"}
 export NEUTRON_FATAL_DEPRECATIONS=${NEUTRON_FATAL_DEPRECATIONS:-"no"}
 export NOVA_FATAL_DEPRECATIONS=${NOVA_FATAL_DEPRECATIONS:-"no"}
 export TEMPEST_FATAL_DEPRECATIONS=${TEMPEST_FATAL_DEPRECATIONS:-"no"}
+
+# Ubuntu repos
+UBUNTU_RELEASE=$(lsb_release -sc)
+UBUNTU_REPO=${UBUNTU_REPO:-"http://mirror.rackspace.com/ubuntu"}
+UBUNTU_SEC_REPO=${UBUNTU_SEC_REPO:-"http://mirror.rackspace.com/ubuntu"}
 
 
 ## Library Check -------------------------------------------------------------
@@ -87,11 +91,22 @@ if [ ! "$(grep -e '^nameserver 8.8.8.8' -e '^nameserver 8.8.4.4' /etc/resolv.con
   echo -e '\n# Adding google name servers\nnameserver 8.8.8.8\nnameserver 8.8.4.4' | tee -a /etc/resolv.conf
 fi
 
-# Ensure that the ubuntu backports repo is in place
-# ref: https://bugs.launchpad.net/openstack-ansible/+bug/1448152
-if ! grep -qrni "^deb .* $(lsb_release -sc)-backports" /etc/apt/sources.list*; then
-  echo "deb ${UBUNTU_REPO} $(lsb_release -sc)-backports main restricted universe multiverse" > /etc/apt/sources.list.d/ubuntu-backports.list
-fi
+# Set the host repositories to only use the same ones, always, for the sake of consistency.
+cat > /etc/apt/sources.list <<EOF
+# Normal repositories
+deb ${UBUNTU_REPO} ${UBUNTU_RELEASE} main restricted
+deb ${UBUNTU_REPO} ${UBUNTU_RELEASE}-updates main restricted
+deb ${UBUNTU_REPO} ${UBUNTU_RELEASE} universe
+deb ${UBUNTU_REPO} ${UBUNTU_RELEASE}-updates universe
+deb ${UBUNTU_REPO} ${UBUNTU_RELEASE} multiverse
+deb ${UBUNTU_REPO} ${UBUNTU_RELEASE}-updates multiverse
+# Backports repositories
+deb ${UBUNTU_REPO} ${UBUNTU_RELEASE}-backports main restricted universe multiverse
+# Security repositories
+deb ${UBUNTU_SEC_REPO} ${UBUNTU_RELEASE}-security main restricted
+deb ${UBUNTU_SEC_REPO} ${UBUNTU_RELEASE}-security universe
+deb ${UBUNTU_SEC_REPO} ${UBUNTU_RELEASE}-security multiverse
+EOF
 
 # Update the package cache
 apt-get update

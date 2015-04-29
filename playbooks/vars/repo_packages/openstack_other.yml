@@ -26,13 +26,13 @@
 
 ## Glance store library
 glancestore_git_repo: https://github.com/openstack/glance_store
-glancestore_git_install_branch: 0.4.0
+glancestore_git_install_branch: e8884d2cb31c3364d353619a8b446ec89da547b8 # HEAD of "master" as of 20.04.2015
 glancestore_git_dest: "/opt/glancestore_{{ glancestore_git_repo | replace('/', '_') }}"
 
 
 ## Global Requirements
 requirements_git_repo: https://github.com/openstack/requirements
-requirements_git_install_branch: master
+requirements_git_install_branch: 7da0b687622932e84a7c7859f4ce474b7062ecd3 # HEAD of "master" as of 23.04.2015
 requirements_git_dest: "/opt/requirements_{{ requirements_git_install_branch | replace('/', '_') }}"
 
 
