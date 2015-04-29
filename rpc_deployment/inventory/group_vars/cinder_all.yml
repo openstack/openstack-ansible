@@ -48,6 +48,29 @@ cinder_volume_clear_size: 0
 
 cinder_service_port: "{{ cinder_port|default('8776') }}"
 
+## Backups
+## In order to enable the cinder backup you MUST set ``cinder_service_backup_program_enabled`` to "true"
+cinder_service_backup_program_enabled: false
+cinder_service_backup_driver: cinder.backup.drivers.swift
+# cinder_service_backup_swift_auth: Options include 'per_user' or 'single_user', we default to
+#                                   'per_user' so that backups are saved to a user's swift account.
+cinder_service_backup_swift_auth: per_user
+# cinder_service_backup_swift_url: This is your swift storage url when using 'per_user', or keystone
+#                                  endpoint when using 'single_user'.  When using 'per_user', you
+#                                  can leave this as empty or as None to allow cinder-backup to
+#                                  obtain storage url from environment.
+cinder_service_backup_swift_url:
+cinder_service_backup_swift_user:
+cinder_service_backup_swift_key:
+cinder_service_backup_swift_tenant:
+cinder_service_backup_swift_auth_version: 2
+cinder_service_backup_swift_container: volumebackups
+cinder_service_backup_swift_object_size: 52428800
+cinder_service_backup_swift_retry_attempts: 3
+cinder_service_backup_swift_retry_backoff: 2
+cinder_service_backup_compression_algorithm: zlib
+cinder_service_backup_metadata_version: 2
+
 ## DB
 container_mysql_user: cinder
 container_mysql_password: "{{ cinder_container_mysql_password }}"
