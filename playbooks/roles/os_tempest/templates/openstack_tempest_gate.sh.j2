@@ -62,6 +62,11 @@ function gen_test_list_heat_api() {
   egrep 'tempest\.api\.orchestration\.stacks\.test_non_empty_stack'
 }
 
+# Run cinder backup api tests
+function gen_test_list_cinder_backup() {
+  egrep 'tempest\.api\.volume\.admin\.test_volumes_backup'
+}
+
 # Run smoke tests
 function gen_test_list_smoke() {
   # this specific test fails frequently and is making our multi node nightly

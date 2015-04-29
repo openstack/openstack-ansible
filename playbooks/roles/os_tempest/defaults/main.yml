@@ -58,6 +58,8 @@ tempest_boto_ec2_url: "http://{{ external_lb_vip_address }}:8773/services/Cloud"
 tempest_swift_enabled: false
 tempest_swift_object_versioning: True
 
+tempest_volume_backup_enabled: False
+
 tempest_git_repo: https://github.com/openstack/tempest
 tempest_git_install_branch: master
 tempest_git_dest: "/opt/tempest_{{ tempest_git_install_branch | replace('/', '_') }}"
