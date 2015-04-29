@@ -1,6 +1,6 @@
-Rackspace Private Cloud Version 9.0
+Rackspace Private Cloud Version 10.0
 ###################################
-:date: 2014-09-25 09:00
+:date: 2014-12-04
 :tags: rackspace, lxc, openstack, cloud, ansible
 :category: \*nix
 
