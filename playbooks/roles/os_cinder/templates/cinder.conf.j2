@@ -21,20 +21,24 @@ enable_v2_api = {{ cinder_enable_v2_api }}
 
 {% if inventory_hostname in groups['cinder_volume'] %}
 {% if cinder_service_backup_program_enabled == true %}
-{% if cinder_service_backup_swift_url is defined and cinder_service_backup_swift_user is defined and cinder_service_backup_swift_key is defined %}
 ## Cinder Backup
 backup_driver = {{ cinder_service_backup_driver }}
-backup_swift_url = {{ cinder_service_backup_swift_url }}
+{% if cinder_service_backup_driver == 'cinder.backup.drivers.swift' %}
 backup_swift_auth = {{ cinder_service_backup_swift_auth }}
+{% if cinder_service_backup_swift_auth == 'single_user' %}
+backup_swift_url = {{ cinder_service_backup_swift_url }}
 backup_swift_user = {{ cinder_service_backup_swift_user }}
+backup_swift_tenant = {{ cinder_service_backup_swift_tenant }}
 backup_swift_key = {{ cinder_service_backup_swift_key }}
+backup_swift_auth_version = {{ cinder_service_backup_swift_auth_version }}
+{% endif %}
 backup_swift_container = {{ cinder_service_backup_swift_container }}
 backup_swift_object_size = {{ cinder_service_backup_swift_object_size }}
 backup_swift_retry_attempts = {{ cinder_service_backup_swift_retry_attempts }}
 backup_swift_retry_backoff = {{ cinder_service_backup_swift_retry_backoff }}
+{% endif %}
 backup_compression_algorithm = {{ cinder_service_backup_compression_algorithm }}
 backup_metadata_version = {{ cinder_service_backup_metadata_version }}
-{% endif %}
 {% endif %}
 {% endif %}
 
