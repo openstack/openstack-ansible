@@ -56,7 +56,7 @@ glanceclient_git_dest: "/opt/glanceclient_{{ glanceclient_git_install_branch | r
 
 ## Heat client
 heatclient_git_repo: https://github.com/openstack/python-heatclient
-heatclient_git_install_branch: 0.3.0
+heatclient_git_install_branch: 76a8e7217558c4e43d7ff45c50c2b2702a20a454 # HEAD of "stable/kilo" as of 30.04.2015
 heatclient_git_dest: "/opt/heatclient_{{ heatclient_git_install_branch | replace('/', '_') }}"
 
 
