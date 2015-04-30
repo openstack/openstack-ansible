@@ -49,7 +49,11 @@ keystone_auth_admin_password:
 keystone_service_password:
 # Set the "public_endpoint" var in keystone.conf
 #keystone_public_endpoint:
-
+#
+# uncomment the following if using ldap
+#keystone_ldap: True
+#keystone_ldap_identity_driver: keystone.identity.backends.ldap.Identity
+#keystone_ldap_domain_config_dir: /etc/keystone/domains
 
 ## Cinder Options
 cinder_container_mysql_password:
