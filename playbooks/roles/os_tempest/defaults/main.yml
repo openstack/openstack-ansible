@@ -60,10 +60,6 @@ tempest_swift_object_versioning: True
 
 tempest_volume_backup_enabled: False
 
-tempest_git_repo: https://github.com/openstack/tempest
-tempest_git_install_branch: master
-tempest_git_dest: "/opt/tempest_{{ tempest_git_install_branch | replace('/', '_') }}"
-
 tempest_main_group: tempest_all
 
 tempest_pip_packages:
