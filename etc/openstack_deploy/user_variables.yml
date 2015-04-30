@@ -34,6 +34,15 @@ glance_swift_store_endpoint_type: internalURL
 # nova_cpu_allocation_ratio: 2.0
 # nova_ram_allocation_ratio: 1.0
 
+## Glance with Swift
+### Extra options when configuring swift as a glance back-end.
+### By default it will use the local swift install
+### Set these when using a remote swift as a glance backend
+#glance_swift_store_auth_address: "https://some.auth.url.com"
+#glance_swift_store_user: "OPENSTACK_TENANT_ID:OPENSTACK_USER_NAME"
+#glance_swift_store_key: "OPENSTACK_USER_PASSWORD"
+#glance_swift_store_container: "NAME_OF_SWIFT_CONTAINER"
+#glance_swift_store_region: "NAME_OF_REGION"
 
 ## Swift
 # This will allow all users to create containers and upload to swift if set to True
