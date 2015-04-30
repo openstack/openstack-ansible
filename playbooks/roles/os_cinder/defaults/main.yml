@@ -80,19 +80,22 @@ cinder_service_v2_internalurl: "{{ cinder_service_internaluri }}/v2/%(tenant_id)
 ## Keystone authentication middleware
 cinder_keystone_auth_plugin: password
 
-## In order to enable the cinder backup you MUST set ``cinder_backup_program_enabled`` to "true"
-## Additionally the configuration section will not be put in the `cinder.conf` file unless the
-## following variables are defined:
-#   * cinder_service_backup_swift_user
-#   * cinder_service_backup_swift_user
-#   * cinder_service_backup_swift_key
+## In order to enable the cinder backup you MUST set ``cinder_service_backup_program_enabled`` to "true"
 cinder_service_backup_program_enabled: false
 cinder_service_backup_program_name: cinder-backup
 cinder_service_backup_driver: cinder.backup.drivers.swift
-cinder_service_backup_swift_url: http://127.0.0.1:8080/v1/AUTH
-cinder_service_backup_swift_user: admin
-cinder_service_backup_swift_key: secrete
+# cinder_service_backup_swift_auth: Options include 'per_user' or 'single_user', we default to
+#                                   'per_user' so that backups are saved to a user's swift account.
 cinder_service_backup_swift_auth: per_user
+# cinder_service_backup_swift_url: This is your swift storage url when using 'per_user', or keystone
+#                                  endpoint when using 'single_user'.  When using 'per_user', you
+#                                  can leave this as empty or as None to allow cinder-backup to
+#                                  obtain storage url from environment.
+cinder_service_backup_swift_url:
+cinder_service_backup_swift_auth_version: 2
+cinder_service_backup_swift_user:
+cinder_service_backup_swift_tenant:
+cinder_service_backup_swift_key:
 cinder_service_backup_swift_container: volumebackups
 cinder_service_backup_swift_object_size: 52428800
 cinder_service_backup_swift_retry_attempts: 3
