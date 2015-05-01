@@ -116,6 +116,8 @@ if [ ! -d "/etc/rpc_deploy" ];then
     sed -i "s/glance_swift_store_key:.*/glance_swift_store_key: '{{ glance_service_password }}'/" ${USER_VARS_PATH}
     sed -i "s/glance_swift_store_region:.*/glance_swift_store_region: RegionOne/" ${USER_VARS_PATH}
     sed -i "s/glance_swift_store_user:.*/glance_swift_store_user: 'service:glance'/" ${USER_VARS_PATH}
+    echo "cinder_service_backup_program_enabled: True" | tee -a ${USER_VARS_PATH}
+    echo "tempest_volume_backup_enabled: True" | tee -a ${USER_VARS_PATH}
   fi
 
   if [ "${BOOTSTRAP_AIO}" == "yes" ]; then
