@@ -22,13 +22,16 @@ set -x
 
 
 # -------------------- Parameters -------------------------
-# The only parameter this script takes is the name of a test list to use:
-# ./$0 <test_list_name>
+# The only parameters this script takes is the names of the test lists
+# to use:
+# ./$0 <test_list_name> ...
 #
 # If a name is not supplied scenario will be used.
+# If multiple lists are given, the resulting tests are combined and
+# duplicates are removed.
 
-test_list_name=${1:-scenario}
-testr_ouput_lines=${testr_output_lines:-5}
+test_lists=${*:-scenario}
+testr_output_lines=${testr_output_lines:-100}
 RUN_TEMPEST_OPTS=${RUN_TEMPEST_OPTS:-''}
 TESTR_OPTS=${TESTR_OPTS:-''}
 
@@ -51,6 +54,12 @@ function gen_test_list_scenario() {
   # https://bugs.launchpad.net/openstack-ansible/+bug/1425255
   # TODO: add them back once the bug has been fixed
   egrep 'tempest\.scenario\.test_(minimum|swift|server|dashboard)_basic(_ops)?'
+}
+
+# Run heat-api tests
+function gen_test_list_heat_api() {
+  # basic orchestration api tests
+  egrep 'tempest\.api\.orchestration\.stacks\.test_non_empty_stack'
 }
 
 # Run smoke tests
@@ -115,8 +124,10 @@ exit_msg(){
 
 available_test_lists=$(compgen -A function|sed -n '/^gen_test_list_/s/gen_test_list_//p')
 
-grep $test_list_name <<<$available_test_lists ||\
-  exit_msg "$test_list_name is not a valid test list, available test lists: $available_test_lists" 1
+for test_list_name in $test_lists; do
+  grep $test_list_name <<<$available_test_lists ||\
+    exit_msg "$test_list_name is not a valid test list, available test lists: $available_test_lists" 1
+done
 
 # work in tempest directory
 pushd /opt/tempest_*
@@ -128,10 +139,10 @@ source /root/openrc
 testr init &>/dev/null ||:
 
 # Get list of available tests.
-# lines 1-$testr_ouput_lines are output to stdout, all lines are written to
+# lines 1-$testr_output_lines are output to stdout, all lines are written to
 # full_test_list.
 set -o pipefail
-testr list-tests |tee >(sed -n 1,${testr_ouput_lines}p) >full_test_list ||\
+testr list-tests |tee >(sed -n 1,${testr_output_lines}p) >full_test_list ||\
   exit_msg "Failed to generate test list" $?
 set +o pipefail
 
@@ -141,14 +152,21 @@ set +o pipefail
 # Write filter test list using selected function. The full test list is
 # pre-filtered to only include test lines, this saves adding that filter to
 # every test list function.
-grep '^tempest\.' < full_test_list \
-  | gen_test_list_${test_list_name} > test_list \
-  || exit_msg "Filter $test_list_name failed. Output: $(cat test_list)" 1
+truncate --size 0 tmp_test_list
+for test_list_name in ${test_lists}; do
+  grep '^tempest\.' < full_test_list \
+    | gen_test_list_${test_list_name} >> tmp_test_list \
+    || exit_msg "Filter $test_list_name failed. Output: $(cat test_list)" 1
+done
+
+# Eliminate duplicate tests
+awk '!seen[$0]++' tmp_test_list > test_list
+rm tmp_test_list
 
 # Check the filtered test list is not empty
 [[ -s test_list ]] || exit_msg "No tests remain after filtering" 1
 
-test_list_summary="${test_list_name} ($(wc -l <test_list) tests)"
+test_list_summary="${test_lists} ($(wc -l <test_list) tests)"
 
 echo "Using test list $test_list_summary"
 
