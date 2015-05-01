@@ -4,6 +4,7 @@ OpenStack Ansible Deployment
 :tags: lxc, openstack, cloud, ansible
 :category: \*nix
 
+Deploys the `current stable release`_ of OpenStack.
 
 Playbooks
 ---------
@@ -60,3 +61,5 @@ While no os-ansible-deployment community documentation exists (yet), other than 
 
 Note:
   These docs may not be up-to-date with the current release of this repository however they are still a good source of documentation.
+
+.. _`current stable release`: https://wiki.openstack.org/wiki/Releases
