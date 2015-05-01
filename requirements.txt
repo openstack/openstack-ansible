@@ -7,3 +7,5 @@ PrettyTable>=0.7,<0.8   # scripts/inventory-manage.py
 pycrypto>=2.6           # ansible
 PyYAML>=3.1.0           # ansible
 requests>=2.2.0,!=2.4.0 # scripts/os-ansible-role-requirements.py
+pbr>=0.6,!=0.7,<0.11.0  # locked to lower than 0.11.0 due to issue https://bugs.launchpad.net/openstack-ansible/+bug/1450733
+

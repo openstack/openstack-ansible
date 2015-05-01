@@ -69,8 +69,12 @@ repo_apt_packages:
   - sqlite3
   - vlan
 
+# The version of PBR is being locked down to resolve an upstream issue with
+# all of the services transitioning to Liberty
+# https://bugs.launchpad.net/openstack-ansible/+bug/1450733
 repo_pip_packages:
   - cloudlib
+  - "pbr>=0.6,!=0.7,<0.11.0"
   - PyCrypto
   - python-memcached
   - PyYAML
