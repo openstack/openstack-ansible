@@ -23,3 +23,21 @@
     - { dest: "keystone.conf", src: "keystone.conf.j2" }
     - { dest: "policy.json", src: "policy.json.j2" }
     - { dest: "keystone-paste.ini", src: "keystone-paste.ini.j2" }
+
+- name: Create keystone ldap domains dir
+  file:
+    path: "{{ keystone_ldap_domain_config_dir }}"
+    state: directory
+    owner: "{{ system_user }}"
+    group: "{{ system_group }}"
+  when: keystone_ldap_domain_config_dir is defined
+
+- name: Generate Keystone ldap domain config
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ keystone_ldap_domain_config_dir}}/{{ item.dest }}"
+    owner: "{{ system_user }}"
+    group: "{{ system_group }}"
+  with_items:
+    - { dest: "keystone.Default.conf", src: "keystone.Default.conf.j2" }
+  when: keystone_ldap_domain_config_dir is defined
