@@ -32,7 +32,7 @@ core_plugin: neutron.plugins.ml2.plugin.Ml2Plugin
 interface_driver: neutron.agent.linux.interface.BridgeInterfaceDriver
 metering_driver: neutron.services.metering.drivers.iptables.iptables_driver.IptablesMeteringDriver
 
-service_plugins: 
+service_plugins:
   - neutron.services.l3_router.l3_router_plugin.L3RouterPlugin
   - neutron.services.loadbalancer.plugin.LoadBalancerPlugin
   - neutron.services.vpn.plugin.VPNDriverPlugin
@@ -54,6 +54,9 @@ container_mysql_password: "{{ neutron_container_mysql_password }}"
 container_database: neutron
 
 ## RPC
+# ``neutron_rpc_workers`` is an experimental feature in neutron master (as of 03/2015) and
+# the value will be 0 by default.
+neutron_rpc_workers: 0
 rpc_backend: rabbit
 
 ## Nova Auth
