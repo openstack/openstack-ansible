@@ -26,6 +26,14 @@ container_release: trusty
 # Parameters on what the conatiner will be built with
 container_config: /etc/lxc/lxc-rpc.conf
 
+# Define container options
+lxc_container_user_password: "{{ lookup('pipe', 'date --rfc-3339=ns | sha512sum | base64 | head -c 32') }}"
+lxc_container_user_name: ubuntu
+lxc_container_template_options: >
+  --release {{ container_release }}
+  --user {{ lxc_container_user_name }}
+  --password {{ lxc_container_user_password }}
+
 
 ## Base Ansible config for all plays
 ansible_ssh_port: 22
