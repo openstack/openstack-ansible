@@ -60,7 +60,7 @@
     fs_size: "{{ properties.container_fs_size|default(lxc_container_fs_size) }}"
     fs_type: "{{ properties.container_fs_type|default(lxc_container_fs_type) }}"
     vg_name: "{{ properties.container_vg_name|default(lxc_container_vg_name) }}"
-    template_options: "--release {{ properties.container_release|default(lxc_container_release) }}"
+    template_options: "{{ lxc_container_template_options }}"
     container_command: |
       mkdir -p ~/.ssh/
       if [ ! -f "~/.ssh/authorized_keys" ];then
@@ -91,6 +91,16 @@
   delegate_to: "{{ physical_host }}"
   tags:
     - lxc-container-create
+
+- name: Force container user password set
+  lxc_container:
+    name: "{{ inventory_hostname }}"
+    container_command: >
+      getent passwd "{{ lxc_container_user_name }}" &&
+      echo "{{ lxc_container_user_name }}:{{ lxc_container_user_password }}" | chpasswd
+  delegate_to: "{{ physical_host }}"
+  tags:
+    - lxc-container-user-password-regen
 
 - name: Container network interfaces
   lxc_container:
