@@ -28,9 +28,7 @@
     config={{ hostvars[item]['container_config'] }}
     command=create
     state=running
-    template_options="
-      --release {{ container_release }}
-    "
+    template_options="{{ lxc_container_template_options }}"
   when: vg_result.rc == 1
   with_items: container_groups
 
@@ -51,8 +49,6 @@
     vgname=lxc
     fstype={{ hostvars[item]['container_lvm_fstype'] }}
     fssize={{ hostvars[item]['container_lvm_fssize'] }}
-    template_options="
-      --release {{ container_release }}
-    "
+    template_options="{{ lxc_container_template_options }}"
   when: vg_result.rc == 0
   with_items: container_groups
