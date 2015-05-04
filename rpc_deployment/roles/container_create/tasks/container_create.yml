@@ -29,7 +29,7 @@
     config: "{{ container_config }}"
     command: create
     state: running
-    template_options: "--release {{ container_release }}"
+    template_options: "{{ lxc_container_template_options }}"
   when: vg_result.rc == 1
   delegate_to: "{{ physical_host }}"
 
@@ -45,6 +45,6 @@
     vgname: "{{ container_vg|default('lxc') }}"
     fstype: "{{ container_lvm_fstype }}"
     fssize: "{{ container_lvm_fssize }}"
-    template_options: " --release {{ container_release }}"
+    template_options: "{{ lxc_container_template_options }}"
   when: vg_result.rc == 0
   delegate_to: "{{ physical_host }}"
