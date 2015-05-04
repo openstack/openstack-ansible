@@ -54,6 +54,9 @@ container_mysql_password: "{{ neutron_container_mysql_password }}"
 container_database: neutron
 
 ## RPC
+# ``neutron_rpc_workers`` is an experimental feature in neutron master (as of 03/2015) and
+# the value will be 0 by default.
+neutron_rpc_workers: 0
 rpc_backend: rabbit
 
 ## Nova Auth
