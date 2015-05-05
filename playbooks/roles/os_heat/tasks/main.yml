@@ -16,10 +16,6 @@
 - include: heat_pre_install.yml
 - include: heat_install.yml
 
-- include: heat_install_plugins.yml
-  when: >
-    inventory_hostname in groups['heat_engine']
-
 - include: heat_domain_setup.yml
   when: >
     inventory_hostname == groups['heat_all'][0]
