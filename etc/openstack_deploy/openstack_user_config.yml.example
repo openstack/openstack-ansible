@@ -12,217 +12,613 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-# User defined container networks in CIDR notation. The inventory generator
-# assigns IP addresses to network interfaces inside containers from these
-# ranges.
-cidr_networks:
-  # Management (same range as br-mgmt on the target hosts)
-  management: 172.29.236.0/22
-  # Service (optional, same range as br-snet on the target hosts)
-  snet: 172.29.248.0/22
-  # Tunnel endpoints for VXLAN tenant networks
-  # (same range as br-vxlan on the target hosts)
-  tunnel: 172.29.240.0/22
-  # Storage (same range as br-storage on the target hosts)
-  storage: 172.29.244.0/22
-
-# User defined list of consumed IP addresses that may intersect
-# with the provided CIDR. If you want to use a range, split the
-# desired range with the lower and upper IP address in the range
-# using a comma. IE "10.0.0.1,10.0.0.100".
-used_ips:
-  - 10.240.0.1,10.240.0.50
-  - 172.29.244.1,172.29.244.50
-
-# As a user you can define anything that you may wish to "globally"
-# override from within the openstack_deploy configuration file. Anything
-# specified here will take precedence over anything else any where.
-global_overrides:
-  # Internal Management vip address
-  internal_lb_vip_address: 10.240.0.1
-  # External DMZ VIP address
-  external_lb_vip_address: 192.168.1.1
-  # Bridged interface to use with tunnel type networks
-  tunnel_bridge: "br-vxlan"
-  # Bridged interface to build containers with
-  management_bridge: "br-mgmt"
-  # Define your Add on container networks.
-  #  group_binds: bind a provided network to a particular group
-  #  container_bridge: instructs inventory where a bridge is plugged
-  #                    into on the host side of a veth pair
-  #  container_interface: interface name within a container
-  #  ip_from_q: name of a cidr to pull an IP address from
-  #  type: Networks must have a type. types are: ["raw", "vxlan", "flat", "vlan"]
-  #  range: Optional value used in "vxlan" and "vlan" type networks
-  #  net_name: Optional value used in mapping network names used in neutron ml2
-  # You must have a management network.
-  provider_networks:
-    - network:
-        group_binds:
-          - all_containers
-          - hosts
-        type: "raw"
-        container_bridge: "br-mgmt"
-        container_interface: "eth1"
-        container_type: "veth"
-        ip_from_q: "management"
-        is_container_address: true
-        is_ssh_address: true
-    - network:
-        group_binds:
-          - glance_api
-          - cinder_api
-          - cinder_volume
-          - nova_compute
-          # - swift_proxy ## If you are using the storage network for swift_proxy add it to the group_binds
-        type: "raw"
-        container_bridge: "br-storage"
-        container_type: "veth"
-        container_interface: "eth2"
-        ip_from_q: "storage"
-    - network:
-        group_binds:
-          - glance_api
-          - nova_compute
-          - neutron_linuxbridge_agent
-        type: "raw"
-        container_bridge: "br-snet"
-        container_type: "veth"
-        container_interface: "eth3"
-        ip_from_q: "snet"
-    - network:
-        group_binds:
-          - neutron_linuxbridge_agent
-        container_bridge: "br-vxlan"
-        container_type: "veth"
-        container_interface: "eth10"
-        ip_from_q: "tunnel"
-        type: "vxlan"
-        range: "1:1000"
-        net_name: "vxlan"
-    - network:
-        group_binds:
-          - neutron_linuxbridge_agent
-        container_bridge: "br-vlan"
-        container_type: "veth"
-        container_interface: "eth11"
-        type: "vlan"
-        range: "1:1"
-        net_name: "vlan"
-    - network:
-        group_binds:
-          - neutron_linuxbridge_agent
-        container_bridge: "br-vlan"
-        container_type: "veth"
-        container_interface: "eth12"
-        host_bind_override: "eth12"
-        type: "flat"
-        net_name: "flat"
-
-# Shared infrastructure parts
-shared-infra_hosts:
-  infra1:
-    ip: 10.240.0.100
-  infra2:
-    ip: 10.240.0.101
-  infra3:
-    ip: 10.240.0.102
-
-# OpenStack Compute infrastructure parts
-os-infra_hosts:
-  infra1:
-    ip: 10.240.0.100
-  infra2:
-    ip: 10.240.0.101
-  infra3:
-    ip: 10.240.0.102
-
-# OpenStack Compute infrastructure parts
-storage-infra_hosts:
-  infra1:
-    ip: 10.240.0.100
-  infra2:
-    ip: 10.240.0.101
-  infra3:
-    ip: 10.240.0.102
-
-# Keystone Identity infrastructure parts
-identity_hosts:
-  infra1:
-    ip: 10.240.0.100
-  infra2:
-    ip: 10.240.0.101
-  infra3:
-    ip: 10.240.0.102
-
-# User defined Compute Hosts, this should be a required group
-compute_hosts:
-  compute1:
-    ip: 10.240.0.103
-
-# User defined Storage Hosts, this should be a required group
-storage_hosts:
-  cinder1:
-    ip: 10.240.0.104
-    # "container_vars" can be set outside of all other options as
-    # host specific optional variables.
-    container_vars:
-      # If you would like to define a cinder availability zone this can
-      # be done with the name spaced variable.
-      cinder_storage_availability_zone: cinderAZ_1
-      # When creating more than ONE availability zone you should define a
-      # sane default for the system to use when scheduling volume creation.
-      cinder_default_availability_zone: cinderAZ_1
-      # In this example we are defining what cinder volumes are
-      # on a given host.
-      cinder_backends:
-        # if the "limit_container_types" argument is set, within
-        # the top level key of the provided option the inventory
-        # process will perform a string match on the container name with
-        # the value found within the "limit_container_types" argument.
-        # If any part of the string found within the container
-        # name the options are appended as host_vars inside of inventory.
-        limit_container_types: cinder_volume
-        lvm:
-          volume_group: cinder-volumes
-          volume_driver: cinder.volume.drivers.lvm.LVMVolumeDriver
-          volume_backend_name: LVM_iSCSI
-        # The ``cinder_nfs_client`` values is an optional component available
-        # when configuring cinder.
-        cinder_nfs_client:
-          nfs_shares_config: /etc/cinder/nfs_shares
-          shares:
-            - { ip: "{{ ip_nfs_server }}", share: "/vol/cinder" }
-
-  cinder2:
-    ip: 10.240.0.105
-    container_vars:
-      cinder_storage_availability_zone: cinderAZ_2
-      cinder_default_availability_zone: cinderAZ_1
-      cinder_backends:
-        limit_container_types: cinder_volume
-        lvm_ssd:
-          volume_group: cinder-volumes
-          volume_driver: cinder.volume.drivers.lvm.LVMVolumeDriver
-          volume_backend_name: LVM_iSCSI_SSD
-
-# User defined Logging Hosts, this should be a required group
-log_hosts:
-  logger1:
-    ip: 10.240.0.107
-
-# User defined Networking Hosts, this should be a required group
-network_hosts:
-  network1:
-    ip: 10.240.0.108
-
-# User defined Repository Hosts, this is an optional group
-repo-infra_hosts:
-  infra1:
-    ip: 10.240.0.100
-  infra2:
-    ip: 10.240.0.101
-  infra3:
-    ip: 10.240.0.102
-
+#
+# Overview
+# ========
+#
+# This file contains the configuration for OpenStack Ansible Deployment
+# (OSAD) core services. Optional service configuration resides in the
+# conf.d directory.
+#
+# You can customize the options in this file and copy it to
+# /etc/openstack_deploy/openstack_user_config.yml or create a new
+# file containing only necessary options for your environment
+# before deployment.
+#
+# OSAD implements PyYAML to parse YAML files and therefore supports structure
+# and formatting options that augment traditional YAML. For example, aliases
+# or references. For more information on PyYAML, see the documentation at
+#
+# http://pyyaml.org/wiki/PyYAMLDocumentation
+#
+# Configuration reference
+# =======================
+#
+# Level: cidr_networks (required)
+# Contains an arbitrary list of networks for the deployment. For each network,
+# the inventory generator uses the IP address range to create a pool of IP
+# addresses for network interfaces inside containers. A deployment requires
+# at least one network for management.
+#
+#   Option: <value> (required, string)
+#   Name of network and IP address range in CIDR notation. This IP address
+#   range coincides with the IP address range of the bridge for this network
+#   on the target host.
+#
+# Example:
+#
+# Define networks for a typical deployment.
+#
+#   - Management network on 172.29.236.0/22. Control plane for infrastructure
+#     services, OpenStack APIs, and horizon.
+#   - Tunnel network on 172.29.240.0/22. Data plane for project (tenant) VXLAN
+#     networks.
+#   - Storage network on 172.29.244.0/22. Data plane for storage services such
+#     as cinder and swift.
+#
+# cidr_networks:
+#   management: 172.29.236.0/22
+#   tunnel: 172.29.240.0/22
+#   storage: 172.29.244.0/22
+#
+# Example:
+#
+# Define additional service network on 172.29.248.0/22 for deployment in a
+# Rackspace data center.
+#
+#   snet: 172.29.248.0/22
+#
+# --------
+#
+# Level: used_ips (optional)
+# For each network in the 'cidr_networks' level, specify a list of IP addresses
+# or a range of IP addresses that the inventory generator should exclude from
+# the pools of IP addresses for network interfaces inside containers. To use a
+# range, specify the lower and upper IP addresses (inclusive) with a comma
+# separator.
+#
+# Example:
+#
+# The management network includes a router (gateway) on 172.29.236.1 and
+# DNS servers on 172.29.236.11-12. The deployment includes seven target
+# servers on 172.29.236.101-103, 172.29.236.111, 172.29.236.121, and
+# 172.29.236.131. However, the inventory generator automatically excludes
+# these IP addresses. Network policy at this particular example organization
+# also reserves 231-254 in the last octet at the high end of the range for
+# network device management.
+#
+# used_ips:
+#   - 172.29.236.1
+#   - 172.29.236.11,172.29.236.12
+#   - 172.29.239.231,172.29.239.254
+#
+# --------
+#
+# Level: global_overrides (required)
+# Contains global options that require customization for a deployment. For
+# example, load balancer virtual IP addresses (VIP). This level also provides
+# a mechanism to override other options defined in the playbook structure.
+#
+#   Option: internal_lb_vip_address (required, string)
+#   Load balancer VIP for the following items:
+#
+#   - Local package repository
+#   - Galera SQL database cluster
+#   - Administrative and internal API endpoints for all OpenStack services
+#   - Glance registry
+#   - Nova compute source of images
+#   - Cinder source of images
+#   - Instance metadata
+#
+#   Option: external_lb_vip_address (required, string)
+#   Load balancer VIP for the following items:
+#
+#   - Public API endpoints for all OpenStack services
+#   - Horizon
+#
+#   Option: management_bridge (required, string)
+#   Name of management network bridge on target hosts. Typically 'br-mgmt'.
+#
+#   Option: tunnel_bridge (optional, string)
+#   Name of tunnel network bridge on target hosts. Typically 'br-vxlan'.
+#
+#   Level: provider_networks (required)
+#   List of container and bare metal networks on target hosts.
+#
+#     Level: network (required)
+#     Defines a container or bare metal network. Create a level for each
+#     network.
+#
+#       Option: type (required, string)
+#       Type of network. Networks other than those for neutron such as
+#       management and storage typically use 'raw'. Neutron networks use
+#       'flat', 'vlan', or 'vxlan'. Coincides with ML2 plug-in configuration
+#       options.
+#
+#       Option: container_bridge (required, string)
+#       Name of unique bridge on target hosts to use for this network. Typical
+#       values include 'br-mgmt', 'br-storage', 'br-vlan', 'br-vxlan', etc.
+#
+#       Option: container_interface (required, string)
+#       Name of unique interface in containers to use for this network.
+#       Typical values include 'eth1', 'eth2', etc.
+#
+#       Option: container_type (required, string)
+#       Name of mechanism that connects interfaces in containers to the bridge
+#       on target hosts for this network. Typically 'veth'.
+#
+#       Option: ip_from_q (optional, string)
+#       Name of network in 'cidr_networks' level to use for IP address pool. Only
+#       valid for 'raw' and 'vxlan' types.
+#
+#       Option: is_container_address (required, boolean)
+#       If true, the load balancer uses this IP address to access services
+#       in the container. Only valid for networks with 'ip_from_q' option.
+#
+#       Option: is_ssh_address (required, boolean)
+#       If true, Ansible uses this IP address to access the container via SSH.
+#       Only valid for networks with 'ip_from_q' option.
+#
+#       Option: group_binds (required, string)
+#       List of one or more Ansible groups that contain this
+#       network. For more information, see the openstack_environment.yml file.
+#
+#       Option: net_name (optional, string)
+#       Name of network for 'flat' or 'vlan' types. Only valid for these
+#       types. Coincides with ML2 plug-in configuration options.
+#
+#       Option: range (optional, string)
+#       For 'vxlan' type neutron networks, range of VXLAN network identifiers
+#       (VNI). For 'vlan' type neutron networks, range of VLAN tags. Coincides
+#       with ML2 plug-in configuration options.
+#
+#   Example:
+#
+#   Define a typical network architecture:
+#
+#   - Network of type 'raw' that uses the 'br-mgmt' bridge and 'management'
+#     IP address pool. Maps to the 'eth1' device in containers. Applies to all
+#     containers and bare metal hosts. Both the load balancer and Ansible
+#     use this network to access containers and services.
+#   - Network of type 'raw' that uses the 'br-storage' bridge and 'storage'
+#     IP address pool. Maps to the 'eth2' device in containers. Applies to
+#     nova compute and all storage service containers. Optionally applies to
+#     to the swift proxy service.
+#   - Network of type 'vxlan' that contains neutron VXLAN tenant networks
+#     1 to 1000 and uses 'br-vxlan' bridge on target hosts. Maps to the
+#     'eth10' device in containers. Applies to all neutron agent containers
+#     and neutron agents on bare metal hosts.
+#   - Network of type 'vlan' that contains neutron VLAN networks 101 to 200
+#     and uses the 'br-vlan' bridge on target hosts. Maps to the 'eth11' device
+#     in containers. Applies to all neutron agent containers and neutron agents
+#     on bare metal hosts.
+#   - Network of type 'flat' that contains one neutron flat network and uses
+#     the 'br-vlan' bridge on target hosts. Maps to the 'eth12' device in
+#     containers. Applies to all neutron agent containers and neutron agents
+#     on bare metal hosts.
+#
+#   Note: A pair of 'vlan' and 'flat' networks can use the same bridge because
+#   one only handles tagged frames and the other only handles untagged frames
+#   (the native VLAN in some parlance). However, additional 'vlan' or 'flat'
+#   networks require additional bridges.
+#
+#   provider_networks:
+#     - network:
+#         group_binds:
+#           - all_containers
+#           - hosts
+#         type: "raw"
+#         container_bridge: "br-mgmt"
+#         container_interface: "eth1"
+#         container_type: "veth"
+#         ip_from_q: "management"
+#         is_container_address: true
+#         is_ssh_address: true
+#     - network:
+#         group_binds:
+#           - glance_api
+#           - cinder_api
+#           - cinder_volume
+#           - nova_compute
+#           # Uncomment the next line if using swift with a storage network.
+#           # - swift_proxy
+#         type: "raw"
+#         container_bridge: "br-storage"
+#         container_type: "veth"
+#         container_interface: "eth2"
+#         ip_from_q: "storage"
+#     - network:
+#         group_binds:
+#           - neutron_linuxbridge_agent
+#         container_bridge: "br-vxlan"
+#         container_type: "veth"
+#         container_interface: "eth10"
+#         ip_from_q: "tunnel"
+#         type: "vxlan"
+#         range: "1:1000"
+#         net_name: "vxlan"
+#     - network:
+#         group_binds:
+#           - neutron_linuxbridge_agent
+#         container_bridge: "br-vlan"
+#         container_type: "veth"
+#         container_interface: "eth11"
+#         type: "vlan"
+#         range: "101:200"
+#         net_name: "vlan"
+#     - network:
+#         group_binds:
+#           - neutron_linuxbridge_agent
+#         container_bridge: "br-vlan"
+#         container_type: "veth"
+#         container_interface: "eth12"
+#         host_bind_override: "eth12"
+#         type: "flat"
+#         net_name: "flat"
+#
+#   Example:
+#
+#   Add the service network to the previous example:
+#
+#   - Network of type 'raw' that uses the 'br-snet' bridge and 'snet' IP
+#     address pool. Maps to the 'eth3' device in containers. Applies to
+#     glance, nova compute, neutron agent containers, and any of these
+#     services on bare metal hosts.
+#
+#   provider_networks:
+#     - network:
+#         group_binds:
+#           - glance_api
+#           - nova_compute
+#           - neutron_linuxbridge_agent
+#         type: "raw"
+#         container_bridge: "br-snet"
+#         container_type: "veth"
+#         container_interface: "eth3"
+#         ip_from_q: "snet"
+#
+# --------
+#
+# Level: shared-infra_hosts (required)
+# List of target hosts on which to deploy shared infrastructure services
+# including the Galera SQL database cluster, RabbitMQ, and Memcached. Recommend
+# three minimum target hosts for these services.
+#
+#   Level: <value> (required, string)
+#   Hostname of a target host.
+#
+#     Option: ip (required, string)
+#     IP address of this target host, typically the IP address assigned to
+#     the management bridge.
+#
+# Example:
+#
+# Define three shared infrastructure hosts:
+#
+# shared-infra_hosts:
+#   infra1:
+#     ip: 172.29.236.101
+#   infra2:
+#     ip: 172.29.236.102
+#   infra3:
+#     ip: 172.29.236.103
+#
+# --------
+#
+# Level: repo_hosts (optional)
+# List of target hosts on which to deploy the package repository. Recommend
+# minimum three target hosts for this service. Typically contains the same
+# target hosts as the 'shared-infra_hosts' level.
+#
+#   Level: <value> (required, string)
+#   Hostname of a target host.
+#
+#     Option: ip (required, string)
+#     IP address of this target host, typically the IP address assigned to
+#     the management bridge.
+#
+# Example:
+#
+# Define three package repository hosts:
+#
+# repo_hosts:
+#   infra1:
+#     ip: 172.29.236.101
+#   infra2:
+#     ip: 172.29.236.102
+#   infra3:
+#     ip: 172.29.236.103
+#
+# --------
+#
+# Level: os-infra_hosts (required)
+# List of target hosts on which to deploy the glance API, nova API, heat API,
+# and horizon. Recommend three minimum target hosts for these services.
+# Typically contains the same target hosts as 'shared-infra_hosts' level.
+#
+#   Level: <value> (required, string)
+#   Hostname of a target host.
+#
+#     Option: ip (required, string)
+#     IP address of this target host, typically the IP address assigned to
+#     the management bridge.
+#
+# Example:
+#
+# Define three OpenStack infrastructure hosts:
+#
+# os-infra_hosts:
+#   infra1:
+#     ip: 172.29.236.100
+#   infra2:
+#     ip: 172.29.236.101
+#   infra3:
+#     ip: 172.29.236.102
+#
+# --------
+#
+# Level: identity_hosts (required)
+# List of target hosts on which to deploy the keystone service. Recommend
+# three minimum target hosts for this service. Typically contains the same
+# target hosts as the 'shared-infra_hosts' level.
+#
+#   Level: <value> (required, string)
+#   Hostname of a target host.
+#
+#     Option: ip (required, string)
+#     IP address of this target host, typically the IP address assigned to
+#     the management bridge.
+#
+# Example:
+#
+# Define three OpenStack identity hosts:
+#
+# identity_hosts:
+#   infra1:
+#     ip: 172.29.236.101
+#   infra2:
+#     ip: 172.29.236.102
+#   infra3:
+#     ip: 172.29.236.103
+#
+# --------
+#
+# Level: network_hosts (required)
+# List of target hosts on which to deploy neutron services. Recommend three
+# minimum target hosts for this service. Typically contains the same target
+# hosts as the 'shared-infra_hosts' level.
+#
+#   Level: <value> (required, string)
+#   Hostname of a target host.
+#
+#     Option: ip (required, string)
+#     IP address of this target host, typically the IP address assigned to
+#     the management bridge.
+#
+# Example:
+#
+# Define three OpenStack network hosts:
+#
+# network_hosts:
+#   infra1:
+#     ip: 172.29.236.101
+#   infra2:
+#     ip: 172.29.236.102
+#   infra3:
+#     ip: 172.29.236.103
+#
+# --------
+#
+# Level: compute_hosts (required)
+# List of target hosts on which to deploy the nova compute service. Recommend
+# one minimum target host for this service. Typically contains target hosts
+# that do not reside in other levels.
+#
+#   Level: <value> (required, string)
+#   Hostname of a target host.
+#
+#     Option: ip (required, string)
+#     IP address of this target host, typically the IP address assigned to
+#     the management bridge.
+#
+# Example:
+#
+# Define an OpenStack compute host:
+#
+# compute_hosts:
+#   compute1:
+#     ip: 172.29.236.111
+#
+# --------
+#
+# Level: storage-infra_hosts (required)
+# List of target hosts on which to deploy the cinder API. Recommend three
+# minimum target hosts for this service. Typically contains the same target
+# hosts as the 'shared-infra_hosts' level.
+#
+#   Level: <value> (required, string)
+#   Hostname of a target host.
+#
+#     Option: ip (required, string)
+#     IP address of this target host, typically the IP address assigned to
+#     the management bridge.
+#
+# Example:
+#
+# Define three OpenStack storage infrastructure hosts:
+#
+# storage-infra_hosts:
+#   infra1:
+#     ip: 172.29.236.101
+#   infra2:
+#     ip: 172.29.236.102
+#   infra3:
+#     ip: 172.29.236.103
+#
+# --------
+#
+# Level: storage_hosts (required)
+# List of target hosts on which to deploy the cinder volume service. Recommend
+# one minimum target host for this service. Typically contains target hosts
+# that do not reside in other levels.
+#
+#   Level: <value> (required, string)
+#   Hostname of a target host.
+#
+#     Option: ip (required, string)
+#     IP address of this target host, typically the IP address assigned to
+#     the management bridge.
+#
+#     Level: container_vars (required)
+#     Contains storage options for this target host.
+#
+#       Option: cinder_storage_availability_zone (optional, string)
+#       Cinder availability zone.
+#
+#       Option: cinder_default_availability_zone (optional, string)
+#       If the deployment contains more than one cinder availability zone,
+#       specify a default availability zone.
+#
+#       Level: cinder_backends (required)
+#       Contains cinder backends.
+#
+#         Option: limit_container_types (optional, string)
+#         Container name string in which to apply these options. Typically
+#         any container with 'cinder_volume' in the name.
+#
+#         Level: <value> (required, string)
+#         Arbitrary name of the backend. Each backend contains one or more
+#         options for the particular backend driver. The template for the
+#         cinder.conf file can generate configuration for any backend
+#         providing that it includes the necessary driver options.
+#
+#           Option: volume_backend_name (required, string)
+#           Name of backend, arbitrary.
+#
+#           The following options apply to the LVM backend driver:
+#
+#           Option: volume_driver (required, string)
+#           Name of volume driver, typically
+#           'cinder.volume.drivers.lvm.LVMVolumeDriver'.
+#
+#           Option: volume_group (required, string)
+#           Name of LVM volume group, typically 'cinder-volumes'.
+#
+#           The following options apply to the NFS backend driver:
+#
+#           Option: volume_driver (required, string)
+#           Name of volume driver,
+#           'cinder.volume.drivers.nfs.NfsDriver'.
+#
+#           Option: nfs_shares_config (optional, string)
+#           File containing list of NFS shares available to cinder, typically
+#           '/etc/cinder/nfs_shares'.
+#
+#           Option: nfs_mount_point_base (optional, string)
+#           Location in which to mount NFS shares, typically
+#           '$state_path/mnt'.
+#
+#           The following options apply to the NetApp backend driver:
+#
+#           Option: volume_driver (required, string)
+#           Name of volume driver,
+#           'cinder.volume.drivers.netapp.common.NetAppDriver'.
+#
+#           Option: netapp_storage_family (required, string)
+#           Access method, typically 'ontap_7mode' or 'ontap_cluster'.
+#
+#           Option: netapp_storage_protocol (required, string)
+#           Transport method, typically 'scsi' or 'nfs'. NFS transport also
+#           requires the 'nfs_shares_config' option.
+#
+#           Option: nfs_shares_config (required, string)
+#           For NFS transport, name of the file containing shares. Typically
+#           '/etc/cinder/nfs_shares'.
+#
+#           Option: netapp_server_hostname (required, string)
+#           NetApp server hostname.
+#
+#           Option: netapp_server_port (required, integer)
+#           NetApp server port, typically 80 or 443.
+#
+#           Option: netapp_login (required, string)
+#           NetApp server username.
+#
+#           Option: netapp_password (required, string)
+#           NetApp server password.
+#
+#        Level: cinder_nfs_client (optional)
+#        Automates management of the file that cinder references for a list of
+#        NFS mounts.
+#
+#          Option: nfs_shares_config (required, string)
+#          File containing list of NFS shares available to cinder, typically
+#          typically /etc/cinder/nfs_shares.
+#
+#          Level: shares (required)
+#          List of shares to populate the 'nfs_shares_config' file. Each share
+#          uses the following format:
+#
+#          - { ip: "{{ ip_nfs_server }}", share: "/vol/cinder" }
+#
+# Example:
+#
+# Define an OpenStack storage host:
+#
+# storage_hosts:
+#   storage1:
+#     ip: 172.29.236.121
+#
+# Example:
+#
+# Use the LVM iSCSI backend in availability zone 'cinderAZ_1':
+#
+#     container_vars:
+#       cinder_storage_availability_zone: cinderAZ_1
+#       cinder_default_availability_zone: cinderAZ_1
+#       cinder_backends:
+#         lvm:
+#           volume_backend_name: LVM_iSCSI
+#           volume_driver: cinder.volume.drivers.lvm.LVMVolumeDriver
+#           volume_group: cinder-volumes
+#         limit_container_types: cinder_volume
+#
+# Example:
+#
+# Use the NetApp iSCSI backend via Data ONTAP 7-mode in availability zone
+# 'cinderAZ_2':
+#
+#     container_vars:
+#       cinder_storage_availability_zone: cinderAZ_2
+#       cinder_default_availability_zone: cinderAZ_1
+#       cinder_backends:
+#         netapp:
+#           volume_backend_name: NETAPP_iSCSI
+#           volume_driver: cinder.volume.drivers.netapp.common.NetAppDriver
+#           netapp_storage_family: ontap_7mode
+#           netapp_storage_protocol: iscsi
+#           netapp_server_hostname: hostname
+#           netapp_server_port: 443
+#           netapp_login: username
+#           netapp_password: password
+#
+# --------
+#
+# Level: log_hosts (required)
+# List of target hosts on which to deploy logging services. Recommend
+# one minimum target host for this service.
+#
+#   Level: <value> (required, string)
+#   Hostname of a target host.
+#
+#     Option: ip (required, string)
+#     IP address of this target host, typically the IP address assigned to
+#     the management bridge.
+#
+# Example:
+#
+# Define a logging host:
+#
+# log_hosts:
+#   log1:
+#     ip: 172.29.236.131
