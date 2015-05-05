@@ -13,16 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apt_container_keys:
-  - { url: "https://monitoring.api.rackspacecloud.com/pki/agent/linux.asc", state: "present" }
+repo_package_name: glance_store
 
-apt_container_repos:
-  - { repo: "deb {{ raxmon_repo_url }} cloudmonitoring main", state: "present" }
+repo_path: "{{ repo_package_name }}_{{ git_install_branch | replace('/', '_') }}"
 
-container_packages:
-  - rackspace-monitoring-agent
-
-pip_requirements_file: "/usr/lib/rackspace-monitoring-agent/plugins/requirements.txt"
-
-git_repo: https://github.com/rcbops/rpc-maas
-git_install_branch: juno
+## Git Source
+git_repo: https://github.com/openstack/glance_store
+git_fallback_repo: https://git.openstack.org/openstack/glance_store
+git_dest: "/opt/{{ repo_path }}"
+git_install_branch: 0.1.10
+git_etc_example: etc/

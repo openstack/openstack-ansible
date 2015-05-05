@@ -21,6 +21,6 @@ repo_path: "{{ pip_wheel_name }}_{{ git_install_branch | replace('/', '_') }}"
 git_repo: https://github.com/openstack/oslo.log
 git_fallback_repo: https://git.openstack.org/openstack/oslo.log
 git_dest: "/opt/{{ repo_path  }}"
-git_install_branch: 0.4.0
+git_install_branch: 1.0.0
 
 pip_wheel_name: oslo.log
