@@ -62,12 +62,8 @@ tempest_volume_backup_enabled: False
 
 tempest_main_group: tempest_all
 
-# fixtures, testscenarios, pbr locked due to issue https://bugs.launchpad.net/openstack-ansible/+bug/1450733
-tempest_pip_packages:
-  - "fixtures<1.1.0"
-  - nose
+tempest_requires_pip_packages:
   - oslo.serialization
-  - "pbr>=0.6,!=0.7,<0.11.0"
   - python-barbicanclient
   - python-ceilometerclient
   - python-cinderclient
@@ -87,8 +83,13 @@ tempest_pip_packages:
   - python-troveclient
   - python-tuskarclient
   - python-memcached
+  - virtualenv
+
+tempest_pip_packages:
+  - fixtures
+  - nose
   - testrepository
-  - "testscenarios<=0.4"
+  - testscenarios
   - testtools
 
 tempest_image_dir: "/opt/images"

@@ -141,6 +141,9 @@ done
 # work in tempest directory
 pushd {{ tempest_git_dest }}
 
+# Load the tempest venv for a tempest run
+source {{ tempest_git_dest }}/bin/activate
+
 # read creds into environment
 source /root/openrc
 
@@ -189,5 +192,8 @@ if [[ $result == 0 ]]; then
 else
   echo "TEMPEST FAIL $test_list_summary"
 fi
+
+# Deactivate the venv after run
+deactivate || true
 
 exit $result
