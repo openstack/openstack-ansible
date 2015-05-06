@@ -13,21 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-galaxy_info:
-  author: rcbops
-  description: Install rabbitmq server
-  company: Rackspace
-  license: Apache2
-  min_ansible_version: 1.6.6
-  platforms:
-    - name: Ubuntu
-      versions:
-        - trusty
-  categories:
-    - cloud
-    - rabbitmq
-    - development
-    - openstack
-dependencies:
-  - apt_package_pinning
-  - pip_lock_down
+- name: Add apt pin preferences
+  template:
+    src: apt_pinned_packages.perf.j2
+    dest: /etc/apt/preferences.d/openstack_pinned_packages.pref
+  when: apt_pinned_packages is defined
