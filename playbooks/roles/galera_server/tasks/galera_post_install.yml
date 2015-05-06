@@ -23,6 +23,7 @@
     recurse: "{{ item.recurse|default('false') }}"
   with_items:
     - { path: "/var/log/mysql/", owner: "mysql", recurse: "true" }
+    - { path: "/var/log/mysql_logs/", owner: "mysql", group: "syslog", mode: "2755" }
     - { path: "/etc/mysql/conf.d" }
   tags:
     - galera-config
