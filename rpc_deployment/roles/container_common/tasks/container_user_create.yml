@@ -20,12 +20,19 @@
     system: "yes"
   when: system_group is defined
 
+- name: create additional groups for system user
+  group:
+    name: "{{ item }}"
+    state: "present"
+    system: "yes"
+  with_items: "{{ additional_system_groups }}"
+
 - name: create system user
   user:
     name: "{{ system_user }}"
     shell: "/bin/false"
     group: "{{ system_group }}"
-    groups: adm
+    groups: "{{ additional_system_groups|join(',')}}"
     home: "/var/lib/{{ system_user }}"
     system: "yes"
     createhome: "yes"
