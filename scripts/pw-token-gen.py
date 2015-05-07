@@ -20,6 +20,7 @@ import hashlib
 import os
 import random
 import tarfile
+import uuid
 
 from Crypto import Random
 try:
@@ -63,7 +64,7 @@ class CredentialGenerator(object):
             func = getattr(self, '_%s_gen' % pw_type)
             return func(encoded_bytes=encoded_bytes)
         else:
-            raise SystemExit('Unknown secrete type passed. [ %s ]' % pw_type)
+            raise SystemExit('Unknown secret type passed. [ %s ]' % pw_type)
 
     @staticmethod
     def _random_bytes():
@@ -135,8 +136,8 @@ def main():
     This will open a file that was specified on the command line. The file
     specified is assumed to be in valid YAML format, which is used in ansible.
     When the YAML file will be processed and any key with a null value that
-    ends with 'password', 'token', or 'key' will have a generated password set
-    as the value.
+    ends with 'password', 'token', 'key' or 'uuid' will have a generated
+    password set as the value.
 
     The main function will create a backup of all changes in the file as a
     tarball in the same directory as the file specified.
@@ -176,6 +177,9 @@ def main():
             elif entry.endswith('key'):
                 changed = True
                 user_vars[entry] = generator.generator(pw_type='key')
+            elif entry.endswith('uuid'):
+                changed = True
+                user_vars[entry] = str(uuid.uuid4())
             elif entry.startswith('swift_hash_path'):
                 changed = True
                 user_vars[entry] = generator.generator(pw_type='key')

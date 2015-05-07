@@ -239,3 +239,19 @@ use_virtio_for_bridges = True
 cpu_mode = {{ nova_cpu_mode }}
 virt_type = {{ nova_virt_type }}
 remove_unused_resized_minimum_age_seconds = {{ nova_remove_unused_resized_minimum_age_seconds }}
+
+{% if cinder_backends_rbd_inuse|bool or nova_libvirt_images_rbd_pool is defined %}
+rbd_user = {{ nova_ceph_client }}
+rbd_secret_uuid = {{ nova_ceph_client_uuid }}
+{% endif %}
+{% if nova_libvirt_images_rbd_pool is defined %}
+# ceph rbd support
+images_type = rbd
+images_rbd_pool = {{ nova_libvirt_images_rbd_pool }}
+images_rbd_ceph_conf = /etc/ceph/ceph.conf
+inject_password = false
+inject_key = false
+inject_partition = -2
+live_migration_flag="VIR_MIGRATE_UNDEFINE_SOURCE,VIR_MIGRATE_PEER2PEER,VIR_MIGRATE_LIVE,VIR_MIGRATE_PERSIST_DEST"
+{% endif %}
+

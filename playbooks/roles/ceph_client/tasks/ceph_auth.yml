@@ -1,0 +1,135 @@
+---
+# Copyright 2015, Serge van Ginderachter <serge@vanginderachter.be>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
+
+## Ceph client keyrings
+
+#TODO: also be able to create users, keys and pools on ceph
+- name: Retrieve keyrings for openstack clients from ceph cluster
+  # the first get makes sure the client exists, so the second only runs when it
+  # exists, the trick is the different output of both, the second has the right
+  # output to put in a keyring; ceph admin should have already created the user
+  shell: ceph auth get client.{{ item.1 }} >/dev/null && ceph auth get-or-create client.{{ item.1 }}
+  with_subelements:
+  - ceph_components
+  - client
+  when: inventory_hostname in groups[item.0.component]
+  always_run: true
+  changed_when: false
+  delegate_to: '{{ ceph_mon_host }}'
+  register: ceph_client_keyrings
+  until: ceph_client_keyrings|success
+  tags:
+  - ceph-auth-client-keyrings
+
+- name: Create cephkeys_access_group group
+  group:
+    name: "{{ cephkeys_access_group }}"
+
+- name: Add OpenStack service to cephkeys_access_group group
+  user:
+    name: "{{ openstack_service_system_user }}"
+    groups: "{{ cephkeys_access_group }}"
+    append: yes
+
+- name: Provision ceph client keyrings
+  # TODO: do we really need a template for this? what's the added value compare to
+  # ceph get-or-create ... ... -o file?
+  template:
+    src:      ceph.client.keyring.j2
+    dest:     /etc/ceph/ceph.client.{{ item.item.1 }}.keyring
+    backup:   true
+    owner:    root
+    # TODO
+    group:    "{{ cephkeys_access_group }}"
+    # ideally the permission will be: 0600 and the owner/group will be either
+    # glance , nova or cinder. For keys that require access by different users
+    # (the cinder one) we should probably create a group 'cephkeys' and add
+    # nova/cinder to it.
+    # If I'm correct, the use case for multiple users is on the computre nodes,
+    # access needed by users libvirt-qemu and nova
+    mode:     0640
+  with_items:   ceph_client_keyrings.results
+  when: not item|skipped and inventory_hostname in groups[item.item.0.component]
+  notify:
+  - Restart os services
+  tags:
+  - ceph-auth-client-keyrings
+
+## Ceph nova client libvirt secret
+
+- name: Retrieve nova secret from cephcluster
+  command: ceph auth get-key client.{{ nova_ceph_client }}
+  when: inventory_hostname in groups.nova_compute
+  register: ceph_client_nova_secret
+  always_run:   true
+  changed_when: false
+  failed_when:  false
+  delegate_to: '{{ ceph_mon_host }}'
+  register: ceph_nova_secret
+  tags:
+  - ceph-auth-nova-libvirt-secret
+
+- name: Check if nova secret is defined in libvirt
+  shell: virsh secret-list|grep {{ nova_ceph_client_uuid }}
+  when: inventory_hostname in groups.nova_compute
+  always_run:   true
+  failed_when:  false
+  changed_when: false
+  register: libvirt_nova_defined
+  tags:
+  - ceph-auth-nova-libvirt-secret
+
+- name: Provide xml file to create the secret
+  template:
+    src: secret.xml.j2
+    dest: /tmp/nova-secret.xml
+  when: inventory_hostname in groups.nova_compute and libvirt_nova_defined.rc is defined and libvirt_nova_defined.rc != 0
+  tags:
+  - ceph-auth-nova-libvirt-secret
+
+- name: Define libvirt nova secret
+  command: virsh secret-define --file /tmp/nova-secret.xml
+  when: inventory_hostname in groups.nova_compute and libvirt_nova_defined.rc is defined and libvirt_nova_defined.rc != 0
+  notify:
+  - Restart os services
+  tags:
+  - ceph-auth-nova-libvirt-secret
+
+- name: Check if nova secret value is set in libvirt
+  command: virsh secret-get-value {{ nova_ceph_client_uuid }}
+  when: inventory_hostname in groups.nova_compute
+  always_run:   true
+  failed_when:  false
+  changed_when: false
+  register: libvirt_nova_set
+  tags:
+  - ceph-auth-nova-libvirt-secret
+
+- name: Set nova secret value in libvirt
+  shell: virsh secret-set-value --secret {{ nova_ceph_client_uuid }} --base64 {{ ceph_nova_secret.stdout }}
+  when: >
+        inventory_hostname in groups.nova_compute and libvirt_nova_set.rc is defined
+        and
+        (libvirt_nova_set.rc != 0
+        or
+        (libvirt_nova_set.rc == 0 and libvirt_nova_set.stdout != ceph_nova_secret.stdout)
+        )
+  notify:
+  - Restart os services
+  tags:
+  - ceph-auth-nova-libvirt-secret
+

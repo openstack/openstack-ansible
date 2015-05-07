@@ -32,12 +32,13 @@ glance_system_shell: /bin/false
 glance_system_comment: glance system user
 glance_system_user_home: "/var/lib/{{ glance_system_user_name }}"
 
-glance_flavor: "keystone+cachemanagement"
 glance_registry_host: "{{ internal_lb_vip_address }}"
 glance_ceilometer_notification_driver: messagingv2
 glance_notification_driver: noop
 glance_rpc_backend: glance.openstack.common.rpc.impl_kombu
 glance_default_store: file
+glance_flavor: "{% if glance_default_store == 'rbd' %}keystone{% else %}keystone+cachemanagement{% endif %}"
+glance_show_image_direct_url: "{{ glance_default_store == 'rbd' }}"
 
 
 ## API options
@@ -132,6 +133,12 @@ glance_policy_dirs: policy.d
 #glance_policy_overrides:
 #  "add_image": ""
 #  "delete_image": ""
+
+## Ceph rbd Options
+glance_ceph_client: glance
+glance_rbd_store_pool: images
+glance_rbd_store_user: '{{ glance_ceph_client }}'
+glance_rbd_store_chunk_size: 8
 
 # Common apt packages
 glance_apt_packages:
