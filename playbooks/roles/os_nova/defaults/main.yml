@@ -238,6 +238,11 @@ nova_scheduler_program_name: nova-scheduler
 # If you want to regenerate the nova users SSH keys, on each run, set this var to True
 # Otherwise keys will be generated on the first run and not regenerated each run.
 nova_recreate_keys: False
+# Nova Ceph rbd
+# Enble and define nova_libvirt_images_rbd_pool to use rbd as nova backend
+#nova_libvirt_images_rbd_pool: vms
+nova_ceph_client: '{{ cinder_ceph_client }}'
+nova_ceph_client_uuid: 517a4663-3927-44bc-9ea7-4a90e1cd4c66
 
 ## General Neutron configuration
 # If ``nova_osapi_compute_workers`` is unset the system will use half the number of available VCPUS to
