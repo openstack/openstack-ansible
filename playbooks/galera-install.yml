@@ -45,7 +45,7 @@
   roles:
     - { role: "galera_server", tags: [ "galera-server" ] }
     - role: "rsyslog_client"
-      rsyslog_client_log_dir: "/var/log/mysql"
+      rsyslog_client_log_dir: "/var/log/mysql_logs"
       rsyslog_client_log_files:
         - /var/log/mysql.log
         - /var/log/mysql.err
