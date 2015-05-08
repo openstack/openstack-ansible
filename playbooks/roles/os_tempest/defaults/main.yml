@@ -62,8 +62,7 @@ tempest_volume_backup_enabled: False
 
 tempest_main_group: tempest_all
 
-tempest_pip_packages:
-  - nose
+tempest_requires_pip_packages:
   - oslo.serialization
   - python-barbicanclient
   - python-ceilometerclient
@@ -84,7 +83,13 @@ tempest_pip_packages:
   - python-troveclient
   - python-tuskarclient
   - python-memcached
+  - virtualenv
+
+tempest_pip_packages:
+  - fixtures
+  - nose
   - testrepository
+  - testscenarios
   - testtools
 
 tempest_image_dir: "/opt/images"

@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Install pip packages
+- name: Install required pip packages
   pip:
     name: "{{ item }}"
     state: present
@@ -22,9 +22,10 @@
   retries: 5
   delay: 2
   with_items:
-    - "{{ tempest_pip_packages }}"
+    - "{{ tempest_requires_pip_packages }}"
   tags:
-    - tempest-pip-packages
+    - tempest-pip-requires-packages
+    - tempest-pip-install
 
 - name: Get tempest from git
   git:
@@ -38,13 +39,20 @@
   tags:
     - tempest-git-clone
 
-- name: Install local tempest
+- name: Install pip packages for tempest
   pip:
-    name: "{{ tempest_git_dest }}"
+    name: "{{ item }}"
     state: present
+    virtualenv: "{{ tempest_git_dest }}"
+    virtualenv_site_packages: "yes"
+    extra_args: "--isolated"
   register: install_packages
   until: install_packages|success
   retries: 5
   delay: 2
+  with_items:
+    - "{{ tempest_pip_packages }}"
+    - "{{ tempest_git_dest }}"
   tags:
+    - tempest-pip-packages
     - tempest-pip-install
