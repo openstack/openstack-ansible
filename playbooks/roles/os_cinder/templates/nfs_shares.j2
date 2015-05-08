@@ -1,5 +1,5 @@
 # {{ ansible_managed }}
 
-{% for share in nfs_client.shares %}
+{% for share in cinder_nfs_client.shares %}
 {{ share.ip }}:{{ share.share }}
 {% endfor %}
