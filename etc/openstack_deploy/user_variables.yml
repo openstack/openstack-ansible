@@ -61,6 +61,7 @@ ssl_cipher_suite: "ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AE
 #   - horizon_ssl_protocol
 #   - horizon_ssl_cipher_suite
 
+
 ## Additional pinning generator that will allow for more packages to be pinned as you see fit.
 ## All pins allow for package and versions to be defined. Be careful using this as versions
 ## are always subject to change and updates regarding security will become your problem from this
@@ -71,3 +72,19 @@ ssl_cipher_suite: "ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AE
 #   - { package: "libvirt-bin", version: "1.2.2-0ubuntu13.1.9" }
 #   - { package: "rabbitmq-server", origin: "www.rabbitmq.com" }
 #   - { package: "*", release: "MariaDB" }
+
+
+## Environment variable settings
+# This allows users to specify the additional environment variables to be set
+# which is useful in setting where you working behind a proxy. If working behind
+# a proxy It's important to always specify the scheme as "http://". This is what
+# the underlying python libraries will handle best. This proxy information will be
+# placed both on the hosts and inside the containers.
+
+## Example environment variable setup:
+# proxy_env_url: http://username:pa$$w0rd@10.10.10.9:9000/
+# no_proxy_env: "localhost,127.0.0.1,{% for host in groups['all_containers'] %}{{ hostvars[host]['container_address'] }}{% if not loop.last %},{% endif %}{% endfor %}"
+# global_environment_variables:
+#   HTTP_PROXY: "{{ proxy_env_url }}"
+#   HTTPS_PROXY: "{{ proxy_env_url }}"
+#   NO_PROXY: "{{ no_proxy_env }}"
