@@ -31,10 +31,4 @@
     mode: "0644"
   notify: Restart libvirt-bin
 
-- name: Add nova user to libvirtd group
-  user:
-    name: "{{ system_user }}"
-    groups: "libvirtd"
-    append: "yes"
-
 - include: virsh_net_remove.yml

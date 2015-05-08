@@ -219,3 +219,7 @@ serverspec_install_dir: /opt/serverspec
 
 # How long to wait for a container after a (re)start
 container_start_timeout: 180
+
+# groups to add the system_user to in each container.
+additional_system_groups:
+ - adm

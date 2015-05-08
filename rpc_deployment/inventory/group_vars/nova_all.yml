@@ -49,6 +49,9 @@ service_admin_password: "{{ nova_service_password }}"
 ## Nova User / Group
 system_user: nova
 system_group: nova
+additional_system_groups:
+  - adm
+  - libvirtd
 
 ## Service Names
 service_names:
