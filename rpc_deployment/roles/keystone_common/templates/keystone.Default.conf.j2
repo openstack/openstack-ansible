@@ -3,7 +3,7 @@
 driver = {{ keystone_ldap_identity_driver|default('keystone.identity.backends.ldap.Identity') }}
 
 [ldap]
-url = ldap://{{ keystone_ldap_server|default('localhost') }}
+url = {{ keystone_ldap_scheme|default('ldap') }}://{{ keystone_ldap_server|default('localhost') }}
 user = {{ keystone_ldap_user_bind|default('root') }}
 password = {{ keystone_ldap_user_bind_password|default('secrete') }}
 suffix = {{ keystone_ldap_suffix|default('cn=example,cn=com') }}
