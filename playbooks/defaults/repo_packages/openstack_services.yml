@@ -50,14 +50,8 @@ glance_git_dest: "/opt/glance_{{ glance_git_install_branch | replace('/', '_') }
 heat_git_repo: https://github.com/openstack/heat
 heat_git_install_branch: 9ca4a533d5b3426d63991a34125f27eb189a6f4e # HEAD of "stable/kilo" as of 23.07.2015
 heat_git_dest: "/opt/heat_{{ heat_git_install_branch | replace('/', '_') }}"
-# The version of PBR >= 0.11.0 breaks this plugin (contrib package) so the package has been removed
-# from the build process until the PBR issues are resolve upstream which is related to all of the
-# services transitioning to Liberty. Note that the package will still be available as its presently
-# part of the upstream index as found here: http://rpc-repo.rackspace.com/pools/heat_contrib_extraroute/
-# BUG: https://bugs.launchpad.net/openstack-ansible/+bug/1450733
-# TODO(cloudnull) Re-enable this plugin once the build issues are resolved upstream.
-# heat_repo_plugins:
-#   - { path: "contrib", package: "extraroute" }
+heat_repo_plugins:
+  - { path: "contrib", package: "extraroute" }
 
 
 ## Horizon service
