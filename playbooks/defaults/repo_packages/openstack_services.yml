@@ -30,19 +30,19 @@
 
 ## Cinder service
 cinder_git_repo: https://github.com/openstack/cinder
-cinder_git_install_branch: 9690c2dcd02442e47bf215ede1d52333999a55a3 # HEAD of "master" as of 20.04.2015
+cinder_git_install_branch: e8d2a6e74bc26040329113daa3798e3dee81a972 # HEAD of "master" as of 12.05.2015
 cinder_git_dest: "/opt/cinder_{{ cinder_git_install_branch | replace('/', '_') }}"
 
 
 ## Glance service
 glance_git_repo: https://github.com/openstack/glance
-glance_git_install_branch: 20ec82f18c368bbc8a89e79d2d6eee2de2c2a9ea # HEAD of "master" as of 20.04.2015
+glance_git_install_branch: 4efb56aae9288952bdb0d368a7c307e8524b80d8 # HEAD of "master" as of 12.05.2015
 glance_git_dest: "/opt/glance_{{ glance_git_install_branch | replace('/', '_') }}"
 
 
 ## Heat service
 heat_git_repo: https://github.com/openstack/heat
-heat_git_install_branch: 5854f1d121d11faebd6e962e251d2e84bda801de # HEAD of "master" as of 20.04.2015
+heat_git_install_branch: 4032e40cce01cf2f31a359d9bbbcb34c3f0d2cae # HEAD of "master" as of 12.05.2015
 heat_git_dest: "/opt/heat_{{ heat_git_install_branch | replace('/', '_') }}"
 # The version of PBR >= 0.11.0 breaks this plugin (contrib package) so the package has been removed
 # from the build process until the PBR issues are resolve upstream which is related to all of the
@@ -56,47 +56,47 @@ heat_git_dest: "/opt/heat_{{ heat_git_install_branch | replace('/', '_') }}"
 
 ## Horizon service
 horizon_git_repo: https://github.com/openstack/horizon
-horizon_git_install_branch: 9f8c35c9e479ebd480a111167cafed4371df665a # HEAD of "master" as of 22.04.2015
+horizon_git_install_branch: 6f3d61241ac32f61e77562a7813e6fd9813a478c # HEAD of "master" as of 12.05.2015
 horizon_git_dest: "/opt/horizon_{{ horizon_git_install_branch | replace('/', '_') }}"
 
 
 ## Keystone service
 keystone_git_repo: https://github.com/openstack/keystone
-keystone_git_install_branch: fbf8985903fcf528e4636cb39880e3ab94c079c0 # HEAD of "master" as of 20.04.2015
+keystone_git_install_branch: 344b4fea7ec3dd703cbcbd080c983759206d13f9 # HEAD of "master" as of 12.05.2015
 keystone_git_dest: "/opt/keystone_{{ keystone_git_install_branch | replace('/', '_') }}"
 
 
 ## Neutron service
 neutron_git_repo: https://github.com/openstack/neutron
-neutron_git_install_branch: cc020dc930d88ae0419a650ad0c268b23f9e9ebe # HEAD of "master" as of 20.04.2015
+neutron_git_install_branch: 2aa336aeb86b5ba4c2569f43242506813bf60e2d # HEAD of "master" as of 12.05.2015
 neutron_git_dest: "/opt/neutron_{{ neutron_git_install_branch | replace('/', '_') }}"
 
 neutron_lbaas_git_repo: https://github.com/openstack/neutron-lbaas
-neutron_lbaas_git_install_branch: 700da77315d609ee02ba1a031df681d51abf2eab # HEAD of "master" as of 20.04.2015
+neutron_lbaas_git_install_branch: 74825a4b94d968e7ed768e5febe1dc12d5b57586 # HEAD of "master" as of 12.05.2015
 neutron_lbaas_git_dest: "/opt/neutron_lbaas_{{ neutron_lbaas_git_install_branch | replace('/', '_') }}"
 
 neutron_vpnaas_git_repo: https://github.com/openstack/neutron-vpnaas
-neutron_vpnaas_git_install_branch: 0782a2ba25cd8fce8c735c84fadd2fa9b670f418 # HEAD of "master" as of 20.04.2015
+neutron_vpnaas_git_install_branch: 5400931e658602fdde3dc2ce2e3a8512d22829ae # HEAD of "master" as of 12.05.2015
 neutron_vpnaas_git_dest: "/opt/neutron_vpnaas_{{ neutron_vpnaas_git_install_branch | replace('/', '_') }}"
 
 neutron_fwaas_git_repo: https://github.com/openstack/neutron-fwaas
-neutron_fwaas_git_install_branch: ba861cf9b9fd345626e2c4e9d3307b74825d5eea # HEAD of "master" as of 20.04.2015
+neutron_fwaas_git_install_branch: b3dcd49842d081a61118a7273d0b5dbc92797ff0 # HEAD of "master" as of 12.05.2015
 neutron_fwaas_git_dest: "/opt/neutron_fwaas_{{ neutron_fwaas_git_install_branch | replace('/', '_') }}"
 
 
 ## Nova service
 nova_git_repo: https://github.com/openstack/nova
-nova_git_install_branch: e77edeee0e7bf4c710b42023da6d9ae2e31cd8b1 # HEAD of "master" as of 20.04.2015
+nova_git_install_branch: d56dd7d233dfafc9245bc0ad972fbfea9ece916f # HEAD of "master" as of 12.05.2015
 nova_git_dest: "/opt/nova_{{ nova_git_install_branch | replace('/', '_') }}"
 
 
 ## Swift service
 swift_git_repo: https://github.com/openstack/swift
-swift_git_install_branch: 843236a635049d0a05d69f47aa675f90641c025d # HEAD of "master" as of 20.04.2015
+swift_git_install_branch: 19fd9d6404f5fbb62abf1e36c559cf02895f90f1 # HEAD of "master" as of 12.05.2015
 swift_git_dest: "/opt/swift_{{ swift_git_install_branch | replace('/', '_') }}"
 
 
 ## Tempest service
 tempest_git_repo: https://github.com/openstack/tempest
-tempest_git_install_branch: d1a391a55482d64b9014e7b41219af195722d990 # HEAD of "master" as of 20.3.2015
+tempest_git_install_branch: 8fba8d3f4647bd97ef9949454a58f0c6f1a3cfb1 # HEAD of "master" as of 12.05.2015
 tempest_git_dest: "/opt/tempest_{{ tempest_git_install_branch | replace('/', '_') }}"

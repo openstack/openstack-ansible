@@ -38,7 +38,7 @@ ceilometerclient_git_dest: "/opt/ceilometerclient_{{ ceilometerclient_git_instal
 
 ## Cinder client
 cinderclient_git_repo: https://github.com/openstack/python-cinderclient
-cinderclient_git_install_branch: 1.1.1
+cinderclient_git_install_branch: 1.2.1
 cinderclient_git_dest: "/opt/cinderclient_{{ cinderclient_git_install_branch | replace('/', '_') }}"
 
 
@@ -50,7 +50,7 @@ designateclient_git_dest: "/opt/designateclient_{{ designateclient_git_install_b
 
 ## Glance client
 glanceclient_git_repo: https://github.com/openstack/python-glanceclient
-glanceclient_git_install_branch: 0.16.0
+glanceclient_git_install_branch: 0.17.1
 glanceclient_git_dest: "/opt/glanceclient_{{ glanceclient_git_install_branch | replace('/', '_') }}"
 
 
@@ -68,7 +68,7 @@ ironicclient_git_dest: "/opt/ironicclient_{{ ironicclient_git_install_branch | r
 
 # Keystone client
 keystoneclient_git_repo: https://github.com/openstack/python-keystoneclient
-keystoneclient_git_install_branch: 1.2.0
+keystoneclient_git_install_branch: 1.3.1
 keystoneclient_git_dest: "/opt/keystoneclient_{{ keystoneclient_git_install_branch | replace('/', '_') }}"
 
 
