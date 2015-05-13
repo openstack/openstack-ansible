@@ -15,7 +15,7 @@
 
 galaxy_info:
   author: rcbops
-  description: Install rabbitmq server
+  description: Pinning of apt packages
   company: Rackspace
   license: Apache2
   min_ansible_version: 1.6.6
@@ -25,9 +25,8 @@ galaxy_info:
         - trusty
   categories:
     - cloud
-    - rabbitmq
+    - apt
+    - pinning
     - development
     - openstack
-dependencies:
-  - apt_package_pinning
-  - pip_lock_down
+dependencies: []
