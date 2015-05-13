@@ -60,3 +60,14 @@ ssl_cipher_suite: "ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AE
 # To override for Horizon only:
 #   - horizon_ssl_protocol
 #   - horizon_ssl_cipher_suite
+
+## Additional pinning generator that will allow for more packages to be pinned as you see fit.
+## All pins allow for package and versions to be defined. Be careful using this as versions
+## are always subject to change and updates regarding security will become your problem from this
+## point on. Pinning can be done based on a package version, release, or origin. Use "*" in the
+## package name to indicate that you want to pin all package to a particular constraint.
+# apt_pinned_packages:
+#   - { package: "lxc", version: "1.0.7-0ubuntu0.1" }
+#   - { package: "libvirt-bin", version: "1.2.2-0ubuntu13.1.9" }
+#   - { package: "rabbitmq-server", origin: "www.rabbitmq.com" }
+#   - { package: "*", release: "MariaDB" }
