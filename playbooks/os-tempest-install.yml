@@ -26,7 +26,7 @@
         - "tempest-rsyslog-client"
         - "rsyslog-client"
   vars_files:
-    - vars/repo_packages/openstack_services.yml
+    - defaults/repo_packages/openstack_services.yml
   vars:
     # This sets the tempest group to the utility group
     tempest_main_group: utility_all

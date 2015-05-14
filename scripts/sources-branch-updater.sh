@@ -19,7 +19,7 @@
 # all of the services that we support in an "automated" fashion.
 
 ONLINE_BRANCH=${ONLINE_BRANCH:-"stable/kilo"}
-SERVICE_FILE=${SERVICE_FILE:-"playbooks/vars/repo_packages/openstack_services.yml"}
+SERVICE_FILE=${SERVICE_FILE:-"playbooks/defaults/repo_packages/openstack_services.yml"}
 
 IFS=$'\n'
 
