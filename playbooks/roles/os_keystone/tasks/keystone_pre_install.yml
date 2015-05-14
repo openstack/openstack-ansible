@@ -41,6 +41,7 @@
     group: "{{ item.group|default(keystone_system_group_name) }}"
   with_items:
     - { path: "/etc/keystone" }
+    - { path: "{{ keystone_ldap_domain_config_dir }}" }
     - { path: "/etc/keystone/ssl" }
     - { path: "/etc/sudoers.d", mode: "0750", owner: "root", group: "root" }
     - { path: "{{ keystone_system_user_home }}" }

@@ -56,6 +56,10 @@ pool_timeout = {{ keystone_database_pool_timeout }}
 
 [identity]
 driver = {{ keystone_identity_driver }}
+{% if keystone_ldap is defined %}
+domain_config_dir = {{ keystone_ldap_domain_config_dir }}
+domain_specific_drivers_enabled = True
+{% endif %}
 
 
 [assignment]
@@ -66,16 +70,6 @@ driver = {{ keystone_assignment_driver }}
 cache_time = {{ keystone_resource_cache_time }}
 caching = true
 driver = {{ keystone_resource_driver }}
-
-
-{% if keystone_ldap is defined %}
-{% for section in keystone_ldap|dictsort %}
-[{{ section.0 }}]
-{% for key, value in section.1.items() %}
-{{ key }} = {{ value }}
-{% endfor %}
-{% endfor %}
-{% endif %}
 
 
 [token]

@@ -1,0 +1,12 @@
+# LDAP configuration options
+{% if keystone_ldap is defined %}
+[identity]
+driver = {{ keystone_ldap_identity_driver }}
+
+{% for section in keystone_ldap|dictsort %}
+[{{ section.0 }}]
+{% for key, value in section.1.items() %}
+{{ key }} = {{ value }}
+{% endfor %}
+{% endfor %}
+{% endif %}
