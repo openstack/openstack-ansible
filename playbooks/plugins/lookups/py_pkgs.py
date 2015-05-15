@@ -88,7 +88,7 @@ class DependencyFileProcessor(object):
 
     @staticmethod
     def _get_files(path):
-        """Return a list of all files in the vars/repo_packages directory.
+        """Return a list of all files in the defaults/repo_packages directory.
 
         :type path: ``str``
         :returns: ``list``

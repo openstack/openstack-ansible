@@ -61,4 +61,4 @@
     ansible_hostname: "{{ container_name }}"
     is_metal: "{{ properties.is_metal|default(false) }}"
   vars_files:
-    - vars/repo_packages/openstack_services.yml
+    - defaults/repo_packages/openstack_services.yml
