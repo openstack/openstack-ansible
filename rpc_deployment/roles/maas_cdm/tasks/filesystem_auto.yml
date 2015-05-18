@@ -40,7 +40,7 @@
   with_items: check_exists.results
 
 - name: Create alarm if it does not exist
-  shell: raxmon-alarms-create --entity-id {{ entity_id.stdout|quote }} --check-id {{ item[1].stdout|quote }} --notification-plan {{ maas_notification_plan }} --label "Disk space used on {{ item[1].item.item|quote }}--{{ inventory_hostname|quote }}" --criteria ":set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (percentage(metric['used'], metric['total']) >= {{ threshold }}) { return new AlarmStatus(WARNING, '{{ item[1].item.item }} filesystem is >= {{ threshold }}% full.'); }"
+  shell: raxmon-alarms-create --entity-id {{ entity_id.stdout|quote }} --check-id {{ item[1].stdout|quote }} --notification-plan {{ maas_notification_plan }} --label "Disk space used on {{ item[1].item.item|quote }}--{{ inventory_hostname|quote }}" --criteria ":set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (percentage(metric['used'], metric['total']) >= {{ critical_threshold }}) { return new AlarmStatus(CRITICAL, '{{ item[1].item.item }} filesystem is >= {{ critical_threshold }}% full.'); } if (percentage(metric['used'], metric['total']) >= {{ warning_threshold }}) { return new AlarmStatus(WARNING, '{{ item[1].item.item }} filesystem is >= {{ warning_threshold }}% full.'); }"
   when: item[0].rc != 0 and item[0].item.item == item[1].item.item
   with_nested:
     - alarm_exists.results
