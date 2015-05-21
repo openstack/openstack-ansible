@@ -28,7 +28,7 @@ container_lvm_fstype: ext4
 container_lvm_fssize: 5GB
 
 ## General configuration
-core_plugin: neutron.plugins.ml2.plugin.Ml2Plugin
+core_plugin: "{{ neutron_plugins[neutron_plugin_type].plugin_core }}"
 interface_driver: neutron.agent.linux.interface.BridgeInterfaceDriver
 metering_driver: neutron.services.metering.drivers.iptables.iptables_driver.IptablesMeteringDriver
 
@@ -40,7 +40,7 @@ service_plugins:
 
 dhcp_driver: neutron.agent.linux.dhcp.Dnsmasq
 neutron_config: /etc/neutron/neutron.conf
-neutron_plugin: /etc/neutron/plugins/ml2/ml2_conf.ini
+neutron_plugin: "/etc/neutron/{{ neutron_plugins[neutron_plugin_type].plugin_ini }}"
 neutron_revision: head
 
 ## Neutron downtime
@@ -72,24 +72,32 @@ system_user: neutron
 system_group: neutron
 
 ## Service Names
-service_names:
-  - neutron-agent
-  - neutron-dhcp-agent
-  - neutron-linuxbridge-agent
-  - neutron-metadata-agent
-  - neutron-metering-agent
-  - neutron-l3-agent
-  - neutron-server
+service_names: "{{ neutron_services|selectattr('service_en')|map(attribute='service_name')|list }}"
 
 container_directories:
-  - { name: /etc/neutron }
-  - { name: /etc/neutron/plugins }
-  - { name: /etc/neutron/plugins/ml2 }
-  - { name: /etc/neutron/rootwrap.d }
-  - { name: /var/cache/neutron }
-  - { name: /var/lib/neutron, mode: 755 }
-  - { name: /var/lib/neutron/ha_confs }
-  - { name: /var/lock/neutron }
-  - { name: /var/log/neutron, mode: 755 }
-  - { name: /var/run/neutron }
+  - { name: "/etc/neutron" }
+  - { name: "/etc/neutron/plugins" }
+  - { name: "/etc/neutron/plugins/{{ neutron_plugin_type}}" }
+  - { name: "/etc/neutron/rootwrap.d" }
+  - { name: "/var/cache/neutron" }
+  - { name: "/var/lib/neutron", mode: 755 }
+  - { name: "/var/lib/neutron/ha_confs" }
+  - { name: "/var/lock/neutron" }
+  - { name: "/var/log/neutron", mode: 755 }
+  - { name: "/var/run/neutron" }
 
+# Neutron Plugins
+neutron_plugin_type: ml2
+
+neutron_plugins:
+  ml2:
+    plugin_core: neutron.plugins.ml2.plugin.Ml2Plugin
+    plugin_ini: plugins/ml2/ml2_conf.ini
+
+neutron_services:
+ - { service_name: neutron-dhcp-agent, service_en: True, service_conf: dhcp_agent.ini, service_rootwrap: rootwrap.d/dhcp.filters }
+ - { service_name: neutron-linuxbridge-agent, service_en: True, service_conf: plugins/ml2/ml2_conf.ini, service_rootwrap: rootwrap.d/linuxbridge-plugin.filters }
+ - { service_name: neutron-metadata-agent, service_en: True, service_conf: metadata_agent.ini }
+ - { service_name: neutron-metering-agent, service_en: True, service_conf: metering_agent.ini }
+ - { service_name: neutron-l3-agent, service_en: True, service_conf: l3_agent.ini, service_rootwrap: rootwrap.d/l3.filters }
+ - { service_name: neutron-server, service_en: True, service_conf: "{{ neutron_plugins[neutron_plugin_type].plugin_ini }}", service_rootwrap: rootwrap.conf }

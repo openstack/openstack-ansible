@@ -54,7 +54,7 @@
   tags:
     - neutron_config
 
-- name: Setup Neutron Config
+- name: Setup Default Neutron Config
   template: >
     src={{ item }}
     dest=/etc/neutron/{{ item }}
@@ -62,25 +62,39 @@
     group={{ system_user }}
   with_items:
     - neutron.conf
-    - metadata_agent.ini
-    - l3_agent.ini
-    - dhcp_agent.ini
     - api-paste.ini
     - policy.json
     - dnsmasq-neutron.conf
-    - rootwrap.conf
-    - plugins/ml2/ml2_conf.ini
     - rootwrap.d/debug.filters
-    - rootwrap.d/dhcp.filters
     - rootwrap.d/iptables-firewall.filters
-    - rootwrap.d/l3.filters
     - rootwrap.d/lbaas-haproxy.filters
-    - rootwrap.d/linuxbridge-plugin.filters
     - rootwrap.d/nec-plugin.filters
     - rootwrap.d/openvswitch-plugin.filters
     - rootwrap.d/ryu-plugin.filters
     - rootwrap.d/vpnaas.filters
     - rootwrap.d/ipset-firewall.filters
+  tags:
+    - neutron_config
+
+- name: Setup Agent Neutron Config
+  template: >
+    src={{ item.service_conf }}
+    dest=/etc/neutron/{{ item.service_conf }}
+    owner={{ system_group }}
+    group={{ system_user }}
+  with_items: neutron_services
+  when: item.service_en == True and (item.service_conf is defined)
+  tags:
+    - neutron_config
+
+- name: Setup Agent Neutron Rootwrap
+  template: >
+    src={{ item.service_rootwrap }}
+    dest=/etc/neutron/{{ item.service_rootwrap }}
+    owner={{ system_group }}
+    group={{ system_user }}
+  with_items: neutron_services
+  when: item.service_en == True and (item.service_rootwrap is defined)
   notify: Restart os service
   tags:
     - neutron_config

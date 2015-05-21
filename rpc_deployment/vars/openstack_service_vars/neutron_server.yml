@@ -17,4 +17,4 @@
 # These don't have to be explicitly imported by vars_files: they are autopopulated.
 
 program_name: neutron-server
-program_config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini
+program_config_options: --config-file /etc/neutron/neutron.conf --config-file "/etc/neutron/{{ neutron_plugins[neutron_plugin_type].plugin_ini }}"
