@@ -22,7 +22,7 @@ verbose: True
 repo_service_user_name: nginx
 repo_service_home_folder: /var/www
 repo_server_port: 8181
-repo_pip_default_index: "http://rpc-repo.rackspace.com/pools"
+repo_pip_default_index: "http://{{ openstack_upstream_domain }}/pools"
 
 
 ## Rsyslog server
@@ -34,7 +34,8 @@ rsyslog_server_storage_directory: /var/log/log-storage
 openstack_release: master
 # URL for the frozen internal openstack repo.
 openstack_repo_url: "http://{{ internal_lb_vip_address }}:{{ repo_server_port }}"
-openstack_upstream_url: "http://rpc-repo.rackspace.com"
+openstack_upstream_domain: "rpc-repo.rackspace.com"
+openstack_upstream_url: "http://{{ openstack_upstream_domain }}"
 # Global minimum kernel requirement
 openstack_host_required_kernel: 3.13.0-34-generic
 
@@ -69,7 +70,7 @@ galera_root_user: root
 
 ## Pip install
 # Lock down pip to only a specific version of pip
-pip_get_pip_options:  "--no-index --find-links={{ openstack_upstream_url }}/os-releases/{{ openstack_release }}"
+pip_get_pip_options:  "--no-index --find-links={{ openstack_upstream_url }}/os-releases/{{ openstack_release }} --trusted-host {{ openstack_upstream_domain }}"
 
 
 ## Memcached options
