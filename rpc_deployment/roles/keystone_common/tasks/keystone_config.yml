@@ -22,6 +22,7 @@
   with_items:
     - default_catalog.templates
     - policy.json
+  notify: Restart Apache
 
 - name: Generate Keystone Config
   template:
@@ -32,3 +33,4 @@
   with_items:
       - { file: keystone.conf, var: "{{ keystone_conf }}" }
       - { file: keystone-paste.ini, var: "{{ keystone_paste_ini }}" }
+  notify: Restart Apache

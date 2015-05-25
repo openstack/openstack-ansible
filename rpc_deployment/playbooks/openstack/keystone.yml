@@ -20,8 +20,8 @@
     - common
     - common_sudoers
     - container_common
-    - keystone_common
     - openstack_common
+    - keystone_common
     - openstack_openrc
     - galera_client_cnf
   vars_files:
@@ -33,7 +33,6 @@
   user: root
   roles:
     - galera_db_setup
-    - keystone_apache
     - keystone_setup
     - keystone_add_service
   vars:
@@ -41,11 +40,3 @@
   vars_files:
     - vars/openstack_service_vars/keystone.yml
     - vars/openstack_service_vars/keystone_endpoint.yml
-
-# Setup all keystone nodes
-- hosts: keystone:!keystone[0]
-  user: root
-  roles:
-    - keystone_apache
-  vars_files:
-    - vars/openstack_service_vars/keystone.yml
