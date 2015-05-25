@@ -18,7 +18,7 @@ is_metal: true
 
 rabbitmq_primary_cluster_node: "{{ groups['rabbitmq_all'][0] }}"
 
-rabbitmq_package_url: http://www.rabbitmq.com/releases/rabbitmq-server/v3.5.1/rabbitmq-server_3.5.1-1_all.deb
+rabbitmq_package_url: https://www.rabbitmq.com/releases/rabbitmq-server/v3.5.1/rabbitmq-server_3.5.1-1_all.deb
 rabbitmq_package_sha256: "e514012a210b4ed5b77d726329ce027c50e8629c396bcde451ac16aaff07d047"
 rabbitmq_package_path: "/opt/rabbitmq-server.deb"
 
