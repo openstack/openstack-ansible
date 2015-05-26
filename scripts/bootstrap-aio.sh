@@ -200,9 +200,9 @@ mount -a || true
 if [ ! "$(swapon -s | grep -v Filename)" ]; then
   memory_kb=$(awk '/MemTotal/ {print $2}' /proc/meminfo)
   if [ "${memory_kb}" -lt "8388608" ]; then
-    swap_size="4G"
+    swap_size="4294967296"
   else
-    swap_size="8G"
+    swap_size="8589934592"
   fi
   loopback_create "/opt/swap.img" ${swap_size} thick swap
   # Ensure swap will be used on the host
@@ -215,7 +215,7 @@ fi
 # Build the loopback drive for cinder to use
 CINDER="cinder.img"
 if ! vgs cinder-volumes; then
-  loopback_create "/opt/${CINDER}" 1000G thin rc
+  loopback_create "/opt/${CINDER}" 1073741824000 thin rc
   CINDER_DEVICE=$(losetup -a | awk -F: "/${CINDER}/ {print \$1}")
   pvcreate ${CINDER_DEVICE}
   pvscan
@@ -234,7 +234,7 @@ if [ "${DEPLOY_SWIFT}" == "yes" ]; then
   # build the loopback drives for swift to use
   for SWIFT in swift1 swift2 swift3; do
     if ! grep "${SWIFT}" /proc/mounts > /dev/null; then
-      loopback_create "/opt/${SWIFT}.img" 1000G thin none
+      loopback_create "/opt/${SWIFT}.img" 1073741824000 thin none
       if ! grep -w "^/opt/${SWIFT}.img" /etc/fstab > /dev/null; then
         echo "/opt/${SWIFT}.img /srv/${SWIFT}.img xfs loop,noatime,nodiratime,nobarrier,logbufs=8 0 0" >> /etc/fstab
       fi
