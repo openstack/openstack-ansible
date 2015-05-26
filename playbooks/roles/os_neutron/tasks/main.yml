@@ -30,3 +30,6 @@
     inventory_hostname in groups['neutron_agent']
 
 - include: neutron_upstart_init.yml
+
+- name: Flush handlers
+  meta: flush_handlers

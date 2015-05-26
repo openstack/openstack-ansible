@@ -20,3 +20,5 @@
 - include: lxc_dnsmasq_cleanup.yml
 - include: lxc_cache.yml
   when: lxc_container_caches is defined
+- name: Flush handlers
+  meta: flush_handlers

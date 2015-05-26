@@ -41,3 +41,6 @@
 - include: swift_service_setup.yml
   when: >
     inventory_hostname == groups['swift_all'][0]
+
+- name: Flush handlers
+  meta: flush_handlers

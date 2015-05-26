@@ -25,3 +25,6 @@
 - include: glance_service_setup.yml
   when: >
     inventory_hostname == groups['glance_all'][0]
+
+- name: Flush handlers
+  meta: flush_handlers

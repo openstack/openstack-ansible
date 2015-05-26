@@ -24,3 +24,6 @@
 
 - include: galera_add_node.yml
   when: inventory_hostname != groups['galera_all'][0]
+
+- name: Flush handlers
+  meta: flush_handlers
