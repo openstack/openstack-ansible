@@ -31,3 +31,6 @@
     inventory_hostname == groups['heat_all'][0]
 
 - include: heat_upstart_init.yml
+
+- name: Flush handlers
+  meta: flush_handlers

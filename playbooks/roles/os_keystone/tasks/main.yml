@@ -27,3 +27,6 @@
 - include: keystone_service_setup.yml
   when: >
     inventory_hostname == groups['keystone_all'][0]
+
+- name: Flush handlers
+  meta: flush_handlers

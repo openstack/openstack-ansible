@@ -32,3 +32,6 @@
 - include: repo_sync_manager.yml
   when: >
     inventory_hostname == groups['pkg_repo'][0]
+
+- name: Flush handlers
+  meta: flush_handlers

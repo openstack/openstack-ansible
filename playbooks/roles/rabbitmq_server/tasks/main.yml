@@ -26,3 +26,6 @@
 - include: rabbitmq_cluster_join.yml
   when: >
     inventory_hostname != groups['rabbitmq_all'][0]
+
+- name: Flush handlers
+  meta: flush_handlers
