@@ -142,9 +142,10 @@ function loopback_create() {
     if [ "${LOOP_FILE_TYPE}" = "thin" ]; then
       truncate -s ${LOOP_FILESIZE} ${LOOP_FILENAME}
     elif [ "${LOOP_FILE_TYPE}" = "thick" ]; then
-      fallocate -l ${LOOP_FILESIZE} ${LOOP_FILENAME}
+      fallocate -l ${LOOP_FILESIZE} ${LOOP_FILENAME} &> /dev/null || \
+      dd if=/dev/zero of=${LOOP_FILENAME} bs=1M count=$(( ${LOOP_FILESIZE} / 1024 / 1024 ))
     else
-      exit_fail 'No valid option ${LOOP_FILE_TYPE} found.'
+      exit_fail "No valid option ${LOOP_FILE_TYPE} found."
     fi
   fi
 
