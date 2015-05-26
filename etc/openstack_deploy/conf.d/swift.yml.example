@@ -16,225 +16,86 @@
 # Overview
 # ========
 #
-# This file contains the configuration for the Object Storage (swift)
-# service. Only enable these options for environments that contain the
-# Object Storage service. For more information on Object Storage options,
-# see the documentation at
+# This file contains the configuration for the OpenStack Ansible Deployment
+# (OSAD) Object Storage (swift) service. Only enable these options for
+# deployments that contain the Object Storage service. For more information on
+# these options, see the documentation at
 #
 # http://docs.openstack.org/developer/swift/index.html
 #
-# The hierarchical structure of this file supports overrides for most
-# options. However, for typical deployments, defining options closest
-# to the top level provides a functional configuration.
+# You can customize the options in this file and copy it to
+# /etc/openstack_deploy/conf.d/swift.yml or create a new
+# file containing only necessary options for your environment
+# before deployment.
+#
+# OSAD implements PyYAML to parse YAML files and therefore supports structure
+# and formatting options that augment traditional YAML. For example, aliases
+# or references. For more information on PyYAML, see the documentation at
+#
+# http://pyyaml.org/wiki/PyYAMLDocumentation
 #
 # Configuration reference
 # =======================
 #
-# Level: swift (required)
-# Contains global options.
+# Level: global_overrides (required)
+# Contains global options that require customization for a deployment. For
+# example, the ring stricture. This level also provides a mechanism to
+# override other options defined in the playbook structure.
 #
-#   Option: storage_network (optional, string)
-#   Network to use for object storage operations. Defaults to the management
-#   network if omitted.
-#   If using a storage network, specify the network bridge containing it,
-#   typically 'br-storage'.
+#   Level: swift (required)
+#   Contains options for swift.
 #
-#   Option: repl_network (optional, string)
-#   Network to use for object replication operations. Defaults to the
-#   'storage_network' value if omitted.
-#   If using a replication network, specify the network bridge containing it,
-#   typically 'br-repl'.
+#     Option: storage_network (required, string)
+#     Name of the storage network bridge on target hosts. Typically
+#     'br-storage'.
 #
-#   Option: part_power (required, integer)
-#   Partition power. Immutable without rebuilding the rings.
-#   Applies to all rings unless overridden at the 'account' or 'container'
-#   levels or within a policy under the 'storage_policies' level.
+#     Option: repl_network (optional, string)
+#     Name of the replication network bridge on target hosts. Typically
+#     'br-repl'. Defaults to the value of the 'storage_network' option.
 #
-#   Option: repl_number (optional, integer)
-#   Number of replicas for each partition. Defaults to 3.
-#   Applies to all rings unless overridden at the 'account' or 'container'
-#   levels or within a policy under the 'storage_policies' level.
+#     Option: part_power (required, integer)
+#     Partition power. Applies to all rings unless overridden at the 'account'
+#     or 'container' levels or within a policy in the 'storage_policies' level.
+#     Immutable without rebuilding the rings.
 #
-#   Option: min_part_hours (optional, integer)
-#   Minimum time in hours between multiple moves of the same partition.
-#   Defaults to 1.
-#   Applies to all rings unless overridden at the 'account' or 'container'
-#   levels or within a policy under the 'storage_policies' level.
+#     Option: repl_number (optional, integer)
+#     Number of replicas for each partition. Applies to all rings unless
+#     overridden at the 'account' or 'container' levels or within a policy
+#     in the 'storage_policies' level. Defaults to 3.
 #
-#   Option: region (optional, integer)
-#   Region of a disk. Defaults to 1.
-#   Applies to all disks in all hosts unless overridden deeper in the
-#   structure.
+#     Option: min_part_hours (optional, integer)
+#     Minimum time in hours between multiple moves of the same partition.
+#     Applies to all rings unless overridden at the 'account' or 'container'
+#     levels or within a policy in the 'storage_policies' level. Defaults
+#     to 1.
 #
-#   Option: zone (optional, integer)
-#   Zone of a disk. Defaults to 0.
-#   Applies to all disks in all hosts unless overridden deeper in the
-#   structure.
+#     Option: region (optional, integer)
+#     Region of a disk. Applies to all disks in all storage hosts unless
+#     overridden deeper in the structure. Defaults to 1.
 #
-#   Option: weight (optional, integer)
-#   Weight of a disk. Defaults to 100.
-#   Applies to all disks in all hosts unless overridden deeper in the
-#   structure.
+#     Option: zone (optional, integer)
+#     Zone of a disk. Applies to all disks in all storage hosts unless
+#     overridden deeper in the structure. Defaults to 0.
 #
-#   Option: mount_point (required, string)
-#   Top-level directory for mount points of disks. Defaults to /mnt.
-#   Applies to all hosts unless overridden deeper in the structure.
+#     Option: weight (optional, integer)
+#     Weight of a disk. Applies to all disks in all storage hosts unless
+#     overridden deeper in the structure. Defaults to 100.
 #
-#   Level: drives (required)
-#   Contains the mount points of disks.
-#   Applies to all hosts unless overridden deeper in the structure.
+#   Example:
 #
-#     Option: name (required, string)
-#     Mount point of a disk. Use one entry for each disk.
-#     Applies to all hosts unless overridden deeper in the structure.
+#   Define a typical deployment:
 #
-#     The following example shows disks mounted at /mnt/sda and /mnt/sdb
-#     on all storage hosts:
-#       mount_point: /mnt
-#       drives:
-#         - name: sda
-#         - name: sdb
+#   - Storage network that uses the 'br-storage' bridge. Proxy containers
+#     typically use the 'storage' IP address pool. However, storage hosts
+#     use bare metal and require manual configuration of the 'br-storage'
+#     bridge on each host.
+#   - Replication network that uses the 'br-repl' bridge. Only storage hosts
+#     contain this network. Storage hosts use bare metal and require manual
+#     configuration of the bridge on each host.
+#   - Ring configuration with partition power of 8, three replicas of each
+#     file, and minimum 1 hour between migrations of the same partition. All
+#     rings use region 1 and zone 0. All disks include a weight of 100.
 #
-#   Level: account (optional)
-#   Contains 'min_part_hours' and 'repl_number' options specific to the
-#   account ring.
-#
-#   Level: container (optional)
-#   Contains 'min_part_hours' and 'repl_number' options specific to the
-#   container ring.
-#
-#   Level: storage_policies (required)
-#   Contains storage policies. Minimum one policy. One policy must include
-#   the 'index: 0' and 'default: True' options.
-#
-#     Level: policy (required)
-#     Contains a storage policy.
-#
-#       Option: name (required, string)
-#       Policy name.
-#
-#       Option: index (required, integer)
-#       Policy index. One policy must include this option with a '0'
-#       value.
-#
-#       Option: policy_type (optional, string)
-#       Policy type. Defines if this type of policy, possible values:
-#         - replication (default); or
-#         - erasure_coding
-#
-#       Option: ec_type (optional, string)
-#       Defines the erasure code algorithm to use. This option is required
-#       when policy_type == erasure_coding.
-#
-#       Option: ec_num_data_fragments (optional, integer)
-#       Defines the  number of data fragments to break object into. This
-#       option is required when policy_type == erasure_coding.
-#
-#       Option: ec_num_parity_fragments (optional, integer)
-#       Defines the  number of parity fragments to break object into. This
-#       option is required when policy_type == erasure_coding.
-#
-#       Option: ec_object_segment_size (optional, integer)
-#       Defines the segment size (btyes). Swift will send the incoming object
-#       data a segment size at a time in to the erasure code encoder.
-#       This option is required when policy_type == erasure_coding.
-#
-#       Option: default (optional, boolean)
-#       Defines the default policy. One policy must include this option
-#       with a 'True' value.
-#
-#       Option: deprecated (optional, boolean)
-#       Defines a deprecated policy.
-#
-#       Note: The following levels and options override any values higher
-#       in the structure and generally apply to advanced deployments.
-#
-#       Option: repl_number (optional, integer)
-#       Number of replicas of each partition in this policy.
-#
-#       Option: min_part_hours (optional, integer)
-#       Minimum time between multiple moves of the same partition in this
-#       policy.
-#
-# Level: swift_proxy-hosts (required)
-# Contains definitions for proxy hosts.
-#
-#   Level: <value> (optional, string)
-#   Name of a proxy host. Typical deployments require at least three
-#   proxy hosts.
-#
-#     Option: ip (required, string)
-#     IP address of the host.
-#
-# Level: swift_hosts (required)
-# Contains definitions for storage hosts.
-#
-#   Level: <value> (required, string)
-#   Name of a storage host. Typical deployments require at least three
-#   storage hosts.
-#
-#     Option: ip (required, string)
-#     IP address of the host.
-#
-#     Note: The following levels and options override any values higher
-#     in the structure and generally apply to advanced deployments.
-#
-#     Level: container_vars (optional)
-#     Contains options specific to this host.
-#
-#       Level: swift_vars (optional)
-#       Contains swift options specific to this host.
-#
-#         Option: region (optional, integer)
-#         Region of all disks in this host.
-#
-#         Option: zone (optional, integer)
-#         Zone of all disks in this host.
-#
-#         Option: weight (optional, integer)
-#         Weight of all disks in this host.
-#
-#         Level: groups (optional)
-#         Contains groups specific to this host.
-#         The following example shows a storage host with the account ring,
-#         container ring, and 'silver' storage policy:
-#           groups:
-#             - account
-#             - container
-#             - silver
-#
-#         Level: drives (optional)
-#         Contains the mount points of disks specific to this host.
-#
-#         Level or option: name (optional, string)
-#         Mount point of a disk specific to this host. Use one entry for
-#         each disk. Functions as a level for disks that contain additional
-#         options.
-#
-#           Option: region (optional, integer)
-#           Region of a disk in this host.
-#
-#           Option: zone (optional, integer)
-#           Zone of a disk in this host.
-#
-#           Option: weight (optional, integer)
-#           Weight of a disk in this host.
-#
-#           Level: groups (optional)
-#           Contains groups for a disk in this host.
-#           The following example shows a disk with the account ring,
-#           container ring, and 'silver' storage policy:
-#             groups:
-#               - account
-#               - container
-#               - silver
-
-# Default (example) configuration
-# ===============================
-
-# Global options
-
-# global_overrides:
 #   swift:
 #     storage_network: 'br-storage'
 #     replication_network: 'br-repl'
@@ -244,81 +105,273 @@
 #     region: 1
 #     zone: 0
 #     weight: 100
+#
+#   Note: Most typical deployments override the 'zone' option in the
+#   'swift_vars' level to use a unique zone for each storage host.
+#
+#     Option: mount_point (required, string)
+#     Top-level directory for mount points of disks. Defaults to /mnt.
+#     Applies to all hosts unless overridden deeper in the structure.
+#
+#     Level: drives (required)
+#     Contains the mount points of disks.
+#     Applies to all hosts unless overridden deeper in the structure.
+#
+#       Option: name (required, string)
+#       Mount point of a disk. Use one entry for each disk.
+#       Applies to all hosts unless overridden deeper in the structure.
+#
+#     Example:
+#
+#     Mount disks 'sdc', 'sdd', 'sde', and 'sdf' to the '/mnt' directory on all
+#     storage hosts:
+#
 #     mount_point: /mnt
 #     drives:
 #       - name: sdc
 #       - name: sdd
 #       - name: sde
 #       - name: sdf
-#     account:
-#     container:
-#     storage_policies:
-#       - policy:
-#           name: gold
-#           index: 0
-#           default: True
-#       - policy:
-#           name: silver
-#           index: 1
-#           repl_number: 3
-#           deprecated: True
-#       - policy:
-#           name: ec10-4
-#           index: 2
-#           policy_type: erasure_coding
-#           ec_type: jerasure_rs_vand
-#           ec_num_data_fragments: 10
-#           ec_num_parity_fragments: 4
-#           ec_object_segment_size: 1048576
-
-# Proxy hosts
-
-# swift-proxy_hosts:
-#   infra-node1:
-#     ip: 192.0.2.1
-#   infra-node2:
-#     ip: 192.0.2.2
-#   infra-node3:
-#     ip: 192.0.2.3
-
-# Storage hosts
 #
-# The first three hosts contain options for typical deployments. Hosts
-# four and five show options for more advanced deployments.
-
+#     Level: account (optional)
+#     Contains 'min_part_hours' and 'repl_number' options specific to the
+#     account ring.
+#
+#     Level: container (optional)
+#     Contains 'min_part_hours' and 'repl_number' options specific to the
+#     container ring.
+#
+#     Level: storage_policies (required)
+#     Contains storage policies. Minimum one policy. One policy must include
+#     the 'index: 0' and 'default: True' options.
+#
+#       Level: policy (required)
+#       Contains a storage policy. Define for each policy.
+#
+#         Option: name (required, string)
+#         Policy name.
+#
+#         Option: index (required, integer)
+#         Policy index. One policy must include this option with a '0'
+#         value.
+#
+#         Option: policy_type (optional, string)
+#         Defines policy as replication or erasure coding. Accepts 'replication'
+#         'erasure_coding' values. Defaults to 'replication' value if omitted.
+#
+#         Option: ec_type (conditionally required, string)
+#         Defines the erasure coding algorithm. Required for erasure coding
+#         policies.
+#
+#         Option: ec_num_data_fragments (conditionally required, integer)
+#         Defines the number of object data fragments. Required for erasure
+#         coding policies.
+#
+#         Option: ec_num_parity_fragments (conditionally required, integer)
+#         Defines the number of object parity fragments. Required for erasure
+#         coding policies.
+#
+#         Option: ec_object_segment_size (conditionally required, integer)
+#         Defines the size of object segments in bytes. Swift sends incoming
+#         objects to an erasure coding policy in segments of this size.
+#         Required for erasure coding policies.
+#
+#         Option: default (conditionally required, boolean)
+#         Defines the default policy. One policy must include this option
+#         with a 'True' value.
+#
+#         Option: deprecated (optional, boolean)
+#         Defines a deprecated policy.
+#
+#         Note: The following levels and options override any values higher
+#         in the structure and generally apply to advanced deployments.
+#
+#         Option: repl_number (optional, integer)
+#         Number of replicas of each partition in this policy.
+#
+#         Option: min_part_hours (optional, integer)
+#         Minimum time in hours between multiple moves of the same partition
+#         in this policy.
+#
+#     Example:
+#
+#     Define three storage policies: A default 'gold' policy, a deprecated
+#     'silver' policy, and an erasure coding 'ec10-4' policy.
+#
+#     storage_policies:
+#      - policy:
+#         name: gold
+#         index: 0
+#         default: True
+#     - policy:
+#         name: silver
+#         index: 1
+#         repl_number: 3
+#         deprecated: True
+#     - policy:
+#         name: ec10-4
+#         index: 2
+#         policy_type: erasure_coding
+#         ec_type: jerasure_rs_vand
+#         ec_num_data_fragments: 10
+#         ec_num_parity_fragments: 4
+#         ec_object_segment_size: 1048576
+#
+# --------
+#
+# Level: swift_proxy-hosts (required)
+# List of target hosts on which to deploy the swift proxy service. Recommend
+# three minimum target hosts for these services. Typically contains the same
+# target hosts as the 'shared-infra_hosts' level in complete OpenStack
+# deployments.
+#
+#   Level: <value> (optional, string)
+#   Name of a proxy host.
+#
+#     Option: ip (required, string)
+#     IP address of this target host, typically the IP address assigned to
+#     the management bridge.
+#
+# Example:
+#
+# Define three swift proxy hosts:
+#
+# swift_proxy-hosts:
+#
+#   infra1:
+#     ip: 172.29.236.101
+#   infra2:
+#     ip: 172.29.236.102
+#   infra3:
+#     ip: 172.29.236.103
+#
+# --------
+#
+# Level: swift_hosts (required)
+# List of target hosts on which to deploy the swift storage services.
+# Recommend three minimum target hosts for these services.
+#
+#   Level: <value> (required, string)
+#   Name of a storage host.
+#
+#     Option: ip (required, string)
+#     IP address of this target host, typically the IP address assigned to
+#     the management bridge.
+#
+#     Note: The following levels and options override any values higher
+#     in the structure and generally apply to advanced deployments.
+#
+#     Level: container_vars (optional)
+#     Contains options for this target host.
+#
+#       Level: swift_vars (optional)
+#       Contains swift options for this target host. Typical deployments
+#       use this level to define a unique zone for each storage host.
+#
+#         Option: storage_ip (optional, string)
+#         IP address to use for accessing the account, container, and object
+#         services if different than the IP address of the storage network
+#         bridge on the target host. Also requires manual configuration of
+#         the host.
+#
+#         Option: repl_ip (optional, string)
+#         IP address to use for replication services if different than the IP
+#         address of the replication network bridge on the target host. Also
+#         requires manual configuration of the host.
+#
+#         Option: region (optional, integer)
+#         Region of all disks.
+#
+#         Option: zone (optional, integer)
+#         Zone of all disks.
+#
+#         Option: weight (optional, integer)
+#         Weight of all disks.
+#
+#         Level: groups (optional)
+#         List of one of more Ansible groups that apply to this host.
+#
+#         Example:
+#
+#         Deploy the account ring, container ring, and 'silver' policy.
+#
+#         groups:
+#           - account
+#           - container
+#           - silver
+#
+#         Level: drives (optional)
+#         Contains the mount points of disks specific to this host.
+#
+#         Level or option: name (optional, string)
+#         Mount point of a disk specific to this host. Use one entry for
+#         each disk. Functions as a level for disks that contain additional
+#         options.
+#
+#           Option: storage_ip (optional, string)
+#           IP address to use for accessing the account, container, and object
+#           services of a disk if different than the IP address of the storage
+#           network bridge on the target host. Also requires manual
+#           configuration of the host.
+#
+#           Option: repl_ip (optional, string)
+#           IP address to use for replication services of a disk if different
+#           than the IP address of the replication network bridge on the target
+#           host. Also requires manual configuration of the host.
+#
+#           Option: region (optional, integer)
+#           Region of a disk.
+#
+#           Option: zone (optional, integer)
+#           Zone of a disk.
+#
+#           Option: weight (optional, integer)
+#           Weight of a disk.
+#
+#           Level: groups (optional)
+#           List of one or more Ansible groups that apply to this disk.
+#
+# Example:
+#
+# Define four storage hosts. The first three hosts contain typical options
+# and the last host contains advanced options.
+#
 # swift_hosts:
 #   swift-node1:
-#     ip: 192.0.2.4
+#     ip: 172.29.236.151
+#     container_vars:
+#       swift_vars:
+#         zone: 0
 #   swift-node2:
-#     ip: 192.0.2.5
+#     ip: 172.29.236.152
+#     container_vars:
+#       swift_vars:
+#         zone: 1
 #   swift-node3:
-#     ip: 192.0.2.6
+#     ip: 172.29.236.153
+#     container_vars:
+#       swift_vars:
+#         zone: 2
 #   swift-node4:
-#     ip: 192.0.2.7
+#     ip: 172.29.236.154
 #     container_vars:
 #       swift_vars:
-#         zone: 3
-#   swift-node5:
-#     ip: 192.0.2.8
-#     container_vars:
-#       swift_vars:
-#         storage_ip: 198.51.100.8
-#         repl_ip: 203.0.113.8
-#         region: 3
-#         zone: 4
+#         storage_ip: 198.51.100.11
+#         repl_ip: 203.0.113.11
+#         region: 2
+#         zone: 0
 #         weight: 200
 #         groups:
 #           - account
 #           - container
 #           - silver
 #         drives:
-#           - name: sdb
-#             storage_ip: 198.51.100.9
-#             repl_ip: 203.0.113.9
+#           - name: sdc
+#             storage_ip: 198.51.100.21
+#             repl_ip: 203.0.113.21
 #             weight: 75
 #             groups:
 #               - gold
-#           - name: sdc
 #           - name: sdd
 #           - name: sde
 #           - name: sdf
