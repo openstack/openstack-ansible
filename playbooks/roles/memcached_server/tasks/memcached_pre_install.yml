@@ -22,14 +22,3 @@
     createhome: "no"
   tags:
     - memcached-user
-
-- name: Ensure memcached directories
-  file:
-    path: "{{ item }}"
-    state: "directory"
-    owner: "root"
-    group: "root"
-  with_items:
-    - "{{ memcached_log | dirname }}"
-  tags:
-    - memcached-dirs
