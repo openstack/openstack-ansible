@@ -26,13 +26,13 @@
 
 ## Glance store library
 glancestore_git_repo: https://github.com/openstack/glance_store
-glancestore_git_install_branch: 0eafed02a0988f250dab5e52756b5fe26623b069 # HEAD of "stable/kilo" as of 30.04.2015
+glancestore_git_install_branch: d9b197b6d63e0cd2b2458c6a2a9c9701ef8b383b # HEAD of "stable/kilo" as of 26.05.2015
 glancestore_git_dest: "/opt/glancestore_{{ glancestore_git_repo | replace('/', '_') }}"
 
 
 ## Global Requirements
 requirements_git_repo: https://github.com/openstack/requirements
-requirements_git_install_branch: 65cd85989cc3ea09d7d7a1a46c175c1f3774bc20 # HEAD of "stable/kilo" as of 30.04.2015
+requirements_git_install_branch: f883e293e606041b5e82875271cf1feb041914ba # HEAD of "stable/kilo" as of 26.05.2015
 requirements_git_dest: "/opt/requirements_{{ requirements_git_install_branch | replace('/', '_') }}"
 
 
