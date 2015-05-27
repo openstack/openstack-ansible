@@ -966,7 +966,8 @@ def main():
         f.write(
             json.dumps(
                 hostnames_ips,
-                indent=4
+                indent=4,
+                sort_keys=True
             )
         )
 
