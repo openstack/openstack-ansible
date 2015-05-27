@@ -20,6 +20,12 @@ set -e -u -v +x
 ## Vars
 export FLUSH_IPTABLES=${FLUSH_IPTABLES:-"yes"}
 
+# Ubuntu repos
+UBUNTU_RELEASE=$(lsb_release -sc)
+UBUNTU_REPO=${UBUNTU_REPO:-"http://mirror.rackspace.com/ubuntu"}
+UBUNTU_SEC_REPO=${UBUNTU_SEC_REPO:-"http://mirror.rackspace.com/ubuntu"}
+
+
 ## Functions -----------------------------------------------------------------
 
 info_block "Checking for required libraries." || source $(dirname ${0})/scripts-library.sh
@@ -30,12 +36,14 @@ info_block "Checking for required libraries." || source $(dirname ${0})/scripts-
 mkdir -p /openstack/log
 
 # Implement the log directory link for openstack-infra log publishing
-ln -s /openstack/log $SYMLINK_DIR
+ln -sf /openstack/log $SYMLINK_DIR
 
 # Create ansible logging directory and add in a log file entry into ansible.cfg
-if [ -f "playbooks/ansible.cfg" ];then
+if [ -f "rpc_deployment/ansible.cfg" ];then
   mkdir -p /openstack/log/ansible-logging
-  sed -i '/\[defaults\]/a log_path = /openstack/log/ansible-logging/ansible.log' playbooks/ansible.cfg
+  if [ ! "$(grep -e '^log_path\ =\ /openstack/log/ansible-logging/ansible.log' rpc_deployment/ansible.cfg)" ];then
+    sed -i '/\[defaults\]/a log_path = /openstack/log/ansible-logging/ansible.log' rpc_deployment/ansible.cfg
+  fi
 fi
 
 # Check that the link creation was successful
@@ -70,7 +78,7 @@ apt-get install -y python-dev \
                    linux-image-extra-$(uname -r)
 
 # output diagnostic information
-get_instance_info && set -x
+log_instance_info && set -x
 
 if [ "${FLUSH_IPTABLES}" == "yes" ]; then
   # Flush all the iptables rules set by openstack-infra
@@ -141,8 +149,28 @@ if ! grep -q "^source /etc/network/interfaces.d/\*.cfg$" /etc/network/interfaces
   echo -e "\nsource /etc/network/interfaces.d/*.cfg" | tee -a /etc/network/interfaces
 fi
 
+
 # Set base DNS to google, ensuring consistent DNS in different environments
-echo -e 'nameserver 8.8.8.8\nnameserver 8.8.4.4' | tee /etc/resolv.conf
+if [ ! "$(grep -e '^nameserver 8.8.8.8' -e '^nameserver 8.8.4.4' /etc/resolv.conf)" ];then
+  echo -e '\n# Adding google name servers\nnameserver 8.8.8.8\nnameserver 8.8.4.4' | tee -a /etc/resolv.conf
+fi
+
+# Set the host repositories to only use the same ones, always, for the sake of consistency.
+cat > /etc/apt/sources.list <<EOF
+# Normal repositories
+deb ${UBUNTU_REPO} ${UBUNTU_RELEASE} main restricted
+deb ${UBUNTU_REPO} ${UBUNTU_RELEASE}-updates main restricted
+deb ${UBUNTU_REPO} ${UBUNTU_RELEASE} universe
+deb ${UBUNTU_REPO} ${UBUNTU_RELEASE}-updates universe
+deb ${UBUNTU_REPO} ${UBUNTU_RELEASE} multiverse
+deb ${UBUNTU_REPO} ${UBUNTU_RELEASE}-updates multiverse
+# Backports repositories
+deb ${UBUNTU_REPO} ${UBUNTU_RELEASE}-backports main restricted universe multiverse
+# Security repositories
+deb ${UBUNTU_SEC_REPO} ${UBUNTU_RELEASE}-security main restricted
+deb ${UBUNTU_SEC_REPO} ${UBUNTU_RELEASE}-security universe
+deb ${UBUNTU_SEC_REPO} ${UBUNTU_RELEASE}-security multiverse
+EOF
 
 # Bring up the new interfaces
 for iface in $(awk '/^iface/ {print $2}' ${IFACE_CFG_TARGET}); do
@@ -150,7 +178,7 @@ for iface in $(awk '/^iface/ {print $2}' ${IFACE_CFG_TARGET}); do
 done
 
 # output an updated set of diagnostic information
-get_instance_info
+log_instance_info
 
 # Final message
 info_block "The system has been prepared for an all-in-one build."

@@ -60,9 +60,26 @@ function exit_state() {
 # Exit with error details
 function exit_fail() {
   set +x
-  get_instance_info
+  log_instance_info
   info_block "Error Info - $@"
   exit_state 1
+}
+
+function log_instance_info() {
+  set +x
+  # Get host information post initial setup and reset verbosity
+  if [ ! -d "/openstack/log/instance-info" ];then
+    mkdir -p "/openstack/log/instance-info"
+  fi
+  get_instance_info &> /openstack/log/instance-info/host_info_$(date +%s).log
+  set -x
+}
+
+function get_repos_info() {
+  for i in /etc/apt/sources.list /etc/apt/sources.list.d/*; do
+    echo -e "\n$i"
+    cat $i
+  done
 }
 
 # Output diagnostic information
@@ -118,6 +135,9 @@ function get_instance_info() {
   tracepath 8.8.8.8 -m 5
   info_block 'XEN Server Information'
   which xenstore-read && xenstore-read vm-data/provider_data/provider ||:
+  get_repos_info &> /openstack/log/instance-info/host_repo_info_$(date +%s).log || true
+  dpkg-query --list &> /openstack/log/instance-info/host_packages_info_$(date +%s).log
+  pip freeze &> /openstack/log/instance-info/pip_packages_info_$(date +%s).log
 }
 
 # Used to retry a process that may fail due to transient issues
