@@ -310,6 +310,7 @@
     alarms:
       - { 'name': 'rabbitmq_disk_free_alarm_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["rabbitmq_disk_free_alarm_status"] != 1) { return new AlarmStatus(CRITICAL, "rabbitmq_disk_free_alarm_status triggered"); }' }
       - { 'name': 'rabbitmq_mem_alarm_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["rabbitmq_mem_alarm_status"] != 1) { return new AlarmStatus(CRITICAL, "rabbitmq_mem_alarm_status triggered"); }' }
+      - { 'name': 'rabbitmq_max_channels_per_conn', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["rabbitmq_max_channels_per_conn"] > 10) { return new AlarmStatus(CRITICAL, "Detected RabbitMQ connections with > 10 channels, check RabbitMQ and all Openstack consumers"); }' }
   user: root
   roles:
     - maas_local
