@@ -16,8 +16,9 @@
 - name: Download lxc cache(s)
   get_url:
     url: "{{ item.url }}"
-    dest: "/var/cache/lxc/{{ item.name }}"
+    dest: "/var/cache/lxc_{{ item.name }}"
     mode: "0644"
+    force: no
   register: cache_download
   until: cache_download|success
   with_items: lxc_container_caches
@@ -27,19 +28,12 @@
 
 - name: Move lxc cached image into place
   unarchive:
-    src: "/var/cache/lxc/{{ item.name }}"
+    src: "/var/cache/lxc_{{ item.name }}"
     dest: "/var/cache/lxc/"
     copy: "no"
   with_items: lxc_container_caches
+  when: cache_download|changed
   tags:
     - lxc-cache
     - lxc-cache-unarchive
 
-- name: Remove cache tarball
-  file:
-    path: "/var/cache/lxc/{{ item.name }}"
-    state: absent
-  with_items: lxc_container_caches
-  tags:
-    - lxc-cache
-    - lxc-cache-remove
