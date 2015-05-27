@@ -99,7 +99,7 @@ cp etc/openstack_deploy/openstack_environment.yml /etc/openstack_deploy/
 
 # Set the rabbitmq cluster name if its not set to something else.
 if ! grep '^rabbit_cluster_name\:' /etc/openstack_deploy/user_variables.yml;then
-  echo 'rabbit_cluster_name: rpc' /etc/openstack_deploy/user_variables.yml
+  echo 'rabbit_cluster_name: rpc' | tee -a /etc/openstack_deploy/user_variables.yml
 fi
 
 # Add some new variables to user_variables.yml
