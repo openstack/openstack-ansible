@@ -52,7 +52,7 @@ if ! modprobe vxlan; then
 fi
 
 # Get initial host information and reset verbosity
-set +x && get_instance_info && set -x
+set +x && log_instance_info && set -x
 
 # Bootstrap ansible if required
 if [ "${BOOTSTRAP_ANSIBLE}" == "yes" ]; then
@@ -65,7 +65,7 @@ if [ "${BOOTSTRAP_AIO}" == "yes" ]; then
 fi
 
 # Get initial host information and reset verbosity
-set +x && get_instance_info && set -x
+set +x && log_instance_info && set -x
 
 # Install requirements
 pip2 install -r requirements.txt || pip install -r requirements.txt

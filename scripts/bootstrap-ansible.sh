@@ -15,23 +15,45 @@
 #
 # (c) 2014, Kevin Carter <kevin.carter@rackspace.com>
 
-set -e -u -v +x
+## Shell Opts ----------------------------------------------------------------
+set -e -u -x
 
-## Variables -----------------------------------------------------------------
 
-export GET_PIP_URL="${GET_PIP_URL:-https://mirror.rackspace.com/rackspaceprivatecloud/downloads/get-pip.py}"
+## Vars ----------------------------------------------------------------------
+export ANSIBLE_GIT_RELEASE=${ANSIBLE_GIT_RELEASE:-"v1.6.10"}
+export ANSIBLE_GIT_REPO=${ANSIBLE_GIT_REPO:-"https://github.com/ansible/ansible"}
+export ANSIBLE_ROLE_FILE=${ANSIBLE_ROLE_FILE:-"ansible-role-requirements.yml"}
+export ANSIBLE_WORKING_DIR=${ANSIBLE_WORKING_DIR:-/opt/ansible_${ANSIBLE_GIT_RELEASE}}
+export GET_PIP_URL=${GET_PIP_URL:-"https://bootstrap.pypa.io/get-pip.py"}
+export SSH_DIR=${SSH_DIR:-"/root/.ssh"}
+export UPDATE_ANSIBLE_REQUIREMENTS=${UPDATE_ANSIBLE_REQUIREMENTS:-"yes"}
+export PIP2_INSTALL=" pip2 install --ignore-installed"
+export PIP_INSTALL=" pip install --ignore-installed"
 
 ## Functions -----------------------------------------------------------------
+info_block "Checking for required libraries." 2> /dev/null || source $(dirname ${0})/scripts-library.sh
 
-info_block "Checking for required libraries." || source $(dirname ${0})/scripts-library.sh
 
 ## Main ----------------------------------------------------------------------
+info_block "Bootstrapping System with Ansible"
 
-# Enable logging of all commands executed
-set -x
+# Create the ssh dir if needed
+ssh_key_create
 
 # Install the base packages
-apt-get update && apt-get -y install git python-all python-dev curl
+apt-get update && apt-get -y install git python-all python-dev curl autoconf g++ python2.7-dev
+
+# If the working directory exists remove it
+if [ -d "${ANSIBLE_WORKING_DIR}" ];then
+    rm -rf "${ANSIBLE_WORKING_DIR}"
+fi
+
+# Clone down the base ansible source
+git clone "${ANSIBLE_GIT_REPO}" "${ANSIBLE_WORKING_DIR}"
+pushd "${ANSIBLE_WORKING_DIR}"
+    git checkout "${ANSIBLE_GIT_RELEASE}"
+    git submodule update --init --recursive
+popd
 
 # Install pip
 if [ ! "$(which pip)" ];then
@@ -39,11 +61,21 @@ if [ ! "$(which pip)" ];then
     python2 /opt/get-pip.py || python /opt/get-pip.py
 fi
 
-# Use pip to install ansible
-pip install ansible==1.6.10
+# Install requirements if there are any
+if [ -f "requirements.txt" ];then
+    ${PIP2_INSTALL} -r requirements.txt || ${PIP_INSTALL} -r requirements.txt
+fi
 
-set +x
-info_block "Ansible is now bootstrapped and ready for use."
+# Install ansible
+${PIP2_INSTALL} "${ANSIBLE_WORKING_DIR}" || ${PIP_INSTALL} "${ANSIBLE_WORKING_DIR}"
+
+# Update dependent roles
+if [ -f "${ANSIBLE_ROLE_FILE}" ];then
+    # Pull all required roles.
+    ansible-galaxy install --role-file=${ANSIBLE_ROLE_FILE} \
+                           --ignore-errors \
+                           --force
+fi
 
 # Create openstack ansible wrapper tool
 cat > /usr/local/bin/openstack-ansible <<EOF
@@ -64,25 +96,26 @@ cat > /usr/local/bin/openstack-ansible <<EOF
 #
 # (c) 2014, Kevin Carter <kevin.carter@rackspace.com>
 
-# Openstack wrapper tool to ease the use of ansible with multiple variable files.
+# OpenStack wrapper tool to ease the use of ansible with multiple variable files.
 
-export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:${PATH}"
+
+function info() {
+    echo -e "\e[0;35m\${@}\e[0m"
+}
 
 # Discover the variable files.
-VAR1="\$(for i in \$(ls /etc/*_deploy/*user_*.yml); do echo -ne "-e @\$i "; done)"
+VAR1="\$(for i in \$(ls /etc/rpc_deploy/user_*.yml); do echo -ne "-e @\$i "; done)"
 
 # Provide information on the discovered variables.
-echo -e "\n--- [ Variable files ] ---\n \"\${VAR1}\""
+info "Variable files: \"\${VAR1}\""
 
 # Run the ansible playbook command.
 \$(which ansible-playbook) \${VAR1} \$@
 EOF
 
-set -x
 # Ensure wrapper tool is executable
 chmod +x /usr/local/bin/openstack-ansible
 
-# Enable logging of all commands executed
-set +x
-
-info_block "The openstack-ansible convenience script has been created."
+echo "openstack-ansible script created."
+echo "System is bootstrapped and ready for use."
