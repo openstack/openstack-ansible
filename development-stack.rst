@@ -31,7 +31,7 @@ Alternatively, you can curl/wget the ``run-aio-build.sh`` script:
 
 .. code-block:: bash
 
-  curl http://git.openstack.org/cgit/stackforge/os-ansible-deployment/plain/scripts/run-aio-build.sh | bash
+  bash <(curl -s http://git.openstack.org/cgit/stackforge/os-ansible-deployment/plain/scripts/run-aio-build.sh)
 
 
 To use these scripts successfully please make sure that you have the following:
