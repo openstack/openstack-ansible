@@ -26,6 +26,9 @@ enable_management_plugin: true
 
 rabbit_cluster_name: rpc
 
+# Specify a partition recovery strategy (autoheal | pause_minority | ignore)
+rabbitmq_cluster_partition_handling: pause_minority
+
 # Directories to create
 container_directories:
   - { name: '/var/log/rabbitmq', mode: 755 }
