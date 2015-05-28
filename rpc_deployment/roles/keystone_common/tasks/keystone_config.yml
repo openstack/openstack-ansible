@@ -23,6 +23,7 @@
     - { dest: "keystone.conf", src: "keystone.conf.j2" }
     - { dest: "policy.json", src: "policy.json.j2" }
     - { dest: "keystone-paste.ini", src: "keystone-paste.ini.j2" }
+  notify: Restart Apache
 
 - name: Create keystone ldap domains dir
   file:
@@ -41,3 +42,4 @@
   with_items:
     - { dest: "keystone.Default.conf", src: "keystone.Default.conf.j2" }
   when: keystone_ldap_domain_config_dir is defined
+  notify: Restart Apache
