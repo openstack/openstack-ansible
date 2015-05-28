@@ -1,6 +1,7 @@
 [
   {rabbit, [
     {loopback_users, []},
+    {% if rabbitmq_cluster_partition_handling != 'ignore' %}{cluster_partition_handling, {{ rabbitmq_cluster_partition_handling }}},{% endif %}
     {cluster_nodes, {
       [ {% for host in groups['rabbitmq_all'] %}'rabbit@{{ hostvars[host]['ansible_ssh_host'] }}'{% if not loop.last %}, {% endif %}{% endfor %}], disc}
     }
