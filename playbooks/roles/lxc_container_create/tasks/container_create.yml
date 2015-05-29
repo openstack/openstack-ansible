@@ -62,6 +62,15 @@
     vg_name: "{{ properties.container_vg_name|default(lxc_container_vg_name) }}"
     template_options: "{{ lxc_container_template_options }}"
     container_command: |
+      {% if global_environment_variables is defined %}
+      {%- for name, value in global_environment_variables.items() %}
+      {% if value %}
+      if ! grep '{{ name }}={{ value }}' /etc/environment;
+        echo '{{ name }}={{ value }}' | tee -a /etc/environment
+      fi
+      {% endif %}
+      {%- endfor %}
+      {% endif %}
       mkdir -p ~/.ssh/
       if [ ! -f "~/.ssh/authorized_keys" ];then
         touch ~/.ssh/authorized_keys
