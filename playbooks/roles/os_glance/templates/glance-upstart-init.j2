@@ -38,4 +38,4 @@ exec start-stop-daemon --start \
                        --pidfile /var/run/{{ program_name }}/{{ program_name }}.pid \
                        --exec "{{ program_override|default('$RUNBIN') }}" \
                        -- {{ program_config_options|default('') }} \
-                       --log-file=/var/log/{{ service_name }}/{{ program_name }}.log
+                       --log-file=/var/log/glance/{{ program_name }}.log
