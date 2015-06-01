@@ -35,6 +35,7 @@
     url: "{{ rabbitmq_package_url }}"
     dest: "/tmp/rabbitmq-server.deb"
     mode: "0644"
+    sha256sum: "{{ rabbitmq_package_sha256 }}"
   register: package_download
   retries: 3
   delay: 10
