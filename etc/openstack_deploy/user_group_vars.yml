@@ -1,0 +1,137 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+## Verbosity Options
+debug: False
+verbose: True
+
+
+## Repo server
+repo_service_user_name: nginx
+repo_service_home_folder: /var/www
+repo_server_port: 8181
+repo_pip_default_index: "http://{{ openstack_upstream_domain }}/pools"
+
+
+## Rsyslog server
+rsyslog_server_storage_directory: /var/log/log-storage
+
+
+## OpenStack source options
+# URL for the frozen internal openstack repo.
+openstack_repo_url: "http://{{ internal_lb_vip_address }}:{{ repo_server_port }}"
+openstack_upstream_domain: "rpc-repo.rackspace.com"
+openstack_upstream_url: "http://{{ openstack_upstream_domain }}"
+
+
+## LXC options
+lxc_container_caches:
+  - url: "{{ openstack_upstream_url }}/container_images/rpc-trusty-container.tgz"
+    name: "trusty.tgz"
+
+
+## RabbitMQ
+rabbitmq_userid: openstack
+rabbitmq_cluster_name: openstack
+rabbitmq_port: 5672
+rabbitmq_servers: "{% for host in groups['rabbitmq_all'] %}{{ hostvars[host]['ansible_ssh_host'] }}:{{ rabbitmq_port }}{% if not loop.last %},{% endif %}{% endfor %}"
+
+
+## Galera
+galera_wsrep_cluster_address: "{% for host in groups['galera_all'] %}{{ hostvars[host]['ansible_ssh_host'] }}{% if not loop.last %},{% endif %}{% endfor %}"
+galera_wsrep_address: "{{ ansible_ssh_host }}"
+
+
+## Pip install
+# Lock down pip to only a specific version of pip
+pip_get_pip_options:  "--no-index --find-links={{ openstack_upstream_url }}/os-releases/{{ openstack_release }} --trusted-host {{ openstack_upstream_domain }}"
+
+
+## Memcached options
+memcached_listen: "{{ ansible_ssh_host }}"
+memcached_port: 11211
+memcached_servers: "{% for host in groups['memcached'] %}{{ hostvars[host]['ansible_ssh_host'] }}:{{ memcached_port }}{% if not loop.last %},{% endif %}{% endfor %}"
+
+
+## Nova
+nova_service_port: 8774
+nova_service_proto: http
+nova_service_user_name: nova
+nova_service_project_name: service
+nova_service_project_domain_id: default
+nova_service_user_domain_id: default
+nova_service_adminuri: "{{ nova_service_proto }}://{{ internal_lb_vip_address }}:{{ nova_service_port }}"
+nova_service_adminurl: "{{ nova_service_adminuri }}/v2/%(tenant_id)s"
+nova_service_region: RegionOne
+nova_metadata_port: 8775
+nova_keystone_auth_plugin: password
+
+
+## Neutron
+neutron_service_port: 9696
+neutron_service_proto: http
+neutron_service_user_name: neutron
+neutron_service_project_name: service
+neutron_service_project_domain_id: default
+neutron_service_user_domain_id: default
+neutron_service_adminuri: "{{ neutron_service_proto }}://{{ internal_lb_vip_address }}:{{ neutron_service_port }}"
+neutron_service_adminurl: "{{ neutron_service_adminuri }}"
+neutron_service_region: RegionOne
+neutron_service_program_enabled: true
+neutron_service_dhcp_program_enabled: true
+neutron_service_l3_program_enabled: true
+neutron_service_linuxbridge_program_enabled: true
+neutron_service_metadata_program_enabled: true
+neutron_service_metering_program_enabled: true
+
+
+## Glance
+glance_service_port: 9292
+glance_service_proto: http
+glance_service_user_name: glance
+glance_service_project_name: service
+glance_service_project_domain_id: default
+glance_service_user_domain_id: default
+glance_service_adminurl: "{{ glance_service_proto }}://{{ internal_lb_vip_address }}:{{ glance_service_port }}"
+glance_service_region: RegionOne
+glance_api_servers: "{% for host in groups['glance_all'] %}{{ hostvars[host]['container_address'] }}:{{ glance_service_port }}{% if not loop.last %},{% endif %}{% endfor %}"
+
+
+## Keystone
+keystone_admin_user_name: admin
+keystone_admin_tenant_name: admin
+keystone_admin_port: 35357
+keystone_service_port: 5000
+keystone_service_proto: http
+keystone_service_user_name: keystone
+keystone_service_tenant_name: service
+keystone_service_uri: "{{ keystone_service_proto }}://{{ internal_lb_vip_address }}"
+keystone_service_internaluri: "{{ keystone_service_proto }}://{{ internal_lb_vip_address }}:{{ keystone_service_port }}"
+keystone_service_internalurl: "{{ keystone_service_internaluri }}/v2.0"
+keystone_service_adminuri: "{{ keystone_service_uri }}:{{ keystone_admin_port }}"
+keystone_service_adminurl: "{{ keystone_service_adminuri }}/v2.0"
+keystone_service_internaluri_v3: "{{ keystone_service_proto }}://{{ internal_lb_vip_address }}:{{ keystone_service_port }}"
+keystone_service_internalurl_v3: "{{ keystone_service_adminuri_v3 }}/v3"
+keystone_service_adminuri_v3: "{{ keystone_service_proto }}://{{ internal_lb_vip_address }}:{{ keystone_admin_port }}"
+keystone_service_adminurl_v3: "{{ keystone_service_adminuri_v3 }}/v3"
+keystone_cache_backend_argument: "url:{% for host in groups['memcached'] %}{{ hostvars[host]['container_address'] }}{% if not loop.last %},{% endif %}{% endfor %}:{{ memcached_port }}"
+keystone_memcached_servers: "{% for host in groups['keystone_all'] %}{{ hostvars[host]['container_address'] }}:{{ memcached_port }}{% if not loop.last %},{% endif %}{% endfor %}"
+keystone_service_region: RegionOne
+
+
+## OpenStack Openrc
+openrc_os_auth_url: "{{ keystone_service_internalurl }}"
+openrc_os_password: "{{ keystone_auth_admin_password }}"
+
