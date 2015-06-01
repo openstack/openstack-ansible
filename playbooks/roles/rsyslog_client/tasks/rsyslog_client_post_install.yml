@@ -41,35 +41,6 @@
   tags:
     - rsyslog-client-config
 
-- name: Set fact for combined log files list and found logs
-  set_fact:
-    rsyslog_client_log_files: "{{ log_files.stdout_lines | union(rsyslog_client_log_files) }}"
-  when: >
-    rsyslog_client_log_files is defined and
-    log_files | success
-  tags:
-    - rsyslog-client-config
-
-- name: Set fact for found log files list
-  set_fact:
-    rsyslog_client_log_files: "{{ log_files.stdout_lines }}"
-  when: >
-    rsyslog_client_log_files is not defined and
-    log_files | success
-  tags:
-    - rsyslog-client-config
-
-- name: Check rsyslog_client_log_files is defined
-  fail:
-    msg: >
-      There were no log files defined in `rsyslog_client_log_files`. Please use that
-      variable to set the files that you want rsyslog to begin shipping logs for. This
-      variable is a list that requires the full path to all log files. You can also set
-      `rsyslog_client_log_dir` which will find all "*.log" files using the path
-      provided.
-  when: >
-    rsyslog_client_log_files is not defined
-
 - name: Write rsyslog config for found log files
   template:
     src: "{{ item.src }}"
