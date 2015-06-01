@@ -24,3 +24,6 @@
 
 - include: tempest_install.yml
 - include: tempest_post_install.yml
+
+- name: Flush handlers
+  meta: flush_handlers
