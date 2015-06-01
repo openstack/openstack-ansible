@@ -18,7 +18,7 @@
 clear
 
 # NOTICE: To run this in an automated fashion run the script via
-#   root@HOSTNAME:/opt/os-ansible-deployment# echo "YES" | bash scripts/upgrade-v10-2-v11.sh
+#   root@HOSTNAME:/opt/os-ansible-deployment# echo "YES" | bash scripts/run-upgrade.sh
 
 # Notify the user.
 echo -e "
@@ -112,6 +112,43 @@ echo 'ssl_protocol: "ALL -SSLv2 -SSLv3"' | tee -a /etc/openstack_deploy/user_var
 
 # Cipher suite string from "https://hynek.me/articles/hardening-your-web-servers-ssl-ciphers/".
 echo 'ssl_cipher_suite: "ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:ECDH+3DES:DH+3DES:RSA+AESGCM:RSA+AES:RSA+3DES:!aNULL:!MD5:!DSS"' | tee -a /etc/openstack_deploy/user_variables.yml
+
+# Ensure that the user_group_vars.yml file is present on upgrade, if not found copy it over
+if [ ! -f "/etc/openstack_deploy/user_group_vars.yml" ];then
+    cp etc/openstack_deploy/user_group_vars.yml /etc/openstack_deploy/user_group_vars.yml
+fi
+
+# If OLD ldap bits found in the user_variables file that pertain to ldap upgrade them to the new syntax.
+if grep '^keystone_ldap.*' /etc/openstack_deploy/user_variables.yml;then
+python <<EOL
+import yaml
+with open('/etc/openstack_deploy/user_variables.yml', 'r') as f:
+    user_vars = yaml.safe_load(f.read())
+
+# Grab a map of the old keystone ldap entries
+new_ldap = dict()
+for k, v in user_vars.items():
+    if k.startswith('keystone_ldap'):
+      new_ldap['%s' % k.split('keystone_ldap_')[-1]] = v
+
+# Open user secrets file.
+with open('/etc/openstack_deploy/user_secrets.yml', 'r') as fsr:
+    user_secrets = yaml.safe_load(fsr.read())
+
+# LDAP variable to instruct keystone to use ldap
+ldap = user_secrets['keystone_ldap'] = dict()
+
+# "ldap" section within the keystone_ldap variable.
+ldap['ldap'] = new_ldap
+with open('/etc/openstack_deploy/user_secrets.yml', 'w') as fsw:
+    fsw.write(
+        yaml.safe_dump(
+            user_secrets,
+            default_flow_style=False,
+            width=1000
+        )
+    )
+EOL
 
 # If monitoring as a service or Rackspace cloud variables are present, rewrite them as rpc-extras.yml
 if grep -e '^maas_.*' -e '^rackspace_.*' -e '^elasticsearch_.*' -e '^kibana_.*' -e 'logstash_.*' /etc/openstack_deploy/user_variables.yml;then
@@ -217,38 +254,6 @@ with open('/etc/openstack_deploy/openstack_environment.yml', 'w') as fsw:
     fsw.write(
         yaml.safe_dump(
             os_environment,
-            default_flow_style=False,
-            width=1000
-        )
-    )
-EOL
-
-# If OLD ldap bits found in the user_variables file that pertain to ldap upgrade them to the new syntax.
-if grep '^keystone_ldap.*' /etc/openstack_deploy/user_variables.yml;then
-python <<EOL
-import yaml
-with open('/etc/openstack_deploy/user_variables.yml', 'r') as f:
-    user_vars = yaml.safe_load(f.read())
-
-# Grab a map of the old keystone ldap entries
-new_ldap = dict()
-for k, v in user_vars.items():
-    if k.startswith('keystone_ldap'):
-      new_ldap['%s' % k.split('keystone_ldap_')[-1]] = v
-
-# Open user secrets file.
-with open('/etc/openstack_deploy/user_secrets.yml', 'r') as fsr:
-    user_secrets = yaml.safe_load(fsr.read())
-
-# LDAP variable to instruct keystone to use ldap
-ldap = user_secrets['keystone_ldap'] = dict()
-
-# "ldap" section within the keystone_ldap variable.
-ldap['ldap'] = new_ldap
-with open('/etc/openstack_deploy/user_secrets.yml', 'w') as fsw:
-    fsw.write(
-        yaml.safe_dump(
-            user_secrets,
             default_flow_style=False,
             width=1000
         )
