@@ -40,10 +40,9 @@ methods = {{ auth_methods }}
 
 [database]
 connection = mysql://{{ container_mysql_user }}:{{ container_mysql_password }}@{{ mysql_address }}/{{ container_database }}?charset=utf8
-idle_timeout = 200
-min_pool_size = 5
-max_pool_size = 10
-pool_timeout = 200
+max_overflow = {{ keystone_db_max_overflow }}
+max_pool_size = {{ keystone_db_max_pool_size }}
+pool_timeout = {{ keystone_db_pool_timeout }}
 
 [identity]
 driver = {{ keystone_identity_driver|default('keystone.identity.backends.sql.Identity') }}
