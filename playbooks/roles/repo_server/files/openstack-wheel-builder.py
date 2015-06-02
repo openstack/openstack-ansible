@@ -345,7 +345,7 @@ def main():
                 '--pip-extra-link-dirs',
                 _abs_path(user_vars['link_pool']),
                 '--pip-index',
-                'http://rpc-repo.rackspace.com/pools',
+                'https://rpc-repo.rackspace.com/pools',
                 '--pip-extra-index',
                 'https://pypi.python.org/simple',
                 '--pip-bulk-operation',

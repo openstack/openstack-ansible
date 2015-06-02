@@ -42,8 +42,8 @@ export TEMPEST_FATAL_DEPRECATIONS=${TEMPEST_FATAL_DEPRECATIONS:-"no"}
 
 # Ubuntu repos
 UBUNTU_RELEASE=$(lsb_release -sc)
-UBUNTU_REPO=${UBUNTU_REPO:-"http://mirror.rackspace.com/ubuntu"}
-UBUNTU_SEC_REPO=${UBUNTU_SEC_REPO:-"http://mirror.rackspace.com/ubuntu"}
+UBUNTU_REPO=${UBUNTU_REPO:-"https://mirror.rackspace.com/ubuntu"}
+UBUNTU_SEC_REPO=${UBUNTU_SEC_REPO:-"https://mirror.rackspace.com/ubuntu"}
 
 
 ## Library Check -------------------------------------------------------------
@@ -91,6 +91,9 @@ if [ ! "$(grep -e '^nameserver 8.8.8.8' -e '^nameserver 8.8.4.4' /etc/resolv.con
   echo -e '\n# Adding google name servers\nnameserver 8.8.8.8\nnameserver 8.8.4.4' | tee -a /etc/resolv.conf
 fi
 
+# Ensure that the https apt transport is available before doing anything else
+apt-get update && apt-get install -y apt-transport-https
+
 # Set the host repositories to only use the same ones, always, for the sake of consistency.
 cat > /etc/apt/sources.list <<EOF
 # Normal repositories
@@ -115,19 +118,19 @@ apt-get update
 apt-get purge -y libmysqlclient18 mysql-common
 
 # Install required packages
-apt-get install -y python-dev \
-                   python2.7 \
+apt-get install -y bridge-utils \
                    build-essential \
                    curl \
                    git-core \
                    ipython \
+                   linux-image-extra-$(uname -r) \
+                   lvm2 \
+                   python2.7 \
+                   python-dev \
                    tmux \
                    vim \
                    vlan \
-                   bridge-utils \
-                   lvm2 \
-                   xfsprogs \
-                   linux-image-extra-$(uname -r)
+                   xfsprogs
 
 # Flush all the iptables rules set by openstack-infra
 if [ "${FLUSH_IPTABLES}" == "yes" ]; then

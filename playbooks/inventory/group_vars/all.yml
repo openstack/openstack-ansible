@@ -18,13 +18,6 @@ debug: False
 verbose: True
 
 
-## Repo server
-repo_service_user_name: nginx
-repo_service_home_folder: /var/www
-repo_server_port: 8181
-repo_pip_default_index: "http://{{ openstack_upstream_domain }}/pools"
-
-
 ## Rsyslog server
 rsyslog_server_spool_directory: /var/spool/rsyslog
 rsyslog_server_storage_directory: /var/log/log-storage
@@ -34,10 +27,18 @@ rsyslog_server_storage_directory: /var/log/log-storage
 openstack_release: master
 # URL for the frozen internal openstack repo.
 openstack_repo_url: "http://{{ internal_lb_vip_address }}:{{ repo_server_port }}"
+openstack_upstream_proto: "https"
 openstack_upstream_domain: "rpc-repo.rackspace.com"
-openstack_upstream_url: "http://{{ openstack_upstream_domain }}"
+openstack_upstream_url: "{{ openstack_upstream_proto }}://{{ openstack_upstream_domain }}"
 # Global minimum kernel requirement
 openstack_host_required_kernel: 3.13.0-34-generic
+
+
+## Repo server
+repo_service_user_name: nginx
+repo_service_home_folder: /var/www
+repo_server_port: 8181
+repo_pip_default_index: "{{ openstack_upstream_url }}/pools"
 
 
 ## LXC options
@@ -46,8 +47,8 @@ lxc_container_caches:
     name: "trusty.tgz"
 
 # In container APT repository settings
-lxc_container_template_main_apt_repo: "http://mirror.rackspace.com/ubuntu"
-lxc_container_template_security_apt_repo: "http://mirror.rackspace.com/ubuntu"
+lxc_container_template_main_apt_repo: "https://mirror.rackspace.com/ubuntu"
+lxc_container_template_security_apt_repo: "https://mirror.rackspace.com/ubuntu"
 
 
 ## RabbitMQ
