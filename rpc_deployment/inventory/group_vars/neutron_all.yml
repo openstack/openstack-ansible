@@ -52,6 +52,9 @@ neutron_agent_polling_interval: 5
 container_mysql_user: neutron
 container_mysql_password: "{{ neutron_container_mysql_password }}"
 container_database: neutron
+neutron_db_max_overflow: 10
+neutron_db_pool_size: 5
+neutron_db_pool_timeout: 30
 
 ## RPC
 # ``neutron_rpc_workers`` is an experimental feature in neutron master (as of 03/2015) and
@@ -89,3 +92,4 @@ container_directories:
   - { name: /var/lock/neutron }
   - { name: /var/log/neutron, mode: 755 }
   - { name: /var/run/neutron }
+
