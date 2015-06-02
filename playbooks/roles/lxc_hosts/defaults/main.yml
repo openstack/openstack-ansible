@@ -40,8 +40,8 @@ lxc_kernel_options:
   - { key: 'fs.inotify.max_user_instances', value: 1024 }
   - { key: 'vm.swappiness', value: 10 }
 
-lxc_container_template_main_apt_repo: "http://archive.ubuntu.com/ubuntu"
-lxc_container_template_security_apt_repo: "http://security.ubuntu.com/ubuntu"
+lxc_container_template_main_apt_repo: "https://mirror.rackspace.com/ubuntu"
+lxc_container_template_security_apt_repo: "https://mirror.rackspace.com/ubuntu"
 
 
 # Required apt packages.

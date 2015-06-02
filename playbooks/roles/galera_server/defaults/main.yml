@@ -52,7 +52,7 @@ galera_gpg_keys:
     hash_id: '0xcbcb082a1bb943db'
 
 # Repositories
-galera_apt_repo_url: "http://mirror.rackspace.com/mariadb/repo/5.5/ubuntu"
+galera_apt_repo_url: "https://mirror.rackspace.com/mariadb/repo/5.5/ubuntu"
 galera_apt_repo:
   repo: "deb {{ galera_apt_repo_url }} {{ ansible_distribution_release }} main"
   state: "present"
