@@ -38,7 +38,9 @@ container_lvm_fssize: 5GB
 container_mysql_user: keystone
 container_mysql_password: "{{ keystone_container_mysql_password }}"
 container_database: keystone
-
+keystone_db_max_overflow: 10
+keystone_db_max_pool_size: 5
+keystone_db_pool_timeout: 30
 
 ## AUTH
 auth_methods: "password,token"
