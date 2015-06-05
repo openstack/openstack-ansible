@@ -78,8 +78,7 @@ log_instance_info
 
 # Ensure that the current kernel can support vxlan
 if ! modprobe vxlan; then
-  MINIMUM_KERNEL_VERSION=$(awk '/openstack_host_required_kernel/ {print $2}' playbooks/inventory/group_vars/all.yml)
-  echo "A minimum kernel version of ${MINIMUM_KERNEL_VERSION} is required for vxlan support."
+  echo "VXLAN support is required for this to work. And the Kernel module was not found."
   echo "This build will not work without it."
   exit_fail
 fi

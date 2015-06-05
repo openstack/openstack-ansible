@@ -55,7 +55,7 @@ tempest_image_api_v2_enabled: True
 tempest_boto_s3_url: "http://{{ external_lb_vip_address }}:3333"
 tempest_boto_ec2_url: "http://{{ external_lb_vip_address }}:8773/services/Cloud"
 
-tempest_swift_enabled: false
+tempest_swift_enabled: true
 tempest_swift_object_versioning: True
 
 tempest_volume_backup_enabled: False
