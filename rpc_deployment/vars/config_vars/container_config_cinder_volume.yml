@@ -18,6 +18,7 @@
 container_config_options:
   - "lxc.aa_profile=lxc-openstack"
   - "lxc.cgroup.devices.allow=a *:* rmw"
+  - "lxc.mount.entry = udev dev devtmpfs defaults 0 0"
 
 kernel_modules:
   - iscsi_tcp
