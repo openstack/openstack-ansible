@@ -16,10 +16,10 @@
 - hosts: neutron_l3_agent
   user: root
   roles:
-    - neutron_common
-    - galera_client_cnf
-    - init_script
-    - neutron_l3_ha
+    - { role: neutron_common, when: "'neutron-l3-agent' in service_names" }
+    - { role: galera_client_cnf, when: "'neutron-l3-agent' in service_names" }
+    - { role: init_script, when: "'neutron-l3-agent' in service_names" }
+    - { role: neutron_l3_ha, when: "'neutron-l3-agent' in service_names" }
   vars_files:
     - inventory/group_vars/neutron_all.yml
     - vars/openstack_service_vars/neutron_l3_agent.yml

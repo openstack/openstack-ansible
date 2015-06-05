@@ -16,19 +16,13 @@
 - include: neutron-common.yml
 
 - include: neutron-server.yml
-  when: neutron-server in service_names
 
 - include: neutron-metadata-agent.yml
-  when: neutron-metadata-agent in service_names
 
 - include: neutron-dhcp-agent.yml
-  when: neutron-dhcp-agent in service_names
 
 - include: neutron-linuxbridge-agent.yml
-  when: neutron-linuxbridge-agent in service_names
 
 - include: neutron-l3-agent.yml
-  when: neutron-l3-agent in service_names
 
 - include: neutron-metering-agent.yml
-  when: neutron-metering-agent in service_names

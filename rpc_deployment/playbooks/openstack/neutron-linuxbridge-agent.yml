@@ -16,9 +16,9 @@
 - hosts: neutron_linuxbridge_agent
   user: root
   roles:
-    - container_extra_setup
-    - neutron_common
-    - init_script
+    - { role: container_extra_setup, when: "'neutron-linuxbridge-agent' in service_names" }
+    - { role: neutron_common, when: "'neutron-linuxbridge-agent' in service_names" }
+    - { role: init_script, when: "'neutron-linuxbridge-agent' in service_names" }
   vars_files:
     - inventory/group_vars/neutron_all.yml
     - vars/config_vars/container_config_neutron.yml

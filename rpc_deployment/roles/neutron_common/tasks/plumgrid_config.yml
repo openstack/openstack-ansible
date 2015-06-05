@@ -1,5 +1,4 @@
 ---
-# Copyright 2014, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,13 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- hosts: neutron_metadata_agent
-  user: root
-  roles:
-    - { role: neutron_common, when: "'neutron-metadata-agent' in service_names" }
-    - { role: init_script, when: "'neutron-metadata-agent' in service_names" }
-  vars_files:
-    - inventory/group_vars/neutron_all.yml
-    - vars/openstack_service_vars/neutron_metadata_agent.yml
-  handlers:
-    - include: handlers/services.yml
+- name: Setup PLUMlib Neutron Config
+  template:
+    src: plugins/plumgrid/plumlib.ini
+    dest: /etc/neutron/plugins/plumgrid/plumlib.ini
+    owner: "{{ system_group }}"
+    group: "{{ system_user }}"
+  tags:
+    - neutron_config
+
+- name: Disable service plugins
+  replace:
+    dest: /etc/neutron/neutron.conf
+    regexp: '^service_plugins'
+    replace: '#service_plugins'
+  tags:
+    - neutron_config

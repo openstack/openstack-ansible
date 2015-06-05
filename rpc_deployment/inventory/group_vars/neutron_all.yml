@@ -93,6 +93,9 @@ neutron_plugins:
   ml2:
     plugin_core: neutron.plugins.ml2.plugin.Ml2Plugin
     plugin_ini: plugins/ml2/ml2_conf.ini
+  plumgrid:
+    plugin_core: neutron.plugins.plumgrid.plumgrid_plugin.plumgrid_plugin.NeutronPluginPLUMgridV2
+    plugin_ini: plugins/plumgrid/plumgrid.ini
 
 neutron_services:
  - { service_name: neutron-dhcp-agent, service_en: True, service_conf: dhcp_agent.ini, service_rootwrap: rootwrap.d/dhcp.filters }
