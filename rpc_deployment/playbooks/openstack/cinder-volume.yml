@@ -24,6 +24,10 @@
     - cinder_backend_types
     - nfs_client
     - init_script
+  tasks:
+    - name: udevadm trigger
+      command: udevadm trigger
+      delegate_to: "{{ physical_host }}"
   vars_files:
     - vars/config_vars/container_config_cinder_volume.yml
     - vars/openstack_service_vars/cinder_volume.yml
