@@ -98,7 +98,7 @@
         - "cinder-rsyslog-client"
         - "rsyslog-client"
   vars:
-    galera_address: "{{ internal_lb_vip_address }}"
+    cinder_galera_address: "{{ internal_lb_vip_address }}"
     glance_host: "{{ internal_lb_vip_address }}"
     ansible_hostname: "{{ container_name }}"
     cinder_storage_address: "{{ container_address }}"

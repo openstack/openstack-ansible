@@ -17,4 +17,4 @@ This role will install the following:
       roles:
         - { role: "os_neutron", tags: [ "os-neutron" ] }
       vars:
-        galera_address: "{{ internal_lb_vip_address }}"
+        neutron_galera_address: "{{ internal_lb_vip_address }}"

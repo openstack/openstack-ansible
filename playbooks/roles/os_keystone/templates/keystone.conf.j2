@@ -47,7 +47,7 @@ methods = {{ keystone_auth_methods }}
 
 
 [database]
-connection = mysql://{{ keystone_galera_user }}:{{ keystone_container_mysql_password }}@{{ galera_address }}/{{ keystone_galera_database }}?charset=utf8
+connection = mysql://{{ keystone_galera_user }}:{{ keystone_container_mysql_password }}@{{ keystone_galera_address }}/{{ keystone_galera_database }}?charset=utf8
 idle_timeout = {{ keystone_database_idle_timeout }}
 min_pool_size = {{ keystone_database_min_pool_size }}
 max_pool_size = {{ keystone_database_max_pool_size }}

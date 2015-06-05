@@ -17,7 +17,7 @@
   mysql_db:
     login_user: "{{ galera_root_user }}"
     login_password: "{{ galera_root_password }}"
-    login_host: "{{ galera_address }}"
+    login_host: "{{ horizon_galera_address }}"
     name: "{{ horizon_galera_database }}"
     state: "present"
   tags:
@@ -27,7 +27,7 @@
   mysql_user:
     login_user: "{{ galera_root_user }}"
     login_password: "{{ galera_root_password }}"
-    login_host: "{{ galera_address }}"
+    login_host: "{{ horizon_galera_address }}"
     name: "{{ horizon_galera_user }}"
     password: "{{ horizon_container_mysql_password }}"
     host: "{{ item }}"

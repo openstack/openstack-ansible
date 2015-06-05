@@ -24,4 +24,4 @@ This role will install the following:
       roles:
         - { role: "os_nova", tags: [ "os-nova" ] }
       vars:
-        galera_address: "{{ internal_lb_vip_address }}"
+        nova_galera_address: "{{ internal_lb_vip_address }}"
