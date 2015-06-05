@@ -18,7 +18,7 @@
 # the head of given branch via the SHA. This makes it possible to update
 # all of the services that we support in an "automated" fashion.
 
-ONLINE_BRANCH=${ONLINE_BRANCH:-"stable/kilo"}
+ONLINE_BRANCH=${ONLINE_BRANCH:-"master"}
 SERVICE_FILE=${SERVICE_FILE:-"playbooks/defaults/repo_packages/openstack_services.yml"}
 
 IFS=$'\n'
@@ -65,7 +65,7 @@ for repo in $(grep 'git_repo\:' ${SERVICE_FILE});do
     # Set the branch entry
     branch_entry="${branch_sha} # HEAD of \"$ONLINE_BRANCH\" as of $(date +%d.%m.%Y)"
     # Write the branch entry
-    sed -i '' "s|${repo_name}_git_install_branch:.*|${repo_name}_git_install_branch: $branch_entry|" ${SERVICE_FILE}
+    sed -i "s|${repo_name}_git_install_branch:.*|${repo_name}_git_install_branch: $branch_entry|" ${SERVICE_FILE}
     echo "processed $repo_name @ $branch_entry"
   fi
 done
