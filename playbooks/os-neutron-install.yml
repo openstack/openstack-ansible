@@ -103,7 +103,7 @@
         - "neutron-rsyslog-client"
         - "rsyslog-client"
   vars:
-    galera_address: "{{ internal_lb_vip_address }}"
+    neutron_galera_address: "{{ internal_lb_vip_address }}"
     ansible_hostname: "{{ container_name }}"
     is_metal: "{{ properties.is_metal|default(false) }}"
     bind_prefix: "{{ provider_network_bind_prefix|default('') }}"

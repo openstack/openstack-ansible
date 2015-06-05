@@ -19,4 +19,4 @@ This role will install the following:
       vars:
         external_lb_vip_address: 172.16.24.1
         internal_lb_vip_address: 192.168.0.1
-        galera_address: "{{ internal_lb_vip_address }}"
+        glance_galera_address: "{{ internal_lb_vip_address }}"
