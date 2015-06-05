@@ -27,6 +27,11 @@ ALLOWED_HOSTS = ['*']
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
+{% if horizon_session_timeout is defined %}
+# Define the time after which a Horizon session expires
+SESSION_TIMEOUT = {{ horizon_session_timeout }}
+{% endif %}
+
 # Overrides for OpenStack API versions. Use this setting to force the
 # OpenStack dashboard to use a specific API version for a given service API.
 # NOTE: The version should be formatted as it appears in the URL for the
