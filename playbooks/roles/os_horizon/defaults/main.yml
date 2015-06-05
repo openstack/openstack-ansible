@@ -35,6 +35,10 @@ horizon_service_name: horizon
 horizon_galera_database: dash
 horizon_galera_user: dash
 
+## Session configuration
+# Specifies the timespan in seconds inactivity, until a user is considered as
+# logged out
+horizon_session_timeout: 1800
 
 ## Horizon Help URL Path
 horizon_help_url: http://docs.openstack.org
