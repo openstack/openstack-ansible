@@ -297,6 +297,11 @@ sed -i '/^environment_version.*/d' /etc/openstack_deploy/openstack_user_config.y
 
 # Remove containers that we no longer need
 pushd playbooks
+  # Ensure that apt-transport-https is installed everywhere before doing anything else.
+  ansible "hosts:all_containers" \
+          -m shell \
+          -a "apt-get update && apt-get install -y apt-transport-https"
+
   # Setup all hosts to run lxc
   openstack-ansible lxc-hosts-setup.yml
 
