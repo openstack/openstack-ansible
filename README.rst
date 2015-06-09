@@ -56,7 +56,8 @@ Everything we do is in launchpad and gerrit. If you'd like to raise a bug, featu
 Documentation
 -------------
 
-While no os-ansible-deployment community documentation exists (yet), other than the .rst files present in this repository, comprehensive installation guides for Rackspace Private Cloud (an opinionated version of os-ansible-deployment) are available at "http://www.rackspace.com/knowledge_center/getting-started/rackspace-private-cloud".
+To build the docs make sure that you have installed the python requirements as found within the ``dev-requirements.txt`` file and then run the following command from within the ``doc`` directory.
 
-Note:
-  These docs may not be up-to-date with the current release of this repository however they are still a good source of documentation.
+.. code-block:: bash
+
+    make html
