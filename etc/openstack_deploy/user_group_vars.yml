@@ -64,6 +64,8 @@ memcached_listen: "{{ ansible_ssh_host }}"
 memcached_port: 11211
 memcached_servers: "{% for host in groups['memcached'] %}{{ hostvars[host]['ansible_ssh_host'] }}:{{ memcached_port }}{% if not loop.last %},{% endif %}{% endfor %}"
 
+## Region Name
+service_region: RegionOne
 
 ## Nova
 nova_service_port: 8774
@@ -75,7 +77,7 @@ nova_service_project_domain_id: default
 nova_service_user_domain_id: default
 nova_service_adminuri: "{{ nova_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ nova_service_port }}"
 nova_service_adminurl: "{{ nova_service_adminuri }}/v2/%(tenant_id)s"
-nova_service_region: RegionOne
+nova_service_region: "{{ service_region }}"
 nova_metadata_port: 8775
 nova_keystone_auth_plugin: password
 
@@ -90,7 +92,7 @@ neutron_service_project_domain_id: default
 neutron_service_user_domain_id: default
 neutron_service_adminuri: "{{ neutron_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ neutron_service_port }}"
 neutron_service_adminurl: "{{ neutron_service_adminuri }}"
-neutron_service_region: RegionOne
+neutron_service_region: "{{ service_region }}"
 neutron_service_program_enabled: true
 neutron_service_dhcp_program_enabled: true
 neutron_service_l3_program_enabled: true
@@ -108,7 +110,7 @@ glance_service_project_name: service
 glance_service_project_domain_id: default
 glance_service_user_domain_id: default
 glance_service_adminurl: "{{ glance_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ glance_service_port }}"
-glance_service_region: RegionOne
+glance_service_region: "{{ service_region }}"
 glance_api_servers: "{% for host in groups['glance_all'] %}{{ hostvars[host]['container_address'] }}:{{ glance_service_port }}{% if not loop.last %},{% endif %}{% endfor %}"
 
 
@@ -132,7 +134,15 @@ keystone_service_adminuri_v3: "{{ keystone_service_adminuri_proto }}://{{ intern
 keystone_service_adminurl_v3: "{{ keystone_service_adminuri_v3 }}/v3"
 keystone_cache_backend_argument: "url:{% for host in groups['memcached'] %}{{ hostvars[host]['container_address'] }}{% if not loop.last %},{% endif %}{% endfor %}:{{ memcached_port }}"
 keystone_memcached_servers: "{% for host in groups['keystone_all'] %}{{ hostvars[host]['container_address'] }}:{{ memcached_port }}{% if not loop.last %},{% endif %}{% endfor %}"
-keystone_service_region: RegionOne
+keystone_service_region: "{{ service_region }}"
+
+
+## Horizon
+horizon_service_region: "{{ service_region }}"
+
+
+## Heat
+heat_service_region: "{{ service_region }}"
 
 
 ## OpenStack Openrc

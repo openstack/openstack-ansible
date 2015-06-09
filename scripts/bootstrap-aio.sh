@@ -294,7 +294,7 @@ sed -i "s/keystone_auth_admin_password:.*/keystone_auth_admin_password: ${ADMIN_
 sed -i "s/external_lb_vip_address:.*/external_lb_vip_address: ${PUBLIC_ADDRESS}/" /etc/openstack_deploy/openstack_user_config.yml
 
 # Service region set
-echo "keystone_service_region: ${SERVICE_REGION}" | tee -a /etc/openstack_deploy/user_variables.yml
+echo "service_region: ${SERVICE_REGION}" | tee -a /etc/openstack_deploy/user_variables.yml
 
 # Virt type set
 echo "nova_virt_type: ${NOVA_VIRT_TYPE}" | tee -a /etc/openstack_deploy/user_variables.yml
