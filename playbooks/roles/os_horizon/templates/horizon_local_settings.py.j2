@@ -155,14 +155,29 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # EMAIL_HOST_USER = 'djangomail'
 # EMAIL_HOST_PASSWORD = 'top-secret!'
 
+{% if horizon_available_regions is defined %}
+# Set the regions accessible through Horizon
+AVAILABLE_REGIONS = [
+{% for item in horizon_available_regions %}
+  ('{{ item.url }}', '{{ item.name }}'),
+{% endfor %}
+]
+
+# This is not used because AVAILABLE_REGIONS is defined
+#OPENSTACK_HOST = "{{ internal_lb_vip_address }}"
+#OPENSTACK_KEYSTONE_URL = "{{ keystone_service_internalurl }}"
+{% else %}
 # For multiple regions uncomment this configuration, and add (endpoint, title).
 # AVAILABLE_REGIONS = [
 #     ('http://cluster1.example.com:5000/v2.0', 'cluster1'),
 #     ('http://cluster2.example.com:5000/v2.0', 'cluster2'),
 # ]
 
+# This is only used if AVAILABLE_REGIONS is not defined
 OPENSTACK_HOST = "{{ internal_lb_vip_address }}"
 OPENSTACK_KEYSTONE_URL = "{{ keystone_service_internalurl }}"
+{% endif %}
+
 OPENSTACK_KEYSTONE_DEFAULT_ROLE = "_member_"
 
 # Enables keystone web single-sign-on if set to True.
