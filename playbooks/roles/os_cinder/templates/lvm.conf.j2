@@ -19,16 +19,10 @@
     {% if used_lvm_devices.append('"r/.*/"') %}{% endif %}
 {% endif %}
 
-{% if is_metal == false or is_metal == "False" %}
-    {% set use_udev = 0 %}
-{% else %}
-    {% set use_udev = 1 %}
-{% endif %}
-
 devices {
     dir = "/dev"
     scan = [ "/dev" ]
-    obtain_device_list_from_udev = {{ use_udev }}
+    obtain_device_list_from_udev = 1
     preferred_names = [ ]
     filter = [ {{ used_lvm_devices|join(', ') }} ]
     cache_dir = "/run/lvm"
@@ -96,8 +90,8 @@ global {
 }
 activation {
     checks = 0
-    udev_sync = {{ use_udev }}
-    udev_rules = {{ use_udev }}
+    udev_sync = 1
+    udev_rules = 1
     verify_udev_operations = 0
     retry_deactivation = 1
     missing_stripe_filler = "error"

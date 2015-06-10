@@ -43,9 +43,27 @@
           - "lxc.aa_profile=unconfined"
           - "lxc.cgroup.devices.allow=a *:* rmw"
       delegate_to: "{{ physical_host }}"
-      when: is_metal == false or is_metal == "False"
+      when: (is_metal == false or is_metal == "False") and inventory_hostname not in groups['cinder_volume']
       tags:
         - cinder-container-setup
+    - name: Cinder volume extra lxc config
+      lxc_container:
+        name: "{{ container_name }}"
+        container_config:
+          - "lxc.aa_profile=unconfined"
+          - "lxc.cgroup.devices.allow=a *:* rmw"
+          - "lxc.mount.entry = udev dev devtmpfs defaults 0 0"
+      delegate_to: "{{ physical_host }}"
+      when: (is_metal == false or is_metal == "False") and inventory_hostname in groups['cinder_volume']
+      tags:
+        - cinder-container-setup
+      register: lxc_config
+    - name: udevadm trigger
+      command: udevadm trigger
+      tags:
+        - cinder-container-setup
+      delegate_to: "{{ physical_host }}"
+      when: lxc_config is defined and lxc_config.changed
     - name: Flush net cache
       command: /usr/local/bin/lxc-system-manage flush-net-cache
       delegate_to: "{{ physical_host }}"
