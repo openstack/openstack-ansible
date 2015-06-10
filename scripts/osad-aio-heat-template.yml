@@ -56,8 +56,10 @@ outputs:
     value: { get_attr: [ OSADAIO, first_address ] }
   OSADAIO_password:
     description: The password for all the things.
-    value: secrete
+    value: { get_attr: [ OSADAIO_random_pass, value ] }
 resources:
+  OSADAIO_random_pass:
+    type: OS::Heat::RandomString
   OSADAIO_port:
     type: OS::Neutron::Port
     properties:
