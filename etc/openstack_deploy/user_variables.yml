@@ -88,3 +88,11 @@ ssl_cipher_suite: "ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AE
 #   HTTP_PROXY: "{{ proxy_env_url }}"
 #   HTTPS_PROXY: "{{ proxy_env_url }}"
 #   NO_PROXY: "{{ no_proxy_env }}"
+
+
+## Multiple region support in Horizon:
+# For multiple regions uncomment this configuration, and
+# add the extra endpoints below the first list item.
+# horizon_available_regions:
+#   - { url: "{{ keystone_service_internalurl }}", name: "{{ keystone_service_region }}" }
+#   - { url: "http://cluster1.example.com:5000/v2.0", name: "RegionTwo" }

@@ -67,6 +67,12 @@ horizon_ssl_cert_path: /etc/ssl/certs
 horizon_ssl_protocol: "{{ ssl_protocol }}"
 horizon_ssl_cipher_suite: "{{ ssl_cipher_suite }}"
 
+# For multiple regions uncomment this configuration, and
+# add the extra endpoints below the first list item.
+# horizon_available_regions:
+#   - { url: "{{ keystone_service_internalurl }}", name: "{{ keystone_service_region }}" }
+#   - { url: "http://cluster1.example.com:5000/v2.0", name: "RegionTwo" }
+
 ## Launch instance
 horizon_launch_instance_legacy: True
 horizon_launch_instance_ng: False
