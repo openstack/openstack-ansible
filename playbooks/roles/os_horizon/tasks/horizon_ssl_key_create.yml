@@ -23,7 +23,7 @@
 
 - name: Create self-signed ssl cert
   command: >
-    openssl req -new -nodes -x509 -subj
+    openssl req -new -nodes -sha256 -x509 -subj
     "/C=US/ST=Texas/L=San Antonio/O=IT/CN={{ horizon_server_name }}"
     -days 3650
     -keyout {{ horizon_ssl_key }}
