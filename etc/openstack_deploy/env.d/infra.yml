@@ -13,8 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-component_skel: {}
-
-container_skel: {}
-
-physical_skel: {}
+physical_skel:
+  infra_containers:
+    belongs_to:
+      - all_containers
+  infra_hosts:
+    belongs_to:
+      - hosts
