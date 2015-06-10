@@ -38,7 +38,7 @@
 
 - name:
   command: >
-    openssl req -newkey rsa:2048
+    openssl req -newkey -sha256 rsa:2048
                 -keyout signing_key.pem
                 -keyform PEM
                 -out signing_cert_req.pem
