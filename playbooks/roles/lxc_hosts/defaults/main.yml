@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# lxc container rootfs directory and cache path
+lxc_container_directory: "/var/lib/lxc"
+lxc_container_cache_path: "/var/cache/lxc"
+
 # lxc container net network
 lxc_net_bridge: lxcbr0
 lxc_net_bridge_port: none
