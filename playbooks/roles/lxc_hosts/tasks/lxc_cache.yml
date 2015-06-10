@@ -29,7 +29,7 @@
 - name: Move lxc cached image into place
   unarchive:
     src: "/var/cache/lxc_{{ item.name }}"
-    dest: "/var/cache/lxc/"
+    dest: "{{ lxc_container_cache_path }}/"
     copy: "no"
   with_items: lxc_container_caches
   when: cache_download|changed

@@ -26,3 +26,16 @@
   with_items: lxc_apt_packages
   tags:
     - lxc-packages
+
+# The functionality with changing the container cache has been added into the
+# upstream LXC templates with patch [ https://github.com/lxc/lxc/pull/558 ]
+# TODO: remove the below patch and pass lxc_container_cache_path to lxc
+# templates as appropriate once the lxc update goes mainstream
+- name: Patch lxc-ubuntu cache path
+  replace:
+    dest: /usr/share/lxc/templates/lxc-ubuntu
+    regexp: '\$LOCALSTATEDIR/cache/lxc'
+    replace: "{{ lxc_container_cache_path }}"
+    backup: yes
+  tags:
+    - lxc-cache-path

@@ -18,6 +18,10 @@ lxc_container_config: /etc/lxc/lxc-openstack.conf
 # Default container template to build from
 lxc_container_template: ubuntu
 
+# lxc container rootfs directory and cache path
+lxc_container_directory: "/var/lib/lxc"
+lxc_container_cache_path: "/var/cache/lxc"
+
 # container_fs.* is only used with building on an LVM backend
 lxc_container_fs_size: 5G
 lxc_container_fs_type: ext4
