@@ -186,6 +186,7 @@ def main():
         print('Creating backup file [ %s ]' % user_vars_tar_file)
         # Create a tarball if needed
         with tarfile.open(user_vars_tar_file, 'a') as tar:
+            os.chmod(user_vars_tar_file, 0o600)
             basename = os.path.basename(user_vars_file)
             # Time stamp the password file in UTC
             utctime = datetime.datetime.utcnow()
@@ -194,6 +195,7 @@ def main():
             tar.add(user_vars_file, arcname=backup_name)
 
     with open(user_vars_file, 'wb') as f:
+        os.chmod(user_vars_file, 0o600)
         f.write(
             yaml.safe_dump(
                 user_vars,
