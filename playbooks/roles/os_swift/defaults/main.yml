@@ -46,12 +46,15 @@ swift_service_user_domain_id: "default"
 swift_service_role_name: "admin"
 swift_service_type: object-store
 swift_service_proto: http
+swift_service_publicuri_proto: "{{ swift_service_proto }}"
+swift_service_adminuri_proto: "{{ swift_service_proto }}"
+swift_service_internaluri_proto: "{{ swift_service_proto }}"
 swift_service_description: "Object Storage Service"
-swift_service_publicuri: "{{ swift_service_proto }}://{{ external_lb_vip_address }}:{{ swift_proxy_port }}"
+swift_service_publicuri: "{{ swift_service_publicuri_proto }}://{{ external_lb_vip_address }}:{{ swift_proxy_port }}"
 swift_service_publicurl: "{{ swift_service_publicuri }}/v1/AUTH_%(tenant_id)s"
-swift_service_adminuri: "{{ swift_service_proto }}://{{ internal_lb_vip_address }}:{{ swift_proxy_port }}"
+swift_service_adminuri: "{{ swift_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ swift_proxy_port }}"
 swift_service_adminurl: "{{ swift_service_adminuri }}/v1/AUTH_%(tenant_id)s"
-swift_service_internaluri: "{{ swift_service_proto }}://{{ internal_lb_vip_address }}:{{ swift_proxy_port }}"
+swift_service_internaluri: "{{ swift_service_internaluri_proto }}://{{ internal_lb_vip_address }}:{{ swift_proxy_port }}"
 swift_service_internalurl: "{{ swift_service_internaluri }}/v1/AUTH_%(tenant_id)s"
 swift_service_region: RegionOne
 
