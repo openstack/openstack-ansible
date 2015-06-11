@@ -136,7 +136,7 @@ SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': '{{ galera_address }}',
+        'HOST': '{{ horizon_galera_address }}',
         'NAME': '{{ horizon_galera_database }}',
         'USER': '{{ horizon_galera_user }}',
         'PASSWORD': '{{ horizon_container_mysql_password }}',

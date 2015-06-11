@@ -18,7 +18,7 @@ api_limit_max = 1000
 limit_param_default = 25
 
 [database]
-connection = mysql://{{ glance_galera_user }}:{{ glance_container_mysql_password }}@{{ galera_address }}/{{ glance_galera_database }}?charset=utf8
+connection = mysql://{{ glance_galera_user }}:{{ glance_container_mysql_password }}@{{ glance_galera_address }}/{{ glance_galera_database }}?charset=utf8
 
 [keystone_authtoken]
 auth_plugin = {{ glance_keystone_auth_plugin }}

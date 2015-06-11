@@ -16,4 +16,4 @@ This role will install the following:
       roles:
         - { role: "os_horizon", tags: [ "os-horizon" ] }
       vars:
-        galera_address: "{{ internal_lb_vip_address }}"
+        horizon_galera_address: "{{ internal_lb_vip_address }}"

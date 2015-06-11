@@ -35,7 +35,7 @@ endpoint_type = {{ heat_clients_endpoint }}
 endpoint_type = {{ heat_clients_heat_endpoint }}
 
 [database]
-connection = mysql://{{ heat_galera_user }}:{{ heat_container_mysql_password }}@{{ galera_address }}/{{ heat_galera_database }}?charset=utf8
+connection = mysql://{{ heat_galera_user }}:{{ heat_container_mysql_password }}@{{ heat_galera_address }}/{{ heat_galera_database }}?charset=utf8
 
 [ec2authtoken]
 auth_uri = {{ keystone_service_internalurl }}

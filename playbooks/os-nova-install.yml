@@ -99,7 +99,7 @@
         - "nova-rsyslog-client"
         - "rsyslog-client"
   vars:
-    galera_address: "{{ internal_lb_vip_address }}"
+    nova_galera_address: "{{ internal_lb_vip_address }}"
     ansible_hostname: "{{ container_name }}"
     ansible_ssh_host: "{{ container_address }}"
     is_metal: "{{ properties.is_metal|default(false) }}"

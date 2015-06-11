@@ -18,4 +18,4 @@ This role will install the following:
       roles:
         - { role: "os_cinder", tags: [ "os-cinder" ] }
       vars:
-        galera_address: "{{ internal_lb_vip_address }}"
+        cinder_galera_address: "{{ internal_lb_vip_address }}"
