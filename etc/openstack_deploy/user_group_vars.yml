@@ -68,11 +68,12 @@ memcached_servers: "{% for host in groups['memcached'] %}{{ hostvars[host]['ansi
 ## Nova
 nova_service_port: 8774
 nova_service_proto: http
+nova_service_adminuri_proto: "{{ nova_service_proto }}"
 nova_service_user_name: nova
 nova_service_project_name: service
 nova_service_project_domain_id: default
 nova_service_user_domain_id: default
-nova_service_adminuri: "{{ nova_service_proto }}://{{ internal_lb_vip_address }}:{{ nova_service_port }}"
+nova_service_adminuri: "{{ nova_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ nova_service_port }}"
 nova_service_adminurl: "{{ nova_service_adminuri }}/v2/%(tenant_id)s"
 nova_service_region: RegionOne
 nova_metadata_port: 8775
@@ -82,11 +83,12 @@ nova_keystone_auth_plugin: password
 ## Neutron
 neutron_service_port: 9696
 neutron_service_proto: http
+neutron_service_adminuri_proto: "{{ neutron_service_proto }}"
 neutron_service_user_name: neutron
 neutron_service_project_name: service
 neutron_service_project_domain_id: default
 neutron_service_user_domain_id: default
-neutron_service_adminuri: "{{ neutron_service_proto }}://{{ internal_lb_vip_address }}:{{ neutron_service_port }}"
+neutron_service_adminuri: "{{ neutron_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ neutron_service_port }}"
 neutron_service_adminurl: "{{ neutron_service_adminuri }}"
 neutron_service_region: RegionOne
 neutron_service_program_enabled: true
@@ -100,11 +102,12 @@ neutron_service_metering_program_enabled: true
 ## Glance
 glance_service_port: 9292
 glance_service_proto: http
+glance_service_adminuri_proto: "{{ glance_service_proto }}"
 glance_service_user_name: glance
 glance_service_project_name: service
 glance_service_project_domain_id: default
 glance_service_user_domain_id: default
-glance_service_adminurl: "{{ glance_service_proto }}://{{ internal_lb_vip_address }}:{{ glance_service_port }}"
+glance_service_adminurl: "{{ glance_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ glance_service_port }}"
 glance_service_region: RegionOne
 glance_api_servers: "{% for host in groups['glance_all'] %}{{ hostvars[host]['container_address'] }}:{{ glance_service_port }}{% if not loop.last %},{% endif %}{% endfor %}"
 
@@ -115,16 +118,17 @@ keystone_admin_tenant_name: admin
 keystone_admin_port: 35357
 keystone_service_port: 5000
 keystone_service_proto: http
+keystone_service_adminuri_proto: "{{ keystone_service_proto }}"
+keystone_service_internaluri_proto: "{{ keystone_service_proto }}"
 keystone_service_user_name: keystone
 keystone_service_tenant_name: service
-keystone_service_uri: "{{ keystone_service_proto }}://{{ internal_lb_vip_address }}"
-keystone_service_internaluri: "{{ keystone_service_proto }}://{{ internal_lb_vip_address }}:{{ keystone_service_port }}"
+keystone_service_internaluri: "{{ keystone_service_internaluri_proto }}://{{ internal_lb_vip_address }}:{{ keystone_service_port }}"
 keystone_service_internalurl: "{{ keystone_service_internaluri }}/v2.0"
-keystone_service_adminuri: "{{ keystone_service_uri }}:{{ keystone_admin_port }}"
+keystone_service_adminuri: "{{ keystone_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ keystone_admin_port }}"
 keystone_service_adminurl: "{{ keystone_service_adminuri }}/v2.0"
-keystone_service_internaluri_v3: "{{ keystone_service_proto }}://{{ internal_lb_vip_address }}:{{ keystone_service_port }}"
+keystone_service_internaluri_v3: "{{ keystone_service_internaluri_proto }}://{{ internal_lb_vip_address }}:{{ keystone_service_port }}"
 keystone_service_internalurl_v3: "{{ keystone_service_adminuri_v3 }}/v3"
-keystone_service_adminuri_v3: "{{ keystone_service_proto }}://{{ internal_lb_vip_address }}:{{ keystone_admin_port }}"
+keystone_service_adminuri_v3: "{{ keystone_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ keystone_admin_port }}"
 keystone_service_adminurl_v3: "{{ keystone_service_adminuri_v3 }}/v3"
 keystone_cache_backend_argument: "url:{% for host in groups['memcached'] %}{{ hostvars[host]['container_address'] }}{% if not loop.last %},{% endif %}{% endfor %}:{{ memcached_port }}"
 keystone_memcached_servers: "{% for host in groups['keystone_all'] %}{{ hostvars[host]['container_address'] }}:{{ memcached_port }}{% if not loop.last %},{% endif %}{% endfor %}"

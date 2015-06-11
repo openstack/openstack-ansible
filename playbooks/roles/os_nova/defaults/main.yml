@@ -59,13 +59,16 @@ nova_enabled_apis: "osapi_compute,metadata"
 nova_s3_service_name: s3
 nova_s3_service_type: s3
 nova_s3_service_proto: http
+nova_s3_service_publicuri_proto: "{{ nova_s3_service_proto }}"
+nova_s3_service_adminuri_proto: "{{ nova_s3_service_proto }}"
+nova_s3_service_internaluri_proto: "{{ nova_s3_service_proto }}"
 nova_s3_service_port: 3333
 nova_s3_service_description: "S3 Compatibility Layer"
-nova_s3_service_publicuri: "{{ nova_s3_service_proto }}://{{ external_lb_vip_address }}:{{ nova_s3_service_port }}"
+nova_s3_service_publicuri: "{{ nova_s3_service_publicuri_proto }}://{{ external_lb_vip_address }}:{{ nova_s3_service_port }}"
 nova_s3_service_publicurl: "{{ nova_s3_service_publicuri }}"
-nova_s3_service_adminuri: "{{ nova_s3_service_proto }}://{{ internal_lb_vip_address }}:{{ nova_s3_service_port }}"
+nova_s3_service_adminuri: "{{ nova_s3_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ nova_s3_service_port }}"
 nova_s3_service_adminurl: "{{ nova_s3_service_adminuri }}"
-nova_s3_service_internaluri: "{{ nova_s3_service_proto }}://{{ internal_lb_vip_address }}:{{ nova_s3_service_port }}"
+nova_s3_service_internaluri: "{{ nova_s3_service_internaluri_proto }}://{{ internal_lb_vip_address }}:{{ nova_s3_service_port }}"
 nova_s3_service_internalurl: "{{ nova_s3_service_internaluri }}"
 nova_s3_program_name: nova-api-ec2
 nova_s3_deprecated_but_enabled: false
@@ -74,13 +77,16 @@ nova_s3_deprecated_but_enabled: false
 nova_v3_service_name: novav3
 nova_v3_service_type: computev3
 nova_v3_service_proto: http
+nova_v3_service_publicuri_proto: "{{ nova_v3_service_proto }}"
+nova_v3_service_adminuri_proto: "{{ nova_v3_service_proto }}"
+nova_v3_service_internaluri_proto: "{{ nova_v3_service_proto }}"
 nova_v3_service_port: 8774
 nova_v3_service_description: "Nova Compute Service V3"
-nova_v3_service_publicuri: "{{ nova_v3_service_proto }}://{{ external_lb_vip_address }}:{{ nova_v3_service_port }}"
+nova_v3_service_publicuri: "{{ nova_v3_service_publicuri_proto }}://{{ external_lb_vip_address }}:{{ nova_v3_service_port }}"
 nova_v3_service_publicurl: "{{ nova_v3_service_publicuri }}/v3"
-nova_v3_service_adminuri: "{{ nova_v3_service_proto }}://{{ internal_lb_vip_address }}:{{ nova_v3_service_port }}"
+nova_v3_service_adminuri: "{{ nova_v3_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ nova_v3_service_port }}"
 nova_v3_service_adminurl: "{{ nova_v3_service_adminuri }}/v3"
-nova_v3_service_internaluri: "{{ nova_v3_service_proto }}://{{ internal_lb_vip_address }}:{{ nova_v3_service_port }}"
+nova_v3_service_internaluri: "{{ nova_v3_service_internaluri_proto }}://{{ internal_lb_vip_address }}:{{ nova_v3_service_port }}"
 nova_v3_service_internalurl: "{{ nova_v3_service_internaluri }}/v3"
 nova_v3_deprecated_but_enabled: false
 
@@ -88,13 +94,16 @@ nova_v3_deprecated_but_enabled: false
 nova_v21_service_name: novav21
 nova_v21_service_type: computev21
 nova_v21_service_proto: http
+nova_v21_service_publicuri_proto: "{{ nova_v21_service_proto }}"
+nova_v21_service_adminuri_proto: "{{ nova_v21_service_proto }}"
+nova_v21_service_internaluri_proto: "{{ nova_v21_service_proto }}"
 nova_v21_service_port: 8774
 nova_v21_service_description: "Nova Compute Service V2.1"
-nova_v21_service_publicuri: "{{ nova_v21_service_proto }}://{{ external_lb_vip_address }}:{{ nova_v21_service_port }}"
+nova_v21_service_publicuri: "{{ nova_v21_service_publicuri_proto }}://{{ external_lb_vip_address }}:{{ nova_v21_service_port }}"
 nova_v21_service_publicurl: "{{ nova_v21_service_publicuri }}/v2.1"
-nova_v21_service_adminuri: "{{ nova_v21_service_proto }}://{{ internal_lb_vip_address }}:{{ nova_v21_service_port }}"
+nova_v21_service_adminuri: "{{ nova_v21_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ nova_v21_service_port }}"
 nova_v21_service_adminurl: "{{ nova_v21_service_adminuri }}/v2.1"
-nova_v21_service_internaluri: "{{ nova_v21_service_proto }}://{{ internal_lb_vip_address }}:{{ nova_v21_service_port }}"
+nova_v21_service_internaluri: "{{ nova_v21_service_internaluri_proto }}://{{ internal_lb_vip_address }}:{{ nova_v21_service_port }}"
 nova_v21_service_internalurl: "{{ nova_v21_service_internaluri }}/v2.1"
 nova_v21_enabled: true
 
@@ -102,13 +111,16 @@ nova_v21_enabled: true
 nova_service_name: nova
 nova_service_type: compute
 nova_service_proto: http
+nova_service_publicuri_proto: "{{ nova_service_proto }}"
+nova_service_adminuri_proto: "{{ nova_service_proto }}"
+nova_service_internaluri_proto: "{{ nova_service_proto }}"
 nova_service_port: 8774
 nova_service_description: "Nova Compute Service"
-nova_service_publicuri: "{{ nova_service_proto }}://{{ external_lb_vip_address }}:{{ nova_service_port }}"
+nova_service_publicuri: "{{ nova_service_publicuri_proto }}://{{ external_lb_vip_address }}:{{ nova_service_port }}"
 nova_service_publicurl: "{{ nova_service_publicuri }}/v2/%(tenant_id)s"
-nova_service_adminuri: "{{ nova_service_proto }}://{{ internal_lb_vip_address }}:{{ nova_service_port }}"
+nova_service_adminuri: "{{ nova_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ nova_service_port }}"
 nova_service_adminurl: "{{ nova_service_adminuri }}/v2/%(tenant_id)s"
-nova_service_internaluri: "{{ nova_service_proto }}://{{ internal_lb_vip_address }}:{{ nova_service_port }}"
+nova_service_internaluri: "{{ nova_service_internaluri_proto }}://{{ internal_lb_vip_address }}:{{ nova_service_port }}"
 nova_service_internalurl: "{{ nova_service_internaluri }}/v2/%(tenant_id)s"
 nova_program_name: nova-api-os-compute
 
@@ -118,13 +130,16 @@ nova_program_name: nova-api-os-compute
 nova_ec2_service_name: ec2
 nova_ec2_service_type: ec2
 nova_ec2_service_proto: http
+nova_ec2_service_publicuri_proto: "{{ nova_ec2_service_proto }}"
+nova_ec2_service_adminuri_proto: "{{ nova_ec2_service_proto }}"
+nova_ec2_service_internaluri_proto: "{{ nova_ec2_service_proto }}"
 nova_ec2_service_port: 8773
 nova_ec2_service_description: "EC2 Compatibility Layer"
-nova_ec2_service_publicuri: "{{ nova_ec2_service_proto }}://{{ external_lb_vip_address }}:{{ nova_ec2_service_port }}"
+nova_ec2_service_publicuri: "{{ nova_ec2_service_publicuri_proto }}://{{ external_lb_vip_address }}:{{ nova_ec2_service_port }}"
 nova_ec2_service_publicurl: "{{ nova_ec2_service_publicuri }}/services/Cloud"
-nova_ec2_service_adminuri: "{{ nova_ec2_service_proto }}://{{ internal_lb_vip_address }}:{{ nova_ec2_service_port }}"
+nova_ec2_service_adminuri: "{{ nova_ec2_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ nova_ec2_service_port }}"
 nova_ec2_service_adminurl: "{{ nova_ec2_service_adminuri }}/services/Admin"
-nova_ec2_service_internaluri: "{{ nova_ec2_service_proto }}://{{ internal_lb_vip_address }}:{{ nova_ec2_service_port }}"
+nova_ec2_service_internaluri: "{{ nova_ec2_service_internaluri_proto }}://{{ internal_lb_vip_address }}:{{ nova_ec2_service_port }}"
 nova_ec2_service_internalurl: "{{ nova_ec2_service_internaluri }}/services/Cloud"
 nova_ec2_program_name: nova-api-ec2
 nova_ec2_deprecated_but_enabled: false
