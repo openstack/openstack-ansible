@@ -18,6 +18,7 @@ Contents:
    :maxdepth: 2
 
    playbooks
+   install-guide/index
    extending
 
 
