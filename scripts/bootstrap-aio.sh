@@ -302,9 +302,10 @@ echo "nova_virt_type: ${NOVA_VIRT_TYPE}" | tee -a /etc/openstack_deploy/user_var
 echo "tempest_public_subnet_cidr: ${TEMPEST_FLAT_CIDR}" | tee -a /etc/openstack_deploy/user_variables.yml
 
 # Minimize galera cache
-echo 'galera_gcache_size: 32M' | tee -a /etc/openstack_deploy/user_variables.yml
 echo 'galera_innodb_buffer_pool_size: 512M' | tee -a /etc/openstack_deploy/user_variables.yml
 echo 'galera_innodb_log_buffer_size: 32M' | tee -a /etc/openstack_deploy/user_variables.yml
+echo 'galera_wsrep_provider_options:
+ - { option: "gcache.size", value: "32M" }' | tee -a /etc/openstack_deploy/user_variables.yml
 
 # Set the running kernel as the required kernel
 echo "required_kernel: $(uname --kernel-release)" | tee -a /etc/openstack_deploy/user_variables.yml
