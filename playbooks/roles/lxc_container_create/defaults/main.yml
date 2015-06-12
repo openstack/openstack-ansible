@@ -65,6 +65,11 @@ lxc_container_interface: |
   {% if item.value.gateway is defined %}
       gateway {{ item.value.gateway }}
   {% endif %}
+  {% if item.value.static_routes is defined %}
+  {% for route in item.value.static_routes %}
+      post-up ip route add {{ route['cidr'] }} via {{ route['gateway'] }} || true
+  {% endfor %}
+  {% endif %}
   {% else %}
   iface {{ item.value.interface }} inet manual
   {% endif %}
