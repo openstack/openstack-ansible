@@ -17,6 +17,15 @@ global_overrides:
 swift-proxy_hosts:
   aio1:
     ip: 172.29.236.100
+    container_vars:
+      swift_proxy_vars:
+        read_affinity: "r1=100"
+        write_affinity: "r1"
+        write_affinity_node_count: "1 * replicas"
 swift_hosts:
   aio1:
     ip: 172.29.236.100
+    container_vars:
+      swift_vars:
+        zone: 0
+        region: 1
