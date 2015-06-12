@@ -22,6 +22,7 @@ galera_monitoring_user: monitoring
 galera_monitoring_user_password: ""
 galera_root_user: root
 
+# WARNING: This option is deprecated and will be removed in v12.0
 galera_gcache_size: 1024M
 
 galera_max_heap_table_size: 32M
@@ -43,6 +44,8 @@ galera_wsrep_node_incoming_address: "{{ galera_wsrep_address }}"
 galera_wsrep_slave_threads: "{{ ansible_processor_vcpus }}"
 galera_wsrep_retry_autocommit: 3
 galera_wsrep_debug: 0
+galera_wsrep_provider_options:
+  - { option: "gcache.size", value: "{{ galera_gcache_size }}" }
 
 # Galera GPG Keys
 galera_gpg_keys:

@@ -3,7 +3,13 @@
 [mysqld]
 # Path to Galera library
 wsrep_provider = /usr/lib/galera/libgalera_smm.so
-wsrep_provider_options = "gcache.size = {{ galera_gcache_size }}"
+{% if galera_wsrep_provider_options is defined %}
+wsrep_provider_options = "
+  {%- for item in galera_wsrep_provider_options -%}
+    {{ item.option }} = {{ item.value }}{% if not loop.last %}; {% endif -%}
+  {%- endfor -%}
+  "
+{% endif %}
 
 # Cluster connection URL contains the IPs of node#1, node#2 and node#3
 wsrep_cluster_address = gcomm://{{ galera_wsrep_cluster_address }}
