@@ -19,7 +19,8 @@ set -e -u -x
 
 
 ## Vars ----------------------------------------------------------------------
-export ADMIN_PASSWORD=${ADMIN_PASSWORD:-"secrete"}
+DEFAULT_PASSWORD=$(head -c 64 /dev/urandom | tr -dc 'a-zA-Z0-9')
+export ADMIN_PASSWORD=${ADMIN_PASSWORD:-$DEFAULT_PASSWORD}
 export SERVICE_REGION=${SERVICE_REGION:-"RegionOne"}
 export DEPLOY_SWIFT=${DEPLOY_SWIFT:-"yes"}
 export GET_PIP_URL=${GET_PIP_URL:-"https://bootstrap.pypa.io/get-pip.py"}
