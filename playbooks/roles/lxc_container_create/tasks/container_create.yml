@@ -57,6 +57,7 @@
     template: "{{ properties.container_template|default(lxc_container_template) }}"
     state: started
     backing_store: "{{ properties.container_backing_store|default(lxc_container_backing_store) }}"
+    directory: "{{ lxc_container_directory }}/{{ container_name }}"
     fs_size: "{{ properties.container_fs_size|default(lxc_container_fs_size) }}"
     fs_type: "{{ properties.container_fs_type|default(lxc_container_fs_type) }}"
     vg_name: "{{ properties.container_vg_name|default(lxc_container_vg_name) }}"
