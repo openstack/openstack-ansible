@@ -18,7 +18,7 @@
 set -e -u -v +x
 
 ## Vars ----------------------------------------------------------------------
-export TEMPEST_SCRIPT_PATH=${TEMPEST_SCRIPT_PATH:-/root/rpc_tempest_gate.sh}
+export TEMPEST_SCRIPT_PATH=${TEMPEST_SCRIPT_PATH:-/opt/openstack_tempest_gate.sh}
 ## TODO(someone) this needs to be changed back to the normal tests once someone
 ## is able to dig into tempest/the updated/deprecated config(s). This test should
 ## go back to being the scenario tests.

@@ -67,7 +67,6 @@ function gen_test_list_cinder_backup() {
   egrep 'tempest\.api\.volume\.admin\.test_volumes_backup'
 }
 
-
 # Run smoke tests
 function gen_test_list_smoke() {
   # this specific test fails frequently and is making our multi node nightly
@@ -85,13 +84,17 @@ function gen_test_list_all() {
 # Note that unlike the other test list functions, this one isn't a filter
 # it ignores its stdin and pulls the test list from github.
 function gen_test_list_defcore(){
-  branch=${1:-juno}
+  branch=${1:-master}
   string=$(python <<END
 import json
 import requests
 
 branch="$branch"
-map = {'juno': '2015.next', 'icehouse': '2015.03'}
+map = {
+    'master': '2015.next',
+    'juno': '2015.04',
+    'icehouse': '2015.04'
+}
 
 url=("https://raw.githubusercontent.com/openstack/"
      "defcore/master/%(version)s.json"
@@ -136,7 +139,10 @@ for test_list_name in $test_lists; do
 done
 
 # work in tempest directory
-pushd /opt/tempest_*
+pushd {{ tempest_git_dest }}
+
+# Load the tempest venv for a tempest run
+source {{ tempest_git_dest }}/bin/activate
 
 # read creds into environment
 source /root/openrc
@@ -186,5 +192,8 @@ if [[ $result == 0 ]]; then
 else
   echo "TEMPEST FAIL $test_list_summary"
 fi
+
+# Deactivate the venv after run
+deactivate || true
 
 exit $result

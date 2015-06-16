@@ -1,0 +1,102 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Defines that the role will be deployed on a host machine
+is_metal: true
+
+## Verbosity Options
+debug: False
+verbose: True
+tempest_fatal_deprecations: False
+
+tempest_private_subnet_cidr: "192.168.74.0/24"
+tempest_public_subnet_cidr: "10.1.13.0/24"
+
+tempest_compute_image_ssh_user: cirros
+tempest_compute_image_alt_ssh_user: cirros
+tempest_compute_image_ssh_password: cubswin:)
+tempest_compute_image_alt_ssh_password: cubswin:)
+tempest_compute_run_ssh: True
+tempest_compute_console_output_enabled: True
+tempest_compute_resize_enabled: True
+tempest_compute_snapshot_enabled: True
+
+tempest_dashboard_login_url: "https://{{ external_lb_vip_address }}/auth/login/"
+tempest_dashboard_url: "https://{{ external_lb_vip_address }}/"
+
+tempest_service_available_ceilometer: False
+tempest_service_available_cinder: True
+tempest_service_available_glance: True
+tempest_service_available_heat: True
+tempest_service_available_horizon: True
+tempest_service_available_ironic: False
+tempest_service_available_neutron: True
+tempest_service_available_nova: True
+tempest_service_available_sahara: False
+tempest_service_available_swift: True
+tempest_service_available_trove: False
+tempest_service_available_zaqar: False
+
+tempest_image_api_v1_enabled: true
+tempest_image_api_v2_enabled: True
+
+tempest_boto_s3_url: "http://{{ external_lb_vip_address }}:3333"
+tempest_boto_ec2_url: "http://{{ external_lb_vip_address }}:8773/services/Cloud"
+
+tempest_swift_enabled: true
+tempest_swift_object_versioning: True
+
+tempest_volume_backup_enabled: False
+
+tempest_main_group: tempest_all
+
+tempest_requires_pip_packages:
+  - oslo.serialization
+  - python-barbicanclient
+  - python-ceilometerclient
+  - python-cinderclient
+  - python-designateclient
+  - python-glanceclient
+  - python-heatclient
+  - python-ironicclient
+  - python-keystoneclient
+  - python-marconiclient
+  - python-memcached
+  - python-neutronclient
+  - python-novaclient
+  - python-openstackclient
+  - python-saharaclient
+  - python-seamicroclient
+  - python-swiftclient
+  - python-troveclient
+  - python-tuskarclient
+  - python-memcached
+  - virtualenv
+
+tempest_pip_packages:
+  - fixtures
+  - nose
+  - testrepository
+  - testscenarios
+  - testtools
+
+tempest_image_dir: "/opt/images"
+tempest_images:
+  - url: "http://download.cirros-cloud.net/0.3.2/cirros-0.3.2-x86_64-uec.tar.gz"
+    sha256: "f462729fc2f071081dbc55932e07437e265263ef2e688306c353a1f152162b03"
+    name: "cirros-0.3.2-x86_64-uec.tar.gz"
+  - url: "http://download.cirros-cloud.net/0.3.3/cirros-0.3.3-x86_64-disk.img"
+    sha256: "f11286e2bd317ee1a1d0469a6b182b33bda4af6f35ba224ca49d75752c81e20a"
+    name: "cirros-0.3.3-x86_64-disk.img"
