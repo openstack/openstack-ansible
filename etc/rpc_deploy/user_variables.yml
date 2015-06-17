@@ -220,3 +220,18 @@ swift_dispersion_password:
 #   - { package: "logstash", version: "1.4.2-1-2c0f5a1" }
 #   - { package: "logstash-contrib", version: "1.4.2-1-efd53ef" }
 #   - { package: "elasticsearch", version: "1.2.4" }
+
+## Environment variable settings
+# This allows users to specify the additional environment variables to be set
+# which is useful in setting where you working behind a proxy. If working behind
+# a proxy It's important to always specify the scheme as "http://". This is what
+# the underlying python libraries will handle best. This proxy information will be
+# placed both on the hosts and inside the containers.
+
+## Example environment variable setup:
+# proxy_env_url: http://username:pa$$w0rd@10.10.10.9:9000/
+# no_proxy_env: "localhost,127.0.0.1,{% for host in groups['all_containers'] %}{{ hostvars[host]['container_address'] }}{% if not loop.last %},{% endif %}{% endfor %}"
+# global_environment_variables:
+#   HTTP_PROXY: "{{ proxy_env_url }}"
+#   HTTPS_PROXY: "{{ proxy_env_url }}"
+#   NO_PROXY: "{{ no_proxy_env }}"

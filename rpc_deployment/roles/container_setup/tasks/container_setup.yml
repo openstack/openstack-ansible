@@ -58,6 +58,20 @@
       echo -e '{{ management_interface }}' | tee /etc/network/interfaces.d/management.cfg
   delegate_to: "{{ physical_host }}"
 
+- name: Run proxy config
+  lxc:
+    name: "{{ container_name }}"
+    command: "attach"
+    container_command: |
+      if ! grep '{{ item.key }}={{ item.value }}' /etc/environment; then
+        echo '{{ item.key }}={{ item.value }}' | tee -a /etc/environment
+      fi
+  with_dict: global_environment_variables | default({})
+  when: global_environment_variables is defined
+  delegate_to: "{{ physical_host }}"
+  tags:
+    - lxc-container-proxy
+
 - name: Ensure Required container config options
   lxc:
     name: "{{ container_name }}"
