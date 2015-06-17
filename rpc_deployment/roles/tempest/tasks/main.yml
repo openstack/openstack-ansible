@@ -13,35 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Get admin tenant id
-  keystone:
-    command: get_tenant
-    tenant_name: admin
-    endpoint: "{{ auth_identity_uri }}"
-    login_tenant_name: "{{ auth_admin_tenant }}"
-    login_user: "{{ auth_admin_username }}"
-    login_password: "{{ auth_admin_password }}"
+- include: tempest_resources.yml
+  when: >
+    inventory_hostname == groups[tempest_main_group][0]
 
-- name: Store admin tenant id
-  set_fact:
-    keystone_admin_tenant_id: "{{ keystone_facts.id }}"
+# Called a second time to set facts on the other utility containers.
+- include: tempest_resources.yml
+  when: >
+    inventory_hostname != groups[tempest_main_group][0]
 
-- name: Create tempest lock dir
-  file:
-    path: "/opt/{{ repo_path }}/locks"
-    state: directory
+- include: tempest_install.yml
+- include: tempest_post_install.yml
 
-- name: Template tempest config
-  template:
-    src: tempest.conf.j2
-    dest: "/opt/{{ repo_path }}/etc/tempest.conf"
-
-- name: Drop tempest script
-  copy:
-    src: rpc_tempest_gate.sh
-    dest: /root/rpc_tempest_gate.sh
-
-- name: Set attributes for tempest script
-  file:
-    path: /root/rpc_tempest_gate.sh
-    mode: 0755
+- name: Flush handlers
+  meta: flush_handlers

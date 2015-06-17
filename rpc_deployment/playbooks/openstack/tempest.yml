@@ -13,31 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Configure tempest on the utility containers
-
-- hosts: utility_all
-  user: root
-  roles:
-    - common
-    - openstack_common
-    - openstack_openrc
-  vars_files:
-    - vars/repo_packages/tempest.yml
-    - inventory/group_vars/tempest_all.yml
-
-# Openstack resources only need to be created once
+# Tempest is installed and configured in one utility container
 - hosts: utility_all[0]
   user: root
   roles:
-    - tempest_resources
-  vars_files:
-    - inventory/group_vars/tempest_all.yml
-
-# Tempest is installed and configured in all utility containers
-- hosts: utility_all
-  user: root
+    - tempest
   vars_files:
     - vars/repo_packages/tempest.yml
-    - inventory/group_vars/tempest_all.yml
-  roles:
-    - tempest

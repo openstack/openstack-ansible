@@ -1,8 +1,9 @@
+# {{ ansible_managed }}
+
 [DEFAULT]
-disable_process_locking = false
-lock_path = /opt/{{ repo_path }}/locks
-debug = False
-verbose = True
+debug = {{ debug }}
+verbose = {{ verbose }}
+fatal_deprecations = {{ tempest_fatal_deprecations }}
 log_file = /var/log/utility/tempest.log
 use_stderr = False
 fatal_deprecations = true
@@ -21,11 +22,11 @@ aki_manifest = cirros-0.3.2-x86_64-vmlinuz.manifest.xml
 ami_manifest = cirros-0.3.2-x86_64-blank.img.manifest.xml
 ari_manifest = cirros-0.3.2-x86_64-initrd.manifest.xml
 build_timeout = 600
-ec2_url = http://134.213.136.181:8773/services/Cloud
+ec2_url = {{ tempest_boto_ec2_url }}
 instance_type = tempest1
 http_socket_timeout = 30
-s3_url = http://134.213.136.181:3333
-s3_materials_path = {{ tempest_image_dir }}
+s3_url = {{ tempest_boto_s3_url }}
+s3_materials_path = /opt/images/s3-materials/cirros-0.3.2
 
 
 [cli]
@@ -44,39 +45,31 @@ endpoint_type = internalURL
 fixed_network_name = private
 flavor_ref = 201
 flavor_ref_alt = 202
-floating_ip_range = 10.0.10.0/29
-image_alt_ssh_password = cubswin:)
-image_alt_ssh_user = cirros
-image_ref = {{ hostvars[groups['utility_all'][0]]['glance_images']['cirros']['id'] }}
-image_ref_alt = {{ hostvars[groups['utility_all'][0]]['glance_images']['cirros']['id'] }}
-image_ssh_password = cubswin:)
-image_ssh_user = cirros
+floating_ip_range = 10.0.0.0/29
+image_alt_ssh_password = {{ tempest_compute_image_alt_ssh_password }}
+image_alt_ssh_user = {{ tempest_compute_image_alt_ssh_user }}
+image_ref = {{ tempest_glance_image_id }}
+image_ref_alt = {{ tempest_glance_image_id }}
+image_ssh_password = {{ tempest_compute_image_ssh_password }}
+image_ssh_user = {{ tempest_compute_image_ssh_user }}
 ip_version_for_ssh = 4
 network_for_ssh = private
 ping_timeout = 240
-run_ssh = false
+run_ssh = {{ tempest_compute_run_ssh }}
 ssh_auth_method = configured
 ssh_connect_method = floating
 ssh_timeout = 196
-ssh_user = cirros
+ssh_user = {{ tempest_compute_image_ssh_user }}
 use_floatingip_for_ssh = true
 volume_device_name = vdb
 
 
-[compute-admin]
-tenant_name = {{ auth_admin_tenant }}
-password = {{ auth_admin_password }}
-username = {{ auth_admin_username }}
-
-
 [compute-feature-enabled]
 api_extensions = all
-api_v3 = false
-api_v3_extensions = all
 block_migrate_cinder_iscsi = false
 block_migration_for_live_migration = false
 change_password = false
-console_output = false
+console_output = {{ tempest_compute_console_output_enabled }}
 disk_config = true
 enable_instance_password = false
 interface_attach = false
@@ -84,17 +77,17 @@ live_migration = false
 pause = false
 rdp_console = false
 rescue = false
-resize = false
+resize = {{ tempest_compute_resize_enabled }}
 shelve = false
-snapshot = false
+snapshot = {{ tempest_compute_resize_enabled }}
 spice_console = true
 suspend = false
 vnc_console = false
 
 
 [dashboard]
-login_url = https://{{ external_vip_address }}/auth/login/
-dashboard_url = https://{{ external_vip_address }}/
+login_url = {{ tempest_dashboard_login_url }}
+dashboard_url = {{ tempest_dashboard_url }}
 
 
 [data_processing]
@@ -104,16 +97,15 @@ dashboard_url = https://{{ external_vip_address }}/
 
 
 [debug]
-enable = true
 
 
 [identity]
 admin_domain_name = Default
-admin_password = {{ auth_admin_password }}
+admin_password = {{ keystone_auth_admin_password }}
 admin_role = admin
-admin_tenant_name = {{ auth_admin_tenant }}
-admin_username = {{ auth_admin_username }}
-admin_tenant_id = {{ keystone_admin_tenant_id }}
+admin_tenant_name = {{ keystone_admin_tenant_name }}
+admin_username = {{ keystone_admin_user_name }}
+admin_tenant_id = {{ tempest_admin_tenant_id }}
 alt_tenant_name = alt_demo
 alt_password = alt_demo
 alt_username = alt_demo
@@ -123,8 +115,8 @@ disable_ssl_certificate_validation = false
 endpoint_type = internalURL
 password = demo
 tenant_name = demo
-uri_v3 = {{ auth_identity_uri_v3 }}
-uri = {{ auth_identity_uri }}
+uri_v3 = {{ keystone_service_internalurl_v3 }}
+uri = {{ keystone_service_internalurl }}
 username = demo
 
 
@@ -141,8 +133,8 @@ http_image = http://download.cirros-cloud.net/0.3.1/cirros-0.3.1-x86_64-uec.tar.
 
 
 [image-feature-enabled]
-api_v1 = true
-api_v2 = false
+api_v1 = {{ tempest_image_api_v1_enabled }}
+api_v2 = {{ tempest_image_api_v2_enabled }}
 
 
 [input-scenario]
@@ -160,7 +152,7 @@ build_timeout = 300
 catalog_type = network
 dns_servers = 8.8.8.8,8.8.4.4
 endpoint_type = internalURL
-public_network_id = {{ hostvars[groups['utility_all'][0]]['neutron_networks']['public']['id'] }}
+public_network_id = {{ tempest_neutron_public_network_id }}
 tenant_network_cidr = {{ tempest_private_subnet_cidr }}
 tenant_networks_reachable = false
 
@@ -173,8 +165,6 @@ ipv6 = false
 
 [object-storage]
 catalog_type = object-store
-container_sync_interval = 5
-container_sync_timeout = 120
 endpoint_type = internalURL
 operator_role = swiftoperator
 reseller_admin_role = reseller_admin
@@ -182,20 +172,13 @@ reseller_admin_role = reseller_admin
 
 [object-storage-feature-enabled]
 container_sync = false
-object_versioning = false
+object_versioning = {{ tempest_swift_object_versioning }}
 discoverable_apis = all
 
 
 [orchestration]
-build_interval = 1
-build_timeout = 900
-catalog_type = orchestration
 endpoint_type = internalURL
-image_ref = {{ hostvars[groups['utility_all'][0]]['glance_images']['cirros']['id'] }}
 instance_type = tempest1
-
-
-[queuing]
 
 
 [scenario]
@@ -207,24 +190,22 @@ img_container_format = bare
 img_dir = {{ tempest_image_dir }}
 img_disk_format = qcow2
 img_file = cirros-0.3.2-x86_64-disk.img
-ssh_user = cirros
+ssh_user = {{ tempest_compute_image_ssh_user }}
 
 
 [service_available]
-neutron = True
-heat = True
-ceilometer = False
-{% if hostvars[groups['utility_all'][0]]['tempest_run_swift_tests'] == True %}
-swift = True
-{% else %}
-swift = False
-{% endif %}
-cinder = True
-nova = True
-glance = True
-horizon = True
-sahara = False
-ironic = False
+ceilometer = {{ tempest_service_available_ceilometer }}
+cinder = {{ tempest_service_available_cinder }}
+glance = {{ tempest_service_available_glance }}
+heat = {{ tempest_service_available_heat }}
+horizon = {{ tempest_service_available_horizon }}
+ironic = {{ tempest_service_available_ironic }}
+neutron = {{ tempest_service_available_neutron }}
+nova = {{ tempest_service_available_nova }}
+sahara = {{ tempest_service_available_sahara }}
+swift = {{ tempest_service_available_swift }}
+trove = {{ tempest_service_available_trove }}
+zaqar = {{ tempest_service_available_zaqar }}
 
 
 [stress]
@@ -252,3 +233,16 @@ api_v2 = false
 backup = {{ tempest_volume_backup_enabled }}
 multi_backend = false
 snapshot = false
+
+
+[oslo_concurrency]
+# Enables or disables inter-process locks. (boolean value)
+# Deprecated group/name - [DEFAULT]/disable_process_locking
+disable_process_locking = false
+
+# Directory to use for lock files.  For security, the specified
+# directory should only be writable by the user running the processes
+# that need locking. Defaults to environment variable OSLO_LOCK_PATH.
+# If external locks are used, a lock path must be set. (string value)
+# Deprecated group/name - [DEFAULT]/lock_path
+lock_path = {{ tempest_git_dest }}/locks

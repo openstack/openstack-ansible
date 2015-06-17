@@ -13,20 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-repo_package_name: tempest
-
-repo_path: "{{ repo_package_name }}_{{ git_install_branch | replace('/', '_') }}"
-
 ## Git Source
-git_repo: https://github.com/openstack/tempest
-git_fallback_repo: https://git.openstack.org/openstack/tempest
-git_dest: "/opt/{{ repo_path }}"
-git_install_branch: 17f81d4cc83569438fe11b1ee6ee2afe74c0b501
-
-pip_wheel_name: tempest
-
-service_pip_dependencies:
-  - nose
-  - testrepository
-  - testtools
-  - oslo.serialization
+tempest_git_repo: https://github.com/openstack/tempest
+tempest_git_install_branch: d1a391a55482d64b9014e7b41219af195722d990  # SHA at the head of master as of 20.3.2015
+tempest_git_dest: "/opt/tempest_{{ tempest_git_install_branch | replace('/', '_') }}"

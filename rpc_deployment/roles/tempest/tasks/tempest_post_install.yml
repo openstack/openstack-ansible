@@ -1,0 +1,92 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Get admin tenant id
+  keystone:
+    command: get_tenant
+    token: "{{ keystone_auth_admin_token }}"
+    tenant_name: admin
+    endpoint: "{{ keystone_service_adminurl }}"
+  register: add_service
+  until: add_service|success
+  retries: 5
+  delay: 10
+  tags:
+    - tempest-config
+
+- name: Store admin tenant id
+  set_fact:
+    tempest_admin_tenant_id: "{{ keystone_facts.id }}"
+  tags:
+    - tempest-config
+
+- name: Create tempest dir
+  file:
+    path: "{{ item.path }}"
+    state: directory
+    owner: "root"
+    group: "root"
+    mode: "{{ item.mode|default('0755') }}"
+  with_items:
+    - { path: "{{ tempest_git_dest }}/locks", mode: "0777" }
+    - { path: "{{ tempest_git_dest }}/etc" }
+    - { path: "{{ tempest_image_dir }}" }
+  tags:
+    - tempest-dirs
+    - tempest-config
+    - tempest-image
+
+- name: Image(s) download
+  get_url:
+    url: "{{ item.url }}"
+    dest: "{{ tempest_image_dir }}"
+    sha256sum: "{{ item.sha256 }}"
+  with_items: tempest_images
+  tags:
+    - tempest-config
+    - tempest-image
+
+- name: Locate archives
+  shell: |
+    ls -1 {{ tempest_image_dir }} | grep '.gz'
+  register: tempest_archives
+  tags:
+    - tempest-config
+    - tempest-image
+    - tempest-image-unarchive
+
+- name: Image(s) unarchive
+  unarchive:
+    src: "{{ tempest_image_dir }}/{{ item }}"
+    dest: "{{ tempest_image_dir }}"
+    copy: "no"
+  with_items: tempest_archives.stdout
+  tags:
+    - tempest-config
+    - tempest-image
+    - tempest-image-unarchive
+
+- name: Generate tempest Config
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "root"
+    group: "root"
+    mode: "{{ item.mode|default('0644') }}"
+  with_items:
+    - { src: "tempest.conf.j2", dest: "{{ tempest_git_dest }}/etc/tempest.conf" }
+    - { src: openstack_tempest_gate.sh.j2, dest: /opt/openstack_tempest_gate.sh, mode: "0755" }
+  tags:
+    - tempest-config

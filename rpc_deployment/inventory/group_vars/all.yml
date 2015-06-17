@@ -49,7 +49,7 @@ external_vip_address: "{{ external_lb_vip_address }}"
 
 ## URL for the frozen rpc repo
 rpc_repo_url: "https://mirror.rackspace.com/rackspaceprivatecloud"
-rpc_release: 10.1.8
+rpc_release: juno
 
 ## URLs for package repos
 mariadb_repo_url: "http://mirror.rackspace.com/mariadb/repo/5.5/ubuntu"
@@ -162,16 +162,25 @@ rabbit_password: "{{ rabbitmq_password }}"
 
 ## Auth
 auth_admin_username: admin
+keystone_admin_user_name: "{{ auth_admin_username }}"
 auth_admin_password: "{{ keystone_auth_admin_password }}"
 auth_admin_token: "{{ keystone_auth_admin_token }}"
 auth_admin_tenant: admin
+keystone_admin_tenant_name: "{{ auth_admin_tenant }}"
 auth_identity_uri: "http://{{ internal_vip_address }}:5000/v2.0"
+keystone_service_internalurl: "{{ auth_identity_uri }}"
 auth_identity_uri_v3: "http://{{ internal_vip_address }}:5000/v3"
+keystone_service_internalurl_v3: "{{ auth_identity_uri_v3 }}"
 auth_admin_uri: "http://{{ internal_vip_address }}:35357/v2.0"
+keystone_service_adminurl: "{{ auth_admin_uri }}"
 auth_host: "{{ internal_vip_address }}"
 auth_port: 35357
 auth_public_port: 5000
 auth_protocol: http
+
+
+## Tempest
+tempest_main_group: utility_all
 
 
 ## Openstack Region
