@@ -25,7 +25,7 @@
     name: "{{ item }}"
     state: "present"
     system: "yes"
-  with_items: "{{ additional_system_groups }}"
+  with_items: additional_system_groups
 
 - name: create system user
   user:
