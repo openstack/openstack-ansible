@@ -13,16 +13,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- name: Update apt sources
+  apt:
+    update_cache: yes
+    cache_valid_time: 600
+  register: apt_update
+  until: apt_update|success
+  retries: 5
+  delay: 2
+  tags:
+    - openstack-apt-packages
+
 - name: Install host packages
   apt:
     pkg: "{{ item }}"
     state: present
-    update_cache: yes
-    cache_valid_time: 600
   register: install_packages
   until: install_packages|success
   retries: 5
   delay: 2
   with_items: openstack_host_apt_packages
   tags:
-    - openstack-host-packages
+    - openstack-apt-packages
