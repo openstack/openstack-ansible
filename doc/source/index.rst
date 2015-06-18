@@ -20,6 +20,7 @@ Contents:
    playbooks
    install-guide/index
    extending
+   scripts
 
 
 Indices and tables
