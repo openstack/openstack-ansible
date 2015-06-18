@@ -27,6 +27,8 @@
     - /usr/share/lxc/templates
     - /openstack
     - /openstack/backup
+    - "{{ lxc_container_directory }}"
+    - "{{ lxc_container_cache_path }}"
   tags:
     - lxc-directories
 
@@ -72,14 +74,14 @@
     - lxc-irqbalance
 
 - name: Drop lxc-openstack app armor profile
-  copy:
+  template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     owner: "{{ item.owner|default('root') }}"
     group: "{{ item.group|default('root') }}"
     mode: "{{ item.mode|default('0644') }}"
   with_items:
-    - { src: lxc-openstack, dest: "/etc/apparmor.d/lxc/lxc-openstack" }
+    - { src: lxc-openstack.apparmor.j2, dest: "/etc/apparmor.d/lxc/lxc-openstack" }
   notify:
     - Load lxc-openstack apparmor profile
     - Restart apparmor
