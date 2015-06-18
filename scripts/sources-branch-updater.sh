@@ -65,7 +65,7 @@ fi
 # Iterate through the service file
 for repo in $(grep 'git_repo\:' ${SERVICE_FILE});do
   # Set the repo name
-  repo_name=$(echo "${repo}" | gsed 's/_git_repo\:.*//g')
+  repo_name=$(echo "${repo}" | sed 's/_git_repo\:.*//g')
   # Get the branch data
   branch_data=$(git ls-remote "$(echo ${repo} | awk '{print $2}')" | grep "${ONLINE_BRANCH}$")
 
@@ -76,7 +76,7 @@ for repo in $(grep 'git_repo\:' ${SERVICE_FILE});do
     # Set the branch entry
     branch_entry="${branch_sha} # HEAD of \"$ONLINE_BRANCH\" as of $(date +%d.%m.%Y)"
     # Write the branch entry
-    gsed -i "s|^git_install_branch:.*|git_install_branch: $branch_entry|" ${SERVICE_FILE}
+    sed -i.bak "s|^git_install_branch:.*|git_install_branch: $branch_entry|" ${SERVICE_FILE}
     echo "processed $repo_name @ $branch_entry"
   fi
 done

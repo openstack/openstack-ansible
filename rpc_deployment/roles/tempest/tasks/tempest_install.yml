@@ -45,7 +45,7 @@
     state: present
     virtualenv: "{{ tempest_git_dest }}"
     virtualenv_site_packages: "yes"
-    extra_args: "--isolated"
+    extra_args: "--isolated --upgrade"
   register: install_packages
   until: install_packages|success
   retries: 5
