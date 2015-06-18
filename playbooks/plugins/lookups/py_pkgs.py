@@ -172,7 +172,16 @@ class DependencyFileProcessor(object):
 
         for file_name in file_names:
             with open(file_name, 'rb') as f:
-                loaded_config = yaml.safe_load(f.read())
+                # If there is an exception loading the file continue
+                #  and if the loaded_config is None continue. This makes
+                #  no bad config gets passed to the rest of the process.
+                try:
+                    loaded_config = yaml.safe_load(f.read())
+                except Exception:  # Broad exception so everything is caught
+                    continue
+                else:
+                    if not loaded_config:
+                        continue
 
             for key, values in loaded_config.items():
                 if key.endswith('git_repo'):
