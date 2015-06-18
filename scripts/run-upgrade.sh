@@ -365,6 +365,61 @@ cat > /tmp/fix_minor_adjustments.yml <<EOF
       changed_when: keystone_cmd_chown.rc == 0
 EOF
 
+cat > /tmp/config-fix.py <<EOF
+#!/usr/bin/env python
+import sys
+
+"""Absolute path for bind mounts
+
+This is a simple single function script that was created to allow for a user
+to upgrade / fix bind mounts within an environment which may be using newer
+versions of LXC / LXD with cgroups/cgroupmanager that may require it.
+"""
+
+
+def main(config_file='config'):
+    """Run the main method.
+
+    :param config_file: config file to munge
+    :type config_file: ``str``
+    """
+    print('Working on file [ %s ]' % config_file)
+    with open(config_file) as f:
+        config_lines = f.readlines()
+
+    # List mounts and index them
+    bind_mounts = [
+        (i, config_lines.index(i)) for i in config_lines
+        if i.startswith('lxc.mount.entry')
+        if 'bind' in i
+    ]
+
+    changed = False
+    for mount in bind_mounts:
+        var, option = mount[0].split('=', 1)
+        option = option.strip().split()
+
+        if not option[1].startswith('/'):
+            changed = True
+            option[1] = '/%s' % option[1]
+            config_lines[mount[1]] = '%s = %s\n' % (
+                var.strip(),
+                ' '.join(option)
+            )
+
+    # rewrite the config
+    if changed:
+        with open(config_file, 'w') as f:
+            f.writelines(config_lines)
+        print('File [ %s ] has been changed.' % config_file)
+
+if __name__ == '__main__':
+    main(config_file=sys.argv[1])
+EOF
+
+# Make the config-fix.py script executable.
+chmod +x /tmp/config-fix.py
+
 # Create a play to fix host things
 cat > /tmp/fix_host_things.yml <<EOF
 - name: Fix host things
@@ -390,6 +445,9 @@ cat > /tmp/fix_host_things.yml <<EOF
         dest: "/var/lib/lxc/{{ item }}/config"
         state: "absent"
         regexp: "^lxc.network"
+      with_items: containers.stdout_lines
+    - name: Fix relative bind mounts
+      script: "/tmp/config-fix.py /var/lib/lxc/{{ item }}/config"
       with_items: containers.stdout_lines
     - name: Remove add_network_interface.conf entry
       lineinfile:
@@ -514,6 +572,7 @@ pushd playbooks
   openstack-ansible /tmp/fix_host_things.yml
   # Remove fix host things play
   rm /tmp/fix_host_things.yml
+  rm /tmp/config-fix.py
 
   # Run the fix for container networks. Forces True as containers may not exist at this point
   openstack-ansible /tmp/fix_container_interfaces.yml || true
