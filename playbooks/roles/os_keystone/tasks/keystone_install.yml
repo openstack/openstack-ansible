@@ -49,6 +49,19 @@
   tags:
     - keystone-apt-packages
 
+- name: Install SP apt packages
+  apt:
+    pkg: "{{ item }}"
+    state: latest
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 2
+  with_items: keystone_sp_apt_packages
+  when: keystone_sp is defined
+  tags:
+    - keystone-apt-packages
+
 - name: Install pip packages
   pip:
     name: "{{ item }}"

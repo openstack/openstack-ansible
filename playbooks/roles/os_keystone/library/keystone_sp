@@ -1,0 +1,117 @@
+#!/usr/bin/python
+# (c) 2015, Kevin Carter <kevin.carter@rackspace.com>
+#
+# Copyright 2015, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+DOCUMENTATION = """
+---
+module: keystone_sp
+version_added: "1.9.2"
+short_description:
+   - Creates a fact for keystone_federated_identities and keystone_protocols
+description:
+   - Sets facts called `keystone_federated_identities` and
+     `keystone_federated_protocols`, which are lists of hashes built from
+     keystone_sp using the information in the `federated_identities` and
+     `protocols` keys.
+options:
+    sp_data:
+      description:
+        - Hash to build the service provider lists from
+          required: true
+author: Kevin Carter
+"""
+
+EXAMPLES = """
+# Set the keystone_federated_identities and keystone_federated_protocols facts
+- keystone_sp:
+    sp_data: "{{ keystone_sp }}"
+  when: keystone_sp is defined
+"""
+
+# Keystone service provider data structure example.
+"""
+keystone_sp:
+  trusted_idp_list:
+    - name: "keystone-idp"
+      federated_identities:
+        - domain: Default
+          project: fedproject
+          group: fedgroup
+          role: _member_
+      protocols:
+        - name: saml2
+          mapping:
+            ...
+    - name: 'testshib-idp'
+      federated_identities:
+        - domain: Default
+          project: fedproject2
+          group: fedgroup2
+          role: _member_
+      protocols:
+        - name: saml2
+          mapping:
+            ...
+"""
+
+
+class KeystoneSp(object):
+    def __init__(self, module):
+        """Generate an integer from a name."""
+        self.module = module
+        self.identities_return_list = list()
+        self.protocols_return_list = list()
+        self.sp_data = self.module.params['sp_data']
+
+    def populate_sp_data(self):
+        trusted_idp_list = self.sp_data['trusted_idp_list']
+        for trusted_idp in trusted_idp_list:
+            federated_identities = trusted_idp.get('federated_identities')
+            if federated_identities:
+                self.identities_return_list.extend(federated_identities)
+            protocols = trusted_idp.get('protocols')
+            if protocols:
+                for protocol in protocols:
+                    self.protocols_return_list.append(
+                        {'idp': trusted_idp, 'protocol': protocol})
+
+
+def main():
+    module = AnsibleModule(
+        argument_spec=dict(
+            sp_data=dict(
+                required=True
+            )
+        ),
+        supports_check_mode=False
+    )
+    try:
+        ksp = KeystoneSp(module=module)
+        ksp.populate_sp_data()
+        module.exit_json(
+            changed=True,
+            ansible_facts={
+                'keystone_federated_identities': ksp.identities_return_list,
+                'keystone_federated_protocols': ksp.protocols_return_list}
+        )
+    except Exception as exp:
+        resp = {'stderr': exp}
+        module.fail_json(msg='Failed Process', **resp)
+
+# import module snippets
+from ansible.module_utils.basic import *
+if __name__ == '__main__':
+    main()

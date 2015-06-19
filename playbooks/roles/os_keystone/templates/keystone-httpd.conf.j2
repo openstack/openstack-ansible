@@ -25,6 +25,32 @@ WSGIDaemonProcess keystone user={{ keystone_system_user_name }} group=nogroup pr
     SSLOptions +StdEnvVars +ExportCertData
     {% endif %}
 
+    {% if keystone_sp is defined -%}
+    ShibURLScheme {{ keystone_service_publicuri_proto }}
+
+    <Location /Shibboleth.sso>
+        SetHandler shib
+    </Location>
+
+    <Location /v3/auth/OS-FEDERATION/websso/saml2>
+        AuthType shibboleth
+        ShibRequestSetting requireSession 1
+        ShibRequestSetting exportAssertion 1
+        ShibRequireSession On
+        ShibExportAssertion On
+        Require valid-user
+    </Location>
+
+    <LocationMatch /v3/OS-FEDERATION/identity_providers/.*?/protocols/saml2/auth>
+        ShibRequestSetting requireSession 1
+        AuthType shibboleth
+        ShibExportAssertion Off
+        Require valid-user
+    </LocationMatch>
+
+    WSGIScriptAliasMatch ^(/v3/OS-FEDERATION/identity_providers/.*?/protocols/.*?/auth)$ /var/www/cgi-bin/keystone/main/$1
+    {%- endif %}
+
     WSGIScriptAlias /  /var/www/cgi-bin/keystone/main
     WSGIProcessGroup keystone
 </VirtualHost>

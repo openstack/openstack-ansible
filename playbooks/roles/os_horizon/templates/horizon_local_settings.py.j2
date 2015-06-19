@@ -170,21 +170,27 @@ OPENSTACK_KEYSTONE_URL = "{{ horizon_keystone_endpoint }}"
 
 OPENSTACK_KEYSTONE_DEFAULT_ROLE = "_member_"
 
-# Enables keystone web single-sign-on if set to True.
-#WEBSSO_ENABLED = False
+{% if keystone_sp is defined %}
+# Enables keystone web single-sign-on
+WEBSSO_ENABLED = True
 
 # Determines which authentication choice to show as default.
-#WEBSSO_INITIAL_CHOICE = "credentials"
+WEBSSO_INITIAL_CHOICE = "credentials"
 
 # The list of authentication mechanisms
 # which include keystone federation protocols.
 # Current supported protocol IDs are 'saml2' and 'oidc'
 # which represent SAML 2.0, OpenID Connect respectively.
 # Do not remove the mandatory credentials mechanism.
-#WEBSSO_CHOICES = (
-#    ("credentials", _("Keystone Credentials")),
-#    ("oidc", _("OpenID Connect")),
-#    ("saml2", _("Security Assertion Markup Language")))
+WEBSSO_CHOICES = (
+    ("credentials", _("Keystone Credentials")),
+{% for idp in keystone_sp.trusted_idp_list %}
+{% for protocol in idp.protocols %}
+    ("{{ protocol.name }}", _("{{ idp.name }}")){% if not loop.last %},{% endif %}
+{% endfor %}
+{% endfor %}
+)
+{% endif %}
 
 # Disable SSL certificate checks (useful for self-signed certificates):
 OPENSTACK_SSL_NO_VERIFY = {{ horizon_ssl_no_verify | bool }}
