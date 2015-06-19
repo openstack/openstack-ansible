@@ -60,9 +60,10 @@ glance_service_region: RegionOne
 glance_service_name: glance
 glance_service_port: 9292
 glance_service_proto: http
-glance_service_publicuri_proto: "{{ glance_service_proto }}"
-glance_service_adminuri_proto: "{{ glance_service_proto }}"
-glance_service_internaluri_proto: "{{ glance_service_proto }}"
+glance_service_registry_proto: "{{ glance_service_proto }}"
+glance_service_publicuri_proto: "{{ openstack_service_publicuri_proto | default(glance_service_proto) }}"
+glance_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(glance_service_proto) }}"
+glance_service_internaluri_proto: "{{ openstack_service_internaluri_proto | default(glance_service_proto) }}"
 glance_service_type: image
 glance_service_description: "Glance Image Service"
 glance_service_user_name: glance

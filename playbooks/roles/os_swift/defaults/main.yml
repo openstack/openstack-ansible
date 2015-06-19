@@ -46,9 +46,9 @@ swift_service_user_domain_id: "default"
 swift_service_role_name: "admin"
 swift_service_type: object-store
 swift_service_proto: http
-swift_service_publicuri_proto: "{{ swift_service_proto }}"
-swift_service_adminuri_proto: "{{ swift_service_proto }}"
-swift_service_internaluri_proto: "{{ swift_service_proto }}"
+swift_service_publicuri_proto: "{{ openstack_service_publicuri_proto | default(swift_service_proto) }}"
+swift_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(swift_service_proto) }}"
+swift_service_internaluri_proto: "{{ openstack_service_internaluri_proto | default(swift_service_proto) }}"
 swift_service_description: "Object Storage Service"
 swift_service_publicuri: "{{ swift_service_publicuri_proto }}://{{ external_lb_vip_address }}:{{ swift_proxy_port }}"
 swift_service_publicurl: "{{ swift_service_publicuri }}/v1/AUTH_%(tenant_id)s"
