@@ -36,7 +36,7 @@ keystone_auth_methods: "password,token"
 keystone_identity_driver: "keystone.identity.backends.sql.Identity"
 # For a sql backed token storage use: "keystone.token.backends.sql.Token"
 keystone_token_driver: "keystone.token.persistence.backends.memcache.Token"
-keystone_token_provider: "keystone.token.providers.uuid.Provider"
+keystone_token_provider: "keystone.token.providers.fernet.Provider"
 keystone_token_expiration: 43200
 keystone_token_cache_time: 3600
 
@@ -47,7 +47,7 @@ keystone_revocation_expiration_buffer: 1800
 
 ## Fernet config vars
 keystone_fernet_tokens_key_repository: "/etc/keystone/fernet-keys"
-keystone_fernet_tokens_max_active_keys: 3
+keystone_fernet_tokens_max_active_keys: 7
 
 keystone_cache_expiration_time: 5400
 

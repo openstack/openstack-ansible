@@ -18,11 +18,11 @@ log_file = keystone.log
 log_dir = /var/log/keystone
 rpc_backend = {{ keystone_rpc_backend }}
 
-
+{% if 'memcache' in keystone_token_driver and 'fernet' not in keystone_token_provider %}
 [memcache]
 servers = {{ keystone_memcached_servers }}
 max_compare_and_set_retry = {{ keystone_memcached_max_compare_and_set_retry }}
-
+{% endif %}
 
 {% if keystone_cache_backend_argument is defined %}
 [cache]
@@ -83,7 +83,9 @@ expiration = {{ keystone_token_expiration }}
 caching = true
 cache_time = {{ keystone_token_cache_time }}
 provider = {{ keystone_token_provider }}
+{% if 'fernet' not in keystone_token_provider %}
 driver = {{ keystone_token_driver }}
+{% endif %}
 
 [eventlet_server]
 admin_bind_host = {{ keystone_bind_address }}
