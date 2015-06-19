@@ -120,7 +120,7 @@ keystone_service_internalurl: "{{ keystone_service_internalurl_v3 }}"
 keystone_service_adminurl: "{{ keystone_service_adminurl_v3 }}"
 
 ## Set this value to override the "public_endpoint" keystone.conf variable
-#keystone_public_endpoint:
+#keystone_public_endpoint: "{{ keystone_service_publicuri }}"
 
 ## Apache setup
 keystone_apache_log_level: info
@@ -189,6 +189,82 @@ keystone_recreate_keys: False
 #  contact_email: jsmith@example.com
 #  contact_telephone: 555-55-5555
 #  contact_type: technical
+
+# Enable the following section in order to install and configure
+# Keystone as a Resource Service Provider (SP) and to configure
+# trusts with specific Identity Providers (IdP).
+#keystone_sp:
+#  cert_duration_years: 5
+#  trusted_dashboard_list:
+#    - "https://{{ external_lb_vip_address }}/auth/websso/"
+#  trusted_idp_list:
+#    note that only one of these is supported at any one time for now
+#    - name: "keystone-idp"
+#      entity_ids:
+#         - 'https://keystone-idp:5000/v3/OS-FEDERATION/saml2/idp'
+#      metadata_uri: 'https://keystone-idp:5000/v3/OS-FEDERATION/saml2/metadata'
+#      metadata_file: 'metadata-keystone-idp.xml'
+#      metadata_reload: 1800
+#      federated_identities:
+#        - domain: Default
+#          project: fedproject
+#          group: fedgroup
+#          role: _member_
+#      protocols:
+#        - name: saml2
+#          mapping:
+#            name: keystone-idp-mapping
+#            rules:
+#              - remote:
+#                  - type: openstack_user
+#                local:
+#                  - group:
+#                      name: fedgroup
+#                      domain:
+#                        name: Default
+#                    user:
+#                      name: '{0}'
+#          attributes:
+#            - name: openstack_user
+#              id: openstack_user
+#            - name: openstack_roles
+#              id: openstack_roles
+#            - name: openstack_project
+#              id: openstack_project
+#            - name: openstack_user_domain
+#              id: openstack_user_domain
+#            - name: openstack_project_domain
+#              id: openstack_project_domain
+#
+#    - name: 'testshib-idp'
+#      entity_ids:
+#        - 'https://idp.testshib.org/idp/shibboleth'
+#      metadata_uri: 'http://www.testshib.org/metadata/testshib-providers.xml'
+#      metadata_file: 'metadata-testshib-idp.xml'
+#      metadata_reload: 1800
+#      federated_identities:
+#        - domain: Default
+#          project: fedproject
+#          group: fedgroup
+#          role: _member_
+#      protocols:
+#        - name: saml2
+#          mapping:
+#            name: testshib-idp-mapping
+#            rules:
+#              - remote:
+#                  - type: eppn
+#                local:
+#                  - group:
+#                      name: fedgroup
+#                      domain:
+#                        name: Default
+#                  - user:
+#                      name: '{0}'
+
+# Keystone Federation SP Packages
+keystone_sp_apt_packages:
+  - libapache2-mod-shib2
 
 # Common apt packages
 keystone_apt_packages:

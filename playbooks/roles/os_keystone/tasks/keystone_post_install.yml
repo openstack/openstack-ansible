@@ -36,6 +36,7 @@
     mode: "{{ item.mode|default('0644') }}"
   with_items:
     - { src: "keystone-paste.ini", dest: "/etc/keystone/keystone-paste.ini" }
+    - { src: "sso_callback_template.html", dest: "/etc/keystone/sso_callback_template.html" }
     - { src: "keystone-wsgi.py", dest: "/var/www/cgi-bin/keystone/admin", mode: "0755" }
     - { src: "keystone-wsgi.py", dest: "/var/www/cgi-bin/keystone/main", mode: "0755" }
   notify:

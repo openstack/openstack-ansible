@@ -22,3 +22,13 @@
   until: apache_restart|success
   retries: 5
   delay: 2
+
+- name: Restart Shibd
+  service:
+    name: "shibd"
+    state: "restarted"
+    pattern: "shibd"
+  register: shibd_restart
+  until: shibd_restart|success
+  retries: 5
+  delay: 2

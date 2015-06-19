@@ -195,7 +195,8 @@ options:
                   'ensure_user', 'ensure_user_role', 'ensure_tenant',
                   'ensure_project', 'ensure_service_provider',
                   'ensure_group', 'ensure_identity_provider',
-                  'ensure_protocol', ensure_mapping']
+                  'ensure_protocol', ensure_mapping',
+                  'ensure_group_role']
         required: true
     insecure:
         description:
@@ -250,6 +251,13 @@ EXAMPLES = """
     user_name: "glance"
     project_name: "service"
     role_name: "admin"
+
+# Add a project role to a group
+- keystone:
+    command: "ensure_group_role"
+    group_name: "fedgroup"
+    project_name: "fedproject"
+    role_name: "_member_"
 
 # Create a service
 - keystone:
@@ -350,6 +358,13 @@ COMMAND_MAP = {
             'user_name',
             'project_name',
             'tenant_name',
+            'role_name'
+        ]
+    },
+    'ensure_group_role': {
+        'variables': [
+            'group_name',
+            'project_name',
             'role_name'
         ]
     },
@@ -716,7 +731,7 @@ class ManageKeystone(object):
         return self._facts(facts={'id': user.id})
 
     def _get_role(self, name):
-        """Return a tenant by name.
+        """Return a role by name.
 
         This will return `None` if the ``name`` is not found.
 
@@ -728,8 +743,25 @@ class ManageKeystone(object):
         else:
             return None
 
+    def _get_group(self, name, domain=None):
+        """Return a group by name.
+
+        This will return `None` if the ``name`` is not found.
+
+        :param name: ``str``  Name of the role.
+        """
+        for entry in self.keystone.groups.list():
+            if domain is None:
+                if entry.name == name:
+                    return entry
+            else:
+                if entry.name == name and entry.domain_id == domain.id:
+                    return entry
+        else:
+            return None
+
     def get_role(self, variables):
-        """Return a tenant by name.
+        """Return a role by name.
 
         This will return `None` if the ``name`` is not found.
 
@@ -749,14 +781,17 @@ class ManageKeystone(object):
 
         return self._facts(facts={'id': role_data.id})
 
-    def _get_role_data(self, user_name, project_name, role_name):
-        user = self._get_user(name=user_name)
-        if user is None:
-            self.failure(
-                error='user [ %s ] was not found.' % user_name,
-                rc=2,
-                msg='User was not found, does it exist?'
-            )
+    def _get_role_data(self, user_name, project_name, role_name, group_name):
+        if user_name is not None:
+            user = self._get_user(name=user_name)
+            if user is None:
+                self.failure(
+                    error='user [ %s ] was not found.' % user_name,
+                    rc=2,
+                    msg='User was not found, does it exist?'
+                )
+        else:
+            user = None
 
         project = self._get_project(name=project_name)
         if project is None:
@@ -774,7 +809,18 @@ class ManageKeystone(object):
                 msg='role was not found, does it exist?'
             )
 
-        return user, project, role
+        if group_name is not None:
+            group = self._get_group(name=group_name)
+            if group is None:
+                self.failure(
+                    error='group [ %s ] was not found.' % group_name,
+                    rc=2,
+                    msg='group was not found, does it exist?'
+                )
+        else:
+            group = None
+
+        return user, project, role, group
 
     def ensure_role(self, variables):
         """Create a new role within Keystone if it does not exist.
@@ -802,6 +848,13 @@ class ManageKeystone(object):
         else:
             return None
 
+    def _get_group_roles(self, name, group, project):
+        for entry in self.keystone.roles.list(group=group, project=project):
+            if entry.name == name:
+                return entry
+        else:
+            return None
+
     def ensure_user_role(self, variables):
         self._authenticate()
         required_vars = ['user_name', 'role_name']
@@ -814,8 +867,9 @@ class ManageKeystone(object):
                         or variables_dict.pop('tenant_name'))
         role_name = variables_dict.pop('role_name')
 
-        user, project, role = self._get_role_data(
-            user_name=user_name, project_name=project_name, role_name=role_name
+        user, project, role, group = self._get_role_data(
+            user_name=user_name, project_name=project_name,
+            role_name=role_name, group_name=None
         )
 
         user_role = self._get_user_roles(
@@ -831,6 +885,64 @@ class ManageKeystone(object):
             )
 
         return self._facts(facts={'id': user_role.id})
+
+    def ensure_group_role(self, variables):
+        self._authenticate()
+        required_vars = ['group_name', 'project_name', 'role_name']
+        variables_dict = self._get_vars(variables, required=required_vars)
+        group_name = variables_dict.pop('group_name')
+        project_name = variables_dict.pop('project_name')
+        role_name = variables_dict.pop('role_name')
+
+        user, project, role, group = self._get_role_data(
+            group_name=group_name, project_name=project_name,
+            role_name=role_name, user_name=None
+        )
+
+        group_role = self._get_group_roles(
+            name=role_name, group=group, project=project
+        )
+
+        if group_role is None:
+            self.keystone.roles.grant(
+                group=group, role=role, project=project
+            )
+            group_role = self._get_group_roles(
+                name=role_name, group=group, project=project
+            )
+
+        return self._facts(facts={'id': group_role.id})
+
+    def ensure_group(self, variables):
+        """Create a new group within Keystone if it does not exist.
+
+        Returns the group ID on a successful run.
+
+        :param variables: ``list``  List of all variables that are available to
+                                    use within the Keystone Command.
+        """
+
+        self._authenticate()
+        required_vars = ['group_name', 'domain_name']
+        variables_dict = self._get_vars(variables, required=required_vars)
+        group_name = variables_dict.pop('group_name')
+        domain_name = variables_dict.pop('domain_name')
+
+        domain = self._get_domain(
+            name=domain_name
+        )
+
+        group = self._get_group(
+            name=group_name, domain=domain
+        )
+
+        if group is None:
+            self.state_change = True
+            group = self.keystone.groups.create(
+                name=group_name, domain=domain
+            )
+
+        return self._facts(facts={'id': group.id})
 
     def _get_service(self, name, srv_type=None):
         for entry in self.keystone.services.list():
@@ -974,23 +1086,6 @@ class ManageKeystone(object):
             # some managers require arguments to their list functions :/
             # return no facts in this case.
             return self._facts(facts={})
-
-    def ensure_group(self, variables):
-        """Create a new group within Keystone if it does not exist.
-
-        Returns the group ID on a successful run.
-
-        :param variables: ``list``  List of all variables that are available to
-                                    use within the Keystone Command.
-        """
-
-        self._authenticate()
-        return self._ensure_generic(
-            manager=self.keystone.groups,
-            required_vars={'group_name': 'name',
-                           'domain_name': 'domain'},
-            variables=variables
-        )
 
     def ensure_identity_provider(self, variables):
         self._authenticate()

@@ -61,5 +61,17 @@
   apache2_module:
     name: ssl
     state: "{{ (keystone_ssl_enabled | bool) | ternary('present', 'absent') }}"
+  notify:
+    - Restart Apache
+  tags:
+    - keystone-httpd
+
+- name: Enable/disable mod_shib2 for apache2
+  apache2_module:
+    name: shib2
+    state: "{{ ( keystone_sp is defined ) | ternary('present', 'absent') }}"
+  ignore_errors: yes
+  notify:
+    - Restart Apache
   tags:
     - keystone-httpd
