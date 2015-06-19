@@ -13,8 +13,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-component_skel: {}
+component_skel:
+  pkg_repo:
+    belongs_to:
+      - repo_all
 
-container_skel: {}
 
-physical_skel: {}
+container_skel:
+  repo_container:
+    belongs_to:
+      - repo-infra_containers
+    contains:
+      - pkg_repo
+    properties:
+      service_name: repo
+      container_release: trusty
+
+
+physical_skel:
+  repo-infra_hosts:
+    belongs_to:
+      - hosts
+  repo-infra_containers:
+    belongs_to:
+      - all_containers

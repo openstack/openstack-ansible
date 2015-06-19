@@ -13,8 +13,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-component_skel: {}
+component_skel:
+  keystone:
+    belongs_to:
+      - keystone_all
 
-container_skel: {}
 
-physical_skel: {}
+container_skel:
+  keystone_container:
+    belongs_to:
+      - infra_containers
+      - identity_containers
+    contains:
+      - keystone
+    properties:
+      service_name: keystone
+      container_release: trusty
+
+
+physical_skel:
+  identity_containers:
+    belongs_to:
+      - all_containers
+  identity_hosts:
+    belongs_to:
+      - hosts

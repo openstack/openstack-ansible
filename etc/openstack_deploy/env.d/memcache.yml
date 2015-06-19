@@ -13,8 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-component_skel: {}
+component_skel:
+  memcached:
+    belongs_to:
+      - memcached_all
 
-container_skel: {}
 
-physical_skel: {}
+container_skel:
+  memcached_container:
+    belongs_to:
+      - infra_containers
+      - shared-infra_containers
+    contains:
+      - memcached
+    properties:
+      service_name: memcached
+      container_release: trusty

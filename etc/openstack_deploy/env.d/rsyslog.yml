@@ -13,8 +13,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-component_skel: {}
+component_skel:
+  rsyslog:
+    belongs_to:
+      - rsyslog_all
 
-container_skel: {}
 
-physical_skel: {}
+container_skel:
+  rsyslog_container:
+    belongs_to:
+      - log_containers
+    contains:
+      - rsyslog
+    properties:
+      service_name: rsyslog
+      container_release: trusty
+
+
+physical_skel:
+  log_containers:
+    belongs_to:
+      - all_containers
+  log_hosts:
+    belongs_to:
+      - hosts

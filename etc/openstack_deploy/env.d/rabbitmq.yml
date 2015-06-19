@@ -13,8 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-component_skel: {}
+component_skel:
+  rabbitmq:
+    belongs_to:
+      - rabbitmq_all
 
-container_skel: {}
 
-physical_skel: {}
+container_skel:
+  rabbit_mq_container:
+    belongs_to:
+      - infra_containers
+      - shared-infra_containers
+    contains:
+      - rabbitmq
+    properties:
+      service_name: rabbitmq
+      container_release: trusty
