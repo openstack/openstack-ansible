@@ -79,31 +79,37 @@ heat_service_region: RegionOne
 heat_service_description: "Heat Orchestration Service"
 heat_service_port: 8004
 heat_service_proto: http
+heat_service_publicuri_proto: "{{ heat_service_proto }}"
+heat_service_adminuri_proto: "{{ heat_service_proto }}"
+heat_service_internaluri_proto: "{{ heat_service_proto }}"
 heat_service_type: orchestration
-heat_service_publicuri: "{{ heat_service_proto }}://{{ external_lb_vip_address }}:{{ heat_service_port }}"
+heat_service_publicuri: "{{ heat_service_publicuri_proto }}://{{ external_lb_vip_address }}:{{ heat_service_port }}"
 heat_service_publicurl: "{{ heat_service_publicuri }}/v1/%(tenant_id)s"
-heat_service_adminuri: "{{ heat_service_proto }}://{{ internal_lb_vip_address }}:{{ heat_service_port }}"
+heat_service_adminuri: "{{ heat_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ heat_service_port }}"
 heat_service_adminurl: "{{ heat_service_adminuri }}/v1/%(tenant_id)s"
-heat_service_internaluri: "{{ heat_service_proto }}://{{ internal_lb_vip_address }}:{{ heat_service_port }}"
+heat_service_internaluri: "{{ heat_service_internaluri_proto }}://{{ internal_lb_vip_address }}:{{ heat_service_port }}"
 heat_service_internalurl: "{{ heat_service_internaluri }}/v1/%(tenant_id)s"
 heat_service_program_name: heat-api
 
 ## Heat wait and metadata server
-heat_waitcondition_server_uri: "{{ heat_service_proto }}://{{ external_lb_vip_address }}:{{ heat_cfn_service_port }}"
+heat_waitcondition_server_uri: "{{ heat_cfn_service_publicuri_proto }}://{{ external_lb_vip_address }}:{{ heat_cfn_service_port }}"
 heat_waitcondition_server_url: "{{ heat_waitcondition_server_uri }}/v1/waitcondition"
-heat_metadata_server_url: "{{ heat_service_proto }}://{{ external_lb_vip_address }}:{{ heat_cfn_service_port }}"
+heat_metadata_server_url: "{{ heat_cfn_service_publicuri_proto }}://{{ external_lb_vip_address }}:{{ heat_cfn_service_port }}"
 
 ## Heat api cfn service type and data
 heat_cfn_service_name: heat-cfn
 heat_cfn_service_description: "Heat CloudFormation Service"
 heat_cfn_service_port: 8000
 heat_cfn_service_proto: http
+heat_cfn_service_publicuri_proto: "{{ heat_cfn_service_proto }}"
+heat_cfn_service_adminuri_proto: "{{ heat_cfn_service_proto }}"
+heat_cfn_service_internaluri_proto: "{{ heat_cfn_service_proto }}"
 heat_cfn_service_type: cloudformation
-heat_cfn_service_publicuri: "{{ heat_cfn_service_proto }}://{{ external_lb_vip_address }}:{{ heat_cfn_service_port }}"
+heat_cfn_service_publicuri: "{{ heat_cfn_service_publicuri_proto }}://{{ external_lb_vip_address }}:{{ heat_cfn_service_port }}"
 heat_cfn_service_publicurl: "{{ heat_cfn_service_publicuri }}/v1"
-heat_cfn_service_adminuri: "{{ heat_cfn_service_proto }}://{{ internal_lb_vip_address }}:{{ heat_cfn_service_port }}"
+heat_cfn_service_adminuri: "{{ heat_cfn_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ heat_cfn_service_port }}"
 heat_cfn_service_adminurl: "{{ heat_cfn_service_adminuri }}/v1"
-heat_cfn_service_internaluri: "{{ heat_cfn_service_proto }}://{{ internal_lb_vip_address }}:{{ heat_cfn_service_port }}"
+heat_cfn_service_internaluri: "{{ heat_cfn_service_internaluri_proto }}://{{ internal_lb_vip_address }}:{{ heat_cfn_service_port }}"
 heat_cfn_service_internalurl: "{{ heat_cfn_service_internaluri }}/v1"
 heat_cfn_service_program_name: heat-api-cfn
 
