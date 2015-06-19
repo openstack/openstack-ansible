@@ -37,6 +37,6 @@ esac
 shift
 done
 
-sed -i '' "s/^maas_repo_version\:.*/maas_repo_version\: ${REVISION}/" etc/rpc_deploy/user_variables.yml
-sed -i '' "s/^rpc_release\:.*/rpc_release\: ${REVISION}/" rpc_deployment/inventory/group_vars/all.yml
-sed -i '' "s/^git_install_branch\:.*/git_install_branch\: ${REVISION}/" rpc_deployment/vars/repo_packages/raxmon.yml
+sed -i.bak "s/^maas_repo_version\:.*/maas_repo_version\: ${REVISION}/" etc/rpc_deploy/user_variables.yml
+sed -i.bak "s/^rpc_release\:.*/rpc_release\: ${REVISION}/" rpc_deployment/inventory/group_vars/all.yml
+sed -i.bak "s/^git_install_branch\:.*/git_install_branch\: ${REVISION}/" rpc_deployment/vars/repo_packages/raxmon.yml
