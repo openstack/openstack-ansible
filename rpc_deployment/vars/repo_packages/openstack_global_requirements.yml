@@ -19,7 +19,7 @@ repo_path: "{{ pip_wheel_name }}_{{ git_install_branch | replace('/', '_') }}"
 git_repo: https://github.com/openstack/requirements
 git_fallback_repo: https://git.openstack.org/openstack/requirements
 git_dest: "/opt/{{ repo_path }}"
-git_install_branch: 7fac992988b9c03d17d89a385dd6c2a766350862 # HEAD of "stable/icehouse" as of 24.04.2015
+git_install_branch: 17721421bf577bc9fa7195a01ce17c9095e51cec # HEAD of "stable/icehouse" as of 20.06.2015
 requirements_file: global-requirements.txt
 
 pip_wheel_name: requirements

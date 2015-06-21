@@ -21,6 +21,6 @@ repo_path: "{{ pip_wheel_name }}_{{ git_install_branch | replace('/', '_') }}"
 git_repo: https://github.com/openstack/oslo.messaging
 git_fallback_repo: https://git.openstack.org/openstack/oslo.messaging
 git_dest: "/opt/{{ repo_path  }}"
-git_install_branch: 1.4.1
+git_install_branch: 33f3b18539da88ddf984ada4b63e2767d64438f9 # HEAD of "stable/icehouse" as of 20.06.2015
 
 pip_wheel_name: oslo.messaging

@@ -21,6 +21,6 @@ repo_path: "{{ repo_package_name }}_{{ git_install_branch | replace('/', '_') }}
 git_repo: https://github.com/openstack/swift
 git_fallback_repo: https://git.openstack.org/openstack/swift
 git_dest: "/opt/{{ repo_path }}"
-git_install_branch: f6525758ab2456d688430699338993439597a789 # HEAD of "stable/icehouse" as of 24.04.2015
+git_install_branch: cbe1f78de471770a6c96462a7833936ffd1a16a6 # HEAD of "stable/icehouse" as of 20.06.2015
 
 pip_wheel_name: swift

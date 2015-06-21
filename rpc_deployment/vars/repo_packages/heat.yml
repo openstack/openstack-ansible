@@ -21,7 +21,7 @@ repo_path: "{{ repo_package_name }}_{{ git_install_branch | replace('/', '_') }}
 git_repo: https://github.com/openstack/heat
 git_fallback_repo: https://git.openstack.org/openstack/heat
 git_dest: "/opt/{{ repo_path }}"
-git_install_branch: 0951cc4093d99328c715ee9ca578749597680002 # HEAD of "stable/icehouse" as of 24.04.2015
+git_install_branch: eb22b015f5491e03e4a96bfa8c3b3d2d7f011ba0 # HEAD of "stable/icehouse" as of 20.06.2015
 
 pip_wheel_name: heat
 
