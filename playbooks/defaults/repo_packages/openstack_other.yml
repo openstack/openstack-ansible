@@ -26,19 +26,19 @@
 
 ## Glance store library
 glancestore_git_repo: https://github.com/openstack/glance_store
-glancestore_git_install_branch: 5277c93e002047d55c521408ee31da1d03825263 # HEAD of "master" as of 08.06.2015
+glancestore_git_install_branch: 0ae8f4102e7aeebb75fe5f65c02ed9bfa76cebb5 # HEAD of "master" as of 22.06.2015
 glancestore_git_dest: "/opt/glancestore_{{ glancestore_git_repo | replace('/', '_') }}"
 
 
 ## Global Requirements
 requirements_git_repo: https://github.com/openstack/requirements
-requirements_git_install_branch: fceaa485414e8872a79b4b3628bc94bcd10e1839 # HEAD of "master" as of 08.06.2015
+requirements_git_install_branch: 6100411c312cfa63526f5dada31318d7f2a605ad # HEAD of "master" as of 22.06.2015
 requirements_git_dest: "/opt/requirements_{{ requirements_git_install_branch | replace('/', '_') }}"
 
 
 ## Tempest Library
 tempestlib_git_repo: https://github.com/openstack/tempest-lib
-tempestlib_git_install_branch: f93048334cf9f93a823dd42387f76ecddf27d30d # HEAD of "master" as of 08.06.2015
+tempestlib_git_install_branch: 061a2efc71ccce9024f86517edccdb4c82d416bc # HEAD of "master" as of 22.06.2015
 tempestlib_git_dest: "/opt/tempest-lib_{{ requirements_git_install_branch | replace('/', '_') }}"
 
 ## Cryptography
@@ -46,5 +46,5 @@ tempestlib_git_dest: "/opt/tempest-lib_{{ requirements_git_install_branch | repl
 # global-requirements.txt allows for it. See also:
 # https://github.com/pyca/cryptography/issues/1868
 cryptography_git_repo: https://github.com/pyca/cryptography
-cryptography_git_install_branch: 926f8ac4927bdc9977f2d960c7def3f2927d1198  # HEAD of "master" as of 16.06.2015
+cryptography_git_install_branch: 02a299d8b2d70e4e145fbd420787ea35873d96f7 # HEAD of "master" as of 22.06.2015
 cryptography_git_dest: "/opt/cryptography_{{ cryptography_git_install_branch | replace('/', '_') }}"
