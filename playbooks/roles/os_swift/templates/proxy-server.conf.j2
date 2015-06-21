@@ -23,6 +23,15 @@ log_facility = LOG_LOCAL1
 node_timeout = 60
 conn_timeout = 3.5
 account_autocreate = true
+{% if swift_proxy_vars.read_affinity is defined %}
+read_affinity = {{ swift_proxy_vars.read_affinity }}
+{% endif %}
+{% if swift_proxy_vars.write_affinity is defined %}
+write_affinity = {{ swift_proxy_vars.write_affinity }}
+{%   if swift_proxy_vars.write_affinity_node_count is defined %}
+write_affinity_node_count = {{ swift_proxy_vars.write_affinity_node_count }}
+{%   endif %}
+{% endif %}
 
 [filter:tempauth]
 use = egg:swift#tempauth
