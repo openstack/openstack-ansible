@@ -98,5 +98,6 @@ swift_git_dest: "/opt/swift_{{ swift_git_install_branch | replace('/', '_') }}"
 
 ## Tempest service
 tempest_git_repo: https://github.com/openstack/tempest
-tempest_git_install_branch: d1a391a55482d64b9014e7b41219af195722d990  # SHA at the head of master as of 20.3.2015
+tempest_git_install_branch: 9927d643c7340cc55a351cc8ed159d7dd3ba0c54 # HEAD of "master" as of 08.06.2015
+tempest_git_install_fragments: "yaprtignorerequirements=true"
 tempest_git_dest: "/opt/tempest_{{ tempest_git_install_branch | replace('/', '_') }}"
