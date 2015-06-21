@@ -21,7 +21,7 @@ repo_path: "{{ repo_package_name }}_{{ git_install_branch | replace('/', '_') }}
 git_repo: https://github.com/openstack/cinder
 git_fallback_repo: https://git.openstack.org/openstack/cinder
 git_dest: "/opt/{{ repo_path }}"
-git_install_branch: d31c937c566005dedf41a60c6b5bd5e7b26f221b # HEAD of "stable/juno" as of 17.06.2015
+git_install_branch: d31c937c566005dedf41a60c6b5bd5e7b26f221b # HEAD of "stable/juno" as of 20.06.2015
 
 pip_wheel_name: cinder
 
