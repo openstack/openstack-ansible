@@ -19,7 +19,7 @@ set -e -u -x
 
 
 ## Vars ----------------------------------------------------------------------
-DEFAULT_PASSWORD=$(head -c 64 /dev/urandom | tr -dc 'a-zA-Z0-9')
+DEFAULT_PASSWORD=$(tr -dc 'a-zA-Z0-9' < /dev/urandom | head -c 32)
 export ADMIN_PASSWORD=${ADMIN_PASSWORD:-$DEFAULT_PASSWORD}
 export SERVICE_REGION=${SERVICE_REGION:-"RegionOne"}
 export DEPLOY_SWIFT=${DEPLOY_SWIFT:-"yes"}
