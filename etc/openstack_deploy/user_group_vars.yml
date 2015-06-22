@@ -149,3 +149,13 @@ heat_service_region: "{{ service_region }}"
 openrc_os_auth_url: "{{ keystone_service_internalurl }}"
 openrc_os_password: "{{ keystone_auth_admin_password }}"
 
+
+## Tempest Options
+tempest_pip_instructions: >
+  --isolated
+  --pre
+  --allow-all-external
+  --index-url {{ repo_pip_default_index }}
+  --extra-index-url https://pypi.python.org/simple
+  --trusted-host pypi.python.org
+  --trusted-host {{ openstack_upstream_domain }}
