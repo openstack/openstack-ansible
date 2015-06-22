@@ -35,6 +35,9 @@ neutron_galera_database: neutron
 neutron_db_revision: head
 neutron_db_config: /etc/neutron/neutron.conf
 neutron_db_plugin: /etc/neutron/plugins/ml2/ml2_conf.ini
+neutron_db_max_overflow: 20
+neutron_db_pool_size: 10
+neutron_db_pool_timeout: 10
 
 ## Plugins
 neutron_plugin_core: neutron.plugins.ml2.plugin.Ml2Plugin
