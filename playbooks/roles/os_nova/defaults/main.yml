@@ -144,6 +144,9 @@ nova_ec2_service_internalurl: "{{ nova_ec2_service_internaluri }}/services/Cloud
 nova_ec2_program_name: nova-api-ec2
 nova_ec2_deprecated_but_enabled: false
 
+## Nova cinder
+nova_cross_az_attach: True
+
 ## Nova spice
 nova_spice_html5proxy_base_proto: http
 nova_spice_html5proxy_base_port: 6082
