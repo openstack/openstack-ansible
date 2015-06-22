@@ -39,7 +39,9 @@ requirements_git_dest: "/opt/requirements_{{ requirements_git_install_branch | r
 ## Tempest Library
 tempestlib_git_repo: https://github.com/openstack/tempest-lib
 tempestlib_git_install_branch: 061a2efc71ccce9024f86517edccdb4c82d416bc # HEAD of "master" as of 22.06.2015
+tempestlib_git_install_fragments: "yaprtignorerequirements=true"
 tempestlib_git_dest: "/opt/tempest-lib_{{ requirements_git_install_branch | replace('/', '_') }}"
+
 
 ## Cryptography
 # NOTE(sigmavirus24): Fix this when cryptography 1.0 is released and

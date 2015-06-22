@@ -82,7 +82,6 @@ tempest_requires_pip_packages:
   - python-swiftclient
   - python-troveclient
   - python-tuskarclient
-  - python-memcached
   - virtualenv
 
 tempest_pip_packages:
@@ -102,3 +101,4 @@ tempest_images:
     name: "cirros-0.3.3-x86_64-disk.img"
 
 tempest_enable_instance_password: True
+tempest_pip_instructions: "--isolated"
