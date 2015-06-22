@@ -64,13 +64,21 @@ memcached_listen: "{{ ansible_ssh_host }}"
 memcached_port: 11211
 memcached_servers: "{% for host in groups['memcached'] %}{{ hostvars[host]['ansible_ssh_host'] }}:{{ memcached_port }}{% if not loop.last %},{% endif %}{% endfor %}"
 
+
 ## Region Name
 service_region: RegionOne
+
+
+## OpenStack global Endpoint Protos
+#openstack_service_publicuri_proto: http
+#openstack_service_adminuri_proto: http
+#openstack_service_internaluri_proto: http
+
 
 ## Nova
 nova_service_port: 8774
 nova_service_proto: http
-nova_service_adminuri_proto: "{{ nova_service_proto }}"
+nova_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(nova_service_proto) }}"
 nova_service_user_name: nova
 nova_service_project_name: service
 nova_service_project_domain_id: default
@@ -85,7 +93,7 @@ nova_keystone_auth_plugin: password
 ## Neutron
 neutron_service_port: 9696
 neutron_service_proto: http
-neutron_service_adminuri_proto: "{{ neutron_service_proto }}"
+neutron_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(neutron_service_proto) }}"
 neutron_service_user_name: neutron
 neutron_service_project_name: service
 neutron_service_project_domain_id: default
@@ -104,7 +112,7 @@ neutron_service_metering_program_enabled: true
 ## Glance
 glance_service_port: 9292
 glance_service_proto: http
-glance_service_adminuri_proto: "{{ glance_service_proto }}"
+glance_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(glance_service_proto) }}"
 glance_service_user_name: glance
 glance_service_project_name: service
 glance_service_project_domain_id: default
@@ -120,8 +128,8 @@ keystone_admin_tenant_name: admin
 keystone_admin_port: 35357
 keystone_service_port: 5000
 keystone_service_proto: http
-keystone_service_adminuri_proto: "{{ keystone_service_proto }}"
-keystone_service_internaluri_proto: "{{ keystone_service_proto }}"
+keystone_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(keystone_service_proto) }}"
+keystone_service_internaluri_proto: "{{ openstack_service_internaluri_proto | default(keystone_service_proto) }}"
 keystone_service_user_name: keystone
 keystone_service_tenant_name: service
 keystone_service_internaluri: "{{ keystone_service_internaluri_proto }}://{{ internal_lb_vip_address }}:{{ keystone_service_port }}"

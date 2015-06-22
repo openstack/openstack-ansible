@@ -17,7 +17,7 @@ backlog = 4096
 workers = {{ glance_api_workers | default(api_threads) }}
 registry_host = {{ glance_registry_host }}
 registry_port = {{ glance_registry_service_port }}
-registry_client_protocol = {{ glance_service_proto }}
+registry_client_protocol = {{ glance_service_registry_proto }}
 cinder_catalog_info = volume:cinder:internalURL
 
 enable_v1_api = {{ glance_enable_v1_api }}
