@@ -120,6 +120,9 @@ check_revocations_for_cached = False
 
 [database]
 connection = mysql://{{ neutron_galera_user }}:{{ neutron_container_mysql_password }}@{{ neutron_galera_address }}/{{ neutron_galera_database }}?charset=utf8
+max_overflow = {{ neutron_db_max_overflow }}
+max_pool_size = {{ neutron_db_pool_size }}
+pool_timeout = {{ neutron_db_pool_timeout }}
 
 {% endif %}
 
