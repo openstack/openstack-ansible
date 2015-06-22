@@ -45,6 +45,10 @@ keystone_revocation_driver: keystone.contrib.revoke.backends.sql.Revoke
 keystone_revocation_cache_time: 3600
 keystone_revocation_expiration_buffer: 1800
 
+## Fernet config vars
+keystone_fernet_tokens_key_repository: "/etc/keystone/fernet-keys"
+keystone_fernet_tokens_max_active_keys: 3
+
 keystone_cache_expiration_time: 5400
 
 keystone_assignment_driver: keystone.assignment.backends.sql.Assignment
@@ -161,6 +165,7 @@ keystone_apt_packages:
   - libldap2-dev
   - libsasl2-dev
   - libxslt1.1
+  - rsync
 
 # Common pip packages
 keystone_pip_packages:
