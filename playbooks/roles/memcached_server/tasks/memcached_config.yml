@@ -13,13 +13,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Drop memcached config
+- name: Apply memcached config
   template:
     src: "memcached.conf"
     dest: "/etc/memcached.conf"
     owner: "root"
     group: "root"
     mode: "0644"
+  notify: Restart memcached
+  tags:
+    - memcached-config
+
+- name: Apply resource limits
+  template:
+    src: "memcached.j2"
+    dest: "/etc/default/memcached"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  when: >
+    memcached_connections > 1024
   notify: Restart memcached
   tags:
     - memcached-config

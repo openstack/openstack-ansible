@@ -1,0 +1,6 @@
+# {{ ansible_managed }}
+# Any other value will disable memcached.
+ENABLE_MEMCACHED=yes
+
+ulimit -Hn {{ memcached_connections }}
+ulimit -n {{ memcached_connections }}
