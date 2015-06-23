@@ -24,7 +24,7 @@
         container_command: |
           [[ ! -d "/var/lib/mysql" ]] && mkdir -p "/var/lib/mysql"
         container_config:
-          - "lxc.mount.entry=/openstack/{{ container_name }} /var/lib/mysql none bind 0 0"
+          - "lxc.mount.entry=/openstack/{{ container_name }} var/lib/mysql none bind 0 0"
       delegate_to: "{{ physical_host }}"
       when: is_metal == false or is_metal == "False"
       tags:
