@@ -32,7 +32,7 @@
         container_command: |
           [[ ! -d "{{ storage_directory }}" ]] && mkdir -p "{{ storage_directory }}"
         container_config:
-          - "lxc.mount.entry=/openstack/{{ container_name }}/log-storage {{ storage_directory }} none bind 0 0"
+          - "lxc.mount.entry=/openstack/{{ container_name }}/log-storage {{ storage_directory.lstrip('/') }} none bind 0 0"
       delegate_to: "{{ physical_host }}"
       when: is_metal == false or is_metal == "False"
       tags:

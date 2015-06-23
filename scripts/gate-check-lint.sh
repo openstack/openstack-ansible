@@ -36,7 +36,7 @@ fi
 # Ignores the following rules due to how ansible modules work in general
 #     F403 'from ansible.module_utils.basic import *' used; unable to detect undefined names
 #     H303  No wildcard (*) import.
-flake8 --ignore=F403,H303 $(grep -rln -e '^#!/usr/bin/env python' -e '^#!/bin/python' * | grep -v '.sh$')
+flake8 --ignore=F403,H303 $(grep -rln -e '^#!/usr/bin/env python' -e '^#!/bin/python' * )
 
 
 # Create keys if they don't already exist.
