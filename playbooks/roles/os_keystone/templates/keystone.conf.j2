@@ -54,6 +54,11 @@ max_pool_size = {{ keystone_database_max_pool_size }}
 pool_timeout = {{ keystone_database_pool_timeout }}
 
 
+[fernet_keys]
+key_repository = {{ keystone_fernet_tokens_key_repository }}
+max_active_keys = {{ keystone_fernet_tokens_max_active_keys }}
+
+
 [identity]
 driver = {{ keystone_identity_driver }}
 {% if keystone_ldap is defined %}

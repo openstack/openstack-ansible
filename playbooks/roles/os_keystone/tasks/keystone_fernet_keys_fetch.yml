@@ -1,5 +1,5 @@
 ---
-# Copyright 2014, Rackspace US, Inc.
+# Copyright 2015, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,25 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: keystone_pre_install.yml
-- include: keystone_install.yml
-
-- include: keystone_fernet.yml
-  when: >
-    'fernet' in keystone_token_provider
-
-- include: keystone_post_install.yml
-
-- include: keystone_db_setup.yml
-  when: >
-    inventory_hostname == groups['keystone_all'][0]
-
-- include: keystone_apache.yml
-- include: keystone_token_cleanup.yml
-
-- include: keystone_service_setup.yml
-  when: >
-    inventory_hostname == groups['keystone_all'][0]
-
-- name: Flush handlers
-  meta: flush_handlers
+- name: Fetch the fernet key repository
+  synchronize:
+    src: "{{ keystone_fernet_tokens_key_repository }}"
+    dest: /tmp/
+    recursive: yes
+    mode: pull
+  tags:
+    - keystone-setup
+    - keystone-fernet

@@ -50,6 +50,21 @@
   tags:
     - keystone-dirs
 
+- name: Create keystone fernet-keys dir
+  file:
+    path: "{{ item.path }}"
+    state: directory
+    owner: "{{ item.owner|default(keystone_system_user_name) }}"
+    group: "{{ item.group|default(keystone_system_group_name) }}"
+    mode: "{{ item.mode }}"
+  with_items:
+    - { path: "{{ keystone_fernet_tokens_key_repository }}", mode: '0750' }
+  when: >
+    'fernet' in keystone_token_provider
+  tags:
+    - keystone-dirs
+    - keystone-fernet
+
 - name: Test for log directory or link
   shell: |
     if [ -h "/var/log/keystone"  ]; then

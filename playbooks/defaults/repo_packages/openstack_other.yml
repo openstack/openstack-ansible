@@ -40,3 +40,11 @@ requirements_git_dest: "/opt/requirements_{{ requirements_git_install_branch | r
 tempestlib_git_repo: https://github.com/openstack/tempest-lib
 tempestlib_git_install_branch: 0.4.0
 tempestlib_git_dest: "/opt/tempest-lib_{{ requirements_git_install_branch | replace('/', '_') }}"
+
+## Cryptography
+# NOTE(sigmavirus24): Fix this when cryptography 1.0 is released and
+# global-requirements.txt allows for it. See also:
+# https://github.com/pyca/cryptography/issues/1868
+cryptography_git_repo: https://github.com/pyca/cryptography
+cryptography_git_install_branch: 926f8ac4927bdc9977f2d960c7def3f2927d1198  # HEAD of "master" as of 16.06.2015
+cryptography_git_dest: "/opt/cryptography_{{ cryptography_git_install_branch | replace('/', '_') }}"
