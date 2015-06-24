@@ -46,3 +46,14 @@
   tags:
     - horizon-db-sync
     - horizon-setup
+
+- name: Register DB session cleanup cron
+  cron:
+    name: "Clear out expired sessions"
+    minute: "{{ 58 | random(start=2) }}"
+    hour: 21
+    job: "/usr/local/bin/horizon-manage.py clearsessions"
+    user: "{{ horizon_system_user_name }}"
+    state: present
+  tags:
+    - horizon-db-setup
