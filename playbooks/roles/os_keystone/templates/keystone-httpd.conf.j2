@@ -10,7 +10,7 @@ WSGIDaemonProcess keystone user={{ keystone_system_user_name }} group=nogroup pr
     CustomLog /var/log/keystone/ssl_access.log combined
     Options +FollowSymLinks
 
-    {% if keystone_ssl_enabled == true %}
+    {% if keystone_ssl_enabled == true -%}
     SSLEngine on
     SSLCertificateFile    {{ keystone_ssl_cert }}
     SSLCertificateKeyFile {{ keystone_ssl_key }}
@@ -35,7 +35,7 @@ WSGIDaemonProcess keystone user={{ keystone_system_user_name }} group=nogroup pr
     CustomLog /var/log/keystone/ssl_access.log combined
     Options +FollowSymLinks
 
-    {% if keystone_ssl_enabled == true %}
+    {% if keystone_ssl_enabled == true -%}
     SSLEngine on
     SSLCertificateFile    {{ keystone_ssl_cert }}
     SSLCertificateKeyFile {{ keystone_ssl_key }}
