@@ -18,6 +18,7 @@
     repo: "{{ item.repo }}"
     state: "{{ item.state }}"
   with_items: rsyslog_client_apt_repos
+  when: rsyslog_client_apt_repos is defined
   register: add_repos
   until: add_repos|success
   retries: 5
