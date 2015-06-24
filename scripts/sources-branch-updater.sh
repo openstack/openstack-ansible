@@ -65,7 +65,7 @@ for repo in $(grep 'git_repo\:' ${SERVICE_FILE});do
     # Set the branch entry
     branch_entry="${branch_sha} # HEAD of \"$ONLINE_BRANCH\" as of $(date +%d.%m.%Y)"
     # Write the branch entry
-    sed -i "s|${repo_name}_git_install_branch:.*|${repo_name}_git_install_branch: $branch_entry|" ${SERVICE_FILE}
+    sed -i.bak "s|${repo_name}_git_install_branch:.*|${repo_name}_git_install_branch: $branch_entry|" ${SERVICE_FILE}
     echo "processed $repo_name @ $branch_entry"
   fi
 done

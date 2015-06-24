@@ -30,66 +30,66 @@
 
 ## Cinder service
 cinder_git_repo: https://github.com/openstack/cinder
-cinder_git_install_branch: fce961e8c8081b804f25786935e4026a87abf9dd # HEAD of "master" as of 08.06.2015
+cinder_git_install_branch: 648d544621ed101e6f5581a201efea585a08935a # HEAD of "master" as of 22.06.2015
 cinder_git_dest: "/opt/cinder_{{ cinder_git_install_branch | replace('/', '_') }}"
 
 
 ## Glance service
 glance_git_repo: https://github.com/openstack/glance
-glance_git_install_branch: be8c464c8e986fc6ca064b42d475c805aac9062d # HEAD of "master" as of 08.06.2015
+glance_git_install_branch: 33fb88108b90e7841e5ac12054214ab229dacd2d # HEAD of "master" as of 22.06.2015
 glance_git_dest: "/opt/glance_{{ glance_git_install_branch | replace('/', '_') }}"
 
 
 ## Heat service
 heat_git_repo: https://github.com/openstack/heat
-heat_git_install_branch: 8fe06151c1691d2246dcec3e6dcae7c204908df2 # HEAD of "master" as of 08.06.2015
+heat_git_install_branch: c512e0fb878ecd519fac19df5d35fb8d83590c92 # HEAD of "master" as of 22.06.2015
 heat_git_dest: "/opt/heat_{{ heat_git_install_branch | replace('/', '_') }}"
 
 
 ## Horizon service
 horizon_git_repo: https://github.com/openstack/horizon
-horizon_git_install_branch: b11d49891c6c8e8cdbc3a09f538d13596fe10b8e # HEAD of "master" as of 08.06.2015
+horizon_git_install_branch: 6b18a22b51aa991ed1bf45871b98e5a20362778b # HEAD of "master" as of 22.06.2015
 horizon_git_dest: "/opt/horizon_{{ horizon_git_install_branch | replace('/', '_') }}"
 
 
 ## Keystone service
 keystone_git_repo: https://github.com/openstack/keystone
-keystone_git_install_branch: 7f76f23bccd772df35da63584685584576289255 # HEAD of "master" as of 08.06.2015
+keystone_git_install_branch: a7ca13b687dd284f0980d768b11a3d1b52b4106e # HEAD of "master" as of 22.06.2015
 keystone_git_dest: "/opt/keystone_{{ keystone_git_install_branch | replace('/', '_') }}"
 
 
 ## Neutron service
 neutron_git_repo: https://github.com/openstack/neutron
-neutron_git_install_branch: 692da2b7c70dd57c692a36f7a6d8f55fc1fa2a44 # HEAD of "master" as of 08.06.2015
+neutron_git_install_branch: 3c6ab9e360e6f29b844e53304d0300714b1d52f9 # HEAD of "master" as of 22.06.2015
 neutron_git_dest: "/opt/neutron_{{ neutron_git_install_branch | replace('/', '_') }}"
 
 neutron_lbaas_git_repo: https://github.com/openstack/neutron-lbaas
-neutron_lbaas_git_install_branch: 397585792ce363a4d894136186a7aa51f39c726b # HEAD of "master" as of 08.06.2015
+neutron_lbaas_git_install_branch: d7bbbf4ce85e923e167ab06004f8cf51055f87ba # HEAD of "master" as of 22.06.2015
 neutron_lbaas_git_dest: "/opt/neutron_lbaas_{{ neutron_lbaas_git_install_branch | replace('/', '_') }}"
 
 neutron_vpnaas_git_repo: https://github.com/openstack/neutron-vpnaas
-neutron_vpnaas_git_install_branch: 17b7f1989a3864cd1d742d58ad9696c21f90563a # HEAD of "master" as of 08.06.2015
+neutron_vpnaas_git_install_branch: f8b7d3168b03efd0fe4fd81f22a98763bae60890 # HEAD of "master" as of 22.06.2015
 neutron_vpnaas_git_dest: "/opt/neutron_vpnaas_{{ neutron_vpnaas_git_install_branch | replace('/', '_') }}"
 
 neutron_fwaas_git_repo: https://github.com/openstack/neutron-fwaas
-neutron_fwaas_git_install_branch: 76c2a4e4124b62fec9236927f9122e1f696cc9ce # HEAD of "master" as of 08.06.2015
+neutron_fwaas_git_install_branch: b1853c01264cef9893cc86192f198f6ab62f4ecd # HEAD of "master" as of 22.06.2015
 neutron_fwaas_git_dest: "/opt/neutron_fwaas_{{ neutron_fwaas_git_install_branch | replace('/', '_') }}"
 
 
 ## Nova service
 nova_git_repo: https://github.com/openstack/nova
-nova_git_install_branch: 770a897179f09546b32763697319d49be1697be1 # HEAD of "master" as of 08.06.2015
+nova_git_install_branch: a4f4be370be06cfc9aa3ed30d2445277e832376f # HEAD of "master" as of 22.06.2015
 nova_git_dest: "/opt/nova_{{ nova_git_install_branch | replace('/', '_') }}"
 
 
 ## Swift service
 swift_git_repo: https://github.com/openstack/swift
-swift_git_install_branch: 0cf95b055549fd76aba38ea682ad4cc0a74de7fa # HEAD of "master" as of 08.06.2015
+swift_git_install_branch: 0009a43eb45fdee6716d1272b346cfc76d946e4b # HEAD of "master" as of 22.06.2015
 swift_git_dest: "/opt/swift_{{ swift_git_install_branch | replace('/', '_') }}"
 
 
 ## Tempest service
 tempest_git_repo: https://github.com/openstack/tempest
-tempest_git_install_branch: 9927d643c7340cc55a351cc8ed159d7dd3ba0c54 # HEAD of "master" as of 08.06.2015
+tempest_git_install_branch: 1cfa1720e8db3966af7ad042b6fbb12e01e2ab31 # HEAD of "master" as of 22.06.2015
 tempest_git_install_fragments: "yaprtignorerequirements=true"
 tempest_git_dest: "/opt/tempest_{{ tempest_git_install_branch | replace('/', '_') }}"
