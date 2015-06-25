@@ -108,7 +108,7 @@ vif_plugging_is_fatal = False
 default_ephemeral_format = ext4
 
 # Configdrive
-force_config_drive = always
+force_config_drive = {{ nova_force_config_drive }}
 
 # Policy
 max_age = {{ nova_max_age }}
