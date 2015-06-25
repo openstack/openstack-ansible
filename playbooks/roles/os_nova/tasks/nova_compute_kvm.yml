@@ -28,4 +28,40 @@
   tags:
     - nova-kvm
 
+- name: Set libvirtd config
+  template: >
+    src=libvirtd.conf.j2
+    dest=/etc/libvirt/libvirtd.conf
+    owner="root"
+    group="root"
+    mode=0644
+  notify: Restart libvirt-bin
+  tags:
+    - nova-kvm
+    - nova-libvirt
+
+- name: Set libvirt runtime options
+  lineinfile:
+    dest: "/etc/default/libvirt-bin"
+    line: 'libvirtd_opts="-d -l"'
+    regexp: "^libvirtd_opts="
+    backup: "yes"
+  when: nova_libvirtd_listen_tcp == 1
+  notify: Restart libvirt-bin
+  tags:
+    - nova-kvm
+    - nova-libvirt
+
+- name: Set libvirt runtime options
+  lineinfile:
+    dest: "/etc/default/libvirt-bin"
+    line: 'libvirtd_opts="-d"'
+    regexp: "^libvirtd_opts="
+    backup: "yes"
+  when: nova_libvirtd_listen_tcp == 0
+  notify: Restart libvirt-bin
+  tags:
+    - nova-kvm
+    - nova-libvirt
+
 - include: nova_compute_kvm_virsh_net_remove.yml
