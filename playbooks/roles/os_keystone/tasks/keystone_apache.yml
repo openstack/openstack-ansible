@@ -56,3 +56,10 @@
     - Restart Apache
   tags:
     - keystone-httpd
+
+- name: Enable/disable mod_ssl for apache2
+  apache2_module:
+    name: ssl
+    state: "{{ (keystone_ssl_enabled | bool) | ternary('present', 'absent') }}"
+  tags:
+    - keystone-httpd
