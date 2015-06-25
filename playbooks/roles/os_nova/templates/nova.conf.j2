@@ -118,8 +118,12 @@ server_proxyclient_address = {{ ansible_ssh_host }}
 
 # Glance
 [glance]
+{% if glance_api_servers is defined %}
 api_servers = {{ glance_api_servers }}
-
+{% else %}
+host = {{ glance_host }}
+port = {{ glance_service_port }}
+{% endif %}
 
 # Neutron
 [neutron]

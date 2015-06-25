@@ -111,7 +111,8 @@ glance_service_project_domain_id: default
 glance_service_user_domain_id: default
 glance_service_adminurl: "{{ glance_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ glance_service_port }}"
 glance_service_region: "{{ service_region }}"
-glance_api_servers: "{% for host in groups['glance_all'] %}{{ hostvars[host]['container_address'] }}:{{ glance_service_port }}{% if not loop.last %},{% endif %}{% endfor %}"
+# Only specify this if you want to list the servers - by default LB host/port will be used
+#glance_api_servers: "{% for host in groups['glance_all'] %}{{ hostvars[host]['container_address'] }}:{{ glance_service_port }}{% if not loop.last %},{% endif %}{% endfor %}"
 
 
 ## Keystone
