@@ -232,6 +232,36 @@
 #     IP address of this target host, typically the IP address assigned to
 #     the management bridge.
 #
+#     Level: container_vars (optional)
+#     Contains options for this target host.
+#
+#       Level: swift_proxy_vars (optional)
+#       Contains swift proxy options for this target host. Typical deployments
+#       use this level to define read/write affinity settings for proxy hosts.
+#
+#         Option: read_affinity (optional, string)
+#         Specify which region/zones the proxy server should prefer for reads
+#         from the account, container and object services.
+#         E.g. read_affinity: "r1=100" this would prefer region 1
+#         read_affinity: "r1z1=100, r1=200" this would prefer region 1 zone 1
+#         if that is unavailable region 1, otherwise any available region/zone.
+#         Lower number is higher priority.
+#
+#         Option: write_affinity (optional, string)
+#         Specify which region to prefer when object PUT requests are made.
+#         E.g. write_affinity: "r1" - favours region 1 for object PUTs
+#
+#         Option: write_affinity_node_count (optional, string)
+#         Specify how many copies to prioritise in specified region on
+#         handoff nodes for Object PUT requests.
+#         Requires "write_affinity" to be set in order to be useful.
+#         This is a short term way to ensure replication happens locally,
+#         Swift's eventual consistency will ensure proper distribution over
+#         time.
+#         e.g. write_affinity_node_count: "2 * replicas" - this would try to
+#         store Object PUT replicas on up to 6 disks in region 1 assuming
+#         replicas is 3, and write_affinity = r1
+#
 # Example:
 #
 # Define three swift proxy hosts:
@@ -240,10 +270,25 @@
 #
 #   infra1:
 #     ip: 172.29.236.101
+#     container_vars:
+#       swift_proxy_vars:
+#         read_affinity: "r1=100"
+#         write_affinity: "r1"
+#         write_affinity_node_count: "2 * replicas"
 #   infra2:
 #     ip: 172.29.236.102
+#     container_vars:
+#       swift_proxy_vars:
+#         read_affinity: "r2=100"
+#         write_affinity: "r2"
+#         write_affinity_node_count: "2 * replicas"
 #   infra3:
 #     ip: 172.29.236.103
+#     container_vars:
+#       swift_proxy_vars:
+#         read_affinity: "r3=100"
+#         write_affinity: "r3"
+#         write_affinity_node_count: "2 * replicas"
 #
 # --------
 #
