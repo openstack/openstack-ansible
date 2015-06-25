@@ -26,12 +26,18 @@
     - name: Sync the upstream repo(s)
       shell: |
         rsync -avzlHAX \
-              --exclude="{{ mirror_excludes }}" \
+              {{ mirror_excludes }} \
               {{ mirror_source_host }}::{{ mirror_name }} {{ mirror_path }}
       sudo: yes
       sudo_user: "{{ repo_service_user_name }}"
   vars:
-    mirror_excludes: "{{ repo_mirror_excludes|default('repos/* mirror/* rpcgit/* openstackgit/*') }}"
+    repo_mirror_excludes:
+      - "/repos"
+      - "/mirror"
+      - "/rpcgit"
+      - "/openstackgit"
+      - "/python_packages"
+    mirror_excludes: "{% for i in repo_mirror_excludes %} --exclude={{ i }} {% endfor %}"
     mirror_path: "{{ repo_service_home_folder }}/repo"
     mirror_name: "{{ repo_mirror_name|default('openstack_mirror') }}"
     mirror_source_host: "{{ repo_mirror_source_host|default('rpc-repo.rackspace.com') }}"
