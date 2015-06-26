@@ -12,19 +12,8 @@ user = {{ swift_system_user_name }}
 log_facility = LOG_LOCAL1
 
 [pipeline:main]
-{% if swift_authtoken_active %}
-{% if swift_ceilometer_enabled %}
-pipeline = catch_errors gatekeeper healthcheck proxy-logging ceilometer cache container_sync bulk tempurl ratelimit authtoken keystoneauth container-quotas account-quotas slo dlo proxy-server
-{% else %}
-pipeline = catch_errors gatekeeper healthcheck proxy-logging cache container_sync bulk tempurl ratelimit authtoken keystoneauth container-quotas account-quotas slo dlo proxy-logging proxy-server
-{% endif %}
-{% else %}
-{% if swift_ceilometer_enabled %}
-pipeline = catch_errors gatekeeper healthcheck proxy-logging ceilometer cache container_sync bulk tempurl ratelimit tempauth container-quotas account-quotas slo dlo proxy-server
-{% else %}
-pipeline = catch_errors gatekeeper healthcheck proxy-logging cache container_sync bulk tempurl ratelimit tempauth container-quotas account-quotas slo dlo proxy-logging proxy-server
-{% endif %}
-{% endif %}
+pipeline = {{ swift_middleware_list | join(' ') }}
+
 [app:proxy-server]
 use = egg:swift#proxy
 log_facility = LOG_LOCAL1
@@ -43,18 +32,18 @@ write_affinity_node_count = {{ swift_proxy_vars.write_affinity_node_count }}
 {%   endif %}
 {% endif %}
 
+{% if 'tempauth' in swift_middleware_list %}
 [filter:tempauth]
 use = egg:swift#tempauth
-{% if not swift_authtoken_active %}
 user_admin_admin = admin .admin .reseller_admin
 user_test_tester = testing .admin
 user_test2_tester2 = testing2 .admin
 user_test_tester3 = testing3
+{% endif %}
 
-{% elif swift_authtoken_active %}
+{% if 'authtoken' in swift_middleware_list %}
 [filter:authtoken]
 paste.filter_factory = keystonemiddleware.auth_token:filter_factory
-insecure = {{ keystone_service_internaluri_insecure | bool }}
 auth_plugin = {{ swift_keystone_auth_plugin }}
 auth_url = {{ keystone_service_adminuri }}
 auth_uri = {{ keystone_service_internaluri }}
@@ -66,16 +55,17 @@ password = {{ swift_service_password }}
 delay_auth_decision = {{ swift_delay_auth_decision }}
 {% endif %}
 
+{% if 'keystoneauth' in swift_middleware_list %}
 [filter:keystoneauth]
 use = egg:swift#keystoneauth
 {% if swift_allow_all_users is defined and swift_allow_all_users == True %}
-{% if swift_ceilometer_enabled %}
+{% if 'ceilometer' in swift_middleware_list %}
 operator_roles = admin, swiftoperator, _member_, ResellerAdmin
 {% else %}
 operator_roles = admin, swiftoperator, _member_
 {% endif %}
 {% else %}
-{% if swift_ceilometer_enabled %}
+{% if 'ceilometer' in swift_middleware_list %}
 operator_roles = admin, swiftoperator, ResellerAdmin
 {% else %}
 operator_roles = admin, swiftoperator
@@ -83,6 +73,7 @@ operator_roles = admin, swiftoperator
 {% endif %}
 # The reseller admin role has the ability to create and delete accounts
 reseller_admin_role = reseller_admin
+{% endif %}
 
 [filter:healthcheck]
 use = egg:swift#healthcheck
@@ -146,7 +137,7 @@ use = egg:swift#container_sync
 [filter:xprofile]
 use = egg:swift#xprofile
 
-{% if swift_ceilometer_enabled %}
+{% if 'ceilometer' in swift_middleware_list %}
 [filter:ceilometer]
 paste.filter_factory = ceilometermiddleware.swift:filter_factory
 control_exchange = swift

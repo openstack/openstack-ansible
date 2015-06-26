@@ -172,9 +172,9 @@ reseller_admin_role = reseller_admin
 
 
 [object-storage-feature-enabled]
-container_sync = false
+container_sync = {{ tempest_swift_container_sync }}
 object_versioning = {{ tempest_swift_object_versioning }}
-discoverable_apis = all
+discoverable_apis = {{ tempest_swift_discoverable_apis | join(' ') }}
 
 
 [orchestration]
