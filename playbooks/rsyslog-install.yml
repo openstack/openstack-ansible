@@ -44,6 +44,9 @@
         - flush-net-cache
   roles:
     - { role: "rsyslog_server", tags: [ "rsyslog-server" ] }
+    - role: "system_crontab_coordination"
+      tags:
+        - "system-crontab-coordination"
   vars:
     storage_directory: "{{ rsyslog_server_storage_directory }}"
     is_metal: "{{ properties.is_metal|default(false) }}"
