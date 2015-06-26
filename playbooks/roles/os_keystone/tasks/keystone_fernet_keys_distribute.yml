@@ -13,12 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Distribute the fernet keys to the other keystone containers
-  synchronize:
-    src: "/tmp/{{ keystone_fernet_tokens_key_repository|basename }}"
-    dest: "{{ keystone_fernet_tokens_key_repository|dirname }}"
-    recursive: yes
-    delete: yes
+- name: Distribute the fernet key repository
+  shell: |
+    rsync -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' \
+          -avz \
+          --delete \
+          {{ keystone_fernet_tokens_key_repository }}/ \
+          {{ keystone_system_user_name }}@{{ hostvars[item]['ansible_ssh_host'] }}:{{ keystone_fernet_tokens_key_repository }}/
+  sudo: yes
+  sudo_user: "{{ keystone_system_user_name }}"
+  with_items: groups['keystone_all'][1:]
   tags:
-    - keystone-setup
-    - keystone-fernet
+    - keystone-fernet-distribute

@@ -13,12 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Fetch the fernet key repository
-  synchronize:
-    src: "{{ keystone_fernet_tokens_key_repository }}"
-    dest: /tmp/
-    recursive: yes
-    mode: pull
+- name: Distribute authorized keys for cluster consumption
+  memcached:
+    name: "{{ item.name }}"
+    file_path: "{{ item.src }}"
+    state: "present"
+    server: "{{ memcached_servers }}"
+    encrypt_string: "{{ memcached_encryption_key }}"
+  with_items:
+    - { src: "{{ keystone_system_user_home }}/.ssh/authorized_keys", name: "authorized_keys" }
+  register: memcache_keys
+  until: memcache_keys|success
+  retries: 5
+  delay: 2
   tags:
-    - keystone-setup
-    - keystone-fernet
+    - keystone-key
+    - keystone-key-store

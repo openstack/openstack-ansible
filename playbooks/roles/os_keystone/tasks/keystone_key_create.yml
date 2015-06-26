@@ -1,0 +1,74 @@
+---
+# Copyright 2015, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Remove old key file(s) if found
+  file:
+    path: "{{ item }}"
+    state: "absent"
+  with_items:
+    - "{{ keystone_system_user_home }}/.ssh/authorized_keys"
+    - "{{ keystone_system_user_home }}/.ssh/id_rsa"
+    - "{{ keystone_system_user_home }}/.ssh/id_rsa.pub"
+  tags:
+    - keystone-key
+    - keystone-key-create
+
+- name: Create the keystone SSH key if it doesnt exist
+  command: |
+    ssh-keygen -f {{ keystone_system_user_home }}/.ssh/id_rsa -t rsa -q -N ""
+  sudo: yes
+  sudo_user: "{{ keystone_system_user_name }}"
+  tags:
+    - keystone-key
+    - keystone-key-create
+
+- name: Create empty 'authorized_keys' file
+  file:
+    path: "{{ keystone_system_user_home }}/.ssh/authorized_keys"
+    state: "touch"
+  tags:
+    - keystone-key
+    - keystone-key-create
+
+- name: Change permissions on the generated keys
+  file:
+    path: "{{ item.path }}"
+    group: "{{ keystone_system_user_name }}"
+    owner: "{{ keystone_system_user_name }}"
+    mode: "{{ item.mode }}"
+  with_items:
+    - { path: "{{ keystone_system_user_home }}/.ssh/authorized_keys", mode: "0700" }
+    - { path: "{{ keystone_system_user_home }}/.ssh/id_rsa", mode: "0600" }
+    - { path: "{{ keystone_system_user_home }}/.ssh/id_rsa.pub", mode: "0644" }
+  tags:
+    - keystone-key
+    - keystone-key-create
+
+- name: Get public key contents
+  command: |
+    cat {{ keystone_system_user_home }}/.ssh/id_rsa.pub
+  register: keystone_pub
+  changed_when: false
+  tags:
+    - keystone-key
+    - keystone-key-create
+
+- name: Build authorized keys
+  shell: |
+    echo "{{ keystone_pub.stdout }}" | tee -a {{ keystone_system_user_home }}/.ssh/authorized_keys
+  delegate_to: "{{ groups['keystone_all'][0] }}"
+  tags:
+    - keystone-key
+    - keystone-key-create
