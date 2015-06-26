@@ -25,6 +25,9 @@
       tags:
         - "tempest-rsyslog-client"
         - "rsyslog-client"
+    - role: "system_crontab_coordination"
+      tags:
+        - "system-crontab-coordination"
   vars_files:
     - defaults/repo_packages/openstack_services.yml
   vars:
