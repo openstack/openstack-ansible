@@ -25,7 +25,7 @@ keystone_fatal_deprecations: False
 keystone_system_user_name: keystone
 keystone_system_group_name: keystone
 keystone_system_service_name: apache2
-keystone_system_shell: /bin/false
+keystone_system_shell: /bin/bash
 keystone_system_comment: keystone system user
 keystone_system_user_home: "/var/lib/{{ keystone_system_user_name }}"
 
@@ -48,6 +48,10 @@ keystone_revocation_expiration_buffer: 1800
 ## Fernet config vars
 keystone_fernet_tokens_key_repository: "/etc/keystone/fernet-keys"
 keystone_fernet_tokens_max_active_keys: 7
+# Any of the following rotation times are valid:
+#   reboot, yearly, annually, monthly, weekly, daily, hourly
+keystone_fernet_rotation: daily
+keystone_fernet_auto_rotation_script: /opt/keystone-fernet-rotate.sh
 
 keystone_cache_expiration_time: 5400
 

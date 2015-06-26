@@ -39,31 +39,18 @@
     state: directory
     owner: "{{ item.owner|default(keystone_system_user_name) }}"
     group: "{{ item.group|default(keystone_system_group_name) }}"
+    mode: "{{ item.mode|default(0755) }}"
   with_items:
     - { path: "/etc/keystone" }
     - { path: "{{ keystone_ldap_domain_config_dir }}" }
     - { path: "/etc/keystone/ssl" }
+    - { path: "{{ keystone_fernet_tokens_key_repository }}", mode: "2750"}
     - { path: "/etc/sudoers.d", mode: "0750", owner: "root", group: "root" }
     - { path: "{{ keystone_system_user_home }}" }
     - { path: "/var/www/cgi-bin", owner: root, group: root }
     - { path: "/var/www/cgi-bin/keystone" }
   tags:
     - keystone-dirs
-
-- name: Create keystone fernet-keys dir
-  file:
-    path: "{{ item.path }}"
-    state: directory
-    owner: "{{ item.owner|default(keystone_system_user_name) }}"
-    group: "{{ item.group|default(keystone_system_group_name) }}"
-    mode: "{{ item.mode }}"
-  with_items:
-    - { path: "{{ keystone_fernet_tokens_key_repository }}", mode: '0750' }
-  when: >
-    'fernet' in keystone_token_provider
-  tags:
-    - keystone-dirs
-    - keystone-fernet
 
 - name: Test for log directory or link
   shell: |
