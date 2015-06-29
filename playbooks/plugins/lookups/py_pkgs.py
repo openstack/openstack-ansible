@@ -122,6 +122,9 @@ class DependencyFileProcessor(object):
                 )
             )
 
+            if git_data['fragments']:
+                package = '%s&%s' % (package, git_data['fragments'])
+
             self.pip['git_package'].append(package)
 
     def _process_git(self, loaded_yaml, git_item):
@@ -150,6 +153,12 @@ class DependencyFileProcessor(object):
         package = self.git_pip_install % (
             git_data['repo'], git_data['branch']
         )
+
+        git_data['fragments'] = loaded_yaml.get(
+            '%s_git_install_fragments' % var_name.replace('.', '_')
+        )
+        if git_data['fragments']:
+            package = '%s#%s' % (package, git_data['fragments'])
 
         self.pip['git_package'].append(package)
 
