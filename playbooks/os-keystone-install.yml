@@ -71,6 +71,23 @@
       when: is_metal | bool
       tags:
         - keystone-logs
+    # todo(cloudnull): this task is being run only if/when keystone is installed on a physical host.
+    #  This is not being run within a container because it is an unsupported action due to this
+    #  issue: (https://bugs.launchpad.net/ubuntu/+source/lxc/+bug/1279041)
+    #  This issue was resolved however we'll need to eval it in the next LTS release.
+    #  Related OSA Bug: https://launchpad.net/bugs/1426371
+    - name: Add keystone reserved port to physical host
+      sysctl:
+        name: "{{ item.key }}"
+        value: "{{ item.value }}"
+        sysctl_set: "{{ item.set|default('yes') }}"
+        state: "{{ item.state|default('present') }}"
+        reload: "{{ item.reload|default('yes') }}"
+      with_items:
+        - { key: "net.ipv4.ip_local_reserved_ports", value: "{{ keystone_admin_port }}"}
+      when: is_metal | bool
+      tags:
+        - keystone-reserved-port
   roles:
     - role: "os_keystone"
       keystone_venv_tag: "{{ openstack_release }}"
@@ -91,5 +108,7 @@
         - "system-crontab-coordination"
   vars:
     galera_address: "{{ internal_lb_vip_address }}"
+    keystone_admin_port: 35357
     ansible_hostname: "{{ container_name }}"
     is_metal: "{{ properties.is_metal|default(false) }}"
+
