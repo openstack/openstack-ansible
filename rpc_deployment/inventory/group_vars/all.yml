@@ -179,8 +179,24 @@ auth_public_port: 5000
 auth_protocol: http
 
 
+## OpenStack source options
+openstack_upstream_domain: "rpc-repo.rackspace.com"
+
+
+## Repo server
+repo_pip_default_index: "http://{{ openstack_upstream_domain }}/pools"
+
+
 ## Tempest
 tempest_main_group: utility_all
+tempest_pip_instructions: >
+  --isolated
+  --pre
+  --allow-all-external
+  --index-url {{ repo_pip_default_index }}
+  --extra-index-url https://pypi.python.org/simple
+  --trusted-host pypi.python.org
+  --trusted-host {{ openstack_upstream_domain }}
 
 
 ## Openstack Region
