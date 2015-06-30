@@ -21,6 +21,7 @@ lxc_container_template: ubuntu
 # lxc container rootfs directory and cache path
 lxc_container_directory: "/var/lib/lxc"
 lxc_container_cache_path: "/var/cache/lxc"
+lxc_container_rootfs_directory: "{{ lxc_container_directory }}/{{ container_name }}/rootfs"
 
 # container_fs.* is only used with building on an LVM backend
 lxc_container_fs_size: 5G
