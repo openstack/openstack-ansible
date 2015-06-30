@@ -131,11 +131,17 @@ port = {{ glance_service_port }}
 [neutron]
 url = {{ neutron_service_adminurl }}
 region_name = {{ neutron_service_region }}
+auth_plugin = password
 auth_strategy = keystone
-admin_auth_url = {{ keystone_service_adminurl }}
-admin_password = {{ neutron_service_password }}
-admin_username = {{ neutron_service_user_name }}
-admin_tenant_name = {{ neutron_service_project_name }}
+# Keystone client plugin password option
+password = {{ neutron_service_password }}
+# Keystone client plugin username option
+username = {{ neutron_service_user_name }}
+project_name = {{ neutron_service_project_name }}
+user_domain_name = {{ neutron_service_domain_name |default("Default") }}
+project_domain_name = {{ neutron_service_domain_name |default("Default") }}
+# Keystone client plugin authentication URL option
+auth_url = {{ keystone_service_adminurl }}
 metadata_proxy_shared_secret = {{ nova_metadata_proxy_secret }}
 service_metadata_proxy = {{ nova_metadata_proxy_enabled }}
 

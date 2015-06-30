@@ -131,10 +131,14 @@
     region_name: "{{ swift_service_region }}"
     service_name: "{{ swift_service_name }}"
     service_type: "{{ swift_service_type }}"
-    publicurl: "{{ swift_service_publicurl }}"
-    adminurl: "{{ swift_service_internalurl }}"
-    internalurl: "{{ swift_service_adminurl }}"
     insecure: "{{ keystone_service_adminuri_insecure }}"
+    endpoint_list:
+      - url: "{{ swift_service_publicurl }}"
+        interface: "public"
+      - url: "{{ swift_service_internalurl }}"
+        interface: "internal"
+      - url: "{{ swift_service_adminurl }}"
+        interface: "admin"
   register: add_service
   until: add_service|success
   retries: 5

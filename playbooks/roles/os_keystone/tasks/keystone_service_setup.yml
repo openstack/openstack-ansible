@@ -194,10 +194,14 @@
     region_name: "{{ keystone_service_region }}"
     service_name: "{{ keystone_service_name }}"
     service_type: "{{ keystone_service_type }}"
-    publicurl: "{{ keystone_service_publicurl }}"
-    adminurl: "{{ keystone_service_adminurl }}"
-    internalurl: "{{ keystone_service_internalurl }}"
     insecure: "{{ keystone_service_adminuri_insecure }}"
+    endpoint_list:
+      - url: "{{ keystone_service_publicurl }}"
+        interface: "public"
+      - url: "{{ keystone_service_adminurl_v3 }}"
+        interface: "admin"
+      - url: "{{ keystone_service_internalurl }}"
+        interface: "internal"
   register: add_service
   until: add_service|success
   retries: 5

@@ -10,9 +10,21 @@ export NOVA_ENDPOINT_TYPE={{ openrc_nova_endpoint_type }}
 export OS_ENDPOINT_TYPE={{ openrc_os_endpoint_type }}
 export OS_USERNAME={{ openrc_os_username }}
 export OS_PASSWORD={{ openrc_os_password }}
+export OS_PROJECT_NAME={{ openrc_os_tenant_name }}
+# NOTE(sigmavirus24): The tenant name setting should be removed when
+# python-cinderclient stops checking for it and failing if it doesn't exist.
 export OS_TENANT_NAME={{ openrc_os_tenant_name }}
 export OS_AUTH_URL={{ openrc_os_auth_url }}
 export OS_NO_CACHE=1
+export OS_USER_DOMAIN_NAME={{ openrc_os_domain_name }}
+export OS_PROJECT_DOMAIN_NAME={{ openrc_os_domain_name }}
+
+# For openstackclient
+{% if openrc_os_auth_url.endswith('v3') %}
+export OS_IDENTITY_API_VERSION=3
+{% else %}
+export OS_IDENTITY_API_VERSION=2
+{% endif %}
 
 {% if openrc_insecure | bool %}
 # Convenience Aliases for Self-Signed Certs
