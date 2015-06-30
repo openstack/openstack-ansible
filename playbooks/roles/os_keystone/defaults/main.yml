@@ -102,18 +102,20 @@ keystone_service_user_name: keystone
 keystone_service_tenant_name: service
 
 keystone_service_publicuri: "{{ keystone_service_publicuri_proto }}://{{ external_lb_vip_address }}:{{ keystone_service_port }}"
-keystone_service_publicurl: "{{ keystone_service_publicuri }}/v2.0"
 keystone_service_internaluri: "{{ keystone_service_internaluri_proto }}://{{ internal_lb_vip_address }}:{{ keystone_service_port }}"
-keystone_service_internalurl: "{{ keystone_service_internaluri }}/v2.0"
 keystone_service_adminuri: "{{ keystone_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ keystone_admin_port }}"
-keystone_service_adminurl: "{{ keystone_service_adminuri }}/v2.0"
 
-keystone_service_publicuri_v3: "{{ keystone_service_publicuri_proto }}://{{ external_lb_vip_address }}:{{ keystone_service_port }}"
-keystone_service_publicurl_v3: "{{ keystone_service_publicuri_v3 }}/v3"
-keystone_service_internaluri_v3: "{{ keystone_service_internaluri_proto }}://{{ internal_lb_vip_address }}:{{ keystone_service_port }}"
-keystone_service_internalurl_v3: "{{ keystone_service_internaluri_v3 }}/v3"
-keystone_service_adminuri_v3: "{{ keystone_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ keystone_admin_port }}"
-keystone_service_adminurl_v3: "{{ keystone_service_adminuri_v3 }}/v3"
+keystone_service_publicurl_v2: "{{ keystone_service_publicuri }}/v2.0"
+keystone_service_internalurl_v2: "{{ keystone_service_internaluri }}/v2.0"
+keystone_service_adminurl_v2: "{{ keystone_service_adminuri }}/v2.0"
+
+keystone_service_publicurl_v3: "{{ keystone_service_publicuri }}/v3"
+keystone_service_internalurl_v3: "{{ keystone_service_internaluri }}/v3"
+keystone_service_adminurl_v3: "{{ keystone_service_adminuri }}/v3"
+
+keystone_service_publicurl: "{{ keystone_service_publicurl_v3 }}"
+keystone_service_internalurl: "{{ keystone_service_internalurl_v3 }}"
+keystone_service_adminurl: "{{ keystone_service_adminurl_v3 }}"
 
 ## Set this value to override the "public_endpoint" keystone.conf variable
 #keystone_public_endpoint:

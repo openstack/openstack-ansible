@@ -22,9 +22,11 @@ DOCUMENTATION = """
 module: keystone
 version_added: "1.6.2"
 short_description:
-   - Manage OpenStack Identity (keystone) users, tenants, roles, and endpoints.
+    - Manage OpenStack Identity (keystone) users, projects, roles, and
+      endpoints.
 description:
-   - Manage OpenStack Identity (keystone) users, tenants, roles, and endpoints.
+    - Manage OpenStack Identity (keystone) users, projects, roles, and
+      endpoints.
 options:
     return_code:
         description:
@@ -41,6 +43,11 @@ options:
             - Password of login user
         required: false
         default: 'yes'
+    login_project_name:
+        description:
+            - The project login_user belongs to
+        required: false
+        default: None
     login_tenant_name:
         description:
             - The tenant login_user belongs to
@@ -65,6 +72,11 @@ options:
             - The name of the user that has to added/removed from OpenStack
         required: false
         default: None
+    project_name:
+        description:
+            - The project name that has be added/removed
+        required: false
+        default: None
     tenant_name:
         description:
             - The tenant name that has be added/removed
@@ -84,9 +96,14 @@ options:
             - Name of the region.
         required: false
         default: None
+    domain_name:
+        description:
+            - Name of the domain to add a project to.
+        required: false
+        default: 'default'
     description:
         description:
-            - A description for the tenant
+            - A description for the project
         required: false
         default: None
     email:
@@ -99,27 +116,19 @@ options:
             - Type of service.
         required: false
         default: None
-    publicurl:
+    endpoint_list:
         description:
-            - Public URL.
+            - List of endpoints to add to keystone for a service
         required: false
         default: None
-    adminurl:
-        description:
-            - Admin URL.
-        required: false
-        default: None
-    internalurl:
-        description:
-            - Internal URL.
-        required: false
-        default: None
+        type: list
     command:
         description:
             - Indicate desired state of the resource
-        choices: ['get_tenant', 'get_user', 'get_role', 'ensure_service',
-                  'ensure_endpoint', 'ensure_role', 'ensure_user',
-                  'ensure_user_role', 'ensure_tenant']
+        choices: ['get_tenant', 'get_project', 'get_user', 'get_role',
+                  'ensure_service', 'ensure_endpoint', 'ensure_role',
+                  'ensure_user', 'ensure_user_role', 'ensure_tenant',
+                  'ensure_project']
         required: true
     insecure:
         description:
@@ -133,23 +142,24 @@ author: Kevin Carter
 """
 
 EXAMPLES = """
-# Create an admin tenant
+# Create an admin project
 - keystone:
-    command: "ensure_tenant"
-    tenant_name: "admin"
-    description: "Admin Tenant"
+    command: "ensure_project"
+    project_name: "admin"
+    domain_name: "Default"
+    description: "Admin project"
 
-# Create a service tenant
+# Create a service project
 - keystone:
-    command: "ensure_tenant"
-    tenant_name: "service"
-    description: "Service Tenant"
+    command: "ensure_project"
+    project_name: "service"
+    description: "Service project"
 
 # Create an admin user
 - keystone:
     command: "ensure_user"
     user_name: "admin"
-    tenant_name: "admin"
+    project_name: "admin"
     password: "secrete"
     email: "admin@some-domain.com"
 
@@ -162,15 +172,16 @@ EXAMPLES = """
 - keystone:
     command: "ensure_user"
     user_name: "glance"
-    tenant_name: "service"
+    project_name: "service"
     password: "secrete"
+    domain_name: "Default"
     email: "glance@some-domain.com"
 
 # Add a role to a user
 - keystone:
     command: "ensure_user_role"
     user_name: "glance"
-    tenant_name: "service"
+    project_name: "service"
     role_name: "admin"
 
 # Create a service
@@ -186,14 +197,18 @@ EXAMPLES = """
     region_name: "RegionOne"
     service_name: "glance"
     service_type: "image"
-    publicurl: "http://127.0.0.1:9292"
-    adminurl: "http://127.0.0.1:9292"
-    internalurl: "http://127.0.0.1:9292"
+    endpoint_list:
+      - url: "http://127.0.0.1:9292"
+        interface: "public"
+      - url: "http://127.0.0.1:9292"
+        interface: "admin"
+      - url: "http://127.0.0.1:9292"
+        interface: "internal"
 
-# Get tenant id
+# Get project id
 - keystone:
-    command: "get_tenant"
-    tenant_name: "admin"
+    command: "get_project"
+    project_name: "admin"
 
 # Get user id
 - keystone:
@@ -210,6 +225,13 @@ EXAMPLES = """
 COMMAND_MAP = {
     'get_tenant': {
         'variables': [
+            'project_name',
+            'tenant_name'
+        ]
+    },
+    'get_project': {
+        'variables': [
+            'project_name',
             'tenant_name'
         ]
     },
@@ -221,6 +243,7 @@ COMMAND_MAP = {
     'get_role': {
         'variables': [
             'role_name',
+            'project_name',
             'tenant_name',
             'user_name'
         ]
@@ -237,9 +260,7 @@ COMMAND_MAP = {
             'region_name',
             'service_name',
             'service_type',
-            'publicurl',
-            'adminurl',
-            'internalurl'
+            'endpoint_list'
         ]
     },
     'ensure_role': {
@@ -249,21 +270,33 @@ COMMAND_MAP = {
     },
     'ensure_user': {
         'variables': [
+            'project_name',
             'tenant_name',
             'user_name',
             'password',
-            'email'
+            'email',
+            'domain_name'
         ]
     },
     'ensure_user_role': {
         'variables': [
             'user_name',
+            'project_name',
             'tenant_name',
             'role_name'
         ]
     },
+    'ensure_project': {
+        'variables': [
+            'project_name',
+            'tenant_name',
+            'description',
+            'domain_name'
+        ]
+    },
     'ensure_tenant': {
         'variables': [
+            'project_name',
             'tenant_name',
             'description'
         ]
@@ -271,7 +304,7 @@ COMMAND_MAP = {
 }
 
 try:
-    from keystoneclient.v2_0 import client
+    from keystoneclient.v3 import client
 except ImportError:
     keystoneclient_found = False
 else:
@@ -363,6 +396,7 @@ class ManageKeystone(object):
             'endpoint',
             'login_user',
             'login_password',
+            'login_project_name',
             'login_tenant_name',
             'token',
             'insecure'
@@ -372,18 +406,19 @@ class ManageKeystone(object):
         endpoint = variables_dict.pop('endpoint')
         login_user = variables_dict.pop('login_user')
         login_password = variables_dict.pop('login_password')
-        login_tenant_name = variables_dict.pop('login_tenant_name')
+        login_project_name = (variables_dict.pop('login_project_name', None) or
+                              variables_dict.pop('login_tenant_name'))
         token = variables_dict.pop('token')
         insecure = variables_dict.pop('insecure')
 
         if token is None:
-            if login_tenant_name is None:
+            if login_project_name is None:
                 self.failure(
-                    error='Missing Tenant Name',
+                    error='Missing Project Name',
                     rc=2,
-                    msg='If you do not specify a token you must use a tenant'
+                    msg='If you do not specify a token you must use a project'
                         ' name for authentication. Try adding'
-                        ' [ login_tenant_name ] to the task'
+                        ' [ login_project_name ] to the task'
                 )
             if login_password is None:
                 self.failure(
@@ -406,22 +441,38 @@ class ManageKeystone(object):
                 auth_url=endpoint,
                 username=login_user,
                 password=login_password,
-                tenant_name=login_tenant_name
+                project_name=login_project_name
             )
 
-    def _get_tenant(self, name):
-        """Return tenant information.
+    def _get_domain(self, name):
+        """Return domain information.
 
-        :param name: ``str``  Name of the tenant.
+        :param str name: Name of the domain.
         """
-        for entry in self.keystone.tenants.list():
+        for entry in self.keystone.domains.list():
+            if entry.name == name:
+                return entry
+        else:
+            return None
+
+    def _get_project(self, name):
+        """Return project information.
+
+        Formerly, _get_tenant
+
+        :param name: ``str``  Name of the project.
+        """
+        for entry in self.keystone.projects.list():
             if entry.name == name:
                 return entry
         else:
             return None
 
     def get_tenant(self, variables):
-        """Return a tenant id.
+        return self.get_project(variables)
+
+    def get_project(self, variables):
+        """Return a project id.
 
         This will return `None` if the ``name`` is not found.
 
@@ -429,43 +480,51 @@ class ManageKeystone(object):
                                     use within the Keystone Command.
         """
         self._authenticate()
-        variables_dict = self._get_vars(variables, required=['tenant_name'])
-        tenant_name = variables_dict.pop('tenant_name')
-        tenant = self._get_tenant(name=tenant_name)
-        if tenant is None:
+        variables_dict = self._get_vars(variables)
+        project_name = (variables_dict.pop('project_name', None) or
+                        variables_dict.pop('tenant_name'))
+        project = self._get_project(name=project_name)
+        if project is None:
             self.failure(
-                error='tenant [ %s ] was not found.' % tenant_name,
+                error='project [ %s ] was not found.' % project_name,
                 rc=2,
-                msg='tenant was not found, does it exist?'
+                msg='project was not found, does it exist?'
             )
 
-        return self._facts(facts={'id': tenant.id})
+        return self._facts(facts={'id': project.id})
 
     def ensure_tenant(self, variables):
-        """Create a new tenant within Keystone if it does not exist.
+        return self.ensure_project(variables)
 
-        Returns the tenant ID on a successful run.
+    def ensure_project(self, variables):
+        """Create a new project within Keystone if it does not exist.
+
+        Returns the project ID on a successful run.
 
         :param variables: ``list``  List of all variables that are available to
                                     use within the Keystone Command.
         """
         self._authenticate()
-        variables_dict = self._get_vars(variables, required=['tenant_name'])
-        tenant_name = variables_dict.pop('tenant_name')
-        tenant_description = variables_dict.pop('description')
-        if tenant_description is None:
-            tenant_description = 'Tenant %s' % tenant_name
+        variables_dict = self._get_vars(variables)
+        project_name = (variables_dict.pop('project_name', None) or
+                        variables_dict.pop('tenant_name'))
+        domain_name = variables_dict.pop('domain_name', None) or 'Default'
+        project_description = variables_dict.pop('description')
+        if project_description is None:
+            project_description = 'Project %s' % project_name
 
-        tenant = self._get_tenant(name=tenant_name)
-        if tenant is None:
+        domain = self._get_domain(name=domain_name)
+        project = self._get_project(name=project_name)
+        if project is None:
             self.state_change = True
-            tenant = self.keystone.tenants.create(
-                tenant_name=tenant_name,
-                description=tenant_description,
+            project = self.keystone.projects.create(
+                name=project_name,
+                description=project_description,
+                domain=domain,
                 enabled=True
             )
 
-        return self._facts(facts={'id': tenant.id})
+        return self._facts(facts={'id': project.id})
 
     def _get_user(self, name):
         """Return a user information.
@@ -481,7 +540,7 @@ class ManageKeystone(object):
             return None
 
     def get_user(self, variables):
-        """Return a tenant id.
+        """Return a project id.
 
         This will return `None` if the ``name`` is not found.
 
@@ -510,19 +569,28 @@ class ManageKeystone(object):
                                     use within the Keystone Command.
         """
         self._authenticate()
-        required_vars = ['tenant_name', 'user_name', 'password']
+        required_vars = ['user_name', 'password']
         variables_dict = self._get_vars(variables, required=required_vars)
-        tenant_name = variables_dict.pop('tenant_name')
+        project_name = (variables_dict.pop('project_name', None) or
+                        variables_dict.pop('tenant_name'))
         password = variables_dict.pop('password')
         user_name = variables_dict.pop('user_name')
         email = variables_dict.pop('email')
+        # NOTE(sigmavirus24): Since we don't require domain, this will be None
+        # in the dictionary. When we pop it, we can't provide a default
+        # because 'domain' exists and is None. In order to use a default
+        # value, we need to use `or 'default'` here to make sure we default to
+        # the default domain. If we don't do it this way, Keystone throws a
+        # 401 Unauthorized which is just plain wrong.
+        domain_name = variables_dict.pop('domain_name', None) or 'Default'
 
-        tenant = self._get_tenant(name=tenant_name)
-        if tenant is None:
+        domain = self._get_domain(name=domain_name)
+        project = self._get_project(name=project_name)
+        if project is None:
             self.failure(
-                error='tenant [ %s ] was not found.' % tenant_name,
+                error='project [ %s ] was not found.' % project_name,
                 rc=2,
-                msg='tenant was not found, does it exist?'
+                msg='project was not found, does it exist?'
             )
 
         user = self._get_user(name=user_name)
@@ -532,7 +600,8 @@ class ManageKeystone(object):
                 name=user_name,
                 password=password,
                 email=email,
-                tenant_id=tenant.id
+                domain=domain,
+                default_project=project
             )
 
         return self._facts(facts={'id': user.id})
@@ -571,7 +640,7 @@ class ManageKeystone(object):
 
         return self._facts(facts={'id': role_data.id})
 
-    def _get_role_data(self, user_name, tenant_name, role_name):
+    def _get_role_data(self, user_name, project_name, role_name):
         user = self._get_user(name=user_name)
         if user is None:
             self.failure(
@@ -580,12 +649,12 @@ class ManageKeystone(object):
                 msg='User was not found, does it exist?'
             )
 
-        tenant = self._get_tenant(name=tenant_name)
-        if tenant is None:
+        project = self._get_project(name=project_name)
+        if project is None:
             self.failure(
-                error='tenant [ %s ] was not found.' % tenant_name,
+                error='project [ %s ] was not found.' % project_name,
                 rc=2,
-                msg='tenant was not found, does it exist?'
+                msg='project was not found, does it exist?'
             )
 
         role = self._get_role(name=role_name)
@@ -596,7 +665,7 @@ class ManageKeystone(object):
                 msg='role was not found, does it exist?'
             )
 
-        return user, tenant, role
+        return user, project, role
 
     def ensure_role(self, variables):
         """Create a new role within Keystone if it does not exist.
@@ -617,8 +686,8 @@ class ManageKeystone(object):
 
         return self._facts(facts={'id': role.id})
 
-    def _get_user_roles(self, name, user, tenant):
-        for entry in self.keystone.users.list_roles(user, tenant.id):
+    def _get_user_roles(self, name, user, project):
+        for entry in self.keystone.roles.list(user=user, project=project):
             if entry.name == name:
                 return entry
         else:
@@ -626,26 +695,30 @@ class ManageKeystone(object):
 
     def ensure_user_role(self, variables):
         self._authenticate()
-        required_vars = ['user_name', 'tenant_name', 'role_name']
+        required_vars = ['user_name', 'role_name']
         variables_dict = self._get_vars(variables, required=required_vars)
         user_name = variables_dict.pop('user_name')
-        tenant_name = variables_dict.pop('tenant_name')
+        # NOTE(sigmavirus24): Try to get the project_name, but
+        # don't error out on it. This will change when the playbooks are
+        # updated to use project_name instead of tenant_name
+        project_name = (variables_dict.pop('project_name', None)
+                        or variables_dict.pop('tenant_name'))
         role_name = variables_dict.pop('role_name')
 
-        user, tenant, role = self._get_role_data(
-            user_name=user_name, tenant_name=tenant_name, role_name=role_name
+        user, project, role = self._get_role_data(
+            user_name=user_name, project_name=project_name, role_name=role_name
         )
 
         user_role = self._get_user_roles(
-            name=role_name, user=user, tenant=tenant
+            name=role_name, user=user, project=project
         )
 
         if user_role is None:
-            self.keystone.roles.add_user_role(
-                user=user, role=role, tenant=tenant
+            self.keystone.roles.grant(
+                user=user, role=role, project=project
             )
             user_role = self._get_user_roles(
-                name=role_name, user=user, tenant=tenant
+                name=role_name, user=user, project=project
             )
 
         return self._facts(facts={'id': user_role.id})
@@ -681,19 +754,18 @@ class ManageKeystone(object):
             self.state_change = True
             service = self.keystone.services.create(
                 name=service_name,
-                service_type=service_type,
+                type=service_type,
                 description=description
             )
 
         return self._facts(facts={'id': service.id})
 
-    def _get_endpoint(self, region, publicurl, adminurl, internalurl):
+    def _get_endpoint(self, region, url, interface):
         for entry in self.keystone.endpoints.list():
             check = [
                 entry.region == region,
-                entry.publicurl == publicurl,
-                entry.adminurl == adminurl,
-                entry.internalurl == internalurl
+                entry.url == url,
+                entry.interface == interface
             ]
             if all(check):
                 return entry
@@ -713,18 +785,14 @@ class ManageKeystone(object):
             'region_name',
             'service_name',
             'service_type',
-            'publicurl',
-            'adminurl',
-            'internalurl'
+            'endpoint_list'
         ]
         variables_dict = self._get_vars(variables, required=required_vars)
 
         service_name = variables_dict.pop('service_name')
         service_type = variables_dict.pop('service_type')
         region = variables_dict.pop('region_name')
-        publicurl = variables_dict.pop('publicurl')
-        adminurl = variables_dict.pop('adminurl')
-        internalurl = variables_dict.pop('internalurl')
+        endpoint_list = variables_dict.pop('endpoint_list')
 
         service = self._get_service(name=service_name, srv_type=service_type)
         if service is None:
@@ -734,23 +802,28 @@ class ManageKeystone(object):
                 msg='Service was not found, does it exist?'
             )
 
-        endpoint = self._get_endpoint(
-            region=region,
-            publicurl=publicurl,
-            adminurl=adminurl,
-            internalurl=internalurl
-        )
-        if endpoint is None:
-            self.state_change = True
-            endpoint = self.keystone.endpoints.create(
+        endpoints = {}
+        for endpoint_dict in endpoint_list:
+            url = endpoint_dict.pop('url')
+            interface = endpoint_dict.pop('interface')
+            endpoint = self._get_endpoint(
                 region=region,
-                service_id=service.id,
-                publicurl=publicurl,
-                adminurl=adminurl,
-                internalurl=internalurl
+                url=url,
+                interface=interface
             )
+            if endpoint is None:
+                self.state_change = True
+                endpoint = self.keystone.endpoints.create(
+                    region=region,
+                    service=service,
+                    url=url,
+                    interface=interface
+                )
+            endpoints[interface] = endpoint
 
-        return self._facts(facts={'id': endpoint.id})
+        return self._facts(
+            facts={'%sid' % interface: endpoint.id
+                   for interface, endpoint in endpoints.items()})
 
 
 def main():
@@ -780,6 +853,12 @@ def main():
             tenant_name=dict(
                 required=False
             ),
+            project_name=dict(
+                required=False
+            ),
+            domain_name=dict(
+                required=False
+            ),
             role_name=dict(
                 required=False
             ),
@@ -798,14 +877,9 @@ def main():
             service_type=dict(
                 required=False
             ),
-            publicurl=dict(
-                required=False
-            ),
-            adminurl=dict(
-                required=False
-            ),
-            internalurl=dict(
-                required=False
+            endpoint_list=dict(
+                required=False,
+                type='list'
             ),
             command=dict(
                 required=True,
@@ -843,6 +917,6 @@ def main():
 
 
 # import module snippets
-from ansible.module_utils.basic import *
+from ansible.module_utils.basic import *  # NOQA
 if __name__ == '__main__':
     main()

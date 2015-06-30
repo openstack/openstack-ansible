@@ -73,9 +73,13 @@
     region_name: "{{ service_region }}"
     service_name: "{{ service_name }}"
     service_type: "{{ service_type }}"
-    publicurl: "{{ service_publicurl }}"
-    adminurl: "{{ service_internalurl }}"
-    internalurl: "{{ service_adminurl }}"
+    endpoint_list:
+      - url: "{{ service_publicurl }}"
+        interface: "public"
+      - url: "{{ service_adminurl }}"
+        interface: "admin"
+      - url: "{{ service_internalurl }}"
+        interface: "internal"
   register: add_service
   until: add_service|success
   retries: 5

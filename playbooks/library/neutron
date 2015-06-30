@@ -114,7 +114,7 @@ EXAMPLES = """
 """
 
 
-import keystoneclient.v2_0.client as ksclient
+import keystoneclient.v3.client as ksclient
 from neutronclient.neutron import client as nclient
 
 
@@ -258,7 +258,7 @@ class ManageNeutron(object):
         self.keystone = ksclient.Client(insecure=insecure,
                                         username=openrc['OS_USERNAME'],
                                         password=openrc['OS_PASSWORD'],
-                                        tenant_name=openrc['OS_TENANT_NAME'],
+                                        project_name=openrc['OS_PROJECT_NAME'],
                                         auth_url=openrc['OS_AUTH_URL'])
 
     def _init_neutron(self):

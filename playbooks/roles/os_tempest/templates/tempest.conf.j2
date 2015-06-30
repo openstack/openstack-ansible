@@ -110,7 +110,7 @@ admin_tenant_id = {{ tempest_admin_tenant_id }}
 alt_tenant_name = alt_demo
 alt_password = alt_demo
 alt_username = alt_demo
-auth_version = v2
+auth_version = v3
 catalog_type = identity
 disable_ssl_certificate_validation = {{ keystone_service_internaluri_insecure | bool }}
 endpoint_type = internalURL
@@ -123,7 +123,7 @@ username = demo
 
 [identity-feature-enabled]
 api_v2 = true
-api_v3 = false
+api_v3 = true
 trust = false
 
 

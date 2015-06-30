@@ -152,9 +152,10 @@ keystone_service_adminurl: "{{ keystone_service_adminuri }}/v2.0"
 keystone_service_publicuri_v3: "{{ keystone_service_publicuri_proto }}://{{ external_lb_vip_address }}:{{ keystone_service_port }}"
 keystone_service_publicurl_v3: "{{ keystone_service_publicuri_v3 }}/v3"
 keystone_service_internaluri_v3: "{{ keystone_service_internaluri_proto }}://{{ internal_lb_vip_address }}:{{ keystone_service_port }}"
-keystone_service_internalurl_v3: "{{ keystone_service_adminuri_v3 }}/v3"
+keystone_service_internalurl_v3: "{{ keystone_service_internaluri_v3 }}/v3"
 keystone_service_adminuri_v3: "{{ keystone_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ keystone_admin_port }}"
 keystone_service_adminurl_v3: "{{ keystone_service_adminuri_v3 }}/v3"
+keystone_service_adminurl: "{{ keystone_service_adminurl_v3 }}"
 keystone_cache_backend_argument: "url:{% for host in groups['memcached'] %}{{ hostvars[host]['container_address'] }}{% if not loop.last %},{% endif %}{% endfor %}:{{ memcached_port }}"
 keystone_memcached_servers: "{% for host in groups['keystone_all'] %}{{ hostvars[host]['container_address'] }}:{{ memcached_port }}{% if not loop.last %},{% endif %}{% endfor %}"
 keystone_service_region: "{{ service_region }}"
@@ -171,8 +172,9 @@ heat_service_region: "{{ service_region }}"
 
 
 ## OpenStack Openrc
-openrc_os_auth_url: "{{ keystone_service_internalurl }}"
+openrc_os_auth_url: "{{ keystone_service_internalurl_v3 }}"
 openrc_os_password: "{{ keystone_auth_admin_password }}"
+openrc_os_domain_name: "Default"
 
 
 ## Tempest Options
