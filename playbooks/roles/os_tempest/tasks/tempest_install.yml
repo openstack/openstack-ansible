@@ -38,6 +38,7 @@
   delay: 2
   tags:
     - tempest-git-clone
+    - tempest-pip-install
 
 - name: Install pip packages for tempest
   pip:
@@ -45,7 +46,7 @@
     state: present
     virtualenv: "{{ tempest_git_dest }}"
     virtualenv_site_packages: "yes"
-    extra_args: "--isolated"
+    extra_args: "{{ tempest_pip_instructions }}"
   register: install_packages
   until: install_packages|success
   retries: 5
