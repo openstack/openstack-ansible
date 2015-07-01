@@ -457,7 +457,7 @@ def _load_optional_q(config, cidr_name):
 
 def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
                              bridge, net_type, user_config, is_ssh_address,
-                             is_container_address):
+                             is_container_address, static_routes):
     """Process additional ip adds and append then to hosts as needed.
 
     If the host is found to be "is_metal" it will be marked as "on_metal"
@@ -472,6 +472,7 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
     :param user_config: ``dict`` user defined configuration details.
     :param is_ssh_address: ``bol`` set this address as ansible_ssh_host.
     :param is_container_address: ``bol`` set this address to container_address.
+    :param static_routes: ``list`` List containing static route dicts.
     """
     def network_entry():
         """Return a network entry for a container."""
@@ -520,7 +521,8 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
                 net_type,
                 user_config,
                 is_ssh_address,
-                is_container_address
+                is_container_address,
+                static_routes
             )
 
     # Make sure the lookup object has a value.
@@ -589,6 +591,15 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
 
         if is_container_address is True:
             container['container_address'] = networks[old_address]['address']
+
+        if static_routes:
+            # NOTE: networks[old_address]['static_routes'] will get
+            #       regenerated on each run
+            networks[old_address]['static_routes'] = []
+            for s in static_routes:
+                # only add static routes if they are specified correctly
+                if 'cidr' in s and 'gateway' in s:
+                    networks[old_address]['static_routes'].append(s)
 
 
 def _net_address_search(provider_networks, main_netowrk, key):
@@ -685,7 +696,8 @@ def container_skel_load(container_skel, inventory, config):
                     net_type=p_net.get('container_type'),
                     user_config=config,
                     is_ssh_address=p_net.get('is_ssh_address'),
-                    is_container_address=p_net.get('is_container_address')
+                    is_container_address=p_net.get('is_container_address'),
+                    static_routes=p_net.get('static_routes')
                 )
 
 
