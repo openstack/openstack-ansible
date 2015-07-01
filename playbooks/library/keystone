@@ -122,13 +122,80 @@ options:
         required: false
         default: None
         type: list
+    group_name:
+        description:
+            - A name for the group
+        required: False
+        default: None
+    idp_name:
+        description:
+            - A name for the identity provider
+        required: False
+        default: None
+    idp_remote_ids:
+        description:
+            - A URL that identifies the remote identity provider
+        required: False
+        default: None
+    idp_enabled:
+        description:
+            - Set whether a remote identity provider is enabled
+        required: False
+        default: True
+    sp_name:
+        description:
+            - A name for the service provider
+        required: False
+        default: None
+    sp_enabled:
+        description:
+            - Set whether a service provider is enabled
+        required: False
+        default: True
+    sp_url:
+        description:
+            - URL where the service provider expects to receive SAML assertions
+            - eg: http(s)://${SP_HOST}:5000/Shibboleth.sso/SAML2/ECP
+        required: False
+        default: None
+    sp_auth_url:
+        description:
+            - URL for federated users to request tokens from
+            - eg: http(s)://${SP_HOST}:5000/v3/OS-FEDERATION
+                  /identity_providers/${IDP_ID}/saml2/auth
+        required: False
+        default: None
+    protocol_name:
+        description:
+            - A name for the protocol
+        required: False
+        default: None
+    mapping_name:
+        description:
+            - A name for the mapping
+        required: False
+        default: None
+    mapping_rules:
+        description:
+            - A dictionary mapping federated users to local groups.
+            - see: http://specs.openstack.org/openstack/keystone-specs
+                   /api/v3/identity-api-v3-os-federation-ext.html#mappings
+        required: False
+        default: None
+    domain_enabled:
+        description:
+            - Name for a doamin
+        required: False
+        default: True
     command:
         description:
             - Indicate desired state of the resource
         choices: ['get_tenant', 'get_project', 'get_user', 'get_role',
                   'ensure_service', 'ensure_endpoint', 'ensure_role',
                   'ensure_user', 'ensure_user_role', 'ensure_tenant',
-                  'ensure_project']
+                  'ensure_project', 'ensure_service_provider',
+                  'ensure_group', 'ensure_identity_provider',
+                  'ensure_protocol', ensure_mapping']
         required: true
     insecure:
         description:
@@ -298,12 +365,54 @@ COMMAND_MAP = {
         'variables': [
             'project_name',
             'tenant_name',
-            'description'
+            'description',
+            'domain_name'
+        ]
+    },
+    'ensure_group': {
+        'variables': [
+            'group_name',
+            'domain_name'
+        ]
+    },
+    'ensure_identity_provider': {
+        'variables': [
+            'idp_name',
+            'idp_remote_ids',
+            'idp_enabled'
+        ]
+    },
+    'ensure_service_provider': {
+        'variables': [
+            'sp_name',
+            'sp_url',
+            'sp_auth_url',
+            'sp_enabled'
+        ]
+    },
+    'ensure_protocol': {
+        'variables': [
+            'protocol_name',
+            'idp_name',
+            'mapping_name'
+        ]
+    },
+    'ensure_mapping': {
+        'variables': [
+            'mapping_name',
+            'mapping_rules',
+        ]
+    },
+    'ensure_domain': {
+        'variables': [
+            'domain_name',
+            'domain_enabled'
         ]
     }
 }
 
 try:
+    from keystoneclient import exceptions as kexceptions
     from keystoneclient.v3 import client
 except ImportError:
     keystoneclient_found = False
@@ -825,6 +934,119 @@ class ManageKeystone(object):
             facts={'%sid' % interface: endpoint.id
                    for interface, endpoint in endpoints.items()})
 
+    def _ensure_generic(self, manager, required_vars, variables):
+        """Try and create a new 'thing' in keystone.
+
+        Thing type is determined by the manager passed in.
+
+        :param: manager - openstack object manager eg self.keystone.groups
+        :param: required_vars - dictionary:
+                ansible module argument name : manager argument name
+                eg {'group_name': 'name'}
+
+        :returns: Facts dictionary with things =
+            <list of things converted to dict>
+
+        TODO: make this handle updates as well as creates
+        TODO (maybe, if we decide to use this module long term):
+            migrate other ensures to use this
+        """
+
+        # Get values for variables
+        variables_dict = self._get_vars(variables,
+                                        required=required_vars.keys())
+
+        # Translate ansible module argument names to manager expected names
+        args_dict = {required_vars[k]: v for k, v in variables_dict.items()}
+
+        try:
+            manager.create(**args_dict)
+            self.state_change = True
+        except kexceptions.Conflict:
+            self.state_change = False
+
+        try:
+            return self._facts(facts={
+                manager.collection_key:
+                    [x.to_dict() for x in manager.list()]
+            })
+        except TypeError:
+            # some managers require arguments to their list functions :/
+            # return no facts in this case.
+            return self._facts(facts={})
+
+    def ensure_group(self, variables):
+        """Create a new group within Keystone if it does not exist.
+
+        Returns the group ID on a successful run.
+
+        :param variables: ``list``  List of all variables that are available to
+                                    use within the Keystone Command.
+        """
+
+        self._authenticate()
+        return self._ensure_generic(
+            manager=self.keystone.groups,
+            required_vars={'group_name': 'name',
+                           'domain_name': 'domain'},
+            variables=variables
+        )
+
+    def ensure_identity_provider(self, variables):
+        self._authenticate()
+        return self._ensure_generic(
+            manager=self.keystone.federation.identity_providers,
+            required_vars={'idp_name': 'id',
+                           'idp_remote_ids': 'remote_ids',
+                           'idp_enabled': 'enabled'},
+            variables=variables
+        )
+
+    def ensure_service_provider(self, variables):
+        self._authenticate()
+        return self._ensure_generic(
+            manager=self.keystone.federation.service_providers,
+            required_vars={'sp_name': 'id',
+                           'sp_auth_url': 'auth_url',
+                           'sp_url': 'sp_url',
+                           'sp_enabled': 'enabled'},
+            variables=variables
+        )
+
+    def ensure_protocol(self, variables):
+        """Facts not returned
+
+        This is because you can't list protocols without
+        specifying an identity provider
+        """
+
+        self._authenticate()
+        return self._ensure_generic(
+            manager=self.keystone.federation.protocols,
+            required_vars={'protocol_name': 'protocol_id',
+                           'idp_name': 'identity_provider',
+                           'mapping_name': 'mapping'},
+            variables=variables
+        )
+
+    def ensure_mapping(self, variables):
+        self._authenticate()
+        return self._ensure_generic(
+            manager=self.keystone.federation.mappings,
+            required_vars={'mapping_name': 'mapping_id',
+                           'mapping_rules': 'rules'},
+            variables=variables
+        )
+
+    def ensure_domain(self, variables):
+        self._authenticate()
+        return self._ensure_generic(
+            manager=self.keystone.domains,
+            required_vars={'domain_name': 'name',
+                           'domain_enabled': 'enabled'},
+            variables=variables
+        )
+
 
 def main():
     module = AnsibleModule(
@@ -893,6 +1115,57 @@ def main():
             return_code=dict(
                 type='str',
                 default='0'
+            ),
+            group_name=dict(
+                type='str',
+                required=False
+            ),
+            idp_remote_ids=dict(
+                type='list',
+                required=False,
+            ),
+            idp_name=dict(
+                type='str',
+                required=False,
+            ),
+            idp_enabled=dict(
+                type='bool',
+                default=True,
+                required=False,
+            ),
+            sp_name=dict(
+                type='str',
+                required=False,
+            ),
+            sp_auth_url=dict(
+                type='str',
+                required=False,
+            ),
+            sp_url=dict(
+                type='str',
+                required=False,
+            ),
+            sp_enabled=dict(
+                type='bool',
+                default=True,
+                required=False,
+            ),
+            protocol_name=dict(
+                type='str',
+                required=False,
+            ),
+            mapping_name=dict(
+                type='str',
+                required=False,
+            ),
+            mapping_rules=dict(
+                type='list',
+                required=False,
+            ),
+            domain_enabled=dict(
+                type='bool',
+                required=False,
+                default=True
             )
         ),
         supports_check_mode=False,
