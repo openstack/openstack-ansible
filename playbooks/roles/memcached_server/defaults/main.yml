@@ -26,6 +26,8 @@ memcached_port: 11211
 memcached_user: memcache
 memcached_listen: "127.0.0.1"
 memcached_log: /var/log/memcached.log
+memcached_connections: 1024
+memcached_threads: 4
 
 memcached_apt_packages:
   - memcached
