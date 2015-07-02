@@ -50,4 +50,8 @@ pushd playbooks
   ansible 'utility[0]' -m shell -a "export RUN_TEMPEST_OPTS=${RUN_TEMPEST_OPTS}; \
                                     export TESTR_OPTS=${TESTR_OPTS}; \
                                     ${TEMPEST_SCRIPT_PATH} ${TEMPEST_SCRIPT_PARAMETERS}"
+
+  # Retrieve tempest test results
+  ansible 'utility[0]' -m fetch -a 'src=/tmp/tempest_results.xml dest=/tmp/ flat=true'
+
 popd
