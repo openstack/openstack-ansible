@@ -50,10 +50,13 @@ nova_catalog_info = {{ cinder_nova_catalog_info }}
 nova_catalog_admin_info = {{ cinder_nova_catalog_admin_info }}
 
 ## Glance
+{% if glance_api_servers is defined %}
+glance_api_servers = {{ glance_api_servers }}
+{% else %}
 glance_host = {{ glance_host }}
 glance_port = {{ glance_service_port }}
+{% endif %}
 glance_num_retries = 0
-glance_api_servers = {{ glance_api_servers }}
 
 volume_clear = {{ cinder_volume_clear }}
 volume_clear_size = {{ cinder_volume_clear_size }}
