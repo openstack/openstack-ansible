@@ -13,14 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Clean up the local key clone
-  local_action:
-    module: file
-      path="/tmp/{{ keystone_fernet_tokens_key_repository|basename }}"
-      state=absent
-  when: >
-    inventory_hostname == groups['keystone_all'][0]
+- name: Retrieve authorized keys
+  memcached:
+    name: "{{ item.name }}"
+    file_path: "{{ item.src }}"
+    state: "retrieve"
+    file_mode: "{{ item.file_mode }}"
+    dir_mode: "{{ item.dir_mode }}"
+    server: "{{ memcached_servers }}"
+    encrypt_string: "{{ memcached_encryption_key }}"
+  with_items:
+    - { src: "{{ keystone_system_user_home }}/.ssh/authorized_keys", name: "authorized_keys", file_mode: "0640", dir_mode: "0750" }
+  register: memcache_keys
+  until: memcache_keys|success
+  retries: 5
+  delay: 2
   tags:
-    - keystone-cleanup
-    - keystone-setup
-    - keystone-fernet
+    - keystone-key
+    - keystone-key-distribute
