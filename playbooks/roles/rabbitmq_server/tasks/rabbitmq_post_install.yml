@@ -32,8 +32,19 @@
     - rabbitmq-config
     - rabbitmq-cluster
 
+- name: Create rabbitmq config
+  register: rabbit_config_changed
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items:
+    - { src: "rabbitmq.config.j2", dest: "/etc/rabbitmq/rabbitmq.config" }
+    - { src: "rabbitmq-server.j2", dest: "/etc/default/rabbitmq-server" }
+  tags:
+    - rabbitmq-config
+
 - include: rabbitmq_restart.yml
-  when: rabbitmq_plugin|changed or rabbitmq_queue_mirror|changed
+  when: rabbit_config_changed|changed or rabbitmq_plugin|changed or rabbitmq_queue_mirror|changed
 
 - name: Ensure rabbitmq user
   rabbitmq_user:
