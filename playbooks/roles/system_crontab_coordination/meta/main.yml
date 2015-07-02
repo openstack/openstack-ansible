@@ -1,5 +1,5 @@
 ---
-# Copyright 2014, Rackspace US, Inc.
+# Copyright 2015, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,14 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Install memcached
-  hosts: memcached
-  max_fail_percentage: 20
-  user: root
-  roles:
-    - { role: "memcached_server", tags: [ "memcached-server" ] }
-    - role: "system_crontab_coordination"
-      tags:
-        - "system-crontab-coordination"
-  vars:
-    is_metal: "{{ properties.is_metal|default(false) }}"
+galaxy_info:
+  author: rcbops
+  company: Rackspace
+  description: Co-ordinating /etc/crontab times across multiple hosts
+  license: Apache 2.0
+  min_ansible_version: 1.9
+  platforms:
+  - name: Ubuntu
+    versions:
+    - trusty
+  categories:
+    - cloud
+    - openstack

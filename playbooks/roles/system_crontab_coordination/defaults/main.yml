@@ -1,5 +1,5 @@
 ---
-# Copyright 2014, Rackspace US, Inc.
+# Copyright 2015, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,14 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Install memcached
-  hosts: memcached
-  max_fail_percentage: 20
-  user: root
-  roles:
-    - { role: "memcached_server", tags: [ "memcached-server" ] }
-    - role: "system_crontab_coordination"
-      tags:
-        - "system-crontab-coordination"
-  vars:
-    is_metal: "{{ properties.is_metal|default(false) }}"
+# 0 <= minute_start <= 59
+minute_start: 0
+# 0 <= minute_end <= 59
+minute_end: 59
+# 0 <= hour_start <= 23
+hour_start: 0
+# 0 <= hour_end <= 23
+hour_end: 23
+# 0 <= day_of_week_start <= 6
+day_of_week_start: 0
+# 0 <= day_of_week_end <= 6
+day_of_week_end: 6
+# 1 <= day_of_month_start <= 28
+day_of_month_start: 1
+# 1 <= day_of_month_end <= 28
+day_of_month_end: 28

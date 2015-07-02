@@ -115,6 +115,9 @@
       tags:
         - "cinder-rsyslog-client"
         - "rsyslog-client"
+    - role: "system_crontab_coordination"
+      tags:
+        - "system-crontab-coordination"
   vars:
     cinder_galera_address: "{{ internal_lb_vip_address }}"
     glance_host: "{{ internal_lb_vip_address }}"

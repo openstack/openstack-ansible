@@ -53,6 +53,9 @@
       tags:
         - "swift-rsyslog-client"
         - "rsyslog-client"
+    - role: "system_crontab_coordination"
+      tags:
+        - "system-crontab-coordination"
   vars:
     ansible_hostname: "{{ container_name }}"
     ansible_ssh_host: "{{ container_address }}"
