@@ -16,7 +16,7 @@ the ``swift`` section.
 
 To view the configuration files, including information about which
 variables are required and which are optional, see `Appendix A, *OSAD
-configuration files* <app-osad-configfiles.html>`__.
+configuration files* <app-configfiles.html>`__.
 
 --------------
 
