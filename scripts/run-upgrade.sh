@@ -374,38 +374,38 @@ cat > /tmp/fix_host_things.yml <<EOF
   user: root
   tasks:
     - name: find containers in /var/lib/lxc
-      command: ls -1 /var/lib/lxc
+      command: "find /var/lib/lxc -maxdepth 2 -type f -name 'config'"
       register: containers
     - name: get the basic container network
       shell: |
-        if [ "\$(grep '^lxc.network.name = eth0' /var/lib/lxc/{{ item }}/config)" ];then
-          grep '^lxc.network.name = eth0' -A1 -B3 /var/lib/lxc/{{ item }}/config | tee /var/lib/lxc/{{ item }}/eth0.ini
-          if [ ! "\$(grep '/var/lib/lxc/{{ item }}/eth0.ini' /var/lib/lxc/{{ item }}/config)" ];then
-            echo 'lxc.include = /var/lib/lxc/{{ item }}/eth0.ini' | tee -a /var/lib/lxc/{{ item }}/config
+        if [ "\$(grep '^lxc.network.name = eth0' {{ item }})" ];then
+          grep '^lxc.network.name = eth0' -A1 -B3 {{ item }} | tee {{ item | dirname }}/eth0.ini
+          if [ ! "\$(grep '{{ item | dirname }}/eth0.ini' {{ item }})" ];then
+            echo 'lxc.include = {{ item | dirname }}/eth0.ini' | tee -a {{ item }}
           fi
         fi
       with_items: containers.stdout_lines
     - name: Remove lxc.network from base config
       lineinfile:
-        dest: "/var/lib/lxc/{{ item }}/config"
+        dest: "{{ item }}"
         state: "absent"
         regexp: "^lxc.network"
       with_items: containers.stdout_lines
     - name: Remove add_network_interface.conf entry
       lineinfile:
-        dest: "/var/lib/lxc/{{ item }}/config"
+        dest: "{{ item }}"
         state: "absent"
         regexp: 'add_network_interface\.conf'
       with_items: containers.stdout_lines
     - name: Remove aa_profile entries
       lineinfile:
-        dest: "/var/lib/lxc/{{ item }}/config"
+        dest: "{{ item }}"
         state: "absent"
         regexp: '^lxc.aa_profile'
       with_items: containers.stdout_lines
     - name: Remove old add_network_interface.conf file
       file:
-        path: "/var/lib/lxc/{{ item }}/add_network_interface.conf"
+        path: "{{ item | dirname }}/add_network_interface.conf"
         state: "absent"
       failed_when: false
       with_items: containers.stdout_lines
