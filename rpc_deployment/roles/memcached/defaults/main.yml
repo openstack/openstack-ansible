@@ -1,5 +1,5 @@
 ---
-# Copyright 2014, Rackspace US, Inc.
+# Copyright 2015, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,22 +13,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Apply memcached config
-  template:
-    src: "memcached.conf"
-    dest: "/etc/memcached.conf"
-    owner: "root"
-    group: "root"
-    mode: "0644"
-  notify: Restart memcached
-
-- name: Apply resource limits
-  template:
-    src: "memcached.j2"
-    dest: "/etc/default/memcached"
-    owner: "root"
-    group: "root"
-    mode: "0644"
-  when: >
-    memcached_connections > 1024
-  notify: Restart memcached
+memcached_connections: 1024
+memcached_threads: 4
