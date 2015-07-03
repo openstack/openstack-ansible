@@ -25,96 +25,96 @@
 ##     package should be one long name with no additional `_` separating it.
 
 ## Barbican client
-barbicanclient_git_repo: https://github.com/openstack/python-barbicanclient
+barbicanclient_git_repo: https://git.openstack.org/openstack/python-barbicanclient
 barbicanclient_git_install_branch: 2f9dc5eb0d5124df41620c6f34202219687f5583 # HEAD of "master" as of 22.06.2015
 barbicanclient_git_dest: "/opt/barbicanclient_{{ barbicanclient_git_install_branch | replace('/', '_') }}"
 
 
 ## Ceilometer client
-ceilometerclient_git_repo: https://github.com/openstack/python-ceilometerclient
+ceilometerclient_git_repo: https://git.openstack.org/openstack/python-ceilometerclient
 ceilometerclient_git_install_branch: 7e4d2edc970a555b982d7081a95c6a1ada6d58de # HEAD of "master" as of 22.06.2015
 ceilometerclient_git_dest: "/opt/ceilometerclient_{{ ceilometerclient_git_install_branch | replace('/', '_') }}"
 
 
 ## Cinder client
-cinderclient_git_repo: https://github.com/openstack/python-cinderclient
+cinderclient_git_repo: https://git.openstack.org/openstack/python-cinderclient
 cinderclient_git_install_branch: f32684747f39d6723f990ee3171e507466066e36 # HEAD of "master" as of 22.06.2015
 cinderclient_git_dest: "/opt/cinderclient_{{ cinderclient_git_install_branch | replace('/', '_') }}"
 
 
 ## Designate client
-designateclient_git_repo: https://github.com/openstack/python-designateclient
+designateclient_git_repo: https://git.openstack.org/openstack/python-designateclient
 designateclient_git_install_branch: b57328dc8f7346152464e18b0210dd1d44abc6f3 # HEAD of "master" as of 22.06.2015
 designateclient_git_dest: "/opt/designateclient_{{ designateclient_git_install_branch | replace('/', '_') }}"
 
 
 ## Glance client
-glanceclient_git_repo: https://github.com/openstack/python-glanceclient
+glanceclient_git_repo: https://git.openstack.org/openstack/python-glanceclient
 glanceclient_git_install_branch: cc38f51086b930a05c0abecf6c9e00fdf5c294f6 # HEAD of "master" as of 22.06.2015
 glanceclient_git_dest: "/opt/glanceclient_{{ glanceclient_git_install_branch | replace('/', '_') }}"
 
 
 ## Heat client
-heatclient_git_repo: https://github.com/openstack/python-heatclient
+heatclient_git_repo: https://git.openstack.org/openstack/python-heatclient
 heatclient_git_install_branch: 4b193e11712847e9b5a80a507124f5d22749ae8d # HEAD of "master" as of 22.06.2015
 heatclient_git_dest: "/opt/heatclient_{{ heatclient_git_install_branch | replace('/', '_') }}"
 
 
 # Ironic client
-ironicclient_git_repo: https://github.com/openstack/python-ironicclient
+ironicclient_git_repo: https://git.openstack.org/openstack/python-ironicclient
 ironicclient_git_install_branch: 3f4671a0b7eb5c300291c2e92082d16b96e6316c # HEAD of "master" as of 22.06.2015
 ironicclient_git_dest: "/opt/ironicclient_{{ ironicclient_git_install_branch | replace('/', '_') }}"
 
 
 # Keystone client
-keystoneclient_git_repo: https://github.com/openstack/python-keystoneclient
+keystoneclient_git_repo: https://git.openstack.org/openstack/python-keystoneclient
 keystoneclient_git_install_branch: d238cc9af4927d1092de207db978536d712af129 # HEAD of "master" as of 22.06.2015
 keystoneclient_git_dest: "/opt/keystoneclient_{{ keystoneclient_git_install_branch | replace('/', '_') }}"
 
 
 ## Neutron client
-neutronclient_git_repo: https://github.com/openstack/python-neutronclient
+neutronclient_git_repo: https://git.openstack.org/openstack/python-neutronclient
 neutronclient_git_install_branch: dcb7401a04c96aeb7c00a456b1ba0c77134a0a25 # HEAD of "master" as of 22.06.2015
 neutronclient_git_dest: "/opt/neutronclient_{{ neutronclient_git_install_branch | replace('/', '_') }}"
 
 
 ## Nova client
-novaclient_git_repo: https://github.com/openstack/python-novaclient
+novaclient_git_repo: https://git.openstack.org/openstack/python-novaclient
 novaclient_git_install_branch: 3c2ff0faad8c84777ffe7d9946a1bc4486116084 # HEAD of "master" as of 22.06.2015
 novaclient_git_dest: "/opt/novaclient_{{ novaclient_git_install_branch | replace('/', '_') }}"
 
 
 ## OpenStack client
-openstackclient_git_repo: https://github.com/openstack/python-openstackclient
+openstackclient_git_repo: https://git.openstack.org/openstack/python-openstackclient
 openstackclient_git_install_branch: 2d6bc8f4c38dbf997e3e71119f13f0328b4a8669 # HEAD of "master" as of 22.06.2015
 openstackclient_git_dest: "/opt/openstackclient_{{ openstackclient_git_install_branch | replace('/', '_') }}"
 
 
 ## Sahara client
-saharaclient_git_repo: https://github.com/openstack/python-saharaclient
+saharaclient_git_repo: https://git.openstack.org/openstack/python-saharaclient
 saharaclient_git_install_branch: 7eeac47d6cb7f2a734894004f62f6b6b91264597 # HEAD of "master" as of 22.06.2015
 saharaclient_git_dest: "/opt/saharaclient_{{ saharaclient_git_install_branch | replace('/', '_') }}"
 
 
 ## Swift client
-swiftclient_git_repo: https://github.com/openstack/python-swiftclient
+swiftclient_git_repo: https://git.openstack.org/openstack/python-swiftclient
 swiftclient_git_install_branch: 7c716997a8ede3f98741709b0594340df9849a76 # HEAD of "master" as of 22.06.2015
 swiftclient_git_dest: "/opt/swiftclient_{{ swiftclient_git_install_branch | replace('/', '_') }}"
 
 
 ## Trove client
-troveclient_git_repo: https://github.com/openstack/python-troveclient
+troveclient_git_repo: https://git.openstack.org/openstack/python-troveclient
 troveclient_git_install_branch: cdbf0f3071785dbe8f83b658748327f8b04a6c12 # HEAD of "master" as of 22.06.2015
 troveclient_git_dest: "/opt/troveclient_{{ troveclient_git_install_branch | replace('/', '_') }}"
 
 
 ## Tuskar client
-tuskarclient_git_repo: https://github.com/openstack/python-tuskarclient
+tuskarclient_git_repo: https://git.openstack.org/openstack/python-tuskarclient
 tuskarclient_git_install_branch: 6fa19d5d106a353188cbccd286a710d1ada4d1d8 # HEAD of "master" as of 22.06.2015
 tuskarclient_git_dest: "/opt/tuskarclient_{{ tuskarclient_git_install_branch | replace('/', '_') }}"
 
 
 ## Zaqar client
-zaqarclient_git_repo: https://github.com/openstack/python-zaqarclient
+zaqarclient_git_repo: https://git.openstack.org/openstack/python-zaqarclient
 zaqarclient_git_install_branch: 09de9ee38127c4cea67553881fa71991df4d9e37 # HEAD of "master" as of 22.06.2015
 zaqarclient_git_dest: "/opt/zaqarclient_{{ zaqarclient_git_install_branch | replace('/', '_') }}"
