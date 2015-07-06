@@ -46,4 +46,20 @@
       endpoint="{{ auth_admin_uri }}"
       user_name="{{ maas_keystone_user }}"
       tenant_name=admin
-      role_name=admin
+
+- hosts: rabbit[0]
+  user: root
+  tasks:
+  - name: Ensure MaaS rabbitmq user as administrator
+    rabbitmq_user:
+      user: "{{ maas_rabbitmq_user }}"
+      password: "{{ maas_rabbitmq_password }}"
+      vhost: "/"
+      configure_priv: ".*"
+      read_priv: ".*"
+      write_priv: ".*"
+      tags: "administrator"
+      state: "present"
+    tags:
+      - rabbitmq-userle_name=admin
+
