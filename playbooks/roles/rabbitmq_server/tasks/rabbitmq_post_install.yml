@@ -57,3 +57,24 @@
     state: "present"
   tags:
     - rabbitmq-user
+
+# This is being done because the rabbitctl command used by the module
+# is not very effective at returning proper status codes for failure
+# and the module does not error detection. until we can go upstream
+# to fix this issue this task being being done in two parts to ensure
+# that the "guest" user is eradicated.
+- name: Ensure default rabbitmq guest user is removed
+  rabbitmq_user:
+    user: guest
+    state: absent
+  when: inventory_hostname == groups['rabbitmq_all'][0]
+  tags:
+    - rabbitmq-user
+
+- name: Ensure default rabbitmq guest user is removed
+  rabbitmq_user:
+    user: guest
+    state: absent
+  when: inventory_hostname != groups['rabbitmq_all'][0]
+  tags:
+    - rabbitmq-user
