@@ -509,6 +509,8 @@
 #           Option: volume_driver (required, string)
 #           Name of volume driver,
 #           'cinder.volume.drivers.nfs.NfsDriver'.
+#           NB. When using NFS driver you may want to adjust your
+#           env.d/cinder.yml file to run cinder-volumes in containers.
 #
 #           Option: nfs_shares_config (optional, string)
 #           File containing list of NFS shares available to cinder, typically
@@ -523,6 +525,8 @@
 #           Option: volume_driver (required, string)
 #           Name of volume driver,
 #           'cinder.volume.drivers.netapp.common.NetAppDriver'.
+#           NB. When using NetApp drivers you may want to adjust your
+#           env.d/cinder.yml file to run cinder-volumes in containers.
 #
 #           Option: netapp_storage_family (required, string)
 #           Access method, typically 'ontap_7mode' or 'ontap_cluster'.
