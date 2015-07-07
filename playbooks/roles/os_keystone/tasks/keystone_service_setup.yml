@@ -50,6 +50,7 @@
     endpoint: "{{ keystone_service_adminurl }}"
     tenant_name: "{{ keystone_service_tenant_name }}"
     description: "{{ keystone_service_description }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_service
   until: add_service|success
   retries: 5
@@ -66,6 +67,7 @@
     endpoint: "{{ keystone_service_adminurl }}"
     tenant_name: "{{ keystone_admin_tenant_name }}"
     description: "{{ keystone_admin_description }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_service
   until: add_service|success
   retries: 5
@@ -83,6 +85,7 @@
     user_name: "{{ keystone_admin_user_name }}"
     tenant_name: "{{ keystone_admin_tenant_name }}"
     password: "{{ keystone_auth_admin_password }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_service
   until: add_service|success
   retries: 5
@@ -98,6 +101,7 @@
     token: "{{ keystone_auth_admin_token }}"
     endpoint: "{{ keystone_service_adminurl }}"
     role_name: "{{ keystone_role_name }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_service
   until: add_service|success
   retries: 5
@@ -115,6 +119,7 @@
     user_name: "{{ keystone_admin_user_name }}"
     tenant_name: "{{ keystone_admin_tenant_name }}"
     role_name: "{{ keystone_role_name }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_service
   until: add_service|success
   retries: 5
@@ -132,6 +137,7 @@
     service_name: "{{ keystone_service_name }}"
     service_type: "{{ keystone_service_type }}"
     description: "{{ keystone_service_description }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_service
   until: add_service|success
   retries: 5
@@ -150,6 +156,7 @@
     user_name: "{{ keystone_service_user_name }}"
     tenant_name: "{{ keystone_service_tenant_name }}"
     password: "{{ keystone_service_password }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_service
   until: add_service|success
   retries: 5
@@ -168,6 +175,7 @@
     user_name: "{{ keystone_service_user_name }}"
     tenant_name: "{{ keystone_service_tenant_name }}"
     role_name: "{{ keystone_role_name }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_service
   until: add_service|success
   retries: 5
@@ -189,6 +197,7 @@
     publicurl: "{{ keystone_service_publicurl }}"
     adminurl: "{{ keystone_service_adminurl }}"
     internalurl: "{{ keystone_service_internalurl }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_service
   until: add_service|success
   retries: 5

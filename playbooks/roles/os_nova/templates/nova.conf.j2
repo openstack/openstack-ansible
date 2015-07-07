@@ -156,6 +156,7 @@ enabled = false
 
 
 [keystone_authtoken]
+insecure = {{ keystone_service_internaluri_insecure | bool }}
 auth_plugin = {{ nova_keystone_auth_plugin }}
 signing_dir = {{ nova_system_home_folder }}/cache/api
 auth_url = {{ keystone_service_adminuri }}
