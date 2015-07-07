@@ -21,7 +21,7 @@ repo_path: "{{ repo_package_name }}_{{ git_install_branch | replace('/', '_') }}
 git_repo: https://github.com/openstack/horizon
 git_fallback_repo: https://git.openstack.org/openstack/horizon
 git_dest: "/opt/{{ repo_path }}"
-git_install_branch: dab92e7d2f576caea8f81c8e22a516fb45633794 # HEAD of "stable/juno" as of 20.06.2015
+git_install_branch: 6b9f019959e47221291ca1f4723f389e6c6cda93 # HEAD of "stable/juno" as of 07.07.2015
 
 pip_wheel_name: horizon
 
