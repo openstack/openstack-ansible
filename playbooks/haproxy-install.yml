@@ -31,6 +31,8 @@
     - name: Add keystone internal endpoint config
       include: roles/haproxy_server/tasks/haproxy_service_config.yml
       when: internal_lb_vip_address != external_lb_vip_address
+      vars_files:
+         - vars/configs/haproxy_config.yml
       vars:
         haproxy_service_configs:
           - service:
@@ -39,11 +41,9 @@
               haproxy_bind: "{{ internal_lb_vip_address }}"
               haproxy_port: 5000
               haproxy_ssl: "{% if haproxy_ssl | bool and keystone_service_internaluri_proto == 'https' %}true{% else %}false{% endif %}"
-              haproxy_balance_type: http
-              haproxy_backend_options:
-                - "forwardfor"
-                - "httpchk"
-                - "httplog"
+              haproxy_balance_type: "{{ (keystone_ssl_internal | bool) | ternary('tcp','http') }}"
+              haproxy_balance_alg: "{{ (keystone_ssl_internal | bool) | ternary('source', 'leastconn') }}"
+              haproxy_backend_options: "{{ (keystone_ssl_internal | bool) | ternary(haproxy_backend_options_https, haproxy_backend_options_http) }}"
       tags:
         - haproxy-service-config
   roles:

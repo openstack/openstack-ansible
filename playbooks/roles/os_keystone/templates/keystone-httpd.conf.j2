@@ -16,14 +16,13 @@
     CustomLog /var/log/keystone/ssl_access.log combined
     Options +FollowSymLinks
 
-    {% if keystone_ssl_enabled == true -%}
+    {% if keystone_ssl | bool and keystone_service_internaluri_proto == "https" -%}
     SSLEngine on
     SSLCertificateFile    {{ keystone_ssl_cert }}
     SSLCertificateKeyFile {{ keystone_ssl_key }}
-    SSLCACertificatePath  {{ keystone_ssl_cert_path }}
-    SSLCARevocationPath   {{ keystone_ssl_cert_path }}
-    SSLVerifyClient optional
-    SSLVerifyDepth 10
+    {% if keystone_user_ssl_ca_cert is defined -%}
+    SSLCACertificateFile  {{ keystone_ssl_ca_cert }}
+    {% endif -%}
     SSLCompression Off
     SSLProtocol {{ keystone_ssl_protocol }}
     SSLHonorCipherOrder On
@@ -74,14 +73,13 @@
     CustomLog /var/log/keystone/ssl_access.log combined
     Options +FollowSymLinks
 
-    {% if keystone_ssl_enabled == true -%}
+    {% if keystone_ssl | bool and keystone_service_adminuri_proto == "https" -%}
     SSLEngine on
     SSLCertificateFile    {{ keystone_ssl_cert }}
     SSLCertificateKeyFile {{ keystone_ssl_key }}
-    SSLCACertificatePath  {{ keystone_ssl_cert_path }}
-    SSLCARevocationPath   {{ keystone_ssl_cert_path }}
-    SSLVerifyClient optional
-    SSLVerifyDepth 10
+    {% if keystone_user_ssl_ca_cert is defined -%}
+    SSLCACertificateFile  {{ keystone_ssl_ca_cert }}
+    {% endif -%}
     SSLCompression Off
     SSLProtocol {{ keystone_ssl_protocol }}
     SSLHonorCipherOrder On

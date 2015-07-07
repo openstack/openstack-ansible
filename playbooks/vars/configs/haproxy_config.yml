@@ -12,6 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+haproxy_backend_options_http:
+  - "forwardfor"
+  - "httpchk"
+  - "httplog"
+
+haproxy_backend_options_https:
+  - "ssl-hello-chk"
+
+keystone_ssl_admin: "{% if keystone_ssl is defined and keystone_ssl | bool and keystone_service_adminuri_proto == 'https' %}true{% else %}false{% endif %}"
+keystone_ssl_internal: "{% if keystone_ssl is defined and keystone_ssl | bool and keystone_service_internaluri_proto == 'https' %}true{% else %}false{% endif %}"
+keystone_ssl_public: "{% if keystone_ssl is defined and keystone_ssl | bool and keystone_service_publicuri_proto == 'https' %}true{% else %}false{% endif %}"
+
 haproxy_service_configs:
   - service:
       haproxy_service_name: galera
@@ -69,22 +81,18 @@ haproxy_service_configs:
       haproxy_backend_nodes: "{{ groups['keystone_all'] }}"
       haproxy_port: 35357
       haproxy_ssl: "{% if haproxy_ssl | bool and keystone_service_adminuri_proto == 'https' %}true{% else %}false{% endif %}"
-      haproxy_balance_type: http
-      haproxy_backend_options:
-       - "forwardfor"
-       - "httpchk"
-       - "httplog"
+      haproxy_balance_type: "{{ (keystone_ssl_admin | bool) | ternary('tcp', 'http') }}"
+      haproxy_balance_alg: "{{ (keystone_ssl_admin | bool) | ternary('source', 'leastconn') }}"
+      haproxy_backend_options: "{{ (keystone_ssl_admin | bool) | ternary(haproxy_backend_options_https, haproxy_backend_options_http) }}"
   - service:
       haproxy_service_name: keystone_service
       haproxy_backend_nodes: "{{ groups['keystone_all'] }}"
       haproxy_bind: "{% if internal_lb_vip_address == external_lb_vip_address %}*{% else %}{{ external_lb_vip_address }}{% endif %}"
       haproxy_port: 5000
       haproxy_ssl: "{% if haproxy_ssl | bool and keystone_service_publicuri_proto == 'https' %}true{% else %}false{% endif %}"
-      haproxy_balance_type: http
-      haproxy_backend_options:
-       - "forwardfor"
-       - "httpchk"
-       - "httplog"
+      haproxy_balance_type: "{{ (keystone_ssl_public | bool) | ternary('tcp','http') }}"
+      haproxy_balance_alg: "{{ (keystone_ssl_public | bool) | ternary('source', 'leastconn') }}"
+      haproxy_backend_options: "{{ (keystone_ssl_public | bool) | ternary(haproxy_backend_options_https, haproxy_backend_options_http) }}"
   - service:
       haproxy_service_name: neutron_server
       haproxy_backend_nodes: "{{ groups['neutron_server'] }}"
