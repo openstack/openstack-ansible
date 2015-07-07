@@ -131,12 +131,17 @@ keystone_service_port: 5000
 keystone_service_proto: http
 keystone_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(keystone_service_proto) }}"
 keystone_service_internaluri_proto: "{{ openstack_service_internaluri_proto | default(keystone_service_proto) }}"
+keystone_service_publicuri_proto: "{{ openstack_service_publicuri_proto | default(keystone_service_proto) }}"
 keystone_service_user_name: keystone
 keystone_service_tenant_name: service
+keystone_service_publicuri: "{{ keystone_service_publicuri_proto }}://{{ external_lb_vip_address }}:{{ keystone_service_port }}"
+keystone_service_publicurl: "{{ keystone_service_publicuri }}/v2.0"
 keystone_service_internaluri: "{{ keystone_service_internaluri_proto }}://{{ internal_lb_vip_address }}:{{ keystone_service_port }}"
 keystone_service_internalurl: "{{ keystone_service_internaluri }}/v2.0"
 keystone_service_adminuri: "{{ keystone_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ keystone_admin_port }}"
 keystone_service_adminurl: "{{ keystone_service_adminuri }}/v2.0"
+keystone_service_publicuri_v3: "{{ keystone_service_publicuri_proto }}://{{ external_lb_vip_address }}:{{ keystone_service_port }}"
+keystone_service_publicurl_v3: "{{ keystone_service_publicuri_v3 }}/v3"
 keystone_service_internaluri_v3: "{{ keystone_service_internaluri_proto }}://{{ internal_lb_vip_address }}:{{ keystone_service_port }}"
 keystone_service_internalurl_v3: "{{ keystone_service_adminuri_v3 }}/v3"
 keystone_service_adminuri_v3: "{{ keystone_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ keystone_admin_port }}"

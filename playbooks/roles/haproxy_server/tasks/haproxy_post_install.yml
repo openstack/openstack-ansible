@@ -23,11 +23,4 @@
   tags:
     - haproxy-base-config
 
-- name: "Create haproxy service config files"
-  template:
-    src: service.j2
-    dest: "/etc/haproxy/conf.d/{{ item.service.haproxy_service_name }}"
-  with_items: haproxy_service_configs
-  notify: Restart haproxy
-  tags:
-    - haproxy-service-config
+- include: haproxy_service_config.yml

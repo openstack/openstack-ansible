@@ -1,16 +1,20 @@
 # {{ ansible_managed }}
 
 frontend {{ item.service.haproxy_service_name }}-front
-bind {{ item.service.haproxy_bind|default('*') }}:{{ item.service.haproxy_port }}
+bind {{ item.service.haproxy_bind|default('*') }}:{{ item.service.haproxy_port }} {% if item.service.haproxy_ssl is defined and item.service.haproxy_ssl | bool %}ssl crt {{ haproxy_ssl_pem }}{% endif %}
+
 {% if item.service.haproxy_balance_type == "http" %}
-    option  httplog
-    option  forwardfor except 127.0.0.0/8
-    option  http-server-close
-    
-    {% set request_option = "http" %}
+    option httplog
+    option forwardfor except 127.0.0.0/8
+    option http-server-close
+
+    {%- set request_option = "http" %}
 {% else %}
     option  tcplog
-    {% set request_option = "tcp" %}
+    {%- set request_option = "tcp" %}
+{% endif %}
+{% if item.service.haproxy_ssl is defined and item.service.haproxy_ssl | bool %}
+    reqadd X-Forwarded-Proto:\ https
 {% endif %}
 
 {% if item.service.haproxy_timeout_client is defined %}

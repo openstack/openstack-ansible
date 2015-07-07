@@ -1,0 +1,86 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Update apt sources
+  apt:
+    update_cache: yes
+    cache_valid_time: 600
+  register: apt_update
+  until: apt_update|success
+  retries: 5
+  delay: 2
+  tags:
+    - haproxy-apt-packages
+
+- name: Install haproxy pre packages
+  apt:
+    pkg: "{{ item }}"
+    state: latest
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 2
+  with_items: haproxy_pre_apt_packages
+  tags:
+    - haproxy-pre-apt-packages
+
+- name: Add haproxy apt-keys
+  apt_key:
+    id: "{{ item.hash_id }}"
+    keyserver: "{{ item.keyserver }}"
+    state: "present"
+  register: add_keys
+  until: add_keys|success
+  ignore_errors: True
+  retries: 5
+  delay: 2
+  with_items: haproxy_gpg_keys
+  tags:
+    - haproxy-apt-keys
+
+- name: Add haproxy apt-keys using fallback keyserver
+  apt_key:
+    id: "{{ item.hash_id }}"
+    keyserver: "{{ item.fallback_keyserver }}"
+    state: "present"
+  register: add_keys_fallback
+  until: add_keys_fallback|success
+  retries: 5
+  delay: 2
+  with_items: haproxy_gpg_keys
+  when: add_keys|failed and item.fallback_keyserver is defined
+  tags:
+    - haproxy-apt-keys
+
+- name: Drop haproxy repo pin
+  template:
+    src: "haproxy_pin.pref.j2"
+    dest: "/etc/apt/preferences.d/haproxy_pin.pref"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  tags:
+    - haproxy-repo-pin
+
+- name: Add haproxy repo(s)
+  apt_repository:
+    repo: "{{ haproxy_apt_repo.repo }}"
+    state: "{{ haproxy_apt_repo.state }}"
+  register: add_repos
+  until: add_repos|success
+  retries: 5
+  delay: 2
+  tags:
+    - haproxy-repos
