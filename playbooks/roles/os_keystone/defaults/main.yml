@@ -127,13 +127,22 @@ keystone_apache_log_level: info
 keystone_wsgi_threads: "{{ ansible_processor_vcpus | default(2) // 2 }}"
 keystone_wsgi_processes: "{{ ansible_processor_vcpus | default(1) }}"
 
-keystone_ssl_enabled: false
-keystone_ssl_cert_path: /etc/ssl/certs
-keystone_ssl_cert: "{{ keystone_ssl_cert_path }}/apache.cert"
-keystone_ssl_key_path: /etc/ssl/private
-keystone_ssl_key: "{{ keystone_ssl_key_path }}/apache.key"
+# set keystone_ssl to true to enable SSL configuration on the keystone containers
+keystone_ssl: false
+keystone_ssl_cert: /etc/ssl/certs/keystone.pem
+keystone_ssl_key: /etc/ssl/private/keystone.key
+keystone_ssl_ca_cert: /etc/ssl/certs/keystone-ca.pem
 keystone_ssl_protocol: "{{ ssl_protocol }}"
 keystone_ssl_cipher_suite: "{{ ssl_cipher_suite }}"
+
+# if using a self-signed certificate, set this to true to regenerate it
+keystone_ssl_self_signed_regen: false
+keystone_ssl_self_signed_subject: "/C=US/ST=Texas/L=San Antonio/O=IT/CN={{ internal_lb_vip_address }}/subjectAltName=IP.1={{ external_lb_vip_address }}"
+
+# Set these in user_variables to deploy custom certificates
+#keystone_user_ssl_cert: <path to cert on ansible deployment host>
+#keystone_user_ssl_key: <path to cert on ansible deployment host>
+#keystone_user_ssl_ca_cert: <path to cert on ansible deployment host>
 
 ## Caching
 # If set this will enable dog pile cache for keystone.

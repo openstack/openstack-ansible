@@ -37,6 +37,7 @@
   when: >
     inventory_hostname == groups['keystone_all'][0]
 
+- include: keystone_ssl.yml
 - include: keystone_apache.yml
 - include: keystone_token_cleanup.yml
 

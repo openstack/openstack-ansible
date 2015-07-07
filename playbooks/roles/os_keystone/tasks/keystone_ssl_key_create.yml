@@ -1,0 +1,36 @@
+---
+# Copyright 2015, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Remove self signed cert for regen
+  file:
+    dest: "{{ keystone_ssl_cert }}"
+    state: "absent"
+  when: keystone_ssl_self_signed_regen | bool
+  tags:
+    - keystone-ssl
+
+- name: Create self-signed Apache ssl cert
+  command: >
+    openssl req -new -nodes -sha256 -x509 -subj
+    "{{ keystone_ssl_self_signed_subject }}"
+    -days 3650
+    -keyout {{ keystone_ssl_key }}
+    -out {{ keystone_ssl_cert }}
+    -extensions v3_ca
+    creates={{ keystone_ssl_cert }}
+  notify: Restart Apache
+  tags:
+    - keystone-configs
+    - keystone-ssl
