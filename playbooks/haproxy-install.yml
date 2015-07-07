@@ -17,6 +17,35 @@
   hosts: haproxy_hosts
   max_fail_percentage: 20
   user: root
+  pre_tasks:
+    - name: Remove legacy haproxy configuration files
+      file:
+        dest: "/etc/haproxy/conf.d/{{ item }}"
+        state: "absent"
+      with_items:
+        - "keystone_internal"
+      when: internal_lb_vip_address == external_lb_vip_address
+      tags:
+        - haproxy-service-config
+  post_tasks:
+    - name: Add keystone internal endpoint config
+      include: roles/haproxy_server/tasks/haproxy_service_config.yml
+      when: internal_lb_vip_address != external_lb_vip_address
+      vars:
+        haproxy_service_configs:
+          - service:
+              haproxy_service_name: keystone_internal
+              haproxy_backend_nodes: "{{ groups['keystone_all'] }}"
+              haproxy_bind: "{{ internal_lb_vip_address }}"
+              haproxy_port: 5000
+              haproxy_ssl: "{% if haproxy_ssl | bool and keystone_service_internaluri_proto == 'https' %}true{% else %}false{% endif %}"
+              haproxy_balance_type: http
+              haproxy_backend_options:
+                - "forwardfor"
+                - "httpchk"
+                - "httplog"
+      tags:
+        - haproxy-service-config
   roles:
     - { role: "haproxy_server", tags: [ "haproxy-server" ] }
   vars_files:
