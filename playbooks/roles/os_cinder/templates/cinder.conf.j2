@@ -111,6 +111,7 @@ profiler_enabled = {{ cinder_profiler_enabled }}
 trace_sqlalchemy = {{ cinder_profiler_trace_sqlalchemy }}
 
 [keystone_authtoken]
+insecure = {{ keystone_service_internaluri_insecure | bool }}
 auth_plugin = {{ cinder_keystone_auth_plugin }}
 signing_dir = /var/cache/cinder
 auth_url = {{ keystone_service_adminuri }}

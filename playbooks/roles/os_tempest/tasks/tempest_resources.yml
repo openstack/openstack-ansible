@@ -22,6 +22,7 @@
     image_container_format: bare
     image_disk_format: qcow2
     image_is_public: True
+    insecure: "{{ keystone_service_internaluri_insecure }}"
   tags:
     - tempest-setup
     - tempest-config
@@ -40,6 +41,7 @@
     tenant_name: "{{ item }}"
     description: "{{ item }} Tenant"
     endpoint: "{{ keystone_service_adminurl }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_service
   until: add_service|success
   retries: 5
@@ -59,6 +61,7 @@
     password: "{{ item }}"
     description: "{{ item }} User"
     endpoint: "{{ keystone_service_adminurl }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_service
   until: add_service|success
   retries: 5
@@ -77,6 +80,7 @@
     user_name: "{{ item }}"
     role_name: heat_stack_owner
     endpoint: "{{ keystone_service_adminurl }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_service
   until: add_service|success
   retries: 5
@@ -93,6 +97,7 @@
     token: "{{ keystone_auth_admin_token }}"
     endpoint: "{{ keystone_service_adminurl }}"
     role_name: "reseller_admin"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_service
   until: add_service|success
   retries: 5
@@ -106,6 +111,7 @@
     token: "{{ keystone_auth_admin_token }}"
     role_name: remote_image
     endpoint: "{{ keystone_service_adminurl }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_service
   until: add_service|success
   retries: 5
@@ -119,6 +125,7 @@
     token: "{{ keystone_auth_admin_token }}"
     tenant_name: demo
     endpoint: "{{ keystone_service_adminurl }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_service
   until: add_service|success
   retries: 5
@@ -140,6 +147,7 @@
     openrc_path: /root/openrc
     net_name: private
     tenant_id: "{{ keystone_demo_tenant_id }}"
+    insecure: "{{ keystone_service_internaluri_insecure }}"
   tags:
     - tempest-setup
     - tempest-config
@@ -159,6 +167,7 @@
     provider_network_type: flat
     provider_physical_network: flat
     router_external: true
+    insecure: "{{ keystone_service_internaluri_insecure }}"
   tags:
     - tempest-setup
     - tempest-config
@@ -178,6 +187,7 @@
     subnet_name: private-subnet
     cidr: "{{ tempest_private_subnet_cidr }}"
     tenant_id: "{{ keystone_demo_tenant_id }}"
+    insecure: "{{ keystone_service_internaluri_insecure }}"
   tags:
     - tempest-setup
 
@@ -188,6 +198,7 @@
     net_name: public
     subnet_name: public-subnet
     cidr: "{{ tempest_public_subnet_cidr }}"
+    insecure: "{{ keystone_service_internaluri_insecure }}"
   tags:
     - tempest-setup
 
@@ -198,6 +209,7 @@
     router_name: router
     external_gateway_info: public
     tenant_id: "{{ keystone_demo_tenant_id }}"
+    insecure: "{{ keystone_service_internaluri_insecure }}"
   tags:
     - tempest-setup
 
@@ -207,6 +219,7 @@
     openrc_path: /root/openrc
     router_name: router
     subnet_name: private-subnet
+    insecure: "{{ keystone_service_internaluri_insecure }}"
   tags:
     - tempest-setup
 

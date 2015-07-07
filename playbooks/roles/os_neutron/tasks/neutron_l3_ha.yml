@@ -36,7 +36,7 @@
 # These are used in the Neutron HA Cron job script, and processed in the template.
 - name: Creating Job Facts
   set_fact:
-    do_job: ". /root/openrc && /opt/neutron-ha-tool.py --l3-agent-migrate"
+    do_job: ". /root/openrc && /opt/neutron-ha-tool.py {% if keystone_service_internaluri_insecure | bool %}--insecure {% endif %}--l3-agent-migrate"
     sleep_time: "{{ hashed_name.int_value }}"
   tags:
     - neutron-ha-tool

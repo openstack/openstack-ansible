@@ -23,6 +23,9 @@ openrc_os_username: admin
 openrc_os_tenant_name: admin
 openrc_os_auth_url: "http://127.0.0.1:5000"
 
+## Deliberately allow access to SSL endpoints with bad certificates
+openrc_insecure: "{{ (keystone_service_adminuri_insecure | bool or keystone_service_internaluri_insecure | bool) | default(false) }}"
+
 ## Create file
 openrc_file_dest: "{{ ansible_env.HOME }}/openrc"
 openrc_file_owner: "{{ ansible_user_id }}"
