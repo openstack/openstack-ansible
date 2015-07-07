@@ -30,19 +30,19 @@
 
 ## Cinder service
 cinder_git_repo: https://github.com/openstack/cinder
-cinder_git_install_branch: 98111823d711e86bb2b4feee9ca7b8f10b53e35e # HEAD of "stable/kilo" as of 20.06.2015
+cinder_git_install_branch: 6c055943e70675585ef45301318c47ccc1139ce9 # HEAD of "stable/kilo" as of 07.07.2015
 cinder_git_dest: "/opt/cinder_{{ cinder_git_install_branch | replace('/', '_') }}"
 
 
 ## Glance service
 glance_git_repo: https://github.com/openstack/glance
-glance_git_install_branch: 64b11434c0340678fd2514ca1b5385a1e96829ca # HEAD of "stable/kilo" as of 20.06.2015
+glance_git_install_branch: d1f54b71b863c2505ce31898f769a71624016e67 # HEAD of "stable/kilo" as of 07.07.2015
 glance_git_dest: "/opt/glance_{{ glance_git_install_branch | replace('/', '_') }}"
 
 
 ## Heat service
 heat_git_repo: https://github.com/openstack/heat
-heat_git_install_branch: b6027fbda7c232253f7d97cc4b7ddc5fe650fefb # HEAD of "stable/kilo" as of 20.06.2015
+heat_git_install_branch: 6880594b7951e2fd00f8f705cefcc3c7e0925460 # HEAD of "stable/kilo" as of 07.07.2015
 heat_git_dest: "/opt/heat_{{ heat_git_install_branch | replace('/', '_') }}"
 # The version of PBR >= 0.11.0 breaks this plugin (contrib package) so the package has been removed
 # from the build process until the PBR issues are resolve upstream which is related to all of the
@@ -56,43 +56,43 @@ heat_git_dest: "/opt/heat_{{ heat_git_install_branch | replace('/', '_') }}"
 
 ## Horizon service
 horizon_git_repo: https://github.com/openstack/horizon
-horizon_git_install_branch: 3715c5b162f46757e42a35eb68809725a8e56fd7 # HEAD of "stable/kilo" as of 20.06.2015
+horizon_git_install_branch: 2cc2495c68e341cdc95617bdb4b64a7597d80c28 # HEAD of "stable/kilo" as of 07.07.2015
 horizon_git_dest: "/opt/horizon_{{ horizon_git_install_branch | replace('/', '_') }}"
 
 
 ## Keystone service
 keystone_git_repo: https://github.com/openstack/keystone
-keystone_git_install_branch: 8125a8913d233f3da0eaacd09aa8e0b794ea98cb # HEAD of "stable/kilo" as of 20.06.2015
+keystone_git_install_branch: 8125a8913d233f3da0eaacd09aa8e0b794ea98cb # HEAD of "stable/kilo" as of 07.07.2015
 keystone_git_dest: "/opt/keystone_{{ keystone_git_install_branch | replace('/', '_') }}"
 
 
 ## Neutron service
 neutron_git_repo: https://github.com/openstack/neutron
-neutron_git_install_branch: bdf194a0e1b98935c88329c2fa0242a7f24c2eba # HEAD of "stable/kilo" as of 20.06.2015
+neutron_git_install_branch: 8e82dc7eaa15e14bd95dde884f4d99919e6bb19c # HEAD of "stable/kilo" as of 07.07.2015
 neutron_git_dest: "/opt/neutron_{{ neutron_git_install_branch | replace('/', '_') }}"
 
 neutron_lbaas_git_repo: https://github.com/openstack/neutron-lbaas
-neutron_lbaas_git_install_branch: 4ab10135f2571727689ad74000a419c00977bef8 # HEAD of "stable/kilo" as of 20.06.2015
+neutron_lbaas_git_install_branch: 4ab10135f2571727689ad74000a419c00977bef8 # HEAD of "stable/kilo" as of 07.07.2015
 neutron_lbaas_git_dest: "/opt/neutron_lbaas_{{ neutron_lbaas_git_install_branch | replace('/', '_') }}"
 
 neutron_vpnaas_git_repo: https://github.com/openstack/neutron-vpnaas
-neutron_vpnaas_git_install_branch: c61c0437307b9d7076d8ef0fb98bcdb890278979 # HEAD of "stable/kilo" as of 20.06.2015
+neutron_vpnaas_git_install_branch: c61c0437307b9d7076d8ef0fb98bcdb890278979 # HEAD of "stable/kilo" as of 07.07.2015
 neutron_vpnaas_git_dest: "/opt/neutron_vpnaas_{{ neutron_vpnaas_git_install_branch | replace('/', '_') }}"
 
 neutron_fwaas_git_repo: https://github.com/openstack/neutron-fwaas
-neutron_fwaas_git_install_branch: aeca0b89c0091723cf0aeb7fc4749bb3c3ef39e7 # HEAD of "stable/kilo" as of 20.06.2015
+neutron_fwaas_git_install_branch: aeca0b89c0091723cf0aeb7fc4749bb3c3ef39e7 # HEAD of "stable/kilo" as of 07.07.2015
 neutron_fwaas_git_dest: "/opt/neutron_fwaas_{{ neutron_fwaas_git_install_branch | replace('/', '_') }}"
 
 
 ## Nova service
 nova_git_repo: https://github.com/openstack/nova
-nova_git_install_branch: 1f4088d17a28c17c1571e3d7413d78a2e460a052 # HEAD of "stable/kilo" as of 20.06.2015
+nova_git_install_branch: b8c4f1bce356838dd3dac3b59734cf47f72373e5 # HEAD of "stable/kilo" as of 07.07.2015
 nova_git_dest: "/opt/nova_{{ nova_git_install_branch | replace('/', '_') }}"
 
 
 ## Swift service
 swift_git_repo: https://github.com/openstack/swift
-swift_git_install_branch: 943db741b04bf548c15d5c836c93fb033caa0753 # HEAD of "stable/kilo" as of 20.06.2015
+swift_git_install_branch: fe4cdb597f70e40c667b001b446546d75a7a5ab0 # HEAD of "stable/kilo" as of 07.07.2015
 swift_git_dest: "/opt/swift_{{ swift_git_install_branch | replace('/', '_') }}"
 
 
