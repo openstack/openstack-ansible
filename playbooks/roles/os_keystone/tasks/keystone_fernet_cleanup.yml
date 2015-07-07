@@ -18,6 +18,8 @@
     module: file
       path="/tmp/{{ keystone_fernet_tokens_key_repository|basename }}"
       state=absent
+  when: >
+    inventory_hostname == groups['keystone_all'][0]
   tags:
     - keystone-cleanup
     - keystone-setup

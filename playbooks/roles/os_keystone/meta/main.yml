@@ -34,4 +34,7 @@ dependencies:
   - galera_client
   - openstack_openrc
   - pip_lock_down
-  - memcached_server
+  - role: memcached_server
+    when: >
+      'memcache' in keystone_token_driver and
+      'fernet' not in keystone_token_provider
