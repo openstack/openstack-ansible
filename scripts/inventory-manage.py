@@ -31,7 +31,7 @@ def file_find(filename, user_file=None, pass_exception=False):
       $(pwd)/rpc_deploy/
 
     :param filename: ``str``  Name of the file to find
-    :param user_file: ``str`` Additional localtion to look in FIRST for a file
+    :param user_file: ``str`` Additional location to look in FIRST for a file
     """
     file_check = [
         os.path.join(
@@ -90,8 +90,8 @@ def args():
         '-f',
         '--file',
         help='Inventory file.',
-        required=True,
-        default=None
+        required=False,
+        default='rpc_inventory.json'
     )
     parser.add_argument(
         '-s',
