@@ -53,10 +53,12 @@
     - lock-pip-files
 
 - name: Drop pip link file(s)
-  lineinfile:
+  template:
+    src: "link_file.j2"
     dest: "{{ ansible_env.HOME }}/.pip/links.d/{{ item.name }}.link"
-    line: "{{ item.link }}"
-    create: "yes"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+    mode: "{{ item.mode|default('0644') }}"
   with_items: pip_links
   tags:
     - lock-pip-files
