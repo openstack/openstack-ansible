@@ -38,6 +38,7 @@
     - { src: cluster.cnf.j2, dest: /etc/mysql/conf.d/cluster.cnf }
     - { src: debian.cnf.j2, dest: /etc/mysql/debian.cnf }
     - { src: mysql_defaults.j2, dest: /etc/default/mysql }
+  notify: Restart mysql
   tags:
     - galera-config
 
@@ -48,6 +49,7 @@
     mode: "{{ item.mode|default('0644') }}"
   with_items:
     - { src: mysql_init.sh, dest: /etc/init.d/mysql, mode: "0755" }
+  notify: Restart mysql
   tags:
     - galera-config
 
