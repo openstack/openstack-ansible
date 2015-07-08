@@ -24,6 +24,15 @@
   register: pkgs
   until: pkgs|success
 
+- name: Ensure specific container packages are uninstalled
+  apt:
+    pkg: "{{ item }}"
+    state: absent
+  with_items: container_remove_packages
+  when: container_remove_packages is defined
+  register: pkgs
+  until: pkgs|success
+
 - name: Ensure apt common Packages are installed
   apt:
     pkg: "{{ item }}"
