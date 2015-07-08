@@ -43,6 +43,7 @@
   retries: 5
   delay: 2
   with_items: galera_apt_packages
+  notify: Restart mysql
   tags:
     - galera-apt-packages
 
@@ -57,3 +58,10 @@
   with_items: galera_pip_packages
   tags:
     - galera-pip-packages
+
+- name: Check if mysql is running
+  command: /usr/bin/mysqladmin --defaults-file=/etc/mysql/debian.cnf ping
+  ignore_errors: true
+  changed_when: mysql_started.rc != 0
+  register: mysql_started
+  notify: Restart mysql

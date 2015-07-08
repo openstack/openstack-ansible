@@ -59,8 +59,7 @@ echo ""
 echo "If this server has been rebooted, you will need to re-bootstrap"
 echo "Galera to get the cluster operational. To do this execute:"
 echo ""
-echo "cd $(pwd)/playbooks"
-echo "openstack-ansible galera-install --tags galera-bootstrap"
+echo "This requires you to identify the most advanced node. For details see http://galeracluster.com/documentation-webpages/quorumreset.html
 echo ""
 EOF
 chmod +x /etc/update-motd.d/21-galera
