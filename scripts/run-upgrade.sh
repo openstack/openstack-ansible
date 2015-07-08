@@ -505,6 +505,9 @@ pushd playbooks
     openstack-ansible haproxy-install.yml
   fi
 
+  # Hunt for and remove any rpc_release link files from pip
+  ansible "hosts:all_containers" -m "shell" -a "rm /root/.pip/links.d/rpc_release.link"
+
   # Run the fix adjustments play.
   openstack-ansible /tmp/fix_minor_adjustments.yml
   # Remove fix container adjustments play
