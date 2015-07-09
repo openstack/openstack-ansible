@@ -30,10 +30,12 @@ container_packages:
   - dnsmasq-base
   - dnsmasq-utils
   - keepalived
-  - conntrackd
   - conntrack
   - ipset
   - iputils-arping
+
+container_remove_packages:
+  - conntrackd
 
 service_pip_dependencies:
   - MySQL-python
