@@ -1,0 +1,369 @@
+---
+- event_type: compute.instance.*
+  traits: &instance_traits
+    tenant_id:
+      fields: payload.tenant_id
+    user_id:
+      fields: payload.user_id
+    instance_id:
+      fields: payload.instance_id
+    host:
+      fields: publisher_id
+      plugin:
+        name: split
+        parameters:
+          segment: 1
+          max_split: 1
+    service:
+      fields: publisher_id
+      plugin: split
+    memory_mb:
+      type: int
+      fields: payload.memory_mb
+    disk_gb:
+      type: int
+      fields: payload.disk_gb
+    root_gb:
+      type: int
+      fields: payload.root_gb
+    ephemeral_gb:
+      type: int
+      fields: payload.ephemeral_gb
+    vcpus:
+      type: int
+      fields: payload.vcpus
+    instance_type_id:
+      type: int
+      fields: payload.instance_type_id
+    instance_type:
+      fields: payload.instance_type
+    state:
+      fields: payload.state
+    os_architecture:
+      fields: payload.image_meta.'org.openstack__1__architecture'
+    os_version:
+      fields: payload.image_meta.'org.openstack__1__os_version'
+    os_distro:
+      fields: payload.image_meta.'org.openstack__1__os_distro'
+    launched_at:
+      type: datetime
+      fields: payload.launched_at
+    deleted_at:
+      type: datetime
+      fields: payload.deleted_at
+- event_type: compute.instance.exists
+  traits:
+    <<: *instance_traits
+    audit_period_beginning:
+      type: datetime
+      fields: payload.audit_period_beginning
+    audit_period_ending:
+      type: datetime
+      fields: payload.audit_period_ending
+- event_type: ['volume.exists', 'volume.create.*', 'volume.delete.*', 'volume.resize.*', 'volume.attach.*', 'volume.detach.*', 'volume.update.*', 'snapshot.exists', 'snapshot.create.*', 'snapshot.delete.*', 'snapshot.update.*']
+  traits: &cinder_traits
+    user_id:
+      fields: payload.user_id
+    project_id:
+      fields: payload.tenant_id
+    availability_zone:
+      fields: payload.availability_zone
+    display_name:
+      fields: payload.display_name
+    replication_status:
+      fields: payload.replication_status
+    status:
+      fields: payload.status
+    created_at:
+      fields: payload.created_at
+- event_type: ['volume.exists', 'volume.create.*', 'volume.delete.*', 'volume.resize.*', 'volume.attach.*', 'volume.detach.*', 'volume.update.*']
+  traits:
+    <<: *cinder_traits
+    resource_id:
+      fields: payload.volume_id
+    host:
+      fields: payload.host
+    size:
+      fields: payload.size
+    type:
+      fields: payload.volume_type
+    replication_status:
+      fields: payload.replication_status
+- event_type: ['snapshot.exists', 'snapshot.create.*', 'snapshot.delete.*', 'snapshot.update.*']
+  traits:
+    <<: *cinder_traits
+    resource_id:
+      fields: payload.snapshot_id
+    volume_id:
+      fields: payload.volume_id
+- event_type: ['image.update', 'image.upload', 'image.delete']
+  traits: &glance_crud
+    project_id:
+      fields: payload.owner
+    resource_id:
+      fields: payload.id
+    name:
+      fields: payload.name
+    status:
+      fields: payload.status
+    created_at:
+      fields: payload.created_at
+    user_id:
+      fields: payload.owner
+    deleted_at:
+      fields: payload.deleted_at
+    size:
+      fields: payload.size
+- event_type: image.send
+  traits: &glance_send
+    receiver_project:
+      fields: payload.receiver_tenant_id
+    receiver_user:
+      fields: payload.receiver_user_id
+    user_id:
+      fields: payload.owner_id
+    image_id:
+      fields: payload.image_id
+    destination_ip:
+      fields: payload.destination_ip
+    bytes_sent:
+      fields: payload.bytes_sent
+- event_type: orchestration.stack.*
+  traits: &orchestration_crud
+    project_id:
+      fields: payload.tenant_id
+    user_id:
+      fields: ['_context_trustor_user_id', '_context_user_id']
+    resource_id:
+      fields: payload.stack_identity
+- event_type: sahara.cluster.*
+  traits: &sahara_crud
+    project_id:
+      fields: payload.project_id
+    user_id:
+      fields: _context_user_id
+    resource_id:
+      fields: payload.cluster_id
+- event_type: ['identity.user.*', 'identity.project.*', 'identity.group.*', 'identity.role.*', 'identity.OS-TRUST:trust.*',
+               'identity.region.*', 'identity.service.*', 'identity.endpoint.*', 'identity.policy.*']
+  traits: &identity_crud
+    resource_id:
+      fields: payload.resource_info
+    initiator_id:
+      fields: payload.initiator.id
+    project_id:
+      fields: payload.initiator.project_id
+    domain_id:
+      fields: payload.initiator.domain_id
+- event_type: identity.role_assignment.*
+  traits: &identity_role_assignment
+    role:
+      fields: payload.role
+    group:
+      fields: payload.group
+    domain:
+      fields: payload.domain
+    user:
+      fields: payload.user
+    project:
+      fields: payload.project
+- event_type: identity.authenticate
+  traits: &identity_authenticate
+    typeURI:
+      fields: payload.typeURI
+    id:
+      fields: payload.id
+    action:
+      fields: payload.action
+    eventType:
+      fields: payload.eventType
+    eventTime:
+      fields: payload.eventTime
+    outcome:
+      fields: payload.outcome
+    initiator_typeURI:
+      fields: payload.initiator.typeURI
+    initiator_id:
+      fields: payload.initiator.id
+    initiator_name:
+      fields: payload.initiator.name
+    initiator_host_agent:
+      fields: payload.initiator.host.agent
+    initiator_host_addr:
+      fields: payload.initiator.host.address
+    target_typeURI:
+      fields: payload.target.typeURI
+    target_id:
+      fields: payload.target.id
+    observer_typeURI:
+      fields: payload.observer.typeURI
+    observer_id:
+      fields: payload.observer.id
+- event_type: objectstore.http.request
+  traits: &objectstore_request
+    typeURI:
+      fields: payload.typeURI
+    id:
+      fields: payload.id
+    action:
+      fields: payload.action
+    eventType:
+      fields: payload.eventType
+    eventTime:
+      fields: payload.eventTime
+    outcome:
+      fields: payload.outcome
+    initiator_typeURI:
+      fields: payload.initiator.typeURI
+    initiator_id:
+      fields: payload.initiator.id
+    initiator_project_id:
+      fields: payload.initiator.project_id
+    target_typeURI:
+      fields: payload.target.typeURI
+    target_id:
+      fields: payload.target.id
+    target_action:
+      fields: payload.target.action
+    target_metadata_path:
+      fields: payload.target.metadata.path
+    target_metadata_version:
+      fields: payload.target.metadata.version
+    target_metadata_container:
+      fields: payload.target.metadata.container
+    target_metadata_object:
+      fields: payload.target.metadata.object
+    observer_id:
+      fields: payload.observer.id
+- event_type: magnetodb.table.*
+  traits: &kv_store
+    resource_id:
+      fields: payload.table_uuid
+    user_id:
+      fields: _context_user_id
+    project_id:
+      fields: _context_tenant
+- event_type: ['network.*', 'subnet.*', 'port.*', 'router.*', 'floatingip.*', 'pool.*', 'vip.*', 'member.*', 'health_monitor.*', 'firewall.*', 'firewall_policy.*', 'firewall_rule.*', 'vpnservice.*', 'ipsecpolicy.*', 'ikepolicy.*', 'ipsec_site_connection.*']
+  traits: &network_traits
+    user_id:
+      fields: _context_user_id
+    project_id:
+      fields: _context_tenant_id
+- event_type: network.*
+  traits:
+    <<: *network_traits
+    resource_id:
+      fields: ['payload.network.id', 'payload.id']
+- event_type: subnet.*
+  traits:
+    <<: *network_traits
+    resource_id:
+      fields: ['payload.subnet.id', 'payload.id']
+- event_type: port.*
+  traits:
+    <<: *network_traits
+    resource_id:
+      fields: ['payload.port.id', 'payload.id']
+- event_type: router.*
+  traits:
+    <<: *network_traits
+    resource_id:
+      fields: ['payload.router.id', 'payload.id']
+- event_type: floatingip.*
+  traits:
+    <<: *network_traits
+    resource_id:
+      fields: ['payload.floatingip.id', 'payload.id']
+- event_type: pool.*
+  traits:
+    <<: *network_traits
+    resource_id:
+      fields: ['payload.pool.id', 'payload.id']
+- event_type: vip.*
+  traits:
+    <<: *network_traits
+    resource_id:
+      fields: ['payload.vip.id', 'payload.id']
+- event_type: member.*
+  traits:
+    <<: *network_traits
+    resource_id:
+      fields: ['payload.member.id', 'payload.id']
+- event_type: health_monitor.*
+  traits:
+    <<: *network_traits
+    resource_id:
+      fields: ['payload.health_monitor.id', 'payload.id']
+- event_type: firewall.*
+  traits:
+    <<: *network_traits
+    resource_id:
+      fields: ['payload.firewall.id', 'payload.id']
+- event_type: firewall_policy.*
+  traits:
+    <<: *network_traits
+    resource_id:
+      fields: ['payload.firewall_policy.id', 'payload.id']
+- event_type: firewall_rule.*
+  traits:
+    <<: *network_traits
+    resource_id:
+      fields: ['payload.firewall_rule.id', 'payload.id']
+- event_type: vpnservice.*
+  traits:
+    <<: *network_traits
+    resource_id:
+      fields: ['payload.vpnservice.id', 'payload.id']
+- event_type: ipsecpolicy.*
+  traits:
+    <<: *network_traits
+    resource_id:
+      fields: ['payload.ipsecpolicy.id', 'payload.id']
+- event_type: ikepolicy.*
+  traits:
+    <<: *network_traits
+    resource_id:
+      fields: ['payload.ikepolicy.id', 'payload.id']
+- event_type: ipsec_site_connection.*
+  traits:
+    <<: *network_traits
+    resource_id:
+      fields: ['payload.ipsec_site_connection.id', 'payload.id']
+- event_type: '*http.*'
+  traits: &http_audit
+    typeURI:
+      fields: payload.typeURI
+    eventType:
+      fields: payload.eventType
+    action:
+      fields: payload.action
+    outcome:
+      fields: payload.outcome
+    id:
+      fields: payload.id
+    eventTime:
+      fields: payload.eventTime
+    requestPath:
+      fields: payload.requestPath
+    observer_id:
+      fields: payload.observer.id
+    target_id:
+      fields: payload.target.id
+    target_typeURI:
+      fields: payload.target.typeURI
+    target_name:
+      fields: payload.target.name
+    initiator_typeURI:
+      fields: payload.initiator.typeURI
+    initiator_id:
+      fields: payload.initiator.id
+    initiator_name:
+      fields: payload.initiator.name
+    initiator_host_address:
+      fields: payload.initiator.host.address
+- event_type: '*http.response'
+  traits:
+    <<: *http_audit
+    reason_code:
+      fields: payload.reason.reasonCode
+

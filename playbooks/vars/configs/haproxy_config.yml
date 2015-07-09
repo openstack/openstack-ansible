@@ -154,3 +154,8 @@ haproxy_service_configs:
       haproxy_port: 8181
       haproxy_backend_port: 8181
       haproxy_balance_type: http
+  - service:
+      haproxy_service_name: ceilometer_api
+      haproxy_backend_nodes: "{{ groups['ceilometer_api_container'] }}"
+      haproxy_port: 8777
+      haproxy_balance_type: http

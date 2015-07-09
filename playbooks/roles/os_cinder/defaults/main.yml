@@ -16,6 +16,9 @@
 # Defines that the role will be deployed on a host machine
 is_metal: true
 
+# Enable/Disable Ceilometer
+cinder_ceilometer_enabled: False
+
 cinder_storage_availability_zone: nova
 cinder_default_availability_zone: "{{ cinder_storage_availability_zone }}"
 

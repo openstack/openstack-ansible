@@ -24,6 +24,7 @@ DEPLOY_INFRASTRUCTURE=${DEPLOY_INFRASTRUCTURE:-"yes"}
 DEPLOY_LOGGING=${DEPLOY_LOGGING:-"yes"}
 DEPLOY_OPENSTACK=${DEPLOY_OPENSTACK:-"yes"}
 DEPLOY_SWIFT=${DEPLOY_SWIFT:-"yes"}
+DEPLOY_CEILOMETER=${DEPLOY_CEILOMETER:-"yes"}
 DEPLOY_TEMPEST=${DEPLOY_TEMPEST:-"no"}
 
 
@@ -93,6 +94,14 @@ pushd "playbooks"
     install_bits os-neutron-install.yml
     install_bits os-heat-install.yml
     install_bits os-horizon-install.yml
+  fi
+
+  # If ceilometer is deployed, it must be run before
+  # swift, since the swift playbooks will make reference
+  # to the ceilometer user when applying the reselleradmin
+  # role
+  if [ "${DEPLOY_CEILOMETER}" == "yes" ]; then
+    install_bits os-ceilometer-install.yml
   fi
 
   if [ "${DEPLOY_SWIFT}" == "yes" ]; then

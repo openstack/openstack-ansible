@@ -99,6 +99,38 @@
     - swift-service-add
     - swift-setup
 
+- name: "Create keystone role for ResellerAdmin"
+  keystone:
+    command: "ensure_role"
+    token: "{{ keystone_auth_admin_token }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    role_name: "ResellerAdmin"
+  register: add_role
+  until: add_role|success
+  retries: 5
+  delay: 10
+  when: swift_ceilometer_enabled
+  tags:
+    - swift-ceilometer-setup
+    - swift-ceilometer-role
+
+- name: "Add ResellerAdmin role to the service tenant and ceilometer user"
+  keystone:
+    command: "ensure_user_role"
+    token: "{{ keystone_auth_admin_token }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    user_name: "{{ ceilometer_service_user_name }}"
+    tenant_name: "{{ ceilometer_service_tenant_name }}"
+    role_name: "{{ swift_reselleradmin_role }}"
+  register: ensure_role
+  until: ensure_role|success
+  retries: 5
+  delay: 10
+  when: swift_ceilometer_enabled
+  tags:
+    - swift-ceilometer-setup
+    - swift-ceilometer-role
+
 - name: "Add swiftoperator role to swift-dispersion user"
   keystone:
     command: "ensure_user_role"

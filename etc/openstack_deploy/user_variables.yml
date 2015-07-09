@@ -13,6 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
+## Ceilometer Options
+ceilometer_db_type: mongodb
+ceilometer_db_ip: localhost
+ceilometer_db_port: 27017
+swift_ceilometer_enabled: False
+heat_ceilometer_enabled: False
+cinder_ceilometer_enabled: False
+glance_ceilometer_enabled: False
+nova_ceilometer_enabled: False
+
 ## Glance Options
 # Set default_store to "swift" if using Cloud Files or swift backend
 glance_default_store: file
