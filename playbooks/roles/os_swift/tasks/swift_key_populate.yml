@@ -13,19 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Distribute authorized keys for cluster consumption
-  memcached:
-    name: "{{ item.name }}"
-    file_path: "{{ item.src }}"
-    state: "present"
-    server: "{{ memcached_servers }}"
-    encrypt_string: "{{ memcached_encryption_key }}"
-  with_items:
-    - { src: "{{ swift_system_home_folder }}/.ssh/authorized_keys", name: "authorized_keys" }
-  register: memcache_keys
-  until: memcache_keys|success
-  retries: 5
-  delay: 2
+- name: Get public key contents and store as var
+  command: |
+    cat {{ swift_system_home_folder }}/.ssh/id_rsa.pub
+  register: swift_pub
+  changed_when: false
   tags:
     - swift-key
-    - swift-key-store
+    - swift-key-create
+
+- name: Register a fact for the swift pub key
+  set_fact:
+     swift_pubkey: "{{ swift_pub.stdout }}"
+  tags:
+    - swift-key
+    - swift-key-create
