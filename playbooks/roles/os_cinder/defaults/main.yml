@@ -39,6 +39,7 @@ cinder_system_group_name: cinder
 cinder_system_comment: cinder system user
 cinder_system_shell: /bin/false
 cinder_system_home_folder: "/var/lib/{{ cinder_system_user_name }}"
+cinder_lock_directory: /var/lock/cinder
 
 ## Cinder Auth
 cinder_service_admin_tenant_name: "service"
@@ -174,17 +175,38 @@ cinder_client_socket_timeout: 900
 
 # Common apt packages
 cinder_apt_packages:
-  - dmeventd
   - libpq-dev
   - libkmod-dev
   - libkmod2
+  - libxslt1-dev
   - nfs-common
   - parted
   - qemu-utils
   - rpcbind
-  - tgt
   - zlib1g
   - zlibc
+
+cinder_volume_apt_packages:
+  - dmeventd
+  - tgt
+
+cinder_yum_packages:
+  - libpqxx-devel
+  - libxslt-devel
+  - kmod-libs
+  - kmod
+  - kmod-devel
+  - nfs-utils
+  - parted
+  - qemu-common
+  - rpcbind
+  - scsi-target-utils
+  - zlib
+  - zlib-devel
+
+cinder_volume_yum_packages:
+  - scsi-target-utils
+  - device-mapper-event
 
 # Common pip packages
 cinder_pip_packages:

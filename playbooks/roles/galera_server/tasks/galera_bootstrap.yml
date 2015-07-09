@@ -50,11 +50,38 @@
   tags:
     - galera-bootstrap
 
+- name: Check init system
+  command: cat /proc/1/comm
+  register: pid1_name
+  tags:
+    - galera-init-name
+
+- name: bootstrap cluster (initialise mysql with @bootstrap.service)
+  command: systemctl restart mysql@bootstrap.service
+  register: systemd_start
+  failed_when: false
+  when: >
+    (wsrep_cluster_size|changed or mysqlstopped|changed or mysql_running|changed) and
+    pid1_name.stdout == "systemd"
+  tags:
+    - galera-bootstrap
+
+- name: bootstrap cluster (initialise mysql with --wsrep-new-cluster)
+  command: /etc/init.d/mysql restart --wsrep-new-cluster
+  when: >
+    (wsrep_cluster_size|changed or mysqlstopped|changed or mysql_running|changed) and
+    pid1_name.stdout == "systemd" and 
+    systemd_start | failed
+  tags:
+    - galera-bootstrap
+
 - name: bootstrap cluster (initialise mysql with --wsrep-new-cluster)
   service:
     name: mysql
     state: restarted
     args: --wsrep-new-cluster
-  when: wsrep_cluster_size|changed or mysqlstopped|changed or mysql_running|changed
+  when: >
+    (wsrep_cluster_size|changed or mysqlstopped|changed or mysql_running|changed) and
+    pid1_name.stdout == "init"
   tags:
     - galera-bootstrap

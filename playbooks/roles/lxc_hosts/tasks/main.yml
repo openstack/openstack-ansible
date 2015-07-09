@@ -16,9 +16,21 @@
 - include: lxc_pre_install.yml
 - include: lxc_kernel_tuning.yml
 - include: lxc_net.yml
-- include: lxc_install.yml
+
+- include: lxc_install_redhat.yml
+  when: ansible_os_family == "RedHat"
+  tags:
+    - lxc-install-rhel
+
+- include: lxc_install_ubuntu.yml
+  when: ansible_os_family == "Debian"
+  tags: 
+    - lxc-install-ubuntu
+
 - include: lxc_dnsmasq_cleanup.yml
+
 - include: lxc_cache.yml
   when: lxc_container_caches is defined
+
 - name: Flush handlers
   meta: flush_handlers

@@ -56,19 +56,16 @@
   tags:
     - cinder-config
 
-- name: Ensure cinder tgt include
-  lineinfile:
-    dest: /etc/tgt/targets.conf
-    line: "include /var/lib/cinder/volumes/*"
-    state: present
-  notify: Ensure tgt service restarted
-  tags:
-    - cinder-tgt
+- include: cinder_init.yml
 
-- name: Create nfs shares export file
-  template:
-    src: nfs_shares.j2
-    dest: "{{ cinder_nfs_client.nfs_shares_config }}"
-  when: cinder_nfs_client is defined
-  tags:
-    - cinder-nfs
+- include: cinder_db_setup.yml
+  when: >
+    inventory_hostname == groups['cinder_all'][0]
+
+- include: cinder_service_setup.yml
+  when: >
+    inventory_hostname == groups['cinder_all'][0]
+
+- include: cinder_volume_post_install.yml
+  when: >
+    inventory_hostname in groups['cinder_volume']

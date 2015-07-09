@@ -28,4 +28,6 @@ galaxy_info:
     - rsyslog
     - development
     - openstack
-dependencies: []
+dependencies:
+  - { role: geerlingguy.repo-epel, when: ansible_os_family == "RedHat" }
+  - { role: "rsyslog_client" }

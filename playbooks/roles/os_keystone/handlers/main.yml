@@ -22,3 +22,13 @@
   until: apache_restart|success
   retries: 5
   delay: 2
+
+- name: Restart Apache RHEL
+  service:
+    name: "httpd"
+    state: "restarted"
+    pattern: "httpd"
+  register: apache_restart
+  until: apache_restart|success
+  retries: 5
+  delay: 2

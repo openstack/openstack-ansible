@@ -31,3 +31,4 @@ galaxy_info:
     - openstack
 dependencies:
   - pip_lock_down
+  - { role: geerlingguy.repo-epel, when: ansible_os_family == "RedHat" }

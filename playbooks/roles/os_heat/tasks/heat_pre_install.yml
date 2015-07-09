@@ -46,6 +46,7 @@
     - { path: "/etc/heat/templates" }
     - { path: "/etc/sudoers.d", owner: "root", group: "root" }
     - { path: "/var/cache/heat", mode: "0700" }
+    - { path: "/var/lock/heat", mode: "2755" }
     - { path: "{{ heat_system_home_folder }}" }
   tags:
     - heat-dirs

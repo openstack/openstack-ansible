@@ -5,18 +5,7 @@
 #################
 $ModLoad imuxsock # provides support for local system logging
 $ModLoad imklog   # provides kernel logging support
-
-{% if rsyslog_server_udp_reception == true %}
-# provides UDP syslog reception
-$ModLoad imudp
-$UDPServerRun {{ rsyslog_server_udp_port }}
-{% endif %}
-
-{% if rsyslog_server_tcp_reception == true %}
-# provides TCP syslog reception
-$ModLoad imtcp
-$InputTCPServerRun {{ rsyslog_server_tcp_port }}
-{% endif %}
+$ModLoad imfile
 
 # Enable non-kernel facility klog messages
 $KLogPermitNonKernelFacility on
@@ -54,8 +43,3 @@ $WorkDirectory {{ rsyslog_server_spool_directory }}
 # Include all config files in /etc/rsyslog.d/
 #
 $IncludeConfig /etc/rsyslog.d/*.conf
-
-$template DDF, "{{ rsyslog_server_storage_directory }}/%hostname%/%programname%.log"
-if \
-$source != 'logsrv' \
-then -?DDF

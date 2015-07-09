@@ -30,6 +30,7 @@ nova_system_group_name: nova
 nova_system_shell: /bin/bash
 nova_system_comment: nova system user
 nova_system_home_folder: "/var/lib/{{ nova_system_user_name }}"
+nova_lock_directory: /var/lock/nova
 
 ## DB
 nova_galera_user: nova
@@ -261,11 +262,22 @@ nova_apt_packages:
   - genisoimage
   - git
   - libpq-dev
+  - libxslt1.1
+
+nova_yum_packages:
+  - genisoimage
+  - git
+  - libxslt-devel
+  - libpqxx-devel
 
 # Spice console apt packages
 nova_spice_apt_packages:
   - spice-html5
 
+nova_spice_yum_packages:
+  - spice-html5
+
+# Compute packages for KVM
 nova_compute_kvm_apt_packages:
   - bridge-utils
   - genisoimage
@@ -278,6 +290,23 @@ nova_compute_kvm_apt_packages:
   - qemu-utils
   - sysfsutils
   - vlan
+
+nova_compute_kvm_yum_packages:
+  - bridge-utils
+  - genisoimage
+  - kpartx
+  - libvirt
+  - iscsi-initiator-utils
+  - libguestfs
+  - libvirt-python
+  - libvirt-daemon-kvm
+  - qemu
+  - qemu-common
+  - qemu-kvm
+  - qemu-kvm-tools
+  - qemu-kvm-common
+  - sysfsutils
+  - vconfig
 
 # Common pip packages
 nova_pip_packages:

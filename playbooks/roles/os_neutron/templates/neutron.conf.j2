@@ -2,6 +2,12 @@
 
 {% set _api_threads = ansible_processor_vcpus|default(2) // 2 %}
 {% set api_threads = _api_threads if _api_threads > 0 else 1 %}
+{% if ansible_os_family | lower == "redhat" %}
+{% set program_bin = "/usr/bin" %}
+{% else %}
+{% set program_bin = "/usr/local/bin" %}
+{% endif %}
+
 
 [DEFAULT]
 verbose = {{ verbose }}
@@ -90,7 +96,7 @@ quota_items = network,subnet,port
 [agent]
 polling_interval = {{ neutron_agent_polling_interval|default(5) }}
 report_interval = {{ neutron_report_interval|int }}
-root_helper = sudo /usr/local/bin/neutron-rootwrap /etc/neutron/rootwrap.conf
+root_helper = sudo {{ program_bin }}/neutron-rootwrap /etc/neutron/rootwrap.conf
 
 
 [keystone_authtoken]

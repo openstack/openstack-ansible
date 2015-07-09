@@ -24,17 +24,6 @@
   tags:
     - repo-ssh
 
-- name: Drop rsyncd configuration file(s)
-  copy:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-  with_items:
-    - { src: "rsync.defaults", dest: "/etc/default/rsync" }
-  notify:
-    - reload rsyncd
-  tags:
-    - repo-config
-
 - name: Copy wheel builder into place
   copy:
     src: "{{ item.src }}"
@@ -47,15 +36,3 @@
     - { src: "openstack-wheel-builder.py", dest: "/opt/openstack-wheel-builder.py" }
   tags:
     - repo-wheel-builder
-
-- name: Drop base config file(s)
-  template:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-    owner: "{{ item.owner|default('root') }}"
-    group: "{{ item.group|default('root') }}"
-    mode: "{{ item.mode|default('0644') }}"
-  with_items:
-    - { src: manual-init.override.j2, dest: "/etc/init/lxc-net.override" }
-  tags:
-    - repo-config

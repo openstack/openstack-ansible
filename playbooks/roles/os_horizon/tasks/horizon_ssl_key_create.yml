@@ -33,7 +33,9 @@
   when: >
     horizon_self_signed == true or
     horizon_self_signed == "True"
-  notify: Restart apache2
+  notify:
+    - Restart apache2
+    - Restart Apache RHEL
   tags:
     - horizon-apache-self-ssl
     - horizon-ssl

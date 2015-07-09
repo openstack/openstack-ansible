@@ -13,53 +13,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Drop apache2 ports file
-  template:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-    owner: "root"
-    group: "root"
-  with_items:
-    - { src: "keystone-ports.conf.j2", dest: "/etc/apache2/ports.conf" }
-    - { src: "keystone-httpd.conf.j2", dest: "/etc/apache2/sites-available/keystone-httpd.conf" }
-  notify:
-    - Restart Apache
+- name: Create apache nogroup user
+  group:
+    name: "nogroup"
+    system: "yes"
   tags:
-    - keystone-httpd
+    - keystone-apache-group
 
-- name: Disable default apache site
-  file:
-    path: "/etc/apache2/sites-enabled/000-default.conf"
-    state: "absent"
-  notify:
-    - Restart Apache
+- name: Create apache nogroup user
+  user:
+    name: "nogroup"
+    group: "nogroup"
+    system: "yes"
+    shell: "/bin/false"
   tags:
-    - keystone-httpd
+    - keystone-apache-user
 
-- name: Enabled keystone vhost
-  file:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-    state: "{{ item.state }}"
-  with_items:
-    - { src: "/etc/apache2/sites-available/keystone-httpd.conf", dest: "/etc/apache2/sites-enabled/keystone-httpd.conf", state: "link" }
-  notify:
-    - Restart Apache
+- include: keystone_apache_rhel.yml
+  when: ansible_os_family == "RedHat"
   tags:
-    - keystone-httpd
+    - keystone-apache-rhel
 
-- name: Ensure Apache ServerName
-  lineinfile:
-    dest: "/etc/apache2/apache2.conf"
-    line: "ServerName {{ inventory_hostname }}"
-  notify:
-    - Restart Apache
-  tags:
-    - keystone-httpd
-
-- name: Enable/disable mod_ssl for apache2
-  apache2_module:
-    name: ssl
-    state: "{{ (keystone_ssl_enabled | bool) | ternary('present', 'absent') }}"
-  tags:
-    - keystone-httpd
+- include: keystone_apache_ubuntu.yml
+  when: ansible_os_family == "Debian"
+  tags: 
+    - keystone-apache-ubuntu

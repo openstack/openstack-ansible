@@ -44,6 +44,7 @@
     - { path: "/etc/glance" }
     - { path: "/etc/sudoers.d", mode: "0755", owner: "root", group: "root" }
     - { path: "/var/cache/glance" }
+    - { path: "/var/lock/glance", mode: "2755" }
     - { path: "{{ glance_system_user_home }}" }
     - { path: "{{ glance_system_user_home }}/cache/api", mode: "0700" }
     - { path: "{{ glance_system_user_home }}/cache/registry" }

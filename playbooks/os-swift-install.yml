@@ -57,6 +57,6 @@
       tags:
         - "system-crontab-coordination"
   vars:
-    ansible_hostname: "{{ container_name }}"
+    ansible_hostname: "{{ inventory_hostname }}"
     ansible_ssh_host: "{{ container_address }}"
     is_metal: "{{ properties.is_metal|default(false) }}"

@@ -47,7 +47,6 @@ lxc_kernel_options:
 lxc_container_template_main_apt_repo: "https://mirror.rackspace.com/ubuntu"
 lxc_container_template_security_apt_repo: "https://mirror.rackspace.com/ubuntu"
 
-
 # Required apt packages.
 lxc_apt_packages:
   - apparmor-utils
@@ -63,6 +62,26 @@ lxc_apt_packages:
   - lxc-templates
   - python-dev
   - python3-lxc
+
+lxc_yum_packages:
+  - '@Development Tools'
+  - automake
+  - autoconf
+  - bridge-utils
+  - debootstrap
+  - docbook2X
+  - dnsmasq
+  - git
+  - libseccomp
+  - libseccomp-devel
+  - libcap-devel
+  - libselinux
+  - libselinux-devel
+  - python-devel
+  - python34-libs
+  - python34-devel
+  - pkgconfig
+  - redhat-lsb
 
 # Prebuilt images to deploy onto hosts for use in containers.
 # lxc_container_caches:

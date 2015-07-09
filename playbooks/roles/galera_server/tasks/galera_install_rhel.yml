@@ -1,0 +1,115 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Copy mariadb repo file in place
+  copy:
+    src: "mariadb-rhel.repo"
+    dest: "/etc/yum.repos.d/mariadb.repo"
+    mode: "0644"
+    backup: yes
+  tags:
+    - galera-config
+
+- name: Install yum xtrabackup repo
+  yum:
+    name: "{{ galera_xtrabackup }}"
+    state: present
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 5
+  tags:
+    - galera-yum-packages
+
+- name: Install yum packages
+  yum:
+    name: "{{ item }}"
+    state: latest
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 5
+  with_items: galera_yum_packages
+  tags:
+    - galera-yum-packages
+
+- name: Enable mysql to start at boot
+  service:
+    name: "mysql"
+    enabled: "yes"
+  tags:
+    - galera-enable
+
+- name: Update root password
+  shell: |
+    service mysql start || true
+    # Reset the root password, at this time there is no password set
+    mysqladmin --no-defaults --port=3306 --socket=/var/run/mysqld/mysqld.sock --host=127.0.0.1 --user=root password "{{ galera_root_password }}"
+    # Grant all the things to root with the password set
+    mysql -u root -h localhost -e "GRANT ALL PRIVILEGES ON *.* TO '{{ galera_root_user }}'@'%' IDENTIFIED BY '{{ galera_root_password }}' WITH GRANT OPTION;"
+    mysql -u root -h localhost -e "GRANT ALL PRIVILEGES ON *.* TO '{{ galera_root_user }}'@'localhost' IDENTIFIED BY '{{ galera_root_password }}' WITH GRANT OPTION;"
+    mysql -u root -h localhost -e "FLUSH PRIVILEGES"
+    # Create a marker file to ensure this script is not run again
+    touch /etc/mysql/rhel_configured
+    service mysql stop
+  args:
+    creates: /etc/mysql/rhel_configured
+  when: ansible_os_family == "RedHat"
+  tags:
+    - galera-rhel-config
+
+- name: Create the local directories
+  file:
+    path: "{{ item.path }}"
+    state: "{{ item.state|default('directory') }}"
+    owner: "{{ item.owner|default('root') }}"
+    group: "{{ item.group|default('root') }}"
+    mode: "{{ item.mode|default('0755') }}"
+    recurse: "{{ item.recurse|default('false') }}"
+  with_items:
+    - { path: "/var/log/mysql_logs/", owner: "mysql", group: "root", mode: "2755" }
+    - { path: "/var/log/mysql/", owner: "mysql", recurse: "true" }
+    - { path: "/var/lib/mysql/", owner: "mysql", group: "mysql", mode: "2755" }
+    - { path: "/etc/my.cnf.d/" }
+    - { path: "/etc/mysql" }
+    - { path: "/etc/my.cnf.d/tokudb.cnf", state: "absent" }
+    - { path: "/etc/my.cnf.d/client.cnf", state: "absent" }
+    - { path: "/etc/my.cnf.d/mysql-clients.cnf", state: "absent" }
+  tags:
+    - galera-config
+
+- name: Create system links
+  file:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    state: "link"
+  with_items:
+    - { src: "/usr/lib64/galera", dest: "/usr/lib/galera" }
+    - { src: "/etc/my.cnf.d", dest: "/etc/mysql/conf.d" }
+  tags:
+    - galera-config
+
+- name: Drop mariadb config(s)
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode|default('0644') }}"
+  with_items:
+    - { src: my.cnf.j2, dest: /etc/my.cnf }
+    - { src: cluster.cnf.j2, dest: /etc/my.cnf.d/cluster.cnf }
+    - { src: debian.cnf.j2, dest: /etc/mysql/debian.cnf }
+    - { src: mysql_defaults.j2, dest: /etc/default/mysql }
+  tags:
+    - galera-config

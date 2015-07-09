@@ -16,6 +16,9 @@
 - name: Check for libvirt default network
   shell: "virsh net-list | awk '/default/'"
   register: default_net
+  notify:
+    - Restart libvirtd
+    - Restart libvirt-bin
   tags:
     - nova-kvm
     - nova-kvm-virsh-net
@@ -23,6 +26,9 @@
 - name: Disable libvirt default network
   command: "virsh net-autostart default --disable"
   when: default_net.stdout|search('default')
+  notify:
+    - Restart libvirtd
+    - Restart libvirt-bin
   tags:
     - nova-kvm
     - nova-kvm-virsh-net
@@ -30,6 +36,9 @@
 - name: Destroy libvirt default network
   command: "virsh net-destroy default"
   when: default_net.stdout|search('default')
+  notify:
+    - Restart libvirtd
+    - Restart libvirt-bin
   tags:
     - nova-kvm
     - nova-kvm-virsh-net

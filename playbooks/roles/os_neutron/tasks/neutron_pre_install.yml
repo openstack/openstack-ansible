@@ -39,6 +39,7 @@
     state: directory
     owner: "{{ item.owner|default(neutron_system_user_name) }}"
     group: "{{ item.group|default(neutron_system_group_name) }}"
+    mode: "{{ item.mode|default('0755') }}"
   with_items:
     - { path: "/etc/neutron" }
     - { path: "/etc/neutron/plugins" }
@@ -46,7 +47,7 @@
     - { path: "/etc/neutron/rootwrap.d" }
     - { path: "/etc/sudoers.d", mode: "0750", owner: "root", group: "root" }
     - { path: "/var/cache/neutron" }
-    - { path: "/var/lock/neutron" }
+    - { path: "/var/lock/neutron", mode: "2755" }
     - { path: "/var/run/neutron" }
     - { path: "{{ neutron_system_home_folder }}" }
     - { path: "{{ neutron_system_home_folder }}/ha_confs" }

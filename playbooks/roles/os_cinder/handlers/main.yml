@@ -22,4 +22,15 @@
   failed_when: false
 
 - name: Ensure tgt service restarted
-  service: name=tgt state=restarted pattern=tgtd
+  service:
+    name: "tgt"
+    state: "restarted"
+    pattern: "tgtd"
+  when: ansible_os_family == "Debian"
+
+- name: Ensure tgt service restarted rhel
+  service:
+    name: "tgtd"
+    state: "restarted"
+    pattern: "tgtd"
+  when: ansible_os_family == "RedHat"

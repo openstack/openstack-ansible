@@ -72,9 +72,56 @@ repo_apt_packages:
   - vlan
   - uuid-dev
 
+repo_yum_openstack_repo: https://repos.fedorapeople.org/repos/openstack/openstack-kilo/rdo-release-kilo-1.noarch.rpm
+
+repo_yum_packages:
+  - '@Development Tools'
+  - bridge-utils
+  - cmake
+  - device-mapper-event
+  - fcgi-devel
+  - git-all
+  - iptables
+  - lsyncd
+  - lynx
+  - nginx
+  - rsync
+  - sshpass
+  - tmux
+  - openldap
+  - openldap-devel
+  - libgsasl-devel
+  - openssl-libs
+  - openssl-devel
+  - libxslt-devel
+  - libpqxx-devel
+  - liberasurecode
+  - liberasurecode-devel
+  - libffi-devel
+  - sqlite-devel
+  - libxml2-devel
+  - libxslt-devel
+  - kmod-devel
+  - krb5-devel
+  - krb5-libs
+  - kmod-libs
+  - libvirt-devel
+  - mariadb-libs
+  - mariadb-devel
+  - lxc-devel
+  - lvm2
+  - python-devel
+  - sqlite
+  - swig
+  - vconfig
+  - libuuid-devel
+  - uuid-devel
+  - sudo
+
 repo_pip_packages:
   - cloudlib
   - PyCrypto
+  - pyeclib
   - python-memcached
   - PyYAML
   - requests

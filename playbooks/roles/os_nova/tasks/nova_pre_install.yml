@@ -49,7 +49,7 @@
     - { path: "{{ nova_system_home_folder }}/.ssh", mode: "0700" }
     - { path: "{{ nova_system_home_folder }}/cache/api" }
     - { path: "{{ nova_system_home_folder }}/instances" }
-    - { path: "/var/lock/nova" }
+    - { path: "/var/lock/nova", mode: "2755" }
     - { path: "/var/run/nova" }
   tags:
     - nova-dirs

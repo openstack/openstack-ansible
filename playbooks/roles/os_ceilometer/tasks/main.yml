@@ -16,8 +16,6 @@
 - include: ceilometer_pre_install.yml
 - include: ceilometer_install.yml
 - include: ceilometer_post_install.yml
-- include: ceilometer_upstart_init.yml
 
-- include: ceilometer_service_setup.yml
-  when: >
-    inventory_hostname == groups['ceilometer_api'][0]
+- name: Flush handlers
+  meta: flush_handlers

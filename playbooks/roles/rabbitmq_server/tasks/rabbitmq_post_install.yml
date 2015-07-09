@@ -24,6 +24,7 @@
 
 - name: Enable queue mirroring
   rabbitmq_policy:
+    node: "rabbit@{{ inventory_hostname }}"
     name: "HA"
     pattern: '^(?!amq\.).*'
     tags: "ha-mode=all"
@@ -48,6 +49,7 @@
 
 - name: Ensure rabbitmq user
   rabbitmq_user:
+    node: "rabbit@{{ inventory_hostname }}"
     user: "{{ rabbitmq_userid }}"
     password: "{{ rabbitmq_password }}"
     vhost: "/"
@@ -65,6 +67,7 @@
 # that the "guest" user is eradicated.
 - name: Ensure default rabbitmq guest user is removed
   rabbitmq_user:
+    node: "rabbit@{{ inventory_hostname }}"
     user: guest
     state: absent
   when: inventory_hostname == groups['rabbitmq_all'][0]
@@ -73,6 +76,7 @@
 
 - name: Ensure default rabbitmq guest user is removed
   rabbitmq_user:
+    node: "rabbit@{{ inventory_hostname }}"
     user: guest
     state: absent
   when: inventory_hostname != groups['rabbitmq_all'][0]

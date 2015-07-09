@@ -1,0 +1,31 @@
+# {{ ansible_managed }}
+
+{% if ansible_os_family | lower == "redhat" %}
+{% set program_bin = "/usr/bin" %}
+{% else %}
+{% set program_bin = "/usr/local/bin" %}
+{% endif %}
+
+[Unit]
+Description=OpenStack Service
+After=syslog.target
+After=network.target
+
+[Service]
+Type=simple
+User={{ system_user }}
+Group={{ system_group }}
+
+{% if program_override is defined %}
+ExecStart={{ program_override }} {{ program_config_options|default('') }}
+{% else %}
+ExecStart={{ program_bin }}/{{ program_binary|default(program_name) }} {{ program_config_options|default('') }}
+{% endif %}
+
+# Give a reasonable amount of time for the server to start up/shut down
+TimeoutSec=300
+Restart=on-failure
+RestartSec=150
+
+[Install]
+WantedBy=multi-user.target

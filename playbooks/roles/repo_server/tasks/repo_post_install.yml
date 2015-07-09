@@ -21,7 +21,7 @@
   tags:
     - pkg-repo-group
 
-- name: Create the nova system user
+- name: Create the repo system user
   user:
     name: "{{ repo_service_user_name }}"
     group: "{{ repo_service_group_name }}"
@@ -54,7 +54,8 @@
     - { path: "{{ repo_service_home_folder }}/repo/reports", state: "directory", owner: "{{ repo_service_user_name }}", group: "{{ repo_service_group_name }}", mode: "2755" }
     - { path: "/etc/lsyncd", state: "directory", mode: "0755" }
     - { path: "/var/log/lsyncd", state: "directory", mode: "0755" }
-    - { path: "/etc/nginx/sites-enabled/default", state: "absent", mode: "0644" }
+    - { path: "/etc/nginx/sites-enabled", state: "directory", mode: "0755" }
+    - { path: "/etc/nginx/sites-available", state: "directory", mode: "0755" }
   tags:
     - pkg-repo-dirs
 
@@ -68,21 +69,6 @@
     - { src: "openstack-slushee.vhost.j2", dest: "/etc/nginx/sites-available/openstack-slushee.vhost" }
   notify:
     - reload nginx
-  tags:
-    - pkg-repo-nginx
-    - pkg-repo-config
-
-- name: Change fcgiwrap GID/UID
-  lineinfile:
-    dest: "/etc/init.d/fcgiwrap"
-    regexp: "{{ item.regexp }}"
-    line: "{{ item.line }}"
-  with_items:
-    - { regexp: "^FCGI_SOCKET_OWNER=", line: 'FCGI_SOCKET_OWNER="{{ repo_service_user_name }}"' }
-    - { regexp: "^FCGI_SOCKET_GROUP=", line: 'FCGI_SOCKET_GROUP="{{ repo_service_group_name }}"' }
-  notify:
-    - reload nginx
-    - reload fcgiwrap
   tags:
     - pkg-repo-nginx
     - pkg-repo-config

@@ -17,19 +17,5 @@
 - include: neutron_install.yml
 - include: neutron_post_install.yml
 
-- include: neutron_db_setup.yml
-  when: >
-    inventory_hostname == groups['neutron_server'][0]
-
-- include: neutron_service_setup.yml
-  when: >
-    inventory_hostname == groups['neutron_all'][0]
-
-- include: neutron_l3_ha.yml
-  when: >
-    inventory_hostname in groups['neutron_agent']
-
-- include: neutron_upstart_init.yml
-
 - name: Flush handlers
   meta: flush_handlers

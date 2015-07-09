@@ -13,38 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Rsyslog apt repository
-  apt_repository:
-    repo: "{{ item.repo }}"
-    state: "{{ item.state }}"
-  with_items: rsyslog_client_apt_repos
-  when: rsyslog_client_apt_repos is defined
-  register: add_repos
-  until: add_repos|success
-  retries: 5
-  delay: 2
+- include: rsyslog_client_install_rhel.yml
+  when: ansible_os_family == "RedHat"
   tags:
-    - rsyslog-client-apt-repositories
+    - rsyslog-client-install-rhel
 
-- name: Update apt sources
-  apt:
-    update_cache: yes
-    cache_valid_time: 600
-  register: apt_update
-  until: apt_update|success
-  retries: 5
-  delay: 2
-  tags:
-    - rsyslog-client-apt-packages
-
-- name: Install rsyslog packages
-  apt:
-    pkg: "{{ item }}"
-    state: latest
-  register: install_packages
-  until: install_packages|success
-  retries: 5
-  delay: 2
-  with_items: rsyslog_client_apt_packages
-  tags:
-    - rsyslog-client-apt-packages
+- include: rsyslog_client_install_ubuntu.yml
+  when: ansible_os_family == "Debian"
+  tags: 
+    - rsyslog-client-install-ubuntu

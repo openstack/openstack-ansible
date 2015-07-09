@@ -39,7 +39,6 @@ openstack_host_kernel_modules:
   - iptable_mangle
   - iptable_nat
   - iscsi_tcp
-  - nbd
   - nf_conntrack
   - nf_conntrack_ipv4
   - nf_defrag_ipv4
@@ -48,6 +47,9 @@ openstack_host_kernel_modules:
   - scsi_dh
   - vhost_net
   - x_tables
+
+openstack_host_deb_kernel_modules:
+  - nbd
 
 ## Base packages
 openstack_host_apt_packages:
@@ -74,6 +76,27 @@ openstack_host_apt_packages:
   - vlan
   - wget
 
+openstack_host_yum_packages:
+  - bridge-utils
+  - '@Development Tools'
+  - curl
+  - device-mapper-event
+  - dstat
+  - htop
+  - iptables
+  - kmod-devel
+  - kmod
+  - lvm2
+  - python-devel
+  - rsync
+  - rsyslog
+  - sshpass
+  - sysstat
+  - sudo
+  - time
+  - vconfig
+  - wget
+
 # System control kernel tuning
 openstack_kernel_options:
   - { key: 'fs.inotify.max_user_watches', value: 36864 }
@@ -84,3 +107,6 @@ openstack_kernel_options:
   - { key: 'vm.dirty_background_ratio', value: 5 }
   - { key: 'vm.dirty_ratio', value: 10 }
   - { key: 'vm.swappiness', value: 5 }
+  - { key: 'net.bridge.bridge-nf-call-ip6tables', value: 0 }
+  - { key: 'net.bridge.bridge-nf-call-iptables', value: 0 }
+  - { key: 'net.bridge.bridge-nf-call-arptables', value: 0 }

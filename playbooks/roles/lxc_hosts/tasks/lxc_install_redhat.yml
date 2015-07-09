@@ -1,0 +1,185 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Install yum packages
+  yum:
+    pkg: "{{ item }}"
+    state: present
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 2
+  with_items: lxc_yum_packages
+  tags:
+    - lxc-yum-packages
+
+- name: Create base directories
+  file:
+    path: "{{ item }}"
+    state: "directory"
+    owner: "root"
+    group: "root"
+  with_items:
+    - /opt/lxc_embeded
+  tags:
+    - lxc-directories
+
+- name: download file with sha256 check
+  get_url: 
+    url: "https://linuxcontainers.org/downloads/lxc/lxc-1.0.7.tar.gz"
+    dest: "/opt/lxc_embeded/lxc-1.0.7.tar.gz"
+    validate_certs: false
+  register: source_download
+  tags:
+    - lxc-source
+    - lxc-source-download
+
+- name: Move lxc cached image into place
+  unarchive:
+    src: "/opt/lxc_embeded/lxc-1.0.7.tar.gz"
+    dest: "/opt/lxc_embeded/"
+    copy: "no"
+  when: source_download|changed
+  tags:
+    - lxc-source
+    - lxc-source-unarchive
+
+- name: Create new linked lib location
+  copy:
+    src: "lxc-x86_64.conf"
+    dest: "/etc/ld.so.conf.d/lxc-x86_64.conf"
+    mode: "0644"
+  tags:
+    - lxc-source
+    - lxc-ldconfig
+
+- name: Create python3 link
+  file:
+    src: /usr/bin/python3.4
+    dest: /usr/bin/python3
+    state: link
+  tags:
+    - lxc-source
+
+- name: Build and install LXC
+  shell: '{{ item }}'
+  args:
+    creates: /opt/lxc_embeded/bin/lxc-ls
+    chdir: /opt/lxc_embeded/lxc-1.0.7
+  environment:
+    PYTHONDEV_CFLAGS: "-I/usr/include/python3.4m"
+    PYTHONDEV_LIBS: "-lpython3.4m"
+  with_items:
+    - ./autogen.sh
+    - ./configure --prefix=/opt/lxc_embeded
+                  --libdir=/opt/lxc_embeded/x86_64-linux-gnu
+                  --libexecdir=/opt/lxc_embeded/x86_64-linux-gnu
+                  --with-rootfs-path=/opt/lxc_embeded/x86_64-linux-gnu/lxc
+                  --sysconfdir=/etc
+                  --localstatedir=/var
+                  --with-config-path=/var/lib/lxc
+                  --with-distro={{ ansible_distribution | lower }}
+                  --enable-seccomp
+                  --enable-python
+                  --enable-doc
+                  --enable-rpath
+                  --enable-selinux
+                  --enable-capabilities
+                  --enable-configpath-log
+                  --disable-tests
+                  --disable-lua
+    - make
+    - make install
+    - ldconfig -v
+  tags:
+    - lxc-source
+    - lxc-source-compile
+
+- name: Ensure embeded LXC is within the PATH
+  lineinfile:
+    dest: "{{ item.dest }}"
+    line: "{{ item.line }}"
+  with_items:
+    - { dest: "/etc/bashrc", line: "export PATH=/opt/lxc_embeded/bin:${PATH}" }
+  tags:
+    - lxc-source
+    - lxc-path
+
+- name: Replace centos template with upstream
+  get_url: 
+    url: "https://raw.githubusercontent.com/lxc/lxc/master/templates/lxc-centos.in"
+    dest: "/opt/lxc_embeded/share/lxc/templates/lxc-centos"
+    validate_certs: false
+  register: source_download
+  tags:
+    - lxc-template
+    - lxc-template-update
+
+- name: Remove sub system lock if found
+  file:
+    path: "{{ item }}"
+    state: "absent"
+    owner: "root"
+    group: "root"
+  with_items:
+    - /var/lock/subsys/lxc
+  tags:
+    - lxc-directories
+
+- name: Drop post up script
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner|default('root') }}"
+    group: "{{ item.group|default('root') }}"
+    mode: "0755"
+  with_items:
+    - { src: lxc-net-post-up-rhel.j2, dest: "/etc/sysconfig/network-scripts/ifup-post-{{ lxc_net_bridge }}" }
+  tags:
+    - lxc-post-up
+
+- name: Create networking post-up data
+  lineinfile:
+    dest: "{{ item.dest }}"
+    line: "{{ item.line }}"
+    insertbefore: "^exit\ 0$"
+  with_items:
+    - dest: "/etc/sysconfig/network-scripts/ifup-post"
+      line: ". /etc/sysconfig/network-scripts/ifup-post-{{ lxc_net_bridge }}"
+  tags:
+    - lxc-post-up
+
+- name: Drop post down script
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner|default('root') }}"
+    group: "{{ item.group|default('root') }}"
+    mode: "0755"
+  with_items:
+    - { src: lxc-net-post-down-rhel.j2, dest: "/etc/sysconfig/network-scripts/ifdown-post-{{ lxc_net_bridge }}" }
+  tags:
+    - lxc-post-down
+
+- name: Create networking post-down data
+  lineinfile:
+    dest: "{{ item.dest }}"
+    line: "{{ item.line }}"
+    insertbefore: "^exit\ 0$"
+  with_items:
+    - dest: "/etc/sysconfig/network-scripts/ifdown-post"
+      line: ". /etc/sysconfig/network-scripts/ifdown-post-{{ lxc_net_bridge }}"
+  tags:
+    - lxc-post-down

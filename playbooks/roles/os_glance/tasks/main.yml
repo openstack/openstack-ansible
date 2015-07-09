@@ -16,15 +16,6 @@
 - include: glance_pre_install.yml
 - include: glance_install.yml
 - include: glance_post_install.yml
-- include: glance_upstart_init.yml
-
-- include: glance_db_setup.yml
-  when: >
-    inventory_hostname == groups['glance_all'][0]
-
-- include: glance_service_setup.yml
-  when: >
-    inventory_hostname == groups['glance_all'][0]
 
 - name: Flush handlers
   meta: flush_handlers

@@ -13,6 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: rsyslog_server_pre_install.yml
-- include: rsyslog_server_install.yml
+- include: rsyslog_server_install_rhel.yml
+  when: ansible_os_family == "RedHat"
+  tags:
+    - rsyslog-install-rhel
+
+- include: rsyslog_server_install_ubuntu.yml
+  when: ansible_os_family == "Debian"
+  tags: 
+    - rsyslog-install-ubuntu
+
 - include: rsyslog_server_post_install.yml

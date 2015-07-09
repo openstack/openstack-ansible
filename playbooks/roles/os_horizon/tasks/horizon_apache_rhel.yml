@@ -1,0 +1,73 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Drop apache2 ports file
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "root"
+    group: "root"
+  with_items:
+    - { src: "horizon_apache_ports.conf.j2", dest: "/etc/httpd/conf.d/ports.conf" }
+    - { src: "openstack_dashboard.conf.j2", dest: "/etc/httpd/conf.d/openstack_dashboard.conf" }
+  notify:
+    - Restart Apache RHEL
+  tags:
+    - horizon-httpd
+
+- name: Remove listen items
+  lineinfile:
+    dest: "/etc/httpd/conf/httpd.conf"
+    regexp: "^Listen.*{{ item }}$"
+    state: "absent"
+  with_items: horizon_listen_ports
+  notify:
+    - Restart Apache RHEL
+  tags:
+    - horizon-httpd
+
+- name: Disable default apache site
+  file:
+    path: "{{ item }}"
+    state: "absent"
+  with_items:
+    - "/etc/httpd/conf.d/userdir.conf"
+    - "/etc/httpd/conf.d/welcome.conf"
+    - "/etc/httpd/conf.d/ssl.conf"
+  notify:
+    - Restart Apache RHEL
+  tags:
+    - horizon-httpd
+
+- name: Ensure Apache ServerName
+  lineinfile:
+    dest: "/etc/httpd/conf/httpd.conf"
+    line: "ServerName {{ inventory_hostname }}"
+  notify:
+    - Restart Apache RHEL
+  tags:
+    - horizon-httpd
+
+- name: Create system links
+  file:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    state: "link"
+  with_items:
+    - { src: "/etc/pki/tls/certs", dest: "/etc/ssl/certs" }
+    - { src: "/etc/pki/tls/private", dest: "/etc/ssl/private" }
+    - { src: "/var/log/httpd", dest: "/var/log/apache2" }
+  tags:
+    - galera-config

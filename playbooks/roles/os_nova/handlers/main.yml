@@ -13,11 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- name: Restart libvirtd
+  service:
+    name: "libvirtd"
+    state: "restarted"
+    pattern: "libvirtd"
+  when: ansible_os_family | lower == "redhat"
+
 - name: Restart libvirt-bin
   service:
     name: "libvirt-bin"
     state: "restarted"
     pattern: "libvirt-bin"
+  when: ansible_os_family | lower == "debian"
 
 - name: Restart nova services
   service:

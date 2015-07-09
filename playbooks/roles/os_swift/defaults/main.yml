@@ -29,6 +29,7 @@ swift_system_group_name: swift
 swift_system_shell: /bin/bash
 swift_system_comment: swift system user
 swift_system_home_folder: "/var/lib/{{ swift_system_user_name }}"
+swift_lock_directory: /var/lock/swift
 
 ## Auth token
 swift_authtoken_active: True
@@ -146,6 +147,22 @@ swift_apt_packages:
   - libffi-dev
   - openssh-server
   - python-dev
+  - rsync
+
+# NOTE: This was added to give the system the ability to install liberasurecode{-devel,}
+swift_yum_openstack_repo: https://repos.fedorapeople.org/repos/openstack/openstack-kilo/rdo-release-kilo-1.noarch.rpm
+
+swift_yum_packages:
+  - '@Development Tools'
+  - curl
+  - git
+  - liberasurecode
+  - liberasurecode-devel
+  - libffi-devel
+  - openssl-libs
+  - openssl-devel
+  - openssh-server
+  - python-devel
   - rsync
 
 swift_account_program_names:

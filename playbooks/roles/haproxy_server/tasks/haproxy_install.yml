@@ -13,44 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Update apt sources
-  apt:
-    update_cache: yes
-    cache_valid_time: 600
-  register: apt_update
-  until: apt_update|success
-  retries: 5
-  delay: 2
-  tags:
-    - haproxy-apt-packages
-
-- name: Install HAPRoxy Packages
-  apt:
-    pkg: "{{ item }}"
-    state: present
-  register: install_packages
-  until: install_packages|success
-  retries: 5
-  delay: 2
-  with_items: haproxy_apt_packages
-  tags:
-    - haproxy-apt-packages
-
-- name: Replace haproxy DEFAULT file
-  copy:
-    src: haproxy.default
-    dest: /etc/default/haproxy
-  tags:
-    - haproxy-config
-
-- name: Replace haproxy init script to allow conf.d
-  copy:
-    src: haproxy.sh
-    dest: /etc/init.d/haproxy
-    mode: "0755"
-  tags:
-    - haproxy-config
-
 - name: Create haproxy conf.d
   file:
     path: /etc/haproxy/conf.d

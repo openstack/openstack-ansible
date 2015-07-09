@@ -28,6 +28,7 @@ keystone_system_service_name: apache2
 keystone_system_shell: /bin/bash
 keystone_system_comment: keystone system user
 keystone_system_user_home: "/var/lib/{{ keystone_system_user_name }}"
+keystone_lock_directory: /var/lock/keystone
 
 keystone_rpc_backend: rabbit
 
@@ -169,6 +170,21 @@ keystone_apt_packages:
   - libldap2-dev
   - libsasl2-dev
   - libxslt1.1
+  - rsync
+
+keystone_yum_packages:
+  - cronie
+  - cronie-anacron
+  - git
+  - httpd
+  - httpd-tools
+  - libgsasl-devel
+  - libxslt-devel
+  - mod_ssl
+  - mod_wsgi
+  - openldap
+  - openldap-devel
+  - openssl
   - rsync
 
 # Common pip packages

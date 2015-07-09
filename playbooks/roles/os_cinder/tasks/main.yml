@@ -17,23 +17,5 @@
 - include: cinder_install.yml
 - include: cinder_post_install.yml
 
-- include: cinder_db_setup.yml
-  when: >
-    inventory_hostname == groups['cinder_all'][0]
-
-- include: cinder_service_setup.yml
-  when: >
-    inventory_hostname == groups['cinder_all'][0]
-
-- include: cinder_upstart_init.yml
-
 - name: Flush handlers
   meta: flush_handlers
-
-- include: cinder_backends.yml
-  when: >
-    inventory_hostname in groups['cinder_volume']
-
-- include: cinder_lvm_config.yml
-  when: >
-    inventory_hostname in groups['cinder_volume']

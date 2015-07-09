@@ -45,9 +45,21 @@
     - "/openstack/{{ inventory_hostname }}"
     - "/openstack/backup/{{ inventory_hostname }}"
     - "/openstack/log/{{ inventory_hostname }}"
+    - "/var/lib/lxc/{{ inventory_hostname }}"
   delegate_to: "{{ physical_host }}"
   tags:
     - lxc-container-directories
+
+- name: LXC autodev setup
+  template:
+    src: "autodev.j2"
+    dest: "/var/lib/lxc/{{ inventory_hostname }}/autodev"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+  delegate_to: "{{ physical_host }}"
+  tags:
+    - lxc-container-autodev
 
 - name: Create container
   lxc_container:
@@ -61,10 +73,21 @@
     fs_size: "{{ properties.container_fs_size|default(lxc_container_fs_size) }}"
     fs_type: "{{ properties.container_fs_type|default(lxc_container_fs_type) }}"
     vg_name: "{{ properties.container_vg_name|default(lxc_container_vg_name) }}"
-    template_options: "{{ lxc_container_template_options }}"
     container_command: |
-      echo -e '{{ lxc_container_default_interfaces }}' | tee /etc/network/interfaces
+      ln -s /usr/lib/systemd/system/poweroff.target /etc/systemd/system/sigpwr.target || true
+      ln -s /dev/null /etc/systemd/system/systemd-udevd.service || true
+      ln -s /dev/null /etc/systemd/system/systemd-udevd-control.socket || true
+      ln -s /dev/null /etc/systemd/system/systemd-udevd-kernel.socket || true
+      ln -s /dev/null /etc/systemd/system/proc-sys-fs-binfmt_misc.automount || true
+    container_config:
+      - "lxc.autodev=1"
+      - "lxc.pts=1024"
+      - "lxc.kmsg=0"
+      - "lxc.hook.autodev=/var/lib/lxc/{{ inventory_hostname }}/autodev"
+    template_options: "{{ lxc_container_template_options }}"
   delegate_to: "{{ physical_host }}"
+  environment:
+    LXC_CACHE_PATH: "{{ lxc_container_cache_path }}"
   tags:
     - lxc-container-create
 
@@ -75,6 +98,7 @@
       mkdir -p /var/backup
       mkdir -p /var/log/{{ properties.service_name }}
     container_config:
+      - "lxc.kmsg=0"
       - "lxc.mount.entry=/openstack/backup/{{ inventory_hostname }} var/backup none defaults,bind,rw 0 0"
       - "lxc.mount.entry=/openstack/log/{{ inventory_hostname }} var/log/{{ properties.service_name }} none defaults,bind,rw 0 0"
       - "lxc.aa_profile=lxc-openstack"
@@ -137,19 +161,6 @@
   tags:
     - lxc-container-key
 
-- name: Container network interfaces
-  lxc_container:
-    name: "{{ inventory_hostname }}"
-    container_command: |
-      if [ ! -d "/etc/network/interfaces.d" ];then
-        mkdir -p /etc/network/interfaces.d
-      fi
-      echo -e '{{ lxc_container_interface }}' | tee /etc/network/interfaces.d/{{ item.value.interface }}.cfg
-  with_dict: container_networks
-  delegate_to: "{{ physical_host }}"
-  tags:
-    - lxc-container-networks
-
 - name: LXC host config for container networks
   template:
     src: "container-interface.ini.j2"
@@ -178,22 +189,6 @@
   tags:
     - lxc-container-networks
 
-# Flush the handlers to ensure the container and networking is online.
-- meta: flush_handlers
-
-# Resets the container user's password using lxc_container because Python2.7
-#  may not be installed at this point.
-- name: Force container user password set
-  lxc_container:
-    name: "{{ inventory_hostname }}"
-    container_command: |
-      getent passwd "{{ lxc_container_user_name }}" &&
-      echo "{{ lxc_container_user_name }}:{{ lxc_container_user_password }}" | chpasswd
-  delegate_to: "{{ physical_host }}"
-  no_log: True
-  tags:
-    - lxc-container-user-password-regen
-
 # Setup proxy configs, this is done here to ensure that we have our container proxy setup
 #  prior to running online commands. This is using lxc_container because python2.7 may not be
 #  installed at this point.
@@ -210,57 +205,15 @@
   tags:
     - lxc-container-proxy
 
-# Uses lxc_container because the repos need to be available before python2.7 is installed
-#  and python2.7 may not be installed at this point.
-- name: Create main apt repos
-  lxc_container:
-    name: "{{ inventory_hostname }}"
-    container_command: |
-      # Configure defined apt-repos
-      rm /etc/apt/sources.list
-      echo '# Sources created by the ansible' | tee /etc/apt/sources.list
-      echo 'deb {{ lxc_container_template_main_apt_repo }} {{ lxc_container_release }} main restricted universe multiverse' | tee -a /etc/apt/sources.list
-      echo 'deb {{ lxc_container_template_main_apt_repo }} {{ lxc_container_release }}-updates main restricted universe multiverse' | tee -a /etc/apt/sources.list
-      echo 'deb {{ lxc_container_template_main_apt_repo }} {{ lxc_container_release }}-backports main restricted universe multiverse' | tee -a /etc/apt/sources.list
-      echo 'deb {{ lxc_container_template_security_apt_repo }} {{ lxc_container_release }}-security main restricted universe multiverse' | tee -a /etc/apt/sources.list
-      for i in {1..3};do
-        timeout 60 sh -c "/usr/bin/apt-get update && /usr/bin/apt-key update"
-        if [ "$?" == 0 ];then
-          break
-        else
-          if [ ! "$i" == "3" ];then
-            echo "Failure to update on attempt $i retrying..."
-            /usr/bin/apt-get clean
-            sleep 2
-          else
-            echo 'Failed to update'
-            exit 99
-          fi
-        fi
-      done
-  delegate_to: "{{ physical_host }}"
+- include: container_create_ubuntu.yml
+  when: properties.container_template|default(lxc_container_template) == "ubuntu"
   tags:
-    - lxc-container-sources
+    - lxc-container-ubuntu
 
-# Update the container and ensure that its all patched. This is using lxc_container
-#  because python2.7 may not be installed at this point.
-- name: Ensure container is updated
-  lxc_container:
-    name: "{{ inventory_hostname }}"
-    container_command: |
-      apt-get -y upgrade
-  delegate_to: "{{ physical_host }}"
+- include: container_create_centos.yml
+  when: properties.container_template|default(lxc_container_template) == "centos"
   tags:
-    - lxc-container-upgrade
+    - lxc-container-rhel
 
-# Uses lxc_container because python2.7 may not be installed within the container at this point.
-- name: Ensure python is installed and is default 2.7
-  lxc_container:
-    name: "{{ inventory_hostname }}"
-    container_command: |
-      apt-get -y install python2.7
-      rm /usr/bin/python
-      ln -s /usr/bin/python2.7 /usr/bin/python
-  delegate_to: "{{ physical_host }}"
-  tags:
-    - lxc-container-python
+# Flush the handlers to ensure the container and networking is online.
+- meta: flush_handlers

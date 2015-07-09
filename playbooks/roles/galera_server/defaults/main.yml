@@ -44,8 +44,12 @@ galera_wsrep_node_incoming_address: "{{ galera_wsrep_address }}"
 galera_wsrep_slave_threads: "{{ ansible_processor_vcpus }}"
 galera_wsrep_retry_autocommit: 3
 galera_wsrep_debug: 0
+galera_wsrep_sst_method: xtrabackup-v2
 galera_wsrep_provider_options:
   - { option: "gcache.size", value: "{{ galera_gcache_size }}" }
+
+# xtrabackup parallel/compression/sync threads
+galera_xtrabackup_threads: 4
 
 # Galera GPG Keys
 galera_gpg_keys:
@@ -85,6 +89,19 @@ galera_apt_packages:
   - rsync
   - xtrabackup
   - socat
+
+galera_yum_packages:
+  - which
+  - MariaDB-client
+  - MariaDB-Galera-server
+  - MariaDB-shared
+  - percona-xtrabackup
+  - percona-toolkit
+  - rsync
+  - socat
+  - qpress
+
+galera_xtrabackup: "http://www.percona.com/downloads/percona-release/redhat/0.1-3/percona-release-0.1-3.noarch.rpm"
 
 galera_debconf_items:
   - question: "mysql-server/root_password"

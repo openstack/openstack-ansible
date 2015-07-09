@@ -18,6 +18,18 @@
   max_fail_percentage: 20
   user: root
   pre_tasks:
+    - name: Create modules dir
+      file:
+        path: "{{ item.path }}"
+        state: directory
+      with_items:
+        - { path: "/lib/modules" }
+      when: >
+        (is_metal == false or is_metal == "False") and
+        inventory_hostname in groups['neutron_agent']
+      tags:
+        - neutron-modules
+        - neutron-modules-dirs
     - name: Neutron extra lxc config
       lxc_container:
         name: "{{ container_name }}"
@@ -28,7 +40,9 @@
           - "lxc.cgroup.devices.allow=a *:* rmw"
           - "lxc.mount.entry=/lib/modules lib/modules none bind 0 0"
       delegate_to: "{{ physical_host }}"
-      when: is_metal == false or is_metal == "False"
+      when: >
+        (is_metal == false or is_metal == "False") and
+        inventory_hostname in groups['neutron_agent']
       tags:
         - neutron-container-setup
     - name: Flush net cache

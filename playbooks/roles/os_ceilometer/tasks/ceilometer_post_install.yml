@@ -45,3 +45,9 @@
   tags:
     - ceilometer-config
     - ceilometer-policy-update
+
+- include: ceilometer_init.yml
+
+- include: ceilometer_service_setup.yml
+  when: >
+    inventory_hostname == groups['ceilometer_api'][0]

@@ -1,4 +1,9 @@
 # {{ ansible_managed }}
 
-# Defaults:{{ nova_system_user_name }}!requiretty
-{{ nova_system_user_name }} ALL = (root) NOPASSWD: /usr/local/bin/{{ nova_service_name }}-rootwrap
+{% if ansible_os_family | lower == "redhat" %}
+{% set program_bin = "/usr/bin" %}
+{% else %}
+{% set program_bin = "/usr/local/bin" %}
+{% endif %}
+
+{{ nova_system_user_name }} ALL = (root) NOPASSWD: {{ program_bin }}/{{ nova_service_name }}-rootwrap

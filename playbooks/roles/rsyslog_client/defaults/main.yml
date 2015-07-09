@@ -19,6 +19,9 @@
 rsyslog_client_apt_packages:
   - rsyslog
 
+rsyslog_client_yum_packages:
+  - rsyslog
+
 rsyslog_client_spool_directory: /var/spool/rsyslog
 
 # Set the `rsyslog_client_log_dir` variable in to override log file

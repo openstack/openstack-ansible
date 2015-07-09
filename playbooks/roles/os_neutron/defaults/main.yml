@@ -27,6 +27,7 @@ neutron_system_group_name: neutron
 neutron_system_comment: neutron system user
 neutron_system_shell: /bin/false
 neutron_system_home_folder: "/var/lib/{{ neutron_system_user_name }}"
+neutron_lock_directory: /var/lock/neutron
 
 ## DB
 neutron_galera_user: neutron
@@ -216,6 +217,7 @@ neutron_rpc_backend: rabbit
 #  "get_subnet": "rule:admin_or_owner or rule:shared"
 
 neutron_apt_packages:
+  - bridge-utils
   - conntrackd
   - conntrack
   - dnsmasq-base
@@ -224,6 +226,19 @@ neutron_apt_packages:
   - iputils-arping
   - keepalived
   - libpq-dev
+
+neutron_yum_packages:
+  - bridge-utils
+  - cronie
+  - cronie-anacron
+  - conntrack-tools
+  - dnsmasq
+  - dnsmasq-utils
+  - ipset
+  - iputils
+  - keepalived
+  - libxslt-devel
+  - libpqxx-devel
 
 neutron_pip_packages:
   - configobj

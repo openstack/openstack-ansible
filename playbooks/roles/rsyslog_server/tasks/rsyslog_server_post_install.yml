@@ -28,6 +28,7 @@
     owner: "root"
     group: "root"
   with_items:
+    - { src: "00-server.conf.j2", dest: "/etc/rsyslog.d/00-server.conf" }
     - { src: "rsyslog.conf.j2", dest: "/etc/rsyslog.conf" }
     - { src: "os_aggregate_storage.j2", dest: "/etc/logrotate.d/os_aggregate_storage" }
   tags:

@@ -18,13 +18,23 @@
   max_fail_percentage: 20
   user: root
   pre_tasks:
+    - name: Create images dir
+      file:
+        path: "{{ item.path }}"
+        state: directory
+      with_items:
+        - { path: "/openstack/{{ inventory_hostname }}/images" }
+      delegate_to: "{{ physical_host }}"
+      tags:
+        - glance-images
+        - glance-images-dirs
     - name: Glance extra lxc config
       lxc_container:
-        name: "{{ container_name }}"
+        name: "{{ inventory_hostname }}"
         container_command: |
           [[ ! -d "/var/lib/glance/images" ]] && mkdir -p "/var/lib/glance/images"
         container_config:
-          - "lxc.mount.entry=/openstack/{{ container_name }} var/lib/glance/images none bind 0 0"
+          - "lxc.mount.entry=/openstack/{{ inventory_hostname }}/images var/lib/glance/images none bind 0 0"
       delegate_to: "{{ physical_host }}"
       when: is_metal == false or is_metal == "False"
       tags:
@@ -44,7 +54,7 @@
         - glance-ssh-wait
     - name: Sort the rabbitmq servers
       dist_sort:
-        value_to_lookup: "{{ container_name }}"
+        value_to_lookup: "{{ inventory_hostname }}"
         ref_list: "{{ groups['glance_all'] }}"
         src_list: "{{ rabbitmq_servers }}"
       register: servers
@@ -86,5 +96,5 @@
         - "system-crontab-coordination"
   vars:
     glance_galera_address: "{{ internal_lb_vip_address }}"
-    ansible_hostname: "{{ container_name }}"
+    ansible_hostname: "{{ inventory_hostname }}"
     is_metal: "{{ properties.is_metal|default(false) }}"

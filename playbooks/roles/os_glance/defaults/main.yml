@@ -31,6 +31,7 @@ glance_system_group_name: glance
 glance_system_shell: /bin/false
 glance_system_comment: glance system user
 glance_system_user_home: "/var/lib/{{ glance_system_user_name }}"
+glance_lock_directory: /var/lock/glance
 
 glance_flavor: "keystone+cachemanagement"
 glance_registry_host: "{{ internal_lb_vip_address }}"
@@ -139,6 +140,14 @@ glance_apt_packages:
   - rsync
   - git
   - nfs-common
+
+glance_yum_packages:
+  - cronie
+  - cronie-anacron
+  - rpcbind
+  - rsync
+  - git
+  - nfs-utils
 
 # Common pip packages
 glance_pip_packages:

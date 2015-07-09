@@ -1,0 +1,58 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Update apt sources
+  apt:
+    update_cache: yes
+    cache_valid_time: 600
+  register: apt_update
+  until: apt_update|success
+  retries: 5
+  delay: 2
+  tags:
+    - neutron-apt-packages
+
+- name: Install apt packages
+  apt:
+    pkg: "{{ item }}"
+    state: latest
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 2
+  with_items: neutron_apt_packages
+  tags:
+    - neutron-apt-packages
+
+- name: Drop iptables checksum fix
+  copy:
+    src: "post-up-checksum-rules"
+    dest: "/etc/network/if-up.d/post-up-checksum-rules"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+  when: >
+    inventory_hostname in groups['neutron_linuxbridge_agent']
+  tags:
+    - neutron-config
+    - neutron-checksum-fix
+
+- name: Run iptables checksum fix
+  command: /etc/network/if-up.d/post-up-checksum-rules
+  when: >
+    inventory_hostname in groups['neutron_linuxbridge_agent']
+  tags:
+    - neutron-config
+    - neutron-checksum-fix

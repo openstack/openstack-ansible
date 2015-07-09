@@ -18,11 +18,25 @@
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
   with_items:
+    - { src: "lsyncd.lua.j2", dest: "/etc/lsyncd.conf" }
+  notify:
+    - reload lsyncd
+  when: >
+    groups['pkg_repo']|length > 1 and ansible_os_family == "RedHat"
+  tags:
+    - repo-lsyncd
+    - repo-config
+
+- name: Drop lsyncd configuration file
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items:
     - { src: "lsyncd.lua.j2", dest: "/etc/lsyncd/lsyncd.conf.lua" }
   notify:
     - reload lsyncd
   when: >
-    groups['pkg_repo']|length > 1
+    groups['pkg_repo']|length > 1 and ansible_os_family == "Debian"
   tags:
     - repo-lsyncd
     - repo-config

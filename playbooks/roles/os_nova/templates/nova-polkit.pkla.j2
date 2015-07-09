@@ -1,0 +1,8 @@
+# {{ ansible_managed }}
+
+[Allow {{ nova_system_user_name }} libvirt management permissions]
+Identity=unix-user:{{ nova_system_user_name }}
+Action=org.libvirt.unix.manage
+ResultAny=yes
+ResultInactive=yes
+ResultActive=yes

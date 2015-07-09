@@ -29,5 +29,5 @@ galaxy_info:
     - development
     - openstack
 dependencies:
-  - apt_package_pinning
+  - { role: apt_package_pinning, when: ansible_os_family == "Debian" }
   - pip_install

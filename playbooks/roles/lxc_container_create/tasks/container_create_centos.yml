@@ -1,0 +1,71 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Create base container network
+  lxc_container:
+    name: "{{ inventory_hostname }}"
+    container_command: |
+      echo -e '{{ lxc_container_default_interfaces_centos }}' | tee /etc/sysconfig/network-scripts/ifcfg-eth0
+  delegate_to: "{{ physical_host }}"
+  tags:
+    - lxc-container-create
+
+- name: Container network interfaces
+  lxc_container:
+    name: "{{ inventory_hostname }}"
+    container_command: |
+      echo -e '{{ lxc_container_interface_centos }}' | tee /etc/sysconfig/network-scripts/ifcfg-{{ item.value.interface }}
+  with_dict: container_networks
+  delegate_to: "{{ physical_host }}"
+  tags:
+    - lxc-container-networks
+
+# Uses lxc_container because python2.7 may not be installed within the container at this point.
+- name: Ensure python is installed and is default 2.7
+  lxc_container:
+    name: "{{ inventory_hostname }}"
+    container_command: |
+      yum install -y python
+      rm /usr/bin/python
+      ln -s /usr/bin/python2.7 /usr/bin/python
+  delegate_to: "{{ physical_host }}"
+  tags:
+    - lxc-container-python
+
+# Resets the container user's password using lxc_container because Python2.7
+#  may not be installed at this point.
+- name: Force container user password set
+  lxc_container:
+    name: "{{ inventory_hostname }}"
+    container_command: |
+      getent passwd "{{ lxc_container_user_name }}" &&
+      echo "root:{{ lxc_container_user_password }}" | chpasswd
+      chage -d -1 root
+  delegate_to: "{{ physical_host }}"
+  no_log: True
+  tags:
+    - lxc-container-user-password-regen
+
+# Install sudo and ensure that there no default tty set
+- name: Remove sudoers tty requirement
+  lxc_container:
+    name: "{{ inventory_hostname }}"
+    container_command: |
+      yum install -y sudo
+      sed -i.bak '/Defaults.*requiretty$/d' /etc/sudoers
+  delegate_to: "{{ physical_host }}"
+  no_log: True
+  tags:
+    - lxc-container-no-tty

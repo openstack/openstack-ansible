@@ -15,15 +15,21 @@
 
 - include: galera_pre_install.yml
 - include: galera_install.yml
-- include: galera_post_install.yml
 
 - include: galera_bootstrap.yml
   when: inventory_hostname == groups['galera_all'][0]
+  tags:
+    - galera-bootstrap
+
 - include: galera_setup.yml
   when: inventory_hostname == groups['galera_all'][0]
+  tags:
+    - galera-setup
 
 - include: galera_add_node.yml
   when: inventory_hostname != groups['galera_all'][0]
+  tags:
+    - galera-add-node
 
 - name: Flush handlers
   meta: flush_handlers

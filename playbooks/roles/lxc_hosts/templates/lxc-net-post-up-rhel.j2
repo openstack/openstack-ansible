@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+if [ "${DEVICE}" == "{{ lxc_net_bridge }}" ];then 
+  if [ "{{ lxc_net_nat }}" == "True" ];then
+    /usr/local/bin/lxc-system-manage iptables-create
+    /usr/local/bin/lxc-system-manage dnsmasq-start || true
+  fi
+fi

@@ -27,6 +27,7 @@
         update_cache: yes
         cache_valid_time: 600
       register: apt_update
+      when: ansible_os_family == "Debian"
       until: apt_update|success
       retries: 5
       delay: 2
@@ -37,12 +38,25 @@
         pkg: "{{ item }}"
         state: latest
       register: install_packages
+      when: ansible_os_family == "Debian"
       until: install_packages|success
       retries: 5
       delay: 2
       with_items: utility_apt_packages
       tags:
         - utility-apt-packages
+    - name: Install yum packages
+      yum:
+        name: "{{ item }}"
+        state: latest
+      register: install_packages
+      when: ansible_os_family == "RedHat"
+      until: install_packages|success
+      retries: 5
+      delay: 5
+      with_items: utility_yum_packages
+      tags:
+        - utility-yum-packages
     - name: Install pip packages
       pip:
         name: "{{ item }}"
@@ -70,6 +84,10 @@
     ansible_ssh_host: "{{ container_address }}"
     utility_apt_packages:
       - openjdk-7-jre
+      - git
+    utility_yum_packages:
+      - java-1.8.0-openjdk
+      - git
     utility_pip_packages:
       - python-openstackclient
       - python-cinderclient

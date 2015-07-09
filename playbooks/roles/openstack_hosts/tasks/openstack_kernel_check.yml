@@ -13,13 +13,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- name: Check for vxlan
+  command: modprobe vxlan
+  failed_when: false
+  register: vxlan_check_kernel
+  tags:
+    - openstack-host-kernel-check
+
 - name: Check Kernel Variant
   fail:
     msg: >
       Wrong kernel Variant found
       [ {{ ansible_kernel.split('-')[2] }} != generic ]
       Resolve this issue before continuing.
-  when: ansible_kernel.split('-')[2] != 'generic'
+  when: >
+    (ansible_os_family == "Debian" and ansible_kernel.split('-')[2] != 'generic') or
+    vxlan_check_kernel.rc == 1
   tags:
     - openstack-host-kernel-check
 
@@ -29,6 +38,8 @@
       Wrong kernel Version found
       [ {{ ansible_kernel }} < {{ openstack_host_required_kernel }} ]
       Resolve this issue before continuing.
-  when: ansible_kernel | version_compare(openstack_host_required_kernel, '<')
+  when: >
+    (ansible_os_family == "Debian" and ansible_kernel | version_compare(openstack_host_required_kernel, '<')) or
+    vxlan_check_kernel.rc == 1
   tags:
     - openstack-host-kernel-check

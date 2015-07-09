@@ -58,6 +58,7 @@
     - { path: "{{ ceilometer_system_user_home }}" }
     - { path: "{{ ceilometer_system_user_home }}/.ssh", mode: "0700" }
     - { path: "/var/cache/ceilometer", mode: "0700" }
+    - { path: "/var/lock/ceilometer", mode: "2755" }
   tags:
     - ceilometer-dirs
 

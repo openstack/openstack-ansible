@@ -26,6 +26,7 @@ horizon_system_group_name: www-data
 horizon_system_shell: /bin/false
 horizon_system_comment: horizon system user
 horizon_system_user_home: "/var/lib/{{ horizon_system_user_name }}"
+horizon_lock_directory: /var/lock/horizon
 
 ## Service Type and Data
 horizon_service_region: RegionOne
@@ -44,7 +45,7 @@ horizon_session_timeout: 1800
 horizon_help_url: http://docs.openstack.org
 
 ## Installation directories
-horizon_lib_dir: /usr/local/lib/python2.7/dist-packages
+horizon_lib_dir: "{% if ansible_os_family | lower == 'redhat' %}/usr/lib/python2.7/site-packages/{% else %}/usr/local/lib/python2.7/dist-packages{% endif %}"
 
 horizon_endpoint_type: internalURL
 
@@ -93,6 +94,21 @@ horizon_apt_packages:
   - libssl-dev
   - libxslt1.1
   - openssl
+
+horizon_yum_packages:
+  - cronie
+  - cronie-anacron
+  - git
+  - httpd
+  - httpd-tools
+  - mod_ssl
+  - mod_wsgi
+  - openldap
+  - openldap-devel
+  - openssl
+  - libgsasl-devel
+  - libxslt-devel
+  - rsync
 
 horizon_pip_packages:
   - django-appconf

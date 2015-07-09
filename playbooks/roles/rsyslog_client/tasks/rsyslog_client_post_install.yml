@@ -32,6 +32,18 @@
   tags:
     - rsyslog-client-config
 
+- name: Write base configs
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "root"
+    group: "root"
+  with_items:
+    - { src: "os_aggregate_storage.j2", dest: "/etc/logrotate.d/os_aggregate_storage" }
+    - { src: "rsyslog.conf.j2", dest: "/etc/rsyslog.conf" }
+  tags:
+    - rsyslog-client-config
+
 - name: Find all log files
   shell: |
     find -L '{{ rsyslog_client_log_dir }}' -type f -name '*.log'
@@ -49,8 +61,9 @@
     group: "root"
   with_items:
     - { src: "99-rsyslog.conf.j2", dest: "/etc/rsyslog.d/{{ rsyslog_client_config_name }}" }
-    - { src: "os_aggregate_storage.j2", dest: "/etc/logrotate.d/os_aggregate_storage" }
-    - { src: "rsyslog.conf.j2", dest: "/etc/rsyslog.conf" }
+  when: >
+    log_files.stdout_lines is defined or
+    (rsyslog_client_log_files is defined and rsyslog_client_log_files)
   tags:
     - rsyslog-client-config
 

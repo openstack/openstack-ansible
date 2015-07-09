@@ -26,6 +26,7 @@ ceilometer_system_group_name: ceilometer
 ceilometer_system_shell: /bin/false
 ceilometer_system_comment: ceilometer system user
 ceilometer_system_user_home: "/var/lib/{{ ceilometer_system_user_name }}"
+ceilometer_lock_directory: /var/lock/ceilometer
 
 ## DB info
 ceilometer_database_name: ceilometer
@@ -72,6 +73,14 @@ ceilometer_apt_packages:
   - rpcbind
   - rsync
   - git
+
+ceilometer_yum_packages:
+  - cronie
+  - cronie-anacron
+  - rpcbind
+  - rsync
+  - git
+  - libxslt-devel
 
 # Common pip packages
 ceilometer_pip_packages:

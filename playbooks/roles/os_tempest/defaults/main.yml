@@ -84,6 +84,14 @@ tempest_requires_pip_packages:
   - python-tuskarclient
   - virtualenv
 
+tempest_apt_packages:
+  - build-essential
+  - python-dev
+
+tempest_yum_packages:
+  - '@Development Tools'
+  - python-devel
+
 tempest_pip_packages:
   - fixtures
   - nose

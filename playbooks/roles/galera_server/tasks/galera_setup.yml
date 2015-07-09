@@ -15,6 +15,9 @@
 
 - name: Create galera users
   mysql_user:
+    login_user: "{{ galera_root_user }}"
+    login_password: "{{ galera_root_password }}"
+    login_host: "{{ ansible_ssh_host }}"
     name: "{{ item.name }}"
     host: "{{ item.host }}"
     password: "{{ item.password }}"
@@ -26,11 +29,6 @@
       password: "{{ galera_root_password }}"
       priv: "*.*:ALL,GRANT"
       state: present
-    - name: "{{ galera_root_user }}"
-      host: "localhost"
-      password: "{{ galera_root_password }}"
-      priv: "*.*:ALL"
-      state: absent
     - name: "{{ galera_monitoring_user }}"
       host: '%'
       password: "{{ galera_monitoring_user_password }}"

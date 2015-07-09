@@ -43,6 +43,7 @@ heat_system_group_name: heat
 heat_system_comment: heat system user
 heat_system_shell: /bin/false
 heat_system_home_folder: "/var/lib/{{ heat_system_user_name }}"
+heat_lock_directory: /var/lock/heat
 
 ## Default domain
 heat_project_domain_id: default
@@ -141,6 +142,10 @@ heat_plugin_dirs:
 heat_apt_packages:
   - rsync
   - libxslt1.1
+
+heat_yum_packages:
+  - rsync
+  - libxslt-devel
 
 heat_pip_packages:
   - keystonemiddleware

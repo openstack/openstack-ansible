@@ -29,7 +29,9 @@
   until: memcache_keys|success
   retries: 5
   delay: 2
-  notify: Restart apache2
+  notify:
+    - Restart apache2
+    - Restart Apache RHEL
   tags:
     - horizon-key
     - horizon-key-distribute

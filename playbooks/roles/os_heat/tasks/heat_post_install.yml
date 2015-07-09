@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- include: heat_domain_setup.yml
+  when: >
+    inventory_hostname == groups['heat_all'][0]
+
 - name: Generate heat Config
   template:
     src: "{{ item.src }}"
@@ -56,3 +60,13 @@
     - Restart heat services
   tags:
     - heat-config
+
+- include: heat_db_setup.yml
+  when: >
+    inventory_hostname == groups['heat_all'][0]
+
+- include: heat_service_setup.yml
+  when: >
+    inventory_hostname == groups['heat_all'][0]
+
+- include: heat_init.yml

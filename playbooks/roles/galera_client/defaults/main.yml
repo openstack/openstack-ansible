@@ -35,6 +35,13 @@ galera_client_apt_packages:
   - mariadb-client
   - xtrabackup
 
+galera_client_yum_packages:
+  - MariaDB-client
+  - MariaDB-shared
+  - percona-xtrabackup
+
+galera_client_xtrabackup: "http://www.percona.com/downloads/percona-release/redhat/0.1-3/percona-release-0.1-3.noarch.rpm"
+
 galera_client_pip_packages:
   - MySQL-python
   - python-memcached

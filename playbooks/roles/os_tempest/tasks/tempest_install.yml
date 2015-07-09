@@ -13,6 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
+- include: tempest_install_rhel.yml
+  when: ansible_os_family == "RedHat"
+  tags:
+    - tempest-install-rhel
+
+- include: tempest_install_ubuntu.yml
+  when: ansible_os_family == "Debian"
+  tags: 
+    - tempest-install-ubuntu
+
 - name: Install required pip packages
   pip:
     name: "{{ item }}"

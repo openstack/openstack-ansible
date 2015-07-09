@@ -1,0 +1,18 @@
+# {{ ansible_managed }}
+
+{% if rsyslog_server_udp_reception == true %}
+# provides UDP syslog reception
+$ModLoad imudp
+$UDPServerRun {{ rsyslog_server_udp_port }}
+{% endif %}
+
+{% if rsyslog_server_tcp_reception == true %}
+# provides TCP syslog reception
+$ModLoad imtcp
+$InputTCPServerRun {{ rsyslog_server_tcp_port }}
+{% endif %}
+
+$template DDF, "{{ rsyslog_server_storage_directory }}/%hostname%/%programname%.log"
+if \
+$source != 'logsrv' \
+then -?DDF

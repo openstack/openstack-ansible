@@ -100,6 +100,9 @@ if [ "${FLUSH_IPTABLES}" == "yes" ]; then
   iptables -P INPUT ACCEPT
   iptables -P FORWARD ACCEPT
   iptables -P OUTPUT ACCEPT
+  if [ -f "/etc/redhat-release" ];then
+    service iptables save
+  fi
 fi
 
 # Ensure that the https apt transport is available before doing anything else
@@ -185,6 +188,9 @@ elif [ -f "/etc/redhat-release" ];then
                  xfsprogs
   # Copy the basic aio network interfaces over
   cp -R etc/network/network-scripts/* /etc/sysconfig/network-scripts/
+
+  sed -i '/^exit.*0$/i . /etc/sysconfig/network-scripts/postup-veth-br-vlan-2-eth12.sh' /etc/sysconfig/network-scripts/ifup-post
+  sed -i '/^exit.*0$/i . /etc/sysconfig/network-scripts/postdown-veth-br-vlan-2-eth12.sh' /etc/sysconfig/network-scripts/ifdown-post
 
   # Bring up the new interfaces
   for i in $(awk -F'=' '/^DEVICE/ {print $2}' /etc/sysconfig/network-scripts/ifcfg-*); do
@@ -314,7 +320,7 @@ fi
 # Move the *.aio files into place for use within the AIO build.
 cp -R etc/openstack_deploy /etc/
 for i in $(find /etc/openstack_deploy/ -type f -name '*.aio');do
-  rename 's/\.aio$//g' $i
+  mv $i $(echo $i | sed 's/\.aio$//g')
 done
 
 # Ensure the conf.d directory exists
@@ -331,25 +337,41 @@ sed -i "s/external_lb_vip_address:.*/external_lb_vip_address: ${PUBLIC_ADDRESS}/
 
 if [ ${DEPLOY_CEILOMETER} ]; then
   # Install mongodb on the aio1 host
+if grep -qi ubuntu /etc/lsb-release; then
   apt-get install mongodb-server mongodb-clients python-pymongo -y
-  # Change bind_ip to management ip
-  sed -i "s/^bind_ip.*/bind_ip = 172.29.236.100/" /etc/mongodb.conf
-  # Asserting smallfiles key
-  sed -i "s/^smallfiles.*/smallfiles = true/" /etc/mongodb.conf
-  service mongodb restart
-  # Giving the service a second..
-  sleep 5
-  #Adding the ceilometer database
-  mongo --host 172.29.236.100 --eval '
-    db = db.getSiblingDB("ceilometer");
-    db.addUser({user: "ceilometer",
-    pwd: "ceilometer",
-    roles: [ "readWrite", "dbAdmin" ]})'
+  MONGO_SERVICE_NAME="mongodb"
+  MONGO_CONF="/etc/mongodb.conf"
+elif [ -f "/etc/redhat-release" ];then
+  cat > /etc/yum.repos.d/mongodb.repo <<EOF
+[mongodb]
+name=MongoDB Repository
+baseurl=http://downloads-distro.mongodb.org/repo/redhat/os/x86_64/
+gpgcheck=0
+enabled=1
+EOF
+  yum install -y mongodb-org mongodb-org-server mongodb-org-shell mongodb-org-tools
+  MONGO_SERVICE_NAME="mongod"
+  MONGO_CONF="/etc/mongod.conf"
+fi
 
-  # change the generated passwords for mongodb access
-  sed -i "s/ceilometer_container_db_password:.*/ceilometer_container_db_password: ceilometer/" /etc/openstack_deploy/user_secrets.yml
-  # Change the ceilometer user variables necessary for deployment
-  sed -i "s/ceilometer_db_ip:.*/ceilometer_db_ip: \"\{\{ hostvars\['aio1'\]\['ansible_ssh_host'\] \}\}\"/" /etc/openstack_deploy/user_variables.yml
+# Change bind_ip to management ip
+sed -i "s/^bind_ip.*/bind_ip = 172.29.236.100/" ${MONGO_CONF}
+# Asserting smallfiles key
+sed -i "s/^smallfiles.*/smallfiles = true/" ${MONGO_CONF}
+service ${MONGO_SERVICE_NAME} restart
+# Giving the service a second..
+sleep 5
+#Adding the ceilometer database
+mongo --host 172.29.236.100 --eval '
+  db = db.getSiblingDB("ceilometer");
+  db.addUser({user: "ceilometer",
+  pwd: "ceilometer",
+  roles: [ "readWrite", "dbAdmin" ]})'
+
+# change the generated passwords for mongodb access
+sed -i "s/ceilometer_container_db_password:.*/ceilometer_container_db_password: ceilometer/" /etc/openstack_deploy/user_secrets.yml
+# Change the ceilometer user variables necessary for deployment
+sed -i "s/ceilometer_db_ip:.*/ceilometer_db_ip: \"\{\{ hostvars\['aio1'\]\['ansible_ssh_host'\] \}\}\"/" /etc/openstack_deploy/user_variables.yml
   # Enable ceilometer for all other openstack services
   if [ ${DEPLOY_SWIFT} ]; then
     sed -i "s/swift_ceilometer_enabled:.*/swift_ceilometer_enabled: True/" /etc/openstack_deploy/user_variables.yml
@@ -426,6 +448,18 @@ fi
 
 if [ "${TEMPEST_FATAL_DEPRECATIONS}" == "yes" ]; then
   echo "tempest_fatal_deprecations: True" | tee -a /etc/openstack_deploy/user_variables.yml
+fi
+
+# Set to 7 for centos
+if [ -f "/etc/redhat-release" ];then
+  # Configures the environment to work with centos
+  sed -i 's/container_release\:.*/container_release\: 7/g' /etc/openstack_deploy/env.d/*
+
+  # Configures the user variables to work with centos
+  echo "lxc_container_release: 7" | tee -a /etc/openstack_deploy/user_variables.yml
+  echo 'lxc_container_template_options: "--release {{ lxc_container_release }}"' | tee -a /etc/openstack_deploy/user_variables.yml
+  echo "lxc_container_template: centos" | tee -a /etc/openstack_deploy/user_variables.yml
+  echo "repo_pip_default_index: https://pypi.python.org/simple/" | tee -a /etc/openstack_deploy/user_variables.yml
 fi
 
 # Log some data about the instance and the rest of the system

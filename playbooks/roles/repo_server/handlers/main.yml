@@ -24,6 +24,13 @@
     name: "rsync"
     state: restarted
     pattern: "rsync"
+  register: reload_rsyncd
+
+- name: reload rsyncd rhel
+  service:
+    name: "rsyncd"
+    state: restarted
+    pattern: "rsyncd"
 
 - name: reload fcgiwrap
   service:

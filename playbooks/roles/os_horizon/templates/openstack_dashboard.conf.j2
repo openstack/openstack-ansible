@@ -32,7 +32,7 @@
     WSGIDaemonProcess horizon user={{ horizon_system_user_name }} group={{ horizon_system_group_name }} processes={{ ansible_processor_cores }} threads={{ threads if threads > 0 else 1 }}
 
     Alias /static {{ horizon_lib_dir }}/static/
-    <Directory /usr/local/lib/python2.7/dist-packages/openstack_dashboard/wsgi/>
+    <Directory {{ horizon_lib_dir }}/openstack_dashboard/wsgi/>
       <Files django.wsgi>
         Order allow,deny
         allow from all

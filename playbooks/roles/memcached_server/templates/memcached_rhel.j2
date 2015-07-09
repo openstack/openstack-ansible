@@ -1,0 +1,10 @@
+# {{ ansible_managed }}
+
+ulimit -Hn {{ memcached_connections }}
+ulimit -n {{ memcached_connections }}
+
+PORT="{{ memcached_port }}"
+USER="{{ memcached_user }}"
+MAXCONN="{{ memcached_connections }}"
+CACHESIZE="{{ memcached_memory }}"
+OPTIONS="-t {{ memcached_threads }} -l {{ memcached_listen }}"

@@ -49,14 +49,6 @@
   with_items: swift_proxy_program_names
   failed_when: false
 
-- name: Restart service
-  service:
-    name: "{{ item }}"
-    state: "restarted"
-    pattern: "{{ item }}"
-    enabled: "yes"
-  when: item is defined
-
 - name: Restart rsyslog
   service:
     name: "rsyslog"
@@ -67,6 +59,19 @@
     name: "rsync"
     state: "stopped"
     pattern: "rsync"
+  register: service_restart
+  failed_when: "'msg' in service_restart and 'FAIL' in service_restart.msg|upper"
+  register: service_restart
+  until: add_service|success
+  retries: 3
+  delay: 2
+  notify: Ensure rsync service running
+
+- name: reload rsyncd rhel
+  service:
+    name: "rsyncd"
+    state: restarted
+    pattern: "rsyncd"
   register: service_restart
   failed_when: "'msg' in service_restart and 'FAIL' in service_restart.msg|upper"
   register: service_restart

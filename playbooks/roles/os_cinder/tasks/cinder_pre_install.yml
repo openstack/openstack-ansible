@@ -39,8 +39,10 @@
     state: directory
     owner: "{{ item.owner|default(cinder_system_user_name) }}"
     group: "{{ item.group|default(cinder_system_group_name) }}"
+    mode: "{{ item.mode|default('0755') }}"
   with_items:
     - { path: "/var/cache/cinder", mode: "0700" }
+    - { path: "/var/lock/cinder", mode: "2755" }
     - { path: "/etc/cinder" }
     - { path: "/etc/cinder/rootwrap.d" }
     - { path: "/etc/sudoers.d", mode: "0750", owner: "root", group: "root" }

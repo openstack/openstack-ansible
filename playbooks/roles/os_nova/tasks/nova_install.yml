@@ -13,28 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Update apt sources
-  apt:
-    update_cache: yes
-    cache_valid_time: 600
-  register: apt_update
-  until: apt_update|success
-  retries: 5
-  delay: 2
+- include: nova_install_rhel.yml
+  when: ansible_os_family == "RedHat"
   tags:
-    - nova-apt-packages
+    - nova-install-rhel
 
-- name: Install apt packages
-  apt:
-    pkg: "{{ item }}"
-    state: latest
-  register: install_packages
-  until: install_packages|success
-  retries: 5
-  delay: 2
-  with_items: nova_apt_packages
-  tags:
-    - nova-apt-packages
+- include: nova_install_ubuntu.yml
+  when: ansible_os_family == "Debian"
+  tags: 
+    - nova-install-ubuntu
 
 - name: Install pip packages
   pip:

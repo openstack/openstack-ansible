@@ -34,7 +34,7 @@ wsrep_node_name = {{ galera_wsrep_node_name }}
 wsrep_debug = {{ galera_wsrep_debug }}
 
 # SST method
-wsrep_sst_method = xtrabackup
+wsrep_sst_method = {{ galera_wsrep_sst_method }}
 wsrep_sst_auth = root:{{ galera_root_password }}
 wsrep_slave_threads = {{ galera_wsrep_slave_threads }}
 
@@ -43,3 +43,10 @@ wsrep_cluster_name = "{{ galera_cluster_name }}"
 
 # how many times to retry deadlocked autocommits
 wsrep_retry_autocommit = {{ galera_wsrep_retry_autocommit }}
+
+[xtrabackup]
+compress
+compact
+parallel = {{ galera_xtrabackup_threads }}
+compress-threads = {{ galera_xtrabackup_threads }}
+rebuild-threads = {{ galera_xtrabackup_threads }}

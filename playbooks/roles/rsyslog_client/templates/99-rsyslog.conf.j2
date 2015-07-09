@@ -1,6 +1,6 @@
 # {{ ansible_managed }}
 
-{% if log_files is defined %}
+{% if log_files is defined and log_files.stdout_lines is defined %}
 {% set rsyslog_client_log_files = log_files.stdout_lines | union(rsyslog_client_log_files) %}
 {% endif %}
 

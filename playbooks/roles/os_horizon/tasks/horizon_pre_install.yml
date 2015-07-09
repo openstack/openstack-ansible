@@ -39,11 +39,17 @@
     state: directory
     owner: "{{ item.owner|default(horizon_system_user_name) }}"
     group: "{{ item.group|default(horizon_system_group_name) }}"
+    mode: "{{ item.mode|default('0755') }}"
   with_items:
     - { path: "/etc/horizon" }
     - { path: "{{ horizon_system_user_home }}" }
-    - { path: "/usr/local/lib/python2.7/dist-packages/static" }
-    - { path: "/usr/local/lib/python2.7/dist-packages/openstack_dashboard/local" }
+    - { path: "{{ horizon_lib_dir }}/static" }
+    - { path: "{{ horizon_lib_dir }}/openstack_dashboard" }
+    - { path: "{{ horizon_lib_dir }}/openstack_dashboard/local" }
+    - { path: "{{ horizon_lib_dir }}/openstack_dashboard/wsgi" }
+    - { path: "/etc/pki/tls/certs", owner: "root", group: "root" }
+    - { path: "/etc/pki/tls/private", owner: "root", group: "root" }
+    - { path: "/var/lock/horizon", mode: "2755" }
   tags:
     - horizon-dirs
 

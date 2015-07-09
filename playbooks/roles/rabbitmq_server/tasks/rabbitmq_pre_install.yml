@@ -13,19 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Download the RabbitMQ package
-  get_url:
-    url: "{{ rabbitmq_package_url }}"
-    dest: "{{ rabbitmq_package_path }}"
-    mode: "0644"
-    sha256sum: "{{ rabbitmq_package_sha256 }}"
-  register: package_download
-  retries: 3
-  delay: 10
-  until: package_download|success
+# If cluster name is our own hostname, we assume we're not properly clustered
+# TODO(someone): implement a more robust way of checking
+# if node is clustered or not
+
+- include: rabbitmq_pre_install_rhel.yml
+  when: ansible_os_family == "RedHat"
   tags:
-    - rabbitmq-package-deb
-    - rabbitmq-package-deb-get
+    - rabbitmq-pre-install-rhel
+
+- include: rabbitmq_pre_install_ubuntu.yml
+  when: ansible_os_family == "Debian"
+  tags: 
+    - rabbitmq-pre-install-ubuntu
 
 - name: Fix /etc/hosts
   lineinfile:

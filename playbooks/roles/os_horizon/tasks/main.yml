@@ -21,6 +21,8 @@
   when: >
     inventory_hostname == groups['horizon_all'][0]
 
+- include: horizon_apache.yml
+
 - include: horizon_ssl_self_signed.yml
   when: >
     horizon_self_signed == true or
@@ -30,8 +32,6 @@
   when: >
     horizon_self_signed == false or
     horizon_self_signed == "False"
-
-- include: horizon_apache.yml
 
 - name: Flush handlers
   meta: flush_handlers

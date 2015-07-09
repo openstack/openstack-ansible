@@ -13,6 +13,39 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- name: Create adm user
+  group:
+    name: "adm"
+    system: "yes"
+  tags:
+    - rsyslog-client-adm-group
+
+- name: Create adm user
+  user:
+    name: "adm"
+    group: "adm"
+    system: "yes"
+    shell: "/bin/false"
+  tags:
+    - rsyslog-client-adm-user
+
+- name: Create syslog user
+  group:
+    name: "syslog"
+    system: "yes"
+  tags:
+    - rsyslog-client-syslog-group
+
+- name: Create syslog user
+  user:
+    name: "syslog"
+    group: "syslog"
+    system: "yes"
+    groups: "syslog,adm"
+    shell: "/bin/false"
+  tags:
+    - rsyslog-client-syslog-user
+
 - name: Ensure ownership on working directory is correct
   file:
     path: "{{ rsyslog_client_spool_directory }}"

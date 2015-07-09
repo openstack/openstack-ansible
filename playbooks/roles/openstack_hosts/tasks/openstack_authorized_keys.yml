@@ -42,3 +42,11 @@
   when: ssh_key_url is defined
   tags:
     - openstack-host-keys
+
+- name: Remove sudoers tty requirement
+  lineinfile:
+    dest: /etc/sudoers
+    regexp: "Defaults.*requiretty$"
+    state: "absent"
+  tags:
+    - openstack-host-sudo-no-tty

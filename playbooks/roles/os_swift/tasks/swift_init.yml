@@ -1,0 +1,86 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Check init system
+  command: cat /proc/1/comm
+  register: pid1_name
+  tags:
+    - swift-init-name
+
+
+- include: swift_init_upstart_storage_hosts_object.yml
+  when: >
+    pid1_name.stdout == "init" and 
+    inventory_hostname in groups['swift_hosts']
+  tags:
+    - swift-init-name
+    - swift-object-init
+
+- include: swift_init_systemd_storage_hosts_object.yml
+  when: >
+    pid1_name.stdout == "systemd" and 
+    inventory_hostname in groups['swift_hosts']
+  tags:
+    - swift-init-name
+    - swift-object-init
+
+
+- include: swift_init_upstart_storage_hosts_account.yml
+  when: >
+    pid1_name.stdout == "init" and 
+    inventory_hostname in groups['swift_hosts']
+  tags:
+    - swift-init-name
+    - swift-account-init
+
+- include: swift_init_systemd_storage_hosts_account.yml
+  when: >
+    pid1_name.stdout == "systemd" and 
+    inventory_hostname in groups['swift_hosts']
+  tags:
+    - swift-init-name
+    - swift-account-init
+
+
+- include: swift_init_upstart_storage_hosts_container.yml
+  when: >
+    pid1_name.stdout == "init" and 
+    inventory_hostname in groups['swift_hosts']
+  tags:
+    - swift-init-name
+    - swift-container-init
+
+- include: swift_init_systemd_storage_hosts_container.yml
+  when: >
+    pid1_name.stdout == "systemd" and 
+    inventory_hostname in groups['swift_hosts']
+  tags:
+    - swift-init-name
+    - swift-container-init
+
+
+- include: swift_init_upstart_proxy_hosts.yml
+  when: >
+    pid1_name.stdout == "init" and 
+    inventory_hostname in groups['swift_proxy']
+  tags:
+    - swift-storage-hosts
+
+- include: swift_init_systemd_proxy_hosts.yml
+  when: >
+    pid1_name.stdout == "systemd" and 
+    inventory_hostname in groups['swift_proxy']
+  tags:
+    - swift-storage-hosts

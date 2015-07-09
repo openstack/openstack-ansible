@@ -13,25 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Restart service
-  service:
-    name: "{{ keystone_system_service_name }}"
-    state: restarted
-    pattern: "{{ keystone_system_service_name }}"
-  tags:
-    - keystone-db-sync
-    - keystone-setup
-
-- name: Wait for keystone admin to come up
-  wait_for:
-    host: "{{ ansible_ssh_host }}"
-    port: "{{ keystone_admin_port }}"
-    timeout: 25
-    delay: 10
-  tags:
-    - keystone-db-sync
-    - keystone-setup
-
 - name: Wait for keystone service to come up
   wait_for:
     host: "{{ ansible_ssh_host }}"

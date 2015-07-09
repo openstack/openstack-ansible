@@ -51,9 +51,22 @@
     mode: "{{ item.mode|default('0644') }}"
   with_items:
     - { src: lxc-openstack.conf.j2, dest: "/etc/lxc/lxc-openstack.conf" }
-    - { src: lxc.default.j2, dest: "/etc/default/lxc-net", mode: "0644" }
     - { src: lxc-system-manage.j2, dest: "/usr/local/bin/lxc-system-manage", mode: "0755" }
+  tags:
+    - lxc-files
+    - lxc-config
+
+- name: Drop Debian base config file(s)
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner|default('root') }}"
+    group: "{{ item.group|default('root') }}"
+    mode: "{{ item.mode|default('0644') }}"
+  with_items:
+    - { src: lxc.default.j2, dest: "/etc/default/lxc-net", mode: "0644" }
     - { src: manual-init.override.j2, dest: "/etc/init/lxc-net.override" }
+  when: ansible_os_family == "Debian"
   tags:
     - lxc-files
     - lxc-config
@@ -82,6 +95,7 @@
     mode: "{{ item.mode|default('0644') }}"
   with_items:
     - { src: lxc-openstack.apparmor.j2, dest: "/etc/apparmor.d/lxc/lxc-openstack" }
+  when: ansible_os_family == "Debian"
   notify:
     - Load lxc-openstack apparmor profile
     - Restart apparmor

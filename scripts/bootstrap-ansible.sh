@@ -40,7 +40,15 @@ info_block "Bootstrapping System with Ansible"
 ssh_key_create
 
 # Install the base packages
-apt-get update && apt-get -y install git python-all python-dev curl autoconf g++ python2.7-dev
+# Ensure that the https apt transport is available before doing anything else
+if grep -qi ubuntu /etc/lsb-release; then
+    apt-get update && apt-get -y install git python-all python-dev curl autoconf g++ python2.7-dev
+elif [ -f "/etc/redhat-release" ];then
+    yum install git python-devel curl autoconf gcc-c++
+else
+  echo "Un-supported OS"
+  exit 99
+fi
 
 # If the working directory exists remove it
 if [ -d "${ANSIBLE_WORKING_DIR}" ];then

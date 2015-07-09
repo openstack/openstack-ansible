@@ -30,5 +30,7 @@ galaxy_info:
     - development
     - openstack
 dependencies:
-  - apt_package_pinning
+  - pip_lock_down
+  - { role: apt_package_pinning, when: ansible_os_family == "Debian" }
+  - { role: geerlingguy.repo-epel, when: ansible_os_family == "RedHat" }
   - galera_client

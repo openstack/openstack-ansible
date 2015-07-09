@@ -23,7 +23,9 @@
   with_items:
     - { src: "/etc/ssl/certs/apache.cert", name: "apache.cert", mode: "0640" }
     - { src: "/etc/ssl/private/apache.key", name: "apache.key", mode: "0640" }
-  notify: Restart apache2
+  notify:
+    - Restart apache2
+    - Restart Apache RHEL
   tags:
     - horizon-configs
     - horizon-ssl

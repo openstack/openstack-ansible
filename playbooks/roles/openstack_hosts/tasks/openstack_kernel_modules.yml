@@ -25,7 +25,17 @@
   lineinfile:
     dest: /etc/modules
     line: "{{ item }}"
+  with_items: openstack_host_kernel_modules + openstack_host_deb_kernel_modules
+  when: ansible_os_family == "Debian"
+  tags:
+    - openstack-host-kernel-modules
+
+- name: "Ensure kernel module(s) loaded at boot"
+  lineinfile:
+    dest: /etc/modules.conf
+    line: "{{ item }}"
+    create: yes
   with_items: openstack_host_kernel_modules
-  when: openstack_host_kernel_modules is defined
+  when: ansible_os_family == "RedHat"
   tags:
     - openstack-host-kernel-modules

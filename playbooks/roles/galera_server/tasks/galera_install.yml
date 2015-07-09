@@ -13,38 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Preseed galera password(s)
-  debconf:
-    name: "{{ item.name }}"
-    question: "{{ item.question }}"
-    value: "{{ item.value }}"
-    vtype: "{{ item.vtype }}"
-  with_items: galera_debconf_items
+- include: galera_install_rhel.yml
+  when: ansible_os_family == "RedHat"
   tags:
-    - galera-debconf
+    - galera-install-rhel
 
-- name: Update apt sources
-  apt:
-    update_cache: yes
-    cache_valid_time: 600
-  register: apt_update
-  until: apt_update|success
-  retries: 5
-  delay: 2
-  tags:
-    - galera-apt-packages
-
-- name: Install galera packages
-  apt:
-    pkg: "{{ item }}"
-    state: latest
-  register: install_packages
-  until: install_packages|success
-  retries: 5
-  delay: 2
-  with_items: galera_apt_packages
-  tags:
-    - galera-apt-packages
+- include: galera_install_ubuntu.yml
+  when: ansible_os_family == "Debian"
+  tags: 
+    - galera-install-ubuntu
 
 - name: Install pip packages
   pip:

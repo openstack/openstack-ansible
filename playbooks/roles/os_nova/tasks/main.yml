@@ -16,14 +16,6 @@
 - include: nova_pre_install.yml
 - include: nova_install.yml
 
-- include: nova_spice_console_install.yml
-  when: >
-    inventory_hostname in groups['nova_console'] and
-    nova_console_type == "spice"
-
-- include: nova_post_install.yml
-- include: nova_upstart_init.yml
-
 - include: nova_db_setup.yml
   when: >
     inventory_hostname == groups['nova_api_os_compute'][0]
@@ -32,11 +24,18 @@
   when: >
     inventory_hostname == groups['nova_api_os_compute'][0]
 
+- include: nova_console_install.yml
+  when: >
+    inventory_hostname in groups['nova_console']
+
 - include: nova_compute.yml
   when: >
     inventory_hostname in groups['nova_compute']
   tags:
     - nova-compute
+
+- include: nova_post_install.yml
+- include: nova_init.yml
 
 - name: Flush handlers
   meta: flush_handlers

@@ -53,6 +53,7 @@
     - { role: "openstack_openrc", tags: [ "openstack-openrc" ] }
     - role: "rsyslog_client"
       rsyslog_client_log_dir: "/var/log/apache2"
+      rsyslog_client_log_dir: "/var/log/keystone"
       rsyslog_client_config_name: "99-keystone-rsyslog-client.conf"
       tags:
         - "keystone-rsyslog-client"

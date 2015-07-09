@@ -15,6 +15,11 @@
 
 - include: keystone_pre_install.yml
 - include: keystone_install.yml
+- include: keystone_post_install.yml
+
+- include: keystone_apache.yml
+  tags:
+    - keystone-apache
 
 - include: keystone_key_setup.yml
   tags:
@@ -22,23 +27,18 @@
     - keystone-key-distribute
 
 - include: keystone_fernet.yml
-  tags:
-    - keystone-fernet
   when: >
     'fernet' in keystone_token_provider
-
-- include: keystone_post_install.yml
+  tags:
+    - keystone-fernet
 
 - include: keystone_db_setup.yml
   when: >
     inventory_hostname == groups['keystone_all'][0]
 
-- include: keystone_apache.yml
-- include: keystone_token_cleanup.yml
+- name: Flush handlers
+  meta: flush_handlers
 
 - include: keystone_service_setup.yml
   when: >
     inventory_hostname == groups['keystone_all'][0]
-
-- name: Flush handlers
-  meta: flush_handlers

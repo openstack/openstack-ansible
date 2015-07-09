@@ -30,6 +30,8 @@ galaxy_info:
     - development
     - openstack
 dependencies:
+  - { role: apt_package_pinning, when: ansible_os_family == "Debian" }
   - galera_client
   - openstack_openrc
   - pip_lock_down
+  - { role: "rsyslog_client" }

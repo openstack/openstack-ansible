@@ -21,6 +21,7 @@
   until: apt_update|success
   retries: 5
   delay: 2
+  when: ansible_os_family == "Debian"
   tags:
     - openstack-apt-packages
 
@@ -33,5 +34,19 @@
   retries: 5
   delay: 2
   with_items: openstack_host_apt_packages
+  when: ansible_os_family == "Debian"
   tags:
     - openstack-apt-packages
+
+- name: Install yum packages
+  yum:
+    pkg: "{{ item }}"
+    state: present
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 2
+  with_items: openstack_host_yum_packages
+  when: ansible_os_family == "RedHat"
+  tags:
+    - lxc-yum-packages

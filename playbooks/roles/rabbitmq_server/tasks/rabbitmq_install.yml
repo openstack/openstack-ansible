@@ -13,35 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Update apt sources
-  apt:
-    update_cache: yes
-    cache_valid_time: 600
-  register: apt_update
-  until: apt_update|success
-  retries: 5
-  delay: 2
-  tags:
-    - rabbitmq-apt-packages
+# If cluster name is our own hostname, we assume we're not properly clustered
+# TODO(someone): implement a more robust way of checking
+# if node is clustered or not
 
-- name: Install apt packages
-  apt:
-    pkg: "{{ item }}"
-    state: latest
-  register: install_packages
-  until: install_packages|success
-  retries: 5
-  delay: 2
-  with_items: rabbitmq_apt_packages
+- include: rabbitmq_install_rhel.yml
+  when: ansible_os_family == "RedHat"
   tags:
-    - rabbitmq-apt-packages
+    - rabbitmq-install-rhel
 
-- name: Install the RabbitMQ package
-  apt:
-    deb: "{{ rabbitmq_package_path }}"
-  tags:
-    - rabbitmq-package-deb
-    - rabbitmq-apt-packages
+- include: rabbitmq_install_ubuntu.yml
+  when: ansible_os_family == "Debian"
+  tags: 
+    - rabbitmq-install-ubuntu
 
 - name: Install pip packages
   pip:

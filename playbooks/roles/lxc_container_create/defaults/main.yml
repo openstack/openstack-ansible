@@ -44,7 +44,7 @@ lxc_container_template_options: >
 lxc_container_template_main_apt_repo: "https://mirror.rackspace.com/ubuntu"
 lxc_container_template_security_apt_repo: "https://mirror.rackspace.com/ubuntu"
 
-lxc_container_default_interfaces: |
+lxc_container_default_interfaces_ubuntu: |
   # The loopback network interface
   auto lo
   iface lo inet loopback
@@ -56,7 +56,7 @@ lxc_container_default_interfaces: |
 
 # The container interface variable is a a default object that assume the
 # Ansible iterator type is `with_dict`.
-lxc_container_interface: |
+lxc_container_interface_ubuntu: |
   ### start generated network for [ {{ item.value.interface }} ] ###
   auto {{ item.value.interface }}
   {% if item.value.address is defined %}
@@ -75,3 +75,31 @@ lxc_container_interface: |
   iface {{ item.value.interface }} inet manual
   {% endif %}
   ### end generated network for [ {{ item.value.interface }} ] ###
+
+lxc_container_default_interfaces_centos: |
+  DEVICE=eth0
+  BOOTPROTO=dhcp
+  ONBOOT=yes
+  HOSTNAME=
+  NM_CONTROLLED=no
+  TYPE=Ethernet
+  DHCP_HOSTNAME={{ inventory_hostname }}
+
+lxc_container_interface_centos: |
+  ### start generated network for [ {{ item.value.interface }} ] ###
+  DEVICE={{ item.value.interface }}
+  TYPE=Ethernet
+  {% if item.value.address is defined %}
+  IPADDR={{ item.value.address }}
+  NETMASK={{ item.value.netmask }}
+  {% if item.value.gateway is defined %}
+  GATEWAY=192.237.244.1
+  {% endif %}
+  {% endif %}
+  ONBOOT=yes
+  BOOTPROTO=none
+  NM_CONTROLLED=no
+  DELAY=0
+  ### end generated network for [ {{ item.value.interface }} ] ###
+
+lxc_container_cache_path: /var/cache/lxc

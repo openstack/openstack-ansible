@@ -1,0 +1,48 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Install yum packages
+  yum:
+    name: "{{ item }}"
+    state: latest
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 5
+  with_items: keystone_yum_packages
+  tags:
+    - keystone-yum-packages
+
+- name: Add keystone token_flush cron job
+  cron:
+    name: "Clear out stale keystone tokens"
+    minute: 0
+    job: "/usr/bin/keystone-manage token_flush"
+    user: "{{ keystone_system_user_name }}"
+  when: >
+    'sql' in keystone_token_driver
+  tags:
+    - keystone-config
+
+- name: Create tempfile.d entry
+  template:
+    src: "keystone-systemd-tempfiles.j2"
+    dest: "/etc/tmpfiles.d/keystone.conf"
+    mode: "0644"
+    owner: "root"
+    group: "root"
+  tags:
+    - systemd-init
+    - keystone-init

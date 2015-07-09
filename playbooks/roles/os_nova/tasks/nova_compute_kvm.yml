@@ -15,17 +15,36 @@
 
 - include: nova_compute_kvm_install.yml
 
-- name: Add nova user to libvirtd group
-  user:
-    name: "{{ nova_system_user_name }}"
-    groups: "libvirtd"
-    append: "yes"
+- include: nova_compute_kvm_virsh_net_remove.yml
+
+- name: Ensure polkit directories
+  file:
+    path: "{{ item.path }}"
+    state: directory
+    owner: "root"
+    group: "root"
+    mode: "0755"
+  with_items:
+    - { path: "/etc/polkit-1" }
+    - { path: "/etc/polkit-1/localauthority" }
+    - { path: "/etc/polkit-1/localauthority/50-local.d" }
   tags:
-    - nova-libvirt
+    - nova-polkit
+    - nova-polkit-dirs
+
+- name: Create nova-polkit.pkla
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ nova_system_user_name }}"
+    group: "{{ nova_system_group_name }}"
+  with_items:
+    - { src: "nova-polkit.pkla.j2", dest: "/etc/polkit-1/localauthority/50-local.d/nova-polkit.pkla" }
+  notify: Restart nova services
+  tags:
+    - nova-polkit
 
 - name: Ensure kvm permissions
   shell: "udevadm trigger"
   tags:
-    - nova-kvm
-
-- include: nova_compute_kvm_virsh_net_remove.yml
+    - nova-kvm-udev

@@ -13,16 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Drop base haproxy config
-  copy:
-    src: "{{ item }}"
-    dest: "/etc/haproxy/{{ item }}"
-  with_items:
-    - haproxy.cfg
-  notify: Restart haproxy
-  tags:
-    - haproxy-base-config
-
 - name: "Create haproxy service config files"
   template:
     src: service.j2
