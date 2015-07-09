@@ -92,3 +92,7 @@ galera_debconf_items:
     name: "{{ galera_mariadb_server_package }}"
     value: "{{ galera_root_password }}"
     vtype: "string"
+
+# Galera slow/unindexed query logging
+galera_slow_query_logging: 0
+galera_unindexed_query_logging: 0

@@ -29,8 +29,8 @@ character-set-server = utf8
 datadir = /var/lib/mysql
 
 # LOGGING #
-log-queries-not-using-indexes = 1
-slow-query-log = 1
+log-queries-not-using-indexes = {{ galera_unindexed_query_logging }}
+slow-query-log = {{ galera_slow_query_logging }}
 slow-query-log-file = /var/log/mysql_logs/mysql-slow.log
 log_error = /var/log/mysql_logs/galera_server_error.log
 log-bin = /var/lib/mysql/mariadb-bin
