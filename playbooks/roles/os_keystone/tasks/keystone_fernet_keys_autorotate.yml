@@ -1,0 +1,53 @@
+---
+# Copyright 2015, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# This script is being created with mode 0755 intentionally. This is so that the
+#  script can be executed by root to rotate the keys as needed. The script being
+#  executed will always change it's user context to the keystone user before
+#  execution and while the script may be world read/executable its contains only
+#  the necessary bits that are required to run the rotate and sync commands.
+- name: Drop fernet key auto rotate script
+  template:
+    src: "keystone-fernet-rotate.sh.j2"
+    dest: "{{ keystone_fernet_auto_rotation_script }}"
+    owner: "{{ keystone_system_user_name }}"
+    group: "{{ keystone_system_group_name }}"
+    mode: "1755"
+  tags:
+    - keystone-fernet-auto-rotate
+
+# This creates the auto rotation job on the first keystone host.
+- name: Create auto rotation job
+  cron:
+    name: "Fernet auto rotate job"
+    special_time: "{{ keystone_fernet_rotation }}"
+    user: "keystone"
+    job: "{{ keystone_fernet_auto_rotation_script }}"
+    cron_file: keystone-fernet-rotate
+  when: >
+    inventory_hostname == groups['keystone_all'][0]
+  tags:
+    - keystone-fernet-auto-rotate
+
+# This makes sure that no auto rotation jobs are on any other hosts.
+- name: Remove extra auto rotation job
+  cron:
+    name: "Fernet auto rotate job"
+    cron_file: keystone-fernet-rotate
+    state: "absent"
+  when: >
+    inventory_hostname != groups['keystone_all'][0]
+  tags:
+    - keystone-fernet-auto-rotate

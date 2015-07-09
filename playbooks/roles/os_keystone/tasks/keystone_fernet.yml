@@ -17,13 +17,8 @@
   when: >
     inventory_hostname == groups['keystone_all'][0]
 
-- include: keystone_fernet_keys_fetch.yml
+- include: keystone_fernet_keys_distribute.yml
   when: >
     inventory_hostname == groups['keystone_all'][0]
 
-- include: keystone_fernet_keys_distribute.yml
-  when: >
-    inventory_hostname != groups['keystone_all'][0] and
-    inventory_hostname in groups['keystone_all']
-
-- include: keystone_fernet_cleanup.yml
+- include: keystone_fernet_keys_autorotate.yml

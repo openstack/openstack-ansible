@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+# Copyright 2015, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# {{ ansible_managed }}
+
+# This script is being created with mode 0755 intentionally. This is so that the
+#  script can be executed by root to rotate the keys as needed. The script being
+#  executed will always change it's user context to the keystone user before
+#  execution and while the script may be world read/executable its contains only
+#  the necessary bits that are required to run the rotate and sync commands.
+
+function autorotate() {
+    # Rotate the keys
+    keystone-manage fernet_rotate --keystone-user "{{ keystone_system_user_name }}" \
+                                  --keystone-group "{{ keystone_system_group_name }}"
+    {% for host in groups['keystone_all'] %}
+
+    {% if inventory_hostname != host %}
+
+    # Fernet sync job to "{{ host }}"
+    rsync -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' \
+          -avz \
+          --delete \
+          {{ keystone_fernet_tokens_key_repository }}/ \
+          {{ keystone_system_user_name }}@{{ hostvars[host]['ansible_ssh_host'] }}:{{ keystone_fernet_tokens_key_repository }}/
+
+    {%- endif %}
+
+    {%- endfor %}
+
+}
+
+if [ "$(id -u)" == "0" ];then
+# Change the script context to always execute as the "{{ keystone_system_user_name }}" user.
+su - "{{ keystone_system_user_name }}" -s "/bin/bash" -c bash << EOC
+    {{ keystone_fernet_auto_rotation_script }}
+EOC
+elif [ "$(whoami)" == "{{ keystone_system_user_name }}" ];then
+    logger $(autorotate)
+else
+    echo "Failed - you do not have permission to rotate, or you've executed the job as the wrong user."
+    exit 99
+fi
