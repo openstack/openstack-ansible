@@ -20,12 +20,13 @@ set -e -u -x
 
 ## Vars ----------------------------------------------------------------------
 DEFAULT_PASSWORD=$(tr -dc 'a-zA-Z0-9' < /dev/urandom | head -c 32)
+GATEWAY_INTERFACE=$(ip route show | awk '/default/ { print $NF }')
 export ADMIN_PASSWORD=${ADMIN_PASSWORD:-$DEFAULT_PASSWORD}
 export SERVICE_REGION=${SERVICE_REGION:-"RegionOne"}
 export DEPLOY_SWIFT=${DEPLOY_SWIFT:-"yes"}
 export DEPLOY_CEILOMETER=${DEPLOY_CEILOMETER:-"yes"}
 export GET_PIP_URL=${GET_PIP_URL:-"https://bootstrap.pypa.io/get-pip.py"}
-export PUBLIC_INTERFACE=${PUBLIC_INTERFACE:-$(ip route show | awk '/default/ { print $NF }')}
+export PUBLIC_INTERFACE=${PUBLIC_INTERFACE:-$GATEWAY_INTERFACE}
 export PUBLIC_ADDRESS=${PUBLIC_ADDRESS:-$(ip -o -4 addr show dev ${PUBLIC_INTERFACE} | awk -F '[ /]+' '/global/ {print $4}')}
 export NOVA_VIRT_TYPE=${NOVA_VIRT_TYPE:-"qemu"}
 export TEMPEST_FLAT_CIDR=${TEMPEST_FLAT_CIDR:-"172.29.248.0/22"}
@@ -41,11 +42,6 @@ export KEYSTONE_FATAL_DEPRECATIONS=${KEYSTONE_FATAL_DEPRECATIONS:-"no"}
 export NEUTRON_FATAL_DEPRECATIONS=${NEUTRON_FATAL_DEPRECATIONS:-"no"}
 export NOVA_FATAL_DEPRECATIONS=${NOVA_FATAL_DEPRECATIONS:-"no"}
 export TEMPEST_FATAL_DEPRECATIONS=${TEMPEST_FATAL_DEPRECATIONS:-"no"}
-
-# Ubuntu repos
-UBUNTU_RELEASE=$(lsb_release -sc)
-UBUNTU_REPO=${UBUNTU_REPO:-"https://mirror.rackspace.com/ubuntu"}
-UBUNTU_SEC_REPO=${UBUNTU_SEC_REPO:-"https://mirror.rackspace.com/ubuntu"}
 
 
 ## Library Check -------------------------------------------------------------
@@ -92,11 +88,31 @@ if [ ! "$(grep -e '^nameserver 8.8.8.8' -e '^nameserver 8.8.4.4' /etc/resolv.con
   echo -e '\n# Adding google name servers\nnameserver 8.8.8.8\nnameserver 8.8.4.4' | tee -a /etc/resolv.conf
 fi
 
-# Ensure that the https apt transport is available before doing anything else
-apt-get update && apt-get install -y apt-transport-https
+# Flush all the iptables rules set by openstack-infra
+if [ "${FLUSH_IPTABLES}" == "yes" ]; then
+  # Flush all the iptables rules set by openstack-infra
+  iptables -F
+  iptables -X
+  iptables -t nat -F
+  iptables -t nat -X
+  iptables -t mangle -F
+  iptables -t mangle -X
+  iptables -P INPUT ACCEPT
+  iptables -P FORWARD ACCEPT
+  iptables -P OUTPUT ACCEPT
+fi
 
-# Set the host repositories to only use the same ones, always, for the sake of consistency.
-cat > /etc/apt/sources.list <<EOF
+# Ensure that the https apt transport is available before doing anything else
+if grep -qi ubuntu /etc/lsb-release; then
+  # Ubuntu repos
+  UBUNTU_RELEASE=$(lsb_release -sc)
+  UBUNTU_REPO=${UBUNTU_REPO:-"https://mirror.rackspace.com/ubuntu"}
+  UBUNTU_SEC_REPO=${UBUNTU_SEC_REPO:-"https://mirror.rackspace.com/ubuntu"}
+
+  apt-get update && apt-get install -y apt-transport-https
+
+  # Set the host repositories to only use the same ones, always, for the sake of consistency.
+  cat > /etc/apt/sources.list <<EOF
 # Normal repositories
 deb ${UBUNTU_REPO} ${UBUNTU_RELEASE} main restricted
 deb ${UBUNTU_REPO} ${UBUNTU_RELEASE}-updates main restricted
@@ -112,39 +128,79 @@ deb ${UBUNTU_SEC_REPO} ${UBUNTU_RELEASE}-security universe
 deb ${UBUNTU_SEC_REPO} ${UBUNTU_RELEASE}-security multiverse
 EOF
 
-# Update the package cache
-apt-get update
+  # Update the package cache
+  apt-get update
 
-# Remove known conflicting packages in the base image
-apt-get purge -y libmysqlclient18 mysql-common
+  # Remove known conflicting packages in the base image
+  apt-get purge -y libmysqlclient18 mysql-common
 
-# Install required packages
-apt-get install -y bridge-utils \
-                   build-essential \
-                   curl \
-                   git-core \
-                   ipython \
-                   linux-image-extra-$(uname -r) \
-                   lvm2 \
-                   python2.7 \
-                   python-dev \
-                   tmux \
-                   vim \
-                   vlan \
-                   xfsprogs
+  # Install required packages
+  apt-get install -y bridge-utils \
+                     build-essential \
+                     curl \
+                     git-core \
+                     ipython \
+                     linux-image-extra-$(uname -r) \
+                     lvm2 \
+                     python2.7 \
+                     python-dev \
+                     tmux \
+                     vim \
+                     vlan \
+                     xfsprogs
 
-# Flush all the iptables rules set by openstack-infra
-if [ "${FLUSH_IPTABLES}" == "yes" ]; then
-  # Flush all the iptables rules set by openstack-infra
-  iptables -F
-  iptables -X
-  iptables -t nat -F
-  iptables -t nat -X
-  iptables -t mangle -F
-  iptables -t mangle -X
-  iptables -P INPUT ACCEPT
-  iptables -P FORWARD ACCEPT
-  iptables -P OUTPUT ACCEPT
+  # Copy aio network config into place.
+  if [ ! -d "/etc/network/interfaces.d" ];then
+    mkdir -p /etc/network/interfaces.d/
+  fi
+
+  # Copy the basic aio network interfaces over
+  cp -R etc/network/interfaces.d/aio_interfaces.cfg /etc/network/interfaces.d/
+
+  # Ensure the network source is in place
+  if [ ! "$(grep -Rni '^source\ /etc/network/interfaces.d/\*.cfg' /etc/network/interfaces)" ]; then
+      echo "source /etc/network/interfaces.d/*.cfg" | tee -a /etc/network/interfaces
+  fi
+
+  # Bring up the new interfaces
+  for i in $(awk '/^iface/ {print $2}' /etc/network/interfaces.d/aio_interfaces.cfg); do
+      if grep "$i\:" /proc/net/dev > /dev/null;then
+        /sbin/ifdown $i || true
+      fi
+      /sbin/ifup $i || true
+  done
+elif [ -f "/etc/redhat-release" ];then
+  # Install required packages
+  yum -y groupinstall 'Development Tools'
+  yum install -y bridge-utils \
+                 curl \
+                 git \
+                 python34 \
+                 python34-devel \
+                 python-ipython \
+                 lvm2 \
+                 python-devel \
+                 tmux \
+                 vconfig \
+                 xfsprogs
+  # Copy the basic aio network interfaces over
+  cp -R etc/network/network-scripts/* /etc/sysconfig/network-scripts/
+
+  # Bring up the new interfaces
+  for i in $(awk -F'=' '/^DEVICE/ {print $2}' /etc/sysconfig/network-scripts/ifcfg-*); do
+      if grep "$i\:" /proc/net/dev > /dev/null;then
+        /sbin/ifdown $i || true
+      fi
+      /sbin/ifup $i || true
+  done
+
+  # Create base rules that we know we'll need
+  iptables -A POSTROUTING -t mangle -p tcp --dport 22 -j CHECKSUM --checksum-fill
+  iptables -t nat -A POSTROUTING -o ${PUBLIC_INTERFACE} -j MASQUERADE
+  service iptables save
+else
+  echo "Un-supported OS"
+  exit 99
 fi
 
 # Ensure newline at end of file (missing on Rackspace public cloud Trusty image)
@@ -249,27 +305,6 @@ if [ "${DEPLOY_SWIFT}" == "yes" ]; then
     fi
   done
 fi
-
-# Copy aio network config into place.
-if [ ! -d "/etc/network/interfaces.d" ];then
-  mkdir -p /etc/network/interfaces.d/
-fi
-
-# Copy the basic aio network interfaces over
-cp -R etc/network/interfaces.d/aio_interfaces.cfg /etc/network/interfaces.d/
-
-# Ensure the network source is in place
-if [ ! "$(grep -Rni '^source\ /etc/network/interfaces.d/\*.cfg' /etc/network/interfaces)" ]; then
-    echo "source /etc/network/interfaces.d/*.cfg" | tee -a /etc/network/interfaces
-fi
-
-# Bring up the new interfaces
-for i in $(awk '/^iface/ {print $2}' /etc/network/interfaces.d/aio_interfaces.cfg); do
-    if grep "^$i\:" /proc/net/dev > /dev/null;then
-      /sbin/ifdown $i || true
-    fi
-    /sbin/ifup $i || true
-done
 
 # Remove an existing etc directory if already found
 if [ -d "/etc/openstack_deploy" ];then

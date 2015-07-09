@@ -274,7 +274,7 @@ function get_instance_info() {
     echo -e "\nNo xenstore Information\n"
   fi
   get_repos_info &> /openstack/log/instance-info/host_repo_info_$(date +%s).log || true
-  dpkg-query --list &> /openstack/log/instance-info/host_packages_info_$(date +%s).log
+  dpkg-query --list &> /openstack/log/instance-info/host_packages_info_$(date +%s).log || true
 }
 
 function print_report() {
