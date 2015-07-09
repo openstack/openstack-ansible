@@ -63,7 +63,7 @@ Heres the ``used_ips`` syntax
 
 ----
 
-If you want to specify specific globally available options and do not want to place them in ``var_files`` or within the ``group_vars/all.yml`` file you can set them in a key = value par within the ``global_overrides`` hash.
+If you want to specify specific globally available options and do not want to place them in ``var_files`` or within the ``group_vars/all.yml`` file you can set them in a key = value pair within the ``global_overrides`` hash.
 
 Here's the ``global_overrides`` syntax
 
