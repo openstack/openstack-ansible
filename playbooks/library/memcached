@@ -15,15 +15,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
 import base64
+import os
 import stat
 import sys
 
 import memcache
 try:
-    from Crypto import Random
     from Crypto.Cipher import AES
+    from Crypto import Random
 
     ENCRYPT_IMPORT = True
 except ImportError:
@@ -204,7 +204,7 @@ class AESCipher(object):
 
         :param string: ``str``
         """
-        ordinal_range = ord(string[len(string)-1:])
+        ordinal_range = ord(string[len(string) - 1:])
         return string[:-ordinal_range]
 
 
@@ -512,7 +512,7 @@ class Memcached(object):
         split_d_value = {}
         count = 0
         for i in range(0, len(d_value), step):
-            split_d_value['%s.%s' % (key_name, count)] = d_value[i:i+step]
+            split_d_value['%s.%s' % (key_name, count)] = d_value[i:i + step]
             count += 1
 
         value = self.mc.set_multi(
