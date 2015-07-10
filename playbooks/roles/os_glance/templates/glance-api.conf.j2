@@ -55,6 +55,7 @@ task_executor = {{ glance_task_executor }}
 connection = mysql://{{ glance_galera_user }}:{{ glance_container_mysql_password }}@{{ glance_galera_address }}/{{ glance_galera_database }}?charset=utf8
 
 [keystone_authtoken]
+insecure = {{ keystone_service_internaluri_insecure | bool }}
 auth_plugin = {{ glance_keystone_auth_plugin }}
 signing_dir = {{ glance_system_user_home }}/cache/api
 auth_url = {{ keystone_service_adminuri }}

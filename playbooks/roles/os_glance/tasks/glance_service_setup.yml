@@ -22,6 +22,7 @@
     service_name: "{{ glance_service_name }}"
     service_type: "{{ glance_service_type }}"
     description: "{{ glance_service_description }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_service
   until: add_service|success
   retries: 5
@@ -40,6 +41,7 @@
     user_name: "{{ glance_service_user_name }}"
     tenant_name: "{{ glance_service_project_name }}"
     password: "{{ glance_service_password }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_service
   until: add_service|success
   retries: 5
@@ -58,6 +60,7 @@
     user_name: "{{ glance_service_user_name }}"
     tenant_name: "{{ glance_service_project_name }}"
     role_name: "{{ glance_role_name }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_service
   until: add_service|success
   retries: 5
@@ -79,6 +82,7 @@
     publicurl: "{{ glance_service_publicurl }}"
     adminurl: "{{ glance_service_internalurl }}"
     internalurl: "{{ glance_service_adminurl }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_service
   until: add_service|success
   retries: 5

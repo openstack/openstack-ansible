@@ -94,6 +94,7 @@ root_helper = sudo /usr/local/bin/neutron-rootwrap /etc/neutron/rootwrap.conf
 
 
 [keystone_authtoken]
+insecure = {{ keystone_service_internaluri_insecure | bool }}
 auth_plugin = {{ neutron_keystone_auth_plugin }}
 signing_dir = /var/cache/neutron
 auth_url = {{ keystone_service_adminuri }}

@@ -197,11 +197,7 @@ OPENSTACK_KEYSTONE_DEFAULT_ROLE = "_member_"
 #    ("saml2", _("Security Assertion Markup Language")))
 
 # Disable SSL certificate checks (useful for self-signed certificates):
-{% if horizon_self_signed == true %}
-OPENSTACK_SSL_NO_VERIFY = True
-{% else %}
-OPENSTACK_SSL_NO_VERIFY = False
-{% endif %}
+OPENSTACK_SSL_NO_VERIFY = {{ keystone_service_internaluri_insecure | bool }}
 
 {% if horizon_cacert_pem is defined %}
 # The CA certificate to use to verify SSL connections

@@ -22,6 +22,7 @@
     service_name: "{{ swift_service_name }}"
     service_type: "{{ swift_service_type }}"
     description: "{{ swift_service_description }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_service
   until: add_service|success
   retries: 5
@@ -40,6 +41,7 @@
     user_name: "{{ swift_service_user_name }}"
     tenant_name: "{{ swift_service_project_name }}"
     password: "{{ swift_service_password }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_service
   until: add_service|success
   retries: 5
@@ -58,6 +60,7 @@
     user_name: "{{ swift_service_user_name }}"
     tenant_name: "{{ swift_service_project_name }}"
     role_name: "{{ swift_service_role_name }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_service
   until: add_service|success
   retries: 5
@@ -73,6 +76,7 @@
     token: "{{ keystone_auth_admin_token }}"
     endpoint: "{{ keystone_service_adminurl }}"
     role_name: "{{ swift_operator_role }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_service
   until: add_service|success
   retries: 5
@@ -90,6 +94,7 @@
     user_name: "{{ swift_dispersion_user }}"
     tenant_name: "{{ swift_service_project_name }}"
     password: "{{ swift_dispersion_password }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_service
   until: add_service|success
   retries: 5
@@ -139,6 +144,7 @@
     user_name: "{{ swift_dispersion_user }}"
     tenant_name: "{{ swift_service_project_name }}"
     role_name: "{{ swift_operator_role }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_service
   until: add_service|success
   retries: 5
@@ -160,6 +166,7 @@
     publicurl: "{{ swift_service_publicurl }}"
     adminurl: "{{ swift_service_internalurl }}"
     internalurl: "{{ swift_service_adminurl }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_service
   until: add_service|success
   retries: 5

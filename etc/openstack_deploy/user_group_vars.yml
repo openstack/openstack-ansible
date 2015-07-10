@@ -153,6 +153,8 @@ keystone_service_adminurl_v3: "{{ keystone_service_adminuri_v3 }}/v3"
 keystone_cache_backend_argument: "url:{% for host in groups['memcached'] %}{{ hostvars[host]['container_address'] }}{% if not loop.last %},{% endif %}{% endfor %}:{{ memcached_port }}"
 keystone_memcached_servers: "{% for host in groups['keystone_all'] %}{{ hostvars[host]['container_address'] }}:{{ memcached_port }}{% if not loop.last %},{% endif %}{% endfor %}"
 keystone_service_region: "{{ service_region }}"
+keystone_service_adminuri_insecure: false
+keystone_service_internaluri_insecure: false
 
 
 ## Horizon

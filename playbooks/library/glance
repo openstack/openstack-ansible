@@ -53,8 +53,16 @@ options:
         description:
             - which version of the glance api to use
         choices:
-            - 1 (default)
+            - 1
             - 2
+        default: 1
+    insecure:
+        description:
+            - Explicitly allow client to perform "insecure" TLS
+        choices:
+            - false
+            - true
+        default: false
 author: Hugh Saunders
 """
 
@@ -114,7 +122,9 @@ class ManageGlance(object):
     def _keystone_authenticate(self):
         """Authenticate with Keystone."""
         openrc = self._parse_openrc()
-        self.keystone = ksclient.Client(username=openrc['OS_USERNAME'],
+        insecure = self.module.params['insecure']
+        self.keystone = ksclient.Client(insecure=insecure,
+                                        username=openrc['OS_USERNAME'],
                                         password=openrc['OS_PASSWORD'],
                                         tenant_name=openrc['OS_TENANT_NAME'],
                                         auth_url=openrc['OS_AUTH_URL'])
@@ -209,7 +219,9 @@ def main():
             image_container_format=dict(required=False),
             image_disk_format=dict(required=False),
             image_is_public=dict(required=False, choices=BOOLEANS),
-            api_version=dict(default='1', required=False, choices=['1', '2'])
+            api_version=dict(default='1', required=False, choices=['1', '2']),
+            insecure=dict(default=False, required=False,
+                          choices=BOOLEANS + ['True', 'False'])
         ),
         supports_check_mode=False
     )
