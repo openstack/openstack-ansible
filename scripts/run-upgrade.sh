@@ -96,6 +96,7 @@ mkdir -p /etc/openstack_deploy/env.d
 
 # Copy over the new environment map
 cp etc/openstack_deploy/openstack_environment.yml /etc/openstack_deploy/
+cp etc/openstack_deploy/env.d/* /etc/openstack_deploy/env.d/
 
 # Set the rabbitmq cluster name if its not set to something else.
 if ! grep '^rabbit_cluster_name\:' /etc/openstack_deploy/user_variables.yml;then
@@ -149,6 +150,10 @@ with open('/etc/openstack_deploy/user_secrets.yml', 'w') as fsw:
         )
     )
 EOL
+  # Remove old ldap variables from "user_variables.yml".
+  sed -i '/keystone_ldap.*/d' /etc/openstack_deploy/user_variables.yml
+fi
+
 
 # If monitoring as a service or Rackspace cloud variables are present, rewrite them as rpc-extras.yml
 if grep -e '^maas_.*' -e '^rackspace_.*' -e '^elasticsearch_.*' -e '^kibana_.*' -e 'logstash_.*' /etc/openstack_deploy/user_variables.yml;then
@@ -227,42 +232,57 @@ fi
 # Regenerate secrets for the new entries
 ./scripts/pw-token-gen.py --file /etc/openstack_deploy/user_secrets.yml
 
-# Ensure any item that was "is_metal: true" and is in the new inventory, is set correctly.
+# Preserve any is_metal configurations that differ from new environment layout.
 python <<EOL
+import os
 import yaml
+
 with open('/etc/rpc_deploy.OLD/rpc_environment.yml', 'r') as f:
-    environment = yaml.safe_load(f.read())
+    rpc_environment = yaml.safe_load(f.read())
 
-onmetal = list()
-for k, v in environment['container_skel'].items():
-    if v.get('is_metal') == True:
-        onmetal.append(k)
+for root, _, files in os.walk('/etc/openstack_deploy/env.d'):
+    for item in files:
+        env_file = os.path.join(root, item)
+        with open(env_file, 'r') as f:
+            os_environment = yaml.safe_load(f.read())
 
-with open('/etc/openstack_deploy/openstack_environment.yml', 'r') as f:
-    os_environment = yaml.safe_load(f.read())
+        if 'container_skel' not in os_environment:
+            continue
 
-for i in onmetal:
-    if i in os_environment['container_skel']:
-        os_item = os_environment['container_skel'][i]
-        if 'properties' in os_item:
-            os_item['properties']['is_metal'] = True
-        else:
-            properties = os_item['properties'] = dict()
-            properties['is_metal'] = True
+        changed = False
 
-with open('/etc/openstack_deploy/openstack_environment.yml', 'w') as fsw:
-    fsw.write(
-        yaml.safe_dump(
-            os_environment,
-            default_flow_style=False,
-            width=1000
-        )
-    )
+        for i in os_environment['container_skel']:
+            os_item = os_environment['container_skel'][i]
+
+            if i not in rpc_environment['container_skel']:
+                continue
+
+            rpc_item = rpc_environment['container_skel'][i]
+
+            if 'is_metal' in rpc_item:
+                rpc_metal = rpc_item['is_metal']
+            else:
+                rpc_metal = False
+
+            if 'is_metal' in os_item['properties']:
+                os_metal = os_item['properties']['is_metal']
+            else:
+                os_metal = False
+
+            if rpc_metal != os_metal:
+                changed = True
+                os_item['properties']['is_metal'] = rpc_metal
+
+        if changed:
+            with open(env_file, 'w') as fsw:
+                fsw.write(
+                    yaml.safe_dump(
+                        os_environment,
+                        default_flow_style=False,
+                        width=1000
+                    )
+                )
 EOL
-
-  # Remove old ldap variables from "user_variables.yml".
-  sed -i '/keystone_ldap.*/d' /etc/openstack_deploy/user_variables.yml
-fi
 
 # Create the repo servers entries from the same entries found within the infra_hosts group.
 if ! grep -R '^repo-infra_hosts\:' /etc/openstack_deploy/user_variables.yml /etc/openstack_deploy/conf.d/;then
@@ -297,10 +317,11 @@ sed -i '/^environment_version.*/d' /etc/openstack_deploy/openstack_user_config.y
 
 # Remove containers that we no longer need
 pushd playbooks
-  # Ensure that apt-transport-https is installed everywhere before doing anything else.
+  # Ensure that apt-transport-https is installed everywhere before doing anything else,
+  # forces True as containers may not exist at this point.
   ansible "hosts:all_containers" \
-          -m shell \
-          -a "apt-get update && apt-get install -y apt-transport-https"
+          -m "apt" \
+          -a "update_cache=yes name=apt-transport-https" || true
 
   # Setup all hosts to run lxc
   openstack-ansible lxc-hosts-setup.yml
@@ -505,8 +526,11 @@ pushd playbooks
     openstack-ansible haproxy-install.yml
   fi
 
-  # Hunt for and remove any rpc_release link files from pip
-  ansible "hosts:all_containers" -m "shell" -a "rm /root/.pip/links.d/rpc_release.link"
+  # Hunt for and remove any rpc_release link files from pip, forces True as
+  # containers may not exist at this point.
+  ansible "hosts:all_containers" \
+          -m "file" \
+          -a "path=/root/.pip/links.d/rpc_release.link state=absent" || true
 
   # Run the fix adjustments play.
   openstack-ansible /tmp/fix_minor_adjustments.yml
