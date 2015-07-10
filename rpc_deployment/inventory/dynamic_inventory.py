@@ -809,7 +809,11 @@ def main():
     _ensure_inventory_uptodate(inventory=dynamic_inventory)
 
     # Load the inventory json
-    dynamic_inventory_json = json.dumps(dynamic_inventory, indent=4)
+    dynamic_inventory_json = json.dumps(
+        dynamic_inventory,
+        indent=4,
+        sort_keys=True
+    )
 
     # Generate a list of all hosts and their used IP addresses
     hostnames_ips = {}
@@ -824,7 +828,8 @@ def main():
         f.write(
             json.dumps(
                 hostnames_ips,
-                indent=4
+                indent=4,
+                sort_keys=True
             )
         )
 
