@@ -166,7 +166,6 @@ if ! grep -q "^source /etc/network/interfaces.d/\*.cfg$" /etc/network/interfaces
   echo -e "\nsource /etc/network/interfaces.d/*.cfg" | tee -a /etc/network/interfaces
 fi
 
-
 # Set base DNS to google, ensuring consistent DNS in different environments
 if [ ! "$(grep -e '^nameserver 8.8.8.8' -e '^nameserver 8.8.4.4' /etc/resolv.conf)" ];then
   echo -e '\n# Adding google name servers\nnameserver 8.8.8.8\nnameserver 8.8.4.4' | tee -a /etc/resolv.conf

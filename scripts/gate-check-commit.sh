@@ -93,6 +93,9 @@ if [ ! -d "/etc/rpc_deploy" ];then
     echo 'galera_gcache_size: 50M' >> ${USER_VARS_PATH}
   fi
 
+  # reduce the mysql innodb_buffer_pool_size
+  echo 'innodb_buffer_pool_size: 512M' | tee -a ${USER_VARS_PATH}
+
   if [ "${DEPLOY_TEMPEST}" == "yes" ]; then
     echo "tempest_public_subnet_cidr: ${TEMPEST_FLAT_CIDR}" | tee -a ${USER_VARS_PATH}
     echo "tempest_public_gateway_ip: ${TEMPEST_FLAT_GATEWAY}" | tee -a ${USER_VARS_PATH}
