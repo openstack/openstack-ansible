@@ -32,6 +32,7 @@ export TEMPEST_FLAT_CIDR=${TEMPEST_FLAT_CIDR:-"172.29.248.0/22"}
 export FLUSH_IPTABLES=${FLUSH_IPTABLES:-"yes"}
 export RABBITMQ_PACKAGE_URL=${RABBITMQ_PACKAGE_URL:-""}
 export SYMLINK_DIR=${SYMLINK_DIR:-"$(pwd)/logs"}
+export MONGO_HOST=172.29.236.100
 
 # Default disabled fatal deprecation warnings
 export CINDER_FATAL_DEPRECATIONS=${CINDER_FATAL_DEPRECATIONS:-"no"}
@@ -294,18 +295,23 @@ scripts/pw-token-gen.py --file /etc/openstack_deploy/user_secrets.yml
 sed -i "s/keystone_auth_admin_password:.*/keystone_auth_admin_password: ${ADMIN_PASSWORD}/" /etc/openstack_deploy/user_secrets.yml
 sed -i "s/external_lb_vip_address:.*/external_lb_vip_address: ${PUBLIC_ADDRESS}/" /etc/openstack_deploy/openstack_user_config.yml
 
-if [ ${DEPLOY_CEILOMETER} ]; then
+if [ ${DEPLOY_CEILOMETER} == "yes" ]; then
   # Install mongodb on the aio1 host
   apt-get install mongodb-server mongodb-clients python-pymongo -y
   # Change bind_ip to management ip
-  sed -i "s/^bind_ip.*/bind_ip = 172.29.236.100/" /etc/mongodb.conf
+  sed -i "s/^bind_ip.*/bind_ip = $MONGO_HOST/" /etc/mongodb.conf
   # Asserting smallfiles key
   sed -i "s/^smallfiles.*/smallfiles = true/" /etc/mongodb.conf
   service mongodb restart
-  # Giving the service a second..
-  sleep 5
+
+  # Wait for mongodb to restart
+  for i in {1..12}
+  do
+    mongo --host $MONGO_HOST --eval ' ' && break
+    sleep 5
+  done
   #Adding the ceilometer database
-  mongo --host 172.29.236.100 --eval '
+  mongo --host $MONGO_HOST --eval '
     db = db.getSiblingDB("ceilometer");
     db.addUser({user: "ceilometer",
     pwd: "ceilometer",
@@ -316,7 +322,7 @@ if [ ${DEPLOY_CEILOMETER} ]; then
   # Change the ceilometer user variables necessary for deployment
   sed -i "s/ceilometer_db_ip:.*/ceilometer_db_ip: \"\{\{ hostvars\['aio1'\]\['ansible_ssh_host'\] \}\}\"/" /etc/openstack_deploy/user_variables.yml
   # Enable ceilometer for all other openstack services
-  if [ ${DEPLOY_SWIFT} ]; then
+  if [ ${DEPLOY_SWIFT} == "yes" ]; then
     sed -i "s/swift_ceilometer_enabled:.*/swift_ceilometer_enabled: True/" /etc/openstack_deploy/user_variables.yml
   fi
   sed -i "s/heat_ceilometer_enabled:.*/heat_ceilometer_enabled: True/" /etc/openstack_deploy/user_variables.yml
