@@ -1,0 +1,37 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# We need the storage network for replication of the ring
+# We find the IP on the "storage_bridge" network for storage hosts
+- name: Register a fact for the default storage IP swift hosts
+  set_fact:
+     swift_storage_address: "{{ hostvars[inventory_hostname]['swift_vars']['storage_ip'] | default(hostvars[inventory_hostname]['ansible_' + swift.storage_network|replace('-','_')]['ipv4']['address'] | default(hostvars[inventory_hostname]['ansible_ssh_host'])) }}"
+  when: inventory_hostname in groups['swift_hosts'] and
+        swift.storage_network is defined
+
+# For proxy servers this is mapped to an interface that isn't the bridge
+- name: Register a fact for the default storage IP on proxy servers
+  set_fact:
+     swift_storage_address: "{{ item.value.address }}"
+  with_dict: container_networks
+  when: inventory_hostname in groups['swift_proxy'] and
+        swift.storage_network is defined and
+        item.value.bridge == swift.storage_network
+
+# A catchall, and for remote hosts the IP is just the ansible_ssh_host IP
+- name: Register a fact for the default storage IP when no storage-network is defined or for remote hosts
+  set_fact:
+    swift_storage_address: "{{ hostvars[inventory_hostname]['ansible_ssh_host'] }}"
+  when: swift.storage_network is not defined
