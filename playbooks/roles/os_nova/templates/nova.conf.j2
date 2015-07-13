@@ -103,6 +103,7 @@ memcached_servers = {{ memcached_servers }}
 # Cinder
 [cinder]
 catalog_info = volume:cinder:internalURL
+cross_az_attach = {{ nova_cross_az_attach }}
 
 
 {% if nova_spice_html5proxy_base_url is defined and nova_console_type == "spice" %}
