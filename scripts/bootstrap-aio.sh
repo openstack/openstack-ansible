@@ -274,6 +274,18 @@ scripts/pw-token-gen.py --file /etc/openstack_deploy/user_secrets.yml
 sed -i "s/keystone_auth_admin_password:.*/keystone_auth_admin_password: ${ADMIN_PASSWORD}/" /etc/openstack_deploy/user_secrets.yml
 sed -i "s/external_lb_vip_address:.*/external_lb_vip_address: ${PUBLIC_ADDRESS}/" /etc/openstack_deploy/openstack_user_config.yml
 
+# Change affinities (number of containers per host) if the appropriate
+# environment variables are set.
+for container_type in keystone galera rabbit_mq horizon repo
+do
+  var_name="NUM_${container_type}_CONTAINER"
+  set +u
+  num=${!var_name}
+  set -u
+  [[ -z $num ]] && continue
+  sed -i "s/${container_type}_container:.*/${container_type}_container: ${num}/" /etc/openstack_deploy/openstack_user_config.yml
+done
+
 if [ ${DEPLOY_CEILOMETER} == "yes" ]; then
   # Install mongodb on the aio1 host
   apt-get install mongodb-server mongodb-clients python-pymongo -y
