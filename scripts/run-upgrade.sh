@@ -532,6 +532,9 @@ pushd playbooks
           -m "file" \
           -a "path=/root/.pip/links.d/rpc_release.link state=absent" || true
 
+  # The galera monitoring user now defaults to 'monitoring', cleaning up old 'haproxy' user.
+  ansible "galera_all[0]" -m "mysql_user" -a "name=haproxy host='%' password='' priv='*.*:USAGE' state=absent"
+
   # Run the fix adjustments play.
   openstack-ansible /tmp/fix_minor_adjustments.yml
   # Remove fix container adjustments play
