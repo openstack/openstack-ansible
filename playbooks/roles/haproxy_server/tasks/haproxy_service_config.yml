@@ -13,12 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: haproxy_add_ppa_repo.yml
-  when: haproxy_ssl | bool
-
-- include: haproxy_install.yml
-
-- include: haproxy_ssl_key_create.yml
-  when: haproxy_ssl | bool
-
-- include: haproxy_post_install.yml
+- name: "Create haproxy service config files"
+  template:
+    src: service.j2
+    dest: "/etc/haproxy/conf.d/{{ item.service.haproxy_service_name }}"
+  with_items: haproxy_service_configs
+  notify: Restart haproxy
+  tags:
+    - haproxy-service-config

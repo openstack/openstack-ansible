@@ -16,6 +16,23 @@
 # Defines that the role will be deployed on a host machine
 is_metal: true
 
+haproxy_apt_repo_url: "http://ppa.launchpad.net/vbernat/haproxy-1.5/ubuntu"
+haproxy_apt_repo:
+  repo: "deb {{ haproxy_apt_repo_url }} {{ ansible_distribution_release }} main"
+  state: "present"
+
+# Haproxy GPG Keys
+haproxy_gpg_keys:
+  - key_name: 'haproxy'
+    keyserver: 'hkp://keyserver.ubuntu.com:80'
+    fallback_keyserver: 'hkp://p80.pool.sks-keyservers.net:80'
+    hash_id: '0xcffb779aadc995e4f350a060505d97a41c61b9cd'
+
+haproxy_pre_apt_packages:
+  - python-software-properties
+  - software-properties-common
+  - debconf-utils
+
 haproxy_apt_packages:
   - haproxy
   - hatop
@@ -43,3 +60,11 @@ haproxy_backup_nodes: []
 #         - "httplog"
 
 galera_monitoring_user: monitoring
+
+## haproxy SSL
+haproxy_ssl: no
+haproxy_cert_regen: no
+haproxy_ssl_cert: /etc/ssl/certs/haproxy.cert
+haproxy_ssl_key: /etc/ssl/private/haproxy.key
+haproxy_ssl_pem: /etc/ssl/private/haproxy.pem
+haproxy_ssl_self_signed_subject: "/C=US/ST=Texas/L=San Antonio/O=IT/CN={{ internal_lb_vip_address }}/subjectAltName=IP.1={{ external_lb_vip_address }}"
