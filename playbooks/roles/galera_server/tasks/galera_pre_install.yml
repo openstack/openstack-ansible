@@ -98,5 +98,6 @@
   template:
     src: "limits.conf.j2"
     dest: "/etc/security/limits.conf"
+  notify: Restart mysql
   tags:
     - galera-config
