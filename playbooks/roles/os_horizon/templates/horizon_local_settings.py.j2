@@ -168,7 +168,8 @@ OPENSTACK_HOST = "{{ horizon_keystone_host }}"
 OPENSTACK_KEYSTONE_URL = "{{ horizon_keystone_endpoint }}"
 {% endif %}
 
-OPENSTACK_KEYSTONE_DEFAULT_ROLE = "_member_"
+# The default role assigned to users
+OPENSTACK_KEYSTONE_DEFAULT_ROLE = "{{ horizon_default_role_name }}"
 
 {% if keystone_sp is defined %}
 # Enables keystone web single-sign-on
