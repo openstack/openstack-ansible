@@ -13,3 +13,15 @@ export OS_PASSWORD={{ openrc_os_password }}
 export OS_TENANT_NAME={{ openrc_os_tenant_name }}
 export OS_AUTH_URL={{ openrc_os_auth_url }}
 export OS_NO_CACHE=1
+
+{% if openrc_insecure | bool %}
+# Convenience Aliases for Self-Signed Certs
+alias cinder='cinder --insecure'
+alias glance='glance --insecure'
+alias heat='heat --insecure'
+alias keystone='keystone --insecure'
+alias neutron='neutron --insecure'
+alias nova='nova --insecure'
+alias openstack='openstack --insecure'
+alias swift='swift --insecure'
+{% endif %}

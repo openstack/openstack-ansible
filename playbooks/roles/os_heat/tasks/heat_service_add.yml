@@ -22,6 +22,7 @@
     service_name: "{{ service_name }}"
     service_type: "{{ service_type }}"
     description: "{{ service_description }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_service
   until: add_service|success
   retries: 5
@@ -40,6 +41,7 @@
     user_name: "{{ service_user_name }}"
     tenant_name: "{{ service_tenant_name }}"
     password: "{{ service_password }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_service
   until: add_service|success
   retries: 5
@@ -58,6 +60,7 @@
     user_name: "{{ service_user_name }}"
     tenant_name: "{{ service_tenant_name }}"
     role_name: "{{ role_name }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_service
   until: add_service|success
   retries: 5
@@ -79,6 +82,7 @@
     publicurl: "{{ service_publicurl }}"
     internalurl: "{{ service_internalurl }}"
     adminurl: "{{ service_adminurl }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_service
   until: add_service|success
   retries: 5

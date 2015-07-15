@@ -58,9 +58,16 @@ options:
     router_external:
         description:
             - Specify router:external' when creating network
-    external_gateway_info
+    external_gateway_info:
         description:
             - Specify external_gateway_info when creating router
+    insecure:
+        description:
+            - Explicitly allow client to perform "insecure" TLS
+        choices:
+            - false
+            - true
+        default: false
 author: Hugh Saunders
 """
 
@@ -247,7 +254,9 @@ class ManageNeutron(object):
     def _keystone_authenticate(self):
         """Authenticate with Keystone."""
         openrc = self._parse_openrc()
-        self.keystone = ksclient.Client(username=openrc['OS_USERNAME'],
+        insecure = self.module.params['insecure']
+        self.keystone = ksclient.Client(insecure=insecure,
+                                        username=openrc['OS_USERNAME'],
                                         password=openrc['OS_PASSWORD'],
                                         tenant_name=openrc['OS_TENANT_NAME'],
                                         auth_url=openrc['OS_AUTH_URL'])
@@ -396,7 +405,9 @@ def main():
             router_external=dict(required=False),
             router_name=dict(required=False),
             external_gateway_info=dict(required=False),
-            tenant_id=dict(required=False)
+            tenant_id=dict(required=False),
+            insecure=dict(default=False, required=False,
+                          choices=BOOLEANS + ['True', 'False'])
         ),
         supports_check_mode=False
     )

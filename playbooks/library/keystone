@@ -121,6 +121,13 @@ options:
                   'ensure_endpoint', 'ensure_role', 'ensure_user',
                   'ensure_user_role', 'ensure_tenant']
         required: true
+    insecure:
+        description:
+            - Explicitly allow client to perform "insecure" TLS
+        choices:
+            - false
+            - true
+        default: false
 requirements: [ python-keystoneclient ]
 author: Kevin Carter
 """
@@ -357,7 +364,8 @@ class ManageKeystone(object):
             'login_user',
             'login_password',
             'login_tenant_name',
-            'token'
+            'token',
+            'insecure'
         ]
         variables_dict = self._get_vars(variables, required=required_vars)
 
@@ -366,6 +374,7 @@ class ManageKeystone(object):
         login_password = variables_dict.pop('login_password')
         login_tenant_name = variables_dict.pop('login_tenant_name')
         token = variables_dict.pop('token')
+        insecure = variables_dict.pop('insecure')
 
         if token is None:
             if login_tenant_name is None:
@@ -386,9 +395,14 @@ class ManageKeystone(object):
                 )
 
         if token:
-            self.keystone = client.Client(endpoint=endpoint, token=token)
+            self.keystone = client.Client(
+                insecure=insecure,
+                endpoint=endpoint,
+                token=token
+            )
         else:
             self.keystone = client.Client(
+                insecure=insecure,
                 auth_url=endpoint,
                 username=login_user,
                 password=login_password,
@@ -796,6 +810,11 @@ def main():
             command=dict(
                 required=True,
                 choices=COMMAND_MAP.keys()
+            ),
+            insecure=dict(
+                default=False,
+                required=False,
+                choices=BOOLEANS + ['True', 'False']
             ),
             return_code=dict(
                 type='str',

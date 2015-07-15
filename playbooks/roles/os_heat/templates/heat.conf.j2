@@ -63,6 +63,7 @@ trace_sqlalchemy = {{ heat_profiler_trace_sqlalchemy }}
 
 
 [keystone_authtoken]
+insecure = {{ keystone_service_internaluri_insecure | bool }}
 signing_dir = /var/cache/heat
 identity_uri = {{ keystone_service_adminuri }}
 auth_uri = {{ keystone_service_internalurl }}
