@@ -92,6 +92,9 @@ openstack_kernel_options:
   - { key: 'vm.dirty_background_ratio', value: 5 }
   - { key: 'vm.dirty_ratio', value: 10 }
   - { key: 'vm.swappiness', value: 5 }
+  - { key: 'net.bridge.bridge-nf-call-ip6tables', value: 0 }
+  - { key: 'net.bridge.bridge-nf-call-iptables', value: 0 }
+  - { key: 'net.bridge.bridge-nf-call-arptables', value: 0 }
   - { key: 'net.ipv4.neigh.default.gc_thresh1', value: "{{ set_gc_val | int // 2 }}" }
   - { key: 'net.ipv4.neigh.default.gc_thresh2', value: "{{ set_gc_val | int }}" }
   - { key: 'net.ipv4.neigh.default.gc_thresh3', value: "{{ set_gc_val | int * 2 }}" }

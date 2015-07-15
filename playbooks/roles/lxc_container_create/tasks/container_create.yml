@@ -45,9 +45,21 @@
     - "/openstack/{{ inventory_hostname }}"
     - "/openstack/backup/{{ inventory_hostname }}"
     - "/openstack/log/{{ inventory_hostname }}"
+    - "{{ lxc_container_directory }}/{{ inventory_hostname }}"
   delegate_to: "{{ physical_host }}"
   tags:
     - lxc-container-directories
+
+- name: LXC autodev setup
+  template:
+    src: "autodev.j2"
+    dest: "/var/lib/lxc/{{ inventory_hostname }}/autodev"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+  delegate_to: "{{ physical_host }}"
+  tags:
+    - lxc-container-autodev
 
 - name: Create container
   lxc_container:
@@ -63,7 +75,19 @@
     vg_name: "{{ properties.container_vg_name|default(lxc_container_vg_name) }}"
     template_options: "{{ lxc_container_template_options }}"
     container_command: |
+      if [ -f  "/usr/lib/systemd/system/poweroff.target" ];then
+        ln -sf /usr/lib/systemd/system/poweroff.target /etc/systemd/system/sigpwr.target || true
+      fi
+      ln -s /dev/null /etc/systemd/system/systemd-udevd.service || true
+      ln -s /dev/null /etc/systemd/system/systemd-udevd-control.socket || true
+      ln -s /dev/null /etc/systemd/system/systemd-udevd-kernel.socket || true
+      ln -s /dev/null /etc/systemd/system/proc-sys-fs-binfmt_misc.automount || true
       echo -e '{{ lxc_container_default_interfaces }}' | tee /etc/network/interfaces
+    container_config:
+      - "lxc.autodev=1"
+      - "lxc.pts=1024"
+      - "lxc.kmsg=0"
+      - "lxc.hook.autodev=/var/lib/lxc/{{ inventory_hostname }}/autodev"
   delegate_to: "{{ physical_host }}"
   tags:
     - lxc-container-create
