@@ -146,6 +146,14 @@ cinder_profiler_trace_sqlalchemy: false
 
 cinder_client_socket_timeout: 900
 
+## Cinder quota
+cinder_quota_volumes: 10
+cinder_quota_snapshots: 10
+cinder_quota_consistencygroups: 10
+cinder_quota_gigabytes: 1000
+cinder_quota_backups: 10
+cinder_quota_backup_gigabytes: 1000
+
 ## General configuration
 ## Set this in rpc_user_config.yml UNLESS you want all hosts to use the same
 ## Cinder backends.  See the rpc_user_config example for more on how this is done.

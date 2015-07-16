@@ -60,6 +60,22 @@ neutron_driver_notification: neutron.openstack.common.notifier.rpc_notifier
 neutron_driver_quota: neutron.db.quota_db.DbQuotaDriver
 neutron_driver_firewall: neutron.agent.linux.iptables_firewall.IptablesFirewallDriver
 
+## Quotas
+neutron_default_quota: -1
+neutron_quota_floatingip: 50
+neutron_quota_health_monitor: -1
+neutron_quota_member: -1
+neutron_quota_network: 10
+neutron_quota_network_gateway: 5
+neutron_quota_packet_filter: 100
+neutron_quota_pool: 10
+neutron_quota_port: 50
+neutron_quota_router: 10
+neutron_quota_security_group: 10
+neutron_quota_security_group_rule: 100
+neutron_quota_subnet: 10
+neutron_quota_vip: 10
+
 ## General Neutron configuration
 # If ``neutron_api_workers`` is unset the system will use half the number of available VCPUs to
 # compute the number of api workers to use.
