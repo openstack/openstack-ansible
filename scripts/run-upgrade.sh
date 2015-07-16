@@ -56,6 +56,40 @@ function remove_inv_items(){
   ./scripts/inventory-manage.py -f /etc/openstack_deploy/openstack_inventory.json -r "$1"
 }
 
+function run_lock() {
+  set +e
+  run_item="${RUN_TASKS[$1]}"
+  upgrade_marker_file=$(basename $run_item .yml)
+  upgrade_marker="/etc/openstack_deploy/upgrade-juno/$upgrade_marker_file.complete"
+
+  if [ ! -f "$upgrade_marker" ];then
+    openstack-ansible "$2"
+    echo "ran $run_item"
+
+    if [ "$?" == "0" ];then
+      RUN_TASKS=("${RUN_TASKS[@]/$run_item}")
+      touch "$upgrade_marker"
+      echo "$run_item has been marked as success"
+    else
+      echo "******************** FAILURE ********************"
+      echo "The upgrade script has failed please rerun the following task to continue"
+      echo "Failed on task $run_item"
+      echo "Do NOT rerun the upgrade script!"
+      echo "Please execute the remaining tasks:"
+      # Run the tasks in order
+      for item in ${!RUN_TASKS[@]}; do
+        echo "${RUN_TASKS[$item]}"
+      done
+      echo "******************** FAILURE ********************"
+      exit 99
+    fi
+  else
+    RUN_TASKS=("${RUN_TASKS[@]/$run_item.*}")
+  fi
+  set -e
+}
+
+
 ## Main ----------------------------------------------------------------------
 
 # Create new openstack_deploy directory.
@@ -69,6 +103,10 @@ if [ -d "/etc/rpc_deploy" ];then
 else
   echo "No /etc/rpc_deploy directory found, thus nothing to upgrade."
   exit 1
+fi
+
+if [ ! -d "/etc/openstack_deploy/upgrade-juno" ];then
+  mkdir -p "/etc/openstack_deploy/upgrade-juno"
 fi
 
 # Drop deprecation file.
@@ -471,6 +509,27 @@ cat > /tmp/fix_container_interfaces.yml <<EOF
       failed_when: false
 EOF
 
+# Create a simple task to bounce all networks within a container.
+cat > /tmp/ensure_container_networking.yml <<EOF
+- name: Ensure container networking is online
+  hosts: "all_containers"
+  gather_facts: false
+  user: root
+  tasks:
+    - name: Ensure network interfaces are all up
+      lxc_container:
+        name: "{{ inventory_hostname }}"
+        container_command: |
+          INTERFACES=""
+          INTERFACES+="\$(awk '/auto/ {print \$2}' /etc/network/interfaces) "
+          INTERFACES+="\$(ls -1 /etc/network/interfaces.d/ | awk -F'.cfg' '{print \$1}')"
+          for i in \${INTERFACES}; do
+            ifdown \$i || true
+            ifup \$i || true
+          done
+      delegate_to: "{{ physical_host }}"
+EOF
+
 # Create a play to send swift rings to the first swift_host
 cat > /tmp/fix_swift_rings_locations.yml <<EOF
 - name: Send swift rings from localhost to the first swift node
@@ -517,13 +576,14 @@ cat > /tmp/fix_swift_rings_locations.yml <<EOF
     swift_system_home_folder: "/var/lib/{{ swift_system_user_name }}"
 EOF
 
+
 pushd playbooks
   # Reconfig haproxy if setup.
   if grep '^haproxy_hosts\:' /etc/openstack_deploy/openstack_user_config.yml;then
     ansible haproxy_hosts \
             -m shell \
             -a 'rm /etc/haproxy/conf.d/nova_api_ec2 /etc/haproxy/conf.d/nova_spice_console'
-    openstack-ansible haproxy-install.yml
+    RUN_TASKS+=("haproxy-install.yml")
   fi
 
   # Hunt for and remove any rpc_release link files from pip, forces True as
@@ -536,36 +596,42 @@ pushd playbooks
   ansible "galera_all[0]" -m "mysql_user" -a "name=haproxy host='%' password='' priv='*.*:USAGE' state=absent"
 
   # Run the fix adjustments play.
-  openstack-ansible /tmp/fix_minor_adjustments.yml
-  # Remove fix container adjustments play
-  rm /tmp/fix_minor_adjustments.yml
+  RUN_TASKS+=("/tmp/fix_minor_adjustments.yml")
 
   # Run the fix host things play
-  openstack-ansible /tmp/fix_host_things.yml
-  # Remove fix host things play
-  rm /tmp/fix_host_things.yml
+  RUN_TASKS+=("/tmp/fix_host_things.yml")
 
   # Run the fix for container networks. Forces True as containers may not exist at this point
-  openstack-ansible /tmp/fix_container_interfaces.yml || true
-  # Remove fix container networks play
-  rm /tmp/fix_container_interfaces.yml
+  RUN_TASKS+=("/tmp/fix_container_interfaces.yml || true")
 
   # Send the swift rings to the first swift host if swift was installed in "v10.x".
   if [ "$(ansible 'swift_hosts' --list-hosts)" != "No hosts matched" ] && [ -d "/etc/swift/rings" ];then
-    openstack-ansible /tmp/fix_swift_rings_locations.yml
-    # Remove fix swift rings locations play
+    RUN_TASKS+=("/tmp/fix_swift_rings_locations.yml")
+  else
+    # No swift install found removing the fix file
     rm /tmp/fix_swift_rings_locations.yml
   fi
 
+  # Ensure that the host is setup correctly to support lxc
+  RUN_TASKS+=("lxc-hosts-setup.yml")
+
   # Rerun create containers that will update all running containers with the new bits
-  openstack-ansible lxc-containers-create.yml
+  RUN_TASKS+=("lxc-containers-create.yml")
+
+  # Run the container network ensure play
+  RUN_TASKS+=("/tmp/ensure_container_networking.yml")
 
   # With inventory and containers upgraded run the remaining host setup
-  openstack-ansible openstack-hosts-setup.yml
+  RUN_TASKS+=("openstack-hosts-setup.yml")
 
   # Now run the infrastructure setup
-  openstack-ansible setup-infrastructure.yml
+  RUN_TASKS+=("setup-infrastructure.yml")
 
   # Now upgrade the rest of OpenStack
-  openstack-ansible setup-openstack.yml
+  RUN_TASKS+=("setup-openstack.yml")
+
+  # Run the tasks in order
+  for item in ${!RUN_TASKS[@]}; do
+    run_lock $item ${RUN_TASKS[$item]}
+  done
 popd
