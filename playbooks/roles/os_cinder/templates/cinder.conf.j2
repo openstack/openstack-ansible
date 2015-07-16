@@ -45,6 +45,14 @@ backup_metadata_version = {{ cinder_service_backup_metadata_version }}
 ## RabbitMQ
 rpc_backend = {{ cinder_rpc_backend }}
 
+## Quota
+quota_volumes = {{ cinder_quota_volumes }}
+quota_snapshots = {{ cinder_quota_snapshots }}
+quota_consistencygroups = {{ cinder_quota_consistencygroups }}
+quota_gigabytes = {{ cinder_quota_gigabytes }}
+quota_backups = {{ cinder_quota_backups }}
+quota_backup_gigabytes = {{ cinder_quota_backup_gigabytes }}
+
 ## Nova
 nova_catalog_info = {{ cinder_nova_catalog_info }}
 nova_catalog_admin_info = {{ cinder_nova_catalog_admin_info }}

@@ -85,6 +85,20 @@ password = {{ nova_service_password }}
 [quotas]
 quota_driver = {{ neutron_driver_quota }}
 quota_items = network,subnet,port
+default_quota = {{ neutron_default_quota }}
+quota_floatingip = {{ neutron_quota_floatingip }}
+quota_health_monitor = {{ neutron_quota_health_monitor }}
+quota_member = {{ neutron_quota_member }}
+quota_network = {{ neutron_quota_network }}
+quota_network_gateway = {{ neutron_quota_network_gateway }}
+quota_packet_filter = {{ neutron_quota_packet_filter }}
+quota_pool = {{ neutron_quota_pool }}
+quota_port = {{ neutron_quota_port }}
+quota_router = {{ neutron_quota_router }}
+quota_security_group = {{ neutron_quota_security_group }}
+quota_security_group_rule = {{ neutron_quota_security_group_rule }}
+quota_subnet = {{ neutron_quota_subnet }}
+quota_vip = {{ neutron_quota_vip }}
 
 
 [agent]
