@@ -18,7 +18,16 @@ is_metal: true
 
 rabbitmq_primary_cluster_node: "{{ groups['rabbitmq_all'][0] }}"
 
-rabbitmq_package_url: https://www.rabbitmq.com/releases/rabbitmq-server/v3.5.3/rabbitmq-server_3.5.3-1_all.deb
+# Upgrading the RabbitMQ package requires shutting down the cluster. This variable makes upgrading
+#  the version an explicit action.
+rabbitmq_upgrade: false
+
+# If the user does not want to upgrade but needs to rerun the playbooks for any reason the
+#  upgrade/version state can be ignored by setting `rabbitmq_ignore_version_state=true`
+rabbitmq_ignore_version_state: false
+
+rabbitmq_package_url: "https://www.rabbitmq.com/releases/rabbitmq-server/v3.5.3/rabbitmq-server_3.5.3-1_all.deb"
+rabbitmq_package_version: "{{ rabbitmq_package_url.split('/')[-1].split('_')[1] }}"
 rabbitmq_package_sha256: "0abcae49842c21242da66f1bc02fe4bf73dc3c3c38419861e08bf1fa4ac74cb1"
 rabbitmq_package_path: "/opt/rabbitmq-server.deb"
 

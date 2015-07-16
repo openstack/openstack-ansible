@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- include: rabbitmq_upgrade_check.yml
+
 - name: Update apt sources
   apt:
     update_cache: yes
@@ -54,3 +56,13 @@
   with_items: rabbitmq_pip_packages
   tags:
     - rabbitmq-pip-packages
+
+- name: Ensure there are no policy-rc files
+  file:
+    path: "/usr/sbin/policy-rc.d"
+    state: absent
+  tags:
+    - rabbitmq-upgrade
+    - rabbitmq-policy-file
+
+- include: rabbitmq_started.yml

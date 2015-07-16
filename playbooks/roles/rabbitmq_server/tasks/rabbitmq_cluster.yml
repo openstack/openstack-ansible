@@ -13,16 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- include: rabbitmq_cluster_create.yml
+  when: >
+    inventory_hostname == rabbitmq_primary_cluster_node
 
-- include: rabbitmq_pre_install.yml
-
-# The install process will be skipped if `rabbitmq_ignore_version_state=true`
-- include: rabbitmq_install.yml
-  when: not rabbitmq_ignore_version_state | bool
-
-- include: rabbitmq_set_cookie.yml
-- include: rabbitmq_post_install.yml
-- include: rabbitmq_cluster.yml
-
-- name: Flush handlers
-  meta: flush_handlers
+- include: rabbitmq_cluster_join.yml
+  when: >
+    inventory_hostname != rabbitmq_primary_cluster_node
