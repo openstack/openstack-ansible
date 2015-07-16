@@ -1,0 +1,39 @@
+---
+# Copyright 2015, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Get version of installed RabbitMQ package
+  shell: |
+    dpkg -l | grep rabbitmq-server
+  failed_when: false
+  register: installed_rabbitmq
+  when:
+    - not rabbitmq_upgrade | bool
+  tags:
+    - rabbitmq-package-deb
+    - rabbitmq-apt-packages
+
+- name: Compare installed version of RabbitMQ with new version variable
+  fail:
+    msg: "To install a new major/minor version of RabbitMQ set '-e rabbitmq_upgrade=true'."
+  when: >
+    not rabbitmq_upgrade | bool and
+    installed_rabbitmq.rc == 0 and
+    installed_rabbitmq.stdout.split()[2] != rabbitmq_package_version
+  tags:
+    - rabbitmq-package-deb
+    - rabbitmq-apt-packages
+
+- include: rabbitmq_upgrade_prep.yml
+  when: rabbitmq_upgrade | bool
