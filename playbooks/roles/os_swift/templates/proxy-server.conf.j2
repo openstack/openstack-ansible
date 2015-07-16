@@ -144,7 +144,7 @@ use = egg:swift#xprofile
 paste.filter_factory = ceilometermiddleware.swift:filter_factory
 control_exchange = swift
 driver = messagingv2
-url = rabbit://openstack:{{ rabbitmq_password }}@{{ groups['rabbitmq_all'][0] }}
+url = rabbit://{{ ceilometer_rabbitmq_userid }}:{{ ceilometer_rabbitmq_password }}@{{ hostvars[groups['rabbitmq_all'][0]]['ansible_ssh_host'] }}:5672{{ ceilometer_rabbitmq_vhost }}
 topic = notifications
 log_level = WARN
 {% endif %}

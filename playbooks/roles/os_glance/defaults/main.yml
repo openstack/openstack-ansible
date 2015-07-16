@@ -47,6 +47,10 @@ glance_enable_v1_registry: True
 glance_enable_v2_api: True
 glance_enable_v2_registry: True
 
+## RabbitMQ info
+glance_rabbitmq_userid: glance
+glance_rabbitmq_vhost: /glance
+
 ## DB info
 glance_galera_database: glance
 glance_galera_user: glance

@@ -226,10 +226,10 @@ lock_path = /var/lock/nova
 
 
 [oslo_messaging_rabbit]
-amqp_auto_delete = False
 rabbit_port = {{ rabbitmq_port }}
-rabbit_userid = {{ rabbitmq_userid }}
-rabbit_password = {{ rabbitmq_password }}
+rabbit_userid = {{ nova_rabbitmq_userid }}
+rabbit_password = {{ nova_rabbitmq_password }}
+rabbit_virtual_host = {{ nova_rabbitmq_vhost }}
 rabbit_hosts = {{ rabbitmq_servers }}
 
 

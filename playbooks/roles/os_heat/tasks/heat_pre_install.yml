@@ -88,3 +88,7 @@
   tags:
     - heat-dirs
     - heat-logs
+
+- include: heat_messaging_setup.yml
+  when: >
+    inventory_hostname == groups['heat_all'][0]

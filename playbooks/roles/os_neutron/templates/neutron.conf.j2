@@ -149,8 +149,9 @@ root_helper = sudo /usr/local/bin/neutron-rootwrap /etc/neutron/rootwrap.conf
 # Messaging service
 [oslo_messaging_rabbit]
 rabbit_port = {{ rabbitmq_port }}
-rabbit_userid = {{ rabbitmq_userid }}
-rabbit_password = {{ rabbitmq_password }}
+rabbit_userid = {{ neutron_rabbitmq_userid }}
+rabbit_password = {{ neutron_rabbitmq_password }}
+rabbit_virtual_host = {{ neutron_rabbitmq_vhost }}
 rabbit_hosts = {{ rabbitmq_servers }}
 
 # Concurrency (locking mechanisms)

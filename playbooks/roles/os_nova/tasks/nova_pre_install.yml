@@ -109,3 +109,7 @@
   tags:
     - sudoers
     - nova-sudoers
+
+- include: nova_messaging_setup.yml
+  when: >
+    inventory_hostname == groups['nova_all'][0]

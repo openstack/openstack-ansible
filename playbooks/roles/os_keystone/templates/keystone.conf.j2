@@ -134,9 +134,11 @@ admin_port = {{ keystone_admin_port }}
 public_port = {{ keystone_service_port }}
 
 [oslo_messaging_rabbit]
+rabbit_port = {{ rabbitmq_port }}
+rabbit_userid = {{ keystone_rabbitmq_userid }}
+rabbit_password = {{ keystone_rabbitmq_password }}
+rabbit_virtual_host = {{ keystone_rabbitmq_vhost }}
 rabbit_hosts = {{ rabbitmq_servers }}
-rabbit_userid = {{ rabbitmq_userid }}
-rabbit_password = {{ rabbitmq_password }}
 
 {% if keystone_sp is defined %}
 [federation]
@@ -147,3 +149,4 @@ trusted_dashboard = {{ item }}
 {% endfor %}
 {% endif %}
 {% endif %}
+

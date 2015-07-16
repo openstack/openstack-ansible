@@ -20,7 +20,9 @@ limit_param_default = 25
 notification_driver = {{ glance_notification_driver }}
 rpc_backend = {{ glance_rpc_backend }}
 rabbit_hosts = {{ rabbitmq_servers }}
-rabbit_password = {{ rabbitmq_password }}
+rabbit_userid = {{ glance_rabbitmq_userid }}
+rabbit_password = {{ glance_rabbitmq_password }}
+rabbit_virtual_host = {{ glance_rabbitmq_vhost }}
 {% endif %}
 
 [database]

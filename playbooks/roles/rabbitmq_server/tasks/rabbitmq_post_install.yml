@@ -46,18 +46,6 @@
 - include: rabbitmq_restart.yml
   when: rabbit_config_changed|changed or rabbitmq_plugin|changed or rabbitmq_queue_mirror|changed
 
-- name: Ensure rabbitmq user
-  rabbitmq_user:
-    user: "{{ rabbitmq_userid }}"
-    password: "{{ rabbitmq_password }}"
-    vhost: "/"
-    configure_priv: ".*"
-    read_priv: ".*"
-    write_priv: ".*"
-    state: "present"
-  tags:
-    - rabbitmq-user
-
 # This is being done because the rabbitctl command used by the module
 # is not very effective at returning proper status codes for failure
 # and the module does not error detection. until we can go upstream

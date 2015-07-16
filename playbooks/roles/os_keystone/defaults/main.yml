@@ -78,6 +78,10 @@ keystone_database_min_pool_size: 5
 keystone_database_max_pool_size: 120
 keystone_database_pool_timeout: 30
 
+## RabbitMQ info
+keystone_rabbitmq_userid: keystone
+keystone_rabbitmq_vhost: /keystone
+
 ## Role info
 keystone_role_name: admin
 keystone_default_role_name: _member_

@@ -38,6 +38,10 @@ nova_db_max_overflow: 10
 nova_db_max_pool_size: 120
 nova_db_pool_timeout: 30
 
+## RabbitMQ info
+nova_rabbitmq_userid: nova
+nova_rabbitmq_vhost: /nova
+
 ## RPC
 nova_rpc_backend: nova.openstack.common.rpc.impl_kombu
 nova_rpc_thread_pool_size: 64

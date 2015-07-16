@@ -36,6 +36,11 @@ ceilometer_db_port: 27017
 ceilometer_connection_string: "{{ ceilometer_db_type }}://{{ ceilometer_database_user }}:{{ ceilometer_container_db_password }}@{{ ceilometer_db_ip }}:{{ ceilometer_db_port }}/{{ ceilometer_database_name }}"
 
 
+## RabbitMQ info
+ceilometer_rabbitmq_userid: ceilometer
+ceilometer_rabbitmq_vhost: /ceilometer
+
+
 #Ceilometer services info
 ceilometer_role_name: admin
 ceilometer_api_host_address: 0.0.0.0
