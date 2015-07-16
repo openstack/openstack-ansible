@@ -13,6 +13,7 @@ bind {{ item.service.haproxy_bind|default('*') }}:{{ item.service.haproxy_port }
     option  tcplog
     {%- set request_option = "tcp" %}
 {% endif %}
+
 {% if item.service.haproxy_ssl is defined and item.service.haproxy_ssl | bool %}
     reqadd X-Forwarded-Proto:\ https
 {% endif %}
