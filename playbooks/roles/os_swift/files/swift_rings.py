@@ -24,7 +24,7 @@ import sys
 import threading
 
 
-USAGE = "usage: %prog -f <swift_ring.contents>"
+USAGE = "usage: %prog -f <swift_ring.contents> -r <managed_region>"
 
 DEVICE_KEY = "%(ip)s:%(port)d/%(device)s"
 
@@ -149,7 +149,7 @@ def get_build_file_data(build_file):
 
 
 def build_ring(build_name, repl, min_part_hours, part_power, hosts,
-               validate=False):
+               region=None, validate=False):
     # Create the build file
     build_file = "%s.builder" % build_name
     build_file_data = get_build_file_data(build_file)
@@ -169,16 +169,18 @@ def build_ring(build_name, repl, min_part_hours, part_power, hosts,
     if update:
         for i, dev in enumerate(build_file_data['devs']):
             if dev is not None:
-                old_hosts[DEVICE_KEY % dev] = i
+                if region is None or int(region) == int(dev['region']):
+                    old_hosts[DEVICE_KEY % dev] = i
     for host in hosts:
         host_key = DEVICE_KEY % host
-        if host_key in old_hosts:
-            old_host = build_file_data['devs'][old_hosts[host_key]]
-            update_host_in_ring(build_file, host, old_host,
-                                validate=validate)
-            old_hosts.pop(host_key)
-        else:
-            add_host_to_ring(build_file, host, validate=validate)
+        if region is None or int(region) == int(host['region']):
+            if host_key in old_hosts:
+                old_host = build_file_data['devs'][old_hosts[host_key]]
+                update_host_in_ring(build_file, host, old_host,
+                                    validate=validate)
+                old_hosts.pop(host_key)
+            else:
+                add_host_to_ring(build_file, host, validate=validate)
 
     if old_hosts and not validate:
         # There are still old hosts, these hosts must've been removed
@@ -197,7 +199,7 @@ def build_ring(build_name, repl, min_part_hours, part_power, hosts,
             )
 
 
-def main(setup):
+def main(setup, region):
     # load the json file
     try:
         with open(setup) as json_stream:
@@ -207,7 +209,7 @@ def main(setup):
         return 1
 
     hosts = _contents_file['drives']
-    kargs = {'validate': True, 'hosts': hosts}
+    kargs = {'validate': True, 'hosts': hosts, 'region': region}
     ring_call = [
         _contents_file['builder_file'],
         _contents_file['repl_number'],
@@ -235,6 +237,14 @@ if __name__ == "__main__":
         help="Specify the swift ring contents file.",
         metavar="FILE"
     )
+    parser.add_option(
+        "-r",
+        "--region",
+        help="Specify the region to manage for the ring file.",
+        dest="region",
+        type='int',
+        metavar="REGION"
+    )
 
     options, _args = parser.parse_args(sys.argv[1:])
     if options.setup and not exists(options.setup):
@@ -242,4 +252,4 @@ if __name__ == "__main__":
         parser.print_help()
         sys.exit(1)
 
-    sys.exit(main(options.setup))
+    sys.exit(main(options.setup, options.region))
