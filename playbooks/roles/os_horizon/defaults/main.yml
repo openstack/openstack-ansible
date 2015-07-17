@@ -50,8 +50,6 @@ horizon_endpoint_type: internalURL
 
 horizon_server_name: "horizon"
 horizon_log_level: info
-horizon_self_signed: true
-horizon_self_signed_regen: false
 horizon_dropdown_max_items: 30
 horizon_time_zone: UTC
 horizon_enforce_password_check: False
@@ -59,19 +57,30 @@ horizon_disable_password_reveal: False
 horizon_enable_password_retrieve: False
 
 ## Horizon SSL
-### Set the cacert pem if you'd like horizon to verify it.
-# horizon_cacert_pem: /path/to/cacert.pem
-horizon_ssl_cert: /etc/ssl/certs/apache.cert
-horizon_ssl_key: /etc/ssl/private/apache.key
-horizon_ssl_cert_path: /etc/ssl/certs
+horizon_ssl_cert: /etc/ssl/certs/horizon.pem
+horizon_ssl_key: /etc/ssl/private/horizon.key
+horizon_ssl_ca_cert: /etc/ssl/certs/horizon-ca.pem
 horizon_ssl_protocol: "{{ ssl_protocol }}"
 horizon_ssl_cipher_suite: "{{ ssl_cipher_suite }}"
+# if using a self-signed certificate, set this to true to regenerate it
+horizon_ssl_self_signed_regen: false
+horizon_ssl_self_signed_subject: "/C=US/ST=Texas/L=San Antonio/O=IT/CN={{ horizon_server_name }}/subjectAltName=IP.1={{ external_lb_vip_address }}"
+# Set these in user_variables to deploy custom certificates
+#horizon_user_ssl_cert: <path to cert on ansible deployment host>
+#horizon_user_ssl_key: <path to cert on ansible deployment host>
+#horizon_user_ssl_ca_cert: <path to cert on ansible deployment host>
 
 # For multiple regions uncomment this configuration, and
 # add the extra endpoints below the first list item.
 # horizon_available_regions:
 #   - { url: "{{ keystone_service_internalurl }}", name: "{{ keystone_service_region }}" }
 #   - { url: "http://cluster1.example.com:5000/v2.0", name: "RegionTwo" }
+
+### Set the cacert pem for Keystone if you'd like Horizon to verify it.
+# horizon_cacert_pem: /path/to/cacert.pem
+
+## alternatively, you can set horizon to turn off ssl verification for Keystone
+horizon_ssl_no_verify: "{{ (keystone_service_adminuri_insecure | bool or keystone_service_internaluri_insecure | bool) | default(false) }}"
 
 ## Launch instance
 horizon_launch_instance_legacy: True

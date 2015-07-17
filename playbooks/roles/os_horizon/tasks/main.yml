@@ -23,13 +23,10 @@
 
 - include: horizon_ssl_self_signed.yml
   when: >
-    horizon_self_signed == true or
-    horizon_self_signed == "True"
+    horizon_user_ssl_cert is not defined or
+    horizon_user_ssl_key is not defined
 
 - include: horizon_ssl_user_provided.yml
-  when: >
-    horizon_self_signed == false or
-    horizon_self_signed == "False"
 
 - include: horizon_apache.yml
 

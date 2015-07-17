@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Drop user provided ssl cert
+- name: Drop user provided ssl cert and key
   copy:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
@@ -21,9 +21,23 @@
     group: "root"
     mode: "{{ item.mode }}"
   with_items:
-    - { src: "/etc/ssl/certs/apache.cert", name: "apache.cert", mode: "0640" }
-    - { src: "/etc/ssl/private/apache.key", name: "apache.key", mode: "0640" }
+    - { src: "{{ horizon_user_ssl_cert }}", dest: "{{ horizon_ssl_cert }}", mode: "0644" }
+    - { src: "{{ horizon_user_ssl_key }}", dest: "{{ horizon_ssl_key }}", mode: "0640" }
+  when: horizon_user_ssl_cert is defined and horizon_user_ssl_key is defined
   notify: Restart apache2
   tags:
     - horizon-configs
     - horizon-ssl
+
+- name: Drop user provided ssl CA cert
+  copy:
+    src: "{{ horizon_user_ssl_ca_cert }}"
+    dest: "{{ horizon_ssl_ca_cert }}"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  when: horizon_user_ssl_ca_cert is defined
+  notify: Restart apache2
+  tags:
+    - keystone-configs
+    - keystone-ssl
