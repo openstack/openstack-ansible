@@ -17,23 +17,19 @@
   file:
     dest: "{{ horizon_ssl_cert }}"
     state: "absent"
-  when: >
-    horizon_self_signed_regen == true or
-    horizon_self_signed_regen == "True"
+  when: horizon_ssl_self_signed_regen | bool
+  tags:
+    - horizon-ssl
 
 - name: Create self-signed ssl cert
   command: >
     openssl req -new -nodes -sha256 -x509 -subj
-    "/C=US/ST=Texas/L=San Antonio/O=IT/CN={{ horizon_server_name }}"
+    "{{ horizon_ssl_self_signed_subject }}"
     -days 3650
     -keyout {{ horizon_ssl_key }}
     -out {{ horizon_ssl_cert }}
     -extensions v3_ca
     creates={{ horizon_ssl_cert }}
-  when: >
-    horizon_self_signed == true or
-    horizon_self_signed == "True"
   notify: Restart apache2
   tags:
-    - horizon-apache-self-ssl
     - horizon-ssl
