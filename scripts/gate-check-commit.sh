@@ -33,7 +33,7 @@ export DEPLOY_OPENSTACK=${DEPLOY_OPENSTACK:-"yes"}
 export DEPLOY_SWIFT=${DEPLOY_SWIFT:-"yes"}
 export DEPLOY_TEMPEST=${DEPLOY_TEMPEST:-"yes"}
 # Limit the gate check to only performing one attempt, unless already set
-export MAX_RETRIES=${MAX_RETRIES:-"1"}
+export MAX_RETRIES=${MAX_RETRIES:-"2"}
 # limit forks for gate check
 export FORKS=${FORKS:-10}
 # tempest and testr options, default is to run tempest in serial
