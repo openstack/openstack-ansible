@@ -3,72 +3,66 @@
 {% set _api_threads = ansible_processor_vcpus|default(2) // 2 %}
 {% set api_threads = _api_threads if _api_threads > 0 else 1 %}
 
+# General, applies to all host groups
 [DEFAULT]
 verbose = {{ verbose }}
 debug = {{ debug }}
 fatal_deprecations = {{ neutron_fatal_deprecations }}
-
 use_syslog = False
-
 log_file = /var/log/neutron/neutron.log
-auth_strategy = keystone
+
+{% if inventory_hostname in groups['neutron_server'] %}
+
+# General, only applies to neutron server host group
 network_device_mtu = {{ neutron_network_device_mtu }}
 allow_overlapping_ips = True
 vlan_transparent = False
 
-
-## Drivers
-network_scheduler_driver = {{ neutron_driver_network_scheduler }}
-router_scheduler_driver = {{ neutron_driver_router_scheduler }}
-loadbalancer_pool_scheduler_driver = {{ neutron_driver_loadbalancer_pool_scheduler }}
-dhcp_driver = {{ neutron_driver_dhcp }}
-notification_driver = {{ neutron_driver_notification }}
-
-
-## Schedulers
-router_distributed = False
-network_auto_schedule = True
-router_auto_schedule = True
-
-
-## Agents
-agent_down_time = {{ neutron_agent_down_time }}
-
-
-## API
-bind_port = 9696
-bind_host = 0.0.0.0
-
-
-## Workers
-api_workers = {{ neutron_api_workers | default(api_threads) }}
-rpc_workers = {{ neutron_rpc_workers }}
-
-
-## Plugins
+# Plugins
 core_plugin = {{ neutron_plugin_core }}
 service_plugins = {{ neutron_plugin_loaded_base }}
 
-
-## MAC Address
+# MAC address generation for VIFs
 base_mac = fa:16:3e:00:00:00
 mac_generation_retries = 16
 
+# Authentication method
+auth_strategy = keystone
 
-## DHCP
+# Drivers
+network_scheduler_driver = {{ neutron_driver_network_scheduler }}
+router_scheduler_driver = {{ neutron_driver_router_scheduler }}
+loadbalancer_pool_scheduler_driver = {{ neutron_driver_loadbalancer_pool_scheduler }}
+notification_driver = {{ neutron_driver_notification }}
+
+# Schedulers
+network_auto_schedule = True
+router_auto_schedule = True
+
+# Distributed virtual routing (disable by default)
+router_distributed = False
+
+# Agents
+agent_down_time = {{ neutron_agent_down_time }}
+
+# API
+bind_port = 9696
+bind_host = 0.0.0.0
+
+# Workers
+api_workers = {{ neutron_api_workers | default(api_threads) }}
+rpc_workers = {{ neutron_rpc_workers }}
+
+# DHCP
 dhcp_agent_notification = True
 dhcp_agents_per_network = {{ groups['neutron_agent'] | length }}
-dhcp_delete_namespaces = True
 dhcp_lease_duration = 86400
 advertise_mtu = False
 
-## Notifications
+# Nova notifications
 notify_nova_on_port_status_changes = True
 notify_nova_on_port_data_changes = True
 send_events_interval = 2
-
-
-## Nova
 nova_url = {{ nova_service_adminurl|replace('/%(tenant_id)s', '') }}
 
 ## Rpc all
@@ -87,7 +81,7 @@ project_name = {{ nova_service_project_name }}
 username = {{ nova_service_user_name }}
 password = {{ nova_service_password }}
 
-
+# Quotas
 [quotas]
 quota_driver = {{ neutron_driver_quota }}
 quota_items = network,subnet,port
@@ -106,13 +100,7 @@ quota_security_group_rule = {{ neutron_quota_security_group_rule }}
 quota_subnet = {{ neutron_quota_subnet }}
 quota_vip = {{ neutron_quota_vip }}
 
-
-[agent]
-polling_interval = {{ neutron_agent_polling_interval|default(5) }}
-report_interval = {{ neutron_report_interval|int }}
-root_helper = sudo /usr/local/bin/neutron-rootwrap /etc/neutron/rootwrap.conf
-
-
+# Keystone authentication
 [keystone_authtoken]
 insecure = {{ keystone_service_internaluri_insecure | bool }}
 auth_plugin = {{ neutron_keystone_auth_plugin }}
@@ -130,34 +118,41 @@ memcached_servers = {{ memcached_servers }}
 token_cache_time = 300
 revocation_cache_time = 60
 
-# if your memcached server is shared, use these settings to avoid cache poisoning
+# Prevent cache poisoning if sharing a memcached server
 memcache_security_strategy = ENCRYPT
 memcache_secret_key = {{ memcached_encryption_key }}
 
-# if your keystone deployment uses PKI, and you value security over performance:
+# Enable if your keystone deployment uses PKI and you prefer security over
+# performance (disable by default)
 check_revocations_for_cached = False
 
-{% if inventory_hostname in groups['neutron_server'] %}
-
+# Database
 [database]
 connection = mysql://{{ neutron_galera_user }}:{{ neutron_container_mysql_password }}@{{ neutron_galera_address }}/{{ neutron_galera_database }}?charset=utf8
 max_overflow = {{ neutron_db_max_overflow }}
 max_pool_size = {{ neutron_db_pool_size }}
 pool_timeout = {{ neutron_db_pool_timeout }}
 
+# Service providers
+[service_providers]
+service_provider = LOADBALANCER:Haproxy:neutron.services.loadbalancer.drivers.haproxy.plugin_driver.HaproxyOnHostPluginDriver:default
+service_provider = VPN:openswan:neutron.services.vpn.service_drivers.ipsec.IPsecVPNDriver:default
+
 {% endif %}
 
+# Agent
+[agent]
+polling_interval = {{ neutron_agent_polling_interval|default(5) }}
+report_interval = {{ neutron_report_interval|int }}
+root_helper = sudo /usr/local/bin/neutron-rootwrap /etc/neutron/rootwrap.conf
+
+# Messaging service
 [oslo_messaging_rabbit]
 rabbit_port = {{ rabbitmq_port }}
 rabbit_userid = {{ rabbitmq_userid }}
 rabbit_password = {{ rabbitmq_password }}
 rabbit_hosts = {{ rabbitmq_servers }}
 
-
+# Concurrency (locking mechanisms)
 [oslo_concurrency]
 lock_path = /var/lock/neutron
-
-
-[service_providers]
-service_provider = LOADBALANCER:Haproxy:neutron.services.loadbalancer.drivers.haproxy.plugin_driver.HaproxyOnHostPluginDriver:default
-service_provider = VPN:openswan:neutron.services.vpn.service_drivers.ipsec.IPsecVPNDriver:default
