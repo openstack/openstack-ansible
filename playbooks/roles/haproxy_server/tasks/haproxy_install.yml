@@ -27,7 +27,7 @@
 - name: Install HAPRoxy Packages
   apt:
     pkg: "{{ item }}"
-    state: present
+    state: latest
   register: install_packages
   until: install_packages|success
   retries: 5
