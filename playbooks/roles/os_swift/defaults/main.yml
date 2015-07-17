@@ -75,6 +75,8 @@ swift_default_drive_weight: 100
 swift_allow_versions: True
 # This will allow all users to create containers and upload to swift if set to True
 swift_allow_all_users: False
+# If you want to regenerate the swift keys, on a run, for rsync purposes set this var to True otherwise keys will be generated on the first run and not regenerated each run.
+swift_recreate_keys: False
 
 ## Swift ceilometer variables
 swift_reselleradmin_role: ResellerAdmin

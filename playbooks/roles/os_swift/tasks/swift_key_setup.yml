@@ -13,21 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: swift_key_create.yml
+- include: swift_key_populate.yml
   tags:
     - swift-key
     - swift-key-create
 
-- include: swift_key_store.yml
-  when: >
-    inventory_hostname == groups['swift_hosts'][0]
-  tags:
-    - swift-key
-    - swift-key-store
-
 - include: swift_key_distribute.yml
-  when: >
-    inventory_hostname != groups['swift_hosts'][0]
   tags:
     - swift-key
+    - swift-key-create
     - swift-key-distribute
