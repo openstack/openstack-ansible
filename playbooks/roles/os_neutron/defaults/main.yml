@@ -192,9 +192,6 @@ neutron_ml2_mechanism_drivers: "linuxbridge,l2population"
 #   type: "veth"
 neutron_overlay_network: {}
 
-# Set the vxlan udp port. This is only used when neutron_tunnel_address is defined.
-neutron_vxlan_udp_port: 4789
-
 ## The neutron multicast group address. This should be set as a host variable if used.
 ## This defaults to an empty string
 # neutron_vxlan_group: 239.1.1.100
