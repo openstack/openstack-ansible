@@ -23,6 +23,7 @@ DEFAULT_PASSWORD=$(tr -dc 'a-zA-Z0-9' < /dev/urandom | head -c 32)
 export ADMIN_PASSWORD=${ADMIN_PASSWORD:-$DEFAULT_PASSWORD}
 export SERVICE_REGION=${SERVICE_REGION:-"RegionOne"}
 export DEPLOY_SWIFT=${DEPLOY_SWIFT:-"yes"}
+export DEPLOY_CEILOMETER=${DEPLOY_CEILOMETER:-"yes"}
 export GET_PIP_URL=${GET_PIP_URL:-"https://bootstrap.pypa.io/get-pip.py"}
 export PUBLIC_INTERFACE=${PUBLIC_INTERFACE:-$(ip route show | awk '/default/ { print $NF }')}
 export PUBLIC_ADDRESS=${PUBLIC_ADDRESS:-$(ip -o -4 addr show dev ${PUBLIC_INTERFACE} | awk -F '[ /]+' '/global/ {print $4}')}
@@ -292,6 +293,37 @@ scripts/pw-token-gen.py --file /etc/openstack_deploy/user_secrets.yml
 # change the generated passwords for the OpenStack (admin)
 sed -i "s/keystone_auth_admin_password:.*/keystone_auth_admin_password: ${ADMIN_PASSWORD}/" /etc/openstack_deploy/user_secrets.yml
 sed -i "s/external_lb_vip_address:.*/external_lb_vip_address: ${PUBLIC_ADDRESS}/" /etc/openstack_deploy/openstack_user_config.yml
+
+if [ ${DEPLOY_CEILOMETER} ]; then
+  # Install mongodb on the aio1 host
+  apt-get install mongodb-server mongodb-clients python-pymongo -y
+  # Change bind_ip to management ip
+  sed -i "s/^bind_ip.*/bind_ip = 172.29.236.100/" /etc/mongodb.conf
+  # Asserting smallfiles key
+  sed -i "s/^smallfiles.*/smallfiles = true/" /etc/mongodb.conf
+  service mongodb restart
+  # Giving the service a second..
+  sleep 5
+  #Adding the ceilometer database
+  mongo --host 172.29.236.100 --eval '
+    db = db.getSiblingDB("ceilometer");
+    db.addUser({user: "ceilometer",
+    pwd: "ceilometer",
+    roles: [ "readWrite", "dbAdmin" ]})'
+
+  # change the generated passwords for mongodb access
+  sed -i "s/ceilometer_container_db_password:.*/ceilometer_container_db_password: ceilometer/" /etc/openstack_deploy/user_secrets.yml
+  # Change the ceilometer user variables necessary for deployment
+  sed -i "s/ceilometer_db_ip:.*/ceilometer_db_ip: \"\{\{ hostvars\['aio1'\]\['ansible_ssh_host'\] \}\}\"/" /etc/openstack_deploy/user_variables.yml
+  # Enable ceilometer for all other openstack services
+  if [ ${DEPLOY_SWIFT} ]; then
+    sed -i "s/swift_ceilometer_enabled:.*/swift_ceilometer_enabled: True/" /etc/openstack_deploy/user_variables.yml
+  fi
+  sed -i "s/heat_ceilometer_enabled:.*/heat_ceilometer_enabled: True/" /etc/openstack_deploy/user_variables.yml
+  sed -i "s/cinder_ceilometer_enabled:.*/cinder_ceilometer_enabled: True/" /etc/openstack_deploy/user_variables.yml
+  sed -i "s/glance_ceilometer_enabled:.*/glance_ceilometer_enabled: True/" /etc/openstack_deploy/user_variables.yml
+  sed -i "s/nova_ceilometer_enabled:.*/nova_ceilometer_enabled: True/" /etc/openstack_deploy/user_variables.yml
+fi
 
 # Service region set
 echo "service_region: ${SERVICE_REGION}" | tee -a /etc/openstack_deploy/user_variables.yml

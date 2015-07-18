@@ -1,0 +1,95 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Defines that the role will be deployed on a host machine
+is_metal: true
+
+## Verbosity Options
+debug: False
+verbose: True
+
+## System info
+ceilometer_system_user_name: ceilometer
+ceilometer_system_group_name: ceilometer
+ceilometer_system_shell: /bin/false
+ceilometer_system_comment: ceilometer system user
+ceilometer_system_user_home: "/var/lib/{{ ceilometer_system_user_name }}"
+
+## DB info
+ceilometer_database_name: ceilometer
+ceilometer_database_user: ceilometer
+ceilometer_db_type: mongodb
+ceilometer_db_ip: localhost
+ceilometer_db_port: 27017
+ceilometer_connection_string: "{{ ceilometer_db_type }}://{{ ceilometer_database_user }}:{{ ceilometer_container_db_password }}@{{ ceilometer_db_ip }}:{{ ceilometer_db_port }}/{{ ceilometer_database_name }}"
+
+
+#Ceilometer services info
+ceilometer_role_name: admin
+ceilometer_api_host_address: 0.0.0.0
+ceilometer_api_service_port: 8777
+ceilometer_collector_program_name: ceilometer-collector
+ceilometer_compute_program_name: ceilometer-agent-compute
+ceilometer_alarm_notifier_program_name: ceilometer-alarm-notifier
+ceilometer_alarm_evaluator_program_name: ceilometer-alarm-evaluator
+ceilometer_api_program_name: ceilometer-api
+ceilometer_agent_notification_program_name: ceilometer-agent-notification
+ceilometer_agent_central_program_name: ceilometer-agent-central
+
+## Service Type and Data
+ceilometer_service_region: RegionOne
+ceilometer_service_name: ceilometer
+ceilometer_service_port: 8777
+ceilometer_service_proto: http
+ceilometer_service_type: metering
+ceilometer_service_description: "Ceilometer Service"
+ceilometer_service_user_name: ceilometer
+ceilometer_service_tenant_name: service
+ceilometer_service_project_name: service
+ceilometer_service_publicuri: "{{ ceilometer_service_proto }}://{{ external_lb_vip_address }}:{{ ceilometer_service_port }}"
+ceilometer_service_publicurl: "{{ ceilometer_service_publicuri }}"
+ceilometer_service_internaluri: "{{ ceilometer_service_proto }}://{{ internal_lb_vip_address }}:{{ ceilometer_service_port }}"
+ceilometer_service_internalurl: "{{ ceilometer_service_internaluri }}"
+ceilometer_service_adminuri: "{{ ceilometer_service_proto }}://{{ internal_lb_vip_address }}:{{ ceilometer_service_port }}"
+ceilometer_service_adminurl: "{{ ceilometer_service_adminuri }}"
+
+## Ceilometer config
+
+# Common apt packages
+ceilometer_apt_packages:
+  - rpcbind
+  - rsync
+  - git
+
+# Common pip packages
+ceilometer_pip_packages:
+  - ceilometer
+  - python-ceilometerclient
+  - ceilometermiddleware
+  - MySQL-python
+  - python-memcached
+  - pycrypto
+  - warlock
+  - pymongo
+
+## Service Names
+ceilometer_service_names:
+  - "ceilometer-api"
+  - "ceilometer-alarm-notifier"
+  - "ceilometer-alarm-evaluator"
+  - "ceilometer-collector"
+  - "ceilometer-agent-notification"
+  - "ceilometer-agent-central"
+  - "ceilometer-agent-compute"

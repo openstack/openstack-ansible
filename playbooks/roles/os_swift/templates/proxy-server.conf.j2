@@ -13,9 +13,17 @@ log_facility = LOG_LOCAL1
 
 [pipeline:main]
 {% if swift_authtoken_active %}
+{% if swift_ceilometer_enabled %}
+pipeline = catch_errors gatekeeper healthcheck proxy-logging ceilometer cache container_sync bulk tempurl ratelimit authtoken keystoneauth container-quotas account-quotas slo dlo proxy-server
+{% else %}
 pipeline = catch_errors gatekeeper healthcheck proxy-logging cache container_sync bulk tempurl ratelimit authtoken keystoneauth container-quotas account-quotas slo dlo proxy-logging proxy-server
+{% endif %}
+{% else %}
+{% if swift_ceilometer_enabled %}
+pipeline = catch_errors gatekeeper healthcheck proxy-logging ceilometer cache container_sync bulk tempurl ratelimit tempauth container-quotas account-quotas slo dlo proxy-server
 {% else %}
 pipeline = catch_errors gatekeeper healthcheck proxy-logging cache container_sync bulk tempurl ratelimit tempauth container-quotas account-quotas slo dlo proxy-logging proxy-server
+{% endif %}
 {% endif %}
 [app:proxy-server]
 use = egg:swift#proxy
@@ -61,9 +69,17 @@ delay_auth_decision = {{ swift_delay_auth_decision }}
 [filter:keystoneauth]
 use = egg:swift#keystoneauth
 {% if swift_allow_all_users is defined and swift_allow_all_users == True %}
+{% if swift_ceilometer_enabled %}
+operator_roles = admin, swiftoperator, _member_, ResellerAdmin
+{% else %}
 operator_roles = admin, swiftoperator, _member_
+{% endif %}
+{% else %}
+{% if swift_ceilometer_enabled %}
+operator_roles = admin, swiftoperator, ResellerAdmin
 {% else %}
 operator_roles = admin, swiftoperator
+{% endif %}
 {% endif %}
 # The reseller admin role has the ability to create and delete accounts
 reseller_admin_role = reseller_admin
@@ -129,3 +145,13 @@ use = egg:swift#container_sync
 
 [filter:xprofile]
 use = egg:swift#xprofile
+
+{% if swift_ceilometer_enabled %}
+[filter:ceilometer]
+paste.filter_factory = ceilometermiddleware.swift:filter_factory
+control_exchange = swift
+driver = messagingv2
+url = rabbit://openstack:{{ rabbitmq_password }}@{{ groups['rabbitmq_all'][0] }}
+topic = notifications
+log_level = WARN
+{% endif %}
