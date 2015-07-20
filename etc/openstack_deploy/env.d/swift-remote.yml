@@ -13,22 +13,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: swift_rings_md5sum.yml
+component_skel:
+  swift_remote:
+    belongs_to:
+      - swift_remote_all
 
-- include: swift_storage_address.yml
 
-- include: swift_rings_check.yml
-  when: >
-    inventory_hostname == groups['swift_hosts'][0]
+container_skel:
+  swift_remote_container:
+    belongs_to:
+      - swift-remote_containers
+    contains:
+      - swift_remote
+    properties:
+      is_metal: true
+      service_name: swift
+      container_release: trusty
 
-- include: swift_rings_build.yml
-  when: >
-    inventory_hostname == groups['swift_hosts'][0]
 
-- include: swift_rings_distribute.yml
-
-- include: swift_rings_md5sum.yml
-
-- include: swift_rings_check.yml
-  when: >
-    inventory_hostname == groups['swift_hosts'][0]
+physical_skel:
+  swift-remote_containers:
+    belongs_to:
+      - remote_containers
+  swift-remote_hosts:
+    belongs_to:
+      - remote
