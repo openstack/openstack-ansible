@@ -14,9 +14,21 @@ rootwrap_config = /etc/nova/rootwrap.conf
 service_down_time = 120
 
 # Quota
+quota_cores = {{ nova_quota_cores }}
+quota_fixed_ips = {{ nova_quota_fixed_ips }}
+quota_floating_ips = {{ nova_quota_floating_ips }}
 quota_injected_file_content_bytes = {{ nova_quota_injected_file_content_bytes }}
 quota_injected_file_path_length = {{ nova_quota_injected_file_path_length }}
 quota_injected_files = {{ nova_quota_injected_files }}
+quota_instances = {{ nova_quota_instances }}
+quota_key_pairs = {{ nova_quota_key_pairs }}
+quota_metadata_items = {{ nova_quota_metadata_items }}
+quota_networks = {{ nova_quota_networks }}
+quota_ram = {{ nova_quota_ram }}
+quota_security_group_rules = {{ nova_quota_security_group_rules }}
+quota_security_groups = {{ nova_quota_security_groups }}
+quota_server_group_members = {{ nova_quota_server_group_members }}
+quota_server_groups = {{ nova_quota_server_groups }}
 
 # Scheduler
 cpu_allocation_ratio = {{ nova_cpu_allocation_ratio }}
