@@ -13,25 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: swift_pre_install.yml
-- include: swift_install.yml
-- include: swift_post_install.yml
-
-- include: swift_storage_hosts.yml
-  when: >
-    inventory_hostname in groups['swift_hosts']
-  tags:
-    - swift-storage-hosts
-
-- include: swift_proxy_hosts.yml
-  when: >
-    inventory_hostname in groups['swift_proxy']
-  tags:
-    - swift-storage-hosts
-
-- include: swift_service_setup.yml
-  when: >
-    inventory_hostname == groups['swift_all'][0]
-
-- name: Flush handlers
-  meta: flush_handlers
+# Playbook will sync the swift ring and ssh keys
+# The services need to be installed first though.
+- name: Synchronisation of swift ring and ssh keys
+  hosts: swift_all:swift_remote_all
+  max_fail_percentage: 20
+  user: root
+  roles:
+    - { role: "os_swift_sync", tags: [ "os-swift-sync" ] }
+  vars:
+    ansible_hostname: "{{ container_name }}"
+    ansible_ssh_host: "{{ container_address }}"
+    is_metal: "{{ properties.is_metal|default(false) }}"

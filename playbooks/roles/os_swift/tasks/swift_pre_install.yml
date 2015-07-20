@@ -29,7 +29,7 @@
     - "{{ swift_system_home_folder }}/.ssh/authorized_keys"
     - "{{ swift_system_home_folder }}/.ssh/id_rsa"
     - "{{ swift_system_home_folder }}/.ssh/id_rsa.pub"
-  when: swift_recreate_keys == True
+  when: swift_recreate_keys | bool
   tags:
     - swift-key
     - swift-key-create

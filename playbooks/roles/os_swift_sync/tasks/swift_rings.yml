@@ -13,12 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Create authorized keys file from host vars
-  authorized_key:
-    user: "{{ swift_system_user_name }}"
-    key: "{{ hostvars[item]['swift_pubkey'] }}"
-  with_items: groups['swift_all']
-  tags:
-    - swift-key
-    - swift-key-create
-    - swift-key-distribute
+- include: swift_rings_md5sum.yml
+
+- include: swift_rings_check.yml
+  when: >
+    inventory_hostname == groups['swift_hosts'][0]
+
+- include: swift_rings_build.yml
+  when: >
+    inventory_hostname == groups['swift_hosts'][0]
+
+- include: swift_rings_distribute.yml
+
+- include: swift_rings_md5sum.yml
+
+- include: swift_rings_post_distribution_check.yml
+  when: >
+    inventory_hostname == groups['swift_hosts'][0]

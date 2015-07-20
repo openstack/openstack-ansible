@@ -14,24 +14,24 @@
 # limitations under the License.
 
 - name: "Get swift rings"
-  shell: |
-    rsync -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' \
-          -avz \
-          {{ swift_system_user_name }}@{{ hostvars[groups['swift_hosts'][0]]['swift_storage_address'] }}:/etc/swift/ring_build_files/ \
-          /etc/swift/
+  synchronize:
+    src: "/etc/swift/ring_build_files/"
+    mode: push
+    dest: "/etc/swift/"
+    set_remote_user: False
+  delegate_to: "{{ groups['swift_hosts'][0] }}"
   sudo: yes
   sudo_user: "{{ swift_system_user_name }}"
   tags:
     - swift-get-rings
 
-# This task will backup the swift rings files on each node
-# This task will prevent an issue if swift_hosts[0] were removed/changes
-- name: "Copy swift rings to /etc/swift/ring_build_files for backup"
-  shell: |
-    rsync -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' \
-          -avz \
-          {{ swift_system_user_name }}@{{ hostvars[groups['swift_hosts'][0]]['swift_storage_address'] }}:/etc/swift/ring_build_files/ \
-          /etc/swift/ring_build_files/
+- name: "Get swift rings for backup in ring_build_files directory"
+  synchronize:
+    src: "/etc/swift/ring_build_files/"
+    mode: push
+    dest: "/etc/swift/ring_build_files/"
+    set_remote_user: False
+  delegate_to: "{{ groups['swift_hosts'][0] }}"
   sudo: yes
   sudo_user: "{{ swift_system_user_name }}"
   tags:

@@ -13,25 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: swift_pre_install.yml
-- include: swift_install.yml
-- include: swift_post_install.yml
-
-- include: swift_storage_hosts.yml
-  when: >
-    inventory_hostname in groups['swift_hosts']
+- include: swift_key_setup.yml
   tags:
-    - swift-storage-hosts
+    - swift-key
+    - swift-key-distribute
 
-- include: swift_proxy_hosts.yml
-  when: >
-    inventory_hostname in groups['swift_proxy']
+- include: swift_rings.yml
   tags:
-    - swift-storage-hosts
+    - swift-rings
 
-- include: swift_service_setup.yml
-  when: >
-    inventory_hostname == groups['swift_all'][0]
-
-- name: Flush handlers
-  meta: flush_handlers
+- include: swift_sync_post_install.yml
+  tags:
+    - swift-sync-post-install
