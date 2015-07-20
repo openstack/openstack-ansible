@@ -1,5 +1,5 @@
 ---
-# Copyright 2014, Rackspace US, Inc.
+# Copyright 2015, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: bashrc.yml
-- include: histformat.yml
-- include: motd.yml
-- include: disable_unattended_upgrades.yml
+- name: Disable unattended upgrades
+  file:
+    name: '/etc/apt/apt.conf.d/50unattended-upgrades'
+    state: absent
