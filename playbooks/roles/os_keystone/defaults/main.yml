@@ -197,6 +197,7 @@ keystone_recreate_keys: False
 #  cert_duration_years: 5
 #  trusted_dashboard_list:
 #    - "https://{{ external_lb_vip_address }}/auth/websso/"
+#    - "https://{{ horizon_server_name }}/auth/websso/"
 #  trusted_idp_list:
 #    note that only one of these is supported at any one time for now
 #    - name: "keystone-idp"
@@ -261,6 +262,35 @@ keystone_recreate_keys: False
 #                        name: Default
 #                  - user:
 #                      name: '{0}'
+#
+#    - name: 'adfs-idp'
+#      entity_ids:
+#       - 'http://idp.pigeonbrawl.net/adfs/services/trust'
+#      metadata_uri: 'https://idp.pigeonbrawl.net/FederationMetadata/2007-06/FederationMetadata.xml'
+#      metadata_file: 'metadata-adfs-idp.xml'
+#      metadata_reload: 1800
+#      federated_identities:
+#        - domain: Default
+#          project: fedproject
+#          group: fedgroup
+#          role: _member_
+#      protocols:
+#        - name: saml2
+#          mapping:
+#            name: adfs-idp-mapping
+#            rules:
+#              - remote:
+#                  - type: upn
+#                local:
+#                  - group:
+#                      name: fedgroup
+#                      domain:
+#                        name: Default
+#                  - user:
+#                      name: '{0}'
+#          attributes:
+#            - name: 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn'
+#              id: upn
 
 # Keystone Federation SP Packages
 keystone_sp_apt_packages:
