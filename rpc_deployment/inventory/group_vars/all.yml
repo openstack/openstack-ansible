@@ -92,11 +92,25 @@ host_kernel_modules:
   - dm_multipath
   - dm_snapshot
 
+# Set the GC value to 8192.
+set_gc_val: 8192
+
 host_kernel_tuning:
   - { key: 'vm.dirty_background_ratio', value: 5 }
   - { key: 'vm.dirty_ratio', value: 10 }
   - { key: 'vm.swappiness', value: 10 }
-
+  - { key: 'net.ipv4.neigh.default.gc_thresh1', value: "{{ set_gc_val | int // 2 }}" }
+  - { key: 'net.ipv4.neigh.default.gc_thresh2', value: "{{ set_gc_val | int }}" }
+  - { key: 'net.ipv4.neigh.default.gc_thresh3', value: "{{ set_gc_val | int * 2 }}" }
+  - { key: 'net.ipv4.route.gc_thresh', value: "{{ set_gc_val | int * 2 }}" }
+  - { key: 'net.ipv4.neigh.default.gc_interval', value: 60 }
+  - { key: 'net.ipv4.neigh.default.gc_stale_time', value: 120 }
+  - { key: 'net.ipv6.neigh.default.gc_thresh1', value: "{{ set_gc_val | int // 2 }}" }
+  - { key: 'net.ipv6.neigh.default.gc_thresh2', value: "{{ set_gc_val | int }}" }
+  - { key: 'net.ipv6.neigh.default.gc_thresh3', value: "{{ set_gc_val | int * 2 }}" }
+  - { key: 'net.ipv6.route.gc_thresh', value: "{{ set_gc_val | int * 2 }}" }
+  - { key: 'net.ipv6.neigh.default.gc_interval', value: 60 }
+  - { key: 'net.ipv6.neigh.default.gc_stale_time', value: 120 }
 
 ## Base Packages
 apt_common_packages:
