@@ -37,6 +37,14 @@ cinder_volume_clear: zero
 # (IntOpt) Size in MiB to wipe at start of old volumes. 0 => all
 cinder_volume_clear_size: 0
 
+## Cinder Quota
+cinder_quota_volumes: 10
+cinder_quota_snapshots: 10
+cinder_quota_consistencygroups: 10
+cinder_quota_gigabytes: 1000
+cinder_quota_backups: 10
+cinder_quota_backup_gigabytes: 1000
+
 ## General configuration
 ## Set this in rpc_user_config.yml UNLESS you want all hosts to use the same
 ## Cinder backends.  See the rpc_user_config example for more on how this is done.

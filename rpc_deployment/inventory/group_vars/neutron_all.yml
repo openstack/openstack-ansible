@@ -104,3 +104,22 @@ neutron_services:
  - { service_name: neutron-metering-agent, service_en: True, service_conf: metering_agent.ini }
  - { service_name: neutron-l3-agent, service_en: True, service_conf: l3_agent.ini, service_rootwrap: rootwrap.d/l3.filters }
  - { service_name: neutron-server, service_en: True, service_conf: "{{ neutron_plugins[neutron_plugin_type].plugin_ini }}", service_rootwrap: rootwrap.conf }
+
+## Neutron Quota
+neutron_default_quota: -1
+neutron_quota_firewall: 1
+neutron_quota_firewall_policy: 1
+neutron_quota_firewall_rule: 100
+neutron_quota_floatingip: 50
+neutron_quota_health_monitor: -1
+neutron_quota_member: -1
+neutron_quota_network: 10
+neutron_quota_network_gateway: 5
+neutron_quota_packet_filter: 100
+neutron_quota_pool: 10
+neutron_quota_port: 50
+neutron_quota_router: 10
+neutron_quota_security_group: 10
+neutron_quota_security_group_rule: 100
+neutron_quota_subnet: 10
+neutron_quota_vip: 10
