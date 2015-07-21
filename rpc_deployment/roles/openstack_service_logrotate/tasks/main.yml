@@ -1,0 +1,8 @@
+---
+- name: Configure logrotate for openstack services
+  template:
+    src: openstack_logrotate.j2
+    dest: "/etc/logrotate.d/openstack_{{ service_name }}"
+    mode: 0440
+    owner: root
+    group: root

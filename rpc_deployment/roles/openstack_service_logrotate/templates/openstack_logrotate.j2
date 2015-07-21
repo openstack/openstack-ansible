@@ -1,0 +1,9 @@
+# {{ ansible_managed }}
+
+/var/log/{{ service_name }}/*.log {
+    weekly
+    rotate 4
+    missingok
+    compress
+    minsize 100k
+}
