@@ -21,13 +21,11 @@
     server: "{{ memcached_servers }}"
     encrypt_string: "{{ memcached_encryption_key }}"
   with_items:
-    - { src: "{{ horizon_ssl_cert }}", name: "apache_cert" }
-    - { src: "{{ horizon_ssl_key }}", name: "apache_key" }
+    - { src: "{{ horizon_ssl_cert }}", name: "horizon_ssl_cert" }
+    - { src: "{{ horizon_ssl_key }}", name: "horizon_ssl_key" }
   register: memcache_keys
   until: memcache_keys|success
   retries: 5
   delay: 2
   tags:
-    - horizon-key
-    - horizon-key-store
     - horizon-ssl
