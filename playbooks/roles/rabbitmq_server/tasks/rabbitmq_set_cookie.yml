@@ -21,14 +21,10 @@
   tags:
     - rabbitmq-config
 
-- name: Stop rabbitmq-server
-  service:
-    name: rabbitmq-server
-    state: stopped
+- include: rabbitmq_stopped.yml
   when: tmp_rabbit_cookie.stdout != rabbitmq_cookie_token
   tags:
     - rabbitmq-config
-    - rabbitmq-stop
 
 - name: Set rabbit cookie
   copy:
@@ -42,5 +38,7 @@
   tags:
     - rabbitmq-config
 
-- include: rabbitmq_restart.yml
+- include: rabbitmq_started.yml
   when: tmp_rabbit_cookie.stdout != rabbitmq_cookie_token
+  tags:
+    - rabbitmq-config

@@ -13,10 +13,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Restart rabbitmq-server
-  service:
-    name: "rabbitmq-server"
-    enabled: "yes"
-    state: "restarted"
-  tags:
-    - rabbitmq-restart
+- include: rabbitmq_stopped.yml
+- include: rabbitmq_started.yml

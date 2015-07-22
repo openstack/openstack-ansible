@@ -625,7 +625,7 @@ pushd playbooks
   RUN_TASKS+=("openstack-hosts-setup.yml")
 
   # Now run the infrastructure setup
-  RUN_TASKS+=("setup-infrastructure.yml")
+  RUN_TASKS+=("-e 'rabbitmq_upgrade=true' setup-infrastructure.yml")
 
   # Now upgrade the rest of OpenStack
   RUN_TASKS+=("setup-openstack.yml")

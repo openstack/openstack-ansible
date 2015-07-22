@@ -15,10 +15,13 @@
 
 - name: Install rabbitmq server
   hosts: rabbitmq_all
-  max_fail_percentage: 20
+  max_fail_percentage: 0
   user: root
   roles:
-    - { role: "rabbitmq_server", tags: [ "rabbitmq-server" ] }
+    - role: "rabbitmq_server"
+      tags:
+        - "rabbitmq-server"
+        - "upgrade-rabbitmq-server"
     - role: "rsyslog_client"
       rsyslog_client_log_dir: "/var/log/rabbitmq"
       rsyslog_client_config_name: "99-rabbitmq-rsyslog-client.conf"
