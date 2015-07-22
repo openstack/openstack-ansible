@@ -94,15 +94,16 @@
     - glance-nfs
     - glance-nfs-local-path
 
-- name: Create nfs mounts
-  lineinfile:
-    dest: "/etc/fstab"
-    line: "{{ item.server }}:{{ item.remote_path }}  {{ item.local_path }}  {{ item.type }}  {{ item.options }}  0  0"
-    backup: "true"
+- name: Glance mount nfs
+  mount:
+    name: "{{ item.local_path }}"
+    src: "{{ item.server }}:{{ item.remote_path }}"
+    fstype: "{{ item.type }}"
+    opts: "{{ item.options }}"
+    state: "mounted"
   with_items: glance_nfs_client
   when: >
     glance_nfs_client is defined
-  notify: Glance mount nfs
   tags:
     - glance-nfs
-    - glance-nfs-fstab
+    - glance-nfs-local-path

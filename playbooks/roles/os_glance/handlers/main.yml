@@ -31,12 +31,3 @@
     state: "restarted"
     pattern: "{{ item }}"
   with_items: glance_service_names
-
-- name: Glance mount nfs
-  mount:
-    name: "{{ item.server }}:{{ item.remote_path }}"
-    src: "{{ item.local_path }}"
-    fstype: "{{ item.type }}"
-    opts: "{{ item.options }}"
-    state: "present"
-  with_items: glance_nfs_client
