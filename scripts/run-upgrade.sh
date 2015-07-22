@@ -576,6 +576,22 @@ cat > /tmp/fix_swift_rings_locations.yml <<EOF
     swift_system_home_folder: "/var/lib/{{ swift_system_user_name }}"
 EOF
 
+# Create a play to fix juno log-rotate config
+cat > /tmp/fix_juno_log_rotate.yml <<EOF
+- name: Remove juno log-rotate config
+  hosts: "hosts:all_containers"
+  gather_facts: false
+  user: root
+  tasks:
+    - name: find log rotate config in /etc/logrotate.d/
+      command: "find /etc/logrotate.d -type f -name 'openstack_*'"
+      register: log_rotate
+    - name: Remove juno log rotate files
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items: log_rotate.stdout_lines
+EOF
 
 pushd playbooks
   # Reconfig haproxy if setup.
@@ -603,6 +619,9 @@ pushd playbooks
 
   # Run the fix for container networks. Forces True as containers may not exist at this point
   RUN_TASKS+=("/tmp/fix_container_interfaces.yml || true")
+
+  # Run the fix juno log rotate
+  RUN_TASKS+=("/tmp/fix_juno_log_rotate.yml")
 
   # Send the swift rings to the first swift host if swift was installed in "v10.x".
   if [ "$(ansible 'swift_hosts' --list-hosts)" != "No hosts matched" ] && [ -d "/etc/swift/rings" ];then
