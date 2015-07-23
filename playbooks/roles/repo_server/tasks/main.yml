@@ -17,16 +17,10 @@
 - include: repo_install.yml
 - include: repo_post_install.yml
 
-- include: repo_key_create.yml
-
-- include: repo_key_store.yml
-  when: >
-    inventory_hostname == groups['pkg_repo'][0] and
-    groups.repo_all|length > 1
+- include: repo_key_populate.yml
 
 - include: repo_key_distribute.yml
   when: >
-    inventory_hostname != groups['pkg_repo'][0] and
     groups.repo_all|length > 1
 
 - include: repo_sync_manager.yml

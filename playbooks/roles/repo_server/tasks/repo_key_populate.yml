@@ -13,19 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Distribute authorized keys for cluster consumption
-  memcached:
-    name: "{{ item.name }}"
-    file_path: "{{ item.src }}"
-    state: "present"
-    server: "{{ repo_memcached_servers }}"
-    encrypt_string: "{{ memcached_encryption_key }}"
-  with_items:
-    - { src: "{{ repo_service_home_folder }}/.ssh/authorized_keys", name: "authorized_keys" }
-  register: memcache_keys
-  until: memcache_keys|success
-  retries: 5
-  delay: 2
+- name: Get public key contents and store as var
+  command: |
+    cat {{ repo_service_home_folder }}/.ssh/id_rsa.pub
+  register: repo_pub
+  changed_when: false
   tags:
     - repo-key
-    - repo-key-distribute
+    - repo-key-create
+
+- name: Register a fact for the repo user pub key
+  set_fact:
+     repo_pubkey: "{{ repo_pub.stdout }}"
+  tags:
+    - repo-key
+    - repo-key-create

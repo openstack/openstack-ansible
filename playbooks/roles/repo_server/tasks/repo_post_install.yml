@@ -21,7 +21,20 @@
   tags:
     - pkg-repo-group
 
-- name: Create the nova system user
+- name: Remove old key file(s) if found
+  file:
+    path: "{{ item }}"
+    state: "absent"
+  with_items:
+    - "{{ repo_service_home_folder }}/.ssh/authorized_keys"
+    - "{{ repo_service_home_folder }}/.ssh/id_rsa"
+    - "{{ repo_service_home_folder }}/.ssh/id_rsa.pub"
+  when: repo_recreate_keys | bool
+  tags:
+    - repo-key
+    - repo-key-create
+
+- name: Create the nginx system user
   user:
     name: "{{ repo_service_user_name }}"
     group: "{{ repo_service_group_name }}"
@@ -30,8 +43,11 @@
     system: "yes"
     createhome: "yes"
     home: "{{ repo_service_home_folder }}"
+    generate_ssh_key: "yes"
   tags:
     - pkg-repo-user
+    - repo-key
+    - repo-key-create
 
 - name: File and directory setup
   file:
