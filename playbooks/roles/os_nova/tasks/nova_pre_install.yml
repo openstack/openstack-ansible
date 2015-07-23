@@ -21,6 +21,19 @@
   tags:
     - nova-group
 
+- name: Remove old key file(s) if found
+  file:
+    path: "{{ item }}"
+    state: "absent"
+  with_items:
+    - "{{ nova_system_home_folder }}/.ssh/authorized_keys"
+    - "{{ nova_system_home_folder }}/.ssh/id_rsa"
+    - "{{ nova_system_home_folder }}/.ssh/id_rsa.pub"
+  when: nova_recreate_keys | bool
+  tags:
+    - nova-key
+    - nova-key-create
+
 - name: Create the nova system user
   user:
     name: "{{ nova_system_user_name }}"
@@ -30,8 +43,11 @@
     system: "yes"
     createhome: "yes"
     home: "{{ nova_system_home_folder }}"
+    generate_ssh_key: "yes"
   tags:
     - nova-user
+    - nova-key
+    - nova-key-create
 
 - name: Create nova dir
   file:
