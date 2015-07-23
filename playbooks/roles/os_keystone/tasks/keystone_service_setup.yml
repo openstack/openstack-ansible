@@ -214,7 +214,7 @@
     endpoint_list:
       - url: "{{ keystone_service_publicurl }}"
         interface: "public"
-      - url: "{{ keystone_service_adminurl_v3 }}"
+      - url: "{{ keystone_service_adminurl }}"
         interface: "admin"
       - url: "{{ keystone_service_internalurl }}"
         interface: "internal"

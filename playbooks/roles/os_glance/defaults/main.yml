@@ -97,7 +97,7 @@ glance_service_adminuri: "{{ glance_service_adminuri_proto }}://{{ internal_lb_v
 glance_service_adminurl: "{{ glance_service_adminuri }}"
 
 ## Swift Options
-glance_swift_store_auth_address: "{{ keystone_service_internalurl_v3 }}"
+glance_swift_store_auth_address: "{{ keystone_service_internalurl }}"
 glance_swift_store_auth_version: 3
 glance_swift_store_user_domain: default
 glance_swift_store_project_domain: default

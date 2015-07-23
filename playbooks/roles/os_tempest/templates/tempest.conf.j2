@@ -81,7 +81,7 @@ dashboard_url = {{ tempest_dashboard_url }}
 [identity]
 disable_ssl_certificate_validation = {{ keystone_service_internaluri_insecure | bool }}
 uri = {{ keystone_service_internalurl }}
-uri_v3 = {{ keystone_service_internalurl_v3 }}
+uri_v3 = {{ keystone_service_internalurl }}
 auth_version = v3
 v2_public_endpoint_type = internalURL
 endpoint_type = internalURL
