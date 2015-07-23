@@ -147,6 +147,9 @@
 #       Name of mechanism that connects interfaces in containers to the bridge
 #       on target hosts for this network. Typically 'veth'.
 #
+#       Option: container_mtu (optional, string)
+#       Sets the MTU within LXC for a given network type.
+#
 #       Option: ip_from_q (optional, string)
 #       Name of network in 'cidr_networks' level to use for IP address pool. Only
 #       valid for 'raw' and 'vxlan' types.
@@ -226,6 +229,7 @@
 #         container_bridge: "br-storage"
 #         container_type: "veth"
 #         container_interface: "eth2"
+#         container_mtu: "9000"
 #         ip_from_q: "storage"
 #     - network:
 #         group_binds:
@@ -233,6 +237,7 @@
 #         container_bridge: "br-vxlan"
 #         container_type: "veth"
 #         container_interface: "eth10"
+#         container_mtu: "9000"
 #         ip_from_q: "tunnel"
 #         type: "vxlan"
 #         range: "1:1000"
