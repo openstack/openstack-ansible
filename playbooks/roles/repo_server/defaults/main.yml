@@ -31,6 +31,10 @@ repo_auto_rebuild: false
 
 repo_memcached_servers: "{% for host in groups['repo_all'] %}{{ hostvars[host]['ansible_ssh_host'] }}:{{ memcached_port }}{% if not loop.last %},{% endif %}{% endfor %}"
 
+# If you want to regenerate the repo users SSH keys, on each run, set this var to True
+# Otherwise keys will be generated on the first run and not regenerated each run.
+repo_recreate_keys: False
+
 repo_apt_packages:
   - aptitude
   - bridge-utils
