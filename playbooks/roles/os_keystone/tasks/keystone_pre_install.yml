@@ -21,6 +21,19 @@
   tags:
     - keystone-group
 
+- name: Remove old key file(s) if found
+  file:
+    path: "{{ item }}"
+    state: "absent"
+  with_items:
+    - "{{ keystone_system_user_home }}/.ssh/authorized_keys"
+    - "{{ keystone_system_user_home }}/.ssh/id_rsa"
+    - "{{ keystone_system_user_home }}/.ssh/id_rsa.pub"
+  when: keystone_recreate_keys | bool
+  tags:
+    - keystone-key
+    - keystone-key-create
+
 - name: Create the keystone system user
   user:
     name: "{{ keystone_system_user_name }}"
@@ -30,8 +43,11 @@
     system: "yes"
     createhome: "yes"
     home: "{{ keystone_system_user_home }}"
+    generate_ssh_key: "yes"
   tags:
     - keystone-user
+    - keystone-key
+    - keystone-key-create
 
 - name: Create keystone dir
   file:

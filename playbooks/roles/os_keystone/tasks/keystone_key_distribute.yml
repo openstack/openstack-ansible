@@ -13,21 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Retrieve authorized keys
-  memcached:
-    name: "{{ item.name }}"
-    file_path: "{{ item.src }}"
-    state: "retrieve"
-    file_mode: "{{ item.file_mode }}"
-    dir_mode: "{{ item.dir_mode }}"
-    server: "{{ memcached_servers }}"
-    encrypt_string: "{{ memcached_encryption_key }}"
-  with_items:
-    - { src: "{{ keystone_system_user_home }}/.ssh/authorized_keys", name: "authorized_keys", file_mode: "0640", dir_mode: "0750" }
-  register: memcache_keys
-  until: memcache_keys|success
-  retries: 5
-  delay: 2
+- name: Create authorized keys file from host vars
+  authorized_key:
+    user: "{{ keystone_system_user_name }}"
+    key: "{{ hostvars[item]['keystone_pubkey'] }}"
+  with_items: groups['keystone_all']
   tags:
     - keystone-key
     - keystone-key-distribute

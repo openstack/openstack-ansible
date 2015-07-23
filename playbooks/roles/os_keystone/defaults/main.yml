@@ -150,6 +150,10 @@ keystone_ssl_cipher_suite: "{{ ssl_cipher_suite }}"
 keystone_ldap_identity_driver: keystone.identity.backends.ldap.Identity
 keystone_ldap_domain_config_dir: /etc/keystone/domains
 
+# If you want to regenerate the keystone users SSH keys, on each run, set this var to True
+# Otherwise keys will be generated on the first run and not regenerated each run.
+keystone_recreate_keys: False
+
 ## Policy vars
 # Provide a list of access controls to update the default policy.json with. These changes will be merged
 # with the access controls in the default policy.json. E.g.
