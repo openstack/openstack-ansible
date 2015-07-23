@@ -13,19 +13,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Distribute authorized keys for cluster consumption
-  memcached:
-    name: "{{ item.name }}"
-    file_path: "{{ item.src }}"
-    state: "present"
-    server: "{{ memcached_servers.split(',')[0] }}"
-    encrypt_string: "{{ memcached_encryption_key }}"
-  with_items:
-    - { src: "{{ nova_system_home_folder }}/.ssh/authorized_keys", name: "authorized_keys" }
-  register: memcache_keys
-  until: memcache_keys|success
-  retries: 5
-  delay: 2
+- name: Create the nova SSH config file
+  copy:
+    src: "ssh_config"
+    dest: "/var/lib/nova/.ssh/config"
+    owner: "{{ nova_system_user_name }}"
+    group: "{{ nova_system_user_name }}"
+    mode: "0644"
   tags:
     - nova-key
-    - nova-key-store
+    - nova-key-create
+
+- name: Get public key contents and store as var
+  command: |
+    cat {{ nova_system_home_folder }}/.ssh/id_rsa.pub
+  register: nova_pub
+  changed_when: false
+  tags:
+    - nova-key
+    - nova-key-create
+
+- name: Register a fact for the nova pub key
+  set_fact:
+     nova_pubkey: "{{ nova_pub.stdout }}"
+  tags:
+    - nova-key
+    - nova-key-create

@@ -229,6 +229,10 @@ nova_scheduler_manager: nova.scheduler.manager.SchedulerManager
 nova_scheduler_weight_classes: nova.scheduler.weights.all_weighers
 nova_scheduler_program_name: nova-scheduler
 
+# If you want to regenerate the nova users SSH keys, on each run, set this var to True
+# Otherwise keys will be generated on the first run and not regenerated each run.
+nova_recreate_keys: False
+
 ## General Neutron configuration
 # If ``nova_osapi_compute_workers`` is unset the system will use half the number of available VCPUS to
 # compute the number of api workers to use.
