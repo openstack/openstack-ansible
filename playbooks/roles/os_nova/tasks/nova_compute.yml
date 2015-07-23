@@ -16,13 +16,6 @@
 - include: nova_compute_kvm.yml
   when: nova_virt_type == 'kvm' or nova_virt_type == 'qemu'
 
-- include: nova_compute_key_create.yml
-
-- include: nova_compute_key_store.yml
-  when: >
-    inventory_hostname == groups['nova_compute'][0]
+- include: nova_compute_key_populate.yml
 
 - include: nova_compute_key_distribute.yml
-  when: >
-    inventory_hostname != groups['nova_compute'][0] and
-    inventory_hostname in groups['nova_compute']
