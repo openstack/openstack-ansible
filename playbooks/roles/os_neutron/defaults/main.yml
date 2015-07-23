@@ -223,6 +223,9 @@ neutron_dnsmasq_lease_max: 16777216
 
 ## RPC
 neutron_rpc_backend: rabbit
+neutron_rpc_thread_pool_size: 64
+neutron_rpc_conn_pool_size: 30
+neutron_rpc_response_timeout: 60
 
 ## Policy vars
 # Provide a list of access controls to update the default policy.json with. These changes will be merged

@@ -72,6 +72,9 @@ s3_host = {{ ansible_ssh_host }}
 
 # Rpc all
 rpc_backend = {{ nova_rpc_backend }}
+rpc_thread_pool_size = {{ nova_rpc_thread_pool_size }}
+rpc_conn_pool_size = {{ nova_rpc_conn_pool_size }}
+rpc_response_timeout = {{ nova_rpc_response_timeout }}
 
 # Metadata
 metadata_host = {{ internal_lb_vip_address }}
