@@ -10,3 +10,6 @@ lxc.network.link = {{ item.value.bridge }}
 lxc.network.hwaddr = 00:16:3e:xx:xx:xx
 # enable the device on boot
 lxc.network.flags = up
+# Set the container network MTU
+lxc.network.mtu = {{ item.value.mtu|default('1500') }}
+

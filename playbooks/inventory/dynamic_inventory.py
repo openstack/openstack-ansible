@@ -456,8 +456,9 @@ def _load_optional_q(config, cidr_name):
 
 
 def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
-                             bridge, net_type, user_config, is_ssh_address,
-                             is_container_address, static_routes):
+                             bridge, net_type, net_mtu, user_config,
+                             is_ssh_address, is_container_address,
+                             static_routes):
     """Process additional ip adds and append then to hosts as needed.
 
     If the host is found to be "is_metal" it will be marked as "on_metal"
@@ -492,6 +493,9 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
         if net_type:
             _network['type'] = net_type
 
+        if net_mtu:
+            _network['mtu'] = net_mtu
+
         return _network
 
     def return_netmask():
@@ -519,6 +523,7 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
                 interface,
                 bridge,
                 net_type,
+                net_mtu,
                 user_config,
                 is_ssh_address,
                 is_container_address,
@@ -694,6 +699,7 @@ def container_skel_load(container_skel, inventory, config):
                     interface=p_net['container_interface'],
                     bridge=p_net['container_bridge'],
                     net_type=p_net.get('container_type'),
+                    net_mtu=p_net.get('container_mtu'),
                     user_config=config,
                     is_ssh_address=p_net.get('is_ssh_address'),
                     is_container_address=p_net.get('is_container_address'),
