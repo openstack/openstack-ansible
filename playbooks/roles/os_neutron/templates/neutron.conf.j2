@@ -71,6 +71,12 @@ send_events_interval = 2
 ## Nova
 nova_url = {{ nova_service_adminurl|replace('/%(tenant_id)s', '') }}
 
+## Rpc all
+rpc_backend = {{ neutron_rpc_backend }}
+rpc_thread_pool_size = {{ neutron_rpc_thread_pool_size }}
+rpc_conn_pool_size = {{ neutron_rpc_conn_pool_size }}
+rpc_response_timeout = {{ neutron_rpc_response_timeout }}
+
 [nova]
 auth_plugin = {{ nova_keystone_auth_plugin }}
 auth_url = {{ keystone_service_adminuri }}

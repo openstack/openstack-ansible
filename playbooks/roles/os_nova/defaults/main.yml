@@ -40,6 +40,9 @@ nova_db_pool_timeout: 30
 
 ## RPC
 nova_rpc_backend: nova.openstack.common.rpc.impl_kombu
+nova_rpc_thread_pool_size: 64
+nova_rpc_conn_pool_size: 30
+nova_rpc_response_timeout: 60
 
 ## Nova virtualization Type, set to KVM if supported
 nova_virt_type: kvm
