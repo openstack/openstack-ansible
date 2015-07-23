@@ -61,6 +61,9 @@ neutron_db_pool_timeout: 30
 # the value will be 0 by default.
 neutron_rpc_workers: 0
 rpc_backend: rabbit
+neutron_rpc_thread_pool_size: 64
+neutron_rpc_conn_pool_size: 30
+neutron_rpc_response_timeout: 60
 
 ## Nova Auth
 service_admin_tenant_name: "service"
