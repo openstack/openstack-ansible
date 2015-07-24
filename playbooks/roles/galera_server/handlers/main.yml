@@ -1,5 +1,5 @@
 ---
-# Copyright 2014, Rackspace US, Inc.
+# Copyright 2015, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,12 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: galera_pre_install.yml
-- include: galera_install.yml
-- include: galera_post_install.yml
-
-- name: Flush handlers
-  meta: flush_handlers
-
-- include: galera_setup.yml
-  when: inventory_hostname == groups['galera_all'][0]
+- name: Restart mysql
+  service:
+    name: mysql
+    state: restarted
+    args: "{{ (not galera_existing_cluster | bool and inventory_hostname == groups['galera_all'][0]) | ternary('--wsrep-new-cluster', '') }}"
