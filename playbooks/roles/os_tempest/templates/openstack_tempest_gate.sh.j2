@@ -183,7 +183,7 @@ echo "Using test list $test_list_summary"
 result=$?
 
 # Create junit xml report from test results
-subunit-1to2 < .testrepository/0 | subunit2junitxml > tempest_results.xml
+testr last --subunit | subunit2junitxml > tempest_results.xml
 cp tempest_results.xml /tmp
 if [ -d "/var/log/utility" ];then
   # Copy the log to the utility logging directory
