@@ -53,7 +53,7 @@ container_mysql_user: neutron
 container_mysql_password: "{{ neutron_container_mysql_password }}"
 container_database: neutron
 neutron_db_max_overflow: 10
-neutron_db_pool_size: 5
+neutron_db_pool_size: 120
 neutron_db_pool_timeout: 30
 
 ## RPC
