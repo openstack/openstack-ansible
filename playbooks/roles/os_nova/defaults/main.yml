@@ -35,8 +35,8 @@ nova_system_home_folder: "/var/lib/{{ nova_system_user_name }}"
 nova_galera_user: nova
 nova_galera_database: nova
 nova_db_max_overflow: 10
-nova_db_max_pool_size: 5
-nova_db_pool_timeout: 30
+nova_db_max_pool_size: 30
+nova_db_pool_timeout: 120
 
 ## RPC
 nova_rpc_backend: nova.openstack.common.rpc.impl_kombu
