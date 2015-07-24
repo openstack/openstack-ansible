@@ -73,8 +73,8 @@ keystone_galera_database: keystone
 # Database tuning
 keystone_database_idle_timeout: 200
 keystone_database_min_pool_size: 5
-keystone_database_max_pool_size: 10
-keystone_database_pool_timeout: 200
+keystone_database_max_pool_size: 120
+keystone_database_pool_timeout: 30
 
 ## Role info
 keystone_role_name: admin
