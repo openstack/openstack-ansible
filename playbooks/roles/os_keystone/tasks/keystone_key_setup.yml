@@ -13,21 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: keystone_key_create.yml
+- include: keystone_key_populate.yml
   tags:
     - keystone-key
     - keystone-key-create
 
-- include: keystone_key_store.yml
-  when: >
-    inventory_hostname == groups['keystone_all'][0]
-  tags:
-    - keystone-key
-    - keystone-key-store
-
 - include: keystone_key_distribute.yml
-  when: >
-    inventory_hostname != groups['keystone_all'][0]
   tags:
     - keystone-key
     - keystone-key-distribute
