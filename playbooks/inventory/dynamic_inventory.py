@@ -272,7 +272,7 @@ def _append_to_host_groups(inventory, container_type, assignment, host_type,
                                     'limit_container_types', None
                                 )
 
-                        if limit is None or limit in container:
+                        if limit is None or (component and limit in component):
                             hdata[_keys] = options
 
 
