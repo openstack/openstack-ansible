@@ -49,6 +49,9 @@ galera_wsrep_debug: 0
 galera_wsrep_provider_options:
   - { option: "gcache.size", value: "{{ galera_gcache_size }}" }
 
+## sst method
+galera_sst_method: xtrabackup-v2
+
 # Galera GPG Keys
 galera_gpg_keys:
   - key_name: 'mariadb'
