@@ -34,7 +34,7 @@ wsrep_node_name = {{ galera_wsrep_node_name }}
 wsrep_debug = {{ galera_wsrep_debug }}
 
 # SST method
-wsrep_sst_method = xtrabackup
+wsrep_sst_method = {{ galera_sst_method }}
 wsrep_sst_auth = root:{{ galera_root_password }}
 wsrep_slave_threads = {{ galera_wsrep_slave_threads }}
 
