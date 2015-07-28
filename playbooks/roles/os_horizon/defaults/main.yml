@@ -76,6 +76,11 @@ horizon_ssl_self_signed_subject: "/C=US/ST=Texas/L=San Antonio/O=IT/CN={{ horizo
 #   - { url: "{{ keystone_service_internalurl }}", name: "{{ keystone_service_region }}" }
 #   - { url: "http://cluster1.example.com:5000/v2.0", name: "RegionTwo" }
 
+## Horizon's keystone endpoint settings
+
+horizon_keystone_host: "{{ internal_lb_vip_address }}"
+horizon_keystone_endpoint: "{{ keystone_service_internalurl }}"
+
 ### Set the cacert pem for Keystone if you'd like Horizon to verify it.
 # horizon_cacert_pem: /path/to/cacert.pem
 
