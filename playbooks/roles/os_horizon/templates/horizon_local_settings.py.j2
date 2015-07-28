@@ -42,16 +42,16 @@ SESSION_COOKIE_SECURE = True
 # Define the time after which a Horizon session expires
 SESSION_TIMEOUT = {{ horizon_session_timeout }}
 
+{% if horizon_keystone_endpoint.endswith('v3') %}
 # Overrides for OpenStack API versions. Use this setting to force the
 # OpenStack dashboard to use a specific API version for a given service API.
 # NOTE: The version should be formatted as it appears in the URL for the
 # service API. For example, The identity service APIs have inconsistent
 # use of the decimal point, so valid options would be "2.0" or "3".
-# OPENSTACK_API_VERSIONS = {
-#     "data_processing": 1.1,
-#     "identity": 3,
-#     "volume": 2
-# }
+OPENSTACK_API_VERSIONS = {
+    "identity": 3,
+}
+{% endif %}
 
 # Set this to True if running on multi-domain model. When this is enabled, it
 # will require user to enter the Domain name in addition to username for login.
@@ -156,26 +156,16 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # EMAIL_HOST_PASSWORD = 'top-secret!'
 
 {% if horizon_available_regions is defined %}
-# Set the regions accessible through Horizon
+# Set Horizon to provide a selection of Keystone endpoints
 AVAILABLE_REGIONS = [
 {% for item in horizon_available_regions %}
   ('{{ item.url }}', '{{ item.name }}'),
 {% endfor %}
 ]
-
-# This is not used because AVAILABLE_REGIONS is defined
-#OPENSTACK_HOST = "{{ internal_lb_vip_address }}"
-#OPENSTACK_KEYSTONE_URL = "{{ keystone_service_internalurl }}"
 {% else %}
-# For multiple regions uncomment this configuration, and add (endpoint, title).
-# AVAILABLE_REGIONS = [
-#     ('http://cluster1.example.com:5000/v2.0', 'cluster1'),
-#     ('http://cluster2.example.com:5000/v2.0', 'cluster2'),
-# ]
-
-# This is only used if AVAILABLE_REGIONS is not defined
-OPENSTACK_HOST = "{{ internal_lb_vip_address }}"
-OPENSTACK_KEYSTONE_URL = "{{ keystone_service_internalurl }}"
+# Set Horizon to use a specific Keystone endpoint
+OPENSTACK_HOST = "{{ horizon_keystone_host }}"
+OPENSTACK_KEYSTONE_URL = "{{ horizon_keystone_endpoint }}"
 {% endif %}
 
 OPENSTACK_KEYSTONE_DEFAULT_ROLE = "_member_"
@@ -197,7 +187,7 @@ OPENSTACK_KEYSTONE_DEFAULT_ROLE = "_member_"
 #    ("saml2", _("Security Assertion Markup Language")))
 
 # Disable SSL certificate checks (useful for self-signed certificates):
-OPENSTACK_SSL_NO_VERIFY = {{ keystone_service_internaluri_insecure | bool }}
+OPENSTACK_SSL_NO_VERIFY = {{ horizon_ssl_no_verify | bool }}
 
 {% if horizon_cacert_pem is defined %}
 # The CA certificate to use to verify SSL connections
