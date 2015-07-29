@@ -87,6 +87,42 @@ provider = {{ keystone_token_provider }}
 driver = {{ keystone_token_driver }}
 {% endif %}
 
+{% if keystone_idp is defined %}
+[saml]
+certfile = "{{ keystone_idp.certfile }}"
+keyfile = "{{ keystone_idp.keyfile }}"
+idp_entity_id = "{{ keystone_idp.idp_entity_id }}"
+idp_sso_endpoint = "{{ keystone_idp.idp_sso_endpoint }}"
+idp_metadata_path = "{{ keystone_idp.idp_metadata_path }}"
+{% if keystone_idp.organization_name is defined %}
+idp_organization_name = {{ keystone_idp.organization_name }}
+{% endif %}
+{% if keystone_idp.organization_display_name is defined %}
+idp_organization_display_name = {{ keystone_idp.organization_display_name }}
+{% endif %}
+{% if keystone_idp.organization_url is defined %}
+idp_organization_url = {{ keystone_idp.organization_url }}
+{% endif %}
+{% if keystone_idp.contact_company is defined %}
+idp_contact_company = {{ keystone_idp.contact_company }}
+{% endif %}
+{% if keystone_idp.contact_name is defined %}
+idp_contact_name = {{ keystone_idp.contact_name }}
+{% endif %}
+{% if keystone_idp.contact_surname is defined %}
+idp_contact_surname = {{ keystone_idp.contact_surname }}
+{% endif %}
+{% if keystone_idp.contact_email is defined %}
+idp_contact_email = {{ keystone_idp.contact_email }}
+{% endif %}
+{% if keystone_idp.contact_telephone is defined %}
+idp_contact_telephone = {{ keystone_idp.contact_telephone }}
+{% endif %}
+{% if keystone_idp.contact_type is defined %}
+idp_contact_type = {{ keystone_idp.contact_type }}
+{% endif %}
+{% endif %}
+
 [eventlet_server]
 admin_bind_host = {{ keystone_bind_address }}
 admin_port = {{ keystone_admin_port }}
