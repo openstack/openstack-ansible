@@ -152,11 +152,10 @@ echo 'ssl_protocol: "ALL -SSLv2 -SSLv3"' | tee -a /etc/openstack_deploy/user_var
 # Cipher suite string from "https://hynek.me/articles/hardening-your-web-servers-ssl-ciphers/".
 echo 'ssl_cipher_suite: "ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:ECDH+3DES:DH+3DES:RSA+AESGCM:RSA+AES:RSA+3DES:!aNULL:!MD5:!DSS"' | tee -a /etc/openstack_deploy/user_variables.yml
 
-# Ensure that the user_group_vars.yml file is present on upgrade, if not found copy it over
-if [ ! -f "/etc/openstack_deploy/user_group_vars.yml" ];then
-    cp etc/openstack_deploy/user_group_vars.yml /etc/openstack_deploy/user_group_vars.yml
+# Ensure that the user_group_vars.yml file is not present.
+if [ -f "/etc/openstack_deploy/user_group_vars.yml" ];then
+    rm /etc/openstack_deploy/user_group_vars.yml
 fi
-
 # If OLD ldap bits found in the user_variables file that pertain to ldap upgrade them to the new syntax.
 if grep '^keystone_ldap.*' /etc/openstack_deploy/user_variables.yml;then
 python <<EOL
