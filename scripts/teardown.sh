@@ -78,7 +78,7 @@ pushd playbooks
 
     - name: Get pip packages
       shell: |
-        pip freeze | grep -i {% for i in remote_pip_pacakges %} -e {{ i }}{% endfor %}
+        pip freeze | grep -i {% for i in remove_pip_packages %} -e {{ i }}{% endfor %}
       register: pippackages
       failed_when: false
     - name: Remove python packages
@@ -186,6 +186,8 @@ pushd playbooks
       - /root/.pip
       - /var/lib/neutron
       - /var/lib/nova
+      - /var/lib/mongodb
+      - /var/log/mongodb
       - /var/log/swift
       - /var/log/neutron
       - /var/log/nova
@@ -198,7 +200,10 @@ pushd playbooks
       - lxc
       - lxc-dev
       - vim-haproxy
-    remote_pip_pacakges:
+      - mongodb-server
+      - mongodb-clients
+      - python-pymongo
+    remove_pip_packages:
       - cinder
       - eventlet
       - euca2ools
@@ -214,6 +219,7 @@ pushd playbooks
       - oslo
       - Paste
       - pbr
+      - pymongo
       - repoze
       - six
       - sql
@@ -228,13 +234,13 @@ EOF
     openstack-ansible -i /tmp/localhost /tmp/destroy_play.yml --forks 5 || true
   else
     openstack-ansible lxc-containers-destroy.yml --forks 5 || true
-    openstack-ansible /tmp/destroy_play.yml --forks 5  || true
+    openstack-ansible /tmp/destroy_play.yml --forks 5 || true
   fi
 popd
 
 # Remove the temp destruction play
-rm /tmp/destroy_play.yml || true
-rm /tmp/localhost || true
+rm /tmp/destroy_play.yml &>/dev/null || true
+rm /tmp/localhost &>/dev/null || true
 
 # Final message
 get_instance_info
