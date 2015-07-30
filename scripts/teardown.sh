@@ -231,10 +231,10 @@ EOF
   # Destroy all of the known stuff.
   if [ "${ANSIBLE_DESTROY_HOSTS}" == "localhost" ];then
     echo -e '[all]\nlocalhost ansible_connection=local' | tee /tmp/localhost
-    openstack-ansible -i /tmp/localhost /tmp/destroy_play.yml --forks 5 || true
+    openstack-ansible -i /tmp/localhost /tmp/destroy_play.yml --forks ${FORKS} || true
   else
-    openstack-ansible lxc-containers-destroy.yml --forks 5 || true
-    openstack-ansible /tmp/destroy_play.yml --forks 5 || true
+    openstack-ansible lxc-containers-destroy.yml --forks ${FORKS} || true
+    openstack-ansible /tmp/destroy_play.yml --forks ${FORKS} || true
   fi
 popd
 
