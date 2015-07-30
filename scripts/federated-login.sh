@@ -29,8 +29,7 @@ usage()
 }
 
 
-while [[ $# > 0 ]]
-do
+while [[ $# > 0 ]]; do
     key="$1"
     case $key in
         -d|--domain)

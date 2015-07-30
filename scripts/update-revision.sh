@@ -27,8 +27,7 @@ exit 0
 fi
 
 # Provide some CLI options
-while [[ $# > 1 ]]
-do
+while [[ $# > 1 ]]; do
 key="$1"
 case $key in
     -r|--revision)
