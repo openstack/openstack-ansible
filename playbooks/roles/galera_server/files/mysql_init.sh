@@ -80,7 +80,7 @@ mysqld_status () {
     ps_alive=0
     pidfile=`mysqld_get_param pid-file`
     if [ -f "$pidfile" ] && ps `cat $pidfile` >/dev/null 2>&1; then ps_alive=1; fi
-    
+
     if [ "$1" = "check_alive"  -a  $ping_alive = 1 ] ||
        [ "$1" = "check_dead"   -a  $ping_alive = 0  -a  $ps_alive = 0 ]; then
 	return 0 # EXIT_SUCCESS
@@ -164,7 +164,7 @@ case "${1:-''}" in
 
   'restart')
 	set +e; $SELF stop; set -e
-	$SELF start 
+	$SELF start
 	;;
 
   'reload'|'force-reload')
