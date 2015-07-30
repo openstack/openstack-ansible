@@ -31,7 +31,6 @@ export NOVA_VIRT_TYPE=${NOVA_VIRT_TYPE:-"qemu"}
 export TEMPEST_FLAT_CIDR=${TEMPEST_FLAT_CIDR:-"172.29.248.0/22"}
 export FLUSH_IPTABLES=${FLUSH_IPTABLES:-"yes"}
 export RABBITMQ_PACKAGE_URL=${RABBITMQ_PACKAGE_URL:-""}
-export SYMLINK_DIR=${SYMLINK_DIR:-"$(pwd)/logs"}
 export MONGO_HOST=172.29.236.100
 
 # Default disabled fatal deprecation warnings
@@ -54,27 +53,6 @@ info_block "Checking for required libraries." 2> /dev/null || source $(dirname $
 
 
 ## Main ----------------------------------------------------------------------
-
-# Make the /openstack/log directory for openstack-infra gate check log publishing
-mkdir -p /openstack/log
-
-# Implement the log directory link for openstack-infra log publishing
-ln -sf /openstack/log $SYMLINK_DIR
-
-# Create ansible logging directory and add in a log file entry into ansible.cfg
-if [ -f "playbooks/ansible.cfg" ];then
-  mkdir -p /openstack/log/ansible-logging
-  if [ ! "$(grep -e '^log_path\ =\ /openstack/log/ansible-logging/ansible.log' playbooks/ansible.cfg)" ];then
-    sed -i '/\[defaults\]/a log_path = /openstack/log/ansible-logging/ansible.log' playbooks/ansible.cfg
-  fi
-fi
-
-# Check that the link creation was successful
-[[ -d $SYMLINK_DIR ]] || exit_fail
-if ! [ -d $SYMLINK_DIR ] ; then
-    echo "Could not create a link from /openstack/log to ${SYMLINK_DIR}"
-    exit_fail
-fi
 
 # Log some data about the instance and the rest of the system
 log_instance_info
