@@ -48,15 +48,15 @@ set -e -u -v
 info_block "Checking for required libraries." 2> /dev/null || source $(dirname ${0})/scripts-library.sh
 
 ## Functions -----------------------------------------------------------------
-function get_inv_items(){
+function get_inv_items {
   ./scripts/inventory-manage.py -f /etc/openstack_deploy/openstack_inventory.json -l | grep -w ".*$1"
 }
 
-function remove_inv_items(){
+function remove_inv_items {
   ./scripts/inventory-manage.py -f /etc/openstack_deploy/openstack_inventory.json -r "$1"
 }
 
-function run_lock() {
+function run_lock {
   set +e
   run_item="${RUN_TASKS[$1]}"
   file_part="${run_item}"

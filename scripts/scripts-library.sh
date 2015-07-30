@@ -28,7 +28,7 @@ FORKS=${FORKS:-$(grep -c ^processor /proc/cpuinfo)}
 
 ## Functions -----------------------------------------------------------------
 # Used to retry a process that may fail due to random issues.
-function successerator() {
+function successerator {
   set +e
   # Get the time that the method was started.
   OP_START_TIME="$(date +%s)"
@@ -56,13 +56,13 @@ function successerator() {
   set -e
 }
 
-function install_bits() {
+function install_bits {
   # Use the successerator to run openstack-ansible with
   # the appropriate number of forks
   successerator openstack-ansible ${ANSIBLE_PARAMETERS} --forks ${FORKS} $@
 }
 
-function configure_diskspace() {
+function configure_diskspace {
   # If there are any block devices available other than the one
   # used for the root disk, repurpose it for our needs.
   MIN_LXC_VG_SIZE_B=$((${MIN_LXC_VG_SIZE_GB} * 1024 * 1024 * 1024))
@@ -110,7 +110,7 @@ function configure_diskspace() {
   fi
 }
 
-function ssh_key_create() {
+function ssh_key_create {
   # Ensure that the ssh key exists and is an authorized_key
   key_path="${HOME}/.ssh"
   key_file="${key_path}/id_rsa"
@@ -133,7 +133,7 @@ function ssh_key_create() {
   fi
 }
 
-function loopback_create() {
+function loopback_create {
   LOOP_FILENAME=${1}
   LOOP_FILESIZE=${2}
   LOOP_FILE_TYPE=${3}  # thin, thick
@@ -171,7 +171,7 @@ function loopback_create() {
   fi
 }
 
-function exit_state() {
+function exit_state {
   set +x
   TOTALSECONDS="$(( $(date +%s) - $STARTTIME ))"
   info_block "Run Time = ${TOTALSECONDS} seconds || $(($TOTALSECONDS / 60)) minutes"
@@ -183,30 +183,30 @@ function exit_state() {
   exit ${1}
 }
 
-function exit_success() {
+function exit_success {
   set +x
   exit_state 0
 }
 
-function exit_fail() {
+function exit_fail {
   set +x
   log_instance_info
   info_block "Error Info - $@"
   exit_state 1
 }
 
-function print_info() {
+function print_info {
   PROC_NAME="- [ $@ ] -"
   printf "\n%s%s\n" "$PROC_NAME" "${LINE:${#PROC_NAME}}"
 }
 
-function info_block(){
+function info_block {
   echo "${LINE}"
   print_info "$@"
   echo "${LINE}"
 }
 
-function log_instance_info() {
+function log_instance_info {
   set +x
   # Get host information post initial setup and reset verbosity
   if [ ! -d "/openstack/log/instance-info" ];then
@@ -216,7 +216,7 @@ function log_instance_info() {
   set -x
 }
 
-function get_repos_info() {
+function get_repos_info {
   for i in /etc/apt/sources.list /etc/apt/sources.list.d/*; do
     echo -e "\n$i"
     cat $i
@@ -224,7 +224,7 @@ function get_repos_info() {
 }
 
 # Get instance info
-function get_instance_info() {
+function get_instance_info {
   set +x
   info_block 'Current User'
   whoami
@@ -278,7 +278,7 @@ function get_instance_info() {
   dpkg-query --list &> /openstack/log/instance-info/host_packages_info_$(date +%s).log
 }
 
-function print_report() {
+function print_report {
   # Print the stored report data
   echo -e "${REPORT_DATA}"
 }
