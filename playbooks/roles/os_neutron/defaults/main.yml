@@ -235,7 +235,6 @@ neutron_rpc_response_timeout: 60
 #  "get_subnet": "rule:admin_or_owner or rule:shared"
 
 neutron_apt_packages:
-  - conntrackd
   - conntrack
   - dnsmasq-base
   - dnsmasq-utils
@@ -243,6 +242,9 @@ neutron_apt_packages:
   - iputils-arping
   - keepalived
   - libpq-dev
+
+neutron_apt_remove_packages:
+  - conntrackd
 
 neutron_pip_packages:
   - configobj
