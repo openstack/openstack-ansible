@@ -14,6 +14,7 @@ Chapter 5. Deployment configuration
    configure-cinder.rst
    configure-swift.rst
    configure-haproxy.rst
+   configure-ceilometer.rst
 
 
 **Figure 5.1. Installation work flow**
