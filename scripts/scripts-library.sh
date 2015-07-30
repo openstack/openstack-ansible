@@ -49,7 +49,7 @@ function successerator() {
     exit_fail
   fi
   # Print the time that the method completed.
-  OP_TOTAL_SECONDS="$[$(date +%s) - $OP_START_TIME]"
+  OP_TOTAL_SECONDS="$(( $(date +%s) - $OP_START_TIME ))"
   REPORT_OUTPUT="${OP_TOTAL_SECONDS} seconds"
   REPORT_DATA+="- Operation: [ $@ ]\t${REPORT_OUTPUT}\tNumber of Attempts [ ${RETRY} ]\n"
   echo -e "Run Time = ${REPORT_OUTPUT}"
@@ -173,7 +173,7 @@ function loopback_create() {
 
 function exit_state() {
   set +x
-  TOTALSECONDS="$[$(date +%s) - $STARTTIME]"
+  TOTALSECONDS="$(( $(date +%s) - $STARTTIME ))"
   info_block "Run Time = ${TOTALSECONDS} seconds || $(($TOTALSECONDS / 60)) minutes"
   if [ "${1}" == 0 ];then
     info_block "Status: Success"
