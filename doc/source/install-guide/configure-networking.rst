@@ -158,6 +158,38 @@ configure target host networking.
    provider network. For example, 1:1000. Create a similar stanza for
    each additional provider network.
 
+.. note::
+
+   Optionally, you can add one or more static routes to interfaces within
+   containers. Each route requires a destination network in CIDR notation
+   and a gateway. For example:
+
+   .. code-block:: yaml
+
+      provider_networks:
+        - network:
+            group_binds:
+              - glance_api
+              - cinder_api
+              - cinder_volume
+              - nova_compute
+            type: "raw"
+            container_bridge: "br-storage"
+            container_interface: "eth2"
+            container_type: "veth"
+            ip_from_q: "storage"
+            static_routes:
+              - cidr: 10.176.0.0/12
+                gateway: 172.29.248.1
+
+   This example adds the following content to the
+   ``/etc/network/interfaces.d/eth2.cfg`` file in the appropriate
+   containers:
+
+   .. code-block:: shell
+
+      post-up ip route add 10.176.0.0/12 via 172.29.248.1 || true
+
 --------------
 
 .. include:: navigation.txt
