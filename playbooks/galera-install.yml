@@ -37,25 +37,25 @@
         msg: "The cluster may be broken, mysql is running but unable to gather mysql facts. Fix it before re-running the playbook or override with 'openstack-ansible -e galera_ignore_cluster_state=true galera-install.yml'."
       when:
         - not galera_ignore_cluster_state | bool
-        - "{{ mysql_running.rc == 0 }}"
+        - mysql_running.rc == 0
         - "{{ 'mysql_status' not in hostvars[inventory_hostname] }}"
 
     - fail:
         msg: "wsrep_incoming_addresses does not match across the cluster. Please fix before re-running the playbooks or override with 'openstack-ansible -e galera_ignore_cluster_state=true galera-install.yml'."
-      with_items: "{{ play_hosts }}"
+      with_items: play_hosts
       when:
         - not galera_ignore_cluster_state | bool
-        - "{{ mysql_running.rc == 0 }}"
-        - "{{ hostvars[item]['mysql_running']['rc'] == 0 }}"
-        - "{{ hostvars[inventory_hostname]['mysql_status']['wsrep_incoming_addresses'] != hostvars[item]['mysql_status']['wsrep_incoming_addresses'] }}"
+        - mysql_running.rc == 0
+        - hostvars[item]['mysql_running']['rc'] == 0
+        - hostvars[inventory_hostname]['mysql_status']['wsrep_incoming_addresses'] != hostvars[item]['mysql_status']['wsrep_incoming_addresses']
 
     - set_fact:
         galera_existing_cluster: false
 
     - set_fact:
         galera_existing_cluster: true
-      with_items: "{{ play_hosts }}"
-      when: "{{ hostvars[item].mysql_running.rc == 0 }}"
+      with_items: play_hosts
+      when: hostvars[item].mysql_running.rc == 0
   vars:
     galera_ignore_cluster_state: false
   tags:
