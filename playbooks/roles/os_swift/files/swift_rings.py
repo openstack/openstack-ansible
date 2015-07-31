@@ -135,16 +135,6 @@ def run_and_wait(func, *args):
     return t.join()
 
 
-def has_section(conf, section):
-    return True if conf.get(section) else False
-
-
-def check_section(conf, section):
-    if not has_section(conf, section):
-        print("Section %s doesn't exist" % section)
-        sys.exit(2)
-
-
 def get_build_file_data(build_file):
     build_file_data = None
     if exists(build_file):
