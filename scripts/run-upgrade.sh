@@ -81,9 +81,10 @@ function run_lock() {
     # Into a command, otherwise we'll get an error that there's no playbook
     # named ||
     eval "openstack-ansible $2"
+    playbook_status="$?"
     echo "ran $run_item"
 
-    if [ "$?" == "0" ];then
+    if [ "$playbook_status" == "0" ];then
       RUN_TASKS=("${RUN_TASKS[@]/$run_item}")
       touch "$upgrade_marker"
       echo "$run_item has been marked as success"
