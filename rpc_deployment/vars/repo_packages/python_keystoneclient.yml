@@ -19,6 +19,6 @@ repo_path: "{{ pip_wheel_name }}_{{ git_install_branch | replace('/', '_') }}"
 git_repo: https://github.com/openstack/python-keystoneclient
 git_fallback_repo: https://git.openstack.org/openstack/python-keystoneclient
 git_dest: "/opt/{{ repo_path }}"
-git_install_branch: 04543e7c9ca0ed9935e75e913cd51531a6245b7e # HEAD of "stable/juno" as of 07.07.2015
+git_install_branch: 04543e7c9ca0ed9935e75e913cd51531a6245b7e # HEAD of "stable/juno" as of 31.07.2015
 
 pip_wheel_name: python-keystoneclient
