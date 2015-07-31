@@ -36,6 +36,18 @@
   tags:
     - neutron-apt-packages
 
+- name: remove specific apt packages
+  apt:
+    pkg: "{{ item }}"
+    state: absent
+  register: remove_packages
+  until: remove_packages|success
+  retries: 5
+  delay: 2
+  with_items: neutron_apt_remove_packages
+  tags:
+    - neutron-apt-packages
+
 - name: Install pip packages
   pip:
     name: "{{ item }}"
