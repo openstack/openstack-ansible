@@ -36,6 +36,19 @@
   tags:
     - keystone-apt-packages
 
+- name: Install IdP apt packages
+  apt:
+    pkg: "{{ item }}"
+    state: latest
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 2
+  with_items: keystone_idp_apt_packages
+  when: keystone_idp is defined
+  tags:
+    - keystone-apt-packages
+
 - name: Install pip packages
   pip:
     name: "{{ item }}"

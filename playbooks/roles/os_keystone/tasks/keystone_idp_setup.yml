@@ -13,36 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: keystone_pre_install.yml
-- include: keystone_install.yml
-
-- include: keystone_key_setup.yml
-  tags:
-    - keystone-key
-    - keystone-key-distribute
-
-- include: keystone_fernet.yml
-  tags:
-    - keystone-fernet
-  when: >
-    'fernet' in keystone_token_provider
-
-- include: keystone_post_install.yml
-
-- include: keystone_db_setup.yml
+- include: keystone_idp_self_signed_create.yml
   when: >
     inventory_hostname == groups['keystone_all'][0]
 
-- include: keystone_apache.yml
-- include: keystone_token_cleanup.yml
-
-- include: keystone_service_setup.yml
+- include: keystone_idp_self_signed_store.yml
   when: >
     inventory_hostname == groups['keystone_all'][0]
 
-- name: Flush handlers
-  meta: flush_handlers
-
-- include: keystone_idp_setup.yml
+- include: keystone_idp_self_signed_distribute.yml
   when: >
-    keystone_idp is defined
+    inventory_hostname != groups['keystone_all'][0]
+
+- include: keystone_idp_metadata.yml
+
+- include: keystone_idp_sp_setup.yml
