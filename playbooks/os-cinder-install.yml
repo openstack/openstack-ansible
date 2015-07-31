@@ -132,6 +132,7 @@
       tags:
         - "system-crontab-coordination"
   vars:
+    galera_address: "{{ internal_lb_vip_address }}"
     cinder_galera_address: "{{ internal_lb_vip_address }}"
     glance_host: "{{ internal_lb_vip_address }}"
     ansible_hostname: "{{ container_name }}"

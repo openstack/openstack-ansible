@@ -86,6 +86,7 @@
       tags:
         - "system-crontab-coordination"
   vars:
+    galera_address: "{{ internal_lb_vip_address }}"
     horizon_galera_address: "{{ internal_lb_vip_address }}"
     ansible_hostname: "{{ container_name }}"
     horizon_server_name: "{{ container_name }}"
