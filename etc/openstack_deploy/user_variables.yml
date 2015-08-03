@@ -25,7 +25,9 @@ glance_ceilometer_enabled: False
 nova_ceilometer_enabled: False
 
 ## Glance Options
-# Set default_store to "swift" if using Cloud Files or swift backend
+# Set glance_default_store to "swift" if using Cloud Files or swift backend
+# or "rbd" if using ceph backend; the latter will trigger ceph to get
+# installed on glance
 glance_default_store: file
 glance_notification_driver: noop
 
@@ -33,8 +35,23 @@ glance_notification_driver: noop
 # `publicURL` to communicate with swift over the public network
 glance_swift_store_endpoint_type: internalURL
 
+# Ceph client user for glance to connect to the ceph cluster
+#glance_ceph_client: glance
+# Ceph pool name for Glance to use
+#glance_rbd_store_pool: images
+#glance_rbd_store_chunk_size: 8
 
 ## Nova
+# When nova_libvirt_images_rbd_pool is defined, ceph will be installed on nova
+# hosts.
+#nova_libvirt_images_rbd_pool: vms
+# by default we assume you use rbd for both cinder and nova, and as libvirt
+# needs to access both volumes (cinder) and boot disks (nova) we default to
+# reuse the cinder_ceph_client
+# only need to change this if you'd use ceph for boot disks and not for volumes
+#nova_ceph_client:
+#nova_ceph_client_uuid:
+
 # This defaults to KVM, if you are deploying on a host that is not KVM capable
 # change this to your hypervisor type: IE "qemu", "lxc".
 # nova_virt_type: kvm
@@ -50,6 +67,26 @@ glance_swift_store_endpoint_type: internalURL
 #glance_swift_store_key: "OPENSTACK_USER_PASSWORD"
 #glance_swift_store_container: "NAME_OF_SWIFT_CONTAINER"
 #glance_swift_store_region: "NAME_OF_REGION"
+
+## Cinder
+# Ceph client user for cinder to connect to the ceph cluster
+#cinder_ceph_client: cinder
+
+## Ceph
+#ceph_apt_repo_url_region: "www"  # or "eu" for Netherlands based mirror
+#ceph_stable_release: hammer
+#
+# Enable these if you use ceph rbd for at least one component (glance, cinder, nova)
+# ceph cluster-id, overrule with correct uuid!
+#ceph_fsid: d4ab416b-490c-4ab9-87e8-2364b524e0f2
+#ceph_conf:
+#  global:
+#    fsid: '{{ ceph_fsid }}'
+#    mon_initial_members: 'mon1.example.local,mon2.example.local,mon3.example.local'
+#    mon_host: '10.16.5.40,10.16.5.41,10.16.5.42'
+#    auth_cluster_required: cephx
+#    auth_service_required: cephx
+#    auth_client_required: cephx
 
 ## Apache SSL Settings
 # These do not need to be configured unless you're creating certificates for

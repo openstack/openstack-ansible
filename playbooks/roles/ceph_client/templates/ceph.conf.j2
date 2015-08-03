@@ -1,0 +1,7 @@
+# {{ ansible_managed }}
+{% for section in ceph_conf %}
+[{{ section }}]
+{% for key, value in ceph_conf[section]|dictsort %}
+{{ key }} = {{ value }}
+{% endfor %}
+{% endfor %}

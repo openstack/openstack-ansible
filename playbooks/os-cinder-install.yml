@@ -109,6 +109,11 @@
         - cinder-logs
   roles:
     - { role: "os_cinder", tags: [ "os-cinder" ] }
+    - role: "ceph_client"
+      openstack_service_system_user: "{{ cinder_system_user_name }}"
+      tags:
+        - "cinder-ceph-client"
+        - "ceph-client"
     - role: "rsyslog_client"
       rsyslog_client_log_dir: "/var/log/cinder"
       rsyslog_client_config_name: "99-cinder-rsyslog-client.conf"

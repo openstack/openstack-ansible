@@ -75,6 +75,11 @@
   roles:
     - { role: "os_glance", tags: [ "os-glance" ] }
     - { role: "openstack_openrc", tags: [ "openstack-openrc" ] }
+    - role: "ceph_client"
+      openstack_service_system_user: "{{ glance_system_user_name }}"
+      tags:
+        - "glance-ceph-client"
+        - "ceph-client"
     - role: "rsyslog_client"
       rsyslog_client_log_dir: "/var/log/glance"
       rsyslog_client_config_name: "99-glance-rsyslog-client.conf"

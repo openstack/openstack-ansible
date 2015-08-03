@@ -1,0 +1,43 @@
+---
+# Copyright 2015, Serge van Ginderachter <serge@vanginderachter.be>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# if glance, cinder and/or nova use rbd, ceph_conf needs to be defined
+- assert:
+    that:
+      - ceph_mons != []
+      - ceph_mons | list == ceph_mons
+  tags:
+    - ceph-config
+    - ceph-auth
+
+- include:  ceph_preinstall.yml
+  tags:     ceph-preinstall
+
+- include:  ceph_install.yml
+  tags:     ceph-install
+
+- include: ceph_get_mon_host.yml
+  tags:
+    - ceph-config
+    - ceph-auth
+
+- include:  ceph_config.yml
+  tags:     ceph-config
+
+- include:  ceph_auth.yml
+  when: >
+            cephx | bool
+  tags:     ceph-auth
+
