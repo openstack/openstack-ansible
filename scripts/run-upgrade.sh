@@ -619,8 +619,9 @@ pushd playbooks
   # Run the fix for container networks. Forces True as containers may not exist at this point
   RUN_TASKS+=("/tmp/fix_container_interfaces.yml || true")
 
-  # Run the fix juno log rotate
-  RUN_TASKS+=("/tmp/fix_juno_log_rotate.yml")
+  # Run the fix juno log rotate.
+  # Forces True as these containers don't exist yet: cinder_scheduler, nova_console, repo, rsyslog
+  RUN_TASKS+=("/tmp/fix_juno_log_rotate.yml || true")
 
   # Send the swift rings to the first swift host if swift was installed in "v10.x".
   if [ "$(ansible 'swift_hosts' --list-hosts)" != "No hosts matched" ] && [ -d "/etc/swift/rings" ];then
