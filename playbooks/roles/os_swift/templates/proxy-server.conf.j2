@@ -23,6 +23,7 @@ account_autocreate = true
 {% if swift_proxy_vars is defined %}
 {%   if swift_proxy_vars.read_affinity is defined %}
 read_affinity = {{ swift_proxy_vars.read_affinity }}
+{%     set swift_sorting_method = 'affinity' %}
 {%   endif %}
 {%   if swift_proxy_vars.write_affinity is defined %}
 write_affinity = {{ swift_proxy_vars.write_affinity }}
@@ -31,6 +32,7 @@ write_affinity_node_count = {{ swift_proxy_vars.write_affinity_node_count }}
 {%     endif %}
 {%   endif %}
 {% endif %}
+sorting_method = {{ swift_sorting_method }}
 
 {% if 'tempauth' in swift_middleware_list %}
 [filter:tempauth]
