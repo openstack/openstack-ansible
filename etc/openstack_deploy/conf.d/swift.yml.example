@@ -245,7 +245,8 @@
 #         E.g. read_affinity: "r1=100" this would prefer region 1
 #         read_affinity: "r1z1=100, r1=200" this would prefer region 1 zone 1
 #         if that is unavailable region 1, otherwise any available region/zone.
-#         Lower number is higher priority.
+#         Lower number is higher priority. When this option is specified the
+#         sorting_method is set to 'affinity' automatically.
 #
 #         Option: write_affinity (optional, string)
 #         Specify which region to prefer when object PUT requests are made.
