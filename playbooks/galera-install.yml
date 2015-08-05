@@ -117,6 +117,7 @@
       tags:
         - "system-crontab-coordination"
   vars:
+    galera_server_id: "{{ inventory_hostname | string_2_int }}"
     galera_wsrep_node_name: "{{ container_name }}"
     ansible_hostname: "{{ container_name }}"
     ansible_ssh_host: "{{ container_address }}"
