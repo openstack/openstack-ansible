@@ -15,6 +15,7 @@
 # (c) 2015, Kevin Carter <kevin.carter@rackspace.com>
 
 import urlparse
+import hashlib
 
 
 """Filter usage:
@@ -88,6 +89,25 @@ def get_netorigin(url):
         return '%s://%s' % (scheme, netloc)
 
 
+def string_2_int(string):
+    """Return the an integer from a string.
+
+    The string is hashed, converted to a base36 int, and the modulo of 10240
+    is returned.
+
+    :param string: string to retrieve an int from
+    :type string: ``str``
+    :returns: ``int``
+    """
+    # Try to encode utf-8 else pass
+    try:
+        string = string.encode('utf-8')
+    except AttributeError:
+        pass
+    hashed_name = hashlib.sha256(string).hexdigest()
+    return int(hashed_name, 36) % 10240
+
+
 class FilterModule(object):
     """Ansible jinja2 filters."""
 
@@ -97,5 +117,6 @@ class FilterModule(object):
             'bit_length_power_of_2': bit_length_power_of_2,
             'netloc': get_netloc,
             'netloc_no_port': get_netloc_no_port,
-            'netorigin': get_netorigin
+            'netorigin': get_netorigin,
+            'string_2_int': string_2_int
         }
