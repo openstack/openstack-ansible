@@ -23,6 +23,9 @@ component_skel:
   cinder_volume:
     belongs_to:
       - cinder_all
+  cinder_backup:
+    belongs_to:
+      - cinder_all
 
 
 container_skel:
@@ -49,6 +52,7 @@ container_skel:
       - storage_containers
     contains:
       - cinder_volume
+      - cinder_backup
     properties:
 # When using lvm as a cinder backend its advised to run cinder-volumes on metal.
 # If you are using a different backend you may want to remove "is_metal: true".

@@ -63,6 +63,7 @@ ceph_mons: []
 # Ceph client usernames for glance and cinder+nova
 glance_ceph_client: glance
 cinder_ceph_client: cinder
+cinder_backup_ceph_client: cinder-backup
 # by default we assume you use rbd for both cinder and nova, and as libvirt
 # needs to access both volumes (cinder) as boot disks (nova) we default to
 # reuse the cinder_ceph_client
@@ -74,6 +75,7 @@ cephkeys_access_group: cephkeys
 openstack_service_system_user: null
 ceph_cinder_service_names:
   - cinder-volume
+  - cinder-backup
 ceph_nova_service_names:
   - nova-compute
 ceph_glance_service_names:

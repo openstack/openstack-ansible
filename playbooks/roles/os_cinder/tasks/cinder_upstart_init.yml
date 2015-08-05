@@ -57,7 +57,7 @@
     system_group: "{{ cinder_system_group_name }}"
     service_home: "{{ cinder_system_home_folder }}"
   when: >
-    inventory_hostname in groups['cinder_volume'] and
+    inventory_hostname in groups['cinder_backup'] and
     cinder_service_backup_program_enabled == true
   tags:
     - upstart-init

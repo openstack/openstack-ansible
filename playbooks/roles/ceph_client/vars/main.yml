@@ -31,6 +31,14 @@ ceph_components:
     client:
       - '{{ cinder_ceph_client }}'
     service: '{{ ceph_cinder_service_names }}'
+  - component: cinder_backup
+    package:
+      - ceph # TODO: remove this once http://tracker.ceph.com/issues/11388 is resolved
+      - ceph-common
+      - python-ceph
+    client:
+      - '{{ cinder_backup_ceph_client }}'
+    service: '{{ ceph_cinder_service_names }}'
   - component: nova_compute
     package:
       - libvirt-bin
