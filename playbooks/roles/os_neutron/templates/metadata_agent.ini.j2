@@ -3,11 +3,12 @@
 {% set _api_threads = ansible_processor_vcpus|default(2) // 2 %}
 {% set api_threads = _api_threads if _api_threads > 0 else 1 %}
 
+# General
 [DEFAULT]
 verbose = {{ verbose }}
 debug = {{ debug }}
 
-# The Neutron user information for accessing the Neutron API.
+# Neutron credentials for API access
 auth_plugin = {{ neutron_keystone_auth_plugin }}
 auth_url = {{ keystone_service_adminuri }}
 auth_uri = {{ keystone_service_internaluri }}
@@ -19,14 +20,16 @@ username = {{ neutron_service_user_name }}
 password = {{ neutron_service_password }}
 endpoint_type = adminURL
 
-# TCP Port used by Nova metadata server
+# Nova metadata service IP and port
 nova_metadata_ip = {{ internal_lb_vip_address }}
 nova_metadata_port = {{ nova_metadata_port }}
 
-# Number of backlog requests to configure the metadata server socket with
+# Metadata proxy shared secret
 metadata_proxy_shared_secret = {{ nova_metadata_proxy_secret }}
+
+# Workers and backlog requests
 metadata_workers = {{ neutron_metadata_workers | default(api_threads) }}
 metadata_backlog = {{ neutron_metadata_backlog }}
 
-# Metadata Caching
+# Caching
 cache_url = memory://?default_ttl=5
