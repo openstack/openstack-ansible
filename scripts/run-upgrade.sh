@@ -364,7 +364,7 @@ fi
 
 # this is useful for deploys that use an external firewall (that cannot be part of a unified upgrade script)
 if ! grep -R '^openstack_repo_url\:' /etc/openstack_deploy/user_* /etc/openstack_deploy/conf.d/; then
-  echo -e "repo-infra_hosts: \"{{ hostvars[groups['pkg_repo'][0]]['ansible_ssh_host'] }}:{{ repo_server_port }}\"" |\
+  echo -e "openstack_repo_url: \"http://{{ hostvars[groups['pkg_repo'][0]]['ansible_ssh_host'] }}:{{ repo_server_port }}\"" |\
     tee -a /etc/openstack_deploy/user_deleteme_post_upgrade_variables.yml
 fi
 
