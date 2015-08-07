@@ -43,8 +43,12 @@ cache_time = {{ keystone_revocation_cache_time }}
 
 
 [auth]
+{% if keystone_sp is defined %}
+methods = {{ keystone_auth_methods }},saml2
+saml2 = keystone.auth.plugins.mapped.Mapped
+{% else %}
 methods = {{ keystone_auth_methods }}
-
+{% endif %}
 
 [database]
 connection = mysql://{{ keystone_galera_user }}:{{ keystone_container_mysql_password }}@{{ keystone_galera_address }}/{{ keystone_galera_database }}?charset=utf8
@@ -132,3 +136,13 @@ public_port = {{ keystone_service_port }}
 rabbit_hosts = {{ rabbitmq_servers }}
 rabbit_userid = {{ rabbitmq_userid }}
 rabbit_password = {{ rabbitmq_password }}
+
+{% if keystone_sp is defined %}
+[federation]
+remote_id_attribute = Shib-Identity-Provider
+{% if keystone_sp.trusted_dashboard_list is defined %}
+{% for item in keystone_sp.trusted_dashboard_list %}
+trusted_dashboard = {{ item }}
+{% endfor %}
+{% endif %}
+{% endif %}

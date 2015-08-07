@@ -1,0 +1,152 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# note that these tasks will run when the id/name parameter is present.
+# Providing the id/name without the other required params is a user error.
+
+# TODO: Revisit this method when Ansible 2 releases
+# User with_subelements instead, but in v1.x it's broken
+- name: Set keystone_federated_identities fact
+  keystone_sp:
+    sp_data: "{{ keystone_sp }}"
+  tags:
+    - keystone-federation-sp
+
+- name: Ensure domain which remote IDP users are mapped onto exists
+  keystone:
+    command: ensure_domain
+    domain_name: "{{ item.domain }}"
+    token: "{{ keystone_auth_admin_token }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
+  when: item.domain is defined
+  with_items: keystone_federated_identities
+  tags:
+    - keystone-federation-sp
+
+- name: Ensure project which remote IDP users are mapped onto exists
+  keystone:
+    command: ensure_project
+    project_name: "{{ item.project }}"
+    domain_name: "{{ item.domain | default('Default') }}"
+    token: "{{ keystone_auth_admin_token }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
+  when: item.project is defined
+  with_items: keystone_federated_identities
+  tags:
+    - keystone-federation-sp
+
+- name: Ensure user which remote IDP users are mapped onto exists
+  keystone:
+    command: ensure_user
+    user_name: "{{ item.user }}"
+    password: "{{ item.password }}"
+    project_name: "{{ item.project }}"
+    domain_name: "{{ item.domain | default('Default') }}"
+    token: "{{ keystone_auth_admin_token }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
+  when: >
+    item.user is defined and
+    item.password is defined and
+    item.project is defined
+  with_items: keystone_federated_identities
+  tags:
+    - keystone-federation-sp
+
+- name: Ensure Group for external IDP users exists
+  keystone:
+    command: ensure_group
+    group_name: "{{ item.group }}"
+    domain_name: "{{ item.domain | default('Default') }}"
+    token: "{{ keystone_auth_admin_token }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
+  when: item.group is defined
+  with_items: keystone_federated_identities
+  tags:
+    - keystone-federation-sp
+
+- name: Ensure Role for external IDP users exists
+  keystone:
+    command: "ensure_role"
+    role_name: "{{ item.role | default('_member_') }}"
+    token: "{{ keystone_auth_admin_token }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
+  when: >
+    item.group is defined and
+    item.project is defined
+  with_items: keystone_federated_identities
+  tags:
+    - keystone-federation-sp
+
+- name: Ensure Group/Project/Role mapping exists
+  keystone:
+    command: ensure_group_role
+    group_name: "{{ item.group }}"
+    project_name: "{{ item.project }}"
+    role_name: "{{ item.role | default('_member_') }}"
+    token: "{{ keystone_auth_admin_token }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
+  when: >
+    item.group is defined and
+    item.project is defined
+  with_items: keystone_federated_identities
+  tags:
+    - keystone-federation-sp
+
+- name: Ensure mapping for external IDP attributes exists
+  keystone:
+    command: ensure_mapping
+    mapping_name: "{{ item.protocol.mapping.name }}"
+    mapping_rules: "{{ item.protocol.mapping.rules }}"
+    token: "{{ keystone_auth_admin_token }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
+  when: item.protocol.mapping.name is defined
+  with_items: keystone_federated_protocols
+  tags:
+    - keystone-federation-sp
+
+- name: Ensure external IDP
+  keystone:
+    command: ensure_identity_provider
+    idp_name: "{{ item.name }}"
+    idp_remote_ids: "{{ item.entity_ids }}"
+    idp_enabled: true
+    token: "{{ keystone_auth_admin_token }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
+  when: item.name is defined
+  with_items: keystone_sp.trusted_idp_list
+  tags:
+    - keystone-federation-sp
+
+- name: Ensure federation protocol exists
+  keystone:
+    command: ensure_protocol
+    protocol_name: "{{ item.protocol.name }}"
+    idp_name: "{{ item.idp.name }}"
+    mapping_name: "{{ item.protocol.mapping.name }}"
+    token: "{{ keystone_auth_admin_token }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
+  when: item.protocol.name is defined
+  with_items: keystone_federated_protocols
+  tags:
+    - keystone-federation-sp
