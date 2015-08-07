@@ -65,6 +65,9 @@ if [ "${BOOTSTRAP_ANSIBLE}" == "yes" ]; then
   source $(dirname ${0})/bootstrap-ansible.sh
 fi
 
+# Enable debug logging for all services to make failure debugging easier
+echo "debug: True" | tee -a /etc/openstack_deploy/user_variables.yml
+
 # Run the ansible playbooks if required
 if [ "${RUN_PLAYBOOKS}" == "yes" ]; then
   # Set-up our tiny awk script.
