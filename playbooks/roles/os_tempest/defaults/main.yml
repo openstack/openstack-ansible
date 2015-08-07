@@ -52,7 +52,15 @@ tempest_boto_s3_url: "http://{{ external_lb_vip_address }}:3333"
 tempest_boto_ec2_url: "http://{{ external_lb_vip_address }}:8773/services/Cloud"
 
 tempest_swift_enabled: true
+tempest_swift_container_sync: True
 tempest_swift_object_versioning: True
+tempest_swift_discoverable_apis:
+  - bulk
+  - object
+  - container_quotas
+  - container_sync
+  - slo
+  - tempurl
 
 tempest_volume_backup_enabled: False
 
