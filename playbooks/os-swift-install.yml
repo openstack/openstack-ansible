@@ -13,50 +13,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Installation and setup of Swift
-  hosts: swift_all
-  max_fail_percentage: 20
-  user: root
-  pre_tasks:
-    - name: Create log dir
-      file:
-        path: "{{ item.path }}"
-        state: directory
-      with_items:
-        - { path: "/openstack/log/{{ inventory_hostname }}-swift" }
-      when: is_metal == true or is_metal == "True"
-      tags:
-        - swift-logs
-        - swift-log-dirs
-    - name: Create log aggregation links
-      file:
-        src: "{{ item.src }}"
-        dest: "{{ item.dest }}"
-        state: "{{ item.state }}"
-        owner: "{{ item.owner }}"
-        group: "{{ item.group }}"
-        force: "yes"
-      with_items:
-        - src: "/openstack/log/{{ inventory_hostname }}-swift"
-          dest: "/var/log/swift"
-          owner: "syslog"
-          group: "syslog"
-          state: "link"
-      when: is_metal == true or is_metal == "True"
-      tags:
-        - swift-logs
-  roles:
-    - { role: "os_swift", tags: [ "os-swift" ] }
-    - role: "rsyslog_client"
-      rsyslog_client_log_dir: "/var/log/swift"
-      rsyslog_client_config_name: "99-swift-rsyslog-client.conf"
-      tags:
-        - "swift-rsyslog-client"
-        - "rsyslog-client"
-    - role: "system_crontab_coordination"
-      tags:
-        - "system-crontab-coordination"
-  vars:
-    ansible_hostname: "{{ container_name }}"
-    ansible_ssh_host: "{{ container_address }}"
-    is_metal: "{{ properties.is_metal|default(false) }}"
+- include: os-swift-setup.yml
+- include: os-swift-sync.yml
