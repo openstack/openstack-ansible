@@ -758,11 +758,28 @@ def _set_used_ips(user_defined_config, inventory):
 
     # Find all used IP addresses and ensure that they are not used again
     for host_entry in inventory['_meta']['hostvars'].values():
-        networks = host_entry.get('container_networks', dict())
-        for network_entry in networks.values():
-            address = network_entry.get('address')
-            if address:
-                append_if(array=USED_IPS, item=address)
+        # TODO(nrb): Remove this For Kilo->Liberty
+        # This is to support upgrades from Juno, which may not have the new
+        # container_networks key at this point in the run.
+        if 'container_networks' in host_entry.keys():
+            networks = host_entry.get('container_networks')
+            for network_entry in networks.values():
+                address = network_entry.get('address')
+                if address:
+                    append_if(array=USED_IPS, item=address)
+        else:
+            # Since the Kilo structure is introduced later in the script,
+            # we need to ensure we get IPs from the Juno inventory
+            # added to our used list.
+            pns = inventory['all']['vars']['provider_networks']
+            for pn in pns:
+                p_net = pn.get('network')
+                if not p_net:
+                    continue
+                q_name = p_net.get('ip_from_q', '')
+                address = host_entry.get('%s_address' % q_name)
+                if address:
+                    append_if(array=USED_IPS, item=address)
 
 
 def _ensure_inventory_uptodate(inventory, container_skel):
