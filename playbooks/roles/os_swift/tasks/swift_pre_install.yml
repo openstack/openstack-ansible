@@ -21,6 +21,19 @@
   tags:
     - swift-group
 
+- name: Remove old key file(s) if found
+  file:
+    path: "{{ item }}"
+    state: "absent"
+  with_items:
+    - "{{ swift_system_home_folder }}/.ssh/authorized_keys"
+    - "{{ swift_system_home_folder }}/.ssh/id_rsa"
+    - "{{ swift_system_home_folder }}/.ssh/id_rsa.pub"
+  when: swift_recreate_keys == True
+  tags:
+    - swift-key
+    - swift-key-create
+
 - name: Create the swift system user
   user:
     name: "{{ swift_system_user_name }}"
@@ -30,8 +43,11 @@
     system: "yes"
     createhome: "yes"
     home: "{{ swift_system_home_folder }}"
+    generate_ssh_key: "yes"
   tags:
     - swift-user
+    - swift-key
+    - swift-key-create
 
 - name: Create swift dir
   file:
