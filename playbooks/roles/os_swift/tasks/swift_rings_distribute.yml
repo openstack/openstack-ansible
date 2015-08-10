@@ -17,7 +17,7 @@
   shell: |
     rsync -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' \
           -avz \
-          {{ swift_system_user_name }}@{{ hostvars[groups['swift_hosts'][0]]['ansible_ssh_host'] }}:/etc/swift/ring_build_files/ \
+          {{ swift_system_user_name }}@{{ hostvars[groups['swift_hosts'][0]]['swift_storage_address'] }}:/etc/swift/ring_build_files/ \
           /etc/swift/
   sudo: yes
   sudo_user: "{{ swift_system_user_name }}"
@@ -30,7 +30,7 @@
   shell: |
     rsync -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' \
           -avz \
-          {{ swift_system_user_name }}@{{ hostvars[groups['swift_hosts'][0]]['ansible_ssh_host'] }}:/etc/swift/ring_build_files/ \
+          {{ swift_system_user_name }}@{{ hostvars[groups['swift_hosts'][0]]['swift_storage_address'] }}:/etc/swift/ring_build_files/ \
           /etc/swift/ring_build_files/
   sudo: yes
   sudo_user: "{{ swift_system_user_name }}"
