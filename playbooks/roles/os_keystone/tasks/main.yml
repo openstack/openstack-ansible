@@ -29,6 +29,10 @@
 
 - include: keystone_post_install.yml
 
+- include: keystone_federation_sp_setup.yml
+  when: >
+    keystone_sp is defined
+
 - include: keystone_db_setup.yml
   when: >
     inventory_hostname == groups['keystone_all'][0]
@@ -38,6 +42,11 @@
 
 - include: keystone_service_setup.yml
   when: >
+    inventory_hostname == groups['keystone_all'][0]
+
+- include: keystone_federation_sp_idp_setup.yml
+  when: >
+    keystone_sp is defined and
     inventory_hostname == groups['keystone_all'][0]
 
 - name: Flush handlers
