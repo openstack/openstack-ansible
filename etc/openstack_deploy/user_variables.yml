@@ -76,20 +76,30 @@ glance_swift_store_endpoint_type: internalURL
 #cinder_ceph_client: cinder
 
 ## Ceph
+# Enable these if you use ceph rbd for at least one component (glance, cinder, nova)
 #ceph_apt_repo_url_region: "www"  # or "eu" for Netherlands based mirror
 #ceph_stable_release: hammer
-#
-# Enable these if you use ceph rbd for at least one component (glance, cinder, nova)
-# ceph cluster-id, overrule with correct uuid!
-#ceph_fsid: d4ab416b-490c-4ab9-87e8-2364b524e0f2
-#ceph_conf:
-#  global:
-#    fsid: '{{ ceph_fsid }}'
-#    mon_initial_members: 'mon1.example.local,mon2.example.local,mon3.example.local'
-#    mon_host: '10.16.5.40,10.16.5.41,10.16.5.42'
-#    auth_cluster_required: cephx
-#    auth_service_required: cephx
-#    auth_client_required: cephx
+# Ceph Authentication - by default cephx is true
+#cephx: true
+# Ceph Monitors
+# A list of the IP addresses for your Ceph monitors
+#ceph_mons:
+#  - 10.16.5.40
+#  - 10.16.5.41
+#  - 10.16.5.42
+# Custom Ceph Configuration File (ceph.conf)
+# By default, your deployment host will connect to one of the mons defined above to
+# obtain a copy of your cluster's ceph.conf.  If you prefer, uncomment ceph_conf_file
+# and customise to avoid ceph.conf being copied from a mon.
+#ceph_conf_file: |
+#  [global]
+#  fsid = 00000000-1111-2222-3333-444444444444
+#  mon_initial_members = mon1.example.local,mon2.example.local,mon3.example.local
+#  mon_host = 10.16.5.40,10.16.5.41,10.16.5.42
+#  # optionally, you can use this construct to avoid defining this list twice:
+#  # mon_host = {{ ceph_mons|join(',') }}
+#  auth_cluster_required = cephx
+#  auth_service_required = cephx
 
 ## Apache SSL Settings
 # These do not need to be configured unless you're creating certificates for
