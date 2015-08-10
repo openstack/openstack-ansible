@@ -55,6 +55,21 @@
   with_items:
     - account
     - container
+  when: swift_managed_regions is not defined
+  sudo: yes
+  sudo_user: "{{ swift_system_user_name }}"
+  args:
+    chdir: /etc/swift/ring_build_files/
+  tags:
+    - swift-rings
+    - swift-rings-build
+
+- name: "build rings for account/container from contents files"
+  command: "/usr/bin/python /etc/swift/scripts/swift_rings.py -f /etc/swift/scripts/{{ item[0] }}.contents -r {{ item[1] }}"
+  with_nested:
+    - [ 'account', 'container' ]
+    - "{{ swift_managed_regions }}"
+  when: swift_managed_regions is defined
   sudo: yes
   sudo_user: "{{ swift_system_user_name }}"
   args:
@@ -67,6 +82,21 @@
   command: "/usr/bin/python /etc/swift/scripts/swift_rings.py -f /etc/swift/scripts/object-{{ item.policy.index }}.contents"
   with_items:
     - "{{ swift.storage_policies }}"
+  when: swift_managed_regions is not defined
+  sudo: yes
+  sudo_user: "{{ swift_system_user_name }}"
+  args:
+    chdir: /etc/swift/ring_build_files/
+  tags:
+    - swift-rings
+    - swift-rings-build
+
+- name: "build rings for storage policies from contents files"
+  command: "/usr/bin/python /etc/swift/scripts/swift_rings.py -f /etc/swift/scripts/object-{{ item[0].policy.index }}.contents -r {{ item[1] }}"
+  with_nested:
+    - "{{ swift.storage_policies }}"
+    - "{{ swift_managed_regions }}"
+  when: swift_managed_regions is defined
   sudo: yes
   sudo_user: "{{ swift_system_user_name }}"
   args:

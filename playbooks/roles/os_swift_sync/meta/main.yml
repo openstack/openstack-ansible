@@ -13,25 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: swift_pre_install.yml
-- include: swift_install.yml
-- include: swift_post_install.yml
-
-- include: swift_storage_hosts.yml
-  when: >
-    inventory_hostname in groups['swift_hosts']
-  tags:
-    - swift-storage-hosts
-
-- include: swift_proxy_hosts.yml
-  when: >
-    inventory_hostname in groups['swift_proxy']
-  tags:
-    - swift-storage-hosts
-
-- include: swift_service_setup.yml
-  when: >
-    inventory_hostname == groups['swift_all'][0]
-
-- name: Flush handlers
-  meta: flush_handlers
+galaxy_info:
+  author: rcbops
+  description: Synchronisation of swift ring and ssh keys
+  company: Rackspace
+  license: Apache2
+  min_ansible_version: 1.6.6
+  platforms:
+    - name: Ubuntu
+      versions:
+        - trusty
+  categories:
+    - cloud
+    - python
+    - swift
+    - development
+    - openstack

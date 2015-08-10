@@ -32,11 +32,12 @@
 - name: Verify md5sum of builder files
   fail:
     msg: >
-      "The builder files on the remote host {{ item }} do not match the {{ md5sum.stdout }},
-      and are not empty on the remote host"
+      "The builder files on the remote host {{ item }}:{{ hostvars[item]['builder_md5sum'] }}
+       do not match {{ inventory_hostname }}:{{ md5sum.stdout }}
+       and are not empty on the remote host"
   when: >
     ("{{ hostvars[item]['builder_md5sum'] }}" != "{{ empty_md5sum.stdout }}") and
     ("{{ hostvars[item]['builder_md5sum'] }}" != "{{ md5sum.stdout }}")
-  with_items: groups['swift_all']
+  with_items: groups['swift_all'] + groups['swift_remote_all']
   tags:
     - swift-ring-check

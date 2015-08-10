@@ -1,0 +1,22 @@
+---
+# For remote swift hosts you will only specify the IP address
+# NB. The ip address that must be specified is the IP address that swift
+# hosts will be able to replicate on and not necessarily the
+# ansible_ssh_host IP from the remote ansible install.
+swift-remote_hosts:
+  remote-swift1:
+    ip: 172.29.237.1
+  remote-swift2:
+    ip: 172.29.237.2
+  remote-swift3:
+    ip: 172.29.237.3
+  remote-swift4:
+    ip: 172.29.237.4
+  remote-swift5:
+    ip: 172.29.237.5
+  remote-swiftproxy1:
+    ip: 172.29.237.6
+  remote-swiftproxy2:
+    ip: 172.29.237.7
+  remote-swiftproxy3:
+    ip: 172.29.237.8
