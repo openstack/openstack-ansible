@@ -2,8 +2,10 @@ cloudlib>=0.3.0         # scripts/os-ansible-role-requirements.py
 Jinja2>=2.6             # ansible
 netaddr>=0.7.12         # playbooks/inventory/dynamic_inventory.py
 paramiko>=1.13.0        # ansible
+pbr!=0.7,<0.11,>=0.6    # locked to <0.11 https://launchpad.net/bugs/1450733
 pip>=6.0
 PrettyTable>=0.7,<0.8   # scripts/inventory-manage.py
 pycrypto>=2.6           # ansible
+python-openstacksdk==0.5.0 # locked to an arbitrary version due to https://launchpad.net/bugs/1484011
 PyYAML>=3.1.0           # ansible
 requests>=2.2.0,!=2.4.0 # scripts/os-ansible-role-requirements.py

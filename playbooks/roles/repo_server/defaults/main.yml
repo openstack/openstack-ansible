@@ -76,8 +76,13 @@ repo_apt_packages:
   - vlan
   - uuid-dev
 
+# TODO: Remove the pbr cap to <0.11 when
+# https://review.openstack.org/211800 merges upstream
+# ref: https://launchpad.net/bugs/1450733
+
 repo_pip_packages:
   - cloudlib
+  - "pbr!=0.7,<0.11,>=0.6"
   - PyCrypto
   - python-memcached
   - PyYAML
