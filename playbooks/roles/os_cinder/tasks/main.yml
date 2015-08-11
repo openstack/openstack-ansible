@@ -37,3 +37,4 @@
 - include: cinder_lvm_config.yml
   when: >
     inventory_hostname in groups['cinder_volume']
+    and cinder_backend_lvm_inuse
