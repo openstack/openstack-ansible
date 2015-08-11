@@ -31,8 +31,29 @@ swift_system_comment: swift system user
 swift_system_home_folder: "/var/lib/{{ swift_system_user_name }}"
 
 ## Auth token
-swift_authtoken_active: True
 swift_delay_auth_decision: true
+
+## Swift middleware
+# NB: The order is important!
+swift_middleware_list:
+  - catch_errors
+  - gatekeeper
+  - healthcheck
+  - proxy-logging
+#  - ceilometer
+  - cache
+  - container_sync
+  - bulk
+  - tempurl
+  - ratelimit
+  - authtoken
+  - keystoneauth
+  - container-quotas
+  - account-quotas
+  - slo
+  - dlo
+  - proxy-logging
+  - proxy-server
 
 ## Swift default ports
 swift_proxy_port: "8080"
