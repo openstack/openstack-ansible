@@ -176,6 +176,13 @@ nova_compute_program_name: nova-compute
 # TODO: This defaults to 'False' upstream, we should set this to 'False' in Liberty
 nova_force_config_drive: True
 
+## Nova libvirt
+nova_libvirt_inject_key: False
+# inject partition options:
+#  -2 => disable, -1 => inspect (libguestfs only), 0 => not partitioned, >0 => partition number
+nova_libvirt_inject_partition: -2
+nova_libvirt_inject_password: False
+
 ## Nova conductor
 nova_conductor_program_name: nova-conductor
 
