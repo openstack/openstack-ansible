@@ -194,6 +194,7 @@ nova_compute_driver: libvirt.LibvirtDriver
 nova_max_age: 0
 nova_remove_unused_resized_minimum_age_seconds: 3600
 nova_image_cache_manager_interval: 0
+nova_resume_guests_state_on_host_boot: False
 
 # Nova quota
 nova_quota_cores: 20
