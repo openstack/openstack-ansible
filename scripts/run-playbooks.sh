@@ -95,6 +95,7 @@ pushd "playbooks"
     mkdir -p "${COMMAND_LOGS}/container_net_bounce"
     ansible all_containers -m script \
                            -a '/tmp/ensure_container_networking.sh' \
+                           --forks ${FORKS} \
                            -t "${COMMAND_LOGS}/container_net_bounce" \
                            &> ${COMMAND_LOGS}/container_net_bounce.log
 
@@ -105,7 +106,7 @@ pushd "playbooks"
     mkdir -p "${COMMAND_LOGS}/force_apt_update"
     ansible all_containers -m raw \
                            -a '(apt-get update && apt-key update) || true' \
-                           --forks 10 \
+                           --forks ${FORKS} \
                            -t "${COMMAND_LOGS}/force_apt_update" \
                            &> ${COMMAND_LOGS}/force_apt_update.log
   fi

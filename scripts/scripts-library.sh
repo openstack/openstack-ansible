@@ -20,10 +20,11 @@ LINE='----------------------------------------------------------------------'
 MAX_RETRIES=${MAX_RETRIES:-5}
 MIN_LXC_VG_SIZE_GB=${MIN_LXC_VG_SIZE_GB:-250}
 REPORT_DATA=${REPORT_DATA:-""}
-FORKS=${FORKS:-25}
 ANSIBLE_PARAMETERS=${ANSIBLE_PARAMETERS:-""}
 STARTTIME="${STARTTIME:-$(date +%s)}"
 
+# the number of forks is set as the number of CPU's present
+FORKS=${FORKS:-$(grep -c ^processor /proc/cpuinfo)}
 
 ## Functions -----------------------------------------------------------------
 # Used to retry a process that may fail due to random issues.
@@ -56,8 +57,8 @@ function successerator() {
 }
 
 function install_bits() {
-  # The number of forks has been limited to 10 by default (2x ansible default)
-  # This will also run ansible in 3x verbose mode
+  # Use the successerator to run openstack-ansible with
+  # the appropriate number of forks
   successerator openstack-ansible ${ANSIBLE_PARAMETERS} --forks ${FORKS} $@
 }
 
