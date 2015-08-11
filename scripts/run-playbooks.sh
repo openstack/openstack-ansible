@@ -26,6 +26,7 @@ DEPLOY_OPENSTACK=${DEPLOY_OPENSTACK:-"yes"}
 DEPLOY_SWIFT=${DEPLOY_SWIFT:-"yes"}
 DEPLOY_CEILOMETER=${DEPLOY_CEILOMETER:-"yes"}
 DEPLOY_TEMPEST=${DEPLOY_TEMPEST:-"no"}
+COMMAND_LOGS=${COMMAND_LOGS:-"/openstack/log/ansible_cmd_logs/"}
 
 
 ## Functions -----------------------------------------------------------------
@@ -33,6 +34,19 @@ info_block "Checking for required libraries." 2> /dev/null || source $(dirname $
 
 
 ## Main ----------------------------------------------------------------------
+# Create a simple task to bounce all networks within a container.
+cat > /tmp/ensure_container_networking.sh <<EOF
+#!/bin/bash
+INTERFACES=""
+INTERFACES+="\$(awk '/auto/ {print \$2}' /etc/network/interfaces) "
+INTERFACES+="\$(ls -1 /etc/network/interfaces.d/ | awk -F'.cfg' '{print \$1}')"
+for i in \${INTERFACES}; do
+  echo "Bouncing on \$i"
+  ifdown \$i || true
+  ifup \$i || true
+done
+EOF
+
 # Initiate the deployment
 pushd "playbooks"
   if [ "${DEPLOY_HOST}" == "yes" ]; then
@@ -42,24 +56,58 @@ pushd "playbooks"
 
     # Bring the lxc bridge down and back up to ensures the iptables rules are in-place
     # This also will ensure that the lxc dnsmasq rules are active.
-    ansible hosts -m shell -a '(ifdown lxcbr0 || true); ifup lxcbr0'
+    mkdir -p "${COMMAND_LOGS}/host_net_bounce"
+    ansible hosts -m shell \
+                  -a '(ifdown lxcbr0 || true); ifup lxcbr0' \
+                  -t "${COMMAND_LOGS}/host_net_bounce" \
+                  &> ${COMMAND_LOGS}/host_net_bounce.log
 
     # Restart any containers that may already exist
-    ansible hosts -m shell -a 'for i in $(lxc-ls); do lxc-stop -n $i; lxc-start -d -n $i; done'
+    mkdir -p "${COMMAND_LOGS}/lxc_existing_container_restart"
+    ansible hosts -m shell \
+                  -a 'for i in $(lxc-ls); do lxc-stop -n $i; lxc-start -d -n $i; done' \
+                  -t "${COMMAND_LOGS}/lxc_existing_container_restart" \
+                  &> ${COMMAND_LOGS}/lxc_existing_container_restart.log
 
     # Create the containers.
     install_bits lxc-containers-create.yml
 
     # Make sure there are no dead veth(s)
     # This is good when using a host with multiple times, IE: Rebuilding.
-    ansible hosts -m shell -a 'lxc-system-manage veth-cleanup'
+    mkdir -p "${COMMAND_LOGS}/veth_cleanup"
+    ansible hosts -m shell \
+                  -a 'lxc-system-manage veth-cleanup' \
+                  -t "${COMMAND_LOGS}/veth_cleanup" \
+                  &> ${COMMAND_LOGS}/veth_cleanup.log
 
     # Flush the net cache
     # This is good when using a host with multiple times, IE: Rebuilding.
-    ansible hosts -m shell -a 'lxc-system-manage flush-net-cache'
+    mkdir -p "${COMMAND_LOGS}/flush_net_cache"
+    ansible hosts -m shell \
+                  -a 'lxc-system-manage flush-net-cache' \
+                  -t "${COMMAND_LOGS}/flush_net_cache" \
+                  &> ${COMMAND_LOGS}/flush_net_cache.log
 
     # Log some data about the instance and the rest of the system
     log_instance_info
+
+    # Force the networks down and then up
+    mkdir -p "${COMMAND_LOGS}/container_net_bounce"
+    ansible all_containers -m script \
+                           -a '/tmp/ensure_container_networking.sh' \
+                           -t "${COMMAND_LOGS}/container_net_bounce" \
+                           &> ${COMMAND_LOGS}/container_net_bounce.log
+
+    # Force an apt-cache update for packages and keys throttling the processes.
+    #  * Note: that the task will always return 0. We want to see everything and
+    #          if it fails we want to see where it breaks down within the stack.
+    #  * Note: this is not using the apt module, because we want to FORCE it with raw.
+    mkdir -p "${COMMAND_LOGS}/force_apt_update"
+    ansible all_containers -m raw \
+                           -a '(apt-get update && apt-key update) || true' \
+                           --forks 10 \
+                           -t "${COMMAND_LOGS}/force_apt_update" \
+                           &> ${COMMAND_LOGS}/force_apt_update.log
   fi
 
   if [ "${DEPLOY_LB}" == "yes" ]; then
@@ -75,6 +123,10 @@ pushd "playbooks"
     # the environment. Normal installation would simply clone the upstream mirror.
     install_bits repo-server.yml
     install_bits repo-build.yml
+    mkdir -p "${COMMAND_LOGS}/repo_data"
+    ansible 'repo_all[0]' -m raw \
+                          -a 'find  /var/www/repo/os-releases -type l' \
+                          -t "${COMMAND_LOGS}/repo_data"
 
     install_bits galera-install.yml
     install_bits rabbitmq-install.yml
