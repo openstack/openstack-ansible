@@ -37,7 +37,7 @@ info_block "Checking for required libraries." 2> /dev/null || source $(dirname $
 ## Main ----------------------------------------------------------------------
 # Create a simple task to bounce all networks within a container.
 cat > /tmp/ensure_container_networking.sh <<EOF
-#!/bin/bash
+#!/usr/bin/env bash
 INTERFACES=""
 INTERFACES+="\$(awk '/auto/ {print \$2}' /etc/network/interfaces) "
 INTERFACES+="\$(ls -1 /etc/network/interfaces.d/ | awk -F'.cfg' '{print \$1}')"
