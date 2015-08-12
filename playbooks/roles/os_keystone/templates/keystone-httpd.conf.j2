@@ -1,10 +1,16 @@
 # {{ ansible_managed }}
 
-{% set threads = ansible_processor_vcpus|default(2) // 2 %}
-
-WSGIDaemonProcess keystone user={{ keystone_system_user_name }} group=nogroup processes={{ ansible_processor_cores|default(1) }} threads={{ threads if threads > 0 else 1 }}
-
 <VirtualHost *:{{ keystone_service_port }}>
+    WSGIDaemonProcess     keystone-service user={{ keystone_system_user_name }} group={{ keystone_system_group_name }} processes={{ keystone_wsgi_processes }} threads={{ keystone_wsgi_threads }} display-name=%{GROUP}
+    WSGIProcessGroup      keystone-service
+    WSGIScriptAlias       / /var/www/cgi-bin/keystone/main
+    WSGIApplicationGroup  %{GLOBAL}
+    WSGIPassAuthorization On
+
+    <IfVersion >= 2.4>
+      ErrorLogFormat "%{cu}t %M"
+    </IfVersion>
+
     LogLevel  {{  keystone_apache_log_level }}
     ErrorLog  /var/log/keystone/keystone-apache-error.log
     CustomLog /var/log/keystone/ssl_access.log combined
@@ -50,12 +56,19 @@ WSGIDaemonProcess keystone user={{ keystone_system_user_name }} group=nogroup pr
 
     WSGIScriptAliasMatch ^(/v3/OS-FEDERATION/identity_providers/.*?/protocols/.*?/auth)$ /var/www/cgi-bin/keystone/main/$1
     {%- endif %}
-
-    WSGIScriptAlias /  /var/www/cgi-bin/keystone/main
-    WSGIProcessGroup keystone
 </VirtualHost>
 
 <VirtualHost *:{{ keystone_admin_port }}>
+    WSGIDaemonProcess     keystone-admin user={{ keystone_system_user_name }} group={{ keystone_system_group_name }} processes={{ keystone_wsgi_processes }} threads={{ keystone_wsgi_threads }} display-name=%{GROUP}
+    WSGIProcessGroup      keystone-admin
+    WSGIScriptAlias       / /var/www/cgi-bin/keystone/admin
+    WSGIApplicationGroup  %{GLOBAL}
+    WSGIPassAuthorization On
+
+    <IfVersion >= 2.4>
+      ErrorLogFormat "%{cu}t %M"
+    </IfVersion>
+
     LogLevel  {{  keystone_apache_log_level }}
     ErrorLog  /var/log/keystone/keystone-apache-error.log
     CustomLog /var/log/keystone/ssl_access.log combined
@@ -75,7 +88,4 @@ WSGIDaemonProcess keystone user={{ keystone_system_user_name }} group=nogroup pr
     SSLCipherSuite {{ keystone_ssl_cipher_suite }}
     SSLOptions +StdEnvVars +ExportCertData
     {% endif %}
-
-    WSGIScriptAlias / /var/www/cgi-bin/keystone/admin
-    WSGIProcessGroup keystone
 </VirtualHost>

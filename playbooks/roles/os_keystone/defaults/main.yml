@@ -124,6 +124,8 @@ keystone_service_adminurl: "{{ keystone_service_adminurl_v3 }}"
 
 ## Apache setup
 keystone_apache_log_level: info
+keystone_wsgi_threads: "{{ ansible_processor_vcpus | default(2) // 2 }}"
+keystone_wsgi_processes: "{{ ansible_processor_vcpus | default(1) }}"
 
 keystone_ssl_enabled: false
 keystone_ssl_cert_path: /etc/ssl/certs
