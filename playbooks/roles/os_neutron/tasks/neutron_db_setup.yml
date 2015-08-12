@@ -39,6 +39,41 @@
   tags:
     - neutron-db-setup
 
+- name: Inspect on disk neutron DB revision
+  command: >
+    cat {{ neutron_system_home_folder }}/neutron-revision
+  failed_when: false
+  changed_when: neutron_revision_on_disk.rc != 0
+  register: neutron_revision_on_disk
+  tags:
+    - neutron-db-setup
+    - neutron-upgrade
+    - neutron-stamp
+
+- name: Check last DB revision
+  shell: |
+    neutron-db-manage history | head -1 | tee {{ neutron_system_home_folder }}/neutron-revision
+  register: neutron_revision
+  sudo: yes
+  sudo_user: "{{ neutron_system_user_name }}"
+  delegate_to: "{{ item }}"
+  with_items: groups['neutron_all']
+  tags:
+    - neutron-db-setup
+    - neutron-upgrade
+    - neutron-stamp
+
+- name: Stop neutron server
+  service:
+    name: "neutron-server"
+    state: stopped
+    pattern: "neutron-server"
+  ignore_errors: true
+  when: neutron_revision.results.0.stdout != neutron_revision_on_disk.stdout
+  tags:
+    - neutron-db-setup
+    - neutron-stamp
+
 - name: Perform a Neutron DB Upgrade
   command: |
     neutron-db-manage --config-file {{ neutron_db_config }}
@@ -46,21 +81,12 @@
                       upgrade {{ neutron_db_revision }}
   sudo: yes
   sudo_user: "{{ neutron_system_user_name }}"
+  when: >
+    neutron_revision.results.0.stdout != neutron_revision_on_disk.stdout
+  notify: Restart neutron services
   tags:
     - neutron-db-setup
     - neutron-upgrade
-
-# This is using shell because we are grep-ing
-- name: Check for DB revision
-  shell: |
-    neutron-db-manage history | grep -w 'Revision ID: {{ neutron_db_revision }}'
-  register: neutron_dbmanage
-  failed_when: false
-  changed_when: neutron_dbmanage.rc != 0
-  sudo: yes
-  sudo_user: "{{ neutron_system_user_name }}"
-  tags:
-    - neutron-db-setup
     - neutron-stamp
 
 - name: Perform a Neutron DB Stamp
@@ -68,9 +94,11 @@
     neutron-db-manage --config-file {{ neutron_db_config }}
                       --config-file {{ neutron_db_plugin }}
                       stamp {{ neutron_db_revision }}
-  when: neutron_dbmanage.rc != 0
+  when: neutron_revision.results.0.stdout != neutron_revision_on_disk.stdout
   sudo: yes
   sudo_user: "{{ neutron_system_user_name }}"
+  notify: Restart neutron services
   tags:
     - neutron-db-setup
+    - neutron-upgrade
     - neutron-stamp

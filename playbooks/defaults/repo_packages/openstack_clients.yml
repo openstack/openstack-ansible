@@ -26,53 +26,53 @@
 
 ## Ceilometer client
 ceilometerclient_git_repo: https://git.openstack.org/openstack/python-ceilometerclient
-ceilometerclient_git_install_branch: 7e4d2edc970a555b982d7081a95c6a1ada6d58de # HEAD of "master" as of 22.06.2015
+ceilometerclient_git_install_branch: 803c59fbc7682dbfbd8f32c191c3e5e45d9fb8ca # HEAD of "master" as of 06.08.2015
 ceilometerclient_git_dest: "/opt/ceilometerclient_{{ ceilometerclient_git_install_branch | replace('/', '_') }}"
 
 
 ## Cinder client
 cinderclient_git_repo: https://git.openstack.org/openstack/python-cinderclient
-cinderclient_git_install_branch: f32684747f39d6723f990ee3171e507466066e36 # HEAD of "master" as of 22.06.2015
+cinderclient_git_install_branch: 03542ee65a5e818a5d908a85a6a9eba21ef63b53 # HEAD of "master" as of 06.08.2015
 cinderclient_git_dest: "/opt/cinderclient_{{ cinderclient_git_install_branch | replace('/', '_') }}"
 
 
 ## Glance client
 glanceclient_git_repo: https://git.openstack.org/openstack/python-glanceclient
-glanceclient_git_install_branch: cc38f51086b930a05c0abecf6c9e00fdf5c294f6 # HEAD of "master" as of 22.06.2015
+glanceclient_git_install_branch: 8af084d5a3c8e48fbbae4015c10141b90b491b00 # HEAD of "master" as of 06.08.2015
 glanceclient_git_dest: "/opt/glanceclient_{{ glanceclient_git_install_branch | replace('/', '_') }}"
 
 
 ## Heat client
 heatclient_git_repo: https://git.openstack.org/openstack/python-heatclient
-heatclient_git_install_branch: 4b193e11712847e9b5a80a507124f5d22749ae8d # HEAD of "master" as of 22.06.2015
+heatclient_git_install_branch: 142d0996ec9ef086b90fee7356c092d8665c679d # HEAD of "master" as of 06.08.2015
 heatclient_git_dest: "/opt/heatclient_{{ heatclient_git_install_branch | replace('/', '_') }}"
 
 
 # Keystone client
 keystoneclient_git_repo: https://git.openstack.org/openstack/python-keystoneclient
-keystoneclient_git_install_branch: d238cc9af4927d1092de207db978536d712af129 # HEAD of "master" as of 22.06.2015
+keystoneclient_git_install_branch: eae8e83f5a7a170b98ef2d74a4ffd9eac7cc47ba # HEAD of "master" as of 06.08.2015
 keystoneclient_git_dest: "/opt/keystoneclient_{{ keystoneclient_git_install_branch | replace('/', '_') }}"
 
 
 ## Neutron client
 neutronclient_git_repo: https://git.openstack.org/openstack/python-neutronclient
-neutronclient_git_install_branch: dcb7401a04c96aeb7c00a456b1ba0c77134a0a25 # HEAD of "master" as of 22.06.2015
+neutronclient_git_install_branch: 6281aba974de947b46e05dd926009a53c14d53df # HEAD of "master" as of 06.08.2015
 neutronclient_git_dest: "/opt/neutronclient_{{ neutronclient_git_install_branch | replace('/', '_') }}"
 
 
 ## Nova client
 novaclient_git_repo: https://git.openstack.org/openstack/python-novaclient
-novaclient_git_install_branch: 3c2ff0faad8c84777ffe7d9946a1bc4486116084 # HEAD of "master" as of 22.06.2015
+novaclient_git_install_branch: 7c18da6e644634181d0d6c33d9453fcba28c41ee # HEAD of "master" as of 06.08.2015
 novaclient_git_dest: "/opt/novaclient_{{ novaclient_git_install_branch | replace('/', '_') }}"
 
 
 ## OpenStack client
 openstackclient_git_repo: https://git.openstack.org/openstack/python-openstackclient
-openstackclient_git_install_branch: 2d6bc8f4c38dbf997e3e71119f13f0328b4a8669 # HEAD of "master" as of 22.06.2015
+openstackclient_git_install_branch: d87403a7bf868d96c6c3185a59ac9bac4ba264fa # HEAD of "master" as of 06.08.2015
 openstackclient_git_dest: "/opt/openstackclient_{{ openstackclient_git_install_branch | replace('/', '_') }}"
 
 
 ## Swift client
 swiftclient_git_repo: https://git.openstack.org/openstack/python-swiftclient
-swiftclient_git_install_branch: 7c716997a8ede3f98741709b0594340df9849a76 # HEAD of "master" as of 22.06.2015
+swiftclient_git_install_branch: a056f1b3742812a2c861a0d01678dfed3b0087e4 # HEAD of "master" as of 06.08.2015
 swiftclient_git_dest: "/opt/swiftclient_{{ swiftclient_git_install_branch | replace('/', '_') }}"
