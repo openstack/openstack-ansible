@@ -27,6 +27,7 @@ DEPLOY_SWIFT=${DEPLOY_SWIFT:-"yes"}
 DEPLOY_CEILOMETER=${DEPLOY_CEILOMETER:-"yes"}
 DEPLOY_TEMPEST=${DEPLOY_TEMPEST:-"no"}
 COMMAND_LOGS=${COMMAND_LOGS:-"/openstack/log/ansible_cmd_logs/"}
+ADD_NEUTRON_AGENT_CHECKSUM_RULE=${BOOTSTRAP_AIO:-"no"}
 
 
 ## Functions -----------------------------------------------------------------
@@ -109,6 +110,22 @@ pushd "playbooks"
                            --forks ${FORKS} \
                            -t "${COMMAND_LOGS}/force_apt_update" \
                            &> ${COMMAND_LOGS}/force_apt_update.log
+
+    # When running in an AIO, we need to drop the following iptables rule in any neutron_agent containers
+    # to that ensure instances can communicate with the neutron metadata service.
+    # This is necessary because in an AIO environment there are no physical interfaces involved in
+    # instance -> metadata requests, and this results in the checksums being incorrect.
+    if [ "${ADD_NEUTRON_AGENT_CHECKSUM_RULE}" == "yes" ]; then
+      mkdir -p "${COMMAND_LOGS}/add_neutron_agent_checksum_rule"
+      ansible neutron_agent -m command \
+                            -a '/sbin/iptables -t mangle -A POSTROUTING -p tcp --sport 80 -j CHECKSUM --checksum-fill' \
+                            -t "${COMMAND_LOGS}/add_neutron_agent_checksum_rule" \
+                            &> ${COMMAND_LOGS}/add_neutron_agent_checksum_rule.log
+      ansible neutron_agent -m shell \
+                            -a 'DEBIAN_FRONTEND=noninteractive apt-get install iptables-persistent' \
+                            -t "${COMMAND_LOGS}/add_neutron_agent_checksum_rule" \
+                            &> ${COMMAND_LOGS}/add_neutron_agent_checksum_rule.log
+    fi
   fi
 
   if [ "${DEPLOY_LB}" == "yes" ]; then
