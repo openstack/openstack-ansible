@@ -26,85 +26,85 @@
 
 ## Barbican client
 barbicanclient_git_repo: https://github.com/openstack/python-barbicanclient
-barbicanclient_git_install_branch: 60eed382a73982ddcd8d89545c03505699eab164 # HEAD of "stable/kilo" as of 23.07.2015
+barbicanclient_git_install_branch: 60eed382a73982ddcd8d89545c03505699eab164 # HEAD of "stable/kilo" as of 10.08.2015
 barbicanclient_git_dest: "/opt/barbicanclient_{{ barbicanclient_git_install_branch | replace('/', '_') }}"
 
 
 ## Ceilometer client
 ceilometerclient_git_repo: https://github.com/openstack/python-ceilometerclient
-ceilometerclient_git_install_branch: e3ef3db503ae95139f4868a4f1e3724b780a766e # HEAD of "stable/kilo" as of 23.07.2015
+ceilometerclient_git_install_branch: e3ef3db503ae95139f4868a4f1e3724b780a766e # HEAD of "stable/kilo" as of 10.08.2015
 ceilometerclient_git_dest: "/opt/ceilometerclient_{{ ceilometerclient_git_install_branch | replace('/', '_') }}"
 
 
 ## Cinder client
 cinderclient_git_repo: https://github.com/openstack/python-cinderclient
-cinderclient_git_install_branch: b44d32d02b014748044b5b18d27a9d1f8312145c # HEAD of "stable/kilo" as of 23.07.2015
+cinderclient_git_install_branch: 762ea63aebca6df67a436344553bc16eeaf84c38 # HEAD of "stable/kilo" as of 10.08.2015
 cinderclient_git_dest: "/opt/cinderclient_{{ cinderclient_git_install_branch | replace('/', '_') }}"
 
 
 ## Designate client
 designateclient_git_repo: https://github.com/openstack/python-designateclient
-designateclient_git_install_branch: 780f9461f94560d13b6e5813b9cfc8591e55467e # HEAD of "stable/kilo" as of 23.07.2015
+designateclient_git_install_branch: 780f9461f94560d13b6e5813b9cfc8591e55467e # HEAD of "stable/kilo" as of 10.08.2015
 designateclient_git_dest: "/opt/designateclient_{{ designateclient_git_install_branch | replace('/', '_') }}"
 
 
 ## Glance client
 glanceclient_git_repo: https://github.com/openstack/python-glanceclient
-glanceclient_git_install_branch: da4f22a2b7a87f3bbb46df02f7f68568ea994e3e # HEAD of "stable/kilo" as of 23.07.2015
+glanceclient_git_install_branch: 0acf7cc35cd2b123abde59e2a7a2fcd0a9a79ef8 # HEAD of "stable/kilo" as of 10.08.2015
 glanceclient_git_dest: "/opt/glanceclient_{{ glanceclient_git_install_branch | replace('/', '_') }}"
 
 
 ## Heat client
 heatclient_git_repo: https://github.com/openstack/python-heatclient
-heatclient_git_install_branch: 76a8e7217558c4e43d7ff45c50c2b2702a20a454 # HEAD of "stable/kilo" as of 23.07.2015
+heatclient_git_install_branch: 76a8e7217558c4e43d7ff45c50c2b2702a20a454 # HEAD of "stable/kilo" as of 10.08.2015
 heatclient_git_dest: "/opt/heatclient_{{ heatclient_git_install_branch | replace('/', '_') }}"
 
 
 # Ironic client
 ironicclient_git_repo: https://github.com/openstack/python-ironicclient
-ironicclient_git_install_branch: 3b71c4ec7bfc9181d972e7f6e706853ec4588236 # HEAD of "stable/kilo" as of 23.07.2015
+ironicclient_git_install_branch: 8334c2b380daa277d84bfe942264399714a4eedc # HEAD of "stable/kilo" as of 10.08.2015
 ironicclient_git_dest: "/opt/ironicclient_{{ ironicclient_git_install_branch | replace('/', '_') }}"
 
 
 # Keystone client
 keystoneclient_git_repo: https://github.com/openstack/python-keystoneclient
-keystoneclient_git_install_branch: 3914c0ce8138619f895c5ee1e4ca193cf594b9f8 # HEAD of "stable/kilo" as of 23.07.2015
+keystoneclient_git_install_branch: 3914c0ce8138619f895c5ee1e4ca193cf594b9f8 # HEAD of "stable/kilo" as of 10.08.2015
 keystoneclient_git_dest: "/opt/keystoneclient_{{ keystoneclient_git_install_branch | replace('/', '_') }}"
 
 
 ## Neutron client
 neutronclient_git_repo: https://github.com/openstack/python-neutronclient
-neutronclient_git_install_branch: ca96a7cdc7892f89529887056c73f2b66247009e # HEAD of "stable/kilo" as of 23.07.2015
+neutronclient_git_install_branch: ca96a7cdc7892f89529887056c73f2b66247009e # HEAD of "stable/kilo" as of 10.08.2015
 neutronclient_git_dest: "/opt/neutronclient_{{ neutronclient_git_install_branch | replace('/', '_') }}"
 
 
 ## Nova client
 novaclient_git_repo: https://github.com/openstack/python-novaclient
-novaclient_git_install_branch: 13463268dbc4bb93a6d606a52e89ff3e23af1de7 # HEAD of "stable/kilo" as of 23.07.2015
+novaclient_git_install_branch: 4ab9db648653f7ea6b9f8b1c78bff672b20b913f # HEAD of "stable/kilo" as of 10.08.2015
 novaclient_git_dest: "/opt/novaclient_{{ novaclient_git_install_branch | replace('/', '_') }}"
 
 
 ## OpenStack client
 openstackclient_git_repo: https://github.com/openstack/python-openstackclient
-openstackclient_git_install_branch: 6972c34b6633df2864f45d6a463f2b7d964b97f5 # HEAD of "stable/kilo" as of 23.07.2015
+openstackclient_git_install_branch: 6972c34b6633df2864f45d6a463f2b7d964b97f5 # HEAD of "stable/kilo" as of 10.08.2015
 openstackclient_git_dest: "/opt/openstackclient_{{ openstackclient_git_install_branch | replace('/', '_') }}"
 
 
 ## Sahara client
 saharaclient_git_repo: https://github.com/openstack/python-saharaclient
-saharaclient_git_install_branch: 46e7ce0506a2ed11e45fd6b86949c85c06df3dde # HEAD of "stable/kilo" as of 23.07.2015
+saharaclient_git_install_branch: cfef9c4c2e8a55d18771f99a65fc7f5358cb484f # HEAD of "stable/kilo" as of 10.08.2015
 saharaclient_git_dest: "/opt/saharaclient_{{ saharaclient_git_install_branch | replace('/', '_') }}"
 
 
 ## Swift client
 swiftclient_git_repo: https://github.com/openstack/python-swiftclient
-swiftclient_git_install_branch: 98d31d8ead462dfbf91ccf41270514fbc8fe73f2 # HEAD of "stable/kilo" as of 23.07.2015
+swiftclient_git_install_branch: 98d31d8ead462dfbf91ccf41270514fbc8fe73f2 # HEAD of "stable/kilo" as of 10.08.2015
 swiftclient_git_dest: "/opt/swiftclient_{{ swiftclient_git_install_branch | replace('/', '_') }}"
 
 
 ## Trove client
 troveclient_git_repo: https://github.com/openstack/python-troveclient
-troveclient_git_install_branch: ebb87b3125771965afc52851e4028176bad3e151 # HEAD of "stable/kilo" as of 23.07.2015
+troveclient_git_install_branch: ebb87b3125771965afc52851e4028176bad3e151 # HEAD of "stable/kilo" as of 10.08.2015
 troveclient_git_dest: "/opt/troveclient_{{ troveclient_git_install_branch | replace('/', '_') }}"
 
 
@@ -116,5 +116,5 @@ tuskarclient_git_dest: "/opt/tuskarclient_{{ tuskarclient_git_install_branch | r
 
 ## Zaqar client
 zaqarclient_git_repo: https://github.com/openstack/python-zaqarclient
-zaqarclient_git_install_branch: 6e5df973a5a0e311262041fefd1603ce9705ae7c # HEAD of "stable/kilo" as of 23.07.2015
+zaqarclient_git_install_branch: 6e5df973a5a0e311262041fefd1603ce9705ae7c # HEAD of "stable/kilo" as of 10.08.2015
 zaqarclient_git_dest: "/opt/zaqarclient_{{ zaqarclient_git_install_branch | replace('/', '_') }}"
