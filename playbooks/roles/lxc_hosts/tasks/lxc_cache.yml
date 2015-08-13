@@ -19,7 +19,10 @@
     dest: "/var/cache/lxc_{{ item.name }}"
     mode: "0644"
     force: no
+    sha256sum: "{{ item.sha256sum }}"
   register: cache_download
+  retries: 3
+  delay: 10
   until: cache_download|success
   with_items: lxc_container_caches
   tags:
