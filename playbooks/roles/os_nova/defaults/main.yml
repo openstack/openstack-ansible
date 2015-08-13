@@ -182,6 +182,9 @@ nova_libvirt_inject_key: False
 #  -2 => disable, -1 => inspect (libguestfs only), 0 => not partitioned, >0 => partition number
 nova_libvirt_inject_partition: -2
 nova_libvirt_inject_password: False
+nova_libvirt_disk_cachemodes: '{{ nova_libvirt_images_rbd_pool is defined | ternary("network=writeback", "") }}'
+nova_libvirt_hw_disk_discard: '{{ nova_libvirt_images_rbd_pool is defined | ternary("unmap", "ignore") }}'
+nova_libvirt_live_migration_flag: "VIR_MIGRATE_UNDEFINE_SOURCE,VIR_MIGRATE_PEER2PEER,VIR_MIGRATE_LIVE,VIR_MIGRATE_TUNNELLED"
 
 ## Nova conductor
 nova_conductor_program_name: nova-conductor
@@ -250,8 +253,6 @@ nova_recreate_keys: False
 #nova_libvirt_images_rbd_pool: vms
 nova_ceph_client: '{{ cinder_ceph_client }}'
 nova_ceph_client_uuid: 517a4663-3927-44bc-9ea7-4a90e1cd4c66
-nova_libvirt_disk_cachemodes: '{{ nova_libvirt_images_rbd_pool is defined | ternary("network=writeback", "") }}'
-nova_libvirt_hw_disk_discard: '{{ nova_libvirt_images_rbd_pool is defined | ternary("unmap", "ignore") }}'
 
 ## General Neutron configuration
 # If ``nova_osapi_compute_workers`` is unset the system will use half the number of available VCPUS to
