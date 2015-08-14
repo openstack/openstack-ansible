@@ -9,8 +9,16 @@ Configuring the Block Storage service (optional)
    configure-cinder-backup.rst
    configure-cinder-az.rst
 
-By default, the Block Storage service uses the LVM back end. To use a
-NetApp storage appliance back end, edit the
+By default, the Block Storage service uses the LVM back end. Therefore
+the container hosting the Block Storage service has to be considered
+as is_metal.
+
+If you rather use another backend (like NetApp, Ceph, etc.) in a
+container instead of bare metal, you may edit
+the ``/etc/openstack_deploy/env.d/cinder.yml`` and remove the
+``is_metal: true`` stanza under the cinder_volumes_container properties.
+
+To use a NetApp storage appliance back end, edit the
 ``/etc/openstack_deploy/openstack_user_config.yml`` file and configure
 each storage node that will use it:
 
