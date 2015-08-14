@@ -77,7 +77,7 @@ haproxy_service_configs:
   - service:
       haproxy_service_name: keystone_service
       haproxy_backend_nodes: "{{ groups['keystone_all'] }}"
-      haproxy_bind: "{% if internal_lb_vip_address != external_lb_vip_address %}{{ external_lb_vip_address }}{% else %}*{% endif %}"
+      haproxy_bind: "{% if internal_lb_vip_address == external_lb_vip_address %}*{% else %}{{ external_lb_vip_address }}{% endif %}"
       haproxy_port: 5000
       haproxy_ssl: "{% if haproxy_ssl | bool and keystone_service_publicuri_proto == 'https' %}true{% else %}false{% endif %}"
       haproxy_balance_type: http
