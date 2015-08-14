@@ -83,6 +83,7 @@ metadata_port = {{ nova_metadata_port }}
 metadata_workers = {{ nova_metadata_workers | default(api_threads) }}
 
 # Network
+dhcp_domain = {{ nova_dhcp_domain }}
 force_dhcp_release = True
 dhcpbridge_flagfile = /etc/nova/nova.conf
 firewall_driver = {{ nova_firewall_driver }}

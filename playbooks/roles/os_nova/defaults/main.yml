@@ -197,6 +197,7 @@ nova_max_age: 0
 nova_remove_unused_resized_minimum_age_seconds: 3600
 nova_image_cache_manager_interval: 0
 nova_resume_guests_state_on_host_boot: False
+nova_dhcp_domain: novalocal
 
 # Nova quota
 nova_quota_cores: 20
@@ -244,7 +245,7 @@ nova_recreate_keys: False
 nova_ceph_client: '{{ cinder_ceph_client }}'
 nova_ceph_client_uuid: 517a4663-3927-44bc-9ea7-4a90e1cd4c66
 
-## General Neutron configuration
+## General Nova configuration
 # If ``nova_osapi_compute_workers`` is unset the system will use half the number of available VCPUS to
 # compute the number of api workers to use.
 # nova_osapi_compute_workers: 16
