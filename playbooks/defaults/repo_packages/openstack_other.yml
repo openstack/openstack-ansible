@@ -27,20 +27,11 @@
 
 ## Glance store library
 glancestore_git_repo: https://git.openstack.org/openstack/glance_store
-glancestore_git_install_branch: 29a84f7ced03ece1eb5b2128593dc84f8f95bec1 # HEAD of "master" as of 29.07.2015
+glancestore_git_install_branch: 425360035676d4bb88b8b5eea3d7ccabb65e850a # HEAD of "master" as of 15.08.2015
 glancestore_git_dest: "/opt/glancestore_{{ glancestore_git_repo | replace('/', '_') }}"
 
 
 ## Global Requirements
 requirements_git_repo: https://git.openstack.org/openstack/requirements
-requirements_git_install_branch: bdd44d169d0c1928f84167fee37dd6753784cdf4 # HEAD of "master" as of 29.07.2015
+requirements_git_install_branch: 2a6b64eeee05933f3719ab50e8b6d2b8e0b13e99 # HEAD of "master" as of 15.08.2015
 requirements_git_dest: "/opt/requirements_{{ requirements_git_install_branch | replace('/', '_') }}"
-
-
-## Cryptography
-# NOTE(sigmavirus24): Fix this when cryptography 1.0 is released and
-# global-requirements.txt allows for it. See also:
-# https://github.com/pyca/cryptography/issues/1868
-cryptography_git_repo: https://github.com/pyca/cryptography
-cryptography_git_install_branch: 172d6846d78e34c005d2c679cf53dd79a3e54d8e # HEAD of "master" as of 27.07.2015
-cryptography_git_dest: "/opt/cryptography_{{ cryptography_git_install_branch | replace('/', '_') }}"
