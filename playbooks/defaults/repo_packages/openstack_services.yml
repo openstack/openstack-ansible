@@ -42,7 +42,7 @@ cinder_git_dest: "/opt/cinder_{{ cinder_git_install_branch | replace('/', '_') }
 
 ## Glance service
 glance_git_repo: https://github.com/openstack/glance
-glance_git_install_branch: c0623627b92193acab0b3594a40c45eea46ee51e # HEAD of "stable/kilo" as of 10.08.2015
+glance_git_install_branch: eb99e45829a1b4c93db5692bdbf636a86faa56c4 # HEAD of "stable/kilo" as of 13.08.2015
 glance_git_dest: "/opt/glance_{{ glance_git_install_branch | replace('/', '_') }}"
 
 
