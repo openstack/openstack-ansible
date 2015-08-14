@@ -14,10 +14,9 @@
 # limitations under the License.
 
 ## Shell Opts ----------------------------------------------------------------
-set -e -u +x
+set -e -u -x
 
 ## Variables -----------------------------------------------------------------
-export ANSIBLE_DISABLE_COLOR=${ANSIBLE_DISABLE_COLOR:-"yes"}
 export BOOTSTRAP_ANSIBLE=${BOOTSTRAP_ANSIBLE:-"yes"}
 export BOOTSTRAP_AIO=${BOOTSTRAP_AIO:-"yes"}
 export RUN_PLAYBOOKS=${RUN_PLAYBOOKS:-"yes"}
@@ -43,12 +42,18 @@ info_block "Checking for required libraries." 2> /dev/null || source $(dirname $
 
 ## Main ----------------------------------------------------------------------
 
-# Remove color options
-if [ "${ANSIBLE_DISABLE_COLOR}" == "yes" ]; then
-  pushd $(dirname ${0})/../playbooks
-    sed -i 's/nocolor.*/nocolor = 1/' ansible.cfg
-  popd
-fi
+# Disable Ansible color output
+sed -i 's/nocolor.*/nocolor = 1/' $(dirname ${0})/../playbooks/ansible.cfg
+
+# Make the /openstack/log directory for openstack-infra gate check log publishing
+mkdir -p /openstack/log
+
+# Implement the log directory link for openstack-infra log publishing
+ln -sf /openstack/log $(dirname ${0})/../logs
+
+# Create ansible logging directory and add in a log file entry into ansible.cfg
+mkdir -p /openstack/log/ansible-logging
+sed -i '/\[defaults\]/a log_path = /openstack/log/ansible-logging/ansible.log' $(dirname ${0})/../playbooks/ansible.cfg
 
 # Bootstrap an AIO setup if required
 if [ "${BOOTSTRAP_AIO}" == "yes" ]; then
