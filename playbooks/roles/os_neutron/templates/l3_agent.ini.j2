@@ -1,34 +1,41 @@
 # {{ ansible_managed }}
 
+# General
 [DEFAULT]
 verbose = {{ verbose }}
 debug = {{ debug }}
 
-allow_automatic_l3agent_failover = True
-enable_metadata_proxy = True
+handle_internal_only_routers = True
 external_network_bridge = {{ neutron_external_network_bridge }}
 gateway_external_network_id = {{ neutron_gateway_external_network_id }}
 
-# L3 Agent HA
-ha_confs_path = {{ neutron_system_home_folder }}/ha_confs
-ha_vrrp_advert_int = {{ neutron_ha_vrrp_advert_int }}
-ha_vrrp_auth_password = {{ neutron_ha_vrrp_auth_password }}
-ha_vrrp_auth_type = {{ neutron_ha_vrrp_auth_type }}
-handle_internal_only_routers = {{ neutron_handle_internal_only_routers }}
-l3_ha = {{ neutron_l3_ha_enabled }}
-l3_ha_net_cidr = {{ neutron_l3_ha_net_cidr }}
-max_l3_agents_per_router = {{ neutron_max_l3_agents_per_router | default(groups['neutron_agent']|length) }}
+# Drivers
+interface_driver = {{ neutron_driver_interface }}
+
+# Agent mode (legacy only)
+agent_mode = {{ neutron_agent_mode }}
+
+# Conventional failover
+allow_automatic_l3agent_failover = True
 
 {% set min_router = groups['neutron_agent'] | length // 2 %}
 {% set min_l3_router = min_router if min_router > 0 else 1 %}
 
 min_l3_agents_per_router = {{ neutron_min_l3_agents_per_router | default(min_l3_router) }}
+max_l3_agents_per_router = {{ neutron_max_l3_agents_per_router | default(groups['neutron_agent']|length) }}
+
+# HA failover
+l3_ha = {{ neutron_l3_ha_enabled }}
+l3_ha_net_cidr = {{ neutron_l3_ha_net_cidr }}
+ha_confs_path = {{ neutron_system_home_folder }}/ha_confs
+ha_vrrp_advert_int = {{ neutron_ha_vrrp_advert_int }}
+ha_vrrp_auth_password = {{ neutron_ha_vrrp_auth_password }}
+ha_vrrp_auth_type = {{ neutron_ha_vrrp_auth_type }}
+handle_internal_only_routers = {{ neutron_handle_internal_only_routers }}
 send_arp_for_ha = 3
 
-# L3 configuration options
-router_delete_namespaces = {{ neutron_l3_router_delete_namespaces }}
+# Metadata
+enable_metadata_proxy = True
 
-# L3 Agent interfaces
-interface_driver = {{ neutron_driver_interface }}
-handle_internal_only_routers = True
-agent_mode = {{ neutron_agent_mode }}
+# Delete defunct namespaces
+router_delete_namespaces = {{ neutron_l3_router_delete_namespaces }}

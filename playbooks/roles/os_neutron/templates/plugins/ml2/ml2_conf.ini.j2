@@ -1,5 +1,8 @@
 # {{ ansible_managed }}
 
+{% if inventory_hostname in groups['neutron_server'] %}
+
+# ML2 general
 [ml2]
 type_drivers = {{ neutron_ml2_drivers_type }}
 tenant_network_types = {{ neutron_provider_networks.network_types }}
@@ -7,66 +10,83 @@ mechanism_drivers = {{ neutron_ml2_mechanism_drivers }}
 path_mtu = 0
 segment_mtu = 0
 
-
 {% if neutron_provider_networks.network_flat_networks %}
+
+# ML2 flat networks
 [ml2_type_flat]
 flat_networks = {{ neutron_provider_networks.network_flat_networks }}
+
 {% endif %}
 
-
 {% if neutron_provider_networks.network_vlan_ranges %}
+
+# ML2 VLAN networks
 [ml2_type_vlan]
 network_vlan_ranges = {{ neutron_provider_networks.network_vlan_ranges }}
 
-
-[vlans]
-tenant_network_type = vlan
-network_vlan_ranges = {{ neutron_provider_networks.network_vlan_ranges }}
 {% endif %}
 
-
 {% if neutron_provider_networks.network_vxlan_ranges is defined %}
+
+# ML2 VXLAN networks
 [ml2_type_vxlan]
 vxlan_group = {{ neutron_vxlan_group|default('') }}
 vni_ranges = {{ neutron_provider_networks.network_vxlan_ranges }}
+
+{% endif %}
 {% endif %}
 
+{% if inventory_hostname in groups['neutron_linuxbridge_agent'] %}
+
+# Linux bridge agent VXLAN networks
+[vxlan]
 
 {% if neutron_overlay_network %}
-[vxlan]
+
 enable_vxlan = True
 vxlan_group = {{ neutron_vxlan_group|default('') }}
+
 {% if (is_metal == true or is_metal == "True") and neutron_overlay_network.bridge is defined %}
 {% set on_metal_tunnel_bridge = 'ansible_' + neutron_overlay_network.bridge|replace('-', '_') %}
+
+# VXLAN local tunnel endpoint (bare metal)
 local_ip = {{ hostvars[inventory_hostname][on_metal_tunnel_bridge]['ipv4']['address'] }}
+
 {% else %}
+
+# VXLAN local tunnel endpoint (container)
 local_ip = {{ neutron_overlay_network.address }}
+
 {% endif %}
+
 l2_population = {{ neutron_l2_population }}
+
+{% else %}
+
+# Disable VXLAN for deployments with only flat or VLAN networks
+enable_vxlan = False
+
 {% endif %}
-
-
-[agent]
-tunnel_types = vxlan
-## VXLAN udp port
-# This is set for the vxlan port and while this
-# is being set here it's ignored because
-# the port is assigned by the kernel
-vxlan_udp_port = {{ neutron_vxlan_udp_port }}
-
 
 {% if neutron_provider_networks.network_mappings is defined %}
+
+# Linux bridge agent physical interface mappings
 [linux_bridge]
 physical_interface_mappings = {{ neutron_provider_networks.network_mappings }}
+
 {% endif %}
 
+# Agent (empty for Linux bridge agent)
+[agent]
 
+# L2 population
 [l2pop]
 agent_boot_time = 180
 
+{% endif %}
 
+# Security groups
 [securitygroup]
 enable_security_group = True
 enable_ipset = True
 firewall_driver = {{ neutron_driver_firewall }}
-
