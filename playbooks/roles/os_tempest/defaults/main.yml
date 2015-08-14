@@ -41,13 +41,9 @@ tempest_service_available_cinder: True
 tempest_service_available_glance: True
 tempest_service_available_heat: True
 tempest_service_available_horizon: True
-tempest_service_available_ironic: False
 tempest_service_available_neutron: True
 tempest_service_available_nova: True
-tempest_service_available_sahara: False
 tempest_service_available_swift: True
-tempest_service_available_trove: False
-tempest_service_available_zaqar: False
 
 tempest_image_api_v1_enabled: true
 tempest_image_api_v2_enabled: True
@@ -72,24 +68,16 @@ tempest_main_group: tempest_all
 
 tempest_requires_pip_packages:
   - oslo.serialization
-  - python-barbicanclient
   - python-ceilometerclient
   - python-cinderclient
-  - python-designateclient
   - python-glanceclient
   - python-heatclient
-  - python-ironicclient
   - python-keystoneclient
-  - python-marconiclient
   - python-memcached
   - python-neutronclient
   - python-novaclient
   - python-openstackclient
-  - python-saharaclient
-  - python-seamicroclient
   - python-swiftclient
-  - python-troveclient
-  - python-tuskarclient
   - virtualenv
 
 tempest_pip_packages:
