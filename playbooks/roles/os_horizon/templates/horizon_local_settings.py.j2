@@ -239,7 +239,7 @@ LAUNCH_INSTANCE_NG_ENABLED = {{ horizon_launch_instance_ng }}
 # from the UI.
 OPENSTACK_HYPERVISOR_FEATURES = {
     'can_set_mount_point': False,
-    'can_set_password': False,
+    'can_set_password': {{ horizon_can_set_password }},
 }
 
 # The OPENSTACK_CINDER_FEATURES settings can be used to enable optional
