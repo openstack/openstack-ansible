@@ -48,13 +48,6 @@ if ! which ansible-playbook > /dev/null; then
   exit 1
 fi
 
-# Install the development requirements
-if [ -f dev-requirements.txt ]; then
-  pip2 install -r dev-requirements.txt || pip install -r dev-requirements.txt
-else
-  pip2 install ansible-lint || pip install ansible-lint
-fi
-
 # Perform our simple sanity checks
 echo -e '[all]\nlocalhost ansible_connection=local' | tee local_only_inventory
 
@@ -64,10 +57,3 @@ ansible-playbook -i local_only_inventory --syntax-check \
                  $(find ${PLAYBOOK_PATH} -type f -name "*.yml" \
                         ! -name "os-service-config-update.yml" \
                         ! -name "host-network-setup.yml")
-
-# Perform a lint check on all playbooks and roles
-info_block "Running Lint Check"
-ansible-lint --version
-ansible-lint $(find ${PLAYBOOK_PATH} -type f -name "*.yml" \
-                    ! -name "os-service-config-update.yml" \
-                    ! -name "host-network-setup.yml")
