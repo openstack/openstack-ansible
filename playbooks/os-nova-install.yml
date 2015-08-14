@@ -189,5 +189,3 @@
     ansible_ssh_host: "{{ container_address }}"
     is_metal: "{{ properties.is_metal|default(false) }}"
     glance_host: "{{ internal_lb_vip_address }}"
-  vars_files:
-    - defaults/repo_packages/openstack_other.yml
