@@ -19,7 +19,7 @@ repo_path: "{{ pip_wheel_name }}_{{ git_install_branch | replace('/', '_') }}"
 git_repo: https://github.com/openstack/requirements
 git_fallback_repo: https://git.openstack.org/openstack/requirements
 git_dest: "/opt/{{ repo_path }}"
-git_install_branch: 30eb1d6a4422ece0372c008ffea2fcc0b732517f # HEAD of "stable/juno" as of 31.07.2015
+git_install_branch: 1f18fc5c69e2905e898633c6ba71aba8d7061a14 # HEAD of "stable/juno" as of 15.08.2015
 requirements_file: global-requirements.txt
 
 pip_wheel_name: requirements

@@ -19,6 +19,6 @@ repo_path: "{{ pip_wheel_name }}_{{ git_install_branch | replace('/', '_') }}"
 git_repo: https://github.com/openstack/python-neutronclient
 git_fallback_repo: https://git.openstack.org/openstack/python-neutronclient
 git_dest: "/opt/{{ repo_path }}"
-git_install_branch: 72c1473f111846a026cb5f9eb97d68b435eba194
+git_install_branch: 3f03a3bdb87782930eaf236f726f9bed7229e441 # HEAD of "stable/juno" as of 15.08.2015
 
 pip_wheel_name: python-neutronclient
