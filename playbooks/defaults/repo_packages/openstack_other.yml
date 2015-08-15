@@ -26,27 +26,18 @@
 
 ## Glance store library
 glancestore_git_repo: https://github.com/openstack/glance_store
-glancestore_git_install_branch: d9b197b6d63e0cd2b2458c6a2a9c9701ef8b383b # HEAD of "stable/kilo" as of 10.08.2015
+glancestore_git_install_branch: d9b197b6d63e0cd2b2458c6a2a9c9701ef8b383b # HEAD of "stable/kilo" as of 15.08.2015
 glancestore_git_dest: "/opt/glancestore_{{ glancestore_git_repo | replace('/', '_') }}"
 
 
 ## Global Requirements
 requirements_git_repo: https://github.com/openstack/requirements
-requirements_git_install_branch: d9c926f831c869d3516d9a34bc54a538df20f158 # HEAD of "stable/kilo" as of 10.08.2015
+requirements_git_install_branch: dd0392825e405def1fd9ff5d31770d148c45c0dc # HEAD of "stable/kilo" as of 15.08.2015
 requirements_git_dest: "/opt/requirements_{{ requirements_git_install_branch | replace('/', '_') }}"
 
 
 ## Tempest Library
 tempestlib_git_repo: https://github.com/openstack/tempest-lib
-tempestlib_git_install_branch: 061a2efc71ccce9024f86517edccdb4c82d416bc # HEAD of "master" as of 22.06.2015
+tempestlib_git_install_branch: 6e6578294885b3a53b9ec9ae8588619cf1e71f2c # HEAD of "master" as of 15.08.2015
 tempestlib_git_install_fragments: "yaprtignorerequirements=true"
 tempestlib_git_dest: "/opt/tempest-lib_{{ requirements_git_install_branch | replace('/', '_') }}"
-
-
-## Cryptography
-# NOTE(sigmavirus24): Fix this when cryptography 1.0 is released and
-# global-requirements.txt allows for it. See also:
-# https://github.com/pyca/cryptography/issues/1868
-cryptography_git_repo: https://github.com/pyca/cryptography
-cryptography_git_install_branch: 926f8ac4927bdc9977f2d960c7def3f2927d1198  # HEAD of "master" as of 16.06.2015
-cryptography_git_dest: "/opt/cryptography_{{ cryptography_git_install_branch | replace('/', '_') }}"
