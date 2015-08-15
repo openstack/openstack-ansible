@@ -36,6 +36,7 @@ log_error = /var/log/mysql_logs/galera_server_error.log
 log-bin = /var/lib/mysql/mariadb-bin
 log-bin-index = /var/lib/mysql/mariadb-bin.index
 expire-logs-days = 7
+log_slave_updates = 1
 
 # SAFETY #
 max-allowed-packet = 16M
