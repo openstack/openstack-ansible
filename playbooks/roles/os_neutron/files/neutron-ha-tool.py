@@ -16,14 +16,15 @@
 #    under the License.
 
 
-import logging
-import os
-import sys
 import argparse
-import random
-import time
-from logging.handlers import SysLogHandler
 from collections import OrderedDict
+import logging
+from logging.handlers import SysLogHandler
+import os
+import random
+import sys
+import time
+
 from neutronclient.neutron import client
 
 
@@ -117,10 +118,10 @@ def run(args):
 
 
 def l3_agent_rebalance(qclient, noop=False):
-    """
-    Rebalance l3 agent router count across agents.  The number of routers
-    on each l3 agent will be as close as possible which should help
-    distribute load as new l3 agents come online.
+    """Rebalance l3 agent router count across agents.
+
+    The number of routers on each l3 agent will be as close as possible
+    which should help distribute load as new l3 agents come online.
 
     :param qclient: A neutronclient
     :param noop: Optional noop flag
@@ -196,7 +197,7 @@ def l3_agent_rebalance(qclient, noop=False):
                                        low_agent_id)
                     low_agent_router_count += 1
                     hgh_agent_router_count -= 1
-                except:
+                except Exception:
                     LOG.exception("Failed to migrate router=%s from agent=%s "
                                   "to agent=%s", router_id, hgh_agent_id,
                                   low_agent_id)
@@ -205,9 +206,9 @@ def l3_agent_rebalance(qclient, noop=False):
 
 
 def l3_agent_check(qclient):
-    """
-    Walk the l3 agents searching for agents that are offline.  Show routers
-    that are offline and where we would migrate them to.
+    """Walk the l3 agents searching for agents that are offline.
+
+    Show routers that are offline and where we would migrate them to.
 
     :param qclient: A neutronclient
 
@@ -242,10 +243,10 @@ def l3_agent_check(qclient):
 
 
 def l3_agent_migrate(qclient, noop=False, now=False):
-    """
-    Walk the l3 agents searching for agents that are offline.  For those that
-    are offline, we will retrieve a list of routers on them and migrate them to
-    a random l3 agent that is online.
+    """Walk the l3 agents searching for agents that are offline.
+
+    For those that are offline, we will retrieve a list of routers on
+    them and migrate them to a random l3 agent that is online.
 
     :param qclient: A neutronclient
     :param noop: Optional noop flag
@@ -300,7 +301,7 @@ def l3_agent_migrate(qclient, noop=False, now=False):
                     if not noop:
                         migrate_router(qclient, router_id, agent_id, target_id)
                         migration_count += 1
-                except:
+                except Exception:
                     LOG.exception("There was an error migrating a router")
                     continue
 
@@ -309,9 +310,9 @@ def l3_agent_migrate(qclient, noop=False, now=False):
 
 
 def replicate_dhcp(qclient, noop=False):
-    """
-    Retrieve a network list and then probe each DHCP agent to ensure
-    they have that network assigned.
+    """Retrieve a network list and then probe each DHCP agent
+
+    This will ensure they have that network assigned.
 
     :param qclient: A neutronclient
     :param noop: Optional noop flag
@@ -338,7 +339,7 @@ def replicate_dhcp(qclient, noop=False):
                     LOG.info("Added missing network=%s to dhcp agent=%s",
                              network_id, dhcp_agent_id)
                     added += 1
-                except:
+                except Exception:
                     LOG.exception("Failed to add network_id=%s to"
                                   "dhcp_agent=%s", network_id, dhcp_agent_id)
                     continue
@@ -347,8 +348,7 @@ def replicate_dhcp(qclient, noop=False):
 
 
 def migrate_router(qclient, router_id, agent_id, target_id):
-    """
-    Returns nothing, and raises on exception
+    """Returns nothing, and raises on exception
 
     :param qclient: A neutronclient
     :param router_id: The id of the router to migrate
@@ -379,8 +379,7 @@ def migrate_router(qclient, router_id, agent_id, target_id):
 
 
 def list_networks(qclient):
-    """
-    Return a list of network objects
+    """Return a list of network objects
 
     :param qclient: A neutronclient
     """
@@ -391,8 +390,7 @@ def list_networks(qclient):
 
 
 def list_dhcp_agent_networks(qclient, agent_id):
-    """
-    Return a list of network ids assigned to a particular DHCP agent
+    """Return a list of network ids assigned to a particular DHCP agent
 
     :param qclient: A neutronclient
     :param agent_id: A DHCP agent id
@@ -404,8 +402,7 @@ def list_dhcp_agent_networks(qclient, agent_id):
 
 
 def list_routers(qclient):
-    """
-    Return a list of router objects
+    """Return a list of router objects
 
     :param qclient: A neutronclient
 
@@ -428,8 +425,7 @@ def list_routers(qclient):
 
 
 def list_routers_on_l3_agent(qclient, agent_id):
-    """
-    Return a list of router ids on an agent
+    """Return a list of router ids on an agent
 
     :param qclient: A neutronclient
     """
@@ -514,8 +510,7 @@ def list_agents(qclient, agent_type=None):
 
 
 def agent_alive_id_list(agent_list, agent_type):
-    """
-    Return a list of agents that are alive from an API list of agents
+    """Return a list of agents that are alive from an API list of agents
 
     :param agent_list: API response for list_agents()
 
@@ -525,8 +520,7 @@ def agent_alive_id_list(agent_list, agent_type):
 
 
 def agent_dead_id_list(agent_list, agent_type):
-    """
-    Return a list of agents that are dead from an API list of agents
+    """Return a list of agents that are dead from an API list of agents
 
     :param agent_list: API response for list_agents()
 

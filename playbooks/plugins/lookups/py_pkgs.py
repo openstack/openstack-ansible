@@ -17,11 +17,9 @@
 import os
 import traceback
 
-from distutils import version
-
+from ansible import errors
+from ansible import utils
 import yaml
-
-from ansible import utils, errors
 
 
 VERSION_DESCRIPTORS = ['>=', '<=', '==', '!=', '<', '>']
