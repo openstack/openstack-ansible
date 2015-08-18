@@ -23,6 +23,7 @@ DEFAULT_PASSWORD=$(tr -dc 'a-zA-Z0-9' < /dev/urandom | head -c 32)
 export BOOTSTRAP_AIO="yes"
 export ADMIN_PASSWORD=${ADMIN_PASSWORD:-$DEFAULT_PASSWORD}
 export SERVICE_REGION=${SERVICE_REGION:-"RegionOne"}
+export DEPLOY_OPENSTACK=${DEPLOY_OPENSTACK:-"yes"}
 export DEPLOY_SWIFT=${DEPLOY_SWIFT:-"yes"}
 export DEPLOY_CEILOMETER=${DEPLOY_CEILOMETER:-"yes"}
 export GET_PIP_URL=${GET_PIP_URL:-"https://bootstrap.pypa.io/get-pip.py"}
@@ -32,7 +33,7 @@ export NOVA_VIRT_TYPE=${NOVA_VIRT_TYPE:-"qemu"}
 export TEMPEST_FLAT_CIDR=${TEMPEST_FLAT_CIDR:-"172.29.248.0/22"}
 export FLUSH_IPTABLES=${FLUSH_IPTABLES:-"yes"}
 export RABBITMQ_PACKAGE_URL=${RABBITMQ_PACKAGE_URL:-""}
-export MONGO_HOST=172.29.236.100
+export MONGO_HOST=${MONGO_HOST:-"172.29.236.100"}
 
 # Default disabled fatal deprecation warnings
 export CINDER_FATAL_DEPRECATIONS=${CINDER_FATAL_DEPRECATIONS:-"no"}
@@ -196,20 +197,22 @@ if [ ! "$(swapon -s | grep -v Filename)" ]; then
   swapon -a
 fi
 
-# Build the loopback drive for cinder to use
-CINDER="cinder.img"
-if ! vgs cinder-volumes; then
-  loopback_create "/opt/${CINDER}" 1073741824000 thin rc
-  CINDER_DEVICE=$(losetup -a | awk -F: "/${CINDER}/ {print \$1}")
-  pvcreate ${CINDER_DEVICE}
-  pvscan
-  # Check for the volume group
+if [ "${DEPLOY_OPENSTACK}" == "yes" ]; then
+  # Build the loopback drive for cinder to use
+  CINDER="cinder.img"
   if ! vgs cinder-volumes; then
-    vgcreate cinder-volumes ${CINDER_DEVICE}
-  fi
-  # Ensure that the cinder loopback is enabled after reboot
-  if ! grep ${CINDER} /etc/rc.local && ! vgs cinder-volumes; then
-    sed -i "\$i losetup \$(losetup -f) /opt/${CINDER}" /etc/rc.local
+    loopback_create "/opt/${CINDER}" 1073741824000 thin rc
+    CINDER_DEVICE=$(losetup -a | awk -F: "/${CINDER}/ {print \$1}")
+    pvcreate ${CINDER_DEVICE}
+    pvscan
+    # Check for the volume group
+    if ! vgs cinder-volumes; then
+      vgcreate cinder-volumes ${CINDER_DEVICE}
+    fi
+    # Ensure that the cinder loopback is enabled after reboot
+    if ! grep ${CINDER} /etc/rc.local && ! vgs cinder-volumes; then
+      sed -i "\$i losetup \$(losetup -f) /opt/${CINDER}" /etc/rc.local
+    fi
   fi
 fi
 
@@ -267,6 +270,16 @@ if [ ! -d "/etc/openstack_deploy/conf.d" ];then
   mkdir -p "/etc/openstack_deploy/conf.d"
 fi
 
+# Add tempest settings for particular use-cases
+if [ ${DEPLOY_OPENSTACK} == "no" ]; then
+  for svc in cinder glance heat horizon neutron nova; do
+    echo "tempest_service_available_${svc}: False" | tee -a /etc/openstack_deploy/user_variables.yml
+  done
+fi
+if [ ${DEPLOY_SWIFT} == "no" ]; then
+  echo "tempest_service_available_swift: False" | tee -a /etc/openstack_deploy/user_variables.yml
+fi
+
 # Generate the passwords
 scripts/pw-token-gen.py --file /etc/openstack_deploy/user_secrets.yml
 
@@ -310,16 +323,18 @@ if [ ${DEPLOY_CEILOMETER} == "yes" ]; then
 
   # change the generated passwords for mongodb access
   sed -i "s/ceilometer_container_db_password:.*/ceilometer_container_db_password: ceilometer/" /etc/openstack_deploy/user_secrets.yml
-  # Change the ceilometer user variables necessary for deployment
-  sed -i "s/ceilometer_db_ip:.*/ceilometer_db_ip: \"\{\{ hostvars\['aio1'\]\['ansible_ssh_host'\] \}\}\"/" /etc/openstack_deploy/user_variables.yml
-  # Enable ceilometer for all other openstack services
+  # Change the Ceilometer user variables necessary for deployment
+  sed -i "s/ceilometer_db_ip:.*/ceilometer_db_ip: ${MONGO_HOST}/" /etc/openstack_deploy/user_variables.yml
+  # Enable Ceilometer for Swift
   if [ ${DEPLOY_SWIFT} == "yes" ]; then
     sed -i "s/swift_ceilometer_enabled:.*/swift_ceilometer_enabled: True/" /etc/openstack_deploy/user_variables.yml
   fi
-  sed -i "s/heat_ceilometer_enabled:.*/heat_ceilometer_enabled: True/" /etc/openstack_deploy/user_variables.yml
-  sed -i "s/cinder_ceilometer_enabled:.*/cinder_ceilometer_enabled: True/" /etc/openstack_deploy/user_variables.yml
-  sed -i "s/glance_ceilometer_enabled:.*/glance_ceilometer_enabled: True/" /etc/openstack_deploy/user_variables.yml
-  sed -i "s/nova_ceilometer_enabled:.*/nova_ceilometer_enabled: True/" /etc/openstack_deploy/user_variables.yml
+  # Enable Ceilometer for other OpenStack Services
+  if [ ${DEPLOY_OPENSTACK} == "yes" ]; then
+    for svc in cinder glance heat nova; do
+      sed -i "s/${svc}_ceilometer_enabled:.*/${svc}_ceilometer_enabled: True/" /etc/openstack_deploy/user_variables.yml
+    done
+  fi
 fi
 
 # Service region set
