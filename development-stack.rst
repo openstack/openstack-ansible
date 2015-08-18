@@ -8,43 +8,130 @@ OpenStack Ansible Deployment
 Building a development stack
 ----------------------------
 
-If you are wanting to build a development stack for testing or otherwise contributing to this repository you can do so using the
-``gate-check-commit.sh`` script in the scripts directory. To execute this script please do so from the ``os-ansible-deployment`` directory that was created when you cloned the repository.
+To deploy an *all-in-one* (AIO) environment for testing or contributing to
+this project, use the scripts in the ``scripts`` directory. You must run these
+scripts from the repository top-level directory. For example:
 
-Example AIO build process:
+.. code-block:: console
 
-.. code-block:: bash
+   $ git clone https://github.com/stackforge/os-ansible-deployment \
+     /opt/os-ansible-deployment
+   $ cd /opt/os-ansible-deployment
+   $ scripts/bootstrap-aio.sh
 
-  # Clone the source code
-  git clone https://github.com/stackforge/os-ansible-deployment /opt/os-ansible-deployment
+Requirements
+^^^^^^^^^^^^
 
-  # Change your directory
-  cd /opt/os-ansible-deployment
+* Quad-core processor capable of running KVM
+* 8 GB of RAM
+* 60 GB of storage
 
-  # Checkout your desired branch.
-  git checkout master
+  .. note::
 
-  # Run the script from the root directory of the cloned repository.
-  ./scripts/gate-check-commit.sh
+     By default, the deployment scripts use the file system on "/" for
+     containers. Optionally, the deployment scripts can use LVM for
+     containers. To use LVM, create the ``lvm`` volume group. Each
+     container uses a logical volume that requires **5 GB** of available
+     storage in the volume group.
 
-Alternatively, you can curl/wget the ``run-aio-build.sh`` script:
+If deploying on a Rackspace public cloud server, use the *general1-8* or
+larger flavor. Optionally, you can use the Orchestration template
+``osad-aio-heat-template.yml`` to launch a cloud server and deploy an AIO
+environment on it.
 
-.. code-block:: bash
+These requirements may seem excessive; however, the default AIO deployment
+builds a roughly 35-node environment that closely matches the reference
+architecture. For example, components such as RabbitMQ, MariaDB with Galera,
+source repository, and Identity service all use multiple containers to
+simulate clustering.
 
-  bash <(curl -s http://git.openstack.org/cgit/stackforge/os-ansible-deployment/plain/scripts/run-aio-build.sh)
+Finally, the AIO deployment uses HAProxy for testing purposes only. Please
+do not use this HAProxy configuration for production purposes because it
+does not provide any redundancy.
 
+.. note::
 
-To use these scripts successfully please make sure that you have the following:
-  * At least **60GB** of available storage on "/" when using local file system containers. Containers are built into ``/var/lib/lxc`` and will consume up-to 40GB on their own.
-    * If you would like to test building containers using LVM simply create an **lxc** volume group before executing the script. Be aware that each container will be built with a minimum of 5GB of storage.
-  * 2.4GHZ quad-core processor with that is KVM capable is required.
-  * You must have at least 4GB of available ram.
+   Never deploy an AIO environment on a host that you cannot risk breaking
+   or destroying.
 
-This may seem like you need a lot to run the stack, which is partially true, however consider that this simple "All in One" deployment builds a "35" node infrastructure and mimics our reference architecture. Additionally, components like Rabbitmq, MariaDB with Galera, Repository servers, and Keystone will all be clustered. Lastly the "All in One" deployment uses HAProxy for test purposes only. **At this time we do not recommend running HAProxy in production**. At this time you should **NEVER** use the AIO script on a box that you care about. Cloud servers such as Rackspace Cloud server of the flavor *general1-8* variety work really well as development machines, as does Virtual Box of KVM instances.
+Procedure
+^^^^^^^^^
 
-Using Heat:
-  If you would like to use heat to deploy an All in one node there is a heat script which you can use. Simply get and or source the raw script as found here: "https://raw.githubusercontent.com/stackforge/os-ansible-deployment/master/scripts/osad-aio-heat-template.yml"
+To deploy an AIO environment, complete these steps:
 
+#. Clone the repository:
+
+   .. code-block:: console
+
+      $ git clone https://github.com/stackforge/os-ansible-deployment \
+        /opt/os-ansible-deployment
+
+#. Change to the repository top-level directory:
+
+   .. code-block:: console
+
+      $ cd /opt/os-ansible-deployment
+
+#. By default, the repository uses the *master* branch. Optionally, you can
+   check out a different branch. For example, to check out the Kilo branch:
+
+   .. code-block:: console
+
+      $ git checkout kilo
+
+#. By default, the scripts deploy all OpenStack services. Optionally, you can
+   disable one or more services using environment variables. See the
+   ``DEPLOY_*`` variables in the ``run-playbooks.sh`` script for details. For
+   example, to disable the Telemetry service:
+
+   .. code-block:: console
+
+      $ export DEPLOY_CEILOMETER="no"
+
+   .. note::
+
+      The scripts still build containers for any service that you disable, but
+      do not deploy the service.
+
+#. Prepare the host:
+
+   .. code-block:: console
+
+      $ scripts/bootstrap-aio.sh
+
+   .. note::
+
+      This script configures the host operating system and supplies values for
+      mandatory options in configuration files in the
+      ``/etc/openstack_deploy`` directory.
+
+#. Install the necessary Ansible components:
+
+   .. code-block:: console
+
+      $ scripts/bootstrap-ansible.sh
+
+   .. note::
+
+      Only run this script once.
+
+#. Run the Ansible playbooks to deploy the environment:
+
+   .. code-block:: console
+
+      $ scripts/run-playbooks.sh
+
+   .. note::
+
+      You can run this script multiple times.
+
+   Optionally, you can run individual playbooks. For example, to deploy the
+   Identity service:
+
+   .. code-block:: console
+
+      $ cd /opt/os-ansible-deployment/playbooks
+      $ openstack-ansible os-keystone-install.yml
 
 Rebuilding the stack
 ^^^^^^^^^^^^^^^^^^^^
@@ -74,6 +161,7 @@ Example:
 Using the teardown script:
   The ``teardown.sh`` script that will destroy everything known within an environment. You should be aware that this script will destroy whole environments and should be used **WITH CAUTION**.
 
+This script will destroy all of your running containers and remove items within the ``/openstack`` directory for the container. After the completion of this play you can rerun the ``run-playbooks.sh`` or you can run the plays manually to rebuild the stack.
 
 Notice
 ^^^^^^
@@ -83,9 +171,6 @@ The system uses a number of variables. You should look a the scripts for a full 
 .. code-block:: bash
 
     export PUBLIC_INTERFACE="<<REPLACE WITH THE NAME OF THE INTERFACE>>" # This is only required if you dont have eth0
-
-
-This play will destroy all of your running containers and remove items within the ``/openstack`` directory for the container. After the completion of this play you can rerun the ``cloudserver-aio.sh`` or you can run the plays manually to rebuild the stack.
 
 
 Diagram of stack
@@ -103,47 +188,49 @@ Diagram::
               V                        [  *   ] Socket Connections
     [ HOST MACHINE ]                   [ <>v^ ] Network Connections
       *       ^  *
-      |       |  |-----------------------------------------------------
-      |       |                                                       |
-      |       |---------------->[ HAProxy ]                           |
-      |                                 ^                             |
-      |                                 |                             |
-      |                                 V                             |
-      |                          (BR-Interfaces)<-----                |
-      |                                ^     *      |                 |
-      *-[ LXC ]*--*--------------------|-----|------|----|            |
-      |           |                    |     |      |  | |            |
-      |           |                    |     |      |  | |            |
-      |           |                    |     |      |  | |            |
-      |           |                    |     |      V  * |            |
-      |           *                    |     |   [ Galera x3 ]        |
-      |        [ Memcached ]<----------|     |           |            |
-      *-------*[ Rsyslog ]<------------|--|  |           *            |
-      |        [ Repos Server x3 ]<----|  ---|-->[ RabbitMQ x3 ]      |
-      |        [ Horizon ]<------------|  |  |                        |
-      |        [ Nova api ec2 ]<-------|--|  |                        |
-      |        [ Nova api os ]<--------|->|  |                        |
-      |        [ Nova spice console ]<-|  |  |                        |
-      |        [ Nova Cert ]<----------|->|  |                        |
-      |        [ Cinder api ]<---------|->|  |                        |
-      |        [ Glance api ]<---------|->|  |                        |
-      |        [ Heat apis ]<----------|->|  | [ Loop back devices ]*-*
-      |        [ Heat engine ]<--------|->|  |    \        \          |
-      | ------>[ Nova api metadata ]   |  |  |    { LVM }  { XFS x3 } |
-      | |      [ Nova conductor ]<-----|  |  |       *         *      |
-      | |----->[ Nova scheduler ]------|->|  |       |         |      |
-      | |      [ Keystone x3 ]<--------|->|  |       |         |      |
-      | | |--->[ Neutron agents ]*-----|--|---------------------------*
-      | | |    [ Neutron server ]<-----|->|          |         |      |
-      | | | |->[ Swift proxy ]<---------  |          |         |      |
-      *-|-|-|-*[ Cinder volume ]*--------------------*         |      |
-      | | | |                             |                    |      |
-      | | | ---------------------------------------            |      |
-      | | --------------------------------------- |            |      |
-      | |          -----------------------|     | |            |      |
-      | |          |                            | |            |      |
-      | |          V                            | |            *      |
-      ---->[ Compute ]*[ Neutron linuxbridge ]<-| |->[ Swift storage ]-
+      |       |  |-------------------------------------------------------
+      |       |                                                         |
+      |       |---------------->[ HAProxy ]                             |
+      |                                 ^                               |
+      |                                 |                               |
+      |                                 V                               |
+      |                          (BR-Interfaces)<-------                |
+      |                                  ^     *      |                 |
+      *-[ LXC ]*--*----------------------|-----|------|----|            |
+      |           |                      |     |      |  | |            |
+      |           |                      |     |      |  | |            |
+      |           |                      |     |      |  | |            |
+      |           |                      |     |      V  * |            |
+      |           *                      |     |   [ Galera x3 ]        |
+      |        [ Memcached ]<------------|     |           |            |
+      *-------*[ Rsyslog ]<--------------|--|  |           *            |
+      |        [ Repos Server x3 ]<------|  ---|-->[ RabbitMQ x3 ]      |
+      |        [ Horizon x2 ]<-----------|  |  |                        |
+      |        [ Nova api ec2 ]<---------|--|  |                        |
+      |        [ Nova api os ]<----------|->|  |                        |
+      |        [ Nova console ]<---------|  |  |                        |
+      |        [ Nova Cert ]<------------|->|  |                        |
+      |        [ Ceilometer api ]<-------|->|  |                        |
+      |        [ Ceilometer collector ]<-|->|  |                        |
+      |        [ Cinder api ]<-----------|->|  |                        |
+      |        [ Glance api ]<-----------|->|  |                        |
+      |        [ Heat apis ]<------------|->|  | [ Loop back devices ]*-*
+      |        [ Heat engine ]<----------|->|  |    \        \          |
+      | ------>[ Nova api metadata ]     |  |  |    { LVM }  { XFS x3 } |
+      | |      [ Nova conductor ]<-------|  |  |       *         *      |
+      | |----->[ Nova scheduler ]--------|->|  |       |         |      |
+      | |      [ Keystone x3 ]<----------|->|  |       |         |      |
+      | | |--->[ Neutron agents ]*-------|--|---------------------------*
+      | | |    [ Neutron server ]<-------|->|          |         |      |
+      | | | |->[ Swift proxy ]<-----------  |          |         |      |
+      *-|-|-|-*[ Cinder volume ]*----------------------*         |      |
+      | | | |                               |                    |      |
+      | | | -----------------------------------------            |      |
+      | | ----------------------------------------- |            |      |
+      | |          -------------------------|     | |            |      |
+      | |          |                              | |            |      |
+      | |          V                              | |            *      |
+      ---->[ Compute ]*[ Neutron linuxbridge ]<---| |->[ Swift storage ]-
 
 
     ====== ASCII Diagram for AIO infrastructure ======
