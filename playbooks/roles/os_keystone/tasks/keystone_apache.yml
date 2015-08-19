@@ -57,6 +57,26 @@
   tags:
     - keystone-httpd
 
+- name: Ensure Apache ServerTokens
+  lineinfile:
+    dest: "/etc/apache2/conf-available/security.conf"
+    regexp: '^ServerTokens'
+    line: "ServerTokens {{ keystone_apache_servertokens }}"
+  notify:
+    - Restart Apache
+  tags:
+    - keystone-httpd
+
+- name: Ensure Apache ServerSignature
+  lineinfile:
+    dest: "/etc/apache2/conf-available/security.conf"
+    regexp: '^ServerSignature'
+    line: "ServerSignature {{ keystone_apache_serversignature }}"
+  notify:
+    - Restart Apache
+  tags:
+    - keystone-httpd
+
 - name: Enable/disable mod_ssl for apache2
   apache2_module:
     name: ssl
