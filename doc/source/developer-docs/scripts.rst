@@ -1,5 +1,5 @@
-OpenStack Ansible Deployment Scripts
-====================================
+Included Scripts
+================
 
 The repository contains several helper scripts to manage gate jobs,
 install base requirements, and update repository information. Invoke
