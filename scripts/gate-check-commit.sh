@@ -83,6 +83,14 @@ fi
 # Enable debug logging for all services to make failure debugging easier
 echo "debug: True" | tee -a /etc/openstack_deploy/user_variables.yml
 
+# NOTE: hpcloud-b4's eth0 uses 10.0.3.0/24, which overlaps with the
+#       lxc_net_address default
+# TODO: We'll need to implement a mechanism to determine valid lxc_net_address
+#       value which will not overlap with an IP already assigned to the host.
+echo "lxc_net_address: 10.255.255.1" | tee -a /etc/openstack_deploy/user_variables.yml
+echo "lxc_net_netmask: 255.255.255.0" | tee -a /etc/openstack_deploy/user_variables.yml
+echo "lxc_net_dhcp_range: 10.255.255.2,10.255.255.253" | tee -a /etc/openstack_deploy/user_variables.yml
+
 # Disable the python output buffering so that jenkins gets the output properly
 export PYTHONUNBUFFERED=1
 
