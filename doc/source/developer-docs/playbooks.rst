@@ -1,5 +1,5 @@
-os-ansible-deployment Playbooks
-===============================
+Playbooks
+=========
 
 The OpenStack Ansible playbooks are stored in the playbooks directory.
 
