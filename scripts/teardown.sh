@@ -254,9 +254,13 @@ EOF
   if [ "${ANSIBLE_DESTROY_HOSTS}" == "localhost" ];then
     echo -e '[all]\nlocalhost ansible_connection=local' | tee /tmp/localhost
     openstack-ansible -i /tmp/localhost /tmp/destroy_play.yml --forks ${FORKS} || true
+    # Since this is an AIO, just remove it from the local hosts file
+    sed -i '/_container-/d' /etc/hosts
   else
     openstack-ansible lxc-containers-destroy.yml --forks ${FORKS} || true
     openstack-ansible /tmp/destroy_play.yml --forks ${FORKS} || true
+    # Remove containers from /etc/hosts on physical hosts
+    ansible hosts -m shell -a "sed -i '/_container-/d' /etc/hosts"
   fi
 popd
 
