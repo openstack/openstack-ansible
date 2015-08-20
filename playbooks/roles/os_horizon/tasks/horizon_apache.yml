@@ -63,3 +63,21 @@
   notify: Restart apache2
   tags:
     - horizon-apache-config
+
+- name: Ensure Apache ServerTokens
+  lineinfile:
+    dest: "/etc/apache2/conf-available/security.conf"
+    regexp: '^ServerTokens'
+    line: "ServerTokens {{ horizon_apache_servertokens }}"
+  notify: Restart apache2
+  tags:
+    - horizon-apache-config
+
+- name: Ensure Apache ServerSignature
+  lineinfile:
+    dest: "/etc/apache2/conf-available/security.conf"
+    regexp: '^ServerSignature'
+    line: "ServerSignature {{ horizon_apache_serversignature }}"
+  notify: Restart apache2
+  tags:
+    - horizon-apache-config
