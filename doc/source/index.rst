@@ -17,10 +17,8 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
-   playbooks
    install-guide/index
-   extending
-   scripts
+   developer-docs/index
 
 
 Indices and tables
