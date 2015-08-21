@@ -57,6 +57,8 @@ horizon_time_zone: UTC
 horizon_enforce_password_check: False
 horizon_disable_password_reveal: False
 horizon_enable_password_retrieve: False
+# If nova_libvirt_inject_password is set to True, then this can also be enabled:
+horizon_can_set_password: False
 
 ## Horizon SSL
 horizon_ssl_cert: /etc/ssl/certs/horizon.pem

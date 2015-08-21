@@ -234,7 +234,9 @@ rabbit_hosts = {{ rabbitmq_servers }}
 
 [libvirt]
 vif_driver = {{ nova_libvirt_vif_driver }}
-inject_partition = -2
+inject_partition = {{ nova_libvirt_inject_partition }}
+inject_password = {{ nova_libvirt_inject_password }}
+inject_key = {{ nova_libvirt_inject_key }}
 use_usb_tablet = False
 use_virtio_for_bridges = True
 cpu_mode = {{ nova_cpu_mode }}
@@ -250,9 +252,6 @@ rbd_secret_uuid = {{ nova_ceph_client_uuid }}
 images_type = rbd
 images_rbd_pool = {{ nova_libvirt_images_rbd_pool }}
 images_rbd_ceph_conf = /etc/ceph/ceph.conf
-inject_password = false
-inject_key = false
-inject_partition = -2
 live_migration_flag="VIR_MIGRATE_UNDEFINE_SOURCE,VIR_MIGRATE_PEER2PEER,VIR_MIGRATE_LIVE,VIR_MIGRATE_PERSIST_DEST"
 {% endif %}
 
