@@ -83,17 +83,17 @@ EXCLUDE_RELEASES="${EXCLUDE_RELEASES:-v9.0.0 gh-pages revert}"
 # Name of the lock file.
 LOCKFILE="/tmp/wheel_builder.lock"
 
-function my_trap_handler() {
+function my_trap_handler {
     kill_job
 }
 
-function lock_file_remove() {
+function lock_file_remove {
     if [ -f "${LOCKFILE}" ]; then
         rm "${LOCKFILE}"
     fi
 }
 
-function kill_job() {
+function kill_job {
     set +e
     # If the job needs killing kill the pid and unlock the file.
     if [ -f "${LOCKFILE}" ]; then
@@ -103,7 +103,7 @@ function kill_job() {
     fi
 }
 
-function cleanup() {
+function cleanup {
     # Ensure workspaces are cleaned up
     rm -rf /tmp/openstack_wheels*
     rm -rf /tmp/pip*
