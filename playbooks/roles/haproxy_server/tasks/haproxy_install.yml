@@ -24,7 +24,7 @@
   tags:
     - haproxy-apt-packages
 
-- name: Install HAPRoxy Packages
+- name: Install HAProxy Packages
   apt:
     pkg: "{{ item }}"
     state: latest
