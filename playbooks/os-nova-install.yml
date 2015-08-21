@@ -91,6 +91,11 @@
         - nova-logs
   roles:
     - { role: "os_nova", tags: [ "os-nova" ] }
+    - role: "ceph_client"
+      openstack_service_system_user: "{{ nova_system_user_name }}"
+      tags:
+        - "nova-ceph-client"
+        - "ceph-client"
     - { role: "openstack_openrc", tags: [ "openstack-openrc" ] }
     - role: "rsyslog_client"
       rsyslog_client_log_dir: "/var/log/nova"

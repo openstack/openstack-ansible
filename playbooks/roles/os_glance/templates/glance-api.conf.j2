@@ -48,6 +48,9 @@ scrub_time = 43200
 scrubber_datadir = {{ glance_system_user_home }}/scrubber/
 image_cache_dir = {{ glance_system_user_home }}/cache/
 
+# defaults to true if RBD is used as default store
+show_image_direct_url = {{ glance_show_image_direct_url }}
+
 [task]
 task_executor = {{ glance_task_executor }}
 
@@ -104,6 +107,12 @@ swift_store_large_object_size = {{ glance_swift_store_large_object_size }}
 swift_store_large_object_chunk_size = {{ glance_swift_store_large_object_chunk_size }}
 swift_store_retry_get_count = 5
 swift_store_endpoint_type = {{ glance_swift_store_endpoint_type }}
+{% elif glance_default_store == "rbd" %}
+stores = glance.store.rbd.Store,glance.store.http.Store,glance.store.cinder.Store
+rbd_store_pool = {{ glance_rbd_store_pool }}
+rbd_store_user = {{ glance_rbd_store_user }}
+rbd_store_ceph_conf = /etc/ceph/ceph.conf
+rbd_store_chunk_size = {{ glance_rbd_store_chunk_size }}
 {% endif %}
 
 [profiler]

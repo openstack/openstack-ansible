@@ -615,6 +615,30 @@
 #           netapp_login: username
 #           netapp_password: password
 #
+#
+# Example:
+#
+# Use the ceph RBD backend in availability zone 'cinderAZ_3':
+#
+#     container_vars:
+#       cinder_storage_availability_zone: cinderAZ_3
+#       cinder_default_availability_zone: cinderAZ_1
+#       cinder_backends:
+#         limit_container_types: cinder_volume
+#         volumes_hdd:
+#           volume_driver: cinder.volume.drivers.rbd.RBDDriver
+#           rbd_pool: volumes_hdd
+#           rbd_ceph_conf: /etc/ceph/ceph.conf
+#           rbd_flatten_volume_from_snapshot: 'false'
+#           rbd_max_clone_depth: 5
+#           rbd_store_chunk_size: 4
+#           rados_connect_timeout: -1
+#           glance_api_version: 2
+#           volume_backend_name: volumes_hdd
+#           rbd_user: "{{ cinder_ceph_client }}"
+#           rbd_secret_uuid: "{{ cinder_ceph_client_uuid }}"
+#
+#
 # --------
 #
 # Level: log_hosts (required)

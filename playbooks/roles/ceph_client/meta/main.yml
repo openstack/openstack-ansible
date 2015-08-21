@@ -1,0 +1,6 @@
+---
+dependencies:
+- role: apt_package_pinning
+  apt_pinned_packages: "{{ ceph_apt_pinned_packages }}"
+  tags:
+  - ceph-pre-preinstall
