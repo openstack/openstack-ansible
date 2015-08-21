@@ -35,11 +35,11 @@ do
     case $key in
         -d|--domain)
             DOMAIN="$2"
-    	    shift
-    	    ;;
-    	-p|--project)
-    	    PROJECT="$2"
-    	    shift
+            shift
+            ;;
+        -p|--project)
+            PROJECT="$2"
+            shift
             ;;
         -h|--help)
             usage

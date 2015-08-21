@@ -44,11 +44,11 @@ export HOME=/etc/mysql/
 #
 # Usage: void mysqld_get_param option
 mysqld_get_param() {
-	/usr/sbin/mysqld --print-defaults \
-		| tr " " "\n" \
-		| grep -- "--$1" \
-		| tail -n 1 \
-		| cut -d= -f2
+    /usr/sbin/mysqld --print-defaults \
+        | tr " " "\n" \
+        | grep -- "--$1" \
+        | tail -n 1 \
+        | cut -d= -f2
 }
 
 ## Do some sanity checks before even trying to start mysqld.
@@ -83,12 +83,12 @@ mysqld_status () {
 
     if [ "$1" = "check_alive"  -a  $ping_alive = 1 ] ||
        [ "$1" = "check_dead"   -a  $ping_alive = 0  -a  $ps_alive = 0 ]; then
-	return 0 # EXIT_SUCCESS
+      return 0 # EXIT_SUCCESS
     else
-  	if [ "$2" = "warn" ]; then
-  	    echo -e "$ps_alive processes alive and '$MYADMIN ping' resulted in\n$ping_output\n" | $ERR_LOGGER -p daemon.debug
-	fi
-  	return 1 # EXIT_FAILURE
+      if [ "$2" = "warn" ]; then
+        echo -e "$ps_alive processes alive and '$MYADMIN ping' resulted in\n$ping_output\n" | $ERR_LOGGER -p daemon.debug
+      fi
+      return 1 # EXIT_FAILURE
     fi
 }
 
@@ -98,93 +98,93 @@ mysqld_status () {
 
 case "${1:-''}" in
   'start')
-	sanity_checks;
-	# Start daemon
-	log_daemon_msg "Starting MariaDB database server" "mysqld"
-	if mysqld_status check_alive nowarn; then
-	   log_progress_msg "already running"
-	   log_end_msg 0
-	else
-	    # Could be removed during boot
-	    test -e /var/run/mysqld || install -m 755 -o mysql -g root -d /var/run/mysqld
+    sanity_checks;
+    # Start daemon
+    log_daemon_msg "Starting MariaDB database server" "mysqld"
+    if mysqld_status check_alive nowarn; then
+       log_progress_msg "already running"
+       log_end_msg 0
+    else
+        # Could be removed during boot
+        test -e /var/run/mysqld || install -m 755 -o mysql -g root -d /var/run/mysqld
 
-	    # Start MariaDB! 
-  	    /usr/bin/mysqld_safe "${@:2}" > /dev/null 2>&1 &
+        # Start MariaDB! 
+        /usr/bin/mysqld_safe "${@:2}" > /dev/null 2>&1 &
 
-	    # 6s was reported in #352070 to be too few when using ndbcluster
-	    for i in $(seq 1 "${MYSQLD_STARTUP_TIMEOUT:-30}"); do
-                sleep 1
-	        if mysqld_status check_alive nowarn ; then break; fi
-		log_progress_msg "."
-	    done
-	    if mysqld_status check_alive warn; then
-                log_end_msg 0
-	        # Now start mysqlcheck or whatever the admin wants.
-	        output=$(/etc/mysql/debian-start)
-		[ -n "$output" ] && log_action_msg "$output"
-	    else
-	        log_end_msg 1
-		log_failure_msg "Please take a look at the syslog"
-	    fi
-	fi
-	;;
+        # 6s was reported in #352070 to be too few when using ndbcluster
+        for i in $(seq 1 "${MYSQLD_STARTUP_TIMEOUT:-30}"); do
+            sleep 1
+            if mysqld_status check_alive nowarn ; then break; fi
+            log_progress_msg "."
+        done
+        if mysqld_status check_alive warn; then
+            log_end_msg 0
+            # Now start mysqlcheck or whatever the admin wants.
+            output=$(/etc/mysql/debian-start)
+            [ -n "$output" ] && log_action_msg "$output"
+        else
+            log_end_msg 1
+            log_failure_msg "Please take a look at the syslog"
+        fi
+    fi
+    ;;
 
   'stop')
-	# * As a passwordless mysqladmin (e.g. via ~/.my.cnf) must be possible
-	# at least for cron, we can rely on it here, too. (although we have 
-	# to specify it explicit as e.g. sudo environments points to the normal
-	# users home and not /root)
-	log_daemon_msg "Stopping MariaDB database server" "mysqld"
-	if ! mysqld_status check_dead nowarn; then
-	  set +e
-	  shutdown_out=`$MYADMIN shutdown 2>&1`; r=$?
-	  set -e
-	  if [ "$r" -ne 0 ]; then
-	    log_end_msg 1
-	    [ "$VERBOSE" != "no" ] && log_failure_msg "Error: $shutdown_out"
-	    log_daemon_msg "Killing MariaDB database server by signal" "mysqld"
-	    killall -15 mysqld
-            server_down=
-	    for i in `seq 1 600`; do
-              sleep 1
-              if mysqld_status check_dead nowarn; then server_down=1; break; fi
-            done
-          if test -z "$server_down"; then killall -9 mysqld; fi
-	  fi
-        fi
+    # * As a passwordless mysqladmin (e.g. via ~/.my.cnf) must be possible
+    # at least for cron, we can rely on it here, too. (although we have 
+    # to specify it explicit as e.g. sudo environments points to the normal
+    # users home and not /root)
+    log_daemon_msg "Stopping MariaDB database server" "mysqld"
+    if ! mysqld_status check_dead nowarn; then
+      set +e
+      shutdown_out=`$MYADMIN shutdown 2>&1`; r=$?
+      set -e
+      if [ "$r" -ne 0 ]; then
+        log_end_msg 1
+        [ "$VERBOSE" != "no" ] && log_failure_msg "Error: $shutdown_out"
+        log_daemon_msg "Killing MariaDB database server by signal" "mysqld"
+        killall -15 mysqld
+        server_down=
+        for i in `seq 1 600`; do
+          sleep 1
+          if mysqld_status check_dead nowarn; then server_down=1; break; fi
+        done
+        if test -z "$server_down"; then killall -9 mysqld; fi
+      fi
+    fi
 
-        if ! mysqld_status check_dead warn; then
-	  log_end_msg 1
-	  log_failure_msg "Please stop MariaDB manually and read /usr/share/doc/mariadb-server-5.5/README.Debian.gz!"
-	  exit -1
-	else
-	  log_end_msg 0
-        fi
-	;;
+    if ! mysqld_status check_dead warn; then
+      log_end_msg 1
+      log_failure_msg "Please stop MariaDB manually and read /usr/share/doc/mariadb-server-5.5/README.Debian.gz!"
+      exit -1
+    else
+      log_end_msg 0
+    fi
+    ;;
 
   'restart')
-	set +e; $SELF stop; set -e
-	$SELF start
-	;;
+    set +e; $SELF stop; set -e
+    $SELF start
+    ;;
 
   'reload'|'force-reload')
-  	log_daemon_msg "Reloading MariaDB database server" "mysqld"
-	$MYADMIN reload
-	log_end_msg 0
-	;;
+    log_daemon_msg "Reloading MariaDB database server" "mysqld"
+    $MYADMIN reload
+    log_end_msg 0
+    ;;
 
   'status')
-	if mysqld_status check_alive nowarn; then
-	  log_action_msg "$($MYADMIN version)"
-	else
-	  log_action_msg "MariaDB is stopped."
-	  exit 3
-	fi
-  	;;
+    if mysqld_status check_alive nowarn; then
+      log_action_msg "$($MYADMIN version)"
+    else
+      log_action_msg "MariaDB is stopped."
+      exit 3
+    fi
+    ;;
 
   *)
-	echo "Usage: $SELF start|stop|restart|reload|force-reload|status"
-	exit 1
-	;;
+    echo "Usage: $SELF start|stop|restart|reload|force-reload|status"
+    exit 1
+    ;;
 esac
 
