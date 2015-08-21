@@ -66,7 +66,7 @@ keystone_git_dest: "/opt/keystone_{{ keystone_git_install_branch | replace('/', 
 
 ## Neutron service
 neutron_git_repo: https://git.openstack.org/openstack/neutron
-neutron_git_install_branch: 5c477abcb97fda88aa00d6d5cf17fc1a6ac9796a # HEAD of "master" as of 15.08.2015
+neutron_git_install_branch: 72f9f09398802f2187c8cffd777b4de2ae71de77 # HEAD of "master" as of 01.09.2015
 neutron_git_dest: "/opt/neutron_{{ neutron_git_install_branch | replace('/', '_') }}"
 
 neutron_lbaas_git_repo: https://git.openstack.org/openstack/neutron-lbaas

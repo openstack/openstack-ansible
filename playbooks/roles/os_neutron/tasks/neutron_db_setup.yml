@@ -39,66 +39,73 @@
   tags:
     - neutron-db-setup
 
-- name: Inspect on disk neutron DB revision
-  command: >
-    cat {{ neutron_system_home_folder }}/neutron-revision
-  failed_when: false
-  changed_when: neutron_revision_on_disk.rc != 0
-  register: neutron_revision_on_disk
-  tags:
-    - neutron-db-setup
-    - neutron-upgrade
-    - neutron-stamp
-
-- name: Check last DB revision
+- name: Check for existing migrations
   shell: |
-    neutron-db-manage history | head -1 | tee {{ neutron_system_home_folder }}/neutron-revision
-  register: neutron_revision
+    neutron-db-manage --config-file {{ neutron_db_config }} --config-file {{ neutron_db_plugin }} current | egrep "^[0-9a-z]{12}"
   sudo: yes
   sudo_user: "{{ neutron_system_user_name }}"
-  delegate_to: "{{ item }}"
-  with_items: groups['neutron_all']
+  failed_when: false
+  register: neutron_migrations_previously_run
   tags:
     - neutron-db-setup
     - neutron-upgrade
-    - neutron-stamp
 
-- name: Stop neutron server
-  service:
-    name: "neutron-server"
-    state: stopped
-    pattern: "neutron-server"
-  ignore_errors: true
-  when: neutron_revision.results.0.stdout != neutron_revision_on_disk.stdout
-  tags:
-    - neutron-db-setup
-    - neutron-stamp
-
-- name: Perform a Neutron DB Upgrade
+- name: Perform an initial Neutron DB sync
   command: |
     neutron-db-manage --config-file {{ neutron_db_config }}
                       --config-file {{ neutron_db_plugin }}
                       upgrade {{ neutron_db_revision }}
   sudo: yes
   sudo_user: "{{ neutron_system_user_name }}"
-  when: >
-    neutron_revision.results.0.stdout != neutron_revision_on_disk.stdout
-  notify: Restart neutron services
+  when: neutron_migrations_previously_run.rc == 1
   tags:
     - neutron-db-setup
     - neutron-upgrade
-    - neutron-stamp
 
-- name: Perform a Neutron DB Stamp
+- name: Perform a Neutron DB online upgrade (expand)
   command: |
     neutron-db-manage --config-file {{ neutron_db_config }}
                       --config-file {{ neutron_db_plugin }}
-                      stamp {{ neutron_db_revision }}
-  when: neutron_revision.results.0.stdout != neutron_revision_on_disk.stdout
+                      upgrade --expand
   sudo: yes
   sudo_user: "{{ neutron_system_user_name }}"
-  notify: Restart neutron services
+  when: neutron_migrations_previously_run.rc == 0
   tags:
     - neutron-db-setup
     - neutron-upgrade
-    - neutron-stamp
+
+- name: Stop Neutron server
+  service:
+    name: "neutron-server"
+    state: stopped
+    pattern: "neutron-server"
+  delegate_to: "{{ item }}"
+  with_items: groups['neutron_server']
+  when: neutron_migrations_previously_run.rc == 0
+  tags:
+    - neutron-db-setup
+    - neutron-upgrade
+
+- name: Perform a Neutron DB offline upgrade (contract)
+  command: |
+    neutron-db-manage --config-file {{ neutron_db_config }}
+                      --config-file {{ neutron_db_plugin }}
+                      upgrade --contract
+  sudo: yes
+  sudo_user: "{{ neutron_system_user_name }}"
+  when: neutron_migrations_previously_run.rc == 0
+  tags:
+    - neutron-db-setup
+    - neutron-upgrade
+
+- name: Start neutron server
+  service:
+    name: "neutron-server"
+    state: started
+    pattern: "neutron-server"
+  delegate_to: "{{ item }}"
+  with_items: groups['neutron_server']
+  when: neutron_migrations_previously_run.rc == 0
+  tags:
+    - neutron-db-setup
+    - neutron-upgrade
