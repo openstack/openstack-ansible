@@ -276,8 +276,7 @@ sed -i "s/external_lb_vip_address:.*/external_lb_vip_address: ${PUBLIC_ADDRESS}/
 
 # Change affinities (number of containers per host) if the appropriate
 # environment variables are set.
-for container_type in keystone galera rabbit_mq horizon repo
-do
+for container_type in keystone galera rabbit_mq horizon repo; do
   var_name="NUM_${container_type}_CONTAINER"
   set +u
   num=${!var_name}
@@ -296,8 +295,7 @@ if [ ${DEPLOY_CEILOMETER} == "yes" ]; then
   service mongodb restart
 
   # Wait for mongodb to restart
-  for i in {1..12}
-  do
+  for i in {1..12}; do
     mongo --host $MONGO_HOST --eval ' ' && break
     sleep 5
   done
