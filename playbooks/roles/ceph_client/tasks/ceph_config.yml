@@ -24,8 +24,7 @@
     - ceph-config-create-dir
 
 - name: Get ceph.conf and store contents when ceph_conf_file is not defined
-  command: |
-    cat /etc/ceph/ceph.conf
+  slurp: src=/etc/ceph/ceph.conf
   register: ceph_conf_content_mon
   delegate_to: '{{ ceph_mon_host }}'
   changed_when: false
@@ -35,7 +34,7 @@
 
 - name: Register ceph_conf fact when ceph_conf_file is not defined
   set_fact:
-     ceph_conf: "{{ ceph_conf_content_mon.stdout }}"
+     ceph_conf: "{{ ceph_conf_content_mon.content | b64decode }}"
   when: ceph_conf_file is not defined
   tags:
     - ceph-config-get-config
