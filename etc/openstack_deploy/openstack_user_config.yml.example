@@ -172,8 +172,9 @@
 #
 #       Option: range (optional, string)
 #       For 'vxlan' type neutron networks, range of VXLAN network identifiers
-#       (VNI). For 'vlan' type neutron networks, range of VLAN tags. Coincides
-#       with ML2 plug-in configuration options.
+#       (VNI). For 'vlan' type neutron networks, range of VLAN tags. Supports
+#       more than one range of VLANs on a particular network. Coincides with
+#       ML2 plug-in configuration options.
 #
 #   Example:
 #
@@ -192,9 +193,9 @@
 #     'eth10' device in containers. Applies to all neutron agent containers
 #     and neutron agents on bare metal hosts.
 #   - Network of type 'vlan' that contains neutron VLAN networks 101 to 200
-#     and uses the 'br-vlan' bridge on target hosts. Maps to the 'eth11' device
-#     in containers. Applies to all neutron agent containers and neutron agents
-#     on bare metal hosts.
+#     and 301 to 400 and uses the 'br-vlan' bridge on target hosts. Maps to
+#     the 'eth11' device in containers. Applies to all neutron agent
+#     containers and neutron agents on bare metal hosts.
 #   - Network of type 'flat' that contains one neutron flat network and uses
 #     the 'br-vlan' bridge on target hosts. Maps to the 'eth12' device in
 #     containers. Applies to all neutron agent containers and neutron agents
@@ -249,7 +250,7 @@
 #         container_type: "veth"
 #         container_interface: "eth11"
 #         type: "vlan"
-#         range: "101:200"
+#         range: "101:200,301:400"
 #         net_name: "vlan"
 #     - network:
 #         group_binds:

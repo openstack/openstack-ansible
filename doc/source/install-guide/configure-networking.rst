@@ -93,7 +93,25 @@ configure target host networking.
    Replace *``TUNNEL_BRIDGE``* with the tunnel/overlay bridge device
    name, typically ``br-vxlan``.
 
-#. Configure optional networks in the ``provider_networks`` subsection:
+#. Configure the management network in the ``provider_networks`` subsection:
+
+   .. code-block:: yaml
+
+         provider_networks:
+           - network:
+               group_binds:
+                 - all_containers
+                 - hosts
+               type: "raw"
+               container_bridge: "br-mgmt"
+               container_interface: "eth1"
+               container_type: "veth"
+               ip_from_q: "management"
+               is_container_address: true
+               is_ssh_address: true
+
+#. Configure optional networks in the ``provider_networks`` subsection. For
+   example, a storage network:
 
    .. code-block:: yaml
 
@@ -106,6 +124,7 @@ configure target host networking.
                  - nova_compute
                type: "raw"
                container_bridge: "br-storage"
+               container_type: "veth"
                container_interface: "eth2"
                ip_from_q: "storage"
 
@@ -113,7 +132,7 @@ configure target host networking.
    networks. To remove one or both of them, comment out the entire
    associated stanza beginning with the *- network:* line.
 
-#. Configure OpenStack Networking tunnel/overlay network in the
+#. Configure OpenStack Networking VXLAN tunnel/overlay networks in the
    ``provider_networks`` subsection:
 
    .. code-block:: yaml
@@ -123,6 +142,7 @@ configure target host networking.
                group_binds:
                  - neutron_linuxbridge_agent
                container_bridge: "br-vxlan"
+               container_type: "veth"
                container_interface: "eth10"
                ip_from_q: "tunnel"
                type: "vxlan"
@@ -132,8 +152,8 @@ configure target host networking.
    Replace *``TUNNEL_ID_RANGE``* with the tunnel ID range. For example,
    1:1000.
 
-#. Configure OpenStack Networking provider networks in the
-   ``provider_networks`` subsection:
+#. Configure OpenStack Networking flat (untagged) and VLAN (tagged) networks
+   in the ``provider_networks`` subsection:
 
    .. code-block:: yaml
 
@@ -142,21 +162,25 @@ configure target host networking.
                group_binds:
                  - neutron_linuxbridge_agent
                container_bridge: "br-vlan"
-               container_interface: "eth11"
+               container_type: "veth"
+               container_interface: "eth12"
+               host_bind_override: "eth12"
                type: "flat"
-               net_name: "vlan"
+               net_name: "flat"
            - network:
                group_binds:
                  - neutron_linuxbridge_agent
                container_bridge: "br-vlan"
+               container_type: "veth"
                container_interface: "eth11"
                type: "vlan"
                range: VLAN_ID_RANGE
                net_name: "vlan"
 
-   Replace *``VLAN_ID_RANGE``* with the VLAN ID range for each VLAN
-   provider network. For example, 1:1000. Create a similar stanza for
-   each additional provider network.
+   Replace *``VLAN_ID_RANGE``* with the VLAN ID range for each VLAN network.
+   For example, 1:1000. Supports more than one range of VLANs on a particular
+   network. For example, 1:1000,2001:3000. Create a similar stanza for each
+   additional network.
 
 .. note::
 
