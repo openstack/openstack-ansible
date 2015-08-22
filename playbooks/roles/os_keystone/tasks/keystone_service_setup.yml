@@ -128,6 +128,22 @@
     - keystone-api-setup
     - keystone-setup
 
+# Add the default user role
+- name: Ensure default keystone user role
+  keystone:
+    command: "ensure_role"
+    token: "{{ keystone_auth_admin_token }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    role_name: "{{ keystone_default_role_name }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
+  register: add_member_role
+  until: add_member_role|success
+  retries: 5
+  delay: 10
+  tags:
+    - keystone-api-setup
+    - keystone-setup
+
 # Create a service
 - name: Ensure Keystone Service
   keystone:

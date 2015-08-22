@@ -91,6 +91,9 @@ horizon_keystone_endpoint: "{{ keystone_service_internalurl }}"
 ## alternatively, you can set horizon to turn off ssl verification for Keystone
 horizon_ssl_no_verify: "{{ (keystone_service_adminuri_insecure | bool or keystone_service_internaluri_insecure | bool) | default(false) }}"
 
+## The role which Horizon should use as a default for users
+horizon_default_role_name: _member_
+
 ## Launch instance
 horizon_launch_instance_legacy: True
 horizon_launch_instance_ng: False
