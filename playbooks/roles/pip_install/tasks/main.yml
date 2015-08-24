@@ -54,10 +54,20 @@
 
 - name: Install PIP
   shell: "python /opt/get-pip.py {{ pip_get_pip_options }}"
-  changed_when: false
+  ignore_errors: true
   register: pip_install
   until: pip_install|success
-  retries: 5
+  retries: 3
+  delay: 2
+  tags:
+    - pip-install
+
+- name: Install PIP (fall back mode)
+  shell: "python /opt/get-pip.py"
+  when: pip_install.rc != 0
+  register: pip_install_fall_back
+  until: pip_install_fall_back|success
+  retries: 3
   delay: 2
   tags:
     - pip-install

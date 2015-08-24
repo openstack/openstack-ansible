@@ -14,6 +14,9 @@
 #
 # (c) 2015, Kevin Carter <kevin.carter@rackspace.com>
 
+import urlparse
+
+
 """Filter usage:
 
 Simple filters that may be useful from within the stack
@@ -30,11 +33,69 @@ def bit_length_power_of_2(value):
     return 2**(int(value)-1).bit_length()
 
 
+def get_netloc(url):
+    """Return the netloc from a URL.
+
+    If the input value is not a value URL the method will raise an Ansible
+    filter exception.
+
+    :param url: the URL to parse
+    :type url: ``str``
+    :returns: ``str``
+    """
+    try:
+        netloc = urlparse.urlparse(url).netloc
+    except Exception as exp:
+        raise errors.AnsibleFilterError(
+            'Failed to return the netloc of: "%s"' % str(exp)
+        )
+    else:
+        return netloc
+
+
+def get_netloc_no_port(url):
+    """Return the netloc without a port from a URL.
+
+    If the input value is not a value URL the method will raise an Ansible
+    filter exception.
+
+    :param url: the URL to parse
+    :type url: ``str``
+    :returns: ``str``
+    """
+    return get_netloc(url=url).split(':')[0]
+
+
+def get_netorigin(url):
+    """Return the netloc from a URL.
+
+    If the input value is not a value URL the method will raise an Ansible
+    filter exception.
+
+    :param url: the URL to parse
+    :type url: ``str``
+    :returns: ``str``
+    """
+    try:
+        parsed_url = urlparse.urlparse(url)
+        netloc = parsed_url.netloc
+        scheme = parsed_url.scheme
+    except Exception as exp:
+        raise errors.AnsibleFilterError(
+            'Failed to return the netorigin of: "%s"' % str(exp)
+        )
+    else:
+        return '%s://%s' % (scheme, netloc)
+
+
 class FilterModule(object):
     """Ansible jinja2 filters."""
 
     @staticmethod
     def filters():
         return {
-            'bit_length_power_of_2': bit_length_power_of_2
+            'bit_length_power_of_2': bit_length_power_of_2,
+            'netloc': get_netloc,
+            'netloc_no_port': get_netloc_no_port,
+            'netorigin': get_netorigin
         }
