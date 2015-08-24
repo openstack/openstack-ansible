@@ -253,7 +253,7 @@ rbd_secret_uuid = {{ nova_ceph_client_uuid }}
 images_type = rbd
 images_rbd_pool = {{ nova_libvirt_images_rbd_pool }}
 images_rbd_ceph_conf = /etc/ceph/ceph.conf
-live_migration_flag="VIR_MIGRATE_UNDEFINE_SOURCE,VIR_MIGRATE_PEER2PEER,VIR_MIGRATE_LIVE,VIR_MIGRATE_PERSIST_DEST"
 {% endif %}
+live_migration_flag = "{{ nova_libvirt_live_migration_flag }}"
 hw_disk_discard = {{ nova_libvirt_hw_disk_discard }}
 disk_cachemodes = {{ nova_libvirt_disk_cachemodes }}
