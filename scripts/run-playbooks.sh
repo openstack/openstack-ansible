@@ -136,11 +136,8 @@ pushd "playbooks"
   if [ "${DEPLOY_INFRASTRUCTURE}" == "yes" ]; then
     # Install all of the infra bits
     install_bits memcached-install.yml
+    install_bits repo-install.yml
 
-    # For the purposes of gating the repository of python wheels are built within
-    # the environment. Normal installation would simply clone the upstream mirror.
-    install_bits repo-server.yml
-    install_bits repo-build.yml
     mkdir -p "${COMMAND_LOGS}/repo_data"
     ansible 'repo_all[0]' -m raw \
                           -a 'find  /var/www/repo/os-releases -type l' \
