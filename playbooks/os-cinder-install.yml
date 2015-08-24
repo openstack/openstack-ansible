@@ -18,6 +18,17 @@
   max_fail_percentage: 20
   user: root
   pre_tasks:
+    - name: Use the lxc-openstack aa profile
+      lxc_container:
+        name: "{{ container_name }}"
+        container_config:
+          - "lxc.aa_profile=unconfined"
+      delegate_to: "{{ physical_host }}"
+      when: >
+        not is_metal | bool and
+        inventory_hostname in groups['cinder_volume']
+      tags:
+        - lxc-aa-profile
     - name: Add volume group block device to cinder
       shell: |
         {% if item.1.volume_group is defined %}
@@ -36,27 +47,16 @@
       delegate_to: "{{ physical_host }}"
       tags:
         - cinder-lxc-devices
-    - name: Cinder extra lxc config
-      lxc_container:
-        name: "{{ container_name }}"
-        container_config:
-          - "lxc.aa_profile=unconfined"
-          - "lxc.cgroup.devices.allow=a *:* rmw"
-      delegate_to: "{{ physical_host }}"
-      when: (is_metal == false or is_metal == "False") and inventory_hostname not in groups['cinder_volume']
-      tags:
-        - cinder-container-setup
     - name: Cinder volume extra lxc config
       lxc_container:
         name: "{{ container_name }}"
         container_config:
           - "lxc.autodev=0"
-          - "lxc.aa_profile=unconfined"
           - "lxc.cgroup.devices.allow=a *:* rmw"
           - "lxc.mount.entry=udev dev devtmpfs defaults 0 0"
       delegate_to: "{{ physical_host }}"
       when: >
-        (is_metal == false or is_metal == "False") and
+        not is_metal | bool and
         inventory_hostname in groups['cinder_volume'] and
         cinder_backend_lvm_inuse
       tags:
@@ -97,7 +97,7 @@
         state: directory
       with_items:
         - { path: "/openstack/log/{{ inventory_hostname }}-cinder" }
-      when: is_metal == true or is_metal == "True"
+      when: is_metal | bool
       tags:
         - cinder-logs
         - cinder-log-dirs
@@ -109,7 +109,7 @@
         force: "yes"
       with_items:
         - { src: "/openstack/log/{{ inventory_hostname }}-cinder", dest: "/var/log/cinder", state: "link" }
-      when: is_metal == true or is_metal == "True"
+      when: is_metal | bool
       tags:
         - cinder-logs
   roles:

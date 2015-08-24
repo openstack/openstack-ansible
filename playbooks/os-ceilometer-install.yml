@@ -18,6 +18,15 @@
   max_fail_percentage: 20
   user: root
   pre_tasks:
+    - name: Use the lxc-openstack aa profile
+      lxc_container:
+        name: "{{ container_name }}"
+        container_config:
+          - "lxc.aa_profile=lxc-openstack"
+      delegate_to: "{{ physical_host }}"
+      when: not is_metal | bool
+      tags:
+        - lxc-aa-profile
     - name: Flush net cache
       command: /usr/local/bin/lxc-system-manage flush-net-cache
       delegate_to: "{{ physical_host }}"
@@ -47,7 +56,7 @@
         state: directory
       with_items:
         - { path: "/openstack/log/{{ inventory_hostname }}-ceilometer" }
-      when: is_metal == true or is_metal == "True"
+      when: is_metal | bool
       tags:
         - ceilometer-logs
         - ceilometer-log-dirs
@@ -59,7 +68,7 @@
         force: "yes"
       with_items:
         - { src: "/openstack/log/{{ inventory_hostname }}-ceilometer", dest: "/var/log/ceilometer", state: "link" }
-      when: is_metal == true or is_metal == "True"
+      when: is_metal | bool
       tags:
         - ceilometer-logs
   roles:
