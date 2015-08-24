@@ -18,17 +18,29 @@
   max_fail_percentage: 20
   user: root
   pre_tasks:
+    - name: Use the lxc-openstack aa profile
+      lxc_container:
+        name: "{{ container_name }}"
+        container_config:
+          - "lxc.aa_profile=unconfined"
+      delegate_to: "{{ physical_host }}"
+      when: >
+        not is_metal | bool and
+        inventory_hostname in groups['neutron_agent']
+      tags:
+        - lxc-aa-profile
     - name: Neutron extra lxc config
       lxc_container:
         name: "{{ container_name }}"
         container_command: |
           [[ ! -d "/lib/modules" ]] && mkdir -p "/lib/modules"
         container_config:
-          - "lxc.aa_profile=unconfined"
           - "lxc.cgroup.devices.allow=a *:* rmw"
           - "lxc.mount.entry=/lib/modules lib/modules none bind 0 0"
       delegate_to: "{{ physical_host }}"
-      when: is_metal == false or is_metal == "False"
+      when: >
+        not is_metal | bool and
+        inventory_hostname in groups['neutron_agent']
       tags:
         - neutron-container-setup
     - name: Flush net cache
@@ -44,7 +56,7 @@
         host: "{{ ansible_ssh_host }}"
       delegate_to: "{{ physical_host }}"
       tags:
-        - neutron-ssh-wait
+        - ssh-wait
     - name: Sort the rabbitmq servers
       dist_sort:
         value_to_lookup: "{{ container_name }}"
@@ -60,7 +72,7 @@
         state: directory
       with_items:
         - { path: "/openstack/log/{{ inventory_hostname }}-neutron" }
-      when: is_metal == true or is_metal == "True"
+      when: is_metal | bool
       tags:
         - neutron-logs
         - neutron-log-dirs
@@ -72,7 +84,7 @@
         force: "yes"
       with_items:
         - { src: "/openstack/log/{{ inventory_hostname }}-neutron", dest: "/var/log/neutron", state: "link" }
-      when: is_metal == true or is_metal == "True"
+      when: is_metal | bool
       tags:
         - neutron-logs
     - name: Create the neutron provider networks facts

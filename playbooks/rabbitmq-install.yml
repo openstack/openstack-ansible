@@ -17,6 +17,33 @@
   hosts: rabbitmq_all
   max_fail_percentage: 0
   user: root
+  pre_tasks:
+    - name: Use the lxc-openstack aa profile
+      lxc_container:
+        name: "{{ container_name }}"
+        container_config:
+          - "lxc.aa_profile=lxc-openstack"
+      delegate_to: "{{ physical_host }}"
+      when: not is_metal | bool
+      tags:
+        - lxc-aa-profile
+    - name: Flush net cache
+      command: /usr/local/bin/lxc-system-manage flush-net-cache
+      delegate_to: "{{ physical_host }}"
+      tags:
+        - flush-net-cache
+    - name: Wait for container ssh
+      wait_for:
+        port: "22"
+        delay: "{{ ssh_delay }}"
+        search_regex: "OpenSSH"
+        host: "{{ ansible_ssh_host }}"
+      delegate_to: "{{ physical_host }}"
+      register: ssh_wait_check
+      until: ssh_wait_check|success
+      retries: 3
+      tags:
+        - ssh-wait
   roles:
     - role: "rabbitmq_server"
       tags:

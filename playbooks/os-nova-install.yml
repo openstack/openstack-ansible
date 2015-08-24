@@ -18,6 +18,32 @@
   max_fail_percentage: 20
   user: root
   pre_tasks:
+    - name: Use the lxc-openstack aa profile
+      lxc_container:
+        name: "{{ container_name }}"
+        container_config:
+          - "lxc.aa_profile=lxc-openstack"
+      delegate_to: "{{ physical_host }}"
+      when: not is_metal | bool
+      tags:
+        - lxc-aa-profile
+    - name: Flush net cache
+      command: /usr/local/bin/lxc-system-manage flush-net-cache
+      delegate_to: "{{ physical_host }}"
+      tags:
+        - flush-net-cache
+    - name: Wait for container ssh
+      wait_for:
+        port: "22"
+        delay: "{{ ssh_delay }}"
+        search_regex: "OpenSSH"
+        host: "{{ ansible_ssh_host }}"
+      delegate_to: "{{ physical_host }}"
+      register: ssh_wait_check
+      until: ssh_wait_check|success
+      retries: 3
+      tags:
+        - ssh-wait
     - name: Sort the rabbitmq servers
       dist_sort:
         value_to_lookup: "{{ container_name }}"
@@ -49,7 +75,7 @@
       delegate_to: "{{ physical_host }}"
       when: >
         inventory_hostname in groups['nova_compute'] and
-        (is_metal == false or is_metal == "False")
+        not is_metal | bool
       tags:
         - nova-kvm
         - nova-kvm-container-devices
@@ -63,7 +89,7 @@
         'added' in device_add.stdout.lower()
       when: >
         inventory_hostname in groups['nova_compute'] and
-        (is_metal == false or is_metal == "False") and
+        not is_metal | bool and
         nova_virt_type == 'kvm'
       tags:
         - nova-kvm
@@ -74,7 +100,7 @@
         state: directory
       with_items:
         - { path: "/openstack/log/{{ inventory_hostname }}-nova" }
-      when: is_metal == true or is_metal == "True"
+      when: is_metal | bool
       tags:
         - nova-logs
         - nova-log-dirs
@@ -86,7 +112,7 @@
         force: "yes"
       with_items:
         - { src: "/openstack/log/{{ inventory_hostname }}-nova", dest: "/var/log/nova", state: "link" }
-      when: is_metal == true or is_metal == "True"
+      when: is_metal | bool
       tags:
         - nova-logs
   roles:

@@ -20,13 +20,39 @@
   max_fail_percentage: 20
   user: root
   pre_tasks:
+    - name: Use the lxc-openstack aa profile
+      lxc_container:
+        name: "{{ container_name }}"
+        container_config:
+          - "lxc.aa_profile=lxc-openstack"
+      delegate_to: "{{ physical_host }}"
+      when: not is_metal | bool
+      tags:
+        - lxc-aa-profile
+    - name: Flush net cache
+      command: /usr/local/bin/lxc-system-manage flush-net-cache
+      delegate_to: "{{ physical_host }}"
+      tags:
+        - flush-net-cache
+    - name: Wait for container ssh
+      wait_for:
+        port: "22"
+        delay: "{{ ssh_delay }}"
+        search_regex: "OpenSSH"
+        host: "{{ ansible_ssh_host }}"
+      delegate_to: "{{ physical_host }}"
+      register: ssh_wait_check
+      until: ssh_wait_check|success
+      retries: 3
+      tags:
+        - ssh-wait
     - name: Create log dir
       file:
         path: "{{ item.path }}"
         state: directory
       with_items:
         - { path: "/openstack/log/{{ inventory_hostname }}-swift" }
-      when: is_metal == true or is_metal == "True"
+      when: is_metal | bool
       tags:
         - swift-logs
         - swift-log-dirs
@@ -44,7 +70,7 @@
           owner: "syslog"
           group: "syslog"
           state: "link"
-      when: is_metal == true or is_metal == "True"
+      when: is_metal | bool
       tags:
         - swift-logs
   roles:

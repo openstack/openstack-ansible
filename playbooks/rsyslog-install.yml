@@ -18,12 +18,21 @@
   max_fail_percentage: 20
   user: root
   pre_tasks:
+    - name: Use the lxc-openstack aa profile
+      lxc_container:
+        name: "{{ container_name }}"
+        container_config:
+          - "lxc.aa_profile=lxc-openstack"
+      delegate_to: "{{ physical_host }}"
+      when: not is_metal | bool
+      tags:
+        - lxc-aa-profile
     - name: Ensure log stroage directory exists
       file:
         path: "/openstack/{{ container_name }}/log-storage"
         state: "directory"
       delegate_to: "{{ physical_host }}"
-      when: is_metal == false or is_metal == "False"
+      when: not is_metal | bool
       tags:
         - rsyslog-storage-dirs
     - name: Rsyslog server extra lxc config
@@ -34,7 +43,7 @@
         container_config:
           - "lxc.mount.entry=/openstack/{{ container_name }}/log-storage {{ storage_directory.lstrip('/') }} none bind 0 0"
       delegate_to: "{{ physical_host }}"
-      when: is_metal == false or is_metal == "False"
+      when: not is_metal | bool
       tags:
         - rsyslog-storage-dirs
     - name: Flush net cache
@@ -49,8 +58,11 @@
         search_regex: "OpenSSH"
         host: "{{ ansible_ssh_host }}"
       delegate_to: "{{ physical_host }}"
+      register: ssh_wait_check
+      until: ssh_wait_check|success
+      retries: 3
       tags:
-        - rsyslog-ssh-wait
+        - ssh-wait
 
   roles:
     - { role: "rsyslog_server", tags: [ "rsyslog-server" ] }
