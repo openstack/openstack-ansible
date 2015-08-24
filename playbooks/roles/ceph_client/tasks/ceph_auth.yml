@@ -44,6 +44,8 @@
     name: "{{ openstack_service_system_user }}"
     groups: "{{ cephkeys_access_group }}"
     append: yes
+  notify:
+  - Restart os services
 
 - name: Provision ceph client keyrings
   # TODO: do we really need a template for this? what's the added value compare to
