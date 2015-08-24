@@ -38,6 +38,7 @@
       wait_for:
         port: "22"
         delay: 5
+        search_regex: "OpenSSH"
         host: "{{ ansible_ssh_host }}"
       delegate_to: "{{ physical_host }}"
       tags:
