@@ -80,11 +80,12 @@
 - name: Enable/disable mod_ssl for apache2
   apache2_module:
     name: ssl
-    state: "{{ (keystone_ssl_enabled | bool) | ternary('present', 'absent') }}"
+    state: "{{ (keystone_ssl | bool) | ternary('present', 'absent') }}"
   notify:
     - Restart Apache
   tags:
     - keystone-httpd
+    - keystone-ssl
 
 - name: Enable/disable mod_shib2 for apache2
   apache2_module:
