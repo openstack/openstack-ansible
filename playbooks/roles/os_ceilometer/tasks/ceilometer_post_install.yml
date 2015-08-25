@@ -31,15 +31,14 @@
     - ceilometer-post-install
 
 - name: Apply updates to policy file
-  copy_updates:
-    content="{{ item.content }}"
-    updates="{{ item.policy_data }}"
-    dest="{{ item.dest }}"
-    owner="{{ ceilometer_system_user_name }}"
-    group="{{ ceilometer_system_group_name }}"
-    mode="{{ item.mode|default('0644') }}"
-  with_items:
-    - { content: "{{ lookup('file', 'policy.json') | b64encode }}", policy_data: "{{ ceilometer_policy_overrides|default('') }}", dest: "/etc/ceilometer/policy.json" }
+  config_template:
+    src: "policy.json"
+    dest: "/etc/ceilometer/policy.json"
+    owner: "{{ ceilometer_system_user_name }}"
+    group: "{{ ceilometer_system_group_name }}"
+    mode: "0644"
+    config_overrides: "{{ ceilometer_policy_overrides|default({}) }}"
+    config_type: "json"
   notify:
     - Restart ceilometer services
   tags:
