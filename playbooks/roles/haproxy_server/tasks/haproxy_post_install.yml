@@ -14,11 +14,11 @@
 # limitations under the License.
 
 - name: Drop base haproxy config
-  copy:
+  template:
     src: "{{ item }}"
-    dest: "/etc/haproxy/{{ item }}"
+    dest: "/etc/haproxy/haproxy.cfg"
   with_items:
-    - haproxy.cfg
+    - haproxy.cfg.j2
   notify: Restart haproxy
   tags:
     - haproxy-base-config

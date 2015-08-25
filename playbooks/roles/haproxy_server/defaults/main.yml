@@ -43,6 +43,13 @@ haproxy_rise: 3
 haproxy_fall: 3
 haproxy_interval: 12000
 
+## Haproxy Stats
+haproxy_stats_enabled: False
+haproxy_stats_bind_address: 127.0.0.1
+haproxy_stats_port: 1936
+haproxy_username: admin
+haproxy_stats_password: secrete
+
 # Default haproxy backup nodes to empty list so this doesn't have to be
 # defined for each service.
 haproxy_backup_nodes: []
