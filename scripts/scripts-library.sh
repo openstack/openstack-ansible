@@ -69,7 +69,7 @@ function configure_diskspace {
 
   # only do this if the lxc vg doesn't already exist
   if ! vgs lxc > /dev/null 2>&1; then
-    blk_devices=$(lsblk -nrdo NAME,TYPE | awk '/d[b-z]+ disk/ {print $1}')
+    blk_devices=$(lsblk -nrdo NAME,TYPE,RO | awk '/d[b-z]+ disk [^1]/ {print $1}')
     for blk_dev in ${blk_devices}; do
       # dismount any mount points on the device
       mount_points=$(awk "/^\/dev\/${blk_dev}[0-9]* / {print \$2}" /proc/mounts)
