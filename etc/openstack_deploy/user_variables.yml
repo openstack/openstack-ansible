@@ -139,3 +139,8 @@ ssl_cipher_suite: "ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AE
 # horizon_available_regions:
 #   - { url: "{{ keystone_service_internalurl }}", name: "{{ keystone_service_region }}" }
 #   - { url: "http://cluster1.example.com:5000/v2.0", name: "RegionTwo" }
+
+## SSH connection wait time
+# If an increased delay for the ssh connection check is desired,
+# uncomment this variable and set it appropriately.
+#ssh_delay: 5
