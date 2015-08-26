@@ -333,6 +333,7 @@ if [ ${DEPLOY_CEILOMETER} == "yes" ]; then
       sed -i "s/${svc}_ceilometer_enabled:.*/${svc}_ceilometer_enabled: True/" /etc/openstack_deploy/user_variables.yml
     done
   fi
+  echo 'tempest_service_available_ceilometer: true' | tee -a /etc/openstack_deploy/user_variables.yml
 fi
 
 # Service region set
