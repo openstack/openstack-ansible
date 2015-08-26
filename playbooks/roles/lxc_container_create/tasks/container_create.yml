@@ -101,7 +101,6 @@
     container_config:
       - "lxc.mount.entry=/openstack/backup/{{ inventory_hostname }} var/backup none defaults,bind,rw 0 0"
       - "lxc.mount.entry=/openstack/log/{{ inventory_hostname }} var/log/{{ properties.log_directory | default(properties.service_name) }} none defaults,bind,rw 0 0"
-      - "lxc.aa_profile=lxc-openstack"
   when: properties.service_name is defined
   delegate_to: "{{ physical_host }}"
   tags:

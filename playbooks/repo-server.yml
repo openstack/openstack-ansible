@@ -18,6 +18,15 @@
   max_fail_percentage: 20
   user: root
   pre_tasks:
+    - name: Use the lxc-openstack aa profile
+      lxc_container:
+        name: "{{ container_name }}"
+        container_config:
+          - "lxc.aa_profile=lxc-openstack"
+      delegate_to: "{{ physical_host }}"
+      when: not is_metal | bool
+      tags:
+        - lxc-aa-profile
     - name: Package repo extra lxc config
       lxc_container:
         name: "{{ container_name }}"
@@ -26,7 +35,7 @@
         container_config:
           - "lxc.mount.entry=/openstack/{{ container_name }} var/www none bind 0 0"
       delegate_to: "{{ physical_host }}"
-      when: is_metal == false or is_metal == "False"
+      when: not is_metal | bool
       tags:
         - repo-dirs
     - name: Flush net cache

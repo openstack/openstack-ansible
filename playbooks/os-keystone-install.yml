@@ -18,6 +18,15 @@
   max_fail_percentage: 20
   user: root
   pre_tasks:
+    - name: Use the lxc-openstack aa profile
+      lxc_container:
+        name: "{{ container_name }}"
+        container_config:
+          - "lxc.aa_profile=lxc-openstack"
+      delegate_to: "{{ physical_host }}"
+      when: not is_metal | bool
+      tags:
+        - lxc-aa-profile
     - name: Sort the rabbitmq servers
       dist_sort:
         value_to_lookup: "{{ container_name }}"
@@ -33,7 +42,7 @@
         state: directory
       with_items:
         - { path: "/openstack/log/{{ inventory_hostname }}-keystone" }
-      when: is_metal == true or is_metal == "True"
+      when: is_metal | bool
       tags:
         - keystone-logs
         - keystone-log-dirs
@@ -45,7 +54,7 @@
         force: "yes"
       with_items:
         - { src: "/openstack/log/{{ inventory_hostname }}-keystone", dest: "/var/log/keystone", state: "link" }
-      when: is_metal == true or is_metal == "True"
+      when: is_metal | bool
       tags:
         - keystone-logs
   roles:

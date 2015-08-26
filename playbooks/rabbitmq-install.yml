@@ -17,6 +17,16 @@
   hosts: rabbitmq_all
   max_fail_percentage: 0
   user: root
+  pre_tasks:
+    - name: Use the lxc-openstack aa profile
+      lxc_container:
+        name: "{{ container_name }}"
+        container_config:
+          - "lxc.aa_profile=lxc-openstack"
+      delegate_to: "{{ physical_host }}"
+      when: not is_metal | bool
+      tags:
+        - lxc-aa-profile
   roles:
     - role: "rabbitmq_server"
       tags:
