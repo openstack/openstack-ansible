@@ -124,7 +124,7 @@ pushd "playbooks"
       ansible neutron_agent -m shell \
                             -a 'DEBIAN_FRONTEND=noninteractive apt-get install iptables-persistent' \
                             -t "${COMMAND_LOGS}/add_neutron_agent_checksum_rule" \
-                            &> ${COMMAND_LOGS}/add_neutron_agent_checksum_rule.log
+                            &>> ${COMMAND_LOGS}/add_neutron_agent_checksum_rule.log
     fi
   fi
 
