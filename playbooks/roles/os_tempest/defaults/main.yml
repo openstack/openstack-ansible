@@ -90,14 +90,17 @@ tempest_pip_packages:
   - python-subunit
   - junitxml
 
+# Please update SHA in tempest_images below when changing the cirros version.
+cirros_version: 0.3.4
+cirros_tgz_url: "http://download.cirros-cloud.net/{{ cirros_version }}/cirros-{{ cirros_version }}-x86_64-uec.tar.gz"
+cirros_img_url: "{{ cirros_tgz_url|replace('uec.tar.gz','disk.img') }}"
+
 tempest_image_dir: "/opt/images"
 tempest_images:
-  - url: "http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-uec.tar.gz"
+  - url: "{{ cirros_tgz_url }}"
     sha256: "95e77c7deaf0f515f959ffe329918d5dd23e417503d1d45e926a888853c90710"
-    name: "cirros-0.3.4-x86_64-uec.tar.gz"
-  - url: "http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-disk.img"
+  - url: "{{ cirros_img_url }}"
     sha256: "34987d0d5702f8813f3ff9efe90e9e39e6926ec78658763580a79face67f3394"
-    name: "cirros-0.3.4-x86_64-disk.img"
 
 tempest_enable_instance_password: True
 tempest_pip_instructions: "--isolated"
