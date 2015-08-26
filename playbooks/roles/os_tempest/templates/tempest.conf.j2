@@ -17,14 +17,13 @@ allow_tenant_isolation = True
 
 
 [boto]
+aki_manifest = cirros-{{ cirros_version }}-x86_64-vmlinuz.manifest.xml
+ami_manifest = cirros-{{ cirros_version }}-x86_64-blank.img.manifest.xml
+ari_manifest = cirros-{{ cirros_version }}-x86_64-initrd.manifest.xml
 ec2_url = {{ tempest_boto_ec2_url }}
 s3_url = {{ tempest_boto_s3_url }}
-s3_materials_path = /opt/images/s3-materials/cirros-0.3.4
-ari_manifest = cirros-0.3.4-x86_64-initrd.manifest.xml
-ami_manifest = cirros-0.3.4-x86_64-blank.img.manifest.xml
-ari_manifest = cirros-0.3.4-x86_64-initrd.manifest.xml
-aki_manifest = cirros-0.3.4-x86_64-vmlinuz.manifest.xml
 instance_type = tempest1
+s3_materials_path = /opt/images/s3-materials/cirros-{{ cirros_version }}
 
 
 [cli]
@@ -107,7 +106,7 @@ trust = false
 
 [image]
 endpoint_type = internalURL
-http_image = http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-uec.tar.gz
+http_image = {{ cirros_tgz_url }}
 
 
 [image-feature-enabled]
@@ -160,11 +159,11 @@ lock_path = {{ tempest_git_dest }}/locks
 
 
 [scenario]
+aki_img_file = cirros-{{ cirros_version }}-x86_64-vmlinuz
+ari_img_file = cirros-{{ cirros_version }}-x86_64-initrd
+ami_img_file = cirros-{{ cirros_version }}-x86_64-blank.img
 img_dir = {{ tempest_image_dir }}
-img_file = cirros-0.3.4-x86_64-disk.img
-ami_img_file = cirros-0.3.4-x86_64-blank.img
-ari_img_file = cirros-0.3.4-x86_64-initrd
-aki_img_file = cirros-0.3.4-x86_64-vmlinuz
+img_file = cirros-{{ cirros_version }}-x86_64-disk.img
 ssh_user = {{ tempest_compute_image_ssh_user }}
 
 
