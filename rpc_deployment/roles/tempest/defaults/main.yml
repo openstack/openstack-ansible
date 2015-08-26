@@ -64,30 +64,23 @@ tempest_main_group: tempest_all
 
 tempest_requires_pip_packages:
   - oslo.serialization
-  - python-barbicanclient
   - python-ceilometerclient
   - python-cinderclient
-  - python-designateclient
   - python-glanceclient
   - python-heatclient
-  - python-ironicclient
   - python-keystoneclient
-  - python-marconiclient
   - python-memcached
   - python-neutronclient
   - python-novaclient
   - python-openstackclient
-  - python-saharaclient
-  - python-seamicroclient
   - python-swiftclient
-  - python-troveclient
-  - python-tuskarclient
   - python-memcached
   - virtualenv
 
 tempest_pip_packages:
   - fixtures
   - nose
+  - pyOpenSSL
   - testrepository
   - testscenarios
   - testtools

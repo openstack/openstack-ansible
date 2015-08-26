@@ -16,4 +16,5 @@
 ## Git Source
 tempest_git_repo: https://github.com/openstack/tempest
 tempest_git_install_branch: 047e7599ff5437a90bec2b09a57435ff4045281b # HEAD of "master" as of 22.03.2015
+tempest_git_install_fragments: "yaprtignorerequirements=true"
 tempest_git_dest: "/opt/tempest_{{ tempest_git_install_branch | replace('/', '_') }}"

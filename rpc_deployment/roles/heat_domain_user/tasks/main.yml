@@ -26,30 +26,26 @@
 - name: Create heat domain
   shell: |
     . /root/openrc
-    openstack --os-identity-api-version=3 --os-auth-url={{ auth_identity_uri_v3 }} \
-              domain create {{ stack_user_domain_name }} --description "Owns users and projects created by heat"
-  ignore_errors: true
+    openstack --os-identity-api-version=3 \
+              --os-auth-url={{ auth_identity_uri_v3 }} \
+              --os-user-domain-name=Default \
+              --os-project-domain-name=Default \
+              domain create --or-show {{ stack_user_domain_name }} --description "Owns users and projects created by heat"
 
 - name: Create heat domain admin user
   shell: |
     . /root/openrc
-    openstack --os-identity-api-version=3 --os-auth-url={{ auth_identity_uri_v3 }} \
-              user create --domain {{ stack_user_domain_name }} --password {{ stack_domain_admin_password }} {{ stack_domain_admin }}
-  ignore_errors: true
-
-- name: Retrieve heat domain id
-  shell: |
-    . /root/openrc
-    openstack --os-identity-api-version=3 --os-auth-url={{ auth_identity_uri_v3 }} \
-                    domain show {{ stack_user_domain_name }} | grep -oE -m 1 "[0-9a-f]{32}"
-  register: stack_user_domain_id
-
-- name: Set fact for heat domain id
-  set_fact:
-    stack_user_domain_id: "{{ stack_user_domain_id.stdout }}"
+    openstack --os-identity-api-version=3 \
+              --os-auth-url={{ auth_identity_uri_v3 }} \
+              --os-user-domain-name=Default \
+              --os-project-domain-name=Default \
+              user create --or-show --domain {{ stack_user_domain_name }} --password {{ stack_domain_admin_password }} {{ stack_domain_admin }}
 
 - name: Assign admin role to heat domain admin user
   shell: |
     . /root/openrc
-    openstack --os-identity-api-version=3 --os-auth-url={{ auth_identity_uri_v3 }} \
-              role add --user {{ stack_domain_admin }} --domain {{ stack_user_domain_id }} admin
+    openstack --os-identity-api-version=3 \
+              --os-auth-url={{ auth_identity_uri_v3 }} \
+              --os-user-domain-name=Default \
+              --os-project-domain-name=Default \
+              role add --user {{ stack_domain_admin }} --domain {{ stack_user_domain_name }} admin
