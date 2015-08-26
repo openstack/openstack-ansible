@@ -24,7 +24,8 @@
     - ceph-config-create-dir
 
 - name: Get ceph.conf and store contents when ceph_conf_file is not defined
-  slurp: src=/etc/ceph/ceph.conf
+  slurp:
+    src: /etc/ceph/ceph.conf
   register: ceph_conf_content_mon
   delegate_to: '{{ ceph_mon_host }}'
   changed_when: false
