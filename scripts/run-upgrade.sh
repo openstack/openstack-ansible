@@ -473,12 +473,6 @@ cat > /tmp/fix_host_things.yml <<EOF
         state: "absent"
         regexp: 'add_network_interface\.conf'
       with_items: containers.stdout_lines
-    - name: Remove aa_profile entries
-      lineinfile:
-        dest: "{{ item }}"
-        state: "absent"
-        regexp: '^lxc.aa_profile'
-      with_items: containers.stdout_lines
     - name: Remove old add_network_interface.conf file
       file:
         path: "{{ item | dirname }}/add_network_interface.conf"
