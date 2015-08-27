@@ -1,3 +1,5 @@
+# {{ ansible_managed }}
+
 global
         log 127.0.0.1 local0
         log 127.0.0.1 local1 notice
@@ -18,3 +20,13 @@ defaults
         timeout connect 10s
         timeout server 50s
         maxconn 4096
+
+{% if haproxy_stats_enabled | bool %}
+listen stats {{ haproxy_stats_bind_address }}:{{ haproxy_stats_port }}
+    mode http
+    stats enable
+    stats hide-version
+    stats realm Haproxy\ Statistics
+    stats uri /
+    stats auth {{ haproxy_username }}:{{ haproxy_stats_password }}
+{% endif %}
