@@ -9,6 +9,7 @@ public_endpoint = {{ keystone_public_endpoint }}
 {% endif %}
 admin_endpoint = {{ keystone_service_adminuri }}
 fatal_deprecations = {{ keystone_fatal_deprecations }}
+member_role_name = {{ keystone_default_role_name }}
 
 {% if keystone_ssl | bool and keystone_secure_proxy_ssl_header is defined %}
 secure_proxy_ssl_header = {{ keystone_secure_proxy_ssl_header }}
