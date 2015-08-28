@@ -78,6 +78,12 @@ nova_max_age: 0
 nova_remove_unused_resized_minimum_age_seconds: 3600
 nova_image_cache_manager_interval: 0
 nova_resume_guests_state_on_host_boot: False
+nova_force_config_drive: always
+
+## libvirtd config options
+nova_libvirtd_listen_tls: 0
+nova_libvirtd_listen_tcp: 1
+nova_libvirtd_auth_tcp: none
 
 # Nova quota
 nova_quota_cores: 20
