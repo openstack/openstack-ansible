@@ -51,7 +51,7 @@
         host: "{{ ansible_ssh_host }}"
       delegate_to: "{{ physical_host }}"
       tags:
-        - repo-ssh-wait
+        - ssh-wait
   roles:
     - { role: "repo_server", tags: [ "repo-server" ] }
     - role: "rsyslog_client"

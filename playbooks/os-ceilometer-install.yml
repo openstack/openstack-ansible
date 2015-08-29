@@ -40,7 +40,7 @@
         host: "{{ ansible_ssh_host }}"
       delegate_to: "{{ physical_host }}"
       tags:
-        - ceilometer-ssh-wait
+        - ssh-wait
     - name: Sort the rabbitmq servers
       dist_sort:
         value_to_lookup: "{{ container_name }}"
