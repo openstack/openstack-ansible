@@ -68,6 +68,9 @@ fi
 # Enable debug logging for all services to make failure debugging easier
 echo "debug: True" | tee -a /etc/openstack_deploy/user_variables.yml
 
+# Disable the python output buffering so that jenkins gets the output properly
+export PYTHONUNBUFFERED=1
+
 # Run the ansible playbooks if required
 if [ "${RUN_PLAYBOOKS}" == "yes" ]; then
   # Set-up our tiny awk script.
