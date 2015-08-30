@@ -55,6 +55,18 @@ ln -sf /openstack/log $(dirname ${0})/../logs
 mkdir -p /openstack/log/ansible-logging
 sed -i '/\[defaults\]/a log_path = /openstack/log/ansible-logging/ansible.log' $(dirname ${0})/../playbooks/ansible.cfg
 
+# Ubuntu Repository Determination (based on provider information in OpenStack-CI)
+if [ -fs /etc/nodepool/provider ]; then
+  source /etc/nodepool/provider
+  if [[ ${NODEPOOL_PROVIDER} == "rax"* ]]; then
+    export UBUNTU_REPO="http://mirror.rackspace.com/ubuntu"
+    export UBUNTU_SEC_REPO="${UBUNTU_REPO}"
+  elif [[ ${NODEPOOL_PROVIDER} == "hpcloud"* ]]; then
+    export UBUNTU_REPO="http://${NODEPOOL_AZ}.clouds.archive.ubuntu.com/ubuntu"
+    export UBUNTU_SEC_REPO="${UBUNTU_REPO}"
+  fi
+fi
+
 # Bootstrap an AIO setup if required
 if [ "${BOOTSTRAP_AIO}" == "yes" ]; then
   source $(dirname ${0})/bootstrap-aio.sh
