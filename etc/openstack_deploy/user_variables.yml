@@ -167,3 +167,25 @@ ssl_cipher_suite: "ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AE
 # If an increased delay for the ssh connection check is desired,
 # uncomment this variable and set it appropriately.
 #ssh_delay: 5
+
+## HAProxy
+# Uncomment this to disable keepalived installation (cf. documentation)
+#haproxy_use_keepalived: False
+#
+# HAProxy Keepalived configuration (cf. documentation)
+haproxy_keepalived_external_vip_cidr: "{{external_lb_vip_address}}/32"
+haproxy_keepalived_internal_vip_cidr: "{{internal_lb_vip_address}}/32"
+#haproxy_keepalived_external_interface:
+#haproxy_keepalived_internal_interface:
+# Defines the default VRRP id used for keepalived with haproxy.
+# Overwrite it to your value to make sure you don't overlap
+# with existing VRRPs id on your network. Default is 10 for the external and 11 for the
+# internal VRRPs
+#haproxy_keepalived_external_virtual_router_id:
+#haproxy_keepalived_internal_virtual_router_id:
+# Defines the VRRP master/backup priority. Defaults respectively to 100 and 20
+#haproxy_keepalived_priority_master:
+#haproxy_keepalived_priority_backup:
+# All the previous variables are used in a var file, fed to the keepalived role.
+# To use another file to feed the role, override the following var:
+#haproxy_keepalived_vars_file: 'vars/configs/keepalived_haproxy.yml'
