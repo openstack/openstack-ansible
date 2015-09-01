@@ -4,6 +4,10 @@
 lxc.network.type = {{ item.value.type|default('veth') }}
 # Network device within the container
 lxc.network.name = {{ item.value.interface }}
+# Name the veth after the container
+# NOTE(major): The lxc.network.veth.pair line must appear right after
+# lxc.network.name or it will be ignored.
+lxc.network.veth.pair = {{ inventory_hostname[-8:].replace('-', '').replace('_', '') }}_{{ item.value.interface }}
 # Host link to attach to, this should be a bridge
 lxc.network.link = {{ item.value.bridge }}
 # Hardware Address
@@ -12,4 +16,3 @@ lxc.network.hwaddr = 00:16:3e:xx:xx:xx
 lxc.network.flags = up
 # Set the container network MTU
 lxc.network.mtu = {{ item.value.mtu|default('1500') }}
-
