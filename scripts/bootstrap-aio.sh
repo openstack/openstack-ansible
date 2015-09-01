@@ -103,6 +103,7 @@ apt-get purge -y libmysqlclient18 mysql-common
 apt-get install -y bridge-utils \
                    build-essential \
                    curl \
+                   ethtool \
                    git-core \
                    ipython \
                    linux-image-extra-$(uname -r) \
