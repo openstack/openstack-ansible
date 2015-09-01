@@ -187,6 +187,19 @@
   tags:
     - lxc-container-networks
 
+# NOTE(major): the lxc.network.veth.pair line must appear *immediately* after
+# the lxc.network.name congfiguration line or it will be ignored.  That's why
+# you'll find a "insertafter" in this YAML block.
+- name: Add veth pair name to match container name
+  lineinfile:
+    dest: "/var/lib/lxc/{{ inventory_hostname }}/config"
+    line: "lxc.network.veth.pair = {{ inventory_hostname[-8:].replace('-', '').replace('_', '') }}_eth0"
+    insertafter: "^lxc.network.name"
+    backup: "true"
+  delegate_to: "{{ physical_host }}"
+  tags:
+    - lxc-container-networks
+
 - name: Container network includes
   lineinfile:
     dest: "/var/lib/lxc/{{ inventory_hostname }}/config"
