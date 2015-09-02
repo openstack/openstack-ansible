@@ -32,7 +32,6 @@ neutron_system_home_folder: "/var/lib/{{ neutron_system_user_name }}"
 neutron_galera_user: neutron
 neutron_galera_password: "{{ neutron_container_mysql_password }}"
 neutron_galera_database: neutron
-neutron_db_revision: heads
 neutron_db_config: /etc/neutron/neutron.conf
 neutron_db_plugin: /etc/neutron/plugins/ml2/ml2_conf.ini
 neutron_db_max_overflow: 20

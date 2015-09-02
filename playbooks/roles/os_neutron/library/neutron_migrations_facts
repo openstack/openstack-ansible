@@ -1,0 +1,101 @@
+#!/usr/bin/env python
+# Copyright 2015, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import os
+import re
+import subprocess
+from ansible.module_utils.basic import *
+
+DOCUMENTATION = """
+---
+module: neutron_migrations_facts
+short_description:
+    - A module for gathering neutron migrations facts.
+description:
+    - This module creates a fact called 'neutron_migrations', which is a dict
+      containing keys that represent each alembic migration branch.  The value
+      for each key is another dict, containing a key value for the current
+      neutron revision for that branch (revision), and whether or not the
+      branch is currently at the latest revision (head).  The
+      'neutron_migrations' fact can then be used to determine if migrations
+      for either branch are required, and allows us to only apply migrations
+      if necessary.
+options:
+    release:
+        description:
+            - This is the OpenStack release you're running, used when
+              searching for migration revisions in the neutron code.
+        default: liberty
+author: Rcbops
+"""
+
+EXAMPLES = """
+- name: Gather neutron migration facts
+  neutron_migrations_facts:
+    release: mitaka
+"""
+
+MIGRATIONS = {'expand': {'revision': None, 'head': None},
+              'contract': {'revision': None, 'head': None}}
+
+
+def get_branch(release, revision):
+    migrations_dir = '/usr/local/lib/python2.7/dist-packages/neutron/db/' \
+                     'migration/alembic_migrations/versions/%s/' % release
+    for branch in MIGRATIONS.keys():
+        for file in os.listdir('%s/%s' % (migrations_dir, branch)):
+            if file.endswith('.py') and file.split('_')[0] == revision:
+                return branch
+
+
+def main():
+    module = AnsibleModule(
+        argument_spec=dict(
+            release=dict(
+                type='str',
+                default='liberty'
+            )
+        ),
+        supports_check_mode=False
+    )
+    state_change = False
+
+    try:
+        current = subprocess.check_output(['neutron-db-manage', 'current'])
+    except subprocess.CalledProcessError as e:
+        message = 'neutron fact collection failed: "%s".' % e
+        module.fail_json(msg=message)
+
+    for line in current.splitlines():
+        head = False
+        match = re.search("^([0-9a-z]{4,12})(\s\(head\))?$", line)
+        if match:
+            revision = match.group(1)
+            if match.group(2):
+                head = True
+            branch = get_branch(module.params['release'], revision)
+            if branch is None:
+                message = 'neutron fact collection failed: unable to find ' \
+                          'migration with revision %s' % revision
+                module.fail_json(msg=message)
+
+            MIGRATIONS[branch]['revision'] = revision
+            MIGRATIONS[branch]['head'] = head
+
+    module.exit_json(changed=state_change,
+                     ansible_facts={'neutron_migrations': MIGRATIONS})
+
+if __name__ == '__main__':
+    main()
