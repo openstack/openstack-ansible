@@ -50,6 +50,9 @@
         search_regex: "OpenSSH"
         host: "{{ ansible_ssh_host }}"
       delegate_to: "{{ physical_host }}"
+      register: ssh_wait_check
+      until: ssh_wait_check|success
+      retries: 3
       tags:
         - ssh-wait
     - name: Sort the rabbitmq servers
