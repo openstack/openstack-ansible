@@ -13,6 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- name: Make haproxy bindable on non local addresses
+  sysctl:
+    name: net.ipv4.ip_nonlocal_bind
+    value: 1
+    sysctl_set: yes
+    state: present
+  when: haproxy_bind_on_non_local | bool
+
 - name: Drop base haproxy config
   template:
     src: "{{ item }}"
