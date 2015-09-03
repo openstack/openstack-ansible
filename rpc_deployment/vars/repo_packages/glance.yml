@@ -21,7 +21,7 @@ repo_path: "{{ repo_package_name }}_{{ git_install_branch | replace('/', '_') }}
 git_repo: https://github.com/openstack/glance
 git_fallback_repo: https://git.openstack.org/openstack/glance
 git_dest: "/opt/{{ repo_path }}"
-git_install_branch: c4a1f064a470db9d82e0a7441148e4c8c8633dfa # HEAD of "stable/juno" as of 26.08.2015
+git_install_branch: c4a1f064a470db9d82e0a7441148e4c8c8633dfa # HEAD of "stable/juno" as of 03.09.2015
 git_etc_example: etc/
 
 pip_wheel_name: glance
