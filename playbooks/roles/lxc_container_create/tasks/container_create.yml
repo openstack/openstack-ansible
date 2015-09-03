@@ -190,6 +190,34 @@
   tags:
     - lxc-container-networks
 
+# Adds post-down and pre-start hooks
+- name: Drop veth cleanup script
+  template:
+    src: "veth-cleanup.sh.j2"
+    dest: "/var/lib/lxc/{{ inventory_hostname }}/veth-cleanup.sh"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+  delegate_to: "{{ physical_host }}"
+  tags:
+    - lxc-container-networks
+
+# This is being defined due to an issue with dangling veth pairs.
+#  TODO(someone) This should be removed once an upstream patch has
+#  been submitted to either the kernel or LXC to fix the veth issues.
+#  Container restart is not happening here because it's not needed.
+- name: Defines a pre and post hook script
+  lineinfile:
+    dest: "/var/lib/lxc/{{ inventory_hostname }}/config"
+    line: "{{ item }}"
+    backup: "true"
+  with_items:
+    - "lxc.hook.pre-start = /var/lib/lxc/{{ inventory_hostname }}/veth-cleanup.sh"
+    - "lxc.hook.post-stop = /var/lib/lxc/{{ inventory_hostname }}/veth-cleanup.sh"
+  delegate_to: "{{ physical_host }}"
+  tags:
+    - lxc-container-networks
+
 # Flush the handlers to ensure the container and networking is online.
 - meta: flush_handlers
 
