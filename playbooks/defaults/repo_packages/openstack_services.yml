@@ -28,6 +28,13 @@
 ### Before this is shipped all of these services should have a tag set as the branch,
 ### or have a comment / reason attached to them as to why a tag can not work.
 
+
+## Global Requirements
+requirements_git_repo: https://git.openstack.org/openstack/requirements
+requirements_git_install_branch: 2a6b64eeee05933f3719ab50e8b6d2b8e0b13e99 # HEAD of "master" as of 15.08.2015
+requirements_git_dest: "/opt/requirements_{{ requirements_git_install_branch | replace('/', '_') }}"
+
+
 ## Ceilometer service
 ceilometer_git_repo: https://git.openstack.org/openstack/ceilometer
 ceilometer_git_install_branch: 3c10d3876eac0b27e39c7d93e7d772a5614518ee # HEAD of "master" as of 15.08.2015
@@ -92,9 +99,3 @@ nova_git_dest: "/opt/nova_{{ nova_git_install_branch | replace('/', '_') }}"
 swift_git_repo: https://git.openstack.org/openstack/swift
 swift_git_install_branch: a2c0e6f68728f7837266f489098adf2cff78a500 # HEAD of "master" as of 15.08.2015
 swift_git_dest: "/opt/swift_{{ swift_git_install_branch | replace('/', '_') }}"
-
-
-## Tempest service
-tempest_git_repo: https://git.openstack.org/openstack/tempest
-tempest_git_install_branch: eb87b44c5af64784a3c5e343f6867b717f670dbd # HEAD of "master" as of 15.08.2015
-tempest_git_dest: "/opt/tempest_{{ tempest_git_install_branch | replace('/', '_') }}"
