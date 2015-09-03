@@ -30,25 +30,25 @@
 
 ## Ceilometer service
 ceilometer_git_repo: https://git.openstack.org/openstack/ceilometer
-ceilometer_git_install_branch: 97079b1970d66efdd088458f66eec49b87ebbc69 # HEAD of "stable/kilo" as of 26.08.2015
+ceilometer_git_install_branch: f45c941f1da5504ac3e3b1b0f04c8e3f08404144 # HEAD of "stable/kilo" as of 04.09.2015
 ceilometer_git_dest: "/opt/ceilometer_{{ceilometer_git_install_branch | replace('/', '_') }}"
 
 
 ## Cinder service
 cinder_git_repo: https://git.openstack.org/openstack/cinder
-cinder_git_install_branch: f303c9bd42e4422494161a854edbc4167795cfe6 # HEAD of "stable/kilo" as of 26.08.2015
+cinder_git_install_branch: 83f7328383b44dec4f5734657f2016f9cb756af1 # HEAD of "stable/kilo" as of 04.09.2015
 cinder_git_dest: "/opt/cinder_{{ cinder_git_install_branch | replace('/', '_') }}"
 
 
 ## Glance service
 glance_git_repo: https://git.openstack.org/openstack/glance
-glance_git_install_branch: 53fc470eb3713fc4455e53fd9de136940318a707 # HEAD of "stable/kilo" as of 26.08.2015
+glance_git_install_branch: f732d0c6f99c43a83107b17cf9700559dc5fa219 # HEAD of "stable/kilo" as of 04.09.2015
 glance_git_dest: "/opt/glance_{{ glance_git_install_branch | replace('/', '_') }}"
 
 
 ## Heat service
 heat_git_repo: https://git.openstack.org/openstack/heat
-heat_git_install_branch: 7454b7bac82e0fbf1ed39d0e70b09a253b88cec5 # HEAD of "stable/kilo" as of 26.08.2015
+heat_git_install_branch: baa4409b26a9728b81816e3da5a691c4d247426d # HEAD of "stable/kilo" as of 04.09.2015
 heat_git_dest: "/opt/heat_{{ heat_git_install_branch | replace('/', '_') }}"
 heat_repo_plugins:
   - { path: "contrib", package: "extraroute" }
@@ -56,48 +56,48 @@ heat_repo_plugins:
 
 ## Horizon service
 horizon_git_repo: https://git.openstack.org/openstack/horizon
-horizon_git_install_branch: 412bda2af8e2a22572ae410b3ecfd12503d08f1c # HEAD of "stable/kilo" as of 26.08.2015
+horizon_git_install_branch: 7c8fc8f1b08e4ecce1e481c23bb1ff8309ba928f # HEAD of "stable/kilo" as of 04.09.2015
 horizon_git_dest: "/opt/horizon_{{ horizon_git_install_branch | replace('/', '_') }}"
 
 
 ## Keystone service
 keystone_git_repo: https://git.openstack.org/openstack/keystone
-keystone_git_install_branch: ec59d49e5f4941fe1d5f08f3b4870ea601910128 # HEAD of "stable/kilo" as of 26.08.2015
+keystone_git_install_branch: f95aa6d35c1b9a30c41bd92cc53e4d37a33d7fdd # HEAD of "stable/kilo" as of 04.09.2015
 keystone_git_dest: "/opt/keystone_{{ keystone_git_install_branch | replace('/', '_') }}"
 
 
 ## Neutron service
 neutron_git_repo: https://git.openstack.org/openstack/neutron
-neutron_git_install_branch: 33f6620737311ed128949f8d422f6f35a3537e29 # HEAD of "stable/kilo" as of 26.08.2015
+neutron_git_install_branch: f50ef4afe0a5096301459ac2fc55adbea1e7e1c9 # HEAD of "stable/kilo" as of 04.09.2015
 neutron_git_dest: "/opt/neutron_{{ neutron_git_install_branch | replace('/', '_') }}"
 
 neutron_lbaas_git_repo: https://git.openstack.org/openstack/neutron-lbaas
-neutron_lbaas_git_install_branch: ade6d882af0ae1d43fb8d1b376bf4453f2a3b798 # HEAD of "stable/kilo" as of 26.08.2015
+neutron_lbaas_git_install_branch: 3f0bd37bc863d299ec8b8600f7ab6cad990c8b37 # HEAD of "stable/kilo" as of 04.09.2015
 neutron_lbaas_git_dest: "/opt/neutron_lbaas_{{ neutron_lbaas_git_install_branch | replace('/', '_') }}"
 
 neutron_vpnaas_git_repo: https://git.openstack.org/openstack/neutron-vpnaas
-neutron_vpnaas_git_install_branch: 4d9563640923833a0956dfc1cf4562ce5fd1dbf3 # HEAD of "stable/kilo" as of 26.08.2015
+neutron_vpnaas_git_install_branch: 9bfd1c8c3b1ce568957b50f34269028171a50407 # HEAD of "stable/kilo" as of 04.09.2015
 neutron_vpnaas_git_dest: "/opt/neutron_vpnaas_{{ neutron_vpnaas_git_install_branch | replace('/', '_') }}"
 
 neutron_fwaas_git_repo: https://git.openstack.org/openstack/neutron-fwaas
-neutron_fwaas_git_install_branch: 859df990fcdb1299a1ca62d18c7e4d92914debff # HEAD of "stable/kilo" as of 26.08.2015
+neutron_fwaas_git_install_branch: a7bb909fdfde64bb41df3252f54b26a5847ac949 # HEAD of "stable/kilo" as of 04.09.2015
 neutron_fwaas_git_dest: "/opt/neutron_fwaas_{{ neutron_fwaas_git_install_branch | replace('/', '_') }}"
 
 
 ## Nova service
 nova_git_repo: https://git.openstack.org/openstack/nova
-nova_git_install_branch: 3828368ca7be35a6d14b60c9b723f2bf67e3c97c # HEAD of "stable/kilo" as of 26.08.2015
+nova_git_install_branch: 6667f70e81bad25aa12e384ce8e4dce59427b095 # HEAD of "stable/kilo" as of 04.09.2015
 nova_git_dest: "/opt/nova_{{ nova_git_install_branch | replace('/', '_') }}"
 
 
 ## Swift service
 swift_git_repo: https://git.openstack.org/openstack/swift
-swift_git_install_branch: 89ceceae4c34d9bfdc8c64774571043386f5456a # HEAD of "stable/kilo" as of 26.08.2015
+swift_git_install_branch: 410778b86a49702f80b734bdbf2480b86db342e2 # HEAD of "stable/kilo" as of 04.09.2015
 swift_git_dest: "/opt/swift_{{ swift_git_install_branch | replace('/', '_') }}"
 
 
 ## Tempest service
 tempest_git_repo: https://git.openstack.org/openstack/tempest
-tempest_git_install_branch: d95efa9be25ab6a6b6daaf9971877978713f2ea0 # HEAD of "master" as of 26.08.2015
+tempest_git_install_branch: 0ed657e83347b15137d209c7eac0feabf2424dd9 # HEAD of "master" as of 04.09.2015
 tempest_git_install_fragments: "yaprtignorerequirements=true"
 tempest_git_dest: "/opt/tempest_{{ tempest_git_install_branch | replace('/', '_') }}"

@@ -26,18 +26,18 @@
 
 ## Glance store library
 glancestore_git_repo: https://git.openstack.org/openstack/glance_store
-glancestore_git_install_branch: d9b197b6d63e0cd2b2458c6a2a9c9701ef8b383b # HEAD of "stable/kilo" as of 26.08.2015
+glancestore_git_install_branch: d32514964553d5e782ee18c2e5b724fc832b809b # HEAD of "stable/kilo" as of 04.09.2015
 glancestore_git_dest: "/opt/glancestore_{{ glancestore_git_repo | replace('/', '_') }}"
 
 
 ## Global Requirements
 requirements_git_repo: https://git.openstack.org/openstack/requirements
-requirements_git_install_branch: 5cf3730a5e2a15684666f532fb4890a1fd495032 # HEAD of "stable/kilo" as of 26.08.2015
+requirements_git_install_branch: 4c08ed336fdb79a7e4aaa09c1f9b2a5cc3e4f940 # HEAD of "stable/kilo" as of 04.09.2015
 requirements_git_dest: "/opt/requirements_{{ requirements_git_install_branch | replace('/', '_') }}"
 
 
 ## Tempest Library
 tempestlib_git_repo: https://git.openstack.org/openstack/tempest-lib
-tempestlib_git_install_branch: 61b7ffcaf84dac5be16acbda2878d2d7811507f1 # HEAD of "master" as of 26.08.2015
+tempestlib_git_install_branch: 2ed10d21738d705132390f6a821d7452940577a3 # HEAD of "master" as of 04.09.2015
 tempestlib_git_install_fragments: "yaprtignorerequirements=true"
 tempestlib_git_dest: "/opt/tempest-lib_{{ requirements_git_install_branch | replace('/', '_') }}"
