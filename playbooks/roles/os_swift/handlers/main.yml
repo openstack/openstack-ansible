@@ -62,21 +62,18 @@
     name: "rsyslog"
     state: "restarted"
 
-- name: Restart rsync service
+- name: Ensure rsync service stopped
   service:
     name: "rsync"
     state: "stopped"
-    pattern: "rsync"
   register: service_restart
   failed_when: "'msg' in service_restart and 'FAIL' in service_restart.msg|upper"
   register: service_restart
   until: add_service|success
   retries: 3
   delay: 2
-  notify: Ensure rsync service running
 
 - name: Ensure rsync service running
   service:
     name: "rsync"
     state: "started"
-    pattern: "rsync"

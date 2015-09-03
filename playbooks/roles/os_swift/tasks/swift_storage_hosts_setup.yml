@@ -38,14 +38,14 @@
     owner: "root"
     group: "root"
     mode: "0644"
-  notify: Restart rsync service
+  notify: ["Ensure rsync service stopped", "Ensure rsync service running"]
 
 - name: "Enable rsync in defaults"
   lineinfile:
     dest: "/etc/default/rsync"
     line: "RSYNC_ENABLE=true"
     regexp: "^RSYNC_ENABLE*"
-  notify: Restart rsync service
+  notify: ["Ensure rsync service stopped", "Ensure rsync service running"]
 
 # We need the location of swift-recon-cron
 - name: "Get location of swift-recon-cron"
