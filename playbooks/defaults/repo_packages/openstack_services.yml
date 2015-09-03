@@ -28,6 +28,13 @@
 ### Before this is shipped all of these services should have a tag set as the branch,
 ### or have a comment / reason attached to them as to why a tag can not work.
 
+
+## Global Requirements
+requirements_git_repo: https://git.openstack.org/openstack/requirements
+requirements_git_install_branch: 4c08ed336fdb79a7e4aaa09c1f9b2a5cc3e4f940 # HEAD of "stable/kilo" as of 04.09.2015
+requirements_git_dest: "/opt/requirements_{{ requirements_git_install_branch | replace('/', '_') }}"
+
+
 ## Ceilometer service
 ceilometer_git_repo: https://git.openstack.org/openstack/ceilometer
 ceilometer_git_install_branch: f45c941f1da5504ac3e3b1b0f04c8e3f08404144 # HEAD of "stable/kilo" as of 04.09.2015
@@ -94,10 +101,3 @@ nova_git_dest: "/opt/nova_{{ nova_git_install_branch | replace('/', '_') }}"
 swift_git_repo: https://git.openstack.org/openstack/swift
 swift_git_install_branch: 410778b86a49702f80b734bdbf2480b86db342e2 # HEAD of "stable/kilo" as of 04.09.2015
 swift_git_dest: "/opt/swift_{{ swift_git_install_branch | replace('/', '_') }}"
-
-
-## Tempest service
-tempest_git_repo: https://git.openstack.org/openstack/tempest
-tempest_git_install_branch: 0ed657e83347b15137d209c7eac0feabf2424dd9 # HEAD of "master" as of 04.09.2015
-tempest_git_install_fragments: "yaprtignorerequirements=true"
-tempest_git_dest: "/opt/tempest_{{ tempest_git_install_branch | replace('/', '_') }}"
