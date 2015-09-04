@@ -31,71 +31,71 @@
 
 ## Global Requirements
 requirements_git_repo: https://git.openstack.org/openstack/requirements
-requirements_git_install_branch: 2a6b64eeee05933f3719ab50e8b6d2b8e0b13e99 # HEAD of "master" as of 15.08.2015
+requirements_git_install_branch: 9c6d8c7459719f7accd3444dbc713b573b7359d0 # HEAD of "master" as of 04.09.2015
 requirements_git_dest: "/opt/requirements_{{ requirements_git_install_branch | replace('/', '_') }}"
 
 
 ## Ceilometer service
 ceilometer_git_repo: https://git.openstack.org/openstack/ceilometer
-ceilometer_git_install_branch: 3c10d3876eac0b27e39c7d93e7d772a5614518ee # HEAD of "master" as of 15.08.2015
+ceilometer_git_install_branch: 5.0.0.0b3 # liberty-3
 ceilometer_git_dest: "/opt/ceilometer_{{ceilometer_git_install_branch | replace('/', '_') }}"
 
 
 ## Cinder service
 cinder_git_repo: https://git.openstack.org/openstack/cinder
-cinder_git_install_branch: 24025cfd3dddf46035571fdc2e173762a95e1685 # HEAD of "master" as of 15.08.2015
+cinder_git_install_branch: 7.0.0.0b3 # liberty-3
 cinder_git_dest: "/opt/cinder_{{ cinder_git_install_branch | replace('/', '_') }}"
 
 
 ## Glance service
 glance_git_repo: https://git.openstack.org/openstack/glance
-glance_git_install_branch: 667331b666ff29e38ac74c86bcd87640288d4c12 # HEAD of "master" as of 15.08.2015
+glance_git_install_branch: 11.0.0.0b3 # liberty-3
 glance_git_dest: "/opt/glance_{{ glance_git_install_branch | replace('/', '_') }}"
 
 
 ## Heat service
 heat_git_repo: https://git.openstack.org/openstack/heat
-heat_git_install_branch: a21614438c9ac4b0db05268c7f580f40bfaac264 # HEAD of "master" as of 15.08.2015
+heat_git_install_branch: 5.0.0.0b3 # liberty-3
 heat_git_dest: "/opt/heat_{{ heat_git_install_branch | replace('/', '_') }}"
 
 
 ## Horizon service
 horizon_git_repo: https://git.openstack.org/openstack/horizon
-horizon_git_install_branch: b7ad8c978a9199ba48cd07fd9a3ce0402feadfcd # HEAD of "master" as of 15.08.2015
+horizon_git_install_branch: 8.0.0.0b3 # liberty-3
 horizon_git_dest: "/opt/horizon_{{ horizon_git_install_branch | replace('/', '_') }}"
 
 
 ## Keystone service
 keystone_git_repo: https://git.openstack.org/openstack/keystone
-keystone_git_install_branch: a6a39608766d933614ba6e5c9c05956abd574fa0 # HEAD of "master" as of 15.08.2015
+keystone_git_install_branch: 8.0.0.0b3 # liberty-3
 keystone_git_dest: "/opt/keystone_{{ keystone_git_install_branch | replace('/', '_') }}"
 
 
 ## Neutron service
 neutron_git_repo: https://git.openstack.org/openstack/neutron
-neutron_git_install_branch: 72f9f09398802f2187c8cffd777b4de2ae71de77 # HEAD of "master" as of 01.09.2015
+neutron_git_install_branch: 7.0.0.0b3 # liberty-3
 neutron_git_dest: "/opt/neutron_{{ neutron_git_install_branch | replace('/', '_') }}"
 
 neutron_lbaas_git_repo: https://git.openstack.org/openstack/neutron-lbaas
-neutron_lbaas_git_install_branch: e9edf5f8ab5df389ec836a386ae1c2b28999136e # HEAD of "master" as of 15.08.2015
+neutron_lbaas_git_install_branch: 7.0.0.0b3 # liberty-3
 neutron_lbaas_git_dest: "/opt/neutron_lbaas_{{ neutron_lbaas_git_install_branch | replace('/', '_') }}"
 
 neutron_vpnaas_git_repo: https://git.openstack.org/openstack/neutron-vpnaas
-neutron_vpnaas_git_install_branch: 86f6f88970f77088601004f330893dc1d090b2ed # HEAD of "master" as of 15.08.2015
+neutron_vpnaas_git_install_branch: 7.0.0.0b3 # liberty-3
 neutron_vpnaas_git_dest: "/opt/neutron_vpnaas_{{ neutron_vpnaas_git_install_branch | replace('/', '_') }}"
 
 neutron_fwaas_git_repo: https://git.openstack.org/openstack/neutron-fwaas
-neutron_fwaas_git_install_branch: e04ba8a68ba931729053e4f8ada251464057fe6f # HEAD of "master" as of 15.08.2015
+neutron_fwaas_git_install_branch: 7.0.0.0b3 # liberty-3
 neutron_fwaas_git_dest: "/opt/neutron_fwaas_{{ neutron_fwaas_git_install_branch | replace('/', '_') }}"
 
 
 ## Nova service
 nova_git_repo: https://git.openstack.org/openstack/nova
-nova_git_install_branch: 003a2f6fcb3295d15d61825bfe6fa7e07033693a # HEAD of "master" as of 15.08.2015
+nova_git_install_branch: 12.0.0.0b3 # liberty-3
 nova_git_dest: "/opt/nova_{{ nova_git_install_branch | replace('/', '_') }}"
 
 
 ## Swift service
 swift_git_repo: https://git.openstack.org/openstack/swift
-swift_git_install_branch: a2c0e6f68728f7837266f489098adf2cff78a500 # HEAD of "master" as of 15.08.2015
+swift_git_install_branch: 2.4.0 # liberty-3
 swift_git_dest: "/opt/swift_{{ swift_git_install_branch | replace('/', '_') }}"
