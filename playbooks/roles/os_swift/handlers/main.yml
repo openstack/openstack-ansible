@@ -68,7 +68,6 @@
     state: "stopped"
   register: service_restart
   failed_when: "'msg' in service_restart and 'FAIL' in service_restart.msg|upper"
-  register: service_restart
   until: add_service|success
   retries: 3
   delay: 2
