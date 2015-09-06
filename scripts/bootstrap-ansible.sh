@@ -20,7 +20,7 @@ set -e -u -x
 
 
 ## Vars ----------------------------------------------------------------------
-export ANSIBLE_GIT_RELEASE=${ANSIBLE_GIT_RELEASE:-"v1.9.2-1"}
+export ANSIBLE_GIT_RELEASE=${ANSIBLE_GIT_RELEASE:-"v1.9.3-1"}
 export ANSIBLE_GIT_REPO=${ANSIBLE_GIT_REPO:-"https://github.com/ansible/ansible"}
 export ANSIBLE_ROLE_FILE=${ANSIBLE_ROLE_FILE:-"ansible-role-requirements.yml"}
 export ANSIBLE_WORKING_DIR=${ANSIBLE_WORKING_DIR:-/opt/ansible_${ANSIBLE_GIT_RELEASE}}
