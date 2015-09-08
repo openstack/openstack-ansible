@@ -20,5 +20,6 @@
     - init_script
   vars_files:
     - vars/openstack_service_vars/cinder_backup.yml
+    - inventory/group_vars/cinder_all.yml
   handlers:
     - include: handlers/services.yml

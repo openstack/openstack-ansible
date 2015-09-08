@@ -32,5 +32,6 @@
     - vars/config_vars/container_config_cinder_volume.yml
     - vars/openstack_service_vars/cinder_volume.yml
     - vars/repo_packages/cinder.yml
+    - inventory/group_vars/cinder_all.yml
   handlers:
     - include: handlers/services.yml
