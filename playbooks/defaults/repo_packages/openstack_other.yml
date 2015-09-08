@@ -25,13 +25,7 @@
 ##     package should be one long name with no additional `_` separating it.
 
 
-## Glance store library
-glancestore_git_repo: https://git.openstack.org/openstack/glance_store
-glancestore_git_install_branch: 425360035676d4bb88b8b5eea3d7ccabb65e850a # HEAD of "master" as of 15.08.2015
-glancestore_git_dest: "/opt/glancestore_{{ glancestore_git_repo | replace('/', '_') }}"
-
-
-## Global Requirements
-requirements_git_repo: https://git.openstack.org/openstack/requirements
-requirements_git_install_branch: 2a6b64eeee05933f3719ab50e8b6d2b8e0b13e99 # HEAD of "master" as of 15.08.2015
-requirements_git_dest: "/opt/requirements_{{ requirements_git_install_branch | replace('/', '_') }}"
+## Tempest service
+tempest_git_repo: https://git.openstack.org/openstack/tempest
+tempest_git_install_branch: eb87b44c5af64784a3c5e343f6867b717f670dbd # HEAD of "master" as of 15.08.2015
+tempest_git_dest: "/opt/tempest_{{ tempest_git_install_branch | replace('/', '_') }}"
