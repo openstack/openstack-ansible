@@ -31,6 +31,8 @@ container_lvm_fssize: 5GB
 core_plugin: "{{ neutron_plugins[neutron_plugin_type].plugin_core }}"
 interface_driver: neutron.agent.linux.interface.BridgeInterfaceDriver
 metering_driver: neutron.services.metering.drivers.iptables.iptables_driver.IptablesMeteringDriver
+neutron_service_port: 9696
+neutron_service_proto: http
 
 service_plugins:
   - neutron.services.l3_router.l3_router_plugin.L3RouterPlugin

@@ -23,6 +23,9 @@ service_description: "Nova Compute Service V3"
 service_password: "{{ nova_v3_service_password }}"
 
 ## V3 API Endpoints 
-service_publicurl: "http://{{ external_vip_address }}:8774/v3"
-service_adminurl: "http://{{ internal_vip_address }}:8774/v3"
-service_internalurl: "http://{{ internal_vip_address }}:8774/v3"
+nova_v3_service_publicuri_proto: "{{ openstack_service_publicuri_proto | default(nova_v3_service_proto) }}"
+nova_v3_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(nova_v3_service_proto) }}"
+nova_v3_service_internaluri_proto: "{{ openstack_service_internaluri_proto | default(nova_v3_service_proto) }}"
+service_publicurl: "{{ nova_v3_service_publicuri_proto }}://{{ external_vip_address }}:{{ nova_v3_service_port }}/v3"
+service_adminurl: "{{ nova_v3_service_adminuri_proto }}://{{ internal_vip_address }}:{{ nova_v3_service_port }}/v3"
+service_internalurl: "{{ nova_v3_service_internaluri_proto }}://{{ internal_vip_address }}:{{ nova_v3_service_port }}/v3"

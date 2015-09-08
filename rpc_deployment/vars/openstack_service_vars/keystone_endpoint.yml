@@ -18,6 +18,6 @@ service_type: identity
 service_description: "Keystone Identity Service"
 service_password: "{{ keystone_service_password }}"
 
-service_publicurl: "http://{{ external_vip_address }}:{{ service_port }}/v2.0"
-service_adminurl: "http://{{ internal_vip_address }}:{{ admin_port }}/v2.0"
-service_internalurl: "http://{{ internal_vip_address }}:{{ service_port }}/v2.0"
+service_publicurl: "{{ keystone_service_proto }}://{{ external_vip_address }}:{{ keystone_service_port }}/v2.0"
+service_adminurl: "{{ keystone_service_proto }}://{{ internal_vip_address }}:{{ keystone_admin_port }}/v2.0"
+service_internalurl: "{{ keystone_service_proto }}://{{ internal_vip_address }}:{{ keystone_service_port }}/v2.0"

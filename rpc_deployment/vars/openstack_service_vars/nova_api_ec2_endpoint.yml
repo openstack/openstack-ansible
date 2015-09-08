@@ -19,6 +19,9 @@ service_type: ec2
 service_description: "EC2 Compatibility Layer"
 service_password: "{{ nova_ec2_service_password }}"
 
-service_publicurl: "http://{{ external_vip_address }}:8773/services/Cloud"
-service_adminurl: "http://{{ internal_vip_address }}:8773/services/Admin"
-service_internalurl: "http://{{ internal_vip_address }}:8773/services/Cloud"
+nova_ec2_service_publicuri_proto: "{{ openstack_service_publicuri_proto | default(nova_ec2_service_proto) }}"
+nova_ec2_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(nova_ec2_service_proto) }}"
+nova_ec2_service_internaluri_proto: "{{ openstack_service_internaluri_proto | default(nova_ec2_service_proto) }}"
+service_publicurl: "{{ nova_ec2_service_publicuri_proto }}://{{ external_vip_address }}:{{ nova_ec2_service_port }}/services/Cloud"
+service_adminurl: "{{ nova_ec2_service_adminuri_proto }}://{{ internal_vip_address }}:{{ nova_ec2_service_port }}/services/Admin"
+service_internalurl: "{{ nova_ec2_service_internaluri_proto }}://{{ internal_vip_address }}:{{ nova_ec2_service_port }}/services/Cloud"

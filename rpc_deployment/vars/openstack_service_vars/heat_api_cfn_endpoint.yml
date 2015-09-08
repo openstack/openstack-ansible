@@ -18,6 +18,9 @@ service_type: cloudformation
 service_description: "Heat CloudFormation Service"
 service_password: "{{ heat_cfn_service_password }}"
 
-service_publicurl: "http://{{ external_vip_address }}:8000/v1"
-service_adminurl: "http://{{ internal_vip_address }}:8000/v1"
-service_internalurl: "http://{{ internal_vip_address }}:8000/v1"
+heat_cfn_service_publicuri_proto: "{{ openstack_service_publicuri_proto | default(heat_cfn_service_proto) }}"
+heat_cfn_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(heat_cfn_service_proto) }}"
+heat_cfn_service_internaluri_proto: "{{ openstack_service_internaluri_proto | default(heat_cfn_service_proto) }}"
+service_publicurl: "{{ heat_cfn_service_publicuri_proto }}://{{ external_vip_address }}:{{ heat_cfn_service_port }}/v1"
+service_adminurl: "{{ heat_cfn_service_adminuri_proto }}://{{ internal_vip_address }}:{{ heat_cfn_service_port }}/v1"
+service_internalurl: "{{ heat_cfn_service_internaluri_proto }}://{{ internal_vip_address }}:{{ heat_cfn_service_port }}/v1"

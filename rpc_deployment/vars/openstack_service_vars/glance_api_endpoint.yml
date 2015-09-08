@@ -18,6 +18,9 @@ service_type: image
 service_description: "Glance Image Service"
 service_password: "{{ glance_service_password }}"
   
-service_publicurl: "http://{{ external_vip_address }}:9292"
-service_adminurl: "http://{{ internal_vip_address }}:9292"
-service_internalurl: "http://{{ internal_vip_address }}:9292"
+glance_service_publicuri_proto: "{{ openstack_service_publicuri_proto | default(glance_service_proto) }}"
+glance_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(glance_service_proto) }}"
+glance_service_internaluri_proto: "{{ openstack_service_internaluri_proto | default(glance_service_proto) }}"
+service_publicurl: "{{ glance_service_publicuri_proto  }}://{{ external_vip_address }}:{{ glance_service_port }}"
+service_adminurl: "{{ glance_service_adminuri_proto  }}://{{ internal_vip_address }}:{{ glance_service_port }}"
+service_internalurl: "{{ glance_service_internaluri_proto  }}://{{ internal_vip_address }}:{{ glance_service_port }}"

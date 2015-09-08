@@ -17,6 +17,9 @@ service_type: object-store
 service_description: "Object Storage Service"
 service_password: "{{ swift_service_password }}"
 
-service_publicurl: "http://{{ external_vip_address }}:{{ swift_proxy_port }}/v1/AUTH_%(tenant_id)s"
-service_adminurl: "http://{{ internal_vip_address }}:{{ swift_proxy_port }}/v1/AUTH_%(tenant_id)s"
-service_internalurl: "http://{{ internal_vip_address }}:{{ swift_proxy_port }}/v1/AUTH_%(tenant_id)s"
+swift_service_publicuri_proto: "{{ openstack_service_publicuri_proto | default(swift_service_proto) }}"
+swift_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(swift_service_proto) }}"
+swift_service_internaluri_proto: "{{ openstack_service_internaluri_proto | default(swift_service_proto) }}"
+service_publicurl: "{{ swift_service_publicuri_proto }}://{{ external_vip_address }}:{{ swift_proxy_port }}/v1/AUTH_%(tenant_id)s"
+service_adminurl: "{{ swift_service_adminuri_proto }}://{{ internal_vip_address }}:{{ swift_proxy_port }}/v1/AUTH_%(tenant_id)s"
+service_internalurl: "{{ swift_service_internaluri_proto }}://{{ internal_vip_address }}:{{ swift_proxy_port }}/v1/AUTH_%(tenant_id)s"

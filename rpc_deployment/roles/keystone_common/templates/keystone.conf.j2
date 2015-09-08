@@ -4,13 +4,13 @@ debug = {{ debug }}
 admin_token = {{ auth_admin_token }}
 bind_host = 0.0.0.0
 # The port number which the public service listens on
-public_port = {{ auth_public_port }}
+public_port = {{ keystone_service_port }}
 # The port number which the public admin listens on
-admin_port = {{ auth_port }}
+admin_port = {{ keystone_admin_port }}
 {% if keystone_public_endpoint is defined %}
 public_endpoint = {{ keystone_public_endpoint }}
 {% endif %}
-admin_endpoint = {{ auth_protocol }}://{{ internal_vip_address }}:{{ auth_port }}/
+admin_endpoint = {{ keystone_service_proto }}://{{ internal_vip_address }}:{{ keystone_admin_port }}/
 log_file = keystone.log
 log_dir = /var/log/keystone
 rabbit_hosts = {{ rabbit_hosts }}
