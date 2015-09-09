@@ -55,16 +55,31 @@ ln -sf /openstack/log $(dirname ${0})/../logs
 mkdir -p /openstack/log/ansible-logging
 sed -i '/\[defaults\]/a log_path = /openstack/log/ansible-logging/ansible.log' $(dirname ${0})/../playbooks/ansible.cfg
 
-# Ubuntu Repository Determination (based on provider information in OpenStack-CI)
+# Adjust settings based on the Cloud Provider info in OpenStack-CI
 if [ -fs /etc/nodepool/provider ]; then
   source /etc/nodepool/provider
+
   if [[ ${NODEPOOL_PROVIDER} == "rax"* ]]; then
+
+    # Set the Ubuntu Repository to the RAX Mirror
     export UBUNTU_REPO="http://mirror.rackspace.com/ubuntu"
     export UBUNTU_SEC_REPO="${UBUNTU_REPO}"
+
   elif [[ ${NODEPOOL_PROVIDER} == "hpcloud"* ]]; then
+
+    # Set the Ubuntu Repository to the HP Cloud Mirror
     export UBUNTU_REPO="http://${NODEPOOL_AZ}.clouds.archive.ubuntu.com/ubuntu"
     export UBUNTU_SEC_REPO="${UBUNTU_REPO}"
+
   fi
+
+  # Reduce container affinities as Liberty appears to consume
+  #  a greater volume of resources, causing greater numbers
+  #  of failures with the default affinities.
+  for container_type in rabbit_mq repo galera horizon keystone; do
+    export "NUM_${container_type}_CONTAINER=1"
+  done
+
 fi
 
 # Enable detailed task profiling
