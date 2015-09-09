@@ -13,13 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Obtain the Systems SSH-Key
-  set_fact:
-    lxc_container_ssh_key: "{{ lookup('file', '/root/.ssh/id_rsa.pub') }}"
-  when: >
-    lxc_container_ssh_key is not defined
-  delegate_to: "{{ physical_host }}"
-
 - name: Check for lxc volume group
   shell: "(which vgs > /dev/null && vgs | grep -o '{{ lxc_container_vg_name }}') || false"
   register: vg_result
@@ -105,60 +98,6 @@
   delegate_to: "{{ physical_host }}"
   tags:
     - lxc-container-service-config
-
-- name: Setup basic container ssh
-  lxc_container:
-    name: "{{ inventory_hostname }}"
-    container_command: |
-      # Enable root ssh login
-      if grep -q "^PermitRootLogin" /etc/ssh/sshd_config;then
-        sed -i 's/PermitRootLogin.*/PermitRootLogin\ yes/g' /etc/ssh/sshd_config
-      else
-        echo 'PermitRootLogin yes' | tee -a /etc/ssh/sshd_config
-      fi
-      # Disable ssh password auth
-      if grep -q "^PasswordAuthentication" /etc/ssh/sshd_config;then
-        sed -i 's/PasswordAuthentication.*/PasswordAuthentication\ no/g' /etc/ssh/sshd_config
-      else
-        echo 'PasswordAuthentication no' | tee -a /etc/ssh/sshd_config
-      fi
-      # Disable UseDNS in ssh
-      if grep -q "^UseDNS" /etc/ssh/sshd_config;then
-        sed -i 's/UseDNS.*/UseDNS\ no/g' /etc/ssh/sshd_config
-      else
-        echo 'UseDNS no' | tee -a /etc/ssh/sshd_config
-      fi
-      # Disable x11 forwarding in ssh
-      if grep -q "^X11Forwarding" /etc/ssh/sshd_config;then
-        sed -i 's/X11Forwarding.*/X11Forwarding\ no/g' /etc/ssh/sshd_config
-      else
-        echo 'X11Forwarding no' | tee -a /etc/ssh/sshd_config
-      fi
-      # Enable tcp keepalive in ssh
-      if grep -q "^TCPKeepAlive" /etc/ssh/sshd_config;then
-        sed -i 's/TCPKeepAlive.*/TCPKeepAlive\ yes/g' /etc/ssh/sshd_config
-      else
-        echo 'TCPKeepAlive yes' | tee -a /etc/ssh/sshd_config
-      fi
-      service ssh restart
-  with_dict: container_networks
-  delegate_to: "{{ physical_host }}"
-  tags:
-    - lxc-container-ssh-config
-
-- name: Create ssh key entry
-  lxc_container:
-    name: "{{ inventory_hostname }}"
-    container_command: |
-      mkdir -p ~/.ssh/
-      if [ ! -f "~/.ssh/authorized_keys" ];then
-        touch ~/.ssh/authorized_keys
-      fi
-      grep '{{ lxc_container_ssh_key }}' ~/.ssh/authorized_keys || echo '{{ lxc_container_ssh_key }}' | tee -a ~/.ssh/authorized_keys
-  with_dict: container_networks
-  delegate_to: "{{ physical_host }}"
-  tags:
-    - lxc-container-key
 
 - name: Container network interfaces
   lxc_container:
@@ -273,58 +212,3 @@
   delegate_to: "{{ physical_host }}"
   tags:
     - lxc-container-proxy
-
-# Uses lxc_container because the repos need to be available before python2.7 is installed
-#  and python2.7 may not be installed at this point.
-- name: Create main apt repos
-  lxc_container:
-    name: "{{ inventory_hostname }}"
-    container_command: |
-      # Configure defined apt-repos
-      rm /etc/apt/sources.list
-      echo '# Sources created by the ansible' | tee /etc/apt/sources.list
-      echo 'deb {{ lxc_container_template_main_apt_repo }} {{ lxc_container_release }} main restricted universe multiverse' | tee -a /etc/apt/sources.list
-      echo 'deb {{ lxc_container_template_main_apt_repo }} {{ lxc_container_release }}-updates main restricted universe multiverse' | tee -a /etc/apt/sources.list
-      echo 'deb {{ lxc_container_template_main_apt_repo }} {{ lxc_container_release }}-backports main restricted universe multiverse' | tee -a /etc/apt/sources.list
-      echo 'deb {{ lxc_container_template_security_apt_repo }} {{ lxc_container_release }}-security main restricted universe multiverse' | tee -a /etc/apt/sources.list
-      for i in {1..3};do
-        timeout 60 sh -c "/usr/bin/apt-get update && /usr/bin/apt-key update"
-        if [ "$?" == 0 ];then
-          break
-        else
-          if [ ! "$i" == "3" ];then
-            echo "Failure to update on attempt $i retrying..."
-            /usr/bin/apt-get clean
-            sleep 2
-          else
-            echo 'Failed to update'
-            exit 99
-          fi
-        fi
-      done
-  delegate_to: "{{ physical_host }}"
-  tags:
-    - lxc-container-sources
-
-# Update the container and ensure that its all patched. This is using lxc_container
-#  because python2.7 may not be installed at this point.
-- name: Ensure container is updated
-  lxc_container:
-    name: "{{ inventory_hostname }}"
-    container_command: |
-      apt-get -y upgrade
-  delegate_to: "{{ physical_host }}"
-  tags:
-    - lxc-container-upgrade
-
-# Uses lxc_container because python2.7 may not be installed within the container at this point.
-- name: Ensure python is installed and is default 2.7
-  lxc_container:
-    name: "{{ inventory_hostname }}"
-    container_command: |
-      apt-get -y install python2.7
-      rm /usr/bin/python
-      ln -s /usr/bin/python2.7 /usr/bin/python
-  delegate_to: "{{ physical_host }}"
-  tags:
-    - lxc-container-python
