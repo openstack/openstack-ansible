@@ -191,9 +191,12 @@ run_validation = {{ tempest_compute_run_ssh }}
 
 [volume]
 endpoint_type = internalURL
-backend1_name = lvm
+# NOTE: These backends are only tested when multi_backend is enabled
+backend1_name = {{ tempest_volume_backend1_name }}
+backend2_name = {{ tempest_volume_backend2_name }}
 
 
 [volume-feature-enabled]
 backup = {{ tempest_volume_backup_enabled }}
 snapshot = false
+multi_backend = {{ tempest_volume_multi_backend_enabled }}
