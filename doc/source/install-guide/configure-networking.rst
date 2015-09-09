@@ -45,8 +45,8 @@ configure target host networking.
    should include all IP addresses manually configured on target hosts
    in the `the section called "Configuring the
    network" <sec-hosts-target-network.html>`__, internal load balancers,
-   service network bridge, and any other devices to avoid conflicts
-   during the automatic IP address generation process.
+   service network bridge, deployment hosts and any other devices
+   to avoid conflicts during the automatic IP address generation process.
 
    Add individual IP addresses on separate lines. For example, to
    prevent use of 203.0.113.101 and 201:
