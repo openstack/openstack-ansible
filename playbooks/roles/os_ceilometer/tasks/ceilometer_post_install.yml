@@ -14,33 +14,41 @@
 # limitations under the License.
 
 - name: Copy ceilometer config
-  template:
+  config_template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     owner: "{{ ceilometer_system_user_name }}"
     group: "{{ ceilometer_system_group_name }}"
+    mode: "0644"
+    config_overrides: "{{ item.config_overrides }}"
+    config_type: "{{ item.config_type }}"
   with_items:
-    - { src: "ceilometer.conf.j2", dest: "/etc/ceilometer/ceilometer.conf" }
-    - { src: "api_paste.ini.j2", dest: "/etc/ceilometer/api_paste.ini" }
-    - { src: "event_pipeline.yaml.j2", dest: "/etc/ceilometer/event_pipeline.yaml" }
-    - { src: "event_definitions.yaml.j2", dest: "/etc/ceilometer/event_definitions.yaml" }
-    - { src: "pipeline.yaml.j2", dest: "/etc/ceilometer/pipeline.yaml" }
+    - src: "ceilometer.conf.j2"
+      dest: "/etc/ceilometer/ceilometer.conf"
+      config_overrides: "{{ ceilometer_ceilometer_conf_overrides }}"
+      config_type: "ini"
+    - src: "api_paste.ini.j2"
+      dest: "/etc/ceilometer/api_paste.ini"
+      config_overrides: "{{ ceilometer_api_paste_ini_overrides }}"
+      config_type: "ini"
+    - src: "event_pipeline.yaml.j2"
+      dest: "/etc/ceilometer/event_pipeline.yaml"
+      config_overrides: "{{ ceilometer_event_pipeline_yaml_overrides }}"
+      config_type: "yaml"
+    - src: "event_definitions.yaml.j2"
+      dest: "/etc/ceilometer/event_definitions.yaml"
+      config_overrides: "{{ ceilometer_event_definitions_yaml_overrides }}"
+      config_type: "yaml"
+    - src: "pipeline.yaml.j2"
+      dest: "/etc/ceilometer/pipeline.yaml"
+      config_overrides: "{{ ceilometer_pipeline_yaml_overrides }}"
+      config_type: "yaml"
+    - src: "policy.json"
+      dest: "/etc/ceilometer/policy.json"
+      config_overrides: "{{ ceilometer_policy_overrides }}"
+      config_type: "json"
   notify: Restart ceilometer services
   tags:
     - ceilometer-config
     - ceilometer-post-install
 
-- name: Apply updates to policy file
-  config_template:
-    src: "policy.json"
-    dest: "/etc/ceilometer/policy.json"
-    owner: "{{ ceilometer_system_user_name }}"
-    group: "{{ ceilometer_system_group_name }}"
-    mode: "0644"
-    config_overrides: "{{ ceilometer_policy_overrides|default({}) }}"
-    config_type: "json"
-  notify:
-    - Restart ceilometer services
-  tags:
-    - ceilometer-config
-    - ceilometer-policy-update
