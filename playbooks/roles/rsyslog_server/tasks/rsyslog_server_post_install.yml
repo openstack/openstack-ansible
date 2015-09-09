@@ -44,6 +44,15 @@
   tags:
     - rsyslog-config
 
+- name: Configure logrotate to compress logs by default
+  lineinfile:
+    dest: /etc/logrotate.conf
+    regexp: "^#compress"
+    line: "compress"
+    backrefs: yes
+  tags:
+    - rsyslog-config
+
 - name: Start rsyslog
   service:
     name: "rsyslog"
