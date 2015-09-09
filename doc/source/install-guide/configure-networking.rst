@@ -13,7 +13,7 @@ configure target host networking.
 
        cidr_networks:
        # Management (same range as br-mgmt on the target hosts)
-       management: CONTAINER_MGMT_CIDR
+       container: CONTAINER_MGMT_CIDR
        # Tunnel endpoints for VXLAN tenant networks
        # (same range as br-vxlan on the target hosts)
        tunnel: TUNNEL_CIDR
