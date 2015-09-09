@@ -44,10 +44,10 @@ export NEUTRON_FATAL_DEPRECATIONS=${NEUTRON_FATAL_DEPRECATIONS:-"no"}
 export NOVA_FATAL_DEPRECATIONS=${NOVA_FATAL_DEPRECATIONS:-"no"}
 export TEMPEST_FATAL_DEPRECATIONS=${TEMPEST_FATAL_DEPRECATIONS:-"no"}
 
-# Ubuntu repos
+# Ubuntu Repository Determination (based on existing host OS configuration)
 UBUNTU_RELEASE=$(lsb_release -sc)
-UBUNTU_REPO=${UBUNTU_REPO:-"https://mirror.rackspace.com/ubuntu"}
-UBUNTU_SEC_REPO=${UBUNTU_SEC_REPO:-"https://mirror.rackspace.com/ubuntu"}
+UBUNTU_REPO=${UBUNTU_REPO:-$(awk "/^deb .*ubuntu\/? ${UBUNTU_RELEASE} main/ {print \$2; exit}" /etc/apt/sources.list)}
+UBUNTU_SEC_REPO=${UBUNTU_SEC_REPO:-$(awk "/^deb .*ubuntu\/? ${UBUNTU_RELEASE}-security main/ {print \$2; exit}" /etc/apt/sources.list)}
 
 
 ## Library Check -------------------------------------------------------------
@@ -78,19 +78,14 @@ apt-get update && apt-get install -y apt-transport-https
 
 # Set the host repositories to only use the same ones, always, for the sake of consistency.
 cat > /etc/apt/sources.list <<EOF
-# Normal repositories
-deb ${UBUNTU_REPO} ${UBUNTU_RELEASE} main restricted
-deb ${UBUNTU_REPO} ${UBUNTU_RELEASE}-updates main restricted
-deb ${UBUNTU_REPO} ${UBUNTU_RELEASE} universe
-deb ${UBUNTU_REPO} ${UBUNTU_RELEASE}-updates universe
-deb ${UBUNTU_REPO} ${UBUNTU_RELEASE} multiverse
-deb ${UBUNTU_REPO} ${UBUNTU_RELEASE}-updates multiverse
+# Base repositories
+deb ${UBUNTU_REPO} ${UBUNTU_RELEASE} main restricted universe multiverse
+# Updates repositories
+deb ${UBUNTU_REPO} ${UBUNTU_RELEASE}-updates main restricted universe multiverse
 # Backports repositories
 deb ${UBUNTU_REPO} ${UBUNTU_RELEASE}-backports main restricted universe multiverse
 # Security repositories
-deb ${UBUNTU_SEC_REPO} ${UBUNTU_RELEASE}-security main restricted
-deb ${UBUNTU_SEC_REPO} ${UBUNTU_RELEASE}-security universe
-deb ${UBUNTU_SEC_REPO} ${UBUNTU_RELEASE}-security multiverse
+deb ${UBUNTU_SEC_REPO} ${UBUNTU_RELEASE}-security main restricted universe multiverse
 EOF
 
 # Update the package cache
@@ -357,7 +352,7 @@ echo "required_kernel: $(uname --kernel-release)" | tee -a /etc/openstack_deploy
 
 # Set the Ubuntu apt repository used for containers to the same as the host
 echo "lxc_container_template_main_apt_repo: ${UBUNTU_REPO}" | tee -a /etc/openstack_deploy/user_variables.yml
-echo "lxc_container_template_security_apt_repo: ${UBUNTU_REPO}" | tee -a /etc/openstack_deploy/user_variables.yml
+echo "lxc_container_template_security_apt_repo: ${UBUNTU_SEC_REPO}" | tee -a /etc/openstack_deploy/user_variables.yml
 
 # Set the running neutron workers to 0/1
 echo "neutron_api_workers: 0" | tee -a /etc/openstack_deploy/user_variables.yml
