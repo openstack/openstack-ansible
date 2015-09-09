@@ -28,7 +28,9 @@
   - client
   when: >
     inventory_hostname in groups[item.0.component] and
-    (item.0.component != 'cinder_backup' or (cinder_service_backup_program_enabled | bool and cinder_service_backup_driver == 'cinder.backup.drivers.ceph'))
+      (item.0.component != 'cinder_backup' or
+        ((cinder_service_backup_program_enabled is defined and cinder_service_backup_program_enabled | bool) and
+          (cinder_service_backup_driver is defined and cinder_service_backup_driver == 'cinder.backup.drivers.ceph')))
   always_run: true
   changed_when: false
   delegate_to: '{{ ceph_mon_host }}'
