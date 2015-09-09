@@ -1,0 +1,66 @@
+---
+# Copyright 2015, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Create apt repos in the cached container
+  template:
+    src: sources.list.j2
+    dest: "{{ lxc_container_cache_path }}/{{ item.chroot_path }}/etc/apt/sources.list"
+  with_items: lxc_container_caches
+  tags:
+    - lxc-cache
+    - lxc-cache-update
+
+# This task runs several commands against the cached image to speed up the
+# lxc_container_create playbook.
+- name: Prepare cached image
+  command: "chroot {{ lxc_container_cache_path }}/{{ item[0].chroot_path }} {{ item[1] }}"
+  with_nested:
+    - lxc_container_caches
+    - lxc_cache_commands
+  when: cache_download|changed
+  tags:
+    - lxc-cache
+    - lxc-cache-update
+
+- name: Adjust sshd configuration in container
+  lineinfile:
+    dest: "{{ lxc_container_cache_path }}/{{ item[0].chroot_path }}/etc/ssh/sshd_config"
+    regexp: "{{ item[1].regexp }}"
+    line: "{{ item[1].line }}"
+    state: present
+  with_nested:
+    - lxc_container_caches
+    - lxc_cache_sshd_configuration
+  tags:
+    - lxc-cache
+    - lxc-cache-update
+
+- name: Obtain the system's ssh public key
+  set_fact:
+    lxc_container_ssh_key: "{{ lookup('file', '/root/.ssh/id_rsa.pub') }}"
+  when: lxc_container_ssh_key is not defined
+  delegate_to: "{{ physical_host }}"
+  tags:
+    - lxc-cache
+    - lxc-cache-update
+
+- name: Deploy ssh public key into the cached image
+  lineinfile:
+    dest: "{{ lxc_container_cache_path }}/{{ item.chroot_path }}/root/.ssh/authorized_keys"
+    line: "{{ lxc_container_ssh_key }}"
+  with_items: lxc_container_caches
+  tags:
+    - lxc-cache
+    - lxc-cache-update
