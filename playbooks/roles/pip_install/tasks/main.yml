@@ -57,7 +57,17 @@
   changed_when: false
   register: pip_install
   until: pip_install|success
-  retries: 5
+  retries: 3
+  delay: 2
+  tags:
+    - pip-install
+
+- name: Install PIP (fall back mode)
+  shell: "python /opt/get-pip.py --isolated"
+  when: pip_install.rc != 0
+  register: pip_install_fall_back
+  until: pip_install_fall_back|success
+  retries: 3
   delay: 2
   tags:
     - pip-install
