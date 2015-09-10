@@ -1,0 +1,69 @@
+---
+# Copyright 2015, Jean-Philippe Evrard <jean-philippe.evrard@belnet.be>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Drop user provided ssl cert and key
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "root"
+    group: "root"
+    mode: "{{ item.mode }}"
+  with_items:
+    - { src: "{{ haproxy_user_ssl_cert }}", dest: "{{ haproxy_ssl_cert }}", mode: "0644" }
+    - { src: "{{ haproxy_user_ssl_key }}", dest: "{{ haproxy_ssl_key }}", mode: "0640" }
+  when: haproxy_user_ssl_cert is defined and haproxy_user_ssl_key is defined
+  notify:
+    - regen pem
+  tags:
+    - haproxy-ssl
+
+- name: Drop user provided ssl CA cert
+  copy:
+    src: "{{ haproxy_user_ssl_ca_cert }}"
+    dest: "{{ haproxy_ssl_ca_cert }}"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  when: haproxy_user_ssl_ca_cert is defined
+  notify:
+    - regen pem
+  tags:
+    - haproxy-ssl
+
+- name: Remove signed certs and keys for regen
+  file:
+    dest: "{{ haproxy_ssl_cert }}"
+    state: "absent"
+  with_items:
+    - "{{ haproxy_ssl_pem }}"
+    - "{{ haproxy_ssl_key }}"
+    - "{{ haproxy_ssl_cert }}"
+  when: haproxy_ssl_self_signed_regen | bool
+  tags:
+    - haproxy-ssl
+
+- name: Create self-signed ssl cert if no certificate exists
+  command: >
+    openssl req -new -nodes -sha256 -x509 -subj
+    "{{ haproxy_ssl_self_signed_subject }}"
+    -days 3650
+    -keyout {{ haproxy_ssl_key }}
+    -out {{ haproxy_ssl_cert }}
+    -extensions v3_ca
+    creates={{ haproxy_ssl_cert }}
+  notify:
+    - regen pem
+  tags:
+    - haproxy-ssl
