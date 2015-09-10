@@ -122,6 +122,7 @@ haproxy_service_configs:
   - service:
       haproxy_service_name: nova_console
       haproxy_backend_nodes: "{{ groups['nova_console'] }}"
+      haproxy_ssl: "{% if haproxy_ssl | bool and nova_spice_html5proxy_base_proto == 'https' %}true{% else %}false{% endif %}"
       haproxy_port: 6082
       haproxy_balance_type: tcp
       haproxy_timeout_client: 60m
