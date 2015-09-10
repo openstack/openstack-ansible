@@ -67,6 +67,9 @@ if [ -fs /etc/nodepool/provider ]; then
   fi
 fi
 
+# Enable detailed task profiling
+sed -i '/\[defaults\]/a callback_plugins = plugins/callbacks' $(dirname ${0})/../playbooks/ansible.cfg
+
 # Bootstrap an AIO setup if required
 if [ "${BOOTSTRAP_AIO}" == "yes" ]; then
   source $(dirname ${0})/bootstrap-aio.sh
