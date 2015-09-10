@@ -14,7 +14,7 @@
                   timeout="3600"
                   relayState="ss:mem"
                   checkAddress="false"
-                  handlerSSL="{% if keystone_ssl_enabled | bool %}true{% else %}false{% endif %}"
+                  handlerSSL="{% if keystone_ssl | bool %}true{% else %}false{% endif %}"
                   {% if keystone_service_publicuri_proto == "https" %}cookieProps="; path=/; secure"{% endif %}>
 
             <!-- Triggers a login request directly to the IdP. -->
