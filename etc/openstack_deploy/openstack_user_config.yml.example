@@ -83,7 +83,8 @@
 # DNS servers on 172.29.236.11-12. The deployment includes seven target
 # servers on 172.29.236.101-103, 172.29.236.111, 172.29.236.121, and
 # 172.29.236.131. However, the inventory generator automatically excludes
-# these IP addresses. Network policy at this particular example organization
+# these IP addresses. The deployment host itself isn't automatically
+# excluded. Network policy at this particular example organization
 # also reserves 231-254 in the last octet at the high end of the range for
 # network device management.
 #
