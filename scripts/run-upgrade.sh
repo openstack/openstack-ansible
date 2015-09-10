@@ -56,6 +56,10 @@ function remove_inv_items {
   ./scripts/inventory-manage.py -f /etc/openstack_deploy/openstack_inventory.json -r "$1"
 }
 
+function remove_inv_groups {
+  ./scripts/inventory-manage.py -f /etc/openstack_deploy/openstack_inventory.json --remove-group "$1"
+}
+
 function run_lock {
   set +e
   run_item="${RUN_TASKS[$1]}"
@@ -398,6 +402,12 @@ REMOVED_CONTAINERS+="$(get_inv_items 'nova_api_ec2' | awk '{print $2}') "
 REMOVED_CONTAINERS+="$(get_inv_items 'nova_spice_console' | awk '{print $2}') "
 for i in ${REMOVED_CONTAINERS};do
   remove_inv_items $i
+done
+
+# Remove unused groups from inventory
+REMOVED_GROUPS="nova_api_ec2 nova_api_ec2_container nova_spice_console nova_spice_console_container rabbit rabbit_all"
+for i in ${REMOVED_GROUPS}; do
+  remove_inv_groups $i
 done
 
 # Create a play to fix all networks in all containers on hosts
