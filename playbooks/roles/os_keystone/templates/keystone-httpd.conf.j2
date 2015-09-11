@@ -54,7 +54,7 @@
     </LocationMatch>
 
     WSGIScriptAliasMatch ^(/v3/OS-FEDERATION/identity_providers/.*?/protocols/.*?/auth)$ /var/www/cgi-bin/keystone/main/$1
-    {%- endif %}
+    {% endif %}
 </VirtualHost>
 
 <VirtualHost *:{{ keystone_admin_port }}>
