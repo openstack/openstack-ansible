@@ -43,15 +43,14 @@
     - heat-config
 
 - name: Apply updates to Policy file
-  copy_updates:
-    content="{{ item.content }}"
-    updates="{{ item.policy_data }}"
-    dest="{{ item.dest }}"
-    owner="{{ heat_system_user_name }}"
-    group="{{ heat_system_group_name }}"
-    mode="{{ item.mode|default('0644') }}"
-  with_items:
-    - { content: "{{ lookup('file', 'policy.json') | b64encode }}", policy_data: "{{ heat_policy_overrides|default('') }}", dest: "/etc/heat/policy.json" }
+  config_template:
+    src: "policy.json"
+    dest: "/etc/heat/policy.json"
+    owner: "{{ heat_system_user_name }}"
+    group: "{{ heat_system_group_name }}"
+    mode: "0644"
+    config_overrides: "{{ heat_policy_overrides|default({}) }}"
+    config_type: "json"
   notify:
     - Restart heat services
   tags:
