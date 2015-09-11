@@ -21,6 +21,6 @@ repo_path: "{{ pip_wheel_name }}_{{ git_install_branch | replace('/', '_') }}"
 git_repo: https://github.com/openstack/oslo.messaging
 git_fallback_repo: https://git.openstack.org/openstack/oslo.messaging
 git_dest: "/opt/{{ repo_path  }}"
-git_install_branch: 01a789313dcf5c1eb652c2df53ce955d6bb38fd6 # HEAD of "stable/juno" as of 03.09.2015
+git_install_branch: 01a789313dcf5c1eb652c2df53ce955d6bb38fd6 # HEAD of "stable/juno" as of 11.09.2015
 
 pip_wheel_name: oslo.messaging

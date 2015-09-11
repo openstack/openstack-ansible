@@ -19,6 +19,6 @@ repo_path: "{{ pip_wheel_name }}_{{ git_install_branch | replace('/', '_') }}"
 git_repo: https://github.com/openstack/keystonemiddleware
 git_fallback_repo: https://git.openstack.org/openstack/keystonemiddleware
 git_dest: "/opt/{{ repo_path }}"
-git_install_branch: 06133df3c722e5db0c00855f82c331873db43359 # HEAD of "stable/juno" as of 03.09.2015
+git_install_branch: 06133df3c722e5db0c00855f82c331873db43359 # HEAD of "stable/juno" as of 11.09.2015
 
 pip_wheel_name: keystonemiddleware
