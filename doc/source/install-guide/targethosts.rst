@@ -18,7 +18,7 @@ Chapter 4. Target hosts
 
 .. image:: figures/workflow-targethosts.png
 
-The OSAD installation process recommends at least five target
+The OSA installation process recommends at least five target
 hosts that will contain the OpenStack environment and supporting
 infrastructure. On each target host, perform the following tasks:
 

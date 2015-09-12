@@ -7,7 +7,7 @@ Chapter 3. Deployment host
 
    deploymenthost-os.rst
    deploymenthost-add.rst
-   deploymenthost-osad.rst
+   deploymenthost-osa.rst
    deploymenthost-sshkeys.rst
 
 
@@ -15,8 +15,8 @@ Chapter 3. Deployment host
 
 .. image:: figures/workflow-deploymenthost.png
 
-The OSAD installation process recommends one deployment host. The
-deployment host contains Ansible and orchestrates the OSAD installation
+The OSA installation process recommends one deployment host. The
+deployment host contains Ansible and orchestrates the OSA installation
 on the target hosts. One of the target hosts, preferably one of the
 infrastructure variants, can be used as the deployment host. To use a
 deployment host as a target host, follow the steps in `Chapter 4,

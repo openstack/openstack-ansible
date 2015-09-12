@@ -13,11 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# to user Ceph in OSAD, you need to
+# to user Ceph in OSA, you need to
 # - have the needed pools and a client user (for glance, cinder and/or nova)
-#   pre-provisioned in your ceph cluster; OSAD assumes to have root access to
+#   pre-provisioned in your ceph cluster; OSA assumes to have root access to
 #   the monitor hosts
-# - configure / overrules following defaults in osad's user config
+# - configure / overrules following defaults in osa's user config
 # - some ceph specific vars are (also) part of other role defaults:
 #   * glance
 #   * nova

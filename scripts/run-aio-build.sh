@@ -18,9 +18,9 @@
 set -e -u +x
 
 ## Variables -----------------------------------------------------------------
-export REPO_URL=${REPO_URL:-"https://github.com/stackforge/os-ansible-deployment.git"}
+export REPO_URL=${REPO_URL:-"https://github.com/openstack/openstack-ansible.git"}
 export REPO_BRANCH=${REPO_BRANCH:-"master"}
-export WORKING_FOLDER=${WORKING_FOLDER:-"/opt/stackforge/os-ansible-deployment"}
+export WORKING_FOLDER=${WORKING_FOLDER:-"/opt/openstack/openstack-ansible"}
 # On normal AIO build the script should do everything possible to try for success
 export MAX_RETRIES=${MAX_RETRIES:-"5"}
 
@@ -45,7 +45,7 @@ bash scripts/gate-check-commit.sh
 cat > /etc/update-motd.d/20-openstack<< EOF
 #!/usr/bin/env bash
 echo ""
-echo "############ os-ansible-deployment all-in-one build #############"
+echo "############ openstack-ansible all-in-one build #############"
 echo ""
 echo " OpenStack Services are now listening on $(ip -o -4 addr show dev eth0 | awk -F '[ /]+' '/global/ {print $4}')"
 echo ""

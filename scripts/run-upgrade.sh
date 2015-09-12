@@ -18,7 +18,7 @@
 clear
 
 # NOTICE: To run this in an automated fashion run the script via
-#   root@HOSTNAME:/opt/os-ansible-deployment# echo "YES" | bash scripts/run-upgrade.sh
+#   root@HOSTNAME:/opt/openstack-ansible# echo "YES" | bash scripts/run-upgrade.sh
 
 # Notify the user.
 echo -e "

@@ -13,7 +13,7 @@
 # limitations under the License.
 
 heat_template_version: 2013-05-23
-description: Heat template to deploy OS-Ansible-Deployment
+description: Heat template to deploy OpenStack-Ansible
 parameters:
   ssh_key_name:
     type: string
@@ -26,11 +26,11 @@ parameters:
     description: Name Flavor to use for server
   server_name:
     type: string
-    default: OSAD-AIO
+    default: OSA-AIO
     description: The Instance Name
   install_script_url:
     type: string
-    default: https://raw.githubusercontent.com/stackforge/os-ansible-deployment/master/scripts/run-aio-build.sh
+    default: https://raw.githubusercontent.com/openstack/openstack-ansible/master/scripts/run-aio-build.sh
     description: The aio script installation URL
   frozen_repo_url:
     type: string
@@ -38,7 +38,7 @@ parameters:
     description: URL to the frozen
   repo_url:
     type: string
-    default: https://github.com/stackforge/os-ansible-deployment.git
+    default: https://github.com/openstack/openstack-ansible.git
     description: The repository URL
   repo_branch:
     type: string
@@ -51,21 +51,21 @@ parameters:
     type: string
     description: Name of the security group
 outputs:
-  OSADAIO_public_ip:
+  OSAAIO_public_ip:
     description: The public IP address of the newly configured Server.
-    value: { get_attr: [ OSADAIO, first_address ] }
-  OSADAIO_password:
+    value: { get_attr: [ OSAAIO, first_address ] }
+  OSAAIO_password:
     description: The password for all the things.
-    value: { get_attr: [ OSADAIO_random_pass, value ] }
+    value: { get_attr: [ OSAAIO_random_pass, value ] }
 resources:
-  OSADAIO_random_pass:
+  OSAAIO_random_pass:
     type: OS::Heat::RandomString
-  OSADAIO_port:
+  OSAAIO_port:
     type: OS::Neutron::Port
     properties:
       network_id: { get_param: net_id }
       security_groups: [{ get_param: sec_group }]
-  OSADAIO:
+  OSAAIO:
     type: OS::Nova::Server
     properties:
       flavor: { get_param: flavor_name }
@@ -73,7 +73,7 @@ resources:
       name: { get_param: server_name }
       key_name: { get_param: ssh_key_name }
       networks:
-        - port: { get_resource: OSADAIO_port }
+        - port: { get_resource: OSAAIO_port }
       user_data:
         str_replace:
           params:

@@ -3,7 +3,7 @@
 Installation workflow
 ---------------------
 
-This diagram shows the general workflow associated with OSAD
+This diagram shows the general workflow associated with OSA
 installation.
 
 **Figure 2.7. Installation workflow**

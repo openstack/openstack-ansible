@@ -29,7 +29,7 @@ Importance:
     Should only be touched if it is a Blocker/Gating issue. If it is, please set to **High**, and only use **Critical** if you have found a bug that can take down whole infrastructures. Once the importance has been changed the status should be changed to *Triaged* by someone other than the bug creator.
 
 Triaging bugs:
-    Reported bugs need prioritization, confirmation, and shouldn't go stale. If you care about OpenStack stability but aren't wanting to actively develop the roles and playbooks used within the "os-ansible-deployment" project consider contributing in the area of bug triage, which helps immensely. The whole process is described in the upstream `Bug Triage Documentation`_.
+    Reported bugs need prioritization, confirmation, and shouldn't go stale. If you care about OpenStack stability but aren't wanting to actively develop the roles and playbooks used within the "openstack-ansible" project consider contributing in the area of bug triage, which helps immensely. The whole process is described in the upstream `Bug Triage Documentation`_.
 
 
 Submitting Code

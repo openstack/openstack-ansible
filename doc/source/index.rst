@@ -1,9 +1,9 @@
-.. os-ansible-deployment documentation master file, created by
+.. openstack-ansible documentation master file, created by
    sphinx-quickstart on Mon Apr 13 20:42:26 2015.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to os-ansible-deployment's documentation!
+Welcome to openstack-ansible's documentation!
 =================================================
 
 

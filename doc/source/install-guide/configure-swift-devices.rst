@@ -75,7 +75,7 @@ through ``sdg``.
        $ mount /srv/node/sdg
 
 To view an annotated example of the ``swift.yml`` file, see `Appendix A,
-*OSAD configuration files* <app-osad-configfiles.html>`__.
+*OSA configuration files* <app-configfiles.html>`__.
 
 For the following mounted devices:
 

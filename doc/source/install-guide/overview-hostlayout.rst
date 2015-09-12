@@ -17,8 +17,8 @@ recommended. Block Storage hosts require an LVM volume group named
 requirements" <overview-requirements.html>`__ and `the section
 called "Configuring LVM" <targethosts-configlvm.html>`__ for more information.
 
-The hosts are called *target hosts* because Ansible deploys the OSAD 
-environment within these hosts. The OSAD environment also recommends a
+The hosts are called *target hosts* because Ansible deploys the OSA
+environment within these hosts. The OSA environment also recommends a
 *deployment host* from which Ansible orchestrates the deployment
 process. One of the target hosts can function as the deployment host.
 

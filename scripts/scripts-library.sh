@@ -301,7 +301,7 @@ fi
 if [ ! -d "etc" -a ! -d "scripts" -a ! -d "playbooks" ]; then
   info_block "** ERROR **"
   echo "Please execute this script from the root directory of the cloned source code."
-  echo -e "Example: /opt/os-ansible-deployment/\n"
+  echo -e "Example: /opt/openstack-ansible/\n"
   exit_state 1
 fi
 

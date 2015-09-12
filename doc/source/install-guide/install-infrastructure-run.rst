@@ -3,7 +3,7 @@
 Running the infrastructure playbook
 -----------------------------------
 
-#. Change to the ``/opt/os-ansible-deployment/playbooks`` directory.
+#. Change to the ``/opt/openstack-ansible/playbooks`` directory.
 
 #. Run the infrastructure setup playbook, which runs a series of
    sub-playbooks:

@@ -13,7 +13,7 @@ The Telemetry module(Ceilometer) performs the following functions:
 
   - Creates alarms when collected data breaks defined rules.
 
-Ceilometer on OSAD requires a monogodb backend to be configured prior to running the ceilometer playbooks. A connection string will then need to be given in the ``user_variables.yml`` file(See section Configuring User Data below).
+Ceilometer on OSA requires a monogodb backend to be configured prior to running the ceilometer playbooks. A connection string will then need to be given in the ``user_variables.yml`` file(See section Configuring User Data below).
 
 
 Setting up a Mongodb database for ceilometer

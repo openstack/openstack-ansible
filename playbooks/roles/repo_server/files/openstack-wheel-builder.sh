@@ -55,8 +55,8 @@ trap my_trap_handler ERR
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 # Defined variables.
-GIT_REPO="${GIT_REPO:-https://github.com/stackforge/os-ansible-deployment}"
-GITHUB_API_ENDPOINT="${GITHUB_API_ENDPOINT:-https://api.github.com/repos/stackforge/os-ansible-deployment}"
+GIT_REPO="${GIT_REPO:-https://github.com/openstack/openstack-ansible}"
+GITHUB_API_ENDPOINT="${GITHUB_API_ENDPOINT:-https://api.github.com/repos/openstack/openstack-ansible}"
 
 # Predefined working directory.
 WORK_DIR="${WORK_DIR:-/tmp/openstack-ansible-deployment}"
