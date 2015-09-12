@@ -7,7 +7,7 @@ For evaluation, testing, and development, HAProxy can temporarily
 provide load balancing services in lieu of hardware load balancers. The
 default HAProxy configuration does not provide highly-available load
 balancing services. For production deployments, deploy a hardware load
-balancer prior to deploying OSAD.
+balancer prior to deploying OSA.
 
 -  In the ``/etc/openstack_deploy/openstack_user_config.yml`` file, add
    the ``haproxy_hosts`` section with one or more infrastructure target

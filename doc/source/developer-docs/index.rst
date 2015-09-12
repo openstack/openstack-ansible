@@ -2,7 +2,7 @@ Developer Documentation
 =======================
 
 In this section, you will find documentation relevant to developing
-os-ansible-deployment.
+openstack-ansible.
 
 Contents:
 

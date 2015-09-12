@@ -12,7 +12,7 @@ physical, logical, and virtual network interfaces within a host. After
 creating a bridge, the network interfaces are virtually "plugged in" to
 it.
 
-OSAD uses bridges to connect physical and logical network interfaces
+OSA uses bridges to connect physical and logical network interfaces
 on the host to virtual network interfaces within containers.
 
 *Namespaces* provide logically separate layer 3 environments (similar to
@@ -103,7 +103,7 @@ containers.
 
 .. image:: figures/networkarch-container-external.png
 
-By default, OSAD installs the Compute service in a bare metal
+By default, OSA installs the Compute service in a bare metal
 environment rather than within a container. `Figure 2.4, "Bare/Metal
 network
 architecture" <overview-hostnetworking.html#fig_overview_networkarch-bare>`__

@@ -15,7 +15,7 @@ playbooks. The values in the ``swift_hosts`` section supersede values in
 the ``swift`` section.
 
 To view the configuration files, including information about which
-variables are required and which are optional, see `Appendix A, *OSAD
+variables are required and which are optional, see `Appendix A, *OSA
 configuration files* <app-configfiles.html>`__.
 
 --------------

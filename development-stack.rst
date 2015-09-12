@@ -14,9 +14,9 @@ scripts from the repository top-level directory. For example:
 
 .. code-block:: console
 
-   $ git clone https://github.com/stackforge/os-ansible-deployment \
-     /opt/os-ansible-deployment
-   $ cd /opt/os-ansible-deployment
+   $ git clone https://github.com/openstack/openstack-ansible \
+     /opt/openstack-ansible
+   $ cd /opt/openstack-ansible
    $ scripts/bootstrap-aio.sh
 
 Requirements
@@ -36,7 +36,7 @@ Requirements
 
 If deploying on a Rackspace public cloud server, use the *general1-8* or
 larger flavor. Optionally, you can use the Orchestration template
-``osad-aio-heat-template.yml`` to launch a cloud server and deploy an AIO
+``osa-aio-heat-template.yml`` to launch a cloud server and deploy an AIO
 environment on it.
 
 These requirements may seem excessive; however, the default AIO deployment
@@ -63,14 +63,14 @@ To deploy an AIO environment, complete these steps:
 
    .. code-block:: console
 
-      $ git clone https://github.com/stackforge/os-ansible-deployment \
-        /opt/os-ansible-deployment
+      $ git clone https://github.com/openstack/openstack-ansible \
+        /opt/openstack-ansible
 
 #. Change to the repository top-level directory:
 
    .. code-block:: console
 
-      $ cd /opt/os-ansible-deployment
+      $ cd /opt/openstack-ansible
 
 #. By default, the repository uses the *master* branch. Optionally, you can
    check out a different branch. For example, to check out the Kilo branch:
@@ -130,7 +130,7 @@ To deploy an AIO environment, complete these steps:
 
    .. code-block:: console
 
-      $ cd /opt/os-ansible-deployment/playbooks
+      $ cd /opt/openstack-ansible/playbooks
       $ openstack-ansible os-keystone-install.yml
 
 Rebuilding the stack
@@ -143,7 +143,7 @@ Example:
 .. code-block:: bash
 
   # Move to the playbooks directory.
-  cd /opt/os-ansible-deployment/playbooks
+  cd /opt/openstack-ansible/playbooks
 
   # Destroy all of the running containers.
   openstack-ansible lxc-containers-destroy.yml

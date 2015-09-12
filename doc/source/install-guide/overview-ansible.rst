@@ -14,7 +14,7 @@ For more information, see `Ansible - Intro to
 Playbooks <http://docs.ansible.com/playbooks_intro.html>`__.
 
 In this guide, we refer to the host running Ansible playbooks as
-the *deployment host* and the hosts on which Ansible installs OSAD as the
+the *deployment host* and the hosts on which Ansible installs OSA as the
 *target hosts*.
 
 A recommended minimal layout for deployments involves five target
