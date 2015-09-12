@@ -80,3 +80,7 @@
   tags:
     - glance-dirs
     - glance-logs
+
+- include: glance_messaging_setup.yml
+  when: >
+    inventory_hostname == groups['glance_all'][0]

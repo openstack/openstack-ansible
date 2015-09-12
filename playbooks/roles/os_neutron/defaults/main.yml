@@ -39,6 +39,10 @@ neutron_db_max_overflow: 20
 neutron_db_pool_size: 120
 neutron_db_pool_timeout: 30
 
+## RabbitMQ info
+neutron_rabbitmq_userid: neutron
+neutron_rabbitmq_vhost: /neutron
+
 ## Plugins
 neutron_plugin_core: neutron.plugins.ml2.plugin.Ml2Plugin
 # Other plugins can be added to the system by simply extending the list `neutron_plugin_base`.

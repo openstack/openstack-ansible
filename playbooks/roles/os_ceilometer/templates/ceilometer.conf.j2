@@ -12,8 +12,9 @@ policy_file = /etc/ceilometer/policy.json
 [oslo_messaging_rabbit]
 rpc_backend = rabbit
 rabbit_port = {{ rabbitmq_port }}
-rabbit_userid = {{ rabbitmq_userid }}
-rabbit_password = {{ rabbitmq_password }}
+rabbit_userid = {{ ceilometer_rabbitmq_userid }}
+rabbit_password = {{ ceilometer_rabbitmq_password }}
+rabbit_virtual_host = {{ ceilometer_rabbitmq_vhost }}
 rabbit_hosts = {{ rabbitmq_servers }}
 
 [api]

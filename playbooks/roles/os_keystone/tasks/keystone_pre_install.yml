@@ -106,3 +106,7 @@
   tags:
     - keystone-dirs
     - keystone-logs
+
+- include: keystone_messaging_setup.yml
+  when: >
+    inventory_hostname == groups['keystone_all'][0]

@@ -34,6 +34,10 @@ heat_clients_heat_endpoint: publicURL
 heat_galera_user: heat
 heat_galera_database: heat
 
+## RabbitMQ info
+heat_rabbitmq_userid: heat
+heat_rabbitmq_vhost: /heat
+
 ## RPC
 heat_rpc_backend: heat.openstack.common.rpc.impl_kombu
 

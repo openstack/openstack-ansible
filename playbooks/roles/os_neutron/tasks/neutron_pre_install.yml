@@ -92,3 +92,7 @@
   tags:
     - sudoers
     - neutron-sudoers
+
+- include: neutron_messaging_setup.yml
+  when: >
+    inventory_hostname == groups['neutron_all'][0]
