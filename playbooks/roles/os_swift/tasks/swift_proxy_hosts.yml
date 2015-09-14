@@ -23,9 +23,17 @@
     service_home: "{{ swift_system_home_folder }}"
 
 - name: swift proxy server configuration
-  template:
-    src: "proxy-server.conf.j2"
-    dest: "/etc/swift/proxy-server/proxy-server.conf"
+  config_template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
     owner: "{{ swift_system_user_name }}"
+    group: "{{ swift_system_group_name }}"
     mode: "0644"
+    config_overrides: "{{ item.config_overrides }}"
+    config_type: "{{ item.config_type }}"
+  with_items:
+    - src: "proxy-server.conf.j2"
+      dest: "/etc/swift/proxy-server/proxy-server.conf"
+      config_overrides: "{{ swift_proxy_server_conf_overrides }}"
+      config_type: "ini"
   notify: Restart swift proxy services

@@ -89,26 +89,36 @@
     service_home: "{{ swift_system_home_folder }}"
 
 - name: "Swift container server configuration"
-  template:
+  config_template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     owner: "{{ swift_system_user_name }}"
     group: "{{ swift_system_group_name }}"
     mode: "0644"
+    config_overrides: "{{ item.config_overrides }}"
+    config_type: "{{ item.config_type }}"
   with_items:
-    - { src: "container-server.conf.j2", dest: "/etc/swift/container-server/container-server.conf" }
+    - src: "container-server.conf.j2"
+      dest: "/etc/swift/container-server/container-server.conf"
+      config_overrides: "{{ swift_container_server_conf_overrides }}"
+      config_type: "ini"
   notify: Restart swift container services
 
 # We only create the dedicated replicator configuration when using a dedicated replication_network
-- name: "Swift container server configuration"
-  template:
+- name: "Swift container server replicator configuration"
+  config_template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     owner: "{{ swift_system_user_name }}"
     group: "{{ swift_system_group_name }}"
     mode: "0644"
+    config_overrides: "{{ item.config_overrides }}"
+    config_type: "{{ item.config_type }}"
   with_items:
-    - { src: "container-server-replicator.conf.j2", dest: "/etc/swift/container-server/container-server-replicator.conf" }
+    - src: "container-server-replicator.conf.j2"
+      dest: "/etc/swift/container-server/container-server-replicator.conf"
+      config_overrides: "{{ swift_container_server_replicator_conf_overrides }}"
+      config_type: "ini"
   when: >
     swift.replication_network is defined and
     swift.replication_network != swift.storage_network

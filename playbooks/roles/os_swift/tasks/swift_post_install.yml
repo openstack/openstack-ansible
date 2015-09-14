@@ -14,15 +14,40 @@
 # limitations under the License.
 
 - name: Copy swift config
+  config_template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ swift_system_user_name }}"
+    group: "{{ swift_system_group_name }}"
+    mode: "0644"
+    config_overrides: "{{ item.config_overrides }}"
+    config_type: "{{ item.config_type }}"
+  with_items:
+    - src: "swift.conf.j2"
+      dest: "/etc/swift/swift.conf"
+      config_overrides: "{{ swift_swift_conf_overrides }}"
+      config_type: "ini"
+    - src: "swift-dispersion.conf.j2"
+      dest: "/etc/swift/dispersion.conf"
+      config_overrides: "{{ swift_swift_dispersion_conf_overrides }}"
+      config_type: "ini"
+  notify:
+    - Restart swift account services
+    - Restart swift container services
+    - Restart swift object services
+    - Restart swift proxy services
+  tags:
+    - swift-config
+    - swift-post-install
+
+- name: Copy swift config
   template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     owner: "{{ swift_system_user_name }}"
     group: "{{ swift_system_group_name }}"
   with_items:
-    - { src: "swift.conf.j2", dest: "/etc/swift/swift.conf" }
     - { src: "swift-rsyslog.conf.j2", dest: "/etc/rsyslog.d/49-swift.conf" }
-    - { src: "swift-dispersion.conf.j2", dest: "/etc/swift/dispersion.conf" }
   notify:
     - Restart swift account services
     - Restart swift container services
