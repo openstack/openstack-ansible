@@ -346,3 +346,9 @@ keystone_pip_packages:
   - python-memcached
   - python-openstackclient
   - repoze.lru
+
+## Tunable overrides
+keystone_keystone_conf_overrides: {}
+keystone_keystone_default_conf_overrides: {}
+keystone_keystone_paste_ini_overrides: {}
+keystone_policy_overrides: {}
