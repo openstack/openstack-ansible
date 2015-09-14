@@ -14,11 +14,18 @@
 # limitations under the License.
 
 - name: Drop local .my.cnf file
-  template:
-    src: "client.my.cnf.j2"
-    dest: "/root/.my.cnf"
+  config_template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
     owner: "root"
     group: "root"
     mode: "0600"
+    config_overrides: "{{ item.config_overrides }}"
+    config_type: "{{ item.config_type }}"
+  with_items:
+    - src: "client.my.cnf.j2"
+      dest: "/root/.my.cnf"
+      config_overrides: "{{ galera_client_my_cnf_overrides }}"
+      config_type: "ini"
   tags:
     - galera-client-user-config
