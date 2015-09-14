@@ -482,7 +482,8 @@ cat > /tmp/fix_host_things.yml <<EOF
     - name: Ensure services log files are fix
       shell: |
         if [ ! -h "/var/log/{{ item }}" ] && [ -d "/var/log/{{ item }}" ];then
-          mv /var/log/{{ item }} /var/log/{{ item }}.old
+          mv /var/log/{{ item }} /openstack/log/{{ inventory_hostname }}-{{ item }}
+          ln -s /openstack/log/{{ inventory_hostname }}-{{ item }} /var/log/{{ item }}
         else
           # Exit 99 when nothing found to change
           exit 99
