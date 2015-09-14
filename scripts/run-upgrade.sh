@@ -491,6 +491,11 @@ cat > /tmp/fix_host_things.yml <<EOF
       changed_when: log_change.rc == 0
       register: log_change
       with_items:
+        - "cinder"
+        - "glance"
+        - "heat"
+        - "horizon"
+        - "keystone"
         - "nova"
         - "neutron"
         - "swift"
