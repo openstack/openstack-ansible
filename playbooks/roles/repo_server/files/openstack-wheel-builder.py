@@ -245,10 +245,10 @@ def _arguments():
         arguments_dict=arguments_dict,
         epilog='Licensed Apache2',
         title='Discover all of the requirements within the'
-              ' os-ansible-deployment project.',
+              ' openstack-ansible project.',
         detail='Requirement lookup',
         description='Discover all of the requirements within the'
-                    ' os-ansible-deployment project.',
+                    ' openstack-ansible project.',
         env_name='OS_ANSIBLE'
     ).arg_parser()
 

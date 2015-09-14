@@ -4,7 +4,7 @@ Prerequisites
 -------------
 
 #. Recursively copy the contents of the
-   ``/opt/os-ansible-deployment/etc/openstack_deploy`` directory to the
+   ``/opt/openstack-ansible/etc/openstack_deploy`` directory to the
    ``/etc/openstack_deploy`` directory.
 
 #. Change to the ``/etc/openstack_deploy`` directory.

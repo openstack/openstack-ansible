@@ -45,7 +45,7 @@ gate-check-commit.sh
 
 The ``gate-check-commit.sh`` script executes a suite of tests necessary for
 each commit to the repository. By default, the script runs the bootstrap
-scripts, builds an *all-in-one* deployment of OSAD, and runs various Tempest
+scripts, builds an *all-in-one* deployment of OSA, and runs various Tempest
 tests on it.
 
 Configurable environment variables:
@@ -83,7 +83,7 @@ run-tempest.sh
 
 The ``run-tempest.sh`` script runs Tempest tests from the first utility
 container. The ``check-gate-commit.sh`` script usually invokes this
-script after it completes the OSAD deployment.
+script after it completes the OSA deployment.
 
 Configurable environment variables:
 

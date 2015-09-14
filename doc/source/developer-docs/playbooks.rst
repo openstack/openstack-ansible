@@ -14,7 +14,7 @@ There is an `openstack-ansible` command installed by the
 command and provides the `/etc/openstack_deploy/user_*.yml` variable files
 to the playbooks.
 
-All of the playbooks should be run within the `os-ansible-deployment/playbooks`
+All of the playbooks should be run within the `openstack-ansible/playbooks`
 directory
 
 Setting up the Hosts

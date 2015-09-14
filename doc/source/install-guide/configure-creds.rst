@@ -25,7 +25,7 @@ values for the variables in each file that contains service credentials:
 
 .. code-block:: bash
 
-    $ cd /opt/os-ansible-deployment/scripts
+    $ cd /opt/openstack-ansible/scripts
     $ python pw-token-gen.py --file /etc/openstack_deploy/user_secrets.yml
         
 

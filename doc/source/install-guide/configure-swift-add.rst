@@ -30,7 +30,7 @@ existing deployment.
 
    .. code-block:: bash
 
-       $ cd /opt/os-ansible-deployment/playbooks
+       $ cd /opt/openstack-ansible/playbooks
        $ openstack-ansible os-swift-install.yml
                
 

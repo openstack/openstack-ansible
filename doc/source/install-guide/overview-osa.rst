@@ -3,15 +3,15 @@
 About OpenStack Ansible Deployment
 ----------------------------------
 
-OS-Ansible-Deployment uses the Ansible IT automation framework to 
-create an OpenStack cluster on Ubuntu Linux. OpenStack components are 
+OpenStack-Ansible uses the Ansible IT automation framework to
+create an OpenStack cluster on Ubuntu Linux. OpenStack components are
 installed into Linux Containers (LXC) for isolation and ease of
 maintenance.
 
 | OpenStack Ansible Deployment
 
-This documentation is intended for deployers of the OpenStack Ansible 
-deployment system who are interested in installing an OpenStack. The 
+This documentation is intended for deployers of the OpenStack Ansible
+deployment system who are interested in installing an OpenStack. The
 document is for informational purposes only and is provided "AS IS."
 
 Third-party trademarks and tradenames appearing in this document are the

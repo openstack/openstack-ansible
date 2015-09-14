@@ -19,7 +19,7 @@ cluster.
 
    .. code-block:: bash
 
-       $ cd /opt/os-ansible-deployment/playbooks
+       $ cd /opt/openstack-ansible/playbooks
        $ openstack-ansible setup-everything.yml \
        rsyslog-config.yml --limit NEW_HOST_NAME
                

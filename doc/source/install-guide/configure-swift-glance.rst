@@ -17,7 +17,7 @@ Service will no longer be available.
 
 This procedure requires the following:
 
--  OSAD Kilo (v11)
+-  OSA Kilo (v11)
 
 -  Object Storage v 2.2.0
 
@@ -62,7 +62,7 @@ This procedure requires the following:
 
    .. code-block:: bash
 
-       $ cd /opt/os-ansible-deployment/playbooks
+       $ cd /opt/openstack-ansible/playbooks
        $ openstack-ansible os-glance-install.yml --tags "glance-config"
 
 --------------

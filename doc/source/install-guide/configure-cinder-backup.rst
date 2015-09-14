@@ -20,7 +20,7 @@ back up to an external Object Storage installation.
 
 #. By default, Block Storage will use the access credentials of the user
    initiating the backup. Default values are set in the
-   ``/opt/os-ansible-deployment/playbooks/roles/os_cinder/defaults/main.yml``
+   ``/opt/openstack-ansible/playbooks/roles/os_cinder/defaults/main.yml``
    file. You can override those defaults by setting variables in
    ``/etc/openstack_deploy/user_variables.yml`` to change how Block
    Storage performs backups. As needed, add and edit any of the
