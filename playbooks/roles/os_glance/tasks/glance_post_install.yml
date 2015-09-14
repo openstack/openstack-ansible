@@ -33,49 +33,55 @@
     - glance-cron
 
 - name: Drop Glance Config(s)
-  template:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-    owner: "{{ glance_system_user_name }}"
-    group: "{{ glance_system_group_name }}"
-  with_items:
-    - { src: "glance-api-paste.ini.j2", dest: "/etc/glance/glance-api-paste.ini" }
-    - { src: "glance-registry-paste.ini.j2", dest: "/etc/glance/glance-registry-paste.ini" }
-    - { src: "glance-api.conf.j2", dest: "/etc/glance/glance-api.conf" }
-    - { src: "glance-cache.conf.j2", dest: "/etc/glance/glance-cache.conf" }
-    - { src: "glance-manage.conf.j2", dest: "/etc/glance/glance-manage.conf" }
-    - { src: "glance-registry.conf.j2", dest: "/etc/glance/glance-registry.conf" }
-    - { src: "glance-scrubber.conf.j2", dest: "/etc/glance/glance-scrubber.conf" }
-  notify:
-    - Restart glance api
-    - Restart glance registry
-  tags:
-    - glance-config
-
-- name: Drop Glance static Config(s)
-  copy:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-    owner: "{{ glance_system_user_name }}"
-    group: "{{ glance_system_group_name }}"
-  with_items:
-    - { src: "schema.json", dest: "/etc/glance/schema.json" }
-    - { src: "schema.json", dest: "/etc/glance/schema-image.json" }
-  notify:
-    - Restart glance api
-    - Restart glance registry
-  tags:
-    - glance-config
-
-- name: Apply updates to Policy file
   config_template:
-    src: "policy.json"
-    dest: "/etc/glance/policy.json"
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
     owner: "{{ glance_system_user_name }}"
     group: "{{ glance_system_group_name }}"
     mode: "0644"
-    config_overrides: "{{ glance_policy_overrides|default({}) }}"
-    config_type: "json"
+    config_overrides: "{{ item.config_overrides }}"
+    config_type: "{{ item.config_type }}"
+  with_items:
+    - src: "glance-api-paste.ini.j2"
+      dest: "/etc/glance/glance-api-paste.ini"
+      config_overrides: "{{ glance_glance_api_paste_ini_overrides }}"
+      config_type: "ini"
+    - src: "glance-api.conf.j2"
+      dest: "/etc/glance/glance-api.conf"
+      config_overrides: "{{ glance_glance_api_conf_overrides }}"
+      config_type: "ini"
+    - src: "glance-cache.conf.j2"
+      dest: "/etc/glance/glance-cache.conf"
+      config_overrides: "{{ glance_glance_cache_conf_overrides }}"
+      config_type: "ini"
+    - src: "glance-manage.conf.j2"
+      dest: "/etc/glance/glance-manage.conf"
+      config_overrides: "{{ glance_glance_manage_conf_overrides }}"
+      config_type: "ini"
+    - src: "glance-registry-paste.ini.j2"
+      dest: "/etc/glance/glance-registry-paste.ini"
+      config_overrides: "{{ glance_glance_registry_paste_ini_overrides }}"
+      config_type: "ini"
+    - src: "glance-registry.conf.j2"
+      dest: "/etc/glance/glance-registry.conf"
+      config_overrides: "{{ glance_glance_registry_conf_overrides }}"
+      config_type: "ini"
+    - src: "glance-scrubber.conf.j2"
+      dest: "/etc/glance/glance-scrubber.conf"
+      config_overrides: "{{ glance_glance_scrubber_conf_overrides }}"
+      config_type: "ini"
+    - src: "policy.json.j2"
+      dest: "/etc/glance/policy.json"
+      config_overrides: "{{ glance_policy_overrides }}"
+      config_type: "json"
+    - src: "schema.json.j2"
+      dest: "/etc/glance/schema.json"
+      config_overrides: "{{ glance_glance_scheme_json_overrides }}"
+      config_type: "json"
+    - src: "schema.json.j2"
+      dest: "/etc/glance/schema-image.json"
+      config_overrides: "{{ glance_glance_scheme_json_overrides }}"
+      config_type: "json"
   notify:
     - Restart glance api
     - Restart glance registry
