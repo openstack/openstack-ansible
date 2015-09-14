@@ -271,3 +271,15 @@ neutron_service_names:
   - neutron-metadata-agent
   - neutron-metering-agent
   - neutron-server
+
+## Tunable overrides
+neutron_neutron_conf_overrides: {}
+neutron_ml2_conf_ini_overrides: {}
+neutron_dhcp_agent_ini_overrides: {}
+neutron_api_paste_ini_overrides: {}
+neutron_rootwrap_conf_overrides: {}
+neutron_policy_overrides: {}
+neutron_dnsmasq_neutron_conf_overrides: {}
+neutron_l3_agent_ini_overrides: {}
+neutron_metadata_agent_ini_overrides: {}
+neutron_metering_agent_ini_overrides: {}
