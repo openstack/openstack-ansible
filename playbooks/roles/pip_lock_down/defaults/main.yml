@@ -27,3 +27,6 @@ pip_allow_all_external: true
 # Drop link files to lock down pip
 pip_links:
   - { name: "openstack_release", link: "{{ openstack_repo_url }}/os-releases/{{ openstack_release }}/" }
+
+## Tunable overrides
+pip_global_conf_overrides: {}
