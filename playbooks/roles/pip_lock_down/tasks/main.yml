@@ -41,14 +41,19 @@
     - lock-pip-files
 
 - name: Drop pip global config(s)
-  template:
+  config_template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     owner: "{{ ansible_user_id }}"
     group: "{{ ansible_user_id }}"
-    mode: "{{ item.mode|default('0644') }}"
+    mode: "0644"
+    config_overrides: "{{ item.config_overrides }}"
+    config_type: "{{ item.config_type }}"
   with_items:
-    - { src: "global.conf.j2", dest: "{{ ansible_env.HOME }}/.pip/base/global.conf" }
+    - src: "global.conf.j2"
+      dest: "{{ ansible_env.HOME }}/.pip/base/global.conf"
+      config_overrides: "{{ pip_global_conf_overrides }}"
+      config_type: "ini"
   tags:
     - lock-pip-files
 
