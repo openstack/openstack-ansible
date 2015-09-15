@@ -53,3 +53,20 @@ rabbitmq_ulimit: 4096
 rabbitmq_plugins:
   - names: rabbitmq_management
     state: enabled
+
+# RabbitMQ SSL support
+rabbitmq_ssl_cert: /etc/ssl/certs/rabbitmq.pem
+rabbitmq_ssl_key: /etc/ssl/private/rabbitmq.key
+rabbitmq_ssl_ca_cert: /etc/ssl/certs/rabbitmq-ca.pem
+
+# Set rabbitmq_ssl_self_signed_regen to true if you want to generate a new
+# SSL certificate for RabbitMQ when this playbook runs.  You can also change
+# the subject of the self-signed certificate here if you prefer.
+rabbitmq_ssl_self_signed_regen: false
+rabbitmq_ssl_self_signed_subject: "/C=US/ST=Texas/L=San Antonio/O=IT/CN={{ container_name }}"
+
+# Define user-provided SSL certificates in:
+# /etc/openstack_deploy/user_variables.yml
+#rabbitmq_user_ssl_cert: <path to cert on ansible deployment host>
+#rabbitmq_user_ssl_key: <path to cert on ansible deployment host>
+#rabbitmq_user_ssl_ca_cert: <path to cert on ansible deployment host>

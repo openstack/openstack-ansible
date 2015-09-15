@@ -20,6 +20,22 @@
 - include: rabbitmq_install.yml
   when: not rabbitmq_ignore_version_state | bool
 
+# RabbitMQ SSL/TLS listener configuration
+#
+# If the user has not specified a certificate, key and CA certificate, we will
+# generate a self-signed SSL certificate and distribute it to each RabbitMQ
+# container.
+#
+# User-provided certificates must be specified within:
+#
+#   playbooks/roles/rabbitmq_server/defaults/main.yml
+#
+- include: rabbitmq_ssl_self_signed.yml
+  when: >
+    rabbitmq_user_ssl_cert is not defined or
+    rabbitmq_user_ssl_key is not defined
+- include: rabbitmq_ssl_user_provided.yml
+
 - include: rabbitmq_set_cookie.yml
 - include: rabbitmq_post_install.yml
 - include: rabbitmq_cluster.yml

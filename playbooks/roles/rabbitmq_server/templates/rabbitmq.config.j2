@@ -1,6 +1,15 @@
 [
   {rabbit, [
     {loopback_users, []},
+    {ssl_listeners, [5671]},
+    {ssl_options, [{certfile,"{{ rabbitmq_ssl_cert }}"},
+                   {keyfile,"{{ rabbitmq_ssl_key }}"},
+                   {% if rabbitmq_ssl_ca_cert is defined -%}
+                   {cacertfile,"{{ rabbitmq_ssl_ca_cert }}"},
+                   {% endif -%}
+                   {versions, ['tlsv1.2', 'tlsv1.1']},
+                   {verify,verify_none},
+                   {fail_if_no_peer_cert,false}]},
     {% if rabbitmq_cluster_partition_handling != 'ignore' %}{cluster_partition_handling, {{ rabbitmq_cluster_partition_handling }}},{% endif %}
     {cluster_nodes, {
       [ {% for host in groups['rabbitmq_all'] %}'rabbit@{{ hostvars[host]['ansible_ssh_host'] }}'{% if not loop.last %}, {% endif %}{% endfor %}], disc}

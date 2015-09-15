@@ -14,6 +14,7 @@ Chapter 5. Deployment configuration
    configure-cinder.rst
    configure-swift.rst
    configure-haproxy.rst
+   configure-rabbitmq.rst
    configure-ceilometer.rst
    configure-keystone.rst
    configure-sslcertificates.rst
