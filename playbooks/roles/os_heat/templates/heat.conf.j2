@@ -10,7 +10,7 @@ log_file = /var/log/heat/heat.log
 
 stack_domain_admin_password = {{ heat_stack_domain_admin_password }}
 stack_domain_admin = {{ heat_stack_domain_admin }}
-stack_user_domain_id = {{ hostvars[groups['heat_api'][0]]['stack_user_domain_id'] }}
+stack_user_domain_name = {{ heat_stack_user_domain_name }}
 max_nested_stack_depth = {{ heat_max_nested_stack_depth }}
 heat_watch_server_url = {{ heat_watch_server_url }}
 heat_waitcondition_server_url = {{ heat_waitcondition_server_url }}

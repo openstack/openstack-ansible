@@ -14,136 +14,81 @@
 # limitations under the License.
 
 # This is the role assigned to users created within Heat stacks themselves
-- name: Ensure stack_user role
+- name: Ensure heat_stack_user role
   keystone:
-    command: "ensure_role"
+    command: ensure_role
+    role_name: "heat_stack_user"
     token: "{{ keystone_auth_admin_token }}"
     endpoint: "{{ keystone_service_adminurl }}"
-    role_name: "heat_stack_user"
-  register: add_service
-  until: add_service|success
-  retries: 5
-  delay: 10
+    insecure: "{{ keystone_service_adminuri_insecure }}"
   tags:
     - heat-domain
     - heat-domain-role
     - heat-domain-setup
     - heat-config
 
-- name: check for heat domain
-  shell: |
-    . {{ ansible_env.HOME }}/openrc
-    openstack --os-identity-api-version=3 \
-              --os-auth-url={{ keystone_service_adminurl_v3 }} \
-              --os-project-name={{ heat_project_name }} \
-              --os-project-domain-id={{ heat_project_domain_id }} \
-              --os-user-domain-id={{ heat_user_domain_id }} \
-              domain \
-              show \
-              "{{ heat_stack_user_domain_name }}" | grep -w "{{ heat_stack_user_domain_name }}"
-  failed_when: false
-  changed_when: stack_user_domain.rc == 1
-  register: stack_user_domain
+- name: Ensure heat domain
+  keystone:
+    command: ensure_domain
+    domain_name: "{{ heat_stack_user_domain_name }}"
+    token: "{{ keystone_auth_admin_token }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
   tags:
     - heat-domain
     - heat-domain-setup
     - heat-config
 
-- name: Create heat domain
-  shell: |
-    . {{ ansible_env.HOME }}/openrc
-    openstack --os-identity-api-version=3 \
-              --os-auth-url={{ keystone_service_adminurl_v3 }} \
-              --os-project-name={{ heat_project_name }} \
-              --os-project-domain-id={{ heat_project_domain_id }} \
-              --os-user-domain-id={{ heat_user_domain_id }} \
-              domain \
-              create \
-              --description "{{ heat_stack_domain_description }}" \
-              "{{ heat_stack_user_domain_name }}"
-  when: stack_user_domain.rc == 1
+- name: Ensure heat project
+  keystone:
+    command: ensure_project
+    project_name: "{{ heat_project_name }}"
+    domain_name: "{{ heat_stack_user_domain_name }}"
+    token: "{{ keystone_auth_admin_token }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
   tags:
     - heat-domain
     - heat-domain-setup
     - heat-config
 
-- name: Check for heat user
+# TODO Change the keystone library to support adding
+# a user to a domain without specifying a project
+- name: Ensure heat user
   shell: |
     . {{ ansible_env.HOME }}/openrc
     openstack --os-identity-api-version=3 \
               --os-auth-url={{ keystone_service_adminurl_v3 }} \
               --os-project-name={{ heat_project_name }} \
-              --os-project-domain-id={{ heat_project_domain_id }} \
-              --os-user-domain-id={{ heat_user_domain_id }} \
-              user \
-              list | grep -w "{{ heat_stack_domain_admin }}"
-  failed_when: false
-  changed_when: stack_user.rc == 1
-  register: stack_user
-  tags:
-    - heat-domain
-    - heat-domain-setup
-    - heat-config
-
-- name: Create heat domain admin user
-  shell: |
-    . {{ ansible_env.HOME }}/openrc
-    openstack --os-identity-api-version=3 \
-              --os-auth-url={{ keystone_service_adminurl_v3 }} \
-              --os-project-name={{ heat_project_name }} \
-              --os-project-domain-id={{ heat_project_domain_id }} \
-              --os-user-domain-id={{ heat_user_domain_id }} \
+              --os-project-domain-name={{ heat_project_domain_name }} \
+              --os-user-domain-name={{ heat_user_domain_name }} \
               user \
               create \
+              --or-show \
               --domain {{ heat_stack_user_domain_name }} \
               --password {{ heat_stack_domain_admin_password }} \
               "{{ heat_stack_domain_admin }}"
-  when: stack_user.rc == 1
   tags:
     - heat-domain
     - heat-domain-setup
     - heat-config
 
-- name: Retrieve heat domain id
-  shell: |
-    . {{ ansible_env.HOME }}/openrc
-    openstack --os-identity-api-version=3 \
-              --os-auth-url={{ keystone_service_adminurl_v3 }} \
-              --os-project-name={{ heat_project_name }} \
-              --os-project-domain-id={{ heat_project_domain_id }} \
-              --os-user-domain-id={{ heat_user_domain_id }} \
-              domain \
-              show \
-              {{ heat_stack_user_domain_name }} | grep -oE -m 1 "[0-9a-f]{32}"
-  register: stack_user_domain_id
-  tags:
-    - heat-domain
-    - heat-domain-setup
-    - heat-config
-
-- name: Set fact for heat domain id
-  set_fact:
-    stack_user_domain_id: "{{ stack_user_domain_id.stdout }}"
-  tags:
-    - heat-domain
-    - heat-domain-setup
-    - heat-config
-
+# TODO Change the keystone library to support adding
+# a role to a user without specifying a project
 - name: Assign admin role to heat domain admin user
   shell: |
     . {{ ansible_env.HOME }}/openrc
     openstack --os-identity-api-version=3 \
               --os-auth-url={{ keystone_service_adminurl_v3 }} \
               --os-project-name={{ heat_project_name }} \
-              --os-project-domain-id={{ heat_project_domain_id }} \
-              --os-user-domain-id={{ heat_user_domain_id }} \
+              --os-project-domain-name={{ heat_project_domain_name }} \
+              --os-user-domain-name={{ heat_user_domain_name }} \
               role \
               add \
               --user {{ heat_stack_domain_admin }} \
-              --domain {{ stack_user_domain_id }} \
+              --domain {{ heat_stack_user_domain_name }} \
               admin
   tags:
     - heat-domain
     - heat-domain-setup
     - heat-config
-

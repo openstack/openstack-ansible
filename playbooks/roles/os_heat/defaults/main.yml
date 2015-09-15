@@ -45,9 +45,9 @@ heat_system_shell: /bin/false
 heat_system_home_folder: "/var/lib/{{ heat_system_user_name }}"
 
 ## Default domain
-heat_project_domain_id: default
+heat_project_domain_name: Default
 heat_project_name: admin
-heat_user_domain_id: default
+heat_user_domain_name: Default
 
 ## Stack
 heat_stack_domain_admin: stack_domain_admin
@@ -69,8 +69,8 @@ heat_profiler_trace_sqlalchemy: false
 ## Auth
 heat_service_project_name: "service"
 heat_service_user_name: "heat"
-heat_service_project_domain_id: "default"
-heat_service_user_domain_id: "default"
+heat_service_project_domain_name: "Default"
+heat_service_user_domain_name: "Default"
 
 ## Keystone authentication middleware
 heat_keystone_auth_plugin: password
