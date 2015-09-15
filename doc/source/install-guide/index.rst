@@ -1,13 +1,13 @@
-OpenStack Ansible Installation Guide
+OpenStack-Ansible Installation Guide
 ====================================
 
-`Home <index.html>`__ OpenStack Ansible Installation Guide
+`Home <index.html>`_ OpenStack-Ansible Installation Guide
 
 
 Overview
 ^^^^^^^^
 
-.. toctree:: 
+.. toctree::
 
    overview.rst
 
@@ -22,7 +22,7 @@ Deployment host
 Target hosts
 ^^^^^^^^^^^^
 
-.. toctree:: 
+.. toctree::
 
    targethosts.rst
 
@@ -30,7 +30,7 @@ Target hosts
 Configuration
 ^^^^^^^^^^^^^
 
-.. toctree:: 
+.. toctree::
 
    configure.rst
 
@@ -38,7 +38,7 @@ Configuration
 Installation
 ^^^^^^^^^^^^
 
-.. toctree:: 
+.. toctree::
 
    install-foundation.rst
    install-infrastructure.rst
@@ -48,15 +48,15 @@ Installation
 Operations
 ^^^^^^^^^^
 
-.. toctree:: 
+.. toctree::
 
    ops.rst
 
 
-Appendix
-^^^^^^^^
+Appendices
+^^^^^^^^^^
 
-.. toctree:: 
+.. toctree::
 
    app-configfiles.rst
    app-resources.rst

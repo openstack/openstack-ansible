@@ -1,4 +1,4 @@
-`Home <index.html>`__ OpenStack Ansible Installation Guide
+`Home <index.html>`_ OpenStack-Ansible Installation Guide
 
 Storage devices
 ---------------
@@ -75,7 +75,7 @@ through ``sdg``.
        $ mount /srv/node/sdg
 
 To view an annotated example of the ``swift.yml`` file, see `Appendix A,
-*OSA configuration files* <app-configfiles.html>`__.
+*OSA configuration files* <app-configfiles.html>`_.
 
 For the following mounted devices:
 

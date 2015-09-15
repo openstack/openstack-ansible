@@ -1,7 +1,9 @@
-Extending openstack-ansible
+`Home <index.html>`_ OpenStack-Ansible Developer Documentation
+
+Extending OpenStack-Ansible
 ===========================
 
-The openstack-ansible project provides a basic OpenStack environment, but
+The OpenStack-Ansible project provides a basic OpenStack environment, but
 many deployers will wish to extend the environment based on their needs. This
 could include installing extra services, changing package versions, or
 overriding existing variables.
@@ -130,6 +132,12 @@ preset template option. All OpenStack-Ansible roles allow for this functionality
 where applicable. Files available to receive overrides can be seen in the
 ``defaults/main.yml`` file as standard empty dictionaries (hashes).
 
+Practical guidance for using this feature is available in the `Install Guide`_.
+
+This module has been `submitted for consideration`_ into Ansible Core.
+
+.. _Install Guide: ../install-guide/configure-openstack.html
+.. _submitted for consideration: https://github.com/ansible/ansible/pull/12555
 
 Module documentation
 ++++++++++++++++++++
@@ -232,90 +240,22 @@ specifies the type of configuration file the module will be interacting with;
 available options are "yaml", "json", and "ini".
 
 
-These are the current overrides available
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Discovering Available Overrides
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 All of these options can be specified in any way that suits your deployment.
 In terms of ease of use and flexibility it's recommended that you define your
 overrides in a user variable file such as
 ``/etc/openstack_deploy/user_variables.yml``.
 
-Galera:
-    * galera_client_my_cnf_overrides
-    * galera_my_cnf_overrides
-    * galera_cluster_cnf_overrides
-    * galera_debian_cnf_overrides
+The list of overrides available may be found by executing:
 
-Ceilometer:
-    * ceilometer_policy_overrides
-    * ceilometer_ceilometer_conf_overrides
-    * ceilometer_api_paste_ini_overrides
-    * ceilometer_event_definitions_yaml_overrides
-    * ceilometer_event_pipeline_yaml_overrides
-    * ceilometer_pipeline_yaml_overrides
+.. code-block:: bash
 
-Cinder:
-    * cinder_policy_overrides
-    * cinder_rootwrap_conf_overrides
-    * cinder_api_paste_ini_overrides
-    * cinder_cinder_conf_overrides
+    find . -name "main.yml" -exec grep '_.*_overrides:' {} \; \
+        | grep -v "^#" \
+        | sort -u
 
-Glance:
-    * glance_glance_api_paste_ini_overrides
-    * glance_glance_api_conf_overrides
-    * glance_glance_cache_conf_overrides
-    * glance_glance_manage_conf_overrides
-    * glance_glance_registry_paste_ini_overrides
-    * glance_glance_registry_conf_overrides
-    * glance_glance_scrubber_conf_overrides
-    * glance_glance_scheme_json_overrides
-    * glance_policy_overrides
+--------------
 
-Heat:
-    * heat_heat_conf_overrides
-    * heat_api_paste_ini_overrides
-    * heat_default_yaml_overrides
-    * heat_aws_cloudwatch_alarm_yaml_overrides
-    * heat_aws_rds_dbinstance_yaml_overrides
-    * heat_policy_overrides
-
-Keystone:
-    * keystone_keystone_conf_overrides
-    * keystone_keystone_default_conf_overrides
-    * keystone_keystone_paste_ini_overrides
-    * keystone_policy_overrides
-
-Neutron:
-    * neutron_neutron_conf_overrides
-    * neutron_ml2_conf_ini_overrides
-    * neutron_dhcp_agent_ini_overrides
-    * neutron_api_paste_ini_overrides
-    * neutron_rootwrap_conf_overrides
-    * neutron_policy_overrides
-    * neutron_dnsmasq_neutron_conf_overrides
-    * neutron_l3_agent_ini_overrides
-    * neutron_metadata_agent_ini_overrides
-    * neutron_metering_agent_ini_overrides
-
-Nova:
-    * nova_nova_conf_overrides
-    * nova_rootwrap_conf_overrides
-    * nova_api_paste_ini_overrides
-    * nova_policy_overrides
-
-Swift:
-    * swift_swift_conf_overrides
-    * swift_swift_dispersion_conf_overrides
-    * swift_proxy_server_conf_overrides
-    * swift_account_server_conf_overrides
-    * swift_account_server_replicator_conf_overrides
-    * swift_container_server_conf_overrides
-    * swift_container_server_replicator_conf_overrides
-    * swift_object_server_conf_overrides
-    * swift_object_server_replicator_conf_overrides
-
-Tempest:
-    * tempest_tempest_conf_overrides
-
-pip:
-    * pip_global_conf_overrides
+.. include:: navigation.txt

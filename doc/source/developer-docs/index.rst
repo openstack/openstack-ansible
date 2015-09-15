@@ -9,9 +9,11 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   quickstart-aio
+   scripts
    playbooks
    extending
-   scripts
+   contribute
 
 
 Indices and tables

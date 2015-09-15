@@ -1,11 +1,11 @@
-`Home <index.html>`__ OpenStack Ansible Installation Guide
+`Home <index.html>`_ OpenStack-Ansible Installation Guide
 
 Configuring service credentials
 -------------------------------
 
 Configure credentials for each service in the
 ``/etc/openstack_deploy/*_secrets.yml`` files. Consider using `Ansible
-Vault <http://docs.ansible.com/playbooks_vault.html>`__ to increase
+Vault <http://docs.ansible.com/playbooks_vault.html>`_ to increase
 security by encrypting any files containing credentials.
 
 Adjust permissions on these files to restrict access by non-privileged
