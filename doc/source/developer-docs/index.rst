@@ -12,6 +12,7 @@ Contents:
    playbooks
    extending
    scripts
+   quickstart-aio
 
 
 Indices and tables
