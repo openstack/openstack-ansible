@@ -7,6 +7,7 @@ Chapter 9. Operations
 
    ops-addcomputehost.rst
    ops-galera.rst
+   ops-troubleshooting.rst
 
 
 The following operations apply to environments after initial
