@@ -42,7 +42,7 @@ following optional components:
    ``br-storage`` bridge with a static IP address.
 
 For more information, see `OpenStack Ansible
-Networking <https://github.com/openstack/openstack-ansible/blob/10.1.0/etc/network/README.html>`__.
+Networking <https://github.com/openstack/openstack-ansible/blob/master/etc/network/README.rst>`__.
 
 --------------
 
