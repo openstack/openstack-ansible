@@ -1,0 +1,32 @@
+---
+# Copyright 2015, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Container network adjustments
+  hosts: "all_containers"
+  max_fail_percentage: 100
+  gather_facts: false
+  user: root
+  tasks:
+    - name: Get interface files
+      command: ls -1 /etc/network/interfaces.d/
+      register: interface_files
+      failed_when: false
+    - name: Remove old interface files
+      file:
+        path: "/etc/network/interfaces.d/{{ item }}"
+        state: "absent"
+      with_items:
+        - "{{ interface_files.stdout_lines }}"
+      failed_when: false

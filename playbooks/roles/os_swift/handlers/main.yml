@@ -67,8 +67,7 @@
     name: "rsync"
     state: "stopped"
   register: service_restart
-  failed_when: "'msg' in service_restart and 'FAIL' in service_restart.msg|upper"
-  until: add_service|success
+  until: service_restart|success
   retries: 3
   delay: 2
 
@@ -76,3 +75,7 @@
   service:
     name: "rsync"
     state: "started"
+  register: service_started
+  until: service_started|success
+  retries: 3
+  delay: 2

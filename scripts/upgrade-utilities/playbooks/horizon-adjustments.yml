@@ -1,0 +1,41 @@
+---
+# Copyright 2015, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Horizon adjustments
+  hosts: "horizon_all"
+  gather_facts: false
+  user: root
+  tasks:
+    - name: Create the horizon system user
+      user:
+        name: "{{ horizon_system_user_name }}"
+        group: "{{ horizon_system_group_name }}"
+        comment: "{{ horizon_system_comment }}"
+        shell: "{{ horizon_system_shell }}"
+        system: "yes"
+        createhome: "yes"
+        home: "{{ horizon_system_user_home }}"
+    - name: Fix horizon permissions
+      command: >
+        chown -R "{{ horizon_system_user_name }}":"{{ horizon_system_group_name }}" "/usr/local/lib/python2.7/dist-packages/static"
+      register: horizon_cmd_chown
+      failed_when: false
+      changed_when: horizon_cmd_chown.rc == 0
+  vars:
+    horizon_system_user_name: "horizon"
+    horizon_system_group_name: "www-data"
+    horizon_system_shell: "/bin/false"
+    horizon_system_comment: "horizon system user"
+    horizon_system_user_home: "/var/lib/{{ horizon_system_user_name }}"
