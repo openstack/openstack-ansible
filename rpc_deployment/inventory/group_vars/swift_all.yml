@@ -65,7 +65,6 @@ service_names:
   - swift-proxy
 
 container_directories:
-  - { name: /var/lock/swift }
   - { name: /var/cache/swift }
   - { name: /etc/swift }
   - { name: /etc/swift/rings/ }

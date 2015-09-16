@@ -144,7 +144,7 @@ use = egg:swift#healthcheck
 use = egg:swift#recon
 log_facility = LOG_LOCAL4
 recon_cache_path = /var/cache/swift
-recon_lock_path = /var/lock/swift
+recon_lock_path = /var/lock
 
 {% if swift.replication_network is not defined or swift.replication_network == swift.storage_network %}
 [object-replicator]
