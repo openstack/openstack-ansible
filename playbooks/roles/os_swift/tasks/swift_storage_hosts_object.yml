@@ -80,26 +80,36 @@
     service_home: "{{ swift_system_home_folder }}"
 
 - name: "Swift object server configuration"
-  template:
+  config_template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     owner: "{{ swift_system_user_name }}"
     group: "{{ swift_system_group_name }}"
     mode: "0644"
+    config_overrides: "{{ item.config_overrides }}"
+    config_type: "{{ item.config_type }}"
   with_items:
-    - { src: "object-server.conf.j2", dest: "/etc/swift/object-server/object-server.conf" }
+    - src: "object-server.conf.j2"
+      dest: "/etc/swift/object-server/object-server.conf"
+      config_overrides: "{{ swift_object_server_conf_overrides }}"
+      config_type: "ini"
   notify: Restart swift object services
 
 # We only create the dedicated replicator configuration when using a dedicated replication_network
-- name: "Swift object server configuration"
-  template:
+- name: "Swift object server replicator configuration"
+  config_template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     owner: "{{ swift_system_user_name }}"
     group: "{{ swift_system_group_name }}"
     mode: "0644"
+    config_overrides: "{{ item.config_overrides }}"
+    config_type: "{{ item.config_type }}"
   with_items:
-    - { src: "object-server-replicator.conf.j2", dest: "/etc/swift/object-server/object-server-replicator.conf" }
+    - src: "object-server-replicator.conf.j2"
+      dest: "/etc/swift/object-server/object-server-replicator.conf"
+      config_overrides: "{{ swift_object_server_replicator_conf_overrides }}"
+      config_type: "ini"
   when: >
     swift.replication_network is defined and
     swift.replication_network != swift.storage_network
