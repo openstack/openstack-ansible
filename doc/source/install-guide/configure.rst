@@ -14,6 +14,7 @@ Chapter 5. Deployment configuration
    configure-cinder.rst
    configure-swift.rst
    configure-haproxy.rst
+   configure-horizon.rst
    configure-ceilometer.rst
 
 
