@@ -72,7 +72,7 @@ if [ "$?" != "0" ]; then
     echo "Could not obtain IdP token, did you forget to import your openrc file? See token.json and error.log for details."
     exit 1
 fi
-IDP_TOKEN=`grep X-Subject-Token token.txt | grep -Po ': .*' | grep -Po '[a-zA-Z0-9-_]*'`
+IDP_TOKEN=`grep X-Subject-Token token.txt | grep -Po ': .*' | grep -Po '[a-zA-Z0-9-_%]*'`
 echo - Obtained IdP token.
 
 # obtain the service provider URLs
@@ -106,7 +106,7 @@ if [ "$?" != "0" ] || ! grep -q X-Subject-Token unscoped.txt; then
     echo Could not obtain unscoped token from service provider. See unscoped.txt and error.log for details.
     exit 1
 fi
-UNSCOPED_TOKEN=`grep X-Subject-Token unscoped.txt | grep -Po ': .*' | grep -Po '[a-zA-Z0-9-_]*'`
+UNSCOPED_TOKEN=`grep X-Subject-Token unscoped.txt | grep -Po ': .*' | grep -Po '[a-zA-Z0-9-_%]*'`
 echo - Obtained unscoped token from SP: $UNSCOPED_TOKEN
 
 echo '- Domains available at sp: '
