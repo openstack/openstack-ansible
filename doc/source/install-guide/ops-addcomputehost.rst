@@ -15,14 +15,13 @@ cluster.
    If necessary, also modify the ``used_ips`` stanza.
 
 #. Run the following commands to add the host. Replace
-   *``NEW_HOST_NAME``* with the name of the new host.
+   ``NEW_HOST_NAME`` with the name of the new host.
 
    .. code-block:: bash
 
        $ cd /opt/openstack-ansible/playbooks
        $ openstack-ansible setup-everything.yml \
        rsyslog-config.yml --limit NEW_HOST_NAME
-               
 
 --------------
 
