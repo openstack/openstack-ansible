@@ -71,6 +71,7 @@ haproxy_bind_on_non_local: False
 
 ## haproxy SSL
 haproxy_ssl: no
+haproxy_ssl_dh_param: 2048
 haproxy_ssl_self_signed_regen: no
 haproxy_ssl_cert: /etc/ssl/certs/haproxy.cert
 haproxy_ssl_key: /etc/ssl/private/haproxy.key
