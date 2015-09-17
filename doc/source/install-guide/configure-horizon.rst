@@ -3,8 +3,8 @@
 Configuring Horizon (optional)
 ------------------------------
 
-Customizing the Horizon deployment is done within the ``os-horizon`` role in
-``playbooks/roles/os-horizon/defaults.main.yml``.
+Customizing the Horizon deployment is done within
+``/etc/openstack_deploy/user_variables.yml``.
 
 SSL certificates
 ----------------
