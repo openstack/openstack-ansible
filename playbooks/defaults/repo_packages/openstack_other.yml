@@ -29,3 +29,15 @@
 tempest_git_repo: https://git.openstack.org/openstack/tempest
 tempest_git_install_branch: aac06c929a9d3bf52a4310b91dc886079c9ca9d7 # HEAD of "master" as of 04.09.2015
 tempest_git_dest: "/opt/tempest_{{ tempest_git_install_branch | replace('/', '_') }}"
+
+# Temporary pin to address openstackclient requirements issue in tag 1.6.0 "python-neutronclient<3,>=2.6.0"
+#  This pin should be removed when 1.6.1 is released
+openstackclient_git_repo: https://github.com/openstack/python-openstackclient
+openstackclient_git_install_branch: b288fbfb35a00fac7e2646592a7cabeff09026b3
+openstackclient_git_dest: "/opt/openstackclient_{{ openstackclient_git_install_branch | replace('/', '_') }}"
+
+# Temporary pin to address django openstack auth issues found here:
+#  https://bugs.launchpad.net/openstack-ansible/+bug/1497679
+djangoopenstackauth_git_repo: https://github.com/openstack/django_openstack_auth
+djangoopenstackauth_git_install_branch: 829cbee14e200fd127ec4f0e0f4d743102d8e9d1
+djangoopenstackauth_git_dest: "/opt/djangoopenstackauth_{{ djangoopenstackauth_git_install_branch | replace('/', '_') }}"
