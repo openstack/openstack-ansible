@@ -131,8 +131,8 @@ keystone_service_adminurl: "{{ keystone_service_adminurl_v3 }}"
 keystone_apache_log_level: info
 keystone_apache_servertokens: "Prod"
 keystone_apache_serversignature: "Off"
-keystone_wsgi_threads: "{{ ansible_processor_vcpus | default(2) // 2 }}"
-keystone_wsgi_processes: "{{ ansible_processor_vcpus | default(1) }}"
+keystone_wsgi_threads: 1
+keystone_wsgi_processes: "{{ ansible_processor_vcpus | default (1) * 2 }}"
 
 # set keystone_ssl to true to enable SSL configuration on the keystone containers
 keystone_ssl: false

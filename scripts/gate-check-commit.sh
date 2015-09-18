@@ -91,6 +91,10 @@ echo "lxc_net_address: 10.255.255.1" | tee -a /etc/openstack_deploy/user_variabl
 echo "lxc_net_netmask: 255.255.255.0" | tee -a /etc/openstack_deploy/user_variables.yml
 echo "lxc_net_dhcp_range: 10.255.255.2,10.255.255.253" | tee -a /etc/openstack_deploy/user_variables.yml
 
+# Limit the number of processes used by Keystone
+# The defaults cause tempest failures in OpenStack CI due to resource constraints
+echo "keystone_wsgi_processes: 4" | tee -a /etc/openstack_deploy/user_variables.yml
+
 # Disable the python output buffering so that jenkins gets the output properly
 export PYTHONUNBUFFERED=1
 
