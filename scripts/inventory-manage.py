@@ -74,6 +74,22 @@ def recursive_dict_removal(inventory, purge_list):
             recursive_list_removal(value, purge_list)
 
 
+def remove_group(inventory, group_names):
+    inv = inventory.copy()
+    for group_name in group_names:
+        for key, value in inv.viewitems():
+            if key == group_name:
+                del inventory[key]
+            else:
+                try:
+                    children = value['children']
+                except KeyError:
+                    pass
+                else:
+                    value['children'] = [c for c in children
+                                         if c != group_name]
+
+
 def args():
     """Setup argument Parsing."""
     parser = argparse.ArgumentParser(
@@ -111,6 +127,14 @@ def args():
         help='',
         action='store_true',
         default=False
+    )
+    exclusive_action.add_argument(
+        '--remove-group',
+        help='Group to remove from inventory. Note, if the group is part of '
+             'the environment it will be automatically re-added next time the '
+             'dynamic inventory script is used.',
+        action='append',
+        default=[]
     )
 
     return vars(parser.parse_args())
@@ -160,6 +184,10 @@ def main():
 
     if user_args['list_host'] is True:
         print(print_inventory(inventory, user_args['sort']))
+    elif user_args['remove_group']:
+        remove_group(inventory, user_args['remove_group'])
+        with open(environment_file, 'wb') as f:
+            f.write(json.dumps(inventory, indent=2))
     else:
         recursive_dict_removal(inventory, user_args['remove_item'])
         with open(environment_file, 'wb') as f:
