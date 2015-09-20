@@ -73,3 +73,19 @@
   when: cinder_nfs_client is defined
   tags:
     - cinder-nfs
+
+- name: Get cinder command path
+  command: which cinder
+  register: cinder_command_path
+  when:
+    - not cinder_venv_enabled | bool
+  tags:
+    - cinder-command-bin
+
+- name: Set cinder command path
+  set_fact:
+    cinder_bin: "{{ cinder_command_path.stdout | dirname }}"
+  when:
+    - not cinder_venv_enabled | bool
+  tags:
+    - cinder-command-bin

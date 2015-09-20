@@ -16,6 +16,18 @@
 # Defines that the role will be deployed on a host machine
 is_metal: true
 
+# Name of the virtual env to deploy into
+cinder_venv_tag: untagged
+cinder_venv_bin: "/openstack/venvs/cinder-{{ cinder_venv_tag }}/bin"
+
+# Set this to enable or disable installing in a venv
+cinder_venv_enabled: true
+
+# The bin path defaults to the venv path however if installation in a
+#  venv is disabled the bin path will be dynamically set based on the
+#  system path used when the installing.
+cinder_bin: "{{ cinder_venv_bin }}"
+
 # Enable/Disable Ceilometer
 cinder_ceilometer_enabled: False
 
@@ -188,6 +200,14 @@ cinder_quota_backup_gigabytes: 1000
 #  "volume:create": ""
 #  "volume:delete": ""
 
+# Potential locations of glance
+# the variable cinder_glance_api_servers is a list of servers that can service glance
+# by default this variable is undefined
+#cinder_glance_api_servers:
+
+cinder_glance_host: 127.0.0.1
+cinder_glance_service_port: 9292
+
 # Common apt packages
 cinder_apt_packages:
   - dmeventd
@@ -202,6 +222,11 @@ cinder_apt_packages:
   - tgt
   - zlib1g
   - zlibc
+
+# Cinder packages that must be installed before anything else
+cinder_requires_pip_packages:
+  - virtualenv
+  - python-keystoneclient # Keystoneclient needed to OSA keystone lib
 
 # Common pip packages
 cinder_pip_packages:
