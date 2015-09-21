@@ -67,7 +67,6 @@
     - { path: "/etc/swift/ring_build_files" }
     - { path: "/openstack/log/{{ inventory_hostname }}", owner: "syslog", group: "syslog" }
     - { path: "/var/cache/swift" }
-    - { path: "/var/lock/swift" }
     - { path: "{{ swift_system_home_folder }}" }
   tags:
     - swift-dirs
