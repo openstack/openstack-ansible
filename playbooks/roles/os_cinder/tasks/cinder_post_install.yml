@@ -13,15 +13,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Generate cinder configs
-  template:
+- name: Copy cinder configs
+  config_template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     owner: "{{ cinder_system_user_name }}"
     group: "{{ cinder_system_group_name }}"
+    mode: "0644"
+    config_overrides: "{{ item.config_overrides }}"
+    config_type: "{{ item.config_type }}"
   with_items:
-    - { src: "cinder.conf.j2", dest: "/etc/cinder/cinder.conf" }
-    - { src: "api-paste.ini.j2", dest: "/etc/cinder/api-paste.ini" }
+    - src: "cinder.conf.j2"
+      dest: "/etc/cinder/cinder.conf"
+      config_overrides: "{{ cinder_cinder_conf_overrides }}"
+      config_type: "ini"
+    - src: "api-paste.ini.j2"
+      dest: "/etc/cinder/api-paste.ini"
+      config_overrides: "{{ cinder_api_paste_ini_overrides }}"
+      config_type: "ini"
+    - src: "rootwrap.conf.j2"
+      dest: "/etc/cinder/rootwrap.conf"
+      config_overrides: "{{ cinder_rootwrap_conf_overrides }}"
+      config_type: "ini"
+    - src: "policy.json"
+      dest: "/etc/cinder/policy.json"
+      config_overrides: "{{ cinder_policy_overrides }}"
+      config_type: "json"
   notify:
     - Restart cinder services
   tags:
@@ -35,21 +52,6 @@
     group: "{{ cinder_system_group_name }}"
   with_items:
     - { src: "volume.filters", dest: "/etc/cinder/rootwrap.d/volume.filters" }
-    - { src: "rootwrap.conf", dest: "/etc/cinder/rootwrap.conf" }
-  notify:
-    - Restart cinder services
-  tags:
-    - cinder-config
-
-- name: Apply updates to Policy file
-  config_template:
-    src: "policy.json"
-    dest: "/etc/cinder/policy.json"
-    owner: "{{ cinder_system_user_name }}"
-    group: "{{ cinder_system_group_name }}"
-    mode: "0644"
-    config_overrides: "{{ cinder_policy_overrides|default({}) }}"
-    config_type: "json"
   notify:
     - Restart cinder services
   tags:
