@@ -29,14 +29,36 @@
     - galera-config
 
 - name: Drop mariadb config(s)
+  config_template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+    config_overrides: "{{ item.config_overrides }}"
+    config_type: "{{ item.config_type }}"
+  with_items:
+    - src: my.cnf.j2
+      dest: /etc/mysql/my.cnf
+      config_overrides: "{{ galera_my_cnf_overrides }}"
+      config_type: "ini"
+    - src: cluster.cnf.j2
+      dest: /etc/mysql/conf.d/cluster.cnf
+      config_overrides: "{{ galera_cluster_cnf_overrides }}"
+      config_type: "ini"
+    - src: debian.cnf.j2
+      dest: /etc/mysql/debian.cnf
+      config_overrides: "{{ galera_debian_cnf_overrides }}"
+      config_type: "ini"
+  tags:
+    - galera-client-user-config
+
+- name: Drop mariadb config(s)
   template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     mode: "{{ item.mode|default('0644') }}"
   with_items:
-    - { src: my.cnf.j2, dest: /etc/mysql/my.cnf }
-    - { src: cluster.cnf.j2, dest: /etc/mysql/conf.d/cluster.cnf }
-    - { src: debian.cnf.j2, dest: /etc/mysql/debian.cnf }
     - { src: mysql_defaults.j2, dest: /etc/default/mysql }
   notify: Restart mysql
   tags:
