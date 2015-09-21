@@ -22,8 +22,10 @@ export OS_PROJECT_DOMAIN_NAME={{ openrc_os_domain_name }}
 # For openstackclient
 {% if openrc_os_auth_url.endswith('v3') %}
 export OS_IDENTITY_API_VERSION=3
+export OS_AUTH_VERSION=3
 {% else %}
 export OS_IDENTITY_API_VERSION=2
+export OS_AUTH_VERSION=2
 {% endif %}
 
 {% if openrc_insecure | bool %}
