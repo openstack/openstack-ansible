@@ -78,6 +78,23 @@
     - tempest-image
     - tempest-image-unarchive
 
+- name: Copy tempest config
+  config_template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+    config_overrides: "{{ item.config_overrides }}"
+    config_type: "{{ item.config_type }}"
+  with_items:
+    - src: "tempest.conf.j2"
+      dest: "{{ tempest_git_dest }}/etc/tempest.conf"
+      config_overrides: "{{ tempest_tempest_conf_overrides }}"
+      config_type: "ini"
+  tags:
+    - tempest-config
+
 - name: Generate tempest Config
   template:
     src: "{{ item.src }}"
@@ -86,7 +103,6 @@
     group: "root"
     mode: "{{ item.mode|default('0644') }}"
   with_items:
-    - { src: "tempest.conf.j2", dest: "{{ tempest_git_dest }}/etc/tempest.conf" }
     - { src: openstack_tempest_gate.sh.j2, dest: /opt/openstack_tempest_gate.sh, mode: "0755" }
   tags:
     - tempest-config
