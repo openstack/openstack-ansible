@@ -72,7 +72,7 @@
   tags:
     - tempest-setup
 
-- name: Ensure tempest users have heat_stack_owners role
+- name: Ensure tempest users have heat_stack_owner role
   keystone:
     command: ensure_user_role
     token: "{{ keystone_auth_admin_token }}"
@@ -85,6 +85,7 @@
   until: add_service|success
   retries: 5
   delay: 10
+  when: tempest_service_available_heat | bool
   with_items:
     - demo
     - alt_demo
