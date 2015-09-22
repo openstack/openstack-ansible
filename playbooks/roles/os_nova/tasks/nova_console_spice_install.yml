@@ -25,15 +25,29 @@
     - nova-apt-packages
     - nova-spice-apt-packages
 
-- name: Install apt packages
+- name: Remove apt packages
   apt:
     pkg: "{{ item }}"
-    state: latest
-  register: install_packages
-  until: install_packages|success
+    state: absent
+  register: remove_packages
+  until: remove_packages|success
   retries: 5
   delay: 2
   with_items: nova_spice_apt_packages
   tags:
     - nova-apt-packages
     - nova-spice-apt-packages
+
+- name: Get package from git
+  git:
+    repo: "{{ nova_spicehtml5_git_repo }}"
+    dest: "/usr/share/spice-html5"
+    clone: "yes"
+    update: "yes"
+    version: "{{ nova_spicehtml5_git_install_branch }}"
+  register: git_clone
+  until: git_clone|success
+  retries: 5
+  delay: 2
+  tags:
+    - nova-spice-git
