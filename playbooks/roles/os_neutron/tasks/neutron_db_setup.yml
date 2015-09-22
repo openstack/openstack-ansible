@@ -39,25 +39,15 @@
   tags:
     - neutron-db-setup
 
-- name: Check for existing migrations
-  shell: |
-    neutron-db-manage --config-file {{ neutron_db_config }} --config-file {{ neutron_db_plugin }} current | egrep "^[0-9a-z]{12}"
-  sudo: yes
-  sudo_user: "{{ neutron_system_user_name }}"
-  failed_when: false
-  register: neutron_migrations_previously_run
+- name: Get neutron migrations facts
+  neutron_migrations_facts:
+    release: liberty
   tags:
     - neutron-db-setup
     - neutron-upgrade
 
-- name: Perform an initial Neutron DB sync
-  command: |
-    neutron-db-manage --config-file {{ neutron_db_config }}
-                      --config-file {{ neutron_db_plugin }}
-                      upgrade {{ neutron_db_revision }}
-  sudo: yes
-  sudo_user: "{{ neutron_system_user_name }}"
-  when: neutron_migrations_previously_run.rc == 1
+- name: Print neutron migrations facts
+  debug: var=neutron_migrations
   tags:
     - neutron-db-setup
     - neutron-upgrade
@@ -69,7 +59,7 @@
                       upgrade --expand
   sudo: yes
   sudo_user: "{{ neutron_system_user_name }}"
-  when: neutron_migrations_previously_run.rc == 0
+  when: not neutron_migrations['expand']['head']|bool
   tags:
     - neutron-db-setup
     - neutron-upgrade
@@ -81,7 +71,7 @@
     pattern: "neutron-server"
   delegate_to: "{{ item }}"
   with_items: groups['neutron_server']
-  when: neutron_migrations_previously_run.rc == 0
+  when: not neutron_migrations['contract']['head']|bool
   tags:
     - neutron-db-setup
     - neutron-upgrade
@@ -93,7 +83,7 @@
                       upgrade --contract
   sudo: yes
   sudo_user: "{{ neutron_system_user_name }}"
-  when: neutron_migrations_previously_run.rc == 0
+  when: not neutron_migrations['contract']['head']|bool
   tags:
     - neutron-db-setup
     - neutron-upgrade
@@ -105,7 +95,7 @@
     pattern: "neutron-server"
   delegate_to: "{{ item }}"
   with_items: groups['neutron_server']
-  when: neutron_migrations_previously_run.rc == 0
+  when: not neutron_migrations['contract']['head']|bool
   tags:
     - neutron-db-setup
     - neutron-upgrade
