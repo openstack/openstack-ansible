@@ -15,6 +15,8 @@ Chapter 5. Deployment configuration
    configure-swift.rst
    configure-haproxy.rst
    configure-ceilometer.rst
+   configure-keystone.rst
+   configure-sslcertificates.rst
 
 
 **Figure 5.1. Installation work flow**

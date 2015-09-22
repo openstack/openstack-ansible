@@ -23,6 +23,17 @@ balancer prior to deploying OSA.
          123458-infra03:
            ip: 172.29.236.53
 
+Securing HAProxy communication with SSL certificates
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The openstack-ansible project provides the ability to secure HAProxy
+communications with self-signed or user-provided SSL certificates.
+
+Refer to `Securing services with SSL certificates`_ for available configuration
+options.
+
+.. _Securing services with SSL certificates: configure-sslcertificates.html
+
 --------------
 
 .. include:: navigation.txt
