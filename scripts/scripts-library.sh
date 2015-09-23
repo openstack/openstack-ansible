@@ -36,7 +36,7 @@ function successerator {
   # Set the initial return value to failure.
   false
   while [ $? -ne 0 -a ${RETRY} -lt ${MAX_RETRIES} ];do
-    RETRY=$((${RETRY}+1))
+    ((RETRY++))
     if [ ${RETRY} -gt 1 ];then
       $@ -vvvv
     else
@@ -49,7 +49,7 @@ function successerator {
     exit_fail
   fi
   # Print the time that the method completed.
-  OP_TOTAL_SECONDS="$(( $(date +%s) - $OP_START_TIME ))"
+  OP_TOTAL_SECONDS="$(( $(date +%s) - OP_START_TIME ))"
   REPORT_OUTPUT="${OP_TOTAL_SECONDS} seconds"
   REPORT_DATA+="- Operation: [ $@ ]\t${REPORT_OUTPUT}\tNumber of Attempts [ ${RETRY} ]\n"
   echo -e "Run Time = ${REPORT_OUTPUT}"
@@ -65,7 +65,7 @@ function install_bits {
 function configure_diskspace {
   # If there are any block devices available other than the one
   # used for the root disk, repurpose it for our needs.
-  MIN_LXC_VG_SIZE_B=$((${MIN_LXC_VG_SIZE_GB} * 1024 * 1024 * 1024))
+  MIN_LXC_VG_SIZE_B=$((MIN_LXC_VG_SIZE_GB * 1024 * 1024 * 1024))
 
   # only do this if the lxc vg doesn't already exist
   if ! vgs lxc > /dev/null 2>&1; then
@@ -144,7 +144,7 @@ function loopback_create {
       truncate -s ${LOOP_FILESIZE} ${LOOP_FILENAME}
     elif [ "${LOOP_FILE_TYPE}" = "thick" ]; then
       fallocate -l ${LOOP_FILESIZE} ${LOOP_FILENAME} &> /dev/null || \
-      dd if=/dev/zero of=${LOOP_FILENAME} bs=1M count=$(( ${LOOP_FILESIZE} / 1024 / 1024 ))
+      dd if=/dev/zero of=${LOOP_FILENAME} bs=1M count=$(( LOOP_FILESIZE / 1024 / 1024 ))
     else
       exit_fail "No valid option ${LOOP_FILE_TYPE} found."
     fi
@@ -173,8 +173,8 @@ function loopback_create {
 
 function exit_state {
   set +x
-  TOTALSECONDS="$(( $(date +%s) - $STARTTIME ))"
-  info_block "Run Time = ${TOTALSECONDS} seconds || $(($TOTALSECONDS / 60)) minutes"
+  TOTALSECONDS="$(( $(date +%s) - STARTTIME ))"
+  info_block "Run Time = ${TOTALSECONDS} seconds || $((TOTALSECONDS / 60)) minutes"
   if [ "${1}" == 0 ];then
     info_block "Status: Success"
   else
