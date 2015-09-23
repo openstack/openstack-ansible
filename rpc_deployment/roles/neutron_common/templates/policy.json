@@ -37,7 +37,9 @@
     "update_network:router:external": "rule:admin_only",
     "delete_network": "rule:admin_or_owner",
 
+    "network_device": "field:port:device_owner=~^network:",
     "create_port": "",
+    "create_port:device_owner": "not rule:network_device or rule:admin_or_network_owner",
     "create_port:mac_address": "rule:admin_or_network_owner",
     "create_port:fixed_ips": "rule:admin_or_network_owner",
     "create_port:port_security_enabled": "rule:admin_or_network_owner",
@@ -51,6 +53,7 @@
     "get_port:binding:host_id": "rule:admin_only",
     "get_port:binding:profile": "rule:admin_only",
     "update_port": "rule:admin_or_owner",
+    "update_port:device_owner": "not rule:network_device or rule:admin_or_network_owner",
     "update_port:fixed_ips": "rule:admin_or_network_owner",
     "update_port:port_security_enabled": "rule:admin_or_network_owner",
     "update_port:binding:host_id": "rule:admin_only",
