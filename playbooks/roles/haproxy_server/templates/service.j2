@@ -1,7 +1,7 @@
 # {{ ansible_managed }}
 
 frontend {{ item.service.haproxy_service_name }}-front
-bind {{ item.service.haproxy_bind|default('*') }}:{{ item.service.haproxy_port }} {% if item.service.haproxy_ssl is defined and item.service.haproxy_ssl | bool %}ssl crt {{ haproxy_ssl_pem }}{% endif %}
+bind {{ item.service.haproxy_bind|default('*') }}:{{ item.service.haproxy_port }} {% if item.service.haproxy_ssl is defined and item.service.haproxy_ssl | bool %}ssl crt {{ haproxy_ssl_pem }} ciphers {{ haproxy_ssl_cipher_suite }}{% endif %}
 
 {% if item.service.haproxy_balance_type == "http" %}
     option httplog
