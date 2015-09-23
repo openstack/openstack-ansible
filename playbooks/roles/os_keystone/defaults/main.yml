@@ -35,15 +35,15 @@ keystone_rpc_backend: rabbit
 
 ## Drivers
 keystone_auth_methods: "password,token"
-keystone_identity_driver: "keystone.identity.backends.sql.Identity"
-# For a sql backed token storage use: "keystone.token.backends.sql.Token"
-keystone_token_driver: "keystone.token.persistence.backends.memcache.Token"
-keystone_token_provider: "keystone.token.providers.fernet.Provider"
+keystone_identity_driver: sql
+# For a sql backed token storage use: "sql"
+keystone_token_driver: memcache
+keystone_token_provider: fernet
 keystone_token_expiration: 43200
 keystone_token_cache_time: 3600
 
 # Set the revocation driver used within keystone.
-keystone_revocation_driver: keystone.contrib.revoke.backends.sql.Revoke
+keystone_revocation_driver: sql
 keystone_revocation_cache_time: 3600
 keystone_revocation_expiration_buffer: 1800
 
@@ -57,10 +57,10 @@ keystone_fernet_auto_rotation_script: /opt/keystone-fernet-rotate.sh
 
 keystone_cache_expiration_time: 5400
 
-keystone_assignment_driver: keystone.assignment.backends.sql.Assignment
+keystone_assignment_driver: sql
 
 keystone_resource_cache_time: 3600
-keystone_resource_driver: keystone.resource.backends.sql.Resource
+keystone_resource_driver: sql
 
 keystone_bind_address: 0.0.0.0
 
@@ -168,7 +168,7 @@ keystone_ssl_self_signed_subject: "/C=US/ST=Texas/L=San Antonio/O=IT/CN={{ inter
 #     password: "secrete"
 #     ...
 
-keystone_ldap_identity_driver: keystone.identity.backends.ldap.Identity
+keystone_ldap_identity_driver: ldap
 keystone_ldap_domain_config_dir: /etc/keystone/domains
 
 # If you want to regenerate the keystone users SSH keys, on each run, set this var to True

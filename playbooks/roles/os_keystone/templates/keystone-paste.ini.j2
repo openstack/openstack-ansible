@@ -1,70 +1,67 @@
 # Keystone PasteDeploy configuration file.
 
 [filter:debug]
-paste.filter_factory = keystone.common.wsgi:Debug.factory
+use = egg:keystone#debug
 
 [filter:request_id]
-paste.filter_factory = oslo_middleware:RequestId.factory
+use = egg:keystone#request_id
 
 [filter:build_auth_context]
-paste.filter_factory = keystone.middleware:AuthContextMiddleware.factory
+use = egg:keystone#build_auth_context
 
 [filter:token_auth]
-paste.filter_factory = keystone.middleware:TokenAuthMiddleware.factory
+use = egg:keystone#token_auth
 
 [filter:admin_token_auth]
-paste.filter_factory = keystone.middleware:AdminTokenAuthMiddleware.factory
+use = egg:keystone#admin_token_auth
 
 [filter:json_body]
-paste.filter_factory = keystone.middleware:JsonBodyMiddleware.factory
+use = egg:keystone#json_body
 
 [filter:user_crud_extension]
-paste.filter_factory = keystone.contrib.user_crud:CrudExtension.factory
+use = egg:keystone#user_crud_extension
 
 [filter:crud_extension]
-paste.filter_factory = keystone.contrib.admin_crud:CrudExtension.factory
+use = egg:keystone#crud_extension
 
 [filter:ec2_extension]
-paste.filter_factory = keystone.contrib.ec2:Ec2Extension.factory
+use = egg:keystone#ec2_extension
 
 [filter:ec2_extension_v3]
-paste.filter_factory = keystone.contrib.ec2:Ec2ExtensionV3.factory
+use = egg:keystone#ec2_extension_v3
 
 [filter:federation_extension]
-paste.filter_factory = keystone.contrib.federation.routers:FederationExtension.factory
+use = egg:keystone#federation_extension
 
 [filter:oauth1_extension]
-paste.filter_factory = keystone.contrib.oauth1.routers:OAuth1Extension.factory
+use = egg:keystone#oauth1_extension
 
 [filter:s3_extension]
-paste.filter_factory = keystone.contrib.s3:S3Extension.factory
+use = egg:keystone#s3_extension
 
 [filter:endpoint_filter_extension]
-paste.filter_factory = keystone.contrib.endpoint_filter.routers:EndpointFilterExtension.factory
-
-[filter:endpoint_policy_extension]
-paste.filter_factory = keystone.contrib.endpoint_policy.routers:EndpointPolicyExtension.factory
+use = egg:keystone#endpoint_filter_extension
 
 [filter:simple_cert_extension]
-paste.filter_factory = keystone.contrib.simple_cert:SimpleCertExtension.factory
+use = egg:keystone#simple_cert_extension
 
 [filter:revoke_extension]
-paste.filter_factory = keystone.contrib.revoke.routers:RevokeExtension.factory
+use = egg:keystone#revoke_extension
 
 [filter:url_normalize]
-paste.filter_factory = keystone.middleware:NormalizingFilter.factory
+use = egg:keystone#url_normalize
 
 [filter:sizelimit]
-paste.filter_factory = oslo_middleware.sizelimit:RequestBodySizeLimiter.factory
+use = egg:keystone#sizelimit
 
 [app:public_service]
-paste.app_factory = keystone.service:public_app_factory
+use = egg:keystone#public_service
 
 [app:service_v3]
-paste.app_factory = keystone.service:v3_app_factory
+use = egg:keystone#service_v3
 
 [app:admin_service]
-paste.app_factory = keystone.service:admin_app_factory
+use = egg:keystone#admin_service
 
 [pipeline:public_api]
 # The last item in this pipeline must be public_service or an equivalent
@@ -79,13 +76,13 @@ pipeline = sizelimit url_normalize request_id build_auth_context token_auth admi
 [pipeline:api_v3]
 # The last item in this pipeline must be service_v3 or an equivalent
 # application. It cannot be a filter.
-pipeline = sizelimit url_normalize request_id build_auth_context token_auth admin_token_auth json_body ec2_extension_v3 s3_extension simple_cert_extension revoke_extension federation_extension oauth1_extension endpoint_filter_extension endpoint_policy_extension service_v3
+pipeline = sizelimit url_normalize request_id build_auth_context token_auth admin_token_auth json_body ec2_extension_v3 s3_extension simple_cert_extension revoke_extension federation_extension oauth1_extension endpoint_filter_extension service_v3
 
 [app:public_version_service]
-paste.app_factory = keystone.service:public_version_app_factory
+use = egg:keystone#public_version_service
 
 [app:admin_version_service]
-paste.app_factory = keystone.service:admin_version_app_factory
+use = egg:keystone#admin_version_service
 
 [pipeline:public_version_api]
 pipeline = sizelimit url_normalize public_version_service
