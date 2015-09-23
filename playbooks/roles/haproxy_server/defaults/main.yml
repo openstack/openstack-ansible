@@ -78,3 +78,4 @@ haproxy_ssl_key: /etc/ssl/private/haproxy.key
 haproxy_ssl_pem: /etc/ssl/private/haproxy.pem
 haproxy_ssl_ca_cert: /etc/ssl/certs/haproxy-ca.pem
 haproxy_ssl_self_signed_subject: "/C=US/ST=Texas/L=San Antonio/O=IT/CN={{ internal_lb_vip_address }}/subjectAltName=IP.1={{ external_lb_vip_address }}"
+haproxy_ssl_cipher_suite: "{{ ssl_cipher_suite }}"
