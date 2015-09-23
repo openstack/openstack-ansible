@@ -31,7 +31,7 @@ FORKS=${FORKS:-$(grep -c ^processor /proc/cpuinfo)}
 function successerator {
   set +e
   # Get the time that the method was started.
-  OP_START_TIME="$(date +%s)"
+  OP_START_TIME=$(date +%s)
   RETRY=0
   # Set the initial return value to failure.
   false

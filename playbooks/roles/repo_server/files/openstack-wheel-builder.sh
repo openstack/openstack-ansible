@@ -97,7 +97,7 @@ function kill_job {
     set +e
     # If the job needs killing kill the pid and unlock the file.
     if [ -f "${LOCKFILE}" ]; then
-        PID="$(cat ${LOCKFILE})"
+        PID=$(cat ${LOCKFILE})
         lock_file_remove
         kill -9 "${PID}"
     fi
