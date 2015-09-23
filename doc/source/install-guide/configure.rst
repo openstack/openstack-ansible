@@ -16,6 +16,8 @@ Chapter 5. Deployment configuration
    configure-haproxy.rst
    configure-horizon.rst
    configure-ceilometer.rst
+   configure-keystone.rst
+   configure-sslcertificates.rst
 
 
 **Figure 5.1. Installation work flow**
