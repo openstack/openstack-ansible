@@ -18,12 +18,15 @@
     name: "nf_conntrack"
     state: present
 
-- name: "Set sysctl tcp_tw_reuse"
+- name: "Set sysctl values"
   sysctl:
-    name: "net.ipv4.tcp_tw_reuse"
+    name: "{{ item.name }}"
     state: present
-    value: "1"
+    value: "{{ item.value }}"
     sysctl_set: yes
+  with_items:
+    - { name: "net.ipv4.tcp_tw_reuse", value: "1" }
+    - { name: "net.netfilter.nf_conntrack_max", value: "262144" }
 
 # We need swift_vars to exist for the "swift_vars.drives is defined check" to work
 - name: "Set swift_vars if undefined"
