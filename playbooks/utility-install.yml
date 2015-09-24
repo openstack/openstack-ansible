@@ -44,6 +44,27 @@
       retries: 3
       tags:
         - ssh-wait
+    - name: Create log dir
+      file:
+        path: "{{ item.path }}"
+        state: directory
+      with_items:
+        - { path: "/openstack/log/{{ inventory_hostname }}-utility" }
+      when: is_metal | bool
+      tags:
+        - utility-logs
+        - utility-log-dirs
+    - name: Create log aggregation links
+      file:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        state: "{{ item.state }}"
+        force: "yes"
+      with_items:
+        - { src: "/openstack/log/{{ inventory_hostname }}-utility", dest: "/var/log/utility", state: "link" }
+      when: is_metal | bool
+      tags:
+        - utility-logs
   roles:
     - { role: "galera_client", tags: [ "utility-galera-client" ] }
     - { role: "pip_lock_down", tags: [ "utility-pip-lock-down" ] }
