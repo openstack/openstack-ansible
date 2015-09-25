@@ -13,6 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- name: Install irqbalance
+  apt:
+    pkg: irqbalance
+    state: present
+    update_cache: yes
+    cache_valid_time: 600
+  register: pkgs
+  until: pkgs|success
+
 - name: Drop irqbalance default
   template:
     src: "irqbalance"
