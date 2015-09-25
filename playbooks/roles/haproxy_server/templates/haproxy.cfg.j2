@@ -29,5 +29,8 @@ listen stats {{ haproxy_stats_bind_address }}:{{ haproxy_stats_port }}
     stats hide-version
     stats realm Haproxy\ Statistics
     stats uri /
+    stats show-node
+    stats show-legends
     stats auth {{ haproxy_username }}:{{ haproxy_stats_password }}
+    stats admin if TRUE
 {% endif %}
