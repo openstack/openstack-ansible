@@ -22,7 +22,8 @@
     mode: "{{ item.mode|default('0755') }}"
     recurse: "{{ item.recurse|default('false') }}"
   with_items:
-    - { path: "/var/log/mysql/", owner: "mysql", recurse: "true" }
+    - { path: "/var/lib/mysql", owner: "mysql", mode: "2755" }
+    - { path: "/var/log/mysql", owner: "mysql", mode: "2755" }
     - { path: "/var/log/mysql_logs/", owner: "mysql", group: "syslog", mode: "2755" }
     - { path: "/etc/mysql/conf.d" }
   tags:
@@ -50,6 +51,7 @@
       dest: /etc/mysql/debian.cnf
       config_overrides: "{{ galera_debian_cnf_overrides }}"
       config_type: "ini"
+  notify: Restart mysql
   tags:
     - galera-client-user-config
 
@@ -60,17 +62,6 @@
     mode: "{{ item.mode|default('0644') }}"
   with_items:
     - { src: mysql_defaults.j2, dest: /etc/default/mysql }
-  notify: Restart mysql
-  tags:
-    - galera-config
-
-- name: Drop mariadb script(s)
-  copy:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-    mode: "{{ item.mode|default('0644') }}"
-  with_items:
-    - { src: mysql_init.sh, dest: /etc/init.d/mysql, mode: "0755" }
   notify: Restart mysql
   tags:
     - galera-config

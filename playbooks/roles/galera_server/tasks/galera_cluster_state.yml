@@ -1,0 +1,75 @@
+---
+# Copyright 2015, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Check if mysql is running
+  command: /usr/bin/mysqladmin --defaults-file=/etc/mysql/debian.cnf ping
+  ignore_errors: true
+  changed_when: mysql_running.rc != 0
+  register: mysql_running
+  notify: Restart mysql
+  tags:
+    - galera-cluster-state-check
+
+- name: Check for cluster state failure
+  fail:
+    msg: |
+      The cluster may be broken, mysql is not running but appears to be
+      installed. Fix it before re-running the playbook or override with
+      'openstack-ansible -e galera_ignore_cluster_state=true galera-install.yml'.
+  when:
+    - not galera_ignore_cluster_state | bool
+    - mysql_running.rc == 1
+    - mysql_running.stderr | search("Check that mysqld is running and that the socket")
+  tags:
+    - galera-cluster-state-check
+
+- name: Gather mysql facts
+  mysql_status_facts:
+  ignore_errors: true
+  tags:
+    - galera-cluster-state-check
+
+- name: Check for cluster state failure
+  fail:
+    msg: |
+      The cluster may be broken, mysql is running but unable to gather mysql facts.
+      Fix it before re-running the playbook or override with
+      'openstack-ansible -e galera_ignore_cluster_state=true galera-install.yml'.
+  when:
+    - not galera_ignore_cluster_state | bool
+    - mysql_running.rc == 0
+    - mysql_status is not defined
+  tags:
+    - galera-cluster-state-check
+
+- name: Check for cluster state failure
+  fail:
+    msg: |
+      wsrep_incoming_addresses does not match across the cluster. Please fix before
+      re-running the playbooks or override with
+      'openstack-ansible -e galera_ignore_cluster_state=true galera-install.yml'.
+  with_items: play_hosts
+  when:
+    - not galera_ignore_cluster_state | bool
+    - mysql_running.rc == 0
+    - mysql_status['wsrep_incoming_addresses'] != hostvars[item]['mysql_status']['wsrep_incoming_addresses']
+  tags:
+    - galera-cluster-state-check
+
+- set_fact:
+    galera_existing_cluster: true
+  when: mysql_running.rc == 0
+  tags:
+    - galera-cluster-state-check

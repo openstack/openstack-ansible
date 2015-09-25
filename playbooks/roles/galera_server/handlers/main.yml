@@ -17,4 +17,9 @@
   service:
     name: mysql
     state: restarted
-    args: "{{ (not galera_existing_cluster | bool and inventory_hostname == groups['galera_all'][0]) | ternary('--wsrep-new-cluster', '') }}"
+    args: "{{ (not galera_existing_cluster | bool and inventory_hostname == galera_server_bootstrap_node) | ternary('--wsrep-new-cluster', '') }}"
+  when: not galera_running_and_bootstrapped | bool
+  register: galera_restart
+  until: galera_restart|success
+  retries: 3
+  delay: 2
