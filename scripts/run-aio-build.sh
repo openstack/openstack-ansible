@@ -18,12 +18,10 @@
 set -e -u +x
 
 ## Variables -----------------------------------------------------------------
+
 export REPO_URL=${REPO_URL:-"https://github.com/openstack/openstack-ansible.git"}
 export REPO_BRANCH=${REPO_BRANCH:-"master"}
-export WORKING_FOLDER=${WORKING_FOLDER:-"/opt/openstack/openstack-ansible"}
-# On normal AIO build the script should do everything possible to try for success
-export MAX_RETRIES=${MAX_RETRIES:-"5"}
-
+export WORKING_FOLDER=${WORKING_FOLDER:-"/opt/openstack-ansible"}
 
 ## Main ----------------------------------------------------------------------
 
@@ -36,10 +34,17 @@ apt-get update && apt-get install -y git
 # fetch the repo
 git clone -b ${REPO_BRANCH} ${REPO_URL} ${WORKING_FOLDER}
 
-# run the same aio build script that is used in the OpenStack CI pipeline
+# change into the expected root directory
 cd ${WORKING_FOLDER}
 
-bash scripts/gate-check-commit.sh
+# first, bootstrap the AIO host
+source $(dirname ${0})/bootstrap-aio.sh
+
+# next, bootstrap Ansible
+source $(dirname ${0})/bootstrap-ansible.sh
+
+# finally, run all the playbooks
+bash $(dirname ${0})/run-playbooks.sh
 
 # put a motd in place to help the user know what stuff is accessible once the build is complete
 cat > /etc/update-motd.d/20-openstack<< EOF
