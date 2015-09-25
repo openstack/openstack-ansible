@@ -119,6 +119,7 @@
         - "ceph-client"
     - { role: "openstack_openrc", tags: [ "openstack-openrc" ] }
     - role: "rsyslog_client"
+      rsyslog_client_log_rotate_file: nova_log_rotate
       rsyslog_client_log_dir: "/var/log/nova"
       rsyslog_client_config_name: "99-nova-rsyslog-client.conf"
       tags:

@@ -71,6 +71,7 @@
   roles:
     - { role: "os_swift", tags: [ "os-swift" ] }
     - role: "rsyslog_client"
+      rsyslog_client_log_rotate_file: swift_log_rotate
       rsyslog_client_log_dir: "/var/log/swift"
       rsyslog_client_config_name: "99-swift-rsyslog-client.conf"
       tags:
