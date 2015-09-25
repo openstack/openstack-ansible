@@ -79,6 +79,7 @@
     - { src: "rootwrap.d/linuxbridge-plugin.filters", dest: "/etc/neutron/rootwrap.d/linuxbridge-plugin.filters" }
     - { src: "rootwrap.d/l3.filters", dest: "/etc/neutron/rootwrap.d/l3.filters" }
     - { src: "rootwrap.d/vpnaas.filters", dest: "/etc/neutron/rootwrap.d/vpnaas.filters" }
+    - { src: "rootwrap.d/ebtables.filters", dest: "/etc/neutron/rootwrap.d/ebtables.filters" }
   notify:
     - Restart neutron services
   tags:
