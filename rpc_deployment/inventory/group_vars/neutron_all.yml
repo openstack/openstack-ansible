@@ -43,6 +43,9 @@ neutron_config: /etc/neutron/neutron.conf
 neutron_plugin: "/etc/neutron/{{ neutron_plugins[neutron_plugin_type].plugin_ini }}"
 neutron_revision: head
 
+## Agent
+neutron_agent_prevent_arp_spoofing: False
+
 ## Neutron downtime
 neutron_agent_down_time: 120
 neutron_report_interval: "{{ neutron_agent_down_time|int / 2 }}"
