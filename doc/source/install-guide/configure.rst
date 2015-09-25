@@ -15,6 +15,7 @@ Chapter 5. Deployment configuration
    configure-swift.rst
    configure-haproxy.rst
    configure-horizon.rst
+   configure-rabbitmq.rst
    configure-ceilometer.rst
    configure-keystone.rst
    configure-sslcertificates.rst
