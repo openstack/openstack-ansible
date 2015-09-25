@@ -45,6 +45,7 @@
         - "rabbitmq-server"
         - "upgrade-rabbitmq-server"
     - role: "rsyslog_client"
+      rsyslog_client_log_rotate_file: rabbitmq_log_rotate
       rsyslog_client_log_dir: "/var/log/rabbitmq"
       rsyslog_client_config_name: "99-rabbitmq-rsyslog-client.conf"
       tags:

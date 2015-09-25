@@ -118,6 +118,7 @@
         - "cinder-ceph-client"
         - "ceph-client"
     - role: "rsyslog_client"
+      rsyslog_client_log_rotate_file: cinder_log_rotate
       rsyslog_client_log_dir: "/var/log/cinder"
       rsyslog_client_config_name: "99-cinder-rsyslog-client.conf"
       tags:

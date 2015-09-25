@@ -20,6 +20,7 @@
   roles:
     - { role: "os_tempest", tags: [ "os-tempest" ] }
     - role: "rsyslog_client"
+      rsyslog_client_log_rotate_file: utility_log_rotate
       rsyslog_client_log_dir: "/var/log/utility"
       rsyslog_client_config_name: "99-tempest-rsyslog-client.conf"
       tags:

@@ -48,6 +48,8 @@ rsyslog_client_tcp_port: 514
 # Define the log files list as empty
 rsyslog_client_log_files: []
 
+rsyslog_client_log_rotate_file: os_aggregate_storage
+
 # Set the `rsyslog_client_user_defined_targets` to define specific log targets.
 # This option will allow you to define multiple log targets with different templates
 # and options. The value of this variable is a list of hashes with the following

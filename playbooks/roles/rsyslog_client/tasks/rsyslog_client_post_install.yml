@@ -49,7 +49,7 @@
     group: "root"
   with_items:
     - { src: "99-rsyslog.conf.j2", dest: "/etc/rsyslog.d/{{ rsyslog_client_config_name }}" }
-    - { src: "os_aggregate_storage.j2", dest: "/etc/logrotate.d/os_aggregate_storage" }
+    - { src: "os_aggregate_storage.j2", dest: "/etc/logrotate.d/{{ rsyslog_client_log_rotate_file }}" }
     - { src: "rsyslog.conf.j2", dest: "/etc/rsyslog.conf" }
   tags:
     - rsyslog-client-config
