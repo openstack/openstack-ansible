@@ -78,9 +78,7 @@ physical_interface_mappings = {{ neutron_provider_networks.network_mappings }}
 
 # Agent
 [agent]
-# TODO: Allow this to be the default of True once the upstream issue
-# with access through floating IP's is fixed (odyssey4me re: liberty-2)
-prevent_arp_spoofing = False
+prevent_arp_spoofing = {{ neutron_agent_prevent_arp_spoofing }}
 
 # L2 population
 [l2pop]
