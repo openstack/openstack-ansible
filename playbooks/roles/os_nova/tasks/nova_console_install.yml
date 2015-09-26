@@ -1,5 +1,5 @@
 ---
-# Copyright 2014, Rackspace US, Inc.
+# Copyright 2015, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,25 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: nova_pre_install.yml
-- include: nova_install.yml
-- include: nova_console_install.yml
-- include: nova_post_install.yml
-- include: nova_upstart_init.yml
-
-- include: nova_db_setup.yml
-  when: >
-    inventory_hostname == groups['nova_api_os_compute'][0]
-
-- include: nova_service_setup.yml
-  when: >
-    inventory_hostname == groups['nova_api_os_compute'][0]
-
-- include: nova_compute.yml
-  when: >
-    inventory_hostname in groups['nova_compute']
+- include: nova_console_spice_install.yml
+  when:
+    - inventory_hostname in groups['nova_console']
+    - nova_console_type == "spice"
   tags:
-    - nova-compute
+    - nova-spice-console
 
-- name: Flush handlers
-  meta: flush_handlers
+- include: nova_console_novnc_install.yml
+  when:
+    - inventory_hostname in groups['nova_console']
+    - nova_console_type == "novnc"
+  tags:
+    - nova-novnc-console
