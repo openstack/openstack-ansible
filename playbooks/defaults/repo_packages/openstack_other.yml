@@ -30,3 +30,8 @@ tempest_git_repo: https://git.openstack.org/openstack/tempest
 tempest_git_install_branch: 94955015682c7d8c5ed45dac76d0dbb2d4107529 # HEAD of "master" as of 08.10.2015
 tempest_git_install_fragments: "yaprtignorerequirements=true"
 tempest_git_dest: "/opt/tempest_{{ tempest_git_install_branch | replace('/', '_') }}"
+
+# NOVNC from source
+novncproxy_git_repo: https://github.com/kanaka/novnc
+novncproxy_git_install_branch: a0e7ab43dca0ce11a713694ee4cf530bd3b17c5a
+novncproxy_git_dest: "/opt/novnc_{{ novncproxy_git_install_branch | replace('/', '_') }}"

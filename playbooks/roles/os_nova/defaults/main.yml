@@ -156,11 +156,25 @@ nova_cross_az_attach: True
 ## Nova spice
 nova_spice_html5proxy_base_proto: http
 nova_spice_html5proxy_base_port: 6082
-nova_spice_html5proxy_base_uri: "{{ nova_spice_html5proxy_base_proto }}://{{ external_lb_vip_address}}:{{ nova_spice_html5proxy_base_port }}"
+nova_spice_html5proxy_base_uri: "{{ nova_spice_html5proxy_base_proto }}://{{ external_lb_vip_address }}:{{ nova_spice_html5proxy_base_port }}"
 nova_spice_html5proxy_base_url: "{{ nova_spice_html5proxy_base_uri }}/spice_auto.html"
 nova_spice_console_keymap: en-us
 nova_spice_console_agent_enabled: True
 nova_spice_program_name: nova-spicehtml5proxy
+
+## Nova novnc
+nova_novncproxy_proto: http
+nova_novncproxy_port: 6080
+nova_novncproxy_host: "{{ ansible_ssh_host }}"
+nova_novncproxy_base_uri: "{{ nova_novncproxy_proto }}://{{ external_lb_vip_address }}:{{ nova_novncproxy_port }}"
+nova_novncproxy_base_url: "{{ nova_novncproxy_base_uri }}/vnc_auto.html"
+nova_novncproxy_vncserver_proxyclient_address: "{{ ansible_ssh_host }}"
+nova_novncproxy_vncserver_listen: "{{ ansible_ssh_host }}"
+nova_novncproxy_agent_enabled: True
+nova_novncproxy_program_name: nova-novncproxy
+nova_novncproxy_git_repo: https://github.com/kanaka/novnc
+nova_novncproxy_git_install_branch: master
+nova_novncproxy_vnc_keymap: en-us
 
 ## Nova metadata
 nova_metadata_proxy_enabled: True
@@ -194,7 +208,7 @@ nova_console_agent_enabled: True
 nova_consoleauth_program_name: nova-consoleauth
 nova_console_agent_enabled: True
 nova_console_keymap: en-us
-# Set the console type. Presently the only option is ["spice"].
+# Set the console type. Presently the only options are ["spice", "novnc"].
 nova_console_type: spice
 
 ## Nova global config
@@ -297,6 +311,7 @@ nova_service_names:
   - "{{ nova_compute_program_name }}"
   - "{{ nova_spice_program_name }}"
   - "{{ nova_consoleauth_program_name }}"
+  - "{{ nova_novncproxy_program_name }}"
 
 # Common apt packages
 nova_apt_packages:
@@ -307,6 +322,17 @@ nova_apt_packages:
 # Spice console apt packages
 nova_spice_apt_packages:
   - spice-html5
+
+nova_novnc_apt_packages:
+  - libjs-jquery
+  - libjs-sphinxdoc
+  - libjs-underscore
+  - libjs-swfobject
+  - librabbitmq1
+  - libyaml-0-2
+
+nova_novnc_pip_packages:
+  - websockify
 
 nova_compute_kvm_apt_packages:
   - bridge-utils

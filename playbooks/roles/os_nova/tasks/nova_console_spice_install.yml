@@ -13,25 +13,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: nova_pre_install.yml
-- include: nova_install.yml
-- include: nova_console_install.yml
-- include: nova_post_install.yml
-- include: nova_upstart_init.yml
-
-- include: nova_db_setup.yml
-  when: >
-    inventory_hostname == groups['nova_api_os_compute'][0]
-
-- include: nova_service_setup.yml
-  when: >
-    inventory_hostname == groups['nova_api_os_compute'][0]
-
-- include: nova_compute.yml
-  when: >
-    inventory_hostname in groups['nova_compute']
+- name: Update apt sources
+  apt:
+    update_cache: yes
+    cache_valid_time: 600
+  register: apt_update
+  until: apt_update|success
+  retries: 5
+  delay: 2
   tags:
-    - nova-compute
+    - nova-apt-packages
+    - nova-spice-apt-packages
 
-- name: Flush handlers
-  meta: flush_handlers
+- name: Install apt packages
+  apt:
+    pkg: "{{ item }}"
+    state: latest
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 2
+  with_items: nova_spice_apt_packages
+  tags:
+    - nova-apt-packages
+    - nova-spice-apt-packages

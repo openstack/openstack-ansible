@@ -28,6 +28,7 @@
               create-report \
               --report-file {{ repo_service_home_folder }}/repo/reports/release-{{ openstack_release }}-report.json \
               --git-install-repos {{ item['remote_packages'] }} \
+              --git-repo-path "{{ repo_service_home_folder }}/repo/openstackgit" \
               --packages {{ item['packages'] }}
       with_py_pkgs: ../
       sudo: yes
@@ -49,6 +50,7 @@
               --build-output "{{ repo_build_output }}" \
               --build-dir "{{ repo_build_dir }}" \
               --build-requirements \
+              --git-repo-path "{{ repo_service_home_folder }}/repo/openstackgit" \
               --force-clean
       sudo: yes
       sudo_user: "{{ repo_service_user_name }}"
@@ -68,6 +70,7 @@
               --build-dir "{{ repo_build_dir }}" \
               --build-branches \
               --build-releases \
+              --git-repo-path "{{ repo_service_home_folder }}/repo/openstackgit" \
               --force-clean
       sudo: yes
       sudo_user: "{{ repo_service_user_name }}"
@@ -84,6 +87,17 @@
       sudo_user: "{{ repo_service_user_name }}"
       tags:
         - repo-html-indexes
+
+    - name: Store all git source
+      shell: |
+        yaprt --quiet \
+              store-repos \
+              --report-file {{ repo_service_home_folder }}/repo/reports/release-{{ openstack_release }}-report.json \
+              --git-repo-path "{{ repo_service_home_folder }}/repo/openstackgit"
+      sudo: yes
+      sudo_user: "{{ repo_service_user_name }}"
+      tags:
+        - repo-store-git-sources
   vars:
     repo_build_dir: "/tmp/openstack-builder"
     repo_build_output: "/tmp/openstack-wheel-output"

@@ -111,13 +111,20 @@
       tags:
         - nova-logs
   roles:
-    - { role: "os_nova", tags: [ "os-nova" ] }
+    - role: "os_nova"
+      nova_novncproxy_git_repo: "{{ openstack_repo_git_url }}/novnc"
+      nova_novncproxy_git_install_branch: "{{ novncproxy_git_install_branch }}"
+      nova_galera_address: "{{ internal_lb_vip_address }}"
+      tags:
+        - "os-nova"
     - role: "ceph_client"
       openstack_service_system_user: "{{ nova_system_user_name }}"
       tags:
         - "nova-ceph-client"
         - "ceph-client"
-    - { role: "openstack_openrc", tags: [ "openstack-openrc" ] }
+    - role: "openstack_openrc"
+      tags:
+        - "openstack-openrc"
     - role: "rsyslog_client"
       rsyslog_client_log_rotate_file: nova_log_rotate
       rsyslog_client_log_dir: "/var/log/nova"
@@ -130,8 +137,9 @@
         - "system-crontab-coordination"
   vars:
     galera_address: "{{ internal_lb_vip_address }}"
-    nova_galera_address: "{{ internal_lb_vip_address }}"
     ansible_hostname: "{{ container_name }}"
     ansible_ssh_host: "{{ container_address }}"
     is_metal: "{{ properties.is_metal|default(false) }}"
     glance_host: "{{ internal_lb_vip_address }}"
+  vars_files:
+    - defaults/repo_packages/openstack_other.yml
