@@ -20,8 +20,7 @@ cluster.
    .. code-block:: bash
 
        $ cd /opt/openstack-ansible/playbooks
-       $ openstack-ansible setup-everything.yml \
-       rsyslog-config.yml --limit NEW_HOST_NAME
+       $ openstack-ansible setup-everything.yml --limit NEW_HOST_NAME
 
 --------------
 
