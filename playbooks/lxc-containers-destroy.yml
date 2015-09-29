@@ -39,28 +39,3 @@
       delegate_to: "{{ physical_host }}"
       tags:
         - container-directories
-
-- name: Flush network cache on lxc host
-  hosts: "hosts"
-  max_fail_percentage: 20
-  gather_facts: false
-  user: root
-  tasks:
-    - name: Flush net cache
-      command: /usr/local/bin/lxc-system-manage flush-net-cache
-      delegate_to: "{{ physical_host }}"
-      tags:
-        - flush-net-cache
-
-- name: Ensure flushing network cache on local host
-  hosts: 127.0.0.1
-  connection: local
-  max_fail_percentage: 20
-  gather_facts: false
-  user: root
-  tasks:
-    - name: Flush net cache
-      command: /usr/local/bin/lxc-system-manage flush-net-cache
-      tags:
-        - flush-net-cache
-        - flush-net-cache-local
