@@ -29,8 +29,12 @@ ceph_gpg_keys:
   - key_name: 'ceph'
     keyserver: 'hkp://keyserver.ubuntu.com:80'
     fallback_keyserver: 'hkp://p80.pool.sks-keyservers.net:80'
-    hash_id: '0x7ebfdd5d17ed316d'
+    hash_id: '0xe84ac2c0460f3994'
 
+# The apt-key command won't del a key when you give it the hash_id, so we have
+# to use the short key ID here instead.
+ceph_revoked_gpg_keys:
+  - '17ED316D'
 
 # Ceph Repositories
 ceph_apt_repo_url_region: "www"  # or "eu" for Netherlands based mirror
