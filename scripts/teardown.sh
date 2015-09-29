@@ -20,6 +20,28 @@ set -e -u
 ## Library Check -------------------------------------------------------------
 info_block "Checking for required libraries." 2> /dev/null || source $(dirname ${0})/scripts-library.sh
 
+## Confirmation -------------------------------------------------------------
+cat <<EOF
+-----------------------------------------------------------------------------
+WARNING: This is a destructive action. All containers will be destroyed and
+         all data within the containers will be removed.  Some data will be
+         removed from the host as well, including all configuration data
+         within /etc/openstack_deploy/.
+
+         Please verify that you have backed up all important data prior to
+         proceeding with the teardown script.
+-----------------------------------------------------------------------------
+To REALLY destroy all containers and delete the data within them,
+type 'Y' or 'y' and press enter:
+EOF
+
+read -r
+echo
+if [[ ! $REPLY =~ ^[Yy]$ ]]
+then
+    echo "Teardown canceled."
+    exit 1
+fi
 
 ## Main ----------------------------------------------------------------------
 info_block "Running Teardown"
