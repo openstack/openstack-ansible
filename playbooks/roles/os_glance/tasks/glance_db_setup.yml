@@ -40,9 +40,10 @@
     - glance-db-setup
 
 - name: Perform a Glance DB sync
-  command: glance-manage db_sync
+  command: "{{ glance_bin }}/glance-manage db_sync"
   sudo: yes
   sudo_user: "{{ glance_system_user_name }}"
   tags:
     - glance-db-sync
     - glance-setup
+    - glance-command-bin
