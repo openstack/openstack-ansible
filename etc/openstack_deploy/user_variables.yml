@@ -101,7 +101,13 @@ glance_swift_store_endpoint_type: internalURL
 #  auth_cluster_required = cephx
 #  auth_service_required = cephx
 
-## Apache SSL Settings
+
+## SSL Settings
+# Adjust these settings to change how SSL connectivity is configured for
+# various services.  For more information, see the openstack-ansible
+# documentation section titled "Securing services with SSL certificates".
+#
+## SSL: Keystone
 # These do not need to be configured unless you're creating certificates for
 # services running behind Apache (currently, Horizon and Keystone).
 ssl_protocol: "ALL -SSLv2 -SSLv3"
@@ -113,7 +119,14 @@ ssl_cipher_suite: "ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AE
 # To override for Horizon only:
 #   - horizon_ssl_protocol
 #   - horizon_ssl_cipher_suite
-
+#
+## SSL: RabbitMQ
+# Set these variables if you prefer to use existing SSL certificates, keys and
+# CA certificates with the RabbitMQ SSL/TLS Listener
+#
+#rabbitmq_user_ssl_cert: <path to cert on ansible deployment host>
+#rabbitmq_user_ssl_key: <path to cert on ansible deployment host>
+#rabbitmq_user_ssl_ca_cert: <path to cert on ansible deployment host>
 
 ## Additional pinning generator that will allow for more packages to be pinned as you see fit.
 ## All pins allow for package and versions to be defined. Be careful using this as versions

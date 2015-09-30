@@ -1,0 +1,46 @@
+---
+# Copyright 2015, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# If we have a user-provided SSL certificate from
+# /etc/openstack_deploy/user_variables.yml, we should deploy that certificate
+# and key to each RabbitMQ container.
+- name: Deploy user provided ssl cert and key
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "root"
+    group: "root"
+    mode: "{{ item.mode }}"
+  with_items:
+    - { src: "{{ rabbitmq_user_ssl_cert }}", dest: "{{ rabbitmq_ssl_cert }}", mode: "0644" }
+    - { src: "{{ rabbitmq_user_ssl_key }}", dest: "{{ rabbitmq_ssl_key }}", mode: "0640" }
+  when: rabbitmq_user_ssl_cert is defined and rabbitmq_user_ssl_key is defined
+  tags:
+    - rabbitmq-configs
+    - rabbitmq-ssl
+
+# Deploy the user provided CA certificate as well (if the user defined it
+# within /etc/openstack_deploy/user_variables.yml).
+- name: Deploy user provided ssl CA cert
+  copy:
+    src: "{{ rabbitmq_user_ssl_ca_cert }}"
+    dest: "{{ rabbitmq_ssl_ca_cert }}"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  when: rabbitmq_user_ssl_ca_cert is defined
+  tags:
+    - keystone-configs
+    - keystone-ssl
