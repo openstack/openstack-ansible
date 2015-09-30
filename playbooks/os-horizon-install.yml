@@ -70,7 +70,12 @@
       tags:
         - horizon-logs
   roles:
-    - { role: "os_horizon", tags: [ "os-horizon" ] }
+    - role: "os_horizon"
+      horizon_galera_address: "{{ galera_address }}"
+      horizon_server_name: "{{ container_name }}"
+      horizon_venv_tag: "{{ openstack_release }}"
+      tags:
+        - "os-horizon"
     - role: "rsyslog_client"
       rsyslog_client_log_rotate_file: horizon_log_rotate
       rsyslog_client_log_dir: "/var/log/apache2"
@@ -83,7 +88,5 @@
         - "system-crontab-coordination"
   vars:
     galera_address: "{{ internal_lb_vip_address }}"
-    horizon_galera_address: "{{ internal_lb_vip_address }}"
     ansible_hostname: "{{ container_name }}"
-    horizon_server_name: "{{ container_name }}"
     is_metal: "{{ properties.is_metal|default(false) }}"

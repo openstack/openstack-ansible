@@ -36,14 +36,80 @@
 - name: Create horizon dir
   file:
     path: "{{ item.path }}"
+    state: "directory"
+    owner: "{{ item.owner|default(horizon_system_user_name) }}"
+    group: "{{ item.group|default(horizon_system_group_name) }}"
+  with_items:
+    - { path: "/openstack", mode: "0755", owner: "root", group: "root" }
+    - { path: "/etc/horizon", mode: "2755" }
+    - { path: "{{ horizon_system_user_home }}", mode: "2755" }
+  tags:
+    - horizon-dirs
+
+- name: Create horizon venv dir
+  file:
+    path: "{{ item.path }}"
     state: directory
     owner: "{{ item.owner|default(horizon_system_user_name) }}"
     group: "{{ item.group|default(horizon_system_group_name) }}"
   with_items:
-    - { path: "/etc/horizon" }
-    - { path: "{{ horizon_system_user_home }}" }
-    - { path: "/usr/local/lib/python2.7/dist-packages/static" }
-    - { path: "/usr/local/lib/python2.7/dist-packages/openstack_dashboard/local" }
+    - { path: "/openstack/venvs", mode: "0755", owner: "root", group: "root" }
+    - { path: "{{ horizon_venv_bin }}" }
+  when: horizon_venv_enabled | bool
+  tags:
+    - horizon-dirs
+
+- name: Install requires pip packages
+  pip:
+    name: "{{ item }}"
+    state: present
+    extra_args: "{{ pip_install_options|default('') }}"
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 2
+  with_items:
+    - "{{ horizon_requires_pip_packages }}"
+  tags:
+    - horizon-pip-packages
+
+- name: Create horizon venv
+  pip:
+    name: "{{ item }}"
+    state: present
+    virtualenv: "{{ horizon_venv_bin | dirname }}"
+    virtualenv_site_packages: "no"
+    extra_args: "{{ pip_install_options|default('') }}"
+  with_items:
+    - "{{ horizon_requires_pip_packages }}"
+  when: horizon_venv_enabled | bool
+  tags:
+    - horizon-pip-packages
+
+- name: Create horizon links for venv
+  file:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ horizon_system_user_name }}"
+    group: "{{ horizon_system_group_name }}"
+    state: "link"
+  with_items:
+    - src: "{{ horizon_lib_dir | dirname }}/site-packages"
+      dest: "{{ horizon_lib_dir }}"
+  when: horizon_venv_enabled | bool
+  tags:
+    - horizon-configs
+
+- name: Create static horizon dir
+  file:
+    path: "{{ item.path }}"
+    state: "directory"
+    owner: "{{ item.owner|default(horizon_system_user_name) }}"
+    group: "{{ item.group|default(horizon_system_group_name) }}"
+  with_items:
+    - { path: "{{ horizon_lib_dir }}/static", mode: "2755" }
+    - { path: "{{ horizon_lib_dir }}/openstack_dashboard", mode: "2755" }
+    - { path: "{{ horizon_lib_dir }}/openstack_dashboard/local", mode: "2755" }
   tags:
     - horizon-dirs
 

@@ -29,19 +29,20 @@
     SSLCipherSuite {{ horizon_ssl_cipher_suite }}
     SetEnvIf User-Agent ".*MSIE.*" nokeepalive ssl-unclean-shutdown
 
-    WSGIScriptAlias / {{ horizon_lib_dir }}/openstack_dashboard/wsgi/django.wsgi
+    WSGIScriptAlias / {{ horizon_lib_wsgi_file }}
     WSGIDaemonProcess horizon user={{ horizon_system_user_name }} group={{ horizon_system_group_name }} processes={{ ansible_processor_cores }} threads={{ threads if threads > 0 else 1 }}
     WSGIProcessGroup horizon
     WSGIApplicationGroup horizon
 
-    Alias /static {{ horizon_lib_dir }}/static/
-    <Directory /usr/local/lib/python2.7/dist-packages/openstack_dashboard/wsgi/>
+    <Directory {{ horizon_lib_wsgi_file | dirname }}>
       <Files django.wsgi>
         Order allow,deny
         allow from all
         Require all granted
       </Files>
     </Directory>
+
+    Alias /static {{ horizon_lib_dir }}/static/
 
     <Directory {{ horizon_lib_dir }}/static/>
       Options -FollowSymlinks
