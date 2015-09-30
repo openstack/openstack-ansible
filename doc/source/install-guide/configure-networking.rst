@@ -25,7 +25,7 @@ configure target host networking.
 
    Use the same IP address ranges as the underlying physical network
    interfaces or bridges configured in `the section called "Configuring
-   the network" <sec-hosts-target-network.html>`__. For example, if the
+   the network" <targethosts-network.html>`__. For example, if the
    container network uses 203.0.113.0/24, the *``CONTAINER_MGMT_CIDR``*
    should also use 203.0.113.0/24.
 
@@ -44,7 +44,7 @@ configure target host networking.
    addresses in the ranges defined in the previous step. This list
    should include all IP addresses manually configured on target hosts
    in the `the section called "Configuring the
-   network" <sec-hosts-target-network.html>`__, internal load balancers,
+   network" <targethosts-network.html>`__, internal load balancers,
    service network bridge, deployment hosts and any other devices
    to avoid conflicts during the automatic IP address generation process.
 
