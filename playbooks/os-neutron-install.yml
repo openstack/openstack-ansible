@@ -43,11 +43,6 @@
         inventory_hostname in groups['neutron_agent']
       tags:
         - neutron-container-setup
-    - name: Flush net cache
-      command: /usr/local/bin/lxc-system-manage flush-net-cache
-      delegate_to: "{{ physical_host }}"
-      tags:
-        - flush-net-cache
     - name: Wait for container ssh
       wait_for:
         port: "22"

@@ -40,14 +40,3 @@
       tags:
         - container-directories
 
-- name: Destroy lxc containers
-  hosts: "hosts"
-  max_fail_percentage: 20
-  gather_facts: false
-  user: root
-  tasks:
-    - name: Flush net cache
-      command: /usr/local/bin/lxc-system-manage flush-net-cache
-      delegate_to: "{{ physical_host }}"
-      tags:
-        - flush-net-cache
