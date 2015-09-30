@@ -57,7 +57,8 @@
 - name: Ensure heat user
   shell: |
     . {{ ansible_env.HOME }}/openrc
-    openstack --os-identity-api-version=3 \
+    {{ heat_bin }}/openstack \
+              --os-identity-api-version=3 \
               --os-auth-url={{ keystone_service_adminurl_v3 }} \
               --os-project-name={{ heat_project_name }} \
               --os-project-domain-name={{ heat_project_domain_name }} \
@@ -72,13 +73,16 @@
     - heat-domain
     - heat-domain-setup
     - heat-config
+    - heat-command-bin
+
 
 # TODO Change the keystone library to support adding
 # a role to a user without specifying a project
 - name: Assign admin role to heat domain admin user
   shell: |
     . {{ ansible_env.HOME }}/openrc
-    openstack --os-identity-api-version=3 \
+    {{ heat_bin }}/openstack \
+              --os-identity-api-version=3 \
               --os-auth-url={{ keystone_service_adminurl_v3 }} \
               --os-project-name={{ heat_project_name }} \
               --os-project-domain-name={{ heat_project_domain_name }} \
@@ -92,3 +96,4 @@
     - heat-domain
     - heat-domain-setup
     - heat-config
+    - heat-command-bin
