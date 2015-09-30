@@ -74,6 +74,12 @@ storage_hosts:
   aio1:
     ip: 172.29.236.100
     container_vars:
+      # When moving to or deploying cinder on metal consider setting
+      # storage_address & storage_network vars below to match the
+      # address & netmask on the storage bridge for the physical host
+      # This will ensure the appropriate IP is used by cinder.
+      # storage_address: 172.29.244.100
+      # storage_netmask: 255.255.252.0
       cinder_backends:
         limit_container_types: cinder_volume
         lvm:
