@@ -76,12 +76,15 @@
 
 - name: Add galera repo(s)
   apt_repository:
-    repo: "{{ galera_apt_repo.repo }}"
-    state: "{{ galera_apt_repo.state }}"
+    repo: "{{ item.repo }}"
+    state: "{{ item.state }}"
   register: add_repos
   until: add_repos|success
   retries: 5
   delay: 2
+  with_items:
+    - "{{ galera_apt_repo }}"
+    - "{{ galera_apt_percona_xtrabackup_repo }}"
   tags:
     - galera-repos
 

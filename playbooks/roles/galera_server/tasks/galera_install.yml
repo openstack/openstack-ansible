@@ -58,10 +58,3 @@
   with_items: galera_pip_packages
   tags:
     - galera-pip-packages
-
-- name: Check if mysql is running
-  command: /usr/bin/mysqladmin --defaults-file=/etc/mysql/debian.cnf ping
-  ignore_errors: true
-  changed_when: mysql_started.rc != 0
-  register: mysql_started
-  notify: Restart mysql

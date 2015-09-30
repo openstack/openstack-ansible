@@ -13,12 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Defines that the role will be deployed on a host machine
-is_metal: true
+galera_server_bootstrap_node: "{{ groups['galera_all'][0] }}"
+galera_ignore_cluster_state: false
+
+galera_lb_address: 127.0.0.1
 
 galera_cluster_name: openstack_galera_cluster
 
 galera_existing_cluster: true
+galera_running_and_bootstrapped: false
 
 galera_monitoring_user: monitoring
 galera_monitoring_user_password: ""
@@ -46,11 +49,14 @@ galera_wsrep_node_incoming_address: "{{ galera_wsrep_address }}"
 galera_wsrep_slave_threads: "{{ ansible_processor_vcpus }}"
 galera_wsrep_retry_autocommit: 3
 galera_wsrep_debug: 0
+galera_wsrep_sst_method: xtrabackup-v2
 galera_wsrep_provider_options:
   - { option: "gcache.size", value: "{{ galera_gcache_size }}" }
+galera_wsrep_sst_auth_user: "root"
+galera_wsrep_sst_auth_password: "{{ galera_root_password  }}"
 
-## sst method
-galera_sst_method: xtrabackup-v2
+# xtrabackup parallel/compression/sync threads
+galera_xtrabackup_threads: 4
 
 # Galera GPG Keys
 galera_gpg_keys:
@@ -58,11 +64,20 @@ galera_gpg_keys:
     keyserver: 'hkp://keyserver.ubuntu.com:80'
     fallback_keyserver: 'hkp://p80.pool.sks-keyservers.net:80'
     hash_id: '0xcbcb082a1bb943db'
+  - key_name: 'percona-xtrabackup'
+    keyserver: 'hkp://keyserver.ubuntu.com:80'
+    fallback_keyserver: 'hkp://p80.pool.sks-keyservers.net:80'
+    hash_id: '0x1c4cbdcdcd2efd2a'
 
 # Repositories
 galera_apt_repo_url: "https://mirror.rackspace.com/mariadb/repo/5.5/ubuntu"
 galera_apt_repo:
   repo: "deb {{ galera_apt_repo_url }} {{ ansible_distribution_release }} main"
+  state: "present"
+
+galera_apt_percona_xtrabackup_url: "https://repo.percona.com/apt"
+galera_apt_percona_xtrabackup_repo:
+  repo: "deb {{ galera_apt_percona_xtrabackup_url }} {{ ansible_distribution_release }} main"
   state: "present"
 
 galera_pip_packages:
@@ -78,7 +93,7 @@ galera_pre_apt_packages:
 # The package name for mariaDB is set as a variable
 # so that it can be used in debconf later in the
 # "galera_common" role.
-galera_mariadb_server_package: "mariadb-galera-server-5.5"
+galera_mariadb_server_package: "mariadb-galera-server-10.0"
 
 # NB This is specifically galera_packages as these packages only get installed
 # during the galera play - this is because of the preseed task and the service
@@ -87,8 +102,9 @@ galera_apt_packages:
   - mariadb-client
   - "{{ galera_mariadb_server_package }}"
   - galera-3
+  - qpress
   - rsync
-  - xtrabackup
+  - percona-xtrabackup
   - socat
 
 galera_debconf_items:
@@ -109,3 +125,9 @@ galera_unindexed_query_logging: 0
 galera_my_cnf_overrides: {}
 galera_cluster_cnf_overrides: {}
 galera_debian_cnf_overrides: {}
+
+# Set the max connections value for galera. Set this value to override the
+# computed value which is (100 x vCPUs). If computed, the lowest value throughout
+# the cluster will be used which is something to note if deploying galera on different
+# hardware.
+# galera_max_connections: 500
