@@ -20,6 +20,18 @@ is_metal: true
 debug: False
 verbose: True
 
+# Name of the virtual env to deploy into
+ceilometer_venv_tag: untagged
+ceilometer_venv_bin: "/openstack/venvs/ceilometer-{{ ceilometer_venv_tag }}/bin"
+
+# Set this to enable or disable installing in a venv
+ceilometer_venv_enabled: true
+
+# The bin path defaults to the venv path however if installation in a
+#  venv is disabled the bin path will be dynamically set based on the
+#  system path used when the installing.
+ceilometer_bin: "{{ ceilometer_venv_bin }}"
+
 ## System info
 ceilometer_system_user_name: ceilometer
 ceilometer_system_group_name: ceilometer
@@ -77,6 +89,11 @@ ceilometer_apt_packages:
   - rpcbind
   - rsync
   - git
+
+# ceilometer packages that must be installed before anything else
+ceilometer_requires_pip_packages:
+  - virtualenv
+  - python-keystoneclient # Keystoneclient needed to OSA keystone lib
 
 # Common pip packages
 ceilometer_pip_packages:

@@ -52,3 +52,18 @@
     - ceilometer-config
     - ceilometer-post-install
 
+- name: Get ceilometer command path
+  command: which ceilometer
+  register: ceilometer_command_path
+  when:
+    - not ceilometer_venv_enabled | bool
+  tags:
+    - ceilometer-command-bin
+
+- name: Set ceilometer command path
+  set_fact:
+    ceilometer_bin: "{{ ceilometer_command_path.stdout | dirname }}"
+  when:
+    - not ceilometer_venv_enabled | bool
+  tags:
+    - ceilometer-command-bin

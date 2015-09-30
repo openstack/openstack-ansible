@@ -54,10 +54,24 @@
     group: "{{ item.group|default(ceilometer_system_group_name) }}"
     mode: "{{ item.mode|default('0755') }}"
   with_items:
+    - { path: "/openstack", mode: "0755", owner: "root", group: "root" }
     - { path: "/etc/ceilometer" }
     - { path: "{{ ceilometer_system_user_home }}" }
     - { path: "{{ ceilometer_system_user_home }}/.ssh", mode: "0700" }
     - { path: "/var/cache/ceilometer", mode: "0700" }
+  tags:
+    - ceilometer-dirs
+
+- name: Create ceilometer venv dir
+  file:
+    path: "{{ item.path }}"
+    state: directory
+    owner: "{{ item.owner|default(ceilometer_system_user_name) }}"
+    group: "{{ item.group|default(ceilometer_system_group_name) }}"
+  with_items:
+    - { path: "/openstack/venvs", mode: "0755", owner: "root", group: "root" }
+    - { path: "{{ ceilometer_venv_bin }}" }
+  when: ceilometer_venv_enabled | bool
   tags:
     - ceilometer-dirs
 
@@ -89,17 +103,6 @@
   tags:
     - ceilometer-dirs
     - ceilometer-logs
-
-- name: Drop sudoers file
-  template:
-    src: "sudoers.j2"
-    dest: "/etc/sudoers.d/{{ ceilometer_system_user_name }}_sudoers"
-    mode: "0440"
-    owner: "root"
-    group: "root"
-  tags:
-    - sudoers
-    - ceilometer-sudoers
 
 - include: ceilometer_messaging_setup.yml
   when: >
