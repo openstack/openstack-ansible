@@ -22,21 +22,25 @@
 
 - name: Create fernet keys for Keystone
   command: >
-    keystone-manage fernet_setup --keystone-user "{{ keystone_system_user_name }}"
-                                 --keystone-group "{{ keystone_system_group_name }}"
+    {{ keystone_bin }}/keystone-manage fernet_setup
+                                       --keystone-user "{{ keystone_system_user_name }}"
+                                       --keystone-group "{{ keystone_system_group_name }}"
   sudo: yes
   sudo_user: "{{ keystone_system_user_name }}"
   when: not _fernet_keys.stat.exists
   tags:
     - keystone-setup
     - keystone-fernet
+    - keystone-command-bin
 
 - name: Rotate fernet keys for Keystone
   command: >
-    keystone-manage fernet_rotate --keystone-user "{{ keystone_system_user_name }}"
-                                  --keystone-group "{{ keystone_system_group_name }}"
+    {{ keystone_bin }}/keystone-manage fernet_rotate
+                                       --keystone-user "{{ keystone_system_user_name }}"
+                                       --keystone-group "{{ keystone_system_group_name }}"
   sudo: yes
   sudo_user: "{{ keystone_system_user_name }}"
   when: _fernet_keys.stat.exists
   tags:
     - keystone-fernet
+    - keystone-command-bin

@@ -70,7 +70,11 @@
       tags:
         - keystone-logs
   roles:
-    - { role: "os_keystone", tags: [ "os-keystone" ] }
+    - role: "os_keystone"
+      keystone_venv_tag: "{{ openstack_release }}"
+      keystone_galera_address: "{{ galera_address }}"
+      tags:
+        - "os-keystone"
     - { role: "openstack_openrc", tags: [ "openstack-openrc" ] }
     - role: "rsyslog_client"
       rsyslog_client_log_rotate_file: keystone_log_rotate
@@ -84,6 +88,5 @@
         - "system-crontab-coordination"
   vars:
     galera_address: "{{ internal_lb_vip_address }}"
-    keystone_galera_address: "{{ internal_lb_vip_address }}"
     ansible_hostname: "{{ container_name }}"
     is_metal: "{{ properties.is_metal|default(false) }}"

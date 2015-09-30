@@ -53,9 +53,38 @@
     mode: "{{ item.mode|default('0644') }}"
   with_items:
     - { src: "sso_callback_template.html", dest: "/etc/keystone/sso_callback_template.html" }
-    - { src: "keystone-wsgi.py", dest: "/var/www/cgi-bin/keystone/admin", mode: "0755" }
-    - { src: "keystone-wsgi.py", dest: "/var/www/cgi-bin/keystone/main", mode: "0755" }
   notify:
     - Restart Apache
   tags:
     - keystone-config
+
+- name: Drop Keystone WSGI Configs
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ keystone_system_user_name }}"
+    group: "{{ keystone_system_group_name }}"
+    mode: "{{ item.mode|default('0644') }}"
+  with_items:
+    - { src: "keystone-wsgi.py.j2", dest: "/var/www/cgi-bin/keystone/admin", mode: "0755" }
+    - { src: "keystone-wsgi.py.j2", dest: "/var/www/cgi-bin/keystone/main", mode: "0755" }
+  notify:
+    - Restart Apache
+  tags:
+    - keystone-config
+
+- name: Get keystone command path
+  command: which keystone
+  register: keystone_command_path
+  when:
+    - not keystone_venv_enabled | bool
+  tags:
+    - keystone-command-bin
+
+- name: Set keystone command path
+  set_fact:
+    keystone_bin: "{{ keystone_command_path.stdout | dirname }}"
+  when:
+    - not keystone_venv_enabled | bool
+  tags:
+    - keystone-command-bin

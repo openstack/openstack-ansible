@@ -23,8 +23,9 @@
 
 function autorotate {
     # Rotate the keys
-    keystone-manage fernet_rotate --keystone-user "{{ keystone_system_user_name }}" \
-                                  --keystone-group "{{ keystone_system_group_name }}"
+    {{ keystone_bin }}/keystone-manage fernet_rotate \
+                                       --keystone-user "{{ keystone_system_user_name }}" \
+                                       --keystone-group "{{ keystone_system_group_name }}"
     {% for host in groups['keystone_all'] %}
 
     {% if inventory_hostname != host %}

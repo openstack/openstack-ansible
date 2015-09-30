@@ -13,12 +13,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Defines that the role will be deployed on a host machine
-is_metal: true
-
 ## Verbosity Options
 debug: False
 verbose: True
+
+# Name of the virtual env to deploy into
+keystone_venv_tag: untagged
+keystone_venv_bin: "/openstack/venvs/keystone-{{ keystone_venv_tag }}/bin"
+
+# Set this to enable or disable installing in a venv
+keystone_venv_enabled: true
+
+# The bin path defaults to the venv path however if installation in a
+#  venv is disabled the bin path will be dynamically set based on the
+#  system path used when the installing.
+keystone_bin: "{{ keystone_venv_bin }}"
+
 keystone_fatal_deprecations: False
 
 ## System info
@@ -333,6 +343,11 @@ keystone_apt_packages:
 keystone_idp_apt_packages:
   - ssl-cert
   - xmlsec1
+
+# Keystone packages that must be installed before anything else
+keystone_requires_pip_packages:
+  - virtualenv
+  - python-keystoneclient # Keystoneclient needed to OSA keystone lib
 
 # Common pip packages
 keystone_pip_packages:
