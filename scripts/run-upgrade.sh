@@ -372,6 +372,10 @@ if ! grep -R '^openstack_repo_url\:' /etc/openstack_deploy/user_* /etc/openstack
     tee -a /etc/openstack_deploy/user_deleteme_post_upgrade_variables.yml
 fi
 
+# Ensure that every pip install action is completed with the '--force-reinstall' argument.
+# See https://review.openstack.org/229542 for more details
+echo 'pip_install_options: "--force-reinstall"' | tee -a /etc/openstack_deploy/user_deleteme_post_upgrade_variables.yml
+
 sed -i '/^environment_version.*/d' /etc/openstack_deploy/openstack_user_config.yml
 
 # Remove containers that we no longer need
