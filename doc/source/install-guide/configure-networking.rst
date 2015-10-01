@@ -106,7 +106,7 @@ configure target host networking.
                container_bridge: "br-mgmt"
                container_interface: "eth1"
                container_type: "veth"
-               ip_from_q: "management"
+               ip_from_q: "container"
                is_container_address: true
                is_ssh_address: true
 
