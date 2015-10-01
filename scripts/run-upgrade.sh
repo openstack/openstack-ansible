@@ -623,6 +623,10 @@ EOF
 pushd playbooks
   # Reconfig haproxy if setup.
   if grep '^haproxy_hosts\:' /etc/openstack_deploy/openstack_user_config.yml;then
+    # Create the new "galera_monitoring_user" - which now defaults to "monitoring" in mysql
+    if ! grep '^galera_monitoring_user:' /etc/openstack_deploy/user_variables.yml; then
+      ansible "galera_all[0]" -m "mysql_user" -a "name=monitoring host='%' password='' priv='*.*:USAGE' state=present"
+    fi
     ansible haproxy_hosts \
             -m shell \
             -a 'rm /etc/haproxy/conf.d/nova_api_ec2 /etc/haproxy/conf.d/nova_spice_console'
@@ -635,8 +639,11 @@ pushd playbooks
           -m "file" \
           -a "path=/root/.pip/links.d/rpc_release.link state=absent" || true
 
-  # The galera monitoring user now defaults to 'monitoring', cleaning up old 'haproxy' user.
-  ansible "galera_all[0]" -m "mysql_user" -a "name=haproxy host='%' password='' priv='*.*:USAGE' state=absent"
+  # The default galera LB monitoring user has changed, we need to clean up the old "haproxy" user.
+  if ! grep '^galera_monitoring_user:' /etc/openstack_deploy/user_variables.yml; then
+    ansible "galera_all[0]" -m "mysql_user" -a "name=haproxy host='%' password='' priv='*.*:USAGE' state=absent"
+    ansible "galera_all[0]" -m "mysql_user" -a "name=haproxy host='localhost' password='' priv='*.*:USAGE' state=absent"
+  fi
 
   # Run the fix adjustments play.
   RUN_TASKS+=("/tmp/fix_minor_adjustments.yml")
