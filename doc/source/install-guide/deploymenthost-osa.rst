@@ -10,7 +10,7 @@ Install the source and dependencies for the deployment host.
 
    .. code-block:: bash
 
-       # git clone -b TAG https://github.com/openstack/openstack-ansible.git /opt/os-ansible-deploymemt
+       # git clone -b TAG https://github.com/openstack/openstack-ansible.git /opt/openstack-ansible
                
 
    Replace *``TAG``* with the current stable release tag.
