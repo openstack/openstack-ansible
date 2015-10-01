@@ -27,6 +27,7 @@ export ANSIBLE_WORKING_DIR=${ANSIBLE_WORKING_DIR:-/opt/ansible_${ANSIBLE_GIT_REL
 export GET_PIP_URL=${GET_PIP_URL:-"https://bootstrap.pypa.io/get-pip.py"}
 export SSH_DIR=${SSH_DIR:-"/root/.ssh"}
 export UPDATE_ANSIBLE_REQUIREMENTS=${UPDATE_ANSIBLE_REQUIREMENTS:-"yes"}
+export DEBIAN_FRONTEND=${DEBIAN_FRONTEND:-"noninteractive"}
 
 
 ## Functions -----------------------------------------------------------------
