@@ -6,12 +6,9 @@ debug = {{ debug }}
 # Log to this file. Make sure you do not set the same log file for both the API
 # and registry servers!
 #
-# If `log_file` is omitted and `use_syslog` is false, then log messages are
+# If `log_file` is omitted then log messages are
 # sent to stdout as a fallback.
 log_file = /var/log/glance/scrubber.log
-
-# Send logs to syslog (/dev/log) instead of to file specified by `log_file`
-#use_syslog: False
 
 # Should we run our own loop or rely on cron/scheduler to run us
 daemon = False

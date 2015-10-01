@@ -87,7 +87,10 @@ glance_service_adminuri: "{{ glance_service_adminuri_proto }}://{{ internal_lb_v
 glance_service_adminurl: "{{ glance_service_adminuri }}"
 
 ## Swift Options
-glance_swift_store_auth_address: "{{ keystone_service_internalurl }}"
+glance_swift_store_auth_address: "{{ keystone_service_internalurl_v3 }}"
+glance_swift_store_auth_version: 3
+glance_swift_store_user_domain: default
+glance_swift_store_project_domain: default
 glance_swift_store_user: "service:{{ glance_service_user_name }}"
 glance_swift_store_key: "{{ glance_service_password }}"
 glance_swift_store_region: "{{ glance_service_region }}"
@@ -112,7 +115,7 @@ glance_image_cache_max_size: 10737418240
 # glance_registry_workers: 16
 
 glance_task_executor: taskflow
-glance_digest_algorithm: sha1
+glance_digest_algorithm: sha256
 glance_http_keepalive: True
 
 ## Glance policy

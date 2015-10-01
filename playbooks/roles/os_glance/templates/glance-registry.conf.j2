@@ -8,7 +8,6 @@ verbose = {{ verbose }}
 debug = {{ debug }}
 fatal_deprecations = {{ glance_fatal_deprecations }}
 log_file = /var/log/glance/glance-registry.log
-use_syslog = False
 bind_host = {{ glance_registry_bind_address }}
 bind_port = {{ glance_registry_service_port }}
 http_keepalive = {{ glance_http_keepalive }}
@@ -19,10 +18,6 @@ limit_param_default = 25
 {% if glance_ceilometer_enabled %}
 notification_driver = {{ glance_notification_driver }}
 rpc_backend = {{ glance_rpc_backend }}
-rabbit_hosts = {{ rabbitmq_servers }}
-rabbit_userid = {{ glance_rabbitmq_userid }}
-rabbit_password = {{ glance_rabbitmq_password }}
-rabbit_virtual_host = {{ glance_rabbitmq_vhost }}
 {% endif %}
 
 [database]
@@ -51,6 +46,15 @@ memcache_secret_key = {{ memcached_encryption_key }}
 
 # if your keystone deployment uses PKI, and you value security over performance:
 check_revocations_for_cached = False
+
+[oslo_messaging_rabbit]
+rabbit_hosts = {{ rabbitmq_servers }}
+rabbit_port = {{ rabbitmq_port }}
+rabbit_userid = {{ glance_rabbitmq_userid }}
+rabbit_password = {{ glance_rabbitmq_password }}
+rabbit_virtual_host = {{ glance_rabbitmq_vhost }}
+rabbit_notification_exchange = glance
+rabbit_notification_topic = notifications
 
 [oslo_policy]
 policy_file = {{ glance_policy_file }}

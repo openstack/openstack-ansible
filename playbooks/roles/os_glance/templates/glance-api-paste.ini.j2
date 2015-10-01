@@ -1,44 +1,45 @@
 # Use this pipeline for no auth or image caching - DEFAULT
 [pipeline:glance-api]
-pipeline = versionnegotiation osprofiler unauthenticated-context rootapp
+pipeline = healthcheck versionnegotiation osprofiler unauthenticated-context rootapp
 
 # Use this pipeline for image caching and no auth
 [pipeline:glance-api-caching]
-pipeline = versionnegotiation osprofiler unauthenticated-context cache rootapp
+pipeline = healthcheck versionnegotiation osprofiler unauthenticated-context cache rootapp
 
 # Use this pipeline for caching w/ management interface but no auth
 [pipeline:glance-api-cachemanagement]
-pipeline = versionnegotiation osprofiler unauthenticated-context cache cachemanage rootapp
+pipeline = healthcheck versionnegotiation osprofiler unauthenticated-context cache cachemanage rootapp
 
 # Use this pipeline for keystone auth
 [pipeline:glance-api-keystone]
-pipeline = versionnegotiation osprofiler authtoken context rootapp
+pipeline = healthcheck versionnegotiation osprofiler authtoken context  rootapp
 
 # Use this pipeline for keystone auth with image caching
 [pipeline:glance-api-keystone+caching]
-pipeline = versionnegotiation osprofiler authtoken context cache rootapp
+pipeline = healthcheck versionnegotiation osprofiler authtoken context cache rootapp
 
 # Use this pipeline for keystone auth with caching and cache management
 [pipeline:glance-api-keystone+cachemanagement]
-pipeline = versionnegotiation osprofiler authtoken context cache cachemanage rootapp
+pipeline = healthcheck versionnegotiation osprofiler authtoken context cache cachemanage rootapp
 
 # Use this pipeline for authZ only. This means that the registry will treat a
 # user as authenticated without making requests to keystone to reauthenticate
 # the user.
 [pipeline:glance-api-trusted-auth]
-pipeline = versionnegotiation osprofiler context rootapp
+pipeline = healthcheck versionnegotiation osprofiler context rootapp
 
 # Use this pipeline for authZ only. This means that the registry will treat a
 # user as authenticated without making requests to keystone to reauthenticate
 # the user and uses cache management
 [pipeline:glance-api-trusted-auth+cachemanagement]
-pipeline = versionnegotiation osprofiler context cache cachemanage rootapp
+pipeline = healthcheck versionnegotiation osprofiler context cache cachemanage rootapp
 
 [composite:rootapp]
 paste.composite_factory = glance.api:root_app_factory
 /: apiversions
 /v1: apiv1app
 /v2: apiv2app
+/v3: apiv3app
 
 [app:apiversions]
 paste.app_factory = glance.api.versions:create_resource
@@ -48,6 +49,14 @@ paste.app_factory = glance.api.v1.router:API.factory
 
 [app:apiv2app]
 paste.app_factory = glance.api.v2.router:API.factory
+
+[app:apiv3app]
+paste.app_factory = glance.api.v3.router:API.factory
+
+[filter:healthcheck]
+paste.filter_factory = oslo_middleware:Healthcheck.factory
+backends = disable_by_file
+disable_by_file_path = /etc/glance/healthcheck_disable
 
 [filter:versionnegotiation]
 paste.filter_factory = glance.api.middleware.version_negotiation:VersionNegotiationFilter.factory
