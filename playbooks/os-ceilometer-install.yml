@@ -73,6 +73,7 @@
     - { role: "os_ceilometer", tags: [ "os-ceilometer" ] }
     - { role: "openstack_openrc", tags: [ "openstack-openrc" ] }
     - role: "rsyslog_client"
+      rsyslog_client_log_rotate_file: ceilometer_log_rotate
       rsyslog_client_log_dir: "/var/log/ceilometer"
       rsyslog_client_config_name: "99-ceilometer-rsyslog-client.conf"
       tags:

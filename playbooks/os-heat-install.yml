@@ -72,6 +72,7 @@
   roles:
     - { role: "os_heat", tags: [ "os-heat" ] }
     - role: "rsyslog_client"
+      rsyslog_client_log_rotate_file: heat_log_rotate
       rsyslog_client_log_dir: "/var/log/heat"
       rsyslog_client_config_name: "99-heat-rsyslog-client.conf"
       tags:

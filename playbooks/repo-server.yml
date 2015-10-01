@@ -53,6 +53,7 @@
   roles:
     - { role: "repo_server", tags: [ "repo-server" ] }
     - role: "rsyslog_client"
+      rsyslog_client_log_rotate_file: repo_log_rotate
       rsyslog_client_log_dir: "/var/log/nginx"
       rsyslog_client_log_files:
         - /var/www/repo_builder.log
