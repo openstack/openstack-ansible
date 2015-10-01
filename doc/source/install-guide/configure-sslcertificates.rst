@@ -32,7 +32,15 @@ Self-signed certificates
 Self-signed certificates make it easy to get started quickly and they ensure
 data is encrypted in transit, but they don't provide a high level of trust
 for highly secure environments.  The use of self-signed certificates is
-currently the default in openstack-ansible.
+currently the default in openstack-ansible. When self-signed certificates are
+being used, certificate verification must be disabled using the following
+user variables depending on your configuration. These variables can be added
+in ``/etc/openstack_deploy/user_variables.yml``.
+
+.. code-block:: yaml
+
+    keystone_service_adminuri_insecure: true
+    keystone_service_internaluri_insecure: true
 
 Setting self-signed certificate subject data
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
