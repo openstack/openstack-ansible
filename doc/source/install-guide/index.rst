@@ -60,3 +60,4 @@ Appendices
 
    app-configfiles.rst
    app-resources.rst
+   app-tips.rst
