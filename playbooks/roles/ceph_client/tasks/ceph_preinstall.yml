@@ -13,6 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- name: Remove revoked ceph apt-keys
+  apt_key:
+    id: "{{ item }}"
+    state: "absent"
+  register: revoke_keys
+  with_items: ceph_revoked_gpg_keys
+  tags:
+    - ceph-apt-keys
+
 - name: Add ceph apt-keys
   apt_key:
     id: "{{ item.hash_id }}"
@@ -52,3 +61,14 @@
   tags:
     - ceph-repos
 
+# This is being added specifically for when a key is revoked, but should apply
+# to other tasks also.  The cache needs updating after changing keys but
+# ceph_install.yml (where packages get installed) only does so if cache > 600
+# seconds.
+- name: Update apt cache
+  apt:
+    update_cache: yes
+  when: revoke_keys|changed or add_keys|changed or add_keys_fallback|changed or add_repos|changed
+  tags:
+    - ceph-apt-keys
+    - ceph-repos
