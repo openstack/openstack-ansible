@@ -14,9 +14,12 @@
 #
 # (c) 2015, Kevin Carter <kevin.carter@rackspace.com>
 
+import os
+import re
 import urlparse
 import hashlib
 
+from ansible import errors
 
 """Filter usage:
 
@@ -108,6 +111,82 @@ def string_2_int(string):
     return int(hashed_name, 36) % 10240
 
 
+def pip_requirement_names(requirements):
+    """Return a ``str`` of requirement name and list of versions.
+    :param requirement: Name of a requirement that may have versions within
+                        it. This will use the constant,
+                        VERSION_DESCRIPTORS.
+    :type requirement: ``str``
+    :return: ``str``
+    """
+
+    version_descriptors = "(>=|<=|>|<|==|~=|!=)"
+    named_requirements = list()
+    for requirement in requirements:
+        requirement = requirement.split(';')[0]
+        name = re.split(r'%s\s*' % version_descriptors, requirement)[0]
+        if name and not name.startswith('#'):
+            named_requirements.append(name.lower())
+
+    return sorted(set(named_requirements))
+
+
+def splitlines(string_with_lines):
+    """Return a ``list`` from a string with lines."""
+
+    return string_with_lines.splitlines()
+
+
+def filtered_list(list_one, list_two):
+
+    _list_one = set([i.lower() for i in list_one])
+    _list_two = set([i.lower() for i in list_two])
+    return list(_list_one-_list_two)
+
+
+def git_link_parse(repo):
+    """Return a dict containing the parts of a git repository.
+
+    :param repo: git repo string to parse.
+    :type repo: ``str``
+    :returns: ``dict``
+    """
+
+    if 'git+' in repo:
+        _git_url = repo.split('git+', 1)[-1]
+    else:
+        _git_url = repo
+
+    if '@' in _git_url:
+        url, branch = _git_url.split('@', 1)
+    else:
+        url = _git_url
+        branch = 'master'
+
+    name = os.path.basename(url.rstrip('/'))
+    _branch = branch.split('#')
+    branch = _branch[0]
+
+    plugin_path = None
+    # Determine if the package is a plugin type
+    if len(_branch) > 1 and 'subdirectory=' in _branch[-1]:
+        plugin_path = _branch[-1].split('subdirectory=')[-1].split('&')[0]
+
+    return {
+        'name': name.split('.git')[0].lower(),
+        'version': branch,
+        'plugin_path': plugin_path,
+        'url': url,
+        'original': repo
+    }
+
+
+def git_link_parse_name(repo):
+    """Return the name of a git repo."""
+
+    return git_link_parse(repo)['name']
+
+
 class FilterModule(object):
     """Ansible jinja2 filters."""
 
@@ -118,5 +197,10 @@ class FilterModule(object):
             'netloc': get_netloc,
             'netloc_no_port': get_netloc_no_port,
             'netorigin': get_netorigin,
-            'string_2_int': string_2_int
+            'string_2_int': string_2_int,
+            'pip_requirement_names': pip_requirement_names,
+            'splitlines': splitlines,
+            'filtered_list': filtered_list,
+            'git_link_parse': git_link_parse,
+            'git_link_parse_name': git_link_parse_name
         }

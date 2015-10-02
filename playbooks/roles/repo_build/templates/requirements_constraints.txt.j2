@@ -1,0 +1,19 @@
+# Computed constraints
+{% set constraint_pkgs = [] -%}
+{% for clone_item in cloned_repos.stdout_lines -%}
+git+file://{{ clone_item }}#egg={{ clone_item | git_link_parse_name | replace('-', '_') | lower }}
+{% if constraint_pkgs.append(clone_item | git_link_parse_name | replace('-', '_') | lower) %}{% endif %}
+{% endfor %}
+# upper boundry constraints from requirements repo.
+{% for constraint_item in upper_constraints %}
+{%- set constraint_split = constraint_item.split('===') %}
+{%- set constraint_name = constraint_split[0] %}
+{%- set constraint_name_normalized = constraint_name | replace('-', '_') | lower %}
+{% if constraint_name_normalized not in constraint_pkgs %}
+{% if repo_build_use_upper_constraints | bool %}
+{{ constraint_split[0] | replace('-', '_') | lower }}<={{ constraint_split[1] }}
+{% else %}
+# {{ constraint_split[0] | replace('-', '_') | lower }}<={{ constraint_split[1] }}
+{% endif %}
+{% endif %}
+{% endfor %}

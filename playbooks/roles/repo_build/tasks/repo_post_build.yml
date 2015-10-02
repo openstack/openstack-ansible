@@ -1,0 +1,116 @@
+---
+# Copyright 2015, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Index built wheels
+  command: "ls -1 {{ repo_build_output }}"
+  register: built_wheels
+  tags:
+    - repo-build-index-wheels
+    - repo-create-pool
+    - repo-copy-wheels-to-pool
+    - repo-create-release-links
+    - repo-create-links-index
+    - repo-create-release-manifest
+
+- name: Create wheel pool structure
+  file:
+    path: "{{ repo_build_pool_dir }}/{{ item.split('-')[0] | lower }}"
+    state: directory
+    owner: "{{ repo_build_service_user_name }}"
+  with_items: built_wheels.stdout_lines
+  tags:
+    - repo-create-pool
+
+- name: Remove pool indexes if found
+  file:
+    path: "{{ repo_build_pool_dir }}/{{ item.split('-')[0] | lower }}/index.html"
+    state: absent
+  with_items: built_wheels.stdout_lines
+  tags:
+    - repo-create-pool
+
+- name: Move wheels into place and ensure permissions
+  shell: |
+    if [ ! -f "{{ repo_build_pool_dir }}/{{ item.split('-')[0] | lower }}/{{ item | lower }}" ];then
+      mv {{ repo_build_output }}/{{ item }} {{ repo_build_pool_dir }}/{{ item.split('-')[0] | lower }}/{{ item | lower }}
+    elif ! diff {{ repo_build_output }}/{{ item }} {{ repo_build_pool_dir }}/{{ item.split('-')[0] | lower }}/{{ item | lower }} > /dev/null;then
+      mv {{ repo_build_output }}/{{ item }} {{ repo_build_pool_dir }}/{{ item.split('-')[0] | lower }}/{{ item | lower }}
+    fi
+    chown {{ repo_build_service_user_name }} {{ repo_build_pool_dir }}/{{ item.split('-')[0] | lower }}/{{ item | lower }}
+  with_items: built_wheels.stdout_lines
+  tags:
+    - repo-copy-wheels-to-pool
+
+- name: Create release pool links
+  file:
+    dest: "{{ repo_build_release_path }}/{{ repo_build_release_tag }}/{{ item | lower }}"
+    src: "{{ repo_build_pool_dir }}/{{ item.split('-')[0] | lower }}/{{ item | lower }}"
+    state: link
+    owner: "{{ repo_build_service_user_name }}"
+  with_items: built_wheels.stdout_lines
+  tags:
+    - repo-create-release-links
+
+- name: Create release manifest
+  template:
+    src: "manifest.in.j2"
+    dest: "{{ repo_build_release_path }}/{{ repo_build_release_tag }}/MANIFEST.in"
+  tags:
+    - repo-create-release-manifest
+
+- name: Create absolute requirements
+  template:
+    src: "requirements_absolute_requirements.txt.j2"
+    dest: "{{ repo_build_release_path }}/{{ repo_build_release_tag }}/requirements_absolute_requirements.txt"
+  tags:
+    - repo-create-absolute-requirements
+
+- name: Index built wheels
+  command: "ls -1 {{ repo_build_release_path }}/{{ repo_build_release_tag }}"
+  register: indexed_links
+  tags:
+    - repo-index-links
+    - repo-create-release-index
+
+- name: Create release index
+  template:
+    src: "release_index_links.html.j2"
+    dest: "{{ repo_build_release_path }}/{{ repo_build_release_tag }}/index.html"
+  tags:
+    - repo-create-release-index
+
+- name: Create general index links
+  file:
+    dest: "{{ repo_build_global_links_path }}/{{ item | lower }}"
+    src: "../pools/{{ item.split('-')[0] | lower }}/{{ item | lower }}"
+    state: link
+    owner: "{{ repo_build_service_user_name }}"
+  with_items: built_wheels.stdout_lines
+  tags:
+    - repo-create-links-index
+
+- name: Index general links
+  command: "ls -1 {{ repo_build_global_links_path }}"
+  register: global_indexed_links
+  tags:
+    - repo-index-links
+    - repo-create-global-release-index
+
+- name: Create release index
+  template:
+    src: "global_indexed_links.html.j2"
+    dest: "{{ repo_build_global_links_path }}/index.html"
+  tags:
+    - repo-create-global-release-index

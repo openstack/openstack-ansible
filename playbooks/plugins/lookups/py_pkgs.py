@@ -26,7 +26,6 @@ VERSION_DESCRIPTORS = ['>=', '<=', '==', '!=', '<', '>']
 
 
 REQUIREMENTS_FILE_TYPES = [
-    'requirements.txt',
     'global-requirements.txt',
     'test-requirements.txt',
     'dev-requirements.txt',
@@ -42,6 +41,60 @@ BUILT_IN_PIP_PACKAGE_VARS = [
     'pip_container_packages',
     'pip_packages'
 ]
+
+
+def git_pip_link_parse(repo):
+    """Return a tuple containing the parts of a git repository.
+
+    Example parsing a standard git repo:
+      >>> git_pip_link_parse('git+https://github.com/username/repo@tag')
+      ('repo',
+       'tag',
+       None,
+       'https://github.com/username/repo',
+       'git+https://github.com/username/repo@tag')
+
+    Example parsing a git repo that uses an installable from a subdirectory:
+      >>> git_pip_link_parse(
+      ...     'git+https://github.com/username/repo@tag#egg=plugin.name'
+      ...     '&subdirectory=remote_path/plugin.name'
+      ... )
+      ('repo',
+       'tag',
+       'remote_path/plugin.name',
+       'https://github.com/username/repo',
+       'git+https://github.com/username/repo@tag#egg=plugin.name&'
+       'subdirectory=remote_path/plugin.name')
+
+    :param repo: git repo string to parse.
+    :type repo: ``str``
+    :returns: ``tuple``
+    """
+
+    _git_url = repo.split('+')
+    if len(_git_url) >= 2:
+        _git_url = _git_url[1]
+    else:
+        _git_url = _git_url[0]
+
+    git_branch_sha = _git_url.split('@')
+    if len(git_branch_sha) > 1:
+        url, branch = git_branch_sha
+    else:
+        url = git_branch_sha[0]
+        branch = 'master'
+
+    name = os.path.basename(url.rstrip('/'))
+    _branch = branch.split('#')
+    branch = _branch[0]
+
+    plugin_path = None
+    # Determine if the package is a plugin type
+    if len(_branch) > 1:
+        if 'subdirectory' in _branch[-1]:
+            plugin_path = _branch[1].split('subdirectory=')[1].split('&')[0]
+
+    return name.lower(), branch, plugin_path, url, repo
 
 
 class DependencyFileProcessor(object):
@@ -152,7 +205,7 @@ class DependencyFileProcessor(object):
         package = self.git_pip_install % (
             git_data['repo'], git_data['branch']
         )
-
+        package = '%s#egg=%s' % (package, git_pip_link_parse(package)[0].replace('-', '_'))
         git_data['fragments'] = loaded_yaml.get(
             '%s_git_install_fragments' % var_name.replace('.', '_')
         )
@@ -192,11 +245,15 @@ class DependencyFileProcessor(object):
                         continue
 
             for key, values in loaded_config.items():
-                if key.endswith('git_repo'):
-                    self._process_git(
-                        loaded_yaml=loaded_config,
-                        git_item=key
-                    )
+                # This conditional is set to ensure we're not processes git repos
+                #  from the defaults file which may conflict with what is being set
+                #  in the repo_packages files.
+                if not '/defaults/main' in file_name:
+                    if key.endswith('git_repo'):
+                        self._process_git(
+                            loaded_yaml=loaded_config,
+                            git_item=key
+                        )
 
                 if [i for i in BUILT_IN_PIP_PACKAGE_VARS if i in key]:
                     self.pip['py_package'].extend(values)
@@ -232,6 +289,10 @@ class LookupModule(object):
         if isinstance(terms, basestring):
             terms = [terms]
 
+        return_data = {
+            'packages': list(),
+            'remote_packages': list()
+        }
         return_list = list()
         for term in terms:
             try:
@@ -248,27 +309,30 @@ class LookupModule(object):
                         traceback.format_exc()
                     )
                 )
-        else:
-            return_data = {
-                'packages': list(),
-                'remote_packages': list()
-            }
-            for file_name in sorted(set(return_list)):
-                is_url = file_name.startswith(('http:', 'https:', 'git+'))
-                if is_url:
-                    if '@' not in file_name:
-                        return_data['packages'].append(file_name)
-                    else:
-                        return_data['remote_packages'].append(file_name)
-                else:
-                    return_data['packages'].append(file_name)
-            else:
-                return_data['packages'] = ' '.join(
-                    ['"%s"' % i for i in set(return_data['packages'])]
-                )
 
-                return_data['remote_packages'] = ' '.join(
-                    ['"%s"' % i for i in set(return_data['remote_packages'])]
+            for item in sorted(set(return_list)):
+                if item.startswith(('http:', 'https:', 'git+')):
+                    if '@' not in item:
+                        return_data['packages'].append(item)
+                    else:
+                        return_data['remote_packages'].append(item)
+                else:
+                    return_data['packages'].append(item)
+            else:
+                return_data['packages'] = list(
+                    set([i.lower() for i in return_data['packages']])
                 )
+                return_data['remote_packages'] = list(
+                    set(return_data['remote_packages'])
+                )
+                keys = ['name', 'version', 'fragment', 'url', 'original']
+                remote_package_parts = [
+                    dict(
+                        zip(
+                            keys, git_pip_link_parse(i)
+                        )
+                    ) for i in return_data['remote_packages']
+                ]
+                return_data['remote_package_parts'] = remote_package_parts
 
                 return [return_data]
