@@ -1,4 +1,4 @@
-`Home <index.html>`__ OpenStack Ansible Installation Guide
+`Home <index.html>`_ OpenStack-Ansible Installation Guide
 
 Adding a compute host
 ---------------------
@@ -7,7 +7,7 @@ Use the following procedure to add a compute host to an operational
 cluster.
 
 #. Configure the host as a target host. See `Chapter 4, *Target
-   hosts* <ch-hosts-target.html>`__ for more information.
+   hosts* <ch-hosts-target.html>`_ for more information.
 
 #. Edit the ``/etc/openstack_deploy/openstack_user_config.yml`` file and
    add the host to the ``compute_hosts`` stanza.

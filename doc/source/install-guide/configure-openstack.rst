@@ -1,4 +1,4 @@
-`Home <index.html>`__ OpenStack Ansible Installation Guide
+`Home <index.html>`_ OpenStack-Ansible Installation Guide
 
 Overriding OpenStack Configuration Defaults
 -------------------------------------------
@@ -13,10 +13,11 @@ the `OpenStack Configuration Reference`_ through the use of a simple set of
 configuration entries in ``/etc/openstack_deploy/user_variables.yml``.
 
 This section provides guidance for how to make use of this facility. Further
-guidance is available in the `Developer Documentation`_.
+guidance is available in the Developer Documentation in the section titled
+`Setting overrides in configuration files`_.
 
 .. _OpenStack Configuration Reference: http://docs.openstack.org/draft/config-reference/
-.. _Developer Documentation: ../developer-docs/extending.html#setting-overrides-in-configuration-files
+.. _Setting overrides in configuration files: ../developer-docs/extending.html#setting-overrides-in-configuration-files
 
 Overriding .conf files
 ~~~~~~~~~~~~~~~~~~~~~~

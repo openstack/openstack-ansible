@@ -1,10 +1,11 @@
+`Home <index.html>`_ OpenStack-Ansible Developer Documentation
+
 Included Scripts
 ================
 
 The repository contains several helper scripts to manage gate jobs,
-install base requirements, and update repository information. Invoke
-these scripts from the top-level directory of the repository. For
-example:
+install base requirements, and update repository information. Execute
+these scripts from the root of the respository clone. For example:
 
 .. code:: bash
 
@@ -37,6 +38,39 @@ The script also creates the ``openstack-ansible`` wrapper tool that provides
 the variable files to match ``/etc/openstack_deploy/user_*.yml`` as
 arguments to ``ansible-playbook`` as a convenience.
 
+Development and Testing
+^^^^^^^^^^^^^^^^^^^^^^^
+
+run-playbooks.sh
+----------------
+
+The ``run-playbooks`` script is designed to be executed in development and
+test environments and is also used for automated testing. It executes actions
+which are definitely **not** suitable for production environments and must
+therefore **not** be used for that purpose.
+
+In order to scope the playbook execution there are several ``DEPLOY_``
+environment variables available near the top of the script. These are used
+by simply exporting an override before executing the script. For example,
+to skip the execution of the Ceilometer playbook, execute:
+
+.. code-block:: bash
+
+    export DEPLOY_CEILOMETER='no'
+
+run-tempest.sh
+--------------
+
+The ``run-tempest.sh`` script runs Tempest tests from the first utility
+container. This is primarily used for automated gate testing, but may also be
+used through manual execution.
+
+Configurable environment variables:
+
+* ``TEMPEST_SCRIPT_PARAMETERS`` - Defines tests to run. Values are passed to
+  ``openstack_tempest_gate.sh`` script, defined in the ``os_tempest`` role.
+  Defaults to ``scenario heat_api cinder_backup``.
+
 Gating
 ^^^^^^
 
@@ -52,7 +86,7 @@ Configurable environment variables:
 
 * ``BOOTSTRAP_AIO`` - Boolean (yes/no) to run AIO bootstrap script. Defaults
   to ``yes``.
-* ``BOOTSTRAP_AIO`` - Boolean (yes/no) to run Ansible bootstrip script.
+* ``BOOTSTRAP_ANSIBLE`` - Boolean (yes/no) to run Ansible bootstrip script.
   Defaults to ``yes``.
 * ``RUN_TEMPEST`` - Boolean (yes/no) to run Tempest tests. Defaults to
   ``yes``.
@@ -78,15 +112,6 @@ the following rules due to Ansible conventions:
 Ansible playbooks pass through ``ansible-playbook --syntax-check``
 and ``ansible-lint``.
 
-run-tempest.sh
 --------------
 
-The ``run-tempest.sh`` script runs Tempest tests from the first utility
-container. The ``check-gate-commit.sh`` script usually invokes this
-script after it completes the OSA deployment.
-
-Configurable environment variables:
-
-* ``TEMPEST_SCRIPT_PARAMETERS`` - Defines tests to run. Values are passed to
-  ``openstack_tempest_gate.sh`` script, defined in the ``os_tempest`` role.
-  Defaults to ``scenario heat_api cinder_backup``.
+.. include:: navigation.txt

@@ -1,4 +1,4 @@
-`Home <index.html>`__ OpenStack Ansible Installation Guide
+`Home <index.html>`_ OpenStack-Ansible Installation Guide
 
 Configuring the hypervisor (optional)
 -------------------------------------

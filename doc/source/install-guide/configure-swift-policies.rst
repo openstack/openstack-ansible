@@ -1,4 +1,4 @@
-`Home <index.html>`__ OpenStack Ansible Installation Guide
+`Home <index.html>`_ OpenStack-Ansible Installation Guide
 
 Storage Policies
 ----------------
@@ -45,7 +45,7 @@ cluster:
    specified when created.
 
 For more information about storage policies, see: `Storage
-Policies <http://docs.openstack.org/developer/swift/overview_policies.html>`__
+Policies <http://docs.openstack.org/developer/swift/overview_policies.html>`_
 
 --------------
 
