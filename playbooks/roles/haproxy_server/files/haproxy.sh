@@ -31,8 +31,7 @@ test "$ENABLED" != "0" || exit 0
 . /lib/lsb/init-functions
 
 CONFIG_DIR_FILES=""
-if [ ! -z "$CONFIG_DIR" ]
-then
+if [ ! -z "$CONFIG_DIR" ]; then
   for file in $CONFIG_DIR/*; do
     CONFIG_DIR_FILES="$CONFIG_DIR_FILES -f $file"
   done

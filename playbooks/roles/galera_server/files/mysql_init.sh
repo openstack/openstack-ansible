@@ -43,7 +43,8 @@ export HOME=/etc/mysql/
 ## Fetch a particular option from mysql's invocation.
 #
 # Usage: void mysqld_get_param option
-mysqld_get_param() {
+mysqld_get_param()
+{
     /usr/sbin/mysqld --print-defaults \
         | tr " " "\n" \
         | grep -- "--$1" \
@@ -52,7 +53,8 @@ mysqld_get_param() {
 }
 
 ## Do some sanity checks before even trying to start mysqld.
-sanity_checks() {
+sanity_checks()
+{
   # check for config file
   if [ ! -r /etc/mysql/my.cnf ]; then
     log_warning_msg "$0: WARNING: /etc/mysql/my.cnf cannot be read. See README.Debian.gz"
@@ -74,12 +76,15 @@ sanity_checks() {
 # check_dead also fails if there is a lost mysqld in the process list
 #
 # Usage: boolean mysqld_status [check_alive|check_dead] [warn|nowarn]
-mysqld_status () {
+mysqld_status()
+{
     ping_output=`$MYADMIN ping 2>&1`; ping_alive=$(( ! $? ))
 
     ps_alive=0
     pidfile=`mysqld_get_param pid-file`
-    if [ -f "$pidfile" ] && ps `cat $pidfile` >/dev/null 2>&1; then ps_alive=1; fi
+    if [ -f "$pidfile" ] && ps `cat $pidfile` >/dev/null 2>&1; then
+        ps_alive=1
+    fi
 
     if [ "$1" = "check_alive"  -a  $ping_alive = 1 ] ||
        [ "$1" = "check_dead"   -a  $ping_alive = 0  -a  $ps_alive = 0 ]; then
@@ -108,13 +113,15 @@ case "${1:-''}" in
         # Could be removed during boot
         test -e /var/run/mysqld || install -m 755 -o mysql -g root -d /var/run/mysqld
 
-        # Start MariaDB! 
+        # Start MariaDB!
         /usr/bin/mysqld_safe "${@:2}" > /dev/null 2>&1 &
 
         # 6s was reported in #352070 to be too few when using ndbcluster
         for i in $(seq 1 "${MYSQLD_STARTUP_TIMEOUT:-30}"); do
             sleep 1
-            if mysqld_status check_alive nowarn ; then break; fi
+            if mysqld_status check_alive nowarn ; then
+                break
+            fi
             log_progress_msg "."
         done
         if mysqld_status check_alive warn; then
@@ -147,9 +154,14 @@ case "${1:-''}" in
         server_down=
         for i in `seq 1 600`; do
           sleep 1
-          if mysqld_status check_dead nowarn; then server_down=1; break; fi
+          if mysqld_status check_dead nowarn; then
+              server_down=1
+              break
+          fi
         done
-        if test -z "$server_down"; then killall -9 mysqld; fi
+        if test -z "$server_down"; then
+          killall -9 mysqld
+        fi
       fi
     fi
 

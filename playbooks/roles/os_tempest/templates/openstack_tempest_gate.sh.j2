@@ -42,14 +42,14 @@ TESTR_OPTS=${TESTR_OPTS:-''}
 # should be run. Each function takes in the full list of tempest tests and
 # should output a filtered list.
 
-function gen_test_list_api() {
+function gen_test_list_api {
   # filter test list to produce list of tests to use.
   egrep 'tempest\.api\.(identity|image|volume|network|compute|object_storage)'\
     |grep -vi xml
 }
 
 # Run selected scenario tests
-function gen_test_list_scenario() {
+function gen_test_list_scenario {
   # network tests have been removed due to
   # https://bugs.launchpad.net/openstack-ansible/+bug/1425255
   # TODO: add them back once the bug has been fixed
@@ -57,18 +57,18 @@ function gen_test_list_scenario() {
 }
 
 # Run heat-api tests
-function gen_test_list_heat_api() {
+function gen_test_list_heat_api {
   # basic orchestration api tests
   egrep 'tempest\.api\.orchestration\.stacks\.test_non_empty_stack'
 }
 
 # Run cinder backup api tests
-function gen_test_list_cinder_backup() {
+function gen_test_list_cinder_backup {
   egrep 'tempest\.api\.volume\.admin\.test_volumes_backup'
 }
 
 # Run smoke tests
-function gen_test_list_smoke() {
+function gen_test_list_smoke {
   # this specific test fails frequently and is making our multi node nightly
   # job unstable (see bug in gen_test_list_scenario function)
   # TODO: re-add back in once the specific issue is identified and corrected
@@ -76,14 +76,14 @@ function gen_test_list_smoke() {
 }
 
 # Run all tests
-function gen_test_list_all() {
+function gen_test_list_all {
   cat
 }
 
 # Generate test list from official defcore/refstack spec
 # Note that unlike the other test list functions, this one isn't a filter
 # it ignores its stdin and pulls the test list from github.
-function gen_test_list_defcore(){
+function gen_test_list_defcore {
   branch=${1:-juno}
   string=$(python <<END
 import json
@@ -100,26 +100,29 @@ response = requests.get(url)
 for capability in response.json()['capabilities'].values():
   for test in capability['tests']:
     print test
-END)
+END
+)
 
   read -a test_list <<<$string
   parse_cmd="grep "
-  for item in ${test_list[@]}; do parse_cmd+="-e $item "; done
+  for item in ${test_list[@]}; do
+    parse_cmd+="-e $item "
+  done
 
   $parse_cmd
 }
 
 # defcore tests for juno
-function gen_test_list_defcore_juno(){
+function gen_test_list_defcore_juno {
   gen_test_list_defcore juno
 }
 
 # defcore tests for icehouse
-function gen_test_list_defcore_icehouse(){
+function gen_test_list_defcore_icehouse {
   gen_test_list_defcore icehouse
 }
 
-exit_msg(){
+function exit_msg {
   echo $1
   exit $2
 }
