@@ -331,3 +331,10 @@ nova_pip_packages:
   - python-novaclient
   - keystonemiddleware
   - nova
+
+
+## Tunable overrides
+nova_nova_conf_overrides: {}
+nova_rootwrap_conf_overrides: {}
+nova_api_paste_ini_overrides: {}
+nova_policy_overrides: {}
