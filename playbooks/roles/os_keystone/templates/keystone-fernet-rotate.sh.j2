@@ -21,7 +21,7 @@
 #  execution and while the script may be world read/executable its contains only
 #  the necessary bits that are required to run the rotate and sync commands.
 
-function autorotate() {
+function autorotate {
     # Rotate the keys
     keystone-manage fernet_rotate --keystone-user "{{ keystone_system_user_name }}" \
                                   --keystone-group "{{ keystone_system_group_name }}"

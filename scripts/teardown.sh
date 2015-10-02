@@ -37,8 +37,7 @@ EOF
 
 read -r
 echo
-if [[ ! $REPLY =~ ^[Yy]$ ]]
-then
+if [[ ! $REPLY =~ ^[Yy]$ ]]; then
     echo "Teardown canceled."
     exit 1
 fi
