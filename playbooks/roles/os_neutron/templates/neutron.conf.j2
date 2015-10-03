@@ -146,7 +146,7 @@ service_provider = VPN:openswan:neutron.services.vpn.service_drivers.ipsec.IPsec
 [agent]
 polling_interval = {{ neutron_agent_polling_interval|default(5) }}
 report_interval = {{ neutron_report_interval|int }}
-root_helper = sudo /usr/local/bin/neutron-rootwrap /etc/neutron/rootwrap.conf
+root_helper = sudo {{ neutron_bin }}/neutron-rootwrap /etc/neutron/rootwrap.conf
 
 # Messaging service
 [oslo_messaging_rabbit]

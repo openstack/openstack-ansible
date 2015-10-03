@@ -13,19 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Ensure service tenant
-  shell: |
-    . {{ ansible_env.HOME }}/openrc && keystone tenant-list | awk '/service/ {print $2}'
-  register: service_id
-  tags:
-    - neutron-config
-
-- name: Set service tenant id
-  set_fact:
-    nova_admin_tenant_id: "{{ service_id.stdout }}"
-  tags:
-    - neutron-config
-
 - name: Copy neutron config
   config_template:
     src: "{{ item.src }}"
@@ -97,29 +84,29 @@
     - neutron-config
 
 - name: Drop neutron Configs
-  copy:
+  template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     owner: "{{ neutron_system_user_name }}"
     group: "{{ neutron_system_group_name }}"
   with_items:
-    - { src: "rootwrap.d/debug.filters", dest: "/etc/neutron/rootwrap.d/debug.filters" }
-    - { src: "rootwrap.d/ipset-firewall.filters", dest: "/etc/neutron/rootwrap.d/ipset-firewall.filters" }
-    - { src: "rootwrap.d/iptables-firewall.filters", dest: "/etc/neutron/rootwrap.d/iptables-firewall.filters" }
-    - { src: "rootwrap.d/nec-plugin.filters", dest: "/etc/neutron/rootwrap.d/nec-plugin.filters" }
-    - { src: "rootwrap.d/openvswitch-plugin.filters", dest: "/etc/neutron/rootwrap.d/openvswitch-plugin.filters" }
-    - { src: "rootwrap.d/ryu-plugin.filters", dest: "/etc/neutron/rootwrap.d/ryu-plugin.filters" }
-    - { src: "rootwrap.d/lbaas-haproxy.filters", dest: "/etc/neutron/rootwrap.d/lbaas-haproxy.filters" }
-    - { src: "rootwrap.d/vpnaas.filters", dest: "/etc/neutron/rootwrap.d/vpnaas.filters" }
-    - { src: "rootwrap.d/ebtables.filters", dest: "/etc/neutron/rootwrap.d/ebtables.filters" }
+    - { src: "rootwrap.d/debug.filters.j2", dest: "/etc/neutron/rootwrap.d/debug.filters" }
+    - { src: "rootwrap.d/ipset-firewall.filters.j2", dest: "/etc/neutron/rootwrap.d/ipset-firewall.filters" }
+    - { src: "rootwrap.d/iptables-firewall.filters.j2", dest: "/etc/neutron/rootwrap.d/iptables-firewall.filters" }
+    - { src: "rootwrap.d/nec-plugin.filters.j2", dest: "/etc/neutron/rootwrap.d/nec-plugin.filters" }
+    - { src: "rootwrap.d/openvswitch-plugin.filters.j2", dest: "/etc/neutron/rootwrap.d/openvswitch-plugin.filters" }
+    - { src: "rootwrap.d/ryu-plugin.filters.j2", dest: "/etc/neutron/rootwrap.d/ryu-plugin.filters" }
+    - { src: "rootwrap.d/lbaas-haproxy.filters.j2", dest: "/etc/neutron/rootwrap.d/lbaas-haproxy.filters" }
+    - { src: "rootwrap.d/vpnaas.filters.j2", dest: "/etc/neutron/rootwrap.d/vpnaas.filters" }
+    - { src: "rootwrap.d/ebtables.filters.j2", dest: "/etc/neutron/rootwrap.d/ebtables.filters" }
   notify:
     - Restart neutron services
   tags:
     - neutron-config
 
 - name: Drop neutron agent filters
-  copy:
-    src: "{{ item.value.service_rootwrap }}"
+  template:
+    src: "{{ item.value.service_rootwrap }}.j2"
     dest: "/etc/neutron/{{ item.value.service_rootwrap }}"
     owner: "{{ neutron_system_user_name }}"
     group: "{{ neutron_system_group_name }}"
@@ -156,3 +143,19 @@
 - name: Setup PLUMgrid config
   include: plumgrid_config.yml
   when: neutron_plugin_type == 'plumgrid'
+
+- name: Get neutron command path
+  command: which neutron
+  register: neutron_command_path
+  when:
+    - not neutron_venv_enabled | bool
+  tags:
+    - neutron-command-bin
+
+- name: Set neutron command path
+  set_fact:
+    neutron_bin: "{{ neutron_command_path.stdout | dirname }}"
+  when:
+    - not neutron_venv_enabled | bool
+  tags:
+    - neutron-command-bin

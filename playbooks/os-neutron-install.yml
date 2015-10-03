@@ -85,6 +85,7 @@
       when: is_metal | bool
       tags:
         - neutron-logs
+
     - name: Create the neutron provider networks facts
       provider_networks:
         provider_networks: "{{ provider_networks }}"
@@ -94,15 +95,37 @@
       tags:
         - neutron-provider-networks
         - neutron-config
+
     - name: Set provider network fact(s)
       set_fact:
-        neutron_provider_networks: "{{ pndata }}"
-        neutron_overlay_network: "{{ container_networks.tunnel_address|default({}) }}"
+        _provider_networks: "{{ pndata }}"
+        _overlay_network: "{{ container_networks.tunnel_address|default({}) }}"
       tags:
         - neutron-provider-networks
         - neutron-config
+
+    - name: set local_ip fact (is_metal)
+      set_fact:
+        _local_ip: "{{ hostvars[inventory_hostname]['ansible_' + _overlay_network.bridge|replace('-', '_')]['ipv4']['address'] }}"
+      when: is_metal | bool
+      tags:
+        - neutron-config
+
+    - name: set local_ip fact (container)
+      set_fact:
+        _local_ip: "{{ _overlay_network.address|default(ansible_ssh_host) }}"
+      when: not is_metal | bool
+      tags:
+        - neutron-config
   roles:
-    - { role: "os_neutron", tags: [ "os-neutron" ] }
+    - role: "os_neutron"
+      neutron_venv_tag: "{{ openstack_release }}"
+      neutron_galera_address: "{{ galera_address }}"
+      neutron_local_ip: "{{ _local_ip }}"
+      neutron_overlay_network: "{{ _overlay_network }}"
+      neutron_provider_networks: "{{ _provider_networks }}"
+      tags:
+        - "os-neutron"
     - { role: "openstack_openrc", tags: [ "openstack-openrc" ] }
     - role: "rsyslog_client"
       rsyslog_client_log_rotate_file: neutron_log_rotate
@@ -119,7 +142,6 @@
         - "system-crontab-coordination"
   vars:
     galera_address: "{{ internal_lb_vip_address }}"
-    neutron_galera_address: "{{ internal_lb_vip_address }}"
     ansible_hostname: "{{ container_name }}"
     is_metal: "{{ properties.is_metal|default(false) }}"
     bind_prefix: "{{ provider_network_bind_prefix|default('') }}"

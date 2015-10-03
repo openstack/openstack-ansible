@@ -42,6 +42,8 @@
 - name: Get neutron migrations facts
   neutron_migrations_facts:
     release: liberty
+    library_path: "{{ neutron_lib_dir }}"
+    bin_path: "{{ neutron_bin }}"
   tags:
     - neutron-db-setup
     - neutron-upgrade
@@ -54,7 +56,8 @@
 
 - name: Perform a Neutron DB online upgrade (expand)
   command: |
-    neutron-db-manage --config-file {{ neutron_db_config }}
+    {{ neutron_bin }}/neutron-db-manage
+                      --config-file {{ neutron_db_config }}
                       --config-file {{ neutron_db_plugin }}
                       upgrade --expand
   sudo: yes
@@ -78,7 +81,8 @@
 
 - name: Perform a Neutron DB offline upgrade (contract)
   command: |
-    neutron-db-manage --config-file {{ neutron_db_config }}
+    {{ neutron_bin }}/neutron-db-manage
+                      --config-file {{ neutron_db_config }}
                       --config-file {{ neutron_db_plugin }}
                       upgrade --contract
   sudo: yes

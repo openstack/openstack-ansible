@@ -34,6 +34,7 @@
   delay: 2
   with_items: neutron_apt_packages
   tags:
+    - neutron-install
     - neutron-apt-packages
 
 - name: remove specific apt packages
@@ -46,9 +47,43 @@
   delay: 2
   with_items: neutron_apt_remove_packages
   tags:
+    - neutron-install
     - neutron-apt-packages
 
-- name: Install pip packages
+- name: Install requires pip packages
+  pip:
+    name: "{{ item }}"
+    state: present
+    extra_args: "{{ pip_install_options|default('') }}"
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 2
+  with_items:
+    - "{{ neutron_requires_pip_packages }}"
+  tags:
+    - neutron-install
+    - neutron-pip-packages
+
+- name: Install pip packages (venv)
+  pip:
+    name: "{{ item }}"
+    state: present
+    virtualenv: "{{ neutron_venv_bin | dirname }}"
+    virtualenv_site_packages: "no"
+    extra_args: "{{ pip_install_options|default('') }}"
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 2
+  with_items:
+    - "{{ neutron_pip_packages }}"
+  when: neutron_venv_enabled | bool
+  tags:
+    - neutron-install
+    - neutron-pip-packages
+
+- name: Install pip packages (no venv)
   pip:
     name: "{{ item }}"
     state: present
@@ -59,5 +94,7 @@
   delay: 2
   with_items:
     - "{{ neutron_pip_packages }}"
+  when: not neutron_venv_enabled | bool
   tags:
+    - neutron-install
     - neutron-pip-packages

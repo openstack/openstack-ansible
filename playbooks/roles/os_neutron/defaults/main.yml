@@ -19,6 +19,25 @@ is_metal: true
 ## Verbosity Options
 debug: False
 verbose: True
+
+# Name of the virtual env to deploy into
+neutron_venv_tag: untagged
+neutron_venv_bin: "/openstack/venvs/neutron-{{ neutron_venv_tag }}/bin"
+
+# Set this to enable or disable installing in a venv
+neutron_venv_enabled: true
+
+# The bin path defaults to the venv path however if installation in a
+#  venv is disabled the bin path will be dynamically set based on the
+#  system path used when the installing.
+neutron_bin: "{{ neutron_venv_bin }}"
+
+# Set the lib dir path to that of the local python path where neutron is installed.
+#  This is used for role access to the db migrations.
+#  Example:
+#  neutron_lib_dir: "/usr/local/lib/python2.7/dist-packages/neutron"
+neutron_lib_dir: "{{ neutron_bin | dirname }}/lib/python2.7/site-packages/neutron"
+
 neutron_fatal_deprecations: False
 
 ## neutron User / Group
@@ -250,6 +269,8 @@ neutron_vxlan_group: ""
 #   network_vlan_ranges: "vlan:1:1,vlan:1024:1025"
 #   network_vxlan_ranges: "1:1000"
 
+neutron_vxlan_enabled: true
+
 neutron_dhcp_domain: openstacklocal
 neutron_dhcp_delete_namespaces: True
 # Comma-separated list of DNS servers which will be used by dnsmasq as forwarders.
@@ -273,6 +294,9 @@ neutron_rpc_response_timeout: 60
 #  "create_subnet": "rule:admin_or_network_owner"
 #  "get_subnet": "rule:admin_or_owner or rule:shared"
 
+# neutron_local_ip is used for the VXLAN local tunnel endpoint
+neutron_local_ip: 127.0.0.1
+
 neutron_apt_packages:
   - conntrack
   - dnsmasq-base
@@ -285,6 +309,11 @@ neutron_apt_packages:
 
 neutron_apt_remove_packages:
   - conntrackd
+
+# neutron packages that must be installed before anything else
+neutron_requires_pip_packages:
+  - virtualenv
+  - python-keystoneclient # Keystoneclient needed to OSA keystone lib
 
 neutron_pip_packages:
   - configobj
