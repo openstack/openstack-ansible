@@ -16,6 +16,16 @@
 from __future__ import print_function
 from optparse import OptionParser
 from os.path import exists
+
+import os
+
+{% if swift_venv_enabled | bool %}
+
+activate_this = os.path.expanduser("{{ swift_venv_bin }}/activate_this.py")
+execfile(activate_this, dict(__file__=activate_this))
+
+{% endif %}
+
 from swift.cli.ringbuilder import main as rb_main
 
 import json

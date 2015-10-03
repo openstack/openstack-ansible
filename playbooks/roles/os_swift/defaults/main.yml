@@ -13,15 +13,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Defines that the role will be deployed on a host machine
-is_metal: true
-
 # Enable/Disable Ceilometer
 swift_ceilometer_enabled: False
 
 ## Verbosity Options
 debug: False
 verbose: True
+
+# Name of the virtual env to deploy into
+swift_venv_tag: untagged
+swift_venv_bin: "/openstack/venvs/swift-{{ swift_venv_tag }}/bin"
+
+# Set this to enable or disable installing in a venv
+swift_venv_enabled: true
+
+# The bin path defaults to the venv path however if installation in a
+#  venv is disabled the bin path will be dynamically set based on the
+#  system path used when the installing.
+swift_bin: "{{ swift_venv_bin }}"
+
+# Set the full path to the swift recon cron
+recon_cron_path: "{{ swift_bin }}/swift-recon-cron"
+
 
 ## Swift User / Group
 swift_system_user_name: swift
@@ -137,6 +150,34 @@ swift_proxy_server_program_config_options: /etc/swift/proxy-server/proxy-server.
 # If ``swift_proxy_server_workers`` is unset the system will use half the number
 # of available VCPUS to compute the number of api workers to use.
 # swift_proxy_server_workers: 16
+
+# This is the storage addressed used to define the network for swift replication
+swift_storage_address: 127.0.0.1
+swift_replication_address: 127.0.0.1
+
+# Basic swift configuration for the cluster
+swift: {}
+
+# Example basic swift configuration for the cluster
+# swift:
+#   part_power: 8
+#   storage_network: 'br-storage'
+#   replication_network: 'br-storage'
+#   drives:
+#     - name: swift1.img
+#     - name: swift2.img
+#     - name: swift3.img
+#   mount_point: /srv
+#   storage_policies:
+#     - policy:
+#         name: default
+#         index: 0
+#         default: True
+
+# swift packages that must be installed before anything else
+swift_requires_pip_packages:
+  - virtualenv
+  - python-keystoneclient # Keystoneclient needed to OSA keystone lib
 
 swift_pip_packages:
   - ceilometermiddleware

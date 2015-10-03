@@ -14,8 +14,8 @@
 # limitations under the License.
 
 - name: "Copy the swift_rings.py file"
-  copy:
-    src: swift_rings.py
+  template:
+    src: swift_rings.py.j2
     dest: "/etc/swift/scripts/swift_rings.py"
     owner: "{{ swift_system_user_name }}"
     group: "{{ swift_system_group_name }}"

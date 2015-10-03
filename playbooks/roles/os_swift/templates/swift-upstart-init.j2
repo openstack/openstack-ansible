@@ -14,7 +14,7 @@ respawn
 respawn limit 10 5
 
 # Set the RUNBIN environment variable
-env RUNBIN="/usr/local/bin/{{ program_binary | default(program_name) }}"
+env RUNBIN="{{ swift_bin }}/{{ program_binary | default(program_name) }}"
 
 # Change directory to service users home
 chdir "{{ service_home }}"
@@ -26,6 +26,11 @@ pre-start script
 
   mkdir -p "/var/lock/{{ program_binary | default(program_name) }}"
   chown {{ system_user }}:{{ system_group }} "/var/lock/{{ program_binary | default(program_name) }}"
+
+  {% if swift_venv_enabled | bool -%}
+  . {{ swift_venv_bin }}/activate
+  {%- endif %}
+
 end script
 
 # Post stop actions

@@ -13,6 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Name of the virtual env to deploy into
+swift_venv_tag: untagged
+swift_venv_bin: "/openstack/venvs/swift-{{ swift_venv_tag }}/bin"
+
+# Set this to enable or disable installing in a venv
+swift_venv_enabled: true
+
+# The bin path defaults to the venv path however if installation in a
+#  venv is disabled the bin path will be dynamically set based on the
+#  system path used when the installing.
+swift_bin: "{{ swift_venv_bin }}"
+
 # Set the managed regions as a list of swift regions to manage
 # Use for global clusters, default when not set is all regions.
 # swift_managed_regions:

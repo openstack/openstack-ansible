@@ -1,5 +1,5 @@
 ---
-# Copyright 2014, Rackspace US, Inc.
+# Copyright 2015, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Playbook will sync the swift ring and ssh keys
-# The services need to be installed first though.
-- name: Synchronisation of swift ring and ssh keys
-  hosts: swift_all:swift_remote_all
-  max_fail_percentage: 20
-  user: root
-  roles:
-    - role: "os_swift_sync"
-      swift_venv_tag: "{{ openstack_release }}"
-      tags:
-        - "os-swift-sync"
-  vars:
-    ansible_hostname: "{{ container_name }}"
-    ansible_ssh_host: "{{ container_address }}"
-    is_metal: "{{ properties.is_metal|default(false) }}"
+- name: Get swift command path
+  command: which swift
+  register: swift_command_path
+  when:
+    - not swift_venv_enabled | bool
+  tags:
+    - swift-command-bin
+
+- name: Set swift command path
+  set_fact:
+    swift_bin: "{{ swift_command_path.stdout | dirname }}"
+  when:
+    - not swift_venv_enabled | bool
+  tags:
+    - swift-command-bin

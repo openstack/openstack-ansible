@@ -56,3 +56,19 @@
   tags:
     - swift-config
     - swift-post-install
+
+- name: Get swift command path
+  command: which swift
+  register: swift_command_path
+  when:
+    - not swift_venv_enabled | bool
+  tags:
+    - swift-command-bin
+
+- name: Set swift command path
+  set_fact:
+    swift_bin: "{{ swift_command_path.stdout | dirname }}"
+  when:
+    - not swift_venv_enabled | bool
+  tags:
+    - swift-command-bin

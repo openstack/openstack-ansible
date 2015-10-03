@@ -33,8 +33,8 @@
     - swift-ring-check
 
 - name: "Copy the swift_rings_check.py file"
-  copy:
-    src: swift_rings_check.py
+  template:
+    src: swift_rings_check.py.j2
     dest: "/etc/swift/scripts/swift_rings_check.py"
     owner: "{{ swift_system_user_name }}"
     group: "{{ swift_system_group_name }}"
