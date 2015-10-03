@@ -159,6 +159,7 @@
       nova_spicehtml5_git_install_branch: "{{ spicehtml5_git_install_branch }}"
       nova_galera_address: "{{ internal_lb_vip_address }}"
       nova_management_address: "{{ management_address }}"
+      nova_venv_tag: "{{ openstack_release }}"
       tags:
         - "os-nova"
     - role: "ceph_client"

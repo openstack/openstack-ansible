@@ -25,6 +25,7 @@
   retries: 5
   delay: 2
   tags:
+    - nova-install
     - nova-novnc-git
 
 - name: Update apt sources
@@ -49,18 +50,40 @@
   delay: 2
   with_items: nova_novnc_apt_packages
   tags:
+    - nova-install
     - nova-apt-packages
     - nova-novnc-apt-packages
 
-- name: Install pip packages
+- name: Install pip packages (venv)
   pip:
     name: "{{ item }}"
     state: present
+    virtualenv: "{{ nova_venv_bin | dirname }}"
+    virtualenv_site_packages: "no"
+    extra_args: "{{ pip_install_options|default('') }}"
   register: install_packages
   until: install_packages|success
   retries: 5
   delay: 2
   with_items:
     - "{{ nova_novnc_pip_packages }}"
+  when: nova_venv_enabled | bool
   tags:
+    - nova-install
+    - nova-pip-packages
+
+- name: Install pip packages (no venv)
+  pip:
+    name: "{{ item }}"
+    state: present
+    extra_args: "{{ pip_install_options|default('') }}"
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 2
+  with_items:
+    - "{{ nova_novnc_pip_packages }}"
+  when: not nova_venv_enabled | bool
+  tags:
+    - nova-install
     - nova-novnc-pip-packages
