@@ -13,6 +13,7 @@ Chapter 2. Overview
    overview-neutron.rst
    overview-requirements.rst
    overview-workflow.rst
+   overview-security.rst
 
 --------------
 
