@@ -40,9 +40,9 @@
       dest: "/etc/neutron/neutron.conf"
       config_overrides: "{{ neutron_neutron_conf_overrides }}"
       config_type: "ini"
-    - src: "plugins/ml2/ml2_conf.ini.j2"
-      dest: "/etc/neutron/plugins/ml2/ml2_conf.ini"
-      config_overrides: "{{ neutron_ml2_conf_ini_overrides }}"
+    - src: "{{ neutron_plugins[neutron_plugin_type].plugin_ini }}.j2"
+      dest: "/etc/neutron/{{ neutron_plugins[neutron_plugin_type].plugin_ini }}"
+      config_overrides: "{{ neutron_plugins[neutron_plugin_type].plugin_conf_ini_overrides }}"
       config_type: "ini"
     - src: "api-paste.ini.j2"
       dest: "/etc/neutron/api-paste.ini"
@@ -61,40 +61,38 @@
   tags:
     - neutron-config
 
-- name: Generate neutron agent only Config
+- name: Generate neutron dnsmasq Config
   config_template:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
+    src: "dnsmasq-neutron.conf.j2"
+    dest: "/etc/neutron/dnsmasq-neutron.conf"
     owner: "{{ neutron_system_user_name }}"
     group: "{{ neutron_system_group_name }}"
     mode: "0644"
-    config_overrides: "{{ item.config_overrides }}"
-    config_type: "{{ item.config_type }}"
-  with_items:
-    - src: "dhcp_agent.ini.j2"
-      dest: "/etc/neutron/dhcp_agent.ini"
-      config_overrides: "{{ neutron_dhcp_agent_ini_overrides }}"
-      config_type: "ini"
-    - src: "dnsmasq-neutron.conf.j2"
-      dest: "/etc/neutron/dnsmasq-neutron.conf"
-      config_overrides: "{{ neutron_dnsmasq_neutron_conf_overrides }}"
-      config_type: "ini"
-    - src: "l3_agent.ini.j2"
-      dest: "/etc/neutron/l3_agent.ini"
-      config_overrides: "{{ neutron_l3_agent_ini_overrides }}"
-      config_type: "ini"
-    - src: "metadata_agent.ini.j2"
-      dest: "/etc/neutron/metadata_agent.ini"
-      config_overrides: "{{ neutron_metadata_agent_ini_overrides }}"
-      config_type: "ini"
-    - src: "metering_agent.ini.j2"
-      dest: "/etc/neutron/metering_agent.ini"
-      config_overrides: "{{ neutron_metering_agent_ini_overrides }}"
-      config_type: "ini"
+    config_overrides: "{{ neutron_dnsmasq_neutron_conf_overrides }}"
+    config_type: "ini"
   notify:
     - Restart neutron services
   when: >
       inventory_hostname in groups['neutron_agents_container']
+  tags:
+    - neutron-config
+
+- name: Generate neutron agent only Config
+  config_template:
+    src: "{{ item.value.service_conf }}.j2"
+    dest: "/etc/neutron/{{ item.value.service_conf }}"
+    owner: "{{ neutron_system_user_name }}"
+    group: "{{ neutron_system_group_name }}"
+    mode: "0644"
+    config_overrides: "{{ item.value.config_overrides }}"
+    config_type: "{{ item.value.config_type }}"
+  with_dict: neutron_services
+  notify:
+    - Restart neutron services
+  when:
+       - item.value.service_en | bool
+       - item.value.service_conf is defined
+       - inventory_hostname in groups['neutron_agents_container']
   tags:
     - neutron-config
 
@@ -106,21 +104,33 @@
     group: "{{ neutron_system_group_name }}"
   with_items:
     - { src: "rootwrap.d/debug.filters", dest: "/etc/neutron/rootwrap.d/debug.filters" }
-    - { src: "rootwrap.d/dhcp.filters", dest: "/etc/neutron/rootwrap.d/dhcp.filters" }
     - { src: "rootwrap.d/ipset-firewall.filters", dest: "/etc/neutron/rootwrap.d/ipset-firewall.filters" }
     - { src: "rootwrap.d/iptables-firewall.filters", dest: "/etc/neutron/rootwrap.d/iptables-firewall.filters" }
     - { src: "rootwrap.d/nec-plugin.filters", dest: "/etc/neutron/rootwrap.d/nec-plugin.filters" }
     - { src: "rootwrap.d/openvswitch-plugin.filters", dest: "/etc/neutron/rootwrap.d/openvswitch-plugin.filters" }
     - { src: "rootwrap.d/ryu-plugin.filters", dest: "/etc/neutron/rootwrap.d/ryu-plugin.filters" }
     - { src: "rootwrap.d/lbaas-haproxy.filters", dest: "/etc/neutron/rootwrap.d/lbaas-haproxy.filters" }
-    - { src: "rootwrap.d/linuxbridge-plugin.filters", dest: "/etc/neutron/rootwrap.d/linuxbridge-plugin.filters" }
-    - { src: "rootwrap.d/l3.filters", dest: "/etc/neutron/rootwrap.d/l3.filters" }
     - { src: "rootwrap.d/vpnaas.filters", dest: "/etc/neutron/rootwrap.d/vpnaas.filters" }
     - { src: "rootwrap.d/ebtables.filters", dest: "/etc/neutron/rootwrap.d/ebtables.filters" }
   notify:
     - Restart neutron services
   tags:
     - neutron-config
+
+- name: Drop neutron agent filters
+  copy:
+    src: "{{ item.value.service_rootwrap }}"
+    dest: "/etc/neutron/{{ item.value.service_rootwrap }}"
+    owner: "{{ neutron_system_user_name }}"
+    group: "{{ neutron_system_group_name }}"
+  with_dict: neutron_services
+  when:
+      - item.value.service_en | bool
+      - item.value.service_rootwrap is defined
+  notify:
+    - Restart neutron services
+  tags:
+    - neutron_config
 
 - name: Drop iptables checksum fix
   copy:
