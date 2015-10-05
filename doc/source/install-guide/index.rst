@@ -60,4 +60,5 @@ Appendices
 
    app-configfiles.rst
    app-resources.rst
+   app-minorupgrade.rst
    app-tips.rst
