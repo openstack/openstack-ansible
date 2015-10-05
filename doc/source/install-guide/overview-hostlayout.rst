@@ -1,4 +1,4 @@
-`Home <index.html>`__ OpenStack Ansible Installation Guide
+`Home <index.html>`_ OpenStack-Ansible Installation Guide
 
 Host layout
 -----------
@@ -14,8 +14,8 @@ The recommended layout contains a minimum of five hosts (or servers).
 To use the optional Block Storage (cinder) service, a sixth host is
 recommended. Block Storage hosts require an LVM volume group named
 *cinder-volumes*. See `the section called "Installation
-requirements" <overview-requirements.html>`__ and `the section
-called "Configuring LVM" <targethosts-configlvm.html>`__ for more information.
+requirements" <overview-requirements.html>`_ and `the section
+called "Configuring LVM" <targethosts-configlvm.html>`_ for more information.
 
 The hosts are called *target hosts* because Ansible deploys the OSA
 environment within these hosts. The OSA environment also recommends a

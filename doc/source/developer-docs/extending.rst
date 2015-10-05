@@ -1,7 +1,9 @@
-Extending openstack-ansible
+`Home <index.html>`_ OpenStack-Ansible Developer Documentation
+
+Extending OpenStack-Ansible
 ===========================
 
-The openstack-ansible project provides a basic OpenStack environment, but
+The OpenStack-Ansible project provides a basic OpenStack environment, but
 many deployers will wish to extend the environment based on their needs. This
 could include installing extra services, changing package versions, or
 overriding existing variables.
@@ -254,3 +256,6 @@ The list of overrides available may be found by executing:
         | grep -v "^#" \
         | sort -u
 
+--------------
+
+.. include:: navigation.txt

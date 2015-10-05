@@ -1,4 +1,4 @@
-`Home <index.html>`__ OpenStack Ansible Installation Guide
+`Home <index.html>`_ OpenStack-Ansible Installation Guide
 
 Multi-node failure
 ------------------
@@ -33,7 +33,7 @@ recover cannot join the cluster because it no longer exists.
    server indicates ``non-Primary`` because it cannot achieve quorum.
 
 #. Run the following command to
-   `rebootstrap <http://galeracluster.com/documentation-webpages/quorumreset.html#id1>`__
+   `rebootstrap <http://galeracluster.com/documentation-webpages/quorumreset.html#id1>`_
    the operational node into the cluster.
 
    .. code-block:: bash

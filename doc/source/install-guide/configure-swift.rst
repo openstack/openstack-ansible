@@ -1,4 +1,4 @@
-`Home <index.html>`__ OpenStack Ansible Installation Guide
+`Home <index.html>`_ OpenStack-Ansible Installation Guide
 
 Configuring the Object Storage service (optional)
 -------------------------------------------------
@@ -21,10 +21,10 @@ modify the Object Storage configuration files to enable Object Storage
 usage.
 
 #. `the section called "Configure and mount storage
-   devices" <configure-swift-devices.html>`__
+   devices" <configure-swift-devices.html>`_
 
 #. `the section called "Configure an Object Storage
-   deployment" <configure-swift-config.html>`__
+   deployment" <configure-swift-config.html>`_
 
 #. Optionally, allow all Identity users to use Object Storage by setting
    ``swift_allow_all_users`` in the ``user_variables.yml`` file to

@@ -1,4 +1,4 @@
-`Home <index.html>`__ OpenStack Ansible Installation Guide
+`Home <index.html>`_ OpenStack-Ansible Installation Guide
 
 Chapter 3. Deployment host
 --------------------------
@@ -20,7 +20,7 @@ deployment host contains Ansible and orchestrates the OSA installation
 on the target hosts. One of the target hosts, preferably one of the
 infrastructure variants, can be used as the deployment host. To use a
 deployment host as a target host, follow the steps in `Chapter 4,
-*Target hosts* <targethosts.html>`__ on the deployment host. This
+*Target hosts* <targethosts.html>`_ on the deployment host. This
 guide assumes separate deployment and target hosts.
 
 --------------
