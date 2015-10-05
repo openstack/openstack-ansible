@@ -18,6 +18,7 @@ Chapter 5. Deployment configuration
    configure-rabbitmq.rst
    configure-ceilometer.rst
    configure-keystone.rst
+   configure-openstack.rst
    configure-sslcertificates.rst
 
 
