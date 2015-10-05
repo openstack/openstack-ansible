@@ -193,6 +193,18 @@
   roles:
     - maas_local
 
+- hosts: neutron_metadata_agent
+  vars:
+    check_name: neutron_metadata_agent_proxy_check
+    check_details: file=neutron_metadata_local_check.py,args={{ internal_vip_address }}
+    check_period: "{{ maas_check_period }}"
+    check_timeout: "{{ maas_check_timeout }}"
+    alarms:
+      - { 'name': 'neutron_metadata_agent_proxy_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["neutron-metadata-agent-proxy_status"] != 1) { return new AlarmStatus(CRITICAL, "neutron-metadata-agent-proxy non-responsive"); }' }
+  user: root
+  roles:
+    - maas_local
+
 - hosts: neutron_metering_agent
   vars:
     check_name: neutron_metering_agent_check
