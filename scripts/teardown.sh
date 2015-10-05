@@ -203,7 +203,6 @@ pushd playbooks
       - /opt/*nova*
       - /opt/*pip*
       - /opt/*repo*
-      - /opt/*openstack*
       - /root/.pip
       - /var/lib/neutron
       - /var/lib/nova
