@@ -60,6 +60,10 @@ neutron_plugins:
     plugin_core: neutron.plugins.ml2.plugin.Ml2Plugin
     plugin_ini: plugins/ml2/ml2_conf.ini
     plugin_conf_ini_overrides: "{{ neutron_ml2_conf_ini_overrides }}"
+  plumgrid:
+    plugin_core: neutron.plugins.plumgrid.plumgrid_plugin.plumgrid_plugin.NeutronPluginPLUMgridV2
+    plugin_ini: plugins/plumgrid/plumgrid.ini
+    plugin_conf_ini_overrides: "{{ neutron_plumgrid_conf_ini_overrides }}"
 
 neutron_services:
  neutron-dhcp-agent:
@@ -294,12 +298,17 @@ neutron_pip_packages:
   - python-novaclient
   - repoze.lru
 
+neutron_plumgrid_pip_packages:
+  - networking-plumgrid
+
 ## Service Names
 neutron_service_names: "{{ neutron_services.items()|selectattr('1.service_en')|map(attribute='0')|list }}"
 
 ## Tunable overrides
 neutron_neutron_conf_overrides: {}
 neutron_ml2_conf_ini_overrides: {}
+neutron_plumgrid_conf_ini_overrides: {}
+neutron_plumlib_ini_overrides: {}
 neutron_dhcp_agent_ini_overrides: {}
 neutron_api_paste_ini_overrides: {}
 neutron_rootwrap_conf_overrides: {}
