@@ -71,6 +71,53 @@ Configurable environment variables:
   ``openstack_tempest_gate.sh`` script, defined in the ``os_tempest`` role.
   Defaults to ``scenario heat_api cinder_backup``.
 
+PEP8
+----
+
+Python coding conventions are tested using `PEP8`_, with the following
+convention exceptions:
+
+* F403 - 'from ansible.module_utils.basic import \*'
+* H303 - No wildcard imports
+
+Testing may be done locally by executing:
+
+.. code-block:: bash
+
+    tox -e pep8
+
+.. PEP8: https://www.python.org/dev/peps/pep-0008/
+
+Bashate
+-------
+
+Bash coding conventions are tested using `Bashate`_, with the following
+convention exceptions:
+
+* E003: Indent not multiple of 4 (we prefer to use multiples of 2)
+
+Testing may be done locally by executing:
+
+.. code-block:: bash
+
+    tox -e bashate
+
+.. Bashate: https://github.com/openstack-dev/bashate
+
+Documentation
+-------------
+
+Documentation is developed in `reStructureText`_ (RST) and compiled into
+HTML using Sphinx.
+
+Documentation may be built locally by executing:
+
+.. code-block:: bash
+
+    tox -e docs
+
+.. reStructureText: http://docutils.sourceforge.net/rst.html
+
 Gating
 ^^^^^^
 
