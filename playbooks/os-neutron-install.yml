@@ -27,6 +27,7 @@
       when: >
         not is_metal | bool and
         inventory_hostname in groups['neutron_agent']
+      register: container_config
       tags:
         - lxc-aa-profile
     - name: Neutron extra lxc config
@@ -41,6 +42,7 @@
       when: >
         not is_metal | bool and
         inventory_hostname in groups['neutron_agent']
+      register: container_extra_config
       tags:
         - neutron-container-setup
     - name: Wait for container ssh
@@ -50,8 +52,11 @@
         search_regex: "OpenSSH"
         host: "{{ ansible_ssh_host }}"
       delegate_to: "{{ physical_host }}"
+      when: >
+            (container_config is defined and container_config | changed) or
+            (container_extra_config is defined and container_extra_config | changed)
       register: ssh_wait_check
-      until: ssh_wait_check|success
+      until: ssh_wait_check | success
       retries: 3
       tags:
         - ssh-wait

@@ -25,6 +25,7 @@
           - "lxc.aa_profile=lxc-openstack"
       delegate_to: "{{ physical_host }}"
       when: not is_metal | bool
+      register: container_config
       tags:
         - lxc-aa-profile
     - name: Package repo extra lxc config
@@ -36,6 +37,7 @@
           - "lxc.mount.entry=/openstack/{{ container_name }} var/www none bind 0 0"
       delegate_to: "{{ physical_host }}"
       when: not is_metal | bool
+      register: container_extra_config
       tags:
         - repo-dirs
     - name: Wait for container ssh
@@ -45,8 +47,11 @@
         search_regex: "OpenSSH"
         host: "{{ ansible_ssh_host }}"
       delegate_to: "{{ physical_host }}"
+      when: >
+            (container_config is defined and container_config | changed) or
+            (container_extra_config is defined and container_extra_config | changed)
       register: ssh_wait_check
-      until: ssh_wait_check|success
+      until: ssh_wait_check | success
       retries: 3
       tags:
         - ssh-wait
