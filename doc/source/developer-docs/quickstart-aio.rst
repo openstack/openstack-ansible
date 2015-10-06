@@ -153,7 +153,7 @@ isn't always practical. As such the following may be executed instead:
          done
 
        $ # Uninstall the core services that were installed.
-       $ for i in $(pip freeze | grep -e "nova\|neutron\|keystone\|swift); do \
+       $ for i in $(pip freeze | grep -e "nova\|neutron\|keystone\|swift"); do \
            pip uninstall -y $i; done
 
        $ # Remove crusty directories.
