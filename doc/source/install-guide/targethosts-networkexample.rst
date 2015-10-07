@@ -1,4 +1,4 @@
-`Home <index.html>`__ OpenStack Ansible Installation Guide
+`Home <index.html>`_ OpenStack-Ansible Installation Guide
 
 Configuring the network on a target host
 ----------------------------------------
@@ -6,9 +6,9 @@ Configuring the network on a target host
 This example uses the following parameters to configure networking on a
 single target host. See `Figure 4.2, "Target hosts for infrastructure,
 networking, and storage
-services" <targethosts-networkexample.html#fig_hosts-target-network-containerexample>`__
+services" <targethosts-networkexample.html#fig_hosts-target-network-containerexample>`_
 and `Figure 4.3, "Target hosts for Compute
-service" <targethosts-networkexample.html#fig_hosts-target-network-bareexample>`__
+service" <targethosts-networkexample.html#fig_hosts-target-network-bareexample>`_
 for a visual representation of these parameters in the architecture.
 
 -  VLANs:

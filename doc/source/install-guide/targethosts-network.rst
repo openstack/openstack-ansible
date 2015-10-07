@@ -1,4 +1,4 @@
-`Home <index.html>`__ OpenStack Ansible Installation Guide
+`Home <index.html>`_ OpenStack-Ansible Installation Guide
 
 Configuring the network
 -----------------------
@@ -41,8 +41,8 @@ following optional components:
 -  Storage network subinterface on the ``bond0`` interface and
    ``br-storage`` bridge with a static IP address.
 
-For more information, see `OpenStack Ansible
-Networking <https://github.com/openstack/openstack-ansible/blob/10.1.0/etc/network/README.html>`__.
+For more information, see `OpenStack-Ansible
+Networking <https://github.com/openstack/openstack-ansible/blob/master/etc/network/README.rst>`_.
 
 --------------
 

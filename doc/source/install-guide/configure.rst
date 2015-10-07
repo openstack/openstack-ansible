@@ -1,4 +1,4 @@
-`Home <index.html>`__ OpenStack Ansible Installation Guide
+`Home <index.html>`_ OpenStack-Ansible Installation Guide
 
 Chapter 5. Deployment configuration
 -----------------------------------
@@ -14,9 +14,11 @@ Chapter 5. Deployment configuration
    configure-cinder.rst
    configure-swift.rst
    configure-haproxy.rst
+   configure-horizon.rst
    configure-rabbitmq.rst
    configure-ceilometer.rst
    configure-keystone.rst
+   configure-openstack.rst
    configure-sslcertificates.rst
 
 

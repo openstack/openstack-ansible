@@ -1,4 +1,4 @@
-`Home <index.html>`__ OpenStack Ansible Installation Guide
+`Home <index.html>`_ OpenStack-Ansible Installation Guide
 
 Utility container
 -----------------
@@ -14,7 +14,7 @@ For example, the tempest playbooks are installed on the utility
 container since tempest testing does not need a container of its own.
 For another example of using the utility container, see `the section
 called "Verifying OpenStack
-operation" <install-openstack-verify.html>`__.
+operation" <install-openstack-verify.html>`_.
 
 --------------
 

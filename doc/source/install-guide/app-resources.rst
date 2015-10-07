@@ -1,38 +1,31 @@
-`Home <index.html>`__ OpenStack Ansible Installation Guide
+`Home <index.html>`_ OpenStack-Ansible Installation Guide
 
-Appendix B. Additional resources
+Appendix B. Additional Resources
 --------------------------------
 
-These additional resources.
+The following Ansible resources are useful to reference:
 
--  `OpenStack Documentation <http://docs.openstack.org>`__
+- `Ansible Documentation
+  <http://docs.ansible.com/ansible/>`_
 
--  `OpenStack Developer
-   Documentation <http://developer.openstack.org/>`__
+- `Ansible Best Practices
+  <http://docs.ansible.com/ansible/playbooks_best_practices.html>`_
 
--  `OpenStack API Quick
-   Start <http://docs.openstack.org/api/quick-start/content/>`__
+- `Ansible Configuration
+  <http://docs.ansible.com/ansible/intro_configuration.html>`_
 
--  `OpenStack Block Storage (cinder) Developer
-   Documentation <http://docs.openstack.org/developer/cinder/>`__
+The following OpenStack resources are useful to reference:
 
--  `OpenStack Compute (nova) Developer
-   Documentation <http://docs.openstack.org/developer/nova/>`__
+- `OpenStack Documentation <http://docs.openstack.org>`_
 
--  `OpenStack Compute API v2 Developer
-   Guide <http://developer.openstack.org/api-ref-compute-v2.html>`__
+- `OpenStack SDK, CLI and API Documentation
+  <http://developer.openstack.org/>`_
 
--  `OpenStack Dashboard (horizon) Developer
-   Documentation <http://docs.openstack.org/developer/horizon/>`__
+- `OpenStack API Quick Start
+  <http://docs.openstack.org/api/quick-start/content/>`_
 
--  `OpenStack Identity (keystone) Developer
-   Documentation <http://docs.openstack.org/developer/keystone/>`__
-
--  `OpenStack Image service (glance) Developer
-   Documentation <http://docs.openstack.org/developer/glance/>`__
-
--  `OpenStack Object Storage (swift) Developer
-   Documentation <http://docs.openstack.org/developer/swift/>`__
+- `OpenStack Project Developer Documentation
+  <http://docs.openstack.org/developer/>`_
 
 --------------
 

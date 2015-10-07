@@ -1,9 +1,9 @@
-`Home <index.html>`__ OpenStack Ansible Installation Guide
+`Home <index.html>`_ OpenStack-Ansible Installation Guide
 
 Chapter 8. OpenStack playbooks
 ------------------------------
 
-.. toctree:: 
+.. toctree::
 
    install-openstack-run.rst
    install-openstack-utilitycontainer.rst

@@ -1,7 +1,9 @@
+`Home <index.html>`_ OpenStack-Ansible Developer Documentation
+
 Playbooks
 =========
 
-The OpenStack Ansible playbooks are stored in the playbooks directory.
+The OpenStack-Ansible playbooks are stored in the playbooks directory.
 
 There are several top-level playbooks that are run to prepare the host machines
 before actually deploying OpenStack and associated containers.
@@ -46,3 +48,7 @@ OpenStack services:
     * Neutron
     * Heat
     * Horizon
+
+--------------
+
+.. include:: navigation.txt

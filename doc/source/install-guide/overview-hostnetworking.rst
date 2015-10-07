@@ -1,4 +1,4 @@
-`Home <index.html>`__ OpenStack Ansible Installation Guide
+`Home <index.html>`_ OpenStack-Ansible Installation Guide
 
 Host networking
 ---------------
@@ -29,7 +29,7 @@ random names for ``veth`` pairs.
 The relationship between physical interfaces, logical interfaces,
 bridges, and virtual interfaces within containers is shown in
 `Figure 2.2, "Network
-components" <overview-hostnetworking.html#fig_overview_networkcomponents>`__.
+components" <overview-hostnetworking.html#fig_overview_networkcomponents>`_.
 
  
 
@@ -93,7 +93,7 @@ Target hosts can contain the following network bridges:
       layer 2 connectivity.
 
 `Figure 2.3, "Container network
-architecture" <overview-hostnetworking.html#fig_overview_networkarch-container>`__
+architecture" <overview-hostnetworking.html#fig_overview_networkarch-container>`_
 provides a visual representation of network components for services in
 containers.
 
@@ -106,7 +106,7 @@ containers.
 By default, OSA installs the Compute service in a bare metal
 environment rather than within a container. `Figure 2.4, "Bare/Metal
 network
-architecture" <overview-hostnetworking.html#fig_overview_networkarch-bare>`__
+architecture" <overview-hostnetworking.html#fig_overview_networkarch-bare>`_
 provides a visual representation of the unique layout of network
 components on a Compute host.
 
