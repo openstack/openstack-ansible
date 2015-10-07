@@ -43,9 +43,25 @@
     url: "{{ pip_get_pip_url }}"
     dest: "/opt/get-pip.py"
     force: "yes"
-    validate_certs: "no"
+    validate_certs: "yes"
   register: get_pip
-  until: get_pip|success
+  until: get_pip | success
+  ignore_errors: True
+  retries: 5
+  delay: 2
+  tags:
+    - pip-install-script
+    - pip-install
+
+- name: Get Modern PIP using fallback URL
+  get_url:
+    url: "{{ pip_get_pip_fallback_url }}"
+    dest: "/opt/get-pip.py"
+    force: "yes"
+    validate_certs: "yes"
+  when: get_pip | failed
+  register: get_pip_fallback
+  until: get_pip_fallback | success
   retries: 5
   delay: 2
   tags:
@@ -56,7 +72,7 @@
   shell: "python /opt/get-pip.py {{ pip_get_pip_options }}"
   ignore_errors: true
   register: pip_install
-  until: pip_install|success
+  until: pip_install | success
   retries: 3
   delay: 2
   tags:
@@ -66,7 +82,7 @@
   shell: "python /opt/get-pip.py --isolated"
   when: pip_install.rc != 0
   register: pip_install_fall_back
-  until: pip_install_fall_back|success
+  until: pip_install_fall_back | success
   retries: 3
   delay: 2
   tags:
