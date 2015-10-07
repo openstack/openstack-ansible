@@ -52,7 +52,9 @@ UBUNTU_SEC_REPO=${UBUNTU_SEC_REPO:-$(awk "/^deb .*ubuntu\/? ${UBUNTU_RELEASE}-se
 
 
 ## Library Check -------------------------------------------------------------
-info_block "Checking for required libraries." 2> /dev/null || source $(dirname ${0})/scripts-library.sh
+info_block "Checking for required libraries." 2> /dev/null ||
+    source $(dirname ${0})/scripts-library.sh ||
+    source scripts/scripts-library.sh
 
 
 ## Main ----------------------------------------------------------------------
