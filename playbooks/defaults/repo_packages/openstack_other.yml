@@ -31,6 +31,12 @@ tempest_git_install_branch: e146bfdc21abb36db3f27f262faf6a70627cfd17 # HEAD of "
 tempest_git_dest: "/opt/tempest_{{ tempest_git_install_branch | replace('/', '_') }}"
 
 
+## aodh service
+aodh_git_repo: https://git.openstack.org/openstack/aodh
+aodh_git_install_branch: 61028410a058224207e296aa18c91eecd0b20ab9 # HEAD of "master" as of Oct 7, 2015.
+aodh_git_dest: "/opt/aodh_{{ aodh_git_install_branch | replace('/', '_') }}"
+
+
 ## NOVNC from source
 novncproxy_git_repo: https://github.com/kanaka/novnc
 novncproxy_git_install_branch: a0e7ab43dca0ce11a713694ee4cf530bd3b17c5a # HEAD of "master" as of 08.10.2015

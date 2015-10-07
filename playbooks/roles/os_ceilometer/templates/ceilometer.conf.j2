@@ -23,7 +23,7 @@ port = 8777
 [database]
 metering_connection = {{ ceilometer_connection_string }}
 event_connection = {{ ceilometer_connection_string }}
-alarm_connection = {{ ceilometer_connection_string }}
+alarm_connection = {{ aodh_connection_string }}
 
 [keystone_authtoken]
 signing_dir = /var/cache/ceilometer

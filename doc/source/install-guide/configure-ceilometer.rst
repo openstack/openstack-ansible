@@ -11,9 +11,15 @@ The Telemetry module(Ceilometer) performs the following functions:
 
   - Publishes collected data to various targets including data stores and message queues.
 
-  - Creates alarms when collected data breaks defined rules.
+.. note::
 
-Ceilometer on OSA requires a monogodb backend to be configured prior to running the ceilometer playbooks. A connection string will then need to be given in the ``user_variables.yml`` file(See section Configuring User Data below).
+  The alarming functionality was moved to a separate component in Liberty. It will be handled
+  by the metering-alarm containers through the aodh services. For configuring these services,
+  please see the Aodh docs.
+
+Ceilometer on OSA requires a monogodb backend to be configured prior to running the ceilometer
+playbooks. The connection data will then need to be given in the ``user_variables.yml``
+file(See section Configuring User Data below).
 
 
 Setting up a Mongodb database for ceilometer
@@ -96,10 +102,6 @@ The ``metering-infra_hosts`` houses serveral services:
   - A notification agent (ceilometer-agent-notification): Runs on a central management server(s) and consumes messages from the message queue(s) to build event and metering data.
 
   - A collector (ceilometer-collector): Runs on central management server(s) and dispatches collected telemetry data to a data store or external consumer without modification.
-
-  - An alarm evaluator (ceilometer-alarm-evaluator): Runs on one or more central management servers to determine when alarms fire due to the associated statistic trend crossing a threshold over a sliding time window.
-
-  - An alarm notifier (ceilometer-alarm-notifier): Runs on one or more central management servers to allow alarms to be set based on the threshold evaluation for a collection of samples.
 
   - An API server (ceilometer-api): Runs on one or more central management servers to provide data access from the data store.
 

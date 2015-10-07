@@ -317,15 +317,24 @@ if [ ${DEPLOY_CEILOMETER} == "yes" ]; then
     mongo --host $MONGO_HOST --eval ' ' && break
     sleep 5
   done
-  #Adding the ceilometer database
+  # Adding the ceilometer database
   mongo --host $MONGO_HOST --eval '
     db = db.getSiblingDB("ceilometer");
     db.addUser({user: "ceilometer",
     pwd: "ceilometer",
     roles: [ "readWrite", "dbAdmin" ]})'
 
+  # Adding the aodh alarm database
+  mongo --host $MONGO_HOST --eval '
+    db = db.getSiblingDB("aodh");
+    db.addUser({user: "aodh",
+    pwd: "aodh",
+    roles: [ "readWrite", "dbAdmin" ]})'
+
   # change the generated passwords for mongodb access
   sed -i "s/ceilometer_container_db_password:.*/ceilometer_container_db_password: ceilometer/" /etc/openstack_deploy/user_secrets.yml
+  sed -i "s/aodh_container_db_password:.*/aodh_container_db_password: aodh/" /etc/openstack_deploy/user_secrets.yml
+  sed -i "s/aodh_db_ip:.*/aodh_db_ip: ${MONGO_HOST}/" /etc/openstack_deploy/user_variables.yml
   # Change the Ceilometer user variables necessary for deployment
   sed -i "s/ceilometer_db_ip:.*/ceilometer_db_ip: ${MONGO_HOST}/" /etc/openstack_deploy/user_variables.yml
   # Enable Ceilometer for Swift
