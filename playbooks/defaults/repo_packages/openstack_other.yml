@@ -27,27 +27,17 @@
 
 ## Tempest service
 tempest_git_repo: https://git.openstack.org/openstack/tempest
-tempest_git_install_branch: aac06c929a9d3bf52a4310b91dc886079c9ca9d7 # HEAD of "master" as of 04.09.2015
+tempest_git_install_branch: fc6ee55fb78e4b1f77a19cfacddf807120abe038 # HEAD of "master" as of 08.10.2015
 tempest_git_dest: "/opt/tempest_{{ tempest_git_install_branch | replace('/', '_') }}"
 
-# Temporary pin to address openstackclient requirements issue in tag 1.6.0 "python-neutronclient<3,>=2.6.0"
-#  This pin should be removed when 1.6.1 is released
-openstackclient_git_repo: https://github.com/openstack/python-openstackclient
-openstackclient_git_install_branch: b288fbfb35a00fac7e2646592a7cabeff09026b3
-openstackclient_git_dest: "/opt/openstackclient_{{ openstackclient_git_install_branch | replace('/', '_') }}"
 
-# Temporary pin to address django openstack auth issues found here:
-#  https://bugs.launchpad.net/openstack-ansible/+bug/1497679
-djangoopenstackauth_git_repo: https://github.com/openstack/django_openstack_auth
-djangoopenstackauth_git_install_branch: 829cbee14e200fd127ec4f0e0f4d743102d8e9d1
-djangoopenstackauth_git_dest: "/opt/djangoopenstackauth_{{ djangoopenstackauth_git_install_branch | replace('/', '_') }}"
-
-# NOVNC from source
+## NOVNC from source
 novncproxy_git_repo: https://github.com/kanaka/novnc
-novncproxy_git_install_branch: a0e7ab43dca0ce11a713694ee4cf530bd3b17c5a
+novncproxy_git_install_branch: a0e7ab43dca0ce11a713694ee4cf530bd3b17c5a # HEAD of "master" as of 08.10.2015
 novncproxy_git_dest: "/opt/novnc_{{ novncproxy_git_install_branch | replace('/', '_') }}"
 
-# spice-html5 from source
+
+## spice-html5 from source
 spicehtml5_git_repo: https://github.com/SPICE/spice-html5
-spicehtml5_git_install_branch: c1e736b083ff47639ecb73ea9be4d14b5002f93f
+spicehtml5_git_install_branch: c1e736b083ff47639ecb73ea9be4d14b5002f93f # HEAD of "master" as of 08.10.2015
 spicehtml5_git_dest: "/opt/spicehtml5_{{ spicehtml5_git_install_branch | replace('/', '_') }}"
