@@ -68,7 +68,7 @@ ec2_dmz_host = {{ external_lb_vip_address }}
 {% endif %}
 {% if nova_s3_deprecated_but_enabled == true or nova_s3_deprecated_but_enabled == 'True' %}
 s3_port = {{ nova_s3_service_port }}
-s3_host = {{ ansible_ssh_host }}
+s3_host = {{ nova_management_address }}
 {% endif %}
 
 # Rpc all
@@ -87,7 +87,7 @@ dhcp_domain = {{ nova_dhcp_domain }}
 force_dhcp_release = True
 dhcpbridge_flagfile = /etc/nova/nova.conf
 firewall_driver = {{ nova_firewall_driver }}
-my_ip = {{ ansible_ssh_host }}
+my_ip = {{ nova_management_address }}
 default_floating_pool = public
 security_group_api = neutron
 network_api_class = nova.network.neutronv2.api.API
@@ -135,8 +135,8 @@ enabled = {{ nova_console_agent_enabled }}
 keymap = {{ nova_console_keymap }}
 # Console Url and binds
 html5proxy_base_url = {{ nova_spice_html5proxy_base_url }}
-server_listen = {{ ansible_ssh_host }}
-server_proxyclient_address = {{ ansible_ssh_host }}
+server_listen = {{ nova_management_address }}
+server_proxyclient_address = {{ nova_management_address }}
 
 {% elif nova_console_type == 'novnc' %}
 [vnc]
