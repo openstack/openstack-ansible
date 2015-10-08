@@ -114,6 +114,8 @@
     - role: "os_nova"
       nova_novncproxy_git_repo: "{{ openstack_repo_git_url }}/novnc"
       nova_novncproxy_git_install_branch: "{{ novncproxy_git_install_branch }}"
+      nova_spicehtml5_git_repo: "{{ openstack_repo_git_url }}/spice-html5"
+      nova_spicehtml5_git_install_branch: "{{ spicehtml5_git_install_branch }}"
       nova_galera_address: "{{ internal_lb_vip_address }}"
       tags:
         - "os-nova"
@@ -135,6 +137,8 @@
     - role: "system_crontab_coordination"
       tags:
         - "system-crontab-coordination"
+  vars_files:
+    - defaults/repo_packages/openstack_other.yml
   vars:
     galera_address: "{{ internal_lb_vip_address }}"
     ansible_hostname: "{{ container_name }}"
