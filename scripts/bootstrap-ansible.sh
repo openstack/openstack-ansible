@@ -24,7 +24,6 @@ export ANSIBLE_GIT_RELEASE=${ANSIBLE_GIT_RELEASE:-"v1.9.3-1"}
 export ANSIBLE_GIT_REPO=${ANSIBLE_GIT_REPO:-"https://github.com/ansible/ansible"}
 export ANSIBLE_ROLE_FILE=${ANSIBLE_ROLE_FILE:-"ansible-role-requirements.yml"}
 export ANSIBLE_WORKING_DIR=${ANSIBLE_WORKING_DIR:-/opt/ansible_${ANSIBLE_GIT_RELEASE}}
-export GET_PIP_URL=${GET_PIP_URL:-"https://bootstrap.pypa.io/get-pip.py"}
 export SSH_DIR=${SSH_DIR:-"/root/.ssh"}
 export UPDATE_ANSIBLE_REQUIREMENTS=${UPDATE_ANSIBLE_REQUIREMENTS:-"yes"}
 export DEBIAN_FRONTEND=${DEBIAN_FRONTEND:-"noninteractive"}
@@ -63,10 +62,7 @@ popd
 
 
 # Install pip
-if [ ! "$(which pip)" ];then
-    curl ${GET_PIP_URL} > /opt/get-pip.py
-    python2 /opt/get-pip.py || python /opt/get-pip.py
-fi
+get_pip
 
 # Install requirements if there are any
 if [ -f "requirements.txt" ];then
