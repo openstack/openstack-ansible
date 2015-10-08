@@ -58,6 +58,18 @@ to skip the execution of the Ceilometer playbook, execute:
 
     export DEPLOY_CEILOMETER='no'
 
+The default MaxSessions setting for the OpenSSH Daemon is 10. Each Ansible
+fork makes use of a Session. By default Ansible sets the number of forks to 5,
+but the ``run-playbooks.sh`` script sets the number of forks used based on the
+number of CPU's on the deployment host up to a maximum of 10.
+
+If a developer wishes to increase the number of forks used when using this
+script, override the FORKS environment variable. For example:
+
+.. code-block:: bash
+
+    export FORKS=20
+
 run-tempest.sh
 --------------
 

@@ -23,8 +23,20 @@ REPORT_DATA=${REPORT_DATA:-""}
 ANSIBLE_PARAMETERS=${ANSIBLE_PARAMETERS:-""}
 STARTTIME="${STARTTIME:-$(date +%s)}"
 
-# the number of forks is set as the number of CPU's present
-FORKS=${FORKS:-$(grep -c ^processor /proc/cpuinfo)}
+# The default SSHD configuration has MaxSessions = 10. If a deployer changes
+#  their SSHD config, then the FORKS may be set to a higher number. We set the
+#  value to 10 or the number of CPU's, whichever is less. This is to balance
+#  between performance gains from the higher number, and CPU consumption. If
+#  FORKS is already set to a value, then we leave it alone.
+if [ -z "${FORKS:-}" ]; then
+  CPU_NUM=$(grep -c ^processor /proc/cpuinfo)
+  if [ ${CPU_NUM} -lt "10" ]; then
+    FORKS=${CPU_NUM}
+  else
+    FORKS=10
+  fi
+fi
+
 
 ## Functions -----------------------------------------------------------------
 # Used to retry a process that may fail due to random issues.
