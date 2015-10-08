@@ -129,6 +129,15 @@ haproxy_service_configs:
       haproxy_timeout_server: 60m
       haproxy_balance_alg: source
   - service:
+      haproxy_service_name: nova_console_novnc
+      haproxy_backend_nodes: "{{ groups['nova_console'] }}"
+      haproxy_ssl: "{% if haproxy_ssl | bool and nova_novncproxy_proto == 'https' %}true{% else %}false{% endif %}"
+      haproxy_port: 6080
+      haproxy_balance_type: tcp
+      haproxy_timeout_client: 60m
+      haproxy_timeout_server: 60m
+      haproxy_balance_alg: source
+  - service:
       haproxy_service_name: cinder_api
       haproxy_backend_nodes: "{{ groups['cinder_api'] }}"
       haproxy_port: 8776

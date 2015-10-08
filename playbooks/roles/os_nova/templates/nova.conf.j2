@@ -92,9 +92,6 @@ default_floating_pool = public
 security_group_api = neutron
 network_api_class = nova.network.neutronv2.api.API
 
-# VNC disabled, see spice section
-vnc_enabled = False
-
 # Authentication
 auth_strategy = keystone
 
@@ -131,7 +128,7 @@ catalog_info = volumev2:cinderv2:internalURL
 cross_az_attach = {{ nova_cross_az_attach }}
 
 
-{% if nova_spice_html5proxy_base_url is defined and nova_console_type == "spice" %}
+{% if nova_console_type == 'spice' %}
 [spice]
 agent_enabled = {{ nova_console_agent_enabled }}
 enabled = {{ nova_console_agent_enabled }}
@@ -140,8 +137,16 @@ keymap = {{ nova_console_keymap }}
 html5proxy_base_url = {{ nova_spice_html5proxy_base_url }}
 server_listen = {{ ansible_ssh_host }}
 server_proxyclient_address = {{ ansible_ssh_host }}
-{% endif %}
 
+{% elif nova_console_type == 'novnc' %}
+[vnc]
+enabled = {{ nova_novncproxy_agent_enabled }}
+keymap = {{ nova_novncproxy_vnc_keymap }}
+novncproxy_base_url = {{ nova_novncproxy_base_url }}
+vncserver_listen = {{ nova_novncproxy_vncserver_listen }}
+vncserver_proxyclient_address = {{ nova_novncproxy_vncserver_proxyclient_address }}
+
+{% endif %}
 
 # Glance
 [glance]

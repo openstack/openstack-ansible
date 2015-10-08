@@ -41,3 +41,8 @@ openstackclient_git_dest: "/opt/openstackclient_{{ openstackclient_git_install_b
 djangoopenstackauth_git_repo: https://github.com/openstack/django_openstack_auth
 djangoopenstackauth_git_install_branch: 829cbee14e200fd127ec4f0e0f4d743102d8e9d1
 djangoopenstackauth_git_dest: "/opt/djangoopenstackauth_{{ djangoopenstackauth_git_install_branch | replace('/', '_') }}"
+
+# NOVNC from source
+novncproxy_git_repo: https://github.com/kanaka/novnc
+novncproxy_git_install_branch: a0e7ab43dca0ce11a713694ee4cf530bd3b17c5a
+novncproxy_git_dest: "/opt/novnc_{{ novncproxy_git_install_branch | replace('/', '_') }}"

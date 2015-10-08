@@ -97,9 +97,21 @@
     system_user: "{{ nova_system_user_name }}"
     system_group: "{{ nova_system_group_name }}"
     service_home: "{{ nova_system_home_folder }}"
-  when: >
-    inventory_hostname in groups ['nova_console'] and
-    nova_console_type == "spice"
+  when:
+    - inventory_hostname in groups ['nova_console']
+    - nova_console_type == "spice"
+
+# Upstart init script for novnc console.
+- include: nova_upstart_common_init.yml
+  vars:
+    program_name: "{{ nova_novncproxy_program_name }}"
+    service_name: "{{ nova_service_name }}"
+    system_user: "{{ nova_system_user_name }}"
+    system_group: "{{ nova_system_group_name }}"
+    service_home: "{{ nova_system_home_folder }}"
+  when:
+    - inventory_hostname in groups ['nova_console']
+    - nova_console_type == "novnc"
 
 - include: nova_upstart_common_init.yml
   vars:
