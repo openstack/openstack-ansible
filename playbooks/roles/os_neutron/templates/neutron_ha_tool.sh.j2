@@ -21,25 +21,25 @@ LOCKFILE="/var/run/neutron_ha_tool.lock"
 # Trap any errors that might happen in executing the script
 trap my_trap_handler ERR
 
-function my_trap_handler() {
+function my_trap_handler {
     kill_job
 }
 
-function unlock() {
+function unlock {
     rm "${LOCKFILE}"
 }
 
-function do_job() {
+function do_job {
     # Do a given job
     logger "$({{ do_job }})"
 }
 
-function cooldown() {
+function cooldown {
     # Sleep for a given amount of time
     sleep {{ sleep_time }}
 }
 
-function kill_job() {
+function kill_job {
     # If the job needs killing kill the pid and unlock the file.
     PID="$(cat ${LOCKFILE})"
     unlock

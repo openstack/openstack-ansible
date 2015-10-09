@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# This sciprt was built for the express purpose of managing LXC on a 
-# host. The functions within this script provide for common operations 
+# This script was built for the express purpose of managing LXC on a
+# host. The functions within this script provide for common operations
 # that may be required when working with LXC in production.
 
 # {{ ansible_managed }}
@@ -31,19 +31,19 @@ export LXC_DNSMASQ_USER="{{ lxc_net_dnsmasq_user }}"
 export VARRUN="/run/lxc"
 export LXC_DOMAIN="{{ lxc_net_domain }}"
 
-function warn() {
+function warn {
     echo -e "\e[0;35m${@}\e[0m"
 }
 
-function info() {
+function info {
     echo -e "\e[0;33m${@}\e[0m"
 }
 
-function success() {
+function success {
     echo -e "\e[0;32m${@}\e[0m"
 }
 
-function remove_rules() {
+function remove_rules {
     info "Removing LXC IPtables rules."
     # Remove rules from the INPUT chain
     iptables ${USE_IPTABLES_LOCK} -D INPUT -i "${LXC_BRIDGE}" -p udp --dport 67 -j ACCEPT
@@ -75,7 +75,7 @@ function remove_rules() {
     success "IPtables rules removed."
 }
 
-function add_rules() {
+function add_rules {
     info "Creating LXC IPtables rules."
     set -e
     # Set ip_prwarding
@@ -111,7 +111,7 @@ function add_rules() {
     success "IPtables rules created."
 }
 
-function cleanup() {
+function cleanup {
     # Clean up everything
     remove_rules
 
@@ -122,7 +122,7 @@ function cleanup() {
     brctl delbr "${LXC_BRIDGE}" || true
 }
 
-function pre_up() {
+function pre_up {
     # Create the run directory if needed.
     if [[ ! -d "${VARRUN}" ]];then
         mkdir -p "${VARRUN}"
@@ -138,7 +138,7 @@ function pre_up() {
     iptables -w -L -n > /dev/null 2>&1 || use_iptables_lock=""
 }
 
-function start_dnsmasq() {
+function start_dnsmasq {
     set -e
     info "Starting LXC dnsmasq."
     dnsmasq "${LXC_DOMAIN_ARG}" --user="${LXC_DNSMASQ_USER}" \
@@ -157,26 +157,32 @@ function start_dnsmasq() {
     success "dnsmasq started."
 }
 
-function start_containers_nicely() {
+function start_containers_nicely {
     set -e
     # Stop all containers on a host
     success "Starting all containers."
-    for container in $(lxc-ls); do lxc-start -d -n "${container}"; done
+    for container in $(lxc-ls); do
+      lxc-start -d -n "${container}"
+    done
 }
 
-function stop_containers_nicely() {
+function stop_containers_nicely {
     # Stop all containers on a host
     warn "Stopping all containers."
-    for container in $(lxc-ls); do lxc-stop -n "${container}"; done
+    for container in $(lxc-ls); do
+      lxc-stop -n "${container}"
+    done
 }
 
-function stop_containers_with_fire() {
+function stop_containers_with_fire {
     # Stop all containers on a host
     warn "Stopping all containers with fire."
-    for container in $(lxc-ls); do lxc-stop -k -n "${container}"; done
+    for container in $(lxc-ls); do
+      lxc-stop -k -n "${container}"
+    done
 }
 
-function start_networks() {
+function start_networks {
     set -e
     if [ -f "/sys/class/net/${LXC_BRIDGE}/bridge/bridge_id" ];then
         success "LXC container network is already online."
@@ -208,7 +214,7 @@ function start_networks() {
     fi
 }
 
-function stop_dnsmasq() {
+function stop_dnsmasq {
     if [[ -f "${VARRUN}/dnsmasq.pid" ]];then
         PID="$(cat ${VARRUN}/dnsmasq.pid)"
         if [[ "${PID}" ]];then
@@ -219,24 +225,26 @@ function stop_dnsmasq() {
     fi
 }
 
-function stop_networks() {
+function stop_networks {
     warn "Destroying the LXC container network."
     cleanup
     stop_dnsmasq
 }
 
-function remove_down_veth() {
+function remove_down_veth {
     info "Getting a list of all DOWN veth interfaces"
     VETHPAIRS="$(ip link list | grep veth | grep "state DOWN" | awk '/veth/ {print $2}' | sed 's/\://g')"
     if [[ "$VETHPAIRS" ]];then
         warn "Removing all DOWN veth interfaces"
-        for veth in $VETHPAIRS; do ip link delete dev "${veth}"; done
+        for veth in $VETHPAIRS; do
+          ip link delete dev "${veth}"
+        done
     else
         success "No DOWN veth interfaces to remove"
     fi
 }
 
-function flush_cache() {
+function flush_cache {
     warn "Flushing network cache"
     ip -s -s neigh flush all
 }
@@ -332,21 +340,21 @@ case "$1" in
         system-start-up           Start up everything that LXC needs to
                                   operate, including the containers, dnsmasq,
                                   LXC bridge, and IPtables.
-        system-tear-down          Tear down everything LXC on this system. 
+        system-tear-down          Tear down everything LXC on this system.
                                   This will remove all all IPtables rules, kill
                                   dnsmasq, remove the LXC bridge, stops all
-                                  containers, removes DOWN veth interfaces, 
+                                  containers, removes DOWN veth interfaces,
                                   and flushes the net cache.
-        system-force-tear-down    Force tear down everything LXC on this system. 
+        system-force-tear-down    Force tear down everything LXC on this system.
                                   This will remove all all IPtables rules, kill
                                   dnsmasq, remove the LXC bridge, stops all
-                                  containers, removes DOWN veth interfaces, 
+                                  containers, removes DOWN veth interfaces,
                                   and flushes the net cache.
         system-rebuild            Rebuild the LXC network, IPtables, dnsmasq,
-                                  removes DOWN veth interfaces, flushes the 
+                                  removes DOWN veth interfaces, flushes the
                                   net cache, and restarts all conatiners.
         system-force-rebuild      Force rebuild the LXC network, IPtables, dnsmasq,
-                                  removes DOWN veth interfaces, flushes the 
+                                  removes DOWN veth interfaces, flushes the
                                   net cache, and restarts all conatiners.
         dnsmasq-start             Start the LXC dnsmasq process.
         dnsmasq-stop              Stop the LXC dnsmasq process.
@@ -355,7 +363,7 @@ case "$1" in
         iptables-remove           Remove the LXC IPtables rules for NAT.
         iptables-recreate         Recreate the LXC IPtables rules for NAT.
         veth-cleanup              Remove all DOWN veth interfaces from a system.
-        flush-net-cache           Flush the hosts network cache. This is usful if 
+        flush-net-cache           Flush the hosts network cache. This is useful if
                                   IP addresses are being recycled on to containers
                                   from other hosts.
         '
