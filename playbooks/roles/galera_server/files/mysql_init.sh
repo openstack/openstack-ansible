@@ -86,8 +86,7 @@ mysqld_status()
         ps_alive=1
     fi
 
-    if [ "$1" = "check_alive"  -a  $ping_alive = 1 ] ||
-       [ "$1" = "check_dead"   -a  $ping_alive = 0  -a  $ps_alive = 0 ]; then
+    if [ "$1" = "check_alive" -a $ping_alive = 1 ] || [ "$1" = "check_dead" -a $ping_alive = 0 -a $ps_alive = 0 ]; then
       return 0 # EXIT_SUCCESS
     else
       if [ "$2" = "warn" ]; then
