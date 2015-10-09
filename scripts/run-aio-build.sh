@@ -29,7 +29,10 @@ export WORKING_FOLDER=${WORKING_FOLDER:-"/opt/openstack-ansible"}
 set -x
 
 # install git so that we can fetch the repo
-apt-get update && apt-get install -y git
+# note: the redirect of stdin to /dev/null is necessary for when this script is
+# run as part of a curl-pipe-shell. otherwise apt-get will consume the rest of
+# this file as if it was its own stdin (despite using -y to skip interaction).
+apt-get update && apt-get install -y git < /dev/null
 
 # fetch the repo
 git clone -b ${REPO_BRANCH} ${REPO_URL} ${WORKING_FOLDER}
