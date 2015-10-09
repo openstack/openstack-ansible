@@ -24,6 +24,8 @@ info_block "Checking for required libraries." 2> /dev/null || source $(dirname $
 ## Main ----------------------------------------------------------------------
 info_block "Running Basic Ansible Lint Check"
 
+# next, bootstrap Ansible
+source $(dirname ${0})/bootstrap-ansible.sh
 
 # Install the development requirements.
 if [ -f "dev-requirements.txt" ]; then

@@ -1,0 +1,90 @@
+---
+# Copyright 2015, Jean-Philippe Evrard <jean-philippe@evrard.me>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+keepalived_global_sync_groups:
+  haproxy:
+    instances:
+      - external
+      - internal
+    notify_script: /etc/keepalived/haproxy_notify.sh
+    ##if a src_*_script is defined, it will be uploaded from src_*_script on the deploy host to the *_script location. Make sure *_script is a location in that case.
+    #src_notify_script: /opt/os-ansible-deployment/playbooks/vars/configs/keepalived_haproxy_notifications.sh
+    src_notify_script: vars/configs/keepalived_haproxy_notifications.sh
+
+# Master and backup sync groups should normally be the same.
+keepalived_master_sync_groups: "{{ keepalived_global_sync_groups }}"
+keepalived_backup_sync_groups: "{{ keepalived_global_sync_groups }}"
+
+keepalived_global_scripts:
+  haproxy_check_script:
+    check_script: "killall -0 haproxy"
+  pingable_check_script:
+    check_script: "ping -c 1 193.0.14.129 1>&2"
+    interval: 10
+    fall: 2
+    rise: 4
+
+# Master and backup scripts should be the same.
+# The two variables (master/backup) are kept if the deployer wants different checks for backup and master.
+keepalived_master_scripts: "{{ keepalived_global_scripts }}"
+keepalived_backup_scripts: "{{ keepalived_global_scripts }}"
+
+keepalived_master_instances:
+  external:
+    interface: "{{ haproxy_keepalived_external_interface | default(management_bridge) }}"
+    state: MASTER
+    virtual_router_id: "{{ haproxy_keepalived_external_virtual_router_id | default ('10') }}"
+    priority: "{{ haproxy_keepalived_priority_master | default('100') }}"
+    authentication_password: "{{ haproxy_keepalived_authentication_password }}"
+    vips:
+      - "{{ haproxy_keepalived_external_vip_cidr }} dev {{ haproxy_keepalived_external_interface | default(management_bridge) }}"
+    track_scripts:
+      - haproxy_check_script
+      - pingable_check_script
+  internal:
+    interface: "{{ haproxy_keepalived_internal_interface | default(management_bridge) }}"
+    state: MASTER
+    virtual_router_id: "{{ haproxy_keepalived_internal_virtual_router_id | default ('11') }}"
+    priority: "{{ haproxy_keepalived_priority_master | default('100') }}"
+    authentication_password: "{{ haproxy_keepalived_authentication_password }}"
+    track_scripts:
+      - haproxy_check_script
+      - pingable_check_script
+    vips:
+      - "{{ haproxy_keepalived_internal_vip_cidr }} dev {{ haproxy_keepalived_internal_interface | default(management_bridge) }}"
+
+keepalived_backup_instances:
+  external:
+    interface: "{{ haproxy_keepalived_external_interface | default(management_bridge) }}"
+    state: BACKUP
+    virtual_router_id: "{{ haproxy_keepalived_external_virtual_router_id | default ('10') }}"
+    priority: "{{ haproxy_keepalived_priority_backup | default('20') }}"
+    authentication_password: "{{ haproxy_keepalived_authentication_password }}"
+    vips:
+      - "{{ haproxy_keepalived_external_vip_cidr }} dev {{ haproxy_keepalived_external_interface | default(management_bridge) }}"
+    track_scripts:
+      - haproxy_check_script
+      - pingable_check_script
+  internal:
+    interface: "{{ haproxy_keepalived_internal_interface | default(management_bridge) }}"
+    state: BACKUP
+    virtual_router_id: "{{ haproxy_keepalived_internal_virtual_router_id | default ('11') }}"
+    priority: "{{ haproxy_keepalived_priority_backup | default('20') }}"
+    authentication_password: "{{ haproxy_keepalived_authentication_password }}"
+    track_scripts:
+      - haproxy_check_script
+      - pingable_check_script
+    vips:
+      - "{{ haproxy_keepalived_internal_vip_cidr }} dev {{ haproxy_keepalived_internal_interface | default(management_bridge) }}"
