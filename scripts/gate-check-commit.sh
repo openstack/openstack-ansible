@@ -56,7 +56,7 @@ mkdir -p /openstack/log/ansible-logging
 sed -i '/\[defaults\]/a log_path = /openstack/log/ansible-logging/ansible.log' $(dirname ${0})/../playbooks/ansible.cfg
 
 # Adjust settings based on the Cloud Provider info in OpenStack-CI
-if [ -fs /etc/nodepool/provider ]; then
+if [ -f /etc/nodepool/provider -a -s /etc/nodepool/provider ]; then
   source /etc/nodepool/provider
 
   if [[ ${NODEPOOL_PROVIDER} == "rax"* ]]; then
