@@ -55,8 +55,8 @@ ln -sf /openstack/log $(dirname ${0})/../logs
 mkdir -p /openstack/log/ansible-logging
 sed -i '/\[defaults\]/a log_path = /openstack/log/ansible-logging/ansible.log' $(dirname ${0})/../playbooks/ansible.cfg
 
-# Ubuntu Repository Determination (based on provider information in OpenStack-CI)
-if [ -fs /etc/nodepool/provider ]; then
+# Adjust settings based on the Cloud Provider info in OpenStack-CI
+if [ -f /etc/nodepool/provider -a -s /etc/nodepool/provider ]; then
   source /etc/nodepool/provider
   if [[ ${NODEPOOL_PROVIDER} == "rax"* ]]; then
     export UBUNTU_REPO="http://mirror.rackspace.com/ubuntu"
