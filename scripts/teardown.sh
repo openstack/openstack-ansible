@@ -25,9 +25,8 @@ cat <<EOF
 -----------------------------------------------------------------------------
 WARNING: This is a destructive action. All containers will be destroyed and
          all data within the containers will be removed.  Some data will be
-         removed from the host as well, including all configuration data
-         within /etc/openstack_deploy/.
-
+         removed from the host as well. /etc/openstack_deploy will be preserved
+         and may be manually removed if needed.
          Please verify that you have backed up all important data prior to
          proceeding with the teardown script.
 -----------------------------------------------------------------------------
@@ -194,7 +193,6 @@ pushd playbooks
       - /etc/nova
       - /etc/network/interfaces.d/aio_interfaces.cfg
       - /etc/neutron
-      - /etc/openstack_deploy
       - /etc/swift
       - /openstack
       - /opt/*.img
