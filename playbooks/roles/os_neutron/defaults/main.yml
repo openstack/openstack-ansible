@@ -33,7 +33,7 @@ neutron_galera_user: neutron
 neutron_galera_password: "{{ neutron_container_mysql_password }}"
 neutron_galera_database: neutron
 neutron_db_config: /etc/neutron/neutron.conf
-neutron_db_plugin: /etc/neutron/plugins/ml2/ml2_conf.ini
+neutron_db_plugin: "/etc/neutron/{{ neutron_plugins[neutron_plugin_type].plugin_ini }}"
 neutron_db_max_overflow: 20
 neutron_db_pool_size: 120
 neutron_db_pool_timeout: 30
@@ -43,7 +43,7 @@ neutron_rabbitmq_userid: neutron
 neutron_rabbitmq_vhost: /neutron
 
 ## Plugins
-neutron_plugin_core: neutron.plugins.ml2.plugin.Ml2Plugin
+neutron_plugin_core: "{{ neutron_plugins[neutron_plugin_type].plugin_core }}"
 # Other plugins can be added to the system by simply extending the list `neutron_plugin_base`.
 # neutron_plugin_base:
 #   - neutron.services.l3_router.l3_router_plugin.L3RouterPlugin
@@ -54,6 +54,65 @@ neutron_plugin_base:
   - neutron.services.l3_router.l3_router_plugin.L3RouterPlugin
   - neutron.services.metering.metering_plugin.MeteringPlugin
 neutron_plugin_loaded_base: "{% for plugin in neutron_plugin_base %}{{ plugin }}{% if not loop.last %},{% endif %}{% endfor %}"
+
+# Neutron Plugins
+neutron_plugin_type: ml2
+
+neutron_plugins:
+  ml2:
+    plugin_core: neutron.plugins.ml2.plugin.Ml2Plugin
+    plugin_ini: plugins/ml2/ml2_conf.ini
+    plugin_conf_ini_overrides: "{{ neutron_ml2_conf_ini_overrides }}"
+
+neutron_services:
+ neutron-dhcp-agent:
+   service_name: neutron-dhcp-agent
+   service_en: True
+   service_conf: dhcp_agent.ini
+   service_group: neutron_agent
+   service_rootwrap: rootwrap.d/dhcp.filters
+   config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/dhcp_agent.ini
+   config_overrides: "{{ neutron_dhcp_agent_ini_overrides }}"
+   config_type: "ini"
+ neutron-linuxbridge-agent:
+   service_name: neutron-linuxbridge-agent
+   service_en: True
+   service_conf: plugins/ml2/ml2_conf.ini
+   service_group: neutron_linuxbridge_agent
+   service_rootwrap: rootwrap.d/linuxbridge-plugin.filters
+   config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini
+   config_overrides: "{{ neutron_ml2_conf_ini_overrides }}"
+   config_type: "ini"
+ neutron-metadata-agent:
+   service_name: neutron-metadata-agent
+   service_en: True
+   service_conf: metadata_agent.ini
+   service_group: neutron_agent
+   config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/metadata_agent.ini
+   config_overrides: "{{ neutron_metadata_agent_ini_overrides }}"
+   config_type: "ini"
+ neutron-metering-agent:
+   service_name: neutron-metering-agent
+   service_en: True
+   service_conf: metering_agent.ini
+   service_group: neutron_agent
+   config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/metering_agent.ini
+   config_overrides: "{{ neutron_metering_agent_ini_overrides }}"
+   config_type: "ini"
+ neutron-l3-agent:
+   service_name: neutron-l3-agent
+   service_en: True
+   service_conf: l3_agent.ini
+   service_group: neutron_agent
+   service_rootwrap: rootwrap.d/l3.filters
+   config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/l3_agent.ini
+   config_overrides: "{{ neutron_l3_agent_ini_overrides }}"
+   config_type: "ini"
+ neutron-server:
+   service_name: neutron-server
+   service_en: True
+   service_group: neutron_server
+   config_options: --config-file /etc/neutron/neutron.conf --config-file "/etc/neutron/{{ neutron_plugins[neutron_plugin_type].plugin_ini }}"
 
 ## Drivers
 neutron_driver_network_scheduler: neutron.scheduler.dhcp_agent_scheduler.ChanceScheduler
@@ -120,30 +179,6 @@ neutron_service_region: RegionOne
 
 ## Keystone authentication middleware
 neutron_keystone_auth_plugin: password
-
-neutron_service_program_name: neutron-server
-neutron_service_program_config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini
-neutron_service_program_enabled: false
-
-neutron_service_dhcp_program_name: neutron-dhcp-agent
-neutron_service_dhcp_program_config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/dhcp_agent.ini
-neutron_service_dhcp_program_enabled: false
-
-neutron_service_l3_program_name: neutron-l3-agent
-neutron_service_l3_program_config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/l3_agent.ini
-neutron_service_l3_program_enabled: false
-
-neutron_service_linuxbridge_program_name: neutron-linuxbridge-agent
-neutron_service_linuxbridge_program_config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini
-neutron_service_linuxbridge_program_enabled: false
-
-neutron_service_metadata_program_name: neutron-metadata-agent
-neutron_service_metadata_program_config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/metadata_agent.ini
-neutron_service_metadata_program_enabled: false
-
-neutron_service_metering_program_name: neutron-metering-agent
-neutron_service_metering_program_config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/metering_agent.ini
-neutron_service_metering_program_enabled: false
 
 ## Agent
 neutron_external_network_bridge: ""
@@ -262,14 +297,7 @@ neutron_pip_packages:
   - repoze.lru
 
 ## Service Names
-neutron_service_names:
-  - neutron-agent
-  - neutron-dhcp-agent
-  - neutron-linuxbridge-agent
-  - neutron-l3-agent
-  - neutron-metadata-agent
-  - neutron-metering-agent
-  - neutron-server
+neutron_service_names: "{{ neutron_services.items()|selectattr('1.service_en')|map(attribute='0')|list }}"
 
 ## Tunable overrides
 neutron_neutron_conf_overrides: {}

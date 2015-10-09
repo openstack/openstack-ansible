@@ -15,84 +15,84 @@
 
 - include: neutron_upstart_common_init.yml
   vars:
-    program_name: "{{ neutron_service_program_name }}"
-    program_config_options: "{{ neutron_service_program_config_options }}"
+    program_name: "{{ neutron_services['neutron-server'].service_name }}"
+    program_config_options: "{{ neutron_services['neutron-server'].config_options }}"
     service_name: "{{ neutron_service_name }}"
     system_user: "{{ neutron_system_user_name }}"
     system_group: "{{ neutron_system_group_name }}"
     service_home: "{{ neutron_system_home_folder }}"
-  when: >
-    inventory_hostname in groups['neutron_server'] and
-    neutron_service_program_enabled == true
+  when:
+    - inventory_hostname in groups['neutron_server']
+    - neutron_services['neutron-server'].service_en | bool
   tags:
     - upstart-init
 
 - include: neutron_upstart_common_init.yml
   vars:
-    program_name: "{{ neutron_service_dhcp_program_name }}"
-    program_config_options: "{{ neutron_service_dhcp_program_config_options }}"
+    program_name: "{{ neutron_services['neutron-dhcp-agent'].service_name }}"
+    program_config_options: "{{ neutron_services['neutron-dhcp-agent'].config_options }}"
     service_name: "{{ neutron_service_name }}"
     system_user: "{{ neutron_system_user_name }}"
     system_group: "{{ neutron_system_group_name }}"
     service_home: "{{ neutron_system_home_folder }}"
-  when: >
-    inventory_hostname in groups['neutron_agent'] and
-    neutron_service_dhcp_program_enabled == true
+  when:
+    - inventory_hostname in groups['neutron_agent']
+    - neutron_services['neutron-dhcp-agent'].service_en | bool
   tags:
     - upstart-init
 
 - include: neutron_upstart_common_init.yml
   vars:
-    program_name: "{{ neutron_service_l3_program_name }}"
-    program_config_options: "{{ neutron_service_l3_program_config_options }}"
+    program_name: "{{ neutron_services['neutron-l3-agent'].service_name }}"
+    program_config_options: "{{ neutron_services['neutron-l3-agent'].config_options }}"
     service_name: "{{ neutron_service_name }}"
     system_user: "{{ neutron_system_user_name }}"
     system_group: "{{ neutron_system_group_name }}"
     service_home: "{{ neutron_system_home_folder }}"
-  when: >
-    inventory_hostname in groups['neutron_agent'] and
-    neutron_service_l3_program_enabled == true
+  when:
+    - inventory_hostname in groups['neutron_agent']
+    - neutron_services['neutron-l3-agent'].service_en | bool
   tags:
     - upstart-init
 
 - include: neutron_upstart_common_init.yml
   vars:
-    program_name: "{{ neutron_service_linuxbridge_program_name }}"
-    program_config_options: "{{ neutron_service_linuxbridge_program_config_options }}"
+    program_name: "{{ neutron_services['neutron-linuxbridge-agent'].service_name }}"
+    program_config_options: "{{ neutron_services['neutron-linuxbridge-agent'].config_options }}"
     service_name: "{{ neutron_service_name }}"
     system_user: "{{ neutron_system_user_name }}"
     system_group: "{{ neutron_system_group_name }}"
     service_home: "{{ neutron_system_home_folder }}"
-  when: >
-    inventory_hostname in groups['neutron_linuxbridge_agent'] and
-    neutron_service_linuxbridge_program_enabled == true
+  when:
+    - inventory_hostname in groups['neutron_linuxbridge_agent']
+    - neutron_services['neutron-linuxbridge-agent'].service_en | bool
   tags:
     - upstart-init
 
 - include: neutron_upstart_common_init.yml
   vars:
-    program_name: "{{ neutron_service_metadata_program_name }}"
-    program_config_options: "{{ neutron_service_metadata_program_config_options }}"
+    program_name: "{{ neutron_services['neutron-metadata-agent'].service_name }}"
+    program_config_options: "{{ neutron_services['neutron-metadata-agent'].config_options }}"
     service_name: "{{ neutron_service_name }}"
     system_user: "{{ neutron_system_user_name }}"
     system_group: "{{ neutron_system_group_name }}"
     service_home: "{{ neutron_system_home_folder }}"
-  when: >
-    inventory_hostname in groups['neutron_agent'] and
-    neutron_service_metadata_program_enabled == true
+  when:
+    - inventory_hostname in groups['neutron_agent']
+    - neutron_services['neutron-metadata-agent'].service_en | bool
   tags:
     - upstart-init
 
 - include: neutron_upstart_common_init.yml
   vars:
-    program_name: "{{ neutron_service_metering_program_name }}"
-    program_config_options: "{{ neutron_service_metering_program_config_options }}"
+    program_name: "{{ neutron_services['neutron-metering-agent'].service_name }}"
+    program_config_options: "{{ neutron_services['neutron-metering-agent'].config_options }}"
     service_name: "{{ neutron_service_name }}"
     system_user: "{{ neutron_system_user_name }}"
     system_group: "{{ neutron_system_group_name }}"
     service_home: "{{ neutron_system_home_folder }}"
-  when: >
-    inventory_hostname in groups['neutron_agent'] and
-    neutron_service_metering_program_enabled == true
+  when:
+    - inventory_hostname in groups['neutron_agent']
+    - neutron_services['neutron-metering-agent'].service_en | bool
   tags:
     - upstart-init
