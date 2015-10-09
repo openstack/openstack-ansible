@@ -16,6 +16,7 @@
 ## Path to pip download/installation script.
 pip_upstream_repo_url: https://bootstrap.pypa.io
 pip_get_pip_url: "{{ pip_upstream_repo_url }}/get-pip.py"
+pip_get_pip_fallback_url: https://raw.github.com/pypa/pip/master/contrib/get-pip.py
 
 # Additional options that you might want to pass to "get-pip.py" when installing pip.
 # Default `pip_get_pip_options` is an empty string.

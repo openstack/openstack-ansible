@@ -26,7 +26,6 @@ export SERVICE_REGION=${SERVICE_REGION:-"RegionOne"}
 export DEPLOY_OPENSTACK=${DEPLOY_OPENSTACK:-"yes"}
 export DEPLOY_SWIFT=${DEPLOY_SWIFT:-"yes"}
 export DEPLOY_CEILOMETER=${DEPLOY_CEILOMETER:-"yes"}
-export GET_PIP_URL=${GET_PIP_URL:-"https://bootstrap.pypa.io/get-pip.py"}
 export PUBLIC_INTERFACE=${PUBLIC_INTERFACE:-$(ip route show | awk '/default/ { print $NF }')}
 export PUBLIC_ADDRESS=${PUBLIC_ADDRESS:-$(ip -o -4 addr show dev ${PUBLIC_INTERFACE} | awk -F '[ /]+' '/global/ {print $4}')}
 export NOVA_VIRT_TYPE=${NOVA_VIRT_TYPE:-"qemu"}
@@ -148,10 +147,7 @@ if [ -d "${HOME}/.pip" ];then
 fi
 
 # Install pip
-if [ ! "$(which pip)" ];then
-    curl ${GET_PIP_URL} > /opt/get-pip.py
-    python2 /opt/get-pip.py || python /opt/get-pip.py
-fi
+get_pip
 
 # Install requirements if there are any
 if [ -f "requirements.txt" ];then
