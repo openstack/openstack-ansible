@@ -20,6 +20,7 @@ Chapter 5. Deployment configuration
    configure-keystone.rst
    configure-openstack.rst
    configure-sslcertificates.rst
+   configure-configurationintegrity.rst
 
 
 **Figure 5.1. Installation work flow**

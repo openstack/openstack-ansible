@@ -3,6 +3,10 @@
 Running the foundation playbook
 -------------------------------
 
+.. seealso:: Before continuing, the configuration files may be validated using the guidance in "`Checking the integrity of your configuration files`_".
+
+   .. _Checking the integrity of your configuration files: ../install-guide/configure-configurationintegrity.html
+
 #. Change to the ``/opt/openstack-ansible/playbooks`` directory.
 
 #. Run the host setup playbook, which runs a series of sub-playbooks:
@@ -10,7 +14,6 @@ Running the foundation playbook
    .. code-block:: bash
 
        $ openstack-ansible setup-hosts.yml
-               
 
    Confirm satisfactory completion with zero items unreachable or
    failed:
