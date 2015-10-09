@@ -152,3 +152,7 @@
   tags:
     - neutron-config
     - neutron-checksum-fix
+
+- name: Setup PLUMgrid config
+  include: plumgrid_config.yml
+  when: neutron_plugin_type == 'plumgrid'

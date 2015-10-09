@@ -20,7 +20,9 @@ vlan_transparent = False
 
 # Plugins
 core_plugin = {{ neutron_plugin_core }}
+{% if neutron_plugin_type != 'plumgrid' %}
 service_plugins = {{ neutron_plugin_loaded_base }}
+{% endif %}
 
 # MAC address generation for VIFs
 base_mac = fa:16:3e:00:00:00
