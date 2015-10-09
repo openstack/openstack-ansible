@@ -11,4 +11,4 @@ director_server_port={{ pg_ports['vip_port'] }}
 username={{ pg_username }}
 password={{ pg_password }}
 servertimeout=70
-connection = mysql://{{ neutron_galera_user }}:{{ neutron_container_mysql_password }}@{{ neutron_galera_address }}/{{ neutron_galera_database }}?charset=utf8
+connection = mysql+pymysql://{{ neutron_galera_user }}:{{ neutron_container_mysql_password }}@{{ neutron_galera_address }}/{{ neutron_galera_database }}?charset=utf8

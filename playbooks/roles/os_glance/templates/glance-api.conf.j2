@@ -50,7 +50,7 @@ show_image_direct_url = {{ glance_show_image_direct_url }}
 task_executor = {{ glance_task_executor }}
 
 [database]
-connection = mysql://{{ glance_galera_user }}:{{ glance_container_mysql_password }}@{{ glance_galera_address }}/{{ glance_galera_database }}?charset=utf8
+connection = mysql+pymysql://{{ glance_galera_user }}:{{ glance_container_mysql_password }}@{{ glance_galera_address }}/{{ glance_galera_database }}?charset=utf8
 
 [keystone_authtoken]
 insecure = {{ keystone_service_internaluri_insecure | bool }}

@@ -111,7 +111,7 @@ nfs_shares_config={{ cinder_nfs_client.nfs_shares_config }}
 {% endif %}
 
 [database]
-connection = mysql://{{ cinder_galera_user }}:{{ cinder_container_mysql_password }}@{{ cinder_galera_address }}/{{ cinder_galera_database }}?charset=utf8
+connection = mysql+pymysql://{{ cinder_galera_user }}:{{ cinder_container_mysql_password }}@{{ cinder_galera_address }}/{{ cinder_galera_database }}?charset=utf8
 
 [oslo_messaging_rabbit]
 rabbit_port = {{ rabbitmq_port }}
