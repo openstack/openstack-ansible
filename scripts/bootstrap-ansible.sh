@@ -20,6 +20,8 @@ set -e -u -x
 
 
 ## Vars ----------------------------------------------------------------------
+export HTTP_PROXY=${HTTP_PROXY:-""}
+export HTTPS_PROXY=${HTTPS_PROXY:-""}
 export ANSIBLE_GIT_RELEASE=${ANSIBLE_GIT_RELEASE:-"v1.9.3-1"}
 export ANSIBLE_GIT_REPO=${ANSIBLE_GIT_REPO:-"https://github.com/ansible/ansible"}
 export ANSIBLE_ROLE_FILE=${ANSIBLE_ROLE_FILE:-"ansible-role-requirements.yml"}
@@ -65,13 +67,21 @@ popd
 # Install pip
 get_pip
 
+# Ensure we use the HTTPS/HTTP proxy with pip if it is specified
+PIP_OPTS=""
+if [ -n "$HTTPS_PROXY" ]; then
+  PIP_OPTS="--proxy $HTTPS_PROXY"
+elif [ -n "$HTTP_PROXY" ]; then
+  PIP_OPTS="--proxy $HTTP_PROXY"
+fi
+
 # Install requirements if there are any
 if [ -f "requirements.txt" ];then
-    pip2 install -r requirements.txt || pip install -r requirements.txt
+  pip2 install $PIP_OPTS -r requirements.txt || pip install $PIP_OPTS -r requirements.txt
 fi
 
 # Install ansible
-pip2 install "${ANSIBLE_WORKING_DIR}" || pip install "${ANSIBLE_WORKING_DIR}"
+pip2 install $PIP_OPTS "${ANSIBLE_WORKING_DIR}" || pip install $PIP_OPTS "${ANSIBLE_WORKING_DIR}"
 
 # Update dependent roles
 if [ -f "${ANSIBLE_ROLE_FILE}" ];then
