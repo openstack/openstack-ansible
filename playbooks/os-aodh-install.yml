@@ -61,7 +61,10 @@
         - aodh-logs
         - aodh-log-dirs
   roles:
-    - { role: "os_aodh", tags: [ "os-aodh" ] }
+    - role: "os_aodh"
+      aodh_venv_tag: "{{ openstack_release }}"
+      tags:
+        - "os-aodh"
     - { role: "openstack_openrc", tags: [ "openstack-openrc" ] }
     - role: "rsyslog_client"
       rsyslog_client_log_rotate_file: aodh_log_rotate

@@ -13,6 +13,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- name: Get aodh command path
+  command: which aodh
+  register: aodh_command_path
+  when:
+    - not aodh_venv_enabled | bool
+  tags:
+    - aodh-command-bin
+
+- name: Set aodh command path
+  set_fact:
+    aodh_bin: "{{ aodh_command_path.stdout | dirname }}"
+  when:
+    - not aodh_venv_enabled | bool
+  tags:
+    - aodh-command-bin
+
 - name: Copy aodh config
   config_template:
     src: "{{ item.src }}"
@@ -39,4 +55,3 @@
   tags:
     - aodh-config
     - aodh-post-install
-

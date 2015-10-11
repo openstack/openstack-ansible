@@ -48,6 +48,17 @@
   tags:
     - aodh-dirs
 
+- name: Create aodh venv dir
+  file:
+    path: "{{ item.path }}"
+    state: directory
+  with_items:
+    - { path: "/openstack/venvs" }
+    - { path: "{{ aodh_venv_bin }}" }
+  when: aodh_venv_enabled | bool
+  tags:
+    - aodh-dirs
+
 - name: Test for log directory or link
   shell: |
     if [ -h "/var/log/aodh"  ]; then
