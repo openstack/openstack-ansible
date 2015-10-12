@@ -29,7 +29,8 @@ REQUIREMENTS_FILE_TYPES = [
     'requirements.txt',
     'global-requirements.txt',
     'test-requirements.txt',
-    'dev-requirements.txt'
+    'dev-requirements.txt',
+    'global-requirement-pins.txt'
 ]
 
 
