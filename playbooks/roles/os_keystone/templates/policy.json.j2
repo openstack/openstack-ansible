@@ -6,6 +6,7 @@
     "admin_or_owner": "rule:admin_required or rule:owner",
     "token_subject": "user_id:%(target.token.user_id)s",
     "admin_or_token_subject": "rule:admin_required or rule:token_subject",
+    "service_admin_or_token_subject": "rule:service_or_admin or rule:token_subject",
 
     "default": "rule:admin_required",
 
@@ -88,14 +89,13 @@
     "identity:update_policy": "rule:admin_required",
     "identity:delete_policy": "rule:admin_required",
 
-    "identity:check_token": "rule:admin_required",
-    "identity:validate_token": "rule:service_or_admin",
+    "identity:check_token": "rule:admin_or_token_subject",
+    "identity:validate_token": "rule:service_admin_or_token_subject",
     "identity:validate_token_head": "rule:service_or_admin",
     "identity:revocation_list": "rule:service_or_admin",
     "identity:revoke_token": "rule:admin_or_token_subject",
 
     "identity:create_trust": "user_id:%(trust.trustor_user_id)s",
-    "identity:get_trust": "rule:admin_or_owner",
     "identity:list_trusts": "",
     "identity:list_roles_for_trust": "",
     "identity:get_role_for_trust": "",
@@ -128,6 +128,7 @@
     "identity:list_projects_associated_with_endpoint_group": "rule:admin_required",
     "identity:list_endpoints_associated_with_endpoint_group": "rule:admin_required",
     "identity:get_endpoint_group_in_project": "rule:admin_required",
+    "identity:list_endpoint_groups_for_project": "rule:admin_required",
     "identity:add_endpoint_group_to_project": "rule:admin_required",
     "identity:remove_endpoint_group_from_project": "rule:admin_required",
 
