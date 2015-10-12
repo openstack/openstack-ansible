@@ -21,6 +21,8 @@ set -e -u -x
 ## Vars ----------------------------------------------------------------------
 DEFAULT_PASSWORD=$(tr -dc 'a-zA-Z0-9' < /dev/urandom | head -c 32)
 export BOOTSTRAP_AIO="yes"
+export HTTP_PROXY=${HTTP_PROXY:-""}
+export HTTPS_PROXY=${HTTPS_PROXY:-""}
 export ADMIN_PASSWORD=${ADMIN_PASSWORD:-$DEFAULT_PASSWORD}
 export SERVICE_REGION=${SERVICE_REGION:-"RegionOne"}
 export DEPLOY_OPENSTACK=${DEPLOY_OPENSTACK:-"yes"}
@@ -149,9 +151,17 @@ fi
 # Install pip
 get_pip
 
+# Ensure we use the HTTPS/HTTP proxy with pip if it is specified
+PIP_OPTS=""
+if [ -n "$HTTPS_PROXY" ]; then
+  PIP_OPTS="--proxy $HTTPS_PROXY"
+elif [ -n "$HTTP_PROXY" ]; then
+  PIP_OPTS="--proxy $HTTP_PROXY"
+fi
+
 # Install requirements if there are any
 if [ -f "requirements.txt" ];then
-    pip2 install -r requirements.txt || pip install -r requirements.txt
+  pip2 install $PIP_OPTS -r requirements.txt || pip install $PIP_OPTS -r requirements.txt
 fi
 
 # Configure all disk space
