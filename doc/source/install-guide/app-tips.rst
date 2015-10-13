@@ -1,6 +1,6 @@
 `Home <index.html>`__ OpenStack Ansible Installation Guide
 
-Appendix C. Tips and Tricks
+Appendix D. Tips and Tricks
 ---------------------------
 
 Ansible Forks
