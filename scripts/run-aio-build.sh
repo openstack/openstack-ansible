@@ -38,13 +38,13 @@ git clone -b ${REPO_BRANCH} ${REPO_URL} ${WORKING_FOLDER}
 cd ${WORKING_FOLDER}
 
 # first, bootstrap the AIO host
-source $(dirname ${0})/bootstrap-aio.sh
+source scripts/bootstrap-aio.sh
 
 # next, bootstrap Ansible
-source $(dirname ${0})/bootstrap-ansible.sh
+source scripts/bootstrap-ansible.sh
 
 # finally, run all the playbooks
-bash $(dirname ${0})/run-playbooks.sh
+bash scripts/run-playbooks.sh
 
 # put a motd in place to help the user know what stuff is accessible once the build is complete
 cat > /etc/update-motd.d/20-openstack<< EOF

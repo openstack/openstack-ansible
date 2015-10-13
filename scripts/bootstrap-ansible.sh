@@ -32,8 +32,9 @@ export DEBIAN_FRONTEND=${DEBIAN_FRONTEND:-"noninteractive"}
 
 
 ## Functions -----------------------------------------------------------------
-info_block "Checking for required libraries." 2> /dev/null || source $(dirname ${0})/scripts-library.sh
-
+info_block "Checking for required libraries." 2> /dev/null ||
+    source $(dirname ${0})/scripts-library.sh ||
+    source scripts/scripts-library.sh
 
 ## Main ----------------------------------------------------------------------
 info_block "Bootstrapping System with Ansible"
