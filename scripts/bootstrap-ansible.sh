@@ -43,7 +43,13 @@ info_block "Bootstrapping System with Ansible"
 ssh_key_create
 
 # Install the base packages
-apt-get update && apt-get -y install git python-all python-dev curl autoconf g++ python2.7-dev
+APT=`command -v apt-get` || true
+YUM=`command -v yum` || true
+if [[ "$APT" != "" ]]; then
+    apt-get update && apt-get -y install git python-all python-dev curl autoconf g++ python2.7-dev
+elif [[ "$YUM" != "" ]]; then
+    yum check-update && yum -y install git python2 curl autoconf gcc-c++ python2-devel
+fi
 
 # If the working directory exists remove it
 if [ -d "${ANSIBLE_WORKING_DIR}" ];then
