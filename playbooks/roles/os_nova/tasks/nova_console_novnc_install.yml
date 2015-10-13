@@ -13,6 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- name: Get package from git
+  git:
+    repo: "{{ nova_novncproxy_git_repo }}"
+    dest: "/usr/share/novnc"
+    clone: "yes"
+    update: "yes"
+    version: "{{ nova_novncproxy_git_install_branch }}"
+  register: git_clone
+  until: git_clone|success
+  retries: 5
+  delay: 2
+  tags:
+    - nova-novnc-git
+
 - name: Update apt sources
   apt:
     update_cache: yes
@@ -23,7 +37,7 @@
   delay: 2
   tags:
     - nova-apt-packages
-    - nova-spice-apt-packages
+    - nova-novnc-apt-packages
 
 - name: Install apt packages
   apt:
@@ -33,8 +47,20 @@
   until: install_packages|success
   retries: 5
   delay: 2
-  with_items: nova_spice_apt_packages
+  with_items: nova_novnc_apt_packages
   tags:
     - nova-apt-packages
-    - nova-spice-apt-packages
+    - nova-novnc-apt-packages
 
+- name: Install pip packages
+  pip:
+    name: "{{ item }}"
+    state: present
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 2
+  with_items:
+    - "{{ nova_novnc_pip_packages }}"
+  tags:
+    - nova-novnc-pip-packages
