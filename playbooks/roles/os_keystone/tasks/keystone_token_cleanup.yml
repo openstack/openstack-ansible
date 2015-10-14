@@ -17,9 +17,7 @@
   cron:
     name: "Clear out stale keystone tokens"
     minute: 0
-    job: "/usr/local/bin/keystone-manage token_flush"
+    job: "{{ keystone_bin }}/keystone-manage token_flush"
     user: "{{ keystone_system_user_name }}"
-  when: >
-    'sql' in keystone_token_driver
   tags:
     - keystone-config

@@ -15,6 +15,7 @@
 
 - include: keystone_pre_install.yml
 - include: keystone_install.yml
+- include: keystone_post_install.yml
 
 - include: keystone_key_setup.yml
   tags:
@@ -27,8 +28,6 @@
   when: >
     'fernet' in keystone_token_provider
 
-- include: keystone_post_install.yml
-
 - include: keystone_federation_sp_setup.yml
   when: >
     keystone_sp is defined
@@ -37,9 +36,12 @@
   when: >
     inventory_hostname == groups['keystone_all'][0]
 
+- include: keystone_token_cleanup.yml
+  when: >
+    'sql' in keystone_token_driver
+
 - include: keystone_ssl.yml
 - include: keystone_apache.yml
-- include: keystone_token_cleanup.yml
 
 - include: keystone_service_setup.yml
   when: >
