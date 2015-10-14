@@ -25,7 +25,7 @@ export OS_PROJECT_DOMAIN_NAME={{ openrc_os_domain_name }}
 export OS_IDENTITY_API_VERSION=3
 export OS_AUTH_VERSION=3
 {% else %}
-export OS_IDENTITY_API_VERSION=2
+export OS_IDENTITY_API_VERSION=2.0
 export OS_AUTH_VERSION=2
 {% endif %}
 
