@@ -24,6 +24,7 @@
         container_config:
           - "lxc.aa_profile=unconfined"
       delegate_to: "{{ physical_host }}"
+      register: container_config
       when: >
         not is_metal | bool and
         inventory_hostname in groups['cinder_volume']
@@ -67,7 +68,7 @@
       tags:
         - cinder-container-setup
       delegate_to: "{{ physical_host }}"
-      when: lxc_config is defined and lxc_config.changed
+      when: lxc_config is defined and lxc_config | changed
     - name: Wait for container ssh
       wait_for:
         port: "22"
@@ -75,6 +76,9 @@
         search_regex: "OpenSSH"
         host: "{{ ansible_ssh_host }}"
       delegate_to: "{{ physical_host }}"
+      when: >
+            (container_config is defined and container_config | changed) or
+            (lxc_config is defined and lxc_config | changed)
       register: ssh_wait_check
       until: ssh_wait_check|success
       retries: 3

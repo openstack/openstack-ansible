@@ -24,6 +24,7 @@
           - "lxc.aa_profile=lxc-openstack"
       delegate_to: "{{ physical_host }}"
       when: not is_metal | bool
+      register: container_config
       tags:
         - lxc-aa-profile
     - name: Galera extra lxc config
@@ -35,6 +36,7 @@
           - "lxc.mount.entry=/openstack/{{ container_name }} var/lib/mysql none bind 0 0"
       delegate_to: "{{ physical_host }}"
       when: not is_metal | bool
+      register: container_extra_config
       tags:
         - galera-mysql-dir
     - name: Wait for container ssh
@@ -44,6 +46,9 @@
         search_regex: "OpenSSH"
         host: "{{ ansible_ssh_host }}"
       delegate_to: "{{ physical_host }}"
+      when: >
+            (container_config is defined and container_config | changed) or
+            (container_extra_config is defined and container_extra_config | changed)
       tags:
         - galera-ssh-wait
   vars:
