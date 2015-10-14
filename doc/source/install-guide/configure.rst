@@ -21,6 +21,7 @@ Chapter 5. Deployment configuration
    configure-openstack.rst
    configure-sslcertificates.rst
    configure-configurationintegrity.rst
+   configure-federation.rst
 
 
 **Figure 5.1. Installation work flow**
