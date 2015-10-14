@@ -22,6 +22,12 @@ vgs_lvmconf: EnvFilter, env, root, LVM_SYSTEM_DIR=, LC_ALL=C, vgs
 lvs_lvmconf: EnvFilter, env, root, LVM_SYSTEM_DIR=, LC_ALL=C, lvs
 lvdisplay_lvmconf: EnvFilter, env, root, LVM_SYSTEM_DIR=, LC_ALL=C, lvdisplay
 
+# os-brick library commands
+# TODO(smcginnis) This is a temporary fix. Need to pull in os-brick
+# os-brick.filters file instead and clean out stale brick values from
+# this file.
+scsi_id: CommandFilter, /lib/udev/scsi_id, root
+
 # cinder/volumes/drivers/srb.py: 'pvresize', '--setphysicalvolumesize', sizestr, pvname
 pvresize: CommandFilter, pvresize, root
 
@@ -103,6 +109,7 @@ netapp_nfs_find: RegExpFilter, find, root, find, ^[/]*([^/\0]+(/+)?)*$, -maxdept
 # cinder/volume/drivers/glusterfs.py
 chgrp: CommandFilter, chgrp, root
 umount: CommandFilter, umount, root
+fallocate: CommandFilter, fallocate, root
 
 # cinder/volumes/drivers/hds/hds.py:
 hus-cmd: CommandFilter, hus-cmd, root
@@ -122,8 +129,11 @@ systool: CommandFilter, systool, root
 blockdev: CommandFilter, blockdev, root
 
 # cinder/volume/drivers/ibm/gpfs.py
-cp: CommandFilter, cp, root
+# cinder/volume/drivers/tintri.py
 mv: CommandFilter, mv, root
+
+# cinder/volume/drivers/ibm/gpfs.py
+cp: CommandFilter, cp, root
 mmgetstate: CommandFilter, /usr/lpp/mmfs/bin/mmgetstate, root
 mmclone: CommandFilter, /usr/lpp/mmfs/bin/mmclone, root
 mmlsattr: CommandFilter, /usr/lpp/mmfs/bin/mmlsattr, root
@@ -185,3 +195,13 @@ auiscsi: EnvFilter, env, root, LANG=, STONAVM_HOME=, LD_LIBRARY_PATH=, STONAVM_R
 audppool: EnvFilter, env, root, LANG=, STONAVM_HOME=, LD_LIBRARY_PATH=, STONAVM_RSP_PASS=, STONAVM_ACT=, /usr/stonavm/audppool
 aureplicationlocal: EnvFilter, env, root, LANG=, STONAVM_HOME=, LD_LIBRARY_PATH=, STONAVM_RSP_PASS=, STONAVM_ACT=, /usr/stonavm/aureplicationlocal
 aureplicationmon: EnvFilter, env, root, LANG=, STONAVM_HOME=, LD_LIBRARY_PATH=, STONAVM_RSP_PASS=, STONAVM_ACT=, /usr/stonavm/aureplicationmon
+
+# cinder/volume/drivers/hgst.py
+vgc-cluster: CommandFilter, vgc-cluster, root
+
+# cinder/volume/drivers/vzstorage.py
+pstorage-mount: CommandFilter, pstorage-mount, root
+pstorage: CommandFilter, pstorage, root
+
+# initiator/connector.py:
+drv_cfg: CommandFilter, /opt/emc/scaleio/sdc/bin/drv_cfg, root, /opt/emc/scaleio/sdc/bin/drv_cfg, --query_guid
