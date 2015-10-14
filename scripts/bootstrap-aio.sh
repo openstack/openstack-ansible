@@ -78,7 +78,7 @@ if [ ! "$(grep -e '^nameserver 8.8.8.8' -e '^nameserver 8.8.4.4' /etc/resolv.con
 fi
 
 # Ensure that the https apt transport is available before doing anything else
-apt-get update && apt-get install -y apt-transport-https
+apt-get update && apt-get install -y apt-transport-https < /dev/null
 
 # Set the host repositories to only use the same ones, always, for the sake of consistency.
 cat > /etc/apt/sources.list <<EOF
@@ -96,7 +96,7 @@ EOF
 apt-get update
 
 # Remove known conflicting packages in the base image
-apt-get purge -y libmysqlclient18 mysql-common
+apt-get purge -y libmysqlclient18 mysql-common < /dev/null
 
 # Install required packages
 apt-get install -y bridge-utils \
@@ -112,7 +112,7 @@ apt-get install -y bridge-utils \
                    tmux \
                    vim \
                    vlan \
-                   xfsprogs
+                   xfsprogs < /dev/null
 
 # Flush all the iptables rules set by openstack-infra
 if [ "${FLUSH_IPTABLES}" == "yes" ]; then
@@ -305,7 +305,7 @@ done
 
 if [ ${DEPLOY_CEILOMETER} == "yes" ]; then
   # Install mongodb on the aio1 host
-  apt-get install mongodb-server mongodb-clients python-pymongo -y
+  apt-get install mongodb-server mongodb-clients python-pymongo -y < /dev/null
   # Change bind_ip to management ip
   sed -i "s/^bind_ip.*/bind_ip = $MONGO_HOST/" /etc/mongodb.conf
   # Asserting smallfiles key
