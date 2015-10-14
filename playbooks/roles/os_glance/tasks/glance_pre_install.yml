@@ -41,6 +41,7 @@
     group: "{{ item.group|default(glance_system_group_name) }}"
     mode: "{{ item.mode|default('0755') }}"
   with_items:
+    - { path: "/openstack", mode: "0755", owner: "root", group: "root" }
     - { path: "/etc/glance" }
     - { path: "/etc/sudoers.d", mode: "0755", owner: "root", group: "root" }
     - { path: "/var/cache/glance" }
@@ -49,6 +50,17 @@
     - { path: "{{ glance_system_user_home }}/cache/registry" }
     - { path: "{{ glance_system_user_home }}/images/" }
     - { path: "{{ glance_system_user_home }}/scrubber" }
+  tags:
+    - glance-dirs
+
+- name: Create glance venv dir
+  file:
+    path: "{{ item.path }}"
+    state: directory
+  with_items:
+    - { path: "/openstack/venvs" }
+    - { path: "{{ glance_venv_bin }}" }
+  when: glance_venv_enabled | bool
   tags:
     - glance-dirs
 

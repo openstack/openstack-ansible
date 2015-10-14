@@ -13,25 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Create glance cache management cron jobs
-  cron:
-    name: "{{ item.name }}"
-    minute: "{{ 59 |random(start=1) }}"
-    day: "*"
-    hour: "{{ item.hour }}"
-    month: "*"
-    state: present
-    job: "{{ item.name }}"
-    user: glance
-  with_items:
-    - name: /usr/local/bin/glance-cache-pruner
-      hour: "*"
-    - name: /usr/local/bin/glance-cache-cleaner
-      hour: "*/5"
-  when: glance_flavor | search("cache")
-  tags:
-    - glance-cron
-
 - name: Drop Glance Config(s)
   config_template:
     src: "{{ item.src }}"
@@ -112,3 +93,38 @@
   tags:
     - glance-nfs
     - glance-nfs-local-path
+
+- name: Get glance command path
+  command: which glance
+  register: glance_command_path
+  when:
+    - not glance_venv_enabled | bool
+  tags:
+    - glance-command-bin
+
+- name: Set glance command path
+  set_fact:
+    glance_bin: "{{ glance_command_path.stdout | dirname }}"
+  when:
+    - not glance_venv_enabled | bool
+  tags:
+    - glance-command-bin
+
+- name: Create glance cache management cron jobs
+  cron:
+    name: "{{ item.name }}"
+    minute: "{{ 59 |random(start=1) }}"
+    day: "*"
+    hour: "{{ item.hour }}"
+    month: "*"
+    state: present
+    job: "{{ item.name }}"
+    user: glance
+  with_items:
+    - name: "{{ glance_bin }}/glance-cache-pruner"
+      hour: "*"
+    - name: "{{ glance_bin }}/glance-cache-cleaner"
+      hour: "*/5"
+  when: glance_flavor | search("cache")
+  tags:
+    - glance-cron

@@ -13,15 +13,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Defines that the role will be deployed on a host machine
-is_metal: true
+## Verbosity Options
+debug: False
+verbose: True
+
+# Name of the virtual env to deploy into
+glance_venv_tag: untagged
+glance_venv_bin: "/openstack/venvs/glance-{{ glance_venv_tag }}/bin"
+
+# Set this to enable or disable installing in a venv
+glance_venv_enabled: true
+
+# The bin path defaults to the venv path however if installation in a
+#  venv is disabled the bin path will be dynamically set based on the
+#  system path used when the installing.
+glance_bin: "{{ glance_venv_bin }}"
 
 # Enable/Disable Ceilometer
 glance_ceilometer_enabled: False
 
-## Verbosity Options
-debug: False
-verbose: True
 glance_profiler_enabled: False
 glance_fatal_deprecations: False
 
@@ -153,6 +163,11 @@ glance_apt_packages:
   - rsync
   - git
   - nfs-common
+
+# Cinder packages that must be installed before anything else
+glance_requires_pip_packages:
+  - virtualenv
+  - python-keystoneclient # Keystoneclient needed to OSA keystone lib
 
 # Common pip packages
 glance_pip_packages:
