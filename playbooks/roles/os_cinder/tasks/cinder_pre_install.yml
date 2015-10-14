@@ -40,11 +40,25 @@
     owner: "{{ item.owner|default(cinder_system_user_name) }}"
     group: "{{ item.group|default(cinder_system_group_name) }}"
   with_items:
+    - { path: "/openstack", mode: "0755", owner: "root", group: "root" }
     - { path: "/var/cache/cinder", mode: "0700" }
     - { path: "/etc/cinder" }
     - { path: "/etc/cinder/rootwrap.d" }
     - { path: "/etc/sudoers.d", mode: "0750", owner: "root", group: "root" }
     - { path: "{{ cinder_system_home_folder }}" }
+  tags:
+    - cinder-dirs
+
+- name: Create cinder venv dir
+  file:
+    path: "{{ item.path }}"
+    state: directory
+    owner: "{{ item.owner|default(cinder_system_user_name) }}"
+    group: "{{ item.group|default(cinder_system_group_name) }}"
+  with_items:
+    - { path: "/openstack/venvs", mode: "0755", owner: "root", group: "root" }
+    - { path: "{{ cinder_venv_bin }}" }
+  when: cinder_venv_enabled | bool
   tags:
     - cinder-dirs
 
