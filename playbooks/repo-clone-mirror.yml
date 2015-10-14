@@ -35,7 +35,6 @@
       - "/repos"
       - "/mirror"
       - "/rpcgit"
-      - "/openstackgit"
       - "/python_packages"
     mirror_excludes: "{% for i in repo_mirror_excludes %} --exclude={{ i }} {% endfor %}"
     mirror_path: "{{ repo_service_home_folder }}/repo"
