@@ -96,7 +96,7 @@ paste.filter_factory = heat.common.custom_backend_auth:filter_factory
 
 # Middleware to set x-openstack-request-id in http response header
 [filter:request_id]
-paste.filter_factory = oslo.middleware.request_id:RequestId.factory
+paste.filter_factory = oslo_middleware.request_id:RequestId.factory
 
 [filter:osprofiler]
 paste.filter_factory = osprofiler.web:WsgiMiddleware.factory
