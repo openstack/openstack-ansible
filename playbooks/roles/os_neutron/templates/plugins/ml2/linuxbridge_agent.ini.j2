@@ -1,0 +1,32 @@
+# {{ ansible_managed }}
+
+# Linux bridge agent physical interface mappings
+[linux_bridge]
+
+{% if neutron_provider_networks.network_mappings is defined %}
+physical_interface_mappings = {{ neutron_provider_networks.network_mappings }}
+{% endif %}
+
+# Linux bridge agent VXLAN networks
+[vxlan]
+
+{% if neutron_vxlan_enabled | bool %}
+enable_vxlan = True
+vxlan_group = {{ neutron_vxlan_group }}
+# VXLAN local tunnel endpoint
+local_ip = {{ neutron_local_ip }}
+l2_population = {{ neutron_l2_population }}
+
+{% else %}
+
+# Disable VXLAN for deployments with only flat or VLAN networks
+enable_vxlan = False
+{% endif %}
+
+# Agent
+[agent]
+
+# Security groups
+[securitygroup]
+firewall_driver = {{ neutron_driver_firewall }}
+enable_security_group = True

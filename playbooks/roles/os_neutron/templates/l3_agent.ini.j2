@@ -5,7 +5,9 @@
 verbose = {{ verbose }}
 debug = {{ debug }}
 
-handle_internal_only_routers = True
+# While this option is deprecated in Liberty, if we remove it then it takes
+# a default value of 'br-ex', which we do not want. We therefore leave it
+# in place for now and can remove it in Mitaka.
 external_network_bridge = {{ neutron_external_network_bridge }}
 gateway_external_network_id = {{ neutron_gateway_external_network_id }}
 
@@ -36,6 +38,3 @@ send_arp_for_ha = 3
 
 # Metadata
 enable_metadata_proxy = True
-
-# Delete defunct namespaces
-router_delete_namespaces = {{ neutron_l3_router_delete_namespaces }}

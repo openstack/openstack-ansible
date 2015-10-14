@@ -8,7 +8,6 @@
 verbose = {{ verbose }}
 debug = {{ debug }}
 fatal_deprecations = {{ neutron_fatal_deprecations }}
-use_syslog = False
 log_file = /var/log/neutron/neutron.log
 
 {% if inventory_hostname in groups['neutron_server'] %}
@@ -69,7 +68,7 @@ nova_url = {{ nova_service_adminurl|replace('/%(tenant_id)s', '') }}
 
 ## Rpc all
 rpc_backend = {{ neutron_rpc_backend }}
-rpc_thread_pool_size = {{ neutron_rpc_thread_pool_size }}
+executor__thread_pool_size = {{ neutron_rpc_thread_pool_size }}
 rpc_conn_pool_size = {{ neutron_rpc_conn_pool_size }}
 rpc_response_timeout = {{ neutron_rpc_response_timeout }}
 

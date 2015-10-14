@@ -8,14 +8,17 @@
 
 [Filters]
 
-# ryu-agent
+# openvswitch-agent
 # unclear whether both variants are necessary, but I'm transliterating
 # from the old mechanism
-
-# neutron/plugins/ryu/agent/ryu_neutron_agent.py:
-#   "ovs-vsctl", "--timeout=2", ...
 ovs-vsctl: CommandFilter, ovs-vsctl, root
-
-# neutron/plugins/ryu/agent/ryu_neutron_agent.py:
-#   "xe", "vif-param-get", ...
+# NOTE(yamamoto): of_interface=native doesn't use ovs-ofctl
+ovs-ofctl: CommandFilter, ovs-ofctl, root
+kill_ovsdb_client: KillFilter, root, /usr/bin/ovsdb-client, -9
+ovsdb-client: CommandFilter, ovsdb-client, root
 xe: CommandFilter, xe, root
+
+# ip_lib
+ip: IpFilter, ip, root
+find: RegExpFilter, find, root, find, /sys/class/net, -maxdepth, 1, -type, l, -printf, %.*
+ip_exec: IpNetnsExecFilter, ip, root
