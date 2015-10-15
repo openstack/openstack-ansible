@@ -62,18 +62,10 @@ resume_guests_state_on_host_boot = {{ nova_resume_guests_state_on_host_boot }}
 # Api's
 enabled_apis = {{ nova_enabled_apis }}
 osapi_compute_workers = {{ nova_osapi_compute_workers | default(api_threads) }}
-{% if nova_ec2_deprecated_but_enabled == true or nova_ec2_deprecated_but_enabled == 'True' %}
-ec2_workers = {{ nova_ec2_workers | default(api_threads) }}
-ec2_dmz_host = {{ external_lb_vip_address }}
-{% endif %}
-{% if nova_s3_deprecated_but_enabled == true or nova_s3_deprecated_but_enabled == 'True' %}
-s3_port = {{ nova_s3_service_port }}
-s3_host = {{ nova_management_address }}
-{% endif %}
 
 # Rpc all
 rpc_backend = {{ nova_rpc_backend }}
-rpc_thread_pool_size = {{ nova_rpc_thread_pool_size }}
+executor_thread_pool_size = {{ nova_rpc_thread_pool_size }}
 rpc_conn_pool_size = {{ nova_rpc_conn_pool_size }}
 rpc_response_timeout = {{ nova_rpc_response_timeout }}
 
@@ -162,7 +154,6 @@ port = {{ glance_service_port }}
 url = {{ neutron_service_adminurl }}
 region_name = {{ neutron_service_region }}
 auth_plugin = password
-auth_strategy = keystone
 # Keystone client plugin password option
 password = {{ neutron_service_password }}
 # Keystone client plugin username option
@@ -181,15 +172,6 @@ use_local = false
 topic = conductor
 manager = nova.conductor.manager.ConductorManager
 workers = {{ nova_conductor_workers | default(api_threads) }}
-
-
-[osapi_v3]
-# note that this setting enables both the v3 and v2.1 APIs in kilo
-{% if nova_v3_deprecated_but_enabled == true or nova_v3_deprecated_but_enabled == 'True' or nova_v21_enabled == true or nova_v21_enabled == 'True' %}
-enabled = true
-{% else %}
-enabled = false
-{% endif %}
 
 
 [keystone_authtoken]

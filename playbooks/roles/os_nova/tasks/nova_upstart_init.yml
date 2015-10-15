@@ -51,28 +51,6 @@
 
 - include: nova_upstart_common_init.yml
   vars:
-    program_name: "{{ nova_s3_program_name }}"
-    service_name: "{{ nova_service_name }}"
-    system_user: "{{ nova_system_user_name }}"
-    system_group: "{{ nova_system_group_name }}"
-    service_home: "{{ nova_system_home_folder }}"
-  when: >
-    inventory_hostname in groups['nova_api_os_compute'] and
-    (nova_ec2_deprecated_but_enabled == true or nova_ec2_deprecated_but_enabled == 'True')
-
-- include: nova_upstart_common_init.yml
-  vars:
-    program_name: "{{ nova_ec2_program_name }}"
-    service_name: "{{ nova_service_name }}"
-    system_user: "{{ nova_system_user_name }}"
-    system_group: "{{ nova_system_group_name }}"
-    service_home: "{{ nova_system_home_folder }}"
-  when: >
-    inventory_hostname in groups['nova_api_os_compute'] and
-    (nova_ec2_deprecated_but_enabled == true or nova_ec2_deprecated_but_enabled == 'True')
-
-- include: nova_upstart_common_init.yml
-  vars:
     program_name: "{{ nova_scheduler_program_name }}"
     service_name: "{{ nova_service_name }}"
     system_user: "{{ nova_system_user_name }}"
