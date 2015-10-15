@@ -51,3 +51,19 @@
     - Restart heat services
   tags:
     - heat-config
+
+- name: Get heat command path
+  command: which heat
+  register: heat_command_path
+  when:
+    - not heat_venv_enabled | bool
+  tags:
+    - heat-command-bin
+
+- name: Set heat command path
+  set_fact:
+    heat_bin: "{{ heat_command_path.stdout | dirname }}"
+  when:
+    - not heat_venv_enabled | bool
+  tags:
+    - heat-command-bin

@@ -15,12 +15,11 @@
 
 - include: heat_pre_install.yml
 - include: heat_install.yml
+- include: heat_post_install.yml
 
 - include: heat_domain_setup.yml
   when: >
     inventory_hostname == groups['heat_all'][0]
-
-- include: heat_post_install.yml
 
 - include: heat_db_setup.yml
   when: >

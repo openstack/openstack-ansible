@@ -16,15 +16,25 @@
 # The variables file used by the playbooks in the Heat-api group.
 # These don't have to be explicitly imported by vars_files: they are autopopulated.
 
-# Defines that the role will be deployed on a host machine
-is_metal: true
-
 # Enable/Disable Ceilometer
 heat_ceilometer_enabled: False
 
 ## Verbosity Options
 debug: False
 verbose: True
+
+# Name of the virtual env to deploy into
+heat_venv_tag: untagged
+heat_venv_bin: "/openstack/venvs/heat-{{ heat_venv_tag }}/bin"
+
+# Set this to enable or disable installing in a venv
+heat_venv_enabled: true
+
+# The bin path defaults to the venv path however if installation in a
+#  venv is disabled the bin path will be dynamically set based on the
+#  system path used when the installing.
+heat_bin: "{{ heat_venv_bin }}"
+
 heat_fatal_deprecations: False
 
 heat_clients_endpoint: internalURL
@@ -144,6 +154,12 @@ heat_apt_packages:
   - rsync
   - libxslt1.1
 
+# Heat packages that must be installed before anything else
+heat_requires_pip_packages:
+  - virtualenv
+  - python-keystoneclient # Keystoneclient needed to OSA keystone lib
+
+# Common pip packages
 heat_pip_packages:
   - keystonemiddleware
   - PyMySQL
