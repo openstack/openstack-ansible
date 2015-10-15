@@ -26,9 +26,9 @@ rabbitmq_upgrade: false
 #  upgrade/version state can be ignored by setting `rabbitmq_ignore_version_state=true`
 rabbitmq_ignore_version_state: false
 
-rabbitmq_package_url: "https://www.rabbitmq.com/releases/rabbitmq-server/v3.5.5/rabbitmq-server_3.5.5-3_all.deb"
+rabbitmq_package_url: "https://www.rabbitmq.com/releases/rabbitmq-server/v3.5.6/rabbitmq-server_3.5.6-1_all.deb"
 rabbitmq_package_version: "{{ rabbitmq_package_url.split('/')[-1].split('_')[1] }}"
-rabbitmq_package_sha256: "ecc00151b41aaac1441be733a5bacd5fb71eab5e76b060a4e541dc8286d89bf1"
+rabbitmq_package_sha256: "e3c377e585c123e06c88422248915f32216641d6f7dfab50d124535c8e93010d"
 rabbitmq_package_path: "/opt/rabbitmq-server.deb"
 
 rabbitmq_apt_packages:
