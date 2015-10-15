@@ -22,8 +22,11 @@ environment within these hosts. The OSA environment also recommends a
 *deployment host* from which Ansible orchestrates the deployment
 process. One of the target hosts can function as the deployment host.
 
-At least one hardware load balancer **must** be included to manage the
-traffic among the target hosts.
+At least one load balancer **must** be used to manage the traffic among
+the target hosts. This can be any load balance of any type (hardware, haproxy,
+etc). While OpenStack-Ansible has playbooks and roles for deploying haproxy
+it's recommended for deployers to use physical load balancers when moving to
+production.
 
 Infrastructure Control Plane target hosts contain the following
 services:
