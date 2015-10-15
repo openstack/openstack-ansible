@@ -13,19 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Ensure service tenant
-  shell: |
-    . {{ ansible_env.HOME }}/openrc && keystone tenant-list | awk '/service/ {print $2}'
-  register: service_id
-  tags:
-    - neutron-config
-
-- name: Set service tenant id
-  set_fact:
-    nova_admin_tenant_id: "{{ service_id.stdout }}"
-  tags:
-    - neutron-config
-
 - name: Copy neutron config
   config_template:
     src: "{{ item.src }}"
