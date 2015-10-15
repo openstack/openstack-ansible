@@ -60,6 +60,7 @@ horizon_enable_password_retrieve: False
 # If nova_libvirt_inject_password is set to True, then this can also be enabled:
 horizon_can_set_password: False
 
+
 ## Horizon SSL
 horizon_ssl_cert: /etc/ssl/certs/horizon.pem
 horizon_ssl_key: /etc/ssl/private/horizon.key
@@ -84,6 +85,11 @@ horizon_ssl_self_signed_subject: "/C=US/ST=Texas/L=San Antonio/O=IT/CN={{ horizo
 
 horizon_keystone_host: "{{ internal_lb_vip_address }}"
 horizon_keystone_endpoint: "{{ keystone_service_internalurl }}"
+
+## Horizon Multi-Domain Support
+# these variables should only be changed if horizon_keystone_endpoint is a Keystone v3 API endpoint
+horizon_keystone_multidomain_support: False
+horizon_keystone_default_domain: Default
 
 ### Set the cacert pem for Keystone if you'd like Horizon to verify it.
 # horizon_cacert_pem: /path/to/cacert.pem
