@@ -33,6 +33,7 @@
     repo: "{{ tempest_git_repo }}"
     dest: "{{ tempest_git_dest }}"
     version: "{{ tempest_git_install_branch }}"
+    force: yes
   register: git_clone
   until: git_clone|success
   retries: 5

@@ -45,6 +45,7 @@
     clone: "yes"
     update: "yes"
     version: "{{ nova_spicehtml5_git_install_branch }}"
+    force: yes
   register: git_clone
   until: git_clone|success
   retries: 5
