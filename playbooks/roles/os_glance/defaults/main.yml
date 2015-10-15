@@ -29,6 +29,14 @@ glance_venv_enabled: true
 #  system path used when the installing.
 glance_bin: "{{ glance_venv_bin }}"
 
+# Set the etc dir path where glance is installed.
+#  This is used for role access to the db migrations.
+#  Example:
+#  glance_etc_dir: "/usr/local/etc/glance"
+glance_venv_etc_dir: "{{ glance_bin | dirname }}/etc/glance"
+glance_non_venv_etc_dir: "/usr/local/etc/glance"
+glance_etc_dir: "{{ (glance_venv_enabled | bool) | ternary(glance_venv_etc_dir, glance_non_venv_etc_dir) }}"
+
 # Enable/Disable Ceilometer
 glance_ceilometer_enabled: False
 

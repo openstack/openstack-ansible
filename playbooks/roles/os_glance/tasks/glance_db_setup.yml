@@ -47,3 +47,12 @@
     - glance-db-sync
     - glance-setup
     - glance-command-bin
+
+- name: Load glance metadata definitions
+  command: "{{ glance_bin }}/glance-manage db_load_metadefs {{ glance_etc_dir }}/metadefs"
+  sudo: yes
+  sudo_user: "{{ glance_system_user_name }}"
+  tags:
+    - glance-db-sync
+    - glance-setup
+    - glance-command-bin
