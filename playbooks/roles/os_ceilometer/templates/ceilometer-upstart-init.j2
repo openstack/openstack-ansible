@@ -12,7 +12,7 @@ respawn
 respawn limit 10 5
 
 # Set the RUNBIN environment variable
-env RUNBIN="/usr/local/bin/{{ program_name }}"
+env RUNBIN="{{ ceilometer_bin }}/{{ program_name }}"
 
 # Change directory to service users home
 chdir "{{ service_home }}"
@@ -24,6 +24,11 @@ pre-start script
 
   mkdir -p "/var/lock/{{ program_name }}"
   chown {{ system_user }}:{{ system_group }} "/var/lock/{{ program_name }}"
+
+  {% if ceilometer_venv_enabled | bool -%}
+  . {{ ceilometer_venv_bin }}/activate
+  {%- endif %}
+
 end script
 
 # Post stop actions

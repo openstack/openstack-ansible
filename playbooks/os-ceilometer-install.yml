@@ -72,7 +72,10 @@
       tags:
         - ceilometer-logs
   roles:
-    - { role: "os_ceilometer", tags: [ "os-ceilometer" ] }
+    - role: "os_ceilometer"
+      ceilometer_venv_tag: "{{ openstack_release }}"
+      tags:
+        - "os-ceilometer"
     - { role: "openstack_openrc", tags: [ "openstack-openrc" ] }
     - role: "rsyslog_client"
       rsyslog_client_log_rotate_file: ceilometer_log_rotate

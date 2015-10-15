@@ -25,10 +25,43 @@
   delay: 2
   with_items: ceilometer_apt_packages
   tags:
+    - ceilometer-install
     - ceilometer-apt-packages
 
+- name: Install requires pip packages
+  pip:
+    name: "{{ item }}"
+    state: present
+    extra_args: "{{ pip_install_options|default('') }}"
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 2
+  with_items:
+    - "{{ ceilometer_requires_pip_packages }}"
+  tags:
+    - ceilometer-install
+    - ceilometer-pip-packages
 
-- name: Install pip packages
+- name: Install pip packages (venv)
+  pip:
+    name: "{{ item }}"
+    state: present
+    virtualenv: "{{ ceilometer_venv_bin | dirname }}"
+    virtualenv_site_packages: "no"
+    extra_args: "{{ pip_install_options|default('') }}"
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 2
+  with_items:
+    - "{{ ceilometer_pip_packages }}"
+  when: ceilometer_venv_enabled | bool
+  tags:
+    - ceilometer-install
+    - ceilometer-pip-packages
+
+- name: Install pip packages (no venv)
   pip:
     name: "{{ item }}"
     state: present
@@ -39,5 +72,7 @@
   delay: 2
   with_items:
     - "{{ ceilometer_pip_packages }}"
+  when: not ceilometer_venv_enabled | bool
   tags:
+    - ceilometer-install
     - ceilometer-pip-packages
