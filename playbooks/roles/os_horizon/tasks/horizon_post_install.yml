@@ -13,6 +13,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Because there is no specific "horizon" command this method
+#  is looking for the "keystone" command to set the horizon
+#  command path.
+- name: Get horizon command path
+  command: which keystone
+  register: horizon_command_path
+  when:
+    - not horizon_venv_enabled | bool
+  tags:
+    - horizon-command-bin
+
+- name: Set horizon command path
+  set_fact:
+    horizon_bin: "{{ horizon_command_path.stdout | dirname }}"
+  when:
+    - not horizon_venv_enabled | bool
+  tags:
+    - horizon-command-bin
+
 - name: Setup Horizon config(s)
   template:
     src: "{{ item.src }}"
@@ -22,19 +41,8 @@
     mode: "{{ item.mode }}"
   with_items:
     - { src: "horizon_local_settings.py.j2", dest: "/etc/horizon/local_settings.py", mode: "0644" }
+    - { src: "horizon-manage.py.j2", dest: "{{ horizon_bin }}/horizon-manage.py", mode: "0755" }
   notify: Restart apache2
-  tags:
-    - horizon-configs
-
-- name: Setup Horizon config(s)
-  copy:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-    owner: "{{ horizon_system_user_name }}"
-    group: "{{ horizon_system_group_name }}"
-    mode: "{{ item.mode }}"
-  with_items:
-    - { src: "horizon-manage.py", dest: "/usr/local/bin/horizon-manage.py", mode: "0755" }
   tags:
     - horizon-configs
 
@@ -55,8 +63,22 @@
   sudo: yes
   sudo_user: "{{ horizon_system_user_name }}"
   with_items:
-    - horizon-manage.py collectstatic --noinput
-    - horizon-manage.py compress --force
+    - "{{ horizon_bin }}/horizon-manage.py collectstatic --noinput"
+    - "{{ horizon_bin }}/horizon-manage.py compress --force"
   tags:
     - horizon-configs
     - horizon-static-collect
+    - horizon-command-bin
+
+- name: Setup Horizon config(s)
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ horizon_system_user_name }}"
+    group: "{{ horizon_system_group_name }}"
+  with_items:
+    - { src: "horizon_django.wsgi.j2", dest: "{{ horizon_lib_wsgi_file }}" }
+  notify: Restart apache2
+  tags:
+    - horizon-configs
+    - horizon-wsgi-venv

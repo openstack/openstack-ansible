@@ -13,12 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Defines that the role will be deployed on a host machine
-is_metal: true
-
 ## Verbosity Options
 debug: False
 verbose: True
+
+# Name of the virtual env to deploy into
+horizon_venv_tag: untagged
+horizon_venv_bin: "/openstack/venvs/horizon-{{ horizon_venv_tag }}/bin"
+
+# Set this to enable or disable installing in a venv
+horizon_venv_enabled: true
+
+# The bin path defaults to the venv path however if installation in a
+#  venv is disabled the bin path will be dynamically set based on the
+#  system path used when the installing.
+horizon_bin: "{{ horizon_venv_bin }}"
 
 ## System info
 horizon_system_user_name: horizon
@@ -44,7 +53,10 @@ horizon_session_timeout: 1800
 horizon_help_url: http://docs.openstack.org
 
 ## Installation directories
-horizon_lib_dir: /usr/local/lib/python2.7/dist-packages
+horizon_venv_lib_dir: "{{ horizon_bin | dirname }}/lib/python2.7/dist-packages"
+horizon_non_venv_lib_dir: "/usr/local/lib/python2.7/dist-packages"
+horizon_lib_dir: "{{ (horizon_venv_enabled | bool) | ternary(horizon_venv_lib_dir, horizon_non_venv_lib_dir) }}"
+horizon_lib_wsgi_file: "{{ horizon_lib_dir }}/openstack_dashboard/wsgi/django.wsgi"
 
 horizon_endpoint_type: internalURL
 
@@ -120,6 +132,11 @@ horizon_apt_packages:
   - libssl-dev
   - libxslt1.1
   - openssl
+
+# horizon packages that must be installed before anything else
+horizon_requires_pip_packages:
+  - virtualenv
+  - python-keystoneclient # Keystoneclient needed to OSA keystone lib
 
 horizon_pip_packages:
   - django-appconf

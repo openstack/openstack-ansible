@@ -40,19 +40,21 @@
     - horizon-db-setup
 
 - name: Perform a horizon DB sync
-  command: horizon-manage.py syncdb --noinput
+  command: "{{ horizon_bin }}/horizon-manage.py syncdb --noinput"
   sudo: yes
   sudo_user: "{{ horizon_system_user_name }}"
   tags:
+    - horizon-db-setup
     - horizon-db-sync
     - horizon-setup
+    - horizon-command-bin
 
 - name: Register DB session cleanup cron
   cron:
     name: "Clear out expired sessions"
     minute: "{{ 58 | random(start=2) }}"
     hour: 21
-    job: "/usr/local/bin/horizon-manage.py clearsessions"
+    job: "{{ horizon_bin }}/horizon-manage.py clearsessions"
     user: "{{ horizon_system_user_name }}"
     state: present
   tags:
