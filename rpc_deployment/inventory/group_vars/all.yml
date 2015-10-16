@@ -172,7 +172,11 @@ rabbit_max_retries: 0
 rabbit_ha_queues: false
 rabbit_userid: openstack
 rabbit_password: "{{ rabbitmq_password }}"
+rabbitmq_ulimit: 4096
 
+
+## Galera
+galera_max_connections: 500
 
 ## Auth
 auth_admin_username: admin
