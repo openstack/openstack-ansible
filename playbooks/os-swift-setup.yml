@@ -70,8 +70,73 @@
       when: is_metal | bool
       tags:
         - swift-logs
+    - name: Set swift storage bridge (is_metal)
+      set_fact:
+        storage_bridge: "{{ 'ansible_' + swift.storage_network | replace('-', '_') }}"
+      when:
+        - swift.storage_network is defined
+        - is_metal | bool
+    - name: Set swift storage address (is_metal)
+      set_fact:
+        storage_address: "{{ hostvars[inventory_hostname][storage_bridge]['ipv4']['address'] }}"
+      when:
+        - swift.storage_network is defined
+        - is_metal | bool
+    - name: Set swift storage address (is_metal no storage network)
+      set_fact:
+        storage_address: "{{ ansible_ssh_host }}"
+      when:
+        - swift.storage_network is undefined
+        - is_metal | bool
+    - name: Set swift storage address (container)
+      set_fact:
+        storage_address: "{{ hostvars[inventory_hostname]['container_networks']['storage_address']['address'] }}"
+      when:
+        - hostvars[inventory_hostname]['container_networks']['storage_address']['address'] is defined
+        - not is_metal | bool
+    - name: Set swift storage address (container no storage network)
+      set_fact:
+        storage_address: "{{ ansible_ssh_host }}"
+      when:
+        - hostvars[inventory_hostname]['container_networks']['storage_address']['address'] is undefined
+        - not is_metal | bool
+    - name: Set swift replication bridge (is_metal)
+      set_fact:
+        replication_bridge: "{{ 'ansible_' + swift.replication_network | replace('-', '_') }}"
+      when:
+        - swift.replication_network is defined
+        - is_metal | bool
+    - name: Set swift replication address (is_metal)
+      set_fact:
+        replication_address: "{{ hostvars[inventory_hostname][replication_bridge]['ipv4']['address'] }}"
+      when:
+        - swift.replication_network is defined
+        - is_metal | bool
+    - name: Set swift replication address (is_metal no replication network)
+      set_fact:
+        replication_address: "{{ storage_address }}"
+      when:
+        - swift.replication_network is undefined
+        - is_metal | bool
+    - name: Set swift replication address (container)
+      set_fact:
+        replication_address: "{{ hostvars[inventory_hostname]['container_networks']['replication_address']['address'] }}"
+      when:
+        - hostvars[inventory_hostname]['container_networks']['replication_address']['address'] is defined
+        - not is_metal | bool
+    - name: Set swift replication address (container no replication network)
+      set_fact:
+        replication_address: "{{ storage_address }}"
+      when:
+        - hostvars[inventory_hostname]['container_networks']['replication_address']['address'] is undefined
+        - not is_metal | bool
   roles:
-    - { role: "os_swift", tags: [ "os-swift" ] }
+    - role: "os_swift"
+      swift_venv_tag: "{{ openstack_release }}"
+      swift_storage_address: "{{ storage_address }}"
+      swift_replication_address: "{{ replication_address }}"
+      tags:
+        - "os-swift"
     - role: "rsyslog_client"
       rsyslog_client_log_rotate_file: swift_log_rotate
       rsyslog_client_log_dir: "/var/log/swift"
