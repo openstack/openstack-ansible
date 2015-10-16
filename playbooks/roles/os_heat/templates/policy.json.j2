@@ -45,6 +45,8 @@
     "stacks:global_index": "rule:deny_everybody",
     "stacks:index": "rule:deny_stack_user",
     "stacks:list_resource_types": "rule:deny_stack_user",
+    "stacks:list_template_versions": "rule:deny_stack_user",
+    "stacks:list_template_functions": "rule:deny_stack_user",
     "stacks:lookup": "",
     "stacks:preview": "rule:deny_stack_user",
     "stacks:resource_schema": "rule:deny_stack_user",
@@ -52,6 +54,8 @@
     "stacks:template": "rule:deny_stack_user",
     "stacks:update": "rule:deny_stack_user",
     "stacks:update_patch": "rule:deny_stack_user",
+    "stacks:preview_update": "rule:deny_stack_user",
+    "stacks:preview_update_patch": "rule:deny_stack_user",
     "stacks:validate_template": "rule:deny_stack_user",
     "stacks:snapshot": "rule:deny_stack_user",
     "stacks:show_snapshot": "rule:deny_stack_user",
@@ -59,6 +63,8 @@
     "stacks:list_snapshots": "rule:deny_stack_user",
     "stacks:restore_snapshot": "rule:deny_stack_user",
 
+    "software_configs:global_index": "rule:deny_everybody",
+    "software_configs:index": "rule:deny_stack_user",
     "software_configs:create": "rule:deny_stack_user",
     "software_configs:show": "rule:deny_stack_user",
     "software_configs:delete": "rule:deny_stack_user",
@@ -69,5 +75,7 @@
     "software_deployments:delete": "rule:deny_stack_user",
     "software_deployments:metadata": "",
 
-    "service:index": "rule:context_is_admin"
+    "service:index": "rule:context_is_admin",
+
+    "resource_types:OS::Nova::Flavor": "rule:context_is_admin"
 }
