@@ -38,6 +38,11 @@ endpoint_type = {{ heat_clients_endpoint }}
 [clients_heat]
 endpoint_type = {{ heat_clients_heat_endpoint }}
 
+[clients_keystone]
+insecure = {{ keystone_service_internaluri_insecure | bool }}
+endpoint_type = {{ heat_clients_endpoint }}
+auth_uri = {{ keystone_service_internaluri }}
+
 [database]
 connection = mysql+pymysql://{{ heat_galera_user }}:{{ heat_container_mysql_password }}@{{ heat_galera_address }}/{{ heat_galera_database }}?charset=utf8
 
@@ -69,12 +74,15 @@ trace_sqlalchemy = {{ heat_profiler_trace_sqlalchemy }}
 
 [keystone_authtoken]
 insecure = {{ keystone_service_internaluri_insecure | bool }}
-signing_dir = /var/cache/heat
-identity_uri = {{ keystone_service_adminuri }}
-auth_uri = {{ keystone_service_internalurl }}
-admin_tenant_name = {{ heat_service_project_name }}
-admin_user = {{ heat_service_user_name }}
-admin_password = {{ heat_service_password }}
+auth_plugin = {{ heat_keystone_auth_plugin }}
+signing_dir = {{ heat_system_home_folder }}/cache/heat
+auth_url = {{ keystone_service_adminuri }}
+auth_uri = {{ keystone_service_internaluri }}
+project_domain_id = {{ heat_service_project_domain_id }}
+user_domain_id = {{ heat_service_user_domain_id }}
+project_name = {{ heat_service_project_name }}
+username = {{ heat_service_user_name }}
+password = {{ heat_service_password }}
 
 memcached_servers = {{ memcached_servers }}
 
@@ -87,3 +95,15 @@ memcache_secret_key = {{ memcached_encryption_key }}
 
 # if your keystone deployment uses PKI, and you value security over performance:
 check_revocations_for_cached = False
+
+[trustee]
+insecure = {{ keystone_service_internaluri_insecure | bool }}
+auth_plugin = {{ heat_keystone_trustee_auth_plugin }}
+signing_dir = {{ heat_system_home_folder }}/cache/heat
+auth_url = {{ keystone_service_adminuri }}
+auth_uri = {{ keystone_service_internaluri }}
+project_domain_id = {{ heat_service_trustee_project_domain_id }}
+user_domain_id = {{ heat_service_trustee_user_domain_id }}
+project_name = {{ heat_service_trustee_project_name }}
+username = {{ heat_service_trustee_user_name }}
+password = {{ heat_service_trustee_password }}
