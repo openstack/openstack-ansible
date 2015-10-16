@@ -15,6 +15,16 @@
 
 - hosts: neutron_server[0]
   user: root
+  pre_tasks:
+    - name: Sort the rabbitmq servers
+      dist_sort:
+        value_to_lookup: "{{ container_name }}"
+        ref_list: "{{ groups['neutron_server'] }}"
+        src_list: "{{ rabbit_hosts }}"
+      register: servers
+    - name: Set rabbitmq servers
+      set_fact:
+        rabbit_hosts: "{{ servers.sorted_list }}"
   roles:
     - galera_db_setup
     - neutron_common
@@ -28,6 +38,16 @@
 
 - hosts: neutron_server:!neutron_server[0]
   user: root
+  pre_tasks:
+    - name: Sort the rabbitmq servers
+      dist_sort:
+        value_to_lookup: "{{ container_name }}"
+        ref_list: "{{ groups['neutron_server'] }}"
+        src_list: "{{ rabbit_hosts }}"
+      register: servers
+    - name: Set rabbitmq servers
+      set_fact:
+        rabbit_hosts: "{{ servers.sorted_list }}"
   roles:
     - neutron_common
     - init_script
