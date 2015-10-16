@@ -18,6 +18,7 @@ import re
 import subprocess
 from ansible.module_utils.basic import *
 
+
 DOCUMENTATION = """
 ---
 module: neutron_migrations_facts
@@ -38,8 +39,18 @@ options:
             - This is the OpenStack release you're running, used when
               searching for migration revisions in the neutron code.
         default: liberty
+    library_path:
+        description:
+            - Local path to the location where the neutron python package
+              is installed.
+        default: /usr/local/lib/python2.7/dist-packages/neutron
+    bin_path:
+        description:
+            - Local path to the where the neutron binaries are.
+        default: /usr/local/bin
 author: Rcbops
 """
+
 
 EXAMPLES = """
 - name: Gather neutron migration facts
@@ -47,17 +58,39 @@ EXAMPLES = """
     release: mitaka
 """
 
-MIGRATIONS = {'expand': {'revision': None, 'head': None},
-              'contract': {'revision': None, 'head': None}}
+
+MIGRATIONS = {
+    'expand': {
+        'revision': None,
+        'head': None
+    },
+    'contract': {
+        'revision': None,
+        'head': None
+    }
+}
 
 
-def get_branch(release, revision):
-    migrations_dir = '/usr/local/lib/python2.7/dist-packages/neutron/db/' \
-                     'migration/alembic_migrations/versions/%s/' % release
+def get_branch(release, revision, library_path):
+    migrations_dir = (
+        '%s/db/migration/alembic_migrations/versions/%s/' % (
+            library_path,
+            release,
+        )
+    )
     for branch in MIGRATIONS.keys():
-        for file in os.listdir('%s/%s' % (migrations_dir, branch)):
+        migration_dir = os.path.join(get_abs_path(migrations_dir), branch)
+        for file in os.listdir(migration_dir):
             if file.endswith('.py') and file.split('_')[0] == revision:
                 return branch
+
+
+def get_abs_path(path):
+    return os.path.abspath(
+        os.path.expanduser(
+            path
+        )
+    )
 
 
 def main():
@@ -66,17 +99,29 @@ def main():
             release=dict(
                 type='str',
                 default='liberty'
+            ),
+            library_path=dict(
+                type='str',
+                default='/usr/local/lib/python2.7/dist-packages/neutron'
+            ),
+            bin_path=dict(
+                type='str',
+                default='/usr/local/bin'
             )
         ),
         supports_check_mode=False
     )
     state_change = False
 
+    command = [
+        '%s/neutron-db-manage' % get_abs_path(module.params['bin_path']),
+        'current'
+    ]
+
     try:
-        current = subprocess.check_output(['neutron-db-manage', 'current'])
+        current = subprocess.check_output(command)
     except subprocess.CalledProcessError as e:
-        message = 'neutron fact collection failed: "%s".' % e
-        module.fail_json(msg=message)
+        module.fail_json(msg='neutron fact collection failed: "%s".' % e)
 
     for line in current.splitlines():
         head = False
@@ -85,17 +130,25 @@ def main():
             revision = match.group(1)
             if match.group(2):
                 head = True
-            branch = get_branch(module.params['release'], revision)
+
+            branch = get_branch(
+                release=module.params['release'],
+                revision=revision,
+                library_path=get_abs_path(module.params['library_path'])
+            )
             if branch is None:
-                message = 'neutron fact collection failed: unable to find ' \
-                          'migration with revision %s' % revision
-                module.fail_json(msg=message)
+                module.fail_json(
+                    msg='neutron fact collection failed: unable to find'
+                        ' migration with revision %s' % revision
+                )
 
             MIGRATIONS[branch]['revision'] = revision
             MIGRATIONS[branch]['head'] = head
 
-    module.exit_json(changed=state_change,
-                     ansible_facts={'neutron_migrations': MIGRATIONS})
+    module.exit_json(
+        changed=state_change,
+        ansible_facts={'neutron_migrations': MIGRATIONS}
+    )
 
 if __name__ == '__main__':
     main()

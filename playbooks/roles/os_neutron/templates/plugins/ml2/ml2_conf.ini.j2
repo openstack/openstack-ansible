@@ -30,7 +30,7 @@ network_vlan_ranges = {{ neutron_provider_networks.network_vlan_ranges }}
 
 # ML2 VXLAN networks
 [ml2_type_vxlan]
-vxlan_group = {{ neutron_vxlan_group|default('') }}
+vxlan_group = {{ neutron_vxlan_group }}
 vni_ranges = {{ neutron_provider_networks.network_vxlan_ranges }}
 
 {% endif %}
@@ -41,23 +41,13 @@ vni_ranges = {{ neutron_provider_networks.network_vxlan_ranges }}
 # Linux bridge agent VXLAN networks
 [vxlan]
 
-{% if neutron_overlay_network %}
+{% if neutron_vxlan_enabled | bool %}
 
 enable_vxlan = True
-vxlan_group = {{ neutron_vxlan_group|default('') }}
+vxlan_group = {{ neutron_vxlan_group }}
 
-{% if (is_metal == true or is_metal == "True") and neutron_overlay_network.bridge is defined %}
-{% set on_metal_tunnel_bridge = 'ansible_' + neutron_overlay_network.bridge|replace('-', '_') %}
-
-# VXLAN local tunnel endpoint (bare metal)
-local_ip = {{ hostvars[inventory_hostname][on_metal_tunnel_bridge]['ipv4']['address'] }}
-
-{% else %}
-
-# VXLAN local tunnel endpoint (container)
-local_ip = {{ neutron_overlay_network.address }}
-
-{% endif %}
+# VXLAN local tunnel endpoint
+local_ip = {{ neutron_local_ip }}
 
 l2_population = {{ neutron_l2_population }}
 

@@ -21,6 +21,14 @@ from collections import OrderedDict
 import logging
 from logging.handlers import SysLogHandler
 import os
+
+{% if neutron_venv_enabled | bool %}
+
+activate_this = os.path.expanduser("{{ neutron_venv_bin }}/activate_this.py")
+execfile(activate_this, dict(__file__=activate_this))
+
+{% endif %}
+
 import random
 import sys
 import time

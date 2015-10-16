@@ -40,6 +40,7 @@
     owner: "{{ item.owner|default(neutron_system_user_name) }}"
     group: "{{ item.group|default(neutron_system_group_name) }}"
   with_items:
+    - { path: "/openstack", owner: "root", group: "root" }
     - { path: "/etc/neutron" }
     - { path: "/etc/neutron/plugins" }
     - { path: "/etc/neutron/plugins/{{ neutron_plugin_type }}" }
@@ -50,6 +51,19 @@
     - { path: "/var/run/neutron" }
     - { path: "{{ neutron_system_home_folder }}" }
     - { path: "{{ neutron_system_home_folder }}/ha_confs" }
+  tags:
+    - neutron-dirs
+
+- name: Create neutron venv dir
+  file:
+    path: "{{ item.path }}"
+    state: directory
+    owner: "{{ item.owner|default(neutron_system_user_name) }}"
+    group: "{{ item.group|default(neutron_system_group_name) }}"
+  with_items:
+    - { path: "/openstack/venvs", mode: "0755", owner: "root", group: "root" }
+    - { path: "{{ neutron_venv_bin }}" }
+  when: neutron_venv_enabled | bool
   tags:
     - neutron-dirs
 

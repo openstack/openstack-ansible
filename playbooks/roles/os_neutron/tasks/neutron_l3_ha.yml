@@ -17,8 +17,8 @@
 # kilo_revision: true
 
 - name: "Drop AT&T neutron ha tool"
-  copy:
-    src: "neutron-ha-tool.py"
+  template:
+    src: "neutron-ha-tool.py.j2"
     dest: "/opt/neutron-ha-tool.py"
     owner: "root"
     group: "root"
