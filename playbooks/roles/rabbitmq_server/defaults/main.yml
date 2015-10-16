@@ -55,9 +55,9 @@ rabbitmq_plugins:
     state: enabled
 
 # RabbitMQ SSL support
-rabbitmq_ssl_cert: /etc/ssl/certs/rabbitmq.pem
-rabbitmq_ssl_key: /etc/ssl/private/rabbitmq.key
-rabbitmq_ssl_ca_cert: /etc/ssl/certs/rabbitmq-ca.pem
+rabbitmq_ssl_cert: /etc/rabbitmq/rabbitmq.pem
+rabbitmq_ssl_key: /etc/rabbitmq/rabbitmq.key
+rabbitmq_ssl_ca_cert: /etc/rabbitmq/rabbitmq-ca.pem
 
 # Set rabbitmq_ssl_self_signed_regen to true if you want to generate a new
 # SSL certificate for RabbitMQ when this playbook runs.  You can also change
