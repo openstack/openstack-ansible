@@ -15,8 +15,12 @@ For more detailed Installation and Operator documentation, please see the
 `Install Guide`_.
 
 If OpenStack-Ansible is missing something you'd like to see included, then
-we encourage you to see the `Developer Documentation` for more details on
+we encourage you to see the `Developer Documentation`_ for more details on
 how you can get involved.
+
+Developers wishing to work on the OpenStack Ansible project should always
+base their work on the lastest Ansible code, available from the master GIT
+repository at `Source`_.
 
 If you have some questions, or would like some assistance with achieving your
 goals, then please feel free to reach out to us on the
@@ -28,5 +32,6 @@ or on IRC in ``#openstack-ansible`` on the `freenode network`_.
 .. _Install Guide: http://docs.openstack.org/developer/openstack-ansible/install-guide/index.html
 .. _Quick Start: http://docs.openstack.org/developer/openstack-ansible/developer-docs/quickstart-aio.html
 .. _Developer Documentation: http://docs.openstack.org/developer/openstack-ansible/developer-docs/index.html
+.. _Source: http://git.openstack.org/cgit/openstack/openstack-ansible
 .. _OpenStack Mailing Lists: http://lists.openstack.org/
 .. _freenode network: https://freenode.net/
