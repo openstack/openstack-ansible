@@ -8,6 +8,7 @@ start on runlevel [2345]
 stop on runlelvel [016]
 
 respawn
+respawn limit 10 5
 
 # Set the RUNBIN environment variable
 env RUNBIN="/usr/local/bin/{{ program_name }}"
