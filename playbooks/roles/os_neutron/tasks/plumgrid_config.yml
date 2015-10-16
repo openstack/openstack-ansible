@@ -27,6 +27,7 @@
   pip:
     name: "{{ item }}"
     state: present
+    extra_args: "{{ pip_install_options|default('') }}"
   with_items: neutron_plumgrid_pip_packages
   register: install_package
   until: install_packages|success
