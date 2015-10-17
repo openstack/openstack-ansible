@@ -13,9 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Defines that the role will be deployed on a host machine
-is_metal: true
-
 ## Verbosity Options
 debug: False
 verbose: True
@@ -55,12 +52,9 @@ ceilometer_rabbitmq_vhost: /ceilometer
 
 #Ceilometer services info
 ceilometer_role_name: admin
-ceilometer_api_host_address: 0.0.0.0
-ceilometer_api_service_port: 8777
+
 ceilometer_collector_program_name: ceilometer-collector
 ceilometer_compute_program_name: ceilometer-agent-compute
-ceilometer_alarm_notifier_program_name: ceilometer-alarm-notifier
-ceilometer_alarm_evaluator_program_name: ceilometer-alarm-evaluator
 ceilometer_api_program_name: ceilometer-api
 ceilometer_agent_notification_program_name: ceilometer-agent-notification
 ceilometer_agent_central_program_name: ceilometer-agent-central
@@ -109,8 +103,6 @@ ceilometer_pip_packages:
 ## Service Names
 ceilometer_service_names:
   - "ceilometer-api"
-  - "ceilometer-alarm-notifier"
-  - "ceilometer-alarm-evaluator"
   - "ceilometer-collector"
   - "ceilometer-agent-notification"
   - "ceilometer-agent-central"
@@ -124,4 +116,3 @@ ceilometer_api_paste_ini_overrides: {}
 ceilometer_event_definitions_yaml_overrides: {}
 ceilometer_event_pipeline_yaml_overrides: {}
 ceilometer_pipeline_yaml_overrides: {}
-

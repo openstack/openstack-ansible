@@ -32,18 +32,6 @@
     state: "restarted"
     pattern: "{{ ceilometer_compute_program_name }}"
 
-- name: Restart ceilometer alarm_notifier
-  service:
-    name: "{{ ceilometer_alarm_notifier_program_name }}"
-    state: "restarted"
-    pattern: "{{ ceilometer_alarm_notifier_program_name }}"
-
-- name: Restart ceilometer alarm_evaluator
-  service:
-    name: "{{ ceilometer_alarm_evaluator_program_name }}"
-    state: "restarted"
-    pattern: "{{ ceilometer_alarm_evaluator_program_name }}"
-
 - name: Restart ceilometer agent_notification
   service:
     name: "{{ ceilometer_agent_notification_program_name }}"

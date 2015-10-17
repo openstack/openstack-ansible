@@ -1,0 +1,35 @@
+---
+component_skel:
+  aodh_api:
+    belongs_to:
+    - aodh_all
+  aodh_listener:
+    belongs_to:
+    - aodh_all
+  aodh_alarm_evaluator:
+    belongs_to:
+    - aodh_all
+  aodh_alarm_notifier:
+    belongs_to:
+    - aodh_all
+
+container_skel:
+  aodh_container:
+    belongs_to:
+      - metering-alarm_containers
+    contains:
+      - aodh_api
+      - aodh_listener
+      - aodh_alarm_evaluator
+      - aodh_alarm_notifier
+    properties:
+      service_name: aodh
+      container_release: trusty
+
+physical_skel:
+  metering-alarm_containers:
+    belongs_to:
+    - all_containers
+  metering-alarm_hosts:
+    belongs_to:
+    - hosts

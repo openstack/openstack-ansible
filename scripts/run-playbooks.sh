@@ -169,6 +169,7 @@ pushd "playbooks"
   # role
   if [ "${DEPLOY_CEILOMETER}" == "yes" ]; then
     install_bits os-ceilometer-install.yml
+    install_bits os-aodh-install.yml
   fi
 
   if [ "${DEPLOY_SWIFT}" == "yes" ]; then

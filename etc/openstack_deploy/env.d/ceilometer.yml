@@ -12,12 +12,6 @@ component_skel:
   ceilometer_collector:
     belongs_to:
     - ceilometer_all
-  ceilometer_alarm_evaluator:
-    belongs_to:
-    - ceilometer_all
-  ceilometer_alarm_notifier:
-    belongs_to:
-    - ceilometer_all
   ceilometer_api:
     belongs_to:
     - ceilometer_all
@@ -29,8 +23,6 @@ container_skel:
     contains:
       - ceilometer_agent_central
       - ceilometer_agent_notification
-      - ceilometer_alarm_evaluator
-      - ceilometer_alarm_notifier
       - ceilometer_api
     properties:
       service_name: ceilometer
