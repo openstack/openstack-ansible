@@ -17,6 +17,18 @@
 debug: False
 verbose: False
 
+# Name of the virtual env to deploy into
+aodh_venv_tag: untagged
+aodh_venv_bin: "/openstack/venvs/aodh-{{ aodh_venv_tag }}/bin"
+
+# Set this to enable or disable installing in a venv
+aodh_venv_enabled: true
+
+# The bin path defaults to the venv path however if installation in a
+#  venv is disabled the bin path will be dynamically set based on the
+#  system path used when the installing.
+aodh_bin: "{{ aodh_venv_bin }}"
+
 ## System info
 aodh_system_user_name: aodh
 aodh_system_group_name: aodh
@@ -69,6 +81,11 @@ aodh_service_adminurl: "{{ aodh_service_adminuri }}"
 # Common apt packages
 aodh_apt_packages:
   - rpcbind
+
+# aodh packages that must be installed before anything else
+aodh_requires_pip_packages:
+  - virtualenv
+  - python-keystoneclient # Keystoneclient needed to OSA keystone lib
 
 # Common pip packages
 aodh_pip_packages:
