@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- include: tempest_install.yml
+
 - include: tempest_resources.yml
   when: >
     inventory_hostname == groups[tempest_main_group][0]
@@ -22,7 +24,6 @@
   when: >
     inventory_hostname != groups[tempest_main_group][0]
 
-- include: tempest_install.yml
 - include: tempest_post_install.yml
 
 - name: Flush handlers

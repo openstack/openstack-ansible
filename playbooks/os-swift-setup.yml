@@ -133,6 +133,7 @@
   roles:
     - role: "os_swift"
       swift_venv_tag: "{{ openstack_release }}"
+      swift_venv_download_url: "{{ openstack_repo_url }}/venvs/{{ openstack_release }}/{{ ansible_distribution | lower }}/swift-{{ openstack_release }}.tgz"
       swift_storage_address: "{{ storage_address }}"
       swift_replication_address: "{{ replication_address }}"
       tags:

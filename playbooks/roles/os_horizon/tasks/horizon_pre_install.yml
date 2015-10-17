@@ -71,6 +71,58 @@
   tags:
     - horizon-pip-packages
 
+- name: Attempt venv download
+  get_url:
+    url: "{{ horizon_venv_download_url }}"
+    dest: "/var/cache/{{ horizon_venv_download_url | basename }}"
+  ignore_errors: true
+  register: get_venv
+  when: horizon_venv_enabled | bool
+  tags:
+    - horizon-install
+    - horizon-pip-packages
+
+- name: Set horizon get_venv fact
+  set_fact:
+    horizon_get_venv: "{{ get_venv }}"
+  when: horizon_venv_enabled | bool
+  tags:
+    - horizon-install
+    - horizon-pip-packages
+
+- name: Create horizon venv dir
+  file:
+    path: "{{ horizon_venv_bin | dirname }}"
+    state: directory
+  when:
+    - horizon_venv_enabled | bool
+    - horizon_get_venv | success
+  tags:
+    - horizon-install
+    - horizon-pip-packages
+
+- name: Unarchive pre-built venv
+  unarchive:
+    src: "/var/cache/{{ horizon_venv_download_url | basename }}"
+    dest: "{{ horizon_venv_bin | dirname }}"
+    copy: "no"
+  when:
+    - horizon_venv_enabled | bool
+    - horizon_get_venv | success
+  tags:
+    - horizon-install
+    - horizon-pip-packages
+
+- name: Update virtualenv path
+  command: >
+    virtualenv-tools --update-path=auto {{ horizon_venv_bin | dirname }}
+  when:
+    - horizon_venv_enabled | bool
+    - horizon_get_venv | success
+  tags:
+    - horizon-install
+    - horizon-pip-packages
+
 - name: Create horizon venv
   pip:
     name: "{{ item }}"
@@ -80,8 +132,11 @@
     extra_args: "{{ pip_install_options|default('') }}"
   with_items:
     - "{{ horizon_requires_pip_packages }}"
-  when: horizon_venv_enabled | bool
+  when:
+    - horizon_venv_enabled | bool
+    - horizon_get_venv | failed
   tags:
+    - horizon-install
     - horizon-pip-packages
 
 - name: Create horizon links for venv
@@ -96,6 +151,7 @@
       dest: "{{ horizon_lib_dir }}"
   when: horizon_venv_enabled | bool
   tags:
+    - horizon-install
     - horizon-configs
 
 - name: Create static horizon dir

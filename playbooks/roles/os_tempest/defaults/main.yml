@@ -19,6 +19,7 @@ is_metal: true
 ## Verbosity Options
 debug: False
 verbose: True
+tempest_venv_download_url: http://127.0.0.1/venvs/untagged/ubuntu/tempest.tgz
 tempest_fatal_deprecations: False
 
 tempest_private_subnet_cidr: "192.168.74.0/24"
@@ -71,6 +72,17 @@ tempest_volume_multi_backend_enabled: False
 tempest_main_group: tempest_all
 
 tempest_requires_pip_packages:
+  - python-glanceclient
+  - python-keystoneclient
+  - python-neutronclient
+  - python-novaclient
+  - virtualenv
+  - virtualenv-tools
+
+tempest_pip_packages:
+  - fixtures
+  - junitxml
+  - nose
   - oslo.serialization
   - python-ceilometerclient
   - python-cinderclient
@@ -81,17 +93,12 @@ tempest_requires_pip_packages:
   - python-neutronclient
   - python-novaclient
   - python-openstackclient
+  - python-subunit
   - python-swiftclient
-  - virtualenv
-
-tempest_pip_packages:
-  - fixtures
-  - nose
+  - tempest-lib
   - testrepository
   - testscenarios
   - testtools
-  - python-subunit
-  - junitxml
 
 # Please update SHA in tempest_images below when changing the cirros version.
 cirros_version: 0.3.4

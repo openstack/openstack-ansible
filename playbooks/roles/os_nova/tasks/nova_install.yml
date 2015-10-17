@@ -52,6 +52,58 @@
     - nova-install
     - nova-pip-packages
 
+- name: Attempt venv download
+  get_url:
+    url: "{{ nova_venv_download_url }}"
+    dest: "/var/cache/{{ nova_venv_download_url | basename }}"
+  ignore_errors: true
+  register: get_venv
+  when: nova_venv_enabled | bool
+  tags:
+    - nova-install
+    - nova-pip-packages
+
+- name: Set nova get_venv fact
+  set_fact:
+    nova_get_venv: "{{ get_venv }}"
+  when: nova_venv_enabled | bool
+  tags:
+    - nova-install
+    - nova-pip-packages
+
+- name: Create nova venv dir
+  file:
+    path: "{{ nova_venv_bin | dirname }}"
+    state: directory
+  when:
+    - nova_venv_enabled | bool
+    - nova_get_venv | success
+  tags:
+    - nova-install
+    - nova-pip-packages
+
+- name: Unarchive pre-built venv
+  unarchive:
+    src: "/var/cache/{{ nova_venv_download_url | basename }}"
+    dest: "{{ nova_venv_bin | dirname }}"
+    copy: "no"
+  when:
+    - nova_venv_enabled | bool
+    - nova_get_venv | success
+  tags:
+    - nova-install
+    - nova-pip-packages
+
+- name: Update virtualenv path
+  command: >
+    virtualenv-tools --update-path=auto {{ nova_venv_bin | dirname }}
+  when:
+    - nova_venv_enabled | bool
+    - nova_get_venv | success
+  tags:
+    - nova-install
+    - nova-pip-packages
+
 - name: Install pip packages (venv)
   pip:
     name: "{{ item }}"
@@ -65,7 +117,9 @@
   delay: 2
   with_items:
     - "{{ nova_pip_packages }}"
-  when: nova_venv_enabled | bool
+  when:
+    - nova_venv_enabled | bool
+    - nova_get_venv | failed
   tags:
     - nova-install
     - nova-pip-packages

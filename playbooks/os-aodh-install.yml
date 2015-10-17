@@ -63,6 +63,7 @@
   roles:
     - role: "os_aodh"
       aodh_venv_tag: "{{ openstack_release }}"
+      aodh_venv_download_url: "{{ openstack_repo_url }}/venvs/{{ openstack_release }}/{{ ansible_distribution | lower }}/aodh-{{ openstack_release }}.tgz"
       tags:
         - "os-aodh"
     - { role: "openstack_openrc", tags: [ "openstack-openrc" ] }

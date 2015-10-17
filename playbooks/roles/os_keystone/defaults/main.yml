@@ -29,6 +29,8 @@ keystone_venv_enabled: true
 #  system path used when the installing.
 keystone_bin: "{{ keystone_venv_bin }}"
 
+keystone_venv_download_url: http://127.0.0.1/venvs/untagged/ubuntu/keystone.tgz
+
 keystone_fatal_deprecations: False
 
 ## System info
@@ -347,6 +349,7 @@ keystone_idp_apt_packages:
 # Keystone packages that must be installed before anything else
 keystone_requires_pip_packages:
   - virtualenv
+  - virtualenv-tools
   - python-keystoneclient # Keystoneclient needed to OSA keystone lib
 
 # Common pip packages

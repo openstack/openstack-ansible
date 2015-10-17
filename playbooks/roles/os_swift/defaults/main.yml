@@ -32,6 +32,8 @@ swift_venv_enabled: true
 #  system path used when the installing.
 swift_bin: "{{ swift_venv_bin }}"
 
+swift_venv_download_url: http://127.0.0.1/venvs/untagged/ubuntu/swift.tgz
+
 # Set the full path to the swift recon cron
 recon_cron_path: "{{ swift_bin }}/swift-recon-cron"
 
@@ -177,6 +179,7 @@ swift: {}
 # swift packages that must be installed before anything else
 swift_requires_pip_packages:
   - virtualenv
+  - virtualenv-tools
   - python-keystoneclient # Keystoneclient needed to OSA keystone lib
 
 swift_pip_packages:

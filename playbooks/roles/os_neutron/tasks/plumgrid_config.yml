@@ -35,6 +35,7 @@
   delay: 2
   when:
     - inventory_hostname in groups['neutron_server']
+    - neutron_get_venv | failed
   tags:
     - neutron-install
     - neutron-pip-packages

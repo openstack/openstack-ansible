@@ -31,6 +31,9 @@
         - repo-set-requirement-names-filtered
         - repo-set-constraints
         - repo-build-constraints-file
+        - repo-create-venv-archive
+        - repo-venv-compress-archive
+        - repo-build-venvs
   roles:
     - role: "repo_build"
       repo_build_release_tag: "{{ openstack_release }}"

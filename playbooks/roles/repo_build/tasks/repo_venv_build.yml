@@ -1,0 +1,81 @@
+---
+# Copyright 2015, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Get venv command path
+  command: which virtualenv
+  register: virtualenv_path
+  tags:
+    - repo-command-bin
+    - repo-create-venv
+
+- name: Set virtualenv command path
+  set_fact:
+    virtualenv_bin: "{{ virtualenv_path.stdout }}"
+  tags:
+    - repo-command-bin
+    - repo-create-venv
+
+- name: Check for created venvs
+  command: >
+    ls -1 "{{ repo_build_venv_dir }}/{{ repo_build_release_tag }}/{{ ansible_distribution | lower }}/"
+  register: created_venvs
+  tags:
+    - repo-create-venv
+
+- name: Set existing venv fact
+  set_fact:
+    existing_venvs: "{{ created_venvs.stdout_lines }}"
+  tags:
+    - repo-command-bin
+    - repo-create-venv
+
+- name: Create role based venv
+  pip:
+    name: "{{ item.value | join(' ') }}"
+    state: present
+    virtualenv: "{{ repo_build_venv_build_dir }}/venvs/{{ item.key | replace('os_', '') }}"
+    virtualenv_site_packages: "no"
+    virtualenv_command: "{{ virtualenv_bin }} --always-copy"
+    extra_args: "{{ repo_build_venv_pip_install_options }}"
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 2
+  with_dict: local_packages.results.0.item.role_packages
+  when:
+    - '"os_" in item.key'
+    - "'{{ item.key | replace('os_', '') }}.tgz' not in existing_venvs"
+  tags:
+    - repo-create-venv
+
+- name: Create venv archive
+  shell: |
+    # This is to clean up pyc files which makes the archived venv smaller
+    #  TODO(cloudnull) This should use the find module when we move to Ansible 2.0
+    find "{{ repo_build_venv_build_dir }}/venvs/{{ item.key | replace('os_', '') }}" -name '*.pyc' -delete
+    # Create archive
+    tar -czf "{{ item.key | replace('os_', '') }}-{{ repo_build_release_tag }}.tgz" \
+        -C "{{ repo_build_venv_build_dir }}/venvs/{{ item.key | replace('os_', '') }}" .
+  args:
+    chdir: "{{ repo_build_venv_dir }}/{{ repo_build_release_tag }}/{{ ansible_distribution | lower }}"
+    creates: "{{ repo_build_venv_dir }}/{{ repo_build_release_tag }}/{{ ansible_distribution | lower }}/{{ item.key | replace('os_', '') }}.tgz"
+  with_dict: local_packages.results.0.item.role_packages
+  when:
+    - '"os_" in item.key'
+  tags:
+    - skip_ansible_lint
+    - repo-venv-compress-archive
+    - repo-create-venv-archive
+    - repo-create-venv

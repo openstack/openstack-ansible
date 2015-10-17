@@ -68,7 +68,9 @@
   delay: 2
   with_items:
     - "{{ nova_novnc_pip_packages }}"
-  when: nova_venv_enabled | bool
+  when:
+    - nova_venv_enabled | bool
+    - nova_get_venv | failed
   tags:
     - nova-install
     - nova-pip-packages

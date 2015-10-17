@@ -160,6 +160,7 @@
       nova_galera_address: "{{ internal_lb_vip_address }}"
       nova_management_address: "{{ management_address }}"
       nova_venv_tag: "{{ openstack_release }}"
+      nova_venv_download_url: "{{ openstack_repo_url }}/venvs/{{ openstack_release }}/{{ ansible_distribution | lower }}/nova-{{ openstack_release }}.tgz"
       tags:
         - "os-nova"
     - role: "ceph_client"

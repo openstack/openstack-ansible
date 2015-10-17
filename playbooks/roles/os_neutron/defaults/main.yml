@@ -32,6 +32,8 @@ neutron_venv_enabled: true
 #  system path used when the installing.
 neutron_bin: "{{ neutron_venv_bin }}"
 
+neutron_venv_download_url: http://127.0.0.1/venvs/untagged/ubuntu/neutron.tgz
+
 # Set the lib dir path to that of the local python path where neutron is installed.
 #  This is used for role access to the db migrations.
 #  Example:
@@ -311,6 +313,7 @@ neutron_apt_remove_packages:
 # neutron packages that must be installed before anything else
 neutron_requires_pip_packages:
   - virtualenv
+  - virtualenv-tools
   - python-keystoneclient # Keystoneclient needed to OSA keystone lib
 
 neutron_pip_packages:

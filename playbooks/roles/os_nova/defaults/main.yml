@@ -32,6 +32,8 @@ nova_venv_enabled: true
 #  system path used when the installing.
 nova_bin: "{{ nova_venv_bin }}"
 
+nova_venv_download_url: http://127.0.0.1/venvs/untagged/ubuntu/nova.tgz
+
 nova_fatal_deprecations: False
 
 ## System info
@@ -289,6 +291,7 @@ nova_compute_kvm_apt_packages:
 # nova packages that must be installed before anything else
 nova_requires_pip_packages:
   - virtualenv
+  - virtualenv-tools
   - python-keystoneclient # Keystoneclient needed to OSA keystone lib
 
 nova_compute_pip_packages:

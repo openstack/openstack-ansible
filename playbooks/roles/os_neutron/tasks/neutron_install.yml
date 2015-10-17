@@ -65,6 +65,58 @@
     - neutron-install
     - neutron-pip-packages
 
+- name: Attempt venv download
+  get_url:
+    url: "{{ neutron_venv_download_url }}"
+    dest: "/var/cache/{{ neutron_venv_download_url | basename }}"
+  ignore_errors: true
+  register: get_venv
+  when: neutron_venv_enabled | bool
+  tags:
+    - neutron-install
+    - neutron-pip-packages
+
+- name: Set neutron get_venv fact
+  set_fact:
+    neutron_get_venv: "{{ get_venv }}"
+  when: neutron_venv_enabled | bool
+  tags:
+    - neutron-install
+    - neutron-pip-packages
+
+- name: Create neutron venv dir
+  file:
+    path: "{{ neutron_venv_bin | dirname }}"
+    state: directory
+  when:
+    - neutron_venv_enabled | bool
+    - neutron_get_venv | success
+  tags:
+    - neutron-install
+    - neutron-pip-packages
+
+- name: Unarchive pre-built venv
+  unarchive:
+    src: "/var/cache/{{ neutron_venv_download_url | basename }}"
+    dest: "{{ neutron_venv_bin | dirname }}"
+    copy: "no"
+  when:
+    - neutron_venv_enabled | bool
+    - neutron_get_venv | success
+  tags:
+    - neutron-install
+    - neutron-pip-packages
+
+- name: Update virtualenv path
+  command: >
+    virtualenv-tools --update-path=auto {{ neutron_venv_bin | dirname }}
+  when:
+    - neutron_venv_enabled | bool
+    - neutron_get_venv | success
+  tags:
+    - neutron-install
+    - neutron-pip-packages
+
 - name: Install pip packages (venv)
   pip:
     name: "{{ item }}"
@@ -78,7 +130,9 @@
   delay: 2
   with_items:
     - "{{ neutron_pip_packages }}"
-  when: neutron_venv_enabled | bool
+  when:
+    - neutron_venv_enabled | bool
+    - neutron_get_venv | failed
   tags:
     - neutron-install
     - neutron-pip-packages

@@ -18,7 +18,11 @@
   max_fail_percentage: 20
   user: root
   roles:
-    - { role: "os_tempest", tags: [ "os-tempest" ] }
+    - role: "os_tempest"
+      tempest_venv_download_url: "{{ openstack_repo_url }}/venvs/{{ openstack_release }}/{{ ansible_distribution | lower }}/tempest-{{ openstack_release }}.tgz"
+      tempest_git_repo: "{{ openstack_repo_git_url }}/tempest"
+      tags:
+        - "os-tempest"
     - role: "rsyslog_client"
       rsyslog_client_log_rotate_file: utility_log_rotate
       rsyslog_client_log_dir: "/var/log/utility"

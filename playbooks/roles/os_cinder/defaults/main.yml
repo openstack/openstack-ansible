@@ -28,6 +28,8 @@ cinder_venv_enabled: true
 #  system path used when the installing.
 cinder_bin: "{{ cinder_venv_bin }}"
 
+cinder_venv_download_url: http://127.0.0.1/venvs/untagged/ubuntu/cinder.tgz
+
 # Enable/Disable Ceilometer
 cinder_ceilometer_enabled: False
 
@@ -226,6 +228,7 @@ cinder_apt_packages:
 # Cinder packages that must be installed before anything else
 cinder_requires_pip_packages:
   - virtualenv
+  - virtualenv-tools
   - python-keystoneclient # Keystoneclient needed to OSA keystone lib
 
 # Common pip packages

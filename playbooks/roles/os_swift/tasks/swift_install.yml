@@ -52,6 +52,58 @@
     - swift-install
     - swift-pip-packages
 
+- name: Attempt venv download
+  get_url:
+    url: "{{ swift_venv_download_url }}"
+    dest: "/var/cache/{{ swift_venv_download_url | basename }}"
+  ignore_errors: true
+  register: get_venv
+  when: swift_venv_enabled | bool
+  tags:
+    - swift-install
+    - swift-pip-packages
+
+- name: Set swift get_venv fact
+  set_fact:
+    swift_get_venv: "{{ get_venv }}"
+  when: swift_venv_enabled | bool
+  tags:
+    - swift-install
+    - swift-pip-packages
+
+- name: Create swift venv dir
+  file:
+    path: "{{ swift_venv_bin | dirname }}"
+    state: directory
+  when:
+    - swift_venv_enabled | bool
+    - swift_get_venv | success
+  tags:
+    - swift-install
+    - swift-pip-packages
+
+- name: Unarchive pre-built venv
+  unarchive:
+    src: "/var/cache/{{ swift_venv_download_url | basename }}"
+    dest: "{{ swift_venv_bin | dirname }}"
+    copy: "no"
+  when:
+    - swift_venv_enabled | bool
+    - swift_get_venv | success
+  tags:
+    - swift-install
+    - swift-pip-packages
+
+- name: Update virtualenv path
+  command: >
+    virtualenv-tools --update-path=auto {{ swift_venv_bin | dirname }}
+  when:
+    - swift_venv_enabled | bool
+    - swift_get_venv | success
+  tags:
+    - swift-install
+    - swift-pip-packages
+
 - name: Install pip packages (venv)
   pip:
     name: "{{ item }}"
@@ -65,7 +117,9 @@
   delay: 2
   with_items:
     - "{{ swift_pip_packages }}"
-  when: swift_venv_enabled | bool
+  when:
+    - swift_venv_enabled | bool
+    - swift_get_venv | failed
   tags:
     - swift-install
     - swift-pip-packages
