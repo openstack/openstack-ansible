@@ -56,7 +56,7 @@ repository root directory:
 
    .. code-block:: bash
 
-       $ git clone https://github.com/openstack/openstack/ansible \
+       $ git clone https://github.com/openstack/openstack-ansible \
            /opt/openstack-ansible
        $ cd /opt/openstack-ansible
 
