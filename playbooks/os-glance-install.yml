@@ -36,7 +36,10 @@
         container_config:
           - "lxc.mount.entry=/openstack/{{ container_name }} var/lib/glance/images none bind 0 0"
       delegate_to: "{{ physical_host }}"
-      when: not is_metal | bool
+      when: >
+            (not is_metal | bool) and
+            (glance_default_store == "file") and
+            (glance_nfs_client is not defined)
       register: container_extra_config
       tags:
         - glance-cache-dir
