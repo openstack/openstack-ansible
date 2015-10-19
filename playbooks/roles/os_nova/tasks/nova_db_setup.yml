@@ -40,9 +40,10 @@
     - nova-db-setup
 
 - name: Perform a Nova DB sync
-  command: nova-manage db sync
+  command: "{{ nova_bin }}/nova-manage db sync"
   sudo: yes
   sudo_user: "{{ nova_system_user_name }}"
   tags:
     - nova-db-setup
     - nova-setup
+    - nova-command-bin

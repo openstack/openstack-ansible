@@ -60,3 +60,19 @@
   tags:
     - nova-config
     - nova-post-install
+
+- name: Get nova command path
+  command: which nova
+  register: nova_command_path
+  when:
+    - not nova_venv_enabled | bool
+  tags:
+    - nova-command-bin
+
+- name: Set nova command path
+  set_fact:
+    nova_bin: "{{ nova_command_path.stdout | dirname }}"
+  when:
+    - not nova_venv_enabled | bool
+  tags:
+    - nova-command-bin

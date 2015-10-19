@@ -13,15 +13,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Defines that the role will be deployed on a host machine
-is_metal: true
-
 # Enable/Disable ceilometer configurations
 nova_ceilometer_enabled: False
 
 ## Verbosity Options
 debug: False
 verbose: True
+
+# Name of the virtual env to deploy into
+nova_venv_tag: untagged
+nova_venv_bin: "/openstack/venvs/nova-{{ nova_venv_tag }}/bin"
+
+# Set this to enable or disable installing in a venv
+nova_venv_enabled: true
+
+# The bin path defaults to the venv path however if installation in a
+#  venv is disabled the bin path will be dynamically set based on the
+#  system path used when the installing.
+nova_bin: "{{ nova_venv_bin }}"
+
 nova_fatal_deprecations: False
 
 ## System info
@@ -276,6 +286,14 @@ nova_compute_kvm_apt_packages:
   - nfs-common
   - dosfstools
   - dosfstools-dbg
+
+# nova packages that must be installed before anything else
+nova_requires_pip_packages:
+  - virtualenv
+  - python-keystoneclient # Keystoneclient needed to OSA keystone lib
+
+nova_compute_pip_packages:
+  - libvirt-python
 
 # Common pip packages
 nova_pip_packages:
