@@ -15,6 +15,16 @@
 
 - hosts: neutron_dhcp_agent
   user: root
+  pre_tasks:
+    - name: Sort the rabbitmq servers
+      dist_sort:
+        value_to_lookup: "{{ container_name }}"
+        ref_list: "{{ groups['neutron_dhcp_agent'] }}"
+        src_list: "{{ rabbit_hosts }}"
+      register: servers
+    - name: Set rabbitmq servers
+      set_fact:
+        rabbit_hosts: "{{ servers.sorted_list }}"
   roles:
     - { role: neutron_common, when: "'neutron-dhcp-agent' in service_names"}
     - { role: init_script, when: "'neutron-dhcp-agent' in service_names"}

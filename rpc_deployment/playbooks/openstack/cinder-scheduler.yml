@@ -15,6 +15,16 @@
 
 - hosts: cinder_scheduler
   user: root
+  pre_tasks:
+    - name: Sort the rabbitmq servers
+      dist_sort:
+        value_to_lookup: "{{ container_name }}"
+        ref_list: "{{ groups['cinder_scheduler'] }}"
+        src_list: "{{ rabbit_hosts }}"
+      register: servers
+    - name: Set rabbitmq servers
+      set_fact:
+        rabbit_hosts: "{{ servers.sorted_list }}"
   roles:
     - cinder_common
     - init_script

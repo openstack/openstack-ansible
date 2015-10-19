@@ -15,6 +15,16 @@
 
 - hosts: nova_api_ec2[0]
   user: root
+  pre_tasks:
+    - name: Sort the rabbitmq servers
+      dist_sort:
+        value_to_lookup: "{{ container_name }}"
+        ref_list: "{{ groups['nova_api_ec2'] }}"
+        src_list: "{{ rabbit_hosts }}"
+      register: servers
+    - name: Set rabbitmq servers
+      set_fact:
+        rabbit_hosts: "{{ servers.sorted_list }}"
   roles:
     - keystone_add_service
   vars_files:
@@ -22,6 +32,16 @@
 
 - hosts: nova_api_ec2[0]
   user: root
+  pre_tasks:
+    - name: Sort the rabbitmq servers
+      dist_sort:
+        value_to_lookup: "{{ container_name }}"
+        ref_list: "{{ groups['nova_api_ec2'] }}"
+        src_list: "{{ rabbit_hosts }}"
+      register: servers
+    - name: Set rabbitmq servers
+      set_fact:
+        rabbit_hosts: "{{ servers.sorted_list }}"
   roles:
     - keystone_add_service
   vars_files:
@@ -29,6 +49,16 @@
 
 - hosts: nova_api_ec2
   user: root
+  pre_tasks:
+    - name: Sort the rabbitmq servers
+      dist_sort:
+        value_to_lookup: "{{ container_name }}"
+        ref_list: "{{ groups['nova_api_ec2'] }}"
+        src_list: "{{ rabbit_hosts }}"
+      register: servers
+    - name: Set rabbitmq servers
+      set_fact:
+        rabbit_hosts: "{{ servers.sorted_list }}"
   roles:
     - nova_common
     - init_script
@@ -41,6 +71,16 @@
 
 - hosts: nova_api_ec2:!nova_api_ec2[0]
   user: root
+  pre_tasks:
+    - name: Sort the rabbitmq servers
+      dist_sort:
+        value_to_lookup: "{{ container_name }}"
+        ref_list: "{{ groups['nova_api_ec2'] }}"
+        src_list: "{{ rabbit_hosts }}"
+      register: servers
+    - name: Set rabbitmq servers
+      set_fact:
+        rabbit_hosts: "{{ servers.sorted_list }}"
   roles:
     - nova_common
     - init_script

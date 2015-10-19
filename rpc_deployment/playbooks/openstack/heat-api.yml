@@ -15,6 +15,16 @@
 
 - hosts: heat_api[0]
   user: root
+  pre_tasks:
+    - name: Sort the rabbitmq servers
+      dist_sort:
+        value_to_lookup: "{{ container_name }}"
+        ref_list: "{{ groups['heat_api'] }}"
+        src_list: "{{ rabbit_hosts }}"
+      register: servers
+    - name: Set rabbitmq servers
+      set_fact:
+        rabbit_hosts: "{{ servers.sorted_list }}"
   roles:
     - keystone_add_service
     - heat_domain_user
@@ -30,6 +40,16 @@
     - include: handlers/services.yml
 
 - hosts: heat_api:!heat_api[0]
+  pre_tasks:
+    - name: Sort the rabbitmq servers
+      dist_sort:
+        value_to_lookup: "{{ container_name }}"
+        ref_list: "{{ groups['heat_api'] }}"
+        src_list: "{{ rabbit_hosts }}"
+      register: servers
+    - name: Set rabbitmq servers
+      set_fact:
+        rabbit_hosts: "{{ servers.sorted_list }}"
   user: root
   roles:
     - heat_common
