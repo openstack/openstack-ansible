@@ -325,6 +325,11 @@ function get_pip {
 trap "exit_fail ${LINENO} $? 'Received STOP Signal'" SIGHUP SIGINT SIGTERM
 trap "exit_fail ${LINENO} $?" ERR
 
+## Determine OS --------------------------------------------------------------
+# Determine the operating system of the base host
+# Adds the $HOST_DISTRO, $HOST_VERSION, and $HOST_CODENAME bash variables.
+eval "$(python $(dirname ${0})/os-detection.py)"
+echo "Detected ${HOST_DISTRO} ${HOST_VERSION} (codename: ${HOST_CODENAME})"
 
 ## Pre-flight check ----------------------------------------------------------
 # Make sure only root can run our script
