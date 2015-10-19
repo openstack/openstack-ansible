@@ -44,9 +44,6 @@
     mode: "{{ item.mode|default('0644') }}"
   with_items:
     - { src: lxc-net-bridge.cfg.j2, dest: "/etc/network/interfaces.d/lxc-net-bridge.cfg" }
-  when: bridge_check.state == "absent"
-  notify:
-    - Bring bridge up
   tags:
     - lxc-files
     - lxc-net
