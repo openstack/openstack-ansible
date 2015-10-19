@@ -20,12 +20,12 @@
   copy:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
-    owner: "root"
-    group: "root"
+    owner: "rabbitmq"
+    group: "rabbitmq"
     mode: "{{ item.mode }}"
   with_items:
     - { src: "{{ rabbitmq_user_ssl_cert }}", dest: "{{ rabbitmq_ssl_cert }}", mode: "0644" }
-    - { src: "{{ rabbitmq_user_ssl_key }}", dest: "{{ rabbitmq_ssl_key }}", mode: "0640" }
+    - { src: "{{ rabbitmq_user_ssl_key }}", dest: "{{ rabbitmq_ssl_key }}", mode: "0600" }
   when: rabbitmq_user_ssl_cert is defined and rabbitmq_user_ssl_key is defined
   tags:
     - rabbitmq-configs
@@ -37,8 +37,8 @@
   copy:
     src: "{{ rabbitmq_user_ssl_ca_cert }}"
     dest: "{{ rabbitmq_ssl_ca_cert }}"
-    owner: "root"
-    group: "root"
+    owner: "rabbitmq"
+    group: "rabbitmq"
     mode: "0644"
   when: rabbitmq_user_ssl_ca_cert is defined
   tags:
