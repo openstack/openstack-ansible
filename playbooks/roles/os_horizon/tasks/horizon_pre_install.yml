@@ -50,10 +50,8 @@
   file:
     path: "{{ item.path }}"
     state: directory
-    owner: "{{ item.owner|default(horizon_system_user_name) }}"
-    group: "{{ item.group|default(horizon_system_group_name) }}"
   with_items:
-    - { path: "/openstack/venvs", mode: "0755", owner: "root", group: "root" }
+    - { path: "/openstack/venvs" }
     - { path: "{{ horizon_venv_bin }}" }
   when: horizon_venv_enabled | bool
   tags:
