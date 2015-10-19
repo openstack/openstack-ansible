@@ -130,6 +130,9 @@ html5proxy_base_url = {{ nova_spice_html5proxy_base_url }}
 server_listen = {{ nova_management_address }}
 server_proxyclient_address = {{ nova_management_address }}
 
+[vnc]
+enabled = False
+
 {% elif nova_console_type == 'novnc' %}
 [vnc]
 enabled = {{ nova_novncproxy_agent_enabled }}
