@@ -35,9 +35,9 @@ $ActionResumeRetryCount 250
 {{ target.template }}
 {% endif %}
 {% if target.proto == "udp" %}
-{% set action_sting = '*.* @@' %}
-{% elif target.proto == "tcp" %}
 {% set action_sting = '*.* @' %}
+{% elif target.proto == "tcp" %}
+{% set action_sting = '*.* @@' %}
 {% endif %}
 {% if target.action_options is defined %}
 {{ action_sting }}{{ target.hostname }}:{{ target.port }};{{ target.action_options }}
