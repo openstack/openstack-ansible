@@ -55,10 +55,8 @@
   file:
     path: "{{ item.path }}"
     state: directory
-    owner: "{{ item.owner|default(heat_system_user_name) }}"
-    group: "{{ item.group|default(heat_system_group_name) }}"
   with_items:
-    - { path: "/openstack/venvs", mode: "0755", owner: "root", group: "root" }
+    - { path: "/openstack/venvs" }
     - { path: "{{ heat_venv_bin }}" }
   when: heat_venv_enabled | bool
   tags:

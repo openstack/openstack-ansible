@@ -58,10 +58,8 @@
   file:
     path: "{{ item.path }}"
     state: directory
-    owner: "{{ item.owner|default(neutron_system_user_name) }}"
-    group: "{{ item.group|default(neutron_system_group_name) }}"
   with_items:
-    - { path: "/openstack/venvs", mode: "0755", owner: "root", group: "root" }
+    - { path: "/openstack/venvs" }
     - { path: "{{ neutron_venv_bin }}" }
   when: neutron_venv_enabled | bool
   tags:

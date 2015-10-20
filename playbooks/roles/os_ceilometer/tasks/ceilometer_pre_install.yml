@@ -66,10 +66,8 @@
   file:
     path: "{{ item.path }}"
     state: directory
-    owner: "{{ item.owner|default(ceilometer_system_user_name) }}"
-    group: "{{ item.group|default(ceilometer_system_group_name) }}"
   with_items:
-    - { path: "/openstack/venvs", mode: "0755", owner: "root", group: "root" }
+    - { path: "/openstack/venvs" }
     - { path: "{{ ceilometer_venv_bin }}" }
   when: ceilometer_venv_enabled | bool
   tags:
