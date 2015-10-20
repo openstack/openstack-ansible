@@ -132,6 +132,12 @@ ssl_cipher_suite: "ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AE
 #rabbitmq_user_ssl_cert: <path to cert on ansible deployment host>
 #rabbitmq_user_ssl_key: <path to cert on ansible deployment host>
 #rabbitmq_user_ssl_ca_cert: <path to cert on ansible deployment host>
+#
+# By default, openstack-ansible configures all OpenStack services to talk to
+# RabbitMQ over encrypted connections on port 5671. To opt-out of this default,
+# set the rabbitmq_use_ssl variable to 'false'. The default setting of 'true'
+# is highly recommended for securing the contents of RabbitMQ messages.
+#rabbitmq_use_ssl: true
 
 ## Additional pinning generator that will allow for more packages to be pinned as you see fit.
 ## All pins allow for package and versions to be defined. Be careful using this as versions
