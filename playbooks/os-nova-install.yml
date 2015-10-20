@@ -112,6 +112,45 @@
       when: is_metal | bool
       tags:
         - nova-logs
+    - name: Set nova management bridge (is_metal)
+      set_fact:
+        management_bridge: "{{ 'ansible_' + hostvars[inventory_hostname]['container_networks']['container_address']['bridge'] | replace('-', '_') }}"
+      when:
+        - hostvars[inventory_hostname]['container_networks']['container_address']['bridge'] is defined
+        - is_metal | bool
+      tags:
+        - nova-config
+    - name: Set nova management address (is_metal)
+      set_fact:
+        management_address: "{{ hostvars[inventory_hostname][management_bridge]['ipv4']['address'] }}"
+      when:
+        - is_metal | bool
+      tags:
+        - nova-config
+    - name: Set nova management bridge (is_metal no container network)
+      set_fact:
+        management_address: "{{ ansible_ssh_host }}"
+      when:
+        - hostvars[inventory_hostname]['container_networks']['container_address']['bridge'] is undefined
+        - is_metal | bool
+      tags:
+        - nova-config
+    - name: Set nova management address (container)
+      set_fact:
+        management_address: "{{ hostvars[inventory_hostname]['container_networks']['container_address']['address'] }}"
+      when:
+        - hostvars[inventory_hostname]['container_networks']['container_address']['address'] is defined
+        - not is_metal | bool
+      tags:
+        - nova-config
+    - name: Set nova management address (container no container network)
+      set_fact:
+        management_address: "{{ ansible_ssh_host }}"
+      when:
+        - hostvars[inventory_hostname]['container_networks']['container_address']['address'] is undefined
+        - not is_metal | bool
+      tags:
+        - nova-config
   roles:
     - role: "os_nova"
       nova_novncproxy_git_repo: "{{ openstack_repo_git_url }}/novnc"
@@ -119,6 +158,7 @@
       nova_spicehtml5_git_repo: "{{ openstack_repo_git_url }}/spice-html5"
       nova_spicehtml5_git_install_branch: "{{ spicehtml5_git_install_branch }}"
       nova_galera_address: "{{ internal_lb_vip_address }}"
+      nova_management_address: "{{ management_address }}"
       tags:
         - "os-nova"
     - role: "ceph_client"
