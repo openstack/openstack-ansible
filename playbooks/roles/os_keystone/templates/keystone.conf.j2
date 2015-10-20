@@ -139,6 +139,7 @@ rabbit_userid = {{ keystone_rabbitmq_userid }}
 rabbit_password = {{ keystone_rabbitmq_password }}
 rabbit_virtual_host = {{ keystone_rabbitmq_vhost }}
 rabbit_hosts = {{ rabbitmq_servers }}
+rabbit_use_ssl = {{ rabbitmq_use_ssl }}
 
 {% if keystone_sp is defined %}
 [federation]
