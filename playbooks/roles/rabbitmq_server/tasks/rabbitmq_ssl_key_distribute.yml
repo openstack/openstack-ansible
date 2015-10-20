@@ -31,3 +31,14 @@
   delay: 2
   tags:
     - rabbitmq-ssl
+
+- name: Ensure rabbitmq user owns the self-signed key and certificate
+  file:
+    path: "{{ item }}"
+    owner: rabbitmq
+    group: rabbitmq
+  with_items:
+    - "{{ rabbitmq_ssl_key }}"
+    - "{{ rabbitmq_ssl_cert }}"
+  tags:
+    - rabbitmq-ssl
