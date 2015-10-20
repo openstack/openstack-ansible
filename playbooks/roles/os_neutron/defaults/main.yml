@@ -36,7 +36,9 @@ neutron_bin: "{{ neutron_venv_bin }}"
 #  This is used for role access to the db migrations.
 #  Example:
 #  neutron_lib_dir: "/usr/local/lib/python2.7/dist-packages/neutron"
-neutron_lib_dir: "{{ neutron_bin | dirname }}/lib/python2.7/site-packages/neutron"
+neutron_venv_lib_dir: "{{ neutron_bin | dirname }}/lib/python2.7/site-packages/neutron"
+neutron_non_venv_lib_dir: "/usr/local/lib/python2.7/dist-packages/neutron"
+neutron_lib_dir: "{{ (neutron_venv_enabled | bool) | ternary(neutron_venv_lib_dir, neutron_non_venv_lib_dir) }}"
 
 neutron_fatal_deprecations: False
 
