@@ -42,7 +42,7 @@
     - keystone-db-sync
     - keystone-setup
 
-# Create an service tenant
+# Create a service tenant
 - name: Ensure service tenant
   keystone:
     command: "ensure_tenant"
