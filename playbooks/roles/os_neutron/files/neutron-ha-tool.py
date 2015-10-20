@@ -19,6 +19,7 @@
 import argparse
 from collections import OrderedDict
 import logging
+from logging import handlers
 from logging.handlers import SysLogHandler
 import os
 import random
@@ -27,12 +28,51 @@ import time
 
 from neutronclient.neutron import client
 
-
-LOG = logging.getLogger('neutron-ha-tool')
+LOG_NAME = 'neutron-ha-tool'
+LOG = logging.getLogger(LOG_NAME)
 LOG_FORMAT = '%(asctime)s %(name)-12s %(levelname)-8s %(message)s'
 LOG_DATE = '%m-%d %H:%M'
 DESCRIPTION = "neutron High Availability Tool"
 TAKEOVER_DELAY = int(random.random()*30+30)
+
+
+def load_local_logging():
+    """Load a local logger for neutron ha tool.
+
+    This method returns a logging object
+
+    :returns: ``object``
+    """
+
+    user = os.getuid()
+    home = os.path.expanduser('~')
+    log_dir = '/var/log/neutron'
+    filename = '%s.log' % LOG_NAME
+
+    if user == 0:
+        file_name = os.path.join(log_dir, filename)
+    elif os.stat(log_dir).st_uid == user:
+        file_name = os.path.join(log_dir, filename)
+    elif os.stat(log_dir).st_gid == user:
+        file_name = os.path.join(log_dir, filename)
+    else:
+        file_name = os.path.join(home, filename)
+
+    log_format = logging.Formatter(fmt=LOG_FORMAT, datefmt=LOG_DATE)
+
+    file_handler = handlers.RotatingFileHandler(
+        filename=file_name,
+        maxBytes=(500 * 1024 * 1024),
+        backupCount=5
+    )
+    file_handler.setLevel(logging.DEBUG)
+    file_handler.name = LOG_NAME
+    file_handler.setFormatter(log_format)
+
+    log = logging.getLogger(LOG_NAME)
+    log.setLevel(logging.DEBUG)
+    log.addHandler(file_handler)
+    return log
 
 
 def parse_args():
@@ -80,6 +120,9 @@ def setup_logging(args):
     syslog_formatter = logging.Formatter('%(name)s: %(levelname)s %(message)s')
     handler.setFormatter(syslog_formatter)
     LOG.addHandler(handler)
+
+    # Create a local rotating logging object
+    load_local_logging()
 
 
 def run(args):
