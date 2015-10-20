@@ -17,10 +17,10 @@ cluster.
 #. Run the following commands to add the host. Replace
    ``NEW_HOST_NAME`` with the name of the new host.
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
-       $ cd /opt/openstack-ansible/playbooks
-       $ openstack-ansible setup-everything.yml --limit NEW_HOST_NAME
+       # cd /opt/openstack-ansible/playbooks
+       # openstack-ansible setup-everything.yml --limit NEW_HOST_NAME
 
 --------------
 

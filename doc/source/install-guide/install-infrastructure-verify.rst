@@ -9,22 +9,22 @@ Verify the database cluster and Kibana web interface operation.
 
 #. Determine the Galera container name:
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
-       $ lxc-ls | grep galera
+       # lxc-ls | grep galera
        infra1_galera_container-4ed0d84a
 
 #. Access the Galera container:
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
-       $ lxc-attach -n infra1_galera_container-4ed0d84a
+       # lxc-attach -n infra1_galera_container-4ed0d84a
 
 #. Run the MariaDB client, show cluster status, and exit the client:
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
-       $ mysql -u root -p
+       # mysql -u root -p
        MariaDB> show status like 'wsrep_cluster%';
        +--------------------------+--------------------------------------+
        | Variable_name            | Value                                |

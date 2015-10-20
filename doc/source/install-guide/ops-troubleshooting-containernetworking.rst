@@ -18,7 +18,7 @@ Predictable interface naming
 On the host, all virtual ethernet devices are named based on their container
 as well as the name of the interface inside the container:
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
     ${CONTAINER_UNIQUE_ID}_${NETWORK_DEVICE_NAME}
 
@@ -29,9 +29,9 @@ network interfaces: `d13b7132_eth0` and `d13b7132_eth1`.
 Another option would be to use LXC's tools to retrieve information about the
 utility container:
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
-    $ lxc-info -n aio1_utility_container-d13b7132
+    # lxc-info -n aio1_utility_container-d13b7132
 
     Name:           aio1_utility_container-d13b7132
     State:          RUNNING

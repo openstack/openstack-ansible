@@ -60,10 +60,10 @@ This procedure requires the following:
 
 #. Run the Image Service (glance) playbook:
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
-       $ cd /opt/openstack-ansible/playbooks
-       $ openstack-ansible os-glance-install.yml --tags "glance-config"
+       # cd /opt/openstack-ansible/playbooks
+       # openstack-ansible os-glance-install.yml --tags "glance-config"
 
 --------------
 

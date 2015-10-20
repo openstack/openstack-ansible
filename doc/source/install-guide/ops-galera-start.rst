@@ -11,9 +11,9 @@ one of the nodes.
    following command to check the ``seqno`` value in the
    ``grastate.dat`` file on all of the nodes:
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
-       $ ansible galera_container -m shell -a "cat /var/lib/mysql/grastate.dat"
+       # ansible galera_container -m shell -a "cat /var/lib/mysql/grastate.dat"
        node2_galera_container-49a47d25 | success | rc=0 >>
        # GALERA saved state version: 2.1
        uuid:    338b06b0-2948-11e4-9d06-bef42f6c52f1
@@ -31,23 +31,21 @@ one of the nodes.
        uuid:    338b06b0-2948-11e4-9d06-bef42f6c52f1
        seqno:   31
        cert_index:
-                 
 
    In this example, all nodes in the cluster contain the same positive
    ``seqno`` values because they were synchronized just prior to
    graceful shutdown. If all ``seqno`` values are equal, any node can
    start the new cluster.
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
-       $ /etc/init.d/mysql start --wsrep-new-cluster
-                 
+       # /etc/init.d/mysql start --wsrep-new-cluster
 
    This command results in a cluster containing a single node. The
    ``wsrep_cluster_size`` value shows the number of nodes in the
    cluster.
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
        node2_galera_container-49a47d25 | FAILED | rc=1 >>
        ERROR 2002 (HY000): Can't connect to local MySQL server
@@ -63,12 +61,11 @@ one of the nodes.
        wsrep_cluster_size        1
        wsrep_cluster_state_uuid  338b06b0-2948-11e4-9d06-bef42f6c52f1
        wsrep_cluster_status      Primary
-                 
 
 #. Restart MariaDB on the other nodes and verify that they rejoin the
    cluster.
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
        node2_galera_container-49a47d25 | success | rc=0 >>
        Variable_name             Value
@@ -90,7 +87,6 @@ one of the nodes.
        wsrep_cluster_size        3
        wsrep_cluster_state_uuid  338b06b0-2948-11e4-9d06-bef42f6c52f1
        wsrep_cluster_status      Primary
-                 
 
 --------------
 

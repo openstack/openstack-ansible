@@ -11,14 +11,14 @@ Running the foundation playbook
 
 #. Run the host setup playbook, which runs a series of sub-playbooks:
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
-       $ openstack-ansible setup-hosts.yml
+       # openstack-ansible setup-hosts.yml
 
    Confirm satisfactory completion with zero items unreachable or
    failed:
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
        PLAY RECAP ********************************************************************
        ...
@@ -33,21 +33,21 @@ Running the foundation playbook
      been downloaded during the bootstrap-ansible stage. If not, you should
      rerun the following command before running the haproxy playbook:
 
-     .. code-block:: shell
+     .. code-block:: shell-session
 
-        $ ../scripts/bootstrap-ansible.sh
+        # ../scripts/bootstrap-ansible.sh
 
      or
 
-     .. code-block:: shell
+     .. code-block:: shell-session
 
-        $ ansible-galaxy install -r ../ansible-role-requirements.yml
+        # ansible-galaxy install -r ../ansible-role-requirements.yml
 
   Run the playbook to deploy haproxy:
 
-  .. code-block:: bash
+  .. code-block:: shell-session
 
-     $ openstack-ansible haproxy-install.yml
+     # openstack-ansible haproxy-install.yml
 
 --------------
 

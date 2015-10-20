@@ -12,16 +12,15 @@ configure NTP.
 #. Install additional software packages if not already installed during
    operating system installation:
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
        # apt-get install bridge-utils debootstrap ifenslave ifenslave-2.6 \
          lsof lvm2 ntp ntpdate openssh-server sudo tcpdump vlan
-               
 
 #. Add the appropriate kernel modules to the ``/etc/modules`` file to
    enable VLAN and bond interfaces:
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
       # echo 'bonding' >> /etc/modules
       # echo '8021q' >> /etc/modules

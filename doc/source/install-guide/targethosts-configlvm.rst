@@ -8,11 +8,10 @@ Configuring LVM
    metadata size of 2048 must be specified during physical volume
    creation. For example:
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
        # pvcreate --metadatasize 2048 physical_volume_device_path
        # vgcreate cinder-volumes physical_volume_device_path
-          
 
 #. Optionally, create an LVM volume group named *lxc* for container file
    systems. If the lxc volume group does not exist, containers will be

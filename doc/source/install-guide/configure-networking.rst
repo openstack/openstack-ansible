@@ -20,13 +20,13 @@ configure target host networking.
        #Storage (same range as br-storage on the target hosts)
        storage: STORAGE_CIDR
 
-   Replace *``*_CIDR``* with the appropriate IP address range in CIDR
+   Replace ``*_CIDR`` with the appropriate IP address range in CIDR
    notation. For example, 203.0.113.0/24.
 
    Use the same IP address ranges as the underlying physical network
    interfaces or bridges configured in `the section called "Configuring
    the network" <targethosts-network.html>`_. For example, if the
-   container network uses 203.0.113.0/24, the *``CONTAINER_MGMT_CIDR``*
+   container network uses 203.0.113.0/24, the ``CONTAINER_MGMT_CIDR``
    should also use 203.0.113.0/24.
 
    The default configuration includes the optional storage and service
@@ -40,7 +40,7 @@ configure target host networking.
        used_ips:
          - EXISTING_IP_ADDRESSES
 
-   Replace *``EXISTING_IP_ADDRESSES``* with a list of existing IP
+   Replace ``EXISTING_IP_ADDRESSES`` with a list of existing IP
    addresses in the ranges defined in the previous step. This list
    should include all IP addresses manually configured on target hosts
    in the `the section called "Configuring the
@@ -79,18 +79,18 @@ configure target host networking.
          # Tunnel network bridge device
          tunnel_bridge: "TUNNEL_BRIDGE"
 
-   Replace *``INTERNAL_LB_VIP_ADDRESS``* with the internal IP address of
+   Replace ``INTERNAL_LB_VIP_ADDRESS`` with the internal IP address of
    the load balancer. Infrastructure and OpenStack services use this IP
    address for internal communication.
 
-   Replace *``EXTERNAL_LB_VIP_ADDRESS``* with the external, public, or
+   Replace ``EXTERNAL_LB_VIP_ADDRESS`` with the external, public, or
    DMZ IP address of the load balancer. Users primarily use this IP
    address for external API and web interfaces access.
 
-   Replace *``MGMT_BRIDGE``* with the container bridge device name,
+   Replace ``MGMT_BRIDGE`` with the container bridge device name,
    typically ``br-mgmt``.
 
-   Replace *``TUNNEL_BRIDGE``* with the tunnel/overlay bridge device
+   Replace ``TUNNEL_BRIDGE`` with the tunnel/overlay bridge device
    name, typically ``br-vxlan``.
 
 #. Configure the management network in the ``provider_networks`` subsection:
@@ -149,7 +149,7 @@ configure target host networking.
                range: "TUNNEL_ID_RANGE"
                net_name: "vxlan"
 
-   Replace *``TUNNEL_ID_RANGE``* with the tunnel ID range. For example,
+   Replace ``TUNNEL_ID_RANGE`` with the tunnel ID range. For example,
    1:1000.
 
 #. Configure OpenStack Networking flat (untagged) and VLAN (tagged) networks
@@ -177,7 +177,7 @@ configure target host networking.
                range: VLAN_ID_RANGE
                net_name: "vlan"
 
-   Replace *``VLAN_ID_RANGE``* with the VLAN ID range for each VLAN network.
+   Replace ``VLAN_ID_RANGE`` with the VLAN ID range for each VLAN network.
    For example, 1:1000. Supports more than one range of VLANs on a particular
    network. For example, 1:1000,2001:3000. Create a similar stanza for each
    additional network.
@@ -210,7 +210,7 @@ configure target host networking.
    ``/etc/network/interfaces.d/eth2.cfg`` file in the appropriate
    containers:
 
-   .. code-block:: shell
+   .. code-block:: shell-session
 
       post-up ip route add 10.176.0.0/12 via 172.29.248.1 || true
 

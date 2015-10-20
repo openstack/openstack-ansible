@@ -15,89 +15,127 @@ In order to facilitate this extra options may be passed to the python package
 installer to reinstall based on whatever version of the package is available
 in the repository. This is done by executing, for example:
 
-.. code-block:: bash
+.. code-block:: shell-session
 
-    openstack-ansible -e pip_install_options="--force-reinstall" \
+    # openstack-ansible -e pip_install_options="--force-reinstall" \
         setup-openstack.yml
 
 A minor upgrade will typically require the execution of the following:
 
-.. code-block:: bash
+1. Change directory into the repository clone root directory::
 
-    # Change directory into the repository clone root directory
-    cd /opt/openstack-ansible
+  .. code-block:: shell-session
 
-    # Update the git remotes
-    git fetch --all
+      # cd /opt/openstack-ansible
 
-    # Checkout the latest tag (the below tag is an example)
-    git checkout 12.0.1
+2. Update the git remotes
 
-    # Change into the playbooks directory
-    cd playbooks
+  .. code-block:: shell-session
 
-    # Build the updated repository
-    openstack-ansible repo-install.yml
+      # git fetch --all
 
-    # Update RabbitMQ
-    openstack-ansible -e rabbitmq_upgrade=true \
-        rabbitmq-install.yml
+3. Checkout the latest tag (the below tag is an example)
 
-    # Update the Utility Container
-    openstack-ansible -e pip_install_options="--force-reinstall" \
-        utility-install.yml
+  .. code-block:: shell-session
 
-    # Update all OpenStack Services
-    openstack-ansible -e pip_install_options="--force-reinstall" \
-        setup-openstack.yml
+      # git checkout 12.0.1
+
+4. Change into the playbooks directory
+
+  .. code-block:: shell-session
+
+      # cd playbooks
+
+5. Build the updated repository
+
+  .. code-block:: shell-session
+
+      # openstack-ansible repo-install.yml
+
+6. Update RabbitMQ
+
+  .. code-block:: shell-session
+
+      # openstack-ansible -e rabbitmq_upgrade=true \
+          rabbitmq-install.yml
+
+7. Update the Utility Container
+
+  .. code-block:: shell-session
+
+      # openstack-ansible -e pip_install_options="--force-reinstall" \
+          utility-install.yml
+
+8. Update all OpenStack Services
+
+  .. code-block:: shell-session
+
+      # openstack-ansible -e pip_install_options="--force-reinstall" \
+          setup-openstack.yml
 
 Note that if you wish to scope the upgrades to specific OpenStack components
 then each of the component playbooks may be executed and scoped using groups.
 For example:
 
-.. code-block:: bash
+1. Update only the Compute Hosts
 
-    # Update only the Compute Hosts
-    openstack-ansible -e pip_install_options="--force-reinstall" \
-        os-nova-install.yml --limit nova_compute
+  .. code-block:: shell-session
 
-    # Update only a single Compute Host
-    #  Skipping the 'nova-key' tag is necessary as the keys on all compute
-    #  hosts will not be gathered.
-    openstack-ansible -e pip_install_options="--force-reinstall" \
-        os-nova-install.yml --limit <node-name> --skip-tags 'nova-key'
+      # openstack-ansible -e pip_install_options="--force-reinstall" \
+          os-nova-install.yml --limit nova_compute
+
+2. Update only a single Compute Host (skipping the 'nova-key' tag is necessary as the keys on all compute hosts will not be gathered)
+
+  .. code-block:: shell-session
+
+      # openstack-ansible -e pip_install_options="--force-reinstall" \
+          os-nova-install.yml --limit <node-name> --skip-tags 'nova-key'
 
 If you wish to see which hosts belong to which groups, the
 ``inventory-manage.py`` script will show all groups and their hosts.
 For example:
 
-.. code-block:: bash
+1. Change directory into the repository clone root directory
 
-    # Change directory into the repository clone root directory
-    cd /opt/openstack-ansible
+  .. code-block:: shell-session
 
-    # Show all groups and which hosts belong to them
-    ./scripts/inventory-manage.py -G
+      # cd /opt/openstack-ansible
 
-    # Show all hosts and which groups they belong to
-    ./scripts/inventory-manage.py -g
+2. Show all groups and which hosts belong to them
+
+  .. code-block:: shell-session
+
+      # ./scripts/inventory-manage.py -G
+
+3. Show all hosts and which groups they belong to
+
+  .. code-block:: shell-session
+
+      # ./scripts/inventory-manage.py -g
 
 You may also see which hosts a playbook will execute against, and which tasks
 will be executed:
 
-.. code-block:: bash
+1. Change directory into the repository clone playbooks directory
 
-    # Change directory into the repository clone playbooks directory
-    cd /opt/openstack-ansible/playbooks
+  .. code-block:: shell-session
 
-    # See the hosts in the nova_compute group which a playbook will execute
-    #  against
-    openstack-ansible os-nova-install.yml --limit nova_compute --list-hosts
+      # cd /opt/openstack-ansible/playbooks
 
-    # See the tasks which will be executed on hosts in the nova_compute group
-    openstack-ansible os-nova-install.yml --limit nova_compute \
-                                          --skip-tags 'nova-key' \
-                                          --list-tasks
+2. See the hosts in the nova_compute group which a playbook will execute against
+
+  .. code-block:: shell-session
+
+      # openstack-ansible os-nova-install.yml --limit nova_compute \
+                                              --list-hosts
+
+3. See the tasks which will be executed on hosts in the nova_compute group
+
+  .. code-block:: shell-session
+
+     # openstack-ansible os-nova-install.yml --limit nova_compute \
+                                             --skip-tags 'nova-key' \
+                                             --list-tasks
 
 --------------
 

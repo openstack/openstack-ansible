@@ -16,9 +16,9 @@ Here are a few steps to execute before running any playbook:
 #. Run your command with syntax-check, for example,
    in the playbooks directory:
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
-      $ openstack-ansible setup-infrastructure.yml --syntax-check
+      # openstack-ansible setup-infrastructure.yml --syntax-check
 
 #. Recheck that all indentation seems correct: the syntax of the
    configuration files can be correct while not being meaningful

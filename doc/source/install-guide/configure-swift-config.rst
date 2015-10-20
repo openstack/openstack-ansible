@@ -9,10 +9,10 @@ file**
 #. Copy the ``/etc/openstack_deploy/conf.d/swift.yml.example`` file to
    ``/etc/openstack_deploy/conf.d/swift.yml``:
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
-       #cp /etc/openstack_deploy/conf.d/swift.yml.example \
-                 /etc/openstack_deploy/conf.d/swift.yml
+       # cp /etc/openstack_deploy/conf.d/swift.yml.example \
+           /etc/openstack_deploy/conf.d/swift.yml
 
 #. Update the global override values:
 

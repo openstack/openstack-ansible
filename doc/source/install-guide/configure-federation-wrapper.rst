@@ -38,14 +38,14 @@ The K2K authentication flow involves the following steps:
 Identity Service to Identity Service federation authentication wrapper
 ----------------------------------------------------------------------
 
-Unfortunately, many of the steps above involve manually sending API requests. 
+Unfortunately, many of the steps above involve manually sending API requests.
 The infrastructure for the command line utilities to perform all these steps
 for the user does not yet exist.
 
 To simplify the task of obtaining access to a SP cloud, OpenStack Ansible provides a script that wraps the above steps. The script is called ``federated-login.sh`` and is
 used as follows::
 
-    ./federated-login.sh -p project [-d domain] sp_id
+    # ./scripts/federated-login.sh -p project [-d domain] sp_id
 
 Where ``project`` is the project in the SP cloud that the user wants to access,
 ``domain`` is the domain in which the project lives (the default domain is
@@ -59,13 +59,13 @@ and the scoped token provided by the SP.
 The endpoints and token can be used with the openstack command line client as
 follows::
 
-    $ openstack --os-token=<token> --os-url=<service-endpoint> [options]
+    # openstack --os-token=<token> --os-url=<service-endpoint> [options]
 
 or alternatively::
 
-    $ export OS_TOKEN=<token>
-    $ export OS_URL=<service-endpoint>
-    $ openstack [options]
+    # export OS_TOKEN=<token>
+    # export OS_URL=<service-endpoint>
+    # openstack [options]
 
 The user must select the appropriate endpoint for the desired
 operation. For example, if the user wants to work with servers, the ``OS_URL``
