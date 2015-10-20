@@ -89,7 +89,6 @@ auth_strategy = keystone
 
 ## Vif
 linuxnet_interface_driver = {{ nova_linuxnet_interface_driver }}
-libvirt_vif_driver = {{ nova_libvirt_vif_driver }}
 libvirt_vif_type = ethernet
 vif_plugging_timeout = 10
 vif_plugging_is_fatal = False
@@ -221,7 +220,6 @@ rabbit_hosts = {{ rabbitmq_servers }}
 
 
 [libvirt]
-vif_driver = {{ nova_libvirt_vif_driver }}
 inject_partition = {{ nova_libvirt_inject_partition }}
 inject_password = {{ nova_libvirt_inject_password }}
 inject_key = {{ nova_libvirt_inject_key }}
