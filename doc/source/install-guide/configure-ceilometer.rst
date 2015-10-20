@@ -13,7 +13,9 @@ The Telemetry module(Ceilometer) performs the following functions:
 
   - Creates alarms when collected data breaks defined rules.
 
-Ceilometer on OSA requires a monogodb backend to be configured prior to running the ceilometer playbooks. A connection string will then need to be given in the ``user_variables.yml`` file(See section Configuring User Data below).
+Ceilometer on OSA requires a monogodb backend to be configured prior to running the ceilometer
+playbooks. The connection data will then need to be given in the ``user_variables.yml``
+file (see section `Configuring the user data`_ below).
 
 
 Setting up a Mongodb database for ceilometer
@@ -21,51 +23,55 @@ Setting up a Mongodb database for ceilometer
 
 1. Install the MongoDB package:
 
-  .. code-block:: shell
+  .. code-block:: shell-session
 
-    apt-get install mongodb-server mongodb-clients python-pymongo
+    # apt-get install mongodb-server mongodb-clients python-pymongo
 
 2. Edit the ``/etc/mongodb.conf`` file and change the bind_ip to the management interface of the node your running this on.
 
-  .. code-block:: shell
+  .. code-block:: shell-session
 
     bind_ip = 10.0.0.11
 
 3. Edit the ``/etc/mongodb.conf`` file and enable smallfiles
 
-  .. code-block:: shell
+  .. code-block:: shell-session
 
     smallfiles = true
 
 4. Restart the mongodb service
 
-  .. code-block:: shell
+  .. code-block:: shell-session
 
-    service mongodb restart
+    # service mongodb restart
 
 5. Create the ceilometer database
 
-  .. code-block:: shell
+  .. code-block:: shell-session
 
-        # mongo --host controller --eval '
+      # mongo --host controller --eval '
       db = db.getSiblingDB("ceilometer");
       db.addUser({user: "ceilometer",
       pwd: "CEILOMETER_DBPASS",
       roles: [ "readWrite", "dbAdmin" ]})'
 
-    MongoDB shell version: 2.4.x
-    connecting to: controller:27017/test
-    {
-     "user" : "ceilometer",
-     "pwd" : "72f25aeee7ad4be52437d7cd3fc60f6f",
-     "roles" : [
-      "readWrite",
-      "dbAdmin"
-     ],
-     "_id" : ObjectId("5489c22270d7fad1ba631dc3")
-    }
+  This should return:
 
-NOTE: The ``CEILOMETER_DBPASS`` must match the ``ceilometer_container_db_password`` in the ``/etc/openstack_deploy/user_secrets.yml`` file. This is how ansible knows how to configure the connection string within the ceilometer configuration files.
+  .. code-block:: shell-session
+
+      MongoDB shell version: 2.4.x
+      connecting to: controller:27017/test
+      {
+       "user" : "ceilometer",
+       "pwd" : "72f25aeee7ad4be52437d7cd3fc60f6f",
+       "roles" : [
+        "readWrite",
+        "dbAdmin"
+       ],
+       "_id" : ObjectId("5489c22270d7fad1ba631dc3")
+      }
+
+  NOTE: The ``CEILOMETER_DBPASS`` must match the ``ceilometer_container_db_password`` in the ``/etc/openstack_deploy/user_secrets.yml`` file. This is how ansible knows how to configure the connection string within the ceilometer configuration files.
 
 Configuring the hosts
 #####################

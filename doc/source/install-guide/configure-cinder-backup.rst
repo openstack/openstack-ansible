@@ -14,7 +14,7 @@ back up to an external Object Storage installation.
    ``/etc/openstack_deploy/user_variables.yml`` file and set the value
    to ``True``:
 
-   .. code-block:: bash
+   .. code-block:: yaml
 
        cinder_service_backup_program_enabled: True
 
@@ -27,7 +27,7 @@ back up to an external Object Storage installation.
    following variables to the
    ``/etc/openstack_deploy/user_variables.yml`` file:
 
-   .. code-block:: bash
+   .. code-block:: yaml
 
        ...
        cinder_service_backup_swift_auth: per_user

@@ -62,9 +62,9 @@ certificates unless the user sets ``<servicename>_ssl_self_signed_regen`` to
 To force a self-signed certificate to regenerate you can pass the variable to
 ``openstack-ansible`` on the command line:
 
-.. code-block:: bash
+.. code-block:: shell-session
 
-    openstack-ansible -e "horizon_ssl_self_signed_regen=true" os-horizon-install.yml
+    # openstack-ansible -e "horizon_ssl_self_signed_regen=true" os-horizon-install.yml
 
 To force a self-signed certificate to regenerate **with every playbook run**,
 simply set the appropriate regeneration option to ``true``.  For example, if
@@ -112,9 +112,9 @@ variables:
 
 Simply run the playbook to apply the certificates:
 
-.. code-block:: bash
+.. code-block:: shell-session
 
-    openstack-ansible rabbitmq-install.yml
+    # openstack-ansible rabbitmq-install.yml
 
 The playbook will deploy your user-provided SSL certificate, key, and CA
 certificate to each RabbitMQ container.

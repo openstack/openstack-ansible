@@ -12,14 +12,14 @@ Running the infrastructure playbook
 #. Run the infrastructure setup playbook, which runs a series of
    sub-playbooks:
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
-       $ openstack-ansible setup-infrastructure.yml
+       # openstack-ansible setup-infrastructure.yml
 
    Confirm satisfactory completion with zero items unreachable or
    failed:
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
        PLAY RECAP ********************************************************************
        ...

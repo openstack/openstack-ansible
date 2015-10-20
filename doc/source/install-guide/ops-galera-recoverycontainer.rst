@@ -16,19 +16,18 @@ containers.
    MariaDB data stored outside of the container. In this example, node 3
    failed.
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
-       $ lxc-stop -n node3_galera_container-3ea2cbd3
-       $ lxc-destroy -n node3_galera_container-3ea2cbd3
-       $ rm -rf /openstack/node3_galera_container-3ea2cbd3/*
-                 
+       # lxc-stop -n node3_galera_container-3ea2cbd3
+       # lxc-destroy -n node3_galera_container-3ea2cbd3
+       # rm -rf /openstack/node3_galera_container-3ea2cbd3/*
 
 #. Run the host setup playbook to rebuild the container specifically on
    node 3:
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
-       $ openstack-ansible setup-hosts.yml -l node3 \
+       # openstack-ansible setup-hosts.yml -l node3 \
        -l node3_galera_container-3ea2cbd3
 
 
@@ -37,9 +36,9 @@ containers.
 #. Run the infrastructure playbook to configure the container
    specifically on node 3:
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
-       $ openstack-ansible infrastructure-setup.yml \
+       # openstack-ansible infrastructure-setup.yml \
        -l node3_galera_container-3ea2cbd3
 
 
@@ -47,9 +46,9 @@ containers.
    state because the environment contains more than one active database
    with potentially different data.
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
-       $ ansible galera_container -m shell -a "mysql \
+       # ansible galera_container -m shell -a "mysql \
        -h localhost -e 'show status like \"%wsrep_cluster_%\";'"
        node3_galera_container-3ea2cbd3 | success | rc=0 >>
        Variable_name             Value
@@ -71,14 +70,13 @@ containers.
        wsrep_cluster_size        2
        wsrep_cluster_state_uuid  338b06b0-2948-11e4-9d06-bef42f6c52f1
        wsrep_cluster_status      Primary
-                 
 
 #. Restart MariaDB in the new container and verify that it rejoins the
    cluster.
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
-       $ ansible galera_container -m shell -a "mysql \
+       # ansible galera_container -m shell -a "mysql \
        -h localhost -e 'show status like \"%wsrep_cluster_%\";'"
        node2_galera_container-49a47d25 | success | rc=0 >>
        Variable_name             Value

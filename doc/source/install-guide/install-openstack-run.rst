@@ -8,9 +8,9 @@ Running the OpenStack playbook
 #. Run the OpenStack setup playbook, which runs a series of
    sub-playbooks:
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
-       $ openstack-ansible setup-openstack.yml
+       # openstack-ansible setup-openstack.yml
 
    The openstack-common.yml sub-playbook builds all OpenStack services
    from source and takes up to 30 minutes to complete. As the playbook
@@ -18,7 +18,7 @@ Running the OpenStack playbook
    approach zero. If any operations take longer than 30 minutes to
    complete, the playbook will terminate with an error.
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
        changed: [target_host_glance_container-f2ebdc06]
        changed: [target_host_heat_engine_container-36022446]
@@ -53,7 +53,7 @@ Running the OpenStack playbook
    approach zero. If any operations take longer than 30 minutes to
    complete, the playbook will terminate with an error.
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
        ok: [target_host_nova_conductor_container-2b495dc4]
        ok: [target_host_nova_api_metadata_container-600fe8b3]
@@ -70,7 +70,7 @@ Running the OpenStack playbook
    Confirm satisfactory completion with zero items unreachable or
    failed:
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
        PLAY RECAP **********************************************************************
        ...

@@ -26,53 +26,47 @@ through ``sdg``.
    For example, create the file systems on the devices using the
    **mkfs** command
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
-       $ apt-get install xfsprogs
-
-       $ mkfs.xfs -f -i size=1024 -L sdc /dev/sdc
-       $ mkfs.xfs -f -i size=1024 -L sdd /dev/sdd
-       $ mkfs.xfs -f -i size=1024 -L sde /dev/sde
-       $ mkfs.xfs -f -i size=1024 -L sdf /dev/sdf
-       $ mkfs.xfs -f -i size=1024 -L sdg /dev/sdg
+       # apt-get install xfsprogs
+       # mkfs.xfs -f -i size=1024 -L sdc /dev/sdc
+       # mkfs.xfs -f -i size=1024 -L sdd /dev/sdd
+       # mkfs.xfs -f -i size=1024 -L sde /dev/sde
+       # mkfs.xfs -f -i size=1024 -L sdf /dev/sdf
+       # mkfs.xfs -f -i size=1024 -L sdg /dev/sdg
 
 #. Add the mount locations to the ``fstab`` file so that the storage
    devices are remounted on boot. The following example mount options
    are recommended when using XFS.
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
-               $ LABEL=sdc /srv/node/sdc xfs noatime,nodiratime, \
-               nobarrier,logbufs=8,noauto 0 0
-               $ LABEL=sdd /srv/node/sdd xfs noatime,nodiratime, \
-               nobarrier,logbufs=8,noauto 0 0
-               $ LABEL=sde /srv/node/sde xfs noatime,nodiratime, \
-               nobarrier,logbufs=8,noauto 0 0
-               $ LABEL=sdf /srv/node/sdf xfs noatime,nodiratime, \
-               nobarrier,logbufs=8,noauto 0 0
-               $ LABEL=sdg /srv/node/sdg xfs noatime,nodiratime, \
-               nobarrier,logbufs=8,noauto 0 0
+       LABEL=sdc /srv/node/sdc xfs noatime,nodiratime,nobarrier,logbufs=8,noauto 0 0
+       LABEL=sdd /srv/node/sdd xfs noatime,nodiratime,nobarrier,logbufs=8,noauto 0 0
+       LABEL=sde /srv/node/sde xfs noatime,nodiratime,nobarrier,logbufs=8,noauto 0 0
+       LABEL=sdf /srv/node/sdf xfs noatime,nodiratime,nobarrier,logbufs=8,noauto 0 0
+       LABEL=sdg /srv/node/sdg xfs noatime,nodiratime,nobarrier,logbufs=8,noauto 0 0
 
 #. Create the mount points for the devices using the **mkdir** command.
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
-       $ mkdir -p /srv/node/sdc
-       $ mkdir -p /srv/node/sdd
-       $ mkdir -p /srv/node/sde
-       $ mkdir -p /srv/node/sdf
-       $ mkdir -p /srv/node/sdg
+       # mkdir -p /srv/node/sdc
+       # mkdir -p /srv/node/sdd
+       # mkdir -p /srv/node/sde
+       # mkdir -p /srv/node/sdf
+       # mkdir -p /srv/node/sdg
 
-   The mount point is referenced as the ``mount_point``\ parameter in
+   The mount point is referenced as the ``mount_point`` parameter in
    the ``swift.yml`` file (``/etc/rpc_deploy/conf.d/swift.yml``).
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
-       $ mount /srv/node/sdc
-       $ mount /srv/node/sdd
-       $ mount /srv/node/sde
-       $ mount /srv/node/sdf
-       $ mount /srv/node/sdg
+       # mount /srv/node/sdc
+       # mount /srv/node/sdd
+       # mount /srv/node/sde
+       # mount /srv/node/sdf
+       # mount /srv/node/sdg
 
 To view an annotated example of the ``swift.yml`` file, see `Appendix A,
 *OSA configuration files* <app-configfiles.html>`_.

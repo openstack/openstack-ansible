@@ -61,8 +61,8 @@ described in the following procedure.
            bond-downdelay 250
            bond-updelay 250
 
-   If not already complete, replace *``HOST_IP_ADDRESS``*,
-   *``HOST_NETMASK``*, *``HOST_GATEWAY``*, and *``HOST_DNS_SERVERS``*
+   If not already complete, replace ``HOST_IP_ADDRESS``,
+   ``HOST_NETMASK``, ``HOST_GATEWAY``, and ``HOST_DNS_SERVERS``
    with the appropriate configuration for the host management network.
 
 #. Logical (VLAN) interfaces:
@@ -81,7 +81,7 @@ described in the following procedure.
        iface bond0.STORAGE_VLAN_ID inet manual
            vlan-raw-device bond0
 
-   Replace *``*_VLAN_ID``* with the appropriate configuration for the
+   Replace ``*_VLAN_ID`` with the appropriate configuration for the
    environment.
 
 #. Bridge devices:
@@ -131,8 +131,8 @@ described in the following procedure.
            address STORAGE_BRIDGE_IP_ADDRESS
            netmask STORAGE_BRIDGE_NETMASK
 
-   Replace *``*_VLAN_ID``*, *``*_BRIDGE_IP_ADDRESS``*, and
-   *``*_BRIDGE_NETMASK``*, *``*_BRIDGE_DNS_SERVERS``* with the
+   Replace ``*_VLAN_ID``, ``*_BRIDGE_IP_ADDRESS``, and
+   ``*_BRIDGE_NETMASK``, ``*_BRIDGE_DNS_SERVERS`` with the
    appropriate configuration for the environment.
 
 --------------

@@ -28,11 +28,10 @@ existing deployment.
 
 #. Run the Object Storage play:
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
-       $ cd /opt/openstack-ansible/playbooks
-       $ openstack-ansible os-swift-install.yml
-               
+       # cd /opt/openstack-ansible/playbooks
+       # openstack-ansible os-swift-install.yml
 
 --------------
 

@@ -20,10 +20,10 @@ The following procedure describes how to set up storage devices and
 modify the Object Storage configuration files to enable Object Storage
 usage.
 
-#. `the section called "Configure and mount storage
+#. `The section called "Configure and mount storage
    devices" <configure-swift-devices.html>`_
 
-#. `the section called "Configure an Object Storage
+#. `The section called "Configure an Object Storage
    deployment" <configure-swift-config.html>`_
 
 #. Optionally, allow all Identity users to use Object Storage by setting

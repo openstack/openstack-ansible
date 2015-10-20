@@ -5,10 +5,10 @@ Removing nodes
 
 In the following example, all but one node was shut down gracefully:
 
-.. code-block:: bash
+.. code-block:: shell-session
 
-    $ ansible galera_container -m shell -a "mysql -h localhost\
-     -e 'show status like \"%wsrep_cluster_%\";'"
+    # ansible galera_container -m shell -a "mysql -h localhost \
+    -e 'show status like \"%wsrep_cluster_%\";'"
     node3_galera_container-3ea2cbd3 | FAILED | rc=1 >>
     ERROR 2002 (HY000): Can't connect to local MySQL server
     through socket '/var/run/mysqld/mysqld.sock' (2)

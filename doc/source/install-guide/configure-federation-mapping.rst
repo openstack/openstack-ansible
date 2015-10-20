@@ -34,7 +34,7 @@ Each IdP trusted by an SP must have the following configuration:
 With the above information, Ansible implements the equivalent of the
 following OpenStack CLI commands:
 
-.. code-block:: shell
+.. code-block:: shell-session
 
   # if the domain does not already exist
   openstack domain create Default
@@ -112,7 +112,7 @@ The ``mapping`` dictionary is a yaml representation very similar to the
 keystone mapping property which Ansible uploads. The above mapping
 produces the following in keystone.
 
-.. code-block:: shell
+.. code-block:: shell-session
 
   root@aio1_keystone_container-783aa4c0:~# openstack mapping list
   +------------------+
