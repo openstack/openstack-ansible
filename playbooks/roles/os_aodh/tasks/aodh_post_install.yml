@@ -14,7 +14,7 @@
 # limitations under the License.
 
 - name: Get aodh command path
-  command: which aodh
+  command: which aodh-api
   register: aodh_command_path
   when:
     - not aodh_venv_enabled | bool
