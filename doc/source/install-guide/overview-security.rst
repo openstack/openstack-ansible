@@ -3,7 +3,7 @@
 Security
 --------
 
-The openstack-ansible project provides provides several security features for
+The openstack-ansible project provides several security features for
 OpenStack deployments.  This section of documentation covers some of those
 features and how they can benefit deployers of various sizes.
 
