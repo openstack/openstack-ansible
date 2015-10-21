@@ -38,10 +38,9 @@ cluster:
    policy groups) creates an empty ring for that storage policy.
 
 -  A non-default storage policy is used only if specified when creating
-   a container, using the
-   ``X-Storage-Policy:             <policy-name>`` header. After the
-   container is created, it uses the created storage policy. Other
-   containers continue using the default or another storage policy
+   a container, using the ``X-Storage-Policy: <policy-name>`` header.
+   After the container is created, it uses the created storage policy.
+   Other containers continue using the default or another storage policy
    specified when created.
 
 For more information about storage policies, see: `Storage

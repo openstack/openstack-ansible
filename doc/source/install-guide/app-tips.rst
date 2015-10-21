@@ -16,9 +16,9 @@ entry in ``ansible.cfg``, or for a particular playbook execution by using the
 ``--forks`` CLI parameter. For example, to execute the
 ``os-keystone-install.yml`` playbook using 10 forks:
 
-.. code-block:: bash
+.. code-block:: shell-session
 
-    openstack-ansible --forks 10 os-keystone-install.yml
+    # openstack-ansible --forks 10 os-keystone-install.yml
 
 .. _forks: http://docs.ansible.com/ansible/intro_configuration.html#forks
 

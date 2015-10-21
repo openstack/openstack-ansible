@@ -16,8 +16,8 @@ availability zones.
 
        cinder_storage_availability_zone: CINDERAZ
 
-   Replace *``CINDERAZ``* with a suitable name. For example
-   *``cinderAZ_2``*
+   Replace ``CINDERAZ`` with a suitable name. For example
+   ``cinderAZ_2``
 
 #. If more than one availability zone is created, configure the default
    availability zone for all the hosts by creating a
@@ -28,8 +28,8 @@ availability zones.
 
        cinder_default_availability_zone: CINDERAZ_DEFAULT
 
-   Replace *``CINDERAZ_DEFAULT``* with a suitable name. For example,
-   *``cinderAZ_1``*. The default availability zone should be the same
+   Replace ``CINDERAZ_DEFAULT`` with a suitable name. For example,
+   ``cinderAZ_1``. The default availability zone should be the same
    for all cinder hosts.
 
    If the ``cinder_default_availability_zone`` is not defined, the

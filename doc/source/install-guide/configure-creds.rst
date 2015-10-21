@@ -23,11 +23,10 @@ interfaces:
 Recommended: Use the ``pw-token-gen.py`` script to generate random
 values for the variables in each file that contains service credentials:
 
-.. code-block:: bash
+.. code-block:: shell-session
 
-    $ cd /opt/openstack-ansible/scripts
-    $ python pw-token-gen.py --file /etc/openstack_deploy/user_secrets.yml
-        
+    # cd /opt/openstack-ansible/scripts
+    # python pw-token-gen.py --file /etc/openstack_deploy/user_secrets.yml
 
 To regenerate existing passwords, add the ``--regen`` flag.
 

@@ -43,7 +43,7 @@ Ensure that the NAS Team enables httpd.admin.access.
 
        netapp_storage_family: STORAGE_FAMILY
 
-   Replace *``STORAGE_FAMILY``* with ``ontap_7mode`` for Data ONTAP
+   Replace ``STORAGE_FAMILY`` with ``ontap_7mode`` for Data ONTAP
    operating in 7-mode or ``ontap_cluster`` for Data ONTAP operating as
    a cluster.
 
@@ -53,7 +53,7 @@ Ensure that the NAS Team enables httpd.admin.access.
 
        netapp_storage_protocol: STORAGE_PROTOCOL
 
-   Replace *``STORAGE_PROTOCOL``* with ``iscsi`` for iSCSI or ``nfs``
+   Replace ``STORAGE_PROTOCOL`` with ``iscsi`` for iSCSI or ``nfs``
    for NFS.
 
    For the NFS protocol, you must also specify the location of the
@@ -64,7 +64,7 @@ Ensure that the NAS Team enables httpd.admin.access.
 
        nfs_shares_config: SHARE_CONFIG
 
-   Replace *``SHARE_CONFIG``* with the location of the share
+   Replace ``SHARE_CONFIG`` with the location of the share
    configuration file. For example, ``/etc/cinder/nfs_shares``.
 
 #. Configure the server:
@@ -73,7 +73,7 @@ Ensure that the NAS Team enables httpd.admin.access.
 
        netapp_server_hostname: SERVER_HOSTNAME
 
-   Replace *``SERVER_HOSTNAME``* with the hostnames for both netapp
+   Replace ``SERVER_HOSTNAME`` with the hostnames for both netapp
    controllers.
 
 #. Configure the server API port:
@@ -82,7 +82,7 @@ Ensure that the NAS Team enables httpd.admin.access.
 
        netapp_server_port: PORT_NUMBER
 
-   Replace *``PORT_NUMBER``* with 80 for HTTP or 443 for HTTPS.
+   Replace ``PORT_NUMBER`` with 80 for HTTP or 443 for HTTPS.
 
 #. Configure the server credentials:
 
@@ -91,7 +91,7 @@ Ensure that the NAS Team enables httpd.admin.access.
        netapp_login: USER_NAME
        netapp_password: PASSWORD
 
-   Replace *``USER_NAME``* and *``PASSWORD``* with the appropriate
+   Replace ``USER_NAME`` and ``PASSWORD`` with the appropriate
    values.
 
 #. Select the NetApp driver:
@@ -106,7 +106,7 @@ Ensure that the NAS Team enables httpd.admin.access.
 
        volume_backend_name: BACKEND_NAME
 
-   Replace *``BACKEND_NAME``* with a suitable value that provides a hint
+   Replace ``BACKEND_NAME`` with a suitable value that provides a hint
    for the Block Storage scheduler. For example, ``NETAPP_iSCSI``.
 
 #. Check that the ``openstack_user_config.yml`` configuration is
@@ -130,10 +130,10 @@ Ensure that the NAS Team enables httpd.admin.access.
                  volume_driver: cinder.volume.drivers.netapp.common.NetAppDriver
                  volume_backend_name: NETAPP_NFS
 
-   For *``netapp_server_hostname``*, specify the IP address of the Data
+   For ``netapp_server_hostname``, specify the IP address of the Data
    ONTAP server. Include iSCSI or NFS for the
-   *``netapp_storage_family``* depending on the configuration. Add 80 if
-   using HTTP or 443 if using HTTPS for *``netapp_server_port``*.
+   ``netapp_storage_family`` depending on the configuration. Add 80 if
+   using HTTP or 443 if using HTTPS for ``netapp_server_port``.
 
    The ``cinder-volume.yml`` playbook will automatically install the
    ``nfs-common`` file across the hosts, transitioning from an LVM to a

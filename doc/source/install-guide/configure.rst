@@ -17,6 +17,7 @@ Chapter 5. Deployment configuration
    configure-horizon.rst
    configure-rabbitmq.rst
    configure-ceilometer.rst
+   configure-aodh.rst
    configure-keystone.rst
    configure-openstack.rst
    configure-sslcertificates.rst

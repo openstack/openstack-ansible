@@ -5,7 +5,6 @@ Verifying OpenStack operation
 
 Verify basic operation of the OpenStack API and dashboard.
 
- 
 
 **Procedure 8.1. Verifying the API**
 
@@ -14,28 +13,28 @@ configuration and testing.
 
 #. Determine the utility container name:
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
-       $ lxc-ls | grep utility
+       # lxc-ls | grep utility
        infra1_utility_container-161a4084
 
 #. Access the utility container:
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
-       $ lxc-attach -n infra1_utility_container-161a4084
+       # lxc-attach -n infra1_utility_container-161a4084
 
 #. Source the ``admin`` tenant credentials:
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
-       $ source openrc
+       # source openrc
 
 #. Run an OpenStack command that uses one or more APIs. For example:
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
-       $ keystone user-list
+       # keystone user-list
        +----------------------------------+----------+---------+-------+
        |                id                |   name   | enabled | email |
        +----------------------------------+----------+---------+-------+

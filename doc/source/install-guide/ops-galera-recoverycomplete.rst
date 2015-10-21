@@ -8,9 +8,9 @@ gracefully), then the integrity of the database can no longer be
 guaranteed and should be restored from backup. Run the following command
 to determine if all nodes in the cluster have failed:
 
-.. code-block:: bash
+.. code-block:: shell-session
 
-    $ ansible galera_container -m shell -a "cat /var/lib/mysql/grastate.dat"
+    # ansible galera_container -m shell -a "cat /var/lib/mysql/grastate.dat"
     node3_galera_container-3ea2cbd3 | success | rc=0 >>
     # GALERA saved state
     version: 2.1
