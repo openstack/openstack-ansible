@@ -9,10 +9,10 @@ noauth = request_id catch_errors extensions neutronapiapp_v2_0
 keystone = request_id catch_errors authtoken keystonecontext extensions neutronapiapp_v2_0
 
 [filter:request_id]
-paste.filter_factory = oslo.middleware:RequestId.factory
+paste.filter_factory = oslo_middleware:RequestId.factory
 
 [filter:catch_errors]
-paste.filter_factory = oslo.middleware:CatchErrors.factory
+paste.filter_factory = oslo_middleware:CatchErrors.factory
 
 [filter:keystonecontext]
 paste.filter_factory = neutron.auth:NeutronKeystoneContext.factory

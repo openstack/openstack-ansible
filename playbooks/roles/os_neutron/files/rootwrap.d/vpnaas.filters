@@ -1,0 +1,17 @@
+# neutron-rootwrap command filters for nodes on which neutron is
+# expected to control network
+#
+# This file should be owned by (and only-writeable by) the root user
+
+# format seems to be
+# cmd-name: filter-name, raw-command, user, args
+
+[Filters]
+
+ip: IpFilter, ip, root
+ip_exec: IpNetnsExecFilter, ip, root
+ipsec: CommandFilter, ipsec, root
+strongswan: CommandFilter, strongswan, root
+neutron_netns_wrapper: CommandFilter, neutron-vpn-netns-wrapper, root
+neutron_netns_wrapper_local: CommandFilter, /usr/local/bin/neutron-vpn-netns-wrapper, root
+chown: RegExpFilter, chown, root, chown, --from=.*, root.root, .*/ipsec.secrets

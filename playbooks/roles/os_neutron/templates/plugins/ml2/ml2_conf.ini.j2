@@ -1,12 +1,11 @@
 # {{ ansible_managed }}
 
-{% if inventory_hostname in groups['neutron_server'] %}
-
 # ML2 general
 [ml2]
 type_drivers = {{ neutron_ml2_drivers_type }}
 tenant_network_types = {{ neutron_provider_networks.network_types }}
 mechanism_drivers = {{ neutron_ml2_mechanism_drivers }}
+extension_drivers = port_security
 path_mtu = 0
 segment_mtu = 0
 
@@ -34,52 +33,8 @@ vxlan_group = {{ neutron_vxlan_group }}
 vni_ranges = {{ neutron_provider_networks.network_vxlan_ranges }}
 
 {% endif %}
-{% endif %}
-
-{% if inventory_hostname in groups['neutron_linuxbridge_agent'] %}
-
-# Linux bridge agent VXLAN networks
-[vxlan]
-
-{% if neutron_vxlan_enabled | bool %}
-
-enable_vxlan = True
-vxlan_group = {{ neutron_vxlan_group }}
-
-# VXLAN local tunnel endpoint
-local_ip = {{ neutron_local_ip }}
-
-l2_population = {{ neutron_l2_population }}
-
-{% else %}
-
-# Disable VXLAN for deployments with only flat or VLAN networks
-enable_vxlan = False
-
-{% endif %}
-
-{% if neutron_provider_networks.network_mappings is defined %}
-
-# Linux bridge agent physical interface mappings
-[linux_bridge]
-physical_interface_mappings = {{ neutron_provider_networks.network_mappings }}
-
-{% endif %}
-
-# Agent
-[agent]
-# TODO: Allow this to be the default of True once the upstream issue
-# with access through floating IP's is fixed (odyssey4me re: liberty-2)
-prevent_arp_spoofing = False
-
-# L2 population
-[l2pop]
-agent_boot_time = 180
-
-{% endif %}
 
 # Security groups
 [securitygroup]
 enable_security_group = True
 enable_ipset = True
-firewall_driver = {{ neutron_driver_firewall }}
