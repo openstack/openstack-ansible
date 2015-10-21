@@ -28,12 +28,12 @@ random names for ``veth`` pairs.
 
 The relationship between physical interfaces, logical interfaces,
 bridges, and virtual interfaces within containers is shown in
-`Figure 2.2, "Network
+`Figure 1.2, "Network
 components" <overview-hostnetworking.html#fig_overview_networkcomponents>`_.
 
  
 
-**Figure 2.2. Network components**
+**Figure 1.2. Network components**
 
 .. image:: figures/networkcomponents.png
 
@@ -92,19 +92,19 @@ Target hosts can contain the following network bridges:
       container. Does not contain an IP address because it only handles
       layer 2 connectivity.
 
-`Figure 2.3, "Container network
+`Figure 1.3, "Container network
 architecture" <overview-hostnetworking.html#fig_overview_networkarch-container>`_
 provides a visual representation of network components for services in
 containers.
 
  
 
-**Figure 2.3. Container network architecture**
+**Figure 1.3. Container network architecture**
 
 .. image:: figures/networkarch-container-external.png
 
 By default, OSA installs the Compute service in a bare metal
-environment rather than within a container. `Figure 2.4, "Bare/Metal
+environment rather than within a container. `Figure 1.4, "Bare/Metal
 network
 architecture" <overview-hostnetworking.html#fig_overview_networkarch-bare>`_
 provides a visual representation of the unique layout of network
@@ -112,7 +112,7 @@ components on a Compute host.
 
  
 
-**Figure 2.4. Bare/Metal network architecture**
+**Figure 1.4. Bare/Metal network architecture**
 
 .. image:: figures/networkarch-bare-external.png
 

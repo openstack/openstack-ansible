@@ -1,6 +1,6 @@
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
-Chapter 6. Foundation playbooks
+Chapter 5. Foundation playbooks
 -------------------------------
 
 .. toctree:: 
@@ -8,7 +8,7 @@ Chapter 6. Foundation playbooks
    install-foundation-run.rst
 
 
-**Figure 6.1. Installation work flow**
+**Figure 5.1. Installation work flow**
 
 .. image:: figures/workflow-foundationplaybooks.png
 

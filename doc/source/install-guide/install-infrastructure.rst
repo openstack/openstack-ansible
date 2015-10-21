@@ -1,6 +1,6 @@
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
-Chapter 7. Infrastructure playbooks
+Chapter 6. Infrastructure playbooks
 -----------------------------------
 
 .. toctree:: 
@@ -9,7 +9,7 @@ Chapter 7. Infrastructure playbooks
    install-infrastructure-verify.rst
 
 
-**Figure 7.1. Installation workflow**
+**Figure 6.1. Installation workflow**
 
 .. image:: figures/workflow-infraplaybooks.png
 

@@ -1,6 +1,6 @@
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
-Chapter 8. OpenStack playbooks
+Chapter 7. OpenStack playbooks
 ------------------------------
 
 .. toctree::
@@ -10,7 +10,7 @@ Chapter 8. OpenStack playbooks
    install-openstack-verify.rst
 
 
-**Figure 8.1. Installation work flow**
+**Figure 7.1. Installation work flow**
 
 .. image:: figures/workflow-openstackplaybooks.png
 

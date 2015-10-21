@@ -6,7 +6,7 @@ Installation workflow
 This diagram shows the general workflow associated with OSA
 installation.
 
-**Figure 2.7. Installation workflow**
+**Figure 1.7. Installation workflow**
 
 .. image:: figures/workflow-overview.png
 

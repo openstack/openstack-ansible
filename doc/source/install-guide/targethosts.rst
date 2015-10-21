@@ -1,6 +1,6 @@
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
-Chapter 4. Target hosts
+Chapter 3. Target hosts
 -----------------------
 
 .. toctree:: 
@@ -14,7 +14,7 @@ Chapter 4. Target hosts
    targethosts-networkexample.rst
 
 
-**Figure 4.1. Installation workflow**
+**Figure 3.1. Installation workflow**
 
 .. image:: figures/workflow-targethosts.png
 

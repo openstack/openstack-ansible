@@ -76,7 +76,7 @@ Compute target hosts contain the following services:
 -  Block Storage volumes
 
 
-**Figure 2.1. Host Layout Overview**
+**Figure 1.1. Host Layout Overview**
 
 .. image:: figures/environment-overview.png
 

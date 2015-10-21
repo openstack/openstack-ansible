@@ -1,6 +1,6 @@
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
-Chapter 9. Operations
+Chapter 8. Operations
 ---------------------
 
 .. toctree:: 

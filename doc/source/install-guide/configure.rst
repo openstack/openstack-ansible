@@ -1,6 +1,6 @@
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
-Chapter 5. Deployment configuration
+Chapter 4. Deployment configuration
 -----------------------------------
 
 .. toctree:: 
@@ -25,7 +25,7 @@ Chapter 5. Deployment configuration
    configure-federation.rst
 
 
-**Figure 5.1. Installation work flow**
+**Figure 4.1. Installation work flow**
 
 .. image:: figures/workflow-configdeployment.png
 

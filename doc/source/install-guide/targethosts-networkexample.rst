@@ -4,10 +4,10 @@ Configuring the network on a target host
 ----------------------------------------
 
 This example uses the following parameters to configure networking on a
-single target host. See `Figure 4.2, "Target hosts for infrastructure,
+single target host. See `Figure 3.2, "Target hosts for infrastructure,
 networking, and storage
 services" <targethosts-networkexample.html#fig_hosts-target-network-containerexample>`_
-and `Figure 4.3, "Target hosts for Compute
+and `Figure 3.3, "Target hosts for Compute
 service" <targethosts-networkexample.html#fig_hosts-target-network-bareexample>`_
 for a visual representation of these parameters in the architecture.
 
@@ -47,12 +47,12 @@ for a visual representation of these parameters in the architecture.
 
  
 
-**Figure 4.2. Target hosts for infrastructure, networking, and storage
+**Figure 3.2. Target hosts for infrastructure, networking, and storage
 services**
 
 .. image:: figures/networkarch-container-external-example.png
 
-**Figure 4.3. Target hosts for Compute service**
+**Figure 3.3. Target hosts for Compute service**
 
 .. image:: figures/networkarch-bare-external-example.png
 
