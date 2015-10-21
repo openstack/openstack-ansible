@@ -22,6 +22,42 @@
     - lxc-cache
     - lxc-cache-update
 
+- name: Update container resolvers
+  template:
+    src: lxc-resolve-base.j2
+    dest: "{{ lxc_container_cache_path }}/{{ item.chroot_path }}/run/resolvconf/resolv.conf"
+  with_items: lxc_container_caches
+  tags:
+    - lxc-cache
+    - lxc-cache-update
+
+- name: Update container resolvconf base
+  template:
+    src: lxc-resolve-base.j2
+    dest: "{{ lxc_container_cache_path }}/{{ item.chroot_path }}/etc/resolvconf/resolv.conf.d/base"
+  with_items: lxc_container_caches
+  tags:
+    - lxc-cache
+    - lxc-cache-update
+
+- name: Update container resolvconf tail
+  copy:
+    content: "# Null Tail"
+    dest: "{{ lxc_container_cache_path }}/{{ item.chroot_path }}/etc/resolvconf/resolv.conf.d/tail"
+  with_items: lxc_container_caches
+  tags:
+    - lxc-cache
+    - lxc-cache-update
+
+- name: Update container resolvconf original
+  copy:
+    content: "# Null original"
+    dest: "{{ lxc_container_cache_path }}/{{ item.chroot_path }}/etc/resolvconf/resolv.conf.d/original"
+  with_items: lxc_container_caches
+  tags:
+    - lxc-cache
+    - lxc-cache-update
+
 # This task runs several commands against the cached image to speed up the
 # lxc_container_create playbook.
 - name: Prepare cached image
