@@ -2,7 +2,7 @@
 {% set constraint_pkgs = [] -%}
 {% for clone_item in cloned_repos.stdout_lines -%}
 git+file://{{ clone_item }}#egg={{ clone_item | git_link_parse_name | replace('-', '_') | lower }}
-{% if constraint_pkgs.append(clone_item | git_link_parse_name | replace('-', '_') | lower) %}{% endif %}
+{% set _ = constraint_pkgs.append(clone_item | git_link_parse_name | replace('-', '_') | lower) %}
 {% endfor %}
 # upper boundry constraints from requirements repo.
 {% for constraint_item in upper_constraints %}
