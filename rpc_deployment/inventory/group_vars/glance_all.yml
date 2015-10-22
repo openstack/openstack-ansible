@@ -19,10 +19,6 @@
 ## Service Name
 service_name: glance
 
-service_publicurl: "http://{{ external_vip_address }}:9292"
-service_adminurl: "http://{{ internal_vip_address }}:9292"
-service_internalurl: "http://{{ internal_vip_address }}:9292"
-
 # Verbosity Options
 debug: False
 verbose: True
@@ -32,7 +28,11 @@ container_lvm_fstype: ext4
 container_lvm_fssize: 12GB
 
 # General configuration
-registry_host: "{{ internal_vip_address }}"
+glance_registry_host: "{{ internal_vip_address }}"
+glance_registry_service_port: 9191
+glance_service_registry_proto: "{{ glance_service_proto }}"
+glance_service_port: 9292
+glance_service_proto: http
 
 ## DB
 container_mysql_user: glance

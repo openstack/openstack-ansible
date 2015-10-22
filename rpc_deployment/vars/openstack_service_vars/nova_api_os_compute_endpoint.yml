@@ -21,6 +21,9 @@ service_type: compute
 service_description: "Nova Compute Service"
 service_password: "{{ nova_service_password }}"
 
-service_publicurl: "http://{{ external_vip_address }}:8774/v2/%(tenant_id)s"
-service_adminurl: "http://{{ internal_vip_address }}:8774/v2/%(tenant_id)s"
-service_internalurl: "http://{{ internal_vip_address }}:8774/v2/%(tenant_id)s"
+nova_service_publicuri_proto: "{{ openstack_service_publicuri_proto | default(nova_service_proto) }}"
+nova_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(nova_service_proto) }}"
+nova_service_internaluri_proto: "{{ openstack_service_internaluri_proto | default(nova_service_proto) }}"
+service_publicurl: "{{ nova_service_publicuri_proto }}://{{ external_vip_address }}:{{ nova_service_port }}/v2/%(tenant_id)s"
+service_adminurl: "{{ nova_service_adminuri_proto }}://{{ internal_vip_address }}:{{ nova_service_port }}/v2/%(tenant_id)s"
+service_internalurl: "{{ nova_service_internaluri_proto }}://{{ internal_vip_address }}:{{ nova_service_port }}/v2/%(tenant_id)s"

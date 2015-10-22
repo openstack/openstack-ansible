@@ -181,17 +181,21 @@ auth_admin_password: "{{ keystone_auth_admin_password }}"
 auth_admin_token: "{{ keystone_auth_admin_token }}"
 auth_admin_tenant: admin
 keystone_admin_tenant_name: "{{ auth_admin_tenant }}"
-auth_identity_uri: "http://{{ internal_vip_address }}:5000/v2.0"
+auth_identity_uri: "{{ keystone_service_proto }}://{{ internal_vip_address }}:{{ keystone_service_port }}/v2.0"
 keystone_service_internalurl: "{{ auth_identity_uri }}"
-auth_identity_uri_v3: "http://{{ internal_vip_address }}:5000/v3"
+auth_identity_uri_v3: "{{ keystone_service_proto }}://{{ internal_vip_address }}:{{ keystone_service_port }}/v3"
 keystone_service_internalurl_v3: "{{ auth_identity_uri_v3 }}"
-auth_admin_uri: "http://{{ internal_vip_address }}:35357/v2.0"
+auth_admin_uri: "{{ keystone_service_proto }}://{{ internal_vip_address }}:{{ keystone_admin_port }}/v2.0"
 keystone_service_adminurl: "{{ auth_admin_uri }}"
 auth_host: "{{ internal_vip_address }}"
-auth_port: 35357
-auth_public_port: 5000
-auth_protocol: http
+keystone_admin_port: 35357
+keystone_service_port: 5000
+keystone_service_proto: http
 
+## OpenStack global Endpoint Protos
+#openstack_service_publicuri_proto: http
+#openstack_service_adminuri_proto: http
+#openstack_service_internaluri_proto: http
 
 ## OpenStack source options
 openstack_upstream_domain: "rpc-repo.rackspace.com"

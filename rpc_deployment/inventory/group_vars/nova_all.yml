@@ -29,6 +29,16 @@ container_lvm_fssize: 5GB
 
 # General configuration
 volume_driver: cinder.volume.drivers.lvm.LVMISCSIDriver
+nova_service_port: 8774
+nova_service_proto: http
+nova_v3_service_port: 8774
+nova_v3_service_proto: http
+nova_ec2_service_port: 8773
+nova_ec2_service_proto: http
+nova_s3_service_port: 3333
+nova_s3_service_proto: http
+nova_spice_html5proxy_base_port: 6082
+nova_html5proxy_base_proto: http
 
 ## DB
 container_mysql_user: nova

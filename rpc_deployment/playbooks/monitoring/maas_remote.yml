@@ -69,7 +69,7 @@
     notification_plan: "{{ maas_notification_plan }}"
     scheme: "{{ maas_keystone_scheme | default(maas_scheme)}}"
     ip_address: "{{ maas_external_ip_address | default(external_vip_address) }}"
-    port: "{{ auth_public_port }}"
+    port: "{{ keystone_service_port }}"
     path: ""
     url: "{{ scheme }}://{{ ip_address }}:{{ port }}{{ path }}"
     alarm_name: lb_api_alarm_keystone

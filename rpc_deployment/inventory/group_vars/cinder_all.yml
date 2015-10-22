@@ -55,6 +55,9 @@ cinder_quota_backup_gigabytes: 1000
 #     backend_name: LVM_iSCSI
 
 cinder_service_port: "{{ cinder_port|default('8776') }}"
+cinder_service_proto: http
+cinder_v2_service_port: "{{ cinder_port|default('8776') }}"
+cinder_v2_service_proto: http
 
 ## Backups
 ## In order to enable the cinder backup you MUST set ``cinder_service_backup_program_enabled`` to "true"

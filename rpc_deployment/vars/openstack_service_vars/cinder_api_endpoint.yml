@@ -17,6 +17,9 @@ service_type: volume
 service_description: "Cinder volume service"
 service_password: "{{ cinder_service_password }}"
 
-service_publicurl: "http://{{ external_vip_address }}:{{ cinder_service_port }}/v1/%(tenant_id)s"
-service_adminurl: "http://{{ internal_vip_address }}:{{ cinder_service_port }}/v1/%(tenant_id)s"
-service_internalurl: "http://{{ internal_vip_address }}:{{ cinder_service_port }}/v1/%(tenant_id)s"
+cinder_service_publicuri_proto: "{{ openstack_service_publicuri_proto | default(cinder_service_proto) }}"
+cinder_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(cinder_service_proto) }}"
+cinder_service_internaluri_proto: "{{ openstack_service_internaluri_proto | default(cinder_service_proto) }}"
+service_publicurl: "{{ cinder_service_publicuri_proto }}://{{ external_vip_address }}:{{ cinder_service_port }}/v1/%(tenant_id)s"
+service_adminurl: "{{ cinder_service_adminuri_proto }}://{{ internal_vip_address }}:{{ cinder_service_port }}/v1/%(tenant_id)s"
+service_internalurl: "{{ cinder_service_internaluri_proto }}://{{ internal_vip_address }}:{{ cinder_service_port }}/v1/%(tenant_id)s"

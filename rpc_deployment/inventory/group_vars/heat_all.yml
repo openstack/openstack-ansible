@@ -59,9 +59,16 @@ deferred_auth_method: trusts
 
 auth_encryption_key: "{{ heat_auth_encryption_key }}"
 
-heat_watch_server_url: "http://{{ external_vip_address }}:8003"
-heat_waitcondition_server_url: "http://{{ external_vip_address }}:8000/v1/waitcondition"
-heat_metadata_server_url: "http://{{ external_vip_address }}:8000"
+heat_service_proto: http
+heat_service_port: 8004
+heat_cfn_service_proto: http
+heat_cfn_service_port: 8000
+heat_watch_proto: http
+heat_watch_port: 8003
+
+heat_watch_server_url: "{{ heat_watch_proto }}://{{ external_vip_address }}:8003"
+heat_waitcondition_server_url: "{{ heat_cfn_service_proto }}://{{ internal_vip_address }}:{{ heat_cfn_service_port }}/v1/waitcondition"
+heat_metadata_server_url: "{{ heat_cfn_service_proto }}://{{ internal_vip_address }}:{{ heat_cfn_service_port }}"
 
 container_directories:
    - { name: /etc/heat }

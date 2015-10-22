@@ -18,6 +18,9 @@ service_type: network
 service_description: "OpenStack Networking"
 service_password: "{{ neutron_service_password }}"
 
-service_publicurl: "http://{{ external_vip_address }}:9696"
-service_adminurl: "http://{{ internal_vip_address }}:9696"
-service_internalurl: "http://{{ internal_vip_address }}:9696"
+neutron_service_publicuri_proto: "{{ openstack_service_publicuri_proto | default(neutron_service_proto) }}"
+neutron_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(neutron_service_proto) }}"
+neutron_service_internaluri_proto: "{{ openstack_service_internaluri_proto | default(neutron_service_proto) }}"
+service_publicurl: "{{ neutron_service_publicuri_proto }}://{{ external_vip_address }}:{{ neutron_service_port }}"
+service_adminurl: "{{ neutron_service_adminuri_proto }}://{{ internal_vip_address }}:{{ neutron_service_port }}"
+service_internalurl: "{{ neutron_service_internaluri_proto }}://{{ internal_vip_address }}:{{ neutron_service_port }}"

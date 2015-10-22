@@ -20,8 +20,11 @@ service_description: "S3 Compatibility Layer"
 service_password: "{{ nova_s3_service_password }}"
 
 ## S3 API Endpoints 
-service_publicurl: "http://{{ external_vip_address }}:3333"
-service_adminurl: "http://{{ internal_vip_address }}:3333"
-service_internalurl: "http://{{ internal_vip_address }}:3333"
+nova_s3_service_publicuri_proto: "{{ openstack_service_publicuri_proto | default(nova_s3_service_proto) }}"
+nova_s3_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(nova_s3_service_proto) }}"
+nova_s3_service_internaluri_proto: "{{ openstack_service_internaluri_proto | default(nova_s3_service_proto) }}"
+service_publicurl: "{{ nova_s3_service_publicuri_proto }}://{{ external_vip_address }}:{{ nova_s3_service_port }}"
+service_adminurl: "{{ nova_s3_service_adminuri_proto }}://{{ internal_vip_address }}:{{ nova_s3_service_port }}"
+service_internalurl: "{{ nova_s3_service_internaluri_proto }}://{{ internal_vip_address }}:{{ nova_s3_service_port }}"
 
 program_name: nova-api-ec2
