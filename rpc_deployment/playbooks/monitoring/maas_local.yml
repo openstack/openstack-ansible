@@ -323,6 +323,9 @@
       - { 'name': 'rabbitmq_disk_free_alarm_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["rabbitmq_disk_free_alarm_status"] != 1) { return new AlarmStatus(CRITICAL, "rabbitmq_disk_free_alarm_status triggered"); }' }
       - { 'name': 'rabbitmq_mem_alarm_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["rabbitmq_mem_alarm_status"] != 1) { return new AlarmStatus(CRITICAL, "rabbitmq_mem_alarm_status triggered"); }' }
       - { 'name': 'rabbitmq_max_channels_per_conn', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["rabbitmq_max_channels_per_conn"] > 10) { return new AlarmStatus(CRITICAL, "Detected RabbitMQ connections with > 10 channels, check RabbitMQ and all Openstack consumers"); }' }
+      - { 'name': 'rabbitmq_fd_used_alarm_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (percentage(metric["rabbitmq_fd_used"],metric["rabbitmq_fd_total"]) >= 90 ) { return new AlarmStatus(CRITICAL, "RabbitMQ file descriptors is reaching configured limit"); }' }
+      - { 'name': 'rabbitmq_proc_used_alarm_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (percentage(metric["rabbitmq_proc_used"],metric["rabbitmq_proc_total"]) >= 90 ) { return new AlarmStatus(CRITICAL, "RabbitMQ processes is reaching configured limit"); }' }
+      - { 'name': 'rabbitmq_socket_used_alarm_status', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (percentage(metric["rabbitmq_socket_used"],metric["rabbitmq_socket_total"]) >= 90 ) { return new AlarmStatus(CRITICAL, "RabbitMQ sockets is reaching configured limit"); }' }
   user: root
   roles:
     - maas_local
