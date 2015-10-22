@@ -1,0 +1,12 @@
+<html>
+<head>
+<title>
+links for "{{ repo_build_release_tag }}"
+</title>
+</head>
+<body>
+{% for item in global_indexed_links.stdout_lines %}
+<a href="{{ item }}">{{ item }}</a><br />
+{% endfor %}
+</body>
+</html>

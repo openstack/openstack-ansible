@@ -1,0 +1,4 @@
+{% for item in built_wheels.stdout_lines %}
+{{ repo_build_pool_dir | basename }}/{{ item.split('-')[0] | lower }}/{{ item }}
+{{ repo_build_release_path | basename }}/{{ repo_build_release_tag }}/{{ item }}
+{% endfor %}

@@ -1,0 +1,3 @@
+{% for item in built_wheels.stdout_lines %}
+{{ item.split('-')[0] | lower }}=={{ item.split('-')[1] | lower }}
+{% endfor %}

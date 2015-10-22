@@ -1,0 +1,50 @@
+---
+# Copyright 2015, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Create OpenStack global requirements wheels
+  shell: |
+    pip wheel --timeout {{ repo_build_timeout }} \
+              --wheel-dir {{ repo_build_output }} \
+              --allow-all-external \
+              --find-links {{ repo_build_global_links_path }} \
+              --constraint {{ repo_build_release_path }}/{{ repo_build_release_tag }}/requirements_constraints.txt \
+              --index-url {{ repo_build_pip_default_index }} \
+              --trusted-host {{ repo_build_pip_default_index | netloc_no_port }} \
+              --extra-index-url {{ repo_build_pip_extra_index }} \
+              --trusted-host {{ repo_build_pip_extra_index | netloc_no_port }} \
+              --build {{ repo_build_dir }} \
+              --verbose \
+              --log /var/log/repo/repo_builder.log \
+              --requirement {{ repo_build_release_path }}/{{ repo_build_release_tag }}/requirements_global_requirements.txt
+  tags:
+    - repo-build-global-requirement-wheels
+
+- name: Create OpenStack-Ansible requirement wheels
+  shell: |
+    pip wheel --timeout {{ repo_build_timeout }} \
+              --wheel-dir {{ repo_build_output }} \
+              --allow-all-external \
+              --find-links {{ repo_build_output }} \
+              --constraint {{ repo_build_release_path }}/{{ repo_build_release_tag }}/requirements_constraints.txt \
+              --index-url {{ repo_build_pip_default_index }} \
+              --trusted-host {{ repo_build_pip_default_index | netloc_no_port }} \
+              --extra-index-url {{ repo_build_pip_extra_index }} \
+              --trusted-host {{ repo_build_pip_extra_index | netloc_no_port }} \
+              --build {{ repo_build_dir }} \
+              --verbose \
+              --log /var/log/repo/repo_builder.log \
+              --requirement {{ repo_build_release_path }}/{{ repo_build_release_tag }}/requirements_local_filtered.txt
+  tags:
+    - repo-build-openstack-ansible-requirement-wheels

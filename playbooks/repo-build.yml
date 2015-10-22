@@ -1,5 +1,5 @@
 ---
-# Copyright 2014, Rackspace US, Inc.
+# Copyright 2015, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,91 +13,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# The purpose here is to allow for the environment to update/build the
-# python wheel files from the CURRENT release, as set in the openstack_release
-# variable.
 - name: Build new repo packages for a given release
   hosts: repo_all[0]
-  max_fail_percentage: 20
-  gather_facts: false
+  gather_facts: true
   user: root
-  tasks:
-    - name: Create a build report for all known packages within a release
-      shell: |
-        yaprt --quiet \
-              create-report \
-              --report-file {{ repo_service_home_folder }}/repo/reports/release-{{ openstack_release }}-report.json \
-              --git-install-repos {{ item['remote_packages'] }} \
-              --git-repo-path "{{ repo_service_home_folder }}/repo/openstackgit" \
-              --packages {{ item['packages'] }}
+  pre_tasks:
+    - name: Load local packages
+      debug:
+        msg: "Loading Packages"
       with_py_pkgs: ../
-      sudo: yes
-      sudo_user: "{{ repo_service_user_name }}"
+      register: local_packages
       tags:
-        - repo-create-report
-
-    - name: Build all known python packages requirements
-      shell: |
-        yaprt --quiet \
-              build-wheels \
-              --report-file {{ repo_service_home_folder }}/repo/reports/release-{{ openstack_release }}-report.json \
-              --storage-pool "{{ repo_service_home_folder }}/repo/pools" \
-              --link-dir "{{ repo_service_home_folder }}/repo/os-releases/{{ openstack_release }}" \
-              --pip-extra-link-dirs "{{ repo_service_home_folder }}/repo/links" \
-              --pip-index "{{ repo_pip_default_index }}" \
-              --pip-extra-index "https://pypi.python.org/simple/" \
-              --pip-bulk-operation \
-              --build-output "{{ repo_build_output }}" \
-              --build-dir "{{ repo_build_dir }}" \
-              --build-requirements \
-              --git-repo-path "{{ repo_service_home_folder }}/repo/openstackgit" \
-              --force-clean
-      sudo: yes
-      sudo_user: "{{ repo_service_user_name }}"
+        - repo-clone-repos
+        - repo-set-requirements
+        - repo-get-global-requirements
+        - repo-set-requirement-names
+        - repo-set-requirement-names-filtered
+        - repo-set-constraints
+        - repo-build-constraints-file
+  roles:
+    - role: "repo_build"
+      repo_build_release_tag: "{{ openstack_release }}"
+      repo_build_pip_default_index: "https://rpc-repo.rackspace.com/pools"
+      repo_build_pip_extra_index: "https://pypi.python.org/simple"
       tags:
-        - repo-build-requirements
-
-    - name: Build all known python packages git sources
-      shell: |
-        yaprt --quiet \
-              build-wheels \
-              --report-file {{ repo_service_home_folder }}/repo/reports/release-{{ openstack_release }}-report.json \
-              --storage-pool "{{ repo_service_home_folder }}/repo/pools" \
-              --link-dir "{{ repo_service_home_folder }}/repo/os-releases/{{ openstack_release }}" \
-              --pip-extra-link-dirs "{{ repo_service_home_folder }}/repo/links" \
-              --pip-no-deps \
-              --build-output "{{ repo_build_output }}" \
-              --build-dir "{{ repo_build_dir }}" \
-              --build-branches \
-              --build-releases \
-              --git-repo-path "{{ repo_service_home_folder }}/repo/openstackgit" \
-              --force-clean
-      sudo: yes
-      sudo_user: "{{ repo_service_user_name }}"
-      tags:
-        - repo-build-git-sources
-
-    - name: Create html indexes
-      shell: |
-        yaprt --quiet \
-              create-html-indexes \
-              --repo-dir "{{ repo_service_home_folder }}/repo" \
-              --dir-exclude "{{ repo_service_home_folder }}/repo/openstackgit"
-      sudo: yes
-      sudo_user: "{{ repo_service_user_name }}"
-      tags:
-        - repo-html-indexes
-
-    - name: Store all git source
-      shell: |
-        yaprt --quiet \
-              store-repos \
-              --report-file {{ repo_service_home_folder }}/repo/reports/release-{{ openstack_release }}-report.json \
-              --git-repo-path "{{ repo_service_home_folder }}/repo/openstackgit"
-      sudo: yes
-      sudo_user: "{{ repo_service_user_name }}"
-      tags:
-        - repo-store-git-sources
-  vars:
-    repo_build_dir: "/tmp/openstack-builder"
-    repo_build_output: "/tmp/openstack-wheel-output"
+        - "repo-build"
