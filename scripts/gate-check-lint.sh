@@ -41,7 +41,7 @@ fi
 # NOTE:
 #     Template files are skipped because they are python executables potentially with Jinja2
 #     expressions and the jinja2 causes a flake8 failures.
-flake8 --ignore=F403,H303 $(grep -rln -e '^#!/usr/bin/env python' -e '^#!/bin/python' -e '^#!/usr/bin/python' * | grep -v 'templates/')
+flake8 --ignore=F403,H303 $(grep -rln -e '^#!/usr/bin/env python' -e '^#!/bin/python' -e '^#!/usr/bin/python' * | grep -v 'templates/\|^doc/')
 
 # Create keys if they don't already exist.
 ssh_key_create
