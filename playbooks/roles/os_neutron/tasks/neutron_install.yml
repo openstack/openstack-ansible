@@ -37,6 +37,22 @@
     - neutron-install
     - neutron-apt-packages
 
+- name: Install apt packages for LBaaS
+  apt:
+    pkg: "{{ item }}"
+    state: latest
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 2
+  with_items: neutron_lbaas_apt_packages
+  when:
+    - inventory_hostname in groups['neutron_agents_container']
+    - neutron_lbaas | bool
+  tags:
+    - neutron-install
+    - neutron-apt-packages
+
 - name: remove specific apt packages
   apt:
     pkg: "{{ item }}"
@@ -98,3 +114,4 @@
   tags:
     - neutron-install
     - neutron-pip-packages
+

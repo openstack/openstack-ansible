@@ -69,7 +69,7 @@ neutron_plugin_core: "{{ neutron_plugins[neutron_plugin_type].plugin_core }}"
 # neutron_plugin_base:
 #   - neutron.services.l3_router.l3_router_plugin.L3RouterPlugin
 #   - neutron.services.metering.metering_plugin.MeteringPlugin
-#   - neutron.services.loadbalancer.plugin.LoadBalancerPlugin
+#   - neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPlugin
 #   - neutron.services.vpn.plugin.VPNDriverPlugin
 neutron_plugin_base:
   - neutron.services.l3_router.l3_router_plugin.L3RouterPlugin
@@ -133,16 +133,29 @@ neutron_services:
    config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/l3_agent.ini
    config_overrides: "{{ neutron_l3_agent_ini_overrides }}"
    config_type: "ini"
+ neutron-lbaas-agent:
+   service_name: neutron-lbaas-agent
+   service_en: "{{ neutron_lbaas }}"
+   service_conf: lbaas_agent.ini
+   service_group: neutron_agent
+   service_rootwrap: rootwrap.d/lbaas-haproxy.filters
+   config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/lbaas_agent.ini
+   config_overrides: "{{ neutron_lbaas_agent_ini_overrides }}"
+   config_type: "ini"
  neutron-server:
    service_name: neutron-server
    service_en: True
    service_group: neutron_server
    config_options: --config-file /etc/neutron/neutron.conf --config-file "/etc/neutron/{{ neutron_plugins[neutron_plugin_type].plugin_ini }}"
 
+## Neutron LBaaS
+# Please add the LoadBalancerPlugin to the neutron_plugin_base list
+neutron_lbaas: "{% if 'neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPlugin' in neutron_plugin_base %}True{% else %}False{% endif %}"
+
 ## Drivers
 neutron_driver_network_scheduler: neutron.scheduler.dhcp_agent_scheduler.WeightScheduler
 neutron_driver_router_scheduler: neutron.scheduler.l3_agent_scheduler.LeastRoutersScheduler
-neutron_driver_loadbalancer_pool_scheduler: neutron.services.loadbalancer.agent_scheduler.ChanceScheduler
+neutron_driver_loadbalancer_pool_scheduler: neutron_lbaas.services.loadbalancer.agent_scheduler.ChanceScheduler
 neutron_driver_interface: neutron.agent.linux.interface.BridgeInterfaceDriver
 neutron_driver_metering: neutron.services.metering.drivers.iptables.iptables_driver.IptablesMeteringDriver
 neutron_driver_dhcp: neutron.agent.linux.dhcp.Dnsmasq
@@ -305,6 +318,9 @@ neutron_apt_packages:
   - libpq-dev
   - ebtables
 
+neutron_lbaas_apt_packages:
+  - haproxy
+
 neutron_apt_remove_packages:
   - conntrackd
 
@@ -319,6 +335,7 @@ neutron_pip_packages:
   - keystonemiddleware
   - PyMySQL
   - neutron
+  - neutron_lbaas
   - pycrypto
   - python-glanceclient
   - python-keystoneclient
@@ -347,3 +364,4 @@ neutron_l3_agent_ini_overrides: {}
 neutron_metadata_agent_ini_overrides: {}
 neutron_metering_agent_ini_overrides: {}
 neutron_linuxbridge_agent_ini_overrides: {}
+neutron_lbaas_agent_ini_overrides: {}
