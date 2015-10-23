@@ -36,6 +36,13 @@
   tags:
     - galera-client-apt-packages
 
+- name: Install galera package
+  apt:
+    deb: "{{ galera_client_package_path }}"
+    force: yes
+  tags:
+    - galera-client-apt-packages
+
 - name: Install pip packages
   pip:
     name: "{{ item }}"

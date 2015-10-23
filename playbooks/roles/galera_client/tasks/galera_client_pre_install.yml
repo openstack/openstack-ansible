@@ -63,3 +63,16 @@
     - "{{ galera_client_apt_percona_xtrabackup_repo }}"
   tags:
     - galera-client-repos
+
+- name: Download the galera package
+  get_url:
+    url: "{{ galera_client_package_url }}"
+    dest: "{{ galera_client_package_path }}"
+    mode: "0644"
+    sha256sum: "{{ galera_client_package_sha256 }}"
+  register: package_download
+  retries: 3
+  delay: 10
+  until: package_download|success
+  tags:
+    - galera-client-apt-packages

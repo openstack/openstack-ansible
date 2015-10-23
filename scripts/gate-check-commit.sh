@@ -76,7 +76,7 @@ if [ -f /etc/nodepool/provider -a -s /etc/nodepool/provider ]; then
   # Reduce container affinities as Liberty appears to consume
   #  a greater volume of resources, causing greater numbers
   #  of failures with the default affinities.
-  for container_type in rabbit_mq repo galera horizon keystone; do
+  for container_type in rabbit_mq repo horizon keystone; do
     export "NUM_${container_type}_CONTAINER=1"
   done
 

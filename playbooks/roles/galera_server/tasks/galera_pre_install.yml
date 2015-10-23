@@ -88,6 +88,19 @@
   tags:
     - galera-repos
 
+- name: Download the galera package
+  get_url:
+    url: "{{ galera_package_url }}"
+    dest: "{{ galera_package_path }}"
+    mode: "0644"
+    sha256sum: "{{ galera_package_sha256 }}"
+  register: package_download
+  retries: 3
+  delay: 10
+  until: package_download|success
+  tags:
+    - galera-apt-packages
+
 - name: Prevent galera from starting on install
   copy:
     src: "policy-rc.d"
