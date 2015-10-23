@@ -127,6 +127,9 @@ lock_path = /var/lock/cinder
 profiler_enabled = {{ cinder_profiler_enabled }}
 trace_sqlalchemy = {{ cinder_profiler_trace_sqlalchemy }}
 
+[keymgr]
+encryption_auth_url = {{ keystone_service_internaluri }}/v3
+
 [keystone_authtoken]
 insecure = {{ keystone_service_internaluri_insecure | bool }}
 auth_plugin = {{ cinder_keystone_auth_plugin }}
