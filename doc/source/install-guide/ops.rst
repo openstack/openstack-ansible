@@ -3,7 +3,7 @@
 Chapter 8. Operations
 ---------------------
 
-.. toctree:: 
+.. toctree::
 
    ops-addcomputehost.rst
    ops-galera.rst

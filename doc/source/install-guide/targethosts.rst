@@ -3,7 +3,7 @@
 Chapter 3. Target hosts
 -----------------------
 
-.. toctree:: 
+.. toctree::
 
    targethosts-os.rst
    targethosts-sshkeys.rst

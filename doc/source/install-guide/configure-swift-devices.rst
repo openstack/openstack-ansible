@@ -9,7 +9,7 @@ before installing Object Storage.
 
 **Procedure 5.1. Configuring and mounting storage devices**
 
-Object Storage recommends a minimum of three Object Storage hosts 
+Object Storage recommends a minimum of three Object Storage hosts
 with five storage disks. The example commands in this procedure
 assume the storage devices for Object Storage are devices ``sdc``
 through ``sdg``.

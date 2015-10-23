@@ -29,7 +29,7 @@ process SQL requests.
        wsrep_cluster_size        3
        wsrep_cluster_state_uuid  338b06b0-2948-11e4-9d06-bef42f6c52f1
        wsrep_cluster_status      Primary
-                 
+
 
    In this example, node 3 has failed.
 

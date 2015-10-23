@@ -23,7 +23,7 @@ In the following example, all but one node was shut down gracefully:
     wsrep_cluster_size        1
     wsrep_cluster_state_uuid  338b06b0-2948-11e4-9d06-bef42f6c52f1
     wsrep_cluster_status      Primary
-          
+
 
 Compare this example output with the output from the multi-node failure
 scenario where the remaining operational node is non-primary and stops

@@ -3,7 +3,7 @@
 Chapter 1. Overview
 -------------------
 
-.. toctree:: 
+.. toctree::
 
    overview-osa.rst
    overview-ansible.rst

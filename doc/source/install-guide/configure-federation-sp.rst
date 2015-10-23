@@ -34,9 +34,9 @@ The following settings must be set to configure a service provider (SP):
    keystone must either be signed by a public CA, or an enterprise CA.
 
 #. When using SSL for the keystone endpoint, the endpoint URI and the
-   certificate must match. For example, if the certificate does not have 
+   certificate must match. For example, if the certificate does not have
    the IP address of the endpoint, then the endpoint must be published with
-   the appropriate name registered on the certificate. When 
+   the appropriate name registered on the certificate. When
    using a DNS name for the keystone endpoint, both
    ``keystone_public_endpoint`` and ``horizon_keystone_endpoint`` must
    be set to use the DNS name.

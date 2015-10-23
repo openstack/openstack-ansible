@@ -3,7 +3,7 @@
 Chapter 6. Infrastructure playbooks
 -----------------------------------
 
-.. toctree:: 
+.. toctree::
 
    install-infrastructure-run.rst
    install-infrastructure-verify.rst

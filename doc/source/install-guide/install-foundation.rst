@@ -3,7 +3,7 @@
 Chapter 5. Foundation playbooks
 -------------------------------
 
-.. toctree:: 
+.. toctree::
 
    install-foundation-run.rst
 

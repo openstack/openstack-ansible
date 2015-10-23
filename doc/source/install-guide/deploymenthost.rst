@@ -3,7 +3,7 @@
 Chapter 2. Deployment host
 --------------------------
 
-.. toctree:: 
+.. toctree::
 
    deploymenthost-os.rst
    deploymenthost-add.rst

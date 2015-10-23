@@ -50,7 +50,7 @@ back up to an external Object Storage installation.
        cinder_service_backup_swift_retry_backoff: 2
        cinder_service_backup_compression_algorithm: zlib
        cinder_service_backup_metadata_version: 2
-                 
+
 
 During installation of Block Storage, the backup service is configured.
 For more information about swift, refer to the Standalone Object Storage
