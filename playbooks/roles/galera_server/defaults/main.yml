@@ -87,15 +87,25 @@ galera_apt_percona_xtrabackup_repo:
   repo: "deb {{ galera_apt_percona_xtrabackup_url }} {{ ansible_distribution_release }} main"
   state: "present"
 
+galera_package_url: "https://www.percona.com/downloads/XtraBackup/Percona-XtraBackup-2.2.13/binary/debian/trusty/x86_64/percona-xtrabackup-22_2.2.13-1.trusty_amd64.deb"
+galera_package_sha256: "2f58eedefa905583f0650f77bb2b149139c4066c7fb690202124fe5c7ac83e9e"
+galera_package_path: "/opt/{{ galera_package_url | basename }}"
+
 galera_pip_packages:
   - MySQL-python
   - python-memcached
   - pycrypto
 
 galera_pre_apt_packages:
+  - debconf-utils
+  - libaio1
+  - libc6
+  - libdbd-mysql-perl
+  - libgcc1
+  - libgcrypt11
+  - libstdc++6
   - python-software-properties
   - software-properties-common
-  - debconf-utils
 
 # The package name for mariaDB is set as a variable
 # so that it can be used in debconf later in the
@@ -111,7 +121,6 @@ galera_apt_packages:
   - galera-3
   - qpress
   - rsync
-  - percona-xtrabackup
   - socat
 
 galera_debconf_items:
