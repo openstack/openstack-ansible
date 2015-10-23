@@ -44,7 +44,7 @@ file**
        #           index: 1
        #           repl_number: 3
        #           deprecated: True
-               
+
 
    ``part_power``
        Set the partition power value based on the total amount of

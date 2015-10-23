@@ -31,7 +31,7 @@ to determine if all nodes in the cluster have failed:
     uuid:    338b06b0-2948-11e4-9d06-bef42f6c52f1
     seqno:   -1
     cert_index:
-          
+
 
 All the nodes have failed if ``mysqld`` is not running on any of the
 nodes and all of the nodes contain a ``seqno`` value of -1.

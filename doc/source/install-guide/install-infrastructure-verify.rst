@@ -35,7 +35,7 @@ Verify the database cluster and Kibana web interface operation.
        | wsrep_cluster_status     | Primary                              |
        +--------------------------+--------------------------------------+
        MariaDB> exit
-               
+
 
    The ``wsrep_cluster_size`` field should indicate the number of nodes
    in the cluster and the ``wsrep_cluster_status`` field should indicate

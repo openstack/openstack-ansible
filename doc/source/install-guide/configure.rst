@@ -3,7 +3,7 @@
 Chapter 4. Deployment configuration
 -----------------------------------
 
-.. toctree:: 
+.. toctree::
 
    configure-prereq.rst
    configure-networking.rst
