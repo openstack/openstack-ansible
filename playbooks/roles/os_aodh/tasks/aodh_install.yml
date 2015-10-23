@@ -43,6 +43,58 @@
     - aodh-install
     - aodh-pip-packages
 
+- name: Attempt venv download
+  get_url:
+    url: "{{ aodh_venv_download_url }}"
+    dest: "/var/cache/{{ aodh_venv_download_url | basename }}"
+  ignore_errors: true
+  register: get_venv
+  when: aodh_venv_enabled | bool
+  tags:
+    - aodh-install
+    - aodh-pip-packages
+
+- name: Set aodh get_venv fact
+  set_fact:
+    aodh_get_venv: "{{ get_venv }}"
+  when: aodh_venv_enabled | bool
+  tags:
+    - aodh-install
+    - aodh-pip-packages
+
+- name: Create aodh venv dir
+  file:
+    path: "{{ aodh_venv_bin | dirname }}"
+    state: directory
+  when:
+    - aodh_venv_enabled | bool
+    - aodh_get_venv | success
+  tags:
+    - aodh-install
+    - aodh-pip-packages
+
+- name: Unarchive pre-built venv
+  unarchive:
+    src: "/var/cache/{{ aodh_venv_download_url | basename }}"
+    dest: "{{ aodh_venv_bin | dirname }}"
+    copy: "no"
+  when:
+    - aodh_venv_enabled | bool
+    - aodh_get_venv | success
+  tags:
+    - aodh-install
+    - aodh-pip-packages
+
+- name: Update virtualenv path
+  command: >
+    virtualenv-tools --update-path=auto {{ aodh_venv_bin | dirname }}
+  when:
+    - aodh_venv_enabled | bool
+    - aodh_get_venv | success
+  tags:
+    - aodh-install
+    - aodh-pip-packages
+
 - name: Install pip packages (venv)
   pip:
     name: "{{ item }}"
@@ -56,7 +108,9 @@
   delay: 2
   with_items:
     - "{{ aodh_pip_packages }}"
-  when: aodh_venv_enabled | bool
+  when:
+    - aodh_venv_enabled | bool
+    - aodh_get_venv | failed
   tags:
     - aodh-install
     - aodh-pip-packages

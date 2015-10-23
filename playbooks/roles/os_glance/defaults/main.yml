@@ -37,6 +37,8 @@ glance_venv_etc_dir: "{{ glance_bin | dirname }}/etc/glance"
 glance_non_venv_etc_dir: "/usr/local/etc/glance"
 glance_etc_dir: "{{ (glance_venv_enabled | bool) | ternary(glance_venv_etc_dir, glance_non_venv_etc_dir) }}"
 
+glance_venv_download_url: http://127.0.0.1/venvs/untagged/ubuntu/glance.tgz
+
 # Enable/Disable Ceilometer
 glance_ceilometer_enabled: False
 
@@ -175,6 +177,7 @@ glance_apt_packages:
 # Cinder packages that must be installed before anything else
 glance_requires_pip_packages:
   - virtualenv
+  - virtualenv-tools
   - python-keystoneclient # Keystoneclient needed to OSA keystone lib
 
 # Common pip packages

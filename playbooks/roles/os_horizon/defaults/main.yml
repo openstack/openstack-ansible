@@ -29,6 +29,8 @@ horizon_venv_enabled: true
 #  system path used when the installing.
 horizon_bin: "{{ horizon_venv_bin }}"
 
+horizon_venv_download_url: http://127.0.0.1/venvs/untagged/ubuntu/horizon.tgz
+
 ## System info
 horizon_system_user_name: horizon
 horizon_system_group_name: www-data
@@ -137,6 +139,7 @@ horizon_apt_packages:
 # horizon packages that must be installed before anything else
 horizon_requires_pip_packages:
   - virtualenv
+  - virtualenv-tools
   - python-keystoneclient # Keystoneclient needed to OSA keystone lib
 
 horizon_pip_packages:

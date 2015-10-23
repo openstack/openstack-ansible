@@ -43,6 +43,58 @@
     - ceilometer-install
     - ceilometer-pip-packages
 
+- name: Attempt venv download
+  get_url:
+    url: "{{ ceilometer_venv_download_url }}"
+    dest: "/var/cache/{{ ceilometer_venv_download_url | basename }}"
+  ignore_errors: true
+  register: get_venv
+  when: ceilometer_venv_enabled | bool
+  tags:
+    - ceilometer-install
+    - ceilometer-pip-packages
+
+- name: Set ceilometer get_venv fact
+  set_fact:
+    ceilometer_get_venv: "{{ get_venv }}"
+  when: ceilometer_venv_enabled | bool
+  tags:
+    - ceilometer-install
+    - ceilometer-pip-packages
+
+- name: Create ceilometer venv dir
+  file:
+    path: "{{ ceilometer_venv_bin | dirname }}"
+    state: directory
+  when:
+    - ceilometer_venv_enabled | bool
+    - ceilometer_get_venv | success
+  tags:
+    - ceilometer-install
+    - ceilometer-pip-packages
+
+- name: Unarchive pre-built venv
+  unarchive:
+    src: "/var/cache/{{ ceilometer_venv_download_url | basename }}"
+    dest: "{{ ceilometer_venv_bin | dirname }}"
+    copy: "no"
+  when:
+    - ceilometer_venv_enabled | bool
+    - ceilometer_get_venv | success
+  tags:
+    - ceilometer-install
+    - ceilometer-pip-packages
+
+- name: Update virtualenv path
+  command: >
+    virtualenv-tools --update-path=auto {{ ceilometer_venv_bin | dirname }}
+  when:
+    - ceilometer_venv_enabled | bool
+    - ceilometer_get_venv | success
+  tags:
+    - ceilometer-install
+    - ceilometer-pip-packages
+
 - name: Install pip packages (venv)
   pip:
     name: "{{ item }}"
@@ -56,7 +108,9 @@
   delay: 2
   with_items:
     - "{{ ceilometer_pip_packages }}"
-  when: ceilometer_venv_enabled | bool
+  when:
+    - ceilometer_venv_enabled | bool
+    - ceilometer_get_venv | failed
   tags:
     - ceilometer-install
     - ceilometer-pip-packages

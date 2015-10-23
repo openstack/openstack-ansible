@@ -157,6 +157,7 @@
   roles:
     - role: "os_cinder"
       cinder_venv_tag: "{{ openstack_release }}"
+      cinder_venv_download_url: "{{ openstack_repo_url }}/venvs/{{ openstack_release }}/{{ ansible_distribution | lower }}/cinder-{{ openstack_release }}.tgz"
       cinder_galera_address: "{{ internal_lb_vip_address }}"
       cinder_storage_address: "{{ container_address }}"
       cinder_glance_host: "{{ internal_lb_vip_address }}"

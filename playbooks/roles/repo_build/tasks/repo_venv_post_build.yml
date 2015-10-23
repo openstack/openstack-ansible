@@ -13,14 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Wheel building
-- include: repo_clone_git.yml
-- include: repo_set_facts.yml
-- include: repo_pre_build.yml
-- include: repo_build.yml
-- include: repo_post_build.yml
-
-# Venv building
-- include: repo_venv.yml
+- name: Cleanup venv directory
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - "{{ repo_build_venv_build_dir }}"
   tags:
-    - repo-build-venvs
+    - repo-cleanup-venv-location

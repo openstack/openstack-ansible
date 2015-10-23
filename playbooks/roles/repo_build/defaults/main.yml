@@ -30,3 +30,13 @@ repo_build_pip_default_index: "https://pypi.python.org/simple"
 repo_build_pip_extra_index: "https://pypi.python.org/simple"
 
 repo_build_timeout: 120
+
+repo_build_venv_force_rebuild: false
+repo_build_venv_build_dir: "/tmp/openstack-venv-builder"
+repo_build_venv_dir: "/var/www/repo/venvs"
+repo_build_venv_pip_install_options: >
+  --timeout 120
+  --find-links {{ repo_build_release_path }}/{{ repo_build_release_tag }}
+  --no-index
+  --verbose
+  --log /var/log/repo/repo_venv_builder.log

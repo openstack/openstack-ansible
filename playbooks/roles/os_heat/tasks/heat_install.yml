@@ -52,6 +52,58 @@
     - heat-install
     - heat-pip-packages
 
+- name: Attempt venv download
+  get_url:
+    url: "{{ heat_venv_download_url }}"
+    dest: "/var/cache/{{ heat_venv_download_url | basename }}"
+  ignore_errors: true
+  register: get_venv
+  when: heat_venv_enabled | bool
+  tags:
+    - heat-install
+    - heat-pip-packages
+
+- name: Set heat get_venv fact
+  set_fact:
+    heat_get_venv: "{{ get_venv }}"
+  when: heat_venv_enabled | bool
+  tags:
+    - heat-install
+    - heat-pip-packages
+
+- name: Create heat venv dir
+  file:
+    path: "{{ heat_venv_bin | dirname }}"
+    state: directory
+  when:
+    - heat_venv_enabled | bool
+    - heat_get_venv | success
+  tags:
+    - heat-install
+    - heat-pip-packages
+
+- name: Unarchive pre-built venv
+  unarchive:
+    src: "/var/cache/{{ heat_venv_download_url | basename }}"
+    dest: "{{ heat_venv_bin | dirname }}"
+    copy: "no"
+  when:
+    - heat_venv_enabled | bool
+    - heat_get_venv | success
+  tags:
+    - heat-install
+    - heat-pip-packages
+
+- name: Update virtualenv path
+  command: >
+    virtualenv-tools --update-path=auto {{ heat_venv_bin | dirname }}
+  when:
+    - heat_venv_enabled | bool
+    - heat_get_venv | success
+  tags:
+    - heat-install
+    - heat-pip-packages
+
 - name: Install pip packages (venv)
   pip:
     name: "{{ item }}"
@@ -65,7 +117,9 @@
   delay: 2
   with_items:
     - "{{ heat_pip_packages }}"
-  when: heat_venv_enabled | bool
+  when:
+    - heat_venv_enabled | bool
+    - heat_get_venv | failed
   tags:
     - heat-install
     - heat-pip-packages

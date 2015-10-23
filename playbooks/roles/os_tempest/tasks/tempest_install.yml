@@ -26,7 +26,8 @@
     - "{{ tempest_requires_pip_packages }}"
   tags:
     - tempest-pip-requires-packages
-    - tempest-pip-install
+    - tempest-install
+    - tempest-pip-packages
 
 - name: Get tempest from git
   git:
@@ -42,17 +43,83 @@
     - tempest-git-clone
     - tempest-pip-install
 
-- name: Install pip packages for tempest
+- name: Attempt venv download
+  get_url:
+    url: "{{ tempest_venv_download_url }}"
+    dest: "/var/cache/{{ tempest_venv_download_url | basename }}"
+  ignore_errors: true
+  register: get_venv
+  tags:
+    - tempest-install
+    - tempest-pip-packages
+
+- name: Set tempest get_venv fact
+  set_fact:
+    tempest_get_venv: "{{ get_venv }}"
+  tags:
+    - tempest-install
+    - tempest-pip-packages
+
+- name: Create tempest venv dir
+  file:
+    path: "{{ tempest_git_dest }}"
+    state: directory
+  when:
+    - tempest_get_venv | success
+  tags:
+    - tempest-install
+    - tempest-pip-packages
+
+- name: Unarchive pre-built venv
+  unarchive:
+    src: "/var/cache/{{ tempest_venv_download_url | basename }}"
+    dest: "{{ tempest_git_dest }}"
+    copy: "no"
+  when:
+    - tempest_get_venv | success
+  tags:
+    - tempest-install
+    - tempest-pip-packages
+
+- name: Update virtualenv path
+  command: >
+    virtualenv-tools --update-path=auto {{ tempest_git_dest }}
+  when:
+    - tempest_get_venv | success
+  tags:
+    - tempest-install
+    - tempest-pip-packages
+
+- name: Install pip packages for tempest (prebuilt venv)
   pip:
-    name: "{{ item }}"
+    name: "{{ tempest_git_dest }}"
     state: present
     virtualenv: "{{ tempest_git_dest }}"
-    virtualenv_site_packages: "yes"
+    virtualenv_site_packages: "no"
     extra_args: "{{ tempest_pip_instructions }}"
   register: install_packages
   until: install_packages|success
   retries: 5
   delay: 2
+  when:
+    - tempest_get_venv | success
+  tags:
+    - tempest-pip-packages
+    - tempest-pip-install
+
+- name: Install pip packages for tempest (no prebuilt venv)
+  pip:
+    name: "{{ item }}"
+    state: present
+    virtualenv: "{{ tempest_git_dest }}"
+    virtualenv_site_packages: "no"
+    extra_args: "{{ tempest_pip_instructions }}"
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 2
+  when:
+    - tempest_get_venv | failed
   with_items:
     - "{{ tempest_pip_packages }}"
     - "{{ tempest_git_dest }}"

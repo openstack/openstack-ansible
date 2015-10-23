@@ -107,6 +107,7 @@ class DependencyFileProcessor(object):
         self.pip = dict()
         self.pip['git_package'] = list()
         self.pip['py_package'] = list()
+        self.pip['role_packages'] = dict()
         self.git_pip_install = 'git+%s@%s'
         self.file_names = self._get_files(path=local_path)
 
@@ -231,6 +232,7 @@ class DependencyFileProcessor(object):
             ext=ext
         )
 
+        role_name = None
         for file_name in file_names:
             with open(file_name, 'rb') as f:
                 # If there is an exception loading the file continue
@@ -243,6 +245,11 @@ class DependencyFileProcessor(object):
                 else:
                     if not loaded_config:
                         continue
+
+                    if 'roles' in file_name:
+                        _role_name = file_name.split('roles%s' % os.sep)[-1]
+                        role_name = _role_name.split(os.sep)[0]
+
 
             for key, values in loaded_config.items():
                 # This conditional is set to ensure we're not processes git repos
@@ -257,6 +264,17 @@ class DependencyFileProcessor(object):
 
                 if [i for i in BUILT_IN_PIP_PACKAGE_VARS if i in key]:
                     self.pip['py_package'].extend(values)
+
+                    if role_name:
+                        if not role_name in self.pip['role_packages']:
+                            self.pip['role_packages'][role_name] = values
+                        else:
+                            self.pip['role_packages'][role_name].extend(values)
+                            self.pip['role_packages'][role_name] = list(
+                                set(
+                                    self.pip['role_packages'][role_name]
+                                )
+                            )
 
 
 def _abs_path(path):
@@ -334,5 +352,6 @@ class LookupModule(object):
                     ) for i in return_data['remote_packages']
                 ]
                 return_data['remote_package_parts'] = remote_package_parts
+                return_data['role_packages'] = dfp.pip['role_packages']
 
                 return [return_data]

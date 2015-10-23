@@ -29,6 +29,8 @@ aodh_venv_enabled: true
 #  system path used when the installing.
 aodh_bin: "{{ aodh_venv_bin }}"
 
+aodh_venv_download_url: http://127.0.0.1/venvs/untagged/ubuntu/aodh.tgz
+
 ## System info
 aodh_system_user_name: aodh
 aodh_system_group_name: aodh
@@ -85,6 +87,7 @@ aodh_apt_packages:
 # aodh packages that must be installed before anything else
 aodh_requires_pip_packages:
   - virtualenv
+  - virtualenv-tools
   - python-keystoneclient # Keystoneclient needed to OSA keystone lib
 
 # Common pip packages

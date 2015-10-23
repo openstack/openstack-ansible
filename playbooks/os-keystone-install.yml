@@ -74,6 +74,7 @@
   roles:
     - role: "os_keystone"
       keystone_venv_tag: "{{ openstack_release }}"
+      keystone_venv_download_url: "{{ openstack_repo_url }}/venvs/{{ openstack_release }}/{{ ansible_distribution | lower }}/keystone-{{ openstack_release }}.tgz"
       keystone_galera_address: "{{ galera_address }}"
       tags:
         - "os-keystone"

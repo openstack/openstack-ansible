@@ -29,6 +29,8 @@ ceilometer_venv_enabled: true
 #  system path used when the installing.
 ceilometer_bin: "{{ ceilometer_venv_bin }}"
 
+ceilometer_venv_download_url: http://127.0.0.1/venvs/untagged/ubuntu/ceilometer.tgz
+
 ## System info
 ceilometer_system_user_name: ceilometer
 ceilometer_system_group_name: ceilometer
@@ -87,6 +89,7 @@ ceilometer_apt_packages:
 # ceilometer packages that must be installed before anything else
 ceilometer_requires_pip_packages:
   - virtualenv
+  - virtualenv-tools
   - python-keystoneclient # Keystoneclient needed to OSA keystone lib
 
 # Common pip packages

@@ -52,6 +52,58 @@
     - glance-install
     - glance-pip-packages
 
+- name: Attempt venv download
+  get_url:
+    url: "{{ glance_venv_download_url }}"
+    dest: "/var/cache/{{ glance_venv_download_url | basename }}"
+  ignore_errors: true
+  register: get_venv
+  when: glance_venv_enabled | bool
+  tags:
+    - glance-install
+    - glance-pip-packages
+
+- name: Set glance get_venv fact
+  set_fact:
+    glance_get_venv: "{{ get_venv }}"
+  when: glance_venv_enabled | bool
+  tags:
+    - glance-install
+    - glance-pip-packages
+
+- name: Create glance venv dir
+  file:
+    path: "{{ glance_venv_bin | dirname }}"
+    state: directory
+  when:
+    - glance_venv_enabled | bool
+    - glance_get_venv | success
+  tags:
+    - glance-install
+    - glance-pip-packages
+
+- name: Unarchive pre-built venv
+  unarchive:
+    src: "/var/cache/{{ glance_venv_download_url | basename }}"
+    dest: "{{ glance_venv_bin | dirname }}"
+    copy: "no"
+  when:
+    - glance_venv_enabled | bool
+    - glance_get_venv | success
+  tags:
+    - glance-install
+    - glance-pip-packages
+
+- name: Update virtualenv path
+  command: >
+    virtualenv-tools --update-path=auto {{ glance_venv_bin | dirname }}
+  when:
+    - glance_venv_enabled | bool
+    - glance_get_venv | success
+  tags:
+    - glance-install
+    - glance-pip-packages
+
 - name: Install pip packages (venv)
   pip:
     name: "{{ item }}"
@@ -65,7 +117,9 @@
   delay: 2
   with_items:
     - "{{ glance_pip_packages }}"
-  when: glance_venv_enabled | bool
+  when:
+    - glance_venv_enabled | bool
+    - glance_get_venv | failed
   tags:
     - glance-install
     - glance-pip-packages

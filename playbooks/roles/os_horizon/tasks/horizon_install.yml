@@ -50,7 +50,9 @@
   delay: 2
   with_items:
     - "{{ horizon_pip_packages }}"
-  when: horizon_venv_enabled | bool
+  when:
+    - horizon_venv_enabled | bool
+    - horizon_get_venv | failed
   tags:
     - horizon-pip-packages
 

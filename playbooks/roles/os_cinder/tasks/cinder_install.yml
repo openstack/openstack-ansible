@@ -52,6 +52,58 @@
     - cinder-install
     - cinder-pip-packages
 
+- name: Attempt venv download
+  get_url:
+    url: "{{ cinder_venv_download_url }}"
+    dest: "/var/cache/{{ cinder_venv_download_url | basename }}"
+  ignore_errors: true
+  register: get_venv
+  when: cinder_venv_enabled | bool
+  tags:
+    - cinder-install
+    - cinder-pip-packages
+
+- name: Set cinder get_venv fact
+  set_fact:
+    cinder_get_venv: "{{ get_venv }}"
+  when: cinder_venv_enabled | bool
+  tags:
+    - cinder-install
+    - cinder-pip-packages
+
+- name: Create cinder venv dir
+  file:
+    path: "{{ cinder_venv_bin | dirname }}"
+    state: directory
+  when:
+    - cinder_venv_enabled | bool
+    - cinder_get_venv | success
+  tags:
+    - cinder-install
+    - cinder-pip-packages
+
+- name: Unarchive pre-built venv
+  unarchive:
+    src: "/var/cache/{{ cinder_venv_download_url | basename }}"
+    dest: "{{ cinder_venv_bin | dirname }}"
+    copy: "no"
+  when:
+    - cinder_venv_enabled | bool
+    - cinder_get_venv | success
+  tags:
+    - cinder-install
+    - cinder-pip-packages
+
+- name: Update virtualenv path
+  command: >
+    virtualenv-tools --update-path=auto {{ cinder_venv_bin | dirname }}
+  when:
+    - cinder_venv_enabled | bool
+    - cinder_get_venv | success
+  tags:
+    - cinder-install
+    - cinder-pip-packages
+
 - name: Install pip packages (venv)
   pip:
     name: "{{ item }}"
@@ -65,7 +117,9 @@
   delay: 2
   with_items:
     - "{{ cinder_pip_packages }}"
-  when: cinder_venv_enabled | bool
+  when:
+    - cinder_venv_enabled | bool
+    - cinder_get_venv | failed
   tags:
     - cinder-install
     - cinder-pip-packages

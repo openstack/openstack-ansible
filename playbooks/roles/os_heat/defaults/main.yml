@@ -35,6 +35,8 @@ heat_venv_enabled: true
 #  system path used when the installing.
 heat_bin: "{{ heat_venv_bin }}"
 
+heat_venv_download_url: http://127.0.0.1/venvs/untagged/ubuntu/heat.tgz
+
 heat_fatal_deprecations: False
 
 heat_clients_endpoint: internalURL
@@ -157,6 +159,7 @@ heat_apt_packages:
 # Heat packages that must be installed before anything else
 heat_requires_pip_packages:
   - virtualenv
+  - virtualenv-tools
   - python-keystoneclient # Keystoneclient needed to OSA keystone lib
 
 # Common pip packages
