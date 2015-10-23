@@ -59,7 +59,7 @@
     . {{ ansible_env.HOME }}/openrc
     {{ heat_bin }}/openstack \
               --os-identity-api-version=3 \
-              --os-auth-url={{ keystone_service_adminurl_v3 }} \
+              --os-auth-url={{ keystone_service_adminurl }} \
               --os-project-name={{ heat_project_name }} \
               --os-project-domain-name={{ heat_project_domain_name }} \
               --os-user-domain-name={{ heat_user_domain_name }} \
@@ -83,7 +83,7 @@
     . {{ ansible_env.HOME }}/openrc
     {{ heat_bin }}/openstack \
               --os-identity-api-version=3 \
-              --os-auth-url={{ keystone_service_adminurl_v3 }} \
+              --os-auth-url={{ keystone_service_adminurl }} \
               --os-project-name={{ heat_project_name }} \
               --os-project-domain-name={{ heat_project_domain_name }} \
               --os-user-domain-name={{ heat_user_domain_name }} \
