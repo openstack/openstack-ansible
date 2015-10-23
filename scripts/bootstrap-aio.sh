@@ -275,6 +275,12 @@ if [ ! -d "/etc/openstack_deploy/conf.d" ];then
   mkdir -p "/etc/openstack_deploy/conf.d"
 fi
 
+# Ensure containers are using the same resolvers as the host
+RESOLVERS=$(grep nameserver /etc/resolv.conf | awk 'NF { print "\""$0"\""}' | tr '\n' ',' | sed 's/,$//' )
+if [ ! "$(grep -Rni '^lxc_cache_resolvers' /etc/openstack_deploy/user_variables.yml)" ]; then
+    echo "lxc_cache_resolvers: [$RESOLVERS]" | tee -a /etc/openstack_deploy/user_variables.yml
+fi
+
 # Add tempest settings for particular use-cases
 if [ ${DEPLOY_OPENSTACK} == "no" ]; then
   for svc in cinder glance heat horizon neutron nova; do
