@@ -56,8 +56,8 @@ heat_rpc_backend: heat.openstack.common.rpc.impl_kombu
 ## Heat User / Group
 heat_system_user_name: heat
 heat_system_group_name: heat
-heat_system_comment: heat system user
 heat_system_shell: /bin/false
+heat_system_comment: heat system user
 heat_system_home_folder: "/var/lib/{{ heat_system_user_name }}"
 
 ## Default domain
@@ -81,18 +81,24 @@ heat_profiler_enabled: false
 heat_profiler_trace_sqlalchemy: false
 
 ## Auth
+heat_service_region: RegionOne
 heat_service_project_name: "service"
 heat_service_user_name: "heat"
-heat_service_project_domain_name: "Default"
-heat_service_user_domain_name: "Default"
-
-## Keystone authentication middleware
+heat_service_role_name: admin
+heat_service_project_domain_id: default
+heat_service_user_domain_id: default
 heat_keystone_auth_plugin: password
+
+## Trustee Auth
+heat_service_trustee_project_name: "service"
+heat_service_trustee_user_name: "heat"
+heat_service_trustee_password: "{{ heat_service_password }}"
+heat_service_trustee_project_domain_id: "default"
+heat_service_trustee_user_domain_id: "default"
+heat_keystone_trustee_auth_plugin: password
 
 ## Heat api service type and data
 heat_service_name: heat
-heat_service_role_name: admin
-heat_service_region: RegionOne
 heat_service_description: "Heat Orchestration Service"
 heat_service_port: 8004
 heat_service_proto: http
