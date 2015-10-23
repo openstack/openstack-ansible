@@ -19,12 +19,11 @@
     file_path: "{{ item.src }}"
     state: "retrieve"
     file_mode: "{{ item.file_mode }}"
-    dir_mode: "{{ item.dir_mode }}"
     server: "{{ memcached_servers }}"
     encrypt_string: "{{ memcached_encryption_key }}"
   with_items:
-    - { src: "{{ rabbitmq_ssl_cert }}", name: "rabbitmq_ssl_cert", file_mode: "0640", dir_mode: "0750" }
-    - { src: "{{ rabbitmq_ssl_key }}", name: "rabbitmq_ssl_key", file_mode: "0640", dir_mode: "0750" }
+    - { src: "{{ rabbitmq_ssl_cert }}", name: "rabbitmq_ssl_cert", file_mode: "0640" }
+    - { src: "{{ rabbitmq_ssl_key }}", name: "rabbitmq_ssl_key", file_mode: "0640" }
   register: memcache_keys
   until: memcache_keys|success
   retries: 5
