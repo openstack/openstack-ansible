@@ -129,6 +129,9 @@ if [ "${RUN_PLAYBOOKS}" == "yes" ]; then
   set +o pipefail
 fi
 
+# Log some data about the instance and the rest of the system
+log_instance_info
+
 # Run the tempest tests if required
 if [ "${RUN_TEMPEST}" == "yes" ]; then
   source $(dirname ${0})/run-tempest.sh
