@@ -29,6 +29,9 @@ component_skel:
   neutron_l3_agent:
     belongs_to:
       - neutron_all
+  neutron_lbaas_agent:
+    belongs_to:
+      - neutron_all
   neutron_metadata_agent:
     belongs_to:
       - neutron_all
@@ -48,6 +51,7 @@ container_skel:
       - neutron_linuxbridge_agent
       - neutron_l3_agent
       - neutron_dhcp_agent
+      - neutron_lbaas_agent
     properties:
       service_name: neutron
       container_release: trusty
