@@ -22,6 +22,11 @@
   hosts: repo_all[0]
   gather_facts: false
   user: root
+  pre_tasks:
+    - name: Delete old MANIFEST file if found
+      file:
+        state: absent
+        path: /tmp/MANIFEST.in
   tasks:
     - name: download MANIFEST.in
       get_url:
@@ -35,18 +40,27 @@
               {{ repo_upstream_url | netloc }}::{{ mirror_name }} {{ mirror_path }}
       sudo: yes
       sudo_user: "{{ repo_service_user_name }}"
+    - name: Create sync directories
+      file:
+        state: directory
+        path: "{{ mirror_path }}/{{ item }}"
+        owner: "{{ repo_service_user_name }}"
+      with_items: rsync_dirs
     - name: Sync supporting directories
       shell: |
         {{ rsync_commands }} \
               {{ rsync_flags }} \
-              {{ repo_upstream_url | netloc }}::{{ mirror_name }}/{{ item }} {{ mirror_path }}
-      with_items:
-        - container_images
-        - downloads
-        - openstackgit
+              {{ repo_upstream_url | netloc }}::{{ mirror_name }}/{{ item }}/ {{ mirror_path }}/{{ item }}
+      with_items: rsync_dirs
+      sudo: yes
+      sudo_user: "{{ repo_service_user_name }}"
   vars:
     rsync_commands: rsync
     rsync_flags: "-avzlHAX"
+    rsync_dirs:
+      - container_images
+      - downloads
+      - "venvs/{{ openstack_release }}"
     mirror_path: "{{ repo_service_home_folder }}/repo"
     mirror_name: "openstack_mirror"
     repo_upstream_url: "https://rpc-repo.rackspace.com"
