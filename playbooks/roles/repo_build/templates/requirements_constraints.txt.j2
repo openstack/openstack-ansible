@@ -1,8 +1,8 @@
 # Computed constraints
 {% set constraint_pkgs = [] -%}
-{% for clone_item in cloned_repos.stdout_lines -%}
-git+file://{{ clone_item }}#egg={{ clone_item | git_link_parse_name | replace('-', '_') | lower }}
-{% set _ = constraint_pkgs.append(clone_item | git_link_parse_name | replace('-', '_') | lower) %}
+{% for clone_item in local_packages.results.0.item.remote_package_parts -%}
+git+file://{{ repo_build_git_dir }}/{{ clone_item['name'] }}@{{ clone_item['version'] }}#egg={{ clone_item['name'] | replace('-', '_') | lower }}
+{% set _ = constraint_pkgs.append(clone_item['name'] | replace('-', '_') | lower) %}
 {% endfor %}
 # upper boundry constraints from requirements repo.
 {% for constraint_item in upper_constraints %}

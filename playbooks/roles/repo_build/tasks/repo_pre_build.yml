@@ -50,14 +50,6 @@
   tags:
     - repo-build-filtered-package-files
 
-- name: Index cloned repos
-  shell: "find  {{ repo_build_git_dir }}/*  -maxdepth 0 -type d"
-  register: cloned_repos
-  tags:
-    - repo-index-cloned-repos
-    - repo-build-constraints-file
-    - repo-create-release-manifest
-
 - name: Build package constraints file
   template:
     src: "requirements_constraints.txt.j2"
