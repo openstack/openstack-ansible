@@ -884,7 +884,7 @@ def main():
     # Exit if no user_config was found and loaded
     if not user_defined_config:
         raise SystemExit(
-            'No user config loadaed\n'
+            'No user config loaded\n'
             'No openstack_user_config files are available in either the base'
             ' location or the conf.d directory'
         )
