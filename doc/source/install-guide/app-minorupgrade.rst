@@ -22,7 +22,7 @@ in the repository. This is done by executing, for example:
 
 A minor upgrade will typically require the execution of the following:
 
-1. Change directory into the repository clone root directory::
+1. Change directory into the repository clone root directory
 
   .. code-block:: shell-session
 
