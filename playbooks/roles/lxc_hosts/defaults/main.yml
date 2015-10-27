@@ -81,6 +81,10 @@ lxc_cache_commands:
   - rm -f /usr/bin/python
   - ln -s /usr/bin/python2.7 /usr/bin/python
 
+lxc_cache_resolvers:
+  - 'nameserver 8.8.8.8'
+  - 'nameserver 8.8.4.4'
+
 lxc_cache_sshd_configuration:
     - { regexp: "^PermitRootLogin",         line: "PermitRootLogin yes" }
     - { regexp: "^TCPKeepAlive",            line: "TCPKeepAlive yes" }
