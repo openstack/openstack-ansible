@@ -56,7 +56,7 @@
   with_dict: local_packages.results.0.item.role_packages
   when:
     - '"os_" in item.key'
-    - "'{{ item.key | replace('os_', '') }}.tgz' not in existing_venvs"
+    - "'{{ item.key | replace('os_', '') }}-{{ repo_build_release_tag }}.tgz' not in existing_venvs"
   tags:
     - repo-create-venv
 
@@ -70,7 +70,7 @@
         -C "{{ repo_build_venv_build_dir }}/venvs/{{ item.key | replace('os_', '') }}" .
   args:
     chdir: "{{ repo_build_venv_dir }}/{{ repo_build_release_tag }}/{{ ansible_distribution | lower }}"
-    creates: "{{ repo_build_venv_dir }}/{{ repo_build_release_tag }}/{{ ansible_distribution | lower }}/{{ item.key | replace('os_', '') }}.tgz"
+    creates: "{{ repo_build_venv_dir }}/{{ repo_build_release_tag }}/{{ ansible_distribution | lower }}/{{ item.key | replace('os_', '') }}-{{ repo_build_release_tag }}.tgz"
   with_dict: local_packages.results.0.item.role_packages
   when:
     - '"os_" in item.key'

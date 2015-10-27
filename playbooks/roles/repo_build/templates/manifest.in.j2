@@ -1,4 +1,7 @@
 {% for item in built_wheels.stdout_lines %}
-{{ repo_build_pool_dir | basename }}/{{ item.split('-')[0] | lower }}/{{ item }}
-{{ repo_build_release_path | basename }}/{{ repo_build_release_tag }}/{{ item }}
+{{ repo_build_pool_dir | basename }}/{{ item.split('-')[0] | lower }}/{{ item | lower }}
+{{ repo_build_release_path | basename }}/{{ repo_build_release_tag }}/{{ item | lower }}
+{% endfor %}
+{% for clone_item in local_packages.results.0.item.remote_package_parts -%}
+{{ repo_build_git_dir | basename }}/{{ clone_item['name'] }}
 {% endfor %}
