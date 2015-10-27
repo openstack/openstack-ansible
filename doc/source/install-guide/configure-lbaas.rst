@@ -45,7 +45,7 @@ The LBaaS default configuration options may be changed through the
 `conf override`_ mechanism using the ``neutron_lbaas_agent_ini_overrides``
 dict.
 
-.. conf override: http://docs.openstack.org/developer/openstack-ansible/install-guide/configure-openstack.html
+.. _conf override: http://docs.openstack.org/developer/openstack-ansible/install-guide/configure-openstack.html
 
 --------------
 
