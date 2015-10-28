@@ -119,7 +119,7 @@ Testing may be done locally by executing:
 Documentation
 -------------
 
-Documentation is developed in `reStructureText`_ (RST) and compiled into
+Documentation is developed in reStructuredText_ (RST) and compiled into
 HTML using Sphinx.
 
 Documentation may be built locally by executing:
@@ -128,7 +128,7 @@ Documentation may be built locally by executing:
 
     tox -e docs
 
-.. reStructureText: http://docutils.sourceforge.net/rst.html
+.. _reStructuredText: http://docutils.sourceforge.net/rst.html
 
 Gating
 ^^^^^^
