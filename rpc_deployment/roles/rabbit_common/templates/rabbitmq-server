@@ -1,2 +1,3 @@
 # Sets open file limit for RabbitMQ
-ulimit -n 4096
+ulimit -n {{ rabbitmq_ulimit }}
+
