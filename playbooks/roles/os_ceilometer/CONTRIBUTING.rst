@@ -1,6 +1,6 @@
-OpenStack glance
+OpenStack ceilometer
 ################
-:tags: openstack, glance, cloud, ansible
+:tags: openstack, ceilometer, cloud, ansible
 :category: \*nix
 
 contributor guidelines
