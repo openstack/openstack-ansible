@@ -1,9 +1,9 @@
 OpenStack Neutron
 #################
-:tags: openstack, nova, cloud, ansible
+:tags: openstack, neutron, cloud, ansible
 :category: \*nix
 
-Role for deployment, setup and installation of nova.
+Role for deployment, setup and installation of Neutron.
 
 This role will install the following:
     * neutron-server
