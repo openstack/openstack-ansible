@@ -1,6 +1,6 @@
-OpenStack glance
+OpenStack heat
 ################
-:tags: openstack, glance, cloud, ansible
+:tags: openstack, heat, cloud, ansible
 :category: \*nix
 
 contributor guidelines
