@@ -9,7 +9,7 @@ The Alarming services of the Telemetry perform the following functions:
 
   - Alows you to set alarms based on threshold evaluation for a collection of samples.
 
-Aodh on OSA requires a monogodb backend to be configured prior to running the aodh
+Aodh on OSA requires a mongodb backend to be configured prior to running the aodh
 playbooks. The connection data will then need to be given in the ``user_variables.yml``
 file (see section `Configuring the user data`_ below).
 
