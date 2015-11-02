@@ -27,7 +27,6 @@ export ANSIBLE_GIT_REPO=${ANSIBLE_GIT_REPO:-"https://github.com/ansible/ansible"
 export ANSIBLE_ROLE_FILE=${ANSIBLE_ROLE_FILE:-"ansible-role-requirements.yml"}
 export ANSIBLE_WORKING_DIR=${ANSIBLE_WORKING_DIR:-/opt/ansible_${ANSIBLE_GIT_RELEASE}}
 export SSH_DIR=${SSH_DIR:-"/root/.ssh"}
-export UPDATE_ANSIBLE_REQUIREMENTS=${UPDATE_ANSIBLE_REQUIREMENTS:-"yes"}
 export DEBIAN_FRONTEND=${DEBIAN_FRONTEND:-"noninteractive"}
 
 
@@ -85,10 +84,6 @@ pip2 install $PIP_OPTS "${ANSIBLE_WORKING_DIR}" || pip install $PIP_OPTS "${ANSI
 
 # Update dependent roles
 if [ -f "${ANSIBLE_ROLE_FILE}" ];then
-    # Update or create the roles manifest
-    if [ "${UPDATE_ANSIBLE_REQUIREMENTS}" == "yes" ];then
-       scripts/openstack-ansible-role-requirements.py --requirement-file ${ANSIBLE_ROLE_FILE} update
-    fi
     # Pull all required roles.
     ansible-galaxy install --role-file=${ANSIBLE_ROLE_FILE} \
                            --ignore-errors \
