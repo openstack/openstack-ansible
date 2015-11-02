@@ -29,5 +29,5 @@ service_pip_dependencies:
   - requests
   - python-memcached
   - pycrypto
-  - elasticsearch
-  - elasticsearch-curator
+  - "elasticsearch>=1.2.0,<1.3.0"
+  - "elasticsearch-curator>=2.1.0,<2.2.0"
