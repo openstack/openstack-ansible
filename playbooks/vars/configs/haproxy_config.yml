@@ -182,6 +182,6 @@ haproxy_service_configs:
       haproxy_balance_type: http
   - service:
       haproxy_service_name: aodh_api
-      haproxy_backend_nodes: "{{ groups['metering-alarm_all'] }}"
+      haproxy_backend_nodes: "{{ groups['aodh_api'] }}"
       haproxy_port: 8042
       haproxy_balance_type: http
