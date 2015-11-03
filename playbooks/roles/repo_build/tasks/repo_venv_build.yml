@@ -66,7 +66,7 @@
     #  TODO(cloudnull) This should use the find module when we move to Ansible 2.0
     find "{{ repo_build_venv_build_dir }}/venvs/{{ item.key | replace('os_', '') }}" -name '*.pyc' -delete
     # Create archive
-    tar -czf "{{ item.key | replace('os_', '') }}-{{ repo_build_release_tag }}.tgz" \
+    tar czf "{{ item.key | replace('os_', '') }}-{{ repo_build_release_tag }}.tgz" \
         -C "{{ repo_build_venv_build_dir }}/venvs/{{ item.key | replace('os_', '') }}" .
   args:
     chdir: "{{ repo_build_venv_dir }}/{{ repo_build_release_tag }}/{{ ansible_distribution | lower }}"
