@@ -29,13 +29,24 @@
     - lxc-cache
     - lxc-cache-download
 
+# Bug in Ansible causes this to fail with UTF-8 characters
+# See: https://bugs.launchpad.net/openstack-ansible/+bug/1512736
+# - name: Move lxc cached image into place
+#   unarchive:
+#     src: "/var/cache/lxc_{{ item.name }}"
+#     dest: "{{ lxc_container_cache_path }}/"
+#     copy: "no"
+#   with_items: lxc_container_caches
+#   when: cache_download|changed
+#   tags:
+#     - lxc-cache
+#     - lxc-cache-unarchive
+
 - name: Move lxc cached image into place
-  unarchive:
-    src: "/var/cache/lxc_{{ item.name }}"
-    dest: "{{ lxc_container_cache_path }}/"
-    copy: "no"
+  command: "tar -C {{ lxc_container_cache_path }}/ -xf /var/cache/lxc_{{ item.name }}"
   with_items: lxc_container_caches
   when: cache_download|changed
   tags:
     - lxc-cache
     - lxc-cache-unarchive
+    - skip_ansible_lint
