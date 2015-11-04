@@ -1,8 +1,10 @@
 # Computed constraints
 {% set constraint_pkgs = [] -%}
 {% for clone_item in local_packages.results.0.item.remote_package_parts -%}
+{% if 'ignorerequirements=true' not in clone_item['original'] %}
 git+file://{{ repo_build_git_dir }}/{{ clone_item['name'] }}@{{ clone_item['version'] }}#egg={{ clone_item['name'] | replace('-', '_') | lower }}
 {% set _ = constraint_pkgs.append(clone_item['name'] | replace('-', '_') | lower) %}
+{% endif %}
 {% endfor %}
 # upper boundry constraints from requirements repo.
 {% for constraint_item in upper_constraints %}
@@ -10,10 +12,10 @@ git+file://{{ repo_build_git_dir }}/{{ clone_item['name'] }}@{{ clone_item['vers
 {%- set constraint_name = constraint_split[0] %}
 {%- set constraint_name_normalized = constraint_name | replace('-', '_') | lower %}
 {% if constraint_name_normalized not in constraint_pkgs %}
-{% if repo_build_use_upper_constraints | bool %}
+{% if repo_build_use_upper_constraints | bool and (constraint_split | length) > 1 %}
 {{ constraint_split[0] | replace('-', '_') | lower }}<={{ constraint_split[1] }}
-{% else %}
-# {{ constraint_split[0] | replace('-', '_') | lower }}<={{ constraint_split[1] }}
+{% elif (constraint_split | length) == 1 %}
+{{ constraint_item }}
 {% endif %}
 {% endif %}
 {% endfor %}

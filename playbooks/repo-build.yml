@@ -21,7 +21,10 @@
     - name: Load local packages
       debug:
         msg: "Loading Packages"
-      with_py_pkgs: ../
+      with_py_pkgs:
+        - ../
+        - /etc/ansible/roles
+        - /etc/openstack_deploy
       register: local_packages
       tags:
         - repo-clone-repos
