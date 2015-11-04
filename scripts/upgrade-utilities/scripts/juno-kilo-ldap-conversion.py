@@ -24,6 +24,22 @@ for k, v in user_vars.items():
     if k.startswith('keystone_ldap'):
         new_ldap['%s' % k.split('keystone_ldap_')[-1]] = v
 
+# Rename misnamed old keystone ldap entries
+MISNAMED_ENTRIES = {'user_bind': 'user', 'user_bind_password': 'password'}
+
+for entry in MISNAMED_ENTRIES:
+    if entry in new_ldap:
+        new_ldap[MISNAMED_ENTRIES[entry]] = new_ldap.pop(entry)
+
+if 'server' in new_ldap:
+    if 'scheme' in new_ldap:
+        ldap_scheme = new_ldap['scheme']
+        new_ldap.pop('scheme')
+    else:
+        ldap_scheme = 'ldap'
+    new_ldap['url'] = "%s://%s" % (ldap_scheme, new_ldap['server'])
+    new_ldap.pop('server')
+
 # Open user secrets file.
 with open('/etc/openstack_deploy/user_secrets.yml', 'r') as fsr:
     user_secrets = yaml.safe_load(fsr.read())
