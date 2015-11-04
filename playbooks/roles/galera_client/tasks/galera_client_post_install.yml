@@ -27,5 +27,6 @@
       dest: "/root/.my.cnf"
       config_overrides: "{{ galera_client_my_cnf_overrides }}"
       config_type: "ini"
+  when: inventory_hostname in groups['galera_all'] or inventory_hostname in groups['utility_all']
   tags:
     - galera-client-user-config
