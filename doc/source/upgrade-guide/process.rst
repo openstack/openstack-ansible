@@ -192,6 +192,16 @@ which will no longer be needed.
 Executing the playbooks
 ^^^^^^^^^^^^^^^^^^^^^^^
 
+Before running any of the service playbooks make sure to generate all of the
+required secret information.
+
+.. code-block:: bash
+
+    openstack-ansible ${UPGRADE_PLAYBOOKS}/user-secrets-adjustments.yml
+
+----
+
+
 If you have **Haproxy** installed on your deployment, run the haproxy
 playbook.
 

@@ -129,6 +129,8 @@ ${UPGRADE_SCRIPTS}/old-variable-remove.sh
 pushd ${MAIN_PATH}/playbooks
   ${UPGRADE_SCRIPTS}/juno-container-cleanup.sh
 
+  RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/user-secrets-adjustments.yml")
+
   RUN_TASKS+=("haproxy-install.yml || true")
 
   RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/container-network-adjustments.yml || true")
