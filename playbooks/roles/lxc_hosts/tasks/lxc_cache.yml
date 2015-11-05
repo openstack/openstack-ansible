@@ -43,7 +43,7 @@
 #     - lxc-cache-unarchive
 
 - name: Move lxc cached image into place
-  command: "tar -C {{ lxc_container_cache_path }}/ -xf /var/cache/lxc_{{ item.name }}"
+  command: "tar xf /var/cache/lxc_{{ item.name }} -C {{ lxc_container_cache_path }}/"
   with_items: lxc_container_caches
   when: cache_download|changed
   tags:
