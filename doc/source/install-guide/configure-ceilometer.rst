@@ -17,7 +17,7 @@ The Telemetry module(Ceilometer) performs the following functions:
   by the metering-alarm containers through the aodh services. For configuring these services,
   please see the Aodh docs.
 
-Ceilometer on OSA requires a monogodb backend to be configured prior to running the ceilometer
+Ceilometer on OSA requires a mongodb backend to be configured prior to running the ceilometer
 playbooks. The connection data will then need to be given in the ``user_variables.yml``
 file (see section `Configuring the user data`_ below).
 
