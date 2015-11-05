@@ -27,8 +27,8 @@ keystone_ssl_public: "{% if keystone_ssl is defined and keystone_ssl | bool and 
 haproxy_service_configs:
   - service:
       haproxy_service_name: galera
-      haproxy_backend_nodes: "{{ [groups['galera_all'][0]] }}"  # list expected
-      haproxy_backup_nodes: "{{ groups['galera_all'][1:] }}"
+      haproxy_backend_nodes: "{{ [groups['galera_all'][0]] | default([]) }}"  # list expected
+      haproxy_backup_nodes: "{{ groups['galera_all'][1:] | default([]) }}"
       haproxy_port: 3306
       haproxy_balance_type: tcp
       haproxy_timeout_client: 5000s
@@ -37,7 +37,7 @@ haproxy_service_configs:
         - "mysql-check user {{ galera_monitoring_user }}"
   - service:
       haproxy_service_name: glance_api
-      haproxy_backend_nodes: "{{ groups['glance_api'] }}"
+      haproxy_backend_nodes: "{{ groups['glance_api'] | default([]) }}"
       haproxy_port: 9292
       haproxy_balance_type: http
       haproxy_backend_options:
@@ -46,12 +46,12 @@ haproxy_service_configs:
         - "httplog"
   - service:
       haproxy_service_name: glance_registry
-      haproxy_backend_nodes: "{{ groups['glance_registry'] }}"
+      haproxy_backend_nodes: "{{ groups['glance_registry'] | default([]) }}"
       haproxy_port: 9191
       haproxy_balance_type: http
   - service:
       haproxy_service_name: heat_api_cfn
-      haproxy_backend_nodes: "{{ groups['heat_api_cfn'] }}"
+      haproxy_backend_nodes: "{{ groups['heat_api_cfn'] | default([]) }}"
       haproxy_port: 8000
       haproxy_balance_type: http
       haproxy_backend_options:
@@ -60,7 +60,7 @@ haproxy_service_configs:
        - "httplog"
   - service:
       haproxy_service_name: heat_api_cloudwatch
-      haproxy_backend_nodes: "{{ groups['heat_api_cloudwatch'] }}"
+      haproxy_backend_nodes: "{{ groups['heat_api_cloudwatch'] | default([]) }}"
       haproxy_port: 8003
       haproxy_balance_type: http
       haproxy_backend_options:
@@ -69,7 +69,7 @@ haproxy_service_configs:
        - "httplog"
   - service:
       haproxy_service_name: heat_api
-      haproxy_backend_nodes: "{{ groups['heat_api'] }}"
+      haproxy_backend_nodes: "{{ groups['heat_api'] | default([]) }}"
       haproxy_port: 8004
       haproxy_balance_type: http
       haproxy_backend_options:
@@ -78,7 +78,7 @@ haproxy_service_configs:
        - "httplog"
   - service:
       haproxy_service_name: keystone_admin
-      haproxy_backend_nodes: "{{ groups['keystone_all'] }}"
+      haproxy_backend_nodes: "{{ groups['keystone_all'] | default([]) }}"
       haproxy_port: 35357
       haproxy_ssl: "{% if haproxy_ssl | bool and keystone_service_adminuri_proto == 'https' %}true{% else %}false{% endif %}"
       haproxy_balance_type: "{{ (keystone_ssl_admin | bool) | ternary('tcp', 'http') }}"
@@ -86,7 +86,7 @@ haproxy_service_configs:
       haproxy_backend_options: "{{ (keystone_ssl_admin | bool) | ternary(haproxy_backend_options_https, haproxy_backend_options_http) }}"
   - service:
       haproxy_service_name: keystone_service
-      haproxy_backend_nodes: "{{ groups['keystone_all'] }}"
+      haproxy_backend_nodes: "{{ groups['keystone_all'] | default([])  }}"
       haproxy_bind: "{% if internal_lb_vip_address == external_lb_vip_address %}*{% else %}{{ external_lb_vip_address }}{% endif %}"
       haproxy_port: 5000
       haproxy_ssl: "{% if haproxy_ssl | bool and keystone_service_publicuri_proto == 'https' %}true{% else %}false{% endif %}"
@@ -95,7 +95,7 @@ haproxy_service_configs:
       haproxy_backend_options: "{{ (keystone_ssl_public | bool) | ternary(haproxy_backend_options_https, haproxy_backend_options_http) }}"
   - service:
       haproxy_service_name: neutron_server
-      haproxy_backend_nodes: "{{ groups['neutron_server'] }}"
+      haproxy_backend_nodes: "{{ groups['neutron_server'] | default([]) }}"
       haproxy_port: 9696
       haproxy_balance_type: http
       haproxy_backend_options:
@@ -104,7 +104,7 @@ haproxy_service_configs:
        - "httplog"
   - service:
       haproxy_service_name: nova_api_metadata
-      haproxy_backend_nodes: "{{ groups['nova_api_metadata'] }}"
+      haproxy_backend_nodes: "{{ groups['nova_api_metadata'] | default([]) }}"
       haproxy_port: 8775
       haproxy_balance_type: http
       haproxy_backend_options:
@@ -112,7 +112,7 @@ haproxy_service_configs:
        - "httplog"
   - service:
       haproxy_service_name: nova_api_os_compute
-      haproxy_backend_nodes: "{{ groups['nova_api_os_compute'] }}"
+      haproxy_backend_nodes: "{{ groups['nova_api_os_compute'] | default([]) }}"
       haproxy_port: 8774
       haproxy_balance_type: http
       haproxy_backend_options:
@@ -121,7 +121,7 @@ haproxy_service_configs:
        - "httplog"
   - service:
       haproxy_service_name: nova_console
-      haproxy_backend_nodes: "{{ groups['nova_console'] }}"
+      haproxy_backend_nodes: "{{ groups['nova_console'] | default([]) }}"
       haproxy_ssl: "{% if haproxy_ssl | bool and nova_spice_html5proxy_base_proto == 'https' %}true{% else %}false{% endif %}"
       haproxy_port: 6082
       haproxy_balance_type: tcp
@@ -130,7 +130,7 @@ haproxy_service_configs:
       haproxy_balance_alg: source
   - service:
       haproxy_service_name: nova_console_novnc
-      haproxy_backend_nodes: "{{ groups['nova_console'] }}"
+      haproxy_backend_nodes: "{{ groups['nova_console'] | default([]) }}"
       haproxy_ssl: "{% if haproxy_ssl | bool and nova_novncproxy_proto == 'https' %}true{% else %}false{% endif %}"
       haproxy_port: 6080
       haproxy_balance_type: tcp
@@ -139,7 +139,7 @@ haproxy_service_configs:
       haproxy_balance_alg: source
   - service:
       haproxy_service_name: cinder_api
-      haproxy_backend_nodes: "{{ groups['cinder_api'] }}"
+      haproxy_backend_nodes: "{{ groups['cinder_api'] | default([]) }}"
       haproxy_port: 8776
       haproxy_balance_type: http
       haproxy_backend_options:
@@ -148,7 +148,7 @@ haproxy_service_configs:
        - "httplog"
   - service:
       haproxy_service_name: horizon
-      haproxy_backend_nodes: "{{ groups['horizon_all'] }}"
+      haproxy_backend_nodes: "{{ groups['horizon_all'] | default([]) }}"
       haproxy_port: 80
       haproxy_balance_type: http
       haproxy_backend_options:
@@ -157,7 +157,7 @@ haproxy_service_configs:
        - "httplog"
   - service:
       haproxy_service_name: horizon_ssl
-      haproxy_backend_nodes: "{{ groups['horizon_all'] }}"
+      haproxy_backend_nodes: "{{ groups['horizon_all'] | default([]) }}"
       haproxy_port: 443
       haproxy_balance_type: tcp
       haproxy_balance_alg: source
@@ -165,18 +165,18 @@ haproxy_service_configs:
        - "ssl-hello-chk"
   - service:
       haproxy_service_name: swift_proxy
-      haproxy_backend_nodes: "{{ groups['swift_proxy'] }}"
+      haproxy_backend_nodes: "{{ groups['swift_proxy'] | default([]) }}"
       haproxy_balance_alg: source
       haproxy_port: 8080
       haproxy_balance_type: http
   - service:
       haproxy_service_name: repo_all
-      haproxy_backend_nodes: "{{ groups['pkg_repo'] }}"
+      haproxy_backend_nodes: "{{ groups['pkg_repo'] | default([]) }}"
       haproxy_port: 8181
       haproxy_backend_port: 8181
       haproxy_balance_type: http
   - service:
       haproxy_service_name: ceilometer_api
-      haproxy_backend_nodes: "{{ groups['ceilometer_api_container'] }}"
+      haproxy_backend_nodes: "{{ groups['ceilometer_api_container'] | default([]) }}"
       haproxy_port: 8777
       haproxy_balance_type: http
