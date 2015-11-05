@@ -65,6 +65,16 @@ release. Log rotation processes in Kilo has been revised, and the Juno files
 would conflict with the new processes.
 
 
+nova-extra-migrations.yml
+-------------------------
+
+This playbook runs transitional extra migrations needed for nova. The playbook
+will run a null instance uuid scan and the nova flavor migrations which will
+clean up the database. Depending on the number of instances online this may
+take some time. While the tasks within the playbook are optional, these steps
+are recommended in order to future proofing the environment.
+
+
 swift-ring-adjustments.yml
 --------------------------
 

@@ -329,6 +329,17 @@ Run the setup OpenStack playbook to deploy new service code.
 
 ----
 
+Run the nova extra migrations playbook to ensure that the nova db has been
+modernized. While this is an optional step it is recommended for future proofing
+the environment.
+
+.. code-block:: bash
+
+    openstack-ansible ${UPGRADE_PLAYBOOKS}/nova-extra-migrations.yml
+
+
+----
+
 When the OpenStack setup plays have finished, run the post-upgrade cleanup
 script to remove the original galera monitoring user. If you are still
 using this user for monitoring your galera cluster, do **NOT** execute this
