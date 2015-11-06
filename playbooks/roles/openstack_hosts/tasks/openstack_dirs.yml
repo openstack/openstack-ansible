@@ -1,5 +1,5 @@
 ---
-# Copyright 2014, Rackspace US, Inc.
+# Copyright 2015, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,14 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: openstack_dirs.yml
-- include: openstack_proxy_settings.yml
-- include: openstack_host_packages.yml
-- include: openstack_sysstat.yml
-- include: openstack_update_hosts_file.yml
-- include: openstack_lvm_config.yml
-- include: openstack_kernel_check.yml
-- include: openstack_kernel_modules.yml
-- include: openstack_kernel_tuning.yml
-- include: openstack_authorized_keys.yml
-- include: openstack_release.yml
+- name: Ensure OpenStack directories
+  file:
+    path: "{{ item }}"
+    state: "directory"
+    mode: "0755"
+  with_items:
+    - /openstack
+    - /openstack/backup
+    - /openstack/instances
+    - /openstack/log
+    - /openstack/venvs
+  tags:
+    - openstack-dirs
