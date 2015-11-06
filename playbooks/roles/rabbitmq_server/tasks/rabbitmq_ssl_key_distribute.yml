@@ -41,3 +41,16 @@
     - "{{ rabbitmq_ssl_cert }}"
   tags:
     - rabbitmq-ssl
+
+# This is here because there was a different way of configuring SSL/TLS
+# for RabbitMQ that used a mode of 0750 for the RabbitMQ directory.  That has
+# since been updated but we need to ensure that old environments get this
+# critical update during upgrades.
+#
+# See bug 1513668 in Launchpad for more details.
+- name: Ensure /etc/rabbitmq is set to the default mode of 0755
+  file:
+    path: /etc/rabbitmq
+    mode: 0755
+  tags:
+    - rabbitmq-ssl
