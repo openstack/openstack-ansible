@@ -33,7 +33,7 @@ auto eth4
 iface eth4 inet manual
 
 
-## Create a bonded interface. Note that the "bond-slaves" is set to none. This is because the 
+## Create a bonded interface. Note that the "bond-slaves" is set to none. This is because the
 # bond-master has already been set in the raw interfaces for the new bond0.
 auto bond0
 iface bond0 inet static
@@ -125,7 +125,7 @@ iface br-storage inet static
 # Bridge for servicenet network
 # ALL nodes will have an IP on this bridge. If fact, it's the same IP.
 # !! DO NOT PUT A PHYSICAL INTERFACE IN THIS BRIDGE ON THE HOST !!
-# Will ue an iptables MASQUERADE rule to NAT traffic
+# Will use an iptables MASQUERADE rule to NAT traffic.
 auto br-snet
 iface br-snet inet static
     bridge_stp off
