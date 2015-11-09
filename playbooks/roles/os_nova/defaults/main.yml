@@ -60,6 +60,9 @@ nova_rpc_thread_pool_size: 64
 nova_rpc_conn_pool_size: 30
 nova_rpc_response_timeout: 60
 
+## Nova virtualization Type Autodetect, set to True if nova_virt_type is not set
+nova_virt_autodetect: True
+
 ## Nova virtualization Type, set to KVM if supported
 nova_virt_type: kvm
 
