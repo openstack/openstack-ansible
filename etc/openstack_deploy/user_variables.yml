@@ -62,9 +62,18 @@ glance_swift_store_endpoint_type: internalURL
 # dhcp_domain:
 
 ## Glance with Swift
-### Extra options when configuring swift as a glance back-end.
-### By default it will use the local swift install
-### Set these when using a remote swift as a glance backend
+# Extra options when configuring swift as a glance back-end. By default it
+# will use the local swift installation. Set these when using a remote swift
+# as a glance backend.
+#
+# NOTE: Ensure that the auth version matches your authentication endpoint.
+#
+# NOTE: If the password for glance_swift_store_key contains a dollar sign ($),
+# it must be escaped with an additional dollar sign ($$), not a backslash. For
+# example, a password of "super$ecure" would need to be entered as
+# "super$$ecure" below.  See Launchpad Bug #1259729 for more details.
+#
+#glance_swift_store_auth_version: 3
 #glance_swift_store_auth_address: "https://some.auth.url.com"
 #glance_swift_store_user: "OPENSTACK_TENANT_ID:OPENSTACK_USER_NAME"
 #glance_swift_store_key: "OPENSTACK_USER_PASSWORD"
