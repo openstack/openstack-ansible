@@ -14,7 +14,7 @@
 # limitations under the License.
 
 - include: nova_compute_kvm.yml
-  when: nova_virt_type == 'kvm' or nova_virt_type == 'qemu'
+  when: nova_virt_type == 'kvm' or nova_virt_type == 'qemu' or nova_virt_autodetect | bool
 
 - include: nova_compute_key_populate.yml
 
