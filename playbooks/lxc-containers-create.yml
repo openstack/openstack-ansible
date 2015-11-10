@@ -20,6 +20,16 @@
   user: root
   roles:
     - { role: "lxc_container_create", tags: [ "lxc-container-create" ] }
+  post_tasks:
+    - name: Wait for ssh to be available
+      local_action:
+        module: wait_for
+        port: "{{ ansible_ssh_port | default('22') }}"
+        host: "{{ ansible_ssh_host | default(inventory_hostname) }}"
+        search_regex: OpenSSH
+        delay: 1
+      tags:
+        - lxc-container-wait-for-ssh
   vars:
     ansible_hostname: "{{ container_name }}"
     is_metal: "{{ properties.is_metal|default(false) }}"
