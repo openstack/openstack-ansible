@@ -36,6 +36,7 @@ haproxy_pre_apt_packages:
 haproxy_apt_packages:
   - haproxy
   - hatop
+  - rsyslog  # Used for local logging
   - vim-haproxy
 
 ## Haproxy Configuration
