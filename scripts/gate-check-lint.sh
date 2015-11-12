@@ -28,8 +28,8 @@ info_block "Running Basic Ansible Lint Check"
 source $(dirname ${0})/bootstrap-ansible.sh
 
 # Install the development requirements.
-if [ -f "dev-requirements.txt" ]; then
-  pip2 install -r dev-requirements.txt || pip install -r dev-requirements.txt
+if [ -f "test-requirements.txt" ]; then
+  pip2 install -r test-requirements.txt || pip install -r test-requirements.txt
 else
   pip2 install ansible-lint || pip install ansible-lint
 fi
