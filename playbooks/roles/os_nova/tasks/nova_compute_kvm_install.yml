@@ -77,28 +77,6 @@
     - nova-install
     - nova-pip-packages
 
-# TODO(mattt): remove once ceph_client role can install ceph packages from pypi
-# This is being done as a temporary workaround since we currently cannot obtain
-#  ceph-related libraries from pypi.  There is work in progress [1] to address
-#  this.
-#  [1] http://tracker.ceph.com/issues/5900
-- name: Link ceph libraries into the venv
-  file:
-    src: "{{ item.name }}"
-    dest: "{{ nova_venv_bin | dirname }}/lib/python2.7/site-packages/{{ item.name | basename }}"
-    state: "{{ item.state }}"
-    force: "yes"
-  with_items:
-    - { state: link, name: "/usr/lib/python2.7/dist-packages/rados.py" }
-    - { state: link, name: "/usr/lib/python2.7/dist-packages/rbd.py" }
-  when:
-    - nova_venv_enabled | bool
-    - inventory_hostname in groups['nova_compute']
-    - (cinder_backends_rbd_inuse|bool or nova_libvirt_images_rbd_pool is defined)
-  tags:
-    - nova-install
-    - nova-pip-packages
-
 - name: Install pip packages (no venv)
   pip:
     name: "{{ item }}"
