@@ -62,7 +62,7 @@
                       upgrade --expand
   sudo: yes
   sudo_user: "{{ neutron_system_user_name }}"
-  when: not neutron_migrations['expand']['head']|bool
+  when: neutron_migrations['run_expand']|bool
   tags:
     - neutron-db-setup
     - neutron-upgrade
@@ -74,7 +74,7 @@
     pattern: "neutron-server"
   delegate_to: "{{ item }}"
   with_items: groups['neutron_server']
-  when: not neutron_migrations['contract']['head']|bool
+  when: neutron_migrations['run_contract']|bool
   tags:
     - neutron-db-setup
     - neutron-upgrade
@@ -87,7 +87,7 @@
                       upgrade --contract
   sudo: yes
   sudo_user: "{{ neutron_system_user_name }}"
-  when: not neutron_migrations['contract']['head']|bool
+  when: neutron_migrations['run_contract']|bool
   tags:
     - neutron-db-setup
     - neutron-upgrade
@@ -99,7 +99,7 @@
     pattern: "neutron-server"
   delegate_to: "{{ item }}"
   with_items: groups['neutron_server']
-  when: not neutron_migrations['contract']['head']|bool
+  when: neutron_migrations['run_contract']|bool
   tags:
     - neutron-db-setup
     - neutron-upgrade

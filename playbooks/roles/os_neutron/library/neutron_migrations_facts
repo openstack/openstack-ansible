@@ -60,29 +60,88 @@ EXAMPLES = """
 
 
 MIGRATIONS = {
-    'expand': {
-        'revision': None,
-        'head': None
+    'projects': {
+        'neutron': {
+            'branches': {
+                'expand': {
+                    'revision': None,
+                    'head': None
+                },
+                'contract': {
+                    'revision': None,
+                    'head': None
+                }
+            },
+            'installed': False
+        },
+        'neutron-fwaas': {
+            'branches': {
+                'expand': {
+                    'revision': None,
+                    'head': None
+                },
+                'contract': {
+                    'revision': None,
+                    'head': None
+                }
+            },
+            'installed': False
+        },
+        'neutron-lbaas': {
+            'branches': {
+                'expand': {
+                    'revision': None,
+                    'head': None
+                },
+                'contract': {
+                    'revision': None,
+                    'head': None
+                }
+            },
+            'installed': False
+        },
+        'neutron-vpnaas': {
+            'branches': {
+                'expand': {
+                    'revision': None,
+                    'head': None
+                },
+                'contract': {
+                    'revision': None,
+                    'head': None
+                }
+            },
+            'installed': False
+        }
     },
-    'contract': {
-        'revision': None,
-        'head': None
-    }
+    'run_contract': True,
+    'run_expand': True
 }
 
+RELEASES = ['mitaka', 'liberty']
 
-def get_branch(release, revision, library_path):
-    migrations_dir = (
-        '%s/db/migration/alembic_migrations/versions/%s/' % (
-            library_path,
-            release,
+
+def get_branch(release, revision, library_path, project):
+    # Here we drop any releases that are newer than the specified release.
+    # We have to check previous releases for migrations as at time of writing,
+    # neutron-lbaas doesn't have mitaka migrations and therefore the plugin
+    # will fail unless we also check the previous release's migrations.
+    for release in RELEASES[RELEASES.index(release):]:
+        migrations_dir = (
+            '%s/%s/db/migration/alembic_migrations/versions/%s/' % (
+                library_path,
+                project.replace('-', '_'),
+                release,
+            )
         )
-    )
-    for branch in MIGRATIONS.keys():
-        migration_dir = os.path.join(get_abs_path(migrations_dir), branch)
-        for file in os.listdir(migration_dir):
-            if file.endswith('.py') and file.split('_')[0] == revision:
-                return branch
+        if os.path.isdir(migrations_dir):
+            for branch in MIGRATIONS['projects'][project]['branches'].keys():
+                migration_dir = os.path.join(
+                    get_abs_path(migrations_dir), branch
+                )
+                for file in os.listdir(migration_dir):
+                    if file.endswith('.py') and file.split('_')[0] == revision:
+                        return branch
 
 
 def get_abs_path(path):
@@ -91,6 +150,37 @@ def get_abs_path(path):
             path
         )
     )
+
+
+def update_run_keys():
+    projects = MIGRATIONS['projects']
+
+    # If a probject or subproject is marked as installed but has no revision,
+    # we can assume the project has just been installed.  In this case we
+    # just return to main, leaving run_contract/run_expand as True so that
+    # migrations will run.
+    # TODO(mattt): We will want to try to figure out if migrations in this
+    #              situation are expand, contract, or both, so that we avoid
+    #              unnecessary neutron-server downtime.
+    for p in projects:
+        if (projects[p]['installed'] is True and
+                projects[p]['branches']['expand']['revision'] is None and
+                projects[p]['branches']['contract']['revision'] is None):
+            return
+
+    # Here we will determine if migrations should be skipped -- this will
+    # happen when all the projects or subprojects that have a revision
+    # are also at head.
+    for b in ('contract', 'expand'):
+        migrations_with_a_rev = [
+            v
+            for v in projects.values()
+            if v['branches'][b]['revision'] is not None
+        ]
+        if (len(migrations_with_a_rev) > 0 and
+                all(m['branches'][b]['head'] is True
+                    for m in migrations_with_a_rev)):
+            MIGRATIONS['run_%s' % b] = False
 
 
 def main():
@@ -111,7 +201,15 @@ def main():
         ),
         supports_check_mode=False
     )
+
+    if module.params['release'] not in RELEASES:
+        module.fail_json(
+            msg='neutron fact collection failed: release %s not found in'
+                ' %s' % (module.params['release'], RELEASES)
+        )
+
     state_change = False
+    project = None
 
     command = [
         '%s/neutron-db-manage' % get_abs_path(module.params['bin_path']),
@@ -125,16 +223,33 @@ def main():
 
     for line in current.splitlines():
         head = False
-        match = re.search("^([0-9a-z]{4,12})(\s\(head\))?$", line)
-        if match:
-            revision = match.group(1)
-            if match.group(2):
+        project_match = re.search(
+            "^\s*Running current for (neutron(-[a-z]+)?) ...$",
+            line
+        )
+        migration_match = re.search("^([0-9a-z]{4,12})(\s\(head\))?$", line)
+
+        if project_match:
+            project = project_match.group(1)
+            MIGRATIONS['projects'][project]['installed'] = True
+
+        if migration_match:
+            revision = migration_match.group(1)
+
+            if project is None:
+                module.fail_json(
+                    msg='neutron fact collection failed: unable to detect'
+                        ' project for revision %s' % revision
+                )
+
+            if migration_match.group(2):
                 head = True
 
             branch = get_branch(
                 release=module.params['release'],
                 revision=revision,
-                library_path=get_abs_path(module.params['library_path'])
+                library_path=get_abs_path(module.params['library_path']),
+                project=project
             )
             if branch is None:
                 module.fail_json(
@@ -142,8 +257,11 @@ def main():
                         ' migration with revision %s' % revision
                 )
 
-            MIGRATIONS[branch]['revision'] = revision
-            MIGRATIONS[branch]['head'] = head
+            proj_migrations = MIGRATIONS['projects'][project]['branches']
+            proj_migrations[branch]['revision'] = revision
+            proj_migrations[branch]['head'] = head
+
+    update_run_keys()
 
     module.exit_json(
         changed=state_change,
