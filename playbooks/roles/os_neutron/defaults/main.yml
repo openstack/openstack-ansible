@@ -37,9 +37,9 @@ neutron_venv_download_url: http://127.0.0.1/venvs/untagged/ubuntu/neutron.tgz
 # Set the lib dir path to that of the local python path where neutron is installed.
 #  This is used for role access to the db migrations.
 #  Example:
-#  neutron_lib_dir: "/usr/local/lib/python2.7/dist-packages/neutron"
-neutron_venv_lib_dir: "{{ neutron_bin | dirname }}/lib/python2.7/site-packages/neutron"
-neutron_non_venv_lib_dir: "/usr/local/lib/python2.7/dist-packages/neutron"
+#  neutron_lib_dir: "/usr/local/lib/python2.7/dist-packages/"
+neutron_venv_lib_dir: "{{ neutron_bin | dirname }}/lib/python2.7/site-packages/"
+neutron_non_venv_lib_dir: "/usr/local/lib/python2.7/dist-packages/"
 neutron_lib_dir: "{{ (neutron_venv_enabled | bool) | ternary(neutron_venv_lib_dir, neutron_non_venv_lib_dir) }}"
 
 neutron_fatal_deprecations: False
