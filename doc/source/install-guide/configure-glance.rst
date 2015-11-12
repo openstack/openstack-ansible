@@ -19,13 +19,15 @@ usage.
 
        glance_default_store: swift
 
-#. Set the appropriate authentication URL:
+#. Set the appropriate authentication URL and version:
 
    .. code-block:: yaml
 
+       glance_swift_store_auth_version: 2
        glance_swift_store_auth_address: https://127.0.0.1/v2.0
 
-#. Set the swift account credentials:
+#. Set the swift account credentials (see *Special Considerations* at the
+   bottom of this page):
 
    .. code-block:: yaml
 
@@ -105,6 +107,16 @@ usage.
    -  ``trusted-auth``
 
    -  ``trusted-auth+cachemanagement``
+
+Special Considerations
+~~~~~~~~~~~~~~~~~~~~~~
+
+If the swift password or key contains a dollar sign (``$``), it must
+be escaped with an additional dollar sign (``$$``). For example, a password of
+``super$ecure`` would need to be entered as ``super$$ecure``.  This is needed
+due to the way `oslo.config formats strings`_.
+
+.. _oslo.config formats strings: https://bugs.launchpad.net/oslo-incubator/+bug/1259729
 
 --------------
 
