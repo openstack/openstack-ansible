@@ -83,7 +83,7 @@
         mkdir -p /etc/network/interfaces.d
       fi
       echo -e '{{ lxc_container_interface }}' | tee /etc/network/interfaces.d/{{ item.value.interface }}.cfg
-  with_dict: container_networks
+  with_dict: container_networks|default({})
   delegate_to: "{{ physical_host }}"
   tags:
     - lxc-container-networks
@@ -95,7 +95,7 @@
     owner: "root"
     group: "root"
     mode: "0644"
-  with_dict: container_networks
+  with_dict: container_networks|default({})
   notify:
     - Lxc container restart
   delegate_to: "{{ physical_host }}"
@@ -120,7 +120,7 @@
     dest: "/var/lib/lxc/{{ inventory_hostname }}/config"
     line: "lxc.include = /var/lib/lxc/{{ inventory_hostname }}/{{ item.value.interface }}.ini"
     backup: "true"
-  with_dict: container_networks
+  with_dict: container_networks|default({})
   when: >
     item.value.interface is defined
   notify:

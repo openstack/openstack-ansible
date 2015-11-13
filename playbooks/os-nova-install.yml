@@ -60,9 +60,9 @@
       changed_when: >
         'added' in device_add.stdout.lower()
       delegate_to: "{{ physical_host }}"
-      when: >
-        inventory_hostname in groups['nova_compute'] and
-        (is_metal == false or is_metal == "False")
+      when:
+        - "inventory_hostname in groups['nova_compute']"
+        - "not is_metal | bool"
       tags:
         - nova-kvm
         - nova-kvm-container-devices
@@ -70,9 +70,9 @@
       shell: |
         lxc-device -n {{ container_name }} add /dev/net/tun /dev/net/tun
       delegate_to: "{{ physical_host }}"
-      when: >
-        inventory_hostname in groups['nova_compute'] and
-        not is_metal | bool
+      when:
+        - "inventory_hostname in groups['nova_compute']"
+        - "not is_metal | bool"
       tags:
         - nova-kvm
         - nova-kvm-container-devices
@@ -84,10 +84,10 @@
       failed_when: false
       changed_when: >
         'added' in device_add.stdout.lower()
-      when: >
-        inventory_hostname in groups['nova_compute'] and
-        not is_metal | bool and
-        nova_virt_type == 'kvm'
+      when:
+        - "inventory_hostname in groups['nova_compute']"
+        - "not is_metal | bool"
+        - "nova_virt_type == 'kvm'"
       tags:
         - nova-kvm
         - nova-kvm-container-devices
@@ -114,41 +114,34 @@
         - nova-logs
     - name: Set nova management bridge (is_metal)
       set_fact:
-        management_bridge: "{{ 'ansible_' + hostvars[inventory_hostname]['container_networks']['container_address']['bridge'] | replace('-', '_') }}"
+        management_bridge: "{{ 'ansible_' + hostvars[inventory_hostname]['management_bridge'] | replace('-', '_') }}"
       when:
-        - hostvars[inventory_hostname]['container_networks']['container_address']['bridge'] is defined
-        - is_metal | bool
+        - "hostvars[inventory_hostname]['management_bridge'] is defined"
+        - "is_metal | bool"
       tags:
         - nova-config
     - name: Set nova management address (is_metal)
       set_fact:
         management_address: "{{ hostvars[inventory_hostname][management_bridge]['ipv4']['address'] }}"
       when:
-        - is_metal | bool
-      tags:
-        - nova-config
-    - name: Set nova management bridge (is_metal no container network)
-      set_fact:
-        management_address: "{{ ansible_ssh_host }}"
-      when:
-        - hostvars[inventory_hostname]['container_networks']['container_address']['bridge'] is undefined
-        - is_metal | bool
+        - "hostvars[inventory_hostname][management_bridge]['ipv4']['address'] is defined"
+        - "is_metal | bool"
       tags:
         - nova-config
     - name: Set nova management address (container)
       set_fact:
         management_address: "{{ hostvars[inventory_hostname]['container_networks']['container_address']['address'] }}"
       when:
-        - hostvars[inventory_hostname]['container_networks']['container_address']['address'] is defined
-        - not is_metal | bool
+        - "management_address is undefined"
+        - "hostvars[inventory_hostname]['container_networks']['container_address']['address'] is defined"
+        - "not is_metal | bool"
       tags:
         - nova-config
-    - name: Set nova management address (container no container network)
+    - name: Set nova management address (unknown management network)
       set_fact:
         management_address: "{{ ansible_ssh_host }}"
       when:
-        - hostvars[inventory_hostname]['container_networks']['container_address']['address'] is undefined
-        - not is_metal | bool
+        - "management_address is undefined"
       tags:
         - nova-config
   roles:
