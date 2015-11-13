@@ -36,6 +36,23 @@
   tags:
     - galera-client-apt-packages
 
+# TODO(cloudnull) -- Remove this after the Mitaka release
+#  This task simply removes the system version of
+#  percona-xtrabackup and xtrabackup if found the
+#  purpose is to ensure that "if" the system version
+#  of the binary is installed its first removed in
+#  favor of the actual upstream package being used in
+#  the next task.
+- name: UnInstall system xtrabackup packages
+  apt:
+    pkg: "{{ item }}"
+    state: absent
+  with_items:
+    - percona-xtrabackup
+    - xtrabackup
+  tags:
+    - galera-client-apt-packages
+
 - name: Install galera package
   apt:
     deb: "{{ galera_client_package_path }}"
