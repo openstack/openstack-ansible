@@ -159,6 +159,8 @@ pushd ${MAIN_PATH}/playbooks
 
   RUN_TASKS+=("os-nova-install.yml")
 
+  RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/nova-extra-migrations.yml")
+
   RUN_TASKS+=("os-heat-install.yml")
 
   RUN_TASKS+=("os-horizon-install.yml")
