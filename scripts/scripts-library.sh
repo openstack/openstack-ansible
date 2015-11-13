@@ -299,23 +299,31 @@ function get_pip {
   # if pip is already installed, don't bother doing anything
   if [ ! "$(which pip)" ]; then
 
-    # if GET_PIP_URL is set, then just use it
+    # If GET_PIP_URL is set, then just use it
     if [ -z "${GET_PIP_URL:-}" ]; then
-
-      # Find and use an available get-pip download location.
-      if curl --silent https://bootstrap.pypa.io/get-pip.py; then
-        export GET_PIP_URL='https://bootstrap.pypa.io/get-pip.py'
-      elif curl --silent https://raw.github.com/pypa/pip/master/contrib/get-pip.py; then
-        export GET_PIP_URL='https://raw.github.com/pypa/pip/master/contrib/get-pip.py'
-      else
-        echo "A suitable download location for get-pip.py could not be found."
-        exit_fail
+      curl --silent ${GET_PIP_URL} > /opt/get-pip.py
+      if head -n 1 /opt/get-pip.py | grep python; then
+        python2 /opt/get-pip.py || python /opt/get-pip.py
+        return
       fi
     fi
 
-    # Download and install pip
-    curl ${GET_PIP_URL} > /opt/get-pip.py
-    python2 /opt/get-pip.py || python /opt/get-pip.py
+    # Try getting pip from bootstrap.pypa.io as a primary source
+    curl --silent https://bootstrap.pypa.io/get-pip.py > /opt/get-pip.py
+    if head -n 1 /opt/get-pip.py | grep python; then
+      python2 /opt/get-pip.py || python /opt/get-pip.py
+      return
+    fi
+
+    # Try the get-pip.py from the github repository as a secondary source
+    curl --silent https://raw.github.com/pypa/pip/master/contrib/get-pip.py > /opt/get-pip.py
+    if head -n 1 /opt/get-pip.py | grep python; then
+      python2 /opt/get-pip.py || python /opt/get-pip.py
+      return
+    fi
+
+    echo "A suitable download location for get-pip.py could not be found."
+    exit_fail
   fi
 }
 
