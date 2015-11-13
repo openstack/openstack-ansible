@@ -300,7 +300,7 @@ function get_pip {
   if [ ! "$(which pip)" ]; then
 
     # If GET_PIP_URL is set, then just use it
-    if [ -z "${GET_PIP_URL:-}" ]; then
+    if [ -n "${GET_PIP_URL:-}" ]; then
       curl --silent ${GET_PIP_URL} > /opt/get-pip.py
       if head -n 1 /opt/get-pip.py | grep python; then
         python2 /opt/get-pip.py || python /opt/get-pip.py
