@@ -62,3 +62,4 @@ Appendices
    app-resources.rst
    app-minorupgrade.rst
    app-tips.rst
+   app-plumgrid.rst
