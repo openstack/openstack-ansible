@@ -301,9 +301,6 @@ neutron_pip_packages:
 neutron_plumgrid_pip_packages:
   - networking-plumgrid
 
-## Service Names
-neutron_service_names: "{{ neutron_services.items()|selectattr('1.service_en')|map(attribute='0')|list }}"
-
 ## Tunable overrides
 neutron_neutron_conf_overrides: {}
 neutron_ml2_conf_ini_overrides: {}

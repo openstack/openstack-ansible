@@ -15,8 +15,9 @@
 
 - name: Restart neutron services
   service:
-    name: "{{ item }}"
+    name: "{{ item.value.service_name }}"
     state: restarted
-    pattern: "{{ item }}"
-  with_items: neutron_service_names
+    pattern: "{{ item.value.service_name }}"
+  with_dict: neutron_services
   failed_when: false
+  when: item.value.service_en | bool
