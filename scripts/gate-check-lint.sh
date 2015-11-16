@@ -34,15 +34,6 @@ else
   pip2 install ansible-lint || pip install ansible-lint
 fi
 
-# Run hacking/flake8 check for all python files
-# Ignores the following rules due to how ansible modules work in general
-#     F403 'from ansible.module_utils.basic import *' used; unable to detect undefined names
-#     H303  No wildcard (*) import.
-# NOTE:
-#     Template files are skipped because they are python executables potentially with Jinja2
-#     expressions and the jinja2 causes a flake8 failures.
-flake8 --ignore=F403,H303 $(grep -rln -e '^#!/usr/bin/env python' -e '^#!/bin/python' -e '^#!/usr/bin/python' * | grep -v 'templates/\|^doc/')
-
 # Create keys if they don't already exist.
 ssh_key_create
 
