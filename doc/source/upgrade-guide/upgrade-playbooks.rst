@@ -88,3 +88,11 @@ swift-repo-adjustments.yml
 
 This playbook ensures that the Swift all swift nodes have access to the backports
 repositories. This is required due to new dependencies on *liberasurecode*.
+
+
+user-secrets-adjustments.yml
+----------------------------
+
+This playbook ensures that the user secrets file is updated based on the example
+file in the main repository. This makes it possible to guarantee all secrets are
+carried into the upgraded environment and appropriately generated.
