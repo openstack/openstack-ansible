@@ -10,32 +10,34 @@ use = call:cinder.api:root_app_factory
 
 [composite:openstack_volume_api_v1]
 use = call:cinder.api.middleware.auth:pipeline_factory
-noauth = request_id faultwrap sizelimit osprofiler noauth apiv1
-keystone = request_id faultwrap sizelimit osprofiler authtoken keystonecontext apiv1
-keystone_nolimit = request_id faultwrap sizelimit osprofiler authtoken keystonecontext apiv1
+noauth = cors request_id faultwrap sizelimit osprofiler noauth apiv1
+keystone = cors request_id faultwrap sizelimit osprofiler authtoken keystonecontext apiv1
+keystone_nolimit = cors request_id faultwrap sizelimit osprofiler authtoken keystonecontext apiv1
 
 [composite:openstack_volume_api_v2]
 use = call:cinder.api.middleware.auth:pipeline_factory
-noauth = request_id faultwrap sizelimit osprofiler noauth apiv2
-keystone = request_id faultwrap sizelimit osprofiler authtoken keystonecontext apiv2
-keystone_nolimit = request_id faultwrap sizelimit osprofiler authtoken keystonecontext apiv2
+noauth = cors request_id faultwrap sizelimit osprofiler noauth apiv2
+keystone = cors request_id faultwrap sizelimit osprofiler authtoken keystonecontext apiv2
+keystone_nolimit = cors request_id faultwrap sizelimit osprofiler authtoken keystonecontext apiv2
 
 [filter:request_id]
 paste.filter_factory = oslo_middleware.request_id:RequestId.factory
+
+[filter:cors]
+paste.filter_factory = oslo_middleware.cors:filter_factory
+oslo_config_project = cinder
 
 [filter:faultwrap]
 paste.filter_factory = cinder.api.middleware.fault:FaultWrapper.factory
 
 [filter:osprofiler]
 paste.filter_factory = osprofiler.web:WsgiMiddleware.factory
-hmac_keys = {{ cinder_profiler_hmac_key }}
-enabled = yes
 
 [filter:noauth]
 paste.filter_factory = cinder.api.middleware.auth:NoAuthMiddleware.factory
 
 [filter:sizelimit]
-paste.filter_factory = oslo_middleware:RequestBodySizeLimiter.factory
+paste.filter_factory = cinder.api.middleware.sizelimit:RequestBodySizeLimiter.factory
 
 [app:apiv1]
 paste.app_factory = cinder.api.v1.router:APIRouter.factory
@@ -44,7 +46,7 @@ paste.app_factory = cinder.api.v1.router:APIRouter.factory
 paste.app_factory = cinder.api.v2.router:APIRouter.factory
 
 [pipeline:apiversions]
-pipeline = faultwrap osvolumeversionapp
+pipeline = cors faultwrap osvolumeversionapp
 
 [app:osvolumeversionapp]
 paste.app_factory = cinder.api.versions:Versions.factory

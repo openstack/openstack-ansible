@@ -8,15 +8,9 @@
     instance_id:
       fields: payload.instance_id
     host:
-      fields: publisher_id
-      plugin:
-        name: split
-        parameters:
-          segment: 1
-          max_split: 1
+      fields: publisher_id.`split(., 1, 1)`
     service:
-      fields: publisher_id
-      plugin: split
+      fields: publisher_id.`split(., 0, -1)`
     memory_mb:
       type: int
       fields: payload.memory_mb
@@ -96,6 +90,12 @@
       fields: payload.snapshot_id
     volume_id:
       fields: payload.volume_id
+- event_type: ['image_volume_cache.*']
+  traits:
+    image_id:
+      fields: payload.image_id
+    host:
+      fields: payload.host
 - event_type: ['image.update', 'image.upload', 'image.delete']
   traits: &glance_crud
     project_id:
@@ -331,6 +331,10 @@
       fields: ['payload.ipsec_site_connection.id', 'payload.id']
 - event_type: '*http.*'
   traits: &http_audit
+    project_id:
+      fields: payload.initiator.project_id
+    user_id:
+      fields: payload.initiator.id
     typeURI:
       fields: payload.typeURI
     eventType:
@@ -366,4 +370,152 @@
     <<: *http_audit
     reason_code:
       fields: payload.reason.reasonCode
-
+- event_type: ['dns.domain.create', 'dns.domain.update', 'dns.domain.delete']
+  traits: &dns_domain_traits
+    status:
+      fields: payload.status
+    retry:
+      fields: payload.retry
+    description:
+      fields: payload.description
+    expire:
+      fields: payload.expire
+    email:
+      fields: payload.email
+    ttl:
+      fields: payload.ttl
+    action:
+      fields: payload.action
+    name:
+      fields: payload.name
+    resource_id:
+      fields: payload.id
+    created_at:
+      fields: payload.created_at
+    updated_at:
+      fields: payload.updated_at
+    version:
+      fields: payload.version
+    parent_domain_id:
+      fields: parent_domain_id
+    serial:
+      fields: payload.serial
+- event_type: dns.domain.exists
+  traits:
+    <<: *dns_domain_traits
+    audit_period_beginning:
+      type: datetime
+      fields: payload.audit_period_beginning
+    audit_period_ending:
+      type: datetime
+      fields: payload.audit_period_ending
+- event_type: trove.*
+  traits: &trove_base_traits
+    state:
+      fields: payload.state_description
+    instance_type:
+      fields: payload.instance_type
+    user_id:
+      fields: payload.user_id
+    resource_id:
+      fields: payload.instance_id
+    instance_type_id:
+      fields: payload.instance_type_id
+    launched_at:
+      type: datetime
+      fields: payload.launched_at
+    instance_name:
+      fields: payload.instance_name
+    state:
+      fields: payload.state
+    nova_instance_id:
+      fields: payload.nova_instance_id
+    service_id:
+      fields: payload.service_id
+    created_at:
+      type: datetime
+      fields: payload.created_at
+    region:
+      fields: payload.region
+- event_type: ['trove.instance.create', 'trove.instance.modify_volume', 'trove.instance.modify_flavor', 'trove.instance.delete']
+  traits: &trove_common_traits
+    name:
+      fields: payload.name
+    availability_zone:
+      fields: payload.availability_zone
+    instance_size:
+      type: int
+      fields: payload.instance_size
+    volume_size:
+      type: int
+      fields: payload.volume_size
+    nova_volume_id:
+      fields: payload.nova_volume_id
+- event_type: trove.instance.create
+  traits:
+    <<: [*trove_base_traits, *trove_common_traits]
+- event_type: trove.instance.modify_volume
+  traits:
+    <<: [*trove_base_traits, *trove_common_traits]
+    old_volume_size:
+      type: int
+      fields: payload.old_volume_size
+    modify_at:
+      type: datetime
+      fields: payload.modify_at
+- event_type: trove.instance.modify_flavor
+  traits:
+    <<: [*trove_base_traits, *trove_common_traits]
+    old_instance_size:
+      type: int
+      fields: payload.old_instance_size
+    modify_at:
+      type: datetime
+      fields: payload.modify_at
+- event_type: trove.instance.delete
+  traits:
+    <<: [*trove_base_traits, *trove_common_traits]
+    deleted_at:
+      type: datetime
+      fields: payload.deleted_at
+- event_type: trove.instance.exists
+  traits:
+    <<: *trove_base_traits
+    display_name:
+      fields: payload.display_name
+    audit_period_beginning:
+      type: datetime
+      fields: payload.audit_period_beginning
+    audit_period_ending:
+      type: datetime
+      fields: payload.audit_period_ending
+- event_type: profiler.*
+  traits:
+    project:
+      fields: payload.project
+    service:
+      fields: payload.service
+    name:
+      fields: payload.name
+    base_id:
+      fields: payload.base_id
+    trace_id:
+      fields: payload.trace_id
+    parent_id:
+      fields: payload.parent_id
+    timestamp:
+      fields: payload.timestamp
+    host:
+      fields: payload.info.host
+    path:
+      fields: payload.info.request.path
+    query:
+      fields: payload.info.request.query
+    method:
+      fields: payload.info.request.method
+    scheme:
+      fields: payload.info.request.scheme
+    db.statement:
+      fields: payload.info.db.statement
+    db.params:
+      fields: payload.info.db.params

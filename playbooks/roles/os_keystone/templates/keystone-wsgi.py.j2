@@ -19,12 +19,30 @@ activate_this = os.path.expanduser("{{ keystone_venv_bin }}/activate_this.py")
 execfile(activate_this, dict(__file__=activate_this))
 {% endif %}
 
+import os
+
+from oslo_log import log
+from oslo_log import versionutils
+
+from keystone.i18n import _LW
 from keystone.server import wsgi as wsgi_server
 
 
 name = os.path.basename(__file__)
+LOG = log.getLogger(__name__)
+
+
+def deprecation_warning():
+    versionutils.report_deprecated_feature(
+        LOG,
+        _LW('httpd/keystone.py is deprecated as of Mitaka'
+            ' in favor of keystone-wsgi-admin and keystone-wsgi-public'
+            ' and may be removed in O.')
+    )
 
 # NOTE(ldbragst): 'application' is required in this context by WSGI spec.
 # The following is a reference to Python Paste Deploy documentation
 # http://pythonpaste.org/deploy/
-application = wsgi_server.initialize_application(name)
+application = wsgi_server.initialize_application(
+    name,
+    post_log_configured_function=deprecation_warning)

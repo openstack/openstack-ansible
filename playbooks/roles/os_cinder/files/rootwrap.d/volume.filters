@@ -27,23 +27,15 @@ lvdisplay_lvmconf: EnvFilter, env, root, LVM_SYSTEM_DIR=, LC_ALL=C, lvdisplay
 # os-brick.filters file instead and clean out stale brick values from
 # this file.
 scsi_id: CommandFilter, /lib/udev/scsi_id, root
-
-# cinder/volumes/drivers/srb.py: 'pvresize', '--setphysicalvolumesize', sizestr, pvname
-pvresize: CommandFilter, pvresize, root
+drbdadm: CommandFilter, drbdadm, root
 
 # cinder/brick/local_dev/lvm.py: 'vgcreate', vg_name, pv_list
 vgcreate: CommandFilter, vgcreate, root
 
-# cinder/volumes/drivers/srb.py: 'vgremove', '-f', vgname
-vgremove: CommandFilter, vgremove, root
-
-# cinder/volumes/drivers/srb.py: 'vgchange', '-an', vgname
-# cinder/volumes/drivers/srb.py: 'vgchange', '-ay', vgname
-vgchange: CommandFilter, vgchange, root
-
-# cinder/volume/driver.py: 'lvcreate', '-L', sizestr, '-n', volume_name,..
-# cinder/volume/driver.py: 'lvcreate', '-L', ...
-lvcreate: CommandFilter, lvcreate, root
+# cinder/brick/local_dev/lvm.py: 'lvcreate', '-L', sizestr, '-n', volume_name,..
+# cinder/brick/local_dev/lvm.py: 'lvcreate', '-L', ...
+lvcreate: EnvFilter, env, root, LC_ALL=C, lvcreate
+lvcreate_lvmconf: EnvFilter, env, root, LVM_SYSTEM_DIR=, LC_ALL=C, lvcreate
 
 # cinder/volume/driver.py: 'dd', 'if=%s' % srcstr, 'of=%s' % deststr,...
 dd: CommandFilter, dd, root
@@ -54,12 +46,16 @@ lvremove: CommandFilter, lvremove, root
 # cinder/volume/driver.py: 'lvrename', '%(vg)s', '%(orig)s' '(new)s'...
 lvrename: CommandFilter, lvrename, root
 
-# cinder/volume/driver.py: 'lvextend', '-L' '%(new_size)s', '%(lv_name)s' ...
-# cinder/volume/driver.py: 'lvextend', '-L' '%(new_size)s', '%(thin_pool)s' ...
-lvextend: CommandFilter, lvextend, root
+# cinder/brick/local_dev/lvm.py: 'lvextend', '-L' '%(new_size)s', '%(lv_name)s' ...
+# cinder/brick/local_dev/lvm.py: 'lvextend', '-L' '%(new_size)s', '%(thin_pool)s' ...
+lvextend: EnvFilter, env, root, LC_ALL=C, lvextend
+lvextend_lvmconf: EnvFilter, env, root, LVM_SYSTEM_DIR=, LC_ALL=C, lvextend
 
 # cinder/brick/local_dev/lvm.py: 'lvchange -a y -K <lv>'
 lvchange: CommandFilter, lvchange, root
+
+# cinder/brick/local_dev/lvm.py: 'lvconvert', '--merge', snapshot_name
+lvconvert: CommandFilter, lvconvert, root
 
 # cinder/volume/driver.py: 'iscsiadm', '-m', 'discovery', '-t',...
 # cinder/volume/driver.py: 'iscsiadm', '-m', 'node', '-T', ...

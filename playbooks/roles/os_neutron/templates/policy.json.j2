@@ -22,8 +22,10 @@
 
     "create_subnetpool": "",
     "create_subnetpool:shared": "rule:admin_only",
+    "create_subnetpool:is_default": "rule:admin_only",
     "get_subnetpool": "rule:admin_or_owner or rule:shared_subnetpools",
     "update_subnetpool": "rule:admin_or_owner",
+    "update_subnetpool:is_default": "rule:admin_only",
     "delete_subnetpool": "rule:admin_or_owner",
 
     "create_address_scope": "",
@@ -197,5 +199,9 @@
     "update_rbac_policy": "rule:admin_or_owner",
     "update_rbac_policy:target_tenant": "rule:restrict_wildcard and rule:admin_or_owner",
     "get_rbac_policy": "rule:admin_or_owner",
-    "delete_rbac_policy": "rule:admin_or_owner"
+    "delete_rbac_policy": "rule:admin_or_owner",
+
+    "create_flavor_service_profile": "rule:admin_only",
+    "delete_flavor_service_profile": "rule:admin_only",
+    "get_flavor_service_profile": "rule:regular_user"
 }

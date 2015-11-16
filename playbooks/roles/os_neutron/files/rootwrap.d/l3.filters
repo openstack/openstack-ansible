@@ -50,3 +50,8 @@ conntrack: CommandFilter, conntrack, root
 
 # keepalived state change monitor
 keepalived_state_change: CommandFilter, neutron-keepalived-state-change, root
+
+# For creating namespace local /etc
+rt_tables_mkdir: RegExpFilter, mkdir, root, mkdir, -p, /etc/netns/qrouter-[^/].*
+rt_tables_chown: RegExpFilter, chown, root, chown, [1-9][0-9].*, /etc/netns/qrouter-[^/].*
+rt_tables_rmdir: RegExpFilter, rm, root, rm, -r, -f, /etc/netns/qrouter-[^/].*

@@ -1,7 +1,5 @@
 {
     "context_is_admin":  "role:admin",
-    "tenant_is_owner": "tenant:%(owner)s",
-    "admin_or_owner": "role:admin OR rule:tenant_is_owner",
     "default": "",
 
     "add_image": "",
@@ -9,7 +7,7 @@
     "get_image": "",
     "get_images": "",
     "modify_image": "",
-    "publicize_image": "rule:admin_or_owner",
+    "publicize_image": "role:admin",
     "copy_from": "",
 
     "download_image": "",
@@ -19,11 +17,11 @@
     "get_image_location": "",
     "set_image_location": "",
 
-    "add_member": "rule:admin_or_owner",
-    "delete_member": "rule:admin_or_owner",
+    "add_member": "",
+    "delete_member": "",
     "get_member": "",
     "get_members": "",
-    "modify_member": "rule:admin_or_owner",
+    "modify_member": "",
 
     "manage_image_cache": "role:admin",
 

@@ -6,7 +6,7 @@ use = egg:Paste#urlmap
 /: meta
 
 [pipeline:meta]
-pipeline = metaapp
+pipeline = cors metaapp
 
 [app:metaapp]
 paste.app_factory = nova.api.metadata.handler:MetadataRequestHandler.factory
@@ -23,7 +23,6 @@ use = call:nova.api.openstack.urlmap:urlmap_factory
 # this causes issues with your clients you can rollback to the
 # *frozen* v2 api by commenting out the above stanza and using the
 # following instead::
-# /v1.1: openstack_compute_api_legacy_v2
 # /v2: openstack_compute_api_legacy_v2
 # if rolling back to v2 fixes your issue please file a critical bug
 # at - https://bugs.launchpad.net/nova/+bugs
@@ -33,26 +32,25 @@ use = call:nova.api.openstack.urlmap:urlmap_factory
 # API). It also provides new features via API microversions which are
 # opt into for clients. Unaware clients will receive the same frozen
 # v2 API feature set, but with some relaxed validation
-/v1.1: openstack_compute_api_v21_legacy_v2_compatible
 /v2: openstack_compute_api_v21_legacy_v2_compatible
 /v2.1: openstack_compute_api_v21
 
 # NOTE: this is deprecated in favor of openstack_compute_api_v21_legacy_v2_compatible
 [composite:openstack_compute_api_legacy_v2]
 use = call:nova.api.auth:pipeline_factory
-noauth2 = compute_req_id faultwrap sizelimit noauth2 legacy_ratelimit osapi_compute_app_legacy_v2
-keystone = compute_req_id faultwrap sizelimit authtoken keystonecontext legacy_ratelimit osapi_compute_app_legacy_v2
-keystone_nolimit = compute_req_id faultwrap sizelimit authtoken keystonecontext osapi_compute_app_legacy_v2
+noauth2 = cors compute_req_id faultwrap sizelimit noauth2 legacy_ratelimit osapi_compute_app_legacy_v2
+keystone = cors compute_req_id faultwrap sizelimit authtoken keystonecontext legacy_ratelimit osapi_compute_app_legacy_v2
+keystone_nolimit = cors compute_req_id faultwrap sizelimit authtoken keystonecontext osapi_compute_app_legacy_v2
 
 [composite:openstack_compute_api_v21]
 use = call:nova.api.auth:pipeline_factory_v21
-noauth2 = compute_req_id faultwrap sizelimit noauth2 osapi_compute_app_v21
-keystone = compute_req_id faultwrap sizelimit authtoken keystonecontext osapi_compute_app_v21
+noauth2 = cors compute_req_id faultwrap sizelimit noauth2 osapi_compute_app_v21
+keystone = cors compute_req_id faultwrap sizelimit authtoken keystonecontext osapi_compute_app_v21
 
 [composite:openstack_compute_api_v21_legacy_v2_compatible]
 use = call:nova.api.auth:pipeline_factory_v21
-noauth2 = compute_req_id faultwrap sizelimit noauth2 legacy_v2_compatible osapi_compute_app_v21
-keystone = compute_req_id faultwrap sizelimit authtoken keystonecontext legacy_v2_compatible osapi_compute_app_v21
+noauth2 = cors compute_req_id faultwrap sizelimit noauth2 legacy_v2_compatible osapi_compute_app_v21
+keystone = cors compute_req_id faultwrap sizelimit authtoken keystonecontext legacy_v2_compatible osapi_compute_app_v21
 
 [filter:request_id]
 paste.filter_factory = oslo_middleware:RequestId.factory
@@ -90,6 +88,10 @@ paste.app_factory = nova.api.openstack.compute.versions:Versions.factory
 ##########
 # Shared #
 ##########
+
+[filter:cors]
+paste.filter_factory = oslo_middleware.cors:filter_factory
+oslo_config_project = nova
 
 [filter:keystonecontext]
 paste.filter_factory = nova.api.auth:NovaKeystoneContext.factory

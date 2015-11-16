@@ -1,0 +1,31 @@
+---
+- event_type: profiler.*
+  traits:
+    project:
+      fields: payload.project
+    service:
+      fields: payload.service
+    name:
+      fields: payload.name
+    base_id:
+      fields: payload.base_id
+    trace_id:
+      fields: payload.trace_id
+    parent_id:
+      fields: payload.parent_id
+    timestamp:
+      fields: payload.timestamp
+    host:
+      fields: payload.info.host
+    path:
+      fields: payload.info.request.path
+    query:
+      fields: payload.info.request.query
+    method:
+      fields: payload.info.request.method
+    scheme:
+      fields: payload.info.request.scheme
+    db.statement:
+      fields: payload.info.db.statement
+    db.params:
+      fields: payload.info.db.params

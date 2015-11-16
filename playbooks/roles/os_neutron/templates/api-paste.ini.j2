@@ -5,14 +5,21 @@ use = egg:Paste#urlmap
 
 [composite:neutronapi_v2_0]
 use = call:neutron.auth:pipeline_factory
-noauth = request_id catch_errors extensions neutronapiapp_v2_0
-keystone = request_id catch_errors authtoken keystonecontext extensions neutronapiapp_v2_0
+noauth = cors request_id catch_errors extensions neutronapiapp_v2_0
+keystone = cors request_id catch_errors authtoken keystonecontext extensions neutronapiapp_v2_0
 
 [filter:request_id]
 paste.filter_factory = oslo_middleware:RequestId.factory
 
 [filter:catch_errors]
 paste.filter_factory = oslo_middleware:CatchErrors.factory
+
+[filter:cors]
+paste.filter_factory = oslo_middleware.cors:filter_factory
+oslo_config_project = neutron
+latent_allow_headers = X-Auth-Token, X-Identity-Status, X-Roles, X-Service-Catalog, X-User-Id, X-Tenant-Id, X-OpenStack-Request-ID
+latent_expose_headers = X-Auth-Token, X-Subject-Token, X-Service-Token, X-OpenStack-Request-ID
+latent_allow_methods = GET, PUT, POST, DELETE, PATCH
 
 [filter:keystonecontext]
 paste.filter_factory = neutron.auth:NeutronKeystoneContext.factory

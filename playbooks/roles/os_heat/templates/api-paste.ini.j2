@@ -1,7 +1,7 @@
 
 # heat-api pipeline
 [pipeline:heat-api]
-pipeline = request_id faultwrap ssl versionnegotiation osprofiler authurl authtoken context apiv1app
+pipeline = cors request_id faultwrap ssl versionnegotiation osprofiler authurl authtoken context apiv1app
 
 # heat-api pipeline for standalone heat
 # ie. uses alternative auth backend that authenticates users against keystone
@@ -12,7 +12,7 @@ pipeline = request_id faultwrap ssl versionnegotiation osprofiler authurl authto
 #   flavor = standalone
 #
 [pipeline:heat-api-standalone]
-pipeline = request_id faultwrap ssl versionnegotiation authurl authpassword context apiv1app
+pipeline = cors request_id faultwrap ssl versionnegotiation authurl authpassword context apiv1app
 
 # heat-api pipeline for custom cloud backends
 # i.e. in heat.conf:
@@ -20,25 +20,25 @@ pipeline = request_id faultwrap ssl versionnegotiation authurl authpassword cont
 #   flavor = custombackend
 #
 [pipeline:heat-api-custombackend]
-pipeline = request_id faultwrap versionnegotiation context custombackendauth apiv1app
+pipeline = cors request_id faultwrap versionnegotiation context custombackendauth apiv1app
 
 # heat-api-cfn pipeline
 [pipeline:heat-api-cfn]
-pipeline = cfnversionnegotiation osprofiler ec2authtoken authtoken context apicfnv1app
+pipeline = cors cfnversionnegotiation osprofiler ec2authtoken authtoken context apicfnv1app
 
 # heat-api-cfn pipeline for standalone heat
 # relies exclusively on authenticating with ec2 signed requests
 [pipeline:heat-api-cfn-standalone]
-pipeline = cfnversionnegotiation ec2authtoken context apicfnv1app
+pipeline = cors cfnversionnegotiation ec2authtoken context apicfnv1app
 
 # heat-api-cloudwatch pipeline
 [pipeline:heat-api-cloudwatch]
-pipeline = versionnegotiation osprofiler ec2authtoken authtoken context apicwapp
+pipeline = cors versionnegotiation osprofiler ec2authtoken authtoken context apicwapp
 
 # heat-api-cloudwatch pipeline for standalone heat
 # relies exclusively on authenticating with ec2 signed requests
 [pipeline:heat-api-cloudwatch-standalone]
-pipeline = versionnegotiation ec2authtoken context apicwapp
+pipeline = cors versionnegotiation ec2authtoken context apicwapp
 
 [app:apiv1app]
 paste.app_factory = heat.common.wsgi:app_factory
@@ -55,6 +55,10 @@ heat.app_factory = heat.api.cloudwatch:API
 [filter:versionnegotiation]
 paste.filter_factory = heat.common.wsgi:filter_factory
 heat.filter_factory = heat.api.openstack:version_negotiation_filter
+
+[filter:cors]
+paste.filter_factory = oslo_middleware.cors:filter_factory
+oslo_config_project = heat
 
 [filter:faultwrap]
 paste.filter_factory = heat.common.wsgi:filter_factory
@@ -100,5 +104,3 @@ paste.filter_factory = oslo_middleware.request_id:RequestId.factory
 
 [filter:osprofiler]
 paste.filter_factory = osprofiler.web:WsgiMiddleware.factory
-hmac_keys = {{ heat_profiler_hmac_key }}
-enabled = {{ heat_profiler_enabled }}

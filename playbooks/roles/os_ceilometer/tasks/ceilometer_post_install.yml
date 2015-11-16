@@ -31,6 +31,10 @@
       dest: "/etc/ceilometer/api_paste.ini"
       config_overrides: "{{ ceilometer_api_paste_ini_overrides }}"
       config_type: "ini"
+    - src: "rootwrap.conf.j2"
+      dest: "/etc/ceilometer/rootwrap.conf"
+      config_overrides: "{{ ceilometer_rootwrap_conf_overrides }}"
+      config_type: "ini"
     - src: "event_pipeline.yaml.j2"
       dest: "/etc/ceilometer/event_pipeline.yaml"
       config_overrides: "{{ ceilometer_event_pipeline_yaml_overrides }}"
@@ -43,6 +47,14 @@
       dest: "/etc/ceilometer/pipeline.yaml"
       config_overrides: "{{ ceilometer_pipeline_yaml_overrides }}"
       config_type: "yaml"
+    - src: "gnocchi_resources.yaml.j2"
+      dest: "/etc/ceilometer/gnocchi_resources.yaml"
+      config_overrides: "{{ ceilometer_gnocci_resources_yaml_overrides }}"
+      config_type: "yaml"
+    - src: "osprofiler_event_definitions.yaml.j2"
+      dest: "/etc/ceilometer/osprofiler_event_definitions.yaml"
+      config_overrides: "{{ ceilometer_osprofiler_event_definitions_yaml_overrides }}"
+      config_type: "yaml"
     - src: "policy.json.j2"
       dest: "/etc/ceilometer/policy.json"
       config_overrides: "{{ ceilometer_policy_overrides }}"
@@ -51,6 +63,19 @@
   tags:
     - ceilometer-config
     - ceilometer-post-install
+
+- name: Drop rootwrap filters
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ ceilometer_system_user_name }}"
+    group: "{{ ceilometer_system_group_name }}"
+  with_items:
+    - { src: "rootwrap.d/ipmi.filters", dest: "/etc/ceilometer/rootwrap.d/ipmi.filters" }
+  notify:
+    - Restart ceilometer services
+  tags:
+    - ceilometer-config
 
 - name: Get ceilometer command path
   command: which ceilometer

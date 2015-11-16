@@ -93,12 +93,13 @@
   with_items:
     - { src: "rootwrap.d/debug.filters", dest: "/etc/neutron/rootwrap.d/debug.filters" }
     - { src: "rootwrap.d/dibbler.filters", dest: "/etc/neutron/rootwrap.d/dibbler.filters" }
+    - { src: "rootwrap.d/ebtables.filters", dest: "/etc/neutron/rootwrap.d/ebtables.filters" }
+    - { src: "rootwrap.d/functional-testing.filters", dest: "/etc/neutron/rootwrap.d/functional-testing.filters" }
     - { src: "rootwrap.d/ipset-firewall.filters", dest: "/etc/neutron/rootwrap.d/ipset-firewall.filters" }
     - { src: "rootwrap.d/iptables-firewall.filters", dest: "/etc/neutron/rootwrap.d/iptables-firewall.filters" }
     - { src: "rootwrap.d/openvswitch-plugin.filters", dest: "/etc/neutron/rootwrap.d/openvswitch-plugin.filters" }
     - { src: "rootwrap.d/lbaas-haproxy.filters", dest: "/etc/neutron/rootwrap.d/lbaas-haproxy.filters" }
     - { src: "rootwrap.d/vpnaas.filters", dest: "/etc/neutron/rootwrap.d/vpnaas.filters" }
-    - { src: "rootwrap.d/ebtables.filters", dest: "/etc/neutron/rootwrap.d/ebtables.filters" }
   notify:
     - Restart neutron services
   tags:

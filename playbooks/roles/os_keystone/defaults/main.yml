@@ -356,11 +356,13 @@ keystone_requires_pip_packages:
 
 # Common pip packages
 keystone_pip_packages:
+  - argparse
   - keystone
   - keystonemiddleware
   - ldappool
   - lxml
   - PyMySQL
+  - oslo.log
   - oslo.middleware
   - pbr
   - pycrypto

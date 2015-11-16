@@ -22,16 +22,14 @@
     "compute:update_instance_metadata": "",
     "compute:delete_instance_metadata": "",
 
-    "compute:get_instance_faults": "",
     "compute:get_diagnostics": "",
     "compute:get_instance_diagnostics": "",
 
     "compute:start": "rule:admin_or_owner",
     "compute:stop": "rule:admin_or_owner",
 
-    "compute:get_lock": "",
-    "compute:lock": "",
-    "compute:unlock": "",
+    "compute:lock": "rule:admin_or_owner",
+    "compute:unlock": "rule:admin_or_owner",
     "compute:unlock_override": "rule:admin_api",
 
     "compute:get_vnc_console": "",
@@ -85,9 +83,6 @@
     "compute:security_groups:add_to_instance": "",
     "compute:security_groups:remove_from_instance": "",
 
-    "compute:delete": "",
-    "compute:soft_delete": "",
-    "compute:force_delete": "",
     "compute:restore": "",
 
     "compute:volume_snapshot_create": "",
@@ -334,6 +329,7 @@
     "os_compute_api:os-extended-availability-zone": "",
     "os_compute_api:os-extended-availability-zone:discoverable": "",
     "os_compute_api:extensions": "",
+    "os_compute_api:extensions:discoverable": "",
     "os_compute_api:extension_info:discoverable": "",
     "os_compute_api:os-extended-volumes": "",
     "os_compute_api:os-extended-volumes:discoverable": "",
@@ -345,6 +341,7 @@
     "os_compute_api:os-flavor-access:add_tenant_access": "rule:admin_api",
     "os_compute_api:os-flavor-rxtx": "",
     "os_compute_api:os-flavor-rxtx:discoverable": "",
+    "os_compute_api:flavors": "",
     "os_compute_api:flavors:discoverable": "",
     "os_compute_api:os-flavor-extra-specs:discoverable": "",
     "os_compute_api:os-flavor-extra-specs:index": "",

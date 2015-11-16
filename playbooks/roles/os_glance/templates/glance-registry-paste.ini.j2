@@ -31,5 +31,5 @@ paste.filter_factory = keystonemiddleware.auth_token:filter_factory
 
 [filter:osprofiler]
 paste.filter_factory = osprofiler.web:WsgiMiddleware.factory
-hmac_keys = {{ glance_profiler_hmac_key }}
-enabled = yes
+hmac_keys = {{ glance_profiler_hmac_key }}  #DEPRECATED
+enabled = yes  #DEPRECATED

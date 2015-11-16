@@ -1,10 +1,10 @@
 # Keystone PasteDeploy configuration file.
 
 [filter:debug]
-use = egg:keystone#debug
+use = egg:oslo.middleware#debug
 
 [filter:request_id]
-use = egg:keystone#request_id
+use = egg:oslo.middleware#request_id
 
 [filter:build_auth_context]
 use = egg:keystone#build_auth_context
@@ -30,29 +30,17 @@ use = egg:keystone#ec2_extension
 [filter:ec2_extension_v3]
 use = egg:keystone#ec2_extension_v3
 
-[filter:federation_extension]
-use = egg:keystone#federation_extension
-
-[filter:oauth1_extension]
-use = egg:keystone#oauth1_extension
-
 [filter:s3_extension]
 use = egg:keystone#s3_extension
 
-[filter:endpoint_filter_extension]
-use = egg:keystone#endpoint_filter_extension
-
 [filter:simple_cert_extension]
 use = egg:keystone#simple_cert_extension
-
-[filter:revoke_extension]
-use = egg:keystone#revoke_extension
 
 [filter:url_normalize]
 use = egg:keystone#url_normalize
 
 [filter:sizelimit]
-use = egg:keystone#sizelimit
+use = egg:oslo.middleware#sizelimit
 
 [app:public_service]
 use = egg:keystone#public_service
@@ -76,7 +64,7 @@ pipeline = sizelimit url_normalize request_id build_auth_context token_auth admi
 [pipeline:api_v3]
 # The last item in this pipeline must be service_v3 or an equivalent
 # application. It cannot be a filter.
-pipeline = sizelimit url_normalize request_id build_auth_context token_auth admin_token_auth json_body ec2_extension_v3 s3_extension simple_cert_extension revoke_extension federation_extension oauth1_extension endpoint_filter_extension service_v3
+pipeline = sizelimit url_normalize request_id build_auth_context token_auth admin_token_auth json_body ec2_extension_v3 s3_extension simple_cert_extension service_v3
 
 [app:public_version_service]
 use = egg:keystone#public_version_service
