@@ -1,11 +1,11 @@
 {
     "kernel_id": {
-        "type": "string",
+        "type": ["null", "string"],
         "pattern": "^([0-9a-fA-F]){8}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){12}$",
         "description": "ID of image stored in Glance that should be used as the kernel when booting an AMI-style image."
     },
     "ramdisk_id": {
-        "type": "string",
+        "type": ["null", "string"],
         "pattern": "^([0-9a-fA-F]){8}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){12}$",
         "description": "ID of image stored in Glance that should be used as the ramdisk when booting an AMI-style image."
     },
