@@ -3,7 +3,7 @@ OpenStack Galera Server
 :tags: openstack, galera, server, cloud, ansible
 :category: \*nix
 
-Role for the installation and installation of a Galera Cluster powered by MariaDB
+Role for the installation and configuration of a Galera cluster powered by MariaDB
 
 .. code-block:: yaml
 
