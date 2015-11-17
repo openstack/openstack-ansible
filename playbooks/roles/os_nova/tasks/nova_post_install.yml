@@ -13,6 +13,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- name: Get virt type value and store as var
+  shell: |
+    /usr/bin/egrep -c '(vmx|svm)' /proc/cpuinfo
+  register: virt_type_value
+  changed_when: false
+  failed_when: false
+  when: nova_virt_type != 'kvm' and nova_virt_type != 'qemu' and nova_virt_autodetect | bool
+  tags:
+    - nova-config
+    - nova-post-install
+
+- name: Register a fact for the nova virt type
+  set_fact:
+     nova_virt_type: "{{ ((virt_type_value.stdout | int) > 0) | ternary('kvm', 'qemu') }}"
+  when: nova_virt_type != 'kvm' and nova_virt_type != 'qemu' and nova_virt_autodetect | bool
+  tags:
+    - nova-config
+    - nova-post-install
+
 - name: Copy nova config
   config_template:
     src: "{{ item.src }}"
