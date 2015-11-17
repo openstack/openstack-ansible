@@ -96,6 +96,11 @@ swift_service_adminurl: "{{ swift_service_adminuri }}/v1/AUTH_%(tenant_id)s"
 swift_service_internaluri: "{{ swift_service_internaluri_proto }}://{{ internal_lb_vip_address }}:{{ swift_proxy_port }}"
 swift_service_internalurl: "{{ swift_service_internaluri }}/v1/AUTH_%(tenant_id)s"
 swift_service_region: RegionOne
+statsd_host:
+statsd_port: 8125
+statsd_default_sample_rate: 1.0
+statsd_sample_rate_factor: 1.0
+statsd_metric_prefix:
 
 ## Keystone authentication middleware
 swift_keystone_auth_plugin: "password"

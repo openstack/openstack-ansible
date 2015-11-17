@@ -12,6 +12,7 @@ user = {{ swift_system_user_name }}
 swift_dir = /etc/swift
 devices = {{ swift_vars.mount_point | default(swift.mount_point) }}
 log_facility = LOG_LOCAL4
+{% include "statsd.j2" %}
 
 [pipeline:main]
 pipeline = healthcheck recon object-server
