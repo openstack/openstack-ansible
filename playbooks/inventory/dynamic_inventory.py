@@ -607,11 +607,11 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
                     networks[old_address]['static_routes'].append(s)
 
 
-def _net_address_search(provider_networks, main_netowrk, key):
+def _net_address_search(provider_networks, main_network, key):
     """Set the key netwokr type to the main network if not specified.
 
     :param provider_networks: ``list`` Network list of ``dict``s
-    :param main_netowrk: ``str`` The name of the main network bridge.
+    :param main_network: ``str`` The name of the main network bridge.
     :param key: ``str`` The name of the key to set true.
     """
     for pn in provider_networks:
@@ -625,7 +625,7 @@ def _net_address_search(provider_networks, main_netowrk, key):
         for pn in provider_networks:
             p_net = pn.get('network')
             if p_net:
-                if p_net.get('container_bridge') == main_netowrk:
+                if p_net.get('container_bridge') == main_network:
                     p_net[key] = True
 
     return provider_networks
@@ -666,13 +666,13 @@ def container_skel_load(container_skel, inventory, config):
         pns = overrides.get('provider_networks', list())
         pns = _net_address_search(
             provider_networks=pns,
-            main_netowrk=config['global_overrides']['management_bridge'],
+            main_network=config['global_overrides']['management_bridge'],
             key='is_ssh_address'
         )
 
         pns = _net_address_search(
             provider_networks=pns,
-            main_netowrk=config['global_overrides']['management_bridge'],
+            main_network=config['global_overrides']['management_bridge'],
             key='is_container_address'
         )
 
