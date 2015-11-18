@@ -20,7 +20,7 @@ set -e -u +x
 ## Variables -----------------------------------------------------------------
 
 export REPO_URL=${REPO_URL:-"https://github.com/openstack/openstack-ansible.git"}
-export REPO_BRANCH=${REPO_BRANCH:-"master"}
+export REPO_BRANCH=${REPO_BRANCH:-"liberty"}
 export WORKING_FOLDER=${WORKING_FOLDER:-"/opt/openstack-ansible"}
 
 ## Main ----------------------------------------------------------------------
