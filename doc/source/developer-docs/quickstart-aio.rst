@@ -17,7 +17,7 @@ It's strongly recommended to have hardware that meets the following
 requirements before starting an AIO build:
 
 * CPU/motherboard that supports `hardware-assisted virtualization`_
-* 80GB disk space
+* At least 80GB disk space (more than 175GB if you have a lxc lvm volume group)
 * 16GB RAM
 
 It's `possible` to perform AIO builds within a virtual machine but your
