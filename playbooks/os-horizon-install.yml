@@ -75,7 +75,7 @@
     - { role: "os_horizon", tags: [ "os-horizon" ] }
     - role: "rsyslog_client"
       rsyslog_client_log_rotate_file: horizon_log_rotate
-      rsyslog_client_log_dir: "/var/log/apache2"
+      rsyslog_client_log_dir: "/var/log/horizon"
       rsyslog_client_config_name: "99-horizon-rsyslog-client.conf"
       tags:
         - "horizon-rsyslog-client"
