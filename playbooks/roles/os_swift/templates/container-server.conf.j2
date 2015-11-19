@@ -32,6 +32,7 @@ recon_lock_path = /var/lock
 {% if swift.replication_network is not defined or swift.replication_network == swift.storage_network %}
 [container-replicator]
 log_facility = LOG_LOCAL3
+reclaim_age = {{ reclaim_age | default(604800) }}
 {% endif %}
 
 [container-updater]

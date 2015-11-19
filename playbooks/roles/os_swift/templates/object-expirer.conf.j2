@@ -1,0 +1,50 @@
+# {{ ansible_managed }}
+
+[DEFAULT]
+swift_dir = /etc/swift
+user = {{ swift_system_user_name }}
+log_facility = LOG_LOCAL4
+
+[object-expirer]
+interval = 300
+auto_create_account_prefix = .
+expiring_objects_account_name = expiring_objects
+report_interval = 300
+# concurrency is the level of concurrency to use to do the work, this value
+# must be set to at least 1
+concurrency = 3
+# processes is how many parts to divide the work into, one part per process
+#   that will be doing the work
+# processes set 0 means that a single process will be doing all the work
+# processes can also be specified on the command line and will override the
+#   config value
+processes = {{ groups['swift_hosts'] | length }}
+# process is which of the parts a particular process will work on
+# process can also be specified on the command line and will override the config
+#   value
+# process is "zero based", if you want to use 3 processes, you should run
+#  processes with process set to 0, 1, and 2
+process = {{ groups['swift_hosts'].index(inventory_hostname) }}
+# The expirer will re-attempt expiring if the source object is not available
+# up to reclaim_age seconds before it gives up and deletes the entry in the
+# queue.
+reclaim_age = {{ reclaim_age | default(604800) }}
+recon_cache_path = /var/cache/swift
+
+[pipeline:main]
+pipeline = catch_errors proxy-logging cache proxy-server
+
+[app:proxy-server]
+use = egg:swift#proxy
+# See proxy-server.conf-sample for options
+
+[filter:cache]
+use = egg:swift#memcache
+# See proxy-server.conf-sample for options
+
+[filter:catch_errors]
+use = egg:swift#catch_errors
+# See proxy-server.conf-sample for options
+
+[filter:proxy-logging]
+use = egg:swift#proxy_logging

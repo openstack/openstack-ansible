@@ -79,6 +79,15 @@
     system_group: "{{ swift_system_group_name }}"
     service_home: "{{ swift_system_home_folder }}"
 
+- include: swift_upstart_common_init.yml
+  vars:
+    program_name: "swift-object-expirer"
+    program_config_options: "{{ swift_object_expirer_program_config_options }}"
+    service_name: "{{ swift_service_name }}"
+    system_user: "{{ swift_system_user_name }}"
+    system_group: "{{ swift_system_group_name }}"
+    service_home: "{{ swift_system_home_folder }}"
+
 - name: "Swift object server configuration"
   config_template:
     src: "{{ item.src }}"
@@ -92,6 +101,10 @@
     - src: "object-server.conf.j2"
       dest: "/etc/swift/object-server/object-server.conf"
       config_overrides: "{{ swift_object_server_conf_overrides }}"
+      config_type: "ini"
+    - src: "object-expirer.conf.j2"
+      dest: "/etc/swift/object-server/object-expirer.conf"
+      config_overrides: "{{ swift_object_expirer_conf_overrides }}"
       config_type: "ini"
   notify: Restart swift object services
 

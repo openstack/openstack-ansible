@@ -1,0 +1,29 @@
+[DEFAULT]
+swift_dir = /etc/swift
+user = {{ swift_system_user_name }}
+log_facility = LOG_LOCAL3
+
+[container-reconciler]
+# The reconciler will re-attempt reconciliation if the source object is not
+# available up to reclaim_age seconds before it gives up and deletes the entry
+# in the queue.
+reclaim_age = {{ reclaim_age | default(604800) }}
+# The cycle time of the daemon
+interval = 30
+# Server errors from requests will be retried by default
+request_tries = 3
+
+[pipeline:main]
+pipeline = catch_errors proxy-logging cache proxy-server
+
+[app:proxy-server]
+use = egg:swift#proxy
+
+[filter:cache]
+use = egg:swift#memcache
+
+[filter:proxy-logging]
+use = egg:swift#proxy_logging
+
+[filter:catch_errors]
+use = egg:swift#catch_errors
