@@ -34,6 +34,7 @@ recon_lock_path = /var/lock
 [object-replicator]
 log_facility = LOG_LOCAL4
 concurrency = 6
+reclaim_age = {{ reclaim_age | default(604800) }}
 {% endif %}
 
 [object-updater]

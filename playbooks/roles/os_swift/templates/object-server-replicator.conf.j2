@@ -21,3 +21,4 @@ replication_server = True
 [object-replicator]
 log_facility = LOG_LOCAL4
 concurrency = 6
+reclaim_age = {{ reclaim_age | default(604800) }}
