@@ -10,7 +10,7 @@ debug = {{ debug }}
 fatal_deprecations = {{ neutron_fatal_deprecations }}
 log_file = /var/log/neutron/neutron.log
 
-{% if inventory_hostname in groups['neutron_server'] %}
+{% if inventory_hostname in groups[neutron_services['neutron-server']['group']] %}
 
 # General, only applies to neutron server host group
 network_device_mtu = {{ neutron_network_device_mtu }}
@@ -48,7 +48,7 @@ router_distributed = False
 # Agents
 agent_down_time = {{ neutron_agent_down_time }}
 
-{% set num_agent = groups['neutron_agent'] | length %}
+{% set num_agent = groups[neutron_services['neutron-dhcp-agent']['group']] | length %}
 {% if neutron_plugin_type == 'ml2' and num_agent >= 2 %}
 {% if neutron_services['neutron-linuxbridge-agent']['service_en'] | bool %}
 

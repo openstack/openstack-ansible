@@ -77,7 +77,7 @@
     state: stopped
     pattern: "neutron-server"
   delegate_to: "{{ item }}"
-  with_items: groups['neutron_server']
+  with_items: groups[neutron_services['neutron-server']['group']]
   when: (neutron_migrations is defined and neutron_migrations['run_contract']|bool) or neutron_plugin_type != 'ml2'
   tags:
     - neutron-db-setup
@@ -121,7 +121,7 @@
     state: started
     pattern: "neutron-server"
   delegate_to: "{{ item }}"
-  with_items: groups['neutron_server']
+  with_items: groups[neutron_services['neutron-server']['group']]
   when: (neutron_migrations is defined and neutron_migrations['run_contract']|bool) or neutron_plugin_type != 'ml2'
   tags:
     - neutron-db-setup
