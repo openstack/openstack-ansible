@@ -48,7 +48,7 @@
     - "{{ neutron_optional_plumgrid_pip_packages }}"
   when:
     - neutron_venv_enabled | bool
-    - inventory_hostname in groups['neutron_server']
+    - inventory_hostname in groups[neutron_services['neutron-server']['group']]
   tags:
     - neutron-install
     - neutron-pip-packages
@@ -69,7 +69,7 @@
     - "{{ neutron_optional_plumgrid_pip_packages }}"
   when:
     - neutron_venv_enabled | bool
-    - inventory_hostname in groups['neutron_server']
+    - inventory_hostname in groups[neutron_services['neutron-server']['group']]
   tags:
     - neutron-install
     - neutron-pip-packages
@@ -88,7 +88,7 @@
     - "{{ neutron_optional_plumgrid_pip_packages }}"
   when:
     - not neutron_venv_enabled | bool
-    - inventory_hostname in groups['neutron_server']
+    - inventory_hostname in groups[neutron_services['neutron-server']['group']]
   tags:
     - neutron-install
     - neutron-pip-packages
@@ -107,7 +107,7 @@
     - "{{ neutron_optional_plumgrid_pip_packages }}"
   when:
     - not neutron_venv_enabled | bool
-    - inventory_hostname in groups['neutron_server']
+    - inventory_hostname in groups[neutron_services['neutron-server']['group']]
   tags:
     - neutron-install
     - neutron-pip-packages

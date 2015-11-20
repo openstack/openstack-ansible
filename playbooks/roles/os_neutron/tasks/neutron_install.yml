@@ -47,7 +47,7 @@
   delay: 2
   with_items: neutron_lbaas_apt_packages
   when:
-    - inventory_hostname in groups['neutron_agents_container']
+    - inventory_hostname in groups[neutron_services['neutron-lbaas-agent']['group']]
     - neutron_lbaas | bool
   tags:
     - neutron-install
