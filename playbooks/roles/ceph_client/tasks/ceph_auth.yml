@@ -103,6 +103,7 @@
   template:
     src: secret.xml.j2
     dest: /tmp/nova-secret.xml
+    mode: "0600"
   when: inventory_hostname in groups.nova_compute and libvirt_nova_defined.rc is defined and libvirt_nova_defined.rc != 0
   tags:
   - ceph-auth-nova-libvirt-secret
@@ -139,3 +140,12 @@
   tags:
   - ceph-auth-nova-libvirt-secret
 
+- name: Remove libvirt nova secret file
+  file:
+    path: "/tmp/nova-secret.xml"
+    state: "absent"
+  always_run: true
+  ignore_errors: true
+  when: inventory_hostname in groups.nova_compute and libvirt_nova_set
+  tags:
+    - ceph-auth-nova-libvirt-secret
