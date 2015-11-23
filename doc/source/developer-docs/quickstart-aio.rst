@@ -31,11 +31,11 @@ Running an AIO build in one step
 For a one-step build, there is a `convenient script`_ within the
 openstack-ansible repository that will run a AIO build with defaults:
 
-.. _convenient script: https://raw.githubusercontent.com/openstack/openstack-ansible/master/scripts/run-aio-build.sh
+.. _convenient script: https://raw.githubusercontent.com/openstack/openstack-ansible/liberty/scripts/run-aio-build.sh
 
    .. code-block:: bash
 
-    curl https://raw.githubusercontent.com/openstack/openstack-ansible/master/scripts/run-aio-build.sh | sudo bash
+    curl https://raw.githubusercontent.com/openstack/openstack-ansible/liberty/scripts/run-aio-build.sh | sudo bash
 
 It's advised to run this build within a terminal muxer, like tmux or screen,
 so that you don't lose your progress if you're disconnected from your terminal
@@ -67,7 +67,11 @@ development) build it is usually best to checkout the latest tagged version.
 
    .. code-block:: bash
 
-       $ git checkout kilo
+       $ # List all existing tags.
+       $ git tag -l
+
+       $ # Checkout the latest tag from the previous command.
+       $ git checkout 12.0.1
 
 By default the scripts deploy all OpenStack services. At this point you may
 optionally adjust which services are deployed within your AIO build.  Look at
@@ -211,7 +215,7 @@ soon as the instance starts.  Save this file as ``user_data.yml``:
       - export ANSIBLE_FORCE_COLOR=true
       - export PYTHONUNBUFFERED=1
       - export REPO=https://github.com/openstack/openstack-ansible
-      - export BRANCH=kilo
+      - export BRANCH=liberty
       - git clone -b ${BRANCH} ${REPO} /opt/openstack-ansible
       - export DEPLOY_CEILOMETER="no"
       - cd /opt/openstack-ansible && scripts/bootstrap-aio.sh
