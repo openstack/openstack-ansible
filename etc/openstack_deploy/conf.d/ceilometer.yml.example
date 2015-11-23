@@ -4,10 +4,14 @@ metering-compute_hosts:
     ip: 172.20.236.110
 
 # The infra nodes that the central agents will be running on
+# For running Ceilometer in HA for workload partitioning, see
+# the HA section in the ceilometer configuration docs.
 metering-infra_hosts:
   infra1:
     ip: 172.20.236.111
+  # See note regarding HA configuration above.
   infra2:
     ip: 172.20.236.112
+  # See note regarding HA configuration above.
   infra3:
     ip: 172.20.236.113
