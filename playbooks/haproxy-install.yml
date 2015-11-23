@@ -46,6 +46,26 @@
       when: internal_lb_vip_address == external_lb_vip_address
       tags:
         - haproxy-service-config
+    - name: Create log dir
+      file:
+        path: "{{ item.path }}"
+        state: directory
+      with_items:
+        - { path: "/openstack/log/{{ inventory_hostname }}-haproxy" }
+      when: is_metal | bool
+      tags:
+        - haproxy-logs
+    - name: Create log aggregation links
+      file:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        state: "{{ item.state }}"
+        force: "yes"
+      with_items:
+        - { src: "/openstack/log/{{ inventory_hostname }}-haproxy", dest: "/var/log/haproxy", state: "link" }
+      when: is_metal | bool
+      tags:
+        - haproxy-logs
   post_tasks:
     - name: Add keystone internal endpoint config
       include: roles/haproxy_server/tasks/haproxy_service_config.yml
@@ -65,8 +85,21 @@
               haproxy_backend_options: "{{ (keystone_ssl_internal | bool) | ternary(haproxy_backend_options_https, haproxy_backend_options_http) }}"
       tags:
         - haproxy-service-config
+    - name: Remove legacy haproxy logging file
+      file:
+        dest: "/etc/rsyslog.d/haproxy.conf"
+        state: "absent"
+      tags:
+        - haproxy-service-config
   roles:
     - { role: "haproxy_server", tags: [ "haproxy-server" ] }
+    - role: "rsyslog_client"
+      rsyslog_client_log_rotate_file: haproxy_log_rotate
+      rsyslog_client_log_dir: "/var/log/haproxy"
+      rsyslog_client_config_name: "99-haproxy-rsyslog-client.conf"
+      tags:
+        - "haproxy-rsyslog-client"
+        - "rsyslog-client"
   vars_files:
     - vars/configs/haproxy_config.yml
   vars:

@@ -31,4 +31,14 @@
   tags:
     - haproxy-base-config
 
+- name: Drop haproxy logging config
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/rsyslog.d/99-haproxy-local-logging.conf"
+  with_items:
+    - haproxy-logging.cfg
+  notify: Restart rsyslog
+  tags:
+    - haproxy-base-config
+
 - include: haproxy_service_config.yml
