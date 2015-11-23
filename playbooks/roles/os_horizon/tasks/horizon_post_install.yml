@@ -45,6 +45,16 @@
   notify: Restart apache2
   tags:
     - horizon-configs
+    - horizon-branding
+
+- name: Uploading horizon custom files
+  copy:
+    src: "{{ item.value.src }}"
+    dest: "{{ horizon_lib_dir }}/openstack_dashboard/static/dashboard/{{ item.value.dest }}"
+  with_dict: "{{ horizon_custom_uploads | default({}) }}"
+  when: horizon_custom_uploads is defined
+  tags:
+    - horizon-branding
 
 - name: Create horizon links
   file:
