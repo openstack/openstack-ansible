@@ -138,6 +138,8 @@ swift_proxy_server_program_config_options: /etc/swift/proxy-server/proxy-server.
 # of available VCPUS to compute the number of api workers to use.
 # swift_proxy_server_workers: 16
 
+swift_service_in_ldap: false
+
 swift_pip_packages:
   - ceilometermiddleware
   - dnspython

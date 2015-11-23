@@ -124,6 +124,8 @@ heat_watch_port: 8003
 heat_watch_server_uri: "{{ heat_watch_proto }}://{{ external_lb_vip_address }}:{{ heat_watch_port }}"
 heat_watch_server_url: "{{ heat_watch_server_uri }}"
 
+heat_service_in_ldap: false
+
 ## Plugin dirs
 heat_plugin_dirs:
   - /usr/lib/heat

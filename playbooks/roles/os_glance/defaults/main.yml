@@ -140,6 +140,8 @@ glance_rbd_store_pool: images
 glance_rbd_store_user: '{{ glance_ceph_client }}'
 glance_rbd_store_chunk_size: 8
 
+glance_service_in_ldap: false
+
 # Common apt packages
 glance_apt_packages:
   - rpcbind

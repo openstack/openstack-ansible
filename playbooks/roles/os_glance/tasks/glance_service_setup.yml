@@ -43,6 +43,7 @@
     password: "{{ glance_service_password }}"
     insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_service
+  when: not glance_service_in_ldap | bool
   until: add_service|success
   retries: 5
   delay: 10
@@ -62,6 +63,7 @@
     role_name: "{{ glance_role_name }}"
     insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_service
+  when: not glance_service_in_ldap | bool
   until: add_service|success
   retries: 5
   delay: 10

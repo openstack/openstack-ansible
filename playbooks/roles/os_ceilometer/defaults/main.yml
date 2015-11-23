@@ -65,6 +65,8 @@ ceilometer_service_internalurl: "{{ ceilometer_service_internaluri }}"
 ceilometer_service_adminuri: "{{ ceilometer_service_proto }}://{{ internal_lb_vip_address }}:{{ ceilometer_service_port }}"
 ceilometer_service_adminurl: "{{ ceilometer_service_adminuri }}"
 
+
+ceilometer_service_in_ldap: false
 ## Ceilometer config
 
 # Common apt packages
