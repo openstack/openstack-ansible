@@ -17,9 +17,9 @@ The Telemetry module(Ceilometer) performs the following functions:
   by the metering-alarm containers through the aodh services. For configuring these services,
   please see the Aodh docs.
 
-Ceilometer on OSA requires a mongodb backend to be configured prior to running the ceilometer
-playbooks. The connection data will then need to be given in the ``user_variables.yml``
-file (see section `Configuring the user data`_ below).
+Ceilometer on OSA requires a mongodb backend to be configured prior to running
+the ceilometer playbooks. The connection data will then need to be given in the
+``user_variables.yml`` file (see section `Configuring the user data`_ below).
 
 
 Setting up a Mongodb database for ceilometer
@@ -80,7 +80,10 @@ Setting up a Mongodb database for ceilometer
 Configuring the hosts
 #####################
 
-Ceilometer can be configured by specifying the ``metering-compute_hosts`` and ``metering-infra_hosts`` directives in the ``/etc/openstack_deploy/conf.d/ceilometer.yml`` file. Below is the example included in the ``etc/openstack_deploy/conf.d/ceilometer.yml.example`` file:
+Ceilometer can be configured by specifying the ``metering-compute_hosts`` and
+``metering-infra_hosts`` directives in the
+``/etc/openstack_deploy/conf.d/ceilometer.yml`` file. Below is the example
+included in the ``etc/openstack_deploy/conf.d/ceilometer.yml.example`` file:
 
 .. code-block:: yaml
 
@@ -89,10 +92,12 @@ Ceilometer can be configured by specifying the ``metering-compute_hosts`` and ``
       compute1:
         ip: 172.20.236.110
 
-    # The infra nodes that the central agents will be running on
+    # The infra node that the central agents will be running on
     metering-infra_hosts:
       infra1:
         ip: 172.20.236.111
+      # Adding more than one host requires further configuration for ceilometer
+      # to work properly. See 'Configuring the hosts for an HA deployment' section.
       infra2:
         ip: 172.20.236.112
       infra3:
@@ -101,18 +106,52 @@ Ceilometer can be configured by specifying the ``metering-compute_hosts`` and ``
 The ``metering-compute_hosts`` houses the ``ceilometer-agent-compute`` service. It runs on each compute node and pools for resource utilization statistics.
 The ``metering-infra_hosts`` houses serveral services:
 
-  - A central agent (ceilometer-agent-central): Runs on a central management server to poll for resource utilization statistics for resources not tied to instances or compute nodes. Multiple agents can be started to scale service horizontally.
+  - A central agent (ceilometer-agent-central): Runs on a central management server to poll for resource utilization statistics for resources not tied to instances or compute nodes. Multiple agents can be started to enable workload partitioning (See HA section below).
 
-  - A notification agent (ceilometer-agent-notification): Runs on a central management server(s) and consumes messages from the message queue(s) to build event and metering data.
+  - A notification agent (ceilometer-agent-notification): Runs on a central management server(s) and consumes messages from the message queue(s) to build event and metering data. Multiple notification agents can be started to enable workload partitioning (See HA section below).
 
   - A collector (ceilometer-collector): Runs on central management server(s) and dispatches collected telemetry data to a data store or external consumer without modification.
 
   - An API server (ceilometer-api): Runs on one or more central management servers to provide data access from the data store.
 
+Configuring the hosts for an HA deployment
+##########################################
+Ceilometer supports running the polling agents and notifications agents in an
+HA deployment, meaning that multiple of these services can run in parallel
+with workload  among these services.
+
+The Tooz library provides the coordination within the groups of service
+instances. Tooz can be uses with several backends. At the time of this
+writing, the following backends are supported:
+
+  - Zookeeper. Recommended solution by the Tooz project.
+
+  - Redis. Recommended solution by the Tooz project.
+
+  - Memcached. Recommended for testing.
+
+It's important to note that the OpenStack-Ansible project will not deploy
+these backends. Instead, these backends are assumed to exist before
+deploying the ceilometer service. HA is achieved by configuring the proper
+directives in ceilometer.conf using ``ceilometer_ceilometer_conf_overrides``
+in the user_variables.yml file. The Ceilometer admin guide[1] details the
+options used in ceilometer.conf for an HA deployment. An example
+``ceilometer_ceilometer_conf_overrides`` is provided below.
+
+.. code-block:: yaml
+
+   ceilometer_ceilometer_conf_overrides:
+     coordination:
+       backend_url: "zookeeper://172.20.1.110:2181"
+     notification:
+       workload_partitioning: True
 
 Configuring the user data
 #########################
-In addtion to adding these hosts in the ``/etc/openstack_deploy/conf.d/ceilometer.yml`` file, other configurations must be specified in the ``/etc/openstack_deploy/user_variable.yml`` file. These configurations are listed below, along with a description:
+In addition to adding these hosts in the
+``/etc/openstack_deploy/conf.d/ceilometer.yml`` file, other configurations
+must be specified in the ``/etc/openstack_deploy/user_variable.yml`` file.
+These configurations are listed below, along with a description:
 
 
 The type of database backend ceilometer will use. Currently only mongodb is supported:
@@ -140,4 +179,10 @@ This configures nova to send notifications to the message bus:
 ``nova_ceilometer_enabled: False``
 
 
-Once all of these steps are complete, you are ready to run the os-ceilometer-install.yml playbook! Or, if deploying a new stack, simply run setup-openstack.yml. The ceilometer playbooks will run as part of this playbook.
+Once all of these steps are complete, you are ready to run the
+os-ceilometer-install.yml playbook! Or, if deploying a new stack, simply run
+setup-openstack.yml. The ceilometer playbooks will run as part of this playbook
+
+References
+##########
+[1] `Ceilometer Admin Guide <http://docs.openstack.org/admin-guide-cloud/telemetry-data-collection.html>`
