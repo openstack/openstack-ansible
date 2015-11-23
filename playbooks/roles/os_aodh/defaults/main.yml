@@ -80,6 +80,8 @@ aodh_service_internalurl: "{{ aodh_service_internaluri }}"
 aodh_service_adminuri: "{{ aodh_service_proto }}://{{ internal_lb_vip_address }}:{{ aodh_service_port }}"
 aodh_service_adminurl: "{{ aodh_service_adminuri }}"
 
+aodh_service_in_ldap: false
+
 # Common apt packages
 aodh_apt_packages:
   - rpcbind
