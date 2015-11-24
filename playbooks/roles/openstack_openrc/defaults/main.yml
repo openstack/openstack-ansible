@@ -17,16 +17,26 @@
 openrc_cinder_endpoint_type: internalURL
 openrc_nova_endpoint_type: internalURL
 openrc_os_endpoint_type: internalURL
+openrc_clouds_yml_interface: internal
 
 ## Default credentials
 openrc_os_username: admin
 openrc_os_tenant_name: admin
 openrc_os_auth_url: "http://127.0.0.1:5000"
+openrc_clouds_yml_region_name: RegionOne
 
 ## Deliberately allow access to SSL endpoints with bad certificates
 openrc_insecure: "{{ (keystone_service_adminuri_insecure | bool or keystone_service_internaluri_insecure | bool) | default(false) }}"
 
-## Create file
+## Create openrc file
 openrc_file_dest: "{{ ansible_env.HOME }}/openrc"
 openrc_file_owner: "{{ ansible_user_id }}"
 openrc_file_group: "{{ ansible_user_id }}"
+
+## Create clouds.yml file
+openrc_openstack_client_config_dir_dest: "{{ ansible_env.HOME }}/.config/openstack"
+openrc_openstack_client_config_dir_owner: "{{ ansible_user_id }}"
+openrc_openstack_client_config_dir_group: "{{ ansible_user_id }}"
+openrc_clouds_yml_file_dest: "{{ openrc_openstack_client_config_dir_dest }}/clouds.yml"
+openrc_clouds_yml_file_owner: "{{ ansible_user_id }}"
+openrc_clouds_yml_file_group: "{{ ansible_user_id }}"

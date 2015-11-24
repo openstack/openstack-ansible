@@ -22,3 +22,23 @@
     mode: "0600"
   tags:
     - openstack-openrc-file
+
+- name: Create OpenStack client configuration directory
+  file:
+    dest: "{{ openrc_openstack_client_config_dir_dest }}"
+    owner: "{{ openrc_openstack_client_config_dir_owner }}"
+    group: "{{ openrc_openstack_client_config_dir_group }}"
+    mode: "0600"
+    state: directory
+  tags:
+    - openstack-openrc-file
+
+- name: Create clouds.yml file
+  template:
+    src: clouds.yml
+    dest: "{{ openrc_clouds_yml_file_dest }}"
+    owner: "{{ openrc_clouds_yml_file_owner }}"
+    group: "{{ openrc_clouds_yml_file_group }}"
+    mode: "0600"
+  tags:
+    - openstack-openrc-file
