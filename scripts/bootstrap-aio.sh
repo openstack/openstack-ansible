@@ -21,6 +21,7 @@ set -e -u -x
 ## Vars ----------------------------------------------------------------------
 DEFAULT_PASSWORD=$(tr -dc 'a-zA-Z0-9' < /dev/urandom | head -c 32)
 export BOOTSTRAP_AIO="yes"
+export BOOTSTRAP_AIO_DIR=${BOOTSTRAP_AIO_DIR:-"/openstack"}
 export HTTP_PROXY=${HTTP_PROXY:-""}
 export HTTPS_PROXY=${HTTPS_PROXY:-""}
 export ADMIN_PASSWORD=${ADMIN_PASSWORD:-$DEFAULT_PASSWORD}
@@ -140,9 +141,9 @@ else
   echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
 fi
 
-# Create /opt if it doesn't already exist
-if [ ! -d "/opt" ];then
-  mkdir /opt
+# Create the directory BOOTSTRAP_AIO_DIR if it doesn't already exist
+if [ ! -d "${BOOTSTRAP_AIO_DIR}" ]; then
+  mkdir -p ${BOOTSTRAP_AIO_DIR}
 fi
 
 # Remove the pip directory if its found
@@ -194,7 +195,7 @@ if [ ! "$(swapon -s | grep -v Filename)" ]; then
   else
     swap_size="8589934592"
   fi
-  loopback_create "/opt/swap.img" ${swap_size} thick swap
+  loopback_create "${BOOTSTRAP_AIO_DIR}/swap.img" ${swap_size} thick swap
   # Ensure swap will be used on the host
   if [ ! $(sysctl vm.swappiness | awk '{print $3}') == "10" ];then
     sysctl -w vm.swappiness=10 | tee -a /etc/sysctl.conf
@@ -206,7 +207,7 @@ if [ "${DEPLOY_OPENSTACK}" == "yes" ]; then
   # Build the loopback drive for cinder to use
   CINDER="cinder.img"
   if ! vgs cinder-volumes; then
-    loopback_create "/opt/${CINDER}" 1073741824000 thin rc
+    loopback_create "${BOOTSTRAP_AIO_DIR}/${CINDER}" 1073741824000 thin rc
     CINDER_DEVICE=$(losetup -a | awk -F: "/${CINDER}/ {print \$1}")
     pvcreate ${CINDER_DEVICE}
     pvscan
@@ -216,8 +217,20 @@ if [ "${DEPLOY_OPENSTACK}" == "yes" ]; then
     fi
     # Ensure that the cinder loopback is enabled after reboot
     if ! grep ${CINDER} /etc/rc.local && ! vgs cinder-volumes; then
-      sed -i "\$i losetup \$(losetup -f) /opt/${CINDER}" /etc/rc.local
+      sed -i "\$i losetup \$(losetup -f) /${BOOTSTRAP_AIO_DIR}/${CINDER}" /etc/rc.local
     fi
+  fi
+
+  # Build the loopback drive for nova instance storage
+  NOVA="nova.img"
+  if ! grep -q "${NOVA}" /proc/mounts; then
+    loopback_create "${BOOTSTRAP_AIO_DIR}/${NOVA}" 1073741824000 thin none
+    mkfs.ext4 -F "${BOOTSTRAP_AIO_DIR}/${NOVA}"
+    mkdir -p /var/lib/nova/instances
+    mount "${BOOTSTRAP_AIO_DIR}/${NOVA}" /var/lib/nova/instances
+  fi
+  if ! grep -qw "^${BOOTSTRAP_AIO_DIR}/${NOVA}" /etc/fstab; then
+    echo "${BOOTSTRAP_AIO_DIR}/${NOVA} /var/lib/nova/instances ext4 defaults 0 0" >> /etc/fstab
   fi
 fi
 
@@ -225,15 +238,15 @@ fi
 if [ "${DEPLOY_SWIFT}" == "yes" ]; then
   # build the loopback drives for swift to use
   for SWIFT in swift1 swift2 swift3; do
-    if ! grep "${SWIFT}" /proc/mounts > /dev/null; then
-      loopback_create "/opt/${SWIFT}.img" 1073741824000 thin none
-      if ! grep -w "^/opt/${SWIFT}.img" /etc/fstab > /dev/null; then
-        echo "/opt/${SWIFT}.img /srv/${SWIFT}.img xfs loop,noatime,nodiratime,nobarrier,logbufs=8 0 0" >> /etc/fstab
+    if ! grep -q "${SWIFT}" /proc/mounts; then
+      loopback_create "${BOOTSTRAP_AIO_DIR}/${SWIFT}.img" 1073741824000 thin none
+      if ! grep -qw "^${BOOTSTRAP_AIO_DIR}/${SWIFT}.img" /etc/fstab; then
+        echo "${BOOTSTRAP_AIO_DIR}/${SWIFT}.img /srv/${SWIFT}.img xfs loop,noatime,nodiratime,nobarrier,logbufs=8 0 0" >> /etc/fstab
       fi
       # Format the lo devices
-      mkfs.xfs -f "/opt/${SWIFT}.img"
+      mkfs.xfs -f "${BOOTSTRAP_AIO_DIR}/${SWIFT}.img"
       mkdir -p "/srv/${SWIFT}.img"
-      mount "/opt/${SWIFT}.img" "/srv/${SWIFT}.img"
+      mount "${BOOTSTRAP_AIO_DIR}/${SWIFT}.img" "/srv/${SWIFT}.img"
     fi
   done
 fi
