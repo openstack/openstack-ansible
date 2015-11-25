@@ -37,17 +37,6 @@
 
 - include: ceilometer_upstart_common_init.yml
   vars:
-    program_name: "{{ ceilometer_agent_central_program_name }}"
-    service_name: "{{ ceilometer_service_name }}"
-    system_user: "{{ ceilometer_system_user_name }}"
-    system_group: "{{ ceilometer_system_group_name }}"
-    service_home: "{{ ceilometer_system_user_home }}"
-  when: inventory_hostname in groups['ceilometer_agent_central']
-  tags:
-    - ceilometer-agent-central
-
-- include: ceilometer_upstart_common_init.yml
-  vars:
     program_name: "{{ ceilometer_collector_program_name }}"
     service_name: "{{ ceilometer_service_name }}"
     system_user: "{{ ceilometer_system_user_name }}"
@@ -59,11 +48,24 @@
 
 - include: ceilometer_upstart_common_init.yml
   vars:
-    program_name: "{{ ceilometer_compute_program_name }}"
+    program_name: "{{ ceilometer_polling_program_name }}"
     service_name: "{{ ceilometer_service_name }}"
     system_user: "{{ ceilometer_system_user_name }}"
     system_group: "{{ ceilometer_system_group_name }}"
     service_home: "{{ ceilometer_system_user_home }}"
+    program_config_options: "--polling-namespaces central"
+  when: inventory_hostname in groups['ceilometer_agent_central']
+  tags:
+    - ceilometer-polling-agent-central
+
+- include: ceilometer_upstart_common_init.yml
+  vars:
+    program_name: "{{ ceilometer_polling_program_name }}"
+    service_name: "{{ ceilometer_service_name }}"
+    system_user: "{{ ceilometer_system_user_name }}"
+    system_group: "{{ ceilometer_system_group_name }}"
+    service_home: "{{ ceilometer_system_user_home }}"
+    program_config_options: "--polling-namespaces compute"
   when: inventory_hostname in groups['ceilometer_agent_compute']
   tags:
-    - ceilometer-agent-compute-init
+    - ceilometer-polling-agent-compute-init

@@ -59,7 +59,7 @@ ceilometer_collector_program_name: ceilometer-collector
 ceilometer_compute_program_name: ceilometer-agent-compute
 ceilometer_api_program_name: ceilometer-api
 ceilometer_agent_notification_program_name: ceilometer-agent-notification
-ceilometer_agent_central_program_name: ceilometer-agent-central
+ceilometer_polling_program_name: ceilometer-polling
 
 ## Service Type and Data
 ceilometer_service_region: RegionOne
@@ -71,6 +71,8 @@ ceilometer_service_description: "Ceilometer Service"
 ceilometer_service_user_name: ceilometer
 ceilometer_service_tenant_name: service
 ceilometer_service_project_name: service
+ceilometer_service_project_domain_id: default
+ceilometer_service_user_domain_id: default
 ceilometer_service_publicuri: "{{ ceilometer_service_proto }}://{{ external_lb_vip_address }}:{{ ceilometer_service_port }}"
 ceilometer_service_publicurl: "{{ ceilometer_service_publicuri }}"
 ceilometer_service_internaluri: "{{ ceilometer_service_proto }}://{{ internal_lb_vip_address }}:{{ ceilometer_service_port }}"
@@ -83,6 +85,9 @@ ceilometer_service_adminurl: "{{ ceilometer_service_adminuri }}"
 # ceilometer_api_workers: 1
 # ceilometer_collector_workers: 1
 # ceilometer_notification_workers: 1
+
+## Keystone authentication middleware
+ceilometer_keystone_auth_plugin: password
 
 # Common apt packages
 ceilometer_apt_packages:
@@ -112,8 +117,7 @@ ceilometer_service_names:
   - "ceilometer-api"
   - "ceilometer-collector"
   - "ceilometer-agent-notification"
-  - "ceilometer-agent-central"
-  - "ceilometer-agent-compute"
+  - "ceilometer-polling"
 
 
 ## Tunable overrides

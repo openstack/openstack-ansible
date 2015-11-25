@@ -26,23 +26,17 @@
     state: "restarted"
     pattern: "{{ ceilometer_collector_program_name }}"
 
-- name: Restart ceilometer compute
-  service:
-    name: "{{ ceilometer_compute_program_name }}"
-    state: "restarted"
-    pattern: "{{ ceilometer_compute_program_name }}"
-
 - name: Restart ceilometer agent_notification
   service:
     name: "{{ ceilometer_agent_notification_program_name }}"
     state: "restarted"
     pattern: "{{ ceilometer_agent_notification_program_name }}"
 
-- name: Restart ceilometer agent_central
+- name: Restart ceilometer polling
   service:
-    name: "{{ ceilometer_agent_central_program_name }}"
+    name: "{{ ceilometer_polling_program_name }}"
     state: "restarted"
-    pattern: "{{ ceilometer_agent_central_program_name }}"
+    pattern: "{{ ceilometer_polling_program_name }}"
 
 - name: Restart ceilometer services
   service:
