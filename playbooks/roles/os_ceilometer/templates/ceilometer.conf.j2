@@ -1,8 +1,10 @@
 #{{ ansible_managed}}
 
+{% set _workers = ansible_processor_vcpus|default(2) // 2 %}
+{% set workers = _workers if _workers > 0 else 1 %}
+
 [DEFAULT]
 auth_strategy = keystone
-collector_workers = 10
 notification_topics = notifications
 rpc_backend = rabbit
 
@@ -19,7 +21,14 @@ rabbit_hosts = {{ rabbitmq_servers }}
 rabbit_use_ssl = {{ rabbitmq_use_ssl }}
 
 [api]
+workers = {{ ceilometer_api_workers | default(workers) }}
 port = 8777
+
+[collector]
+workers = {{ ceilometer_collector_workers | default(workers) }}
+
+[notification]
+workers = {{ ceilometer_notification_workers | default(workers) }}
 
 [database]
 metering_connection = {{ ceilometer_connection_string }}
