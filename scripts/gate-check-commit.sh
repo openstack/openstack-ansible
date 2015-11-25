@@ -42,19 +42,6 @@ info_block "Checking for required libraries." 2> /dev/null || source $(dirname $
 
 ## Main ----------------------------------------------------------------------
 
-# Disable Ansible color output
-sed -i 's/nocolor.*/nocolor = 1/' $(dirname ${0})/../playbooks/ansible.cfg
-
-# Make the /openstack/log directory for openstack-infra gate check log publishing
-mkdir -p /openstack/log
-
-# Implement the log directory link for openstack-infra log publishing
-ln -sf /openstack/log $(dirname ${0})/../logs
-
-# Create ansible logging directory and add in a log file entry into ansible.cfg
-mkdir -p /openstack/log/ansible-logging
-sed -i '/\[defaults\]/a log_path = /openstack/log/ansible-logging/ansible.log' $(dirname ${0})/../playbooks/ansible.cfg
-
 # Adjust settings based on the Cloud Provider info in OpenStack-CI
 if [ -f /etc/nodepool/provider -a -s /etc/nodepool/provider ]; then
   source /etc/nodepool/provider
@@ -82,9 +69,6 @@ if [ -f /etc/nodepool/provider -a -s /etc/nodepool/provider ]; then
 
 fi
 
-# Enable detailed task profiling
-sed -i '/\[defaults\]/a callback_plugins = plugins/callbacks' $(dirname ${0})/../playbooks/ansible.cfg
-
 # Bootstrap an AIO setup if required
 if [ "${BOOTSTRAP_AIO}" == "yes" ]; then
   source $(dirname ${0})/bootstrap-aio.sh
@@ -94,6 +78,22 @@ fi
 if [ "${BOOTSTRAP_ANSIBLE}" == "yes" ]; then
   source $(dirname ${0})/bootstrap-ansible.sh
 fi
+
+# Make the /openstack/log directory for openstack-infra gate check log publishing
+mkdir -p /openstack/log
+
+# Implement the log directory link for openstack-infra log publishing
+ln -sf /openstack/log $(dirname ${0})/../logs
+
+# Create ansible logging directory and add in a log file entry into ansible.cfg
+mkdir -p /openstack/log/ansible-logging
+sed -i '/\[defaults\]/a log_path = /openstack/log/ansible-logging/ansible.log' $(dirname ${0})/../playbooks/ansible.cfg
+
+# Enable detailed task profiling
+sed -i '/\[defaults\]/a callback_plugins = plugins/callbacks' $(dirname ${0})/../playbooks/ansible.cfg
+
+# Disable Ansible color output
+sed -i 's/nocolor.*/nocolor = 1/' $(dirname ${0})/../playbooks/ansible.cfg
 
 # Enable debug logging for all services to make failure debugging easier
 echo "debug: True" | tee -a /etc/openstack_deploy/user_variables.yml

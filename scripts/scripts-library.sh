@@ -18,7 +18,9 @@
 ## Vars ----------------------------------------------------------------------
 LINE='----------------------------------------------------------------------'
 MAX_RETRIES=${MAX_RETRIES:-5}
-MIN_LXC_VG_SIZE_GB=${MIN_LXC_VG_SIZE_GB:-250}
+BOOTSTRAP_AIO_DIR=${BOOTSTRAP_AIO_DIR:-"/openstack"}
+DATA_DISK_DEVICE=${DATA_DISK_DEVICE:-}
+MIN_DISK_SIZE_GB=${MIN_DISK_SIZE_GB:-80}
 REPORT_DATA=${REPORT_DATA:-""}
 ANSIBLE_PARAMETERS=${ANSIBLE_PARAMETERS:-""}
 STARTTIME="${STARTTIME:-$(date +%s)}"
@@ -77,48 +79,68 @@ function install_bits {
 function configure_diskspace {
   # If there are any block devices available other than the one
   # used for the root disk, repurpose it for our needs.
-  MIN_LXC_VG_SIZE_B=$((MIN_LXC_VG_SIZE_GB * 1024 * 1024 * 1024))
 
-  # only do this if the lxc vg doesn't already exist
-  if ! vgs lxc > /dev/null 2>&1; then
-    blk_devices=$(lsblk -nrdo NAME,TYPE,RO | awk '/d[b-z]+ disk [^1]/ {print $1}')
-    for blk_dev in ${blk_devices}; do
-      # dismount any mount points on the device
-      mount_points=$(awk "/^\/dev\/${blk_dev}[0-9]* / {print \$2}" /proc/mounts)
-      for mount_point in ${mount_points}; do
-        umount ${mount_point}
-        sed -i ":${mount_point}:d" /etc/fstab
-      done
+  # If DATA_DISK_DEVICE is not set or empty, then try to figure out which
+  #  device to use
+  if [ -z "${DATA_DISK_DEVICE}" ]; then
+    # Identify the list of disk devices available, sort from largest to
+    #  smallest, and pick the largest.
+    # Excludes:
+    #   - the first device, as that is where the OS is expected
+    #   - read only devices, as we can't write to them
+    DATA_DISK_DEVICE=$(lsblk -brndo NAME,TYPE,RO,SIZE | \
+                       awk '/d[b-z]+ disk 0/{ if ($4>m){m=$4; d=$1}}; END{print d}')
+  fi
 
-      # add a vg for lxc
-      blk_dev_size_b=$(lsblk -nrdbo NAME,TYPE,SIZE | awk "/^${blk_dev} disk/ {print \$3}")
-      if [ "${blk_dev_size_b}" -gt "${MIN_LXC_VG_SIZE_B}" ]; then
-        if ! vgs lxc > /dev/null 2>&1; then
-          parted --script /dev/${blk_dev} mklabel gpt
-          parted --align optimal --script /dev/${blk_dev} mkpart lxc 0% 80%
-          part_num=$(parted /dev/${blk_dev} print --machine | awk -F':' '/lxc/ {print $1}')
-          pvcreate -ff -y /dev/${blk_dev}${part_num}
-          vgcreate lxc /dev/${blk_dev}${part_num}
-        fi
-        # add a vg for cinder volumes, but only if it doesn't already exist
-        if ! vgs cinder-volumes > /dev/null 2>&1; then
-          parted --align optimal --script /dev/${blk_dev} mkpart cinder 80% 100%
-          part_num=$(parted /dev/${blk_dev} print --machine | awk -F':' '/cinder/ {print $1}')
-          pvcreate -ff -y /dev/${blk_dev}${part_num}
-          vgcreate cinder-volumes /dev/${blk_dev}${part_num}
-        fi
-      else
-        if ! grep '/var/lib/lxc' /proc/mounts 2>&1; then
-          parted --script /dev/${blk_dev} mklabel gpt
-          parted --script /dev/${blk_dev} mkpart lxc ext4 0% 100%
-          part_num=$(parted /dev/${blk_dev} print --machine | awk -F':' '/lxc/ {print $1}')
-          # Format, Create, and Mount it all up.
-          mkfs.ext4 /dev/${blk_dev}${part_num}
-          mkdir -p /var/lib/lxc
-          mount /dev/${blk_dev}${part_num} /var/lib/lxc
-        fi
+  # We only want to continue if a device was found to use. If not,
+  #  then we simply leave the disks alone.
+  if [ ! -z "${DATA_DISK_DEVICE}" ]; then
+    # Calculate the minimum disk size in bytes
+    MIN_DISK_SIZE_B=$((MIN_DISK_SIZE_GB * 1024 * 1024 * 1024))
+
+    # Determine the size in bytes of the selected device
+    blk_dev_size_b=$(lsblk -nrdbo NAME,TYPE,SIZE | \
+                     awk "/^${DATA_DISK_DEVICE} disk/ {print \$3}")
+
+    # Determine if the device is large enough
+    if [ "${blk_dev_size_b}" -ge "${MIN_DISK_SIZE_B}" ]; then
+      # Only execute the disk partitioning process if a partition labeled
+      #  'openstack-data{1,2}' is not present and that partition is not
+      #  formatted as ext4. This is an attempt to achieve idempotency just
+      #  in case this script is run multiple times.
+      if ! parted --script -l -m | egrep -q ':ext4:openstack-data[12]:;$'; then
+
+        # Dismount any mount points on the device
+        mount_points=$(awk "/^\/dev\/${DATA_DISK_DEVICE}[0-9]* / {print \$2}" /proc/mounts)
+        for mount_point in ${mount_points}; do
+          umount ${mount_point}
+          sed -i ":${mount_point}:d" /etc/fstab
+        done
+
+        # Partition the whole disk for our usage
+        parted --script /dev/${DATA_DISK_DEVICE} mklabel gpt
+        parted --align optimal --script /dev/${DATA_DISK_DEVICE} mkpart openstack-data1 ext4 0% 40%
+        parted --align optimal --script /dev/${DATA_DISK_DEVICE} mkpart openstack-data2 ext4 40% 100%
+
+        # Format the bootstrap partition, create the mount point, and mount it.
+        mkfs.ext4 /dev/${DATA_DISK_DEVICE}1
+        mkdir -p ${BOOTSTRAP_AIO_DIR}
+        mount /dev/${DATA_DISK_DEVICE}1 ${BOOTSTRAP_AIO_DIR}
+
+        # Format the lxc partition, create the mount point, and mount it.
+        mkfs.ext4 /dev/${DATA_DISK_DEVICE}2
+        mkdir -p /var/lib/lxc
+        mount /dev/${DATA_DISK_DEVICE}2 /var/lib/lxc
+
       fi
-    done
+      # Add the fstab entries if they aren't there already
+      if ! grep -qw "^/dev/${DATA_DISK_DEVICE}1" /etc/fstab; then
+        echo "/dev/${DATA_DISK_DEVICE}1 ${BOOTSTRAP_AIO_DIR} ext4 defaults 0 0" >> /etc/fstab
+      fi
+      if ! grep -qw "^/dev/${DATA_DISK_DEVICE}2" /etc/fstab; then
+        echo "/dev/${DATA_DISK_DEVICE}2 /var/lib/lxc ext4 defaults 0 0" >> /etc/fstab
+      fi
+    fi
   fi
 }
 
