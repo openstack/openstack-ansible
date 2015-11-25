@@ -18,19 +18,13 @@ services and performs the following operations:
 
 -  Install Memcached
 
+-  Install the repository server
+
 -  Install Galera
 
 -  Install RabbitMQ
 
 -  Install Rsyslog
-
--  Install Elasticsearch
-
--  Install Logstash
-
--  Install Kibana
-
--  Install Elasticsearch command-line utilities
 
 -  Configure Rsyslog
 
