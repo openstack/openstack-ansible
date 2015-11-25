@@ -67,7 +67,11 @@ development) build it is usually best to checkout the latest tagged version.
 
    .. code-block:: bash
 
-       $ git checkout kilo
+       $ # List all existing tags.
+       $ git tag -l
+
+       $ # Checkout the latest tag from the previous command.
+       $ git checkout 12.0.0
 
 By default the scripts deploy all OpenStack services. At this point you may
 optionally adjust which services are deployed within your AIO build.  Look at
@@ -211,7 +215,7 @@ soon as the instance starts.  Save this file as ``user_data.yml``:
       - export ANSIBLE_FORCE_COLOR=true
       - export PYTHONUNBUFFERED=1
       - export REPO=https://github.com/openstack/openstack-ansible
-      - export BRANCH=kilo
+      - export BRANCH=liberty
       - git clone -b ${BRANCH} ${REPO} /opt/openstack-ansible
       - export DEPLOY_CEILOMETER="no"
       - cd /opt/openstack-ansible && scripts/bootstrap-aio.sh
