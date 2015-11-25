@@ -41,6 +41,8 @@ services:
 
    -  Logging
 
+   -  Repository
+
 -  OpenStack:
 
    -  Identity (keystone)
@@ -58,10 +60,6 @@ services:
 Infrastructure Logging target hosts contain the following services:
 
 -  Rsyslog
-
--  Logstash
-
--  Elasticsearch with Kibana
 
 Compute target hosts contain the following services:
 
