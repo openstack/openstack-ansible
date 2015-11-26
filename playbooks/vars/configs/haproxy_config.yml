@@ -42,7 +42,7 @@ haproxy_service_configs:
       haproxy_balance_type: http
       haproxy_backend_options:
         - "forwardfor"
-        - "httpchk"
+        - "httpchk /versions"
         - "httplog"
   - service:
       haproxy_service_name: glance_registry
