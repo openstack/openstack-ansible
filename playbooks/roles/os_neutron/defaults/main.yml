@@ -193,10 +193,6 @@ neutron_quota_vip: 10
 # compute the number of api workers to use.
 # neutron_api_workers: 16
 
-# ``neutron_rpc_workers`` is an experimental feature in neutron master (as of 03/2015) and
-# the value will be 0 by default.
-neutron_rpc_workers: 0
-
 # If ``neutron_metadata_workers`` is unset the system will use half the number of available VCPUs to
 # compute the number of api workers to use.
 # neutron_metadata_workers: 16
@@ -291,6 +287,7 @@ neutron_rpc_backend: rabbit
 neutron_rpc_thread_pool_size: 64
 neutron_rpc_conn_pool_size: 30
 neutron_rpc_response_timeout: 60
+neutron_rpc_workers: 1
 
 ## Policy vars
 # Provide a list of access controls to update the default policy.json with. These changes will be merged
