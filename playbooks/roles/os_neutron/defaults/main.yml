@@ -119,7 +119,7 @@ neutron_services:
    config_type: "ini"
  neutron-metering-agent:
    service_name: neutron-metering-agent
-   service_en: True
+   service_en: "{{ neutron_metering }}"
    service_conf: metering_agent.ini
    service_group: neutron_agent
    config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/metering_agent.ini
@@ -127,7 +127,7 @@ neutron_services:
    config_type: "ini"
  neutron-l3-agent:
    service_name: neutron-l3-agent
-   service_en: True
+   service_en: "{{ neutron_l3 }}"
    service_conf: l3_agent.ini
    service_group: neutron_agent
    service_rootwrap: rootwrap.d/l3.filters
@@ -152,6 +152,14 @@ neutron_services:
 ## Neutron LBaaS
 # Please add the LoadBalancerPlugin to the neutron_plugin_base list
 neutron_lbaas: "{% if 'neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPlugin' in neutron_plugin_base %}True{% else %}False{% endif %}"
+
+## Neutron L3
+## Please add the L3RouterPlugin to the neutron_plugin_base list
+neutron_l3: "{% if 'neutron.services.l3_router.l3_router_plugin.L3RouterPlugin' in neutron_plugin_base %}True{% else %}False{% endif %}"
+
+## Neutron Metering
+# Please add the MeteringPlugin to the neutron_plugin_base list
+neutron_metering: "{% if 'neutron.services.metering.metering_plugin.MeteringPlugin' in neutron_plugin_base %}True{% else %}False{% endif %}"
 
 ## Drivers
 neutron_driver_network_scheduler: neutron.scheduler.dhcp_agent_scheduler.WeightScheduler
