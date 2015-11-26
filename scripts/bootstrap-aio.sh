@@ -378,10 +378,30 @@ echo "required_kernel: $(uname --kernel-release)" | tee -a /etc/openstack_deploy
 echo "lxc_container_template_main_apt_repo: ${UBUNTU_REPO}" | tee -a /etc/openstack_deploy/user_variables.yml
 echo "lxc_container_template_security_apt_repo: ${UBUNTU_SEC_REPO}" | tee -a /etc/openstack_deploy/user_variables.yml
 
-# Set the running neutron workers to 0/1
-echo "neutron_api_workers: 0" | tee -a /etc/openstack_deploy/user_variables.yml
-echo "neutron_rpc_workers: 0" | tee -a /etc/openstack_deploy/user_variables.yml
-echo "neutron_metadata_workers: 1" | tee -a /etc/openstack_deploy/user_variables.yml
+# Optimise the worker settings for an AIO
+tee -a /etc/openstack_deploy/user_variables.yml << EOF
+ceilometer_api_workers: 2
+ceilometer_collector_workers: 2
+ceilometer_notification_workers: 2
+cinder_osapi_volume_workers: 2
+glance_api_workers: 2
+glance_registry_workers: 2
+heat_api_workers: 2
+heat_engine_workers: 2
+horizon_wsgi_processes: 2
+horizon_wsgi_threads: 2
+keystone_wsgi_processes: 2
+neutron_api_workers: 2
+neutron_metadata_workers: 1
+neutron_rpc_workers: 1
+nova_conductor_workers: 2
+nova_metadata_workers: 2
+nova_osapi_compute_workers: 2
+swift_account_server_workers: 2
+swift_container_server_workers: 2
+swift_object_server_workers: 2
+swift_proxy_server_workers: 2
+EOF
 
 # Add in swift vars if needed
 if [ "${DEPLOY_SWIFT}" == "yes" ]; then
