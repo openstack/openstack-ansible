@@ -23,14 +23,20 @@ info_block "Checking for required libraries." 2> /dev/null || source $(dirname $
 ## Confirmation -------------------------------------------------------------
 cat <<EOF
 -----------------------------------------------------------------------------
-WARNING: This is a destructive action. All containers will be destroyed and
-         all data within the containers will be removed.  Some data will be
-         removed from the host as well. /etc/openstack_deploy will be preserved
-         and may be manually removed if needed.
+WARNING: This is a destructive action.
+         All containers will be destroyed as well as the data within the
+         containers (even if the containers are added by users and not by
+         AIO). Data will be removed from the host as well (e.g. files, apt
+         packages and pip packages). Please check this script for information
+         about the data to be removed in removed_(files/packages/pip-packages).
+         /etc/openstack_deploy will be preserved and may be manually removed
+         if needed.
+         ALL the data stored in the lvm volume group called "lxc" WILL BE
+         DELETED as well (even if volumes are created by users and not AIO).
          Please verify that you have backed up all important data prior to
          proceeding with the teardown script.
 -----------------------------------------------------------------------------
-To REALLY destroy all containers and delete the data within them,
+To REALLY destroy all containers and delete all data mentioned above,
 type 'Y' or 'y' and press enter:
 EOF
 
