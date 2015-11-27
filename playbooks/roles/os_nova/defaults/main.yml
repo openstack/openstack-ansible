@@ -130,8 +130,7 @@ nova_cert_program_name: nova-cert
 ## Nova compute
 nova_enable_instance_password: True
 nova_compute_program_name: nova-compute
-# TODO: This defaults to 'False' upstream, we should set this to 'False' in Liberty
-nova_force_config_drive: True
+nova_force_config_drive: False
 
 ## Nova libvirt
 nova_libvirt_inject_key: False
