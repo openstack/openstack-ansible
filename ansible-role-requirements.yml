@@ -7,3 +7,26 @@
 - src: evrardjp.keepalived
   name: keepalived
   version: '1.3'
+- src: mattwillsher.sshd
+  name: sshd
+- name: apt_package_pinning
+  src: https://github.com/openstack/openstack-ansible-apt_package_pinning
+  version: master
+- name: lxc_container_create
+  src: https://github.com/openstack/openstack-ansible-lxc_container_create
+  version: master
+- name: lxc_hosts
+  src: https://github.com/openstack/openstack-ansible-lxc_hosts
+  version: master
+- name: openstack_hosts
+  src: https://github.com/openstack/openstack-ansible-openstack_hosts
+  version: master
+- name: pip_install
+  src: https://github.com/openstack/openstack-ansible-pip_install
+  version: master
+- name: py_from_git
+  src: https://github.com/openstack/openstack-ansible-py_from_git
+  version: master
+- name: rsyslog_client
+  src: https://github.com/openstack/openstack-ansible-rsyslog_client
+  version: master

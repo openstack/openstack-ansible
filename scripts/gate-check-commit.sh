@@ -17,30 +17,49 @@
 set -e -u -x
 
 ## Variables -----------------------------------------------------------------
-export BOOTSTRAP_ANSIBLE=${BOOTSTRAP_ANSIBLE:-"yes"}
-export BOOTSTRAP_AIO=${BOOTSTRAP_AIO:-"yes"}
-export RUN_PLAYBOOKS=${RUN_PLAYBOOKS:-"yes"}
-export RUN_TEMPEST=${RUN_TEMPEST:-"yes"}
-# Ansible options
 export ANSIBLE_PARAMETERS=${ANSIBLE_PARAMETERS:-"-v"}
-# Deployment options
-export DEPLOY_HOST=${DEPLOY_HOST:-"yes"}
-export DEPLOY_LB=${DEPLOY_LB:-"yes"}
-export DEPLOY_INFRASTRUCTURE=${DEPLOY_INFRASTRUCTURE:-"yes"}
-export DEPLOY_LOGGING=${DEPLOY_LOGGING:-"yes"}
-export DEPLOY_OPENSTACK=${DEPLOY_OPENSTACK:-"yes"}
-export DEPLOY_SWIFT=${DEPLOY_SWIFT:-"yes"}
-export DEPLOY_TEMPEST=${DEPLOY_TEMPEST:-"yes"}
-# Limit the gate check to only performing one attempt, unless already set
 export MAX_RETRIES=${MAX_RETRIES:-"2"}
 # tempest and testr options, default is to run tempest in serial
 export RUN_TEMPEST_OPTS=${RUN_TEMPEST_OPTS:-'--serial'}
 export TESTR_OPTS=${TESTR_OPTS:-''}
+# Disable the python output buffering so that jenkins gets the output properly
+export PYTHONUNBUFFERED=1
+# Extra options to pass to the AIO bootstrap process
+export BOOTSTRAP_OPTS=${BOOTSTRAP_OPTS:-''}
 
 ## Functions -----------------------------------------------------------------
 info_block "Checking for required libraries." 2> /dev/null || source $(dirname ${0})/scripts-library.sh
 
 ## Main ----------------------------------------------------------------------
+
+# Log some data about the instance and the rest of the system
+log_instance_info
+
+# Determine the largest secondary disk device available for repartitioning
+DATA_DISK_DEVICE=$(lsblk -brndo NAME,TYPE,RO,SIZE | \
+                   awk '/d[b-z]+ disk 0/{ if ($4>m){m=$4; d=$1}}; END{print d}')
+
+# Only set the secondary disk device option if there is one
+if [ -n "${DATA_DISK_DEVICE}" ]; then
+  export BOOTSTRAP_OPTS="${BOOTSTRAP_OPTS} bootstrap_host_data_disk_device=${DATA_DISK_DEVICE}"
+fi
+
+# Bootstrap Ansible
+source $(dirname ${0})/bootstrap-ansible.sh
+
+# Log some data about the instance and the rest of the system
+log_instance_info
+
+# Flush all the iptables rules set by openstack-infra
+iptables -F
+iptables -X
+iptables -t nat -F
+iptables -t nat -X
+iptables -t mangle -F
+iptables -t mangle -X
+iptables -P INPUT ACCEPT
+iptables -P FORWARD ACCEPT
+iptables -P OUTPUT ACCEPT
 
 # Adjust settings based on the Cloud Provider info in OpenStack-CI
 if [ -f /etc/nodepool/provider -a -s /etc/nodepool/provider ]; then
@@ -48,89 +67,57 @@ if [ -f /etc/nodepool/provider -a -s /etc/nodepool/provider ]; then
 
   if [[ ${NODEPOOL_PROVIDER} == "rax"* ]]; then
 
-    # Set the Ubuntu Repository to the RAX Mirror
-    export UBUNTU_REPO="http://mirror.rackspace.com/ubuntu"
-    export UBUNTU_SEC_REPO="${UBUNTU_REPO}"
+    # Set the Ubuntu Repository for the AIO to the RAX Mirror
+    export BOOTSTRAP_OPTS="${BOOTSTRAP_OPTS} bootstrap_host_ubuntu_repo=http://mirror.rackspace.com/ubuntu"
+    export BOOTSTRAP_OPTS="${BOOTSTRAP_OPTS} bootstrap_host_ubuntu_security_repo=http://mirror.rackspace.com/ubuntu"
 
   elif [[ ${NODEPOOL_PROVIDER} == "hpcloud"* ]]; then
 
-    # Set the Ubuntu Repository to the HP Cloud Mirror
-    export UBUNTU_REPO="http://${NODEPOOL_AZ}.clouds.archive.ubuntu.com/ubuntu"
-    export UBUNTU_SEC_REPO="${UBUNTU_REPO}"
+    # Set the Ubuntu Repository for the AIO to the HP Cloud Mirror
+    export BOOTSTRAP_OPTS="${BOOTSTRAP_OPTS} bootstrap_host_ubuntu_repo=http://${NODEPOOL_AZ}.clouds.archive.ubuntu.com/ubuntu"
+    export BOOTSTRAP_OPTS="${BOOTSTRAP_OPTS} bootstrap_host_ubuntu_security_repo=http://${NODEPOOL_AZ}.clouds.archive.ubuntu.com/ubuntu"
 
   fi
-
-  # Reduce container affinities as Liberty appears to consume
-  #  a greater volume of resources, causing greater numbers
-  #  of failures with the default affinities.
-  for container_type in rabbit_mq repo horizon keystone; do
-    export "NUM_${container_type}_CONTAINER=1"
-  done
-
 fi
 
-# Bootstrap an AIO setup if required
-if [ "${BOOTSTRAP_AIO}" == "yes" ]; then
-  source $(dirname ${0})/bootstrap-aio.sh
-fi
-
-# Bootstrap ansible if required
-if [ "${BOOTSTRAP_ANSIBLE}" == "yes" ]; then
-  source $(dirname ${0})/bootstrap-ansible.sh
-fi
-
-# Make the /openstack/log directory for openstack-infra gate check log publishing
-mkdir -p /openstack/log
+# Bootstrap an AIO
+pushd $(dirname ${0})/../tests
+  sed -i '/\[defaults\]/a nocolor = 1/' ansible.cfg
+  ansible-playbook -i "localhost ansible-connection=local," \
+                   -e "${BOOTSTRAP_OPTS}" \
+                   ${ANSIBLE_PARAMETERS} \
+                   bootstrap-aio.yml
+popd
 
 # Implement the log directory link for openstack-infra log publishing
+mkdir -p /openstack/log
 ln -sf /openstack/log $(dirname ${0})/../logs
 
-# Create ansible logging directory and add in a log file entry into ansible.cfg
-mkdir -p /openstack/log/ansible-logging
-sed -i '/\[defaults\]/a log_path = /openstack/log/ansible-logging/ansible.log' $(dirname ${0})/../playbooks/ansible.cfg
+pushd $(dirname ${0})/../playbooks
+  # Disable Ansible color output
+  sed -i 's/nocolor.*/nocolor = 1/' ansible.cfg
 
-# Enable detailed task profiling
-sed -i '/\[defaults\]/a callback_plugins = plugins/callbacks' $(dirname ${0})/../playbooks/ansible.cfg
+  # Create ansible logging directory and add in a log file entry into ansible.cfg
+  mkdir -p /openstack/log/ansible-logging
+  sed -i '/\[defaults\]/a log_path = /openstack/log/ansible-logging/ansible.log' ansible.cfg
 
-# Disable Ansible color output
-sed -i 's/nocolor.*/nocolor = 1/' $(dirname ${0})/../playbooks/ansible.cfg
-
-# Enable debug logging for all services to make failure debugging easier
-echo "debug: True" | tee -a /etc/openstack_deploy/user_variables.yml
-
-# NOTE: hpcloud-b4's eth0 uses 10.0.3.0/24, which overlaps with the
-#       lxc_net_address default
-# TODO: We'll need to implement a mechanism to determine valid lxc_net_address
-#       value which will not overlap with an IP already assigned to the host.
-echo "lxc_net_address: 10.255.255.1" | tee -a /etc/openstack_deploy/user_variables.yml
-echo "lxc_net_netmask: 255.255.255.0" | tee -a /etc/openstack_deploy/user_variables.yml
-echo "lxc_net_dhcp_range: 10.255.255.2,10.255.255.253" | tee -a /etc/openstack_deploy/user_variables.yml
-
-# Disable the python output buffering so that jenkins gets the output properly
-export PYTHONUNBUFFERED=1
-
-# Run the ansible playbooks if required
-if [ "${RUN_PLAYBOOKS}" == "yes" ]; then
-  # Set-up our tiny awk script.
-  strip_debug="
-    !/(^[ 0-9|:.-]+<[0-9.]|localhost+>)|Extracting/ {
-      gsub(/{.*/, \"\");
-      gsub(/\\n.*/, \"\");
-      gsub(/\=\>.*/, \"\");
-      print
-    }
-  "
-  set -o pipefail
-  bash $(dirname ${0})/run-playbooks.sh | awk "${strip_debug}"
-  set +o pipefail
-fi
+  # Enable detailed task profiling
+  sed -i '/\[defaults\]/a callback_plugins = plugins/callbacks' ansible.cfg
+popd
 
 # Log some data about the instance and the rest of the system
 log_instance_info
 
-# Run the tempest tests if required
-if [ "${RUN_TEMPEST}" == "yes" ]; then
-  source $(dirname ${0})/run-tempest.sh
-fi
+# Execute the Playbooks
+bash $(dirname ${0})/run-playbooks.sh
+
+# Log some data about the instance and the rest of the system
+log_instance_info
+
+# Run the tempest tests
+source $(dirname ${0})/run-tempest.sh
+
+# Log some data about the instance and the rest of the system
+log_instance_info
 
 exit_success

@@ -18,9 +18,6 @@
 ## Vars ----------------------------------------------------------------------
 LINE='----------------------------------------------------------------------'
 MAX_RETRIES=${MAX_RETRIES:-5}
-BOOTSTRAP_AIO_DIR=${BOOTSTRAP_AIO_DIR:-"/openstack"}
-DATA_DISK_DEVICE=${DATA_DISK_DEVICE:-}
-MIN_DISK_SIZE_GB=${MIN_DISK_SIZE_GB:-80}
 REPORT_DATA=${REPORT_DATA:-""}
 ANSIBLE_PARAMETERS=${ANSIBLE_PARAMETERS:-""}
 STARTTIME="${STARTTIME:-$(date +%s)}"
@@ -76,74 +73,6 @@ function install_bits {
   successerator openstack-ansible ${ANSIBLE_PARAMETERS} --forks ${FORKS} $@
 }
 
-function configure_diskspace {
-  # If there are any block devices available other than the one
-  # used for the root disk, repurpose it for our needs.
-
-  # If DATA_DISK_DEVICE is not set or empty, then try to figure out which
-  #  device to use
-  if [ -z "${DATA_DISK_DEVICE}" ]; then
-    # Identify the list of disk devices available, sort from largest to
-    #  smallest, and pick the largest.
-    # Excludes:
-    #   - the first device, as that is where the OS is expected
-    #   - read only devices, as we can't write to them
-    DATA_DISK_DEVICE=$(lsblk -brndo NAME,TYPE,RO,SIZE | \
-                       awk '/d[b-z]+ disk 0/{ if ($4>m){m=$4; d=$1}}; END{print d}')
-  fi
-
-  # We only want to continue if a device was found to use. If not,
-  #  then we simply leave the disks alone.
-  if [ ! -z "${DATA_DISK_DEVICE}" ]; then
-    # Calculate the minimum disk size in bytes
-    MIN_DISK_SIZE_B=$((MIN_DISK_SIZE_GB * 1024 * 1024 * 1024))
-
-    # Determine the size in bytes of the selected device
-    blk_dev_size_b=$(lsblk -nrdbo NAME,TYPE,SIZE | \
-                     awk "/^${DATA_DISK_DEVICE} disk/ {print \$3}")
-
-    # Determine if the device is large enough
-    if [ "${blk_dev_size_b}" -ge "${MIN_DISK_SIZE_B}" ]; then
-      # Only execute the disk partitioning process if a partition labeled
-      #  'openstack-data{1,2}' is not present and that partition is not
-      #  formatted as ext4. This is an attempt to achieve idempotency just
-      #  in case this script is run multiple times.
-      if ! parted --script -l -m | egrep -q ':ext4:openstack-data[12]:;$'; then
-
-        # Dismount any mount points on the device
-        mount_points=$(awk "/^\/dev\/${DATA_DISK_DEVICE}[0-9]* / {print \$2}" /proc/mounts)
-        for mount_point in ${mount_points}; do
-          umount ${mount_point}
-          sed -i ":${mount_point}:d" /etc/fstab
-        done
-
-        # Partition the whole disk for our usage
-        parted --script /dev/${DATA_DISK_DEVICE} mklabel gpt
-        parted --align optimal --script /dev/${DATA_DISK_DEVICE} mkpart openstack-data1 ext4 0% 40%
-        parted --align optimal --script /dev/${DATA_DISK_DEVICE} mkpart openstack-data2 ext4 40% 100%
-
-        # Format the bootstrap partition, create the mount point, and mount it.
-        mkfs.ext4 /dev/${DATA_DISK_DEVICE}1
-        mkdir -p ${BOOTSTRAP_AIO_DIR}
-        mount /dev/${DATA_DISK_DEVICE}1 ${BOOTSTRAP_AIO_DIR}
-
-        # Format the lxc partition, create the mount point, and mount it.
-        mkfs.ext4 /dev/${DATA_DISK_DEVICE}2
-        mkdir -p /var/lib/lxc
-        mount /dev/${DATA_DISK_DEVICE}2 /var/lib/lxc
-
-      fi
-      # Add the fstab entries if they aren't there already
-      if ! grep -qw "^/dev/${DATA_DISK_DEVICE}1" /etc/fstab; then
-        echo "/dev/${DATA_DISK_DEVICE}1 ${BOOTSTRAP_AIO_DIR} ext4 defaults 0 0" >> /etc/fstab
-      fi
-      if ! grep -qw "^/dev/${DATA_DISK_DEVICE}2" /etc/fstab; then
-        echo "/dev/${DATA_DISK_DEVICE}2 /var/lib/lxc ext4 defaults 0 0" >> /etc/fstab
-      fi
-    fi
-  fi
-}
-
 function ssh_key_create {
   # Ensure that the ssh key exists and is an authorized_key
   key_path="${HOME}/.ssh"
@@ -164,44 +93,6 @@ function ssh_key_create {
   key_content=$(cat "${key_file}.pub")
   if ! grep -q "${key_content}" ${key_path}/authorized_keys; then
     echo "${key_content}" | tee -a ${key_path}/authorized_keys
-  fi
-}
-
-function loopback_create {
-  LOOP_FILENAME=${1}
-  LOOP_FILESIZE=${2}
-  LOOP_FILE_TYPE=${3}  # thin, thick
-  LOOP_MOUNT_METHOD=${4}  # swap, rc, none
-
-  if [ ! -f "${LOOP_FILENAME}" ]; then
-    if [ "${LOOP_FILE_TYPE}" = "thin" ]; then
-      truncate -s ${LOOP_FILESIZE} ${LOOP_FILENAME}
-    elif [ "${LOOP_FILE_TYPE}" = "thick" ]; then
-      fallocate -l ${LOOP_FILESIZE} ${LOOP_FILENAME} &> /dev/null || \
-      dd if=/dev/zero of=${LOOP_FILENAME} bs=1M count=$(( LOOP_FILESIZE / 1024 / 1024 ))
-    else
-      exit_fail "No valid option ${LOOP_FILE_TYPE} found."
-    fi
-  fi
-
-  if [ "${LOOP_MOUNT_METHOD}" = "rc" ]; then
-    if ! losetup -a | grep -q "(${LOOP_FILENAME})$"; then
-      LOOP_DEVICE=$(losetup -f)
-      losetup ${LOOP_DEVICE} ${LOOP_FILENAME}
-    fi
-    if ! grep -q ${LOOP_FILENAME} /etc/rc.local; then
-      sed -i "\$i losetup \$(losetup -f) ${LOOP_FILENAME}" /etc/rc.local
-    fi
-  fi
-
-  if [ "${LOOP_MOUNT_METHOD}" = "swap" ]; then
-    if ! swapon -s | grep -q ${LOOP_FILENAME}; then
-      mkswap ${LOOP_FILENAME}
-      swapon -a
-    fi
-    if ! grep -q "^${LOOP_FILENAME} " /etc/fstab; then
-      echo "${LOOP_FILENAME} none swap loop 0 0" >> /etc/fstab
-    fi
   fi
 }
 

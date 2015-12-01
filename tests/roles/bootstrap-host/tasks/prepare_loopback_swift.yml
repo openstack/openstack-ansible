@@ -1,0 +1,54 @@
+---
+# Copyright 2015, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Create sparse Swift files
+  shell: "truncate -s {{ bootstrap_host_loopback_cinder_size }}G /openstack/{{ item }}.img"
+  args:
+    creates: "/openstack/{{ item }}.img"
+  with_items:
+    - 'swift1'
+    - 'swift2'
+    - 'swift3'
+  register: swift_create
+  tags:
+    - swift-file-create
+
+- name: Format the Swift files
+  filesystem:
+    fstype: xfs
+    dev: "/openstack/{{ item }}.img"
+  when: swift_create | changed
+  with_items:
+    - 'swift1'
+    - 'swift2'
+    - 'swift3'
+  tags:
+    - swift-format-file
+
+- name: Create the Swift mount points, fstab entries and mount the file systems
+  mount:
+    name: "/srv/{{ item }}.img"
+    src: "/openstack/{{ item }}.img"
+    fstype: xfs
+    opts: 'loop,noatime,nodiratime,nobarrier,logbufs=8'
+    passno: 0
+    dump: 0
+    state: mounted
+  with_items:
+    - 'swift1'
+    - 'swift2'
+    - 'swift3'
+  tags:
+    - swift-file-mount
