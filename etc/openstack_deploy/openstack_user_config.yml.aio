@@ -12,7 +12,7 @@ used_ips:
 
 global_overrides:
   internal_lb_vip_address: 172.29.236.100
-  external_lb_vip_address: 192.168.1.1
+  external_lb_vip_address: {{ bootstrap_host_public_address | default(ansible_default_ipv4.address) }}
   tunnel_bridge: "br-vxlan"
   management_bridge: "br-mgmt"
   provider_networks:

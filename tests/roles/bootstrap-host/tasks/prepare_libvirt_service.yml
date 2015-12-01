@@ -1,0 +1,53 @@
+---
+# Copyright 2016, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Download LibVirt CPU map configuration script
+  get_url:
+    url: "http://git.openstack.org/cgit/openstack-dev/devstack/plain/tools/cpu_map_update.py"
+    dest: /openstack/cpu_map_update.py
+    validate_certs: yes
+    mode: 755
+  register: libvirt_cpu_map_download
+  tags:
+    - libvirt-cpu-map-download
+
+# Update the libvirt cpu map with a gate64 cpu model. This enables nova
+# live migration for 64bit guest OSes on heterogenous cloud "hardware".
+- name: Execute LibVirt CPU map configuration script
+  shell: /openstack/cpu_map_update.py /usr/share/libvirt/cpu_map.xml
+  when: libvirt_cpu_map_download | changed
+  tags:
+    - libvirt-cpu-map-updated
+
+# libvirt detects various settings on startup, as we potentially changed
+# the system configuration (modules, filesystems), we need to restart
+# libvirt to detect those changes. Use a stop start as otherwise the new
+# cpu_map is not loaded properly on some systems (Ubuntu).
+- name: Stop libvirt-bin
+  service:
+    name: "{{ servicename_libvirt }}"
+    state: stopped
+  when: libvirt_cpu_map_download | changed
+  tags:
+    - libvirt-service-stop
+
+- name: Start libvirt-bin
+  service:
+    name: "{{ servicename_libvirt }}"
+    state: started
+  when: libvirt_cpu_map_download | changed
+  tags:
+    - libvirt-service-start
+

@@ -13,11 +13,17 @@ for:
 Although AIO builds aren't recommended for large production deployments,
 they're great for smaller proof-of-concept deployments.
 
-It's strongly recommended to have hardware that meets the following
-requirements before starting an AIO build:
+Absolute minimum server resources (currently used for gate checks):
+
+* 8 vCPU's
+* 50GB disk space
+* 8GB RAM
+
+Recommended server resources:
 
 * CPU/motherboard that supports `hardware-assisted virtualization`_
-* At least 80GB disk space (more than 175GB if you have a lxc lvm volume group)
+* 8 CPU Cores
+* 80GB disk space
 * 16GB RAM
 
 It's `possible` to perform AIO builds within a virtual machine but your
@@ -29,7 +35,7 @@ Running an AIO build in one step
 --------------------------------
 
 For a one-step build, there is a `convenient script`_ within the
-openstack-ansible repository that will run a AIO build with defaults:
+Openstack-Ansible repository that will run a AIO build with defaults:
 
 .. _convenient script: https://raw.githubusercontent.com/openstack/openstack-ansible/kilo/scripts/run-aio-build.sh
 
@@ -47,8 +53,8 @@ Running a customized AIO build
 There are four main steps for running a customized AIO build:
 
 * Configuration *(this step is optional)*
-* Initial host bootstrap
 * Install and bootstrap Ansible
+* Initial host bootstrap
 * Run playbooks
 
 Start by cloning the openstack-ansible repository and changing into the
@@ -73,18 +79,41 @@ development) build it is usually best to checkout the latest tagged version.
        $ # Checkout the latest tag from the previous command.
        $ git checkout 11.2.5
 
-By default the scripts deploy all OpenStack services. At this point you may
-optionally adjust which services are deployed within your AIO build.  Look at
-the ``DEPLOY_`` environment variables at the top of
-``scripts/run-playbooks.sh`` for more details. For example, if you'd like to
-skip the deployment of ceilometer, you would execute the following:
+By default the scripts deploy all OpenStack services with sensible defaults
+for the purpose of a gate check, development or testing system.
+
+Review the ``tests/roles/bootstrap-host/defaults/main.yml`` file to see
+various configuration options.  Deployers have the option to change how the
+host is bootstrapped. This is useful when you wish the AIO to make use of
+a secondary data disk, or when using this role to bootstrap a multi-node
+development environment.
+
+The bootstrap script is pre-set to pass the environment variable
+``BOOTSTRAP_OPTS`` as an additional option to the bootstrap process. For
+example, if you wish to set the bootstrap to re-partition a specific
+secondary storage device (/dev/sdb), which will erase all of the data on the
+device, then execute:
+
+  .. code-block:: bash
+
+      $ export BOOTSTRAP_OPTS="bootstrap_host_data_disk_device=sdb"
+
+Additional options may be implemented by simply concatenating them with
+a space between each set of options, for example:
+
+  .. code-block:: bash
+
+      $ export BOOTSTRAP_OPTS="bootstrap_host_data_disk_device=sdb"
+      $ export BOOTSTRAP_OPTS="${BOOTSTRAP_OPTS} bootstrap_host_ubuntu_repo=http://mymirror.example.com/ubuntu"
+
+The next step is to bootstrap Ansible and the Ansible roles for the
+development environment.  Deployers can customize roles by adding variables to
+override the defaults in each role (see :ref:`adding-galaxy-roles`).  Run the
+following to bootstrap Ansible:
 
    .. code-block:: bash
 
-       $ export DEPLOY_CEILOMETER="no"
-
-Note that the scripts still build containers for any service that you disable,
-but do not deploy the service.
+       $ scripts/bootstrap-ansible.sh
 
 In order for all the services to run, the host must be prepared with the
 appropriate disks, packages, network configuration and a base configuration
@@ -98,15 +127,6 @@ If you wish to add any additional configuration entries for the OpenStack
 configuration then this can be done now by editing
 ``/etc/openstack_deploy/user_variables.yml``. Please see the `Install Guide`_
 for more details.
-
-Note that the host bootstrap is not idempotent and should only be executed
-once.
-
-Once you're ready to deploy, bootstrap Ansible by executing:
-
-   .. code-block:: bash
-
-       $ scripts/bootstrap-ansible.sh
 
 Finally, run the playbooks by executing:
 
@@ -130,6 +150,10 @@ Keystone service, execute:
 
        $ cd /opt/openstack-ansible/playbooks
        $ openstack-ansible os-keystone-install.yml
+
+**Note:** The AIO bootstrap playbook will still build containers for services
+that are not requested for deployment, but the service will not be deployed
+in that container.
 
 .. _Install Guide: ../install-guide/
 
@@ -171,30 +195,6 @@ will destroy whole environments and should be used WITH CAUTION.
 After the teardown is complete, ``run-playbooks.sh`` may be executed again to
 rebuild the AIO.
 
-AIO Host Bootstrap Customisation
---------------------------------
-The AIO makes a number of assumptions about the system it is being deployed
-on. Many of these assumptions may be changed through the use of environment
-variables which can be changed prior to the AIO host bootstrap.
-
-As these options change on a regular basis it is best to examine each of the
-scripts used to find the environment variables which can be overridden:
-
-  * ``scripts/bootstrap-aio.sh`` (this sets the AIO host up)
-  * ``scripts/bootstrap-ansible.sh`` (this sets Ansible up)
-  * ``scripts/scripts-library.sh`` (this is used by all the other scripts)
-
-As an example, if you wish the Keystone Admin password to be a value which
-you set (rather than the default of a random string), then execute:
-
-.. code-block:: bash
-
-    export ADMIN_PASSWORD="secrete"
-
-More details about the scripts used can be found in the `scripts page`_.
-
-.. _scripts page: scripts.html
-
 Quick AIO build on Rackspace Cloud
 ----------------------------------
 
@@ -217,15 +217,12 @@ soon as the instance starts.  Save this file as ``user_data.yml``:
       - export REPO=https://github.com/openstack/openstack-ansible
       - export BRANCH=kilo
       - git clone -b ${BRANCH} ${REPO} /opt/openstack-ansible
-      - export DEPLOY_CEILOMETER="no"
-      - cd /opt/openstack-ansible && scripts/bootstrap-aio.sh
       - cd /opt/openstack-ansible && scripts/bootstrap-ansible.sh
+      - cd /opt/openstack-ansible && scripts/bootstrap-aio.sh
       - cd /opt/openstack-ansible && scripts/run-playbooks.sh
     output: { all: '| tee -a /var/log/cloud-init-output.log' }
 
-Feel free to customize the YAML file to meet your requirements.  As an example
-above, the deployment of ceilometer will be skipped due to the
-``DEPLOY_CEILOMETER`` export line.
+Feel free to customize the YAML file to meet your requirements.
 
 We can pass this YAML file to nova and build a Cloud Server at Rackspace:
 

@@ -18,7 +18,6 @@
 ## Vars ----------------------------------------------------------------------
 LINE='----------------------------------------------------------------------'
 MAX_RETRIES=${MAX_RETRIES:-5}
-MIN_LXC_VG_SIZE_GB=${MIN_LXC_VG_SIZE_GB:-250}
 REPORT_DATA=${REPORT_DATA:-""}
 ANSIBLE_PARAMETERS=${ANSIBLE_PARAMETERS:-""}
 STARTTIME="${STARTTIME:-$(date +%s)}"
@@ -43,12 +42,12 @@ fi
 function successerator {
   set +e
   # Get the time that the method was started.
-  OP_START_TIME="$(date +%s)"
+  OP_START_TIME=$(date +%s)
   RETRY=0
   # Set the initial return value to failure.
   false
   while [ $? -ne 0 -a ${RETRY} -lt ${MAX_RETRIES} ];do
-    RETRY=$((${RETRY}+1))
+    ((RETRY++))
     if [ ${RETRY} -gt 1 ];then
       $@ -vvvv
     else
@@ -61,7 +60,7 @@ function successerator {
     exit_fail
   fi
   # Print the time that the method completed.
-  OP_TOTAL_SECONDS="$(( $(date +%s) - $OP_START_TIME ))"
+  OP_TOTAL_SECONDS="$(( $(date +%s) - OP_START_TIME ))"
   REPORT_OUTPUT="${OP_TOTAL_SECONDS} seconds"
   REPORT_DATA+="- Operation: [ $@ ]\t${REPORT_OUTPUT}\tNumber of Attempts [ ${RETRY} ]\n"
   echo -e "Run Time = ${REPORT_OUTPUT}"
@@ -72,54 +71,6 @@ function install_bits {
   # Use the successerator to run openstack-ansible with
   # the appropriate number of forks
   successerator openstack-ansible ${ANSIBLE_PARAMETERS} --forks ${FORKS} $@
-}
-
-function configure_diskspace {
-  # If there are any block devices available other than the one
-  # used for the root disk, repurpose it for our needs.
-  MIN_LXC_VG_SIZE_B=$((${MIN_LXC_VG_SIZE_GB} * 1024 * 1024 * 1024))
-
-  # only do this if the lxc vg doesn't already exist
-  if ! vgs lxc > /dev/null 2>&1; then
-    blk_devices=$(lsblk -nrdo NAME,TYPE,RO | awk '/d[b-z]+ disk [^1]/ {print $1}')
-    for blk_dev in ${blk_devices}; do
-      # dismount any mount points on the device
-      mount_points=$(awk "/^\/dev\/${blk_dev}[0-9]* / {print \$2}" /proc/mounts)
-      for mount_point in ${mount_points}; do
-        umount ${mount_point}
-        sed -i ":${mount_point}:d" /etc/fstab
-      done
-
-      # add a vg for lxc
-      blk_dev_size_b=$(lsblk -nrdbo NAME,TYPE,SIZE | awk "/^${blk_dev} disk/ {print \$3}")
-      if [ "${blk_dev_size_b}" -gt "${MIN_LXC_VG_SIZE_B}" ]; then
-        if ! vgs lxc > /dev/null 2>&1; then
-          parted --script /dev/${blk_dev} mklabel gpt
-          parted --align optimal --script /dev/${blk_dev} mkpart lxc 0% 80%
-          part_num=$(parted /dev/${blk_dev} print --machine | awk -F':' '/lxc/ {print $1}')
-          pvcreate -ff -y /dev/${blk_dev}${part_num}
-          vgcreate lxc /dev/${blk_dev}${part_num}
-        fi
-        # add a vg for cinder volumes, but only if it doesn't already exist
-        if ! vgs cinder-volumes > /dev/null 2>&1; then
-          parted --align optimal --script /dev/${blk_dev} mkpart cinder 80% 100%
-          part_num=$(parted /dev/${blk_dev} print --machine | awk -F':' '/cinder/ {print $1}')
-          pvcreate -ff -y /dev/${blk_dev}${part_num}
-          vgcreate cinder-volumes /dev/${blk_dev}${part_num}
-        fi
-      else
-        if ! grep '/var/lib/lxc' /proc/mounts 2>&1; then
-          parted --script /dev/${blk_dev} mklabel gpt
-          parted --script /dev/${blk_dev} mkpart lxc ext4 0% 100%
-          part_num=$(parted /dev/${blk_dev} print --machine | awk -F':' '/lxc/ {print $1}')
-          # Format, Create, and Mount it all up.
-          mkfs.ext4 /dev/${blk_dev}${part_num}
-          mkdir -p /var/lib/lxc
-          mount /dev/${blk_dev}${part_num} /var/lib/lxc
-        fi
-      fi
-    done
-  fi
 }
 
 function ssh_key_create {
@@ -145,48 +96,10 @@ function ssh_key_create {
   fi
 }
 
-function loopback_create {
-  LOOP_FILENAME=${1}
-  LOOP_FILESIZE=${2}
-  LOOP_FILE_TYPE=${3}  # thin, thick
-  LOOP_MOUNT_METHOD=${4}  # swap, rc, none
-
-  if [ ! -f "${LOOP_FILENAME}" ]; then
-    if [ "${LOOP_FILE_TYPE}" = "thin" ]; then
-      truncate -s ${LOOP_FILESIZE} ${LOOP_FILENAME}
-    elif [ "${LOOP_FILE_TYPE}" = "thick" ]; then
-      fallocate -l ${LOOP_FILESIZE} ${LOOP_FILENAME} &> /dev/null || \
-      dd if=/dev/zero of=${LOOP_FILENAME} bs=1M count=$(( ${LOOP_FILESIZE} / 1024 / 1024 ))
-    else
-      exit_fail "No valid option ${LOOP_FILE_TYPE} found."
-    fi
-  fi
-
-  if [ "${LOOP_MOUNT_METHOD}" = "rc" ]; then
-    if ! losetup -a | grep -q "(${LOOP_FILENAME})$"; then
-      LOOP_DEVICE=$(losetup -f)
-      losetup ${LOOP_DEVICE} ${LOOP_FILENAME}
-    fi
-    if ! grep -q ${LOOP_FILENAME} /etc/rc.local; then
-      sed -i "\$i losetup \$(losetup -f) ${LOOP_FILENAME}" /etc/rc.local
-    fi
-  fi
-
-  if [ "${LOOP_MOUNT_METHOD}" = "swap" ]; then
-    if ! swapon -s | grep -q ${LOOP_FILENAME}; then
-      mkswap ${LOOP_FILENAME}
-      swapon -a
-    fi
-    if ! grep -q "^${LOOP_FILENAME} " /etc/fstab; then
-      echo "${LOOP_FILENAME} none swap loop 0 0" >> /etc/fstab
-    fi
-  fi
-}
-
 function exit_state {
   set +x
-  TOTALSECONDS="$(( $(date +%s) - $STARTTIME ))"
-  info_block "Run Time = ${TOTALSECONDS} seconds || $(($TOTALSECONDS / 60)) minutes"
+  TOTALSECONDS="$(( $(date +%s) - STARTTIME ))"
+  info_block "Run Time = ${TOTALSECONDS} seconds || $((TOTALSECONDS / 60)) minutes"
   if [ "${1}" == 0 ];then
     info_block "Status: Success"
   else
@@ -203,6 +116,7 @@ function exit_success {
 function exit_fail {
   set +x
   log_instance_info
+  cat ${INFO_FILENAME}
   info_block "Error Info - $@"
   exit_state 1
 }
@@ -224,7 +138,8 @@ function log_instance_info {
   if [ ! -d "/openstack/log/instance-info" ];then
     mkdir -p "/openstack/log/instance-info"
   fi
-  get_instance_info &> /openstack/log/instance-info/host_info_$(date +%s).log
+  export INFO_FILENAME="/openstack/log/instance-info/host_info_$(date +%s).log"
+  get_instance_info &> ${INFO_FILENAME}
   set -x
 }
 
@@ -333,6 +248,11 @@ function get_pip {
 trap "exit_fail ${LINENO} $? 'Received STOP Signal'" SIGHUP SIGINT SIGTERM
 trap "exit_fail ${LINENO} $?" ERR
 
+## Determine OS --------------------------------------------------------------
+# Determine the operating system of the base host
+# Adds the $HOST_DISTRO, $HOST_VERSION, and $HOST_CODENAME bash variables.
+eval "$(python $(dirname ${BASH_SOURCE})/os-detection.py)"
+echo "Detected ${HOST_DISTRO} ${HOST_VERSION} (codename: ${HOST_CODENAME})"
 
 ## Pre-flight check ----------------------------------------------------------
 # Make sure only root can run our script

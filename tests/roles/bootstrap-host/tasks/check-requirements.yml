@@ -1,0 +1,56 @@
+---
+# Copyright 2015, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Check for a supported Operating System
+  assert:
+    that: ansible_distribution | lower == 'ubuntu'
+  tags:
+    - check-operating-system
+
+- name: Identify the space available in /
+  shell: |
+    df -BG / | awk '/^[^Filesystem]/ {print $4}' | sed 's/G//'
+  when:
+    - bootstrap_host_data_disk_device is not defined
+  changed_when: false
+  register: root_space_available
+  tags:
+    - check-disk-size
+
+- name: Fail if there is not enough space available in /
+  assert:
+    that: |
+      root_space_available.stdout | int >= (bootstrap_host_data_disk_min_size * 0.75) | int
+  when:
+    - bootstrap_host_data_disk_device is not defined
+  tags:
+    - check-disk-size
+
+- name: Fail if there is not enough disk space available (disk specified)
+  assert:
+    that: |
+      (ansible_devices[bootstrap_host_data_disk_device]['size'] | replace(' GB','')) | int
+      >= bootstrap_host_data_disk_min_size | int
+  when:
+    - bootstrap_host_data_disk_device is defined
+  tags:
+    - check-disk-size
+
+- name: Ensure that the kernel has VXLAN support
+  modprobe:
+    name: vxlan
+    state: present
+  tags:
+    - check-vxlan

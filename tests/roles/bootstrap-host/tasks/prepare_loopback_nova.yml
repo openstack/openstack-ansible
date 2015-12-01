@@ -1,0 +1,39 @@
+---
+# Copyright 2015, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Create sparse Nova file
+  shell: "truncate -s {{ bootstrap_host_loopback_nova_size }}G /openstack/nova.img"
+  args:
+    creates: /openstack/nova.img
+  register: nova_create
+  tags:
+    - nova-file-create
+
+- name: Format the Nova file
+  filesystem:
+    fstype: ext4
+    dev: /openstack/nova.img
+  when: nova_create | changed
+  tags:
+    - nova-format-file
+
+- name: Create the mount points, fstab entries and mount the file systems
+  mount:
+    name: /var/lib/nova/instances
+    src: /openstack/nova.img
+    fstype: ext4
+    state: mounted
+  tags:
+    - nova-file-mount

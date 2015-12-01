@@ -1,0 +1,89 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+## General options
+debug: True
+
+## Ceilometer Options
+ceilometer_db_type: mongodb
+ceilometer_db_ip: {{ bootstrap_host_mongodb_address }}
+ceilometer_db_port: 27017
+cinder_ceilometer_enabled: True
+glance_ceilometer_enabled: True
+heat_ceilometer_enabled: True
+neutron_ceilometer_enabled: True
+nova_ceilometer_enabled: True
+swift_ceilometer_enabled: True
+
+## Nova Options
+nova_virt_type: qemu
+
+## Glance Options
+glance_default_store: swift
+
+## SSL Settings
+ssl_protocol: "ALL -SSLv2 -SSLv3"
+# Cipher suite string from https://hynek.me/articles/hardening-your-web-servers-ssl-ciphers/
+ssl_cipher_suite: "ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:ECDH+3DES:DH+3DES:RSA+AESGCM:RSA+AES:RSA+3DES:!aNULL:!MD5:!DSS"
+
+## Cinder settings
+cinder_service_backup_program_enabled: True
+
+## Tempest settings
+tempest_service_available_ceilometer: True
+tempest_public_subnet_cidr: 172.29.248.0/22
+tempest_volume_backup_enabled: True
+
+## Galera settings
+galera_innodb_buffer_pool_size: 512M
+galera_innodb_log_buffer_size: 32M
+galera_wsrep_provider_options:
+ - { option: "gcache.size", value: "32M" }
+
+## Set workers for all services to optimise memory usage
+ceilometer_api_workers: 2
+ceilometer_collector_workers: 2
+ceilometer_notification_workers: 2
+cinder_osapi_volume_workers: 2
+glance_api_workers: 2
+glance_registry_workers: 2
+heat_api_workers: 2
+heat_engine_workers: 2
+horizon_wsgi_processes: 2
+horizon_wsgi_threads: 2
+keystone_wsgi_processes: 2
+neutron_api_workers: 2
+neutron_metadata_workers: 1
+neutron_rpc_workers: 0
+nova_conductor_workers: 2
+nova_metadata_workers: 2
+nova_osapi_compute_workers: 2
+swift_account_server_workers: 2
+swift_container_server_workers: 2
+swift_object_server_workers: 2
+swift_proxy_server_workers: 2
+
+# NOTE: hpcloud-b4's eth0 uses 10.0.3.0/24, which overlaps with the
+#       lxc_net_address default
+# TODO: We'll need to implement a mechanism to determine valid lxc_net_address
+#       value which will not overlap with an IP already assigned to the host.
+lxc_net_address: 10.255.255.1
+lxc_net_netmask: 255.255.255.0
+lxc_net_dhcp_range: 10.255.255.2,10.255.255.253
+
+## LXC Container Settings
+lxc_cache_resolvers: {{ lxc_cache_resolvers }}
+lxc_container_template_main_apt_repo: {{ bootstrap_host_ubuntu_repo }}
+lxc_container_template_security_apt_repo: {{ bootstrap_host_ubuntu_security_repo }}
