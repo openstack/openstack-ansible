@@ -242,6 +242,9 @@ neutron_dhcp_config:
 neutron_ml2_drivers_type: "flat,vlan,vxlan,local"
 neutron_ml2_mechanism_drivers: "linuxbridge,l2population"
 
+# Enable or disable L2 Population.
+neutron_l2_population: "False"
+
 ## Set this to configure overlay networks. The default is set as an empty hash.
 # neutron_overlay_network:
 #   address: "172.29.241.248"
@@ -254,7 +257,7 @@ neutron_overlay_network: {}
 ## The neutron multicast group address. This should be set as a host variable if used.
 ## This defaults to an empty string
 # neutron_vxlan_group: 239.1.1.100
-neutron_vxlan_group: ""
+neutron_vxlan_group: "239.1.1.1"
 
 ## Set this variable to configure the provider networks that will be available
 ## When setting up networking in things like the ml2_conf.ini file. Normally
