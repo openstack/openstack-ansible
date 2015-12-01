@@ -21,3 +21,4 @@ replication_server = True
 [account-replicator]
 log_facility = LOG_LOCAL2
 per_diff = 10000
+reclaim_age = {{ reclaim_age | default(604800) }}
