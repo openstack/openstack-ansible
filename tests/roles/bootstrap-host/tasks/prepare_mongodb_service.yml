@@ -1,0 +1,61 @@
+---
+# Copyright 2015, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Configure the MongoDB bind address
+  lineinfile:
+    dest: /etc/mongodb.conf
+    regexp: "^(#)?bind_ip"
+    line: "bind_ip = {{ bootstrap_host_mongodb_address }}"
+  register: mongodb_bind
+  tags:
+    - mongodb-conf-bind_ip
+
+- name: Enable the MongoDB smallfiles option
+  lineinfile:
+    dest: /etc/mongodb.conf
+    regexp: "^(#)?smallfiles"
+    line: "smallfiles = true"
+  register: mongodb_smallfiles
+  tags:
+    - mongodb-conf-smallfiles
+
+- name: Restart mongodb
+  service:
+    name: mongodb
+    state: restarted
+  when:
+    - mongodb_bind | changed or mongodb_smallfiles | changed
+  register: mongodb_restart
+  tags:
+    - mongodb-restart
+
+- name: Wait for mongodb to come back online after the restart
+  wait_for:
+    host: "{{ bootstrap_host_mongodb_address }}"
+    port: 27017
+    delay: 5
+    timeout: 30
+  when:
+    - mongodb_restart is defined
+    - mongodb_restart | changed
+  tags:
+    - mongodb-wait
+
+- name: Test mongodb connectivity
+  command: "mongo --host {{ bootstrap_host_mongodb_address }} --eval ' '"
+  changed_when: False
+  tags:
+    - mongodb-test
+

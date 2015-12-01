@@ -1,0 +1,67 @@
+---
+# Copyright 2015, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Ensure root has a .ssh directory
+  file:
+    path: /root/.ssh
+    state: directory
+    owner: root
+    group: root
+    mode: 0700
+  tags:
+    - ssh-key-dir
+
+- name: Check for existing ssh private key file
+  stat:
+    path: /root/.ssh/id_rsa
+  register: ssh_key_private
+  tags:
+    - ssh-key-check
+
+- name: Check for existing ssh public key file
+  stat:
+    path: /root/.ssh/id_rsa.pub
+  register: ssh_key_public
+  tags:
+    - ssh-key-check
+
+- name: Remove an existing private/public ssh keys if one is missing
+  file:
+    path: "/root/.ssh/{{ item }}"
+    state: absent
+  when: not ssh_key_public.stat.exists or not ssh_key_private.stat.exists
+  with_items:
+    - 'id_rsa'
+    - 'id_rsa.pub'
+  tags:
+    - ssh-key-clean
+
+- name: Create ssh key pair for root
+  user:
+    name: root
+    generate_ssh_key: yes
+    ssh_key_bits: 2048
+    ssh_key_file: /root/.ssh/id_rsa
+  tags:
+    - ssh-key-generate
+
+- name: Ensure root's new public ssh key is in authorized_keys
+  authorized_key:
+    user: root
+    key: "{{ lookup('file', '/root/.ssh/id_rsa.pub') }}"
+    manage_dir: no
+  tags:
+    - ssh-key-authorized
+
