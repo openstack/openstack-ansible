@@ -174,12 +174,12 @@ class ProviderNetworksParsing(object):
             if net['network']['type'] == "vlan":
                 if "vlan" not in self.network_types:
                     self.network_types.append('vlan')
-                    for vlan_range in net['network']['range'].split(','):
-                        self.network_vlan_ranges.append(
-                            '%s:%s' % (
-                                net['network']['net_name'], vlan_range.strip()
-                            )
+                for vlan_range in net['network']['range'].split(','):
+                    self.network_vlan_ranges.append(
+                        '%s:%s' % (
+                            net['network']['net_name'], vlan_range.strip()
                         )
+                    )
             elif net['network']['type'] == "vxlan":
                 if "vxlan" not in self.network_types:
                     self.network_types.append('vxlan')
