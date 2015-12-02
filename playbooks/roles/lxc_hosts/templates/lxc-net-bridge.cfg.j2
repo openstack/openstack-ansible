@@ -8,6 +8,9 @@ iface {{ lxc_net_bridge }} inet static
 {% if lxc_net_gateway != "none" %}
     gateway {{ lxc_net_gateway }}
 {% endif %}
+{% if lxc_net_mtu is defined %}
+    mtu {{ lxc_net_mtu }}
+{% endif %}
     # nat rules start and stop
     post-up /usr/local/bin/lxc-system-manage iptables-create
     post-down /usr/local/bin/lxc-system-manage iptables-remove

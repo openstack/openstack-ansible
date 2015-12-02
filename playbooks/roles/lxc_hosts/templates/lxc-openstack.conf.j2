@@ -10,4 +10,7 @@ lxc.network.type = {{ lxc_container_net_type }}
 lxc.network.name = {{ lxc_container_net_name }}
 lxc.network.link = {{ lxc_container_net_link }}
 lxc.network.flags = up
+{% if lxc_net_mtu is defined %}
+lxc.network.mtu = {{ lxc_net_mtu }}
+{% endif %}
 lxc.network.hwaddr = 00:16:3e:xx:xx:xx
