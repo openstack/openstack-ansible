@@ -116,6 +116,7 @@ function exit_success {
 function exit_fail {
   set +x
   log_instance_info
+  cat ${INFO_FILENAME}
   info_block "Error Info - $@"
   exit_state 1
 }
@@ -137,7 +138,8 @@ function log_instance_info {
   if [ ! -d "/openstack/log/instance-info" ];then
     mkdir -p "/openstack/log/instance-info"
   fi
-  get_instance_info &> /openstack/log/instance-info/host_info_$(date +%s).log
+  export INFO_FILENAME="/openstack/log/instance-info/host_info_$(date +%s).log"
+  get_instance_info &> ${INFO_FILENAME}
   set -x
 }
 
