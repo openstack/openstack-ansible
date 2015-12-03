@@ -178,6 +178,8 @@ This configures glance to send notifications to the message bus:
 This configures nova to send notifications to the message bus:
 ``nova_ceilometer_enabled: False``
 
+This configures neutron to send notifications to the message bus:
+``neutron_ceilometer_enabled: False``
 
 Once all of these steps are complete, you are ready to run the
 os-ceilometer-install.yml playbook! Or, if deploying a new stack, simply run
