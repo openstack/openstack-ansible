@@ -39,6 +39,9 @@ auth_strategy = keystone
 network_scheduler_driver = {{ neutron_driver_network_scheduler }}
 router_scheduler_driver = {{ neutron_driver_router_scheduler }}
 loadbalancer_pool_scheduler_driver = {{ neutron_driver_loadbalancer_pool_scheduler }}
+{% if neutron_ceilometer_enabled %}
+notification_driver = messagingv2
+{% endif %}
 
 # Schedulers
 network_auto_schedule = True
