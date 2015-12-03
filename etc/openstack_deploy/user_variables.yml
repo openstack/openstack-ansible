@@ -29,7 +29,6 @@ nova_ceilometer_enabled: False
 # or "rbd" if using ceph backend; the latter will trigger ceph to get
 # installed on glance
 glance_default_store: file
-glance_notification_driver: noop
 
 # `internalURL` will cause glance to speak to swift via ServiceNet, use
 # `publicURL` to communicate with swift over the public network
