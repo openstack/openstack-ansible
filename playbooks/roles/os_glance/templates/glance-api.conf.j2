@@ -29,14 +29,10 @@ enable_v2_registry = {{ glance_enable_v2_registry }}
 #
 
 {% if glance_ceilometer_enabled %}
-notification_driver = {{ glance_ceilometer_notification_driver }}
-{% else %}
-notification_driver = {{ glance_notification_driver }}
-{% endif %}
-{% if glance_notification_driver == "messaging" or (glance_ceilometer_notification_driver == "messagingv2" and glance_ceilometer_enabled) %}
-rpc_backend = {{ glance_rpc_backend }}
+notification_driver = messagingv2
 {% endif %}
 
+rpc_backend = {{ glance_rpc_backend }}
 
 delayed_delete = False
 scrub_time = 43200
