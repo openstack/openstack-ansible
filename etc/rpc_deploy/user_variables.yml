@@ -148,6 +148,10 @@ maas_filesystem_critical_threshold: 90.0
 #    threshold: 90.0
 #  - filesystem: /boot
 #    threshold: 90.0
+rabbitmq_queued_messages_excluding_notifications_threshold: 100
+# queued messages per check period (default period = 60s)
+rabbitmq_queue_growth_rate_threshold: 15
+
 
 # mysql monitoring thresholds
 mysql_connection_critical_threshold: 90.0
