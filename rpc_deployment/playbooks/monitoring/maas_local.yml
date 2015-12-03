@@ -339,6 +339,7 @@
     alarms:
       - { 'name': 'wsrep_cluster_size', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["wsrep_cluster_size"] < {{ groups["galera"] | length }}) { return new AlarmStatus(CRITICAL, "Galera cluster size less than expected"); }' }
       - { 'name': 'wsrep_local_state', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (metric["wsrep_local_state_comment"] != "Synced" ) { return new AlarmStatus(CRITICAL, "Galera cluster node not synced"); }' }
+      - { 'name': 'percentage_used_mysql_connections', 'criteria': ':set consecutiveCount={{ maas_alarm_local_consecutive_count }} if (percentage(metric["mysql_current_connections"], metric["mysql_max_configured_connections"]) > {{ mysql_connection_critical_threshold }} ) { return new AlarmStatus(CRITICAL, "Mysql connections has exceeded {{ mysql_connection_critical_threshold }}% of configured maximum"); } if (percentage(metric["mysql_current_connections"], metric["mysql_max_configured_connections"]) > {{ mysql_connection_warning_threshold }} ) { return new AlarmStatus(WARNING, "Mysql connections has exceeded {{ mysql_connection_warning_threshold }}% of configured maximum"); }' }
   user: root
   roles:
     - maas_local
