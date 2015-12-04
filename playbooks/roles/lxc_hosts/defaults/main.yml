@@ -23,6 +23,7 @@ lxc_net_bridge_port: none
 lxc_net_address: 10.0.3.1
 lxc_net_netmask: 255.255.255.0
 lxc_net_gateway: none  ## if "none" no gateway will on the LXC bridge, nat must be "false" to use a gateway.
+#lxc_net_mtu: 1500 ##setting this variable will add mtu configuration for the lxc config and network bridge
 
 # lxc container nat enabled
 lxc_net_nat: true  ## If "true" nat rules will be created with the lxc network.
