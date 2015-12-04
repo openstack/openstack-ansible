@@ -57,7 +57,15 @@
 
 - name: Set upper constraints
   set_fact:
-    upper_constraints: "{{ slurp_upper_constraints.content | b64decode | splitlines }}"
+    _upper_constraints: "{{ slurp_upper_constraints.content | b64decode | splitlines }}"
+  when: slurp_upper_constraints | success
+  tags:
+    - repo-set-constraints
+    - repo-build-constraints-file
+
+- name: Set upper constraints
+  set_fact:
+    upper_constraints: "{{ _upper_constraints | pip_constraint_update(local_packages.results.0.item.packages) }}"
   when: slurp_upper_constraints | success
   tags:
     - repo-set-constraints

@@ -27,6 +27,28 @@ Simple filters that may be useful from within the stack
 """
 
 
+def _pip_requirement_split(requirement):
+    version_descriptors = "(>=|<=|>|<|==|~=|!=)"
+    requirement = requirement.split(';')
+    requirement_info = re.split(r'%s\s*' % version_descriptors, requirement[0])
+    name = requirement_info[0]
+    marker = None
+    if len(requirement) > 1:
+        marker = requirement[1]
+    versions = None
+    if len(requirement_info) > 1:
+        versions = requirement_info[1]
+
+    return name, versions, marker
+
+
+def _lower_set_lists(list_one, list_two):
+
+    _list_one = set([i.lower() for i in list_one])
+    _list_two = set([i.lower() for i in list_two])
+    return _list_one, _list_two
+
+
 def bit_length_power_of_2(value):
     """Return the smallest power of 2 greater than a numeric value.
 
@@ -120,15 +142,31 @@ def pip_requirement_names(requirements):
     :return: ``str``
     """
 
-    version_descriptors = "(>=|<=|>|<|==|~=|!=)"
     named_requirements = list()
     for requirement in requirements:
-        requirement = requirement.split(';')[0]
-        name = re.split(r'%s\s*' % version_descriptors, requirement)[0]
+        name = _pip_requirement_split(requirement)[0]
         if name and not name.startswith('#'):
             named_requirements.append(name.lower())
 
     return sorted(set(named_requirements))
+
+
+def pip_constraint_update(list_one, list_two):
+
+    _list_one, _list_two = _lower_set_lists(list_one, list_two)
+    _list_one, _list_two = list(_list_one), list(_list_two)
+    for item2 in _list_two:
+        item2_name, item2_versions, _ = _pip_requirement_split(item2)
+        if item2_versions:
+            for item1 in _list_one:
+                if item2_name == _pip_requirement_split(item1)[0]:
+                    item1_index = _list_one.index(item1)
+                    _list_one[item1_index] = item2
+                    break
+            else:
+                _list_one.append(item2)
+
+    return sorted(_list_one)
 
 
 def splitlines(string_with_lines):
@@ -139,8 +177,7 @@ def splitlines(string_with_lines):
 
 def filtered_list(list_one, list_two):
 
-    _list_one = set([i.lower() for i in list_one])
-    _list_two = set([i.lower() for i in list_two])
+    _list_one, _list_two = _lower_set_lists(list_one, list_two)
     return list(_list_one-_list_two)
 
 
@@ -199,6 +236,7 @@ class FilterModule(object):
             'netorigin': get_netorigin,
             'string_2_int': string_2_int,
             'pip_requirement_names': pip_requirement_names,
+            'pip_constraint_update': pip_constraint_update,
             'splitlines': splitlines,
             'filtered_list': filtered_list,
             'git_link_parse': git_link_parse,
