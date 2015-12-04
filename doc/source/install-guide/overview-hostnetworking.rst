@@ -85,19 +85,21 @@ Target hosts can contain the following network bridges:
 
    -  Mandatory.
 
-   -  Provides infrastructure for VLAN and flat networks.
+   -  Provides infrastructure for VLAN networks.
 
    -  Manually created and attaches to a physical or logical interface,
-      typically ``bond1``. Also attaches to ``eth11`` in each associated
-      container. Does not contain an IP address because it only handles
-      layer 2 connectivity.
+      typically ``bond1``. Attaches to ``eth11`` for vlan type networks
+      in each associated container. It does not contain an IP address because
+      it only handles layer 2 connectivity. This interface can support flat
+      networks as well, though additional bridge configuration will be needed.
+      See more on `network configuration here <configure-networking.html>`_
+
 
 `Figure 2.3, "Container network
 architecture" <overview-hostnetworking.html#fig_overview_networkarch-container>`_
 provides a visual representation of network components for services in
 containers.
 
- 
 
 **Figure 2.3. Container network architecture**
 
