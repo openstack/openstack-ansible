@@ -164,7 +164,7 @@ configure target host networking.
                container_bridge: "br-vlan"
                container_type: "veth"
                container_interface: "eth12"
-               host_bind_override: "eth12"
+               host_bind_override: "PHYSICAL_NETWORK_INTERFACE"
                type: "flat"
                net_name: "flat"
            - network:
@@ -181,6 +181,25 @@ configure target host networking.
    For example, 1:1000. Supports more than one range of VLANs on a particular
    network. For example, 1:1000,2001:3000. Create a similar stanza for each
    additional network.
+
+   Replace ``PHYSICAL_NETWORK_INTERFACE`` with the network interface used for
+   flat networking. This **must** be a physical interface on the same L2 network
+   being used with the br-vlan devices. If no additional network interface is
+   available, a veth pair plugged into the br-vlan bridge can provide the needed
+   interface.
+
+   Example creating a veth-pair within an existing bridge
+
+   .. code-block:: text
+
+         # Create veth pair, don't bomb if already exists
+         pre-up ip link add br-vlan-veth type veth peer name PHYSICAL_NETWORK_INTERFACE || true
+         # Set both ends UP
+         pre-up ip link set br-vlan-veth up
+         pre-up ip link set PHYSICAL_NETWORK_INTERFACE up
+         # Delete veth pair on DOWN
+         post-down ip link del br-vlan-veth || true
+         bridge_ports br-vlan-veth
 
 .. note::
 
