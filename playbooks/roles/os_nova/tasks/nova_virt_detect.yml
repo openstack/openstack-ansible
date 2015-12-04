@@ -13,9 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: nova_compute_kvm.yml
-  when: nova_virt_type == 'kvm' or nova_virt_type == 'qemu'
+- name: Get virt type value and store as var
+  shell: |
+    /usr/bin/egrep -c '(vmx|svm)' /proc/cpuinfo
+  register: virt_type_value
+  changed_when: false
+  failed_when: false
+  tags:
+    - nova-cpuinfo-read
 
-- include: nova_compute_key_populate.yml
-
-- include: nova_compute_key_distribute.yml
+- name: Register a fact for the nova virt type
+  set_fact:
+     nova_virt_type: "{{ ((virt_type_value.stdout | int) > 0) | ternary('kvm', 'qemu') }}"
+  tags:
+    - nova-virt-type-set
