@@ -60,7 +60,7 @@ repository root directory:
            /opt/openstack-ansible
        $ cd /opt/openstack-ansible
 
-Next switch the the applicable branch/tag you wish to deploy from. Note that
+Next switch the applicable branch/tag you wish to deploy from. Note that
 deploying from the head of a branch may result in an unstable build due to
 changes in flight and upstream OpenStack changes. For a test (ie not a
 development) build it is usually best to checkout the latest tagged version.
