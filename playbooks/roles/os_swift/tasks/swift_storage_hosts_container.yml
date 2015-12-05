@@ -88,6 +88,15 @@
     system_group: "{{ swift_system_group_name }}"
     service_home: "{{ swift_system_home_folder }}"
 
+- include: swift_upstart_common_init.yml
+  vars:
+    program_name: "swift-container-reconciler"
+    program_config_options: "{{ swift_container_reconciler_program_config_options }}"
+    service_name: "{{ swift_service_name }}"
+    system_user: "{{ swift_system_user_name }}"
+    system_group: "{{ swift_system_group_name }}"
+    service_home: "{{ swift_system_home_folder }}"
+
 - name: "Swift container server configuration"
   config_template:
     src: "{{ item.src }}"
@@ -101,6 +110,10 @@
     - src: "container-server.conf.j2"
       dest: "/etc/swift/container-server/container-server.conf"
       config_overrides: "{{ swift_container_server_conf_overrides }}"
+      config_type: "ini"
+    - src: "container-reconciler.conf.j2"
+      dest: "/etc/swift/container-server/container-reconciler.conf"
+      config_overrides: "{{ swift_container_reconciler_conf_overrides }}"
       config_type: "ini"
   notify: Restart swift container services
 

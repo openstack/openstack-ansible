@@ -20,3 +20,4 @@ replication_server = True
 
 [container-replicator]
 log_facility = LOG_LOCAL3
+reclaim_age = {{ reclaim_age | default(604800) }}

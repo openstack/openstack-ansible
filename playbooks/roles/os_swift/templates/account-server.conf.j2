@@ -32,6 +32,7 @@ recon_lock_path = /var/lock
 [account-replicator]
 log_facility = LOG_LOCAL2
 per_diff = 10000
+reclaim_age = {{ reclaim_age | default(604800) }}
 {% endif %}
 
 [account-auditor]

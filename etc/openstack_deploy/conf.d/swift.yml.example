@@ -81,6 +81,10 @@
 #     Weight of a disk. Applies to all disks in all storage hosts unless
 #     overridden deeper in the structure. Defaults to 100.
 #
+#     Option: reclaim_age (optional, integer, default 604800)
+#     The amount of time in seconds  before items, such as tombstones are
+#     reclaimed, default is 604800 (7 Days).
+#
 #   Example:
 #
 #   Define a typical deployment:

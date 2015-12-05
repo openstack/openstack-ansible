@@ -118,9 +118,11 @@ swift_account_replicator_program_config_options: /etc/swift/account-server/accou
 
 swift_container_server_program_config_options: /etc/swift/container-server/container-server.conf
 swift_container_replicator_program_config_options: /etc/swift/container-server/container-server-replicator.conf
+swift_container_reconciler_program_config_options: /etc/swift/container-server/container-reconciler.conf
 
 swift_object_server_program_config_options: /etc/swift/object-server/object-server.conf
 swift_object_replicator_program_config_options: /etc/swift/object-server/object-server-replicator.conf
+swift_object_expirer_program_config_options: /etc/swift/object-server/object-expirer.conf
 
 swift_proxy_server_program_config_options: /etc/swift/proxy-server/proxy-server.conf
 
@@ -221,6 +223,7 @@ swift_container_program_names:
   - swift-container-sync
   - swift-container-updater
   - swift-container-replicator-server
+  - swift-container-reconciler
 
 swift_object_program_names:
   - swift-object-server
@@ -228,6 +231,7 @@ swift_object_program_names:
   - swift-object-replicator
   - swift-object-updater
   - swift-object-replicator-server
+  - swift-object-expirer
 
 swift_proxy_program_names:
   - swift-proxy-server
@@ -239,6 +243,8 @@ swift_proxy_server_conf_overrides: {}
 swift_account_server_conf_overrides: {}
 swift_account_server_replicator_conf_overrides: {}
 swift_container_server_conf_overrides: {}
+swift_container_reconciler_conf_overrides: {}
 swift_container_server_replicator_conf_overrides: {}
 swift_object_server_conf_overrides: {}
+swift_object_expirer_conf_overrides: {}
 swift_object_server_replicator_conf_overrides: {}
