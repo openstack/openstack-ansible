@@ -18,7 +18,7 @@ repo_package_name: rackspace-monitoring-cli
 repo_path: "{{ repo_package_name }}_{{ git_install_branch | replace('/', '_') }}"
 
 git_repo: https://github.com/racker/rackspace-monitoring-cli
-git_install_branch: "v0.6.8"
+git_install_branch: "v0.6.10"
 git_dest: "/opt/{{ repo_path }}"
 
 pip_wheel_name: rackspace-monitoring-cli
