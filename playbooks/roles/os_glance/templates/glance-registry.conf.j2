@@ -16,9 +16,9 @@ workers = {{ glance_registry_workers | default(api_threads) }}
 api_limit_max = 1000
 limit_param_default = 25
 {% if glance_ceilometer_enabled %}
-notification_driver = {{ glance_notification_driver }}
-rpc_backend = {{ glance_rpc_backend }}
+notification_driver = messagingv2
 {% endif %}
+rpc_backend = {{ glance_rpc_backend }}
 
 [database]
 connection = mysql+pymysql://{{ glance_galera_user }}:{{ glance_container_mysql_password }}@{{ glance_galera_address }}/{{ glance_galera_database }}?charset=utf8
