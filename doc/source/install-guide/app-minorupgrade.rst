@@ -1,4 +1,4 @@
-`Home <index.html>`__ OpenStack Ansible Installation Guide
+`Home <index.html>`__ OpenStack-Ansible Installation Guide
 
 Appendix C. Minor Upgrades
 --------------------------

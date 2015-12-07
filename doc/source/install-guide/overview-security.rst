@@ -1,9 +1,9 @@
-`Home <index.html>`__ OpenStack Ansible Installation Guide
+`Home <index.html>`__ OpenStack-Ansible Installation Guide
 
 Security
 --------
 
-The openstack-ansible project provides several security features for
+The OpenStack-Ansible project provides several security features for
 OpenStack deployments.  This section of documentation covers some of those
 features and how they can benefit deployers of various sizes.
 
@@ -24,7 +24,7 @@ specific limits and policies around what resources a particular application
 can access.  Any activity outside the allowed policies is denied at the kernel
 level.
 
-In openstack-ansible, AppArmor profiles are applied that limit the actions
+In OpenStack-Ansible, AppArmor profiles are applied that limit the actions
 that each LXC container may take on a system.  This is done within the
 `lxc_hosts role`_.
 
@@ -37,7 +37,7 @@ Encrypted communication
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 Data is encrypted while in transit between some OpenStack services in
-openstack-ansible deployments.  Not all communication between all services is
+OpenStack-Ansible deployments.  Not all communication between all services is
 currently encrypted.  For more details on what traffic is encrypted, and how
 to configure SSL certificates, refer to the documentation section titled
 `Securing services with SSL certificates`_.
