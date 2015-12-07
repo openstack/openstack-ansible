@@ -30,8 +30,9 @@
     - swift-storage-hosts
 
 - include: swift_service_setup.yml
-  when: >
-    inventory_hostname == groups['swift_all'][0]
+  when:
+    - inventory_hostname == groups['swift_all'][0]
+    - '"keystoneauth" in swift_middleware_list'
 
 - name: Flush handlers
   meta: flush_handlers
