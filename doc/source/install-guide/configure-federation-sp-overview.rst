@@ -1,9 +1,9 @@
-`Home <index.html>`__ OpenStack Ansible Installation Guide
+`Home <index.html>`__ OpenStack-Ansible Installation Guide
 
 Identity Service (keystone) service provider background
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In openstack-ansible (OSA) the Identity Service (keystone) is set up to
+In OpenStack-Ansible (OSA) the Identity Service (keystone) is set up to
 use Apache with mod_wsgi. The additional configuration of
 keystone as a federation service provider adds Apache mod_shib
 and configures it to respond to specific locations requests
