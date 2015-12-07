@@ -17,11 +17,6 @@ network_device_mtu = {{ neutron_network_device_mtu }}
 allow_overlapping_ips = True
 vlan_transparent = False
 
-#Ceilometer configurations
-{% if neutron_ceilometer_enabled %}
-notification_driver = {{ neutron_driver_notification }}
-{% endif %}
-
 # Plugins
 core_plugin = {{ neutron_plugin_core }}
 {% if neutron_plugin_type != 'plumgrid' %}
