@@ -42,6 +42,8 @@
       tags:
         - ssh-wait
   roles:
+    - role: "pip_lock_down"
+      when: "(groups['repo_all'] | length) >= 1"
     - role: "rabbitmq_server"
       tags:
         - "rabbitmq-server"
