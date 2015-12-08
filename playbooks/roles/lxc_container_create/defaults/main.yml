@@ -54,6 +54,7 @@ lxc_container_default_interfaces: |
   # Load any additional configs
   source /etc/network/interfaces.d/*.cfg
 
+lxc_container_default_mtu: "1500"
 # The container interface variable is a a default object that assume the
 # Ansible iterator type is `with_dict`.
 lxc_container_interface: |
