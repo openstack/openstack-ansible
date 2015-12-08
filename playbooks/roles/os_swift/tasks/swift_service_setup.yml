@@ -43,6 +43,7 @@
     password: "{{ swift_service_password }}"
     insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_service
+  when: not swift_service_in_ldap | bool
   until: add_service|success
   retries: 5
   delay: 10
@@ -62,6 +63,7 @@
     role_name: "{{ swift_service_role_name }}"
     insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_service
+  when: not swift_service_in_ldap | bool
   until: add_service|success
   retries: 5
   delay: 10
@@ -96,6 +98,7 @@
     password: "{{ swift_dispersion_password }}"
     insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_service
+  when: not swift_service_in_ldap | bool
   until: add_service|success
   retries: 5
   delay: 10
