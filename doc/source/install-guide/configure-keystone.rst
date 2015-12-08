@@ -9,7 +9,7 @@ Customizing the Keystone deployment is done within
 Securing Keystone communication with SSL certificates
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The openstack-ansible project provides the ability to secure Keystone
+The OpenStack-Ansible project provides the ability to secure Keystone
 communications with self-signed or user-provided SSL certificates.
 
 Refer to `Securing services with SSL certificates`_ for available configuration
