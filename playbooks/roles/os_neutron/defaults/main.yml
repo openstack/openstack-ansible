@@ -42,6 +42,10 @@ neutron_venv_lib_dir: "{{ neutron_bin | dirname }}/lib/python2.7/site-packages/"
 neutron_non_venv_lib_dir: "/usr/local/lib/python2.7/dist-packages/"
 neutron_lib_dir: "{{ (neutron_venv_enabled | bool) | ternary(neutron_venv_lib_dir, neutron_non_venv_lib_dir) }}"
 
+# Enable/Disable Ceilometer
+neutron_ceilometer_enabled: False
+
+# Fatal Deprecations
 neutron_fatal_deprecations: False
 
 ## neutron User / Group
