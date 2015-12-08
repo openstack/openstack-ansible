@@ -23,4 +23,4 @@
   meta: flush_handlers
 
 - include: galera_setup.yml
-  when: inventory_hostname == groups['galera_all'][0]
+  when: inventory_hostname == galera_server_bootstrap_node
