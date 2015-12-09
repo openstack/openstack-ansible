@@ -3,19 +3,18 @@
     "context_is_project": "project_id:%(target.project_id)s",
     "context_is_owner": "user_id:%(target.user_id)s",
     "segregation": "rule:context_is_admin",
-    "service_role": "role:service",
-    "iaas_role": "role:iaas",
 
     "telemetry:get_alarm": "rule:context_is_admin",
-    "telemetry:query_alarm": "rule:context_is_admin",
-    "telemetry:get_alarm_state": "rule:context_is_admin",
     "telemetry:get_alarms": "rule:context_is_admin",
+    "telemetry:query_alarm": "rule:context_is_admin",
+
     "telemetry:create_alarm": "rule:context_is_admin",
-    "telemetry:set_alarm": "rule:context_is_admin",
+    "telemetry:change_alarm": "rule:context_is_admin",
     "telemetry:delete_alarm": "rule:context_is_admin",
 
-    "telemetry:alarm_history": "rule:context_is_admin",
+    "telemetry:get_alarm_state": "rule:context_is_admin",
     "telemetry:change_alarm_state": "rule:context_is_admin",
+
+    "telemetry:alarm_history": "rule:context_is_admin",
     "telemetry:query_alarm_history": "rule:context_is_admin"
 }
-
