@@ -92,11 +92,15 @@ flavor = {{ glance_flavor }}
 
 [glance_store]
 default_store = {{ glance_default_store }}
-{% if glance_default_store == "file" %}
-stores = file,http,cinder
+
+{% set glance_available_stores = [ glance_default_store ] + glance_additional_stores %}
+stores = {% for backend in glance_available_stores %}{{ backend }}{% if not loop.last %},{% endif %}{% endfor %}
+
+{% if 'file' in glance_available_stores %}
 filesystem_store_datadir = {{ glance_system_user_home }}/images/
-{% elif glance_default_store == "swift" %}
-stores = swift,http,cinder
+{% endif %}
+
+{% if 'swift' in glance_available_stores %}
 user_domain_id = {{ glance_swift_store_user_domain }}
 project_domain_id = {{ glance_swift_store_project_domain }}
 swift_store_auth_version = {{ glance_swift_store_auth_version }}
@@ -111,8 +115,9 @@ swift_store_large_object_size = {{ glance_swift_store_large_object_size }}
 swift_store_large_object_chunk_size = {{ glance_swift_store_large_object_chunk_size }}
 swift_store_retry_get_count = 5
 swift_store_endpoint_type = {{ glance_swift_store_endpoint_type }}
-{% elif glance_default_store == "rbd" %}
-stores = rbd,http,cinder
+{% endif %}
+
+{% if 'rbd' in glance_available_stores %}
 rbd_store_pool = {{ glance_rbd_store_pool }}
 rbd_store_user = {{ glance_rbd_store_user }}
 rbd_store_ceph_conf = /etc/ceph/ceph.conf
