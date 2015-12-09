@@ -55,6 +55,9 @@ glance_system_user_home: "/var/lib/{{ glance_system_user_name }}"
 glance_registry_host: "{{ internal_lb_vip_address }}"
 glance_rpc_backend: glance.openstack.common.rpc.impl_kombu
 glance_default_store: file
+glance_additional_stores:
+  - http
+  - cinder
 glance_flavor: "{% if glance_default_store == 'rbd' %}keystone{% else %}keystone+cachemanagement{% endif %}"
 glance_show_image_direct_url: "{{ glance_default_store == 'rbd' }}"
 
