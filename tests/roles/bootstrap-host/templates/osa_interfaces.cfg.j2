@@ -1,0 +1,68 @@
+## The default networking requires several bridges. These bridges were named to be informative
+## however they can be named what ever you like and is adaptable to any network infrastructure
+## environment. This file serves as an example of how to setup basic networking and was ONLY
+## built for the purpose of being an example and used expressly in the building of an ALL IN
+## ONE development environment.
+
+auto br-mgmt
+iface br-mgmt inet static
+    bridge_stp off
+    bridge_waitport 0
+    bridge_fd 0
+    # Notice the bridge port is the vlan tagged interface
+    bridge_ports {{ bootstrap_host_bridge_mgmt_ports }}
+    address 172.29.236.100
+    netmask 255.255.252.0
+    offload-sg off
+
+auto br-vxlan
+iface br-vxlan inet static
+    bridge_stp off
+    bridge_waitport 0
+    bridge_fd 0
+    bridge_ports {{ bootstrap_host_bridge_vxlan_ports }}
+    address 172.29.240.100
+    netmask 255.255.252.0
+    offload-sg off
+    # To ensure ssh checksum is correct
+    up /sbin/iptables -A POSTROUTING -t mangle -p tcp --dport 22 -j CHECKSUM --checksum-fill
+    down /sbin/iptables -D POSTROUTING -t mangle -p tcp --dport 22 -j CHECKSUM --checksum-fill
+    # To provide internet connectivity to instances
+    up /sbin/iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+    down /sbin/iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
+
+auto br-storage
+iface br-storage inet static
+    bridge_stp off
+    bridge_waitport 0
+    bridge_fd 0
+    bridge_ports {{ bootstrap_host_bridge_storage_ports }}
+    address 172.29.244.100
+    netmask 255.255.252.0
+    offload-sg off
+
+auto br-vlan
+iface br-vlan inet static
+    bridge_stp off
+    bridge_waitport 0
+    bridge_fd 0
+    address 172.29.248.100
+    netmask 255.255.252.0
+    offload-sg off
+    # Create veth pair, don't bomb if already exists
+    pre-up ip link add br-vlan-veth type veth peer name eth12 || true
+    # Set both ends UP
+    pre-up ip link set br-vlan-veth up
+    pre-up ip link set eth12 up
+    # Delete veth pair on DOWN
+    post-down ip link del br-vlan-veth || true
+    bridge_ports br-vlan-veth
+
+# Add an additional address to br-vlan
+iface br-vlan inet static
+    # Flat network default gateway
+    # -- This needs to exist somewhere for network reachability
+    # -- from the router namespace for floating IP paths.
+    # -- Putting this here is primarily for tempest to work.
+    address 172.29.248.1
+    netmask 255.255.252.0
