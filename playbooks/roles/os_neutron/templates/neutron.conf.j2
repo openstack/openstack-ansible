@@ -50,7 +50,7 @@ agent_down_time = {{ neutron_agent_down_time }}
 
 {% set num_agent = groups['neutron_agent'] | length %}
 {% if neutron_plugin_type == 'ml2' and num_agent >= 2 %}
-{% if neutron_services['neutron-linuxbridge-agent']['service_en'] | bool and not neutron_l2_population | bool %}
+{% if neutron_services['neutron-linuxbridge-agent']['service_en'] | bool %}
 
 {% set max_l3_router = num_agent if num_agent > 2 else 2 %}
 {% set min_l3_router = num_agent if (num_agent > 2 and num_agent < max_l3_router) else 2 %}
