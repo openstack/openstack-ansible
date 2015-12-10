@@ -13,26 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Disable L2 population for L3HA support
-  set_fact:
-    neutron_l2_population: "False"
-  when:
-    - neutron_plugin_type == 'ml2'
-    - groups['neutron_agent'] | length >= 2
-    - neutron_services['neutron-linuxbridge-agent']['service_en'] | bool
-    - neutron_l2_population is undefined
-  tags:
-    - neutron-config
-
-- name: Enable L2 population support
-  set_fact:
-    neutron_l2_population: "True"
-  when:
-    - neutron_plugin_type == 'ml2'
-    - neutron_l2_population is undefined
-  tags:
-    - neutron-config
-
 - name: Copy neutron config
   config_template:
     src: "{{ item.src }}"
