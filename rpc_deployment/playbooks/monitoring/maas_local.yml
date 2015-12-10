@@ -360,7 +360,7 @@
 
 - hosts: hosts
   vars:
-    devices: "[{% for device in ansible_devices.keys()%}{% if device not in maas_excluded_devices|default([]) %}'{{ device }}',{% endif %}{% endfor %}]"
+    devices: "[{% for device in ansible_devices.keys()%}{% if (device not in maas_excluded_devices|default([])) and (ansible_devices[device].model != 'VIRTUAL-DISK') %}'{{ device }}',{% endif %}{% endfor %}]"
     check_name: disk_utilisation
     check_details: file={{ check_name }}.py
     check_period: "{{ maas_check_period }}"
