@@ -1,4 +1,4 @@
-`Home <index.html>`__ OpenStack Ansible Installation Guide
+`Home <index.html>`__ OpenStack-Ansible Installation Guide
 
 Using Identity Service to Identity Service federation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -42,7 +42,7 @@ Unfortunately, many of the steps above involve manually sending API requests.
 The infrastructure for the command line utilities to perform all these steps
 for the user does not yet exist.
 
-To simplify the task of obtaining access to a SP cloud, OpenStack Ansible provides a script that wraps the above steps. The script is called ``federated-login.sh`` and is
+To simplify the task of obtaining access to a SP cloud, OpenStack-Ansible provides a script that wraps the above steps. The script is called ``federated-login.sh`` and is
 used as follows::
 
     # ./scripts/federated-login.sh -p project [-d domain] sp_id

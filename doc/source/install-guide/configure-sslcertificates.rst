@@ -8,7 +8,7 @@ deployment is highly recommended in the `OpenStack Security Guide`_.
 
 .. _OpenStack Security Guide: http://docs.openstack.org/security-guide/secure-communication.html
 
-The openstack-ansible project currently offers the ability to configure SSL
+The OpenStack-Ansible project currently offers the ability to configure SSL
 certificates for secure communication with the following services:
 
 * HAProxy
@@ -32,7 +32,7 @@ Self-signed certificates
 Self-signed certificates make it easy to get started quickly and they ensure
 data is encrypted in transit, but they don't provide a high level of trust
 for highly secure environments.  The use of self-signed certificates is
-currently the default in openstack-ansible. When self-signed certificates are
+currently the default in OpenStack-Ansible. When self-signed certificates are
 being used, certificate verification must be disabled using the following
 user variables depending on your configuration. These variables can be added
 in ``/etc/openstack_deploy/user_variables.yml``.
