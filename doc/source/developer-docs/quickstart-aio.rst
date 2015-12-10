@@ -122,7 +122,7 @@ general estimates:
 * Systems with traditional hard disks: ~ 90-120 minutes
 
 Once the playbooks have fully executed, you may experiment with various
-settings changes in ``/etc/openstack_deploy/user_variable.yml`` and only
+settings changes in ``/etc/openstack_deploy/user_variables.yml`` and only
 run individual playbooks. For example, to run the playbook for the
 Keystone service, execute:
 

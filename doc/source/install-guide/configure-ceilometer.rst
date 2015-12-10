@@ -150,7 +150,7 @@ Configuring the user data
 #########################
 In addition to adding these hosts in the
 ``/etc/openstack_deploy/conf.d/ceilometer.yml`` file, other configurations
-must be specified in the ``/etc/openstack_deploy/user_variable.yml`` file.
+must be specified in the ``/etc/openstack_deploy/user_variables.yml`` file.
 These configurations are listed below, along with a description:
 
 
