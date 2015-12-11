@@ -13,11 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Ensure cinder api ip/port are responsive
-  wait_for:
-    port: "{{ cinder_service_port }}"
-    delay: 10
-    host: "{{ internal_lb_vip_address }}"
+- name: Ensure cinder api is available
+  uri:
+    url: "{{ cinder_service_internaluri }}"
+    status_code: 200
+  register: api_status
+  until: api_status |success
+  retries: 10
+  delay: 10
   tags:
     - cinder-backends
 
