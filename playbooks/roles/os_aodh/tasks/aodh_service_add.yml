@@ -39,6 +39,7 @@
     role_name: "{{ role_name }}"
     password: "{{ aodh_service_password }}"
   register: add_service
+  when: not aodh_service_in_ldap | bool
   until: add_service|success
   retries: 5
   delay: 10
@@ -55,6 +56,7 @@
     tenant_name: "{{ aodh_service_project_name }}"
     role_name: "{{ aodh_role_name }}"
   register: add_admin_role
+  when: not aodh_service_in_ldap | bool
   until: add_admin_role|success
   retries: 5
   delay: 10
