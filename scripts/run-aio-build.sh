@@ -12,6 +12,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
+# ----------------------------------------------------------------------------
+#
+# This script configures an all-in-one (AIO) deployment. For more details, see
+# the quick start documentation for openstack-ansible:
+#
+#   http://docs.openstack.org/developer/openstack-ansible/developer-docs/quickstart-aio.html#running-an-aio-build-in-one-step
 
 ## Shell Opts ----------------------------------------------------------------
 
@@ -25,31 +32,32 @@ export WORKING_FOLDER=${WORKING_FOLDER:-"/opt/openstack-ansible"}
 
 ## Main ----------------------------------------------------------------------
 
-# set verbosity
+# Set verbosity
 set -x
 
-# install git so that we can fetch the repo
-# note: the redirect of stdin to /dev/null is necessary for when this script is
+# Install git so that we can fetch various git repositories.
+# Note: the redirect of stdin to /dev/null is necessary for when this script is
 # run as part of a curl-pipe-shell. otherwise apt-get will consume the rest of
 # this file as if it was its own stdin (despite using -y to skip interaction).
 apt-get update && apt-get install -y git < /dev/null
 
-# fetch the repo
+# Fetch the openstack-ansible repository.
 git clone -b ${REPO_BRANCH} ${REPO_URL} ${WORKING_FOLDER}
 
-# change into the expected root directory
+# Change into the expected root directory.
 cd ${WORKING_FOLDER}
 
-# first, bootstrap the AIO host
-source scripts/bootstrap-aio.sh
-
-# next, bootstrap Ansible
+# Start by bootstrapping Ansible from source.
 source scripts/bootstrap-ansible.sh
 
-# finally, run all the playbooks
+# Next, bootstrap the AIO host.
+source scripts/bootstrap-aio.sh
+
+# Finally, run all of the playbooks.
 bash scripts/run-playbooks.sh
 
-# put a motd in place to help the user know what stuff is accessible once the build is complete
+# Add a MOTD to explain to the deployer what is accessible once the build
+# is complete.
 cat > /etc/update-motd.d/20-openstack<< EOF
 #!/usr/bin/env bash
 echo ""
@@ -60,7 +68,8 @@ echo ""
 EOF
 chmod +x /etc/update-motd.d/20-openstack
 
-# put an motd in place to help the user know how to restart galera after reboot
+# Add a MOTD to explain to the deployer how to restart galera properly after a
+# reboot.
 cat > /etc/update-motd.d/21-galera<< EOF
 #!/usr/bin/env bash
 echo ""
