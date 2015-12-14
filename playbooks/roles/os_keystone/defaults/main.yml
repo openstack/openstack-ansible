@@ -330,6 +330,9 @@ keystone_service_in_ldap: false
 keystone_sp_apt_packages:
   - libapache2-mod-shib2
 
+# Keystone notification settings
+keystone_ceilometer_enabled: false
+
 # Common apt packages
 keystone_apt_packages:
   - apache2
