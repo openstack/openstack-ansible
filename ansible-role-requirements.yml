@@ -1,26 +1,68 @@
+# Potential method for globally resolving plugins and libs
+# - name: plugins
+#   src: https://github.com/os-cloud/openstack-ansible-plugins
+#   scm: git
+#   path: /etc/ansible
+#   version: master
 - src: evrardjp.keepalived
   name: keepalived
   version: '1.3'
 - src: mattwillsher.sshd
   name: sshd
 - name: apt_package_pinning
-  src: https://github.com/openstack/openstack-ansible-apt_package_pinning
+  src: https://git.openstack.org/openstack/openstack-ansible-apt_package_pinning
+  scm: git
   version: master
 - name: lxc_container_create
-  src: https://github.com/openstack/openstack-ansible-lxc_container_create
+  src: https://git.openstack.org/openstack/openstack-ansible-lxc_container_create
+  scm: git
   version: master
 - name: lxc_hosts
-  src: https://github.com/openstack/openstack-ansible-lxc_hosts
+  src: https://git.openstack.org/openstack/openstack-ansible-lxc_hosts
+  scm: git
   version: master
 - name: openstack_hosts
-  src: https://github.com/openstack/openstack-ansible-openstack_hosts
+  src: https://git.openstack.org/openstack/openstack-ansible-openstack_hosts
+  scm: git
   version: master
 - name: pip_install
-  src: https://github.com/openstack/openstack-ansible-pip_install
+  src: https://git.openstack.org/openstack/openstack-ansible-pip_install
+  scm: git
+  version: master
+- name: pip_lock_down
+  src: https://git.openstack.org/openstack/openstack-ansible-pip_lock_down
+  scm: git
   version: master
 - name: py_from_git
-  src: https://github.com/openstack/openstack-ansible-py_from_git
+  src: https://git.openstack.org/openstack/openstack-ansible-py_from_git
+  scm: git
   version: master
 - name: rsyslog_client
-  src: https://github.com/openstack/openstack-ansible-rsyslog_client
+  src: https://git.openstack.org/openstack/openstack-ansible-rsyslog_client
+  scm: git
   version: master
+- name: memcached_server
+  src: https://git.openstack.org/openstack/openstack-ansible-memcached_server
+  scm: git
+  version: master
+- name: repo_server
+  src: https://git.openstack.org/openstack/openstack-ansible-repo_server
+  scm: git
+  version: master
+- name: rabbitmq_server
+  src: https://git.openstack.org/openstack/openstack-ansible-rabbitmq_server
+  scm: git
+  version: master
+- name: galera_client
+  src: https://git.openstack.org/openstack/openstack-ansible-galera_client
+  scm: git
+  version: master
+- name: galera_server
+  src: https://git.openstack.org/openstack/openstack-ansible-galera_server
+  scm: git
+  version: master
+- name: rsyslog_server
+  src: https://git.openstack.org/openstack/openstack-ansible-rsyslog_server
+  scm: git
+  version: master
+
