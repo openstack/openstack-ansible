@@ -105,3 +105,4 @@ openstack_kernel_options:
   - { key: 'net.ipv6.route.gc_thresh', value: "{{ set_gc_val | int * 2 }}" }
   - { key: 'net.ipv6.neigh.default.gc_interval', value: 60 }
   - { key: 'net.ipv6.neigh.default.gc_stale_time', value: 120 }
+  - { key: 'fs.aio-max-nr', value: 131072 }
