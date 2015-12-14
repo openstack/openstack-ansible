@@ -19,6 +19,10 @@ log_file = keystone.log
 log_dir = /var/log/keystone
 rpc_backend = {{ keystone_rpc_backend }}
 
+{% if keystone_ceilometer_enabled %}
+notification_driver = messagingv2
+{% endif %}
+
 {% if 'memcache' in keystone_token_driver and 'fernet' not in keystone_token_provider %}
 [memcache]
 servers = {{ keystone_memcached_servers }}
@@ -151,4 +155,3 @@ trusted_dashboard = {{ item }}
 {% endfor %}
 {% endif %}
 {% endif %}
-
