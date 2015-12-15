@@ -167,21 +167,25 @@ keystone_ssl_self_signed_subject: "/C=US/ST=Texas/L=San Antonio/O=IT/CN={{ inter
 # If set this will enable dog pile cache for keystone.
 # keystone_cache_backend_argument: url:127.0.0.1:11211
 
-## LDAP section
-# Define keystone ldap information here.
+## LDAP Section
+# Define Keystone LDAP domain configuration here.
+# This may be used to add configuration for a LDAP identity back-end.
 # See the http://docs.openstack.org/admin-guide-cloud/keystone_integrate_with_ldap.html
-# for more information on available options. The sections here are defined as key: value pairs. Each
-# top level key bellow ``keystone_ldap`` is a section.
+#
+# Each top-level entry is a domain name. Each entry below that are key: value pairs for
+# the ldap section in the domain-specific configuraiton file.
+#
 # (EXAMPLE LAYOUT)
 # keystone_ldap:
-#   ldap:
+#   Users:
 #     url: "ldap://127.0.0.1"
 #     user: "root"
 #     password: "secrete"
 #     ...
 
-keystone_ldap_identity_driver: ldap
+keystone_ldap: {}
 keystone_ldap_domain_config_dir: /etc/keystone/domains
+
 
 # If you want to regenerate the keystone users SSH keys, on each run, set this var to True
 # Otherwise keys will be generated on the first run and not regenerated each run.

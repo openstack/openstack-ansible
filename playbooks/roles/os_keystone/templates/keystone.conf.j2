@@ -65,8 +65,10 @@ max_active_keys = {{ keystone_fernet_tokens_max_active_keys }}
 
 
 [identity]
-driver = {{ keystone_identity_driver }}
-{% if keystone_ldap is defined and keystone_ldap.ldap %}
+{% if keystone_ldap.Default is not defined %}
+driver = sql
+{% endif %}
+{% if keystone_ldap | length > 0 %}
 domain_config_dir = {{ keystone_ldap_domain_config_dir }}
 domain_specific_drivers_enabled = True
 {% endif %}
