@@ -100,7 +100,7 @@ options:
         description:
             - Name of the domain to add a project to.
         required: false
-        default: 'default'
+        default: 'Default'
     description:
         description:
             - A description for the project
@@ -184,7 +184,7 @@ options:
         default: None
     domain_enabled:
         description:
-            - Name for a doamin
+            - Name for a domain
         required: False
         default: True
     command:
@@ -568,6 +568,17 @@ class ManageKeystone(object):
                 project_name=login_project_name
             )
 
+    def _get_domain_from_vars(self, variables):
+        # NOTE(sigmavirus24): Since we don't require domain, this will be None
+        # in the dictionary. When we pop it, we can't provide a default
+        # because 'domain' exists and is None. In order to use a default
+        # value, we need to use `or 'default'` here to make sure we default to
+        # the default domain. If we don't do it this way, Keystone throws a
+        # 401 Unauthorized which is just plain wrong.
+        domain_name = variables.pop('domain_name', None) or 'Default'
+
+        return self._get_domain(name=domain_name)
+
     def _get_domain(self, name):
         """Return domain information.
 
@@ -632,12 +643,11 @@ class ManageKeystone(object):
         variables_dict = self._get_vars(variables)
         project_name = (variables_dict.pop('project_name', None) or
                         variables_dict.pop('tenant_name'))
-        domain_name = variables_dict.pop('domain_name', None) or 'Default'
         project_description = variables_dict.pop('description')
         if project_description is None:
             project_description = 'Project %s' % project_name
 
-        domain = self._get_domain(name=domain_name)
+        domain = self._get_domain_from_vars(variables_dict)
         project = self._get_project(name=project_name)
         if project is None:
             self.state_change = True
@@ -650,14 +660,14 @@ class ManageKeystone(object):
 
         return self._facts(facts={'id': project.id})
 
-    def _get_user(self, name):
+    def _get_user(self, name, domain):
         """Return a user information.
 
         This will return `None` if the ``name`` is not found.
 
         :param name: ``str``  Name of the user.
         """
-        for entry in self.keystone.users.list():
+        for entry in self.keystone.users.list(domain=domain):
             if getattr(entry, 'name', None) == name:
                 return entry
         else:
@@ -674,7 +684,8 @@ class ManageKeystone(object):
         self._authenticate()
         variables_dict = self._get_vars(variables, required=['user_name'])
         user_name = variables_dict.pop('user_name')
-        user = self._get_user(name=user_name)
+        domain = self._get_domain_from_vars(variables_dict)
+        user = self._get_user(name=user_name, domain=domain)
         if user is None:
             self.failure(
                 error='user [ %s ] was not found.' % user_name,
@@ -700,15 +711,8 @@ class ManageKeystone(object):
         password = variables_dict.pop('password')
         user_name = variables_dict.pop('user_name')
         email = variables_dict.pop('email')
-        # NOTE(sigmavirus24): Since we don't require domain, this will be None
-        # in the dictionary. When we pop it, we can't provide a default
-        # because 'domain' exists and is None. In order to use a default
-        # value, we need to use `or 'default'` here to make sure we default to
-        # the default domain. If we don't do it this way, Keystone throws a
-        # 401 Unauthorized which is just plain wrong.
-        domain_name = variables_dict.pop('domain_name', None) or 'Default'
 
-        domain = self._get_domain(name=domain_name)
+        domain = self._get_domain_from_vars(variables_dict)
         project = self._get_project(name=project_name)
         if project is None:
             self.failure(
@@ -717,7 +721,7 @@ class ManageKeystone(object):
                 msg='project was not found, does it exist?'
             )
 
-        user = self._get_user(name=user_name)
+        user = self._get_user(name=user_name, domain=domain)
         if user is None:
             self.state_change = True
             user = self.keystone.users.create(
@@ -730,27 +734,28 @@ class ManageKeystone(object):
 
         return self._facts(facts={'id': user.id})
 
-    def _get_role(self, name):
+    def _get_role(self, name, domain):
         """Return a role by name.
 
         This will return `None` if the ``name`` is not found.
 
         :param name: ``str``  Name of the role.
+        :param domain: ``str`` ID of the domain
         """
-        for entry in self.keystone.roles.list():
+        for entry in self.keystone.roles.list(domain=domain):
             if entry.name == name:
                 return entry
         else:
             return None
 
-    def _get_group(self, name, domain=None):
+    def _get_group(self, name, domain='Default'):
         """Return a group by name.
 
         This will return `None` if the ``name`` is not found.
 
         :param name: ``str``  Name of the role.
         """
-        for entry in self.keystone.groups.list():
+        for entry in self.keystone.groups.list(domain=domain):
             if domain is None:
                 if entry.name == name:
                     return entry
@@ -771,7 +776,8 @@ class ManageKeystone(object):
         self._authenticate()
         variables_dict = self._get_vars(variables, required=['role_name'])
         role_name = variables_dict.pop('role_name')
-        role_data = self._get_role(name=role_name)
+        domain = self._get_domain_from_vars(variables_dict)
+        role_data = self._get_role(name=role_name, domain=domain)
         if role_data is None:
             self.failure(
                 error='role [ %s ] was not found.' % role_name,
@@ -781,9 +787,10 @@ class ManageKeystone(object):
 
         return self._facts(facts={'id': role_data.id})
 
-    def _get_role_data(self, user_name, project_name, role_name, group_name):
+    def _get_role_data(self, user_name, project_name, role_name, group_name,
+                       domain):
         if user_name is not None:
-            user = self._get_user(name=user_name)
+            user = self._get_user(name=user_name, domain=domain)
             if user is None:
                 self.failure(
                     error='user [ %s ] was not found.' % user_name,
@@ -801,7 +808,7 @@ class ManageKeystone(object):
                 msg='project was not found, does it exist?'
             )
 
-        role = self._get_role(name=role_name)
+        role = self._get_role(name=role_name, domain=domain)
         if role is None:
             self.failure(
                 error='role [ %s ] was not found.' % role_name,
@@ -810,7 +817,7 @@ class ManageKeystone(object):
             )
 
         if group_name is not None:
-            group = self._get_group(name=group_name)
+            group = self._get_group(name=group_name, domain=domain)
             if group is None:
                 self.failure(
                     error='group [ %s ] was not found.' % group_name,
@@ -832,9 +839,10 @@ class ManageKeystone(object):
         """
         self._authenticate()
         variables_dict = self._get_vars(variables, required=['role_name'])
+        domain = self._get_domain_from_vars(variables_dict)
         role_name = variables_dict.pop('role_name')
 
-        role = self._get_role(name=role_name)
+        role = self._get_role(name=role_name, domain=domain)
         if role is None:
             self.state_change = True
             role = self.keystone.roles.create(role_name)
@@ -842,14 +850,23 @@ class ManageKeystone(object):
         return self._facts(facts={'id': role.id})
 
     def _get_user_roles(self, name, user, project):
-        for entry in self.keystone.roles.list(user=user, project=project):
+        role_list = self.keystone.roles.list(
+            user=user,
+            project=project
+        )
+        for entry in role_list:
             if entry.name == name:
                 return entry
         else:
             return None
 
-    def _get_group_roles(self, name, group, project):
-        for entry in self.keystone.roles.list(group=group, project=project):
+    def _get_group_roles(self, name, group, project, domain):
+        group_list = self.keystone.roles.list(
+            group=group,
+            project=project,
+            domain=domain
+        )
+        for entry in group_list:
             if entry.name == name:
                 return entry
         else:
@@ -859,6 +876,7 @@ class ManageKeystone(object):
         self._authenticate()
         required_vars = ['user_name', 'role_name']
         variables_dict = self._get_vars(variables, required=required_vars)
+        domain = self._get_domain_from_vars(variables_dict)
         user_name = variables_dict.pop('user_name')
         # NOTE(sigmavirus24): Try to get the project_name, but
         # don't error out on it. This will change when the playbooks are
@@ -869,7 +887,7 @@ class ManageKeystone(object):
 
         user, project, role, group = self._get_role_data(
             user_name=user_name, project_name=project_name,
-            role_name=role_name, group_name=None
+            role_name=role_name, group_name=None, domain=domain
         )
 
         user_role = self._get_user_roles(
@@ -890,17 +908,18 @@ class ManageKeystone(object):
         self._authenticate()
         required_vars = ['group_name', 'project_name', 'role_name']
         variables_dict = self._get_vars(variables, required=required_vars)
+        domain = self._get_domain_from_vars(variables_dict)
         group_name = variables_dict.pop('group_name')
         project_name = variables_dict.pop('project_name')
         role_name = variables_dict.pop('role_name')
 
         user, project, role, group = self._get_role_data(
             group_name=group_name, project_name=project_name,
-            role_name=role_name, user_name=None
+            role_name=role_name, user_name=None, domain=domain
         )
 
         group_role = self._get_group_roles(
-            name=role_name, group=group, project=project
+            name=role_name, group=group, project=project, domain=domain
         )
 
         if group_role is None:
@@ -908,7 +927,10 @@ class ManageKeystone(object):
                 group=group, role=role, project=project
             )
             group_role = self._get_group_roles(
-                name=role_name, group=group, project=project
+                name=role_name,
+                group=group,
+                project=project,
+                domain=domain
             )
 
         return self._facts(facts={'id': group_role.id})
@@ -926,11 +948,8 @@ class ManageKeystone(object):
         required_vars = ['group_name', 'domain_name']
         variables_dict = self._get_vars(variables, required=required_vars)
         group_name = variables_dict.pop('group_name')
-        domain_name = variables_dict.pop('domain_name')
 
-        domain = self._get_domain(
-            name=domain_name
-        )
+        domain = self._get_domain_from_vars(variables_dict)
 
         group = self._get_group(
             name=group_name, domain=domain
