@@ -13,7 +13,7 @@ entire environment.
 
    .. code-block:: shell-session
 
-       # openstack-ansible galera-install --tags galera-bootstrap
+       # openstack-ansible galera-install.yml --tags galera-bootstrap
 
 
 Upon completion of this command the cluster should be back online an in
