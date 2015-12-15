@@ -47,6 +47,11 @@
   when: >
     inventory_hostname == groups['keystone_all'][0]
 
+- include: keystone_ldap_setup.yml
+  tags:
+    - keystone-config
+    - keystone-ldap
+
 - include: keystone_federation_sp_idp_setup.yml
   when: >
     keystone_sp is defined and
