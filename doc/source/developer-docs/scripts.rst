@@ -5,7 +5,7 @@ Included Scripts
 
 The repository contains several helper scripts to manage gate jobs,
 install base requirements, and update repository information. Execute
-these scripts from the root of the respository clone. For example:
+these scripts from the root of the repository clone. For example:
 
 .. code:: bash
 
