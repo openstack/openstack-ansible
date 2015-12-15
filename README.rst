@@ -27,6 +27,8 @@ goals, then please feel free to reach out to us on the
 `OpenStack Mailing Lists`_ (particularly openstack-operators or openstack-dev)
 or on IRC in ``#openstack-ansible`` on the `freenode network`_.
 
+The best place to submit bugs you encounter along the way is `on the Launchpad page`_.
+
 .. _official OpenStack project: http://governance.openstack.org/reference/projects/index.html
 .. _Home Page: http://governance.openstack.org/reference/projects/openstackansible.html
 .. _Install Guide: http://docs.openstack.org/developer/openstack-ansible/install-guide/index.html
@@ -35,3 +37,4 @@ or on IRC in ``#openstack-ansible`` on the `freenode network`_.
 .. _Source: http://git.openstack.org/cgit/openstack/openstack-ansible
 .. _OpenStack Mailing Lists: http://lists.openstack.org/
 .. _freenode network: https://freenode.net/
+.. _on the Launchpad page: https://launchpad.net/openstack-ansible/
