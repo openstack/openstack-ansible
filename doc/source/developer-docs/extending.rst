@@ -113,6 +113,8 @@ Ordering and Precedence
 ``user_*.yml`` variables are just YAML variable files. They will be sourced
 in alphanumeric order by ``openstack-ansible``.
 
+.. _adding-galaxy-roles:
+
 Adding Galaxy roles
 -------------------
 
