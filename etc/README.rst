@@ -81,8 +81,9 @@ Predefined host groups
 
 The user configuration file has 4 defined groups which have mapping found within the ``openstack_environment.yml`` file. 
 
-The predefined groups are: 
-  * infra_hosts: 
+The predefined groups are:
+  * os-infra_hosts:
+  * shared-infra_hosts:
   * compute_hosts:
   * storage_hosts:
   * log_hosts:
@@ -94,7 +95,7 @@ When specifying hosts inside of any of the known groups the syntax is as follows
 
 .. code-block:: yaml
 
-    infra_hosts:
+    shared-infra_hosts:
       infra_host1:
         ip: 10.0.0.1
 
@@ -114,7 +115,7 @@ Here is an example of turning debug mode on all containers on infra1
 
 .. code-block:: yaml
 
-	infra_hosts:
+	shared-infra_hosts:
 	  infra1:
 	    ip: 10.0.0.10
 	    container_vars:
