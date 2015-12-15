@@ -5,7 +5,7 @@ Chapter 5. Deployment configuration
 
 .. toctree:: 
 
-   configure-prereq.rst
+   configure-initial.rst
    configure-networking.rst
    configure-hostlist.rst
    configure-creds.rst
