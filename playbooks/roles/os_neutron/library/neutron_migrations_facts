@@ -139,9 +139,13 @@ def get_branch(release, revision, library_path, project):
                 migration_dir = os.path.join(
                     get_abs_path(migrations_dir), branch
                 )
-                for file in os.listdir(migration_dir):
-                    if file.endswith('.py') and file.split('_')[0] == revision:
-                        return branch
+                # If a release has no migrations for a given branch, the branch
+                # directory will not exist.
+                if os.path.isdir(migration_dir):
+                    for file in os.listdir(migration_dir):
+                        if (file.endswith('.py') and
+                                file.split('_')[0] == revision):
+                            return branch
 
 
 def get_abs_path(path):
