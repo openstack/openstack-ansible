@@ -12,3 +12,8 @@ pip==6.1.1
 wheel>=0.24.0
 setuptools==7.0
 ansible==1.6.10
+# Juno & Kilo share oslo.utils
+# v1.4.2 introduces a requirement for oslo.i18n which is
+# incompatible with the rest of Juno's packages.
+# That's why we cap oslo.utils at 1.4.1.
+oslo.utils<=1.4.1
