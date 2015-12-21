@@ -159,7 +159,4 @@ horizon_pip_packages:
   - pycrypto
   - python-memcached
   - python-keystoneclient
-  # This lower cap is to address django openstack auth issues found here:
-  #  https://bugs.launchpad.net/openstack-ansible/+bug/1497679
-  #  If the Horizon requirements change to a later version, this may be removed.
-  - "django-openstack-auth>=2.0.1"
+  - django-openstack-auth
