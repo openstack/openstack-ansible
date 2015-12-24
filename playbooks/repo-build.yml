@@ -37,6 +37,7 @@
         - repo-create-venv-archive
         - repo-venv-compress-archive
         - repo-build-venvs
+        - repo-create-venv-checksum
   roles:
     - role: "repo_build"
       repo_build_release_tag: "{{ openstack_release }}"

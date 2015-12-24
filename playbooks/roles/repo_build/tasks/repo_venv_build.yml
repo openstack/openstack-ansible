@@ -79,3 +79,16 @@
     - repo-venv-compress-archive
     - repo-create-venv-archive
     - repo-create-venv
+
+- name: Create venv archive checksum
+  shell: >
+    sha1sum "{{ item.key | replace('os_', '') }}-{{ repo_build_release_tag }}.tgz" | awk '{print $1}' > "{{ item.key | replace('os_', '') }}-{{ repo_build_release_tag }}.checksum"
+  args:
+    chdir: "{{ repo_build_venv_dir }}/{{ repo_build_release_tag }}/{{ ansible_distribution | lower }}"
+    creates: "{{ repo_build_venv_dir }}/{{ repo_build_release_tag }}/{{ ansible_distribution | lower }}/{{ item.key | replace('os_', '') }}-{{ repo_build_release_tag }}.checksum"
+  with_dict: local_packages.results.0.item.role_packages
+  when:
+    - '"os_" in item.key'
+  tags:
+    - repo-create-venv-checksum
+    - repo-create-venv
