@@ -19,7 +19,6 @@ set -e -u -x
 ## Variables -----------------------------------------------------------------
 export MAX_RETRIES=${MAX_RETRIES:-"2"}
 # tempest and testr options, default is to run tempest in serial
-export RUN_TEMPEST_OPTS=${RUN_TEMPEST_OPTS:-'--serial'}
 export TESTR_OPTS=${TESTR_OPTS:-''}
 # Disable the python output buffering so that jenkins gets the output properly
 export PYTHONUNBUFFERED=1
