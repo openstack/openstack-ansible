@@ -4,6 +4,7 @@
 {% set workers = _workers if _workers > 0 else 1 %}
 
 [DEFAULT]
+debug = {{ debug }}
 auth_strategy = keystone
 notification_topics = notifications
 rpc_backend = rabbit
@@ -29,6 +30,44 @@ workers = {{ ceilometer_collector_workers | default(workers) }}
 
 [notification]
 workers = {{ ceilometer_notification_workers | default(workers) }}
+store_events = True
+# Configuring the notification queue listeners
+# Ceilometer needs to connect to it's own rabbitmq vhost
+{% for host in groups['rabbitmq_all'] %}
+messaging_urls = rabbit://{{ ceilometer_rabbitmq_userid }}:{{ ceilometer_rabbitmq_password }}@{{ hostvars[host]['ansible_ssh_host'] }}:{{ rabbitmq_port }}/{{ ceilometer_rabbitmq_vhost }}
+{% endfor %}
+{% if glance_ceilometer_enabled %}
+# Glance
+{% for host in groups['rabbitmq_all'] %}
+messaging_urls = rabbit://{{ glance_rabbitmq_userid }}:{{ glance_rabbitmq_password }}@{{ hostvars[host]['ansible_ssh_host'] }}:{{ rabbitmq_port }}/{{ glance_rabbitmq_vhost }}
+{% endfor %}
+{% endif %}
+{% if nova_ceilometer_enabled %}
+# Nova
+{% for host in groups['rabbitmq_all'] %}
+messaging_urls = rabbit://{{ nova_rabbitmq_userid }}:{{ nova_rabbitmq_password }}@{{ hostvars[host]['ansible_ssh_host'] }}:{{ rabbitmq_port }}/{{ nova_rabbitmq_vhost }}
+{% endfor %}
+{% endif %}
+{% if cinder_ceilometer_enabled %}
+# Cinder
+{% for host in groups['rabbitmq_all'] %}
+messaging_urls = rabbit://{{ cinder_rabbitmq_userid }}:{{ cinder_rabbitmq_password }}@{{ hostvars[host]['ansible_ssh_host'] }}:{{ rabbitmq_port }}/{{ cinder_rabbitmq_vhost }}
+{% endfor %}
+{% endif %}
+{% if neutron_ceilometer_enabled %}
+# Neutron
+{% for host in groups['rabbitmq_all'] %}
+messaging_urls = rabbit://{{ neutron_rabbitmq_userid }}:{{ neutron_rabbitmq_password }}@{{ hostvars[host]['ansible_ssh_host'] }}:{{ rabbitmq_port }}/{{ neutron_rabbitmq_vhost }}
+{% endfor %}
+{% endif %}
+{% if heat_ceilometer_enabled %}
+# Heat
+{% for host in groups['rabbitmq_all'] %}
+messaging_urls = rabbit://{{ heat_rabbitmq_userid }}:{{ heat_rabbitmq_password }}@{{ hostvars[host]['ansible_ssh_host'] }}:{{ rabbitmq_port }}/{{ heat_rabbitmq_vhost }}
+{% endfor %}
+{% endif %}
+# TODO: Keystone
+# TODO: Swift
 
 [database]
 metering_connection = {{ ceilometer_connection_string }}
