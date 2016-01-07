@@ -108,3 +108,9 @@
 - include: prepare_mongodb_users.yml
   tags:
     - prepare-mongodb-users
+
+# Prepare the LibVirt Service for Nova
+- include: prepare_libvirt_service.yml
+  when: bootstrap_host_libvirt_config | bool
+  tags:
+    - prepare-libvirt-service
