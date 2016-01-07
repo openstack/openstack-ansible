@@ -17,3 +17,7 @@ ansible==1.6.10
 # incompatible with the rest of Juno's packages.
 # That's why we cap oslo.utils at 1.4.1.
 oslo.utils<=1.4.1
+# rackspace-monitoring has a constraint on apache-libcloud
+# that is not tracked in a requirements.txt file. Pinning
+# here so correct version is added to upstream repo.
+apache-libcloud>=0.14,<0.16
