@@ -16,6 +16,9 @@
 # Boolean option to implement OpenStack-Ansible configuration for an AIO
 bootstrap_host_aio_config: yes
 
+# Boolean option to implement OpenStack-CI LibVirt Configuration Changes
+bootstrap_host_libvirt_config: no
+
 ## Swap memory
 # If there is no swap memory present, the bootstrap will create a loopback disk
 # for the purpose of having swap memory available. Swap is required for some of

@@ -95,3 +95,13 @@
   when: bootstrap_host_mongodb_service | bool
   tags:
     - install-mongodb
+
+- name: Install LibVirt packages
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - "{{ packages_libvirt }}"
+  when: bootstrap_host_libvirt_config | bool
+  tags:
+    - install-libvirt

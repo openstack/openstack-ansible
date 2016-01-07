@@ -98,6 +98,10 @@ if [ -f /etc/nodepool/provider -a -s /etc/nodepool/provider ]; then
     export BOOTSTRAP_OPTS="${BOOTSTRAP_OPTS} bootstrap_host_ubuntu_security_repo=${UBUNTU_REPO}"
   fi
 
+  # Update the libvirt cpu map with a gate64 cpu model. This enables nova
+  # live migration for 64bit guest OSes on heterogenous cloud "hardware".
+  export BOOTSTRAP_OPTS="${BOOTSTRAP_OPTS} bootstrap_host_libvirt_config=yes"
+
 fi
 
 # Bootstrap an AIO
