@@ -72,7 +72,7 @@ def create_buildfile(build_file, part_power, repl, min_part_hours,
 
 def change_host_weight(build_file, host_search_str, weight):
     run_and_wait(rb_main, ["swift-ring-builder", build_file, "set_weight",
-                 host_search_str, weight])
+                 host_search_str, str(weight)])
 
 
 def remove_host_from_ring(build_file, host):
