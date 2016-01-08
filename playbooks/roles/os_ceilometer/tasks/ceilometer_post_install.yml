@@ -43,7 +43,7 @@
       dest: "/etc/ceilometer/pipeline.yaml"
       config_overrides: "{{ ceilometer_pipeline_yaml_overrides }}"
       config_type: "yaml"
-    - src: "policy.json"
+    - src: "policy.json.j2"
       dest: "/etc/ceilometer/policy.json"
       config_overrides: "{{ ceilometer_policy_overrides }}"
       config_type: "json"
