@@ -51,7 +51,7 @@
     owner: "{{ cinder_system_user_name }}"
     group: "{{ cinder_system_group_name }}"
   with_items:
-    - { src: "volume.filters", dest: "/etc/cinder/rootwrap.d/volume.filters" }
+    - { src: "rootwrap.d/volume.filters", dest: "/etc/cinder/rootwrap.d/volume.filters" }
   notify:
     - Restart cinder services
   tags:
