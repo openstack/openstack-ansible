@@ -5,10 +5,7 @@ Chapter 3. Target hosts
 
 .. toctree::
 
-   targethosts-os.rst
-   targethosts-sshkeys.rst
-   targethosts-add.rst
-   targethosts-configlvm.rst
+   targethosts-prepare.rst
    targethosts-network.rst
    targethosts-networkrefarch.rst
    targethosts-networkexample.rst
