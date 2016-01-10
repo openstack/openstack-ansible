@@ -25,6 +25,5 @@
     service_publicurl: "{{ nova_service_publicurl }}"
     service_internalurl: "{{ nova_service_internalurl }}"
     service_adminurl: "{{ nova_service_adminurl }}"
-    role_name: "{{ nova_service_role_name }}"
   tags:
     - nova-api

@@ -25,7 +25,6 @@
     service_publicurl: "{{ cinder_service_publicurl }}"
     service_internalurl: "{{ cinder_service_internalurl }}"
     service_adminurl: "{{ cinder_service_adminurl }}"
-    role_name: "{{ cinder_service_role_name }}"
   tags:
     - cinder-server
 
@@ -41,6 +40,5 @@
     service_publicurl: "{{ cinder_service_v2_publicurl }}"
     service_internalurl: "{{ cinder_service_v2_internalurl }}"
     service_adminurl: "{{ cinder_service_v2_adminurl }}"
-    role_name: "{{ cinder_service_role_name }}"
   tags:
     - cinder-server

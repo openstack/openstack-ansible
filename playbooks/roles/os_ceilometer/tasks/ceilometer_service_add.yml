@@ -36,7 +36,7 @@
     endpoint: "{{ keystone_service_adminurl }}"
     user_name: "{{ service_user_name }}"
     tenant_name: "{{ service_tenant_name }}"
-    role_name: "{{ role_name }}"
+    role_name: "{{ ceilometer_role_name }}"
     password: "{{ ceilometer_service_password }}"
   register: add_service
   when: not ceilometer_service_in_ldap | bool

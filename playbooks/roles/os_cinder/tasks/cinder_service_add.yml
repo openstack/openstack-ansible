@@ -60,7 +60,7 @@
     endpoint: "{{ keystone_service_adminurl }}"
     user_name: "{{ service_user_name }}"
     tenant_name: "{{ service_tenant_name }}"
-    role_name: "{{ role_name }}"
+    role_name: "{{ cinder_service_role_name }}"
     insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_service
   when: not cinder_service_in_ldap | bool
