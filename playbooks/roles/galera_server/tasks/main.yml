@@ -20,5 +20,14 @@
 - name: Flush handlers
   meta: flush_handlers
 
+- name: Confirm service connectivity after mysql restart
+  command: /usr/bin/mysqladmin --defaults-file=/etc/mysql/debian.cnf ping
+  changed_when: mysql_running.rc != 0
+  register: mysql_running
+  when: galera_restart is defined
+  until: mysql_running|success
+  retries: 12
+  delay: 5
+
 - include: galera_setup.yml
   when: inventory_hostname == groups['galera_all'][0]
