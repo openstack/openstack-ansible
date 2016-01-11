@@ -15,6 +15,7 @@ socket = /var/run/mysqld/mysqld.sock
 [mysqld_safe]
 socket = /var/run/mysqld/mysqld.sock
 nice = 0
+log_error = /var/log/mysql_logs/galera_server_error.log
 
 
 [mysql]
@@ -66,7 +67,6 @@ table-open-cache = 10240
 
 # INNODB #
 innodb-flush-method = O_DIRECT
-innodb-additional-mem-pool-size = {{ galera_innodb_additional_mem_pool_size }}
 innodb-log-file-size = {{ galera_innodb_log_file_size }}
 innodb-flush-log-at-trx-commit = 1
 innodb-file-per-table = 1
