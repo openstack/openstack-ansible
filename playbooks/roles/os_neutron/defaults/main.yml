@@ -90,7 +90,7 @@ neutron_plugins:
     plugin_ini: plugins/ml2/ml2_conf.ini
     plugin_conf_ini_overrides: "{{ neutron_ml2_conf_ini_overrides }}"
   plumgrid:
-    plugin_core: neutron.plugins.plumgrid.plumgrid_plugin.plumgrid_plugin.NeutronPluginPLUMgridV2
+    plugin_core: networking_plumgrid.neutron.plugins.plugin.NeutronPluginPLUMgridV2
     plugin_ini: plugins/plumgrid/plumgrid.ini
     plugin_conf_ini_overrides: "{{ neutron_plumgrid_conf_ini_overrides }}"
 
