@@ -9,3 +9,7 @@ PyYAML>=3.1.0           # ansible
 # Temporary pin of <2.8.0 for requests:
 # https://bugs.launchpad.net/python-glanceclient/+bug/1476770
 requests>=2.2.0,!=2.4.0,<2.8.0 # scripts/openstack-ansible-role-requirements.py
+# Temporary pin of <2.0 for django-compressor:
+# https://bugs.launchpad.net/horizon/+bug/1532048
+# https://review.openstack.org/265025
+django_compressor>=1.4,<2.0
