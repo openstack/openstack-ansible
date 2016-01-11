@@ -25,6 +25,4 @@
       tags:
         - "os-swift-sync"
   vars:
-    ansible_hostname: "{{ container_name }}"
-    ansible_ssh_host: "{{ container_address }}"
     is_metal: "{{ properties.is_metal|default(false) }}"

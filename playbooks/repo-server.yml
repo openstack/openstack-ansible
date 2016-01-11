@@ -75,5 +75,4 @@
         - "rsyslog-client"
   vars:
     pip_no_index: false
-    ansible_hostname: "{{ container_name }}"
     is_metal: "{{ properties.is_metal|default(false) }}"
