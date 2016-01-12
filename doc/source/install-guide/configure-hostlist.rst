@@ -18,11 +18,11 @@ suitable short hostname for a compute host might be:
 ``123456-Compute001``.
 
 #. Configure a list containing at least three infrastructure target
-   hosts in the ``infra_hosts`` section:
+   hosts in the ``shared-infra_hosts`` section:
 
    .. code-block:: yaml
 
-      infra_hosts:
+      shared-infra_hosts:
         603975-infra01:
           ip: INFRA01_IP_ADDRESS
         603989-infra02:
@@ -37,13 +37,43 @@ suitable short hostname for a compute host might be:
 
    .. code-block:: yaml
 
-      infra_hosts:
+      shared-infra_hosts:
         603975-infra01:
           ip: 10.240.0.80
         603989-infra02:
           ip: 10.240.0.81
         627116-infra03:
           ip: 10.240.0.184
+
+#. Configure a list containing at least two infrastructure target
+   hosts in the ``os-infra_hosts`` section (you can reuse
+   previous hosts as long as their name and ip is consistent):
+
+   .. code-block:: yaml
+
+      os-infra_hosts:
+        603975-infra01:
+          ip: INFRA01_IP_ADDRESS
+        603989-infra02:
+          ip: INFRA02_IP_ADDRESS
+        627116-infra03:
+          ip: INFRA03_IP_ADDRESS
+        628771-infra04: ...
+
+   Replace ``*_IP_ADDRESS`` with the IP address of the ``br-mgmt``
+   container management bridge on each infrastructure target host. Use
+   the same net block as bond0 on the nodes, for example:
+
+   .. code-block:: yaml
+
+      os-infra_hosts:
+        603975-infra01:
+          ip: 10.240.0.80
+        603989-infra02:
+          ip: 10.240.0.81
+        627116-infra03:
+          ip: 10.240.0.184
+
 
 #. Configure a list containing at least one network target host in the
    ``network_hosts`` section:
