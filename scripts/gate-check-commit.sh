@@ -34,7 +34,6 @@ export DEPLOY_TEMPEST=${DEPLOY_TEMPEST:-"yes"}
 # Limit the gate check to only performing one attempt, unless already set
 export MAX_RETRIES=${MAX_RETRIES:-"2"}
 # tempest and testr options, default is to run tempest in serial
-export RUN_TEMPEST_OPTS=${RUN_TEMPEST_OPTS:-'--serial'}
 export TESTR_OPTS=${TESTR_OPTS:-''}
 
 ## Functions -----------------------------------------------------------------
