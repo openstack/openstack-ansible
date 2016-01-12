@@ -242,12 +242,6 @@ file**
        Set the names of the drives on this Object Storage host. At least
        one name must be specified.
 
-   ``weight``
-       The default weight is 100. If the drives are different sizes, set
-       the weight value to avoid uneven distribution of data. This value
-       can be specified on a host or drive basis (if specified at both,
-       the drive setting takes precedence).
-
    In the following example, ``swift-node5`` shows values in the
    ``swift_hosts`` section that will override the global values. Groups
    are set, which overrides the global settings for drive ``sdb``. The
@@ -282,7 +276,7 @@ file**
        #           - name: sde
        #           - name: sdf
 
-#. Ensure the ``swift.yml`` is in the ``/etc/rpc_deploy/conf.d/``
+#. Ensure the ``swift.yml`` is in the ``/etc/openstack_deploy/conf.d/``
    folder.
 
 --------------
