@@ -1,4 +1,3 @@
-cloudlib>=0.3.0         # scripts/openstack-ansible-role-requirements.py
 Jinja2>=2.6             # ansible
 netaddr>=0.7.12         # playbooks/inventory/dynamic_inventory.py
 paramiko>=1.13.0        # ansible
@@ -6,9 +5,6 @@ pip>=6.0
 PrettyTable>=0.7,<0.8   # scripts/inventory-manage.py
 pycrypto>=2.6           # ansible
 PyYAML>=3.1.0           # ansible
-# Temporary pin of <2.8.0 for requests:
-# https://bugs.launchpad.net/python-glanceclient/+bug/1476770
-requests>=2.2.0,!=2.4.0,<2.8.0 # scripts/openstack-ansible-role-requirements.py
 # Temporary pin of <2.0 for django-compressor:
 # https://bugs.launchpad.net/horizon/+bug/1532048
 # https://review.openstack.org/265025
