@@ -67,17 +67,17 @@ class ActionModule(object):
             # If the items value is not a dictionary it is assumed that the
             #  value is a default item for this config type.
             if not isinstance(items, dict):
-                config.set('DEFAULT', section, str(items))
+                config.set('DEFAULT', str(section), str(items))
             else:
                 # Attempt to add a section to the config file passing if
                 #  an error is raised that is related to the section
                 #  already existing.
                 try:
-                    config.add_section(section)
+                    config.add_section(str(section))
                 except (ConfigParser.DuplicateSectionError, ValueError):
                     pass
                 for key, value in items.items():
-                    config.set(section, key, str(value))
+                    config.set(str(section), str(key), str(value))
         else:
             config_object.close()
 
