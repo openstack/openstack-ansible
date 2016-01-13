@@ -119,6 +119,12 @@ if ! grep -R '^openstack_repo_url\:' /etc/openstack_deploy/user_* /etc/openstack
     tee -a /etc/openstack_deploy/user_deleteme_post_upgrade_variables.yml
 fi
 
+# This pins the git repo url to the use the defined repo path -- Related issue https://bugs.launchpad.net/openstack-ansible/+bug/1533817
+if ! grep -R '^openstack_repo_git_url\:' /etc/openstack_deploy/user_* /etc/openstack_deploy/conf.d/; then
+  echo -e "openstack_repo_git_url: \"{{ openstack_repo_url }}/openstackgit\"" |\
+    tee -a /etc/openstack_deploy/user_deleteme_post_upgrade_variables.yml
+fi
+
 # Set the galera monitoring user to the old Juno Value.
 if ! grep '^galera_monitoring_user' /etc/openstack_deploy/user_deleteme_post_upgrade_variables.yml;then
   echo 'galera_monitoring_user: "haproxy"' | tee -a /etc/openstack_deploy/user_deleteme_post_upgrade_variables.yml
