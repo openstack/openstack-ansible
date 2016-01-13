@@ -16,7 +16,7 @@
 - name: Create authorized keys file from host vars
   authorized_key:
     user: "{{ nova_system_user_name }}"
-    key: "{{ hostvars[item]['nova_pubkey'] }}"
+    key: "{{ hostvars[item]['nova_pubkey'] | b64decode }}"
   with_items: groups['nova_compute']
   tags:
     - nova-key
