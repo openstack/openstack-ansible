@@ -16,7 +16,7 @@
 - name: Create authorized keys file from host vars
   authorized_key:
     user: "{{ keystone_system_user_name }}"
-    key: "{{ hostvars[item]['keystone_pubkey'] }}"
+    key: "{{ hostvars[item]['keystone_pubkey'] | b64decode }}"
   with_items: groups['keystone_all']
   tags:
     - keystone-key
