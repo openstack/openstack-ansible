@@ -23,19 +23,40 @@
   tags:
     - neutron_config
 
-- name: Install networking-plumgrid
+- name: Install plumgrid pip packages (venv)
+  pip:
+    name: "{{ item }}"
+    state: present
+    virtualenv: "{{ neutron_venv_bin | dirname }}"
+    virtualenv_site_packages: "no"
+    extra_args: "{{ pip_install_options|default('') }}"
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 2
+  with_items:
+    - neutron_optional_plumgrid_pip_packages
+  when:
+    - neutron_venv_enabled | bool
+    - inventory_hostname in groups['neutron_server']
+  tags:
+    - neutron-install
+    - neutron-pip-packages
+
+- name: Install plumgrid pip packages (no venv)
   pip:
     name: "{{ item }}"
     state: present
     extra_args: "{{ pip_install_options|default('') }}"
-  with_items: neutron_plumgrid_pip_packages
-  register: install_package
+  register: install_packages
   until: install_packages|success
   retries: 5
   delay: 2
+  with_items:
+    - neutron_optional_plumgrid_pip_packages
   when:
+    - not neutron_venv_enabled | bool
     - inventory_hostname in groups['neutron_server']
-    - neutron_get_venv | failed
   tags:
     - neutron-install
     - neutron-pip-packages

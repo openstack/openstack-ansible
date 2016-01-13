@@ -356,7 +356,8 @@ class DependencyFileProcessor(object):
                             role_pkgs = ROLE_PACKAGES[role_name] = dict()
 
                         pkgs = role_pkgs.get(key, list())
-                        pkgs.extend(values)
+                        if 'optional' not in key:
+                            pkgs.extend(values)
                         ROLE_PACKAGES[role_name][key] = pkgs
                     else:
                         for k, v in ROLE_PACKAGES.items():
