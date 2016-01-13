@@ -2,7 +2,6 @@
 {% if (swift.replication_network is not defined or swift.replication_network == swift.storage_network) and 'replicator-server' in program_name %}
 # Blank script - dedicated replication network not in use
 {% else %}
-# vim:set ft=upstart ts=2 et:
 
 description "{{ program_name }}"
 author "Kevin Carter <kevin.carter@rackspace.com>"
