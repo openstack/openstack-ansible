@@ -13,6 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
+import glanceclient.client as glclient
+import keystoneclient.v3.client as ksclient
+
+# import module snippets
+from ansible.module_utils.basic import *
+
+
 DOCUMENTATION = """
 ---
 module: glance
@@ -84,10 +92,6 @@ EXAMPLES = """
     command: 'image-list'
     openrc_path: /root/openrc
 """
-
-
-import glanceclient.client as glclient
-import keystoneclient.v3.client as ksclient
 
 
 COMMAND_MAP = {'image-list': 'list_images',
@@ -228,6 +232,5 @@ def main():
     mg = ManageGlance(module)
     mg.route()
 
-from ansible.module_utils.basic import *
 if __name__ == '__main__':
     main()
