@@ -881,8 +881,8 @@ class ManageKeystone(object):
         # NOTE(sigmavirus24): Try to get the project_name, but
         # don't error out on it. This will change when the playbooks are
         # updated to use project_name instead of tenant_name
-        project_name = (variables_dict.pop('project_name', None)
-                        or variables_dict.pop('tenant_name'))
+        project_name = (variables_dict.pop('project_name', None) or
+                        variables_dict.pop('tenant_name'))
         role_name = variables_dict.pop('role_name')
 
         user, project, role, group = self._get_role_data(

@@ -13,6 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
+import keystoneclient.v3.client as ksclient
+from neutronclient.neutron import client as nclient
+
+# import module snippets
+from ansible.module_utils.basic import *
+
+
 DOCUMENTATION = """
 ---
 module: neutron
@@ -112,10 +120,6 @@ EXAMPLES = """
     router_name: router
     subnet_name: private-subnet
 """
-
-
-import keystoneclient.v3.client as ksclient
-from neutronclient.neutron import client as nclient
 
 
 COMMAND_MAP = {
@@ -414,6 +418,5 @@ def main():
     mn = ManageNeutron(module)
     mn.command_router()
 
-from ansible.module_utils.basic import *
 if __name__ == '__main__':
     main()

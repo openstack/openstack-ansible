@@ -13,6 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
+import subprocess
+
+# import module snippets
+from ansible.module_utils.basic import *
+
+
 DOCUMENTATION = """
 ---
 module: mysql_status_facts
@@ -27,8 +34,6 @@ EXAMPLES = """
 - name: Gather mysql status facts
   mysql_status_facts:
 """
-
-import subprocess
 
 
 class MysqlStatusFacts(object):
@@ -61,6 +66,5 @@ def main():
     mysql_facts = MysqlStatusFacts(module)
     mysql_facts.gather_facts()
 
-from ansible.module_utils.basic import *
 if __name__ == '__main__':
     main()
