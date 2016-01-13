@@ -32,6 +32,28 @@
     extra_args: "{{ pip_install_options|default('') }}"
   register: install_packages
   until: install_packages|success
+  ignore_errors: True
+  retries: 5
+  delay: 2
+  with_items:
+    - neutron_optional_plumgrid_pip_packages
+  when:
+    - neutron_venv_enabled | bool
+    - inventory_hostname in groups['neutron_server']
+  tags:
+    - neutron-install
+    - neutron-pip-packages
+
+- name: Install plumgrid pip packages fall back (venv)
+  pip:
+    name: "{{ item }}"
+    state: present
+    virtualenv: "{{ neutron_venv_bin | dirname }}"
+    virtualenv_site_packages: "no"
+    extra_args: "--isolated"
+  when: install_packages|failed
+  register: install_packages_fall_back
+  until: install_packages_fall_back|success
   retries: 5
   delay: 2
   with_items:
@@ -50,6 +72,26 @@
     extra_args: "{{ pip_install_options|default('') }}"
   register: install_packages
   until: install_packages|success
+  retries: 5
+  delay: 2
+  ignore_errors: True
+  with_items:
+    - neutron_optional_plumgrid_pip_packages
+  when:
+    - not neutron_venv_enabled | bool
+    - inventory_hostname in groups['neutron_server']
+  tags:
+    - neutron-install
+    - neutron-pip-packages
+
+- name: Install plumgrid pip packages fall back (no venv)
+  pip:
+    name: "{{ item }}"
+    state: present
+    extra_args: "--isolated"
+  when: install_packages|failed
+  register: install_packages_fall_back
+  until: install_packages_fall_back|success
   retries: 5
   delay: 2
   with_items:
