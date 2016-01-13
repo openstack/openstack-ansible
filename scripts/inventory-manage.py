@@ -204,8 +204,8 @@ def get_groups_for_container(inventory, container_name):
     # Beware, this dictionary comprehension requires Python 2.7, but we should
     # have this on openstack-ansible hosts already.
     groups = {k for (k, v) in inventory.items() if
-              ('hosts' in v
-              and container_name in v['hosts'])}
+              ('hosts' in v and
+              container_name in v['hosts'])}
     return groups
 
 

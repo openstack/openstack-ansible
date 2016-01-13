@@ -29,6 +29,8 @@ try:
 except ImportError:
     ENCRYPT_IMPORT = False
 
+# import module snippets
+from ansible.module_utils.basic import *
 
 DOCUMENTATION = """
 ---
@@ -592,7 +594,5 @@ def main():
     ms = Memcached(module=module)
     ms.router()
 
-# import module snippets
-from ansible.module_utils.basic import *
 if __name__ == '__main__':
     main()
