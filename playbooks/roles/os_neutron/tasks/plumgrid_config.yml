@@ -29,8 +29,23 @@
     state: present
     extra_args: "{{ pip_install_options|default('') }}"
   with_items: neutron_plumgrid_pip_packages
-  register: install_package
+  register: install_packages
   until: install_packages|success
+  ignore_errors: True
+  retries: 5
+  delay: 2
+  when:
+    inventory_hostname in groups['neutron_server']
+
+- name: Install networking-plumgrid fall back mode
+  pip:
+    name: "{{ item }}"
+    state: present
+    extra_args: "--isolated"
+  with_items: neutron_plumgrid_pip_packages
+  when: install_packages|failed
+  register: install_packages_fall_back
+  until: install_packages_fall_back|success
   retries: 5
   delay: 2
   when:
