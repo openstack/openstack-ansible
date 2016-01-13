@@ -25,8 +25,8 @@
     - nova-key-create
 
 - name: Get public key contents and store as var
-  command: |
-    cat {{ nova_system_home_folder }}/.ssh/id_rsa.pub
+  slurp:
+    src: "{{ nova_system_home_folder }}/.ssh/id_rsa.pub"
   register: nova_pub
   changed_when: false
   tags:
@@ -35,7 +35,7 @@
 
 - name: Register a fact for the nova pub key
   set_fact:
-     nova_pubkey: "{{ nova_pub.stdout }}"
+     nova_pubkey: "{{ nova_pub.content }}"
   tags:
     - nova-key
     - nova-key-create
