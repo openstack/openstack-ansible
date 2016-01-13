@@ -42,6 +42,7 @@
   with_items:
     - { src: "horizon_local_settings.py.j2", dest: "/etc/horizon/local_settings.py", mode: "0644" }
     - { src: "horizon-manage.py.j2", dest: "{{ horizon_bin }}/horizon-manage.py", mode: "0755" }
+    - { src: "80_admin_default_panel.py.j2", dest: "{{ horizon_lib_dir }}/openstack_dashboard/local/enabled/_80_admin_default_panel.py", mode: "0755" }
   notify: Restart apache2
   tags:
     - horizon-configs

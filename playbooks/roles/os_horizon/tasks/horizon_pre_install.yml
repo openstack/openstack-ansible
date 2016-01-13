@@ -164,6 +164,7 @@
     - { path: "{{ horizon_lib_dir }}/static", mode: "2755" }
     - { path: "{{ horizon_lib_dir }}/openstack_dashboard", mode: "2755" }
     - { path: "{{ horizon_lib_dir }}/openstack_dashboard/local", mode: "2755" }
+    - { path: "{{ horizon_lib_dir }}/openstack_dashboard/local/enabled", mode: "2755" }
   tags:
     - horizon-dirs
 
