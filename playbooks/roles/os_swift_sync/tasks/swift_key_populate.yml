@@ -14,8 +14,8 @@
 # limitations under the License.
 
 - name: Get public key contents and store as var
-  command: |
-    cat {{ swift_system_home_folder }}/.ssh/id_rsa.pub
+  slurp:
+    src: "{{ swift_system_home_folder }}/.ssh/id_rsa.pub"
   register: swift_pub
   changed_when: false
   tags:
@@ -24,7 +24,7 @@
 
 - name: Register a fact for the swift pub key
   set_fact:
-     swift_pubkey: "{{ swift_pub.stdout }}"
+     swift_pubkey: "{{ swift_pub.content }}"
   tags:
     - swift-key
     - swift-key-create
