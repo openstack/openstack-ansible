@@ -28,32 +28,31 @@ configuration and testing.
 
    .. code-block:: shell-session
 
-       # source openrc
+       # source /root/openrc
 
 #. Run an OpenStack command that uses one or more APIs. For example:
 
    .. code-block:: shell-session
 
-       # keystone user-list
-       +----------------------------------+----------+---------+-------+
-       |                id                |   name   | enabled | email |
-       +----------------------------------+----------+---------+-------+
-       | 090c1023d0184a6e8a70e26a5722710d |  admin   |   True  |       |
-       | 239e04cd3f7d49929c7ead506d118e40 |  cinder  |   True  |       |
-       | e1543f70e56041679c013612bccfd4ee | cinderv2 |   True  |       |
-       | bdd2df09640e47888f819057c8e80f04 |   demo   |   True  |       |
-       | 453dc7932df64cc58e36bf0ac4f64d14 |   ec2    |   True  |       |
-       | 257da50c5cfb4b7c9ca8334bc096f344 |  glance  |   True  |       |
-       | 6e0bc047206f4f5585f7b700a8ed6e94 |   heat   |   True  |       |
-       | 187ee2e32eec4293a3fa243fa21f6dd9 | keystone |   True  |       |
-       | dddaca4b39194dc4bcefd0bae542c60a | neutron  |   True  |       |
-       | f1c232f9d53c4adabb54101ccefaefce |   nova   |   True  |       |
-       | fdfbda23668c4980990708c697384050 |  novav3  |   True  |       |
-       | 744069c771d84f1891314388c1f23686 |    s3    |   True  |       |
-       | 4e7fdfda8d14477f902eefc8731a7fdb |  swift   |   True  |       |
-       +----------------------------------+----------+---------+-------+
-
- 
+       # openstack user list
+       +----------------------------------+--------------------+
+       | ID                               | Name               |
+       +----------------------------------+--------------------+
+       | 08fe5eeeae314d578bba0e47e7884f3a | alt_demo           |
+       | 0aa10040555e47c09a30d2240e474467 | dispersion         |
+       | 10d028f9e47b4d1c868410c977abc3df | glance             |
+       | 249f9ad93c024f739a17ca30a96ff8ee | demo               |
+       | 39c07b47ee8a47bc9f9214dca4435461 | swift              |
+       | 3e88edbf46534173bc4fd8895fa4c364 | cinder             |
+       | 41bef7daf95a4e72af0986ec0583c5f4 | neutron            |
+       | 4f89276ee4304a3d825d07b5de0f4306 | admin              |
+       | 943a97a249894e72887aae9976ca8a5e | nova               |
+       | ab4f0be01dd04170965677e53833e3c3 | stack_domain_admin |
+       | ac74be67a0564722b847f54357c10b29 | heat               |
+       | b6b1d5e76bc543cda645fa8e778dff01 | ceilometer         |
+       | dc001a09283a404191ff48eb41f0ffc4 | aodh               |
+       | e59e4379730b41209f036bbeac51b181 | keystone           |
+       +----------------------------------+--------------------+
 
 **Procedure 8.2. Verifying the dashboard**
 
