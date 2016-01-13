@@ -8,7 +8,8 @@ logger "LXC container {{ inventory_hostname }} removing veth {{ inventory_hostna
 
 # Veth cleanup for items in the container_networks data structure
 {% for key, value in container_networks.items() %}
+    {% if value.type == 'veth' or value.type is none %}
 ip link del {{ inventory_hostname[-8:].replace('-', '').replace('_', '') }}_{{ value.interface }} || true
 logger "LXC container {{ inventory_hostname }} removing veth {{ inventory_hostname[-8:].replace('-', '').replace('_', '') }}_{{ value.interface }}"
-
+    {% endif %}
 {% endfor %}
