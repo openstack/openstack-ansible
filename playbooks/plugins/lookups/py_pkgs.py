@@ -18,8 +18,8 @@ import os
 import re
 import traceback
 
-from ansible import errors
-from ansible import utils
+from distutils.version import LooseVersion
+from ansible import __version__ as __ansible_version__
 import yaml
 
 
@@ -47,6 +47,118 @@ BUILT_IN_PIP_PACKAGE_VARS = [
     'pip_container_packages',
     'pip_packages'
 ]
+
+
+PACKAGE_MAPPING = {
+    'packages': set(),
+    'remote_packages': set(),
+    'remote_package_parts': list(),
+    'role_packages': dict()
+}
+
+
+def map_base_and_remote_packages(package, package_map):
+    """Determine whether a package is a base package or a remote package
+       and add to the appropriate set.
+
+    :type package: ``str``
+    :type package_map: ``dict``
+    """
+    if package.startswith(('http:', 'https:', 'git+')):
+        if '@' not in package:
+            package_map['packages'].add(package)
+        else:
+            git_parts = git_pip_link_parse(package)
+            package_name = git_parts[-1]
+            if not package_name:
+                package_name = git_pip_link_parse(package)[0]
+
+            for rpkg in list(package_map['remote_packages']):
+                rpkg_name = git_pip_link_parse(rpkg)[-1]
+                if not rpkg_name:
+                    rpkg_name = git_pip_link_parse(package)[0]
+
+                if rpkg_name == package_name:
+                    package_map['remote_packages'].remove(rpkg)
+                    package_map['remote_packages'].add(package)
+                    break
+            else:
+                package_map['remote_packages'].add(package)
+    else:
+        package_map['packages'].add(package)
+
+
+def parse_remote_package_parts(package_map):
+    """Parse parts of each remote package and add them to
+       the remote_package_parts list.
+
+    :type package_map: ``dict``
+    """
+    keys = [
+        'name',
+        'version',
+        'fragment',
+        'url',
+        'original',
+        'egg_name'
+    ]
+    remote_pkg_parts = [
+        dict(
+            zip(
+                keys, git_pip_link_parse(i)
+            )
+        ) for i in package_map['remote_packages']
+    ]
+    package_map['remote_package_parts'].extend(remote_pkg_parts)
+    package_map['remote_package_parts'] = list(
+        dict(
+            (i['name'], i)
+            for i in package_map['remote_package_parts']
+        ).values()
+    )
+
+
+def map_role_packages(package_map):
+    """Add and sort packages belonging to a role to the role_packages dict.
+
+    :type package_map: ``dict``
+    """
+    for k, v in ROLE_PACKAGES.items():
+        role_pkgs = package_map['role_packages'][k] = list()
+        for pkg_list in v.values():
+            role_pkgs.extend(pkg_list)
+        else:
+            package_map['role_packages'][k] = sorted(set(role_pkgs))
+
+
+def map_base_package_details(package_map):
+    """Parse package version and marker requirements and add to the
+       base packages set.
+
+    :type package_map: ``dict``
+    """
+    check_pkgs = dict()
+    base_packages = sorted(list(package_map['packages']))
+    for pkg in base_packages:
+        name, versions, markers = _pip_requirement_split(pkg)
+        if versions and markers:
+            versions = '%s;%s' % (versions, markers)
+        elif not versions and markers:
+            versions = ';%s' % markers
+
+        if name in check_pkgs:
+            if versions and not check_pkgs[name]:
+                check_pkgs[name] = versions
+        else:
+            check_pkgs[name] = versions
+    else:
+        return_pkgs = list()
+        for k, v in check_pkgs.items():
+            if v:
+                return_pkgs.append('%s%s' % (k, v))
+            else:
+                return_pkgs.append(k)
+        package_map['packages'] = set(return_pkgs)
 
 
 def git_pip_link_parse(repo):
@@ -385,133 +497,116 @@ def _abs_path(path):
 
 
 class LookupModule(object):
+    def __new__(class_name, *args, **kwargs):
+        if LooseVersion(__ansible_version__) < LooseVersion("2.0"):
+            from ansible import utils, errors
 
-    def __init__(self, basedir=None, **kwargs):
-        """Run the lookup module.
+            class LookupModuleV1(object):
+                def __init__(self, basedir=None, **kwargs):
+                    """Run the lookup module.
 
-        :type basedir:
-        :type kwargs:
-        """
-        self.basedir = basedir
+                    :type basedir:
+                    :type kwargs:
+                    """
+                    self.basedir = basedir
 
-    def run(self, terms, inject=None, **kwargs):
-        """Run the main application.
+                def run(self, terms, inject=None, **kwargs):
+                    """Run the main application.
 
-        :type terms: ``str``
-        :type inject: ``str``
-        :type kwargs: ``dict``
-        :returns: ``list``
-        """
-        terms = utils.listify_lookup_plugin_terms(terms, self.basedir, inject)
-        if isinstance(terms, basestring):
-            terms = [terms]
-
-        return_data = {
-            'packages': set(),
-            'remote_packages': set(),
-            'remote_package_parts': list(),
-            'role_packages': dict()
-        }
-        for term in terms:
-            return_list = list()
-            try:
-                dfp = DependencyFileProcessor(
-                    local_path=_abs_path(str(term))
-                )
-                return_list.extend(dfp.pip['py_package'])
-                return_list.extend(dfp.pip['git_package'])
-            except Exception as exp:
-                raise errors.AnsibleError(
-                    'lookup_plugin.py_pkgs(%s) returned "%s" error "%s"' % (
-                        term,
-                        str(exp),
-                        traceback.format_exc()
+                    :type terms: ``str``
+                    :type inject: ``str``
+                    :type kwargs: ``dict``
+                    :returns: ``list``
+                    """
+                    terms = utils.listify_lookup_plugin_terms(
+                        terms,
+                        self.basedir,
+                        inject
                     )
-                )
+                    if isinstance(terms, basestring):
+                        terms = [terms]
 
-            for item in return_list:
-                if item.startswith(('http:', 'https:', 'git+')):
-                    if '@' not in item:
-                        return_data['packages'].add(item)
-                    else:
-                        git_parts = git_pip_link_parse(item)
-                        item_name = git_parts[-1]
-                        if not item_name:
-                            item_name = git_pip_link_parse(item)[0]
+                    return_data = PACKAGE_MAPPING
 
-                        for rpkg in list(return_data['remote_packages']):
-                            rpkg_name = git_pip_link_parse(rpkg)[-1]
-                            if not rpkg_name:
-                                rpkg_name = git_pip_link_parse(item)[0]
+                    for term in terms:
+                        return_list = list()
+                        try:
+                            dfp = DependencyFileProcessor(
+                                local_path=_abs_path(str(term))
+                            )
+                            return_list.extend(dfp.pip['py_package'])
+                            return_list.extend(dfp.pip['git_package'])
+                        except Exception as exp:
+                            raise errors.AnsibleError(
+                                'lookup_plugin.py_pkgs(%s) returned "%s" error "%s"' % (
+                                    term,
+                                    str(exp),
+                                    traceback.format_exc()
+                                )
+                            )
 
-                            if rpkg_name == item_name:
-                                return_data['remote_packages'].remove(rpkg)
-                                return_data['remote_packages'].add(item)
-                                break
+                        for item in return_list:
+                            map_base_and_remote_packages(item, return_data)
                         else:
-                            return_data['remote_packages'].add(item)
-                else:
-                    return_data['packages'].add(item)
-            else:
-                keys = [
-                    'name',
-                    'version',
-                    'fragment',
-                    'url',
-                    'original',
-                    'egg_name'
-                ]
-                remote_pkg_parts = [
-                    dict(
-                        zip(
-                            keys, git_pip_link_parse(i)
-                        )
-                    ) for i in return_data['remote_packages']
-                ]
-                return_data['remote_package_parts'].extend(remote_pkg_parts)
-                return_data['remote_package_parts'] = list(
-                    dict(
-                        (i['name'], i)
-                        for i in return_data['remote_package_parts']
-                    ).values()
-                )
-        else:
-            for k, v in ROLE_PACKAGES.items():
-                role_pkgs = return_data['role_packages'][k] = list()
-                for pkg_list in v.values():
-                    role_pkgs.extend(pkg_list)
-                else:
-                    return_data['role_packages'][k] = sorted(set(role_pkgs))
-
-            check_pkgs = dict()
-            base_packages = sorted(list(return_data['packages']))
-            for pkg in base_packages:
-                name, versions, markers = _pip_requirement_split(pkg)
-                if versions and markers:
-                    versions = '%s;%s' % (versions, markers)
-                elif not versions and markers:
-                    versions = ';%s' % markers
-
-                if name in check_pkgs:
-                    if versions and not check_pkgs[name]:
-                        check_pkgs[name] = versions
-                else:
-                    check_pkgs[name] = versions
-            else:
-                return_pkgs = list()
-                for k, v in check_pkgs.items():
-                    if v:
-                        return_pkgs.append('%s%s' % (k, v))
+                            parse_remote_package_parts(return_data)
                     else:
-                        return_pkgs.append(k)
-                return_data['packages'] = set(return_pkgs)
+                        map_role_packages(return_data)
+                        map_base_package_details(return_data)
+                        # Sort everything within the returned data
+                        for key, value in return_data.items():
+                            if isinstance(value, (list, set)):
+                                return_data[key] = sorted(value)
+                        return [return_data]
+            return LookupModuleV1(*args, **kwargs)
 
-            # Sort everything within the returned data
-            for key, value in return_data.items():
-                if isinstance(value, (list, set)):
-                    return_data[key] = sorted(value)
-            return [return_data]
+        else:
+            from ansible.errors import AnsibleError
+            from ansible.plugins.lookup import LookupBase
 
+            class LookupModuleV2(LookupBase):
+                def run(self, terms, variables=None, **kwargs):
+                    """Run the main application.
+
+                    :type terms: ``str``
+                    :type variables: ``str``
+                    :type kwargs: ``dict``
+                    :returns: ``list``
+                    """
+                    if isinstance(terms, basestring):
+                        terms = [terms]
+
+                    return_data = PACKAGE_MAPPING
+
+                    for term in terms:
+                        return_list = list()
+                        try:
+                            dfp = DependencyFileProcessor(
+                                local_path=_abs_path(str(term))
+                            )
+                            return_list.extend(dfp.pip['py_package'])
+                            return_list.extend(dfp.pip['git_package'])
+                        except Exception as exp:
+                            raise AnsibleError(
+                                'lookup_plugin.py_pkgs(%s) returned "%s" error "%s"' % (
+                                    term,
+                                    str(exp),
+                                    traceback.format_exc()
+                                )
+                            )
+
+                        for item in return_list:
+                            map_base_and_remote_packages(item, return_data)
+                        else:
+                            parse_remote_package_parts(return_data)
+                    else:
+                        map_role_packages(return_data)
+                        map_base_package_details(return_data)
+                        # Sort everything within the returned data
+                        for key, value in return_data.items():
+                            if isinstance(value, (list, set)):
+                                return_data[key] = sorted(value)
+                        return [return_data]
+            return LookupModuleV2(*args, **kwargs)
 
 # Used for testing and debuging usage: `python plugins/lookups/py_pkgs.py ../`
 if __name__ == '__main__':
