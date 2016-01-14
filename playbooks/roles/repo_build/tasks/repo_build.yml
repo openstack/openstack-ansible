@@ -25,7 +25,6 @@
               --extra-index-url {{ repo_build_pip_extra_index }} \
               --trusted-host {{ repo_build_pip_extra_index | netloc_no_port }} \
               --build {{ repo_build_dir }} \
-              --verbose \
               --log /var/log/repo/repo_builder.log \
               --requirement {{ repo_build_release_path }}/{{ repo_build_release_tag }}/requirements_global_requirements.txt
   tags:
@@ -43,7 +42,6 @@
               --extra-index-url {{ repo_build_pip_extra_index }} \
               --trusted-host {{ repo_build_pip_extra_index | netloc_no_port }} \
               --build {{ repo_build_dir }} \
-              --verbose \
               --log /var/log/repo/repo_builder.log \
               --requirement {{ repo_build_release_path }}/{{ repo_build_release_tag }}/requirements_local_filtered.txt
   tags:
