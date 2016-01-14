@@ -31,8 +31,8 @@
     owner: "{{ swift_system_user_name }}"
     group: "{{ swift_system_group_name }}"
   with_items:
-    - { item: "{{ swift.account }}", port: "{{ swift_account_port }}", type: "account" }
-    - { item: "{{ swift.container }}", port: "{{ swift_container_port}}", type: "container" }
+    - { item: "{{ swift.account | default({}) }}", port: "{{ swift_account_port }}", type: "account" }
+    - { item: "{{ swift.container | default({}) }}", port: "{{ swift_container_port}}", type: "container" }
   tags:
     - swift-rings
     - swift-rings-contents
@@ -68,8 +68,7 @@
   command: "/usr/bin/python /etc/swift/scripts/swift_rings.py -f /etc/swift/scripts/{{ item[0] }}.contents -r {{ item[1] }}"
   with_nested:
     - [ 'account', 'container' ]
-    - swift_managed_regions
-  when: swift_managed_regions is defined
+    - swift_managed_regions | default([])
   sudo: yes
   sudo_user: "{{ swift_system_user_name }}"
   args:
@@ -95,8 +94,7 @@
   command: "/usr/bin/python /etc/swift/scripts/swift_rings.py -f /etc/swift/scripts/object-{{ item[0].policy.index }}.contents -r {{ item[1] }}"
   with_nested:
     - "{{ swift.storage_policies }}"
-    - swift_managed_regions
-  when: swift_managed_regions is defined
+    - swift_managed_regions | default([])
   sudo: yes
   sudo_user: "{{ swift_system_user_name }}"
   args:

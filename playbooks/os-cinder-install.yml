@@ -32,19 +32,17 @@
         - lxc-aa-profile
     - name: Add volume group block device to cinder
       shell: |
-        {% if item.1.volume_group is defined %}
-        if [ "$(pvdisplay | grep -B1 {{ item.1.volume_group }} | awk '/PV/ {print $3}')" ];then
-          for device in `pvdisplay | grep -B1 {{ item.1.volume_group }} | awk '/PV/ {print $3}'`
+        {% if item.value.volume_group is defined %}
+        if [ "$(pvdisplay | grep -B1 {{ item.value.volume_group }} | awk '/PV/ {print $3}')" ];then
+          for device in `pvdisplay | grep -B1 {{ item.value.volume_group }} | awk '/PV/ {print $3}'`
             do lxc-device -n {{ container_name }} add $device
           done
         fi
         {% else %}
-        echo "{{ item.1 }} volume_group not defined"
+        echo "{{ item.key }} volume_group not defined"
         {% endif %}
-      with_items: cinder_backends|dictsort
-      when: >
-        cinder_backends is defined and
-        physical_host != container_name
+      with_dict: cinder_backends|default({})
+      when: physical_host != container_name
       delegate_to: "{{ physical_host }}"
       tags:
         - cinder-lxc-devices
