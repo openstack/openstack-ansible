@@ -9,8 +9,6 @@ Chapter 1. Overview
    overview-ansible.rst
    overview-lxc.rst
    overview-hostlayout.rst
-   overview-hostnetworking.rst
-   overview-neutron.rst
    overview-requirements.rst
    overview-workflow.rst
    overview-security.rst
