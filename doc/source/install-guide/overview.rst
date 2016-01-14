@@ -6,8 +6,6 @@ Chapter 1. Overview
 .. toctree::
 
    overview-osa.rst
-   overview-ansible.rst
-   overview-lxc.rst
    overview-hostlayout.rst
    overview-hostnetworking.rst
    overview-neutron.rst
