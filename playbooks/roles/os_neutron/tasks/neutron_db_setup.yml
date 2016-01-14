@@ -44,12 +44,14 @@
     release: liberty
     library_path: "{{ neutron_lib_dir }}"
     bin_path: "{{ neutron_bin }}"
+  when: neutron_plugin_type == 'ml2'
   tags:
     - neutron-db-setup
     - neutron-upgrade
 
 - name: Print neutron migrations facts
   debug: var=neutron_migrations
+  when: neutron_plugin_type == 'ml2'
   tags:
     - neutron-db-setup
     - neutron-upgrade
@@ -62,7 +64,9 @@
                       upgrade --expand
   sudo: yes
   sudo_user: "{{ neutron_system_user_name }}"
-  when: neutron_migrations['run_expand']|bool
+  when:
+    - (neutron_migrations is defined and neutron_migrations['run_expand']|bool)
+    - neutron_plugin_type == 'ml2'
   tags:
     - neutron-db-setup
     - neutron-upgrade
@@ -74,7 +78,7 @@
     pattern: "neutron-server"
   delegate_to: "{{ item }}"
   with_items: groups['neutron_server']
-  when: neutron_migrations['run_contract']|bool
+  when: (neutron_migrations is defined and neutron_migrations['run_contract']|bool) or neutron_plugin_type != 'ml2'
   tags:
     - neutron-db-setup
     - neutron-upgrade
@@ -87,7 +91,26 @@
                       upgrade --contract
   sudo: yes
   sudo_user: "{{ neutron_system_user_name }}"
-  when: neutron_migrations['run_contract']|bool
+  when:
+    - (neutron_migrations is defined and neutron_migrations['run_contract']|bool)
+    - neutron_plugin_type == 'ml2'
+  tags:
+    - neutron-db-setup
+    - neutron-upgrade
+
+# NOTE: We have to handle neutron_plugin_type != 'ml2' because not all neutron
+#       plugins have contract/expand branches which breaks neutron-db-manage.
+#       This can be reverted once all plugins are conformant.
+- name: Perform a Neutron DB offline upgrade (heads)
+  command: |
+    {{ neutron_bin }}/neutron-db-manage
+                      --config-file {{ neutron_db_config }}
+                      --config-file {{ neutron_db_plugin }}
+                      upgrade heads
+  sudo: yes
+  sudo_user: "{{ neutron_system_user_name }}"
+  when:
+    - neutron_plugin_type != 'ml2'
   tags:
     - neutron-db-setup
     - neutron-upgrade
@@ -99,7 +122,7 @@
     pattern: "neutron-server"
   delegate_to: "{{ item }}"
   with_items: groups['neutron_server']
-  when: neutron_migrations['run_contract']|bool
+  when: (neutron_migrations is defined and neutron_migrations['run_contract']|bool) or neutron_plugin_type != 'ml2'
   tags:
     - neutron-db-setup
     - neutron-upgrade
