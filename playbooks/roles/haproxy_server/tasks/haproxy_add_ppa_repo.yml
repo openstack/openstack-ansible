@@ -39,7 +39,8 @@
 - name: Add haproxy apt-keys
   apt_key:
     id: "{{ item.hash_id }}"
-    keyserver: "{{ item.keyserver }}"
+    keyserver: "{{ item.keyserver | default(omit) }}"
+    data: "{{ item.data | default(omit) }}"
     state: "present"
   register: add_keys
   until: add_keys|success
