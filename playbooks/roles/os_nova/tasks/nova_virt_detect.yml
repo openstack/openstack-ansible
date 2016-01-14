@@ -15,7 +15,7 @@
 
 - name: Get virt type value and store as var
   shell: |
-    /usr/bin/egrep -c '(vmx|svm)' /proc/cpuinfo
+    `which egrep` -c '(vmx|svm)' /proc/cpuinfo
   register: virt_type_value
   changed_when: false
   failed_when: false
