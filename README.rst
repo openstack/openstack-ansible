@@ -1,4 +1,4 @@
-OpenStack Ansible
+OpenStack-Ansible
 #################
 
 OpenStack-Ansible is an `official OpenStack project`_ which aims to deploy
@@ -18,9 +18,9 @@ If OpenStack-Ansible is missing something you'd like to see included, then
 we encourage you to see the `Developer Documentation`_ for more details on
 how you can get involved.
 
-Developers wishing to work on the OpenStack Ansible project should always
-base their work on the lastest Ansible code, available from the master GIT
-repository at `Source`_.
+Developers wishing to work on the OpenStack-Ansible project should always
+base their work on the latest code, available from the master GIT repository
+at `Source`_.
 
 If you have some questions, or would like some assistance with achieving your
 goals, then please feel free to reach out to us on the
