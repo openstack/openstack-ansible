@@ -28,6 +28,9 @@ openstack_host_required_kernel: 3.13.0-34-generic
 ## Kernel modules loaded on hosts
 openstack_host_kernel_modules:
   - 8021q
+  # TODO (odyssey4me): revise the minimum kernel version once this kernel version is commonplace
+  #  If we end up with more requirements like this, then we should change the approach.
+  - "{% if ansible_kernel | version_compare('3.18.0-0-generic', '>') %}br_netfilter{% endif %}"
   - dm_multipath
   - dm_snapshot
   - ip6table_filter
