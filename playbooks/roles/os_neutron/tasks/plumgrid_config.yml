@@ -36,7 +36,7 @@
   retries: 5
   delay: 2
   with_items:
-    - neutron_optional_plumgrid_pip_packages
+    - "{{ neutron_optional_plumgrid_pip_packages }}"
   when:
     - neutron_venv_enabled | bool
     - inventory_hostname in groups['neutron_server']
@@ -57,7 +57,7 @@
   retries: 5
   delay: 2
   with_items:
-    - neutron_optional_plumgrid_pip_packages
+    - "{{ neutron_optional_plumgrid_pip_packages }}"
   when:
     - neutron_venv_enabled | bool
     - inventory_hostname in groups['neutron_server']
@@ -76,7 +76,7 @@
   delay: 2
   ignore_errors: True
   with_items:
-    - neutron_optional_plumgrid_pip_packages
+    - "{{ neutron_optional_plumgrid_pip_packages }}"
   when:
     - not neutron_venv_enabled | bool
     - inventory_hostname in groups['neutron_server']
@@ -95,7 +95,7 @@
   retries: 5
   delay: 2
   with_items:
-    - neutron_optional_plumgrid_pip_packages
+    - "{{ neutron_optional_plumgrid_pip_packages }}"
   when:
     - not neutron_venv_enabled | bool
     - inventory_hostname in groups['neutron_server']
