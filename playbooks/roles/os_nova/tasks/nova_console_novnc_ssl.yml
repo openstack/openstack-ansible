@@ -1,0 +1,39 @@
+---
+# Copyright 2016, Logan Vig <logan2211@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Ensure ssl cert directory exists
+  file:
+    path: "{{ nova_console_ssl_dir }}"
+    state: directory
+    owner: "nova"
+    group: "nova"
+    mode: "0755"
+
+- name: Prepare combined nova-console SSL and CA certs
+  local_action: command cat {{ nova_console_user_ssl_cert }} {{ nova_console_user_ssl_ca_cert is defined | ternary(nova_console_user_ssl_ca_cert,'') }}
+  register: nova_console_user_ssl_combined
+
+- name: Drop user provided ssl cert and key
+  copy:
+    src: "{{ item.src | default(omit) }}"
+    content: "{{ item.content | default(omit) }}"
+    dest: "{{ item.dest }}"
+    owner: "nova"
+    group: "nova"
+    mode: "{{ item.mode }}"
+  with_items:
+    - { content: "{{ nova_console_user_ssl_combined.stdout ~ '\n' }}", dest: "{{ nova_console_ssl_cert }}", mode: "0644" }
+    - { src: "{{ nova_console_user_ssl_key }}", dest: "{{ nova_console_ssl_key }}", mode: "0640" }
+  notify: Restart nova services

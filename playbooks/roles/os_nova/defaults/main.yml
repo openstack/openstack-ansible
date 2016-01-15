@@ -156,6 +156,11 @@ nova_console_keymap: en-us
 # Set the console type. Presently the only options are ["spice", "novnc"].
 nova_console_type: spice
 
+# Nova console ssl info, presently only used by novnc console type
+nova_console_ssl_dir: "/etc/nova/ssl"
+nova_console_ssl_cert: "{{ nova_console_ssl_dir }}/nova-console.pem"
+nova_console_ssl_key: "{{ nova_console_ssl_dir }}/nova-console.key"
+
 ## Nova global config
 nova_cpu_mode: host-model
 nova_linuxnet_interface_driver: nova.network.linux_net.NeutronLinuxBridgeInterfaceDriver

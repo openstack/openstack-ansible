@@ -88,3 +88,9 @@
   tags:
     - nova-install
     - nova-novnc-pip-packages
+
+- include: nova_console_novnc_ssl.yml
+  when: nova_console_user_ssl_cert is defined and nova_console_user_ssl_key is defined
+  tags:
+    - nova-novnc
+    - nova-novnc-ssl
