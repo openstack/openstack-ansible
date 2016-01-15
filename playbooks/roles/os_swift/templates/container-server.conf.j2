@@ -11,6 +11,7 @@ workers = {{ swift_container_server_workers | default(api_threads) }}
 user = {{ swift_system_user_name }}
 devices = {{ swift_vars.mount_point | default(swift.mount_point) }}
 log_facility = LOG_LOCAL3
+{% include "statsd.j2" %}
 
 [pipeline:main]
 pipeline = healthcheck recon container-server

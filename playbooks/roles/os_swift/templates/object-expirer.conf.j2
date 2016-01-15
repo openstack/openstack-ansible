@@ -4,6 +4,7 @@
 swift_dir = /etc/swift
 user = {{ swift_system_user_name }}
 log_facility = LOG_LOCAL4
+{% include "statsd.j2" %}
 
 [object-expirer]
 interval = 300

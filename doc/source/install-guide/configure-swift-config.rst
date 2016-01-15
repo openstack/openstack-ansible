@@ -44,6 +44,11 @@ file**
        #           index: 1
        #           repl_number: 3
        #           deprecated: True
+       #     statsd_host: statsd.example.com
+       #     statsd_port: 8125
+       #     statsd_metric_prefix:
+       #     statsd_default_sample_rate: 1.0
+       #     statsd_sample_rate_factor: 1.0
 
 
    ``part_power``
@@ -129,6 +134,27 @@ file**
        ``repl_number`` are the only values that can be set. Setting them
        in this section overrides the defaults for the specific ring.
 
+   ``statsd_host``
+      Swift supports sending extra metrics to a statsd host. This option
+      sets the statsd host that will receive statsd metrics. Specifying
+      this here will apply to all hosts in the cluster.
+
+      If statsd_host is left blank or omitted then statsd will be
+      disabled.
+
+      All statsd settings can be overridden or specified deeper in the
+      structure if you want to only catch statsd metrics on certain hosts.
+
+   ``statsd_port``
+      Optionally, use this to specify the statsd server's port your sending
+      metrics to. Defaults to 8125 of omitted.
+
+   ``statsd_default_sample_rate`` and ``statsd_sample_rate_factor``
+      These statsd related options are a little more complicated and are
+      used to tune how many samples are sent to statsd. Omit them unless
+      you need to tweak these settings, if so first read:
+      http://docs.openstack.org/developer/swift/admin_guide.html
+
 #. Update the Object Storage proxy hosts values:
 
    .. code-block:: yaml
@@ -136,15 +162,24 @@ file**
        # swift-proxy_hosts:
        #   infra-node1:
        #     ip: 192.0.2.1
+       #     statsd_metric_prefix: proxy01
        #   infra-node2:
        #     ip: 192.0.2.2
+       #     statsd_metric_prefix: proxy02
        #   infra-node3:
        #     ip: 192.0.2.3
+       #     statsd_metric_prefix: proxy03
 
    ``swift-proxy_hosts``
        Set the ``IP`` address of the hosts that Ansible will connect to
        to deploy the swift-proxy containers. The ``swift-proxy_hosts``
        value should match the infra nodes.
+
+  ``statsd_metric_prefix``
+       This metric is optional, and also only evaluated it you have defined
+       ``statsd_host`` somewhere. It allows you define a prefix to add to
+       all statsd metrics sent from this hose. If omitted the node name will
+       be used.
 
 #. Update the Object Storage hosts values:
 
@@ -156,16 +191,19 @@ file**
        #     container_vars:
        #       swift_vars:
        #         zone: 0
+       #         statsd_metric_prefix: node1
        #   swift-node2:
        #     ip: 192.0.2.5
        #     container_vars:
        #       swift_vars:
        #         zone: 1
+       #         statsd_metric_prefix: node2
        #   swift-node3:
        #     ip: 192.0.2.6
        #     container_vars:
        #       swift_vars:
        #         zone: 2
+       #         statsd_metric_prefix: node3
        #   swift-node4:
        #     ip: 192.0.2.7
        #     container_vars:
@@ -241,6 +279,12 @@ file**
    ``drives``
        Set the names of the drives on this Object Storage host. At least
        one name must be specified.
+
+  ``statsd_metric_prefix``
+       This metric is optional, and also only evaluated it you have defined
+       ``statsd_host`` somewhere. It allows you define a prefix to add to
+       all statsd metrics sent from this hose. If omitted the node name will
+       be used.
 
    In the following example, ``swift-node5`` shows values in the
    ``swift_hosts`` section that will override the global values. Groups

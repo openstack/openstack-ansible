@@ -10,6 +10,7 @@ bind_port = {{ swift_account_port }}
 devices = {{ swift_vars.mount_point | default(swift.mount_point) }}
 workers = {{ swift_account_server_replicator_workers | default(api_threads) }}
 log_facility = LOG_LOCAL2
+{% include "statsd.j2" %}
 
 [pipeline:main]
 pipeline = account-server

@@ -85,6 +85,26 @@
 #     The amount of time in seconds  before items, such as tombstones are
 #     reclaimed, default is 604800 (7 Days).
 #
+#     Option: statsd_host (optional, string)
+#     Swift supports statsd metrics, this option sets the statsd host that will
+#     receive statsd metrics. Specifying this here will apply to all hosts in
+#     a cluster. It can be overridden or specified deeper in the structure if you
+#     want to only catch statsd metrics on certain hosts.
+#
+#     Option: statsd_port (optional, integer, default 8125)
+#     Statsd port, requires statsd_host set.
+#
+#     Option: statsd_metric_prefix (optional, string, default ansible_host)
+#     Specify a prefix that will be prepended to all metrics, this should be specified
+#     deeper in the configuration so different host metrics can be separated.
+#
+#     The following statsd related options are a little more complicated and are
+#     used to tune how many samples are sent to statsd. If you need to tweak these
+#     settings then first read: http://docs.openstack.org/developer/swift/admin_guide.html
+#
+#     Option: statsd_default_sample_rate (optional, float, default 1.0)
+#     Option: statsd_sample_rate_factor (optional, float, default 1.0)
+#
 #   Example:
 #
 #   Define a typical deployment:
@@ -109,6 +129,8 @@
 #     region: 1
 #     zone: 0
 #     weight: 100
+#     statsd_host: statsd.example.lan
+#     statsd_port: 8125
 #
 #   Note: Most typical deployments override the 'zone' option in the
 #   'swift_vars' level to use a unique zone for each storage host.
@@ -267,6 +289,23 @@
 #         store Object PUT replicas on up to 6 disks in region 1 assuming
 #         replicas is 3, and write_affinity = r1
 #
+#         Option: statsd_host (optional, string)
+#         Swift supports statsd metrics, this option sets the statsd host that will
+#         receive statsd metrics.
+#
+#         Option: statsd_port (optional, integer, default 8125)
+#         Statsd port, requires statsd_host set.
+#
+#         Option: statsd_metric_prefix (optional, string, default ansible_host)
+#         Specify a prefix that will be prepended to all metrics on this host.
+#
+#         The following statsd related options are a little more complicated and are
+#         used to tune how many samples are sent to statsd. If you need to tweak these
+#         settings then first read: http://docs.openstack.org/developer/swift/admin_guide.html
+#
+#         Option: statsd_default_sample_rate (optional, float, default 1.0)
+#         Option: statsd_sample_rate_factor (optional, float, default 1.0)
+#
 # Example:
 #
 # Define three swift proxy hosts:
@@ -337,6 +376,23 @@
 #
 #         Option: weight (optional, integer)
 #         Weight of all disks.
+#
+#         Option: statsd_host (optional, string)
+#         Swift supports statsd metrics, this option sets the statsd host that will
+#         receive statsd metrics.
+#
+#         Option: statsd_port (optional, integer, default 8125)
+#         Statsd port, requires statsd_host set.
+#
+#         Option: statsd_metric_prefix (optional, string, default ansible_host)
+#         Specify a prefix that will prepended all metrics on this host.
+#
+#         The following statsd related options are a little more complicated and are
+#         used to tune how many samples are sent to statsd. If you need to tweak these
+#         settings then first read: http://docs.openstack.org/developer/swift/admin_guide.html
+#
+#         Option: statsd_default_sample_rate (optional, float, default 1.0)
+#         Option: statsd_sample_rate_factor (optional, float, default 1.0)
 #
 #         Level: groups (optional)
 #         List of one of more Ansible groups that apply to this host.
@@ -411,6 +467,8 @@
 #         region: 2
 #         zone: 0
 #         weight: 200
+#         statsd_host: statsd2.example.net
+#         statsd_metric_prefix: swift-node4
 #         groups:
 #           - account
 #           - container

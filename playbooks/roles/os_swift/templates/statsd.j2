@@ -1,0 +1,32 @@
+
+{% if swift_vars is defined %}
+{%   if swift_vars.statsd_host is defined %}
+{%     set statsd = 1 %}
+log_statsd_host = {{ swift_vars.statsd_host | default(statsd_host) }}
+{%   elif swift.statsd_host is defined %}
+{%     set statsd =1 %}
+log_statsd_host = {{ swift.statsd_host | default(statsd_host) }}
+{%   endif %}
+{%   if statsd is defined %}
+{%     if swift_vars.statsd_port is defined %}
+log_statsd_port = {{ swift_vars.statsd_port }}
+{%     else %}
+log_statsd_port = {{ swift.statsd_port | default(statsd_port) }}
+{%     endif %}
+{%     if swift_vars.statsd_default_sample_rate is defined %}
+log_statsd_default_sample_rate = {{ swift_vars.statsd_default_sample_rate }}
+{%     else %}
+log_statsd_default_sample_rate = {{ swift.statsd_default_sample_rate | default(statsd_default_sample_rate) }}
+{%     endif %}
+{%     if swift_vars.statsd_sample_rate_factor is defined %}
+log_statsd_sample_rate_factor = {{ swift_vars.statsd_sample_rate_factor }}
+{%     else %}
+log_statsd_sample_rate_factor = {{ swift.statsd_sample_rate_factor | default(statsd_sample_rate_factor) }}
+{%     endif %}
+{%     if swift_vars.statsd_metric_prefix is defined %}
+log_statsd_metric_prefix = {{ swift_vars.statsd_metric_prefix }}
+{%     else %}
+log_statsd_metric_prefix = {{ swift.statsd_metric_prefix | default(inventory_hostname) }}
+{%     endif %}
+{%   endif %}
+{% endif %}
