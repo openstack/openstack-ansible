@@ -21,8 +21,8 @@ The following OpenStack resources are useful to reference:
 - `OpenStack SDK, CLI and API Documentation
   <http://developer.openstack.org/>`_
 
-- `OpenStack API Quick Start
-  <http://docs.openstack.org/api/quick-start/content/>`_
+- `OpenStack API Guide
+  <http://developer.openstack.org/api-guide/quick-start>`_
 
 - `OpenStack Project Developer Documentation
   <http://docs.openstack.org/developer/>`_
