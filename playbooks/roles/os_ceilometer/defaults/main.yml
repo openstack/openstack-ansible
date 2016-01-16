@@ -82,11 +82,19 @@ ceilometer_service_adminurl: "{{ ceilometer_service_adminuri }}"
 
 
 ceilometer_service_in_ldap: false
+
 ## Ceilometer config
 # If the following variables are unset in user_variables, the value set will be half the number of available VCPUs
 # ceilometer_api_workers: 1
 # ceilometer_collector_workers: 1
 # ceilometer_notification_workers: 1
+
+# Enable/Disable Ceilometer per service
+glance_ceilometer_enabled: false
+nova_ceilometer_enabled: false
+cinder_ceilometer_enabled: false
+neutron_ceilometer_enabled: false
+heat_ceilometer_enabled: false
 
 ## Keystone authentication middleware
 ceilometer_keystone_auth_plugin: password
