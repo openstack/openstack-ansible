@@ -91,6 +91,7 @@
               add \
               --user {{ heat_stack_domain_admin }} \
               --domain {{ heat_stack_user_domain_name }} \
+              --user-domain {{ heat_stack_user_domain_name }} \
               admin
   tags:
     - heat-domain
