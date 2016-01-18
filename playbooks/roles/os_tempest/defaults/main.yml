@@ -21,9 +21,12 @@ debug: False
 verbose: True
 tempest_fatal_deprecations: False
 
-tempest_private_subnet_cidr: "192.168.74.0/24"
+# This needs to coincide with tempest_network_tenant_network_cidr and
+# tempest_network_tenant_network_mask_bits below
+tempest_private_subnet_cidr: "192.168.74.0/28"
 tempest_public_subnet_cidr: "10.1.13.0/24"
 
+tempest_compute_ssh_user: cirros
 tempest_compute_image_ssh_user: cirros
 tempest_compute_image_alt_ssh_user: cirros
 tempest_compute_image_ssh_password: cubswin:)
@@ -33,6 +36,8 @@ tempest_compute_console_output_enabled: True
 tempest_compute_resize_enabled: True
 tempest_compute_snapshot_enabled: True
 tempest_compute_change_password: False
+tempest_network_tenant_network_cidr: "192.168.74.0/24"
+tempest_network_tenant_network_mask_bits: 28
 
 tempest_dashboard_login_url: "https://{{ external_lb_vip_address }}/auth/login/"
 tempest_dashboard_url: "https://{{ external_lb_vip_address }}/"

@@ -41,6 +41,7 @@ flavor_ref_alt = 202
 image_ssh_user = {{ tempest_compute_image_ssh_user }}
 image_ssh_password = {{ tempest_compute_image_ssh_password }}
 image_alt_ssh_user = {{ tempest_compute_image_alt_ssh_user }}
+ssh_user = {{ tempest_compute_ssh_user }}
 auth_method = keypair
 fixed_network_name = private
 endpoint_type = internalURL
@@ -125,8 +126,8 @@ api_v2 = {{ tempest_image_api_v2_enabled }}
 
 [network]
 endpoint_type = internalURL
-tenant_network_cidr = {{ tempest_private_subnet_cidr }}
-tenant_network_mask_bits = 24
+tenant_network_cidr = {{ tempest_network_tenant_network_cidr }}
+tenant_network_mask_bits = {{ tempest_network_tenant_network_mask_bits }}
 tenant_networks_reachable = false
 public_network_id = {{ tempest_neutron_public_network_id }}
 floating_network_name = public
