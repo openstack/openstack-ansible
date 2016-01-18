@@ -14,7 +14,7 @@
 # limitations under the License.
 
 - name: Basic host setup
-  hosts: "{{ host_group|default('hosts') }}"
+  hosts: "{{ openstack_host_group|default('hosts') }}"
   max_fail_percentage: 20
   user: root
   roles:
