@@ -17,7 +17,6 @@
 set -e -u -x
 
 ## Variables -----------------------------------------------------------------
-export ANSIBLE_PARAMETERS=${ANSIBLE_PARAMETERS:-"-v"}
 export MAX_RETRIES=${MAX_RETRIES:-"2"}
 # tempest and testr options, default is to run tempest in serial
 export TESTR_OPTS=${TESTR_OPTS:-''}
@@ -125,7 +124,10 @@ pushd $(dirname ${0})/../playbooks
   mkdir -p /openstack/log/ansible-logging
   sed -i '/\[defaults\]/a log_path = /openstack/log/ansible-logging/ansible.log' ansible.cfg
 
-  # Enable detailed task profiling
+  # This plugin makes the output easier to read
+  wget -O plugins/callbacks/human_log.py https://gist.githubusercontent.com/cliffano/9868180/raw/f360f306b3c6d689734a6aa8773a00edf16a0054/human_log.py
+
+  # Enable callback plugins
   sed -i '/\[defaults\]/a callback_plugins = plugins/callbacks' ansible.cfg
 popd
 
