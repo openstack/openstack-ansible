@@ -1,0 +1,23 @@
+# Use this pipeline for no auth - DEFAULT
+[pipeline:glance-search]
+pipeline = unauthenticated-context rootapp
+
+[pipeline:glance-search-keystone]
+pipeline = authtoken context rootapp
+
+[composite:rootapp]
+paste.composite_factory = glance.api:root_app_factory
+/v0.1: apiv0_1app
+
+[app:apiv0_1app]
+paste.app_factory = glance.search.api.v0_1.router:API.factory
+
+[filter:unauthenticated-context]
+paste.filter_factory = glance.api.middleware.context:UnauthenticatedContextMiddleware.factory
+
+[filter:authtoken]
+paste.filter_factory = keystonemiddleware.auth_token:filter_factory
+delay_auth_decision = true
+
+[filter:context]
+paste.filter_factory = glance.api.middleware.context:ContextMiddleware.factory

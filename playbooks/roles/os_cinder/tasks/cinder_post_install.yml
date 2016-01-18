@@ -35,7 +35,7 @@
       dest: "/etc/cinder/rootwrap.conf"
       config_overrides: "{{ cinder_rootwrap_conf_overrides }}"
       config_type: "ini"
-    - src: "policy.json"
+    - src: "policy.json.j2"
       dest: "/etc/cinder/policy.json"
       config_overrides: "{{ cinder_policy_overrides }}"
       config_type: "json"

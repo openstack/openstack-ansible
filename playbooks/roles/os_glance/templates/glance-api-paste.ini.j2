@@ -12,7 +12,7 @@ pipeline = versionnegotiation osprofiler unauthenticated-context cache cachemana
 
 # Use this pipeline for keystone auth
 [pipeline:glance-api-keystone]
-pipeline = versionnegotiation osprofiler authtoken context rootapp
+pipeline = versionnegotiation osprofiler authtoken context  rootapp
 
 # Use this pipeline for keystone auth with image caching
 [pipeline:glance-api-keystone+caching]

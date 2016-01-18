@@ -95,11 +95,11 @@ for repo in $(grep 'git_repo\:' ${SERVICE_FILE}); do
         cp {} "playbooks/roles/os_${repo_name}/templates/policy.json.j2" \;
 
       # Tweak the paste files
-      find ${repo_tmp_path}/etc -name "*-paste.ini" -exec \
+      find ${repo_tmp_path}/etc -name "*[_-]paste.ini" -exec \
         sed -i.bak "s|hmac_keys = SECRET_KEY|hmac_keys = {{ ${repo_name}_profiler_hmac_key }}|" {} \;
 
       # Update the paste files
-      find ${repo_tmp_path}/etc -name "*-paste.ini" -exec \
+      find ${repo_tmp_path}/etc -name "*[_-]paste.ini" -exec \
         bash -c "name=\"{}\"; cp \${name} \"playbooks/roles/os_${repo_name}/templates/\$(basename \${name}).j2\"" \;
 
       # Update the rootwrap conf files

@@ -1,0 +1,73 @@
+---
+-
+    name: meter_pipeline
+    interval: 600
+    meters:
+        - "*"
+    resources:
+    transformers:
+    publishers:
+        - rpc://
+-
+    name: cpu_pipeline
+    interval: 600
+    meters:
+        - "cpu"
+    transformers:
+        - name: "rate_of_change"
+          parameters:
+              target:
+                  name: "cpu_util"
+                  unit: "%"
+                  type: "gauge"
+                  scale: "100.0 / (10**9 * (resource_metadata.cpu_number or 1))"
+    publishers:
+        - rpc://
+-
+    name: disk_pipeline
+    interval: 600
+    meters:
+        - "disk.read.bytes"
+        - "disk.read.requests"
+        - "disk.write.bytes"
+        - "disk.write.requests"
+        - "disk.device.read.bytes"
+        - "disk.device.read.requests"
+        - "disk.device.write.bytes"
+        - "disk.device.write.requests"
+    transformers:
+        - name: "rate_of_change"
+          parameters:
+              source:
+                  map_from:
+                      name: "(disk\\.device|disk)\\.(read|write)\\.(bytes|requests)"
+                      unit: "(B|request)"
+              target:
+                  map_to:
+                      name: "\\1.\\2.\\3.rate"
+                      unit: "\\1/s"
+                  type: "gauge"
+    publishers:
+        - rpc://
+-
+    name: network_pipeline
+    interval: 600
+    meters:
+        - "network.incoming.bytes"
+        - "network.incoming.packets"
+        - "network.outgoing.bytes"
+        - "network.outgoing.packets"
+    transformers:
+        - name: "rate_of_change"
+          parameters:
+              source:
+                  map_from:
+                      name: "network\\.(incoming|outgoing)\\.(bytes|packets)"
+                      unit: "(B|packet)"
+              target:
+                  map_to:
+                      name: "network.\\1.\\2.rate"
+                      unit: "\\1/s"
+                  type: "gauge"
+    publishers:
+        - rpc://

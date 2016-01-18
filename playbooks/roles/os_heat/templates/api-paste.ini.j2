@@ -101,4 +101,4 @@ paste.filter_factory = oslo.middleware.request_id:RequestId.factory
 [filter:osprofiler]
 paste.filter_factory = osprofiler.web:WsgiMiddleware.factory
 hmac_keys = {{ heat_profiler_hmac_key }}
-enabled = {{ heat_profiler_enabled }}
+enabled = yes

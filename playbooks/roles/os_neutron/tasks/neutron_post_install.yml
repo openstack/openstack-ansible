@@ -99,6 +99,7 @@
     - { src: "rootwrap.d/lbaas-haproxy.filters", dest: "/etc/neutron/rootwrap.d/lbaas-haproxy.filters" }
     - { src: "rootwrap.d/vpnaas.filters", dest: "/etc/neutron/rootwrap.d/vpnaas.filters" }
     - { src: "rootwrap.d/ebtables.filters", dest: "/etc/neutron/rootwrap.d/ebtables.filters" }
+    - { src: "rootwrap.d/cisco-apic.filters", dest: "/etc/neutron/rootwrap.d/cisco-apic.filters" }
   notify:
     - Restart neutron services
   tags:
