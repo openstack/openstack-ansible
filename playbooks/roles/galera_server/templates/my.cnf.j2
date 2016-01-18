@@ -1,6 +1,6 @@
 {%- set all_calculated_max_connections = [] %}
 {%- for galera_node in groups['galera_all'] %}
-    {%- if all_calculated_max_connections.append(hostvars[galera_node]['ansible_processor_vcpus'] * 100) %}
+    {%- if all_calculated_max_connections.append(hostvars[galera_node]['ansible_processor_vcpus'] | default(2) * 100) %}
     {%- endif %}
 {%- endfor %}
 {%- set calculated_max_connections = all_calculated_max_connections|sort %}

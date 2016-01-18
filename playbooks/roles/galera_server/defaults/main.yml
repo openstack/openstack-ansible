@@ -43,7 +43,7 @@ galera_innodb_log_buffer_size: 128M
 galera_wsrep_address: "127.0.0.1"
 galera_wsrep_cluster_address: "{{ galera_wsrep_address }}"
 galera_wsrep_node_incoming_address: "{{ galera_wsrep_address }}"
-galera_wsrep_slave_threads: "{{ ansible_processor_vcpus }}"
+galera_wsrep_slave_threads: "{{ ansible_processor_vcpus | default(2) }}"
 galera_wsrep_retry_autocommit: 3
 galera_wsrep_debug: 0
 galera_wsrep_provider_options:
