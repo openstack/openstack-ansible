@@ -12,6 +12,7 @@ sources:
           - "cpu"
       sinks:
           - cpu_sink
+          - cpu_delta_sink
     - name: disk_source
       interval: 600
       meters:
@@ -50,6 +51,15 @@ sinks:
                     scale: "100.0 / (10**9 * (resource_metadata.cpu_number or 1))"
       publishers:
           - notifier://
+    - name: cpu_delta_sink
+      transformers:
+          - name: "delta"
+            parameters:
+                target:
+                    name: "cpu.delta"
+                growth_only: True
+      publishers:
+          - notifier://
     - name: disk_sink
       transformers:
           - name: "rate_of_change"
@@ -80,4 +90,3 @@ sinks:
                     type: "gauge"
       publishers:
           - notifier://
-
