@@ -18,3 +18,32 @@
     name: mysql
     state: restarted
     args: "{{ (not galera_existing_cluster | bool and inventory_hostname == groups['galera_all'][0]) | ternary('--wsrep-new-cluster', '') }}"
+  environment:
+    MYSQLD_STARTUP_TIMEOUT: 180
+  register: galera_restart
+  # notifies are only fired when status is "changed"
+  changed_when: galera_restart | failed
+  failed_when: false
+  notify:
+    - "remove stale .sst"
+    - "Restart mysql fall back"
+
+- name: remove stale .sst
+  file:
+    path: "/var/lib/mysql/.sst"
+    state: absent
+  when: galera_restart | failed
+
+- name: Restart mysql fall back
+  service:
+    name: mysql
+    state: restarted
+    args: "{{ (not galera_existing_cluster | bool and inventory_hostname == groups['galera_all'][0]) | ternary('--wsrep-new-cluster', '') }}"
+  environment:
+    MYSQLD_STARTUP_TIMEOUT: 180
+  when: galera_restart | failed
+  register: galera_restart_fall_back
+  until: galera_restart_fall_back | success
+  retries: 3
+  delay: 5
+

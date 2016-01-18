@@ -75,6 +75,13 @@
   tags:
     - galera-config
 
+- name: remove default mysql_safe_syslog
+  file:
+    path: "/etc/mysql/conf.d/mysqld_safe_syslog.cnf"
+    state: absent
+  tags:
+    - galera-config
+
 - name: Remove policy-rc
   file:
     path: "/usr/sbin/policy-rc.d"
