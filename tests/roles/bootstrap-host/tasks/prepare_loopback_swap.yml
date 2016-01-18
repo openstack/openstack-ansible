@@ -1,0 +1,61 @@
+---
+# Copyright 2015, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Create swap file
+  shell: "fallocate -l {{ bootstrap_host_swap_size }}G /openstack/swap.img"
+  args:
+    creates: /openstack/swap.img
+  register: swap_create
+  tags:
+    - swap-file-create
+
+- name: Set swap file permissions to 0600
+  file:
+    path: /openstack/swap.img
+    mode: 0600
+  tags:
+    - swap-permissions
+
+- name: Format the swap file
+  shell: mkswap /openstack/swap.img
+  when: swap_create | changed
+  tags:
+    - swap-format
+
+- name: Ensure that the swap file entry is in /etc/fstab
+  mount:
+    name: none
+    src: /openstack/swap.img
+    fstype: swap
+    opts: sw
+    passno: 0
+    dump: 0
+    state: present
+  tags:
+    - swap-fstab
+
+- name: Bring swap file online
+  shell: swapon /openstack/swap.img
+  tags:
+    - swap-online
+
+- name: Set system swappiness
+  sysctl:
+    name: vm.swappiness
+    value: 10
+    state: present
+  tags:
+    - swap-sysctl
+

@@ -1,0 +1,104 @@
+---
+# Copyright 2015, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Boolean option to implement OpenStack-Ansible configuration for an AIO
+bootstrap_host_aio_config: yes
+
+# Boolean option to implement OpenStack-CI LibVirt Configuration Changes
+bootstrap_host_libvirt_config: no
+
+## Swap memory
+# If there is no swap memory present, the bootstrap will create a loopback disk
+# for the purpose of having swap memory available. Swap is required for some of
+# the services deployed and is useful for AIO's built with less than 16GB memory.
+# By default the swap size is set to 8GB unless the host memory is less than 8GB,
+# in which case it is set to 4GB.
+bootstrap_host_swap_size: "{% if ansible_memory_mb['real']['total'] < 8*1024 %}4{% else %}8{% endif %}"
+
+## Loopback volumes
+# Sparse loopback disks are used for Cinder, Swift and Nova (instance storage).
+# The size of the loopback volumes can be customized here (in gigabytes).
+#
+# Boolean option to deploy the loopback disk for Cinder
+bootstrap_host_loopback_cinder: yes
+# Size of the Cinder loopback disk in gigabytes (GB).
+bootstrap_host_loopback_cinder_size: 1024
+#
+# Boolean option to deploy the loopback disk for Swift
+bootstrap_host_loopback_swift: yes
+# Size of the Swift loopback disk in gigabytes (GB).
+bootstrap_host_loopback_swift_size: 1024
+#
+# Boolean option to deploy the loopback disk for Nova
+bootstrap_host_loopback_nova: yes
+# Size of the Nova loopback disk in gigabytes (GB).
+bootstrap_host_loopback_nova_size: 1024
+
+## Bridge configuration
+# The AIO bootstrap configures bridges for use with the AIO deployment.
+# By default, these bridges are configured to be independent of any physical
+# interfaces, and they have their 'bridge_ports' set to 'none'.  However,
+# deployers can add a physical interface to 'bridge_ports' to connect the
+# bridge to a real physical interface.
+#
+# A setting of 'none' keeps the bridges as independent from physical
+# interfaces (the default).
+#
+# Setting the value to 'eth1' would mean that the bridge is directly connected
+# to the eth1 device.
+#
+# See https://wiki.debian.org/BridgeNetworkConnections for more details.
+bootstrap_host_bridge_mgmt_ports: none
+bootstrap_host_bridge_vxlan_ports: none
+bootstrap_host_bridge_storage_ports: none
+
+## Extra storage
+# An AIO may optionally be built using a second storage device. If a
+# secondary disk device to use is not specified, then the AIO will be
+# built on any existing disk partitions.
+#
+# WARNING: The data on a secondary storage device specified here will
+# be destroyed and repartitioned.
+#
+# Specify the secondary disk device to use.
+#bootstrap_host_data_disk_device: vdb
+#
+# Boolean value to force the repartitioning of the secondary device.
+bootstrap_host_data_disk_device_force: no
+#
+# If the storage capacity on this device is greater than or equal to this
+# size (in GB), the bootstrap process will use it.
+bootstrap_host_data_disk_min_size: 80
+
+### MongoDB Settings
+# MongoDB is installed on the host in the AIO for Ceilometer to use.
+#
+# Boolean value to deploy and configure the MongoDB service on the host.
+bootstrap_host_mongodb_service: yes
+#
+# Specify the IP address of a MongoDB Host.
+bootstrap_host_mongodb_address: 172.29.236.100
+
+### Optional Settings ###
+
+# Set the apt repository URL's configured for the host and containers.
+# By default the configuration will be derived from the host.
+#bootstrap_host_ubuntu_repo: http://archive.ubuntu.com/ubuntu/
+#bootstrap_host_ubuntu_security_repo: http://archive.ubuntu.com/ubuntu/
+
+# Specify the public IP address for the host.
+# By default the address will be set to the ipv4 address of the
+# host's network interface that has the default route on it.
+#bootstrap_host_public_address: 0.0.0.0

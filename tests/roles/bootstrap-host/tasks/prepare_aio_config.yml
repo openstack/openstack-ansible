@@ -1,0 +1,143 @@
+---
+# Copyright 2015, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
+- name: Create the required deployment directories
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "/etc/openstack_deploy/"
+    - "/etc/openstack_deploy/conf.d"
+    - "/etc/openstack_deploy/env.d"
+  tags:
+    - create-directories
+
+- name: Deploy environment (env.d) configuration
+  config_template:
+    src: "../etc/openstack_deploy/env.d/{{ item.name }}"
+    dest: "/etc/openstack_deploy/env.d/{{ item.name }}"
+    config_overrides: "{{ item.override }}"
+    config_type: "yaml"
+  with_items:
+    - name: ceilometer.yml
+      override: "{{ ceilometer_env_overrides | default({}) }}"
+    - name: cinder.yml
+      override: "{{ cinder_env_overrides | default({}) }}"
+    - name: galera.yml
+      override: "{{ galera_env_overrides | default({}) }}"
+    - name: glance.yml
+      override: "{{ glance_env_overrides | default({}) }}"
+    - name: heat.yml
+      override: "{{ heat_env_overrides | default({}) }}"
+    - name: horizon.yml
+      override: "{{ horizon_env_overrides | default({}) }}"
+    - name: infra.yml
+      override: "{{ infra_env_overrides | default({}) }}"
+    - name: keystone.yml
+      override: "{{ keystone_env_overrides | default({}) }}"
+    - name: memcache.yml
+      override: "{{ memcache_env_overrides | default({}) }}"
+    - name: neutron.yml
+      override: "{{ neutron_env_overrides | default({}) }}"
+    - name: nova.yml
+      override: "{{ nova_env_overrides | default({}) }}"
+    - name: os-infra.yml
+      override: "{{ os_infra_env_overrides | default({}) }}"
+    - name: pkg_repo.yml
+      override: "{{ pkg_repo_env_overrides | default({}) }}"
+    - name: rabbitmq.yml
+      override: "{{ rabbitmq_env_overrides | default({}) }}"
+    - name: rsyslog.yml
+      override: "{{ rsyslog_env_overrides | default({}) }}"
+    - name: shared-infra.yml
+      override: "{{ shared_infra_env_overrides | default({}) }}"
+    - name: swift-remote.yml
+      override: "{{ swift_remote_env_overrides | default({}) }}"
+    - name: swift.yml
+      override: "{{ swift_env_overrides | default({}) }}"
+    - name: utility.yml
+      override: "{{ utility_env_overrides | default({}) }}"
+  tags:
+    - deploy-envd
+
+- name: Deploy user conf.d configuration
+  config_template:
+    src: "../etc/openstack_deploy/conf.d/{{ item.name }}"
+    dest: "/etc/openstack_deploy/conf.d/{{ item.name | regex_replace('.aio$', '') }}"
+    config_overrides: "{{ item.override }}"
+    config_type: "yaml"
+  with_items:
+    - name: ceilometer.yml.aio
+      override: "{{ ceilometer_conf_overrides | default({}) }}"
+    - name: swift.yml.aio
+      override: "{{ swift_conf_overrides | default({}) }}"
+  tags:
+    - deploy-confd
+
+- name: Deploy openstack_user_config
+  config_template:
+    src: "../etc/openstack_deploy/openstack_user_config.yml.aio"
+    dest: "/etc/openstack_deploy/openstack_user_config.yml"
+    config_overrides: "{{ openstack_user_config_overrides | default({}) }}"
+    config_type: "yaml"
+  tags:
+    - deploy-openstack-user-config
+
+- name: Deploy openstack_environment
+  config_template:
+    src: "../etc/openstack_deploy/openstack_environment.yml"
+    dest: "/etc/openstack_deploy/openstack_environment.yml"
+    config_overrides: "{{ openstack_environment_overrides | default({}) }}"
+    config_type: "yaml"
+  tags:
+    - deploy-openstack-environment
+
+- name: Deploy user_secrets file
+  config_template:
+    src: "../etc/openstack_deploy/user_secrets.yml"
+    dest: "/etc/openstack_deploy/user_secrets.yml"
+    config_overrides: "{{ user_secrets_overrides | default({}) }}"
+    config_type: "yaml"
+  tags:
+    - deploy-user-secrets
+
+- name: Generate any missing values in user_secrets
+  shell: ../scripts/pw-token-gen.py --file /etc/openstack_deploy/user_secrets.yml
+  tags:
+    - generate_secrets
+
+- name: Get the DNS servers in use on the host
+  shell: grep nameserver /etc/resolv.conf
+  register: nameservers
+  when:
+    - lxc_cache_resolvers is not defined
+  tags:
+    - get-nameservers
+
+- name: Set lxc_cache_resolvers fact
+  set_fact:
+    lxc_cache_resolvers: "[\"{{ nameservers.stdout_lines | join('\",\"') }}\"]"
+  when:
+    - nameservers is defined
+  tags:
+    - set-fact-lxc_cache_resolvers
+
+- name: Set the user_variables
+  config_template:
+    src: user_variables.aio.yml.j2
+    dest: /etc/openstack_deploy/user_variables.yml
+    config_overrides: "{{ user_variables_overrides | default({}) }}"
+    config_type: yaml

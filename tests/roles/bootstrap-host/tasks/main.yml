@@ -1,0 +1,116 @@
+---
+# Copyright 2015, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Before we do anything, check the minimum requirements
+- include: check-requirements.yml
+  tags:
+    - check-requirements
+
+# We will look for the most specific variable files first and eventually
+# end up with the least-specific files.
+- name: Gather variables for each operating system
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution | lower }}-{{ ansible_distribution_version | lower }}.yml"
+    - "{{ ansible_distribution | lower }}.yml"
+    - "{{ ansible_os_family | lower }}.yml"
+  tags:
+    - always
+
+- name: Create the required directories
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "/openstack"
+  tags:
+    - create-directories
+
+# Configure apt in a known way to reduce the chance of unexpected failures
+- include: install-apt.yml
+  when:
+    - ansible_pkg_mgr == 'apt'
+  tags:
+    - install-apt
+
+# Prepare the data disk, if one is provided
+- include: prepare_data_disk.yml
+  when:
+    - bootstrap_host_data_disk_device is defined
+  tags:
+    - prepare-data-disk
+
+# Prepare the swap space loopback disk
+# This is only necessary if there isn't swap already
+- include: prepare_loopback_swap.yml
+  when:
+    - ansible_swaptotal_mb < 1
+  tags:
+    - prepare-loopback-swap
+
+# Prepare the Cinder LVM VG loopback disk
+# This is only necessary if bootstrap_host_loopback_cinder is set to yes
+- include: prepare_loopback_cinder.yml
+  when:
+    - bootstrap_host_loopback_cinder | bool
+  tags:
+    - prepare-loopback-cinder
+
+# Prepare the Nova instance storage loopback disk
+- include: prepare_loopback_nova.yml
+  when:
+    - bootstrap_host_loopback_nova | bool
+  tags:
+    - prepare-loopback-nova
+
+# Prepare the Swift data storage loopback disks
+- include: prepare_loopback_swift.yml
+  when:
+    - bootstrap_host_loopback_swift | bool
+  tags:
+    - prepare-loopback-swift
+
+# Prepare the network interfaces
+- include: prepare_networking.yml
+  tags:
+    - prepare-networking
+
+# Ensure that there are both private and public ssh keys for root
+- include: prepare_ssh_keys.yml
+  tags:
+    - prepare-ssh-keys
+
+# Put the OpenStack-Ansible configuration for an All-In-One on the host
+- include: prepare_aio_config.yml
+  when: bootstrap_host_aio_config | bool
+  tags:
+    - prepare-aio-config
+
+# Prepare the MongoDB Service for Ceilometer
+- include: prepare_mongodb_service.yml
+  when: bootstrap_host_mongodb_service | bool
+  tags:
+    - prepare-mongodb-service
+
+# Prepare the MongoDB Users for Ceilometer
+- include: prepare_mongodb_users.yml
+  tags:
+    - prepare-mongodb-users
+
+# Prepare the LibVirt Service for Nova
+- include: prepare_libvirt_service.yml
+  when: bootstrap_host_libvirt_config | bool
+  tags:
+    - prepare-libvirt-service

@@ -1,0 +1,72 @@
+---
+# Copyright 2015, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Create sparse Cinder file
+  shell: "truncate -s {{ bootstrap_host_loopback_cinder_size }}G /openstack/cinder.img"
+  args:
+    creates: /openstack/cinder.img
+  register: cinder_create
+  tags:
+    - cinder-file-create
+
+- name: Get a loopback device for cinder file
+  shell: losetup -f
+  when: cinder_create | changed
+  register: cinder_losetup
+  tags:
+    - cinder-device-get
+
+- name: Create the loopback device
+  shell: "losetup {{ cinder_losetup.stdout }} /openstack/cinder.img"
+  when: cinder_create | changed
+  tags:
+    - cinder-device-create
+
+- name: Ensure that rc.local exists
+  file:
+    path: /etc/rc.local
+    state: touch
+    mode: "u+x"
+  tags:
+    - cinder-rc-file
+
+# As the cinder loopback is an LVM VG, it needs to be mounted differently
+#  to the other loopback files. It requires the use of rc.local to attach
+#  the loopback device on boot so that the VG becomes available immediately
+#  after the boot process completes.
+- name: Create loopback devices at boot time
+  lineinfile:
+    dest: /etc/rc.local
+    line: "losetup $(losetup -f) /openstack/cinder.img"
+  tags:
+    - cinder-rc-config
+
+- name: Make LVM physical volume on the cinder device
+  shell: "{{ item }}"
+  when: cinder_create | changed
+  with_items:
+    - "pvcreate {{ cinder_losetup.stdout }}"
+    - "pvscan"
+  tags:
+    - cinder-lvm-pv
+
+- name: Add cinder-volumes volume group
+  lvg:
+    vg: cinder-volumes
+    pvs: "{{ cinder_losetup.stdout }}"
+  when: cinder_create | changed
+  tags:
+    - cinder-lvm-vg
+

@@ -1,0 +1,73 @@
+---
+# Copyright 2015, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
+# Only execute the disk partitioning process if a partition labeled
+#  'openstack-data{1,2}' is not present and that partition is not
+#  formatted as ext4. This is an attempt to achieve idempotency just
+#  in case these tasks are executed multiple times.
+- name: Determine whether partitions labeled openstack-data{1,2} are present
+  shell: |
+    parted --script -l -m | egrep -q ':ext4:openstack-data[12]:;$'
+  register: data_disk_partitions
+  changed_when: false
+  ignore_errors: yes
+  tags:
+    - check-data-disk-partitions
+
+- name: Dismount and remove fstab entries for anything on the data disk device
+  mount:
+    name: "{{ item.mount }}"
+    src: "{{ item.device }}"
+    fstype: ext4
+    state: absent
+  when:
+    - data_disk_partitions.rc == 1 or bootstrap_host_data_disk_device_force | bool
+    - item.device | search(bootstrap_host_data_disk_device)
+  with_items:
+    - "{{ ansible_mounts }}"
+
+- name: Partition the whole data disk for our usage
+  shell: "{{ item }}"
+  when: data_disk_partitions.rc == 1 or bootstrap_host_data_disk_device_force | bool
+  with_items:
+    - "parted --script /dev/{{ bootstrap_host_data_disk_device }} mklabel gpt"
+    - "parted --align optimal --script /dev/{{ bootstrap_host_data_disk_device }} mkpart openstack-data1 ext4 0% 40%"
+    - "parted --align optimal --script /dev/{{ bootstrap_host_data_disk_device }} mkpart openstack-data2 ext4 40% 100%"
+  tags:
+    - create-data-disk-partitions
+
+- name: Format the partitions
+  filesystem:
+    fstype: ext4
+    dev: "{{ item  }}"
+  when: data_disk_partitions.rc == 1 or bootstrap_host_data_disk_device_force | bool
+  with_items:
+    - "/dev/{{ bootstrap_host_data_disk_device  }}1"
+    - "/dev/{{ bootstrap_host_data_disk_device  }}2"
+  tags:
+    - format-data-partitions
+
+- name: Create the mount points, fstab entries and mount the file systems
+  mount:
+    name: "{{ item.mount_point }}"
+    src: "{{ item.device }}"
+    fstype: ext4
+    state: mounted
+  with_items:
+    - { mount_point: /openstack, device: "/dev/{{ bootstrap_host_data_disk_device  }}1"}
+    - { mount_point: /var/lib/lxc, device: "/dev/{{ bootstrap_host_data_disk_device  }}2"}
+  tags:
+    - mount-data-partitions
