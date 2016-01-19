@@ -16,14 +16,16 @@ they're great for smaller proof-of-concept deployments.
 Absolute minimum server resources (currently used for gate checks):
 
 * 8 vCPU's
-* 50GB disk space
+* 60GB free disk space on the root partition
 * 8GB RAM
 
 Recommended server resources:
 
 * CPU/motherboard that supports `hardware-assisted virtualization`_
 * 8 CPU Cores
-* 80GB disk space
+* 80GB free disk space on the root partition, or 60GB+ on a blank
+  secondary disk. Using a secondary disk requires
+  `Running a customized AIO build`_.
 * 16GB RAM
 
 It's `possible` to perform AIO builds within a virtual machine but your
