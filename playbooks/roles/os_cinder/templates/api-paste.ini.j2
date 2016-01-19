@@ -35,7 +35,7 @@ enabled = yes
 paste.filter_factory = cinder.api.middleware.auth:NoAuthMiddleware.factory
 
 [filter:sizelimit]
-paste.filter_factory = oslo_middleware:RequestBodySizeLimiter.factory
+paste.filter_factory = cinder.api.middleware.sizelimit:RequestBodySizeLimiter.factory
 
 [app:apiv1]
 paste.app_factory = cinder.api.v1.router:APIRouter.factory

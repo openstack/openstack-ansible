@@ -1,0 +1,19 @@
+# A limited pipeline for use with the Gabbi spike.
+# direct writes to the the metering database without using an
+# intermediary dispatcher.
+#
+# This is one of several things that will need some extensive
+# tidying to be more right.
+---
+sources:
+    - name: meter_source
+      interval: 1
+      meters:
+          - "*"
+      sinks:
+          - meter_sink
+sinks:
+    - name: meter_sink
+      transformers:
+      publishers:
+          - direct://

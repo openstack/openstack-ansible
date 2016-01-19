@@ -1,0 +1,175 @@
+---
+
+resources:
+  - resource_type: identity
+    archive_policy: low
+    metrics:
+      - 'identity.authenticate.success'
+      - 'identity.authenticate.pending'
+      - 'identity.authenticate.failure'
+      - 'identity.user.created'
+      - 'identity.user.deleted'
+      - 'identity.user.updated'
+      - 'identity.group.created'
+      - 'identity.group.deleted'
+      - 'identity.group.updated'
+      - 'identity.role.created'
+      - 'identity.role.deleted'
+      - 'identity.role.updated'
+      - 'identity.project.created'
+      - 'identity.project.deleted'
+      - 'identity.project.updated'
+      - 'identity.trust.created'
+      - 'identity.trust.deleted'
+      - 'identity.role_assignment.created'
+      - 'identity.role_assignment.deleted'
+
+  - resource_type: ceph_account
+    metrics:
+      - 'radosgw.objects'
+      - 'radosgw.objects.size'
+      - 'radosgw.objects.containers'
+      - 'radosgw.api.request'
+      - 'radosgw.containers.objects'
+      - 'radosgw.containers.objects.size'
+
+  - resource_type: instance
+    metrics:
+      - 'instance'
+      - 'memory'
+      - 'memory.usage'
+      - 'memory.resident'
+      - 'vcpus'
+      - 'cpu'
+      - 'cpu_util'
+      - 'disk.root.size'
+      - 'disk.ephemeral.size'
+      - 'disk.read.requests'
+      - 'disk.read.requests.rate'
+      - 'disk.write.requests'
+      - 'disk.write.requests.rate'
+      - 'disk.read.bytes'
+      - 'disk.read.bytes.rate'
+      - 'disk.write.bytes'
+      - 'disk.write.bytes.rate'
+      - 'disk.latency'
+      - 'disk.iops'
+      - 'disk.capacity'
+      - 'disk.allocation'
+      - 'disk.usage'
+    attributes:
+      host: resource_metadata.host
+      image_ref: resource_metadata.image_ref_url
+      display_name: resource_metadata.display_name
+      flavor_id: resource_metadata.(instance_flavor_id|(flavor.id))
+      server_group: resource_metadata.user_metadata.server_group
+
+  - resource_type: instance_network_interface
+    metrics:
+      - 'network.outgoing.packets.rate'
+      - 'network.incoming.packets.rate'
+      - 'network.outgoing.packets'
+      - 'network.incoming.packets'
+      - 'network.outgoing.bytes.rate'
+      - 'network.incoming.bytes.rate'
+      - 'network.outgoing.bytes'
+      - 'network.incoming.bytes'
+    attributes:
+      name: resource_metadata.vnic_name
+      instance_id: resource_metadata.instance_id
+
+  - resource_type: instance_disk
+    metrics:
+      - 'disk.device.read.requests'
+      - 'disk.device.read.requests.rate'
+      - 'disk.device.write.requests'
+      - 'disk.device.write.requests.rate'
+      - 'disk.device.read.bytes'
+      - 'disk.device.read.bytes.rate'
+      - 'disk.device.write.bytes'
+      - 'disk.device.write.bytes.rate'
+      - 'disk.device.latency'
+      - 'disk.device.iops'
+      - 'disk.device.capacity'
+      - 'disk.device.allocation'
+      - 'disk.device.usage'
+    attributes:
+      name: resource_metadata.disk_name
+      instance_id: resource_metadata.instance_id
+
+  - resource_type: image
+    metrics:
+      - 'image'
+      - 'image.size'
+      - 'image.download'
+      - 'image.serve'
+    attributes:
+      name: resource_metadata.name
+      container_format: resource_metadata.container_format
+      disk_format: resource_metadata.disk_format
+
+  - resource_type: ipmi
+    metrics:
+      - 'hardware.ipmi.node.power'
+      - 'hardware.ipmi.node.temperature'
+      - 'hardware.ipmi.node.inlet_temperature'
+      - 'hardware.ipmi.node.outlet_temperature'
+      - 'hardware.ipmi.node.fan'
+      - 'hardware.ipmi.node.current'
+      - 'hardware.ipmi.node.voltage'
+      - 'hardware.ipmi.node.airflow'
+      - 'hardware.ipmi.node.cups'
+      - 'hardware.ipmi.node.cpu_util'
+      - 'hardware.ipmi.node.mem_util'
+      - 'hardware.ipmi.node.io_util'
+
+  - resource_type: network
+    metrics:
+      - 'bandwidth'
+      - 'network'
+      - 'network.create'
+      - 'network.update'
+      - 'subnet'
+      - 'subnet.create'
+      - 'subnet.update'
+      - 'port'
+      - 'port.create'
+      - 'port.update'
+      - 'router'
+      - 'router.create'
+      - 'router.update'
+      - 'ip.floating'
+      - 'ip.floating.create'
+      - 'ip.floating.update'
+
+  - resource_type: orchestration
+    metrics:
+      - 'stack.create'
+      - 'stack.update'
+      - 'stack.delete'
+      - 'stack.resume'
+      - 'stack.suspend'
+
+  - resource_type: swift_account
+    metrics:
+      - 'storage.objects.incoming.bytes'
+      - 'storage.objects.outgoing.bytes'
+      - 'storage.api.request'
+      - 'storage.objects.size'
+      - 'storage.objects'
+      - 'storage.objects.containers'
+      - 'storage.containers.objects'
+      - 'storage.containers.objects.size'
+
+  - resource_type: volume
+    metrics:
+      - 'volume'
+      - 'volume.size'
+      - 'volume.create'
+      - 'volume.delete'
+      - 'volume.update'
+      - 'volume.resize'
+      - 'volume.attach'
+      - 'volume.detach'
+    attributes:
+      display_name: resource_metadata.display_name

@@ -95,8 +95,8 @@ Resources:
             MasterUserPassword: {Ref: MasterUserPassword}
             WaitHandle: {Ref: WaitHandle}
           - |
-            #!/usr/bin/env bash
-            set -v
+            #!/bin/bash -v
+            #
             iptables -F
 
             # Helper function
