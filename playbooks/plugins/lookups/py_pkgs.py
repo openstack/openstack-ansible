@@ -362,7 +362,7 @@ class DependencyFileProcessor(object):
             if check_item:
                 git_data[item] = check_item
 
-    def _process_git(self, loaded_yaml, git_item):
+    def _process_git(self, loaded_yaml, git_item, yaml_file_name):
         """Process git repos.
 
         :type loaded_yaml: ``dict``
@@ -391,6 +391,13 @@ class DependencyFileProcessor(object):
                 git_data['repo'].rstrip('/')
             )
         git_data['egg_name'] = name.replace('-', '_')
+
+        # This conditional is set to ensure we're only processing git
+        #  repos from the defaults file when those same repos are not
+        #  being set in the repo_packages files.
+        if '/defaults/main' in yaml_file_name:
+            if name in GIT_PACKAGE_DEFAULT_PARTS:
+                return
 
         # get the repo branch definition
         git_data['branch'] = loaded_yaml.get(branch_var)
@@ -449,15 +456,12 @@ class DependencyFileProcessor(object):
                         role_name = _role_name.split(os.sep)[0]
 
             for key, values in loaded_config.items():
-                # This conditional is set to ensure we're not processes git
-                #  repos from the defaults file which may conflict with what is
-                #  being set in the repo_packages files.
-                if '/defaults/main' not in file_name:
-                    if key.endswith('git_repo'):
-                        self._process_git(
-                            loaded_yaml=loaded_config,
-                            git_item=key
-                        )
+                if key.endswith('git_repo'):
+                    self._process_git(
+                        loaded_yaml=loaded_config,
+                        git_item=key,
+                        yaml_file_name=file_name
+                )
 
                 if [i for i in BUILT_IN_PIP_PACKAGE_VARS if i in key]:
                     self._py_pkg_extend(values)
