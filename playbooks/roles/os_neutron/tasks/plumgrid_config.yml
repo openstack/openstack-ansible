@@ -23,6 +23,15 @@
   tags:
     - neutron_config
 
+- name: Place pgrc file
+  template:
+    src: plugins/plumgrid/pgrc
+    dest: /etc/neutron/plugins/plumgrid/pgrc
+    owner: "{{ neutron_system_user_name }}"
+    group: "{{ neutron_system_group_name }}"
+  tags:
+    - neutron_config
+
 - name: Install networking-plumgrid
   pip:
     name: "{{ item }}"
