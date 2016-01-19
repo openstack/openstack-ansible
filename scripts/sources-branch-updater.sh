@@ -27,7 +27,7 @@ IFS=$'\n'
 if echo "$@" | grep -e '-h' -e '--help';then
     echo "
 Options:
-  -b|--branch       (name of branch)
+  -b|--branch       (name of branch, eg: stable/liberty)
   -s|--service-file (path to service file to parse)
 "
 exit 0
@@ -85,7 +85,10 @@ for repo in $(grep 'git_repo\:' ${SERVICE_FILE}); do
       rm -rf ${repo_tmp_path}
 
       # Do a shallow clone of the repo to work with
-      git clone --quiet --depth=1 --origin ${branch_sha} ${repo_address} ${repo_tmp_path}
+      git clone --quiet --depth=10 --branch ${ONLINE_BRANCH} --no-checkout --single-branch ${repo_address} ${repo_tmp_path}
+      pushd ${repo_tmp_path} > /dev/null
+        git checkout --quiet ${branch_sha}
+      popd > /dev/null
 
       # Update the policy files
       find ${repo_tmp_path}/etc -name "policy.json" -exec \
@@ -98,10 +101,6 @@ for repo in $(grep 'git_repo\:' ${SERVICE_FILE}); do
       # Update the paste files
       find ${repo_tmp_path}/etc -name "*-paste.ini" -exec \
         bash -c "name=\"{}\"; cp \${name} \"playbooks/roles/os_${repo_name}/templates/\$(basename \${name}).j2\"" \;
-
-      # Tweak the rootwrap conf files
-      find ${repo_tmp_path}/etc -name "rootwrap.conf" -exec \
-        sed -i.bak "s|exec_dirs=|exec_dirs={{ ${repo_name}_bin }},|" {} \;
 
       # Update the rootwrap conf files
       find ${repo_tmp_path}/etc -name "rootwrap.conf" -exec \
