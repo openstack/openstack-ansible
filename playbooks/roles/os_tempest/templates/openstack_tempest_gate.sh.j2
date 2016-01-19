@@ -81,16 +81,17 @@ function gen_test_list_all {
 }
 
 # Generate test list from official defcore/refstack spec
-# Note that unlike the other test list functions, this one isn't a filter
-# it ignores its stdin and pulls the test list from github.
 function gen_test_list_defcore {
-  branch=${1:-juno}
+  branch=${1:-kilo}
   string=$(python <<END
 import json
 import requests
 
 branch="$branch"
-map = {'juno': '2015.next', 'icehouse': '2015.03'}
+map = {
+    'kilo': '2016.01',
+    'liberty': '2016.01'
+}
 
 url=("https://raw.githubusercontent.com/openstack/"
      "defcore/master/%(version)s.json"
@@ -112,14 +113,14 @@ END
   $parse_cmd
 }
 
-# defcore tests for juno
-function gen_test_list_defcore_juno {
-  gen_test_list_defcore juno
+# defcore tests for kilo
+function gen_test_list_defcore_kilo {
+  gen_test_list_defcore kilo
 }
 
-# defcore tests for icehouse
-function gen_test_list_defcore_icehouse {
-  gen_test_list_defcore icehouse
+# defcore tests for liberty
+function gen_test_list_defcore_liberty {
+  gen_test_list_defcore liberty
 }
 
 function exit_msg {
