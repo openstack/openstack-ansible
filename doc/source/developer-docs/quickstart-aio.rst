@@ -82,11 +82,13 @@ development) build it is usually best to checkout the latest tagged version.
 By default the scripts deploy all OpenStack services with sensible defaults
 for the purpose of a gate check, development or testing system.
 
-Review the ``tests/roles/bootstrap-host/defaults/main.yml`` file to see
+Review the `bootstrap-host role defaults`_ file to see
 various configuration options.  Deployers have the option to change how the
 host is bootstrapped. This is useful when you wish the AIO to make use of
 a secondary data disk, or when using this role to bootstrap a multi-node
 development environment.
+
+.. _bootstrap-host role defaults: https://github.com/openstack/openstack-ansible/blob/master/tests/roles/bootstrap-host/defaults/main.yml
 
 The bootstrap script is pre-set to pass the environment variable
 ``BOOTSTRAP_OPTS`` as an additional option to the bootstrap process. For
