@@ -1,0 +1,9 @@
+# {{ ansible_managed }}
+#!/bin/sh
+export os_auth_url="{{ keystone_service_adminuri }}/v3"
+export os_admin_user="{{ keystone_admin_user_name }}"
+export os_admin_tenant="{{ keystone_admin_tenant_name }}"
+export os_admin_password="{{ keystone_auth_admin_password }}"
+export pg_virtual_ip="{{ pg_vip }}"
+export pg_username="{{ pg_username }}"
+export pg_password="{{ pg_password }}"
