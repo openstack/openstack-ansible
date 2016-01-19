@@ -7,71 +7,56 @@ Upgrades between minor versions of OpenStack-Ansible are handled by simply
 updating the repository clone to the latest tag, then executing playbooks
 against the target hosts.
 
-Due to changes in python package dependencies by OpenStack (even in stable
-branches) it is likely that some python packages may have to be downgraded in
-a production environment.
-
-In order to facilitate this extra options may be passed to the python package
-installer to reinstall based on whatever version of the package is available
-in the repository. This is done by executing, for example:
-
-.. code-block:: shell-session
-
-    # openstack-ansible -e pip_install_options="--force-reinstall" \
-        setup-openstack.yml
-
 A minor upgrade will typically require the execution of the following:
 
-1. Change directory into the repository clone root directory
+#. Change directory into the repository clone root directory
 
   .. code-block:: shell-session
 
       # cd /opt/openstack-ansible
 
-2. Update the git remotes
+#. Update the git remotes
 
   .. code-block:: shell-session
 
       # git fetch --all
 
-3. Checkout the latest tag (the below tag is an example)
+#. Checkout the latest tag (the below tag is an example)
 
   .. code-block:: shell-session
 
       # git checkout 12.0.1
 
-4. Change into the playbooks directory
+#. Update all the dependent roles to the latest versions
+
+  .. code-block:: shell-session
+
+      # ./scripts/bootstrap-ansible.sh
+
+#. Change into the playbooks directory
 
   .. code-block:: shell-session
 
       # cd playbooks
 
-5. Build the updated repository
+#. Update the Hosts
 
   .. code-block:: shell-session
 
-      # openstack-ansible repo-install.yml
+      # openstack-ansible setup-hosts.yml
 
-6. Update RabbitMQ
+#. Update the Infrastructure
 
   .. code-block:: shell-session
 
       # openstack-ansible -e rabbitmq_upgrade=true \
-          rabbitmq-install.yml
-
-7. Update the Utility Container
-
-  .. code-block:: shell-session
-
-      # openstack-ansible -e pip_install_options="--force-reinstall" \
-          utility-install.yml
+          setup-infrastructure.yml
 
 8. Update all OpenStack Services
 
   .. code-block:: shell-session
 
-      # openstack-ansible -e pip_install_options="--force-reinstall" \
-          setup-openstack.yml
+      # openstack-ansible setup-openstack.yml
 
 Note that if you wish to scope the upgrades to specific OpenStack components
 then each of the component playbooks may be executed and scoped using groups.
@@ -81,15 +66,15 @@ For example:
 
   .. code-block:: shell-session
 
-      # openstack-ansible -e pip_install_options="--force-reinstall" \
-          os-nova-install.yml --limit nova_compute
+      # openstack-ansible os-nova-install.yml --limit nova_compute
 
-2. Update only a single Compute Host (skipping the 'nova-key' tag is necessary as the keys on all compute hosts will not be gathered)
+2. Update only a single Compute Host. Note that skipping the 'nova-key' tag is
+    necessary as the keys on all compute hosts will not be gathered.
 
   .. code-block:: shell-session
 
-      # openstack-ansible -e pip_install_options="--force-reinstall" \
-          os-nova-install.yml --limit <node-name> --skip-tags 'nova-key'
+      # openstack-ansible os-nova-install.yml --limit <node-name> \
+          --skip-tags 'nova-key'
 
 If you wish to see which hosts belong to which groups, the
 ``inventory-manage.py`` script will show all groups and their hosts.
