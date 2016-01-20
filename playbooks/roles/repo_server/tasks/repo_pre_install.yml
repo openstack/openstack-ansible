@@ -35,19 +35,6 @@
   tags:
     - repo-config
 
-- name: Copy wheel builder into place
-  copy:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-    owner: "root"
-    group: "root"
-    mode: "0755"
-  with_items:
-    - { src: "openstack-wheel-builder.sh", dest: "/opt/openstack-wheel-builder.sh" }
-    - { src: "openstack-wheel-builder.py", dest: "/opt/openstack-wheel-builder.py" }
-  tags:
-    - repo-wheel-builder
-
 - name: Drop base config file(s)
   template:
     src: "{{ item.src }}"
