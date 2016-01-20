@@ -1,5 +1,7 @@
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
+.. _network_configuration:
+
 Configuring target host networking
 ----------------------------------
 

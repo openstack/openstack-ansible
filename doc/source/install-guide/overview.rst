@@ -7,8 +7,6 @@ Chapter 1. Overview
 
    overview-osa.rst
    overview-hostlayout.rst
-   overview-hostnetworking.rst
-   overview-neutron.rst
    overview-requirements.rst
    overview-workflow.rst
    overview-security.rst
