@@ -80,13 +80,42 @@
     - keystone-install
     - keystone-pip-packages
 
+- name: Get local venv checksum
+  stat:
+    path: "/var/cache/{{ keystone_venv_download_url | basename }}"
+    get_md5: False
+  when: keystone_venv_enabled | bool
+  register: local_venv_stat
+  tags:
+    - keystone-install
+    - keystone-pip-packages
+
+- name: Get remote venv checksum
+  uri:
+    url: "{{ keystone_venv_download_url | replace('tgz', 'checksum') }}"
+    return_content: True
+  when: keystone_venv_enabled | bool
+  register: remote_venv_checksum
+  tags:
+    - keystone-install
+    - keystone-pip-packages
+
+# TODO: When project moves to ansible 2 we can pass this a sha256sum which will:
+#       a) allow us to remove force: yes
+#       b) allow the module to calculate the checksum of dest file which would
+#          result in file being downloaded only if provided and dest sha256sum
+#          checksums differ
 - name: Attempt venv download
   get_url:
     url: "{{ keystone_venv_download_url }}"
     dest: "/var/cache/{{ keystone_venv_download_url | basename }}"
+    force: yes
   ignore_errors: true
   register: get_venv
-  when: keystone_venv_enabled | bool
+  when:
+    - keystone_venv_enabled | bool
+    - (local_venv_stat.stat.exists == False or
+        {{ local_venv_stat.stat.checksum is defined and local_venv_stat.stat.checksum != remote_venv_checksum.content | trim }})
   tags:
     - keystone-install
     - keystone-pip-packages
@@ -99,13 +128,24 @@
     - keystone-install
     - keystone-pip-packages
 
+- name: Remove existing venv
+  file:
+    path: "{{ keystone_venv_bin | dirname }}"
+    state: absent
+  when:
+    - keystone_venv_enabled | bool
+    - keystone_get_venv | changed
+  tags:
+    - keystone-install
+    - keystone-pip-packages
+
 - name: Create keystone venv dir
   file:
     path: "{{ keystone_venv_bin | dirname }}"
     state: directory
   when:
     - keystone_venv_enabled | bool
-    - keystone_get_venv | success
+    - keystone_get_venv | changed
   tags:
     - keystone-install
     - keystone-pip-packages
@@ -117,7 +157,9 @@
     copy: "no"
   when:
     - keystone_venv_enabled | bool
-    - keystone_get_venv | success
+    - keystone_get_venv | changed
+  notify:
+    - Restart Apache
   tags:
     - keystone-install
     - keystone-pip-packages
@@ -148,6 +190,8 @@
   when:
     - keystone_venv_enabled | bool
     - keystone_get_venv | failed
+  notify:
+    - Restart Apache
   tags:
     - keystone-install
     - keystone-pip-packages
@@ -164,6 +208,8 @@
   with_items:
     - "{{ keystone_pip_packages }}"
   when: not keystone_venv_enabled | bool
+  notify:
+    - Restart Apache
   tags:
     - keystone-install
     - keystone-pip-packages
