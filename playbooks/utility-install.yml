@@ -85,7 +85,7 @@
       until: install_packages|success
       retries: 5
       delay: 2
-      with_items: utility_apt_packages
+      with_items: utility_apt_packages | default([])
       tags:
         - utility-apt-packages
     - name: Install pip packages
@@ -114,8 +114,6 @@
     galera_address: "{{ internal_lb_vip_address }}"
     ansible_hostname: "{{ container_name }}"
     ansible_ssh_host: "{{ container_address }}"
-    utility_apt_packages:
-      - openjdk-7-jre
     utility_pip_packages:
       - python-openstackclient
       - python-ceilometerclient
