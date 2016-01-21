@@ -61,6 +61,9 @@ horizon_enable_password_retrieve: False
 horizon_can_set_password: False
 horizon_enable_cinder_backup: False
 
+# If the following variables are unset in user_variables, the value set will be half the number of available VCPUs
+# horizon_wsgi_processes: 4
+# horizon_wsgi_threads: 4
 
 ## Horizon SSL
 horizon_ssl_cert: /etc/ssl/certs/horizon.pem

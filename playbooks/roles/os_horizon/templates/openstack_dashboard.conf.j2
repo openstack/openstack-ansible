@@ -1,6 +1,7 @@
 # {{ ansible_managed }}
 
-{% set threads = ansible_processor_vcpus // 2 %}
+{% set _wsgi_threads = ansible_processor_vcpus | default(2) // 2 %}
+{% set wsgi_threads = _wsgi_threads if _wsgi_threads > 0 else 1 %}
 
 <VirtualHost *:80>
     ServerName {{ horizon_server_name }}
@@ -30,7 +31,7 @@
     SetEnvIf User-Agent ".*MSIE.*" nokeepalive ssl-unclean-shutdown
 
     WSGIScriptAlias / {{ horizon_lib_dir }}/openstack_dashboard/wsgi/django.wsgi
-    WSGIDaemonProcess horizon user={{ horizon_system_user_name }} group={{ horizon_system_group_name }} processes={{ ansible_processor_cores }} threads={{ threads if threads > 0 else 1 }}
+    WSGIDaemonProcess horizon user={{ horizon_system_user_name }} group={{ horizon_system_group_name }} processes={{ horizon_wsgi_processes | default(wsgi_threads) }} threads={{ horizon_wsgi_threads | default(wsgi_threads) }}
     WSGIProcessGroup horizon
     WSGIApplicationGroup horizon
 
