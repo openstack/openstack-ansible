@@ -21,7 +21,7 @@
 
 - name: Identify the space available in /
   shell: |
-    df -BG / | awk '/^[^Filesystem]/ {print $4}' | sed 's/G//'
+    df -BK / | awk '/^[^Filesystem]/ {print $4}' | sed 's/K//'
   when:
     - bootstrap_host_data_disk_device is not defined
   changed_when: false
@@ -29,10 +29,41 @@
   tags:
     - check-disk-size
 
+- name: Set root disk facts
+  set_fact:
+    host_root_space_available: "{{ ( root_space_available.stdout | int) * 1024 | int }}"
+  when:
+    - bootstrap_host_data_disk_device is not defined
+  tags:
+    - check-disk-size
+
+- name: Set data disk facts
+  set_fact:
+    host_data_disk_sectors: "{{ (ansible_devices[bootstrap_host_data_disk_device]['sectors'] | int) }}"
+    host_data_disk_sectorsize: "{{ (ansible_devices[bootstrap_host_data_disk_device]['sectorsize'] | int) }}"
+  when:
+    - bootstrap_host_data_disk_device is defined
+  tags:
+    - check-disk-size
+
+- name: Calculate data disk size
+  set_fact:
+    host_data_disk_size: "{{ ((host_data_disk_sectors | int) * (host_data_disk_sectorsize | int)) | int }}"
+  when:
+    - bootstrap_host_data_disk_device is defined
+  tags:
+    - check-disk-size
+
+- name: Set min size fact
+  set_fact:
+    host_data_disk_min_size: "{{ ((bootstrap_host_data_disk_min_size | int) * 1024**3) | int }}"
+  tags:
+    - check-disk-size
+
 - name: Fail if there is not enough space available in /
   assert:
     that: |
-      root_space_available.stdout | int >= (bootstrap_host_data_disk_min_size * 0.75) | int
+      (host_root_space_available | int) >= ((host_data_disk_min_size | int) * 0.75)
   when:
     - bootstrap_host_data_disk_device is not defined
   tags:
@@ -41,8 +72,7 @@
 - name: Fail if there is not enough disk space available (disk specified)
   assert:
     that: |
-      (ansible_devices[bootstrap_host_data_disk_device]['size'] | replace(' GB','')) | int
-      >= bootstrap_host_data_disk_min_size | int
+      (host_data_disk_size | int) >= (host_data_disk_min_size | int)
   when:
     - bootstrap_host_data_disk_device is defined
   tags:
