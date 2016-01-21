@@ -14,4 +14,4 @@ paste.app_factory = ceilometer.api.app:app_factory
 paste.filter_factory = keystonemiddleware.auth_token:filter_factory
 
 [filter:request_id]
-paste.filter_factory = oslo.middleware:RequestId.factory
+paste.filter_factory = oslo_middleware:RequestId.factory
