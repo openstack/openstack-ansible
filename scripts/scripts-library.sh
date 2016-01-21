@@ -21,6 +21,7 @@ MAX_RETRIES=${MAX_RETRIES:-5}
 REPORT_DATA=${REPORT_DATA:-""}
 ANSIBLE_PARAMETERS=${ANSIBLE_PARAMETERS:-""}
 STARTTIME="${STARTTIME:-$(date +%s)}"
+PIP_MAJOR_VERSION=${PIP_MAJOR_VERSION:-"7"}
 
 # The default SSHD configuration has MaxSessions = 10. If a deployer changes
 #  their SSHD config, then the FORKS may be set to a higher number. We set the
@@ -211,14 +212,23 @@ function print_report {
 }
 
 function get_pip {
-  # if pip is already installed, don't bother doing anything
-  if [ ! "$(which pip)" ]; then
+
+  # check if pip is already installed
+  if [ "$(which pip)" ]; then
+
+    # if the version installed is the wrong version, fix it
+    if [ "$(pip --version | awk '{print $2}' | cut -d. -f1)" != ${PIP_MAJOR_VERSION} ]; then
+      pip install -I "pip>=${PIP_MAJOR_VERSION},<$((PIP_MAJOR_VERSION+1))"
+    fi
+
+  # when pip is not installed, install it
+  else
 
     # If GET_PIP_URL is set, then just use it
     if [ -n "${GET_PIP_URL:-}" ]; then
       curl --silent ${GET_PIP_URL} > /opt/get-pip.py
       if head -n 1 /opt/get-pip.py | grep python; then
-        python2 /opt/get-pip.py || python /opt/get-pip.py
+        python /opt/get-pip.py "pip>=${PIP_MAJOR_VERSION},<$((PIP_MAJOR_VERSION+1))"
         return
       fi
     fi
@@ -226,14 +236,14 @@ function get_pip {
     # Try getting pip from bootstrap.pypa.io as a primary source
     curl --silent https://bootstrap.pypa.io/get-pip.py > /opt/get-pip.py
     if head -n 1 /opt/get-pip.py | grep python; then
-      python2 /opt/get-pip.py || python /opt/get-pip.py
+      python /opt/get-pip.py "pip>=${PIP_MAJOR_VERSION},<$((PIP_MAJOR_VERSION+1))"
       return
     fi
 
-    # Try the get-pip.py from the github repository as a secondary source
-    curl --silent https://raw.github.com/pypa/pip/master/contrib/get-pip.py > /opt/get-pip.py
+    # Try the get-pip.py from the github repository as a primary source
+    curl --silent https://raw.githubusercontent.com/pypa/get-pip/master/get-pip.py > /opt/get-pip.py
     if head -n 1 /opt/get-pip.py | grep python; then
-      python2 /opt/get-pip.py || python /opt/get-pip.py
+      python /opt/get-pip.py "pip>=${PIP_MAJOR_VERSION},<$((PIP_MAJOR_VERSION+1))"
       return
     fi
 
