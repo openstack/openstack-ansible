@@ -1,8 +1,13 @@
 #{{ ansible_managed}}
 
+{% set _workers = ansible_processor_vcpus|default(2) // 2 %}
+{% set workers = _workers if _workers > 0 else 1 %}
+
 [DEFAULT]
 auth_strategy = keystone
-collector_workers = 10
+api_workers = {{ ceilometer_api_workers | default(workers) }}
+collector_workers = {{ ceilometer_collector_workers | default(workers) }}
+notification_workers = {{ ceilometer_notification_workers | default(workers) }}
 notification_topics = notifications
 rpc_backend = rabbit
 
