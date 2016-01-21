@@ -48,8 +48,7 @@
   until: install_packages|success
   retries: 5
   delay: 2
-  with_items:
-    - "{{ horizon_pip_packages }}"
+  with_items: horizon_pip_packages
   when:
     - horizon_venv_enabled | bool
     - horizon_get_venv | failed
@@ -65,8 +64,7 @@
   until: install_packages|success
   retries: 5
   delay: 2
-  with_items:
-    - "{{ horizon_pip_packages }}"
+  with_items: horizon_pip_packages
   when: not horizon_venv_enabled | bool
   tags:
     - horizon-pip-packages

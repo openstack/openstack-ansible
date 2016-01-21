@@ -22,8 +22,7 @@
   until: install_packages|success
   retries: 5
   delay: 2
-  with_items:
-    - "{{ tempest_requires_pip_packages }}"
+  with_items: tempest_requires_pip_packages
   tags:
     - tempest-pip-requires-packages
     - tempest-install
@@ -121,8 +120,8 @@
   when:
     - tempest_get_venv | failed
   with_items:
-    - "{{ tempest_pip_packages }}"
-    - "{{ tempest_git_dest }}"
+    - tempest_pip_packages
+    - tempest_git_dest
   tags:
     - tempest-pip-packages
     - tempest-pip-install

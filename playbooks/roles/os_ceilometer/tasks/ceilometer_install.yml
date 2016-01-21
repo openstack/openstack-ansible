@@ -37,8 +37,7 @@
   until: install_packages|success
   retries: 5
   delay: 2
-  with_items:
-    - "{{ ceilometer_requires_pip_packages }}"
+  with_items: ceilometer_requires_pip_packages
   tags:
     - ceilometer-install
     - ceilometer-pip-packages
@@ -106,8 +105,7 @@
   until: install_packages|success
   retries: 5
   delay: 2
-  with_items:
-    - "{{ ceilometer_pip_packages }}"
+  with_items: ceilometer_pip_packages
   when:
     - ceilometer_venv_enabled | bool
     - ceilometer_get_venv | failed
@@ -124,8 +122,7 @@
   until: install_packages|success
   retries: 5
   delay: 2
-  with_items:
-    - "{{ ceilometer_pip_packages }}"
+  with_items: ceilometer_pip_packages
   when: not ceilometer_venv_enabled | bool
   tags:
     - ceilometer-install

@@ -46,8 +46,7 @@
   until: install_packages|success
   retries: 5
   delay: 2
-  with_items:
-    - "{{ heat_requires_pip_packages }}"
+  with_items: heat_requires_pip_packages
   tags:
     - heat-install
     - heat-pip-packages
@@ -115,8 +114,7 @@
   until: install_packages|success
   retries: 5
   delay: 2
-  with_items:
-    - "{{ heat_pip_packages }}"
+  with_items: heat_pip_packages
   when:
     - heat_venv_enabled | bool
     - heat_get_venv | failed
@@ -133,8 +131,7 @@
   until: install_packages|success
   retries: 5
   delay: 2
-  with_items:
-    - "{{ heat_pip_packages }}"
+  with_items: heat_pip_packages
   when: not heat_venv_enabled | bool
   tags:
     - heat-install

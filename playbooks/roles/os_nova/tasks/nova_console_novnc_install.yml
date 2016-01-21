@@ -66,8 +66,7 @@
   until: install_packages|success
   retries: 5
   delay: 2
-  with_items:
-    - "{{ nova_novnc_pip_packages }}"
+  with_items: nova_novnc_pip_packages
   when:
     - nova_venv_enabled | bool
     - nova_get_venv | failed
@@ -84,8 +83,7 @@
   until: install_packages|success
   retries: 5
   delay: 2
-  with_items:
-    - "{{ nova_novnc_pip_packages }}"
+  with_items: nova_novnc_pip_packages
   when: not nova_venv_enabled | bool
   tags:
     - nova-install
