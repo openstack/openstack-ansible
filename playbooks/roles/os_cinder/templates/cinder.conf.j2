@@ -94,7 +94,7 @@ enabled_backends={% for backend in cinder_backends|dictsort %}{{ backend.0 }}{% 
 
 #Ceilometer configurations
 {% if cinder_ceilometer_enabled %}
-notification_driver = cinder.openstack.common.notifier.rpc_notifier
+notification_driver = messagingv2
 {% endif %}
 
 # All given backend(s)

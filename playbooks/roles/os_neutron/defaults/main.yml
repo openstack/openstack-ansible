@@ -21,6 +21,9 @@ debug: False
 verbose: True
 neutron_fatal_deprecations: False
 
+#Enable/Disable Ceilometer
+neutron_ceilometer_enabled: False
+
 ## neutron User / Group
 neutron_system_user_name: neutron
 neutron_system_group_name: neutron
@@ -122,7 +125,6 @@ neutron_driver_loadbalancer_pool_scheduler: neutron.services.loadbalancer.agent_
 neutron_driver_interface: neutron.agent.linux.interface.BridgeInterfaceDriver
 neutron_driver_metering: neutron.services.metering.drivers.iptables.iptables_driver.IptablesMeteringDriver
 neutron_driver_dhcp: neutron.agent.linux.dhcp.Dnsmasq
-neutron_driver_notification: neutron.openstack.common.notifier.rpc_notifier
 neutron_driver_quota: neutron.db.quota_db.DbQuotaDriver
 neutron_driver_firewall: neutron.agent.linux.iptables_firewall.IptablesFirewallDriver
 
