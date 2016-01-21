@@ -31,77 +31,77 @@
 
 ## Global Requirements
 requirements_git_repo: https://git.openstack.org/openstack/requirements
-requirements_git_install_branch: 4b8e8e2fc86afd61af8452df3d2a8b537d969f29 # HEAD of "stable/liberty" as of 18.01.2016
+requirements_git_install_branch: 4b8e8e2fc86afd61af8452df3d2a8b537d969f29 # HEAD of "stable/liberty" as of 21.01.2016
 requirements_git_dest: "/opt/requirements_{{ requirements_git_install_branch | replace('/', '_') }}"
 
 
 ## Aodh service
 aodh_git_repo: https://git.openstack.org/openstack/aodh
-aodh_git_install_branch: 3a05a1df615e0ae8ce0461dbcabcb763ebbe32bc # HEAD of "stable/liberty" as of 18.01.2016
+aodh_git_install_branch: 3a05a1df615e0ae8ce0461dbcabcb763ebbe32bc # HEAD of "stable/liberty" as of 21.01.2016
 aodh_git_dest: "/opt/aodh_{{ aodh_git_install_branch | replace('/', '_') }}"
 
 
 ## Ceilometer service
 ceilometer_git_repo: https://git.openstack.org/openstack/ceilometer
-ceilometer_git_install_branch: cd2065df67889354703f2a5d38af669630d67760 # HEAD of "stable/liberty" as of 18.01.2016
+ceilometer_git_install_branch: 278c4846efd218c648b76510aba2b52c762866ff # HEAD of "stable/liberty" as of 21.01.2016
 ceilometer_git_dest: "/opt/ceilometer_{{ceilometer_git_install_branch | replace('/', '_') }}"
 
 
 ## Cinder service
 cinder_git_repo: https://git.openstack.org/openstack/cinder
-cinder_git_install_branch: b98d0fac84c3a736a3a92e5e0036f7eaccd30207 # HEAD of "stable/liberty" as of 18.01.2016
+cinder_git_install_branch: 6d0981b252835a525149714e39cc1e4ee7568315 # HEAD of "stable/liberty" as of 21.01.2016
 cinder_git_dest: "/opt/cinder_{{ cinder_git_install_branch | replace('/', '_') }}"
 
 
 ## Glance service
 glance_git_repo: https://git.openstack.org/openstack/glance
-glance_git_install_branch: b61b199afdba606bad12b4812a088dbcd0e7637d # HEAD of "stable/liberty" as of 18.01.2016
+glance_git_install_branch: b9c9ac736361c42afdc46cd772b7e0741372fc78 # HEAD of "stable/liberty" as of 21.01.2016
 glance_git_dest: "/opt/glance_{{ glance_git_install_branch | replace('/', '_') }}"
 
 
 ## Heat service
 heat_git_repo: https://git.openstack.org/openstack/heat
-heat_git_install_branch: 71d7b4572f717b10429dc02760b1d41121ecfc84 # HEAD of "stable/liberty" as of 18.01.2016
+heat_git_install_branch: dc8ccd8ee15bb336c4704ac1ff628bfb245a5593 # HEAD of "stable/liberty" as of 21.01.2016
 heat_git_dest: "/opt/heat_{{ heat_git_install_branch | replace('/', '_') }}"
 
 
 ## Horizon service
 horizon_git_repo: https://git.openstack.org/openstack/horizon
-horizon_git_install_branch: 38aee7b5e07ceb327203af4c23f31194733c6435 # HEAD of "stable/liberty" as of 18.01.2016
+horizon_git_install_branch: 38aee7b5e07ceb327203af4c23f31194733c6435 # HEAD of "stable/liberty" as of 21.01.2016
 horizon_git_dest: "/opt/horizon_{{ horizon_git_install_branch | replace('/', '_') }}"
 
 
 ## Keystone service
 keystone_git_repo: https://git.openstack.org/openstack/keystone
-keystone_git_install_branch: 25a62094a840abc632ecbfbc7b74bf14dcf2baab # HEAD of "stable/liberty" as of 18.01.2016
+keystone_git_install_branch: 25a62094a840abc632ecbfbc7b74bf14dcf2baab # HEAD of "stable/liberty" as of 21.01.2016
 keystone_git_dest: "/opt/keystone_{{ keystone_git_install_branch | replace('/', '_') }}"
 
 
 ## Neutron service
 neutron_git_repo: https://git.openstack.org/openstack/neutron
-neutron_git_install_branch: ba9485d2cceb993c1cc955144366817f229f0036 # HEAD of "stable/liberty" as of 18.01.2016
+neutron_git_install_branch: cc6b16558e72619a50ba8ce7b7fc5b75645c6b6b # HEAD of "stable/liberty" as of 21.01.2016
 neutron_git_dest: "/opt/neutron_{{ neutron_git_install_branch | replace('/', '_') }}"
 
 neutron_lbaas_git_repo: https://git.openstack.org/openstack/neutron-lbaas
-neutron_lbaas_git_install_branch: eb7590c78a9185112f6600aa4c9a2d45fefa85fa # HEAD of "stable/liberty" as of 18.01.2016
+neutron_lbaas_git_install_branch: eb7590c78a9185112f6600aa4c9a2d45fefa85fa # HEAD of "stable/liberty" as of 21.01.2016
 neutron_lbaas_git_dest: "/opt/neutron_lbaas_{{ neutron_lbaas_git_install_branch | replace('/', '_') }}"
 
 neutron_vpnaas_git_repo: https://git.openstack.org/openstack/neutron-vpnaas
-neutron_vpnaas_git_install_branch: 427ba7e748ad19e230a6d04b6888331cc49ef868 # HEAD of "stable/liberty" as of 18.01.2016
+neutron_vpnaas_git_install_branch: 427ba7e748ad19e230a6d04b6888331cc49ef868 # HEAD of "stable/liberty" as of 21.01.2016
 neutron_vpnaas_git_dest: "/opt/neutron_vpnaas_{{ neutron_vpnaas_git_install_branch | replace('/', '_') }}"
 
 neutron_fwaas_git_repo: https://git.openstack.org/openstack/neutron-fwaas
-neutron_fwaas_git_install_branch: 33c06d9c703d4dbe65a3c0d5a7f4db61d86c7e26 # HEAD of "stable/liberty" as of 18.01.2016
+neutron_fwaas_git_install_branch: 33c06d9c703d4dbe65a3c0d5a7f4db61d86c7e26 # HEAD of "stable/liberty" as of 21.01.2016
 neutron_fwaas_git_dest: "/opt/neutron_fwaas_{{ neutron_fwaas_git_install_branch | replace('/', '_') }}"
 
 
 ## Nova service
 nova_git_repo: https://git.openstack.org/openstack/nova
-nova_git_install_branch: cc0bc4be85b2f51fdc30dd99fa231c7e6af61485 # HEAD of "stable/liberty" as of 18.01.2016
+nova_git_install_branch: cc0bc4be85b2f51fdc30dd99fa231c7e6af61485 # HEAD of "stable/liberty" as of 21.01.2016
 nova_git_dest: "/opt/nova_{{ nova_git_install_branch | replace('/', '_') }}"
 
 
 ## Swift service
 swift_git_repo: https://git.openstack.org/openstack/swift
-swift_git_install_branch: 74b12f26c43b3afca90a4b49f1e5a9503548ec0f # HEAD of "stable/liberty" as of 18.01.2016
+swift_git_install_branch: 74b12f26c43b3afca90a4b49f1e5a9503548ec0f # HEAD of "stable/liberty" as of 21.01.2016
 swift_git_dest: "/opt/swift_{{ swift_git_install_branch | replace('/', '_') }}"
