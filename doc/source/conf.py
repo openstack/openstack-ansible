@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# openstack-ansible documentation build configuration file, created by
+# OpenStack-Ansible Documentation build configuration file, created by
 # sphinx-quickstart on Mon Apr 13 20:42:26 2015.
 #
 # This file is execfile()d with the current directory set to its
@@ -49,9 +49,9 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = 'openstack-ansible'
-copyright = '2015, openstack-ansible contributors'
-author = 'openstack-ansible contributors'
+project = 'OpenStack-Ansible'
+copyright = '2016, OpenStack-Ansible Contributors'
+author = 'OpenStack-Ansible Contributors'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -226,8 +226,8 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (master_doc, 'openstack-ansible.tex',
-     'openstack-ansible Documentation',
-     'openstack-ansible contributors', 'manual'),
+     'OpenStack-Ansible Documentation',
+     'OpenStack-Ansible Contributors', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -257,7 +257,7 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     (master_doc, 'openstack-ansible',
-     'openstack-ansible Documentation',
+     'OpenStack-Ansible Documentation',
      [author], 1)
 ]
 
@@ -272,8 +272,9 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (master_doc, 'openstack-ansible',
-     'openstack-ansible Documentation',
-     author, 'openstack-ansible', 'One line description of project.',
+     'OpenStack-Ansible Documentation',
+     author, 'OpenStack-Ansible',
+     'OpenStack-Ansible deploys OpenStack environments using Ansible.',
      'Miscellaneous'),
 ]
 

@@ -45,7 +45,7 @@ Triaging bugs
 `````````````
 Reported bugs need prioritization, confirmation, and shouldn't go stale.
 If you care about OpenStack stability but aren't wanting to actively
-develop the roles and playbooks used within the "openstack-ansible"
+develop the roles and playbooks used within the OpenStack-Ansible
 project consider contributing in the area of bug triage, which helps
 immensely. The whole process is described in the upstream
 `Bug Triage Documentation`_.

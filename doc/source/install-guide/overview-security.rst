@@ -17,7 +17,7 @@ AppArmor
 ~~~~~~~~
 
 The Linux kernel offers multiple `security modules`_ (LSMs) that that set
-`mandatory access controls`_ (MAC) on Linux systems.  The openstack-ansible
+`mandatory access controls`_ (MAC) on Linux systems.  The OpenStack-Ansible
 project configures `AppArmor`_, a Linux security module, to provide additional
 security on LXC container hosts.  AppArmor allows administrators to set
 specific limits and policies around what resources a particular application

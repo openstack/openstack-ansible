@@ -11,7 +11,7 @@ overriding existing variables.
 Using these extension points, deployers can provide a more 'opinionated'
 installation of OpenStack that may include their own software.
 
-Including openstack-ansible in your project
+Including OpenStack-Ansible in your project
 -------------------------------------------
 
 Including the openstack-ansible repository within another project can be
@@ -21,7 +21,7 @@ done in several ways.
     2. A script to automatically perform a git checkout of
        openstack-ansible
 
-When including openstack-ansible in a project, consider using a parallel
+When including OpenStack-Ansible in a project, consider using a parallel
 directory structure as shown in the `ansible.cfg files`_ section.
 
 Also note that copying files into directories such as `env.d`_ or
@@ -32,26 +32,26 @@ ansible.cfg files
 -----------------
 
 You can create your own playbook, variable, and role structure while still
-including the openstack-ansible roles and libraries by putting an
+including the OpenStack-Ansible roles and libraries by putting an
 ``ansible.cfg`` file in your ``playbooks`` directory.
 
-The relevant options for Ansible 1.9 (included in openstack-ansible)
+The relevant options for Ansible 1.9 (included in OpenStack-Ansible)
 are as follows:
 
     ``library``
         This variable should point to
         ``openstack-ansible/playbooks/library``. Doing so allows roles and
-        playbooks to access openstack-ansible's included Ansible modules.
+        playbooks to access OpenStack-Ansible's included Ansible modules.
     ``roles_path``
         This variable should point to
         ``openstack-ansible/playbooks/roles``. This allows Ansible to
-        properly look up any openstack-ansible roles that extension roles
+        properly look up any OpenStack-Ansible roles that extension roles
         may reference.
     ``inventory``
         This variable should point to
         ``openstack-ansible/playbooks/inventory``. With this setting,
         extensions have access to the same dynamic inventory that
-        openstack-ansible uses.
+        OpenStack-Ansible uses.
 
 Note that the paths to the ``openstack-ansible`` top level directory can be
 relative in this file.
@@ -74,19 +74,19 @@ The variables in ``my_project/custom_stuff/playbooks/ansible.cfg`` would use
 env.d
 -----
 
-The openstack-ansible default environment, including container and host
+The OpenStack-Ansible default environment, including container and host
 group mappings, resides in ``/etc/openstack_deploy/openstack_environment.yml``.
 
 The ``/etc/openstack_deploy/env.d`` directory sources all YAML files into the
 deployed environment, allowing a deployer to define additional group mappings
 without having to edit the ``openstack_environment.yml`` file, which is
-controlled by the openstack-ansible project itself.
+controlled by the OpenStack-Ansible project itself.
 
 conf.d
 ------
 
 Common OpenStack services and their configuration are defined by
-openstack-ansible in the
+OpenStack-Ansible in the
 ``/etc/openstack_deploy/openstack_user_config.yml`` settings file.
 
 Additional services should be defined with a YAML file in
@@ -101,7 +101,7 @@ sourced in any ``openstack-ansible`` command. Alternatively, the files can be
 sourced with the ``-e`` parameter of the ``ansible-playbook`` command.
 
 ``user_variables.yml`` and ``user_secrets.yml`` are used directly by
-openstack-ansible; adding custom values here is not recommended.
+OpenStack-Ansible; adding custom values here is not recommended.
 
 ``user_extras_variables.yml`` and ``users_extras_secrets.yml`` are provided
 and can contain deployer's custom values, but deployers can add any other
