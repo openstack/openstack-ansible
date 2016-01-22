@@ -41,16 +41,6 @@ The following settings must be set to configure a service provider (SP):
    ``keystone_public_endpoint`` and ``horizon_keystone_endpoint`` must
    be set to use the DNS name.
 
-#. At this time, `fernet tokens do not fully support
-   federation <https://bugs.launchpad.net/keystone/+bug/1471289>`_.
-   The following settings are therefore required to be set in the
-   ``user_variables.yml`` file:
-
-   .. code-block:: yaml
-
-      keystone_token_provider: "keystone.token.providers.uuid.Provider"
-      keystone_token_driver: "keystone.token.persistence.backends.sql.Token"
-
 #. ``horizon_endpoint_type`` must be set to ``publicURL`` to ensure that
    Horizon makes use of the public endpoint for all its references and
    queries.
