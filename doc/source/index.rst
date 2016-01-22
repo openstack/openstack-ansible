@@ -12,7 +12,8 @@ Mitaka (unreleased)
 ===================
 
 OpenStack-Ansible Mitaka is currently in development. The
-`Mitaka Series Timeline`_ is available for review.
+`Mitaka Series Timeline`_ and `Mitaka Series Release Notes`_ are available for
+review.
 
 .. toctree::
    :maxdepth: 1
@@ -21,6 +22,7 @@ OpenStack-Ansible Mitaka is currently in development. The
    developer-docs/index
 
 .. _Mitaka Series Timeline: https://launchpad.net/openstack-ansible/trunk
+.. _Mitaka Series Release Notes: http://docs.openstack.org/releasenotes/openstack-ansible/mitaka.html
 
 Liberty (current stable)
 ========================

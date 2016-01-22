@@ -1,6 +1,6 @@
-==============================
- Liberty Series Release Notes
-==============================
+============================
+Liberty Series Release Notes
+============================
 
 .. release-notes::
    :branch: origin/liberty
