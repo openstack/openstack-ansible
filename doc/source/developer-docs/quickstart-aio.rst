@@ -59,7 +59,7 @@ There are four main steps for running a customized AIO build:
 * Initial host bootstrap
 * Run playbooks
 
-Start by cloning the openstack-ansible repository and changing into the
+Start by cloning the OpenStack-Ansible repository and changing into the
 repository root directory:
 
    .. code-block:: bash
