@@ -9,7 +9,7 @@ extension_drivers = port_security
 path_mtu = 0
 segment_mtu = 0
 
-{% if neutron_provider_networks.network_flat_networks %}
+{% if neutron_provider_networks.network_flat_networks is defined %}
 
 # ML2 flat networks
 [ml2_type_flat]
@@ -17,7 +17,7 @@ flat_networks = {{ neutron_provider_networks.network_flat_networks }}
 
 {% endif %}
 
-{% if neutron_provider_networks.network_vlan_ranges %}
+{% if neutron_provider_networks.network_vlan_ranges is defined %}
 
 # ML2 VLAN networks
 [ml2_type_vlan]
