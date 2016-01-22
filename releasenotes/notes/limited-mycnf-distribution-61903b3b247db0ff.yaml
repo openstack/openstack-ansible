@@ -1,0 +1,16 @@
+---
+upgrade:
+  - The distribution of the ``.my.cnf`` database access configuration file
+    which contains sensitive root credentials has now been limited to only
+    be distributed to containers and hosts which require it for
+    troubleshooting purposes. It is recommended that this file be removed
+    from all hosts and containers. The only containers that should have
+    the file are the Utility container and the Galera containers. This may
+    be done by executing ``ansible 'all:!galera:!utility' -m shell -a 'rm
+    -f /root/.my.cnf'`` from the ``/opt/openstack-ansible/`` directory.
+
+security:
+  - The distribution of the ``.my.cnf`` database access configuration file
+    which contains sensitive root credentials has now been limited to only
+    be distributed to containers and hosts which require it for
+    troubleshooting purposes.
