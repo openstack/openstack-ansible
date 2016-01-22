@@ -41,6 +41,7 @@
     id: "{{ item.hash_id }}"
     keyserver: "{{ item.keyserver | default(omit) }}"
     data: "{{ item.data | default(omit) }}"
+    url: "{{ item.url | default(omit) }}"
     state: "present"
   register: add_keys
   until: add_keys|success
@@ -54,14 +55,15 @@
 - name: Add haproxy apt-keys using fallback keyserver
   apt_key:
     id: "{{ item.hash_id }}"
-    keyserver: "{{ item.fallback_keyserver }}"
+    keyserver: "{{ item.fallback_keyserver | default(omit) }}"
+    url: "{{ item.fallback_url | default(omit) }}"
     state: "present"
   register: add_keys_fallback
   until: add_keys_fallback|success
   retries: 5
   delay: 2
   with_items: haproxy_gpg_keys
-  when: add_keys|failed and item.fallback_keyserver is defined
+  when: add_keys|failed and (item.fallback_keyserver is defined or item.fallback_url is defined)
   tags:
     - haproxy-apt-keys
 
