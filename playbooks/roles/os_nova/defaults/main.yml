@@ -55,7 +55,7 @@ nova_rabbitmq_userid: nova
 nova_rabbitmq_vhost: /nova
 
 ## RPC
-nova_rpc_backend: nova.openstack.common.rpc.impl_kombu
+nova_rpc_backend: rabbit 
 nova_rpc_thread_pool_size: 64
 nova_rpc_conn_pool_size: 30
 nova_rpc_response_timeout: 60
