@@ -31,7 +31,6 @@ backend = dogpile.cache.memcached
 backend_argument = {{ keystone_cache_backend_argument }}
 config_prefix = cache.keystone
 distributed_lock = True
-expiration_time = {{ keystone_cache_expiration_time }}
 enabled = true
 {% endif %}
 
@@ -91,6 +90,14 @@ provider = {{ keystone_token_provider }}
 {% if 'fernet' not in keystone_token_provider %}
 driver = {{ keystone_token_driver }}
 {% endif %}
+
+# We need to /temporarily/ disable catalog caching due to [1], once
+# upstream keystone bug [2] is fixed we can remove this [catalog]
+# section entirely.
+# [1] https://review.openstack.org/#/c/215212/
+# [2] https://review.openstack.org/#/c/271536/
+[catalog]
+caching = false
 
 {% if keystone_idp is defined %}
 [saml]
