@@ -83,7 +83,7 @@ The following settings must be set to configure a service provider (SP):
                   rules:
                     - remote:
                         - type: eppn
-                    local:
+                      local:
                         - group:
                             name: fedgroup
                             domain:
