@@ -21,10 +21,7 @@
     - name: Load local packages
       debug:
         msg: "Loading Packages"
-      with_py_pkgs:
-        - ../
-        - /etc/ansible/roles
-        - /etc/openstack_deploy
+      with_py_pkgs: "{{ pkg_locations }}"
       register: local_packages
       tags:
         - repo-clone-repos
@@ -45,3 +42,8 @@
       repo_build_pip_extra_index: "https://pypi.python.org/simple"
       tags:
         - "repo-build"
+  vars:
+    pkg_locations:
+      - ../
+      - /etc/ansible/roles
+      - /etc/openstack_deploy
