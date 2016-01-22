@@ -9,9 +9,8 @@ default HAProxy configuration does not provide highly-available load
 balancing services. For production deployments, deploy a hardware load
 balancer prior to deploying OSA.
 
--  In the ``/etc/openstack_deploy/openstack_user_config.yml`` file, add
-   the ``haproxy_hosts`` section with one or more infrastructure target
-   hosts, for example:
+To deploy HAProxy within your OpenStack-Ansible environment, define target
+hosts which should run HAProxy:
 
    .. code-block:: yaml
 
@@ -22,6 +21,11 @@ balancer prior to deploying OSA.
            ip: 172.29.236.52
          123458-infra03:
            ip: 172.29.236.53
+
+There is an example configuration file already provided in
+``/etc/openstack_deploy/conf.d/haproxy.yml.example``. Rename the file to
+``haproxy.yml`` and configure it with the correct target hosts to use HAProxy
+in an OpenStack-Ansible deployment.
 
 Making HAProxy highly-available
 ###############################
