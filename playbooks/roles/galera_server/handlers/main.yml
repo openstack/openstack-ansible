@@ -17,11 +17,16 @@
   service:
     name: mysql
     state: restarted
+    sleep: 2
+    pattern: mysql
     args: "{{ (not galera_existing_cluster | bool and inventory_hostname == galera_server_bootstrap_node) | ternary('--wsrep-new-cluster', '') }}"
   environment:
     MYSQLD_STARTUP_TIMEOUT: 180
   when: not galera_running_and_bootstrapped | bool
   register: galera_restart
+  until: galera_restart_fall_back | success
+  retries: 3
+  delay: 5
   # notifies are only fired when status is "changed"
   changed_when: galera_restart | failed
   failed_when: false
@@ -39,6 +44,8 @@
   service:
     name: mysql
     state: restarted
+    sleep: 2
+    pattern: mysql
     args: "{{ (not galera_existing_cluster | bool and inventory_hostname == galera_server_bootstrap_node) | ternary('--wsrep-new-cluster', '') }}"
   environment:
     MYSQLD_STARTUP_TIMEOUT: 180
@@ -47,4 +54,3 @@
   until: galera_restart_fall_back | success
   retries: 3
   delay: 5
-
