@@ -43,13 +43,42 @@
     - aodh-install
     - aodh-pip-packages
 
+- name: Get local venv checksum
+  stat:
+    path: "/var/cache/{{ aodh_venv_download_url | basename }}"
+    get_md5: False
+  when: aodh_venv_enabled | bool
+  register: local_venv_stat
+  tags:
+    - aodh-install
+    - aodh-pip-packages
+
+- name: Get remote venv checksum
+  uri:
+    url: "{{ aodh_venv_download_url | replace('tgz', 'checksum') }}"
+    return_content: True
+  when: aodh_venv_enabled | bool
+  register: remote_venv_checksum
+  tags:
+    - aodh-install
+    - aodh-pip-packages
+
+# TODO: When project moves to ansible 2 we can pass this a sha256sum which will:
+#       a) allow us to remove force: yes
+#       b) allow the module to calculate the checksum of dest file which would
+#          result in file being downloaded only if provided and dest sha256sum
+#          checksums differ
 - name: Attempt venv download
   get_url:
     url: "{{ aodh_venv_download_url }}"
     dest: "/var/cache/{{ aodh_venv_download_url | basename }}"
+    force: yes
   ignore_errors: true
   register: get_venv
-  when: aodh_venv_enabled | bool
+  when:
+    - aodh_venv_enabled | bool
+    - (local_venv_stat.stat.exists == False or
+        {{ local_venv_stat.stat.checksum is defined and local_venv_stat.stat.checksum != remote_venv_checksum.content | trim }})
   tags:
     - aodh-install
     - aodh-pip-packages
@@ -62,13 +91,24 @@
     - aodh-install
     - aodh-pip-packages
 
+- name: Remove existing venv
+  file:
+    path: "{{ aodh_venv_bin | dirname }}"
+    state: absent
+  when:
+    - aodh_venv_enabled | bool
+    - aodh_get_venv | changed
+  tags:
+    - aodh-install
+    - aodh-pip-packages
+
 - name: Create aodh venv dir
   file:
     path: "{{ aodh_venv_bin | dirname }}"
     state: directory
   when:
     - aodh_venv_enabled | bool
-    - aodh_get_venv | success
+    - aodh_get_venv | changed
   tags:
     - aodh-install
     - aodh-pip-packages
@@ -80,7 +120,8 @@
     copy: "no"
   when:
     - aodh_venv_enabled | bool
-    - aodh_get_venv | success
+    - aodh_get_venv | changed
+  notify: Restart aodh services
   tags:
     - aodh-install
     - aodh-pip-packages
@@ -111,6 +152,7 @@
   when:
     - aodh_venv_enabled | bool
     - aodh_get_venv | failed
+  notify: Restart aodh services
   tags:
     - aodh-install
     - aodh-pip-packages
@@ -127,6 +169,7 @@
   with_items:
     - "{{ aodh_pip_packages }}"
   when: not aodh_venv_enabled | bool
+  notify: Restart aodh services
   tags:
     - aodh-install
     - aodh-pip-packages
