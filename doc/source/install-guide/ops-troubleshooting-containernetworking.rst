@@ -9,8 +9,8 @@ All LXC containers on the host have two virtual ethernet interfaces:
 * `eth1` in the container connects to `br-mgmt` on the host
 
 .. note::
-   Some containers, such as cinder, glance, neutron_agents, and swift_proxy, have
-   more than two interfaces to support their functions.`
+   Some containers, such as cinder, glance, neutron_agents, and swift_proxy,
+   have more than two interfaces to support their functions.
 
 Predictable interface naming
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
