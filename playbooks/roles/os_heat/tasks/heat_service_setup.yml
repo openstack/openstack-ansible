@@ -25,7 +25,6 @@
     service_publicurl: "{{ heat_service_publicurl }}"
     service_internalurl: "{{ heat_service_internalurl }}"
     service_adminurl: "{{ heat_service_adminurl }}"
-    role_name: "{{ heat_service_role_name }}"
   tags:
     - heat-api
 
@@ -41,7 +40,6 @@
     service_publicurl: "{{ heat_cfn_service_publicurl }}"
     service_internalurl: "{{ heat_cfn_service_internalurl }}"
     service_adminurl: "{{ heat_cfn_service_adminurl }}"
-    role_name: "{{ heat_service_role_name }}"
   tags:
     - heat-api
     - heat-api-cfn

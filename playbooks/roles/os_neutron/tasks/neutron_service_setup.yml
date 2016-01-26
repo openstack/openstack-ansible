@@ -25,6 +25,5 @@
     service_publicurl: "{{ neutron_service_publicurl }}"
     service_internalurl: "{{ neutron_service_internalurl }}"
     service_adminurl: "{{ neutron_service_adminurl }}"
-    role_name: "{{ neutron_service_role_name }}"
   tags:
     - neutron-server
