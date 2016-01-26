@@ -1,0 +1,6 @@
+---
+features:
+  - Each service using RabbitMQ now has a separate vhost and user.
+upgrade:
+  - Each service using RabbitMQ now has a separate vhost and user. The shared / vhost is cleaned up
+    so that it contains only the default data. The shared user 'openstack' is removed.

@@ -1,0 +1,60 @@
+---
+# Copyright 2016, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Commit b2624d4a2644edb5e8fe6060e8754d8fc781dc73 introduced per-service
+# vhosts in RabbitMQ. This play removes all exchanges except for the
+# defaults, those that start with 'amq.'. The 'openstack' user is also
+# deleted because each OpenStack service has its own user.
+- name: Rabbitmq cleanup
+  hosts: rabbitmq_all[0]
+  gather_facts: false
+  user: root
+  tasks:
+    - name: List exchanges in / vhost
+      command: "rabbitmqctl -q list_exchanges"
+      register: rabbitmq_exchanges
+
+    - name: List queues in / vhost
+      command: "rabbitmqctl -q list_queues"
+      register: rabbitmq_queues
+
+    - name: Add management tag to rabbitmq_user_to_delete user so exchanges can be deleted
+      command: "rabbitmqctl set_user_tags {{ rabbitmq_user_to_delete }} management"
+
+    - name: Create new password value
+      set_fact:
+        rabbitmq_user_to_delete_password: "{{ lookup('password', '/tmp/rabbitmqpasswordfile chars=ascii_letters,digits') }}"
+
+    - name: Remove temporary password file created by password lookup
+      local_action: 'file path="/tmp/rabbitmqpasswordfile" state="absent"'
+
+    - name: Reset rabbitmq_user_to_delete user password
+      command: "rabbitmqctl change_password {{ rabbitmq_user_to_delete }} {{ rabbitmq_user_to_delete_password }}"
+
+    - name: Remove unwanted exchanges from / vhost
+      command: "curl -XDELETE -u '{{ rabbitmq_user_to_delete }}:{{ rabbitmq_user_to_delete_password }}' http://127.0.0.1:{{ 15672 }}/api/exchanges/%2F/{{ item | regex_replace('(^[a-zA-Z0-9_.-]+).*', '\\\\1') }}"
+      with_items: rabbitmq_exchanges.stdout_lines
+      when:
+        - "{{ not item.startswith('amq.') }}"
+        - "{{ item.strip() != 'direct' }}"
+
+    - name: Remove unwanted queues from / vhost
+      command: "curl -XDELETE -u '{{ rabbitmq_user_to_delete }}:{{ rabbitmq_user_to_delete_password }}' http://127.0.0.1:{{ 15672 }}/api/queues/%2F/{{ item | regex_replace('(^[a-zA-Z0-9_.@-]+).*', '\\\\1') }}"
+      with_items: rabbitmq_queues.stdout_lines
+
+    - name: Delete openstack user
+      command: "rabbitmqctl delete_user {{ rabbitmq_user_to_delete }}"
+  vars:
+     rabbitmq_user_to_delete: "openstack"
