@@ -1,9 +1,8 @@
-# Potential method for globally resolving plugins and libs
-# - name: plugins
-#   src: https://github.com/os-cloud/openstack-ansible-plugins
-#   scm: git
-#   path: /etc/ansible
-#   version: master
+- name: plugins
+  src: https://git.openstack.org/openstack/openstack-ansible-plugins
+  path: /etc/ansible
+  scm: git
+  version: master
 - src: evrardjp.keepalived
   name: keepalived
   version: '1.3'
