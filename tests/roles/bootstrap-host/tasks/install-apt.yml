@@ -72,8 +72,7 @@
   apt:
     name: "{{ item }}"
     state: absent
-  with_items:
-    - "{{ packages_remove }}"
+  with_items: packages_remove
   tags:
     - remove-packages
 
@@ -81,8 +80,7 @@
   apt:
     name: "{{ item }}"
     state: present
-  with_items:
-    - "{{ packages_install }}"
+  with_items: packages_install
   tags:
     - install-packages
 
@@ -90,8 +88,7 @@
   apt:
     name: "{{ item }}"
     state: present
-  with_items:
-    - "{{ packages_mongodb }}"
+  with_items: packages_mongodb
   when: bootstrap_host_mongodb_service | bool
   tags:
     - install-mongodb
@@ -100,8 +97,7 @@
   apt:
     name: "{{ item }}"
     state: present
-  with_items:
-    - "{{ packages_libvirt }}"
+  with_items: packages_libvirt
   when: bootstrap_host_libvirt_config | bool
   tags:
     - install-libvirt

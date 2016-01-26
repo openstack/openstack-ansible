@@ -46,8 +46,7 @@
   until: install_packages|success
   retries: 5
   delay: 2
-  with_items:
-    - "{{ glance_requires_pip_packages }}"
+  with_items: glance_requires_pip_packages
   tags:
     - glance-install
     - glance-pip-packages
@@ -115,8 +114,7 @@
   until: install_packages|success
   retries: 5
   delay: 2
-  with_items:
-    - "{{ glance_pip_packages }}"
+  with_items: glance_pip_packages
   when:
     - glance_venv_enabled | bool
     - glance_get_venv | failed
@@ -133,8 +131,7 @@
   until: install_packages|success
   retries: 5
   delay: 2
-  with_items:
-    - "{{ glance_pip_packages }}"
+  with_items: glance_pip_packages
   when: not glance_venv_enabled | bool
   tags:
     - glance-install

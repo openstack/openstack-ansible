@@ -75,8 +75,7 @@
   until: install_packages|success
   retries: 5
   delay: 2
-  with_items:
-    - "{{ neutron_requires_pip_packages }}"
+  with_items: neutron_requires_pip_packages
   tags:
     - neutron-install
     - neutron-pip-packages
@@ -144,8 +143,7 @@
   until: install_packages|success
   retries: 5
   delay: 2
-  with_items:
-    - "{{ neutron_pip_packages }}"
+  with_items: neutron_pip_packages
   when:
     - neutron_venv_enabled | bool
     - neutron_get_venv | failed
@@ -162,8 +160,7 @@
   until: install_packages|success
   retries: 5
   delay: 2
-  with_items:
-    - "{{ neutron_pip_packages }}"
+  with_items: neutron_pip_packages
   when: not neutron_venv_enabled | bool
   tags:
     - neutron-install
