@@ -41,20 +41,6 @@ Verify the database cluster and Kibana web interface operation.
    in the cluster and the ``wsrep_cluster_status`` field should indicate
    primary.
 
- 
-
-**Procedure 7.2. Verifying the Kibana web interface**
-
-#. With a web browser, access the Kibana web interface using the
-   external load balancer IP address defined by the
-   ``external_lb_vip_address`` option in the
-   ``/etc/openstack_deploy/openstack_user_config.yml`` file. The Kibana
-   web interface uses HTTPS on port 8443.
-
-#. Authenticate using the username ``kibana`` and password defined by
-   the ``kibana_password`` option in the
-   ``/etc/openstack_deploy/user_variables.yml`` file.
-
 --------------
 
 .. include:: navigation.txt
