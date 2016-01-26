@@ -1,0 +1,6 @@
+---
+features:
+  - Logs for haproxy can now be found in
+    ``/openstack/log/<haproxy host name>-haproxy/`` on the container host (if
+    haproxy is in a container), or ``/var/log/haproxy/`` if haproxy is
+    installed directly on a host.
