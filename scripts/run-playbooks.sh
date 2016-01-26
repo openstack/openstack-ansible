@@ -55,6 +55,9 @@ pushd "playbooks"
     install_bits openstack-hosts-setup.yml
     install_bits lxc-hosts-setup.yml
 
+    # Apply security hardening
+    install_bits security-hardening.yml
+
     # Bring the lxc bridge down and back up to ensures the iptables rules are in-place
     # This also will ensure that the lxc dnsmasq rules are active.
     mkdir -p "${COMMAND_LOGS}/host_net_bounce"
