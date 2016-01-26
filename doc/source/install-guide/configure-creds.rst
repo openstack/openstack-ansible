@@ -17,9 +17,6 @@ interfaces:
 -  ``keystone_auth_admin_password`` configures the ``admin`` tenant
    password for both the OpenStack API and dashboard access.
 
--  ``kibana_password`` configures the password for Kibana web interface
-   access.
-
 Recommended: Use the ``pw-token-gen.py`` script to generate random
 values for the variables in each file that contains service credentials:
 
