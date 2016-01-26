@@ -126,6 +126,10 @@ heat_watch_server_url: "{{ heat_watch_server_uri }}"
 
 heat_service_in_ldap: false
 
+# If the following variables are unset in user_variables, the value set will be half the number of available VCPUs
+# heat_engine_workers: 4
+# heat_api_workers: 4
+
 ## Plugin dirs
 heat_plugin_dirs:
   - /usr/lib/heat

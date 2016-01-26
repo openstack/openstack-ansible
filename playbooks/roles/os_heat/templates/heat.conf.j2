@@ -1,5 +1,8 @@
 # {{ ansible_managed }}
 
+{% set _api_threads = ansible_processor_vcpus|default(2) // 2 %}
+{% set api_threads = _api_threads if _api_threads > 0 else 1 %}
+
 [DEFAULT]
 verbose = {{ verbose }}
 debug = {{ debug }}
@@ -20,6 +23,8 @@ deferred_auth_method = {{ heat_deferred_auth_method }}
 trusts_delegated_roles = {{ heat_trusts_delegated_roles | join(',') }}
 
 auth_encryption_key = {{ heat_auth_encryption_key }}
+
+num_engine_workers = {{ heat_engine_workers | default(api_threads) }}
 
 ## RPC Backend
 rpc_backend = {{ heat_rpc_backend }}
@@ -47,6 +52,7 @@ auth_uri = {{ keystone_service_internalurl }}
 
 [heat_api]
 bind_port = {{ heat_service_port }}
+workers = {{ heat_api_workers | default(api_threads) }}
 
 [heat_api_cfn]
 bind_port = {{ heat_cfn_service_port }}
