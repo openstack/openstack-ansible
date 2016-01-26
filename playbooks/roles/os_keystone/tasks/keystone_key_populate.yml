@@ -14,8 +14,8 @@
 # limitations under the License.
 
 - name: Get public key contents and store as var
-  command: |
-    cat {{ keystone_system_user_home }}/.ssh/id_rsa.pub
+  slurp:
+    src: "{{ keystone_system_user_home }}/.ssh/id_rsa.pub"
   register: keystone_pub
   changed_when: false
   tags:
@@ -24,7 +24,7 @@
 
 - name: Register a fact for the keystone pub key
   set_fact:
-     keystone_pubkey: "{{ keystone_pub.stdout }}"
+     keystone_pubkey: "{{ keystone_pub.content }}"
   tags:
     - keystone-key
     - keystone-key-create
