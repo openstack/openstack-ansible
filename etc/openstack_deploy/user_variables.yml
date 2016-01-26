@@ -210,3 +210,12 @@ haproxy_keepalived_internal_vip_cidr: "{{internal_lb_vip_address}}/32"
 # All the previous variables are used in a var file, fed to the keepalived role.
 # To use another file to feed the role, override the following var:
 #haproxy_keepalived_vars_file: 'vars/configs/keepalived_haproxy.yml'
+
+## Host security hardening
+# The openstack-ansible-security role provides security hardening for hosts
+# by applying security configurations from the STIG. Hardening is disabled by
+# default, but it can be applied to all hosts by adjusting the following
+# variable to 'true'.
+#
+# Docs: http://docs.openstack.org/developer/openstack-ansible-security/
+apply_security_hardening: false
