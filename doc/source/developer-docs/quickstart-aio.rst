@@ -161,6 +161,23 @@ in that container.
 
 .. _Install Guide: ../install-guide/
 
+Rebooting the AIO
+-----------------
+As the AIO includes all three cluster members of MariaDB/Galera, the cluster
+has to be re-initialized after the host is rebooted.
+
+This is done by executing the following:
+
+   .. code-block:: bash
+
+      $ cd /opt/openstack-ansible/playbooks
+      $ openstack-ansible -e galera_ignore_cluster_state=true galera-install.yml
+
+If this fails to get the database cluster back into a running state, then
+please make use of the `Galera Cluster Recovery`_ page in the Install Guide.
+
+.. _Galera Cluster Recovery: ../install-guide/ops-galera-recovery.html
+
 Rebuilding the AIO
 ------------------
 Sometimes it may be useful to destroy all the containers and rebuild the AIO.
