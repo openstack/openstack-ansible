@@ -274,7 +274,7 @@ To view a mapping in detail::
 
 To edit a mapping, use an auxiliary file. Save the JSON mapping shown above
 and make the necessary modifications, then use the``set`` command to trigger
-an update. For example:
+an update. For example::
 
     $ openstack mapping show cloud1-mapping -c rules -f value | python -m json.tool > rules.json
     $ vi rules.json  # <--- make any necessary changes
