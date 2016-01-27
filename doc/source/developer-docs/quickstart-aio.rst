@@ -33,26 +33,12 @@ virtual machines will perform poorly.
 
 .. _hardware-assisted virtualization: https://en.wikipedia.org/wiki/Hardware-assisted_virtualization
 
-Running an AIO build in one step
---------------------------------
 
-For a one-step build, there is a `convenient script`_ within the
-Openstack-Ansible repository that will run a AIO build with defaults:
+Building an AIO
+---------------
 
-.. _convenient script: https://raw.githubusercontent.com/openstack/openstack-ansible/master/scripts/run-aio-build.sh
-
-   .. code-block:: bash
-
-    curl https://raw.githubusercontent.com/openstack/openstack-ansible/master/scripts/run-aio-build.sh | sudo bash
-
-It's advised to run this build within a terminal muxer, like tmux or screen,
-so that you don't lose your progress if you're disconnected from your terminal
-session.
-
-Running a customized AIO build
-------------------------------
-
-There are four main steps for running a customized AIO build:
+There are three steps to running an AIO build, with an optional first step
+should you need to customize your build:
 
 * Configuration *(this step is optional)*
 * Install and bootstrap Ansible
@@ -161,8 +147,8 @@ in that container.
 
 .. _Install Guide: ../install-guide/
 
-Rebooting the AIO
------------------
+Rebooting an AIO
+----------------
 As the AIO includes all three cluster members of MariaDB/Galera, the cluster
 has to be re-initialized after the host is rebooted.
 
@@ -178,8 +164,8 @@ please make use of the `Galera Cluster Recovery`_ page in the Install Guide.
 
 .. _Galera Cluster Recovery: ../install-guide/ops-galera-recovery.html
 
-Rebuilding the AIO
-------------------
+Rebuilding an AIO
+-----------------
 Sometimes it may be useful to destroy all the containers and rebuild the AIO.
 While it is preferred that the AIO is entirely destroyed and rebuilt, this
 isn't always practical. As such the following may be executed instead:
@@ -268,8 +254,8 @@ To follow along with the progress, ssh to your running instance and execute:
 
     tail -F /var/log/cloud-init-output.log
 
-Reference Diagram for the AIO Build
------------------------------------
+Reference Diagram for an AIO Build
+----------------------------------
 
 Here is a basic diagram that attempts to illustrate what the resulting AIO
 deployment looks like.
