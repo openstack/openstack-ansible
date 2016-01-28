@@ -1,0 +1,7 @@
+---
+features:
+  - A conditional has been added to the ``_local_ip`` settings used in
+    the ``neutron_local_ip`` which removes the hard requirement for an
+    overlay network to be set within a deployment. If no overlay network
+    is set within the deployment the ``local_ip`` will be set to the value
+    of "ansible_ssh_host".
