@@ -16,7 +16,8 @@
 - include: nova_virt_detect.yml
   when: nova_virt_type is not defined
   tags:
-    nova-virt-detect
+    - always
+    - nova-virt-detect
 
 - include: nova_pre_install.yml
 - include: nova_install.yml
