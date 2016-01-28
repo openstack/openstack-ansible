@@ -51,13 +51,42 @@
     - swift-install
     - swift-pip-packages
 
+- name: Get local venv checksum
+  stat:
+    path: "/var/cache/{{ swift_venv_download_url | basename }}"
+    get_md5: False
+  when: swift_venv_enabled | bool
+  register: local_venv_stat
+  tags:
+    - swift-install
+    - swift-pip-packages
+
+- name: Get remote venv checksum
+  uri:
+    url: "{{ swift_venv_download_url | replace('tgz', 'checksum') }}"
+    return_content: True
+  when: swift_venv_enabled | bool
+  register: remote_venv_checksum
+  tags:
+    - swift-install
+    - swift-pip-packages
+
+# TODO: When project moves to ansible 2 we can pass this a sha256sum which will:
+#       a) allow us to remove force: yes
+#       b) allow the module to calculate the checksum of dest file which would
+#          result in file being downloaded only if provided and dest sha256sum
+#          checksums differ
 - name: Attempt venv download
   get_url:
     url: "{{ swift_venv_download_url }}"
     dest: "/var/cache/{{ swift_venv_download_url | basename }}"
+    force: yes
   ignore_errors: true
   register: get_venv
-  when: swift_venv_enabled | bool
+  when:
+    - swift_venv_enabled | bool
+    - (local_venv_stat.stat.exists == False or
+        {{ local_venv_stat.stat.checksum is defined and local_venv_stat.stat.checksum != remote_venv_checksum.content | trim }})
   tags:
     - swift-install
     - swift-pip-packages
@@ -70,13 +99,24 @@
     - swift-install
     - swift-pip-packages
 
+- name: Remove existing venv
+  file:
+    path: "{{ swift_venv_bin | dirname }}"
+    state: absent
+  when:
+    - swift_venv_enabled | bool
+    - swift_get_venv | changed
+  tags:
+    - swift-install
+    - swift-pip-packages
+
 - name: Create swift venv dir
   file:
     path: "{{ swift_venv_bin | dirname }}"
     state: directory
   when:
     - swift_venv_enabled | bool
-    - swift_get_venv | success
+    - swift_get_venv | changed
   tags:
     - swift-install
     - swift-pip-packages
@@ -88,7 +128,12 @@
     copy: "no"
   when:
     - swift_venv_enabled | bool
-    - swift_get_venv | success
+    - swift_get_venv | changed
+  notify:
+    - Restart swift account services
+    - Restart swift container services
+    - Restart swift object services
+    - Restart swift proxy services
   tags:
     - swift-install
     - swift-pip-packages
@@ -118,6 +163,11 @@
   when:
     - swift_venv_enabled | bool
     - swift_get_venv | failed
+  notify:
+    - Restart swift account services
+    - Restart swift container services
+    - Restart swift object services
+    - Restart swift proxy services
   tags:
     - swift-install
     - swift-pip-packages
@@ -133,6 +183,11 @@
   delay: 2
   with_items: swift_pip_packages
   when: not swift_venv_enabled | bool
+  notify:
+    - Restart swift account services
+    - Restart swift container services
+    - Restart swift object services
+    - Restart swift proxy services
   tags:
     - swift-install
     - swift-pip-packages
