@@ -52,6 +52,7 @@
   when:
     - horizon_venv_enabled | bool
     - horizon_get_venv | failed
+  notify: Restart apache2
   tags:
     - horizon-pip-packages
 
@@ -66,5 +67,6 @@
   delay: 2
   with_items: horizon_pip_packages
   when: not horizon_venv_enabled | bool
+  notify: Restart apache2
   tags:
     - horizon-pip-packages
