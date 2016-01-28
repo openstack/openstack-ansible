@@ -51,13 +51,42 @@
     - glance-install
     - glance-pip-packages
 
+- name: Get local venv checksum
+  stat:
+    path: "/var/cache/{{ glance_venv_download_url | basename }}"
+    get_md5: False
+  when: glance_venv_enabled | bool
+  register: local_venv_stat
+  tags:
+    - glance-install
+    - glance-pip-packages
+
+- name: Get remote venv checksum
+  uri:
+    url: "{{ glance_venv_download_url | replace('tgz', 'checksum') }}"
+    return_content: True
+  when: glance_venv_enabled | bool
+  register: remote_venv_checksum
+  tags:
+    - glance-install
+    - glance-pip-packages
+
+# TODO: When project moves to ansible 2 we can pass this a sha256sum which will:
+#       a) allow us to remove force: yes
+#       b) allow the module to calculate the checksum of dest file which would
+#          result in file being downloaded only if provided and dest sha256sum
+#          checksums differ
 - name: Attempt venv download
   get_url:
     url: "{{ glance_venv_download_url }}"
     dest: "/var/cache/{{ glance_venv_download_url | basename }}"
+    force: yes
   ignore_errors: true
   register: get_venv
-  when: glance_venv_enabled | bool
+  when:
+    - glance_venv_enabled | bool
+    - (local_venv_stat.stat.exists == False or
+        {{ local_venv_stat.stat.checksum is defined and local_venv_stat.stat.checksum != remote_venv_checksum.content | trim }})
   tags:
     - glance-install
     - glance-pip-packages
@@ -70,13 +99,24 @@
     - glance-install
     - glance-pip-packages
 
+- name: Remove existing venv
+  file:
+    path: "{{ glance_venv_bin | dirname }}"
+    state: absent
+  when:
+    - glance_venv_enabled | bool
+    - glance_get_venv | changed
+  tags:
+    - glance-install
+    - glance-pip-packages
+
 - name: Create glance venv dir
   file:
     path: "{{ glance_venv_bin | dirname }}"
     state: directory
   when:
     - glance_venv_enabled | bool
-    - glance_get_venv | success
+    - glance_get_venv | changed
   tags:
     - glance-install
     - glance-pip-packages
@@ -88,7 +128,9 @@
     copy: "no"
   when:
     - glance_venv_enabled | bool
-    - glance_get_venv | success
+    - glance_get_venv | changed
+  notify:
+    - Restart glance services
   tags:
     - glance-install
     - glance-pip-packages
@@ -118,6 +160,8 @@
   when:
     - glance_venv_enabled | bool
     - glance_get_venv | failed
+  notify:
+    - Restart glance services
   tags:
     - glance-install
     - glance-pip-packages
@@ -133,6 +177,8 @@
   delay: 2
   with_items: glance_pip_packages
   when: not glance_venv_enabled | bool
+  notify:
+    - Restart glance services
   tags:
     - glance-install
     - glance-pip-packages
