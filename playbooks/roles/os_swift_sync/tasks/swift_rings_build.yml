@@ -68,7 +68,7 @@
   command: "/usr/bin/python /etc/swift/scripts/swift_rings.py -f /etc/swift/scripts/{{ item[0] }}.contents -r {{ item[1] }}"
   with_nested:
     - [ 'account', 'container' ]
-    - "{{ swift_managed_regions }}"
+    - swift_managed_regions
   when: swift_managed_regions is defined
   sudo: yes
   sudo_user: "{{ swift_system_user_name }}"
@@ -95,7 +95,7 @@
   command: "/usr/bin/python /etc/swift/scripts/swift_rings.py -f /etc/swift/scripts/object-{{ item[0].policy.index }}.contents -r {{ item[1] }}"
   with_nested:
     - "{{ swift.storage_policies }}"
-    - "{{ swift_managed_regions }}"
+    - swift_managed_regions
   when: swift_managed_regions is defined
   sudo: yes
   sudo_user: "{{ swift_system_user_name }}"
