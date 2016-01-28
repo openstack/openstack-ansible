@@ -149,6 +149,7 @@
   when:
     - horizon_venv_enabled | bool
     - horizon_get_venv | changed
+  notify: Restart apache2
   tags:
     - horizon-install
     - horizon-pip-packages
