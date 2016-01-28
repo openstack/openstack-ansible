@@ -23,12 +23,10 @@
 
 - name: Rsyslog Setup
   copy:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
+    src: "50-default.conf"
+    dest: "/etc/rsyslog.d/50-default.conf"
     owner: "root"
     group: "root"
-  with_items:
-    - { src: "50-default.conf", dest: "/etc/rsyslog.d/50-default.conf" }
   tags:
     - rsyslog-client-config
 
@@ -43,14 +41,37 @@
 
 - name: Write rsyslog config for found log files
   template:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
+    src: "rsyslog.conf.j2"
+    dest: "/etc/rsyslog.conf"
     owner: "root"
     group: "root"
-  with_items:
-    - { src: "99-rsyslog.conf.j2", dest: "/etc/rsyslog.d/{{ rsyslog_client_config_name }}" }
-    - { src: "os_aggregate_storage.j2", dest: "/etc/logrotate.d/{{ rsyslog_client_log_rotate_file }}" }
-    - { src: "rsyslog.conf.j2", dest: "/etc/rsyslog.conf" }
+  tags:
+    - rsyslog-client-config
+
+- name: Union the log files
+  set_fact:
+    rsyslog_client_log_files: "{{ log_files.stdout_lines | union(rsyslog_client_log_files) }}"
+  when: log_files.stdout_lines is defined
+  tags:
+    - rsyslog-client-config
+
+- name: Write rsyslog target file
+  template:
+    src: "99-rsyslog.conf.j2"
+    dest: "/etc/rsyslog.d/{{ rsyslog_client_config_name }}"
+    owner: "root"
+    group: "root"
+  when: (rsyslog_client_log_files | length) > 0
+  tags:
+    - rsyslog-client-config
+
+- name: Write log rotate file
+  template:
+    src: "os_aggregate_storage.j2"
+    dest: "/etc/logrotate.d/{{ rsyslog_client_log_rotate_file }}"
+    owner: "root"
+    group: "root"
+  when: (rsyslog_client_log_files | length) > 0
   tags:
     - rsyslog-client-config
 
