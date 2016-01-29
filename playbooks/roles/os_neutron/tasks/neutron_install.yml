@@ -81,13 +81,42 @@
     - neutron-install
     - neutron-pip-packages
 
+- name: Get local venv checksum
+  stat:
+    path: "/var/cache/{{ neutron_venv_download_url | basename }}"
+    get_md5: False
+  when: neutron_venv_enabled | bool
+  register: local_venv_stat
+  tags:
+    - neutron-install
+    - neutron-pip-packages
+
+- name: Get remote venv checksum
+  uri:
+    url: "{{ neutron_venv_download_url | replace('tgz', 'checksum') }}"
+    return_content: True
+  when: neutron_venv_enabled | bool
+  register: remote_venv_checksum
+  tags:
+    - neutron-install
+    - neutron-pip-packages
+
+# TODO: When project moves to ansible 2 we can pass this a sha256sum which will:
+#       a) allow us to remove force: yes
+#       b) allow the module to calculate the checksum of dest file which would
+#          result in file being downloaded only if provided and dest sha256sum
+#          checksums differ
 - name: Attempt venv download
   get_url:
     url: "{{ neutron_venv_download_url }}"
     dest: "/var/cache/{{ neutron_venv_download_url | basename }}"
+    force: yes
   ignore_errors: true
   register: get_venv
-  when: neutron_venv_enabled | bool
+  when:
+    - neutron_venv_enabled | bool
+    - (local_venv_stat.stat.exists == False or
+        {{ local_venv_stat.stat.checksum is defined and local_venv_stat.stat.checksum != remote_venv_checksum.content | trim }})
   tags:
     - neutron-install
     - neutron-pip-packages
@@ -100,13 +129,24 @@
     - neutron-install
     - neutron-pip-packages
 
+- name: Remove existing venv
+  file:
+    path: "{{ neutron_venv_bin | dirname }}"
+    state: absent
+  when:
+    - neutron_venv_enabled | bool
+    - neutron_get_venv | changed
+  tags:
+    - neutron-install
+    - neutron-pip-packages
+
 - name: Create neutron venv dir
   file:
     path: "{{ neutron_venv_bin | dirname }}"
     state: directory
   when:
     - neutron_venv_enabled | bool
-    - neutron_get_venv | success
+    - neutron_get_venv | changed
   tags:
     - neutron-install
     - neutron-pip-packages
@@ -118,7 +158,8 @@
     copy: "no"
   when:
     - neutron_venv_enabled | bool
-    - neutron_get_venv | success
+    - neutron_get_venv | changed
+  notify: Restart neutron services
   tags:
     - neutron-install
     - neutron-pip-packages
@@ -149,6 +190,7 @@
   when:
     - neutron_venv_enabled | bool
     - neutron_get_venv | failed
+  notify: Restart neutron services
   tags:
     - neutron-install
     - neutron-pip-packages
@@ -165,6 +207,7 @@
   with_items:
     - "{{ neutron_pip_packages }}"
   when: not neutron_venv_enabled | bool
+  notify: Restart neutron services
   tags:
     - neutron-install
     - neutron-pip-packages
