@@ -17,38 +17,47 @@ options.
 
 .. _Securing services with SSL certificates: configure-sslcertificates.html
 
-Special considerations when using LDAP or AD backends
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Implementing LDAP (or AD) Back-Ends
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Configuring LDAP or Active Directory (AD) backends for keystone can make
-deployment easier, but there are special considerations for these types of
-deployments.
+In many environments there may already be a LDAP (or Active Directory) service
+available which already has Users, Groups and User-Group assignment data.
+Keystone can be configured to make use of the LDAP service using
+Domain-specific Back-End configuration.
 
-Creating users
-""""""""""""""
+While it is possible to set the Keystone Identity Back-End to use LDAP for
+the Default domain, this is not recommended. It is a better practice to use
+the Default domain for service accounts and to configure additional Domains
+for LDAP services which provide general User/Group data.
 
-During an OpenStack-Ansible deployment, the individual roles that deploy
-various OpenStack services will attempt to create users in keystone. For
-deployments where keystone uses LDAP as an authentication backend, these users
-must be created **prior** to the running the OpenStack-Ansible playbooks. The
-tasks for adding keystone users within individual role playbooks will be
-skipped.
+Example implementation in user_variables.yml:
 
-Stacked authentication
-""""""""""""""""""""""
+keystone_ldap:
+  Users:
+    url: "ldap://10.10.10.10"
+    user: "root"
+    password: "secrete"
+    ...
+  Admins:
+    url: "ldap://20.20.20.20"
+    user: "root"
+    password: "secrete"
+    ...
 
-Some deployers may prefer to use "stacked" authentication where some users
-exist in a SQL backend while other users exist in an LDAP or Active Directory
-(AD) backend. This can be useful for deploys who want to reduce the number of
-service accounts that must exist in LDAP or AD.
+This will place two configuration files into /etc/keystone/domains/, both of
+which will be configured to use the LDAP driver.
 
-For more details on stacked authentication, see `Matt Fischer's blog post`_ or
-review IBM's documentation titled `Configure OpenStack Keystone support for
-domain-specific corporate directories`_.
+ - keystone.Users.conf
+ - keystone.Admins.conf
 
-.. _Matt Fischer's blog post: http://www.mattfischer.com/blog/?p=576
-.. _Configure OpenStack Keystone support for domain-specific corporate directories: http://www.ibm.com/developerworks/cloud/library/cl-configure-keystone-ldap-and-active-directory/index.html
+Each first level key entry is a domain name. Each entry below that are
+key-value pairs for the 'ldap' section in the configuration file.
 
---------------
+More details regarding valid configuration for the LDAP Identity Back-End can
+be found in the `Keystone Developer Documentation`_ and the
+`OpenStack Admin Guide`_.
+
+.. _Keystone Developer Documentation: http://docs.openstack.org/developer/keystone/configuration.html#configuring-the-ldap-identity-provider
+.. _OpenStack Admin Guide: http://docs.openstack.org/admin-guide-cloud/keystone_integrate_identity_backend_ldap.html
 
 .. include:: navigation.txt
