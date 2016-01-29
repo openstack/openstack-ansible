@@ -18,6 +18,13 @@ is_metal: true
 
 galera_cluster_name: openstack_galera_cluster
 
+# The galera server-id should be set on all cluster nodes to ensure
+#  that replication is handled correctly and the error
+#  "Warning: You should set server-id to a non-0 value if master_host is
+#   set; we will force server id to 2, but this MySQL server will not act
+#   as a slave." is no longer present.
+# galera_server_id: 0
+
 galera_existing_cluster: true
 
 galera_monitoring_user: monitoring

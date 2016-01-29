@@ -28,6 +28,9 @@ collation-server = utf8_unicode_ci
 init-connect = 'SET NAMES utf8'
 character-set-server = utf8
 datadir = /var/lib/mysql
+{% if galera_server_id is defined %}
+server-id = {{ galera_server_id }}
+{% endif %}
 
 # LOGGING #
 log-queries-not-using-indexes = {{ galera_unindexed_query_logging }}
