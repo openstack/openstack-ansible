@@ -142,6 +142,8 @@
       rsyslog_client_log_rotate_file: swift_log_rotate
       rsyslog_client_log_dir: "/var/log/swift"
       rsyslog_client_config_name: "99-swift-rsyslog-client.conf"
+      rsyslog_client_log_files:
+        - /var/log/rsyncd.log
       tags:
         - "swift-rsyslog-client"
         - "rsyslog-client"
