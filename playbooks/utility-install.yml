@@ -112,8 +112,6 @@
         group: root
   vars:
     galera_address: "{{ internal_lb_vip_address }}"
-    ansible_hostname: "{{ container_name }}"
-    ansible_ssh_host: "{{ container_address }}"
     utility_pip_packages:
       - python-openstackclient
       - python-ceilometerclient

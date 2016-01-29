@@ -74,5 +74,4 @@
       tags:
         - "aodh-rsyslog-client"
   vars:
-    ansible_hostname: "{{ container_name }}"
     is_metal: "{{ properties.is_metal|default(false) }}"

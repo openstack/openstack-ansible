@@ -113,5 +113,4 @@
         - "system-crontab-coordination"
   vars:
     galera_address: "{{ internal_lb_vip_address }}"
-    ansible_hostname: "{{ container_name }}"
     is_metal: "{{ properties.is_metal|default(false) }}"

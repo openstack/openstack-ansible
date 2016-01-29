@@ -31,6 +31,5 @@
       tags:
         - lxc-container-wait-for-ssh
   vars:
-    ansible_hostname: "{{ container_name }}"
     is_metal: "{{ properties.is_metal|default(false) }}"
     lxc_container_release: "{{ properties.container_release|default('trusty') }}"
