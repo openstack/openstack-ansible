@@ -52,13 +52,42 @@
     - cinder-install
     - cinder-pip-packages
 
+- name: Get local venv checksum
+  stat:
+    path: "/var/cache/{{ cinder_venv_download_url | basename }}"
+    get_md5: False
+  when: cinder_venv_enabled | bool
+  register: local_venv_stat
+  tags:
+    - cinder-install
+    - cinder-pip-packages
+
+- name: Get remote venv checksum
+  uri:
+    url: "{{ cinder_venv_download_url | replace('tgz', 'checksum') }}"
+    return_content: True
+  when: cinder_venv_enabled | bool
+  register: remote_venv_checksum
+  tags:
+    - cinder-install
+    - cinder-pip-packages
+
+# TODO: When project moves to ansible 2 we can pass this a sha256sum which will:
+#       a) allow us to remove force: yes
+#       b) allow the module to calculate the checksum of dest file which would
+#          result in file being downloaded only if provided and dest sha256sum
+#          checksums differ
 - name: Attempt venv download
   get_url:
     url: "{{ cinder_venv_download_url }}"
     dest: "/var/cache/{{ cinder_venv_download_url | basename }}"
+    force: yes
   ignore_errors: true
   register: get_venv
-  when: cinder_venv_enabled | bool
+  when:
+    - cinder_venv_enabled | bool
+    - (local_venv_stat.stat.exists == False or
+        {{ local_venv_stat.stat.checksum is defined and local_venv_stat.stat.checksum != remote_venv_checksum.content | trim }})
   tags:
     - cinder-install
     - cinder-pip-packages
@@ -71,13 +100,24 @@
     - cinder-install
     - cinder-pip-packages
 
+- name: Remove existing venv
+  file:
+    path: "{{ cinder_venv_bin | dirname }}"
+    state: absent
+  when:
+    - cinder_venv_enabled | bool
+    - cinder_get_venv | changed
+  tags:
+    - cinder-install
+    - cinder-pip-packages
+
 - name: Create cinder venv dir
   file:
     path: "{{ cinder_venv_bin | dirname }}"
     state: directory
   when:
     - cinder_venv_enabled | bool
-    - cinder_get_venv | success
+    - cinder_get_venv | changed
   tags:
     - cinder-install
     - cinder-pip-packages
@@ -89,7 +129,8 @@
     copy: "no"
   when:
     - cinder_venv_enabled | bool
-    - cinder_get_venv | success
+    - cinder_get_venv | changed
+  notify: Restart cinder services
   tags:
     - cinder-install
     - cinder-pip-packages
@@ -120,6 +161,7 @@
   when:
     - cinder_venv_enabled | bool
     - cinder_get_venv | failed
+  notify: Restart cinder services
   tags:
     - cinder-install
     - cinder-pip-packages
@@ -158,6 +200,7 @@
   with_items:
     - "{{ cinder_pip_packages }}"
   when: not cinder_venv_enabled | bool
+  notify: Restart cinder services
   tags:
     - cinder-install
     - cinder-pip-packages
