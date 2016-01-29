@@ -51,13 +51,42 @@
     - heat-install
     - heat-pip-packages
 
+- name: Get local venv checksum
+  stat:
+    path: "/var/cache/{{ heat_venv_download_url | basename }}"
+    get_md5: False
+  when: heat_venv_enabled | bool
+  register: local_venv_stat
+  tags:
+    - heat-install
+    - heat-pip-packages
+
+- name: Get remote venv checksum
+  uri:
+    url: "{{ heat_venv_download_url | replace('tgz', 'checksum') }}"
+    return_content: True
+  when: heat_venv_enabled | bool
+  register: remote_venv_checksum
+  tags:
+    - heat-install
+    - heat-pip-packages
+
+# TODO: When project moves to ansible 2 we can pass this a sha256sum which will:
+#       a) allow us to remove force: yes
+#       b) allow the module to calculate the checksum of dest file which would
+#          result in file being downloaded only if provided and dest sha256sum
+#          checksums differ
 - name: Attempt venv download
   get_url:
     url: "{{ heat_venv_download_url }}"
     dest: "/var/cache/{{ heat_venv_download_url | basename }}"
+    force: yes
   ignore_errors: true
   register: get_venv
-  when: heat_venv_enabled | bool
+  when:
+    - heat_venv_enabled | bool
+    - (local_venv_stat.stat.exists == False or
+        {{ local_venv_stat.stat.checksum is defined and local_venv_stat.stat.checksum != remote_venv_checksum.content | trim }})
   tags:
     - heat-install
     - heat-pip-packages
@@ -70,13 +99,24 @@
     - heat-install
     - heat-pip-packages
 
+- name: Remove existing venv
+  file:
+    path: "{{ heat_venv_bin | dirname }}"
+    state: absent
+  when:
+    - heat_venv_enabled | bool
+    - heat_get_venv | changed
+  tags:
+    - heat-install
+    - heat-pip-packages
+
 - name: Create heat venv dir
   file:
     path: "{{ heat_venv_bin | dirname }}"
     state: directory
   when:
     - heat_venv_enabled | bool
-    - heat_get_venv | success
+    - heat_get_venv | changed
   tags:
     - heat-install
     - heat-pip-packages
@@ -88,7 +128,8 @@
     copy: "no"
   when:
     - heat_venv_enabled | bool
-    - heat_get_venv | success
+    - heat_get_venv | changed
+  notify: Restart heat services
   tags:
     - heat-install
     - heat-pip-packages
@@ -118,6 +159,7 @@
   when:
     - heat_venv_enabled | bool
     - heat_get_venv | failed
+  notify: Restart heat services
   tags:
     - heat-install
     - heat-pip-packages
@@ -133,6 +175,7 @@
   delay: 2
   with_items: heat_pip_packages
   when: not heat_venv_enabled | bool
+  notify: Restart heat services
   tags:
     - heat-install
     - heat-pip-packages
