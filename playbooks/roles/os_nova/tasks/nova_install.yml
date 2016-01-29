@@ -51,13 +51,42 @@
     - nova-install
     - nova-pip-packages
 
+- name: Get local venv checksum
+  stat:
+    path: "/var/cache/{{ nova_venv_download_url | basename }}"
+    get_md5: False
+  when: nova_venv_enabled | bool
+  register: local_venv_stat
+  tags:
+    - nova-install
+    - nova-pip-packages
+
+- name: Get remote venv checksum
+  uri:
+    url: "{{ nova_venv_download_url | replace('tgz', 'checksum') }}"
+    return_content: True
+  when: nova_venv_enabled | bool
+  register: remote_venv_checksum
+  tags:
+    - nova-install
+    - nova-pip-packages
+
+# TODO: When project moves to ansible 2 we can pass this a sha256sum which will:
+#       a) allow us to remove force: yes
+#       b) allow the module to calculate the checksum of dest file which would
+#          result in file being downloaded only if provided and dest sha256sum
+#          checksums differ
 - name: Attempt venv download
   get_url:
     url: "{{ nova_venv_download_url }}"
     dest: "/var/cache/{{ nova_venv_download_url | basename }}"
+    force: yes
   ignore_errors: true
   register: get_venv
-  when: nova_venv_enabled | bool
+  when:
+    - nova_venv_enabled | bool
+    - (local_venv_stat.stat.exists == False or
+        {{ local_venv_stat.stat.checksum is defined and local_venv_stat.stat.checksum != remote_venv_checksum.content | trim }})
   tags:
     - nova-install
     - nova-pip-packages
@@ -70,13 +99,24 @@
     - nova-install
     - nova-pip-packages
 
+- name: Remove existing venv
+  file:
+    path: "{{ nova_venv_bin | dirname }}"
+    state: absent
+  when:
+    - nova_venv_enabled | bool
+    - nova_get_venv | changed
+  tags:
+    - nova-install
+    - nova-pip-packages
+
 - name: Create nova venv dir
   file:
     path: "{{ nova_venv_bin | dirname }}"
     state: directory
   when:
     - nova_venv_enabled | bool
-    - nova_get_venv | success
+    - nova_get_venv | changed
   tags:
     - nova-install
     - nova-pip-packages
@@ -88,7 +128,8 @@
     copy: "no"
   when:
     - nova_venv_enabled | bool
-    - nova_get_venv | success
+    - nova_get_venv | changed
+  notify: Restart nova services
   tags:
     - nova-install
     - nova-pip-packages
@@ -118,6 +159,7 @@
   when:
     - nova_venv_enabled | bool
     - nova_get_venv | failed
+  notify: Restart nova services
   tags:
     - nova-install
     - nova-pip-packages
@@ -133,6 +175,7 @@
   delay: 2
   with_items: nova_pip_packages
   when: not nova_venv_enabled | bool
+  notify: Restart nova services
   tags:
     - nova-install
     - nova-pip-packages
