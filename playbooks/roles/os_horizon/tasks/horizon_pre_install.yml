@@ -71,13 +71,42 @@
   tags:
     - horizon-pip-packages
 
+- name: Get local venv checksum
+  stat:
+    path: "/var/cache/{{ horizon_venv_download_url | basename }}"
+    get_md5: False
+  when: horizon_venv_enabled | bool
+  register: local_venv_stat
+  tags:
+    - horizon-install
+    - horizon-pip-packages
+
+- name: Get remote venv checksum
+  uri:
+    url: "{{ horizon_venv_download_url | replace('tgz', 'checksum') }}"
+    return_content: True
+  when: horizon_venv_enabled | bool
+  register: remote_venv_checksum
+  tags:
+    - horizon-install
+    - horizon-pip-packages
+
+# TODO: When project moves to ansible 2 we can pass this a sha256sum which will:
+#       a) allow us to remove force: yes
+#       b) allow the module to calculate the checksum of dest file which would
+#          result in file being downloaded only if provided and dest sha256sum
+#          checksums differ
 - name: Attempt venv download
   get_url:
     url: "{{ horizon_venv_download_url }}"
     dest: "/var/cache/{{ horizon_venv_download_url | basename }}"
+    force: yes
   ignore_errors: true
   register: get_venv
-  when: horizon_venv_enabled | bool
+  when:
+    - horizon_venv_enabled | bool
+    - (local_venv_stat.stat.exists == False or
+        {{ local_venv_stat.stat.checksum is defined and local_venv_stat.stat.checksum != remote_venv_checksum.content | trim }})
   tags:
     - horizon-install
     - horizon-pip-packages
@@ -90,13 +119,24 @@
     - horizon-install
     - horizon-pip-packages
 
+- name: Remove existing venv
+  file:
+    path: "{{ horizon_venv_bin | dirname }}"
+    state: absent
+  when:
+    - horizon_venv_enabled | bool
+    - horizon_get_venv | changed
+  tags:
+    - horizon-install
+    - horizon-pip-packages
+
 - name: Create horizon venv dir
   file:
     path: "{{ horizon_venv_bin | dirname }}"
     state: directory
   when:
     - horizon_venv_enabled | bool
-    - horizon_get_venv | success
+    - horizon_get_venv | changed
   tags:
     - horizon-install
     - horizon-pip-packages
@@ -108,7 +148,7 @@
     copy: "no"
   when:
     - horizon_venv_enabled | bool
-    - horizon_get_venv | success
+    - horizon_get_venv | changed
   tags:
     - horizon-install
     - horizon-pip-packages
