@@ -42,13 +42,42 @@
     - ceilometer-install
     - ceilometer-pip-packages
 
+- name: Get local venv checksum
+  stat:
+    path: "/var/cache/{{ ceilometer_venv_download_url | basename }}"
+    get_md5: False
+  when: ceilometer_venv_enabled | bool
+  register: local_venv_stat
+  tags:
+    - ceilometer-install
+    - ceilometer-pip-packages
+
+- name: Get remote venv checksum
+  uri:
+    url: "{{ ceilometer_venv_download_url | replace('tgz', 'checksum') }}"
+    return_content: True
+  when: ceilometer_venv_enabled | bool
+  register: remote_venv_checksum
+  tags:
+    - ceilometer-install
+    - ceilometer-pip-packages
+
+# TODO: When project moves to ansible 2 we can pass this a sha256sum which will:
+#       a) allow us to remove force: yes
+#       b) allow the module to calculate the checksum of dest file which would
+#          result in file being downloaded only if provided and dest sha256sum
+#          checksums differ
 - name: Attempt venv download
   get_url:
     url: "{{ ceilometer_venv_download_url }}"
     dest: "/var/cache/{{ ceilometer_venv_download_url | basename }}"
+    force: yes
   ignore_errors: true
   register: get_venv
-  when: ceilometer_venv_enabled | bool
+  when:
+    - ceilometer_venv_enabled | bool
+    - (local_venv_stat.stat.exists == False or
+        {{ local_venv_stat.stat.checksum is defined and local_venv_stat.stat.checksum != remote_venv_checksum.content | trim }})
   tags:
     - ceilometer-install
     - ceilometer-pip-packages
@@ -61,13 +90,24 @@
     - ceilometer-install
     - ceilometer-pip-packages
 
+- name: Remove existing venv
+  file:
+    path: "{{ ceilometer_venv_bin | dirname }}"
+    state: absent
+  when:
+    - ceilometer_venv_enabled | bool
+    - ceilometer_get_venv | changed
+  tags:
+    - ceilometer-install
+    - ceilometer-pip-packages
+
 - name: Create ceilometer venv dir
   file:
     path: "{{ ceilometer_venv_bin | dirname }}"
     state: directory
   when:
     - ceilometer_venv_enabled | bool
-    - ceilometer_get_venv | success
+    - ceilometer_get_venv | changed
   tags:
     - ceilometer-install
     - ceilometer-pip-packages
@@ -79,7 +119,8 @@
     copy: "no"
   when:
     - ceilometer_venv_enabled | bool
-    - ceilometer_get_venv | success
+    - ceilometer_get_venv | changed
+  notify: Restart ceilometer services
   tags:
     - ceilometer-install
     - ceilometer-pip-packages
@@ -109,6 +150,7 @@
   when:
     - ceilometer_venv_enabled | bool
     - ceilometer_get_venv | failed
+  notify: Restart ceilometer services
   tags:
     - ceilometer-install
     - ceilometer-pip-packages
@@ -124,6 +166,7 @@
   delay: 2
   with_items: ceilometer_pip_packages
   when: not ceilometer_venv_enabled | bool
+  notify: Restart ceilometer services
   tags:
     - ceilometer-install
     - ceilometer-pip-packages
