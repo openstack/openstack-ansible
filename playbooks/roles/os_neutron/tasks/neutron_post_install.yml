@@ -60,7 +60,7 @@
   notify:
     - Restart neutron services
   when: >
-      inventory_hostname in groups['neutron_agents_container']
+      inventory_hostname in groups[neutron_services['neutron-dhcp-agent']['group']]
   tags:
     - neutron-config
 
@@ -79,8 +79,7 @@
   when:
        - item.value.service_en | bool
        - item.value.service_conf is defined
-       - (inventory_hostname in groups['neutron_agents_container'] or
-         inventory_hostname in groups['neutron_linuxbridge_agent'])
+       - inventory_hostname in groups[item.value.group]
   tags:
     - neutron-config
 
@@ -128,7 +127,7 @@
     group: "root"
     mode: "0755"
   when: >
-    inventory_hostname in groups['neutron_linuxbridge_agent']
+    inventory_hostname in groups[neutron_services['neutron-linuxbridge-agent']['group']]
   tags:
     - neutron-config
     - neutron-checksum-fix
@@ -136,7 +135,7 @@
 - name: Run iptables checksum fix
   command: /etc/network/if-up.d/post-up-checksum-rules
   when: >
-    inventory_hostname in groups['neutron_linuxbridge_agent']
+    inventory_hostname in groups[neutron_services['neutron-linuxbridge-agent']['group']]
   tags:
     - neutron-config
     - neutron-checksum-fix
