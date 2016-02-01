@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- hosts: haproxy_hosts
+- hosts: haproxy
   vars_files:
     - "{{ haproxy_keepalived_vars_file | default('vars/configs/keepalived_haproxy.yml')}}"
   roles:
@@ -23,17 +23,17 @@
       keepalived_instances: "{{ keepalived_master_instances }}"
       when: >
         haproxy_use_keepalived|bool and
-        inventory_hostname in groups['haproxy_hosts'][0]
+        inventory_hostname in groups['haproxy'][0]
     - role: "keepalived"
       keepalived_sync_groups: "{{ keepalived_backup_sync_groups }}"
       keepalived_scripts: "{{ keepalived_backup_scripts }}"
       keepalived_instances: "{{ keepalived_backup_instances }}"
       when: >
         haproxy_use_keepalived|bool and
-        inventory_hostname in groups['haproxy_hosts'][1:]
+        inventory_hostname in groups['haproxy'][1:]
 
 - name: Install haproxy
-  hosts: haproxy_hosts
+  hosts: haproxy
   max_fail_percentage: 20
   user: root
   pre_tasks:
