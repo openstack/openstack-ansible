@@ -1,0 +1,6 @@
+---
+upgrade:
+  - |
+    A new database called `nova_api` has been created. This database has its own user credentials
+    and nova-manage db sync process. For the database password there is a new variable entry in
+    `user_secrets.yml` called ``nova_api_container_mysql_password``.

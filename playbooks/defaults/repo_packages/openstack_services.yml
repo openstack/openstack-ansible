@@ -31,7 +31,7 @@
 
 ## Global Requirements
 requirements_git_repo: https://git.openstack.org/openstack/requirements
-requirements_git_install_branch: 332278d456e06870150835564342570ec9d5f5a0 # HEAD of "master" as of 17.01.2016
+requirements_git_install_branch: 0a0352fb3065308647e0fd49e15b1b733135501a # HEAD of "master" as of 01.02.2016
 requirements_git_dest: "/opt/requirements_{{ requirements_git_install_branch | replace('/', '_') }}"
 
 
@@ -97,7 +97,7 @@ neutron_fwaas_git_dest: "/opt/neutron_fwaas_{{ neutron_fwaas_git_install_branch 
 
 ## Nova service
 nova_git_repo: https://git.openstack.org/openstack/nova
-nova_git_install_branch: deb1ee440923b0b292f3536a2f8bda672c03984a # HEAD of "master" as of 17.01.2016
+nova_git_install_branch: 2fc930a84e0e934c3f3d2c24679c698aeb98f8df # HEAD of "master" as of 01.02.2016
 nova_git_dest: "/opt/nova_{{ nova_git_install_branch | replace('/', '_') }}"
 
 
