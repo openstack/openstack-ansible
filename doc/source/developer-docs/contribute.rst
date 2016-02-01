@@ -3,8 +3,8 @@
 Contributor Guidelines
 ======================
 
-Bugs
-----
+Reporting Bugs
+--------------
 
 Bugs should be filed on `Bug Launchpad`_ for OpenStack-Ansible.
 
@@ -24,7 +24,7 @@ criteria are met:
 Tags
 ````
 If it's a bug that needs fixing in a branch in addition to master, add a
-'\<release\>-backport-potential' tag (e.g. ``kilo-backport-potential``).
+'\<release\>-backport-potential' tag (e.g. ``liberty-backport-potential``).
 There are predefined tags that will auto-complete.
 
 Status
@@ -41,20 +41,20 @@ can take down whole infrastructures. Once the importance has been changed
 the status should be changed to *Triaged* by someone other than the bug
 creator.
 
-Triaging bugs
+Triaging Bugs
 `````````````
 Reported bugs need prioritization, confirmation, and shouldn't go stale.
 If you care about OpenStack stability but aren't wanting to actively
 develop the roles and playbooks used within the OpenStack-Ansible
 project consider contributing in the area of bug triage, which helps
-immensely. The whole process is described in the upstream
+immensely. The whole process is described in the OpenStack
 `Bug Triage Documentation`_.
 
 .. _Bug Launchpad: https://bugs.launchpad.net/openstack-ansible
-.. _Bug Triage Documentation: https://wiki.openstack.org/wiki/BugTriage
+.. _Bug Triage Documentation: http://docs.openstack.org/infra/manual/developers.html#working-on-bugs
 
-Submitting Code
----------------
+General Guidelines for Submitting Code
+--------------------------------------
 
 * Write good commit messages. We follow the OpenStack
   "`Git Commit Good Practice`_" guide. if you have any questions regarding how
@@ -64,21 +64,6 @@ Submitting Code
   following the `workflow documented here`_.
 * Pull requests submitted through GitHub will be ignored and closed without
   regard.
-* All feature additions/deletions should be accompanied by a blueprint/spec.
-  ie: adding additional active agents to neutron, developing a new service
-  role, etc...
-* Before creating blueprint/spec an associated issue should be raised on
-  launchpad. This issue will be triaged and a determination will be made on
-  how large the change is and whether or not the change warrants a
-  blueprint/spec. Both features and bug fixes may require the creation of a
-  blueprint/spec. This requirement will be voted on by core reviewers and will
-  be based on the size and impact of the change.
-* All blueprints/specs should be voted on and approved by core reviewers
-  before any associated code will be merged. For more information on
-  blueprints/specs please review the
-  `upstream OpenStack Blueprint documentation`_. At the time the
-  blueprint/spec is voted on a determination will be made whether or not the
-  work will be backported to any of the "released" branches.
 * Patches should be focused on solving one problem at a time. If the review is
   overly complex or generally large the initial commit will receive a "**-2**"
   and the contributor will be asked to split the patch up across multiple
@@ -87,23 +72,59 @@ Submitting Code
   submitted in multiple patches using dependencies. Using dependent changes
   should always aim to result in a working build throughout the dependency
   chain. Documentation is available for `advanced gerrit usage`_ too.
-* All patch sets should adhere to the Ansible Style Guide listed here as well
-  as adhere to the `Ansible best practices`_ when possible.
+* All patch sets should adhere to the `Ansible Style Guide`_ listed here as
+  well as adhere to the `Ansible best practices`_ when possible.
 * All changes should be clearly listed in the commit message, with an
   associated bug id/blueprint along with any extra information where
   applicable.
 * Refactoring work should never include additional "rider" features. Features
   that may pertain to something that was re-factored should be raised as an
   issue and submitted in prior or subsequent patches.
+* New features, breaking changes and other patches of note must include a
+  release note generated using `the reno tool`_.
 
 .. _Git Commit Good Practice: https://wiki.openstack.org/wiki/GitCommitMessages
 .. _workflow documented here: http://docs.openstack.org/infra/manual/developers.html#development-workflow
-.. _upstream OpenStack Blueprint documentation: https://wiki.openstack.org/wiki/Blueprints
 .. _advanced gerrit usage: http://www.mediawiki.org/wiki/Gerrit/Advanced_usage
 .. _Ansible best practices: http://docs.ansible.com/playbooks_best_practices.html
+.. _the reno tool: http://docs.openstack.org/developer/reno/usage.html
+
+Working on Features
+-------------------
+
+* All feature additions/deletions should be accompanied by a blueprint/spec.
+  e.g. adding additional active agents to neutron, developing a new service
+  role, etc...
+* Before creating blueprint/spec an associated 'Wishlist Bug' can be raised on
+  launchpad. This issue will be triaged and a determination will be made on
+  how large the change is and whether or not the change warrants a
+  blueprint/spec. Both features and bug fixes may require the creation of a
+  blueprint/spec. This requirement will be voted on by core reviewers and will
+  be based on the size and impact of the change.
+* All blueprints/specs should be voted on and approved by core reviewers
+  before any associated code will be merged. For more information on
+  blueprints/specs please review the OpenStack documentation regarding
+  `Working on Specifications and Blueprints`_.
+* Once the blueprint work is completed the author(s) can request a backport
+  of the blueprint work into a stable branch. Each backport will be evaluated
+  on a case by case basis with cautious consideration based on how the
+  backport affects any existing deployments. See the `Backporting`_ section
+  for more information.
+* Any new OpenStack services implemented which have `Tempest`_ tests
+  available must be implemented along with suitable functional tests enabled
+  as part of the feature development in order to ensure that any changes
+  to the code base do not break the service functionality.
+* Feature additions must include documentation which provides reference to
+  OpenStack documentation about what the feature is and how it works. The
+  documentation should then describe how it is implemented in
+  OpenStack-Ansible and what configuration options there are.
+
+.. _Working on Specifications and Blueprints: http://docs.openstack.org/infra/manual/developers.html#working-on-specifications-and-blueprints
+.. _Tempest: http://docs.openstack.org/developer/tempest/
 
 Backporting
 -----------
+
 * Backporting is defined as the act of reproducing a change from another
   branch. Unclean/squashed/modified cherry-picks and complete
   reimplementations are OK.
@@ -117,20 +138,24 @@ Backporting
   commit message. This can be done with ``cherry-pick -x``. Here's more
   information on `Submitting a change to a branch for review`_.
 * Every backport commit must still only solve one problem, as per the
-  guidelines in `Submitting Code`_.
+  guidelines in `General Guidelines for Submitting Code`_.
 * If a backport is a squashed set of cherry-picked commits, the original SHAs
   should be referenced in the commit message and the reason for squashing the
   commits should be clearly explained.
 * When a cherry-pick is modified in any way, the changes made and the reasons
   for them must be explicitly expressed in the commit message.
 * Refactoring work must not be backported to a "released" branch.
+* Backport reviews should be done with due consideration to the effect of the
+  patch on any existing environment deployed by OpenStack-Ansible. The general
+  `OpenStack Guidelines for stable branches`_ can be used as a reference.
 
 .. _Submitting a change to a branch for review: http://www.mediawiki.org/wiki/Gerrit/Advanced_usage#Submitting_a_change_to_a_branch_for_review_.28.22backporting.22.29
+.. _OpenStack Guidelines for stable branches: http://docs.openstack.org/project-team-guide/stable-branches.html
 
-Style Guide
------------
+Ansible Style Guide
+-------------------
 
-When creating tasks and other roles for use in Ansible please create then
+When creating tasks and other roles for use in Ansible please create them
 using the YAML dictionary format.
 
 Example YAML dictionary format:
