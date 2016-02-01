@@ -199,6 +199,7 @@ pushd playbooks
       - /etc/nova
       - /etc/network/interfaces.d/aio_interfaces.cfg
       - /etc/neutron
+      - /etc/openstack_deploy/ansible_facts
       - /etc/swift
       - /openstack
       - /opt/*.img
