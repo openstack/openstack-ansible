@@ -13,6 +13,41 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- name: haproxy container config
+  hosts: haproxy_all
+  max_fail_percentage: 0
+  user: root
+  tasks:
+    - name: Use the lxc-openstack aa profile
+      lxc_container:
+        name: "{{ container_name }}"
+        container_config:
+          - "lxc.aa_profile=lxc-openstack"
+      delegate_to: "{{ physical_host }}"
+      when: not is_metal | bool
+      register: container_config
+      tags:
+        - lxc-aa-profile
+    - name: Wait for container ssh
+      wait_for:
+        port: "22"
+        delay: "{{ ssh_delay }}"
+        search_regex: "OpenSSH"
+        host: "{{ ansible_ssh_host }}"
+      delegate_to: "{{ physical_host }}"
+      when:
+        - container_config is defined
+        - container_config | changed
+      register: ssh_wait_check
+      until: ssh_wait_check | success
+      retries: 3
+      tags:
+        - ssh-wait
+  vars:
+    is_metal: "{{ properties.is_metal|default(false) }}"
+  tags:
+    - haproxy-lxc-container-setup
+
 - hosts: haproxy
   user: root
   vars_files:
