@@ -77,7 +77,6 @@ alarm_connection = {{ aodh_connection_string }}
 [keystone_authtoken]
 insecure = {{ keystone_service_internaluri_insecure | bool }}
 signing_dir = /var/cache/ceilometer
-identity_uri = {{ keystone_service_adminuri }}
 auth_uri = {{ keystone_service_internaluri }}
 auth_url = {{ keystone_service_adminuri }}
 auth_plugin = {{ ceilometer_keystone_auth_plugin }}
@@ -86,6 +85,7 @@ user_domain_id = {{ ceilometer_service_user_domain_id }}
 project_name = {{ ceilometer_service_project_name }}
 username = {{ ceilometer_service_user_name }}
 password = {{ ceilometer_service_password }}
+region_name = {{ ceilometer_service_region }}
 
 memcached_servers = {{ memcached_servers }}
 
@@ -99,8 +99,12 @@ memcache_secret_key = {{ memcached_encryption_key }}
 telemetry_secret = {{ ceilometer_telemetry_secret }}
 
 [service_credentials]
-#TODO: Keystone v2 API is being used until https://review.openstack.org/#/c/237537/ merges.
-os_auth_url = {{ keystone_service_internaluri }}/v2.0
-os_username = {{ ceilometer_service_user_name }}
-os_tenant_name = {{ ceilometer_service_tenant_name }}
-os_password = {{ ceilometer_service_password }}
+insecure = {{ keystone_service_internaluri_insecure | bool }}
+auth_url = {{ keystone_service_adminuri }}
+auth_plugin = {{ ceilometer_keystone_auth_plugin }}
+project_domain_id = {{ ceilometer_service_project_domain_id }}
+user_domain_id = {{ ceilometer_service_user_domain_id }}
+project_name = {{ ceilometer_service_project_name }}
+username = {{ ceilometer_service_user_name }}
+password = {{ ceilometer_service_password }}
+region_name = {{ ceilometer_service_region }}

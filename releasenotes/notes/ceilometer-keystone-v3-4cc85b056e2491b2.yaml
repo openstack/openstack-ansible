@@ -1,0 +1,7 @@
+---
+features:
+  - Ceilometer now uses the Keystone v3 endpoint.
+    The 'identity_uri' directive has been removed since
+    it's unused. 'region_name' has been added.
+    The directives under 'service_credentials' have been
+    updated to support the keystoneauth library
