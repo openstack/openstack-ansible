@@ -8,7 +8,7 @@ Role for the installation and setup of haproxy
 .. code-block:: yaml
 
     - name: Install haproxy
-      hosts: haproxy_hosts
+      hosts: haproxy
       user: root
       roles:
         - { role: "haproxy_server", tags: [ "haproxy-server" ] }
