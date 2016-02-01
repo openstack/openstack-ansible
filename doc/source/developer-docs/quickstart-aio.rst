@@ -24,8 +24,9 @@ Recommended server resources:
 * CPU/motherboard that supports `hardware-assisted virtualization`_
 * 8 CPU Cores
 * 80GB free disk space on the root partition, or 60GB+ on a blank
-  secondary disk. Using a secondary disk requires
-  `Running a customized AIO build`_.
+  secondary disk. Using a secondary disk requires the use of the
+  ``bootstrap_host_data_disk_device`` parameter. Please see
+  `Building an AIO`_ for more details.
 * 16GB RAM
 
 It's `possible` to perform AIO builds within a virtual machine but your
