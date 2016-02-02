@@ -21,6 +21,7 @@ Chapter 4. Deployment configuration
    configure-aodh.rst
    configure-keystone.rst
    configure-lbaas.rst
+   configure-fwaas.rst
    configure-openstack.rst
    configure-sslcertificates.rst
    configure-configurationintegrity.rst
