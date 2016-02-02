@@ -46,6 +46,14 @@ should you need to customize your build:
 * Initial host bootstrap
 * Run playbooks
 
+If you are building an AIO on a new server, it is recommended you first
+upgrade all system packages and reboot into the new kernel:
+
+   .. code-block:: shell-session
+
+       # apt-get dist-upgrade
+       # reboot
+
 Start by cloning the OpenStack-Ansible repository and changing into the
 repository root directory:
 

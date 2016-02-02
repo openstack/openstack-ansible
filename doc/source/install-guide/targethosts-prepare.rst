@@ -19,8 +19,14 @@ adding the Secure Shell (SSH) server packages to the installation.
 Configuring the operating system
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Check the kernel version, install additional software packages, and
-configure NTP.
+Upgrade system packages, check the kernel version, install additional
+software packages, and configure NTP.
+
+#. Upgrade system packages and kernel:
+
+   .. code-block:: shell-session
+
+       # apt-get dist-upgrade
 
 #. Check the kernel version. It should be ``3.13.0-34-generic`` or
    later.
@@ -43,7 +49,7 @@ configure NTP.
 
 #. Configure NTP to synchronize with a suitable time source.
 
-#. Reboot the host to activate the changes.
+#. Reboot the host to activate the changes and use new kernel.
 
 Deploying SSH keys
 ~~~~~~~~~~~~~~~~~~
