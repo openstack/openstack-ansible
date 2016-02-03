@@ -25,3 +25,7 @@ pip_get_pip_options: ""
 # This list var can be used to specify specific versions of pip, setuptools,
 # wheel and any other packages which must be installed when pip installs.
 pip_packages: []
+
+# Validate Certificates when downloading pip. May be set to "no" when proxy server
+# is intercepting the certificates.
+pip_validate_certs: "yes"
