@@ -14,29 +14,38 @@ these scripts from the root of the repository clone. For example:
 Bootstrapping
 ^^^^^^^^^^^^^
 
-bootstrap-aio.sh
-----------------
-
-The ``bootstrap-aio.sh`` script prepares a host for an *all-in-one* (AIO)
-deployment for the purposes of development and gating. Create the necessary
-partitions, directories, and configurations. Configurable via environment
-variables to work with Jenkins.
-
 bootstrap-ansible.sh
 --------------------
 
-The ``bootstrap-ansible.sh`` script installs Ansible including core and extras
-module repositories and Galaxy roles.
+The ``bootstrap-ansible.sh`` script installs Ansible including `core`_ and
+`extras`_ module repositories and Galaxy roles.
 
-Configurable environment variables:
+While there are several configurable environment variables which this script
+uses, the following are commonly used:
 
-* ``ANSIBLE_GIT_RELEASE`` - Version of Ansible to install.
-* ``ANSIBLE_ROLE_FILE`` - Galaxy roles to install. Defaults to
-  contents of ``ansible-role-requirements.yml`` file.
+* ``ANSIBLE_GIT_RELEASE`` - The version of Ansible to install.
+
+* ``ANSIBLE_ROLE_FILE`` - The location of a yaml file which ansible-galaxy can
+  consume which specifies which roles to download and install. The default
+  value for this is ``ansible-role-requirements.yml``.
 
 The script also creates the ``openstack-ansible`` wrapper tool that provides
 the variable files to match ``/etc/openstack_deploy/user_*.yml`` as
 arguments to ``ansible-playbook`` as a convenience.
+
+.. core: https://github.com/ansible/ansible-modules-core
+.. extras: https://github.com/ansible/ansible-modules-extras
+
+bootstrap-aio.sh
+----------------
+
+The ``bootstrap-aio.sh`` script prepares a host for an `All-In-One`_ (AIO)
+deployment for the purposes of development and gating. The script creates the
+necessary partitions, directories, and configurations. The script can be
+configured using environment variables - more details are provided on the
+`All-In-One`_ page.
+
+.. All-In-One: quickstart-aio
 
 Development and Testing
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -83,8 +92,8 @@ Configurable environment variables:
   ``openstack_tempest_gate.sh`` script, defined in the ``os_tempest`` role.
   Defaults to ``scenario heat_api cinder_backup``.
 
-PEP8
-----
+Lint Tests
+----------
 
 Python coding conventions are tested using `PEP8`_, with the following
 convention exceptions:
@@ -98,11 +107,6 @@ Testing may be done locally by executing:
 
     tox -e pep8
 
-.. PEP8: https://www.python.org/dev/peps/pep-0008/
-
-Bashate
--------
-
 Bash coding conventions are tested using `Bashate`_, with the following
 convention exceptions:
 
@@ -114,10 +118,34 @@ Testing may be done locally by executing:
 
     tox -e bashate
 
-.. Bashate: https://github.com/openstack-dev/bashate
+Ansible is lint tested using `ansible-lint`_.
 
-Documentation
--------------
+Testing may be done locally by executing:
+
+.. code-block:: bash
+
+    tox -e ansible-lint
+
+Ansible playbook syntax is tested using ansible-playbook.
+
+Testing may be done locally by executing:
+
+.. code-block:: bash
+
+    tox -e ansible-syntax
+
+A consolidated set of all lint tests may be done locally by executing:
+
+.. code-block:: bash
+
+    tox -e linters
+
+.. PEP8: https://www.python.org/dev/peps/pep-0008/
+.. Bashate: https://github.com/openstack-dev/bashate
+.. ansible-lint: https://github.com/willthames/ansible-lint
+
+Documentation Build
+-------------------
 
 Documentation is developed in reStructuredText_ (RST) and compiled into
 HTML using Sphinx.
@@ -133,43 +161,25 @@ Documentation may be built locally by executing:
 Gating
 ^^^^^^
 
-gate-check-commit.sh
---------------------
+Every commit to OpenStack-Ansible is verified by OpenStack-CI through the
+following jobs:
 
-The ``gate-check-commit.sh`` script executes a suite of tests necessary for
-each commit to the repository. By default, the script runs the bootstrap
-scripts, builds an *all-in-one* deployment of OSA, and runs various Tempest
-tests on it.
+* ``gate-openstack-ansible-docs``: This job executes the
+  `Documentation Build`_.
 
-Configurable environment variables:
+* ``gate-openstack-ansible-linters``: This job executes the `Lint Tests`_.
 
-* ``BOOTSTRAP_AIO`` - Boolean (yes/no) to run AIO bootstrap script. Defaults
-  to ``yes``.
-* ``BOOTSTRAP_ANSIBLE`` - Boolean (yes/no) to run Ansible bootstrip script.
-  Defaults to ``yes``.
-* ``RUN_TEMPEST`` - Boolean (yes/no) to run Tempest tests. Defaults to
-  ``yes``.
+* ``gate-openstack-ansible-dsvm-commit``: This job executes the
+  ``gate-check-commit.sh`` script which executes a convergence test and then a
+  functional test.
 
-gate-check-docs.sh
-------------------
+  The convergence test is the execution of an AIO build
+  which aims to test the primary code path for a functional environment. The
+  functional test then executes OpenStack's Tempest testing suite to verify
+  that the environment that has deployed successfully actually works.
 
-The ``gate-check-docs.sh`` script invokes Sphinx to build the HTML
-documentation from RST source.
-
-gate-check-lint.sh
-------------------
-
-The ``gate-check-lint.sh`` script executes a suite of tests necessary for each
-commit to the repository to verify correct YAML and Python syntax.
-
-All files that begin with a Python shebang pass through *flake8* which ignores
-the following rules due to Ansible conventions:
-
- * F403 - 'from ansible.module_utils.basic import \*'
- * H303 - No wildcard imports
-
-Ansible playbooks pass through ``ansible-playbook --syntax-check``
-and ``ansible-lint``.
+  While this script is primarily developed and maintained for use in
+  OpenStack-CI, it can be used in other environments.
 
 --------------
 
