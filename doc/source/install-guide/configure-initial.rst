@@ -96,13 +96,28 @@ within ``user_variables.yml``:
 
     apply_security_hardening: true
 
+When the variable is set, the role will be applied by
+``scripts/run_playbooks.sh`` automatically during deployments.
+
+Deployers can apply security configurations to an existing environment or audit
+an environment using a playbook supplied with OpenStack-Ansible:
+
+.. code-block:: bash
+
+    # Perform a quick audit using Ansible's check mode
+    openstack-ansible --check security-hardening.yml
+
+    # Apply security hardening configurations
+    openstack-ansible security-hardening.yml
+
 For more details on the security configurations that will be applied, refer to
-the `openstack-ansible-security`_ documentation. Review the _Configuration_
+the `openstack-ansible-security`_ documentation. Review the `Configuration`_
 section of the openstack-ansible-security documentation to find out how to
 fine-tune certain security configurations.
 
 .. _openstack-ansible-security: http://docs.openstack.org/developer/openstack-ansible-security/
 .. _Security Technical Implementation Guide (STIG): https://en.wikipedia.org/wiki/Security_Technical_Implementation_Guide
+.. _Configuration: http://docs.openstack.org/developer/openstack-ansible-security/configuration.html
 
 --------------
 
