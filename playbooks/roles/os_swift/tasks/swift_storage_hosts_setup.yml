@@ -38,14 +38,14 @@
     owner: "root"
     group: "root"
     mode: "0644"
-  notify: ["Ensure rsync service stopped", "Ensure rsync service running"]
+  notify: "Restart rsync service"
 
 - name: "Enable rsync in defaults"
   lineinfile:
     dest: "/etc/default/rsync"
     line: "RSYNC_ENABLE=true"
     regexp: "^RSYNC_ENABLE*"
-  notify: ["Ensure rsync service stopped", "Ensure rsync service running"]
+  notify: "Restart rsync service"
 
 - name: "Setup swift-recon-cron cron job"
   cron:
