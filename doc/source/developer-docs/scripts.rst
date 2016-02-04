@@ -110,7 +110,11 @@ Testing may be done locally by executing:
 Bash coding conventions are tested using `Bashate`_, with the following
 convention exceptions:
 
-* E003: Indent not multiple of 4 (we prefer to use multiples of 2)
+* E003: Indent not multiple of 4. We prefer to use multiples of 2 instead.
+* E006: Line longer than 79 columns. As many scripts are deployed as templates
+        and use jinja templating, this is very difficult to achieve. It is
+        still considered a preference and should be a goal to improve
+        readability, within reason.
 
 Testing may be done locally by executing:
 
