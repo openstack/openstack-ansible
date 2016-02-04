@@ -7,7 +7,7 @@ The Alarming services of the Telemetry perform the following functions:
 
   - Creates an API endpoint for controlling alarms.
 
-  - Alows you to set alarms based on threshold evaluation for a collection of samples.
+  - Allows you to set alarms based on threshold evaluation for a collection of samples.
 
 Aodh on OSA requires a mongodb backend to be configured prior to running the aodh
 playbooks. The connection data will then need to be given in the ``user_variables.yml``
@@ -85,7 +85,7 @@ Aodh can be configured by specifying the ``metering-alarm_hosts`` directive in t
       infra3:
         ip: 172.20.236.113
 
-The ``metering-alarm_hosts`` houses serveral services:
+The ``metering-alarm_hosts`` houses several services:
 
   - An API server (aodh-api). Runs on one or more central management servers to provide access to the alarm information stored in the data store.
 
