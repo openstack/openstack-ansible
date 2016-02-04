@@ -24,11 +24,11 @@ Enable encrypted connections to RabbitMQ
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 SSL communication between various OpenStack services and RabbitMQ is
-controlled via the Ansible variable ``rabbit_use_ssl``:
+controlled via the Ansible variable ``rabbitmq_use_ssl``:
 
 .. code-block:: yaml
 
-    rabbit_use_ssl: true
+    rabbitmq_use_ssl: true
 
 Setting this variable to ``true`` will adjust the RabbitMQ port to 5671 (the
 default SSL/TLS listener port) and enable SSL connectivity between each
