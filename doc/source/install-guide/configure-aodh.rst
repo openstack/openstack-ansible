@@ -100,7 +100,7 @@ These services communicate by using the OpenStack messaging bus. Only the API se
 
 Configuring the user data
 #########################
-In addtion to adding these hosts in the ``/etc/openstack_deploy/conf.d/aodh.yml`` file, other configurations must be specified in the ``/etc/openstack_deploy/user_variables.yml`` file. These configurations are listed below, along with a description:
+In addition to adding these hosts in the ``/etc/openstack_deploy/conf.d/aodh.yml`` file, other configurations must be specified in the ``/etc/openstack_deploy/user_variables.yml`` file. These configurations are listed below, along with a description:
 
 
 The type of database backend aodh will use. Currently only mongodb is supported:

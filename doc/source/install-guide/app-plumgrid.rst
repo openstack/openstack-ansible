@@ -111,7 +111,7 @@ PLUMgrid Cofigurations
 
 On the Deployment Host create a PLUMgrid user variables file, using the sample in
 ``../playbooks/plumgrid-ansible/etc/user_pg_vars.yml.example`` and place it under
-``/etc/openstack_deploy/``. The following paremeters must be configured:
+``/etc/openstack_deploy/``. The following parameters must be configured:
 
 #. Replace ``PG_REPO_HOST`` with a valid repo URL hosting PLUMgrid
    packages.
@@ -120,8 +120,8 @@ On the Deployment Host create a PLUMgrid user variables file, using the sample i
 
       plumgrid_repo: PG_REPO_HOST
 
-#. Replace ``INFRA_IPs`` with comma seperated Infrastructure Node IPs and
-   ``PG_VIP`` with an anallocated IP on the management network, this will
+#. Replace ``INFRA_IPs`` with comma separated Infrastructure Node IPs and
+   ``PG_VIP`` with an allocated IP on the management network, this will
    be used to access the PLUMgrid UI.
 
    .. code-block:: yaml
@@ -152,7 +152,7 @@ that are used for providing connectivity with external resources such as
 external networks (Internet), bare-metal servers or network service
 appliances. In addition to the Management and Fabric networks required
 by PLUMgrid nodes, Gateways require dedicated external interfaces referred
-to as gateway_devs in the confgiuration files.
+to as gateway_devs in the configuration files.
 
 #. To add Gateways Hosts, add a ``gateway_hosts`` section to
    ``/etc/openstack_deploy/openstack_user_config.yml`` as shown below:
