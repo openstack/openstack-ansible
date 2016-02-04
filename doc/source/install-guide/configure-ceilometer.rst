@@ -181,6 +181,9 @@ This configures nova to send notifications to the message bus:
 This configures neutron to send notifications to the message bus:
 ``neutron_ceilometer_enabled: False``
 
+This configures keystone to send notifications to the message bus:
+``keystone_ceilometer_enabled: False``
+
 Once all of these steps are complete, you are ready to run the
 os-ceilometer-install.yml playbook! Or, if deploying a new stack, simply run
 setup-openstack.yml. The ceilometer playbooks will run as part of this playbook
