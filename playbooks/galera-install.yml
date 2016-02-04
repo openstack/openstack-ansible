@@ -16,6 +16,7 @@
 - name: Galera container config
   hosts: galera_all
   max_fail_percentage: 0
+  user: root
   tasks:
     - name: Use the lxc-openstack aa profile
       lxc_container:
