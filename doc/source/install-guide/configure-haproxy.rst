@@ -84,10 +84,19 @@ Securing HAProxy communication with SSL certificates
 ####################################################
 
 The OpenStack-Ansible project provides the ability to secure HAProxy
-communications with self-signed or user-provided SSL certificates.
+communications with self-signed or user-provided SSL certificates. By default,
+self-signed certificates are used with HAProxy.  However, deployers can
+provide their own certificates by using the following Ansible variables:
 
-Refer to `Securing services with SSL certificates`_ for available configuration
-options.
+.. code-block:: yaml
+
+    haproxy_user_ssl_cert:          # Path to certificate
+    haproxy_user_ssl_key:           # Path to private key
+    haproxy_user_ssl_ca_cert:       # Path to CA certificate
+
+Refer to `Securing services with SSL certificates`_ for more information on
+these configuration options and how deployers can provide their own
+certificates and keys to use with HAProxy.
 
 .. _Securing services with SSL certificates: configure-sslcertificates.html
 
