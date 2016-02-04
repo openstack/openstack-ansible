@@ -6,6 +6,7 @@ Troubleshooting
 .. toctree::
 
    ops-troubleshooting-containernetworking.rst
+   ops-troubleshooting-ansiblecachedfacts.rst
 
 --------------
 
