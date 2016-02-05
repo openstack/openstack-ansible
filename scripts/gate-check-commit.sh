@@ -128,7 +128,7 @@ pushd $(dirname ${0})/../playbooks
   wget -O /etc/ansible/plugins/callbacks/human_log.py https://gist.githubusercontent.com/cliffano/9868180/raw/f360f306b3c6d689734a6aa8773a00edf16a0054/human_log.py
 
   # Enable callback plugins
-  sed -i '/\[defaults\]/a callback_plugins = plugins/callbacks' ansible.cfg
+  sed -i '/\[defaults\]/a callback_plugins = /etc/ansible/plugins/callbacks' ansible.cfg
 popd
 
 # Log some data about the instance and the rest of the system
