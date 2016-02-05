@@ -66,7 +66,12 @@ messaging_urls = rabbit://{{ neutron_rabbitmq_userid }}:{{ neutron_rabbitmq_pass
 messaging_urls = rabbit://{{ heat_rabbitmq_userid }}:{{ heat_rabbitmq_password }}@{{ hostvars[host]['ansible_ssh_host'] }}:{{ rabbitmq_port }}/{{ heat_rabbitmq_vhost }}
 {% endfor %}
 {% endif %}
-# TODO: Keystone
+{% if keystone_ceilometer_enabled %}
+# Keystone
+{% for host in groups['rabbitmq_all'] %}
+messaging_urls = rabbit://{{ keystone_rabbitmq_userid }}:{{ keystone_rabbitmq_password }}@{{ hostvars[host]['ansible_ssh_host'] }}:{{ rabbitmq_port }}/{{ keystone_rabbitmq_vhost }}
+{% endfor %}
+{% endif %}
 # TODO: Swift
 
 [database]
