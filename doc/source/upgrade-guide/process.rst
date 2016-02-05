@@ -280,11 +280,38 @@ of 0 because there are containers that may not exist at this time.
 
 ----
 
-Run the basic host setup play to ensure you have the latest configurations.
+Run the OpenStack host setup play to ensure you have the latest configurations.
 
 .. code-block:: bash
 
-    openstack-ansible setup-hosts.yml
+  openstack-ansible openstack-hosts-setup.yml
+
+
+----
+
+Run the lxc host setup play to ensure you have the latest configurations.
+
+.. code-block:: bash
+
+  openstack-ansible lxc-hosts-setup.yml
+
+
+----
+
+Run the lxc container create play to ensure you have all containers built and in a
+health state. This is a three part process to ensure no containers being updated or
+upgrade are restarted simultaneously potentially causing a service interruption. The
+basic overview here is to run the container create play on all groups that do NOT hold
+state. Once the stateless groups have been processed, all other groups are updated
+serially.
+
+.. code-block:: bash
+
+  openstack-ansible lxc-containers-create.yml --limit '!galera_all:!nova_scheduler:!nova_conductor:!rabbitmq_all:!cinder_scheduler:!neutron_agent'
+
+  openstack-ansible lxc-containers-create.yml --limit 'galera_all[0]:nova_scheduler[0]:nova_conductor[0]:rabbitmq_all[0]:cinder_scheduler[0]:neutron_agent[0]'
+
+  openstack-ansible lxc-containers-create.yml --limit 'galera_all[1-999]:nova_scheduler[1-999]:nova_conductor[1-999]:rabbitmq_all[1-999]:cinder_scheduler[1-999]:neutron_agent[1-999]'
 
 
 ----
