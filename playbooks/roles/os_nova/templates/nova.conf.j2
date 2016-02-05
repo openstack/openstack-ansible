@@ -59,6 +59,13 @@ allow_resize_to_same_host = True
 image_cache_manager_interval = {{ nova_image_cache_manager_interval }}
 resume_guests_state_on_host_boot = {{ nova_resume_guests_state_on_host_boot }}
 
+{% if nova_console_user_ssl_cert is defined and nova_console_user_ssl_key is defined and inventory_hostname in groups['nova_console'] %}
+# Console SSL keys
+ssl_only = true
+cert = {{ nova_console_ssl_cert }}
+key = {{ nova_console_ssl_key }}
+{% endif %}
+
 # Api's
 enabled_apis = {{ nova_enabled_apis }}
 osapi_compute_workers = {{ nova_osapi_compute_workers | default(api_threads) }}
