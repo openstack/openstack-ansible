@@ -19,7 +19,6 @@
   user: root
   roles:
     - { role: "lxc_hosts", tags: [ "lxc-host", "host-setup" ] }
-    - { role: "py_from_git", tags: [ "lxc-libs" ] }
     - role: "rsyslog_client"
       rsyslog_client_log_rotate_file: lxc_log_rotate
       rsyslog_client_log_dir: "/var/log/lxc"
@@ -27,5 +26,3 @@
       tags:
         - "lxc-rsyslog-client"
         - "rsyslog-client"
-  vars_files:
-    - defaults/repo_packages/python2_lxc.yml

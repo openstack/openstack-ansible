@@ -1,0 +1,9 @@
+---
+upgrade:
+  - The git source for python2_lxc was used in the past as the package was not
+    available on pypi. Now that the package
+    `has been published <https://pypi.python.org/pypi/lxc-python2>`_ the
+    `py_from_git` role dependency has been removed from the `lxc_hosts`
+    playbook, the role has been removed from the required roles list and the
+    repo details have been removed from the repo_packages files as none of
+    these details are required any more.
