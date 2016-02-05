@@ -35,18 +35,6 @@ info_block "Checking for required libraries." 2> /dev/null || source $(dirname $
 
 
 ## Main ----------------------------------------------------------------------
-# Create a simple task to bounce all networks within a container.
-cat > /tmp/ensure_container_networking.sh <<EOF
-#!/usr/bin/env bash
-INTERFACES=""
-INTERFACES+="\$(awk '/auto/ {print \$2}' /etc/network/interfaces) "
-INTERFACES+="\$(ls -1 /etc/network/interfaces.d/ | awk -F'.cfg' '{print \$1}')"
-for i in \${INTERFACES}; do
-  echo "Bouncing on \$i"
-  ifdown \$i || true
-  ifup \$i || true
-done
-EOF
 
 # Initiate the deployment
 pushd "playbooks"
@@ -66,53 +54,11 @@ pushd "playbooks"
                   -t "${COMMAND_LOGS}/host_net_bounce" \
                   &> ${COMMAND_LOGS}/host_net_bounce.log
 
-    # Restart any containers that may already exist
-    mkdir -p "${COMMAND_LOGS}/lxc_existing_container_restart"
-    ansible hosts -m shell \
-                  -a 'for i in $(lxc-ls); do lxc-stop -n $i; lxc-start -d -n $i; done' \
-                  -t "${COMMAND_LOGS}/lxc_existing_container_restart" \
-                  &> ${COMMAND_LOGS}/lxc_existing_container_restart.log
-
     # Create the containers.
     install_bits lxc-containers-create.yml
 
-    # Make sure there are no dead veth(s)
-    # This is good when using a host with multiple times, IE: Rebuilding.
-    mkdir -p "${COMMAND_LOGS}/veth_cleanup"
-    ansible hosts -m shell \
-                  -a 'lxc-system-manage veth-cleanup' \
-                  -t "${COMMAND_LOGS}/veth_cleanup" \
-                  &> ${COMMAND_LOGS}/veth_cleanup.log
-
-    # Flush the net cache
-    # This is good when using a host with multiple times, IE: Rebuilding.
-    mkdir -p "${COMMAND_LOGS}/flush_net_cache"
-    ansible hosts -m shell \
-                  -a 'lxc-system-manage flush-net-cache' \
-                  -t "${COMMAND_LOGS}/flush_net_cache" \
-                  &> ${COMMAND_LOGS}/flush_net_cache.log
-
     # Log some data about the instance and the rest of the system
     log_instance_info
-
-    # Force the networks down and then up
-    mkdir -p "${COMMAND_LOGS}/container_net_bounce"
-    ansible all_containers -m script \
-                           -a '/tmp/ensure_container_networking.sh' \
-                           --forks ${FORKS} \
-                           -t "${COMMAND_LOGS}/container_net_bounce" \
-                           &> ${COMMAND_LOGS}/container_net_bounce.log
-
-    # Force an apt-cache update for packages and keys throttling the processes.
-    #  * Note: that the task will always return 0. We want to see everything and
-    #          if it fails we want to see where it breaks down within the stack.
-    #  * Note: this is not using the apt module, because we want to FORCE it with raw.
-    mkdir -p "${COMMAND_LOGS}/force_apt_update"
-    ansible all_containers -m raw \
-                           -a '(apt-get update && apt-key update) || true' \
-                           --forks ${FORKS} \
-                           -t "${COMMAND_LOGS}/force_apt_update" \
-                           &> ${COMMAND_LOGS}/force_apt_update.log
 
     # When running in an AIO, we need to drop the following iptables rule in any neutron_agent containers
     # to that ensure instances can communicate with the neutron metadata service.
