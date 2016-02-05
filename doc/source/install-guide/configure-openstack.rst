@@ -57,6 +57,25 @@ entry in ``/etc/openstack_deploy/user_variables.yml``:
         idle_timeout: 300
         max_pool_size: 10
 
+Overrides may also be applied on a per host basis with the following
+configuration in ``/etc/openstack_deploy/openstack_user_config.yml``:
+
+.. code-block:: yaml
+
+      compute_hosts:
+        900089-compute001:
+          ip: 192.0.2.10
+          host_vars:
+            nova_nova_conf_overrides:
+              DEFAULT:
+                remove_unused_original_minimum_age_seconds: 43200
+              libvirt:
+                cpu_mode: host-model
+                disk_cachemodes: file=directsync,block=none
+              database:
+                idle_timeout: 300
+                max_pool_size: 10
+
 This method may be used for any INI file format for all OpenStack projects
 deployed in OpenStack-Ansible.
 
