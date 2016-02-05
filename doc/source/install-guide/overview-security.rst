@@ -55,6 +55,21 @@ operation of an OpenStack deployment.
 Refer to the documentation on :ref:`security_hardening` for more information
 on the role and how to enable it in OpenStack-Ansible.
 
+Least privilege
+~~~~~~~~~~~~~~~
+
+The `principle of least privilege`_ is used throughout OpenStack-Ansible to
+limit the damage that could be caused if an attacker gained access to a set of
+credentials.
+
+OpenStack-Ansible configures unique username and password combinations for
+each service that talks to RabbitMQ and Galera/MariaDB.  Each service that
+connects to RabbitMQ uses a separate virtual host for publishing and consuming
+messages.  The MariaDB users for each service are only granted access to the
+database(s) that they need to query.
+
+.. _principle of least privilege: https://en.wikipedia.org/wiki/Principle_of_least_privilege
+
 --------------
 
 .. include:: navigation.txt
