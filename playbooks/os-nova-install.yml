@@ -76,6 +76,17 @@
       tags:
         - nova-kvm
         - nova-kvm-container-devices
+    - name: Check if kvm device exists
+      stat:
+        path: /dev/kvm
+      delegate_to: "{{ physical_host }}"
+      register: kvm_device
+      when:
+        - "inventory_hostname in groups['nova_compute']"
+        - "not is_metal | bool"
+      tags:
+        - nova-kvm
+        - nova-kvm-container-devices
     - name: Add kvm device to the compute
       shell: |
         lxc-device -n {{ container_name }} add /dev/kvm /dev/kvm
@@ -87,7 +98,7 @@
       when:
         - "inventory_hostname in groups['nova_compute']"
         - "not is_metal | bool"
-        - "nova_virt_type == 'kvm'"
+        - kvm_device.stat.ischr is defined and kvm_device.stat.ischr
       tags:
         - nova-kvm
         - nova-kvm-container-devices
