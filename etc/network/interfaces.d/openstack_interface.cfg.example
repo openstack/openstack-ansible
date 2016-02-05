@@ -121,16 +121,3 @@ iface br-storage inet static
     address 172.29.244.100
     netmask 255.255.252.0
 
-
-# Bridge for servicenet network
-# ALL nodes will have an IP on this bridge. If fact, it's the same IP.
-# !! DO NOT PUT A PHYSICAL INTERFACE IN THIS BRIDGE ON THE HOST !!
-# Will use an iptables MASQUERADE rule to NAT traffic.
-auto br-snet
-iface br-snet inet static
-    bridge_stp off
-    bridge_waitport 0
-    bridge_fd 0
-    # Notice there is NO physical interface in this bridge!
-    address 172.29.248.1
-    netmask 255.255.252.0

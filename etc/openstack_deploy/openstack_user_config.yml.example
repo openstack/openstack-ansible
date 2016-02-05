@@ -263,27 +263,6 @@
 #         type: "flat"
 #         net_name: "flat"
 #
-#   Example:
-#
-#   Add the service network to the previous example:
-#
-#   - Network of type 'raw' that uses the 'br-snet' bridge and 'snet' IP
-#     address pool. Maps to the 'eth3' device in containers. Applies to
-#     glance, nova compute, neutron agent containers, and any of these
-#     services on bare metal hosts.
-#
-#   provider_networks:
-#     - network:
-#         group_binds:
-#           - glance_api
-#           - nova_compute
-#           - neutron_linuxbridge_agent
-#         type: "raw"
-#         container_bridge: "br-snet"
-#         container_type: "veth"
-#         container_interface: "eth3"
-#         ip_from_q: "snet"
-#
 # --------
 #
 # Level: shared-infra_hosts (required)
