@@ -155,7 +155,7 @@ are exported by the IdP. For a keystone IdP these are the five attributes
 shown above. The attributes given in this section are configured into the
 Shibboleth service, making them available to use in the mappings.
 
-Reviewing or modifying the configuration with the Openstack client
+Reviewing or modifying the configuration with the OpenStack client
 ------------------------------------------------------------------
 
 Use OpenStack command line client to review or make modifications to an
