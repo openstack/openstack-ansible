@@ -27,9 +27,30 @@
     - tempest-setup
     - tempest-config
 
-- name: Store glance image id
+- name: Store cirros image id
   set_fact:
     tempest_glance_image_id: "{{ glance_images.cirros.id }}"
+  tags:
+    - tempest-setup
+    - tempest-config
+
+- name: Ensure alt cirros image
+  glance:
+    command: 'image-create'
+    openrc_path: /root/openrc
+    image_name: cirros_alt
+    image_url: "{{ cirros_img_url }}"
+    image_container_format: bare
+    image_disk_format: qcow2
+    image_is_public: True
+    insecure: "{{ keystone_service_internaluri_insecure }}"
+  tags:
+    - tempest-setup
+    - tempest-config
+
+- name: Store alt cirros image id
+  set_fact:
+    tempest_glance_image_alt_id: "{{ glance_images.cirros_alt.id }}"
   tags:
     - tempest-setup
     - tempest-config
