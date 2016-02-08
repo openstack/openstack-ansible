@@ -93,6 +93,18 @@ below:
     # Use SASL for authentication
     nova_libvirtd_auth_tcp: sasl
 
+Multipath
+~~~~~~~~~
+
+Nova supports multipath for iSCSI-based storage.  Deployers can enable
+multipath support in nova through a configuration override:
+
+.. code-block:: yaml
+
+    nova_nova_conf_overrides:
+      libvirt:
+          iscsi_use_multipath: true
+
 --------------
 
 .. include:: navigation.txt
