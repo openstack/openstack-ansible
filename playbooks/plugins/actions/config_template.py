@@ -67,6 +67,8 @@ class ActionModule(object):
             # If the items value is not a dictionary it is assumed that the
             #  value is a default item for this config type.
             if not isinstance(items, dict):
+                if isinstance(items, list):
+                    items = ','.join(items)
                 config.set('DEFAULT', str(section), str(items))
             else:
                 # Attempt to add a section to the config file passing if
@@ -77,6 +79,8 @@ class ActionModule(object):
                 except (ConfigParser.DuplicateSectionError, ValueError):
                     pass
                 for key, value in items.items():
+                    if isinstance(value, list):
+                        value = ','.join(value)
                     config.set(str(section), str(key), str(value))
         else:
             config_object.close()
@@ -140,11 +144,11 @@ class ActionModule(object):
                     base_items.get(key, {}),
                     value
                 )
+            elif ',' in value or '\n' in value:
+                base_items[key] = re.split(', |,|\n', value)
+                base_items[key] = [i.strip() for i in base_items[key] if i]
             elif isinstance(value, list):
-                if key in base_items and isinstance(base_items[key], list):
-                    base_items[key].extend(value)
-                else:
-                    base_items[key] = value
+                base_items[key] = value
             else:
                 base_items[key] = new_items[key]
         return base_items
