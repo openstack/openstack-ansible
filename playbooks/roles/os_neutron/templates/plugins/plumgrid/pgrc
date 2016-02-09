@@ -1,5 +1,5 @@
-# {{ ansible_managed }}
 #!/bin/sh
+# {{ ansible_managed }}
 export os_auth_url="{{ keystone_service_adminuri }}/v3"
 export os_admin_user="{{ keystone_admin_user_name }}"
 export os_admin_tenant="{{ keystone_admin_tenant_name }}"
