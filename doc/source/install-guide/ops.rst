@@ -7,6 +7,7 @@ Chapter 8. Operations
 
    ops-addcomputehost.rst
    ops-galera.rst
+   ops-logging.rst
    ops-troubleshooting.rst
 
 
