@@ -1,0 +1,12 @@
+---
+features:
+  - Repeatable deployments are now easier since the manifest files for
+    OpenStack software uses the exact content from an upstream repository.
+    Specific commits or tags can be referenced within the manifest.  The
+    ``yaprt`` package is no longer used to build the repo.
+  - Developers can specify additional python packages for the repo build
+    process by creating YAML files within ``/etc/openstack_deploy/``.
+    Refer to the `documentation on adding packages <http://docs.openstack.org/developer/openstack-ansible/developer-docs/extending.html#build-the-environment-with-additional-python-packages>`_ for more details.
+upgrade:
+  - The ``repo-store-source.yml`` playbook has been removed as it is no longer
+    needed.
