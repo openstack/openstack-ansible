@@ -13,14 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Update apt sources
+#TODO(evrardjp): Replace the next 2 tasks by a standard apt with cache
+#when https://github.com/ansible/ansible-modules-core/pull/1517 is merged
+#in 1.9.x or we move to 2.0 (if tested working)
+- name: Check apt last update file
+  stat:
+    path: /var/cache/apt
+  register: apt_cache_stat
+  tags:
+    - haproxy-apt-packages
+
+- name: Update apt if needed
   apt:
     update_cache: yes
-    cache_valid_time: 600
-  register: apt_update
-  until: apt_update|success
-  retries: 5
-  delay: 2
+  when: "ansible_date_time.epoch|float - apt_cache_stat.stat.mtime > {{cache_timeout}}"
   tags:
     - haproxy-apt-packages
 
@@ -87,3 +93,11 @@
   delay: 2
   tags:
     - haproxy-repos
+
+- name: Update apt if necessary
+  apt:
+    update_cache: yes
+  when: add_repos|changed
+  tags:
+    - haproxy-repos
+

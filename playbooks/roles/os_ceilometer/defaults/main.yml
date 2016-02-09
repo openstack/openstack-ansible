@@ -17,6 +17,9 @@
 debug: False
 verbose: True
 
+## APT Cache options
+cache_timeout: 600
+
 # Name of the virtual env to deploy into
 ceilometer_venv_tag: untagged
 ceilometer_venv_bin: "/openstack/venvs/ceilometer-{{ ceilometer_venv_tag }}/bin"

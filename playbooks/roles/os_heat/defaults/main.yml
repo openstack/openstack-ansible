@@ -23,6 +23,9 @@ heat_ceilometer_enabled: False
 debug: False
 verbose: True
 
+## APT Cache options
+cache_timeout: 600
+
 # Name of the virtual env to deploy into
 heat_venv_tag: untagged
 heat_venv_bin: "/openstack/venvs/heat-{{ heat_venv_tag }}/bin"

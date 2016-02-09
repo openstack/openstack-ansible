@@ -20,6 +20,9 @@ nova_ceilometer_enabled: False
 debug: False
 verbose: True
 
+## APT Cache options
+cache_timeout: 600
+
 # Name of the virtual env to deploy into
 nova_venv_tag: untagged
 nova_venv_bin: "/openstack/venvs/nova-{{ nova_venv_tag }}/bin"

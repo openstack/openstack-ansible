@@ -16,6 +16,9 @@
 # Defines that the role will be deployed on a host machine
 is_metal: true
 
+## APT Cache options
+cache_timeout: 600
+
 haproxy_apt_repo_url: "http://ppa.launchpad.net/vbernat/haproxy-1.5/ubuntu"
 haproxy_apt_repo:
   repo: "deb {{ haproxy_apt_repo_url }} {{ ansible_distribution_release }} main"
