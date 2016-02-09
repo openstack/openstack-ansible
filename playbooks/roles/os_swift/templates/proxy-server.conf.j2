@@ -82,8 +82,6 @@ use = egg:swift#healthcheck
 
 [filter:cache]
 use = egg:swift#memcache
-memcache_servers = {{ memcached_servers }}
-memcache_serialization_support = 2
 
 [filter:ratelimit]
 use = egg:swift#ratelimit

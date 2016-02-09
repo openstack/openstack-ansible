@@ -31,6 +31,10 @@
       dest: "/etc/swift/dispersion.conf"
       config_overrides: "{{ swift_swift_dispersion_conf_overrides }}"
       config_type: "ini"
+    - src: "swift-memcache.conf.j2"
+      dest: "/etc/swift/memcache.conf"
+      config_overrides: "{{ swift_memcache_conf_overrides }}"
+      config_type: "ini"
   notify:
     - Restart swift account services
     - Restart swift container services
