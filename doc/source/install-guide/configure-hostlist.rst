@@ -88,6 +88,11 @@ suitable short hostname for a compute host might be:
    Replace ``*_IP_ADDRESS`` with the IP address of the ``br-mgmt``
    container management bridge on each network target host.
 
+   Providing more than one network host in the ``network_hosts`` block will
+   enable `L3HA support using VRRP`_ in the neutron-agent containers.
+
+.. _L3HA support using VRRP: http://docs.openstack.org/liberty/networking-guide/scenario_l3ha_lb.html
+
 #. Configure a list containing at least one compute target host in the
    ``compute_hosts`` section:
 
