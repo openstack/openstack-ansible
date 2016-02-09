@@ -115,6 +115,10 @@ convention exceptions:
         and use jinja templating, this is very difficult to achieve. It is
         still considered a preference and should be a goal to improve
         readability, within reason.
+* E040: Syntax error determined using `bash -n`. As many scripts are deployed
+        as templates and use use jinja templating, this will often fail. This
+        test is reasonably safely ignored as the syntax error will be
+        identified when executing the resulting script.
 
 Testing may be done locally by executing:
 
