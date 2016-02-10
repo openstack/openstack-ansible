@@ -60,7 +60,7 @@ guidance in "`Checking the integrity of your configuration files`_".
 
      .. code-block:: shell-session
 
-        # ../scripts/bootstrap-ansible.sh
+        # pushd /opt/openstack-ansible; scripts/bootstrap-ansible.sh; popd
 
      or
 
