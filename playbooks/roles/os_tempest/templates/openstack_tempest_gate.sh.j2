@@ -67,6 +67,11 @@ function gen_test_list_cinder_backup {
   egrep 'tempest\.api\.volume\.admin\.test_volumes_backup'
 }
 
+# Run ceilometer api tests
+function gen_test_list_ceilometer_api {
+  egrep 'tempest\.api\.telemetry'
+}
+
 # Run smoke tests
 function gen_test_list_smoke {
   # this specific test fails frequently and is making our multi node nightly
