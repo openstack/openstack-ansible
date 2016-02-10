@@ -10,6 +10,7 @@ Chapter 4. Deployment configuration
    configure-hostlist.rst
    configure-creds.rst
    configure-hypervisor.rst
+   configure-nova.rst
    configure-glance.rst
    configure-cinder.rst
    configure-swift.rst
