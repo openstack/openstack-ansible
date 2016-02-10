@@ -3,11 +3,6 @@
 Chapter 5. Foundation playbooks
 -------------------------------
 
-.. toctree::
-
-   install-foundation-run.rst
-
-
 **Figure 5.1. Installation work flow**
 
 .. image:: figures/workflow-foundationplaybooks.png
@@ -28,7 +23,7 @@ Running the foundation playbook
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. seealso:: Before continuing, the configuration files may be validated using the
-guidance in "`Checking the integrity of your configuration files`_".
+   guidance in "`Checking the integrity of your configuration files`_".
 
    .. _Checking the integrity of your configuration files: ../install-guide/configure-configurationintegrity.html
 
