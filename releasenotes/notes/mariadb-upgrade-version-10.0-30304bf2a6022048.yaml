@@ -1,0 +1,21 @@
+---
+features:
+  - MariaDB version 10.x is now the default in OpenStack-Ansible.
+  - The percona-xtrabackup repository is now enabled in OpenStack-Ansible and
+    it allows deployers to install and use
+    `Percona's XtraBackup project <https://www.percona.com/software/mysql-database/percona-xtrabackup>`_
+    to perform online backups of data stored in MariaDB.
+  - Deployers how have the option to set the the wsrep method via the
+    ``galera_wsrep_sst_method``.
+  - Deployers can specify the authentication credentials to be used with wsrep
+    by configuring ``galera_wsrep_sst_auth_user`` and
+    ``galera_wsrep_sst_auth_password``.
+  - The Galera installation process has been optimized and takes less time
+    to complete.
+upgrade:
+  - The max connections setting for Galera is now determined automatically
+    by taking the number of vCPUs available and multiplying it by 100.
+    Deployers may override this default via the ``galera_max_connections``
+    variable.
+  - The upstream MariaDB init script has replaced the custom init script that
+    was provided by OpenStack-Ansible in previous versions.
