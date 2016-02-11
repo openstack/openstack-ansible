@@ -50,7 +50,8 @@
     - neutron-upgrade
 
 - name: Print neutron migrations facts
-  debug: var=neutron_migrations
+  debug:
+    var: neutron_migrations
   when: neutron_plugin_type == 'ml2'
   tags:
     - neutron-db-setup

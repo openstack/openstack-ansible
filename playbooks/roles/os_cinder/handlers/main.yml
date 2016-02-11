@@ -22,4 +22,7 @@
   failed_when: false
 
 - name: Ensure tgt service restarted
-  service: name=tgt state=restarted pattern=tgtd
+  service:
+    name: tgt
+    state: restarted
+    pattern: tgtd
