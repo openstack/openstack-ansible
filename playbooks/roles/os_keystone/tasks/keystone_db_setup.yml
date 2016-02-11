@@ -41,8 +41,8 @@
 
 - name: Perform a Keystone DB sync
   command: "{{ keystone_bin }}/keystone-manage db_sync"
-  sudo: yes
-  sudo_user: "{{ keystone_system_user_name }}"
+  become: yes
+  become_user: "{{ keystone_system_user_name }}"
   tags:
     - keystone-db-setup
     - keystone-db-sync

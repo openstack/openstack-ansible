@@ -49,8 +49,8 @@
     - account
     - container
   when: swift_managed_regions is not defined
-  sudo: yes
-  sudo_user: "{{ swift_system_user_name }}"
+  become: yes
+  become_user: "{{ swift_system_user_name }}"
   args:
     chdir: /etc/swift/ring_build_files/
   tags:
@@ -62,8 +62,8 @@
   with_nested:
     - [ 'account', 'container' ]
     - swift_managed_regions | default([])
-  sudo: yes
-  sudo_user: "{{ swift_system_user_name }}"
+  become: yes
+  become_user: "{{ swift_system_user_name }}"
   args:
     chdir: /etc/swift/ring_build_files/
   tags:
@@ -75,8 +75,8 @@
   with_items:
     - "{{ swift.storage_policies }}"
   when: swift_managed_regions is not defined
-  sudo: yes
-  sudo_user: "{{ swift_system_user_name }}"
+  become: yes
+  become_user: "{{ swift_system_user_name }}"
   args:
     chdir: /etc/swift/ring_build_files/
   tags:
@@ -88,8 +88,8 @@
   with_nested:
     - "{{ swift.storage_policies }}"
     - swift_managed_regions | default([])
-  sudo: yes
-  sudo_user: "{{ swift_system_user_name }}"
+  become: yes
+  become_user: "{{ swift_system_user_name }}"
   args:
     chdir: /etc/swift/ring_build_files/
   tags:

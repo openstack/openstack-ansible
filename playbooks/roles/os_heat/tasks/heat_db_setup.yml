@@ -41,8 +41,8 @@
 
 - name: Perform a heat DB sync
   command: "{{ heat_bin }}/heat-manage db_sync"
-  sudo: yes
-  sudo_user: "{{ heat_system_user_name }}"
+  become: yes
+  become_user: "{{ heat_system_user_name }}"
   tags:
     - heat-db-sync
     - heat-setup

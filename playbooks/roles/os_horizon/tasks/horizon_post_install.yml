@@ -70,8 +70,8 @@
 
 - name: Collect and compress static files
   command: "{{ item }}"
-  sudo: yes
-  sudo_user: "{{ horizon_system_user_name }}"
+  become: yes
+  become_user: "{{ horizon_system_user_name }}"
   with_items:
     - "{{ horizon_bin }}/horizon-manage.py collectstatic --noinput"
     - "{{ horizon_bin }}/horizon-manage.py compress --force"

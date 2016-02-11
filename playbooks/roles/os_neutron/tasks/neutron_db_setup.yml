@@ -62,8 +62,8 @@
                       --config-file {{ neutron_db_config }}
                       --config-file {{ neutron_db_plugin }}
                       upgrade --expand
-  sudo: yes
-  sudo_user: "{{ neutron_system_user_name }}"
+  become: yes
+  become_user: "{{ neutron_system_user_name }}"
   when:
     - (neutron_migrations is defined and neutron_migrations['run_expand']|bool)
     - neutron_plugin_type == 'ml2'
@@ -89,8 +89,8 @@
                       --config-file {{ neutron_db_config }}
                       --config-file {{ neutron_db_plugin }}
                       upgrade --contract
-  sudo: yes
-  sudo_user: "{{ neutron_system_user_name }}"
+  become: yes
+  become_user: "{{ neutron_system_user_name }}"
   when:
     - (neutron_migrations is defined and neutron_migrations['run_contract']|bool)
     - neutron_plugin_type == 'ml2'
@@ -107,8 +107,8 @@
                       --config-file {{ neutron_db_config }}
                       --config-file {{ neutron_db_plugin }}
                       upgrade heads
-  sudo: yes
-  sudo_user: "{{ neutron_system_user_name }}"
+  become: yes
+  become_user: "{{ neutron_system_user_name }}"
   when:
     - neutron_plugin_type != 'ml2'
   tags:
