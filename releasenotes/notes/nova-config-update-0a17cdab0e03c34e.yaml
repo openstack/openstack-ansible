@@ -1,0 +1,10 @@
+---
+upgrade:
+  - The Nova project has set the v2.1 API as the default and those
+    configuration variables have changed.  Variables that began with
+    ``nova_v21_*`` in the Kilo release are now renamed to ``nova_*``. All new
+    Liberty deployments will have only the v2.1 API registered in the service
+    catalog.
+  - The S3, v3, and EC2 API's have been deprecated by the Nova project in the
+    liberty release.  Those variables have been removed.  They include
+    variables that begin with ``nova_s3_*``, ``nova_ec2_*``, and ``nova_v3_*``.
