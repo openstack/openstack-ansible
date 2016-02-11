@@ -20,8 +20,8 @@
     dest: "/etc/swift/"
     set_remote_user: False
   delegate_to: "{{ groups['swift_hosts'][0] }}"
-  sudo: yes
-  sudo_user: "{{ swift_system_user_name }}"
+  become: yes
+  become_user: "{{ swift_system_user_name }}"
   tags:
     - swift-get-rings
 
@@ -32,7 +32,7 @@
     dest: "/etc/swift/ring_build_files/"
     set_remote_user: False
   delegate_to: "{{ groups['swift_hosts'][0] }}"
-  sudo: yes
-  sudo_user: "{{ swift_system_user_name }}"
+  become: yes
+  become_user: "{{ swift_system_user_name }}"
   tags:
     - swift-get-rings

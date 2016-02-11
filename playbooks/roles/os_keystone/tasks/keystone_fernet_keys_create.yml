@@ -25,8 +25,8 @@
     {{ keystone_bin }}/keystone-manage fernet_setup
                                        --keystone-user "{{ keystone_system_user_name }}"
                                        --keystone-group "{{ keystone_system_group_name }}"
-  sudo: yes
-  sudo_user: "{{ keystone_system_user_name }}"
+  become: yes
+  become_user: "{{ keystone_system_user_name }}"
   when: not _fernet_keys.stat.exists
   tags:
     - keystone-setup
@@ -38,8 +38,8 @@
     {{ keystone_bin }}/keystone-manage fernet_rotate
                                        --keystone-user "{{ keystone_system_user_name }}"
                                        --keystone-group "{{ keystone_system_group_name }}"
-  sudo: yes
-  sudo_user: "{{ keystone_system_user_name }}"
+  become: yes
+  become_user: "{{ keystone_system_user_name }}"
   when: _fernet_keys.stat.exists
   tags:
     - keystone-fernet

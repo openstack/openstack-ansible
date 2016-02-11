@@ -41,8 +41,8 @@
 
 - name: Perform a Glance DB sync
   command: "{{ glance_bin }}/glance-manage db_sync"
-  sudo: yes
-  sudo_user: "{{ glance_system_user_name }}"
+  become: yes
+  become_user: "{{ glance_system_user_name }}"
   tags:
     - glance-db-sync
     - glance-setup
@@ -50,8 +50,8 @@
 
 - name: Load glance metadata definitions
   command: "{{ glance_bin }}/glance-manage db_load_metadefs {{ glance_etc_dir }}/metadefs"
-  sudo: yes
-  sudo_user: "{{ glance_system_user_name }}"
+  become: yes
+  become_user: "{{ glance_system_user_name }}"
   tags:
     - glance-db-sync
     - glance-setup

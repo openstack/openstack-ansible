@@ -16,8 +16,8 @@
 - name: Generate IdP metadata
   shell: |
     {{ keystone_bin }}/keystone-manage saml_idp_metadata > {{ keystone_idp.idp_metadata_path }}
-  sudo: yes
-  sudo_user: "{{ keystone_system_user_name }}"
+  become: yes
+  become_user: "{{ keystone_system_user_name }}"
   when: keystone_idp is defined
   notify:
     - Restart Apache

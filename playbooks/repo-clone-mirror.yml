@@ -38,8 +38,8 @@
               {{ rsync_flags }} \
               --files-from=/tmp/MANIFEST.in \
               {{ repo_upstream_url | netloc }}::{{ mirror_name }} {{ mirror_path }}
-      sudo: yes
-      sudo_user: "{{ repo_service_user_name }}"
+      become: yes
+      become_user: "{{ repo_service_user_name }}"
     - name: Create sync directories
       file:
         state: directory
@@ -52,8 +52,8 @@
               {{ rsync_flags }} \
               {{ repo_upstream_url | netloc }}::{{ mirror_name }}/{{ item }}/ {{ mirror_path }}/{{ item }}
       with_items: rsync_dirs
-      sudo: yes
-      sudo_user: "{{ repo_service_user_name }}"
+      become: yes
+      become_user: "{{ repo_service_user_name }}"
   vars:
     rsync_commands: rsync
     rsync_flags: "-avzlHAX"
