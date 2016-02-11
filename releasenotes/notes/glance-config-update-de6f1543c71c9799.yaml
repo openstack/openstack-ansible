@@ -1,0 +1,13 @@
+---
+upgrade:
+  - When Glance is configured to use a swift store backend, it will use
+    Keystone v3 authentication by default via the
+    ``glance_swift_store_auth_version`` variable.
+  - Two new options were added for handling authentication with Swift storage
+    backends - ``glance_swift_store_user_domain`` and
+    ``glance_swift_store_project_domain``. Both are set to ``default`` and
+    can be adjusted if deployers use a different Keystone domain to
+    authenticate to swift.
+security:
+  - The ``glance_digest_algorithm`` has changed from ``sha1`` to ``sha256``
+    and this improves integrity verification of stored images.
