@@ -57,28 +57,31 @@ Otherwise, edit at least the following variables in
    haproxy_keepalived_external_interface: br-flat
    haproxy_keepalived_internal_interface: br-mgmt
 
-``haproxy_keepalived_internal_interface`` represents the interface
-on the deployed node where the keepalived master will bind the
-internal vip. By default the ``br-mgmt`` will be used.
+- ``haproxy_keepalived_internal_interface`` and
+  ``haproxy_keepalived_external_interface`` represent the interfaces on the
+  deployed node where the keepalived nodes will bind the internal/external
+  vip. By default the ``br-mgmt`` will be used.
 
-``haproxy_keepalived_external_interface`` represents the interface
-on the deployed node where the keepalived master will bind the
-external vip. By default the ``br-mgmt`` will be used.
+- ``haproxy_keepalived_internal_vip_cidr`` and
+  ``haproxy_keepalived_external_vip_cidr`` represents the internal and
+  external (respectively) vips (with their prefix length) that will be used on
+  keepalived host with the master status, on the interface listed above.
 
-``haproxy_keepalived_external_vip_cidr`` represents the external
-vip (and its netmask) that will be used on keepalived master host.
+- Additional variables can be set to adapt keepalived in the deployed
+  environment. Please refer to the ``user_variables.yml`` for more descriptions.
 
-``haproxy_keepalived_internal_vip_cidr`` represents the internal
-vip (and its netmask) that will be used on keepalived master host.
+To always deploy (or upgrade to) the latest stable version of keepalived,
+edit the ``/etc/openstack_deploy/user_variables.yml`` by setting:
 
-Additional variables can be set to adapt keepalived in the deployed
-environment. Please refer to the ``user_variables.yml``
-for more descriptions.
+.. code-block:: yaml
 
-All the variables mentioned above are used in the variable file
-``vars/configs/keepalived_haproxy.yml`` to feed the
-keepalived role. More information can be found in the keepalived
-role documentation. You can use your own variable file by setting
+   keepalived_use_latest_stable: True
+
+The HAProxy playbook makes use of the variable file
+``vars/configs/keepalived_haproxy.yml``, and feeds its content
+to the keepalived role, for keepalived master and backup nodes.
+
+You can use your own variable file by setting
 the path in your ``/etc/openstack_deploy/user_variables.yml``:
 
 .. code-block:: yaml
