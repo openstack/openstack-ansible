@@ -6,6 +6,20 @@ actions require manual intervention from the deployer. Some of these changes
 require careful consideration of configuration variables or contents of a
 database.
 
+Updating user-configured SSL certificates for Horizon
+-----------------------------------------------------
+
+In Kilo, the variables for user-configured SSL certificates have changed. These
+variables must be adjusted when upgrading from Juno to Kilo::
+
+    Juno                        Kilo
+    ----                        ----
+    horizon_ssl_cert       ->   horizon_user_ssl_cert
+    horizon_ssl_key        ->   horizon_user_ssl_key
+
+User-provided CA certificates are now specified by
+``horizon_user_ssl_ca_cert`` variable.
+
 Removing nova spice console services
 ------------------------------------
 
