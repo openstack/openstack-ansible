@@ -41,13 +41,25 @@
     - repo-command-bin
     - repo-create-venv
 
+# This is removed so that virtual env is not installing unknown
+#  packages as assumed wheels, IE pip8
+- name: Ensure virtualenv_support is absent
+  file:
+    path: "{{ item }}"
+    state: "absent"
+  with_items:
+    - "/usr/local/lib/python2.7/dist-packages/virtualenv_support"
+    - "/usr/local/lib/python2.7/site-packages/virtualenv_support"
+  tags:
+    - repo-create-venv
+
 - name: Create role based venv
   pip:
     name: "{{ item.value | join(' ') }}"
     state: present
     virtualenv: "{{ repo_build_venv_build_dir }}/venvs/{{ item.key | replace('os_', '') }}"
     virtualenv_site_packages: "no"
-    virtualenv_command: "{{ virtualenv_bin }} --always-copy"
+    virtualenv_command: "{{ repo_build_venv_command_options }}"
     extra_args: "{{ repo_build_venv_pip_install_options }}"
   register: install_packages
   until: install_packages|success
