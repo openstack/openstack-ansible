@@ -88,6 +88,57 @@
       when: is_metal | bool
       tags:
         - keystone-reserved-port
+    - name: Keystone ensure Rabbitmq vhost
+      rabbitmq_vhost:
+        name: "{{ keystone_rabbitmq_vhost }}"
+        state: "present"
+      delegate_to: "{{ groups['rabbitmq_all'][0] }}"
+      when: inventory_hostname == groups['keystone_all'][0]
+      tags:
+        - aodh-rabbitmq
+        - aodh-rabbitmq-vhost
+    - name: Keystone ensure rabbitmq user
+      rabbitmq_user:
+        user: "{{ keystone_rabbitmq_userid }}"
+        password: "{{ keystone_rabbitmq_password }}"
+        vhost: "{{ keystone_rabbitmq_vhost }}"
+        configure_priv: ".*"
+        read_priv: ".*"
+        write_priv: ".*"
+        state: "present"
+      delegate_to: "{{ groups['rabbitmq_all'][0] }}"
+      when: inventory_hostname == groups['keystone_all'][0]
+      tags:
+        - aodh-rabbitmq
+        - aodh-rabbitmq-user
+    - name: Keystone create DB for service
+      mysql_db:
+        login_user: "{{ galera_root_user }}"
+        login_password: "{{ galera_root_password }}"
+        login_host: "{{ galera_address }}"
+        name: "{{ keystone_galera_database }}"
+        state: "present"
+      when: inventory_hostname == groups['keystone_all'][0]
+      delegate_to: "{{ groups['galera_all'][0] }}"
+      tags:
+        - mysql-db-setup
+    - name: Keystone grant access to the DB for the service
+      mysql_user:
+        login_user: "{{ galera_root_user }}"
+        login_password: "{{ galera_root_password }}"
+        login_host: "{{ galera_address }}"
+        name: "{{ keystone_galera_database }}"
+        password: "{{ keystone_container_mysql_password }}"
+        host: "{{ item }}"
+        state: "present"
+        priv: "{{ keystone_galera_database }}.*:ALL"
+      with_items:
+        - "localhost"
+        - "%"
+      when: inventory_hostname == groups['keystone_all'][0]
+      delegate_to: "{{ groups['galera_all'][0] }}"
+      tags:
+        - mysql-db-setup
   roles:
     - role: "os_keystone"
       keystone_venv_tag: "{{ openstack_release }}"
@@ -108,6 +159,13 @@
         - "system-crontab-coordination"
   vars:
     galera_address: "{{ internal_lb_vip_address }}"
-    keystone_admin_port: 35357
     is_metal: "{{ properties.is_metal|default(false) }}"
-
+    galera_root_user: "root"
+    keystone_admin_port: 35357
+    keystone_galera_user: keystone
+    keystone_galera_database: keystone
+    keystone_rabbitmq_userid: keystone
+    keystone_rabbitmq_vhost: /keystone
+    keystone_rabbitmq_servers: "{{ rabbitmq_servers }}"
+    keystone_rabbitmq_port: "{{ rabbitmq_port }}"
+    keystone_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
