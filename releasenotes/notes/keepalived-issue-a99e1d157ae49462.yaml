@@ -1,0 +1,7 @@
+---
+issues:
+  - There is a bug in the version of keepalived which ships with Ubuntu 14.04 which results in all
+    backup nodes having the same priority. This causes the automatic failover to fail when more than
+    two keepalived hosts are configured. To work around this issue it is recommended that deployers
+    limit the number of keepalived hosts to no more than two, or that each host is configured with
+    different priorities.
