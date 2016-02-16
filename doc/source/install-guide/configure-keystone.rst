@@ -10,10 +10,20 @@ Securing Keystone communication with SSL certificates
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The OpenStack-Ansible project provides the ability to secure Keystone
-communications with self-signed or user-provided SSL certificates.
+communications with self-signed or user-provided SSL certificates. By default,
+self-signed certificates are used with Keystone.  However, deployers can
+provide their own certificates by using the following Ansible variables in
+``/etc/openstack_deploy/user_variables.yml``:
 
-Refer to `Securing services with SSL certificates`_ for available configuration
-options.
+.. code-block:: yaml
+
+    keystone_user_ssl_cert:          # Path to certificate
+    keystone_user_ssl_key:           # Path to private key
+    keystone_user_ssl_ca_cert:       # Path to CA certificate
+
+Refer to `Securing services with SSL certificates`_ for more information on
+these configuration options and how deployers can provide their own
+certificates and keys to use with Keystone.
 
 .. _Securing services with SSL certificates: configure-sslcertificates.html
 
