@@ -43,6 +43,7 @@ tempest_network_tenant_network_mask_bits: 28
 tempest_dashboard_login_url: "https://{{ external_lb_vip_address }}/auth/login/"
 tempest_dashboard_url: "https://{{ external_lb_vip_address }}/"
 
+tempest_service_available_aodh: False
 tempest_service_available_ceilometer: False
 tempest_service_available_cinder: True
 tempest_service_available_glance: True
