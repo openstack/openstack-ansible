@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+## APT Cache Options
+cache_timeout: 600
+
 # to user Ceph in OSA, you need to
 # - have the needed pools and a client user (for glance, cinder and/or nova)
 #   pre-provisioned in your ceph cluster; OSA assumes to have root access to

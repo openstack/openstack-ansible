@@ -17,6 +17,9 @@
 debug: False
 verbose: False
 
+## APT Cache options
+cache_timeout: 600
+
 # Name of the virtual env to deploy into
 aodh_venv_tag: untagged
 aodh_venv_bin: "/openstack/venvs/aodh-{{ aodh_venv_tag }}/bin"

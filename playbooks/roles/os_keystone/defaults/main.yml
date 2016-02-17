@@ -17,6 +17,9 @@
 debug: False
 verbose: True
 
+## APT Cache options
+cache_timeout: 600
+
 # Name of the virtual env to deploy into
 keystone_venv_tag: untagged
 keystone_venv_bin: "/openstack/venvs/keystone-{{ keystone_venv_tag }}/bin"

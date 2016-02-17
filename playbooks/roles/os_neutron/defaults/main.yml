@@ -20,6 +20,9 @@ is_metal: true
 debug: False
 verbose: True
 
+## APT Cache options
+cache_timeout: 600
+
 # Name of the virtual env to deploy into
 neutron_venv_tag: untagged
 neutron_venv_bin: "/openstack/venvs/neutron-{{ neutron_venv_tag }}/bin"
