@@ -51,10 +51,28 @@ back up to an external Object Storage installation.
        cinder_service_backup_compression_algorithm: zlib
        cinder_service_backup_metadata_version: 2
 
-
 During installation of Block Storage, the backup service is configured.
 For more information about swift, refer to the Standalone Object Storage
 Deployment guide.
+
+Using Ceph for Cinder backups
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Deployers can use Ceph to hold Cinder volume backups if they have Ceph
+deployed. To get started, set the ``cinder_service_backup_driver`` Ansible
+variable:
+
+.. code-block:: yaml
+
+    cinder_service_backup_driver: cinder.backup.drivers.ceph
+
+Next, configure the Ceph user and the pool to use for backups.  The defaults
+are shown here:
+
+.. code-block:: yaml
+
+    cinder_service_backup_ceph_user: cinder-backup
+    cinder_service_backup_ceph_pool: backups
 
 --------------
 
