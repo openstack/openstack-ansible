@@ -1,0 +1,11 @@
+---
+upgrade:
+  - The ``neutron_driver_network_scheduler`` variable default has changed from
+    ChanceScheduler to WeightScheduler to match the new Neutron defaults.
+  - The ``neutron_driver_quota`` variable default has changed slightly to
+    match the new upstream driver paths.
+  - The LinuxBridge configuration that was in ``plugins/ml2/ml2_conf.ini`` is
+    now found in ``plugins/ml2/linuxbridge_agent.ini``.
+  - Two Neutron variables have been deprecated and are now removed from
+    OpenStack-Ansible - ``neutron_l3_router_delete_namespaces`` and
+    ``neutron_dhcp_delete_namespaces``.
