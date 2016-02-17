@@ -14,7 +14,7 @@
 # limitations under the License.
 
 - name: Create sparse Swift files
-  shell: "truncate -s {{ bootstrap_host_loopback_cinder_size }}G /openstack/{{ item }}.img"
+  shell: "truncate -s {{ bootstrap_host_loopback_swift_size }}G /openstack/{{ item }}.img"
   args:
     creates: "/openstack/{{ item }}.img"
   with_items:
