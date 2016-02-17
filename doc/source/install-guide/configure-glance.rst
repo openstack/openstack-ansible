@@ -1,12 +1,41 @@
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
-Configuring the Image service
+Configuring the Image Service
 -----------------------------
 
 In an all-in-one deployment with a single infrastructure node, the Image
-service uses the local file system on the target host to store images.
+Service uses the local file system on the target host to store images.
 When deploying production clouds we recommend backing Glance with a
 swift backend or some form or another of shared storage.
+
+Configuring default and additional stores
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+OpenStack-Ansible provides two configurations for controlling where the Image
+Service stores files: the default store and additional stores.  As mentioned
+in the previous section, the Image Service stores images in file-based storage
+by default.  Two additional stores, http and cinder, are also enabled by
+default.
+
+Deployers can choose alternative default stores, as shown in the swift example
+in the next section, and deployers can choose alternative additional stores.
+For example, a deployer that uses Ceph may configure the following Ansible
+variables:
+
+.. code-block:: yaml
+
+    glance_default_store = rbd
+    glance_additional_stores:
+      - swift
+      - http
+      - cinder
+
+The configuration above will configure the Image Service to use rbd (Ceph) by
+default, but the swift, http and cinder stores will also be enabled in the
+Image Service configuration files.
+
+Storing images in Cloud Files
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The following procedure describes how to modify the
 ``/etc/openstack_deploy/user_variables.yml`` file to enable Cloud Files
@@ -66,10 +95,10 @@ usage.
 
        glance_flavor: GLANCE_FLAVOR
 
-   By default, the Image service uses caching and authenticates with the
+   By default, the Image Service uses caching and authenticates with the
    Identity service. The default maximum size of the image cache is 10
-   GB. The default Image service container size is 12 GB. In some
-   configurations, the Image service might attempt to cache an image
+   GB. The default Image Service container size is 12 GB. In some
+   configurations, the Image Service might attempt to cache an image
    which exceeds the available disk space. If necessary, you can disable
    caching. For example, to use Identity without caching, replace
    ``GLANCE_FLAVOR`` with ``keystone``:
