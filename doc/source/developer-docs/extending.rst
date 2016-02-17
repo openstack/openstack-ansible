@@ -101,11 +101,12 @@ sourced in any ``openstack-ansible`` command. Alternatively, the files can be
 sourced with the ``-e`` parameter of the ``ansible-playbook`` command.
 
 ``user_variables.yml`` and ``user_secrets.yml`` are used directly by
-OpenStack-Ansible; adding custom values here is not recommended.
-
-``user_extras_variables.yml`` and ``users_extras_secrets.yml`` are provided
-and can contain deployer's custom values, but deployers can add any other
-files they wish to include new configuration, or override existing.
+OpenStack-Ansible. Adding custom variables used by your own roles and playbooks
+to these files is not recommended. Doing so will complicate your upgrade path
+by making comparison of your existing files with later versions of these files
+more arduous. Rather, recommended practice is to place your own variables in files
+named following the ``user_*.yml`` pattern so they will be sourced alongside
+those used exclusively by OpenStack-Ansible.
 
 Ordering and Precedence
 +++++++++++++++++++++++
