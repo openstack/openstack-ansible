@@ -201,37 +201,71 @@ configure target host networking.
          post-down ip link del br-vlan-veth || true
          bridge_ports br-vlan-veth
 
-.. note::
 
-   Optionally, you can add one or more static routes to interfaces within
-   containers. Each route requires a destination network in CIDR notation
-   and a gateway. For example:
+Adding static routes to network interfaces
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-   .. code-block:: yaml
+ Optionally, you can add one or more static routes to interfaces within
+ containers. Each route requires a destination network in CIDR notation
+ and a gateway. For example:
 
-      provider_networks:
-        - network:
-            group_binds:
-              - glance_api
-              - cinder_api
-              - cinder_volume
-              - nova_compute
-            type: "raw"
-            container_bridge: "br-storage"
-            container_interface: "eth2"
-            container_type: "veth"
-            ip_from_q: "storage"
-            static_routes:
-              - cidr: 10.176.0.0/12
-                gateway: 172.29.248.1
+ .. code-block:: yaml
 
-   This example adds the following content to the
-   ``/etc/network/interfaces.d/eth2.cfg`` file in the appropriate
-   containers:
+    provider_networks:
+      - network:
+          group_binds:
+            - glance_api
+            - cinder_api
+            - cinder_volume
+            - nova_compute
+          type: "raw"
+          container_bridge: "br-storage"
+          container_interface: "eth2"
+          container_type: "veth"
+          ip_from_q: "storage"
+          static_routes:
+            - cidr: 10.176.0.0/12
+              gateway: 172.29.248.1
 
-   .. code-block:: shell-session
+ This example adds the following content to the
+ ``/etc/network/interfaces.d/eth2.cfg`` file in the appropriate
+ containers:
 
-      post-up ip route add 10.176.0.0/12 via 172.29.248.1 || true
+ .. code-block:: shell-session
+
+    post-up ip route add 10.176.0.0/12 via 172.29.248.1 || true
+
+Setting an MTU on a network interface
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Larger MTU's can be useful on certain networks, especially storage networks.
+Add a ``container_mtu`` attribute within the ``provider_networks`` dictionary
+to set a custom MTU on the container network interfaces that attach to a
+particular network:
+
+.. code-block:: yaml
+
+    provider_networks:
+      - network:
+          group_binds:
+            - glance_api
+            - cinder_api
+            - cinder_volume
+            - nova_compute
+          type: "raw"
+          container_bridge: "br-storage"
+          container_interface: "eth2"
+          container_type: "veth"
+          container_mtu: "9000"
+          ip_from_q: "storage"
+          static_routes:
+            - cidr: 10.176.0.0/12
+              gateway: 172.29.248.1
+
+The example above enables `jumbo frames`_ by setting the MTU on the storage
+network to 9000.
+
+.. _jumbo frames: https://en.wikipedia.org/wiki/Jumbo_frame
 
 --------------
 
