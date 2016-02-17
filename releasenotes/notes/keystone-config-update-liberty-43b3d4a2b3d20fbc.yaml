@@ -1,0 +1,18 @@
+---
+upgrade:
+ - |
+   The Keystone configuration has been updated for liberty.
+   Several variables that may appear in the ``user_config.yml`` file may need
+   to be updated.  Those variables include:
+
+   * keystone_identity_driver
+   * keystone_token_driver
+   * keystone_token_provider
+   * keystone_revocation_driver
+   * keystone_assignment_driver
+   * keystone_resource_driver
+   * keystone_ldap_identity_driver
+
+   Deployers should review the defaults provided in
+   ``playbooks/os_keystone/defaults/main.yml`` and adjust any variables in
+   ``user_variables.yml`` if they exist there.
