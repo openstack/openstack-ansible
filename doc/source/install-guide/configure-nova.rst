@@ -36,9 +36,62 @@ Deployers can disable discard by setting ``nova_libvirt_hw_disk_discard`` to
 ``ignore``.  The ``nova_libvirt_disk_cachemodes`` can be set to an empty
 string to disable ``network=writeback``.
 
-The `Ceph documentation for OpenStack`_ has additional information about these settings.
+The `Ceph documentation for OpenStack`_ has additional information about these
+settings.
 
 .. _Ceph documentation for OpenStack: http://docs.ceph.com/docs/master/rbd/rbd-openstack/
+
+Config Drive
+~~~~~~~~~~~~
+
+By default, OpenStack-Ansible will not configure Nova to force config drives
+to be provisioned with every instance that Nova builds.  The metadata service
+provides configuration information that can be used by cloud-init inside the
+instance.  Config drives are only necessary when an instance doesn't have
+cloud-init installed or doesn't have support for handling metadata.
+
+A deployer can set an Ansible variable to force config drives to be deployed
+with every virtual machine:
+
+.. code-block:: yaml
+
+    nova_force_config_drive: True
+
+Certain formats of config drives can prevent instances from migrating properly
+between hypervisors.  If a deployer needs forced config drives and the ability
+to migrate instances, the config drive format should be set to ``vfat`` using
+the ``nova_nova_conf_overrides`` variable:
+
+.. code-block:: yaml
+
+    nova_nova_conf_overrides:
+      DEFAULT:
+        config_drive_format: vfat
+        force_config_drive: True
+
+Libvirtd Connectivity and Authentication
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+By default, OpenStack-Ansible configures the libvirt daemon in the following
+way:
+
+* TLS connections are enabled
+* TCP plaintext connections are disabled
+* Authentication over TCP connections uses SASL
+
+Deployers can customize these settings using the Ansible variables shown
+below:
+
+.. code-block:: yaml
+
+    # Enable libvirtd's TLS listener
+    nova_libvirtd_listen_tls: 1
+
+    # Disable libvirtd's plaintext TCP listener
+    nova_libvirtd_listen_tcp: 0
+
+    # Use SASL for authentication
+    nova_libvirtd_auth_tcp: sasl
 
 --------------
 
