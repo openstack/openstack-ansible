@@ -856,6 +856,49 @@ def _extra_config(user_defined_config, base_dir):
                     )
 
 
+def _check_config_settings(cidr_networks, config, container_skel):
+    """ check preciseness of config settings
+
+    :param cidr_networks: ``dict`` cidr_networks from config
+    :param config: ``dict``  User defined information
+    :param container_skel: ``dict`` container skeleton for all known containers
+    """
+
+    # search for any container that dosen't have is_metal flag set to true
+    is_provider_networks_needed = False
+    for key, value in container_skel.iteritems():
+        properties = value.get('properties')
+        is_metal = properties.get('is_metal', False)
+        if not is_metal:
+            is_provider_networks_needed = True
+            break
+
+    if is_provider_networks_needed:
+        if ('global_overrides' not in config):
+            raise SystemExit(
+                "global_overrides can't be found in user config"
+            )
+
+        elif ('provider_networks' not in config['global_overrides']):
+            raise SystemExit(
+                "provider networks can't be found under "
+                "global_overrides in user config"
+            )
+        else:
+            # make sure that provider networks's ip_from_q is valid
+            overrides = config['global_overrides']
+            pns = overrides.get('provider_networks', list())
+            for pn in pns:
+                p_net = pn.get('network')
+                if not p_net:
+                    continue
+                q_name = p_net.get('ip_from_q')
+                if q_name and q_name not in cidr_networks:
+                    raise SystemExit(
+                        "can't find " + q_name + " in cidr_networks"
+                    )
+
+
 def main():
     """Run the main application."""
     all_args = args()
@@ -933,6 +976,13 @@ def main():
     else:
         raise SystemExit('No container or management network '
                          'specified in user config.')
+
+    # make sure user_defined config is self contained
+    _check_config_settings(
+        cidr_networks,
+        user_defined_config,
+        environment.get('container_skel')
+    )
 
     # Add the container_cidr into the all global ansible group_vars
     _parse_global_variables(user_cidr, dynamic_inventory, user_defined_config)
