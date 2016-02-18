@@ -31,7 +31,7 @@ Setting up a Mongodb database for ceilometer
 
     # apt-get install mongodb-server mongodb-clients python-pymongo
 
-2. Edit the ``/etc/mongodb.conf`` file and change the bind_ip to the management interface of the node your running this on.
+2. Edit the ``/etc/mongodb.conf`` file and change the bind_ip to the management interface of the node the service is running on.
 
   .. code-block:: shell-session
 
@@ -103,7 +103,7 @@ included in the ``etc/openstack_deploy/conf.d/ceilometer.yml.example`` file:
       infra3:
         ip: 172.20.236.113
 
-The ``metering-compute_hosts`` houses the ``ceilometer-agent-compute`` service. It runs on each compute node and pools for resource utilization statistics.
+The ``metering-compute_hosts`` houses the ``ceilometer-agent-compute`` service. It runs on each compute node and polls for resource utilization statistics.
 The ``metering-infra_hosts`` houses serveral services:
 
   - A central agent (ceilometer-agent-central): Runs on a central management server to poll for resource utilization statistics for resources not tied to instances or compute nodes. Multiple agents can be started to enable workload partitioning (See HA section below).
@@ -116,12 +116,12 @@ The ``metering-infra_hosts`` houses serveral services:
 
 Configuring the hosts for an HA deployment
 ##########################################
-Ceilometer supports running the polling agents and notifications agents in an
-HA deployment, meaning that multiple of these services can run in parallel
-with workload  among these services.
+Ceilometer supports running the polling and notification agents in an
+HA deployment, meaning that several of these services can be run in parallel
+with workload divided among these services.
 
 The Tooz library provides the coordination within the groups of service
-instances. Tooz can be uses with several backends. At the time of this
+instances. Tooz can be used with several backends. At the time of this
 writing, the following backends are supported:
 
   - Zookeeper. Recommended solution by the Tooz project.
