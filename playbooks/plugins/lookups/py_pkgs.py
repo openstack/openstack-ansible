@@ -336,7 +336,7 @@ class DependencyFileProcessor(object):
                 except Exception:  # Broad exception so everything is caught
                     continue
                 else:
-                    if not loaded_config:
+                    if not loaded_config or not isinstance(loaded_config, dict):
                         continue
 
                     if 'roles' in file_name:
