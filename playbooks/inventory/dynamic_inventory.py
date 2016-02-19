@@ -885,15 +885,16 @@ def main():
             '\nor \n%s/conf.d directory' % (config_path, config_path)
         )
 
-    # Get the contents of the system environment json
+    # Get the contents of the system environment YAML
     environment_file = os.path.join(config_path, 'openstack_environment.yml')
 
-    # Load existing openstack environment json
+    # Load existing openstack environment YAML
     with open(environment_file, 'rb') as f:
         environment = yaml.safe_load(f.read())
 
-    # Load anything in an env.d directory if found
+    # Load all YAML files found in the env.d directory
     env_plugins = os.path.join(config_path, 'env.d')
+
     if os.path.isdir(env_plugins):
         _extra_config(user_defined_config=environment, base_dir=env_plugins)
 
@@ -930,7 +931,8 @@ def main():
     elif 'management' in cidr_networks:
         user_cidr = cidr_networks['management']
     else:
-        raise SystemExit('No container or management network specified')
+        raise SystemExit('No container or management network '
+                         'specified in user config.')
 
     # Add the container_cidr into the all global ansible group_vars
     _parse_global_variables(user_cidr, dynamic_inventory, user_defined_config)
