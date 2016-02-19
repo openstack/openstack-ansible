@@ -1,0 +1,6 @@
+---
+features:
+  - Keystone's v3 API is now the default for all services.
+upgrade:
+  - Deployers can optionally remove the Keystone v2 endpoints from the
+    database.  Those endpoints will not be removed by the upgrade process.
