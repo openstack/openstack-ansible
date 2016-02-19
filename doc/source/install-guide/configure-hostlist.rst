@@ -137,9 +137,10 @@ suitable short hostname for a compute host might be:
    container management bridge on each repository target host.
 
    The repository typically resides on one or more infrastructure hosts.
-   Alternatively, specify a value for the variables ``openstack_repo_url``
-   and ``openstack_release`` in the
-   ``/etc/openstack_deploy/user_group_vars.yml`` file. The values should
+
+   Alternatively, you can specify values for the variables
+   ``openstack_repo_url`` and ``openstack_release`` in the
+   ``/etc/openstack_deploy/user_variables.yml`` file. The values should
    contain a URL for a host with the appropriate repository layout and
    the desired OpenStack release, respectively. For
    example:
