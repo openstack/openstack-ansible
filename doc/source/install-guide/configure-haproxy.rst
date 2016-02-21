@@ -69,12 +69,11 @@ Additional variables can be set to adapt keepalived in the deployed
 environment. Please refer to the ``user_variables.yml``
 for more descriptions.
 
-All the variables mentionned here before are used in the variable
-files ``vars/configs/keepalived_haproxy_master.yml`` and
-``vars/configs/keepalived_haproxy_backup.yml`` to feed the
-keepalived role. More information can be found on the keepalived
-role documentation. You can use your own file by setting their path
-in your ``/etc/openstack_deploy/user_variables.yml``:
+All the variables mentioned above are used in the variable file
+``vars/configs/keepalived_haproxy.yml`` to feed the
+keepalived role. More information can be found in the keepalived
+role documentation. You can use your own variable file by setting
+the path in your ``/etc/openstack_deploy/user_variables.yml``:
 
 .. code-block:: yaml
 
