@@ -227,7 +227,7 @@ containers.
 
    .. code-block:: shell-session
 
-       # openstack-ansible infrastructure-setup.yml \
+       # openstack-ansible setup-infrastructure.yml \
        -l node3_galera_container-3ea2cbd3
 
 
