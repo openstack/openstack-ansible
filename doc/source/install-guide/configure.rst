@@ -25,6 +25,7 @@ Chapter 4. Deployment configuration
    configure-sslcertificates.rst
    configure-configurationintegrity.rst
    configure-federation.rst
+   configure-ceph.rst
 
 
 **Figure 4.1. Installation work flow**
