@@ -7,7 +7,7 @@
 verbose = {{ verbose }}
 debug = {{ debug }}
 fatal_deprecations = {{ cinder_fatal_deprecations }}
-my_ip = {{ cinder_storage_address }}
+my_ip = {{ cinder_management_address }}
 
 osapi_volume_workers = {{ cinder_osapi_volume_workers | default(api_threads) }}
 
@@ -80,7 +80,7 @@ default_availability_zone = {{ cinder_default_availability_zone }}
 
 iscsi_helper = {{ cinder_iscsi_helper }}
 iscsi_iotype = {{ cinder_iscsi_iotype }}
-iscsi_ip_address = $my_ip
+iscsi_ip_address = {{ cinder_storage_address }}
 iscsi_num_targets = {{ cinder_iscsi_num_targets }}
 iscsi_port = {{ cinder_iscsi_port }}
 
