@@ -231,7 +231,7 @@ def _build_container_hosts(container_affinity, container_hosts, type_and_name,
                 address = host_type_config.get('ip')
 
             # Create a host types containers group and append it to inventory
-            host_type_containers = '%s_containers' % host_type
+            host_type_containers = '%s-host_containers' % host_type
             append_if(array=container_mapping, item=host_type_containers)
 
             hostvars_options.update({
@@ -373,7 +373,7 @@ def _add_container_hosts(assignment, config, container_name, container_type,
             )
 
         physical_host = inventory['_meta']['hostvars'][host_type]
-        container_host_type = '%s_containers' % host_type
+        container_host_type = '%s-host_containers' % host_type
         if 'container_types' not in physical_host:
             physical_host['container_types'] = container_host_type
         elif physical_host['container_types'] != container_host_type:

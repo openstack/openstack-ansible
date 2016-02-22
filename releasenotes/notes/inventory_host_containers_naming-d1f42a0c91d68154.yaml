@@ -1,0 +1,11 @@
+---
+fixes:
+  - Changed the way we name host containers groups in
+    dynamic_inventory.py for a hostname from
+    hostname_containers to hostname-host_containers to
+    prevent failing in the case where containers groups
+    have the same name as host containers when choosing
+    hostnames inspired from containers group names. This
+    change fixes the following bugs
+    https://bugs.launchpad.net/openstack-ansible/+bug/1512883 and
+    https://bugs.launchpad.net/openstack-ansible/+bug/1528953.
