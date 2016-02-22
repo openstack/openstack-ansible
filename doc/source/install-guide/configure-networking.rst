@@ -65,7 +65,7 @@ configure target host networking.
    .. code-block:: yaml
 
        used_ips:
-         - 203.0.113.101, 203.0.113.201
+         - "203.0.113.101,203.0.113.201"
 
 #. Configure load balancing in the ``global_overrides`` section:
 
