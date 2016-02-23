@@ -55,7 +55,7 @@ Running the foundation playbook
 
      .. code-block:: shell-session
 
-        # ../scripts/bootstrap-ansible.sh
+        # pushd /opt/openstack-ansible; scripts/bootstrap-ansible.sh; popd
 
      or
 
