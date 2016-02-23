@@ -6,7 +6,7 @@ Appendix E. Using PLUMgrid Neutron Plugin
 Installing Source and Host Networking
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#. Clone the PLUMgrid ansible repository into the ``/opt`` directory:
+#. Clone the PLUMgrid ansible repository under the ``/opt/`` directory:
 
    .. code-block:: shell-session
 
@@ -110,8 +110,9 @@ PLUMgrid Cofigurations
 ~~~~~~~~~~~~~~~~~~~~~~
 
 On the Deployment Host create a PLUMgrid user variables file, using the sample in
-``../playbooks/plumgrid-ansible/etc/user_pg_vars.yml.example`` and place it under
-``/etc/openstack_deploy/``. The following paremeters must be configured:
+``/opt/plumgrid-ansible/etc/user_pg_vars.yml.example`` and copy it to
+``/etc/openstack_deploy/user_pg_vars.yml``. The following parameters must be
+configured:
 
 #. Replace ``PG_REPO_HOST`` with a valid repo URL hosting PLUMgrid
    packages.
@@ -188,8 +189,8 @@ Installation
 
 .. code-block:: yaml
 
-   cd /opt/plumgrid-ansible
-   openstack-ansible plumgrid_playbooks/plumgrid_all.yml
+   cd /opt/plumgrid-ansible/plumgrid_playbooks
+   openstack-ansible plumgrid_all.yml
 
 Note: Contact PLUMgrid for an Installation Pack info@plumgrid.com
 (includes full/trial license, packages, deployment documentation and
