@@ -120,5 +120,6 @@
     - keystone-logs
 
 - include: keystone_messaging_setup.yml
-  when: >
-    inventory_hostname == groups['keystone_all'][0]
+  when:
+    - inventory_hostname == groups['keystone_all'][0]
+    - groups['rabbitmq_all']|length > 0

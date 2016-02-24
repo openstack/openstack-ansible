@@ -106,5 +106,6 @@
     - neutron-sudoers
 
 - include: neutron_messaging_setup.yml
-  when: >
-    inventory_hostname == groups['neutron_all'][0]
+  when:
+    - inventory_hostname == groups['neutron_all'][0]
+    - groups['rabbitmq_all']|length > 0

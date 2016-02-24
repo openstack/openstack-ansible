@@ -104,5 +104,6 @@
     - ceilometer-logs
 
 - include: ceilometer_messaging_setup.yml
-  when: >
-    inventory_hostname == groups['ceilometer_api'][0]
+  when:
+    - inventory_hostname == groups['ceilometer_api'][0]
+    - groups['rabbitmq_all']|length > 0

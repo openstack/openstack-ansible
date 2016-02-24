@@ -89,5 +89,6 @@
     - aodh-logs
 
 - include: aodh_messaging_setup.yml
-  when: >
-    inventory_hostname == groups['aodh_api'][0]
+  when:
+    - inventory_hostname == groups['aodh_api'][0]
+    - groups['rabbitmq_all']|length > 0
