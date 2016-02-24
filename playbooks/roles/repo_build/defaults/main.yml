@@ -39,3 +39,8 @@ repo_build_venv_pip_install_options: >
   --find-links {{ repo_build_release_path }}/{{ repo_build_release_tag }}
   --no-index
   --log /var/log/repo/repo_venv_builder.log
+repo_build_venv_command_options: >
+  {{ virtualenv_bin }}
+  --always-copy
+  --extra-search-dir {{ repo_build_release_path }}/{{ repo_build_release_tag }}
+  --no-download
