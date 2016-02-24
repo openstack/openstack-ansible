@@ -1,9 +1,5 @@
 # {{ ansible_managed }}
 
-{% if log_files is defined %}
-{% set rsyslog_client_log_files = log_files.stdout_lines | union(rsyslog_client_log_files) %}
-{% endif %}
-
 $WorkDirectory {{ rsyslog_client_spool_directory }}
 $template RFC3164fmt,"<%PRI%>%TIMESTAMP% %HOSTNAME% %syslogtag%%msg%"
 
