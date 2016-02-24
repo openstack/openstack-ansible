@@ -15,4 +15,5 @@ Contents:
    extending
    contribute
    additional-roles
+   inventory
 

@@ -27,6 +27,9 @@ memcache, and RabbitMQ.  There are several other host types that contain
 other types of containers and all of these are listed in
 ``openstack_user_config.yml``.
 
+For details about how the inventory is generated from the environment
+configuration, please see :ref:`developer-inventory`.
+
 Affinity
 ^^^^^^^^
 
