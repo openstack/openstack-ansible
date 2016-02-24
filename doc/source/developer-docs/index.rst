@@ -14,4 +14,5 @@ Contents:
    playbooks
    extending
    contribute
+   additional-roles
 
