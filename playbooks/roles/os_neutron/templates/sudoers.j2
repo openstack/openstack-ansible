@@ -1,6 +1,0 @@
-# {{ ansible_managed }}
-
-Defaults:{{ neutron_system_user_name }} !requiretty
-Defaults:{{ neutron_system_user_name }} secure_path="{{ neutron_bin }}:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-
-{{ neutron_system_user_name }} ALL = (root) NOPASSWD: {{ neutron_bin }}/{{ neutron_service_name }}-rootwrap

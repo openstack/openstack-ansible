@@ -1,6 +1,0 @@
-# {{ ansible_managed }}
-
-Defaults:{{ cinder_system_user_name }} !requiretty
-Defaults:{{ cinder_system_user_name }} secure_path="{{ cinder_bin }}:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-
-{{ cinder_system_user_name }} ALL = (root) NOPASSWD: {{ cinder_bin }}/{{ cinder_service_name }}-rootwrap
