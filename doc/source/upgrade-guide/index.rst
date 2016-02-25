@@ -12,6 +12,7 @@ Contents:
    scripts
    upgrade-playbooks
    process
+   manual-change
 
 
 Indices and tables
