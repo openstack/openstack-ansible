@@ -101,5 +101,6 @@
     - cinder-sudoers
 
 - include: cinder_messaging_setup.yml
-  when: >
-    inventory_hostname == groups['cinder_all'][0]
+  when:
+    - inventory_hostname == groups['cinder_all'][0]
+    - groups['rabbitmq_all']|length > 0
