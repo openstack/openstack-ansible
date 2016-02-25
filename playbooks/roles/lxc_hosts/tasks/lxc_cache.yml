@@ -20,6 +20,7 @@
     mode: "0644"
     force: no
     sha256sum: "{{ item.sha256sum }}"
+    validate_certs: "{{ lxc_cache_validate_certs }}"
   register: cache_download
   retries: 3
   delay: 10

@@ -97,6 +97,10 @@ lxc_cache_sshd_configuration:
     - { regexp: "^X11Forwarding",           line: "X11Forwarding no" }
     - { regexp: "^PasswordAuthentication",  line: "PasswordAuthentication no" }
 
+# Validate Certificates when downloading lxc_container_caches.
+# May be set to "no" when proxy server is intercepting the certificates.
+lxc_cache_validate_certs: "yes"
+
 # Prebuilt images to deploy onto hosts for use in containers.
 # lxc_container_caches:
 #   - url: "https://rpc-repo.rackspace.com/container_images/rpc-trusty-container.tgz"
