@@ -575,6 +575,7 @@
 #           volume_backend_name: LVM_iSCSI
 #           volume_driver: cinder.volume.drivers.lvm.LVMVolumeDriver
 #           volume_group: cinder-volumes
+#           iscsi_ip_address: "{{ storage_address }}"
 #         limit_container_types: cinder_volume
 #
 # Example:

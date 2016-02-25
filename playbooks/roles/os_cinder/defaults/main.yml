@@ -40,6 +40,7 @@ cinder_storage_availability_zone: nova
 cinder_default_availability_zone: "{{ cinder_storage_availability_zone }}"
 
 cinder_storage_address: 127.0.0.1
+cinder_management_address: 127.0.0.1
 
 cinder_nova_catalog_info: compute:nova:internalURL
 cinder_nova_catalog_admin_info: compute:nova:adminURL
