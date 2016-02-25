@@ -28,6 +28,13 @@ making the necessary changes to the configuration.
 ``/etc/openstack_deploy`` is copied once to ``/etc/openstack_deploy.KILO``.
 The copy happens only once, so repeated runs are safe.
 
+Additionally, the following changes will be made to the environment and
+configuration of container memberships.
+
+    * ``aodh.yml`` and ``haproxy.yml`` will be copied from the source tree into
+        ``/etc/openstack_deploy/env.d``.
+    * ``/etc/openstack_deploy/env.d/neutron.yml`` will have LBaaS group
+      memberships added. See :ref:`neutron-env-script` for details.
 
 --------------
 
