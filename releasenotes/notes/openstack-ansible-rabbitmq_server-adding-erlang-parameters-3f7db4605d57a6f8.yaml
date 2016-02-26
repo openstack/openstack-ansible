@@ -1,0 +1,16 @@
+---
+features:
+  - Two new variables (`rabbitmq_async_threads` and `rabbitmq_process_limit`)
+    have been added to the openstack-ansible-rabbitmq_server role.
+    The variable `rabbitmq_async_threads` limits the number of asynchronous
+    threads for file and socket I/O.
+    The variable `rabbitmq_process_limit` limits the overall number of supported
+    processes inside the erlang VM.
+
+upgrade:
+  - The number of erlang asynchronous threads used by RabbitMQ have been
+    increased from the default of 32 to 128 in order to speed up message
+    processing.
+  - The maximum erlang process limit for RabbitMQ has been set to 1048576
+    in order to prevent virtual machine lockups which are caused when
+    this limit has been reached.
