@@ -17,6 +17,18 @@ RabbitMQ configuration, this means removing the shared RabbitMQ user
 default. This playbook should not be run until after all the services have
 stopped using the shared configuration.
 
+.. _config-change-playbook:
+
+deploy-config-changes.yml
+-------------------------
+
+This playbook will back up the ``/etc/openstack_deploy`` directory before
+making the necessary changes to the configuration.
+
+``/etc/openstack_deploy`` is copied once to ``/etc/openstack_deploy.KILO``.
+The copy happens only once, so repeated runs are safe.
+
+
 --------------
 
 .. include:: navigation.txt

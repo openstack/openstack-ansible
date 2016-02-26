@@ -21,6 +21,12 @@ following steps in the ``openstack-ansible`` directory:
    # ./scripts/run-upgrade.sh
 
 
+Configuration Changes
+---------------------
+
+The upgrade process will modify files residing in ``/etc/openstack_deploy`` in
+order to reflect new Liberty values.
+
 --------------
 
 .. include:: navigation.txt
