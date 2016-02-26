@@ -1,0 +1,6 @@
+---
+upgrade:
+  - The variables beginning with ``openstack_host_systat_`` in the
+    openstack_hosts role have been renamed to
+    ``openstack_host_sysstat_``.  This was done to better reflect their
+    dependency to sysstat.
