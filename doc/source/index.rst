@@ -18,6 +18,7 @@ Contents:
    :maxdepth: 2
 
    install-guide/index
+   upgrade-guide/index
    developer-docs/index
 
 

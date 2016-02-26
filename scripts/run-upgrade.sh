@@ -22,6 +22,57 @@ set -e -u -v
 
 ## Functions -----------------------------------------------------------------
 
+function run_lock {
+  set +e
+  run_item="${RUN_TASKS[$1]}"
+  file_part="${run_item}"
+
+  # note(sigmavirus24): this handles tasks like:
+  # "-e 'rabbitmq_upgrade=true' setup-infrastructure.yml"
+  # "/tmp/fix_container_interfaces.yml || true"
+  # so we can get the appropriate basename for the upgrade_marker
+  for part in $run_item; do
+    if [[ "$part" == *.yml ]];then
+      file_part="$part"
+      break
+    fi
+  done
+
+  upgrade_marker_file=$(basename ${file_part} .yml)
+  upgrade_marker="/etc/openstack_deploy/upgrade-kilo/$upgrade_marker_file.complete"
+
+  if [ ! -f "$upgrade_marker" ];then
+    # note(sigmavirus24): use eval so that we properly turn strings like
+    # "/tmp/fix_container_interfaces.yml || true"
+    # into a command, otherwise we'll get an error that there's no playbook
+    # named ||
+    eval "openstack-ansible $2 -e 'pip_install_options=--force-reinstall'"
+    playbook_status="$?"
+    echo "ran $run_item"
+
+    if [ "$playbook_status" == "0" ];then
+      RUN_TASKS=("${RUN_TASKS[@]/$run_item}")
+      touch "$upgrade_marker"
+      echo "$run_item has been marked as success"
+    else
+      echo "******************** failure ********************"
+      echo "the upgrade script has failed please rerun the following task to continue"
+      echo "failed on task $run_item"
+      echo "do not rerun the upgrade script!"
+      echo "please execute the remaining tasks:"
+      # run the tasks in order
+      for item in ${!RUN_TASKS[@]}; do
+        echo "${RUN_TASKS[$item]}"
+      done
+      echo "******************** failure ********************"
+      exit 99
+    fi
+  else
+    RUN_TASKS=("${RUN_TASKS[@]/$run_item.*}")
+  fi
+  set -e
+}
+
 function check_for_juno {
     if [ -d "/etc/rpc_deploy" ];then
       echo "--------------ERROR--------------"
@@ -77,6 +128,13 @@ function main {
     pre_flight
     check_for_juno
     check_for_kilo
+
+    pushd ${MAIN_PATH}/playbooks
+        # Run the tasks in order
+        for item in ${!RUN_TASKS[@]}; do
+          run_lock $item "${RUN_TASKS[$item]}"
+        done
+    popd
 }
 
 main
