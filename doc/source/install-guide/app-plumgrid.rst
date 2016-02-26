@@ -106,7 +106,7 @@ parameters:
          config_options: "--config-file /etc/neutron/neutron.conf --config-file /etc/neutron/{{ neutron_plugins[neutron_plugin_type].plugin_ini }}"
 
 
-PLUMgrid Cofigurations
+PLUMgrid Configurations
 ~~~~~~~~~~~~~~~~~~~~~~
 
 On the Deployment Host create a PLUMgrid user variables file, using the sample in
@@ -187,10 +187,10 @@ Installation
 #. Run the PLUMgrid playbooks with (do this before the openstack-setup.yml
    playbook is run):
 
-.. code-block:: yaml
+   .. code-block:: shell-session
 
-   cd /opt/plumgrid-ansible/plumgrid_playbooks
-   openstack-ansible plumgrid_all.yml
+       # cd /opt/plumgrid-ansible/plumgrid_playbooks
+       # openstack-ansible plumgrid_all.yml
 
 Note: Contact PLUMgrid for an Installation Pack info@plumgrid.com
 (includes full/trial license, packages, deployment documentation and
