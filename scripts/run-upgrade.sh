@@ -137,6 +137,8 @@ function main {
     check_for_juno
     check_for_kilo
 
+    "${SCRIPTS}/bootstrap-ansible.sh"
+
     pushd ${MAIN_PATH}/playbooks
         # Run the tasks in order
         for item in ${!RUN_TASKS[@]}; do

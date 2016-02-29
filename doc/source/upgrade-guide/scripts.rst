@@ -20,6 +20,10 @@ It provides the following environment variables:
     * ``MAIN_PATH`` - openstack_ansible root directory.
     * ``UPGRADE_PLAYBOOKS`` - path to the playbooks used in upgrading
 
+The upgrade script will also bootstrap ansible (using
+``bootstrap-ansible.sh``) in order to provide the new role dependencies
+introduced in the Liberty series.
+
 --------------
 
 .. include:: navigation.txt
