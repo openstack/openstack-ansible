@@ -99,6 +99,8 @@ A host can be removed with the ``--remove-item/-r`` parameter.
 
 Use the host's name as an argument.
 
-.. include:: navigation.txt
 ..  _`dynamic inventory functionality`: http://docs.ansible.com/ansible/intro_dynamic_inventory.html
 
+--------------
+
+.. include:: navigation.txt

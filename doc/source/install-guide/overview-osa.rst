@@ -109,4 +109,6 @@ Useful commands:
 
        # lxc-stop --name container_name
 
+--------------
+
 .. include:: navigation.txt
