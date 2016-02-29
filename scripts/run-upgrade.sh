@@ -20,6 +20,10 @@
 ## Shell Opts ----------------------------------------------------------------
 set -e -u -v
 
+export SCRIPTS_PATH="$(dirname $(readlink -f $0))"
+export MAIN_PATH="$(dirname ${SCRIPTS_PATH})"
+export UPGRADE_PLAYBOOKS="${SCRIPTS_PATH}/upgrade-utilities/playbooks"
+
 ## Functions -----------------------------------------------------------------
 
 function run_lock {
@@ -37,6 +41,10 @@ function run_lock {
       break
     fi
   done
+
+  if [ ! -d  "/etc/openstack_deploy/upgrade-kilo" ]; then
+      mkdir -p "/etc/openstack_deploy/upgrade-kilo"
+  fi
 
   upgrade_marker_file=$(basename ${file_part} .yml)
   upgrade_marker="/etc/openstack_deploy/upgrade-kilo/$upgrade_marker_file.complete"
