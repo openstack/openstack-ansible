@@ -38,5 +38,10 @@
         command: "{{ upgrade_scripts }}/add_new_neutron_env.py"
         args:
             creates: /etc/openstack_deploy.KILO/NEUTRON_MIGRATED
+
+      - name: Remove old ceilometer environment memberships
+        command: "{{ upgrade_scripts }}/fix_ceilometer_env.py"
+        args:
+            creates: /etc/openstack_deploy.KILO/CEILOMETER_MIGRATED
   vars:
       upgrade_scripts: "{{ playbook_dir }}/../scripts"

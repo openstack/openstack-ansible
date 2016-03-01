@@ -39,6 +39,30 @@ script itself does not check for this file.
 
 Called by :ref:`config-change-playbook`
 
+.. _ceilo-env-script:
+
+fix_ceilometer_env.py
+---------------------
+
+The alarming functionality for ceilometer has been removed from ceilometer
+itself and moved into aodh in Liberty. To compensate, the relevant
+OpenStack-Ansible environment memberships have been updated. See `this mailing
+list post
+<http://lists.openstack.org/pipermail/openstack-dev/2015-September/073897.html>`_
+for details.
+
+This file will remove the ``ceilometer_alarm_notifier`` and
+``ceilometer_alarm_evaluator`` entries from the
+``/etc/openstack_deploy/env.d/ceilometer.yml`` file. In order to preserve any
+user changes made to the file, only these specific values are removed.
+
+This script will also create
+``/etc/openstack_deploy.KILO/CEILOMETER_MIGRATED`` to indicate to ansible that
+the step can be skipped on successive runs. The script itself does not check
+for this file.
+
+Called by :ref:`config-change-playbook`
+
 --------------
 
 .. include:: navigation.txt
