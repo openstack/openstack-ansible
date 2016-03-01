@@ -191,3 +191,7 @@ setup-openstack.yml. The ceilometer playbooks will run as part of this playbook
 References
 ##########
 [1] `Ceilometer Admin Guide <http://docs.openstack.org/admin-guide-cloud/telemetry-data-collection.html>`
+
+--------------
+
+.. include:: navigation.txt

@@ -65,3 +65,7 @@ IP addresses for the Ceph Monitor servers in the deployment:
     ceph_mons: ['192.168.1.10', '192.168.1.11', '192.168.1.12']
 
 .. _Ceph Monitor: http://docs.ceph.com/docs/master/rados/configuration/mon-config-ref/
+
+--------------
+
+.. include:: navigation.txt

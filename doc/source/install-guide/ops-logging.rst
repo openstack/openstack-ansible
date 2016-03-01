@@ -22,3 +22,7 @@ deployment:
 * Each physical host has the logs from its service containers mounted at
   ``/openstack/log/``
 * Each service container has its own logs stored at ``/var/log/<service_name>``
+
+--------------
+
+.. include:: navigation.txt

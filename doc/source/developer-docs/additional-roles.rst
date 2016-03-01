@@ -133,3 +133,7 @@ Deploying the Role
 .. _conf.d: extending.html#conf-d
 .. _as described in the Install Guide: ../install-guide/configure-creds.html#configuring-service-credentials
 .. _Extending OpenStack-Ansible: extending.html#user-yml-files
+
+--------------
+
+.. include:: navigation.txt

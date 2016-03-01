@@ -113,3 +113,7 @@ The port of the Mongodb service:
 ``aodh_db_port: 27017``
 
 Once all of these steps are complete, you are ready to run the os-aodh-install.yml playbook! Or, if deploying a new stack, simply run setup-openstack.yml. The aodh playbooks will run as part of this playbook.
+
+--------------
+
+.. include:: navigation.txt
