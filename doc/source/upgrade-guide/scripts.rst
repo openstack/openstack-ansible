@@ -63,6 +63,72 @@ for this file.
 
 Called by :ref:`config-change-playbook`
 
+.. _migrate-os-vars:
+
+migrate_openstack_vars.py
+-------------------------
+
+In Liberty, some variable names were changed to reflect upstream decisions.
+This script will look for and replace any instances of these strings in the
+variable override files matching the pattern
+``/etc/openstack_deploy/user_*.yml``.
+Comments in the file will be preserved, though the variable names within the
+comments will be updated.
+
+This script will also create files of the form
+``/etc/openstack_deploy.KILO/VARS_MIGRATED_file`` e.g. once the script has
+processed the file ``/etc/openstack_deploy/user_variables.yml`` it creates
+``/etc/openstack_deploy.KILO/VARS_MIGRATED_user_variables`` to indicate to
+ansible that the step can be skipped on successive runs. The script itself does
+not check for this file.
+
+The variable changes are shown in the following table.
+
+.. This table was made with the output of
+   scripts/upgrade-utilities/scripts/make_rst_table.py. Insertion needs to be
+   done manually since the OpenStack publish jobs do not use `make` and there
+   isn't yet a sphinx extension that runs an abitrary script on build.
+
++------------------------------------------+------------------------------------------+
+|                                Old Value |                                New Value |
++==========================================+==========================================+
+|                        galera_sst_method |                  galera_wsrep_sst_method |
++------------------------------------------+------------------------------------------+
+|         heat_service_project_domain_name |           heat_service_project_domain_id |
++------------------------------------------+------------------------------------------+
+|            heat_service_user_domain_name |              heat_service_user_domain_id |
++------------------------------------------+------------------------------------------+
+|                nova_v21_service_adminuri |                    nova_service_adminuri |
++------------------------------------------+------------------------------------------+
+|          nova_v21_service_adminuri_proto |              nova_service_adminuri_proto |
++------------------------------------------+------------------------------------------+
+|                nova_v21_service_adminurl |                    nova_service_adminurl |
++------------------------------------------+------------------------------------------+
+|             nova_v21_service_description |                 nova_service_description |
++------------------------------------------+------------------------------------------+
+|             nova_v21_service_internaluri |                 nova_service_internaluri |
++------------------------------------------+------------------------------------------+
+|       nova_v21_service_internaluri_proto |           nova_service_internaluri_proto |
++------------------------------------------+------------------------------------------+
+|             nova_v21_service_internalurl |                 nova_service_internalurl |
++------------------------------------------+------------------------------------------+
+|                    nova_v21_service_name |                        nova_service_name |
++------------------------------------------+------------------------------------------+
+|                    nova_v21_service_port |                        nova_service_port |
++------------------------------------------+------------------------------------------+
+|                   nova_v21_service_proto |                       nova_service_proto |
++------------------------------------------+------------------------------------------+
+|               nova_v21_service_publicuri |                   nova_service_publicuri |
++------------------------------------------+------------------------------------------+
+|         nova_v21_service_publicuri_proto |             nova_service_publicuri_proto |
++------------------------------------------+------------------------------------------+
+|               nova_v21_service_publicurl |                   nova_service_publicurl |
++------------------------------------------+------------------------------------------+
+|                    nova_v21_service_type |                        nova_service_type |
++------------------------------------------+------------------------------------------+
+
+Called by :ref:`config-change-playbook`
+
 --------------
 
 .. include:: navigation.txt
