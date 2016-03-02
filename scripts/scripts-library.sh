@@ -21,7 +21,7 @@ MAX_RETRIES=${MAX_RETRIES:-5}
 REPORT_DATA=${REPORT_DATA:-""}
 ANSIBLE_PARAMETERS=${ANSIBLE_PARAMETERS:-""}
 STARTTIME="${STARTTIME:-$(date +%s)}"
-PIP_MAJOR_VERSION=${PIP_MAJOR_VERSION:-"7"}
+PIP_INSTALL_OPTIONS=${PIP_INSTALL_OPTIONS:-'pip==8.0.3 setuptools==20.1.1 wheel==0.29.0 '}
 
 # The default SSHD configuration has MaxSessions = 10. If a deployer changes
 #  their SSHD config, then the FORKS may be set to a higher number. We set the
@@ -216,10 +216,8 @@ function get_pip {
   # check if pip is already installed
   if [ "$(which pip)" ]; then
 
-    # if the version installed is the wrong version, fix it
-    if [ "$(pip --version | awk '{print $2}' | cut -d. -f1)" != ${PIP_MAJOR_VERSION} ]; then
-      pip install -I "pip>=${PIP_MAJOR_VERSION},<$((PIP_MAJOR_VERSION+1))"
-    fi
+    # make sure that the right pip base packages are installed
+    pip install --upgrade ${PIP_INSTALL_OPTIONS}
 
   # when pip is not installed, install it
   else
@@ -228,7 +226,7 @@ function get_pip {
     if [ -n "${GET_PIP_URL:-}" ]; then
       curl --silent ${GET_PIP_URL} > /opt/get-pip.py
       if head -n 1 /opt/get-pip.py | grep python; then
-        python /opt/get-pip.py "pip>=${PIP_MAJOR_VERSION},<$((PIP_MAJOR_VERSION+1))"
+        python /opt/get-pip.py ${PIP_INSTALL_OPTIONS}
         return
       fi
     fi
@@ -236,14 +234,14 @@ function get_pip {
     # Try getting pip from bootstrap.pypa.io as a primary source
     curl --silent https://bootstrap.pypa.io/get-pip.py > /opt/get-pip.py
     if head -n 1 /opt/get-pip.py | grep python; then
-      python /opt/get-pip.py "pip>=${PIP_MAJOR_VERSION},<$((PIP_MAJOR_VERSION+1))"
+      python /opt/get-pip.py ${PIP_INSTALL_OPTIONS}
       return
     fi
 
     # Try the get-pip.py from the github repository as a primary source
     curl --silent https://raw.githubusercontent.com/pypa/get-pip/master/get-pip.py > /opt/get-pip.py
     if head -n 1 /opt/get-pip.py | grep python; then
-      python /opt/get-pip.py "pip>=${PIP_MAJOR_VERSION},<$((PIP_MAJOR_VERSION+1))"
+      python /opt/get-pip.py ${PIP_INSTALL_OPTIONS}
       return
     fi
 
