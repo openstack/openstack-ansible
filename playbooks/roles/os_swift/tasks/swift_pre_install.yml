@@ -65,7 +65,7 @@
     - { path: "/etc/swift/proxy-server" }
     - { path: "/etc/swift/scripts" }
     - { path: "/etc/swift/ring_build_files" }
-    - { path: "/openstack/log/{{ inventory_hostname }}", owner: "syslog", group: "syslog" }
+    - { path: "/openstack/log/{{ inventory_hostname }}", owner: "{{ swift_syslog_user_name }}", group: "{{ swift_syslog_group_name }}" }
     - { path: "/var/cache/swift" }
     - { path: "{{ swift_system_home_folder }}" }
   tags:
@@ -74,8 +74,8 @@
 - name: Test for log directory or link
   shell: |
     if [ -h "/var/log/swift"  ]; then
-      chown -h {{ swift_system_user_name }}:{{ swift_system_group_name }} "/var/log/swift"
-      chown -R {{ swift_system_user_name }}:{{ swift_system_group_name }} "$(readlink /var/log/swift)"
+      chown -h {{ swift_syslog_user_name }}:{{ swift_syslog_group_name }} "/var/log/swift"
+      chown -R {{ swift_syslog_user_name }}:{{ swift_syslog_group_name }} "$(readlink /var/log/swift)"
     else
       exit 1
     fi
@@ -90,11 +90,11 @@
   file:
     path: "{{ item.path }}"
     state: directory
-    owner: "{{ item.owner|default(swift_system_user_name) }}"
-    group: "{{ item.group|default(swift_system_group_name) }}"
+    owner: "{{ swift_syslog_user_name }}"
+    group: "{{ swift_syslog_group_name }}"
     mode: "{{ item.mode|default('0755') }}"
   with_items:
-    - { path: "/var/log/swift", owner: "syslog", group: "syslog" }
+    - { path: "/var/log/swift" }
   when: log_dir.rc != 0
   tags:
     - swift-dirs

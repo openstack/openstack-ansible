@@ -29,6 +29,9 @@ swift_system_group_name: swift
 swift_system_shell: /bin/bash
 swift_system_comment: swift system user
 swift_system_home_folder: "/var/lib/{{ swift_system_user_name }}"
+## Swift Syslog User / Group
+swift_syslog_user_name: syslog
+swift_syslog_group_name: syslog
 
 ## Auth token
 swift_delay_auth_decision: true
