@@ -130,3 +130,16 @@ for repo in $(grep 'git_repo\:' ${SERVICE_FILE}); do
   echo -e "Processed $repo_name @ $branch_entry\n"
 
 done
+
+unset IFS
+
+# Finally, update the PIP_INSTALL_OPTIONS with the current versions of pip, wheel and setuptools
+PIP_CURRENT_OPTIONS=$(./scripts/get-pypi-pkg-version.py -p pip setuptools wheel -l horizontal)
+sed -i.bak "s|^PIP_INSTALL_OPTIONS=.*|PIP_INSTALL_OPTIONS=\$\{PIP_INSTALL_OPTIONS:-'${PIP_CURRENT_OPTIONS}'\}|" scripts/scripts-library.sh
+
+for pin in ${PIP_CURRENT_OPTIONS}; do
+  sed -i.bak "s|^$(echo ${pin} | cut -f1 -d=).*|${pin}|" *requirements.txt
+  sed -i.bak "s|^  - $(echo ${pin} | cut -f1 -d=).*|  - ${pin}|" playbooks/inventory/group_vars/hosts.yml
+done
+
+echo "Updated pip install options/pins"
