@@ -1,0 +1,8 @@
+---
+fixes:
+  - The python packages `pip`, `setuptools` and `wheel` are now all pinned on
+    a per-tag basis. The pins are updated along with every OpenStack Service
+    update. This is done to ensure a consistent build experience with the
+    latest available packages at the time the tag is released. A deployer may
+    override the pins by adding a list of required pins using the
+    `pip_packages` variable in `user_variables.yml`.

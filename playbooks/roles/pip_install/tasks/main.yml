@@ -69,7 +69,7 @@
     - pip-install
 
 - name: Install PIP
-  shell: "python /opt/get-pip.py {{ pip_get_pip_options }} '{{ pip_packages[0] }}'"
+  shell: "python /opt/get-pip.py {{ pip_get_pip_options }} {{ pip_packages | map('quote') | join (' ') }}"
   ignore_errors: true
   register: pip_install
   until: pip_install | success
@@ -79,7 +79,7 @@
     - pip-install
 
 - name: Install PIP (fall back mode)
-  shell: "python /opt/get-pip.py --isolated '{{ pip_packages[0] }}'"
+  shell: "python /opt/get-pip.py --isolated {{ pip_packages | map('quote') | join (' ') }}"
   when: pip_install.rc != 0
   register: pip_install_fall_back
   until: pip_install_fall_back | success
