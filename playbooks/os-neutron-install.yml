@@ -90,7 +90,31 @@
       when: is_metal | bool
       tags:
         - neutron-logs
-
+    - name: Ensure Rabbitmq vhost
+      rabbitmq_vhost:
+        name: "{{ neutron_rabbitmq_vhost }}"
+        state: "present"
+      delegate_to: "{{ groups['rabbitmq_all'][0] }}"
+      when:
+        - inventory_hostname == groups['neutron_all'][0]
+      tags:
+        - neutron-rabbitmq
+        - neutron-rabbitmq-vhost
+    - name: Ensure rabbitmq user
+      rabbitmq_user:
+        user: "{{ neutron_rabbitmq_userid }}"
+        password: "{{ neutron_rabbitmq_password }}"
+        vhost: "{{ neutron_rabbitmq_vhost }}"
+        configure_priv: ".*"
+        read_priv: ".*"
+        write_priv: ".*"
+        state: "present"
+      delegate_to: "{{ groups['rabbitmq_all'][0] }}"
+      when:
+        - inventory_hostname == groups['neutron_all'][0]
+      tags:
+        - neutron-rabbitmq
+        - neutron-rabbitmq-user
     - name: Create the neutron provider networks facts
       provider_networks:
         provider_networks: "{{ provider_networks }}"
@@ -150,3 +174,8 @@
     galera_address: "{{ internal_lb_vip_address }}"
     is_metal: "{{ properties.is_metal|default(false) }}"
     bind_prefix: "{{ provider_network_bind_prefix|default('') }}"
+    neutron_rabbitmq_userid: neutron
+    neutron_rabbitmq_vhost: /neutron
+    neutron_rabbitmq_servers: "{{ rabbitmq_servers }}"
+    neutron_rabbitmq_port: "{{ rabbitmq_port }}"
+    neutron_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
