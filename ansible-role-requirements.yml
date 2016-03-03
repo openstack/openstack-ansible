@@ -3,10 +3,10 @@
   path: /etc/ansible
   scm: git
   version: master
-- src: evrardjp.keepalived
+- src: https://github.com/evrardjp/ansible-keepalived
   name: keepalived
   version: '1.3'
-- src: mattwillsher.sshd
+- src: https://github.com/willshersystems/ansible-sshd
   name: sshd
 - name: apt_package_pinning
   src: https://git.openstack.org/openstack/openstack-ansible-apt_package_pinning
