@@ -12,6 +12,11 @@ Running the Upgrade script
 The Liberty series releases of OpenStack-Ansible contain the code for
 migrating from Kilo to Liberty.
 
+.. note::
+
+  The upgrade script is still under active development and should not be run at
+  this time.
+
 To upgrade from Kilo to Liberty using the upgrade script, perform the
 following steps in the ``openstack-ansible`` directory:
 
