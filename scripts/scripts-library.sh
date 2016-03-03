@@ -226,7 +226,7 @@ function get_pip {
     if [ -n "${GET_PIP_URL:-}" ]; then
       curl --silent ${GET_PIP_URL} > /opt/get-pip.py
       if head -n 1 /opt/get-pip.py | grep python; then
-        python /opt/get-pip.py "${PIP_INSTALL_OPTIONS}"
+        python /opt/get-pip.py ${PIP_INSTALL_OPTIONS}
         return
       fi
     fi
@@ -234,14 +234,14 @@ function get_pip {
     # Try getting pip from bootstrap.pypa.io as a primary source
     curl --silent https://bootstrap.pypa.io/get-pip.py > /opt/get-pip.py
     if head -n 1 /opt/get-pip.py | grep python; then
-      python /opt/get-pip.py "${PIP_INSTALL_OPTIONS}"
+      python /opt/get-pip.py ${PIP_INSTALL_OPTIONS}
       return
     fi
 
     # Try the get-pip.py from the github repository as a primary source
     curl --silent https://raw.githubusercontent.com/pypa/get-pip/master/get-pip.py > /opt/get-pip.py
     if head -n 1 /opt/get-pip.py | grep python; then
-      python /opt/get-pip.py "${PIP_INSTALL_OPTIONS}"
+      python /opt/get-pip.py ${PIP_INSTALL_OPTIONS}
       return
     fi
 
