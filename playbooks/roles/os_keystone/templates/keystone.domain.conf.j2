@@ -1,9 +1,0 @@
-# {{ ansible_managed }}
-
-[identity]
-driver = ldap
-
-[ldap]
-{% for key, value in item.value | dictsort %}
-{{ key }} = {{ value }}
-{% endfor %}
