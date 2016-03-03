@@ -138,6 +138,8 @@ function main {
     check_for_juno
     check_for_kilo
 
+    "${SCRIPTS}/bootstrap-ansible.sh"
+
     pushd ${MAIN_PATH}/playbooks
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/cleanup-rabbitmq-vhost.yml")
         # Run the tasks in order
