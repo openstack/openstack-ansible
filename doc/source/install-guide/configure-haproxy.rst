@@ -3,11 +3,17 @@
 Configuring HAProxy (optional)
 ------------------------------
 
-For evaluation, testing, and development, HAProxy can temporarily
-provide load balancing services in lieu of hardware load balancers. The
-default HAProxy configuration does not provide highly-available load
-balancing services. For production deployments, deploy a hardware load
-balancer prior to deploying OSA.
+HAProxy provides load balancing for high availability architectures deployed by
+OpenStack-Ansible. The default HAProxy configuration provides highly-available
+load balancing services via keepalived if there are more than one hosts in the
+``haproxy_hosts`` group.
+
+.. note::
+
+  A load balancer is required for a successful installation. Deployers may
+  prefer to make use of hardware load balancers instead of haproxy. If hardware
+  load balancers are used then the load balancing configuration for services must
+  be implemented prior to executing the deployment.
 
 To deploy HAProxy within your OpenStack-Ansible environment, define target
 hosts which should run HAProxy:
