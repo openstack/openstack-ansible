@@ -79,3 +79,7 @@
     state: absent
   tags:
     - galera-config
+
+- include: galera_upgrade_post.yml
+  when:
+    - galera_upgrade | bool

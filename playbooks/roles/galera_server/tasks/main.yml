@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- include: galera_upgrade_check.yml
 - include: galera_cluster_state.yml
 - include: galera_pre_install.yml
 - include: galera_install.yml
@@ -22,14 +23,10 @@
 - name: Flush handlers
   meta: flush_handlers
 
-- name: Confirm service connectivity after mysql restart
-  command: /usr/bin/mysqladmin --defaults-file=/etc/mysql/debian.cnf ping
-  changed_when: mysql_running.rc != 0
-  register: mysql_running
-  when: galera_restart is defined
-  until: mysql_running|success
-  retries: 12
-  delay: 5
+- include: galera_running_check.yml
+  vars:
+    num_retries: 10
+    wait_delay: 3
 
 - include: galera_setup.yml
   when: inventory_hostname == galera_server_bootstrap_node

@@ -1,0 +1,53 @@
+---
+# Copyright 2016, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Check major galera install version
+  command: "dpkg -s {{ galera_mariadb_server_package }}"
+  ignore_errors: true
+  register: installed_galera_specific
+  when:
+    - not galera_upgrade | bool
+  tags:
+    - galera-package-deb
+    - galera-apt-packages
+    - galera-upgrade
+
+- name: Check for any galera install version
+  shell: |
+    dpkg --get-selections | grep mariadb-galera-server
+  ignore_errors: true
+  register: installed_galera_any
+  when:
+    - not galera_upgrade | bool
+    - installed_galera_specific.rc != 0
+  tags:
+    - galera-package-deb
+    - galera-apt-packages
+    - galera-upgrade
+
+- name: Check if major version of Galera is installed
+  fail:
+    msg: "To install a new major version of mariadb-galera-server set '-e galera_upgrade=true'."
+  when:
+    - not galera_upgrade | bool
+    - installed_galera_specific.rc != 0 and installed_galera_any.rc == 0
+  tags:
+    - galera-package-deb
+    - galera-apt-packages
+    - galera-upgrade
+
+- include: galera_upgrade_pre.yml
+  when:
+    - galera_upgrade | bool
