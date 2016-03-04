@@ -8,12 +8,11 @@ import subprocess
 import unittest
 
 
-INV_DIR = '../playbooks/inventory'
+INV_DIR = 'playbooks/inventory'
 SCRIPT_FILENAME = 'dynamic_inventory.py'
-INV_SCRIPT = path.join(INV_DIR, SCRIPT_FILENAME)
+INV_SCRIPT = path.join(os.getcwd(), INV_DIR, SCRIPT_FILENAME)
 
-# We'll use the test directory, and have tox do the cd command for us.
-TARGET_DIR = path.join(os.getcwd(), 'inventory')
+TARGET_DIR = path.join(os.getcwd(), 'tests', 'inventory')
 
 # These files will be placed in TARGET_DIR by INV_SCRIPT.
 # They should be cleaned up between each test.
@@ -34,7 +33,7 @@ def cleanup():
 def get_inventory():
     "Return the inventory mapping in a dict."
     try:
-        cmd = [INV_SCRIPT, '--file', TARGET_DIR]
+        cmd = [INV_SCRIPT, '--config', TARGET_DIR]
         inventory_string = subprocess.check_output(cmd)
         inventory = json.loads(inventory_string)
         return inventory
