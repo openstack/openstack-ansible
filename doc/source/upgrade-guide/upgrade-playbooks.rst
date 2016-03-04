@@ -38,6 +38,16 @@ configuration of container memberships.
     * ``/etc/openstack_deploy/env.d/ceilometer.yml`` will have two alarm group
       memberships changed. See :ref:`ceilo-env-script` for details.
 
+user-secrets-adjustments.yml
+----------------------------
+
+This playbook ensures that the user secrets file is updated based on the example
+file in the main repository. This makes it possible to guarantee all secrets are
+carried into the upgraded environment and appropriately generated. Only new
+secrets are added, such as those necessary for new services or new settings
+added to existing services. Previously set values will not be changed.
+
+
 --------------
 
 .. include:: navigation.txt
