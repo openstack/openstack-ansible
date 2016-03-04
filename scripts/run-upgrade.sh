@@ -151,6 +151,8 @@ function main {
     "${SCRIPTS}/bootstrap-ansible.sh"
 
     pushd ${MAIN_PATH}/playbooks
+        RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/deploy-config-changes.yml")
+
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/cleanup-rabbitmq-vhost.yml")
         # Run the tasks in order
         for item in ${!RUN_TASKS[@]}; do
