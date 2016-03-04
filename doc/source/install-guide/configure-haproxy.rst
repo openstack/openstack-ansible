@@ -29,6 +29,14 @@ Making HAProxy highly-available
 HAProxy will be deployed in a highly-available manner, by installing
 keepalived if multiple hosts are found in the inventory.
 
+.. note:: A bug affects keepalived shipped by default with Ubuntu
+   14.04. You are probably affected if you have more than two
+   HAProxy/keepalived nodes. If you are running a keepalived
+   version < 1.2.8, you'll encounter a bug when two (or more) backup hosts
+   have the same priority. (cf. http://keepalived.org/changelog.html -
+   1.2.8 - Boon Ang's fix). Please check/adapt your keepalived version
+   and the priorities defined in your deployment.
+
 To skip the deployment of keepalived along HAProxy when installing
 HAProxy on multiple hosts, edit the
 ``/etc/openstack_deploy/user_variables.yml`` by setting:
