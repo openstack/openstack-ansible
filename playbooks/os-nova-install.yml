@@ -130,6 +130,7 @@
       delegate_to: "{{ groups['rabbitmq_all'][0] }}"
       when:
         - inventory_hostname == groups['nova_all'][0]
+        - groups['rabbitmq_all']|length > 0
       tags:
         - nova-rabbitmq
         - nova-rabbitmq-vhost
@@ -145,6 +146,7 @@
       delegate_to: "{{ groups['rabbitmq_all'][0] }}"
       when:
         - inventory_hostname == groups['nova_all'][0]
+        - groups['rabbitmq_all']|length > 0
       tags:
         - nova-rabbitmq
         - nova-rabbitmq-user

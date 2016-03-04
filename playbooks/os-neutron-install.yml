@@ -97,6 +97,7 @@
       delegate_to: "{{ groups['rabbitmq_all'][0] }}"
       when:
         - inventory_hostname == groups['neutron_all'][0]
+        - groups['rabbitmq_all']|length > 0
       tags:
         - neutron-rabbitmq
         - neutron-rabbitmq-vhost
@@ -112,6 +113,7 @@
       delegate_to: "{{ groups['rabbitmq_all'][0] }}"
       when:
         - inventory_hostname == groups['neutron_all'][0]
+        - groups['rabbitmq_all']|length > 0
       tags:
         - neutron-rabbitmq
         - neutron-rabbitmq-user

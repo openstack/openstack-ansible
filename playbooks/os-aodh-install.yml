@@ -67,6 +67,7 @@
       delegate_to: "{{ groups['rabbitmq_all'][0] }}"
       when:
         - inventory_hostname == groups['aodh_api'][0]
+        - groups['rabbitmq_all']|length > 0
       tags:
         - aodh-rabbitmq
         - aodh-rabbitmq-vhost
@@ -82,6 +83,7 @@
       delegate_to: "{{ groups['rabbitmq_all'][0] }}"
       when:
         - inventory_hostname == groups['aodh_api'][0]
+        - groups['rabbitmq_all']|length > 0
       tags:
         - aodh-rabbitmq
         - aodh-rabbitmq-user

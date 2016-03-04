@@ -95,6 +95,7 @@
       delegate_to: "{{ groups['rabbitmq_all'][0] }}"
       when:
         - inventory_hostname == groups['glance_all'][0]
+        - groups['rabbitmq_all']|length > 0
       tags:
         - glance-rabbitmq
         - glance-rabbitmq-vhost
@@ -110,6 +111,7 @@
       delegate_to: "{{ groups['rabbitmq_all'][0] }}"
       when:
         - inventory_hostname == groups['glance_all'][0]
+        - groups['rabbitmq_all']|length > 0
       tags:
         - glance-rabbitmq
         - glance-rabbitmq-user
