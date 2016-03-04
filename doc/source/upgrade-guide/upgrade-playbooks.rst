@@ -35,6 +35,8 @@ configuration of container memberships.
         ``/etc/openstack_deploy/env.d``.
     * ``/etc/openstack_deploy/env.d/neutron.yml`` will have LBaaS group
       memberships added. See :ref:`neutron-env-script` for details.
+    * ``/etc/openstack_deploy/env.d/ceilometer.yml`` will have two alarm group
+      memberships changed. See :ref:`ceilo-env-script` for details.
 
 --------------
 

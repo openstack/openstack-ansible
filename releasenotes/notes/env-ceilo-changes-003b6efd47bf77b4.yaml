@@ -1,0 +1,5 @@
+---
+upgrade:
+  - The ceilometer alarming functionality has been moved into aodh. The 
+    ``ceilometer_alarm_notifier`` and ``ceilometer_alarm_evaluator`` entries
+    are removed from the ``/etc/openstack_deploy/env.d/ceilometer.yml`` file.
