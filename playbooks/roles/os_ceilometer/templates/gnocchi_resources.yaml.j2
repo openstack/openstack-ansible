@@ -41,6 +41,7 @@ resources:
       - 'memory.resident'
       - 'vcpus'
       - 'cpu'
+      - 'cpu.delta'
       - 'cpu_util'
       - 'disk.root.size'
       - 'disk.ephemeral.size'
@@ -142,7 +143,7 @@ resources:
       - 'ip.floating.create'
       - 'ip.floating.update'
 
-  - resource_type: orchestration
+  - resource_type: stack
     metrics:
       - 'stack.create'
       - 'stack.update'
