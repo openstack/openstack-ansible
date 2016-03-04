@@ -32,6 +32,13 @@ Configuration Changes
 The upgrade process will modify files residing in ``/etc/openstack_deploy`` in
 order to reflect new Liberty values.
 
+Flag Files
+----------
+
+Some flag files are created by the migration scripts in order to achieve
+idempotency. These files are placed in the ``/etc/openstack_deploy.KILO``
+directory
+
 --------------
 
 .. include:: navigation.txt
