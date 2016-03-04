@@ -39,3 +39,15 @@
   tags:
     - keystone-ldap-domain-config
 
+# Bug 1547542 - Older versions of the keystone role would deploy a blank
+# keystone.Default.conf and this will cause errors when adding LDAP-backed
+# domains.
+- name: Remove Keystone Default domain configuration file if not needed
+  file:
+    path: "{{ keystone_ldap_domain_config_dir }}/keystone.Default.conf"
+    state: absent
+  when: keystone_ldap.Default is not defined
+  notify:
+    - Restart Apache
+  tags:
+    - keystone-ldap-domain-config

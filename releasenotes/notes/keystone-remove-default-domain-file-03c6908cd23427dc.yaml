@@ -1,0 +1,6 @@
+fixes:
+  - The addition of multi-domain LDAP configuration support left behind a
+    configuration file for the default domain that causes problems with
+    Keystone. This file will automatically be removed if the deployer is not
+    using the Default domain with an LDAP back end.
+    (`Bug 1547542 <https://bugs.launchpad.net/openstack-ansible/+bug/1547542>`_)
