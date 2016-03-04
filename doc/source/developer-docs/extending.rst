@@ -74,13 +74,8 @@ The variables in ``my_project/custom_stuff/playbooks/ansible.cfg`` would use
 env.d
 -----
 
-The OpenStack-Ansible default environment, including container and host
-group mappings, resides in ``/etc/openstack_deploy/openstack_environment.yml``.
-
 The ``/etc/openstack_deploy/env.d`` directory sources all YAML files into the
-deployed environment, allowing a deployer to define additional group mappings
-without having to edit the ``openstack_environment.yml`` file, which is
-controlled by the OpenStack-Ansible project itself.
+deployed environment, allowing a deployer to define additional group mappings.
 
 conf.d
 ------

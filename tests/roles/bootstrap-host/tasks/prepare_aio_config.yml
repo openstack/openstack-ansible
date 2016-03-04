@@ -102,15 +102,6 @@
   tags:
     - deploy-openstack-user-config
 
-- name: Deploy openstack_environment
-  config_template:
-    src: "../etc/openstack_deploy/openstack_environment.yml"
-    dest: "/etc/openstack_deploy/openstack_environment.yml"
-    config_overrides: "{{ openstack_environment_overrides | default({}) }}"
-    config_type: "yaml"
-  tags:
-    - deploy-openstack-environment
-
 - name: Deploy user_secrets file
   config_template:
     src: "../etc/openstack_deploy/user_secrets.yml"

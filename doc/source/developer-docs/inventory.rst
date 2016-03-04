@@ -40,9 +40,8 @@ not specified, the default is ``/etc/openstack_deploy/``.
 
 .. note:: In all versions prior to Mitaka, this argument was ``--file``.
 
-Within the specified directory, the following files must be present:
+The following file must be present in the configuration directory:
 
-    * ``openstack_environment.yml``
     * ``openstack_user_config.yml``
 
 Additionally, the configuration or environment could be spread between two
