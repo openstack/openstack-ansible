@@ -1,5 +1,5 @@
 ---
-# Copyright 2014, Rackspace US, Inc.
+# Copyright 2016, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,25 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Update apt sources
-  apt:
-    update_cache: yes
-    cache_valid_time: 600
-  register: apt_update
-  until: apt_update|success
-  retries: 5
-  delay: 2
-  tags:
-    - repo-apt-packages
 
-- name: Install apt packages
-  apt:
-    pkg: "{{ item }}"
-    state: latest
+- name: Install pip packages
+  pip:
+    name: "{{ item }}"
+    state: present
+    extra_args: "--constraint {{ repo_build_git_dir }}/requirements/upper-constraints.txt {{ pip_install_options|default('') }}"
   register: install_packages
   until: install_packages|success
   retries: 5
   delay: 5
-  with_items: repo_apt_packages
+  with_items: repo_pip_packages
   tags:
-    - repo-apt-packages
+    - repo-pip-packages
+

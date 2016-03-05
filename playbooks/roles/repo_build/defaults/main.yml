@@ -43,4 +43,10 @@ repo_build_venv_command_options: >
   {{ virtualenv_bin }}
   --always-copy
   --extra-search-dir {{ repo_build_release_path }}/{{ repo_build_release_tag }}
-  --no-download
+  --never-download
+
+repo_pip_packages:
+  - wheel
+  - virtualenv
+  - virtualenv-tools
+
