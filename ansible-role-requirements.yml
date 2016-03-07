@@ -1,59 +1,5 @@
-- name: plugins
-  src: https://git.openstack.org/openstack/openstack-ansible-plugins
-  path: /etc/ansible
-  scm: git
-  version: master
-- src: https://github.com/evrardjp/ansible-keepalived
-  name: keepalived
-  version: '1.3'
-- src: https://github.com/willshersystems/ansible-sshd
-  name: sshd
 - name: apt_package_pinning
   src: https://git.openstack.org/openstack/openstack-ansible-apt_package_pinning
-  scm: git
-  version: master
-- name: lxc_container_create
-  src: https://git.openstack.org/openstack/openstack-ansible-lxc_container_create
-  scm: git
-  version: master
-- name: lxc_hosts
-  src: https://git.openstack.org/openstack/openstack-ansible-lxc_hosts
-  scm: git
-  version: master
-- name: openstack_hosts
-  src: https://git.openstack.org/openstack/openstack-ansible-openstack_hosts
-  scm: git
-  version: master
-- name: openstack-ansible-security
-  src: https://git.openstack.org/openstack/openstack-ansible-security
-  scm: git
-  version: master
-- name: pip_install
-  src: https://git.openstack.org/openstack/openstack-ansible-pip_install
-  scm: git
-  version: master
-- name: pip_lock_down
-  src: https://git.openstack.org/openstack/openstack-ansible-pip_lock_down
-  scm: git
-  version: master
-- name: rsyslog_client
-  src: https://git.openstack.org/openstack/openstack-ansible-rsyslog_client
-  scm: git
-  version: master
-- name: memcached_server
-  src: https://git.openstack.org/openstack/openstack-ansible-memcached_server
-  scm: git
-  version: master
-- name: repo_server
-  src: https://git.openstack.org/openstack/openstack-ansible-repo_server
-  scm: git
-  version: master
-- name: repo_build
-  src: https://git.openstack.org/openstack/openstack-ansible-repo_build
-  scm: git
-  version: master
-- name: rabbitmq_server
-  src: https://git.openstack.org/openstack/openstack-ansible-rabbitmq_server
   scm: git
   version: master
 - name: galera_client
@@ -64,8 +10,27 @@
   src: https://git.openstack.org/openstack/openstack-ansible-galera_server
   scm: git
   version: master
-- name: rsyslog_server
-  src: https://git.openstack.org/openstack/openstack-ansible-rsyslog_server
+- name: keepalived
+  src: https://github.com/evrardjp/ansible-keepalived
+  version: '1.3'
+- name: lxc_container_create
+  src: https://git.openstack.org/openstack/openstack-ansible-lxc_container_create
+  scm: git
+  version: master
+- name: lxc_hosts
+  src: https://git.openstack.org/openstack/openstack-ansible-lxc_hosts
+  scm: git
+  version: master
+- name: memcached_server
+  src: https://git.openstack.org/openstack/openstack-ansible-memcached_server
+  scm: git
+  version: master
+- name: openstack-ansible-security
+  src: https://git.openstack.org/openstack/openstack-ansible-security
+  scm: git
+  version: master
+- name: openstack_hosts
+  src: https://git.openstack.org/openstack/openstack-ansible-openstack_hosts
   scm: git
   version: master
 - name: os_keystone
@@ -120,7 +85,38 @@
   src: https://git.openstack.org/openstack/openstack-ansible-os_tempest
   scm: git
   version: master
+- name: pip_lock_down
+  src: https://git.openstack.org/openstack/openstack-ansible-pip_lock_down
+  scm: git
+  version: master
+- name: pip_install
+  src: https://git.openstack.org/openstack/openstack-ansible-pip_install
+  scm: git
+  version: master
+- name: plugins
+  src: https://git.openstack.org/openstack/openstack-ansible-plugins
+  path: /etc/ansible
+  scm: git
+  version: master
+- name: rabbitmq_server
+  src: https://git.openstack.org/openstack/openstack-ansible-rabbitmq_server
+  scm: git
+  version: master
 - name: repo_build
   src: https://git.openstack.org/openstack/openstack-ansible-repo_build
   scm: git
   version: master
+- name: repo_server
+  src: https://git.openstack.org/openstack/openstack-ansible-repo_server
+  scm: git
+  version: master
+- name: rsyslog_client
+  src: https://git.openstack.org/openstack/openstack-ansible-rsyslog_client
+  scm: git
+  version: master
+- name: rsyslog_server
+  src: https://git.openstack.org/openstack/openstack-ansible-rsyslog_server
+  scm: git
+  version: master
+- name: sshd
+  src: https://github.com/willshersystems/ansible-sshd
