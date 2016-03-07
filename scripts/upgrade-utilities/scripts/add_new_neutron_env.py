@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import os
+import sys
 import yaml
 
 
@@ -41,21 +42,18 @@ def add_new_dict_data(original, new):
 
 if __name__ == '__main__':
 
-    # Calculate the repository root based on the script's location
-    script_path = os.path.abspath(__file__)
-    script_rel_path = os.path.relpath(__file__)
-    # Removing the relative path's length from the end of the absolute path
-    # gives us the root.
-    root = script_path[:-len(script_rel_path)]
+    repo_root = sys.argv[1]
 
     kilo_file = '/etc/openstack_deploy.KILO/env.d/neutron.yml'
-    liberty_file = os.path.join(root, 'etc/openstack_deploy/env.d/neutron.yml')
+    repo_liberty_file = os.path.join(repo_root,
+                                     'etc/openstack_deploy/env.d/neutron.yml')
+    liberty_file = '/etc/openstack_deploy/env.d/neutron.yml'
     flag_file = '/etc/openstack_deploy.KILO/NEUTRON_MIGRATED'
 
     with open(kilo_file, 'r') as f:
         kilo_dict = yaml.safe_load(f.read())
 
-    with open(liberty_file, 'r') as f:
+    with open(repo_liberty_file, 'r') as f:
         liberty_dict = yaml.safe_load(f.read())
 
     for skel in ('component_skel', 'container_skel', 'physical_skel'):
