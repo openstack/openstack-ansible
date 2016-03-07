@@ -217,7 +217,9 @@ function get_pip {
   if [ "$(which pip)" ]; then
 
     # make sure that the right pip base packages are installed
-    pip install --upgrade ${PIP_INSTALL_OPTIONS}
+    # If this fails retry with --isolated to bypass the repo server because the repo server will not have
+    # been updated at this point to include any newer pip packages.
+    pip install --upgrade ${PIP_INSTALL_OPTIONS} || pip install --upgrade --isolated ${PIP_INSTALL_OPTIONS}
 
   # when pip is not installed, install it
   else
