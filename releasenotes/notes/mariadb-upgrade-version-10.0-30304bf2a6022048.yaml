@@ -19,3 +19,5 @@ upgrade:
     variable.
   - The upstream MariaDB init script has replaced the custom init script that
     was provided by OpenStack-Ansible in previous versions.
+  - The ``galera_upgrade`` variable is now provided to allow the MariaDB role
+    to update existing installs.

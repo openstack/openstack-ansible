@@ -153,6 +153,11 @@ function main {
     pushd ${MAIN_PATH}/playbooks
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/deploy-config-changes.yml")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/user-secrets-adjustment.yml")
+        RUN_TAKS+=("setup-hosts.yml")
+        # A Galera/MariaDB upgrade is mandatory. See the upgrade
+        # playbooks documentation for more details.
+        RUN_TASKS+=("setup-infrastructure.yml -e 'galera_upgrade=true'")
+        RUN_TASKS+=("setup-openstack.yml")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/cleanup-rabbitmq-vhost.yml")
         # Run the tasks in order
         for item in ${!RUN_TASKS[@]}; do
