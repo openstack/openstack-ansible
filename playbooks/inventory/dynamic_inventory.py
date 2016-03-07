@@ -857,7 +857,7 @@ def _extra_config(user_defined_config, base_dir):
 
 
 def _check_config_settings(cidr_networks, config, container_skel):
-    """ check preciseness of config settings
+    """check preciseness of config settings
 
     :param cidr_networks: ``dict`` cidr_networks from config
     :param config: ``dict``  User defined information
