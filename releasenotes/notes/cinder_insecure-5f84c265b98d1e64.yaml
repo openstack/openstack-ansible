@@ -1,0 +1,5 @@
+---
+fixes:
+  - Fix bug https://bugs.launchpad.net/openstack-ansible/+bug/1553796
+    by ensuring that the --insecure flag is passed to the cinder
+    CLI tool during task execution
