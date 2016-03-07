@@ -17,7 +17,8 @@ import yaml
 
 
 def add_new_dict_data(original, new):
-    """
+    """Adds/appends new entries to existing dicts
+
     Adds new key/value entries to existing dictionaries, and appends
     new leaf values.
     """
