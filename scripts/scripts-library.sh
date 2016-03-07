@@ -48,7 +48,7 @@ function successerator {
   # Set the initial return value to failure.
   false
   while [ $? -ne 0 -a ${RETRY} -lt ${MAX_RETRIES} ];do
-    ((RETRY++))
+    $((RETRY++))
     if [ ${RETRY} -gt 1 ];then
       $@ -vvvv
     else
