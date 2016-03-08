@@ -110,7 +110,7 @@ iface br-vlan inet manual
 
 
 # Bridge for storage network
-# Only the COMPUTE nodes will have an IP on this bridge!
+# Only the COMPUTE and STORAGE nodes will have an IP on this bridge!
 # When used by infra nodes, IPs exist in the containers and inet should be set to manual.
 auto br-storage
 iface br-storage inet static
