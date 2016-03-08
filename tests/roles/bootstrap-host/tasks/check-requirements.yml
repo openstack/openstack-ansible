@@ -29,9 +29,10 @@
   tags:
     - check-disk-size
 
+# Convert root_space_available to bytes.
 - name: Set root disk facts
   set_fact:
-    host_root_space_available: "{{ ( root_space_available.stdout | int) * 1024 | int }}"
+    host_root_space_available_bytes: "{{ ( root_space_available.stdout | int) * 1024 | int }}"
   when:
     - bootstrap_host_data_disk_device is not defined
   tags:
@@ -46,24 +47,26 @@
   tags:
     - check-disk-size
 
+# Calculate the size of the bootstrap_host_data_disk_device by muliplying sectors with sectorsize.
 - name: Calculate data disk size
   set_fact:
-    host_data_disk_size: "{{ ((host_data_disk_sectors | int) * (host_data_disk_sectorsize | int)) | int }}"
+    host_data_disk_size_bytes: "{{ ((host_data_disk_sectors | int) * (host_data_disk_sectorsize | int)) | int }}"
   when:
     - bootstrap_host_data_disk_device is defined
   tags:
     - check-disk-size
 
+# Convert bootstrap_host_data_disk_min_size to bytes.
 - name: Set min size fact
   set_fact:
-    host_data_disk_min_size: "{{ ((bootstrap_host_data_disk_min_size | int) * 1024**3) | int }}"
+    host_data_disk_min_size_bytes: "{{ ((bootstrap_host_data_disk_min_size | int) * 1024**3) | int }}"
   tags:
     - check-disk-size
 
 - name: Fail if there is not enough space available in /
   assert:
     that: |
-      (host_root_space_available | int) >= ((host_data_disk_min_size | int) * 0.75)
+      (host_root_space_available_bytes | int) >= (host_data_disk_min_size_bytes | int)
   when:
     - bootstrap_host_data_disk_device is not defined
   tags:
@@ -72,7 +75,7 @@
 - name: Fail if there is not enough disk space available (disk specified)
   assert:
     that: |
-      (host_data_disk_size | int) >= (host_data_disk_min_size | int)
+      (host_data_disk_size_bytes | int) >= (host_data_disk_min_size_bytes | int)
   when:
     - bootstrap_host_data_disk_device is defined
   tags:
