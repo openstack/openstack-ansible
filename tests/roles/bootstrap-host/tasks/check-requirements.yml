@@ -66,7 +66,7 @@
 - name: Fail if there is not enough space available in /
   assert:
     that: |
-      (host_root_space_available_bytes | int) >= ((host_data_disk_min_size_bytes | int) * 0.75)
+      (host_root_space_available_bytes | int) >= (host_data_disk_min_size_bytes | int)
   when:
     - bootstrap_host_data_disk_device is not defined
   tags:
