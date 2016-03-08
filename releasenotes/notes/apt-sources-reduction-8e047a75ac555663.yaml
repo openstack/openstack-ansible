@@ -1,0 +1,39 @@
+---
+features:
+  - |
+    Ubuntu has 4 different 'components' - main, universe, multiverse and
+    restricted:
+
+    * Main: Officially supported software.
+    * Restricted: Supported software that is not available under a completely
+      free license.
+    * Universe: Community maintained software, i.e. not officially supported
+      software.
+    * Multiverse: Software that is not free.
+
+    The default apt sources configuration is now set to only include the
+    ``main`` and ``universe`` components as those are the only required
+    components for a functional deployment. If deployers wish to include
+    other components then the variable
+    ``lxc_container_template_apt_components`` may be set in
+    ``/etc/openstack_deploy/user_variables.yml`` with the full list of
+    desired components.
+upgrade:
+  - |
+    Ubuntu has 4 different 'components' - main, universe, multiverse and
+    restricted:
+
+    * Main: Officially supported software.
+    * Restricted: Supported software that is not available under a completely
+      free license.
+    * Universe: Community maintained software, i.e. not officially supported
+      software.
+    * Multiverse: Software that is not free.
+
+    The default apt sources configuration is now set to only include the
+    ``main`` and ``universe`` components as those are the only required
+    components for a functional deployment. If deployers wish to include
+    other components then the variable
+    ``lxc_container_template_apt_components`` may be set in
+    ``/etc/openstack_deploy/user_variables.yml`` with the full list of
+    desired components.
