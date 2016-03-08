@@ -13,6 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- name: Copy files from deployment host to the container cache
+  copy:
+    src: "{{ item[1].src }}"
+    dest: "{{ lxc_container_cache_path }}/{{ item[0].chroot_path }}/{{ item[1].dest }}"
+    owner: "{{ item[1].owner | default('root') }}"
+    group: "{{ item[1].group | default('root') }}"
+    mode: "{{ item[1].mode | default('644') }}"
+  with_nested:
+    - lxc_container_caches
+    - lxc_container_cache_files
+  tags:
+    - lxc-cache
+    - lxc-cache-copy-files
+
 - name: Create apt repos in the cached container
   template:
     src: sources.list.j2
