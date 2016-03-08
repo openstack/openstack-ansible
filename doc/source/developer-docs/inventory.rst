@@ -35,8 +35,8 @@ This invocation is useful when testing changes to the dynamic inventory script.
 Inputs
 ^^^^^^
 
-The ``dynamic_inventory.py`` script takes a single argument, ``--config``. If not
-specified, the default is ``/etc/openstack_deploy/``.
+The ``dynamic_inventory.py`` script takes a single argument, ``--config``. If
+not specified, the default is ``/etc/openstack_deploy/``.
 
 .. note:: In all versions prior to Mitaka, this argument was ``--file``.
 
@@ -51,7 +51,35 @@ additional directories:
     * ``conf.d``
     * ``env.d``
 
-These files are used to build a definition of the environment consumable by Ansible.
+The dynamic inventory script does the following:
+
+* Generates the names of each container that runs a service
+* Creates container and IP address mappings
+* Assigns containers to physical hosts
+
+As an example, consider the following excerpt from
+``openstack_user_config.yml``:
+
+.. code-block :: yaml
+
+    identity_hosts:
+      infra01:
+        ip: 10.0.0.10
+      infra02:
+        ip: 10.0.0.11
+      infra03:
+        ip: 10.0.0.12
+
+The ``identity_hosts`` dictionary defines an Ansible inventory group named
+``identity_hosts`` containing the three infra hosts. The configuration file
+``etc/openstack_deploy/env.d/keystone.yml`` defines additional Ansible
+inventory groups for the containers that are deployed onto the three hosts
+named with the prefix *infra*.
+
+Note that any services marked with ``is_metal: true`` will run on the allocated
+physical host and not in a container. For an example of ``is_metal: true``
+being used refer to ``etc/openstack_deploy/env.d/cinder.yml`` in the
+``container_skel`` section.
 
 Outputs
 ^^^^^^^
