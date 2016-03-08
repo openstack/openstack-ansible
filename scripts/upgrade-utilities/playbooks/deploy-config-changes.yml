@@ -27,7 +27,7 @@
 
       - name: Copy new env.d files into place
         copy:
-            src: "{{ root_dir }}/etc/openstack_deploy/env.d/{{ item }}.yml"
+            src: "{{ repo_root_dir }}/etc/openstack_deploy/env.d/{{ item }}.yml"
             dest: "/etc/openstack_deploy/env.d/{{ item }}.yml"
             force: no
         with_items:
@@ -35,7 +35,7 @@
             - haproxy
 
       - name: Add new neutron environment memberships
-        command: "{{ upgrade_scripts }}/add_new_neutron_env.py"
+        command: "{{ upgrade_scripts }}/add_new_neutron_env.py {{ repo_root_dir }}"
         args:
             creates: /etc/openstack_deploy.KILO/NEUTRON_MIGRATED
 
@@ -45,3 +45,4 @@
             creates: /etc/openstack_deploy.KILO/CEILOMETER_MIGRATED
   vars:
       upgrade_scripts: "{{ playbook_dir }}/../scripts"
+      repo_root_dir: "{{ playbook_dir }}/../../../"
