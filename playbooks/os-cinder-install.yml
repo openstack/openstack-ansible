@@ -112,6 +112,31 @@
       when: is_metal | bool
       tags:
         - cinder-logs
+    - name: Ensure Rabbitmq vhost
+      rabbitmq_vhost:
+        name: "{{ cinder_rabbitmq_vhost }}"
+        state: "present"
+      delegate_to: "{{ groups['rabbitmq_all'][0] }}"
+      when:
+        - inventory_hostname == groups['cinder_all'][0]
+      tags:
+        - cinder-rabbitmq
+        - cinder-rabbitmq-vhost
+    - name: Ensure rabbitmq user
+      rabbitmq_user:
+        user: "{{ cinder_rabbitmq_userid }}"
+        password: "{{ cinder_rabbitmq_password }}"
+        vhost: "{{ cinder_rabbitmq_vhost }}"
+        configure_priv: ".*"
+        read_priv: ".*"
+        write_priv: ".*"
+        state: "present"
+      delegate_to: "{{ groups['rabbitmq_all'][0] }}"
+      when:
+        - inventory_hostname == groups['cinder_all'][0]
+      tags:
+        - cinder-rabbitmq
+        - cinder-rabbitmq-user
     - name: Set cinder storage bridge (is_metal)
       set_fact:
         storage_bridge: "{{ 'ansible_' + hostvars[inventory_hostname]['container_networks']['storage_address']['bridge'] | replace('-', '_') }}"
@@ -180,3 +205,8 @@
   vars:
     galera_address: "{{ internal_lb_vip_address }}"
     is_metal: "{{ properties.is_metal|default(false) }}"
+    cinder_rabbitmq_userid: cinder
+    cinder_rabbitmq_vhost: /cinder
+    cinder_rabbitmq_servers: "{{ rabbitmq_servers }}"
+    cinder_rabbitmq_port: "{{ rabbitmq_port }}"
+    cinder_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"

@@ -123,6 +123,31 @@
       when: is_metal | bool
       tags:
         - nova-logs
+    - name: Ensure Rabbitmq vhost
+      rabbitmq_vhost:
+        name: "{{ nova_rabbitmq_vhost }}"
+        state: "present"
+      delegate_to: "{{ groups['rabbitmq_all'][0] }}"
+      when:
+        - inventory_hostname == groups['nova_all'][0]
+      tags:
+        - nova-rabbitmq
+        - nova-rabbitmq-vhost
+    - name: Ensure rabbitmq user
+      rabbitmq_user:
+        user: "{{ nova_rabbitmq_userid }}"
+        password: "{{ nova_rabbitmq_password }}"
+        vhost: "{{ nova_rabbitmq_vhost }}"
+        configure_priv: ".*"
+        read_priv: ".*"
+        write_priv: ".*"
+        state: "present"
+      delegate_to: "{{ groups['rabbitmq_all'][0] }}"
+      when:
+        - inventory_hostname == groups['nova_all'][0]
+      tags:
+        - nova-rabbitmq
+        - nova-rabbitmq-user
     - name: Set nova management bridge (is_metal)
       set_fact:
         management_bridge: "{{ 'ansible_' + hostvars[inventory_hostname]['management_bridge'] | replace('-', '_') }}"
@@ -191,3 +216,8 @@
     galera_address: "{{ internal_lb_vip_address }}"
     is_metal: "{{ properties.is_metal|default(false) }}"
     glance_host: "{{ internal_lb_vip_address }}"
+    nova_rabbitmq_userid: nova
+    nova_rabbitmq_vhost: /nova
+    nova_rabbitmq_servers: "{{ rabbitmq_servers }}"
+    nova_rabbitmq_port: "{{ rabbitmq_port }}"
+    nova_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"

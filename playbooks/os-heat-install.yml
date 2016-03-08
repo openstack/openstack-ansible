@@ -71,6 +71,31 @@
       when: is_metal | bool
       tags:
         - heat-logs
+    - name: Ensure Rabbitmq vhost
+      rabbitmq_vhost:
+        name: "{{ heat_rabbitmq_vhost }}"
+        state: "present"
+      delegate_to: "{{ groups['rabbitmq_all'][0] }}"
+      when:
+        - inventory_hostname == groups['heat_all'][0]
+      tags:
+        - heat-rabbitmq
+        - heat-rabbitmq-vhost
+    - name: Ensure rabbitmq user
+      rabbitmq_user:
+        user: "{{ heat_rabbitmq_userid }}"
+        password: "{{ heat_rabbitmq_password }}"
+        vhost: "{{ heat_rabbitmq_vhost }}"
+        configure_priv: ".*"
+        read_priv: ".*"
+        write_priv: ".*"
+        state: "present"
+      delegate_to: "{{ groups['rabbitmq_all'][0] }}"
+      when:
+        - inventory_hostname == groups['heat_all'][0]
+      tags:
+        - heat-rabbitmq
+        - heat-rabbitmq-user
   roles:
     - role: "os_heat"
       heat_venv_tag: "{{ openstack_release }}"
@@ -91,5 +116,10 @@
   vars:
     galera_address: "{{ internal_lb_vip_address }}"
     is_metal: "{{ properties.is_metal|default(false) }}"
+    heat_rabbitmq_userid: heat
+    heat_rabbitmq_vhost: /heat
+    heat_rabbitmq_servers: "{{ rabbitmq_servers }}"
+    heat_rabbitmq_port: "{{ rabbitmq_port }}"
+    heat_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
   vars_files:
     - defaults/repo_packages/openstack_services.yml

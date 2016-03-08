@@ -60,6 +60,31 @@
       tags:
         - aodh-logs
         - aodh-log-dirs
+    - name: Ensure Rabbitmq vhost
+      rabbitmq_vhost:
+        name: "{{ aodh_rabbitmq_vhost }}"
+        state: "present"
+      delegate_to: "{{ groups['rabbitmq_all'][0] }}"
+      when:
+        - inventory_hostname == groups['aodh_api'][0]
+      tags:
+        - aodh-rabbitmq
+        - aodh-rabbitmq-vhost
+    - name: Ensure rabbitmq user
+      rabbitmq_user:
+        user: "{{ aodh_rabbitmq_userid }}"
+        password: "{{ aodh_rabbitmq_password }}"
+        vhost: "{{ aodh_rabbitmq_vhost }}"
+        configure_priv: ".*"
+        read_priv: ".*"
+        write_priv: ".*"
+        state: "present"
+      delegate_to: "{{ groups['rabbitmq_all'][0] }}"
+      when:
+        - inventory_hostname == groups['aodh_api'][0]
+      tags:
+        - aodh-rabbitmq
+        - aodh-rabbitmq-user
   roles:
     - role: "os_aodh"
       aodh_venv_tag: "{{ openstack_release }}"
@@ -75,3 +100,8 @@
         - "aodh-rsyslog-client"
   vars:
     is_metal: "{{ properties.is_metal|default(false) }}"
+    aodh_rabbitmq_userid: aodh
+    aodh_rabbitmq_vhost: /aodh
+    aodh_rabbitmq_servers: "{{ rabbitmq_servers }}"
+    aodh_rabbitmq_port: "{{ rabbitmq_port }}"
+    aodh_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"

@@ -88,16 +88,17 @@
       when: is_metal | bool
       tags:
         - keystone-reserved-port
-    - name: Keystone ensure Rabbitmq vhost
+    - name: Ensure Rabbitmq vhost
       rabbitmq_vhost:
         name: "{{ keystone_rabbitmq_vhost }}"
         state: "present"
       delegate_to: "{{ groups['rabbitmq_all'][0] }}"
-      when: inventory_hostname == groups['keystone_all'][0]
+      when:
+        - inventory_hostname == groups['keystone_all'][0]
       tags:
-        - aodh-rabbitmq
-        - aodh-rabbitmq-vhost
-    - name: Keystone ensure rabbitmq user
+        - keystone-rabbitmq
+        - keystone-rabbitmq-vhost
+    - name: Ensure rabbitmq user
       rabbitmq_user:
         user: "{{ keystone_rabbitmq_userid }}"
         password: "{{ keystone_rabbitmq_password }}"
@@ -107,10 +108,11 @@
         write_priv: ".*"
         state: "present"
       delegate_to: "{{ groups['rabbitmq_all'][0] }}"
-      when: inventory_hostname == groups['keystone_all'][0]
+      when:
+        - inventory_hostname == groups['keystone_all'][0]
       tags:
-        - aodh-rabbitmq
-        - aodh-rabbitmq-user
+        - keystone-rabbitmq
+        - keystone-rabbitmq-user
     - name: Keystone create DB for service
       mysql_db:
         login_user: "{{ galera_root_user }}"

@@ -88,6 +88,31 @@
       when: is_metal | bool
       tags:
         - glance-logs
+    - name: Ensure Rabbitmq vhost
+      rabbitmq_vhost:
+        name: "{{ glance_rabbitmq_vhost }}"
+        state: "present"
+      delegate_to: "{{ groups['rabbitmq_all'][0] }}"
+      when:
+        - inventory_hostname == groups['glance_all'][0]
+      tags:
+        - glance-rabbitmq
+        - glance-rabbitmq-vhost
+    - name: Ensure rabbitmq user
+      rabbitmq_user:
+        user: "{{ glance_rabbitmq_userid }}"
+        password: "{{ glance_rabbitmq_password }}"
+        vhost: "{{ glance_rabbitmq_vhost }}"
+        configure_priv: ".*"
+        read_priv: ".*"
+        write_priv: ".*"
+        state: "present"
+      delegate_to: "{{ groups['rabbitmq_all'][0] }}"
+      when:
+        - inventory_hostname == groups['glance_all'][0]
+      tags:
+        - glance-rabbitmq
+        - glance-rabbitmq-user
   roles:
     - role: "os_glance"
       glance_galera_address: "{{ galera_address }}"
@@ -114,3 +139,8 @@
   vars:
     galera_address: "{{ internal_lb_vip_address }}"
     is_metal: "{{ properties.is_metal|default(false) }}"
+    glance_rabbitmq_userid: glance
+    glance_rabbitmq_vhost: /glance
+    glance_rabbitmq_servers: "{{ rabbitmq_servers }}"
+    glance_rabbitmq_port: "{{ rabbitmq_port }}"
+    glance_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"

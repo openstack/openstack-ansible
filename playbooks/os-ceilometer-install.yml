@@ -71,6 +71,31 @@
       when: is_metal | bool
       tags:
         - ceilometer-logs
+    - name: Ensure Rabbitmq vhost
+      rabbitmq_vhost:
+        name: "{{ ceilometer_rabbitmq_vhost }}"
+        state: "present"
+      delegate_to: "{{ groups['rabbitmq_all'][0] }}"
+      when:
+        - inventory_hostname == groups['ceilometer_api'][0]
+      tags:
+        - ceilometer-rabbitmq
+        - ceilometer-rabbitmq-vhost
+    - name: Ensure rabbitmq user
+      rabbitmq_user:
+        user: "{{ ceilometer_rabbitmq_userid }}"
+        password: "{{ ceilometer_rabbitmq_password }}"
+        vhost: "{{ ceilometer_rabbitmq_vhost }}"
+        configure_priv: ".*"
+        read_priv: ".*"
+        write_priv: ".*"
+        state: "present"
+      delegate_to: "{{ groups['rabbitmq_all'][0] }}"
+      when:
+        - inventory_hostname == groups['ceilometer_api'][0]
+      tags:
+        - ceilometer-rabbitmq
+        - ceilometer-rabbitmq-user
   roles:
     - role: "os_ceilometer"
       ceilometer_venv_tag: "{{ openstack_release }}"
@@ -87,3 +112,8 @@
   vars:
     galera_address: "{{ internal_lb_vip_address }}"
     is_metal: "{{ properties.is_metal|default(false) }}"
+    ceilometer_rabbitmq_userid: ceilometer
+    ceilometer_rabbitmq_vhost: /ceilometer
+    ceilometer_rabbitmq_servers: "{{ rabbitmq_servers }}"
+    ceilometer_rabbitmq_port: "{{ rabbitmq_port }}"
+    ceilometer_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
