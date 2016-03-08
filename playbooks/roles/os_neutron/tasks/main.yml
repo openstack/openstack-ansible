@@ -20,7 +20,7 @@
 
 - include: neutron_db_setup.yml
   when: >
-    inventory_hostname == groups['neutron_server'][0]
+    inventory_hostname == groups[neutron_services['neutron-server']['group']][0]
 
 - include: neutron_service_setup.yml
   when: >
@@ -28,7 +28,7 @@
 
 - include: neutron_l3_ha.yml
   when: >
-    inventory_hostname in groups['neutron_agent']
+    inventory_hostname in groups[neutron_services['neutron-l3-agent']['group']]
 
 - name: Flush handlers
   meta: flush_handlers
