@@ -65,6 +65,8 @@ if [ -f /etc/nodepool/provider -a -s /etc/nodepool/provider ]; then
 
   # Get the fastest possible Linux mirror depending on the datacenter where the
   # tests are running.
+  # The nodepool provider list can be found in:
+  # https://github.com/openstack-infra/project-config/blob/master/nodepool/nodepool.yaml
   case ${NODEPOOL_PROVIDER} in
   "rax-dfw"*)
       export UBUNTU_REPO="http://dfw.mirror.rackspace.com/ubuntu"
@@ -88,6 +90,12 @@ if [ -f /etc/nodepool/provider -a -s /etc/nodepool/provider ]; then
       export UBUNTU_REPO="http://ord.mirror.rackspace.com/ubuntu"
       ;;
   "internap-nyj01"*)
+      export UBUNTU_REPO="http://iad.mirror.rackspace.com/ubuntu"
+      ;;
+  "vexxhost-ca-ymq-1"*)
+      export UBUNTU_REPO="http://ubuntu.mirror.vexxhost.com/ubuntu"
+      ;;
+  "osic-cloud1"*)
       export UBUNTU_REPO="http://iad.mirror.rackspace.com/ubuntu"
       ;;
   esac
