@@ -261,6 +261,26 @@ class TestUserConfiguration(unittest.TestCase):
         self.assertIsInstance(self.loaded_user_configuration, dict)
 
 
+class TestEnvironments(unittest.TestCase):
+    def setUp(self):
+        self.longMessage = True
+        self.loaded_environment = di.load_environment(TARGET_DIR)
+
+    def test_loading_environment(self):
+        """Test that the environment can be loaded"""
+        self.assertIsInstance(self.loaded_environment, dict)
+
+    def test_envd_read(self):
+        """Test that the env.d contents are inserted into the environment"""
+        expected_keys = [
+            'component_skel',
+            'container_skel',
+            'physical_skel',
+        ]
+        for key in expected_keys:
+            self.assertIn(key, self.loaded_environment)
+
+
 class TestDuplicateIps(unittest.TestCase):
     def setUp(self):
         # Allow custom assertion errors.

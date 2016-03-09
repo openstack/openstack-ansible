@@ -898,11 +898,29 @@ def _check_config_settings(cidr_networks, config, container_skel):
                     )
 
 
+def load_environment(config_path):
+    """Create an environment dictionary from config files
+
+    :param config_path: ``str``path where the environment files are kept
+    """
+
+    environment = dict()
+
+    # Load all YAML files found in the env.d directory
+    env_plugins = os.path.join(config_path, 'env.d')
+
+    if os.path.isdir(env_plugins):
+        _extra_config(user_defined_config=environment, base_dir=env_plugins)
+
+    return environment
+
+
 def load_user_configuration(config_path):
     """Create a user configuration dictionary from config files
 
     :param config_path: ``str`` path where the configuration files are kept
     """
+
     user_defined_config = dict()
 
     # Load the user defined configuration file
@@ -936,13 +954,7 @@ def main():
 
     user_defined_config = load_user_configuration(config_path)
 
-    environment = dict()
-
-    # Load all YAML files found in the env.d directory
-    env_plugins = os.path.join(config_path, 'env.d')
-
-    if os.path.isdir(env_plugins):
-        _extra_config(user_defined_config=environment, base_dir=env_plugins)
+    environment = load_environment(config_path)
 
     # Load existing inventory file if found
     dynamic_inventory_file = os.path.join(
