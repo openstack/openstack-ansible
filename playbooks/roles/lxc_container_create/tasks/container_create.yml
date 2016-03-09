@@ -82,7 +82,12 @@
       if [ ! -d "/etc/network/interfaces.d" ];then
         mkdir -p /etc/network/interfaces.d
       fi
+      configmd5sum=$(md5sum /etc/network/interfaces.d/{{ item.value.interface }}.cfg 2>/dev/null)
       echo -e '{{ lxc_container_interface }}' | tee /etc/network/interfaces.d/{{ item.value.interface }}.cfg
+      if ! md5sum -c --status <<< "$configmd5sum" 2>/dev/null; then
+        ifdown {{ item.value.interface }}
+        ifup {{ item.value.interface }}
+      fi
   with_dict: container_networks|default({})
   delegate_to: "{{ physical_host }}"
   tags:
