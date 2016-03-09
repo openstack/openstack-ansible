@@ -9,14 +9,96 @@ Configuring the Block Storage service (optional)
    configure-cinder-backup.rst
    configure-cinder-az.rst
 
-By default, the Block Storage service uses the LVM back end. Therefore
-the container hosting the Block Storage service has to be considered
-as is_metal.
+By default, the Block Storage service installs on the host itself using the LVM
+backend. While this is the default for cinder it should be noted that using a
+LVM backend results in a Single Point of Failure. As a result of the volume
+service being deployed directly to the host is_metal is true when using LVM.
 
-If you rather use another backend (like NetApp, Ceph, etc.) in a
+Configuring Cinder to use LVM
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#. List the container_vars which contain the storage options for this target host.
+   Note that the vars related to the Cinder availability zone and the
+   limit_container_types are optional.
+
+
+
+   To configure an LVM you would utilize the following example:
+
+   .. code-block:: yaml
+
+        storage_hosts:
+         Infra01:
+           ip: 172.29.236.16
+           container_vars:
+             cinder_storage_availability_zone: cinderAZ_1
+             cinder_default_availability_zone: cinderAZ_1
+             cinder_backends:
+               lvm:
+                 volume_backend_name: LVM_iSCSI
+                 volume_driver: cinder.volume.drivers.lvm.LVMVolumeDriver
+                 volume_group: cinder-volumes
+                 iscsi_ip_address: "{{ storage_address }}"
+               limit_container_types: cinder_volume
+
+If you rather use another backend (like Ceph, NetApp, etc.) in a
 container instead of bare metal, you may edit
 the ``/etc/openstack_deploy/env.d/cinder.yml`` and remove the
 ``is_metal: true`` stanza under the cinder_volumes_container properties.
+
+Configuring Cinder to use Ceph
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In order for Cinder to use Ceph it will be necessary to configure for both
+the API and backend.
+
+#. List of target hosts on which to deploy the cinder API. It is recommended
+   that a minumum of three target hosts are used for this service.
+
+   .. code-block:: yaml
+
+       storage-infra_hosts:
+         infra1:
+           ip: 172.29.236.101
+         infra2:
+           ip: 172.29.236.102
+         infra3:
+           ip: 172.29.236.103
+
+#. List of target hosts on which to deploy the cinder volume service. It is
+   recommended that there is at least one target host for this service configured.
+   Typically this list contains target hosts that do not reside in other levels of
+   the configuration.
+
+   .. code-block:: yaml
+
+       storage_hosts:
+         storage1:
+           ip: 172.29.236.121 ...
+
+   To configure an RBD backend utilize the following example:
+
+   .. code-block:: yaml
+
+       container_vars:
+       cinder_storage_availability_zone: cinderAZ_3
+       cinder_default_availability_zone: cinderAZ_1
+       cinder_backends:
+         limit_container_types: cinder_volume
+         volumes_hdd:
+           volume_driver: cinder.volume.drivers.rbd.RBDDriver
+           rbd_pool: volumes_hdd
+           rbd_ceph_conf: /etc/ceph/ceph.conf
+           rbd_flatten_volume_from_snapshot: 'false'
+           rbd_max_clone_depth: 5
+           rbd_store_chunk_size: 4
+           rados_connect_timeout: -1
+           volume_backend_name: volumes_hdd
+           rbd_user: "{{ cinder_ceph_client }}"
+           rbd_secret_uuid: "{{ cinder_ceph_client_uuid }}"
+
+Configuring Cinder to use a NetApp appliance
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To use a NetApp storage appliance back end, edit the
 ``/etc/openstack_deploy/openstack_user_config.yml`` file and configure
@@ -115,7 +197,7 @@ Ensure that the NAS Team enables httpd.admin.access.
    .. code-block:: yaml
 
        storage_hosts:
-         xxxxxx-Infra01:
+         Infra01:
            ip: 172.29.236.16
            container_vars:
              cinder_backends:
