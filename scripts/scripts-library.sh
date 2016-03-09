@@ -44,11 +44,9 @@ function successerator {
   set +e
   # Get the time that the method was started.
   OP_START_TIME=$(date +%s)
-  RETRY=0
   # Set the initial return value to failure.
   false
-  while [ $? -ne 0 -a ${RETRY} -lt ${MAX_RETRIES} ];do
-    $((RETRY++))
+  for ((RETRY=0; $? != 0 && RETRY < MAX_RETRIES; RETRY++)); do
     if [ ${RETRY} -gt 1 ];then
       $@ -vvvv
     else
