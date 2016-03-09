@@ -13,65 +13,56 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+###
+### This file contains commonly used overrides for convenience. Please inspect
+### the defaults for each role to find additional override options.
+###
 
-## Ceilometer Options
-ceilometer_db_type: mongodb
-ceilometer_db_ip: localhost
-ceilometer_db_port: 27017
-swift_ceilometer_enabled: False
-heat_ceilometer_enabled: False
-cinder_ceilometer_enabled: False
-glance_ceilometer_enabled: False
-nova_ceilometer_enabled: False
-neutron_ceilometer_enabled: False
-keystone_ceilometer_enabled: False
+## Common Ceilometer Overrides
+# ceilometer_db_type: mongodb
+# ceilometer_db_ip: localhost
+# ceilometer_db_port: 27017
 
-## Aodh Options
-aodh_db_type: mongodb
-aodh_db_ip: localhost
-aodh_db_port: 27017
+## Common Override to enable Ceilometer for each service.
+## By default all service are *not* enabled.
+# swift_ceilometer_enabled: True
+# heat_ceilometer_enabled: True
+# cinder_ceilometer_enabled: True
+# glance_ceilometer_enabled: True
+# nova_ceilometer_enabled: True
+# neutron_ceilometer_enabled: True
+# keystone_ceilometer_enabled: True
 
-## Glance Options
+## Common Aodh Overrides
+# aodh_db_type: mongodb
+# aodh_db_ip: localhost
+# aodh_db_port: 27017
+
+## Common Glance Overrides
 # Set glance_default_store to "swift" if using Cloud Files or swift backend
 # or "rbd" if using ceph backend; the latter will trigger ceph to get
-# installed on glance
-glance_default_store: file
-glance_notification_driver: noop
+# installed on glance. If using a file store, a shared file store is
+# recommended. See the OpenStack-Ansible install guide and the OpenStack
+# documentation for more details.
+# glance_default_store: file
 
-# `internalURL` will cause glance to speak to swift via ServiceNet, use
-# `publicURL` to communicate with swift over the public network
-glance_swift_store_endpoint_type: internalURL
+## Ceph pool name for Glance to use
+# glance_rbd_store_pool: images
+# glance_rbd_store_chunk_size: 8
 
-# Ceph client user for glance to connect to the ceph cluster
-#glance_ceph_client: glance
-# Ceph pool name for Glance to use
-#glance_rbd_store_pool: images
-#glance_rbd_store_chunk_size: 8
-
-## Nova
+## Common Nova Overrides
 # When nova_libvirt_images_rbd_pool is defined, ceph will be installed on nova
 # hosts.
-#nova_libvirt_images_rbd_pool: vms
-# by default we assume you use rbd for both cinder and nova, and as libvirt
-# needs to access both volumes (cinder) and boot disks (nova) we default to
-# reuse the cinder_ceph_client
-# only need to change this if you'd use ceph for boot disks and not for volumes
-#nova_ceph_client:
-#nova_ceph_client_uuid:
-
-# This defaults to KVM, if you are deploying on a host that is not KVM capable
-# change this to your hypervisor type: IE "qemu", "lxc".
-# nova_virt_type: kvm
-# nova_cpu_allocation_ratio: 2.0
-# nova_ram_allocation_ratio: 1.0
+# nova_libvirt_images_rbd_pool: vms
 
 # If you wish to change the dhcp_domain configured for both nova and neutron
-# dhcp_domain:
+# dhcp_domain: openstacklocal
 
-## Glance with Swift
-# Extra options when configuring swift as a glance back-end. By default it
-# will use the local swift installation. Set these when using a remote swift
-# as a glance backend.
+## Common Glance Overrides when using a Swift back-end
+# By default when 'glance_default_store' is set to 'swift' the playbooks will
+# expect to use the Swift back-end that is configured in the same inventory.
+# If the Swift back-end is not in the same inventory (ie it is already setup
+# through some other means) then these settings should be used.
 #
 # NOTE: Ensure that the auth version matches your authentication endpoint.
 #
@@ -80,30 +71,20 @@ glance_swift_store_endpoint_type: internalURL
 # example, a password of "super$ecure" would need to be entered as
 # "super$$ecure" below.  See Launchpad Bug #1259729 for more details.
 #
-#glance_swift_store_auth_version: 3
-#glance_swift_store_auth_address: "https://some.auth.url.com"
-#glance_swift_store_user: "OPENSTACK_TENANT_ID:OPENSTACK_USER_NAME"
-#glance_swift_store_key: "OPENSTACK_USER_PASSWORD"
-#glance_swift_store_container: "NAME_OF_SWIFT_CONTAINER"
-#glance_swift_store_region: "NAME_OF_REGION"
+# glance_swift_store_auth_version: 3
+# glance_swift_store_auth_address: "https://some.auth.url.com"
+# glance_swift_store_user: "OPENSTACK_TENANT_ID:OPENSTACK_USER_NAME"
+# glance_swift_store_key: "OPENSTACK_USER_PASSWORD"
+# glance_swift_store_container: "NAME_OF_SWIFT_CONTAINER"
+# glance_swift_store_region: "NAME_OF_REGION"
 
-## Cinder
-# Ceph client user for cinder to connect to the ceph cluster
-#cinder_ceph_client: cinder
+## Common Ceph Overrides
+# ceph_mons:
+#   - 10.16.5.40
+#   - 10.16.5.41
+#   - 10.16.5.42
 
-## Ceph
-# Enable these if you use ceph rbd for at least one component (glance, cinder, nova)
-#ceph_apt_repo_url_region: "www"  # or "eu" for Netherlands based mirror
-#ceph_stable_release: hammer
-# Ceph Authentication - by default cephx is true
-#cephx: true
-# Ceph Monitors
-# A list of the IP addresses for your Ceph monitors
-#ceph_mons:
-#  - 10.16.5.40
-#  - 10.16.5.41
-#  - 10.16.5.42
-# Custom Ceph Configuration File (ceph.conf)
+## Custom Ceph Configuration File (ceph.conf)
 # By default, your deployment host will connect to one of the mons defined above to
 # obtain a copy of your cluster's ceph.conf.  If you prefer, uncomment ceph_conf_file
 # and customise to avoid ceph.conf being copied from a mon.
@@ -118,37 +99,12 @@ glance_swift_store_endpoint_type: internalURL
 #  auth_service_required = cephx
 
 
-## SSL Settings
-# Adjust these settings to change how SSL connectivity is configured for
-# various services.  For more information, see the openstack-ansible
-# documentation section titled "Securing services with SSL certificates".
-#
-## SSL: Keystone
-# These do not need to be configured unless you're creating certificates for
-# services running behind Apache (currently, Horizon and Keystone).
-ssl_protocol: "ALL -SSLv2 -SSLv3"
-# Cipher suite string from https://hynek.me/articles/hardening-your-web-servers-ssl-ciphers/
-ssl_cipher_suite: "ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:ECDH+3DES:DH+3DES:RSA+AESGCM:RSA+AES:RSA+3DES:!aNULL:!MD5:!DSS"
-# To override for Keystone only:
-#   - keystone_ssl_protocol
-#   - keystone_ssl_cipher_suite
-# To override for Horizon only:
-#   - horizon_ssl_protocol
-#   - horizon_ssl_cipher_suite
-#
-## SSL: RabbitMQ
-# Set these variables if you prefer to use existing SSL certificates, keys and
-# CA certificates with the RabbitMQ SSL/TLS Listener
-#
-#rabbitmq_user_ssl_cert: <path to cert on ansible deployment host>
-#rabbitmq_user_ssl_key: <path to cert on ansible deployment host>
-#rabbitmq_user_ssl_ca_cert: <path to cert on ansible deployment host>
-#
 # By default, openstack-ansible configures all OpenStack services to talk to
 # RabbitMQ over encrypted connections on port 5671. To opt-out of this default,
 # set the rabbitmq_use_ssl variable to 'false'. The default setting of 'true'
 # is highly recommended for securing the contents of RabbitMQ messages.
-#rabbitmq_use_ssl: true
+# rabbitmq_use_ssl: false
+
 
 ## Additional pinning generator that will allow for more packages to be pinned as you see fit.
 ## All pins allow for package and versions to be defined. Be careful using this as versions
@@ -178,45 +134,43 @@ ssl_cipher_suite: "ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AE
 #   NO_PROXY: "{{ no_proxy_env }}"
 
 
-## Multiple region support in Horizon:
-# For multiple regions uncomment this configuration, and
-# add the extra endpoints below the first list item.
-# horizon_available_regions:
-#   - { url: "{{ keystone_service_internalurl }}", name: "{{ keystone_service_region }}" }
-#   - { url: "http://cluster1.example.com:5000/v2.0", name: "RegionTwo" }
-
 ## SSH connection wait time
 # If an increased delay for the ssh connection check is desired,
 # uncomment this variable and set it appropriately.
 #ssh_delay: 5
 
+
 ## HAProxy
 # Uncomment this to disable keepalived installation (cf. documentation)
-#haproxy_use_keepalived: False
+# haproxy_use_keepalived: False
 #
 # HAProxy Keepalived configuration (cf. documentation)
-haproxy_keepalived_external_vip_cidr: "{{external_lb_vip_address}}/32"
-haproxy_keepalived_internal_vip_cidr: "{{internal_lb_vip_address}}/32"
-#haproxy_keepalived_external_interface:
-#haproxy_keepalived_internal_interface:
+# Make sure that this is set correctly according to the CIDR used for your
+# internal and external addresses.
+# haproxy_keepalived_external_vip_cidr: "{{external_lb_vip_address}}/32"
+# haproxy_keepalived_internal_vip_cidr: "{{internal_lb_vip_address}}/32"
+# haproxy_keepalived_external_interface:
+# haproxy_keepalived_internal_interface:
+
 # Defines the default VRRP id used for keepalived with haproxy.
 # Overwrite it to your value to make sure you don't overlap
 # with existing VRRPs id on your network. Default is 10 for the external and 11 for the
 # internal VRRPs
-#haproxy_keepalived_external_virtual_router_id:
-#haproxy_keepalived_internal_virtual_router_id:
+# haproxy_keepalived_external_virtual_router_id:
+# haproxy_keepalived_internal_virtual_router_id:
+
 # Defines the VRRP master/backup priority. Defaults respectively to 100 and 20
-#haproxy_keepalived_priority_master:
-#haproxy_keepalived_priority_backup:
+# haproxy_keepalived_priority_master:
+# haproxy_keepalived_priority_backup:
+
 # All the previous variables are used in a var file, fed to the keepalived role.
 # To use another file to feed the role, override the following var:
-#haproxy_keepalived_vars_file: 'vars/configs/keepalived_haproxy.yml'
+# haproxy_keepalived_vars_file: 'vars/configs/keepalived_haproxy.yml'
 
 ## Host security hardening
 # The openstack-ansible-security role provides security hardening for hosts
 # by applying security configurations from the STIG. Hardening is disabled by
-# default, but it can be applied to all hosts by adjusting the following
+# default, but an option to opt-in is available by setting the following
 # variable to 'true'.
-#
 # Docs: http://docs.openstack.org/developer/openstack-ansible-security/
-apply_security_hardening: false
+# apply_security_hardening: true
