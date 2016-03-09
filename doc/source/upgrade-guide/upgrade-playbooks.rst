@@ -47,6 +47,40 @@ carried into the upgraded environment and appropriately generated. Only new
 secrets are added, such as those necessary for new services or new settings
 added to existing services. Previously set values will not be changed.
 
+.. _setup-infra-playbook:
+
+setup-infrastructure.yml
+------------------------
+
+The ``setup-infrastructure.yml`` playbook is contained in the main
+``playbooks`` directory, but is called by ``run-upgrade.sh`` with specific
+arguments in order to upgrade infrastructure components such as MariaDB and
+RabbitMQ.
+
+For example, to run an upgrade for both components at once, run the following:
+
+.. code-block:: console
+
+    # openstack-ansible setup-infrastructure.yml -e 'rabbitmq_upgrade=true' \
+    # -e 'galera_upgrade=true'
+
+The ``rabbitmq_upgrade`` variable tells the ``rabbitmq_server`` role to
+upgrade the running major/minor version of RabbitMQ.
+
+.. note::
+    The RabbitMQ server role will install patch releases automatically,
+    regardless of the value of ``rabbitmq_upgrade``. This variable only
+    controls upgrading the major or minor version.
+
+    Upgrading RabbitMQ in the Liberty release is optional. The
+   ``run-upgrade.sh`` script will not automatically upgrade it. If a RabbitMQ
+    upgrade using the script is desired, insert the ``rabbitmq_upgrade: true``
+    line into a file such as ``/etc/openstack_deploy/user_variables.yml``.
+
+The ``galera_upgrade`` variable tells the ``galera_server`` role to remove the
+current version of MariaDB/Galera and upgrade to the 10.x series. This upgrade
+is required for Liberty.
+
 
 --------------
 
