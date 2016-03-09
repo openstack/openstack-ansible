@@ -38,6 +38,19 @@ Install additional software packages and configure NTP.
 
 #. Configure NTP to synchronize with a suitable time source.
 
+Configuring the network
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Ansible deployments will fail if the deployment server is unable to ssh to the containers.
+Configure the deployment host to be on the same network designated for container management.
+This configuration reduces the rate of failure due to connectivity issues.
+
+The following network information is used as an example:
+
+  Container management: 172.29.236.0/22 (VLAN 10)
+
+Select an IP from this range to assign to the deployment host.
+
 Installing source and dependencies
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
