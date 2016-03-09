@@ -141,3 +141,35 @@
     dest: /etc/openstack_deploy/user_variables.yml
     config_overrides: "{{ user_variables_overrides | default({}) }}"
     config_type: yaml
+
+- name: Add user_apt_conf_files to contain the list of files to copy into containers
+  file:
+    path: /etc/openstack_deploy/user_apt_conf_files.yml
+    state: touch
+  when:
+    - apt_conf_files is defined
+    - apt_conf_files.stdout_lines | length > 0
+  tags:
+    - apt-conf-files
+
+- name: Ensure that the first two lines in user_apt_conf_files are correct
+  lineinfile:
+    dest: /etc/openstack_deploy/user_apt_conf_files.yml
+    line: "---\nlxc_container_cache_files:"
+    insertbefore: BOF
+  when:
+    - apt_conf_files is defined
+    - apt_conf_files.stdout_lines | length > 0
+  tags:
+    - apt-conf-files
+
+- name: Add the list of dicts into user_apt_conf_files
+  lineinfile:
+    dest: /etc/openstack_deploy/user_apt_conf_files.yml
+    line: " - { src: '/etc/apt/apt.conf.d/{{ item }}', dest: '/etc/apt/apt.conf.d/{{ item }}' }"
+  with_items: apt_conf_files.stdout_lines
+  when:
+    - apt_conf_files is defined
+    - apt_conf_files.stdout_lines | length > 0
+  tags:
+    - apt-conf-files
