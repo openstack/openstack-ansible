@@ -43,6 +43,13 @@
         command: "{{ upgrade_scripts }}/fix_ceilometer_env.py"
         args:
             creates: /etc/openstack_deploy.KILO/CEILOMETER_MIGRATED
+
+      - name: Update OpenStack variable names
+        command: "{{ upgrade_scripts }}/migrate_openstack_vars.py {{ item }} {{ (item | basename)[:-4] }}"
+        args:
+            creates: "/etc/openstack_deploy.KILO/VARS_MIGRATED_{{ (item | basename)[:-4] }}"
+        with_fileglob:
+          - "/etc/openstack_deploy/user_*.yml"
   vars:
       upgrade_scripts: "{{ playbook_dir }}/../scripts"
       repo_root_dir: "{{ playbook_dir }}/../../../"

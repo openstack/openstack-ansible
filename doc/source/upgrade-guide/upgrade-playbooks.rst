@@ -28,8 +28,8 @@ making the necessary changes to the configuration.
 ``/etc/openstack_deploy`` is copied once to ``/etc/openstack_deploy.KILO``.
 The copy happens only once, so repeated runs are safe.
 
-Additionally, the following changes will be made to the environment and
-configuration of container memberships.
+Additionally, the following changes will be made to the environment,
+configuration of container memberships, and user variables.
 
     * ``aodh.yml`` and ``haproxy.yml`` will be copied from the source tree into
         ``/etc/openstack_deploy/env.d``.
@@ -37,6 +37,8 @@ configuration of container memberships.
       memberships added. See :ref:`neutron-env-script` for details.
     * ``/etc/openstack_deploy/env.d/ceilometer.yml`` will have two alarm group
       memberships changed. See :ref:`ceilo-env-script` for details.
+    * ``/etc/openstack_deploy/user_*.yml`` will have old variable names
+      updated to reflect new ones. See :ref:`migrate-os-vars` for details.
 
 user-secrets-adjustments.yml
 ----------------------------

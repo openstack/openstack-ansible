@@ -1,0 +1,15 @@
+---
+upgrade:
+  - Some variables names have been changed to reflect
+    upstream design decisions (such as Nova's default API version), or to
+    provide clarity. These require updating in ``/etc/openstack_deploy/user_*.yml``
+    for any overrides to continue to work. See the `upgrade documentation
+    <http://docs.openstack.org/developer/openstack-ansible/liberty/upgrade-guide/scripts.html#migrate-openstack-vars-py>`
+    for details.
+deprecations:
+    - The Nova 2.1 variables (``nova_v21_<variable>``), Heat name variables (
+      ``heat_project_domain_name``, ``heat_user_domain``) and Galera SST Method
+      (``galera_sst_method``) variables have changed. See the
+      `upgrade documentation
+      <http://docs.openstack.org/developer/openstack-ansible/liberty/upgrade-guide/scripts.html#migrate-openstack-vars-py>`
+      for details.
