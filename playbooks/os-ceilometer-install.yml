@@ -112,7 +112,6 @@
       tags:
         - "ceilometer-rsyslog-client"
   vars:
-    galera_address: "{{ internal_lb_vip_address }}"
     is_metal: "{{ properties.is_metal|default(false) }}"
     ceilometer_rabbitmq_userid: ceilometer
     ceilometer_rabbitmq_vhost: /ceilometer
