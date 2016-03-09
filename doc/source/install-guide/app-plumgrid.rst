@@ -10,7 +10,7 @@ Installing Source and Host Networking
 
    .. code-block:: shell-session
 
-       # git clone -b TAG https://github.com/plumgrid/plumgrid-ansible.git /opt
+       # git clone -b TAG https://github.com/plumgrid/plumgrid-ansible.git /opt/plumgrid-ansible
 
    Replace *``TAG``* with the current stable release tag.
 
@@ -122,7 +122,7 @@ configured:
       plumgrid_repo: PG_REPO_HOST
 
 #. Replace ``INFRA_IPs`` with comma separated Infrastructure Node IPs and
-   ``PG_VIP`` with an allocated IP on the management network, this will
+   ``PG_VIP`` with an unallocated IP on the management network, this will
    be used to access the PLUMgrid UI.
 
    .. code-block:: yaml
@@ -132,7 +132,7 @@ configured:
 
 #. Replace ``FABRIC_IFC`` with the name of the interface that will be used
    for PLUMgrid Fabric. [Note: PLUMgrid Fabric must be an untagged unbridged
-   raw inteface such as eth0]
+   raw interface such as eth0]
 
    .. code-block:: yaml
 
