@@ -130,20 +130,10 @@ function pre_flight {
     fi
 }
 
-function exit_early {
-    echo -e "
-    This script is still under active development and
-    should not be run at this time.
-    "
-
-    exit 99
-}
-
 
 ## Main ----------------------------------------------------------------------
 
 function main {
-    exit_early
     pre_flight
     check_for_juno
     check_for_kilo
