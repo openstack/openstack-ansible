@@ -65,48 +65,6 @@ iptables -P OUTPUT ACCEPT
 if [ -f /etc/nodepool/provider -a -s /etc/nodepool/provider ]; then
   source /etc/nodepool/provider
 
-  # Get the fastest possible Linux mirror depending on the datacenter where the
-  # tests are running.
-  # The nodepool provider list can be found in:
-  # https://github.com/openstack-infra/project-config/blob/master/nodepool/nodepool.yaml
-  case ${NODEPOOL_PROVIDER} in
-  "rax-dfw"*)
-      export UBUNTU_REPO="http://dfw.mirror.rackspace.com/ubuntu"
-      ;;
-  "rax-ord"*)
-      export UBUNTU_REPO="http://ord.mirror.rackspace.com/ubuntu"
-      ;;
-  "rax-iad"*)
-      export UBUNTU_REPO="http://iad.mirror.rackspace.com/ubuntu"
-      ;;
-  "hpcloud"*)
-      export UBUNTU_REPO="http://${NODEPOOL_AZ}.clouds.archive.ubuntu.com/ubuntu"
-      ;;
-  "ovh-gra1"*)
-      export UBUNTU_REPO="http://ubuntu.mirrors.ovh.net/ubuntu"
-      ;;
-  "ovh-bhs1"*)
-      export UBUNTU_REPO="http://ubuntu.bhs.mirrors.ovh.net/ubuntu"
-      ;;
-  "bluebox-sjc1"*)
-      export UBUNTU_REPO="http://ord.mirror.rackspace.com/ubuntu"
-      ;;
-  "internap-nyj01"*)
-      export UBUNTU_REPO="http://iad.mirror.rackspace.com/ubuntu"
-      ;;
-  "vexxhost-ca-ymq-1"*)
-      export UBUNTU_REPO="http://ubuntu.mirror.vexxhost.com/ubuntu"
-      ;;
-  "osic-cloud1"*)
-      export UBUNTU_REPO="http://iad.mirror.rackspace.com/ubuntu"
-      ;;
-  esac
-
-  if [ -n "${UBUNTU_REPO:-}" ]; then
-    export BOOTSTRAP_OPTS="${BOOTSTRAP_OPTS} bootstrap_host_ubuntu_repo=${UBUNTU_REPO}"
-    export BOOTSTRAP_OPTS="${BOOTSTRAP_OPTS} bootstrap_host_ubuntu_security_repo=${UBUNTU_REPO}"
-  fi
-
   # Update the libvirt cpu map with a gate64 cpu model. This enables nova
   # live migration for 64bit guest OSes on heterogenous cloud "hardware".
   export BOOTSTRAP_OPTS="${BOOTSTRAP_OPTS} bootstrap_host_libvirt_config=yes"
