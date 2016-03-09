@@ -23,6 +23,10 @@
     image_disk_format: qcow2
     image_is_public: True
     insecure: "{{ keystone_service_internaluri_insecure }}"
+  register: cirros_image_create
+  until: cirros_image_create | success
+  retries: 5
+  delay: 15
   tags:
     - tempest-setup
     - tempest-config
