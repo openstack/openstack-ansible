@@ -8,6 +8,8 @@ Within the main :file:`scripts` directory there is an :file:`upgrade-utilities`
 directory, which contains an additional playbooks directory. These playbooks
 facilitate the upgrade process.
 
+.. _cleanup-rabbit-playbook:
+
 cleanup-rabbitmq-vhost.yml
 --------------------------
 Liberty has introduced separate vhosts and RabbitMQ users for the OpenStack
@@ -39,6 +41,8 @@ configuration of container memberships, and user variables.
       memberships changed. See :ref:`ceilo-env-script` for details.
     * ``/etc/openstack_deploy/user_*.yml`` will have old variable names
       updated to reflect new ones. See :ref:`migrate-os-vars` for details.
+
+.. _user-secrets-playbook:
 
 user-secrets-adjustments.yml
 ----------------------------
@@ -75,7 +79,7 @@ upgrade the running major/minor version of RabbitMQ.
     controls upgrading the major or minor version.
 
     Upgrading RabbitMQ in the Liberty release is optional. The
-   ``run-upgrade.sh`` script will not automatically upgrade it. If a RabbitMQ
+    ``run-upgrade.sh`` script will not automatically upgrade it. If a RabbitMQ
     upgrade using the script is desired, insert the ``rabbitmq_upgrade: true``
     line into a file such as ``/etc/openstack_deploy/user_variables.yml``.
 

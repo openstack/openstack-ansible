@@ -9,5 +9,6 @@ Contents:
    :maxdepth: 2
 
    overview
+   manual-upgrade
    scripts
    upgrade-playbooks
