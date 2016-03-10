@@ -33,6 +33,7 @@ openstack_host_kernel_modules:
   - "{% if ansible_kernel | version_compare('3.18.0-0-generic', '>') %}br_netfilter{% endif %}"
   - dm_multipath
   - dm_snapshot
+  - ebtables
   - ip6table_filter
   - ip6_tables
   - ip_tables
@@ -62,6 +63,7 @@ openstack_host_apt_packages:
   - curl
   - dmeventd
   - dstat
+  - ebtables
   - htop
   - iptables
   - irqbalance
