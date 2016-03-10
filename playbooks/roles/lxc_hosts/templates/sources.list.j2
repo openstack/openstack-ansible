@@ -1,5 +1,5 @@
 # Sources created by the ansible
-deb {{ lxc_container_template_main_apt_repo }} {{ lxc_container_release }} main restricted universe multiverse
-deb {{ lxc_container_template_main_apt_repo }} {{ lxc_container_release }}-updates main restricted universe multiverse
-deb {{ lxc_container_template_main_apt_repo }} {{ lxc_container_release }}-backports main restricted universe multiverse
-deb {{ lxc_container_template_security_apt_repo }} {{ lxc_container_release }}-security main restricted universe multiverse
+deb {{ lxc_container_template_main_apt_repo }} {{ lxc_container_release }} {{ lxc_container_template_apt_components | join(" ") }}
+deb {{ lxc_container_template_main_apt_repo }} {{ lxc_container_release }}-updates {{ lxc_container_template_apt_components | join(" ") }}
+deb {{ lxc_container_template_main_apt_repo }} {{ lxc_container_release }}-backports {{ lxc_container_template_apt_components | join(" ") }}
+deb {{ lxc_container_template_security_apt_repo }} {{ lxc_container_release }}-security {{ lxc_container_template_apt_components | join(" ") }}
