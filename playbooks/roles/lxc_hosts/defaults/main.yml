@@ -98,3 +98,10 @@ lxc_cache_sshd_configuration:
 #     name: "trusty.tgz"
 #     sha256sum: "56c6a6e132ea7d10be2f3e8104f47136ccf408b30e362133f0dc4a0a9adb4d0c"
 #     chroot_path: trusty/rootfs-amd64
+
+# A list of files may be copied into the container image cache during its preparation.
+# Example:
+#   lxc_container_cache_files:
+#     - src: "/etc/openstack_deploy/files/etc/issue"
+#       dest: "/etc/issue"
+lxc_container_cache_files: []
