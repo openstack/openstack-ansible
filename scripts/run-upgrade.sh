@@ -65,13 +65,13 @@ function run_lock {
       echo "$run_item has been marked as success"
     else
       echo "******************** failure ********************"
-      echo "the upgrade script has failed please rerun the following task to continue"
-      echo "failed on task $run_item"
-      echo "do not rerun the upgrade script!"
-      echo "please execute the remaining tasks:"
+      echo "The upgrade script has encountered a failure."
+      echo "Failed on task $run_item"
+      echo "Re-run the run-upgrade.sh script, or"
+      echo "execute the remaining tasks manually:"
       # run the tasks in order
       for item in ${!RUN_TASKS[@]}; do
-        echo "${RUN_TASKS[$item]}"
+        echo "openstack-ansible ${RUN_TASKS[$item]} -e 'pip_install_options=--force-reinstall'"
       done
       echo "******************** failure ********************"
       exit 99
