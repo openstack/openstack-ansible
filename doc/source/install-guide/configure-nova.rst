@@ -105,6 +105,28 @@ multipath support in nova through a configuration override:
       libvirt:
           iscsi_use_multipath: true
 
+Shared storage and synchronized UID/GID
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Deployers can specify a custom UID for the nova user and GID for the nova group
+to ensure they are identical on each host. This is helpful when using shared
+storage on compute nodes because it allows instances to migrate without
+filesystem ownership failures.
+
+By default, Ansible will create the nova user and group without specifying the
+UID or GID. To specify custom values for the UID/GID, set the following
+Ansible variables:
+
+.. code-block:: yaml
+
+    nova_system_user_uid = <specify a UID>
+    nova_system_group_gid = <specify a GID>
+
+**WARNING:** Setting this value **after** deploying an environment with
+OpenStack-Ansible can cause failures, errors, and general instability. These
+values should only be set once **before** deploying an OpenStack environment
+and then never changed.
+
 --------------
 
 .. include:: navigation.txt
