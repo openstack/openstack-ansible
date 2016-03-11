@@ -43,7 +43,7 @@
     - { path: "/openstack", mode: "0755", owner: "root", group: "root" }
     - { path: "/var/cache/cinder", mode: "0700" }
     - { path: "/etc/cinder" }
-    - { path: "/etc/cinder/rootwrap.d" }
+    - { path: "/etc/cinder/rootwrap.d", owner: "root", group: "root" }
     - { path: "/etc/sudoers.d", mode: "0750", owner: "root", group: "root" }
     - { path: "{{ cinder_system_home_folder }}" }
   tags:

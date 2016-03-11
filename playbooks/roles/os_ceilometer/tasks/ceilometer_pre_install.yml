@@ -54,9 +54,9 @@
     group: "{{ item.group|default(ceilometer_system_group_name) }}"
     mode: "{{ item.mode|default('0755') }}"
   with_items:
-    - { path: "/openstack", mode: "0755", owner: "root", group: "root" }
+    - { path: "/openstack", owner: "root", group: "root" }
     - { path: "/etc/ceilometer" }
-    - { path: "/etc/ceilometer/rootwrap.d" }
+    - { path: "/etc/ceilometer/rootwrap.d", owner: "root", group: "root" }
     - { path: "{{ ceilometer_system_user_home }}" }
     - { path: "{{ ceilometer_system_user_home }}/.ssh", mode: "0700" }
     - { path: "/var/cache/ceilometer", mode: "0700" }

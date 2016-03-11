@@ -13,12 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Copy nova config
+- name: Generate nova config
   config_template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
-    owner: "{{ nova_system_user_name }}"
-    group: "{{ nova_system_group_name }}"
+    owner: "{{ item.owner|default(nova_system_user_name) }}"
+    group: "{{ item.group|default(nova_system_group_name) }}"
     mode: "0644"
     config_overrides: "{{ item.config_overrides }}"
     config_type: "{{ item.config_type }}"
@@ -31,6 +31,8 @@
       dest: "/etc/nova/rootwrap.conf"
       config_overrides: "{{ nova_rootwrap_conf_overrides }}"
       config_type: "ini"
+      owner: "root"
+      group: "root"
     - src: "api-paste.ini.j2"
       dest: "/etc/nova/api-paste.ini"
       config_overrides: "{{ nova_api_paste_ini_overrides }}"
@@ -44,12 +46,12 @@
     - nova-config
     - nova-post-install
 
-- name: Generate nova config
+- name: Copy nova rootwrap filter config
   copy:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
-    owner: "{{ nova_system_user_name }}"
-    group: "{{ nova_system_group_name }}"
+    owner: "root"
+    group: "root"
   with_items:
     - { src: "rootwrap.d/api-metadata.filters", dest: "/etc/nova/rootwrap.d/api-metadata.filters" }
     - { src: "rootwrap.d/baremetal-compute-ipmi.filters", dest: "/etc/nova/rootwrap.d/baremetal-compute-ipmi.filters" }
