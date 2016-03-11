@@ -17,8 +17,8 @@
   config_template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
-    owner: "{{ ceilometer_system_user_name }}"
-    group: "{{ ceilometer_system_group_name }}"
+    owner: "{{ item.owner|default(ceilometer_system_user_name) }}"
+    group: "{{ item.group|default(ceilometer_system_group_name) }}"
     mode: "0644"
     config_overrides: "{{ item.config_overrides }}"
     config_type: "{{ item.config_type }}"
@@ -35,6 +35,8 @@
       dest: "/etc/ceilometer/rootwrap.conf"
       config_overrides: "{{ ceilometer_rootwrap_conf_overrides }}"
       config_type: "ini"
+      owner: "root"
+      group: "root"
     - src: "event_pipeline.yaml.j2"
       dest: "/etc/ceilometer/event_pipeline.yaml"
       config_overrides: "{{ ceilometer_event_pipeline_yaml_overrides }}"
@@ -66,12 +68,10 @@
 
 - name: Drop rootwrap filters
   copy:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-    owner: "{{ ceilometer_system_user_name }}"
-    group: "{{ ceilometer_system_group_name }}"
-  with_items:
-    - { src: "rootwrap.d/ipmi.filters", dest: "/etc/ceilometer/rootwrap.d/ipmi.filters" }
+    src: "rootwrap.d/ipmi.filters"
+    dest: "/etc/ceilometer/rootwrap.d/ipmi.filters"
+    owner: "root"
+    group: "root"
   notify:
     - Restart ceilometer services
   tags:

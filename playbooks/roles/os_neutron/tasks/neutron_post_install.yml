@@ -17,8 +17,8 @@
   config_template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
-    owner: "{{ neutron_system_user_name }}"
-    group: "{{ neutron_system_group_name }}"
+    owner: "{{ item.owner|default(neutron_system_user_name) }}"
+    group: "{{ item.group|default(neutron_system_group_name) }}"
     mode: "0644"
     config_overrides: "{{ item.config_overrides }}"
     config_type: "{{ item.config_type }}"
@@ -39,6 +39,8 @@
       dest: "/etc/neutron/rootwrap.conf"
       config_overrides: "{{ neutron_rootwrap_conf_overrides }}"
       config_type: "ini"
+      owner: "root"
+      group: "root"
     - src: "policy.json.j2"
       dest: "/etc/neutron/policy.json"
       config_overrides: "{{ neutron_policy_overrides }}"
@@ -83,12 +85,12 @@
   tags:
     - neutron-config
 
-- name: Drop neutron Configs
+- name: Drop neutron rootwrap filters
   copy:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
-    owner: "{{ neutron_system_user_name }}"
-    group: "{{ neutron_system_group_name }}"
+    owner: "root"
+    group: "root"
   with_items:
     - { src: "rootwrap.d/debug.filters", dest: "/etc/neutron/rootwrap.d/debug.filters" }
     - { src: "rootwrap.d/ipset-firewall.filters", dest: "/etc/neutron/rootwrap.d/ipset-firewall.filters" }
@@ -105,12 +107,12 @@
   tags:
     - neutron-config
 
-- name: Drop neutron agent filters
+- name: Drop neutron agent rootwrap filters
   copy:
     src: "{{ item.value.service_rootwrap }}"
     dest: "/etc/neutron/{{ item.value.service_rootwrap }}"
-    owner: "{{ neutron_system_user_name }}"
-    group: "{{ neutron_system_group_name }}"
+    owner: "root"
+    group: "root"
   with_dict: neutron_services
   when:
       - item.value.service_en | bool
