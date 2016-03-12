@@ -1,0 +1,5 @@
+---
+upgrade:
+  - The ``signing_dir`` configuration option has changed from
+    ``/var/cache/heat`` to ``/var/lib/heat/cache/heat``. This only applies to
+    heat deployments that use PKI tokens.
