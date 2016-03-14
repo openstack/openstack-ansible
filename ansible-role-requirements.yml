@@ -2,6 +2,14 @@
   src: https://git.openstack.org/openstack/openstack-ansible-apt_package_pinning
   scm: git
   version: master
+- name: pip_install
+  src: https://git.openstack.org/openstack/openstack-ansible-pip_install
+  scm: git
+  version: master
+- name: pip_lock_down
+  src: https://git.openstack.org/openstack/openstack-ansible-pip_lock_down
+  scm: git
+  version: master
 - name: galera_client
   src: https://git.openstack.org/openstack/openstack-ansible-galera_client
   scm: git
@@ -83,14 +91,6 @@
   version: master
 - name: os_tempest
   src: https://git.openstack.org/openstack/openstack-ansible-os_tempest
-  scm: git
-  version: master
-- name: pip_lock_down
-  src: https://git.openstack.org/openstack/openstack-ansible-pip_lock_down
-  scm: git
-  version: master
-- name: pip_install
-  src: https://git.openstack.org/openstack/openstack-ansible-pip_install
   scm: git
   version: master
 - name: plugins

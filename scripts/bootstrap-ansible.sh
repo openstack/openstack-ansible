@@ -86,7 +86,6 @@ pip2 install $PIP_OPTS "${ANSIBLE_WORKING_DIR}" || pip install $PIP_OPTS "${ANSI
 if [ -f "${ANSIBLE_ROLE_FILE}" ];then
     # Pull all required roles.
     ansible-galaxy install --role-file=${ANSIBLE_ROLE_FILE} \
-                           --ignore-errors \
                            --force
 fi
 
