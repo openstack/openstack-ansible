@@ -1,0 +1,15 @@
+---
+fixes:
+  - Containers might fail to retrieve packages from the repo server
+    when connecting to a slave repo server that has not finished
+    synchronizing. For more information, see
+    https://bugs.launchpad.net/openstack-ansible/+bug/1543146. This is
+    addressed by adding pre and post hooks into lsyncd to connect to
+    the slave repo servers and disable NGINX for the duration for the
+    sync.
+
+security:
+  - A sudoers entry is added to the repo_servers to allow the nginx
+    user to stop and start NGINX from the init script. This ensures
+    that the repo sync process can shut off NGINX while synchronizing
+    data from master to slaves.
