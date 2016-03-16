@@ -928,12 +928,7 @@ def main():
             '\nor \n%s/conf.d directory' % (config_path, config_path)
         )
 
-    # Get the contents of the system environment YAML
-    environment_file = os.path.join(config_path, 'openstack_environment.yml')
-
-    # Load existing openstack environment YAML
-    with open(environment_file, 'rb') as f:
-        environment = yaml.safe_load(f.read())
+    environment = dict()
 
     # Load all YAML files found in the env.d directory
     env_plugins = os.path.join(config_path, 'env.d')

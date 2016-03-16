@@ -12,9 +12,6 @@ Appendix A. Configuration files
 `user_secrets.yml
 <https://raw.githubusercontent.com/openstack/openstack-ansible/master/etc/openstack_deploy/user_secrets.yml>`_
 
-`openstack_environment.yml
-<https://raw.githubusercontent.com/openstack/openstack-ansible/master/etc/openstack_deploy/openstack_environment.yml>`_
-
 `swift.yml
 <https://raw.githubusercontent.com/openstack/openstack-ansible/master/etc/openstack_deploy/conf.d/swift.yml.example>`_
 
