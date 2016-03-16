@@ -37,9 +37,9 @@ Deploying LBaaS v1
    .. code-block:: yaml
 
       neutron_plugin_base:
-        - neutron.services.l3_router.l3_router_plugin.L3RouterPlugin
-        - neutron.services.metering.metering_plugin.MeteringPlugin
-        - neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPlugin
+        - router
+        - metering
+        - lbaas
 
    Ensure that ``neutron_plugin_base`` includes all of the plugins that you
    want to deploy with Neutron **in addition** to the LBaaS plugin.
@@ -62,9 +62,9 @@ Deploying LBaaS v2
    .. code-block:: yaml
 
       neutron_plugin_base:
-        - neutron.services.l3_router.l3_router_plugin.L3RouterPlugin
-        - neutron.services.metering.metering_plugin.MeteringPlugin
-        - neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPluginv2
+        - router
+        - metering
+        - lbaasv2
 
    Ensure that ``neutron_plugin_base`` includes all of the plugins that you
    want to deploy with Neutron **in addition** to the LBaaS plugin.
