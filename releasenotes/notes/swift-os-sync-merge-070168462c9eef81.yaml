@@ -1,0 +1,6 @@
+---
+upgrade:
+  - The os_swift and os_swift_sync role have been merged into the single os_swift role. Two
+    variables (``swift_do_setup`` and ``swift_do_sync``) have been implemented to action the
+    install and synchronise code paths. The separate playbooks have been adjusted to make use
+    of these variables to ensure that the behaviour is exactly the same as before.
