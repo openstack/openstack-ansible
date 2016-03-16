@@ -1,0 +1,5 @@
+---
+features:
+  - Deployers can set a default availability zone (AZ) for new instance builds
+    which do not provide an AZ. The value is ``None`` by default, but it can be
+    changed with the ``nova_default_schedule_zone`` Ansible variable.
