@@ -1,10 +1,10 @@
 # {{ ansible_managed }}
 
 # Base repositories
-deb {{ bootstrap_host_ubuntu_repo }} {{ ansible_distribution_release }} main restricted universe multiverse
+deb {{ bootstrap_host_ubuntu_repo }} {{ ansible_distribution_release }} {{ bootstrap_host_apt_components | join(" ") }}
 # Updates repositories
-deb {{ bootstrap_host_ubuntu_repo }} {{ ansible_distribution_release }}-updates main restricted universe multiverse
+deb {{ bootstrap_host_ubuntu_repo }} {{ ansible_distribution_release }}-updates {{ bootstrap_host_apt_components | join(" ") }}
 # Backports repositories
-deb {{ bootstrap_host_ubuntu_repo }} {{ ansible_distribution_release }}-backports main restricted universe multiverse
+deb {{ bootstrap_host_ubuntu_repo }} {{ ansible_distribution_release }}-backports {{ bootstrap_host_apt_components | join(" ") }}
 # Security repositories
-deb {{ bootstrap_host_ubuntu_security_repo }} {{ ansible_distribution_release }}-security main restricted universe multiverse
+deb {{ bootstrap_host_ubuntu_security_repo }} {{ ansible_distribution_release }}-security {{ bootstrap_host_apt_components | join(" ") }}
