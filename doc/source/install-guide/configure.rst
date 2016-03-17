@@ -11,6 +11,7 @@ Chapter 4. Deployment configuration
    configure-creds.rst
    configure-hypervisor.rst
    configure-nova.rst
+   configure-ironic.rst
    configure-glance.rst
    configure-cinder.rst
    configure-swift.rst
