@@ -110,23 +110,6 @@ the ``br-mgmt`` container management bridge on each target host.
 
    The repository typically resides on one or more infrastructure hosts.
 
-   Alternatively, you can specify values for the variables
-   ``openstack_repo_url`` and ``openstack_release`` in the
-   ``/etc/openstack_deploy/user_variables.yml`` file. The values should
-   contain a URL for a host with the appropriate repository layout and
-   the desired OpenStack release, respectively. For
-   example:
-
-   .. code-block:: yaml
-
-       openstack_repo_url: "https://rpc-repo.rackspace.com/"
-       openstack_release: master
-
-   Using ``repo-infra_hosts`` configures a local repository with the
-   appropriate layout and sets ``openstack_repo_url`` and
-   ``openstack_release`` for you.  Using ``repo-infra_hosts`` is the
-   preferred method of configuring the repository.
-
 #. Configure a list containing at least one optional storage host in the
    ``storage_hosts`` section:
 
