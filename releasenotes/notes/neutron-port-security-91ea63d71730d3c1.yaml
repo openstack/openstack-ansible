@@ -1,0 +1,10 @@
+---
+issues:
+  - Neutron currently does not support enabling the ``port_security``
+    extension driver cleanly for existing networks. If networks are created
+    and the plugin is enabled afterwards, VMs connected to those networks
+    will not start. See bug https://bugs.launchpad.net/neutron/+bug/1509312
+upgrade:
+  - When upgrading from Kilo to Liberty, the ``port_security`` extension
+    driver will not be configured due to the known issues with enabling it
+    after creating networks.

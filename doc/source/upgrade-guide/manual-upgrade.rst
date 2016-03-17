@@ -112,6 +112,19 @@ See :ref:`setup-infra-playbook` for details.
 
     # openstack-ansible setup-infrastructure.yml -e 'galera_upgrade=true'
 
+
+Disable Neutron port security driver
+------------------------------------
+
+Use the playbook ``disable-neutron-port-security.yml`` to disable the Neutron
+port security extension if there is no existing override.
+
+See :ref:`neutron-port-sec-playbook` for details.
+
+.. code-block:: console
+
+    # openstack-ansible "${UPGRADE_PLAYBOOKS}/disable-neutron-port-security.yml
+
 Upgrade OpenStack
 -----------------
 

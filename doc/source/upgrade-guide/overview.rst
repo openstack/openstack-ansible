@@ -62,4 +62,14 @@ See :ref:`setup-infra-playbook` for details.
 
 --------------
 
+Neutron Port Security
+---------------------
+
+OpenStack-Ansible enabled Neutron's ML2 port security driver by default in
+Liberty, but will keep the driver disabled in environments upgraded from Kilo
+unless it has already been enabled in Kilo.
+
+See :ref:`neutron-port-sec-playbook` for details.
+
+
 .. include:: navigation.txt

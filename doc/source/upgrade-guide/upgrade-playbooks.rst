@@ -87,6 +87,31 @@ The ``galera_upgrade`` variable tells the ``galera_server`` role to remove the
 current version of MariaDB/Galera and upgrade to the 10.x series. This upgrade
 is required for Liberty.
 
+.. _neutron-port-sec-playbook:
+
+disable-neutron-port-security.yml
+---------------------------------
+
+In Kilo, Neutron introduced a port security extension to ML2, but did not
+enable it. OpenStack-Ansible enabled this extension by default in Liberty.
+However, networks created prior to enabling the port security extension do not
+receive any port security information. When VMs are started or created while
+attached to these networks, the start up or creation will fail.
+
+Neutron itself does not currently provide a mechanism for cleanly applying the
+port security bindings to pre-existing networks.
+
+In order to avoid this behavior, OpenStack-Ansible will disable port security
+bindings for environments upgraded from Kilo to Liberty.
+
+The following stanza will be added to
+``/etc/openstack_deploy/user_variables.yml``:
+
+.. code-block:: yaml
+
+    neutron_ml2_conf_ini_overrides:
+      ml2:
+        extension_drivers: ''
 
 --------------
 

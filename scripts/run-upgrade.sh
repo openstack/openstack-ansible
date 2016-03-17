@@ -147,6 +147,7 @@ function main {
         # A Galera/MariaDB upgrade is mandatory. See the upgrade
         # playbooks documentation for more details.
         RUN_TASKS+=("setup-infrastructure.yml -e 'galera_upgrade=true'")
+        RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/disable-neutron-port-security.yml")
         RUN_TASKS+=("setup-openstack.yml")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/cleanup-rabbitmq-vhost.yml")
         # Run the tasks in order
