@@ -185,3 +185,8 @@ haproxy_service_configs:
       haproxy_backend_nodes: "{{ groups['aodh_api'] | default([]) }}"
       haproxy_port: 8042
       haproxy_balance_type: http
+  - service:
+      haproxy_service_name: ironic_api
+      haproxy_backend_nodes: "{{ groups['ironic_api'] | default([]) }}"
+      haproxy_port: 6385
+      haproxy_balance_type: http

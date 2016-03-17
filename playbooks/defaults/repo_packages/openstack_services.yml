@@ -105,3 +105,9 @@ nova_git_dest: "/opt/nova_{{ nova_git_install_branch | replace('/', '_') }}"
 swift_git_repo: https://git.openstack.org/openstack/swift
 swift_git_install_branch: ee6af69af429e1a278581531e509be92774f668d # HEAD of "master" as of 03.04.2016
 swift_git_dest: "/opt/swift_{{ swift_git_install_branch | replace('/', '_') }}"
+
+
+## Ironic service
+ironic_git_repo: https://git.openstack.org/openstack/ironic
+ironic_git_install_branch: 8d105f60790ce108f65de90fc68e6e8651a87b4d # HEAD of "stable/mitaka" as of 23.03.2016
+ironic_git_dest: "/opt/ironic_{{ ironic_git_install_branch | replace('/', '_') }}"
