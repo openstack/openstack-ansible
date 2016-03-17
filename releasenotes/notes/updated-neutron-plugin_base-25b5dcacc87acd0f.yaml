@@ -1,0 +1,11 @@
+---
+upgrade:
+  - The ``neutron_plugin_base`` variable has been modifed to use the friendly
+    names. Deployers should change any customisations to this variable to
+    ensure that the customisation makes use of the short names instead of
+    the full class path.
+  - Database migration tasks have been added for the LBaaS neutron plugins.
+deprecations:
+  - The old class path names used within the ``neutron_plugin_base``
+    have been deprecated in favor of the friendly names. Support for the use
+    of the class path plugins will be removed in the OpenStack Newton cycle.
