@@ -55,6 +55,15 @@ added to existing services. Previously set values will not be changed.
 
 .. _setup-infra-playbook:
 
+repo-server-pip-conf-removal.yml
+--------------------------------
+
+This playbook ensures the repository servers do not have the ``pip.conf`` in the
+root ``pip`` directory locking down the python packages available to install. If
+this file exists on the repository servers it will cause build failures.
+
+.. _repo-server-pip-conf-removal:
+
 setup-infrastructure.yml
 ------------------------
 

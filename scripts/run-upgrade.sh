@@ -146,6 +146,7 @@ function main {
         RUN_TAKS+=("setup-hosts.yml")
         # A Galera/MariaDB upgrade is mandatory. See the upgrade
         # playbooks documentation for more details.
+        RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/repo-server-pip-conf-removal.yml")
         RUN_TASKS+=("setup-infrastructure.yml -e 'galera_upgrade=true'")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/disable-neutron-port-security.yml")
         RUN_TASKS+=("setup-openstack.yml")
