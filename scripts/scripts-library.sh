@@ -97,6 +97,14 @@ function ssh_key_create {
 
 function exit_state {
   set +x
+  # Check if the logs link is in place. This will only be true when the
+  # environment was built by the gate-check-commit script.
+  if [ -h $(dirname ${0})/../logs ]; then
+    # Ensure that all directories may be traversed by all users, and that
+    # all files are readable by all users.
+    chmod --recursive o+rX $(dirname ${0})/../logs
+  fi
+
   TOTALSECONDS="$(( $(date +%s) - STARTTIME ))"
   info_block "Run Time = ${TOTALSECONDS} seconds || $((TOTALSECONDS / 60)) minutes"
   if [ "${1}" == 0 ];then
