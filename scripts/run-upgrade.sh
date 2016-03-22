@@ -145,6 +145,8 @@ pushd ${MAIN_PATH}/playbooks
 
   RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/remove-juno-log-rotate.yml || true")
 
+  RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/mariadb-apt-cleanup.yml")
+
   RUN_TASKS+=("openstack-hosts-setup.yml")
 
   RUN_TASKS+=("lxc-hosts-setup.yml")

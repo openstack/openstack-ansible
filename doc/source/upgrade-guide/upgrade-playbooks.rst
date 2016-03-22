@@ -65,6 +65,13 @@ release. Log rotation processes in Kilo has been revised, and the Juno files
 would conflict with the new processes.
 
 
+mariadb-apt-cleanup.yml
+-----------------------
+
+In the Juno release, the apt sources for MariaDB used plaintext HTTP. This
+playbook cleans up any lingering apt sources for MariaDB that use HTTP so that
+the new HTTPS apt sources are used in Kilo.
+
 nova-extra-migrations.yml
 -------------------------
 
