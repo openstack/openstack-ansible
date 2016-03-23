@@ -74,7 +74,7 @@ neutron_plugin_core: "{{ neutron_plugins[neutron_plugin_type].plugin_core }}"
 # neutron_plugin_base:
 #   - neutron.services.l3_router.l3_router_plugin.L3RouterPlugin
 #   - neutron.services.metering.metering_plugin.MeteringPlugin
-#   - neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPlugin
+#   - neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPluginv2
 #   - neutron.services.vpn.plugin.VPNDriverPlugin
 neutron_plugin_base:
   - neutron.services.l3_router.l3_router_plugin.L3RouterPlugin
@@ -153,6 +153,16 @@ neutron_services:
    config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/lbaas_agent.ini
    config_overrides: "{{ neutron_lbaas_agent_ini_overrides }}"
    config_type: "ini"
+ neutron-lbaasv2-agent:
+   group: neutron_lbaas_agent
+   service_name: neutron-lbaasv2-agent
+   service_en: "{{ neutron_lbaasv2 }}"
+   service_conf: lbaas_agent.ini
+   service_group: neutron_agent
+   service_rootwrap: rootwrap.d/lbaas-haproxy.filters
+   config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/lbaas_agent.ini
+   config_overrides: "{{ neutron_lbaas_agent_ini_overrides }}"
+   config_type: "ini"
  neutron-server:
    group: neutron_server
    service_name: neutron-server
@@ -161,8 +171,13 @@ neutron_services:
    config_options: "--config-file /etc/neutron/neutron.conf --config-file /etc/neutron/{{ neutron_plugins[neutron_plugin_type].plugin_ini }}"
 
 ## Neutron LBaaS
-# Please add the LoadBalancerPlugin to the neutron_plugin_base list
+# See documentation section titled "Configuring the Network Load Balacing
+# Service (Optional)" for more details.
+#
+# To enable LBaaS v1, add LoadBalancerPlugin to neutron_plugin_base list.
+# To enable LBaaS v2, add LoadBalancerPluginv2 to neutron_plugin_base list
 neutron_lbaas: "{% if 'neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPlugin' in neutron_plugin_base %}True{% else %}False{% endif %}"
+neutron_lbaasv2: "{% if 'neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPluginv2' in neutron_plugin_base %}True{% else %}False{% endif %}"
 
 ## Neutron L3
 ## Please add the L3RouterPlugin to the neutron_plugin_base list

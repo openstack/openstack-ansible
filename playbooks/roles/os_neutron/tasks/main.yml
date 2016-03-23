@@ -13,10 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- include: neutron_check.yml
 - include: neutron_pre_install.yml
 - include: neutron_install.yml
 - include: neutron_post_install.yml
 - include: neutron_upstart_init.yml
+- include: neutron_lbaas.yml
 
 - include: neutron_db_setup.yml
   when: >

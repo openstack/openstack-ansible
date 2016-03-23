@@ -1,0 +1,49 @@
+---
+# Copyright 2016, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# These tasks are here to handle a situation where a deployer has v1 deployed
+# and then chooses to deploy v2 (or vice versa). The existing tasks within
+# neutron_upstart_init.yml will deploy configuration files for both agents
+# and both will be running on the system until these tasks run.
+#
+# These tasks will ensure that the correct agent is the only one running.
+
+- name: Check if LBaaS agent v1 upstart script exists when v2 is in neutron_plugin_base
+  stat: path=/etc/init/neutron-lbaas-agent.conf
+  register: neutron_lbaas_upstart
+  when: neutron_lbaasv2 | bool
+
+- name: Check if LBaaS agent v2 upstart script exists when v1 is in neutron_plugin_base
+  stat: path=/etc/init/neutron-lbaasv2-agent.conf
+  register: neutron_lbaasv2_upstart
+  when: neutron_lbaas | bool
+
+- name: Ensure LBaaS v1 agent is stopped when v2 is in neutron_plugin_base
+  service:
+    name: neutron-lbaas-agent
+    enabled: no
+    state: stopped
+  when:
+    - neutron_lbaasv2 | bool
+    - neutron_lbaas_upstart.stat.exists
+
+- name: Ensure LBaaS v2 agent is stopped when v1 is in neutron_plugin_base
+  service:
+    name: neutron-lbaasv2-agent
+    enabled: no
+    state: stopped
+  when:
+    - neutron_lbaas | bool
+    - neutron_lbaasv2_upstart.stat.exists
