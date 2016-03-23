@@ -1,0 +1,11 @@
+---
+upgrade:
+  - The ``pip_get_pip_options`` override has been removed from group_vars,
+    resulting in the empty default being used. Previously this method was
+    used to lock the pip install source appropriately, but this has been
+    handled through the pip_lock_down role for several cycles. If a deployer
+    has implemented an override in user_variables based on the previous
+    group_vars settings then the settings should be reviewed. This override
+    may now be used for catering to situations where the pip installation
+    requires extra options set to allow installing through a proxy, or
+    disabling certificate validation.
