@@ -22,47 +22,13 @@
   hosts: repo_all[0]
   gather_facts: false
   user: root
-  pre_tasks:
-    - name: Delete old MANIFEST file if found
-      file:
-        state: absent
-        path: /tmp/MANIFEST.in
   tasks:
-    - name: download MANIFEST.in
-      get_url:
-        url: "{{ repo_upstream_manifest_url }}"
-        dest: /tmp/MANIFEST.in
-    - name: Sync the upstream repo(s)
-      shell: |
-        {{ rsync_commands }} \
-              {{ rsync_flags }} \
-              --files-from=/tmp/MANIFEST.in \
-              {{ repo_upstream_url | netloc }}::{{ mirror_name }} {{ mirror_path }}
-      become: yes
-      become_user: "{{ repo_service_user_name }}"
-    - name: Create sync directories
-      file:
-        state: directory
-        path: "{{ mirror_path }}/{{ item }}"
-        owner: "{{ repo_service_user_name }}"
-      with_items: rsync_dirs
-    - name: Sync supporting directories
-      shell: |
-        {{ rsync_commands }} \
-              {{ rsync_flags }} \
-              {{ repo_upstream_url | netloc }}::{{ mirror_name }}/{{ item }}/ {{ mirror_path }}/{{ item }}
-      with_items: rsync_dirs
-      become: yes
-      become_user: "{{ repo_service_user_name }}"
-  vars:
-    rsync_commands: rsync
-    rsync_flags: "-avzlHAX"
-    rsync_dirs:
-      - container_images
-      - downloads
-      - "venvs/{{ openstack_release }}"
-    mirror_path: "{{ repo_service_home_folder }}/repo"
-    mirror_name: "openstack_mirror"
-    repo_upstream_url: "https://rpc-repo.rackspace.com"
-    repo_upstream_manifest_url: "{{ repo_upstream_url }}/os-releases/{{ openstack_release }}/MANIFEST.in"
-    repo_service_user_name: nginx
+    - name: Print fail message
+      fail:
+        msg: |
+
+          ################################################################
+          # The repo clone capability is no longer supported.            #
+          # Please build packages locally using the repo-build.yml play. #
+          # This playbook will be removed in the Mitaka release.         #
+          ################################################################
