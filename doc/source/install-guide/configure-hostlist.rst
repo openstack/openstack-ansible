@@ -132,17 +132,6 @@ suitable short hostname for a compute host might be:
    container management bridge on each repository target host.
 
    The repository typically resides on one or more infrastructure hosts.
-   Alternatively, specify a value for the ``openstack_repo_url`` variable
-   in the ``/etc/openstack_deploy/user_group_vars.yml`` file. The value should
-   contain a URL for a host with the appropriate repository layout. For
-   example:
-
-   .. code-block:: yaml
-
-       openstack_repo_url: "https://rpc-repo.rackspace.com/"
-
-   Using ``repo-infra_hosts`` configures a local repository with the
-   appropriate layout and sets ``openstack_repo_url`` for you.
 
 #. Configure a list containing at least one optional storage host in the
    ``storage_hosts`` section:
