@@ -27,17 +27,17 @@
 
 ## Tempest service
 tempest_git_repo: https://git.openstack.org/openstack/tempest
-tempest_git_install_branch: bc850e2c36107db2f436252994482efb0ec1b7b3 # HEAD of "master" as of 18.03.2016
+tempest_git_install_branch: 6423d149b2100a99da84e63f19675de06d344d9e # HEAD of "master" as of 24.03.2016
 tempest_git_dest: "/opt/tempest_{{ tempest_git_install_branch | replace('/', '_') }}"
 
 
 ## NOVNC from source
 novncproxy_git_repo: https://github.com/kanaka/novnc
-novncproxy_git_install_branch: b403cb92fb8de82d04f305b4f14fa978003890d7 # HEAD of "master" as of 18.03.2016
+novncproxy_git_install_branch: b403cb92fb8de82d04f305b4f14fa978003890d7 # HEAD of "master" as of 24.03.2016
 novncproxy_git_dest: "/opt/novnc_{{ novncproxy_git_install_branch | replace('/', '_') }}"
 
 
 ## spice-html5 from source
 spicehtml5_git_repo: https://github.com/SPICE/spice-html5
-spicehtml5_git_install_branch: ab73d009487c8afd4def39b54a422499b4c13c40 # HEAD of "master" as of 18.03.2016
+spicehtml5_git_install_branch: ab73d009487c8afd4def39b54a422499b4c13c40 # HEAD of "master" as of 24.03.2016
 spicehtml5_git_dest: "/opt/spicehtml5_{{ spicehtml5_git_install_branch | replace('/', '_') }}"
