@@ -84,7 +84,7 @@ the ``nova_nova_conf_overrides`` variable:
         force_config_drive: True
 
 Libvirtd Connectivity and Authentication
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 By default, OpenStack-Ansible configures the libvirt daemon in the following
 way:

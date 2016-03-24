@@ -107,7 +107,7 @@ parameters:
 
 
 PLUMgrid Configurations
-~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
 
 On the Deployment Host create a PLUMgrid user variables file, using the sample in
 ``/opt/plumgrid-ansible/etc/user_pg_vars.yml.example`` and copy it to
@@ -199,4 +199,3 @@ automation scripts for the entire workflow described above)
 --------------
 
 .. include:: navigation.txt
-

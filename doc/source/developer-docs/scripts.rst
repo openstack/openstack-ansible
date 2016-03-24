@@ -33,8 +33,8 @@ The script also creates the ``openstack-ansible`` wrapper tool that provides
 the variable files to match ``/etc/openstack_deploy/user_*.yml`` as
 arguments to ``ansible-playbook`` as a convenience.
 
-.. core: https://github.com/ansible/ansible-modules-core
-.. extras: https://github.com/ansible/ansible-modules-extras
+.. _core: https://github.com/ansible/ansible-modules-core
+.. _extras: https://github.com/ansible/ansible-modules-extras
 
 bootstrap-aio.sh
 ----------------
@@ -45,7 +45,7 @@ necessary partitions, directories, and configurations. The script can be
 configured using environment variables - more details are provided on the
 `All-In-One`_ page.
 
-.. All-In-One: quickstart-aio
+.. _All-In-One: quickstart-aio
 
 Development and Testing
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -148,9 +148,9 @@ A consolidated set of all lint tests may be done locally by executing:
 
     tox -e linters
 
-.. PEP8: https://www.python.org/dev/peps/pep-0008/
-.. Bashate: https://github.com/openstack-dev/bashate
-.. ansible-lint: https://github.com/willthames/ansible-lint
+.. _PEP8: https://www.python.org/dev/peps/pep-0008/
+.. _Bashate: https://github.com/openstack-dev/bashate
+.. _ansible-lint: https://github.com/willthames/ansible-lint
 
 Documentation Build
 -------------------
