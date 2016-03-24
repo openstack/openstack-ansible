@@ -20,8 +20,7 @@ Chapter 4. Deployment configuration
    configure-ceilometer.rst
    configure-aodh.rst
    configure-keystone.rst
-   configure-lbaas.rst
-   configure-fwaas.rst
+   configure-network-services.rst
    configure-openstack.rst
    configure-sslcertificates.rst
    configure-configurationintegrity.rst
