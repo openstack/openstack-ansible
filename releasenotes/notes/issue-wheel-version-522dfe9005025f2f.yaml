@@ -1,0 +1,14 @@
+---
+issues:
+  - |
+    For OpenStack-Ansible Liberty versions >12.0.7,<12.0.9 the
+    wheel version pinned in OpenStack-Ansible (0.29.0) is higher
+    that the OpenStack upper-constraint (0.26.0). This causes an
+    issue where the repo-server install may fail because it
+    cannot find a version of wheel to install that meets the
+    requirements of <0.26.0 and ==0.29.0. A workaround for this
+    issue is to change the wheel package pin in the following files
+    ``wheel==0.26.0``.
+
+    * ``playbooks/inventory/group_vars/hosts.yml``
+    * ``requirements.txt``
