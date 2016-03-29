@@ -354,12 +354,11 @@ def _add_container_hosts(assignment, config, container_name, container_type,
         )
 
 
-def user_defined_setup(config, inventory, is_metal):
+def user_defined_setup(config, inventory):
     """Apply user defined entries from config into inventory.
 
     :param config: ``dict``  User defined information
     :param inventory: ``dict``  Living dictionary of inventory
-    :param is_metal: ``bol``  If true, a container entry will not be built
     """
     hvs = inventory['_meta']['hostvars']
     for key, value in config.iteritems():
@@ -377,7 +376,7 @@ def user_defined_setup(config, inventory, is_metal):
                 hvs[_key].update({
                     'ansible_ssh_host': _value['ip'],
                     'container_address': _value['ip'],
-                    'is_metal': is_metal,
+                    'is_metal': True,
                     'physical_host_group': key
                 })
 
@@ -386,7 +385,7 @@ def user_defined_setup(config, inventory, is_metal):
                 if not properties or not isinstance(properties, dict):
                     hvs[_key]['properties'] = dict()
 
-                hvs[_key]['properties'].update({'is_metal': is_metal})
+                hvs[_key]['properties'].update({'is_metal': True})
 
                 if 'host_vars' in _value:
                     for _k, _v in _value['host_vars'].items():
@@ -984,7 +983,7 @@ def main():
 
     # Load all of the IP addresses that we know are used and set the queue
     _set_used_ips(user_defined_config, dynamic_inventory)
-    user_defined_setup(user_defined_config, dynamic_inventory, is_metal=True)
+    user_defined_setup(user_defined_config, dynamic_inventory)
     skel_setup(environment, dynamic_inventory)
     skel_load(
         environment.get('physical_skel'),
