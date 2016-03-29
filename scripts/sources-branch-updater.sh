@@ -21,14 +21,19 @@
 ONLINE_BRANCH=${ONLINE_BRANCH:-"master"}
 SERVICE_FILE=${SERVICE_FILE:-"playbooks/defaults/repo_packages/openstack_services.yml"}
 OPENSTACK_SERVICE_LIST=${OPENSTACK_SERVICE_LIST:-"aodh ceilometer cinder glance heat keystone neutron nova"}
+OSA_ROLE_PATH="${OSA_ROLE_PATH:-playbooks/roles}"
+OSA_ROLE_PREFIX="${OSA_ROLE_PREFIX:-os}"
+OSA_ROLE_LOCAL="${OSA_ROLE_PATH}/${OSA_ROLE_PREFIX}"
 
 IFS=$'\n'
 
 if echo "$@" | grep -e '-h' -e '--help';then
     echo "
 Options:
-  -b|--branch       (name of branch, eg: stable/liberty)
-  -s|--service-file (path to service file to parse)
+  -b|--branch          (name of branch, eg: stable/liberty)
+  -s|--service-file    (path to service yaml file to parse)
+  -r|--osa-role-path   (path to stored roles to update, eg: 'playbooks/roles')
+  -p|--osa-role-prefix (the prefix in front of OpenStack service roles, eg: 'os')
 "
 exit 0
 fi
@@ -43,6 +48,14 @@ case $key in
     ;;
     -s|--service-file)
     SERVICE_FILE="$2"
+    shift
+    ;;
+    -r|--osa-role-path)
+    OSA_ROLE_PATH="$2"
+    shift
+    ;;
+    -p|--osa-role-prefix)
+    OSA_ROLE_PREFIX="$2"
     shift
     ;;
     *)
@@ -79,55 +92,57 @@ for repo in $(grep 'git_repo\:' ${SERVICE_FILE}); do
 
     # If the repo is in the specified list, then action the additional updates
     if [[ "${OPENSTACK_SERVICE_LIST}" =~ "${repo_name}" ]]; then
-      repo_tmp_path="/tmp/${repo_name}"
+      if [[ -d "${OSA_ROLE_LOCAL}_${repo_name}" ]]; then
+        repo_tmp_path="/tmp/${repo_name}"
 
-      # Ensure that the temp path doesn't exist
-      rm -rf ${repo_tmp_path}
+        # Ensure that the temp path doesn't exist
+        [[ -d "repo_tmp_path" ]] && rm -rf "${repo_tmp_path}"
 
-      # Do a shallow clone of the repo to work with
-      git clone --quiet --depth=10 --branch ${ONLINE_BRANCH} --no-checkout --single-branch ${repo_address} ${repo_tmp_path}
-      pushd ${repo_tmp_path} > /dev/null
-        git checkout --quiet ${branch_sha}
-      popd > /dev/null
+        # Do a shallow clone of the repo to work with
+        git clone --quiet --depth=5 --branch ${ONLINE_BRANCH} --no-checkout --single-branch ${repo_address} "${repo_tmp_path}"
+        pushd ${repo_tmp_path} > /dev/null
+          git checkout --quiet "${branch_sha}"
+        popd > /dev/null
 
-      # Update the policy files
-      find ${repo_tmp_path}/etc -name "policy.json" -exec \
-        cp {} "playbooks/roles/os_${repo_name}/templates/policy.json.j2" \;
+        # Update the policy files
+        find ${repo_tmp_path}/etc -name "policy.json" -exec \
+          cp {} "${OSA_ROLE_LOCAL}_${repo_name}/templates/policy.json.j2" \;
 
-      # Tweak the paste files
-      find ${repo_tmp_path}/etc -name "*[_-]paste.ini" -exec \
-        sed -i.bak "s|hmac_keys = SECRET_KEY|hmac_keys = {{ ${repo_name}_profiler_hmac_key }}|" {} \;
+        # Tweak the paste files
+        find ${repo_tmp_path}/etc -name "*[_-]paste.ini" -exec \
+          sed -i.bak "s|hmac_keys = SECRET_KEY|hmac_keys = {{ ${repo_name}_profiler_hmac_key }}|" {} \;
 
-      # Update the paste files
-      find ${repo_tmp_path}/etc -name "*[_-]paste.ini" -exec \
-        bash -c "name=\"{}\"; cp \${name} \"playbooks/roles/os_${repo_name}/templates/\$(basename \${name}).j2\"" \;
+        # Update the paste files
+        find ${repo_tmp_path}/etc -name "*[_-]paste.ini" -exec \
+          bash -c "name=\"{}\"; cp \${name} \"${OSA_ROLE_LOCAL}_${repo_name}/templates/\$(basename \${name}).j2\"" \;
 
-      # Tweak the rootwrap conf files
-      find ${repo_tmp_path}/etc -name "rootwrap.conf" -exec \
-        sed -i.bak "s|exec_dirs=|exec_dirs={{ ${repo_name}_bin }},|" {} \;
+        # Tweak the rootwrap conf files
+        find ${repo_tmp_path}/etc -name "rootwrap.conf" -exec \
+          sed -i.bak "s|exec_dirs=|exec_dirs={{ ${repo_name}_bin }},|" {} \;
 
-      # Update the rootwrap conf files
-      find ${repo_tmp_path}/etc -name "rootwrap.conf" -exec \
-        cp {} "playbooks/roles/os_${repo_name}/templates/rootwrap.conf.j2" \;
+        # Update the rootwrap conf files
+        find ${repo_tmp_path}/etc -name "rootwrap.conf" -exec \
+          cp {} "${OSA_ROLE_LOCAL}_${repo_name}/templates/rootwrap.conf.j2" \;
 
-      # Update the rootwrap filters
-      find ${repo_tmp_path}/etc -name "*.filters" -exec \
-        bash -c "name=\"{}\"; cp \${name} \"playbooks/roles/os_${repo_name}/files/rootwrap.d/\$(basename \${name})\"" \;
+        # Update the rootwrap filters
+        find ${repo_tmp_path}/etc -name "*.filters" -exec \
+          bash -c "name=\"{}\"; cp \${name} \"${OSA_ROLE_LOCAL}_${repo_name}/files/rootwrap.d/\$(basename \${name})\"" \;
 
-      # Update the yaml files for Ceilometer
-      if [ "${repo_name}" = "ceilometer" ]; then
-        find ${repo_tmp_path}/etc -name "*.yaml" -exec \
-          bash -c "name=\"{}\"; cp \${name} \"playbooks/roles/os_${repo_name}/templates/\$(basename \${name}).j2\"" \;
+        # Update the yaml files for Ceilometer
+        if [ "${repo_name}" = "ceilometer" ]; then
+          find ${repo_tmp_path}/etc -name "*.yaml" -exec \
+            bash -c "name=\"{}\"; cp \${name} \"${OSA_ROLE_LOCAL}_${repo_name}/templates/\$(basename \${name}).j2\"" \;
+        fi
+
+        # Update the yaml files for Heat
+        if [ "${repo_name}" = "heat" ]; then
+          find ${repo_tmp_path}/etc -name "*.yaml" -exec \
+            bash -c "name=\"{}\"; cp \${name} \"${OSA_ROLE_LOCAL}_${repo_name}/templates/\$(echo \${name} | rev | cut -sd / -f -2 | rev).j2\"" \;
+        fi
+
+        # Clean up the temporary files
+        [[ -d "repo_tmp_path" ]] && rm -rf "${repo_tmp_path}"
       fi
-
-      # Update the yaml files for Heat
-      if [ "${repo_name}" = "heat" ]; then
-        find ${repo_tmp_path}/etc -name "*.yaml" -exec \
-          bash -c "name=\"{}\"; cp \${name} \"playbooks/roles/os_${repo_name}/templates/\$(echo \${name} | rev | cut -sd / -f -2 | rev).j2\"" \;
-      fi
-
-      # Clean up the temporary files
-      rm -rf ${repo_tmp_path}
     fi
   fi
 
