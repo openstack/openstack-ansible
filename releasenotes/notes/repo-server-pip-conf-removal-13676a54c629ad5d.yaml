@@ -1,0 +1,13 @@
+---
+issues:
+  - Depending on when the initial Kilo deployment was done it
+    is possible the repository servers have a pip.conf locking
+    down the environment which limits the packages available to
+    to install. If this file is present it will cause build
+    failures as the repository server attempts to build
+    Liberty packages.
+upgrade:
+  - To fix this issue the ``pip.conf`` file needs to be removed
+    from all repository servers. The upgrade playbook
+    ``repo-server-pip-conf-removal.yml`` will remove the pip.conf
+    file from the repository servers if it's found.

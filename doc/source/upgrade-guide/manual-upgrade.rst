@@ -98,6 +98,21 @@ Before installing the infrastructure and OpenStack, update the host machines.
 
 This command is the same as doing host setups on a new install.
 
+Cleanup pip.conf file in the repo_servers if found
+--------------------------------------------------
+
+It is possible that a ``pip.conf`` file may exist within the repository server
+infrastructure. If this file exists it will cause build failures when upgrading
+to Liberty. This play will remove the ``pip.conf`` file from the repository
+servers if it's found.
+
+See :ref:`repo-server-pip-conf-removal` for more details.
+
+.. code-block:: console
+
+    # openstack-ansible "${UPGRADE_PLAYBOOKS}/repo-server-pip-conf-removal.yml
+
+
 Upgrade infrastructure
 ----------------------
 
