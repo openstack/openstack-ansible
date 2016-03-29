@@ -396,13 +396,13 @@ def user_defined_setup(config, inventory, is_metal):
                 append_if(array=inventory[key]['hosts'], item=_key)
 
 
-def skel_setup(environment_file, inventory):
+def skel_setup(environment, inventory):
     """Build out the main inventory skeleton as needed.
 
-    :param environment_file: ``dict`` Known environment information
+    :param environment: ``dict`` Known environment information
     :param inventory: ``dict``  Living dictionary of inventory
     """
-    for key, value in environment_file.iteritems():
+    for key, value in environment.iteritems():
         if key == 'version':
             continue
         for _key, _value in value.iteritems():
