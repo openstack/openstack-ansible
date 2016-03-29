@@ -1,0 +1,20 @@
+---
+features:
+  - Services deploy into virtual environments by default
+    when the service relies on Python. Find the virtualenv
+    for each service under ``/openstack/venvs/`` on the
+    host or in the container where the service is
+    deployed. Disable the use of virtualenv by overriding
+    the service-specific variable (for example
+    ``cinder_venv_enabled``) which defaults to ``True``.
+issues:
+  - Services deploy into virtual environments by default
+    when the service relies on Python. On upgrade any
+    Python packages installed on the host or container are
+    not upgraded with the release unless the virtualenv
+    for that service is disabled. There might be older and
+    possibly broken packages left on the system outside of
+    the virtualenv, which can cause confusion for those
+    who attempt to use Python-based tools or services
+    without using the virtualenv. These left over packages
+    can be manually removed at the operator's discretion.
