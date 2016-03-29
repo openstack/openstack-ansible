@@ -899,15 +899,12 @@ def _check_config_settings(cidr_networks, config, container_skel):
                     )
 
 
-def main():
-    """Run the main application."""
-    all_args = args()
-    user_defined_config = dict()
+def load_user_configuration(config_path):
+    """Create a user configuration dictionary from config files
 
-    # Get the path to the user configuration files
-    config_path = find_config_path(
-        user_config_path=all_args.get('config')
-    )
+    :param config_path: ``str`` path where the configuration files are kept
+    """
+    user_defined_config = dict()
 
     # Load the user defined configuration file
     user_config_file = os.path.join(config_path, 'openstack_user_config.yml')
@@ -927,6 +924,18 @@ def main():
             'No openstack_user_config files are available in either \n%s'
             '\nor \n%s/conf.d directory' % (config_path, config_path)
         )
+    return user_defined_config
+
+
+def main():
+    """Run the main application."""
+    all_args = args()
+    # Get the path to the user configuration files
+    config_path = find_config_path(
+        user_config_path=all_args.get('config')
+    )
+
+    user_defined_config = load_user_configuration(config_path)
 
     environment = dict()
 
