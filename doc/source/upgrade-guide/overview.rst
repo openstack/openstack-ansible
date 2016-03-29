@@ -55,8 +55,8 @@ See :ref:`setup-infra-playbook` for details.
 RabbitMQ Upgrade
 ----------------
 
-The RabbitMQ server can be upgraded during an OpenStack-Ansible upgrade. For
-Liberty, upgrading RabbitMQ is optional.
+The RabbitMQ server can be upgraded during an OpenStack-Ansible upgrade. When
+upgrading from an early Kilo release, the update will be mandatory.
 
 See :ref:`setup-infra-playbook` for details.
 
