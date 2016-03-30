@@ -144,7 +144,7 @@ function main {
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/ansible_fact_cleanup.yml")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/deploy-config-changes.yml")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/user-secrets-adjustment.yml")
-        RUN_TAKS+=("setup-hosts.yml")
+        RUN_TASKS+=("setup-hosts.yml")
         # A Galera/MariaDB upgrade is mandatory. See the upgrade
         # playbooks documentation for more details.
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/repo-server-pip-conf-removal.yml")
