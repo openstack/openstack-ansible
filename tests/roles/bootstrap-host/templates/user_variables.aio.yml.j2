@@ -34,11 +34,7 @@ aodh_db_ip: {{ bootstrap_host_mongodb_address }}
 aodh_db_port: 27017
 
 ## Glance Options
-# this has been set to file in the gate because of an upstream bug in glance_store:
-#  * https://bugs.launchpad.net/glance/+bug/1561947
-#  once this issue has been resolved this _needs_ to be reset to "swift" for full
-#  integration testing in a psuedo production environment.
-glance_default_store: file
+glance_default_store: swift
 
 ## SSL Settings
 ssl_protocol: "ALL -SSLv2 -SSLv3"
