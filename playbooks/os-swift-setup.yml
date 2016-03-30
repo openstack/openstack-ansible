@@ -136,6 +136,8 @@
       swift_venv_download_url: "{{ openstack_repo_url }}/venvs/{{ openstack_release }}/{{ ansible_distribution | lower }}/swift-{{ openstack_release }}.tgz"
       swift_storage_address: "{{ storage_address }}"
       swift_replication_address: "{{ replication_address }}"
+      swift_do_setup: True
+      swift_do_sync: False
       tags:
         - "os-swift"
     - role: "rsyslog_client"

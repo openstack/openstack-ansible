@@ -20,7 +20,9 @@
   max_fail_percentage: 20
   user: root
   roles:
-    - role: "os_swift_sync"
+    - role: "os_swift"
+      swift_do_setup: False
+      swift_do_sync: True
       swift_venv_tag: "{{ openstack_release }}"
       tags:
         - "os-swift-sync"
