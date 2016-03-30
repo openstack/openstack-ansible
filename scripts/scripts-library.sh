@@ -97,14 +97,6 @@ function ssh_key_create {
 
 function exit_state {
   set +x
-  # Check if the logs link is in place. This will only be true when the
-  # environment was built by the gate-check-commit script.
-  if [ -h $(dirname ${0})/../logs ]; then
-    # Ensure that all directories may be traversed by all users, and that
-    # all files are readable by all users.
-    chmod --recursive o+rX $(dirname ${0})/../logs
-  fi
-
   TOTALSECONDS="$(( $(date +%s) - STARTTIME ))"
   info_block "Run Time = ${TOTALSECONDS} seconds || $((TOTALSECONDS / 60)) minutes"
   if [ "${1}" == 0 ];then
@@ -117,6 +109,7 @@ function exit_state {
 
 function exit_success {
   set +x
+  [[ "${OSA_GATE_JOB:-false}" = true ]] && gate_job_exit_tasks
   exit_state 0
 }
 
@@ -125,7 +118,12 @@ function exit_fail {
   log_instance_info
   cat ${INFO_FILENAME}
   info_block "Error Info - $@"
+  [[ "${OSA_GATE_JOB:-false}" = true ]] && gate_job_exit_tasks
   exit_state 1
+}
+
+function gate_job_exit_tasks {
+  [[ -d "/openstack/log" ]] && chmod -R 0777 /openstack/log
 }
 
 function print_info {
@@ -255,7 +253,6 @@ function get_pip {
     exit_fail
   fi
 }
-
 
 ## Signal traps --------------------------------------------------------------
 # Trap all Death Signals and Errors
