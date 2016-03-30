@@ -157,7 +157,11 @@ pool_timeout = {{ neutron_db_pool_timeout }}
 
 # Service providers
 [service_providers]
+{% if neutron_lbaas | bool %}
 service_provider = LOADBALANCER:Haproxy:neutron_lbaas.services.loadbalancer.drivers.haproxy.plugin_driver.HaproxyOnHostPluginDriver:default
+{% elif neutron_lbaasv2 | bool %}
+service_provider = LOADBALANCERV2:Haproxy:neutron_lbaas.drivers.haproxy.plugin_driver.HaproxyOnHostPluginDriver:default
+{% endif %}
 #service_provider = VPN:openswan:neutron.services.vpn.service_drivers.ipsec.IPsecVPNDriver:default
 
 {% endif %}

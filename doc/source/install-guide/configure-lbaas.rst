@@ -10,13 +10,29 @@ case is when you want to use multiple instances to serve web pages and want to
 meet high performance or availability goals.
 
 OpenStack-Ansible currently provides the OpenStack Neutron LBaaS service using
-HAProxy as the load balancer.
+HAProxy as the load balancer. LBaaS has two implementations available: v1 and
+v2.
 
-The following procedure describes how to modify the
-``/etc/openstack_deploy/user_variables.yml`` file to enable LBaaS.
+Both implementations use agents that manage `HAProxy`_ daemons. However, LBaaS
+v1 has a limitation of one port per load balancer.  LBaaS v2 allows for multiple
+ports (called *listeners*) per load balancer.
 
-#. Override the default list of Neutron plugins used in order to include
-   ``neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPlugin``:
+.. note::
+
+   Horizon panels for LBaaS v2 are not yet available.
+
+.. _HAProxy: http://www.haproxy.org/
+
+Deploying LBaaS v1
+~~~~~~~~~~~~~~~~~~
+
+.. note::
+
+    LBaaS v1 was deprecated during the Liberty release and is not recommended
+    for new deployments.
+
+#. Start by adding the LBaaS v1 plugin to the ``neutron_plugin_base`` variable
+   within ``/etc/openstack_deploy/user_variables.yml``.
 
    .. code-block:: yaml
 
@@ -25,25 +41,59 @@ The following procedure describes how to modify the
         - neutron.services.metering.metering_plugin.MeteringPlugin
         - neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPlugin
 
-#. Execute the Neutron install playbook in order to update the configuration
-   of the Neutron Agents:
+   Ensure that ``neutron_plugin_base`` includes all of the plugins that you
+   want to deploy with Neutron **in addition** to the LBaaS plugin.
 
-   .. code-block:: shell-session
+#. Run the Neutron and Horizon playbooks to deploy the LBaaS v1 agent and enable
+   the LBaaS panels in Horizon.
+
+   .. code-block:: console
+
+       # cd /opt/openstack-ansible/playbooks
+       # openstack-ansible os-neutron-install.yml
+       # openstack-ansible os-horizon-install.yml
+
+Deploying LBaaS v2
+~~~~~~~~~~~~~~~~~~
+
+#. Start by adding the LBaaS v2 plugin to the ``neutron_plugin_base`` variable
+   within ``/etc/openstack_deploy/user_variables.yml``.
+
+   .. code-block:: yaml
+
+      neutron_plugin_base:
+        - neutron.services.l3_router.l3_router_plugin.L3RouterPlugin
+        - neutron.services.metering.metering_plugin.MeteringPlugin
+        - neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPluginv2
+
+   Ensure that ``neutron_plugin_base`` includes all of the plugins that you
+   want to deploy with Neutron **in addition** to the LBaaS plugin.
+
+#. Run the Neutron playbook to deploy the LBaaS v2 agent:
+
+   .. code-block:: console
 
        # cd /opt/openstack-ansible/playbooks
        # openstack-ansible os-neutron-install.yml
 
-#. Execute the Horizon install playbook in order to update the Horizon
-   configuration to show the LBaaS panels:
-
-   .. code-block:: shell-session
-
-       # cd /opt/openstack-ansible/playbooks
-       # openstack-ansible os-horizon-install.yml
+Special notes about LBaaS
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The LBaaS default configuration options may be changed through the
 `conf override`_ mechanism using the ``neutron_lbaas_agent_ini_overrides``
 dict.
+
+LBaaS v1 and v2 agents cannot run at the same time. If a deployer switches from
+LBaaS v1 to v2, the v2 agent will be the only agent running. The LBaaS v1 agent
+will be stopped along with any load balancers provisioned under the v1 agent.
+The same is true if a deployer chooses to move from LBaaS v2 to v1.
+
+Load balancers are not migrated between LBaaS v1 and v2 automatically. Each
+implementation has different code paths and database tables. Deployers will need
+to manually delete load balancers, pools, and members before switching LBaaS
+versions. Those objects will need to be re-created afterwards.
+
+
 
 .. _conf override: http://docs.openstack.org/developer/openstack-ansible/install-guide/configure-openstack.html
 

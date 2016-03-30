@@ -48,7 +48,7 @@
   with_items: neutron_lbaas_apt_packages
   when:
     - inventory_hostname in groups[neutron_services['neutron-lbaas-agent']['group']]
-    - neutron_lbaas | bool
+    - neutron_lbaas | bool or neutron_lbaasv2 | bool
   tags:
     - neutron-install
     - neutron-apt-packages

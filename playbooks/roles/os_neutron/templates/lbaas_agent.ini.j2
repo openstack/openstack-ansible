@@ -27,7 +27,11 @@ interface_driver = {{ neutron_driver_interface }}
 # device_driver = path.to.provider1.driver.Driver
 # device_driver = path.to.provider2.driver.Driver
 # Default is:
+{% if neutron_lbaas | bool %}
 device_driver = neutron_lbaas.services.loadbalancer.drivers.haproxy.namespace_driver.HaproxyNSDriver
+{% elif neutron_lbaasv2 | bool %}
+device_driver = neutron_lbaas.drivers.haproxy.namespace_driver.HaproxyNSDriver
+{% endif %}
 
 [haproxy]
 # Location to store config and state files

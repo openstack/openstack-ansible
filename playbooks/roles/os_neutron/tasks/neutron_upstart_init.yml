@@ -110,3 +110,17 @@
     - neutron_services['neutron-lbaas-agent'].service_en | bool
   tags:
     - upstart-init
+
+- include: neutron_upstart_common_init.yml
+  vars:
+    program_name: "{{ neutron_services['neutron-lbaasv2-agent'].service_name }}"
+    program_config_options: "{{ neutron_services['neutron-lbaasv2-agent'].config_options }}"
+    service_name: "{{ neutron_service_name }}"
+    system_user: "{{ neutron_system_user_name }}"
+    system_group: "{{ neutron_system_group_name }}"
+    service_home: "{{ neutron_system_home_folder }}"
+  when:
+    - inventory_hostname in groups[neutron_services['neutron-lbaasv2-agent']['group']]
+    - neutron_services['neutron-lbaasv2-agent'].service_en | bool
+  tags:
+    - upstart-init
