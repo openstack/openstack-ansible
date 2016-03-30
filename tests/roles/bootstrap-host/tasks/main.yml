@@ -106,6 +106,7 @@
 
 # Prepare the MongoDB Users for Ceilometer
 - include: prepare_mongodb_users.yml
+  when: bootstrap_host_mongodb_users | bool
   tags:
     - prepare-mongodb-users
 
