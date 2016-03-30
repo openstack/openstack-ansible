@@ -88,6 +88,9 @@ bootstrap_host_data_disk_min_size: 60
 # Boolean value to deploy and configure the MongoDB service on the host.
 bootstrap_host_mongodb_service: yes
 #
+# Boolean value to configure the required MongoDB users
+bootstrap_host_mongodb_users: "{{ bootstrap_host_mongodb_service }}"
+#
 # Specify the IP address of a MongoDB Host.
 bootstrap_host_mongodb_address: 172.29.236.100
 
