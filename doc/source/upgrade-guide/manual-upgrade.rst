@@ -121,11 +121,15 @@ relevant Liberty settings and packages. However, MariaDB/Galera needs an
 extra option to specify an upgrade from the 5.5 series to 10.0. This upgrade
 is required for the Liberty release of OpenStack-Ansible.
 
+RabbitMQ may need a minor version upgrade depending on what version of Kilo
+was previously installed.
+
 See :ref:`setup-infra-playbook` for details.
 
 .. code-block:: console
 
-    # openstack-ansible setup-infrastructure.yml -e 'galera_upgrade=true'
+    # openstack-ansible setup-infrastructure.yml -e 'galera_upgrade=true' \
+    -e 'rabbitmq_upgrade=true'
 
 
 Disable Neutron port security driver
