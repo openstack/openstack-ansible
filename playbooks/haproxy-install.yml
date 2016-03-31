@@ -102,25 +102,6 @@
       when: is_metal | bool
       tags:
         - haproxy-logs
-  post_tasks:
-    - name: Add keystone internal endpoint config
-      include: roles/haproxy_server/tasks/haproxy_service_config.yml
-      when: internal_lb_vip_address != external_lb_vip_address
-      vars_files:
-         - vars/configs/haproxy_config.yml
-      vars:
-        haproxy_service_configs:
-          - service:
-              haproxy_service_name: keystone_internal
-              haproxy_backend_nodes: "{{ groups['keystone_all'] }}"
-              haproxy_bind: "{{ internal_lb_vip_address }}"
-              haproxy_port: 5000
-              haproxy_ssl: "{% if haproxy_ssl | bool and keystone_service_internaluri_proto == 'https' %}true{% else %}false{% endif %}"
-              haproxy_balance_type: "{{ (keystone_ssl_internal | bool) | ternary('tcp','http') }}"
-              haproxy_balance_alg: "{{ (keystone_ssl_internal | bool) | ternary('source', 'leastconn') }}"
-              haproxy_backend_options: "{{ (keystone_ssl_internal | bool) | ternary(haproxy_backend_options_https, haproxy_backend_options_http) }}"
-      tags:
-        - haproxy-service-config
     - name: Remove legacy haproxy logging file
       file:
         dest: "/etc/rsyslog.d/haproxy.conf"
@@ -129,6 +110,19 @@
         - haproxy-service-config
   roles:
     - { role: "haproxy_server", tags: [ "haproxy-server" ] }
+    - role: haproxy_server
+      haproxy_service_configs:
+        - service:
+            haproxy_service_name: keystone_internal
+            haproxy_backend_nodes: "{{ groups['keystone_all'] }}"
+            haproxy_bind: "{{ internal_lb_vip_address }}"
+            haproxy_port: 5000
+            haproxy_ssl: "{% if haproxy_ssl | bool and keystone_service_internaluri_proto == 'https' %}true{% else %}false{% endif %}"
+            haproxy_balance_type: "{{ (keystone_ssl_internal | bool) | ternary('tcp','http') }}"
+            haproxy_balance_alg: "{{ (keystone_ssl_internal | bool) | ternary('source', 'leastconn') }}"
+            haproxy_backend_options: "{{ (keystone_ssl_internal | bool) | ternary(haproxy_backend_options_https, haproxy_backend_options_http) }}"
+      when: internal_lb_vip_address != external_lb_vip_address
+
     - role: "rsyslog_client"
       rsyslog_client_log_rotate_file: haproxy_log_rotate
       rsyslog_client_log_dir: "/var/log/haproxy"
@@ -140,3 +134,4 @@
     - vars/configs/haproxy_config.yml
   vars:
     is_metal: "{{ properties.is_metal|default(false) }}"
+
