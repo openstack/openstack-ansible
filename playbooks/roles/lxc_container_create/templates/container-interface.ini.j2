@@ -4,7 +4,7 @@
 lxc.network.type = {{ item.value.type|default('veth') }}
 # Network device within the container
 lxc.network.name = {{ item.value.interface }}
-{% if item.value.type == 'veth' or item.value.type is none %}
+{% if item.value.type is not defined or item.value.type == 'veth' %}
 # Name the veth after the container
 # NOTE(major): The lxc.network.veth.pair line must appear right after
 # lxc.network.name or it will be ignored.
