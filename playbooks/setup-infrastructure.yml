@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- include: haproxy-install.yml
 - include: memcached-install.yml
 - include: repo-install.yml
 - include: galera-install.yml
