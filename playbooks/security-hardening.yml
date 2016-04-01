@@ -1,5 +1,5 @@
 ---
-# Copyright 2014, Rackspace US, Inc.
+# Copyright 2016, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 # As an additional safeguard, this playbook requires the
 # 'apply_security_hardening' boolean set to True for it to apply security
 # hardening standards to a system.
+
 - name: Apply security hardening configurations
   hosts: "{{ host_group|default('hosts') }}"
   user: root
