@@ -223,7 +223,7 @@
 #
 # --------
 #
-# Level: swift_proxy-hosts (required)
+# Level: swift-proxy_hosts (required)
 # List of target hosts on which to deploy the swift proxy service. Recommend
 # three minimum target hosts for these services. Typically contains the same
 # target hosts as the 'shared-infra_hosts' level in complete OpenStack
@@ -271,7 +271,7 @@
 #
 # Define three swift proxy hosts:
 #
-# swift_proxy-hosts:
+# swift-proxy_hosts:
 #
 #   infra1:
 #     ip: 172.29.236.101
