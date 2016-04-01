@@ -80,7 +80,6 @@
 - name: Retrieve nova secret from cephcluster
   command: ceph auth get-key client.{{ nova_ceph_client }}
   when: inventory_hostname in groups.nova_compute
-  register: ceph_client_nova_secret
   always_run:   true
   changed_when: false
   failed_when:  false
