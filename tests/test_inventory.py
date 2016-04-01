@@ -147,6 +147,7 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'neutron_linuxbridge_agent',
         'neutron_metadata_agent',
         'neutron_metering_agent',
+        'neutron_openvswitch_agent',
         'neutron_server',
         'neutron_server_container',
         'nova_all',

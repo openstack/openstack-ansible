@@ -1,0 +1,9 @@
+---
+upgrade:
+  - The new host group ``neutron_openvswitch_agent`` has been added to the ``env.d/neutron.yml``
+    and ``env.d/nova.yml`` environment configuration files in order to support the implementation
+    of Open vSwitch. Deployers must ensure that their environment configuration files are updated
+    to include the above group name. Please see the example implementations in
+    `env.d/neutron.yml <https://github.com/openstack/openstack-ansible/blob/stable/newton/etc/openstack_deploy/env.d/neutron.yml>`_
+    and
+    `env.d/nova.yml <https://github.com/openstack/openstack-ansible/blob/stable/newton/etc/openstack_deploy/env.d/nova.yml>`_.
