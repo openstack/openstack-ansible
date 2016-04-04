@@ -40,6 +40,7 @@
   with_items:
     - { src: "rabbitmq.config.j2", dest: "/etc/rabbitmq/rabbitmq.config" }
     - { src: "rabbitmq-server.j2", dest: "/etc/default/rabbitmq-server" }
+    - { src: "rabbitmq-env.j2", dest: "/etc/rabbitmq/rabbitmq-env.conf" }
   tags:
     - rabbitmq-config
 

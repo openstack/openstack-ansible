@@ -68,3 +68,7 @@ rabbitmq_ssl_self_signed_subject: "/C=US/ST=Texas/L=San Antonio/O=IT/CN={{ conta
 #rabbitmq_user_ssl_cert: <path to cert on ansible deployment host>
 #rabbitmq_user_ssl_key: <path to cert on ansible deployment host>
 #rabbitmq_user_ssl_ca_cert: <path to cert on ansible deployment host>
+
+# RabbitMQ erlang VM parameters
+rabbitmq_async_threads: 128
+rabbitmq_process_limit: 1048576

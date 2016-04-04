@@ -1,0 +1,9 @@
+---
+features:
+  - New rabbitmq-server role override rabbitmq_async_threads defaults to
+    128 threads for IO operations inside the RabbitMQ erlang VM.
+    This setting doubled the threads for IO operations.
+  - New rabbitmq-server role override rabbitmq_process_limit defaults to
+    1048576 for number of concurrent processes inside the erlang VM.
+    Each network connection and file handle does need its own
+    process inside erlang.
