@@ -26,6 +26,21 @@
     - galera-cluster-state-check
     - galera-bootstrap
 
+- name: Check that WSREP is ready
+  shell: "/usr/bin/mysqladmin --defaults-file=/etc/mysql/debian.cnf extended-status | egrep '(wsrep_ready|wsrep_evs_state)'"
+  changed_when: >
+    _mysql_ready.rc != 0
+  register: _mysql_ready
+  when: _mysql_running.rc == 0
+  until:
+    - _mysql_ready.rc == 0
+    - (_mysql_ready.stdout).find("ON") != -1
+  retries: "{{ num_retries }}"
+  delay: "{{ wait_delay }}"
+  tags:
+    - galera-cluster-state-check
+    - galera-bootstrap
+
 - name: Set running state fact
   set_fact:
     mysql_running: "{{ _mysql_running }}"

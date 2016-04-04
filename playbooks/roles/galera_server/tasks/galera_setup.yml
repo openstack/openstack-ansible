@@ -41,5 +41,9 @@
       password: "{{ galera_monitoring_user_password }}"
       priv: "*.*:USAGE"
       state: present
+  register: galera_users
+  until: galera_users | success
+  retries: 10
+  delay: 3
   tags:
     - galera-user-create

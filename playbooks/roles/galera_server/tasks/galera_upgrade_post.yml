@@ -35,11 +35,15 @@
 
 - include: galera_running_check.yml
   vars:
-    num_retries: 1
+    num_retries: 10
     wait_delay: 3
 
 - name: Run MySQL Upgrade
   command: "/usr/bin/mysql_upgrade"
+  register: galera_mysql_upgrade
+  until: galera_mysql_upgrade | success
+  retries: 3
+  delay: 10
   when:
     - galera_upgrade | bool
   tags:
