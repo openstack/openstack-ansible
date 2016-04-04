@@ -9,4 +9,7 @@
         maxage 60
         notifempty
         nocreate
+        postrotate
+            restart rsyslog 2>&1 || true
+        endscript
 }
