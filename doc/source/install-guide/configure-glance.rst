@@ -34,6 +34,32 @@ The configuration above will configure the Image Service to use rbd (Ceph) by
 default, but the swift, http and cinder stores will also be enabled in the
 Image Service configuration files.
 
+
+The following example sets glance to use the ``images`` pool.
+The example uses cephx authentication and requires an existing ``glance``
+account for the ``images`` pool.
+
+
+in ``user_variables.yml``
+
+   .. code-block:: yaml
+
+    glance_default_store: rbd
+    ceph_mons:
+      - 172.29.244.151
+      - 172.29.244.152
+      - 172.29.244.153
+
+
+You can use the following variables if you are not using the defaults:
+
+    .. code-block:: yaml
+
+     glance_ceph_client: <glance-username>
+     glance_rbd_store_pool: <glance-pool-name>
+     glance_rbd_store_chunk_size: <chunk-size>
+
+
 Storing images in Cloud Files
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
