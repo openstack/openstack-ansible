@@ -105,6 +105,10 @@ minimum requirements:
   * OSA is tested regularly against the latest Ubuntu 14.04 LTS point
     releases
   * Linux kernel version ``3.13.0-34-generic`` or later
+  * For swift storage hosts, you must enable the ``trusty-backports``
+    repositories in ``/etc/apt/sources.list`` or ``/etc/apt/sources.list.d/``
+    See the `Ubuntu documentation
+    <https://help.ubuntu.com/community/UbuntuBackports#Enabling_Backports_Manually>`_ for more detailed instructions.
 
 * Secure Shell (SSH) client and server that supports public key
   authentication
