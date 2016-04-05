@@ -22,7 +22,6 @@ Configuring Cinder to use LVM
    limit_container_types are optional.
 
 
-
    To configure an LVM you would utilize the following example:
 
    .. code-block:: yaml
@@ -50,7 +49,11 @@ Configuring Cinder to use Ceph
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In order for Cinder to use Ceph it will be necessary to configure for both
-the API and backend.
+the API and backend. When using any forms of network storage
+(iSCSI, NFS, Ceph ) for cinder, the API containers can be considered
+as backend servers, so a separate storage host is not required.
+
+In ``env.d/cinder.yml`` remove/disable ``is_metal: true``
 
 #. List of target hosts on which to deploy the cinder API. It is recommended
    that a minumum of three target hosts are used for this service.
@@ -65,16 +68,6 @@ the API and backend.
          infra3:
            ip: 172.29.236.103
 
-#. List of target hosts on which to deploy the cinder volume service. It is
-   recommended that there is at least one target host for this service configured.
-   Typically this list contains target hosts that do not reside in other levels of
-   the configuration.
-
-   .. code-block:: yaml
-
-       storage_hosts:
-         storage1:
-           ip: 172.29.236.121 ...
 
    To configure an RBD backend utilize the following example:
 
@@ -96,6 +89,79 @@ the API and backend.
            volume_backend_name: volumes_hdd
            rbd_user: "{{ cinder_ceph_client }}"
            rbd_secret_uuid: "{{ cinder_ceph_client_uuid }}"
+
+
+The following example sets cinder to use the ``cinder_volumes`` pool.
+The example uses cephx authentication and requires existing ``cinder``
+account for ``cinder_volumes`` pool.
+
+
+in ``user_variables.yml``
+
+   .. code-block:: yaml
+
+
+    ceph_mons:
+      - 172.29.244.151
+      - 172.29.244.152
+      - 172.29.244.153
+
+
+
+
+in ``openstack_user_config.yml``
+
+  .. code-block:: yaml
+
+
+   storage_hosts:
+    infra1:
+     ip: 172.29.236.101
+     container_vars:
+      cinder_backends:
+        limit_container_types: cinder_volume
+        rbd:
+          volume_group: cinder-volumes
+          volume_driver: cinder.volume.drivers.rbd.RBDDriver
+          volume_backend_name: rbd
+          rbd_pool: cinder-volumes
+          rbd_ceph_conf: /etc/ceph/ceph.conf
+          rbd_user: cinder
+    infra2:
+     ip: 172.29.236.102
+     container_vars:
+      cinder_backends:
+        limit_container_types: cinder_volume
+        rbd:
+          volume_group: cinder-volumes
+          volume_driver: cinder.volume.drivers.rbd.RBDDriver
+          volume_backend_name: rbd
+          rbd_pool: cinder-volumes
+          rbd_ceph_conf: /etc/ceph/ceph.conf
+          rbd_user: cinder
+    infra3:
+     ip: 172.29.236.103
+     container_vars:
+      cinder_backends:
+        limit_container_types: cinder_volume
+        rbd:
+          volume_group: cinder-volumes
+          volume_driver: cinder.volume.drivers.rbd.RBDDriver
+          volume_backend_name: rbd
+          rbd_pool: cinder-volumes
+          rbd_ceph_conf: /etc/ceph/ceph.conf
+          rbd_user: cinder
+
+
+
+This link provides a complete working example of ceph setup and
+integration with cinder (nova and glance included)
+
+* `OpenStack-Ansible and Ceph Working Example`_
+
+.. _OpenStack-Ansible and Ceph Working Example: https://www.openstackfaq.com/openstack-ansible-ceph/
+
+
 
 Configuring Cinder to use a NetApp appliance
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
