@@ -1,0 +1,7 @@
+---
+features:
+  - Host security hardening is now applied by default using the
+    ``openstack-ansible-security`` role. Developers can opt out by setting the
+    ``apply_security_hardening`` Ansible variable to ``false``. For more
+    information about the role and the changes it makes, refer to the
+    `openstack-ansible-security documentation <http://docs.openstack.org/developer/openstack-ansible-security/>`_.
