@@ -74,6 +74,12 @@ pushd ${PLAYBOOK_PATH}/playbooks
           -m "file" \
           -a "path=/root/.pip/links.d/rpc_release.link state=absent" || true
 
+  # Remove MariaDB repositories left over from Juno, forces True as
+  #  containers may not exist at this point.
+  ansible "hosts:all_containers" \
+          -m "shell" \
+          -a "sed -i '/http:.*maria.*/d' /etc/apt/sources.list.d/*" || true
+
   ansible haproxy_hosts \
           -m "file" \
           -a "path=/etc/haproxy/conf.d/nova_api_ec2 state=absent" || true

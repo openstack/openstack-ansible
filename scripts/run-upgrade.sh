@@ -145,17 +145,15 @@ pushd ${MAIN_PATH}/playbooks
 
   RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/remove-juno-log-rotate.yml || true")
 
-  RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/mariadb-apt-cleanup.yml")
-
   RUN_TASKS+=("openstack-hosts-setup.yml")
 
   RUN_TASKS+=("lxc-hosts-setup.yml")
 
-  RUN_TASKS+=("lxc-containers-create.yml --limit '!galera_all:!nova_scheduler:!nova_conductor:!rabbitmq_all:!cinder_scheduler:!neutron_agent'")
+  RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/lxc-containers-create-upgrade-step-1.yml --limit '!galera_all:!nova_scheduler:!nova_conductor:!rabbitmq_all:!cinder_scheduler:!neutron_agent'")
 
-  RUN_TASKS+=("lxc-containers-create.yml --limit 'galera_all[0]:nova_scheduler[0]:nova_conductor[0]:rabbitmq_all[0]:cinder_scheduler[0]:neutron_agent[0]'")
+  RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/lxc-containers-create-upgrade-step-2.yml --limit 'galera_all[0]:nova_scheduler[0]:nova_conductor[0]:rabbitmq_all[0]:cinder_scheduler[0]:neutron_agent[0]'")
 
-  RUN_TASKS+=("lxc-containers-create.yml --limit 'galera_all[1-999]:nova_scheduler[1-999]:nova_conductor[1-999]:rabbitmq_all[1-999]:cinder_scheduler[1-999]:neutron_agent[1-999]'")
+  RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/lxc-containers-create-upgrade-step-3.yml --limit 'galera_all[1-999]:nova_scheduler[1-999]:nova_conductor[1-999]:rabbitmq_all[1-999]:cinder_scheduler[1-999]:neutron_agent[1-999]'")
 
   RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/container-network-bounce.yml || true")
 
