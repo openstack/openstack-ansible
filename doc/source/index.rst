@@ -17,8 +17,8 @@ review.
    install-guide/index
    developer-docs/index
 
-.. _Mitaka Series Timeline: https://launchpad.net/openstack-ansible/trunk
-.. _Mitaka Series Release Notes: http://docs.openstack.org/releasenotes/openstack-ansible/unreleased.html
+.. _Newton Series Timeline: https://launchpad.net/openstack-ansible/trunk
+.. _Newton Series Release Notes: http://docs.openstack.org/releasenotes/openstack-ansible/unreleased.html
 
 Mitaka (experimental)
 =====================
@@ -44,7 +44,7 @@ on 11 September 2015.
 
 * `OpenStack-Ansible Liberty Documentation`_
 
-* `OpenStack-Ansible Liberty Release Notes`_
+* `OpenStack-Ansible Liberty Series Release Notes`_
 
 * `OpenStack-Ansible Liberty Series Timeline`_
 
