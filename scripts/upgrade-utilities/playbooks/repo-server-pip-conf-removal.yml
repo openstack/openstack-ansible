@@ -15,10 +15,10 @@
 
 - name: Remove pip.conf if found
   hosts: repo_all
-  gather_facts: false
+  gather_facts: true
   user: root
   tasks:
     - name: Remove pip.conf
       file:
-        src: "{{ ansible_env.HOME }}/.pip/pip.conf"
+        path: "{{ ansible_env.HOME }}/.pip/pip.conf"
         state: "absent"
