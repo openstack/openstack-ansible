@@ -13,21 +13,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Distribute self signed ssl
-  memcached:
-    name: "{{ item.name }}"
-    file_path: "{{ item.src }}"
-    state: "retrieve"
-    file_mode: "{{ item.file_mode }}"
-    server: "{{ memcached_servers }}"
-    encrypt_string: "{{ memcached_encryption_key }}"
-  with_items:
-    - { src: "{{ rabbitmq_ssl_cert }}", name: "rabbitmq_ssl_cert", file_mode: "0640" }
-    - { src: "{{ rabbitmq_ssl_key }}", name: "rabbitmq_ssl_key", file_mode: "0640" }
-  register: memcache_keys
-  until: memcache_keys|success
-  retries: 5
-  delay: 2
+- name: Distribute self signed ssl key
+  copy:
+    dest: "{{ rabbitmq_ssl_key }}"
+    content: "{{ hostvars[groups['rabbitmq_all'][0]]['rabbitmq_ssl_key_fact'] | b64decode }}"
+    owner: "rabbitmq"
+    group: "rabbitmq"
+    mode: "0640"
+  tags:
+    - rabbitmq-ssl
+
+- name: Distribute self signed ssl cert
+  copy:
+    dest: "{{ rabbitmq_ssl_cert }}"
+    content: "{{ hostvars[groups['rabbitmq_all'][0]]['rabbitmq_ssl_cert_fact'] | b64decode }}"
+    owner: "rabbitmq"
+    group: "rabbitmq"
+    mode: "0640"
   tags:
     - rabbitmq-ssl
 
