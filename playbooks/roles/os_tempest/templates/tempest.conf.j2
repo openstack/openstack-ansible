@@ -35,7 +35,7 @@ timeout = 15
 
 [compute]
 image_ref = {{ tempest_glance_image_id }}
-image_ref_alt = {{ tempest_glance_image_id }}
+image_ref_alt = {{ tempest_glance_image_alt_id }}
 flavor_ref = 201
 flavor_ref_alt = 202
 image_ssh_user = {{ tempest_compute_image_ssh_user }}
@@ -147,7 +147,7 @@ reseller_admin_role = reseller_admin
 [object-storage-feature-enabled]
 container_sync = {{ tempest_swift_container_sync }}
 object_versioning = {{ tempest_swift_object_versioning }}
-discoverable_apis = {{ tempest_swift_discoverable_apis | join(' ') }}
+discoverable_apis = {{ tempest_swift_discoverable_apis | join(',') }}
 
 
 [orchestration]
