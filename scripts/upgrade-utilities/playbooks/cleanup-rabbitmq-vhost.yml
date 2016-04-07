@@ -30,9 +30,6 @@
       command: "rabbitmqctl -q list_queues"
       register: rabbitmq_queues
 
-    - name: Add management tag to rabbitmq_user_to_delete user so exchanges can be deleted
-      command: "rabbitmqctl set_user_tags {{ rabbitmq_user_to_delete }} management"
-
     - name: Create new password value
       set_fact:
         rabbitmq_user_to_delete_password: "{{ lookup('password', '/tmp/rabbitmqpasswordfile chars=ascii_letters,digits') }}"
@@ -40,8 +37,16 @@
     - name: Remove temporary password file created by password lookup
       local_action: 'file path="/tmp/rabbitmqpasswordfile" state="absent"'
 
-    - name: Reset rabbitmq_user_to_delete user password
-      command: "rabbitmqctl change_password {{ rabbitmq_user_to_delete }} {{ rabbitmq_user_to_delete_password }}"
+    - name: Ensure rabbitmq_user_to_delete user can delete exchanges
+      rabbitmq_user:
+        user: "{{ rabbitmq_user_to_delete }}"
+        tags: "management"
+        password: "{{ rabbitmq_user_to_delete_password }}"
+        vhost: "/"
+        configure_priv: ".*"
+        read_priv: ".*"
+        write_priv: ".*"
+        force: yes
 
     - name: Remove unwanted exchanges from / vhost
       command: "curl -XDELETE -u '{{ rabbitmq_user_to_delete }}:{{ rabbitmq_user_to_delete_password }}' http://127.0.0.1:{{ 15672 }}/api/exchanges/%2F/{{ item | regex_replace('(^[a-zA-Z0-9_.-]+).*', '\\\\1') }}"
@@ -55,6 +60,8 @@
       with_items: rabbitmq_queues.stdout_lines
 
     - name: Delete openstack user
-      command: "rabbitmqctl delete_user {{ rabbitmq_user_to_delete }}"
+      rabbitmq_user:
+        user: "{{ rabbitmq_user_to_delete }}"
+        state: absent
   vars:
      rabbitmq_user_to_delete: "openstack"
