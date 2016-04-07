@@ -24,11 +24,16 @@ export TESTR_OPTS=${TESTR_OPTS:-''}
 export PYTHONUNBUFFERED=1
 # Extra options to pass to the AIO bootstrap process
 export BOOTSTRAP_OPTS=${BOOTSTRAP_OPTS:-''}
+# This variable is being added to ensure the gate job executes an exit
+#  function at the end of the run.
+export OSA_GATE_JOB=true
 
 ## Functions -----------------------------------------------------------------
 info_block "Checking for required libraries." 2> /dev/null || source $(dirname ${0})/scripts-library.sh
 
 ## Main ----------------------------------------------------------------------
+# Set gate job exit traps, this is run regardless of exit state when the job finishes.
+trap gate_job_exit_tasks EXIT
 
 # Log some data about the instance and the rest of the system
 log_instance_info
@@ -80,8 +85,10 @@ pushd $(dirname ${0})/../tests
                    bootstrap-aio.yml
 popd
 
-# Implement the log directory link for openstack-infra log publishing
+# Implement the log directory
 mkdir -p /openstack/log
+
+# Implement the log directory link for openstack-infra log publishing
 ln -sf /openstack/log $(dirname ${0})/../logs
 
 pushd $(dirname ${0})/../playbooks
