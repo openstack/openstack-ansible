@@ -21,12 +21,12 @@ hosts which should run HAProxy:
    .. code-block:: yaml
 
        haproxy_hosts:
-         123456-infra01:
-           ip: 172.29.236.51
-         123457-infra02:
-           ip: 172.29.236.52
-         123458-infra03:
-           ip: 172.29.236.53
+         infra1:
+           ip: 172.29.236.101
+         infra2:
+           ip: 172.29.236.102
+         infra3:
+           ip: 172.29.236.103
 
 There is an example configuration file already provided in
 ``/etc/openstack_deploy/conf.d/haproxy.yml.example``. Rename the file to
