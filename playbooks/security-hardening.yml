@@ -1,5 +1,5 @@
 ---
-# Copyright 2014, Rackspace US, Inc.
+# Copyright 2016, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,7 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: openstack-hosts-setup.yml
-- include: security-hardening.yml
-- include: lxc-hosts-setup.yml
-- include: lxc-containers-create.yml
+# As an additional safeguard, this playbook requires the
+# 'apply_security_hardening' boolean set to True for it to apply security
+# hardening standards to a system.
+
+- name: Apply security hardening configurations
+  hosts: "{{ host_group|default('hosts') }}"
+  user: root
+  roles:
+    - { role: "openstack-ansible-security",
+        when: apply_security_hardening | bool }
