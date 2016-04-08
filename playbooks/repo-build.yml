@@ -38,8 +38,6 @@
   roles:
     - role: "repo_build"
       repo_build_release_tag: "{{ openstack_release }}"
-      repo_build_pip_default_index: "https://rpc-repo.rackspace.com/pools"
-      repo_build_pip_extra_index: "https://pypi.python.org/simple"
       tags:
         - "repo-build"
   vars:
