@@ -67,7 +67,7 @@ fi
 echo Performing federated login...
 
 # obtain a scoped token from the identity provider
-curl -v -s -X POST -H "Content-Type: application/json" -d '{"auth":{"identity":{"methods":["password"],"password":{"user":{"name":"'"$OS_USERNAME"'","password":"'"$OS_PASSWORD"'","domain":{"name":"'"$OS_USER_DOMAIN_NAME"'"}}}}}}' $OS_AUTH_URL/auth/tokens >token.json 2>token.txt
+curl -v -s -X POST -H "Content-Type: application/json" -d '{"auth":{"scope": {"project":{"domain": {"name": "'"$OS_DOMAIN_NAME"'"}, "name": "'"$OS_PROJECT_NAME"'"}},"identity":{"methods":["password"],"password":{"user":{"name":"'"$OS_USERNAME"'","password":"'"$OS_PASSWORD"'","domain":{"name":"'"$OS_DOMAIN_NAME"'"}}}}}}' $OS_AUTH_URL/auth/tokens >token.json 2>token.txt
 if [ "$?" != "0" ]; then
     echo "Could not obtain IdP token, did you forget to import your openrc file? See token.json and error.log for details."
     exit 1
