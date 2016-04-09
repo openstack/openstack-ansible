@@ -5,12 +5,17 @@ import json
 import os
 from os import path
 import subprocess
+import sys
 import unittest
 import yaml
 
 INV_DIR = 'playbooks/inventory'
 SCRIPT_FILENAME = 'dynamic_inventory.py'
 INV_SCRIPT = path.join(os.getcwd(), INV_DIR, SCRIPT_FILENAME)
+
+sys.path.append(path.join(os.getcwd(), INV_DIR))
+
+import dynamic_inventory as di
 
 TARGET_DIR = path.join(os.getcwd(), 'tests', 'inventory')
 USER_CONFIG_FILE = path.join(TARGET_DIR, "openstack_user_config.yml")
@@ -244,6 +249,16 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         all_keys = list(self.expected_groups)
         all_keys.append('_meta')
         self.assertEqual(set(all_keys), set(self.inventory.keys()))
+
+
+class TestUserConfiguration(unittest.TestCase):
+    def setUp(self):
+        self.longMessage = True
+        self.loaded_user_configuration = di.load_user_configuration(TARGET_DIR)
+
+    def test_loading_user_configuration(self):
+        """Test that the user configuration can be loaded"""
+        self.assertIsInstance(self.loaded_user_configuration, dict)
 
 
 class TestDuplicateIps(unittest.TestCase):
