@@ -180,7 +180,7 @@ pushd ${MAIN_PATH}/playbooks
   RUN_TASKS+=("os-ceilometer-install.yml")
 
   # Send the swift rings to the first swift host if swift was installed in "v10.x".
-  if [ "$(ansible 'swift_hosts' --list-hosts)" != "No hosts matched" ] && [ -d "/etc/swift/rings" ];then
+  if [ "$(ansible 'swift_hosts' --list-hosts)" != "No hosts matched" ]; then
     RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/swift-ring-adjustments.yml")
   fi
 
