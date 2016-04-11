@@ -162,11 +162,21 @@
   tags:
     - container-conf-files
 
-- name: Ensure that the first two lines in user_conf_files are correct
+- name: Ensure that the first line in user_conf_files is correct
   lineinfile:
     dest: /etc/openstack_deploy/user_conf_files.yml
-    line: "---\nlxc_container_cache_files:"
+    line: "---"
     insertbefore: BOF
+  when:
+    - apt_conf_files is defined or pip_conf_file.stat.exists
+  tags:
+    - container-conf-files
+
+- name: Ensure that the second line in user_conf_files is correct
+  lineinfile:
+    dest: /etc/openstack_deploy/user_conf_files.yml
+    line: "lxc_container_cache_files:"
+    insertafter: "^---"
   when:
     - apt_conf_files is defined or pip_conf_file.stat.exists
   tags:
