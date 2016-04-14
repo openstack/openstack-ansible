@@ -1,0 +1,22 @@
+---
+features:
+  - There is a new default configuration for keepalived, supporting more than 2 nodes.
+  - In order to make use of the latest stable keepalived version, the variable
+    ``keepalived_use_latest_stable`` must be set to ``True``
+issues:
+  - In the latest stable version of keepalived there is a problem with the priority
+    calculation when a deployer has more than five keepalived nodes. The problem causes the
+    whole keepalived cluster to fail to work. To work around this issue it is recommended that
+    deployers limit the number of keepalived nodes to no more than five or that the priority
+    for each node is set as part of the configuration (cf. ``haproxy_keepalived_vars_file``
+    variable).
+upgrade:
+  - There is a new default configuration for keepalived. When running the haproxy playbook,
+    the configuration change will cause a keepalived restart unless the deployer has used a custom
+    configuration file. The restart will cause the virtual IP addresses managed by keepalived to
+    be briefly unconfigured, then reconfigured.
+  - A new version of keepalived will be installed on the haproxy nodes if the variable
+    ``keepalived_use_latest_stable`` is set to ``True`` and more than one haproxy node is
+    configured. The update of the package will cause keepalived to restart and therefore will
+    cause the virtual IP addresses managed by keepalived to be briefly unconfigured, then
+    reconfigured.

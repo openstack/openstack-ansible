@@ -54,19 +54,7 @@
     - "{{ haproxy_keepalived_vars_file | default('vars/configs/keepalived_haproxy.yml')}}"
   roles:
     - role: "keepalived"
-      keepalived_sync_groups: "{{ keepalived_master_sync_groups }}"
-      keepalived_scripts: "{{ keepalived_master_scripts }}"
-      keepalived_instances: "{{ keepalived_master_instances }}"
-      when: >
-        haproxy_use_keepalived|bool and
-        inventory_hostname in groups['haproxy'][0]
-    - role: "keepalived"
-      keepalived_sync_groups: "{{ keepalived_backup_sync_groups }}"
-      keepalived_scripts: "{{ keepalived_backup_scripts }}"
-      keepalived_instances: "{{ keepalived_backup_instances }}"
-      when: >
-        haproxy_use_keepalived|bool and
-        inventory_hostname in groups['haproxy'][1:]
+      when: haproxy_use_keepalived | bool
 
 - name: Install haproxy
   hosts: haproxy
