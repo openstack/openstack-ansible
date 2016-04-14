@@ -107,7 +107,7 @@ be found in the `Keystone Developer Documentation`_ and the
 `OpenStack Admin Guide`_.
 
 .. _Keystone Developer Documentation: http://docs.openstack.org/developer/keystone/configuration.html#configuring-the-ldap-identity-provider
-.. _OpenStack Admin Guide: http://docs.openstack.org/admin-guide-cloud/keystone_integrate_identity_backend_ldap.html
+.. _OpenStack Administrator Guide: http://docs.openstack.org/admin-guide/keystone_integrate_identity_backend_ldap.html
 
 --------------
 
