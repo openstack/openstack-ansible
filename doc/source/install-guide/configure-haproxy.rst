@@ -3,10 +3,11 @@
 Configuring HAProxy (optional)
 ------------------------------
 
-HAProxy provides load balancing for high availability architectures deployed by
-OpenStack-Ansible. The default HAProxy configuration provides highly-available
-load balancing services via keepalived if there are more than one hosts in the
-``haproxy_hosts`` group.
+HAProxy provides load balancing services and SSL termination when hardware
+load balancers are not available for high availability architectures deployed
+by OpenStack-Ansible. The default HAProxy configuration provides highly-
+available load balancing services via keepalived if there is more than one
+host in the ``haproxy_hosts`` group.
 
 .. note::
 

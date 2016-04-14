@@ -18,6 +18,11 @@
     src: service.j2
     dest: "/etc/haproxy/conf.d/{{ item.service.haproxy_service_name }}"
   with_items: haproxy_service_configs
+  when: >
+    (item.service.haproxy_backend_nodes is defined and
+     item.service.haproxy_backend_nodes | length > 0) or
+    (item.service.haproxy_backup_nodes is defined and
+     item.service.haproxy_backup_nodes | length > 0)
   notify: Restart haproxy
   tags:
     - haproxy-service-config
