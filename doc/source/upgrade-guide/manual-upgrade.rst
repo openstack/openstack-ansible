@@ -31,7 +31,7 @@ From the ``openstack-ansible`` root directory, run the following.
 
     # export MAIN_PATH="$(pwd)"
     # export SCRIPTS_PATH="${MAIN_PATH}/scripts"
-    # export UPGRADE_PLAYBOOKS="${SCRIPTS_PATH}/upgrade_utilities/playbooks"
+    # export UPGRADE_PLAYBOOKS="${SCRIPTS_PATH}/upgrade-utilities/playbooks"
 
 These variables will reduce typing when running the remaining upgrade
 tasks.
@@ -68,7 +68,7 @@ See :ref:`config-change-playbook` for more details.
 
 .. code-block:: console
 
-    # openstack-ansible "${UPGRADE_PLAYBOOKS}/deploy-config-changes.yml
+    # openstack-ansible "${UPGRADE_PLAYBOOKS}/deploy-config-changes.yml"
 
 .. note::
 
@@ -85,7 +85,7 @@ See :ref:`user-secrets-playbook` for more details.
 
 .. code-block:: console
 
-    # openstack-ansible "${UPGRADE_PLAYBOOKS}/user-secrets-adjustments.yml
+    # openstack-ansible "${UPGRADE_PLAYBOOKS}/user-secrets-adjustment.yml"
 
 Upgrade hosts
 -------------
@@ -110,7 +110,7 @@ See :ref:`repo-server-pip-conf-removal` for more details.
 
 .. code-block:: console
 
-    # openstack-ansible "${UPGRADE_PLAYBOOKS}/repo-server-pip-conf-removal.yml
+    # openstack-ansible "${UPGRADE_PLAYBOOKS}/repo-server-pip-conf-removal.yml"
 
 
 Upgrade infrastructure
@@ -142,7 +142,7 @@ See :ref:`neutron-port-sec-playbook` for details.
 
 .. code-block:: console
 
-    # openstack-ansible "${UPGRADE_PLAYBOOKS}/disable-neutron-port-security.yml
+    # openstack-ansible "${UPGRADE_PLAYBOOKS}/disable-neutron-port-security.yml"
 
 Upgrade OpenStack
 -----------------

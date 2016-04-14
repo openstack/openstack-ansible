@@ -44,8 +44,8 @@ configuration of container memberships, and user variables.
 
 .. _user-secrets-playbook:
 
-user-secrets-adjustments.yml
-----------------------------
+user-secrets-adjustment.yml
+---------------------------
 
 This playbook ensures that the user secrets file is updated based on the example
 file in the main repository. This makes it possible to guarantee all secrets are
