@@ -18,22 +18,19 @@
 # the head of given branch via the SHA. This makes it possible to update
 # all of the services that we support in an "automated" fashion.
 
-ONLINE_BRANCH=${ONLINE_BRANCH:-"master"}
+OS_BRANCH=${OS_BRANCH:-"master"}
+OSA_BRANCH=${OSA_BRANCH:-"$OS_BRANCH"}
 SERVICE_FILE=${SERVICE_FILE:-"playbooks/defaults/repo_packages/openstack_services.yml"}
 OPENSTACK_SERVICE_LIST=${OPENSTACK_SERVICE_LIST:-"aodh ceilometer cinder glance heat keystone neutron nova"}
-OSA_ROLE_PATH="${OSA_ROLE_PATH:-playbooks/roles}"
-OSA_ROLE_PREFIX="${OSA_ROLE_PREFIX:-os}"
-OSA_ROLE_LOCAL="${OSA_ROLE_PATH}/${OSA_ROLE_PREFIX}"
 
 IFS=$'\n'
 
 if echo "$@" | grep -e '-h' -e '--help';then
     echo "
 Options:
-  -b|--branch          (name of branch, eg: stable/liberty)
-  -s|--service-file    (path to service yaml file to parse)
-  -r|--osa-role-path   (path to stored roles to update, eg: 'playbooks/roles')
-  -p|--osa-role-prefix (the prefix in front of OpenStack service roles, eg: 'os')
+  -b|--openstack-branch (name of OpenStack branch, eg: stable/mitaka)
+  -o|--osa-branch       (name of the OSA branch, eg: stable/mitaka)
+  -s|--service-file     (path to service file to parse)
 "
 exit 0
 fi
@@ -42,20 +39,16 @@ fi
 while [[ $# > 1 ]]; do
 key="$1"
 case $key in
-    -b|--branch)
-    ONLINE_BRANCH="$2"
+    -b|--openstack-branch)
+    OS_BRANCH="$2"
+    shift
+    ;;
+    -o|--osa-branch)
+    OSA_BRANCH="$2"
     shift
     ;;
     -s|--service-file)
     SERVICE_FILE="$2"
-    shift
-    ;;
-    -r|--osa-role-path)
-    OSA_ROLE_PATH="$2"
-    shift
-    ;;
-    -p|--osa-role-prefix)
-    OSA_ROLE_PREFIX="$2"
     shift
     ;;
     *)
@@ -76,7 +69,7 @@ for repo in $(grep 'git_repo\:' ${SERVICE_FILE}); do
   repo_address=$(echo ${repo} | awk '{print $2}')
 
   # Get the branch data
-  branch_data=$(git ls-remote ${repo_address} | grep "${ONLINE_BRANCH}$")
+  branch_data=$(git ls-remote ${repo_address} | grep "${OS_BRANCH}$")
 
   # If there is branch data continue
   if [ ! -z "${branch_data}" ];then
@@ -85,64 +78,100 @@ for repo in $(grep 'git_repo\:' ${SERVICE_FILE}); do
     branch_sha=$(echo "${branch_data}" | awk '{print $1}')
 
     # Set the branch entry
-    branch_entry="${branch_sha} # HEAD of \"$ONLINE_BRANCH\" as of $(date +%d.%m.%Y)"
+    branch_entry="${branch_sha} # HEAD of \"$OS_BRANCH\" as of $(date +%d.%m.%Y)"
 
     # Write the branch entry into the repo_packages file
     sed -i.bak "s|${repo_name}_git_install_branch:.*|${repo_name}_git_install_branch: $branch_entry|" ${SERVICE_FILE}
 
     # If the repo is in the specified list, then action the additional updates
     if [[ "${OPENSTACK_SERVICE_LIST}" =~ "${repo_name}" ]]; then
-      if [[ -d "${OSA_ROLE_LOCAL}_${repo_name}" ]]; then
-        repo_tmp_path="/tmp/${repo_name}"
+      os_repo_tmp_path="/tmp/os_${repo_name}"
+      osa_repo_tmp_path="/tmp/osa_${repo_name}"
 
-        # Ensure that the temp path doesn't exist
-        [[ -d "repo_tmp_path" ]] && rm -rf "${repo_tmp_path}"
+      # Ensure that the temp path doesn't exist
+      rm -rf ${os_repo_tmp_path} ${osa_repo_tmp_path}
 
-        # Do a shallow clone of the repo to work with
-        git clone --quiet --depth=5 --branch ${ONLINE_BRANCH} --no-checkout --single-branch ${repo_address} "${repo_tmp_path}"
-        pushd ${repo_tmp_path} > /dev/null
-          git checkout --quiet "${branch_sha}"
-        popd > /dev/null
+      # Do a shallow clone of the OpenStack repo to work with
+      git clone --quiet --depth=10 --branch ${OS_BRANCH} --no-checkout --single-branch ${repo_address} ${os_repo_tmp_path}
+      pushd ${os_repo_tmp_path} > /dev/null
+        git checkout --quiet ${branch_sha}
+      popd > /dev/null
 
-        # Update the policy files
-        find ${repo_tmp_path}/etc -name "policy.json" -exec \
-          cp {} "${OSA_ROLE_LOCAL}_${repo_name}/templates/policy.json.j2" \;
-
-        # Tweak the paste files
-        find ${repo_tmp_path}/etc -name "*[_-]paste.ini" -exec \
-          sed -i.bak "s|hmac_keys = SECRET_KEY|hmac_keys = {{ ${repo_name}_profiler_hmac_key }}|" {} \;
-
-        # Update the paste files
-        find ${repo_tmp_path}/etc -name "*[_-]paste.ini" -exec \
-          bash -c "name=\"{}\"; cp \${name} \"${OSA_ROLE_LOCAL}_${repo_name}/templates/\$(basename \${name}).j2\"" \;
-
-        # Tweak the rootwrap conf files
-        find ${repo_tmp_path}/etc -name "rootwrap.conf" -exec \
-          sed -i.bak "s|exec_dirs=|exec_dirs={{ ${repo_name}_bin }},|" {} \;
-
-        # Update the rootwrap conf files
-        find ${repo_tmp_path}/etc -name "rootwrap.conf" -exec \
-          cp {} "${OSA_ROLE_LOCAL}_${repo_name}/templates/rootwrap.conf.j2" \;
-
-        # Update the rootwrap filters
-        find ${repo_tmp_path}/etc -name "*.filters" -exec \
-          bash -c "name=\"{}\"; cp \${name} \"${OSA_ROLE_LOCAL}_${repo_name}/files/rootwrap.d/\$(basename \${name})\"" \;
-
-        # Update the yaml files for Ceilometer
-        if [ "${repo_name}" = "ceilometer" ]; then
-          find ${repo_tmp_path}/etc -name "*.yaml" -exec \
-            bash -c "name=\"{}\"; cp \${name} \"${OSA_ROLE_LOCAL}_${repo_name}/templates/\$(basename \${name}).j2\"" \;
-        fi
-
-        # Update the yaml files for Heat
-        if [ "${repo_name}" = "heat" ]; then
-          find ${repo_tmp_path}/etc -name "*.yaml" -exec \
-            bash -c "name=\"{}\"; cp \${name} \"${OSA_ROLE_LOCAL}_${repo_name}/templates/\$(echo \${name} | rev | cut -sd / -f -2 | rev).j2\"" \;
-        fi
-
-        # Clean up the temporary files
-        [[ -d "repo_tmp_path" ]] && rm -rf "${repo_tmp_path}"
+      # Set the OSA address
+      if [[ "${repo_name}" == "ironic" ]]; then
+        osa_repo_address="https://git.openstack.org/openstack/openstack-ansible-ironic"
+      else
+        osa_repo_address="https://git.openstack.org/openstack/openstack-ansible-os_${repo_name}"
       fi
+
+      # Do a shallow clone of the OSA repo to work with
+      git clone --quiet --depth=10 --branch ${OSA_BRANCH} --single-branch ${osa_repo_address} ${osa_repo_tmp_path}
+      pushd ${osa_repo_tmp_path} > /dev/null
+        git checkout --quiet origin/${OSA_BRANCH}
+      popd > /dev/null
+
+      # Update the policy files
+      find ${os_repo_tmp_path}/etc -name "policy.json" -exec \
+        cp {} "${osa_repo_tmp_path}/templates/policy.json.j2" \;
+
+      # Tweak the paste files
+      find ${os_repo_tmp_path}/etc -name "*[_-]paste.ini" -exec \
+        sed -i.bak "s|hmac_keys = SECRET_KEY|hmac_keys = {{ ${repo_name}_profiler_hmac_key }}|" {} \;
+
+      # Update the paste files
+      find ${os_repo_tmp_path}/etc -name "*[_-]paste.ini" -exec \
+        bash -c "name=\"{}\"; cp \${name} \"${osa_repo_tmp_path}/templates/\$(basename \${name}).j2\"" \;
+
+      # Tweak the rootwrap conf files
+      find ${os_repo_tmp_path}/etc -name "rootwrap.conf" -exec \
+        sed -i.bak "s|exec_dirs=|exec_dirs={{ ${repo_name}_bin }},|" {} \;
+
+      # Update the rootwrap conf files
+      find ${os_repo_tmp_path}/etc -name "rootwrap.conf" -exec \
+        cp {} "${osa_repo_tmp_path}/templates/rootwrap.conf.j2" \;
+
+      # Update the rootwrap filters
+      find ${os_repo_tmp_path}/etc -name "*.filters" -exec \
+        bash -c "name=\"{}\"; cp \${name} \"${osa_repo_tmp_path}/files/rootwrap.d/\$(basename \${name})\"" \;
+
+      # Update the yaml files for Ceilometer
+      if [ "${repo_name}" = "ceilometer" ]; then
+        find ${os_repo_tmp_path}/etc -name "*.yaml" -exec \
+          bash -c "name=\"{}\"; cp \${name} \"${osa_repo_tmp_path}/templates/\$(basename \${name}).j2\"" \;
+      fi
+
+      # Update the yaml files for Heat
+      if [ "${repo_name}" = "heat" ]; then
+        find ${os_repo_tmp_path}/etc -name "*.yaml" -exec \
+          bash -c "name=\"{}\"; cp \${name} \"${osa_repo_tmp_path}/templates/\$(echo \${name} | rev | cut -sd / -f -2 | rev).j2\"" \;
+      fi
+
+      # Switch into the OSA git directory to work with it
+      pushd ${osa_repo_tmp_path} > /dev/null
+
+        # Check for changed files
+        git_changed=$(git status --porcelain | wc -l)
+        # Check for untracked files
+        git_untracked=$(git ls-files --other --exclude-standard --directory | wc -l)
+        if [ ${git_untracked} -gt 0 ]; then
+          # If there are untracked files, ensure that the commit message includes
+          # a WIP prefix so that the patch is revised in more detail.
+          git_msg_prefix="[New files - needs update] "
+        else
+          git_msg_prefix=""
+        fi
+
+        # If any files have changed, submit a patch including the changes
+        if [ ${git_changed} -gt 0 ]; then
+          git review -s > /dev/null
+          git add --all
+          git commit -a -m "${git_msg_prefix}Update paste, policy and rootwrap configurations $(date +%Y-%m-%d)" --quiet
+          git review > /dev/null
+        fi
+      popd > /dev/null
+
+      # Clean up the temporary files
+      rm -rf ${os_repo_tmp_path} ${osa_repo_tmp_path}
     fi
   fi
 
@@ -152,7 +181,7 @@ done
 
 unset IFS
 
-# Finally, update the PIP_INSTALL_OPTIONS with the current versions of pip, wheel and setuptools
+# Update the PIP_INSTALL_OPTIONS with the current versions of pip, wheel and setuptools
 PIP_CURRENT_OPTIONS=$(./scripts/get-pypi-pkg-version.py -p pip setuptools wheel -l horizontal)
 sed -i.bak "s|^PIP_INSTALL_OPTIONS=.*|PIP_INSTALL_OPTIONS=\$\{PIP_INSTALL_OPTIONS:-'${PIP_CURRENT_OPTIONS}'\}|" scripts/scripts-library.sh
 
@@ -162,3 +191,30 @@ for pin in ${PIP_CURRENT_OPTIONS}; do
 done
 
 echo "Updated pip install options/pins"
+
+# Update the ansible-role-requirements.yml file
+# We don't want to be doing this for the master branch
+if [[ "${OSA_BRANCH}" != "master" ]]; then
+  echo "Updating ansible-role-requirements.yml"
+
+  # Loop through each of the role git sources
+  for role_src in $(awk '/src: / {print $2}' ansible-role-requirements.yml); do
+
+    # Determine the role's name
+    role_name=$(sed 's/^[ \t-]*//' ansible-role-requirements.yml | awk '/src: / || /name: / {print $2}' | grep -B1 "${role_src}" | head -n 1)
+
+    # Grab the latest SHA that matches the specified branch
+    role_version=$(git ls-remote ${role_src} | grep "${OSA_BRANCH}$" | awk '{print $1}')
+
+    # If that branch doesn't exist, then it's probably not an OpenStack-Ansible role, so grab the latest tag instead
+    if [[ -z "${role_version}" ]]; then
+      role_version=$(git ls-remote --tags ${role_src} | awk '{print $2}' | grep -v '{}' | cut -d/ -f 3 | sort -n | tail -n 1)
+    fi
+
+    # Now use the information we have to update the ansible-role-requirements file
+    $(dirname ${0})/ansible-role-requirements-editer.py -f ansible-role-requirements.yml -n "${role_name}" -v "${role_version}"
+  done
+  echo "Completed updating ansible-role-requirements.yml"
+else
+  echo "Skipping the ansible-role-requirements.yml update as we're working on the master branch"
+fi
