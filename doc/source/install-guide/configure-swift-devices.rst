@@ -1,30 +1,28 @@
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
 Storage devices
----------------
+===============
 
 This section offers a set of prerequisite instructions for setting up
-Object Storage storage devices. The storage devices must be set up
-before installing Object Storage.
+Object Storage (swift) storage devices. The storage devices must be set up
+before installing swift.
 
 **Procedure 5.1. Configuring and mounting storage devices**
 
-Object Storage recommends a minimum of three Object Storage hosts
+Object Storage recommends a minimum of three swift hosts
 with five storage disks. The example commands in this procedure
-assume the storage devices for Object Storage are devices ``sdc``
-through ``sdg``.
+use the storage devices ``sdc`` through to ``sdg``.
 
-#. Determine the storage devices on the node to be used for Object
-   Storage.
+#. Determine the storage devices on the node to be used for swift.
 
 #. Format each device on the node used for storage with XFS. While
    formatting the devices, add a unique label for each device.
 
-   Without labels, a failed drive can cause mount points to shift and
+   Without labels, a failed drive causes mount points to shift and
    data to become inaccessible.
 
    For example, create the file systems on the devices using the
-   **mkfs** command
+   ``mkfs`` command:
 
    .. code-block:: shell-session
 
@@ -37,7 +35,7 @@ through ``sdg``.
 
 #. Add the mount locations to the ``fstab`` file so that the storage
    devices are remounted on boot. The following example mount options
-   are recommended when using XFS.
+   are recommended when using XFS:
 
    .. code-block:: shell-session
 
@@ -47,7 +45,7 @@ through ``sdg``.
        LABEL=sdf /srv/node/sdf xfs noatime,nodiratime,nobarrier,logbufs=8,noauto 0 0
        LABEL=sdg /srv/node/sdg xfs noatime,nodiratime,nobarrier,logbufs=8,noauto 0 0
 
-#. Create the mount points for the devices using the **mkdir** command.
+#. Create the mount points for the devices using the ``mkdir`` command:
 
    .. code-block:: shell-session
 
@@ -58,7 +56,7 @@ through ``sdg``.
        # mkdir -p /srv/node/sdg
 
    The mount point is referenced as the ``mount_point`` parameter in
-   the ``swift.yml`` file (``/etc/rpc_deploy/conf.d/swift.yml``).
+   the ``swift.yml`` file (``/etc/rpc_deploy/conf.d/swift.yml``):
 
    .. code-block:: shell-session
 
@@ -89,7 +87,7 @@ For the following mounted devices:
 
 Table: Table 5.1. Mounted devices
 
-The entry in the ``swift.yml`` would be:
+The entry in the ``swift.yml``:
 
 .. code-block:: yaml
 
