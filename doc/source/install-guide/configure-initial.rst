@@ -76,6 +76,48 @@ this configuration, their ``openstack_user_config.yml`` would look like this:
 The configuration above would still deploy a memcached container and a database
 container on each host, but there would be no RabbitMQ containers deployed.
 
+.. _security_hardening:
+
+Security Hardening
+^^^^^^^^^^^^^^^^^^
+
+Deployers have the option to automatically apply security hardening to an
+OpenStack Ansible deployment using the `openstack-ansible-security`_ role. The
+role uses a version of the `Security Technical Implementation Guide (STIG)`_
+that has been adapted for Ubuntu 14.04 and OpenStack.
+
+The role is applicable to physical hosts within an OpenStack-Ansible deployment
+that are operating as any type of node -- infrastructure or compute. By
+default, the role is disabled. Deployers can enable it by changing a variable
+within ``user_variables.yml``:
+
+.. code-block:: yaml
+
+    apply_security_hardening: true
+
+When the variable is set, the role will be applied by the ``setup-hosts.yml``
+playbook automatically during deployments.
+
+Deployers can apply security configurations to an existing environment or audit
+an environment using a playbook supplied with OpenStack-Ansible:
+
+.. code-block:: bash
+
+    # Perform a quick audit using Ansible's check mode
+    openstack-ansible --check security-hardening.yml
+
+    # Apply security hardening configurations
+    openstack-ansible security-hardening.yml
+
+For more details on the security configurations that will be applied, refer to
+the `openstack-ansible-security`_ documentation. Review the `Configuration`_
+section of the openstack-ansible-security documentation to find out how to
+fine-tune certain security configurations.
+
+.. _openstack-ansible-security: http://docs.openstack.org/developer/openstack-ansible-security/
+.. _Security Technical Implementation Guide (STIG): https://en.wikipedia.org/wiki/Security_Technical_Implementation_Guide
+.. _Configuration: http://docs.openstack.org/developer/openstack-ansible-security/configuration.html
+
 --------------
 
 .. include:: navigation.txt
