@@ -212,7 +212,7 @@ if [[ "${OSA_BRANCH}" != "master" ]]; then
     fi
 
     # Now use the information we have to update the ansible-role-requirements file
-    $(dirname ${0})/ansible-role-requirements-editer.py -f ansible-role-requirements.yml -n "${role_name}" -v "${role_version}"
+    $(dirname ${0})/ansible-role-requirements-editor.py -f ansible-role-requirements.yml -n "${role_name}" -v "${role_version}"
   done
   echo "Completed updating ansible-role-requirements.yml"
 else

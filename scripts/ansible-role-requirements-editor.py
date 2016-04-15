@@ -47,7 +47,7 @@ def main():
 
     # Setup argument parsing
     parser = argparse.ArgumentParser(
-        description='ansible-role-requirements.yml CLI editer',
+        description='ansible-role-requirements.yml CLI editor',
         epilog='Licensed "Apache 2.0"')
 
     parser.add_argument(
@@ -82,7 +82,7 @@ def main():
     args = parser.parse_args()
 
     # Read the ansible-role-requirements.yml file into memory
-    with open(args.file, "r+") as role_req_file:
+    with open(args.file, "r") as role_req_file:
         reqs = yaml.safe_load(role_req_file)
 
     # Loop through the list to find the applicable role
@@ -94,7 +94,7 @@ def main():
                 role_data['src'] = args.src
 
     # Write out the resulting file
-    with open(args.file, "r+") as role_req_file:
+    with open(args.file, "w") as role_req_file:
         try:
             yaml.dump(reqs, role_req_file, default_flow_style=False)
         except yaml.YAMLError as exc:
