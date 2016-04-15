@@ -26,6 +26,7 @@ DEPLOY_OPENSTACK=${DEPLOY_OPENSTACK:-"yes"}
 DEPLOY_SWIFT=${DEPLOY_SWIFT:-"yes"}
 DEPLOY_CEILOMETER=${DEPLOY_CEILOMETER:-"yes"}
 DEPLOY_TEMPEST=${DEPLOY_TEMPEST:-"yes"}
+DEPLOY_IRONIC=${DEPLOY_IRONIC:-"no"}
 COMMAND_LOGS=${COMMAND_LOGS:-"/openstack/log/ansible_cmd_logs/"}
 ADD_NEUTRON_AGENT_CHECKSUM_RULE=${ADD_NEUTRON_AGENT_CHECKSUM_RULE:-"yes"}
 
@@ -131,6 +132,11 @@ pushd "playbooks"
     fi
     # install all of the swift Bits
     install_bits os-swift-install.yml
+  fi
+
+  if [ "${DEPLOY_IRONIC}" == "yes" ]; then
+    # install all of the ironic Bits
+    install_bits os-ironic-install.yml
   fi
 
   if [ "${DEPLOY_TEMPEST}" == "yes" ]; then

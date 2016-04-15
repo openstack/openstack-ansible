@@ -50,6 +50,8 @@
       override: "{{ horizon_env_overrides | default({}) }}"
     - name: infra.yml
       override: "{{ infra_env_overrides | default({}) }}"
+    - name: ironic.yml
+      override: "{{ ironic_env_overrides | default({}) }}"
     - name: keystone.yml
       override: "{{ keystone_env_overrides | default({}) }}"
     - name: memcache.yml
@@ -90,6 +92,8 @@
       override: "{{ ceilometer_conf_overrides | default({}) }}"
     - name: swift.yml.aio
       override: "{{ swift_conf_overrides | default({}) }}"
+    - name: ironic.yml.aio
+      override: "{{ ironic_conf_overrides | default({}) }}"
   tags:
     - deploy-confd
 

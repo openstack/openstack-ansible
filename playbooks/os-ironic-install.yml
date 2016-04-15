@@ -1,0 +1,126 @@
+---
+# Copyright 2016, Rackspace, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Installation and setup of Ironic
+  hosts: ironic_all
+  user: root
+  pre_tasks:
+    - name: Use the lxc-openstack aa profile
+      lxc_container:
+        name: "{{ container_name }}"
+        container_config:
+          - "lxc.aa_profile=lxc-openstack"
+      delegate_to: "{{ physical_host }}"
+      when: not is_metal | bool
+      register: container_config
+      tags:
+        - lxc-aa-profile
+    - name: Wait for container ssh
+      wait_for:
+        port: "22"
+        delay: "{{ ssh_delay }}"
+        search_regex: "OpenSSH"
+        host: "{{ ansible_ssh_host }}"
+      delegate_to: "{{ physical_host }}"
+      when: container_config is defined and container_config | changed
+      register: ssh_wait_check
+      until: ssh_wait_check | success
+      retries: 3
+      tags:
+        - ssh-wait
+    - name: Create DB for Ironic
+      mysql_db:
+        login_user: "{{ galera_root_user }}"
+        login_password: "{{ galera_root_password }}"
+        login_host: "{{ ironic_galera_address }}"
+        name: "{{ ironic_galera_database }}"
+        state: "present"
+      delegate_to: "{{ groups['galera_all'][0] }}"
+      run_once: true
+      tags:
+        - ironic-db-setup
+    - name: Grant access to the DB for Ironic
+      mysql_user:
+        login_user: "{{ galera_root_user }}"
+        login_password: "{{ galera_root_password }}"
+        login_host: "{{ ironic_galera_address }}"
+        name: "{{ ironic_galera_user }}"
+        password: "{{ ironic_galera_password }}"
+        host: "{{ item }}"
+        state: "present"
+        priv: "{{ ironic_galera_database }}.*:ALL"
+      with_items:
+        - "localhost"
+        - "%"
+      delegate_to: "{{ groups['galera_all'][0] }}"
+      run_once: true
+      tags:
+        - ironic-db-setup
+    - name: Ensure Rabbitmq vhost for Ironic
+      rabbitmq_vhost:
+        name: "{{ ironic_rabbitmq_vhost }}"
+        state: "present"
+      delegate_to: "{{ groups['rabbitmq_all'][0] }}"
+      run_once: true
+      tags:
+        - ironic-rabbitmq
+        - ironic-rabbitmq-vhost
+    - name: Ensure rabbitmq user for Ironic
+      rabbitmq_user:
+        user: "{{ ironic_rabbitmq_userid }}"
+        password: "{{ ironic_rabbitmq_password }}"
+        vhost: "{{ ironic_rabbitmq_vhost }}"
+        configure_priv: ".*"
+        read_priv: ".*"
+        write_priv: ".*"
+        state: "present"
+      delegate_to: "{{ groups['rabbitmq_all'][0] }}"
+      run_once: true
+      tags:
+        - ironic-rabbitmq
+        - ironic-rabbitmq-user
+    - name: Sort the rabbitmq servers
+      dist_sort:
+        value_to_lookup: "{{ container_name }}"
+        ref_list: "{{ groups['ironic_all'] }}"
+        src_list: "{{ rabbitmq_servers }}"
+      register: servers
+    - name: Set rabbitmq servers
+      set_fact:
+        rabbitmq_servers: "{{ servers.sorted_list }}"
+  roles:
+    - role: "os_ironic"
+      ironic_venv_tag: "{{ openstack_release }}"
+      ironic_venv_download_url: "{{ openstack_repo_url }}/venvs/{{ openstack_release }}/{{ ansible_distribution | lower }}/ironic-{{ openstack_release }}.tgz"
+      tags:
+        - "os-ironic"
+    - role: "openstack_openrc"
+      tags:
+        - "openstack-openrc"
+    - role: "rsyslog_client"
+      rsyslog_client_log_rotate_file: ironic_log_rotate
+      rsyslog_client_log_dir: "/var/log/ironic"
+      rsyslog_client_config_name: "99-ironic-rsyslog-client.conf"
+      tags:
+        - "ironic-rsyslog-client"
+        - "rsyslog-client"
+    - role: "system_crontab_coordination"
+      tags:
+        - "system-crontab-coordination"
+  vars:
+    ansible_hostname: "{{ container_name }}"
+    ansible_ssh_host: "{{ container_address }}"
+    ironic_galera_address: "{{ internal_lb_vip_address }}"
+    is_metal: "{{ properties.is_metal|default(false) }}"
