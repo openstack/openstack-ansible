@@ -32,10 +32,6 @@ availability zones.
    ``cinderAZ_1``. The default availability zone should be the same
    for all cinder hosts.
 
-   If the ``cinder_default_availability_zone`` is not defined, the
-   default variable will be used (nova). This could make horizon's
-   volume creation fail.
-
 --------------
 
 .. include:: navigation.txt
