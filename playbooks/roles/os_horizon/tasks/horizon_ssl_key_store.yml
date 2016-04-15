@@ -13,19 +13,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Store self signed ssl
-  memcached:
-    name: "{{ item.name }}"
-    file_path: "{{ item.src }}"
-    state: "present"
-    server: "{{ memcached_servers }}"
-    encrypt_string: "{{ memcached_encryption_key }}"
-  with_items:
-    - { src: "{{ horizon_ssl_cert }}", name: "horizon_ssl_cert" }
-    - { src: "{{ horizon_ssl_key }}", name: "horizon_ssl_key" }
-  register: memcache_keys
-  until: memcache_keys|success
-  retries: 5
-  delay: 2
+- name: Store ssl cert
+  slurp:
+    src: "{{ horizon_ssl_cert }}"
+  register: _horizon_ssl_cert
+  changed_when: false
+  tags:
+    - horizon-ssl
+
+- name: Store ssl key
+  slurp:
+    src: "{{ horizon_ssl_key }}"
+  register: _horizon_ssl_key
+  changed_when: false
+  tags:
+    - horizon-ssl
+
+- name: Register a fact for the cert and key
+  set_fact:
+     horizon_ssl_cert_fact: "{{ _horizon_ssl_cert.content }}"
+     horizon_ssl_key_fact: "{{ _horizon_ssl_key.content }}"
   tags:
     - horizon-ssl
