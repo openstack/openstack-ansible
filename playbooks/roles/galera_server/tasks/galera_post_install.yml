@@ -55,6 +55,18 @@
   tags:
     - galera-client-user-config
 
+# NOTE: (mancdaz) this should not be needed with mariadb-10.1 since its
+#       initscript sources /etc/default/mariadb
+- name: fix mysql startup timeout
+  lineinfile:
+    dest: /etc/init.d/mysql
+    state: present
+    insertafter: '^export HOME=/etc/mysql/'
+    line: '[ -r /etc/default/mysql ] && . /etc/default/mysql'
+    backup: yes
+
+# NOTE: (mancdaz) The target will need to change to /etc/default/mariadb
+#       for mariadb-10.1
 - name: Drop mariadb config(s)
   template:
     src: "{{ item.src }}"
