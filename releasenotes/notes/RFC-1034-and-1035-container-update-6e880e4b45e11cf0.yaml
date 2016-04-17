@@ -1,0 +1,15 @@
+---
+features:
+  - LXC containers will now have a proper RFC1034/5 hostname set during post
+    build tasks. A localhost entry for 127.0.1.1 will be created by converting
+    all of the "_" in the ``inventory_hostname`` to "-". Containers will be
+    created with a default domain of *openstack.local*.
+    This domain name can be customized to meet your deployment needs by
+    setting the option ``lxc_container_domain``.
+upgrade:
+  - LXC containers will now have a proper RFC1034/5 hostname set during post
+    build tasks. A localhost entry for 127.0.1.1 will be created by converting
+    all of the "_" in the ``inventory_hostname`` to "-". Containers will be
+    created with a default domain of *openstack.local*.
+    This domain name can be customized to meet your deployment needs by
+    setting the option ``lxc_container_domain``.
