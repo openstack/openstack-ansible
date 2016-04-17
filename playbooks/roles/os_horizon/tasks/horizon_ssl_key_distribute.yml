@@ -13,22 +13,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Distribute self signed ssl
-  memcached:
-    name: "{{ item.name }}"
-    file_path: "{{ item.src }}"
-    state: "retrieve"
-    file_mode: "{{ item.file_mode }}"
-    dir_mode: "{{ item.dir_mode }}"
-    server: "{{ memcached_servers }}"
-    encrypt_string: "{{ memcached_encryption_key }}"
-  with_items:
-    - { src: "{{ horizon_ssl_cert }}", name: "horizon_ssl_cert", file_mode: "0640", dir_mode: "0750" }
-    - { src: "{{ horizon_ssl_key }}", name: "horizon_ssl_key", file_mode: "0640", dir_mode: "0750" }
-  register: memcache_keys
-  until: memcache_keys|success
-  retries: 5
-  delay: 2
-  notify: Restart apache2
+- name: Distribute self signed ssl key
+  copy:
+    dest: "{{ horizon_ssl_key }}"
+    content: "{{ hostvars[groups['horizon_all'][0]]['horizon_ssl_key_fact'] | b64decode }}"
+    owner: "{{ horizon_system_user_name }}"
+    group: "{{ horizon_system_group_name }}"
+    mode: "0640"
+  tags:
+    - horizon-ssl
+
+- name: Distribute self signed ssl cert
+  copy:
+    dest: "{{ horizon_ssl_cert }}"
+    content: "{{ hostvars[groups['horizon_all'][0]]['horizon_ssl_cert_fact'] | b64decode }}"
+    owner: "{{ horizon_system_user_name }}"
+    group: "{{ horizon_system_group_name }}"
+    mode: "0640"
   tags:
     - horizon-ssl
