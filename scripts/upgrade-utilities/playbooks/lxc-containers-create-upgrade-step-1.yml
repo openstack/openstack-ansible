@@ -13,12 +13,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: MariaDB apt sources cleanup
-  hosts: "all_containers"
-  max_fail_percentage: 100
-  gather_facts: false
-  user: root
-  tasks:
-    - name: Remove MariaDB repositories left over from Juno
-      shell: |
-        sed -i '/http:.*maria.*/d' /etc/apt/repos.d/*
+- include: ../../../playbooks/lxc-containers-create.yml
