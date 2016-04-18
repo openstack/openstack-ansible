@@ -77,16 +77,26 @@ edit the ``/etc/openstack_deploy/user_variables.yml`` by setting:
 
    keepalived_use_latest_stable: True
 
-The HAProxy playbook makes use of the variable file
-``vars/configs/keepalived_haproxy.yml``, and feeds its content
-to the keepalived role, for keepalived master and backup nodes.
+The HAProxy playbook reads the ``vars/configs/keepalived_haproxy.yml``
+variable file and provides its content to the keepalived role for
+keepalived master and backup nodes.
 
-You can use your own variable file by setting
-the path in your ``/etc/openstack_deploy/user_variables.yml``:
+Keepalived pings a public IP address to check its status. The default
+address is ``193.0.14.129``. To change this default, for example to
+your gateway, set the ``keepalived_ping_address`` variable in the
+``user_variables.yml`` file.
+
+.. note:: The keepalived test works with IPv4 addresses only.
+
+You can define additional variables to adapt keepalived to the
+deployed environment. Refer to the ``user_variables.yml`` file for
+more information. Optionally, you can use your own variable file, as
+follows:
 
 .. code-block:: yaml
 
-   haproxy_keepalived_vars_file:
+   haproxy_keepalived_vars_file: /path/to/myvariablefile.yml
+
 
 Securing HAProxy communication with SSL certificates
 ####################################################
