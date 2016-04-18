@@ -8,6 +8,7 @@ Configuring the Block Storage service (optional)
    configure-cinder-nfs.rst
    configure-cinder-backup.rst
    configure-cinder-az.rst
+   configure-cinder-horizon.rst
 
 By default, the Block Storage service installs on the host itself using the LVM
 backend. While this is the default for cinder it should be noted that using a
