@@ -4,7 +4,6 @@ import collections
 import json
 import os
 from os import path
-import subprocess
 import sys
 import unittest
 import yaml
@@ -39,11 +38,7 @@ def cleanup():
 def get_inventory():
     "Return the inventory mapping in a dict."
     try:
-        cmd = [INV_SCRIPT, '--config', TARGET_DIR]
-        inventory_string = subprocess.check_output(
-            cmd,
-            stderr=subprocess.STDOUT
-        )
+        inventory_string = di.main({'config': TARGET_DIR})
         inventory = json.loads(inventory_string)
         return inventory
     finally:
@@ -324,19 +319,19 @@ class TestConfigChecks(unittest.TestCase):
         # create config file without provider networks
         self.setup_config_file(self.user_defined_config, 'provider_networks')
         # check if provider networks absence is Caught
-        with self.assertRaises(subprocess.CalledProcessError) as context:
+        with self.assertRaises(SystemExit) as context:
             get_inventory()
         expectedLog = "provider networks can't be found under global_overrides"
-        self.assertTrue(expectedLog in context.exception.output)
+        self.assertTrue(expectedLog in context.exception.message)
 
     def test_global_overrides_check(self):
         # create config file without global_overrides
         self.setup_config_file(self.user_defined_config, 'global_overrides')
         # check if global_overrides absence is Caught
-        with self.assertRaises(subprocess.CalledProcessError) as context:
+        with self.assertRaises(SystemExit) as context:
             get_inventory()
-        expectedLog = "global_overrides can't be found in user config\n"
-        self.assertEqual(context.exception.output, expectedLog)
+        expectedLog = "global_overrides can't be found in user config"
+        self.assertEqual(context.exception.message, expectedLog)
 
     def tearDown(self):
         # get back our initial user config file
