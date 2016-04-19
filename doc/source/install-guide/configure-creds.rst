@@ -27,6 +27,11 @@ values for the variables in each file that contains service credentials:
 
 To regenerate existing passwords, add the ``--regen`` flag.
 
+.. warning::
+   The playbooks do not currently manage changing passwords in an existing
+   environment. Changing passwords and re-running the playbooks will fail
+   and may break your OpenStack environment.
+
 --------------
 
 .. include:: navigation.txt
