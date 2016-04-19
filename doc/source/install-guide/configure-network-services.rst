@@ -173,7 +173,7 @@ The following procedure describes how to modify the
        # openstack-ansible os-neutron-install.yml
 
 #. Execute the Horizon install playbook in order to update the Horizon
-   configuration to show the FWaaS panels:
+   configuration to show the VPNaaS panels:
 
    .. code-block:: shell-session
 
