@@ -77,6 +77,10 @@ logical volumes which appear as a physical storage device to the operating
 system. The Block Storage (cinder) service as well as the LXC containers that
 run the OpenStack infrastructure can optionally use LVM for their data storage.
 
+.. note:: OpenStack-Ansible automatically configures LVM on the nodes, and
+   overrides any existing LVM configuration. If you had a customized LVM
+   configuration, edit the generated configuration file as needed.
+
 #. To use the optional Block Storage (cinder) service, create an LVM
    volume group named *cinder-volumes* on the Block Storage host. A
    metadata size of 2048 must be specified during physical volume
