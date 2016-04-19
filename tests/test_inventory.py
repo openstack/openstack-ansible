@@ -390,6 +390,11 @@ class TestConfigChecks(unittest.TestCase):
         user_defined_config[group][new_hostname] = old_hostname_settings
         self.write_config()
 
+    def set_new_ip(self, user_defined_config, group, hostname, ip):
+        # Sets an IP address for a specified host.
+        user_defined_config[group][hostname]['ip'] = ip
+        self.write_config()
+
     def test_provider_networks_check(self):
         # create config file without provider networks
         self.delete_config_key(self.user_defined_config, 'provider_networks')
@@ -439,6 +444,55 @@ class TestConfigChecks(unittest.TestCase):
                        "address:172.29.236.100 assigned.  Cannot "
                        "assign same ip to both hosts")
         self.assertEqual(context.exception.message, expectedLog)
+
+    def test_one_host_two_ips_externally(self):
+        # haproxy chosen because it was last in the config file as of
+        # writing
+        self.set_new_ip(self.user_defined_config, 'haproxy_hosts', 'aio1',
+                        '172.29.236.101')
+        with self.assertRaises(di.MultipleIpForHostError) as context:
+            get_inventory()
+        expectedLog = ("Host aio1 has both 172.29.236.100 and 172.29.236.101 "
+                       "assigned")
+        self.assertEqual(context.exception.message, expectedLog)
+
+    def test_two_ips(self):
+        # Use an OrderedDict to be certain our testing order is preserved
+        # Even with the same hash seed, different OSes get different results,
+        # eg. local OS X vs gate's Linux
+        config = collections.OrderedDict()
+        config['infra_hosts'] = {
+            'host1': {
+                'ip': '192.168.1.1'
+            }
+        }
+        config['compute_hosts'] = {
+            'host1': {
+                'ip': '192.168.1.2'
+            }
+        }
+
+        with self.assertRaises(di.MultipleIpForHostError) as context:
+            di._check_multiple_ips_to_host(config)
+        self.assertEqual(context.exception.current_ip, '192.168.1.1')
+        self.assertEqual(context.exception.new_ip, '192.168.1.2')
+        self.assertEqual(context.exception.hostname, 'host1')
+
+    def test_correct_hostname_ip_map(self):
+        config = {
+            'infra_hosts': {
+                'host1': {
+                    'ip': '192.168.1.1'
+                }
+            },
+            'compute_hosts': {
+                'host2': {
+                    'ip': '192.168.1.2'
+                }
+            },
+        }
+        ret = di._check_multiple_ips_to_host(config)
+        self.assertTrue(ret)
 
     def tearDown(self):
         if self.config_changed:

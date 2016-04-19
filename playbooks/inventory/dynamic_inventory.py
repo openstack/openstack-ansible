@@ -68,6 +68,24 @@ class MultipleHostsWithOneIPError(Exception):
         return self.message
 
 
+class MultipleIpForHostError(Exception):
+    def __init__(self, hostname, current_ip, new_ip):
+        self.hostname = hostname
+        self.current_ip = current_ip
+        self.new_ip = new_ip
+
+        # Sort the IPs for our error message so we're always consistent.
+        ips = [current_ip, new_ip]
+        ips.sort()
+
+        error_msg = "Host {hostname} has both {ips[0]} and {ips[1]} assigned"
+
+        self.message = error_msg.format(hostname=hostname, ips=ips)
+
+    def __str__(self):
+        return self.message
+
+
 def args():
     """Setup argument Parsing."""
     parser = argparse.ArgumentParser(
@@ -389,8 +407,8 @@ def user_defined_setup(config, inventory):
                 return
 
             for _key, _value in value.iteritems():
-                if _key not in inventory['_meta']['hostvars']:
-                    inventory['_meta']['hostvars'][_key] = {}
+                if _key not in hvs:
+                    hvs[_key] = {}
 
                 hvs[_key].update({
                     'ansible_ssh_host': _value['ip'],
@@ -894,6 +912,28 @@ def _check_same_ip_to_multiple_host(config):
                         raise MultipleHostsWithOneIPError(*info)
 
 
+def _check_multiple_ips_to_host(config):
+    """Check for multiple IPs assigned to a single hostname
+
+    :param: config: ``dict`` User provided configuration
+    """
+
+    # Extract only the dictionaries in the host groups.
+    host_ip_map = {}
+    for groupnames, group in config.items():
+        if '_hosts' in groupnames:
+            for hostname, entries in group.items():
+                if hostname not in host_ip_map:
+                    host_ip_map[hostname] = entries['ip']
+                else:
+                    current_ip = host_ip_map[hostname]
+                    new_ip = entries['ip']
+                    if not current_ip == new_ip:
+                        raise MultipleIpForHostError(hostname, current_ip,
+                                                     new_ip)
+    return True
+
+
 def _check_config_settings(cidr_networks, config, container_skel):
     """check preciseness of config settings
 
@@ -937,6 +977,8 @@ def _check_config_settings(cidr_networks, config, container_skel):
                     )
     # look for same ip address assigned to different hosts
     _check_same_ip_to_multiple_host(config)
+
+    _check_multiple_ips_to_host(config)
 
 
 def load_environment(config_path):
