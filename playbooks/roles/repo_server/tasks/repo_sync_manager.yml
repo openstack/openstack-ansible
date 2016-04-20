@@ -19,6 +19,7 @@
     dest: "{{ item.dest }}"
   with_items:
     - { src: "lsyncd.lua.j2", dest: "/etc/lsyncd/lsyncd.conf.lua" }
+    - { src: "lsyncd.defaults.j2", dest: "/etc/default/lsyncd" }
   notify:
     - reload lsyncd
   when: >
