@@ -30,6 +30,29 @@
         delay: 1
       tags:
         - lxc-container-wait-for-ssh
+    - name: Create domain config
+      lineinfile:
+        dest: "/etc/hosts"
+        regexp: "^127.0.1.1"
+        line: "127.0.1.1 {{ inventory_hostname | replace('_', '-') }}.{{ lxc_container_domain }} {{ inventory_hostname | replace('_', '-') }}"
+        owner: "root"
+        group: "root"
+        mode: "0644"
+      tags:
+        - lxc-container-hostname
+    - name: Create hostname
+      copy:
+        dest: "/etc/hostname"
+        content: "{{ inventory_hostname | replace('_', '-') }}"
+        owner: "root"
+        group: "root"
+        mode: "0644"
+      tags:
+        - lxc-container-hostname
+    - name: Setup hostname
+      command: hostname -F /etc/hostname
+      tags:
+        - lxc-container-hostname
   vars:
     is_metal: "{{ properties.is_metal|default(false) }}"
     lxc_container_release: "{{ properties.container_release|default('trusty') }}"
