@@ -142,7 +142,7 @@ to manually delete load balancers, pools, and members before switching LBaaS
 versions. Those objects will need to be re-created afterwards.
 
 Virtual Private Network Service (Optional)
----------------------------------------------------
+------------------------------------------
 
 The following procedure describes how to modify the
 ``/etc/openstack_deploy/user_variables.yml`` file to enable VPNaaS.
