@@ -46,8 +46,8 @@ should you need to customize your build:
 * Initial host bootstrap
 * Run playbooks
 
-If you are building an AIO on a new server, it is recommended you first
-upgrade all system packages and reboot into the new kernel:
+When building an AIO on a new server, it is recommended that all
+system packages are upgraded and then reboot into the new kernel:
 
    .. code-block:: shell-session
 
@@ -63,7 +63,7 @@ repository root directory:
            /opt/openstack-ansible
        $ cd /opt/openstack-ansible
 
-Next switch the applicable branch/tag you wish to deploy from. Note that
+Next switch the applicable branch/tag to be deployed from. Note that
 deploying from the head of a branch may result in an unstable build due to
 changes in flight and upstream OpenStack changes. For a test (ie not a
 development) build it is usually best to checkout the latest tagged version.
@@ -73,8 +73,12 @@ development) build it is usually best to checkout the latest tagged version.
        $ # List all existing tags.
        $ git tag -l
 
-       $ # Checkout the latest tag from the previous command.
-       $ git checkout 12.0.0
+       $ # Checkout the stable branch and find just the latest tag
+       $ git checkout stable/mitaka
+       $ git describe --abbrev=0 --tags
+
+       $ # Checkout the latest tag from either method of retrieving the tag.
+       $ git checkout 13.0.1
 
 By default the scripts deploy all OpenStack services with sensible defaults
 for the purpose of a gate check, development or testing system.
@@ -121,9 +125,8 @@ for the OpenStack Deployment. This preparation is completed by executing:
    .. code-block:: bash
 
        $ scripts/bootstrap-aio.sh
-
-If you wish to add any additional configuration entries for the OpenStack
-configuration then this can be done now by editing
+If you wish to add any additional configuration entries for the OpenStack configuration
+then this can be done now by editing
 ``/etc/openstack_deploy/user_variables.yml``. Please see the `Install Guide`_
 for more details.
 
@@ -140,7 +143,7 @@ general estimates:
 * Virtual machines with SSD storage: ~ 45-60 minutes
 * Systems with traditional hard disks: ~ 90-120 minutes
 
-Once the playbooks have fully executed, you may experiment with various
+Once the playbooks have fully executed, it is possible to experiment with various
 settings changes in ``/etc/openstack_deploy/user_variables.yml`` and only
 run individual playbooks. For example, to run the playbook for the
 Keystone service, execute:
@@ -205,8 +208,8 @@ isn't always practical. As such the following may be executed instead:
                 /var/log/{neutron,nova,swift}
 
 There is a convenience script (``scripts/teardown.sh``) which will destroy
-everything known within an environment. You should be aware that this script
-will destroy whole environments and should be used WITH CAUTION.
+everything known within an environment. Be aware that this script will destroy
+whole environments and should be used WITH CAUTION.
 
 After the teardown is complete, ``run-playbooks.sh`` may be executed again to
 rebuild the AIO.
@@ -214,11 +217,10 @@ rebuild the AIO.
 Quick AIO build on Rackspace Cloud
 ----------------------------------
 
-You can automate the AIO build process with a virtual machine from the
-Rackspace Cloud.
+You can automate the AIO build process with a virtual machine from the Rackspace Cloud.
 
-First, we will need a cloud-config file that will allow us to run the build as
-soon as the instance starts.  Save this file as ``user_data.yml``:
+First, we will need a cloud-config file that will allow us to run the build as soon as the
+instance starts. Save this file as ``user_data.yml``:
 
    .. code-block:: yaml
 
@@ -231,14 +233,14 @@ soon as the instance starts.  Save this file as ``user_data.yml``:
       - export ANSIBLE_FORCE_COLOR=true
       - export PYTHONUNBUFFERED=1
       - export REPO=https://github.com/openstack/openstack-ansible
-      - export BRANCH=liberty
+      - export BRANCH=stable/mitaka
       - git clone -b ${BRANCH} ${REPO} /opt/openstack-ansible
       - cd /opt/openstack-ansible && scripts/bootstrap-ansible.sh
       - cd /opt/openstack-ansible && scripts/bootstrap-aio.sh
       - cd /opt/openstack-ansible && scripts/run-playbooks.sh
     output: { all: '| tee -a /var/log/cloud-init-output.log' }
 
-Feel free to customize the YAML file to meet your requirements.
+Feel free to customize the YAML file to meet any requirements.
 
 We can pass this YAML file to nova and build a Cloud Server at Rackspace:
 
@@ -254,10 +256,10 @@ We can pass this YAML file to nova and build a Cloud Server at Rackspace:
         openstack-ansible-aio-build
 
 Be sure to replace ``public_key_name`` with the name of the public key that
-you prefer to use with your instance.  Within a minute or so, your instance
-should be running and the OpenStack-Ansible installation will be in progress.
+to use with this instance.  Within a minute or so, the instance should be
+running and the OpenStack-Ansible installation will be in progress.
 
-To follow along with the progress, ssh to your running instance and execute:
+To follow along with the progress, ssh to the running instance and execute:
 
    .. code-block:: bash
 
