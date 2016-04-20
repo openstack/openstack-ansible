@@ -63,3 +63,4 @@ Appendices
    app-minorupgrade.rst
    app-tips.rst
    app-plumgrid.rst
+   app-nuage.rst
