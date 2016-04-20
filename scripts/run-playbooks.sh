@@ -14,124 +14,74 @@
 # limitations under the License.
 
 ## Shell Opts ----------------------------------------------------------------
-set -e -u -x
-
+set -e -u
 
 ## Variables -----------------------------------------------------------------
-DEPLOY_HOST=${DEPLOY_HOST:-"yes"}
-DEPLOY_LB=${DEPLOY_LB:-"yes"}
-DEPLOY_INFRASTRUCTURE=${DEPLOY_INFRASTRUCTURE:-"yes"}
-DEPLOY_LOGGING=${DEPLOY_LOGGING:-"yes"}
-DEPLOY_OPENSTACK=${DEPLOY_OPENSTACK:-"yes"}
-DEPLOY_SWIFT=${DEPLOY_SWIFT:-"yes"}
-DEPLOY_CEILOMETER=${DEPLOY_CEILOMETER:-"yes"}
-DEPLOY_TEMPEST=${DEPLOY_TEMPEST:-"yes"}
+DEPLOY_AIO=${DEPLOY_AIO:-false}
 COMMAND_LOGS=${COMMAND_LOGS:-"/openstack/log/ansible_cmd_logs/"}
-ADD_NEUTRON_AGENT_CHECKSUM_RULE=${ADD_NEUTRON_AGENT_CHECKSUM_RULE:-"yes"}
-
-
-## Functions -----------------------------------------------------------------
-info_block "Checking for required libraries." 2> /dev/null || source $(dirname ${0})/scripts-library.sh
-
 
 ## Main ----------------------------------------------------------------------
+function run_play_book_exit_message {
+echo -e "\e[1;5;97m*** NOTICE ***\e[0m
+
+The \"\e[1;31m${0}\e[0m\" script has exited. This script is no longer needed from now on.
+If you need to re-run parts of the stack, adding new nodes to the environment,
+or have encountered an error you will no longer need this application to
+interact with the environment. All jobs should be executed out of the
+\"\e[1;33m${PLAYBOOK_DIR}\e[0m\" directory using the \"\e[1;32mopenstack-ansible\e[0m\"
+command line wrapper.
+
+For more information about OpenStack-Ansible please review our documentation at:
+  \e[1;36mhttp://docs.openstack.org/developer/openstack-ansible\e[0m
+
+Additionally if there's ever a need for information on common operational tasks please
+see the following information:
+  \e[1;36mhttp://docs.openstack.org/developer/openstack-ansible/install-guide/index.html#operations\e[0m
+
+
+If you ever have any questions please join the community conversation on IRC at
+#openstack-ansible on freenode.
+"
+}
+
+function playbook_run {
+  for root_include in $(awk -F'include:' '{print $2}' setup-everything.yml); do
+    for include in $(awk -F'include:' '{print $2}' "${root_include}"); do
+      echo "[Executing \"${include}\" playbook]"
+      if [[ "${DEPLOY_AIO}" = true ]] && [[ "${include}" == "security-hardening.yml" ]]; then
+        # NOTE(mattt): We have to skip V-38462 as openstack-infra are now building
+        #              images with apt config Apt::Get::AllowUnauthenticated set
+        #              to true.
+        install_bits "${include}" --skip-tag V-38462
+      else
+        install_bits "${include}"
+      fi
+    done
+  done
+}
+
+trap run_play_book_exit_message EXIT
+
+info_block "Checking for required libraries." 2> /dev/null || source $(dirname ${0})/scripts-library.sh
 
 # Initiate the deployment
 pushd "playbooks"
-  if [ "${DEPLOY_HOST}" == "yes" ]; then
-    # Install all host bits
-    install_bits openstack-hosts-setup.yml
-    install_bits lxc-hosts-setup.yml
+  PLAYBOOK_DIR="$(pwd)"
 
-    # Apply security hardening
-    # NOTE(mattt): We have to skip V-38462 as openstack-infra are now building
-    #              images with apt config Apt::Get::AllowUnauthenticated set
-    #              to true.
-    install_bits --skip-tag V-38462 security-hardening.yml
+  # Execute setup everything
+  playbook_run
 
-    # Bring the lxc bridge down and back up to ensures the iptables rules are in-place
-    # This also will ensure that the lxc dnsmasq rules are active.
-    mkdir -p "${COMMAND_LOGS}/host_net_bounce"
-    ansible hosts -m shell \
-                  -a '(ifdown lxcbr0 || true); ifup lxcbr0' \
-                  -t "${COMMAND_LOGS}/host_net_bounce" \
-                  &> ${COMMAND_LOGS}/host_net_bounce.log
-
-    # If run-playbooks is executed more than once, the above lxcbr0 network
-    # restart will break any existing container networks. The lxc_host role
-    # places a convenience script on the host which fixes that, so let's use
-    # it to repair the container networks.
-    if [ -f /usr/local/bin/lxc-veth-check ]; then
-      /usr/local/bin/lxc-veth-check
-    fi
-
-    # Create the containers.
-    install_bits lxc-containers-create.yml
-
+  if [[ "${DEPLOY_AIO}" = true ]]; then
     # Log some data about the instance and the rest of the system
     log_instance_info
 
-  fi
-
-  if [ "${DEPLOY_LB}" == "yes" ]; then
-    # Install haproxy for dev purposes only
-    install_bits haproxy-install.yml
-  fi
-
-  if [ "${DEPLOY_INFRASTRUCTURE}" == "yes" ]; then
-    # Install all of the infra bits
-    install_bits memcached-install.yml
-    install_bits repo-install.yml
-
+    # Log repo data
     mkdir -p "${COMMAND_LOGS}/repo_data"
     ansible 'repo_all[0]' -m raw \
                           -a 'find  /var/www/repo/os-releases -type l' \
                           -t "${COMMAND_LOGS}/repo_data"
 
-    install_bits galera-install.yml
-    install_bits rabbitmq-install.yml
-    install_bits utility-install.yml
-
-    if [ "${DEPLOY_LOGGING}" == "yes" ]; then
-      install_bits rsyslog-install.yml
-    fi
+    openstack-ansible os-tempest-install.yml
+    print_report
   fi
-
-  if [ "${DEPLOY_OPENSTACK}" == "yes" ]; then
-    # install all of the compute Bits
-    install_bits os-keystone-install.yml
-    install_bits os-glance-install.yml
-    install_bits os-cinder-install.yml
-    install_bits os-nova-install.yml
-    install_bits os-neutron-install.yml
-    install_bits os-heat-install.yml
-    install_bits os-horizon-install.yml
-  fi
-
-  # If ceilometer is deployed, it must be run before
-  # swift, since the swift playbooks will make reference
-  # to the ceilometer user when applying the reselleradmin
-  # role
-  if [ "${DEPLOY_CEILOMETER}" == "yes" ]; then
-    install_bits os-ceilometer-install.yml
-    install_bits os-aodh-install.yml
-  fi
-
-  if [ "${DEPLOY_SWIFT}" == "yes" ]; then
-    if [ "${DEPLOY_OPENSTACK}" == "no" ]; then
-      # When os install is no, make sure we still have keystone for use in swift.
-      install_bits os-keystone-install.yml
-    fi
-    # install all of the swift Bits
-    install_bits os-swift-install.yml
-  fi
-
-  if [ "${DEPLOY_TEMPEST}" == "yes" ]; then
-    # Deploy tempest
-    install_bits os-tempest-install.yml
-  fi
-
 popd
-
-# print the report data
-set +x && print_report
