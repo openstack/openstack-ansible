@@ -163,6 +163,9 @@
 # haproxy_keepalived_priority_master:
 # haproxy_keepalived_priority_backup:
 
+# Keepalived default IP address used to check its alive status (IPv4 only)
+# keepalived_ping_address: "193.0.14.129"
+
 # All the previous variables are used in a var file, fed to the keepalived role.
 # To use another file to feed the role, override the following var:
 # haproxy_keepalived_vars_file: 'vars/configs/keepalived_haproxy.yml'

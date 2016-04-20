@@ -13,7 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-keepalived_sync_groups:
+keepalived_ping_address: "193.0.14.129"
+keepalived_ping_count: 1
+keepalived_ping_interval: 10
+
+keepalived_global_sync_groups:
   haproxy:
     instances:
       - external
@@ -28,8 +32,8 @@ keepalived_scripts:
   haproxy_check_script:
     check_script: "killall -0 haproxy"
   pingable_check_script:
-    check_script: "ping -c 1 193.0.14.129 1>&2"
-    interval: 10
+    check_script: "ping -c {{ keepalived_ping_count }} {{ keepalived_ping_address }} 1>&2"
+    interval: "{{ keepalived_ping_interval }}"
     fall: 2
     rise: 4
 
