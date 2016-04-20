@@ -98,7 +98,7 @@ neutron_services:
  neutron-dhcp-agent:
    group: neutron_dhcp_agent
    service_name: neutron-dhcp-agent
-   service_en: True
+   service_en: "{{ neutron_dhcp | bool }}"
    service_conf: dhcp_agent.ini
    service_group: neutron_agent
    service_rootwrap: rootwrap.d/dhcp.filters
@@ -108,7 +108,7 @@ neutron_services:
  neutron-linuxbridge-agent:
    group: neutron_linuxbridge_agent
    service_name: neutron-linuxbridge-agent
-   service_en: True
+   service_en: "{{ neutron_linuxbridge | bool }}"
    service_conf: plugins/ml2/linuxbridge_agent.ini
    service_group: neutron_linuxbridge_agent
    service_rootwrap: rootwrap.d/linuxbridge-plugin.filters
@@ -118,7 +118,7 @@ neutron_services:
  neutron-metadata-agent:
    group: neutron_metadata_agent
    service_name: neutron-metadata-agent
-   service_en: True
+   service_en: "{{ neutron_metadata | bool }}"
    service_conf: metadata_agent.ini
    service_group: neutron_agent
    config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/metadata_agent.ini
@@ -127,7 +127,7 @@ neutron_services:
  neutron-metering-agent:
    group: neutron_metering_agent
    service_name: neutron-metering-agent
-   service_en: "{{ neutron_metering }}"
+   service_en: "{{ neutron_metering | bool }}"
    service_conf: metering_agent.ini
    service_group: neutron_agent
    config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/metering_agent.ini
@@ -136,7 +136,7 @@ neutron_services:
  neutron-l3-agent:
    group: neutron_l3_agent
    service_name: neutron-l3-agent
-   service_en: "{{ neutron_l3 }}"
+   service_en: "{{ neutron_l3 | bool }}"
    service_conf: l3_agent.ini
    service_group: neutron_agent
    service_rootwrap: rootwrap.d/l3.filters
@@ -146,7 +146,7 @@ neutron_services:
  neutron-lbaas-agent:
    group: neutron_lbaas_agent
    service_name: neutron-lbaas-agent
-   service_en: "{{ neutron_lbaas }}"
+   service_en: "{{ neutron_lbaas | bool }}"
    service_conf: lbaas_agent.ini
    service_group: neutron_agent
    service_rootwrap: rootwrap.d/lbaas-haproxy.filters
@@ -156,7 +156,7 @@ neutron_services:
  neutron-lbaasv2-agent:
    group: neutron_lbaas_agent
    service_name: neutron-lbaasv2-agent
-   service_en: "{{ neutron_lbaasv2 }}"
+   service_en: "{{ neutron_lbaasv2 | bool }}"
    service_conf: lbaas_agent.ini
    service_group: neutron_agent
    service_rootwrap: rootwrap.d/lbaas-haproxy.filters
@@ -169,6 +169,15 @@ neutron_services:
    service_en: True
    service_group: neutron_server
    config_options: "--config-file /etc/neutron/neutron.conf --config-file /etc/neutron/{{ neutron_plugins[neutron_plugin_type].plugin_ini }}"
+
+## Neutron DHCP Agent
+neutron_dhcp: "{% if neutron_plugin_type == 'ml2' %}True{% else %}False{% endif %}"
+
+## Neutron Metadata Agent
+neutron_metadata: "{% if neutron_plugin_type == 'ml2' %}True{% else %}False{% endif %}"
+
+## Neutron LinuxBridge Agent
+neutron_linuxbridge: "{% if neutron_plugin_type == 'ml2' and 'linuxbridge' in neutron_ml2_mechanism_drivers %}True{% else %}False{% endif %}"
 
 ## Neutron LBaaS
 # See documentation section titled "Configuring the Network Load Balacing
