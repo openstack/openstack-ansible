@@ -329,8 +329,8 @@ class TestIps(unittest.TestCase):
 
 
 class TestConfigChecks(unittest.TestCase):
-
     def setUp(self):
+        self.config_changed = False
         self.user_defined_config = dict()
         with open(USER_CONFIG_FILE, 'rb') as f:
             self.user_defined_config.update(yaml.safe_load(f.read()) or {})
@@ -351,6 +351,7 @@ class TestConfigChecks(unittest.TestCase):
         self.write_config()
 
     def write_config(self):
+        self.config_changed = True
         # rename temporarily our user_config_file so we can use the new one
         os.rename(USER_CONFIG_FILE, USER_CONFIG_FILE + ".tmp")
         # Save new user_config_file
@@ -380,6 +381,14 @@ class TestConfigChecks(unittest.TestCase):
         expectedLog = "No container CIDR specified in user config"
         self.assertEqual(context.exception.message, expectedLog)
 
+    def set_new_hostname(self, user_defined_config, group,
+                         old_hostname, new_hostname):
+        self.config_changed = True
+        # set a new name for the specified hostname
+        old_hostname_settings = user_defined_config[group].pop(old_hostname)
+        user_defined_config[group][new_hostname] = old_hostname_settings
+        self.write_config()
+
     def test_provider_networks_check(self):
         # create config file without provider networks
         self.delete_config_key(self.user_defined_config, 'provider_networks')
@@ -398,10 +407,42 @@ class TestConfigChecks(unittest.TestCase):
         expectedLog = "global_overrides can't be found in user config"
         self.assertEqual(context.exception.message, expectedLog)
 
+    def test_two_hosts_same_ip(self):
+        # Use an OrderedDict to be certain our testing order is preserved
+        # Even with the same hash seed, different OSes get different results,
+        # eg. local OS X vs gate's Linux
+        config = collections.OrderedDict()
+        config['infra_hosts'] = {
+            'host1': {
+                'ip': '192.168.1.1'
+            }
+        }
+        config['compute_hosts'] = {
+            'host2': {
+                'ip': '192.168.1.1'
+            }
+        }
+
+        with self.assertRaises(di.MultipleHostsWithOneIPError) as context:
+            di._check_same_ip_to_multiple_host(config)
+        self.assertEqual(context.exception.ip, '192.168.1.1')
+        self.assertEqual(context.exception.assigned_host, 'host1')
+        self.assertEqual(context.exception.new_host, 'host2')
+
+    def test_two_hosts_same_ip_externally(self):
+        self.set_new_hostname(self.user_defined_config, "haproxy_hosts",
+                              "aio1", "hap")
+        with self.assertRaises(di.MultipleHostsWithOneIPError) as context:
+            get_inventory()
+        expectedLog = ("ip address:172.29.236.100 has already been assigned"
+                       " to host:aio1, cannot assign same ip to host:hap")
+        self.assertEqual(context.exception.message, expectedLog)
+
     def tearDown(self):
-        # get back our initial user config file
-        os.remove(USER_CONFIG_FILE)
-        os.rename(USER_CONFIG_FILE + ".tmp", USER_CONFIG_FILE)
+        if self.config_changed:
+            # get back our initial user config file
+            os.remove(USER_CONFIG_FILE)
+            os.rename(USER_CONFIG_FILE + ".tmp", USER_CONFIG_FILE)
 
 
 if __name__ == '__main__':

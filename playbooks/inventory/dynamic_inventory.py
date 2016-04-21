@@ -49,6 +49,22 @@ REQUIRED_HOSTVARS = [
 ]
 
 
+class MultipleHostsWithOneIPError(Exception):
+    def __init__(self, ip, assigned_host, new_host):
+        self.ip = ip
+        self.assigned_host = assigned_host
+        self.new_host = new_host
+
+        error_msg = ("ip address:{} has already been "
+                     "assigned to host:{}, cannot "
+                     "assign same ip to host:{}")
+
+        self.message = error_msg.format(ip, assigned_host, new_host)
+
+    def __str__(self):
+        return self.message
+
+
 def args():
     """Setup argument Parsing."""
     parser = argparse.ArgumentParser(
@@ -855,6 +871,26 @@ def _extra_config(user_defined_config, base_dir):
                     )
 
 
+def _check_same_ip_to_multiple_host(config):
+    """Check for IPs assigned to multiple hosts
+
+    : param: config:  ``dict`` User provided configuration
+    """
+
+    ips_to_hostnames_mapping = dict()
+    for key, value in config.iteritems():
+        if key.endswith('hosts'):
+            for _key, _value in value.iteritems():
+                hostname = _key
+                ip = _value['ip']
+                if not (ip in ips_to_hostnames_mapping):
+                    ips_to_hostnames_mapping[ip] = hostname
+                else:
+                    if ips_to_hostnames_mapping[ip] != hostname:
+                        info = (ip, ips_to_hostnames_mapping[ip], hostname)
+                        raise MultipleHostsWithOneIPError(*info)
+
+
 def _check_config_settings(cidr_networks, config, container_skel):
     """check preciseness of config settings
 
@@ -896,6 +932,8 @@ def _check_config_settings(cidr_networks, config, container_skel):
                     raise SystemExit(
                         "can't find " + q_name + " in cidr_networks"
                     )
+    # look for same ip address assigned to different hosts
+    _check_same_ip_to_multiple_host(config)
 
 
 def load_environment(config_path):
