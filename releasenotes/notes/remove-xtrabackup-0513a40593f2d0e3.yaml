@@ -1,0 +1,7 @@
+---
+upgrade:
+  - Percona Xtrabackup has been removed from the Galera client
+    role.
+deprecations:
+  - The variables ```galera_client_package_*``` and ```galera_client_apt_percona_xtrabackup_*```
+    have been removed from the role as Xtrabackup is no longer deployed.
