@@ -204,6 +204,9 @@ isn't always practical. As such the following may be executed instead:
        $ rm -rf /openstack /etc/{neutron,nova,swift} \
                 /var/log/{neutron,nova,swift}
 
+       $ # Remove the pip configuration files on the host
+       $ rm -rf /root/.pip
+
 There is a convenience script (``scripts/teardown.sh``) which will destroy
 everything known within an environment. You should be aware that this script
 will destroy whole environments and should be used WITH CAUTION.
