@@ -202,6 +202,7 @@ if [[ "${OSA_BRANCH}" != "master" ]]; then
 
     # Determine the role's name
     role_name=$(sed 's/^[ \t-]*//' ansible-role-requirements.yml | awk '/src: / || /name: / {print $2}' | grep -B1 "${role_src}" | head -n 1)
+    echo "... updating ${role_name}"
 
     # Grab the latest SHA that matches the specified branch
     role_version=$(git ls-remote ${role_src} | grep "${OSA_BRANCH}$" | awk '{print $1}')
@@ -209,6 +210,28 @@ if [[ "${OSA_BRANCH}" != "master" ]]; then
     # If that branch doesn't exist, then it's probably not an OpenStack-Ansible role, so grab the latest tag instead
     if [[ -z "${role_version}" ]]; then
       role_version=$(git ls-remote --tags ${role_src} | awk '{print $2}' | grep -v '{}' | cut -d/ -f 3 | sort -n | tail -n 1)
+    else
+      # As this is an OSA role, we want to grab the release notes from it
+
+      # Setup a var for tmp space
+      osa_repo_tmp_path="/tmp/osa_${role_name}"
+
+      # Ensure that the temp path doesn't exist
+      rm -rf ${osa_repo_tmp_path}
+
+      # Do a shallow clone of the repo to work with
+      git clone --quiet --depth=10 --branch ${OSA_BRANCH} --single-branch ${role_src} ${osa_repo_tmp_path}
+      pushd ${osa_repo_tmp_path} > /dev/null
+        git checkout --quiet origin/${OSA_BRANCH}
+      popd > /dev/null
+
+      # If there are releasenotes to copy, then copy them
+      if $(ls -1 ${osa_repo_tmp_path}/releasenotes/notes/*.yaml > /dev/null 2>&1); then
+        rsync -aq ${osa_repo_tmp_path}/releasenotes/notes/*.yaml releasenotes/notes/
+      fi
+
+      # Clean up the temporary files
+      rm -rf ${osa_repo_tmp_path}
     fi
 
     # Now use the information we have to update the ansible-role-requirements file
