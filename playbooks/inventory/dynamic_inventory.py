@@ -926,9 +926,8 @@ def load_user_configuration(config_path):
     return user_defined_config
 
 
-def main():
+def main(all_args):
     """Run the main application."""
-    all_args = args()
     # Get the path to the user configuration files
     config_path = find_config_path(
         user_config_path=all_args.get('config')
@@ -1045,8 +1044,9 @@ def main():
     with open(dynamic_inventory_file, 'wb') as f:
         f.write(dynamic_inventory_json)
 
-    # Print out our inventory
-    print(dynamic_inventory_json)
+    return dynamic_inventory_json
 
 if __name__ == '__main__':
-    main()
+    all_args = args()
+    output = main(all_args)
+    print(output)
