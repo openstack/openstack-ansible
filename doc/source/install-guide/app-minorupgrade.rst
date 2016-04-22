@@ -25,7 +25,7 @@ A minor upgrade will typically require the execution of the following:
 
    .. code-block:: shell-session
 
-      # git checkout 12.0.1
+      # git checkout 13.0.1
 
 #. Update all the dependent roles to the latest versions
 
