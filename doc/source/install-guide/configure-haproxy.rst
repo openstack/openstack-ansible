@@ -97,6 +97,26 @@ follows:
 
    haproxy_keepalived_vars_file: /path/to/myvariablefile.yml
 
+Configuring keepalived ping checks
+##################################
+
+OpenStack-Ansible configures keepalived with a check script that pings an
+external resource and uses that ping to determine if a node has lost network
+connectivity. If the pings fail, keepalived will fail over to another node and
+HAProxy will serve requests there.
+
+The destination address, ping count and ping interval are configurable via
+Ansible variables in ``/etc/openstack_deploy/user_variables.yml``:
+
+.. code-block:: yaml
+
+   keepalived_ping_address:         # IP address to ping
+   keepalived_ping_count:           # ICMP packets to send (per interval)
+   keepalived_ping_interval:        # How often ICMP packets are sent
+
+By default, OpenStack-Ansible will configure keepalived to ping one of the root
+DNS servers operated by RIPE. You can change this IP address to a different
+external address or another address on your internal network.
 
 Securing HAProxy communication with SSL certificates
 ####################################################
