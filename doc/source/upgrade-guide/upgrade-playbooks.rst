@@ -122,6 +122,12 @@ The following stanza will be added to
       ml2:
         extension_drivers: ''
 
+mariadb-apt-cleanup.yml
+-----------------------
+
+This playbook cleans up older MariaDB apt repositories which used HTTP instead
+of HTTPS.
+
 --------------
 
 .. include:: navigation.txt
