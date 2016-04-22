@@ -50,10 +50,39 @@ Deployers can disable discard by setting ``nova_libvirt_hw_disk_discard`` to
 ``ignore``.  The ``nova_libvirt_disk_cachemodes`` can be set to an empty
 string to disable ``network=writeback``.
 
-The `Ceph documentation for OpenStack`_ has additional information about these
-settings.
+
+
+The following minimal example configuration sets nova to use the 
+``ephemeral-vms`` ceph pool.The example uses cephx authentication, and
+requires an existing ``cinder`` account for the ``ephemeral-vms`` pool.
+
+.. code-block:: console
+
+    nova_libvirt_images_rbd_pool: ephemeral-vms
+    ceph_mons:
+      - 172.29.244.151
+      - 172.29.244.152
+      - 172.29.244.153
+
+
+If you have a different ceph username for the pool, you can use it as
+
+.. code-block:: console 
+
+   cinder_ceph_client: <ceph-username>
+
+
+
+* The `Ceph documentation for OpenStack`_ has additional information about these settings.
+* `OpenStack-Ansible and Ceph Working Example`_
+
+
 
 .. _Ceph documentation for OpenStack: http://docs.ceph.com/docs/master/rbd/rbd-openstack/
+.. _OpenStack-Ansible and Ceph Working Example: https://www.openstackfaq.com/openstack-ansible-ceph/
+
+
+
 
 Config Drive
 ~~~~~~~~~~~~
