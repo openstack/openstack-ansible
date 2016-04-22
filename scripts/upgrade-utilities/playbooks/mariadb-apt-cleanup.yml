@@ -14,11 +14,11 @@
 # limitations under the License.
 
 - name: MariaDB apt sources cleanup
-  hosts: "all_containers"
+  hosts: "hosts:all_containers"
   max_fail_percentage: 100
   gather_facts: false
   user: root
   tasks:
     - name: Remove MariaDB repositories left over from Juno
       shell: |
-        sed -i '/http:.*maria.*/d' /etc/apt/repos.d/*
+        sed -i '/http:.*maria.*/d' /etc/apt/sources.list.d/*
