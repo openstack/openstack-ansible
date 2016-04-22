@@ -134,7 +134,7 @@ done
 unset IFS
 
 # Finally, update the PIP_INSTALL_OPTIONS with the current versions of pip, wheel and setuptools
-PIP_CURRENT_OPTIONS=$(./scripts/get-pypi-pkg-version.py -p pip setuptools wheel -l horizontal)
+PIP_CURRENT_OPTIONS="$(./scripts/get-pypi-pkg-version.py -p pip setuptools -l horizontal)wheel==0.26.0"
 sed -i.bak "s|^PIP_INSTALL_OPTIONS=.*|PIP_INSTALL_OPTIONS=\$\{PIP_INSTALL_OPTIONS:-'${PIP_CURRENT_OPTIONS}'\}|" scripts/scripts-library.sh
 
 for pin in ${PIP_CURRENT_OPTIONS}; do
