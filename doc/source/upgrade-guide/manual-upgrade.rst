@@ -94,9 +94,24 @@ Before installing the infrastructure and OpenStack, update the host machines.
 
 .. code-block:: console
 
-    # openstack-ansible setup-hosts.yml
+    # openstack-ansible setup-hosts.yml --limit '!galera_all[0]'
 
-This command is the same as doing host setups on a new install.
+This command is the same as doing host setups on a new install. The first
+member of the galera_all host group is excluded to prevent simultaneous
+restarts of all galera containers.
+
+Update Galera LXC container configuration
+-----------------------------------------
+
+Update the first galera container's configuration independently.
+
+.. code-block:: console
+
+    # openstack-ansible lxc-containers-create.yml --limit galera_all[0]
+
+This command is a subset of the host setup playbook, limited to the first
+member of the galera_all host group so that its container is restarted only
+after other galera containers have been restarted in the previous step.
 
 Cleanup pip.conf file in the repo_servers if found
 --------------------------------------------------

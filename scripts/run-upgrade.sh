@@ -146,7 +146,8 @@ function main {
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/user-secrets-adjustment.yml")
         # Clean up old MariaDB apt repositories
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/mariadb-apt-cleanup.yml")
-        RUN_TASKS+=("setup-hosts.yml")
+        RUN_TASKS+=("setup-hosts.yml --limit '!galera_all[0]'")
+        RUN_TASKS+=("lxc-containers-create.yml --limit galera_all[0]")
         # A Galera/MariaDB upgrade is mandatory. See the upgrade
         # playbooks documentation for more details.
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/repo-server-pip-conf-removal.yml")
