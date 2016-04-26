@@ -21,6 +21,11 @@ provide their own certificates by using the following Ansible variables in
     keystone_user_ssl_key:           # Path to private key
     keystone_user_ssl_ca_cert:       # Path to CA certificate
 
+.. note:: If the deployer is providing certificate, key, and ca file for a
+   CA without chain of trust (or an invalid/self-generated ca), the variables
+   `keystone_service_internaluri_insecure` and
+   `keystone_service_adminuri_insecure` should be set to True.
+
 Refer to `Securing services with SSL certificates`_ for more information on
 these configuration options and how deployers can provide their own
 certificates and keys to use with Keystone.
