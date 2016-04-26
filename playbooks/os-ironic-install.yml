@@ -97,9 +97,13 @@
         ref_list: "{{ groups['ironic_all'] }}"
         src_list: "{{ rabbitmq_servers }}"
       register: servers
+      tags:
+        - always
     - name: Set rabbitmq servers
       set_fact:
         rabbitmq_servers: "{{ servers.sorted_list }}"
+      tags:
+        - always
   roles:
     - role: "os_ironic"
       ironic_venv_tag: "{{ openstack_release }}"

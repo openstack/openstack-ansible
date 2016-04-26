@@ -47,9 +47,13 @@
         ref_list: "{{ groups['nova_all'] }}"
         src_list: "{{ rabbitmq_servers }}"
       register: servers
+      tags:
+        - always
     - name: Set rabbitmq servers
       set_fact:
         rabbitmq_servers: "{{ servers.sorted_list }}"
+      tags:
+        - always
     - name: Add nbd devices to the compute
       shell: |
         for i in /dev/nbd*;do

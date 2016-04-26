@@ -66,9 +66,13 @@
         ref_list: "{{ groups['neutron_all'] }}"
         src_list: "{{ rabbitmq_servers }}"
       register: servers
+      tags:
+        - always
     - name: Set rabbitmq servers
       set_fact:
         rabbitmq_servers: "{{ servers.sorted_list }}"
+      tags:
+        - always
     - name: Create log dir
       file:
         path: "{{ item.path }}"
