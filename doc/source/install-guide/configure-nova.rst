@@ -52,7 +52,7 @@ string to disable ``network=writeback``.
 
 
 
-The following minimal example configuration sets nova to use the 
+The following minimal example configuration sets nova to use the
 ``ephemeral-vms`` ceph pool.The example uses cephx authentication, and
 requires an existing ``cinder`` account for the ``ephemeral-vms`` pool.
 
@@ -67,7 +67,7 @@ requires an existing ``cinder`` account for the ``ephemeral-vms`` pool.
 
 If you have a different ceph username for the pool, you can use it as
 
-.. code-block:: console 
+.. code-block:: console
 
    cinder_ceph_client: <ceph-username>
 
@@ -165,10 +165,10 @@ Ansible variables:
     nova_system_user_uid = <specify a UID>
     nova_system_group_gid = <specify a GID>
 
-**WARNING:** Setting this value **after** deploying an environment with
-OpenStack-Ansible can cause failures, errors, and general instability. These
-values should only be set once **before** deploying an OpenStack environment
-and then never changed.
+.. warning:: Setting this value **after** deploying an environment with
+   OpenStack-Ansible can cause failures, errors, and general instability. These
+   values should only be set once **before** deploying an OpenStack environment
+   and then never changed.
 
 --------------
 
