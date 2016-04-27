@@ -39,5 +39,6 @@
   delay: 2
   with_items:
     - "{{ ceilometer_pip_packages }}"
+  notify: Restart ceilometer services
   tags:
     - ceilometer-pip-packages

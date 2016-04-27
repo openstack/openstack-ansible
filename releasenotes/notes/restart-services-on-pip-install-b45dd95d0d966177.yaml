@@ -1,0 +1,6 @@
+---
+fixes:
+  - Each OpenStack service now restarts when any of its
+    required Python packages are installed or updated
+    so that changes to that service take effect reliably
+    and immediately.
