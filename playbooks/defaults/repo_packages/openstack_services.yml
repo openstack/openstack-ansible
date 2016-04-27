@@ -70,6 +70,11 @@ horizon_git_repo: https://git.openstack.org/openstack/horizon
 horizon_git_install_branch: b3e0ddcb7527019b78119cd30cf8dd27169cd32d # HEAD of "master" as of 22.04.2016
 horizon_git_dest: "/opt/horizon_{{ horizon_git_install_branch | replace('/', '_') }}"
 
+## Horizon LBaaS dashboard plugin
+neutron_lbaas_dashboard_git_repo: https://git.openstack.org/openstack/neutron-lbaas-dashboard
+neutron_lbaas_dashboard_git_install_branch: 528567509debcb9165bcf7bf675d31bde5d36c00 # HEAD of "master" as of 27.04.2016
+neutron_lbaas_dashboard_git_dest: "/opt/neutron_lbaas_dashboard_{{ neutron_lbaas_dashboard_git_install_branch | replace('/', '_') }}"
+
 
 ## Keystone service
 keystone_git_repo: https://git.openstack.org/openstack/keystone
