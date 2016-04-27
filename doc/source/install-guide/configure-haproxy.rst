@@ -10,10 +10,16 @@ load balancing services via keepalived if there are more than one hosts in the
 
 .. note::
 
+  Deployers must review the services exposed by HAProxy and **must limit access
+  to these services to trusted users and networks only**. For more details,
+  refer to the :ref:`least-access-openstack-services` section.
+
+.. note::
+
   A load balancer is required for a successful installation. Deployers may
   prefer to make use of hardware load balancers instead of haproxy. If hardware
-  load balancers are used then the load balancing configuration for services must
-  be implemented prior to executing the deployment.
+  load balancers are used then the load balancing configuration for services
+  must be implemented prior to executing the deployment.
 
 To deploy HAProxy within your OpenStack-Ansible environment, define target
 hosts which should run HAProxy:
