@@ -1,0 +1,5 @@
+---
+fixes:
+  - The XFS filesystem is excluded from the daily mlocate crond job
+    in order to conserve disk IO for large IOPS bursts due to
+    updatedb/mlocate file indexing.
