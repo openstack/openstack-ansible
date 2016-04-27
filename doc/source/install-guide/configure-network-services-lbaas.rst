@@ -58,7 +58,7 @@ Deploying LBaaS v2
       neutron_plugin_base:
         - router
         - metering
-        - lbaasv2
+        - neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPluginv2
 
    Ensure that ``neutron_plugin_base`` includes all of the plugins that you
    want to deploy with Neutron **in addition** to the LBaaS plugin.
