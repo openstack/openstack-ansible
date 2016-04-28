@@ -1,120 +1,128 @@
 `Home <index.html>`__ OpenStack-Ansible Installation Guide
 
-Appendix C. Minor Upgrades
---------------------------
+==========================
+Appendix C: Minor upgrades
+==========================
 
-Upgrades between minor versions of OpenStack-Ansible are handled by simply
+Upgrades between minor versions of OpenStack-Ansible are handled by
 updating the repository clone to the latest tag, then executing playbooks
 against the target hosts.
 
-A minor upgrade will typically require the execution of the following:
+A minor upgrade typically requires the execution of the following:
 
-#. Change directory into the repository clone root directory
+#. Change directory into the repository clone root directory:
 
    .. code-block:: shell-session
 
       # cd /opt/openstack-ansible
 
-#. Update the git remotes
+#. Update the git remotes:
 
    .. code-block:: shell-session
 
       # git fetch --all
 
-#. Checkout the latest tag (the below tag is an example)
+#. Checkout the latest tag (the below tag is an example):
 
    .. code-block:: shell-session
 
       # git checkout 13.0.1
 
-#. Update all the dependent roles to the latest versions
+#. Update all the dependent roles to the latest versions:
 
    .. code-block:: shell-session
 
       # ./scripts/bootstrap-ansible.sh
 
-#. Change into the playbooks directory
+#. Change into the playbooks directory:
 
    .. code-block:: shell-session
 
       # cd playbooks
 
-#. Update the Hosts
+#. Update the hosts:
 
    .. code-block:: shell-session
 
       # openstack-ansible setup-hosts.yml
 
-#. Update the Infrastructure
+#. Update the infrastructure:
 
    .. code-block:: shell-session
 
       # openstack-ansible -e rabbitmq_upgrade=true \
           setup-infrastructure.yml
 
-#. Update all OpenStack Services
+#. Update all OpenStack services:
 
    .. code-block:: shell-session
 
       # openstack-ansible setup-openstack.yml
 
-Note that if you wish to scope the upgrades to specific OpenStack components
-then each of the component playbooks may be executed and scoped using groups.
+.. note::
+   
+   Scope upgrades to specific OpenStack components by
+   executing each of the component playbooks using groups.
+
 For example:
 
-#. Update only the Compute Hosts
+#. Update only the Compute hosts:
 
    .. code-block:: shell-session
 
       # openstack-ansible os-nova-install.yml --limit nova_compute
 
-#. Update only a single Compute Host. Note that skipping the 'nova-key' tag is
-    necessary as the keys on all compute hosts will not be gathered.
+#. Update only a single Compute host:
+
+   .. note::
+   
+      Skipping the ``nova-key`` tag is necessary as the keys on
+      all Compute hosts will not be gathered.
 
    .. code-block:: shell-session
 
       # openstack-ansible os-nova-install.yml --limit <node-name> \
           --skip-tags 'nova-key'
 
-If you wish to see which hosts belong to which groups, the
-``inventory-manage.py`` script will show all groups and their hosts.
+To see which hosts belong to which groups, the
+``inventory-manage.py`` script shows all groups and their hosts.
 For example:
 
-#. Change directory into the repository clone root directory
+#. Change directory into the repository clone root directory:
 
    .. code-block:: shell-session
 
       # cd /opt/openstack-ansible
 
-#. Show all groups and which hosts belong to them
+#. Show all groups and which hosts belong to them:
 
    .. code-block:: shell-session
 
       # ./scripts/inventory-manage.py -G
 
-#. Show all hosts and which groups they belong to
+#. Show all hosts and which groups they belong:
 
    .. code-block:: shell-session
 
       # ./scripts/inventory-manage.py -g
 
-You may also see which hosts a playbook will execute against, and which tasks
-will be executed:
+To see which hosts a playbook will execute against, and to see which
+tasks will execute.
 
-#. Change directory into the repository clone playbooks directory
+#. Change directory into the repository clone playbooks directory:
 
    .. code-block:: shell-session
 
       # cd /opt/openstack-ansible/playbooks
 
-#. See the hosts in the nova_compute group which a playbook will execute against
+#. See the hosts in the ``nova_compute`` group which a playbook executes against:
 
    .. code-block:: shell-session
 
       # openstack-ansible os-nova-install.yml --limit nova_compute \
                                               --list-hosts
 
-#. See the tasks which will be executed on hosts in the nova_compute group
+#. See the tasks which will be executed on hosts in the ``nova_compute`` group:
 
    .. code-block:: shell-session
 
