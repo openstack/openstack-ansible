@@ -74,5 +74,4 @@
         - "repo-rsyslog-client"
         - "rsyslog-client"
   vars:
-    pip_no_index: false
     is_metal: "{{ properties.is_metal|default(false) }}"
