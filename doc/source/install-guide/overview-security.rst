@@ -11,8 +11,6 @@ Security requirements will always differ between deployers.  For deployers
 that need additional security measures in place, please refer to the official
 `OpenStack Security Guide`_ for additional resources.
 
-.. _OpenStack Security Guide: http://docs.openstack.org/sec/
-
 AppArmor
 ~~~~~~~~
 
@@ -69,6 +67,55 @@ messages.  The MariaDB users for each service are only granted access to the
 database(s) that they need to query.
 
 .. _principle of least privilege: https://en.wikipedia.org/wiki/Principle_of_least_privilege
+
+.. _least-access-openstack-services:
+
+Securing network access to OpenStack services
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+OpenStack environments expose many service ports and API endpoints to the
+network. **Deployers must limit access to these resources and expose them only
+to trusted users and networks.**
+
+The resources within an OpenStack environment can be divided into two groups:
+
+1. Services that users must access directly to consume the OpenStack cloud.
+
+   * Aodh
+   * Cinder
+   * Ceilometer
+   * Glance
+   * Heat
+   * Horizon
+   * Keystone *(excluding the admin API endpoint)*
+   * Neutron
+   * Nova
+   * Swift
+
+2. Services that are only utilized internally by the OpenStack cloud.
+
+   * Keystone (admin API endpoint)
+   * MariaDB
+   * RabbitMQ
+
+Users must be able to access certain public API endpoints, such as the Nova or
+Neutron API, to manage instances. Deployers should configure firewalls to allow
+access to these services, but that access should be limited to the fewest
+networks possible.
+
+Other services, such as MariaDB and RabbitMQ, **must be segmented away from
+direct user access**. Deployers must configure a firewall to only allow
+connectivity to these services within the OpenStack environment itself. This
+reduces an attacker's ability to query or manipulate data in OpenStack's
+critical database and queuing services, especially if one of these services has
+a known vulnerability.
+
+For more details on recommended network policies for OpenStack clouds, refer to
+the `API endpoint process isolation and policy`_ section from the `OpenStack
+Security Guide`_
+
+.. _API endpoint process isolation and policy: http://docs.openstack.org/security-guide/api-endpoints/api-endpoint-configuration-recommendations.html#network-policy
+.. _OpenStack Security Guide: http://docs.openstack.org/security-guide
 
 --------------
 
