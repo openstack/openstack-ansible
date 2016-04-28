@@ -29,8 +29,9 @@ Recommended server resources:
   `Building an AIO`_ for more details.
 * 16GB RAM
 
-It's `possible` to perform AIO builds within a virtual machine but your
-virtual machines will perform poorly.
+It's `possible` to perform AIO builds within a virtual machine for
+demonstration and evaluation, but your virtual machines will perform poorly.
+For production workloads, multiple nodes for specific roles are recommended.
 
 .. _hardware-assisted virtualization: https://en.wikipedia.org/wiki/Hardware-assisted_virtualization
 
@@ -210,12 +211,9 @@ isn't always practical. As such the following may be executed instead:
        $ # Remove the pip configuration files on the host
        $ rm -rf /root/.pip
 
-There is a convenience script (``scripts/teardown.sh``) which will destroy
-everything known within an environment. Be aware that this script will destroy
-whole environments and should be used WITH CAUTION.
-
-After the teardown is complete, ``run-playbooks.sh`` may be executed again to
-rebuild the AIO.
+Should an existing AIO environment need to be reinstalled, the most efficient
+method is to destroy the host operating system and start over. For this reason,
+AIOs are best run inside of some form of virtual machine or cloud guest.
 
 Quick AIO build on Rackspace Cloud
 ----------------------------------
