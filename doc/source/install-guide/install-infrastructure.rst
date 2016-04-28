@@ -1,7 +1,8 @@
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
+===================================
 Chapter 6. Infrastructure playbooks
------------------------------------
+===================================
 
 **Figure 6.1. Installation workflow**
 
@@ -34,8 +35,7 @@ Running the infrastructure playbook
 
 #. Change to the ``/opt/openstack-ansible/playbooks`` directory.
 
-#. Run the infrastructure setup playbook, which runs a series of
-   sub-playbooks:
+#. Run the infrastructure setup playbook:
 
    .. code-block:: shell-session
 
@@ -62,7 +62,7 @@ Verify the database cluster
        # ansible galera_container -m shell -a "mysql \
        -h localhost -e 'show status like \"%wsrep_cluster_%\";'"
 
-   The results should look something like:
+   Example output:
 
    .. code-block:: shell-session
 
@@ -87,8 +87,8 @@ Verify the database cluster
        wsrep_cluster_state_uuid  338b06b0-2948-11e4-9d06-bef42f6c52f1
        wsrep_cluster_status      Primary
 
-   The ``wsrep_cluster_size`` field should indicate the number of nodes
-   in the cluster and the ``wsrep_cluster_status`` field should indicate
+   The ``wsrep_cluster_size`` field indicates the number of nodes
+   in the cluster and the ``wsrep_cluster_status`` field indicates
    primary.
 
 --------------

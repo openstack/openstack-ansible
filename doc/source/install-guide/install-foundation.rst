@@ -1,7 +1,8 @@
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
+===============================
 Chapter 5. Foundation playbooks
--------------------------------
+===============================
 
 **Figure 5.1. Installation work flow**
 
@@ -22,14 +23,16 @@ operations:
 Running the foundation playbook
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. seealso:: Before continuing, the configuration files may be validated using the
+.. seealso::
+
+   Before continuing, validate the configuration files using the
    guidance in "`Checking the integrity of your configuration files`_".
 
    .. _Checking the integrity of your configuration files: ../install-guide/configure-configurationintegrity.html
 
 #. Change to the ``/opt/openstack-ansible/playbooks`` directory.
 
-#. Run the host setup playbook, which runs a series of sub-playbooks:
+#. Run the host setup playbook:
 
    .. code-block:: shell-session
 
@@ -48,10 +51,9 @@ Running the foundation playbook
 
    .. note::
 
-     If you plan to run haproxy on multiple hosts, you'll need keepalived
-     to make haproxy highly-available. The keepalived role should have
-     been downloaded during the bootstrap-ansible stage. If not, you should
-     rerun the following command before running the haproxy playbook:
+     To run HAProxy on multiple hosts, use ``keepalived`` to make HAProxy highly
+     available. The keepalived role downloads during the ``bootstrap-ansible`` stage.
+     If not, re-run the following command before running the HAProxy playbook:
 
      .. code-block:: shell-session
 
@@ -63,7 +65,7 @@ Running the foundation playbook
 
         # ansible-galaxy install -r ../ansible-role-requirements.yml
 
-  Run the playbook to deploy haproxy:
+  Run the playbook to deploy HAProxy:
 
   .. code-block:: shell-session
 
