@@ -1,19 +1,23 @@
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
+=======================
 Configuring the network
------------------------
+=======================
 
-This documentation section describes a recommended reference architecture.
-Some components are mandatory, such as the bridges described below. Other
-components aren't required but are strongly recommended, such as the bonded
-network interfaces. Deployers are strongly urged to follow the reference
-design as closely as possible for production deployments.
+This section describes the recommended network architecture.
+Some components are mandatory, such as the bridges described below. We
+recommend other components such as a bonded network interface but this
+is not a requirement.
+
+.. important::
+   
+   Follow the reference design as closely as possible for production deployments.
 
 Although Ansible automates most deployment operations, networking on
-target hosts requires manual configuration because it can vary
+target hosts requires manual configuration as it varies
 dramatically per environment. For demonstration purposes, these
 instructions use a reference architecture with example network interface
-names, networks, and IP addresses. Modify these values as needed for the
+names, networks, and IP addresses. Modify these values as needed for your
 particular environment.
 
 Bonded network interfaces
@@ -22,40 +26,39 @@ Bonded network interfaces
 The reference architecture includes bonded network interfaces, which
 use multiple physical network interfaces for better redundancy and throughput.
 Avoid using two ports on the same multi-port network card for the same bonded
-interface since a network card failure would affect both physical network
+interface since a network card failure affects both physical network
 interfaces used by the bond.
 
-The ``bond0`` interface will carry the traffic from the containers that
-run the OpenStack infrastructure. Configure a static IP address on the
+The ``bond0`` interface carries traffic from the containers
+running your OpenStack infrastructure. Configure a static IP address on the
 ``bond0`` interface from your management network.
 
-The ``bond1`` interface will carry the traffic from your virtual machines.
-Don't configure a static IP on this interface since this bond will be used by
-neutron to handle VLAN and VXLAN networks for virtual machines.
+The ``bond1`` interface carries traffic from your virtual machines.
+Do not configure a static IP on this interface, since neutron uses this
+bond to handle VLAN and VXLAN networks for virtual machines.
 
-Additional bridge networks are required for OpenStack-Ansible and those bridges
-will be connected to these two bonded network interfaces. See the following
-section for the bridge configuration.
+Additional bridge networks are required for OpenStack-Ansible. These bridges
+connect the two bonded network interfaces.
 
 Adding bridges
 ~~~~~~~~~~~~~~
 
-The combination of containers and flexible deployment options requires
-implementation of advanced Linux networking features such as bridges and
+The combination of containers and flexible deployment options require
+implementation of advanced Linux networking features, such as bridges and
 namespaces.
 
-*Bridges* provide layer 2 connectivity (similar to switches) among
+Bridges provide layer 2 connectivity (similar to switches) among
 physical, logical, and virtual network interfaces within a host. After
-creating a bridge, the network interfaces are virtually "plugged in" to
+creating a bridge, the network interfaces are virtually plugged in to
 it.
 
 OpenStack-Ansible uses bridges to connect physical and logical network
 interfaces on the host to virtual network interfaces within containers.
 
-*Namespaces* provide logically separate layer 3 environments (similar to
+Namespaces provide logically separate layer 3 environments (similar to
 routers) within a host. Namespaces use virtual interfaces to connect
 with other namespaces, including the host namespace. These interfaces,
-often called ``veth`` pairs, are virtually "plugged in" between
+often called ``veth`` pairs, are virtually plugged in between
 namespaces similar to patch cables connecting physical devices such as
 switches and routers.
 
@@ -72,7 +75,7 @@ Target hosts can contain the following network bridges:
 
 -  LXC internal ``lxcbr0``:
 
-   -  This bridge is **required**, but LXC will configure it automatically.
+   -  This bridge is **required**, but LXC configures it automatically.
 
    -  Provides external (typically internet) connectivity to containers.
 
@@ -89,32 +92,32 @@ Target hosts can contain the following network bridges:
    -  Provides management of and communication among infrastructure and
       OpenStack services.
 
-   -  Manually created and attaches to a physical or logical interface,
+   -  Manually creates and attaches to a physical or logical interface,
       typically a ``bond0`` VLAN subinterface. Also attaches to ``eth1``
-      in each container. As mentioned earlier, the container network interface
+      in each container. The container network interface
       is configurable in ``openstack_user_config.yml``.
 
 -  Storage ``br-storage``:
 
    -  This bridge is *optional*, but recommended.
 
-   -  Provides segregated access to block storage devices between
+   -  Provides segregated access to Block Storage devices between
       Compute and Block Storage hosts.
 
-   -  Manually created and attaches to a physical or logical interface,
+   -  Manually creates and attaches to a physical or logical interface,
       typically a ``bond0`` VLAN subinterface. Also attaches to ``eth2``
-      in each associated container. As mentioned earlier, the container network
+      in each associated container. The container network
       interface is configurable in ``openstack_user_config.yml``.
 
--  OpenStack Networking tunnel/overlay ``br-vxlan``:
+-  OpenStack Networking tunnel ``br-vxlan``:
 
    -  This bridge is **required**.
 
-   -  Provides infrastructure for VXLAN tunnel/overlay networks.
+   -  Provides infrastructure for VXLAN tunnel networks.
 
-   -  Manually created and attaches to a physical or logical interface,
+   -  Manually creates and attaches to a physical or logical interface,
       typically a ``bond1`` VLAN subinterface. Also attaches to
-      ``eth10`` in each associated container. As mentioned earlier, the
+      ``eth10`` in each associated container. The
       container network interface is configurable in
       ``openstack_user_config.yml``.
 
@@ -124,15 +127,15 @@ Target hosts can contain the following network bridges:
 
    -  Provides infrastructure for VLAN networks.
 
-   -  Manually created and attaches to a physical or logical interface,
+   -  Manually creates and attaches to a physical or logical interface,
       typically ``bond1``. Attaches to ``eth11`` for vlan type networks
       in each associated container. It does not contain an IP address because
-      it only handles layer 2 connectivity.  As mentioned earlier, the
+      it only handles layer 2 connectivity. The
       container network interface is configurable in
       ``openstack_user_config.yml``.
 
-   -  This interface can support flat networks as well, though additional
-      bridge configuration will be needed. More details are available here:
+   -  This interface supports flat networks with additional
+      bridge configuration. More details are available here:
       :ref:`network_configuration`.
 
 
@@ -145,16 +148,16 @@ to provide network connectivity to the OpenStack deployment:
 .. image:: figures/networkarch-container-external.png
 
 OpenStack-Ansible deploys the compute service on the physical host rather than
-in a container. The following image shows how the bridges are used for
+in a container. The following image shows how to use bridges for
 network connectivity:
 
 .. image:: figures/networkarch-bare-external.png
 
 The following image shows how the neutron agents work with the bridges
-``br-vlan`` and ``br-vxlan``. As a reminder, OpenStack Networking (neutron) is
-configured to use a DHCP agent, L3 agent and Linux Bridge agent within a
-``networking-agents`` container. You can see how the DHCP agents can provide
-information (IP addresses and DNS servers) to the instances, but also how
+``br-vlan`` and ``br-vxlan``. OpenStack Networking (neutron) is
+configured to use a DHCP agent, L3 agent, and Linux Bridge agent within a
+``networking-agents`` container. The image shows how DHCP agents provide
+information (IP addresses and DNS servers) to the instances, and how
 routing works on the image:
 
 .. image:: figures/networking-neutronagents.png
