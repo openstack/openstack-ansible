@@ -4,6 +4,7 @@ import collections
 import json
 import os
 from os import path
+import Queue
 import sys
 import unittest
 import yaml
@@ -288,7 +289,7 @@ class TestEnvironments(unittest.TestCase):
             self.assertIn(key, self.loaded_environment)
 
 
-class TestDuplicateIps(unittest.TestCase):
+class TestIps(unittest.TestCase):
     def setUp(self):
         # Allow custom assertion errors.
         self.longMessage = True
@@ -312,6 +313,20 @@ class TestDuplicateIps(unittest.TestCase):
                         self.assertEqual(1, ips[addr],
                                          msg="IP %s duplicated." % addr)
 
+    def test_empty_ip_queue(self):
+        q = Queue.Queue()
+        with self.assertRaises(SystemExit) as context:
+            di.get_ip_address('test', q)
+        expectedLog = ("Cannot retrieve requested amount of IP addresses. "
+                       "Increase the test range in your "
+                       "openstack_user_config.yml.")
+        self.assertEqual(context.exception.message, expectedLog)
+
+    def tearDown(self):
+        # Since the get_ip_address function touches USED_IPS,
+        # and USED_IPS is currently a global var, make sure we clean it out
+        di.USED_IPS = []
+
 
 class TestConfigChecks(unittest.TestCase):
 
@@ -320,7 +335,7 @@ class TestConfigChecks(unittest.TestCase):
         with open(USER_CONFIG_FILE, 'rb') as f:
             self.user_defined_config.update(yaml.safe_load(f.read()) or {})
 
-    def setup_config_file(self, user_defined_config, key):
+    def delete_config_key(self, user_defined_config, key):
         try:
             if key in user_defined_config:
                 del user_defined_config[key]
@@ -329,15 +344,45 @@ class TestConfigChecks(unittest.TestCase):
             else:
                 raise KeyError("can't find specified key in user config")
         finally:
-            # rename temporarily our user_config_file so we can use the new one
-            os.rename(USER_CONFIG_FILE, USER_CONFIG_FILE + ".tmp")
-            # Save new user_config_file
-            with open(USER_CONFIG_FILE, 'wb') as f:
-                f.write(yaml.dump(user_defined_config))
+            self.write_config()
+
+    def delete_provider_network(self, net_name):
+        del self.user_defined_config['cidr_networks'][net_name]
+        self.write_config()
+
+    def write_config(self):
+        # rename temporarily our user_config_file so we can use the new one
+        os.rename(USER_CONFIG_FILE, USER_CONFIG_FILE + ".tmp")
+        # Save new user_config_file
+        with open(USER_CONFIG_FILE, 'wb') as f:
+            f.write(yaml.dump(self.user_defined_config))
+
+    def test_missing_container_cidr_network(self):
+        self.delete_provider_network('container')
+        with self.assertRaises(SystemExit) as context:
+            get_inventory()
+        expectedLog = ("No container or management network specified in "
+                       "user config.")
+        self.assertEqual(context.exception.message, expectedLog)
+
+    def test_missing_cidr_network_present_in_provider(self):
+        self.delete_provider_network('storage')
+        with self.assertRaises(SystemExit) as context:
+            get_inventory()
+        expectedLog = "can't find storage in cidr_networks"
+        self.assertEqual(context.exception.message, expectedLog)
+
+    def test_missing_cidr_networks_key(self):
+        del self.user_defined_config['cidr_networks']
+        self.write_config()
+        with self.assertRaises(SystemExit) as context:
+            get_inventory()
+        expectedLog = "No container CIDR specified in user config"
+        self.assertEqual(context.exception.message, expectedLog)
 
     def test_provider_networks_check(self):
         # create config file without provider networks
-        self.setup_config_file(self.user_defined_config, 'provider_networks')
+        self.delete_config_key(self.user_defined_config, 'provider_networks')
         # check if provider networks absence is Caught
         with self.assertRaises(SystemExit) as context:
             get_inventory()
@@ -346,7 +391,7 @@ class TestConfigChecks(unittest.TestCase):
 
     def test_global_overrides_check(self):
         # create config file without global_overrides
-        self.setup_config_file(self.user_defined_config, 'global_overrides')
+        self.delete_config_key(self.user_defined_config, 'global_overrides')
         # check if global_overrides absence is Caught
         with self.assertRaises(SystemExit) as context:
             get_inventory()
