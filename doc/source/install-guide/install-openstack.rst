@@ -1,7 +1,8 @@
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
+==============================
 Chapter 7. OpenStack playbooks
-------------------------------
+==============================
 
 **Figure 7.1. Installation work flow**
 
@@ -12,7 +13,7 @@ performs the following operations:
 
 -  Install common components
 
--  Create utility container that provides utilities to interact with
+-  Create a utility container that provides utilities to interact with
    services in other containers
 
 -  Install Identity (keystone)
@@ -38,18 +39,17 @@ Running the OpenStack playbook
 
 #. Change to the ``/opt/openstack-ansible/playbooks`` directory.
 
-#. Run the OpenStack setup playbook, which runs a series of
-   sub-playbooks:
+#. Run the OpenStack setup playbook:
 
    .. code-block:: shell-session
 
        # openstack-ansible setup-openstack.yml
 
-   The openstack-common.yml sub-playbook builds all OpenStack services
+   The ``openstack-common.yml`` sub-playbook builds all OpenStack services
    from source and takes up to 30 minutes to complete. As the playbook
-   progresses, the quantity of containers in the "polling" state will
-   approach zero. If any operations take longer than 30 minutes to
-   complete, the playbook will terminate with an error.
+   progresses, the quantity of containers in the polling state
+   approaches zero. If any operations take longer than 30 minutes to
+   complete, the playbook terminates with an error.
 
    .. code-block:: shell-session
 
@@ -80,10 +80,10 @@ Running the OpenStack playbook
        <job 802849856578.7322> polling, 1675s remaining
        <job 802849856578.7319> polling, 1675s remaining
 
-   Setting up the compute hosts will take up to another 30 minutes to
+   Setting up the compute hosts takes up to another 30 minutes to
    complete, particularly in environments with many compute hosts. If
    any operations take longer than 30 minutes to complete, the playbook
-   will terminate with an error.
+   terminates with an error.
 
    .. code-block:: shell-session
 
@@ -112,16 +112,14 @@ Utility container
 ~~~~~~~~~~~~~~~~~
 
 The utility container provides a space where miscellaneous tools and
-other software can be installed. Tools and objects can be placed in a
+software are installed. Tools and objects are placed in a
 utility container if they do not require a dedicated container or if it
 is impractical to create a new container for a single tool or object.
-Utility containers can also be used when tools cannot be installed
+Utility containers are also used when tools cannot be installed
 directly onto a host.
 
 For example, the tempest playbooks are installed on the utility
 container since tempest testing does not need a container of its own.
-For another example of using the utility container, see "Verifying
-OpenStack operation".
 
 Verifying OpenStack operation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -187,8 +185,10 @@ configuration and testing.
    ``keystone_auth_admin_password`` option in the
    ``/etc/openstack_deploy/user_variables.yml`` file.
 
-Uploading public images using the dashboard or CLI can only be performed
-by users with administrator privileges.
+.. note::
+
+   Only users with administrator privileges can upload public images
+   using the dashboard or CLI.
 
 --------------
 
