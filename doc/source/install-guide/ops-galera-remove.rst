@@ -1,7 +1,8 @@
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
+==============
 Removing nodes
---------------
+==============
 
 In the following example, all but one node was shut down gracefully:
 
