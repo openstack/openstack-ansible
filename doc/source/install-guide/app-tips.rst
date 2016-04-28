@@ -1,15 +1,16 @@
 `Home <index.html>`__ OpenStack-Ansible Installation Guide
 
-Appendix D. Tips and Tricks
----------------------------
+===========================
+Appendix D: Tips and tricks
+===========================
 
-Ansible Forks
+Ansible forks
 ~~~~~~~~~~~~~
 
 The default MaxSessions setting for the OpenSSH Daemon is 10. Each Ansible
-fork makes use of a Session. By default Ansible sets the number of forks to 5,
-but a deployer may wish to increase the number of forks used in order to
-improve deployment performance in large environments.
+fork makes use of a Session. By default, Ansible sets the number of forks to 5.
+However, you can increase the number of forks used in order to improve deployment
+performance in large environments.
 
 This may be done on a permanent basis by adding the `forks`_ configuration
 entry in ``ansible.cfg``, or for a particular playbook execution by using the
