@@ -126,6 +126,7 @@ for the OpenStack Deployment. This preparation is completed by executing:
    .. code-block:: bash
 
        $ scripts/bootstrap-aio.sh
+
 If you wish to add any additional configuration entries for the OpenStack configuration
 then this can be done now by editing
 ``/etc/openstack_deploy/user_variables.yml``. Please see the `Install Guide`_
