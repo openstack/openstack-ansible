@@ -48,6 +48,7 @@
   delay: 2
   with_items:
     - "{{ horizon_pip_packages }}"
+  notify: Restart apache2
   tags:
     - horizon-install
     - horizon-pip-packages

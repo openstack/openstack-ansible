@@ -48,6 +48,11 @@
   delay: 2
   with_items:
     - "{{ swift_pip_packages }}"
+  notify:
+    - Restart swift account services
+    - Restart swift container services
+    - Restart swift object services
+    - Restart swift proxy services
   tags:
     - swift-install
     - swift-pip-packages

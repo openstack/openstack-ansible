@@ -48,6 +48,7 @@
   delay: 2
   with_items:
     - "{{ glance_pip_packages }}"
+  notify: Restart glance services
   tags:
     - glance-install
     - glance-pip-packages

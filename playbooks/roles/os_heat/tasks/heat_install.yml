@@ -47,5 +47,6 @@
   delay: 2
   with_items:
     - "{{ heat_pip_packages }}"
+  notify: Restart heat services
   tags:
     - heat-pip-packages

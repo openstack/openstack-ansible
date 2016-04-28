@@ -47,5 +47,6 @@
   delay: 2
   with_items:
     - "{{ nova_pip_packages }}"
+  notify: Restart nova services
   tags:
     - nova-pip-packages

@@ -59,5 +59,6 @@
   delay: 2
   with_items:
     - "{{ neutron_pip_packages }}"
+  notify: Restart neutron services
   tags:
     - neutron-pip-packages

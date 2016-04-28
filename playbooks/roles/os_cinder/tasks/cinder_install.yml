@@ -47,5 +47,6 @@
   delay: 2
   with_items:
     - "{{ cinder_pip_packages }}"
+  notify: Restart cinder services
   tags:
     - cinder-pip-packages
