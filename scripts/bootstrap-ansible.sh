@@ -43,11 +43,11 @@ ssh_key_create
 
 # Install the base packages
 if [[ $HOST_DISTRO =~ ^(Ubuntu|Debian) ]]; then
-    apt-get update && apt-get -y install git python-all python-dev curl autoconf g++ python2.7-dev < /dev/null
+    apt-get update && apt-get -y install git python-all python-dev curl python2.7-dev build-essential libssl-dev libffi-dev < /dev/null
 elif [[ $HOST_DISTRO =~ ^(CentOS|Red Hat) ]]; then
-    yum check-update && yum -y install git python2 curl autoconf gcc-c++ python2-devel
+    yum check-update && yum -y install git python2 curl autoconf gcc-c++ python2-devel gcc libffi-devel openssl-devel
 elif [[ $HOST_DISTRO =~ ^Fedora ]]; then
-    dnf -y install git python curl autoconf gcc-c++ python-devel
+    dnf -y install git python curl autoconf gcc-c++ python-devel gcc libffi-devel openssl-devel
 fi
 
 # If the working directory exists remove it
