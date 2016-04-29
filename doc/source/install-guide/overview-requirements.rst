@@ -118,6 +118,8 @@ minimum requirements:
 
 * Python 2.7 or later
 
+* en_US.UTF-8 as locale
+
 --------------
 
 .. include:: navigation.txt
