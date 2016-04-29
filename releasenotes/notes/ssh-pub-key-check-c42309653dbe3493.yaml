@@ -1,0 +1,5 @@
+---
+fixes:
+  - The check to validate whether an appropriate ssh public key
+    is available to copy into the container cache has been
+    corrected to check the deployment host, not the LXC host.
