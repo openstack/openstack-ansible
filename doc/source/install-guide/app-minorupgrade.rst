@@ -8,6 +8,11 @@ Upgrades between minor versions of OpenStack-Ansible are handled by
 updating the repository clone to the latest tag, then executing playbooks
 against the target hosts.
 
+.. note:: In order to avoid issues and ease the troubleshooting if an
+          issue appears during the upgrade, disable the security
+          hardening role before running the following steps. Set your
+          variable ``apply_security_hardening`` to ``False``.
+
 A minor upgrade typically requires the execution of the following:
 
 #. Change directory into the repository clone root directory:
