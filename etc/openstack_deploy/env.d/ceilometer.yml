@@ -26,7 +26,6 @@ container_skel:
       - ceilometer_api
     properties:
       service_name: ceilometer
-      container_release: trusty
   ceilometer_collector_container:
     belongs_to:
       - metering-infra_containers
@@ -34,7 +33,6 @@ container_skel:
       - ceilometer_collector
     properties:
       service_name: ceilometer
-      container_release: trusty
   metering-compute_container:
     belongs_to:
     - metering-compute_containers
@@ -43,7 +41,6 @@ container_skel:
     properties:
       is_metal: true
       service_name: ceilometer
-      container_release: trusty
 
 physical_skel:
   metering-compute_containers:

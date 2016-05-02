@@ -39,7 +39,6 @@ container_skel:
       - heat_api
     properties:
       service_name: heat
-      container_release: trusty
   heat_engine_container:
     belongs_to:
       - infra_containers
@@ -48,4 +47,3 @@ container_skel:
       - heat_engine
     properties:
       service_name: heat
-      container_release: trusty
