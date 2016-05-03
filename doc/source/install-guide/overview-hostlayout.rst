@@ -1,9 +1,10 @@
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
+===========
 Host layout
------------
+===========
 
-The recommended layout contains a minimum of five hosts (or servers).
+We recommend a layout that contains a minimum of five hosts (or servers):
 
 -  Three control plane infrastructure hosts
 
@@ -11,22 +12,21 @@ The recommended layout contains a minimum of five hosts (or servers).
 
 -  One compute host
 
-To use the optional Block Storage (cinder) service, a sixth host is
-recommended. Block Storage hosts require an LVM volume group named
-*cinder-volumes*. See `the section called "Installation
+If using the optional Block Storage (cinder) service, we recommend
+the use of a sixth host. Block Storage hosts require an LVM volume group named
+``cinder-volumes``. See `the section called "Installation
 requirements" <overview-requirements.html>`_ and `the section
 called "Configuring LVM" <targethosts-configlvm.html>`_ for more information.
 
-The hosts are called *target hosts* because Ansible deploys the OSA
-environment within these hosts. The OSA environment also recommends a
-*deployment host* from which Ansible orchestrates the deployment
+The hosts are called target hosts because Ansible deploys the OSA
+environment within these hosts. We recommend a
+deployment host from which Ansible orchestrates the deployment
 process. One of the target hosts can function as the deployment host.
 
-At least one load balancer **must** be used to manage the traffic among
-the target hosts. This can be any type of load balancer (hardware, haproxy,
-etc). While OpenStack-Ansible has playbooks and roles for deploying haproxy,
-we recommend for deployers to use physical load balancers when moving to
-production.
+Use at least one load balancer to manage the traffic among
+the target hosts. You can use any type of load balancer such as a hardware
+appliance or HAProxy. We recommend using physical load balancers for
+production environments.
 
 Infrastructure Control Plane target hosts contain the following
 services:

@@ -1,21 +1,21 @@
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
+=======================
 About OpenStack-Ansible
------------------------
+=======================
 
-OpenStack-Ansible uses the Ansible IT automation framework to
+OpenStack-Ansible (OSA) uses the Ansible IT automation framework to
 deploy an OpenStack environment on Ubuntu Linux. OpenStack components are
 installed into Linux Containers (LXC) for isolation and ease of
 maintenance.
 
 This documentation is intended for deployers of the OpenStack-Ansible
 deployment system who are interested in installing an OpenStack environment.
-The document is for informational purposes only and is provided "AS IS."
 
 Third-party trademarks and tradenames appearing in this document are the
 property of their respective owners. Such third-party trademarks have
 been printed in caps or initial caps and are used for referential
-purposes only. We do not intend our use or display of other companies"
+purposes only. We do not intend our use or display of other companies'
 tradenames, trademarks, or service marks to imply a relationship with,
 or endorsement or sponsorship of us by, these other companies.
 
@@ -28,18 +28,18 @@ provides an automation platform to simplify system and application
 deployment. Ansible manages systems using Secure Shell (SSH)
 instead of unique protocols that require remote daemons or agents.
 
-Ansible uses *playbooks* written in the YAML language for orchestration.
+Ansible uses playbooks written in the YAML language for orchestration.
 For more information, see `Ansible - Intro to
 Playbooks <http://docs.ansible.com/playbooks_intro.html>`_.
 
 In this guide, we refer to the host running Ansible playbooks as
-the *deployment host* and the hosts on which Ansible installs OSA as the
-*target hosts*.
+the deployment host and the hosts on which Ansible installs OSA as the
+target hosts.
 
 A recommended minimal layout for deployments involves five target
 hosts in total: three infrastructure hosts, one compute host, and one
 logging host. All hosts will need at least one networking interface, but
-multiple bonded interfaces are recommended. More information on setting up
+we recommend multiple bonded interfaces. More information on setting up
 target hosts can be found in `the section called "Host layout"`_.
 
 For more information on physical, logical, and virtual network
@@ -54,7 +54,7 @@ Linux Containers (LXC)
 ~~~~~~~~~~~~~~~~~~~~~~
 
 Containers provide operating-system level virtualization by enhancing
-the concept of **chroot** environments, which isolate resources and file
+the concept of ``chroot`` environments, which isolate resources and file
 systems for a particular group of processes without the overhead and
 complexity of virtual machines. They access the same kernel, devices,
 and file systems on the underlying host and provide a thin operational
@@ -65,7 +65,7 @@ virtualization on Linux using kernel namespaces and includes the
 following features:
 
 -  Resource isolation including CPU, memory, block I/O, and network
-   using *cgroups*.
+   using ``cgroups``.
 
 -  Selective connectivity to physical and virtual network devices on the
    underlying physical host.

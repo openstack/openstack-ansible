@@ -1,7 +1,8 @@
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
+=====================
 Installation workflow
----------------------
+=====================
 
 This diagram shows the general workflow associated with an
 OpenStack-Ansible (OSA) installation.
@@ -23,7 +24,7 @@ OpenStack-Ansible (OSA) installation.
 Network ranges
 ~~~~~~~~~~~~~~
 
-For consistency, the following IP addresses and hostnames will be
+For consistency, the following IP addresses and hostnames are
 referred to in this installation workflow.
 
 +-----------------------+-----------------+
