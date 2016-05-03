@@ -70,13 +70,23 @@ function pre_flight {
     fi
 }
 
+function disable_security_hardening {
+    echo 'apply_security_hardening: False' > /etc/openstack_deploy/user_zzz_disable_security_hardening.yml
+}
+
+
+function reset_security_hardening {
+    rm /etc/openstack_deploy/user_zzz_disable_security_hardening.yml
+}
 
 ## Main ----------------------------------------------------------------------
 
 function main {
     pre_flight
+    disable_security_hardening
     check_for_juno
     check_for_kilo
+    reset_security_hardening
 }
 
 main
