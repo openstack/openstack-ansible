@@ -39,71 +39,17 @@ parameters:
       # Neutron Plugins
       neutron_plugin_type: plumgrid
 
-#. Also in the same file, disable the installation of all neutron-agents
+#. Also in the same file, disable the installation of unnecessary neutron-agents
    in the ``neutron_services`` dictionary, by setting their ``service_en``
-   keys to ``False``
+   parameters to ``False``
 
    .. code-block:: yaml
 
-      # Neutron Services
-      neutron_services:
-       neutron-dhcp-agent:
-         service_name: neutron-dhcp-agent
-         service_en: False
-         service_conf: dhcp_agent.ini
-         service_group: neutron_agent
-         service_rootwrap: rootwrap.d/dhcp.filters
-         config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/dhcp_agent.ini
-         config_overrides: "{{ neutron_dhcp_agent_ini_overrides }}"
-         config_type: "ini"
-       neutron-linuxbridge-agent:
-         service_name: neutron-linuxbridge-agent
-         service_en: False
-         service_conf: plugins/ml2/ml2_conf.ini
-         service_group: neutron_linuxbridge_agent
-         service_rootwrap: rootwrap.d/linuxbridge-plugin.filters
-         config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini
-         config_overrides: "{{ neutron_ml2_conf_ini_overrides }}"
-         config_type: "ini"
-       neutron-metadata-agent:
-         service_name: neutron-metadata-agent
-         service_en: False
-         service_conf: metadata_agent.ini
-         service_group: neutron_agent
-         config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/metadata_agent.ini
-         config_overrides: "{{ neutron_metadata_agent_ini_overrides }}"
-         config_type: "ini"
-       neutron-metering-agent:
-         service_name: neutron-metering-agent
-         service_en: False
-         service_conf: metering_agent.ini
-         service_group: neutron_agent
-         config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/metering_agent.ini
-         config_overrides: "{{ neutron_metering_agent_ini_overrides }}"
-         config_type: "ini"
-       neutron-l3-agent:
-         service_name: neutron-l3-agent
-         service_en: False
-         service_conf: l3_agent.ini
-         service_group: neutron_agent
-         service_rootwrap: rootwrap.d/l3.filters
-         config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/l3_agent.ini
-         config_overrides: "{{ neutron_l3_agent_ini_overrides }}"
-         config_type: "ini"
-       neutron-lbaas-agent:
-         service_name: neutron-lbaas-agent
-         service_en: False
-         service_conf: lbaas_agent.ini
-         service_group: neutron_agent
-         service_rootwrap: rootwrap.d/lbaas-haproxy.filters
-         config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/lbaas_agent.ini
-         config_overrides: "{{ neutron_lbaas_agent_ini_overrides }}"
-         config_type: "ini"
-       neutron-server:
-         service_name: neutron-server
-         service_en: True
-         service_group: neutron_server
-         config_options: "--config-file /etc/neutron/neutron.conf --config-file /etc/neutron/{{ neutron_plugins[neutron_plugin_type].plugin_ini }}"
+         neutron_metering: False
+         neutron_l3: False
+         neutron_lbaas: False
+         neutron_lbaasv2: False
+         neutron_vpnaas: False
 
 
 PLUMgrid Cofigurations
