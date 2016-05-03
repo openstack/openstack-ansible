@@ -42,10 +42,36 @@
       retries: 3
       tags:
         - ssh-wait
+
+    - name: Create log dir
+      file:
+        path: "/openstack/log/{{ inventory_hostname }}-memcached"
+        state: directory
+      when: is_metal | bool
+      tags:
+        - memcached-logs
+        - memcached-log-dirs
+
+    - name: Create log aggregation links
+      file:
+        src: "/openstack/log/{{ inventory_hostname }}-memcached"
+        dest: "/var/log/memcached"
+        state: "link"
+        force: "yes"
+      when: is_metal | bool
+      tags:
+        - memcached-logs
   roles:
     - { role: "memcached_server", tags: [ "memcached-server" ] }
     - role: "system_crontab_coordination"
       tags:
         - "system-crontab-coordination"
+    - role: "rsyslog_client"
+      rsyslog_client_log_rotate_file: memcached_log_rotate
+      rsyslog_client_log_dir: "/var/log/memcached"
+      rsyslog_client_config_name: "99-memcached-rsyslog-client.conf"
+      tags:
+        - "memcached-rsyslog-client"
+        - "rsyslog-client"
   vars:
     is_metal: "{{ properties.is_metal|default(false) }}"

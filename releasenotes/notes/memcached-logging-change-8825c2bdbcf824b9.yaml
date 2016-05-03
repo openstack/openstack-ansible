@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    memcached now logs with multiple levels of verbosity, depending on
+    the user variables. Setting ``debug: True`` enables maximum verbosity while
+    setting ``verbose: True`` logs with an intermediate level.
+
+upgrade:
+  - The memcached log is removed from /var/log/memcached.log and is now
+    stored in the /var/log/memcached folder.
