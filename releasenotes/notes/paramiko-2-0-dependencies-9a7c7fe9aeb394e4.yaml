@@ -1,0 +1,6 @@
+---
+issues:
+  - Paramiko version 2.0 Python requires the Python cryptography library. New system packages must
+    be installed for this library. For OpenStack-Ansible versions <12.0.12, <11.2.15, <13.0.2 the
+    system packages must be installed on the **deployment host** manually by executing
+    ``apt-get install -y build-essential libssl-dev libffi-dev``.
