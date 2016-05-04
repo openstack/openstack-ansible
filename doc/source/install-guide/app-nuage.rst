@@ -140,3 +140,7 @@ Installation
 
 Note: For Nuage Networks VSP software packages, user documentation and licenses
 please reach out with a query to info@nuagenetworks.net
+
+--------------
+
+.. include:: navigation.txt
