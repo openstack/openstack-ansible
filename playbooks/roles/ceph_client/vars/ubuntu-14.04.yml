@@ -1,0 +1,49 @@
+---
+# Copyright 2016 IBM Corp
+# Copyright 2015, Serge van Ginderachter <serge@vanginderachter.be>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+## APT Cache Options
+cache_timeout: 600
+
+# Ceph GPG Keys
+ceph_gpg_keys:
+  - key_name: 'ceph'
+    keyserver: 'hkp://keyserver.ubuntu.com:80'
+    fallback_keyserver: 'hkp://p80.pool.sks-keyservers.net:80'
+    hash_id: '0xe84ac2c0460f3994'
+
+# The apt-key command won't del a key when you give it the hash_id, so we have
+# to use the short key ID here instead.
+ceph_revoked_gpg_keys:
+  - '17ED316D'
+
+# Ceph.com repository variables
+ceph_apt_repo_url_region: "download"  # or "eu" for Netherlands based mirror
+ceph_stable_release: hammer
+ceph_apt_repo_url: "http://{{ ceph_apt_repo_url_region }}.ceph.com/debian-{{ ceph_stable_release }}/"
+
+# Ubuntu Cloud Archive variables
+uca_openstack_release: mitaka
+uca_apt_repo_url: "http://ubuntu-cloud.archive.canonical.com/ubuntu"
+uca_repo_dist: "{{ ansible_lsb.codename }}-updates/{{ uca_openstack_release }}"
+
+# Apt repositories
+ceph_apt_repos:
+    ceph:
+        repo: "deb {{ ceph_apt_repo_url }} {{ ansible_lsb.codename }} main"
+        state: "present"
+    uca:
+        repo: "deb {{ uca_apt_repo_url }} {{ uca_repo_dist }} main"
+        state: "present"

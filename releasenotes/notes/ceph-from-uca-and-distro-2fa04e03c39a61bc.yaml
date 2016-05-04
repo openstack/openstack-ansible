@@ -1,0 +1,21 @@
+---
+features:
+  - |
+    Support had been added to install the ceph_client packages and
+    dependencies from Ceph.com, Ubuntu Cloud Archive (UCA), or the
+    operating system's default repository.
+
+    The ``ceph_pkg_source`` variable controls the install source for the
+    Ceph packages. Valid values include:
+
+    * ``ceph``: This option installs Ceph from a ceph.com repo. Additional
+      variables to adjust items such as Ceph release and regional download
+      mirror can be found in the variables files.
+
+    * ``uca``: This option installs Ceph from the Ubuntu Cloud Archive. Additional
+      variables to adjust items such as the OpenStack/Ceph release can be
+      found in the variables files.
+
+    * ``distro``: This options installs Ceph from the operating system's default
+      repository and unlike the other options does not attempt to manage
+      package keys or add additional package repositories.

@@ -22,7 +22,18 @@
     - ceph-config
     - ceph-auth
 
+- name: Gather variables for each operating system
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution | lower }}-{{ ansible_distribution_version | lower }}.yml"
+    - "{{ ansible_distribution | lower }}.yml"
+    - "{{ ansible_os_family | lower }}.yml"
+  tags:
+    - always
+
 - include:  ceph_preinstall.yml
+  when:
+    - ceph_pkg_source != 'distro'
   tags:     ceph-preinstall
 
 - include:  ceph_install.yml
