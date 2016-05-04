@@ -22,6 +22,7 @@ import netaddr
 import os
 import Queue
 import random
+import sys
 import tarfile
 import uuid
 import yaml
@@ -86,7 +87,7 @@ class MultipleIpForHostError(Exception):
         return self.message
 
 
-def args():
+def args(arg_list):
     """Setup argument Parsing."""
     parser = argparse.ArgumentParser(
         usage='%(prog)s',
@@ -105,7 +106,7 @@ def args():
         action='store_true'
     )
 
-    return vars(parser.parse_args())
+    return vars(parser.parse_args(arg_list))
 
 
 def get_ip_address(name, ip_q):
@@ -1142,6 +1143,6 @@ def main(all_args):
     return dynamic_inventory_json
 
 if __name__ == '__main__':
-    all_args = args()
+    all_args = args(sys.argv[1:])
     output = main(all_args)
     print(output)
