@@ -22,3 +22,4 @@
     - name: Remove MariaDB repositories left over from Juno
       shell: |
         sed -i '/http:.*maria.*/d' /etc/apt/sources.list.d/*
+      ignore_errors: true
