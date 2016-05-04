@@ -8,9 +8,7 @@ Chapter 3. Target hosts
 
    targethosts-prepare.rst
    targethosts-network.rst
-   targethosts-networkrefarch.rst
-   targethosts-networkexample.rst
-
+   targethosts-networkconfig.rst
 
 **Figure 3.1. Installation workflow**
 

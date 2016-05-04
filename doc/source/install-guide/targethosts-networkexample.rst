@@ -1,8 +1,8 @@
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
-===================================================================================
-Configuring the network on a target host: Simple architecture: A single target host
-===================================================================================
+=========================================
+Simple architecture: A single target host
+=========================================
 
 Overview
 ~~~~~~~~
