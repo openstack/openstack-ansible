@@ -13,6 +13,9 @@ swift_dir = /etc/swift
 devices = {{ swift_vars.mount_point | default(swift.mount_point) }}
 log_facility = LOG_LOCAL4
 
+disable_fallocate = {{ swift_object_disable_fallocate }}
+fallocate_reserve = {{ swift_object_fallocate_reserve }}
+
 [pipeline:main]
 pipeline = healthcheck recon object-server
 

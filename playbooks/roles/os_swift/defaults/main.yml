@@ -113,6 +113,17 @@ swift_allow_all_users: False
 swift_recreate_keys: False
 swift_sorting_method: shuffle
 
+# Set the fallocate_reserve value which will reserve space and fail on PUTs above this value in bytes (Default 10GB)
+swift_fallocate_reserve: 10737418240
+swift_account_fallocate_reserve: "{{ swift_fallocate_reserve }}"
+swift_container_fallocate_reserve: "{{ swift_fallocate_reserve }}"
+swift_object_fallocate_reserve: "{{ swift_fallocate_reserve }}"
+# Set this to true to disable fallocate
+swift_disable_fallocate: false
+swift_account_disable_fallocate: "{{ swift_disable_fallocate }}"
+swift_container_disable_fallocate: "{{ swift_disable_fallocate }}"
+swift_object_disable_fallocate: "{{ swift_disable_fallocate }}"
+
 ## Swift ceilometer variables
 swift_reselleradmin_role: ResellerAdmin
 
