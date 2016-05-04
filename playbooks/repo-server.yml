@@ -59,7 +59,7 @@
     - { role: "repo_server", tags: [ "repo-server" ] }
     - role: "rsyslog_client"
       rsyslog_client_log_rotate_file: repo_nginx_log_rotate
-      rsyslog_client_log_dir: "/var/log/nginx"
+      rsyslog_client_log_dir: "/var/log/{{ repo_service_user_name }}"
       rsyslog_client_log_files:
         - /var/log/rsyncd.log
       rsyslog_client_config_name: "99-repo-nginx-rsyslog-client.conf"
@@ -67,9 +67,9 @@
         - "repo-nginx-rsyslog-client"
         - "rsyslog-client"
     - role: "rsyslog_client"
-      rsyslog_client_log_rotate_file: repo_log_rotate
-      rsyslog_client_log_dir: "/var/log/repo"
-      rsyslog_client_config_name: "99-repo-rsyslog-client.conf"
+      rsyslog_client_log_rotate_file: lsyncd_log_rotate
+      rsyslog_client_log_dir: "/var/log/lsyncd"
+      rsyslog_client_config_name: "99-lsyncd-rsyslog-client.conf"
       tags:
         - "repo-rsyslog-client"
         - "rsyslog-client"
