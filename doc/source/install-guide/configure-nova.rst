@@ -1,44 +1,45 @@
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
-Configuring the Compute (Nova) Service (optional)
--------------------------------------------------
+Configuring the Compute (nova) service (optional)
+=================================================
 
-The compute service (nova) handles the creation of virtual machines within an
+The Compute service (nova) handles the creation of virtual machines within an
 OpenStack environment. Many of the default options used by OpenStack-Ansible
-are found within `defaults/main.yml` within the nova role.
+are found within ``defaults/main.yml`` within the nova role.
 
 Availability zones
 ~~~~~~~~~~~~~~~~~~
 
-Deployers with multiple availability zones (AZ's) can set the
-``nova_default_schedule_zone`` Ansible variable to specify an AZ to use for
-instance build requests where an AZ is not provided. This could be useful in
-environments with different types of hypervisors where builds are sent to
-certain hardware types based on their resource requirements.
+Deployers with multiple availability zones can set the
+``nova_default_schedule_zone`` Ansible variable to specify an availability zone
+for new requests. This is useful in environments with different types
+of hypervisors, where builds are sent to certain hardware types based on
+their resource requirements.
 
-For example, if a deployer has some servers with spinning hard disks and others
-with SSDs, they can set the default AZ to one that uses only spinning disks (to
-save costs). To build an instance using SSDs, users must select an AZ that
-includes SSDs and provide that AZ in their instance build request.
+For example, if you have servers running on two racks without sharing the PDU.
+These two racks can be grouped into two availability zones.
+When one rack loses power, the other one still works. By spreading
+your containers onto the two racks (availability zones), you will
+improve your service availability.
 
 Block device tuning for Ceph (RBD)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-When Ceph is enabled and ``nova_libvirt_images_rbd_pool`` is defined, two
-libvirt configurations will be changed by default:
+Enabling Ceph and defining ``nova_libvirt_images_rbd_pool`` changes two
+libvirt configurations by default:
 
 * hw_disk_discard: ``unmap``
 * disk_cachemodes: ``network=writeback``
 
-Setting ``hw_disk_discard`` to ``unmap`` in libvirt will enable
+Setting ``hw_disk_discard`` to ``unmap`` in libvirt enables
 discard (sometimes called TRIM) support for the underlying block device. This
-allows for unused blocks to be reclaimed on the underlying disks.
+allows reclaiming of unused blocks on the underlying disks.
 
 Setting ``disk_cachemodes`` to ``network=writeback`` allows data to be written
 into a cache on each change, but those changes are flushed to disk at a regular
-interval.  This can increase write performance on Ceph block devices.
+interval. This can increase write performance on Ceph block devices.
 
-Deployers have the option to customize these settings using two Ansible
+You have the option to customize these settings using two Ansible
 variables (defaults shown here):
 
 .. code-block:: yaml
@@ -46,15 +47,13 @@ variables (defaults shown here):
     nova_libvirt_hw_disk_discard: 'unmap'
     nova_libvirt_disk_cachemodes: 'network=writeback'
 
-Deployers can disable discard by setting ``nova_libvirt_hw_disk_discard`` to
+You can disable discard by setting ``nova_libvirt_hw_disk_discard`` to
 ``ignore``.  The ``nova_libvirt_disk_cachemodes`` can be set to an empty
 string to disable ``network=writeback``.
 
-
-
 The following minimal example configuration sets nova to use the
-``ephemeral-vms`` ceph pool.The example uses cephx authentication, and
-requires an existing ``cinder`` account for the ``ephemeral-vms`` pool.
+``ephemeral-vms`` Ceph pool. The following example uses cephx authentication, and
+requires an existing ``cinder`` account for the ``ephemeral-vms`` pool:
 
 .. code-block:: console
 
@@ -65,17 +64,14 @@ requires an existing ``cinder`` account for the ``ephemeral-vms`` pool.
       - 172.29.244.153
 
 
-If you have a different ceph username for the pool, you can use it as
+If you have a different Ceph username for the pool, use it as:
 
 .. code-block:: console
 
    cinder_ceph_client: <ceph-username>
 
-
-
 * The `Ceph documentation for OpenStack`_ has additional information about these settings.
 * `OpenStack-Ansible and Ceph Working Example`_
-
 
 
 .. _Ceph documentation for OpenStack: http://docs.ceph.com/docs/master/rbd/rbd-openstack/
@@ -83,15 +79,14 @@ If you have a different ceph username for the pool, you can use it as
 
 
 
-
-Config Drive
+Config drive
 ~~~~~~~~~~~~
 
-By default, OpenStack-Ansible will not configure Nova to force config drives
-to be provisioned with every instance that Nova builds.  The metadata service
-provides configuration information that can be used by cloud-init inside the
-instance.  Config drives are only necessary when an instance doesn't have
-cloud-init installed or doesn't have support for handling metadata.
+By default, OpenStack-Ansible does not configure nova to force config drives
+to be provisioned with every instance that nova builds. The metadata service
+provides configuration information that is used by ``cloud-init`` inside the
+instance. Config drives are only necessary when an instance does not have
+``cloud-init`` installed or does not have support for handling metadata.
 
 A deployer can set an Ansible variable to force config drives to be deployed
 with every virtual machine:
@@ -101,8 +96,8 @@ with every virtual machine:
     nova_force_config_drive: True
 
 Certain formats of config drives can prevent instances from migrating properly
-between hypervisors.  If a deployer needs forced config drives and the ability
-to migrate instances, the config drive format should be set to ``vfat`` using
+between hypervisors. If you need forced config drives and the ability
+to migrate instances, set the config drive format to ``vfat`` using
 the ``nova_nova_conf_overrides`` variable:
 
 .. code-block:: yaml
@@ -112,7 +107,7 @@ the ``nova_nova_conf_overrides`` variable:
         config_drive_format: vfat
         force_config_drive: True
 
-Libvirtd Connectivity and Authentication
+Libvirtd connectivity and authentication
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 By default, OpenStack-Ansible configures the libvirt daemon in the following
@@ -122,8 +117,7 @@ way:
 * TCP plaintext connections are disabled
 * Authentication over TCP connections uses SASL
 
-Deployers can customize these settings using the Ansible variables shown
-below:
+You can customize these settings using the following Ansible variables:
 
 .. code-block:: yaml
 
@@ -139,8 +133,8 @@ below:
 Multipath
 ~~~~~~~~~
 
-Nova supports multipath for iSCSI-based storage.  Deployers can enable
-multipath support in nova through a configuration override:
+Nova supports multipath for iSCSI-based storage. Enable multipath support in
+nova through a configuration override:
 
 .. code-block:: yaml
 
@@ -151,13 +145,13 @@ multipath support in nova through a configuration override:
 Shared storage and synchronized UID/GID
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Deployers can specify a custom UID for the nova user and GID for the nova group
+Specify a custom UID for the nova user and GID for the nova group
 to ensure they are identical on each host. This is helpful when using shared
-storage on compute nodes because it allows instances to migrate without
+storage on Compute nodes because it allows instances to migrate without
 filesystem ownership failures.
 
-By default, Ansible will create the nova user and group without specifying the
-UID or GID. To specify custom values for the UID/GID, set the following
+By default, Ansible creates the nova user and group without specifying the
+UID or GID. To specify custom values for the UID or GID, set the following
 Ansible variables:
 
 .. code-block:: yaml
@@ -165,9 +159,11 @@ Ansible variables:
     nova_system_user_uid = <specify a UID>
     nova_system_group_gid = <specify a GID>
 
-.. warning:: Setting this value **after** deploying an environment with
+.. warning::
+
+   Setting this value after deploying an environment with
    OpenStack-Ansible can cause failures, errors, and general instability. These
-   values should only be set once **before** deploying an OpenStack environment
+   values should only be set once before deploying an OpenStack environment
    and then never changed.
 
 --------------
