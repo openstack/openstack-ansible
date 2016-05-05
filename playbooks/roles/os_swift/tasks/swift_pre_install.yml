@@ -99,3 +99,13 @@
   tags:
     - swift-dirs
     - swift-logs
+
+- name: Configure mlocate for cron.daily
+  template:
+    src: "mlocate-crond-daily.sh.j2"
+    dest: "/etc/cron.daily/mlocate"
+    mode: "0755"
+    owner: "root"
+    group: "root"
+  tags:
+    - swift-crond
