@@ -1,56 +1,116 @@
 # {{ ansible_managed }}
 
-frontend {{ item.service.haproxy_service_name }}-front
-bind {{ item.service.haproxy_bind|default('*') }}:{{ item.service.haproxy_port }} {% if item.service.haproxy_ssl is defined and item.service.haproxy_ssl | bool %}ssl crt {{ haproxy_ssl_pem }} ciphers {{ haproxy_ssl_cipher_suite }}{% endif %}
-
-{% if item.service.haproxy_balance_type == "http" %}
-    option httplog
-    option forwardfor except 127.0.0.0/8
-    option http-server-close
-
-    {%- set request_option = "http" %}
-{% else %}
-    option  tcplog
-    {%- set request_option = "tcp" %}
-{% endif %}
-
-{% if item.service.haproxy_ssl is defined and item.service.haproxy_ssl | bool %}
-    reqadd X-Forwarded-Proto:\ https
-{% endif %}
-
-{% if item.service.haproxy_timeout_client is defined %}
-    timeout client {{ item.service.haproxy_timeout_client }}
-{% endif %}
-
-{% if item.service.haproxy_whitelist_hosts is defined and item.service.haproxy_whitelist_hosts == true %}
-    acl white_list src 127.0.0.1/8 10.0.3.0/24 {{ container_cidr }}
-
-    {{ request_option }}-request content accept if white_list
-    {{ request_option }}-request content reject
-{% endif %}
-
-    mode {{ item.service.haproxy_balance_type }}
-    default_backend {{ item.service.haproxy_service_name }}-back
-
-
+{% set request_option = item.service.haproxy_balance_type | default("http") -%}
 {% if item.service.haproxy_backend_port is not defined %}
   {% set haproxy_backend_port = item.service.haproxy_port %}
 {% else %}
   {% set haproxy_backend_port = item.service.haproxy_backend_port %}
+{% endif -%}
+
+{% set vip_binds = [external_lb_vip_address] -%}
+{%- if internal_lb_vip_address not in vip_binds %}
+  {% set _ = vip_binds.append(internal_lb_vip_address) %}
+{% endif -%}
+
+{%- if extra_lb_vip_addresses is defined %}
+{% for vip_address in extra_lb_vip_addresses %}
+  {% set _ = vip_binds.append(vip_address) %}
+{% endfor %}
+{% endif -%}
+
+{%- if item.service.haproxy_bind is defined %}
+  {% if item.service.haproxy_bind not in vip_binds %}
+    {% set _ = vip_binds.append(item.service.haproxy_bind) %}
+  {% endif %}
+{% endif -%}
+
+{% for vip_bind in vip_binds %}
+{% if item.service.haproxy_redirect_http_port is defined %}
+{% if (loop.index == 1 or item.service.haproxy_ssl_all_vips | default(false) | bool) %}
+
+frontend {{ item.service.haproxy_service_name }}-redirect-front-{{ loop.index }}
+bind {{ vip_bind }}:{{ item.service.haproxy_redirect_http_port }}
+    mode http
+    redirect scheme https if !{ ssl_fc }
 {% endif %}
+{% endif %}
+
+frontend {{ item.service.haproxy_service_name }}-front-{{ loop.index }}
+    bind {{ vip_bind }}:{{ item.service.haproxy_port }} {% if (item.service.haproxy_ssl | default(false) | bool) and (loop.index == 1 or item.service.haproxy_ssl_all_vips | default(false) | bool) %}ssl crt {{ haproxy_ssl_pem }} ciphers {{ haproxy_ssl_cipher_suite }}{% endif %}
+
+{% if request_option == "http" %}
+    option httplog
+    option forwardfor except 127.0.0.0/8
+    option http-server-close
+{% elif request_option == "tcp" %}
+    option tcplog
+{% endif %}
+{% if item.service.haproxy_timeout_client is defined %}
+    timeout client {{ item.service.haproxy_timeout_client }}
+{% endif %}
+{% if item.service.haproxy_whitelist_networks is defined %}
+    acl white_list src 127.0.0.1/8 {{ item.service.haproxy_whitelist_networks | join(' ') }}
+    tcp-request content accept if white_list
+    tcp-request content reject
+{% endif %}
+{% if (item.service.haproxy_ssl | default(false) | bool) and request_option == 'http' and (loop.index == 1 or item.service.haproxy_ssl_all_vips | default(false) | bool) %}
+    reqadd X-Forwarded-Proto:\ https
+{% endif %}
+    mode {{ item.service.haproxy_balance_type }}
+    default_backend {{ item.service.haproxy_service_name }}-back
+{% endfor %}
+
+{% set backend_options = item.service.haproxy_backend_options|default([]) %}
 
 backend {{ item.service.haproxy_service_name }}-back
     mode {{ item.service.haproxy_balance_type }}
     balance {{ item.service.haproxy_balance_alg|default("leastconn") }}
-{% for option in item.service.haproxy_backend_options|default([]) %}
-    option {{ option }}
-{% endfor %}
 {% if item.service.haproxy_timeout_server is defined %}
     timeout server {{ item.service.haproxy_timeout_server }}
 {% endif %}
-{% for host_name in item.service.haproxy_backend_nodes %}
-    server {{ host_name }} {{ hostvars[host_name]['ansible_ssh_host'] }}:{{ haproxy_backend_port }} check port {{ haproxy_backend_port }} inter {{ haproxy_interval }} rise {{ item.service.haproxy_backend_nodes|count }} fall {{ item.service.haproxy_backend_nodes|count }}
+    stick store-request src
+    stick-table type ip size 256k expire 30m
+{% if request_option == "http" %}
+    option forwardfor
+    option httplog
+{% elif request_option == "tcp" %}
+    option tcplog
+{% endif %}
+{% for option in backend_options %}
+    option {{ option }}
 {% endfor %}
+
+{% for host_name in item.service.haproxy_backend_nodes %}
+{% set entry = [] %}
+{% set _ = entry.append("server") %}
+{% set _ = entry.append(host_name | string) %}
+{% set _ = entry.append(hostvars[host_name]['ansible_ssh_host'] + ":" + haproxy_backend_port | string) %}
+{% set _ = entry.append("check") %}
+{% set _ = entry.append("port") %}
+{% set _ = entry.append(haproxy_backend_port | string) %}
+{% set _ = entry.append("inter") %}
+{% set _ = entry.append(haproxy_interval | string) %}
+{% set _ = entry.append("rise") %}
+{% set _ = entry.append(item.service.haproxy_backend_nodes | count | string) %}
+{% set _ = entry.append("fall") %}
+{% set _ = entry.append(item.service.haproxy_backend_nodes | count | string) %}
+    {{ entry | join(' ') }}
+{% endfor %}
+
 {% for host_name in item.service.haproxy_backup_nodes|default([]) %}
-    server {{ host_name }} {{ hostvars[host_name]['ansible_ssh_host'] }}:{{ haproxy_backend_port }} check port {{ haproxy_backend_port }} inter {{ haproxy_interval }} rise {{ item.service.haproxy_backend_nodes|count }} fall {{ item.service.haproxy_backend_nodes|count }} backup
+{% set entry = [] %}
+{% set _ = entry.append("server") %}
+{% set _ = entry.append(host_name | string) %}
+{% set _ = entry.append(hostvars[host_name]['ansible_ssh_host'] + ":" + haproxy_backend_port | string) %}
+{% set _ = entry.append("check") %}
+{% set _ = entry.append("port") %}
+{% set _ = entry.append(haproxy_backend_port | string) %}
+{% set _ = entry.append("inter") %}
+{% set _ = entry.append(haproxy_interval | string) %}
+{% set _ = entry.append("rise") %}
+{% set _ = entry.append(item.service.haproxy_backup_nodes | count | string) %}
+{% set _ = entry.append("fall") %}
+{% set _ = entry.append(item.service.haproxy_backup_nodes | count | string) %}
+{% set _ = entry.append("backup") %}
+    {{ entry | join(' ') }}
 {% endfor %}

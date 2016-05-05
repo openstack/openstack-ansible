@@ -75,12 +75,12 @@ galera_monitoring_user: monitoring
 haproxy_bind_on_non_local: False
 
 ## haproxy SSL
-haproxy_ssl: no
+haproxy_ssl: true
 haproxy_ssl_dh_param: 2048
 haproxy_ssl_self_signed_regen: no
 haproxy_ssl_cert: /etc/ssl/certs/haproxy.cert
 haproxy_ssl_key: /etc/ssl/private/haproxy.key
 haproxy_ssl_pem: /etc/ssl/private/haproxy.pem
 haproxy_ssl_ca_cert: /etc/ssl/certs/haproxy-ca.pem
-haproxy_ssl_self_signed_subject: "/C=US/ST=Texas/L=San Antonio/O=IT/CN={{ internal_lb_vip_address }}/subjectAltName=IP.1={{ external_lb_vip_address }}"
+haproxy_ssl_self_signed_subject: "/C=US/ST=Texas/L=San Antonio/O=IT/CN={{ external_lb_vip_address }}/subjectAltName=IP.1={{ external_lb_vip_address }}"
 haproxy_ssl_cipher_suite: "{{ ssl_cipher_suite }}"
