@@ -21,7 +21,7 @@
 OS_BRANCH=${OS_BRANCH:-"master"}
 OSA_BRANCH=${OSA_BRANCH:-"$OS_BRANCH"}
 SERVICE_FILE=${SERVICE_FILE:-"playbooks/defaults/repo_packages/openstack_services.yml"}
-OPENSTACK_SERVICE_LIST=${OPENSTACK_SERVICE_LIST:-"aodh ceilometer cinder glance heat keystone neutron nova"}
+OPENSTACK_SERVICE_LIST=${OPENSTACK_SERVICE_LIST:-"aodh ceilometer cinder glance heat ironic keystone neutron nova"}
 
 IFS=$'\n'
 
