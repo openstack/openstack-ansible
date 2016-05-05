@@ -62,6 +62,14 @@
       when: is_metal | bool
       tags:
         - utility-logs
+    - name: Create log directory
+      file:
+        dest: "/var/log/utility"
+        state: "directory"
+        force: "yes"
+      when: not is_metal | bool
+      tags:
+        - utility-logs
   roles:
     - { role: "galera_client", tags: [ "utility-galera-client" ] }
     - { role: "pip_lock_down", tags: [ "utility-pip-lock-down" ] }
