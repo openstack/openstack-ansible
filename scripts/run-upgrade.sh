@@ -147,7 +147,7 @@ pushd ${MAIN_PATH}/playbooks
 
   RUN_TASKS+=("openstack-hosts-setup.yml")
 
-  RUN_TASKS+=("lxc-hosts-setup.yml")
+  RUN_TASKS+=("lxc-hosts-setup.yml --tags rsyslog-config")
 
   RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/lxc-containers-create-upgrade-step-1.yml --limit '!galera_all:!nova_scheduler:!nova_conductor:!rabbitmq_all:!cinder_scheduler:!neutron_agent'")
 

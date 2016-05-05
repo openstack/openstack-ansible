@@ -34,7 +34,7 @@ function remove_inv_groups {
 # Remove containers that we no longer need
 pushd ${PLAYBOOK_PATH}/playbooks
   # Before interacting with any containers make sure that the libs are updated
-  openstack-ansible lxc-hosts-setup.yml
+  openstack-ansible lxc-hosts-setup.yml --skip-tags rsyslog-client
 
   # Clean up post destroy
   openstack-ansible lxc-containers-destroy.yml -e container_group="rsyslog_all"
