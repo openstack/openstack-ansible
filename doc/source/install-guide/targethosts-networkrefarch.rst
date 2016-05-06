@@ -4,6 +4,35 @@
 Reference architecture
 ======================
 
+Overview
+~~~~~~~~
+
+This example allows you to use your own parameters for the deployment.
+
+The following is a table of the bridges that are be configured on hosts, if you followed the
+previously proposed design.
+
++-------------+-----------------------+-------------------------------------+
+| Bridge name | Best configured on    | With a static IP                    |
++=============+=======================+=====================================+
+| br-mgmt     | On every node         | Always                              |
++-------------+-----------------------+-------------------------------------+
+|             | On every storage node | When component is deployed on metal |
++ br-storage  +-----------------------+-------------------------------------+
+|             | On every compute node | Always                              |
++-------------+-----------------------+-------------------------------------+
+|             | On every network node | When component is deployed on metal |
++ br-vxlan    +-----------------------+-------------------------------------+
+|             | On every compute node | Always                              |
++-------------+-----------------------+-------------------------------------+
+|             | On every network node | Never                               |
++ br-vlan     +-----------------------+-------------------------------------+
+|             | On every compute node | Never                               |
++-------------+-----------------------+-------------------------------------+
+
+Modifying the network interfaces file
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 After establishing initial host management network connectivity using
 the ``bond0`` interface, modify the ``/etc/network/interfaces`` file as
 described in the following procedure.
@@ -135,6 +164,41 @@ described in the following procedure.
    Replace ``*_VLAN_ID``, ``*_BRIDGE_IP_ADDRESS``, and
    ``*_BRIDGE_NETMASK``, ``*_BRIDGE_DNS_SERVERS`` with the
    appropriate configuration for the environment.
+
+Example for 3 controller nodes and 2 compute nodes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- VLANs:
+
+  -  Host management: Untagged/Native
+  -  Container management: 10
+  -  Tunnels: 30
+  -  Storage: 20
+
+- Networks:
+
+  -  Host management: 10.240.0.0/22
+  -  Container management: 172.29.236.0/22
+  -  Tunnel: 172.29.240.0/22
+  -  Storage: 172.29.244.0/22
+
+- Addresses for the controller nodes:
+
+  -  Host management: 10.240.0.11 - 10.240.0.13
+  -  Host management gateway: 10.240.0.1
+  -  DNS servers: 69.20.0.164 69.20.0.196
+  -  Container management: 172.29.236.11 - 172.29.236.13
+  -  Tunnel: no IP (because IP exist in the containers, when the components aren't deployed directly on metal)
+  -  Storage: no IP (because IP exist in the containers, when the components aren't deployed directly on metal)
+
+- Addresses for the compute nodes:
+
+  -  Host management: 10.240.0.21 - 10.240.0.22
+  -  Host management gateway: 10.240.0.1
+  -  DNS servers: 69.20.0.164 69.20.0.196
+  -  Container management: 172.29.236.21 - 172.29.236.22
+  -  Tunnel: 172.29.240.21 - 172.29.240.22
+  -  Storage: 172.29.244.21 - 172.29.244.22
 
 --------------
 

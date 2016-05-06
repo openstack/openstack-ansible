@@ -1,8 +1,8 @@
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
-=======================
-Configuring the network
-=======================
+=====================
+Designing the network
+=====================
 
 This section describes the recommended network architecture.
 Some components are mandatory, such as the bridges described below. We
@@ -10,7 +10,7 @@ recommend other components such as a bonded network interface but this
 is not a requirement.
 
 .. important::
-   
+
    Follow the reference design as closely as possible for production deployments.
 
 Although Ansible automates most deployment operations, networking on
