@@ -1,24 +1,22 @@
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
-Configuring the Image Service
------------------------------
+Configuring the Image (glance) service
+======================================
 
 In an all-in-one deployment with a single infrastructure node, the Image
-Service uses the local file system on the target host to store images.
-When deploying production clouds we recommend backing Glance with a
-swift backend or some form or another of shared storage.
+(glance) service uses the local file system on the target host to store images.
+When deploying production clouds, we recommend backing glance with a
+swift backend or some form of shared storage.
 
 Configuring default and additional stores
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible provides two configurations for controlling where the Image
-Service stores files: the default store and additional stores.  As mentioned
-in the previous section, the Image Service stores images in file-based storage
-by default.  Two additional stores, http and cinder, are also enabled by
-default.
+OpenStack-Ansible provides two configurations for controlling where glance stores
+files: the default store and additional stores. glance stores images in file-based
+storage by default. Two additional stores, ``http`` and ``cinder`` (Block Storage),
+are also enabled by default.
 
-Deployers can choose alternative default stores, as shown in the swift example
-in the next section, and deployers can choose alternative additional stores.
+You can choose alternative default stores and alternative additional stores.
 For example, a deployer that uses Ceph may configure the following Ansible
 variables:
 
@@ -30,17 +28,17 @@ variables:
       - http
       - cinder
 
-The configuration above will configure the Image Service to use rbd (Ceph) by
-default, but the swift, http and cinder stores will also be enabled in the
-Image Service configuration files.
-
+The configuration above configures glance to use ``rbd`` (Ceph) by
+default, but ``glance_additional_stores`` list enables ``swift``,
+``http`` and ``cinder`` stores in the glance
+configuration files.
 
 The following example sets glance to use the ``images`` pool.
-The example uses cephx authentication and requires an existing ``glance``
+This example uses cephx authentication and requires an existing ``glance``
 account for the ``images`` pool.
 
 
-in ``user_variables.yml``
+In ``user_variables.yml``:
 
    .. code-block:: yaml
 
@@ -81,8 +79,7 @@ usage.
        glance_swift_store_auth_version: 2
        glance_swift_store_auth_address: https://127.0.0.1/v2.0
 
-#. Set the swift account credentials (see *Special Considerations* at the
-   bottom of this page):
+#. Set the swift account credentials:
 
    .. code-block:: yaml
 
@@ -104,7 +101,7 @@ usage.
        glance_swift_store_container: STORE_NAME
 
    Replace ``STORE_NAME`` with the container name in swift to be
-   used for storing images. If the container doesn't exist, it will be
+   used for storing images. If the container does not exist, it is
    automatically created.
 
 #. Define the store region:
@@ -121,10 +118,10 @@ usage.
 
        glance_flavor: GLANCE_FLAVOR
 
-   By default, the Image Service uses caching and authenticates with the
-   Identity service. The default maximum size of the image cache is 10
-   GB. The default Image Service container size is 12 GB. In some
-   configurations, the Image Service might attempt to cache an image
+   By default, glance uses caching and authenticates with the
+   Identity (keystone) service. The default maximum size of the image cache is 10GB.
+   The default glance container size is 12GB. In some
+   configurations, glance attempts to cache an image
    which exceeds the available disk space. If necessary, you can disable
    caching. For example, to use Identity without caching, replace
    ``GLANCE_FLAVOR`` with ``keystone``:
@@ -163,12 +160,12 @@ usage.
 
    -  ``trusted-auth+cachemanagement``
 
-Special Considerations
+Special considerations
 ~~~~~~~~~~~~~~~~~~~~~~
 
 If the swift password or key contains a dollar sign (``$``), it must
 be escaped with an additional dollar sign (``$$``). For example, a password of
-``super$ecure`` would need to be entered as ``super$$ecure``.  This is needed
+``super$ecure`` would need to be entered as ``super$$ecure``.  This is necessary
 due to the way `oslo.config formats strings`_.
 
 .. _oslo.config formats strings: https://bugs.launchpad.net/oslo-incubator/+bug/1259729
