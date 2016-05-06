@@ -21,7 +21,7 @@ MAX_RETRIES=${MAX_RETRIES:-5}
 REPORT_DATA=${REPORT_DATA:-""}
 ANSIBLE_PARAMETERS=${ANSIBLE_PARAMETERS:-""}
 STARTTIME="${STARTTIME:-$(date +%s)}"
-PIP_INSTALL_OPTIONS=${PIP_INSTALL_OPTIONS:-'pip==8.1.1 setuptools==20.9.0 wheel==0.26.0'}
+PIP_INSTALL_OPTIONS=${PIP_INSTALL_OPTIONS:-'pip==8.1.1 setuptools==21.0.0 wheel==0.26.0'}
 
 # The default SSHD configuration has MaxSessions = 10. If a deployer changes
 #  their SSHD config, then the FORKS may be set to a higher number. We set the
