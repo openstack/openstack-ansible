@@ -182,6 +182,7 @@ Run the variable removal script to ensure old options are cleaned up.
 
 Run the final upgrade script to clean up containers and components
 which will no longer be needed.
+Additionally the lxc host setup play ensures the latest host configuration.
 
 .. code-block:: bash
 
@@ -289,11 +290,11 @@ Run the OpenStack host setup play to ensure you have the latest configurations.
 
 ----
 
-Run the lxc host setup play to ensure you have the latest configurations.
+Run the lxc host setup play to reconfigure the rsyslog configuration.
 
 .. code-block:: bash
 
-  openstack-ansible lxc-hosts-setup.yml
+  openstack-ansible lxc-hosts-setup.yml --tags rsyslog-config
 
 
 ----
