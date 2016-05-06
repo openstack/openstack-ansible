@@ -37,7 +37,7 @@ These variables will reduce typing when running the remaining upgrade
 tasks.
 
 Re-bootstrap Ansible for Liberty
--------------------------------
+--------------------------------
 
 Bootstrapping Ansible again ensures that new external Ansible role
 dependencies are in place before the Liberty version of playbooks and roles
@@ -56,6 +56,18 @@ inventory will be found automatically
 .. code-block:: console
 
     # cd playbooks
+
+Disabling the security hardening role temporarily
+-------------------------------------------------
+
+In order to avoid issues (and ease the troubleshooting if an issue
+appears during the upgrade), disable the security hardening role
+before running the following steps. Set your
+variable ``apply_security_hardening`` to False:
+
+.. code-block:: console
+
+   # echo 'apply_security_hardening: False' >> /etc/openstack_deploy/user_zzz_disable_security_hardening.yml
 
 Update configuration and environment files
 ------------------------------------------
@@ -181,6 +193,16 @@ See :ref:`cleanup-rabbit-playbook` for details.
 
     # openstack-ansible "${UPGRADE_PLAYBOOKS}/cleanup-rabbitmq-vhost.yml \
     -e 'pip_install_options=--force-reinstall'"
+
+Removing the security hardening prevention variable file
+--------------------------------------------------------
+
+You can now return the security hardening to its previous value by
+removing the file previously created:
+
+.. code-block:: console
+
+   # rm /etc/openstack_deploy/user_zzz_disable_security_hardening.yml
 
 --------------
 
