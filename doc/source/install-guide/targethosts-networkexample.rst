@@ -1,15 +1,16 @@
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
-========================================
-Configuring the network on a target host
-========================================
+===================================================================================
+Configuring the network on a target host: Simple architecture: A single target host
+===================================================================================
+
+Overview
+~~~~~~~~
 
 This example uses the following parameters to configure networking on a
 single target host. See `Figure 3.2, "Target hosts for infrastructure,
-networking, and storage
+networking, compute, and storage
 services" <targethosts-networkexample.html#fig_hosts-target-network-containerexample>`_
-and `Figure 3.3, "Target hosts for Compute
-service" <targethosts-networkexample.html#fig_hosts-target-network-bareexample>`_
 for a visual representation of these parameters in the architecture.
 
 -  VLANs:
@@ -46,121 +47,137 @@ for a visual representation of these parameters in the architecture.
 
    -  Storage: 172.29.244.11
 
- 
 
-**Figure 3.2. Target hosts for infrastructure, networking, and storage
-services**
+**Figure 3.2. Target host for infrastructure, networking, compute, and
+storage services**
 
 .. image:: figures/networkarch-container-external-example.png
 
-**Figure 3.3. Target hosts for Compute service**
+Modifying the network interfaces file
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. image:: figures/networkarch-bare-external-example.png
+After establishing the initial host management network connectivity using
+the ``bond0`` interface, modify the ``/etc/network/interfaces`` file as
+described in this procedure.
 
 Contents of the ``/etc/network/interfaces`` file:
 
-.. code-block:: yaml
+#. Physical interfaces:
 
-    # Physical interface 1
-    auto eth0
-    iface eth0 inet manual
-        bond-master bond0
-        bond-primary eth0
+    .. code-block:: yaml
 
-    # Physical interface 2
-    auto eth1
-    iface eth1 inet manual
-        bond-master bond1
-        bond-primary eth1
+        # Physical interface 1
+        auto eth0
+        iface eth0 inet manual
+            bond-master bond0
+            bond-primary eth0
 
-    # Physical interface 3
-    auto eth2
-    iface eth2 inet manual
-        bond-master bond0
+        # Physical interface 2
+        auto eth1
+        iface eth1 inet manual
+            bond-master bond1
+            bond-primary eth1
 
-    # Physical interface 4
-    auto eth3
-    iface eth3 inet manual
-        bond-master bond1
+        # Physical interface 3
+        auto eth2
+        iface eth2 inet manual
+            bond-master bond0
 
-.. code-block:: yaml
+        # Physical interface 4
+        auto eth3
+        iface eth3 inet manual
+            bond-master bond1
 
-    # Bond interface 0 (physical interfaces 1 and 3)
-    auto bond0
-    iface bond0 inet static
-        bond-slaves eth0 eth2
-        bond-mode active-backup
-        bond-miimon 100
-        bond-downdelay 200
-        bond-updelay 200
-        address 10.240.0.11
-        netmask 255.255.252.0
-        gateway 10.240.0.1
-        dns-nameservers 69.20.0.164 69.20.0.196
+#. Bonding interfaces:
 
-    # Bond interface 1 (physical interfaces 2 and 4)
-    auto bond1
-    iface bond1 inet manual
-        bond-slaves eth1 eth3
-        bond-mode active-backup
-        bond-miimon 100
-        bond-downdelay 250
-        bond-updelay 250
+    .. code-block:: yaml
 
-    # Container management VLAN interface
-    iface bond0.10 inet manual
-        vlan-raw-device bond0
+        # Bond interface 0 (physical interfaces 1 and 3)
+        auto bond0
+        iface bond0 inet static
+            bond-slaves eth0 eth2
+            bond-mode active-backup
+            bond-miimon 100
+            bond-downdelay 200
+            bond-updelay 200
+            address 10.240.0.11
+            netmask 255.255.252.0
+            gateway 10.240.0.1
+            dns-nameservers 69.20.0.164 69.20.0.196
 
-    # OpenStack Networking VXLAN (tunnel/overlay) VLAN interface
-    iface bond1.30 inet manual
-        vlan-raw-device bond1
+        # Bond interface 1 (physical interfaces 2 and 4)
+        auto bond1
+        iface bond1 inet manual
+            bond-slaves eth1 eth3
+            bond-mode active-backup
+            bond-miimon 100
+            bond-downdelay 250
+            bond-updelay 250
 
-    # Storage network VLAN interface (optional)
-    iface bond0.20 inet manual
-        vlan-raw-device bond0
+#. Logical (VLAN) interfaces:
 
-    # Container management bridge
-    auto br-mgmt
-    iface br-mgmt inet static
-        bridge_stp off
-        bridge_waitport 0
-        bridge_fd 0
-        # Bridge port references tagged interface
-        bridge_ports bond0.10
-        address 172.29.236.11
-        netmask 255.255.252.0
-        dns-nameservers 69.20.0.164 69.20.0.196
+    .. code-block:: yaml
 
-    # OpenStack Networking VXLAN (tunnel/overlay) bridge
-    auto br-vxlan
-    iface br-vxlan inet static
-        bridge_stp off
-        bridge_waitport 0
-        bridge_fd 0
-        # Bridge port references tagged interface
-        bridge_ports bond1.30
-        address 172.29.240.11
-        netmask 255.255.252.0
+        # Container management VLAN interface
+        iface bond0.10 inet manual
+            vlan-raw-device bond0
 
-    # OpenStack Networking VLAN bridge
-    auto br-vlan
-    iface br-vlan inet manual
-        bridge_stp off
-        bridge_waitport 0
-        bridge_fd 0
-        # Bridge port references untagged interface
-        bridge_ports bond1
+        # OpenStack Networking VXLAN (tunnel/overlay) VLAN interface
+        iface bond1.30 inet manual
+            vlan-raw-device bond1
 
-    # Storage bridge (optional)
-    auto br-storage
-    iface br-storage inet static
-        bridge_stp off
-        bridge_waitport 0
-        bridge_fd 0
-        # Bridge port reference tagged interface
-        bridge_ports bond0.20
-        address 172.29.244.11
-        netmask 255.255.252.0
+        # Storage network VLAN interface (optional)
+        iface bond0.20 inet manual
+            vlan-raw-device bond0
+
+
+#. Bridge devices:
+
+    .. code-block:: yaml
+
+        # Container management bridge
+        auto br-mgmt
+        iface br-mgmt inet static
+            bridge_stp off
+            bridge_waitport 0
+            bridge_fd 0
+            # Bridge port references tagged interface
+            bridge_ports bond0.10
+            address 172.29.236.11
+            netmask 255.255.252.0
+            dns-nameservers 69.20.0.164 69.20.0.196
+
+        # OpenStack Networking VXLAN (tunnel/overlay) bridge
+        auto br-vxlan
+        iface br-vxlan inet static
+            bridge_stp off
+            bridge_waitport 0
+            bridge_fd 0
+            # Bridge port references tagged interface
+            bridge_ports bond1.30
+            address 172.29.240.11
+            netmask 255.255.252.0
+
+        # OpenStack Networking VLAN bridge
+        auto br-vlan
+        iface br-vlan inet manual
+            bridge_stp off
+            bridge_waitport 0
+            bridge_fd 0
+            # Bridge port references untagged interface
+            bridge_ports bond1
+
+        # Storage bridge
+        auto br-storage
+        iface br-storage inet static
+            bridge_stp off
+            bridge_waitport 0
+            bridge_fd 0
+            # Bridge port reference tagged interface
+            bridge_ports bond0.20
+            address 172.29.244.11
+            netmask 255.255.252.0
+
 
 --------------
 
