@@ -16,7 +16,7 @@
 - name: Create authorized keys file from host vars
   authorized_key:
     user: "{{ swift_system_user_name }}"
-    key: "{{ hostvars[item]['swift_pubkey'] }}"
+    key: "{{ hostvars[item]['swift_pubkey'] | b64decode }}"
   with_items: groups['swift_all'] + groups['swift_remote_all']
   tags:
     - swift-key
