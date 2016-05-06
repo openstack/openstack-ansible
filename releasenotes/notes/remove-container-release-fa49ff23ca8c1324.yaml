@@ -1,0 +1,6 @@
+---
+upgrade:
+  - The container property ``container_release`` has been removed as this is automatically set
+    to the same version as the host in the container creation process.
+  - The variable ``lxc_container_release`` has been removed from the ``lxc-container-create.yml``
+    playbook as it is no longer consumed by the container creation process.

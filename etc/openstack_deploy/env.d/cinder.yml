@@ -37,7 +37,6 @@ container_skel:
       - cinder_api
     properties:
       service_name: cinder
-      container_release: trusty
   cinder_scheduler_container:
     belongs_to:
       - infra_containers
@@ -46,7 +45,6 @@ container_skel:
       - cinder_scheduler
     properties:
       service_name: cinder
-      container_release: trusty
   cinder_volumes_container:
     belongs_to:
       - storage_containers
@@ -61,7 +59,6 @@ container_skel:
 # deployed on metal.
       is_metal: true
       service_name: cinder
-      container_release: trusty
 
 
 physical_skel:

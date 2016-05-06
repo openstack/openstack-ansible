@@ -46,7 +46,6 @@ container_skel:
       - nova_api_metadata
     properties:
       service_name: nova
-      container_release: trusty
   nova_api_os_compute_container:
     belongs_to:
       - infra_containers
@@ -55,7 +54,6 @@ container_skel:
       - nova_api_os_compute
     properties:
       service_name: nova
-      container_release: trusty
   nova_cert_container:
     belongs_to:
       - infra_containers
@@ -64,7 +62,6 @@ container_skel:
       - nova_cert
     properties:
       service_name: nova
-      container_release: trusty
   nova_compute_container:
     belongs_to:
       - compute_containers
@@ -74,7 +71,6 @@ container_skel:
     properties:
       is_metal: true
       service_name: nova
-      container_release: trusty
   nova_conductor_container:
     belongs_to:
       - infra_containers
@@ -83,7 +79,6 @@ container_skel:
       - nova_conductor
     properties:
       service_name: nova
-      container_release: trusty
   nova_scheduler_container:
     belongs_to:
       - infra_containers
@@ -92,7 +87,6 @@ container_skel:
       - nova_scheduler
     properties:
       service_name: nova
-      container_release: trusty
   nova_console_container:
     belongs_to:
       - infra_containers
@@ -101,7 +95,6 @@ container_skel:
       - nova_console
     properties:
       service_name: nova
-      container_release: trusty
 
 
 physical_skel:

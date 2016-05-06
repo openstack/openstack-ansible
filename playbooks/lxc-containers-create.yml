@@ -55,4 +55,3 @@
         - lxc-container-hostname
   vars:
     is_metal: "{{ properties.is_metal|default(false) }}"
-    lxc_container_release: "{{ properties.container_release|default('trusty') }}"

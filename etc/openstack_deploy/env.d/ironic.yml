@@ -32,7 +32,6 @@ container_skel:
       - ironic_api
     properties:
       service_name: ironic
-      container_release: trusty
   ironic_conductor_container:
     belongs_to:
       - ironic-infra_containers
@@ -40,7 +39,6 @@ container_skel:
       - ironic_conductor
     properties:
       service_name: ironic
-      container_release: trusty
   ironic_server_container:
     belongs_to:
       - ironic-server_containers
@@ -49,7 +47,6 @@ container_skel:
     properties:
       is_metal: true
       service_name: ironic
-      container_release: trusty
 
 
 physical_skel:
