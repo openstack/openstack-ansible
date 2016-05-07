@@ -70,6 +70,11 @@ horizon_git_repo: https://git.openstack.org/openstack/horizon
 horizon_git_install_branch: c6bc96c90963fd0b5d785fc37b54a206fa5bf4fa # HEAD of "stable/mitaka" as of 05.05.2016
 horizon_git_dest: "/opt/horizon_{{ horizon_git_install_branch | replace('/', '_') }}"
 
+## Horizon LBaaS dashboard plugin
+neutron_lbaas_dashboard_git_repo: https://github.com/openstack/neutron-lbaas-dashboard
+neutron_lbaas_dashboard_git_install_branch: c68b80b0bb9f89acd46da717b360b429efade43a # HEAD of "stable/mitaka" as of 27.04.2016
+neutron_lbaas_dashboard_git_dest: "/opt/neutron_lbaas_dashboard_{{ neutron_lbaas_dashboard_git_install_branch | replace('/', '_') }}"
+
 
 ## Keystone service
 keystone_git_repo: https://git.openstack.org/openstack/keystone
