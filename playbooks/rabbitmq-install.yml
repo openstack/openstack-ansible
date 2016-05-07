@@ -42,8 +42,8 @@
       tags:
         - ssh-wait
   roles:
-    - role: "pip_lock_down"
-      when: "(groups['repo_all'] | length) >= 1"
+    - role: "pip_install"
+      pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"
     - role: "system_crontab_coordination"
       tags:
         - "system-crontab-coordination"
