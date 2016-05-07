@@ -17,6 +17,9 @@ to access the internet or suitable local repositories.
 We recommend adding the Secure Shell (SSH) server packages to the
 installation on target hosts without local (console) access.
 
+We also recommend setting your locale to en_US.UTF-8. Other locales may
+work, but they are not tested or supported.
+
 Configuring the operating system
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
