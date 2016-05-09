@@ -294,7 +294,7 @@ Run the lxc host setup play to reconfigure the rsyslog configuration.
 
 .. code-block:: bash
 
-  openstack-ansible lxc-hosts-setup.yml --tags rsyslog-config
+  openstack-ansible lxc-hosts-setup.yml --tags rsyslog-client
 
 
 ----
