@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Install rabbitmq server
+- name: Create and configure rabbitmq container
   hosts: rabbitmq_all
   max_fail_percentage: 0
   user: root
@@ -44,6 +44,20 @@
   roles:
     - role: "pip_lock_down"
       when: "(groups['repo_all'] | length) >= 1"
+    - role: "system_crontab_coordination"
+      tags:
+        - "system-crontab-coordination"
+  vars:
+    is_metal: "{{ properties.is_metal|default(false) }}"
+
+# NOTE(mancdaz): rabbitmq cannot be upgraded in serial, so when
+# rabbitmq_upgrade=True, serial is set to 0, else it is 1 for installs
+- name: Install rabbitmq server
+  hosts: rabbitmq_all
+  serial: "{{ rabbitmq_upgrade|default(false) | bool | ternary(0, 1)}}"
+  max_fail_percentage: 20
+  user: root
+  roles:
     - role: "rabbitmq_server"
       tags:
         - "rabbitmq-server"
@@ -55,8 +69,3 @@
       tags:
         - "rabbitmq-rsyslog-client"
         - "rsyslog-client"
-    - role: "system_crontab_coordination"
-      tags:
-        - "system-crontab-coordination"
-  vars:
-    is_metal: "{{ properties.is_metal|default(false) }}"
