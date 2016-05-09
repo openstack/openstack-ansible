@@ -74,13 +74,22 @@ elif [ -n "$HTTP_PROXY" ]; then
   PIP_OPTS="--proxy $HTTP_PROXY"
 fi
 
+PIP_COMMAND=pip2
+if [ ! $(which "$PIP_COMMAND") ]; then
+  PIP_COMMAND=pip
+fi
+
 # Install requirements if there are any
 if [ -f "requirements.txt" ];then
-  pip2 install $PIP_OPTS -r requirements.txt || pip install $PIP_OPTS -r requirements.txt
+  # When upgrading there will already be a pip.conf file locking pip down to the repo server, in such cases it may be
+  # necessary to use --isolated because the repo server does not meet the specified requirements.
+  $PIP_COMMAND install $PIP_OPTS -r requirements.txt || $PIP_COMMAND install --isolated $PIP_OPTS -r requirements.txt
 fi
 
 # Install ansible
-pip2 install $PIP_OPTS "${ANSIBLE_WORKING_DIR}" || pip install $PIP_OPTS "${ANSIBLE_WORKING_DIR}"
+# When upgrading there will already be a pip.conf file locking pip down to the repo server, in such cases it may be
+# necessary to use --isolated because the repo server does not meet the specified requirements.
+$PIP_COMMAND install $PIP_OPTS "${ANSIBLE_WORKING_DIR}" || $PIP_COMMAND install --isolated $PIP_OPTS "${ANSIBLE_WORKING_DIR}"
 
 # Update dependent roles
 if [ -f "${ANSIBLE_ROLE_FILE}" ];then
