@@ -434,8 +434,9 @@ class TestConfigChecks(unittest.TestCase):
                               "aio1", "hap")
         with self.assertRaises(di.MultipleHostsWithOneIPError) as context:
             get_inventory()
-        expectedLog = ("ip address:172.29.236.100 has already been assigned"
-                       " to host:aio1, cannot assign same ip to host:hap")
+        expectedLog = ("Both host:aio1 and host:hap have "
+                       "address:172.29.236.100 assigned.  Cannot "
+                       "assign same ip to both hosts")
         self.assertEqual(context.exception.message, expectedLog)
 
     def tearDown(self):

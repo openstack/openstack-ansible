@@ -55,11 +55,14 @@ class MultipleHostsWithOneIPError(Exception):
         self.assigned_host = assigned_host
         self.new_host = new_host
 
-        error_msg = ("ip address:{} has already been "
-                     "assigned to host:{}, cannot "
-                     "assign same ip to host:{}")
+        # Order the hostnames for predictable testing.
+        host_list = [assigned_host, new_host]
+        host_list.sort()
+        error_msg = ("Both host:{} and host:{} have "
+                     "address:{} assigned.  Cannot "
+                     "assign same ip to both hosts")
 
-        self.message = error_msg.format(ip, assigned_host, new_host)
+        self.message = error_msg.format(host_list[0], host_list[1], ip)
 
     def __str__(self):
         return self.message
