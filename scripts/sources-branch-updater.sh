@@ -241,3 +241,21 @@ if [[ "${OSA_BRANCH}" != "master" ]]; then
 else
   echo "Skipping the ansible-role-requirements.yml update as we're working on the master branch"
 fi
+
+# Update the release version in playbooks/inventory/group_vars/all.yml
+# We don't want to be doing this for the master branch
+if [[ "${OSA_BRANCH}" != "master" ]]; then
+
+  echo "Updating the release version..."
+  currentversion=$(awk '/openstack_release/ {print $2}' playbooks/inventory/group_vars/all.yml)
+
+  # split the version into an array
+  versionarray=( ${currentversion//./ } )
+
+  # increment the patch version
+  versionarray[2]=((versionarray[2]++))
+
+  sed -i .bak "s/${currentversion}/${versionarray[0]}.${versionarray[1]}.${versionarray[2]}/" playbooks/inventory/group_vars/all.yml
+else
+  echo "Skipping the release version update as we're working on the master branch"
+fi
