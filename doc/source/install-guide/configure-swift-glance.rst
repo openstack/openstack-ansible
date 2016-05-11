@@ -1,17 +1,16 @@
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
-Integrate with the Image Service
---------------------------------
+Integrate with the Image Service (glance)
+=========================================
 
-Optionally, the images created by the Image Service (glance) can be
-stored using Object Storage.
+As an option, you can create images in Image Service (glance) and
+store them using Object Storage (swift).
 
-If there is an existing Image Service (glance) backend (for example,
-cloud files) but want to add Object Storage (swift) to use as the Image
-Service back end, re-add any images from the Image Service after moving
-to Object Storage. If the Image Service variables are changed (as
-described below) and begin using Object storage, any images in the Image
-Service will no longer be available.
+If there is an existing glance backend (for example,
+cloud files) but you want to add swift to use as the glance backend,
+you can re-add any images from glance after moving
+to swift. Images are no longer available if there is a change in the
+glance variables when you begin using swift. 
 
 **Procedure 5.3. Integrating Object Storage with Image Service**
 
@@ -19,7 +18,7 @@ This procedure requires the following:
 
 -  OSA Kilo (v11)
 
--  Object Storage v 2.2.0
+-  Object Storage v2.2.0
 
 #. Update the glance options in the
    ``/etc/openstack_deploy/user_variables.yml`` file:
@@ -47,7 +46,7 @@ This procedure requires the following:
    -  ``glance_swift_store_endpoint_type``: Set the endpoint type to
       ``internalURL``.
 
-   -  ``glance_swift_store_key``: Set the Image Service password using
+   -  ``glance_swift_store_key``: Set the glance password using
       the ``{{ glance_service_password }}`` variable.
 
    -  ``glance_swift_store_region``: Set the region. The default value
@@ -56,9 +55,9 @@ This procedure requires the following:
    -  ``glance_swift_store_user``: Set the tenant and user name to
       ``'service:glance'``.
 
-#. Rerun the Image Service (glance) configuration plays.
+#. Rerun the glance configuration plays.
 
-#. Run the Image Service (glance) playbook:
+#. Run the glance playbook:
 
    .. code-block:: shell-session
 

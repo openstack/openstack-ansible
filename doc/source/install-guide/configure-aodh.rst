@@ -1,20 +1,18 @@
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
-=======================================
 Configuring the Aodh service (optional)
 =======================================
 
-The Telemetry Alarming services perform the following functions:
+The Telemetry (ceilometer) alarming services perform the following functions:
 
   - Creates an API endpoint for controlling alarms.
 
   - Allows you to set alarms based on threshold evaluation for a collection of samples.
 
-Aodh on OSA requires a configured MongoDB back end prior to running
-the Aodh playbooks. To specify the connection data, the deployer has to edit in the
+Aodh on OpenStack-Ansible requires a configured MongoDB backend prior to running
+the Aodh playbooks. To specify the connection data, edit the
 ``user_variables.yml`` file (see section `Configuring the user data`_
 below).
-
 
 Setting up a MongoDB database for Aodh
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -27,14 +25,14 @@ Setting up a MongoDB database for Aodh
 
 
 2. Edit the ``/etc/mongodb.conf`` file and change ``bind_ip`` to the
-   management interface of the node running Aodh.
+   management interface of the node running Aodh:
 
   .. code-block:: ini
 
      bind_ip = 10.0.0.11
 
 
-3. Edit the ``/etc/mongodb.conf`` file and enable smallfiles:
+3. Edit the ``/etc/mongodb.conf`` file and enable ``smallfiles``:
 
   .. code-block:: ini
 
@@ -48,7 +46,7 @@ Setting up a MongoDB database for Aodh
      # service mongodb restart
 
 
-5. Create the Aodh database
+5. Create the Aodh database:
 
   .. code-block:: console
 
@@ -72,11 +70,13 @@ Setting up a MongoDB database for Aodh
      }
 
 
-  .. note:: The ``AODH_DBPASS`` must match the
-            ``aodh_container_db_password`` in the
-            ``/etc/openstack_deploy/user_secrets.yml`` file. This
-            allows Ansible to configure the connection string within
-            the Aodh configuration files.
+  .. note::
+  
+      Ensure ``AODH_DBPASS`` matches the
+      ``aodh_container_db_password`` in the
+      ``/etc/openstack_deploy/user_secrets.yml`` file. This
+      allows Ansible to configure the connection string within
+      the Aodh configuration files.
 
 
 Configuring the hosts
@@ -89,7 +89,7 @@ the example included in the
 
   .. code-block:: yaml
 
-     # The infra nodes that the aodh services will run on.
+     # The infra nodes that the Aodh services run on.
      metering-alarm_hosts:
        infra1:
          ip: 172.20.236.111
@@ -100,47 +100,42 @@ the example included in the
 
 The ``metering-alarm_hosts`` provides several services:
 
-  - An API server (aodh-api). Runs on one or more central management
-    servers to provide access to the alarm information stored in the
+  - An API server (``aodh-api``): Runs on one or more central management
+    servers to provide access to the alarm information in the
     data store.
 
-  - An alarm evaluator (aodh-evaluator). Runs on one or more central
-    management servers to determine when alarms fire due to the
+  - An alarm evaluator (``aodh-evaluator``): Runs on one or more central
+    management servers to determine alarm fire due to the
     associated statistic trend crossing a threshold over a sliding
     time window.
 
-  - A notification listener (aodh-listener). Runs on a central
+  - A notification listener (``aodh-listener``): Runs on a central
     management server and fire alarms based on defined rules against
-    event captured by the Telemetry module's notification agents.
+    event captured by ceilometer's module's notification agents.
 
-  - An alarm notifier (aodh-notifier). Runs on one or more central
-    management servers to allow alarms to be set based on the
+  - An alarm notifier (``aodh-notifier``). Runs on one or more central
+    management servers to allow the setting of alarms to base on the
     threshold evaluation for a collection of samples.
 
 These services communicate by using the OpenStack messaging bus. Only
 the API server has access to the data store.
 
-
 Configuring the user data
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In addition to adding these hosts in the
-``/etc/openstack_deploy/conf.d/aodh.yml`` file, other configurations
-must be specified in the ``/etc/openstack_deploy/user_variables.yml``
-file. These configurations are listed below, along with a description:
+Specify the following considerations in
+``/etc/openstack_deploy/user_variables.yml``:
 
-
-  - The type of database backend aodh will use. Currently only MongoDB
+  - The type of database backend Aodh uses. Currently, only MongoDB
     is supported: ``aodh_db_type: mongodb``
 
   - The IP address of the MonogoDB host: ``aodh_db_ip: localhost``
 
   - The port of the MongoDB service: ``aodh_db_port: 27017``
 
-After all of these steps are complete, run the ``os-aodh-install.yml``
-playbook. If deploying a new openstack (instead of only aodh),
-run ``setup-openstack.yml``. The aodh playbooks run as part of this
-playbook.
+Run the ``os-aodh-install.yml`` playbook. If deploying a new OpenStack
+(instead of only Aodh), run ``setup-openstack.yml``.
+The Aodh playbooks run as part of this playbook.
 
 --------------
 
