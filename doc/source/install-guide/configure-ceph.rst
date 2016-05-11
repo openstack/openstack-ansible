@@ -1,11 +1,11 @@
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
 Configuring the Ceph client (optional)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+======================================
 
 Ceph is a massively scalable, open source, distributed storage system.
 
-These links provide more details around how to use Ceph with OpenStack:
+These links provide details on how to use Ceph with OpenStack:
 
 * `Ceph Block Devices and OpenStack`_
 * `Ceph - The De Facto Storage Backend for OpenStack`_ *(Hong Kong Summit
@@ -19,30 +19,32 @@ These links provide more details around how to use Ceph with OpenStack:
 .. _OpenStack Config Reference - Ceph RADOS Block Device (RBD): http://docs.openstack.org/liberty/config-reference/content/ceph-rados.html
 .. _OpenStack-Ansible and Ceph Working Example: https://www.openstackfaq.com/openstack-ansible-ceph/
 
-Configuring Ceph storage servers is outside the scope of this documentation.
+.. note::
+
+   Configuring Ceph storage servers is outside the scope of this documentation.
 
 Authentication
---------------
+~~~~~~~~~~~~~~
 
-The ``cephx`` authentication method is strongly recommended in the `Ceph
-config reference`_ and OpenStack-Ansible enables ``cephx`` by default for
-the Ceph client.  Deployers may choose to override this setting by using the
+We recommend the ``cephx`` authentication method in the `Ceph
+config reference`_. OpenStack-Ansible enables ``cephx`` by default for
+the Ceph client. You can choose to override this setting by using the
 ``cephx`` Ansible variable:
 
 .. code-block:: yaml
 
     cephx: False
 
-Ceph **must** be deployed on a trusted network if ``cephx`` is disabled.
+Deploy Ceph on a trusted network if disabling ``cephx``.
 
 .. _Ceph config reference: http://docs.ceph.com/docs/master/rados/configuration/auth-config-ref/
 
 Configuration file overrides
-----------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible provides the ``ceph_conf_file`` variable which allows
-deployers to specify configuration file options to override the default
-Ceph configuration.
+OpenStack-Ansible provides the ``ceph_conf_file`` variable. This allows
+you to specify configuration file options to override the default
+Ceph configuration:
 
 .. code-block:: console
 
@@ -57,7 +59,7 @@ Ceph configuration.
 
 The following minimal example configuration sets nova and glance
 to use ceph pools: ``ephemeral-vms`` and ``images`` respectively.
-The example uses cephx authentication, and requires existing ``glance`` and
+The example uses ``cephx`` authentication, and requires existing ``glance`` and
 ``cinder`` accounts for ``images`` and ``ephemeral-vms`` pools.
 
 .. code-block:: console
@@ -65,9 +67,8 @@ The example uses cephx authentication, and requires existing ``glance`` and
     glance_default_store: rbd
     nova_libvirt_images_rbd_pool: ephemeral-vms
 
-
 Monitors
---------
+~~~~~~~~
 
 The `Ceph Monitor`_ maintains a master copy of the cluster map.
 OpenStack-Ansible provides the ``ceph_mons`` variable and expects a list of

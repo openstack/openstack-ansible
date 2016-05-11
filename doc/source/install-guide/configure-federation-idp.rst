@@ -1,11 +1,13 @@
 `Home <index.html>`__ OpenStack-Ansible Installation Guide
 
-Configure Identity Service (keystone) as a federated identity provider
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Configure Identity service (keystone) as a federated identity provider
+======================================================================
 
-The identity provider (IdP) configuration for Keystone must be provided in a
+The Identity Provider (IdP) configuration for keystone provides a
 dictionary attribute with the key ``keystone_idp``. The following is a
-complete example::
+complete example:
+
+.. code::
 
     keystone_idp:
       certfile: "/etc/keystone/ssl/idp_signing_cert.pem"
@@ -29,7 +31,7 @@ complete example::
       contact_telephone: 555-55-5555
       contact_type: technical
 
-The following list is a reference of all the allowed settings:
+The following list is a reference of allowed settings:
 
 * ``certfile`` defines the location and filename of the SSL certificate that
   the IdP uses to sign assertions. This file must be in a location that is
@@ -39,37 +41,37 @@ The following list is a reference of all the allowed settings:
   the IdP uses to sign assertions. This file must be in a location that is
   accessible to the keystone system user.
 
-* ``self_signed_cert_subject`` is the subject used in the SSL signing
-  certificate. It is important to note that the common name of the certificate
-  must match the hostname that is configured in the service provider(s) for
+* ``self_signed_cert_subject`` is the subject in the SSL signing
+  certificate. The common name of the certificate
+  must match the hostname configuration in the service provider(s) for
   this IdP.
 
-* ``regen_cert`` should normally be set to ``False``. When set to ``True``,
-  the existing signing certificate will be replaced with a new one. This
+* ``regen_cert`` by default is set to ``False``. When set to ``True``, the
+  next Ansible run replaces the existing signing certificate with a new one. This
   setting is added as a convenience mechanism to renew a certificate when it
   is close to its expiration date.
 
-* ``idp_entity_id`` is the entity ID. The service providers will
-  use this as a unique identifier for each IdP. The recommended value for this
-  setting is ``<keystone-public-endpoint>/OS-FEDERATION/saml2/idp``
+* ``idp_entity_id`` is the entity ID. The service providers
+  use this as a unique identifier for each IdP. ``<keystone-public-endpoint>/OS-FEDERATION/saml2/idp``
+  is the value we recommend for this setting.
 
-* ``idp_sso_endpoint`` is the single sign-on endpoint for this IdP. The
-  recommended value for this setting is
-  ``<keystone-public-endpoint>/OS-FEDERATION/saml2/sso>``
+* ``idp_sso_endpoint`` is the single sign-on endpoint for this IdP.
+  ``<keystone-public-endpoint>/OS-FEDERATION/saml2/sso>`` is the value
+  we recommend for this setting.
 
 * ``idp_metadata_path`` is the location and filename where the metadata for
-  this IdP will be cached. The keystone system user must have access to this
+  this IdP is cached. The keystone system user must have access to this
   location.
 
-* ``service_providers`` is a list of the known service providers that will be
-  using this keystone instance as identity provider. For each SP there are
-  three values that need to be provided: ``id`` is a unique identifier,
-  ``auth_url`` is the authentication endpoint of the SP, and ``sp_url`` is the
-  endpoint where SAML2 assertions need to be posted.
+* ``service_providers`` is a list of the known service providers (SP) that
+  use the keystone instance as identity provider. For each SP, provide
+  three values: ``id`` as a unique identifier,
+  ``auth_url`` as the authentication endpoint of the SP, and ``sp_url``
+  endpoint for posting SAML2 assertions.
 
 * ``organization_name``, ``organization_display_name``, ``organization_url``,
   ``contact_company``, ``contact_name``, ``contact_surname``,
-  ``contact_email``, ``contact_telephone`` and ``contact_type`` are all
+  ``contact_email``, ``contact_telephone`` and ``contact_type`` are
   settings that describe the identity provider. These settings are all optional.
 
 --------------

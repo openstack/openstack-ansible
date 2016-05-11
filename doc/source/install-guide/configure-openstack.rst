@@ -1,19 +1,22 @@
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
-Overriding OpenStack Configuration Defaults
--------------------------------------------
+Overriding OpenStack configuration defaults
+===========================================
 
 OpenStack has many configuration options available in configuration files
-which take the form of ``.conf`` files (in a standard ``INI`` file format),
-policy files (in a standard ``JSON`` format) and also in ``YAML`` files (only
-in the Ceilometer project at this time).
+which are in the form of ``.conf`` files (in a standard ``INI`` file format),
+policy files (in a standard ``JSON`` format) and also ``YAML`` files.
 
-OpenStack-Ansible provides the facility to include any options referenced in
+.. note::
+
+   ``YAML`` files are only in the ceilometer project at this time.
+
+OpenStack-Ansible provides the facility to include reference to any options in
 the `OpenStack Configuration Reference`_ through the use of a simple set of
 configuration entries in ``/etc/openstack_deploy/user_variables.yml``.
 
 This section provides guidance for how to make use of this facility. Further
-guidance is available in the Developer Documentation in the section titled
+guidance is available in the developer documentation in the section titled
 `Setting overrides in configuration files`_.
 
 .. _OpenStack Configuration Reference: http://docs.openstack.org/draft/config-reference/
@@ -23,11 +26,10 @@ Overriding .conf files
 ~~~~~~~~~~~~~~~~~~~~~~
 
 The most common use-case for implementing overrides are for the
-``<service>.conf`` files (eg: ``nova.conf``). These files use a standard
+``<service>.conf`` files (for example, ``nova.conf``). These files use a standard
 ``INI`` file format.
 
-As an example, if a deployer wishes to add the following parameters
-to ``nova.conf``:
+For example, if you add the following parameters to ``nova.conf``:
 
 .. code-block:: ini
 
@@ -42,7 +44,7 @@ to ``nova.conf``:
     idle_timeout = 300
     max_pool_size = 10
 
-This would be accomplished through the use of the following configuration
+This is accomplished through the use of the following configuration
 entry in ``/etc/openstack_deploy/user_variables.yml``:
 
 .. code-block:: yaml
@@ -76,22 +78,21 @@ configuration in ``/etc/openstack_deploy/openstack_user_config.yml``:
                 idle_timeout: 300
                 max_pool_size: 10
 
-This method may be used for any INI file format for all OpenStack projects
+Use this method for any ``INI`` file format for all OpenStack projects
 deployed in OpenStack-Ansible.
 
-To assist deployers in finding the appropriate variable name to use for
+To assist you in finding the appropriate variable name to use for
 overrides, the general format for the variable name is:
 ``<service>_<filename>_<file extension>_overrides``.
 
 Overriding .json files
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Deployers may wish to adjust the default policies applied by services in order
-to implement access controls which are different to the norm. Policy files
-are in a JSON format.
+You can adjust the default policies applied by services in order
+to implement access controls which are different to a standard OpenStack
+environment. Policy files are in a ``JSON`` format.
 
-As an example, the deployer wishes to add the following policy in
-Keystone's ``policy.json``:
+For example, you can add the following policy in keystone's ``policy.json``:
 
 .. code-block:: json
 
@@ -100,7 +101,7 @@ Keystone's ``policy.json``:
         "identity:bar": "rule:admin_required"
     }
 
-This would be accomplished through the use of the following configuration
+Accomplish this through the use of the following configuration
 entry in ``/etc/openstack_deploy/user_variables.yml``:
 
 .. code-block:: yaml
@@ -109,17 +110,17 @@ entry in ``/etc/openstack_deploy/user_variables.yml``:
       identity:foo: "rule:admin_required"
       identity:bar: "rule:admin_required"
 
-This method may be used for any JSON file format for all OpenStack projects
+Use this method for any ``JSON`` file format for all OpenStack projects
 deployed in OpenStack-Ansible.
 
-To assist deployers in finding the appropriate variable name to use for
+To assist you in finding the appropriate variable name to use for
 overrides, the general format for the variable name is
 ``<service>_policy_overrides``.
 
-Currently Available Overrides
+Currently available overrides
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-For convenience, this is a (possibly incomplete) list of overrides available:
+The following is a list of overrides available:
 
 Galera:
     * galera_client_my_cnf_overrides
