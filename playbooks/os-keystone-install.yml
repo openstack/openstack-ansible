@@ -123,7 +123,7 @@
       mysql_db:
         login_user: "{{ galera_root_user }}"
         login_password: "{{ galera_root_password }}"
-        login_host: "{{ galera_address }}"
+        login_host: "{{ keystone_galera_address }}"
         name: "{{ keystone_galera_database }}"
         state: "present"
       when: inventory_hostname == groups['keystone_all'][0]
@@ -134,7 +134,7 @@
       mysql_user:
         login_user: "{{ galera_root_user }}"
         login_password: "{{ galera_root_password }}"
-        login_host: "{{ galera_address }}"
+        login_host: "{{ keystone_galera_address }}"
         name: "{{ keystone_galera_database }}"
         password: "{{ keystone_container_mysql_password }}"
         host: "{{ item }}"
@@ -151,7 +151,6 @@
     - role: "os_keystone"
       keystone_venv_tag: "{{ openstack_release }}"
       keystone_venv_download_url: "{{ openstack_repo_url }}/venvs/{{ openstack_release }}/{{ ansible_distribution | lower }}/keystone-{{ openstack_release }}.tgz"
-      keystone_galera_address: "{{ galera_address }}"
       tags:
         - "os-keystone"
     - { role: "openstack_openrc", tags: [ "openstack-openrc" ] }
@@ -172,6 +171,7 @@
     keystone_admin_port: 35357
     keystone_galera_user: keystone
     keystone_galera_database: keystone
+    keystone_galera_address: "{{ galera_address }}"
     keystone_rabbitmq_userid: keystone
     keystone_rabbitmq_vhost: /keystone
     keystone_rabbitmq_servers: "{{ rabbitmq_servers }}"

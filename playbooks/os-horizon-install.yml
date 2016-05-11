@@ -75,9 +75,36 @@
       when: is_metal | bool
       tags:
         - horizon-logs
+    - name: Create DB for service
+      mysql_db:
+        login_user: "{{ galera_root_user }}"
+        login_password: "{{ galera_root_password }}"
+        login_host: "{{ horizon_galera_address }}"
+        name: "{{ horizon_galera_database }}"
+        state: "present"
+      when: inventory_hostname == groups['horizon_all'][0]
+      delegate_to: "{{ groups['galera_all'][0] }}"
+      tags:
+        - mysql-db-setup
+    - name: Grant access to the DB for the service
+      mysql_user:
+        login_user: "{{ galera_root_user }}"
+        login_password: "{{ galera_root_password }}"
+        login_host: "{{ horizon_galera_address }}"
+        name: "{{ horizon_galera_user }}"
+        password: "{{ horizon_container_mysql_password }}"
+        host: "{{ item }}"
+        state: "present"
+        priv: "{{ horizon_galera_database }}.*:ALL"
+      when: inventory_hostname == groups['horizon_all'][0]
+      delegate_to: "{{ groups['galera_all'][0] }}"
+      with_items:
+        - "localhost"
+        - "%"
+      tags:
+        - mysql-db-setup
   roles:
     - role: "os_horizon"
-      horizon_galera_address: "{{ galera_address }}"
       horizon_server_name: "{{ container_name }}"
       horizon_venv_tag: "{{ openstack_release }}"
       horizon_venv_download_url: "{{ openstack_repo_url }}/venvs/{{ openstack_release }}/{{ ansible_distribution | lower }}/horizon-{{ openstack_release }}.tgz"
@@ -96,3 +123,6 @@
   vars:
     galera_address: "{{ internal_lb_vip_address }}"
     is_metal: "{{ properties.is_metal|default(false) }}"
+    horizon_galera_user: horizon
+    horizon_galera_database: horizon
+    horizon_galera_address: "{{ galera_address }}"

@@ -143,6 +143,34 @@
       tags:
         - cinder-rabbitmq
         - cinder-rabbitmq-user
+    - name: Create DB for service
+      mysql_db:
+        login_user: "{{ galera_root_user }}"
+        login_password: "{{ galera_root_password }}"
+        login_host: "{{ cinder_galera_address }}"
+        name: "{{ cinder_galera_database }}"
+        state: "present"
+      when: inventory_hostname == groups['cinder_all'][0]
+      delegate_to: "{{ groups['galera_all'][0] }}"
+      tags:
+        - mysql-db-setup
+    - name: Grant access to the DB for the service
+      mysql_user:
+        login_user: "{{ galera_root_user }}"
+        login_password: "{{ galera_root_password }}"
+        login_host: "{{ cinder_galera_address }}"
+        name: "{{ cinder_galera_user }}"
+        password: "{{ cinder_container_mysql_password }}"
+        host: "{{ item }}"
+        state: "present"
+        priv: "{{ cinder_galera_database }}.*:ALL"
+      when: inventory_hostname == groups['cinder_all'][0]
+      delegate_to: "{{ groups['galera_all'][0] }}"
+      with_items:
+        - "localhost"
+        - "%"
+      tags:
+        - mysql-db-setup
     - name: Set cinder storage bridge (is_metal)
       set_fact:
         storage_bridge: "{{ 'ansible_' + hostvars[inventory_hostname]['container_networks']['storage_address']['bridge'] | replace('-', '_') }}"
@@ -187,7 +215,6 @@
     - role: "os_cinder"
       cinder_venv_tag: "{{ openstack_release }}"
       cinder_venv_download_url: "{{ openstack_repo_url }}/venvs/{{ openstack_release }}/{{ ansible_distribution | lower }}/cinder-{{ openstack_release }}.tgz"
-      cinder_galera_address: "{{ internal_lb_vip_address }}"
       cinder_management_address: "{{ ansible_ssh_host }}"
       cinder_glance_host: "{{ internal_lb_vip_address }}"
       cinder_glance_service_port: "{{ glance_service_port }}"
@@ -211,6 +238,9 @@
   vars:
     galera_address: "{{ internal_lb_vip_address }}"
     is_metal: "{{ properties.is_metal|default(false) }}"
+    cinder_galera_user: cinder
+    cinder_galera_database: cinder
+    cinder_galera_address: "{{ galera_address }}"
     cinder_rabbitmq_userid: cinder
     cinder_rabbitmq_vhost: /cinder
     cinder_rabbitmq_servers: "{{ rabbitmq_servers }}"
