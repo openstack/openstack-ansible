@@ -27,6 +27,8 @@ export BOOTSTRAP_OPTS=${BOOTSTRAP_OPTS:-''}
 # This variable is being added to ensure the gate job executes an exit
 #  function at the end of the run.
 export OSA_GATE_JOB=true
+# Set the role fetch mode to any option [galaxy, git-clone]
+export ANSIBLE_ROLE_FETCH_MODE="git-clone"
 
 ## Functions -----------------------------------------------------------------
 info_block "Checking for required libraries." 2> /dev/null || source $(dirname ${0})/scripts-library.sh
