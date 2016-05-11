@@ -1,7 +1,7 @@
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
 Configuring the service
------------------------
+=======================
 
 **Procedure 5.2. Updating the Object Storage configuration ``swift.yml``
 file**
@@ -53,14 +53,14 @@ file**
 
    ``part_power``
        Set the partition power value based on the total amount of
-       storage the entire ring will use.
+       storage the entire ring uses.
 
-       Multiply the maximum number of drives ever used with this Object
-       Storage installation by 100 and round that value up to the
+       Multiply the maximum number of drives ever used with the swift
+       installation by 100 and round that value up to the
        closest power of two value. For example, a maximum of six drives,
        times 100, equals 600. The nearest power of two above 600 is two
        to the power of nine, so the partition power is nine. The
-       partition power cannot be changed after the Object Storage rings
+       partition power cannot be changed after the swift rings
        are built.
 
    ``weight``
@@ -71,9 +71,9 @@ file**
 
    ``min_part_hours``
        The default value is 1. Set the minimum partition hours to the
-       amount of time to lock a partition's replicas after a partition
-       has been moved. Moving multiple replicas at the same time might
-       make data inaccessible. This value can be set separately in the
+       amount of time to lock a partition's replicas after moving a partition.
+       Moving multiple replicas at the same time
+       makes data inaccessible. This value can be set separately in the
        swift, container, account, and policy sections with the value in
        lower sections superseding the value in the swift section.
 
@@ -85,13 +85,13 @@ file**
        section.
 
    ``storage_network``
-       By default, the swift services will listen on the default
+       By default, the swift services listen on the default
        management IP. Optionally, specify the interface of the storage
        network.
 
        If the ``storage_network`` is not set, but the ``storage_ips``
        per host are set (or the ``storage_ip`` is not on the
-       ``storage_network`` interface) the proxy server will not be able
+       ``storage_network`` interface) the proxy server is unable
        to connect to the storage services.
 
    ``replication_network``
@@ -99,9 +99,8 @@ file**
        dedicated replication can be setup. If this value is not
        specified, no dedicated ``replication_network`` is set.
 
-       As with the ``storage_network``, if the ``repl_ip`` is not set on
-       the ``replication_network`` interface, replication will not work
-       properly.
+       Replication does not work properly if the ``repl_ip`` is not set on
+       the ``replication_network`` interface.
 
    ``drives``
        Set the default drives per host. This is useful when all hosts
@@ -123,39 +122,39 @@ file**
        created before storage policies were instituted.
 
    ``default``
-       Set the default value to *yes* for at least one policy. This is
+       Set the default value to ``yes`` for at least one policy. This is
        the default storage policy for any non-legacy containers that are
        created.
 
    ``deprecated``
-       Set the deprecated value to *yes* to turn off storage policies.
+       Set the deprecated value to ``yes`` to turn off storage policies.
 
        For account and container rings, ``min_part_hours`` and
        ``repl_number`` are the only values that can be set. Setting them
        in this section overrides the defaults for the specific ring.
 
    ``statsd_host``
-      Swift supports sending extra metrics to a statsd host. This option
-      sets the statsd host that will receive statsd metrics. Specifying
-      this here will apply to all hosts in the cluster.
+      Swift supports sending extra metrics to a ``statsd`` host. This option
+      sets the ``statsd`` host to receive ``statsd`` metrics. Specifying
+      this here applies to all hosts in the cluster.
 
-      If statsd_host is left blank or omitted then statsd will be
+      If ``statsd_host`` is left blank or omitted, then ``statsd`` are
       disabled.
 
-      All statsd settings can be overridden or specified deeper in the
-      structure if you want to only catch statsd metrics on certain hosts.
+      All ``statsd`` settings can be overridden or you can specify deeper in the
+      structure if you want to only catch ``statsdv`` metrics on certain hosts.
 
    ``statsd_port``
-      Optionally, use this to specify the statsd server's port your sending
-      metrics to. Defaults to 8125 of omitted.
+      Optionally, use this to specify the ``statsd`` server's port you are
+      sending metrics to. Defaults to 8125 of omitted.
 
    ``statsd_default_sample_rate`` and ``statsd_sample_rate_factor``
-      These statsd related options are a little more complicated and are
-      used to tune how many samples are sent to statsd. Omit them unless
+      These ``statsd`` related options are more complex and are
+      used to tune how many samples are sent to ``statsd``. Omit them unless
       you need to tweak these settings, if so first read:
       http://docs.openstack.org/developer/swift/admin_guide.html
 
-#. Update the Object Storage proxy hosts values:
+#. Update the swift proxy hosts values:
 
    .. code-block:: yaml
 
@@ -171,17 +170,16 @@ file**
        #     statsd_metric_prefix: proxy03
 
    ``swift-proxy_hosts``
-       Set the ``IP`` address of the hosts that Ansible will connect to
-       to deploy the swift-proxy containers. The ``swift-proxy_hosts``
-       value should match the infra nodes.
+       Set the ``IP`` address of the hosts so Ansible connects to
+       to deploy the ``swift-proxy`` containers. The ``swift-proxy_hosts``
+       value matches the infra nodes.
 
   ``statsd_metric_prefix``
        This metric is optional, and also only evaluated it you have defined
        ``statsd_host`` somewhere. It allows you define a prefix to add to
-       all statsd metrics sent from this hose. If omitted the node name will
-       be used.
+       all ``statsd`` metrics sent from this hose. If omitted, use the node name.
 
-#. Update the Object Storage hosts values:
+#. Update the swift hosts values:
 
    .. code-block:: yaml
 
@@ -237,20 +235,20 @@ file**
    ``swift_hosts``
        Specify the hosts to be used as the storage nodes. The ``ip`` is
        the address of the host to which Ansible connects. Set the name
-       and IP address of each Object Storage host. The ``swift_hosts``
+       and IP address of each swift host. The ``swift_hosts``
        section is not required.
 
    ``swift_vars``
-       Contains the Object Storage host specific values.
+       Contains the swift host specific values.
 
    ``storage_ip`` and ``repl_ip``
-       These values are based on the IP addresses of the host's
+       Base these values on the IP addresses of the host's
        ``storage_network`` or ``replication_network``. For example, if
        the ``storage_network`` is ``br-storage`` and host1 has an IP
-       address of 1.1.1.1 on ``br-storage``, then that is the IP address
-       that will be used for ``storage_ip``. If only the ``storage_ip``
-       is specified then the ``repl_ip`` defaults to the ``storage_ip``.
-       If neither are specified, both will default to the host IP
+       address of 1.1.1.1 on ``br-storage``, then this is the IP address
+       in use for ``storage_ip``. If only the ``storage_ip``
+       is specified, then the ``repl_ip`` defaults to the ``storage_ip``.
+       If neither are specified, both default to the host IP
        address.
 
        Overriding these values on a host or drive basis can cause
@@ -259,11 +257,11 @@ file**
        the ring is set to a different IP address.
 
    ``zone``
-       The default is 0. Optionally, set the Object Storage zone for the
+       The default is 0. Optionally, set the swift zone for the
        ring.
 
    ``region``
-       Optionally, set the Object Storage region for the ring.
+       Optionally, set the swift region for the ring.
 
    ``weight``
        The default weight is 100. If the drives are different sizes, set
@@ -273,21 +271,20 @@ file**
 
    ``groups``
        Set the groups to list the rings to which a host's drive belongs.
-       This can be set on a per drive basis which will override the host
+       This can be set on a per drive basis which overrides the host
        setting.
 
    ``drives``
-       Set the names of the drives on this Object Storage host. At least
-       one name must be specified.
+       Set the names of the drives on the swift host. Specify at least
+       one name.
 
   ``statsd_metric_prefix``
-       This metric is optional, and also only evaluated it you have defined
-       ``statsd_host`` somewhere. It allows you define a prefix to add to
-       all statsd metrics sent from this hose. If omitted the node name will
-       be used.
+       This metric is optional, and only evaluates if ``statsd_host`` is defined
+       somewhere. This allows you to define a prefix to add to
+       all ``statsd`` metrics sent from the hose. If omitted, use the node name.
 
    In the following example, ``swift-node5`` shows values in the
-   ``swift_hosts`` section that will override the global values. Groups
+   ``swift_hosts`` section that override the global values. Groups
    are set, which overrides the global settings for drive ``sdb``. The
    weight is overridden for the host and specifically adjusted on drive
    ``sdb``. Also, the ``storage_ip`` and ``repl_ip`` are set differently
