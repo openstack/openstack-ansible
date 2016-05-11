@@ -1,0 +1,43 @@
+---
+# Copyright 2016, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Clone the role ansible-role-requirements
+  hosts: localhost
+  connection: local
+  user: root
+  tasks:
+    - name: Remove target directory if required
+      shell: |
+        if [[ ! -d "{{ item.path | default('/etc/ansible/roles') }}/{{ item.name | default(item.src | basename) }}/.git" ]]; then
+          rm -rf "{{ item.path | default('/etc/ansible/roles') }}/{{ item.name | default(item.src | basename) }}"
+        fi
+      args:
+        executable: /bin/bash
+      when:
+        - item.scm == "git" or item.scm is undefined
+      with_items: "{{ roles }}"
+    - name: Clone git repos
+      git:
+        repo: "{{ item.src }}"
+        dest: "{{ item.path | default('/etc/ansible/roles') }}/{{ item.name | default(item.src | basename) }}"
+        version: "{{ item.version | default('master') }}"
+        update: true
+        force: true
+      when:
+        - item.scm == "git" or item.scm is undefined
+      with_items: "{{ roles }}"
+  vars:
+    roles: "{{ lookup('file', role_file) | from_yaml }}"
+    role_file: '../ansible-role-requirements.yml'

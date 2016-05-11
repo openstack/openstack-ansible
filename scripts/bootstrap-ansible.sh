@@ -28,7 +28,8 @@ export ANSIBLE_ROLE_FILE=${ANSIBLE_ROLE_FILE:-"ansible-role-requirements.yml"}
 export ANSIBLE_WORKING_DIR=${ANSIBLE_WORKING_DIR:-/opt/ansible_${ANSIBLE_GIT_RELEASE}}
 export SSH_DIR=${SSH_DIR:-"/root/.ssh"}
 export DEBIAN_FRONTEND=${DEBIAN_FRONTEND:-"noninteractive"}
-
+# Set the role fetch mode to any option [galaxy, git-clone]
+export ANSIBLE_ROLE_FETCH_MODE=${ANSIBLE_ROLE_FETCH_MODE:-galaxy}
 
 ## Functions -----------------------------------------------------------------
 info_block "Checking for required libraries." 2> /dev/null ||
@@ -37,6 +38,9 @@ info_block "Checking for required libraries." 2> /dev/null ||
 
 ## Main ----------------------------------------------------------------------
 info_block "Bootstrapping System with Ansible"
+
+# Set the variable to the role file to be the absolute path
+ANSIBLE_ROLE_FILE="$(readlink -f ${ANSIBLE_ROLE_FILE})"
 
 # Create the ssh dir if needed
 ssh_key_create
@@ -92,10 +96,21 @@ fi
 $PIP_COMMAND install $PIP_OPTS "${ANSIBLE_WORKING_DIR}" || $PIP_COMMAND install --isolated $PIP_OPTS "${ANSIBLE_WORKING_DIR}"
 
 # Update dependent roles
-if [ -f "${ANSIBLE_ROLE_FILE}" ];then
+if [ -f "${ANSIBLE_ROLE_FILE}" ]; then
+  if [[ "${ANSIBLE_ROLE_FETCH_MODE}" == 'galaxy' ]];then
     # Pull all required roles.
-    ansible-galaxy install --role-file=${ANSIBLE_ROLE_FILE} \
+    ansible-galaxy install --role-file="${ANSIBLE_ROLE_FILE}" \
                            --force
+  elif [[ "${ANSIBLE_ROLE_FETCH_MODE}" == 'git-clone' ]];then
+    pushd tests
+      ansible-playbook -i "localhost ansible-connection=local," \
+                       get-ansible-role-requirements.yml \
+                       -e role_file="${ANSIBLE_ROLE_FILE}"
+    popd
+  else
+    echo "Please set the ANSIBLE_ROLE_FETCH_MODE to either of the following options ['galaxy', 'git-clone']"
+    exit 99
+  fi
 fi
 
 # Create openstack ansible wrapper tool
