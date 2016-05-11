@@ -1,9 +1,9 @@
 `Home <index.html>`__ OpenStack-Ansible Installation Guide
 
 Identity Service to Identity Service federation example use-case
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+================================================================
 
-This document describes the configuration steps necessary to reproduce the
+The following is the configuration steps necessary to reproduce the
 federation scenario described below:
 
 * Federate Cloud 1 and Cloud 2.
@@ -14,9 +14,11 @@ federation scenario described below:
 * Assign User U to Group B, confirm scope to Role S in Project Y.
 
 Keystone identity provider (IdP) configuration
-----------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The configuration for the keystone IdP instance is as follows::
+The following is the configuration for the keystone IdP instance:
+
+.. code::
 
     keystone_idp:
       certfile: "/etc/keystone/ssl/idp_signing_cert.pem"
@@ -31,21 +33,25 @@ The configuration for the keystone IdP instance is as follows::
           auth_url: https://cloud2.com:5000/v3/OS-FEDERATION/identity_providers/cloud1/protocols/saml2/auth
           sp_url: https://cloud2.com:5000/Shibboleth.sso/SAML2/ECP
 
-In the above example, only the last three lines are specific to a particular
+In this example, the last three lines are specific to a particular
 installation, as they reference the service provider cloud (referred to as
-"Cloud 2" in the original scenario). In the example, it is assumed that this
+"Cloud 2" in the original scenario). In the example, the
 cloud is located at https://cloud2.com, and the unique ID for this cloud
 is "cloud2".
 
-Also note that in the ``auth_url`` there is a reference to the IdP cloud (or
-"Cloud 1"), as known by the service provider (SP). The ID used for the IdP
-cloud in this example is "cloud1".
+.. note::
 
-Keystone SP configuration
--------------------------
+   In the ``auth_url`` there is a reference to the IdP cloud (or
+   "Cloud 1"), as known by the service provider (SP). The ID used for the IdP
+   cloud in this example is "cloud1".
 
-The configuration for the Keystone SP is more complex, as it needs to define
-the remote-to-local user mappings. The complete configuration is as follows::
+Keystone service provider (SP) configuration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The configuration for keystone SP needs to define the remote-to-local user mappings.
+The following is the complete configuration:
+
+.. code::
 
     keystone_sp:
       cert_duration_years: 5
@@ -102,61 +108,62 @@ the remote-to-local user mappings. The complete configuration is as follows::
                 - name: openstack_project_domain
                   id: openstack_project_domain
 
-The ``cert_duration_years`` is used for the self-signed certificate used by
-Shibboleth. The ``trusted_dashboard_list`` is only necessary if Horizon SSO
-login is going to be implemented. When given, it works as a security measure,
+``cert_duration_years`` is for the self-signed certificate used by
+Shibboleth. Only implement the ``trusted_dashboard_list`` if horizon SSO
+login is necessary. When given, it works as a security measure,
 as keystone will only redirect to these URLs.
 
-The ``trusted_idp_list`` is where the IdPs known to the SP are configured. In
-this example there is only one IdP, the "Cloud 1", which is configured with
-the ID "cloud1", matching the reference in the IdP configuration shown in the
+Configure the IdPs known to SP in ``trusted_idp_list``. In
+this example there is only one IdP, the "Cloud 1". Configure "Cloud 1" with
+the ID "cloud1". This matches the reference in the IdP configuration shown in the
 previous section.
 
-The ``entity_ids`` is given the unique URL that represents the "Cloud 1" IdP,
-which for this example is assumed to be hosted at https://cloud1.com.
+The ``entity_ids`` is given the unique URL that represents the "Cloud 1" IdP.
+For this example, it is hosted at: https://cloud1.com.
 
-The three metadata values that follow configure the access to the IdP
-metadata. The ``metadata_file`` needs to be different for each IdP, as this is
-a filename in the keystone containers of the SP cloud that will hold cached
+The ``metadata_file`` needs to be different for each IdP. This is
+a filename in the keystone containers of the SP cloud that holds cached
 metadata for each registered IdP.
 
-The ``federated_identities`` list defines the sets of identities that will be
-used for federated users. In this example there are two sets, Project X/Role R
-and Project Y/Role S. To keep things organized, a user group is created
-for each set.
+The ``federated_identities`` list defines the sets of identities in use
+for federated users. In this example there are two sets, Project X/Role R
+and Project Y/Role S. A user group is created for each set.
 
-The ``protocols`` section is where the federation protocols are specified. At
-this time the only supported protocol is ``saml2``.
+The ``protocols`` section is where the federation protocols are specified.
+The only supported protocol is ``saml2``.
 
-The ``mapping`` dictionary is where the actual assignments of remote to local
+The ``mapping`` dictionary is where the assignments of remote to local
 users is defined. A keystone mapping is given a ``name`` and a set of
 ``rules`` that keystone applies to determine how to map a given user. Each
 mapping rule has a ``remote`` and a ``local`` component.
 
 The ``remote`` part of the mapping rule specifies the criteria for the remote
-user, based on the attributes exposed by the IdP in the SAML2 assertion. The
+user based on the attributes exposed by the IdP in the SAML2 assertion. The
 use case for this scenario calls for mapping users in "Group A" and "Group B",
 but the group or groups a user belongs to are not exported in the SAML2
-assertion. To make the example work, the groups A and B in the use case have
-been assumed to be projects, so there are projects A and B, which are exported
-in the assertion under the ``openstack_project`` attribute. The two rules
-defined above select the corresponding project using the ``any_one_of``
+assertion. To make the example work, the groups A and B in the use case are
+projects. Export projects A and B in the assertion under the ``openstack_project`` attribute.
+The two rules above select the corresponding project using the ``any_one_of``
 selector.
 
-The ``local`` part of the mapping rule specifies how keystone should represent
-the remote user in the local SP cloud. Since the two federated identities were
-configured with their own user group, this part simply maps the user to the
-corresponding group, which in turn will expose the correct domain, project and
-role. Note that a user name is not specified, so keystone creates an
-ephemeral user in the specified group.
+The ``local`` part of the mapping rule specifies how keystone represents
+the remote user in the local SP cloud. Configuring the two federated identities
+with their own user group maps the user to the
+corresponding group. This exposes the correct domain, project, and
+role. 
 
-The final setting of the configuration defines the SAML2 ``attributes`` that
-are exported by the IdP. For a keystone IdP these are the five attributes
-shown above. The attributes given in this section are configured into the
-Shibboleth service, making them available to use in the mappings.
+.. note::
+   
+   Keystone creates a ephemeral user in the specified group as
+   you cannot specify user names.
+
+The IdP exports the final setting of the configuration defines the SAML2 ``attributes``.
+For a keystone IdP, these are the five attributes
+shown above. Configure the attributes above into the Shibboleth service. This
+ensures they are available to use in the mappings.
 
 Reviewing or modifying the configuration with the OpenStack client
-------------------------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Use OpenStack command line client to review or make modifications to an
 existing federation configuration. The following commands can be used for
@@ -165,7 +172,9 @@ the previous configuration.
 Service providers on the identity provider
 ------------------------------------------
 
-To see the list of known SPs::
+To see the list of known SPs:
+
+.. code::
 
     $ openstack service provider list
     +--------+---------+-------------+-----------------------------------------------------------------------------------------+
@@ -174,7 +183,9 @@ To see the list of known SPs::
     | cloud2 | True    | None        | https://cloud2.com:5000/v3/OS-FEDERATION/identity_providers/cloud1/protocols/saml2/auth |
     +--------+---------+-------------+-----------------------------------------------------------------------------------------+
 
-To view the information for a specific SP::
+To view the information for a specific SP:
+
+.. code::
 
     $ openstack service provider show cloud2
     +--------------------+----------------------------------------------------------------------------------------------+
@@ -188,8 +199,10 @@ To view the information for a specific SP::
     | sp_url             | http://cloud2.com:5000/Shibboleth.sso/SAML2/ECP                                              |
     +--------------------+----------------------------------------------------------------------------------------------+
 
-To make modifications, the ``set`` command is used. Below are the available
-options for this command::
+To make modifications, use the ``set`` command. The following are the available
+options for this command:
+
+.. code::
 
     $ openstack service provider set
     usage: openstack service provider set [-h] [--auth-url <auth-url>]
@@ -201,7 +214,9 @@ options for this command::
 Identity providers on the service provider
 ------------------------------------------
 
-To see the list of known IdPs::
+To see the list of known IdPs:
+
+.. code::
 
     $ openstack identity provider list
     +----------------+---------+-------------+
@@ -210,7 +225,9 @@ To see the list of known IdPs::
     | cloud1         | True    | None        |
     +----------------+---------+-------------+
 
-To view the information for a specific IdP::
+To view the information for a specific IdP:
+
+.. code::
 
     $ openstack identity provider show keystone-idp
     +-------------+--------------------------------------------------------+
@@ -222,8 +239,10 @@ To view the information for a specific IdP::
     | remote_ids  | [u'http://cloud1.com:5000/v3/OS-FEDERATION/saml2/idp'] |
     +-------------+--------------------------------------------------------+
 
-To make modifications, the ``set`` command is used. Below are the available
-options for this command::
+To make modifications, use the ``set`` command. The following are the available
+options for this command:
+
+.. code::
 
     $ openstack identity provider set
     usage: openstack identity provider set [-h]
@@ -234,9 +253,11 @@ options for this command::
 Federated identities on the service provider
 --------------------------------------------
 
-The domain, project, role, group and user entities created for the purpose of
-federation are regular keystone entities that can be viewed or modified with
-the OpenStack command client. For example::
+You can use the OpenStack commandline client to view or modify
+the created domain, project, role, group, and user entities for the
+purpose of federation as these are regular keystone entities. For example:
+
+.. code::
 
     $ openstack domain list
     $ openstack project list
@@ -244,14 +265,15 @@ the OpenStack command client. For example::
     $ openstack group list
     $ openstack user list
 
-When using a domain other than the default, the ``--domain`` option must be
-added to all the commands above except the first. The ``set`` option is used
-to modify these entities.
+Add the ``--domain`` option when using a domain other than the default.
+Use the ``set`` option to modify these entities.
 
 Federation mappings
 -------------------
 
-To view the list of mappings::
+To view the list of mappings:
+
+.. code::
 
     $ openstack mapping list
     +------------------+
@@ -260,7 +282,9 @@ To view the list of mappings::
     | cloud1-mapping   |
     +------------------+
 
-To view a mapping in detail::
+To view a mapping in detail:
+
+..code::
 
     $ openstack mapping show cloud1-mapping
     +-------+--------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -273,8 +297,10 @@ To view a mapping in detail::
     +-------+--------------------------------------------------------------------------------------------------------------------------------------------------+
 
 To edit a mapping, use an auxiliary file. Save the JSON mapping shown above
-and make the necessary modifications, then use the``set`` command to trigger
-an update. For example::
+and make the necessary modifications. Use the``set`` command to trigger
+an update. For example:
+
+.. code::
 
     $ openstack mapping show cloud1-mapping -c rules -f value | python -m json.tool > rules.json
     $ vi rules.json  # <--- make any necessary changes
@@ -283,8 +309,10 @@ an update. For example::
 Federation protocols
 --------------------
 
-It is also possible to view or change the association between a federation
-protocol and a mapping::
+To view or change the association between a federation
+protocol and a mapping, use the following command:
+
+.. code::
 
     $ openstack federation protocol list --identity-provider keystone-idp
     +-------+----------------+

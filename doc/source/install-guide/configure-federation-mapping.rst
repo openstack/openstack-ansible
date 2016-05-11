@@ -1,7 +1,7 @@
 `Home <index.html>`__ OpenStack-Ansible Installation Guide
 
 Configure Identity Service (keystone) Domain-Project-Group-Role mappings
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+========================================================================
 
 The following is an example service provider (SP) mapping configuration
 for an ADFS identity provider (IdP):
@@ -16,23 +16,21 @@ for an ADFS identity provider (IdP):
 
 Each IdP trusted by an SP must have the following configuration:
 
-#. ``project``: The project which federated users will have access to.
-   If the project does not already exist then it is created in the
-   domain with the name specified by ``domain``.
+#. ``project``: The project that federation users have access to.
+   If the project does not already exist, create it in the
+   domain with the name, ``domain``.
 
-#. ``group``: The Identity (keystone) group to which the federated users
-   will belong. If the group does not already exist then it is created in
-   the domain with the name specified by ``domain``.
+#. ``group``: The keystone group that federation users
+   belong. If the group does not already exist, create it in
+   the domain with the name, ``domain``.
 
-#. ``role``: The role which federated users will assume in that project.
-   If the role does not already exist, it is created.
+#. ``role``: The role that federation users use in that project.
+   Create the role if it does not already exist.
 
-#. ``domain``: The domain in which the ``project`` lives, and in
-   which the role is assigned. If the domain does not already exist,
-   it will be created.
+#. ``domain``: The domain where the ``project`` lives, and where
+   the you assign roles. Create the domain if it does not already exist.
 
-With the above information, Ansible implements the equivalent of the
-following OpenStack CLI commands:
+Ansible implements the equivalent of the following OpenStack CLI commands:
 
 .. code-block:: shell-session
 
@@ -51,8 +49,8 @@ following OpenStack CLI commands:
   # map the role to the project and user group in the domain
   openstack role add --project fedproject --group fedgroup _member_
 
-If the deployer wants to add more mappings, additional options can be added to
-the list, for example:
+To add more mappings, add options to the list.
+For example:
 
 .. code-block:: yaml
 
@@ -66,20 +64,19 @@ the list, for example:
           group: fedgroup2
           role: _member_
 
-Identity Service federation attribute mapping
----------------------------------------------
+Identity service federation attribute mapping
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Attribute mapping adds a set of rules to map federation attributes to keystone
-users and/or groups. An IdP has exactly one mapping specified per
-protocol.
+users and groups. IdP specifies one mapping per protocol.
 
-Mapping objects can be used multiple times by different combinations of
+Use mapping objects multiple times by different combinations of
 IdP and protocol.
 
-The details of how the mapping engine works, the schema and various rule
+The details of how the mapping engine works, the schema, and various rule
 examples are in the `keystone developer documentation <http://docs.openstack.org/developer/keystone/mapping_combinations.html>`_.
 
-Consider an example SP attribute mapping configuration for an ADFS IdP:
+For example, SP attribute mapping configuration for an ADFS IdP:
 
 .. code-block:: yaml
 
@@ -102,13 +99,12 @@ Consider an example SP attribute mapping configuration for an ADFS IdP:
 Each IdP for an SP needs to be set up with a mapping. This tells the SP how
 to interpret the attributes provided to the SP from the IdP.
 
-In this particular case the IdP is publishing the ``upn`` attribute. As this
-is not in the standard Shibboleth attribute attribute map (see
-``/etc/shibboleth/attribute-map.xml`` in the keystone containers), this IdP
-has been configured with the extra mapping through the ``attributes``
-dictionary.
+In this example, the IdP publishes the ``upn`` attribute. As this
+is not in the standard Shibboleth attribute map (see
+``/etc/shibboleth/attribute-map.xml`` in the keystone containers), the configuration
+of the IdP has extra mapping through the ``attributes`` dictionary.
 
-The ``mapping`` dictionary is a yaml representation very similar to the
+The ``mapping`` dictionary is a YAML representation similar to the
 keystone mapping property which Ansible uploads. The above mapping
 produces the following in keystone.
 
@@ -155,11 +151,11 @@ produces the following in keystone.
       }
   ]
 
-The interpretation of the above mapping rule is that any federated user
-authenticated by the IdP is mapped to an ``ephemeral`` (non-existant) user in
-keystone. The user is a member of a group named ``fedgroup``, which in turn is
-in a domain called ``Default``. The user's ID and Name (federation always uses
-the same value for both properties) for all OpenStack services will be
+The interpretation of the above mapping rule is that any federation user
+authenticated by the IdP maps to an ``ephemeral`` (non-existant) user in
+keystone. The user is a member of a group named ``fedgroup``. This is
+in a domain called ``Default``. The user's ID and Name (federation uses
+the same value for both properties) for all OpenStack services is
 the value of ``upn``.
 
 
