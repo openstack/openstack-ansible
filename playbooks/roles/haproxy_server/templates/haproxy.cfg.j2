@@ -4,8 +4,8 @@ global
         log 127.0.0.1 local0
         log 127.0.0.1 local1 notice
         chroot /var/lib/haproxy
-        uid haproxy
-        gid haproxy
+        user haproxy
+        group haproxy
         daemon
         maxconn 4096
         tune.bufsize 384000
