@@ -62,19 +62,19 @@ delay_auth_decision = {{ swift_delay_auth_decision }}
 use = egg:swift#keystoneauth
 {% if swift_allow_all_users is defined and swift_allow_all_users == True %}
 {% if 'ceilometer' in swift_middleware_list %}
-operator_roles = admin, swiftoperator, _member_, ResellerAdmin
+operator_roles = admin, swiftoperator, _member_, {{ swift_reselleradmin_role }}
 {% else %}
 operator_roles = admin, swiftoperator, _member_
 {% endif %}
 {% else %}
 {% if 'ceilometer' in swift_middleware_list %}
-operator_roles = admin, swiftoperator, ResellerAdmin
+operator_roles = admin, swiftoperator, {{ swift_reselleradmin_role }}
 {% else %}
 operator_roles = admin, swiftoperator
 {% endif %}
 {% endif %}
 # The reseller admin role has the ability to create and delete accounts
-reseller_admin_role = reseller_admin
+reseller_admin_role = {{ swift_reselleradmin_role }}
 {% endif %}
 
 [filter:healthcheck]
