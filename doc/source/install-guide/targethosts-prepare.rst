@@ -68,7 +68,7 @@ practices, refer to `GitHub's documentation on generating SSH keys`_.
 .. _GitHub's documentation on generating SSH keys: https://help.github.com/articles/generating-ssh-keys/
 
 .. warning:: OpenStack-Ansible deployments expect the presence of a
-             ``/root/.ssh/id_rsa.pub`` file on the hosts that use LXC.
+             ``/root/.ssh/id_rsa.pub`` file on the deployment host.
              The contents of this file is inserted into an
              ``authorized_keys`` file for the containers, which is a
              necessary step for the Ansible playbooks. You can
