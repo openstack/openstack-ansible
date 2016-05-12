@@ -35,7 +35,7 @@
     mode: "{{ item.mode|default('0755') }}"
   with_items:
     - { path: "/var/log/haproxy" }
-  when: log_dir.rc != 0
+  when: log_dir | changed
   tags:
     - haproxy-dirs
     - haproxy-logs
