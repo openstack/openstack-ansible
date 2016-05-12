@@ -1,7 +1,7 @@
 `Home <index.html>`__ OpenStack-Ansible Installation Guide
 
-Configuring Identity Service federation (optional)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Configuring Identity service (keystone) federation (optional)
+=============================================================
 
 .. toctree::
 
@@ -13,16 +13,17 @@ Configuring Identity Service federation (optional)
    configure-federation-mapping.rst
    configure-federation-use-case.rst
 
-In Identity Service federation, the identity provider (IdP) and service
+In keystone federation, the identity provider (IdP) and service
 provider (SP) exchange information securely to enable a user on the IdP cloud
 to access resources of the SP cloud.
 
 .. note::
+
    For the Kilo release of OpenStack, federation is only partially supported.
    It is possible to perform a federated login using command line clients and
    scripting, but Dashboard (horizon) does not support this functionality.
 
-The following procedure describes how set up federation.
+The following procedure describes how to set up federation.
 
 #. `Configure Identity Service (keystone) service providers. <configure-federation-sp.html>`_
 
@@ -38,8 +39,8 @@ The following procedure describes how set up federation.
 
 #. `Run the authentication wrapper to use Identity Service to Identity Service federation. <configure-federation-wrapper.html>`_
 
-   For examples of how to set up Identity Service to Identity
-   Service federation, see the `Identity Service to Identity Service
+   For examples of how to set up keystone to keystone federation,
+   see the `Identity Service to Identity Service
    federation example use-case. <configure-federation-use-case.html>`_
 
 --------------
