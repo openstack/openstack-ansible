@@ -36,15 +36,17 @@ def cleanup():
             os.remove(f_file)
 
 
-def get_inventory():
+def get_inventory(clean=True):
     "Return the inventory mapping in a dict."
     try:
         inventory_string = di.main({'config': TARGET_DIR})
         inventory = json.loads(inventory_string)
         return inventory
     finally:
-        # Remove the file system artifacts since we want to force fresh runs
-        cleanup()
+        if clean:
+            # Remove the file system artifacts since we want to force
+            # fresh runs
+            cleanup()
 
 
 class TestArgParser(unittest.TestCase):
@@ -515,6 +517,34 @@ class TestConfigChecks(unittest.TestCase):
             os.remove(USER_CONFIG_FILE)
             os.rename(USER_CONFIG_FILE + ".tmp", USER_CONFIG_FILE)
 
+
+class TestMultipleRuns(unittest.TestCase):
+    def test_creating_backup_file(self):
+        # Generate the initial inventory files
+        get_inventory(clean=False)
+
+        # run again to force creation of the backup files
+        get_inventory(clean=False)
+
+        backup_path = path.join(TARGET_DIR, 'backup_openstack_inventory.tar')
+
+        self.assertTrue(os.path.exists(backup_path))
+
+    def test_recreating_files(self):
+        # Deleting the files after the first run should cause the files to be
+        # completely remade
+        get_inventory()
+
+        get_inventory()
+
+        backup_path = path.join(TARGET_DIR, 'backup_openstack_inventory.tar')
+
+        self.assertFalse(os.path.exists(backup_path))
+
+    def tearDown(self):
+        # Clean up here since get_inventory will not do it by design in
+        # this test.
+        cleanup()
 
 if __name__ == '__main__':
     unittest.main()
