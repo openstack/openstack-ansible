@@ -47,6 +47,21 @@ def get_inventory():
         cleanup()
 
 
+class TestArgParser(unittest.TestCase):
+    def test_no_args(self):
+        arg_dict = di.args([])
+        self.assertEqual(arg_dict['config'], None)
+        self.assertEqual(arg_dict['list'], False)
+
+    def test_list_arg(self):
+        arg_dict = di.args(['--list'])
+        self.assertEqual(arg_dict['list'], True)
+
+    def test_config_arg(self):
+        arg_dict = di.args(['--config', '/etc/openstack_deploy'])
+        self.assertEqual(arg_dict['config'], '/etc/openstack_deploy')
+
+
 class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
     inventory = None
 
