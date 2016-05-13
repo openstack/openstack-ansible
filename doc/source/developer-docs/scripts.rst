@@ -166,11 +166,29 @@ Documentation may be built locally by executing:
 
 .. _reStructuredText: http://docutils.sourceforge.net/rst.html
 
+Release Notes Build
+-------------------
+
+Release notes are generated using the `the reno tool`_ and compiled into
+HTML using Sphinx.
+
+Release notes may be built locally by executing:
+
+.. code-block:: bash
+
+    tox -e releasenotes
+
+.. _the reno tool: http://docs.openstack.org/developer/reno/usage.html
+
+
 Gating
 ^^^^^^
 
 Every commit to OpenStack-Ansible is verified by OpenStack-CI through the
 following jobs:
+
+* ``gate-openstack-ansible-releasenotes``: This job executes the
+  `Release Notes Build`_.
 
 * ``gate-openstack-ansible-docs``: This job executes the
   `Documentation Build`_.
