@@ -24,6 +24,13 @@
   tags:
     - repo-ssh
 
+# This is so that the master repo server can stop nginx on the slaves
+# while data is syncing.
+- name: Allow nginx user to stop/start nginx via sudo
+  copy:
+    content: "nginx ALL=NOPASSWD: /etc/init.d/nginx start, /etc/init.d/nginx stop\n"
+    dest: /etc/sudoers.d/nginx
+
 - name: Drop rsyncd configuration file(s)
   copy:
     src: "{{ item.src }}"
