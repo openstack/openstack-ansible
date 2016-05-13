@@ -1,10 +1,11 @@
 `Home <index.html>`_ OpenStack-Ansible Developer Documentation
 
+======================
 Contributor Guidelines
 ======================
 
 Reporting Bugs
---------------
+~~~~~~~~~~~~~~
 
 Bugs should be filed on `Bug Launchpad`_ for OpenStack-Ansible.
 
@@ -22,19 +23,19 @@ criteria are met:
 * Steps to reproduce the problem if possible.
 
 Tags
-````
+----
 If it's a bug that needs fixing in a branch in addition to master, add a
 '\<release\>-backport-potential' tag (e.g. ``liberty-backport-potential``).
 There are predefined tags that will auto-complete.
 
 Status
-``````
+------
 Please leave the **status** of an issue alone until someone confirms it or
 a member of the bugs team triages it. While waiting for the issue to be
 confirmed or triaged the status should remain as **New**.
 
 Importance
-``````````
+----------
 Should only be touched if it is a Blocker/Gating issue. If it is, please
 set to **High**, and only use **Critical** if you have found a bug that
 can take down whole infrastructures. Once the importance has been changed
@@ -42,7 +43,7 @@ the status should be changed to *Triaged* by someone other than the bug
 creator.
 
 Triaging Bugs
-`````````````
+-------------
 Reported bugs need prioritization, confirmation, and shouldn't go stale.
 If you care about OpenStack stability but aren't wanting to actively
 develop the roles and playbooks used within the OpenStack-Ansible
@@ -54,7 +55,7 @@ immensely. The whole process is described in the OpenStack
 .. _Bug Triage Documentation: http://docs.openstack.org/infra/manual/developers.html#working-on-bugs
 
 General Guidelines for Submitting Code
---------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 * Write good commit messages. We follow the OpenStack
   "`Git Commit Good Practice`_" guide. if you have any questions regarding how
@@ -81,7 +82,8 @@ General Guidelines for Submitting Code
   that may pertain to something that was re-factored should be raised as an
   issue and submitted in prior or subsequent patches.
 * New features, breaking changes and other patches of note must include a
-  release note generated using `the reno tool`_.
+  release note generated using `the reno tool`_. Please see the
+  `Documentation and Release Note Guidelines`_ for more information.
 
 .. _Git Commit Good Practice: https://wiki.openstack.org/wiki/GitCommitMessages
 .. _workflow documented here: http://docs.openstack.org/infra/manual/developers.html#development-workflow
@@ -90,7 +92,7 @@ General Guidelines for Submitting Code
 .. _the reno tool: http://docs.openstack.org/developer/reno/usage.html
 
 Working on Features
--------------------
+~~~~~~~~~~~~~~~~~~~
 
 * All feature additions/deletions should be accompanied by a blueprint/spec.
   e.g. adding additional active agents to neutron, developing a new service
@@ -123,7 +125,7 @@ Working on Features
 .. _Tempest: http://docs.openstack.org/developer/tempest/
 
 Backporting
------------
+~~~~~~~~~~~
 
 * Backporting is defined as the act of reproducing a change from another
   branch. Unclean/squashed/modified cherry-picks and complete
@@ -152,8 +154,111 @@ Backporting
 .. _Submitting a change to a branch for review: http://www.mediawiki.org/wiki/Gerrit/Advanced_usage#Submitting_a_change_to_a_branch_for_review_.28.22backporting.22.29
 .. _OpenStack Guidelines for stable branches: http://docs.openstack.org/project-team-guide/stable-branches.html
 
+Documentation and Release Note Guidelines
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Documentation is a critical part of ensuring that the deployers of OpenStack-Ansible
+are appropriately informed about:
+
+* How to use the project's tooling effectively to deploy OpenStack.
+* How to implement the right configuration to meet the needs of their specific
+  use-case.
+* Changes in the project over time which may affect an existing deployment.
+
+To meet these needs developers must submit code comments, documentation and
+release notes with any code submissions. All forms of documentation should
+comply with the guidelines provided in the `OpenStack Documentation Contributor
+Guide`_, with particular reference to the following sections:
+
+* Writing style
+* RST formatting conventions
+
+.. _OpenStack Documentation Contributor Guide: http://docs.openstack.org/contributor-guide/
+
+Code Comments
+-------------
+
+Code comments for variables should be used to explain the purpose of the
+variable. This is particularly important for the role defaults file as the file
+is included verbatim in the role's documentation. Where there is an optional
+variable, the variable and an explanation of what it is used for should be
+added to the defaults file.
+
+Code comments for bash/python scripts should give guidance to the purpose of
+the code. This is important to provide context for reviewers before the patch
+has merged, and for later modifications to remind the contributors what the
+purpose was and why it was done that way.
+
+Documentation
+-------------
+
+OpenStack-Ansible has multiple forms of documentation with different intent.
+
+.. note::
+
+   The statements below regarding the Install Guide and Role Documentation are
+   statements of intent. The work to fulfill the intent is ongoing. Any new
+   documentation submissions should try to help this intent where possible.
+
+The `install guide <../install-guide/`_ intends to help deployers install
+OpenStack-Ansible for the first time. As such, the install guide is somewhat
+opinionated, focusing on ensuring that the deployer has to make very few
+decisions and implement the least amount of configuration possible to deploy
+a running OpenStack environment.
+
+The role documentation (for example, the `keystone role documentation`_)
+intends to explain all the options available for the role and how to implement
+more advanced requirements. To reduce duplication, the role documentation
+directly includes the role's default variables file which includes the
+comments explaining the purpose of the variables. The long hand documentation
+for the roles should focus less on explaining variables and more on explaining
+how to implement advanced use cases.
+
+Where possible the documentation in OpenStack-Ansible should steer clear of
+trying to explain OpenStack concepts. Those explanations belong in the
+OpenStack Manuals or service documentation and OpenStack-Ansible documentation
+should link to those documents when available, rather than duplicate their
+content.
+
+.. _keystone role documentation: http://docs.openstack.org/developer/openstack-ansible-os_keystone/
+
+Release Notes
+-------------
+
+Release notes are generated using `the reno tool`_. Release notes must be
+written with the following guidelines in mind:
+
+* Each list item must make sense to read without the context of the patch or
+  the repository the patch is being submitted into. The reason for this is that
+  all release notes are consolidated and presented in a long list without
+  reference to the source patch or the context of the repository.
+* Each note should be brief and to the point. Try to avoid multi-paragraph
+  notes. For features the note should typically refer to documentation for more
+  details. For bug fixes the note can refer to a registered bug for more
+  details.
+
+In most cases only the following sections should be used for new release notes
+submitted with patches:
+
+* ``features``: This should inform the deployer briefly about a new feature and
+  should describe how to use it either by referencing the variables to set or
+  by referring to documentation.
+* ``issues``: This should inform the deployer about known issues. This may be
+  used when fixing an issue and wanting to inform deployers about a workaround
+  that can be used for versions prior to that which contains the patch that
+  fixes the issue. Issue notes should specifically make mention of what
+  versions of OpenStack-Ansible are affected by the issue.
+* ``upgrade``: This should inform the deployer about changes which may affect
+  them when upgrading from a previous major or minor version. Typically, these
+  notes would describe changes to default variable values or variables that
+  have been removed.
+* ``deprecations``: If a variable has been deprecated (ideally using the
+  deprecation filter), then it should be communicated through notes in this
+  section. Note that if a variable has been removed entirely then it has not
+  been deprecated and the removal should be noted in the ``upgrade`` section.
+
 Ansible Style Guide
--------------------
+~~~~~~~~~~~~~~~~~~~
 
 When creating tasks and other roles for use in Ansible please create them
 using the YAML dictionary format.
