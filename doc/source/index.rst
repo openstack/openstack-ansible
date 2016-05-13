@@ -20,8 +20,8 @@ review.
 .. _Newton Series Timeline: https://launchpad.net/openstack-ansible/trunk
 .. _Newton Series Release Notes: http://docs.openstack.org/releasenotes/openstack-ansible/unreleased.html
 
-Mitaka (experimental)
-=====================
+Mitaka (Current stable release, security-supported)
+===================================================
 
 OpenStack-Ansible's Mitaka Series was first released with the 13.0.0 tag on
 1 April 2016.
@@ -36,8 +36,8 @@ OpenStack-Ansible's Mitaka Series was first released with the 13.0.0 tag on
 .. _OpenStack-Ansible Mitaka Series Timeline: https://launchpad.net/openstack-ansible/mitaka
 .. _OpenStack-Ansible Mitaka Series Release Notes: http://docs.openstack.org/releasenotes/openstack-ansible/mitaka.html
 
-Liberty: Current stable release, security-supported (EOL: 2016-11-17)
-=====================================================================
+Liberty: Security-supported (EOL: 2016-11-17)
+=============================================
 
 OpenStack-Ansible's Liberty Series was first released with the 12.0.0 tag
 on 11 September 2015.
