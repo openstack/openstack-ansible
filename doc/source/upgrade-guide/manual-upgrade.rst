@@ -1,94 +1,91 @@
 .. _manual-upgrade:
 
-Manual Upgrade Steps
+Manual upgrade steps
 ====================
 
 The steps detailed here match those performed by the ``run-upgrade.sh``
-script. Any of these steps can safely be run multiple times.
+script. Any of these steps can be run safely multiple times.
 
-Checkout Liberty version
-------------------------
+Check out the Liberty release
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Ensure your OpenStack-Ansible code is on a Liberty release of 12.0.8 or later.
 
-Versions prior to this did not include the upgrade utilities.
+.. note::
+
+   Versions before 12.0.8 do not include the upgrade capability.
 
 .. code-block:: console
 
-    # git checkout 12.0.8
+   # git checkout 12.0.8
 
 Preparing the shell variables
------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. note::
 
-    This is step is optional, since these environment variables are simply
+    This step is optional, since the environment variables are
     shortcuts. Files can be referenced directly.
 
-From the ``openstack-ansible`` root directory, run the following.
+From the ``openstack-ansible`` root directory, run the following commands:
 
 .. code-block:: console
 
-    # export MAIN_PATH="$(pwd)"
-    # export SCRIPTS_PATH="${MAIN_PATH}/scripts"
-    # export UPGRADE_PLAYBOOKS="${SCRIPTS_PATH}/upgrade-utilities/playbooks"
+   # export MAIN_PATH="$(pwd)"
+   # export SCRIPTS_PATH="${MAIN_PATH}/scripts"
+   # export UPGRADE_PLAYBOOKS="${SCRIPTS_PATH}/upgrade-utilities/playbooks"
 
-These variables will reduce typing when running the remaining upgrade
+These variables reduce typing when running the remaining upgrade
 tasks.
 
-Re-bootstrap Ansible for Liberty
---------------------------------
+Re-bootstrap OpenStack-Ansible for Liberty
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Bootstrapping Ansible again ensures that new external Ansible role
+Bootstrapping OpenStack-Ansible again ensures that new external OpenStack-Ansible role
 dependencies are in place before the Liberty version of playbooks and roles
 run.
 
 .. code-block:: console
 
-    # ${SCRIPTS_PATH}/bootstrap-ansible.sh
+   # ${SCRIPTS_PATH}/bootstrap-ansible.sh
 
-Change to playbooks directory
------------------------------
+Temporarily disabling the security hardening role
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Move to the playbooks directory so that the Ansible dynamic
-inventory will be found automatically
-
-.. code-block:: console
-
-    # cd playbooks
-
-Disabling the security hardening role temporarily
--------------------------------------------------
-
-In order to avoid issues (and ease the troubleshooting if an issue
-appears during the upgrade), disable the security hardening role
-before running the following steps. Set your
+To avoid issues and ease troubleshooting, if an issue
+appears during the upgrade, disable the security hardening role
+before running the following steps. Set the
 variable ``apply_security_hardening`` to False:
 
 .. code-block:: console
 
    # echo 'apply_security_hardening: False' >> /etc/openstack_deploy/user_zzz_disable_security_hardening.yml
 
+Change to playbooks directory
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Change to the playbooks directory the OpenStack-Ansible dynamic
+inventory is found automatically.
+
+.. code-block:: console
+
+   # cd playbooks
+
 Update configuration and environment files
-------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The user configuration files in ``/etc/openstack_deploy/`` and the environment
-layout in ``/etc/openstack_deploy/env.d`` have had names changed and new
-values added in Liberty. This step updates the files as necessary.
+layout in ``/etc/openstack_deploy/env.d`` have new names and
+values added in Liberty.
 
 See :ref:`config-change-playbook` for more details.
 
 .. code-block:: console
 
-    # openstack-ansible "${UPGRADE_PLAYBOOKS}/deploy-config-changes.yml"
-
-.. note::
-
-    The `-e pip_install_options=--force-reinstall` ensures that all pip
-    packages are reinstalled and running the correct version on hosts.
+   # openstack-ansible "${UPGRADE_PLAYBOOKS}/deploy-config-changes.yml"
 
 Update user secrets file
-------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 Liberty introduces new user secrets to the stack (for example, in aodh).
 These are populated automatically with the following playbook.
@@ -97,92 +94,91 @@ See :ref:`user-secrets-playbook` for more details.
 
 .. code-block:: console
 
-    # openstack-ansible "${UPGRADE_PLAYBOOKS}/user-secrets-adjustment.yml"
+   # openstack-ansible "${UPGRADE_PLAYBOOKS}/user-secrets-adjustment.yml"
 
 Upgrade hosts
--------------
+~~~~~~~~~~~~~
 
 Before installing the infrastructure and OpenStack, update the host machines.
 
 .. code-block:: console
 
-    # openstack-ansible setup-hosts.yml --limit '!galera_all[0]'
+   # openstack-ansible setup-hosts.yml --limit '!galera_all[0]'
 
 This command is the same as doing host setups on a new install. The first
-member of the galera_all host group is excluded to prevent simultaneous
-restarts of all galera containers.
+member of the ``galera_all`` host group is excluded to prevent simultaneous
+restarts of all Galera containers.
 
 Update Galera LXC container configuration
------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Update the first galera container's configuration independently.
+Update the first Galera container's configuration independently.
 
 .. code-block:: console
 
-    # openstack-ansible lxc-containers-create.yml --limit galera_all[0]
+   # openstack-ansible lxc-containers-create.yml --limit galera_all[0]
 
 This command is a subset of the host setup playbook, limited to the first
-member of the galera_all host group so that its container is restarted only
-after other galera containers have been restarted in the previous step.
+member of the ``galera_all`` host group so that its container is restarted only
+after other Galera containers have been restarted.
 
-Cleanup pip.conf file in the repo_servers if found
---------------------------------------------------
+Cleanup ``pip.conf`` file in the ``repo_servers``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-It is possible that a ``pip.conf`` file may exist within the repository server
-infrastructure. If this file exists it will cause build failures when upgrading
-to Liberty. This play will remove the ``pip.conf`` file from the repository
-servers if it's found.
+If a ``pip.conf`` file exists within the repository server infrastructure,
+it can cause build failures when upgrading to Liberty.
+This play removes the ``pip.conf`` file from the repository
+servers.
 
 See :ref:`repo-server-pip-conf-removal` for more details.
 
 .. code-block:: console
 
-    # openstack-ansible "${UPGRADE_PLAYBOOKS}/repo-server-pip-conf-removal.yml"
+   # openstack-ansible "${UPGRADE_PLAYBOOKS}/repo-server-pip-conf-removal.yml"
 
 
 Upgrade infrastructure
-----------------------
+~~~~~~~~~~~~~~~~~~~~~~
 
 Running the standard OpenStack-Ansible infrastructure playbook applies the
-relevant Liberty settings and packages. However, MariaDB/Galera needs an
+relevant Liberty settings and packages. However, MariaDB and Galera require an
 extra option to specify an upgrade from the 5.5 series to 10.0. This upgrade
 is required for the Liberty release of OpenStack-Ansible.
 
-RabbitMQ may need a minor version upgrade depending on what version of Kilo
-was previously installed.
+For certain versions of Kilo, you must upgrade the RabbitMQ minor version.
 
 See :ref:`setup-infra-playbook` for details.
 
 .. code-block:: console
 
-    # openstack-ansible setup-infrastructure.yml -e 'galera_upgrade=true' \
-    -e 'rabbitmq_upgrade=true'
+   # openstack-ansible setup-infrastructure.yml -e 'galera_upgrade=true' \
+   -e 'rabbitmq_upgrade=true'
 
 
-Disable Neutron port security driver
-------------------------------------
+Disable neutron port security driver
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Use the playbook ``disable-neutron-port-security.yml`` to disable the Neutron
+Use the playbook ``disable-neutron-port-security.yml`` to disable the neutron
 port security extension if there is no existing override.
 
 See :ref:`neutron-port-sec-playbook` for details.
 
 .. code-block:: console
 
-    # openstack-ansible "${UPGRADE_PLAYBOOKS}/disable-neutron-port-security.yml"
+   # openstack-ansible "${UPGRADE_PLAYBOOKS}/disable-neutron-port-security.yml"
 
 Upgrade OpenStack
------------------
+~~~~~~~~~~~~~~~~~
 
-Upgrading the OpenStack components is done with the same playbook that
-installs them, without any additional options.
+Upgrade the OpenStack components with the installation playbook,
+without any additional options.
 
 .. code-block:: console
 
-    # openstack-ansible setup-openstack.yml
+   # openstack-ansible setup-openstack.yml
 
 Clean up RabbitMQ
------------------
+~~~~~~~~~~~~~~~~~
 
 Use the ``cleanup-rabbitmq-vhost.yml`` playbook to remove residual virtual
 hosts and users that are replaced in Liberty.
@@ -191,13 +187,13 @@ See :ref:`cleanup-rabbit-playbook` for details.
 
 .. code-block:: console
 
-    # openstack-ansible "${UPGRADE_PLAYBOOKS}/cleanup-rabbitmq-vhost.yml \
-    -e 'pip_install_options=--force-reinstall'"
+   # openstack-ansible "${UPGRADE_PLAYBOOKS}/cleanup-rabbitmq-vhost.yml \
+   -e 'pip_install_options=--force-reinstall'"
 
 Removing the security hardening prevention variable file
---------------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You can now return the security hardening to its previous value by
+You can now return the security hardening to its former value by
 removing the file previously created:
 
 .. code-block:: console

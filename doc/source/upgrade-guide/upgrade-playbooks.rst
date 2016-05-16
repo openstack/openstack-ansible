@@ -10,69 +10,72 @@ facilitate the upgrade process.
 
 .. _cleanup-rabbit-playbook:
 
-cleanup-rabbitmq-vhost.yml
---------------------------
-Liberty has introduced separate vhosts and RabbitMQ users for the OpenStack
-services. This playbook is designed to clean up the remnants of the previous
-RabbitMQ configuration, this means removing the shared RabbitMQ user
-'openstack' and the exchanges and queues in the / vhost that aren't there by
-default. This playbook should not be run until after all the services have
-stopped using the shared configuration.
+``cleanup-rabbitmq-vhost.yml``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Liberty introduces separate vhost and RabbitMQ users for the OpenStack
+services. This playbook cleans up the remnants of the previous
+RabbitMQ configuration, removes the shared RabbitMQ user
+`openstack`, and clears the exchanges and queues in the vhost that
+are not there by default.
+
+.. note::
+
+   Do not run this playbook until after all the services have
+   stopped using the shared configuration.
 
 .. _config-change-playbook:
 
-deploy-config-changes.yml
--------------------------
+``deploy-config-changes.yml``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This playbook will back up the ``/etc/openstack_deploy`` directory before
+This playbook backs up the ``/etc/openstack_deploy`` directory before
 making the necessary changes to the configuration.
 
-``/etc/openstack_deploy`` is copied once to ``/etc/openstack_deploy.KILO``.
-The copy happens only once, so repeated runs are safe.
+``/etc/openstack_deploy`` copies once to ``/etc/openstack_deploy.KILO``.
 
-Additionally, the following changes will be made to the environment,
-configuration of container memberships, and user variables.
+As a result, the following changes are made to the environment,
+configuration of container memberships, and user variables:
 
-    * ``aodh.yml`` and ``haproxy.yml`` will be copied from the source tree into
+    * Copy ``aodh.yml`` and ``haproxy.yml`` from the source tree into
         ``/etc/openstack_deploy/env.d``.
-    * ``/etc/openstack_deploy/env.d/neutron.yml`` will have LBaaS group
-      memberships added. See :ref:`neutron-env-script` for details.
-    * ``/etc/openstack_deploy/env.d/ceilometer.yml`` will have two alarm group
-      memberships changed. See :ref:`ceilo-env-script` for details.
-    * ``/etc/openstack_deploy/user_*.yml`` will have old variable names
-      updated to reflect new ones. See :ref:`migrate-os-vars` for details.
+    * ``/etc/openstack_deploy/env.d/neutron.yml`` adds LBaaS group
+      memberships. See :ref:`neutron-env-script` for details.
+    * ``/etc/openstack_deploy/env.d/ceilometer.yml`` changes two alarm group
+      memberships. See :ref:`ceilo-env-script` for details.
+    * ``/etc/openstack_deploy/user_*.yml`` updates old variable names
+      to reflect new ones. See :ref:`migrate-os-vars` for details.
 
 .. _user-secrets-playbook:
 
-user-secrets-adjustment.yml
----------------------------
+``user-secrets-adjustment.yml``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This playbook ensures that the user secrets file is updated based on the example
-file in the main repository. This makes it possible to guarantee all secrets are
-carried into the upgraded environment and appropriately generated. Only new
-secrets are added, such as those necessary for new services or new settings
-added to existing services. Previously set values will not be changed.
+Updates to this playbook ensure that the user secrets file is based on the example
+file in the main repository. This makes it possible to guarantee all
+secrets move into the upgraded environment and generate appropriately.
+This adds only new secrets, such as those necessary for new services or new settings
+added to existing services. Values set previously are not changed.
 
 .. _setup-infra-playbook:
 
-repo-server-pip-conf-removal.yml
---------------------------------
+``repo-server-pip-conf-removal.yml``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This playbook ensures the repository servers do not have the ``pip.conf`` in the
-root ``pip`` directory locking down the python packages available to install. If
-this file exists on the repository servers it will cause build failures.
+root ``pip`` directory. This locks down the Python packages available to install.
+If this file exists on the repository servers, it causes build failures.
 
 .. _repo-server-pip-conf-removal:
 
-setup-infrastructure.yml
-------------------------
+``setup-infrastructure.yml``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The ``setup-infrastructure.yml`` playbook is contained in the main
-``playbooks`` directory, but is called by ``run-upgrade.sh`` with specific
-arguments in order to upgrade infrastructure components such as MariaDB and
-RabbitMQ.
+The main ``playbooks`` directory contains the ``setup-infrastructure.yml`` playbook.
+However, ``run-upgrade.sh`` calls it with specific arguments to upgrade
+infrastructure components such as MariaDB and RabbitMQ.
 
-For example, to run an upgrade for both components at once, run the following:
+For example, to run an upgrade for both components at once, run the following command:
 
 .. code-block:: console
 
@@ -80,40 +83,41 @@ For example, to run an upgrade for both components at once, run the following:
     # -e 'galera_upgrade=true'
 
 The ``rabbitmq_upgrade`` variable tells the ``rabbitmq_server`` role to
-upgrade the running major/minor version of RabbitMQ.
+upgrade the running major or minor versions of RabbitMQ.
 
 .. note::
-    The RabbitMQ server role will install patch releases automatically,
+
+    The RabbitMQ server role installs patch releases automatically,
     regardless of the value of ``rabbitmq_upgrade``. This variable only
-    controls upgrading the major or minor version.
+    controls upgrading the major or minor versions.
 
     Upgrading RabbitMQ in the Liberty release is optional. The
-    ``run-upgrade.sh`` script will not automatically upgrade it. If a RabbitMQ
-    upgrade using the script is desired, insert the ``rabbitmq_upgrade: true``
-    line into a file such as ``/etc/openstack_deploy/user_variables.yml``.
+    ``run-upgrade.sh`` script does not automatically upgrade it. To upgrade RabbitMQ,
+    insert the ``rabbitmq_upgrade: true``
+    line into a file, such as: ``/etc/openstack_deploy/user_variables.yml``.
 
 The ``galera_upgrade`` variable tells the ``galera_server`` role to remove the
-current version of MariaDB/Galera and upgrade to the 10.x series. This upgrade
-is required for Liberty.
+current version of MariaDB and Galera and upgrade to the 10.x series. Liberty requires
+this upgrade.
 
 .. _neutron-port-sec-playbook:
 
-disable-neutron-port-security.yml
----------------------------------
+``disable-neutron-port-security.yml``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In Kilo, Neutron introduced a port security extension to ML2, but did not
-enable it. OpenStack-Ansible enabled this extension by default in Liberty.
+In Kilo, neutron introduces a port security extension to ML2, but does not
+enable it. OpenStack-Ansible enables this extension by default in Liberty.
 However, networks created prior to enabling the port security extension do not
-receive any port security information. When VMs are started or created while
-attached to these networks, the start up or creation will fail.
+receive any port security information. Start up creation fails when starting
+or creating VMs while attached to these networks.
 
-Neutron itself does not currently provide a mechanism for cleanly applying the
-port security bindings to pre-existing networks.
+Neutron does not currently provide a mechanism for applying the
+port security bindings cleanly to pre-existing networks.
 
-In order to avoid this behavior, OpenStack-Ansible will disable port security
+In order to avoid this behavior, OpenStack-Ansible disables port security
 bindings for environments upgraded from Kilo to Liberty.
 
-The following stanza will be added to
+The following stanza adds to
 ``/etc/openstack_deploy/user_variables.yml``:
 
 .. code-block:: yaml
@@ -122,8 +126,8 @@ The following stanza will be added to
       ml2:
         extension_drivers: ''
 
-mariadb-apt-cleanup.yml
------------------------
+``mariadb-apt-cleanup.yml``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This playbook cleans up older MariaDB apt repositories which used HTTP instead
 of HTTPS.

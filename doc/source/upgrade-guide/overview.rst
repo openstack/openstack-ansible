@@ -6,10 +6,10 @@ to upgrade an environment from Kilo to Liberty. The ``run-upgrade.sh``
 script runs each upgrade playbook in the correct order, or playbooks
 can be run individually if necessary.
 
-Running the Upgrade script
+Running the upgrade script
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The Liberty series releases of OpenStack-Ansible contain the code for
+The Liberty release series of OpenStack-Ansible contain the code for
 migrating from Kilo to Liberty.
 
 To upgrade from Kilo to Liberty using the upgrade script, perform the
@@ -20,54 +20,53 @@ following steps in the ``openstack-ansible`` directory:
    # git checkout <liberty-tag>
    # ./scripts/run-upgrade.sh
 
-Upgrading Manually
+Upgrading manually
 ~~~~~~~~~~~~~~~~~~
 
 Deployers can run the upgrade steps manually. See :ref:`manual-upgrade`.
 
-Upgrade Actions
+Upgrade actions
 ~~~~~~~~~~~~~~~
 
 Both the upgrade script and manual upgrade steps perform the actions and
 use the concepts introduced below.
 
-Configuration Changes
+Configuration changes
 ---------------------
 
-The upgrade process will modify files residing in ``/etc/openstack_deploy`` in
+The upgrade process modifies files residing in ``/etc/openstack_deploy`` in
 order to reflect new Liberty values.
 
-Flag Files
+Flag files
 ----------
 
 Some flag files are created by the migration scripts in order to achieve
 idempotency. These files are placed in the ``/etc/openstack_deploy.KILO``
 directory.
 
-MariaDB Upgrade
+MariaDB upgrade
 ---------------
 
-The version of MariaDB is upgraded from the 5.5 series to 10.0 in Liberty.
-These changes are facilitated directly by the MariaDB/Galera roles themselves.
+MariaDB and Galera directly facilitate the Liberty upgrade of MariaDB from the 5.5
+series to the 10.0.
 
 See :ref:`setup-infra-playbook` for details.
 
-RabbitMQ Upgrade
+RabbitMQ upgrade
 ----------------
 
-The RabbitMQ server can be upgraded during an OpenStack-Ansible upgrade. When
-upgrading from an early Kilo release, the update will be mandatory.
+Upgrade the RabbitMQ server during an OpenStack-Ansible upgrade. When
+upgrading from an early Kilo release, the update is mandatory.
 
 See :ref:`setup-infra-playbook` for details.
 
---------------
-
-Neutron Port Security
+Neutron port security
 ---------------------
 
-OpenStack-Ansible enabled Neutron's ML2 port security driver by default in
-Liberty, but will keep the driver disabled in environments upgraded from Kilo
-unless it has already been enabled in Kilo.
+OpenStack-Ansible enables neutron ML2 port security driver by default in
+Liberty, but keeps the driver disabled in environments upgraded from Kilo
+unless you have enabled it in Kilo.
+
 
 See :ref:`neutron-port-sec-playbook` for details.
 
