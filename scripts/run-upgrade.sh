@@ -156,6 +156,7 @@ function main {
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/memcached-flush.yml")
         RUN_TASKS+=("setup-openstack.yml")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/cleanup-rabbitmq-vhost.yml")
+        RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/glance-db-storage-url-fix.yml")
         # Run the tasks in order
         for item in ${!RUN_TASKS[@]}; do
           run_lock $item "${RUN_TASKS[$item]}"

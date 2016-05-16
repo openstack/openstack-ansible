@@ -146,6 +146,21 @@ of HTTPS.
 
 Sends "flush_all" to memcached with the help of nc.
 
+.. _glance-db-storage-url-fix:
+
+``glance-db-storage-url-fix.yml``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The upgrade playbook ``glance-db-storage-url-fix.yml`` will
+migrate all existing Swift backed Glance images inside the
+image_locations database table from a Keystone v2 API URL to a v3 URL.
+This will force the Swift client to operate against a v3 Keystone URL.
+A backup of the old image_locations table is stored inside a new database
+table ``image_locations_keystone_v3_mig_pre_liberty`` and can be safely
+removed after a successfull upgrade to Liberty.
+This upgrade task is related to
+``https://bugs.launchpad.net/openstack-ansible/+bug/1582279``
+
 --------------
 
 .. include:: navigation.txt

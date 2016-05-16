@@ -221,6 +221,15 @@ See :ref:`cleanup-rabbit-playbook` for details.
    # openstack-ansible "${UPGRADE_PLAYBOOKS}/cleanup-rabbitmq-vhost.yml \
    -e 'pip_install_options=--force-reinstall'"
 
+Migrate Glance v2 Swift image locations to Keystone v3
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+See :ref:`glance-db-storage-url-fix` for details.
+
+.. code-block:: console
+
+    # openstack-ansible "${UPGRADE_PLAYBOOKS}/glance-db-storage-url-fix.yml"
+
 Removing the security hardening prevention variable file
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
