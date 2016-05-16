@@ -31,7 +31,7 @@ file**
        #       - name: sdd
        #       - name: sde
        #       - name: sdf
-       #     mount_point: /mnt
+       #     mount_point: /srv/node
        #     account:
        #     container:
        #     storage_policies:
@@ -109,8 +109,8 @@ file**
 
    ``mount_point``
        Set the ``mount_point`` value to the location where the swift
-       drives are mounted. For example, with a mount point of ``/mnt``
-       and a drive of ``sdc``, a drive is mounted at ``/mnt/sdc`` on the
+       drives are mounted. For example, with a mount point of ``/srv/node``
+       and a drive of ``sdc``, a drive is mounted at ``/srv/node/sdc`` on the
        ``swift_host``. This can be overridden on a per-host basis.
 
    ``storage_policies``
