@@ -12,21 +12,21 @@ The main Ansible foundation playbook prepares the target hosts for
 infrastructure and OpenStack services and performs the following
 operations:
 
--  Perform deployment host initial setup
+-  Performs deployment host initial setup
 
--  Build containers on target hosts
+-  Builds containers on target hosts
 
--  Restart containers on target hosts
+-  Restarts containers on target hosts
 
--  Install common components into containers on target hosts
+-  Installs common components into containers on target hosts
 
 Running the foundation playbook
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. seealso::
+.. note::
 
    Before continuing, validate the configuration files using the
-   guidance in "`Checking the integrity of your configuration files`_".
+   guidance in `Checking the integrity of your configuration files`_.
 
    .. _Checking the integrity of your configuration files: ../install-guide/configure-configurationintegrity.html
 
