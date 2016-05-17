@@ -84,12 +84,15 @@ General Guidelines for Submitting Code
 * New features, breaking changes and other patches of note must include a
   release note generated using `the reno tool`_. Please see the
   `Documentation and Release Note Guidelines`_ for more information.
-
+* All patches including code, documentation and release notes should be built and
+  tested locally with the appropriate test suite before submitting for review.
+  See `Development and Testing`_ for more information.
 .. _Git Commit Good Practice: https://wiki.openstack.org/wiki/GitCommitMessages
 .. _workflow documented here: http://docs.openstack.org/infra/manual/developers.html#development-workflow
 .. _advanced gerrit usage: http://www.mediawiki.org/wiki/Gerrit/Advanced_usage
 .. _Ansible best practices: http://docs.ansible.com/playbooks_best_practices.html
 .. _the reno tool: http://docs.openstack.org/developer/reno/usage.html
+.. _Development and Testing: scripts.html#development-and-testing
 
 Working on Features
 ~~~~~~~~~~~~~~~~~~~
