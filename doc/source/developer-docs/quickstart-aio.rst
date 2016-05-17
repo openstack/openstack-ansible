@@ -60,9 +60,9 @@ repository root directory:
 
    .. code-block:: bash
 
-       $ git clone https://github.com/openstack/openstack-ansible \
+       # git clone https://github.com/openstack/openstack-ansible \
            /opt/openstack-ansible
-       $ cd /opt/openstack-ansible
+       # cd /opt/openstack-ansible
 
 Next switch the applicable branch/tag to be deployed from. Note that
 deploying from the head of a branch may result in an unstable build due to
@@ -71,15 +71,15 @@ development) build it is usually best to checkout the latest tagged version.
 
    .. code-block:: bash
 
-       $ # List all existing tags.
-       $ git tag -l
+       # # List all existing tags.
+       # git tag -l
 
-       $ # Checkout the stable branch and find just the latest tag
-       $ git checkout stable/mitaka
-       $ git describe --abbrev=0 --tags
+       # # Checkout the stable branch and find just the latest tag
+       # git checkout stable/mitaka
+       # git describe --abbrev=0 --tags
 
-       $ # Checkout the latest tag from either method of retrieving the tag.
-       $ git checkout 13.0.1
+       # # Checkout the latest tag from either method of retrieving the tag.
+       # git checkout 13.0.1
 
 By default the scripts deploy all OpenStack services with sensible defaults
 for the purpose of a gate check, development or testing system.
@@ -100,15 +100,15 @@ device, then execute:
 
   .. code-block:: bash
 
-      $ export BOOTSTRAP_OPTS="bootstrap_host_data_disk_device=sdb"
+      # export BOOTSTRAP_OPTS="bootstrap_host_data_disk_device=sdb"
 
 Additional options may be implemented by simply concatenating them with
 a space between each set of options, for example:
 
   .. code-block:: bash
 
-      $ export BOOTSTRAP_OPTS="bootstrap_host_data_disk_device=sdb"
-      $ export BOOTSTRAP_OPTS="${BOOTSTRAP_OPTS} bootstrap_host_ubuntu_repo=http://mymirror.example.com/ubuntu"
+      # export BOOTSTRAP_OPTS="bootstrap_host_data_disk_device=sdb"
+      # export BOOTSTRAP_OPTS="${BOOTSTRAP_OPTS} bootstrap_host_ubuntu_repo=http://mymirror.example.com/ubuntu"
 
 The next step is to bootstrap Ansible and the Ansible roles for the
 development environment.  Deployers can customize roles by adding variables to
@@ -117,7 +117,7 @@ following to bootstrap Ansible:
 
    .. code-block:: bash
 
-       $ scripts/bootstrap-ansible.sh
+       # scripts/bootstrap-ansible.sh
 
 In order for all the services to run, the host must be prepared with the
 appropriate disks, packages, network configuration and a base configuration
@@ -125,7 +125,7 @@ for the OpenStack Deployment. This preparation is completed by executing:
 
    .. code-block:: bash
 
-       $ scripts/bootstrap-aio.sh
+       # scripts/bootstrap-aio.sh
 
 If you wish to add any additional configuration entries for the OpenStack configuration
 then this can be done now by editing
@@ -136,7 +136,7 @@ Finally, run the playbooks by executing:
 
    .. code-block:: bash
 
-       $ scripts/run-playbooks.sh
+       # scripts/run-playbooks.sh
 
 The installation process will take a while to complete, but here are some
 general estimates:
@@ -152,8 +152,8 @@ Keystone service, execute:
 
    .. code-block:: bash
 
-       $ cd /opt/openstack-ansible/playbooks
-       $ openstack-ansible os-keystone-install.yml
+       # cd /opt/openstack-ansible/playbooks
+       # openstack-ansible os-keystone-install.yml
 
 **Note:** The AIO bootstrap playbook will still build containers for services
 that are not requested for deployment, but the service will not be deployed
@@ -170,8 +170,8 @@ This is done by executing the following:
 
    .. code-block:: bash
 
-      $ cd /opt/openstack-ansible/playbooks
-      $ openstack-ansible -e galera_ignore_cluster_state=true galera-install.yml
+      # cd /opt/openstack-ansible/playbooks
+      # openstack-ansible -e galera_ignore_cluster_state=true galera-install.yml
 
 If this fails to get the database cluster back into a running state, then
 please make use of the `Galera Cluster Recovery`_ page in the Install Guide.
@@ -186,31 +186,31 @@ isn't always practical. As such the following may be executed instead:
 
    .. code-block:: bash
 
-       $ # Move to the playbooks directory.
-       $ cd /opt/openstack-ansible/playbooks
+       # # Move to the playbooks directory.
+       # cd /opt/openstack-ansible/playbooks
 
-       $ # Destroy all of the running containers.
-       $ openstack-ansible lxc-containers-destroy.yml
+       # # Destroy all of the running containers.
+       # openstack-ansible lxc-containers-destroy.yml
 
-       $ # On the host stop all of the services that run locally and not
-       $ #  within a container.
-       $ for i in \
+       # # On the host stop all of the services that run locally and not
+       # #  within a container.
+       # for i in \
               $(ls /etc/init \
                 | grep -e "nova\|swift\|neutron" \
                 | awk -F'.' '{print $1}'); do \
            service $i stop; \
          done
 
-       $ # Uninstall the core services that were installed.
-       $ for i in $(pip freeze | grep -e "nova\|neutron\|keystone\|swift"); do \
+       # # Uninstall the core services that were installed.
+       # for i in $(pip freeze | grep -e "nova\|neutron\|keystone\|swift"); do \
            pip uninstall -y $i; done
 
-       $ # Remove crusty directories.
-       $ rm -rf /openstack /etc/{neutron,nova,swift} \
+       # # Remove crusty directories.
+       # rm -rf /openstack /etc/{neutron,nova,swift} \
                 /var/log/{neutron,nova,swift}
 
-       $ # Remove the pip configuration files on the host
-       $ rm -rf /root/.pip
+       # # Remove the pip configuration files on the host
+       # rm -rf /root/.pip
 
 Should an existing AIO environment need to be reinstalled, the most efficient
 method is to destroy the host operating system and start over. For this reason,
