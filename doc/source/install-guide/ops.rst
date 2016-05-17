@@ -4,6 +4,9 @@
 Chapter 8. Operations
 =====================
 
+The following operations and troubleshooting procedures apply to
+installed environments.
+
 .. toctree::
 
    ops-addcomputehost.rst
@@ -11,9 +14,6 @@ Chapter 8. Operations
    ops-logging.rst
    ops-troubleshooting.rst
 
-
-The following operations apply to environments after initial
-installation.
 
 --------------
 

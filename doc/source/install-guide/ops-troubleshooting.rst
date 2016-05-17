@@ -4,6 +4,19 @@
 Troubleshooting
 ===============
 
+Host kernel upgrade from version 3.13
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Ubuntu kernel packages newer than version 3.13 contain a change in
+module naming from ``nf_conntrack`` to ``br_netfilter``. After
+upgrading the kernel, re-run the ``openstack-hosts-setup.yml``
+playbook against those hosts. See `OSA bug 157996`_ for more
+information.
+
+.. _OSA bug 157996: https://bugs.launchpad.net/openstack-ansible/+bug/1579963
+
+
+
 Container networking issues
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -77,7 +90,7 @@ Examples of the information gathered are:
     * Linux distribution
     * Kernel version
     * Network interfaces
-    
+
 To improve performance, particularly in large deployments, you can
 cache host facts and information.
 
