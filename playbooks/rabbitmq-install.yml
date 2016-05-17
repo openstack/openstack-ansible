@@ -69,3 +69,17 @@
       tags:
         - "rabbitmq-rsyslog-client"
         - "rsyslog-client"
+
+- name: Ensure rabbitmq user for monitoring GUI
+  hosts: rabbitmq_all[0]
+  user: root
+  tasks:
+    - name: Create rabbitmq user for monitoring GUI
+      rabbitmq_user:
+         user: "{{ rabbitmq_monitoring_userid|default('monitoring') }}"
+         password: "{{ rabbitmq_monitoring_password }}"
+         state: "present"
+         tags: "monitoring"
+      when: rabbitmq_monitoring_password is defined
+      tags:
+        - "rabbitmq_monitoring_user"

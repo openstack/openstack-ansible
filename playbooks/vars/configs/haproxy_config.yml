@@ -201,3 +201,15 @@ haproxy_service_configs:
       haproxy_balance_type: http
       haproxy_backend_options:
         - "httpchk HEAD /"
+  - service:
+      haproxy_service_name: rabbitmq_mgmt
+      haproxy_backend_nodes: "{{ groups['rabbitmq'] | default([]) }}"
+      haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_port: 15672
+      haproxy_balance_type: http
+      haproxy_backend_options:
+        - "httpchk HEAD /"
+      haproxy_whitelist_networks:
+        - 192.168.0.0/16
+        - 172.16.0.0/12
+        - 10.0.0.0/8
