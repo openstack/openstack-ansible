@@ -128,7 +128,9 @@
         - "os-glance"
     - { role: "openstack_openrc", tags: [ "openstack-openrc" ] }
     - role: "ceph_client"
+      glance_venv_bin: "/openstack/venvs/glance-{{ openstack_release }}/bin"
       openstack_service_system_user: "{{ glance_system_user_name }}"
+      openstack_service_venv_bin: "{{ glance_venv_bin if glance_venv_enabled|default(True) else None }}"
       tags:
         - "glance-ceph-client"
         - "ceph-client"

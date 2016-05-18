@@ -39,6 +39,11 @@
 - include:  ceph_install.yml
   tags:     ceph-install
 
+- include: ceph_install_python_libs.yml
+  when: openstack_service_venv_bin != ''
+  tags:
+    - ceph-install
+
 - include: ceph_get_mon_host.yml
   tags:
     - ceph-config
