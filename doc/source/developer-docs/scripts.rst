@@ -45,7 +45,7 @@ necessary partitions, directories, and configurations. The script can be
 configured using environment variables - more details are provided on the
 `All-In-One`_ page.
 
-.. _All-In-One: quickstart-aio
+.. _All-In-One: quickstart-aio.html
 
 Development and Testing
 ^^^^^^^^^^^^^^^^^^^^^^^
