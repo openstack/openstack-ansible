@@ -106,6 +106,11 @@ nova_git_install_branch: e1522c1d8635377172a25e21ec18710d3ca446e6 # HEAD of "mas
 nova_git_dest: "/opt/nova_{{ nova_git_install_branch | replace('/', '_') }}"
 
 
+## PowerVM Virt Driver
+nova_powervm_git_repo: https://git.openstack.org/openstack/nova-powervm
+nova_powervm_git_install_branch: 86d7fdfee450de555cdc506c4ad2fdfbbc14ab24 # HEAD of "master" as of 18.05.2016
+nova_powervm_git_dest: "/opt/nova_powervm_{{ nova_powervm_git_install_branch | replace('/', '_') }}"
+
 ## Swift service
 swift_git_repo: https://git.openstack.org/openstack/swift
 swift_git_install_branch: 72372c1464d1aae4a9b5de5ef6a3689fddf168cc # HEAD of "master" as of 22.04.2016
