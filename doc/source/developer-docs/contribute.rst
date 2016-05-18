@@ -203,7 +203,7 @@ OpenStack-Ansible has multiple forms of documentation with different intent.
    statements of intent. The work to fulfill the intent is ongoing. Any new
    documentation submissions should try to help this intent where possible.
 
-The `install guide <../install-guide/`_ intends to help deployers install
+The `install guide <../install-guide/>`_ intends to help deployers install
 OpenStack-Ansible for the first time. As such, the install guide is somewhat
 opinionated, focusing on ensuring that the deployer has to make very few
 decisions and implement the least amount of configuration possible to deploy
