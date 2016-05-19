@@ -1,0 +1,8 @@
+---
+features:
+  - Allow the fallocate_reserve option to be set (in
+    bytes) for Swift, to help prevent disks from filling
+    up and prevent a situation where Swift is unable to
+    remove objects due to a lack of disk space. The
+    fallocate_reserve value to is set to a default of
+    10GB.

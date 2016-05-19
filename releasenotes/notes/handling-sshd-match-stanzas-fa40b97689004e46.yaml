@@ -1,0 +1,7 @@
+---
+fixes:
+  - The security role now handles ``ssh_config`` files that contain
+    ``Match`` stanzas. A marker is added to the configuration file and any new
+    configuration items will be added below that marker. In addition, the
+    configuration file is validated for each change to the ssh configuration
+    file.
