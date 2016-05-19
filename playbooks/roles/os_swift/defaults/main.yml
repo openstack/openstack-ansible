@@ -84,6 +84,7 @@ swift_service_name: swift
 swift_service_user_name: swift
 swift_service_project_name: service
 swift_service_project_domain_id: "default"
+swift_service_project_domain_name: "Default"
 swift_service_user_domain_id: "default"
 swift_service_role_name: "admin"
 swift_service_type: object-store
@@ -103,8 +104,9 @@ swift_service_region: RegionOne
 ## Keystone authentication middleware
 swift_keystone_auth_plugin: "password"
 
-## Swift default variables
 swift_dispersion_user: dispersion
+swift_dispersion_user_domain_name: "Default"
+
 swift_operator_role: swiftoperator
 swift_allow_versions: True
 # This will allow all users to create containers and upload to swift if set to True
