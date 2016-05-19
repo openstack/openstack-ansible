@@ -1,7 +1,8 @@
 Upgrade Documentation
 =====================
 
-In this section you'll find information on the Kilo to Liberty upgrade process.
+In this section you can find information on the Kilo to
+Liberty upgrade process.
 
 Contents:
 
