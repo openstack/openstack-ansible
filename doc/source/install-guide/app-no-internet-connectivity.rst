@@ -98,6 +98,12 @@ affect:
 - `wget`
 - `openstack`
 
+Use the ``no_proxy`` environment variable to specify hosts that you cannot
+reach through the proxy. These often are the hosts in the management network.
+In the example below, ``no_proxy`` is set to localhost only, but the default
+configuration file suggests using variables to list all the hosts/containers'
+management addresses as well as the load balancer internal/external addresses.
+
 Configuration changes are made in ``/etc/openstack_deploy/user_variables.yml``.
 
 .. code-block:: yaml
@@ -106,11 +112,10 @@ Configuration changes are made in ``/etc/openstack_deploy/user_variables.yml``.
       global_environment_variables:
          HTTP_PROXY: "http://proxy.example.com:3128"
          HTTPS_PROXY: "http://proxy.example.com:3128"
+         NO_PROXY: "localhost,127.0.0.1"
          http_proxy: "http://proxy.example.com:3128"
          https_proxy: "http://proxy.example.com:3128"
-
-      # pip needs proxies specified as well
-      pip_install_options: "--proxy http://proxy.example.com:3128"
+         no_proxy: "localhost,127.0.0.1"
 
 ``apt-get`` proxy configuration
 -------------------------------
