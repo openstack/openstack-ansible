@@ -194,20 +194,20 @@ Recovering from certain failures require rebuilding one or more containers.
 #. Disable the failed node on the load balancer.
 
    .. note::
-   
+
       Do not rely on the load balancer health checks to disable the node.
       If the node is not disabled, the load balancer sends SQL requests
       to it before it rejoins the cluster and cause data inconsistencies.
 
 #. Destroy the container and remove MariaDB data stored outside
-   of the container: 
+   of the container:
 
    .. code-block:: shell-session
 
        # lxc-stop -n node3_galera_container-3ea2cbd3
        # lxc-destroy -n node3_galera_container-3ea2cbd3
        # rm -rf /openstack/node3_galera_container-3ea2cbd3/*
-   
+
    In this example, node 3 failed.
 
 #. Run the host setup playbook to rebuild the container on node 3:
@@ -230,7 +230,7 @@ Recovering from certain failures require rebuilding one or more containers.
 
 
    .. warning::
-   
+
       The new container runs a single-node Galera cluster, which is a dangerous
       state because the environment contains more than one active database
       with potentially different data.
@@ -262,6 +262,18 @@ Recovering from certain failures require rebuilding one or more containers.
 
 #. Restart MariaDB in the new container and verify that it rejoins the
    cluster.
+
+   .. note::
+
+      In larger deployments, it may take some time for the MariaDB daemon to
+      start in the new container. It will be synchronizing data from the other
+      MariaDB servers during this time. You can monitor the status during this
+      process by tailing the ``/var/log/mysql_logs/galera_server_error.log``
+      log file.
+
+      Lines starting with ``WSREP_SST`` will appear during the sync process
+      and you should see a line with ``WSREP: SST complete, seqno: <NUMBER>``
+      if the sync was successful.
 
    .. code-block:: shell-session
 
