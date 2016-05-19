@@ -22,7 +22,7 @@ export TEMPEST_SCRIPT_PATH=${TEMPEST_SCRIPT_PATH:-/opt/openstack_tempest_gate.sh
 ## TODO(someone) this needs to be changed back to the normal tests once someone
 ## is able to dig into tempest/the updated/deprecated config(s). This test should
 ## go back to being the scenario tests.
-export TEMPEST_SCRIPT_PARAMETERS=${TEMPEST_SCRIPT_PARAMETERS:-"scenario heat_api cinder_backup ceilometer_api"}
+export TEMPEST_SCRIPT_PARAMETERS=${TEMPEST_SCRIPT_PARAMETERS:-"scenario heat_api cinder_backup"}
 export RUN_TEMPEST_OPTS=${RUN_TEMPEST_OPTS:-'--serial'}
 export TESTR_OPTS=${TESTR_OPTS:-''}
 

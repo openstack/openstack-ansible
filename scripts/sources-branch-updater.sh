@@ -249,13 +249,15 @@ if [[ "${OSA_BRANCH}" != "master" ]]; then
   echo "Updating the release version..."
   currentversion=$(awk '/openstack_release/ {print $2}' playbooks/inventory/group_vars/all.yml)
 
-  # split the version into an array
-  versionarray=( ${currentversion//./ } )
+  # Extract the required version info
+  major_version=$( echo ${currentversion} | cut -d. -f1 )
+  minor_version=$( echo ${currentversion} | cut -d. -f2 )
+  patch_version=$( echo ${currentversion} | cut -d. -f3 )
 
   # increment the patch version
-  versionarray[2]=((versionarray[2]++))
+  patch_version=$(( patch_version + 1 ))
 
-  sed -i .bak "s/${currentversion}/${versionarray[0]}.${versionarray[1]}.${versionarray[2]}/" playbooks/inventory/group_vars/all.yml
+  sed -i .bak "s/${currentversion}/${major_version}.${minor_version}.${patch_version}/" playbooks/inventory/group_vars/all.yml
 else
   echo "Skipping the release version update as we're working on the master branch"
 fi
