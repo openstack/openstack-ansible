@@ -5,12 +5,15 @@ Configuring the Networking service (neutron) (optional)
 
 The OpenStack Networking service (neutron) includes the following services:
 
- * Firewall as a Service (FWaaS) allows for the configuration of a firewall
-   that filters traffic from the router.
- * Load Balancer as a Service (LBaaS) allows for the configuration of a
-   load balancer that directs traffic to the specified instances.
- * VPN as a Service (VPNaaS) allows for the configuration of a virtual
-   private network allowing the extension of the private network across a public network.
+Firewall as a Service (FWaaS)
+  Provides a software-based firewall that filters traffic from the router.
+
+Load Balancer as a Service (LBaaS)
+  Provides load balancers that direct traffic to OpenStack instances or other
+  servers outside the OpenStack deployment.
+
+VPN as a Service (VPNaaS)
+  Provides a method for extending a private network across a public network.
 
 Firewall service (optional)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
