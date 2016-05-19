@@ -236,6 +236,11 @@ Adding static routes to network interfaces
 
     post-up ip route add 10.176.0.0/12 via 172.29.248.1 || true
 
+ The ``cidr`` and ``gateway`` values must *both* be specified, or the
+ inventory script will raise an error. Accuracy of the network information
+ is not checked within the inventory script, just that the keys and values
+ are present.
+
 Setting an MTU on a network interface
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

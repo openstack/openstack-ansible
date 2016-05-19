@@ -1,0 +1,11 @@
+---
+fixes:
+  - Static route information for provider networks now *must* include the
+    `cidr` and `gateway` information. If either key is missing, an error will
+    be raised and the dynamic_inventory.py script will halt before any Ansible
+    action is taken. Previously, if either key was missing, the inventory
+    script would continue silently without adding the static route
+    information to the networks.
+
+    Note that this check does not validate the CIDR or gateway values, just
+    just that the values are present.

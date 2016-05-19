@@ -87,6 +87,19 @@ class MultipleIpForHostError(Exception):
         return self.message
 
 
+class MissingStaticRouteInfo(Exception):
+    def __init__(self, queue_name):
+        self.queue_name = queue_name
+
+        error_msg = ("Static route provider network with queue '{queue}' "
+                     "needs both 'cidr' and 'gateway' values.")
+
+        self.message = error_msg.format(queue=self.queue_name)
+
+    def __str__(self):
+        return self.message
+
+
 def args(arg_list):
     """Setup argument Parsing."""
     parser = argparse.ArgumentParser(
@@ -638,10 +651,19 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
             # NOTE: networks[old_address]['static_routes'] will get
             #       regenerated on each run
             networks[old_address]['static_routes'] = []
-            for s in static_routes:
-                # only add static routes if they are specified correctly
-                if 'cidr' in s and 'gateway' in s:
-                    networks[old_address]['static_routes'].append(s)
+            for route in static_routes:
+                # only add static routes if they are specified correctly;
+                # that is, the key and a value must be present. This doesn't
+                # ensure that the values provided are routeable, just that
+                # they are not empty.
+                cidr_present = route.get('cidr', False)
+                gateway_present = route.get('gateway', False)
+
+                if cidr_present and gateway_present:
+                    networks[old_address]['static_routes'].append(route)
+
+                elif not cidr_present or not gateway_present:
+                    raise MissingStaticRouteInfo(q_name)
 
 
 def _net_address_search(provider_networks, main_network, key):
