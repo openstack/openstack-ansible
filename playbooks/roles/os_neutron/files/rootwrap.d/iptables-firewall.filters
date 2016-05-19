@@ -19,3 +19,10 @@ ip6tables-restore: CommandFilter, ip6tables-restore, root
 #   "iptables", "-A", ...
 iptables: CommandFilter, iptables, root
 ip6tables: CommandFilter, ip6tables, root
+
+# neutron/agent/linux/iptables_manager.py
+#   "sysctl", "-w", ...
+sysctl: CommandFilter, sysctl, root
+
+# neutron/agent/linux/ip_conntrack.py
+conntrack: CommandFilter, conntrack, root
