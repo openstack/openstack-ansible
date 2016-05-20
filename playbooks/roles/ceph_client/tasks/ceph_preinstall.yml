@@ -1,5 +1,6 @@
 ---
 # Copyright 2015, Serge van Ginderachter <serge@vanginderachter.be>
+# Copyright 2016 IBM Corp
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,65 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Remove revoked ceph apt-keys
-  apt_key:
-    id: "{{ item }}"
-    state: "absent"
-  register: revoke_keys
-  with_items: ceph_revoked_gpg_keys
+- include: ceph_preinstall_apt.yml
+  when:
+    - ansible_pkg_mgr == 'apt'
   tags:
     - ceph-apt-keys
-
-- name: Add ceph apt-keys
-  apt_key:
-    id: "{{ item.hash_id }}"
-    keyserver: "{{ item.keyserver | default(omit) }}"
-    data: "{{ item.data | default(omit) }}"
-    url: "{{ item.url | default(omit) }}"
-    state: "present"
-  register: add_keys
-  until: add_keys|success
-  ignore_errors: True
-  retries: 5
-  delay: 2
-  with_items: ceph_gpg_keys
-  tags:
-    - ceph-apt-keys
-
-- name: Add ceph apt-keys using fallback keyserver
-  apt_key:
-    id: "{{ item.hash_id }}"
-    keyserver: "{{ item.fallback_keyserver | default(omit) }}"
-    url: "{{ item.fallback_url | default(omit) }}"
-    state: "present"
-  register: add_keys_fallback
-  until: add_keys_fallback|success
-  retries: 5
-  delay: 2
-  with_items: ceph_gpg_keys
-  when: add_keys|failed and (item.fallback_keyserver is defined or item.fallback_url is defined)
-  tags:
-    - ceph-apt-keys
-
-- name: Add ceph repo(s)
-  apt_repository:
-    repo: "{{ ceph_apt_repo.repo }}"
-    state: "{{ ceph_apt_repo.state }}"
-  register: add_repos
-  until: add_repos|success
-  retries: 5
-  delay: 2
-  tags:
-    - ceph-repos
-
-# This is being added specifically for when a key is revoked, but should apply
-# to other tasks also.  The cache needs updating after changing keys but
-# ceph_install.yml (where packages get installed) only does so if cache > 600
-# seconds.
-- name: Update apt cache
-  apt:
-    update_cache: yes
-  when: revoke_keys|changed or add_keys|changed or add_keys_fallback|changed or add_repos|changed
-  tags:
-    - ceph-apt-keys
-    - ceph-repos

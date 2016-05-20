@@ -1,5 +1,6 @@
 ---
 # Copyright 2015, Serge van Ginderachter <serge@vanginderachter.be>
+# Copyright 2016 IBM Corp
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,10 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-## APT Cache Options
-cache_timeout: 600
-
-# to user Ceph in OSA, you need to
+# to use Ceph in OSA, you need to
 # - have the needed pools and a client user (for glance, cinder and/or nova)
 #   pre-provisioned in your ceph cluster; OSA assumes to have root access to
 #   the monitor hosts
@@ -27,25 +25,19 @@ cache_timeout: 600
 # - cinder gets configured with ceph if there are cinder backends defined with
 #   the rbd driver (see openstack_user_config.yml.example)
 
-# Ceph GPG Keys
-ceph_gpg_keys:
-  - key_name: 'ceph'
-    keyserver: 'hkp://keyserver.ubuntu.com:80'
-    fallback_keyserver: 'hkp://p80.pool.sks-keyservers.net:80'
-    hash_id: '0xe84ac2c0460f3994'
-
-# The apt-key command won't del a key when you give it the hash_id, so we have
-# to use the short key ID here instead.
-ceph_revoked_gpg_keys:
-  - '17ED316D'
-
-# Ceph Repositories
-ceph_apt_repo_url_region: "download"  # or "eu" for Netherlands based mirror
-ceph_stable_release: hammer
-ceph_apt_repo_url: "http://{{ ceph_apt_repo_url_region }}.ceph.com/debian-{{ ceph_stable_release }}/"
-ceph_apt_repo:
-  repo: "deb {{ ceph_apt_repo_url }} {{ ansible_lsb.codename }} main"
-  state: "present"
+# The ceph_pkg_source variable controls the install source for the Ceph packages.
+# Valid values include:
+#   * ceph This option installs Ceph from a ceph.com repo.  Additional variables to
+#          adjust items such as Ceph release and regional download mirror can be found
+#          in vars/*.yml
+#
+#   * uca  This option installs Ceph from the Ubuntu Cloud Archive. Additional variables
+#          to adjust items such as the OpenStack/Ceph release can be found in vars/*.yml.
+#
+#   * distro This options installs Ceph from the operating system's default repository and
+#            unlike the other options does not attempt to manage package keys or add additional
+#            package repositories.
+ceph_pkg_source: ceph
 
 ceph_apt_pinned_packages: [{ package: "*", release: Inktank,  priority: 1001 }]
 
