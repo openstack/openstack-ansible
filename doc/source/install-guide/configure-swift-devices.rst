@@ -97,7 +97,7 @@ The entry in the ``swift.yml``:
     #        - name: sde
     #        - name: sdf
     #        - name: sdg
-    #    mount_point: /mnt
+    #    mount_point: /srv/node
 
 --------------
 
