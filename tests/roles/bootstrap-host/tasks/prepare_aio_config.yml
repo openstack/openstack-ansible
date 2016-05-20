@@ -185,14 +185,3 @@
     - pip_conf_file.stat.exists
   tags:
     - container-conf-files
-
-- name: Add the list of dicts for the apt config files into user_conf_files
-  lineinfile:
-    dest: /etc/openstack_deploy/user_conf_files.yml
-    line: " - { src: '/etc/apt/apt.conf.d/{{ item }}', dest: '/etc/apt/apt.conf.d/{{ item }}' }"
-  with_items: apt_conf_files.stdout_lines
-  when:
-    - apt_conf_files is defined
-    - apt_conf_files.stdout_lines | length > 0
-  tags:
-    - container-conf-files
