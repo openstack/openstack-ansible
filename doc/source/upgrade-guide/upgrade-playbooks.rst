@@ -10,46 +10,44 @@ facilitate the upgrade process.
 
 .. _config-change-playbook:
 
-deploy-config-changes.yml
--------------------------
+``deploy-config-changes.yml``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This playbook will back up the ``/etc/openstack_deploy`` directory before
-making the necessary changes to the configuration.
+This playbook backs up the ``/etc/openstack_deploy`` directory before
+changing the configuration.
 
-``/etc/openstack_deploy`` is copied once to ``/etc/openstack_deploy.MITAKA``.
-The copy happens only once, so repeated runs are safe.
+``/etc/openstack_deploy`` copies once to ``/etc/openstack_deploy.MITAKA``.
 
 .. _user-secrets-playbook:
 
-user-secrets-adjustment.yml
----------------------------
+``user-secrets-adjustment.yml``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This playbook ensures that the user secrets file is updated based on the example
-file in the main repository. This makes it possible to guarantee all secrets are
-carried into the upgraded environment and appropriately generated. Only new
-secrets are added, such as those necessary for new services or new settings
-added to existing services. Previously set values will not be changed.
+file in the main repository, making it possible to guarantee all secrets move
+into the upgraded environment and generate appropriately.
+This adds only new secrets, such as those necessary for new services or new settings
+added to existing services. Values set previously are not changed.
 
 .. _setup-infra-playbook:
 
-repo-server-pip-conf-removal.yml
---------------------------------
+``repo-server-pip-conf-removal.yml``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This playbook ensures the repository servers do not have the ``pip.conf`` in the
-root ``pip`` directory locking down the python packages available to install. If
-this file exists on the repository servers it will cause build failures.
+The presence of ``pip.conf`` locks down all Python installations to packages on the
+repo server. If ``pip.conf`` exists on the repo server, it creates a circular
+dependency, causing build failures.
 
 .. _repo-server-pip-conf-removal:
 
-setup-infrastructure.yml
-------------------------
+``setup-infrastructure.yml``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The ``setup-infrastructure.yml`` playbook is contained in the main
-``playbooks`` directory, but is called by ``run-upgrade.sh`` with specific
-arguments in order to upgrade infrastructure components such as MariaDB and
-RabbitMQ.
+The ``playbooks`` directory contains the ``setup-infrastructure.yml`` playbook.
+The ``run-upgrade.sh`` script calls ``setup-insfrastructure.yml`` with specific
+arguments to upgrade MariaDB and RabbitMQ.
 
-For example, to run an upgrade for both components at once, run the following:
+For example, to run an upgrade for both components at once, run the following commands:
 
 .. code-block:: console
 
@@ -57,20 +55,20 @@ For example, to run an upgrade for both components at once, run the following:
     # -e 'galera_upgrade=true'
 
 The ``rabbitmq_upgrade`` variable tells the ``rabbitmq_server`` role to
-upgrade the running major/minor version of RabbitMQ.
+upgrade RabbitMQ.
 
 .. note::
-    The RabbitMQ server role will install patch releases automatically,
+    The RabbitMQ server role installs patch releases automatically,
     regardless of the value of ``rabbitmq_upgrade``. This variable only
-    controls upgrading the major or minor version.
+    controls upgrading the major or minor versions.
 
     Upgrading RabbitMQ in the Mitaka release is optional. The
-    ``run-upgrade.sh`` script will not automatically upgrade it. If a RabbitMQ
-    upgrade using the script is desired, insert the ``rabbitmq_upgrade: true``
-    line into a file such as ``/etc/openstack_deploy/user_variables.yml``.
+    ``run-upgrade.sh`` script does not automatically upgrade it. To upgrade RabbitMQ,
+    insert the ``rabbitmq_upgrade: true``
+    line into a file, such as: ``/etc/openstack_deploy/user_variables.yml``.
 
 The ``galera_upgrade`` variable tells the ``galera_server`` role to remove the
-current version of MariaDB/Galera and upgrade to the 10.x series.
+current version of MariaDB and Galera and upgrade to the 10.x series.
 
 .. _setup-infra-playbook:
 

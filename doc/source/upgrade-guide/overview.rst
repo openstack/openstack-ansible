@@ -6,10 +6,10 @@ to upgrade an environment from Liberty to Mitaka. The ``run-upgrade.sh``
 script runs each upgrade playbook in the correct order, or playbooks
 can be run individually if necessary.
 
-Running the Upgrade script
+Running the upgrade script
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The Mitaka series releases of OpenStack-Ansible contain the code for
+The Mitaka release series of OpenStack-Ansible contain the code for
 migrating from Liberty to Mitaka.
 
 .. warning::
@@ -26,7 +26,7 @@ following steps in the ``openstack-ansible`` directory:
    # git checkout ${LATEST_TAG}
    # ./scripts/run-upgrade.sh
 
-Upgrading Manually
+Upgrading manually
 ~~~~~~~~~~~~~~~~~~
 
 Deployers can run the upgrade steps manually. See :ref:`manual-upgrade`.
@@ -35,29 +35,29 @@ Manual execution is useful for scoping the changes in the upgrade process
 inclusion into other orchestration for upgrade automation beyond what
 OpenStack-Ansible provides.
 
-Upgrade Actions
+Upgrade actions
 ~~~~~~~~~~~~~~~
 
 Both the upgrade script and manual upgrade steps perform the actions and
 use the concepts introduced below.
 
-Configuration Changes
+Configuration changes
 ---------------------
 
-The upgrade process will modify files residing in ``/etc/openstack_deploy`` in
+The upgrade process modifies files residing in ``/etc/openstack_deploy`` in
 order to reflect new Mitaka values.
 
-Flag Files
+Flag files
 ----------
 
 Some flag files are created by the migration scripts in order to achieve
 idempotency. These files are placed in the ``/etc/openstack_deploy.MITAKA``
 directory.
 
-RabbitMQ Upgrade
+RabbitMQ upgrade
 ----------------
 
-The RabbitMQ server can be upgraded during an OpenStack-Ansible upgrade.
+Upgrade the RabbitMQ server during an OpenStack-Ansible upgrade.
 
 See :ref:`setup-infra-playbook` for details.
 
