@@ -154,6 +154,62 @@
       tags:
         - nova-rabbitmq
         - nova-rabbitmq-user
+    - name: Create DB for service
+      mysql_db:
+        login_user: "{{ galera_root_user }}"
+        login_password: "{{ galera_root_password }}"
+        login_host: "{{ nova_galera_address }}"
+        name: "{{ nova_galera_database }}"
+        state: "present"
+      when: inventory_hostname == groups['nova_all'][0]
+      delegate_to: "{{ groups['galera_all'][0] }}"
+      tags:
+        - mysql-db-setup
+    - name: Grant access to the DB for the service
+      mysql_user:
+        login_user: "{{ galera_root_user }}"
+        login_password: "{{ galera_root_password }}"
+        login_host: "{{ nova_galera_address }}"
+        name: "{{ nova_galera_user }}"
+        password: "{{ nova_container_mysql_password }}"
+        host: "{{ item }}"
+        state: "present"
+        priv: "{{ nova_galera_database }}.*:ALL"
+      when: inventory_hostname == groups['nova_all'][0]
+      delegate_to: "{{ groups['galera_all'][0] }}"
+      with_items:
+        - "localhost"
+        - "%"
+      tags:
+        - mysql-db-setup
+    - name: Create API DB for service
+      mysql_db:
+        login_user: "{{ galera_root_user }}"
+        login_password: "{{ galera_root_password }}"
+        login_host: "{{ nova_api_galera_address }}"
+        name: "{{ nova_api_galera_database }}"
+        state: "present"
+      when: inventory_hostname == groups['nova_all'][0]
+      delegate_to: "{{ groups['galera_all'][0] }}"
+      tags:
+        - mysql-db-setup
+    - name: Grant access to the API DB for the service
+      mysql_user:
+        login_user: "{{ galera_root_user }}"
+        login_password: "{{ galera_root_password }}"
+        login_host: "{{ nova_api_galera_address }}"
+        name: "{{ nova_api_galera_user }}"
+        password: "{{ nova_api_container_mysql_password }}"
+        host: "{{ item }}"
+        state: "present"
+        priv: "{{ nova_api_galera_database }}.*:ALL"
+      when: inventory_hostname == groups['nova_all'][0]
+      delegate_to: "{{ groups['galera_all'][0] }}"
+      with_items:
+        - "localhost"
+        - "%"
+      tags:
+        - mysql-db-setup
     - name: Set nova management bridge (is_metal)
       set_fact:
         management_bridge: "{{ 'ansible_' + hostvars[inventory_hostname]['management_bridge'] | replace('-', '_') }}"
@@ -192,8 +248,6 @@
       nova_novncproxy_git_install_branch: "{{ novncproxy_git_install_branch }}"
       nova_spicehtml5_git_repo: "{{ openstack_repo_git_url }}/spice-html5"
       nova_spicehtml5_git_install_branch: "{{ spicehtml5_git_install_branch }}"
-      nova_galera_address: "{{ galera_address }}"
-      nova_api_galera_address: "{{ galera_address }}"
       nova_management_address: "{{ management_address }}"
       nova_venv_tag: "{{ openstack_release }}"
       nova_venv_download_url: "{{ openstack_repo_url }}/venvs/{{ openstack_release }}/{{ ansible_distribution | lower }}/nova-{{ openstack_release }}.tgz"
@@ -222,6 +276,12 @@
   vars:
     galera_address: "{{ internal_lb_vip_address }}"
     is_metal: "{{ properties.is_metal|default(false) }}"
+    nova_galera_user: nova
+    nova_galera_database: nova
+    nova_api_galera_user: nova_api
+    nova_api_galera_database: nova_api
+    nova_galera_address: "{{ galera_address }}"
+    nova_api_galera_address: "{{ galera_address }}"
     glance_host: "{{ internal_lb_vip_address }}"
     nova_rabbitmq_userid: nova
     nova_rabbitmq_vhost: /nova

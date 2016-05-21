@@ -102,11 +102,38 @@
       tags:
         - heat-rabbitmq
         - heat-rabbitmq-user
+    - name: Create DB for service
+      mysql_db:
+        login_user: "{{ galera_root_user }}"
+        login_password: "{{ galera_root_password }}"
+        login_host: "{{ heat_galera_address }}"
+        name: "{{ heat_galera_database }}"
+        state: "present"
+      when: inventory_hostname == groups['heat_all'][0]
+      delegate_to: "{{ groups['galera_all'][0] }}"
+      tags:
+        - mysql-db-setup
+    - name: Grant access to the DB for the service
+      mysql_user:
+        login_user: "{{ galera_root_user }}"
+        login_password: "{{ galera_root_password }}"
+        login_host: "{{ heat_galera_address }}"
+        name: "{{ heat_galera_user }}"
+        password: "{{ heat_container_mysql_password }}"
+        host: "{{ item }}"
+        state: "present"
+        priv: "{{ heat_galera_database }}.*:ALL"
+      when: inventory_hostname == groups['heat_all'][0]
+      delegate_to: "{{ groups['galera_all'][0] }}"
+      with_items:
+        - "localhost"
+        - "%"
+      tags:
+        - mysql-db-setup
   roles:
     - role: "os_heat"
       heat_venv_tag: "{{ openstack_release }}"
       heat_venv_download_url: "{{ openstack_repo_url }}/venvs/{{ openstack_release }}/{{ ansible_distribution | lower }}/heat-{{ openstack_release }}.tgz"
-      heat_galera_address: "{{ galera_address }}"
       tags:
         - "os-heat"
     - role: "rsyslog_client"
@@ -122,6 +149,9 @@
   vars:
     galera_address: "{{ internal_lb_vip_address }}"
     is_metal: "{{ properties.is_metal|default(false) }}"
+    heat_galera_user: heat
+    heat_galera_database: heat
+    heat_galera_address: "{{ galera_address }}"
     heat_rabbitmq_userid: heat
     heat_rabbitmq_vhost: /heat
     heat_rabbitmq_servers: "{{ rabbitmq_servers }}"

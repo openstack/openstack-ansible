@@ -40,34 +40,6 @@
       retries: 3
       tags:
         - ssh-wait
-    - name: Create DB for Ironic
-      mysql_db:
-        login_user: "{{ galera_root_user }}"
-        login_password: "{{ galera_root_password }}"
-        login_host: "{{ ironic_galera_address }}"
-        name: "{{ ironic_galera_database }}"
-        state: "present"
-      delegate_to: "{{ groups['galera_all'][0] }}"
-      run_once: true
-      tags:
-        - ironic-db-setup
-    - name: Grant access to the DB for Ironic
-      mysql_user:
-        login_user: "{{ galera_root_user }}"
-        login_password: "{{ galera_root_password }}"
-        login_host: "{{ ironic_galera_address }}"
-        name: "{{ ironic_galera_user }}"
-        password: "{{ ironic_galera_password }}"
-        host: "{{ item }}"
-        state: "present"
-        priv: "{{ ironic_galera_database }}.*:ALL"
-      with_items:
-        - "localhost"
-        - "%"
-      delegate_to: "{{ groups['galera_all'][0] }}"
-      run_once: true
-      tags:
-        - ironic-db-setup
     - name: Ensure Rabbitmq vhost for Ironic
       rabbitmq_vhost:
         name: "{{ ironic_rabbitmq_vhost }}"
@@ -91,6 +63,36 @@
       tags:
         - ironic-rabbitmq
         - ironic-rabbitmq-user
+    - name: Create DB for Ironic
+      mysql_db:
+        login_user: "{{ galera_root_user }}"
+        login_password: "{{ galera_root_password }}"
+        login_host: "{{ ironic_galera_address }}"
+        name: "{{ ironic_galera_database }}"
+        state: "present"
+      when: inventory_hostname == groups['ironic_all'][0]
+      delegate_to: "{{ groups['galera_all'][0] }}"
+      run_once: true
+      tags:
+        - mysql-db-setup
+    - name: Grant access to the DB for Ironic
+      mysql_user:
+        login_user: "{{ galera_root_user }}"
+        login_password: "{{ galera_root_password }}"
+        login_host: "{{ ironic_galera_address }}"
+        name: "{{ ironic_galera_user }}"
+        password: "{{ ironic_galera_password }}"
+        host: "{{ item }}"
+        state: "present"
+        priv: "{{ ironic_galera_database }}.*:ALL"
+      when: inventory_hostname == groups['ironic_all'][0]
+      delegate_to: "{{ groups['galera_all'][0] }}"
+      with_items:
+        - "localhost"
+        - "%"
+      run_once: true
+      tags:
+        - mysql-db-setup
     - name: Sort the rabbitmq servers
       dist_sort:
         value_to_lookup: "{{ container_name }}"
@@ -124,7 +126,10 @@
       tags:
         - "system-crontab-coordination"
   vars:
+    galera_address: "{{ internal_lb_vip_address }}"
     ansible_hostname: "{{ container_name }}"
     ansible_ssh_host: "{{ container_address }}"
-    ironic_galera_address: "{{ internal_lb_vip_address }}"
     is_metal: "{{ properties.is_metal|default(false) }}"
+    ironic_galera_user: ironic
+    ironic_galera_database: ironic
+    ironic_galera_address: "{{ galera_address }}"
