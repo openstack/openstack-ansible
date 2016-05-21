@@ -36,3 +36,19 @@
   notify: Restart memcached
   tags:
     - memcached-config
+
+- name: Configure soft file limits
+  lineinfile:
+    dest: "/etc/security/limits.conf"
+    regexp: "^memcache.*soft.*nofile.*"
+    state: "present"
+    line: "memcache\tsoft\tnofile\t\t{{ memcached_file_limits }}"
+    insertbefore: "^# End of file"
+
+- name: Configure hard file limits
+  lineinfile:
+    dest: "/etc/security/limits.conf"
+    regexp: "^memcache.*hard.*nofile.*"
+    state: "present"
+    line: "memcache\thard\tnofile\t\t{{ memcached_file_limits }}"
+    insertbefore: "^# End of file"
