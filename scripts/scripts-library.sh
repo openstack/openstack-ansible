@@ -24,16 +24,18 @@ STARTTIME="${STARTTIME:-$(date +%s)}"
 PIP_INSTALL_OPTIONS=${PIP_INSTALL_OPTIONS:-'pip==8.1.1 setuptools==20.9.0 wheel==0.29.0 '}
 
 # The default SSHD configuration has MaxSessions = 10. If a deployer changes
-#  their SSHD config, then the FORKS may be set to a higher number. We set the
-#  value to 10 or the number of CPU's, whichever is less. This is to balance
-#  between performance gains from the higher number, and CPU consumption. If
-#  FORKS is already set to a value, then we leave it alone.
-if [ -z "${FORKS:-}" ]; then
+#  their SSHD config, then the ANSIBLE_FORKS may be set to a higher number. We
+#  set the value to 10 or the number of CPU's, whichever is less. This is to
+#  balance between performance gains from the higher number, and CPU
+#  consumption. If ANSIBLE_FORKS is already set to a value, then we leave it
+#  alone.
+#  ref: https://bugs.launchpad.net/openstack-ansible/+bug/1479812
+if [ -z "${ANSIBLE_FORKS:-}" ]; then
   CPU_NUM=$(grep -c ^processor /proc/cpuinfo)
   if [ ${CPU_NUM} -lt "10" ]; then
-    FORKS=${CPU_NUM}
+    ANSIBLE_FORKS=${CPU_NUM}
   else
-    FORKS=10
+    ANSIBLE_FORKS=10
   fi
 fi
 
@@ -67,9 +69,8 @@ function successerator {
 }
 
 function install_bits {
-  # Use the successerator to run openstack-ansible with
-  # the appropriate number of forks
-  successerator openstack-ansible ${ANSIBLE_PARAMETERS} --forks ${FORKS} $@
+  # Use the successerator to run openstack-ansible
+  successerator openstack-ansible ${ANSIBLE_PARAMETERS} $@
 }
 
 function ssh_key_create {

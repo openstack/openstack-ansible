@@ -73,11 +73,11 @@ but the ``run-playbooks.sh`` script sets the number of forks used based on the
 number of CPU's on the deployment host up to a maximum of 10.
 
 If a developer wishes to increase the number of forks used when using this
-script, override the FORKS environment variable. For example:
+script, override the ANSIBLE_FORKS environment variable. For example:
 
 .. code-block:: bash
 
-    export FORKS=20
+    export ANSIBLE_FORKS=20
 
 run-tempest.sh
 --------------
