@@ -20,12 +20,6 @@
   tags:
     - apt-install-prerequisites
 
-- name: Determine the list of apt configuration files on the host
-  command: "ls -1 /etc/apt/apt.conf.d"
-  register: apt_conf_files
-  tags:
-    - apt-conf-files
-
 - name: Determine the existing Ubuntu repo configuration
   shell: 'awk "/^deb .*ubuntu\/? {{ ansible_distribution_release }} main/ {print \$2; exit}" /etc/apt/sources.list'
   register: ubuntu_repo

@@ -90,9 +90,6 @@ lxc_net_dhcp_range: 10.255.255.2,10.255.255.253
 
 ## LXC Container Settings
 lxc_cache_resolvers: {{ lxc_cache_resolvers }}
-lxc_container_template_main_apt_repo: {{ bootstrap_host_ubuntu_repo }}
-lxc_container_template_security_apt_repo: {{ bootstrap_host_ubuntu_security_repo }}
-lxc_container_template_apt_components: {{ bootstrap_host_apt_components }}
 
 ## Security hardening
 apply_security_hardening: true
