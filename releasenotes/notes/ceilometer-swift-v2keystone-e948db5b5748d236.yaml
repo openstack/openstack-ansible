@@ -1,0 +1,12 @@
+---
+issues:
+  - Ceilometer does not support V3 endpoints in Liberty,
+    which are the flavor created by OSA. To deploy
+    Ceilometer some endpoints in the Keystone service
+    catalog must be removed and replaced with V2
+    endpoints. This is neccessary, for example, to use the
+    Swift pollster to collect metrics for Swift storage
+    use the Swift endpoint. For detailed instructions on
+    the steps for these changes to the service catalog see
+    the `OpenStack Liberty Install Guide
+    <http://docs.openstack.org/liberty>`.
