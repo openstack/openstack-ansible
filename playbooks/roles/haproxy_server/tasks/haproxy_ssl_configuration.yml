@@ -42,6 +42,13 @@
   tags:
     - haproxy-ssl
 
+- name: Ensure the private ssl directory exists
+  file:
+    dest: "/etc/ssl/private"
+    state: "directory"
+  tags:
+    - haproxy-ssl
+
 - name: Remove signed certs and keys for regen
   file:
     dest: "{{ haproxy_ssl_cert }}"

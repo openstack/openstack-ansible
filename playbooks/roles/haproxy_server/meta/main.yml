@@ -23,10 +23,20 @@ galaxy_info:
     - name: Ubuntu
       versions:
         - trusty
+        - xenial
+    - name: EL
+      versions:
+        - 7
   categories:
     - cloud
     - python
     - development
     - openstack
 dependencies:
-  - apt_package_pinning
+  - role: apt_package_pinning
+    apt_pinned_packages: [{ package: "*", release: LP-PPA-vbernat-haproxy-1.5, priority: "1001" }]
+    apt_package_pinning_file_name: "haproxy_pin.pref"
+    when:
+      - ansible_pkg_mgr == 'apt'
+      - haproxy_ssl | bool
+      - ansible_distribution_version | version_compare('16.04', '<')

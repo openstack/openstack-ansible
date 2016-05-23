@@ -1,5 +1,5 @@
 ---
-# Copyright 2014, Rackspace US, Inc.
+# Copyright 2016, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,27 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: haproxy_install_apt.yml
-  when:
-    - ansible_pkg_mgr == 'apt'
-  tags:
-    - install-apt
+## APT Cache options
+cache_timeout: 600
 
-- include: haproxy_install_yum.yml
-  when:
-    - ansible_pkg_mgr == 'yum'
-  tags:
-    - install-yum
+haproxy_pre_packages:
+  - python-software-properties
+  - software-properties-common
+  - debconf-utils
 
-- include: haproxy_install_hatop.yml
-
-- name: Create haproxy conf.d dir
-  file:
-    path: "{{ item.path }}"
-    state: directory
-    mode: "0755"
-  with_items:
-    - { path: "/etc/haproxy" }
-    - { path: "/etc/haproxy/conf.d" }
-  tags:
-    - haproxy-config
+haproxy_packages:
+  - haproxy
+  - rsyslog  # Used for local logging
+  - vim-haproxy
+  - psmisc

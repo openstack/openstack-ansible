@@ -1,0 +1,11 @@
+---
+features:
+  - CentOS 7 and Ubuntu 16.04 support have been added to the ``haproxy`` role.
+  - The ``haproxy`` role installs *hatop* from source to ensure that the same operator
+    tooling is available across all supported distributions. The download URL for
+    the source can be set using the variable ``haproxy_hatop_download_url``.
+upgrade:
+  - Within the ``haproxy`` role *hatop* has been changed from a package installation
+    to a source-based installation. This has been done to ensure that the same operator
+    tooling is available across all supported distributions. The download URL for
+    the source can be set using the variable ``haproxy_hatop_download_url``.
