@@ -31,78 +31,78 @@
 
 ## Global Requirements
 requirements_git_repo: https://git.openstack.org/openstack/requirements
-requirements_git_install_branch: 978e1cf5e908ea63c9617054356f633255f67402 # HEAD of "master" as of 22.04.2016
+requirements_git_install_branch: f724bca6c907122f53069dd6a6b5c5f56bd76a64 # HEAD of "master" as of 19.05.2016
 requirements_git_dest: "/opt/requirements_{{ requirements_git_install_branch | replace('/', '_') }}"
 
 
 ## Aodh service
 aodh_git_repo: https://git.openstack.org/openstack/aodh
-aodh_git_install_branch: aed9a3d8824c1eb0a219d0cd2bb4e2ddf91afd5c # HEAD of "master" as of 22.04.2016
+aodh_git_install_branch: 1c1064b6d447aa0186cbd9099dc84d7c34f60405 # HEAD of "master" as of 19.05.2016
 aodh_git_dest: "/opt/aodh_{{ aodh_git_install_branch | replace('/', '_') }}"
 
 
 ## Ceilometer service
 ceilometer_git_repo: https://git.openstack.org/openstack/ceilometer
-ceilometer_git_install_branch: 47b7b7720e004f15bcb6809148029122cd01960d # HEAD of "master" as of 22.04.2016
+ceilometer_git_install_branch: 23978d7a7944a3a822587b16aeba946cb4d34845 # HEAD of "master" as of 19.05.2016
 ceilometer_git_dest: "/opt/ceilometer_{{ceilometer_git_install_branch | replace('/', '_') }}"
 
 
 ## Cinder service
 cinder_git_repo: https://git.openstack.org/openstack/cinder
-cinder_git_install_branch: 3ec6a6b791f132e6e42b1bfad2276cca2df7b368 # HEAD of "master" as of 22.04.2016
+cinder_git_install_branch: cb0504e24f80c98c662081f74b7e7c2351c9e06c # HEAD of "master" as of 19.05.2016
 cinder_git_dest: "/opt/cinder_{{ cinder_git_install_branch | replace('/', '_') }}"
 
 
 ## Glance service
 glance_git_repo: https://git.openstack.org/openstack/glance
-glance_git_install_branch: 2fc6ff3f30a585a9530b46742ddef29a4f1129bd # HEAD of "master" as of 22.04.2016
+glance_git_install_branch: 67f4866fb232434ec3b22df71b06f7cd29365949 # HEAD of "master" as of 19.05.2016
 glance_git_dest: "/opt/glance_{{ glance_git_install_branch | replace('/', '_') }}"
 
 
 ## Heat service
 heat_git_repo: https://git.openstack.org/openstack/heat
-heat_git_install_branch: bc6c4a271edef2ac2183855bb17885156db893f3 # HEAD of "master" as of 22.04.2016
+heat_git_install_branch: d4445e15141aad03bba035d475629200a7ef3298 # HEAD of "master" as of 19.05.2016
 heat_git_dest: "/opt/heat_{{ heat_git_install_branch | replace('/', '_') }}"
 
 
 ## Horizon service
 horizon_git_repo: https://git.openstack.org/openstack/horizon
-horizon_git_install_branch: b3e0ddcb7527019b78119cd30cf8dd27169cd32d # HEAD of "master" as of 22.04.2016
+horizon_git_install_branch: 6ec5dd3b5327df4d51c5c9a396656365918258d8 # HEAD of "master" as of 19.05.2016
 horizon_git_dest: "/opt/horizon_{{ horizon_git_install_branch | replace('/', '_') }}"
 
 ## Horizon LBaaS dashboard plugin
 neutron_lbaas_dashboard_git_repo: https://git.openstack.org/openstack/neutron-lbaas-dashboard
-neutron_lbaas_dashboard_git_install_branch: 528567509debcb9165bcf7bf675d31bde5d36c00 # HEAD of "master" as of 27.04.2016
+neutron_lbaas_dashboard_git_install_branch: 528567509debcb9165bcf7bf675d31bde5d36c00 # HEAD of "master" as of 19.05.2016
 neutron_lbaas_dashboard_git_dest: "/opt/neutron_lbaas_dashboard_{{ neutron_lbaas_dashboard_git_install_branch | replace('/', '_') }}"
 
 
 ## Keystone service
 keystone_git_repo: https://git.openstack.org/openstack/keystone
-keystone_git_install_branch: 6d8c504fb1a1e999f199db618b67fcf648804cfc # HEAD of "master" as of 22.04.2016
+keystone_git_install_branch: 6635f8dcac2c14c24e1033ca7226671075161eb6 # HEAD of "master" as of 19.05.2016
 keystone_git_dest: "/opt/keystone_{{ keystone_git_install_branch | replace('/', '_') }}"
 
 
 ## Neutron service
 neutron_git_repo: https://git.openstack.org/openstack/neutron
-neutron_git_install_branch: f2785fc7975bc3e464eef1cf013708df095fa204 # HEAD of "master" as of 22.04.2016
+neutron_git_install_branch: 79c1d7efc1a964836a98339e1e820ab6ebc5570e # HEAD of "master" as of 19.05.2016
 neutron_git_dest: "/opt/neutron_{{ neutron_git_install_branch | replace('/', '_') }}"
 
 neutron_lbaas_git_repo: https://git.openstack.org/openstack/neutron-lbaas
-neutron_lbaas_git_install_branch: 2698ed4f930a0e1b1aaee62ea63a55247af5f777 # HEAD of "master" as of 22.04.2016
+neutron_lbaas_git_install_branch: 0033ab1d00a342bb0627a9e44b5140f389883855 # HEAD of "master" as of 19.05.2016
 neutron_lbaas_git_dest: "/opt/neutron_lbaas_{{ neutron_lbaas_git_install_branch | replace('/', '_') }}"
 
 neutron_vpnaas_git_repo: https://git.openstack.org/openstack/neutron-vpnaas
-neutron_vpnaas_git_install_branch: 9fc64611e53ae6ab514ed044f9e35c1b4ff6b7b7 # HEAD of "master" as of 22.04.2016
+neutron_vpnaas_git_install_branch: 5a7883bdf5c17ea5440c1f3dcdc2fbc065fc13f1 # HEAD of "master" as of 19.05.2016
 neutron_vpnaas_git_dest: "/opt/neutron_vpnaas_{{ neutron_vpnaas_git_install_branch | replace('/', '_') }}"
 
 neutron_fwaas_git_repo: https://git.openstack.org/openstack/neutron-fwaas
-neutron_fwaas_git_install_branch: fadfe86516de7982c86de4dd1a0d275d0a6c84f7 # HEAD of "master" as of 22.04.2016
+neutron_fwaas_git_install_branch: fadfe86516de7982c86de4dd1a0d275d0a6c84f7 # HEAD of "master" as of 19.05.2016
 neutron_fwaas_git_dest: "/opt/neutron_fwaas_{{ neutron_fwaas_git_install_branch | replace('/', '_') }}"
 
 
 ## Nova service
 nova_git_repo: https://git.openstack.org/openstack/nova
-nova_git_install_branch: e1522c1d8635377172a25e21ec18710d3ca446e6 # HEAD of "master" as of 22.04.2016
+nova_git_install_branch: 813787644bd11ffb8bdf46a547bd25982d995dea # HEAD of "master" as of 19.05.2016
 nova_git_dest: "/opt/nova_{{ nova_git_install_branch | replace('/', '_') }}"
 
 
@@ -113,11 +113,11 @@ nova_powervm_git_dest: "/opt/nova_powervm_{{ nova_powervm_git_install_branch | r
 
 ## Swift service
 swift_git_repo: https://git.openstack.org/openstack/swift
-swift_git_install_branch: 40eace99c3f5833af43a366dad951faff2c34321 # HEAD of "master" as of 19.05.2016
+swift_git_install_branch: 4f9d9eab7fdf7c85c3ad1fc884464d4df952118d # HEAD of "master" as of 19.05.2016
 swift_git_dest: "/opt/swift_{{ swift_git_install_branch | replace('/', '_') }}"
 
 
 ## Ironic service
 ironic_git_repo: https://git.openstack.org/openstack/ironic
-ironic_git_install_branch: 6be9976257c9a56d7f9913b619ec40186228176d # HEAD of "master" as of 22.04.2016
+ironic_git_install_branch: bb42652d709a82aecb93f1d77bfbcb7e1d027d06 # HEAD of "master" as of 19.05.2016
 ironic_git_dest: "/opt/ironic_{{ ironic_git_install_branch | replace('/', '_') }}"
