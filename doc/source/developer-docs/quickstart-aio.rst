@@ -110,6 +110,24 @@ a space between each set of options, for example:
       # export BOOTSTRAP_OPTS="bootstrap_host_data_disk_device=sdb"
       # export BOOTSTRAP_OPTS="${BOOTSTRAP_OPTS} bootstrap_host_ubuntu_repo=http://mymirror.example.com/ubuntu"
 
+You may wish to change the role fetch mode. Options are "galaxy" and
+"git-clone". The default for this option is "galaxy".
+
+options:
+  :galaxy: Resolve all role dependencies using the ``ansible-galaxy`` resolver
+  :git-clone: Clone all of the role dependencies using native git
+
+Notes:
+  When doing role development it may be useful to set ``ANSIBLE_ROLE_FETCH_MODE``
+  to *git-clone*. This will provide you the ability to develop roles within the
+  environment by modifying, patching, or committing changes using an intact
+  git tree while the *galaxy* option scrubs the ``.git`` directory when
+  it resolves a dependency.
+
+   .. code-block:: bash
+
+       $ export ANSIBLE_ROLE_FETCH_MODE=git-clone
+
 The next step is to bootstrap Ansible and the Ansible roles for the
 development environment.  Deployers can customize roles by adding variables to
 override the defaults in each role (see :ref:`adding-galaxy-roles`).  Run the
