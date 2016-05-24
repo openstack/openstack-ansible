@@ -18,6 +18,7 @@
     user: "{{ nova_system_user_name }}"
     key: "{{ hostvars[item]['nova_pubkey'] | b64decode }}"
   with_items: groups['nova_compute']
+  when: hostvars[item]['nova_pubkey'] is defined
   tags:
     - nova-key
     - nova-key-distribute
