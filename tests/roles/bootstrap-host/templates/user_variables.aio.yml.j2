@@ -93,3 +93,8 @@ lxc_cache_resolvers: {{ lxc_cache_resolvers }}
 
 ## Security hardening
 apply_security_hardening: true
+
+{% if repo_build_pip_extra_indexes is defined %}
+## Wheel mirrors for the repo_build to use
+repo_build_pip_extra_indexes: {{ repo_build_pip_extra_indexes }}
+{% endif %}
