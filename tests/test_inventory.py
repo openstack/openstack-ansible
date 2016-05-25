@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import collections
+import copy
 import json
 import os
 from os import path
@@ -668,6 +669,64 @@ class TestMultipleRuns(unittest.TestCase):
         # Clean up here since get_inventory will not do it by design in
         # this test.
         cleanup()
+
+
+class TestEnsureInventoryUptoDate(unittest.TestCase):
+    def setUp(self):
+        self.env = di.load_environment(TARGET_DIR)
+        # Copy because we manipulate the structure in each test;
+        # not copying would modify the global var in the target code
+        self.inv = copy.deepcopy(di.INVENTORY_SKEL)
+        # Since we're not running skel_setup, add necessary keys
+        self.host_vars = self.inv['_meta']['hostvars']
+
+        # The _ensure_inventory_uptodate function depends on values inserted
+        # by the skel_setup function
+        di.skel_setup(self.env, self.inv)
+
+    def test_missing_required_host_vars(self):
+        self.host_vars['host1'] = {}
+
+        di._ensure_inventory_uptodate(self.inv, self.env['container_skel'])
+
+        for required_key in di.REQUIRED_HOSTVARS:
+            self.assertIn(required_key, self.host_vars['host1'])
+
+    def test_missing_container_name(self):
+        self.host_vars['host1'] = {}
+
+        di._ensure_inventory_uptodate(self.inv, self.env['container_skel'])
+
+        self.assertIn('container_name', self.host_vars['host1'])
+        self.assertEqual(self.host_vars['host1']['container_name'], 'host1')
+
+    def test_inserting_container_networks_is_dict(self):
+        self.host_vars['host1'] = {}
+
+        di._ensure_inventory_uptodate(self.inv, self.env['container_skel'])
+
+        self.assertIsInstance(self.host_vars['host1']['container_networks'],
+                              dict)
+
+    def test_populating_inventory_info(self):
+        skel = self.env['container_skel']
+
+        di._ensure_inventory_uptodate(self.inv, skel)
+
+        for container_type, type_vars in skel.items():
+            hosts = self.inv[container_type]['hosts']
+            if hosts:
+                for host in hosts:
+                    host_var_entries = self.inv['_meta']['hostvars'][host]
+                    if 'properties' in type_vars:
+                        self.assertEqual(host_var_entries['properties'],
+                                         type_vars['properties'])
+
+    def tearDown(self):
+        self.env = None
+        self.host_vars = None
+        self.inv = None
+
 
 if __name__ == '__main__':
     unittest.main()
