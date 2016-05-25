@@ -81,7 +81,7 @@ fi
 # Bootstrap an AIO
 pushd $(dirname ${0})/../tests
   sed -i '/\[defaults\]/a nocolor = 1/' ansible.cfg
-  ansible-playbook -i "localhost ansible-connection=local," \
+  ansible-playbook -i test-inventory.ini \
                    -e "${BOOTSTRAP_OPTS}" \
                    ${ANSIBLE_PARAMETERS} \
                    bootstrap-aio.yml
@@ -101,11 +101,8 @@ pushd $(dirname ${0})/../playbooks
   mkdir -p /openstack/log/ansible-logging
   sed -i '/\[defaults\]/a log_path = /openstack/log/ansible-logging/ansible.log' ansible.cfg
 
-  # This plugin makes the output easier to read
-  wget -O /etc/ansible/plugins/callback/human_log.py https://gist.githubusercontent.com/cliffano/9868180/raw/f360f306b3c6d689734a6aa8773a00edf16a0054/human_log.py
-
   # Enable callback plugins
-  sed -i '/\[defaults\]/a callback_plugins = /etc/ansible/plugins/callback' ansible.cfg
+  sed -i 's/^callback_whitelist.*/callback_whitelist = "profile_tasks"/g' ansible.cfg
 popd
 
 # Log some data about the instance and the rest of the system

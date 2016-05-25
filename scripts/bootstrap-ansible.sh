@@ -22,7 +22,7 @@ set -e -u -x
 ## Vars ----------------------------------------------------------------------
 export HTTP_PROXY=${HTTP_PROXY:-""}
 export HTTPS_PROXY=${HTTPS_PROXY:-""}
-export ANSIBLE_GIT_RELEASE=${ANSIBLE_GIT_RELEASE:-"v1.9.4-1"}
+export ANSIBLE_GIT_RELEASE=${ANSIBLE_GIT_RELEASE:-"v2.1.0.0-1"}
 export ANSIBLE_GIT_REPO=${ANSIBLE_GIT_REPO:-"https://github.com/ansible/ansible"}
 export ANSIBLE_ROLE_FILE=${ANSIBLE_ROLE_FILE:-"ansible-role-requirements.yml"}
 export ANSIBLE_WORKING_DIR=${ANSIBLE_WORKING_DIR:-/opt/ansible_${ANSIBLE_GIT_RELEASE}}
@@ -102,6 +102,9 @@ $PIP_COMMAND install $PIP_OPTS -r requirements.txt "${ANSIBLE_WORKING_DIR}" || $
 pushd /usr/local/bin
     find /opt/ansible-runtime/bin/ -name 'ansible*' -exec ln -sf {} \;
 popd
+
+# If the Ansible plugins are in the old location remove them.
+[[ -d "/etc/ansible/plugins" ]] && rm -rf "/etc/ansible/plugins"
 
 # Update dependent roles
 if [ -f "${ANSIBLE_ROLE_FILE}" ]; then
