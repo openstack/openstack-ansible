@@ -15,6 +15,7 @@ review.
    :maxdepth: 1
 
    install-guide/index
+   upgrade-guide/index
    developer-docs/index
 
 .. _Newton Series Timeline: https://launchpad.net/openstack-ansible/trunk
