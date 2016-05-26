@@ -15,6 +15,7 @@ OpenStack-Ansible's Mitaka Series was first released with the 13.0.0 tag on
    :maxdepth: 2
 
    install-guide/index
+   upgrade-guide/index
    developer-docs/index
 
 .. _OpenStack-Ansible Mitaka Series Timeline: https://launchpad.net/openstack-ansible/mitaka
