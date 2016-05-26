@@ -19,6 +19,7 @@
   src: https://git.openstack.org/openstack/openstack-ansible-galera_server
   version: master
 - name: keepalived
+  scm: git
   src: https://github.com/evrardjp/ansible-keepalived
   version: master
 - name: lxc_container_create
@@ -119,4 +120,6 @@
   src: https://git.openstack.org/openstack/openstack-ansible-rsyslog_server
   version: master
 - name: sshd
+  scm: git
   src: https://github.com/willshersystems/ansible-sshd
+  version: master
