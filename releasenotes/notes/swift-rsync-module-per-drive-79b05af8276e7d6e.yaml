@@ -1,0 +1,12 @@
+---
+features:
+  - Enable rsync module per object server drive by setting
+    the ``swift_rsync_module_per_drive`` setting to ``True``.
+    Set this to configure rsync and swift to utilise individual
+    configuration per drive. This is required when disabling
+    rsyncs to individual disks. For example, in a disk full
+    scenario.
+upgrade:
+  - The ``swift_max_rsync_connections`` default value has
+    changed from 2 to 4 in order to match the OpenStack swift
+    documented value.

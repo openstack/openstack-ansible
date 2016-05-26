@@ -1,0 +1,8 @@
+---
+upgrade:
+  - As described in the `Mitaka release notes
+    <http://docs.openstack.org/releasenotes/neutron/mitaka.html>`_
+    Neutron now correctly calculates for and advertises the MTU to
+    instances. The default DHCP configuration to advertise an MTU
+    to instances has therefore been removed from the variable
+    ``neutron_dhcp_config``.

@@ -1,0 +1,9 @@
+---
+upgrade:
+  - As described in the `Mitaka release notes
+    <http://docs.openstack.org/releasenotes/neutron/mitaka.html>`_
+    Neutron now correctly calculates for and advertises the MTU to
+    instances. As such the ``neutron_network_device_mtu`` variable
+    has been removed and the hard-coded values in the templates for
+    ``advertise_mtu``, ``path_mtu``, and ``segment_mtu`` have been
+    removed to allow upstream defaults to operate as intended.
