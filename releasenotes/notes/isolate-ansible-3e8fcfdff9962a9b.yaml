@@ -1,0 +1,9 @@
+---
+features:
+  - To ensure the deployment system remains clean the Ansible execution environment is
+    contained within a virtual environment. The virtual environment is created at
+    "/opt/ansible-runtime" and the "ansible.*" CLI commands are linked within /usr/local/bin
+    to ensure there is no interruption in the deployer workflow.
+deprecations:
+  - Installation of Ansible on the root system, outside of a virtual environment, will
+    no longer be supported.

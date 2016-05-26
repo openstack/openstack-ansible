@@ -83,17 +83,25 @@ if [ ! $(which "$PIP_COMMAND") ]; then
   PIP_COMMAND=pip
 fi
 
-# Install requirements if there are any
-if [ -f "requirements.txt" ];then
-  # When upgrading there will already be a pip.conf file locking pip down to the repo server, in such cases it may be
-  # necessary to use --isolated because the repo server does not meet the specified requirements.
-  $PIP_COMMAND install $PIP_OPTS -r requirements.txt || $PIP_COMMAND install --isolated $PIP_OPTS -r requirements.txt
-fi
-
-# Install ansible
 # When upgrading there will already be a pip.conf file locking pip down to the repo server, in such cases it may be
 # necessary to use --isolated because the repo server does not meet the specified requirements.
-$PIP_COMMAND install $PIP_OPTS "${ANSIBLE_WORKING_DIR}" || $PIP_COMMAND install --isolated $PIP_OPTS "${ANSIBLE_WORKING_DIR}"
+$PIP_COMMAND install $PIP_OPTS -r requirements.txt || $PIP_COMMAND install --isolated $PIP_OPTS -r requirements.txt
+
+# Create a Virtualenv for the Ansible runtime
+PYTHON_EXEC_PATH="$(which python2 || which python)"
+virtualenv --always-copy --system-site-packages --python="${PYTHON_EXEC_PATH}" /opt/ansible-runtime
+
+# Install ansible
+PIP_OPTS+=" --upgrade"
+PIP_COMMAND="/opt/ansible-runtime/bin/pip"
+# When upgrading there will already be a pip.conf file locking pip down to the repo server, in such cases it may be
+# necessary to use --isolated because the repo server does not meet the specified requirements.
+$PIP_COMMAND install $PIP_OPTS -r requirements.txt "${ANSIBLE_WORKING_DIR}" || $PIP_COMMAND install --isolated $PIP_OPTS "${ANSIBLE_WORKING_DIR}"
+
+# Link the venv installation of Ansible to the local path
+pushd /usr/local/bin
+    find /opt/ansible-runtime/bin/ -name 'ansible*' -exec ln -sf {} \;
+popd
 
 # Update dependent roles
 if [ -f "${ANSIBLE_ROLE_FILE}" ]; then

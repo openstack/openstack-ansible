@@ -1,5 +1,8 @@
 netaddr>=0.7.12         # playbooks/inventory/dynamic_inventory.py
 PrettyTable>=0.7,<0.8   # scripts/inventory-manage.py
+pycrypto>=2.6           # scripts/pw-token-gen.py
+PyYAML>=3.1.0           # scripts/pw-token-gen.py
+virtualenv>=14.0.0      # Used for Ansible isolation
 ###
 ### These are pinned to ensure exactly the same behaviour forever!   ###
 ### These pins are updated through the sources-branch-updater script ###
