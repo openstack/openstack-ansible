@@ -518,6 +518,98 @@ class TestConfigChecks(unittest.TestCase):
             os.rename(USER_CONFIG_FILE + ".tmp", USER_CONFIG_FILE)
 
 
+class TestStaticRouteConfig(TestConfigChecks):
+    def setUp(self):
+        super(TestStaticRouteConfig, self).setUp()
+        self.expectedMsg = ("Static route provider network with queue "
+                            "'container' needs both 'cidr' and 'gateway' "
+                            "values.")
+
+    def add_static_route(self, q_name, route_dict):
+        """Adds a static route to a provider network."""
+        pn = self.user_defined_config['global_overrides']['provider_networks']
+        for net in pn:
+            net_dict = net['network']
+            q = net_dict.get('ip_from_q', None)
+            if q == q_name:
+                net_dict['static_routes'] = [route_dict]
+        self.write_config()
+
+    def test_setting_static_route(self):
+        route_dict = {'cidr': '10.176.0.0/12',
+                      'gateway': '172.29.248.1'}
+        self.add_static_route('container', route_dict)
+        inventory = get_inventory()
+
+        # Use aio1 and 'container_address' since they're known keys.
+        hostvars = inventory['_meta']['hostvars']['aio1']
+        cont_add = hostvars['container_networks']['container_address']
+
+        self.assertIn('static_routes', cont_add)
+
+        first_route = cont_add['static_routes'][0]
+        self.assertIn('cidr', first_route)
+        self.assertIn('gateway', first_route)
+
+    def test_setting_bad_static_route_only_cidr(self):
+        route_dict = {'cidr': '10.176.0.0/12'}
+        self.add_static_route('container', route_dict)
+
+        with self.assertRaises(di.MissingStaticRouteInfo) as context:
+            get_inventory()
+
+        exception = context.exception
+
+        self.assertEqual(str(exception), self.expectedMsg)
+
+    def test_setting_bad_static_route_only_gateway(self):
+        route_dict = {'gateway': '172.29.248.1'}
+        self.add_static_route('container', route_dict)
+
+        with self.assertRaises(di.MissingStaticRouteInfo) as context:
+            get_inventory()
+
+        exception = context.exception
+
+        self.assertEqual(exception.message, self.expectedMsg)
+
+    def test_setting_bad_gateway_value(self):
+        route_dict = {'cidr': '10.176.0.0/12',
+                      'gateway': None}
+        self.add_static_route('container', route_dict)
+
+        with self.assertRaises(di.MissingStaticRouteInfo) as context:
+            get_inventory()
+
+        exception = context.exception
+
+        self.assertEqual(exception.message, self.expectedMsg)
+
+    def test_setting_bad_cidr_value(self):
+        route_dict = {'cidr': None,
+                      'gateway': '172.29.248.1'}
+        self.add_static_route('container', route_dict)
+
+        with self.assertRaises(di.MissingStaticRouteInfo) as context:
+            get_inventory()
+
+        exception = context.exception
+
+        self.assertEqual(exception.message, self.expectedMsg)
+
+    def test_setting_bad_cidr_gateway_value(self):
+        route_dict = {'cidr': None,
+                      'gateway': None}
+        self.add_static_route('container', route_dict)
+
+        with self.assertRaises(di.MissingStaticRouteInfo) as context:
+            get_inventory()
+
+        exception = context.exception
+
+        self.assertEqual(exception.message, self.expectedMsg)
+
+
 class TestMultipleRuns(unittest.TestCase):
     def test_creating_backup_file(self):
         # Generate the initial inventory files
