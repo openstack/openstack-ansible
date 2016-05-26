@@ -161,7 +161,7 @@ The following procedure describes how to modify the
         - router
         - metering
 
-#. ````neutron_plugin_base`` is as follows:
+#. ``neutron_plugin_base`` is as follows:
 
    .. code-block:: yaml
 
@@ -169,6 +169,25 @@ The following procedure describes how to modify the
          - router
          - metering
          - vpnaas
+
+#. Override the default list of specific kernel modules
+   in order to include the necessary modules to run ipsec:
+
+   .. code-block:: yaml
+
+      openstack_host_specific_kernel_modules:
+         - { name: "ebtables", pattern: "CONFIG_BRIDGE_NF_EBTABLES=", group: "network_hosts" }
+         - { name: "af_key", pattern: "CONFIG_NET_KEY=", group: "network_hosts" }
+         - { name: "ah4", pattern: "CONFIG_INET_AH=", group: "network_hosts" }
+         - { name: "ipcomp", pattern: "CONFIG_INET_IPCOMP=", group: "network_hosts" }
+
+#. Execute the openstack hosts setup in order to load the kernel modules at boot
+   and runtime in the network hosts
+
+   .. code-block:: shell-session
+
+      # openstack-ansible openstack-hosts-setup.yml --limit network_hosts\
+      --tags "openstack-hosts-setup,openstack-host-specific-kernel-modules"
 
 #. Execute the neutron install playbook in order to update the configuration:
 
