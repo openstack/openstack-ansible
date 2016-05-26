@@ -136,6 +136,21 @@
   tags:
     - set-fact-lxc_cache_resolvers
 
+- name: Determine if the host has a global pip config file
+  stat:
+    path: /etc/pip.conf
+  register: pip_conf_file
+
+- name: Determine the fastest available OpenStack-Infra wheel mirror
+  shell: ../scripts/fastest-infra-wheel-mirror.py
+  register: fastest_wheel_mirror
+  when: not pip_conf_file.stat.exists
+
+- name: Set repo_build_pip_extra_indexes fact
+  set_fact:
+    repo_build_pip_extra_indexes: "[\"{{ fastest_wheel_mirror.stdout }}\"]"
+  when: not pip_conf_file.stat.exists
+
 - name: Set the user_variables
   config_template:
     src: user_variables.aio.yml.j2
@@ -143,17 +158,11 @@
     config_overrides: "{{ user_variables_overrides | default({}) }}"
     config_type: yaml
 
-- name: Determine if the host has a global pip config file
-  stat:
-    path: /etc/pip.conf
-  register: pip_conf_file
-
 - name: Add user_conf_files to contain the list of files to copy into containers
   file:
     path: /etc/openstack_deploy/user_conf_files.yml
     state: touch
-  when:
-    - apt_conf_files is defined or pip_conf_file.stat.exists
+  when: pip_conf_file.stat.exists
   tags:
     - container-conf-files
 
@@ -162,8 +171,7 @@
     dest: /etc/openstack_deploy/user_conf_files.yml
     line: "---"
     insertbefore: BOF
-  when:
-    - apt_conf_files is defined or pip_conf_file.stat.exists
+  when: pip_conf_file.stat.exists
   tags:
     - container-conf-files
 
@@ -172,8 +180,7 @@
     dest: /etc/openstack_deploy/user_conf_files.yml
     line: "lxc_container_cache_files:"
     insertafter: "^---"
-  when:
-    - apt_conf_files is defined or pip_conf_file.stat.exists
+  when: pip_conf_file.stat.exists
   tags:
     - container-conf-files
 
@@ -181,7 +188,6 @@
   lineinfile:
     dest: /etc/openstack_deploy/user_conf_files.yml
     line: " - { src: '/etc/pip.conf', dest: '/etc/pip.conf' }"
-  when:
-    - pip_conf_file.stat.exists
+  when: pip_conf_file.stat.exists
   tags:
     - container-conf-files
