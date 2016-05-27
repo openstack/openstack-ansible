@@ -1,7 +1,8 @@
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
+========================================
 Configuring the network on a target host
-----------------------------------------
+========================================
 
 This example uses the following parameters to configure networking on a
 single target host. See `Figure 3.2, "Target hosts for infrastructure,

@@ -1,7 +1,8 @@
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
+======================
 Reference architecture
-----------------------
+======================
 
 After establishing initial host management network connectivity using
 the ``bond0`` interface, modify the ``/etc/network/interfaces`` file as
