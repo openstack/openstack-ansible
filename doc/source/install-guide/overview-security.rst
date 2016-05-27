@@ -1,14 +1,15 @@
 `Home <index.html>`__ OpenStack-Ansible Installation Guide
 
+========
 Security
---------
+========
 
 The OpenStack-Ansible project provides several security features for
-OpenStack deployments.  This section of documentation covers some of those
+OpenStack deployments. This section of documentation covers those
 features and how they can benefit deployers of various sizes.
 
-Security requirements will always differ between deployers.  For deployers
-that need additional security measures in place, please refer to the official
+Security requirements always differ between deployers. If you require
+additional security measures, refer to the official
 `OpenStack Security Guide`_ for additional resources.
 
 AppArmor
@@ -16,14 +17,14 @@ AppArmor
 
 The Linux kernel offers multiple `security modules`_ (LSMs) that that set
 `mandatory access controls`_ (MAC) on Linux systems.  The OpenStack-Ansible
-project configures `AppArmor`_, a Linux security module, to provide additional
-security on LXC container hosts.  AppArmor allows administrators to set
-specific limits and policies around what resources a particular application
-can access.  Any activity outside the allowed policies is denied at the kernel
-level.
+project configures `AppArmor`_. AppArmor is a Linux security module that
+provides additional security on LXC container hosts. AppArmor allows
+administrators to set specific limits and policies around what resources a
+particular application can access. Any activity outside the allowed policies
+is denied at the kernel level.
 
-In OpenStack-Ansible, AppArmor profiles are applied that limit the actions
-that each LXC container may take on a system.  This is done within the
+AppArmor profiles that are applied in OpenStack-Ansible limit the actions
+that each LXC container may take on a system. This is done within the
 `lxc_hosts role`_.
 
 .. _security modules: https://en.wikipedia.org/wiki/Linux_Security_Modules
@@ -34,9 +35,9 @@ that each LXC container may take on a system.  This is done within the
 Encrypted communication
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Data is encrypted while in transit between some OpenStack services in
-OpenStack-Ansible deployments.  Not all communication between all services is
-currently encrypted.  For more details on what traffic is encrypted, and how
+While in transit, data is encrypted between some OpenStack services in
+OpenStack-Ansible deployments. Not all communication between all services is
+encrypted. For more details on what traffic is encrypted, and how
 to configure SSL certificates, refer to the documentation section titled
 `Securing services with SSL certificates`_.
 
@@ -46,7 +47,7 @@ Host security hardening
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 Deployers can apply security hardening to OpenStack infrastructure and compute
-hosts using the openstack-ansible-security role. The purpose of the role is to
+hosts using the ``openstack-ansible-security`` role. The purpose of the role is to
 apply as many security configurations as possible without disrupting the
 operation of an OpenStack deployment.
 
@@ -61,9 +62,9 @@ limit the damage that could be caused if an attacker gained access to a set of
 credentials.
 
 OpenStack-Ansible configures unique username and password combinations for
-each service that talks to RabbitMQ and Galera/MariaDB.  Each service that
+each service that talks to RabbitMQ and Galera/MariaDB. Each service that
 connects to RabbitMQ uses a separate virtual host for publishing and consuming
-messages.  The MariaDB users for each service are only granted access to the
+messages. The MariaDB users for each service are only granted access to the
 database(s) that they need to query.
 
 .. _principle of least privilege: https://en.wikipedia.org/wiki/Principle_of_least_privilege
@@ -74,8 +75,12 @@ Securing network access to OpenStack services
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 OpenStack environments expose many service ports and API endpoints to the
-network. **Deployers must limit access to these resources and expose them only
-to trusted users and networks.**
+network. 
+
+.. note::
+   
+   Deployers must limit access to these resources and expose them only
+   to trusted users and networks.
 
 The resources within an OpenStack environment can be divided into two groups:
 
@@ -98,13 +103,12 @@ The resources within an OpenStack environment can be divided into two groups:
    * MariaDB
    * RabbitMQ
 
-Users must be able to access certain public API endpoints, such as the Nova or
-Neutron API, to manage instances. Deployers should configure firewalls to allow
-access to these services, but that access should be limited to the fewest
-networks possible.
+To manage instances, you are able to access certain public API endpoints, such as
+the Nova or Neutron API. Configure firewalls to limit network access to
+these services.
 
-Other services, such as MariaDB and RabbitMQ, **must be segmented away from
-direct user access**. Deployers must configure a firewall to only allow
+Other services, such as MariaDB and RabbitMQ, must be segmented away from
+direct user access. You must configure a firewall to only allow
 connectivity to these services within the OpenStack environment itself. This
 reduces an attacker's ability to query or manipulate data in OpenStack's
 critical database and queuing services, especially if one of these services has
