@@ -3,7 +3,7 @@
 .. _network_configuration:
 
 Configuring target host networking
-----------------------------------
+==================================
 
 Edit the ``/etc/openstack_deploy/openstack_user_config.yml`` file to
 configure target host networking.
@@ -26,10 +26,10 @@ configure target host networking.
    notation. For example, 203.0.113.0/24.
 
    Use the same IP address ranges as the underlying physical network
-   interfaces or bridges configured in `the section called "Configuring
+   interfaces or bridges in `the section called "Configuring
    the network" <targethosts-network.html>`_. For example, if the
    container network uses 203.0.113.0/24, the ``CONTAINER_MGMT_CIDR``
-   should also use 203.0.113.0/24.
+   also uses 203.0.113.0/24.
 
    The default configuration includes the optional storage and service
    networks. To remove one or both of them, comment out the appropriate
@@ -44,11 +44,10 @@ configure target host networking.
 
    Replace ``EXISTING_IP_ADDRESSES`` with a list of existing IP
    addresses in the ranges defined in the previous step. This list
-   should include all IP addresses manually configured on target hosts
-   in the `the section called "Configuring the
-   network" <targethosts-network.html>`_, internal load balancers,
-   service network bridge, deployment hosts and any other devices
-   to avoid conflicts during the automatic IP address generation process.
+   should include all IP addresses manually configured on target hosts,
+   internal load balancers, service network bridge, deployment hosts and
+   any other devices to avoid conflicts during the automatic IP address
+   generation process.
 
    Add individual IP addresses on separate lines. For example, to
    prevent use of 203.0.113.101 and 201:
@@ -132,7 +131,7 @@ configure target host networking.
 
    The default configuration includes the optional storage and service
    networks. To remove one or both of them, comment out the entire
-   associated stanza beginning with the *- network:* line.
+   associated stanza beginning with the ``- network:`` line.
 
 #. Configure OpenStack Networking VXLAN tunnel/overlay networks in the
    ``provider_networks`` subsection:
@@ -185,16 +184,16 @@ configure target host networking.
    additional network.
 
    Replace ``PHYSICAL_NETWORK_INTERFACE`` with the network interface used for
-   flat networking. This **must** be a physical interface on the same L2 network
-   being used with the br-vlan devices. If no additional network interface is
-   available, a veth pair plugged into the br-vlan bridge can provide the needed
-   interface.
+   flat networking. Ensure this is a physical interface on the same L2 network
+   being used with the ``br-vlan`` devices. If no additional network interface is
+   available, a veth pair plugged into the ``br-vlan`` bridge can provide the
+   necessary interface.
 
-   Example creating a veth-pair within an existing bridge
+   The following is an example of creating a ``veth-pair`` within an existing bridge:
 
    .. code-block:: text
 
-         # Create veth pair, don't bomb if already exists
+         # Create veth pair, do not abort if already exists
          pre-up ip link add br-vlan-veth type veth peer name PHYSICAL_NETWORK_INTERFACE || true
          # Set both ends UP
          pre-up ip link set br-vlan-veth up

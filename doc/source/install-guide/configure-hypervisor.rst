@@ -1,7 +1,7 @@
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
 Configuring the hypervisor (optional)
--------------------------------------
+=====================================
 
 By default, the KVM hypervisor is used. If you are deploying to a host
 that does not support KVM hardware acceleration extensions, select a

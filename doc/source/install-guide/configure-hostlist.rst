@@ -1,7 +1,7 @@
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
 Configuring target hosts
-------------------------
+========================
 
 Modify the ``/etc/openstack_deploy/openstack_user_config.yml`` file to
 configure the target hosts.
@@ -70,7 +70,7 @@ the ``br-mgmt`` container management bridge on each target host.
         network02: ...
 
    Providing more than one network host in the ``network_hosts`` block will
-   enable `L3HA support using VRRP`_ in the neutron-agent containers.
+   enable `L3HA support using VRRP`_ in the ``neutron-agent`` containers.
 
 .. _L3HA support using VRRP: http://docs.openstack.org/liberty/networking-guide/scenario_l3ha_lb.html
 
@@ -120,12 +120,12 @@ the ``br-mgmt`` container management bridge on each target host.
           ip: STORAGE01_IP_ADDRESS
         storage02: ...
 
-   Each storage host also requires additional configuration to define the back end
+   Each storage host requires additional configuration to define the back end
    driver.
 
    The default configuration includes an optional storage host. To
    install without storage hosts, comment out the stanza beginning with
-   the *storage\_hosts:* line.
+   the *storage_hosts:* line.
 
 --------------
 
