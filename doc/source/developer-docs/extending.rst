@@ -77,6 +77,10 @@ env.d
 The ``/etc/openstack_deploy/env.d`` directory sources all YAML files into the
 deployed environment, allowing a deployer to define additional group mappings.
 
+See also `Understanding Container Groups`_ in Appendix H.
+
+.. _Understanding Container Groups: ../install-guide/app-custom-layouts.html#understanding-container-groups
+
 conf.d
 ------
 
@@ -87,6 +91,9 @@ OpenStack-Ansible in the
 Additional services should be defined with a YAML file in
 ``/etc/openstack_deploy/conf.d``, in order to manage file size.
 
+See also `Understanding Host Groups`_ in Appendix H.
+
+.. _Understanding Host Groups: ../install-guide/app-custom-layouts.html#understanding-host-groups
 
 user\_*.yml files
 -----------------

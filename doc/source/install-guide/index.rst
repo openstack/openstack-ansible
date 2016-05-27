@@ -65,3 +65,4 @@ Appendices
    app-plumgrid.rst
    app-nuage.rst
    app-no-internet-connectivity.rst
+   app-custom-layouts.rst
