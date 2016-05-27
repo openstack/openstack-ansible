@@ -1,7 +1,8 @@
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
+=====================
 Adding a compute host
----------------------
+=====================
 
 Use the following procedure to add a compute host to an operational
 cluster.
@@ -14,8 +15,8 @@ cluster.
 
    If necessary, also modify the ``used_ips`` stanza.
 
-#. If the cluster is utilizing Ceilometer, it will be necessary to edit the
-   ``/etc/openstack_deploy/conf.d/ceilometer.yml`` file and add the host to
+#. If the cluster is utilizing Telemetry/Metering (Ceilometer),
+   edit the ``/etc/openstack_deploy/conf.d/ceilometer.yml`` file and add the host to
    the ``metering-compute_hosts`` stanza.
 
 #. Run the following commands to add the host. Replace

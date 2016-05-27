@@ -13,8 +13,9 @@ All LXC containers on the host have two virtual Ethernet interfaces:
 * `eth1` in the container connects to `br-mgmt` on the host
 
 .. note::
-   Some containers, such as cinder, glance, neutron_agents, and
-   swift_proxy, have more than two interfaces to support their
+
+   Some containers, such as ``cinder``, ``glance``, ``neutron_agents``, and
+   ``swift_proxy``, have more than two interfaces to support their
    functions.
 
 Predictable interface naming
@@ -70,10 +71,15 @@ containers.
 Cached Ansible facts issues
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-At the beginning of a playbook run, information about each host, such
-as its Linux distribution, kernel version, and network interfaces, is
-gathered. To improve performance, particularly in larger deployments,
-these facts can be cached.
+At the beginning of a playbook run, information about each host is gathered.
+Examples of the information gathered are:
+
+    * Linux distribution
+    * Kernel version
+    * Network interfaces
+    
+To improve performance, particularly in large deployments, you can
+cache host facts and information.
 
 OpenStack-Ansible enables fact caching by default. The facts are
 cached in JSON files within ``/etc/openstack_deploy/ansible_facts``.
@@ -87,8 +93,9 @@ documentation on `fact caching`_ for more details.
 Forcing regeneration of cached facts
 ------------------------------------
 
-If a host's kernel is upgraded or additional network interfaces or
-bridges are created on the host, its cached facts may be incorrect.
+Cached facts may be incorrect if the host receives a kernel upgrade or new network
+interfaces. Newly created bridges also disrupt cache facts.
+
 This can lead to unexpected errors while running playbooks, and
 require that the cached facts be regenerated.
 

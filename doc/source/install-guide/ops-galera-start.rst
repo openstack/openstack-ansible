@@ -1,15 +1,15 @@
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
+==================
 Starting a cluster
-------------------
+==================
 
 Gracefully shutting down all nodes destroys the cluster. Starting or
 restarting a cluster from zero nodes requires creating a new cluster on
 one of the nodes.
 
-#. The new cluster should be started on the most advanced node. Run the
-   following command to check the ``seqno`` value in the
-   ``grastate.dat`` file on all of the nodes:
+#. Start a new cluster on the most advanced node.
+   Check the ``seqno`` value in the ``grastate.dat`` file on all of the nodes:
 
    .. code-block:: shell-session
 
@@ -33,7 +33,7 @@ one of the nodes.
        cert_index:
 
    In this example, all nodes in the cluster contain the same positive
-   ``seqno`` values because they were synchronized just prior to
+   ``seqno`` values as they were synchronized just prior to
    graceful shutdown. If all ``seqno`` values are equal, any node can
    start the new cluster.
 
