@@ -121,7 +121,7 @@
     - generate_secrets
 
 - name: Get the DNS servers in use on the host
-  shell: grep nameserver /etc/resolv.conf
+  command: grep nameserver /etc/resolv.conf
   register: nameservers
   when:
     - lxc_cache_resolvers is not defined
@@ -130,9 +130,9 @@
 
 - name: Set lxc_cache_resolvers fact
   set_fact:
-    lxc_cache_resolvers: "[\"{{ nameservers.stdout_lines | join('\",\"') }}\"]"
+    lxc_cache_resolvers: "{{ nameservers.stdout_lines }}"
   when:
-    - nameservers is defined
+    - lxc_cache_resolvers is not defined
   tags:
     - set-fact-lxc_cache_resolvers
 
