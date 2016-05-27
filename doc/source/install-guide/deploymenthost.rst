@@ -8,12 +8,12 @@ Chapter 2. Deployment host
 .. image:: figures/workflow-deploymenthost.png
 
 The OSA installation process recommends one deployment host. The
-deployment host contains Ansible and orchestrates the OpenStack-Ansible installation
-on the target hosts. Use one of the target hosts, preferably one of the
-infrastructure variants, as the deployment host. To use a
-deployment host as a target host, follow the steps in `Chapter 3,
-Target hosts <targethosts.html>`_ on the deployment host. Use separate
-deployment and target hosts.
+deployment host contains Ansible and orchestrates the OpenStack-Ansible
+installation on the target hosts. We recommend using separate deployment and
+target hosts. You could alternatively use one of the target hosts, preferably
+one of the infrastructure variants, as the deployment host. To use a
+deployment host as a target host, follow the steps in `Chapter 3, Target
+hosts <targethosts.html>`_ on the deployment host.
 
 Installing the operating system
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
