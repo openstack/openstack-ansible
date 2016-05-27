@@ -89,7 +89,8 @@ lxc_net_netmask: 255.255.255.0
 lxc_net_dhcp_range: 10.255.255.2,10.255.255.253
 
 ## LXC Container Settings
-lxc_cache_resolvers: {{ lxc_cache_resolvers }}
+lxc_cache_resolvers:
+{{ lxc_cache_resolvers | to_nice_yaml }}
 
 ## Security hardening
 apply_security_hardening: true
