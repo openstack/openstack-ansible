@@ -1,9 +1,10 @@
 `Home <index.html>`__ OpenStack-Ansible Installation Guide
 
-Appendix E. Using PLUMgrid Neutron Plugin
------------------------------------------
+=========================================
+Appendix E: Using PLUMgrid Neutron plugin
+=========================================
 
-Installing Source and Host Networking
+Installing source and host networking
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #. Clone the PLUMgrid ansible repository under the ``/opt/`` directory:
@@ -14,34 +15,34 @@ Installing Source and Host Networking
 
    Replace *``TAG``* with the current stable release tag.
 
-#. PLUMgrid will take over networking for the entire cluster; therefore the
-   bridges br-vxlan and br-vlan will only need to be present to avoid
+#. PLUMgrid will take over networking for the entire cluster. The
+   bridges ``br-vxlan`` and ``br-vlan`` only need to be present to avoid
    relevant containers from erroring out on infra hosts. They do not
    need to be attached to any host interface or a valid network.
 
-#. PLUMgrid requires two networks, a Management and a Fabric network.
-   Management is typically shared via the standard br-mgmt and Fabric
+#. PLUMgrid requires two networks: a `Management` and a `Fabric` network.
+   Management is typically shared via the standard ``br-mgmt`` and Fabric
    must be specified in the PLUMgrid configuration file described below.
-   Furthermore the Fabric interface must be untagged and unbridged.
+   The Fabric interface must be untagged and unbridged.
 
-Neutron Configurations
+Neutron configurations
 ~~~~~~~~~~~~~~~~~~~~~~
 
 To setup the neutron configuration to install PLUMgrid as the
 core neutron plugin, create a user space variable file
 ``/etc/openstack_deploy/user_pg_neutron.yml`` and insert the following
-parameters:
+parameters.
 
-#. Set the ``neutron_plugin_type`` parameter to ``plumgrid`` in this file:
+#. Set the ``neutron_plugin_type`` parameter to ``plumgrid``:
 
    .. code-block:: yaml
 
       # Neutron Plugins
       neutron_plugin_type: plumgrid
 
-#. Also in the same file, disable the installation of unnecessary neutron-agents
+#. In the same file, disable the installation of unnecessary ``neutron-agents``
    in the ``neutron_services`` dictionary, by setting their ``service_en``
-   parameters to ``False``
+   parameters to ``False``:
 
    .. code-block:: yaml
 
@@ -52,24 +53,24 @@ parameters:
          neutron_vpnaas: False
 
 
-PLUMgrid Configurations
+PLUMgrid configurations
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-On the Deployment Host create a PLUMgrid user variables file, using the sample in
+On the deployment host, create a PLUMgrid user variables file using the sample in
 ``/opt/plumgrid-ansible/etc/user_pg_vars.yml.example`` and copy it to
-``/etc/openstack_deploy/user_pg_vars.yml``. The following parameters must be
-configured:
+``/etc/openstack_deploy/user_pg_vars.yml``. You must configure the
+following parameters.
 
 #. Replace ``PG_REPO_HOST`` with a valid repo URL hosting PLUMgrid
-   packages.
+   packages:
 
    .. code-block:: yaml
 
       plumgrid_repo: PG_REPO_HOST
 
 #. Replace ``INFRA_IPs`` with comma separated Infrastructure Node IPs and
-   ``PG_VIP`` with an unallocated IP on the management network, this will
-   be used to access the PLUMgrid UI.
+   ``PG_VIP`` with an unallocated IP on the management network. This will
+   be used to access the PLUMgrid UI:
 
    .. code-block:: yaml
 
@@ -77,32 +78,35 @@ configured:
       pg_vip: PG_VIP
 
 #. Replace ``FABRIC_IFC`` with the name of the interface that will be used
-   for PLUMgrid Fabric. [Note: PLUMgrid Fabric must be an untagged unbridged
-   raw interface such as eth0]
+   for PLUMgrid Fabric. 
+   
+   .. note::
+   
+      PLUMgrid Fabric must be an untagged unbridged raw interface such as ``eth0``.
 
    .. code-block:: yaml
 
       fabric_interface: FABRIC_IFC
 
-#. To override the default interface names with another name for any
-   particular node fill in the ``fabric_ifc_override`` and ``mgmt_override``
-   dicts with node ``hostname: interface_name`` as shown in the example file.
+#. Fill in the ``fabric_ifc_override`` and ``mgmt_override`` dicts with
+   node ``hostname: interface_name`` to override the default interface
+   names.
 
 #. Obtain a PLUMgrid License file, rename to ``pg_license`` and place it under
-   ``/var/lib/plumgrid/pg_license`` on the Deployment Host.
+   ``/var/lib/plumgrid/pg_license`` on the deployment host.
 
 Gateway Hosts
 ~~~~~~~~~~~~~
 
-PLUMgrid enabled OpenStack clusters contain one or more Gateway Nodes
-that are used for providing connectivity with external resources such as
-external networks (Internet), bare-metal servers or network service
-appliances. In addition to the Management and Fabric networks required
-by PLUMgrid nodes, Gateways require dedicated external interfaces referred
-to as gateway_devs in the configuration files.
+PLUMgrid-enabled OpenStack clusters contain one or more gateway nodes
+that are used for providing connectivity with external resources, such as
+external networks, bare-metal servers, or network service
+appliances. In addition to the `Management` and `Fabric` networks required
+by PLUMgrid nodes, gateways require dedicated external interfaces referred
+to as ``gateway_devs`` in the configuration files.
 
-#. To add Gateways Hosts, add a ``gateway_hosts`` section to
-   ``/etc/openstack_deploy/openstack_user_config.yml`` as shown below:
+#. Add a ``gateway_hosts`` section to
+   ``/etc/openstack_deploy/openstack_user_config.yml``:
 
    .. code-block:: yaml
 
@@ -115,9 +119,13 @@ to as gateway_devs in the configuration files.
    Replace ``*_IP_ADDRESS`` with the IP address of the ``br-mgmt`` container management
    bridge on each Gateway host.
 
-#. Also add a ``gateway_hosts`` section to the end of the PLUMgrid ``user_pg_vars.yml``
-   file described in the section above. This must contain hostnames and gateway_dev
-   names for each Gateway in the cluster.
+#. Add a ``gateway_hosts`` section to the end of the PLUMgrid ``user_pg_vars.yml``
+   file:
+   
+   .. note::
+      
+      This must contain hostnames and ``gateway_dev`` names for each
+      gateway in the cluster.
 
    .. code-block:: yaml
 
@@ -130,7 +138,7 @@ to as gateway_devs in the configuration files.
 Installation
 ~~~~~~~~~~~~
 
-#. Run the PLUMgrid playbooks with (do this before the openstack-setup.yml
+#. Run the PLUMgrid playbooks (do this before the ``openstack-setup.yml``
    playbook is run):
 
    .. code-block:: shell-session
@@ -138,9 +146,11 @@ Installation
        # cd /opt/plumgrid-ansible/plumgrid_playbooks
        # openstack-ansible plumgrid_all.yml
 
-Note: Contact PLUMgrid for an Installation Pack info@plumgrid.com
-(includes full/trial license, packages, deployment documentation and
-automation scripts for the entire workflow described above)
+.. note::
+
+   Contact PLUMgrid for an Installation Pack: info@plumgrid.com
+   This includes a full trial commercial license, packages, deployment documentation,
+   and automation scripts for the entire workflow described above.
 
 --------------
 
