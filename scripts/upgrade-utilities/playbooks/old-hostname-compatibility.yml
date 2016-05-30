@@ -1,0 +1,145 @@
+---
+# Copyright 2016, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Set hostname alias for local lookup compatibility
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: Update Alias hostnames
+      lineinfile:
+        dest: /etc/hosts
+        insertafter: "^127.0.0.1"
+        regexp: "^127.0.1.1"
+        line: "127.0.1.1 {{ rfc_1034_1035_name }}.{{ domain_name }} {{ rfc_1034_1035_name }} {{ inventory_hostname }} {{ ansible_hostname }}"
+        state: present
+      register: result1
+      when:
+        - rfc_1034_1035_name != inventory_hostname
+        - rfc_1034_1035_name != ansible_hostname
+    - name: Update Alias hostnames
+      lineinfile:
+        dest: /etc/hosts
+        insertafter: "^127.0.0.1"
+        regexp: "^127.0.1.1"
+        line: "127.0.1.1 {{ rfc_1034_1035_name }}.{{ domain_name }} {{ rfc_1034_1035_name }} {{ ansible_hostname }}"
+        state: present
+      register: result2
+      when:
+        - rfc_1034_1035_name == inventory_hostname
+        - rfc_1034_1035_name != ansible_hostname
+    - name: Update Alias hostnames
+      lineinfile:
+        dest: /etc/hosts
+        insertafter: "^127.0.0.1"
+        regexp: "^127.0.1.1"
+        line: "127.0.1.1 {{ rfc_1034_1035_name }}.{{ domain_name }} {{ rfc_1034_1035_name }} {{ inventory_hostname }}"
+        state: present
+      when:
+        - result1 | skipped
+        - result2 | skipped
+  vars:
+    rfc_1034_1035_name: "{{ inventory_hostname | replace('_', '-') }}"
+    domain_name: "{{ openstack_domain|default('openstack.local') }}"
+
+- name: Set hostnames alias for RabbitMQ lookup compatibility
+  hosts: rabbitmq_all
+  tasks:
+    - name: Update hosts file from ansible inventory
+      lineinfile:
+        dest: /etc/hosts
+        regexp: "^{{ hostvars[item]['ansible_ssh_host'] }}"
+        line: "{{ hostvars[item]['ansible_ssh_host'] }} {{ rfc_1034_1035_name }}.{{ domain_name }} {{ rfc_1034_1035_name }} {{ item }}"
+        state: present
+      when: item != inventory_hostname
+      with_items: "{{ play_hosts }}"
+  vars:
+    rfc_1034_1035_name: "{{ item | replace('_', '-') }}"
+    domain_name: "{{ openstack_domain|default('openstack.local') }}"
+
+- name: Set hostnames alias for MariaDB lookup compatibility
+  hosts: galera_all
+  tasks:
+    - name: Update hosts file from ansible inventory
+      lineinfile:
+        dest: /etc/hosts
+        regexp: "^{{ hostvars[item]['ansible_ssh_host'] }}"
+        line: "{{ hostvars[item]['ansible_ssh_host'] }} {{ rfc_1034_1035_name }}.{{ domain_name }} {{ rfc_1034_1035_name }} {{ item }}"
+        state: present
+      when: item != inventory_hostname
+      with_items: "{{ play_hosts }}"
+  vars:
+    rfc_1034_1035_name: "{{ item | replace('_', '-') }}"
+    domain_name: "{{ openstack_domain|default('openstack.local') }}"
+
+- name: Set hostnames alias for Neutron Agent lookup compatibility
+  hosts: neutron_all:!nova_compute
+  tasks:
+    - name: Update hosts file from ansible inventory
+      lineinfile:
+        dest: /etc/hosts
+        regexp: "^{{ hostvars[item]['ansible_ssh_host'] }}"
+        line: "{{ hostvars[item]['ansible_ssh_host'] }} {{ rfc_1034_1035_name }}.{{ domain_name }} {{ rfc_1034_1035_name }} {{ item }}"
+        state: present
+      when: item != inventory_hostname
+      with_items: "{{ play_hosts }}"
+  vars:
+    rfc_1034_1035_name: "{{ item | replace('_', '-') }}"
+    domain_name: "{{ openstack_domain|default('openstack.local') }}"
+
+- name: Set hostnames alias for Cinder lookup compatibility
+  hosts: cinder_all
+  tasks:
+    - name: Update hosts file from ansible inventory
+      lineinfile:
+        dest: /etc/hosts
+        regexp: "^{{ hostvars[item]['ansible_ssh_host'] }}"
+        line: "{{ hostvars[item]['ansible_ssh_host'] }} {{ rfc_1034_1035_name }}.{{ domain_name }} {{ rfc_1034_1035_name }} {{ item }}"
+        state: present
+      when: item != inventory_hostname
+      with_items: "{{ play_hosts }}"
+  vars:
+    rfc_1034_1035_name: "{{ item | replace('_', '-') }}"
+    domain_name: "{{ openstack_domain|default('openstack.local') }}"
+
+- name: Set hostnames alias for Heat lookup compatibility
+  hosts: heat_all
+  tasks:
+    - name: Update hosts file from ansible inventory
+      lineinfile:
+        dest: /etc/hosts
+        regexp: "^{{ hostvars[item]['ansible_ssh_host'] }}"
+        line: "{{ hostvars[item]['ansible_ssh_host'] }} {{ rfc_1034_1035_name }}.{{ domain_name }} {{ rfc_1034_1035_name }} {{ item }}"
+        state: present
+      when: item != inventory_hostname
+      with_items: "{{ play_hosts }}"
+  vars:
+    rfc_1034_1035_name: "{{ item | replace('_', '-') }}"
+    domain_name: "{{ openstack_domain|default('openstack.local') }}"
+
+- name: Set hostnames alias for Nova Sevice lookup compatibility
+  hosts: nova_all:!nova_compute
+  tasks:
+    - name: Update hosts file from ansible inventory
+      lineinfile:
+        dest: /etc/hosts
+        regexp: "^{{ hostvars[item]['ansible_ssh_host'] }}"
+        line: "{{ hostvars[item]['ansible_ssh_host'] }} {{ rfc_1034_1035_name }}.{{ domain_name }} {{ rfc_1034_1035_name }} {{ item }}"
+        state: present
+      when:
+        - item != inventory_hostname
+      with_items: "{{ play_hosts }}"
+  vars:
+    rfc_1034_1035_name: "{{ item | replace('_', '-') }}"
+    domain_name: "{{ openstack_domain|default('openstack.local') }}"
