@@ -40,6 +40,17 @@ dependency, causing build failures.
 
 .. _repo-server-pip-conf-removal:
 
+``old-hostname-compatibility.yml``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This playbook ensures an alias is created for old hostnames that may not be RFC
+1034 or 1035 compatible. Using a hostname alias allows agents to continue working
+in cases where the hostname is also the registered agent name. This playbook is
+only needed for upgrades of in-place upgrades of existing nodes or if a node is replaced or
+rebuilt it will be brought into the cluster using a compliant hostname.
+
+.. _old-hostname-compatibility:
+
 ``setup-infrastructure.yml``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
