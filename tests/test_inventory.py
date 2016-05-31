@@ -3,6 +3,7 @@
 import collections
 import copy
 import json
+import mock
 import os
 from os import path
 import Queue
@@ -644,15 +645,30 @@ class TestNetAddressSearch(unittest.TestCase):
 
 class TestMultipleRuns(unittest.TestCase):
     def test_creating_backup_file(self):
-        # Generate the initial inventory files
-        get_inventory(clean=False)
+        inventory_file_path = os.path.join(TARGET_DIR,
+                                           'openstack_inventory.json')
+        get_backup_name_path = 'dynamic_inventory.get_backup_name'
+        backup_name = 'openstack_inventory.json-20160531_171804.json'
 
-        # run again to force creation of the backup files
-        get_inventory(clean=False)
+        tar_file = mock.MagicMock()
+        tar_file.__enter__.return_value = tar_file
+
+        # run make backup with faked tarfiles and date
+        with mock.patch('dynamic_inventory.tarfile.open') as tar_open:
+            tar_open.return_value = tar_file
+            with mock.patch(get_backup_name_path) as backup_mock:
+                backup_mock.return_value = backup_name
+                di.make_backup(TARGET_DIR, inventory_file_path)
 
         backup_path = path.join(TARGET_DIR, 'backup_openstack_inventory.tar')
 
-        self.assertTrue(os.path.exists(backup_path))
+        tar_open.assert_called_with(backup_path, 'a')
+
+        # This chain is present because of how tarfile.open is called to
+        # make a context manager inside the make_backup function.
+
+        tar_file.add.assert_called_with(inventory_file_path,
+                                        arcname=backup_name)
 
     def test_recreating_files(self):
         # Deleting the files after the first run should cause the files to be
@@ -664,6 +680,20 @@ class TestMultipleRuns(unittest.TestCase):
         backup_path = path.join(TARGET_DIR, 'backup_openstack_inventory.tar')
 
         self.assertFalse(os.path.exists(backup_path))
+
+    def test_rereading_files(self):
+        # Generate the initial inventory files
+        get_inventory(clean=False)
+
+        inventory_file_path = os.path.join(TARGET_DIR,
+                                           'openstack_inventory.json')
+
+        inv = di.get_inventory(TARGET_DIR, inventory_file_path)
+        self.assertIsInstance(inv, dict)
+        self.assertIn('_meta', inv)
+        # This test is basically just making sure we get more than
+        # INVENTORY_SKEL populated, so we're not going to do deep testing
+        self.assertIn('log_hosts', inv)
 
     def tearDown(self):
         # Clean up here since get_inventory will not do it by design in
