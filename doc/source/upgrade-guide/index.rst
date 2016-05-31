@@ -1,7 +1,8 @@
 Upgrade Documentation
 =====================
 
-In this section you will find information on the Mitaka to Newton upgrade process.
+In this section you can find information on the Mitaka to
+Newton upgrade process.
 
 Contents:
 
