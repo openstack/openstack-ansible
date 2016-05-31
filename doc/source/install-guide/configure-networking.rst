@@ -271,7 +271,12 @@ particular network:
 The example above enables `jumbo frames`_ by setting the MTU on the storage
 network to 9000.
 
+.. note:: If you are editing the MTU for your networks, you may also want
+   to adapt your neutron MTU settings (depending on your needs). Please
+   refer to the neutron documentation (`Neutron MTU considerations`_).
+
 .. _jumbo frames: https://en.wikipedia.org/wiki/Jumbo_frame
+.. _neutron MTU considerations: http://docs.openstack.org/mitaka/networking-guide/adv-config-mtu.html
 
 --------------
 
