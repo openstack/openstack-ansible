@@ -667,7 +667,7 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
 
 
 def _net_address_search(provider_networks, main_network, key):
-    """Set the key netwokr type to the main network if not specified.
+    """Set the key network type to the main network if not specified.
 
     :param provider_networks: ``list`` Network list of ``dict``s
     :param main_network: ``str`` The name of the main network bridge.
@@ -680,10 +680,7 @@ def _net_address_search(provider_networks, main_network, key):
             # Check for the key
             if p_net.get(key):
                 break
-    else:
-        for pn in provider_networks:
-            p_net = pn.get('network')
-            if p_net:
+            else:
                 if p_net.get('container_bridge') == main_network:
                     p_net[key] = True
 

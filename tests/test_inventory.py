@@ -610,6 +610,33 @@ class TestStaticRouteConfig(TestConfigChecks):
         self.assertEqual(exception.message, self.expectedMsg)
 
 
+class TestNetAddressSearch(unittest.TestCase):
+    def test_net_address_search_key_not_found(self):
+        pns = [
+            {'network': {'container_bridge': 'br-mgmt'}}
+        ]
+        new_pns = di._net_address_search(pns, 'br-mgmt', 'is_ssh_address')
+
+        self.assertTrue(new_pns[0]['network']['is_ssh_address'])
+
+    def test_net_address_search_key_not_found_bridge_doesnt_match(self):
+        pns = [
+            {'network': {'container_bridge': 'lxcbr0'}}
+        ]
+        new_pns = di._net_address_search(pns, 'br-mgmt', 'is_ssh_address')
+
+        self.assertNotIn('is_ssh_address', new_pns[0]['network'])
+
+    def test_net_address_search_key_found(self):
+        pns = [
+            {'network': {'container_bridge': 'br-mgmt',
+                         'is_ssh_address': True}}
+        ]
+        new_pns = di._net_address_search(pns, 'br-mgmt', 'is_ssh_address')
+
+        self.assertEqual(pns, new_pns)
+
+
 class TestMultipleRuns(unittest.TestCase):
     def test_creating_backup_file(self):
         # Generate the initial inventory files
