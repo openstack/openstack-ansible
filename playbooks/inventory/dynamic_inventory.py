@@ -826,24 +826,29 @@ def _ensure_inventory_uptodate(inventory, container_skel):
 
     :param inventory: ``dict`` Living inventory of containers and hosts
     """
-    for key, value in inventory['_meta']['hostvars'].iteritems():
-        if 'container_name' not in value:
-            value['container_name'] = key
+    host_vars = inventory['_meta']['hostvars']
+    for hostname, _vars in host_vars.items():
+        if 'container_name' not in _vars:
+            _vars['container_name'] = hostname
 
         for rh in REQUIRED_HOSTVARS:
-            if rh not in value:
-                value[rh] = None
+            if rh not in _vars:
+                _vars[rh] = None
                 if rh == 'container_networks':
-                    value[rh] = {}
+                    _vars[rh] = {}
 
-    for key, value in container_skel.iteritems():
-        item = inventory.get(key)
+    # For each of the various properties in the container skeleton,
+    # copy them into the host's properties dictionary
+    for container_type, type_vars in container_skel.items():
+        item = inventory.get(container_type)
+        # Note: this creates an implicit dependency on skel_setup which
+        # adds the hosts entries.
         hosts = item.get('hosts')
         if hosts:
             for host in hosts:
-                container = inventory['_meta']['hostvars'][host]
-                if 'properties' in value:
-                    container['properties'] = value['properties']
+                container = host_vars[host]
+                if 'properties' in type_vars:
+                    container['properties'] = type_vars['properties']
 
 
 def _parse_global_variables(user_cidr, inventory, user_defined_config):
