@@ -316,6 +316,10 @@ class TestIps(unittest.TestCase):
         """Test that no duplicate IPs are made on any network."""
 
         for i in xrange(0, 99):
+            # tearDown is ineffective for this loop, so clean the USED_IPs
+            # on each run
+            inventory = None
+            di.USED_IPS = []
             inventory = get_inventory()
             ips = collections.defaultdict(int)
             hostvars = inventory['_meta']['hostvars']

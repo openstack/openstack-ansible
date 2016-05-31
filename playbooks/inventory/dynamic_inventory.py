@@ -16,6 +16,7 @@
 # (c) 2014, Kevin Carter <kevin.carter@rackspace.com>
 
 import argparse
+import copy
 import datetime
 import json
 import netaddr
@@ -1079,7 +1080,7 @@ def main(all_args):
             backup_name = '%s-%s.json' % (basename, utctime)
             tar.add(dynamic_inventory_file, arcname=backup_name)
     else:
-        dynamic_inventory = INVENTORY_SKEL
+        dynamic_inventory = copy.deepcopy(INVENTORY_SKEL)
 
     # Save the users container cidr as a group variable
     cidr_networks = user_defined_config.get('cidr_networks')
