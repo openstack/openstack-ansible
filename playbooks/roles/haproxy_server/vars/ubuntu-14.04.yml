@@ -1,0 +1,40 @@
+---
+# Copyright 2016, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+## APT Cache options
+cache_timeout: 600
+
+haproxy_apt_repo_url: "http://ppa.launchpad.net/vbernat/haproxy-1.5/ubuntu"
+haproxy_repo:
+  repo: "deb {{ haproxy_apt_repo_url }} {{ ansible_distribution_release }} main"
+  state: "present"
+
+# Haproxy GPG Keys
+haproxy_gpg_keys:
+  - key_name: 'haproxy'
+    keyserver: 'hkp://keyserver.ubuntu.com:80'
+    fallback_keyserver: 'hkp://p80.pool.sks-keyservers.net:80'
+    hash_id: '0xcffb779aadc995e4f350a060505d97a41c61b9cd'
+
+haproxy_pre_packages:
+  - python-software-properties
+  - software-properties-common
+  - debconf-utils
+
+haproxy_packages:
+  - haproxy
+  - rsyslog  # Used for local logging
+  - vim-haproxy
+  - psmisc

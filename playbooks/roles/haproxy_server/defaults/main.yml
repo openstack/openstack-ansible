@@ -13,40 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Defines that the role will be deployed on a host machine
-is_metal: true
-
-## APT Cache options
-cache_timeout: 600
-
-haproxy_apt_repo_url: "http://ppa.launchpad.net/vbernat/haproxy-1.5/ubuntu"
-haproxy_apt_repo:
-  repo: "deb {{ haproxy_apt_repo_url }} {{ ansible_distribution_release }} main"
-  state: "present"
-
-# Haproxy GPG Keys
-haproxy_gpg_keys:
-  - key_name: 'haproxy'
-    keyserver: 'hkp://keyserver.ubuntu.com:80'
-    fallback_keyserver: 'hkp://p80.pool.sks-keyservers.net:80'
-    hash_id: '0xcffb779aadc995e4f350a060505d97a41c61b9cd'
-
-haproxy_pre_apt_packages:
-  - python-software-properties
-  - software-properties-common
-  - debconf-utils
-
-haproxy_apt_packages:
-  - haproxy
-  - hatop
-  - rsyslog  # Used for local logging
-  - vim-haproxy
-  - psmisc
-
 ## Haproxy Configuration
 haproxy_rise: 3
 haproxy_fall: 3
 haproxy_interval: 12000
+
+## Haproxy standard API
+haproxy_repo: {}
+haproxy_gpg_keys: []
+haproxy_pre_packages: []
+haproxy_packages: []
+haproxy_pinned_packages: []
 
 ## Haproxy Stats
 haproxy_stats_enabled: False
@@ -84,3 +61,5 @@ haproxy_ssl_pem: /etc/ssl/private/haproxy.pem
 haproxy_ssl_ca_cert: /etc/ssl/certs/haproxy-ca.pem
 haproxy_ssl_self_signed_subject: "/C=US/ST=Texas/L=San Antonio/O=IT/CN={{ external_lb_vip_address }}/subjectAltName=IP.1={{ external_lb_vip_address }}"
 haproxy_ssl_cipher_suite: "{{ ssl_cipher_suite }}"
+
+haproxy_hatop_download_url: "http://hatop.googlecode.com/files/hatop-0.7.7.tar.gz"

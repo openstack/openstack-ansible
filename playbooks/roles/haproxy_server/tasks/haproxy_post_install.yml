@@ -20,25 +20,42 @@
     sysctl_set: yes
     state: present
   when: haproxy_bind_on_non_local | bool
+  tags:
+    - haproxy-base-config
+    - haproxy-config
 
 - name: Drop base haproxy config
   template:
-    src: "{{ item }}"
-    dest: "/etc/haproxy/haproxy.cfg"
-  with_items:
-    - haproxy.cfg.j2
+    src: "haproxy.cfg.j2"
+    dest: "/etc/haproxy/conf.d/00-haproxy"
   notify: Restart haproxy
   tags:
     - haproxy-base-config
+    - haproxy-config
 
 - name: Drop haproxy logging config
   copy:
-    src: "{{ item }}"
+    src: "haproxy-logging.cfg"
     dest: "/etc/rsyslog.d/99-haproxy-local-logging.conf"
-  with_items:
-    - haproxy-logging.cfg
   notify: Restart rsyslog
   tags:
     - haproxy-base-config
+    - haproxy-config
 
 - include: haproxy_service_config.yml
+
+- name: Regenerate haproxy configuration
+  assemble:
+    src: "/etc/haproxy/conf.d"
+    dest: "/etc/haproxy/haproxy.cfg"
+  notify: Restart haproxy
+  tags:
+    - haproxy-base-config
+    - haproxy-config
+
+- name: Enable haproxy services
+  service:
+    name: "haproxy"
+    enabled: "yes"
+  tags:
+    - haproxy-config

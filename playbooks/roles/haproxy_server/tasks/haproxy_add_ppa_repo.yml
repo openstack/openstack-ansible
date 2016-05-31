@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# NOTE(cloudnull) This file can be removed when we drop 14.04 support
+
 #TODO(evrardjp): Replace the next 2 tasks by a standard apt with cache
 #when https://github.com/ansible/ansible-modules-core/pull/1517 is merged
 #in 1.9.x or we move to 2.0 (if tested working)
@@ -38,7 +40,7 @@
   until: install_packages|success
   retries: 5
   delay: 2
-  with_items: haproxy_pre_apt_packages
+  with_items: "{{ haproxy_pre_packages }}"
   tags:
     - haproxy-pre-apt-packages
 
@@ -54,7 +56,7 @@
   ignore_errors: True
   retries: 5
   delay: 2
-  with_items: haproxy_gpg_keys
+  with_items: "{{ haproxy_gpg_keys }}"
   tags:
     - haproxy-apt-keys
 
@@ -68,25 +70,18 @@
   until: add_keys_fallback|success
   retries: 5
   delay: 2
-  with_items: haproxy_gpg_keys
+  with_items: "{{ haproxy_gpg_keys }}"
   when: add_keys|failed and (item.fallback_keyserver is defined or item.fallback_url is defined)
   tags:
     - haproxy-apt-keys
 
-- name: Drop haproxy repo pin
-  template:
-    src: "haproxy_pin.pref.j2"
-    dest: "/etc/apt/preferences.d/haproxy_pin.pref"
-    owner: "root"
-    group: "root"
-    mode: "0644"
-  tags:
-    - haproxy-repo-pin
-
 - name: Add haproxy repo(s)
   apt_repository:
-    repo: "{{ haproxy_apt_repo.repo }}"
-    state: "{{ haproxy_apt_repo.state }}"
+    repo: "{{ haproxy_repo.repo }}"
+    state: "{{ haproxy_repo.state }}"
+  when:
+    - haproxy_repo.repo is defined
+    - haproxy_repo.state is defined
   register: add_repos
   until: add_repos|success
   retries: 5
