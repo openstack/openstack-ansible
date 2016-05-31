@@ -1,0 +1,6 @@
+---
+upgrade:
+  - A new nova admin endpoint will be registered with the suffix ``/v2.1/%(tenant_id)s``. The nova admin endpoint
+    with the suffix ``/v2/%(tenant_id)s`` may be manually removed.
+fixes:
+  - The nova admin endpoint is now correctly registered as ``/v2.1/%(tenant_id)s`` instead of ``/v2/%(tenant_id)s``.
