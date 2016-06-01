@@ -56,6 +56,14 @@ haproxy_default_services:
         - 172.16.0.0/12
         - 10.0.0.0/8
   - service:
+      haproxy_service_name: gnocchi
+      haproxy_backend_nodes: "{{ groups['gnocchi_all'] | default([]) }}"
+      haproxy_port: 8041
+      haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_balance_type: http
+      haproxy_backend_options:
+        - "httpchk /healthcheck"
+  - service:
       haproxy_service_name: heat_api_cfn
       haproxy_backend_nodes: "{{ groups['heat_api_cfn'] | default([]) }}"
       haproxy_port: 8000

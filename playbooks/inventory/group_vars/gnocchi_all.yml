@@ -1,5 +1,5 @@
 ---
-# Copyright 2014, Rackspace US, Inc.
+# Copyright 2016, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,15 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: os-keystone-install.yml
-- include: os-glance-install.yml
-- include: os-cinder-install.yml
-- include: os-nova-install.yml
-- include: os-neutron-install.yml
-- include: os-heat-install.yml
-- include: os-horizon-install.yml
-- include: os-ceilometer-install.yml
-- include: os-aodh-install.yml
-- include: os-swift-install.yml
-- include: os-gnocchi-install.yml
-- include: os-ironic-install.yml
+gnocchi_service_port: 8041
+gnocchi_service_proto: http
+gnocchi_service_internaluri_proto: "{{ openstack_service_internaluri_proto | default(gnocchi_service_proto) }}"
+gnocchi_service_internalurl: "{{ gnocchi_service_internaluri_proto }}://{{ internal_lb_vip_address }}:{{ gnocchi_service_port }}"
+
+gnocchi_ssl_external: "{{ openstack_external_ssl }}"
+gnocchi_service_region: "{{ service_region }}"

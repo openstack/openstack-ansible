@@ -59,6 +59,12 @@ glance_git_install_branch: 8dd23d0b9c7ca9bb521f56407f6f601db84771f9 # HEAD of "m
 glance_git_dest: "/opt/glance_{{ glance_git_install_branch | replace('/', '_') }}"
 
 
+## Gnocchi service
+gnocchi_git_repo: https://git.openstack.org/openstack/gnocchi
+gnocchi_git_install_branch: 27e52986cf716111dded4761665f02983bc2b366 # HEAD of "master" as of 27.06.2016
+gnocchi_git_dest: "/opt/gnocchi_{{ gnocchi_git_install_branch | replace('/', '_') }}"
+
+
 ## Heat service
 heat_git_repo: https://git.openstack.org/openstack/heat
 heat_git_install_branch: e4c09815e9557e5f93785e8a49db3c41be1d7892 # HEAD of "master" as of 02.06.2016
