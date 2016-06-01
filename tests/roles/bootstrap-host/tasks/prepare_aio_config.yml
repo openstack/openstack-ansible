@@ -120,22 +120,6 @@
   tags:
     - generate_secrets
 
-- name: Get the DNS servers in use on the host
-  command: grep nameserver /etc/resolv.conf
-  register: nameservers
-  when:
-    - lxc_cache_resolvers is not defined
-  tags:
-    - get-nameservers
-
-- name: Set lxc_cache_resolvers fact
-  set_fact:
-    lxc_cache_resolvers: "{{ nameservers.stdout_lines }}"
-  when:
-    - lxc_cache_resolvers is not defined
-  tags:
-    - set-fact-lxc_cache_resolvers
-
 - name: Determine if the host has a global pip config file
   stat:
     path: /etc/pip.conf
