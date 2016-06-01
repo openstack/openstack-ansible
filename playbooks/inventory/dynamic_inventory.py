@@ -660,11 +660,9 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
                 cidr_present = route.get('cidr', False)
                 gateway_present = route.get('gateway', False)
 
-                if cidr_present and gateway_present:
-                    networks[old_address]['static_routes'].append(route)
-
-                elif not cidr_present or not gateway_present:
+                if not (cidr_present and gateway_present):
                     raise MissingStaticRouteInfo(q_name)
+                networks[old_address]['static_routes'].append(route)
 
 
 def _net_address_search(provider_networks, main_network, key):
