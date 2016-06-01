@@ -108,6 +108,12 @@ debug: false
 # is highly recommended for securing the contents of RabbitMQ messages.
 # rabbitmq_use_ssl: false
 
+# RabbitMQ management plugin is enabled by default, the guest user has been
+# removed for security reasons and a new userid 'monitoring' has been created
+# with the 'monitoring' user tag. In order to modify the userid, uncomment the
+# following and change 'monitoring' to your userid of choice.
+# rabbitmq_monitoring_userid: monitoring
+
 
 ## Additional pinning generator that will allow for more packages to be pinned as you see fit.
 ## All pins allow for package and versions to be defined. Be careful using this as versions

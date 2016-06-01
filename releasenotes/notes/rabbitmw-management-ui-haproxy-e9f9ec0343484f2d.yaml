@@ -1,0 +1,17 @@
+---
+features:
+  - The RabbitMQ Management UI is now available
+    through HAProxy on port 15672. The default
+    userid is ``monitoring``. This user can be
+    modified by changing the parameter
+    ``rabbitmq_monitoring_userid`` in the file
+    ``user_variables.yml``. Please note that ACLs
+    have been added to this HAProxy service by
+    default, such that it may only be accessed by
+    common internal clients.  Reference
+    ``playbooks/vars/configs/haproxy_config.yml``
+upgrade:
+  - The variable ``rabbitmq_monitoring_password``
+    has been added to ``user_secrets.yml``. If
+    this variable does not exist, the RabbitMQ
+    monitoring user will not be created.
