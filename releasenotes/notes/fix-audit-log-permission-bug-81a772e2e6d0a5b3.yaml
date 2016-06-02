@@ -1,0 +1,10 @@
+---
+fixes:
+  - |
+    The security role previously set the permissions on all audit log files in
+    ``/var/log/audit`` to ``0400``, but this prevents the audit daemon from
+    writing to the active log file. This will prevent ``auditd`` from
+    starting or restarting cleanly.
+
+    The task now removes any permissions that are not allowed by the STIG. Any
+    log files that meet or exceed the STIG requirements will not be modified.

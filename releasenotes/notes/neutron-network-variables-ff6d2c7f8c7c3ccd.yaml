@@ -1,0 +1,10 @@
+---
+features:
+  - Deployers can now configure tempest public and private networks by setting
+    the following variables, 'tempest_private_net_provider_type' to either vxlan
+    or vlan and 'tempest_public_net_provider_type' to flat or vlan. Depending on
+    what the deployer sets these variables to, they may also need to update other
+    variables accordingly, this mainly involves 'tempest_public_net_physical_type'
+    and 'tempest_public_net_seg_id'. Please refer to
+    http://docs.openstack.org/mitaka/networking-guide/intro-basic-networking.html
+    for more neutron networking information.

@@ -1,0 +1,14 @@
+---
+features:
+  - |
+    The Linux Security Module (LSM) that is appropriate for the Linux
+    distribution in use will be automatically enabled by the security role by
+    default. Deployers can opt out of this change by setting the following
+    Ansible variable:
+
+    .. code-block:: yaml
+
+        security_enable_linux_security_module: False
+
+    The documentation for STIG V-51337 has more information about how each
+    LSM is enabled along with special notes for SELinux.

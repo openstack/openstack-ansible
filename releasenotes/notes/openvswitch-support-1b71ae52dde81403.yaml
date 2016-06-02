@@ -1,0 +1,14 @@
+---
+features:
+  - |
+    Open vSwitch driver support has been implemented. This includes the implementation of the
+    appropriate Neutron configuration and package installation. This feature may be activated
+    by setting ``neutron_plugin_type: ml2.ovs`` in ``/etc/openstack_deploy/user_variables.yml``.
+upgrade:
+  - The variable ``neutron_linuxbridge`` has been removed as it is no longer used.
+  - The variable ``neutron_driver_interface`` has been removed. The appropriate value for
+    ``neutron.conf`` is now determined based on the ``neutron_plugin_type``.
+  - The variable ``neutron_driver_firewall`` has been removed. The appropriate value for
+    ``neutron.conf`` is now determined based on the ``neutron_plugin_type``.
+  - The variable ``neutron_ml2_mechanism_drivers`` has been removed. The appropriate value for
+    ml2_conf.ini is now determined based on the ``neutron_plugin_type``.

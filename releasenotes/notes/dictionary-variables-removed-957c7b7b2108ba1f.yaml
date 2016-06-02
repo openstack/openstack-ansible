@@ -1,0 +1,9 @@
+---
+fixes:
+  - The dictionary-based variables in ``defaults/main.yml`` are now individual
+    variables. The dictionary-based variables could not be changed as the
+    documentation instructed. Instead it was required to override the entire
+    dictionary. Deployers must use the new variable names to enable or disable
+    the security configuration changes applied by the security role. For more
+    information, see
+    `Launchpad Bug 1577944 <https://bugs.launchpad.net/openstack-ansible/+bug/1577944>`_.

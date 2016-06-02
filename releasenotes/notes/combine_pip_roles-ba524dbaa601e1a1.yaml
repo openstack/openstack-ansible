@@ -1,0 +1,6 @@
+---
+features:
+  - The pip_install role can now configure pip to be locked down to the
+    repository built by OpenStack-Ansible. To enable the lockdown
+    configuration, deployers may set ``pip_lock_to_internal_repo`` to
+    ``true`` in ``/etc/openstack_deploy/user_variables.yml``.

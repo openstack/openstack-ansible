@@ -1,0 +1,12 @@
+---
+features:
+  - Implemented support for Ubuntu 16.04 Xenial.  percona-xtrabackup
+    packages will be installed from distro repositories, instead of
+    upstream percona repositories due to lack of available packages
+    upstream at the time of implementing this feature.
+deprecations:
+ - galera_package_url changed to percona_package_url for clarity
+ - galera_package_sha256 changed to percona_package_sha256 for clarity
+ - galera_package_path changed to percona_package_path for clarity
+ - galera_package_download_validate_certs changed to
+   percona_package_download_validate_certs for clarity

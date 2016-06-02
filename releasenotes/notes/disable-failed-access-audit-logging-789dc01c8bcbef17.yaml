@@ -1,0 +1,6 @@
+---
+fixes:
+  - Failed access logging is now disabled by default and can be enabled by
+    changing ``security_audit_failed_access`` to ``yes``. The rsyslog daemon
+    checks for the existence of log files regularly and this audit rule was
+    triggered very frequently, which led to very large audit logs.

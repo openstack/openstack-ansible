@@ -1,0 +1,14 @@
+---
+features:
+  - |
+    Horizon's IPv6 support is now enabled by default. This allows users to
+    manage subnets with IPv6 addresses within the Horizon interface. Deployers
+    can disable IPv6 support in Horizon by setting the following variable:
+
+    .. code-block:: yaml
+
+        horizon_enable_ipv6: False
+
+    Please note: Horizon will still display IPv6 addresses in various panels
+    with IPv6 support disabled. However, it will not allow any direct
+    management of IPv6 configuration.

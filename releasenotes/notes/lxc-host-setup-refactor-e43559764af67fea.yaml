@@ -1,0 +1,29 @@
+---
+features:
+  - The ``lxc_host`` cache prep has been updated to use the LXC download
+    template. This removes the last remaining dependency the project has on
+    the `rpc-trusty-container.tgz image <http://rpc-repo.rackspace.com/container_images/rpc-trusty-container.tgz>`_.
+  - The ``lxc_host`` role will build lxc cache using the download
+    template built from `images found here <https://images.linuxcontainers.org>`_.
+    These images are upstream builds from the greater LXC/D community.
+  - The ``lxc_host`` role introduces support for CentOS 7 and Ubuntu 16.04
+    container types.
+upgrade:
+  - The ``lxc_host`` role no longer uses the distro specific lxc container
+    create template.
+  - |
+    The following variable changes have been made in the  ``lxc_host`` role:
+
+    * **lxc_container_user_password**: Removed because the default lxc
+      container user is no longer created by the lxc container template.
+    * **lxc_container_template_options**: This option was renamed to
+      *lxc_cache_download_template_options*. The deprecation filter was not
+      used because the values provided from this option have been
+      fundamentally changed and potentially old overrides will cause
+      problems.
+    * **lxc_container_base_delete**: Removed because the cache will be
+      refreshed upon role execution.
+    * **lxc_cache_validate_certs**: Removed because the Ansible ``get_url``
+      module is no longer used.
+    * **lxc_container_caches**: Removed because the container create process
+      will build a cached image based on the host OS.

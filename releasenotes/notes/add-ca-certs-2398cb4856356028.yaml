@@ -1,0 +1,6 @@
+---
+upgrade:
+  - The ``ca-certificates`` package has been included in the LXC
+    container build process in order to prevent issues related to
+    trying to connect to public websites which make use of newer
+    certificates than exist in the base CA certificate store.

@@ -1,0 +1,9 @@
+---
+fixes:
+  - In order to ensure that the appropriate data is delivered to requesters from the repo servers,
+    the slave repo_server web servers are taken offline during the synchronisation process. This
+    ensures that the right data is always delivered to the requesters through the load balancer.
+security:
+  - A sudoers entry has been added to the repo_servers in order to allow the nginx user to stop and
+    start nginx via the init script. This is implemented in order to ensure that the repo sync
+    process can shut off nginx while synchronising data from the master to the slaves.

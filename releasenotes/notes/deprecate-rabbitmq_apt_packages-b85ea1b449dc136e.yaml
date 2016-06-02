@@ -1,0 +1,5 @@
+---
+deprecations:
+  - The ``rabbitmq_apt_packages`` variable has been deprecated.
+    ``rabbitmq_dependencies`` should be used instead to override
+    additional packages to install alongside rabbitmq-server.
