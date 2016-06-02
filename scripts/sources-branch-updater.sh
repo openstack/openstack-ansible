@@ -187,7 +187,7 @@ sed -i.bak "s|^PIP_INSTALL_OPTIONS=.*|PIP_INSTALL_OPTIONS=\$\{PIP_INSTALL_OPTION
 
 for pin in ${PIP_CURRENT_OPTIONS}; do
   sed -i.bak "s|^$(echo ${pin} | cut -f1 -d=).*|${pin}|" *requirements.txt
-  sed -i.bak "s|^  - $(echo ${pin} | cut -f1 -d=).*|  - ${pin}|" playbooks/inventory/group_vars/hosts.yml
+  sed -i.bak "s|^  - $(echo ${pin} | cut -f1 -d=).*|  - ${pin}|" playbooks/inventory/group_vars/all.yml
 done
 
 echo "Updated pip install options/pins"

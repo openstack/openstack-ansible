@@ -1,5 +1,5 @@
 ---
-# Copyright 2015, Rackspace US, Inc.
+# Copyright 2016, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,5 +16,183 @@
 ## OpenStack Source Code Release
 openstack_release: master
 
-# Global minimum kernel requirement
-openstack_host_required_kernel: 3.13.0-34-generic
+## Verbosity Options
+debug: False
+
+## SSH connection wait time
+ssh_delay: 5
+
+# These are pinned to ensure exactly the same behaviour forever!
+# These pins are updated through the sources-branch-updater script
+pip_packages:
+  - pip==8.1.2
+  - setuptools==22.0.0
+  - wheel==0.29.0
+
+pip_links:
+  - { name: "openstack_release", link: "{{ openstack_repo_url }}/os-releases/{{ openstack_release }}/" }
+
+## OpenStack source options
+# URL for the frozen internal openstack repo.
+repo_server_port: 8181
+openstack_repo_url: "http://{{ internal_lb_vip_address }}:{{ repo_server_port }}"
+openstack_repo_git_url: "http://{{ internal_lb_vip_address }}:{{ repo_server_port }}/openstackgit"
+
+## kernel modules for specific group hosts
+# :param name: name of the kernel module
+# :param pattern: pattern to search for in /boot/config-$kernel_version to check how module is configured inside kernel
+# :param group: group of hosts where the module will be loaded
+openstack_host_specific_kernel_modules:
+  - { name: "ebtables", pattern: "CONFIG_BRIDGE_NF_EBTABLES", group: "network_hosts" }
+
+## Memcached options
+memcached_port: 11211
+memcached_servers: "{% for host in groups['memcached'] %}{{ hostvars[host]['ansible_ssh_host'] }}:{{ memcached_port }}{% if not loop.last %},{% endif %}{% endfor %}"
+
+## Galera
+galera_root_user: "root"
+
+## RabbitMQ
+rabbitmq_port: "{{ (rabbitmq_use_ssl | bool) | ternary(5671, 5672) }}"
+rabbitmq_servers: "{% for host in groups['rabbitmq_all'] %}{{ hostvars[host]['ansible_ssh_host'] }}:{{ rabbitmq_port }}{% if not loop.last %},{% endif %}{% endfor %}"
+rabbitmq_use_ssl: true
+
+## Enable external SSL handling for general OpenStack services
+openstack_external_ssl: true
+
+## OpenStack global Endpoint Protos
+openstack_service_publicuri_proto: https
+#openstack_service_adminuri_proto: http
+#openstack_service_internaluri_proto: http
+
+## SSL
+# These do not need to be configured unless you're creating certificates for
+# services running behind Apache (currently, Horizon and Keystone).
+ssl_protocol: "ALL -SSLv2 -SSLv3"
+# Cipher suite string from https://hynek.me/articles/hardening-your-web-servers-ssl-ciphers/
+ssl_cipher_suite: "ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:ECDH+3DES:DH+3DES:RSA+AESGCM:RSA+AES:RSA+3DES:!aNULL:!MD5:!DSS"
+
+## Region Name
+service_region: RegionOne
+
+## OpenStack Domain
+openstack_domain: openstack.local
+lxc_container_domain: "{{ openstack_domain }}"
+
+## DHCP Domain Name
+dhcp_domain: openstacklocal
+
+## LDAP enabled toggle
+service_ldap_backend_enabled: "{{ keystone_ldap is defined and keystone_ldap.Default is defined }}"
+
+## Aodh DB info
+aodh_database_name: aodh
+aodh_database_user: aodh
+aodh_db_type: mongodb
+aodh_db_ip: localhost
+aodh_db_port: 27017
+aodh_connection_string: "{{ aodh_db_type }}://{{ aodh_database_user }}:{{ aodh_container_db_password }}@{{ aodh_db_ip }}:{{ aodh_db_port }}/{{ aodh_database_name }}"
+
+## Ceilometer
+ceilometer_service_user_name: ceilometer
+ceilometer_service_tenant_name: service
+ceilometer_rabbitmq_userid: ceilometer
+ceilometer_rabbitmq_vhost: /ceilometer
+
+## Cinder
+# cinder_backend_rbd_inuse: True if current host has an rbd backend
+cinder_backend_rbd_inuse: '{{ (cinder_backends|default("")|to_json).find("cinder.volume.drivers.rbd.RBDDriver") != -1 }}'
+# cinder_backends_rbd_inuse: true if at least 1 cinder_backend on any
+# cinder_volume host uses Ceph RBD
+# http://stackoverflow.com/questions/9486393/jinja2-change-the-value-of-a-variable-inside-a-loop
+cinder_backends_rbd_inuse: >
+  {% set _var = {'rbd_inuse': False} %}{%
+  for host in groups.cinder_volume %}{%
+  if hostvars[host].cinder_backend_rbd_inuse | bool %}{%
+  if _var.update({'rbd_inuse': True }) %}{%
+  endif %}{%
+  endif %}{%
+  endfor %}{{
+  _var.rbd_inuse }}
+cinder_ceph_client: cinder
+cinder_rabbitmq_userid: cinder
+cinder_rabbitmq_vhost: /cinder
+
+## Glance
+glance_service_port: 9292
+glance_api_servers: "{{ internal_lb_vip_address }}:{{ glance_service_port }}"
+glance_service_user_name: glance
+glance_rabbitmq_userid: glance
+glance_rabbitmq_vhost: /glance
+
+## Heat
+heat_rabbitmq_userid: heat
+heat_rabbitmq_vhost: /heat
+
+## Keystone
+keystone_admin_user_name: admin
+keystone_admin_tenant_name: admin
+keystone_admin_port: 35357
+keystone_service_port: 5000
+keystone_service_proto: http
+keystone_service_region: "{{ service_region }}"
+keystone_rabbitmq_userid: keystone
+keystone_rabbitmq_vhost: /keystone
+
+keystone_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(keystone_service_proto) }}"
+keystone_service_adminuri_insecure: "{% if keystone_service_adminuri_proto == 'https' and (keystone_user_ssl_cert is not defined or haproxy_user_ssl_cert is not defined) | bool %}true{% else %}false{% endif %}"
+keystone_service_adminuri: "{{ keystone_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ keystone_admin_port }}"
+keystone_service_adminurl: "{{ keystone_service_adminuri }}/v3"
+
+keystone_service_internaluri_proto: "{{ openstack_service_internaluri_proto | default(keystone_service_proto) }}"
+keystone_service_internaluri_insecure: "{% if keystone_service_internaluri_proto == 'https' and (keystone_user_ssl_cert is not defined or haproxy_user_ssl_cert is not defined) | bool %}true{% else %}false{% endif %}"
+keystone_service_internaluri: "{{ keystone_service_internaluri_proto }}://{{ internal_lb_vip_address }}:{{ keystone_service_port }}"
+keystone_service_internalurl: "{{ keystone_service_internaluri }}/v3"
+
+## Neutron
+neutron_service_port: 9696
+neutron_service_proto: http
+neutron_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(neutron_service_proto) }}"
+neutron_service_adminuri: "{{ neutron_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ neutron_service_port }}"
+neutron_service_adminurl: "{{ neutron_service_adminuri }}"
+neutron_service_user_name: neutron
+neutron_service_project_name: service
+neutron_service_region: "{{ service_region }}"
+neutron_rabbitmq_userid: neutron
+neutron_rabbitmq_vhost: /neutron
+neutron_plugin_type: ml2.lxb
+
+## Nova
+nova_service_port: 8774
+nova_metadata_port: 8775
+nova_service_proto: http
+nova_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(nova_service_proto) }}"
+nova_service_adminuri: "{{ nova_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ nova_service_port }}"
+nova_service_adminurl: "{{ nova_service_adminuri }}/v2.1/%(tenant_id)s"
+nova_service_region: "{{ service_region }}"
+nova_service_user_name: nova
+nova_service_project_name: service
+nova_service_project_domain_id: default
+nova_service_user_domain_id: default
+nova_rabbitmq_userid: nova
+nova_rabbitmq_vhost: /nova
+nova_keystone_auth_plugin: password
+
+## Swift
+swift_system_user_name: swift
+swift_system_shell: /bin/bash
+swift_system_comment: swift system user
+swift_system_home_folder: "/var/lib/{{ swift_system_user_name }}"
+
+## OpenStack Openrc
+openrc_os_auth_url: "{{ keystone_service_internalurl }}"
+openrc_os_password: "{{ keystone_auth_admin_password }}"
+openrc_os_domain_name: "Default"
+
+## Host security hardening
+# The openstack-ansible-security role provides security hardening for hosts
+# by applying security configurations from the STIG. Hardening is enabled by
+# default, but an option to opt out is available by setting the following
+# variable to 'false'.
+# Docs: http://docs.openstack.org/developer/openstack-ansible-security/
+apply_security_hardening: true
