@@ -63,6 +63,25 @@ inventory is found automatically.
 
     # cd playbooks
 
+Pre-flight checks
+~~~~~~~~~~~~~~~~~
+
+Before starting with the new version, you should do pre-flight checks
+to ensure everything is fine. If any of those check fail, the upgrade
+should stop to let the deployer chose what to do.
+
+Making sure LBaaS v1 isn't in the way
+`````````````````````````````````````
+
+Because LBaaS was deprecated, this playbook checks if it was previously
+deployed, and fails if this is the case.
+
+See :ref:`lbaas-version-check` for more details.
+
+.. code-block:: console
+
+    # openstack-ansible "${UPGRADE_PLAYBOOKS}/lbaas-version-check.yml"
+
 Cleanup old facts
 ~~~~~~~~~~~~~~~~~
 

@@ -9,6 +9,19 @@ Within the main :file:`scripts` directory there is an :file:`upgrade-utilities`
 directory, which contains an additional playbooks directory. These playbooks
 facilitate the upgrade process.
 
+.. _lbaas-version-check:
+
+lbaas-version-check.yml
+-----------------------
+
+This playbook is part of the general pre-flight checks.
+
+Because LBaaS v1 isn't supported in Newton and above, and there is no
+migration path, the deployer will have to manually disable LBaaS v1 before
+upgrading. For openstack-ansible, we are checking if ``neutron_lbaas`` is
+set to ``False``, but additional operations are to be done by the deployer for
+the cleanup.
+
 .. _fact-cleanup-playbook:
 
 ``ansible_fact_cleanup.yml``
