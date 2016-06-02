@@ -1,0 +1,8 @@
+---
+fixes:
+  - The ``/var/lib/libvirt/qemu/save`` directory is now a
+    symlink to ``{{ nova_system_home_folder }}/save`` to
+    resolve an issue where the default location used by the
+    libvirt managed save command can result with the root
+    partitions on compute nodes becoming full when
+    ``nova image-create`` is run on large instances.
