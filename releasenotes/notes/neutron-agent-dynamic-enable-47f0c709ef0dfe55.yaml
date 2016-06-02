@@ -1,0 +1,15 @@
+---
+features:
+  - Whether the Neutron DHCP Agent, Metadata Agent or LinuxBridge Agent
+    should be enabled is now dynamically determined based on the
+    ``neutron_plugin_type`` and the ``neutron_ml2_mechanism_drivers``
+    that are set. This aims to simplify the configuration of Neutron
+    services and eliminate the need for deployers to override the
+    entire ``neutron_services`` dict variable to disable these services.
+upgrade:
+  - Whether the Neutron DHCP Agent, Metadata Agent or LinuxBridge Agent
+    should be enabled is now dynamically determined based on the
+    ``neutron_plugin_type`` and the ``neutron_ml2_mechanism_drivers``
+    that are set. This aims to simplify the configuration of Neutron
+    services and eliminate the need for deployers to override the
+    entire ``neutron_services`` dict variable to disable these services.

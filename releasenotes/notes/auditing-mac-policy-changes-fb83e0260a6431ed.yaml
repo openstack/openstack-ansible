@@ -1,0 +1,15 @@
+---
+
+upgrade:
+  - |
+    The variable ``security_audit_apparmor_changes`` is now renamed to
+    ``security_audit_mac_changes`` and is enabled by default. Setting
+    ``security_audit_mac_changes`` to ``no`` will disable syscall auditing for
+    any changes to AppArmor policies (in Ubuntu) or SELinux policies (in
+    CentOS).
+features:
+  - |
+    The auditd rules template included a rule that audited changes to the
+    AppArmor policies, but the SELinux policy changes were not being audited.
+    Any changes to SELinux policies in ``/etc/selinux`` are now being logged
+    by auditd.

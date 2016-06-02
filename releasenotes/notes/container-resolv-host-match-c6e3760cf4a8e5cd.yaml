@@ -1,0 +1,6 @@
+---
+upgrade:
+  - The LXC container cache preparation process now copies DNS
+    resolution configuration from the host instead of implementing
+    its own configuration. The ``lxc_cache_resolvers`` variable
+    is therefore unnecessary and has been removed.

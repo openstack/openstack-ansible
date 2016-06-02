@@ -1,0 +1,9 @@
+---
+features:
+  - The openstack-ansible-memcached_server role includes
+    a new override,`memcached_connections` which is
+    automatically calculated from the number of memcached
+    connection limit plus additional 1k to configure
+    the OS nofile limit. Without proper nofile limit
+    configuration, memcached will crash in order to support
+    higher parallel connection TCP/Memcache counts.

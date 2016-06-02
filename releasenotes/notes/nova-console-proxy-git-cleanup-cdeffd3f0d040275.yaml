@@ -1,0 +1,8 @@
+---
+upgrade:
+  - Cleanup tasks are added to remove the nova console git
+    directories ``/usr/share/novnc`` and ``/usr/share/spice-html5``,
+    prior to cloning these inside the nova vnc and spice
+    console playbooks. This is necessary to guarantee
+    that local modifications do not break git clone
+    operations, especially during upgrades.

@@ -1,0 +1,29 @@
+---
+features:
+  - The ``lxc_container_create`` role will now build a container
+    based on the distro of the host OS.
+  - The ``lxc_container_create`` role now supports Ubuntu 14.04,
+    16.04, and RHEL/CentOS 7
+upgrade:
+  - The ``lxc_container_create`` role no longer uses the distro specific lxc
+    container create template.
+  - |
+    The following variable changes have been made in the  ``lxc_host`` role:
+
+    * **lxc_container_template**: Removed because the template option is now
+      contained within the operating system specific variable file loaded at
+      runtime.
+    * **lxc_container_template_options**: This option was renamed to
+      *lxc_container_download_template_options*. The deprecation filter was not
+      used because the values provided from this option have been
+      fundamentally changed and old overrides will cause problems.
+    * **lxc_container_release**: Removed because image is now tied with the host
+      operating system.
+    * **lxc_container_user_name**: Removed because the default users are no longer
+      created when the cached image is created.
+    * **lxc_container_user_password**: Removed because the default users are no
+      longer created when the cached image is created.
+    * **lxc_container_template_main_apt_repo**: Removed because this option is now
+      being set within the cache creation process and is no longer needed here.
+    * **lxc_container_template_security_apt_repo**: Removed because this option is
+      now being set within the cache creation process and is no longer needed here.

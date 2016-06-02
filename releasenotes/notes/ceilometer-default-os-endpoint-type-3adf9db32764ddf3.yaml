@@ -1,0 +1,6 @@
+---
+upgrade:
+  - The default value of ``service_credentials/os_endpoint_type``
+    within ceilometer's configuration file has been changed to
+    **internalURL**. This may be overridden through the use of
+    the ``ceilometer_ceilometer_conf_overrides`` variable.

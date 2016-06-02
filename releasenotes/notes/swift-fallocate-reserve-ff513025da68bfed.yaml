@@ -1,0 +1,11 @@
+---
+features:
+  - The ``fallocate_reserve` option can now be set (in bytes or as a percentage) for swift
+    by using the ``swift_fallocate_reserve`` variable in
+    ``/etc/openstack_deploy/user_variables.yml``. This value is the amount of space to
+    reserve on a disk to prevent a situation where swift is unable to remove objects due
+    to a lack of available disk space to work with. The default value is 1% of the total
+    disk size.
+upgrade:
+  - The ``swift_fallocate_reserve`` default value has changed from 10737418240
+    (10GB) to 1% in order to match the OpenStack swift default setting.

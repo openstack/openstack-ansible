@@ -1,0 +1,7 @@
+fixes:
+  - |
+    An Ansible task was added to disable the ``netconsole`` service on CentOS
+    systems if the service is installed on the system.
+
+    Deployers can opt-out of this change by setting
+    ``security_disable_netconsole`` to ``no``.

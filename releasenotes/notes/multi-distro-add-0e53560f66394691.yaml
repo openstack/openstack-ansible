@@ -1,0 +1,12 @@
+---
+features:
+  - CentOS 7 support has been added to the ``galera_client`` role.
+deprecations:
+  - The variable **galera_client_apt_packages** has been deprecated
+    when deploying the ``galera_client`` role on Ubuntu 14.04. This
+    variable has been replaced with **galera_client_packages** and
+    will be removed in the Ocata release.
+  - The variable **galera_apt_pinned_packages** has been deprecated
+    when deploying the ``galera_client`` role on Ubuntu 14.04. This
+    variable has been replaced with **galera_pinned_packages**
+    and will be removed in the Ocata release.

@@ -1,0 +1,7 @@
+---
+upgrade:
+  - The Neutron L3 Agent configuration for the handle_internal_only_routers
+    variable is removed in order to use the Neutron upstream default setting.
+    The current default for handle_internal_only_routers is True,
+    which does allow Neutron L3 router without external networks attached
+    (as discussed per https://bugs.launchpad.net/neutron/+bug/1572390).

@@ -1,0 +1,12 @@
+---
+upgrade:
+  - |
+    The LXC container cache preparation process now copies package
+    repository configuration from the host instead of implementing
+    its own configuration. The following variables are therefore
+    unnecessary and have been removed:
+
+    * ``lxc_container_template_main_apt_repo``
+    * ``lxc_container_template_security_apt_repo``
+    * ``lxc_container_template_apt_components``
+

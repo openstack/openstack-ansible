@@ -1,0 +1,17 @@
+---
+features:
+  - |
+    Apache MPM tunable support has been added to the os-keystone
+    role in order to allow MPM thread tuning.
+    Default values reflect the current Ubuntu default settings:
+
+    .. code-block:: yaml
+
+        keystone_httpd_mpm_backend: event
+        keystone_httpd_mpm_start_servers: 2
+        keystone_httpd_mpm_min_spare_threads: 25
+        keystone_httpd_mpm_max_spare_threads: 75
+        keystone_httpd_mpm_thread_limit: 64
+        keystone_httpd_mpm_thread_child: 25
+        keystone_httpd_mpm_max_requests: 150
+        keystone_httpd_mpm_max_conn_child: 0

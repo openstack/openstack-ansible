@@ -1,0 +1,9 @@
+---
+features:
+  - The ``os_swift`` role will now include the swift "staticweb" middleware
+    by default.
+upgrade:
+  - When upgrading a Swift deployment from Mitaka to Newton it should be noted
+    that the enabled middleware list has changed. In Newton the "staticweb"
+    middleware will be loaded by default. While the change adds a feature it is
+    non-disruptive in upgrades.

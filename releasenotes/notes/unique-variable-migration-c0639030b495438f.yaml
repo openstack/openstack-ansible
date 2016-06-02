@@ -1,0 +1,20 @@
+---
+upgrade:
+  - |
+    All variables in the security role are now prepended with ``security_`` to
+    avoid collisions with variables in other roles. All deployers who have
+    used the security role in previous releases will need to prepend all
+    security role variables with ``security_``.
+
+    For example, a deployer could have disabled direct root ssh logins with the
+    following variable:
+
+    .. code-block:: yaml
+
+       ssh_permit_root_login: yes
+
+    That variable would become:
+
+    .. code-block:: yaml
+
+       security_ssh_permit_root_login: yes

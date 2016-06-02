@@ -1,0 +1,15 @@
+---
+features:
+  - While default python interpreter for swift is cpython, pypy is 
+    now an option. This change adds the ability to greatly improve swift 
+    performance without the core code modifications. These changes have
+    been implemented using the documentation provided by Intel and
+    Swiftstack. Notes about the performance increase can be seen
+    `here <https://software.intel.com/en-us/blogs/2016/05/06/doubling-the-performance-of-openstack-swift-with-no-code-changes>`_.
+upgrade:
+  - A new option `swift_pypy_enabled` has been added to enable or
+    disable the pypy interpreter for swift. The default is "false".
+  - A new option `swift_pypy_archive` has been added to allow a pre-built
+    pypy archive to be downloaded and moved into place to support swift
+    running under pypy. This option is a dictionary and contains the URL
+    and SHA256 as keys.
