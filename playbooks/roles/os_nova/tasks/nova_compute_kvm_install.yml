@@ -38,6 +38,29 @@
     - nova-apt-packages
     - nova-compute-kvm-apt-packages
 
+- name: Check if qemu save directory is a directory
+  stat:
+    path: "/var/lib/libvirt/qemu/save"
+  register: qemu_savedir_stat
+
+- name: Check if qemu save directory is empty
+  shell: 'ls -1A /var/lib/libvirt/qemu/save'
+  register: qemu_savedir_empty
+
+# We force the link creation if our tests passed, this removes the directory as
+# well
+- name: Symlink qemu save dir to nova_libvirt_save_path
+  file:
+    path: "/var/lib/libvirt/qemu/save"
+    state: link
+    owner: "{{ nova_qemu_user }}"
+    group: "{{ nova_qemu_group }}"
+    src: "{{ nova_libvirt_save_path }}"
+    force: True
+  when:
+    - qemu_savedir_stat.stat.isdir
+    - qemu_savedir_empty.stdout_lines | length == 0
+
 - name: Install pip packages (venv)
   pip:
     name: "{{ item }}"

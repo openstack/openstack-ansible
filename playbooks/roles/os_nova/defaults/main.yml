@@ -42,6 +42,7 @@ nova_system_group_name: nova
 nova_system_shell: /bin/bash
 nova_system_comment: nova system user
 nova_system_home_folder: "/var/lib/{{ nova_system_user_name }}"
+nova_libvirt_save_path: "{{ nova_system_home_folder }}/save"
 
 ## DB
 nova_galera_user: nova
@@ -311,6 +312,8 @@ nova_pip_packages:
   - keystonemiddleware
   - nova
 
+nova_qemu_user: libvirt-qemu
+nova_qemu_group: kvm
 
 ## Tunable overrides
 nova_nova_conf_overrides: {}

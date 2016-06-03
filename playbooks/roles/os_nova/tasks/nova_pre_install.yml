@@ -66,6 +66,7 @@
     - { path: "{{ nova_system_home_folder }}/.ssh", mode: "0700" }
     - { path: "{{ nova_system_home_folder }}/cache/api" }
     - { path: "{{ nova_system_home_folder }}/instances" }
+    - { path: "{{ nova_libvirt_save_path }}", mode: "0750" }
     - { path: "/var/lock/nova" }
     - { path: "/var/run/nova" }
   tags:
