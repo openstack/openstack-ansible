@@ -137,6 +137,16 @@ Finally, run the playbooks by executing:
 
        $ scripts/run-playbooks.sh
 
+.. note::
+   Do not execute the ``run-playbooks.sh`` more than once. If something goes
+   wrong, it is necessary to start over as described below in the
+   `Rebuilding an AIO`_ section. Alternatively, it may be possible to
+   individually run each playbook rather than starting over. If any playbooks
+   need to be re-run after the initial deploy, they should be run from the
+   playbooks directory with the openstack-ansible command. Executing
+   ``run-playbooks.sh`` a second time results in an inconsistent state for LXC
+   IPtables rules and causes network connectivity issues from within containers.
+
 The installation process will take a while to complete, but here are some
 general estimates:
 
