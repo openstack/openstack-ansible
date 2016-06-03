@@ -1,0 +1,5 @@
+---
+fixes:
+  - Deleting variable entries from the ``global_overrides`` dictionary in
+    ``openstack_user_config.yml`` now properly removes those variables from
+    the ``openstack_inventory.json`` file. See Bug #1588902.
