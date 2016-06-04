@@ -15,7 +15,7 @@
 
 - name: Download LibVirt CPU map configuration script
   get_url:
-    url: "http://git.openstack.org/cgit/openstack-dev/devstack/plain/tools/cpu_map_update.py"
+    url: "http://git.openstack.org/cgit/openstack-dev/devstack/plain/tools/cpu_map_update.py?h=a631abadde7346b49fab5b2ac16561dff77050d7"
     dest: /openstack/cpu_map_update.py
     validate_certs: yes
     mode: 755
