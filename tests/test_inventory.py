@@ -69,7 +69,7 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
     inventory = None
 
     expected_groups = [
-        'aio1_containers',
+        'aio1-host_containers',
         'all',
         'all_containers',
         'aodh_alarm_evaluator',
