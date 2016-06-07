@@ -25,7 +25,7 @@ export BOOTSTRAP_OPTS=${BOOTSTRAP_OPTS:-''}
 
 # Run AIO bootstrap playbook
 pushd tests
-  ansible-playbook -i "localhost ansible-connection=local," \
+  ansible-playbook -i test-inventory.ini \
                    -e "${BOOTSTRAP_OPTS}" \
                    bootstrap-aio.yml
 popd
