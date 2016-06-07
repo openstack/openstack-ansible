@@ -21,6 +21,7 @@
     - role: "os_tempest"
       tempest_venv_download_url: "{{ openstack_repo_url }}/venvs/{{ openstack_release }}/{{ ansible_distribution | lower }}/tempest-{{ openstack_release }}.tgz"
       tempest_git_repo: "{{ openstack_repo_git_url }}/tempest"
+      pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"
       tags:
         - "os-tempest"
     - role: "rsyslog_client"

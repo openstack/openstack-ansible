@@ -218,6 +218,7 @@
       cinder_management_address: "{{ ansible_ssh_host }}"
       cinder_glance_host: "{{ internal_lb_vip_address }}"
       cinder_glance_service_port: "{{ glance_service_port }}"
+      pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"
       tags:
         - "os-cinder"
     - role: "ceph_client"

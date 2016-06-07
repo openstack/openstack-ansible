@@ -24,6 +24,7 @@
       swift_do_setup: False
       swift_do_sync: True
       swift_venv_tag: "{{ openstack_release }}"
+      pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"
       tags:
         - "os-swift-sync"
   vars:

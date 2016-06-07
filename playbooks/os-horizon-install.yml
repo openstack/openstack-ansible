@@ -108,6 +108,7 @@
       horizon_server_name: "{{ container_name }}"
       horizon_venv_tag: "{{ openstack_release }}"
       horizon_venv_download_url: "{{ openstack_repo_url }}/venvs/{{ openstack_release }}/{{ ansible_distribution | lower }}/horizon-{{ openstack_release }}.tgz"
+      pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"
       tags:
         - "os-horizon"
     - role: "rsyslog_client"

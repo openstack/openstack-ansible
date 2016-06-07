@@ -187,6 +187,7 @@
       neutron_local_ip: "{{ _local_ip }}"
       neutron_overlay_network: "{{ _overlay_network }}"
       neutron_provider_networks: "{{ _provider_networks }}"
+      pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"
       tags:
         - "os-neutron"
     - { role: "openstack_openrc", tags: [ "openstack-openrc" ] }
