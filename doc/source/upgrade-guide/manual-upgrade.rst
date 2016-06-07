@@ -122,6 +122,16 @@ See :ref:`repo-server-pip-conf-removal` for more details.
 
     # openstack-ansible "${UPGRADE_PLAYBOOKS}/repo-server-pip-conf-removal.yml"
 
+Ensure hostname aliases are created for non-RFC1034/35 hostnames
+----------------------------------------------------------------
+
+Ensure an alias is created for non-RFC1034/35 hostnames.
+
+See :ref:`old-hostname-compatibility` for details.
+
+.. code-block:: console
+
+    # openstack-ansible "${UPGRADE_PLAYBOOKS}/old-hostname-compatibility.yml"
 
 Upgrade infrastructure
 ~~~~~~~~~~~~~~~~~~~~~~
