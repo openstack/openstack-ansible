@@ -68,16 +68,6 @@ iptables -P INPUT ACCEPT
 iptables -P FORWARD ACCEPT
 iptables -P OUTPUT ACCEPT
 
-# Adjust settings based on the Cloud Provider info in OpenStack-CI
-if [ -f /etc/nodepool/provider -a -s /etc/nodepool/provider ]; then
-  source /etc/nodepool/provider
-
-  # Update the libvirt cpu map with a gate64 cpu model. This enables nova
-  # live migration for 64bit guest OSes on heterogenous cloud "hardware".
-  export BOOTSTRAP_OPTS="${BOOTSTRAP_OPTS} bootstrap_host_libvirt_config=yes"
-
-fi
-
 # Bootstrap an AIO
 pushd $(dirname ${0})/../tests
   sed -i '/\[defaults\]/a nocolor = 1/' ansible.cfg
