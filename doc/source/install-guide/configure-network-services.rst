@@ -161,7 +161,7 @@ The following procedure describes how to modify the
    .. code-block:: shell-session
 
       # openstack-ansible openstack-hosts-setup.yml --limit network_hosts\
-      --tags "openstack-hosts-setup,openstack-host-specific-kernel-modules"
+      --tags "openstack_hosts-config"
 
 #. Execute the neutron install playbook in order to update the configuration:
 
