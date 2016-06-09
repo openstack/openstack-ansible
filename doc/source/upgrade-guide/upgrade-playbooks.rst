@@ -29,7 +29,7 @@ into the upgraded environment and generate appropriately.
 This adds only new secrets, such as those necessary for new services or new settings
 added to existing services. Values set previously are not changed.
 
-.. _setup-infra-playbook:
+.. _repo-server-pip-conf-removal:
 
 ``repo-server-pip-conf-removal.yml``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -38,7 +38,7 @@ The presence of ``pip.conf`` locks down all Python installations to packages on 
 repo server. If ``pip.conf`` exists on the repo server, it creates a circular
 dependency, causing build failures.
 
-.. _repo-server-pip-conf-removal:
+.. _old-hostname-compatibility:
 
 ``old-hostname-compatibility.yml``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -49,7 +49,7 @@ in cases where the hostname is also the registered agent name. This playbook is
 only needed for upgrades of in-place upgrades of existing nodes or if a node is replaced or
 rebuilt it will be brought into the cluster using a compliant hostname.
 
-.. _old-hostname-compatibility:
+.. _setup-infra-playbook:
 
 ``setup-infrastructure.yml``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -80,8 +80,6 @@ upgrade RabbitMQ.
 
 The ``galera_upgrade`` variable tells the ``galera_server`` role to remove the
 current version of MariaDB and Galera and upgrade to the 10.x series.
-
-.. _setup-infra-playbook:
 
 --------------
 
