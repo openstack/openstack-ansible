@@ -1051,6 +1051,36 @@ def load_user_configuration(config_path):
     return user_defined_config
 
 
+def make_backup(config_path, inventory_file_path):
+    # Create a backup of all previous inventory files as a tar archive
+    inventory_backup_file = os.path.join(
+        config_path,
+        'backup_openstack_inventory.tar'
+    )
+    with tarfile.open(inventory_backup_file, 'a') as tar:
+        basename = os.path.basename(inventory_file_path)
+        backup_name = get_backup_name(basename)
+        tar.add(inventory_file_path, arcname=backup_name)
+
+
+def get_backup_name(basename):
+    utctime = datetime.datetime.utcnow()
+    utctime = utctime.strftime("%Y%m%d_%H%M%S")
+    return '%s-%s.json' % (basename, utctime)
+
+
+def get_inventory(config_path, inventory_file_path):
+    if os.path.isfile(inventory_file_path):
+        with open(inventory_file_path, 'rb') as f:
+            dynamic_inventory = json.loads(f.read())
+
+        make_backup(config_path, inventory_file_path)
+    else:
+        dynamic_inventory = copy.deepcopy(INVENTORY_SKEL)
+
+    return dynamic_inventory
+
+
 def main(all_args):
     """Run the main application."""
     # Get the path to the user configuration files
@@ -1066,24 +1096,8 @@ def main(all_args):
     dynamic_inventory_file = os.path.join(
         config_path, 'openstack_inventory.json'
     )
-    if os.path.isfile(dynamic_inventory_file):
-        with open(dynamic_inventory_file, 'rb') as f:
-            dynamic_inventory = json.loads(f.read())
 
-        # Create a backup of all previous inventory files as a tar archive
-        inventory_backup_file = os.path.join(
-            config_path,
-            'backup_openstack_inventory.tar'
-        )
-        with tarfile.open(inventory_backup_file, 'a') as tar:
-            basename = os.path.basename(dynamic_inventory_file)
-            # Time stamp the inventory file in UTC
-            utctime = datetime.datetime.utcnow()
-            utctime = utctime.strftime("%Y%m%d_%H%M%S")
-            backup_name = '%s-%s.json' % (basename, utctime)
-            tar.add(dynamic_inventory_file, arcname=backup_name)
-    else:
-        dynamic_inventory = copy.deepcopy(INVENTORY_SKEL)
+    dynamic_inventory = get_inventory(config_path, dynamic_inventory_file)
 
     # Save the users container cidr as a group variable
     cidr_networks = user_defined_config.get('cidr_networks')
