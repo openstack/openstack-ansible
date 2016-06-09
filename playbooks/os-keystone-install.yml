@@ -136,7 +136,7 @@
         login_user: "{{ galera_root_user }}"
         login_password: "{{ galera_root_password }}"
         login_host: "{{ keystone_galera_address }}"
-        name: "{{ keystone_galera_database }}"
+        name: "{{ keystone_galera_user }}"
         password: "{{ keystone_container_mysql_password }}"
         host: "{{ item }}"
         state: "present"
