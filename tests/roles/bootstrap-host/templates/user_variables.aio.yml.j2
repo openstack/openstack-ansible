@@ -98,3 +98,8 @@ apply_security_hardening: true
 ## Wheel mirrors for the repo_build to use
 repo_build_pip_extra_indexes: {{ repo_build_pip_extra_indexes }}
 {% endif %}
+
+{% if nova_uca_enable is defined %}
+## TODO(odyssey4me) Remove this once OpenStack-Infra has UCA mirrors
+nova_uca_enable: {{ nova_uca_enable }}
+{% endif %}
