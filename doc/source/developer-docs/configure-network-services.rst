@@ -103,7 +103,7 @@ Deploying LBaaS v2
        # openstack-ansible os-neutron-install.yml
        # openstack-ansible os-horizon-install.yml
 
-.. _lbaas-special-notes
+.. _lbaas-special-notes:
 
 Special notes about LBaaS
 -------------------------

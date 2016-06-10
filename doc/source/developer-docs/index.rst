@@ -10,12 +10,13 @@ Contents:
    :maxdepth: 2
 
    quickstart-aio
+   installation-hosts-limited-connectivity
    scripts
    playbooks
    extending
+   ops
    contribute
    core-reviewers
    additional-roles
    inventory
    deploy-config
-

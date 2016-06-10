@@ -1,10 +1,11 @@
 `Home <index.html>`__ OpenStack-Ansible Installation Guide
 
-Appendix F. Using Nuage Neutron Plugin
---------------------------------------
+======================================
+Appendix C. Using Nuage Neutron Plugin
+======================================
 
 Introduction
-============
+~~~~~~~~~~~~
 
 This document describes the steps required to deploy Nuage Networks VCS
 with OpenStack-Ansible (OSA). These steps include:
@@ -20,7 +21,7 @@ with OpenStack-Ansible (OSA). These steps include:
 - Execute the playbooks.
 
 Prerequisites
-=============
+~~~~~~~~~~~~~
 
 #. The deployment environment has been configured according to OSA
    best-practices. This includes cloning OSA software and bootstrapping
@@ -33,7 +34,7 @@ Prerequisites
    /opt/nuage-openstack-ansible
 
 Configure Nuage Neutron Plugin
-==============================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Configuring the Neutron plugin requires creating/editing of parameters
 in following two files:
@@ -122,7 +123,7 @@ Also modify the following parameters in this file as per your Nuage VCS environm
         - { name: "nuage_repo", link: "<Local PyPi Mirror URL>" }
 
 Installation
-============
+~~~~~~~~~~~~
 
 #. After multi-node OpenStack cluster is setup as detailed above; start
    the OpenStack deployment as listed in the OpenStack-Ansible Install guide by
