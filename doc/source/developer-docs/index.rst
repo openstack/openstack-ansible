@@ -17,4 +17,5 @@ Contents:
    core-reviewers
    additional-roles
    inventory
+   deploy-config
 

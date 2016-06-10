@@ -9,24 +9,10 @@ Chapter 4. Deployment configuration
    configure-networking.rst
    configure-hostlist.rst
    configure-creds.rst
-   configure-hypervisor.rst
-   configure-nova.rst
-   configure-ironic.rst
    configure-glance.rst
-   configure-cinder.rst
-   configure-swift.rst
-   configure-haproxy.rst
-   configure-horizon.rst
-   configure-rabbitmq.rst
-   configure-ceilometer.rst
-   configure-aodh.rst
-   configure-keystone.rst
-   configure-network-services.rst
    configure-openstack.rst
    configure-sslcertificates.rst
    configure-configurationintegrity.rst
-   configure-federation.rst
-   configure-ceph.rst
 
 
 **Figure 4.1. Installation work flow**
