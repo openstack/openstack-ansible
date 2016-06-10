@@ -1,3 +1,4 @@
+
 .. _manual-upgrade:
 
 Manual upgrade steps
@@ -71,6 +72,16 @@ inventory is found automatically.
 
    # cd playbooks
 
+Delete old repo containers
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Destroy the old repo containers to re-create the repo containers
+later in the upgrade process to avoid dependency issues from Kilo.
+
+.. code-block:: console
+
+   # openstack-ansible lxc-containers-destroy.yml --limit repo_all
+
 Cleanup old facts
 ~~~~~~~~~~~~~~~~~
 
@@ -131,18 +142,18 @@ This command is the same as doing host setups on a new install. The first
 member of the ``galera_all`` host group is excluded to prevent simultaneous
 restarts of all Galera containers.
 
-Update Galera LXC container configuration
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Update Galera LXC container configuration and re-create the repo containers
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Update the first Galera container's configuration independently.
+Update the configuration for the first Galera container and all of the repo containers.
 
 .. code-block:: console
 
-   # openstack-ansible lxc-containers-create.yml --limit galera_all[0]
+   # openstack-ansible lxc-containers-create.yml --limit galera_all[0]:repo_all
 
 This command is a subset of the host setup playbook, limited to the first
-member of the ``galera_all`` host group so that its container is restarted only
-after other Galera containers have been restarted.
+member of the ``galera_all`` and ``repo_all`` host groups so these are the only
+containers restarted only after other Galera containers have been restarted.
 
 Cleanup ``pip.conf`` file in the ``repo_servers``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
