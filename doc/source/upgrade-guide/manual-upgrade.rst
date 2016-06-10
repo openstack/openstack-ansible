@@ -1,7 +1,13 @@
 .. _manual-upgrade:
 
-Manual Upgrade Steps
-====================
+===============
+Manual upgrades
+===============
+
+Deployers can run the upgrade steps manually. Manual execution is useful for
+scoping the changes in the upgrade process (For example, in very large
+deployments with strict SLA requirements), or for inclusion into other
+orchestration for upgrade automation beyond what OpenStack-Ansible provides.
 
 The steps detailed here match those performed by the ``run-upgrade.sh``
 script. Any of these steps can safely be run multiple times.
@@ -17,8 +23,8 @@ Ensure your OpenStack-Ansible code is on the latest Newton release tag (14.x.x).
     # LATEST_TAG=$(git describe --abbrev=0 --tags)
     # git checkout ${LATEST_TAG}
 
-Preparing the shell variables
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Prepare the shell variables
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. note::
 

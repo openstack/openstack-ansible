@@ -1,15 +1,17 @@
+=====================
 Upgrade Documentation
 =====================
 
 In this section you can find information on the Mitaka to
-Newton upgrade process.
+Newton upgrade process for OpenStack-Ansible.
 
-Contents:
+Table of Contents:
 
 .. toctree::
    :maxdepth: 2
 
    overview
+   minor-upgrade
+   script-upgrade
    manual-upgrade
-   scripts
-   upgrade-playbooks
+   reference
