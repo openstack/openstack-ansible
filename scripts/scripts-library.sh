@@ -19,7 +19,7 @@
 LINE='----------------------------------------------------------------------'
 MAX_RETRIES=${MAX_RETRIES:-5}
 REPORT_DATA=${REPORT_DATA:-""}
-ANSIBLE_PARAMETERS=${ANSIBLE_PARAMETERS:-""}
+ANSIBLE_PARAMETERS=${ANSIBLE_PARAMETERS:-" -e 'gather_facts=False' "}
 STARTTIME="${STARTTIME:-$(date +%s)}"
 PIP_INSTALL_OPTIONS=${PIP_INSTALL_OPTIONS:-'pip==8.1.2 setuptools==22.0.0 wheel==0.29.0 '}
 

@@ -15,6 +15,7 @@
 
 - name: haproxy container config
   hosts: haproxy_all
+  gather_facts: "{{ gather_facts | default(True) }}"
   max_fail_percentage: 0
   user: root
   tasks:
@@ -49,6 +50,7 @@
     - haproxy-lxc-container-setup
 
 - hosts: haproxy
+  gather_facts: "{{ gather_facts | default(True) }}"
   user: root
   vars_files:
     - "{{ haproxy_keepalived_vars_file | default('vars/configs/keepalived_haproxy.yml')}}"
@@ -58,6 +60,7 @@
 
 - name: Install haproxy
   hosts: haproxy
+  gather_facts: "{{ gather_facts | default(True) }}"
   max_fail_percentage: 20
   user: root
   pre_tasks:

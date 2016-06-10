@@ -19,6 +19,7 @@
 
 - name: Apply security hardening configurations
   hosts: "{{ host_group|default('hosts') }}"
+  gather_facts: "{{ gather_facts | default(True) }}"
   user: root
   roles:
     - { role: "openstack-ansible-security",

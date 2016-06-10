@@ -39,6 +39,12 @@ info_block "Checking for required libraries." 2> /dev/null || source $(dirname $
 
 # Initiate the deployment
 pushd "playbooks"
+  ansible -m setup localhost
+
+  if [ "${DEPLOY_HOST}" == "no" ]; then
+    ansible -m setup all
+  fi
+
   if [ "${DEPLOY_HOST}" == "yes" ]; then
     # Install all host bits
     install_bits openstack-hosts-setup.yml
@@ -70,7 +76,7 @@ pushd "playbooks"
 
     # Create the containers.
     install_bits lxc-containers-create.yml
-
+    ansible -m setup all
     # Log some data about the instance and the rest of the system
     log_instance_info
 

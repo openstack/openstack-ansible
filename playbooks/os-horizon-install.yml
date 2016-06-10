@@ -15,6 +15,7 @@
 
 - name: Install horizon server
   hosts: horizon_all
+  gather_facts: "{{ gather_facts | default(True) }}"
   max_fail_percentage: 20
   user: root
   pre_tasks:

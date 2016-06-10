@@ -15,6 +15,7 @@
 
 - name: Installation and setup of Ironic
   hosts: ironic_all
+  gather_facts: "{{ gather_facts | default(True) }}"
   user: root
   pre_tasks:
     - name: Use the lxc-openstack aa profile
