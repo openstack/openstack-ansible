@@ -156,7 +156,7 @@ neutron_rpc_workers: 0
 # If ``neutron_metadata_workers`` is unset the system will use half the number of available VCPUs to
 # compute the number of api workers to use.
 # neutron_metadata_workers: 16
-neutron_metadata_backlog: 128
+neutron_metadata_backlog: 4096
 
 ## Auth
 neutron_service_project_name: service
