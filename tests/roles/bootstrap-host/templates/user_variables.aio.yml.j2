@@ -57,6 +57,9 @@ galera_innodb_log_buffer_size: 32M
 galera_wsrep_provider_options:
  - { option: "gcache.size", value: "32M" }
 
+## Neutron settings
+neutron_metadata_checksum_fix: True
+
 ## Set workers for all services to optimise memory usage
 ceilometer_api_workers: 2
 ceilometer_collector_workers: 2

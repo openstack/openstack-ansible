@@ -60,27 +60,20 @@ pushd "playbooks"
                   -t "${COMMAND_LOGS}/host_net_bounce" \
                   &> ${COMMAND_LOGS}/host_net_bounce.log
 
+    # If run-playbooks is executed more than once, the above lxcbr0 network
+    # restart will break any existing container networks. The lxc_host role
+    # places a convenience script on the host which fixes that, so let's use
+    # it to repair the container networks.
+    if [ -f /usr/local/bin/lxc-veth-check ]; then
+      /usr/local/bin/lxc-veth-check
+    fi
+
     # Create the containers.
     install_bits lxc-containers-create.yml
 
     # Log some data about the instance and the rest of the system
     log_instance_info
 
-    # When running in an AIO, we need to drop the following iptables rule in any neutron_agent containers
-    # to that ensure instances can communicate with the neutron metadata service.
-    # This is necessary because in an AIO environment there are no physical interfaces involved in
-    # instance -> metadata requests, and this results in the checksums being incorrect.
-    if [ "${ADD_NEUTRON_AGENT_CHECKSUM_RULE}" == "yes" ]; then
-      mkdir -p "${COMMAND_LOGS}/add_neutron_agent_checksum_rule"
-      ansible neutron_agent -m command \
-                            -a '/sbin/iptables -t mangle -A POSTROUTING -p tcp --sport 80 -j CHECKSUM --checksum-fill' \
-                            -t "${COMMAND_LOGS}/add_neutron_agent_checksum_rule" \
-                            &> ${COMMAND_LOGS}/add_neutron_agent_checksum_rule.log
-      ansible neutron_agent -m shell \
-                            -a 'DEBIAN_FRONTEND=noninteractive apt-get install iptables-persistent' \
-                            -t "${COMMAND_LOGS}/add_neutron_agent_checksum_rule" \
-                            &>> ${COMMAND_LOGS}/add_neutron_agent_checksum_rule.log
-    fi
   fi
 
   if [ "${DEPLOY_LB}" == "yes" ]; then
