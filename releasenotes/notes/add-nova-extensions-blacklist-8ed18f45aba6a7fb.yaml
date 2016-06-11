@@ -1,0 +1,11 @@
+---
+features:
+  - |
+    Deployers can now blacklist certain Nova extensions
+    by providing a list of such extensions in
+    ``horizon_nova_extensions_blacklist`` variable, for example:
+
+    .. code-block:: yaml
+
+        horizon_nova_extensions_blacklist:
+          - "SimpleTenantUsage"
