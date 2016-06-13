@@ -109,3 +109,6 @@ uca_apt_repo_url: {{ uca_apt_repo_url }}
 repo_build_pip_no_binary:
   - libvirt-python
 
+# The container backing store is set to 'overlayfs' to speed up the
+# AIO build time.
+lxc_container_backing_store: overlayfs
