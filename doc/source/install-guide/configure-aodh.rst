@@ -9,74 +9,6 @@ The Telemetry (ceilometer) alarming services perform the following functions:
 
   - Allows you to set alarms based on threshold evaluation for a collection of samples.
 
-Aodh on OpenStack-Ansible requires a configured MongoDB backend prior to running
-the Aodh playbooks. To specify the connection data, edit the
-``user_variables.yml`` file (see section `Configuring the user data`_
-below).
-
-Setting up a MongoDB database for Aodh
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-1. Install the MongoDB package:
-
-  .. code-block:: console
-
-     # apt-get install mongodb-server mongodb-clients python-pymongo
-
-
-2. Edit the ``/etc/mongodb.conf`` file and change ``bind_ip`` to the
-   management interface of the node running Aodh:
-
-  .. code-block:: ini
-
-     bind_ip = 10.0.0.11
-
-
-3. Edit the ``/etc/mongodb.conf`` file and enable ``smallfiles``:
-
-  .. code-block:: ini
-
-     smallfiles = true
-
-
-4. Restart the MongoDB service:
-
-  .. code-block:: console
-
-     # service mongodb restart
-
-
-5. Create the Aodh database:
-
-  .. code-block:: console
-
-     # mongo --host controller --eval 'db = db.getSiblingDB("aodh"); db.addUser({user: "aodh", pwd: "AODH_DBPASS", roles: [ "readWrite", "dbAdmin" ]});'
-
-
-  This returns:
-
-  .. code-block:: console
-
-     MongoDB shell version: 2.4.x
-     connecting to: controller:27017/test
-     {
-       "user" : "aodh",
-       "pwd" : "72f25aeee7ad4be52437d7cd3fc60f6f",
-       "roles" : [
-        "readWrite",
-        "dbAdmin"
-       ],
-       "_id" : ObjectId("5489c22270d7fad1ba631dc3")
-     }
-
-
-  .. note::
-  
-      Ensure ``AODH_DBPASS`` matches the
-      ``aodh_container_db_password`` in the
-      ``/etc/openstack_deploy/user_secrets.yml`` file. This
-      allows Ansible to configure the connection string within
-      the Aodh configuration files.
 
 
 Configuring the hosts
@@ -119,19 +51,6 @@ The ``metering-alarm_hosts`` provides several services:
 
 These services communicate by using the OpenStack messaging bus. Only
 the API server has access to the data store.
-
-Configuring the user data
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Specify the following considerations in
-``/etc/openstack_deploy/user_variables.yml``:
-
-  - The type of database backend Aodh uses. Currently, only MongoDB
-    is supported: ``aodh_db_type: mongodb``
-
-  - The IP address of the MonogoDB host: ``aodh_db_ip: localhost``
-
-  - The port of the MongoDB service: ``aodh_db_port: 27017``
 
 Run the ``os-aodh-install.yml`` playbook. If deploying a new OpenStack
 (instead of only Aodh), run ``setup-openstack.yml``.

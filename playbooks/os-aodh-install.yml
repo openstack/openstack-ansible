@@ -91,6 +91,34 @@
       tags:
         - aodh-rabbitmq
         - aodh-rabbitmq-user
+    - name: Create DB for service
+      mysql_db:
+        login_user: "{{ galera_root_user }}"
+        login_password: "{{ galera_root_password }}"
+        login_host: "{{ aodh_galera_address }}"
+        name: "{{ aodh_galera_database }}"
+        state: "present"
+      when: inventory_hostname == groups['aodh_all'][0]
+      delegate_to: "{{ groups['galera_all'][0] }}"
+      tags:
+        - mysql-db-setup
+    - name: Grant access to the DB for the service
+      mysql_user:
+        login_user: "{{ galera_root_user }}"
+        login_password: "{{ galera_root_password }}"
+        login_host: "{{ aodh_galera_address }}"
+        name: "{{ aodh_galera_user }}"
+        password: "{{ aodh_container_db_password }}"
+        host: "{{ item }}"
+        state: "present"
+        priv: "{{ aodh_galera_database }}.*:ALL"
+      when: inventory_hostname == groups['aodh_all'][0]
+      delegate_to: "{{ groups['galera_all'][0] }}"
+      with_items:
+        - "localhost"
+        - "%"
+      tags:
+        - mysql-db-setup
   roles:
     - role: "os_aodh"
       aodh_venv_tag: "{{ openstack_release }}"
@@ -107,6 +135,9 @@
         - "aodh-rsyslog-client"
   vars:
     is_metal: "{{ properties.is_metal|default(false) }}"
+    aodh_galera_address: "{{ internal_lb_vip_address }}"
+    aodh_galera_user: aodh
+    aodh_galera_database: aodh
     aodh_rabbitmq_userid: aodh
     aodh_rabbitmq_vhost: /aodh
     aodh_rabbitmq_servers: "{{ rabbitmq_servers }}"

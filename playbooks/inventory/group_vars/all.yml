@@ -86,12 +86,11 @@ dhcp_domain: openstacklocal
 service_ldap_backend_enabled: "{{ keystone_ldap is defined and keystone_ldap.Default is defined }}"
 
 ## Aodh DB info
-aodh_database_name: aodh
-aodh_database_user: aodh
-aodh_db_type: mongodb
-aodh_db_ip: localhost
-aodh_db_port: 27017
-aodh_connection_string: "{{ aodh_db_type }}://{{ aodh_database_user }}:{{ aodh_container_db_password }}@{{ aodh_db_ip }}:{{ aodh_db_port }}/{{ aodh_database_name }}"
+aodh_galera_user: aodh
+aodh_galera_database: aodh
+aodh_galera_address: "{{ internal_lb_vip_address }}"
+aodh_connection_string: "mysql+pymysql://{{ aodh_galera_user }}:{{ aodh_container_db_password }}@{{ aodh_galera_address }}/{{ aodh_galera_database }}?charset=utf8"
+
 
 ## Ceilometer
 ceilometer_service_user_name: ceilometer
