@@ -24,6 +24,13 @@ are not there by default.
    Do not run this playbook until after all the services have
    stopped using the shared configuration.
 
+.. _fact-cleanup-playbook:
+
+``ansible_fact_cleanup.yml``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This calls a script to removes files in ``/etc/openstack_deploy/ansible_facts/``
+
 .. _config-change-playbook:
 
 ``deploy-config-changes.yml``
@@ -131,6 +138,13 @@ The following stanza adds to
 
 This playbook cleans up older MariaDB apt repositories which used HTTP instead
 of HTTPS.
+
+.. _memcached-flush:
+
+``memcached-flush.yml``
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Sends "flush_all" to memcached with the help of nc.
 
 --------------
 

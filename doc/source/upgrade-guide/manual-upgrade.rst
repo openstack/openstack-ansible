@@ -71,6 +71,18 @@ inventory is found automatically.
 
    # cd playbooks
 
+Cleanup old facts
+~~~~~~~~~~~~~~~~~
+
+Some configuration changed, and old facts should be purged before
+the upgrade.
+
+See :ref:`fact-cleanup-playbook` for more details.
+
+.. code-block:: console
+
+    # openstack-ansible "${UPGRADE_PLAYBOOKS}/ansible_fact_cleanup.yml"
+
 Update configuration and environment files
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -95,6 +107,16 @@ See :ref:`user-secrets-playbook` for more details.
 .. code-block:: console
 
    # openstack-ansible "${UPGRADE_PLAYBOOKS}/user-secrets-adjustment.yml"
+
+Remove MariaDB apt repositories leftovers
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This makes sures that all references to mariadb in apt sources are removed.
+
+.. code-block:: console
+
+   # openstack-ansible "${UPGRADE_PLAYBOOKS}/mariadb-apt-cleanup.yml"
+
 
 Upgrade hosts
 ~~~~~~~~~~~~~
@@ -166,6 +188,15 @@ See :ref:`neutron-port-sec-playbook` for details.
 .. code-block:: console
 
    # openstack-ansible "${UPGRADE_PLAYBOOKS}/disable-neutron-port-security.yml"
+
+Flush Memcached cache
+~~~~~~~~~~~~~~~~~~~~~
+
+See :ref:`memcached-flush` for details.
+
+.. code-block:: console
+
+    # openstack-ansible "${UPGRADE_PLAYBOOKS}/memcached-flush.yml"
 
 Upgrade OpenStack
 ~~~~~~~~~~~~~~~~~
