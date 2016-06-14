@@ -54,9 +54,7 @@ pushd "playbooks"
     # NOTE(mattt): We have to skip V-38462 as openstack-infra are now building
     #              images with apt config Apt::Get::AllowUnauthenticated set
     #              to true.
-    # NOTE(cloudnull): We have to skip V-38496,V-38670 as openstack-infra are now building
-    #                  images with open users resulting in "System accounts are unlocked"
-    install_bits --skip-tag "V-38462,V-38496,V-38670" security-hardening.yml
+    install_bits --skip-tag "V-38462" security-hardening.yml
 
     # Bring the lxc bridge down and back up to ensures the iptables rules are in-place
     # This also will ensure that the lxc dnsmasq rules are active.
