@@ -38,8 +38,9 @@ for existing roles.
    and user prepared
 #. service add: register the service (each of: service type, service project,
    service user, and endpoints) within Keystone's service catalog.
-#. service setup: install a service-startup script (init, upstart, etc.) so
-   that the service will start up when the container or host next starts.
+#. service setup: install a service-startup script (init, upstart, SystemD,
+   etc.) so that the service will start up when the container or host next
+   starts.
 #. service init/startup: signal to the host or container to start the services
 
 There may be other specialized steps required by some services but most of the
@@ -133,6 +134,196 @@ Deploying the Role
 .. _conf.d: extending.html#conf-d
 .. _as described in the Install Guide: ../install-guide/configure-creds.html#configuring-service-credentials
 .. _Extending OpenStack-Ansible: extending.html#user-yml-files
+
+Role development maturity
+-------------------------
+In order to include a role into the integrated build implemented by the
+playbooks in the ``openstack/openstack-ansible`` repository, it needs to
+meet an appropriate level of maturity requirements. Developers are
+encouraged to observe the below-mentioned patterns in the existing roles.
+
+.. note::
+   Many of the existing roles may not fully implement all the patterns
+   just yet. It is important to look through multiple roles to get an
+   idea of the common patterns rather than to fixate on a single role's
+   pattern.
+
+The development of a role will usually go through the following stages:
+
+#. Initial role development
+
+   * Include base scaffolding. To facilitate development and the tests
+     implemented across all OpenStack-Ansible roles, a base set of folders
+     and files need to be implemented. A base set of configuration and test
+     facilitation scripts must include at least the following:
+
+     * ``tox.ini``:
+       The lint testing, documentation build, release notes build and
+       functional build execution process for the role's gate tests are all
+       defined in this file.
+     * ``test-requirements.txt``:
+       The python requirements which must be installed when executing the
+       tests.
+     * ``other-requirements.txt``:
+       The binary requirements which must be installed on the host the tests
+       are executed on for the python requirements and the tox execution to
+       work.
+     * ``setup.cfg`` and ``setup.py``:
+       Information about the repository which is used during the build of any
+       artifacts.
+     * ``run_tests.sh``:
+       A convenient script for developers to execute all standard tests on a
+       suitable host.
+     * ``Vagrantfile``:
+       A convenient configuration file to allow a developer to easily create a
+       test virtual machine using `Vagrant`_. This must automatically execute
+       ``run_tests.sh``.
+     * ``README.rst``, ``LICENSE``, ``CONTRIBUTING.rst``:
+       A set of standard files which have content describing their purpose.
+     * ``.gitignore``:
+       A standard git configuration file for the repository which should be
+       pretty uniform across all the repositories.
+     * ``.gitreview``:
+       A standard file configured for the project to inform the ``git-review``
+       plugin where to find the upstream gerrit remote for the repository.
+
+   * The role development should initially be focused on implementing a set of
+     tasks and a test playbook which converge. The convergence must:
+
+     * Implement ``developer_mode`` to build from a git source into a Python
+       venv.
+     * Deploy the applicable configuration files in the right places.
+     * Ensure that the service starts.
+
+     The convergence may involve consuming other OpenStack-Ansible roles (For
+     example: ``galera_server``, ``galera_client``, ``rabbitmq_server``) in
+     order to ensure that the appropriate infrastructure is in place. Reuse
+     of existing roles in OpenStack-Ansible or Ansible Galaxy is strongly
+     encouraged.
+
+   * The role *must* support Ubuntu 14.04 LTS and Ubuntu 16.04 LTS. It should
+     ideally also support CentOS7 but this is not required at this time. The
+     patterns to achieve this include:
+
+     * The separation of platform specific variables into role vars files.
+     * The detection and handling of different init systems (init.d, SystemD).
+     * The detection and handling of different package managers (apt, yum).
+     * The detection and handling of different network configuration methods.
+
+     There are several examples of these patterns implemented across many of
+     the OpenStack-Ansible roles. Developers are advised to inspect the
+     established patterns and either implement or improve upon them.
+
+   * The role implementation should be done in such a way that it is agnostic
+     with regards to whether it is implemented in a container, or on a
+     physical host. The test infrastructure may make use of LXC containers for
+     the separation of services, but if a role is used by a playbook that
+     targets a host, it must work regardless of whether that host is a
+     container, a virtual server, or a physical server. The use of LXC
+     containers for role tests is not required but it may be useful in order
+     to simulate a multi-node build out as part of the testing infrastructure.
+
+   * Any secrets (For example: passwords) should not be provided with default
+     values in the tasks, role vars, or role defaults. The tasks should be
+     implemented in such a way that any secrets required, but not provided,
+     should result in the task execution failure. It is important for a
+     secure-by-default implementation to ensure that an environment is not
+     vulnerable due to the production use of default secrets. Deployers
+     must be forced to properly provide their own secret variable values.
+
+   * Once the initial convergence is working and the services are running,
+     the role development should focus on implementing some level of
+     functional testing. Ideally, the functional tests for an OpenStack role
+     should make use of Tempest to execute the functional tests. The ideal
+     tests to execute are scenario tests as they test the functions that
+     the service is expected to do in a production deployment. In the absence
+     of any scenario tests for the service a fallback option is to implement
+     the smoke tests instead.
+
+   * The role must include documentation. The `Documentation and Release Note
+     Guidelines`_ provide specific guidelines with regards to style and
+     conventions. The documentation must include a description of the
+     mandatory infrastructure (For example: a database and a message queue are
+     required), variables (For example: the database name and credentials) and
+     group names (For example: The role expects a group named ``foo_all`` to
+     be present and it expects the host to be a member of it) for the role's
+     execution to succeed.
+
+   .. _Documentation and Release Note Guidelines: contribute.html#documentation-and-release-note-guidelines
+   .. _Vagrant: https://www.vagrantup.com/
+
+#. Integration development
+
+   Once the role has implemented the above requirements, work can begin on
+   integrating the role into the integrated build. This involves the
+   preparation of the following items:
+
+   * Host and container group configuration
+
+     This is implemented into the dynamic inventory through the definition of
+     content in an ``env.d`` file. A description of how these work can be
+     found in `Appendix H`_ of the Installation Guide.
+
+   * Load balancer configuration
+
+     OpenStack-Ansible deploys services in a highly available configuration by
+     default, so all API services must be configured for implementation behind
+     HAProxy. This is done through the modification of
+     ``playbooks/vars/configs/haproxy_config.yml``.
+
+   * Install playbook
+
+     In order to implement the role in the appropriate way, an
+     ``os-<service>-install.yml`` playbook must be created and targeted
+     at the appropriate group defined in the service ``env.d`` file. The
+     playbook should also ensure that the database(s), database user(s),
+     rabbitmq vhost and rabbitmq user are setup for the service. It is
+     crucial that the implementation of the service is optional and that the
+     deployer must opt-in to the deployment through the population of a host
+     in the applicable host group. If the host group has no hosts, Ansible
+     skips the playbook's tasks automatically.
+
+   * Secrets
+
+     Any secrets required for the role to work must be noted in the
+     ``etc/openstack_deploy/user_secrets.yml`` file.
+
+   * Group vars
+
+     Any variables needed by other roles to connect to the new role, or by the
+     new role to connect to other roles, should be implemented in
+     ``playbooks/inventory/group_vars``. The group vars are essentially the
+     glue which playbooks use to ensure that all roles are given the
+     appropriate information. When group vars are implemented it should be a
+     minimum set to achieve the goal of integrating the new role into the
+     integrated build.
+
+   * Documentation
+
+     Content must be added to the Installation Guide to describe how to
+     implement the new service in an integrated environment. This content must
+     adhere to the `Documentation and Release Note Guidelines`_. Until the
+     role has integrated functional testing implemented, the documentation
+     must make it clear that the service inclusion in OpenStack-Ansible is
+     experimental and is not fully tested by OpenStack-Ansible in an
+     integrated build.
+
+   * Release note
+
+     A feature release note must be added to announce the new service
+     availability and to refer to the Installation Guide entry and the role
+     documentation for further details. This content must adhere to the
+     `Documentation and Release Note Guidelines`_.
+
+   * Integration test
+
+     It must be possible to execute a functional, integrated test which
+     executes a deployment in the same way as a production environment. The
+     test must execute a set of functional tests using Tempest. This is the
+     required last step before a service can remove the experimental warning
+     from the documentation.
+
+   .. _Appendix H: ../install-guide/app-custom-layouts.html
 
 --------------
 
