@@ -57,6 +57,18 @@ inventory is found automatically.
 
     # cd playbooks
 
+Cleanup old facts
+~~~~~~~~~~~~~~~~~
+
+Some configuration changed, and old facts should be purged before
+the upgrade.
+
+See :ref:`fact-cleanup-playbook` for more details.
+
+.. code-block:: console
+
+    # openstack-ansible "${UPGRADE_PLAYBOOKS}/ansible_fact_cleanup.yml"
+
 Update configuration and environment files
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -123,7 +135,7 @@ See :ref:`repo-server-pip-conf-removal` for more details.
     # openstack-ansible "${UPGRADE_PLAYBOOKS}/repo-server-pip-conf-removal.yml"
 
 Ensure hostname aliases are created for non-RFC1034/35 hostnames
-----------------------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Ensure an alias is created for non-RFC1034/35 hostnames.
 
@@ -148,6 +160,15 @@ See :ref:`setup-infra-playbook` for details.
 
     # openstack-ansible setup-infrastructure.yml -e 'galera_upgrade=true' \
     -e 'rabbitmq_upgrade=true'
+
+Flush Memcached cache
+~~~~~~~~~~~~~~~~~~~~~
+
+See :ref:`memcached-flush` for details.
+
+.. code-block:: console
+
+    # openstack-ansible "${UPGRADE_PLAYBOOKS}/memcached-flush.yml"
 
 Upgrade OpenStack
 ~~~~~~~~~~~~~~~~~

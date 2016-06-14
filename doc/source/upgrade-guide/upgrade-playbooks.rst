@@ -8,6 +8,13 @@ Within the main :file:`scripts` directory there is an :file:`upgrade-utilities`
 directory, which contains an additional playbooks directory. These playbooks
 facilitate the upgrade process.
 
+.. _fact-cleanup-playbook:
+
+``ansible_fact_cleanup.yml``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This calls a script to removes files in ``/etc/openstack_deploy/ansible_facts/``
+
 .. _config-change-playbook:
 
 ``deploy-config-changes.yml``
@@ -80,6 +87,13 @@ upgrade RabbitMQ.
 
 The ``galera_upgrade`` variable tells the ``galera_server`` role to remove the
 current version of MariaDB and Galera and upgrade to the 10.x series.
+
+.. _memcached-flush:
+
+``memcached-flush.yml``
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Sends "flush_all" to memcached with the help of nc.
 
 --------------
 
