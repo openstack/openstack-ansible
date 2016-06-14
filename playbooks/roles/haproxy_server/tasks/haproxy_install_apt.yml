@@ -44,7 +44,7 @@
   until: install_packages|success
   retries: 5
   delay: 2
-  with_items: haproxy_packages
+  with_items: "{{ haproxy_packages }}"
   tags:
     - haproxy-apt-packages
 

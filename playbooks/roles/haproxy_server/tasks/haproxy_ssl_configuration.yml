@@ -23,7 +23,9 @@
   with_items:
     - { src: "{{ haproxy_user_ssl_cert }}", dest: "{{ haproxy_ssl_cert }}", mode: "0644" }
     - { src: "{{ haproxy_user_ssl_key }}", dest: "{{ haproxy_ssl_key }}", mode: "0640" }
-  when: haproxy_user_ssl_cert is defined and haproxy_user_ssl_key is defined
+  when:
+    - haproxy_user_ssl_cert is defined
+    - haproxy_user_ssl_key is defined
   notify:
     - regen pem
   tags:
