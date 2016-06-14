@@ -10,14 +10,11 @@ debug = {{ debug }}
 
 # Neutron credentials for API access
 auth_plugin = {{ neutron_keystone_auth_plugin }}
-auth_url = {{ keystone_service_adminuri }}
-auth_uri = {{ keystone_service_internaluri }}
+auth_url = "{{ keystone_service_internaluri }}/v2.0"
 auth_region = {{ keystone_service_region }}
-project_domain_id = {{ neutron_service_project_domain_id }}
-user_domain_id = {{ neutron_service_user_domain_id }}
-project_name = {{ neutron_service_project_name }}
-username = {{ neutron_service_user_name }}
-password = {{ neutron_service_password }}
+admin_tenant_name = {{ neutron_service_project_name }}
+admin_user = {{ neutron_service_user_name }}
+admin_password = {{ neutron_service_password }}
 endpoint_type = adminURL
 
 # Nova metadata service IP and port
