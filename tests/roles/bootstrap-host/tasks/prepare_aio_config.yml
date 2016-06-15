@@ -118,6 +118,16 @@
   tags:
     - generate_secrets
 
+- name: Detect whether the host is an OpenStack-CI host
+  stat:
+    path: /etc/nodepool
+  register: nodepool_dir
+
+- name: Disable nova using UCA in OpenStack-CI
+  set_fact:
+    nova_uca_enable: False
+  when: nodepool_dir.stat.exists
+
 - name: Determine if the host has a global pip config file
   stat:
     path: /etc/pip.conf
