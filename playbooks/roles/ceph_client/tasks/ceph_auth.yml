@@ -68,8 +68,8 @@
     # If I'm correct, the use case for multiple users is on the computre nodes,
     # access needed by users libvirt-qemu and nova
     mode:     0640
-  with_items:   ceph_client_keyrings.results
-  when: not item|skipped and inventory_hostname in groups[item.item.0.component]
+  with_items: "{{ ceph_client_keyrings.results }}"
+  when: not item | skipped and inventory_hostname in groups[item.item.0.component]
   notify:
   - Restart os services
   tags:

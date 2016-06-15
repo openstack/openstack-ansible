@@ -18,7 +18,7 @@
     id: "{{ item }}"
     state: "absent"
   register: revoke_keys
-  with_items: ceph_revoked_gpg_keys
+  with_items: "{{ ceph_revoked_gpg_keys }}"
   when: ceph_pkg_source == 'ceph'
   tags:
     - ceph-apt-keys
@@ -35,7 +35,7 @@
   ignore_errors: True
   retries: 5
   delay: 2
-  with_items: ceph_gpg_keys
+  with_items: "{{ ceph_gpg_keys }}"
   when: ceph_pkg_source == 'ceph'
   tags:
     - ceph-apt-keys
@@ -50,7 +50,7 @@
   until: add_keys_fallback|success
   retries: 5
   delay: 2
-  with_items: ceph_gpg_keys
+  with_items: "{{ ceph_gpg_keys }}"
   when: ceph_pkg_source == 'ceph' and
         add_keys|failed and
         (item.fallback_keyserver is defined or

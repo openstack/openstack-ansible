@@ -20,7 +20,7 @@
   # failed_when: false  is needed to not loose any hosts, as this check expects
   # some to be down.
   local_action:   command nc -w 1 {{ item }} 22
-  with_items:     '{{ ceph_mons }}'
+  with_items:     "{{ ceph_mons }}"
   changed_when:   false
   failed_when:    false
   register:       ceph_mon_upcheck
@@ -33,7 +33,7 @@
   set_fact:
                   ceph_mon_host: '{{ item.item }}'
   when:           item.rc == 0 and "OpenSSH" in item.stdout
-  with_items:     ceph_mon_upcheck.results
+  with_items:     "{{ ceph_mon_upcheck.results }}"
   tags:
   - ceph-config-create-config
   - ceph-auth-client-keyrings
