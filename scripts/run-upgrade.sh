@@ -148,6 +148,7 @@ function main {
         RUN_TASKS+=("lxc-containers-create.yml --limit galera_all[0]")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/repo-server-pip-conf-removal.yml")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/old-hostname-compatibility.yml")
+        RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/restart-rabbitmq-containers.yml")
         RUN_TASKS+=("setup-infrastructure.yml -e 'galera_upgrade=true' -e 'rabbitmq_upgrade=true'")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/memcached-flush.yml")
         RUN_TASKS+=("setup-openstack.yml")

@@ -145,6 +145,17 @@ See :ref:`old-hostname-compatibility` for details.
 
     # openstack-ansible "${UPGRADE_PLAYBOOKS}/old-hostname-compatibility.yml"
 
+Restart Rabbitmq containers
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This ensures the rabbitmq nodes are using their proper new hostnames.
+
+See :ref:`restart-rabbitmq` for details.
+
+.. code-block:: console
+
+    # openstack-ansible "${UPGRADE_PLAYBOOKS}/restart-rabbitmq-containers.yml"
+
 Upgrade infrastructure
 ~~~~~~~~~~~~~~~~~~~~~~
 

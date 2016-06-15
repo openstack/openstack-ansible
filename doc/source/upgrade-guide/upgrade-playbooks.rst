@@ -56,6 +56,14 @@ in cases where the hostname is also the registered agent name. This playbook is
 only needed for upgrades of in-place upgrades of existing nodes or if a node is replaced or
 rebuilt it will be brought into the cluster using a compliant hostname.
 
+.. _restart-rabbitmq:
+
+``restart-rabbitmq-containers``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This playbook restarts the rabbitmq nodes serially (1 at a time), and waits
+for rabbitmq to be back up before continuing.
+
 .. _setup-infra-playbook:
 
 ``setup-infrastructure.yml``
