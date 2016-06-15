@@ -16,6 +16,7 @@
 - name: Galera container config
   hosts: galera_all
   max_fail_percentage: 0
+  gather_facts: "{{ gather_facts | default(True) }}"
   user: root
   tasks:
     - name: Use the lxc-openstack aa profile
@@ -59,6 +60,7 @@
 
 - name: Install galera server
   hosts: galera_all
+  gather_facts: "{{ gather_facts | default(True) }}"
   serial: 1
   max_fail_percentage: 20
   user: root

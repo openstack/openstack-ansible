@@ -15,6 +15,7 @@
 
 - name: Install rsyslog
   hosts: rsyslog
+  gather_facts: "{{ gather_facts | default(True) }}"
   max_fail_percentage: 20
   user: root
   pre_tasks:
