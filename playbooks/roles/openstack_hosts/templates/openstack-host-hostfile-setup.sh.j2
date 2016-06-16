@@ -4,7 +4,7 @@
 set -x
 
 {% for item in groups['all'] %}
-sed -i '/^{{ hostvars[item]["ansible_ssh_host"] }}.*/d' /etc/hosts
+sed -i '/^{{ hostvars[item]["ansible_ssh_host"] }} .*/d' /etc/hosts
 echo '{{ hostvars[item]["ansible_ssh_host"] }} {{ item }}' | tee -a /etc/hosts
 {% endfor %}
 
