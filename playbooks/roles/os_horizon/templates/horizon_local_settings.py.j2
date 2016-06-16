@@ -711,6 +711,14 @@ REST_API_REQUIRED_SETTINGS = ['OPENSTACK_HYPERVISOR_FEATURES']
 # http://tinyurl.com/anticlickjack
 #DISALLOW_IFRAME_EMBED = True
 
+{% if horizon_nova_extensions_blacklist is defined %}
+OPENSTACK_NOVA_EXTENSIONS_BLACKLIST = [
+{% for item in horizon_nova_extensions_blacklist %}
+  '{{ item }}',
+{% endfor %}
+]
+{% endif %}
+
 {% if horizon_site_name is defined %}
 SITE_BRANDING = '{{ horizon_site_name }}'
 {% endif %}
