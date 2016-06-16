@@ -1,4 +1,5 @@
-Upgrade Playbooks
+=================
+Upgrade playbooks
 =================
 
 This section describes the playbooks that are used in the upgrade process in

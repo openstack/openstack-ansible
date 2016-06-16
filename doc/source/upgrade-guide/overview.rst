@@ -1,65 +1,34 @@
+========
 Overview
 ========
 
-The OpenStack-Ansible repository provides playbooks and scripts used
-to upgrade an environment from Mitaka to Newton. The ``run-upgrade.sh``
-script runs each upgrade playbook in the correct order, or playbooks
-can be run individually if necessary.
+An OpenStack-Ansible environment can be upgraded between minor versions,
+and between major versions.
 
-Running the upgrade script
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Upgrades between minor versions of OpenStack-Ansible require
+updating the repository clone to the latest minor release tag, then
+running playbooks against the target hosts. For more information, see
+:ref:`minor-upgrades`.
 
-The Newton release series of OpenStack-Ansible contain the code for
-migrating from Mitaka to Newton.
+For major upgrades, the OpenStack-Ansible repository provides playbooks and
+scripts used to upgrade an environment. The ``run-upgrade.sh`` script runs
+each upgrade playbook in the correct order, or playbooks can be run
+individually if necessary. Alternatively, a deployer can upgrade manually. A
+major upgrade process performs the following actions:
 
-.. warning::
+- Modifies files residing in ``/etc/openstack_deploy`` in
+  order to reflect new configuration values.
+- Some flag files are created by the migration scripts in order to achieve
+  idempotency. These files are placed in the ``/etc/openstack_deploy.NEWTON``
+  directory.
+- Upgrade the RabbitMQ server during an OpenStack-Ansible upgrade process.
+  See :ref:`setup-infra-playbook` for details.
 
-   The upgrade script is still under active development and should not be run at this time.
+For more information on the major upgrade process, see :ref:`script-upgrade`
+and :ref:`manual-upgrade`.
 
-To upgrade from Mitaka to Newton using the upgrade script, perform the
-following steps in the ``openstack-ansible`` directory:
-
-.. code-block:: console
-
-   # git checkout stable/newton
-   # LATEST_TAG=$(git describe --abbrev=0 --tags)
-   # git checkout ${LATEST_TAG}
-   # ./scripts/run-upgrade.sh
-
-Upgrading manually
-~~~~~~~~~~~~~~~~~~
-
-Deployers can run the upgrade steps manually. See :ref:`manual-upgrade`.
-Manual execution is useful for scoping the changes in the upgrade process
-(For example, in very large deployments with strict SLA requirements), or for
-inclusion into other orchestration for upgrade automation beyond what
-OpenStack-Ansible provides.
-
-Upgrade actions
-~~~~~~~~~~~~~~~
-
-Both the upgrade script and manual upgrade steps perform the actions and
-use the concepts introduced below.
-
-Configuration changes
----------------------
-
-The upgrade process modifies files residing in ``/etc/openstack_deploy`` in
-order to reflect new Newton values.
-
-Flag files
-----------
-
-Some flag files are created by the migration scripts in order to achieve
-idempotency. These files are placed in the ``/etc/openstack_deploy.NEWTON``
-directory.
-
-RabbitMQ upgrade
-----------------
-
-Upgrade the RabbitMQ server during an OpenStack-Ansible upgrade.
-
-See :ref:`setup-infra-playbook` for details.
+.. note::
+   You can only upgrade between sequential releases.
 
 --------------
 
