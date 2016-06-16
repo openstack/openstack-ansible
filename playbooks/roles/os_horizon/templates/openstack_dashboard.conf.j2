@@ -15,7 +15,7 @@
 
     LogLevel  {{ horizon_log_level }}
     ErrorLog  /var/log/horizon/horizon-error.log
-    CustomLog /var/log/horizon/ssl_access.log combined
+    CustomLog /var/log/horizon/ssl_access.log {{ horizon_apache_custom_log_format }}
     Options +FollowSymLinks
 
     SSLEngine on
