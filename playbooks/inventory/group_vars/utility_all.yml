@@ -14,3 +14,7 @@
 # limitations under the License.
 
 tempest_log_dir: /var/log/utility
+
+# Set this if ssh access from the utility container to all other hosts is
+# desired
+# utility_ssh_private_key: "{{ lookup('file', '/root/.ssh/id_rsa') }}"

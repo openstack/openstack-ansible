@@ -111,16 +111,15 @@
       with_items: utility_pip_packages
       tags:
         - utility-pip-packages
-    - name: Grab private ssh key
-      set_fact:
-        private_ssh_key: "{{ lookup('file', '/root/.ssh/id_rsa') }}"
-    - name: Drop in private ssh key
+    - name: Distribute private ssh key
       copy:
-        content: "{{ private_ssh_key }}"
+        content: "{{ utility_ssh_private_key }}"
         dest: /root/.ssh/id_rsa
         mode: 0600
         owner: root
         group: root
+      when:
+        - utility_ssh_private_key is defined
   vars:
     galera_address: "{{ internal_lb_vip_address }}"
     utility_pip_packages:
