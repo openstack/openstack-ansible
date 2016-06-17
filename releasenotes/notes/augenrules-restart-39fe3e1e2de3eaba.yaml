@@ -1,0 +1,5 @@
+---
+fixes:
+  - The role previously did not restart the audit daemon after generating a
+    new rules file. The `bug <https://launchpad.net/bugs/1590916>`_ has been
+    fixed and the audit daemon will be restarted after any audit rule changes.

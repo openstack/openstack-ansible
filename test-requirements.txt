@@ -1,13 +1,14 @@
-ansible>1.9,<2.0,!=1.9.6
 ansible-lint>=2.0.3,<=2.3.6
-bashate==0.5.0 # Apache-2.0
-flake8==2.2.4
-hacking>=0.10.0,<0.11
-mccabe==0.2.1 # capped for flake8
-pep8==1.5.7
-pyflakes==0.8.1
+ansible>1.9,<2.0,!=1.9.6
+bashate>=0.2 # Apache-2.0
+flake8>2.4.1,<2.6.0  # MIT
+hacking>=0.10.2,<0.11  # Apache-2.0
+# mccabe pinned for flake8
+mccabe==0.2.1 # MIT License
+pep8==1.5.7  # MIT
+pyflakes==0.8.1  # MIT
 
 # this is required for the docs build jobs
-sphinx!=1.2.0,!=1.3b1,<1.3,>=1.1.2
-oslosphinx>=2.5.0 # Apache-2.0
+sphinx>=1.1.2,!=1.2.0,!=1.3b1,<1.3  # BSD
+oslosphinx>=2.5.0,!=3.4.0  # Apache-2.0
 reno>=0.1.1 # Apache-2.0

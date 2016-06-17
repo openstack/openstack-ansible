@@ -1,0 +1,9 @@
+---
+fixes:
+  - Previously, the ``ansible_managed`` var was being
+    used to insert a header into the ``swift.conf`` that
+    contained date/time information. This meant that
+    swift.conf across different nodes did not have the
+    same MD5SUM, causing ``swift-recon --md5`` to break.
+    We now insert a piece of static text instead to
+    resolve this issue.
