@@ -871,6 +871,11 @@ def _parse_global_variables(user_cidr, inventory, user_defined_config):
                 user_defined_config['global_overrides']
             )
 
+            # Remove global overrides that were deleted from inventory, too
+            for key in inventory['all']['vars'].keys():
+                if key not in user_defined_config['global_overrides']:
+                    del inventory['all']['vars'][key]
+
 
 def append_if(array, item):
     """Append an ``item`` to an ``array`` if its not already in it.

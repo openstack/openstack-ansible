@@ -382,6 +382,12 @@ class TestConfigChecks(unittest.TestCase):
         with open(USER_CONFIG_FILE, 'wb') as f:
             f.write(yaml.dump(self.user_defined_config))
 
+    def restore_config(self):
+        # get back our initial user config file
+        os.remove(USER_CONFIG_FILE)
+        os.rename(USER_CONFIG_FILE + ".tmp", USER_CONFIG_FILE)
+        self.config_changed = False
+
     def test_missing_container_cidr_network(self):
         self.delete_provider_network('container')
         with self.assertRaises(SystemExit) as context:
@@ -519,9 +525,7 @@ class TestConfigChecks(unittest.TestCase):
 
     def tearDown(self):
         if self.config_changed:
-            # get back our initial user config file
-            os.remove(USER_CONFIG_FILE)
-            os.rename(USER_CONFIG_FILE + ".tmp", USER_CONFIG_FILE)
+            self.restore_config()
 
 
 class TestStaticRouteConfig(TestConfigChecks):
@@ -641,6 +645,45 @@ class TestNetAddressSearch(unittest.TestCase):
         new_pns = di._net_address_search(pns, 'br-mgmt', 'is_ssh_address')
 
         self.assertEqual(pns, new_pns)
+
+
+class TestGlobalOverridesConfigDeletion(TestConfigChecks):
+    def setUp(self):
+        super(TestGlobalOverridesConfigDeletion, self).setUp()
+        self.inventory = get_inventory()
+
+    def add_global_override(self, var_name, var_value):
+        """Adds an arbitrary name and value to the global_overrides dict."""
+        overrides = self.user_defined_config['global_overrides']
+        overrides[var_name] = var_value
+
+    def remove_global_override(self, var_name):
+        """Removes target key from the global_overrides dict."""
+        overrides = self.user_defined_config['global_overrides']
+        del overrides[var_name]
+
+    def test_global_overrides_delete_when_merge(self):
+        """Vars removed from global overrides are removed from inventory"""
+        self.add_global_override('foo', 'bar')
+
+        di._parse_global_variables({}, self.inventory,
+                                   self.user_defined_config)
+
+        self.remove_global_override('foo')
+
+        di._parse_global_variables({}, self.inventory,
+                                   self.user_defined_config)
+
+        self.assertNotIn('foo', self.inventory['all']['vars'],
+                         "foo var not removed from group_vars_all")
+
+    def test_global_overrides_merge(self):
+        self.add_global_override('foo', 'bar')
+
+        di._parse_global_variables({}, self.inventory,
+                                   self.user_defined_config)
+
+        self.assertEqual('bar', self.inventory['all']['vars']['foo'])
 
 
 class TestMultipleRuns(unittest.TestCase):
