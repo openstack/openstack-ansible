@@ -76,7 +76,7 @@ def main():
     args = parser.parse_args()
 
     # Setup pypi object
-    pypi = xmlrpclib.ServerProxy('http://pypi.python.org/pypi')
+    pypi = xmlrpclib.ServerProxy('https://pypi.python.org/pypi')
 
     # Setup the newline if the results layout should be vertical
     # Also add a space delimiter appropriately
