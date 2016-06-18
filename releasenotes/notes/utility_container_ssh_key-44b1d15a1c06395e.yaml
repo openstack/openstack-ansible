@@ -1,0 +1,6 @@
+---
+upgrade:
+  - The ``utility-all.yml`` playbook will no longer distribute the deployment
+    host's root user's private ssh key to all utility containers. Deployers
+    who desire this behavior should set the ``utility_ssh_private_key``
+    variable.
