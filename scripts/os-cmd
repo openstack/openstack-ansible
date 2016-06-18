@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+#
+# Copyright 2016, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# What this script is for:
+#   This script runs the supplied commands in the utility container on
+#   localhost.  It simplifies performing actions from the utility
+#   container. It's most useful for use with an AIO installation.
+
+__check_cmd_avail ()
+{
+    if [ "z$(which $1)" == "z" ]; then
+        echo "The command '$1' could not be found, exiting"
+        exit 1
+    fi
+}
+
+# Make sure we're running as root
+if [[ $EUID -ne 0 ]]; then
+  echo "This script must be run as root.  Exiting..." 2>&1
+  exit 1
+fi
+
+# Ensure a command was provided
+if [ $# -eq 0 ]; then
+  echo "Usage: $(basename $0) <command>"
+  exit 1
+fi
+
+LXCATTACH="lxc-attach"
+LXCLS="lxc-ls"
+
+# Verify we have the commands we need
+__check_cmd_avail ${LXCATTACH}
+__check_cmd_avail ${LXCLS}
+
+# Find the first utility container to execute in
+UTIL=$(${LXCLS} | grep utility | head -n 1)
+if [ "z${UTIL}" == "z" ]; then
+  echo "*** Couldn't find a utility container.  Exiting..."
+  exit 1
+fi
+
+${LXCATTACH} -n ${UTIL} -- bash -c ". /root/openrc && $*"
