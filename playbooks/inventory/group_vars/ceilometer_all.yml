@@ -17,3 +17,5 @@ ceilometer_service_publicuri: "{{ openstack_service_publicuri_proto|default(ceil
 ceilometer_service_adminurl: "{{ ceilometer_service_adminuri }}/"
 ceilometer_service_region: "{{ service_region }}"
 ceilometer_service_in_ldap: "{{ service_ldap_backend_enabled }}"
+
+ceilometer_aodh_enabled: groups['aodh_all'] is defined and groups['aodh_all'] | length > 0
