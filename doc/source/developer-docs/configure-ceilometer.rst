@@ -110,7 +110,7 @@ example included in the
 
 The ``metering-compute_hosts`` houses the ``ceilometer-agent-compute``
 service. It runs on each compute node and polls for resource
-utilization statistics. The ``metering-infra_hosts`` houses serveral
+utilization statistics. The ``metering-infra_hosts`` houses several
 services:
 
   - A central agent (ceilometer-agent-central): Runs on a central
