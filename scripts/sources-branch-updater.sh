@@ -51,6 +51,9 @@ esac
 shift
 done
 
+# The OSA branch doesn't have the stable prefix
+OSA_BRANCH=${ONLINE_BRANCH#stable/}
+
 # Iterate through the service file
 for repo in $(grep 'git_repo\:' ${SERVICE_FILE}); do
 
@@ -147,3 +150,73 @@ for pin in ${PIP_CURRENT_OPTIONS}; do
 done
 
 echo "Updated pip install options/pins"
+
+# Update the ansible-role-requirements.yml file
+# We don't want to be doing this for the master branch
+if [[ "${OSA_BRANCH}" != "master" ]]; then
+  echo "Updating ansible-role-requirements.yml"
+
+  # Loop through each of the role git sources
+  for role_src in $(awk '/src: / {print $2}' ansible-role-requirements.yml); do
+
+    # Determine the role's name
+    role_name=$(sed 's/^[ \t-]*//' ansible-role-requirements.yml | awk '/src: / || /name: / {print $2}' | grep -B1 "${role_src}" | head -n 1)
+    echo "... updating ${role_name}"
+
+    # Grab the latest SHA that matches the specified branch
+    role_version=$(git ls-remote ${role_src} | grep "${OSA_BRANCH}$" | awk '{print $1}')
+
+    # If that branch doesn't exist, then it's probably not an OpenStack-Ansible role, so grab the latest tag instead
+    if [[ -z "${role_version}" ]]; then
+      role_version=$(git ls-remote --tags ${role_src} | awk '{print $2}' | grep -v '{}' | cut -d/ -f 3 | sort -n | tail -n 1)
+    else
+      # As this is an OSA role, we want to grab the release notes from it
+
+      # Setup a var for tmp space
+      osa_repo_tmp_path="/tmp/osa_${role_name}"
+
+      # Ensure that the temp path doesn't exist
+      rm -rf ${osa_repo_tmp_path}
+
+      # Do a shallow clone of the repo to work with
+      git clone --quiet --depth=10 --branch ${OSA_BRANCH} --single-branch ${role_src} ${osa_repo_tmp_path}
+      pushd ${osa_repo_tmp_path} > /dev/null
+        git checkout --quiet origin/${OSA_BRANCH}
+      popd > /dev/null
+
+      # If there are releasenotes to copy, then copy them
+      if $(ls -1 ${osa_repo_tmp_path}/releasenotes/notes/*.yaml > /dev/null 2>&1); then
+        rsync -aq ${osa_repo_tmp_path}/releasenotes/notes/*.yaml releasenotes/notes/
+      fi
+
+      # Clean up the temporary files
+      rm -rf ${osa_repo_tmp_path}
+    fi
+
+    # Now use the information we have to update the ansible-role-requirements file
+    $(dirname ${0})/ansible-role-requirements-editor.py -f ansible-role-requirements.yml -n "${role_name}" -v "${role_version}"
+  done
+  echo "Completed updating ansible-role-requirements.yml"
+else
+  echo "Skipping the ansible-role-requirements.yml update as we're working on the master branch"
+fi
+
+# Update the release version in playbooks/inventory/group_vars/all.yml
+# We don't want to be doing this for the master branch
+if [[ "${OSA_BRANCH}" != "master" ]]; then
+
+  echo "Updating the release version..."
+  currentversion=$(awk '/openstack_release/ {print $2}' playbooks/inventory/group_vars/all.yml)
+
+  # Extract the required version info
+  major_version=$( echo ${currentversion} | cut -d. -f1 )
+  minor_version=$( echo ${currentversion} | cut -d. -f2 )
+  patch_version=$( echo ${currentversion} | cut -d. -f3 )
+
+  # increment the patch version
+  patch_version=$(( patch_version + 1 ))
+
+  sed -i .bak "s/${currentversion}/${major_version}.${minor_version}.${patch_version}/" playbooks/inventory/group_vars/all.yml
+else
+  echo "Skipping the release version update as we're working on the master branch"
+fi
