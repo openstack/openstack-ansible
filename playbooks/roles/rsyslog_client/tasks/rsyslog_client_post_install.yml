@@ -50,8 +50,7 @@
 
 - name: Union the log files
   set_fact:
-    rsyslog_client_log_files: "{{ log_files.stdout_lines | union(rsyslog_client_log_files) }}"
-  when: log_files.stdout_lines is defined
+    rsyslog_client_all_log_files: "{{ log_files.stdout_lines | default([]) | union(rsyslog_client_log_files) }}"
   tags:
     - rsyslog-client-config
 
@@ -61,7 +60,7 @@
     dest: "/etc/rsyslog.d/{{ rsyslog_client_config_name }}"
     owner: "root"
     group: "root"
-  when: (rsyslog_client_log_files | length) > 0
+  when: (rsyslog_client_all_log_files | length) > 0
   tags:
     - rsyslog-client-config
 
@@ -71,7 +70,7 @@
     dest: "/etc/logrotate.d/{{ rsyslog_client_log_rotate_file }}"
     owner: "root"
     group: "root"
-  when: (rsyslog_client_log_files | length) > 0
+  when: (rsyslog_client_all_log_files | length) > 0
   tags:
     - rsyslog-client-config
 
