@@ -1,8 +1,6 @@
-`Home <index.html>`__ OpenStack-Ansible Installation Guide
-
-===========================
-Appendix D: Tips and tricks
-===========================
+===============
+Tips and tricks
+===============
 
 Ansible forks
 ~~~~~~~~~~~~~
@@ -12,8 +10,8 @@ fork makes use of a Session. By default, Ansible sets the number of forks to
 5. However, you can increase the number of forks used in order to improve
 deployment performance in large environments.
 
-Note that a number of forks larger than 10 will cause issues for any playbooks
-which make use of ``delegate_to`` or ``local_action`` in the tasks. It is
+Note that more than 10 forks will cause issues for any playbooks
+which use ``delegate_to`` or ``local_action`` in the tasks. It is
 recommended that the number of forks are not raised when executing against the
 Control Plane, as this is where delegation is most often used.
 

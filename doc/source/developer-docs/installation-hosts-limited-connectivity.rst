@@ -1,11 +1,6 @@
-`Home <index.html>`__ OpenStack-Ansible Installation Guide
-
-===========================================================
-Appendix G. Installation on hosts with limited connectivity
-===========================================================
-
-Introduction
-~~~~~~~~~~~~
+===============================================
+Installation on hosts with limited connectivity
+===============================================
 
 Many playbooks and roles in OpenStack-Ansible retrieve dependencies from the
 public Internet by default. Many deployers block direct outbound connectivity
