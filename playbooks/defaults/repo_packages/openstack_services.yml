@@ -76,6 +76,13 @@ horizon_git_repo: https://git.openstack.org/openstack/horizon
 horizon_git_install_branch: 02043a98cb01dc9050dfaae5a95986b5f31dba84 # HEAD of "master" as of 27.07.2016
 horizon_git_dest: "/opt/horizon_{{ horizon_git_install_branch | replace('/', '_') }}"
 
+
+## Horizon Ironic dashboard plugin
+ironic_dashboard_git_repo: https://git.openstack.org/openstack/ironic-ui
+ironic_dashboard_git_install_branch: 9b8cce125c05435ee0baf9d8c61f5db0808e9b09 # HEAD of "master" as of 22 June 2016
+ironic_dashboard_git_dest: "/opt/ironic_dashboard_{{ ironic_dashboard_git_install_branch | replace('/', '_') }}"
+
+
 ## Horizon LBaaS dashboard plugin
 neutron_lbaas_dashboard_git_repo: https://git.openstack.org/openstack/neutron-lbaas-dashboard
 neutron_lbaas_dashboard_git_install_branch: 0d25bbd63b2392f07e1f37e3d94119883858d3dd # HEAD of "master" as of 27.07.2016
