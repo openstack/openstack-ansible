@@ -6,7 +6,7 @@ Security
 
 The OpenStack-Ansible project provides several security features for
 OpenStack deployments. This section of documentation covers those
-features and how they can benefit deployers of various sizes.
+features and how they can benefit deployers.
 
 Security requirements always differ between deployers. If you require
 additional security measures, refer to the official
@@ -30,15 +30,14 @@ that each LXC container may take on a system. This is done within the
 .. _security modules: https://en.wikipedia.org/wiki/Linux_Security_Modules
 .. _mandatory access controls: https://en.wikipedia.org/wiki/Mandatory_access_control
 .. _AppArmor: https://en.wikipedia.org/wiki/AppArmor
-.. _lxc_hosts role: https://github.com/openstack/openstack-ansible/blob/master/playbooks/roles/lxc_hosts/templates/lxc-openstack.apparmor.j2
+.. _lxc_hosts role: https://github.com/openstack/openstack-ansible-lxc_hosts
 
 Encrypted communication
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-While in transit, data is encrypted between some OpenStack services in
-OpenStack-Ansible deployments. Not all communication between all services is
-encrypted. For more details on what traffic is encrypted, and how
-to configure SSL certificates, refer to the documentation section titled
+Data in transit is encrypted between some OpenStack services in
+OpenStack-Ansible deployments. For more details on what traffic is encrypted,
+and how to configure SSL certificates, see
 `Securing services with SSL certificates`_.
 
 .. _Securing services with SSL certificates: configure-sslcertificates.html
@@ -46,7 +45,7 @@ to configure SSL certificates, refer to the documentation section titled
 Host security hardening
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Deployers can apply security hardening to OpenStack infrastructure and compute
+Security hardening is applied by default to OpenStack infrastructure and compute
 hosts using the ``openstack-ansible-security`` role. The purpose of the role is to
 apply as many security configurations as possible without disrupting the
 operation of an OpenStack deployment.
@@ -58,7 +57,7 @@ Least privilege
 ~~~~~~~~~~~~~~~
 
 The `principle of least privilege`_ is used throughout OpenStack-Ansible to
-limit the damage that could be caused if an attacker gained access to a set of
+limit the damage that could be caused if an attacker gains access to any
 credentials.
 
 OpenStack-Ansible configures unique username and password combinations for
@@ -75,10 +74,10 @@ Securing network access to OpenStack services
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 OpenStack environments expose many service ports and API endpoints to the
-network. 
+network.
 
 .. note::
-   
+
    Deployers must limit access to these resources and expose them only
    to trusted users and networks.
 
@@ -103,13 +102,12 @@ The resources within an OpenStack environment can be divided into two groups:
    * MariaDB
    * RabbitMQ
 
-To manage instances, you are able to access certain public API endpoints, such as
-the Nova or Neutron API. Configure firewalls to limit network access to
-these services.
+Configure firewalls to limit network access to all services that users must access
+directly.
 
 Other services, such as MariaDB and RabbitMQ, must be segmented away from
-direct user access. You must configure a firewall to only allow
-connectivity to these services within the OpenStack environment itself. This
+direct user access. Configure a firewall to only allow connectivity to
+these services within the OpenStack environment itself. This
 reduces an attacker's ability to query or manipulate data in OpenStack's
 critical database and queuing services, especially if one of these services has
 a known vulnerability.

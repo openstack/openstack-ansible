@@ -1,17 +1,17 @@
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
-=====================
-Designing the network
-=====================
+.. _network-architecture:
 
-This section describes the recommended network architecture.
-Some components are mandatory, such as the bridges described below. We
-recommend other components such as a bonded network interface but this
-is not a requirement.
+====================
+Network architecture
+====================
+
+For a production environment, some components are mandatory, such as bridges
+described below. We recommend other components such as a bonded network interface.
 
 .. important::
 
-   Follow the reference design as closely as possible for production deployments.
+   Follow the reference design as closely as possible.
 
 Although Ansible automates most deployment operations, networking on
 target hosts requires manual configuration as it varies
@@ -23,10 +23,10 @@ particular environment.
 Bonded network interfaces
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The reference architecture includes bonded network interfaces, which
-use multiple physical network interfaces for better redundancy and throughput.
-Avoid using two ports on the same multi-port network card for the same bonded
-interface since a network card failure affects both physical network
+The reference architecture for a production environment includes bonded network
+interfaces, which use multiple physical network interfaces for better redundancy
+and throughput. Avoid using two ports on the same multi-port network card for the
+same bonded interface since a network card failure affects both physical network
 interfaces used by the bond.
 
 The ``bond0`` interface carries traffic from the containers
@@ -71,7 +71,7 @@ connected to the host's bridges and to the host's physical network interfaces:
 
 .. image:: figures/networkcomponents.png
 
-Target hosts can contain the following network bridges:
+Target hosts contain the following network bridges:
 
 -  LXC internal ``lxcbr0``:
 
@@ -167,6 +167,81 @@ The following image shows how virtual machines connect to the ``br-vlan`` and
 
 .. image:: figures/networking-compute.png
 
+Network ranges
+~~~~~~~~~~~~~~
+
+.. TODO Edit this for production and test environment?
+
+In this guide, the following IP addresses and hostnames are
+used when installing OpenStack-Ansible.
+
++-----------------------+-----------------+
+| Network               | IP Range        |
++=======================+=================+
+| Management Network    | 172.29.236.0/22 |
++-----------------------+-----------------+
+| Tunnel (VXLAN) Network| 172.29.240.0/22 |
++-----------------------+-----------------+
+| Storage Network       | 172.29.244.0/22 |
++-----------------------+-----------------+
+
+
+IP assignments
+~~~~~~~~~~~~~~
+
++------------------+----------------+-------------------+----------------+
+| Host name        | Management IP  | Tunnel (VxLAN) IP | Storage IP     |
++==================+================+===================+================+
+| infra1           | 172.29.236.101 | 172.29.240.101    | 172.29.244.101 |
++------------------+----------------+-------------------+----------------+
+| infra2           | 172.29.236.102 | 172.29.240.102    | 172.29.244.102 |
++------------------+----------------+-------------------+----------------+
+| infra3           | 172.29.236.103 | 172.29.240.103    | 172.29.244.103 |
++------------------+----------------+-------------------+----------------+
+|                  |                |                   |                |
++------------------+----------------+-------------------+----------------+
+| net1             | 172.29.236.111 | 172.29.240.111    |                |
++------------------+----------------+-------------------+----------------+
+| net2             | 172.29.236.112 | 172.29.240.112    |                |
++------------------+----------------+-------------------+----------------+
+| net3             | 172.29.236.113 | 172.29.240.113    |                |
++------------------+----------------+-------------------+----------------+
+|                  |                |                   |                |
++------------------+----------------+-------------------+----------------+
+| compute1         | 172.29.236.121 | 172.29.240.121    | 172.29.244.121 |
++------------------+----------------+-------------------+----------------+
+| compute2         | 172.29.236.122 | 172.29.240.122    | 172.29.244.122 |
++------------------+----------------+-------------------+----------------+
+| compute3         | 172.29.236.123 | 172.29.240.123    | 172.29.244.123 |
++------------------+----------------+-------------------+----------------+
+|                  |                |                   |                |
++------------------+----------------+-------------------+----------------+
+| lvm-storage1     | 172.29.236.131 |                   | 172.29.244.131 |
++------------------+----------------+-------------------+----------------+
+|                  |                |                   |                |
++------------------+----------------+-------------------+----------------+
+| nfs-storage1     | 172.29.236.141 |                   | 172.29.244.141 |
++------------------+----------------+-------------------+----------------+
+|                  |                |                   |                |
++------------------+----------------+-------------------+----------------+
+| ceph-mon1        | 172.29.236.151 |                   | 172.29.244.151 |
++------------------+----------------+-------------------+----------------+
+| ceph-mon2        | 172.29.236.152 |                   | 172.29.244.152 |
++------------------+----------------+-------------------+----------------+
+| ceph-mon3        | 172.29.236.153 |                   | 172.29.244.153 |
++------------------+----------------+-------------------+----------------+
+|                  |                |                   |                |
++------------------+----------------+-------------------+----------------+
+| swift1           | 172.29.236.161 |                   | 172.29.244.161 |
++------------------+----------------+-------------------+----------------+
+| swift2           | 172.29.236.162 |                   | 172.29.244.162 |
++------------------+----------------+-------------------+----------------+
+| swift3           | 172.29.236.163 |                   | 172.29.244.163 |
++------------------+----------------+-------------------+----------------+
+|                  |                |                   |                |
++------------------+----------------+-------------------+----------------+
+| log1             | 172.29.236.171 |                   |                |
++------------------+----------------+-------------------+----------------+
 
 --------------
 

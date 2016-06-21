@@ -1,8 +1,8 @@
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
-==============================
-Chapter 7. OpenStack playbooks
-==============================
+===================
+OpenStack playbooks
+===================
 
 **Figure 7.1. Installation work flow**
 
