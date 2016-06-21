@@ -47,30 +47,6 @@ Running the foundation playbook
        ...
        deployment_host                :  ok=18   changed=11   unreachable=0    failed=0
 
-#. If using HAProxy:
-
-   .. note::
-
-     To run HAProxy on multiple hosts, use ``keepalived`` to make HAProxy highly
-     available. The keepalived role downloads during the ``bootstrap-ansible`` stage.
-     If not, re-run the following command before running the HAProxy playbook:
-
-     .. code-block:: shell-session
-
-        # pushd /opt/openstack-ansible; scripts/bootstrap-ansible.sh; popd
-
-     or
-
-     .. code-block:: shell-session
-
-        # ansible-galaxy install -r ../ansible-role-requirements.yml
-
-  Run the playbook to deploy HAProxy:
-
-  .. code-block:: shell-session
-
-     # openstack-ansible haproxy-install.yml
-
 
 --------------
 
