@@ -39,10 +39,10 @@ info_block "Checking for required libraries." 2> /dev/null || source $(dirname $
 
 # Initiate the deployment
 pushd "playbooks"
-  ansible -m setup localhost
+  ansible localhost -m setup -a 'gather_subset=!facter,!ohai'
 
   if [ "${DEPLOY_HOST}" == "no" ]; then
-    ansible -m setup all
+    ansible all -m setup -a 'gather_subset=!facter,!ohai'
   fi
 
   if [ "${DEPLOY_HOST}" == "yes" ]; then
@@ -74,7 +74,7 @@ pushd "playbooks"
 
     # Create the containers.
     install_bits lxc-containers-create.yml
-    ansible -m setup all
+    ansible all -m setup -a 'gather_subset=!facter,!ohai'
     # Log some data about the instance and the rest of the system
     log_instance_info
 
