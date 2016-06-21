@@ -223,7 +223,7 @@ as backend servers. A separate storage host is not required.
 In ``env.d/cinder.yml`` remove ``is_metal: true``
 
 #. List of target hosts on which to deploy the cinder API. We recommend
-   that a minumum of three target hosts are used for this service.
+   that a minimum of three target hosts are used for this service.
 
    .. code-block:: yaml
 

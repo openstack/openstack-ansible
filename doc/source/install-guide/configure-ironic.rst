@@ -14,7 +14,7 @@ machines by leveraging common technologies such as PXE boot and IPMI to cover a 
 range of hardware, while supporting pluggable drivers to allow vendor-specific
 functionality to be added.
 
-OpenStack’s ironic project makes physical servers as easy to provision as
+OpenStack's ironic project makes physical servers as easy to provision as
 virtual machines in a cloud.
 
 OpenStack-Ansible deployment
