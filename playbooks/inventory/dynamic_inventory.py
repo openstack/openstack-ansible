@@ -28,7 +28,6 @@ import tarfile
 import uuid
 import yaml
 
-
 USED_IPS = set()
 INVENTORY_SKEL = {
     '_meta': {
@@ -892,12 +891,15 @@ def append_if(array, item):
 def _merge_dict(base_items, new_items):
     """Recursively merge new_items into some base_items.
 
+    If an empty dictionary is provided as a new value, it will
+    completely replace the existing dictionary.
+
     :param base_items: ``dict``
     :param new_items: ``dict``
     :return dictionary:
     """
     for key, value in new_items.iteritems():
-        if isinstance(value, dict):
+        if isinstance(value, dict) and value:
             base_merge = _merge_dict(base_items.get(key, {}), value)
             base_items[key] = base_merge
         else:
@@ -1010,13 +1012,12 @@ def _check_config_settings(cidr_networks, config, container_skel):
     _check_multiple_ips_to_host(config)
 
 
-def load_environment(config_path):
+def load_environment(config_path, environment):
     """Create an environment dictionary from config files
 
     :param config_path: ``str``path where the environment files are kept
+    :param environment: ``dict`` dictionary to populate with environment data
     """
-
-    environment = dict()
 
     # Load all YAML files found in the env.d directory
     env_plugins = os.path.join(config_path, 'env.d')
@@ -1095,7 +1096,8 @@ def main(all_args):
 
     user_defined_config = load_user_configuration(config_path)
 
-    environment = load_environment(config_path)
+    base_env = load_environment(os.path.dirname(__file__), {})
+    environment = load_environment(config_path, base_env)
 
     # Load existing inventory file if found
     dynamic_inventory_file = os.path.join(

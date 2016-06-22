@@ -1,0 +1,14 @@
+---
+features:
+  - The env.d directory included with OpenStack-Ansible is now used as the
+    first source for the environment skeleton, and
+    ``/etc/openstack_deploy/env.d`` will be used only to override values.
+    Deployers without customizations will no longer need to copy the env.d
+    directory to /etc/openstack_deploy.
+
+    As a result, the env.d copy operation has been removed from the node
+    bootstrap role.
+upgrade:
+  - Upgrades will not replace entries in the /etc/openstack_deploy/env.d
+    directory, though new versions of OpenStack-Ansible will now use the
+    shipped env.d as a base, which may alter existing deployments.
