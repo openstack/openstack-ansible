@@ -15,9 +15,8 @@
 
 - name: Create container(s)
   hosts: "{{ container_group|default('all_containers') }}"
-  gather_facts: "{{ gather_facts | default(True) }}"
-  max_fail_percentage: 20
   gather_facts: false
+  max_fail_percentage: 20
   user: root
   roles:
     - { role: "lxc_container_create", tags: [ "lxc-container-create" ] }
