@@ -29,7 +29,7 @@ import uuid
 import yaml
 
 
-USED_IPS = []
+USED_IPS = set()
 INVENTORY_SKEL = {
     '_meta': {
         'hostvars': {}
@@ -130,7 +130,7 @@ def get_ip_address(name, ip_q):
         while ip_addr in USED_IPS:
             ip_addr = ip_q.get(timeout=1)
         else:
-            append_if(array=USED_IPS, item=ip_addr)
+            USED_IPS.add(ip_addr)
             return str(ip_addr)
     except AttributeError:
         return None
@@ -151,7 +151,7 @@ def _load_ip_q(cidr, ip_q):
         str(netaddr.IPNetwork(cidr).network),
         str(netaddr.IPNetwork(cidr).broadcast)
     ]
-    USED_IPS.extend(base_exclude)
+    USED_IPS.update(base_exclude)
     for ip in random.sample(_all_ips, len(_all_ips)):
         if ip not in USED_IPS:
             ip_q.put(ip)
@@ -443,7 +443,7 @@ def user_defined_setup(config, inventory):
                     for _k, _v in _value['host_vars'].items():
                         hvs[_key][_k] = _v
 
-                append_if(array=USED_IPS, item=_value['ip'])
+                USED_IPS.add(_value['ip'])
                 append_if(array=inventory[key]['hosts'], item=_key)
 
 
@@ -803,9 +803,9 @@ def _set_used_ips(user_defined_config, inventory):
                         split_ip[-1]
                     )
                 )
-                USED_IPS.extend([str(i) for i in ip_range])
+                USED_IPS.update([str(i) for i in ip_range])
             else:
-                append_if(array=USED_IPS, item=split_ip[0])
+                USED_IPS.add(split_ip[0])
 
     # Find all used IP addresses and ensure that they are not used again
     for host_entry in inventory['_meta']['hostvars'].values():
@@ -813,7 +813,7 @@ def _set_used_ips(user_defined_config, inventory):
         for network_entry in networks.values():
             address = network_entry.get('address')
             if address:
-                append_if(array=USED_IPS, item=address)
+                USED_IPS.add(address)
 
 
 def _ensure_inventory_uptodate(inventory, container_skel):

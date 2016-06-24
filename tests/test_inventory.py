@@ -321,7 +321,8 @@ class TestIps(unittest.TestCase):
             # tearDown is ineffective for this loop, so clean the USED_IPs
             # on each run
             inventory = None
-            di.USED_IPS = []
+            di.USED_IPS = set()
+
             inventory = get_inventory()
             ips = collections.defaultdict(int)
             hostvars = inventory['_meta']['hostvars']
@@ -349,7 +350,7 @@ class TestIps(unittest.TestCase):
     def tearDown(self):
         # Since the get_ip_address function touches USED_IPS,
         # and USED_IPS is currently a global var, make sure we clean it out
-        di.USED_IPS = []
+        di.USED_IPS = set()
 
 
 class TestConfigChecks(unittest.TestCase):
