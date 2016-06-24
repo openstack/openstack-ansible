@@ -189,7 +189,6 @@
       neutron_venv_download_url: "{{ openstack_repo_url }}/venvs/{{ openstack_release }}/{{ ansible_distribution | lower }}/neutron-{{ openstack_release }}.tgz"
       neutron_overlay_network: "{{ _overlay_network }}"
       neutron_provider_networks: "{{ _provider_networks }}"
-      pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"
       tags:
         - "os-neutron"
     - { role: "openstack_openrc", tags: [ "openstack-openrc" ] }
@@ -219,3 +218,4 @@
     neutron_rabbitmq_servers: "{{ rabbitmq_servers }}"
     neutron_rabbitmq_port: "{{ rabbitmq_port }}"
     neutron_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
+    pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"

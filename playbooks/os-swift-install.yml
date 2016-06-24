@@ -155,11 +155,11 @@
       swift_replication_address: "{{ replication_address }}"
       swift_do_setup: True
       swift_do_sync: True
-      pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"
       tags:
         - "os-swift"
   vars:
     is_metal: "{{ properties.is_metal|default(false) }}"
+    pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"
 
 - name: Installation and setup of Swift
   hosts: swift_all

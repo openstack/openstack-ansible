@@ -111,7 +111,6 @@
     - role: "os_ironic"
       ironic_venv_tag: "{{ openstack_release }}"
       ironic_venv_download_url: "{{ openstack_repo_url }}/venvs/{{ openstack_release }}/{{ ansible_distribution | lower }}/ironic-{{ openstack_release }}.tgz"
-      pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"
       tags:
         - "os-ironic"
     - role: "openstack_openrc"
@@ -133,3 +132,4 @@
     ironic_galera_user: ironic
     ironic_galera_database: ironic
     ironic_galera_address: "{{ galera_address }}"
+    pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"

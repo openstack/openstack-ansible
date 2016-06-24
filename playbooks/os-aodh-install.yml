@@ -124,7 +124,6 @@
     - role: "os_aodh"
       aodh_venv_tag: "{{ openstack_release }}"
       aodh_venv_download_url: "{{ openstack_repo_url }}/venvs/{{ openstack_release }}/{{ ansible_distribution | lower }}/aodh-{{ openstack_release }}.tgz"
-      pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"
       tags:
         - "os-aodh"
     - { role: "openstack_openrc", tags: [ "openstack-openrc" ] }
@@ -144,3 +143,4 @@
     aodh_rabbitmq_servers: "{{ rabbitmq_servers }}"
     aodh_rabbitmq_port: "{{ rabbitmq_port }}"
     aodh_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
+    pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"

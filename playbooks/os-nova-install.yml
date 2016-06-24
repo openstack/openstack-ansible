@@ -252,7 +252,6 @@
       nova_management_address: "{{ management_address }}"
       nova_venv_tag: "{{ openstack_release }}"
       nova_venv_download_url: "{{ openstack_repo_url }}/venvs/{{ openstack_release }}/{{ ansible_distribution | lower }}/nova-{{ openstack_release }}.tgz"
-      pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"
       tags:
         - "os-nova"
     - role: "ceph_client"
@@ -292,3 +291,4 @@
     nova_rabbitmq_servers: "{{ rabbitmq_servers }}"
     nova_rabbitmq_port: "{{ rabbitmq_port }}"
     nova_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
+    pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"

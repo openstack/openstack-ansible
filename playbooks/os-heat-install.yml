@@ -135,7 +135,6 @@
     - role: "os_heat"
       heat_venv_tag: "{{ openstack_release }}"
       heat_venv_download_url: "{{ openstack_repo_url }}/venvs/{{ openstack_release }}/{{ ansible_distribution | lower }}/heat-{{ openstack_release }}.tgz"
-      pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"
       tags:
         - "os-heat"
     - role: "rsyslog_client"
@@ -159,5 +158,6 @@
     heat_rabbitmq_servers: "{{ rabbitmq_servers }}"
     heat_rabbitmq_port: "{{ rabbitmq_port }}"
     heat_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
+    pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"
   vars_files:
     - defaults/repo_packages/openstack_services.yml

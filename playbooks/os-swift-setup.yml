@@ -139,7 +139,6 @@
       swift_replication_address: "{{ replication_address }}"
       swift_do_setup: True
       swift_do_sync: False
-      pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"
       tags:
         - "os-swift"
     - role: "rsyslog_client"
@@ -156,3 +155,4 @@
         - "system-crontab-coordination"
   vars:
     is_metal: "{{ properties.is_metal|default(false) }}"
+    pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"
