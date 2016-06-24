@@ -22,6 +22,6 @@
     - name: Wait for Rabbitmq aliveness
       wait_for:
         port: 5672
-        host: "{{ inventory_hostname }}"
+        host: "{{ ansible_ssh_host }}"
         delay: 5
-      delegate_to: localhost
+      delegate_to: "{{ physical_host }}"
