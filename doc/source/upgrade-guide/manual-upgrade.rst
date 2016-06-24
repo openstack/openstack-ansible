@@ -119,6 +119,16 @@ See :ref:`user-secrets-playbook` for more details.
 
     # openstack-ansible "${UPGRADE_PLAYBOOKS}/user-secrets-adjustment.yml"
 
+Update database collations
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The default database collation has been changed to `utf8_general_ci`. This play
+performs a conversion on existing databases and tables.
+
+.. code-block:: console
+
+    # openstack-ansible "${UPGRADE_PLAYBOOKS}/db-collation-alter.yml
+
 Upgrade hosts
 ~~~~~~~~~~~~~
 

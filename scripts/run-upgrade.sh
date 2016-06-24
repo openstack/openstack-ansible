@@ -144,6 +144,7 @@ function main {
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/ansible_fact_cleanup.yml")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/deploy-config-changes.yml")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/user-secrets-adjustment.yml")
+        RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/db-collation-alter.yml")
         RUN_TASKS+=("setup-hosts.yml --limit '!galera_all[0]'")
         RUN_TASKS+=("lxc-containers-create.yml --limit galera_all[0]")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/repo-server-pip-conf-removal.yml")
