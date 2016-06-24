@@ -99,6 +99,7 @@ popd
 log_instance_info
 
 # Execute the Playbooks
+export DEPLOY_AIO=true
 bash $(dirname ${0})/run-playbooks.sh
 
 # Log some data about the instance and the rest of the system
