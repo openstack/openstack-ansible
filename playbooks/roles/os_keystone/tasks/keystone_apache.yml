@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Drop apache2 ports file
+- name: Drop apache2 config files
   template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
@@ -22,6 +22,7 @@
   with_items:
     - { src: "keystone-ports.conf.j2", dest: "/etc/apache2/ports.conf" }
     - { src: "keystone-httpd.conf.j2", dest: "/etc/apache2/sites-available/keystone-httpd.conf" }
+    - { src: "keystone-httpd-mpm.conf.j2", dest: "/etc/apache2/mods-available/mpm_{{ keystone_httpd_mpm_backend }}.conf" }
   notify:
     - Restart Apache
   tags:
