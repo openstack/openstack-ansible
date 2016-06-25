@@ -1,5 +1,5 @@
 ---
-# Copyright 2014, Rackspace US, Inc.
+# Copyright 2016, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@
         name: "{{ container_name }}"
         state: "absent"
       delegate_to: "{{ physical_host }}"
+      when: force_containers_destroy | bool
       tags:
         - container-destroy
     - name: Destroy container service directories
@@ -37,5 +38,12 @@
         - "/var/lib/lxc/{{ container_name }}"
         - "{{ lxc_container_directory|default('/var/lib/lxc') }}/{{ container_name }}"
       delegate_to: "{{ physical_host }}"
+      when: force_containers_destroy | bool
       tags:
         - container-directories
+  vars_prompt:
+    - name: "force_containers_destroy"
+      prompt: "Are you sure you want to destroy LXC containers?"
+      default: "no"
+      private: no
+      when: force_containers_destroy is undefined
