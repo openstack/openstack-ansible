@@ -655,7 +655,7 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
             for route in static_routes:
                 # only add static routes if they are specified correctly;
                 # that is, the key and a value must be present. This doesn't
-                # ensure that the values provided are routeable, just that
+                # ensure that the values provided are routable, just that
                 # they are not empty.
                 cidr_present = route.get('cidr', False)
                 gateway_present = route.get('gateway', False)
@@ -971,7 +971,7 @@ def _check_config_settings(cidr_networks, config, container_skel):
     :param container_skel: ``dict`` container skeleton for all known containers
     """
 
-    # search for any container that dosen't have is_metal flag set to true
+    # search for any container that doesn't have is_metal flag set to true
     is_provider_networks_needed = False
     for key, value in container_skel.iteritems():
         properties = value.get('properties')
@@ -992,7 +992,7 @@ def _check_config_settings(cidr_networks, config, container_skel):
                 "global_overrides in user config"
             )
         else:
-            # make sure that provider networks's ip_from_q is valid
+            # make sure that provider network's ip_from_q is valid
             overrides = config['global_overrides']
             pns = overrides.get('provider_networks', list())
             for pn in pns:
