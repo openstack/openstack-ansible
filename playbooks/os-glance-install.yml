@@ -152,7 +152,6 @@
     - role: "os_glance"
       glance_venv_tag: "{{ openstack_release }}"
       glance_venv_download_url: "{{ openstack_repo_url }}/venvs/{{ openstack_release }}/{{ ansible_distribution | lower }}/glance-{{ openstack_release }}.tgz"
-      pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"
       tags:
         - "os-glance"
     - { role: "openstack_openrc", tags: [ "openstack-openrc" ] }
@@ -184,3 +183,4 @@
     glance_rabbitmq_servers: "{{ rabbitmq_servers }}"
     glance_rabbitmq_port: "{{ rabbitmq_port }}"
     glance_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
+    pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"
