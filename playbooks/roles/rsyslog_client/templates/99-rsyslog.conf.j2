@@ -45,7 +45,7 @@ $ActionResumeRetryCount 250
 {% endif %}
 
 # Log files
-{% for log_file in rsyslog_client_log_files %}
+{% for log_file in rsyslog_client_all_log_files %}
 $InputFileName {{ log_file }}
 $InputFileTag {{ log_file.split('.log')[0] | basename }}:
 $InputFileStateFile state-{{ log_file.split('.log')[0] | basename }}
