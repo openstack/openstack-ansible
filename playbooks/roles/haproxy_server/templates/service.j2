@@ -25,7 +25,7 @@
 {% endif -%}
 
 {% for vip_bind in vip_binds %}
-{% if item.service.haproxy_redirect_http_port is defined %}
+{% if item.service.haproxy_redirect_http_port is defined and item.service.haproxy_ssl %}
 {% if (loop.index == 1 or item.service.haproxy_ssl_all_vips | default(false) | bool) %}
 
 frontend {{ item.service.haproxy_service_name }}-redirect-front-{{ loop.index }}

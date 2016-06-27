@@ -161,7 +161,7 @@ haproxy_service_configs:
       haproxy_backend_nodes: "{{ groups['horizon_all'] | default([]) }}"
       haproxy_ssl: "{{ haproxy_ssl }}"
       haproxy_ssl_all_vips: true
-      haproxy_port: 443
+      haproxy_port: "{{ haproxy_ssl | ternary(443,80) }}"
       haproxy_backend_port: 80
       haproxy_redirect_http_port: 80
       haproxy_balance_type: http

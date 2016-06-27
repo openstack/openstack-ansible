@@ -16,7 +16,6 @@
 # NOTE(cloudnull) This can be removed when we drop 14.04 support
 - include: haproxy_add_ppa_repo.yml
   when:
-    - haproxy_ssl | bool
     - ansible_distribution_version | version_compare('16.04', '<')
 
 #TODO(evrardjp): Replace the next 2 tasks by a standard apt with cache
