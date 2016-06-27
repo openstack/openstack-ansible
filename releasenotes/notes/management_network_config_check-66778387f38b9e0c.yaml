@@ -1,0 +1,8 @@
+---
+upgrade:
+  - The dynamic_inventory script previously set the provider network
+    attributes ``is_container_address`` and ``is_ssh_address`` to True
+    for the management network regardless of whether a deployer had them
+    configured this way or not. Now, these attributes must be configured
+    by deployers and the dynamic_inventory script will fail if they are
+    missing or not True.

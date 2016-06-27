@@ -70,6 +70,20 @@ class MultipleHostsWithOneIPError(Exception):
         return self.message
 
 
+class ProviderNetworkMisconfiguration(Exception):
+    def __init__(self, queue_name):
+        self.queue_name = queue_name
+
+        error_msg = ("Provider network with queue '{queue}' "
+                     "requires 'is_container_address' and "
+                     "'is_ssh_address' to be set to True.")
+
+        self.message = error_msg.format(queue=self.queue_name)
+
+    def __str__(self):
+        return self.message
+
+
 class MultipleIpForHostError(Exception):
     def __init__(self, hostname, current_ip, new_ip):
         self.hostname = hostname
@@ -665,27 +679,6 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
                 networks[old_address]['static_routes'].append(route)
 
 
-def _net_address_search(provider_networks, main_network, key):
-    """Set the key network type to the main network if not specified.
-
-    :param provider_networks: ``list`` Network list of ``dict``s
-    :param main_network: ``str`` The name of the main network bridge.
-    :param key: ``str`` The name of the key to set true.
-    """
-    for pn in provider_networks:
-        # p_net are the provider_network values
-        p_net = pn.get('network')
-        if p_net:
-            # Check for the key
-            if p_net.get(key):
-                break
-            else:
-                if p_net.get('container_bridge') == main_network:
-                    p_net[key] = True
-
-    return provider_networks
-
-
 def container_skel_load(container_skel, inventory, config):
     """Build out all containers as defined in the environment file.
 
@@ -719,18 +712,6 @@ def container_skel_load(container_skel, inventory, config):
         overrides = config['global_overrides']
         # iterate over a list of provider_networks, var=pn
         pns = overrides.get('provider_networks', list())
-        pns = _net_address_search(
-            provider_networks=pns,
-            main_network=config['global_overrides']['management_bridge'],
-            key='is_ssh_address'
-        )
-
-        pns = _net_address_search(
-            provider_networks=pns,
-            main_network=config['global_overrides']['management_bridge'],
-            key='is_container_address'
-        )
-
         for pn in pns:
             # p_net are the provider_network values
             p_net = pn.get('network')
@@ -1004,6 +985,12 @@ def _check_config_settings(cidr_networks, config, container_skel):
                     raise SystemExit(
                         "can't find " + q_name + " in cidr_networks"
                     )
+                if (p_net.get('container_bridge') ==
+                        overrides.get('management_bridge')):
+                    if (not p_net.get('is_ssh_address') or
+                            not p_net.get('is_container_address')):
+                        raise ProviderNetworkMisconfiguration(q_name)
+
     # look for same ip address assigned to different hosts
     _check_same_ip_to_multiple_host(config)
 
