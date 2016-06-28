@@ -17,3 +17,4 @@ nova_external_ssl: "{{ openstack_external_ssl }}"
 nova_ceph_client_uuid: '{{ cinder_ceph_client_uuid | default() }}'
 nova_dhcp_domain: "{{ dhcp_domain }}"
 nova_service_in_ldap: "{{ service_ldap_backend_enabled }}"
+nova_glance_api_servers: "{{ glance_api_servers }}"
