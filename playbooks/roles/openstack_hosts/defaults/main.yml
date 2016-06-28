@@ -49,7 +49,7 @@ openstack_host_kernel_modules:
   - nf_defrag_ipv4
   - nf_nat
   - nf_nat_ipv4
-  - scsi_dh
+  - "{% if ansible_kernel | version_compare('4.4.0-0-generic', '<') %}scsi_dh{% endif %}"
   - vhost_net
   - x_tables
 
