@@ -206,7 +206,6 @@
       tags:
         - "system-crontab-coordination"
   vars:
-    galera_address: "{{ internal_lb_vip_address }}"
     is_metal: "{{ properties.is_metal|default(false) }}"
     neutron_galera_user: neutron
     neutron_galera_database: neutron

@@ -173,7 +173,6 @@
       tags:
         - "system-crontab-coordination"
   vars:
-    galera_address: "{{ internal_lb_vip_address }}"
     is_metal: "{{ properties.is_metal|default(false) }}"
     glance_galera_user: glance
     glance_galera_database: glance

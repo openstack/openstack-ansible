@@ -122,7 +122,6 @@
       tags:
         - "system-crontab-coordination"
   vars:
-    galera_address: "{{ internal_lb_vip_address }}"
     is_metal: "{{ properties.is_metal|default(false) }}"
     horizon_galera_user: horizon
     horizon_galera_database: horizon

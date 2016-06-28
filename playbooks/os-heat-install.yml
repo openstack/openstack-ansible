@@ -148,7 +148,6 @@
       tags:
         - "system-crontab-coordination"
   vars:
-    galera_address: "{{ internal_lb_vip_address }}"
     is_metal: "{{ properties.is_metal|default(false) }}"
     heat_galera_user: heat
     heat_galera_database: heat

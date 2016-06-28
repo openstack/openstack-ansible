@@ -121,7 +121,6 @@
       when:
         - utility_ssh_private_key is defined
   vars:
-    galera_address: "{{ internal_lb_vip_address }}"
     utility_pip_packages:
       - python-openstackclient
       - python-ceilometerclient

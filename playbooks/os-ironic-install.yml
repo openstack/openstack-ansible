@@ -127,7 +127,6 @@
       tags:
         - "system-crontab-coordination"
   vars:
-    galera_address: "{{ internal_lb_vip_address }}"
     is_metal: "{{ properties.is_metal|default(false) }}"
     ironic_galera_user: ironic
     ironic_galera_database: ironic

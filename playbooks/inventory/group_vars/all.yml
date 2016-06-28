@@ -50,6 +50,7 @@ memcached_port: 11211
 memcached_servers: "{% for host in groups['memcached'] %}{{ hostvars[host]['ansible_ssh_host'] }}:{{ memcached_port }}{% if not loop.last %},{% endif %}{% endfor %}"
 
 ## Galera
+galera_address: "{{ internal_lb_vip_address }}"
 galera_root_user: "root"
 
 ## RabbitMQ

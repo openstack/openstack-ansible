@@ -277,7 +277,6 @@
   vars_files:
     - defaults/repo_packages/openstack_other.yml
   vars:
-    galera_address: "{{ internal_lb_vip_address }}"
     is_metal: "{{ properties.is_metal|default(false) }}"
     nova_galera_user: nova
     nova_galera_database: nova
