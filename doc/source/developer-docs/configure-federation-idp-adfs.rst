@@ -35,9 +35,9 @@ Configuring ADFS
 References
 ~~~~~~~~~~
 
-* `http://blogs.technet.com/b/rmilne/archive/2014/04/28/how-to-install-adfs-2012-r2-for-office-365.aspx`_
-* `http://blog.kloud.com.au/2013/08/14/powershell-deployment-of-web-application-proxy-and-adfs-in-under-10-minutes/`_
-* `https://ethernuno.wordpress.com/2014/04/20/install-adds-on-windows-server-2012-r2-with-powershell/`_
+* http://blogs.technet.com/b/rmilne/archive/2014/04/28/how-to-install-adfs-2012-r2-for-office-365.aspx
+* http://blog.kloud.com.au/2013/08/14/powershell-deployment-of-web-application-proxy-and-adfs-in-under-10-minutes/
+* https://ethernuno.wordpress.com/2014/04/20/install-adds-on-windows-server-2012-r2-with-powershell/
 
 --------------
 

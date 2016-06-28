@@ -1,8 +1,8 @@
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
-=======================
-Chapter 3. Target hosts
-=======================
+============
+Target hosts
+============
 
 .. toctree::
 

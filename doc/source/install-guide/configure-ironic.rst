@@ -28,7 +28,7 @@ OpenStack-Ansible deployment
       sed -i '/is_metal.*/d' /etc/openstack_deploy/env.d/nova.yml
 
 Setup a neutron network for use by ironic
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In a general case, neutron networking can be a simple flat network. However,
 in a complex case, this can be whatever you need and want. Ensure
