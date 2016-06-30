@@ -125,8 +125,10 @@
 
 - name: Disable nova using UCA in OpenStack-CI
   set_fact:
-    nova_uca_enable: False
-  when: nodepool_dir.stat.exists
+    uca_apt_repo_url: "{{ bootstrap_host_ubuntu_repo | netorigin }}/ubuntu-cloud-archive"
+  when:
+    - nodepool_dir.stat.exists
+    - bootstrap_host_ubuntu_repo is defined
 
 - name: Determine if the host has a global pip config file
   stat:

@@ -100,7 +100,7 @@ repo_build_pip_extra_indexes:
 {{ repo_build_pip_extra_indexes | to_nice_yaml }}
 {% endif %}
 
-{% if nova_uca_enable is defined %}
-## TODO(odyssey4me) Remove this once OpenStack-Infra has UCA mirrors
-nova_uca_enable: {{ nova_uca_enable }}
+{% if uca_apt_repo_url is defined %}
+## Ubuntu Cloud Archive mirror to use
+uca_apt_repo_url: {{ uca_apt_repo_url }}
 {% endif %}
