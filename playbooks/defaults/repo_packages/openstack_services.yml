@@ -87,7 +87,7 @@ neutron_vpnaas_git_install_branch: 0bd14f9af0e81339b9a1ff8c3a4579f2d420f663 # HE
 neutron_vpnaas_git_dest: "/opt/neutron_vpnaas_{{ neutron_vpnaas_git_install_branch | replace('/', '_') }}"
 
 neutron_fwaas_git_repo: https://git.openstack.org/openstack/neutron-fwaas
-neutron_fwaas_git_install_branch: ccdc9e921d58267bbd15079e52c36747cde5b141 # HEAD of "stable/kilo" as of 13.05.2016
+neutron_fwaas_git_install_branch: b5f5abe0fad39529955a150d15a3137be93afad0 # HEAD of "kilo-eol" as of 30.06.2016
 neutron_fwaas_git_dest: "/opt/neutron_fwaas_{{ neutron_fwaas_git_install_branch | replace('/', '_') }}"
 
 
@@ -99,5 +99,5 @@ nova_git_dest: "/opt/nova_{{ nova_git_install_branch | replace('/', '_') }}"
 
 ## Swift service
 swift_git_repo: https://git.openstack.org/openstack/swift
-swift_git_install_branch: eabe02cd717f5799e8f38389882025a70b7270f8 # HEAD of "stable/kilo" as of 13.05.2016
+swift_git_install_branch: 026ab82f83caccf2bee6832154e1ec17a1806016 # HEAD of "kilo-eol" as of 30.06.2016
 swift_git_dest: "/opt/swift_{{ swift_git_install_branch | replace('/', '_') }}"
