@@ -239,7 +239,6 @@
       tags:
         - "system-crontab-coordination"
   vars:
-    galera_address: "{{ internal_lb_vip_address }}"
     is_metal: "{{ properties.is_metal|default(false) }}"
     cinder_galera_user: cinder
     cinder_galera_database: cinder
