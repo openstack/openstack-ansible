@@ -13,6 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- name: Remove old git directory
+  file:
+    path: "/usr/share/novnc"
+    state: "absent"
+  tags:
+    - nova-install
+    - nova-novnc-git
+
 - name: Get package from git
   git:
     repo: "{{ nova_novncproxy_git_repo }}"

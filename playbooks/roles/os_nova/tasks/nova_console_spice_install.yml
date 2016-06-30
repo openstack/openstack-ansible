@@ -13,6 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- name: Remove old git directory
+  file:
+    path: "/usr/share/spice-html5"
+    state: "absent"
+  tags:
+    - nova-install
+    - nova-spice-git
+
 - name: Update apt sources
   apt:
     update_cache: yes
