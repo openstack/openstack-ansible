@@ -1,0 +1,59 @@
+---
+# Copyright 2016, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Gracefully restart mariadb/galera cluster
+  hosts: galera_all
+  serial: 1
+  max_fail_percentage: 0
+  gather_facts: false
+  user: root
+  tasks:
+    - name: Stop mariadb
+      service:
+        name: mysql
+        state: stopped
+      retries: 5
+      delay: 10
+
+    - name: Stop container
+      lxc_container:
+        name: "{{ inventory_hostname }}"
+        state: "stopped"
+      delegate_to: "{{ physical_host }}"
+
+    - name: Start container
+      lxc_container:
+        name: "{{ inventory_hostname }}"
+        state: "started"
+      delegate_to: "{{ physical_host }}"
+
+  post_tasks:
+    - name: Wait for mariadb port 3306 to be available
+      local_action:
+        module: wait_for
+        port: "3306"
+        host: "{{ ansible_ssh_host | default(inventory_hostname) }}"
+        search_regex: MariaDB
+      retries: 10
+      delay: 10
+
+    - name: Check that WSREP is ready and Synced
+      shell: "/usr/bin/mysqladmin --defaults-file=/etc/mysql/debian.cnf extended-status | egrep '(wsrep_local_state_comment)'"
+      register: mysql_ready
+      until:
+        - mysql_ready.rc == 0
+        - (mysql_ready.stdout).find("Synced") != -1
+      retries: 60
+      delay: 1
