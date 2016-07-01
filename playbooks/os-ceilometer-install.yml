@@ -114,8 +114,6 @@
         - "ceilometer-rsyslog-client"
   vars:
     is_metal: "{{ properties.is_metal|default(false) }}"
-    ceilometer_rabbitmq_userid: ceilometer
-    ceilometer_rabbitmq_vhost: /ceilometer
     ceilometer_rabbitmq_servers: "{{ rabbitmq_servers }}"
     ceilometer_rabbitmq_port: "{{ rabbitmq_port }}"
     ceilometer_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
