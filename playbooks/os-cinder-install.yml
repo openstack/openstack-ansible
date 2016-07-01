@@ -243,8 +243,6 @@
     cinder_galera_user: cinder
     cinder_galera_database: cinder
     cinder_galera_address: "{{ galera_address }}"
-    cinder_rabbitmq_userid: cinder
-    cinder_rabbitmq_vhost: /cinder
     cinder_rabbitmq_servers: "{{ rabbitmq_servers }}"
     cinder_rabbitmq_port: "{{ rabbitmq_port }}"
     cinder_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
