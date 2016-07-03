@@ -14,13 +14,13 @@ configure target host networking.
    .. code-block:: yaml
 
        cidr_networks:
-       # Management (same range as br-mgmt on the target hosts)
-       container: CONTAINER_MGMT_CIDR
-       # Tunnel endpoints for VXLAN tenant networks
-       # (same range as br-vxlan on the target hosts)
-       tunnel: TUNNEL_CIDR
-       #Storage (same range as br-storage on the target hosts)
-       storage: STORAGE_CIDR
+         # Management (same range as br-mgmt on the target hosts)
+         container: CONTAINER_MGMT_CIDR
+         # Tunnel endpoints for VXLAN tenant networks
+         # (same range as br-vxlan on the target hosts)
+         tunnel: TUNNEL_CIDR
+         # Storage (same range as br-storage on the target hosts)
+         storage: STORAGE_CIDR
 
    Replace ``*_CIDR`` with the appropriate IP address range in CIDR
    notation. For example, 203.0.113.0/24.
