@@ -135,9 +135,6 @@
         - "aodh-rsyslog-client"
   vars:
     is_metal: "{{ properties.is_metal|default(false) }}"
-    aodh_galera_address: "{{ internal_lb_vip_address }}"
-    aodh_galera_user: aodh
-    aodh_galera_database: aodh
     aodh_rabbitmq_userid: aodh
     aodh_rabbitmq_vhost: /aodh
     aodh_rabbitmq_servers: "{{ rabbitmq_servers }}"
