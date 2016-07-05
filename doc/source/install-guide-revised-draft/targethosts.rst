@@ -7,7 +7,6 @@ Target hosts
 .. toctree::
 
    targethosts-prepare.rst
-   targethosts-network.rst
    targethosts-networkconfig.rst
 
 **Figure 3.1. Installation workflow**

@@ -7,6 +7,7 @@ installed environments.
 
 .. toctree::
 
+   ops-lxc-commands.rst
    ops-addcomputehost.rst
    ops-galera.rst
    ops-logging.rst

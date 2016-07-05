@@ -4,6 +4,8 @@ Chapter 4. Deployment configuration
 -----------------------------------
 
 .. toctree::
+   :maxdepth: 2
+
 
    configure-initial.rst
    configure-networking.rst

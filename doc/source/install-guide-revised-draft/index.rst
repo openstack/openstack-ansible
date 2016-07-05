@@ -7,55 +7,15 @@ and is currently under development.
 
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
-
-Overview
-^^^^^^^^
+Table of Contents
+^^^^^^^^^^^^^^^^^
 
 .. toctree::
+   :maxdepth: 2
 
    overview.rst
-
-Deployment host
-^^^^^^^^^^^^^^^
-
-.. toctree::
-
    deploymenthost.rst
-
-
-Target hosts
-^^^^^^^^^^^^
-
-.. toctree::
-
    targethosts.rst
-
-
-Configuration
-^^^^^^^^^^^^^
-
-.. toctree::
-
    configure.rst
-
-
-Installation
-^^^^^^^^^^^^
-
-.. toctree::
-
-   install-foundation.rst
-   install-infrastructure.rst
-   install-openstack.rst
-
-
-Appendices
-^^^^^^^^^^
-
-.. toctree::
-
-   app-configfiles.rst
-   app-resources.rst
-   app-plumgrid.rst
-   app-nuage.rst
-   app-custom-layouts.rst
+   install.rst
+   app.rst
