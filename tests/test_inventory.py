@@ -20,6 +20,7 @@ sys.path.append(path.join(os.getcwd(), INV_DIR))
 import dynamic_inventory as di
 
 TARGET_DIR = path.join(os.getcwd(), 'tests', 'inventory')
+BASE_ENV_DIR = INV_DIR
 USER_CONFIG_FILE = path.join(TARGET_DIR, "openstack_user_config.yml")
 
 # These files will be placed in TARGET_DIR by INV_SCRIPT.
@@ -292,7 +293,7 @@ class TestUserConfiguration(unittest.TestCase):
 class TestEnvironments(unittest.TestCase):
     def setUp(self):
         self.longMessage = True
-        self.loaded_environment = di.load_environment(TARGET_DIR)
+        self.loaded_environment = di.load_environment(BASE_ENV_DIR, {})
 
     def test_loading_environment(self):
         """Test that the environment can be loaded"""
@@ -747,7 +748,7 @@ class TestMultipleRuns(unittest.TestCase):
 
 class TestEnsureInventoryUptoDate(unittest.TestCase):
     def setUp(self):
-        self.env = di.load_environment(TARGET_DIR)
+        self.env = di.load_environment(BASE_ENV_DIR, {})
         # Copy because we manipulate the structure in each test;
         # not copying would modify the global var in the target code
         self.inv = copy.deepcopy(di.INVENTORY_SKEL)
@@ -801,6 +802,89 @@ class TestEnsureInventoryUptoDate(unittest.TestCase):
         self.host_vars = None
         self.inv = None
 
+
+class TestOverridingEnvVars(unittest.TestCase):
+    def setUp(self):
+        self.base_env = di.load_environment(BASE_ENV_DIR, {})
+
+        # Use the cinder configuration as our sample for override testing
+        with open(path.join(BASE_ENV_DIR, 'env.d', 'cinder.yml'), 'r') as f:
+            self.cinder_config = yaml.safe_load(f.read())
+
+        self.override_path = path.join(TARGET_DIR, 'env.d')
+        os.mkdir(self.override_path)
+
+    def write_override_env(self):
+        with open(path.join(self.override_path, 'cinder.yml'), 'w') as f:
+            f.write(yaml.safe_dump(self.cinder_config))
+
+    def test_cinder_metal_override(self):
+        vol = self.cinder_config['container_skel']['cinder_volumes_container']
+        vol['properties']['is_metal'] = False
+
+        self.write_override_env()
+
+        di.load_environment(TARGET_DIR, self.base_env)
+
+        test_vol = self.base_env['container_skel']['cinder_volumes_container']
+        self.assertFalse(test_vol['properties']['is_metal'])
+
+    def test_deleting_elements(self):
+        # Leave only the 'properties' dictionary attached to simulate writing
+        # a partial override file
+
+        vol = self.cinder_config['container_skel']['cinder_volumes_container']
+        for key in vol.keys():
+            if not key == 'properties':
+                del vol[key]
+
+        self.write_override_env()
+
+        di.load_environment(TARGET_DIR, self.base_env)
+
+        test_vol = self.base_env['container_skel']['cinder_volumes_container']
+
+        self.assertIn('belongs_to', test_vol)
+
+    def test_adding_new_keys(self):
+        vol = self.cinder_config['container_skel']['cinder_volumes_container']
+        vol['a_new_key'] = 'Added'
+
+        self.write_override_env()
+
+        di.load_environment(TARGET_DIR, self.base_env)
+
+        test_vol = self.base_env['container_skel']['cinder_volumes_container']
+
+        self.assertIn('a_new_key', test_vol)
+        self.assertEqual(test_vol['a_new_key'], 'Added')
+
+    def test_emptying_dictionaries(self):
+        self.cinder_config['container_skel']['cinder_volumes_container'] = {}
+
+        self.write_override_env()
+
+        di.load_environment(TARGET_DIR, self.base_env)
+
+        test_vol = self.base_env['container_skel']['cinder_volumes_container']
+
+        self.assertNotIn('belongs_to', test_vol)
+
+    def test_emptying_lists(self):
+        vol = self.cinder_config['container_skel']['cinder_volumes_container']
+        vol['belongs_to'] = []
+
+        self.write_override_env()
+
+        di.load_environment(TARGET_DIR, self.base_env)
+
+        test_vol = self.base_env['container_skel']['cinder_volumes_container']
+
+        self.assertEqual(test_vol['belongs_to'], [])
+
+    def tearDown(self):
+        os.remove(path.join(self.override_path, 'cinder.yml'))
+        os.rmdir(self.override_path)
 
 if __name__ == '__main__':
     unittest.main()

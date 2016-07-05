@@ -77,6 +77,9 @@ env.d
 The ``/etc/openstack_deploy/env.d`` directory sources all YAML files into the
 deployed environment, allowing a deployer to define additional group mappings.
 
+This directory is used to extend the environment skeleton, or modify the
+defaults defined in the ``playbooks/inventory/env.d`` directory.
+
 See also `Understanding Container Groups`_ in Appendix H.
 
 .. _Understanding Container Groups: ../install-guide/app-custom-layouts.html#understanding-container-groups

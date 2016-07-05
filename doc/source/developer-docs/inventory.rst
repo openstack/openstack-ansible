@@ -38,6 +38,9 @@ Inputs
 The ``dynamic_inventory.py`` script takes a single argument, ``--config``. If
 not specified, the default is ``/etc/openstack_deploy/``.
 
+In addition to this argument, the base environment skeleton is provided in the
+``playbooks/inventory/env.d`` directory of the OpenStack-Ansible codebase.
+
 .. note:: In all versions prior to Mitaka, this argument was ``--file``.
 
 The following file must be present in the configuration directory:
@@ -45,10 +48,10 @@ The following file must be present in the configuration directory:
     * ``openstack_user_config.yml``
 
 Additionally, the configuration or environment could be spread between two
-additional directories:
+additional sub-directories:
 
     * ``conf.d``
-    * ``env.d``
+    * ``env.d`` (for environment customization)
 
 The dynamic inventory script does the following:
 
@@ -71,13 +74,13 @@ As an example, consider the following excerpt from
 
 The ``identity_hosts`` dictionary defines an Ansible inventory group named
 ``identity_hosts`` containing the three infra hosts. The configuration file
-``etc/openstack_deploy/env.d/keystone.yml`` defines additional Ansible
+``playbooks/inventory/env.d/keystone.yml`` defines additional Ansible
 inventory groups for the containers that are deployed onto the three hosts
 named with the prefix *infra*.
 
 Note that any services marked with ``is_metal: true`` will run on the allocated
 physical host and not in a container. For an example of ``is_metal: true``
-being used refer to ``etc/openstack_deploy/env.d/cinder.yml`` in the
+being used refer to ``playbooks/inventory/env.d/cinder.yml`` in the
 ``container_skel`` section.
 
 Outputs
