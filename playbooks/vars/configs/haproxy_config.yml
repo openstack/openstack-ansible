@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-haproxy_service_configs:
+haproxy_default_services:
   - service:
       haproxy_service_name: galera
       haproxy_backend_nodes: "{{ [groups['galera_all'][0]] | default([]) }}"  # list expected

@@ -101,6 +101,7 @@
         - haproxy-service-config
   roles:
     - role: "haproxy_server"
+      haproxy_service_configs: "{{ haproxy_default_services + haproxy_extra_services|default([]) }}"
       tags:
         - "haproxy-server"
     - role: "rsyslog_client"
@@ -114,4 +115,3 @@
     - vars/configs/haproxy_config.yml
   vars:
     is_metal: "{{ properties.is_metal|default(false) }}"
-
