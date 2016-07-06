@@ -278,6 +278,19 @@ network to 9000.
 .. _jumbo frames: https://en.wikipedia.org/wiki/Jumbo_frame
 .. _neutron MTU considerations: http://docs.openstack.org/mitaka/networking-guide/adv-config-mtu.html
 
+Setting an MTU on a default lxc bridge (lxcbr0)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To modify a container MTU it is also required to set ``lxc_net_mtu`` to
+a value other than 1500 in ``user_variables.yml``. It will also be necessary
+to modify the ``provider_networks`` subsection to reflect the change.
+
+This will define the mtu on the lxcbr0 interface. An ifup/ifdown will
+be required if the interface is already up for the changes to take effect.
+
+
+
+
 --------------
 
 .. include:: navigation.txt
