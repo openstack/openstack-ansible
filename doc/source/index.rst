@@ -1,11 +1,16 @@
-Welcome to OpenStack-Ansible's documentation!
-=============================================
+===============================
+OpenStack-Ansible Documentation
+===============================
 
-This project provides Ansible playbooks and roles for the deployment and
+Abstract
+~~~~~~~~
+OpenStack-Ansible provides Ansible playbooks and roles for the deployment and
 configuration of an OpenStack environment.
 
+Documentation for each of the following releases is available.
+
 Newton (unreleased)
-===================
+~~~~~~~~~~~~~~~~~~~
 
 OpenStack-Ansible Newton is currently in development. The
 `Newton Series Timeline`_ and `Newton Series Release Notes`_ are available for
@@ -27,7 +32,7 @@ review.
 .. _Newton Series Release Notes: http://docs.openstack.org/releasenotes/openstack-ansible/unreleased.html
 
 Mitaka (Current stable release, security-supported)
-===================================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 OpenStack-Ansible's Mitaka Series was first released with the 13.0.0 tag on
 1 April 2016.
@@ -43,7 +48,7 @@ OpenStack-Ansible's Mitaka Series was first released with the 13.0.0 tag on
 .. _OpenStack-Ansible Mitaka Series Release Notes: http://docs.openstack.org/releasenotes/openstack-ansible/mitaka.html
 
 Liberty: Security-supported (EOL: 2016-11-17)
-=============================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 OpenStack-Ansible's Liberty Series was first released with the 12.0.0 tag
 on 11 September 2015.
@@ -58,8 +63,8 @@ on 11 September 2015.
 .. _OpenStack-Ansible Liberty Series Release Notes: http://docs.openstack.org/releasenotes/openstack-ansible/liberty.html
 .. _OpenStack-Ansible Liberty Series Timeline: https://launchpad.net/openstack-ansible/liberty
 
-Kilo: Security-supported (EOL: 2016-05-02)
-==========================================
+Kilo: End of Life (2016-07-05)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 OpenStack-Ansible's Kilo series was first released with the 11.0.0 tag on
 30 April 2015.
