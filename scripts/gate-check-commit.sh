@@ -92,7 +92,7 @@ pushd $(dirname ${0})/../playbooks
   sed -i '/\[defaults\]/a log_path = /openstack/log/ansible-logging/ansible.log' ansible.cfg
 
   # Enable callback plugins
-  sed -i 's/^callback_whitelist.*/callback_whitelist = "profile_tasks"/g' ansible.cfg
+  sed -i 's/^callback_whitelist.*/callback_whitelist = "profile_tasks,human_log"/g' ansible.cfg
 popd
 
 # Log some data about the instance and the rest of the system
