@@ -18,6 +18,10 @@ the use of a sixth host. Block Storage hosts require an LVM volume group named
 requirements" <overview-requirements.html>`_ and `the section
 called "Configuring LVM" <targethosts-configlvm.html>`_ for more information.
 
+If using the optional Object Storage (swift) service, we recommend the use of
+three additional hosts (or some other odd number). See the section
+:ref:`configure-swift` for more information.
+
 The hosts are called target hosts because Ansible deploys the OSA
 environment within these hosts. We recommend a
 deployment host from which Ansible orchestrates the deployment
@@ -56,6 +60,8 @@ services:
    -  Orchestration (heat)
 
    -  Dashboard (horizon)
+
+   -  Object storage (swift)
 
 Infrastructure Logging target hosts contain the following services:
 
