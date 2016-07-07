@@ -376,6 +376,14 @@ class TestConfigChecks(unittest.TestCase):
         del self.user_defined_config['cidr_networks'][net_name]
         self.write_config()
 
+    def delete_provider_network_key(self, net_name, key):
+        pns = self.user_defined_config['global_overrides']['provider_networks']
+        for net in pns:
+            if 'ip_from_q' in net['network']:
+                if net['network']['ip_from_q'] == net_name:
+                    if key in net['network']:
+                        del net['network'][key]
+
     def write_config(self):
         self.config_changed = True
         # rename temporarily our user_config_file so we can use the new one
@@ -397,6 +405,19 @@ class TestConfigChecks(unittest.TestCase):
         expectedLog = ("No container or management network specified in "
                        "user config.")
         self.assertEqual(context.exception.message, expectedLog)
+
+    def test_management_network_malformed(self):
+        self.delete_provider_network_key('container', 'is_container_address')
+        self.delete_provider_network_key('container', 'is_ssh_address')
+        self.write_config()
+
+        with self.assertRaises(di.ProviderNetworkMisconfiguration) as context:
+            get_inventory()
+        expectedLog = ("Provider network with queue 'container' "
+                       "requires 'is_container_address' and "
+                       "'is_ssh_address' to be set to True.")
+        self.assertEqual(context.exception.message, expectedLog)
+        self.restore_config()
 
     def test_missing_cidr_network_present_in_provider(self):
         self.delete_provider_network('storage')
@@ -620,33 +641,6 @@ class TestStaticRouteConfig(TestConfigChecks):
         exception = context.exception
 
         self.assertEqual(exception.message, self.expectedMsg)
-
-
-class TestNetAddressSearch(unittest.TestCase):
-    def test_net_address_search_key_not_found(self):
-        pns = [
-            {'network': {'container_bridge': 'br-mgmt'}}
-        ]
-        new_pns = di._net_address_search(pns, 'br-mgmt', 'is_ssh_address')
-
-        self.assertTrue(new_pns[0]['network']['is_ssh_address'])
-
-    def test_net_address_search_key_not_found_bridge_doesnt_match(self):
-        pns = [
-            {'network': {'container_bridge': 'lxcbr0'}}
-        ]
-        new_pns = di._net_address_search(pns, 'br-mgmt', 'is_ssh_address')
-
-        self.assertNotIn('is_ssh_address', new_pns[0]['network'])
-
-    def test_net_address_search_key_found(self):
-        pns = [
-            {'network': {'container_bridge': 'br-mgmt',
-                         'is_ssh_address': True}}
-        ]
-        new_pns = di._net_address_search(pns, 'br-mgmt', 'is_ssh_address')
-
-        self.assertEqual(pns, new_pns)
 
 
 class TestGlobalOverridesConfigDeletion(TestConfigChecks):
