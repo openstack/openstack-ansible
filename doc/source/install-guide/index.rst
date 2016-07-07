@@ -26,7 +26,6 @@ Target hosts
 
    targethosts.rst
 
-
 Configuration
 ^^^^^^^^^^^^^
 
@@ -44,15 +43,6 @@ Installation
    install-infrastructure.rst
    install-openstack.rst
 
-
-Operations
-^^^^^^^^^^
-
-.. toctree::
-
-   ops.rst
-
-
 Appendices
 ^^^^^^^^^^
 
@@ -60,9 +50,6 @@ Appendices
 
    app-configfiles.rst
    app-resources.rst
-   app-minorupgrade.rst
-   app-tips.rst
    app-plumgrid.rst
    app-nuage.rst
-   app-no-internet-connectivity.rst
    app-custom-layouts.rst
