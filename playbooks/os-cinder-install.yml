@@ -224,7 +224,7 @@
     - role: "ceph_client"
       cinder_venv_bin: "/openstack/venvs/cinder-{{ openstack_release }}/bin"
       openstack_service_system_user: "{{ cinder_system_user_name }}"
-      openstack_service_venv_bin: "{{ cinder_venv_bin if cinder_venv_enabled|default(True) else None }}"
+      openstack_service_venv_bin: "{{ cinder_venv_bin if cinder_venv_enabled|default(True)|bool else None }}"
       tags:
         - "cinder-ceph-client"
         - "ceph-client"
