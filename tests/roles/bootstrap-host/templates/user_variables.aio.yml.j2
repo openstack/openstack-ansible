@@ -112,3 +112,9 @@ repo_build_pip_no_binary:
 # The container backing store is set to 'overlayfs' to speed up the
 # AIO build time.
 lxc_container_backing_store: overlayfs
+
+## Enable LBaaSv2 in the AIO
+neutron_plugin_base:
+  - router
+  - metering
+  - neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPluginv2
