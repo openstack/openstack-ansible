@@ -15,3 +15,13 @@
 
 neutron_dhcp_domain: "{{ dhcp_domain }}"
 neutron_service_in_ldap: "{{ service_ldap_backend_enabled }}"
+
+neutron_galera_user: neutron
+neutron_galera_database: neutron
+neutron_galera_address: "{{ galera_address }}"
+
+neutron_rabbitmq_userid: neutron
+neutron_rabbitmq_vhost: /neutron
+neutron_rabbitmq_port: "{{ rabbitmq_port }}"
+neutron_rabbitmq_servers: "{{ rabbitmq_servers }}"
+neutron_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"

@@ -65,7 +65,7 @@
       dist_sort:
         value_to_lookup: "{{ container_name }}"
         ref_list: "{{ groups['neutron_all'] }}"
-        src_list: "{{ rabbitmq_servers }}"
+        src_list: "{{ neutron_rabbitmq_servers }}"
       register: servers
       tags:
         - always
@@ -189,6 +189,7 @@
       neutron_venv_download_url: "{{ openstack_repo_url }}/venvs/{{ openstack_release }}/{{ ansible_distribution | lower }}/neutron-{{ openstack_release }}.tgz"
       neutron_overlay_network: "{{ _overlay_network }}"
       neutron_provider_networks: "{{ _provider_networks }}"
+      neutron_local_ip: "{{ _local_ip|default('127.0.0.1') }}"
       tags:
         - "os-neutron"
     - { role: "openstack_openrc", tags: [ "openstack-openrc" ] }
@@ -207,14 +208,5 @@
         - "system-crontab-coordination"
   vars:
     is_metal: "{{ properties.is_metal|default(false) }}"
-    neutron_galera_user: neutron
-    neutron_galera_database: neutron
-    neutron_galera_address: "{{ galera_address }}"
-    neutron_local_ip: "{{ _local_ip|default('127.0.0.1') }}"
     bind_prefix: "{{ provider_network_bind_prefix|default('') }}"
-    neutron_rabbitmq_userid: neutron
-    neutron_rabbitmq_vhost: /neutron
-    neutron_rabbitmq_servers: "{{ rabbitmq_servers }}"
-    neutron_rabbitmq_port: "{{ rabbitmq_port }}"
-    neutron_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
     pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"
