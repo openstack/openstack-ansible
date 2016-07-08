@@ -18,6 +18,23 @@ Example internet dependencies
 - Source code repositories
 - GPG keys for package validation
 
+Install pip through deployment host
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You may install pip via the deployment host in environments where the
+deployment host has internet connectivity, but the containers do not.
+
+Configure the ``pip_offline_install`` variable to enable the deployment
+host to fetch pip along with its dependencies, then transfer them to the
+remote container for installation.
+
+Configuration changes are made in ``/etc/openstack_deploy/user_variables.yml``.
+
+.. code-block:: yaml
+
+      # Install pip via deployment host
+      pip_offline_install: true
+
 Practice A: Mirror internet resources locally
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -157,4 +174,3 @@ contain a workaround that has been effective for some deployers.
 --------------
 
 .. include:: navigation.txt
-
