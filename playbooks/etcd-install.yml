@@ -1,5 +1,5 @@
 ---
-# Copyright 2014, Rackspace US, Inc.
+# Copyright 2016, Logan Vig <logan2211@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,11 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: repo-install.yml
-- include: haproxy-install.yml
-- include: memcached-install.yml
-- include: galera-install.yml
-- include: rabbitmq-install.yml
-- include: etcd-install.yml
-- include: utility-install.yml
-- include: rsyslog-install.yml
+- name: Install etcd server cluster
+  hosts: etcd_all
+  gather_facts: "{{ gather_facts | default(True) }}"
+  max_fail_percentage: 20
+  user: root
+  pre_tasks:
+    - include: common-tasks/os-lxc-container-setup.yml
+    - include: common-tasks/package-cache-proxy.yml
+  roles:
+    - role: "etcd"
+      etcd_install_type: server
+      tags:
+        - etcd-server
+    - role: "system_crontab_coordination"
+  vars:
+    is_metal: "{{ properties.is_metal|default(false) }}"
