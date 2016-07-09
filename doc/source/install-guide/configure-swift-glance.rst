@@ -10,7 +10,7 @@ If there is an existing glance backend (for example,
 cloud files) but you want to add swift to use as the glance backend,
 you can re-add any images from glance after moving
 to swift. Images are no longer available if there is a change in the
-glance variables when you begin using swift. 
+glance variables when you begin using swift.
 
 **Procedure 5.3. Integrating Object Storage with Image Service**
 

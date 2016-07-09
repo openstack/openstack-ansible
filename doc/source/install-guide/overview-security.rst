@@ -75,10 +75,10 @@ Securing network access to OpenStack services
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 OpenStack environments expose many service ports and API endpoints to the
-network. 
+network.
 
 .. note::
-   
+
    Deployers must limit access to these resources and expose them only
    to trusted users and networks.
 

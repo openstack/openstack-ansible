@@ -78,10 +78,10 @@ following parameters.
       pg_vip: PG_VIP
 
 #. Replace ``FABRIC_IFC`` with the name of the interface that will be used
-   for PLUMgrid Fabric. 
-   
+   for PLUMgrid Fabric.
+
    .. note::
-   
+
       PLUMgrid Fabric must be an untagged unbridged raw interface such as ``eth0``.
 
    .. code-block:: yaml
@@ -121,9 +121,9 @@ to as ``gateway_devs`` in the configuration files.
 
 #. Add a ``gateway_hosts`` section to the end of the PLUMgrid ``user_pg_vars.yml``
    file:
-   
+
    .. note::
-      
+
       This must contain hostnames and ``gateway_dev`` names for each
       gateway in the cluster.
 

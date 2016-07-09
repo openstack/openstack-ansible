@@ -150,10 +150,10 @@ The ``local`` part of the mapping rule specifies how keystone represents
 the remote user in the local SP cloud. Configuring the two federated identities
 with their own user group maps the user to the
 corresponding group. This exposes the correct domain, project, and
-role. 
+role.
 
 .. note::
-   
+
    Keystone creates a ephemeral user in the specified group as
    you cannot specify user names.
 

@@ -38,7 +38,7 @@ Implementing LDAP (or Active Directory) backends
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can use the built-in keystone support for services if you already have
-LDAP or Active Directory (AD) infrastructure on your deployment. 
+LDAP or Active Directory (AD) infrastructure on your deployment.
 Keystone uses the existing users, groups, and user-group relationships to
 handle authentication and access control in an OpenStack deployment.
 
@@ -47,8 +47,8 @@ handle authentication and access control in an OpenStack deployment.
    We do not recommend configuring the default domain in keystone to use
    LDAP or AD identity backends. Create additional domains
    in keystone and configure either LDAP or active directory backends for
-   that domain. 
-  
+   that domain.
+
    This is critical in situations where the identity backend cannot
    be reached due to network issues or other problems. In those situations,
    the administrative users in the default domain would still be able to

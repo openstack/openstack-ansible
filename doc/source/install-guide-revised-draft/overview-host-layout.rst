@@ -80,7 +80,7 @@ It also has the following features:
  - No log aggregation target host
  - File-backed storage for glance and nova
  - LVM-backed cinder
- 
+
  .. image:: figures/arch-layout-test.png
    :width: 100%
    :alt: Test environment host layout

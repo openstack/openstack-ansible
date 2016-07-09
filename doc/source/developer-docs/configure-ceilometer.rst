@@ -18,7 +18,7 @@ The Telemetry module (ceilometer) performs the following functions:
    services. For configuring these services, see the aodh docs:
    http://docs.openstack.org/developer/aodh/
 
-Configure a MongoDB backend prior to running the ceilometer playbooks. 
+Configure a MongoDB backend prior to running the ceilometer playbooks.
 The connection data is in the ``user_variables.yml`` file
 (see section `Configuring the user data`_ below).
 
@@ -74,7 +74,7 @@ Setting up a MongoDB database for ceilometer
       }
 
   .. note::
-  
+
      Ensure ``CEILOMETER_DBPASS`` matches the
      ``ceilometer_container_db_password`` in the
      ``/etc/openstack_deploy/user_secrets.yml`` file. This is

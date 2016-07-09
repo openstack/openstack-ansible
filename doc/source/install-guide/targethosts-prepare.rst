@@ -5,14 +5,14 @@ Preparing the target hosts
 ==========================
 
 The following section describes the installation and configuration of
-operating systems for the target hosts. 
+operating systems for the target hosts.
 
 Installing the operating system
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Install the Ubuntu Server 14.04 (Trusty Tahr) LTS 64-bit operating
 system on the target host. Configure at least one network interface
-to access the internet or suitable local repositories. 
+to access the internet or suitable local repositories.
 
 We recommend adding the Secure Shell (SSH) server packages to the
 installation on target hosts without local (console) access.

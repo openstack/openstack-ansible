@@ -60,9 +60,9 @@ Logging hosts
   In addition, the storage performance must be enough to keep pace with the
   log traffic coming from various hosts and containers within the OpenStack
   environment. Reserve a minimum of 50GB of disk space for storing
-  logs on the logging hosts. 
+  logs on the logging hosts.
 
-   
+
 Hosts that provide Block Storage (cinder) volumes must have logical volume
 manager (LVM) support. Ensure those hosts have a ``cinder-volumes`` volume group
 that OpenStack-Ansible can configure for use with cinder.

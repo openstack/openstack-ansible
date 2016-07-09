@@ -4,7 +4,7 @@ Deployment configuration options
 
 Ansible references a handful of files containing mandatory and optional
 configuration directives. This chapter describes optional configuration
-options to define the target environment before running the Ansible playbooks. 
+options to define the target environment before running the Ansible playbooks.
 
 Contents:
 

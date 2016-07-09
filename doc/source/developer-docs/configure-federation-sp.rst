@@ -19,7 +19,7 @@ The following settings must be set to configure a service provider (SP):
    keystone endpoint if the IdP is ADFS.
    Keystone or an SSL offloading load balancer provides the endpoint.
 
-#. Set ``keystone_service_publicuri_proto`` to https. 
+#. Set ``keystone_service_publicuri_proto`` to https.
    This ensures keystone publishes https in its references
    and ensures that Shibboleth is configured to know that it
    expects SSL URL's in the assertions (otherwise it will invalidate

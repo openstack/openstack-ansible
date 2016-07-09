@@ -71,7 +71,7 @@ Setting up a MongoDB database for Aodh
 
 
   .. note::
-  
+
       Ensure ``AODH_DBPASS`` matches the
       ``aodh_container_db_password`` in the
       ``/etc/openstack_deploy/user_secrets.yml`` file. This

@@ -19,7 +19,7 @@ When requests are sent to those locations, Apache hands off the
 request to the ``shibd`` service.
 
 .. note::
-   
+
    Handing off happens only with requests pertaining to authentication.
 
 Handle the ``shibd`` service configuration through
