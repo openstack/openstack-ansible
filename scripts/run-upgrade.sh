@@ -55,7 +55,7 @@ function run_lock {
     # "/tmp/fix_container_interfaces.yml || true"
     # into a command, otherwise we'll get an error that there's no playbook
     # named ||
-    eval "openstack-ansible $2 -e 'pip_install_options=--force-reinstall'"
+    eval "openstack-ansible $2"
     playbook_status="$?"
     echo "ran $run_item"
 
@@ -71,7 +71,7 @@ function run_lock {
       echo "execute the remaining tasks manually:"
       # run the tasks in order
       for item in ${!RUN_TASKS[@]}; do
-        echo "openstack-ansible ${RUN_TASKS[$item]} -e 'pip_install_options=--force-reinstall'"
+        echo "openstack-ansible ${RUN_TASKS[$item]}"
       done
       echo "******************** failure ********************"
       exit 99
