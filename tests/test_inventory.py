@@ -129,8 +129,6 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'identity_all',
         'identity_containers',
         'identity_hosts',
-        'infra_containers',
-        'infra_hosts',
         'ironic-server_hosts',
         'ironic_conductor_container',
         'ironic_api_container',
@@ -476,7 +474,7 @@ class TestConfigChecks(unittest.TestCase):
         # Even with the same hash seed, different OSes get different results,
         # eg. local OS X vs gate's Linux
         config = collections.OrderedDict()
-        config['infra_hosts'] = {
+        config['shared-infra_hosts'] = {
             'host1': {
                 'ip': '192.168.1.1'
             }
@@ -519,7 +517,7 @@ class TestConfigChecks(unittest.TestCase):
         # Even with the same hash seed, different OSes get different results,
         # eg. local OS X vs gate's Linux
         config = collections.OrderedDict()
-        config['infra_hosts'] = {
+        config['shared-infra_hosts'] = {
             'host1': {
                 'ip': '192.168.1.1'
             }
@@ -538,7 +536,7 @@ class TestConfigChecks(unittest.TestCase):
 
     def test_correct_hostname_ip_map(self):
         config = {
-            'infra_hosts': {
+            'shared-infra_hosts': {
                 'host1': {
                     'ip': '192.168.1.1'
                 }

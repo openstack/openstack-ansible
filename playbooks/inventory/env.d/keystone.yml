@@ -22,7 +22,6 @@ component_skel:
 container_skel:
   keystone_container:
     belongs_to:
-      - infra_containers
       - identity_containers
     contains:
       - keystone
