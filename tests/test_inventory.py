@@ -801,7 +801,7 @@ class TestEnsureInventoryUptoDate(unittest.TestCase):
         self.inv = None
 
 
-class TestOverridingEnvVars(unittest.TestCase):
+class OverridingEnvBase(unittest.TestCase):
     def setUp(self):
         self.base_env = di.load_environment(BASE_ENV_DIR, {})
 
@@ -815,6 +815,13 @@ class TestOverridingEnvVars(unittest.TestCase):
     def write_override_env(self):
         with open(path.join(self.override_path, 'cinder.yml'), 'w') as f:
             f.write(yaml.safe_dump(self.cinder_config))
+
+    def tearDown(self):
+        os.remove(path.join(self.override_path, 'cinder.yml'))
+        os.rmdir(self.override_path)
+
+
+class TestOverridingEnvVars(OverridingEnvBase):
 
     def test_cinder_metal_override(self):
         vol = self.cinder_config['container_skel']['cinder_volumes_container']
@@ -880,9 +887,83 @@ class TestOverridingEnvVars(unittest.TestCase):
 
         self.assertEqual(test_vol['belongs_to'], [])
 
+
+class TestOverridingEnvIntegration(OverridingEnvBase):
+    def setUp(self):
+        super(TestOverridingEnvIntegration, self).setUp()
+        self.user_defined_config = {}
+        with open(USER_CONFIG_FILE, 'rb') as f:
+            self.user_defined_config.update(yaml.safe_load(f.read()))
+
+        # Inventory is necessary since keys are assumed present
+        self.inv = di.get_inventory(TARGET_DIR, '')
+
+    def skel_setup(self):
+        self.environment = di.load_environment(TARGET_DIR, self.base_env)
+
+        di.skel_setup(self.environment, self.inv)
+
+        di.skel_load(
+            self.environment.get('physical_skel'),
+            self.inv
+        )
+
+    def test_emptying_container_integration(self):
+        self.cinder_config = {}
+        self.cinder_config['container_skel'] = {'cinder_volumes_container': {}}
+
+        self.write_override_env()
+        self.skel_setup()
+
+        di.container_skel_load(
+            self.environment.get('container_skel'),
+            self.inv,
+            self.user_defined_config
+        )
+
+        test_vol = self.base_env['container_skel']['cinder_volumes_container']
+
+        self.assertNotIn('belongs_to', test_vol)
+        self.assertNotIn('contains', test_vol)
+
+    def test_empty_contains(self):
+        vol = self.cinder_config['container_skel']['cinder_volumes_container']
+        vol['contains'] = []
+
+        self.write_override_env()
+        self.skel_setup()
+
+        di.container_skel_load(
+            self.environment.get('container_skel'),
+            self.inv,
+            self.user_defined_config
+        )
+
+        test_vol = self.base_env['container_skel']['cinder_volumes_container']
+
+        self.assertEqual(test_vol['contains'], [])
+
+    def test_empty_belongs_to(self):
+        vol = self.cinder_config['container_skel']['cinder_volumes_container']
+        vol['belongs_to'] = []
+
+        self.write_override_env()
+        self.skel_setup()
+
+        di.container_skel_load(
+            self.environment.get('container_skel'),
+            self.inv,
+            self.user_defined_config
+        )
+
+        test_vol = self.base_env['container_skel']['cinder_volumes_container']
+
+        self.assertEqual(test_vol['belongs_to'], [])
+
     def tearDown(self):
-        os.remove(path.join(self.override_path, 'cinder.yml'))
-        os.rmdir(self.override_path)
+        super(TestOverridingEnvIntegration, self).tearDown()
+        self.user_defined_config = None
+        self.inv = None
 
 if __name__ == '__main__':
     unittest.main()

@@ -686,16 +686,19 @@ def container_skel_load(container_skel, inventory, config):
     :param config: ``dict``  User defined information
     """
     for key, value in container_skel.iteritems():
-        for assignment in value['contains']:
-            for container_type in value['belongs_to']:
-                _add_container_hosts(
-                    assignment,
-                    config,
-                    key,
-                    container_type,
-                    inventory,
-                    value.get('properties')
-                )
+        contains_in = value.get('contains', False)
+        belongs_to_in = value.get('belongs_to', False)
+        if contains_in or belongs_to_in:
+            for assignment in value['contains']:
+                for container_type in value['belongs_to']:
+                    _add_container_hosts(
+                        assignment,
+                        config,
+                        key,
+                        container_type,
+                        inventory,
+                        value.get('properties')
+                    )
     else:
         cidr_networks = config.get('cidr_networks')
         provider_queues = {}
