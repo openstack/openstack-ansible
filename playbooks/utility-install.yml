@@ -86,19 +86,28 @@
       until: apt_update|success
       retries: 5
       delay: 2
+      when:
+        - ansible_pkg_mgr == 'apt'
       tags:
         - utility-apt-packages
     - name: Install apt packages
       apt:
         pkg: "{{ item }}"
         state: latest
-      register: install_packages
-      until: install_packages|success
-      retries: 5
-      delay: 2
-      with_items: "{{ utility_apt_packages | default([]) }}"
+      with_items: "{{ utility_apt_packages }}"
+      when:
+        - ansible_pkg_mgr == 'apt'
       tags:
         - utility-apt-packages
+    - name: Install yum packages
+      yum:
+        pkg: "{{ item }}"
+        state: latest
+      with_items: "{{ utility_yum_packages }}"
+      when:
+        - ansible_pkg_mgr == 'yum'
+      tags:
+        - utility-yum-packages
     - name: Install pip packages
       pip:
         name: "{{ item }}"
@@ -122,6 +131,8 @@
         - utility_ssh_private_key is defined
   vars:
     utility_apt_packages:
+      - git
+    utility_yum_packages:
       - git
     utility_pip_packages:
       - python-openstackclient
