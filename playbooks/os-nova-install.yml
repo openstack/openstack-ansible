@@ -257,7 +257,7 @@
     - role: "ceph_client"
       nova_venv_bin: "/openstack/venvs/nova-{{ openstack_release }}/bin"
       openstack_service_system_user: "{{ nova_system_user_name }}"
-      openstack_service_venv_bin: "{{ nova_venv_bin if nova_venv_enabled|default(True) else None }}"
+      openstack_service_venv_bin: "{{ nova_venv_bin if nova_venv_enabled|default(True)|bool else None }}"
       tags:
         - "nova-ceph-client"
         - "ceph-client"
