@@ -1,5 +1,5 @@
 ---
-# Copyright 2014, Rackspace US, Inc.
+# Copyright 2015, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,15 +13,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: os-keystone-install.yml
-- include: os-glance-install.yml
-- include: os-cinder-install.yml
-- include: os-nova-install.yml
-- include: os-neutron-install.yml
-- include: os-heat-install.yml
-- include: os-horizon-install.yml
-- include: os-ceilometer-install.yml
-- include: os-aodh-install.yml
-- include: os-swift-install.yml
-- include: os-gnocchi-install.yml
-- include: os-ironic-install.yml
+component_skel:
+  gnocchi_api:
+    belongs_to:
+      - gnocchi_all
+  gnocchi_metricd:
+    belongs_to:
+      - gnocchi_all
+
+container_skel:
+  gnocchi_container:
+    belongs_to:
+      - metrics_containers
+    contains:
+      - gnocchi_api
+      - gnocchi_metricd
+    properties:
+      service_name: gnocchi
+
+physical_skel:
+  metrics_containers:
+    belongs_to:
+      - all_containers
+  metrics_hosts:
+    belongs_to:
+      - hosts
+

@@ -132,6 +132,7 @@
       - python-novaclient
       - python-ironicclient
       - python-swiftclient
+      - gnocchiclient
       - python-memcached
       - pycrypto
     is_metal: "{{ properties.is_metal|default(false) }}"
