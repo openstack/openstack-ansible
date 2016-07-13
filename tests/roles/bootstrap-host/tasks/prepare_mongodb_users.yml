@@ -18,9 +18,22 @@
   tags:
     - mongodb-secrets
 
+- name: Add admin user
+  mongodb_user:
+    login_host: "{{ bootstrap_host_mongodb_address }}"
+    database: admin
+    name: root
+    password: "{{ bootstrap_host_mongodb_password }}"
+    roles: 'root'
+    state: present
+  tags:
+    - mongodb-create-user-admin
+
 - name: Add ceilometer database user
   mongodb_user:
     login_host: "{{ bootstrap_host_mongodb_address }}"
+    login_user: "root"
+    login_password: "{{ bootstrap_host_mongodb_password }}"
     database: ceilometer
     name: ceilometer
     password: "{{ ceilometer_container_db_password }}"
@@ -32,6 +45,8 @@
 - name: Add aodh database user
   mongodb_user:
     login_host: "{{ bootstrap_host_mongodb_address }}"
+    login_user: "root"
+    login_password: "{{ bootstrap_host_mongodb_password }}"
     database: aodh
     name: aodh
     password: "{{ aodh_container_db_password }}"
