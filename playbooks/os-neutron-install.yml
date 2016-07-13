@@ -170,7 +170,7 @@
 
     - name: set local_ip fact (is_metal)
       set_fact:
-        _local_ip: "{{ hostvars[inventory_hostname]['ansible_' + _overlay_network.bridge|default('br-mgmt')|replace('-', '_')]['ipv4']['address']|default(ansible_ssh_host) }}"
+        _local_ip: "{{ hostvars[inventory_hostname]['ansible_' + _overlay_network.bridge|default(ansible_default_ipv4['interface'])|replace('-', '_')]['ipv4']['address']|default(ansible_ssh_host) }}"
       when:
         - is_metal | bool
       tags:
