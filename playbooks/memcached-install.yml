@@ -19,49 +19,12 @@
   max_fail_percentage: 20
   user: root
   pre_tasks:
-    - name: Use the lxc-openstack aa profile
-      lxc_container:
-        name: "{{ container_name }}"
-        container_config:
-          - "lxc.aa_profile=lxc-openstack"
-      delegate_to: "{{ physical_host }}"
-      when: not is_metal | bool
-      register: container_config
-      tags:
-        - lxc-aa-profile
-
-    - name: Wait for container ssh
-      wait_for:
-        port: "22"
-        delay: "{{ ssh_delay }}"
-        search_regex: "OpenSSH"
-        host: "{{ ansible_ssh_host }}"
-      delegate_to: "{{ physical_host }}"
-      when: container_config is defined and container_config | changed
-      register: ssh_wait_check
-      until: ssh_wait_check | success
-      retries: 3
-      tags:
-        - ssh-wait
-
-    - name: Create log dir
-      file:
-        path: "/openstack/log/{{ inventory_hostname }}-memcached"
-        state: directory
-      when: is_metal | bool
-      tags:
-        - memcached-logs
-        - memcached-log-dirs
-
-    - name: Create log aggregation links
-      file:
-        src: "/openstack/log/{{ inventory_hostname }}-memcached"
-        dest: "/var/log/memcached"
-        state: "link"
-        force: "yes"
-      when: is_metal | bool
-      tags:
-        - memcached-logs
+    - include: common-tasks/os-lxc-container-setup.yml
+    - include: common-tasks/os-log-dir-setup.yml
+      vars:
+        log_dirs:
+          - src: "/openstack/log/{{ inventory_hostname }}-memcached"
+            dest: "/var/log/memcached"
   roles:
     - { role: "memcached_server", tags: [ "memcached-server" ] }
     - role: "system_crontab_coordination"

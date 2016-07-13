@@ -18,90 +18,26 @@
   max_fail_percentage: 20
   user: root
   pre_tasks:
-    - name: Use the lxc-openstack aa profile
-      lxc_container:
-        name: "{{ container_name }}"
-        container_config:
-          - "lxc.aa_profile=lxc-openstack"
-      delegate_to: "{{ physical_host }}"
-      when: not is_metal | bool
-      register: container_config
-      tags:
-        - lxc-aa-profile
-    - name: Wait for container ssh
-      wait_for:
-        port: "22"
-        delay: "{{ ssh_delay }}"
-        search_regex: "OpenSSH"
-        host: "{{ ansible_ssh_host }}"
-      delegate_to: "{{ physical_host }}"
-      when: container_config is defined and container_config | changed
-      register: ssh_wait_check
-      until: ssh_wait_check | success
-      retries: 3
-      tags:
-        - ssh-wait
-    - name: Gnocchi extra lxc config
-      lxc_container:
-        name: "{{ container_name }}"
-        container_command: |
-          [[ ! -d "/var/lib/gnocchi" ]] && mkdir -p "/var/lib/gnocchi"
-        container_config:
-          - "lxc.mount.entry=/openstack/{{ container_name }} var/lib/gnocchi none bind 0 0"
-      delegate_to: "{{ physical_host }}"
-      when: >
-            (not is_metal | bool) and gnocchi_storage_driver is not defined or
-            (gnocchi_storage_driver == "file")
-      register: container_extra_config
-      tags:
-        -gnocchi-storage-dir
-    - name: Create log dir
-      file:
-        path: "{{ item.path }}"
-        state: directory
-      with_items:
-        - { path: "/openstack/log/{{ inventory_hostname }}-gnocchi" }
-      when: is_metal | bool
-      tags:
-        - gnocchi-logs
-        - gnocchi-log-dirs
-    - name: Create log aggregation links
-      file:
-        src: "/openstack/log/{{ inventory_hostname }}-gnocchi"
-        dest: "/var/log/gnocchi"
-        state: "link"
-        force: "yes"
-      when: is_metal | bool
-      tags:
-        - gnocchi-logs
-    - name: Create DB for service
-      mysql_db:
-        login_user: "{{ galera_root_user }}"
-        login_password: "{{ galera_root_password }}"
+    - include: common-tasks/os-lxc-container-setup.yml
+      vars:
+        list_of_bind_mounts:
+          - bind_dir_path: "/var/lib/gnocchi"
+            mount_path: "/openstack/{{ inventory_hostname }}"
+      when: (gnocchi_storage_driver == "file") and (gnocchi_storage_driver is not defined)
+    - include: common-tasks/os-lxc-container-setup.yml
+      when: (gnocchi_storage_driver != "file") or (gnocchi_storage_driver is defined)
+    - include: common-tasks/os-log-dir-setup.yml
+      vars:
+        log_dirs:
+          - src: "/openstack/log/{{ inventory_hostname }}-gnocchi"
+            dest: "/var/log/gnocchi"
+    - include: common-tasks/mysql-db-user.yml
+      vars:
+        user_name: "{{ gnocchi_galera_user }}"
+        password: "{{ gnocchi_container_mysql_password }}"
         login_host: "{{ gnocchi_galera_address }}"
-        name: "{{ gnocchi_galera_database }}"
-        state: "present"
+        db_name: "{{ gnocchi_galera_database }}"
       when: inventory_hostname == groups['gnocchi_all'][0]
-      delegate_to: "{{ groups['galera_all'][0] }}"
-      tags:
-        - mysql-db-setup
-    - name: Grant access to the DB for the service
-      mysql_user:
-        login_user: "{{ galera_root_user }}"
-        login_password: "{{ galera_root_password }}"
-        login_host: "{{ gnocchi_galera_address }}"
-        name: "{{ gnocchi_galera_user }}"
-        password: "{{ gnocchi_galera_password }}"
-        host: "{{ item }}"
-        state: "present"
-        priv: "{{ gnocchi_galera_database }}.*:ALL"
-      when: inventory_hostname == groups['gnocchi_all'][0]
-      delegate_to: "{{ groups['galera_all'][0] }}"
-      with_items:
-        - "localhost"
-        - "%"
-      tags:
-        - mysql-db-setup
   roles:
     - role: "os_gnocchi"
       gnocchi_venv_tag: "{{ openstack_release }}"

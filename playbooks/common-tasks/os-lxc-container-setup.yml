@@ -1,0 +1,89 @@
+---
+# Copyright 2016, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Usage:
+#  This common task will update lxc containers to use the lxc-openstack
+#  app-armor profile by default however this profile can be changed as needed.
+
+#  This will also load in a list of bind mounts for a given container. To load
+#  in a list of bind mounts the variable, "list_of_bind_mounts" must be used
+#  containing at least one dictionary with the keys "bind_dir_path",
+#  "relative_bind_dir_path", and "mount_path".
+#    * bind_dir_path = Container path used in a bind mount
+#    * mount_path = Local path on the physical host used for a bind mount
+
+#  If extra container configurations are desirable set the
+#  "extra_container_config" list to strings containing the options needed.
+
+- name: Set the LXC app-armor profile
+  lxc_container:
+    name: "{{ inventory_hostname }}"
+    container_config:
+      - "lxc.aa_profile={{ aa_profile | default('lxc-openstack') }}"
+  delegate_to: "{{ physical_host }}"
+  when:
+    - not is_metal | bool
+  register: _cp
+
+- name: Ensure mount directories exists
+  file:
+    path: "{{ item['mount_path'] }}"
+    state: "directory"
+  with_items: "{{ list_of_bind_mounts | default([]) }}"
+  delegate_to: "{{ physical_host }}"
+  when:
+    - list_of_bind_mounts is defined
+    - not is_metal | bool
+
+- name: LXC Directory bind mount
+  lxc_container:
+    name: "{{ inventory_hostname }}"
+    container_command: |
+      [[ ! -d "{{ item['bind_dir_path'] }}" ]] && mkdir -p "{{ item['bind_dir_path'] }}"
+    container_config:
+      - "lxc.mount.entry={{ item['mount_path'] }} {{ item['bind_dir_path'].lstrip('/') }} none bind 0 0"
+  with_items: "{{ list_of_bind_mounts | default([]) }}"
+  delegate_to: "{{ physical_host }}"
+  register: _bm
+  when:
+    - list_of_bind_mounts is defined
+    - not is_metal | bool
+
+- name: Extra lxc config
+  lxc_container:
+    name: "{{ inventory_hostname }}"
+    container_config: "{{ extra_container_config }}"
+  delegate_to: "{{ physical_host }}"
+  when:
+    - extra_container_config is defined
+    - not is_metal | bool
+  register: _ec
+
+- name: Wait for container ssh
+  wait_for:
+    port: "22"
+    delay: "{{ ssh_delay }}"
+    search_regex: "OpenSSH"
+    host: "{{ ansible_ssh_host }}"
+  delegate_to: "{{ physical_host }}"
+  when:
+    - >
+      (_cp is defined and _cp | changed) or
+      (_bm is defined and _bm | changed) or
+      (_ec is defined and _ec | changed)
+    - not is_metal | bool
+  register: ssh_wait_check
+  until: ssh_wait_check | success
+  retries: 3

@@ -19,137 +19,41 @@
   max_fail_percentage: 20
   user: root
   pre_tasks:
-    - name: Use the lxc-openstack aa profile
-      lxc_container:
-        name: "{{ container_name }}"
-        container_config:
-          - "lxc.aa_profile=unconfined"
-      delegate_to: "{{ physical_host }}"
-      when: >
-        not is_metal | bool and
-        inventory_hostname in groups['neutron_agent']
-      register: container_config
-      tags:
-        - lxc-aa-profile
-    - name: Neutron extra lxc config
-      lxc_container:
-        name: "{{ container_name }}"
-        container_command: |
-          [[ ! -d "/lib/modules" ]] && mkdir -p "/lib/modules"
-        container_config:
+    - include: common-tasks/rabbitmq-servers-sort.yml
+      vars:
+        sort_group_name: "neutron_all"
+    - include: common-tasks/os-lxc-container-setup.yml
+      vars:
+        aa_profile: "unconfined"
+        list_of_bind_mounts:
+          - bind_dir_path: "/lib/modules"
+            mount_path: "/lib/modules"
+        extra_container_config:
           - "lxc.cgroup.devices.allow=a *:* rmw"
-          - "lxc.mount.entry=/lib/modules lib/modules none bind 0 0"
-      delegate_to: "{{ physical_host }}"
-      when: >
-        not is_metal | bool and
-        inventory_hostname in groups['neutron_agent']
-      register: container_extra_config
-      tags:
-        - neutron-container-setup
-    - name: Wait for container ssh
-      wait_for:
-        port: "22"
-        delay: "{{ ssh_delay }}"
-        search_regex: "OpenSSH"
-        host: "{{ ansible_ssh_host }}"
-      delegate_to: "{{ physical_host }}"
-      when: >
-            (container_config is defined and container_config | changed) or
-            (container_extra_config is defined and container_extra_config | changed)
-      register: ssh_wait_check
-      until: ssh_wait_check | success
-      retries: 3
-      tags:
-        - ssh-wait
-    - name: Sort the rabbitmq servers
-      dist_sort:
-        value_to_lookup: "{{ container_name }}"
-        ref_list: "{{ groups['neutron_all'] }}"
-        src_list: "{{ neutron_rabbitmq_servers }}"
-      register: servers
-      tags:
-        - always
-    - name: Set rabbitmq servers
-      set_fact:
-        rabbitmq_servers: "{{ servers.sorted_list }}"
-      tags:
-        - always
-    - name: Create log dir
-      file:
-        path: "{{ item.path }}"
-        state: directory
-      with_items:
-        - { path: "/openstack/log/{{ inventory_hostname }}-neutron" }
-      when: is_metal | bool
-      tags:
-        - neutron-logs
-        - neutron-log-dirs
-    - name: Create log aggregation links
-      file:
-        src: "{{ item.src }}"
-        dest: "{{ item.dest }}"
-        state: "{{ item.state }}"
-        force: "yes"
-      with_items:
-        - { src: "/openstack/log/{{ inventory_hostname }}-neutron", dest: "/var/log/neutron", state: "link" }
-      when: is_metal | bool
-      tags:
-        - neutron-logs
-    - name: Ensure Rabbitmq vhost
-      rabbitmq_vhost:
-        name: "{{ neutron_rabbitmq_vhost }}"
-        state: "present"
-      delegate_to: "{{ groups['rabbitmq_all'][0] }}"
-      when:
-        - inventory_hostname == groups['neutron_all'][0]
-        - groups['rabbitmq_all']|length > 0
-      tags:
-        - neutron-rabbitmq
-        - neutron-rabbitmq-vhost
-    - name: Ensure rabbitmq user
-      rabbitmq_user:
+      when: inventory_hostname in groups['neutron_agent']
+    - include: common-tasks/os-lxc-container-setup.yml
+      when: inventory_hostname not in groups['neutron_agent']
+    - include: common-tasks/rabbitmq-vhost-user.yml
+      vars:
         user: "{{ neutron_rabbitmq_userid }}"
         password: "{{ neutron_rabbitmq_password }}"
         vhost: "{{ neutron_rabbitmq_vhost }}"
-        configure_priv: ".*"
-        read_priv: ".*"
-        write_priv: ".*"
-        state: "present"
-      delegate_to: "{{ groups['rabbitmq_all'][0] }}"
       when:
         - inventory_hostname == groups['neutron_all'][0]
-        - groups['rabbitmq_all']|length > 0
-      tags:
-        - neutron-rabbitmq
-        - neutron-rabbitmq-user
-    - name: Create DB for service
-      mysql_db:
-        login_user: "{{ galera_root_user }}"
-        login_password: "{{ galera_root_password }}"
-        login_host: "{{ neutron_galera_address }}"
-        name: "{{ neutron_galera_database }}"
-        state: "present"
-      when: inventory_hostname == groups['neutron_all'][0]
-      delegate_to: "{{ groups['galera_all'][0] }}"
-      tags:
-        - mysql-db-setup
-    - name: Grant access to the DB for the service
-      mysql_user:
-        login_user: "{{ galera_root_user }}"
-        login_password: "{{ galera_root_password }}"
-        login_host: "{{ neutron_galera_address }}"
-        name: "{{ neutron_galera_user }}"
+        - groups['rabbitmq_all'] | length > 0
+    - include: common-tasks/os-log-dir-setup.yml
+      vars:
+        log_dirs:
+          - src: "/openstack/log/{{ inventory_hostname }}-neutron"
+            dest: "/var/log/neutron"
+    - include: common-tasks/mysql-db-user.yml
+      vars:
+        user_name: "{{ neutron_galera_user }}"
         password: "{{ neutron_container_mysql_password }}"
-        host: "{{ item }}"
-        state: "present"
-        priv: "{{ neutron_galera_database }}.*:ALL"
+        login_host: "{{ neutron_galera_address }}"
+        db_name: "{{ neutron_galera_database }}"
       when: inventory_hostname == groups['neutron_all'][0]
-      delegate_to: "{{ groups['galera_all'][0] }}"
-      with_items:
-        - "localhost"
-        - "%"
-      tags:
-        - mysql-db-setup
+
     - name: Create the neutron provider networks facts
       provider_networks:
         provider_networks: "{{ provider_networks }}"

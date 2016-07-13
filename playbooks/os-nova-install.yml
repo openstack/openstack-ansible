@@ -19,42 +19,38 @@
   max_fail_percentage: 20
   user: root
   pre_tasks:
-    - name: Use the lxc-openstack aa profile
-      lxc_container:
-        name: "{{ container_name }}"
-        container_config:
-          - "lxc.aa_profile=lxc-openstack"
-      delegate_to: "{{ physical_host }}"
-      when: not is_metal | bool
-      register: container_config
-      tags:
-        - lxc-aa-profile
-    - name: Wait for container ssh
-      wait_for:
-        port: "22"
-        delay: "{{ ssh_delay }}"
-        search_regex: "OpenSSH"
-        host: "{{ ansible_ssh_host }}"
-      delegate_to: "{{ physical_host }}"
-      when: container_config is defined and container_config | changed
-      register: ssh_wait_check
-      until: ssh_wait_check | success
-      retries: 3
-      tags:
-        - ssh-wait
-    - name: Sort the rabbitmq servers
-      dist_sort:
-        value_to_lookup: "{{ container_name }}"
-        ref_list: "{{ groups['nova_all'] }}"
-        src_list: "{{ rabbitmq_servers }}"
-      register: servers
-      tags:
-        - always
-    - name: Set rabbitmq servers
-      set_fact:
-        rabbitmq_servers: "{{ servers.sorted_list }}"
-      tags:
-        - always
+    - include: common-tasks/rabbitmq-servers-sort.yml
+      vars:
+        sort_group_name: "nova_all"
+    - include: common-tasks/os-lxc-container-setup.yml
+    - include: common-tasks/rabbitmq-vhost-user.yml
+      vars:
+        user: "{{ nova_rabbitmq_userid }}"
+        password: "{{ nova_rabbitmq_password }}"
+        vhost: "{{ nova_rabbitmq_vhost }}"
+      when:
+        - inventory_hostname == groups['nova_all'][0]
+        - groups['rabbitmq_all'] | length > 0
+    - include: common-tasks/os-log-dir-setup.yml
+      vars:
+        log_dirs:
+          - src: "/openstack/log/{{ inventory_hostname }}-nova"
+            dest: "/var/log/nova"
+    - include: common-tasks/mysql-db-user.yml
+      vars:
+        user_name: "{{ nova_galera_user }}"
+        password: "{{ nova_container_mysql_password }}"
+        login_host: "{{ nova_galera_address }}"
+        db_name: "{{ nova_galera_database }}"
+      when: inventory_hostname == groups['nova_all'][0]
+    - include: common-tasks/mysql-db-user.yml
+      vars:
+        user_name: "{{ nova_api_galera_user }}"
+        password: "{{ nova_api_container_mysql_password }}"
+        login_host: "{{ nova_api_galera_address }}"
+        db_name: "{{ nova_api_galera_database }}"
+      when: inventory_hostname == groups['nova_all'][0]
+
     - name: Add nbd devices to the compute
       shell: |
         for i in /dev/nbd*;do
@@ -107,110 +103,6 @@
       tags:
         - nova-kvm
         - nova-kvm-container-devices
-    - name: Create log dir
-      file:
-        path: "{{ item.path }}"
-        state: directory
-      with_items:
-        - { path: "/openstack/log/{{ inventory_hostname }}-nova" }
-      when: is_metal | bool
-      tags:
-        - nova-logs
-        - nova-log-dirs
-    - name: Create log aggregation links
-      file:
-        src: "{{ item.src }}"
-        dest: "{{ item.dest }}"
-        state: "{{ item.state }}"
-        force: "yes"
-      with_items:
-        - { src: "/openstack/log/{{ inventory_hostname }}-nova", dest: "/var/log/nova", state: "link" }
-      when: is_metal | bool
-      tags:
-        - nova-logs
-    - name: Ensure Rabbitmq vhost
-      rabbitmq_vhost:
-        name: "{{ nova_rabbitmq_vhost }}"
-        state: "present"
-      delegate_to: "{{ groups['rabbitmq_all'][0] }}"
-      when:
-        - inventory_hostname == groups['nova_all'][0]
-        - groups['rabbitmq_all']|length > 0
-      tags:
-        - nova-rabbitmq
-        - nova-rabbitmq-vhost
-    - name: Ensure rabbitmq user
-      rabbitmq_user:
-        user: "{{ nova_rabbitmq_userid }}"
-        password: "{{ nova_rabbitmq_password }}"
-        vhost: "{{ nova_rabbitmq_vhost }}"
-        configure_priv: ".*"
-        read_priv: ".*"
-        write_priv: ".*"
-        state: "present"
-      delegate_to: "{{ groups['rabbitmq_all'][0] }}"
-      when:
-        - inventory_hostname == groups['nova_all'][0]
-        - groups['rabbitmq_all']|length > 0
-      tags:
-        - nova-rabbitmq
-        - nova-rabbitmq-user
-    - name: Create DB for service
-      mysql_db:
-        login_user: "{{ galera_root_user }}"
-        login_password: "{{ galera_root_password }}"
-        login_host: "{{ nova_galera_address }}"
-        name: "{{ nova_galera_database }}"
-        state: "present"
-      when: inventory_hostname == groups['nova_all'][0]
-      delegate_to: "{{ groups['galera_all'][0] }}"
-      tags:
-        - mysql-db-setup
-    - name: Grant access to the DB for the service
-      mysql_user:
-        login_user: "{{ galera_root_user }}"
-        login_password: "{{ galera_root_password }}"
-        login_host: "{{ nova_galera_address }}"
-        name: "{{ nova_galera_user }}"
-        password: "{{ nova_container_mysql_password }}"
-        host: "{{ item }}"
-        state: "present"
-        priv: "{{ nova_galera_database }}.*:ALL"
-      when: inventory_hostname == groups['nova_all'][0]
-      delegate_to: "{{ groups['galera_all'][0] }}"
-      with_items:
-        - "localhost"
-        - "%"
-      tags:
-        - mysql-db-setup
-    - name: Create API DB for service
-      mysql_db:
-        login_user: "{{ galera_root_user }}"
-        login_password: "{{ galera_root_password }}"
-        login_host: "{{ nova_api_galera_address }}"
-        name: "{{ nova_api_galera_database }}"
-        state: "present"
-      when: inventory_hostname == groups['nova_all'][0]
-      delegate_to: "{{ groups['galera_all'][0] }}"
-      tags:
-        - mysql-db-setup
-    - name: Grant access to the API DB for the service
-      mysql_user:
-        login_user: "{{ galera_root_user }}"
-        login_password: "{{ galera_root_password }}"
-        login_host: "{{ nova_api_galera_address }}"
-        name: "{{ nova_api_galera_user }}"
-        password: "{{ nova_api_container_mysql_password }}"
-        host: "{{ item }}"
-        state: "present"
-        priv: "{{ nova_api_galera_database }}.*:ALL"
-      when: inventory_hostname == groups['nova_all'][0]
-      delegate_to: "{{ groups['galera_all'][0] }}"
-      with_items:
-        - "localhost"
-        - "%"
-      tags:
-        - mysql-db-setup
     - name: Set nova management bridge (is_metal)
       set_fact:
         management_bridge: "{{ 'ansible_' + hostvars[inventory_hostname]['management_bridge'] | replace('-', '_') }}"
