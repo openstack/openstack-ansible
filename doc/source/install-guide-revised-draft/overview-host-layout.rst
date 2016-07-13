@@ -89,8 +89,9 @@ Production environment
 ~~~~~~~~~~~~~~~~~~~~~~
 
 The layout for a production environment involves seven target
-hosts in total: three control plane and infrastructure hosts, two compute hosts,
-one storage host and one log aggregation host. It also has the following features:
+hosts in total: three control plane and infrastructure hosts, two compute
+hosts, one storage host and one log aggregation host. It also has the
+following features:
 
  - Bonded NICs
  - NFS/Ceph-backed storage for nova, glance, and cinder

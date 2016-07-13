@@ -22,7 +22,8 @@ deployment:
   directories named after the container or physical host.
 * Each physical host has the logs from its service containers mounted at
   ``/openstack/log/``.
-* Each service container has its own logs stored at ``/var/log/<service_name>``.
+* Each service container has its own logs stored at
+  ``/var/log/<service_name>``.
 
 --------------
 

@@ -46,7 +46,8 @@ OpenStack-Ansible's dynamic inventory generation has a concept called
 `affinity`. This determines how many containers of a similar type are deployed
 onto a single physical host.
 
-Using `shared-infra_hosts` as an example, consider this ``openstack_user_config.yml``:
+Using `shared-infra_hosts` as an example, consider this
+``openstack_user_config.yml``:
 
 .. code-block:: yaml
 

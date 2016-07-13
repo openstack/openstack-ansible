@@ -148,9 +148,9 @@ recover cannot join the cluster because it no longer exists.
 Complete failure
 ~~~~~~~~~~~~~~~~
 
-Restore from backup if all of the nodes in a Galera cluster fail (do not shutdown
-gracefully). Run the following command to determine if all nodes in the
-cluster have failed:
+Restore from backup if all of the nodes in a Galera cluster fail (do not
+shutdown gracefully). Run the following command to determine if all nodes in
+the cluster have failed:
 
 .. code-block:: shell-session
 

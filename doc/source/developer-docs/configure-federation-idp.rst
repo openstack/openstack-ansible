@@ -47,13 +47,14 @@ The following list is a reference of allowed settings:
   this IdP.
 
 * ``regen_cert`` by default is set to ``False``. When set to ``True``, the
-  next Ansible run replaces the existing signing certificate with a new one. This
-  setting is added as a convenience mechanism to renew a certificate when it
-  is close to its expiration date.
+  next Ansible run replaces the existing signing certificate with a new one.
+  This setting is added as a convenience mechanism to renew a certificate when
+  it is close to its expiration date.
 
 * ``idp_entity_id`` is the entity ID. The service providers
-  use this as a unique identifier for each IdP. ``<keystone-public-endpoint>/OS-FEDERATION/saml2/idp``
-  is the value we recommend for this setting.
+  use this as a unique identifier for each IdP.
+  ``<keystone-public-endpoint>/OS-FEDERATION/saml2/idp`` is the value we
+  recommend for this setting.
 
 * ``idp_sso_endpoint`` is the single sign-on endpoint for this IdP.
   ``<keystone-public-endpoint>/OS-FEDERATION/saml2/sso>`` is the value
@@ -72,7 +73,8 @@ The following list is a reference of allowed settings:
 * ``organization_name``, ``organization_display_name``, ``organization_url``,
   ``contact_company``, ``contact_name``, ``contact_surname``,
   ``contact_email``, ``contact_telephone`` and ``contact_type`` are
-  settings that describe the identity provider. These settings are all optional.
+  settings that describe the identity provider. These settings are all
+  optional.
 
 --------------
 

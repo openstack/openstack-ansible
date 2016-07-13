@@ -101,17 +101,18 @@ See also `Understanding Host Groups`_ in Appendix H.
 user\_*.yml files
 -----------------
 
-Files in ``/etc/openstack_deploy`` beginning with ``user_`` will be automatically
-sourced in any ``openstack-ansible`` command. Alternatively, the files can be
-sourced with the ``-e`` parameter of the ``ansible-playbook`` command.
+Files in ``/etc/openstack_deploy`` beginning with ``user_`` will be
+automatically sourced in any ``openstack-ansible`` command. Alternatively,
+the files can be sourced with the ``-e`` parameter of the ``ansible-playbook``
+command.
 
 ``user_variables.yml`` and ``user_secrets.yml`` are used directly by
-OpenStack-Ansible. Adding custom variables used by your own roles and playbooks
-to these files is not recommended. Doing so will complicate your upgrade path
-by making comparison of your existing files with later versions of these files
-more arduous. Rather, recommended practice is to place your own variables in files
-named following the ``user_*.yml`` pattern so they will be sourced alongside
-those used exclusively by OpenStack-Ansible.
+OpenStack-Ansible. Adding custom variables used by your own roles and
+playbooks to these files is not recommended. Doing so will complicate your
+upgrade path by making comparison of your existing files with later versions
+of these files more arduous. Rather, recommended practice is to place your own
+variables in files named following the ``user_*.yml`` pattern so they will be
+sourced alongside those used exclusively by OpenStack-Ansible.
 
 Ordering and Precedence
 +++++++++++++++++++++++
@@ -136,9 +137,9 @@ All of the services that use YAML, JSON, or INI for configuration can receive
 overrides through the use of a Ansible action plugin named ``config_template``.
 The configuration template engine allows a deployer to use a simple dictionary
 to modify or add items into configuration files at run time that may not have a
-preset template option. All OpenStack-Ansible roles allow for this functionality
-where applicable. Files available to receive overrides can be seen in the
-``defaults/main.yml`` file as standard empty dictionaries (hashes).
+preset template option. All OpenStack-Ansible roles allow for this
+functionality where applicable. Files available to receive overrides can be
+seen in the ``defaults/main.yml`` file as standard empty dictionaries (hashes).
 
 Practical guidance for using this feature is available in the `Install Guide`_.
 
@@ -157,12 +158,12 @@ git based or PyPi installable package. When the package is built the repo-build
 role will create the sources as Python wheels to extend the base system and
 requirements.
 
-While the packages pre-built in the repository-infrastructure are comprehensive,
-it may be needed to change the source locations and versions of packages to suit
-different deployment needs. Adding additional repositories as overrides is as
-simple as listing entries within the variable file of your choice. Any
-``user_.*.yml`` file within the "/etc/openstack_deployment" directory will work
-to facilitate the addition of a new packages.
+While the packages pre-built in the repository-infrastructure are
+comprehensive, it may be needed to change the source locations and versions of
+packages to suit different deployment needs. Adding additional repositories as
+overrides is as simple as listing entries within the variable file of your
+choice. Any ``user_.*.yml`` file within the "/etc/openstack_deployment"
+directory will work to facilitate the addition of a new packages.
 
 
 .. code-block:: yaml
@@ -171,8 +172,8 @@ to facilitate the addition of a new packages.
     swift_git_install_branch: master
 
 
-Additional lists of python packages can also be overridden using a ``user_.*.yml``
-variable file.
+Additional lists of python packages can also be overridden using a
+``user_.*.yml`` variable file.
 
 .. code-block:: yaml
 
@@ -191,8 +192,8 @@ deploy your overridden source code.
 Module documentation
 ++++++++++++++++++++
 
-These are the options available as found within the virtual module documentation
-section.
+These are the options available as found within the virtual module
+documentation section.
 
 .. code-block:: yaml
 

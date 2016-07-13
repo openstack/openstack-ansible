@@ -7,9 +7,11 @@ The Telemetry module (ceilometer) performs the following functions:
 
   - Efficiently polls metering data related to OpenStack services.
 
-  - Collects event and metering data by monitoring notifications sent from services.
+  - Collects event and metering data by monitoring notifications sent from
+    services.
 
-  - Publishes collected data to various targets including data stores and message queues.
+  - Publishes collected data to various targets including data stores and
+    message queues.
 
 .. note::
 
@@ -32,8 +34,8 @@ Setting up a MongoDB database for ceilometer
 
      # apt-get install mongodb-server mongodb-clients python-pymongo
 
-2. Edit the ``/etc/mongodb.conf`` file and change the ``bind_i`` to the management
-   interface:
+2. Edit the ``/etc/mongodb.conf`` file and change the ``bind_i`` to the
+   management interface:
 
   .. code-block:: ini
 

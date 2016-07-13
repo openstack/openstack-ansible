@@ -107,11 +107,11 @@ Deploying the Role
 #. If your service is installed from source or relies on python packages which
    need to be installed from source, specify a repository for the source
    code of each requirement by adding a file to your deploy host under
-   ``playbooks/defaults/repo_packages`` in the OpenStack-Ansible source repository
-   and following the pattern of files currently in that directory. You could
-   also simply add an entry to an existing file there. Be sure to run the
-   ``repo-build.yml`` play later so that wheels for your packages will be
-   included in the repository infrastructure.
+   ``playbooks/defaults/repo_packages`` in the OpenStack-Ansible source
+   repository and following the pattern of files currently in that directory.
+   You could also simply add an entry to an existing file there. Be sure to
+   run the ``repo-build.yml`` play later so that wheels for your packages will
+   be included in the repository infrastructure.
 #. Make any required adjustments to the load balancer configuration
    (e.g. modify ``playbooks/vars/configs/haproxy_config.yml`` in the
    OpenStack-Ansible source repository on your deploy host) so that your

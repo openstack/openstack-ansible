@@ -7,7 +7,8 @@ RabbitMQ provides the messaging broker for various OpenStack services. The
 OpenStack-Ansible project configures a plaintext listener on port 5672 and
 a SSL/TLS encrypted listener on port 5671.
 
-Customize your RabbitMQ deployment in ``/etc/openstack_deploy/user_variables.yml``.
+Customize your RabbitMQ deployment in
+``/etc/openstack_deploy/user_variables.yml``.
 
 Add a TLS encrypted listener to RabbitMQ
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -11,10 +11,10 @@ swift backend or some form of shared storage.
 Configuring default and additional stores
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible provides two configurations for controlling where glance stores
-files: the default store and additional stores. glance stores images in file-based
-storage by default. Two additional stores, ``http`` and ``cinder`` (Block Storage),
-are also enabled by default.
+OpenStack-Ansible provides two configurations for controlling where glance
+stores files: the default store and additional stores. glance stores images in
+file-based storage by default. Two additional stores, ``http`` and ``cinder``
+(Block Storage), are also enabled by default.
 
 You can choose alternative default stores and alternative additional stores.
 For example, a deployer that uses Ceph may configure the following Ansible
@@ -165,8 +165,8 @@ Special considerations
 
 If the swift password or key contains a dollar sign (``$``), it must
 be escaped with an additional dollar sign (``$$``). For example, a password of
-``super$ecure`` would need to be entered as ``super$$ecure``.  This is necessary
-due to the way `oslo.config formats strings`_.
+``super$ecure`` would need to be entered as ``super$$ecure``.  This is
+necessary due to the way `oslo.config formats strings`_.
 
 .. _oslo.config formats strings: https://bugs.launchpad.net/oslo-incubator/+bug/1259729
 

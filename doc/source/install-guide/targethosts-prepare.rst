@@ -79,10 +79,11 @@ practices, refer to `GitHub's documentation on generating SSH keys`_.
 Configuring LVM
 ~~~~~~~~~~~~~~~
 
-`Logical Volume Manager (LVM)`_ allows a single device to be split into multiple
-logical volumes which appear as a physical storage device to the operating
-system. The Block Storage (cinder) service, as well as the LXC containers that
-run the OpenStack infrastructure, can optionally use LVM for their data storage.
+`Logical Volume Manager (LVM)`_ allows a single device to be split into
+multiple logical volumes which appear as a physical storage device to the
+operating system. The Block Storage (cinder) service, as well as the LXC
+containers that run the OpenStack infrastructure, can optionally use LVM for
+their data storage.
 
 .. note::
 

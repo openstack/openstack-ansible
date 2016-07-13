@@ -15,7 +15,8 @@ script. Any of these steps can safely be run multiple times.
 Check out the Newton release
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Ensure your OpenStack-Ansible code is on the latest Newton release tag (14.x.x).
+Ensure your OpenStack-Ansible code is on the latest Newton release tag
+(14.x.x).
 
 .. code-block:: console
 

@@ -3,7 +3,8 @@
 Configuring the Identity service (keystone) (optional)
 ======================================================
 
-Customize your keystone deployment in ``/etc/openstack_deploy/user_variables.yml``.
+Customize your keystone deployment in
+``/etc/openstack_deploy/user_variables.yml``.
 
 
 Securing keystone communication with SSL certificates

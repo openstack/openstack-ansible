@@ -45,10 +45,10 @@ and how to configure SSL certificates, see
 Host security hardening
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Security hardening is applied by default to OpenStack infrastructure and compute
-hosts using the ``openstack-ansible-security`` role. The purpose of the role is to
-apply as many security configurations as possible without disrupting the
-operation of an OpenStack deployment.
+Security hardening is applied by default to OpenStack infrastructure and
+compute hosts using the ``openstack-ansible-security`` role. The purpose of
+the role is to apply as many security configurations as possible without
+disrupting the operation of an OpenStack deployment.
 
 Refer to the documentation on :ref:`security_hardening` for more information
 on the role and how to enable it in OpenStack-Ansible.
@@ -102,19 +102,19 @@ The resources within an OpenStack environment can be divided into two groups:
    * MariaDB
    * RabbitMQ
 
-Configure firewalls to limit network access to all services that users must access
-directly.
+Configure firewalls to limit network access to all services that users must
+access directly.
 
 Other services, such as MariaDB and RabbitMQ, must be segmented away from
 direct user access. Configure a firewall to only allow connectivity to
 these services within the OpenStack environment itself. This
 reduces an attacker's ability to query or manipulate data in OpenStack's
-critical database and queuing services, especially if one of these services has
-a known vulnerability.
+critical database and queuing services, especially if one of these services
+has a known vulnerability.
 
-For more details on recommended network policies for OpenStack clouds, refer to
-the `API endpoint process isolation and policy`_ section from the `OpenStack
-Security Guide`_
+For more details on recommended network policies for OpenStack clouds, refer
+to the `API endpoint process isolation and policy`_ section from the
+`OpenStack Security Guide`_
 
 .. _API endpoint process isolation and policy: http://docs.openstack.org/security-guide/api-endpoints/api-endpoint-configuration-recommendations.html#network-policy
 .. _OpenStack Security Guide: http://docs.openstack.org/security-guide

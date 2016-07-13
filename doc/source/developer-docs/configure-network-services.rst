@@ -155,8 +155,8 @@ The following procedure describes how to modify the
          - { name: "ah4", pattern: "CONFIG_INET_AH=", group: "network_hosts" }
          - { name: "ipcomp", pattern: "CONFIG_INET_IPCOMP=", group: "network_hosts" }
 
-#. Execute the openstack hosts setup in order to load the kernel modules at boot
-   and runtime in the network hosts
+#. Execute the openstack hosts setup in order to load the kernel modules at
+   boot and runtime in the network hosts
 
    .. code-block:: shell-session
 

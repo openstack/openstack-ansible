@@ -47,8 +47,8 @@ Host security hardening
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 Deployers can apply security hardening to OpenStack infrastructure and compute
-hosts using the ``openstack-ansible-security`` role. The purpose of the role is to
-apply as many security configurations as possible without disrupting the
+hosts using the ``openstack-ansible-security`` role. The purpose of the role
+is to apply as many security configurations as possible without disrupting the
 operation of an OpenStack deployment.
 
 Refer to the documentation on :ref:`security_hardening` for more information
@@ -103,8 +103,8 @@ The resources within an OpenStack environment can be divided into two groups:
    * MariaDB
    * RabbitMQ
 
-To manage instances, you are able to access certain public API endpoints, such as
-the Nova or Neutron API. Configure firewalls to limit network access to
+To manage instances, you are able to access certain public API endpoints, such
+as the Nova or Neutron API. Configure firewalls to limit network access to
 these services.
 
 Other services, such as MariaDB and RabbitMQ, must be segmented away from

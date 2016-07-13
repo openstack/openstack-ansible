@@ -48,8 +48,8 @@ The following steps above involve manually sending API requests.
    The infrastructure for the command line utilities that performs these steps
    for the user does not exist.
 
-To obtain access to a SP cloud, OpenStack-Ansible provides a script that wraps the
-above steps. The script is called ``federated-login.sh`` and is
+To obtain access to a SP cloud, OpenStack-Ansible provides a script that wraps
+the above steps. The script is called ``federated-login.sh`` and is
 used as follows:
 
 .. code::

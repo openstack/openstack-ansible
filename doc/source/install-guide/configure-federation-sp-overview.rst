@@ -54,9 +54,9 @@ containers:
 
 References
 ----------
-* `http://docs.openstack.org/developer/keystone/configure_federation.html`_
-* `http://docs.openstack.org/developer/keystone/extensions/shibboleth.html`_
-* `https://wiki.shibboleth.net/confluence/display/SHIB2/NativeSPConfiguration`_
+* http://docs.openstack.org/developer/keystone/configure_federation.html
+* http://docs.openstack.org/developer/keystone/extensions/shibboleth.html
+* https://wiki.shibboleth.net/confluence/display/SHIB2/NativeSPConfiguration
 
 --------------
 

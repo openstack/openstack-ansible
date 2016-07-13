@@ -118,11 +118,11 @@ options:
   :git-clone: Clone all of the role dependencies using native git
 
 Notes:
-  When doing role development it may be useful to set ``ANSIBLE_ROLE_FETCH_MODE``
-  to *git-clone*. This will provide you the ability to develop roles within the
-  environment by modifying, patching, or committing changes using an intact
-  git tree while the *galaxy* option scrubs the ``.git`` directory when
-  it resolves a dependency.
+  When doing role development it may be useful to set
+  ``ANSIBLE_ROLE_FETCH_MODE`` to *git-clone*. This will provide you the
+  ability to develop roles within the environment by modifying, patching, or
+  committing changes using an intact git tree while the *galaxy* option scrubs
+  the ``.git`` directory when it resolves a dependency.
 
    .. code-block:: bash
 
@@ -145,8 +145,8 @@ for the OpenStack Deployment. This preparation is completed by executing:
 
        # scripts/bootstrap-aio.sh
 
-If you wish to add any additional configuration entries for the OpenStack configuration
-then this can be done now by editing
+If you wish to add any additional configuration entries for the OpenStack
+configuration then this can be done now by editing
 ``/etc/openstack_deploy/user_variables.yml``. Please see the `Install Guide`_
 for more details.
 
@@ -173,9 +173,9 @@ general estimates:
 * Virtual machines with SSD storage: ~ 45-60 minutes
 * Systems with traditional hard disks: ~ 90-120 minutes
 
-Once the playbooks have fully executed, it is possible to experiment with various
-settings changes in ``/etc/openstack_deploy/user_variables.yml`` and only
-run individual playbooks. For example, to run the playbook for the
+Once the playbooks have fully executed, it is possible to experiment with
+various settings changes in ``/etc/openstack_deploy/user_variables.yml`` and
+only run individual playbooks. For example, to run the playbook for the
 Keystone service, execute:
 
    .. code-block:: bash
@@ -247,10 +247,11 @@ AIOs are best run inside of some form of virtual machine or cloud guest.
 Quick AIO build on Rackspace Cloud
 ----------------------------------
 
-You can automate the AIO build process with a virtual machine from the Rackspace Cloud.
+You can automate the AIO build process with a virtual machine from the
+Rackspace Cloud.
 
-First, we will need a cloud-config file that will allow us to run the build as soon as the
-instance starts. Save this file as ``user_data.yml``:
+First, we will need a cloud-config file that will allow us to run the build as
+soon as the instance starts. Save this file as ``user_data.yml``:
 
    .. code-block:: yaml
 

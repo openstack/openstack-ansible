@@ -57,11 +57,11 @@ Ceph configuration:
    auth_service_required = cephx
    auth_client_required = cephx
 
-The use of the ``ceph_conf_file`` variable is optional. By default, OpenStack-Ansible
-obtains a copy of ``ceph.conf`` from one of your Ceph monitors. This
-transfer of ``ceph.conf`` requires the OpenStack-Ansible deployment host public key
-to be deployed to all of the Ceph monitors. More details are available
-here: `Deploying SSH Keys`_.
+The use of the ``ceph_conf_file`` variable is optional. By default,
+OpenStack-Ansible obtains a copy of ``ceph.conf`` from one of your Ceph
+monitors. This transfer of ``ceph.conf`` requires the OpenStack-Ansible
+deployment host public key to be deployed to all of the Ceph monitors. More
+details are available here: `Deploying SSH Keys`_.
 
 The following minimal example configuration sets nova and glance
 to use ceph pools: ``ephemeral-vms`` and ``images`` respectively.

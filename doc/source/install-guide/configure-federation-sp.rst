@@ -104,8 +104,9 @@ The following settings must be set to configure a service provider (SP):
 #. ``metadata_reload`` is the number of seconds between metadata
    refresh polls.
 
-#. ``federated_identities`` is a mapping list of domain, project, group, and users.
-   See `Configure Identity Service (keystone) Domain-Project-Group-Role mappings <configure-federation-mapping.html>`_
+#. ``federated_identities`` is a mapping list of domain, project, group, and
+   users. See
+   `Configure Identity Service (keystone) Domain-Project-Group-Role mappings`_
    for more information.
 
 #. ``protocols`` is a list of protocols supported for the IdP and the set
@@ -113,7 +114,11 @@ The following settings must be set to configure a service provider (SP):
    with the name ``saml2``.
 
 #. ``mapping`` is the local to remote mapping configuration for federated
-   users. For more information, see `Configure Identity Service (keystone) Domain-Project-Group-Role mappings. <configure-federation-mapping.html>`_
+   users. See
+   `Configure Identity Service (keystone) Domain-Project-Group-Role mappings`_
+   for more information.
+
+.. _Configure Identity Service (keystone) Domain-Project-Group-Role mappings: configure-federation-mapping.html
 
 --------------
 

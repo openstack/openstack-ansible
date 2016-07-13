@@ -3,8 +3,8 @@
 Configuring the Block (cinder) storage service (optional)
 =========================================================
 
-By default, the Block (cinder) storage service installs on the host itself using
-the LVM backend.
+By default, the Block (cinder) storage service installs on the host itself
+using the LVM backend.
 
 .. note::
 
@@ -181,7 +181,8 @@ By default, no horizon configuration is set.
 Configuring cinder to use LVM
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#. List the ``container_vars`` that contain the storage options for the target host.
+#. List the ``container_vars`` that contain the storage options for the target
+   host.
 
    .. note::
 
