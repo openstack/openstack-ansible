@@ -10,6 +10,12 @@ for Ansible. Start by getting those files into the correct places:
    ``/opt/openstack-ansible/etc/openstack_deploy`` directory to the
    ``/etc/openstack_deploy`` directory.
 
+.. note::
+
+    As of Newton, the ``env.d`` directory has been moved from this source
+    directory to ``playbooks/inventory/``. See `Appendix H`_ for more
+    details on this change.
+
 #. Change to the ``/etc/openstack_deploy`` directory.
 
 #. Copy the ``openstack_user_config.yml.example`` file to
@@ -123,6 +129,7 @@ fine-tune certain security configurations.
 .. _openstack-ansible-security: http://docs.openstack.org/developer/openstack-ansible-security/
 .. _Security Technical Implementation Guide (STIG): https://en.wikipedia.org/wiki/Security_Technical_Implementation_Guide
 .. _Configuration: http://docs.openstack.org/developer/openstack-ansible-security/configuration.html
+.. _Appendix H: ../install-guide/app-custom-layouts.html
 
 --------------
 
