@@ -64,15 +64,15 @@ Logging hosts
   logs on the logging hosts.
 
 Hosts that provide Block Storage (cinder) volumes must have logical volume
-manager (LVM) support. Ensure those hosts have a ``cinder-volumes`` volume group
-that OpenStack-Ansible can configure for use with cinder.
+manager (LVM) support. Ensure those hosts have a ``cinder-volumes`` volume
+group that OpenStack-Ansible can configure for use with cinder.
 
 Each control plane host runs services inside LXC containers. The container
 filesystems are deployed by default onto the root filesystem of each control
 plane hosts. You have the option to deploy those container filesystems
-into logical volumes by creating a volume group called ``lxc``. OpenStack-Ansible
-creates a 5GB logical volume for the filesystem of each container running
-on the host.
+into logical volumes by creating a volume group called ``lxc``.
+OpenStack-Ansible creates a 5GB logical volume for the filesystem of each
+container running on the host.
 
 Network requirements
 ~~~~~~~~~~~~~~~~~~~~
@@ -83,8 +83,9 @@ Network requirements
    network interface. This works for small environments, but it can cause
    problems when your environment grows.
 
-For the best performance, reliability and scalability in a production environment,
-deployers should consider a network configuration that contains the following features:
+For the best performance, reliability and scalability in a production
+environment, deployers should consider a network configuration that contains
+the following features:
 
 * Bonded network interfaces: Increases performance and/or reliability
   (dependent on bonding architecture).

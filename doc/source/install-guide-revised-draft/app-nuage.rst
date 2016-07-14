@@ -51,7 +51,8 @@ On the deployment host, copy the Nuage user variables file from
 
       # cp /opt/nuage-openstack-ansible/etc/user_nuage_vars.yml /etc/openstack_deploy/
 
-Also modify the following parameters in this file as per your Nuage VCS environment:
+Also modify the following parameters in this file as per your Nuage VCS
+environment:
 
 #. Replace *VSD Enterprise Name* parameter with user desired name of VSD
    Enterprise:

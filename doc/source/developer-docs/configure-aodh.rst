@@ -7,10 +7,11 @@ The Telemetry (ceilometer) alarming services perform the following functions:
 
   - Creates an API endpoint for controlling alarms.
 
-  - Allows you to set alarms based on threshold evaluation for a collection of samples.
+  - Allows you to set alarms based on threshold evaluation for a collection of
+    samples.
 
-Aodh on OpenStack-Ansible requires a configured MongoDB backend prior to running
-the Aodh playbooks. To specify the connection data, edit the
+Aodh on OpenStack-Ansible requires a configured MongoDB backend prior to
+running the Aodh playbooks. To specify the connection data, edit the
 ``user_variables.yml`` file (see section `Configuring the user data`_
 below).
 

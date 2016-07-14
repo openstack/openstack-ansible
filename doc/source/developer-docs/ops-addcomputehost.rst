@@ -16,8 +16,8 @@ cluster.
    If necessary, also modify the ``used_ips`` stanza.
 
 #. If the cluster is utilizing Telemetry/Metering (Ceilometer),
-   edit the ``/etc/openstack_deploy/conf.d/ceilometer.yml`` file and add the host to
-   the ``metering-compute_hosts`` stanza.
+   edit the ``/etc/openstack_deploy/conf.d/ceilometer.yml`` file and add the
+   host to the ``metering-compute_hosts`` stanza.
 
 #. Run the following commands to add the host. Replace
    ``NEW_HOST_NAME`` with the name of the new host.

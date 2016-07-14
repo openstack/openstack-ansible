@@ -56,8 +56,8 @@ parameters.
 PLUMgrid configurations
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-On the deployment host, create a PLUMgrid user variables file using the sample in
-``/opt/plumgrid-ansible/etc/user_pg_vars.yml.example`` and copy it to
+On the deployment host, create a PLUMgrid user variables file using the sample
+in ``/opt/plumgrid-ansible/etc/user_pg_vars.yml.example`` and copy it to
 ``/etc/openstack_deploy/user_pg_vars.yml``. You must configure the
 following parameters.
 
@@ -119,8 +119,8 @@ to as ``gateway_devs`` in the configuration files.
    Replace ``*_IP_ADDRESS`` with the IP address of the ``br-mgmt`` container management
    bridge on each Gateway host.
 
-#. Add a ``gateway_hosts`` section to the end of the PLUMgrid ``user_pg_vars.yml``
-   file:
+#. Add a ``gateway_hosts`` section to the end of the PLUMgrid
+   ``user_pg_vars.yml`` file:
 
    .. note::
 

@@ -31,8 +31,8 @@ many services as possible.
 Self-signed certificates
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Self-signed certificates ensure you are able to start quickly and you are able to
-encrypt data in transit. However, they do not provide a high level of trust
+Self-signed certificates ensure you are able to start quickly and you are able
+to encrypt data in transit. However, they do not provide a high level of trust
 for highly secure environments. The use of self-signed certificates is
 currently the default in OpenStack-Ansible. When self-signed certificates are
 being used, certificate verification must be disabled using the following
@@ -82,9 +82,9 @@ To force a self-signed certificate to regenerate, you can pass the variable to
 
 To force a self-signed certificate to regenerate with every playbook run,
 set the appropriate regeneration option to ``true``.  For example, if
-you have already run the ``os-horizon`` playbook, but you want to regenerate the
-self-signed certificate, set the ``horizon_ssl_self_signed_regen`` variable to
-``true`` in ``/etc/openstack_deploy/user_variables.yml``:
+you have already run the ``os-horizon`` playbook, but you want to regenerate
+the self-signed certificate, set the ``horizon_ssl_self_signed_regen`` variable
+to ``true`` in ``/etc/openstack_deploy/user_variables.yml``:
 
 .. code-block:: yaml
 

@@ -35,23 +35,23 @@ variable override files matching the pattern
 Variable names within comments are updated.
 
 This script creates files of the form
-``/etc/openstack_deploy.NEWTON/VARS_MIGRATED_file``. For example, once the script has
-processed the file ``/etc/openstack_deploy/user_variables.yml``, it creates
-``/etc/openstack_deploy.NEWTON/VARS_MIGRATED_user_variables``. This indicates to
-OpenStack-Ansible to skip this step on successive runs. The script itself does
-not check for this file.
+``/etc/openstack_deploy.NEWTON/VARS_MIGRATED_file``. For example, once the
+script has processed the file ``/etc/openstack_deploy/user_variables.yml``, it
+creates ``/etc/openstack_deploy.NEWTON/VARS_MIGRATED_user_variables``. This
+indicates to OpenStack-Ansible to skip this step on successive runs. The script
+itself does not check for this file.
 
 The variable changes are shown in the following table.
 
 .. This table was made with the output of
-   ``scripts/upgrade-utilities/scripts/make_rst_table.py``. Insertion needs to be
-   done manually since the OpenStack publish jobs do not use `make` and there
-   is not yet a Sphinx extension that runs an abitrary script on build.
+   ``scripts/upgrade-utilities/scripts/make_rst_table.py``. Insertion needs to
+   be done manually since the OpenStack publish jobs do not use `make` and
+   there is not yet a Sphinx extension that runs an abitrary script on build.
 
-+------------------------------------------+------------------------------------------+
-|                                Old Value |                                New Value |
-+==========================================+==========================================+
-+------------------------------------------+------------------------------------------+
++--------------------------------------+--------------------------------------+
+|                            Old Value |                            New Value |
++======================================+======================================+
++--------------------------------------+--------------------------------------+
 
 Called by :ref:`config-change-playbook`
 

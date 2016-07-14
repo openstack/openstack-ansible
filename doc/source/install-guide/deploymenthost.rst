@@ -41,9 +41,10 @@ Install additional software packages and configure NTP.
 Configuring the network
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Ansible deployments fail if the deployment server is unable to SSH to the containers.
-Configure the deployment host to be on the same network designated for container management.
-This configuration reduces the rate of failure due to connectivity issues.
+Ansible deployments fail if the deployment server is unable to SSH to the
+containers. Configure the deployment host to be on the same network designated
+for container management. This configuration reduces the rate of failure due
+to connectivity issues.
 
 The following network information is used as an example:
 

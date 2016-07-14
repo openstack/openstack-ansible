@@ -7,7 +7,8 @@ Network architecture
 ====================
 
 For a production environment, some components are mandatory, such as bridges
-described below. We recommend other components such as a bonded network interface.
+described below. We recommend other components such as a bonded network
+interface.
 
 .. important::
 
@@ -23,11 +24,11 @@ particular environment.
 Bonded network interfaces
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The reference architecture for a production environment includes bonded network
-interfaces, which use multiple physical network interfaces for better redundancy
-and throughput. Avoid using two ports on the same multi-port network card for the
-same bonded interface since a network card failure affects both physical network
-interfaces used by the bond.
+The reference architecture for a production environment includes bonded
+network interfaces, which use multiple physical network interfaces for better
+redundancy and throughput. Avoid using two ports on the same multi-port
+network card for the same bonded interface since a network card failure
+affects both physical network interfaces used by the bond.
 
 The ``bond0`` interface carries traffic from the containers
 running your OpenStack infrastructure. Configure a static IP address on the

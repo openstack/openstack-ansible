@@ -48,8 +48,8 @@ is "cloud2".
 Keystone service provider (SP) configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The configuration for keystone SP needs to define the remote-to-local user mappings.
-The following is the complete configuration:
+The configuration for keystone SP needs to define the remote-to-local user
+mappings. The following is the complete configuration:
 
 .. code::
 
@@ -142,9 +142,9 @@ user based on the attributes exposed by the IdP in the SAML2 assertion. The
 use case for this scenario calls for mapping users in "Group A" and "Group B",
 but the group or groups a user belongs to are not exported in the SAML2
 assertion. To make the example work, the groups A and B in the use case are
-projects. Export projects A and B in the assertion under the ``openstack_project`` attribute.
-The two rules above select the corresponding project using the ``any_one_of``
-selector.
+projects. Export projects A and B in the assertion under the
+``openstack_project`` attribute. The two rules above select the corresponding
+project using the ``any_one_of`` selector.
 
 The ``local`` part of the mapping rule specifies how keystone represents
 the remote user in the local SP cloud. Configuring the two federated identities
@@ -157,10 +157,10 @@ role.
    Keystone creates a ephemeral user in the specified group as
    you cannot specify user names.
 
-The IdP exports the final setting of the configuration defines the SAML2 ``attributes``.
-For a keystone IdP, these are the five attributes
-shown above. Configure the attributes above into the Shibboleth service. This
-ensures they are available to use in the mappings.
+The IdP exports the final setting of the configuration defines the SAML2
+``attributes``. For a keystone IdP, these are the five attributes shown above.
+Configure the attributes above into the Shibboleth service. This ensures they
+are available to use in the mappings.
 
 Reviewing or modifying the configuration with the OpenStack client
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -5,14 +5,14 @@ Configuring the Bare Metal (ironic) service (optional)
 
 .. note::
 
-   This feature is experimental at this time and it has not been fully production
-   tested yet. These implementation instructions assume that ironic is being deployed
-   as the sole hypervisor for the region.
+   This feature is experimental at this time and it has not been fully
+   production tested yet. These implementation instructions assume that
+   ironic is being deployed as the sole hypervisor for the region.
 
-Ironic is an OpenStack project which provisions bare metal (as opposed to virtual)
-machines by leveraging common technologies such as PXE boot and IPMI to cover a wide
-range of hardware, while supporting pluggable drivers to allow vendor-specific
-functionality to be added.
+Ironic is an OpenStack project which provisions bare metal (as opposed to
+virtual) machines by leveraging common technologies such as PXE boot and IPMI
+to cover a wide range of hardware, while supporting pluggable drivers to allow
+vendor-specific functionality to be added.
 
 OpenStack's ironic project makes physical servers as easy to provision as
 virtual machines in a cloud.
@@ -140,8 +140,8 @@ Creating an ironic flavor
 
 After successfully deploying the ironic node on subsequent boots, the instance
 boots from your local disk as first preference. This speeds up the deployed
-node's boot time. Alternatively, if this is not set, the ironic node PXE boots first and
-allows for operator-initiated image updates and other operations.
+node's boot time. Alternatively, if this is not set, the ironic node PXE boots
+first and allows for operator-initiated image updates and other operations.
 
 .. note::
 
@@ -151,7 +151,8 @@ allows for operator-initiated image updates and other operations.
 Enroll ironic nodes
 -------------------
 
-#. From the utility container, enroll a new baremetal node by executing the following:
+#. From the utility container, enroll a new baremetal node by executing the
+   following:
 
    .. code-block:: bash
 

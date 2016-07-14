@@ -26,8 +26,8 @@ Overriding .conf files
 ~~~~~~~~~~~~~~~~~~~~~~
 
 The most common use-case for implementing overrides are for the
-``<service>.conf`` files (for example, ``nova.conf``). These files use a standard
-``INI`` file format.
+``<service>.conf`` files (for example, ``nova.conf``). These files use a
+standard ``INI`` file format.
 
 For example, if you add the following parameters to ``nova.conf``:
 

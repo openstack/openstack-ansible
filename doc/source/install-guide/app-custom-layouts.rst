@@ -135,9 +135,9 @@ Omit a service or component from the deployment
 To omit a component from a deployment, several options exist.
 
 - You could remove the ``physical_skel`` link between the container group and
-  the host group. The simplest way to do this is to simply copy the relevant file
-  to the ``/etc/openstack_deploy/env.d/`` directory, and set the following
-  information:
+  the host group. The simplest way to do this is to simply copy the relevant
+  file to the ``/etc/openstack_deploy/env.d/`` directory, and set the
+  following information:
 
 .. code-block:: yaml
 

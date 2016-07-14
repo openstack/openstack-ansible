@@ -52,8 +52,8 @@ You can disable discard by setting ``nova_libvirt_hw_disk_discard`` to
 string to disable ``network=writeback``.
 
 The following minimal example configuration sets nova to use the
-``ephemeral-vms`` Ceph pool. The following example uses cephx authentication, and
-requires an existing ``cinder`` account for the ``ephemeral-vms`` pool:
+``ephemeral-vms`` Ceph pool. The following example uses cephx authentication,
+and requires an existing ``cinder`` account for the ``ephemeral-vms`` pool:
 
 .. code-block:: console
 
@@ -70,7 +70,8 @@ If you have a different Ceph username for the pool, use it as:
 
    cinder_ceph_client: <ceph-username>
 
-* The `Ceph documentation for OpenStack`_ has additional information about these settings.
+* The `Ceph documentation for OpenStack`_ has additional information about
+  these settings.
 * `OpenStack-Ansible and Ceph Working Example`_
 
 

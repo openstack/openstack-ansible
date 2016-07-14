@@ -106,8 +106,8 @@ documentation on `fact caching`_ for more details.
 Forcing regeneration of cached facts
 ------------------------------------
 
-Cached facts may be incorrect if the host receives a kernel upgrade or new network
-interfaces. Newly created bridges also disrupt cache facts.
+Cached facts may be incorrect if the host receives a kernel upgrade or new
+network interfaces. Newly created bridges also disrupt cache facts.
 
 This can lead to unexpected errors while running playbooks, and
 require that the cached facts be regenerated.

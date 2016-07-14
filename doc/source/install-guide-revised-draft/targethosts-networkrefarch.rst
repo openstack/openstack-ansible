@@ -9,8 +9,8 @@ Overview
 
 This example allows you to use your own parameters for the deployment.
 
-The following is a table of the bridges that are be configured on hosts, if you followed the
-previously proposed design.
+The following is a table of the bridges that are be configured on hosts, if
+you followed the previously proposed design.
 
 +-------------+-----------------------+-------------------------------------+
 | Bridge name | Best configured on    | With a static IP                    |
@@ -188,8 +188,10 @@ Example for 3 controller nodes and 2 compute nodes
   -  Host management gateway: 10.240.0.1
   -  DNS servers: 69.20.0.164 69.20.0.196
   -  Container management: 172.29.236.11 - 172.29.236.13
-  -  Tunnel: no IP (because IP exist in the containers, when the components aren't deployed directly on metal)
-  -  Storage: no IP (because IP exist in the containers, when the components aren't deployed directly on metal)
+  -  Tunnel: no IP (because IP exist in the containers, when the components
+     aren't deployed directly on metal)
+  -  Storage: no IP (because IP exist in the containers, when the components
+     aren't deployed directly on metal)
 
 - Addresses for the compute nodes:
 

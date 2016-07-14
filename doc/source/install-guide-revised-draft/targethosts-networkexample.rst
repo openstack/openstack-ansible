@@ -8,10 +8,8 @@ Overview
 ~~~~~~~~
 
 This example uses the following parameters to configure networking on a
-single target host. See `Figure 3.2, "Target hosts for infrastructure,
-networking, compute, and storage
-services" <targethosts-networkexample.html#fig_hosts-target-network-containerexample>`_
-for a visual representation of these parameters in the architecture.
+single target host. See `Figure 3.2`_ for a visual representation of these
+parameters in the architecture.
 
 -  VLANs:
 
@@ -47,6 +45,7 @@ for a visual representation of these parameters in the architecture.
 
    -  Storage: 172.29.244.11
 
+.. _Figure 3.2: targethosts-networkexample.html#fig_hosts-target-network-containerexample
 
 **Figure 3.2. Target host for infrastructure, networking, compute, and
 storage services**

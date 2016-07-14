@@ -94,31 +94,16 @@ Deploying LBaaS v2
    Ensure that ``neutron_plugin_base`` includes all of the plugins that you
    want to deploy with neutron in addition to the LBaaS plugin.
 
-#. Run the neutron playbook to deploy the LBaaS v2 agent:
+#. Run the neutron and horizon playbooks to deploy the LBaaS v2 agent and
+   enable the LBaaS v2 panels in horizon:
 
    .. code-block:: console
 
        # cd /opt/openstack-ansible/playbooks
        # openstack-ansible os-neutron-install.yml
-
-Enabling Horizon panels for LBaaS v2
-------------------------------------
-
-#. Set the ``horizon_enable_neutron_lbaas`` variable to ``True`` in
-   ``/etc/openstack_deploy/user_variables.yml``:
-
-   .. code-block:: yaml
-
-       horizon_enable_neutron_lbaas: True
-
-#. Run the Horizon playbook to activate the panel:
-
-   .. code-block:: console
-
-       # cd /opt/openstack-ansible/playbooks
        # openstack-ansible os-horizon-install.yml
 
-.. _lbaas-special-notes
+.. _lbaas-special-notes:
 
 Special notes about LBaaS
 -------------------------
@@ -170,8 +155,8 @@ The following procedure describes how to modify the
          - { name: "ah4", pattern: "CONFIG_INET_AH=", group: "network_hosts" }
          - { name: "ipcomp", pattern: "CONFIG_INET_IPCOMP=", group: "network_hosts" }
 
-#. Execute the openstack hosts setup in order to load the kernel modules at boot
-   and runtime in the network hosts
+#. Execute the openstack hosts setup in order to load the kernel modules at
+   boot and runtime in the network hosts
 
    .. code-block:: shell-session
 

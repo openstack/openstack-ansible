@@ -19,7 +19,8 @@ A minor upgrade typically requires the following steps:
 
       # cd /opt/openstack-ansible
 
-#. Ensure your OpenStack-Ansible code is on the latest Newton release tag (14.x.x):
+#. Ensure your OpenStack-Ansible code is on the latest Newton release tag
+   (14.x.x):
 
    .. code-block:: console
 
@@ -114,7 +115,8 @@ tasks will execute.
 
       # cd /opt/openstack-ansible/playbooks
 
-#. See the hosts in the ``nova_compute`` group which a playbook executes against:
+#. See the hosts in the ``nova_compute`` group which a playbook executes
+   against:
 
    .. code-block:: console
 

@@ -1,9 +1,9 @@
 `Home <index.html>`__ OpenStack-Ansible Installation Guide
 
-Configuring Active Directory Federation Services (ADFS) 3.0 as an identity provider
-===================================================================================
+Configuring ADFS 3.0 as an identity provider
+============================================
 
-To install ADFS:
+To install Active Directory Federation Services (ADFS):
 
 * `Prerequisites for ADFS from Microsoft Technet <https://technet.microsoft.com/library/bf7f9cf4-6170-40e8-83dd-e636cb4f9ecb>`_
 * `ADFS installation procedure from Microsoft Technet <https://technet.microsoft.com/en-us/library/dn303423>`_

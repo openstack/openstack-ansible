@@ -7,7 +7,8 @@ The Telemetry (ceilometer) alarming services perform the following functions:
 
   - Creates an API endpoint for controlling alarms.
 
-  - Allows you to set alarms based on threshold evaluation for a collection of samples.
+  - Allows you to set alarms based on threshold evaluation for a collection of
+    samples.
 
 
 
