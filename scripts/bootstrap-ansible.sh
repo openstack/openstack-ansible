@@ -46,11 +46,11 @@ ANSIBLE_ROLE_FILE="$(readlink -f ${ANSIBLE_ROLE_FILE})"
 ssh_key_create
 
 # Install the base packages
-if [[ $HOST_DISTRO =~ ^(Ubuntu|Debian) ]]; then
+if [[ -f "/etc/os-release" ]]; then
     apt-get update && apt-get -y install git python-all python-dev curl python2.7-dev build-essential libssl-dev libffi-dev python-requests < /dev/null
-elif [[ $HOST_DISTRO =~ ^(CentOS|Red Hat) ]]; then
+elif [[ -f "/etc/redhat-release" ]]; then
     yum check-update && yum -y install git python2 curl autoconf gcc-c++ python2-devel gcc libffi-devel openssl-devel python-requests
-elif [[ $HOST_DISTRO =~ ^Fedora ]]; then
+elif [[ -f "/etc/fedora-release" ]]; then
     dnf -y install git python curl autoconf gcc-c++ python-devel gcc libffi-devel openssl-devel python-requests
 fi
 
