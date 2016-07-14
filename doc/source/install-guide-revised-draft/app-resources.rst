@@ -1,8 +1,8 @@
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
-================================
+=================================
 Appendix B: Additional resources
-================================
+=================================
 
 The following Ansible resources are useful to reference:
 

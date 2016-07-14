@@ -1,8 +1,8 @@
 `Home <index.html>`__ OpenStack-Ansible Installation Guide
 
-=========================================
+==========================================
 Appendix E: Using PLUMgrid Neutron plugin
-=========================================
+==========================================
 
 Installing source and host networking
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

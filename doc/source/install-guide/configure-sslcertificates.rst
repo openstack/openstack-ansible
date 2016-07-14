@@ -102,7 +102,7 @@ User-provided certificates
 You can provide your own SSL certificates, keys, and CA certificates
 for added trust in highly secure environments. Acquiring certificates from a
 trusted certificate authority is outside the scope of this document, but the
- `Certificate Management`_  section of the Linux Documentation Project explains
+`Certificate Management`_  section of the Linux Documentation Project explains
 how to create your own certificate authority and sign certificates.
 
 .. _Certificate Management: http://www.tldp.org/HOWTO/SSL-Certificates-HOWTO/c118.html

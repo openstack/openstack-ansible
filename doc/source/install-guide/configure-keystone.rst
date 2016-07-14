@@ -112,7 +112,7 @@ keystone section.
 
 More details regarding valid configuration for the LDAP Identity backend can
 be found in the `Keystone Developer Documentation`_ and the
-`OpenStack Admin Guide`_.
+`OpenStack Administrator Guide`_.
 
 .. _Keystone Developer Documentation: http://docs.openstack.org/developer/keystone/configuration.html#configuring-the-ldap-identity-provider
 .. _OpenStack Administrator Guide: http://docs.openstack.org/admin-guide/keystone_integrate_identity_backend_ldap.html
