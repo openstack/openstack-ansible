@@ -94,6 +94,14 @@ configure target host networking.
    Replace ``TUNNEL_BRIDGE`` with the tunnel/overlay bridge device
    name, typically ``br-vxlan``.
 
+   .. note::
+
+      Only use ``global_overrides`` for networking overrides.
+      Edit all other variable overrides in ``user_variables.yml``.
+
+      ``global_overrides`` are not removed from ``inventory.json``
+      and can conflict.
+
 #. Configure the management network in the ``provider_networks`` subsection:
 
    .. code-block:: yaml
