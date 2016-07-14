@@ -1,0 +1,5 @@
+---
+upgrade:
+  - Adding a new nova.conf entry, live_migration_uri. This entry will default
+    to a ``qemu-ssh://`` uri, which uses the ssh keys that have already been
+    distributed between all of the compute hosts.
