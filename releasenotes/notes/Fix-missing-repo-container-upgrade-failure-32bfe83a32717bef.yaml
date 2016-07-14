@@ -1,0 +1,5 @@
+---
+fixes:
+  - The upgrade step to remove legacy MariaDB apt sources was failing due to
+    the destruction of the repo containers. This issue has now been fixed by
+    skipping the repo containers in this step.

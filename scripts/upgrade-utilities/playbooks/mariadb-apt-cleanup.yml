@@ -14,7 +14,7 @@
 # limitations under the License.
 
 - name: MariaDB apt sources cleanup
-  hosts: "hosts:all_containers"
+  hosts: "hosts:all_containers:!repo_all"
   max_fail_percentage: 100
   gather_facts: false
   user: root
