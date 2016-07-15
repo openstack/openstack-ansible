@@ -79,7 +79,8 @@ version = version_info.canonical_version_string()
 #   gitsha: The SHA checksum of the bug description. Automatically extracted from git log.
 #   bug_tag: Tag for categorizing the bug. Must be set manually.
 # These variables are passed to the logabug code via html_context.
-giturl = 'http://git.openstack.org/cgit/openstack/' + target_name + '/tree/doc/source'
+giturl = ("http://git.openstack.org/cgit/openstack/{0}"
+          "/tree/doc/source").format(target_name)
 git_cmd = "/usr/bin/git log | head -n1 | cut -f2 -d' '"
 gitsha = os.popen(git_cmd).read().strip('\n')
 bug_title = "Documentation bug"
