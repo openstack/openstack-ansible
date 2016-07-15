@@ -1,12 +1,15 @@
-netaddr>=0.7.12         # playbooks/inventory/dynamic_inventory.py
-PrettyTable>=0.7,<0.8   # scripts/inventory-manage.py
-pycrypto>=2.6           # scripts/pw-token-gen.py
-PyYAML>=3.1.0           # scripts/pw-token-gen.py
-virtualenv>=14.0.0      # Used for Ansible isolation
+# The order of packages is significant, because pip processes them in the order
+# of appearance. Changing the order has an impact on the overall integration
+# process, which may cause wedges in the gate later.
+netaddr!=0.7.16,>=0.7.12 # BSD
+PrettyTable<0.8,>=0.7 # BSD
+pycrypto>=2.6 # Public Domain
+PyYAML>=3.1.0 # MIT
+virtualenv # MIT
 ###
 ### These are pinned to ensure exactly the same behaviour forever!   ###
 ### These pins are updated through the sources-branch-updater script ###
 ###
-pip==8.1.2
-setuptools==22.0.0
-wheel==0.29.0
+pip>=6.0 # MIT
+setuptools!=24.0.0,>=16.0 # PSF/ZPL
+wheel # MIT
