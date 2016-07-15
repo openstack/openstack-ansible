@@ -8,8 +8,8 @@ Chapter 1. Overview
 
    overview-osa.rst
    overview-host-layout
-   overview-ref-arch.rst
    overview-network-arch.rst
+   overview-storage-arch.rst
    overview-requirements.rst
    overview-security.rst
    overview-workflow.rst
