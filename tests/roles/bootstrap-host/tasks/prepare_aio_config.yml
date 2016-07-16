@@ -71,7 +71,7 @@
     path: /etc/nodepool
   register: nodepool_dir
 
-- name: Disable nova using UCA in OpenStack-CI
+- name: Set the UCA repository URL in OpenStack-CI
   set_fact:
     uca_apt_repo_url: "{{ bootstrap_host_ubuntu_repo | netorigin }}/ubuntu-cloud-archive"
   when:

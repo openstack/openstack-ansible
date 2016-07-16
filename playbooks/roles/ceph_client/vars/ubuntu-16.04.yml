@@ -35,9 +35,7 @@ ceph_stable_release: hammer
 ceph_apt_repo_url: "http://{{ ceph_apt_repo_url_region }}.ceph.com/debian-{{ ceph_stable_release }}/"
 
 # Ubuntu Cloud Archive variables
-# TODO(smatzek) Revisit the default uca release for 16.04 at newton-1
-uca_openstack_release: mitaka
-uca_apt_repo_url: "http://ubuntu-cloud.archive.canonical.com/ubuntu"
+uca_openstack_release: newton
 uca_repo_dist: "{{ ansible_lsb.codename }}-updates/{{ uca_openstack_release }}"
 
 # Apt repositories
