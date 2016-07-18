@@ -31,10 +31,10 @@ ROLE_PACKAGES = dict()
 
 
 REQUIREMENTS_FILE_TYPES = [
-    'global-requirements.txt',
     'test-requirements.txt',
     'dev-requirements.txt',
     'requirements.txt',
+    'global-requirements.txt',
     'global-requirement-pins.txt'
 ]
 
@@ -175,7 +175,6 @@ class DependencyFileProcessor(object):
     @staticmethod
     def _filter_files(file_names, ext):
         """Filter the files and return a sorted list.
-
         :type file_names:
         :type ext: ``str`` or ``tuple``
         :returns: ``list``
@@ -369,8 +368,17 @@ class DependencyFileProcessor(object):
                                 if key == item_name:
                                     ROLE_PACKAGES[k][item_name].extend(values)
 
-        for file_name in self._filter_files(self.file_names, 'txt'):
-            if os.path.basename(file_name) in REQUIREMENTS_FILE_TYPES:
+        return_list = self._filter_files(self.file_names, 'txt')
+        for file_name in return_list:
+            base_name = os.path.basename(file_name)
+            if base_name in REQUIREMENTS_FILE_TYPES:
+                index = REQUIREMENTS_FILE_TYPES.index(base_name)
+                return_list.remove(file_name)
+                return_list.insert(index, file_name)
+        else:
+            for file_name in return_list:
+                if file_name.endswith('other-requirements.txt'):
+                    continue
                 with open(file_name, 'r') as f:
                     packages = [
                         i.split()[0] for i in f.read().splitlines()
