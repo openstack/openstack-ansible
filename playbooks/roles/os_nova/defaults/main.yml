@@ -126,6 +126,7 @@ nova_novncproxy_vnc_keymap: en-us
 
 ## Nova metadata
 nova_metadata_proxy_enabled: True
+nova_metadata_host: "{{ internal_lb_vip_address }}"
 nova_metadata_port: 8775
 nova_metadata_program_name: nova-api-metadata
 

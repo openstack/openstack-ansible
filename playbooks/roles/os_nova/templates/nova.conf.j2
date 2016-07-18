@@ -70,7 +70,7 @@ rpc_conn_pool_size = {{ nova_rpc_conn_pool_size }}
 rpc_response_timeout = {{ nova_rpc_response_timeout }}
 
 # Metadata
-metadata_host = {{ internal_lb_vip_address }}
+metadata_host = {{ nova_metadata_host }}
 metadata_port = {{ nova_metadata_port }}
 metadata_workers = {{ nova_metadata_workers | default(api_threads) }}
 
