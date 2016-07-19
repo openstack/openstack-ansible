@@ -21,7 +21,7 @@
     - apt-install-prerequisites
 
 - name: Determine the existing Ubuntu repo configuration
-  shell: 'awk "/^deb .*ubuntu\/? {{ ansible_distribution_release }} main/ {print \$2; exit}" /etc/apt/sources.list'
+  shell: 'awk "/^deb .*ubuntu.*\/? {{ ansible_distribution_release }} main/ {print \$2; exit}" /etc/apt/sources.list'
   register: ubuntu_repo
   when:
     - bootstrap_host_ubuntu_repo is not defined
@@ -30,7 +30,7 @@
     - find-apt-repo
 
 - name: Determine the existing Ubuntu Security repo configuration
-  shell: 'awk "/^deb .*ubuntu\/? {{ ansible_distribution_release }}-security main/ {print \$2; exit}" /etc/apt/sources.list'
+  shell: 'awk "/^deb .*ubuntu.*\/? {{ ansible_distribution_release }}-security main/ {print \$2; exit}" /etc/apt/sources.list'
   register: ubuntu_security_repo
   when:
     - bootstrap_host_ubuntu_security_repo is not defined
