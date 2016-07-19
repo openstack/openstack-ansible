@@ -2,7 +2,7 @@
 {% set constraint_pkgs = [] -%}
 {% for clone_item in local_packages.results.0.item.remote_package_parts -%}
 {% if 'ignorerequirements=true' not in clone_item['original'] %}
-git+file://{{ repo_build_git_dir }}/{{ clone_item['name'] }}@{{ clone_item['version'] }}#egg={{ clone_item['name'] | replace('-', '_') | lower }}
+{{ clone_item['original'] | replace(clone_item['url'], 'file://' + repo_build_git_dir + '/' + clone_item['name'] ) }}
 {% set _ = constraint_pkgs.append(clone_item['name'] | replace('-', '_') | lower) %}
 {% endif %}
 {% endfor %}
