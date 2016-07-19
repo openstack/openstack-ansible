@@ -65,4 +65,3 @@
     aodh_rabbitmq_servers: "{{ rabbitmq_servers }}"
     aodh_rabbitmq_port: "{{ rabbitmq_port }}"
     aodh_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
-    pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"

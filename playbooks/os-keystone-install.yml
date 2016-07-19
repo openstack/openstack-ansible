@@ -98,4 +98,3 @@
     keystone_galera_user: keystone
     keystone_galera_database: keystone
     keystone_galera_address: "{{ galera_address }}"
-    pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"

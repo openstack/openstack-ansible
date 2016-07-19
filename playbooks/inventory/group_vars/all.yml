@@ -41,6 +41,7 @@ pip_packages:
 
 pip_links:
   - { name: "openstack_release", link: "{{ openstack_repo_url }}/os-releases/{{ openstack_release }}/" }
+pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"
 
 ## OpenStack source options
 # URL for the frozen internal openstack repo.

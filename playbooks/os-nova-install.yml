@@ -191,4 +191,3 @@
     nova_galera_address: "{{ galera_address }}"
     nova_api_galera_address: "{{ galera_address }}"
     glance_host: "{{ internal_lb_vip_address }}"
-    pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"

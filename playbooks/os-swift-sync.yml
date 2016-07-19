@@ -29,4 +29,3 @@
         - "os-swift-sync"
   vars:
     is_metal: "{{ properties.is_metal|default(false) }}"
-    pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"

@@ -78,6 +78,5 @@
     heat_galera_user: heat
     heat_galera_database: heat
     heat_galera_address: "{{ galera_address }}"
-    pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"
   vars_files:
     - defaults/repo_packages/openstack_services.yml

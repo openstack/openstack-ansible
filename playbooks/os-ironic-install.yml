@@ -63,4 +63,3 @@
     ironic_galera_user: ironic
     ironic_galera_database: ironic
     ironic_galera_address: "{{ galera_address }}"
-    pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"
