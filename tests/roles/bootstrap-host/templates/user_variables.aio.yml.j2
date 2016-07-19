@@ -25,7 +25,7 @@ glance_ceilometer_enabled: True
 heat_ceilometer_enabled: True
 neutron_ceilometer_enabled: True
 nova_ceilometer_enabled: True
-swift_ceilometer_enabled: True
+swift_ceilometer_enabled: False
 keystone_ceilometer_enabled: True
 
 ## Aodh Options
@@ -104,3 +104,8 @@ repo_build_pip_extra_indexes:
 ## Ubuntu Cloud Archive mirror to use
 uca_apt_repo_url: {{ uca_apt_repo_url }}
 {% endif %}
+
+## Instruct the gate to always build libvirt-python from pip source
+repo_build_pip_no_binary:
+  - libvirt-python
+
