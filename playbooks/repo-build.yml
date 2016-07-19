@@ -21,6 +21,8 @@
         key: repo_servers_{{ ansible_architecture }}
       tags:
         - always
+  tags:
+    - repo-build
 
 # repo_all[0] is built last to ensure it has all build artifacts for final indexing
 - name: Build new repo packages for a given release
@@ -106,11 +108,10 @@
       when:
         - "groups['repo_servers_{{ ansible_architecture }}'] | length > 0"
         - "inventory_hostname == groups['repo_servers_{{ ansible_architecture }}'][0]"
-      tags:
-        - "repo-build"
-
   vars:
     pkg_locations:
       - ../
       - /etc/ansible/roles
       - /etc/openstack_deploy
+  tags:
+    - repo-build

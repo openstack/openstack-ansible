@@ -79,8 +79,7 @@
         - "inventory_hostname in groups['nova_compute']"
         - "not is_metal | bool"
       tags:
-        - nova-kvm
-        - nova-kvm-container-devices
+        - always
     - name: Add net/tun device to the compute
       shell: |
         lxc-device -n {{ container_name }} add /dev/net/tun /dev/net/tun
@@ -89,8 +88,7 @@
         - "inventory_hostname in groups['nova_compute']"
         - "not is_metal | bool"
       tags:
-        - nova-kvm
-        - nova-kvm-container-devices
+        - always
     - name: Check if kvm device exists
       stat:
         path: /dev/kvm
@@ -100,8 +98,7 @@
         - "inventory_hostname in groups['nova_compute']"
         - "not is_metal | bool"
       tags:
-        - nova-kvm
-        - nova-kvm-container-devices
+        - always
     - name: Add kvm device to the compute
       shell: |
         lxc-device -n {{ container_name }} add /dev/kvm /dev/kvm
@@ -115,8 +112,7 @@
         - "not is_metal | bool"
         - kvm_device.stat.ischr is defined and kvm_device.stat.ischr
       tags:
-        - nova-kvm
-        - nova-kvm-container-devices
+        - always
     - name: Set nova management bridge (is_metal)
       set_fact:
         management_bridge: "{{ 'ansible_' + hostvars[inventory_hostname]['management_bridge'] | replace('-', '_') }}"
@@ -124,7 +120,7 @@
         - "hostvars[inventory_hostname]['management_bridge'] is defined"
         - "is_metal | bool"
       tags:
-        - nova-config
+        - always
     - name: Set nova management address (is_metal)
       set_fact:
         management_address: "{{ hostvars[inventory_hostname][management_bridge]['ipv4']['address'] }}"
@@ -132,7 +128,7 @@
         - "hostvars[inventory_hostname][management_bridge]['ipv4']['address'] is defined"
         - "is_metal | bool"
       tags:
-        - nova-config
+        - always
     - name: Set nova management address (container)
       set_fact:
         management_address: "{{ hostvars[inventory_hostname]['container_networks']['container_address']['address'] }}"
@@ -141,14 +137,14 @@
         - "hostvars[inventory_hostname]['container_networks']['container_address']['address'] is defined"
         - "not is_metal | bool"
       tags:
-        - nova-config
+        - always
     - name: Set nova management address (unknown management network)
       set_fact:
         management_address: "{{ ansible_ssh_host }}"
       when:
         - "management_address is undefined"
       tags:
-        - nova-config
+        - always
   roles:
     - role: "os_nova"
       nova_novncproxy_git_repo: "{{ openstack_repo_git_url }}/novnc"
@@ -158,28 +154,24 @@
       nova_management_address: "{{ management_address }}"
       nova_venv_tag: "{{ openstack_release }}"
       nova_venv_download_url: "{{ openstack_repo_url }}/venvs/{{ openstack_release }}/{{ ansible_distribution | lower }}/nova-{{ openstack_release }}-{{ ansible_architecture | lower }}.tgz"
-      tags:
-        - "os-nova"
     - role: "ceph_client"
       nova_venv_bin: "/openstack/venvs/nova-{{ openstack_release }}/bin"
       openstack_service_system_user: "{{ nova_system_user_name }}"
       openstack_service_venv_bin: "{{ nova_venv_bin if nova_venv_enabled|default(True)|bool else None }}"
       tags:
-        - "nova-ceph-client"
-        - "ceph-client"
+        - ceph
     - role: "openstack_openrc"
       tags:
-        - "openstack-openrc"
+        - openrc
     - role: "rsyslog_client"
       rsyslog_client_log_rotate_file: nova_log_rotate
       rsyslog_client_log_dir: "/var/log/nova"
       rsyslog_client_config_name: "99-nova-rsyslog-client.conf"
       tags:
-        - "nova-rsyslog-client"
-        - "rsyslog-client"
+        - rsyslog
     - role: "system_crontab_coordination"
       tags:
-        - "system-crontab-coordination"
+        - crontab
   vars_files:
     - defaults/repo_packages/openstack_other.yml
   vars:
@@ -191,3 +183,5 @@
     nova_galera_address: "{{ galera_address }}"
     nova_api_galera_address: "{{ galera_address }}"
     glance_host: "{{ internal_lb_vip_address }}"
+  tags:
+    - nova
