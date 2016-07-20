@@ -18,6 +18,17 @@
   gather_facts: "{{ gather_facts | default(True) }}"
   max_fail_percentage: 20
   user: root
+  pre_tasks:
+    - name: Create log dir
+      file:
+        path: "/openstack/log/{{ inventory_hostname }}-lxc"
+        state: directory
+    - name: Create log aggregation links
+      file:
+        src: "/openstack/log/{{ inventory_hostname }}-lxc"
+        dest: "/var/log/lxc"
+        state: "link"
+        force: "yes"
   roles:
     - { role: "lxc_hosts", tags: [ "lxc-host", "host-setup" ] }
     - role: "rsyslog_client"
