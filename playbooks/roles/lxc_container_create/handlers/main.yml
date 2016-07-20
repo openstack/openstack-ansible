@@ -17,6 +17,7 @@
   lxc_container:
     name: "{{ inventory_hostname }}"
     state: "stopped"
+  when: lxc_container_allow_restarts | bool
   notify:
     - Start Container
   delegate_to: "{{ physical_host }}"

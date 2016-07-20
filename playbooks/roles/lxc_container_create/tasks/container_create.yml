@@ -76,14 +76,25 @@
       ln -s /dev/null /etc/systemd/system/systemd-udevd-kernel.socket || true
       ln -s /dev/null /etc/systemd/system/proc-sys-fs-binfmt_misc.automount || true
       echo -e '{{ lxc_container_default_interfaces }}' | tee /etc/network/interfaces
-    container_config:
+  delegate_to: "{{ physical_host }}"
+  tags:
+    - lxc-container-create
+
+- name: Write container config
+  lineinfile:
+    dest: "/var/lib/lxc/{{ inventory_hostname }}/config"
+    line: "{{ item }}"
+    backup: "true"
+  with_items:
       - "lxc.autodev=1"
       - "lxc.pts=1024"
       - "lxc.kmsg=0"
       - "lxc.hook.autodev=/var/lib/lxc/{{ inventory_hostname }}/autodev"
   delegate_to: "{{ physical_host }}"
+  notify:
+    - Lxc container restart
   tags:
-    - lxc-container-create
+    - lxc-container-config
 
 - name: Load container service mounts and profile
   lxc_container:
