@@ -28,9 +28,22 @@
         user: "{{ nova_rabbitmq_userid }}"
         password: "{{ nova_rabbitmq_password }}"
         vhost: "{{ nova_rabbitmq_vhost }}"
+        _rabbitmq_host_group: "{{ nova_rabbitmq_host_group }}"
       when:
         - inventory_hostname == groups['nova_all'][0]
-        - groups['rabbitmq_all'] | length > 0
+        - groups[nova_rabbitmq_host_group] | length > 0
+    - include: common-tasks/rabbitmq-vhost-user.yml
+      vars:
+        user: "{{ nova_rabbitmq_telemetry_userid }}"
+        password: "{{ nova_rabbitmq_telemetry_password }}"
+        vhost: "{{ nova_rabbitmq_telemetry_vhost }}"
+        _rabbitmq_host_group: "{{ nova_rabbitmq_telemetry_host_group }}"
+      when:
+        - nova_ceilometer_enabled | bool
+        - inventory_hostname == groups['nova_all'][0]
+        - groups[nova_rabbitmq_telemetry_host_group] is defined
+        - groups[nova_rabbitmq_telemetry_host_group] | length > 0
+        - groups[nova_rabbitmq_telemetry_host_group] != groups[nova_rabbitmq_host_group]
     - include: common-tasks/os-log-dir-setup.yml
       vars:
         log_dirs:
@@ -178,9 +191,4 @@
     nova_galera_address: "{{ galera_address }}"
     nova_api_galera_address: "{{ galera_address }}"
     glance_host: "{{ internal_lb_vip_address }}"
-    nova_rabbitmq_userid: nova
-    nova_rabbitmq_vhost: /nova
-    nova_rabbitmq_servers: "{{ rabbitmq_servers }}"
-    nova_rabbitmq_port: "{{ rabbitmq_port }}"
-    nova_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
     pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"

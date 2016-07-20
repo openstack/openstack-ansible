@@ -28,9 +28,22 @@
         user: "{{ heat_rabbitmq_userid }}"
         password: "{{ heat_rabbitmq_password }}"
         vhost: "{{ heat_rabbitmq_vhost }}"
+        _rabbitmq_host_group: "{{ heat_rabbitmq_host_group }}"
       when:
         - inventory_hostname == groups['heat_all'][0]
-        - groups['rabbitmq_all'] | length > 0
+        - groups[heat_rabbitmq_host_group] | length > 0
+    - include: common-tasks/rabbitmq-vhost-user.yml
+      vars:
+        user: "{{ heat_rabbitmq_telemetry_userid }}"
+        password: "{{ heat_rabbitmq_telemetry_password }}"
+        vhost: "{{ heat_rabbitmq_telemetry_vhost }}"
+        _rabbitmq_host_group: "{{ heat_rabbitmq_telemetry_host_group }}"
+      when:
+        - heat_ceilometer_enabled | bool
+        - inventory_hostname == groups['heat_all'][0]
+        - groups[heat_rabbitmq_telemetry_host_group] is defined
+        - groups[heat_rabbitmq_telemetry_host_group] | length > 0
+        - groups[heat_rabbitmq_telemetry_host_group] != groups[heat_rabbitmq_host_group]
     - include: common-tasks/os-log-dir-setup.yml
       vars:
         log_dirs:
@@ -65,11 +78,6 @@
     heat_galera_user: heat
     heat_galera_database: heat
     heat_galera_address: "{{ galera_address }}"
-    heat_rabbitmq_userid: heat
-    heat_rabbitmq_vhost: /heat
-    heat_rabbitmq_servers: "{{ rabbitmq_servers }}"
-    heat_rabbitmq_port: "{{ rabbitmq_port }}"
-    heat_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
     pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"
   vars_files:
     - defaults/repo_packages/openstack_services.yml

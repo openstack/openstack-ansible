@@ -35,9 +35,22 @@
         user: "{{ glance_rabbitmq_userid }}"
         password: "{{ glance_rabbitmq_password }}"
         vhost: "{{ glance_rabbitmq_vhost }}"
+        _rabbitmq_host_group: "{{ glance_rabbitmq_host_group }}"
       when:
         - inventory_hostname == groups['glance_all'][0]
-        - groups['rabbitmq_all'] | length > 0
+        - groups[glance_rabbitmq_host_group] | length > 0
+    - include: common-tasks/rabbitmq-vhost-user.yml
+      vars:
+        user: "{{ glance_rabbitmq_telemetry_userid }}"
+        password: "{{ glance_rabbitmq_telemetry_password }}"
+        vhost: "{{ glance_rabbitmq_telemetry_vhost }}"
+        _rabbitmq_host_group: "{{ glance_rabbitmq_telemetry_host_group }}"
+      when:
+        - glance_ceilometer_enabled | bool
+        - inventory_hostname == groups['glance_all'][0]
+        - groups[glance_rabbitmq_telemetry_host_group] is defined
+        - groups[glance_rabbitmq_telemetry_host_group] | length > 0
+        - groups[glance_rabbitmq_telemetry_host_group] != groups[glance_rabbitmq_host_group]
     - include: common-tasks/os-log-dir-setup.yml
       vars:
         log_dirs:
@@ -80,9 +93,4 @@
     glance_galera_user: glance
     glance_galera_database: glance
     glance_galera_address: "{{ galera_address }}"
-    glance_rabbitmq_userid: glance
-    glance_rabbitmq_vhost: /glance
-    glance_rabbitmq_servers: "{{ rabbitmq_servers }}"
-    glance_rabbitmq_port: "{{ rabbitmq_port }}"
-    glance_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
     pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"

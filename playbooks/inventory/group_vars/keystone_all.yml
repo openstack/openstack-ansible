@@ -19,8 +19,5 @@ keystone_cache_backend_argument: "url:{% for host in groups['memcached'] %}{{ ho
 keystone_memcached_servers: "{% for host in groups['keystone_all'] %}{{ hostvars[host]['container_address'] }}:{{ memcached_port }}{% if not loop.last %},{% endif %}{% endfor %}"
 keystone_service_in_ldap: "{{ service_ldap_backend_enabled }}"
 
-# If there are any Ceilometer hosts in the environment, then enable its usage
-keystone_ceilometer_enabled: "{{ (groups['ceilometer_all'] is defined) and (groups['ceilometer_all'] | length > 0) }}"
-
 # Ensure that the package state matches the global setting
 keystone_package_state: "{{ package_state }}"

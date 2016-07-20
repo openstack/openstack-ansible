@@ -28,9 +28,22 @@
         user: "{{ keystone_rabbitmq_userid }}"
         password: "{{ keystone_rabbitmq_password }}"
         vhost: "{{ keystone_rabbitmq_vhost }}"
+        _rabbitmq_host_group: "{{ keystone_rabbitmq_host_group }}"
       when:
         - inventory_hostname == groups['keystone_all'][0]
-        - groups['rabbitmq_all'] | length > 0
+        - groups[keystone_rabbitmq_host_group] | length > 0
+    - include: common-tasks/rabbitmq-vhost-user.yml
+      vars:
+        user: "{{ keystone_rabbitmq_telemetry_userid }}"
+        password: "{{ keystone_rabbitmq_telemetry_password }}"
+        vhost: "{{ keystone_rabbitmq_telemetry_vhost }}"
+        _rabbitmq_host_group: "{{ keystone_rabbitmq_telemetry_host_group }}"
+      when:
+        - keystone_ceilometer_enabled | bool
+        - inventory_hostname == groups['keystone_all'][0]
+        - groups[keystone_rabbitmq_telemetry_host_group] is defined
+        - groups[keystone_rabbitmq_telemetry_host_group] | length > 0
+        - groups[keystone_rabbitmq_telemetry_host_group] != groups[keystone_rabbitmq_host_group]
     - include: common-tasks/os-log-dir-setup.yml
       vars:
         log_dirs:
@@ -85,9 +98,4 @@
     keystone_galera_user: keystone
     keystone_galera_database: keystone
     keystone_galera_address: "{{ galera_address }}"
-    keystone_rabbitmq_userid: keystone
-    keystone_rabbitmq_vhost: /keystone
-    keystone_rabbitmq_servers: "{{ rabbitmq_servers }}"
-    keystone_rabbitmq_port: "{{ rabbitmq_port }}"
-    keystone_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
     pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"

@@ -22,7 +22,7 @@
   rabbitmq_vhost:
     name: "{{ vhost }}"
     state: "present"
-  delegate_to: "{{ groups['rabbitmq_all'][0] }}"
+  delegate_to: "{{ groups[_rabbitmq_host_group][0] }}"
 
 - name: Ensure rabbitmq user
   rabbitmq_user:
@@ -33,4 +33,4 @@
     read_priv: ".*"
     write_priv: ".*"
     state: "present"
-  delegate_to: "{{ groups['rabbitmq_all'][0] }}"
+  delegate_to: "{{ groups[_rabbitmq_host_group][0] }}"

@@ -40,9 +40,22 @@
         user: "{{ cinder_rabbitmq_userid }}"
         password: "{{ cinder_rabbitmq_password }}"
         vhost: "{{ cinder_rabbitmq_vhost }}"
+        _rabbitmq_host_group: "{{ cinder_rabbitmq_host_group }}"
       when:
         - inventory_hostname == groups['cinder_all'][0]
-        - groups['rabbitmq_all'] | length > 0
+        - groups[cinder_rabbitmq_host_group] | length > 0
+    - include: common-tasks/rabbitmq-vhost-user.yml
+      vars:
+        user: "{{ cinder_rabbitmq_telemetry_userid }}"
+        password: "{{ cinder_rabbitmq_telemetry_password }}"
+        vhost: "{{ cinder_rabbitmq_telemetry_vhost }}"
+        _rabbitmq_host_group: "{{ cinder_rabbitmq_telemetry_host_group }}"
+      when:
+        - cinder_ceilometer_enabled | bool
+        - inventory_hostname == groups['cinder_all'][0]
+        - groups[cinder_rabbitmq_telemetry_host_group] is defined
+        - groups[cinder_rabbitmq_telemetry_host_group] | length > 0
+        - groups[cinder_rabbitmq_telemetry_host_group] != groups[cinder_rabbitmq_host_group]
     - include: common-tasks/os-log-dir-setup.yml
       vars:
         log_dirs:
@@ -152,7 +165,4 @@
     cinder_galera_user: cinder
     cinder_galera_database: cinder
     cinder_galera_address: "{{ galera_address }}"
-    cinder_rabbitmq_servers: "{{ rabbitmq_servers }}"
-    cinder_rabbitmq_port: "{{ rabbitmq_port }}"
-    cinder_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
     pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"

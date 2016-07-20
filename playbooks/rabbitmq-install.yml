@@ -14,7 +14,7 @@
 # limitations under the License.
 
 - name: Create and configure rabbitmq container
-  hosts: rabbitmq_all
+  hosts: "{{ rabbitmq_host_group | default('rabbitmq_all') }}"
   gather_facts: "{{ gather_facts | default(True) }}"
   max_fail_percentage: 0
   user: root
@@ -31,7 +31,7 @@
 # NOTE(mancdaz): rabbitmq cannot be upgraded in serial, so when
 # rabbitmq_upgrade=True, serial is set to 0, else it is 1 for installs
 - name: Install rabbitmq server
-  hosts: rabbitmq_all
+  hosts: "{{ rabbitmq_host_group | default('rabbitmq_all') }}"
   serial: "{{ rabbitmq_upgrade|default(false) | bool | ternary(0, 1)}}"
   max_fail_percentage: 20
   user: root
@@ -49,7 +49,7 @@
         - "rsyslog-client"
 
 - name: Ensure rabbitmq user for monitoring GUI
-  hosts: rabbitmq_all[0]
+  hosts: "{{ rabbitmq_host_group | default('rabbitmq_all') }}[0]"
   user: root
   tasks:
     - name: Create rabbitmq user for monitoring GUI

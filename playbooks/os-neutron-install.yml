@@ -38,9 +38,22 @@
         user: "{{ neutron_rabbitmq_userid }}"
         password: "{{ neutron_rabbitmq_password }}"
         vhost: "{{ neutron_rabbitmq_vhost }}"
+        _rabbitmq_host_group: "{{ neutron_rabbitmq_host_group }}"
       when:
         - inventory_hostname == groups['neutron_all'][0]
-        - groups['rabbitmq_all'] | length > 0
+        - groups[neutron_rabbitmq_host_group] | length > 0
+    - include: common-tasks/rabbitmq-vhost-user.yml
+      vars:
+        user: "{{ neutron_rabbitmq_telemetry_userid }}"
+        password: "{{ neutron_rabbitmq_telemetry_password }}"
+        vhost: "{{ neutron_rabbitmq_telemetry_vhost }}"
+        _rabbitmq_host_group: "{{ neutron_rabbitmq_telemetry_host_group }}"
+      when:
+        - neutron_ceilometer_enabled | bool
+        - inventory_hostname == groups['neutron_all'][0]
+        - groups[neutron_rabbitmq_telemetry_host_group] is defined
+        - groups[neutron_rabbitmq_telemetry_host_group] | length > 0
+        - groups[neutron_rabbitmq_telemetry_host_group] != groups[neutron_rabbitmq_host_group]
     - include: common-tasks/os-log-dir-setup.yml
       vars:
         log_dirs:

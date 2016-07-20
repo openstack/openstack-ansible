@@ -67,11 +67,11 @@ galera_address: "{{ internal_lb_vip_address }}"
 galera_root_user: "root"
 
 ## RabbitMQ
+rabbitmq_host_group: "rabbitmq_all"
 rabbitmq_port: "{{ (rabbitmq_use_ssl | bool) | ternary(5671, 5672) }}"
-rabbitmq_servers: "{% for host in groups['rabbitmq_all'] %}{{ hostvars[host]['ansible_ssh_host'] }}{% if not loop.last %},{% endif %}{% endfor %}"
-# TODO(odyssey4me)
-# The new transport_url configuration option is not working with SSL enabled. Revisit this ASAP.
-rabbitmq_use_ssl: false
+
+rabbitmq_use_ssl: True
+rabbitmq_servers: "{% for host in groups[rabbitmq_host_group] %}{{ hostvars[host]['ansible_ssh_host'] }}{% if not loop.last %},{% endif %}{% endfor %}"
 
 ## Enable external SSL handling for general OpenStack services
 openstack_external_ssl: true
@@ -106,15 +106,22 @@ aodh_galera_user: aodh
 aodh_galera_database: aodh
 aodh_galera_address: "{{ internal_lb_vip_address }}"
 aodh_connection_string: "mysql+pymysql://{{ aodh_galera_user }}:{{ aodh_container_db_password }}@{{ aodh_galera_address }}/{{ aodh_galera_database }}?charset=utf8"
+aodh_rabbitmq_host_group: "{{ rabbitmq_host_group }}"
 
 
 ## Ceilometer
 ceilometer_service_user_name: ceilometer
 ceilometer_service_tenant_name: service
+
+# These are here rather than in ceilometer_all because
+# both the os_ceilometer and os_swift roles require them
 ceilometer_rabbitmq_userid: ceilometer
 ceilometer_rabbitmq_vhost: /ceilometer
-ceilometer_rabbitmq_host_group: "rabbitmq_all"
 ceilometer_rabbitmq_port: "{{ rabbitmq_port }}"
+ceilometer_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
+ceilometer_rabbitmq_servers: "{{ rabbitmq_servers }}"
+ceilometer_rabbitmq_host_group: "{{ rabbitmq_host_group }}"
+
 
 ## Cinder
 # If there are Swift hosts in the environment, then enable cinder backups to it
@@ -134,10 +141,29 @@ cinder_backends_rbd_inuse: >
   endfor %}{{
   _var.rbd_inuse }}
 cinder_ceph_client: cinder
+
+# These are here rather than in cinder_all because
+# both the os_ceilometer and os_cinder roles require them
+
+# RPC
 cinder_rabbitmq_userid: cinder
 cinder_rabbitmq_vhost: /cinder
-cinder_rabbitmq_host_group: "rabbitmq_all"
 cinder_rabbitmq_port: "{{ rabbitmq_port }}"
+cinder_rabbitmq_servers: "{{ rabbitmq_servers }}"
+cinder_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
+cinder_rabbitmq_host_group: "{{ rabbitmq_host_group }}"
+
+# Telemetry notifications
+cinder_rabbitmq_telemetry_userid: "{{ cinder_rabbitmq_userid }}"
+cinder_rabbitmq_telemetry_password: "{{ cinder_rabbitmq_password }}"
+cinder_rabbitmq_telemetry_vhost: "{{ cinder_rabbitmq_vhost }}"
+cinder_rabbitmq_telemetry_port: "{{ cinder_rabbitmq_port }}"
+cinder_rabbitmq_telemetry_servers: "{{ cinder_rabbitmq_servers }}"
+cinder_rabbitmq_telemetry_use_ssl: "{{ cinder_rabbitmq_use_ssl }}"
+cinder_rabbitmq_telemetry_host_group: "{{ cinder_rabbitmq_host_group }}"
+
+# If there are any Ceilometer hosts in the environment, then enable its usage
+cinder_ceilometer_enabled: "{{ (groups['cinder_all'] is defined) and (groups['cinder_all'] | length > 0) and (groups['ceilometer_all'] is defined) and (groups['ceilometer_all'] | length > 0) }}"
 
 ## Glance
 glance_service_port: 9292
@@ -153,16 +179,57 @@ glance_service_adminuri: "{{ glance_service_adminuri_proto }}://{{ internal_lb_v
 glance_service_adminurl: "{{ glance_service_adminuri }}"
 glance_api_servers: "{{ glance_service_internaluri }}"
 glance_service_user_name: glance
+
+# These are here rather than in glance_all because
+# both the os_ceilometer and os_glance roles require them
+
+# RPC
 glance_rabbitmq_userid: glance
 glance_rabbitmq_vhost: /glance
-glance_rabbitmq_host_group: "rabbitmq_all"
 glance_rabbitmq_port: "{{ rabbitmq_port }}"
+glance_rabbitmq_servers: "{{ rabbitmq_servers }}"
+glance_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
+glance_rabbitmq_host_group: "{{ rabbitmq_host_group }}"
+
+# Telemetry notifications
+glance_rabbitmq_telemetry_userid: "{{ glance_rabbitmq_userid }}"
+glance_rabbitmq_telemetry_password: "{{ glance_rabbitmq_password }}"
+glance_rabbitmq_telemetry_vhost: "{{ glance_rabbitmq_vhost }}"
+glance_rabbitmq_telemetry_port: "{{ glance_rabbitmq_port }}"
+glance_rabbitmq_telemetry_servers: "{{ glance_rabbitmq_servers }}"
+glance_rabbitmq_telemetry_use_ssl: "{{ glance_rabbitmq_use_ssl }}"
+glance_rabbitmq_telemetry_host_group: "{{ glance_rabbitmq_host_group }}"
+
+# If there are any Ceilometer hosts in the environment, then enable its usage
+glance_ceilometer_enabled: "{{ (groups['ceilometer_all'] is defined) and (groups['ceilometer_all'] | length > 0) }}"
 
 ## Heat
+
+# These are here rather than in heat_all because
+# both the os_ceilometer and os_heat roles require them
+
+# RPC
 heat_rabbitmq_userid: heat
 heat_rabbitmq_vhost: /heat
-heat_rabbitmq_host_group: "rabbitmq_all"
 heat_rabbitmq_port: "{{ rabbitmq_port }}"
+heat_rabbitmq_servers: "{{ rabbitmq_servers }}"
+heat_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
+heat_rabbitmq_host_group: "{{ rabbitmq_host_group }}"
+
+# Telemetry notifications
+heat_rabbitmq_telemetry_userid: "{{ heat_rabbitmq_userid }}"
+heat_rabbitmq_telemetry_password: "{{ heat_rabbitmq_password }}"
+heat_rabbitmq_telemetry_vhost: "{{ heat_rabbitmq_vhost }}"
+heat_rabbitmq_telemetry_port: "{{ heat_rabbitmq_port }}"
+heat_rabbitmq_telemetry_servers: "{{ heat_rabbitmq_servers }}"
+heat_rabbitmq_telemetry_use_ssl: "{{ heat_rabbitmq_use_ssl }}"
+heat_rabbitmq_telemetry_host_group: "{{ heat_rabbitmq_host_group }}"
+
+# If there are any Ceilometer hosts in the environment, then enable its usage
+heat_ceilometer_enabled: "{{ (groups['ceilometer_all'] is defined) and (groups['ceilometer_all'] | length > 0) }}"
+
+## Ironic
+ironic_rabbitmq_host_group: "{{ rabbitmq_host_group }}"
 
 ## Keystone
 keystone_admin_user_name: admin
@@ -171,10 +238,29 @@ keystone_admin_port: 35357
 keystone_service_port: 5000
 keystone_service_proto: http
 keystone_service_region: "{{ service_region }}"
+
+# These are here rather than in keystone_all because
+# both the os_ceilometer and os_keystone roles require them
+
+# RPC
 keystone_rabbitmq_userid: keystone
 keystone_rabbitmq_vhost: /keystone
-keystone_rabbitmq_host_group: "rabbitmq_all"
 keystone_rabbitmq_port: "{{ rabbitmq_port }}"
+keystone_rabbitmq_servers: "{{ rabbitmq_servers }}"
+keystone_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
+keystone_rabbitmq_host_group: "{{ rabbitmq_host_group }}"
+
+# Telemetry notifications
+keystone_rabbitmq_telemetry_userid: "{{ keystone_rabbitmq_userid }}"
+keystone_rabbitmq_telemetry_password: "{{ keystone_rabbitmq_password }}"
+keystone_rabbitmq_telemetry_vhost: "{{ keystone_rabbitmq_vhost }}"
+keystone_rabbitmq_telemetry_port: "{{ keystone_rabbitmq_port }}"
+keystone_rabbitmq_telemetry_servers: "{{ keystone_rabbitmq_servers }}"
+keystone_rabbitmq_telemetry_use_ssl: "{{ keystone_rabbitmq_use_ssl }}"
+keystone_rabbitmq_telemetry_host_group: "{{ keystone_rabbitmq_host_group }}"
+
+# If there are any Ceilometer hosts in the environment, then enable its usage
+keystone_ceilometer_enabled: "{{ (groups['ceilometer_all'] is defined) and (groups['ceilometer_all'] | length > 0) }}"
 
 keystone_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(keystone_service_proto) }}"
 keystone_service_adminuri_insecure: "{% if keystone_service_adminuri_proto == 'https' and (keystone_user_ssl_cert is not defined or haproxy_user_ssl_cert is not defined) | bool %}true{% else %}false{% endif %}"
@@ -195,10 +281,30 @@ neutron_service_adminurl: "{{ neutron_service_adminuri }}"
 neutron_service_user_name: neutron
 neutron_service_project_name: service
 neutron_service_region: "{{ service_region }}"
+
+# These are here rather than in neutron_all because
+# both the os_ceilometer and os_neutron roles require them
+
+# RPC
 neutron_rabbitmq_userid: neutron
 neutron_rabbitmq_vhost: /neutron
-neutron_rabbitmq_host_group: "rabbitmq_all"
 neutron_rabbitmq_port: "{{ rabbitmq_port }}"
+neutron_rabbitmq_servers: "{{ rabbitmq_servers }}"
+neutron_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
+neutron_rabbitmq_host_group: "{{ rabbitmq_host_group }}"
+
+# Telemetry notifications
+neutron_rabbitmq_telemetry_userid: "{{ neutron_rabbitmq_userid }}"
+neutron_rabbitmq_telemetry_password: "{{ neutron_rabbitmq_password }}"
+neutron_rabbitmq_telemetry_vhost: "{{ neutron_rabbitmq_vhost }}"
+neutron_rabbitmq_telemetry_port: "{{ neutron_rabbitmq_port }}"
+neutron_rabbitmq_telemetry_servers: "{{ neutron_rabbitmq_servers }}"
+neutron_rabbitmq_telemetry_use_ssl: "{{ neutron_rabbitmq_use_ssl }}"
+neutron_rabbitmq_telemetry_host_group: "{{ neutron_rabbitmq_host_group }}"
+
+# If there are any Ceilometer hosts in the environment, then enable its usage
+neutron_ceilometer_enabled: "{{ (groups['ceilometer_all'] is defined) and (groups['ceilometer_all'] | length > 0) }}"
+
 neutron_plugin_type: ml2.lxb
 
 ## Nova
@@ -213,15 +319,34 @@ nova_service_user_name: nova
 nova_service_project_name: service
 nova_service_project_domain_id: default
 nova_service_user_domain_id: default
-nova_rabbitmq_userid: nova
-nova_rabbitmq_vhost: /nova
-nova_rabbitmq_host_group: "rabbitmq_all"
-nova_rabbitmq_port: "{{ rabbitmq_port }}"
 nova_keystone_auth_plugin: password
 nova_console_type: spice
 nova_novncproxy_port: 6080
 nova_spice_html5proxy_base_port: 6082
 nova_console_port: "{% if nova_console_type == 'spice' %}{{ nova_spice_html5proxy_base_port }}{% else %}{{ nova_novncproxy_port }}{% endif %}"
+
+# These are here rather than in nova_all because
+# both the os_ceilometer and os_nova roles require them
+
+# RPC
+nova_rabbitmq_userid: nova
+nova_rabbitmq_vhost: /nova
+nova_rabbitmq_port: "{{ rabbitmq_port }}"
+nova_rabbitmq_servers: "{{ rabbitmq_servers }}"
+nova_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
+nova_rabbitmq_host_group: "{{ rabbitmq_host_group }}"
+
+# Telemetry notifications
+nova_rabbitmq_telemetry_userid: "{{ nova_rabbitmq_userid }}"
+nova_rabbitmq_telemetry_password: "{{ nova_rabbitmq_password }}"
+nova_rabbitmq_telemetry_vhost: "{{ nova_rabbitmq_vhost }}"
+nova_rabbitmq_telemetry_port: "{{ nova_rabbitmq_port }}"
+nova_rabbitmq_telemetry_servers: "{{ nova_rabbitmq_servers }}"
+nova_rabbitmq_telemetry_use_ssl: "{{ nova_rabbitmq_use_ssl }}"
+nova_rabbitmq_telemetry_host_group: "{{ nova_rabbitmq_host_group }}"
+
+# If there are any Ceilometer hosts in the environment, then enable its usage
+nova_ceilometer_enabled: "{{ (groups['ceilometer_all'] is defined) and (groups['ceilometer_all'] | length > 0) }}"
 
 
 ## Swift

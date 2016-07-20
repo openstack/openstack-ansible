@@ -28,9 +28,10 @@
         user: "{{ ceilometer_rabbitmq_userid }}"
         password: "{{ ceilometer_rabbitmq_password }}"
         vhost: "{{ ceilometer_rabbitmq_vhost }}"
+        _rabbitmq_host_group: "{{ ceilometer_rabbitmq_host_group }}"
       when:
         - inventory_hostname == groups['ceilometer_api'][0]
-        - groups['rabbitmq_all'] | length > 0
+        - groups[ceilometer_rabbitmq_host_group] | length > 0
     - include: common-tasks/os-log-dir-setup.yml
       vars:
         log_dirs:
@@ -52,7 +53,4 @@
         - "ceilometer-rsyslog-client"
   vars:
     is_metal: "{{ properties.is_metal|default(false) }}"
-    ceilometer_rabbitmq_servers: "{{ rabbitmq_servers }}"
-    ceilometer_rabbitmq_port: "{{ rabbitmq_port }}"
-    ceilometer_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
     pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"

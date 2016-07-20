@@ -28,9 +28,10 @@
         user: "{{ aodh_rabbitmq_userid }}"
         password: "{{ aodh_rabbitmq_password }}"
         vhost: "{{ aodh_rabbitmq_vhost }}"
+        _rabbitmq_host_group: "{{ aodh_rabbitmq_host_group }}"
       when:
         - inventory_hostname == groups['aodh_api'][0]
-        - groups['rabbitmq_all'] | length > 0
+        - groups[aodh_rabbitmq_host_group] | length > 0
     - include: common-tasks/os-log-dir-setup.yml
       vars:
         log_dirs:

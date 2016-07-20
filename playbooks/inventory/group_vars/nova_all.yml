@@ -19,8 +19,5 @@ nova_dhcp_domain: "{{ dhcp_domain }}"
 nova_service_in_ldap: "{{ service_ldap_backend_enabled }}"
 nova_glance_api_servers: "{{ glance_api_servers }}"
 
-# If there are any Ceilometer hosts in the environment, then enable its usage
-nova_ceilometer_enabled: "{{ (groups['ceilometer_all'] is defined) and (groups['ceilometer_all'] | length > 0) }}"
-
 # Ensure that the package state matches the global setting
 nova_package_state: "{{ package_state }}"
