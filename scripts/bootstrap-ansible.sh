@@ -53,7 +53,7 @@ case ${DISTRO_ID} in
     centos|rhel)
         yum check-update
         yum -y install git python2 curl autoconf gcc-c++ \
-          python2-devel gcc libffi-devel openssl-devel python-requests \
+          python2-devel gcc libffi-devel nc openssl-devel python-requests \
           python-pyasn1 pyOpenSSL python-ndg_httpsclient \
           python-netaddr python-prettytable python-crypto PyYAML \
           python-virtualenv
@@ -62,7 +62,7 @@ case ${DISTRO_ID} in
         apt-get update
         DEBIAN_FRONTEND=noninteractive apt-get -y install \
           git python-all python-dev curl python2.7-dev build-essential \
-          libssl-dev libffi-dev python-requests python-openssl python-pyasn1 \
+          libssl-dev libffi-dev netcat python-requests python-openssl python-pyasn1 \
           python-netaddr python-prettytable python-crypto python-yaml \
           python-virtualenv
         ;;
@@ -130,6 +130,11 @@ if [ -f "${ANSIBLE_ROLE_FILE}" ]; then
   fi
 fi
 
+# Copy the OSA Ansible rc file into place
+if [[ ! -f "/usr/local/bin/openstack-ansible.rc" ]]; then
+  cp scripts/openstack-ansible.rc /usr/local/bin/openstack-ansible.rc
+fi
+
 # Create openstack ansible wrapper tool
 cat > /usr/local/bin/openstack-ansible <<EOF
 #!/usr/bin/env bash
@@ -164,7 +169,7 @@ VAR1="\$(for i in \$(ls /etc/openstack_deploy/user_*.yml); do echo -ne "-e @\$i 
 info "Variable files: \"\${VAR1}\""
 
 # Run the ansible playbook command.
-\$(which ansible-playbook) \${VAR1} \$@
+. /usr/local/bin/openstack-ansible.rc && \$(which ansible-playbook) \${VAR1} \$@
 EOF
 
 # Ensure wrapper tool is executable

@@ -1,0 +1,17 @@
+---
+features:
+  - Our general config options are now stored in an
+    "/usr/local/bin/openstack-ansible.rc" file and will
+    be sourced when the "openstack-ansible" wrapper is
+    invoked. The RC file will read in BASH environment
+    variables and should any Ansible option be set that
+    overlaps with our defaults the provided value will
+    be used.
+other:
+  - The in tree "ansible.cfg" file in the playbooks
+    directory has been removed. This file was making
+    compatibility difficult for deployers who need to
+    change these values. Additionally this files very
+    existance forced Ansible to ignore any other config
+    file in either a users home directory or in the
+    default "/etc/ansible" directory.

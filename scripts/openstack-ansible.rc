@@ -1,0 +1,42 @@
+# Copyright 2016, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+export ANSIBLE_RETRY_FILES_ENABLED="${ANSIBLE_RETRY_FILES_ENABLED:-False}"
+
+export ANSIBLE_INVENTORY="${ANSIBLE_INVENTORY:-inventory}"
+
+export ANSIBLE_LOG_PATH="${ANSIBLE_LOG_PATH:-/openstack/log/ansible-logging/ansible.log}"
+export ANSIBLE_ROLES_PATH="${ANSIBLE_ROLES_PATH:-/etc/ansible/roles:roles}"
+
+export ANSIBLE_LIBRARY="${ANSIBLE_LIBRARY:-/etc/ansible/roles/plugins/library}"
+export ANSIBLE_LOOKUP_PLUGINS="${ANSIBLE_LOOKUP_PLUGINS:-/etc/ansible/roles/plugins/lookup}"
+export ANSIBLE_FILTER_PLUGINS="${ANSIBLE_FILTER_PLUGINS:-/etc/ansible/roles/plugins/filter}"
+export ANSIBLE_ACTION_PLUGINS="${ANSIBLE_ACTION_PLUGINS:-/etc/ansible/roles/plugins/action}"
+export ANSIBLE_CALLBACK_PLUGINS="${ANSIBLE_CALLBACK_PLUGINS:-/etc/ansible/roles/plugins/callback}"
+
+export ANSIBLE_GATHERING="${ANSIBLE_GATHERING:-smart}"
+export ANSIBLE_CACHE_PLUGIN="${ANSIBLE_CACHE_PLUGIN:-jsonfile}"
+export ANSIBLE_CACHE_PLUGIN_CONNECTION="${ANSIBLE_CACHE_PLUGIN_CONNECTION:-/etc/openstack_deploy/ansible_facts}"
+export ANSIBLE_CACHE_PLUGIN_TIMEOUT="${ANSIBLE_CACHE_PLUGIN_TIMEOUT:-86400}"
+
+if [[ "${ANSIBLE_CACHE_PLUGIN}" == "memcached" ]];then
+  if ! echo stats | nc -w 1 $(echo ${ANSIBLE_CACHE_PLUGIN_CONNECTION}|awk -F',' '{print $1}'|sed 's/:/ /') > /dev/null; then
+    export ANSIBLE_CACHE_PLUGIN="memory"
+  fi
+fi
+
+export ANSIBLE_HOST_KEY_CHECKING="${ANSIBLE_HOST_KEY_CHECKING:-False}"
+export ANSIBLE_TIMEOUT="${ANSIBLE_TIMEOUT:-5}"
+export ANSIBLE_TRANSPORT="${ANSIBLE_TRANSPORT:-ssh}"
+export ANSIBLE_SSH_PIPELINING="${ANSIBLE_SSH_PIPELINING:-True}"

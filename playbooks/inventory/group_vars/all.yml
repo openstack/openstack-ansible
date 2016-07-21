@@ -244,8 +244,10 @@ openrc_region_name: "{{ service_region }}"
 # Docs: http://docs.openstack.org/developer/openstack-ansible-security/
 apply_security_hardening: true
 
+## Ansible ssh configuration
 ansible_ssh_extra_args: >
   -o UserKnownHostsFile=/dev/null
+  -o StrictHostKeyChecking=no
   -o ServerAliveInterval=64
   -o ServerAliveCountMax=1024
   -o Compression=no

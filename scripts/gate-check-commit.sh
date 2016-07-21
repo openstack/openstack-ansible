@@ -70,7 +70,6 @@ iptables -P OUTPUT ACCEPT
 
 # Bootstrap an AIO
 pushd "$(dirname "${0}")/../tests"
-  sed -i '/\[defaults\]/a nocolor = 1/' ansible.cfg
   ansible-playbook -i test-inventory.ini \
                    -e "${BOOTSTRAP_OPTS}" \
                    ${ANSIBLE_PARAMETERS} \
@@ -85,14 +84,11 @@ ln -sf /openstack/log "$(dirname "${0}")/../logs"
 
 pushd "$(dirname "${0}")/../playbooks"
   # Disable Ansible color output
-  sed -i 's/nocolor.*/nocolor = 1/' ansible.cfg
+  export ANSIBLE_NOCOLOR=1
 
-  # Create ansible logging directory and add in a log file entry into ansible.cfg
+  # Create ansible logging directory and add in a log file export
   mkdir -p /openstack/log/ansible-logging
-  sed -i '/\[defaults\]/a log_path = /openstack/log/ansible-logging/ansible.log' ansible.cfg
-
-  # Enable callback plugins
-  sed -i 's/^callback_whitelist.*/callback_whitelist = "profile_tasks,human_log"/g' ansible.cfg
+  export ANSIBLE_LOG_PATH="/openstack/log/ansible-logging/ansible.log"
 popd
 
 # Log some data about the instance and the rest of the system
