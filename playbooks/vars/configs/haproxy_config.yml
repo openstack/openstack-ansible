@@ -48,6 +48,19 @@ haproxy_default_services:
       haproxy_backend_options:
         - "httpchk HEAD /"
   - service:
+      haproxy_service_name: repo_cache
+      haproxy_backend_nodes: "{{ [groups['repo_all'][0]] | default([]) }}"  # list expected
+      haproxy_backup_nodes: "{{ groups['repo_all'][1:] | default([]) }}"
+      haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_port: 3142
+      haproxy_balance_type: http
+      haproxy_backend_options:
+        - "httpchk HEAD /acng-report.html"
+      haproxy_whitelist_networks:
+        - 192.168.0.0/16
+        - 172.16.0.0/12
+        - 10.0.0.0/8
+  - service:
       haproxy_service_name: glance_api
       haproxy_backend_nodes: "{{ groups['glance_api'] | default([]) }}"
       haproxy_ssl: "{{ haproxy_ssl }}"

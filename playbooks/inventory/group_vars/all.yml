@@ -35,6 +35,7 @@ pip_links:
 ## OpenStack source options
 # URL for the frozen internal openstack repo.
 repo_server_port: 8181
+repo_pkg_cache_enabled: true
 openstack_repo_url: "http://{{ internal_lb_vip_address }}:{{ repo_server_port }}"
 openstack_repo_git_url: "git://{{ internal_lb_vip_address }}"
 
