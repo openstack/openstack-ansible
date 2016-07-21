@@ -98,6 +98,12 @@ HTTP or SOCKS proxy server(s). OpenStack-Ansible may be used to configure
 target hosts to use the proxy server(s). OpenStack-Ansible does not provide
 automation for creating the proxy server(s).
 
+.. note::
+
+   We recommend you set your ``/etc/environment`` variables with proxy
+   settings before launching ``scripts/run-playbooks.sh`` to avoid
+   failure.
+
 Basic proxy configuration
 -------------------------
 
