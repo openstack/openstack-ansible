@@ -55,11 +55,12 @@ After successful deployment, you are able to update variables in
 * Object Storage (swift)
 
    - The ``pretend_min_part_hours_passed`` option can now be
-     passed to swift-ring-builder prior to performing a rebalance. This is set by
-     the ``swift_pretend_min_part_hours_passed`` boolean variable.
+     passed to swift-ring-builder prior to performing a rebalance. This is set
+     by the ``swift_pretend_min_part_hours_passed`` boolean variable.
      The default for this variable is False. However, we recommend using
      ``-e swift_pretend_min_part_hours_passed=True`` when running the
-     ``os-swift.yml`` playbook to avoid resetting ``min_part_hours`` unintentionally.
+     ``os-swift.yml`` playbook to avoid resetting ``min_part_hours``
+     unintentionally.
 
      .. important::
 
