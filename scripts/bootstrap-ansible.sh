@@ -22,10 +22,8 @@ set -e -u -x
 ## Vars ----------------------------------------------------------------------
 export HTTP_PROXY=${HTTP_PROXY:-""}
 export HTTPS_PROXY=${HTTPS_PROXY:-""}
-export ANSIBLE_GIT_RELEASE=${ANSIBLE_GIT_RELEASE:-"v2.1.0.0-1"}
-export ANSIBLE_GIT_REPO=${ANSIBLE_GIT_REPO:-"https://github.com/ansible/ansible"}
+export ANSIBLE_PACKAGE=${ANSIBLE_RELEASE:-"ansible==2.1.0.0"}
 export ANSIBLE_ROLE_FILE=${ANSIBLE_ROLE_FILE:-"ansible-role-requirements.yml"}
-export ANSIBLE_WORKING_DIR=${ANSIBLE_WORKING_DIR:-/opt/ansible_${ANSIBLE_GIT_RELEASE}}
 export SSH_DIR=${SSH_DIR:-"/root/.ssh"}
 export DEBIAN_FRONTEND=${DEBIAN_FRONTEND:-"noninteractive"}
 # Set the role fetch mode to any option [galaxy, git-clone]
@@ -53,19 +51,6 @@ elif [[ -f "/etc/redhat-release" ]]; then
 elif [[ -f "/etc/fedora-release" ]]; then
     dnf -y install git python curl autoconf gcc-c++ python-devel gcc libffi-devel openssl-devel python-requests
 fi
-
-# If the working directory exists remove it
-if [ -d "${ANSIBLE_WORKING_DIR}" ];then
-    rm -rf "${ANSIBLE_WORKING_DIR}"
-fi
-
-# Clone down the base ansible source
-git clone "${ANSIBLE_GIT_REPO}" "${ANSIBLE_WORKING_DIR}"
-pushd "${ANSIBLE_WORKING_DIR}"
-    git checkout "${ANSIBLE_GIT_RELEASE}"
-    git submodule update --init --recursive
-popd
-
 
 # Install pip
 get_pip
@@ -96,7 +81,7 @@ PIP_OPTS+=" --upgrade"
 PIP_COMMAND="/opt/ansible-runtime/bin/pip"
 # When upgrading there will already be a pip.conf file locking pip down to the repo server, in such cases it may be
 # necessary to use --isolated because the repo server does not meet the specified requirements.
-$PIP_COMMAND install $PIP_OPTS -r requirements.txt "${ANSIBLE_WORKING_DIR}" || $PIP_COMMAND install --isolated $PIP_OPTS "${ANSIBLE_WORKING_DIR}"
+$PIP_COMMAND install $PIP_OPTS -r requirements.txt ${ANSIBLE_PACKAGE} || $PIP_COMMAND install --isolated $PIP_OPTS -r requirements.txt ${ANSIBLE_PACKAGE}
 
 # Link the venv installation of Ansible to the local path
 pushd /usr/local/bin
