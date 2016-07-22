@@ -1,0 +1,9 @@
+---
+upgrade:
+  - The ``infra_hosts`` and ``infra_containers`` inventory groups
+    have been removed. No containers or services were assigned to
+    these groups exclusively, and the usage of the groups has been
+    supplanted by the ``shared-infra_*`` and ``os-infra_*`` groups
+    for some time. Deployers who were using the groups should adjust
+    any custom configuration in the ``env.d`` directory to assign
+    containers and/or services to other groups.

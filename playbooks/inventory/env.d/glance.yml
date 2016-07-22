@@ -25,7 +25,6 @@ component_skel:
 container_skel:
   glance_container:
     belongs_to:
-      - infra_containers
       - os-infra_containers
     contains:
       - glance_api
