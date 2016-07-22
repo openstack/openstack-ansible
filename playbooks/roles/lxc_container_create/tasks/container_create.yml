@@ -86,10 +86,10 @@
     line: "{{ item }}"
     backup: "true"
   with_items:
-      - "lxc.autodev=1"
-      - "lxc.pts=1024"
-      - "lxc.kmsg=0"
-      - "lxc.hook.autodev=/var/lib/lxc/{{ inventory_hostname }}/autodev"
+      - "lxc.autodev = 1"
+      - "lxc.pts = 1024"
+      - "lxc.kmsg = 0"
+      - "lxc.hook.autodev = /var/lib/lxc/{{ inventory_hostname }}/autodev"
   delegate_to: "{{ physical_host }}"
   notify:
     - Lxc container restart
