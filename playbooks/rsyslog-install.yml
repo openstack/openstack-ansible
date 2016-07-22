@@ -19,52 +19,11 @@
   max_fail_percentage: 20
   user: root
   pre_tasks:
-    - name: Use the lxc-openstack aa profile
-      lxc_container:
-        name: "{{ container_name }}"
-        container_config:
-          - "lxc.aa_profile=lxc-openstack"
-      delegate_to: "{{ physical_host }}"
-      when: not is_metal | bool
-      register: container_config
-      tags:
-        - lxc-aa-profile
-    - name: Ensure log storage directory exists
-      file:
-        path: "/openstack/{{ container_name }}/log-storage"
-        state: "directory"
-      delegate_to: "{{ physical_host }}"
-      when: not is_metal | bool
-      tags:
-        - rsyslog-storage-dirs
-    - name: Rsyslog server extra lxc config
-      lxc_container:
-        name: "{{ container_name }}"
-        container_command: |
-          [[ ! -d "{{ storage_directory }}" ]] && mkdir -p "{{ storage_directory }}"
-        container_config:
-          - "lxc.mount.entry=/openstack/{{ container_name }}/log-storage {{ storage_directory.lstrip('/') }} none bind 0 0"
-      delegate_to: "{{ physical_host }}"
-      when: not is_metal | bool
-      register: container_extra_config
-      tags:
-        - rsyslog-storage-dirs
-    - name: Wait for container ssh
-      wait_for:
-        port: "22"
-        delay: "{{ ssh_delay }}"
-        search_regex: "OpenSSH"
-        host: "{{ ansible_ssh_host }}"
-      delegate_to: "{{ physical_host }}"
-      when: >
-            (container_config is defined and container_config | changed) or
-            (container_extra_config is defined and container_extra_config | changed)
-      register: ssh_wait_check
-      until: ssh_wait_check | success
-      retries: 3
-      tags:
-        - ssh-wait
-
+    - include: common-tasks/os-lxc-container-setup.yml
+      vars:
+        list_of_bind_mounts:
+          - bind_dir_path: "{{ storage_directory }}"
+            mount_path: "/openstack/{{ inventory_hostname }}/log-storage"
   roles:
     - { role: "rsyslog_server", tags: [ "rsyslog-server" ] }
     - role: "system_crontab_coordination"

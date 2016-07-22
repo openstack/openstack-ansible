@@ -19,91 +19,22 @@
   max_fail_percentage: 20
   user: root
   pre_tasks:
-    - name: Use the lxc-openstack aa profile
-      lxc_container:
-        name: "{{ container_name }}"
-        container_config:
-          - "lxc.aa_profile=lxc-openstack"
-      delegate_to: "{{ physical_host }}"
-      when: not is_metal | bool
-      register: container_config
-      tags:
-        - lxc-aa-profile
-    - name: Wait for container ssh
-      wait_for:
-        port: "22"
-        delay: "{{ ssh_delay }}"
-        search_regex: "OpenSSH"
-        host: "{{ ansible_ssh_host }}"
-      delegate_to: "{{ physical_host }}"
-      when: container_config is defined and container_config | changed
-      register: ssh_wait_check
-      until: ssh_wait_check | success
-      retries: 3
-      tags:
-        - ssh-wait
-    - name: Sort the rabbitmq servers
-      dist_sort:
-        value_to_lookup: "{{ container_name }}"
-        ref_list: "{{ groups['horizon_all'] }}"
-        src_list: "{{ rabbitmq_servers }}"
-      register: servers
-      tags:
-        - always
-    - name: Set rabbitmq servers
-      set_fact:
-        rabbitmq_servers: "{{ servers.sorted_list }}"
-      tags:
-        - always
-    - name: Create log dir
-      file:
-        path: "{{ item.path }}"
-        state: directory
-      with_items:
-        - { path: "/openstack/log/{{ inventory_hostname }}-horizon" }
-      when: is_metal | bool
-      tags:
-        - horizon-logs
-        - horizon-log-dirs
-    - name: Create log aggregation links
-      file:
-        src: "{{ item.src }}"
-        dest: "{{ item.dest }}"
-        state: "{{ item.state }}"
-        force: "yes"
-      with_items:
-        - { src: "/openstack/log/{{ inventory_hostname }}-horizon", dest: "/var/log/horizon", state: "link" }
-      when: is_metal | bool
-      tags:
-        - horizon-logs
-    - name: Create DB for service
-      mysql_db:
-        login_user: "{{ galera_root_user }}"
-        login_password: "{{ galera_root_password }}"
-        login_host: "{{ horizon_galera_address }}"
-        name: "{{ horizon_galera_database }}"
-        state: "present"
-      when: inventory_hostname == groups['horizon_all'][0]
-      delegate_to: "{{ groups['galera_all'][0] }}"
-      tags:
-        - mysql-db-setup
-    - name: Grant access to the DB for the service
-      mysql_user:
-        login_user: "{{ galera_root_user }}"
-        login_password: "{{ galera_root_password }}"
-        login_host: "{{ horizon_galera_address }}"
-        name: "{{ horizon_galera_user }}"
+    - include: common-tasks/rabbitmq-servers-sort.yml
+      vars:
+        sort_group_name: "horizon_all"
+    - include: common-tasks/os-lxc-container-setup.yml
+    - include: common-tasks/os-log-dir-setup.yml
+      vars:
+        log_dirs:
+          - src: "/openstack/log/{{ inventory_hostname }}-horizon"
+            dest: "/var/log/horizon"
+    - include: common-tasks/mysql-db-user.yml
+      vars:
+        user_name: "{{ horizon_galera_user }}"
         password: "{{ horizon_container_mysql_password }}"
-        host: "{{ item }}"
-        state: "present"
-        priv: "{{ horizon_galera_database }}.*:ALL"
+        login_host: "{{ horizon_galera_address }}"
+        db_name: "{{ horizon_galera_database }}"
       when: inventory_hostname == groups['horizon_all'][0]
-      delegate_to: "{{ groups['galera_all'][0] }}"
-      with_items:
-        - "localhost"
-        - "%"
-      tags:
-        - mysql-db-setup
   roles:
     - role: "os_horizon"
       horizon_server_name: "{{ container_name }}"

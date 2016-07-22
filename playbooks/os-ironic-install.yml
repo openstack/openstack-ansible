@@ -18,95 +18,25 @@
   gather_facts: "{{ gather_facts | default(True) }}"
   user: root
   pre_tasks:
-    - name: Use the lxc-openstack aa profile
-      lxc_container:
-        name: "{{ container_name }}"
-        container_config:
-          - "lxc.aa_profile=lxc-openstack"
-      delegate_to: "{{ physical_host }}"
-      when: not is_metal | bool
-      register: container_config
-      tags:
-        - lxc-aa-profile
-    - name: Wait for container ssh
-      wait_for:
-        port: "22"
-        delay: "{{ ssh_delay }}"
-        search_regex: "OpenSSH"
-        host: "{{ ansible_ssh_host }}"
-      delegate_to: "{{ physical_host }}"
-      when: container_config is defined and container_config | changed
-      register: ssh_wait_check
-      until: ssh_wait_check | success
-      retries: 3
-      tags:
-        - ssh-wait
-    - name: Ensure Rabbitmq vhost for Ironic
-      rabbitmq_vhost:
-        name: "{{ ironic_rabbitmq_vhost }}"
-        state: "present"
-      delegate_to: "{{ groups['rabbitmq_all'][0] }}"
-      run_once: true
-      tags:
-        - ironic-rabbitmq
-        - ironic-rabbitmq-vhost
-    - name: Ensure rabbitmq user for Ironic
-      rabbitmq_user:
+    - include: common-tasks/rabbitmq-servers-sort.yml
+      vars:
+        sort_group_name: "ironic_all"
+    - include: common-tasks/os-lxc-container-setup.yml
+    - include: common-tasks/rabbitmq-vhost-user.yml
+      vars:
         user: "{{ ironic_rabbitmq_userid }}"
         password: "{{ ironic_rabbitmq_password }}"
         vhost: "{{ ironic_rabbitmq_vhost }}"
-        configure_priv: ".*"
-        read_priv: ".*"
-        write_priv: ".*"
-        state: "present"
-      delegate_to: "{{ groups['rabbitmq_all'][0] }}"
-      run_once: true
-      tags:
-        - ironic-rabbitmq
-        - ironic-rabbitmq-user
-    - name: Create DB for Ironic
-      mysql_db:
-        login_user: "{{ galera_root_user }}"
-        login_password: "{{ galera_root_password }}"
+      when:
+        - inventory_hostname == groups['ironic_all'][0]
+        - groups['rabbitmq_all'] | length > 0
+    - include: common-tasks/mysql-db-user.yml
+      vars:
+        user_name: "{{ ironic_galera_user }}"
+        password: "{{ ironic_container_mysql_password }}"
         login_host: "{{ ironic_galera_address }}"
-        name: "{{ ironic_galera_database }}"
-        state: "present"
+        db_name: "{{ ironic_galera_database }}"
       when: inventory_hostname == groups['ironic_all'][0]
-      delegate_to: "{{ groups['galera_all'][0] }}"
-      run_once: true
-      tags:
-        - mysql-db-setup
-    - name: Grant access to the DB for Ironic
-      mysql_user:
-        login_user: "{{ galera_root_user }}"
-        login_password: "{{ galera_root_password }}"
-        login_host: "{{ ironic_galera_address }}"
-        name: "{{ ironic_galera_user }}"
-        password: "{{ ironic_galera_password }}"
-        host: "{{ item }}"
-        state: "present"
-        priv: "{{ ironic_galera_database }}.*:ALL"
-      when: inventory_hostname == groups['ironic_all'][0]
-      delegate_to: "{{ groups['galera_all'][0] }}"
-      with_items:
-        - "localhost"
-        - "%"
-      run_once: true
-      tags:
-        - mysql-db-setup
-    - name: Sort the rabbitmq servers
-      dist_sort:
-        value_to_lookup: "{{ container_name }}"
-        ref_list: "{{ groups['ironic_all'] }}"
-        src_list: "{{ rabbitmq_servers }}"
-      register: servers
-      tags:
-        - always
-    - name: Set rabbitmq servers
-      set_fact:
-        rabbitmq_servers: "{{ servers.sorted_list }}"
-      tags:
-        - always
   roles:
     - role: "os_ironic"
       ironic_venv_tag: "{{ openstack_release }}"
