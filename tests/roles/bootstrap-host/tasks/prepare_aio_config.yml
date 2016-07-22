@@ -25,12 +25,6 @@
     - create-directories
 
 
-# NOTICE(cloudnull) The ceilometer and aodh inclusion for the gate has been removed.
-# We need to add these lines back as soon as the gate stabalizes.
-# -    - name: aodh.yml.aio
-# -      override: "{{ aodh_conf_overrides | default({}) }}"
-# -    - name: ceilometer.yml.aio
-# -      override: "{{ ceilometer_conf_overrides | default({}) }}"
 - name: Deploy user conf.d configuration
   config_template:
     src: "../etc/openstack_deploy/conf.d/{{ item.name }}"
@@ -40,6 +34,10 @@
   with_items:
     - name: swift.yml.aio
       override: "{{ swift_conf_overrides | default({}) }}"
+    - name: aodh.yml.aio
+      override: "{{ aodh_conf_overrides | default({}) }}"
+    - name: ceilometer.yml.aio
+      override: "{{ ceilometer_conf_overrides | default({}) }}"
   tags:
     - deploy-confd
 
