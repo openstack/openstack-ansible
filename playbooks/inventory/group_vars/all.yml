@@ -55,8 +55,10 @@ galera_root_user: "root"
 
 ## RabbitMQ
 rabbitmq_port: "{{ (rabbitmq_use_ssl | bool) | ternary(5671, 5672) }}"
-rabbitmq_servers: "{% for host in groups['rabbitmq_all'] %}{{ hostvars[host]['ansible_ssh_host'] }}:{{ rabbitmq_port }}{% if not loop.last %},{% endif %}{% endfor %}"
-rabbitmq_use_ssl: true
+rabbitmq_servers: "{% for host in groups['rabbitmq_all'] %}{{ hostvars[host]['ansible_ssh_host'] }}{% if not loop.last %},{% endif %}{% endfor %}"
+# TODO(odyssey4me)
+# The new transport_url configuration option is not working with SSL enabled. Revisit this ASAP.
+rabbitmq_use_ssl: false
 
 ## Enable external SSL handling for general OpenStack services
 openstack_external_ssl: true

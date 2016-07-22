@@ -1,0 +1,7 @@
+---
+features:
+  - Whether ceilometer should be enabled by default for each service
+    is now dynamically determined based on whether there are any
+    ceilometer hosts/containers deployed. This behaviour can still
+    be overridden by toggling ``<service>_ceilometer_enabled`` in
+    ``/etc/openstack_deploy/user_variables.yml``.

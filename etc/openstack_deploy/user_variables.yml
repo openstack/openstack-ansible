@@ -26,16 +26,6 @@ debug: false
 # ceilometer_db_ip: localhost
 # ceilometer_db_port: 27017
 
-## Common Override to enable Ceilometer for each service.
-## By default all service are *not* enabled.
-# swift_ceilometer_enabled: True
-# heat_ceilometer_enabled: True
-# cinder_ceilometer_enabled: True
-# glance_ceilometer_enabled: True
-# nova_ceilometer_enabled: True
-# neutron_ceilometer_enabled: True
-# keystone_ceilometer_enabled: True
-
 ## Common Glance Overrides
 # Set glance_default_store to "swift" if using Cloud Files or swift backend
 # or "rbd" if using ceph backend; the latter will trigger ceph to get
