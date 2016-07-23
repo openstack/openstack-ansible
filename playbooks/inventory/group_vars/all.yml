@@ -220,6 +220,7 @@ swift_system_home_folder: "/var/lib/{{ swift_system_user_name }}"
 openrc_os_auth_url: "{{ keystone_service_internalurl }}"
 openrc_os_password: "{{ keystone_auth_admin_password }}"
 openrc_os_domain_name: "Default"
+openrc_region_name: "{{ service_region }}"
 
 ## Host security hardening
 # The openstack-ansible-security role provides security hardening for hosts
