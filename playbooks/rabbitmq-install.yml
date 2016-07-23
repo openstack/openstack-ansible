@@ -21,8 +21,6 @@
   pre_tasks:
     - include: common-tasks/os-lxc-container-setup.yml
   roles:
-    - role: "pip_install"
-      pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"
     - role: "system_crontab_coordination"
       tags:
         - "system-crontab-coordination"
