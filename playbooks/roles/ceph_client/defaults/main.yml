@@ -38,8 +38,11 @@
 #            unlike the other options does not attempt to manage package keys or add additional
 #            package repositories.
 ceph_pkg_source: ceph
-
 ceph_apt_pinned_packages: [{ package: "*", release: Inktank,  priority: 1001 }]
+
+# Ubuntu Cloud Archive mirror URL
+# This is only used if 'uca' is the selected option for ceph_pkg_source
+uca_apt_repo_url: "http://ubuntu-cloud.archive.canonical.com/ubuntu"
 
 # Ceph Authentication
 cephx: true
@@ -63,19 +66,26 @@ ceph_mons: []
 glance_ceph_client: glance
 cinder_ceph_client: cinder
 cinder_backup_ceph_client: cinder-backup
+
 # by default we assume you use rbd for both cinder and nova, and as libvirt
 # needs to access both volumes (cinder) as boot disks (nova) we default to
 # reuse the cinder_ceph_client
 # only need to change this if you'd use ceph for boot disks and not for volumes
 nova_ceph_client: '{{ cinder_ceph_client }}'
+
 # overruled in user_secrets:
+# TODO(odyssey4me) - the uuid should be removed, there should be no defaults for secrets
 nova_ceph_client_uuid: 457eb676-33da-42ec-9a8c-9293d545c337
 cephkeys_access_group: cephkeys
+
 openstack_service_system_user: null
+
 ceph_cinder_service_names:
   - cinder-volume
   - cinder-backup
+
 ceph_nova_service_names:
   - nova-compute
+
 ceph_glance_service_names:
   - glance-api

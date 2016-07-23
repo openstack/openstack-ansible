@@ -35,8 +35,9 @@ ceph_stable_release: hammer
 ceph_apt_repo_url: "http://{{ ceph_apt_repo_url_region }}.ceph.com/debian-{{ ceph_stable_release }}/"
 
 # Ubuntu Cloud Archive variables
+# There are no UCA packages for Trusty beyond Mitaka, so the selected
+# release here has to remain at Mitaka.
 uca_openstack_release: mitaka
-uca_apt_repo_url: "http://ubuntu-cloud.archive.canonical.com/ubuntu"
 uca_repo_dist: "{{ ansible_lsb.codename }}-updates/{{ uca_openstack_release }}"
 
 # Apt repositories
