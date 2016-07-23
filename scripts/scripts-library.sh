@@ -41,6 +41,15 @@ fi
 
 
 ## Functions -----------------------------------------------------------------
+# Determine the distribution we are running on, so that we can configure it
+# appropriately.
+function determine_distro {
+    source /etc/os-release 2>/dev/null
+    export DISTRO_ID="${ID}"
+    export DISTRO_NAME="${NAME}"
+    export DISTRO_VERSION_ID="${VERSION_ID}"
+}
+
 # Used to retry a process that may fail due to random issues.
 function successerator {
   set +e

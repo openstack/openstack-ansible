@@ -43,14 +43,21 @@ ANSIBLE_ROLE_FILE="$(readlink -f ${ANSIBLE_ROLE_FILE})"
 # Create the ssh dir if needed
 ssh_key_create
 
+# Determine the distribution which the host is running on
+determine_distro
+
 # Install the base packages
-if [[ -f "/etc/os-release" ]]; then
-    apt-get update && apt-get -y install git python-all python-dev curl python2.7-dev build-essential libssl-dev libffi-dev python-requests < /dev/null
-elif [[ -f "/etc/redhat-release" ]]; then
-    yum check-update && yum -y install git python2 curl autoconf gcc-c++ python2-devel gcc libffi-devel openssl-devel python-requests
-elif [[ -f "/etc/fedora-release" ]]; then
-    dnf -y install git python curl autoconf gcc-c++ python-devel gcc libffi-devel openssl-devel python-requests
-fi
+case ${DISTRO_ID} in
+    centos|rhel)
+        yum check-update && yum -y install git python2 curl autoconf gcc-c++ python2-devel gcc libffi-devel openssl-devel python-requests
+        ;;
+    fedora)
+        dnf --refresh -y install git python curl autoconf gcc-c++ python-devel gcc libffi-devel openssl-devel python-requests
+        ;;
+    ubuntu)
+        apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -y install git python-all python-dev curl python2.7-dev build-essential libssl-dev libffi-dev python-requests
+        ;;
+esac
 
 # Install pip
 get_pip
