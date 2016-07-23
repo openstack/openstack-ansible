@@ -67,7 +67,7 @@
         {% else %}
         echo "{{ item.key }} volume_group not defined"
         {% endif %}
-      with_dict: cinder_backends|default({})
+      with_dict: "{{ cinder_backends | default({}) }}"
       when:
         - physical_host != container_name
         - cinder_backend_lvm_inuse | bool
