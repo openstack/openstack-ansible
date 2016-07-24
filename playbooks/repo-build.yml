@@ -39,6 +39,64 @@
       register: local_packages
       tags:
         - always
+
+    - name: Check if the git cache exists on deployment host
+      local_action:
+        module: stat
+        path: "{{ repo_build_git_cache }}"
+      register: _local_git_cache
+      when: repo_build_git_cache is defined
+
+    - name: Check if deployment host has the bind mount for the master repo container
+      local_action:
+        module: stat
+        path: "{{ repo_build_git_bind_mount }}"
+      register: _local_repo_bind_mount
+      when:
+        - inventory_hostname == groups['repo_all'][0]
+        - _local_git_cache.stat.exists
+
+    - name: Check if the repo container bind mount is empty
+      local_action: shell
+        ls -1A {{ repo_build_git_bind_mount }}
+      register: _local_repo_bind_mount_contents
+      when:
+        - _local_repo_bind_mount.stat is defined
+        - _local_repo_bind_mount.stat.exists
+        - not _local_repo_bind_mount.stat.islnk
+
+    - name: Remove the bind mounted git directory so we can symlink the cache folder to replace it
+      local_action:
+        module: file
+        path: "{{ repo_build_git_bind_mount }}"
+        state: absent
+      register: _local_repo_bind_mount_dir_remove
+      when:
+        - _local_repo_bind_mount.stat is defined
+        - _local_repo_bind_mount.stat.exists
+        - not _local_repo_bind_mount.stat.islnk
+        - _local_repo_bind_mount_contents.stdout_lines | length == 0
+
+    - name: Symlink the git cache into the repo container bind mount
+      local_action:
+        module: file
+        src: "{{ repo_build_git_cache }}"
+        dest: "{{ repo_build_git_bind_mount }}"
+        state: link
+      when:
+        - _local_git_cache.stat.exists
+        - _local_repo_bind_mount.stat is defined
+        - _local_repo_bind_mount.stat.exists
+
+    - name: Synchronise the contents of the git cache to the repo server
+      synchronize:
+        src: "{{ repo_build_git_cache }}"
+        dest: "{{ repo_build_git_dir }}"
+      when:
+        - _local_git_cache.stat.exists
+        - _local_repo_bind_mount.stat is defined
+        - not _local_repo_bind_mount.stat.exists
+
   roles:
     - role: "repo_build"
       repo_build_release_tag: "{{ openstack_release }}"
@@ -47,6 +105,7 @@
         - "inventory_hostname == groups['repo_servers_{{ ansible_architecture }}'][0]"
       tags:
         - "repo-build"
+
   vars:
     pkg_locations:
       - ../

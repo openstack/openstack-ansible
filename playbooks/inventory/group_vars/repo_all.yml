@@ -16,3 +16,30 @@
 # Ensure that the package state matches the global setting
 repo_server_package_state: "{{ package_state }}"
 repo_build_package_state: "{{ package_state }}"
+
+# The default bind mount to hold the repo data
+repo_all_lxc_container_bind_mounts:
+  - mount_path: "/openstack/{{ inventory_hostname }}"
+    bind_dir_path: "/var/www"
+
+# Optionally set this variable to the location on the deployment
+# host where a set of git clones may be sourced to stage the repo
+# server.
+#repo_build_git_cache: /opt/git/openstack/
+
+# The folder in the repo container where the git clones should
+# be synchronised to.
+repo_build_git_dir: /var/www/repo/openstackgit
+
+# The folder in the repo container which is bind-mounted to
+# the host.
+repo_service_home_folder: /var/www
+
+# The folder on the repo container's host which will hold
+# the git clones via the container-host bind-mount
+repo_build_git_bind_mount: "/openstack/{{ inventory_hostname }}{{ repo_build_git_dir | replace(repo_service_home_folder, '') }}"
+
+# The appropriate user:group names for the repo_build_git_dir
+# folder/file attributes.
+repo_service_user_name: nginx
+repo_service_group_name: www-data

@@ -100,6 +100,16 @@
     repo_build_pip_extra_indexes: "[\"{{ fastest_wheel_mirror.stdout }}\"]"
   when: not pip_conf_file.stat.exists
 
+- name: Check whether the host has a git cache
+  stat:
+    path: /opt/git/openstack
+  register: _local_git_cache
+
+- name: Set repo_build_git_cache fact
+  set_fact:
+    repo_build_git_cache: /opt/git/openstack
+  when: _local_git_cache.stat.exists
+
 - name: Set the user_variables
   config_template:
     src: user_variables.aio.yml.j2
