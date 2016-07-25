@@ -32,18 +32,34 @@
         path: "{{ item }}"
         state: "absent"
       with_items:
+        - "/var/lib/lxc/{{ container_name }}"
+      delegate_to: "{{ physical_host }}"
+      when:
+        - force_containers_destroy | bool
+      tags:
+        - container-directories-service
+    - name: Destroy container data directories
+      file:
+        path: "{{ item }}"
+        state: "absent"
+      with_items:
         - "/openstack/{{ container_name }}"
         - "/openstack/backup/{{ container_name }}"
         - "/openstack/log/{{ container_name }}"
-        - "/var/lib/lxc/{{ container_name }}"
-        - "{{ lxc_container_directory|default('/var/lib/lxc') }}/{{ container_name }}"
       delegate_to: "{{ physical_host }}"
-      when: force_containers_destroy | bool
+      when:
+        - force_containers_destroy | bool
+        - force_containers_data_destroy | bool
       tags:
-        - container-directories
+        - container-directories-data
   vars_prompt:
     - name: "force_containers_destroy"
-      prompt: "Are you sure you want to destroy LXC containers?"
+      prompt: "Are you sure you want to destroy the LXC containers?"
       default: "no"
       private: no
       when: force_containers_destroy is undefined
+    - name: "force_containers_data_destroy"
+      prompt: "Are you sure you want to destroy the LXC container data?"
+      default: "no"
+      private: no
+      when: force_containers_data_destroy is undefined
