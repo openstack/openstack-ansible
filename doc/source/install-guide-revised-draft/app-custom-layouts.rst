@@ -1,8 +1,8 @@
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
-=================================================
+==================================================
 Appendix E: Customizing host and service layouts
-=================================================
+==================================================
 
 Understanding the default layout
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
