@@ -10,7 +10,8 @@ OpenStack Ansible supports Block Storage (cinder) and Object Storage (swift).
 Block storage (cinder)
 ~~~~~~~~~~~~~~~~~~~~~~
 
-.. Suggestion: Document the location of the cinder-api service (containers on the infra hosts)
+.. Suggestion: Document the location of the cinder-api service (containers on
+   the infra hosts)
 .. Suggestion: Document the location of the cinder-volumes service
 
 .. important::
@@ -28,7 +29,7 @@ set up a container inside one of the infra hosts.
    ``cinder_volumes`` do not run in HA `active/active` mode.
    This is not to be set up on multiple hosts. If you have multiple storage
    backends, set up one per volumes container.
-   For more information: `https://specs.openstack.org/openstack/cinder-specs/specs/mitaka/cinder-volume-active-active-support.html>`_.
+   For more information: `<https://specs.openstack.org/openstack/cinder-specs/specs/mitaka/cinder-volume-active-active-support.html>`_.
 
 
 Networking for Block Storage (cinder)
@@ -42,8 +43,10 @@ and ``br-mgmt`` for API requests. ``cinder-volumes`` hosts require
 Object Storage (swift)
 ~~~~~~~~~~~~~~~~~~~~~~
 
-.. Suggestion: Document the location of the swift-proxy hosts (containers on the infra hosts).
-.. Suggestion: Document the location of the swift account/object/container services (on separate physical hosts)
+.. Suggestion: Document the location of the swift-proxy hosts (containers on
+   the infra hosts).
+.. Suggestion: Document the location of the swift account/object/container
+   services (on separate physical hosts)
 
 Networking for Object Storage (swift)
 -------------------------------------
