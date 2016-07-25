@@ -98,11 +98,7 @@ for repo in $(grep 'git_repo\:' ${SERVICE_FILE}); do
       popd > /dev/null
 
       # Set the OSA address
-      if [[ "${repo_name}" == "ironic" ]]; then
-        osa_repo_address="https://git.openstack.org/openstack/openstack-ansible-ironic"
-      else
-        osa_repo_address="https://git.openstack.org/openstack/openstack-ansible-os_${repo_name}"
-      fi
+      osa_repo_address="https://git.openstack.org/openstack/openstack-ansible-os_${repo_name}"
 
       # Do a shallow clone of the OSA repo to work with
       git clone --quiet --depth=10 --branch ${OSA_BRANCH} --single-branch ${osa_repo_address} ${osa_repo_tmp_path}
@@ -163,6 +159,7 @@ for repo in $(grep 'git_repo\:' ${SERVICE_FILE}); do
 
         # If any files have changed, submit a patch including the changes
         if [ ${git_changed} -gt 0 ]; then
+          git checkout -b sha-update
           git review -s > /dev/null
           git add --all
           git commit -a -m "${git_msg_prefix}Update paste, policy and rootwrap configurations $(date +%Y-%m-%d)" --quiet
