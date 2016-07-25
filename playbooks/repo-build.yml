@@ -13,14 +13,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- name: Group repo servers by architecture
+  hosts: repo_all
+  tasks:
+    - name: Group repo servers by architecture
+      group_by:
+        key: repo_servers_{{ ansible_architecture }}
+      tags:
+        - "repo-build"
+
+# repo_all[0] is built last to ensure it has all build artifacts for final indexing
 - name: Build new repo packages for a given release
-  hosts: repo_all[0]
+  hosts: repo_all[1:],repo_all[0]
   gather_facts: true
   user: root
+  serial: 1
   pre_tasks:
     - name: Load local packages
       debug:
         msg: "Loading Packages"
+      when:
+        - "groups['repo_servers_{{ ansible_architecture }}'] | length > 0"
+        - "inventory_hostname == groups['repo_servers_{{ ansible_architecture }}'][0]"
       with_py_pkgs: "{{ pkg_locations }}"
       register: local_packages
       tags:
@@ -28,6 +42,9 @@
   roles:
     - role: "repo_build"
       repo_build_release_tag: "{{ openstack_release }}"
+      when:
+        - "groups['repo_servers_{{ ansible_architecture }}'] | length > 0"
+        - "inventory_hostname == groups['repo_servers_{{ ansible_architecture }}'][0]"
       tags:
         - "repo-build"
   vars:
