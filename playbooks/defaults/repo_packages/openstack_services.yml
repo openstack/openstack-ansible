@@ -117,6 +117,11 @@ nova_powervm_git_repo: https://git.openstack.org/openstack/nova-powervm
 nova_powervm_git_install_branch: fb4cab4a03dcb0c2357928807e6729b4235439d0 # HEAD of "master" as of 20.07.2016
 nova_powervm_git_dest: "/opt/nova_powervm_{{ nova_powervm_git_install_branch | replace('/', '_') }}"
 
+## LXD Virt Driver
+nova_lxd_git_repo: https://git.openstack.org/openstack/nova-lxd
+nova_lxd_git_install_branch: cda09db0969107b2fd6a69bf4d32b043050de1e7 # HEAD of "master" as of 25.07.2016
+nova_lxd_git_dest: "/opt/nova_lxd_{{ nova_lxd_git_install_branch | replace('/', '_') }}"
+
 ## Swift service
 swift_git_repo: https://git.openstack.org/openstack/swift
 swift_git_install_branch: d9b765320d58571b6b123839f8555f95c20a6bbf # HEAD of "master" as of 20.07.2016
