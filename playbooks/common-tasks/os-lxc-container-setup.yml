@@ -27,16 +27,6 @@
 #  If extra container configurations are desirable set the
 #  "extra_container_config" list to strings containing the options needed.
 
-- name: Set the LXC app-armor profile
-  lxc_container:
-    name: "{{ inventory_hostname }}"
-    container_config:
-      - "lxc.aa_profile={{ aa_profile | default('lxc-openstack') }}"
-  delegate_to: "{{ physical_host }}"
-  when:
-    - not is_metal | bool
-  register: _cp
-
 - name: Ensure mount directories exists
   file:
     path: "{{ item['mount_path'] }}"
@@ -80,7 +70,6 @@
   delegate_to: "{{ physical_host }}"
   when:
     - >
-      (_cp is defined and _cp | changed) or
       (_bm is defined and _bm | changed) or
       (_ec is defined and _ec | changed)
     - not is_metal | bool
