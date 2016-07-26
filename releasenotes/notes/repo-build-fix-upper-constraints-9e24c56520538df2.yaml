@@ -1,0 +1,5 @@
+---
+fixes:
+  - The ``repo_build`` role now correctly applies OpenStack requirements
+    upper-constraints when building Python wheels. This resolves
+    https://bugs.launchpad.net/openstack-ansible/+bug/1605846

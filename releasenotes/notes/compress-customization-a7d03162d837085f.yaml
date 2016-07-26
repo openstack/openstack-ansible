@@ -1,0 +1,5 @@
+---
+fixes:
+  - The standard collectstatic and compression process in the os_horizon role
+    now happens after horizon customizations are installed, so that all static
+    resources will be collected and compressed.

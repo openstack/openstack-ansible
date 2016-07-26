@@ -183,7 +183,7 @@ PIP_CURRENT_OPTIONS="$(./scripts/get-pypi-pkg-version.py -p pip setuptools -l ho
 sed -i.bak "s|^PIP_INSTALL_OPTIONS=.*|PIP_INSTALL_OPTIONS=\$\{PIP_INSTALL_OPTIONS:-'${PIP_CURRENT_OPTIONS}'\}|" scripts/scripts-library.sh
 
 for pin in ${PIP_CURRENT_OPTIONS}; do
-  sed -i.bak "s|^$(echo ${pin} | cut -f1 -d=).*|${pin}|" *requirements.txt
+  sed -i.bak "s|^$(echo ${pin} | cut -f1 -d=).*|${pin}|" global-requirements-pins.txt
   sed -i.bak "s|^  - $(echo ${pin} | cut -f1 -d=).*|  - ${pin}|" playbooks/inventory/group_vars/hosts.yml
 done
 
@@ -194,8 +194,8 @@ echo "Updated pip install options/pins"
 if [[ "${OSA_BRANCH}" != "master" ]]; then
   echo "Updating ansible-role-requirements.yml"
 
-  # Loop through each of the role git sources
-  for role_src in $(awk '/src: / {print $2}' ansible-role-requirements.yml); do
+  # Loop through each of the role git sources, only looking for openstack roles
+  for role_src in $(awk '/src: .*\/openstack\// {print $2}' ansible-role-requirements.yml); do
 
     # Determine the role's name
     role_name=$(sed 's/^[ \t-]*//' ansible-role-requirements.yml | awk '/src: / || /name: / {print $2}' | grep -B1 "${role_src}" | head -n 1)
