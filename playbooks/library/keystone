@@ -358,14 +358,16 @@ COMMAND_MAP = {
             'user_name',
             'project_name',
             'tenant_name',
-            'role_name'
+            'role_name',
+            'domain_name'
         ]
     },
     'ensure_group_role': {
         'variables': [
             'group_name',
             'project_name',
-            'role_name'
+            'role_name',
+            'domain_name'
         ]
     },
     'ensure_project': {
@@ -714,7 +716,7 @@ class ManageKeystone(object):
 
         domain = self._get_domain_from_vars(variables_dict)
         project = self._get_project(name=project_name)
-        if project is None:
+        if project is None and project_name is not None:
             self.failure(
                 error='project [ %s ] was not found.' % project_name,
                 rc=2,
@@ -801,7 +803,7 @@ class ManageKeystone(object):
             user = None
 
         project = self._get_project(name=project_name)
-        if project is None:
+        if project is None and project_name is not None:
             self.failure(
                 error='project [ %s ] was not found.' % project_name,
                 rc=2,
@@ -849,10 +851,11 @@ class ManageKeystone(object):
 
         return self._facts(facts={'id': role.id})
 
-    def _get_user_roles(self, name, user, project):
+    def _get_user_roles(self, name, user, project, domain):
         role_list = self.keystone.roles.list(
             user=user,
-            project=project
+            project=project,
+            domain=domain
         )
         for entry in role_list:
             if entry.name == name:
@@ -885,21 +888,25 @@ class ManageKeystone(object):
                         variables_dict.pop('tenant_name'))
         role_name = variables_dict.pop('role_name')
 
+        if project_name is not None:
+            domain = None
+
         user, project, role, group = self._get_role_data(
             user_name=user_name, project_name=project_name,
             role_name=role_name, group_name=None, domain=domain
         )
 
         user_role = self._get_user_roles(
-            name=role_name, user=user, project=project
+            name=role_name, user=user, project=project, domain=domain
         )
 
         if user_role is None:
+            self.state_change = True
             self.keystone.roles.grant(
-                user=user, role=role, project=project
+                user=user, role=role, project=project, domain=domain
             )
             user_role = self._get_user_roles(
-                name=role_name, user=user, project=project
+                name=role_name, user=user, project=project, domain=domain
             )
 
         return self._facts(facts={'id': user_role.id})
@@ -913,6 +920,9 @@ class ManageKeystone(object):
         project_name = variables_dict.pop('project_name')
         role_name = variables_dict.pop('role_name')
 
+        if project_name is not None:
+            domain = None
+
         user, project, role, group = self._get_role_data(
             group_name=group_name, project_name=project_name,
             role_name=role_name, user_name=None, domain=domain
@@ -923,8 +933,9 @@ class ManageKeystone(object):
         )
 
         if group_role is None:
+            self.state_change = True
             self.keystone.roles.grant(
-                group=group, role=role, project=project
+                group=group, role=role, project=project, domain=domain
             )
             group_role = self._get_group_roles(
                 name=role_name,
