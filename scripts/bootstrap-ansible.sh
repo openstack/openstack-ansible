@@ -75,6 +75,13 @@ if [ ! $(which "$PIP_COMMAND") ]; then
   PIP_COMMAND=pip
 fi
 
+# NOTE(mhayden): CentOS 7's Python 2.7.5 doesn't have SNI support and has
+#                issues verifying some SSL certificates from some servers.
+#                These Python modules add the appropriate SNI support.
+if [[ "$DISTRO_ID" =~ (centos|rhel) ]]; then
+    $PIP_COMMAND install $PIP_OPTS pyasn1 pyOpenSSL ndg-httpsclient
+fi
+
 # When upgrading there will already be a pip.conf file locking pip down to the repo server, in such cases it may be
 # necessary to use --isolated because the repo server does not meet the specified requirements.
 $PIP_COMMAND install $PIP_OPTS -r requirements.txt || $PIP_COMMAND install --isolated $PIP_OPTS -r requirements.txt
