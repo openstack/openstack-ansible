@@ -1,0 +1,13 @@
+---
+features:
+  - The repo server will now be used as a package manager
+    cache.
+upgrade:
+  - Haproxy has a new backend to support using the repo
+    server nodes as a package manager cache. The new backend
+    is called "repo_cache" and uses port "3142" and a single
+    active node. All other nodes within the pool are backups
+    and will be promoted if the active node goes down.
+    Default ACLs have been created to lock down the port's
+    availability to only internal networks originating from
+    an RFC1918 address.
