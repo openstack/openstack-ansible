@@ -28,6 +28,18 @@ haproxy_default_services:
         - 172.16.0.0/12
         - 10.0.0.0/8
   - service:
+      haproxy_service_name: repo_git
+      haproxy_backend_nodes: "{{ groups['repo_all'] | default([]) }}"
+      haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_port: 9418
+      haproxy_balance_type: tcp
+      haproxy_backend_options:
+        - tcp-check
+      haproxy_whitelist_networks:
+        - 192.168.0.0/16
+        - 172.16.0.0/12
+        - 10.0.0.0/8
+  - service:
       haproxy_service_name: repo_all
       haproxy_backend_nodes: "{{ groups['repo_all'] | default([]) }}"
       haproxy_ssl: "{{ haproxy_ssl }}"

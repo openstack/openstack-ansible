@@ -1,0 +1,8 @@
+---
+upgrade:
+  - Haproxy has a new backend to support using the repo
+    server nodes as a git server. The new backend
+    is called "repo_git" and uses port "9418".
+    Default ACLs have been created to lock down the port's
+    availability to only internal networks originating from
+    an RFC1918 address.

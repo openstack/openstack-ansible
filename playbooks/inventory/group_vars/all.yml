@@ -36,7 +36,7 @@ pip_links:
 # URL for the frozen internal openstack repo.
 repo_server_port: 8181
 openstack_repo_url: "http://{{ internal_lb_vip_address }}:{{ repo_server_port }}"
-openstack_repo_git_url: "http://{{ internal_lb_vip_address }}:{{ repo_server_port }}/openstackgit"
+openstack_repo_git_url: "git://{{ internal_lb_vip_address }}"
 
 ## kernel modules for specific group hosts
 # :param name: name of the kernel module
