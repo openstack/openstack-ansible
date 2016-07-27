@@ -23,7 +23,20 @@ The ``bootstrap-ansible.sh`` script installs Ansible including `core`_ and
 While there are several configurable environment variables which this script
 uses, the following are commonly used:
 
-* ``ANSIBLE_GIT_RELEASE`` - The version of Ansible to install.
+* ``ANSIBLE_PACKAGE`` - The version of Ansible to install.
+
+For example:
+
+.. code:: bash
+
+   $ export ANSIBLE_PACKAGE="ansible==2.1.0"
+
+Installing directly from git is also supported. For example, from the tip of
+Ansible development branch:
+
+.. code:: bash
+
+   $ export ANSIBLE_PACKAGE="git+https://github.com/ansible/ansible@devel#egg=ansible"
 
 * ``ANSIBLE_ROLE_FILE`` - The location of a yaml file which ansible-galaxy can
   consume which specifies which roles to download and install. The default
