@@ -1,0 +1,10 @@
+---
+upgrade:
+  - Ceilometer no longer manages alarm storage when Aodh
+    is enabled. It now redirects alarm-related requests to
+    the Aodh API. This is now auto-enabled when Aodh is
+    deployed.
+  - Overrides for ceilometer ``aodh_connection_string``
+    will no longer work. Specifying an Aodh connection
+    string in Ceilometer was deprecated within Ceilometer
+    in a prior release so this option has been removed.

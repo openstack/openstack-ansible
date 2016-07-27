@@ -1,0 +1,11 @@
+---
+features:
+  - |
+    Support for Neutron distributed virtual routing has been added to the
+    ``os_neutron`` role. This includes the implementation of Networking
+    Guide's suggested agent configuration. This feature may be activated
+    by setting ``neutron_plugin_type: ml2.ovs.dvr`` in ``/etc/openstack_deploy/user_variables.yml``.
+upgrade:
+  - The variable ``neutron_agent_mode`` has been removed from the
+    ``os_neutron`` role. The appropriate value for ``l3_agent.ini`` is now
+    determined based on the ``neutron_plugin_type`` and host group membership.

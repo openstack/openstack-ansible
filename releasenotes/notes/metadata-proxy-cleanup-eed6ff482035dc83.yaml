@@ -1,0 +1,10 @@
+---
+fixes:
+  - When upgrading it is possible for an old ``neutron-ns-metadata-proxy``
+    process to remain running in memory. If this happens the old version of
+    the process can cause unexpected issues in a production environment. To
+    fix this a task has been added to the os_neutron role that will execute
+    a process lookup and kill any ``neutron-ns-metadata-proxy`` processes that
+    are not running the current release tag. Once the old processes are
+    removed the metadata agent running will respawn everything needed within
+    60 seconds.

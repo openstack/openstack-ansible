@@ -1,0 +1,17 @@
+---
+security:
+  - |
+    The admin_token_auth middleware presents a potential
+    security risk and will be removed in a future release
+    of keystone. Its use can be removed by setting the
+    ``keystone_keystone_paste_ini_overrides`` variable.
+
+    ::
+
+      keystone_keystone_paste_ini_overrides:
+        pipeline:public_api:
+          pipeline: cors sizelimit osprofiler url_normalize request_id build_auth_context token_auth json_body ec2_extension public_service
+        pipeline:admin_api:
+          pipeline: cors sizelimit osprofiler url_normalize request_id build_auth_context token_auth json_body ec2_extension s3_extension admin_service
+        pipeline:api_v3:
+          pipeline: cors sizelimit osprofiler url_normalize request_id build_auth_context token_auth json_body ec2_extension_v3 s3_extension service_v3

@@ -1,0 +1,12 @@
+---
+features:
+  - The ``os_neutron`` role now determines the default configuration for
+    openvswitch-agent ``tunnel_types`` and the presence or absence of
+    ``local_ip`` configuration based on the value of
+    ``neutron_ml2_drivers_type``. Deployers may directly control this
+    configuration by overriding the ``neutron_tunnel_types`` variable .
+  - The ``os_neutron`` role now configures neutron ml2 to load the
+    ``l2_population`` mechanism driver by default based on the value of
+    ``neutron_l2_population``. Deployers may directly control the neutron ml2
+    mechanism drivers list by overriding the ``mechanisms`` variable in the
+    ``neutron_plugins`` dictionary.

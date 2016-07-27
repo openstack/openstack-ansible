@@ -1,0 +1,10 @@
+---
+other:
+  - |
+    ``nova_libvirt_live_migration_flag`` is now phased out.
+    Please create a nova configuration override with
+    ``live_migration_tunnelled: True`` if you want to force the flag
+    ``VIR_MIGRATE_TUNNELLED`` to libvirt. Nova "chooses a sensible
+    default" otherwise.
+  - |
+    ``nova_compute_manager`` is now phased out.

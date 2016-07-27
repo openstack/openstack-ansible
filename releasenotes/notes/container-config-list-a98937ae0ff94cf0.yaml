@@ -1,0 +1,10 @@
+---
+features:
+  - The ``lxc-container-create`` role now consumes the variable
+    ``lxc_container_config_list`` which should contain a list of the entries
+    which should be added to the LXC container config file when the container
+    is created. This feature is designed to be used in group_vars to ensure
+    that containers are fully prepared at the time they are created, thus
+    cutting down the number of times containers are restarted during
+    deployments and upgrades.
+

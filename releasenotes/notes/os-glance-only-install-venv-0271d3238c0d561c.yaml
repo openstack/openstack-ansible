@@ -1,0 +1,6 @@
+---
+upgrade:
+  - Installation of glance and its dependent pip packages will now only
+    occur within a Python virtual environment. The ``glance_venv_bin``,
+    ``glance_venv_enabled``, ``glance_venv_etc_dir``, and
+    ``glance_non_venv_etc_dir`` variables have been removed.

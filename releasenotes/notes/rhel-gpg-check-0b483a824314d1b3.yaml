@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    The GPG key checks for package verification in V-38476 are now working for
+    Red Hat Enterprise Linux 7 in addition to CentOS 7. The checks only look
+    for GPG keys from Red Hat and any other GPG keys, such as ones imported
+    from the EPEL repository, are skipped.

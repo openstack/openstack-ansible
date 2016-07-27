@@ -1,0 +1,7 @@
+---
+features:
+  - The container creation process now allows ``overlayfs`` to be set as the
+    ``lxc_container_backing_store``. When this is set it will use a snapshot
+    of the base container to build the containers. The ``overlayfs``
+    backing store is not recommended to be used for production unless the host
+    kernel version is 3.18 or higher.

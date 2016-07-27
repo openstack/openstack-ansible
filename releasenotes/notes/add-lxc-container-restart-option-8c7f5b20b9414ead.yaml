@@ -1,0 +1,8 @@
+---
+features:
+  - A new variable has been added to allow a deployer to control
+    the restart of containers via the handler. This new option is
+    ``lxc_container_allow_restarts`` and has a default of ``yes``.
+    If a deployer wishes to disable the auto-restart functionality
+    they can set this value to ``no`` and automatic container
+    restarts that are not absolutely required will be disabled.

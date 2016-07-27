@@ -1,0 +1,13 @@
+---
+features:
+  - |
+    The security role now has tasks that will disable the graphical interface
+    on a server using upstart (Ubuntu 14.04) or systemd (Ubuntu 16.04 and
+    CentOS 7). These changes take effect after a reboot.
+
+    Deployers that need a graphical interface will need to set the following
+    Ansible variable:
+
+    .. code-block:: yaml
+
+        security_disable_x_windows: no

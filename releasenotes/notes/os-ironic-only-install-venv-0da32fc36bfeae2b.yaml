@@ -1,0 +1,5 @@
+---
+upgrade:
+  - Installation of ironic and its dependent pip packages will now only
+    occur within a Python virtual environment. The ``ironic_venv_bin``
+    and ``ironic_venv_enabled`` variables have been removed.

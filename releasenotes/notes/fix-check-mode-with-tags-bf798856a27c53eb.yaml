@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    When the security role was run in Ansible's check mode and a tag was
+    provided, the ``check_mode`` variable was not being set. Any tasks which
+    depend on that variable would fail. This `bug is fixed <https://bugs.launchpad.net/openstack-ansible/+bug/1590086>`_
+    and the ``check_mode`` variable is now set properly on every playbook run.

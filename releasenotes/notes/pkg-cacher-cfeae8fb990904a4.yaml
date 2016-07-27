@@ -1,0 +1,6 @@
+---
+features:
+  - The repo server now has a Package Cache service for distribution packages. To leverage
+    the cache, deployers will need to configure the package manager on all hosts to use the
+    cache as a proxy. If a deployer would prefer to disable this service, the variable
+    ``repo_pkg_cache_enabled`` should be set to ``false``.

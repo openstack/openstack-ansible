@@ -1,0 +1,6 @@
+---
+upgrade:
+  - Installation of neutron and its dependent pip packages will now only
+    occur within a Python virtual environment. The ``neutron_venv_enabled``,
+    ``neutron_venv_bin``, ``neutron_non_venv_lib_dir`` and
+    ``neutron_venv_lib_dir`` variables have been removed.

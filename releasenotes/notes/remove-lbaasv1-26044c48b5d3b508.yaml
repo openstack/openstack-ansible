@@ -1,0 +1,8 @@
+---
+features:
+  - The LBaaSv2 device driver is now set by the Ansible variable
+    ``neutron_lbaasv2_device_driver``. The default is set to use the
+    ``HaproxyNSDriver``, which allows for agent-based load balancers.
+upgrade:
+  - LBaaSv1 has been removed from the ``neutron-lbaas`` project in the Newton
+    release and it has been removed from OpenStack-Ansible as well.

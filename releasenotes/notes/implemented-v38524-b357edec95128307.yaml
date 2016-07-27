@@ -1,0 +1,12 @@
+---
+features:
+  - |
+    A task was added that restricts ICMPv4 redirects to meet the requirements
+    of V-38524 in the STIG. This configuration is disabled by default since
+    it could cause issues with LXC in some environments.
+
+    Deployers can enable this configuration by setting an Ansible variable:
+
+    .. code-block:: yaml
+
+       security_disable_icmpv4_redirects: yes

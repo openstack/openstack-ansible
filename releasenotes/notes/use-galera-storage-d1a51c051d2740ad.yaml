@@ -1,0 +1,14 @@
+---
+upgrade:
+  - The Aodh data migration script should be run to
+    migrate alarm data from MongoDB storage to Galera
+    due to the pending removal of MongoDB support.
+fixes:
+  - Aodh has deprecated support for NoSQL storage (MongoDB
+    and Cassandra) in Mitaka with removal scheduled for
+    the O* release. This causes warnings in the logs. The
+    default of using MongoDB storage for Aodh is replaced
+    with the use of Galera. Continued use of MongoDB will
+    require the use of vars to specify a correct
+    ``aodh_connection_string`` and add pymongo to the
+    ``aodh_pip_packages`` list.

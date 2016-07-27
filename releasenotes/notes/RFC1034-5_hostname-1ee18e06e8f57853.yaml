@@ -1,0 +1,8 @@
+---
+features:
+  - The option ``openstack_domain`` has been added to the
+    **openstack_hosts** role. This option is used to setup
+    proper hostname entries for all hosts within a given
+    OpenStack deployment.
+  - The **openstack_hosts** role will setup an RFC1034/5
+    hostname and create an alias for all hosts in inventory.

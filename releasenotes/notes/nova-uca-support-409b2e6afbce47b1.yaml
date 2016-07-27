@@ -1,0 +1,10 @@
+---
+features:
+  - Nova UCA repository support is implemented by default.
+    This will allow the users to benefit from the updated
+    packages for KVM.
+
+    The ``nova_uca_enable`` variable controls the install
+    source for the KVM packages. By default this value is set
+    to ``True`` to make use of UCA repository. User can set to
+    ``False`` to disable.

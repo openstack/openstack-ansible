@@ -1,0 +1,17 @@
+---
+features:
+  - The ``pretend_min_part_hours_passed`` option can now be
+    passed to swift-ring-builder prior to performing a
+    rebalance. This is set by the
+    ``swift_pretend_min_part_hours_passed`` boolean variable.
+    The default for this variable is False. We recommend setting
+    this by running the os-swift.yml playbook with
+    ``-e swift_pretend_min_part_hours_passed=True``, to avoid
+    resetting ``min_part_hours`` unintentionally on every run.
+    Setting ``swift_pretend_min_part_hours_passed`` to True will
+    reset the clock on the last time a rebalance happened, thus
+    circumventing the min_part_hours check. This should only be
+    used with extreme caution. If you run this command and deploy
+    rebalanced rings before a replication pass completes, you may
+    introduce unavailability in your cluster. This has an end-user
+    imapct.

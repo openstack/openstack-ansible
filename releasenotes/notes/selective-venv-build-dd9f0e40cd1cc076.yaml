@@ -1,0 +1,8 @@
+---
+features:
+  - The repo build process now selectively builds venvs based on
+    whether each OpenStack service group has any hosts in it. If
+    there are no hosts in the group, the venv will not be built.
+    This behaviour can be optionally changed to force all venvs
+    to be built by setting ``repo_build_venv_selective`` to
+    ``yes``.

@@ -1,0 +1,6 @@
+---
+features:
+  - The repo build process is now able to make use of a pre-staged git cache.
+    If the ``/var/www/repo/openstackgit`` folder on the repo server is found
+    to contain existing git clones then they will be updated if they do not
+    already contain the required SHA for the build.

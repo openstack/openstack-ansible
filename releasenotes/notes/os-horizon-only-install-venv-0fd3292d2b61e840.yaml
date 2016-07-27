@@ -1,0 +1,6 @@
+---
+upgrade:
+  - Installation of horizon and its dependent pip packages will now only
+    occur within a Python virtual environment. The ``horizon_venv_bin``,
+    ``horizon_venv_enabled``, ``horizon_venv_lib_dir``, and
+    ``horizon_non_venv_lib_dir`` variables have been removed.

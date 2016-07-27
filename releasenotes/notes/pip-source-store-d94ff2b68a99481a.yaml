@@ -1,0 +1,10 @@
+---
+features:
+  - The repo build process now has the ability to store the pip
+    sources within the build archive. This ability is useful when
+    deploying environments that are "multi-architecture",
+    "multi-distro", or "multi-interpreter" where specific pre-build
+    wheels may not be enough to support all of the deployment.
+    To enable the ability to store the python source code within a
+    given release, set the new option ``repo_build_store_pip_sources``
+    to ``true``.

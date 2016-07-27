@@ -1,0 +1,11 @@
+---
+features:
+  - The ``os_swift`` role has 3 new variables that will allow a
+    deployer to change the hard, soft and fs.file-max limits. the
+    hard and soft limits are being added to the limits.conf file for
+    the swift system user. The fs.file-max settings are added to
+    storage hosts via kernel tuning. The new options are
+    ``swift_hard_open_file_limits`` with a default of 10240
+    ``swift_soft_open_file_limits`` with a default of 4096
+    ``swift_max_file_limits`` with a default of 24 times the value
+    of ``swift_hard_open_file_limits``.

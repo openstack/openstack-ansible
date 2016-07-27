@@ -1,0 +1,18 @@
+---
+features:
+  - |
+    The ``os_neutron`` role will now default to the OVS firewall driver when
+    ``neutron_plugin_type`` is ``ml2.ovs`` and the host is running Ubuntu
+    16.04 on PowerVM. To override this default behavior, deployers should
+    define ``neutron_ml2_conf_ini_overrides`` and
+    'neutron_openvswitch_agent_ini_overrides' in 'user_variables.yml'. Example
+    below
+
+    ::
+
+      neutron_ml2_conf_ini_overrides:
+        securitygroup:
+          firewall_driver: neutron.agent.linux.iptables_firewall.OVSHybridIptablesFirewallDriver
+      neutron_openvswitch_agent_ini_overrides:
+        securitygroup:
+          firewall_driver: iptables_hybrid

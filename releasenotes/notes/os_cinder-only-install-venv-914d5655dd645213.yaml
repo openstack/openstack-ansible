@@ -1,0 +1,5 @@
+---
+upgrade:
+  - Installation of cinder and its dependent pip packages will now only
+    occur within a Python virtual environment. The ``cinder_venv_enabled``
+    and ``cinder_venv_bin`` variables have been removed.

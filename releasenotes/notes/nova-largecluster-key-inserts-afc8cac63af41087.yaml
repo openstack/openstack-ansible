@@ -1,0 +1,12 @@
+---
+features:
+  - The nova SSH public key distribution has been made a lot faster
+    especially when deploying against very large clusters. To support
+    larger clusters the role has moved away from the "authorized_key"
+    module and is now generating a script to insert keys that may
+    be missing from the authorized keys file. The script is saved on all
+    nova compute nodes and can be found at
+    ``/usr/local/bin/openstack-nova-key.sh``. If ever there is a need to
+    reinsert keys or fix issues on a given compute node the script can be
+    executed at any time without directly running the ansible playbooks
+    or roles.

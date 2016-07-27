@@ -1,0 +1,6 @@
+---
+upgrade:
+  - Installation of glance and its dependent pip packages will now only
+    occur within a Python virtual environment. The ``gnocchi_venv_bin``,
+    ``gnocchi_venv_enabled``, ``gnocchi_venv_etc_dir``, and
+    ``gnocchi_non_venv_etc_dir`` variables have been removed.

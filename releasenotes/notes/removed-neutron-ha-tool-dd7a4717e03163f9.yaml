@@ -1,0 +1,13 @@
+---
+deprecations:
+  - The Neutron HA tool written by AT&T has been deprecated and will be
+    removed in the Ocata release.
+upgrade:
+  - The Neutron HA tool written by AT&T is no longer enabled by default.
+    This tool was providing HA capabilities for networks and routers
+    that were not using the native Neutron L3HA. Because native Neutron
+    L3HA is stable, compatible with the Linux Bridge Agent, and is
+    a better means of enabling HA within a deployment this tool is no
+    longer being setup by default. If legacy L3HA is needed within a
+    deployment the deployer can set `neutron_legacy_ha_tool_enabled` to
+    **true** to enable the legacy tooling.

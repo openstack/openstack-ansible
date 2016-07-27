@@ -1,0 +1,12 @@
+---
+deprecations:
+  - |
+    The following variables have been renamed in order to make the variable
+    names neutral for multiple operating systems.
+
+      * nova_apt_packages -> nova_packages
+      * nova_spice_apt_packages -> nova_spice_packages
+      * nova_novnc_apt_packages -> nova_novnc_packages
+      * nova_compute_kvm_apt_packages -> nova_compute_kvm_package
+
+    The old variable names will be removed in the Ocata cycle.

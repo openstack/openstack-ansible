@@ -1,0 +1,5 @@
+---
+upgrade:
+  - Installation of nova and its dependent pip packages will now only
+    occur within a Python virtual environment. The ``nova_venv_enabled``,
+    ``nova_venv_bin`` variables have been removed.
