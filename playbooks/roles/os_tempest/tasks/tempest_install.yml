@@ -29,6 +29,15 @@
     - tempest-install
     - tempest-pip-packages
 
+# This ensures a clean clone, and that only one venv is ever unpacked
+# over the checkout. (previous problems were caused when multiple runs of this
+# playbook caused a venv to be expanded into a modifed clone which lead to an
+# inconsistent state)
+- name: Remove tempest git clone
+  file:
+    path: "{{ tempest_git_dest }}"
+    state: absent
+
 - name: Get tempest from git
   git:
     repo: "{{ tempest_git_repo }}"
@@ -47,6 +56,7 @@
   get_url:
     url: "{{ tempest_venv_download_url }}"
     dest: "/var/cache/{{ tempest_venv_download_url | basename }}"
+    force: yes
   ignore_errors: true
   register: get_venv
   tags:
