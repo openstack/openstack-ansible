@@ -27,7 +27,7 @@ export RUN_TEMPEST_OPTS=${RUN_TEMPEST_OPTS:-'--serial'}
 export TESTR_OPTS=${TESTR_OPTS:-''}
 
 ## Library Check -------------------------------------------------------------
-info_block "Checking for required libraries." 2> /dev/null || source $(dirname ${0})/scripts-library.sh
+info_block "Checking for required libraries." 2> /dev/null || source "$(dirname "${0}")/scripts-library.sh"
 
 
 ## Main ----------------------------------------------------------------------

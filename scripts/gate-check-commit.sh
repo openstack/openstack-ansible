@@ -31,7 +31,7 @@ export OSA_GATE_JOB=true
 export ANSIBLE_ROLE_FETCH_MODE="git-clone"
 
 ## Functions -----------------------------------------------------------------
-info_block "Checking for required libraries." 2> /dev/null || source $(dirname ${0})/scripts-library.sh
+info_block "Checking for required libraries." 2> /dev/null || source "$(dirname "${0}")/scripts-library.sh"
 
 ## Main ----------------------------------------------------------------------
 # Set gate job exit traps, this is run regardless of exit state when the job finishes.
@@ -41,7 +41,7 @@ trap gate_job_exit_tasks EXIT
 log_instance_info
 
 # Get minimum disk size
-DATA_DISK_MIN_SIZE="$((1024**3 * $(awk '/bootstrap_host_data_disk_min_size/{print $2}' $(dirname ${0})/../tests/roles/bootstrap-host/defaults/main.yml) ))"
+DATA_DISK_MIN_SIZE="$((1024**3 * $(awk '/bootstrap_host_data_disk_min_size/{print $2}' "$(dirname "${0}")/../tests/roles/bootstrap-host/defaults/main.yml") ))"
 
 # Determine the largest secondary disk device that meets the minimum size
 DATA_DISK_DEVICE=$(lsblk -brndo NAME,TYPE,RO,SIZE | awk '/d[b-z]+ disk 0/{ if ($4>m && $4>='$DATA_DISK_MIN_SIZE'){m=$4; d=$1}}; END{print d}')
@@ -52,7 +52,7 @@ if [ -n "${DATA_DISK_DEVICE}" ]; then
 fi
 
 # Bootstrap Ansible
-source $(dirname ${0})/bootstrap-ansible.sh
+source "$(dirname "${0}")/bootstrap-ansible.sh"
 
 # Log some data about the instance and the rest of the system
 log_instance_info
@@ -69,7 +69,7 @@ iptables -P FORWARD ACCEPT
 iptables -P OUTPUT ACCEPT
 
 # Bootstrap an AIO
-pushd $(dirname ${0})/../tests
+pushd "$(dirname "${0}")/../tests"
   sed -i '/\[defaults\]/a nocolor = 1/' ansible.cfg
   ansible-playbook -i test-inventory.ini \
                    -e "${BOOTSTRAP_OPTS}" \
@@ -81,9 +81,9 @@ popd
 mkdir -p /openstack/log
 
 # Implement the log directory link for openstack-infra log publishing
-ln -sf /openstack/log $(dirname ${0})/../logs
+ln -sf /openstack/log "$(dirname "${0}")/../logs"
 
-pushd $(dirname ${0})/../playbooks
+pushd "$(dirname "${0}")/../playbooks"
   # Disable Ansible color output
   sed -i 's/nocolor.*/nocolor = 1/' ansible.cfg
 
@@ -100,13 +100,13 @@ log_instance_info
 
 # Execute the Playbooks
 export DEPLOY_AIO=true
-bash $(dirname ${0})/run-playbooks.sh
+bash "$(dirname "${0}")/run-playbooks.sh"
 
 # Log some data about the instance and the rest of the system
 log_instance_info
 
 # Run the tempest tests
-source $(dirname ${0})/run-tempest.sh
+source "$(dirname "${0}")/run-tempest.sh"
 
 # Log some data about the instance and the rest of the system
 log_instance_info

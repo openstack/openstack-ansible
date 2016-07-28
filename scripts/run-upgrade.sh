@@ -21,8 +21,8 @@
 ## Shell Opts ----------------------------------------------------------------
 set -e -u -v
 
-export SCRIPTS_PATH="$(dirname $(readlink -f $0))"
-export MAIN_PATH="$(dirname ${SCRIPTS_PATH})"
+export SCRIPTS_PATH="$(dirname "$(readlink -f "${0}")")"
+export MAIN_PATH="$(dirname "${SCRIPTS_PATH}")"
 export UPGRADE_PLAYBOOKS="${SCRIPTS_PATH}/upgrade-utilities/playbooks"
 
 ## Functions -----------------------------------------------------------------
@@ -93,7 +93,7 @@ function check_for_current {
 
 function pre_flight {
     ## Library Check -------------------------------------------------------------
-    echo "Checking for required libraries." 2> /dev/null || source $(dirname ${0})/scripts-library.sh
+    echo "Checking for required libraries." 2> /dev/null || source "$(dirname "${0}")/scripts-library.sh"
     ## Pre-flight Check ----------------------------------------------------------
     # Clear the screen and make sure the user understands whats happening.
     clear

@@ -64,7 +64,7 @@ function playbook_run {
 
 trap run_play_book_exit_message EXIT
 
-info_block "Checking for required libraries." 2> /dev/null || source $(dirname ${0})/scripts-library.sh
+info_block "Checking for required libraries." 2> /dev/null || source "$(dirname "${0}")/scripts-library.sh"
 
 # Initiate the deployment
 pushd "playbooks"
