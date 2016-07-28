@@ -123,6 +123,7 @@ cinder_ceph_client: cinder
 cinder_rabbitmq_userid: cinder
 cinder_rabbitmq_vhost: /cinder
 cinder_rabbitmq_host_group: "rabbitmq_all"
+cinder_rabbitmq_port: "{{ rabbitmq_port }}"
 
 ## Glance
 glance_service_port: 9292
@@ -141,11 +142,13 @@ glance_service_user_name: glance
 glance_rabbitmq_userid: glance
 glance_rabbitmq_vhost: /glance
 glance_rabbitmq_host_group: "rabbitmq_all"
+glance_rabbitmq_port: "{{ rabbitmq_port }}"
 
 ## Heat
 heat_rabbitmq_userid: heat
 heat_rabbitmq_vhost: /heat
 heat_rabbitmq_host_group: "rabbitmq_all"
+heat_rabbitmq_port: "{{ rabbitmq_port }}"
 
 ## Keystone
 keystone_admin_user_name: admin
@@ -157,6 +160,7 @@ keystone_service_region: "{{ service_region }}"
 keystone_rabbitmq_userid: keystone
 keystone_rabbitmq_vhost: /keystone
 keystone_rabbitmq_host_group: "rabbitmq_all"
+keystone_rabbitmq_port: "{{ rabbitmq_port }}"
 
 keystone_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(keystone_service_proto) }}"
 keystone_service_adminuri_insecure: "{% if keystone_service_adminuri_proto == 'https' and (keystone_user_ssl_cert is not defined or haproxy_user_ssl_cert is not defined) | bool %}true{% else %}false{% endif %}"
@@ -180,6 +184,7 @@ neutron_service_region: "{{ service_region }}"
 neutron_rabbitmq_userid: neutron
 neutron_rabbitmq_vhost: /neutron
 neutron_rabbitmq_host_group: "rabbitmq_all"
+neutron_rabbitmq_port: "{{ rabbitmq_port }}"
 neutron_plugin_type: ml2.lxb
 
 ## Nova
@@ -197,6 +202,7 @@ nova_service_user_domain_id: default
 nova_rabbitmq_userid: nova
 nova_rabbitmq_vhost: /nova
 nova_rabbitmq_host_group: "rabbitmq_all"
+nova_rabbitmq_port: "{{ rabbitmq_port }}"
 nova_keystone_auth_plugin: password
 nova_console_type: spice
 nova_novncproxy_port: 6080
