@@ -13,7 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Use OpenStack's upper-constraints
 repo_build_use_upper_constraints: true
+
+# A list of overrides to apply to OpenStack's upper constraints
+# Use these with caution as you're implementing a change to the
+# package set which OpenStack has tested its releases with!
+repo_build_upper_constraints_overrides: []
 
 repo_build_service_user_name: "nginx"
 
