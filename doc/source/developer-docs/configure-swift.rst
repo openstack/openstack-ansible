@@ -1,5 +1,7 @@
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
+.. _configure-swift:
+
 Configuring the Object Storage (swift) service (optional)
 =========================================================
 
