@@ -49,15 +49,28 @@ determine_distro
 # Install the base packages
 case ${DISTRO_ID} in
     centos|rhel)
-        yum check-update && yum -y install git python2 curl autoconf gcc-c++ python2-devel gcc libffi-devel openssl-devel python-requests
+        yum check-update && yum -y install git python2 curl autoconf gcc-c++ \
+          python2-devel gcc libffi-devel openssl-devel python-requests \
+          python-pyasn1 pyOpenSSL python-ndg_httpsclient
         ;;
     fedora)
-        dnf --refresh -y install git python curl autoconf gcc-c++ python-devel gcc libffi-devel openssl-devel python-requests
+        dnf --refresh -y install git python curl autoconf gcc-c++ \
+          python-devel gcc libffi-devel openssl-devel python-requests
         ;;
     ubuntu)
-        apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -y install git python-all python-dev curl python2.7-dev build-essential libssl-dev libffi-dev python-requests
+        apt-get update && \
+          DEBIAN_FRONTEND=noninteractive apt-get -y install \
+          git python-all python-dev curl python2.7-dev build-essential \
+          libssl-dev libffi-dev python-requests python-openssl python-pyasn1
         ;;
 esac
+
+# NOTE(mhayden): Ubuntu 16.04 needs python-ndg-httpsclient for SSL SNI support.
+#                This package is not needed in Ubuntu 14.04 and isn't available
+#                there as a package.
+if [[ "${DISTRO_ID}" == 'ubuntu' ]] && [[ "${DISTRO_VERSION_ID}" == '16.04' ]]; then
+  DEBIAN_FRONTEND=noninteractive apt-get -y install python-ndg-httpsclient
+fi
 
 # Install pip
 get_pip
@@ -73,13 +86,6 @@ fi
 PIP_COMMAND=pip2
 if [ ! $(which "$PIP_COMMAND") ]; then
   PIP_COMMAND=pip
-fi
-
-# NOTE(mhayden): CentOS 7's Python 2.7.5 doesn't have SNI support and has
-#                issues verifying some SSL certificates from some servers.
-#                These Python modules add the appropriate SNI support.
-if [[ "$DISTRO_ID" =~ (centos|rhel) ]]; then
-    $PIP_COMMAND install $PIP_OPTS pyasn1 pyOpenSSL ndg-httpsclient
 fi
 
 # When upgrading there will already be a pip.conf file locking pip down to the repo server, in such cases it may be
