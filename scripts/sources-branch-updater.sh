@@ -183,7 +183,7 @@ PIP_CURRENT_OPTIONS="$(./scripts/get-pypi-pkg-version.py -p pip setuptools -l ho
 sed -i.bak "s|^PIP_INSTALL_OPTIONS=.*|PIP_INSTALL_OPTIONS=\$\{PIP_INSTALL_OPTIONS:-'${PIP_CURRENT_OPTIONS}'\}|" scripts/scripts-library.sh
 
 for pin in ${PIP_CURRENT_OPTIONS}; do
-  sed -i.bak "s|^$(echo ${pin} | cut -f1 -d=).*|${pin}|" global-requirements-pins.txt
+  sed -i.bak "s|^$(echo ${pin} | cut -f1 -d=).*|${pin}|" global-requirement-pins.txt
   sed -i.bak "s|^  - $(echo ${pin} | cut -f1 -d=).*|  - ${pin}|" playbooks/inventory/group_vars/hosts.yml
 done
 

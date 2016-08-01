@@ -1,0 +1,6 @@
+---
+features:
+  - The options of application logrotate configuration files are now configurable.
+    ``rsyslog_client_log_rotate_options`` can be used to provide a list of directives, and
+    ``rsyslog_client_log_rotate_scripts`` can be used to provide a list of postrotate, prerotate,
+    firstaction, or lastaction scripts.
