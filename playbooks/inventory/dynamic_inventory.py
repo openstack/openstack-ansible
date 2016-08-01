@@ -562,17 +562,6 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
 
         return _network
 
-    def return_netmask():
-        """Return the netmask for a container."""
-        # TODO(cloudnull) After a few releases this conditional should be
-        # simplified. The container address checking that is ssh address
-        # is only being done to support old inventory.
-        _old_netmask = container.get(old_netmask)
-        if _old_netmask:
-            return container.pop(old_netmask)
-        elif netmask:
-            return netmask
-
     base_hosts = inventory['_meta']['hostvars']
     lookup = inventory.get(key, list())
 
@@ -607,7 +596,6 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
         old_address = '%s_address' % q_name
     else:
         old_address = '%s_address' % interface
-    old_netmask = '%s_netmask' % q_name
 
     for container_host in hosts:
         container = base_hosts[container_host]
@@ -637,10 +625,10 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
                 if address:
                     network['address'] = address
 
-            network['netmask'] = return_netmask()
+            network['netmask'] = netmask
         elif is_metal:
             network = networks[old_address] = network_entry()
-            network['netmask'] = return_netmask()
+            network['netmask'] = netmask
             # TODO(cloudnull) After a few releases this conditional should be
             # simplified. The container address checking that is ssh address
             # is only being done to support old inventory.
