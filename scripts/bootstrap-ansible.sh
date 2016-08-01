@@ -41,14 +41,23 @@ info_block "Bootstrapping System with Ansible"
 # Create the ssh dir if needed
 ssh_key_create
 
+# Determine the distribution which the host is running on
+determine_distro
+
 # Install the base packages
-if [[ $HOST_DISTRO =~ ^(Ubuntu|Debian) ]]; then
-    apt-get update && apt-get -y install git python-all python-dev curl python2.7-dev build-essential libssl-dev libffi-dev < /dev/null
-elif [[ $HOST_DISTRO =~ ^(CentOS|Red Hat) ]]; then
-    yum check-update && yum -y install git python2 curl autoconf gcc-c++ python2-devel gcc libffi-devel openssl-devel
-elif [[ $HOST_DISTRO =~ ^Fedora ]]; then
-    dnf -y install git python curl autoconf gcc-c++ python-devel gcc libffi-devel openssl-devel
-fi
+case ${DISTRO_ID} in
+    centos|rhel)
+        yum check-update && yum -y install git python2 curl autoconf gcc-c++ \
+          python2-devel gcc libffi-devel openssl-devel python-requests \
+          python-pyasn1 pyOpenSSL python-ndg_httpsclient
+        ;;
+    ubuntu)
+        apt-get update && \
+          DEBIAN_FRONTEND=noninteractive apt-get -y install \
+          git python-all python-dev curl python2.7-dev build-essential \
+          libssl-dev libffi-dev python-requests python-openssl python-pyasn1
+        ;;
+esac
 
 # If the working directory exists remove it
 if [ -d "${ANSIBLE_WORKING_DIR}" ];then
