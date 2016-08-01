@@ -965,5 +965,34 @@ class TestOverridingEnvIntegration(OverridingEnvBase):
         self.user_defined_config = None
         self.inv = None
 
+
+class TestSetUsedIPS(unittest.TestCase):
+    def setUp(self):
+        # Clean up the used ips in case other tests didn't.
+        di.USED_IPS = set()
+
+        # Create a fake inventory just for this test.
+        self.inventory = {'_meta': {'hostvars': {
+            'host1': {'container_networks': {
+                'net': {'address': '172.12.1.1'}
+            }},
+            'host2': {'container_networks': {
+                'net': {'address': '172.12.1.2'}
+            }},
+        }}}
+
+    def test_adding_inventory_used_ips(self):
+        config = {'used_ips': None}
+
+        di._set_used_ips(config, self.inventory)
+
+        self.assertEqual(len(di.USED_IPS), 2)
+        self.assertIn('172.12.1.1', di.USED_IPS)
+        self.assertIn('172.12.1.2', di.USED_IPS)
+
+    def tearDown(self):
+        di.USED_IPS = set()
+
+
 if __name__ == '__main__':
     unittest.main()
