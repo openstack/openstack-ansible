@@ -17,5 +17,5 @@ Table of Contents
    deploymenthost.rst
    targethosts.rst
    configure.rst
-   install.rst
+   installation.rst
    app.rst
