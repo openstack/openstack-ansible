@@ -629,19 +629,13 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
         elif is_metal:
             network = networks[old_address] = network_entry()
             network['netmask'] = netmask
-            # TODO(cloudnull) After a few releases this conditional should be
-            # simplified. The container address checking that is ssh address
-            # is only being done to support old inventory.
-            if old_address in container and container[old_address]:
-                network['address'] = container.pop(old_address)
-            else:
-                if is_ssh_address or is_container_address:
-                    # Container physical host group
-                    cphg = container.get('physical_host_group')
+            if is_ssh_address or is_container_address:
+                # Container physical host group
+                cphg = container.get('physical_host_group')
 
-                    # user_config data from the container physical host group
-                    phg = user_config[cphg][container_host]
-                    network['address'] = phg['ip']
+                # user_config data from the container physical host group
+                phg = user_config[cphg][container_host]
+                network['address'] = phg['ip']
 
         if is_ssh_address is True:
             container['ansible_ssh_host'] = networks[old_address]['address']
