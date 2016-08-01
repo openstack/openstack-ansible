@@ -51,17 +51,17 @@ case ${DISTRO_ID} in
     centos|rhel)
         yum check-update && yum -y install git python2 curl autoconf gcc-c++ \
           python2-devel gcc libffi-devel openssl-devel python-requests \
-          python-pyasn1 pyOpenSSL python-ndg_httpsclient
-        ;;
-    fedora)
-        dnf --refresh -y install git python curl autoconf gcc-c++ \
-          python-devel gcc libffi-devel openssl-devel python-requests
+          python-pyasn1 pyOpenSSL python-ndg_httpsclient \
+          python-netaddr python-prettytable python-crypto PyYAML \
+          python-virtualenv
         ;;
     ubuntu)
         apt-get update && \
           DEBIAN_FRONTEND=noninteractive apt-get -y install \
           git python-all python-dev curl python2.7-dev build-essential \
-          libssl-dev libffi-dev python-requests python-openssl python-pyasn1
+          libssl-dev libffi-dev python-requests python-openssl python-pyasn1 \
+          python-netaddr python-prettytable python-crypto python-yaml \
+          python-virtualenv
         ;;
 esac
 
@@ -87,10 +87,6 @@ PIP_COMMAND=pip2
 if [ ! $(which "$PIP_COMMAND") ]; then
   PIP_COMMAND=pip
 fi
-
-# When upgrading there will already be a pip.conf file locking pip down to the repo server, in such cases it may be
-# necessary to use --isolated because the repo server does not meet the specified requirements.
-$PIP_COMMAND install $PIP_OPTS -r requirements.txt || $PIP_COMMAND install --isolated $PIP_OPTS -r requirements.txt
 
 # Create a Virtualenv for the Ansible runtime
 PYTHON_EXEC_PATH="$(which python2 || which python)"
