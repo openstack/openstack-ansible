@@ -92,27 +92,12 @@ Configure ceilometer by specifying the ``metering-compute_hosts`` and
 example included in the
 ``etc/openstack_deploy/conf.d/ceilometer.yml.example`` file:
 
-  .. code-block:: bash
+.. literalinclude:: ../../../etc/openstack_deploy/conf.d/ceilometer.yml.example
+   :language: yaml
 
-     # The compute host that the ceilometer compute agent runs on
-     ``metering-compute_hosts``:
-      compute1:
-        ip: 172.20.236.110
-
-     # The infra node that the central agents runs on
-     ``metering-infra_hosts``:
-      infra1:
-        ip: 172.20.236.111
-      # Adding more than one host requires further configuration for ceilometer
-      # to work properly.
-      infra2:
-        ip: 172.20.236.112
-      infra3:
-        ip: 172.20.236.113
-
-The ``metering-compute_hosts`` houses the ``ceilometer-agent-compute``
+The ``metering-compute_hosts`` host the ``ceilometer-agent-compute``
 service. It runs on each compute node and polls for resource
-utilization statistics. The ``metering-infra_hosts`` houses several
+utilization statistics. The ``metering-infra_hosts`` host several
 services:
 
   - A central agent (ceilometer-agent-central): Runs on a central
@@ -154,13 +139,15 @@ writing, the following backends are supported:
 .. important::
 
    The OpenStack-Ansible project does not deploy these backends.
-   The backends exist before deploying the ceilometer service.
+   One of the backends must exist before deploying the ceilometer service.
 
 Achieve HA by configuring the proper directives in ``ceilometer.conf`` using
 ``ceilometer_ceilometer_conf_overrides`` in the ``user_variables.yml`` file.
-The ceilometer admin guide[1] details the
+The `Ceilometer Admin Guide`_ details the
 options used in ``ceilometer.conf`` for HA deployment. The following is an
 example of ``ceilometer_ceilometer_conf_overrides``:
+
+.. _Ceilometer Admin Guide: http://docs.openstack.org/admin-guide/telemetry-data-collection.html
 
 .. code-block:: yaml
 
@@ -180,43 +167,15 @@ Specify the following configurations in the
   - The type of database backend ceilometer uses. Currently only
     MongoDB is supported: ``ceilometer_db_type: mongodb``
 
-  - The IP address of the MonogoDB host: ``ceilometer_db_ip:
+  - The IP address of the MongoDB host: ``ceilometer_db_ip:
     localhost``
 
   - The port of the MongoDB service: ``ceilometer_db_port: 27017``
 
-  - This configures swift to send notifications to the message bus:
-    ``swift_ceilometer_enabled: False``
-
-  - This configures heat to send notifications to the message bus:
-    ``heat_ceilometer_enabled: False``
-
-  - This configures cinder to send notifications to the message bus:
-    ``cinder_ceilometer_enabled: False``
-
-  - This configures glance to send notifications to the message bus:
-    ``glance_ceilometer_enabled: False``
-
-  - This configures nova to send notifications to the message bus:
-    ``nova_ceilometer_enabled: False``
-
-  - This configures neutron to send notifications to the message bus:
-    ``neutron_ceilometer_enabled: False``
-
-  - This configures keystone to send notifications to the message bus:
-    ``keystone_ceilometer_enabled: False``
 
 Run the ``os-ceilometer-install.yml`` playbook. If deploying a new OpenStack
 (instead of only ceilometer), run ``setup-openstack.yml``. The
 ceilometer playbooks run as part of this playbook.
-
-
-References
-~~~~~~~~~~
-
-[1] `Ceilometer Admin Guide`_
-
-.. _Ceilometer Admin Guide: http://docs.openstack.org/admin-guide/telemetry-data-collection.html
 
 
 --------------
