@@ -1,5 +1,6 @@
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
+=======================================
 Securing services with SSL certificates
 =======================================
 

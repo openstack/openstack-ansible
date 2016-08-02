@@ -22,19 +22,36 @@ The installation process requires running three main playbooks:
   (ceilometer and aodh), Object Storage service (swift), and OpenStack
   bare metal provisioning (ironic).
 
-Installation process
-~~~~~~~~~~~~~~~~~~~~
+Checking the integrity of your configuration files
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Before running any playbook, check the integrity of your configuration files:
+
+#. Ensure all files edited in ``/etc/`` are Ansible
+   YAML compliant. Guidelines can be found here:
+   `<http://docs.ansible.com/ansible/YAMLSyntax.html>`_
+
+#. Check the integrity of your YAML files:
+
+   .. note:: Here is an online linter: `<http://www.yamllint.com/>`_
+
+#. Run your command with ``syntax-check``:
+
+   .. code-block:: shell-session
+
+      # openstack-ansible setup-infrastructure.yml --syntax-check
+
+#. Recheck that all indentation is correct.
+
+   .. note::
+      The syntax of the configuration files can be correct
+      while not being meaningful for OpenStack-Ansible.
+
+Run playbooks
+~~~~~~~~~~~~~
 
 .. figure:: figures/installation-workflow-run-playbooks.png
-   :scale: 100
-
-
-.. note::
-
-   Before continuing, validate the configuration files using the
-   guidance in `Checking the integrity of your configuration files`_.
-
-   .. _Checking the integrity of your configuration files: ../install-guide/configure-configurationintegrity.html
+   :width: 100%
 
 #. Change to the ``/opt/openstack-ansible/playbooks`` directory.
 
@@ -132,7 +149,7 @@ Verifying OpenStack operation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. figure:: figures/installation-workflow-verify-openstack.png
-   :scale: 100
+   :width: 100%
 
 
 .. TODO Add procedures to test different layers of the OpenStack environment

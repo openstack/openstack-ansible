@@ -1,49 +1,35 @@
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
-Chapter 4. Deployment configuration
------------------------------------
+========================
+Deployment configuration
+========================
 
 .. toctree::
    :maxdepth: 2
 
-
    configure-initial.rst
-   configure-networking.rst
-   configure-hostlist.rst
+   configure-user-config-examples.rst
    configure-creds.rst
-   configure-glance.rst
-   configure-openstack.rst
-   configure-sslcertificates.rst
-   configure-configurationintegrity.rst
 
+.. figure:: figures/workflow-configdeployment.png
+   :width: 100%
 
-**Figure 4.1. Installation work flow**
-
-.. image:: figures/workflow-configdeployment.png
+   Installation workflow
 
 Ansible references a handful of files containing mandatory and optional
 configuration directives. These files must be modified to define the
-target environment before running the Ansible playbooks. Perform the
-following tasks:
+target environment before running the Ansible playbooks. Configuration
+tasks include:
 
--  Configure Target host networking to define bridge interfaces and
+-  target host networking to define bridge interfaces and
    networks
 
--  Configure a list of target hosts on which to install the software
+-  a list of target hosts on which to install the software
 
--  Configure virtual and physical network relationships for OpenStack
+-  virtual and physical network relationships for OpenStack
    Networking (neutron)
 
--  (Optional) Configure the hypervisor
-
--  (Optional) Configure Block Storage (cinder) to use the NetApp back
-   end
-
--  (Optional) Configure Block Storage (cinder) backups.
-
--  (Optional) Configure Block Storage availability zones
-
--  Configure passwords for all services
+-  passwords for all services
 
 --------------
 

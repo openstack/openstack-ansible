@@ -10,6 +10,8 @@ Contents:
 
 .. toctree::
 
+   configure-affinity.rst
+   configure-glance.rst
    configure-hypervisor.rst
    configure-nova.rst
    configure-ironic.rst

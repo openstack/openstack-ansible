@@ -51,7 +51,7 @@ the role is to apply as many security configurations as possible without
 disrupting the operation of an OpenStack deployment.
 
 Refer to the documentation on :ref:`security_hardening` for more information
-on the role and how to enable it in OpenStack-Ansible.
+on the role in OpenStack-Ansible.
 
 Least privilege
 ~~~~~~~~~~~~~~~
