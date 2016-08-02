@@ -36,6 +36,7 @@
         - repo-build-venvs
         - repo-create-venv-checksum
   roles:
+    - role: "galera_client"
     - role: "repo_build"
       repo_build_release_tag: "{{ openstack_release }}"
       repo_build_pip_default_index: "https://rpc-repo.rackspace.com/pools"
@@ -43,6 +44,8 @@
       tags:
         - "repo-build"
   vars:
+    pip_no_index: false
+    pip_install_options: "--isolated"
     pkg_locations:
       - ../
       - /etc/ansible/roles
