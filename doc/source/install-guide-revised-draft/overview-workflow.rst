@@ -8,16 +8,16 @@ This diagram shows the general workflow associated with an
 OpenStack-Ansible (OSA) installation.
 
 
-**Figure 1.7. Installation workflow**
+.. figure:: figures/installation-workflow-overview.png
+   :scale: 100
 
-.. image:: figures/workflow-overview.png
+   Installation workflow
 
-#. :doc:`Prepare deployment hosts <deploymenthost>`
+#. :doc:`Prepare deployment host <deploymenthost>`
 #. :doc:`Prepare target hosts <targethosts>`
 #. :doc:`Configure deployment <configure>`
-#. :doc:`Run foundation playbooks <install-foundation>`
-#. :doc:`Run infrastructure playbooks <install-infrastructure>`
-#. :doc:`Run OpenStack playbooks <install-openstack>`
+#. :doc:`Run playbooks <installation>`
+#. :doc:`Verify OpenStack operation <installation>`
 
 =======
 
