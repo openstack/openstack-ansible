@@ -33,7 +33,7 @@
 - name: Install ceph packages
   apt:
     name: '{{ item.1 }}'
-    state: latest
+    state: "{{ ceph_client_package_state }}"
   register: install_packages
   until: install_packages|success
   retries: 5

@@ -14,6 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Set the package install state for distribution packages
+# Options are 'present' and 'latest'
+ceph_client_package_state: "latest"
+
 # to use Ceph in OSA, you need to
 # - have the needed pools and a client user (for glance, cinder and/or nova)
 #   pre-provisioned in your ceph cluster; OSA assumes to have root access to

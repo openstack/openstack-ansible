@@ -61,6 +61,7 @@
 - name: add ubuntu cloud archive key package
   apt:
     pkg: ubuntu-cloud-keyring
+    state: "{{ ceph_client_package_state }}"
   register: add_keys
   when: ceph_pkg_source == 'uca'
   tags:
