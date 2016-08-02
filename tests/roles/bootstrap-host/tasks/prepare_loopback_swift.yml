@@ -28,6 +28,7 @@
 - name: Format the Swift files
   filesystem:
     fstype: xfs
+    opts: '-K'
     dev: "/openstack/{{ item }}.img"
   when: swift_create | changed
   with_items:
