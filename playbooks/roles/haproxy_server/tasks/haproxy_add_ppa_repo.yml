@@ -35,7 +35,7 @@
 - name: Install haproxy pre packages
   apt:
     pkg: "{{ item }}"
-    state: latest
+    state: "{{ haproxy_package_state }}"
   register: install_packages
   until: install_packages|success
   retries: 5
