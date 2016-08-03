@@ -66,12 +66,18 @@ function run_lock {
     else
       echo "******************** failure ********************"
       echo "The upgrade script has encountered a failure."
-      echo "Failed on task $run_item"
+      echo "Failed on task \"$run_item\""
       echo "Re-run the run-upgrade.sh script, or"
       echo "execute the remaining tasks manually:"
+      # NOTE:
+      # List the remaining, incompleted tasks from the tasks array.
+      # Using seq to genertate a sequence which starts from the spot
+      # where previous exception or failures happened.
       # run the tasks in order
-      for item in ${!RUN_TASKS[@]}; do
-        echo "openstack-ansible ${RUN_TASKS[$item]} -e 'pip_install_options=--force-reinstall'"
+      for item in $(seq $1 $((${#RUN_TASKS[@]} - 1))); do
+        if [ -n "${RUN_TASKS[$item]}" ]; then
+          echo "openstack-ansible ${RUN_TASKS[$item]} -e 'pip_install_options=--force-reinstall'"
+        fi
       done
       echo "******************** failure ********************"
       exit 99
