@@ -37,7 +37,7 @@ The following procedure describes how to modify the
       neutron_plugin_base:
          - router
          - firewall
-         - lbaas
+         - neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPluginv2
          - vpnaas
          - metering
          - qos
@@ -94,13 +94,20 @@ Deploying LBaaS v2
    Ensure that ``neutron_plugin_base`` includes all of the plugins that you
    want to deploy with neutron in addition to the LBaaS plugin.
 
-#. Run the neutron and horizon playbooks to deploy the LBaaS v2 agent and
-   enable the LBaaS v2 panels in horizon:
+#. Run the neutron playbook to deploy and enable the LBaaS v2 agent:
 
    .. code-block:: console
 
        # cd /opt/openstack-ansible/playbooks
        # openstack-ansible os-neutron-install.yml
+
+#. Set ``horizon_enable_neutron_lbaas`` to ``True`` in
+   ``/etc/openstack_deploy/user_variables.yml`` and run the horizon playbook to
+   enable the LBaaS v2 panels in horizon:
+
+   .. code-block:: console
+
+       # cd /opt/openstack-ansible/playbooks
        # openstack-ansible os-horizon-install.yml
 
 .. _lbaas-special-notes:
