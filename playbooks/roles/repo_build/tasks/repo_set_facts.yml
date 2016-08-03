@@ -57,25 +57,8 @@
 
 - name: Decode the upper constraints content
   set_fact:
-    _upper_constraints: "{{ slurp_upper_constraints.content | b64decode | splitlines }}"
+    upper_constraints: "{{ slurp_upper_constraints.content | b64decode | splitlines }}"
   when: slurp_upper_constraints | success
   tags:
     - repo-set-constraints
     - repo-build-constraints-file
-
-- name: Normalise the upper constraints
-  set_fact:
-    upper_constraints: "{{ local_packages.results.0.item.packages | pip_constraint_update(_upper_constraints) }}"
-  when: slurp_upper_constraints | success
-  tags:
-    - repo-set-constraints
-    - repo-build-constraints-file
-
-- name: Apply the upper constraint overrides
-  set_fact:
-    upper_constraints: "{{ upper_constraints | pip_constraint_update(repo_build_upper_constraints_overrides) }}"
-  when: repo_build_upper_constraints_overrides | length > 0
-  tags:
-    - repo-set-constraints
-    - repo-build-constraints-file
-
