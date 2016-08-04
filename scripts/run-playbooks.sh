@@ -36,7 +36,7 @@ For more information about OpenStack-Ansible please review our documentation at:
 
 Additionally if there's ever a need for information on common operational tasks please
 see the following information:
-  \e[1;36mhttp://docs.openstack.org/developer/openstack-ansible/install-guide/index.html#operations\e[0m
+  \e[1;36mhttp://docs.openstack.org/developer/openstack-ansible/developer-docs/ops.html\e[0m
 
 
 If you ever have any questions please join the community conversation on IRC at
