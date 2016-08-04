@@ -83,19 +83,23 @@ horizon_git_install_branch: f9ba1ecc2f47a2b3fd2816dfba62f8ab9eaf343f # HEAD of "
 horizon_git_dest: "/opt/horizon_{{ horizon_git_install_branch | replace('/', '_') }}"
 horizon_git_project_group: horizon_all
 
-
-
 ## Horizon Ironic dashboard plugin
 ironic_dashboard_git_repo: https://git.openstack.org/openstack/ironic-ui
 ironic_dashboard_git_install_branch: 8f554eb3a9dc6eacbfc86b4a58250d17dbb41e43 # HEAD of "master" as of 01.08.2016
 ironic_dashboard_git_dest: "/opt/ironic_dashboard_{{ ironic_dashboard_git_install_branch | replace('/', '_') }}"
+ironic_dashboard_git_project_group: horizon_all
 
+## Horizon Magnum dashboard plugin
+magnum_dashboard_git_repo: https://git.openstack.org/openstack/magnum-ui
+magnum_dashboard_git_install_branch: bbdd887f9172b520ff26c4df97e6ad6fbedc8864 # HEAD of "master" as of 4.08.2016
+magnum_dashboard_git_dest: "/opt/magnum_dashboard_{{ magnum_dashboard_git_install_branch | replace('/', '_') }}"
+magnum_dashboard_git_project_group: horizon_all
 
 ## Horizon LBaaS dashboard plugin
 neutron_lbaas_dashboard_git_repo: https://git.openstack.org/openstack/neutron-lbaas-dashboard
 neutron_lbaas_dashboard_git_install_branch: 0d25bbd63b2392f07e1f37e3d94119883858d3dd # HEAD of "master" as of 01.08.2016
 neutron_lbaas_dashboard_git_dest: "/opt/neutron_lbaas_dashboard_{{ neutron_lbaas_dashboard_git_install_branch | replace('/', '_') }}"
-neutron_lbaas_dashboard_git_project_group: neutron_agent
+neutron_lbaas_dashboard_git_project_group: horizon_all
 
 
 ## Keystone service
