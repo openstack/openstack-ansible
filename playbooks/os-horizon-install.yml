@@ -37,7 +37,6 @@
       when: inventory_hostname == groups['horizon_all'][0]
   roles:
     - role: "os_horizon"
-      horizon_server_name: "{{ container_name }}"
       horizon_venv_tag: "{{ openstack_release }}"
       horizon_venv_download_url: "{{ openstack_repo_url }}/venvs/{{ openstack_release }}/{{ ansible_distribution | lower }}/horizon-{{ openstack_release }}.tgz"
       tags:
