@@ -79,9 +79,6 @@ popd
 # Implement the log directory
 mkdir -p /openstack/log
 
-# Implement the log directory link for openstack-infra log publishing
-ln -sf /openstack/log "$(dirname "${0}")/../logs"
-
 pushd "$(dirname "${0}")/../playbooks"
   # Disable Ansible color output
   export ANSIBLE_NOCOLOR=1

@@ -132,7 +132,15 @@ function exit_fail {
 }
 
 function gate_job_exit_tasks {
-  [[ -d "/openstack/log" ]] && chmod -R 0777 /openstack/log
+  # If this is a gate node from OpenStack-Infra Store all logs into the
+  #  execution directory after gate run.
+  if [[ -d "/etc/nodepool" ]];then
+    GATE_LOG_DIR="$(dirname "${0}")/../logs"
+    mkdir -p "${GATE_LOG_DIR}/host" "${GATE_LOG_DIR}/openstack"
+    rsync -av --ignore-errors /var/log/ "${GATE_LOG_DIR}/host" || true
+    rsync -av --ignore-errors /openstack/log/ "${GATE_LOG_DIR}/openstack" || true
+    chmod -R 0777 "${GATE_LOG_DIR}"
+  fi
 }
 
 function print_info {

@@ -27,39 +27,97 @@
 #  If extra container configurations are desirable set the
 #  "extra_container_config" list to strings containing the options needed.
 
+- name: Set default bind mounts
+  set_fact:
+    lxc_default_bind_mounts:
+      - bind_dir_path: "/var/log"
+        mount_path: "/openstack/log/{{ inventory_hostname }}"
+  when: lxc_default_bind_mounts is undefined
+
 - name: Ensure mount directories exists
   file:
     path: "{{ item['mount_path'] }}"
     state: "directory"
-  with_items: "{{ list_of_bind_mounts | default([]) }}"
+  with_items:
+    - "{{ list_of_bind_mounts | default([]) }}"
+    - "{{ lxc_default_bind_mounts }}"
   delegate_to: "{{ physical_host }}"
   when:
     - list_of_bind_mounts is defined
     - not is_metal | bool
 
-- name: LXC Directory bind mount
+- name: LXC bind mount directories
   lxc_container:
     name: "{{ inventory_hostname }}"
     container_command: |
       [[ ! -d "{{ item['bind_dir_path'] }}" ]] && mkdir -p "{{ item['bind_dir_path'] }}"
-    container_config:
-      - "lxc.mount.entry={{ item['mount_path'] }} {{ item['bind_dir_path'].lstrip('/') }} none bind 0 0"
-  with_items: "{{ list_of_bind_mounts | default([]) }}"
+  with_items:
+    - "{{ list_of_bind_mounts | default([]) }}"
+    - "{{ lxc_default_bind_mounts }}"
   delegate_to: "{{ physical_host }}"
   register: _bm
   when:
     - list_of_bind_mounts is defined
     - not is_metal | bool
 
-- name: Extra lxc config
-  lxc_container:
-    name: "{{ inventory_hostname }}"
-    container_config: "{{ extra_container_config }}"
+- name: Add bind mount configuration to container
+  lineinfile:
+    dest: "/var/lib/lxc/{{ inventory_hostname }}/config"
+    line: "lxc.mount.entry = {{ item['mount_path'] }} {{ item['bind_dir_path'].lstrip('/') }} none bind 0 0"
+    backup: "true"
+  with_items:
+    - "{{ list_of_bind_mounts | default([]) }}"
+    - "{{ lxc_default_bind_mounts }}"
   delegate_to: "{{ physical_host }}"
+  when:
+    - list_of_bind_mounts is defined
+    - not is_metal | bool
+  register: _mc
+
+- name: Extra lxc config
+  lineinfile:
+    dest: "/var/lib/lxc/{{ inventory_hostname }}/config"
+    line: "{{ item.split('=')[0] }} = {{ item.split('=', 1)[1] }}"
+    insertafter: "^{{ item.split('=')[0] }}"
+    backup: "true"
+  with_items: "{{ extra_container_config }}"
+  delegate_to: "{{ physical_host }}"
+  register: _ec
   when:
     - extra_container_config is defined
     - not is_metal | bool
-  register: _ec
+
+# Due to https://github.com/ansible/ansible-modules-extras/issues/2691
+# this uses the LXC CLI tools to ensure that we get logging.
+# TODO(odyssey4me): revisit this once the bug is fixed and released
+- name: Lxc container restart
+  command: >
+    lxc-stop --name {{ inventory_hostname }}
+    --logfile {{ lxc_container_log_path }}/lxc-{{ inventory_hostname }}.log
+    --logpriority {{ (debug | bool) | ternary('DEBUG', 'INFO') }}
+  delegate_to: "{{ physical_host }}"
+  register: container_stop
+  until: container_stop | success
+  retries: 3
+  when:
+    - not is_metal | bool
+    - (_mc is defined and _mc | changed) or (_ec is defined and _ec | changed)
+
+# Due to https://github.com/ansible/ansible-modules-extras/issues/2691
+# this uses the LXC CLI tools to ensure that we get logging.
+# TODO(odyssey4me): revisit this once the bug is fixed and released
+- name: Start Container
+  command: >
+    lxc-start --daemon --name {{ inventory_hostname }}
+    --logfile {{ lxc_container_log_path }}/lxc-{{ inventory_hostname }}.log
+    --logpriority {{ (debug | bool) | ternary('DEBUG', 'INFO') }}
+  delegate_to: "{{ physical_host }}"
+  register: container_start
+  until: container_start | success
+  retries: 3
+  when:
+    - not is_metal | bool
+    - (_mc is defined and _mc | changed) or (_ec is defined and _ec | changed)
 
 - name: Wait for container ssh
   wait_for:
@@ -68,11 +126,9 @@
     search_regex: "OpenSSH"
     host: "{{ ansible_ssh_host }}"
   delegate_to: "{{ physical_host }}"
-  when:
-    - >
-      (_bm is defined and _bm | changed) or
-      (_ec is defined and _ec | changed)
-    - not is_metal | bool
   register: ssh_wait_check
   until: ssh_wait_check | success
   retries: 3
+  when:
+    - (_bm is defined and _bm | changed) or (_ec is defined and _ec | changed)
+    - not is_metal | bool
