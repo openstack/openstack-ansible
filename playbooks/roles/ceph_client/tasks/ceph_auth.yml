@@ -36,6 +36,7 @@
   delegate_to: '{{ ceph_mon_host }}'
   register: ceph_client_keyrings
   until: ceph_client_keyrings|success
+  retries: 3
   tags:
   - ceph-auth-client-keyrings
 
