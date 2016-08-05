@@ -87,7 +87,7 @@ repo_build_pip_no_binary:
 
 # The container backing store is set to 'overlayfs' to speed up the
 # AIO build time.
-lxc_container_backing_store: overlayfs
+lxc_container_backing_store: "{{ ((ansible_kernel | version_compare('3.18.0-0-generic', '<')) or (ansible_distribution_release | lower == 'trusty')) | ternary('dir', 'overlayfs') }}"
 
 ## Enable LBaaSv2 in the AIO
 neutron_plugin_base:
