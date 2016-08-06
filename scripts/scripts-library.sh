@@ -126,7 +126,6 @@ function exit_success {
 function exit_fail {
   set +x
   log_instance_info
-  cat ${INFO_FILENAME}
   info_block "Error Info - $@"
   [[ "${OSA_GATE_JOB:-false}" = true ]] && gate_job_exit_tasks
   exit_state 1
@@ -153,71 +152,54 @@ function log_instance_info {
   if [ ! -d "/openstack/log/instance-info" ];then
     mkdir -p "/openstack/log/instance-info"
   fi
-  export INFO_FILENAME="/openstack/log/instance-info/host_info_$(date +%s).log"
-  get_instance_info &> ${INFO_FILENAME}
+  get_instance_info
   set -x
 }
 
 function get_repos_info {
-  for i in /etc/apt/sources.list /etc/apt/sources.list.d/*; do
-    echo -e "\n$i"
-    cat $i
+  for i in /etc/apt/sources.list /etc/apt/sources.list.d/* /etc/yum.conf /etc/yum.repos.d/*; do
+    if [ -f "${i}" ]; then
+      echo -e "\n$i"
+      cat $i
+    fi
   done
 }
 
 # Get instance info
 function get_instance_info {
-  set +x
-  info_block 'Current User'
-  whoami
-  info_block 'Available Memory'
-  free -mt || true
-  info_block 'Available Disk Space'
-  df -h || true
-  info_block 'Mounted Devices'
-  mount || true
-  info_block 'Block Devices'
-  lsblk -i || true
-  info_block 'Block Devices Information'
-  blkid || true
-  info_block 'Block Device Partitions'
-  for i in /dev/xv* /dev/sd* /dev/vd*; do
-    if [ -b "$i" ];then
-      parted --script $i print || true
-    fi
-  done
-  info_block 'PV Information'
-  pvs || true
-  info_block 'VG Information'
-  vgs || true
-  info_block 'LV Information'
-  lvs || true
-  info_block 'CPU Information'
-  which lscpu && lscpu || true
-  info_block 'Kernel Information'
-  uname -a || true
-  info_block 'Container Information'
-  which lxc-ls && lxc-ls --fancy || true
-  info_block 'Firewall Information'
-  iptables -vnL || true
-  iptables -t nat -vnL || true
-  iptables -t mangle -vnL || true
-  info_block 'Network Devices'
-  ip a || true
-  info_block 'Network Routes'
-  ip r || true
-  info_block 'DNS Configuration'
-  cat /etc/resolv.conf
-  info_block 'Trace Path from google'
-  tracepath 8.8.8.8 -m 5 || true
-  info_block 'XEN Server Information'
-  if (which xenstore-read);then
-    xenstore-read vm-data/provider_data/provider || echo "\nxenstore Read Failed - Skipping\n"
-  else
-    echo -e "\nNo xenstore Information\n"
-  fi
-  get_repos_info &> /openstack/log/instance-info/host_repo_info_$(date +%s).log || true
-  dpkg-query --list &> /openstack/log/instance-info/host_packages_info_$(date +%s).log
+  TS="$(date +"%H-%M-%S")"
+  (cat /etc/resolv.conf && \
+    which systemd-resolve && \
+      systemd-resolve --statistics && \
+        cat /etc/systemd/resolved.conf) > \
+          "/openstack/log/instance-info/host_dns_info_${TS}.log" || true
+  tracepath "8.8.8.8" -m 5 > \
+    "/openstack/log/instance-info/host_tracepath_info_${TS}.log" || true
+  tracepath6 "2001:4860:4860::8888" -m 5 >> \
+    "/openstack/log/instance-info/host_tracepath_info_${TS}.log" || true
+  lxc-ls --fancy > \
+    "/openstack/log/instance-info/host_lxc_container_info_${TS}.log" || true
+  lxc-checkconfig > \
+    "/openstack/log/instance-info/host_lxc_config_info_${TS}.log" || true
+  (iptables -vnL && iptables -t nat -vnL && iptables -t mangle -vnL) > \
+    "/openstack/log/instance-info/host_firewall_info_${TS}.log" || true
+  ANSIBLE_HOST_KEY_CHECKING=False \
+    ansible -i "localhost," localhost -m setup > \
+      "/openstack/log/instance-info/host_system_info_${TS}.log" || true
+  get_repos_info > \
+    "/openstack/log/instance-info/host_repo_info_${TS}.log" || true
+
+  determine_distro
+  case ${DISTRO_ID} in
+      centos|rhel|fedora)
+          rpm -qa > \
+            "/openstack/log/instance-info/host_packages_info_${TS}.log" || true
+          ;;
+      ubuntu|debian)
+          dpkg-query --list > \
+            "/openstack/log/instance-info/host_packages_info_${TS}.log" || true
+          ;;
+  esac
 }
 
 function print_report {
@@ -289,7 +271,7 @@ fi
 
 ## Exports -------------------------------------------------------------------
 # Export known paths
-export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:${PATH}"
 
 # Export the home directory just in case it's not set
 export HOME="/root"
