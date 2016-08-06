@@ -1,0 +1,8 @@
+---
+upgrade:
+  - During upgrades, container and service restarts for the mariadb/galera
+    cluster were being triggered multiple times and causing the cluster to
+    become unstable and often unrecoverable. This situation has been improved
+    immensely, and we now have tight control such that restarts of the galera
+    containers only need to happen once, and are done so in a controlled,
+    predictable and repeatable way.
