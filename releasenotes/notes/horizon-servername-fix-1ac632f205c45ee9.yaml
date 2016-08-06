@@ -1,0 +1,5 @@
+---
+fixes:
+  - Horizon deployments were broken due to an incorrect hostname setting being
+    placed in the apache ServerName configuration. This caused Horizon startup
+    failure any time debug was disabled.
