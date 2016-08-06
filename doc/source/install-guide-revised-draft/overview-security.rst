@@ -85,21 +85,24 @@ The resources within an OpenStack environment can be divided into two groups:
 
 1. Services that users must access directly to consume the OpenStack cloud.
 
-   * Aodh
-   * Cinder
-   * Ceilometer
-   * Glance
-   * Heat
-   * Horizon
-   * Keystone *(excluding the admin API endpoint)*
-   * Neutron
-   * Nova
-   * Swift
+   * aodh
+   * cinder
+   * ceilometer
+   * glance
+   * gnocchi
+   * heat
+   * horizon
+   * ironic
+   * keystone *(excluding the admin API endpoint)*
+   * neutron
+   * nova
+   * swift
 
 2. Services that are only utilized internally by the OpenStack cloud.
 
-   * Keystone (admin API endpoint)
+   * keystone (admin API endpoint)
    * MariaDB
+   * memcached
    * RabbitMQ
 
 Configure firewalls to limit network access to all services that users must
