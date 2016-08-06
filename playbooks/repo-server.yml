@@ -44,22 +44,3 @@
         - "rsyslog-client"
   vars:
     is_metal: "{{ properties.is_metal|default(false) }}"
-
-- name: Setup package manager proxy
-  hosts: all:!repo_all
-  tasks:
-    - name: Drop apt package manager proxy
-      copy:
-        content: 'Acquire::http { Proxy "http://{{ internal_lb_vip_address }}:3142"; };'
-        dest: "/etc/apt/apt.conf.d/00apt-cacher-proxy"
-      when:
-        - ansible_os_family == 'Debian'
-        - repo_pkg_cache_enabled | bool
-    - name: Drop apt package manager proxy
-      lineinfile:
-        line: 'proxy=http://{{ internal_lb_vip_address }}:3142'
-        dest: "/etc/yum.conf"
-      when:
-        - ansible_os_family == 'RedHat'
-        - repo_pkg_cache_enabled | bool
-

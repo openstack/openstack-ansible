@@ -36,6 +36,8 @@ pip_links:
 # URL for the frozen internal openstack repo.
 repo_server_port: 8181
 repo_pkg_cache_enabled: true
+repo_pkg_cache_port: 3142
+repo_pkg_cache_url: "http://{{ internal_lb_vip_address }}:{{ repo_pkg_cache_port }}"
 openstack_repo_url: "http://{{ internal_lb_vip_address }}:{{ repo_server_port }}"
 openstack_repo_git_url: "git://{{ internal_lb_vip_address }}"
 
@@ -240,4 +242,3 @@ ansible_ssh_extra_args: >
   -o ForwardX11=no
   -o ForwardAgent=yes
   -T
-

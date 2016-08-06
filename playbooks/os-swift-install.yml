@@ -27,6 +27,7 @@
             dest: "/var/log/swift"
             owner: "syslog"
             group: "syslog"
+    - include: common-tasks/package-cache-proxy.yml
 
     - name: Set swift storage bridge (is_metal)
       set_fact:

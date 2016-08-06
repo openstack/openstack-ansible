@@ -72,6 +72,8 @@
       tags:
         - "haproxy-rsyslog-client"
         - "rsyslog-client"
+  post_tasks:
+    - include: common-tasks/package-cache-proxy.yml
   vars_files:
     - vars/configs/haproxy_config.yml
   vars:

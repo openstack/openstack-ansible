@@ -24,6 +24,7 @@
         log_dirs:
           - src: "/openstack/log/{{ inventory_hostname }}-utility"
             dest: "/var/log/utility"
+    - include: common-tasks/package-cache-proxy.yml
 
     - name: Create log directory (not is_metal)
       file:

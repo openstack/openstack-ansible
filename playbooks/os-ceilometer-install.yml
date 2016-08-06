@@ -36,6 +36,7 @@
         log_dirs:
           - src: "/openstack/log/{{ inventory_hostname }}-ceilometer"
             dest: "/var/log/ceilometer"
+    - include: common-tasks/package-cache-proxy.yml
   roles:
     - role: "os_ceilometer"
       ceilometer_venv_tag: "{{ openstack_release }}"

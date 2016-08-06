@@ -24,6 +24,7 @@
         list_of_bind_mounts:
           - bind_dir_path: "{{ storage_directory }}"
             mount_path: "/openstack/{{ inventory_hostname }}/log-storage"
+    - include: common-tasks/package-cache-proxy.yml
   roles:
     - { role: "rsyslog_server", tags: [ "rsyslog-server" ] }
     - role: "system_crontab_coordination"
