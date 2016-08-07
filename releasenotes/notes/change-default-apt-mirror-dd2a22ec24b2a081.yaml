@@ -1,0 +1,15 @@
+---
+issues:
+  - For OpenStack-Ansible Mitaka releases earlier than 13.3.1 the default
+    container apt source used was ``http://mirror.rackspace.com/ubuntu``. This
+    mirror seems to sometimes have broken package indexes or missing packages.
+    The default package source has therefore been changed to make use of
+    ``http://archive.ubuntu.com/ubuntu/`` for packages and
+    ``http://security.ubuntu.com/ubuntu`` for security packages.
+upgrade:
+  - The default container apt sources have been changed from using
+    ``http://mirror.rackspace.com/ubuntu`` to
+    ``http://archive.ubuntu.com/ubuntu/`` for packages and
+    ``http://security.ubuntu.com/ubuntu`` for security packages. This is to
+    resolve issues with unavailable packages during the install process due
+    to incomplete mirror updates.
