@@ -38,7 +38,7 @@
         - force_containers_destroy | bool
       tags:
         - container-directories-service
-    - name: Destroy container data directories
+    - name: Destroy container data
       file:
         path: "{{ item }}"
         state: "absent"
@@ -46,6 +46,7 @@
         - "/openstack/{{ container_name }}"
         - "/openstack/backup/{{ container_name }}"
         - "/openstack/log/{{ container_name }}"
+        - "/var/log/lxc/lxc-{{ container_name }}.log"
       delegate_to: "{{ physical_host }}"
       when:
         - force_containers_destroy | bool
