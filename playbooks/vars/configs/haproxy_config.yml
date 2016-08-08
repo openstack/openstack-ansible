@@ -235,3 +235,11 @@ haproxy_default_services:
         - 192.168.0.0/16
         - 172.16.0.0/12
         - 10.0.0.0/8
+  - service:
+      haproxy_service_name: magnum
+      haproxy_backend_nodes: "{{ groups['magnum_all'] | default([]) }}"
+      haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_port: 9511
+      haproxy_balance_type: http
+      haproxy_backend_options:
+        - "httpchk HEAD /"
