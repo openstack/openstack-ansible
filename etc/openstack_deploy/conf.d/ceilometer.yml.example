@@ -1,11 +1,12 @@
-# The compute host that the ceilometer compute agent will be running on.
+# The compute hosts that will run the ceilometer compute agent. This list
+# should contain every host in the compute_hosts list.
 metering-compute_hosts:
   compute1:
     ip: 172.20.236.110
 
-# The infra nodes that the central agents will be running on
+# The infra hosts that will run the central agents.
 # For running Ceilometer in HA for workload partitioning, see
-# the HA section in the ceilometer configuration docs.
+# http://docs.openstack.org/admin-guide/telemetry-data-collection.html#support-for-ha-deployment
 metering-infra_hosts:
   infra1:
     ip: 172.20.236.111
