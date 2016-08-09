@@ -56,3 +56,16 @@
     dest: "{{ repo_build_release_path }}/{{ repo_build_release_tag }}/requirements_constraints.txt"
   tags:
     - repo-build-constraints-file
+
+- name: Install pip packages
+  pip:
+    name: "{{ item }}"
+    state: present
+    extra_args: "--constraint {{ repo_build_release_path }}/{{ repo_build_release_tag }}/requirements_constraints.txt {{ pip_install_options|default('') }}"
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 5
+  with_items: repo_pip_packages
+  tags:
+    - repo-pip-packages

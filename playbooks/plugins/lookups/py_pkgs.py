@@ -28,6 +28,7 @@ GIT_PACKAGE_DEFAULT_PARTS = dict()
 
 
 ROLE_PACKAGES = dict()
+ROLE_REQUIREMENTS = dict()
 
 
 REQUIREMENTS_FILE_TYPES = [
@@ -162,15 +163,18 @@ class DependencyFileProcessor(object):
         # Process everything simply by calling the method
         self._process_files()
 
-    def _py_pkg_extend(self, packages):
+    def _py_pkg_extend(self, packages, py_package=None):
+        if py_package is None:
+            py_package = self.pip['py_package']
         for pkg in packages:
             pkg_name = _pip_requirement_split(pkg)[0]
-            for py_pkg in self.pip['py_package']:
+            for py_pkg in py_package:
                 py_pkg_name = _pip_requirement_split(py_pkg)[0]
                 if pkg_name == py_pkg_name:
-                    self.pip['py_package'].remove(py_pkg)
+                    py_package.remove(py_pkg)
         else:
-            self.pip['py_package'].extend([i.lower() for i in packages])
+            py_package.extend([i.lower() for i in packages])
+        return py_package
 
     @staticmethod
     def _filter_files(file_names, ext):
@@ -310,7 +314,7 @@ class DependencyFileProcessor(object):
         if name not in GIT_PACKAGE_DEFAULT_PARTS:
             GIT_PACKAGE_DEFAULT_PARTS[name] = git_data.copy()
         else:
-            GIT_PACKAGE_DEFAULT_PARTS[name].update()
+            GIT_PACKAGE_DEFAULT_PARTS[name].update(git_data)
 
         # get the repo plugin definitions, if any
         git_data['plugins'] = loaded_yaml.get(plugins_var)
@@ -320,6 +324,26 @@ class DependencyFileProcessor(object):
                 git_repo_plugins=git_data['plugins'],
                 git_data=git_data
             )
+
+    def _package_build_index(self, packages, role_name, var_name,
+                             pkg_index=ROLE_PACKAGES):
+        self._py_pkg_extend(packages)
+        if role_name:
+            if role_name in pkg_index:
+                role_pkgs = pkg_index[role_name]
+            else:
+                role_pkgs = pkg_index[role_name] = dict()
+
+            pkgs = role_pkgs.get(var_name, list())
+            if 'optional' not in var_name:
+                pkgs = self._py_pkg_extend(packages, pkgs)
+            pkg_index[role_name][var_name] = pkgs
+        else:
+            for k, v in pkg_index.items():
+                for item_name in v.keys():
+                    if var_name == item_name:
+                        pkg_index[k][item_name] = self._py_pkg_extend(packages, pkg_index[k][item_name])
+
 
     def _process_files(self):
         """Process files."""
@@ -348,25 +372,31 @@ class DependencyFileProcessor(object):
                         loaded_yaml=loaded_config,
                         git_item=key,
                         yaml_file_name=file_name
-                )
+                    )
 
-                if [i for i in BUILT_IN_PIP_PACKAGE_VARS if i in key]:
-                    self._py_pkg_extend(values)
-                    if role_name:
-                        if role_name in ROLE_PACKAGES:
-                            role_pkgs = ROLE_PACKAGES[role_name]
-                        else:
-                            role_pkgs = ROLE_PACKAGES[role_name] = dict()
+                if [i for i in BUILT_IN_PIP_PACKAGE_VARS
+                    if i in key
+                        if 'proprietary' not in key]:
+                        self._package_build_index(
+                            packages=values,
+                            role_name=role_name,
+                            var_name=key
+                        )
 
-                        pkgs = role_pkgs.get(key, list())
-                        if 'optional' not in key:
-                            pkgs.extend(values)
-                        ROLE_PACKAGES[role_name][key] = pkgs
-                    else:
-                        for k, v in ROLE_PACKAGES.items():
-                            for item_name in v.keys():
-                                if key == item_name:
-                                    ROLE_PACKAGES[k][item_name].extend(values)
+            for key, values in loaded_config.items():
+                if 'proprietary' in key:
+                    proprietary_pkgs = [
+                        i for i in values
+                        if GIT_PACKAGE_DEFAULT_PARTS.get(i)
+                    ]
+                    if proprietary_pkgs:
+                        self._package_build_index(
+                            packages=proprietary_pkgs,
+                            role_name=role_name,
+                            var_name=key
+                        )
+        else:
+            role_name = None
 
         return_list = self._filter_files(self.file_names, 'txt')
         for file_name in return_list:
@@ -379,13 +409,33 @@ class DependencyFileProcessor(object):
             for file_name in return_list:
                 if file_name.endswith('other-requirements.txt'):
                     continue
+                if 'roles' in file_name:
+                    _role_name = file_name.split('roles%s' % os.sep)[-1]
+                    role_name = _role_name.split(os.sep)[0]
+                if not role_name:
+                    role_name = 'default'
                 with open(file_name, 'r') as f:
                     packages = [
-                        i.split()[0] for i in f.read().splitlines()
+                        i.split()[0].lower() for i in f.read().splitlines()
                         if i
                         if not i.startswith('#')
                     ]
-                    self._py_pkg_extend(packages)
+                    base_file_name = os.path.basename(file_name)
+                    if base_file_name.endswith('test-requirements.txt'):
+                        continue
+                    if base_file_name.endswith('global-requirement-pins.txt'):
+                        self._package_build_index(
+                            packages=packages,
+                            role_name='global_pins',
+                            var_name='pinned_packages',
+                            pkg_index=ROLE_REQUIREMENTS
+                        )
+                    self._package_build_index(
+                        packages=packages,
+                        role_name=role_name,
+                        var_name='txt_file_packages',
+                        pkg_index=ROLE_REQUIREMENTS
+                    )
 
 
 def _abs_path(path):
@@ -522,6 +572,7 @@ class LookupModule(object):
             for key, value in return_data.items():
                 if isinstance(value, (list, set)):
                     return_data[key] = sorted(value)
+            return_data['role_requirement_files'] = ROLE_REQUIREMENTS
             return [return_data]
 
 

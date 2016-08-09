@@ -1,21 +1,47 @@
-# Computed constraints
-{% set constraint_pkgs = [] -%}
-{% for clone_item in local_packages.results.0.item.remote_package_parts -%}
-{% if 'ignorerequirements=true' not in clone_item['original'] %}
+#
+# Constraints set by SHA's in the git sources
+#
+{% set constraint_pkgs = [] %}
+{% for clone_item in local_packages.results.0.item.remote_package_parts %}
+{%   if 'ignorerequirements=true' not in clone_item['original'] %}
 {{ clone_item['original'] | replace(clone_item['url'], 'file://' + repo_build_git_dir + '/' + clone_item['name'] ) }}
-{% set _ = constraint_pkgs.append(clone_item['name'] | replace('-', '_') | lower) %}
-{% endif %}
+{%     set _ = constraint_pkgs.append(clone_item['name'] | replace('-', '_') | lower) %}
+{%   endif %}
 {% endfor %}
-# upper boundry constraints from requirements repo.
-{% for constraint_item in upper_constraints %}
-{%- set constraint_split = constraint_item.split('===') %}
-{%- set constraint_name = constraint_split[0] %}
-{%- set constraint_name_normalized = constraint_name | replace('-', '_') | lower %}
-{% if constraint_name_normalized not in constraint_pkgs %}
-{% if repo_build_use_upper_constraints | bool and (constraint_split | length) > 1 %}
-{{ constraint_split[0] | replace('-', '_') | lower }}<={{ constraint_split[1] }}
-{% elif (constraint_split | length) == 1 %}
-{{ constraint_item }}
-{% endif %}
-{% endif %}
+#
+# User-provided constraints set through a variable
+#
+{% set override_packages = [] %}
+{% for constraint_override_item in repo_build_upper_constraints_overrides %}
+{%   set constraint_override_name = constraint_override_item | regex_replace('(>=|<=|>|<|==|~=|!=).*$','') %}
+{%   set _ = override_packages.append(constraint_override_name) %}
+{{ constraint_override_item }}
 {% endfor %}
+#
+# Global pins set through the file global-requirement-pins.txt
+#
+{% set global_pin_packages = [] %}
+{% for global_pin in local_packages.results.0.item.role_requirement_files.global_pins.pinned_packages %}
+{%   set global_pin_package_name = global_pin | regex_replace('(<=|<|==).*$','') %}
+{%   set _ = global_pin_packages.append(global_pin_package_name) %}
+{#   we want to ensure that repo_build_upper_constraints_overrides take the highest precedence #}
+{%   if global_pin_package_name not in repo_build_upper_constraints_overrides %}
+{{ global_pin }}
+{%   endif %}
+{% endfor %}
+{# we don't bother applying OpenStack upper-constraints if the deployer has opted not to #}
+{% if repo_build_use_upper_constraints | bool %}
+#
+# Upper constraints from the OpenStack requirements repo
+#
+{%   for constraint_item in upper_constraints %}
+{%     set constraint_name = constraint_item | regex_replace('===.*', '') %}
+{%     set constraint_data = constraint_item | regex_replace('.*===', '') %}
+{#     The name has to be normalised to comply with PEP standards #}
+{%     set constraint_name_normalized = constraint_name | replace('-', '_') | lower %}
+{%     set constraint = constraint_name_normalized + '<=' + constraint_data %}
+{%     if (constraint_name_normalized not in constraint_pkgs) and (constraint_name_normalized not in override_packages) and (constraint_name_normalized not in global_pin_packages) %}
+{{ constraint }}
+{%     endif %}
+{%   endfor %}
+{% endif %}
