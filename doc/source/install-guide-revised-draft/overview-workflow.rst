@@ -9,9 +9,9 @@ OpenStack-Ansible (OSA) installation.
 
 
 .. figure:: figures/installation-workflow-overview.png
-   :scale: 100
+   :width: 100%
 
-   Installation workflow
+   **Installation workflow**
 
 #. :doc:`Prepare deployment host <deploymenthost>`
 #. :doc:`Prepare target hosts <targethosts>`

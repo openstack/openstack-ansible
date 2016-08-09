@@ -4,18 +4,18 @@
 Target hosts
 ============
 
+.. figure:: figures/installation-workflow-targethosts.png
+   :width: 100%
+
+   **Installation workflow**
+
 .. toctree::
 
    targethosts-prepare.rst
    targethosts-networkconfig.rst
 
-**Figure 3.1. Installation workflow**
 
-.. image:: figures/workflow-targethosts.png
-
-We recommend at least five target hosts to contain the
-OpenStack environment and supporting infrastructure for the OSA
-installation process. On each target host, perform the following tasks:
+On each target host, perform the following tasks:
 
 -  Naming target hosts
 

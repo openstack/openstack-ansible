@@ -1,19 +1,21 @@
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
-Chapter 2. Deployment host
-==========================
+===============
+Deployment host
+===============
 
-**Figure 2.1. Installation work flow**
+.. figure:: figures/installation-workflow-deploymenthost.png
+   :width: 100%
 
-.. image:: figures/workflow-deploymenthost.png
+   **Installation workflow**
 
-The OSA installation process recommends one deployment host. The
-deployment host contains Ansible and orchestrates the OpenStack-Ansible
-installation on the target hosts. We recommend using separate deployment and
-target hosts. You could alternatively use one of the target hosts, preferably
-one of the infrastructure variants, as the deployment host. To use a
-deployment host as a target host, follow the steps in `Chapter 3, Target
-hosts <targethosts.html>`_ on the deployment host.
+When installing OpenStack in a production environment, we recommend using a
+separate deployment host which contains Ansible and orchestrates the
+OpenStack-Ansible installation on the target hosts. In a test environment, we
+prescribe using one of the infrastructure target hosts as the deployment host.
+
+To use a target host as a deployment host, follow the steps in `Chapter 3,
+Target hosts <targethosts.html>`_ on the deployment host.
 
 Installing the operating system
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

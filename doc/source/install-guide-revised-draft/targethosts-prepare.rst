@@ -79,6 +79,8 @@ practices, refer to `GitHub's documentation on generating SSH keys`_.
 Configuring LVM
 ~~~~~~~~~~~~~~~
 
+.. TODO Change title to Configuring Storage and add content
+
 `Logical Volume Manager (LVM)`_ allows a single device to be split into
 multiple logical volumes which appear as a physical storage device to the
 operating system. The Block Storage (cinder) service, as well as the LXC
