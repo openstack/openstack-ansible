@@ -8,8 +8,6 @@ Appendices
    :maxdepth: 2
 
    app-configfiles.rst
-   app-advanced-config-options.rst
    app-resources.rst
-   app-plumgrid.rst
-   app-nuage.rst
    app-custom-layouts.rst
+   app-advanced-config-options.rst

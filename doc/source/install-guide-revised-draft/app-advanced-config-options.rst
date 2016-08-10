@@ -1,8 +1,8 @@
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
-======================
-Advanced configuration
-======================
+===================================
+Appendix D: Advanced configuration
+===================================
 
 .. toctree::
    :maxdepth: 2
