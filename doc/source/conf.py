@@ -25,7 +25,7 @@
 import openstackdocstheme
 import os
 import pbr.version
-
+from subprocess import Popen, PIPE
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
@@ -297,3 +297,7 @@ pdf_documents = [
     (master_doc, target_name,
      title, author)
 ]
+
+pipe = Popen('git describe --abbrev=0 --tags', stdout=PIPE, shell=True)
+version = pipe.stdout.read()
+rst_epilog = '.. |my_conf_val| replace:: %s' % version
