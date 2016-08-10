@@ -51,13 +51,14 @@ determine_distro
 # Install the base packages
 case ${DISTRO_ID} in
     centos|rhel)
-        yum check-update && yum -y install git python2 curl autoconf gcc-c++ \
+        yum check-update
+        yum -y install git python2 curl autoconf gcc-c++ \
           python2-devel gcc libffi-devel openssl-devel python-requests \
           python-pyasn1 pyOpenSSL python-ndg_httpsclient
         ;;
     ubuntu)
-        apt-get update && \
-          DEBIAN_FRONTEND=noninteractive apt-get -y install \
+        apt-get update
+        DEBIAN_FRONTEND=noninteractive apt-get -y install \
           git python-all python-dev curl python2.7-dev build-essential \
           libssl-dev libffi-dev python-requests python-openssl python-pyasn1
         ;;
