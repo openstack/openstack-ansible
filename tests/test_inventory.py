@@ -363,7 +363,7 @@ class TestIps(unittest.TestCase):
         di.USED_IPS = set()
 
 
-class TestConfigChecks(unittest.TestCase):
+class TestConfigCheckBase(unittest.TestCase):
     def setUp(self):
         self.config_changed = False
         self.user_defined_config = dict()
@@ -407,6 +407,25 @@ class TestConfigChecks(unittest.TestCase):
         os.rename(USER_CONFIG_FILE + ".tmp", USER_CONFIG_FILE)
         self.config_changed = False
 
+    def set_new_hostname(self, user_defined_config, group,
+                         old_hostname, new_hostname):
+        self.config_changed = True
+        # set a new name for the specified hostname
+        old_hostname_settings = user_defined_config[group].pop(old_hostname)
+        user_defined_config[group][new_hostname] = old_hostname_settings
+        self.write_config()
+
+    def set_new_ip(self, user_defined_config, group, hostname, ip):
+        # Sets an IP address for a specified host.
+        user_defined_config[group][hostname]['ip'] = ip
+        self.write_config()
+
+    def tearDown(self):
+        if self.config_changed:
+            self.restore_config()
+
+
+class TestConfigChecks(TestConfigCheckBase):
     def test_missing_container_cidr_network(self):
         self.delete_provider_network('container')
         with self.assertRaises(SystemExit) as context:
@@ -442,19 +461,6 @@ class TestConfigChecks(unittest.TestCase):
             get_inventory()
         expectedLog = "No container CIDR specified in user config"
         self.assertEqual(context.exception.message, expectedLog)
-
-    def set_new_hostname(self, user_defined_config, group,
-                         old_hostname, new_hostname):
-        self.config_changed = True
-        # set a new name for the specified hostname
-        old_hostname_settings = user_defined_config[group].pop(old_hostname)
-        user_defined_config[group][new_hostname] = old_hostname_settings
-        self.write_config()
-
-    def set_new_ip(self, user_defined_config, group, hostname, ip):
-        # Sets an IP address for a specified host.
-        user_defined_config[group][hostname]['ip'] = ip
-        self.write_config()
 
     def test_provider_networks_check(self):
         # create config file without provider networks
@@ -555,12 +561,8 @@ class TestConfigChecks(unittest.TestCase):
         ret = di._check_multiple_ips_to_host(config)
         self.assertTrue(ret)
 
-    def tearDown(self):
-        if self.config_changed:
-            self.restore_config()
 
-
-class TestStaticRouteConfig(TestConfigChecks):
+class TestStaticRouteConfig(TestConfigCheckBase):
     def setUp(self):
         super(TestStaticRouteConfig, self).setUp()
         self.expectedMsg = ("Static route provider network with queue "
@@ -652,7 +654,7 @@ class TestStaticRouteConfig(TestConfigChecks):
         self.assertEqual(exception.message, self.expectedMsg)
 
 
-class TestGlobalOverridesConfigDeletion(TestConfigChecks):
+class TestGlobalOverridesConfigDeletion(TestConfigCheckBase):
     def setUp(self):
         super(TestGlobalOverridesConfigDeletion, self).setUp()
         self.inventory = get_inventory()
