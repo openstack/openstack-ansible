@@ -160,3 +160,9 @@ ironic_git_repo: https://git.openstack.org/openstack/ironic
 ironic_git_install_branch: 66b66fd6296398482d95f7ef5383ada9f6f60264 # HEAD of "master" as of 01.08.2016
 ironic_git_dest: "/opt/ironic_{{ ironic_git_install_branch | replace('/', '_') }}"
 ironic_git_project_group: ironic_all
+
+## Magnum service
+magnum_git_repo: https://git.openstack.org/openstack/magnum
+magnum_git_install_branch: 83d154607e626ad09cee75521d6a3b51f48b2c6d # HEAD of "master" as of 08.08.2016
+magnum_git_dest: "/opt/magnum_{{ magnum_git_install_branch | replace('/', '_') }}"
+magnum_git_project_group: magnum_all
