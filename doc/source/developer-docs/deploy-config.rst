@@ -18,7 +18,6 @@ Contents:
    configure-cinder.rst
    configure-swift.rst
    configure-haproxy.rst
-   configure-horizon.rst
    configure-keystone.rst
    configure-network-services.rst
    configure-federation.rst
