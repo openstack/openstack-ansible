@@ -1,0 +1,7 @@
+---
+features:
+  - The `dynamic_inventory.py` file now takes a new argument, ``--check``,
+    which will run the inventory build without writing any files to the file
+    system. This is useful for checking to make sure your configuration does
+    not contain known errors prior to running Ansible commands.
+

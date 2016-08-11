@@ -133,6 +133,12 @@ def args(arg_list):
         action='store_true'
     )
 
+    parser.add_argument(
+        '--check',
+        help="Configuration check only, don't generate inventory",
+        action='store_true',
+    )
+
     return vars(parser.parse_args(arg_list))
 
 
@@ -1137,6 +1143,10 @@ def main(all_args):
         indent=4,
         sort_keys=True
     )
+
+    check = all_args.get('check')
+    if check:
+        return 'Configuration ok!'
 
     # Generate a list of all hosts and their used IP addresses
     hostnames_ips = {}
