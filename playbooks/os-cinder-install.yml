@@ -57,7 +57,7 @@
       when: >
         not is_metal | bool and
         inventory_hostname in groups['cinder_volume'] and
-        cinder_backend_lvm_inuse
+        cinder_backend_lvm_inuse | bool
       tags:
         - cinder-container-setup
       register: lxc_config
