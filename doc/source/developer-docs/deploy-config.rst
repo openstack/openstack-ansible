@@ -19,8 +19,6 @@ Contents:
    configure-swift.rst
    configure-haproxy.rst
    configure-horizon.rst
-   configure-ceilometer.rst
-   configure-aodh.rst
    configure-keystone.rst
    configure-network-services.rst
    configure-federation.rst
