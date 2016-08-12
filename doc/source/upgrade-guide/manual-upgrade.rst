@@ -136,24 +136,46 @@ Before installing the infrastructure and OpenStack, update the host machines.
 
 .. code-block:: console
 
-   # openstack-ansible setup-hosts.yml --limit '!galera_all[0]'
+   # openstack-ansible setup-hosts.yml --limit '!galera_all'
 
-This command is the same as doing host setups on a new install. The first
-member of the ``galera_all`` host group is excluded to prevent simultaneous
-restarts of all Galera containers.
+This command is the same as doing host setups on a new install. The
+``galera_all`` host group is excluded to prevent restarts of any Galera
+containers. This will be handled separately.
 
-Update Galera LXC container configuration and re-create the repo containers
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Update Galera LXC container configuration without restarting containers
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Update the configuration for the first Galera container and all of the repo containers.
+Update the configuration for the Galera containers but do not allow them to
+restart.
 
 .. code-block:: console
 
-   # openstack-ansible lxc-containers-create.yml --limit galera_all[0]:repo_all
+   # openstack-ansible lxc-containers-create.yml -e 'lxc_container_allow_restarts=false' --limit galera_all
 
-This command is a subset of the host setup playbook, limited to the first
-member of the ``galera_all`` and ``repo_all`` host groups so these are the only
-containers restarted only after other Galera containers have been restarted.
+This command is a subset of the host setup playbook and adds the necessary new
+lxc config to these containers, but does not trigger a restart of the
+containers.
+
+Perform a mariadb version upgrade
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Update the version of mariadb across the cluster from 5.5 to 10.0
+
+.. code-block:: console
+
+   # openstack-ansible galera-install.yml -e 'galera_upgrade=true'
+
+Perform a controlled rolling restart of the galera containers
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Restart containers one at a time, ensuring that each is up, responding, and synced
+with the other nodes in the cluster, before moving on to the next. This step
+allows the lxc container config applied earlier to take effect, ensuring that
+the containers are restarted in a controlled fashion.
+
+.. code-block:: console
+
+   # openstack-ansible "${UPGRADE_PLAYBOOKS}/galera-cluster-rolling-restart.yml"
 
 Cleanup ``pip.conf`` file in the ``repo_servers``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -169,14 +191,12 @@ See :ref:`repo-server-pip-conf-removal` for more details.
 
    # openstack-ansible "${UPGRADE_PLAYBOOKS}/repo-server-pip-conf-removal.yml"
 
-
 Upgrade infrastructure
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Running the standard OpenStack-Ansible infrastructure playbook applies the
-relevant Liberty settings and packages. However, MariaDB and Galera require an
-extra option to specify an upgrade from the 5.5 series to 10.0. This upgrade
-is required for the Liberty release of OpenStack-Ansible.
+The following commands perform all steps from the setup-infrastructure
+playbook, except for ``galera-install.yml`` which we ran earlier. Running these
+playbooks applies the relevant Liberty settings and packages.
 
 For certain versions of Kilo, you must upgrade the RabbitMQ minor version.
 
@@ -184,9 +204,11 @@ See :ref:`setup-infra-playbook` for details.
 
 .. code-block:: console
 
-   # openstack-ansible setup-infrastructure.yml -e 'galera_upgrade=true' \
-   -e 'rabbitmq_upgrade=true'
-
+   # openstack-ansible haproxy-install.yml
+   # openstack-ansible memcached-install.yml
+   # openstack-ansible rabbitmq-install.yml -e 'rabbitmq_upgrade=true'
+   # openstack-ansible utility-install.yml
+   # openstack-ansible rsyslog-install.yml
 
 Disable neutron port security driver
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
