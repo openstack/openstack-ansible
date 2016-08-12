@@ -38,6 +38,8 @@
       override: "{{ aodh_conf_overrides | default({}) }}"
     - name: ceilometer.yml.aio
       override: "{{ ceilometer_conf_overrides | default({}) }}"
+    - name: gnocchi.yml.aio
+      override: "{{ gnocchi_conf_overrides | default({}) }}"
   tags:
     - deploy-confd
 

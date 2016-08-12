@@ -83,12 +83,3 @@
   with_items: "{{ packages_install }}"
   tags:
     - install-packages
-
-- name: Install MongoDB packages
-  apt:
-    name: "{{ item }}"
-    state: present
-  with_items: "{{ packages_mongodb }}"
-  when: bootstrap_host_mongodb_service | bool
-  tags:
-    - install-mongodb

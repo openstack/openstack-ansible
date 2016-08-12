@@ -19,3 +19,4 @@ ceilometer_service_region: "{{ service_region }}"
 ceilometer_service_in_ldap: "{{ service_ldap_backend_enabled }}"
 
 ceilometer_aodh_enabled: groups['aodh_all'] is defined and groups['aodh_all'] | length > 0
+ceilometer_gnocchi_enabled: groups['gnocchi_all'] is defined and groups['gnocchi_all'] | length > 0
