@@ -19,7 +19,6 @@ Contents:
    configure-swift.rst
    configure-haproxy.rst
    configure-horizon.rst
-   configure-rabbitmq.rst
    configure-ceilometer.rst
    configure-aodh.rst
    configure-keystone.rst
