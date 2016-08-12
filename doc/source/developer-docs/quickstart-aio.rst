@@ -240,6 +240,9 @@ isn't always practical. As such the following may be executed instead:
        # # Remove the pip configuration files on the host
        # rm -rf /root/.pip
 
+       # # Remove the apt package manager proxy
+       # rm /etc/apt/apt.conf.d/00apt-cacher-proxy
+
 Should an existing AIO environment need to be reinstalled, the most efficient
 method is to destroy the host operating system and start over. For this reason,
 AIOs are best run inside of some form of virtual machine or cloud guest.
