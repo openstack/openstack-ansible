@@ -112,6 +112,17 @@ current version of MariaDB and Galera and upgrade to the 10.x series.
 
 Sends "flush_all" to memcached with the help of nc.
 
+.. _aodh-api-init-delete:
+
+``aodh-api-init-delete.yml``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Stops the ``aodh-api`` service and removes the init file since ``aodh-api``
+now runs under Apache ``mod_wsgi``.
+Run the ``os-aodh-install.yml`` playbook during the OpenStack services upgrade
+to ensure ``aodh-api`` is available after running ``aodh-api-init-delete.yml``.
+
+
 --------------
 
 .. include:: navigation.txt
