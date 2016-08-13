@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Set the package install state for distribution packages
+# Options are 'present' and 'latest'
+haproxy_package_state: "latest"
+
 ## Haproxy Configuration
 haproxy_rise: 3
 haproxy_fall: 3
