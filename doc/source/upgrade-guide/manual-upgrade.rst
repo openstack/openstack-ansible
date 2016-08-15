@@ -128,7 +128,7 @@ performs a conversion on existing databases and tables.
 
 .. code-block:: console
 
-    # openstack-ansible "${UPGRADE_PLAYBOOKS}/db-collation-alter.yml
+    # openstack-ansible "${UPGRADE_PLAYBOOKS}/db-collation-alter.yml"
 
 Upgrade hosts
 ~~~~~~~~~~~~~
