@@ -66,7 +66,7 @@ Install the source and dependencies for the deployment host.
 
        # git clone -b TAG https://github.com/openstack/openstack-ansible.git /opt/openstack-ansible
 
-   Replace ``TAG`` with the current stable release tag.
+   Replace ``TAG`` with the current stable release tag : |my_conf_val|
 
 #. Change to the ``/opt/openstack-ansible`` directory, and run the
    Ansible bootstrap script:
