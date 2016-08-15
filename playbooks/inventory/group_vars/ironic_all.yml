@@ -18,3 +18,6 @@ ironic_rabbitmq_userid: ironic
 ironic_galera_database: ironic
 ironic_galera_user: ironic
 ironic_service_adminurl: "{{ ironic_service_adminuri }}/v1"
+
+# Ensure that the package state matches the global setting
+ironic_package_state: "{{ package_state }}"

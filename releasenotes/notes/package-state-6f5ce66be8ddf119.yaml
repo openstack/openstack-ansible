@@ -1,0 +1,12 @@
+---
+features:
+  - A new global option to control all package install states has been
+    implemented. The default action for all distribution package
+    installations is to ensure that the latest package is installed.
+    This may be changed to only verify if the package is present by
+    setting ``package_state`` to ``present``.
+upgrade:
+  - All roles always checks whether the latest package is installed
+    when executed. If a deployer wishes to change the check to
+    only validate the presence of the package, the option
+    ``package_state`` should be set to ``present``.

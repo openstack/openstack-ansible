@@ -22,3 +22,6 @@ magnum_rabbitmq_vhost: /magnum
 magnum_rabbitmq_port: "{{ rabbitmq_port }}"
 magnum_rabbitmq_servers: "{{ rabbitmq_servers }}"
 magnum_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
+
+# Ensure that the package state matches the global setting
+magnum_package_state: "{{ package_state }}"

@@ -18,3 +18,6 @@ glance_service_in_ldap: "{{ service_ldap_backend_enabled }}"
 
 # If there are any Ceilometer hosts in the environment, then enable its usage
 glance_ceilometer_enabled: "{{ (groups['ceilometer_all'] is defined) and (groups['ceilometer_all'] | length > 0) }}"
+
+# Ensure that the package state matches the global setting
+glance_package_state: "{{ package_state }}"
