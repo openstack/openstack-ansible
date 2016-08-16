@@ -11,14 +11,9 @@ Contents:
 .. toctree::
 
    configure-affinity.rst
-   configure-glance.rst
    configure-hypervisor.rst
    configure-nova.rst
-   configure-ironic.rst
-   configure-cinder.rst
    configure-swift.rst
    configure-haproxy.rst
-   configure-keystone.rst
    configure-network-services.rst
-   configure-federation.rst
    configure-ceph.rst
