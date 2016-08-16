@@ -140,14 +140,15 @@ function main {
     "${SCRIPTS_PATH}/bootstrap-ansible.sh"
 
     pushd ${MAIN_PATH}/playbooks
-        RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/ansible_fact_cleanup.yml")
+        RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/01_ansible_fact_cleanup.yml")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/deploy-config-changes.yml")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/user-secrets-adjustment.yml")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/repo-server-pip-conf-removal.yml")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/old-hostname-compatibility.yml")
-        RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/restart-rabbitmq-containers.yml")
         # we don't want to trigger galera container restarts yet
         RUN_TASKS+=("setup-hosts.yml --limit '!galera_all'")
+        RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/restart-rabbitmq-containers.yml")
+        RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/02_ansible_fact_cleanup.yml")
         # add new container config to galera containers but don't restart
         RUN_TASKS+=("lxc-containers-create.yml -e 'lxc_container_allow_restarts=false' --limit galera_all")
 	# rebuild the repo servers
