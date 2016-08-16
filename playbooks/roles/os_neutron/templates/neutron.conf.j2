@@ -9,6 +9,7 @@ verbose = {{ verbose }}
 debug = {{ debug }}
 fatal_deprecations = {{ neutron_fatal_deprecations }}
 log_file = /var/log/neutron/neutron.log
+use_stderr = False
 
 {% if inventory_hostname in groups[neutron_services['neutron-server']['group']] %}
 
