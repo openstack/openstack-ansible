@@ -25,7 +25,7 @@
 # repo_all[0] is built last to ensure it has all build artifacts for final indexing
 - name: Build new repo packages for a given release
   hosts: repo_all[1:],repo_all[0]
-  gather_facts: true
+  gather_facts: "{{ gather_facts | default(True) }}"
   user: root
   serial: 1
   pre_tasks:
