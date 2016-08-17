@@ -4,6 +4,7 @@
 {% set api_threads = _api_threads if _api_threads > 0 else 1 %}
 
 [DEFAULT]
+use_stderr = False
 verbose = {{ verbose }}
 debug = {{ debug }}
 fatal_deprecations = {{ glance_fatal_deprecations }}
