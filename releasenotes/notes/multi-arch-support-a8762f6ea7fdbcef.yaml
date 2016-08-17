@@ -1,0 +1,8 @@
+---
+features:
+  - The repo install process is now able to support building and synchronizing
+    artifacts for multiple CPU architectures. To support multiple architectures,
+    one or more repo servers must be created for each CPU architecture in the
+    deployment. When multiple CPU architectures are detected among the repo
+    servers, the repo-discovery process will automatically assign a repo
+    master to perform the build process for each architecture.
