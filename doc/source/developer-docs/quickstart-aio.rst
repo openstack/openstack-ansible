@@ -79,7 +79,7 @@ development) build it is usually best to checkout the latest tagged version.
        # git describe --abbrev=0 --tags
 
        # # Checkout the latest tag from either method of retrieving the tag.
-       # git checkout 13.0.1
+       # git checkout |my_conf_val|
 
 By default the scripts deploy all OpenStack services with sensible defaults
 for the purpose of a gate check, development or testing system.
