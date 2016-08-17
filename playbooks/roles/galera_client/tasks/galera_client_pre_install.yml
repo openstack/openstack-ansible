@@ -25,6 +25,7 @@
   until: add_keys|success
   retries: 5
   delay: 2
+  ignore_errors: true
   tags:
     - galera-client-apt-keys
 
