@@ -11,7 +11,7 @@ Deployment configuration
    configure-user-config-examples.rst
    configure-creds.rst
 
-.. figure:: figures/workflow-configdeployment.png
+.. figure:: figures/installation-workflow-configure-deployment.png
    :width: 100%
 
    Installation workflow
