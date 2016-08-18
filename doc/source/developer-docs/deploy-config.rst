@@ -12,7 +12,5 @@ Contents:
 
    configure-affinity.rst
    configure-hypervisor.rst
-   configure-nova.rst
    configure-haproxy.rst
-   configure-network-services.rst
    configure-ceph.rst
