@@ -10,7 +10,9 @@ Production environment
 This example allows you to use your own parameters for the deployment.
 
 If you followed the previously proposed design, the following table shows
-bridges that are to be configured on hosts:
+bridges that are to be configured on hosts.
+
+
 +-------------+-----------------------+-------------------------------------+
 | Bridge name | Best configured on    | With a static IP                    |
 +=============+=======================+=====================================+
@@ -28,6 +30,7 @@ bridges that are to be configured on hosts:
 + br-vlan     +-----------------------+-------------------------------------+
 |             | On every compute node | Never                               |
 +-------------+-----------------------+-------------------------------------+
+
 
 Example for 3 controller nodes and 2 compute nodes
 --------------------------------------------------
@@ -75,10 +78,12 @@ Modifying the network interfaces file
 
 After establishing initial host management network connectivity using
 the ``bond0`` interface, modify the ``/etc/network/interfaces`` file.
-An example is provided below based on the production environment described
-in :ref:`host-layout`.
+An example is provided on this `Link to Production Environment`_ based
+on the production environment described in `host layout for production
+environment`_.
 
-.. TODO include example file
+.. _host layout for production environment: overview-host-layout.html#production-environment
+.. _Link to Production Environment: targethosts-networkexample.html#production-environment
 
 Test environment
 ~~~~~~~~~~~~~~~~
@@ -121,7 +126,7 @@ parameters in the architecture.
 
    -  Storage: 172.29.244.11
 
-.. _Figure 3.2: targethosts-networkexample.html#fig_hosts-target-network-containerexample
+.. _Figure 3.2: targethosts-networkconfig.html#fig_hosts-target-network-containerexample
 
 **Figure 3.2. Target host for infrastructure, networking, compute, and
 storage services**
@@ -133,10 +138,12 @@ Modifying the network interfaces file
 
 After establishing initial host management network connectivity using
 the ``bond0`` interface, modify the ``/etc/network/interfaces`` file.
-An example is provided below based on the test environment described
-in :ref:`host-layout`.
+An example is provided below on this `Link to Test Environment`_ based
+on the test environment described in `host layout for testing
+environment`_.
 
-.. TODO include example file
+.. _Link to Test Environment: targethosts-networkexample.html#test-environment
+.. _host layout for testing environment: overview-host-layout.html#test-environment
 
 
 --------------

@@ -12,3 +12,4 @@ Appendices
    app-custom-layouts.rst
    app-security.rst
    app-advanced-config-options.rst
+   targethosts-networkexample.rst

@@ -82,9 +82,10 @@ It also has the following features:
  - File-backed storage for glance and nova
  - LVM-backed cinder
 
- .. image:: figures/arch-layout-test.png
+.. image:: figures/arch-layout-test.png
    :width: 100%
    :alt: Test environment host layout
+
 
 Production environment
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -94,8 +95,8 @@ hosts in total: three control plane and infrastructure hosts, two compute
 hosts, one storage host and one log aggregation host. It also has the
 following features:
 
- - Bonded NICs
- - NFS/Ceph-backed storage for nova, glance, and cinder
+ - Bonded NICs.
+ - NFS/Ceph-backed storage for nova, glance, and cinder.
 
 All hosts will need at least one networking
 interface, but we recommend multiple bonded interfaces.
