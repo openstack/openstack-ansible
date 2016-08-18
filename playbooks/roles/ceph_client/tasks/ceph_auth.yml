@@ -24,7 +24,7 @@
   # output to put in a keyring; ceph admin should have already created the user
   shell: ceph auth get client.{{ item.1 }} >/dev/null && ceph auth get-or-create client.{{ item.1 }}
   with_subelements:
-  - ceph_components
+  - "{{ ceph_components }}"
   - client
   when: >
     inventory_hostname in groups[item.0.component] and
