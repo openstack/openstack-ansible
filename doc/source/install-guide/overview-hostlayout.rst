@@ -16,7 +16,8 @@ If using the optional Block Storage (cinder) service, we recommend
 the use of a sixth host. Block Storage hosts require an LVM volume group named
 ``cinder-volumes``. See `the section called "Installation
 requirements" <overview-requirements.html>`_ and `the section
-called "Configuring LVM" <targethosts-configlvm.html>`_ for more information.
+called "Configuring LVM" <targethosts-prepare.html#configuring-lvm>`_
+for more information.
 
 If using the optional Object Storage (swift) service, we recommend the use of
 three additional hosts (or some other odd number). See the section

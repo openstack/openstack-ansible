@@ -15,7 +15,8 @@ If the optional Block Storage (cinder) service is used, we recommend
 using an additional host. Block Storage hosts require an LVM volume group named
 ``cinder-volumes``. See `the section called "Installation
 requirements" <overview-requirements.html>`_ and `the section
-called "Configuring LVM" <targethosts-configlvm.html>`_ for more information.
+called "Configuring LVM" <targethosts-prepare.html#configuring-lvm>`_
+for more information.
 
 Use at least one load balancer to manage the traffic among
 the target hosts. You can use any type of load balancer such as a hardware
