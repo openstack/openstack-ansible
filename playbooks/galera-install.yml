@@ -24,6 +24,7 @@
         list_of_bind_mounts:
           - bind_dir_path: "/var/lib/mysql"
             mount_path: "/openstack/{{ inventory_hostname }}"
+    - include: common-tasks/package-cache-proxy.yml
   vars:
     is_metal: "{{ properties.is_metal|default(false) }}"
   tags:

@@ -25,6 +25,7 @@
         log_dirs:
           - src: "/openstack/log/{{ inventory_hostname }}-memcached"
             dest: "/var/log/memcached"
+    - include: common-tasks/package-cache-proxy.yml
   roles:
     - { role: "memcached_server", tags: [ "memcached-server" ] }
     - role: "system_crontab_coordination"

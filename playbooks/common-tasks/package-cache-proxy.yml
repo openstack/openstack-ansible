@@ -1,5 +1,5 @@
 ---
-# Copyright 2014, Rackspace US, Inc.
+# Copyright 2016, Logan Vig <logan2211@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,10 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: repo-install.yml
-- include: haproxy-install.yml
-- include: memcached-install.yml
-- include: galera-install.yml
-- include: rabbitmq-install.yml
-- include: utility-install.yml
-- include: rsyslog-install.yml
+- name: Drop apt package manager proxy
+  copy:
+    content: 'Acquire::http { Proxy "{{ repo_pkg_cache_url }}"; };'
+    dest: "/etc/apt/apt.conf.d/00apt-cacher-proxy"
+  when:
+    - ansible_os_family == 'Debian'
+    - repo_pkg_cache_enabled | bool
+
+- name: Drop yum package manager proxy
+  lineinfile:
+    line: 'proxy={{ repo_pkg_cache_url }}'
+    dest: "/etc/yum.conf"
+  when:
+    - ansible_os_family == 'RedHat'
+    - repo_pkg_cache_enabled | bool

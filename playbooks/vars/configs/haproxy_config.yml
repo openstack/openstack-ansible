@@ -52,7 +52,7 @@ haproxy_default_services:
       haproxy_backend_nodes: "{{ [groups['repo_all'][0]] | default([]) }}"  # list expected
       haproxy_backup_nodes: "{{ groups['repo_all'][1:] | default([]) }}"
       haproxy_ssl: "{{ haproxy_ssl }}"
-      haproxy_port: 3142
+      haproxy_port: "{{ repo_pkg_cache_port }}"
       haproxy_balance_type: http
       haproxy_backend_options:
         - "httpchk HEAD /acng-report.html"

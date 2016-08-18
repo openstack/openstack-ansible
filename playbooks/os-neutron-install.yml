@@ -53,6 +53,7 @@
         login_host: "{{ neutron_galera_address }}"
         db_name: "{{ neutron_galera_database }}"
       when: inventory_hostname == groups['neutron_all'][0]
+    - include: common-tasks/package-cache-proxy.yml
 
     - name: Create the neutron provider networks facts
       provider_networks:

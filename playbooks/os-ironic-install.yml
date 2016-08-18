@@ -37,6 +37,7 @@
         login_host: "{{ ironic_galera_address }}"
         db_name: "{{ ironic_galera_database }}"
       when: inventory_hostname == groups['ironic_all'][0]
+    - include: common-tasks/package-cache-proxy.yml
   roles:
     - role: "os_ironic"
       ironic_venv_tag: "{{ openstack_release }}"
