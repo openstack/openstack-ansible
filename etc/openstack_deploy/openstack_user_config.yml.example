@@ -292,7 +292,7 @@
 #
 # --------
 #
-# Level: repo-infra_hosts (optional)
+# Level: repo-infra_hosts (required)
 # List of target hosts on which to deploy the package repository. Recommend
 # minimum three target hosts for this service. Typically contains the same
 # target hosts as the 'shared-infra_hosts' level.
@@ -315,10 +315,6 @@
 #     ip: 172.29.236.102
 #   infra3:
 #     ip: 172.29.236.103
-#
-# If you choose not to implement repository target hosts, you must configure
-# the 'openstack_repo_url' variable in the user_variables.yml file to
-# contain the URL of a host with an existing repository.
 #
 # --------
 #
