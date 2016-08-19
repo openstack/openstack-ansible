@@ -21,15 +21,15 @@ configuration directives. These files must be modified to define the
 target environment before running the Ansible playbooks. Configuration
 tasks include:
 
--  target host networking to define bridge interfaces and
-   networks
+-  Target host networking to define bridge interfaces and
+   networks.
 
--  a list of target hosts on which to install the software
+-  A list of target hosts on which to install the software.
 
--  virtual and physical network relationships for OpenStack
-   Networking (neutron)
+-  Virtual and physical network relationships for OpenStack
+   Networking (neutron).
 
--  passwords for all services
+-  Passwords for all services.
 
 --------------
 

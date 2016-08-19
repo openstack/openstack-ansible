@@ -11,7 +11,6 @@ Overview
    overview-network-arch.rst
    overview-storage-arch.rst
    overview-requirements.rst
-   overview-security.rst
    overview-workflow.rst
 
 --------------

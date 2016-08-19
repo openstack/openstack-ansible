@@ -1,5 +1,6 @@
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
+===========================================
 Overriding OpenStack configuration defaults
 ===========================================
 
@@ -22,8 +23,8 @@ guidance is available in the developer documentation in the section titled
 .. _OpenStack Configuration Reference: http://docs.openstack.org/draft/config-reference/
 .. _Setting overrides in configuration files: ../developer-docs/extending.html#setting-overrides-in-configuration-files
 
-Overriding .conf files
-~~~~~~~~~~~~~~~~~~~~~~
+Overriding ``.conf`` files
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The most common use-case for implementing overrides are for the
 ``<service>.conf`` files (for example, ``nova.conf``). These files use a
@@ -85,8 +86,8 @@ To assist you in finding the appropriate variable name to use for
 overrides, the general format for the variable name is:
 ``<service>_<filename>_<file extension>_overrides``.
 
-Overriding .json files
-~~~~~~~~~~~~~~~~~~~~~~
+Overriding ``.json`` files
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can adjust the default policies applied by services in order
 to implement access controls which are different to a standard OpenStack
@@ -110,8 +111,8 @@ entry in ``/etc/openstack_deploy/user_variables.yml``:
       identity:foo: "rule:admin_required"
       identity:bar: "rule:admin_required"
 
-Use this method for any ``JSON`` file format for all OpenStack projects
-deployed in OpenStack-Ansible.
+Use this method for all OpenStack projects
+deployed in OpenStack-Ansible with ``JSON`` file formats.
 
 To assist you in finding the appropriate variable name to use for
 overrides, the general format for the variable name is

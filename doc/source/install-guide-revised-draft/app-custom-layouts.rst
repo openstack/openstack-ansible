@@ -6,6 +6,7 @@ Appendix C: Customizing host and service layouts
 
 Understanding the default layout
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 The default layout of containers and services in OpenStack-Ansible is driven
 by the ``/etc/openstack_deploy/openstack_user_config.yml`` file and the
 contents of both the ``/etc/openstack_deploy/conf.d/`` and
@@ -27,12 +28,13 @@ desire before running the installation playbooks.
 
 Understanding host groups
 -------------------------
+
 As part of initial configuration, each target host appears in either the
 ``/etc/openstack_deploy/openstack_user_config.yml`` file or in files within
 the ``/etc/openstack_deploy/conf.d/`` directory. We use a format for files in
 ``conf.d/`` which is identical to the syntax used in the
 ``openstack_user_config.yml`` file. These hosts are listed under one or more
-headings such as ``shared-infra_hosts`` or ``storage_hosts`` which serve as
+headings, such as ``shared-infra_hosts`` or ``storage_hosts``, which serve as
 Ansible group mappings. We treat these groupings as mappings to the physical
 hosts.
 
@@ -40,7 +42,7 @@ The example file ``haproxy.yml.example`` in the ``conf.d/`` directory provides
 a simple example of defining a host group (``haproxy_hosts``) with two hosts
 (``infra1`` and ``infra2``).
 
-A more complex example file is ``swift.yml.example``. Here, in addition, we
+A more complex example file is ``swift.yml.example``. Here, we
 specify host variables for a target host using the ``container_vars`` key.
 OpenStack-Ansible applies all entries under this key as host-specific
 variables to any component containers on the specific host.
@@ -53,6 +55,7 @@ variables to any component containers on the specific host.
 
 Understanding container groups
 ------------------------------
+
 Additional group mappings can be found within files in the
 ``/etc/openstack_deploy/env.d/`` directory. These groupings are treated as
 virtual mappings from the host groups (described above) onto the container
@@ -88,7 +91,7 @@ The default layout does not rely exclusively on groups being subsets of other
 groups. The ``memcache`` component group is part of the ``memcache_container``
 group, as well as the ``memcache_all`` group and also contains a ``memcached``
 component group. If you review the ``playbooks/memcached-install.yml``
-playbook you see that the playbook applies to hosts in the ``memcached``
+playbook, you see that the playbook applies to hosts in the ``memcached``
 group. Other services may have more complex deployment needs. They define and
 consume inventory container groups differently. Mapping components to several
 groups in this way allows flexible targeting of roles and tasks.
@@ -117,20 +120,19 @@ is the same for a service deployed directly onto the host.
 Omit a service or component from the deployment
 -----------------------------------------------
 
-To omit a component from a deployment, several options exist.
+To omit a component from a deployment, several options exist:
 
-- You could remove the ``physical_skel`` link between the container group and
-  the host group. The simplest way to do this is to simply delete the related
+- Remove the ``physical_skel`` link between the container group and
+  the host group. The simplest way to do this is to delete the related
   file located in the ``env.d/`` directory.
-- You could choose to not run the playbook which installs the component.
-  Unless you specify the component to run directly on a host using is_metal, a
-  container creates for this component.
-- You could adjust the ``affinity`` to 0 for the host group. Unless you
-  specify the component to run directly on a host using is_metal, a container
-  creates for this component. `Affinity`_ is discussed in the initial
-  environment configuration section of the install guide.
+- Do not run the playbook which installs the component.
+  Unless you specify the component to run directly on a host using
+  ``is_metal``, a container creates for this component.
+- Adjust the `affinity`_ to 0 for the host group. Unless you
+  specify the component to run directly on a host using ``is_metal``,
+  a container creates for this component.
 
-.. _Affinity: configure-initial.html#affinity
+.. _affinity: app-advanced-config-affinity.rst
 
 Deploying existing components on dedicated hosts
 ------------------------------------------------
@@ -160,10 +162,10 @@ segment of the ``env.d/galera.yml`` file might look like:
    ``is_metal: true`` property. We include it here as a recipe for the more
    commonly requested layout.
 
-Since we define the new container group (``db_containers`` above) we must
+Since we define the new container group (``db_containers`` above), we must
 assign that container group to a host group. To assign the new container
 group to a new host group, provide a ``physical_skel`` for the new host group
-(in a new or existing file, such as ``env.d/galera.yml``) like the following:
+(in a new or existing file, such as ``env.d/galera.yml``). For example:
 
 .. code-block:: yaml
 
@@ -176,7 +178,7 @@ group to a new host group, provide a ``physical_skel`` for the new host group
           - hosts
 
 Lastly, define the host group (db_hosts above) in a ``conf.d/`` file (such as
-``galera.yml``).
+``galera.yml``):
 
 .. code-block:: yaml
 

@@ -17,7 +17,7 @@ Target hosts
 
 On each target host, perform the following tasks:
 
--  Naming target hosts
+-  Name the target hosts
 
 -  Install the operating system
 

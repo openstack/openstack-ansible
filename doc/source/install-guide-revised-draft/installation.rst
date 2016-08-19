@@ -31,9 +31,11 @@ Before running any playbook, check the integrity of your configuration files:
    YAML compliant. Guidelines can be found here:
    `<http://docs.ansible.com/ansible/YAMLSyntax.html>`_
 
-#. Check the integrity of your YAML files:
+#. Check the integrity of your YAML files.
 
-   .. note:: Here is an online linter: `<http://www.yamllint.com/>`_
+   .. note::
+
+      To check your lint online, we recommend: `<http://www.yamllint.com/>`_.
 
 #. Run your command with ``syntax-check``:
 
@@ -41,11 +43,9 @@ Before running any playbook, check the integrity of your configuration files:
 
       # openstack-ansible setup-infrastructure.yml --syntax-check
 
-#. Recheck that all indentation is correct.
-
-   .. note::
-      The syntax of the configuration files can be correct
-      while not being meaningful for OpenStack-Ansible.
+#. Recheck that all indentation is correct. This is important as the syntax
+   of the configuration files can be correct while not being meaningful for
+   OpenStack-Ansible.
 
 Run playbooks
 ~~~~~~~~~~~~~
@@ -204,9 +204,9 @@ configuration and testing.
       | e59e4379730b41209f036bbeac51b181 | keystone           |
       +----------------------------------+--------------------+
 
-**Verifying the dashboard**
+**Verifying the Dashboard**
 
-#. With a web browser, access the dashboard using the external load
+#. With a web browser, access the Dashboard using the external load
    balancer IP address defined by the ``external_lb_vip_address`` option
    in the ``/etc/openstack_deploy/openstack_user_config.yml`` file. The
    dashboard uses HTTPS on port 443.

@@ -7,7 +7,6 @@ Storage architecture
 OpenStack-Ansible supports Block Storage (cinder), Ephemeral storage
 (nova), Image service (glance) and Object Storage (swift).
 
-
 Block Storage (cinder)
 ~~~~~~~~~~~~~~~~~~~~~~
 
@@ -33,8 +32,8 @@ NFS) set up a container inside one of the infra hosts.
     For more information: `<https://specs.openstack.org/openstack/cinder-specs/specs/mitaka/cinder-volume-active-active-support.html>`_.
 
 
-Configuring the Block Storage service (cinder)
-----------------------------------------------
+Configuring the Block Storage service
+-------------------------------------
 
 Configure ``cinder-api`` infra hosts with ``br-storage`` and ``br-mgmt``.
 Configure ``cinder-volumes`` hosts with ``br-storage`` and ``br-mgmt``.
@@ -59,8 +58,8 @@ actual swift objects are stored on separate physical hosts.
     The swift proxy service is responsible for storage, retrieval, encoding and
     decoding of objects from an object server.
 
-Configuring the Object Storage (swift)
---------------------------------------
+Configuring the Object Storage
+------------------------------
 
 Ensure the swift proxy hosts are configured with ``br-mgmt`` and
 ``br-storage``. Ensure storage hosts are on ``br-storage``. When using
@@ -97,8 +96,8 @@ creation or deletion). These messages are then sent to
 ``nova-conductor`` which in turn pushes messages to ``nova-compute``
 on the compute host.
 
-Configuring the ephemeral storage (nova)
-----------------------------------------
+Configuring the ephemeral storage
+---------------------------------
 
 All nova containers on the infra hosts communicate using the AMQP service over
 the management network ``br-mgmt``.
@@ -124,8 +123,8 @@ Image service (glance)
 The glance API and volume service runs in the glance container on
 infra hosts.
 
-Configuring the Image service (glance)
---------------------------------------
+Configuring the Image service
+-----------------------------
 Configure glance-volume container to use the ``br-storage`` and
 ``br-mgmt`` interfaces.
 

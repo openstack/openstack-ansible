@@ -7,8 +7,8 @@ and is currently under development.
 
 `Home <index.html>`_ OpenStack-Ansible Installation Guide
 
-Table of Contents
-^^^^^^^^^^^^^^^^^
+Table of contents
+~~~~~~~~~~~~~~~~~
 
 .. toctree::
    :maxdepth: 2

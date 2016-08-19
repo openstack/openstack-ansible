@@ -1,8 +1,8 @@
 `Home <index.html>`__ OpenStack-Ansible Installation Guide
 
-========
-Security
-========
+=====================
+Appendix D: Security
+=====================
 
 The OpenStack-Ansible project provides several security features for
 OpenStack deployments. This section of documentation covers those

@@ -63,7 +63,7 @@ Logging hosts
   environment. Reserve a minimum of 50GB of disk space for storing
   logs on the logging hosts.
 
-Hosts that provide Block Storage (cinder) volumes must have logical volume
+Hosts that provide Block Storage volumes must have logical volume
 manager (LVM) support. Ensure those hosts have a ``cinder-volumes`` volume
 group that OpenStack-Ansible can configure for use with cinder.
 
@@ -83,7 +83,7 @@ Network requirements
    network interface. This works for small environments, but it can cause
    problems when your environment grows.
 
-For the best performance, reliability and scalability in a production
+For the best performance, reliability, and scalability in a production
 environment, deployers should consider a network configuration that contains
 the following features:
 
@@ -94,8 +94,7 @@ the following features:
   hardware, rather than in the server's main CPU.
 
 * Gigabit or 10 Gigabit Ethernet: Supports higher network speeds, which can
-  also improve storage performance when using the Block Storage (cinder)
-  service.
+  also improve storage performance when using the Block Storage service.
 
 * Jumbo frames: Increases network performance by allowing more data to be sent
   in each packet.
