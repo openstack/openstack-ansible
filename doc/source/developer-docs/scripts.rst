@@ -208,19 +208,27 @@ following jobs:
 * ``gate-openstack-ansible-releasenotes``: This job executes the
   `Release Notes Build`_.
 
-* ``gate-openstack-ansible-docs``: This job executes the
+* ``gate-openstack-ansible-docs-ubuntu-xenial``: This job executes the
   `Documentation Build`_.
 
-* ``gate-openstack-ansible-linters``: This job executes the `Lint Tests`_.
+* ``gate-openstack-ansible-linters-ubuntu-xenial``: This job executes
+  the `Lint Tests`_.
 
-* ``gate-openstack-ansible-dsvm-commit``: This job executes the
-  ``gate-check-commit.sh`` script which executes a convergence test and then a
-  functional test.
+* ``gate-openstack-ansible-openstack-ansible-aio-ubuntu-trusty``: where
+  ``aio`` is the scenario, ``ubuntu`` is the distribution, and ``trusty``
+  is the version of the distribution.
 
-  The convergence test is the execution of an AIO build
-  which aims to test the primary code path for a functional environment. The
-  functional test then executes OpenStack's Tempest testing suite to verify
-  that the environment that has deployed successfully actually works.
+  The same test is executed against multiple distribution versions, and
+  may be executed against multiple distributions and multiple scenarios
+  too.
+
+  This job executes the ``gate-check-commit.sh`` script which executes a
+  convergence test and then a functional test.
+
+  The convergence test is the execution of an AIO build which aims to test
+  the primary code path for a functional environment. The functional test
+  then executes OpenStack's Tempest testing suite to verify that the
+  environment that has deployed successfully actually works.
 
   While this script is primarily developed and maintained for use in
   OpenStack-CI, it can be used in other environments.
