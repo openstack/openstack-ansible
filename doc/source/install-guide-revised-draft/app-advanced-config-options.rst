@@ -10,6 +10,7 @@ Appendix D: Advanced configuration
    app-advanced-config-override
    app-advanced-config-security
    app-advanced-config-sslcertificates
+   app-advanced-config-affinity
 
 --------------
 
