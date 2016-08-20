@@ -1,0 +1,11 @@
+---
+features:
+  - If there are swift hosts in the environment, then the value for
+    ``glance_default_store`` will automatically be set to ``swift``.
+    This negates the need to set this variable in ``user_variables.yml``,
+    but the value may still be overridden at the deployer discretion.
+upgrade:
+  - If there are swift hosts in the environment, then the value for
+    ``glance_default_store`` will automatically be set to ``swift``.
+    This negates the need to set this variable in ``user_variables.yml``,
+    but the value may still be overridden at the deployer discretion.

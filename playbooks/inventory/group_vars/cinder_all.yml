@@ -13,6 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# If there are Swift hosts in the environment, then use it as the default Glance store
+# This is specifically duplicated from glance_all for the cinder_glance_api_version
+# setting below.
+glance_default_store: "{{ ((groups['swift_all'] is defined) and (groups['swift_all'] | length > 0)) | ternary('swift', 'file') }}"
+
 # cinder_backend_lvm_inuse: True if current host has an lvm backend
 cinder_backend_lvm_inuse: '{{ (cinder_backends|default("")|to_json).find("cinder.volume.drivers.lvm.LVMVolumeDriver") != -1 }}'
 cinder_service_region: "{{ service_region }}"

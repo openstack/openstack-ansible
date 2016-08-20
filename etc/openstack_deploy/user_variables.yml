@@ -22,11 +22,14 @@
 debug: false
 
 ## Common Glance Overrides
-# Set glance_default_store to "swift" if using Cloud Files or swift backend
+# Set glance_default_store to "swift" if using Cloud Files backend
 # or "rbd" if using ceph backend; the latter will trigger ceph to get
 # installed on glance. If using a file store, a shared file store is
 # recommended. See the OpenStack-Ansible install guide and the OpenStack
 # documentation for more details.
+# Note that "swift" is automatically set as the default back-end if there
+# are any swift hosts in the environment. Use this setting to override
+# this automation if you wish for a different default back-end.
 # glance_default_store: file
 
 ## Ceph pool name for Glance to use
