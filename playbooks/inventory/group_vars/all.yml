@@ -22,6 +22,16 @@ debug: False
 ## SSH connection wait time
 ssh_delay: 5
 
+# Set the package install state for distribution packages
+# Options are 'present' and 'latest'
+package_state: "latest"
+
+# Ensure that the package state matches the global setting
+ceph_client_package_state: "{{ package_state }}"
+galera_client_package_state: "{{ package_state }}"
+pip_install_package_state: "{{ package_state }}"
+rsyslog_client_package_state: "{{ package_state }}"
+
 # These are pinned to ensure exactly the same behaviour forever!
 # These pins are updated through the sources-branch-updater script
 pip_packages:

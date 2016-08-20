@@ -14,3 +14,6 @@
 # limitations under the License.
 
 rsyslog_server_storage_directory: /var/log/log-storage
+
+# Ensure that the package state matches the global setting
+rsyslog_package_state: "{{ package_state }}"

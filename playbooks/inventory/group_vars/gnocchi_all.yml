@@ -20,3 +20,6 @@ gnocchi_service_internalurl: "{{ gnocchi_service_internaluri_proto }}://{{ inter
 
 gnocchi_ssl_external: "{{ openstack_external_ssl }}"
 gnocchi_service_region: "{{ service_region }}"
+
+# Ensure that the package state matches the global setting
+gnocchi_package_state: "{{ package_state }}"

@@ -20,3 +20,6 @@ tempest_log_dir: /var/log/utility
 # utility_ssh_private_key: "{{ lookup('file', '/root/.ssh/id_rsa') }}"
 
 galera_client_drop_config_file: true
+
+# Ensure that the package state matches the global setting
+utility_package_state: "{{ package_state }}"

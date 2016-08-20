@@ -20,3 +20,6 @@ ceilometer_service_in_ldap: "{{ service_ldap_backend_enabled }}"
 
 ceilometer_aodh_enabled: groups['aodh_all'] is defined and groups['aodh_all'] | length > 0
 ceilometer_gnocchi_enabled: groups['gnocchi_all'] is defined and groups['gnocchi_all'] | length > 0
+
+# Ensure that the package state matches the global setting
+ceilometer_package_state: "{{ package_state }}"

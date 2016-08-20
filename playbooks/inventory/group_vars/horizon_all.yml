@@ -26,3 +26,6 @@ horizon_enable_neutron_vpnaas: "{{ neutron_plugin_base is defined and 'vpnaas' i
 horizon_enable_ha_router: "{{ neutron_plugin_type.split('.')[0] == 'ml2' and (groups['neutron_l3_agent'] | length >= 2) }}"
 horizon_rabbitmq_userid: horizon
 horizon_rabbitmq_vhost: /horizon
+
+# Ensure that the package state matches the global setting
+horizon_package_state: "{{ package_state }}"
