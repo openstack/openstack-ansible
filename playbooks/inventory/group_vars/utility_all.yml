@@ -21,5 +21,8 @@ tempest_log_dir: /var/log/utility
 
 galera_client_drop_config_file: true
 
+# If cinder has a backup service enabled, make sure that Tempest tests it
+tempest_volume_backup_enabled: "{{ cinder_service_backup_program_enabled | bool }}"
+
 # Ensure that the package state matches the global setting
 utility_package_state: "{{ package_state }}"
