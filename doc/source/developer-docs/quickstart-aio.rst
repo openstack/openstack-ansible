@@ -224,18 +224,18 @@ isn't always practical. As such the following may be executed instead:
        # #  within a container.
        # for i in \
               $(ls /etc/init \
-                | grep -e "nova\|swift\|neutron" \
+                | grep -e "nova\|swift\|neutron\|cinder" \
                 | awk -F'.' '{print $1}'); do \
            service $i stop; \
          done
 
        # # Uninstall the core services that were installed.
-       # for i in $(pip freeze | grep -e "nova\|neutron\|keystone\|swift"); do \
+       # for i in $(pip freeze | grep -e "nova\|neutron\|keystone\|swift\|cinder"); do \
            pip uninstall -y $i; done
 
        # # Remove crusty directories.
-       # rm -rf /openstack /etc/{neutron,nova,swift} \
-                /var/log/{neutron,nova,swift}
+       # rm -rf /openstack /etc/{neutron,nova,swift,cinder} \
+                /var/log/{neutron,nova,swift,cinder}
 
        # # Remove the pip configuration files on the host
        # rm -rf /root/.pip
