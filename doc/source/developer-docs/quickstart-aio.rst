@@ -16,7 +16,7 @@ they're great for smaller proof-of-concept deployments.
 Absolute minimum server resources (currently used for gate checks):
 
 * 8 vCPU's
-* 60GB free disk space on the root partition
+* 50GB free disk space on the root partition
 * 8GB RAM
 
 Recommended server resources:
