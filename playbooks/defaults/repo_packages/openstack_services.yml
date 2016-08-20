@@ -78,7 +78,7 @@ neutron_lbaas_dashboard_git_dest: "/opt/neutron_lbaas_dashboard_{{ neutron_lbaas
 
 ## Keystone service
 keystone_git_repo: https://git.openstack.org/openstack/keystone
-keystone_git_install_branch: f8c65c10dfe55787e9d5755f4986e8808aa6aa28 # HEAD of "stable/mitaka" as of 15.08.2016
+keystone_git_install_branch: 3a1e41fecfe9e4b7dfa8391476202c3113456c89 # HEAD of "stable/mitaka" as of 19.08.2016
 keystone_git_dest: "/opt/keystone_{{ keystone_git_install_branch | replace('/', '_') }}"
 
 
