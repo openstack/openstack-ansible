@@ -40,7 +40,7 @@ OpenStack-Ansible deployments. For more details on what traffic is encrypted,
 and how to configure SSL certificates, see
 `Securing services with SSL certificates`_.
 
-.. _Securing services with SSL certificates: configure-sslcertificates.html
+.. _Securing services with SSL certificates: app-advanced-config-sslcertificates.html
 
 Host security hardening
 ~~~~~~~~~~~~~~~~~~~~~~~
