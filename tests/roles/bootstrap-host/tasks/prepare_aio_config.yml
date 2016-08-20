@@ -78,6 +78,13 @@
     - nodepool_dir.stat.exists
     - bootstrap_host_ubuntu_repo is defined
 
+- name: Set the package cache timeout to 60 mins in OpenStack-CI
+  set_fact:
+    cache_timeout: 3600
+  when:
+    - cache_timeout is not defined
+    - nodepool_dir.stat.exists
+
 - name: Determine if the host has a global pip config file
   stat:
     path: /etc/pip.conf

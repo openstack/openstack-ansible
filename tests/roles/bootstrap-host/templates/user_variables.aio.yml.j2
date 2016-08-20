@@ -83,6 +83,11 @@ repo_build_pip_extra_indexes:
 uca_apt_repo_url: {{ uca_apt_repo_url }}
 {% endif %}
 
+{% if cache_timeout is defined %}
+## Package cache timeout
+cache_timeout: {{ cache_timeout }}
+{% endif %}
+
 ## Instruct the gate to always build libvirt-python from pip source
 repo_build_pip_no_binary:
   - libvirt-python
