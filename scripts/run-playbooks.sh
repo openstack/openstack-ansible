@@ -45,7 +45,19 @@ If you ever have any questions please join the community conversation on IRC at
 }
 
 function playbook_run {
+
+  # First we gather facts about the hosts to populate the fact cache.
+  # We can't gather the facts for all hosts yet because the containers
+  # aren't built yet.
+  ansible -m setup -a "gather_subset=!facter,!ohai" hosts
+
   for root_include in $(awk -F'include:' '{print $2}' setup-everything.yml); do
+    # Once setup-hosts is complete, we should gather facts for everything
+    # (now including containers) so that the fact cache is complete for the
+    # remainder of the run.
+    if [[ "${root_include}" == "setup-infrastructure.yml" ]]; then
+      ansible -m setup -a "gather_subset=!facter,!ohai" all
+    fi
     for include in $(awk -F'include:' '{print $2}' "${root_include}"); do
       echo "[Executing \"${include}\" playbook]"
       if [[ "${DEPLOY_AIO}" = true ]] && [[ "${include}" == "security-hardening.yml" ]]; then
