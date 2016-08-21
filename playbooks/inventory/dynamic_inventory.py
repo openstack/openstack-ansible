@@ -500,7 +500,8 @@ def skel_setup(environment, inventory):
 def skel_load(skeleton, inventory):
     """Build out data as provided from the defined `skel` dictionary.
 
-    :param skeleton:
+    :param skeleton: ``dict`` Dictionary defining group and component
+        memberships for the inventory.
     :param inventory: ``dict``  Living dictionary of inventory
     """
     for key, value in skeleton.iteritems():
@@ -534,10 +535,11 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
     If the host is found to be "is_metal" it will be marked as "on_metal"
     and will not have an additionally assigned IP address.
 
-    :param key: ``str`` Component key name.
+    :param key: ``str`` Component key name. This could be a group or a host
+        name
     :param inventory: ``dict``  Living dictionary of inventory.
     :param ip_q: ``object`` build queue of IP addresses.
-    :param q_name: ``str`` key to use in host vars for storage.
+    :param q_name: ``str`` key to use in host vars for storage. May be blank.
     :param netmask: ``str`` netmask to use.
     :param interface: ``str`` interface name to set for the network.
     :param user_config: ``dict`` user defined configuration details.
@@ -737,9 +739,11 @@ def find_config_path(user_config_path=None):
     """Return the path to the user configuration files.
 
     If no directory is found the system will exit.
+
     The lookup will be done in the following directories:
-      $(user_config_path)/
-      /etc/openstack_deploy/
+
+      * user_config_path
+      * ``/etc/openstack_deploy/``
 
     :param user_config_path: ``str`` Location to look in FIRST for a file
     """
@@ -993,7 +997,7 @@ def _check_config_settings(cidr_networks, config, container_skel):
 def load_environment(config_path, environment):
     """Create an environment dictionary from config files
 
-    :param config_path: ``str``path where the environment files are kept
+    :param config_path: ``str`` path where the environment files are kept
     :param environment: ``dict`` dictionary to populate with environment data
     """
 

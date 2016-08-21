@@ -142,6 +142,12 @@ Use the host's name as an argument.
 
 ..  _`dynamic inventory functionality`: http://docs.ansible.com/ansible/intro_dynamic_inventory.html
 
+Dynamic Inventory API documentation
+-----------------------------------
+
+.. automodule:: dynamic_inventory
+   :members:
+
 --------------
 
 .. include:: navigation.txt

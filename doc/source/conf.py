@@ -26,10 +26,12 @@ import openstackdocstheme
 import os
 import pbr.version
 from subprocess import Popen, PIPE
+import sys
+
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-# sys.path.insert(0, os.path.abspath('.'))
+sys.path.insert(0, os.path.abspath('../../playbooks/inventory/'))
 
 # -- General configuration ------------------------------------------------
 
@@ -40,7 +42,7 @@ from subprocess import Popen, PIPE
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 # TODO(ajaeger): enable PDF building, for example add 'rst2pdf.pdfbuilder'
-extensions = []
+extensions = ['sphinx.ext.autodoc']
 
 # Add any paths that contain templates here, relative to this directory.
 #templates_path = ['_templates']
