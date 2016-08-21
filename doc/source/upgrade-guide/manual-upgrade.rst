@@ -206,6 +206,15 @@ See :ref:`memcached-flush` for details.
 
     # openstack-ansible "${UPGRADE_PLAYBOOKS}/memcached-flush.yml"
 
+Stop and remove ``aodh-api`` service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+See :ref:`aodh-api-init-delete` for details.
+
+.. code-block:: console
+
+    # openstack-ansible "${UPGRADE_PLAYBOOKS}/aodh-api-init-delete.yml"
+
 Upgrade OpenStack
 ~~~~~~~~~~~~~~~~~
 
