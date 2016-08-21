@@ -50,6 +50,7 @@
   lineinfile:
     dest: /etc/rc.local
     line: "losetup $(losetup -f) /openstack/cinder.img"
+    insertbefore: "^exit 0$"
   tags:
     - cinder-rc-config
 
