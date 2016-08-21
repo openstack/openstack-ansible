@@ -737,7 +737,6 @@ class TestMultipleRuns(unittest.TestCase):
 
         inventory_file_path = os.path.join(TARGET_DIR,
                                            'openstack_inventory.json')
-
         inv = di.get_inventory(TARGET_DIR, inventory_file_path)
         self.assertIsInstance(inv, dict)
         self.assertIn('_meta', inv)
@@ -999,6 +998,23 @@ class TestSetUsedIPS(unittest.TestCase):
 
     def tearDown(self):
         di.USED_IPS = set()
+
+
+class TestConfigCheckFunctional(TestConfigCheckBase):
+    def duplicate_ip(self):
+        ip = self.user_defined_config['log_hosts']['aio1']
+        self.user_defined_config['log_hosts']['bogus'] = ip
+
+    def test_checking_good_config(self):
+        output = di.main({'config': TARGET_DIR, 'check': True})
+        self.assertEqual(output, 'Configuration ok!')
+
+    def test_duplicated_ip(self):
+        self.duplicate_ip()
+        self.write_config()
+        with self.assertRaises(di.MultipleHostsWithOneIPError) as context:
+            di.main({'config': TARGET_DIR, 'check': True})
+        self.assertEqual(context.exception.ip, '172.29.236.100')
 
 
 if __name__ == '__main__':

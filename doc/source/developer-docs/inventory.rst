@@ -101,6 +101,17 @@ The same JSON structure is printed to stdout, which is consumed by Ansible as
 the inventory for the playbooks.
 
 
+Checking Inventory Configuration for Errors
+-------------------------------------------
+
+Using the ``--check`` flag when running ``dynamic_inventory.py`` will run the
+inventory build process and look for known errors, but not write any files to
+disk.
+
+This check does not do YAML syntax validation, though it will fail if there
+are unparseable errors.
+
+
 Inspecting and Managing the Inventory
 -------------------------------------
 
