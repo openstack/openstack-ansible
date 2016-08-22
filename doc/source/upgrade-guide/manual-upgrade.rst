@@ -57,17 +57,16 @@ inventory is found automatically.
 
     # cd playbooks
 
-Cleanup old facts
-~~~~~~~~~~~~~~~~~
+Clean up old facts
+~~~~~~~~~~~~~~~~~~
 
-Some configuration changed, and old facts should be purged before
-the upgrade.
+Purge old facts before beginning the upgrade.
 
 See :ref:`fact-cleanup-playbook` for more details.
 
 .. code-block:: console
 
-    # openstack-ansible "${UPGRADE_PLAYBOOKS}/ansible_fact_cleanup.yml"
+    # openstack-ansible "${UPGRADE_PLAYBOOKS}/01_ansible_fact_cleanup.yml"
 
 Update configuration and environment files
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -94,32 +93,6 @@ See :ref:`user-secrets-playbook` for more details.
 
     # openstack-ansible "${UPGRADE_PLAYBOOKS}/user-secrets-adjustment.yml"
 
-Upgrade hosts
-~~~~~~~~~~~~~
-
-Before installing the infrastructure and OpenStack, update the host machines.
-
-.. code-block:: console
-
-    # openstack-ansible setup-hosts.yml --limit '!galera_all[0]'
-
-This command is the same as doing host setups on a new install. The first
-member of the ``galera_all`` host group is excluded to prevent simultaneous
-restarts of all Galera containers.
-
-Update Galera LXC container configuration
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Update the first Galera container's configuration independently.
-
-.. code-block:: console
-
-    # openstack-ansible lxc-containers-create.yml --limit galera_all[0]
-
-This command is a subset of the host setup playbook, limited to the first
-member of the ``galera_all`` host group so that its container is restarted only
-after other Galera containers have been restarted in the previous step.
-
 Cleanup ``pip.conf`` file
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -144,6 +117,16 @@ See :ref:`old-hostname-compatibility` for details.
 
     # openstack-ansible "${UPGRADE_PLAYBOOKS}/old-hostname-compatibility.yml"
 
+Upgrade hosts
+~~~~~~~~~~~~~
+
+The next step is upgrading your hosts. Avoid upgrading the Galera cluster
+nodes to prevent changes in the cluster.
+
+.. code-block:: console
+
+   # openstack-ansible setup-hosts.yml --limit '!galera_all'
+
 Restart Rabbitmq containers
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -155,21 +138,73 @@ See :ref:`restart-rabbitmq` for details.
 
     # openstack-ansible "${UPGRADE_PLAYBOOKS}/restart-rabbitmq-containers.yml"
 
-Upgrade infrastructure
-~~~~~~~~~~~~~~~~~~~~~~
+Clean up old facts
+~~~~~~~~~~~~~~~~~~
 
-Running the standard OpenStack-Ansible infrastructure playbook applies the
-relevant Mitaka settings and packages. This upgrade is required for the Mitaka
-release of OpenStack-Ansible.
+Facts are purged as container hostnames have changed after running the
+``old-hostname-compatibility.yml`` playbook. Failing to do this could
+result in a failure in upgrading RabbitMQ.
 
-For certain versions of Liberty, you must upgrade the RabbitMQ service.
-
-See :ref:`setup-infra-playbook` for details.
+See :ref:`fact-cleanup-playbook` for more details.
 
 .. code-block:: console
 
-    # openstack-ansible setup-infrastructure.yml -e 'galera_upgrade=true' \
-    -e 'rabbitmq_upgrade=true'
+    # openstack-ansible "${UPGRADE_PLAYBOOKS}/02_ansible_fact_cleanup.yml"
+
+Update Galera LXC container configuration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The ``setup-hosts.yml`` playbook above skipped the Galera nodes. In this step,
+the ``lxc-container-create.yml`` playbook applies changes to Galera containers
+while preventing them from restarting.
+
+.. code-block:: console
+
+   # openstack-ansible lxc-containers-create.yml -e \
+     'lxc_container_allow_restarts=false' --limit galera_all
+
+Upgrade repositories
+~~~~~~~~~~~~~~~~~~~~
+
+Running the OpenStack-Ansible ``repo-install.yml`` playbook
+prepares the repo server with all the packages needed for Mitaka.
+
+.. code-block:: console
+
+   # openstack-ansible repo-install.yml
+
+Upgrade Galera
+~~~~~~~~~~~~~~
+
+Running the OpenStack-Ansible ``galera-install.yml`` playbook
+ensures Galera is running on the latest Mitaka.
+
+.. code-block:: console
+
+   # openstack-ansible galera-install.yml -e 'galera_upgrade=true'
+
+Restart Galera
+~~~~~~~~~~~~~~
+
+After the Galera update in the previous step, restart the cluster
+in a controlled fashion.
+
+.. code-block:: console
+
+   # openstack-ansible "${UPGRADE_PLAYBOOKS}/galera-cluster-rolling-restart.yml"
+
+Upgrade the remaining infrastructure
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Run the remaining parts of the ``setup-infrastructure.yml`` playbook.
+
+.. code-block:: console
+
+   # openstack-ansible haproxy-install.yml
+   # openstack-ansible memcached-install.yml
+   # openstack-ansible rabbitmq-install.yml -e 'rabbitmq_upgrade=true'
+   # openstack-ansible utility-install.yml
+   # openstack-ansible rsyslog-install.yml
 
 Flush Memcached cache
 ~~~~~~~~~~~~~~~~~~~~~
