@@ -149,7 +149,7 @@ function main {
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/01_ansible_fact_cleanup.yml")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/deploy-config-changes.yml")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/user-secrets-adjustment.yml")
-        RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/repo-server-pip-conf-removal.yml")
+        RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/pip-conf-removal.yml")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/old-hostname-compatibility.yml")
         # we don't want to trigger galera container restarts yet
         RUN_TASKS+=("setup-hosts.yml --limit '!galera_all'")

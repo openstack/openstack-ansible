@@ -14,7 +14,7 @@
 # limitations under the License.
 
 - name: Remove pip.conf if found
-  hosts: repo_all
+  hosts: hosts:repo_all
   gather_facts: true
   user: root
   tasks:
