@@ -24,6 +24,7 @@ set -e -u -v
 export SCRIPTS_PATH="$(dirname "$(readlink -f "${0}")")"
 export MAIN_PATH="$(dirname "${SCRIPTS_PATH}")"
 export UPGRADE_PLAYBOOKS="${SCRIPTS_PATH}/upgrade-utilities/playbooks"
+export I_REALLY_KNOW_WHAT_I_AM_DOING=${I_REALLY_KNOW_WHAT_I_AM_DOING:-"false"}
 
 ## Functions -----------------------------------------------------------------
 
@@ -106,7 +107,7 @@ function pre_flight {
 
     # Notify the user.
     echo -e "
-    This script will perform a v11.x to v12.x upgrade.
+    This script will perform a v13.x to v14.x upgrade.
     Once you start the upgrade there's no going back.
 
     Note, this is an online upgrade and while the
@@ -120,7 +121,7 @@ function pre_flight {
     # Confirm the user is ready to upgrade.
     read -p 'Enter "YES" to continue or anything else to quit: ' UPGRADE
     if [ "${UPGRADE}" == "YES" ]; then
-      echo "Running Upgrade from v11.x to v12.x"
+      echo "Running Upgrade from v13.x to v14.x"
     else
       exit 99
     fi
