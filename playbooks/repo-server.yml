@@ -19,11 +19,29 @@
   max_fail_percentage: 20
   user: root
   pre_tasks:
+
+    - name: Check if the git cache exists on deployment host
+      local_action:
+        module: stat
+        path: "{{ repo_build_git_cache }}"
+      register: _local_git_cache
+      when: repo_build_git_cache is defined
+
     - include: common-tasks/os-lxc-container-setup.yml
       vars:
-        list_of_bind_mounts:
-          - bind_dir_path: "/var/www"
-            mount_path: "/openstack/{{ inventory_hostname }}"
+        list_of_bind_mounts: "{{ repo_all_lxc_container_bind_mounts }}"
+      when: repo_build_git_cache is not defined or not _local_git_cache.stat.exists
+
+    - include: common-tasks/os-lxc-container-setup.yml
+      vars:
+        repo_build_git_cache_bind_mount:
+          - mount_path: "{{ repo_build_git_cache }}"
+            bind_dir_path: "{{ repo_build_git_cache }}"
+        list_of_bind_mounts: "{{ repo_all_lxc_container_bind_mounts + repo_build_git_cache_bind_mount }}"
+      when:
+        - repo_build_git_cache is defined
+        - _local_git_cache.stat.exists
+
   roles:
     - { role: "repo_server", tags: [ "repo-server" ] }
     - role: "rsyslog_client"

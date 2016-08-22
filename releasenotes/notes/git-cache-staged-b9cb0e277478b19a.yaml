@@ -1,0 +1,9 @@
+---
+features:
+  - The repo build process is now able to synchronize a git cache from the
+    deployment node to the repo server. The git cache path on the deployment
+    node is set using the variable ``repo_build_git_cache``. If the
+    deployment node hosts the repo container, then the folder will be
+    symlinked into the bind mount for the repo container. If the deployment
+    node does not host the repo container, then the contents of the folder
+    will be synchronised into the repo container.
