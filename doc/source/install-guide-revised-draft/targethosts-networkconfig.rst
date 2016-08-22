@@ -10,8 +10,7 @@ Production environment
 This example allows you to use your own parameters for the deployment.
 
 If you followed the previously proposed design, the following table shows
-bridges that are to be configured on hosts.
-
+bridges that are to be configured on hosts:
 +-------------+-----------------------+-------------------------------------+
 | Bridge name | Best configured on    | With a static IP                    |
 +=============+=======================+=====================================+

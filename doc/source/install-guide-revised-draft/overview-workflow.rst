@@ -5,7 +5,7 @@ Installation workflow
 =====================
 
 This diagram shows the general workflow associated with an
-OpenStack-Ansible (OSA) installation.
+OpenStack-Ansible installation.
 
 
 .. figure:: figures/installation-workflow-overview.png

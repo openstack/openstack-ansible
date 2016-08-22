@@ -6,8 +6,8 @@
 Host layout
 ===========
 
-The hosts are called target hosts because Ansible deploys the OSA
-environment within these hosts. We recommend a
+The hosts are called target hosts because Ansible deploys the
+OpenStack-Ansible environment within these hosts. We recommend a
 deployment host from which Ansible orchestrates the deployment
 process. One of the target hosts can function as the deployment host.
 
