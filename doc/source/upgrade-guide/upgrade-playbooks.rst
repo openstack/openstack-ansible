@@ -36,14 +36,14 @@ into the upgraded environment and generate appropriately.
 This adds only new secrets, such as those necessary for new services or new settings
 added to existing services. Values set previously are not changed.
 
-.. _repo-server-pip-conf-removal:
+.. _pip-conf-removal:
 
-``repo-server-pip-conf-removal.yml``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+``pip-conf-removal.yml``
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 The presence of ``pip.conf`` locks down all Python installations to packages on the
-repo server. If ``pip.conf`` exists on the repo server, it creates a circular
-dependency, causing build failures.
+repo servers. If ``pip.conf`` exists on a repo server or a physical node, it will
+cause a circular dependency issue and the upgrade will fail.
 
 .. _old-hostname-compatibility:
 
