@@ -29,16 +29,18 @@ export DEBIAN_FRONTEND=${DEBIAN_FRONTEND:-"noninteractive"}
 # Set the role fetch mode to any option [galaxy, git-clone]
 export ANSIBLE_ROLE_FETCH_MODE=${ANSIBLE_ROLE_FETCH_MODE:-galaxy}
 
+# This script should be executed from the root directory of the cloned repo
+cd "$(dirname "${0}")/.."
+
 ## Functions -----------------------------------------------------------------
 info_block "Checking for required libraries." 2> /dev/null ||
-    source $(dirname ${0})/scripts-library.sh ||
     source scripts/scripts-library.sh
 
 ## Main ----------------------------------------------------------------------
 info_block "Bootstrapping System with Ansible"
 
 # Set the variable to the role file to be the absolute path
-ANSIBLE_ROLE_FILE="$(readlink -f ${ANSIBLE_ROLE_FILE})"
+ANSIBLE_ROLE_FILE="$(readlink -f "${ANSIBLE_ROLE_FILE}")"
 
 # Create the ssh dir if needed
 ssh_key_create
