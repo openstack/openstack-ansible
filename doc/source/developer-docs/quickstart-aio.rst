@@ -58,7 +58,7 @@ system packages are upgraded and then reboot into the new kernel:
 Start by cloning the OpenStack-Ansible repository and changing into the
 repository root directory:
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
        # git clone https://github.com/openstack/openstack-ansible \
            /opt/openstack-ansible
@@ -69,7 +69,7 @@ deploying from the head of a branch may result in an unstable build due to
 changes in flight and upstream OpenStack changes. For a test (ie not a
 development) build it is usually best to checkout the latest tagged version.
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
        # # List all existing tags.
        # git tag -l
@@ -98,14 +98,14 @@ example, if you wish to set the bootstrap to re-partition a specific
 secondary storage device (/dev/sdb), which will erase all of the data on the
 device, then execute:
 
-  .. code-block:: bash
+  .. code-block:: shell-session
 
       # export BOOTSTRAP_OPTS="bootstrap_host_data_disk_device=sdb"
 
 Additional options may be implemented by simply concatenating them with
 a space between each set of options, for example:
 
-  .. code-block:: bash
+  .. code-block:: shell-session
 
       # export BOOTSTRAP_OPTS="bootstrap_host_data_disk_device=sdb"
       # export BOOTSTRAP_OPTS="${BOOTSTRAP_OPTS} bootstrap_host_ubuntu_repo=http://mymirror.example.com/ubuntu"
@@ -133,7 +133,7 @@ development environment.  Deployers can customize roles by adding variables to
 override the defaults in each role (see :ref:`adding-galaxy-roles`).  Run the
 following to bootstrap Ansible:
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
        # scripts/bootstrap-ansible.sh
 
@@ -141,7 +141,7 @@ In order for all the services to run, the host must be prepared with the
 appropriate disks, packages, network configuration and a base configuration
 for the OpenStack Deployment. This preparation is completed by executing:
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
        # scripts/bootstrap-aio.sh
 
@@ -152,7 +152,7 @@ for more details.
 
 Finally, run the playbooks by executing:
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
        # scripts/run-playbooks.sh
 
@@ -178,7 +178,7 @@ various settings changes in ``/etc/openstack_deploy/user_variables.yml`` and
 only run individual playbooks. For example, to run the playbook for the
 Keystone service, execute:
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
        # cd /opt/openstack-ansible/playbooks
        # openstack-ansible os-keystone-install.yml
@@ -196,7 +196,7 @@ has to be re-initialized after the host is rebooted.
 
 This is done by executing the following:
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
       # cd /opt/openstack-ansible/playbooks
       # openstack-ansible -e galera_ignore_cluster_state=true galera-install.yml
@@ -212,7 +212,7 @@ Sometimes it may be useful to destroy all the containers and rebuild the AIO.
 While it is preferred that the AIO is entirely destroyed and rebuilt, this
 isn't always practical. As such the following may be executed instead:
 
-   .. code-block:: bash
+   .. code-block:: shell-session
 
        # # Move to the playbooks directory.
        # cd /opt/openstack-ansible/playbooks
