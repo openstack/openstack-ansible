@@ -156,19 +156,18 @@ This command is a subset of the host setup playbook, limited to the first
 member of the ``galera_all`` host group so that its container is restarted only
 after other Galera containers have been restarted in the previous step.
 
-Cleanup ``pip.conf`` file in the ``repo_servers``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Cleanup ``pip.conf`` file
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If a ``pip.conf`` file exists within the repository server
-infrastructure, it can cause build failures when upgrading
-to Newton. This play removes the ``pip.conf`` file from the repository
-servers.
+The presence of ``pip.conf`` file can cause build failures when upgrading to
+Newton. This play removes the ``pip.conf`` file on all the physical servers
+and on the repo containers.
 
-See :ref:`repo-server-pip-conf-removal` for more details.
+See :ref:`pip-conf-removal` for more details.
 
 .. code-block:: console
 
-    # openstack-ansible "${UPGRADE_PLAYBOOKS}/repo-server-pip-conf-removal.yml"
+    # openstack-ansible "${UPGRADE_PLAYBOOKS}/pip-conf-removal.yml"
 
 Ensure hostname aliases are created for non-RFC1034/35 hostnames
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
