@@ -117,6 +117,8 @@ ceilometer_rabbitmq_host_group: "rabbitmq_all"
 ceilometer_rabbitmq_port: "{{ rabbitmq_port }}"
 
 ## Cinder
+# If there are Swift hosts in the environment, then enable cinder backups to it
+cinder_service_backup_program_enabled: "{{ groups['swift_all'] is defined and groups['swift_all'] | length > 0 }}"
 # cinder_backend_rbd_inuse: True if current host has an rbd backend
 cinder_backend_rbd_inuse: '{{ (cinder_backends|default("")|to_json).find("cinder.volume.drivers.rbd.RBDDriver") != -1 }}'
 # cinder_backends_rbd_inuse: true if at least 1 cinder_backend on any
