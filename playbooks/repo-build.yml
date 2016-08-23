@@ -54,6 +54,7 @@
       register: _local_repo_bind_mount
       when:
         - inventory_hostname == groups['repo_all'][0]
+        - _local_git_cache.stat is defined
         - _local_git_cache.stat.exists
 
     - name: Check if the repo container bind mount is empty
@@ -84,6 +85,7 @@
         dest: "{{ repo_build_git_bind_mount }}"
         state: link
       when:
+        - _local_git_cache.stat is defined
         - _local_git_cache.stat.exists
         - _local_repo_bind_mount.stat is defined
         - _local_repo_bind_mount.stat.exists
@@ -93,6 +95,7 @@
         src: "{{ repo_build_git_cache }}"
         dest: "{{ repo_build_git_dir }}"
       when:
+        - _local_git_cache.stat is defined
         - _local_git_cache.stat.exists
         - _local_repo_bind_mount.stat is defined
         - not _local_repo_bind_mount.stat.exists
