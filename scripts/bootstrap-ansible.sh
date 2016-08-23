@@ -86,20 +86,22 @@ elif [ -n "$HTTP_PROXY" ]; then
   PIP_OPTS="--proxy $HTTP_PROXY"
 fi
 
-PIP_COMMAND=pip2
-if [ ! $(which "$PIP_COMMAND") ]; then
-  PIP_COMMAND=pip
-fi
-
 # Create a Virtualenv for the Ansible runtime
 PYTHON_EXEC_PATH="$(which python2 || which python)"
-virtualenv --always-copy --system-site-packages --python="${PYTHON_EXEC_PATH}" /opt/ansible-runtime
+virtualenv --clear --always-copy --system-site-packages --python="${PYTHON_EXEC_PATH}" /opt/ansible-runtime
 
 # Install ansible
 PIP_OPTS+=" --upgrade"
 PIP_COMMAND="/opt/ansible-runtime/bin/pip"
-# When upgrading there will already be a pip.conf file locking pip down to the repo server, in such cases it may be
-# necessary to use --isolated because the repo server does not meet the specified requirements.
+
+# When upgrading there will already be a pip.conf file locking pip down to the
+# repo server, in such cases it may be necessary to use --isolated because the
+# repo server does not meet the specified requirements.
+
+# Ensure we are running the required versions of pip, wheel and setuptools
+${PIP_COMMAND} install ${PIP_OPTS} ${PIP_INSTALL_OPTIONS} || ${PIP_COMMAND} install ${PIP_OPTS} --isolated ${PIP_INSTALL_OPTIONS}
+
+# Install the required packages for ansible
 $PIP_COMMAND install $PIP_OPTS -r requirements.txt ${ANSIBLE_PACKAGE} || $PIP_COMMAND install --isolated $PIP_OPTS -r requirements.txt ${ANSIBLE_PACKAGE}
 
 # Link the venv installation of Ansible to the local path
