@@ -50,36 +50,36 @@ should you need to customize your build:
 When building an AIO on a new server, it is recommended that all
 system packages are upgraded and then reboot into the new kernel:
 
-   .. code-block:: shell-session
+.. code-block:: shell-session
 
-       # apt-get dist-upgrade
-       # reboot
+   # apt-get dist-upgrade
+   # reboot
 
 Start by cloning the OpenStack-Ansible repository and changing into the
 repository root directory:
 
-   .. code-block:: shell-session
+.. code-block:: shell-session
 
-       # git clone https://github.com/openstack/openstack-ansible \
-           /opt/openstack-ansible
-       # cd /opt/openstack-ansible
+   # git clone https://github.com/openstack/openstack-ansible \
+       /opt/openstack-ansible
+   # cd /opt/openstack-ansible
 
 Next switch the applicable branch/tag to be deployed from. Note that
 deploying from the head of a branch may result in an unstable build due to
 changes in flight and upstream OpenStack changes. For a test (ie not a
 development) build it is usually best to checkout the latest tagged version.
 
-   .. code-block:: shell-session
+.. code-block:: shell-session
 
-       # # List all existing tags.
-       # git tag -l
+   # # List all existing tags.
+   # git tag -l
 
-       # # Checkout the stable branch and find just the latest tag
-       # git checkout stable/mitaka
-       # git describe --abbrev=0 --tags
+   # # Checkout the stable branch and find just the latest tag
+   # git checkout stable/mitaka
+   # git describe --abbrev=0 --tags
 
-       # # Checkout the latest tag from either method of retrieving the tag.
-       # git checkout |my_conf_val|
+   # # Checkout the latest tag from either method of retrieving the tag.
+   # git checkout |my_conf_val|
 
 By default the scripts deploy all OpenStack services with sensible defaults
 for the purpose of a gate check, development or testing system.
@@ -98,17 +98,17 @@ example, if you wish to set the bootstrap to re-partition a specific
 secondary storage device (/dev/sdb), which will erase all of the data on the
 device, then execute:
 
-  .. code-block:: shell-session
+.. code-block:: shell-session
 
-      # export BOOTSTRAP_OPTS="bootstrap_host_data_disk_device=sdb"
+   # export BOOTSTRAP_OPTS="bootstrap_host_data_disk_device=sdb"
 
 Additional options may be implemented by simply concatenating them with
 a space between each set of options, for example:
 
-  .. code-block:: shell-session
+.. code-block:: shell-session
 
-      # export BOOTSTRAP_OPTS="bootstrap_host_data_disk_device=sdb"
-      # export BOOTSTRAP_OPTS="${BOOTSTRAP_OPTS} bootstrap_host_ubuntu_repo=http://mymirror.example.com/ubuntu"
+   # export BOOTSTRAP_OPTS="bootstrap_host_data_disk_device=sdb"
+   # export BOOTSTRAP_OPTS="${BOOTSTRAP_OPTS} bootstrap_host_ubuntu_repo=http://mymirror.example.com/ubuntu"
 
 You may wish to change the role fetch mode. Options are "galaxy" and
 "git-clone". The default for this option is "galaxy".
@@ -124,26 +124,26 @@ Notes:
   committing changes using an intact git tree while the *galaxy* option scrubs
   the ``.git`` directory when it resolves a dependency.
 
-   .. code-block:: bash
+.. code-block:: bash
 
-       $ export ANSIBLE_ROLE_FETCH_MODE=git-clone
+   $ export ANSIBLE_ROLE_FETCH_MODE=git-clone
 
 The next step is to bootstrap Ansible and the Ansible roles for the
 development environment.  Deployers can customize roles by adding variables to
 override the defaults in each role (see :ref:`adding-galaxy-roles`).  Run the
 following to bootstrap Ansible:
 
-   .. code-block:: shell-session
+.. code-block:: shell-session
 
-       # scripts/bootstrap-ansible.sh
+   # scripts/bootstrap-ansible.sh
 
 In order for all the services to run, the host must be prepared with the
 appropriate disks, packages, network configuration and a base configuration
 for the OpenStack Deployment. This preparation is completed by executing:
 
-   .. code-block:: shell-session
+.. code-block:: shell-session
 
-       # scripts/bootstrap-aio.sh
+   # scripts/bootstrap-aio.sh
 
 If you wish to add any additional configuration entries for the OpenStack
 configuration then this can be done now by editing
@@ -152,9 +152,9 @@ for more details.
 
 Finally, run the playbooks by executing:
 
-   .. code-block:: shell-session
+.. code-block:: shell-session
 
-       # scripts/run-playbooks.sh
+   # scripts/run-playbooks.sh
 
 .. note::
    Do not execute the ``run-playbooks.sh`` more than once. If something goes
@@ -178,10 +178,10 @@ various settings changes in ``/etc/openstack_deploy/user_variables.yml`` and
 only run individual playbooks. For example, to run the playbook for the
 Keystone service, execute:
 
-   .. code-block:: shell-session
+.. code-block:: shell-session
 
-       # cd /opt/openstack-ansible/playbooks
-       # openstack-ansible os-keystone-install.yml
+   # cd /opt/openstack-ansible/playbooks
+   # openstack-ansible os-keystone-install.yml
 
 **Note:** The AIO bootstrap playbook will still build containers for services
 that are not requested for deployment, but the service will not be deployed
@@ -196,10 +196,10 @@ has to be re-initialized after the host is rebooted.
 
 This is done by executing the following:
 
-   .. code-block:: shell-session
+.. code-block:: shell-session
 
-      # cd /opt/openstack-ansible/playbooks
-      # openstack-ansible -e galera_ignore_cluster_state=true galera-install.yml
+   # cd /opt/openstack-ansible/playbooks
+   # openstack-ansible -e galera_ignore_cluster_state=true galera-install.yml
 
 If this fails to get the database cluster back into a running state, then
 please make use of the `Galera Cluster Recovery`_ page in the Install Guide.
@@ -212,36 +212,36 @@ Sometimes it may be useful to destroy all the containers and rebuild the AIO.
 While it is preferred that the AIO is entirely destroyed and rebuilt, this
 isn't always practical. As such the following may be executed instead:
 
-   .. code-block:: shell-session
+.. code-block:: shell-session
 
-       # # Move to the playbooks directory.
-       # cd /opt/openstack-ansible/playbooks
+   # # Move to the playbooks directory.
+   # cd /opt/openstack-ansible/playbooks
 
-       # # Destroy all of the running containers.
-       # openstack-ansible lxc-containers-destroy.yml
+   # # Destroy all of the running containers.
+   # openstack-ansible lxc-containers-destroy.yml
 
-       # # On the host stop all of the services that run locally and not
-       # #  within a container.
-       # for i in \
-              $(ls /etc/init \
-                | grep -e "nova\|swift\|neutron\|cinder" \
-                | awk -F'.' '{print $1}'); do \
-           service $i stop; \
-         done
+   # # On the host stop all of the services that run locally and not
+   # #  within a container.
+   # for i in \
+          $(ls /etc/init \
+            | grep -e "nova\|swift\|neutron\|cinder" \
+            | awk -F'.' '{print $1}'); do \
+       service $i stop; \
+     done
 
-       # # Uninstall the core services that were installed.
-       # for i in $(pip freeze | grep -e "nova\|neutron\|keystone\|swift\|cinder"); do \
-           pip uninstall -y $i; done
+   # # Uninstall the core services that were installed.
+   # for i in $(pip freeze | grep -e "nova\|neutron\|keystone\|swift\|cinder"); do \
+       pip uninstall -y $i; done
 
-       # # Remove crusty directories.
-       # rm -rf /openstack /etc/{neutron,nova,swift,cinder} \
-                /var/log/{neutron,nova,swift,cinder}
+   # # Remove crusty directories.
+   # rm -rf /openstack /etc/{neutron,nova,swift,cinder} \
+            /var/log/{neutron,nova,swift,cinder}
 
-       # # Remove the pip configuration files on the host
-       # rm -rf /root/.pip
+   # # Remove the pip configuration files on the host
+   # rm -rf /root/.pip
 
-       # # Remove the apt package manager proxy
-       # rm /etc/apt/apt.conf.d/00apt-cacher-proxy
+   # # Remove the apt package manager proxy
+   # rm /etc/apt/apt.conf.d/00apt-cacher-proxy
 
 Should an existing AIO environment need to be reinstalled, the most efficient
 method is to destroy the host operating system and start over. For this reason,
@@ -256,31 +256,31 @@ Rackspace Cloud.
 First, we will need a cloud-config file that will allow us to run the build as
 soon as the instance starts. Save this file as ``user_data.yml``:
 
-   .. code-block:: yaml
+.. code-block:: yaml
 
-    #cloud-config
-    apt_mirror: http://mirror.rackspace.com/ubuntu/
-    package_upgrade: true
-    packages:
-      - git-core
-    runcmd:
-      - export ANSIBLE_FORCE_COLOR=true
-      - export PYTHONUNBUFFERED=1
-      - export REPO=https://github.com/openstack/openstack-ansible
-      - export BRANCH=stable/mitaka
-      - git clone -b ${BRANCH} ${REPO} /opt/openstack-ansible
-      - cd /opt/openstack-ansible && scripts/bootstrap-ansible.sh
-      - cd /opt/openstack-ansible && scripts/bootstrap-aio.sh
-      - cd /opt/openstack-ansible && scripts/run-playbooks.sh
-    output: { all: '| tee -a /var/log/cloud-init-output.log' }
+   #cloud-config
+   apt_mirror: http://mirror.rackspace.com/ubuntu/
+   package_upgrade: true
+   packages:
+     - git-core
+   runcmd:
+     - export ANSIBLE_FORCE_COLOR=true
+     - export PYTHONUNBUFFERED=1
+     - export REPO=https://github.com/openstack/openstack-ansible
+     - export BRANCH=stable/mitaka
+     - git clone -b ${BRANCH} ${REPO} /opt/openstack-ansible
+     - cd /opt/openstack-ansible && scripts/bootstrap-ansible.sh
+     - cd /opt/openstack-ansible && scripts/bootstrap-aio.sh
+     - cd /opt/openstack-ansible && scripts/run-playbooks.sh
+   output: { all: '| tee -a /var/log/cloud-init-output.log' }
 
 Feel free to customize the YAML file to meet any requirements.
 
 We can pass this YAML file to nova and build a Cloud Server at Rackspace:
 
-   .. code-block:: bash
+.. code-block:: bash
 
-    nova boot \
+   nova boot \
         --flavor general1-8 \
         --image 09de0a66-3156-48b4-90a5-1cf25a905207 \
         --key-name=public_key_name \
@@ -295,9 +295,9 @@ running and the OpenStack-Ansible installation will be in progress.
 
 To follow along with the progress, ssh to the running instance and execute:
 
-   .. code-block:: bash
+.. code-block:: bash
 
-    tail -F /var/log/cloud-init-output.log
+   tail -F /var/log/cloud-init-output.log
 
 Reference Diagram for an AIO Build
 ----------------------------------
