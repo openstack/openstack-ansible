@@ -217,6 +217,9 @@ function get_pip {
     # been updated at this point to include any newer pip packages.
     pip install --upgrade ${PIP_INSTALL_OPTIONS} || pip install --upgrade --isolated ${PIP_INSTALL_OPTIONS}
 
+    # Ensure that our shell knows about the new pip
+    hash -r pip
+
   # when pip is not installed, install it
   else
 
