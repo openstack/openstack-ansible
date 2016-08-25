@@ -1,5 +1,3 @@
-`Home <index.html>`_ OpenStack-Ansible Installation Guide
-
 .. _network-architecture:
 
 ====================
@@ -93,10 +91,9 @@ Target hosts contain the following network bridges:
    -  Provides management of and communication among infrastructure and
       OpenStack services.
 
-   -  Manually creates and attaches to a physical or logical interface,
-      typically a ``bond0`` VLAN subinterface. Also attaches to ``eth1``
-      in each container. The container network interface
-      is configurable in ``openstack_user_config.yml``.
+   -  Attaches to a physical or logical interface, typically a ``bond0`` VLAN
+      subinterface. Also attaches to ``eth1`` in each container. The container
+      network interface is configurable in ``openstack_user_config.yml``.
 
 -  Storage ``br-storage``:
 
@@ -105,10 +102,10 @@ Target hosts contain the following network bridges:
    -  Provides segregated access to Block Storage devices between
       Compute and Block Storage hosts.
 
-   -  Manually creates and attaches to a physical or logical interface,
-      typically a ``bond0`` VLAN subinterface. Also attaches to ``eth2``
-      in each associated container. The container network
-      interface is configurable in ``openstack_user_config.yml``.
+   -  Attaches to a physical or logical interface, typically a ``bond0`` VLAN
+      subinterface. Also attaches to ``eth2`` in each associated container.
+      The container network interface is configurable in
+      ``openstack_user_config.yml``.
 
 -  OpenStack Networking tunnel ``br-vxlan``:
 
@@ -116,10 +113,9 @@ Target hosts contain the following network bridges:
 
    -  Provides infrastructure for VXLAN tunnel networks.
 
-   -  Manually creates and attaches to a physical or logical interface,
-      typically a ``bond1`` VLAN subinterface. Also attaches to
-      ``eth10`` in each associated container. The
-      container network interface is configurable in
+   -  Attaches to a physical or logical interface, typically a ``bond1`` VLAN
+      subinterface. Also attaches to ``eth10`` in each associated container.
+      The container network interface is configurable in
       ``openstack_user_config.yml``.
 
 -  OpenStack Networking provider ``br-vlan``:
@@ -128,11 +124,10 @@ Target hosts contain the following network bridges:
 
    -  Provides infrastructure for VLAN networks.
 
-   -  Manually creates and attaches to a physical or logical interface,
-      typically ``bond1``. Attaches to ``eth11`` for vlan type networks
-      in each associated container. It does not contain an IP address because
-      it only handles layer 2 connectivity. The
-      container network interface is configurable in
+   -  Attaches to a physical or logical interface, typically ``bond1``.
+      Attaches to ``eth11`` for vlan type networks in each associated
+      container. It is not assigned an IP address because it only handles
+      layer 2 connectivity. The container network interface is configurable in
       ``openstack_user_config.yml``.
 
    -  This interface supports flat networks with additional

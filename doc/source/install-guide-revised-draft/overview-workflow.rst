@@ -1,5 +1,3 @@
-`Home <index.html>`_ OpenStack-Ansible Installation Guide
-
 =====================
 Installation workflow
 =====================
@@ -16,10 +14,9 @@ OpenStack-Ansible installation.
 #. :doc:`Prepare deployment host <deploymenthost>`
 #. :doc:`Prepare target hosts <targethosts>`
 #. :doc:`Configure deployment <configure>`
-#. :doc:`Run playbooks <installation>`
+#. :doc:`Run playbooks <installation#run-playbooks>`
 #. :doc:`Verify OpenStack operation <installation>`
 
-=======
-
+-----------
 
 .. include:: navigation.txt

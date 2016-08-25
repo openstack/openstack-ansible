@@ -1,5 +1,3 @@
-`Home <index.html>`_ OpenStack-Ansible Installation Guide
-
 =========================
 Installation requirements
 =========================
@@ -57,14 +55,14 @@ Logging hosts
   An OpenStack-Ansible deployment generates a significant amount of logging.
   Logs come from a variety of sources, including services running in
   containers, the containers themselves, and the physical hosts. Logging hosts
-  need additional disk space to hold live and rotated (historical) log files.
+  need sufficient disk space to hold live, and rotated (historical), log files.
   In addition, the storage performance must be enough to keep pace with the
   log traffic coming from various hosts and containers within the OpenStack
   environment. Reserve a minimum of 50GB of disk space for storing
   logs on the logging hosts.
 
 Hosts that provide Block Storage volumes must have logical volume
-manager (LVM) support. Ensure those hosts have a ``cinder-volumes`` volume
+manager (LVM) support. Ensure those hosts have a ``cinder-volume`` volume
 group that OpenStack-Ansible can configure for use with cinder.
 
 Each control plane host runs services inside LXC containers. The container
@@ -108,8 +106,8 @@ minimum requirements:
 * Ubuntu 14.04 LTS (Trusty Tahr)
 
   * OSA is tested regularly against the latest Ubuntu 14.04 LTS point
-    releases
-  * Linux kernel version ``3.13.0-34-generic`` or later
+    releases.
+  * Linux kernel version ``3.13.0-34-generic`` or later.
   * For swift storage hosts, you must enable the ``trusty-backports``
     repositories in ``/etc/apt/sources.list`` or ``/etc/apt/sources.list.d/``
     See the `Ubuntu documentation

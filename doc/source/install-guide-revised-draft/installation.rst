@@ -1,5 +1,3 @@
-`Home <index.html>`_ OpenStack-Ansible Installation Guide
-
 ============
 Installation
 ============
@@ -13,19 +11,19 @@ The installation process requires running three main playbooks:
 
 - The ``setup-infrastructure.yml`` Ansible infrastructure playbook installs
   infrastructure services: memcached, the repository server, Galera, RabbitMQ,
-  Rsyslog, and configures Rsyslog.
+  and Rsyslog.
 
 - The ``setup-openstack.yml`` OpenStack playbook installs OpenStack services,
   including the Identity service (keystone), Image service (glance),
   Block Storage (cinder), Compute service (nova), OpenStack Networking
   (neutron), Orchestration (heat), Dashboard (horizon), Telemetry service
   (ceilometer and aodh), Object Storage service (swift), and OpenStack
-  bare metal provisioning (ironic).
+  Bare Metal provisioning (ironic).
 
 Checking the integrity of your configuration files
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Before running any playbook, check the integrity of your configuration files:
+Before running any playbook, check the integrity of your configuration files.
 
 #. Ensure all files edited in ``/etc/`` are Ansible
    YAML compliant. Guidelines can be found here:
@@ -154,10 +152,6 @@ Verifying OpenStack operation
 
 .. TODO Add procedures to test different layers of the OpenStack environment
 
-Verify basic operation of the OpenStack API and dashboard.
-
-**Verifying the API**
-
 The utility container provides a CLI environment for additional
 configuration and testing.
 
@@ -204,7 +198,8 @@ configuration and testing.
       | e59e4379730b41209f036bbeac51b181 | keystone           |
       +----------------------------------+--------------------+
 
-**Verifying the Dashboard**
+Verifying the Dashboard (horizon)
+---------------------------------
 
 #. With a web browser, access the Dashboard using the external load
    balancer IP address defined by the ``external_lb_vip_address`` option

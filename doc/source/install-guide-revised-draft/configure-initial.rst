@@ -1,5 +1,3 @@
-`Home <index.html>`_ OpenStack-Ansible Installation Guide
-
 =================================
 Initial environment configuration
 =================================
@@ -28,13 +26,13 @@ to the deployment of your OpenStack environment.
 
    The file is heavily commented with details about the various options.
 
-There are various types of physical hardware that are able to use containers
-deployed by OpenStack-Ansible. For example, hosts listed in the
-``shared-infra_hosts`` run containers for many of the shared services that
-your OpenStack environment requires. Some of these services include databases,
-memcached, and RabbitMQ. There are several other host types that contain
-other types of containers and all of these are listed in
-``openstack_user_config.yml``.
+Configuration in ``openstack_user_config.yml`` defines which hosts
+will run the containers and services deployed by OpenStack-Ansible. For
+example, hosts listed in the ``shared-infra_hosts`` run containers for many of
+the shared services that your OpenStack environment requires. Some of these
+services include databases, memcached, and RabbitMQ. There are several other
+host types that contain other types of containers and all of these are listed
+in ``openstack_user_config.yml``.
 
 For details about how the inventory is generated from the environment
 configuration, see :ref:`developer-inventory`.

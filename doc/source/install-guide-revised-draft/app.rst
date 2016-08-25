@@ -2,8 +2,6 @@
 Appendices
 ==========
 
-`Home <index.html>`_ OpenStack-Ansible Installation Guide
-
 .. toctree::
    :maxdepth: 2
 
@@ -12,4 +10,8 @@ Appendices
    app-custom-layouts.rst
    app-security.rst
    app-advanced-config-options.rst
-   targethosts-networkexample.rst
+   app-targethosts-networkexample.rst
+
+--------------
+
+.. include:: navigation.txt
