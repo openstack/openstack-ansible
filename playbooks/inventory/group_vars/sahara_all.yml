@@ -1,6 +1,4 @@
 ---
-# Copyright 2014, Rackspace US, Inc.
-#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -13,17 +11,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: os-keystone-install.yml
-- include: os-glance-install.yml
-- include: os-cinder-install.yml
-- include: os-nova-install.yml
-- include: os-neutron-install.yml
-- include: os-heat-install.yml
-- include: os-horizon-install.yml
-- include: os-ceilometer-install.yml
-- include: os-aodh-install.yml
-- include: os-swift-install.yml
-- include: os-gnocchi-install.yml
-- include: os-ironic-install.yml
-- include: os-magnum-install.yml
-- include: os-sahara-install.yml
+sahara_service_region: "{{ service_region }}"
+sahara_service_in_ldap: "{{ service_ldap_backend_enabled }}"
+
+sahara_galera_address: "{{ galera_address }}"

@@ -29,3 +29,6 @@ horizon_rabbitmq_vhost: /horizon
 
 # Ensure that the package state matches the global setting
 horizon_package_state: "{{ package_state }}"
+
+# If there are any Sahara hosts in the environment, then enable sahara-dashboard
+horizon_enable_sahara_ui: "{{ (groups['sahara_all'] is defined) and (groups['sahara_all'] | length > 0) }}"

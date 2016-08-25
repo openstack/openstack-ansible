@@ -101,6 +101,12 @@ neutron_lbaas_dashboard_git_install_branch: aba14a4ccde177141b6314b9fafafb0868b8
 neutron_lbaas_dashboard_git_dest: "/opt/neutron_lbaas_dashboard_{{ neutron_lbaas_dashboard_git_install_branch | replace('/', '_') }}"
 neutron_lbaas_dashboard_git_project_group: horizon_all
 
+## Horizon Sahara dashboard plugin
+sahara_dashboard_git_repo: https://git.openstack.org/openstack/sahara-dashboard
+sahara_dashboard_git_install_branch: 1a19b8851c7d7d2daa2e22db4894ecd47eb9498d # HEAD of "master" as of 15.08.2016
+sahara_dashboard_git_dest: "/opt/sahara_dashboard_{{ sahara_dashboard_git_install_branch | replace('/', '_') }}"
+sahara_dashboard_git_project_group: horizon_all
+
 
 ## Keystone service
 keystone_git_repo: https://git.openstack.org/openstack/keystone
@@ -155,6 +161,13 @@ nova_lxd_git_repo: https://git.openstack.org/openstack/nova-lxd
 nova_lxd_git_install_branch: e5c3a4d28738986eea9193fae82653126a388b27 # HEAD of "master" as of 15.08.2016
 nova_lxd_git_dest: "/opt/nova_lxd_{{ nova_lxd_git_install_branch | replace('/', '_') }}"
 nova_lxd_git_project_group: nova_compute
+
+
+## Sahara service
+sahara_git_repo: https://git.openstack.org/openstack/sahara
+sahara_git_install_branch: 8f8f817d779b4eee22a2ecda3dc8d7344facd7c6 # HEAD of "master" as of 15.08.2016
+sahara_git_dest: "/opt/sahara_{{ sahara_git_install_branch | replace('/', '_') }}"
+sahara_git_project_group: sahara_all
 
 
 ## Swift service
