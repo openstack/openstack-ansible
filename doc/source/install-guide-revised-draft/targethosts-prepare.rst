@@ -1,5 +1,3 @@
-`Home <index.html>`_ OpenStack-Ansible Installation Guide
-
 ==========================
 Preparing the target hosts
 ==========================
@@ -17,8 +15,10 @@ to access the internet or suitable local repositories.
 We recommend adding the Secure Shell (SSH) server packages to the
 installation on target hosts without local (console) access.
 
-We also recommend setting your locale to en_US.UTF-8. Other locales may
-work, but they are not tested or supported.
+.. note::
+
+   We also recommend setting your locale to `en_US.UTF-8`. Other locales may
+   work, but they are not tested or supported.
 
 Configuring the operating system
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -50,8 +50,8 @@ Configuring the operating system
 
 #. Reboot the host to activate the changes and use new kernel.
 
-Deploying SSH keys
-~~~~~~~~~~~~~~~~~~
+Deploying Secure Shell (SSH) keys
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Ansible uses SSH for connectivity between the deployment and target hosts.
 
@@ -78,10 +78,8 @@ practices, refer to `GitHub's documentation on generating SSH keys`_.
    ``lxc_container_ssh_key`` variable to the public key for
    the container.
 
-Configuring LVM
-~~~~~~~~~~~~~~~
-
-.. TODO Change title to Configuring Storage and add content
+Configuring storage
+~~~~~~~~~~~~~~~~~~~
 
 `Logical Volume Manager (LVM)`_ allows a single device to be split into
 multiple logical volumes which appear as a physical storage device to the
@@ -96,7 +94,7 @@ their data storage.
    configuration, edit the generated configuration file as needed.
 
 #. To use the optional Block Storage (cinder) service, create an LVM
-   volume group named ``cinder-volumes`` on the Block Storage host. A
+   volume group named ``cinder-volume`` on the Block Storage host. A
    metadata size of 2048 must be specified during physical volume
    creation. For example:
 

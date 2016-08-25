@@ -1,5 +1,3 @@
-`Home <index.html>`_ OpenStack-Ansible Installation Guide
-
 =====================
 Network configuration
 =====================
@@ -35,39 +33,39 @@ bridges that are to be configured on hosts.
 Example for 3 controller nodes and 2 compute nodes
 --------------------------------------------------
 
-- VLANs:
+* VLANs:
 
-  -  Host management: Untagged/Native
-  -  Container management: 10
-  -  Tunnels: 30
-  -  Storage: 20
+  * Host management: Untagged/Native
+  * Container management: 10
+  * Tunnels: 30
+  * Storage: 20
 
-- Networks:
+* Networks:
 
-  -  Host management: 10.240.0.0/22
-  -  Container management: 172.29.236.0/22
-  -  Tunnel: 172.29.240.0/22
-  -  Storage: 172.29.244.0/22
+  * Host management: 10.240.0.0/22
+  * Container management: 172.29.236.0/22
+  * Tunnel: 172.29.240.0/22
+  * Storage: 172.29.244.0/22
 
-- Addresses for the controller nodes:
+* Addresses for the controller nodes:
 
-  -  Host management: 10.240.0.11 - 10.240.0.13
-  -  Host management gateway: 10.240.0.1
-  -  DNS servers: 69.20.0.164 69.20.0.196
-  -  Container management: 172.29.236.11 - 172.29.236.13
-  -  Tunnel: no IP (because IP exist in the containers, when the components
-     aren't deployed directly on metal)
-  -  Storage: no IP (because IP exist in the containers, when the components
-     aren't deployed directly on metal)
+  * Host management: 10.240.0.11 - 10.240.0.13
+  * Host management gateway: 10.240.0.1
+  * DNS servers: 69.20.0.164 69.20.0.196
+  * Container management: 172.29.236.11 - 172.29.236.13
+  * Tunnel: no IP (because IP exist in the containers, when the components
+    are not deployed directly on metal)
+  * Storage: no IP (because IP exist in the containers, when the components
+    are not deployed directly on metal)
 
-- Addresses for the compute nodes:
+* Addresses for the compute nodes:
 
-  -  Host management: 10.240.0.21 - 10.240.0.22
-  -  Host management gateway: 10.240.0.1
-  -  DNS servers: 69.20.0.164 69.20.0.196
-  -  Container management: 172.29.236.21 - 172.29.236.22
-  -  Tunnel: 172.29.240.21 - 172.29.240.22
-  -  Storage: 172.29.244.21 - 172.29.244.22
+  * Host management: 10.240.0.21 - 10.240.0.22
+  * Host management gateway: 10.240.0.1
+  * DNS servers: 69.20.0.164 69.20.0.196
+  * Container management: 172.29.236.21 - 172.29.236.22
+  * Tunnel: 172.29.240.21 - 172.29.240.22
+  * Storage: 172.29.244.21 - 172.29.244.22
 
 
 .. TODO Update this section. Should this information be moved to the overview
@@ -83,7 +81,7 @@ on the production environment described in `host layout for production
 environment`_.
 
 .. _host layout for production environment: overview-host-layout.html#production-environment
-.. _Link to Production Environment: targethosts-networkexample.html#production-environment
+.. _Link to Production Environment: app-targethosts-networkexample.html#production-environment
 
 Test environment
 ~~~~~~~~~~~~~~~~
@@ -92,39 +90,28 @@ This example uses the following parameters to configure networking on a
 single target host. See `Figure 3.2`_ for a visual representation of these
 parameters in the architecture.
 
--  VLANs:
+* VLANs:
 
-   -  Host management: Untagged/Native
+  * Host management: Untagged/Native
+  * Container management: 10
+  * Tunnels: 30
+  * Storage: 20
 
-   -  Container management: 10
+* Networks:
 
-   -  Tunnels: 30
+   * Host management: 10.240.0.0/22
+   * Container management: 172.29.236.0/22
+   * Tunnel: 172.29.240.0/22
+   * Storage: 172.29.244.0/22
 
-   -  Storage: 20
+* Addresses:
 
-   Networks:
-
-   -  Host management: 10.240.0.0/22
-
-   -  Container management: 172.29.236.0/22
-
-   -  Tunnel: 172.29.240.0/22
-
-   -  Storage: 172.29.244.0/22
-
-   Addresses:
-
-   -  Host management: 10.240.0.11
-
-   -  Host management gateway: 10.240.0.1
-
-   -  DNS servers: 69.20.0.164 69.20.0.196
-
-   -  Container management: 172.29.236.11
-
-   -  Tunnel: 172.29.240.11
-
-   -  Storage: 172.29.244.11
+   * Host management: 10.240.0.11
+   * Host management gateway: 10.240.0.1
+   * DNS servers: 69.20.0.164 69.20.0.196
+   * Container management: 172.29.236.11
+   * Tunnel: 172.29.240.11
+   * Storage: 172.29.244.11
 
 .. _Figure 3.2: targethosts-networkconfig.html#fig_hosts-target-network-containerexample
 
@@ -138,11 +125,11 @@ Modifying the network interfaces file
 
 After establishing initial host management network connectivity using
 the ``bond0`` interface, modify the ``/etc/network/interfaces`` file.
-An example is provided below on this `Link to Test Environment`_ based
+An example is provided below on this `link to Test Environment`_ based
 on the test environment described in `host layout for testing
 environment`_.
 
-.. _Link to Test Environment: targethosts-networkexample.html#test-environment
+.. _Link to Test Environment: app-targethosts-networkexample.html#test-environment
 .. _host layout for testing environment: overview-host-layout.html#test-environment
 
 

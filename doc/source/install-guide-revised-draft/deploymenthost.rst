@@ -1,13 +1,9 @@
-`Home <index.html>`_ OpenStack-Ansible Installation Guide
-
 ===============
 Deployment host
 ===============
 
 .. figure:: figures/installation-workflow-deploymenthost.png
    :width: 100%
-
-   **Installation workflow**
 
 When installing OpenStack in a production environment, we recommend using a
 separate deployment host which contains Ansible and orchestrates the
@@ -23,7 +19,7 @@ Installing the operating system
 Install the `Ubuntu Server 14.04 (Trusty Tahr) LTS 64-bit
 <http://releases.ubuntu.com/14.04/>`_ operating system on the
 deployment host. Configure at least one network interface to
-access the Internet or suitable local repositories.
+access the internet or suitable local repositories.
 
 Configuring the operating system
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

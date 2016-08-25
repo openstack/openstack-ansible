@@ -1,5 +1,3 @@
-`Home <index.html>`__ OpenStack-Ansible Installation Guide
-
 =====================
 Appendix D: Security
 =====================

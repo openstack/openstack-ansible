@@ -1,5 +1,3 @@
-`Home <index.html>`_ OpenStack-Ansible Installation Guide
-
 .. _security_hardening:
 
 ==================
@@ -34,8 +32,8 @@ an environment using a playbook supplied with OpenStack-Ansible:
     # Apply security hardening configurations
     openstack-ansible security-hardening.yml
 
-For more details on the security configurations that will be applied, refer to
-the `openstack-ansible-security`_ documentation. Review the `Configuration`_
+Refer to the `openstack-ansible-security`_ documentation for more details on
+the security configurations. Review the `Configuration`_
 section of the openstack-ansible-security documentation to find out how to
 fine-tune certain security configurations.
 

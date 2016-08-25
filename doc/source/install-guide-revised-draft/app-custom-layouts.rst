@@ -1,5 +1,3 @@
-`Home <index.html>`_ OpenStack-Ansible Installation Guide
-
 ==================================================
 Appendix C: Customizing host and service layouts
 ==================================================
@@ -49,7 +47,7 @@ variables to any component containers on the specific host.
 
 .. note::
 
-   Our current recommendation is for new inventory groups, particularly for new
+   We recommend new inventory groups, particularly for new
    services, to be defined using a new file in the ``conf.d/`` directory in
    order to manage file size.
 
@@ -99,9 +97,6 @@ groups in this way allows flexible targeting of roles and tasks.
 Customizing existing components
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Numerous customization scenarios are possible, but three popular ones are
-presented here as starting points and also as common recipes.
-
 Deploying directly on hosts
 ---------------------------
 
@@ -114,7 +109,7 @@ is the same for a service deployed directly onto the host.
 
 .. note::
 
-   The ``cinder_volume`` component is also deployed directly on the host by
+   The ``cinder-volume`` component is also deployed directly on the host by
    default. See the ``env.d/cinder.yml`` file for this example.
 
 Omit a service or component from the deployment

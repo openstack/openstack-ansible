@@ -5,11 +5,6 @@ OpenStack-Ansible Installation Guide - DRAFT
 This is a draft revision of the install guide for Newton
 and is currently under development.
 
-`Home <index.html>`_ OpenStack-Ansible Installation Guide
-
-Table of contents
-~~~~~~~~~~~~~~~~~
-
 .. toctree::
    :maxdepth: 2
 
@@ -19,3 +14,10 @@ Table of contents
    configure.rst
    installation.rst
    app.rst
+
+Third-party trademarks and tradenames appearing in this document are the
+property of their respective owners. Such third-party trademarks have
+been printed in caps or initial caps and are used for referential
+purposes only. We do not intend our use or display of other companies'
+tradenames, trademarks, or service marks to imply a relationship with,
+or endorsement or sponsorship of us by these other companies.

@@ -1,5 +1,3 @@
-`Home <index.html>`_ OpenStack-Ansible Installation Guide
-
 ===============================
 Configuring service credentials
 ===============================
@@ -16,7 +14,7 @@ users.
 
    The following options configure passwords for the web interfaces.
 
--  ``keystone_auth_admin_password`` configures the ``admin`` tenant
+* ``keystone_auth_admin_password`` configures the ``admin`` tenant
    password for both the OpenStack API and dashboard access.
 
 .. note::
