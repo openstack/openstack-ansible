@@ -81,6 +81,9 @@ development) build it is usually best to checkout the latest tagged version.
    # # Checkout the latest tag from either method of retrieving the tag.
    # git checkout |my_conf_val|
 
+.. note::
+   The Mitaka release is only compatible with Ubuntu 14.04 (Trusy Tahr).
+
 By default the scripts deploy all OpenStack services with sensible defaults
 for the purpose of a gate check, development or testing system.
 
