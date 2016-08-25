@@ -130,6 +130,11 @@ neutron_fwaas_git_install_branch: 83f2064d1d8a9fc03819ea3d8e56835f46983a8a # HEA
 neutron_fwaas_git_dest: "/opt/neutron_fwaas_{{ neutron_fwaas_git_install_branch | replace('/', '_') }}"
 neutron_fwaas_git_project_group: neutron_agent
 
+neutron_dynamic_routing_git_repo: https://git.openstack.org/openstack/neutron-dynamic-routing
+neutron_dynamic_routing_git_install_branch: c20333d37b6b4160f8a84c8d985b40eba5e5088d # HEAD of "master" as of 15.08.2016
+neutron_dynamic_routing_git_dest: "/opt/neutron_dynamic_routing_{{ neutron_dynamic_routing_git_install_branch | replace('/', '_') }}"
+neutron_dynamic_routing_git_project_group: neutron_agent
+
 
 ## Nova service
 nova_git_repo: https://git.openstack.org/openstack/nova

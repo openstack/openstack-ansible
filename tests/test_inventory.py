@@ -173,6 +173,7 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'neutron_dhcp_agent',
         'neutron_l3_agent',
         'neutron_lbaas_agent',
+        'neutron_bgp_dragent',
         'neutron_linuxbridge_agent',
         'neutron_metadata_agent',
         'neutron_metering_agent',
