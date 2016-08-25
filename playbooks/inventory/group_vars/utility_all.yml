@@ -54,3 +54,7 @@ utility_pip_packages:
   - python-swiftclient
   - python-memcached
   - pycrypto
+
+rally_galera_user: rally
+rally_galera_database_name: rally
+rally_galera_address: "{{ galera_address }}"

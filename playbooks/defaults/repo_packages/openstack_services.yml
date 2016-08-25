@@ -170,3 +170,9 @@ magnum_git_repo: https://git.openstack.org/openstack/magnum
 magnum_git_install_branch: 4dbe7716e721ad33603bd48b6e871d0a55e4448e # HEAD of "master" as of 15.08.2016
 magnum_git_dest: "/opt/magnum_{{ magnum_git_install_branch | replace('/', '_') }}"
 magnum_git_project_group: magnum_all
+
+## Rally service
+rally_git_repo: https://git.openstack.org/openstack/rally
+rally_git_install_branch: 6c7975cd9ac997c5efe5932f301f0fb56f00818b # HEAD of "master" as of 18.08.2016
+rally_git_dest: "/opt/rally_{{ rally_git_install_branch | replace('/', '_') }}"
+rally_git_project_group: utility_all
