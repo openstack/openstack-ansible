@@ -103,6 +103,18 @@ current version of MariaDB and Galera and upgrade to the 10.x series.
 
 Sends "flush_all" to memcached with the help of nc.
 
+rfc1034_1035-cleanup.yml
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+This playbook ensures the OpenStack service databases for heat, nova, neutron,
+and cinder are cleaned up with regard to actively registered services. These
+OpenStack services register nodes within the environment using the hostname as
+a unique key and in previous releases containers had invalid hostnames. This
+playbook will remove invalid service/agent entries that are found within the
+database and meet the invalid hostname criteria.
+
+.. _rfc1034-1035-cleanup:
+
 --------------
 
 .. include:: navigation.txt

@@ -225,6 +225,18 @@ without any additional options.
 
     # openstack-ansible setup-openstack.yml
 
+Clean up Databases for RFC 1034 and 1035
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Use the ``rfc1034_1035-cleanup.yml`` playbook to remove invalid
+hostnames that may still be within the databases.
+
+See :ref:`rfc1034-1035-cleanup` for details.
+
+.. code-block:: console
+
+    # openstack-ansible "${UPGRADE_PLAYBOOKS}/rfc1034_1035-cleanup.yml"
+
 --------------
 
 .. include:: navigation.txt

@@ -1,0 +1,126 @@
+---
+# Copyright 2016, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- hosts: all
+  connection: local
+  vars_prompt:
+    - name: destroy_ok
+      prompt: |
+        "The following actions are destructive and remove items from your
+        database. Would you like to continue ? (yes/no)"
+      private: no
+      default: "no"
+  tasks:
+    - set_fact:
+        destroy: "{{ destroy_ok }}"
+
+- name: Cleanup heat services through the database
+  hosts: galera_all[0]
+  user: root
+  tasks:
+    - name: Run database clean up for rfc1034/5
+      command: >
+        mysql --verbose --unbuffered -e "delete from service where host like '%\_%';" heat
+      when: destroy | bool
+
+- name: Apply cinder changes with cinder-manage
+  hosts: cinder_all[0]
+  user: root
+  tasks:
+    - name: Move the cinder volumes running in containers to new hostnames
+      shell: |
+        . /openstack/venvs/cinder-{{openstack_release}}/bin/activate
+        cinder-manage service list \
+          | awk '/volume.*_container.*XXX/{print $2 }'\
+          | while IFS=@ read cinderhost cinderbackend; do
+            cinder-manage volume update_host \
+              --currenthost $cinderhost@$cinderbackend \
+              --newhost ${cinderhost//_/-}@$cinderbackend;
+            done
+      args:
+        executable: /bin/bash
+
+- name: Disable/delete the services with CLIs
+  hosts: utility_all[0]
+  user: root
+  vars:
+    services:
+      - name: "nova"
+        list_command: " service-list "
+        awk_filter: "/_container.*down/"
+        awk_print_column: '$6" "$4'
+        delete_command: " service-disable "
+        post_command: "sleep 5"
+      - name: "nova"
+        list_command: " service-list "
+        awk_filter: "/_container.*down/"
+        awk_print_column: "$2"
+        delete_command: " service-delete "
+      - name: "cinder"
+        list_command: " service-list "
+        awk_filter: "/_container.*down/"
+        awk_print_column: '$4" "$2'
+        delete_command: " service-disable "
+      - name: "neutron"
+        list_command: " agent-list "
+        awk_filter: "/_container.*xxx/"
+        awk_print_column: "$2"
+        delete_command: " agent-update --admin-state-down "
+        post_command: "sleep 5"
+      - name: "neutron"
+        list_command: " agent-list "
+        awk_filter: "/_container.*xxx/"
+        awk_print_column: "$2"
+        delete_command: " agent-delete "
+  tasks:
+    - name: Registering what to disable
+      shell: |
+        . {{ ansible_env.HOME }}/openrc
+        {{ item.name }} {{ item.list_command}} | awk '{{ item.awk_filter }}{print {{ item.awk_print_column }} }'
+      register: to_disable
+      with_items: "{{ services }}"
+
+    - name: showing the list of items
+      debug:
+        msg: "We will delete the following item for {{ item.0.item.name }}: {{ item.1 }}"
+      with_subelements:
+        - to_disable.results
+        - stdout_lines
+
+    - name: Disabling or deleting the services/agents
+      shell: |
+        . {{ ansible_env.HOME }}/openrc
+        {{ item.0.item.name }} {{ item.0.item.delete_command }} {{ item.1 }}
+        {{ item.0.item.post_command | default('')}}
+      with_subelements:
+        - to_disable.results
+        - stdout_lines
+      when: destroy | bool
+
+- name: Apply cinder changes with cinder-manage
+  hosts: cinder_all[0]
+  user: root
+  tasks:
+    - name: Removing the cinder services with old container hostnames
+      shell: |
+        . /openstack/venvs/cinder-{{openstack_release}}/bin/activate
+        cinder-manage service list \
+          | awk '/.*_container.*XXX/{print $1" "$2}'\
+          | while read line; do
+            cinder-manage service remove $line;
+            done
+      args:
+        executable: /bin/bash
+      when: destroy | bool
