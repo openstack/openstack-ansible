@@ -58,6 +58,10 @@ openstack_repo_git_url: "git://{{ internal_lb_vip_address }}"
 openstack_host_specific_kernel_modules:
   - { name: "ebtables", pattern: "CONFIG_BRIDGE_NF_EBTABLES", group: "network_hosts" }
 
+## DNS resolution (resolvconf) options
+#Group containing resolvers to configure
+resolvconf_resolver_group: unbound_all
+
 ## Memcached options
 memcached_port: 11211
 memcached_servers: "{% for host in groups['memcached'] %}{{ hostvars[host]['ansible_ssh_host'] }}:{{ memcached_port }}{% if not loop.last %},{% endif %}{% endfor %}"

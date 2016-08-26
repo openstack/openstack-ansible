@@ -1,5 +1,5 @@
 ---
-# Copyright 2016, Rackspace US, Inc.
+# Copyright 2016, Logan Vig <logan2211@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,11 +13,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Ensure that the package state matches the global setting
-lxc_hosts_package_state: "{{ package_state }}"
-openstack_hosts_package_state: "{{ package_state }}"
-security_package_state: "{{ package_state }}"
+component_skel:
+  unbound:
+    belongs_to:
+      - unbound_all
 
-#Disable /etc/hosts management if unbound DNS resolution containers exist
-openstack_host_manage_hosts_file: >
-  "{{ groups['unbound_all'] is not defined or groups['unbound_all'] | length < 1 }}"
+container_skel:
+  unbound_container:
+    belongs_to:
+      - unbound_containers
+    contains:
+      - unbound
+    properties:
+      service_name: unbound
+
+physical_skel:
+  unbound_containers:
+    belongs_to:
+      - all_containers
+  unbound_hosts:
+    belongs_to:
+      - hosts

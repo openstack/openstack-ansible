@@ -1,0 +1,6 @@
+---
+features:
+  - Support for the deployment of Unbound caching DNS resolvers has been added
+    as an optional replacement for /etc/hosts management across all hosts in
+    the environment. To enable the Unbound DNS containers, add ``unbound_hosts``
+    entries to the environment.
