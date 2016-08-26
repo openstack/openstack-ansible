@@ -49,8 +49,7 @@
 
 # Prepare the data disk, if one is provided
 - include: prepare_data_disk.yml
-  when:
-    - bootstrap_host_data_disk_device is defined
+  when: bootstrap_host_data_disk_device != None
   tags:
     - prepare-data-disk
 

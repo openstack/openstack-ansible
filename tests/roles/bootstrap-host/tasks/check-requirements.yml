@@ -22,8 +22,7 @@
 - name: Identify the space available in /
   shell: |
     df -BK / | awk '/^[^Filesystem]/ {print $4}' | sed 's/K//'
-  when:
-    - bootstrap_host_data_disk_device is not defined
+  when: bootstrap_host_data_disk_device == None
   changed_when: false
   register: root_space_available
   tags:
@@ -34,7 +33,7 @@
   set_fact:
     host_root_space_available_bytes: "{{ ( root_space_available.stdout | int) * 1024 | int }}"
   when:
-    - bootstrap_host_data_disk_device is not defined
+    - bootstrap_host_data_disk_device == None
   tags:
     - check-disk-size
 
@@ -43,7 +42,7 @@
     host_data_disk_sectors: "{{ (ansible_devices[bootstrap_host_data_disk_device]['sectors'] | int) }}"
     host_data_disk_sectorsize: "{{ (ansible_devices[bootstrap_host_data_disk_device]['sectorsize'] | int) }}"
   when:
-    - bootstrap_host_data_disk_device is defined
+    - bootstrap_host_data_disk_device != None
   tags:
     - check-disk-size
 
@@ -51,8 +50,7 @@
 - name: Calculate data disk size
   set_fact:
     host_data_disk_size_bytes: "{{ ((host_data_disk_sectors | int) * (host_data_disk_sectorsize | int)) | int }}"
-  when:
-    - bootstrap_host_data_disk_device is defined
+  when: bootstrap_host_data_disk_device != None
   tags:
     - check-disk-size
 
@@ -67,8 +65,7 @@
   assert:
     that: |
       (host_root_space_available_bytes | int) >= (host_data_disk_min_size_bytes | int)
-  when:
-    - bootstrap_host_data_disk_device is not defined
+  when: bootstrap_host_data_disk_device == None
   tags:
     - check-disk-size
 
@@ -76,8 +73,7 @@
   assert:
     that: |
       (host_data_disk_size_bytes | int) >= (host_data_disk_min_size_bytes | int)
-  when:
-    - bootstrap_host_data_disk_device is defined
+  when: bootstrap_host_data_disk_device != None
   tags:
     - check-disk-size
 

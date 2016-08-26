@@ -55,8 +55,8 @@
     dev: "{{ item  }}"
   when: data_disk_partitions.rc == 1 or bootstrap_host_data_disk_device_force | bool
   with_items:
-    - "/dev/{{ bootstrap_host_data_disk_device  }}1"
-    - "/dev/{{ bootstrap_host_data_disk_device  }}2"
+    - "/dev/{{ bootstrap_host_data_disk_device }}1"
+    - "/dev/{{ bootstrap_host_data_disk_device }}2"
   tags:
     - format-data-partitions
 
@@ -67,7 +67,7 @@
     fstype: ext4
     state: mounted
   with_items:
-    - { mount_point: /openstack, device: "/dev/{{ bootstrap_host_data_disk_device  }}1"}
-    - { mount_point: /var/lib/lxc, device: "/dev/{{ bootstrap_host_data_disk_device  }}2"}
+    - { mount_point: /openstack, device: "/dev/{{ bootstrap_host_data_disk_device }}1"}
+    - { mount_point: /var/lib/lxc, device: "/dev/{{ bootstrap_host_data_disk_device }}2"}
   tags:
     - mount-data-partitions
