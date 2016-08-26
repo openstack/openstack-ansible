@@ -13,18 +13,87 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: neutron_service_add.yml
-  vars:
-    service_user_name: "{{ neutron_service_user_name }}"
-    service_tenant_name: "{{ neutron_service_project_name }}"
+# Create a service
+- name: Ensure neutron service
+  keystone:
+    command: "ensure_service"
+    token: "{{ keystone_auth_admin_token }}"
+    endpoint: "{{ keystone_service_adminurl }}"
     service_name: "{{ neutron_service_name }}"
     service_type: "{{ neutron_service_type }}"
-    service_region: "{{ neutron_service_region }}"
-    service_description: "{{ neutron_service_description }}"
-    service_password: "{{ neutron_service_password }}"
-    service_publicurl: "{{ neutron_service_publicurl }}"
-    service_internalurl: "{{ neutron_service_internalurl }}"
-    service_adminurl: "{{ neutron_service_adminurl }}"
-    role_name: "{{ neutron_service_role_name }}"
+    description: "{{ neutron_service_description }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
+  register: add_service
+  until: add_service|success
+  retries: 5
+  delay: 2
   tags:
-    - neutron-server
+    - neutron-api-setup
+    - neutron-service-add
+    - neutron-setup
+
+# Create an admin user
+- name: Ensure neutron user
+  keystone:
+    command: "ensure_user"
+    token: "{{ keystone_auth_admin_token }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    user_name: "{{ neutron_service_user_name }}"
+    tenant_name: "{{ neutron_service_project_name }}"
+    password: "{{ neutron_service_password }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
+  register: add_service
+  when: not neutron_service_in_ldap | bool
+  until: add_service|success
+  retries: 5
+  delay: 10
+  tags:
+    - neutron-api-setup
+    - neutron-service-add
+    - neutron-setup
+
+# Add a role to the user
+- name: Ensure neutron user to admin role
+  keystone:
+    command: "ensure_user_role"
+    token: "{{ keystone_auth_admin_token }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    user_name: "{{ neutron_service_user_name }}"
+    tenant_name: "{{ neutron_service_project_name }}"
+    role_name: "{{ neutron_service_role_name }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
+  register: add_service
+  when: not neutron_service_in_ldap | bool
+  until: add_service|success
+  retries: 5
+  delay: 10
+  tags:
+    - neutron-api-setup
+    - neutron-service-add
+    - neutron-setup
+
+# Create an endpoint
+- name: Ensure neutron endpoint
+  keystone:
+    command: "ensure_endpoint"
+    token: "{{ keystone_auth_admin_token }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    region_name: "{{ neutron_service_region }}"
+    service_name: "{{ neutron_service_name }}"
+    service_type: "{{ neutron_service_type }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
+    endpoint_list:
+      - url: "{{ neutron_service_publicurl }}"
+        interface: "public"
+      - url: "{{ neutron_service_internalurl }}"
+        interface: "internal"
+      - url: "{{ neutron_service_adminurl }}"
+        interface: "admin"
+  register: add_service
+  until: add_service|success
+  retries: 5
+  delay: 10
+  tags:
+    - neutron-api-setup
+    - neutron-service-add
+    - neutron-setup

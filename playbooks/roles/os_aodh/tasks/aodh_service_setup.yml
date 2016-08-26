@@ -13,18 +13,79 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: aodh_service_add.yml
-  vars:
-    service_user_name: "{{ aodh_service_user_name }}"
-    service_tenant_name: "{{ aodh_service_tenant_name }}"
+- name: Ensure aodh service
+  keystone:
+    command: "ensure_service"
+    token: "{{ keystone_auth_admin_token }}"
+    endpoint: "{{ keystone_service_adminurl }}"
     service_name: "{{ aodh_service_name }}"
     service_type: "{{ aodh_service_type }}"
-    service_region: "{{aodh_service_region }}"
-    service_description: "{{ aodh_service_description }}"
-    service_password: "{{ aodh_service_password }}"
-    service_internalurl: "{{ aodh_service_internalurl }}"
-    service_publicurl: "{{ aodh_service_publicurl }}"
-    service_adminurl: "{{ aodh_service_adminurl }}"
-    role_name: "{{ aodh_role_name }}"
+    description: "{{ aodh_service_description }}"
+  register: add_service
+  until: add_service|success
+  retries: 5
+  delay: 2
   tags:
-    - aodh-add-service
+    - aodh-setup
+    - aodh-service-add
+
+- name: Ensure aodh user
+  keystone:
+    command: "ensure_user"
+    token: "{{ keystone_auth_admin_token }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    user_name: "{{ aodh_service_user_name }}"
+    tenant_name: "{{ aodh_service_tenant_name }}"
+    role_name: "{{ aodh_role_name }}"
+    password: "{{ aodh_service_password }}"
+  register: add_service
+  when: not aodh_service_in_ldap | bool
+  until: add_service|success
+  retries: 5
+  delay: 10
+  tags:
+    - aodh-setup
+    - aodh-service-add
+
+- name: Ensure aodh user to admin role
+  keystone:
+    command: "ensure_user_role"
+    token: "{{ keystone_auth_admin_token }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    user_name: "{{ aodh_service_user_name }}"
+    tenant_name: "{{ aodh_service_project_name }}"
+    role_name: "{{ aodh_role_name }}"
+  register: add_admin_role
+  when: not aodh_service_in_ldap | bool
+  until: add_admin_role|success
+  retries: 5
+  delay: 10
+  tags:
+    - aodh-api-setup
+    - aodh-service-add
+    - aodh-setup
+
+
+# Create an endpoint
+- name: Ensure aodh endpoint
+  keystone:
+    command: "ensure_endpoint"
+    token: "{{ keystone_auth_admin_token }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    region_name: "{{ aodh_service_region }}"
+    service_name: "{{ aodh_service_name }}"
+    service_type: "{{ aodh_service_type }}"
+    endpoint_list:
+      - url: "{{ aodh_service_publicurl }}"
+        interface: "public"
+      - url: "{{ aodh_service_adminurl }}"
+        interface: "admin"
+      - url: "{{ aodh_service_internalurl }}"
+        interface: "internal"
+  register: add_service
+  until: add_service|success
+  retries: 5
+  delay: 10
+  tags:
+    - aodh-setup
+    - aodh-service-add

@@ -15,33 +15,23 @@
 
 - include: heat_service_add.yml
   vars:
-    service_user_name: "{{ heat_service_user_name }}"
-    service_tenant_name: "{{ heat_service_project_name }}"
     service_name: "{{ heat_service_name }}"
     service_type: "{{ heat_service_type }}"
-    service_region: "{{ heat_service_region }}"
     service_description: "{{ heat_service_description }}"
-    service_password: "{{ heat_service_password }}"
     service_publicurl: "{{ heat_service_publicurl }}"
     service_internalurl: "{{ heat_service_internalurl }}"
     service_adminurl: "{{ heat_service_adminurl }}"
-    role_name: "{{ heat_service_role_name }}"
   tags:
     - heat-api
 
 - include: heat_service_add.yml
   vars:
-    service_user_name: "{{ heat_service_user_name }}"
-    service_tenant_name: "{{ heat_service_project_name }}"
     service_name: "{{ heat_cfn_service_name }}"
     service_type: "{{ heat_cfn_service_type }}"
-    service_region: "{{ heat_service_region }}"
     service_description: "{{ heat_cfn_service_description }}"
-    service_password: "{{ heat_cfn_service_password }}"
     service_publicurl: "{{ heat_cfn_service_publicurl }}"
     service_internalurl: "{{ heat_cfn_service_internalurl }}"
     service_adminurl: "{{ heat_cfn_service_adminurl }}"
-    role_name: "{{ heat_service_role_name }}"
   tags:
     - heat-api
     - heat-api-cfn

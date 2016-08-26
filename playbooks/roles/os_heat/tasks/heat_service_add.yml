@@ -38,9 +38,9 @@
     command: "ensure_user"
     token: "{{ keystone_auth_admin_token }}"
     endpoint: "{{ keystone_service_adminurl }}"
-    user_name: "{{ service_user_name }}"
-    tenant_name: "{{ service_tenant_name }}"
-    password: "{{ service_password }}"
+    user_name: "{{ heat_service_user_name }}"
+    tenant_name: "{{ heat_service_project_name }}"
+    password: "{{ heat_service_password }}"
     insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_service
   when: not heat_service_in_ldap | bool
@@ -58,9 +58,9 @@
     command: "ensure_user_role"
     token: "{{ keystone_auth_admin_token }}"
     endpoint: "{{ keystone_service_adminurl }}"
-    user_name: "{{ service_user_name }}"
-    tenant_name: "{{ service_tenant_name }}"
-    role_name: "{{ role_name }}"
+    user_name: "{{ heat_service_user_name }}"
+    tenant_name: "{{ heat_service_project_name }}"
+    role_name: "{{ heat_service_role_name }}"
     insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_service
   when: not heat_service_in_ldap | bool
@@ -78,7 +78,7 @@
     command: "ensure_endpoint"
     token: "{{ keystone_auth_admin_token }}"
     endpoint: "{{ keystone_service_adminurl }}"
-    region_name: "{{ service_region }}"
+    region_name: "{{ heat_service_region }}"
     service_name: "{{ service_name }}"
     service_type: "{{ service_type }}"
     insecure: "{{ keystone_service_adminuri_insecure }}"
