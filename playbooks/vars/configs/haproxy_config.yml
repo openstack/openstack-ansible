@@ -191,6 +191,15 @@ haproxy_default_services:
       haproxy_backend_options:
         - "httpchk HEAD /"
   - service:
+      haproxy_service_name: sahara_api
+      haproxy_backend_nodes: "{{ groups['sahara_api'] | default([]) }}"
+      haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_balance_alg: source
+      haproxy_port: 8386
+      haproxy_balance_type: http
+      haproxy_backend_options:
+        - "httpchk /healthcheck"
+  - service:
       haproxy_service_name: swift_proxy
       haproxy_backend_nodes: "{{ groups['swift_proxy'] | default([]) }}"
       haproxy_ssl: "{{ haproxy_ssl }}"
