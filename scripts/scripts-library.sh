@@ -278,3 +278,7 @@ export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:${PATH
 
 # Export the home directory just in case it's not set
 export HOME="/root"
+
+if [[ -f "/usr/local/bin/openstack-ansible.rc" ]];then
+  source "/usr/local/bin/openstack-ansible.rc"
+fi
