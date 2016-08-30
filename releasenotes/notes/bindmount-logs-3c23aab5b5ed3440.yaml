@@ -1,0 +1,25 @@
+---
+features:
+  - Containers will now bind mount all logs to the physical host
+    machine in the "/openstack/log/{{ inventory_hostname }}"
+    location. This change will ensure containers using a block
+    backed file system (lvm, zfs, bfrfs) do not run into issues
+    with full file systems due to logging.
+upgrade:
+  - When upgrading deployers will need to ensure they have a
+    backup of all logging from within the container prior to
+    running the playbooks. If the logging node is present within
+    the deployment all logs should already be sync'd with the
+    logging server and no action is required. As a pre-step it's
+    recommended that deployers clean up logging directories from
+    within containers prior to running the playbooks. After the
+    playbooks have run the bind mount will be in effect at
+    "/var/log" which will mount over all previous log files and
+    directories.
+  - Due to a new bind mount at "/var/log" all containers will be
+    restarted. This is a required restart. It is recommended that
+    deployers run the container restarts in serial to not impact
+    production workloads.
+fixes:
+  - Logging within the container has been bind mounted to the hosts
+    this reslves issue `1588051 <https://bugs.launchpad.net/openstack-ansible/+bug/1588051>_`

@@ -22,7 +22,7 @@
     - include: common-tasks/os-lxc-container-setup.yml
       vars:
         list_of_bind_mounts:
-          - bind_dir_path: "{{ storage_directory }}"
+          - bind_dir_path: "{{ rsyslog_server_storage_directory }}"
             mount_path: "/openstack/{{ inventory_hostname }}/log-storage"
     - include: common-tasks/package-cache-proxy.yml
   roles:
@@ -31,5 +31,4 @@
       tags:
         - "system-crontab-coordination"
   vars:
-    storage_directory: "{{ rsyslog_server_storage_directory }}"
     is_metal: "{{ properties.is_metal|default(false) }}"

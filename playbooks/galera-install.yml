@@ -19,6 +19,11 @@
   gather_facts: "{{ gather_facts | default(True) }}"
   user: root
   tasks:
+    - include: common-tasks/os-log-dir-setup.yml
+      vars:
+        log_dirs:
+          - src: "/openstack/log/{{ inventory_hostname }}-mysql_logs"
+            dest: "/var/log/mysql_logs"
     - include: common-tasks/os-lxc-container-setup.yml
       vars:
         list_of_bind_mounts:
