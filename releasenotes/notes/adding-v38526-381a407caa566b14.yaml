@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    A task was added to disable secure ICMP redirects per the requirements in
+    V-38526. This change can cause problems in some environments, so it is
+    disabled by default. Deployers can enable the task (which disables secure
+    ICMP redirects) by setting ``security_disable_icmpv4_redirects_secure`` to
+    ``yes``.

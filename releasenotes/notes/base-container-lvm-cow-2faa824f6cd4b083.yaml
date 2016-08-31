@@ -1,0 +1,14 @@
+---
+features:
+  - The container cache preparation process now allows ``copy-on-write`` to be
+    set as the ``lxc_container_backing_method`` when the
+    ``lxc_container_backing_store`` is set to ``lvm``. When this is set a base
+    container will be created using a name of the form
+    `<linux-distribution>`-`distribution-release>`-`<host-cpu-architecture>`.
+    The container will be stopped as it is not used for anything except to be
+    a backing store for all other containers which will be based on a snapshot
+    of the base container.
+  - When using copy-on-write backing stores for containers, the base container
+    name may be set using the variable ``lxc_container_base_name`` which
+    defaults to
+    `<linux-distribution>`-`distribution-release>`-`<host-cpu-architecture>`.

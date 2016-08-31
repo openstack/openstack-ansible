@@ -1,0 +1,6 @@
+---
+features:
+  - The os_swift role now allows the permissions for the log files created
+    by the swift account, container and object servers to be set. The
+    variable is ``swift_syslog_log_perms`` and is set to ``0644`` by
+    default.

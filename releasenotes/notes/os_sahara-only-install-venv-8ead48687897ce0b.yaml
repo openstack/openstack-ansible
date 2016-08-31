@@ -1,0 +1,6 @@
+---
+upgrade:
+  - Installation of sahara and its dependent pip packages will now only
+    occur within a Python virtual environment. The ``sahara_venv_bin``,
+    ``sahara_venv_enabled``, ``sahara_venv_etc_dir``, and
+    ``sahara_non_venv_etc_dir`` variables have been removed.

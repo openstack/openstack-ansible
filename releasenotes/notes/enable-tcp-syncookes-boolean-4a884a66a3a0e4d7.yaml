@@ -1,0 +1,11 @@
+---
+upgrade:
+  - |
+    The variable ``security_sysctl_enable_tcp_syncookies`` has replaced
+    ``security_sysctl_tcp_syncookies`` and it is now a boolean instead of an
+    integer.  It is still enabled by default, but deployers can disable TCP
+    syncookies by setting the following Ansible variable:
+
+    .. code-block:: yaml
+
+       security_sysctl_enable_tcp_syncookies: no

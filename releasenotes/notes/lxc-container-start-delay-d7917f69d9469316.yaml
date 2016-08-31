@@ -1,0 +1,6 @@
+---
+features:
+  - The LXC container creation process now has a configurable
+    delay for the task which waits for the container to start.
+    The variable ``lxc_container_ssh_delay`` can be set to
+    change the default delay of five seconds.

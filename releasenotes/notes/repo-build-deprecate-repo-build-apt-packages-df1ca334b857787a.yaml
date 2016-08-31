@@ -1,5 +1,5 @@
 ---
-deprecations:
-  - The ``repo_build_apt_packages`` variable has been deprecated.
-    ``repo_build_packages`` should be used instead to override
-    packages required to build Python wheels and venvs.
+upgrade:
+  - The ``repo_build_apt_packages`` variable has been renamed.
+    ``repo_build_distro_packages`` should be used instead to
+    override packages required to build Python wheels and venvs.

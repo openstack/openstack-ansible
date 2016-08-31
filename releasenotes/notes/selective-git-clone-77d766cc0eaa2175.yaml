@@ -1,0 +1,8 @@
+---
+features:
+  - The repo build process now selectively clones git repositories
+    based on whether each OpenStack service group has any hosts in
+    it. If there are no hosts in the group, the git repo for the
+    service will not be cloned. This behaviour can be optionally
+    changed to force all git repositories to be cloned by setting
+    ``repo_build_git_selective`` to ``no``.

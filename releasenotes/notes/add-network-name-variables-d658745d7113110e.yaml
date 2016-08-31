@@ -1,0 +1,8 @@
+---
+fixes:
+  - This role assumes that there is a network named "public|private" and a
+    subnet named "public|private-subnet". These names are made configurable
+    by the addition of two sets of variables; ``tempest_public_net_name``
+    and ``tempest_public_subnet_name`` for public networks and 
+    ``tempest_private_net_name`` and ``tempest_private_subnet_name`` for
+    private networks This addresses `bug 1588818 <https://bugs.launchpad.net/openstack-ansible/+bug/1588818>`_

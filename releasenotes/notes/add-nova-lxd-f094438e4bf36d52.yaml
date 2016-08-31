@@ -1,0 +1,6 @@
+---
+features:
+  - The os_nova role can now deploy the nova-lxd hypervisor.
+    This can be achieved by setting ``nova_virt_type`` to
+    ``lxd`` on a per-host basis in ``openstack_user_config.yml``
+    or on a global basis in ``user_variables.yml``.

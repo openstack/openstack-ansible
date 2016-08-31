@@ -1,0 +1,12 @@
+---
+features:
+  - The ``lxc-container-create`` role now consumes the variable
+    ``lxc_container_bind_mounts`` which should contain a list
+    of bind mounts to apply to a newly created container. The
+    appropriate host and container directory will be created and
+    the configuration applied to the container config. This
+    feature is designed to be used in group_vars to ensure that
+    containers are fully prepared at the time they are created,
+    thus cutting down the number of times containers are restarted
+    during deployments and upgrades.
+

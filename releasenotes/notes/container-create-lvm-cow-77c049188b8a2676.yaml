@@ -1,0 +1,6 @@
+---
+features:
+  - The container creation process now allows ``copy-on-write`` to be set as
+    the ``lxc_container_backing_method`` when the
+    ``lxc_container_backing_store`` is set to ``lvm``. When this is set it
+    will use a snapshot of the base container to build the containers.

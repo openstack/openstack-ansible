@@ -1,0 +1,13 @@
+---
+features:
+  - The os_swift role now supports the ability to configure whether
+    apt/yum tasks install the latest available package, or just ensure
+    that the package is present. The default action is to ensure that
+    the latest package is present. The action taken may be changed to
+    only ensure that the package is present by setting
+    ``swift_package_state`` to ``present``.
+upgrade:
+  - The os_swift role always checks whether the latest package is
+    installed when executed. If a deployer wishes to change the check to
+    only validate the presence of the package, the option
+    ``swift_package_state`` should be set to ``present``.
