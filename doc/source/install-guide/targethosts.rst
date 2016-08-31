@@ -1,35 +1,21 @@
-`Home <index.html>`_ OpenStack-Ansible Installation Guide
+============
+Target hosts
+============
 
-=======================
-Chapter 3. Target hosts
-=======================
+.. figure:: figures/installation-workflow-targethosts.png
+   :width: 100%
 
 .. toctree::
+   :maxdepth: 2
 
    targethosts-prepare.rst
-   targethosts-network.rst
    targethosts-networkconfig.rst
 
-**Figure 3.1. Installation workflow**
+On each target host, perform the following tasks:
 
-.. image:: figures/workflow-targethosts.png
-
-We recommend at least five target hosts to contain the
-OpenStack environment and supporting infrastructure for the OSA
-installation process. On each target host, perform the following tasks:
-
--  Naming target hosts
-
--  Install the operating system
-
--  Generate and set up security measures
-
--  Update the operating system and install additional software packages
-
--  Create LVM volume groups
-
--  Configure networking devices
-
---------------
-
-.. include:: navigation.txt
+* Name the target hosts
+* Install the operating system
+* Generate and set up security measures
+* Update the operating system and install additional software packages
+* Create LVM volume groups
+* Configure networking devices

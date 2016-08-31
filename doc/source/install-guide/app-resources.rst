@@ -1,5 +1,3 @@
-`Home <index.html>`_ OpenStack-Ansible Installation Guide
-
 =================================
 Appendix B: Additional resources
 =================================
@@ -27,7 +25,3 @@ The following OpenStack resources are useful to reference:
 
 - `OpenStack Project Developer Documentation
   <http://docs.openstack.org/developer/>`_
-
---------------
-
-.. include:: navigation.txt

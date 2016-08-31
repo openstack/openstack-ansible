@@ -92,6 +92,3 @@ fine-tune certain security configurations.
 .. _Configuration: http://docs.openstack.org/developer/openstack-ansible-security/configuration.html
 .. _Appendix H: ../install-guide/app-custom-layouts.html
 
---------------
-
-.. include:: navigation.txt

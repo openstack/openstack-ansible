@@ -9,7 +9,3 @@ Appendix E: Advanced configuration
    app-advanced-config-security
    app-advanced-config-sslcertificates
    app-advanced-config-affinity
-
---------------
-
-.. include:: navigation.txt

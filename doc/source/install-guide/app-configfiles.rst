@@ -1,5 +1,3 @@
-`Home <index.html>`_ OpenStack-Ansible Installation Guide
-
 =================================
 Appendix A: Configuration files
 =================================
@@ -19,6 +17,3 @@ Appendix A: Configuration files
 `extra_container.yml
 <https://raw.githubusercontent.com/openstack/openstack-ansible/master/etc/openstack_deploy/env.d/extra_container.yml.example>`_
 
---------------
-
-.. include:: navigation.txt
