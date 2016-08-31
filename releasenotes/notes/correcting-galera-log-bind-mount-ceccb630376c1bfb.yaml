@@ -1,0 +1,33 @@
+---
+upgrade:
+  - |
+    The fix for the broken bind mounts in the galera container
+    (see `bug 1609862 <https://launchpad.net/bugs/1609862>` for details)
+    will be applied to the LXC container configuration file, but a restart of
+    each galera container is required to put the change into effect.
+
+    Deployers can use the rolling restart functionality provided in the upgrade
+    playbook within the main
+    `OpenStack-Ansible repository <https://github.com/openstack/openstack-ansible/blob/stable/mitaka/scripts/upgrade-utilities/playbooks/galera-cluster-rolling-restart.yml>`_.
+
+    Deployers can also shut down and power on galera containers
+    **one at a time** manually if that method is preferred.
+
+    This will also cause the old error logs in ``/var/log/mysql_logs`` in the
+    container to become unavailable since the new bind mount is mounted on
+    top of the existing logs directory within the container. If these logs are
+    critical for a deployer to keep, the deployer should:
+
+    #. Power off one Galera container
+    #. Copy the logs from the container's filesystem to
+       ``/openstack/log/{{ inventory_hostname }}`` on the host filesystem
+    #. Power on the Galera container
+    #. Repeat for the other Galera containers
+fixes:
+  - |
+    The bind mount for logs on the galera container was found to be broken in
+    `bug 1609862 <https://launchpad.net/bugs/1609862>` and it has been fixed.
+
+    **NOTE:** This fix is partially applied for existing OpenStack-Ansible
+    deployments. See the upgrade section of the release notes for the work
+    required to fully apply the fix.
