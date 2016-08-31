@@ -22,3 +22,6 @@ replication_server = True
 log_facility = LOG_LOCAL4
 concurrency = 6
 reclaim_age = {{ reclaim_age | default(604800) }}
+
+[object-auditor]
+log_facility = LOG_LOCAL4

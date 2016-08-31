@@ -38,6 +38,9 @@ recon_lock_path = /var/lock
 log_facility = LOG_LOCAL4
 concurrency = 6
 reclaim_age = {{ reclaim_age | default(604800) }}
+
+[object-auditor]
+log_facility = LOG_LOCAL4
 {% endif %}
 
 [object-updater]
@@ -46,9 +49,6 @@ concurrency = 3
 concurrency = 3
 node_timeout = 60
 conn_timeout = 5
-
-[object-auditor]
-log_facility = LOG_LOCAL4
 
 [filter:xprofile]
 use = egg:swift#xprofile
