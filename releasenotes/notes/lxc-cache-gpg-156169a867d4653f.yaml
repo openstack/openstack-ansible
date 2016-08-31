@@ -1,0 +1,7 @@
+---
+features:
+  - The lxc_hosts role can now make use of a primary and secondary gpg
+    keyserver for gpg validation of the downloaded cache. Setting the
+    servers to use can be done using the
+    ``lxc_image_cache_primary_keyserver`` and
+    ``lxc_image_cache_secondary_keyserver`` variables.

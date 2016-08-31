@@ -1,0 +1,13 @@
+---
+features:
+  - The rsyslog_server role now supports the ability to configure whether
+    apt/yum tasks install the latest available package, or just ensure
+    that the package is present. The default action is to ensure that
+    the latest package is present. The action taken may be changed to
+    only ensure that the package is present by setting
+    ``rsyslog_server_package_state`` to ``present``.
+upgrade:
+  - The rsyslog_server role always checks whether the latest package is
+    installed when executed. If a deployer wishes to change the check to
+    only validate the presence of the package, the option
+    ``rsyslog_server_package_state`` should be set to ``present``.

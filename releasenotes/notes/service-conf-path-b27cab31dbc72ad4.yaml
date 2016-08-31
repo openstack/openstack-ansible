@@ -1,0 +1,6 @@
+---
+features:
+  - A new variable is supported in the ``neutron_services`` dictionary called
+    ``service_conf_path``. This variable enables services to deploy their
+    config templates to paths outside of /etc/neutron by specifying a
+    directory using the new variable.

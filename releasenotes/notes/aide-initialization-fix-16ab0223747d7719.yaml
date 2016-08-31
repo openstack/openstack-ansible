@@ -1,0 +1,17 @@
+---
+features:
+  - |
+    AIDE is configured to skip the entire ``/var`` directory when it does the
+    database initialization and when it performs checks. This reduces disk
+    I/O and allows these jobs to complete faster.
+
+    This also allows the initialization to become a blocking process and
+    Ansible will wait for the initialization to complete prior to running the
+    next task.
+fixes:
+  - |
+    AIDE initialization is now always run on subsequent playbook runs when
+    ``security_initialize_aide`` is set to ``yes``. The initialization will
+    be skipped if AIDE isn't installed or if the AIDE database already exists.
+
+    See `bug 1616281 <https://launchpad.net/bugs/1616281>`_ for more details.

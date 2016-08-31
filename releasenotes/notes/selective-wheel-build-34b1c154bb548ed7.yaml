@@ -1,0 +1,8 @@
+---
+features:
+  - The repo build process now selectively builds python packages
+    based on whether each OpenStack service group has any hosts in
+    it. If there are no hosts in the group, the list of python
+    packages for the service will not be built. This behaviour can
+    be optionally changed to force all python packages to be built
+    by setting ``repo_build_wheel_selective`` to ``no``.

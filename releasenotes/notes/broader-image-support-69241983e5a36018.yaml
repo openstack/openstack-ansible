@@ -1,0 +1,30 @@
+---
+features:
+  - Added new variable ``tempest_img_name``.
+  - Added new variable ``tempest_img_url``.
+    This variable replaces ``cirros_tgz_url`` and ``cirros_img_url``.
+  - Added new variable ``tempest_image_file``.
+    This variable replaces the hard-coded value
+    for the ``img_file`` setting in tempest.conf.j2.  This will
+    allow users to specify images other than cirros.
+  - Added new variable ``tempest_img_disk_format``.
+    This variable replaces ``cirros_img_disk_format``.
+deprecations:
+  - Removed ``cirros_tgz_url`` and in most places replaced
+    with ``tempest_img_url``.
+  - Removed ``cirros_img_url`` and in most places replaced
+    with ``tempest_img_url``.
+  - Removed deprecated variable ``tempest_compute_image_alt_ssh_user``
+  - Removed deprecated variable ``tempest_compute_image_ssh_password``
+  - Removed deprecated variable
+    ``tempest_compute_image_alt_ssh_password``
+  - Renamed ``cirros_img_disk_format`` to ``tempest_img_disk_format``
+  - Downloading and unarchiving a .tar.gz has been removed.  The
+    related tempest options ``ami_img_file``, ``aki_img_file``, and
+    ``ari_img_file`` have been removed from tempest.conf.j2.
+  - The ``[boto]`` section of tempest.conf.j2 has been removed.  These
+    tests have been completely removed from tempest for some time.
+fixes:
+  - Removed various deprecated / no longer supported
+    features from tempest.conf.j2.  Some variables have been moved
+    to their new sections in the config.

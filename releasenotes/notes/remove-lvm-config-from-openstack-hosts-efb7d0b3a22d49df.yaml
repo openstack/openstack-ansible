@@ -1,0 +1,6 @@
+---
+upgrade:
+  - |
+    The LVM configuration tasks and ``lvm.conf`` template have been removed
+    from the ``openstack_hosts`` role since they are no longer needed. All of
+    the LVM configuration is properly handled in the ``os_cinder`` role.

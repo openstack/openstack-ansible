@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    A new task was added to disable ICMPv6 redirects per the requirements in
+    V-38548. However, since this change can cause problems in running OpenStack
+    environments, it is disabled by default. Deployers who wish to enable this
+    task (and disable ICMPv6 redirects) should set
+    ``security_disable_icmpv6_redirects`` to ``yes``.
