@@ -118,7 +118,11 @@ for repo in $(grep 'git_repo\:' ${SERVICE_FILE}); do
       find ${os_repo_tmp_path}/etc -name "*[_-]paste.ini" -exec \
         bash -c "name=\"{}\"; cp \${name} \"${osa_repo_tmp_path}/templates/\$(basename \${name}).j2\"" \;
 
-      # Tweak the rootwrap conf files
+      # Tweak the rootwrap conf filters_path
+      find ${os_repo_tmp_path}/etc -name "rootwrap.conf" -exec \
+        sed -i.bak "s|filters_path=/etc/neutron|filters_path={{ ${repo_name}_conf_dir }}" {} \;
+
+      # Tweak the rootwrap conf exec_dirs
       find ${os_repo_tmp_path}/etc -name "rootwrap.conf" -exec \
         sed -i.bak "s|exec_dirs=|exec_dirs={{ ${repo_name}_bin }},|" {} \;
 
