@@ -1,17 +1,16 @@
-`Home <index.html>`_ OpenStack-Ansible Installation Guide
-
-================================================
-Appendix E: Customizing host and service layouts
-================================================
+==================================================
+Appendix C: Customizing host and service layouts
+==================================================
 
 Understanding the default layout
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 The default layout of containers and services in OpenStack-Ansible is driven
 by the ``/etc/openstack_deploy/openstack_user_config.yml`` file and the
-contents of the ``/etc/openstack_deploy/conf.d/``,
-``playbooks/inventory/env.d/`` and ``/etc/openstack_deploy/env.d/``
-directories. Use these sources to define the group mappings used by the
-playbooks to target hosts and containers for roles used in the deploy.
+contents of both the ``/etc/openstack_deploy/conf.d/`` and
+``/etc/openstack_deploy/env.d/`` directories. Use these sources to define the
+group mappings used by the playbooks to target hosts and containers for roles
+used in the deploy.
 
 Conceptually, these can be thought of as mapping from two directions. You
 define host groups, which gather the target hosts into inventory groups,
@@ -27,12 +26,13 @@ desire before running the installation playbooks.
 
 Understanding host groups
 -------------------------
+
 As part of initial configuration, each target host appears in either the
 ``/etc/openstack_deploy/openstack_user_config.yml`` file or in files within
 the ``/etc/openstack_deploy/conf.d/`` directory. We use a format for files in
 ``conf.d/`` which is identical to the syntax used in the
 ``openstack_user_config.yml`` file. These hosts are listed under one or more
-headings such as ``shared-infra_hosts`` or ``storage_hosts`` which serve as
+headings, such as ``shared-infra_hosts`` or ``storage_hosts``, which serve as
 Ansible group mappings. We treat these groupings as mappings to the physical
 hosts.
 
@@ -40,21 +40,22 @@ The example file ``haproxy.yml.example`` in the ``conf.d/`` directory provides
 a simple example of defining a host group (``haproxy_hosts``) with two hosts
 (``infra1`` and ``infra2``).
 
-A more complex example file is ``swift.yml.example``. Here, in addition, we
+A more complex example file is ``swift.yml.example``. Here, we
 specify host variables for a target host using the ``container_vars`` key.
 OpenStack-Ansible applies all entries under this key as host-specific
 variables to any component containers on the specific host.
 
 .. note::
 
-   Our current recommendation is for new inventory groups, particularly for new
+   We recommend new inventory groups, particularly for new
    services, to be defined using a new file in the ``conf.d/`` directory in
    order to manage file size.
 
 Understanding container groups
 ------------------------------
+
 Additional group mappings can be found within files in the
-``playbooks/inventory/env.d/`` directory. These groupings are treated as
+``/etc/openstack_deploy/env.d/`` directory. These groupings are treated as
 virtual mappings from the host groups (described above) onto the container
 groups which define where each service deploys. By reviewing files within the
 ``env.d/`` directory, you can begin to see the nesting of groups represented
@@ -88,7 +89,7 @@ The default layout does not rely exclusively on groups being subsets of other
 groups. The ``memcache`` component group is part of the ``memcache_container``
 group, as well as the ``memcache_all`` group and also contains a ``memcached``
 component group. If you review the ``playbooks/memcached-install.yml``
-playbook you see that the playbook applies to hosts in the ``memcached``
+playbook, you see that the playbook applies to hosts in the ``memcached``
 group. Other services may have more complex deployment needs. They define and
 consume inventory container groups differently. Mapping components to several
 groups in this way allows flexible targeting of roles and tasks.
@@ -96,62 +97,37 @@ groups in this way allows flexible targeting of roles and tasks.
 Customizing existing components
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Numerous customization scenarios are possible, but three popular ones are
-presented here as starting points and also as common recipes.
-
-Modifying the default environment
----------------------------------
-
-In order to avoid conflicts between deployer and project changes, the base
-configuration for the OpenStack-Ansible components resides in the
-``playbooks/inventory/env.d/`` directory.
-
-The ``/etc/openstack_deploy/env.d`` directory is used to override and extend
-the environment to the deployer's needs. To modify an existing configuration,
-copy the relevant service file to the ``/etc/openstack_deploy/env.d``
-directory. Then, modify the values under the relevant keys. Only the keys
-and the modified value are required to be present; other information can
-safely be omitted.
-
-
 Deploying directly on hosts
 ---------------------------
 
-To deploy a component directly on the host instead of within a container, copy
-the relevant file to ``/etc/openstack_deploy/env.d/`` and set the ``is_metal``
-property to ``true`` for the container group under the ``container_skel``.
+To deploy a component directly on the host instead of within a container, set
+the ``is_metal`` property to ``true`` for the container group under the
+``container_skel`` in the appropriate file.
 
 The use of ``container_vars`` and mapping from container groups to host groups
 is the same for a service deployed directly onto the host.
 
 .. note::
 
-   The ``cinder_volume`` component is also deployed directly on the host by
-   default. See the ``playbooks/inventory/env.d/cinder.yml`` file for this example.
+   The ``cinder-volume`` component is also deployed directly on the host by
+   default. See the ``env.d/cinder.yml`` file for this example.
 
 Omit a service or component from the deployment
 -----------------------------------------------
 
-To omit a component from a deployment, several options exist.
+To omit a component from a deployment, several options exist:
 
-- You could remove the ``physical_skel`` link between the container group and
-  the host group. The simplest way to do this is to simply copy the relevant
-  file to the ``/etc/openstack_deploy/env.d/`` directory, and set the
-  following information:
+- Remove the ``physical_skel`` link between the container group and
+  the host group. The simplest way to do this is to delete the related
+  file located in the ``env.d/`` directory.
+- Do not run the playbook which installs the component.
+  Unless you specify the component to run directly on a host using
+  ``is_metal``, a container creates for this component.
+- Adjust the `affinity`_ to 0 for the host group. Unless you
+  specify the component to run directly on a host using ``is_metal``,
+  a container creates for this component.
 
-.. code-block:: yaml
-
-  physical_skel: {}
-
-- You could choose to not run the playbook which installs the component.
-  Unless you specify the component to run directly on a host using is_metal, a
-  container creates for this component.
-- You could adjust the ``affinity`` to 0 for the host group. Unless you
-  specify the component to run directly on a host using is_metal, a container
-  creates for this component. `Affinity`_ is discussed in the initial
-  environment configuration section of the install guide.
-
-.. _Affinity: configure-initial.html#affinity
+.. _affinity: app-advanced-config-affinity.rst
 
 Deploying existing components on dedicated hosts
 ------------------------------------------------
@@ -181,10 +157,10 @@ segment of the ``env.d/galera.yml`` file might look like:
    ``is_metal: true`` property. We include it here as a recipe for the more
    commonly requested layout.
 
-Since we define the new container group (``db_containers`` above) we must
+Since we define the new container group (``db_containers`` above), we must
 assign that container group to a host group. To assign the new container
 group to a new host group, provide a ``physical_skel`` for the new host group
-(in a new or existing file, such as ``env.d/galera.yml``) like the following:
+(in a new or existing file, such as ``env.d/galera.yml``). For example:
 
 .. code-block:: yaml
 
@@ -197,7 +173,7 @@ group to a new host group, provide a ``physical_skel`` for the new host group
           - hosts
 
 Lastly, define the host group (db_hosts above) in a ``conf.d/`` file (such as
-``galera.yml``).
+``galera.yml``):
 
 .. code-block:: yaml
 

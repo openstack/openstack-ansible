@@ -11,7 +11,3 @@ Appendices
    app-security.rst
    app-advanced-config-options.rst
    app-targethosts-networkexample.rst
-
---------------
-
-.. include:: navigation.txt

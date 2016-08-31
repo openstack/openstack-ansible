@@ -16,6 +16,3 @@ Production environment
 
 .. TODO include openstack_user_config.yml examples when done.
 
---------------
-
-.. include:: navigation.txt

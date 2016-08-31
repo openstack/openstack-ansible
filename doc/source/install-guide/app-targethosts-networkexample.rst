@@ -254,7 +254,3 @@ Contents of the ``/etc/network/interfaces`` file:
             address 172.29.244.11
             netmask 255.255.252.0
 
-
---------------
-
-.. include:: navigation.txt

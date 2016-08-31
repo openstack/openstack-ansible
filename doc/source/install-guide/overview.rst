@@ -1,17 +1,12 @@
-`Home <index.html>`_ OpenStack-Ansible Installation Guide
-
-=====================
-Chapter 1. Overview
-=====================
+========
+Overview
+========
 
 .. toctree::
 
    overview-osa.rst
-   overview-hostlayout.rst
+   overview-host-layout
+   overview-network-arch.rst
+   overview-storage-arch.rst
    overview-requirements.rst
    overview-workflow.rst
-   overview-security.rst
-
---------------
-
-.. include:: navigation.txt

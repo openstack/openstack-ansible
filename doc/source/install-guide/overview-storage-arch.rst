@@ -128,8 +128,3 @@ Configure the ``glance-volume`` container to use the ``br-storage`` and
 
 * ``br-storage`` bridge carries image traffic to compute host.
 * ``br-mgmt`` bridge carries Image Service API request traffic.
-
-
---------------
-
-.. include:: navigation.txt

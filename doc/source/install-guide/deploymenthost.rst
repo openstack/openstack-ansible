@@ -1,19 +1,17 @@
-`Home <index.html>`_ OpenStack-Ansible Installation Guide
+===============
+Deployment host
+===============
 
-Chapter 2. Deployment host
-==========================
+.. figure:: figures/installation-workflow-deploymenthost.png
+   :width: 100%
 
-**Figure 2.1. Installation work flow**
+When installing OpenStack in a production environment, we recommend using a
+separate deployment host which contains Ansible and orchestrates the
+OpenStack-Ansible installation on the target hosts. In a test environment, we
+prescribe using one of the infrastructure target hosts as the deployment host.
 
-.. image:: figures/workflow-deploymenthost.png
-
-The OSA installation process recommends one deployment host. The
-deployment host contains Ansible and orchestrates the OpenStack-Ansible
-installation on the target hosts. We recommend using separate deployment and
-target hosts. You could alternatively use one of the target hosts, preferably
-one of the infrastructure variants, as the deployment host. To use a
-deployment host as a target host, follow the steps in `Chapter 3, Target
-hosts <targethosts.html>`_ on the deployment host.
+To use a target host as a deployment host, follow the steps in `Chapter 3,
+Target hosts <targethosts.html>`_ on the deployment host.
 
 Installing the operating system
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -21,7 +19,7 @@ Installing the operating system
 Install the `Ubuntu Server 14.04 (Trusty Tahr) LTS 64-bit
 <http://releases.ubuntu.com/14.04/>`_ operating system on the
 deployment host. Configure at least one network interface to
-access the Internet or suitable local repositories.
+access the internet or suitable local repositories.
 
 Configuring the operating system
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -64,7 +62,7 @@ Install the source and dependencies for the deployment host.
 
        # git clone -b TAG https://github.com/openstack/openstack-ansible.git /opt/openstack-ansible
 
-   Replace ``TAG`` with the current stable release tag.
+   Replace ``TAG`` with the current stable release tag : |my_conf_val|
 
 #. Change to the ``/opt/openstack-ansible`` directory, and run the
    Ansible bootstrap script:
@@ -83,6 +81,3 @@ key pairs. However, if a pass phrase is required, consider using the
 ``ssh-agent`` and ``ssh-add`` commands to temporarily store the
 pass phrase before performing Ansible operations.
 
---------------
-
-.. include:: navigation.txt

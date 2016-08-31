@@ -212,6 +212,3 @@ Verifying the Dashboard (horizon)
 
 .. TODO Add troubleshooting information to resolve common installation issues
 
---------------
-
-.. include:: navigation.txt

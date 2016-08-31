@@ -137,7 +137,3 @@ The process is identical to the other services. Replace
 ``rabbitmq`` in the configuration variables shown above with ``horizon``,
 ``haproxy``, or ``keystone`` to deploy user-provided certificates to those
 services.
-
---------------
-
-.. include:: navigation.txt
