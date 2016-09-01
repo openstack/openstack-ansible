@@ -99,6 +99,16 @@
         - inventory_hostname in groups['swift_all']
         - hostvars[inventory_hostname]['container_networks']['replication_address']['address'] is undefined
         - not is_metal | bool
+    # If we're using ceilometer then swift needs a rabbitmq/vhost & usera
+    - include: common-tasks/rabbitmq-vhost-user.yml
+      vars:
+        user: "{{ swift_rabbitmq_telemetry_userid }}"
+        password: "{{ swift_rabbitmq_telemetry_password }}"
+        vhost: "{{ swift_rabbitmq_telemetry_vhost }}"
+        _rabbitmq_host_group: "{{ swift_rabbitmq_telemetry_host_group }}"
+      when:
+        - swift_ceilometer_enabled | bool
+        - inventory_hostname == groups['swift_all'][0]
   roles:
     - role: "os_swift"
       swift_venv_tag: "{{ openstack_release }}"

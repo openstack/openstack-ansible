@@ -379,6 +379,18 @@ swift_system_shell: /bin/bash
 swift_system_comment: swift system user
 swift_system_home_folder: "/var/lib/{{ swift_system_user_name }}"
 
+# Swift Telemetry notifications
+swift_rabbitmq_telemetry_userid: "swift"
+swift_rabbitmq_telemetry_vhost: "/swift"
+swift_rabbitmq_telemetry_servers: "{{ rabbitmq_servers }}"
+# TODO: (andymccr) ceilometer with swift does not support SSL rabbitmq connections, so we are hard coding the port and use_ssl var
+swift_rabbitmq_telemetry_port: "5672"
+swift_rabbitmq_use_ssl: False
+swift_rabbitmq_telemetry_host_group: "{{ rabbitmq_host_group }}"
+
+# If there are any Ceilometer and Swift hosts in the environment, then enable its usage
+swift_ceilometer_enabled: "{{ (groups['ceilometer_all'] is defined) and (groups['swift_proxy'] is defined) and (groups['ceilometer_all'] | length > 0) and (groups['swift_proxy'] | length > 0) }}"
+
 ## OpenStack Openrc
 openrc_os_auth_url: "{{ keystone_service_internalurl }}"
 openrc_os_password: "{{ keystone_auth_admin_password }}"
