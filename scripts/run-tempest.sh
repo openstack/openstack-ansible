@@ -33,6 +33,10 @@ info_block "Checking for required libraries." 2> /dev/null || source "$(dirname 
 ## Main ----------------------------------------------------------------------
 info_block "Running OpenStack Smoke Tests"
 
+if [[ -f "/usr/local/bin/openstack-ansible.rc" ]];then
+  source "/usr/local/bin/openstack-ansible.rc"
+fi
+
 pushd playbooks
   # Check that there are utility containers
   if ! ansible 'utility[0]' --list-hosts;then
