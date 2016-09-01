@@ -16,9 +16,13 @@ Target hosts <targethosts.html>`_ on the deployment host.
 Installing the operating system
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Install the `Ubuntu Server 14.04 (Trusty Tahr) LTS 64-bit
-<http://releases.ubuntu.com/14.04/>`_ operating system on the
-deployment host. Configure at least one network interface to
+Install one of the following supported operating systems
+on the deployment hosts:
+* `Ubuntu Server 16.04 (Xenial Xerus) LTS 64-bit
+<http://releases.ubuntu.com/16.04/>`_
+* `Ubuntu Server 14.04 (Trusty Tahr) LTS 64-bit
+<http://releases.ubuntu.com/14.04/>`_
+Configure at least one network interface to
 access the internet or suitable local repositories.
 
 Configuring the operating system

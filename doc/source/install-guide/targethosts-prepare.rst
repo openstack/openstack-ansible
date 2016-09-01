@@ -8,7 +8,8 @@ operating systems for the target hosts.
 Installing the operating system
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Install the Ubuntu Server 14.04 (Trusty Tahr) LTS 64-bit operating
+Install the Ubuntu Server 16.04 (Xenial Xerus) LTS 64-bit/
+Ubuntu Server 14.04 (Trusty Tahr) LTS 64-bit operating
 system on the target host. Configure at least one network interface
 to access the internet or suitable local repositories.
 

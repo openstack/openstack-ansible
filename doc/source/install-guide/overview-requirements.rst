@@ -103,13 +103,14 @@ Software requirements
 Ensure all hosts within an OpenStack-Ansible environment meet the following
 minimum requirements:
 
-* Ubuntu 14.04 LTS (Trusty Tahr)
+* Ubuntu 16.04 LTS (Xenial Xerus)/Ubuntu 14.04 LTS (Trusty Tahr)
 
-  * OSA is tested regularly against the latest Ubuntu 14.04 LTS point
-    releases.
+  * OSA is tested regularly against the latest Ubuntu 16.04 LTS Xenial
+    point releases and Ubuntu 14.04 Trusty as well.
   * Linux kernel version ``3.13.0-34-generic`` or later.
-  * For swift storage hosts, you must enable the ``trusty-backports``
-    repositories in ``/etc/apt/sources.list`` or ``/etc/apt/sources.list.d/``
+  * For Trusty hosts, you must enable the ``trusty-backports`` or
+    repositories in ``/etc/apt/sources.list`` or
+    ``/etc/apt/sources.list.d/``
     See the `Ubuntu documentation
     <https://help.ubuntu.com/community/UbuntuBackports#Enabling_Backports_Manually>`_ for more detailed instructions.
 
@@ -119,6 +120,6 @@ minimum requirements:
 * Network Time Protocol (NTP) client for time synchronization (such as
   ``ntpd`` or ``chronyd``)
 
-* Python 2.7 or later
+* Python 2.7.x must be on the hosts.
 
 * en_US.UTF-8 as locale
