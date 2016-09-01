@@ -116,6 +116,52 @@ To assist you in finding the appropriate variable name to use for
 overrides, the general format for the variable name is
 ``<service>_policy_overrides``.
 
+Overriding YAML files
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can override ``.yml`` file values by supplying replacement YAML content.
+
+.. note::
+
+   All default YAML file content will be completely overwritten by
+   the provided overrides, so the entire YAML source (both the existing
+   content and your changes) must be provided.
+
+For example, you can define a meter exclusion for all hardware items
+in the default content of ceilometer's ``pipeline.yml``:
+
+.. code-block:: yaml
+
+    sources:
+        - name: meter_source
+        interval: 600
+        meters:
+            - "!hardware.*"
+        sinks:
+            - meter_sink
+        - name: foo_source
+        value: foo
+
+You can accomplish this through the use of the following configuration
+entry in ``/etc/openstack_deploy/user_variables.yml``:
+
+.. code-block:: yaml
+
+    ceilometer_pipeline_yaml_overrides:
+      sources:
+          - name: meter_source
+          interval: 600
+          meters:
+              - "!hardware.*"
+          sinks:
+              - meter_sink
+          - name: source_foo
+          value: foo
+
+To assist you in finding the appropriate variable name to use for
+overrides, the general format for the variable name is
+``<service>_<filename>_<file extension>_overrides``.
+
 Currently available overrides
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
