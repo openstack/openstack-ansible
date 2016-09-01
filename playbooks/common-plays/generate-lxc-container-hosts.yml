@@ -18,17 +18,19 @@
   connection: local
   gather_facts: false
   tasks:
-    - set_fact:
-        _container_hosts: >
-          {%- for item in groups['all_containers'] -%}
-          {%-   if hostvars[item]['physical_host'] | default(false) != item -%}
-          {{ hostvars[item]['physical_host'] }}{% if not loop.last %},{% endif %}
-          {%-   endif -%}
-          {%- endfor -%}
-    - set_fact:
-        _known_container_hosts: "{{ _container_hosts | replace('\n', '') }}"
+    - name: Create known container hosts fact
+      set_fact:
+        _known_container_hosts: >
+          {% set _var = [] -%}
+          {% for item in groups['all_containers'] -%}
+          {%   if hostvars[item]['physical_host'] | default(false) != item -%}
+          {%     if _var.append(hostvars[item]['physical_host']) -%}
+          {%     endif -%}
+          {%   endif -%}
+          {% endfor -%}
+          {{ _var | unique }}
     - name: Create dynamic lxc_host group
       add_host:
         hostname: "{{ item }}"
         groups: "known_container_hosts"
-      with_items: "{{ _known_container_hosts.split(',') | unique }}"
+      with_items: "{{ _known_container_hosts }}"

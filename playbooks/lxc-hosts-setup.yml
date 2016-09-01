@@ -16,7 +16,7 @@
 - include: common-plays/generate-lxc-container-hosts.yml
 
 - name: Basic lxc host setup
-  hosts: known_container_hosts
+  hosts: "{{ lxc_host_group | default('known_container_hosts') }}"
   gather_facts: "{{ gather_facts | default(True) }}"
   max_fail_percentage: 20
   user: root
