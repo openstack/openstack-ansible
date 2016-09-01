@@ -140,7 +140,6 @@ function exit_early {
 ## Main ----------------------------------------------------------------------
 
 function main {
-    [[ "${I_REALLY_KNOW_WHAT_I_AM_DOING}" = true ]] || exit_early
     pre_flight
     check_for_current
 
