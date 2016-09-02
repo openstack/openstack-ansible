@@ -41,18 +41,6 @@ utility_package_state: "{{ package_state }}"
 
 # Python packages to be installed into the utility container
 utility_pip_packages:
-  - gnocchiclient
-  - python-openstackclient
-  - python-ceilometerclient
-  - python-cinderclient
-  - python-glanceclient
-  - python-heatclient
-  - python-keystoneclient
-  - python-neutronclient
-  - python-novaclient
-  - python-ironicclient
-  - python-saharaclient
-  - python-swiftclient
   - python-memcached
   - pycrypto
 
