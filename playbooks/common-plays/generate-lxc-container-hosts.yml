@@ -1,0 +1,36 @@
+---
+# Copyright 2016, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Generate container host list
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Create known container hosts fact
+      set_fact:
+        _known_container_hosts: >
+          {% set _var = [] -%}
+          {% for item in groups['all_containers'] -%}
+          {%   if hostvars[item]['physical_host'] | default(false) != item -%}
+          {%     if _var.append(hostvars[item]['physical_host']) -%}
+          {%     endif -%}
+          {%   endif -%}
+          {% endfor -%}
+          {{ _var | unique }}
+    - name: Create dynamic lxc_host group
+      add_host:
+        hostname: "{{ item }}"
+        groups: "known_container_hosts"
+      with_items: "{{ _known_container_hosts }}"
