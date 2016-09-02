@@ -223,7 +223,3 @@ without any additional options.
 .. code-block:: console
 
     # openstack-ansible setup-openstack.yml
-
---------------
-
-.. include:: navigation.txt

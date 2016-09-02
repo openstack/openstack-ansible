@@ -25,6 +25,3 @@ following steps in the ``openstack-ansible`` directory:
    # git checkout ${LATEST_TAG}
    # ./scripts/run-upgrade.sh
 
---------------
-
-.. include:: navigation.txt

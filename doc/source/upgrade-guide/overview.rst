@@ -30,6 +30,3 @@ and :ref:`manual-upgrade`.
 .. note::
    You can only upgrade between sequential releases.
 
---------------
-
-.. include:: navigation.txt

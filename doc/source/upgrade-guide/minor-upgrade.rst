@@ -1,5 +1,3 @@
-`Home <index.html>`__ OpenStack-Ansible Installation Guide
-
 .. _minor-upgrades:
 
 ==============
@@ -130,7 +128,3 @@ tasks will execute.
      # openstack-ansible os-nova-install.yml --limit nova_compute \
                                              --skip-tags 'nova-key' \
                                              --list-tasks
-
---------------
-
-.. include:: navigation.txt
