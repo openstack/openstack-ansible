@@ -1,3 +1,4 @@
+=======
 Scripts
 =======
 
@@ -42,7 +43,3 @@ indicates to OpenStack-Ansible to skip this step on successive runs. The script
 itself does not check for this file.
 
 Called by :ref:`config-change-playbook`
-
---------------
-
-.. include:: navigation.txt

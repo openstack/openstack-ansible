@@ -121,8 +121,3 @@ Stops the ``aodh-api`` service and removes the init file since ``aodh-api``
 now runs under Apache ``mod_wsgi``.
 Run the ``os-aodh-install.yml`` playbook during the OpenStack services upgrade
 to ensure ``aodh-api`` is available after running ``aodh-api-init-delete.yml``.
-
-
---------------
-
-.. include:: navigation.txt
