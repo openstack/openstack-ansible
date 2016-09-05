@@ -1,0 +1,13 @@
+---
+features:
+  - In order to reduce the time taken for fact gathering, the default
+    subset gathered has been reduced to a smaller set than the Ansible
+    default. This may be changed by the deployer by setting the
+    ``ANSIBLE_GATHER_SUBSET`` variable in the bash environment prior
+    to executing any ansible commands.
+upgrade:
+  - In order to reduce the time taken for fact gathering, the default
+    subset gathered has been reduced to a smaller set than the Ansible
+    default. This may be changed by the deployer by setting the
+    ``ANSIBLE_GATHER_SUBSET`` variable in the bash environment prior
+    to executing any ansible commands.
