@@ -20,7 +20,7 @@
       group_by:
         key: repo_servers_{{ ansible_architecture }}
       tags:
-        - "repo-build"
+        - always
 
 # repo_all[0] is built last to ensure it has all build artifacts for final indexing
 - name: Build new repo packages for a given release
