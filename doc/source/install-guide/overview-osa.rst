@@ -8,7 +8,8 @@ For isolation and ease of maintenance, you can install OpenStack components
 into Linux containers (LXC).
 
 This documentation is intended for deployers, and walks through an
-OpenStack-Ansible installation for a test and production environments.
+OpenStack-Ansible installation for a test environment and production
+environment.
 
 Ansible
 ~~~~~~~
@@ -23,9 +24,9 @@ Playbooks <http://docs.ansible.com/playbooks_intro.html>`_.
 
 In this guide, we refer to two types of hosts:
 
-* The host running Ansible playbooks is the `deployment host`.
-* The hosts where Ansible installs OpenStack services and infrastructure
-  components are the `target host`.
+* `Deployment host` - The host running Ansible playbooks.
+* `Target hosts` - The hosts where Ansible installs OpenStack services and
+  infrastructure components.
 
 Linux containers (LXC)
 ~~~~~~~~~~~~~~~~~~~~~~
