@@ -48,3 +48,22 @@ following features:
 * Support for a variety of backing stores including LVM.
 * Built on a foundation of stable Linux technologies with an active
   development and support community.
+
+
+Installation workflow
+~~~~~~~~~~~~~~~~~~~~~
+
+This diagram shows the general workflow associated with an
+OpenStack-Ansible installation.
+
+
+.. figure:: figures/installation-workflow-overview.png
+   :width: 100%
+
+   **Installation workflow**
+
+#. :doc:`Prepare deployment host <deploymenthost>`
+#. :doc:`Prepare target hosts <targethosts>`
+#. :doc:`Configure deployment <configure>`
+#. :doc:`Run playbooks <installation#run-playbooks>`
+#. :doc:`Verify OpenStack operation <installation>`
