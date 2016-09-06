@@ -1,5 +1,5 @@
 =================================
-Appendix B: Additional resources
+Appendix F: Additional resources
 =================================
 
 The following Ansible resources are useful to reference:
