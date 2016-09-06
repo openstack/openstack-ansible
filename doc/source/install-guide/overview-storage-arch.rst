@@ -2,129 +2,176 @@
 Storage architecture
 ====================
 
-OpenStack-Ansible supports Block Storage (cinder), Ephemeral storage
-(nova), Image service (glance), and Object Storage (swift).
+Introduction
+~~~~~~~~~~~~
+
+OpenStack has multiple storage realms to consider:
+
+* Block Storage (cinder)
+* Object Storage (swift)
+* Image storage (glance)
+* Ephemeral storage (nova)
 
 Block Storage (cinder)
 ~~~~~~~~~~~~~~~~~~~~~~
 
- .. important::
+The Block Storage (cinder) service manages volumes on storage devices in an
+environment. For a production deployment, this is a device that presents
+storage via a storage protocol (for example: NFS, iSCSI, Ceph RBD) to a
+storage network (``br-storage``) and a storage management API to the
+management (``br-mgmt``) network. Instances are connected to the volumes via
+the storage network by the hypervisor on the Compute host. The following
+diagram illustrates how Block Storage is connected to instances.
 
-    The Block Storage used by each service is typically on a storage system, not
-    a server. An exception to this is the LVM-backed storage store; however, this is a
-    reference implementation and is used primarily for test environments and not
-    for production environments. For non-server storage systems, the ``cinder-volume``
-    service interacts with the Block Storage system through an API which
-    is implemented in the appropriate driver.
+.. figure:: figures/production-storage-cinder.png
+   :width: 600px
 
-When using the cinder LVM driver, you have separate physical hosts with the
-volume groups that cinder volumes will use.
-Most of the other external cinder storage (For example: Ceph, EMC, NAS, and
-NFS) sets up a container inside one of the infra hosts.
+   The following steps relate to the illustration above.
+
+   +----+---------------------------------------------------------------------+
+   | 1. | The creation of a volume is executed by the assigned                |
+   |    | ``cinder-volume`` service using the appropriate `cinder driver`_.   |
+   |    | This is done using an API which is presented to the management      |
+   |    | network.                                                            |
+   +----+---------------------------------------------------------------------+
+   | 2. | After the volume is created, the ``nova-compute`` service connects  |
+   |    | the Compute host hypervisor to the volume via the storage network.  |
+   +----+---------------------------------------------------------------------+
+   | 3. | After the hypervisor is connected to the volume, it presents the    |
+   |    | volume as a local hardware device to the instance.                  |
+   +----+---------------------------------------------------------------------+
+
+.. important::
+
+   The `LVMVolumeDriver`_ is designed as a reference driver implementation
+   which we do not recommend for production usage. The LVM storage back-end
+   is a single server solution which provides no high availability options.
+   If the server becomes unavailable, then all volumes managed by the
+   ``cinder-volume`` service running on that server become unavailable.
+   Upgrading the operating system packages (for example: kernel, iscsi) on
+   the server will cause storage connectivity outages due to the iscsi
+   service (or the host) restarting.
+
+Due to a `limitation with container iSCSI connectivity`_, you must deploy the
+``cinder-volume`` service directly on a physical host (not into a container)
+when using storage back-ends which connect via iSCSI. This includes the
+`LVMVolumeDriver`_ and many of the drivers for commercial storage devices.
 
  .. note::
 
-    The ``cinder-volume`` service cannot run in a highly available configuration.
-    Do not set it up on multiple hosts. If you have multiple storage
-    backends, set up one per volumes container.
-    For more information: `<https://specs.openstack.org/openstack/cinder-specs/specs/mitaka/cinder-volume-active-active-support.html>`_.
+    The ``cinder-volume`` service does not run in a highly available
+    configuration. When the ``cinder-volume`` service is configured to manage
+    volumes on the same back-end from multiple hosts/containers, one service
+    is scheduled to manage the life-cycle of the volume until an alternative
+    service is assigned to do so. This assignment may be done through by
+    using the `cinder-manage CLI tool`_.
+    This may change in the future if the
+    `cinder volume active-active support spec`_ is implemented.
 
-
-Configuring the Block Storage service
--------------------------------------
-
-Configure ``cinder-api`` infra hosts with ``br-storage`` and ``br-mgmt``.
-Configure ``cinder-volumes`` hosts with ``br-storage`` and ``br-mgmt``.
-
-* ``br-storage`` bridge carries Block Storage traffic to compute host.
-* ``br-mgmt`` bridge carries Block Storage API requests traffic.
-
- .. note::
-
-    For production environments segregate the traffic (storage and
-    API request) from the hosts onto dedicated networks.
-
+.. _cinder driver: http://docs.openstack.org/developer/cinder/drivers.html
+.. _LVMVolumeDriver: http://docs.openstack.org/developer/cinder/drivers.html#lvmvolumedriver
+.. _limitation with container iSCSI connectivity: https://bugs.launchpad.net/ubuntu/+source/lxc/+bug/1226855
+.. _cinder-manage CLI tool: http://docs.openstack.org/developer/cinder/man/cinder-manage.html#cinder-volume
+.. _cinder volume active-active support spec: https://specs.openstack.org/openstack/cinder-specs/specs/mitaka/cinder-volume-active-active-support.html
 
 Object Storage (swift)
 ~~~~~~~~~~~~~~~~~~~~~~
 
-The Object Storage proxy service container resides on one of the infra hosts
-whereas the actual swift objects are stored on separate physical hosts.
+The Object Storage (swift) service implements a highly available, distributed,
+eventually consistent object/blob store which is accessible via HTTP/HTTPS.
 
- .. important::
+The following diagram illustrates how data is accessed and replicated.
 
-    The swift proxy service is responsible for storage, retrieval, encoding, and
-    decoding of objects from an object server.
+.. figure:: figures/production-storage-swift.png
+   :width: 600px
 
-Configuring the Object Storage service
---------------------------------------
+   The ``swift-proxy`` service is accessed by clients via the load balancer
+   on the management (``br-mgmt``) network. The ``swift-proxy`` service
+   communicates with the Account, Container and Object services on the
+   ``swift_hosts`` via the storage (``br-storage``) network. Replication
+   between the ``swift_hosts`` is done via the replication (``br-repl``)
+   network.
 
-Ensure the swift proxy hosts are configured with ``br-mgmt`` and ``br-
-storage``. Ensure storage hosts are configured with ``br-storage``. When using
-dedicated replication, also ensure storage hosts are configured with ``br-
-repl``.
+Image storage (glance)
+~~~~~~~~~~~~~~~~~~~~~~
 
-``br-storage`` handles the retrieval and upload of objects to the storage
-nodes. ``br-mgmt`` handles the API requests.
+The Image service (glance) may be configured to store images on a variety of
+storage back-ends supported by the `glance_store drivers`_.
 
-* ``br-storage`` carries traffic for the transfer of objects from the storage
-  hosts to the proxy and vice-versa.
-* ``br-repl`` carries traffic for the replication of objects between storage
-  hosts, and is not needed by the proxy containers.
+.. important::
 
- .. note::
+   When using the File System store, glance has no mechanism of its own to
+   replicate the image between glance hosts. We recommend using a shared
+   storage back-end (via a file system mount) to ensure that all
+   ``glance-api`` services have access to all images. This prevents the
+   unfortunate situation of losing access to images when a control plane host
+   is lost.
 
-    ``br-repl`` is optional. Replication occurs over the ``br-storage``
-    interface when there is no ``br-repl`` replication bridge.
+The following diagram illustrates the interactions between the glance service,
+the storage device, and the ``nova-compute`` service when an instance is
+created.
 
+.. figure:: figures/production-storage-glance.png
+   :width: 600px
+
+   The following steps relate to the illustration above.
+
+   +----+---------------------------------------------------------------------+
+   | 1. | When a client requests an image, the ``glance-api`` service         |
+   |    | accesses the appropriate store on the storage device over the       |
+   |    | storage (``br-storage``) network and pulls it into its cache. When  |
+   |    | the same image is requested again, it is given to the client        |
+   |    | directly from the cache instead of re-requesting it from the        |
+   |    | storage device.                                                     |
+   +----+---------------------------------------------------------------------+
+   | 2. | When an instance is scheduled for creation on a Compute host, the   |
+   |    | ``nova-compute`` service requests the image from the ``glance-api`` |
+   |    | service over the management (``br-mgmt``) network.                  |
+   +----+---------------------------------------------------------------------+
+   | 3. | After the image is retrieved, the ``nova-compute`` service stores   |
+   |    | the image in its own image cache. When another instance is created  |
+   |    | with the same image, the image is retrieved from the local base     |
+   |    | image cache instead of re-requesting it from the ``glance-api``     |
+   |    | service.                                                            |
+   +----+---------------------------------------------------------------------+
+
+.. _glance_store drivers: http://docs.openstack.org/developer/glance_store/drivers/
 
 Ephemeral storage (nova)
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-The ``nova-scheduler`` container resides on the infra host. The
-``nova-scheduler`` service determines on which host (node on
-which ``nova-compute`` service is running) a particular VM
-launches.
+When the flavors in the Compute service are configured to provide instances
+with root or ephemeral disks, the ``nova-compute`` service manages these
+allocations using its ephemeral disk storage location.
 
-The ``nova-api-os-compute`` container resides on the infra host. The
-``nova-compute`` service resides on the compute host. The
-``nova-api-os-compute`` container handles the client API requests and
-passes messages to the ``nova-scheduler``. The API requests may
-involve operations that require scheduling (For example, instance
-creation or deletion). These messages are then sent to
-``nova-conductor`` which in turn pushes messages to ``nova-compute``
-on the compute host.
+In many environments, the ephemeral disks are stored on the Compute host's
+local disks, but for production environments we recommended that the Compute
+hosts are configured to use a shared storage subsystem instead.
 
-Configuring the Ephemeral storage
----------------------------------
+Making use of a shared storage subsystem allows the use of quick live instance
+migration between Compute hosts.  This is useful when the administrator needs
+to perform maintenance on the Compute host and wants to evacuate it.
+Using a shared storage subsystem also allows the recovery of instances when a
+Compute host goes offline. The administrator is able to evacuate the instance
+to another Compute host and boot it up again.
 
-All nova containers on the infra hosts communicate using the AMQP service over
-the management network ``br-mgmt``.
+The following diagram illustrates the interactions between the
+storage device, the Compute host, the hypervisor and the instance.
 
-Configure the ``nova-compute`` host with ``br-mgmt`` for it to
-communicate with the ``nova-conductor`` and ``br-storage`` for it to
-carry traffic to the storage host. Configure the
-``nova-api-os-compute`` host with the ``br-mgmt``.
+.. figure:: figures/production-storage-nova.png
+   :width: 600px
 
-* ``br-mgmt`` bridge handles the client interaction for API requests.
-* ``br-storage`` bridge handles the transfer of data from the storage
-  hosts to the compute host and vice-versa.
+   The following steps relate to the illustration above.
 
- .. note::
+   +----+---------------------------------------------------------------------+
+   | 1. | The Compute host is configured with access to the storage device.   |
+   |    | The Compute host accesses the storage space via the storage network |
+   |    | (``br-storage``) using a storage protocol (for example: NFS, iSCSI, |
+   |    | Ceph RBD).                                                          |
+   +----+---------------------------------------------------------------------+
+   | 2. | The ``nova-compute`` service configures the hypervisor to present   |
+   |    | the allocated instance disk as a device to the instance.            |
+   +----+---------------------------------------------------------------------+
+   | 3. | The hypervisor presents the disk as a device to the instance.       |
+   +----+---------------------------------------------------------------------+
 
-    For production environments segregate the traffic (storage and
-    API request) from the hosts onto dedicated networks.
-
-Image service (glance)
-~~~~~~~~~~~~~~~~~~~~~~
-
-The glance API and volume service runs in the glance container on
-infra hosts.
-
-Configuring the Image service
------------------------------
-Configure the ``glance-volume`` container to use the ``br-storage`` and
-``br-mgmt`` interfaces.
-
-* ``br-storage`` bridge carries image traffic to compute host.
-* ``br-mgmt`` bridge carries Image Service API request traffic.

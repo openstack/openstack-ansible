@@ -23,11 +23,6 @@ review.
    upgrade-guide/index
    developer-docs/index
 
-.. toctree::
-   :hidden:
-
-   install-guide-revised-draft/index
-
 .. _Newton Series Timeline: https://launchpad.net/openstack-ansible/trunk
 .. _Newton Series Release Notes: http://docs.openstack.org/releasenotes/openstack-ansible/unreleased.html
 
