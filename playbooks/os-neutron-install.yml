@@ -132,4 +132,3 @@
   vars:
     is_metal: "{{ properties.is_metal|default(false) }}"
     bind_prefix: "{{ provider_network_bind_prefix|default('') }}"
-    pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"

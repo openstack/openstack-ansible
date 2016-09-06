@@ -38,3 +38,5 @@ repo_build_git_bind_mount: "/openstack/{{ inventory_hostname }}{{ repo_build_git
 # folder/file attributes.
 repo_service_user_name: nginx
 repo_service_group_name: www-data
+
+pip_lock_to_internal_repo: False

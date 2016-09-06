@@ -43,7 +43,6 @@
   user: root
   roles:
     - role: "pip_install"
-      pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"
     - { role: "galera_server", tags: [ "galera-server" ] }
     - role: "rsyslog_client"
       rsyslog_client_log_rotate_file: galera_log_rotate
