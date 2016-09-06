@@ -1,6 +1,8 @@
-========================
-Deployment configuration
-========================
+.. _configure:
+
+====================
+Configure deployment
+====================
 
 .. toctree::
    :maxdepth: 2

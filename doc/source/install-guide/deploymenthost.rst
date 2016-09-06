@@ -1,6 +1,8 @@
-===============
-Deployment host
-===============
+.. _deployment-host:
+
+=======================
+Prepare deployment host
+=======================
 
 .. figure:: figures/installation-workflow-deploymenthost.png
    :width: 100%

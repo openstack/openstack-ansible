@@ -1,6 +1,8 @@
-============
-Target hosts
-============
+.. _target-hosts:
+
+====================
+Prepare target hosts
+====================
 
 .. figure:: figures/installation-workflow-targethosts.png
    :width: 100%

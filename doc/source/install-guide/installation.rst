@@ -45,6 +45,8 @@ Before running any playbook, check the integrity of your configuration files.
    of the configuration files can be correct while not being meaningful for
    OpenStack-Ansible.
 
+.. _run-playbooks:
+
 Run playbooks
 ~~~~~~~~~~~~~
 
@@ -142,6 +144,8 @@ directly onto a host.
 
 For example, the tempest playbooks are installed on the utility
 container since tempest testing does not need a container of its own.
+
+.. _verify-operation:
 
 Verifying OpenStack operation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
