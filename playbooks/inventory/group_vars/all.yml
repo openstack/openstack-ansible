@@ -189,6 +189,10 @@ glance_service_user_name: glance
 # These are here rather than in glance_all because
 # both the os_ceilometer and os_glance roles require them
 
+## Gnocchi
+# Used in both Gnocchi and Swift roles.
+gnocchi_service_project_name: "{{ (gnocchi_storage_driver is defined and gnocchi_storage_driver == 'swift') | ternary('gnocchi_swift', 'service') }}"
+
 # RPC
 glance_rabbitmq_userid: glance
 glance_rabbitmq_vhost: /glance
