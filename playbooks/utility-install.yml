@@ -72,9 +72,17 @@
         - ansible_pkg_mgr == 'yum'
       tags:
         - utility-yum-packages
+    - name: Get list of python clients
+      shell: "curl -s {{ openstack_repo_url }}/os-releases/{{ openstack_release }}/requirements_absolute_requirements.txt  | grep client | cut -d'=' -f1"
+      register: client_list
+      run_once: true
+      changed_when: false
+      tags:
+        - utility-pip-packages
+        - skip_ansible_lint
     - name: Install pip packages
       pip:
-        name: "{{ utility_pip_packages | join(' ') }}"
+        name: "{{ client_list.stdout_lines | union(utility_pip_packages) | join(' ') }}"
         state: latest
         extra_args: "{{ pip_install_options|default('') }}"
       register: install_packages
