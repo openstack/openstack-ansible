@@ -124,3 +124,23 @@
       args:
         executable: /bin/bash
       when: destroy | bool
+
+- name: Cleanup layer2 ports
+  gather_facts: no
+  hosts: utility_all[0]
+  tasks:
+    - name: disable and delete new ports
+      # list all the ports, sort them by network and then state in the reverse order.
+      # Save the network if there is an old dhcp port to migrate. Check if there are
+      # dhcp ports in the same network that are active. Print them for deletion.
+      shell: |
+        . {{ ansible_env.HOME }}/openrc
+        neutron port-list -c id -c device_owner -c binding:host_id -c status \
+          -c network_id  -f value | sort -k 5 -k 4 -r | \
+          awk '/dhcp.*BUILD/{net=$5}; /dhcp.*ACTIVE/{if(net==$5){print $1}}' | \
+          while read portid; do
+            neutron port-update --admin-state-up False $portid
+            sleep 1
+            neutron port-delete $portid
+            done
+      when: destroy | bool
