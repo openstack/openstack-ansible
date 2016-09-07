@@ -6,6 +6,6 @@ Overview
 
    overview-osa.rst
    overview-requirements.rst
-   overview-host-layout
+   overview-service-architecture.rst
    overview-network-arch.rst
    overview-storage-arch.rst
