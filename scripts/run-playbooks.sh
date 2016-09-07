@@ -64,9 +64,12 @@ function playbook_run {
         # NOTE(mattt): We have to skip V-38462 as openstack-infra are now building
         #              images with apt config Apt::Get::AllowUnauthenticated set
         #              to true.
+        # NOTE(odyssey4me): We skip V-38471 as it generates a huge amount of log
+        #                   entries in syslog and the syslog files are gathered
+        #                   in OpenStack-CI. ref: bug/1620849
         # NOTE(mhayden): Skipping V-38660 since it breaks the Xenial gate. The
         #                CI Xenial image has non-SNMPv3 configurations.
-        install_bits "${include}" --skip-tag V-38462,V-38660
+        install_bits "${include}" --skip-tag V-38462,V-38471,V-38660
       else
         install_bits "${include}"
       fi
