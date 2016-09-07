@@ -22,6 +22,13 @@
 - include: os-horizon-install.yml
 - include: os-ceilometer-install.yml
 - include: os-aodh-install.yml
+#NOTE(stevelle) Ensure Gnocchi identities exist before Swift
+- include: os-gnocchi-install.yml
+  when:
+    - gnocchi_storage_driver is defined
+    - gnocchi_storage_driver == 'swift'
+  vars:
+    gnocchi_identity_only: True
 - include: os-swift-install.yml
 - include: os-gnocchi-install.yml
 - include: os-ironic-install.yml

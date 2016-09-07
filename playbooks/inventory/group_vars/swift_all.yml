@@ -20,4 +20,4 @@ swift_service_in_ldap: "{{ service_ldap_backend_enabled }}"
 swift_package_state: "{{ package_state }}"
 
 # Used to optionally filter Gnocchi-originated traffic in Ceilometermiddleware
-swift_gnocchi_enabled: "{{ groups['gnocchi_all'] is defined and groups['gnocchi_all'] | length > 0 }}"
+swift_gnocchi_enabled: "{{ (groups['gnocchi_all'] is defined and groups['gnocchi_all'] | length > 0) }}"
