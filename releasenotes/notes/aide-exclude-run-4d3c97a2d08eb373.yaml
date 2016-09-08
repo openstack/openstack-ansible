@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    The ``/run`` directory is excluded from AIDE checks since the files and
+    directories there are only temporary and often change when services
+    start and stop.
