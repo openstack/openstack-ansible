@@ -20,11 +20,21 @@
   tags:
     - networking-dir-create
 
-- name: Copy network configuration
+- name: Copy AIO network configuration
   template:
     src: osa_interfaces.cfg.j2
     dest: /etc/network/interfaces.d/osa_interfaces.cfg
   register: osa_interfaces
+  when: bootstrap_host_aio_config | bool
+  tags:
+    - networking-interfaces-file
+
+- name: Copy multinode network configuration
+  template:
+    src: osa_interfaces_multinode.cfg.j2
+    dest: /etc/network/interfaces.d/osa_interfaces.cfg
+  register: osa_multinode_interfaces
+  when: not bootstrap_host_aio_config | bool
   tags:
     - networking-interfaces-file
 
@@ -37,7 +47,7 @@
 
 - name: Shut down the network interfaces
   command: "ifdown {{ item }}"
-  when: osa_interfaces | changed
+  when: osa_interfaces | changed or osa_multinode_interfaces | changed
   with_items:
     - br-mgmt
     - br-storage
@@ -45,6 +55,24 @@
     - br-vxlan
   tags:
     - networking-interfaces-stop
+
+- name: Shut down the encapsulation network interfaces
+  command: "ifdown {{ item.key }}"
+  when:
+   - osa_multinode_interfaces | changed
+   - bootstrap_host_encapsulation_enabled | bool
+  with_dict: "{{ bootstrap_host_encapsulation_interfaces }}"
+  tags:
+    - networking-interfaces-stop
+
+- name: Start the encapsulation network interfaces
+  command: "ifup {{ item.key }}"
+  when:
+    - osa_multinode_interfaces | changed
+    - bootstrap_host_encapsulation_enabled | bool
+  with_dict: "{{ bootstrap_host_encapsulation_interfaces }}"
+  tags:
+    - networking-interfaces-start
 
 - name: Start the network interfaces
   command: "ifup {{ item }}"
@@ -56,3 +84,9 @@
     - br-vxlan
   tags:
     - networking-interfaces-start
+
+- name: Updating the facts due to net changes
+  setup:
+    filter: "ansible_br*"
+  tags:
+    - networking

@@ -1,0 +1,28 @@
+{% if bootstrap_host_encapsulation_enabled | bool %}
+{% for nic_name, nic_details in bootstrap_host_encapsulation_interfaces.iteritems() %}
+# {{ nic_details.friendly_name }}
+auto {{ nic_name }}
+iface {{ nic_name }} inet manual
+    pre-up ip link add {{ nic_name }} type vxlan id {{ nic_details.id }} group 239.0.0.{{ nic_details.id }} dev {{ nic_details.underlay_device }} || true
+    up ip link set $IFACE up
+    down ip link set $IFACE down
+    post-down ip link del {{ nic_name }} || true
+
+{% endfor %}
+{% endif %}
+{%- for nic_name, nic_details in bootstrap_host_bridges_interfaces.iteritems() -%}
+auto {{ nic_name }}
+iface {{ nic_name }} inet {{ nic_details.mode | default('static') }}
+    bridge_stp off
+    bridge_waitport 0
+    bridge_fd 0
+    bridge_ports {{ nic_details.ports }}
+    offload-sg {{ nic_details.offload_sg | default('off') }}
+    {% if nic_details.mode | default('static') == 'static' -%}
+    address {{ nic_details.ip_address_range }}.{{ node_id }}
+    netmask {{ nic_details.ip_netmask }}
+    {% endif %}
+    {%- if nic_details.state_change_scripts is defined %}{{ nic_details.state_change_scripts }}
+    {% endif %}
+
+{% endfor %}
