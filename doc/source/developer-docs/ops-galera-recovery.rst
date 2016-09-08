@@ -27,6 +27,7 @@ continue to process SQL requests.
 
    .. code-block:: shell-session
 
+       # . /usr/local/bin/openstack-ansible.rc
        # ansible galera_container -m shell -a "mysql -h localhost \
        -e 'show status like \"%wsrep_cluster_%\";'"
        node3_galera_container-3ea2cbd3 | FAILED | rc=1 >>
@@ -68,6 +69,7 @@ recover cannot join the cluster because it no longer exists.
 
    .. code-block:: shell-session
 
+       # . /usr/local/bin/openstack-ansible.rc
        # ansible galera_container -m shell -a "mysql \
        -h localhost -e 'show status like \"%wsrep_cluster_%\";'"
        node2_galera_container-49a47d25 | FAILED | rc=1 >>
@@ -118,6 +120,7 @@ recover cannot join the cluster because it no longer exists.
 
    .. code-block:: shell-session
 
+       # . /usr/local/bin/openstack-ansible.rc
        # ansible galera_container -m shell -a "mysql \
        -h localhost -e 'show status like \"%wsrep_cluster_%\";'"
        node3_galera_container-3ea2cbd3 | success | rc=0 >>
@@ -154,6 +157,7 @@ the cluster have failed:
 
 .. code-block:: shell-session
 
+    # . /usr/local/bin/openstack-ansible.rc
     # ansible galera_container -m shell -a "cat /var/lib/mysql/grastate.dat"
     node3_galera_container-3ea2cbd3 | success | rc=0 >>
     # GALERA saved state
@@ -237,6 +241,7 @@ Recovering from certain failures require rebuilding one or more containers.
 
    .. code-block:: shell-session
 
+       # . /usr/local/bin/openstack-ansible.rc
        # ansible galera_container -m shell -a "mysql \
        -h localhost -e 'show status like \"%wsrep_cluster_%\";'"
        node3_galera_container-3ea2cbd3 | success | rc=0 >>
@@ -277,6 +282,7 @@ Recovering from certain failures require rebuilding one or more containers.
 
    .. code-block:: shell-session
 
+       # . /usr/local/bin/openstack-ansible.rc
        # ansible galera_container -m shell -a "mysql \
        -h localhost -e 'show status like \"%wsrep_cluster_%\";'"
        node2_galera_container-49a47d25 | success | rc=0 >>
