@@ -5,10 +5,15 @@
 #
 # Use this file with caution!
 #
+
+# TODO(odyssey4me) Remove once https://review.openstack.org/368001
+# merges and we bump the requirements SHA
+oslo.db==4.13.3
+
 ###
 ### These are pinned to ensure exactly the same behaviour forever!   ###
 ### These pins are updated through the sources-branch-updater script ###
 ###
 pip==8.1.2
-setuptools==26.0.0
+setuptools==27.1.2
 wheel==0.29.0
