@@ -1029,5 +1029,20 @@ class TestConfigCheckFunctional(TestConfigCheckBase):
         self.assertEqual(context.exception.ip, '172.29.236.100')
 
 
+class TestNetworkEntry(unittest.TestCase):
+    def test_all_args_filled(self):
+        entry = di.network_entry(True, 'eth1', 'br-mgmt', 'my_type', '1700')
+
+        self.assertNotIn('interface', entry.keys())
+        self.assertEqual(entry['bridge'], 'br-mgmt')
+        self.assertEqual(entry['type'], 'my_type')
+        self.assertEqual(entry['mtu'], '1700')
+
+    def test_container_dict(self):
+        entry = di.network_entry(False, 'eth1', 'br-mgmt', 'my_type', '1700')
+
+        self.assertEqual(entry['interface'], 'eth1')
+
+
 if __name__ == '__main__':
     unittest.main()
