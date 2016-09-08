@@ -251,4 +251,4 @@ haproxy_default_services:
       haproxy_port: 9511
       haproxy_balance_type: http
       haproxy_backend_options:
-        - "httpchk HEAD /"
+        - "httpchk GET /"
