@@ -1,14 +1,39 @@
-=========================
-Installation requirements
-=========================
+=============================================
+Installation requirements and recommendations
+=============================================
 
-.. note::
+This section describes software requirements, hardware recommendations, and
+network recommendations for running OpenStack in a production environment.
 
-   These are the minimum requirements for OpenStack-Ansible. Larger
-   deployments require additional resources.
+Software requirements
+~~~~~~~~~~~~~~~~~~~~~
 
-CPU requirements
-~~~~~~~~~~~~~~~~
+Ensure all hosts within an OpenStack-Ansible environment meet the following
+minimum requirements:
+
+* Ubuntu 16.04 LTS (Xenial Xerus)/Ubuntu 14.04 LTS (Trusty Tahr)
+
+  * OSA is tested regularly against the latest Ubuntu 16.04 LTS Xenial
+    point releases and Ubuntu 14.04 Trusty as well.
+  * Linux kernel version ``3.13.0-34-generic`` or later.
+  * For Trusty hosts, you must enable the ``trusty-backports`` or
+    repositories in ``/etc/apt/sources.list`` or
+    ``/etc/apt/sources.list.d/``. For detailed instructions, see
+    `Ubuntu documentation <https://help.ubuntu.com/community/
+    UbuntuBackports#Enabling_Backports_Manually>`_.
+
+* Secure Shell (SSH) client and server that supports public key
+  authentication
+
+* Network Time Protocol (NTP) client for time synchronization (such as
+  ``ntpd`` or ``chronyd``)
+
+* Python 2.7.x must be on the hosts.
+
+* en_US.UTF-8 as locale
+
+CPU recommendations
+~~~~~~~~~~~~~~~~~~~
 
 * Compute hosts with multi-core processors that have `hardware-assisted
   virtualization extensions`_ available. These extensions provide a
@@ -22,8 +47,8 @@ CPU requirements
 .. _hardware-assisted virtualization extensions: https://en.wikipedia.org/wiki/Hardware-assisted_virtualization
 .. _Hyper-threading: https://en.wikipedia.org/wiki/Hyper-threading
 
-Disk requirements
-~~~~~~~~~~~~~~~~~
+Disk recommendations
+~~~~~~~~~~~~~~~~~~~~
 
 Different hosts have different disk space requirements based on the
 services running on each host:
@@ -72,8 +97,8 @@ into logical volumes by creating a volume group called ``lxc``.
 OpenStack-Ansible creates a 5GB logical volume for the filesystem of each
 container running on the host.
 
-Network requirements
-~~~~~~~~~~~~~~~~~~~~
+Network recommendations
+~~~~~~~~~~~~~~~~~~~~~~~
 
 .. note::
 
@@ -97,29 +122,3 @@ the following features:
 * Jumbo frames: Increases network performance by allowing more data to be sent
   in each packet.
 
-Software requirements
-~~~~~~~~~~~~~~~~~~~~~
-
-Ensure all hosts within an OpenStack-Ansible environment meet the following
-minimum requirements:
-
-* Ubuntu 16.04 LTS (Xenial Xerus)/Ubuntu 14.04 LTS (Trusty Tahr)
-
-  * OSA is tested regularly against the latest Ubuntu 16.04 LTS Xenial
-    point releases and Ubuntu 14.04 Trusty as well.
-  * Linux kernel version ``3.13.0-34-generic`` or later.
-  * For Trusty hosts, you must enable the ``trusty-backports`` or
-    repositories in ``/etc/apt/sources.list`` or
-    ``/etc/apt/sources.list.d/``
-    See the `Ubuntu documentation
-    <https://help.ubuntu.com/community/UbuntuBackports#Enabling_Backports_Manually>`_ for more detailed instructions.
-
-* Secure Shell (SSH) client and server that supports public key
-  authentication
-
-* Network Time Protocol (NTP) client for time synchronization (such as
-  ``ntpd`` or ``chronyd``)
-
-* Python 2.7.x must be on the hosts.
-
-* en_US.UTF-8 as locale

@@ -79,6 +79,8 @@ practices, refer to `GitHub's documentation on generating SSH keys`_.
    ``lxc_container_ssh_key`` variable to the public key for
    the container.
 
+.. _configuring-storage:
+
 Configuring storage
 ~~~~~~~~~~~~~~~~~~~
 
