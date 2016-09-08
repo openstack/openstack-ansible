@@ -5,9 +5,9 @@ Appendices
 .. toctree::
    :maxdepth: 2
 
-   app-configfiles.rst
-   app-resources.rst
+   app-config-test.rst
+   app-config-prod.rst
    app-custom-layouts.rst
    app-security.rst
    app-advanced-config-options.rst
-   app-targethosts-networkexample.rst
+   app-resources.rst
