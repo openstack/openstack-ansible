@@ -1,0 +1,13 @@
+---
+features:
+  - |
+    Although the STIG requires martian packets to be logged, the logging is
+    now disabled by default. The logs can quickly fill up a syslog server or
+    make a physical console unusable.
+
+    Deployers that need this logging enabled will need to set the following
+    Ansible variable:
+
+    .. code-block:: yaml
+
+       security_sysctl_enable_martian_logging: yes
