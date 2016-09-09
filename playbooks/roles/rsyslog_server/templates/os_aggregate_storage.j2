@@ -3,7 +3,7 @@
         copytruncate
         weekly
         missingok
-        rotate 14
+        rotate {{ rsyslog_server_logrotation_window }}
         compress
         dateext
         maxage 60

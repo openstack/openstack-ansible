@@ -22,6 +22,7 @@ rsyslog_server_apt_packages:
 
 rsyslog_server_spool_directory: /var/spool/rsyslog
 rsyslog_server_storage_directory: /var/log/rsyslog
+rsyslog_server_logrotation_window: 14 #Number of days to keep logfiles
 
 # provides UDP syslog reception
 rsyslog_server_udp_reception: true
@@ -30,3 +31,9 @@ rsyslog_server_udp_port: 514
 # provides TCP syslog reception
 rsyslog_server_tcp_reception: true
 rsyslog_server_tcp_port: 514
+
+# Rate limits
+rsyslog_server_ratelimit_interval: 0 # Disabled by default
+
+# To use this setting, you have to configure a interval >0 seconds for rsyslog_server_ratelimit_interval
+rsyslog_server_ratelimit_burst: 10000

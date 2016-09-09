@@ -3,40 +3,21 @@
 #################
 #### MODULES ####
 #################
-$ModLoad imuxsock # provides support for local system logging
-$ModLoad imklog   # provides kernel logging support
-
-{% if rsyslog_server_udp_reception == true %}
-# provides UDP syslog reception
-$ModLoad imudp
-$UDPServerRun {{ rsyslog_server_udp_port }}
-{% endif %}
-
-{% if rsyslog_server_tcp_reception == true %}
-# provides TCP syslog reception
-$ModLoad imtcp
-$InputTCPServerRun {{ rsyslog_server_tcp_port }}
-{% endif %}
-
-# Enable non-kernel facility klog messages
-$KLogPermitNonKernelFacility on
-
+module(load="imuxsock") # provides support for local system logging
+module(load="imklog") # provides kernel logging support
 
 ###########################
 #### GLOBAL DIRECTIVES ####
 ###########################
-#
+
 # Use traditional timestamp format.
 # To enable high precision timestamps, comment out the following line.
-#
 $ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat
 
 # Filter duplicated messages
 $RepeatedMsgReduction on
 
-#
 # Set the default permissions for all log files.
-#
 $FileOwner syslog
 $FileGroup adm
 $FileCreateMode 0640
@@ -45,17 +26,33 @@ $Umask 0022
 $PrivDropToUser syslog
 $PrivDropToGroup syslog
 
-#
 # Where to place spool and state files
-#
 $WorkDirectory {{ rsyslog_server_spool_directory }}
 
-#
-# Include all config files in /etc/rsyslog.d/
-#
-$IncludeConfig /etc/rsyslog.d/*.conf
 
-$template DDF, "{{ rsyslog_server_storage_directory }}/%hostname%/%programname%.log"
-if \
-$source != 'logsrv' \
-then -?DDF
+# Log all remote messages into a sub directory
+template(name="DDF" type="string" string="{{ rsyslog_server_storage_directory }}/%hostname%/%programname%.log")
+ruleset(name="remote"){
+  *.* -?DDF
+}
+
+# Switch back to default ruleset
+$Ruleset RSYSLOG_DefaultRuleset
+
+# Enable non-kernel facility klog messages
+$KLogPermitNonKernelFacility on
+
+{% if rsyslog_server_udp_reception == true %}
+# Provides UDP syslog reception
+module(load="imudp")
+input(type="imudp" port="{{ rsyslog_server_udp_port }}" ruleset="remote" RateLimit.Interval="{{ rsyslog_server_ratelimit_interval }}" RateLimit.Burst="{{ rsyslog_server_ratelimit_burst }}")
+{% endif %}
+
+{% if rsyslog_server_tcp_reception == true %}
+# Provides TCP syslog reception
+module(load="imtcp")
+input(type="imtcp" port="514" ruleset="remote" RateLimit.Interval="{{ rsyslog_server_ratelimit_interval }}" RateLimit.Burst="{{ rsyslog_server_ratelimit_burst }}")
+{% endif %}
+
+# Include all config files in /etc/rsyslog.d/
+$IncludeConfig /etc/rsyslog.d/*.conf
