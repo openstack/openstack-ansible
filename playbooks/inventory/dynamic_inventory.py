@@ -40,6 +40,7 @@ INVENTORY_SKEL = {
 # inventory setup should be added to this list.
 REQUIRED_HOSTVARS = [
     'properties',
+    'ansible_host',
     'ansible_ssh_host',
     'physical_host_group',
     'container_address',
@@ -255,6 +256,7 @@ def _build_container_hosts(container_affinity, container_hosts, type_and_name,
 
             hostvars_options.update({
                 'properties': properties,
+                'ansible_host': address,
                 'ansible_ssh_host': address,
                 'container_address': address,
                 'container_name': container_host_name,
@@ -445,6 +447,7 @@ def user_defined_setup(config, inventory):
                     hvs[_key] = {}
 
                 hvs[_key].update({
+                    'ansible_host': _value['ip'],
                     'ansible_ssh_host': _value['ip'],
                     'container_address': _value['ip'],
                     'is_metal': True,
@@ -661,6 +664,7 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
                 network['address'] = phg['ip']
 
         if is_ssh_address is True:
+            container['ansible_host'] = networks[old_address]['address']
             container['ansible_ssh_host'] = networks[old_address]['address']
 
         if is_container_address is True:
