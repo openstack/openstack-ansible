@@ -20,6 +20,8 @@
     - name: Checking if neutron_lbaas variable exists
       fail:
         msg: |
-          LBaaS v1 isn't supported in Newton. Please read:
-          http://docs.openstack.org/developer/openstack-ansible/install-guide/configure-network-services.html#load-balancing-service-optional
-      when: neutron_lbaas | bool
+          LBaaS v1 has been removed from OpenStack in Newton and there is no migration path for it.
+          Please implement LBaaS v2.
+          http://docs.openstack.org/developer/openstack-ansible-os_neutron/configure-network-services.html#special-notes-about-lbaas
+      when:
+        - neutron_lbaas is defined and neutron_lbaas | bool
