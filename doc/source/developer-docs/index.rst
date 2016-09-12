@@ -16,6 +16,7 @@ Contents:
    extending
    ops
    contribute
+   bug-triage
    core-reviewers
    additional-roles
    inventory

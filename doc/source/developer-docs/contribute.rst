@@ -42,17 +42,10 @@ can take down whole infrastructures. Once the importance has been changed
 the status should be changed to *Triaged* by someone other than the bug
 creator.
 
-Triaging Bugs
--------------
-Reported bugs need prioritization, confirmation, and shouldn't go stale.
-If you care about OpenStack stability but aren't wanting to actively
-develop the roles and playbooks used within the OpenStack-Ansible
-project consider contributing in the area of bug triage, which helps
-immensely. The whole process is described in the OpenStack
-`Bug Triage Documentation`_.
+The triaging process is explained on the `bug triage documentation`_ page.
 
 .. _Bug Launchpad: https://bugs.launchpad.net/openstack-ansible
-.. _Bug Triage Documentation: http://docs.openstack.org/infra/manual/developers.html#working-on-bugs
+.. _bug triage documentation: bug-triage.html
 
 General Guidelines for Submitting Code
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
