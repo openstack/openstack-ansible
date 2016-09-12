@@ -12,7 +12,7 @@ facilitate the upgrade process.
 .. _lbaas-version-check:
 
 lbaas-version-check.yml
------------------------
+~~~~~~~~~~~~~~~~~~~~~~~
 
 This playbook is part of the general pre-flight checks.
 
@@ -24,16 +24,16 @@ the cleanup.
 
 .. _fact-cleanup-playbook:
 
-``ansible_fact_cleanup.yml``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ansible_fact_cleanup.yml
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 This calls a script to removes files in
 ``/etc/openstack_deploy/ansible_facts/``
 
 .. _config-change-playbook:
 
-``deploy-config-changes.yml``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+deploy-config-changes.yml
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This playbook backs up the ``/etc/openstack_deploy`` directory before
 changing the configuration.
@@ -42,8 +42,8 @@ changing the configuration.
 
 .. _user-secrets-playbook:
 
-``user-secrets-adjustment.yml``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+user-secrets-adjustment.yml
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This playbook ensures that the user secrets file is updated based on the
 example file in the main repository, making it possible to guarantee all
@@ -53,8 +53,8 @@ settings added to existing services. Values set previously are not changed.
 
 .. _pip-conf-removal:
 
-``pip-conf-removal.yml``
-~~~~~~~~~~~~~~~~~~~~~~~~
+pip-conf-removal.yml
+~~~~~~~~~~~~~~~~~~~~
 
 The presence of ``pip.conf`` locks down all Python installations to packages
 on the repo servers. If ``pip.conf`` exists on a repo server or a physical
@@ -62,8 +62,8 @@ node, it will cause a circular dependency issue and the upgrade will fail.
 
 .. _old-hostname-compatibility:
 
-``old-hostname-compatibility.yml``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+old-hostname-compatibility.yml
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This playbook ensures an alias is created for old hostnames that may not be
 RFC 1034 or 1035 compatible. Using a hostname alias allows agents to continue
@@ -74,8 +74,8 @@ compliant hostname.
 
 .. _setup-infra-playbook:
 
-``setup-infrastructure.yml``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+setup-infrastructure.yml
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 The ``playbooks`` directory contains the ``setup-infrastructure.yml`` playbook.
 The ``run-upgrade.sh`` script calls ``setup-insfrastructure.yml`` with specific
@@ -107,15 +107,15 @@ current version of MariaDB and Galera and upgrade to the 10.x series.
 
 .. _memcached-flush:
 
-``memcached-flush.yml``
-~~~~~~~~~~~~~~~~~~~~~~~
+memcached-flush.yml
+~~~~~~~~~~~~~~~~~~~
 
 Sends "flush_all" to memcached with the help of nc.
 
 .. _aodh-api-init-delete:
 
-``aodh-api-init-delete.yml``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+aodh-api-init-delete.yml
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 Stops the ``aodh-api`` service and removes the init file since ``aodh-api``
 now runs under Apache ``mod_wsgi``.
