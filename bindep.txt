@@ -10,6 +10,9 @@
 # will fall back to installing its default packages which
 # will potentially be detrimental to the tests executed.
 
+# Required for compressing collected log files in CI
+gzip
+
 # Requirements for Paramiko 2.0
 libssl-dev        [platform:dpkg]
 libffi-dev        [platform:dpkg]
