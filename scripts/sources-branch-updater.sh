@@ -113,6 +113,7 @@ for repo in $(grep 'git_repo\:' ${SERVICE_FILE}); do
       # Tweak the paste files
       find ${os_repo_tmp_path}/etc -name "*[_-]paste.ini" -exec \
         sed -i.bak "s|hmac_keys = SECRET_KEY|hmac_keys = {{ ${repo_name}_profiler_hmac_key }}|" {} \;
+        sed -i.bak "s|pipeline = gnocchi+noauth|pipeline = {{ (gnocchi_keystone_auth | bool) | ternary('gnocchi+noauth', 'gnocchi+auth') }}|" {} \;
 
       # Update the paste files
       find ${os_repo_tmp_path}/etc -name "*[_-]paste.ini" -exec \
