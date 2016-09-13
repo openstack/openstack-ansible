@@ -23,7 +23,7 @@ This calls a script to removes files in ``/etc/openstack_deploy/ansible_facts/``
 This playbook backs up the ``/etc/openstack_deploy`` directory before
 changing the configuration.
 
-``/etc/openstack_deploy`` copies once to ``/etc/openstack_deploy.MITAKA``.
+``/etc/openstack_deploy`` copies once to ``/etc/openstack_deploy.LIBERTY``.
 
 .. _user-secrets-playbook:
 
