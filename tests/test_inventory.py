@@ -153,6 +153,7 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'log_all',
         'log_containers',
         'log_hosts',
+        'lxc_hosts',
         'magnum',
         'magnum_all',
         'magnum_container',
@@ -403,6 +404,11 @@ class TestConfigCheckBase(unittest.TestCase):
         finally:
             self.write_config()
 
+    def add_config_key(self, key, value):
+        self.config_changed = True
+        self.user_defined_config[key] = value
+        self.write_config()
+
     def delete_provider_network(self, net_name):
         del self.user_defined_config['cidr_networks'][net_name]
         self.write_config()
@@ -440,6 +446,10 @@ class TestConfigCheckBase(unittest.TestCase):
     def set_new_ip(self, user_defined_config, group, hostname, ip):
         # Sets an IP address for a specified host.
         user_defined_config[group][hostname]['ip'] = ip
+        self.write_config()
+
+    def add_host(self, group, host_name, ip):
+        self.user_defined_config[group][host_name] = {'ip': ip}
         self.write_config()
 
     def tearDown(self):
@@ -1052,6 +1062,28 @@ class TestNetworkEntry(unittest.TestCase):
         entry = di.network_entry(False, 'eth1', 'br-mgmt', 'my_type', '1700')
 
         self.assertEqual(entry['interface'], 'eth1')
+
+
+class TestLxcHosts(TestConfigCheckBase):
+
+    def test_lxc_hosts_group_present(self):
+        inventory = get_inventory()
+        self.assertIn('lxc_hosts', inventory)
+
+    def test_lxc_hosts_only_inserted_once(self):
+        inventory = get_inventory()
+        self.assertEqual(1, len(inventory['lxc_hosts']['hosts']))
+
+    def test_lxc_hosts_members(self):
+        self.add_host('shared-infra_hosts', 'aio2', '172.29.236.101')
+        inventory = get_inventory()
+        self.assertIn('aio2', inventory['lxc_hosts']['hosts'])
+        self.assertIn('aio1', inventory['lxc_hosts']['hosts'])
+
+    def test_lxc_hosts_in_config_raises_error(self):
+        self.add_config_key('lxc_hosts', {})
+        with self.assertRaises(di.LxcHostsDefined):
+            get_inventory()
 
 
 if __name__ == '__main__':

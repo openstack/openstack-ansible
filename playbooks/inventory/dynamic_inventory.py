@@ -115,6 +115,12 @@ class MissingStaticRouteInfo(Exception):
         return self.message
 
 
+class LxcHostsDefined(Exception):
+    def __init__(self):
+        self.message = ("The group 'lxc_hosts' must not be defined in config;"
+                        " it will be dynamically generated.")
+
+
 def args(arg_list):
     """Setup argument Parsing."""
     parser = argparse.ArgumentParser(
@@ -371,6 +377,8 @@ def _add_container_hosts(assignment, config, container_name, container_type,
         # If host_type is not in config do not append containers to it
         if host_type not in config[physical_host_type]:
             continue
+        append_if(array=inventory['lxc_hosts']['hosts'],
+                  item=host_type)
 
         # Get any set host options
         host_options = config[physical_host_type][host_type]
@@ -694,6 +702,8 @@ def container_skel_load(container_skel, inventory, config):
     :param inventory: ``dict``  Living dictionary of inventory
     :param config: ``dict``  User defined information
     """
+    if 'lxc_hosts' not in inventory.keys():
+        inventory['lxc_hosts'] = {'hosts': []}
     for key, value in container_skel.iteritems():
         contains_in = value.get('contains', False)
         belongs_to_in = value.get('belongs_to', False)
@@ -960,6 +970,11 @@ def _check_multiple_ips_to_host(config):
     return True
 
 
+def _check_lxc_hosts(config):
+    if 'lxc_hosts' in config.keys():
+        raise LxcHostsDefined()
+
+
 def _check_config_settings(cidr_networks, config, container_skel):
     """check preciseness of config settings
 
@@ -1011,6 +1026,8 @@ def _check_config_settings(cidr_networks, config, container_skel):
     _check_same_ip_to_multiple_host(config)
 
     _check_multiple_ips_to_host(config)
+
+    _check_lxc_hosts(config)
 
 
 def load_environment(config_path, environment):

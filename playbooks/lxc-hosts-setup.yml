@@ -13,10 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: common-plays/generate-lxc-container-hosts.yml
-
 - name: Basic lxc host setup
-  hosts: "{{ lxc_host_group | default('known_container_hosts') }}"
+  hosts: "{{ lxc_host_group | default('lxc_hosts')}}"
   gather_facts: "{{ gather_facts | default(True) }}"
   max_fail_percentage: 20
   user: root

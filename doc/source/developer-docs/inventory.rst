@@ -142,6 +142,15 @@ Use the host's name as an argument.
 
 ..  _`dynamic inventory functionality`: http://docs.ansible.com/ansible/intro_dynamic_inventory.html
 
+The lxc_hosts Group
+-------------------
+
+When a container name is created by the dynamic inventory script, the host on
+which the container resides is added to the ``lxc_hosts`` inventory group.
+
+Using this name for a group in the configuration will result in a runtime
+error.
+
 Dynamic Inventory API documentation
 -----------------------------------
 
