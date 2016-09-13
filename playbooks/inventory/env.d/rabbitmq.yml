@@ -22,8 +22,18 @@ component_skel:
 container_skel:
   rabbit_mq_container:
     belongs_to:
+      - mq_containers
       - shared-infra_containers
     contains:
       - rabbitmq
     properties:
       service_name: rabbitmq
+
+
+physical_skel:
+  mq_containers:
+    belongs_to:
+      - all_containers
+  mq_hosts:
+    belongs_to:
+      - hosts

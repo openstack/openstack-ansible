@@ -29,17 +29,9 @@
   config_template:
     src: "../etc/openstack_deploy/conf.d/{{ item.name }}"
     dest: "/etc/openstack_deploy/conf.d/{{ item.name | regex_replace('.aio$', '') }}"
-    config_overrides: "{{ item.override }}"
+    config_overrides: "{{ item.override | default({}) }}"
     config_type: "yaml"
-  with_items:
-    - name: swift.yml.aio
-      override: "{{ swift_conf_overrides | default({}) }}"
-    - name: aodh.yml.aio
-      override: "{{ aodh_conf_overrides | default({}) }}"
-    - name: ceilometer.yml.aio
-      override: "{{ ceilometer_conf_overrides | default({}) }}"
-    - name: gnocchi.yml.aio
-      override: "{{ gnocchi_conf_overrides | default({}) }}"
+  with_items: "{{ openstack_confd_entries | default([]) }}"
   tags:
     - deploy-confd
 

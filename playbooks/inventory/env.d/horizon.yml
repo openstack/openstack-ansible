@@ -22,8 +22,18 @@ component_skel:
 container_skel:
   horizon_container:
     belongs_to:
+      - dashboard_containers
       - os-infra_containers
     contains:
       - horizon
     properties:
       service_name: horizon
+
+
+physical_skel:
+  dashboard_containers:
+    belongs_to:
+    - all_containers
+  dashboard_hosts:
+    belongs_to:
+    - hosts

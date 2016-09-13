@@ -40,6 +40,7 @@ component_skel:
 container_skel:
   nova_api_metadata_container:
     belongs_to:
+      - compute-infra_containers
       - os-infra_containers
     contains:
       - nova_api_metadata
@@ -47,6 +48,7 @@ container_skel:
       service_name: nova
   nova_api_os_compute_container:
     belongs_to:
+      - compute-infra_containers
       - os-infra_containers
     contains:
       - nova_api_os_compute
@@ -54,6 +56,7 @@ container_skel:
       service_name: nova
   nova_cert_container:
     belongs_to:
+      - compute-infra_containers
       - os-infra_containers
     contains:
       - nova_cert
@@ -73,6 +76,7 @@ container_skel:
       service_name: nova
   nova_conductor_container:
     belongs_to:
+      - compute-infra_containers
       - os-infra_containers
     contains:
       - nova_conductor
@@ -80,6 +84,7 @@ container_skel:
       service_name: nova
   nova_scheduler_container:
     belongs_to:
+      - compute-infra_containers
       - os-infra_containers
     contains:
       - nova_scheduler
@@ -87,6 +92,7 @@ container_skel:
       service_name: nova
   nova_console_container:
     belongs_to:
+      - compute-infra_containers
       - os-infra_containers
     contains:
       - nova_console
@@ -95,6 +101,12 @@ container_skel:
 
 
 physical_skel:
+  compute-infra_containers:
+    belongs_to:
+      - all_containers
+  compute-infra_hosts:
+    belongs_to:
+      - hosts
   compute_containers:
     belongs_to:
       - all_containers

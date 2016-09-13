@@ -22,9 +22,19 @@ component_skel:
 container_skel:
   galera_container:
     belongs_to:
+      - database_containers
       - shared-infra_containers
     contains:
       - galera
     properties:
       log_directory: mysql_logs
       service_name: galera
+
+
+physical_skel:
+  database_containers:
+    belongs_to:
+      - all_containers
+  database_hosts:
+    belongs_to:
+      - hosts

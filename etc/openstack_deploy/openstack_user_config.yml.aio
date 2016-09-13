@@ -70,60 +70,16 @@ global_overrides:
           - nova_compute
           - swift_proxy
 
+# galera, memcache, rabbitmq, utility
 shared-infra_hosts:
-  aio1:
-    # Rabbitmq, and galera are set to multiples to test clustering.
-    affinity:
-      galera_container: 1
-      rabbit_mq_container: 1
-    ip: 172.29.236.100
-
-os-infra_hosts:
-  aio1:
-    # Horizon is set to multiple to test clustering. This test only requires x2.
-    affinity:
-      horizon_container: 1
-    ip: 172.29.236.100
-
-storage-infra_hosts:
   aio1:
     ip: 172.29.236.100
 
 repo-infra_hosts:
   aio1:
-    # Repo is set to multiple to test clustering. This test only requires x2.
-    affinity:
-      repo_container: 1
     ip: 172.29.236.100
-
-identity_hosts:
-  aio1:
-    # Keystone is set to multiple to test clustering. This test only requires x2.
-    affinity:
-      keystone_container: 1
-    ip: 172.29.236.100
-
-compute_hosts:
-  aio1:
-    ip: 172.29.236.100
-
-storage_hosts:
-  aio1:
-    ip: 172.29.236.100
-    container_vars:
-      cinder_backends:
-        limit_container_types: cinder_volume
-        lvm:
-          volume_group: cinder-volumes
-          volume_driver: cinder.volume.drivers.lvm.LVMVolumeDriver
-          volume_backend_name: LVM_iSCSI
-          iscsi_ip_address: "172.29.236.100"
 
 log_hosts:
-  aio1:
-    ip: 172.29.236.100
-
-network_hosts:
   aio1:
     ip: 172.29.236.100
 

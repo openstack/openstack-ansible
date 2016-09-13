@@ -31,6 +31,7 @@ component_skel:
 container_skel:
   heat_apis_container:
     belongs_to:
+      - orchestration_containers
       - os-infra_containers
     contains:
       - heat_api_cloudwatch
@@ -40,8 +41,18 @@ container_skel:
       service_name: heat
   heat_engine_container:
     belongs_to:
+      - orchestration_containers
       - os-infra_containers
     contains:
       - heat_engine
     properties:
       service_name: heat
+
+
+physical_skel:
+  orchestration_containers:
+    belongs_to:
+    - all_containers
+  orchestration_hosts:
+    belongs_to:
+    - hosts
