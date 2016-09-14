@@ -31,6 +31,8 @@
     dest: "{{ openstack_service_venv_bin | dirname }}/lib/python2.7/site-packages/{{ rados_module_path.stdout | basename }}"
     state: link
     force: "yes"
+  notify:
+    - Restart os services
   tags:
     - ceph-python-libs
 
@@ -40,5 +42,7 @@
     dest: "{{ openstack_service_venv_bin | dirname }}/lib/python2.7/site-packages/{{ rbd_module_path.stdout | basename }}"
     state: link
     force: "yes"
+  notify:
+    - Restart os services
   tags:
     - ceph-python-libs
