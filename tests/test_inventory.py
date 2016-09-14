@@ -481,7 +481,7 @@ class TestConfigChecks(TestConfigCheckBase):
         with self.assertRaises(SystemExit) as context:
             get_inventory()
         expectedLog = "provider networks can't be found under global_overrides"
-        self.assertTrue(expectedLog in context.exception.message)
+        self.assertIn(expectedLog, context.exception.message)
 
     def test_global_overrides_check(self):
         # create config file without global_overrides
