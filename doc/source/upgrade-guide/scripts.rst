@@ -35,9 +35,9 @@ variable override files matching the pattern
 Variable names within comments are updated.
 
 This script creates files of the form
-``/etc/openstack_deploy.MITAKA/VARS_MIGRATED_file``. For example, once the script has
+``/etc/openstack_deploy.LIBERTY/VARS_MIGRATED_file``. For example, once the script has
 processed the file ``/etc/openstack_deploy/user_variables.yml``, it creates
-``/etc/openstack_deploy.MITAKA/VARS_MIGRATED_user_variables``. This indicates to
+``/etc/openstack_deploy.LIBERTY/VARS_MIGRATED_user_variables``. This indicates to
 OpenStack-Ansible to skip this step on successive runs. The script itself does
 not check for this file.
 

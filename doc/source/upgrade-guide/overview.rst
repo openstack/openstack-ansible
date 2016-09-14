@@ -51,7 +51,7 @@ Flag files
 ----------
 
 Some flag files are created by the migration scripts in order to achieve
-idempotency. These files are placed in the ``/etc/openstack_deploy.MITAKA``
+idempotency. These files are placed in the ``/etc/openstack_deploy.LIBERTY``
 directory.
 
 RabbitMQ upgrade
