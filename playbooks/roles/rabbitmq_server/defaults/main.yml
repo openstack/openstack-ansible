@@ -72,3 +72,9 @@ rabbitmq_ssl_self_signed_subject: "/C=US/ST=Texas/L=San Antonio/O=IT/CN={{ conta
 # RabbitMQ erlang VM parameters
 rabbitmq_async_threads: 128
 rabbitmq_process_limit: 1048576
+
+# RabbitMQ collect statistics interval
+rabbitmq_collect_statistics_interval: 5000
+
+# RabbitMQ Management rates mode
+rabbitmq_management_rates_mode: basic
