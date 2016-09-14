@@ -17,6 +17,8 @@ export ANSIBLE_RETRY_FILES_ENABLED="${ANSIBLE_RETRY_FILES_ENABLED:-False}"
 export ANSIBLE_INVENTORY="${ANSIBLE_INVENTORY:-inventory}"
 
 export ANSIBLE_LOG_PATH="${ANSIBLE_LOG_PATH:-/openstack/log/ansible-logging/ansible.log}"
+mkdir -p "$(dirname ${ANSIBLE_LOG_PATH})" || unset ANSIBLE_LOG_PATH
+
 export ANSIBLE_ROLES_PATH="${ANSIBLE_ROLES_PATH:-/etc/ansible/roles:roles}"
 
 export ANSIBLE_LIBRARY="${ANSIBLE_LIBRARY:-/etc/ansible/roles/plugins/library}"
