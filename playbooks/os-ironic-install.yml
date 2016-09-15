@@ -43,23 +43,22 @@
     - role: "os_ironic"
       ironic_venv_tag: "{{ openstack_release }}"
       ironic_venv_download_url: "{{ openstack_repo_url }}/venvs/{{ openstack_release }}/{{ ansible_distribution | lower }}/ironic-{{ openstack_release }}-{{ ansible_architecture | lower }}.tgz"
-      tags:
-        - "os-ironic"
     - role: "openstack_openrc"
       tags:
-        - "openstack-openrc"
+        - openrc
     - role: "rsyslog_client"
       rsyslog_client_log_rotate_file: ironic_log_rotate
       rsyslog_client_log_dir: "/var/log/ironic"
       rsyslog_client_config_name: "99-ironic-rsyslog-client.conf"
       tags:
-        - "ironic-rsyslog-client"
-        - "rsyslog-client"
+        - rsyslog
     - role: "system_crontab_coordination"
       tags:
-        - "system-crontab-coordination"
+        - crontab
   vars:
     is_metal: "{{ properties.is_metal|default(false) }}"
     ironic_galera_user: ironic
     ironic_galera_database: ironic
     ironic_galera_address: "{{ galera_address }}"
+  tags:
+    - ironic

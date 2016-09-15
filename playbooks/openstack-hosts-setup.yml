@@ -19,4 +19,6 @@
   max_fail_percentage: 20
   user: root
   roles:
-    - { role: "openstack_hosts", tags: [ "openstack-hosts-setup" ] }
+    - role: "openstack_hosts"
+  tags:
+    - openstack-hosts

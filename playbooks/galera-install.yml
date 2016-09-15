@@ -33,7 +33,7 @@
   vars:
     is_metal: "{{ properties.is_metal|default(false) }}"
   tags:
-    - galera-lxc-container-setup
+    - galera
 
 - name: Install galera server
   hosts: galera_all
@@ -43,7 +43,9 @@
   user: root
   roles:
     - role: "pip_install"
-    - { role: "galera_server", tags: [ "galera-server" ] }
+      tags:
+        - pip
+    - role: "galera_server"
     - role: "rsyslog_client"
       rsyslog_client_log_rotate_file: galera_log_rotate
       rsyslog_client_log_dir: "/var/log/mysql_logs"
@@ -52,15 +54,14 @@
         - /var/log/mysql.err
       rsyslog_client_config_name: "99-galera-rsyslog-client.conf"
       tags:
-        - "galera-rsyslog-client"
-        - "rsyslog-client"
+        - rsyslog
     - role: "system_crontab_coordination"
       tags:
-        - "system-crontab-coordination"
+        - crontab
   vars:
     # overridden here to ensure the correct value for the galera_client role
     galera_address: 127.0.0.1
     galera_server_id: "{{ inventory_hostname | string_2_int }}"
     galera_wsrep_node_name: "{{ container_name }}"
   tags:
-    - galera-install-cluster
+    - galera

@@ -32,14 +32,14 @@
         state: "directory"
         force: "yes"
       when: not is_metal | bool
-      tags:
-        - utility-logs
   roles:
-    - { role: "galera_client", tags: [ "utility-galera-client" ] }
+    - role: "galera_client"
     - role: "pip_install"
       tags:
-        - utility-pip-lock-down
-    - { role: "openstack_openrc", tags: [ "utility-openstack-openrc" ] }
+        - pip
+    - role: "openstack_openrc"
+      tags:
+        - openrc
   post_tasks:
     - name: Update apt sources
       apt:
@@ -51,33 +51,27 @@
       delay: 2
       when:
         - ansible_pkg_mgr == 'apt'
-      tags:
-        - utility-apt-packages
     - name: Install apt packages
       apt:
         pkg: "{{ item }}"
         state: latest
-      with_items: "{{ utility_apt_packages }}"
+      with_items: "{{ utility_apt_packages | default([]) }}"
       when:
         - ansible_pkg_mgr == 'apt'
-      tags:
-        - utility-apt-packages
     - name: Install yum packages
       yum:
         pkg: "{{ item }}"
         state: latest
-      with_items: "{{ utility_yum_packages }}"
+      with_items: "{{ utility_yum_packages | default([]) }}"
       when:
         - ansible_pkg_mgr == 'yum'
-      tags:
-        - utility-yum-packages
     - name: Get list of python clients
       shell: "curl -s {{ openstack_repo_url }}/os-releases/{{ openstack_release }}/requirements_absolute_requirements.txt  | grep client | cut -d'=' -f1"
       register: client_list
       run_once: true
       changed_when: false
       tags:
-        - utility-pip-packages
+        - always
         - skip_ansible_lint
     - name: Install pip packages
       pip:
@@ -88,8 +82,7 @@
       until: install_packages|success
       retries: 5
       delay: 2
-      tags:
-        - utility-pip-packages
+      with_items: "{{ utility_pip_packages }}"
     - name: Distribute private ssh key
       copy:
         content: "{{ utility_ssh_private_key }}"
@@ -105,3 +98,5 @@
     utility_yum_packages:
       - git
     is_metal: "{{ properties.is_metal|default(false) }}"
+  tags:
+    - utility

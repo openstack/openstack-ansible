@@ -48,7 +48,7 @@
         - repo_build_git_cache is defined
         - _local_git_cache.stat.exists
   roles:
-    - { role: "repo_server", tags: [ "repo-server" ] }
+    - role: "repo_server"
     - role: "rsyslog_client"
       rsyslog_client_log_rotate_file: repo_nginx_log_rotate
       rsyslog_client_log_dir: "/var/log/{{ repo_service_user_name }}"
@@ -56,14 +56,14 @@
         - /var/log/rsyncd.log
       rsyslog_client_config_name: "99-repo-nginx-rsyslog-client.conf"
       tags:
-        - "repo-nginx-rsyslog-client"
-        - "rsyslog-client"
+        - rsyslog
     - role: "rsyslog_client"
       rsyslog_client_log_rotate_file: lsyncd_log_rotate
       rsyslog_client_log_dir: "/var/log/lsyncd"
       rsyslog_client_config_name: "99-lsyncd-rsyslog-client.conf"
       tags:
-        - "repo-rsyslog-client"
-        - "rsyslog-client"
+        - rsyslog
   vars:
     is_metal: "{{ properties.is_metal|default(false) }}"
+  tags:
+    - repo-server

@@ -25,7 +25,7 @@
       swift_do_setup: False
       swift_do_sync: True
       swift_venv_tag: "{{ openstack_release }}"
-      tags:
-        - "os-swift-sync"
   vars:
     is_metal: "{{ properties.is_metal|default(false) }}"
+  tags:
+    - swift

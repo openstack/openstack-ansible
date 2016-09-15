@@ -19,7 +19,7 @@
   max_fail_percentage: 20
   user: root
   roles:
-    - { role: "lxc_container_create", tags: [ "lxc-container-create" ] }
+    - role: "lxc_container_create"
   post_tasks:
     - name: Wait for ssh to be available
       local_action:
@@ -28,7 +28,7 @@
         host: "{{ ansible_ssh_host | default(inventory_hostname) }}"
         search_regex: OpenSSH
         delay: 1
-      tags:
-        - lxc-container-wait-for-ssh
   vars:
     is_metal: "{{ properties.is_metal|default(false) }}"
+  tags:
+    - lxc-containers-create

@@ -24,9 +24,9 @@
         name: "{{ container_name }}"
         state: "absent"
       delegate_to: "{{ physical_host }}"
-      when: force_containers_destroy | bool
-      tags:
-        - container-destroy
+      when:
+        - force_containers_destroy | bool
+        - force_containers_data_destroy | bool
     - name: Destroy container service directories
       file:
         path: "{{ item }}"
@@ -36,8 +36,6 @@
       delegate_to: "{{ physical_host }}"
       when:
         - force_containers_destroy | bool
-      tags:
-        - container-directories-service
     - name: Destroy container data
       file:
         path: "{{ item }}"
@@ -51,8 +49,6 @@
       when:
         - force_containers_destroy | bool
         - force_containers_data_destroy | bool
-      tags:
-        - container-directories-data
   vars_prompt:
     - name: "force_containers_destroy"
       prompt: "Are you sure you want to destroy the LXC containers?"
@@ -64,3 +60,5 @@
       default: "no"
       private: no
       when: force_containers_data_destroy is undefined
+  tags:
+    - lxc-containers-destroy

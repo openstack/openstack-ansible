@@ -40,13 +40,14 @@
         dest: "/var/log/lxc"
         state: "link"
   roles:
-    - { role: "lxc_hosts", tags: [ "lxc-host", "host-setup" ] }
+    - role: "lxc_hosts"
     - role: "rsyslog_client"
       rsyslog_client_log_rotate_file: lxc_log_rotate
       rsyslog_client_log_dir: "/var/log/lxc"
       rsyslog_client_config_name: "99-lxc-rsyslog-client.conf"
       tags:
-        - "lxc-rsyslog-client"
-        - "rsyslog-client"
+        - rsyslog
   vars:
     pip_lock_to_internal_repo: False
+  tags:
+    - lxc-hosts

@@ -75,32 +75,27 @@
         is_metal: "{{ is_metal }}"
       register: pndata
       tags:
-        - neutron-provider-networks
-        - neutron-config
-
+        - always
     - name: Set provider network fact(s)
       set_fact:
         _provider_networks: "{{ pndata }}"
         _overlay_network: "{{ container_networks.tunnel_address|default({}) }}"
       tags:
-        - neutron-provider-networks
-        - neutron-config
-
+        - always
     - name: set local_ip fact (is_metal)
       set_fact:
         _local_ip: "{{ hostvars[inventory_hostname]['ansible_' + _overlay_network.bridge|default(ansible_default_ipv4['interface'])|replace('-', '_')]['ipv4']['address']|default(ansible_ssh_host) }}"
       when:
         - is_metal | bool
       tags:
-        - neutron-config
-
+        - always
     - name: set local_ip fact (container)
       set_fact:
         _local_ip: "{{ _overlay_network.address|default(ansible_ssh_host) }}"
       when:
         - not is_metal | bool
       tags:
-        - neutron-config
+        - always
   roles:
     - role: "os_neutron"
       neutron_venv_tag: "{{ openstack_release }}"
@@ -108,14 +103,14 @@
       neutron_overlay_network: "{{ _overlay_network }}"
       neutron_provider_networks: "{{ _provider_networks }}"
       neutron_local_ip: "{{ _local_ip|default('127.0.0.1') }}"
-      tags:
-        - "os-neutron"
     - role: "bird"
       when:
         - "'neutron_calico_dhcp_agent' in group_names"
       tags:
-        - "bird"
-    - { role: "openstack_openrc", tags: [ "openstack-openrc" ] }
+        - bird
+    - role: "openstack_openrc"
+      tags:
+        - openrc
     - role: "rsyslog_client"
       rsyslog_client_log_rotate_file: neutron_log_rotate
       rsyslog_client_log_dir: "/var/log/neutron"
@@ -124,11 +119,12 @@
         - /var/log/conntrackd.log
         - /var/log/conntrackd-stats.log
       tags:
-        - "neutron-rsyslog-client"
-        - "rsyslog-client"
+        - rsyslog
     - role: "system_crontab_coordination"
       tags:
-        - "system-crontab-coordination"
+        - crontab
   vars:
     is_metal: "{{ properties.is_metal|default(false) }}"
     bind_prefix: "{{ provider_network_bind_prefix|default('') }}"
+  tags:
+    - neutron
