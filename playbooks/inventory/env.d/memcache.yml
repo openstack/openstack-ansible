@@ -22,8 +22,18 @@ component_skel:
 container_skel:
   memcached_container:
     belongs_to:
+      - memcaching_containers
       - shared-infra_containers
     contains:
       - memcached
     properties:
       service_name: memcached
+
+
+physical_skel:
+  memcaching_containers:
+    belongs_to:
+      - all_containers
+  memcaching_hosts:
+    belongs_to:
+      - hosts

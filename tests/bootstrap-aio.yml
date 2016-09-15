@@ -13,9 +13,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- hosts: localhost
+- name: Bootstrap the All-In-One (AIO)
+  hosts: localhost
   user: root
   roles:
-    - sshd
-    - pip_install
-    - bootstrap-host
+    - role: "sshd"
+    - role: "pip_install"
+    - role: "bootstrap-host"
+      openstack_confd_entries: "{{ confd_overrides[scenario] }}"
+      scenario: "{{ lookup('env','SCENARIO') | default('aio', true) }}"
+      confd_overrides:
+        aio:
+          - name: aodh.yml.aio
+          - name: cinder.yml.aio
+          - name: ceilometer.yml.aio
+          - name: glance.yml.aio
+          - name: gnocchi.yml.aio
+          - name: heat.yml.aio
+          - name: horizon.yml.aio
+          - name: keystone.yml.aio
+          - name: neutron.yml.aio
+          - name: nova.yml.aio
+          - name: swift.yml.aio
+

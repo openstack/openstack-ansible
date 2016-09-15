@@ -22,8 +22,18 @@ component_skel:
 container_skel:
   utility_container:
     belongs_to:
+      - operator_containers
       - shared-infra_containers
     contains:
       - utility
     properties:
       service_name: utility
+
+
+physical_skel:
+  operator_containers:
+    belongs_to:
+      - all_containers
+  operator_hosts:
+    belongs_to:
+      - hosts

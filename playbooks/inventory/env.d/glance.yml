@@ -25,6 +25,7 @@ component_skel:
 container_skel:
   glance_container:
     belongs_to:
+      - image_containers
       - os-infra_containers
     contains:
       - glance_api
@@ -32,3 +33,12 @@ container_skel:
     properties:
       service_name: glance
       container_fs_size: 12G
+
+
+physical_skel:
+  image_containers:
+    belongs_to:
+    - all_containers
+  image_hosts:
+    belongs_to:
+    - hosts
