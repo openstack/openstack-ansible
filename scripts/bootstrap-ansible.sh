@@ -28,6 +28,8 @@ export SSH_DIR=${SSH_DIR:-"/root/.ssh"}
 export DEBIAN_FRONTEND=${DEBIAN_FRONTEND:-"noninteractive"}
 # Set the role fetch mode to any option [galaxy, git-clone]
 export ANSIBLE_ROLE_FETCH_MODE=${ANSIBLE_ROLE_FETCH_MODE:-galaxy}
+# virtualenv vars
+VIRTUALENV_OPTIONS="--always-copy"
 
 # This script should be executed from the root directory of the cloned repo
 cd "$(dirname "${0}")/.."
@@ -51,12 +53,12 @@ determine_distro
 # Install the base packages
 case ${DISTRO_ID} in
     centos|rhel)
-        yum check-update
         yum -y install git python2 curl autoconf gcc-c++ \
-          python2-devel gcc libffi-devel nc openssl-devel python-requests \
+          python2-devel gcc libffi-devel nc openssl-devel \
           python-pyasn1 pyOpenSSL python-ndg_httpsclient \
           python-netaddr python-prettytable python-crypto PyYAML \
           python-virtualenv
+          VIRTUALENV_OPTIONS=""
         ;;
     ubuntu)
         apt-get update
@@ -88,7 +90,7 @@ fi
 
 # Create a Virtualenv for the Ansible runtime
 PYTHON_EXEC_PATH="$(which python2 || which python)"
-virtualenv --clear --always-copy --system-site-packages --python="${PYTHON_EXEC_PATH}" /opt/ansible-runtime
+virtualenv --clear ${VIRTUALENV_OPTIONS} --system-site-packages --python="${PYTHON_EXEC_PATH}" /opt/ansible-runtime
 
 # Install ansible
 PIP_OPTS+=" --upgrade"
