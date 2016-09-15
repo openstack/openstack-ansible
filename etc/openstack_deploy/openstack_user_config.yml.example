@@ -638,6 +638,21 @@
 #   log1:
 #     ip: 172.29.236.171
 #
+# --------
+#
+# Level: haproxy_hosts (optional)
+# List of target hosts on which to deploy HAProxy. Recommend at least one
+# target host for this service if hardware load balancers are not being
+# used.
+#
+#   Level: <value> (required, string)
+#   Hostname of a target host.
+#
+#     Option: ip (required, string)
+#     IP address of this target host, typically the IP address assigned to
+#     the management bridge.
+#
+#
 # Example:
 #
 # Define a virtual load balancer (HAProxy):
