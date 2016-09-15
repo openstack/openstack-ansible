@@ -637,3 +637,46 @@
 # log_hosts:
 #   log1:
 #     ip: 172.29.236.171
+#
+# Example:
+#
+# Define a virtual load balancer (HAProxy):
+#
+# While HAProxy can be used as a virtual load balancer, it is recommended to use
+# a physical load balancer in a production environment.
+#
+# haproxy_hosts:
+#   lb1:
+#     ip: 172.29.236.100
+#   lb2:
+#     ip: 172.29.236.101
+#
+# In case of the above scenario(multiple hosts),HAProxy can be deployed in a
+# highly-available manner by installing keepalived.
+#
+# To make keepalived work, edit at least the following variables
+# in ``user_variables.yml``:
+#  haproxy_keepalived_external_vip_cidr: 192.168.0.4/25
+#  haproxy_keepalived_internal_vip_cidr: 172.29.236.54/16
+#  haproxy_keepalived_external_interface: br-flat
+#  haproxy_keepalived_internal_interface: br-mgmt
+#
+# To always deploy (or upgrade to) the latest stable version of keepalived.
+# Edit the ``/etc/openstack_deploy/user_variables.yml``:
+#   keepalived_use_latest_stable: True
+#
+# The HAProxy playbook reads the ``vars/configs/keepalived_haproxy.yml``
+# variable file and provides content to the keepalived role for
+# keepalived master and backup nodes.
+#
+# Keepalived pings a public IP address to check its status. The default
+# address is ``193.0.14.129``. To change this default,
+# set the ``keepalived_ping_address`` variable in the
+# ``user_variables.yml`` file.
+#
+# You can define additional variables to adapt keepalived to your
+# deployment. Refer to the ``user_variables.yml`` file for
+# more information. Optionally, you can use your own variable file.
+# For example:
+#   haproxy_keepalived_vars_file: /path/to/myvariablefile.yml
+#
