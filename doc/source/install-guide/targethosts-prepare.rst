@@ -24,6 +24,12 @@ installation on target hosts without local (console) access.
 Configuring the operating system
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+#. Update package source lists
+
+   .. code-block:: shell-session
+
+       # apt-get update
+
 #. Upgrade system packages and kernel:
 
    .. code-block:: shell-session
@@ -31,6 +37,10 @@ Configuring the operating system
        # apt-get dist-upgrade
 
 #. Ensure the kernel version is ``3.13.0-34-generic`` or later.
+
+   .. code-block:: shell-session
+
+       # uname -r
 
 #. Install additional software packages:
 
@@ -47,7 +57,12 @@ Configuring the operating system
       # echo 'bonding' >> /etc/modules
       # echo '8021q' >> /etc/modules
 
-#. Configure NTP to synchronize with a suitable time source.
+#. Configure NTP in ``/etc/ntp.conf`` to synchronize with a suitable time
+   source and restart the service.
+
+   .. code-block:: shell-session
+
+      # service ntp restart
 
 #. Reboot the host to activate the changes and use new kernel.
 
