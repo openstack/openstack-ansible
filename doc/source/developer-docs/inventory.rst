@@ -142,6 +142,19 @@ Use the host's name as an argument.
 
 ..  _`dynamic inventory functionality`: http://docs.ansible.com/ansible/intro_dynamic_inventory.html
 
+Exporting Host Information
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Information on a per-host basis can be obtained with the ``--export/-e``
+parameter.
+
+This JSON output has two top-level keys: ``hosts`` and ``all``.
+
+``hosts`` contains a map of a host's name to its variable and group data.
+
+``all`` contains global network information such as the load balancer IPs and
+provider network metadata.
+
 The lxc_hosts Group
 -------------------
 
