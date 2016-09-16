@@ -1,0 +1,22 @@
+---
+features:
+  - Introduced option to deploy Keystone under Uwsgi. A new variable
+    ``keystone_mod_wsgi_enabled`` is introduced to toggle this
+    behavior. The default is ``true`` which continues to deploy with
+    mod_wsgi for Apache. The ports used by Uwsgi for socket and http
+    connection for both public and admin Keystone services are
+    configurable (see also the ``keystone_uwsgi_ports`` dictionary
+    variable). Other Uwsgi configuration can be overridden by using
+    the ``keystone_uwsgi_ini_overrides`` variable as documented
+    under "Overriding OpenStack configuration defaults" in the
+    OpenStack-Ansible Install Guide. Federation features should be
+    considered _experimental_ with this configuration at this time.
+  - Introduced option to deploy Keystone behind Nginx. A new
+    variable ``keystone_apache_enabled`` is introduced to toggle
+    this behavior.  The default is ``true`` which continues to
+    deploy with Apache. Additional configuration can be delivered to
+    Nginx through the use of the ``keystone_nginx_extra_conf`` list
+    variable. Federation features are not supported with this
+    configuration at this time. Use of this option requires
+    ``keystone_mod_wsgi_enabled`` to be set to ``false`` which will
+    deploy Keystone under Uwsgi.

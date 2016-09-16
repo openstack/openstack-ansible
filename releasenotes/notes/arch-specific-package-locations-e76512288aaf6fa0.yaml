@@ -1,0 +1,8 @@
+---
+fixes:
+  - Add architecture-specific locations for percona-xtrabackup and qpress,
+    with alternate locations provided for ppc64el due to package inavailability
+    from the current provider.
+issues:
+  - Deployments on ppc64le are limited to Ubuntu 16.04 for the Newton
+    release of OpenStack-Ansible.

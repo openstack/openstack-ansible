@@ -22,6 +22,7 @@ OS_BRANCH=${OS_BRANCH:-"master"}
 OSA_BRANCH=${OSA_BRANCH:-"$OS_BRANCH"}
 SERVICE_FILE=${SERVICE_FILE:-"playbooks/defaults/repo_packages/openstack_services.yml"}
 OPENSTACK_SERVICE_LIST=${OPENSTACK_SERVICE_LIST:-"$(grep 'git_repo\:' ${SERVICE_FILE} | awk -F '/' '{ print $NF }' | egrep -v 'requirements|-' | tr '\n' ' ')"}
+PRE_RELEASE=${PRE_RELEASE:-"false"}
 
 IFS=$'\n'
 
@@ -110,10 +111,13 @@ for repo in $(grep 'git_repo\:' ${SERVICE_FILE}); do
       find ${os_repo_tmp_path}/etc -name "policy.json" -exec \
         cp {} "${osa_repo_tmp_path}/templates/policy.json.j2" \;
 
-      # Tweak the paste files
+      # Tweak the paste files for any hmac key entries
       find ${os_repo_tmp_path}/etc -name "*[_-]paste.ini" -exec \
         sed -i.bak "s|hmac_keys = SECRET_KEY|hmac_keys = {{ ${repo_name}_profiler_hmac_key }}|" {} \;
-        sed -i.bak "s|pipeline = gnocchi+noauth|pipeline = {{ (gnocchi_keystone_auth | bool) | ternary('gnocchi+noauth', 'gnocchi+auth') }}|" {} \;
+
+      # Tweak the gnocchi paste file to support keystone auth
+      find ${os_repo_tmp_path}/etc -name "*[_-]paste.ini" -exec \
+        sed -i.bak "s|pipeline = gnocchi+noauth|pipeline = {{ (gnocchi_keystone_auth \| bool) \| ternary('gnocchi+noauth', 'gnocchi+auth') }}|" {} \;
 
       # Update the paste files
       find ${os_repo_tmp_path}/etc -name "*[_-]paste.ini" -exec \
@@ -196,25 +200,34 @@ echo "Updated pip install options/pins"
 
 # Update the ansible-role-requirements.yml file
 # We don't want to be doing this for the master branch
-if [[ "${OSA_BRANCH}" != "master" ]]; then
+if [ "${OSA_BRANCH}" != "master" ] || [ "${PRE_RELEASE}" == "true" ]; then
   echo "Updating ansible-role-requirements.yml"
 
+  if [ "${PRE_RELEASE}" == "true" ]; then
+    ROLE_GIT_SOURCES=$(awk '/src: .*/ {print $2}' ansible-role-requirements.yml)
+  else
+    ROLE_GIT_SOURCES=$(awk '/src: .*\/openstack\// {print $2}' ansible-role-requirements.yml)
+  fi
+
   # Loop through each of the role git sources, only looking for openstack roles
-  for role_src in $(awk '/src: .*\/openstack\// {print $2}' ansible-role-requirements.yml); do
+  for role_src in ${ROLE_GIT_SOURCES}; do
 
     # Determine the role's name
     role_name=$(sed 's/^[ \t-]*//' ansible-role-requirements.yml | awk '/src: / || /name: / {print $2}' | grep -B1 "${role_src}" | head -n 1)
     echo "... updating ${role_name}"
 
-    # Grab the latest SHA that matches the specified branch
-    role_version=$(git ls-remote ${role_src} | grep "${OSA_BRANCH}$" | awk '{print $1}')
-
-    # If that branch doesn't exist, then it's probably not an OpenStack-Ansible role, so grab the latest tag instead
-    if [[ -z "${role_version}" ]]; then
+    # If the role_src is NOT from git.openstack.org, try to get a tag first
+    if [[ ${role_src} != *"git.openstack.org"* ]]; then
       role_version=$(git ls-remote --tags ${role_src} | awk '{print $2}' | grep -v '{}' | cut -d/ -f 3 | sort -n | tail -n 1)
-    else
-      # As this is an OSA role, we want to grab the release notes from it
+    fi
 
+    # Grab the latest SHA that matches the specified branch
+    if [[ -z "${role_version}" ]]; then
+      role_version=$(git ls-remote ${role_src} | grep "${OSA_BRANCH}$" | awk '{print $1}')
+    fi
+
+    # For OSA roles, get the release notes
+    if [[ ${role_src} == *"git.openstack.org"* ]]; then
       # Setup a var for tmp space
       osa_repo_tmp_path="/tmp/osa_${role_name}"
 
@@ -238,6 +251,8 @@ if [[ "${OSA_BRANCH}" != "master" ]]; then
 
     # Now use the information we have to update the ansible-role-requirements file
     "$(dirname "${0}")/ansible-role-requirements-editor.py" -f ansible-role-requirements.yml -n "${role_name}" -v "${role_version}"
+
+    unset role_version
   done
   echo "Completed updating ansible-role-requirements.yml"
 else

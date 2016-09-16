@@ -1,0 +1,21 @@
+---
+features:
+  - |
+    The role now enables auditing during early boot to comply with the
+    requirements in V-38438. By default, the GRUB configuration variables in
+    ``/etc/default/grub.d/`` will be updated and the active ``grub.cfg`` will
+    be updated.
+
+    Deployers can opt-out of the change entirely by setting a variable:
+
+    .. code-block:: yaml
+
+       security_enable_audit_during_boot: no
+
+    Deployers may opt-in for the change without automatically updating the
+    active ``grub.cfg`` file by setting the following Ansible variables:
+
+    .. code-block:: yaml
+
+       security_enable_audit_during_boot: yes
+       security_enable_grub_update: no

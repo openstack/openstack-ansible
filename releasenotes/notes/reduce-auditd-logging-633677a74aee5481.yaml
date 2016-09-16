@@ -1,0 +1,25 @@
+---
+upgrade:
+  - |
+    All of the discretionary access control (DAC) auditing is now disabled by
+    default. This reduces the amount of logs generated during deployments and
+    minor upgrades.  The following variables are now set to ``no``:
+
+    .. code-block:: yaml
+
+       security_audit_DAC_chmod: no
+       security_audit_DAC_chown: no
+       security_audit_DAC_lchown: no
+       security_audit_DAC_fchmod: no
+       security_audit_DAC_fchmodat: no
+       security_audit_DAC_fchown: no
+       security_audit_DAC_fchownat: no
+       security_audit_DAC_fremovexattr: no
+       security_audit_DAC_lremovexattr: no
+       security_audit_DAC_fsetxattr: no
+       security_audit_DAC_lsetxattr: no
+       security_audit_DAC_setxattr: no
+fixes:
+  - The auditd rules for auditing V-38568 (filesystem mounts) were incorrectly
+    labeled in the auditd logs with the key of ``export-V-38568``. They are
+    now correctly logged with the key ``filesystem_mount-V-38568``.

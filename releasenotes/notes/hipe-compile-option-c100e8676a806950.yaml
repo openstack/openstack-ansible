@@ -1,0 +1,7 @@
+---
+features:
+  - The ``rabbitmq_server`` role now supports configuring HiPE compilation
+    of the RabbitMQ server Erlang code. This configuration option may improve
+    server performance for some workloads and hardware. Deployers can
+    override the ``rabbitmq_hipe_compile`` variable, setting a value of
+    ``True`` if they wish to enable this feature.

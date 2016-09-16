@@ -1,0 +1,14 @@
+---
+features:
+  - The ``openstack-ansible-os_swift`` role will now prevent
+    deployers from changing the ``swift_hash_path_prefix`` and
+    ``swift_hash_path_suffix`` variables on clusters that already
+    have a value set in ``/etc/swift/swift.conf``.
+    You can set the new ``swift_force_change_hashes`` variable to
+    ``True`` to force the ``swift_hash_path_`` variables to be
+    changed.
+    We recommend setting this by running the os-swift.yml playbook
+    with ``-e swift_force_change_hashes=True``, to avoid changing
+    the ``swift_hash_path_`` variables unintentionally.
+    Use with caution, changing the ``swift_hash_path_`` values
+    causes end-user impact.

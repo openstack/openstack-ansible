@@ -1,0 +1,6 @@
+---
+features:
+  - The ``rabbitmq_server`` role now supports deployer override of the
+    RabbitMQ policies applied to the cluster. Deployers can
+    override the ``rabbitmq_policies`` variable, providing a list of
+    desired policies.

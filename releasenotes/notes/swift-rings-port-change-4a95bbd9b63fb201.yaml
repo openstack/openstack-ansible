@@ -1,0 +1,11 @@
+---
+features:
+  - Change the port for devices in the ring by adjusting
+    the port value for services, hosts, or devices. This
+    will not involve a rebalance of the ring.
+  - Changing the port for a device, or group of devices,
+    carries a brief period of downtime to the swift
+    storage services for those devices. The devices will
+    be unavailable during period between when the
+    storage service restarts after the port update, and
+    the ring updates to match the new port.

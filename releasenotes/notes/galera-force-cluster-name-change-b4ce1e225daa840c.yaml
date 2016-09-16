@@ -1,0 +1,15 @@
+---
+features:
+  - The ``openstack-ansible-galera_server`` role will now prevent
+    deployers from changing the ``galera_cluster_name`` variable
+    on clusters that already have a value set in a running galera
+    cluster.
+    You can set the new ``galera_force_change_cluster_name``
+    variable to ``True`` to force the ``galera_cluster_name``
+    variable to be changed.
+    We recommend setting this by running the galera-install.yml playbook
+    with ``-e galera_force_change_cluster_name=True``, to avoid
+    changing the ``galera_cluster_name`` variable unintentionally.
+    Use with caution, changing the ``galera_cluster_name`` value
+    can cause your cluster to fail, as the nodes won't join if restarted
+    sequentially.
