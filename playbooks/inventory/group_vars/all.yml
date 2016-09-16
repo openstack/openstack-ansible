@@ -106,7 +106,8 @@ dhcp_domain: openstacklocal
 ## LDAP enabled toggle
 service_ldap_backend_enabled: "{{ keystone_ldap is defined and keystone_ldap.Default is defined }}"
 
-## Aodh DB info
+## Aodh
+aodh_service_region: "{{ service_region }}"
 aodh_galera_user: aodh
 aodh_galera_database: aodh
 aodh_galera_address: "{{ internal_lb_vip_address }}"
