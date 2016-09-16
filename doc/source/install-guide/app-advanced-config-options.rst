@@ -9,3 +9,4 @@ Appendix E: Advanced configuration
    app-advanced-config-security
    app-advanced-config-sslcertificates
    app-advanced-config-affinity
+   app-advanced-role-docs

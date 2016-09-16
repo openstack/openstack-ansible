@@ -36,6 +36,8 @@ Configuring the operating system
 
        # apt-get dist-upgrade
 
+Reboot before you continue.
+
 #. Ensure the kernel version is ``3.13.0-34-generic`` or later.
 
    .. code-block:: shell-session
@@ -75,7 +77,9 @@ Ansible uses SSH for connectivity between the deployment and target hosts.
    the ``/root/.ssh/authorized_keys`` file on each target host.
 
 #. Test public key authentication from the deployment host to each
-   target host. SSH provides a shell without asking for a
+   target host by sshing to the target host from the deployment host.
+   If you are able to connect and get the shell without authenticating, it
+   is working. SSH provides a shell without asking for a
    password.
 
 For more information on how to generate an SSH keypair as well as best
@@ -83,7 +87,7 @@ practices, refer to `GitHub's documentation on generating SSH keys`_.
 
 .. _GitHub's documentation on generating SSH keys: https://help.github.com/articles/generating-ssh-keys/
 
-.. warning::
+.. important::
 
    OpenStack-Ansible deployments expect the presence of a
    ``/root/.ssh/id_rsa.pub`` file on the deployment host.

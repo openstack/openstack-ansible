@@ -158,7 +158,8 @@ Verifying OpenStack operation
 .. TODO Add procedures to test different layers of the OpenStack environment
 
 The utility container provides a CLI environment for additional
-configuration and testing.
+configuration and testing. The following instructions are to be done on an
+infra host.
 
 #. Determine the utility container name:
 
