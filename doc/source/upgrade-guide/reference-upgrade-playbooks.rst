@@ -16,11 +16,12 @@ lbaas-version-check.yml
 
 This playbook is part of the general pre-flight checks.
 
-Because LBaaS v1 isn't supported in Newton and above, and there is no
-migration path, the deployer will have to manually disable LBaaS v1 before
-upgrading. For openstack-ansible, we are checking if ``neutron_lbaas`` is
-set to ``False``, but additional operations are to be done by the deployer for
-the cleanup.
+Because LBaaS v1 isn't supported in |current_release_formal_name|
+and above, and there is no migration path, the deployer will have
+to manually disable LBaaS v1 before upgrading. For
+openstack-ansible, we are checking if ``neutron_lbaas`` is set to
+``False``, but additional operations are to bedone by the deployer
+for the cleanup.
 
 .. _fact-cleanup-playbook:
 
@@ -38,7 +39,8 @@ deploy-config-changes.yml
 This playbook backs up the ``/etc/openstack_deploy`` directory before
 changing the configuration.
 
-``/etc/openstack_deploy`` copies once to ``/etc/openstack_deploy.NEWTON``.
+``/etc/openstack_deploy`` copies once to
+|current_release_deploy_dir|.
 
 .. _user-secrets-playbook:
 
@@ -97,7 +99,7 @@ upgrade RabbitMQ.
     regardless of the value of ``rabbitmq_upgrade``. This variable only
     controls upgrading the major or minor versions.
 
-    Upgrading RabbitMQ in the Newton release is optional. The
+    Upgrading RabbitMQ in the |current_release_formal_name| release is optional. The
     ``run-upgrade.sh`` script does not automatically upgrade it. To upgrade
     RabbitMQ, insert the ``rabbitmq_upgrade: true``
     line into a file, such as: ``/etc/openstack_deploy/user_variables.yml``.

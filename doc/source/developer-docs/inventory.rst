@@ -41,7 +41,7 @@ not specified, the default is ``/etc/openstack_deploy/``.
 In addition to this argument, the base environment skeleton is provided in the
 ``playbooks/inventory/env.d`` directory of the OpenStack-Ansible codebase.
 
-.. note:: In all versions prior to Mitaka, this argument was ``--file``.
+.. note:: In all versions prior to |previous_release_formal_name|, this argument was ``--file``.
 
 The following file must be present in the configuration directory:
 

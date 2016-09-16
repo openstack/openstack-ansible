@@ -17,12 +17,12 @@ A minor upgrade typically requires the following steps:
 
       # cd /opt/openstack-ansible
 
-#. Ensure your OpenStack-Ansible code is on the latest Newton release tag
-   (|my_conf_val|):
+#. Ensure your OpenStack-Ansible code is on the latest
+   |current_release_formal_name| release tag (|latest_tag|):
 
-   .. code-block:: console
+   .. parsed-literal::
 
-      # git checkout stable/newton
+      # git checkout stable/|current_release_branch_name|
       # LATEST_TAG=$(git describe --abbrev=0 --tags)
       # git checkout ${LATEST_TAG}
 
