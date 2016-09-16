@@ -25,7 +25,7 @@ Checking the integrity of your configuration files
 
 Before running any playbook, check the integrity of your configuration files.
 
-#. Ensure all files edited in ``/etc/`` are Ansible
+#. Ensure all files edited in ``/etc/openstack_deploy`` are Ansible
    YAML compliant. Guidelines can be found here:
    `<http://docs.ansible.com/ansible/YAMLSyntax.html>`_
 
@@ -213,7 +213,7 @@ Verifying the Dashboard (horizon)
 
 #. Authenticate using the username ``admin`` and password defined by the
    ``keystone_auth_admin_password`` option in the
-   ``/etc/openstack_deploy/user_variables.yml`` file.
+   ``/etc/openstack_deploy/user_secrets.yml`` file.
 
 .. TODO Add troubleshooting information to resolve common installation issues
 
