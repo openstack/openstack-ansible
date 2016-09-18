@@ -151,6 +151,7 @@ function main {
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/ansible_fact_cleanup.yml")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/deploy-config-changes.yml")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/user-secrets-adjustment.yml")
+        RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/mariadb-apt-cleanup.yml")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/db-collation-alter.yml")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/pip-conf-removal.yml")
         # we don't want to trigger galera container restarts yet
