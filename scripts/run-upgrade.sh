@@ -159,7 +159,6 @@ function main {
         RUN_TASKS+=("lxc-containers-create.yml -e 'lxc_container_allow_restarts=false' --limit galera_all")
 	# rebuild the repo servers
         RUN_TASKS+=("repo-install.yml")
-        RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/repo-server-pip-conf-removal.yml")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/old-hostname-compatibility.yml")
         # explicitly perform mariadb upgrade
         RUN_TASKS+=("galera-install.yml -e 'galera_upgrade=true'")
