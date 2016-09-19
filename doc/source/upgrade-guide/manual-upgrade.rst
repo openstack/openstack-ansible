@@ -231,6 +231,17 @@ See :ref:`memcached-flush` for details.
 
     # openstack-ansible "${UPGRADE_PLAYBOOKS}/memcached-flush.yml"
 
+Perform nova flavor data migration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Run the nova flavor migration playbook to ensure that the information is
+stored where expected in the Liberty release. This is required to be done
+before upgrading nova to the Liberty code base.
+
+.. code-block:: console
+
+   # openstack-ansible ${UPGRADE_PLAYBOOKS}/nova-flavor-migration.yml
+
 Upgrade OpenStack
 ~~~~~~~~~~~~~~~~~
 

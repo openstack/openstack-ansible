@@ -1,0 +1,11 @@
+---
+upgrade:
+  - |
+    The upgrade playbook `nova-flavor-migration.yml` will perform a migration
+    of nova flavor data. This will need to be completed prior to upgrading to
+    Liberty. It is recommended that Kilo be deployed from the `eol-kilo` tag
+    prior to upgrading to Liberty to ensure that this task is completed
+    successfully.
+
+    This upgrade task is related to
+    `bug 1594584 <https://bugs.launchpad.net/openstack-ansible/+bug/1594584>`_.

@@ -172,6 +172,7 @@ function main {
         RUN_TASKS+=("rsyslog-install.yml")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/disable-neutron-port-security.yml")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/memcached-flush.yml")
+        RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/nova-extra-migrations.yml")
         RUN_TASKS+=("setup-openstack.yml")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/cleanup-rabbitmq-vhost.yml")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/glance-db-storage-url-fix.yml")
