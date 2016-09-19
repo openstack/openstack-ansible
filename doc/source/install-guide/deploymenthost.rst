@@ -30,7 +30,22 @@ access the internet or suitable local repositories.
 Configuring the operating system
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Install additional software packages and configure NTP.
+Install additional software packages and configure NTP. Before you begin,
+we recommend upgrading your system packages and kernel:
+
+#. Update package source lists:
+
+   .. code-block:: shell-session
+
+       # apt-get update
+
+#. Upgrade system packages and kernel:
+
+   .. code-block:: shell-session
+
+      # apt-get dist-upgrade
+
+Reboot before you continue.
 
 #. Install additional software packages if not already installed
    during operating system installation:
@@ -46,9 +61,10 @@ Configuring the network
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 Ansible deployments fail if the deployment server is unable to SSH to the
-containers. Configure the deployment host to be on the same network designated
-for container management. This configuration reduces the rate of failure due
-to connectivity issues.
+containers. Configure the deployment host (where Ansible is executed) to be on
+the same L2 network as the network designated for container management. By
+default, this is ``br-mgmt``. This configuration reduces the rate of failure
+due to connectivity issues.
 
 The following network information is used as an example:
 

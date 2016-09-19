@@ -80,6 +80,8 @@ An example is provided on this `Link to Production Environment`_ based
 on the production environment described in `host layout for production
 environment`_.
 
+Reboot your servers after modifying the network interfaces file.
+
 .. _host layout for production environment: overview-host-layout.html#production-environment
 .. _Link to Production Environment: app-targethosts-networkexample.html#production-environment
 
