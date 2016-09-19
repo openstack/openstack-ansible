@@ -25,21 +25,15 @@
 ##     package should be one long name with no additional `_` separating it.
 
 
-## Tempest service
-tempest_git_repo: https://git.openstack.org/openstack/tempest
-tempest_git_install_branch: 3b0a86f7b8a7a5e8911a2cf7006c469efdbcad06 # HEAD of "master" as of 16.09.2016
-tempest_git_dest: "/opt/tempest_{{ tempest_git_install_branch | replace('/', '_') }}"
-tempest_git_project_group: utility_all
-
 ## NOVNC from source
 novncproxy_git_repo: https://github.com/kanaka/novnc
-novncproxy_git_install_branch: 7a16304e52b3fbd466337601f05a7def2493c563 # HEAD of "master" as of 16.09.2016
+novncproxy_git_install_branch: 33e1462999d78bafff55be9723a90c6498d2d9e8 # HEAD of "master" as of 20.09.2016
 novncproxy_git_dest: "/opt/novnc_{{ novncproxy_git_install_branch | replace('/', '_') }}"
 novncproxy_git_project_group: nova_console
 
 ## spice-html5 from source
 spicehtml5_git_repo: https://github.com/SPICE/spice-html5
-spicehtml5_git_install_branch: 54cc41299bea8cd681ed0262735e0fd821cd774a # HEAD of "master" as of 16.09.2016
+spicehtml5_git_install_branch: 54cc41299bea8cd681ed0262735e0fd821cd774a # HEAD of "master" as of 20.09.2016
 spicehtml5_git_dest: "/opt/spicehtml5_{{ spicehtml5_git_install_branch | replace('/', '_') }}"
 spicehtml5_git_project_group: nova_console
 

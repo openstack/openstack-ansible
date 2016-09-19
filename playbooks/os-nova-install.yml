@@ -173,7 +173,7 @@
       tags:
         - crontab
   vars_files:
-    - defaults/repo_packages/openstack_other.yml
+    - defaults/repo_packages/nova_consoles.yml
   vars:
     is_metal: "{{ properties.is_metal|default(false) }}"
     nova_galera_user: nova

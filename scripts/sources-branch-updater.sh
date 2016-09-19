@@ -93,88 +93,94 @@ for repo in $(grep 'git_repo\:' ${SERVICE_FILE}); do
       rm -rf ${os_repo_tmp_path} ${osa_repo_tmp_path}
 
       # Do a shallow clone of the OpenStack repo to work with
-      git clone --quiet --depth=10 --branch ${OS_BRANCH} --no-checkout --single-branch ${repo_address} ${os_repo_tmp_path}
-      pushd ${os_repo_tmp_path} > /dev/null
-        git checkout --quiet ${branch_sha}
-      popd > /dev/null
+      if git clone --quiet --depth=10 --branch ${OS_BRANCH} --no-checkout --single-branch ${repo_address} ${os_repo_tmp_path}; then
+        pushd ${os_repo_tmp_path} > /dev/null
+          git checkout --quiet ${branch_sha}
+        popd > /dev/null
 
-      # Set the OSA address
-      osa_repo_address="https://git.openstack.org/openstack/openstack-ansible-os_${repo_name}"
+        # Set the OSA address
+        osa_repo_address="https://git.openstack.org/openstack/openstack-ansible-os_${repo_name}"
 
-      # Do a shallow clone of the OSA repo to work with
-      git clone --quiet --depth=10 --branch ${OSA_BRANCH} --single-branch ${osa_repo_address} ${osa_repo_tmp_path}
-      pushd ${osa_repo_tmp_path} > /dev/null
-        git checkout --quiet origin/${OSA_BRANCH}
-      popd > /dev/null
+        # Do a shallow clone of the OSA repo to work with
+        if git clone --quiet --depth=10 --branch ${OSA_BRANCH} --single-branch ${osa_repo_address} ${osa_repo_tmp_path}; then
+          pushd ${osa_repo_tmp_path} > /dev/null
+            git checkout --quiet origin/${OSA_BRANCH}
+          popd > /dev/null
 
-      # Update the policy files
-      find ${os_repo_tmp_path}/etc -name "policy.json" -exec \
-        cp {} "${osa_repo_tmp_path}/templates/policy.json.j2" \;
+          # Update the policy files
+          find ${os_repo_tmp_path}/etc -name "policy.json" -exec \
+            cp {} "${osa_repo_tmp_path}/templates/policy.json.j2" \;
 
-      # Tweak the paste files for any hmac key entries
-      find ${os_repo_tmp_path}/etc -name "*[_-]paste.ini" -exec \
-        sed -i.bak "s|hmac_keys = SECRET_KEY|hmac_keys = {{ ${repo_name}_profiler_hmac_key }}|" {} \;
+          # Tweak the paste files for any hmac key entries
+          find ${os_repo_tmp_path}/etc -name "*[_-]paste.ini" -exec \
+            sed -i.bak "s|hmac_keys = SECRET_KEY|hmac_keys = {{ ${repo_name}_profiler_hmac_key }}|" {} \;
 
-      # Tweak the gnocchi paste file to support keystone auth
-      find ${os_repo_tmp_path}/etc -name "*[_-]paste.ini" -exec \
-        sed -i.bak "s|pipeline = gnocchi+noauth|pipeline = {{ (gnocchi_keystone_auth \| bool) \| ternary('gnocchi+noauth', 'gnocchi+auth') }}|" {} \;
+          # Tweak the gnocchi paste file to support keystone auth
+          if [ "${repo_name}" = "gnocchi" ]; then
+            find ${os_repo_tmp_path}/etc -name "*[_-]paste.ini" -exec \
+              sed -i.bak "s|pipeline = gnocchi+noauth|pipeline = {{ (gnocchi_keystone_auth \| bool) \| ternary('gnocchi+auth', 'gnocchi+noauth') }}|" {} \;
+          fi
 
-      # Update the paste files
-      find ${os_repo_tmp_path}/etc -name "*[_-]paste.ini" -exec \
-        bash -c "name=\"{}\"; cp \${name} \"${osa_repo_tmp_path}/templates/\$(basename \${name}).j2\"" \;
+          # Update the paste files
+          find ${os_repo_tmp_path}/etc -name "*[_-]paste.ini" -exec \
+            bash -c "name=\"{}\"; cp \${name} \"${osa_repo_tmp_path}/templates/\$(basename \${name}).j2\"" \;
 
-      # Tweak the rootwrap conf filters_path (for os_neutron only)
-      find ${os_repo_tmp_path}/etc -name "rootwrap.conf" -exec \
-        sed -i.bak "s|filters_path=/etc/neutron|filters_path={{ ${repo_name}_conf_dir }}|" {} \;
+          # Tweak the rootwrap conf filters_path (for neutron only)
+          if [ "${repo_name}" = "neutron" ]; then
+            find ${os_repo_tmp_path}/etc -name "rootwrap.conf" -exec \
+              sed -i.bak "s|filters_path=/etc/neutron|filters_path={{ ${repo_name}_conf_dir }}|" {} \;
+          fi
 
-      # Tweak the rootwrap conf exec_dirs
-      find ${os_repo_tmp_path}/etc -name "rootwrap.conf" -exec \
-        sed -i.bak "s|exec_dirs=|exec_dirs={{ ${repo_name}_bin }},|" {} \;
+          # Tweak the rootwrap conf exec_dirs
+          find ${os_repo_tmp_path}/etc -name "rootwrap.conf" -exec \
+            sed -i.bak "s|exec_dirs=|exec_dirs={{ ${repo_name}_bin }},|" {} \;
 
-      # Update the rootwrap conf files
-      find ${os_repo_tmp_path}/etc -name "rootwrap.conf" -exec \
-        cp {} "${osa_repo_tmp_path}/templates/rootwrap.conf.j2" \;
+          # Update the rootwrap conf files
+          find ${os_repo_tmp_path}/etc -name "rootwrap.conf" -exec \
+            cp {} "${osa_repo_tmp_path}/templates/rootwrap.conf.j2" \;
 
-      # Update the rootwrap filters
-      find ${os_repo_tmp_path}/etc -name "*.filters" -exec \
-        bash -c "name=\"{}\"; cp \${name} \"${osa_repo_tmp_path}/files/rootwrap.d/\$(basename \${name})\"" \;
+          # Update the rootwrap filters
+          find ${os_repo_tmp_path}/etc -name "*.filters" -exec \
+            bash -c "name=\"{}\"; cp \${name} \"${osa_repo_tmp_path}/files/rootwrap.d/\$(basename \${name})\"" \;
 
-      # Update the yaml files for Ceilometer
-      if [ "${repo_name}" = "ceilometer" ]; then
-        find ${os_repo_tmp_path}/etc -name "*.yaml" -exec \
-          bash -c "name=\"{}\"; cp \${name} \"${osa_repo_tmp_path}/templates/\$(basename \${name}).j2\"" \;
-      fi
+          # Update the yaml files for Ceilometer
+          if [ "${repo_name}" = "ceilometer" ]; then
+            find ${os_repo_tmp_path}/etc -name "*.yaml" -exec \
+              bash -c "name=\"{}\"; cp \${name} \"${osa_repo_tmp_path}/templates/\$(basename \${name}).j2\"" \;
+          fi
 
-      # Update the yaml files for Heat
-      if [ "${repo_name}" = "heat" ]; then
-        find ${os_repo_tmp_path}/etc -name "*.yaml" -exec \
-          bash -c "name=\"{}\"; cp \${name} \"${osa_repo_tmp_path}/templates/\$(echo \${name} | rev | cut -sd / -f -2 | rev).j2\"" \;
-      fi
+          # Update the yaml files for Heat
+          if [ "${repo_name}" = "heat" ]; then
+            find ${os_repo_tmp_path}/etc -name "*.yaml" -exec \
+              bash -c "name=\"{}\"; cp \${name} \"${osa_repo_tmp_path}/templates/\$(echo \${name} | rev | cut -sd / -f -2 | rev).j2\"" \;
+          fi
 
-      # Switch into the OSA git directory to work with it
-      pushd ${osa_repo_tmp_path} > /dev/null
+          # Switch into the OSA git directory to work with it
+          pushd ${osa_repo_tmp_path} > /dev/null
 
-        # Check for changed files
-        git_changed=$(git status --porcelain | wc -l)
-        # Check for untracked files
-        git_untracked=$(git ls-files --other --exclude-standard --directory | wc -l)
-        if [ ${git_untracked} -gt 0 ]; then
-          # If there are untracked files, ensure that the commit message includes
-          # a WIP prefix so that the patch is revised in more detail.
-          git_msg_prefix="[New files - needs update] "
-        else
-          git_msg_prefix=""
+            # Check for changed files
+            git_changed=$(git status --porcelain | wc -l)
+            # Check for untracked files
+            git_untracked=$(git ls-files --other --exclude-standard --directory | wc -l)
+            if [ ${git_untracked} -gt 0 ]; then
+              # If there are untracked files, ensure that the commit message includes
+              # a WIP prefix so that the patch is revised in more detail.
+              git_msg_prefix="[New files - needs update] "
+            else
+              git_msg_prefix=""
+            fi
+
+            # If any files have changed, submit a patch including the changes
+            if [ ${git_changed} -gt 0 ]; then
+              git checkout -b sha-update
+              git review -s > /dev/null
+              git add --all
+              git commit -a -m "${git_msg_prefix}Update paste, policy and rootwrap configurations $(date +%Y-%m-%d)" --quiet
+              git review > /dev/null
+            fi
+          popd > /dev/null
         fi
-
-        # If any files have changed, submit a patch including the changes
-        if [ ${git_changed} -gt 0 ]; then
-          git checkout -b sha-update
-          git review -s > /dev/null
-          git add --all
-          git commit -a -m "${git_msg_prefix}Update paste, policy and rootwrap configurations $(date +%Y-%m-%d)" --quiet
-          git review > /dev/null
-        fi
-      popd > /dev/null
+      fi
 
       # Clean up the temporary files
       rm -rf ${os_repo_tmp_path} ${osa_repo_tmp_path}

@@ -1,0 +1,10 @@
+---
+features:
+  - Yaml files used for ceilometer configuration will now allow a deployer to
+    override a given list. If an override is provided that matches an already
+    defined list in one of the ceilometer default yaml files the entire list
+    will be replaced by the provided override. Previously, a nested lists of
+    lists within the default ceilometer configration files would extend should
+    a deployer provide an override matching an existing pipeline. The
+    extension of the defaults had a high probability to cause undesirable
+    outcomes and was very unpredictable.

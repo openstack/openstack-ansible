@@ -31,159 +31,153 @@
 
 ## Global Requirements
 requirements_git_repo: https://git.openstack.org/openstack/requirements
-requirements_git_install_branch: e2edc35050a99503987cec4120309804f41a830d # HEAD of "master" as of 16.09.2016
+requirements_git_install_branch: c589637b184e77901d37cc7faa93dbb906979448 # HEAD of "stable/newton" as of 21.09.2016
 requirements_git_dest: "/opt/requirements_{{ requirements_git_install_branch | replace('/', '_') }}"
 
 
 ## Aodh service
 aodh_git_repo: https://git.openstack.org/openstack/aodh
-aodh_git_install_branch: caf9f2e1c252835bda8d2b17b7d1239fcaa9a9ba # HEAD of "stable/newton" as of 16.09.2016
+aodh_git_install_branch: caf9f2e1c252835bda8d2b17b7d1239fcaa9a9ba # HEAD of "stable/newton" as of 21.09.2016
 aodh_git_dest: "/opt/aodh_{{ aodh_git_install_branch | replace('/', '_') }}"
 aodh_git_project_group: aodh_all
 
 
 ## Ceilometer service
 ceilometer_git_repo: https://git.openstack.org/openstack/ceilometer
-ceilometer_git_install_branch: 91d4a9479d4835b1b012ab55eeb678774bf38c76 # HEAD of "master" as of 16.09.2016
+ceilometer_git_install_branch: 9eb8b652bcec998bf14832151338d9e2b3f061d8 # HEAD of "stable/newton" as of 21.09.2016
 ceilometer_git_dest: "/opt/ceilometer_{{ceilometer_git_install_branch | replace('/', '_') }}"
 ceilometer_git_project_group: ceilometer_all
 
 
 ## Cinder service
 cinder_git_repo: https://git.openstack.org/openstack/cinder
-cinder_git_install_branch: 0ba267fbc1836722735102994b466ecd7803b10a # HEAD of "stable/newton" as of 16.09.2016
+cinder_git_install_branch: d3f37914164ecb8b028f1b46ae3121fe89182f8b # HEAD of "stable/newton" as of 21.09.2016
 cinder_git_dest: "/opt/cinder_{{ cinder_git_install_branch | replace('/', '_') }}"
 cinder_git_project_group: cinder_all
 
 
 ## Glance service
 glance_git_repo: https://git.openstack.org/openstack/glance
-glance_git_install_branch: ee667852f588415259bc7b5dbe07b6037da66226 # HEAD of "stable/newton" as of 16.09.2016
+glance_git_install_branch: 912d1fb3bacef539dc804ab30b1f4bf85d3b32a8 # HEAD of "stable/newton" as of 21.09.2016
 glance_git_dest: "/opt/glance_{{ glance_git_install_branch | replace('/', '_') }}"
 glance_git_project_group: glance_all
 
 
 ## Heat service
 heat_git_repo: https://git.openstack.org/openstack/heat
-heat_git_install_branch: 5dc1084260c8a7a7f5ec97d0cdfc1fc08cd8f82e # HEAD of "stable/newton" as of 16.09.2016
+heat_git_install_branch: 847fca33f00003aaa97cbdd085b6f87dd98d44de # HEAD of "stable/newton" as of 21.09.2016
 heat_git_dest: "/opt/heat_{{ heat_git_install_branch | replace('/', '_') }}"
 heat_git_project_group: heat_all
 
 
 ## Horizon service
 horizon_git_repo: https://git.openstack.org/openstack/horizon
-horizon_git_install_branch: f9774acb7345b644d344af3af2f350170db38dfd # HEAD of "stable/newton" as of 16.09.2016
+horizon_git_install_branch: 1e6614a41fc8ad5d100641d6962c3fb5896dae61 # HEAD of "stable/newton" as of 21.09.2016
 horizon_git_dest: "/opt/horizon_{{ horizon_git_install_branch | replace('/', '_') }}"
 horizon_git_project_group: horizon_all
 
 ## Horizon Ironic dashboard plugin
 ironic_dashboard_git_repo: https://git.openstack.org/openstack/ironic-ui
-ironic_dashboard_git_install_branch: 7e8189b9ac1c5e818b695f0555994ff15d1465b7 # HEAD of "master" as of 16.09.2016
+ironic_dashboard_git_install_branch: 7d226b75dae84607925a54b10f60a6a83baf9ac0 # HEAD of "master" as of 21.09.2016
 ironic_dashboard_git_dest: "/opt/ironic_dashboard_{{ ironic_dashboard_git_install_branch | replace('/', '_') }}"
 ironic_dashboard_git_project_group: horizon_all
 
 ## Horizon Magnum dashboard plugin
 magnum_dashboard_git_repo: https://git.openstack.org/openstack/magnum-ui
-magnum_dashboard_git_install_branch: 28c55311f09d0b8294fec279bf89fa60582c4c6c # HEAD of "master" as of 16.09.2016
+magnum_dashboard_git_install_branch: 726ca1d39ee28afe0eb16cba617a59ae78ad359a # HEAD of "stable/newton" as of 21.09.2016
 magnum_dashboard_git_dest: "/opt/magnum_dashboard_{{ magnum_dashboard_git_install_branch | replace('/', '_') }}"
 magnum_dashboard_git_project_group: horizon_all
 
 ## Horizon LBaaS dashboard plugin
 neutron_lbaas_dashboard_git_repo: https://git.openstack.org/openstack/neutron-lbaas-dashboard
-neutron_lbaas_dashboard_git_install_branch: 2ffb6c930f4c230d0ff888064b6de36aa34cd12f # HEAD of "master" as of 16.09.2016
+neutron_lbaas_dashboard_git_install_branch: 2ffb6c930f4c230d0ff888064b6de36aa34cd12f # HEAD of "master" as of 21.09.2016
 neutron_lbaas_dashboard_git_dest: "/opt/neutron_lbaas_dashboard_{{ neutron_lbaas_dashboard_git_install_branch | replace('/', '_') }}"
 neutron_lbaas_dashboard_git_project_group: horizon_all
 
 ## Horizon Sahara dashboard plugin
 sahara_dashboard_git_repo: https://git.openstack.org/openstack/sahara-dashboard
-sahara_dashboard_git_install_branch: 8b6b41cf3f648bbba334496b28d7966d7832da74 # HEAD of "stable/newton" as of 16.09.2016
+sahara_dashboard_git_install_branch: f1215445f1a6b7ea87f75fa85a1ac7a8f3b2fdb3 # HEAD of "stable/newton" as of 21.09.2016
 sahara_dashboard_git_dest: "/opt/sahara_dashboard_{{ sahara_dashboard_git_install_branch | replace('/', '_') }}"
 sahara_dashboard_git_project_group: horizon_all
 
 
 ## Keystone service
 keystone_git_repo: https://git.openstack.org/openstack/keystone
-keystone_git_install_branch: 6eeb354a78084e83d672f5a0e890e8832d87c19f # HEAD of "stable/newton" as of 16.09.2016
+keystone_git_install_branch: b3fae7724db797c911bedec1e9ab1ded982691c5 # HEAD of "stable/newton" as of 21.09.2016
 keystone_git_dest: "/opt/keystone_{{ keystone_git_install_branch | replace('/', '_') }}"
 keystone_git_project_group: keystone_all
 
 
 ## Neutron service
 neutron_git_repo: https://git.openstack.org/openstack/neutron
-neutron_git_install_branch: b05549f67151883c4a6463540bb57c4513408675 # HEAD of "master" as of 16.09.2016
+neutron_git_install_branch: b49f590fa12aae9a677e38472a467cf8dfbb317b # HEAD of "stable/newton" as of 21.09.2016
 neutron_git_dest: "/opt/neutron_{{ neutron_git_install_branch | replace('/', '_') }}"
 neutron_git_project_group: neutron_all
 
 neutron_lbaas_git_repo: https://git.openstack.org/openstack/neutron-lbaas
-neutron_lbaas_git_install_branch: d1693c10ea618f3a15086fa694c792dc65f26a94 # HEAD of "master" as of 16.09.2016
+neutron_lbaas_git_install_branch: 10d8a18baa47b5c1a481e1d2fe53fb798ec62175 # HEAD of "stable/newton" as of 21.09.2016
 neutron_lbaas_git_dest: "/opt/neutron_lbaas_{{ neutron_lbaas_git_install_branch | replace('/', '_') }}"
 neutron_lbaas_git_project_group: neutron_agent
 
 neutron_vpnaas_git_repo: https://git.openstack.org/openstack/neutron-vpnaas
-neutron_vpnaas_git_install_branch: 3c93dc6c136557761fc3bf0a16097180f9f0fe65 # HEAD of "master" as of 16.09.2016
+neutron_vpnaas_git_install_branch: 89dac51538b711d8e966d4a4a50f9cdfafa92fc5 # HEAD of "stable/newton" as of 21.09.2016
 neutron_vpnaas_git_dest: "/opt/neutron_vpnaas_{{ neutron_vpnaas_git_install_branch | replace('/', '_') }}"
 neutron_vpnaas_git_project_group: neutron_agent
 
 neutron_fwaas_git_repo: https://git.openstack.org/openstack/neutron-fwaas
-neutron_fwaas_git_install_branch: 71f2220d2c0a6c3c1c375c904b17103ec505769b # HEAD of "master" as of 16.09.2016
+neutron_fwaas_git_install_branch: 48e58a61712c337226a0e6705f080bfc4c3fe1f2 # HEAD of "stable/newton" as of 21.09.2016
 neutron_fwaas_git_dest: "/opt/neutron_fwaas_{{ neutron_fwaas_git_install_branch | replace('/', '_') }}"
 neutron_fwaas_git_project_group: neutron_agent
 
 neutron_dynamic_routing_git_repo: https://git.openstack.org/openstack/neutron-dynamic-routing
-neutron_dynamic_routing_git_install_branch: 26a252e3d7db2e1fb5dc72058e5b25cd283d00e2 # HEAD of "master" as of 16.09.2016
+neutron_dynamic_routing_git_install_branch: 2b27679fb6d690e6f65a98dfa2828bc367aa30ad # HEAD of "stable/newton" as of 21.09.2016
 neutron_dynamic_routing_git_dest: "/opt/neutron_dynamic_routing_{{ neutron_dynamic_routing_git_install_branch | replace('/', '_') }}"
 neutron_dynamic_routing_git_project_group: neutron_agent
 
 
 ## Nova service
 nova_git_repo: https://git.openstack.org/openstack/nova
-nova_git_install_branch: d4b35152c0ac2f3f2b4d158c83dba249d6d2ff0c # HEAD of "stable/newton" as of 16.09.2016
+nova_git_install_branch: 0cb20bb0145b4cd770553f8e0899234ceaf5063a # HEAD of "stable/newton" as of 21.09.2016
 nova_git_dest: "/opt/nova_{{ nova_git_install_branch | replace('/', '_') }}"
 nova_git_project_group: nova_all
 
 
 ## PowerVM Virt Driver
 nova_powervm_git_repo: https://git.openstack.org/openstack/nova-powervm
-nova_powervm_git_install_branch: 89b47fcfc5a8d7f062ef6d845658b4a1b480a487 # HEAD of "master" as of 16.09.2016
+nova_powervm_git_install_branch: 1373fad17a05232c887f7c15f3abb288a75e1f21 # HEAD of "stable/newton" as of 21.09.2016
 nova_powervm_git_dest: "/opt/nova_powervm_{{ nova_powervm_git_install_branch | replace('/', '_') }}"
 nova_powervm_git_project_group: nova_compute
 
 
 ## LXD Virt Driver
 nova_lxd_git_repo: https://git.openstack.org/openstack/nova-lxd
-nova_lxd_git_install_branch: 3a24f8676e20a4ad96815b2c33ff614361a06dc8 # HEAD of "master" as of 16.09.2016
+nova_lxd_git_install_branch: 8f7dca4e4b0b910eeaea4370c968be9032a1491a # HEAD of "master" as of 21.09.2016
 nova_lxd_git_dest: "/opt/nova_lxd_{{ nova_lxd_git_install_branch | replace('/', '_') }}"
 nova_lxd_git_project_group: nova_compute
 
 
 ## Sahara service
 sahara_git_repo: https://git.openstack.org/openstack/sahara
-sahara_git_install_branch: 47579eec40cbed801e5555233bdd054d065e5edf # HEAD of "stable/newton" as of 16.09.2016
+sahara_git_install_branch: 5c775d2e84e0fee2524fa53c82549af64aa808a9 # HEAD of "stable/newton" as of 21.09.2016
 sahara_git_dest: "/opt/sahara_{{ sahara_git_install_branch | replace('/', '_') }}"
 sahara_git_project_group: sahara_all
 
 
 ## Swift service
 swift_git_repo: https://git.openstack.org/openstack/swift
-swift_git_install_branch: acb8971c765fbc64e55f37923e8b16c0126598ac # HEAD of "master" as of 16.09.2016
+swift_git_install_branch: e07f9be8f5db130361a2bf106b6c7f1ac9bdd841 # HEAD of "master" as of 21.09.2016
 swift_git_dest: "/opt/swift_{{ swift_git_install_branch | replace('/', '_') }}"
 swift_git_project_group: swift_all
 
 
 ## Ironic service
 ironic_git_repo: https://git.openstack.org/openstack/ironic
-ironic_git_install_branch: 5603a215b726ca465eed2867d830821bb24b1a72 # HEAD of "master" as of 16.09.2016
+ironic_git_install_branch: 2351d624aed7aae9d58ce37676c0181687be0e8a # HEAD of "master" as of 21.09.2016
 ironic_git_dest: "/opt/ironic_{{ ironic_git_install_branch | replace('/', '_') }}"
 ironic_git_project_group: ironic_all
 
 ## Magnum service
 magnum_git_repo: https://git.openstack.org/openstack/magnum
-magnum_git_install_branch: 8e7706f4aaa6d1c9600cbc3f301389aea3f337ab # HEAD of "master" as of 16.09.2016
+magnum_git_install_branch: a10ac080c7f63fe255c015bb9337f9adb97f83d9 # HEAD of "stable/newton" as of 21.09.2016
 magnum_git_dest: "/opt/magnum_{{ magnum_git_install_branch | replace('/', '_') }}"
 magnum_git_project_group: magnum_all
-
-## Rally service
-rally_git_repo: https://git.openstack.org/openstack/rally
-rally_git_install_branch: 8ff0f2ee8c92f748e99138b24124a5c008918555 # HEAD of "master" as of 16.09.2016
-rally_git_dest: "/opt/rally_{{ rally_git_install_branch | replace('/', '_') }}"
-rally_git_project_group: utility_all
