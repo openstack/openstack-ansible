@@ -35,8 +35,8 @@ for Ansible. Start by getting those files into the correct places:
 
 .. note::
 
-    As of Newton, the ``env.d`` directory has been moved from this source
-    directory to ``playbooks/inventory/``.
+    As of |current_release_formal_name|, the ``env.d`` directory has been
+    moved from this source directory to ``playbooks/inventory/``.
 
 #. Change to the ``/etc/openstack_deploy`` directory.
 

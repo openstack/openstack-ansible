@@ -12,15 +12,15 @@ orchestration for upgrade automation beyond what OpenStack-Ansible provides.
 The steps detailed here match those performed by the ``run-upgrade.sh``
 script. Any of these steps can safely be run multiple times.
 
-Check out the Newton release
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Check out the |current_release_formal_name| release
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Ensure your OpenStack-Ansible code is on the latest Newton release tag
-(|my_conf_val|).
+Ensure your OpenStack-Ansible code is on the latest
+|current_release_formal_name| release tag (|latest_tag|).
 
-.. code-block:: console
+.. parsed-literal::
 
-    # git checkout stable/newton
+    # git checkout stable/|current_release_branch_name|
     # LATEST_TAG=$(git describe --abbrev=0 --tags)
     # git checkout ${LATEST_TAG}
 
@@ -43,12 +43,12 @@ From the ``openstack-ansible`` root directory, run the following commands:
 These variables reduce typing when running the remaining upgrade
 tasks.
 
-Re-bootstrap Ansible for Newton
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Re-bootstrap Ansible for |current_release_formal_name|
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Bootstrapping Ansible again ensures that all OpenStack-Ansible role
-dependencies are in place before running playbooks from the Newton
-release.
+dependencies are in place before running playbooks from the
+|current_release_formal_name| release.
 
 .. code-block:: console
 
@@ -100,7 +100,7 @@ Update configuration and environment files
 
 The user configuration files in ``/etc/openstack_deploy/`` and the environment
 layout in ``/etc/openstack_deploy/env.d`` have new name
-values added in Newton.
+values added in |current_release_formal_name|.
 
 See :ref:`config-change-playbook` for more details.
 
@@ -111,8 +111,8 @@ See :ref:`config-change-playbook` for more details.
 Update user secrets file
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Newton introduces new user secrets to the stack. These are populated
-automatically with the following playbook.
+|current_release_formal_name| introduces new user secrets to the stack.
+These are populated automatically with the following playbook.
 
 See :ref:`user-secrets-playbook` for more details.
 
@@ -160,8 +160,8 @@ Cleanup ``pip.conf`` file
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The presence of ``pip.conf`` file can cause build failures when upgrading to
-Newton. This play removes the ``pip.conf`` file on all the physical servers
-and on the repo containers.
+|current_release_formal_name|. This play removes the ``pip.conf`` file
+on all the physical servers and on the repo containers.
 
 See :ref:`pip-conf-removal` for more details.
 
@@ -183,11 +183,13 @@ See :ref:`old-hostname-compatibility` for details.
 Upgrade infrastructure
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Running the standard OpenStack-Ansible infrastructure playbook applies the
-relevant Newton settings and packages. This upgrade is required for the Newton
-release of OpenStack-Ansible.
+Running the standard OpenStack-Ansible infrastructure playbook
+applies the relevant |current_release_formal_name| settings
+and packages.This upgrade is required for the
+|current_release_formal_name| release of OpenStack-Ansible.
 
-For certain versions of Mitaka, you must upgrade the RabbitMQ service.
+For certain versions of |previous_release_formal_name|, you must upgrade
+the RabbitMQ service.
 
 See :ref:`setup-infra-playbook` for details.
 
@@ -217,8 +219,8 @@ See :ref:`aodh-api-init-delete` for details.
 Upgrade OpenStack
 ~~~~~~~~~~~~~~~~~
 
-Upgrade the OpenStack components with the same installation playbook,
-without any additional options.
+Upgrade the OpenStack components with the same installation
+playbook, without any additional options.
 
 .. code-block:: console
 

@@ -69,20 +69,20 @@ deploying from the head of a branch may result in an unstable build due to
 changes in flight and upstream OpenStack changes. For a test (ie not a
 development) build it is usually best to checkout the latest tagged version.
 
-.. code-block:: shell-session
+.. parsed-literal::
 
    # # List all existing tags.
    # git tag -l
 
    # # Checkout the stable branch and find just the latest tag
-   # git checkout stable/mitaka
+   # git checkout stable/|previous_release_branch_name|
    # git describe --abbrev=0 --tags
 
    # # Checkout the latest tag from either method of retrieving the tag.
-   # git checkout |my_conf_val|
+   # git checkout |latest_tag|
 
 .. note::
-   The Mitaka release is only compatible with Ubuntu 14.04 (Trusy Tahr).
+   The |previous_release_formal_name| release is only compatible with Ubuntu 14.04 (Trusy Tahr).
 
 By default the scripts deploy all OpenStack services with sensible defaults
 for the purpose of a gate check, development or testing system.
@@ -270,7 +270,7 @@ soon as the instance starts. Save this file as ``user_data.yml``:
      - export ANSIBLE_FORCE_COLOR=true
      - export PYTHONUNBUFFERED=1
      - export REPO=https://github.com/openstack/openstack-ansible
-     - export BRANCH=stable/mitaka
+     - export BRANCH=stable/|previous_release_branch_name|
      - git clone -b ${BRANCH} ${REPO} /opt/openstack-ansible
      - cd /opt/openstack-ansible && scripts/bootstrap-ansible.sh
      - cd /opt/openstack-ansible && scripts/bootstrap-aio.sh

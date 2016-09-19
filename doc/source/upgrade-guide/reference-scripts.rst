@@ -22,23 +22,23 @@ It provides the following environment variables:
 
 The upgrade script also bootstraps OpenStack-Ansible (using
 ``bootstrap-ansible.sh``) in order to provide the new role dependencies
-introduced in the Mitaka series.
+introduced in the |previous_release_formal_name| series.
 
 .. _migrate-os-vars:
 
 ``migrate_openstack_vars.py``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Upstream decisions influenced the change of some variable names in Newton.
-This script replaces any instances of these strings in the
-variable override files matching the pattern
+Upstream decisions influenced the change of some variable names in
+|current_release_formal_name|. This script replaces any instances of these
+strings in the variable override files matching the pattern
 ``/etc/openstack_deploy/user_*.yml``.
 Variable names within comments are updated.
 
 This script creates files of the form
-``/etc/openstack_deploy.NEWTON/VARS_MIGRATED_file``. For example, once the
+|upgrade_deploy_vars_file|. For example, once the
 script has processed the file ``/etc/openstack_deploy/user_variables.yml``, it
-creates ``/etc/openstack_deploy.NEWTON/VARS_MIGRATED_user_variables``. This
+creates |upgrade_deploy_vars_user|. This
 indicates to OpenStack-Ansible to skip this step on successive runs. The script
 itself does not check for this file.
 

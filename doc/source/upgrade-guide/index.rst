@@ -2,8 +2,9 @@
 Upgrade Guide
 =============
 
-In this section you can find information on the Mitaka to
-Newton upgrade process for OpenStack-Ansible.
+In this section you can find information on the
+|previous_release_formal_name| to |current_release_formal_name|
+upgrade process for OpenStack-Ansible.
 
 .. toctree::
    :maxdepth: 2
