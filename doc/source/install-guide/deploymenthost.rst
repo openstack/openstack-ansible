@@ -61,14 +61,12 @@ Installing source and dependencies
 
 Install the source and dependencies for the deployment host.
 
-#. Clone the OSA repository into the ``/opt/openstack-ansible``
-   directory:
+#. Clone the latest stable release of the OpenStack-Ansible git repository into
+   the ``/opt/openstack-ansible`` directory:
 
-   .. code-block:: shell-session
+   .. parsed-literal::
 
-       # git clone -b TAG https://github.com/openstack/openstack-ansible.git /opt/openstack-ansible
-
-   Replace ``TAG`` with the current stable release tag : |my_conf_val|
+       # git clone -b |latest_tag| https://github.com/openstack/openstack-ansible /opt/openstack-ansible
 
 #. Change to the ``/opt/openstack-ansible`` directory, and run the
    Ansible bootstrap script:

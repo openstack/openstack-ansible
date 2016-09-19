@@ -35,11 +35,12 @@ strings in the variable override files matching the pattern
 ``/etc/openstack_deploy/user_*.yml``.
 Variable names within comments are updated.
 
-This script creates files of the form
-|upgrade_deploy_vars_file|. For example, once the
-script has processed the file ``/etc/openstack_deploy/user_variables.yml``, it
-creates |upgrade_deploy_vars_user|. This
-indicates to OpenStack-Ansible to skip this step on successive runs. The script
-itself does not check for this file.
+This script creates files of the form ``VARS_MIGRATED_<filename>`` and
+places them in |upgrade_backup_dir|.
+For example, once the script has processed the file
+``/etc/openstack_deploy/user_variables.yml``, it creates
+``VARS_MIGRATED_user_variables.yml`` in |upgrade_backup_dir|.
+This indicates to OpenStack-Ansible to skip this step on successive runs. The
+script itself does not check for this file.
 
 Called by :ref:`config-change-playbook`

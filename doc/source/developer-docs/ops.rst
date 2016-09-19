@@ -11,7 +11,6 @@ installed environments.
    ops-add-computehost.rst
    ops-remove-computehost.rst
    ops-galera.rst
-   ops-logging.rst
    ops-tips.rst
    ops-troubleshooting.rst
 

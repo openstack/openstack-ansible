@@ -4,11 +4,6 @@
 Configure deployment
 ====================
 
-.. toctree::
-   :maxdepth: 2
-
-   configure-user-config-examples.rst
-
 .. figure:: figures/installation-workflow-configure-deployment.png
    :width: 100%
 
