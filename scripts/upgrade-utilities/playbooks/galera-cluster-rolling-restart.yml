@@ -45,7 +45,6 @@
         module: wait_for
         port: "3306"
         host: "{{ ansible_ssh_host | default(inventory_hostname) }}"
-        search_regex: MariaDB
       retries: 10
       delay: 10
 
