@@ -57,11 +57,19 @@
   tags:
     - ssh-key-generate
 
-- name: Ensure root's new public ssh key is in authorized_keys
-  authorized_key:
-    user: root
-    key: "{{ lookup('file', '/root/.ssh/id_rsa.pub') }}"
-    manage_dir: no
+- name: Fetch the generated public ssh key
+  fetch:
+    src: "/root/.ssh/id_rsa.pub"
+    dest: "/tmp/id_rsa.pub"
+    flat: yes
+  when: inventory_hostname == groups['all'][0]
   tags:
     - ssh-key-authorized
 
+- name: Ensure root's new public ssh key is in authorized_keys
+  authorized_key:
+    user: root
+    key: "{{ lookup('file','/tmp/id_rsa.pub') }}"
+    manage_dir: no
+  tags:
+    - ssh-key-authorized
