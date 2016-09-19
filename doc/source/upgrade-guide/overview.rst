@@ -19,8 +19,8 @@ major upgrade process performs the following actions:
 - Modifies files residing in ``/etc/openstack_deploy`` in
   order to reflect new configuration values.
 - Some flag files are created by the migration scripts in order to achieve
-  idempotency. These files are placed in the |current_release_deploy_dir|
-  directory.
+  idempotency. These files are placed in the
+  |upgrade_backup_dir| directory.
 - Upgrade the RabbitMQ server during an OpenStack-Ansible upgrade process.
   See :ref:`setup-infra-playbook` for details.
 

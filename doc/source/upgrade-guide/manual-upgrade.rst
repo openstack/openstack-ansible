@@ -16,13 +16,11 @@ Check out the |current_release_formal_name| release
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Ensure your OpenStack-Ansible code is on the latest
-|current_release_formal_name| release tag (|latest_tag|).
+|current_release_formal_name| tagged release.
 
 .. parsed-literal::
 
-    # git checkout stable/|current_release_branch_name|
-    # LATEST_TAG=$(git describe --abbrev=0 --tags)
-    # git checkout ${LATEST_TAG}
+    # git checkout |latest_tag|
 
 Prepare the shell variables
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~

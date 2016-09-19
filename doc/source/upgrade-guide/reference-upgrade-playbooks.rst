@@ -40,7 +40,7 @@ This playbook backs up the ``/etc/openstack_deploy`` directory before
 changing the configuration.
 
 ``/etc/openstack_deploy`` copies once to
-|current_release_deploy_dir|.
+|upgrade_backup_dir|.
 
 .. _user-secrets-playbook:
 

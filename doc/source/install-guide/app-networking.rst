@@ -1,7 +1,7 @@
 .. _network-appendix:
 
 ================================
-Appendix F: Container networking
+Appendix E: Container networking
 ================================
 
 OpenStack-Ansible deploys LXC machine containers and uses linux bridging

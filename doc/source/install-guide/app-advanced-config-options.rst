@@ -1,5 +1,5 @@
 ===================================
-Appendix E: Advanced configuration
+Appendix F: Advanced configuration
 ===================================
 
 .. toctree::

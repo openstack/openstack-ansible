@@ -23,8 +23,6 @@ directoy:
 
 .. parsed-literal::
 
-   # git checkout stable/|current_release_branch_name|
-   # LATEST_TAG=$(git describe --abbrev=0 --tags)
-   # git checkout ${LATEST_TAG}
+   # git checkout |latest_tag|
    # ./scripts/run-upgrade.sh
 

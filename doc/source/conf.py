@@ -300,29 +300,31 @@ pdf_documents = [
      title, author)
 ]
 
-pipe = Popen('git describe --abbrev=0 --tags', stdout=PIPE, shell=True)
+latest_tag = os.popen('git describe --abbrev=0 --tags').read().strip('\n')
 
 previous_release_branch_name='mitaka'
 current_release_branch_name='newton'
-version = pipe.stdout.read()
 
 previous_release_capital_name=previous_release_branch_name.upper()
 previous_release_formal_name=previous_release_branch_name.capitalize()
-current_release_formal_name=current_release_branch_name.capitalize()
 current_release_capital_name=current_release_branch_name.upper()
-current_release_deploy_dir="``/etc/openstack_deploy."+current_release_capital_name+"``"
-upgrade_deploy_vars_file="``/etc/openstack_deploy."+current_release_capital_name+"/VARS_MIGRATED_file``"
-upgrade_deploy_vars_user="``/etc/openstack_deploy."+current_release_capital_name+"/VARS_MIGRATED_user_variables``"
+current_release_formal_name=current_release_branch_name.capitalize()
+upgrade_backup_dir="``/etc/openstack_deploy."+previous_release_capital_name+"``"
 
 rst_epilog = """
-.. |current_release_branch_name| replace:: %s
 .. |previous_release_branch_name| replace:: %s
+.. |current_release_branch_name| replace:: %s
 .. |previous_release_capital_name| replace:: %s
-.. |current_release_capital_name| replace:: %s
 .. |previous_release_formal_name| replace:: %s
+.. |current_release_capital_name| replace:: %s
 .. |current_release_formal_name| replace:: %s
-.. |current_release_deploy_dir| replace:: %s
-.. |upgrade_deploy_vars_file| replace:: %s
-.. |upgrade_deploy_vars_user| replace:: %s
+.. |upgrade_backup_dir| replace:: %s
 .. |latest_tag| replace:: %s
-""" % (current_release_branch_name,previous_release_branch_name,previous_release_capital_name,current_release_capital_name,previous_release_formal_name,current_release_formal_name,current_release_deploy_dir,upgrade_deploy_vars_file,upgrade_deploy_vars_user,version)
+""" % (previous_release_branch_name,
+       current_release_branch_name,
+       previous_release_capital_name,
+       previous_release_formal_name,
+       current_release_capital_name,
+       current_release_formal_name,
+       upgrade_backup_dir,
+       latest_tag)
