@@ -1,3 +1,5 @@
+.. _test-environment-config:
+
 ==================================================
 Appendix A: Example test environment configuration
 ==================================================

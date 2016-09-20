@@ -1,3 +1,5 @@
+.. _production-environment-config:
+
 ========================================================
 Appendix B: Example production environment configuration
 ========================================================
