@@ -53,6 +53,13 @@ in ``openstack_user_config.yml``.
 For details about how the inventory is generated from the environment
 configuration, see :ref:`developer-inventory`.
 
+To configure your OpenStack installation for a test environment or production
+environment, see the examples in :ref:`test-environment-config` and
+:ref:`production-environment-config`.
+
+To install additional services, see the example configuration files in
+``/etc/openstack_deploy/conf.d``.
+
 Configuring service credentials
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Configure credentials for each service in the
