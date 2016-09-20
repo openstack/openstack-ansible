@@ -118,6 +118,16 @@ See :ref:`user-secrets-playbook` for more details.
 
     # openstack-ansible "${UPGRADE_PLAYBOOKS}/user-secrets-adjustment.yml"
 
+Cleanup old MariaDB apt repositories
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The default MariaDB apt repositories have been changed to use HTTP instead of
+HTTPS. This playbook removes existing repositories of the previous default.
+
+.. code-block:: console
+
+    # openstack-ansible "${UPGRADE_PLAYBOOKS}/mariadb-apt-cleanup.yml
+
 Update database collations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
