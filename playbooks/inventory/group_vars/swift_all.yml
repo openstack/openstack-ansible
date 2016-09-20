@@ -19,5 +19,9 @@ swift_service_in_ldap: "{{ service_ldap_backend_enabled }}"
 # Ensure that the package state matches the global setting
 swift_package_state: "{{ package_state }}"
 
+# TODO: (andymccr) ceilometer with swift does not support SSL rabbitmq connections, so we are hard coding the port and use_ssl var
+swift_rabbitmq_telemetry_port: "5672"
+swift_rabbitmq_telemetry_use_ssl: False
+
 # Used to optionally filter Gnocchi-originated traffic in Ceilometermiddleware
 swift_gnocchi_enabled: "{{ (groups['gnocchi_all'] is defined and groups['gnocchi_all'] | length > 0) }}"
