@@ -1,5 +1,5 @@
 ---
-# Copyright 2016, Rackspace US, Inc.
+# Copyright 2014, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,20 +19,21 @@
 ##     make sure to leave an in-line comment as to "why".
 
 ## For the sake of anyone else editing this file:
-##   * If you add services to this file please do so in alphabetical order.
+##   * If you add clients to this file please do so in alphabetical order.
 ##   * Every entry should be name spaced with the name of the client followed by an "_"
 ##   * All items with this file should be separated by `name_` note that the name of the
 ##     package should be one long name with no additional `_` separating it.
 
 
-### Before this is shipped all of these services should have a tag set as the branch,
-### or have a comment / reason attached to them as to why a tag can not work.
+## Tempest service
+tempest_git_repo: https://git.openstack.org/openstack/tempest
+tempest_git_install_branch: 304802830b56354a83bad86925851107411d45ec # HEAD of "master" as of 21.09.2016
+tempest_git_dest: "/opt/tempest_{{ tempest_git_install_branch | replace('/', '_') }}"
+tempest_git_project_group: utility_all
 
 
-## Gnocchi service
-## This service has a different stable branch strategy to the rest of OpenStack.
-## The SHA is recorded here to make the SHA updating easier.
-gnocchi_git_repo: https://git.openstack.org/openstack/gnocchi
-gnocchi_git_install_branch: 5594840a7187964dc29f5aebd5947c58c03e3380 # HEAD of "master" as of 21.09.2016
-gnocchi_git_dest: "/opt/gnocchi_{{ gnocchi_git_install_branch | replace('/', '_') }}"
-gnocchi_git_project_group: gnocchi_all
+## Rally service
+rally_git_repo: https://git.openstack.org/openstack/rally
+rally_git_install_branch: f1a9abd5c9922b3d67d1e69a80cf96eda2bdac59 # HEAD of "master" as of 21.09.2016
+rally_git_dest: "/opt/rally_{{ rally_git_install_branch | replace('/', '_') }}"
+rally_git_project_group: utility_all

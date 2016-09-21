@@ -49,8 +49,6 @@
         state: "absent"
       with_items:
         - "keystone_internal"
-      tags:
-        - haproxy-config  # this tag is present because the task is ONLY a config task
       when: internal_lb_vip_address == external_lb_vip_address
       tags:
         - haproxy-config  # this tag is present because the task is ONLY a config task
