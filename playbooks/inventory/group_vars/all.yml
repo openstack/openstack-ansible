@@ -134,6 +134,7 @@ ceilometer_rabbitmq_host_group: "{{ rabbitmq_host_group }}"
 
 ## Cinder
 cinder_service_region: "{{ service_region }}"
+cinder_service_port: 8776
 # If there are Swift hosts in the environment, then enable cinder backups to it
 cinder_service_backup_program_enabled: "{{ groups['swift_all'] is defined and groups['swift_all'] | length > 0 }}"
 # cinder_backend_rbd_inuse: True if current host has an rbd backend
@@ -395,6 +396,7 @@ sahara_rabbitmq_telemetry_host_group: "{{ sahara_rabbitmq_host_group }}"
 sahara_ceilometer_enabled: "{{ (groups['ceilometer_all'] is defined) and (groups['sahara_all'] is defined) and (groups['ceilometer_all'] | length > 0) and (groups['sahara_all'] | length > 0) }}"
 
 ## Swift
+swift_proxy_port: 8080
 swift_system_user_name: swift
 swift_system_shell: /bin/bash
 swift_system_comment: swift system user

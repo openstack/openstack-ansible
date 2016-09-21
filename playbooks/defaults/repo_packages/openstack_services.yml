@@ -181,3 +181,9 @@ magnum_git_repo: https://git.openstack.org/openstack/magnum
 magnum_git_install_branch: de227ba88ccc2936bcab09905345f23b42f57964 # HEAD of "stable/newton" as of 27.09.2016
 magnum_git_dest: "/opt/magnum_{{ magnum_git_install_branch | replace('/', '_') }}"
 magnum_git_project_group: magnum_all
+
+## Trove service
+trove_git_repo: https://git.openstack.org/openstack/trove
+trove_git_install_branch: 41f3dd6920eb60d438e1542e9994319c08e44461 # HEAD of "master" as of 02.10.2016
+trove_git_dest: "/opt/trove_{{ trove_git_install_branch | replace('/', '_') }}"
+trove_git_project_group: trove_all
