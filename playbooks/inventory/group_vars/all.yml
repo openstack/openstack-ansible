@@ -26,6 +26,9 @@ ssh_delay: 5
 # Options are 'present' and 'latest'
 package_state: "latest"
 
+# Set "/var/log" to be a bind mount to the physical host.
+default_bind_mount_logs: true
+
 # Ensure that the package state matches the global setting
 ceph_client_package_state: "{{ package_state }}"
 galera_client_package_state: "{{ package_state }}"

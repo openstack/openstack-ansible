@@ -29,10 +29,15 @@
 
 - name: Set default bind mounts
   set_fact:
-    lxc_default_bind_mounts:
-      - bind_dir_path: "/var/log"
-        mount_path: "/openstack/log/{{ inventory_hostname }}"
-  when: lxc_default_bind_mounts is undefined
+    lxc_default_bind_mounts: []
+  when:
+    - lxc_default_bind_mounts is undefined
+
+- name: Set default bind mounts (bind var/log)
+  set_fact:
+    lxc_default_bind_mounts: '{{ lxc_default_bind_mounts | default([{"bind_dir_path": "/var/log", "mount_path": "/openstack/log/{{ inventory_hostname }}"}]) }}'
+  when:
+    - default_bind_mount_logs | bool
 
 - name: Ensure mount directories exists
   file:

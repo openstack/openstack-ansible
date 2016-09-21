@@ -38,17 +38,27 @@
         with_items:
             - "{{ diff_result.stdout_lines }}"
         when: diff_result.stdout != ""
-    
+
       - name: Check result for emptiness
         debug: msg="All new env.d files are placed in the stock repo. No new changes"
         when: diff_result.stdout == ""
-      
+
       - name: Update OpenStack variable names
         command: "{{ upgrade_scripts }}/migrate_openstack_vars.py {{ item }} {{ (item | basename)[:-4] }}"
         args:
             creates: "/etc/openstack_deploy.NEWTON/VARS_MIGRATED_{{ (item | basename)[:-4] }}"
         with_fileglob:
           - "/etc/openstack_deploy/user_*.yml"
+
+      - name: Write vars required for upgrade from Mitaka
+        lineinfile:
+          dest: /etc/openstack_deploy/user_variables.yml
+          regexp: "^{{ item.key }}"
+          line: "{{ item.key }}: {{ item.value }}"
+          state: present
+        with_items:
+          - key: "default_bind_mount_logs"
+            value: false
   vars:
       upgrade_scripts: "{{ playbook_dir }}/../scripts"
       repo_root_dir: "{{ playbook_dir }}/../../../"
