@@ -39,10 +39,13 @@ def cleanup():
             os.remove(f_file)
 
 
-def get_inventory(clean=True):
+def get_inventory(clean=True, extra_args=None):
     "Return the inventory mapping in a dict."
+    args = {'config': TARGET_DIR}
+    if extra_args:
+        args.update(extra_args)
     try:
-        inventory_string = di.main({'config': TARGET_DIR})
+        inventory_string = di.main(args)
         inventory = json.loads(inventory_string)
         return inventory
     finally:
@@ -1062,6 +1065,31 @@ class TestNetworkEntry(unittest.TestCase):
         entry = di.network_entry(False, 'eth1', 'br-mgmt', 'my_type', '1700')
 
         self.assertEqual(entry['interface'], 'eth1')
+
+
+class TestDebugLogging(unittest.TestCase):
+    @mock.patch('dynamic_inventory.logging')
+    @mock.patch('dynamic_inventory.logger')
+    def test_logging_enabled(self, mock_logger, mock_logging):
+        # Shadow the real value so tests don't complain about it
+        mock_logging.DEBUG = 10
+
+        get_inventory(extra_args={"debug": True})
+
+        self.assertTrue(mock_logging.basicConfig.called)
+        self.assertTrue(mock_logger.info.called)
+        self.assertTrue(mock_logger.debug.called)
+
+    @mock.patch('dynamic_inventory.logging')
+    @mock.patch('dynamic_inventory.logger')
+    def test_logging_disabled(self, mock_logger, mock_logging):
+        get_inventory(extra_args={"debug": False})
+
+        self.assertFalse(mock_logging.basicConfig.called)
+        # Even though logging is disabled, we still call these
+        # all over the place; they just choose not to do anything.
+        self.assertTrue(mock_logger.info.called)
+        self.assertTrue(mock_logger.debug.called)
 
 
 class TestLxcHosts(TestConfigCheckBase):

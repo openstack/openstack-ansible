@@ -111,6 +111,16 @@ disk.
 This check does not do YAML syntax validation, though it will fail if there
 are unparseable errors.
 
+Writing Debug Logs
+------------------
+
+The ``--debug/-d`` parameter allows writing of a detailed log file for
+debugging the inventory script's behavior. The output is written to
+``inventory.log`` in the current working directory.
+
+The ``inventory.log`` file is appended to, not overwritten.
+
+Like ``--check``, this flag is not invoked when running from ansible.
 
 Inspecting and Managing the Inventory
 -------------------------------------
