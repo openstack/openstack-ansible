@@ -80,12 +80,10 @@
     line: "{{ item.split('=')[0] }} = {{ item.split('=', 1)[1] }}"
     insertafter: "^{{ item.split('=')[0] }}"
     backup: "true"
-  with_items: "{{ extra_container_config }}"
+  with_items: "{{ extra_container_config | default([]) }}"
   delegate_to: "{{ physical_host }}"
   register: _ec
-  when:
-    - extra_container_config is defined
-    - not is_metal | bool
+  when: not is_metal | bool
 
 # Due to https://github.com/ansible/ansible-modules-extras/issues/2691
 # this uses the LXC CLI tools to ensure that we get logging.
