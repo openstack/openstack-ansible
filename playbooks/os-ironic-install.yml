@@ -23,6 +23,7 @@
         sort_group_name: "ironic_all"
     - include: common-tasks/os-lxc-container-setup.yml
     - include: common-tasks/rabbitmq-vhost-user.yml
+      static: no
       vars:
         user: "{{ ironic_rabbitmq_userid }}"
         password: "{{ ironic_rabbitmq_password }}"
@@ -32,6 +33,7 @@
         - inventory_hostname == groups['ironic_all'][0]
         - groups[ironic_rabbitmq_host_group] | length > 0
     - include: common-tasks/mysql-db-user.yml
+      static: no
       vars:
         user_name: "{{ ironic_galera_user }}"
         password: "{{ ironic_container_mysql_password }}"

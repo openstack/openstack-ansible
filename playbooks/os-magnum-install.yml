@@ -31,6 +31,7 @@
       vars:
         sort_group_name: "magnum_all"
     - include: common-tasks/rabbitmq-vhost-user.yml
+      static: no
       vars:
         user: "{{ magnum_rabbitmq_userid }}"
         password: "{{ magnum_rabbitmq_password }}"
@@ -40,6 +41,7 @@
         - inventory_hostname == groups['magnum_all'][0]
         - groups[magnum_rabbitmq_host_group] | length > 0
     - include: common-tasks/mysql-db-user.yml
+      static: no
       vars:
         user_name: "{{ magnum_galera_user }}"
         password: "{{ magnum_galera_password }}"

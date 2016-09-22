@@ -23,14 +23,17 @@
       vars:
         sort_group_name: "glance_all"
     - include: common-tasks/os-lxc-container-setup.yml
+      static: no
       vars:
         list_of_bind_mounts:
           - bind_dir_path: "/var/lib/glance/images"
             mount_path: "/openstack/{{ inventory_hostname }}"
       when: (glance_default_store == "file") and (glance_nfs_client is not defined)
     - include: common-tasks/os-lxc-container-setup.yml
+      static: no
       when: (glance_default_store != "file") or (glance_nfs_client is defined)
     - include: common-tasks/rabbitmq-vhost-user.yml
+      static: no
       vars:
         user: "{{ glance_rabbitmq_userid }}"
         password: "{{ glance_rabbitmq_password }}"
@@ -40,6 +43,7 @@
         - inventory_hostname == groups['glance_all'][0]
         - groups[glance_rabbitmq_host_group] | length > 0
     - include: common-tasks/rabbitmq-vhost-user.yml
+      static: no
       vars:
         user: "{{ glance_rabbitmq_telemetry_userid }}"
         password: "{{ glance_rabbitmq_telemetry_password }}"
@@ -57,6 +61,7 @@
           - src: "/openstack/log/{{ inventory_hostname }}-glance"
             dest: "/var/log/glance"
     - include: common-tasks/mysql-db-user.yml
+      static: no
       vars:
         user_name: "{{ glance_galera_user }}"
         password: "{{ glance_container_mysql_password }}"

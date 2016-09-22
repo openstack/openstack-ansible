@@ -19,6 +19,7 @@
   user: root
   pre_tasks:
     - include: common-tasks/mysql-db-user.yml
+      static: no
       vars:
         user_name: "{{ rally_galera_user }}"
         password: "{{ rally_galera_password }}"

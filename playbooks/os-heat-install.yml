@@ -24,6 +24,7 @@
         sort_group_name: "heat_all"
     - include: common-tasks/os-lxc-container-setup.yml
     - include: common-tasks/rabbitmq-vhost-user.yml
+      static: no
       vars:
         user: "{{ heat_rabbitmq_userid }}"
         password: "{{ heat_rabbitmq_password }}"
@@ -33,6 +34,7 @@
         - inventory_hostname == groups['heat_all'][0]
         - groups[heat_rabbitmq_host_group] | length > 0
     - include: common-tasks/rabbitmq-vhost-user.yml
+      static: no
       vars:
         user: "{{ heat_rabbitmq_telemetry_userid }}"
         password: "{{ heat_rabbitmq_telemetry_password }}"
@@ -50,6 +52,7 @@
           - src: "/openstack/log/{{ inventory_hostname }}-heat"
             dest: "/var/log/heat"
     - include: common-tasks/mysql-db-user.yml
+      static: no
       vars:
         user_name: "{{ heat_galera_user }}"
         password: "{{ heat_container_mysql_password }}"

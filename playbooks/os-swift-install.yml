@@ -119,6 +119,7 @@
         - not is_metal | bool
     # If we're using ceilometer then swift needs a rabbitmq/vhost & usera
     - include: common-tasks/rabbitmq-vhost-user.yml
+      static: no
       vars:
         user: "{{ swift_rabbitmq_telemetry_userid }}"
         password: "{{ swift_rabbitmq_telemetry_password }}"

@@ -24,6 +24,7 @@
         sort_group_name: "ceilometer_all"
     - include: common-tasks/os-lxc-container-setup.yml
     - include: common-tasks/rabbitmq-vhost-user.yml
+      static: no
       vars:
         user: "{{ ceilometer_rabbitmq_userid }}"
         password: "{{ ceilometer_rabbitmq_password }}"

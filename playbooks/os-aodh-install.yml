@@ -24,6 +24,7 @@
         sort_group_name: "aodh_all"
     - include: common-tasks/os-lxc-container-setup.yml
     - include: common-tasks/rabbitmq-vhost-user.yml
+      static: no
       vars:
         user: "{{ aodh_rabbitmq_userid }}"
         password: "{{ aodh_rabbitmq_password }}"
@@ -38,6 +39,7 @@
           - src: "/openstack/log/{{ inventory_hostname }}-aodh"
             dest: "/var/log/aodh"
     - include: common-tasks/mysql-db-user.yml
+      static: no
       vars:
         user_name: "{{ aodh_galera_user }}"
         password: "{{ aodh_container_db_password }}"
