@@ -13,6 +13,14 @@ sys.path.append(MANAGE_DIR)
 import manage_inventory as mi
 
 
+def setUpModule():
+    test_inventory.make_config()
+
+
+def tearDownModule():
+    os.remove(test_inventory.USER_CONFIG_FILE)
+
+
 class TestExportFunction(unittest.TestCase):
     def setUp(self):
         self.inv = test_inventory.get_inventory()
