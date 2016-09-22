@@ -112,7 +112,7 @@ bootstrap_host_bridges_interfaces:
     ip_netmask: "{{ netmask }}"
   br-vlan:
     mode: "{{ bridge_vlan_inet_mode | default('static') }}"
-    ports: "{{ bootstrap_host_encapsulation_enabled | bool | ternary ('encap-vxlan', bootstrap_host_bridge_vlan_ports) }}"
+    ports: "{{ bootstrap_host_encapsulation_enabled | bool | ternary ('encap-vlan', bootstrap_host_bridge_vlan_ports) }}"
     ip_address_range: "{{ vlan_range }}"
     ip_netmask: "{{ netmask }}"
     state_change_scripts: "{{ bridge_vlan_state_change_scripts }}"
