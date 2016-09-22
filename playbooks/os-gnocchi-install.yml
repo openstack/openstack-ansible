@@ -43,6 +43,12 @@
       when: inventory_hostname == groups['gnocchi_all'][0]
     - include: common-tasks/package-cache-proxy.yml
   roles:
+    - role: "ceph_client"
+      gnocchi_venv_bin: "/openstack/venvs/gnocchi-{{ openstack_release }}/bin"
+      openstack_service_system_user: "{{ gnocchi_system_user_name }}"
+      openstack_service_venv_bin: ""
+      tags:
+        - ceph
     - role: "os_gnocchi"
       gnocchi_venv_tag: "{{ openstack_release }}"
       gnocchi_venv_download_url: "{{ openstack_repo_url }}/venvs/{{ openstack_release }}/{{ ansible_distribution | lower }}/gnocchi-{{ openstack_release }}-{{ ansible_architecture | lower }}.tgz"
