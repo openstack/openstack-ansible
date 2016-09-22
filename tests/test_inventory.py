@@ -41,8 +41,9 @@ _BASE_CONFIG = {}
 
 
 def get_config():
+    """Return a copy of the original config so original isn't modified."""
     global _BASE_CONFIG
-    return _BASE_CONFIG
+    return copy.deepcopy(_BASE_CONFIG)
 
 
 def make_config():
@@ -52,7 +53,9 @@ def make_config():
     configuration dict  and write them out to a file for consumption by
     the tests.
     """
-    config = get_config()
+    # Allow access here so we can populate the dictionary.
+    global _BASE_CONFIG
+    config = _BASE_CONFIG
 
     files = glob.glob(os.path.join(CONFD, '*.aio'))
     for file_name in files:
@@ -419,8 +422,10 @@ class TestIps(unittest.TestCase):
         # Allow custom assertion errors.
         self.longMessage = True
 
-    def test_duplicates(self):
+    @mock.patch('dynamic_inventory.load_user_configuration')
+    def test_duplicates(self, mock_load_config):
         """Test that no duplicate IPs are made on any network."""
+        mock_load_config.return_value = get_config()
 
         for i in xrange(0, 99):
             # tearDown is ineffective for this loop, so clean the USED_IPs
@@ -461,9 +466,7 @@ class TestIps(unittest.TestCase):
 class TestConfigCheckBase(unittest.TestCase):
     def setUp(self):
         self.config_changed = False
-        self.user_defined_config = dict()
-        with open(USER_CONFIG_FILE, 'rb') as f:
-            self.user_defined_config.update(yaml.safe_load(f.read()) or {})
+        self.user_defined_config = get_config()
 
     def delete_config_key(self, user_defined_config, key):
         try:
@@ -477,7 +480,6 @@ class TestConfigCheckBase(unittest.TestCase):
             self.write_config()
 
     def add_config_key(self, key, value):
-        self.config_changed = True
         self.user_defined_config[key] = value
         self.write_config()
 
@@ -495,21 +497,17 @@ class TestConfigCheckBase(unittest.TestCase):
 
     def write_config(self):
         self.config_changed = True
-        # rename temporarily our user_config_file so we can use the new one
-        os.rename(USER_CONFIG_FILE, USER_CONFIG_FILE + ".tmp")
         # Save new user_config_file
         with open(USER_CONFIG_FILE, 'wb') as f:
             f.write(yaml.dump(self.user_defined_config))
 
     def restore_config(self):
         # get back our initial user config file
-        os.remove(USER_CONFIG_FILE)
-        os.rename(USER_CONFIG_FILE + ".tmp", USER_CONFIG_FILE)
-        self.config_changed = False
+        self.user_defined_config = get_config()
+        self.write_config()
 
     def set_new_hostname(self, user_defined_config, group,
                          old_hostname, new_hostname):
-        self.config_changed = True
         # set a new name for the specified hostname
         old_hostname_settings = user_defined_config[group].pop(old_hostname)
         user_defined_config[group][new_hostname] = old_hostname_settings
@@ -1001,9 +999,7 @@ class TestOverridingEnvVars(OverridingEnvBase):
 class TestOverridingEnvIntegration(OverridingEnvBase):
     def setUp(self):
         super(TestOverridingEnvIntegration, self).setUp()
-        self.user_defined_config = {}
-        with open(USER_CONFIG_FILE, 'rb') as f:
-            self.user_defined_config.update(yaml.safe_load(f.read()))
+        self.user_defined_config = get_config()
 
         # Inventory is necessary since keys are assumed present
         self.inv = di.get_inventory(TARGET_DIR, '')
