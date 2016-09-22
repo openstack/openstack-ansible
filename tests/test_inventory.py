@@ -422,10 +422,16 @@ class TestIps(unittest.TestCase):
         # Allow custom assertion errors.
         self.longMessage = True
 
+    @mock.patch('dynamic_inventory.load_environment')
     @mock.patch('dynamic_inventory.load_user_configuration')
-    def test_duplicates(self, mock_load_config):
+    def test_duplicates(self, mock_load_config, mock_load_env):
         """Test that no duplicate IPs are made on any network."""
+
+        # Grab our values read from the file system just once.
         mock_load_config.return_value = get_config()
+        mock_load_env.return_value = di.load_environment(BASE_ENV_DIR, {})
+
+        mock_open = mock.mock_open()
 
         for i in xrange(0, 99):
             # tearDown is ineffective for this loop, so clean the USED_IPs
@@ -433,7 +439,10 @@ class TestIps(unittest.TestCase):
             inventory = None
             di.USED_IPS = set()
 
-            inventory = get_inventory()
+            # Mock out the context manager being used to write files.
+            # We don't need to hit the file system for this test.
+            with mock.patch('__main__.open', mock_open):
+                inventory = get_inventory()
             ips = collections.defaultdict(int)
             hostvars = inventory['_meta']['hostvars']
 
