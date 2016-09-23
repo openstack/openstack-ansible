@@ -1166,9 +1166,17 @@ def get_inventory(config_path, inventory_file_path):
     return dynamic_inventory
 
 
-def main(all_args):
-    """Run the main application."""
-    if all_args.get('debug'):
+def main(config=None, check=False, debug=False, **kwargs):
+    """Run the main application.
+
+    :param config: ``str`` Directory from which to pull configs and overrides
+    :param check: ``bool`` Flag to enable check mode
+    :param debug: ``bool`` Flag to enable debug logging
+    :param kwargs: ``dict`` Dictionary of arbitrary arguments; mostly for
+        catching Ansible's required `--list` parameter without name shadowing
+        the `list` built-in.
+    """
+    if debug:
         log_fmt = "%(lineno)d - %(funcName)s: %(message)s"
         logging.basicConfig(format=log_fmt, filename='inventory.log')
         logger.setLevel(logging.DEBUG)
@@ -1176,7 +1184,7 @@ def main(all_args):
 
     # Get the path to the user configuration files
     config_path = find_config_path(
-        user_config_path=all_args.get('config')
+        user_config_path=config
     )
 
     user_defined_config = load_user_configuration(config_path)
@@ -1247,7 +1255,6 @@ def main(all_args):
         sort_keys=True
     )
 
-    check = all_args.get('check')
     if check:
         return 'Configuration ok!'
 
@@ -1284,5 +1291,5 @@ def main(all_args):
 
 if __name__ == '__main__':
     all_args = args(sys.argv[1:])
-    output = main(all_args)
+    output = main(**all_args)
     print(output)

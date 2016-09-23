@@ -1,0 +1,6 @@
+---
+deprecations:
+  - The ``main`` function in ``dynamic_inventory.py`` now
+    takes named arguments instead of dictionary. This is to support
+    future code changes that will move construction logic into
+    separate files.

@@ -89,11 +89,13 @@ def cleanup():
 
 def get_inventory(clean=True, extra_args=None):
     "Return the inventory mapping in a dict."
-    args = {'config': TARGET_DIR}
+    # Use the list argument to more closely mirror
+    # Ansible's use of the callable.
+    args = {'config': TARGET_DIR, 'list': True}
     if extra_args:
         args.update(extra_args)
     try:
-        inventory_string = di.main(args)
+        inventory_string = di.main(**args)
         inventory = json.loads(inventory_string)
         return inventory
     finally:
@@ -1106,14 +1108,14 @@ class TestConfigCheckFunctional(TestConfigCheckBase):
         self.user_defined_config['log_hosts']['bogus'] = ip
 
     def test_checking_good_config(self):
-        output = di.main({'config': TARGET_DIR, 'check': True})
+        output = di.main(config=TARGET_DIR, check=True)
         self.assertEqual(output, 'Configuration ok!')
 
     def test_duplicated_ip(self):
         self.duplicate_ip()
         self.write_config()
         with self.assertRaises(di.MultipleHostsWithOneIPError) as context:
-            di.main({'config': TARGET_DIR, 'check': True})
+            di.main(config=TARGET_DIR, check=True)
         self.assertEqual(context.exception.ip, '172.29.236.100')
 
 
