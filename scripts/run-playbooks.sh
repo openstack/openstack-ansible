@@ -18,7 +18,9 @@ set -e -u
 
 ## Variables -----------------------------------------------------------------
 DEPLOY_AIO=${DEPLOY_AIO:-false}
+PLAYBOOK_LOGS=${PLAYBOOK_LOGS:-"/openstack/log/ansible_playbooks/"}
 COMMAND_LOGS=${COMMAND_LOGS:-"/openstack/log/ansible_cmd_logs/"}
+ORIG_ANSIBLE_LOG_PATH=${ANSIBLE_LOG_PATH:-"/openstack/log/ansible-logging/ansible.log"}
 
 ## Main ----------------------------------------------------------------------
 function run_play_book_exit_message {
@@ -44,6 +46,26 @@ If you ever have any questions please join the community conversation on IRC at
 "
 }
 
+function get_includes {
+  /opt/ansible-runtime/bin/python <<EOC
+import yaml
+with open("${1}") as f:
+    yaml_list = yaml.load(f.read())
+for item in yaml_list:
+    _item = '---\n' + yaml.safe_dump([item], default_flow_style=False, width=1000)
+    print(repr(_item).strip("'").strip('"'))
+EOC
+}
+
+function get_include_file {
+  /opt/ansible-runtime/bin/python <<EOC
+import yaml
+with open("${1}") as f:
+    yaml_list = yaml.load(f.read())
+print(yaml_list[0]['include'])
+EOC
+}
+
 function playbook_run {
 
   # First we gather facts about the hosts to populate the fact cache.
@@ -51,16 +73,29 @@ function playbook_run {
   # aren't built yet.
   ansible -m setup -a "gather_subset=network,hardware,virtual" hosts
 
-  for root_include in $(awk -F'include:' '{print $2}' setup-everything.yml); do
+  # Iterate over lines in setup-everything
+  IFS=$'\n'
+  COUNTER=0
+  for root_include in $(get_includes setup-everything.yml); do
+    echo -e "${root_include}" > root-include-playbook.yml
+    root_include_file_name="$(get_include_file root-include-playbook.yml)"
+
     # Once setup-hosts is complete, we should gather facts for everything
     # (now including containers) so that the fact cache is complete for the
     # remainder of the run.
-    if [[ "${root_include}" == "setup-infrastructure.yml" ]]; then
+    if [[ "${root_include_file_name}" == "setup-infrastructure.yml" ]]; then
       ansible -m setup -a "gather_subset=network,hardware,virtual" all
     fi
-    for include in $(awk -F'include:' '{print $2}' "${root_include}"); do
-      echo "[Executing \"${include}\" playbook]"
-      if [[ "${DEPLOY_AIO}" = true ]] && [[ "${include}" == "security-hardening.yml" ]]; then
+    for include in $(get_includes "${root_include_file_name}"); do
+      echo -e "${include}" > /tmp/include-playbook.yml
+      include_file_name="$(get_include_file /tmp/include-playbook.yml)"
+      include_playbook="include-playbook.yml-${include_file_name}"
+      mv  /tmp/include-playbook.yml ${include_playbook}
+      echo "[Executing \"${include_file_name}\" playbook]"
+      # Set the playbook log path so that we can review specific execution later.
+      export ANSIBLE_LOG_PATH="${PLAYBOOK_LOGS}/${COUNTER}-${include_file_name}.txt"
+      let COUNTER=COUNTER+=1
+      if [[ "${DEPLOY_AIO}" = true ]] && [[ "${include_file_name}" == "security-hardening.yml" ]]; then
         # NOTE(mattt): We have to skip V-38462 as openstack-infra are now building
         #              images with apt config Apt::Get::AllowUnauthenticated set
         #              to true.
@@ -69,12 +104,17 @@ function playbook_run {
         #                   in OpenStack-CI. ref: bug/1620849
         # NOTE(mhayden): Skipping V-38660 since it breaks the Xenial gate. The
         #                CI Xenial image has non-SNMPv3 configurations.
-        install_bits "${include}" --skip-tag V-38462,V-38471,V-38660
+        install_bits "${include_playbook}" --skip-tag V-38462,V-38471,V-38660
       else
-        install_bits "${include}"
+        install_bits "${include_playbook}"
       fi
+      # Remove the generate playbook when done with it
+      rm "${include_playbook}"
     done
+    # Remove the generate playbook when done with it
+    rm root-include-playbook.yml
   done
+  cat ${PLAYBOOK_LOGS}/* >> "${ORIG_ANSIBLE_LOG_PATH}"
 }
 
 trap run_play_book_exit_message EXIT
@@ -84,6 +124,10 @@ info_block "Checking for required libraries." 2> /dev/null || source "$(dirname 
 # Initiate the deployment
 pushd "playbooks"
   PLAYBOOK_DIR="$(pwd)"
+
+  # Create playbook log directory
+  mkdir -p "${PLAYBOOK_LOGS}"
+  mkdir -p "$(dirname ${ORIG_ANSIBLE_LOG_PATH})"
 
   # Execute setup everything
   playbook_run
