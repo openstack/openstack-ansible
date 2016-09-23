@@ -19,6 +19,7 @@ import argparse
 import copy
 import datetime
 import json
+import logging
 import netaddr
 import os
 import Queue
@@ -27,6 +28,8 @@ import sys
 import tarfile
 import uuid
 import yaml
+
+logger = logging.getLogger('osa-inventory')
 
 USED_IPS = set()
 INVENTORY_SKEL = {
@@ -146,6 +149,15 @@ def args(arg_list):
         action='store_true',
     )
 
+    parser.add_argument(
+        '-d',
+        '--debug',
+        help=('Output debug messages to log file. '
+              'File is appended to, not overwritten'),
+        action='store_true',
+        default=False,
+    )
+
     return vars(parser.parse_args(arg_list))
 
 
@@ -192,6 +204,7 @@ def _parse_belongs_to(key, belongs_to, inventory):
     """
     for item in belongs_to:
         if key not in inventory[item]['children']:
+            logger.debug("Adding %s to %s", key, item)
             append_if(array=inventory[item]['children'], item=key)
 
 
@@ -236,12 +249,16 @@ def _build_container_hosts(container_affinity, container_hosts, type_and_name,
                 cuuid = '%s' % uuid.uuid4()
                 cuuid = cuuid.split('-')[0]
                 container_host_name = '%s-%s' % (type_and_name, cuuid)
+                logger.debug("Generated container name %s",
+                             container_host_name)
                 hostvars_options = hostvars[container_host_name] = {}
                 if container_host_type not in inventory:
                     inventory[container_host_type] = {
                         "hosts": [],
                     }
 
+                logger.debug("Adding container %s to %s",
+                             container_host_name, container_host_type)
                 append_if(
                     array=inventory[container_host_type]["hosts"],
                     item=container_host_name
@@ -283,6 +300,8 @@ def _append_container_types(inventory, host_type):
         if 'container_name' in hdata:
             if hdata['container_name'].startswith(host_type):
                 if 'physical_host' not in hdata:
+                    logger.debug("Set physical host for %s to %s",
+                                 _host, host_type)
                     hdata['physical_host'] = host_type
 
 
@@ -299,6 +318,7 @@ def _append_to_host_groups(inventory, container_type, assignment, host_type,
     """
     physical_group_type = '%s_all' % container_type.split('_')[0]
     if physical_group_type not in inventory:
+        logger.debug("Added %s group to inventory", physical_group_type)
         inventory[physical_group_type] = {'hosts': []}
 
     iph = inventory[physical_group_type]['hosts']
@@ -321,15 +341,23 @@ def _append_to_host_groups(inventory, container_type, assignment, host_type,
                     hdata['physical_host'] = host_type
 
                 if container.startswith('%s-' % type_and_name):
+                    logger.debug("Added host %s to %s hosts",
+                                 container, assignment)
                     append_if(array=iah, item=container)
                 elif is_metal is True:
                     if component == assignment:
+                        logger.debug("Added is_metal host %s to %s hosts",
+                                     container, assignment)
                         append_if(array=iah, item=container)
 
                 if container.startswith('%s-' % type_and_name):
+                    logger.debug("Added host %s to %s hosts",
+                                 container, physical_group_type)
                     append_if(array=iph, item=container)
                 elif is_metal is True:
                     if container.startswith(host_type):
+                        logger.debug("Added is_metal host %s to %s hosts",
+                                     container, physical_group_type)
                         append_if(array=iph, item=container)
 
                 # Append any options in config to the host_vars of a container
@@ -352,6 +380,7 @@ def _append_to_host_groups(inventory, container_type, assignment, host_type,
                                 )
 
                         if limit is None or (component and limit in component):
+                            logger.debug("Set options for %s", hname)
                             hdata[_keys] = options
 
 
@@ -389,6 +418,7 @@ def _add_container_hosts(assignment, config, container_name, container_type,
         # This section will ensure that we are not it by the following bug:
         # https://bugzilla.mindrot.org/show_bug.cgi?id=2239
         type_and_name = '%s_%s' % (host_type, container_name)
+        logger.debug("Generated container name %s", type_and_name)
         max_hostname_len = 52
         if len(type_and_name) > max_hostname_len:
             raise SystemExit(
@@ -409,6 +439,7 @@ def _add_container_hosts(assignment, config, container_name, container_type,
             physical_host['container_types'] = container_host_type
 
         # Add all of the containers into the inventory
+        logger.debug("Building containers for host %s", container_name)
         _build_container_hosts(
             container_affinity,
             container_hosts,
@@ -445,9 +476,11 @@ def user_defined_setup(config, inventory):
     for key, value in config.iteritems():
         if key.endswith('hosts'):
             if key not in inventory:
+                logger.debug("Key %s was added to inventory", key)
                 inventory[key] = {'hosts': []}
 
             if value is None:
+                logger.debug("Key %s had no value", key)
                 return
 
             for _key, _value in value.iteritems():
@@ -461,6 +494,7 @@ def user_defined_setup(config, inventory):
                     'is_metal': True,
                     'physical_host_group': key
                 })
+                logger.debug("Hostvars info updated for %s", key)
 
                 # If the entry is missing the properties key add it.
                 properties = hvs[_key].get('properties')
@@ -474,6 +508,8 @@ def user_defined_setup(config, inventory):
                         hvs[_key][_k] = _v
 
                 USED_IPS.add(_value['ip'])
+                logger.debug("Attempting to add host %s to group %s",
+                             _key, key)
                 append_if(array=inventory[key]['hosts'], item=_key)
 
 
@@ -488,6 +524,7 @@ def skel_setup(environment, inventory):
             continue
         for _key, _value in value.iteritems():
             if _key not in inventory:
+                logger.debug("Key %s added to inventory", _key)
                 inventory[_key] = {}
                 if _key.endswith('container'):
                     if 'hosts' not in inventory[_key]:
@@ -495,12 +532,15 @@ def skel_setup(environment, inventory):
                 else:
                     if 'children' not in inventory[_key]:
                         inventory[_key]['children'] = []
+                    # TODO(nrb): This line is duplicated above;
+                    # is that necessary?
                     if 'hosts' not in inventory[_key]:
                         inventory[_key]['hosts'] = []
 
             if 'belongs_to' in _value:
                 for assignment in _value['belongs_to']:
                     if assignment not in inventory:
+                        logger.debug("Created group %s", assignment)
                         inventory[assignment] = {}
                         if 'children' not in inventory[assignment]:
                             inventory[assignment]['children'] = []
@@ -702,7 +742,9 @@ def container_skel_load(container_skel, inventory, config):
     :param inventory: ``dict``  Living dictionary of inventory
     :param config: ``dict``  User defined information
     """
+    logger.debug("Loading container skeleton")
     if 'lxc_hosts' not in inventory.keys():
+        logger.debug("Created lxc_hosts group.")
         inventory['lxc_hosts'] = {'hosts': []}
     for key, value in container_skel.iteritems():
         contains_in = value.get('contains', False)
@@ -809,6 +851,7 @@ def _set_used_ips(user_defined_config, inventory):
                 )
                 USED_IPS.update([str(i) for i in ip_range])
             else:
+                logger.debug("IP %s set as used", split_ip[0])
                 USED_IPS.add(split_ip[0])
 
     # Find all used IP addresses and ensure that they are not used again
@@ -817,6 +860,7 @@ def _set_used_ips(user_defined_config, inventory):
         for network_entry in networks.values():
             address = network_entry.get('address')
             if address:
+                logger.debug("IP %s set as used", address)
                 USED_IPS.add(address)
 
 
@@ -850,6 +894,8 @@ def _ensure_inventory_uptodate(inventory, container_skel):
             for host in hosts:
                 container = host_vars[host]
                 if 'properties' in type_vars:
+                    logger.debug("Copied propeties for %s from skeleton",
+                                 container)
                     container['properties'] = type_vars['properties']
 
 
@@ -874,10 +920,12 @@ def _parse_global_variables(user_cidr, inventory, user_defined_config):
             inventory['all']['vars'].update(
                 user_defined_config['global_overrides']
             )
+            logger.debug("Applied global_overrides")
 
             # Remove global overrides that were deleted from inventory, too
             for key in inventory['all']['vars'].keys():
                 if key not in user_defined_config['global_overrides']:
+                    logger.debug("Deleting key %s from inventory", key)
                     del inventory['all']['vars'][key]
 
 
@@ -890,6 +938,8 @@ def append_if(array, item):
     """
     if item not in array:
         array.append(item)
+    # TODO(nrb): Would be nice to change this to return true/false
+    # for logging purposes.
     return array
 
 
@@ -926,6 +976,7 @@ def _extra_config(user_defined_config, base_dir):
                         user_defined_config,
                         yaml.safe_load(f.read()) or {}
                     )
+                    logger.debug("Merged overrides from file %s", name)
 
 
 def _check_same_ip_to_multiple_host(config):
@@ -946,6 +997,7 @@ def _check_same_ip_to_multiple_host(config):
                     if ips_to_hostnames_mapping[ip] != hostname:
                         info = (ip, ips_to_hostnames_mapping[ip], hostname)
                         raise MultipleHostsWithOneIPError(*info)
+    logger.debug("No hosts with duplicated IPs found")
 
 
 def _check_multiple_ips_to_host(config):
@@ -967,12 +1019,14 @@ def _check_multiple_ips_to_host(config):
                     if not current_ip == new_ip:
                         raise MultipleIpForHostError(hostname, current_ip,
                                                      new_ip)
+    logger.debug("No hosts with multiple IPs found.")
     return True
 
 
 def _check_lxc_hosts(config):
     if 'lxc_hosts' in config.keys():
         raise LxcHostsDefined()
+    logger.debug("lxc_hosts group not defined")
 
 
 def _check_config_settings(cidr_networks, config, container_skel):
@@ -1022,6 +1076,8 @@ def _check_config_settings(cidr_networks, config, container_skel):
                             not p_net.get('is_container_address')):
                         raise ProviderNetworkMisconfiguration(q_name)
 
+    logger.debug("Provider network information OK")
+
     # look for same ip address assigned to different hosts
     _check_same_ip_to_multiple_host(config)
 
@@ -1042,7 +1098,7 @@ def load_environment(config_path, environment):
 
     if os.path.isdir(env_plugins):
         _extra_config(user_defined_config=environment, base_dir=env_plugins)
-
+    logger.debug("Loaded environment from %s", config_path)
     return environment
 
 
@@ -1072,6 +1128,7 @@ def load_user_configuration(config_path):
             'No openstack_user_config files are available in either \n%s'
             '\nor \n%s/conf.d directory' % (config_path, config_path)
         )
+    logger.debug("User configuration loaded from: %s", user_config_file)
     return user_defined_config
 
 
@@ -1085,6 +1142,7 @@ def make_backup(config_path, inventory_file_path):
         basename = os.path.basename(inventory_file_path)
         backup_name = get_backup_name(basename)
         tar.add(inventory_file_path, arcname=backup_name)
+    logger.debug("Backup written to %s", inventory_backup_file)
 
 
 def get_backup_name(basename):
@@ -1097,16 +1155,25 @@ def get_inventory(config_path, inventory_file_path):
     if os.path.isfile(inventory_file_path):
         with open(inventory_file_path, 'rb') as f:
             dynamic_inventory = json.loads(f.read())
+            logger.debug("Loaded existing inventory from %s",
+                         inventory_file_path)
 
         make_backup(config_path, inventory_file_path)
     else:
         dynamic_inventory = copy.deepcopy(INVENTORY_SKEL)
+        logger.debug("No existing inventory, created fresh skeleton.")
 
     return dynamic_inventory
 
 
 def main(all_args):
     """Run the main application."""
+    if all_args.get('debug'):
+        log_fmt = "%(lineno)d - %(funcName)s: %(message)s"
+        logging.basicConfig(format=log_fmt, filename='inventory.log')
+        logger.setLevel(logging.DEBUG)
+        logger.info("Beginning new inventory run")
+
     # Get the path to the user configuration files
     config_path = find_config_path(
         user_config_path=all_args.get('config')
@@ -1151,10 +1218,12 @@ def main(all_args):
     _set_used_ips(user_defined_config, dynamic_inventory)
     user_defined_setup(user_defined_config, dynamic_inventory)
     skel_setup(environment, dynamic_inventory)
+    logger.debug("Loading physical skel.")
     skel_load(
         environment.get('physical_skel'),
         dynamic_inventory
     )
+    logger.debug("Loading component skel")
     skel_load(
         environment.get('component_skel'),
         dynamic_inventory
@@ -1202,9 +1271,14 @@ def main(all_args):
             )
         )
 
+    if logger.isEnabledFor(logging.DEBUG):
+        num_hosts = len(dynamic_inventory['_meta']['hostvars'])
+        logger.debug("%d hosts found." % num_hosts)
+
     # Save new dynamic inventory
     with open(dynamic_inventory_file, 'wb') as f:
         f.write(dynamic_inventory_json)
+        logger.info("Inventory written")
 
     return dynamic_inventory_json
 
