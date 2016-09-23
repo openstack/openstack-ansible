@@ -241,6 +241,12 @@ heat_ceilometer_enabled: "{{ (groups['ceilometer_all'] is defined) and (groups['
 
 ## Ironic
 ironic_rabbitmq_host_group: "{{ rabbitmq_host_group }}"
+ironic_service_name: ironic
+ironic_service_proto: http
+ironic_service_port: 6385
+ironic_service_project_name: service
+ironic_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(ironic_service_proto) }}"
+ironic_service_adminurl: "{{ ironic_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ ironic_service_port }}"
 
 ## Keystone
 keystone_admin_user_name: admin
