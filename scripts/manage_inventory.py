@@ -143,6 +143,14 @@ def args():
         default=False
     )
 
+    exclusive_action.add_argument(
+        '-e',
+        '--export',
+        help='Export group and variable information per host in JSON.',
+        action='store_true',
+        default=False
+    )
+
     return vars(parser.parse_args())
 
 
@@ -296,6 +304,38 @@ def print_inventory(inventory, sort_key):
     return table
 
 
+def export_host_info(inventory):
+    """Pivot variable information to be a per-host dict
+
+    This command is meant for exporting an existing inventory's information.
+    The exported data re-arranges variable data so that the keys are the host,
+    and the values are hostvars and groups.
+
+    Two top level keys are present: 'hosts' and 'all'. 'hosts' is a dictonary
+    of the host information. 'all' represents global data, mostly the load
+    balancer and provider network values. It is taken from
+    inventory['all']['vars'].
+    """
+    export_info = {'hosts': {}}
+    host_info = export_info['hosts']
+
+    export_info['all'] = inventory['all']['vars']
+
+    for host, hostvars in inventory['_meta']['hostvars'].items():
+        host_info[host] = {}
+        host_info[host]['hostvars'] = hostvars
+
+    for group_name, group_info in inventory.items():
+        if group_name in ('_meta', 'all'):
+            continue
+        for host in group_info['hosts']:
+            if 'groups' not in host_info[host]:
+                host_info[host]['groups'] = []
+            host_info[host]['groups'].append(group_name)
+
+    return export_info
+
+
 def main():
     """Run the main application."""
     # Parse user args
@@ -318,6 +358,8 @@ def main():
     # Containers in the first column, groups for each container on the right
     elif user_args['list_containers'] is True:
         print(print_containers_per_group(inventory))
+    elif user_args['export'] is True:
+        print(json.dumps(export_host_info(inventory), indent=2))
     else:
         recursive_dict_removal(inventory, user_args['remove_item'])
         with open(environment_file, 'wb') as f_handle:
