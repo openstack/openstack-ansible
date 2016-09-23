@@ -35,9 +35,10 @@ Before running any playbook, check the integrity of your configuration files.
 
       To check your lint online, we recommend: `<http://www.yamllint.com/>`_.
 
-#. Run your command with ``syntax-check``:
+#. Change to the ``/opt/openstack-ansible/playbooks`` directory, and run the
+   following command:
 
-   .. code-block:: shell-session
+   .. code-block:: console
 
       # openstack-ansible setup-infrastructure.yml --syntax-check
 
