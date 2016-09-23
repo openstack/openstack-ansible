@@ -32,3 +32,5 @@ horizon_package_state: "{{ package_state }}"
 
 # If there are any Sahara hosts in the environment, then enable sahara-dashboard
 horizon_enable_sahara_ui: "{{ (groups['sahara_all'] is defined) and (groups['sahara_all'] | length > 0) }}"
+# If there are any Trove hosts in the environment, then enable trove-dashboard
+horizon_enable_trove_ui: "{{ (groups['trove_all'] is defined) and (groups['trove_all'] | length > 0) }}"
