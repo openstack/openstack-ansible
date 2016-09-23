@@ -23,6 +23,7 @@
       vars:
         sort_group_name: "cinder_all"
     - include: common-tasks/os-lxc-container-setup.yml
+      static: no
       vars:
         aa_profile: "unconfined"
         extra_container_config:
@@ -33,9 +34,11 @@
         - inventory_hostname in groups['cinder_volume']
         - cinder_backend_lvm_inuse | bool
     - include: common-tasks/os-lxc-container-setup.yml
+      static: no
       when:
         - inventory_hostname not in groups['cinder_volume']
     - include: common-tasks/rabbitmq-vhost-user.yml
+      static: no
       vars:
         user: "{{ cinder_rabbitmq_userid }}"
         password: "{{ cinder_rabbitmq_password }}"
@@ -45,6 +48,7 @@
         - inventory_hostname == groups['cinder_all'][0]
         - groups[cinder_rabbitmq_host_group] | length > 0
     - include: common-tasks/rabbitmq-vhost-user.yml
+      static: no
       vars:
         user: "{{ cinder_rabbitmq_telemetry_userid }}"
         password: "{{ cinder_rabbitmq_telemetry_password }}"
@@ -62,6 +66,7 @@
           - src: "/openstack/log/{{ inventory_hostname }}-cinder"
             dest: "/var/log/cinder"
     - include: common-tasks/mysql-db-user.yml
+      static: no
       vars:
         user_name: "{{ cinder_galera_user }}"
         password: "{{ cinder_container_mysql_password }}"

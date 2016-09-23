@@ -23,6 +23,7 @@
       vars:
         sort_group_name: "neutron_all"
     - include: common-tasks/os-lxc-container-setup.yml
+      static: no
       vars:
         aa_profile: "unconfined"
         list_of_bind_mounts:
@@ -32,8 +33,10 @@
           - "lxc.cgroup.devices.allow=a *:* rmw"
       when: inventory_hostname in groups['neutron_agent']
     - include: common-tasks/os-lxc-container-setup.yml
+      static: no
       when: inventory_hostname not in groups['neutron_agent']
     - include: common-tasks/rabbitmq-vhost-user.yml
+      static: no
       vars:
         user: "{{ neutron_rabbitmq_userid }}"
         password: "{{ neutron_rabbitmq_password }}"
@@ -43,6 +46,7 @@
         - inventory_hostname == groups['neutron_all'][0]
         - groups[neutron_rabbitmq_host_group] | length > 0
     - include: common-tasks/rabbitmq-vhost-user.yml
+      static: no
       vars:
         user: "{{ neutron_rabbitmq_telemetry_userid }}"
         password: "{{ neutron_rabbitmq_telemetry_password }}"
@@ -60,6 +64,7 @@
           - src: "/openstack/log/{{ inventory_hostname }}-neutron"
             dest: "/var/log/neutron"
     - include: common-tasks/mysql-db-user.yml
+      static: no
       vars:
         user_name: "{{ neutron_galera_user }}"
         password: "{{ neutron_container_mysql_password }}"

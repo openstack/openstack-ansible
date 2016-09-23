@@ -24,6 +24,7 @@
         sort_group_name: "keystone_all"
     - include: common-tasks/os-lxc-container-setup.yml
     - include: common-tasks/rabbitmq-vhost-user.yml
+      static: no
       vars:
         user: "{{ keystone_rabbitmq_userid }}"
         password: "{{ keystone_rabbitmq_password }}"
@@ -33,6 +34,7 @@
         - inventory_hostname == groups['keystone_all'][0]
         - groups[keystone_rabbitmq_host_group] | length > 0
     - include: common-tasks/rabbitmq-vhost-user.yml
+      static: no
       vars:
         user: "{{ keystone_rabbitmq_telemetry_userid }}"
         password: "{{ keystone_rabbitmq_telemetry_password }}"
@@ -50,6 +52,7 @@
           - src: "/openstack/log/{{ inventory_hostname }}-keystone"
             dest: "/var/log/keystone"
     - include: common-tasks/mysql-db-user.yml
+      static: no
       vars:
         user_name: "{{ keystone_galera_user }}"
         password: "{{ keystone_container_mysql_password }}"

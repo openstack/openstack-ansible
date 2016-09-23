@@ -21,6 +21,7 @@
         sort_group_name: "sahara_all"
     - include: common-tasks/os-lxc-container-setup.yml
     - include: common-tasks/rabbitmq-vhost-user.yml
+      static: no
       vars:
         user: "{{ sahara_rabbitmq_userid }}"
         password: "{{ sahara_rabbitmq_password }}"
@@ -30,6 +31,7 @@
         - inventory_hostname == groups['sahara_all'][0]
         - groups[sahara_rabbitmq_host_group] | length > 0
     - include: common-tasks/rabbitmq-vhost-user.yml
+      static: no
       vars:
         user: "{{ sahara_rabbitmq_telemetry_userid }}"
         password: "{{ sahara_rabbitmq_telemetry_password }}"
@@ -47,6 +49,7 @@
           - src: "/openstack/log/{{ inventory_hostname }}-sahara"
             dest: "/var/log/sahara"
     - include: common-tasks/mysql-db-user.yml
+      static: no
       vars:
         user_name: "{{ sahara_galera_user }}"
         password: "{{ sahara_container_mysql_password }}"
