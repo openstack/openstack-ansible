@@ -158,6 +158,15 @@ def args(arg_list):
         default=False,
     )
 
+    parser.add_argument(
+        '-e',
+        '--environment',
+        help=('Directory that contains the base env.d directory.\n'
+              'Defaults to <OSA_ROOT>/playbooks/inventory/.'),
+        required=False,
+        default=os.path.dirname(__file__),
+    )
+
     return vars(parser.parse_args(arg_list))
 
 
@@ -1166,7 +1175,7 @@ def get_inventory(config_path, inventory_file_path):
     return dynamic_inventory
 
 
-def main(config=None, check=False, debug=False, **kwargs):
+def main(config=None, check=False, debug=False, environment=None, **kwargs):
     """Run the main application.
 
     :param config: ``str`` Directory from which to pull configs and overrides
@@ -1175,6 +1184,7 @@ def main(config=None, check=False, debug=False, **kwargs):
     :param kwargs: ``dict`` Dictionary of arbitrary arguments; mostly for
         catching Ansible's required `--list` parameter without name shadowing
         the `list` built-in.
+    :param environment: ``str`` Directory containing the base env.d
     """
     if debug:
         log_fmt = "%(lineno)d - %(funcName)s: %(message)s"
@@ -1188,8 +1198,8 @@ def main(config=None, check=False, debug=False, **kwargs):
     )
 
     user_defined_config = load_user_configuration(config_path)
-
-    base_env = load_environment(os.path.dirname(__file__), {})
+    base_env_dir = environment
+    base_env = load_environment(base_env_dir, {})
     environment = load_environment(config_path, base_env)
 
     # Load existing inventory file if found

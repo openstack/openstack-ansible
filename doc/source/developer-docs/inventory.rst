@@ -35,11 +35,16 @@ This invocation is useful when testing changes to the dynamic inventory script.
 Inputs
 ^^^^^^
 
-The ``dynamic_inventory.py`` script takes a single argument, ``--config``. If
-not specified, the default is ``/etc/openstack_deploy/``.
+The ``dynamic_inventory.py`` takes the ``--config`` argument for the directory
+holding configuration from which to create the inventory. If not specified,
+the default is ``/etc/openstack_deploy/``.
 
 In addition to this argument, the base environment skeleton is provided in the
 ``playbooks/inventory/env.d`` directory of the OpenStack-Ansible codebase.
+
+Should an ``env.d`` directory be found in the directory specified by
+``--config``, it's contents will be added to the base environment, overriding
+any previous contents in the event of conflicts.
 
 .. note:: In all versions prior to |previous_release_formal_name|, this argument was ``--file``.
 
@@ -99,6 +104,17 @@ source of truth for repeated runs.
 
 The same JSON structure is printed to stdout, which is consumed by Ansible as
 the inventory for the playbooks.
+
+
+Changing the Base Environment Directory
+---------------------------------------
+
+The ``--environment/-e`` argument will take the path to a directory containing
+an ``env.d`` directory. This defaults to ``playbooks/inventory/`` in the
+OpenStack-Ansible codebase.
+
+Contents of this directory are populated into the environment *before* the
+``env.d`` found in the directory specified by ``--config``.
 
 
 Checking Inventory Configuration for Errors
