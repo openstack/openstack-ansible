@@ -18,10 +18,10 @@
 ## Vars ----------------------------------------------------------------------
 LINE='----------------------------------------------------------------------'
 MAX_RETRIES=${MAX_RETRIES:-5}
-REPORT_DATA=${REPORT_DATA:-""}
 ANSIBLE_PARAMETERS=${ANSIBLE_PARAMETERS:-" -e 'gather_facts=False' "}
 STARTTIME="${STARTTIME:-$(date +%s)}"
 PIP_INSTALL_OPTIONS=${PIP_INSTALL_OPTIONS:-'pip==8.1.2 setuptools==27.3.0 wheel==0.29.0 '}
+COMMAND_LOGS=${COMMAND_LOGS:-"/openstack/log/ansible_cmd_logs"}
 
 # The default SSHD configuration has MaxSessions = 10. If a deployer changes
 #  their SSHD config, then the ANSIBLE_FORKS may be set to a higher number. We
@@ -69,11 +69,14 @@ function successerator {
     echo -e "\nHit maximum number of retries, giving up...\n"
     exit_fail
   fi
-  # Print the time that the method completed.
+  # Ensure the log directory exists
+  if [[ ! -d "${COMMAND_LOGS}" ]];then
+    mkdir -p "${COMMAND_LOGS}"
+  fi
+  # Log the time that the method completed.
   OP_TOTAL_SECONDS="$(( $(date +%s) - OP_START_TIME ))"
-  REPORT_OUTPUT="${OP_TOTAL_SECONDS} seconds"
-  REPORT_DATA+="- Operation: [ $@ ]\t${REPORT_OUTPUT}\tNumber of Attempts [ ${RETRY} ]\n"
-  echo -e "Run Time = ${REPORT_OUTPUT}"
+  echo -e "- Operation: [ $@ ]\t${OP_TOTAL_SECONDS} seconds\tNumber of Attempts [ ${RETRY} ]" \
+    >> ${COMMAND_LOGS}/ansible_runtime_report.txt
   set -e
 }
 
@@ -220,7 +223,7 @@ function get_instance_info {
 
 function print_report {
   # Print the stored report data
-  echo -e "${REPORT_DATA}"
+  cat ${COMMAND_LOGS}/ansible_runtime_report.txt
 }
 
 function get_pip {
