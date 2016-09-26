@@ -159,9 +159,8 @@
       nova_venv_tag: "{{ openstack_release }}"
       nova_venv_download_url: "{{ openstack_repo_url }}/venvs/{{ openstack_release }}/{{ ansible_distribution | lower }}/nova-{{ openstack_release }}-{{ ansible_architecture | lower }}.tgz"
     - role: "ceph_client"
-      nova_venv_bin: "/openstack/venvs/nova-{{ openstack_release }}/bin"
       openstack_service_system_user: "{{ nova_system_user_name }}"
-      openstack_service_venv_bin: "{{ nova_venv_bin if nova_venv_enabled|default(True)|bool else None }}"
+      openstack_service_venv_bin: "/openstack/venvs/nova-{{ openstack_release }}/bin"
       tags:
         - ceph
     - role: "openstack_openrc"
