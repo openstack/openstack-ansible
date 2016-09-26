@@ -30,7 +30,7 @@ that each LXC container may take on a system. This is done within the
 .. _security modules: https://en.wikipedia.org/wiki/Linux_Security_Modules
 .. _mandatory access controls: https://en.wikipedia.org/wiki/Mandatory_access_control
 .. _AppArmor: https://en.wikipedia.org/wiki/AppArmor
-.. _lxc_hosts role: https://github.com/openstack/openstack-ansible/blob/master/playbooks/roles/lxc_hosts/templates/lxc-openstack.apparmor.j2
+.. _lxc_hosts role: https://github.com/openstack/openstack-ansible-lxc_hosts/blob/stable/mitaka/templates/lxc-openstack.apparmor.j2
 
 Encrypted communication
 ~~~~~~~~~~~~~~~~~~~~~~~
