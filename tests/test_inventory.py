@@ -2,6 +2,7 @@
 
 import collections
 import copy
+import glob
 import json
 import mock
 import os
@@ -21,7 +22,10 @@ import dynamic_inventory as di
 
 TARGET_DIR = path.join(os.getcwd(), 'tests', 'inventory')
 BASE_ENV_DIR = INV_DIR
-USER_CONFIG_FILE = path.join(TARGET_DIR, "openstack_user_config.yml")
+CONFIGS_DIR = path.join(os.getcwd(), 'etc', 'openstack_deploy')
+CONFD = os.path.join(CONFIGS_DIR, 'conf.d')
+AIO_CONFIG_FILE = path.join(CONFIGS_DIR, 'openstack_user_config.yml.aio')
+USER_CONFIG_FILE = path.join(TARGET_DIR, 'openstack_user_config.yml')
 
 # These files will be placed in TARGET_DIR by INV_SCRIPT.
 # They should be cleaned up between each test.
@@ -30,6 +34,47 @@ CLEANUP = [
     'openstack_hostnames_ips.yml',
     'backup_openstack_inventory.tar'
 ]
+
+# Base config is a global configuration accessible for convenience.
+# It should *not* be mutated outside of setUpModule, which populates it.
+_BASE_CONFIG = {}
+
+
+def get_config():
+    global _BASE_CONFIG
+    return _BASE_CONFIG
+
+
+def make_config():
+    """Build an inventory configuration from the sample AIO files.
+
+    Take any files specified as '.aio' and load their keys into a
+    configuration dict  and write them out to a file for consumption by
+    the tests.
+    """
+    config = get_config()
+
+    files = glob.glob(os.path.join(CONFD, '*.aio'))
+    for file_name in files:
+        with open(file_name, 'r') as f:
+            config.update(yaml.safe_load(f.read()))
+
+    with open(AIO_CONFIG_FILE, 'r') as f:
+        config.update(yaml.safe_load(f.read()))
+
+    with open(USER_CONFIG_FILE, 'w') as f:
+        f.write(yaml.dump(config))
+
+
+def setUpModule():
+    # The setUpModule function is used by the unittest framework.
+    make_config()
+
+
+def tearDownModule():
+    # This file should only be removed after all tests are run,
+    # thus it is excluded from cleanup.
+    os.remove(USER_CONFIG_FILE)
 
 
 def cleanup():
@@ -99,10 +144,13 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'cinder_scheduler_container',
         'cinder_volume',
         'cinder_volumes_container',
-        'compute_containers',
-        'compute_hosts',
+        'compute-infra_all',
         'compute-infra_containers',
         'compute-infra_hosts',
+        'compute_all',
+        'compute_containers',
+        'compute_hosts',
+        'dashboard_all',
         'dashboard_containers',
         'dashboard_hosts',
         'database_containers',
@@ -134,22 +182,25 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'horizon_all',
         'horizon_container',
         'hosts',
+        'identity_all',
         'identity_containers',
         'identity_hosts',
+        'image_all',
         'image_containers',
         'image_hosts',
-        'ironic-server_hosts',
-        'ironic_conductor_container',
-        'ironic_api_container',
-        'ironic_conductor',
+        'ironic-infra_all',
         'ironic-infra_containers',
         'ironic-infra_hosts',
-        'ironic_servers',
         'ironic-server_containers',
+        'ironic-server_hosts',
         'ironic_all',
+        'ironic_api',
+        'ironic_api_container',
+        'ironic_conductor',
+        'ironic_conductor_container',
         'ironic_server',
         'ironic_server_container',
-        'ironic_api',
+        'ironic_servers',
         'keystone',
         'keystone_all',
         'keystone_container',
@@ -158,35 +209,41 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'log_hosts',
         'lxc_hosts',
         'magnum',
-        'magnum_all',
-        'magnum_container',
+        'magnum-infra_all',
         'magnum-infra_containers',
         'magnum-infra_hosts',
+        'magnum_all',
+        'magnum_container',
         'memcached',
         'memcached_all',
         'memcached_container',
         'memcaching_containers',
         'memcaching_hosts',
+        'metering-alarm_all',
         'metering-alarm_containers',
         'metering-alarm_hosts',
+        'metering-compute_all',
         'metering-compute_container',
         'metering-compute_containers',
         'metering-compute_hosts',
+        'metering-infra_all',
         'metering-infra_containers',
         'metering-infra_hosts',
+        'metrics_all',
         'metrics_containers',
         'metrics_hosts',
         'mq_containers',
         'mq_hosts',
+        'network_all',
         'network_containers',
         'network_hosts',
         'neutron_agent',
         'neutron_agents_container',
         'neutron_all',
+        'neutron_bgp_dragent',
         'neutron_dhcp_agent',
         'neutron_l3_agent',
         'neutron_lbaas_agent',
-        'neutron_bgp_dragent',
         'neutron_linuxbridge_agent',
         'neutron_metadata_agent',
         'neutron_metering_agent',
@@ -210,6 +267,7 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'nova_scheduler_container',
         'operator_containers',
         'operator_hosts',
+        'orchestration_all',
         'orchestration_containers',
         'orchestration_hosts',
         'os-infra_containers',
@@ -228,19 +286,23 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'rsyslog',
         'rsyslog_all',
         'rsyslog_container',
+        'sahara-infra_all',
+        'sahara-infra_containers',
+        'sahara-infra_hosts',
         'sahara_all',
         'sahara_api',
         'sahara_container',
         'sahara_engine',
-        'sahara-infra_containers',
-        'sahara-infra_hosts',
         'shared-infra_all',
         'shared-infra_containers',
         'shared-infra_hosts',
+        'storage-infra_all',
         'storage-infra_containers',
         'storage-infra_hosts',
+        'storage_all',
         'storage_containers',
         'storage_hosts',
+        'swift-proxy_all',
         'swift-proxy_containers',
         'swift-proxy_hosts',
         'swift-remote_containers',
@@ -260,13 +322,13 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'swift_remote_all',
         'swift_remote_container',
         'unbound',
+        'unbound_all',
         'unbound_container',
         'unbound_containers',
         'unbound_hosts',
-        'unbound_all',
         'utility',
         'utility_all',
-        'utility_container',
+        'utility_container'
     ]
 
     @classmethod
@@ -313,6 +375,13 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         all_keys = list(self.expected_groups)
         all_keys.append('_meta')
         self.assertEqual(set(all_keys), set(self.inventory.keys()))
+
+    def test_configured_groups_have_hosts(self):
+        config = get_config()
+        groups = self.inventory.keys()
+        for group in groups:
+            if group in config.keys():
+                self.assertTrue(0 < len(self.inventory[group]['hosts']))
 
 
 class TestUserConfiguration(unittest.TestCase):
