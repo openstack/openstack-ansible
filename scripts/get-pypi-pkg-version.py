@@ -24,12 +24,16 @@
 from __future__ import print_function
 
 import argparse
+import re
 import xmlrpclib
+
+PRE_RELEASE_RE = re.compile('a|b|rc')
 
 
 def get_package_version(pypiConn, pkg_name):
     """Get the current package version from PyPI."""
-    pkg_result = pypiConn.package_releases(pkg_name)
+    pkg_result = [v for v in pypiConn.package_releases(pkg_name, True)
+                  if not PRE_RELEASE_RE.search(v)]
     if pkg_result:
         pkg_version = pkg_result[0]
     else:
