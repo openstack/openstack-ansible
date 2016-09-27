@@ -122,7 +122,6 @@ function exit_state {
 
 function exit_success {
   set +x
-  [[ "${OSA_GATE_JOB:-false}" = true ]] && gate_job_exit_tasks
   exit_state 0
 }
 
@@ -130,7 +129,6 @@ function exit_fail {
   set +x
   log_instance_info
   info_block "Error Info - $@"
-  [[ "${OSA_GATE_JOB:-false}" = true ]] && gate_job_exit_tasks
   exit_state 1
 }
 
