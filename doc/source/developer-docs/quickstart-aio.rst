@@ -50,6 +50,8 @@ should you need to customize your build:
 When building an AIO on a new server, it is recommended that all
 system packages are upgraded and then reboot into the new kernel:
 
+.. note:: Execute the following commands and scripts as the root user.
+
 .. code-block:: shell-session
 
    # apt-get dist-upgrade
