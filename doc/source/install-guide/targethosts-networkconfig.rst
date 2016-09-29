@@ -101,19 +101,19 @@ parameters in the architecture.
 
 * Networks:
 
-   * Host management: 10.240.0.0/22
-   * Container management: 172.29.236.0/22
-   * Tunnel: 172.29.240.0/22
-   * Storage: 172.29.244.0/22
+  * Host management: 10.240.0.0/22
+  * Container management: 172.29.236.0/22
+  * Tunnel: 172.29.240.0/22
+  * Storage: 172.29.244.0/22
 
 * Addresses:
 
-   * Host management: 10.240.0.11
-   * Host management gateway: 10.240.0.1
-   * DNS servers: 69.20.0.164 69.20.0.196
-   * Container management: 172.29.236.11
-   * Tunnel: 172.29.240.11
-   * Storage: 172.29.244.11
+  * Host management: 10.240.0.11
+  * Host management gateway: 10.240.0.1
+  * DNS servers: 69.20.0.164 69.20.0.196
+  * Container management: 172.29.236.11
+  * Tunnel: 172.29.240.11
+  * Storage: 172.29.244.11
 
 .. _Figure 3.2: targethosts-networkconfig.html#fig_hosts-target-network-containerexample
 
