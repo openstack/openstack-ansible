@@ -7,4 +7,5 @@
 
    liberty
    mitaka
+   newton
    unreleased
