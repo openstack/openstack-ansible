@@ -1,0 +1,8 @@
+---
+upgrade:
+  - New overrides are provided to allow for better customization
+    around logfile retention and rate limiting for UDP/TCP sockets.
+    ``rsyslog_server_logrotation_window`` defaults to 14 days
+    ``rsyslog_server_ratelimit_interval`` defaults to 0 seconds
+    ``rsyslog_server_ratelimit_burst`` defaults to 10000
+  - The rsyslog.conf is now using v7+ style configuration settings

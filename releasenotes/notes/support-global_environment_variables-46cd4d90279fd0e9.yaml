@@ -1,0 +1,5 @@
+---
+fixes:
+  - The repo_build play now correctly evaluates environment
+    variables configured in /etc/environment.  This enables
+    deployments in an environment with http proxies.

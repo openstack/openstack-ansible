@@ -1,0 +1,6 @@
+---
+fixes:
+  - The pip_install_options variable is now honored during repo
+    building.  This variable allows deployers to specify trusted
+    CA certificates by setting the variable to "--cert
+    /etc/ssl/certs/ca-certificates.crt"
