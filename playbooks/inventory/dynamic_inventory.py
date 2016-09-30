@@ -213,8 +213,9 @@ def _parse_belongs_to(key, belongs_to, inventory):
     """
     for item in belongs_to:
         if key not in inventory[item]['children']:
-            logger.debug("Adding %s to %s", key, item)
-            append_if(array=inventory[item]['children'], item=key)
+            appended = append_if(array=inventory[item]['children'], item=key)
+            if appended:
+                logger.debug("Added %s to %s", key, item)
 
 
 def _build_container_hosts(container_affinity, container_hosts, type_and_name,
@@ -266,12 +267,14 @@ def _build_container_hosts(container_affinity, container_hosts, type_and_name,
                         "hosts": [],
                     }
 
-                logger.debug("Adding container %s to %s",
-                             container_host_name, container_host_type)
-                append_if(
+                appended = append_if(
                     array=inventory[container_host_type]["hosts"],
                     item=container_host_name
                 )
+                if appended:
+                    logger.debug("Added container %s to %s",
+                                 container_host_name, container_host_type)
+
                 append_if(array=container_hosts, item=container_host_name)
             else:
                 if host_type not in hostvars:
@@ -350,24 +353,28 @@ def _append_to_host_groups(inventory, container_type, assignment, host_type,
                     hdata['physical_host'] = host_type
 
                 if container.startswith('%s-' % type_and_name):
-                    logger.debug("Added host %s to %s hosts",
-                                 container, assignment)
-                    append_if(array=iah, item=container)
+                    appended = append_if(array=iah, item=container)
+                    if appended:
+                        logger.debug("Added host %s to %s hosts",
+                                     container, assignment)
                 elif is_metal is True:
                     if component == assignment:
-                        logger.debug("Added is_metal host %s to %s hosts",
-                                     container, assignment)
-                        append_if(array=iah, item=container)
-
+                        appended = append_if(array=iah, item=container)
+                        if appended:
+                            logger.debug("Added is_metal host %s to %s hosts",
+                                         container, assignment)
                 if container.startswith('%s-' % type_and_name):
-                    logger.debug("Added host %s to %s hosts",
-                                 container, physical_group_type)
-                    append_if(array=iph, item=container)
+                    appended = append_if(array=iph, item=container)
+                    if appended:
+                        logger.debug("Added host %s to %s hosts",
+                                     container, physical_group_type)
+
                 elif is_metal is True:
                     if container.startswith(host_type):
-                        logger.debug("Added is_metal host %s to %s hosts",
-                                     container, physical_group_type)
-                        append_if(array=iph, item=container)
+                        appended = append_if(array=iph, item=container)
+                        if appended:
+                            logger.debug("Added is_metal host %s to %s hosts",
+                                         container, physical_group_type)
 
                 # Append any options in config to the host_vars of a container
                 container_vars = host_options.get('container_vars')
@@ -415,8 +422,10 @@ def _add_container_hosts(assignment, config, container_name, container_type,
         # If host_type is not in config do not append containers to it
         if host_type not in config[physical_host_type]:
             continue
-        append_if(array=inventory['lxc_hosts']['hosts'],
-                  item=host_type)
+        appended = append_if(array=inventory['lxc_hosts']['hosts'],
+                             item=host_type)
+        if appended:
+            logger.debug("%s added to lxc_hosts group", host_type)
 
         # Get any set host options
         host_options = config[physical_host_type][host_type]
@@ -517,9 +526,10 @@ def user_defined_setup(config, inventory):
                         hvs[_key][_k] = _v
 
                 USED_IPS.add(_value['ip'])
-                logger.debug("Attempting to add host %s to group %s",
-                             _key, key)
-                append_if(array=inventory[key]['hosts'], item=_key)
+                appended = append_if(array=inventory[key]['hosts'], item=_key)
+                if appended:
+                    logger.debug("Added host %s to group %s",
+                                 _key, key)
 
 
 def skel_setup(environment, inventory):
@@ -943,13 +953,13 @@ def append_if(array, item):
 
     :param array: ``list``  List object to append to
     :param item: ``object``  Object to append to the list
-    :returns array:  returns the amended list.
+    :returns bool:  Flag indicating whether the append happend (True)
+        or not (False)
     """
     if item not in array:
         array.append(item)
-    # TODO(nrb): Would be nice to change this to return true/false
-    # for logging purposes.
-    return array
+        return True
+    return False
 
 
 def _merge_dict(base_items, new_items):
