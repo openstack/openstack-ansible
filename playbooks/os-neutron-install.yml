@@ -23,7 +23,7 @@
       vars:
         sort_group_name: "neutron_all"
     - include: common-tasks/os-lxc-container-setup.yml
-      static: no
+      # This config is specific to Ubuntu
       vars:
         aa_profile: "unconfined"
         list_of_bind_mounts:
@@ -31,7 +31,21 @@
             mount_path: "/lib/modules"
         extra_container_config:
           - "lxc.cgroup.devices.allow=a *:* rmw"
-      when: inventory_hostname in groups['neutron_agent']
+      when:
+        - inventory_hostname in groups['neutron_agent']
+        - ansible_pkg_mgr == 'apt'
+    - include: common-tasks/os-lxc-container-setup.yml
+      # This config is specific to CentOS.
+      vars:
+        aa_profile: "unconfined"
+        list_of_bind_mounts:
+          - bind_dir_path: "/usr/lib/modules"
+            mount_path: "/usr/lib/modules"
+        extra_container_config:
+          - "lxc.cgroup.devices.allow=a *:* rmw"
+      when:
+        - inventory_hostname in groups['neutron_agent']
+        - ansible_pkg_mgr == 'yum'
     - include: common-tasks/os-lxc-container-setup.yml
       static: no
       when: inventory_hostname not in groups['neutron_agent']
