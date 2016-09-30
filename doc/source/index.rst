@@ -9,11 +9,11 @@ configuration of an OpenStack environment.
 
 Documentation for each of the following releases is available.
 
-Newton (unreleased)
+Ocata (unreleased)
 ~~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible Newton is currently in development. The
-`Newton Series Timeline`_ and `Newton Series Release Notes`_ are available for
+OpenStack-Ansible Ocata is currently in development. The
+`Ocata Series Timeline`_ and `Ocata Series Release Notes`_ are available for
 review.
 
 .. toctree::
@@ -23,8 +23,25 @@ review.
    upgrade-guide/index
    developer-docs/index
 
-.. _Newton Series Timeline: https://launchpad.net/openstack-ansible/trunk
-.. _Newton Series Release Notes: http://docs.openstack.org/releasenotes/openstack-ansible/unreleased.html
+.. _Ocata Series Timeline: https://launchpad.net/openstack-ansible/trunk
+.. _Ocata Series Release Notes: http://docs.openstack.org/releasenotes/openstack-ansible/unreleased.html
+
+Newton (Current release candidate)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+OpenStack-Ansible Newton is currently in development. The
+`Newton Series Timeline`_ and `Newton Series Release Notes`_ are available for
+review.
+
+.. toctree::
+   :maxdepth: 1
+
+   install-guide/newton/index
+   upgrade-guide/newton/index
+   developer-docs/newton/index
+
+.. _Newton Series Timeline: https://launchpad.net/openstack-ansible/newton
+.. _Newton Series Release Notes: http://docs.openstack.org/releasenotes/openstack-ansible/newton.html
 
 Mitaka (Current stable release, security-supported)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
