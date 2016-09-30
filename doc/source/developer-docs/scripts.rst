@@ -38,7 +38,7 @@ Ansible development branch:
 
    $ export ANSIBLE_PACKAGE="git+https://github.com/ansible/ansible@devel#egg=ansible"
 
-* ``ANSIBLE_ROLE_FILE`` - The location of a yaml file which ansible-galaxy can
+* ``ANSIBLE_ROLE_FILE`` - The location of a YAML file which ansible-galaxy can
   consume which specifies which roles to download and install. The default
   value for this is ``ansible-role-requirements.yml``.
 
