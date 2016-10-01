@@ -1,0 +1,8 @@
+---
+fixes:
+  - When a task fails while executing a playbook, the default behaviour for
+    Ansible is to fail for that host without executing any notifiers. This can
+    result in configuration changes being executed, but services not being
+    restarted. OpenStack-Ansible now sets ``ANSIBLE_FORCE_HANDLERS`` to
+    ``True`` by default to ensure that all notified handlers attempt to
+    execute before stopping the playbook execution.
