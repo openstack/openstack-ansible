@@ -29,7 +29,7 @@ Setting up Infrastructure
 -------------------------
 
 Infrastructure pertains to utility services such as RabbitMQ, memcached,
-galera, and logging which are not actually OpenStack services, but that
+Galera, and logging which are not actually OpenStack services, but that
 OpenStack relies on.
 
 Run `openstack-ansible setup-infrastructure.yml` to install these containers.
