@@ -2,6 +2,10 @@
 Installation Guide
 ==================
 
+This guide provides instructions for performing an OpenStack-Ansible
+installation in a test environment and a production environment, and is
+intended for deployers.
+
 .. toctree::
    :maxdepth: 2
 
