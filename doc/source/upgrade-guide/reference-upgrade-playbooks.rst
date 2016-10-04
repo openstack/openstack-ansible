@@ -20,7 +20,7 @@ Because LBaaS v1 isn't supported in |current_release_formal_name|
 and above, and there is no migration path, the deployer will have
 to manually disable LBaaS v1 before upgrading. For
 openstack-ansible, we are checking if ``neutron_lbaas`` is set to
-``False``, but additional operations are to bedone by the deployer
+``False``, but additional operations are to be done by the deployer
 for the cleanup.
 
 .. _fact-cleanup-playbook:
