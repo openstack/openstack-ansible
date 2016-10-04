@@ -1,0 +1,4 @@
+---
+fixes:
+  - Fix run-upgrade.sh so that it correctly calls nova-flavor-migration.yml and no longer fails
+    due to the non-existent playbook nova-extra-migrations.yml.
