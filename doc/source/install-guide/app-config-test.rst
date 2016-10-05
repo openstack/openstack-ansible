@@ -7,16 +7,16 @@ Appendix A: Example test environment configuration
 Introduction
 ~~~~~~~~~~~~
 
-The test environment is a minimal set of components to deploy a working
-OpenStack-Ansible environment for testing purposes.
+A test environment contains the minimal set of components needed to deploy a
+working OpenStack-Ansible (OSA) environment for testing purposes.
 
-The test environment has the following characteristics:
+A test environment has the following characteristics:
 
-* One control plane host (8 vCPU, 8GB RAM, 60GB HDD)
-* One compute host (8 vCPU, 8GB RAM, 60GB HDD)
-* Each host only has one Network Interface Card (NIC)
-* Only a basic compute kit environment will be installed, with glance
-  and nova set to use file-backed storage.
+* One infrastructure (control plane) host (8 vCPU, 8 GB RAM, 60 GB HDD)
+* One compute host (8 vCPU, 8 GB RAM, 60 GB HDD)
+* One Network Interface Card (NIC) for each host
+* A basic compute kit environment, with the Image (glance) and Compute (nova)
+  services set to use file-backed storage.
 
 .. image:: figures/arch-layout-test.png
    :width: 100%
@@ -31,8 +31,12 @@ Environment configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The ``/etc/openstack_deploy/openstack_user_config.yml`` configuration file
-sets the hosts available in the groups. This designates the services that
-runs on them.
+defines which hosts run the containers and services deployed by OSA. For
+example, hosts listed in the ``shared-infra_hosts`` section run containers
+for many of the shared services that your OpenStack environment requires.
+The following is an example of the
+``/etc/openstack_deploy/openstack_user_config.yml`` configuration file for a
+test environment.
 
 .. literalinclude:: ../../../etc/openstack_deploy/openstack_user_config.yml.aio
 
