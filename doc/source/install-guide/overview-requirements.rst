@@ -8,41 +8,41 @@ network recommendations for running OpenStack in a production environment.
 Software requirements
 ~~~~~~~~~~~~~~~~~~~~~
 
-Ensure all hosts within an OpenStack-Ansible environment meet the following
-minimum requirements:
+Ensure that all hosts within an OpenStack-Ansible (OSA) environment meet the
+following minimum requirements:
 
-* Ubuntu 16.04 LTS (Xenial Xerus)/Ubuntu 14.04 LTS (Trusty Tahr)
+* Ubuntu 16.04 LTS (Xenial Xerus) or Ubuntu 14.04 LTS (Trusty Tahr)
 
-  * OSA is tested regularly against the latest Ubuntu 16.04 LTS Xenial
-    point releases and Ubuntu 14.04 Trusty as well.
-  * Linux kernel version ``3.13.0-34-generic`` or later.
-  * For Trusty hosts, you must enable the ``trusty-backports`` or
+  * OpenStack-Ansible is tested regularly against the latest point releases of
+    Ubuntu 16.04 LTS and Ubuntu 14.04 LTS.
+  * Linux kernel version ``3.13.0-34-generic`` or later is required.
+  * For Trusty hosts, you must enable the ``trusty-backports`` or the
     repositories in ``/etc/apt/sources.list`` or
-    ``/etc/apt/sources.list.d/``. For detailed instructions, see
+    ``/etc/apt/sources.list.d/``. For detailed instructions, see the
     `Ubuntu documentation <https://help.ubuntu.com/community/
     UbuntuBackports#Enabling_Backports_Manually>`_.
 
-* Secure Shell (SSH) client and server that supports public key
+* Secure Shell (SSH) client and server that support public key
   authentication
 
 * Network Time Protocol (NTP) client for time synchronization (such as
   ``ntpd`` or ``chronyd``)
 
-* Python 2.7.x must be on the hosts.
+* Python 2.7.*x*
 
-* en_US.UTF-8 as locale
+* en_US.UTF-8 as the locale
 
 CPU recommendations
 ~~~~~~~~~~~~~~~~~~~
 
-* Compute hosts with multi-core processors that have `hardware-assisted
-  virtualization extensions`_ available. These extensions provide a
+* Compute hosts should have multicore processors with `hardware-assisted
+  virtualization extensions`_. These extensions provide a
   significant performance boost and improve security in virtualized
   environments.
 
-* Infrastructure hosts with multi-core processors for best
-  performance. Some services, such as MySQL, greatly benefit from additional
-  CPU cores and other technologies, such as `Hyper-threading`_.
+* Infrastructure (control plane) hosts should have multicore processors for
+  best performance. Some services, such as MySQL, benefit from
+  additional CPU cores and other technologies, such as `Hyper-threading`_.
 
 .. _hardware-assisted virtualization extensions: https://en.wikipedia.org/wiki/Hardware-assisted_virtualization
 .. _Hyper-threading: https://en.wikipedia.org/wiki/Hyper-threading
@@ -54,47 +54,46 @@ Different hosts have different disk space requirements based on the
 services running on each host:
 
 Deployment hosts
-  10GB of disk space is sufficient for holding the OpenStack-Ansible
+  Ten GB of disk space is sufficient for holding the OpenStack-Ansible
   repository content and additional required software.
 
 Compute hosts
-  Disk space requirements vary depending on the total number of instances
+  Disk space requirements depend on the total number of instances
   running on each host and the amount of disk space allocated to each instance.
-  Compute hosts need to have at least 100GB of disk space available. Consider
-  disks that provide higher throughput with lower latency, such as SSD drives
-  in a RAID array.
+  Compute hosts must have a minimum of 1 TB of disk space available. Consider
+  disks that provide higher I/O throughput with lower latency, such as SSD
+  drives in a RAID array.
 
 Storage hosts
   Hosts running the Block Storage (cinder) service often consume the most disk
-  space in OpenStack environments. As with compute hosts,
-  choose disks that provide the highest I/O throughput with the lowest latency
-  for storage hosts. Storage hosts need to have 1TB of disk space at a
-  minimum.
+  space in OpenStack environments. Storage hosts must have a minimum of 1 TB
+  of disk space. As with Compute hosts, choose disks that provide the highest
+  I/O throughput with the lowest latency.
 
-Infrastructure hosts
-  The OpenStack control plane contains storage-intensive services, such as
-  the Image (glance) service as well as MariaDB. These control plane hosts
-  need to have 100GB of disk space available at a minimum.
+Infrastructure (control plane) hosts
+  The OpenStack control plane contains storage-intensive services, such as the
+  Image service (glance), and MariaDB. These hosts must have a minimum of
+  100 GB of disk space.
 
 Logging hosts
-  An OpenStack-Ansible deployment generates a significant amount of logging.
-  Logs come from a variety of sources, including services running in
-  containers, the containers themselves, and the physical hosts. Logging hosts
-  need sufficient disk space to hold live, and rotated (historical), log files.
-  In addition, the storage performance must be enough to keep pace with the
-  log traffic coming from various hosts and containers within the OpenStack
-  environment. Reserve a minimum of 50GB of disk space for storing
-  logs on the logging hosts.
+  An OpenStack-Ansible deployment generates a significant amount of log
+  information. Logs come from a variety of sources, including services running
+  in containers, the containers themselves, and the physical hosts. Logging
+  hosts need sufficient disk space to hold live and rotated (historical) log
+  files. In addition, the storage performance must be able to keep pace with
+  the log traffic coming from various hosts and containers within the OpenStack
+  environment. Reserve a minimum of 50 GB of disk space for storing logs on
+  the logging hosts.
 
-Hosts that provide Block Storage volumes must have logical volume
-manager (LVM) support. Ensure those hosts have a ``cinder-volume`` volume
-group that OpenStack-Ansible can configure for use with cinder.
+Hosts that provide Block Storage volumes must have Logical Volume
+Manager (LVM) support. Ensure that hosts have a ``cinder-volume`` volume
+group that OpenStack-Ansible can configure for use with Block Storage.
 
-Each control plane host runs services inside LXC containers. The container
-filesystems are deployed by default onto the root filesystem of each control
-plane hosts. You have the option to deploy those container filesystems
-into logical volumes by creating a volume group called ``lxc``.
-OpenStack-Ansible creates a 5GB logical volume for the filesystem of each
+Each infrastructure (control plane) host runs services inside LXC containers.
+The container file systems are deployed by default on the root file system of
+each control plane host. You have the option to deploy those container file
+systems into logical volumes by creating a volume group called lxc.
+OpenStack-Ansible creates a 5 GB logical volume for the file system of each
 container running on the host.
 
 Network recommendations
@@ -107,18 +106,17 @@ Network recommendations
    problems when your environment grows.
 
 For the best performance, reliability, and scalability in a production
-environment, deployers should consider a network configuration that contains
+environment, consider a network configuration that contains
 the following features:
 
-* Bonded network interfaces: Increases performance and/or reliability
-  (dependent on bonding architecture).
+* Bonded network interfaces, which increase performance, reliability, or both
+  (depending on the bonding architecture)
 
-* VLAN offloading: Increases performance by adding and removing VLAN tags in
-  hardware, rather than in the server's main CPU.
+* VLAN offloading, which increases performance by adding and removing VLAN tags
+  in hardware, rather than in the server's main CPU
 
-* Gigabit or 10 Gigabit Ethernet: Supports higher network speeds, which can
-  also improve storage performance when using the Block Storage service.
+* Gigabit or 10 Gigabit Ethernet, which supports higher network speeds and can
+  also improve storage performance when using the Block Storage service
 
-* Jumbo frames: Increases network performance by allowing more data to be sent
-  in each packet.
-
+* Jumbo frames, which increase network performance by allowing more data to
+  be sent in each packet
