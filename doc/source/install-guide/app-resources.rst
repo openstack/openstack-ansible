@@ -2,7 +2,7 @@
 Appendix G: Additional resources
 =================================
 
-The following Ansible resources are useful to reference:
+Ansible resources:
 
 - `Ansible Documentation
   <http://docs.ansible.com/ansible/>`_
@@ -13,7 +13,7 @@ The following Ansible resources are useful to reference:
 - `Ansible Configuration
   <http://docs.ansible.com/ansible/intro_configuration.html>`_
 
-The following OpenStack resources are useful to reference:
+OpenStack resources:
 
 - `OpenStack Documentation <http://docs.openstack.org>`_
 
