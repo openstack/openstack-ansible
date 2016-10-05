@@ -13,7 +13,7 @@ Ocata (unreleased)
 ~~~~~~~~~~~~~~~~~~~
 
 OpenStack-Ansible Ocata is currently in development. The
-`Ocata Series Timeline`_ and `Ocata Series Release Notes`_ are available for
+`Ocata series timeline`_ and `Ocata series release notes`_ are available for
 review.
 
 .. toctree::
@@ -23,25 +23,25 @@ review.
    upgrade-guide/index
    developer-docs/index
 
-.. _Ocata Series Timeline: https://launchpad.net/openstack-ansible/trunk
-.. _Ocata Series Release Notes: http://docs.openstack.org/releasenotes/openstack-ansible/unreleased.html
+.. _Ocata series timeline: https://launchpad.net/openstack-ansible/trunk
+.. _Ocata series release notes: http://docs.openstack.org/releasenotes/openstack-ansible/unreleased.html
 
 Newton (Current release candidate)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible Newton is currently in development. The
-`Newton Series Timeline`_ and `Newton Series Release Notes`_ are available for
-review.
+OpenStack-Ansible's Newton series is planned to be released with the 14.0.0
+tag between 6 October 2016 and 20 October 2016. A release candidate is
+currently available for testing.
 
-.. toctree::
-   :maxdepth: 1
+* `OpenStack-Ansible Newton documentation`_
 
-   install-guide/newton/index
-   upgrade-guide/newton/index
-   developer-docs/newton/index
+* `OpenStack-Ansible Newton series release notes`_
 
-.. _Newton Series Timeline: https://launchpad.net/openstack-ansible/newton
-.. _Newton Series Release Notes: http://docs.openstack.org/releasenotes/openstack-ansible/newton.html
+* `OpenStack-Ansible Newton series timeline`_
+
+.. _OpenStack-Ansible Newton documentation: http://docs.openstack.org/developer/openstack-ansible/newton/
+.. _OpenStack-Ansible Newton series timeline: https://launchpad.net/openstack-ansible/newton
+.. _OpenStack-Ansible Newton series release notes: http://docs.openstack.org/releasenotes/openstack-ansible/newton.html
 
 Mitaka (Current stable release, security-supported)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -49,15 +49,15 @@ Mitaka (Current stable release, security-supported)
 OpenStack-Ansible's Mitaka Series was first released with the 13.0.0 tag on
 1 April 2016.
 
-* `OpenStack-Ansible Mitaka Documentation`_
+* `OpenStack-Ansible Mitaka documentation`_
 
-* `OpenStack-Ansible Mitaka Series Release Notes`_
+* `OpenStack-Ansible Mitaka series release notes`_
 
-* `OpenStack-Ansible Mitaka Series Timeline`_
+* `OpenStack-Ansible Mitaka series timeline`_
 
-.. _OpenStack-Ansible Mitaka Documentation: http://docs.openstack.org/developer/openstack-ansible/mitaka/
-.. _OpenStack-Ansible Mitaka Series Timeline: https://launchpad.net/openstack-ansible/mitaka
-.. _OpenStack-Ansible Mitaka Series Release Notes: http://docs.openstack.org/releasenotes/openstack-ansible/mitaka.html
+.. _OpenStack-Ansible Mitaka documentation: http://docs.openstack.org/developer/openstack-ansible/mitaka/
+.. _OpenStack-Ansible Mitaka series timeline: https://launchpad.net/openstack-ansible/mitaka
+.. _OpenStack-Ansible Mitaka series release notes: http://docs.openstack.org/releasenotes/openstack-ansible/mitaka.html
 
 Liberty: Security-supported (EOL: 2016-11-17)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
