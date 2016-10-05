@@ -2,33 +2,35 @@
 Overriding OpenStack configuration defaults
 ===========================================
 
-OpenStack has many configuration options available in configuration files
-which are in the form of ``.conf`` files (in a standard ``INI`` file format),
-policy files (in a standard ``JSON`` format) and also ``YAML`` files.
+OpenStack has many configuration options available in ``.conf`` files
+(in a standard ``INI`` file format),
+policy files (in a standard ``JSON`` format) and ``YAML`` files.
 
 .. note::
 
    ``YAML`` files are only in the ceilometer project at this time.
 
-OpenStack-Ansible provides the facility to include reference to any options in
-the `OpenStack Configuration Reference`_ through the use of a simple set of
-configuration entries in ``/etc/openstack_deploy/user_variables.yml``.
+OpenStack-Ansible enables you to reference any options in the
+`OpenStack Configuration Reference`_ through the use of a simple set of
+configuration entries in the ``/etc/openstack_deploy/user_variables.yml``.
 
-This section provides guidance for how to make use of this facility. Further
-guidance is available in the developer documentation in the section titled
-`Setting overrides in configuration files`_.
+This section describes how to use the configuration entries in the
+``/etc/openstack_deploy/user_variables.yml`` file to override default
+configuration settings. For more information, see the
+`Setting overrides in configuration files`_ section in the developer
+documentation.
 
 .. _OpenStack Configuration Reference: http://docs.openstack.org/draft/config-reference/
 .. _Setting overrides in configuration files: ../developer-docs/extending.html#setting-overrides-in-configuration-files
 
-Overriding ``.conf`` files
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Overriding .conf files
+~~~~~~~~~~~~~~~~~~~~~~
 
-The most common use-case for implementing overrides are for the
-``<service>.conf`` files (for example, ``nova.conf``). These files use a
-standard ``INI`` file format.
+Most often, overrides are implemented for the ``<service>.conf`` files
+(for example, ``nova.conf``). These files use a standard INI file format.
 
-For example, if you add the following parameters to ``nova.conf``:
+For example, you might want to add the following parameters to the
+``nova.conf`` file:
 
 .. code-block:: ini
 
@@ -43,8 +45,8 @@ For example, if you add the following parameters to ``nova.conf``:
     idle_timeout = 300
     max_pool_size = 10
 
-This is accomplished through the use of the following configuration
-entry in ``/etc/openstack_deploy/user_variables.yml``:
+To do this, you use the following configuration entry in the
+``/etc/openstack_deploy/user_variables.yml`` file:
 
 .. code-block:: yaml
 
@@ -58,8 +60,16 @@ entry in ``/etc/openstack_deploy/user_variables.yml``:
         idle_timeout: 300
         max_pool_size: 10
 
-Overrides may also be applied on a per host basis with the following
-configuration in ``/etc/openstack_deploy/openstack_user_config.yml``:
+.. note::
+
+   The general format for the variable names used for overrides is
+   ``<service>_<filename>_<file extension>_overrides``. For example, the variable
+   name used in these examples to add parameters to the ``nova.conf`` file is
+   ``nova_nova_conf_overrides``.
+
+You can also apply overrides on a per-host basis with the following
+configuration in the ``/etc/openstack_deploy/openstack_user_config.yml``
+file:
 
 .. code-block:: yaml
 
@@ -77,21 +87,18 @@ configuration in ``/etc/openstack_deploy/openstack_user_config.yml``:
                 idle_timeout: 300
                 max_pool_size: 10
 
-Use this method for any ``INI`` file format for all OpenStack projects
+Use this method for any files with the ``INI`` format for in OpenStack projects
 deployed in OpenStack-Ansible.
 
-To assist you in finding the appropriate variable name to use for
-overrides, the general format for the variable name is:
-``<service>_<filename>_<file extension>_overrides``.
+Overriding .json files
+~~~~~~~~~~~~~~~~~~~~~~
 
-Overriding ``.json`` files
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+To implement access controls that are different from the ones in a standard
+OpenStack environment, you can adjust the default policies applied by services.
+Policy files are in a ``JSON`` format.
 
-You can adjust the default policies applied by services in order
-to implement access controls which are different to a standard OpenStack
-environment. Policy files are in a ``JSON`` format.
-
-For example, you can add the following policy in keystone's ``policy.json``:
+For example, you might want to add the following policy in the ``policy.json``
+file for the Identity service (keystone):
 
 .. code-block:: json
 
@@ -100,8 +107,8 @@ For example, you can add the following policy in keystone's ``policy.json``:
         "identity:bar": "rule:admin_required"
     }
 
-Accomplish this through the use of the following configuration
-entry in ``/etc/openstack_deploy/user_variables.yml``:
+To do this, you use the following configuration entry in the
+``/etc/openstack_deploy/user_variables.yml`` file:
 
 .. code-block:: yaml
 
@@ -109,26 +116,34 @@ entry in ``/etc/openstack_deploy/user_variables.yml``:
       identity:foo: "rule:admin_required"
       identity:bar: "rule:admin_required"
 
-Use this method for all OpenStack projects
-deployed in OpenStack-Ansible with ``JSON`` file formats.
+.. note::
+
+   The general format for the variable names used for overrides is
+   ``<service>_policy_overrides``. For example, the variable name used in this
+   example to add a policy to the Identity service (keystone) ``policy.json`` file
+   is ``keystone_policy_overrides``.
+
+Use this method for any files with the ``JSON`` format in OpenStack projects
+deployed in OpenStack-Ansible.
 
 To assist you in finding the appropriate variable name to use for
 overrides, the general format for the variable name is
 ``<service>_policy_overrides``.
 
-Overriding YAML files
+Overriding .yml files
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can override ``.yml`` file values by supplying replacement YAML content.
 
 .. note::
 
-   All default YAML file content will be completely overwritten by
-   the provided overrides, so the entire YAML source (both the existing
-   content and your changes) must be provided.
+   All default YAML file content is completely overwritten by the overrides,
+   so the entire YAML source (both the existing content and your changes)
+   must be provided.
 
-For example, you can define a meter exclusion for all hardware items
-in the default content of ceilometer's ``pipeline.yml``:
+For example, you might want to define a meter exclusion for all hardware
+items in the default content of the ``pipeline.yml`` file for the
+Telemetry service (ceilometer):
 
 .. code-block:: yaml
 
@@ -142,8 +157,8 @@ in the default content of ceilometer's ``pipeline.yml``:
         - name: foo_source
         value: foo
 
-You can accomplish this through the use of the following configuration
-entry in ``/etc/openstack_deploy/user_variables.yml``:
+To do this, you use the following configuration entry in the
+``/etc/openstack_deploy/user_variables.yml`` file:
 
 .. code-block:: yaml
 
@@ -158,14 +173,17 @@ entry in ``/etc/openstack_deploy/user_variables.yml``:
           - name: source_foo
           value: foo
 
-To assist you in finding the appropriate variable name to use for
-overrides, the general format for the variable name is
-``<service>_<filename>_<file extension>_overrides``.
+.. note::
+
+   The general format for the variable names used for overrides is
+   ``<service>_<filename>_<file extension>_overrides``. For example, the variable
+   name used in this example to define a meter exclusion in the ``pipeline.yml`` file
+   for the Telemetry service (ceilometer) is ``ceilometer_pipeline_yaml_overrides``.
 
 Currently available overrides
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The following is a list of overrides available:
+The following override variables are available.
 
 Galera:
     * galera_client_my_cnf_overrides
@@ -173,7 +191,7 @@ Galera:
     * galera_cluster_cnf_overrides
     * galera_debian_cnf_overrides
 
-Ceilometer:
+Telemetry service (ceilometer):
     * ceilometer_policy_overrides
     * ceilometer_ceilometer_conf_overrides
     * ceilometer_api_paste_ini_overrides
@@ -181,13 +199,13 @@ Ceilometer:
     * ceilometer_event_pipeline_yaml_overrides
     * ceilometer_pipeline_yaml_overrides
 
-Cinder:
+Block Storage (cinder):
     * cinder_policy_overrides
     * cinder_rootwrap_conf_overrides
     * cinder_api_paste_ini_overrides
     * cinder_cinder_conf_overrides
 
-Glance:
+Image service (glance):
     * glance_glance_api_paste_ini_overrides
     * glance_glance_api_conf_overrides
     * glance_glance_cache_conf_overrides
@@ -198,7 +216,7 @@ Glance:
     * glance_glance_scheme_json_overrides
     * glance_policy_overrides
 
-Heat:
+Orchestration service (heat):
     * heat_heat_conf_overrides
     * heat_api_paste_ini_overrides
     * heat_default_yaml_overrides
@@ -206,13 +224,13 @@ Heat:
     * heat_aws_rds_dbinstance_yaml_overrides
     * heat_policy_overrides
 
-Keystone:
+Identity service (keystone):
     * keystone_keystone_conf_overrides
     * keystone_keystone_default_conf_overrides
     * keystone_keystone_paste_ini_overrides
     * keystone_policy_overrides
 
-Neutron:
+Networking service (neutron):
     * neutron_neutron_conf_overrides
     * neutron_ml2_conf_ini_overrides
     * neutron_dhcp_agent_ini_overrides
@@ -224,13 +242,13 @@ Neutron:
     * neutron_metadata_agent_ini_overrides
     * neutron_metering_agent_ini_overrides
 
-Nova:
+Compute service (nova):
     * nova_nova_conf_overrides
     * nova_rootwrap_conf_overrides
     * nova_api_paste_ini_overrides
     * nova_policy_overrides
 
-Swift:
+Object Storage service (swift):
     * swift_swift_conf_overrides
     * swift_swift_dispersion_conf_overrides
     * swift_proxy_server_conf_overrides
