@@ -1,16 +1,15 @@
 .. _configure:
 
-====================
-Configure deployment
-====================
+========================
+Configure the deployment
+========================
 
 .. figure:: figures/installation-workflow-configure-deployment.png
    :width: 100%
 
-Ansible references a handful of files containing mandatory and optional
-configuration directives. Modify these files to define the
-target environment before running the Ansible playbooks. Configuration
-tasks include:
+Ansible references some files that contain mandatory and optional
+configuration directives. Before you can run the Ansible playbooks, modify
+these files to define the target environment. Configuration tasks include:
 
 * Target host networking to define bridge interfaces and
   networks.
@@ -22,9 +21,9 @@ tasks include:
 Initial environment configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible depends on various files that are used to build an inventory
-for Ansible. The following configuration is to be done on the deployment host.
-Start by getting those files into the correct places:
+OpenStack-Ansible (OSA) depends on various files that are used to build an
+inventory for Ansible. Perform the following configuration on the deployment
+host.
 
 #. Copy the contents of the
    ``/opt/openstack-ansible/etc/openstack_deploy`` directory to the
@@ -42,45 +41,40 @@ Start by getting those files into the correct places:
 
       The file is heavily commented with details about the various options.
 
-Configuration in ``openstack_user_config.yml`` defines which hosts
-will run the containers and services deployed by OpenStack-Ansible. For
-example, hosts listed in the ``shared-infra_hosts`` run containers for many of
-the shared services that your OpenStack environment requires. Some of these
-services include databases, memcached, and RabbitMQ. There are several other
-host types that contain other types of containers and all of these are listed
-in ``openstack_user_config.yml``.
-
-For details about how the inventory is generated from the environment
-configuration, see :ref:`developer-inventory`.
+The configuration in the ``openstack_user_config.yml`` file defines which hosts
+run the containers and services deployed by OpenStack-Ansible. For
+example, hosts listed in the ``shared-infra_hosts`` section run containers for
+many of the shared services that your OpenStack environment requires. Some of
+these services include databases, Memcached, and RabbitMQ. Several other
+host types contain other types of containers, and all of these are listed
+in the ``openstack_user_config.yml`` file.
 
 To configure your OpenStack installation for a test environment or production
 environment, see the examples in :ref:`test-environment-config` and
-:ref:`production-environment-config`.
+:ref:`production-environment-config` file.
 
 To install additional services, see the example configuration files in
 ``/etc/openstack_deploy/conf.d``.
 
+For details about how the inventory is generated from the environment
+configuration, see :ref:`developer-inventory`.
+
 Configuring service credentials
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Configure credentials for each service in the
-``/etc/openstack_deploy/*_secrets.yml`` files. Consider using `Ansible
-Vault <http://docs.ansible.com/playbooks_vault.html>`_ to increase
-security by encrypting any files containing credentials.
 
-Adjust permissions on these files to restrict access by non-privileged
+Configure credentials for each service in the
+``/etc/openstack_deploy/*_secrets.yml`` files. Consider using the
+`Ansible Vault <http://docs.ansible.com/playbooks_vault.html>`_ feature to
+increase security by encrypting any files that contain credentials.
+
+Adjust permissions on these files to restrict access by nonprivileged
 users.
 
-.. note::
+The ``keystone_auth_admin_password`` option configures the ``admin`` tenant
+password for both the OpenStack API and Dashboard access.
 
-   The following options configure passwords for the web interfaces.
-
-* ``keystone_auth_admin_password`` configures the ``admin`` tenant
-   password for both the OpenStack API and dashboard access.
-
-.. note::
-
-   We recommend using the ``pw-token-gen.py`` script to generate random
-   values for the variables in each file that contains service credentials:
+We recommend that you use the ``pw-token-gen.py`` script to generate random
+values for the variables in each file that contains service credentials:
 
    .. code-block:: shell-session
 
@@ -92,5 +86,5 @@ To regenerate existing passwords, add the ``--regen`` flag.
 .. warning::
 
    The playbooks do not currently manage changing passwords in an existing
-   environment. Changing passwords and re-running the playbooks will fail
-   and may break your OpenStack environment.
+   environment. Changing passwords and rerunning the playbooks will fail
+   and might break your OpenStack environment.
