@@ -4,11 +4,11 @@
 Advanced service configuration
 ==============================
 
-OpenStack-Ansible has many options which can be used for the advanced
-configuration of services. Each role's documentation provides more
-insight into the options available and what they are used for.
+OpenStack-Ansible has many options that you can use for the advanced
+configuration of services. Each role's documentation provides information
+about the available options.
 
-The following options are not necessary to set - they are entirely optional.
+The following options are optional.
 
 Infrastructure service roles
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~

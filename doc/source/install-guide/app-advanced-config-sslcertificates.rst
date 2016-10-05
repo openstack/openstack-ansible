@@ -3,91 +3,91 @@ Securing services with SSL certificates
 =======================================
 
 The `OpenStack Security Guide`_ recommends providing secure communication
-between various services in an OpenStack deployment.
+between various services in an OpenStack deployment. The OpenStack-Ansible
+project currently offers the ability to configure SSL certificates for secure
+communication with the following services:
 
 .. _OpenStack Security Guide: http://docs.openstack.org/security-guide/secure-communication.html
 
-The OpenStack-Ansible project currently offers the ability to configure SSL
-certificates for secure communication with the following services:
-
 * HAProxy
-* Horizon
-* Keystone
+* Dashboard (horizon)
+* Identity (keystone)
 * RabbitMQ
 
-For each service, you have the option to use self-signed certificates
+For each service, you can either use self-signed certificates that are
 generated during the deployment process or provide SSL certificates,
 keys, and CA certificates from your own trusted certificate authority. Highly
-secured environments use trusted, user-provided, certificates for as
+secured environments use trusted, user-provided certificates for as
 many services as possible.
 
 .. note::
 
-   Conduct all SSL certificate configuration in
-   ``/etc/openstack_deploy/user_variables.yml`` and not in the playbook
+   Perform all SSL certificate configuration in
+   ``/etc/openstack_deploy/user_variables.yml`` file and not in the playbook
    roles themselves.
 
 Self-signed certificates
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Self-signed certificates ensure you are able to start quickly and you are able
-to encrypt data in transit. However, they do not provide a high level of trust
-for highly secure environments. The use of self-signed certificates is
-currently the default in OpenStack-Ansible. When self-signed certificates are
-being used, certificate verification must be disabled using the following
-user variables depending on your configuration. Add these variables
-in ``/etc/openstack_deploy/user_variables.yml``.
+Self-signed certificates enable you to start quickly and encrypt data in
+transit. However, they do not provide a high level of trust for highly
+secure environments. By default, self-signed certificates are used in
+OpenStack-Ansible. When self-signed certificates are used, you must disable
+certificate verification by using the following user variables, depending on
+your configuration. Add these variables in the
+``/etc/openstack_deploy/user_variables.yml`` file.
 
 .. code-block:: yaml
 
     keystone_service_adminuri_insecure: true
     keystone_service_internaluri_insecure: true
 
-Setting self-signed certificate subject data
---------------------------------------------
+Setting subject data for self-signed certificates
+-------------------------------------------------
 
-Change the subject data of any self-signed certificate using
-configuration variables. The configuration variable for each service is
-``<servicename>_ssl_self_signed_subject``. To change the SSL certificate
-subject data for HAProxy, adjust ``/etc/openstack_deploy/user_variables.yml``:
+Change the subject data of any self-signed certificate by using
+configuration variables. The configuration variable for each service
+is formatted as ``<servicename>_ssl_self_signed_subject``. For example, to
+change the SSL certificate subject data for HAProxy, adjust the
+``/etc/openstack_deploy/user_variables.yml`` file as follows:
 
 .. code-block:: yaml
 
     haproxy_ssl_self_signed_subject: "/C=US/ST=Texas/L=San Antonio/O=IT/CN=haproxy.example.com"
 
+
 For more information about the available fields in the certificate subject,
-refer to OpenSSL's documentation on the `req subcommand`_.
+see the OpenSSL documentation for the `req subcommand`_.
 
 .. _req subcommand: https://www.openssl.org/docs/manmaster/apps/req.html
 
 Generating and regenerating self-signed certificates
 ----------------------------------------------------
 
-Generate self-signed certificates for each service during the first run
-of the playbook.
+Self-signed certificates are generated for each service during the first
+run of the playbook.
 
-.. note::
+To generate a new self-signed certificate for a service, you must set
+the ``<servicename>_ssl_self_signed_regen`` variable to true in one of the
+following ways:
 
-   Subsequent runs of the playbook do not generate new SSL
-   certificates unless you set ``<servicename>_ssl_self_signed_regen`` to
-   ``true``.
+* To force a self-signed certificate to regenerate, you can pass the variable
+  to ``openstack-ansible`` on the command line:
 
-To force a self-signed certificate to regenerate, you can pass the variable to
-``openstack-ansible`` on the command line:
+  .. code-block:: shell-session
 
-.. code-block:: shell-session
+     # openstack-ansible -e "horizon_ssl_self_signed_regen=true" os-horizon-install.yml
 
-    # openstack-ansible -e "horizon_ssl_self_signed_regen=true" os-horizon-install.yml
+* To force a self-signed certificate to regenerate with every playbook run,
+  set the appropriate regeneration option to ``true``.  For example, if
+  you have already run the ``os-horizon`` playbook, but you want to regenerate
+  the self-signed certificate, set the ``horizon_ssl_self_signed_regen``
+  variable to ``true`` in the ``/etc/openstack_deploy/user_variables.yml``
+  file:
 
-To force a self-signed certificate to regenerate with every playbook run,
-set the appropriate regeneration option to ``true``.  For example, if
-you have already run the ``os-horizon`` playbook, but you want to regenerate
-the self-signed certificate, set the ``horizon_ssl_self_signed_regen`` variable
-to ``true`` in ``/etc/openstack_deploy/user_variables.yml``:
+  .. code-block:: yaml
 
-.. code-block:: yaml
-
-    horizon_ssl_self_signed_regen: true
+     horizon_ssl_self_signed_regen: true
 
 .. note::
 
@@ -98,25 +98,27 @@ to ``true`` in ``/etc/openstack_deploy/user_variables.yml``:
 User-provided certificates
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You can provide your own SSL certificates, keys, and CA certificates
-for added trust in highly secure environments. Acquiring certificates from a
+For added trust in highly secure environments, you can provide your own SSL
+certificates, keys, and CA certificates. Acquiring certificates from a
 trusted certificate authority is outside the scope of this document, but the
 `Certificate Management`_  section of the Linux Documentation Project explains
 how to create your own certificate authority and sign certificates.
 
 .. _Certificate Management: http://www.tldp.org/HOWTO/SSL-Certificates-HOWTO/c118.html
 
-Deploying user-provided SSL certificates is a three step process:
+Use the following process to deploy user-provided SSL certificates in
+OpenStack-Ansible:
 
-#. Copy your SSL certificate, key, and CA certificate to the deployment host.
+#. Copy your SSL certificate, key, and CA certificate files to the deployment
+   host.
 #. Specify the path to your SSL certificate, key, and CA certificate in
-   ``/etc/openstack_deploy/user_variables.yml``.
+   the ``/etc/openstack_deploy/user_variables.yml`` file.
 #. Run the playbook for that service.
 
 For example, to deploy user-provided certificates for RabbitMQ,
 copy the certificates to the deployment host, edit
-``/etc/openstack_deploy/user_variables.yml`` and set the following three
-variables:
+the ``/etc/openstack_deploy/user_variables.yml`` file and set the following
+three variables:
 
 .. code-block:: yaml
 
@@ -124,7 +126,7 @@ variables:
     rabbitmq_user_ssl_key:     /tmp/example.com.key
     rabbitmq_user_ssl_ca_cert: /tmp/ExampleCA.crt
 
-Run the playbook to apply the certificates:
+Then, run the playbook to apply the certificates:
 
 .. code-block:: shell-session
 
@@ -133,7 +135,7 @@ Run the playbook to apply the certificates:
 The playbook deploys your user-provided SSL certificate, key, and CA
 certificate to each RabbitMQ container.
 
-The process is identical to the other services. Replace
-``rabbitmq`` in the configuration variables shown above with ``horizon``,
-``haproxy``, or ``keystone`` to deploy user-provided certificates to those
-services.
+The process is identical for the other services. Replace `rabbitmq` in
+the preceding configuration variables with `horizon`, `haproxy`, or `keystone`,
+and then run the playbook for that service to deploy user-provided certificates
+to those services.
