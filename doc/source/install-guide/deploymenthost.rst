@@ -68,7 +68,9 @@ due to connectivity issues.
 
 The following network information is used as an example:
 
-  Container management: 172.29.236.0/22 (VLAN 10)
+   .. code-block::
+
+      Container management: 172.29.236.0/22 (VLAN 10)
 
 Select an IP from this range to assign to the deployment host.
 
