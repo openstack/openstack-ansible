@@ -20,10 +20,17 @@
 """Returns data about containers and groups in tabular formats."""
 
 # NOTE(nrb/palendae): The contents of this file were moved
-# to manage_inventory.py in order to facilitate importing of the python code
+# to manage.py in order to facilitate importing of the python code
 
 # This file remains for backwards compatibility
-import manage_inventory
+import os
+import sys
+
+cwd = os.path.abspath(os.path.dirname(__file__))
+import_path = os.path.join(cwd, '..', 'lib')
+sys.path.append(import_path)
+
+import manage
 
 if __name__ == "__main__":
-        manage_inventory.main()
+        manage.main()

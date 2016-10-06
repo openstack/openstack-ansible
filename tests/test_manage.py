@@ -6,11 +6,11 @@ import sys
 import test_inventory
 import unittest
 
-MANAGE_DIR = path.join(os.getcwd(), 'scripts')
+MANAGE_DIR = path.join(os.getcwd(), 'lib')
 
 sys.path.append(MANAGE_DIR)
 
-import manage_inventory as mi
+import manage as mi
 
 
 def setUpModule():
