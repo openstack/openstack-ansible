@@ -94,3 +94,12 @@ neutron_plugin_base:
   - router
   - metering
   - neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPluginv2
+
+# TODO(odyssey4me):
+# This is in place to resolve build issues with Rally due to
+# incompatibilities between its requirements and OpenStack
+# upper constraints. This may be removed when
+# https://review.openstack.org/385360 merges and the SHA's
+# are updated to include it.
+repo_build_upper_constraints_overrides:
+  - pycparser<2.14
