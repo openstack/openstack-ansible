@@ -13,7 +13,8 @@ intended for deployers.
    deploymenthost.rst
    targethosts.rst
    configure.rst
-   installation.rst
+   run-playbooks.rst
+   verify-operation.rst
    app.rst
 
 Disclaimer
