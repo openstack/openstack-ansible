@@ -13,8 +13,8 @@ For more information about configuring security, see `Appendix F`_.
 
 .. note::
 
-   Every deployer has different security requirements based on
-   `OpenStack Security Guide`_ has instructions and advice on how to
+   Every deployer has different security requirements.
+   The `OpenStack Security Guide`_ has instructions and advice on how to
    operate and consume an OpenStack cloud by using the most secure methods.
 
 Encrypted communication
