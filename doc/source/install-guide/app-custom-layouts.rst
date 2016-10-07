@@ -72,7 +72,7 @@ expects to find a pair of keys. The first key maps to items in the
 ``container_skel`` section, and the second key maps to the target host groups
 (described above) that are responsible for hosting the service component.
 
-To continue the example, the ``memcache.yml``file defines the
+To continue the example, the ``memcache.yml`` file defines the
 ``memcache_container`` container group. This group is a subset of the
 ``shared-infra_containers`` group, which is itself a subset of
 the ``all_containers`` inventory group.
