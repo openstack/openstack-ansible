@@ -10,6 +10,7 @@ from os import path
 import Queue
 import sys
 import unittest
+import warnings
 import yaml
 
 INV_DIR = 'playbooks/inventory'
@@ -1200,6 +1201,60 @@ class TestLxcHosts(TestConfigCheckBase):
         self.add_config_key('lxc_hosts', {})
         with self.assertRaises(di.LxcHostsDefined):
             get_inventory()
+
+
+class TestConfigMatchesEnvironment(unittest.TestCase):
+    def setUp(self):
+        self.env = di.load_environment(BASE_ENV_DIR, {})
+
+    def test_matching_keys(self):
+        config = get_config()
+
+        result = di._check_all_conf_groups_present(config, self.env)
+        self.assertTrue(result)
+
+    def test_failed_match(self):
+        bad_config = get_config()
+        bad_config['bogus_key'] = []
+
+        result = di._check_all_conf_groups_present(bad_config, self.env)
+        self.assertFalse(result)
+
+    def test_extra_config_key_warning(self):
+        bad_config = get_config()
+        bad_config['bogus_key'] = []
+        with warnings.catch_warnings(record=True) as wl:
+            di._check_all_conf_groups_present(bad_config, self.env)
+            self.assertEqual(1, len(wl))
+            self.assertTrue('bogus_key' in str(wl[0].message))
+
+    def test_multiple_extra_keys(self):
+        bad_config = get_config()
+        bad_config['bogus_key1'] = []
+        bad_config['bogus_key2'] = []
+
+        with warnings.catch_warnings(record=True) as wl:
+            di._check_all_conf_groups_present(bad_config, self.env)
+            self.assertEqual(2, len(wl))
+            warn_msgs = [str(warn.message) for warn in wl]
+            warn_msgs.sort()
+            self.assertTrue('bogus_key1' in warn_msgs[0])
+            self.assertTrue('bogus_key2' in warn_msgs[1])
+
+    def test_confirm_exclusions(self):
+        """Ensure the the excluded keys in the function are present."""
+        config = get_config()
+        excluded_keys = ('global_overrides', 'cidr_networks', 'used_ips')
+
+        for key in excluded_keys:
+            config[key] = 'sentinel value'
+
+        with warnings.catch_warnings(record=True) as wl:
+            di._check_all_conf_groups_present(config, self.env)
+            self.assertEqual(0, len(wl))
+
+        for key in excluded_keys:
+            self.assertIn(key, config.keys())
 
 
 if __name__ == '__main__':

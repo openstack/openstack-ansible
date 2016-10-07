@@ -25,6 +25,7 @@ import Queue
 import random
 import tarfile
 import uuid
+import warnings
 import yaml
 
 logger = logging.getLogger('osa-inventory')
@@ -1057,6 +1058,34 @@ def _check_config_settings(cidr_networks, config, container_skel):
     _check_lxc_hosts(config)
 
 
+def _check_all_conf_groups_present(config, environment):
+    """Verifies that all groups defined in the config are in the environment
+
+    If a group is in config but not the environment, a warning will be raised.
+    Multiple warnings can be raised, and the return value will be set to False.
+
+    If all groups found are in the environment, the function returns True
+
+    :param config: ``dict`` user's provided configuration
+    :param environment: ``dict`` group membership mapping
+    :rtype: bool, True if all groups are in environment, False otherwise
+    """
+    excludes = ('global_overrides', 'cidr_networks', 'used_ips')
+    config_groups = [k for k in config.keys() if k not in excludes]
+    env_groups = environment['physical_skel'].keys()
+
+    retval = True
+
+    for group in config_groups:
+        if group not in env_groups:
+            msg = ("Group %s was found in configuration but "
+                   "not the environment." % group)
+            warnings.warn(msg)
+
+            retval = False
+    return retval
+
+
 def load_environment(config_path, environment):
     """Create an environment dictionary from config files
 
@@ -1228,7 +1257,8 @@ def main(config=None, check=False, debug=False, environment=None, **kwargs):
     )
 
     if check:
-        return 'Configuration ok!'
+        if _check_all_conf_groups_present(user_defined_config, environment):
+            return 'Configuration ok!'
 
     # Generate a list of all hosts and their used IP addresses
     hostnames_ips = {}

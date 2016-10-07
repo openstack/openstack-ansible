@@ -124,6 +124,9 @@ Using the ``--check`` flag when running ``dynamic_inventory.py`` will run the
 inventory build process and look for known errors, but not write any files to
 disk.
 
+If any groups defined in the ``openstack_user_config.yml`` or ``conf.d`` files
+are not found in the environment, a warning will be raised.
+
 This check does not do YAML syntax validation, though it will fail if there
 are unparseable errors.
 
