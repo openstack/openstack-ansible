@@ -1,28 +1,33 @@
-==========================
-Preparing the target hosts
-==========================
+============================================
+Configuring the operating system and storage
+============================================
 
-The following section describes the installation and configuration of
-operating systems for the target hosts.
+This section describes the installation and configuration of operating
+systems for the target hosts, as well as deploying SSH keys and
+configuring storage.
 
 Installing the operating system
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Install the Ubuntu Server 16.04 (Xenial Xerus) LTS 64-bit/
-Ubuntu Server 14.04 (Trusty Tahr) LTS 64-bit operating
-system on the target host. Configure at least one network interface
-to access the internet or suitable local repositories.
+Install one of the following supported operating systems on the
+target host:
+
+* Ubuntu server 16.04 (Xenial Xerus) LTS 64-bit
+* Ubuntu server 14.04 (Trusty Tahr) LTS 64-bit
+
+Configure at least one network interface to access the Internet or
+suitable local repositories.
 
 We recommend adding the Secure Shell (SSH) server packages to the
-installation on target hosts without local (console) access.
+installation on target hosts that do not have local (console) access.
 
 .. note::
 
-   We also recommend setting your locale to `en_US.UTF-8`. Other locales may
+   We also recommend setting your locale to `en_US.UTF-8`. Other locales might
    work, but they are not tested or supported.
 
-Configuring the operating system
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Configure the operating system
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #. Update package source lists
 
@@ -30,15 +35,15 @@ Configuring the operating system
 
        # apt-get update
 
-#. Upgrade system packages and kernel:
+#. Upgrade the system packages and kernel:
 
    .. code-block:: shell-session
 
        # apt-get dist-upgrade
 
-Reboot before you continue.
+#. Reboot the host.
 
-#. Ensure the kernel version is ``3.13.0-34-generic`` or later.
+#. Ensure that the kernel version is ``3.13.0-34-generic`` or later:
 
    .. code-block:: shell-session
 
@@ -59,37 +64,37 @@ Reboot before you continue.
       # echo 'bonding' >> /etc/modules
       # echo '8021q' >> /etc/modules
 
-#. Configure NTP in ``/etc/ntp.conf`` to synchronize with a suitable time
-   source and restart the service.
+#. Configure Network Time Protocol (NTP) in ``/etc/ntp.conf`` to
+   synchronize with a suitable time source and restart the service:
 
    .. code-block:: shell-session
 
       # service ntp restart
 
-#. Reboot the host to activate the changes and use new kernel.
+#. Reboot the host to activate the changes and use the new kernel.
 
 Deploying Secure Shell (SSH) keys
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Ansible uses SSH for connectivity between the deployment and target hosts.
+Ansible uses SSH to connect the deployment host and target hosts.
 
 #. Copy the contents of the public key file on the deployment host to
    the ``/root/.ssh/authorized_keys`` file on each target host.
 
-#. Test public key authentication from the deployment host to each
-   target host by sshing to the target host from the deployment host.
-   If you are able to connect and get the shell without authenticating, it
+#. Test public key authentication from the deployment host to each target
+   host by using SSH to connect to the target host from the deployment host.
+   If you can connect and get the shell without authenticating, it
    is working. SSH provides a shell without asking for a
    password.
 
-For more information on how to generate an SSH keypair as well as best
-practices, refer to `GitHub's documentation on generating SSH keys`_.
+For more information about how to generate an SSH key pair, as well as best
+practices, see `GitHub's documentation about generating SSH keys`_.
 
-.. _GitHub's documentation on generating SSH keys: https://help.github.com/articles/generating-ssh-keys/
+.. _GitHub's documentation about generating SSH keys: https://help.github.com/articles/generating-ssh-keys/
 
 .. important::
 
-   OpenStack-Ansible deployments expect the presence of a
+   OpenStack-Ansible deployments require the presence of a
    ``/root/.ssh/id_rsa.pub`` file on the deployment host.
    The contents of this file is inserted into an
    ``authorized_keys`` file for the containers, which is a
@@ -100,14 +105,14 @@ practices, refer to `GitHub's documentation on generating SSH keys`_.
 
 .. _configuring-storage:
 
-Configuring storage
-~~~~~~~~~~~~~~~~~~~
+Configure storage
+~~~~~~~~~~~~~~~~~
 
-`Logical Volume Manager (LVM)`_ allows a single device to be split into
-multiple logical volumes which appear as a physical storage device to the
-operating system. The Block Storage (cinder) service, as well as the LXC
-containers that run the OpenStack infrastructure, can optionally use LVM for
-their data storage.
+`Logical Volume Manager (LVM)`_ enables a single device to be split into
+multiple logical volumes that appear as a physical storage device to the
+operating system. The Block Storage (cinder) service, and the LXC containers
+that run the OpenStack infrastructure, can optionally use LVM for their data
+storage.
 
 .. note::
 
@@ -116,9 +121,8 @@ their data storage.
    configuration, edit the generated configuration file as needed.
 
 #. To use the optional Block Storage (cinder) service, create an LVM
-   volume group named ``cinder-volume`` on the Block Storage host. A
-   metadata size of 2048 must be specified during physical volume
-   creation. For example:
+   volume group named ``cinder-volumes`` on the storage host. Specify a metadata
+   size of 2048 when creating the physical volume. For example:
 
    .. code-block:: shell-session
 
@@ -127,7 +131,7 @@ their data storage.
 
 #. Optionally, create an LVM volume group named ``lxc`` for container file
    systems. If the ``lxc`` volume group does not exist, containers are
-   automatically installed into the file system under ``/var/lib/lxc`` by
+   automatically installed on the file system under ``/var/lib/lxc`` by
    default.
 
 .. _Logical Volume Manager (LVM): https://en.wikipedia.org/wiki/Logical_Volume_Manager_(Linux)
