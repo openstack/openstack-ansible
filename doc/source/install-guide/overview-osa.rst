@@ -2,8 +2,8 @@
 About OpenStack-Ansible
 =======================
 
-OpenStack-Ansible (OSA) uses the `Ansible IT <https://www.ansible.com/how-ansible-works>`_
-automation engine to deploy an OpenStack environment on Ubuntu Linux.
+OpenStack-Ansible (OSA) uses the `Ansible <https://www.ansible.com/how-ansible-works>`_
+IT automation engine to deploy an OpenStack environment on Ubuntu Linux.
 For isolation and ease of maintenance, you can install OpenStack components
 into Linux containers (LXC).
 
