@@ -39,4 +39,9 @@ repo_build_git_bind_mount: "/openstack/{{ inventory_hostname }}{{ repo_build_git
 repo_service_user_name: nginx
 repo_service_group_name: www-data
 
+# Ensure that the repo service and the repo build use the same user:group
+repo_build_service_user_name: "{{ repo_service_user_name }}"
+repo_build_service_group_name: "{{ repo_service_group_name }}"
+
+# Disable the pip lock down for the repo servers
 pip_lock_to_internal_repo: False
