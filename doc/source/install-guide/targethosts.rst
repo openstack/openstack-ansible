@@ -1,11 +1,8 @@
 .. _target-hosts:
 
-====================
-Prepare target hosts
-====================
-
-.. figure:: figures/installation-workflow-targethosts.png
-   :width: 100%
+========================
+Prepare the target hosts
+========================
 
 .. toctree::
    :maxdepth: 2
@@ -13,11 +10,5 @@ Prepare target hosts
    targethosts-prepare.rst
    targethosts-networkconfig.rst
 
-On each target host, perform the following tasks:
-
-* Name the target hosts
-* Install the operating system
-* Generate and set up security measures
-* Update the operating system and install additional software packages
-* Create LVM volume groups
-* Configure networking devices
+.. figure:: figures/installation-workflow-targethosts.png
+   :width: 100%
