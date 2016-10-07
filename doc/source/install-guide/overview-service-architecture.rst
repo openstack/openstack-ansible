@@ -29,7 +29,7 @@ OpenStack-Ansible deploys the following infrastructure components:
 
 * RabbitMQ
 
-  OpenStack services use RabbitMQ for Remote Procedure Calls (RPC).
+  OpenStack services use RabbitMQ for Advanced Message Queuing Protocol (AMQP).
   OSA deploys RabbitMQ in a clustered configuration with all
   queues mirrored between the cluster nodes. Because Telemetry (ceilometer)
   message queue traffic is quite heavy, for large environments we recommend
