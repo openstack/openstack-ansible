@@ -4,6 +4,9 @@
 Appendix B: Example production environment configuration
 ========================================================
 
+Introduction
+~~~~~~~~~~~~
+
 A production environment contains the minimal set of components needed to
 deploy a working OpenStack-Ansible (OSA) environment for production purposes.
 
