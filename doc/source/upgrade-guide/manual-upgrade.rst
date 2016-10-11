@@ -70,7 +70,7 @@ to ensure everything is fine. If any of those check fail, the upgrade
 should stop to let the deployer chose what to do.
 
 Making sure LBaaS v1 isn't in the way
-`````````````````````````````````````
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Because LBaaS was deprecated, this playbook checks if it was previously
 deployed, and fails if this is the case.
@@ -138,34 +138,8 @@ performs a conversion on existing databases and tables.
 
     # openstack-ansible "${UPGRADE_PLAYBOOKS}/db-collation-alter.yml"
 
-Upgrade hosts
-~~~~~~~~~~~~~
-
-Before installing the infrastructure and OpenStack, update the host machines.
-
-.. code-block:: console
-
-    # openstack-ansible setup-hosts.yml --limit '!galera_all[0]'
-
-This command is the same as doing host setups on a new install. The first
-member of the ``galera_all`` host group is excluded to prevent simultaneous
-restarts of all Galera containers.
-
-Update Galera LXC container configuration
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Update the first Galera container's configuration independently.
-
-.. code-block:: console
-
-    # openstack-ansible lxc-containers-create.yml --limit galera_all[0]
-
-This command is a subset of the host setup playbook, limited to the first
-member of the ``galera_all`` host group so that its container is restarted only
-after other Galera containers have been restarted in the previous step.
-
-Cleanup ``pip.conf`` file
-~~~~~~~~~~~~~~~~~~~~~~~~~
+Cleanup pip.conf file
+~~~~~~~~~~~~~~~~~~~~~
 
 The presence of ``pip.conf`` file can cause build failures when upgrading to
 |current_release_formal_name|. This play removes the ``pip.conf`` file
@@ -176,6 +150,65 @@ See :ref:`pip-conf-removal` for more details.
 .. code-block:: console
 
     # openstack-ansible "${UPGRADE_PLAYBOOKS}/pip-conf-removal.yml"
+
+Upgrade hosts
+~~~~~~~~~~~~~
+
+Before installing the infrastructure and OpenStack, update the host machines.
+
+.. code-block:: console
+
+    # openstack-ansible setup-hosts.yml --limit '!galera_all'
+
+This command is the same as doing host setups on a new install. The
+``galera_all`` host group is excluded to prevent reconfiguration and
+restarting of any Galera containers.
+
+Update Galera LXC container configuration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Update the Galera container configuration independently.
+
+.. code-block:: console
+
+    # openstack-ansible lxc-containers-create.yml -e \
+    'lxc_container_allow_restarts=false' --limit galera_all
+
+This command is a subset of the host setup playbook, limited to the
+``galera_all`` host group. The configuration of those containers will be
+updated but a restart for any changes to take effect will be deferred to a
+later playbook.
+
+Perform a controlled rolling restart of the galera containers
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Restart containers one at a time, ensuring that each is up, responding,
+and synced with the other nodes in the cluster, before moving on to the
+next. This step allows the lxc container config applied earlier to take
+effect, ensuring that the containers are restarted in a controlled fashion.
+
+.. code-block:: console
+
+    # openstack-ansible "${UPGRADE_PLAYBOOKS}/galera-cluster-rolling-restart.yml"
+
+Update HAProxy configuration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Install and update any new or changed HAProxy service configurations.
+
+.. code-block:: console
+
+    # openstack-ansible haproxy-install.yml
+
+Update repo servers
+~~~~~~~~~~~~~~~~~~~
+
+Update the configuration of the repo servers and build new packages required by
+the |current_release_formal_name| release.
+
+.. code-block:: console
+
+    # openstack-ansible repo-install.yml
 
 Ensure hostname aliases are created for non-RFC1034/35 hostnames
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -188,13 +221,23 @@ See :ref:`old-hostname-compatibility` for details.
 
     # openstack-ansible "${UPGRADE_PLAYBOOKS}/old-hostname-compatibility.yml"
 
+Perform a mariadb version upgrade
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Update mariadb to the most 10.0 minor release across the cluster.
+
+.. code-block:: console
+
+    # openstack-ansible galera-install.yml -e 'galera_upgrade=true'
+
 Upgrade infrastructure
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Running the standard OpenStack-Ansible infrastructure playbook
-applies the relevant |current_release_formal_name| settings
-and packages.This upgrade is required for the
-|current_release_formal_name| release of OpenStack-Ansible.
+The following commands perform all steps from the setup-infrastructure
+playbook, except for `repo-install.yml``, ``haproxyinstall.yml``, and
+`galera-install.yml`` which we ran earlier.
+Running these playbook applies the relevant |current_release_formal_name|
+settings and packages.
 
 For certain versions of |previous_release_formal_name|, you must upgrade
 the RabbitMQ service.
@@ -203,8 +246,10 @@ See :ref:`setup-infra-playbook` for details.
 
 .. code-block:: console
 
-    # openstack-ansible setup-infrastructure.yml -e 'galera_upgrade=true' \
-    -e 'rabbitmq_upgrade=true'
+    # openstack-ansible memcached-install.yml
+    # openstack-ansible rabbitmq-install.yml -e 'rabbitmq_upgrade=true'
+    # openstack-ansible utility-install.yml
+    # openstack-ansible rsyslog-install.yml
 
 Flush Memcached cache
 ~~~~~~~~~~~~~~~~~~~~~
