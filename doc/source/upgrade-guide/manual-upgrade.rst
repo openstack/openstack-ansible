@@ -126,7 +126,7 @@ HTTPS. This playbook removes existing repositories of the previous default.
 
 .. code-block:: console
 
-    # openstack-ansible "${UPGRADE_PLAYBOOKS}/mariadb-apt-cleanup.yml
+    # openstack-ansible "${UPGRADE_PLAYBOOKS}/mariadb-apt-cleanup.yml"
 
 Update database collations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
