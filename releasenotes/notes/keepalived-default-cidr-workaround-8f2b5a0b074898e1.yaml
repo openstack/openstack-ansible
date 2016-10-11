@@ -1,0 +1,9 @@
+---
+issues:
+  - The variables
+    ``haproxy_keepalived_(internal|external)_cidr`` now has a default
+    set to ``169.254.(2|1).1/24``. This is to prevent Ansible
+    undefined variable warnings.
+    Deployers must set values for these variables for a working
+    haproxy with keepalived environment when using more than one
+    haproxy node.
