@@ -27,12 +27,6 @@
 #  If extra container configurations are desirable set the
 #  "extra_container_config" list to strings containing the options needed.
 
-- name: Set default bind mounts
-  set_fact:
-    lxc_default_bind_mounts: []
-  when:
-    - lxc_default_bind_mounts is undefined
-
 - name: Set default bind mounts (bind var/log)
   set_fact:
     lxc_default_bind_mounts: '{{ lxc_default_bind_mounts | default([{"bind_dir_path": "/var/log", "mount_path": "/openstack/log/{{ inventory_hostname }}"}]) }}'
@@ -45,10 +39,9 @@
     state: "directory"
   with_items:
     - "{{ list_of_bind_mounts | default([]) }}"
-    - "{{ lxc_default_bind_mounts }}"
+    - "{{ lxc_default_bind_mounts | default([]) }}"
   delegate_to: "{{ physical_host }}"
   when:
-    - list_of_bind_mounts is defined
     - not is_metal | bool
 
 - name: LXC bind mount directories
@@ -58,11 +51,10 @@
       [[ ! -d "{{ item['bind_dir_path'] }}" ]] && mkdir -p "{{ item['bind_dir_path'] }}"
   with_items:
     - "{{ list_of_bind_mounts | default([]) }}"
-    - "{{ lxc_default_bind_mounts }}"
+    - "{{ lxc_default_bind_mounts | default([]) }}"
   delegate_to: "{{ physical_host }}"
   register: _bm
   when:
-    - list_of_bind_mounts is defined
     - not is_metal | bool
 
 - name: Add bind mount configuration to container
@@ -72,10 +64,9 @@
     backup: "true"
   with_items:
     - "{{ list_of_bind_mounts | default([]) }}"
-    - "{{ lxc_default_bind_mounts }}"
+    - "{{ lxc_default_bind_mounts | default([]) }}"
   delegate_to: "{{ physical_host }}"
   when:
-    - list_of_bind_mounts is defined
     - not is_metal | bool
   register: _mc
 
