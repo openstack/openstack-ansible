@@ -446,7 +446,7 @@ class TestIps(unittest.TestCase):
 
         mock_open = mock.mock_open()
 
-        for i in xrange(0, 99):
+        for i in range(0, 99):
             # tearDown is ineffective for this loop, so clean the USED_IPs
             # on each run
             inventory = None
