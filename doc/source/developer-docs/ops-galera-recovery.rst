@@ -4,8 +4,8 @@
 Galera cluster recovery
 =======================
 
-Run the `` ``galera-bootstrap`` playbook to automatically recover
-a node or an entire environment. Run the ``galera install`` playbook`
+Run the ``galera-bootstrap`` playbook to automatically recover
+a node or an entire environment. Run the ``galera install`` playbook
 using the ``galera-bootstrap``  tag to auto recover a node or an
 entire environment.
 
