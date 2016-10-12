@@ -7,16 +7,18 @@ Appendix A: Example test environment configuration
 Introduction
 ~~~~~~~~~~~~
 
-A test environment contains the minimal set of components needed to deploy a
-working OpenStack-Ansible (OSA) environment for testing purposes.
+This appendix describes an example test environment for a working
+OpenStack-Ansible (OSA) deployment with a small number of servers.
 
-A test environment has the following characteristics:
+This example environment has the following characteristics:
 
 * One infrastructure (control plane) host (8 vCPU, 8 GB RAM, 60 GB HDD)
 * One compute host (8 vCPU, 8 GB RAM, 60 GB HDD)
 * One Network Interface Card (NIC) for each host
 * A basic compute kit environment, with the Image (glance) and Compute (nova)
   services set to use file-backed storage.
+* Internet access via the router address 172.29.236.1 on the
+  Management Network
 
 .. image:: figures/arch-layout-test.png
    :width: 100%
@@ -25,18 +27,67 @@ A test environment has the following characteristics:
 Network configuration
 ~~~~~~~~~~~~~~~~~~~~~
 
+Network CIDR/VLAN assignments
+-----------------------------
+
++-----------------------+-----------------+------+
+| Network               | CIDR            | VLAN |
++=======================+=================+======+
+| Management Network    | 172.29.236.0/22 |  10  |
++-----------------------+-----------------+------+
+| Tunnel (VXLAN) Network| 172.29.240.0/22 |  30  |
++-----------------------+-----------------+------+
+| Storage Network       | 172.29.244.0/22 |  20  |
++-----------------------+-----------------+------+
+
+IP assignments
+--------------
+
++------------------+----------------+-------------------+----------------+
+| Host name        | Management IP  | Tunnel (VxLAN) IP | Storage IP     |
++==================+================+===================+================+
+| infra1           | 172.29.236.11  |                   |                |
++------------------+----------------+-------------------+----------------+
+| compute1         | 172.29.236.12  | 172.29.240.12     | 172.29.244.12  |
++------------------+----------------+-------------------+----------------+
+| storage1         | 172.29.236.13  |                   | 172.29.244.13  |
++------------------+----------------+-------------------+----------------+
+
+Host network configuration
+--------------------------
+
 .. literalinclude:: ../../../etc/network/interfaces.d/openstack_interface.cfg.test.example
 
-Environment configuration
+Deployment configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The ``/etc/openstack_deploy/openstack_user_config.yml`` configuration file
-defines which hosts run the containers and services deployed by OSA. For
-example, hosts listed in the ``shared-infra_hosts`` section run containers
-for many of the shared services that your OpenStack environment requires.
-The following is an example of the
-``/etc/openstack_deploy/openstack_user_config.yml`` configuration file for a
-test environment.
+Environment layout
+------------------
 
-.. literalinclude:: ../../../etc/openstack_deploy/openstack_user_config.yml.aio
+The ``/etc/openstack_deploy/openstack_user_config.yml`` file defines the
+environment layout.
 
+The following configuration describes the layout for this environment.
+
+.. literalinclude:: ../../../etc/openstack_deploy/openstack_user_config.yml.test.example
+
+Environment customizations
+--------------------------
+
+The optionally deployed files in ``/etc/openstack_deploy/env.d`` allow the
+customization of Ansible groups. This allows the deployer to set whether
+the services will run in a container (the default), or on the host (on
+metal).
+
+For this environment you do not need the ``/etc/openstack_deploy/env.d``
+folder as the defaults set by OpenStack-Ansible are suitable.
+
+User variables
+--------------
+
+The ``/etc/openstack_deploy/user_variables.yml`` file defines the global
+overrides for the default variables
+
+For this environment you do not need the
+``/etc/openstack_deploy/user_variables.yml`` file as the defaults set by
+OpenStack-Ansible are suitable.
