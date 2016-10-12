@@ -13,12 +13,13 @@ import unittest
 import yaml
 
 INV_DIR = 'playbooks/inventory'
-SCRIPT_FILENAME = 'dynamic_inventory.py'
-INV_SCRIPT = path.join(os.getcwd(), INV_DIR, SCRIPT_FILENAME)
+LIB_DIR = 'lib'
 
+sys.path.append(path.join(os.getcwd(), LIB_DIR))
 sys.path.append(path.join(os.getcwd(), INV_DIR))
 
-import dynamic_inventory as di
+import dynamic_inventory
+import generate as di
 
 TARGET_DIR = path.join(os.getcwd(), 'tests', 'inventory')
 BASE_ENV_DIR = INV_DIR
@@ -27,7 +28,7 @@ CONFD = os.path.join(CONFIGS_DIR, 'conf.d')
 AIO_CONFIG_FILE = path.join(CONFIGS_DIR, 'openstack_user_config.yml.aio')
 USER_CONFIG_FILE = path.join(TARGET_DIR, 'openstack_user_config.yml')
 
-# These files will be placed in TARGET_DIR by INV_SCRIPT.
+# These files will be placed in TARGET_DIR by the inventory functions
 # They should be cleaned up between each test.
 CLEANUP = [
     'openstack_inventory.json',
@@ -108,16 +109,17 @@ def get_inventory(clean=True, extra_args=None):
 
 class TestArgParser(unittest.TestCase):
     def test_no_args(self):
-        arg_dict = di.args([])
+        arg_dict = dynamic_inventory.args([])
         self.assertEqual(arg_dict['config'], None)
         self.assertEqual(arg_dict['list'], False)
 
     def test_list_arg(self):
-        arg_dict = di.args(['--list'])
+        arg_dict = dynamic_inventory.args(['--list'])
         self.assertEqual(arg_dict['list'], True)
 
     def test_config_arg(self):
-        arg_dict = di.args(['--config', '/etc/openstack_deploy'])
+        arg_dict = dynamic_inventory.args(['--config',
+                                           '/etc/openstack_deploy'])
         self.assertEqual(arg_dict['config'], '/etc/openstack_deploy')
 
 
@@ -435,8 +437,8 @@ class TestIps(unittest.TestCase):
         # Allow custom assertion errors.
         self.longMessage = True
 
-    @mock.patch('dynamic_inventory.load_environment')
-    @mock.patch('dynamic_inventory.load_user_configuration')
+    @mock.patch('generate.load_environment')
+    @mock.patch('generate.load_user_configuration')
     def test_duplicates(self, mock_load_config, mock_load_env):
         """Test that no duplicate IPs are made on any network."""
 
@@ -821,14 +823,14 @@ class TestMultipleRuns(unittest.TestCase):
     def test_creating_backup_file(self):
         inventory_file_path = os.path.join(TARGET_DIR,
                                            'openstack_inventory.json')
-        get_backup_name_path = 'dynamic_inventory.get_backup_name'
+        get_backup_name_path = 'generate.get_backup_name'
         backup_name = 'openstack_inventory.json-20160531_171804.json'
 
         tar_file = mock.MagicMock()
         tar_file.__enter__.return_value = tar_file
 
         # run make backup with faked tarfiles and date
-        with mock.patch('dynamic_inventory.tarfile.open') as tar_open:
+        with mock.patch('generate.tarfile.open') as tar_open:
             tar_open.return_value = tar_file
             with mock.patch(get_backup_name_path) as backup_mock:
                 backup_mock.return_value = backup_name
@@ -1156,8 +1158,8 @@ class TestNetworkEntry(unittest.TestCase):
 
 
 class TestDebugLogging(unittest.TestCase):
-    @mock.patch('dynamic_inventory.logging')
-    @mock.patch('dynamic_inventory.logger')
+    @mock.patch('generate.logging')
+    @mock.patch('generate.logger')
     def test_logging_enabled(self, mock_logger, mock_logging):
         # Shadow the real value so tests don't complain about it
         mock_logging.DEBUG = 10
@@ -1168,8 +1170,8 @@ class TestDebugLogging(unittest.TestCase):
         self.assertTrue(mock_logger.info.called)
         self.assertTrue(mock_logger.debug.called)
 
-    @mock.patch('dynamic_inventory.logging')
-    @mock.patch('dynamic_inventory.logger')
+    @mock.patch('generate.logging')
+    @mock.patch('generate.logger')
     def test_logging_disabled(self, mock_logger, mock_logging):
         get_inventory(extra_args={"debug": False})
 
