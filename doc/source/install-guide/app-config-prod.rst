@@ -29,7 +29,7 @@ A production environment has the following characteristics:
 Network configuration
 ~~~~~~~~~~~~~~~~~~~~~
 
-.. literalinclude:: ../../../etc/network/interfaces.d/openstack_interface.cfg.example
+.. literalinclude:: ../../../etc/network/interfaces.d/openstack_interface.cfg.prod.example
 
 Environment configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~
