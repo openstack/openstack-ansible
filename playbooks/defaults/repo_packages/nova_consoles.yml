@@ -27,13 +27,13 @@
 
 ## NOVNC from source
 novncproxy_git_repo: https://github.com/kanaka/novnc
-novncproxy_git_install_branch: 33e1462999d78bafff55be9723a90c6498d2d9e8 # HEAD of "master" as of 20.09.2016
+novncproxy_git_install_branch: 00df30999b88803f65f1c83cf278ede4b5195e1e # HEAD of "master" as of 12.10.2016
 novncproxy_git_dest: "/opt/novnc_{{ novncproxy_git_install_branch | replace('/', '_') }}"
 novncproxy_git_project_group: nova_console
 
 ## spice-html5 from source
 spicehtml5_git_repo: https://github.com/SPICE/spice-html5
-spicehtml5_git_install_branch: 54cc41299bea8cd681ed0262735e0fd821cd774a # HEAD of "master" as of 20.09.2016
+spicehtml5_git_install_branch: 54cc41299bea8cd681ed0262735e0fd821cd774a # HEAD of "master" as of 12.10.2016
 spicehtml5_git_dest: "/opt/spicehtml5_{{ spicehtml5_git_install_branch | replace('/', '_') }}"
 spicehtml5_git_project_group: nova_console
 

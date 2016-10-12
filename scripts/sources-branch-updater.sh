@@ -270,7 +270,7 @@ fi
 if [[ "${OSA_BRANCH}" != "master" ]]; then
 
   echo "Updating the release version..."
-  currentversion=$(awk '/openstack_release/ {print $2}' playbooks/inventory/group_vars/all.yml)
+  currentversion=$(awk '/openstack_release:/ {print $2}' playbooks/inventory/group_vars/all.yml)
 
   # Extract the required version info
   major_version=$( echo ${currentversion} | cut -d. -f1 )
