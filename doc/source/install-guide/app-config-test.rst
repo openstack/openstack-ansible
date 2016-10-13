@@ -25,7 +25,7 @@ A test environment has the following characteristics:
 Network configuration
 ~~~~~~~~~~~~~~~~~~~~~
 
-.. TBD
+.. literalinclude:: ../../../etc/network/interfaces.d/openstack_interface.cfg.test.example
 
 Environment configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~

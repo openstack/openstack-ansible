@@ -1,0 +1,94 @@
+# This is a single-NIC configuration to implement the required bridges
+# for OpenStack-Ansible. This illustrates the configuration of the first
+# Infrastructure host and the IP addresses assigned should be adapted
+# for implementation on the other hosts.
+#
+# After implementing this configuration, the host will need to be
+# rebooted.
+
+# Physical interface
+auto eth0
+iface eth0 inet manual
+
+# Container/Host management VLAN interface
+auto eth0.10
+iface eth0.10 inet manual
+    vlan-raw-device eth0
+
+# OpenStack Networking VXLAN (tunnel/overlay) VLAN interface
+auto eth0.30
+iface eth0.30 inet manual
+    vlan-raw-device eth0
+
+# Storage network VLAN interface (optional)
+auto eth0.20
+iface eth0.20 inet manual
+    vlan-raw-device eth0
+
+# Container/Host management bridge
+auto br-mgmt
+iface br-mgmt inet static
+    bridge_stp off
+    bridge_waitport 0
+    bridge_fd 0
+    bridge_ports eth0.10
+    address 172.29.236.11
+    netmask 255.255.252.0
+    gateway 172.29.236.1
+    dns-nameservers 8.8.8.8 8.8.4.4
+
+# OpenStack Networking VXLAN (tunnel/overlay) bridge
+#
+# Only the COMPUTE and NETWORK nodes must have an IP address
+# on this bridge. When used by infrastructure nodes, the
+# IP addresses are assigned to containers which use this
+# bridge.
+#
+auto br-vxlan
+iface br-vxlan inet manual
+    bridge_stp off
+    bridge_waitport 0
+    bridge_fd 0
+    bridge_ports eth0.30
+
+# compute1 VXLAN (tunnel/overlay) bridge config
+#auto br-vxlan
+#iface br-vxlan inet static
+#    bridge_stp off
+#    bridge_waitport 0
+#    bridge_fd 0
+#    bridge_ports eth0.30
+#    address 172.29.240.12
+#    netmask 255.255.252.0
+
+# OpenStack Networking VLAN bridge
+auto br-vlan
+iface br-vlan inet manual
+    bridge_stp off
+    bridge_waitport 0
+    bridge_fd 0
+    bridge_ports none
+
+# Storage bridge (optional)
+#
+# Only the COMPUTE and STORAGE nodes must have an IP address
+# on this bridge. When used by infrastructure nodes, the
+# IP addresses are assigned to containers which use this
+# bridge.
+#
+auto br-storage
+iface br-storage inet manual
+    bridge_stp off
+    bridge_waitport 0
+    bridge_fd 0
+    bridge_ports eth0.20
+
+# compute1 Storage bridge
+#auto br-storage
+#iface br-storage inet static
+#    bridge_stp off
+#    bridge_waitport 0
+#    bridge_fd 0
+#    bridge_ports eth0.20
+#    address 172.29.244.12
+#    netmask 255.255.252.0
