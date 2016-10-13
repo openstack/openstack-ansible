@@ -49,15 +49,19 @@ these services include databases, Memcached, and RabbitMQ. Several other
 host types contain other types of containers, and all of these are listed
 in the ``openstack_user_config.yml`` file.
 
-To configure your OpenStack installation for a test environment or production
-environment, see the examples in :ref:`test-environment-config` and
-:ref:`production-environment-config` file.
-
-To install additional services, see the example configuration files in
-``/etc/openstack_deploy/conf.d``.
+For examples, please see :ref:`test-environment-config` and
+:ref:`production-environment-config`.
 
 For details about how the inventory is generated from the environment
 configuration, see :ref:`developer-inventory`.
+
+Configuring additional services
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To install additional services, the files in
+``/etc/openstack_deploy/conf.d`` provide examples showing
+the correct host groups to use. To add another service, add the host group,
+allocate hosts to it, and then execute the playbooks.
 
 Configuring service credentials
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

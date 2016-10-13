@@ -1,0 +1,12 @@
+---
+# This file contains an example to show how to set
+# the cinder-volume service to run in a container.
+#
+# Important note:
+# When using LVM or any iSCSI-based cinder backends, such as NetApp with
+# iSCSI protocol, the cinder-volume service *must* run on metal.
+# Reference: https://bugs.launchpad.net/ubuntu/+source/lxc/+bug/1226855
+
+container_skel:
+  cinder_volumes_container:
+      is_metal: false
