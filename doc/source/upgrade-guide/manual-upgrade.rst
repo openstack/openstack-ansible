@@ -221,6 +221,17 @@ See :ref:`old-hostname-compatibility` for details.
 
     # openstack-ansible "${UPGRADE_PLAYBOOKS}/old-hostname-compatibility.yml"
 
+Ensure TZ data is sync'd between hosts and containers
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Ensure all containers have the same TZ and the physical hosts.
+
+See :ref:`lxc-container-tz-sync` for details.
+
+.. code-block:: console
+
+    # openstack-ansible "${UPGRADE_PLAYBOOKS}/lxc-container-tz-sync.yml"
+
 Perform a mariadb version upgrade
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

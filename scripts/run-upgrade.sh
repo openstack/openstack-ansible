@@ -180,6 +180,7 @@ function main {
 	# rebuild the repo servers
         RUN_TASKS+=("repo-install.yml")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/old-hostname-compatibility.yml")
+        RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/lxc-container-tz-sync.yml")
         # explicitly perform mariadb upgrade
         RUN_TASKS+=("galera-install.yml -e 'galera_upgrade=true'")
         # explicitly perform controlled galera cluster restart

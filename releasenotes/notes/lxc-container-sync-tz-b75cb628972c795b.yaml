@@ -1,0 +1,7 @@
+---
+upgrade:
+  - LXC containers will have their TZ data sync with their physical host
+    machines. This is being done because containers have been assumed to
+    use UTC while a host could be using something else. This causes issues
+    in some services like celiometer and can result in general time
+    differences in logging.

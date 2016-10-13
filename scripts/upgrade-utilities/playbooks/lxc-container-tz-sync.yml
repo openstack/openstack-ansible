@@ -1,0 +1,44 @@
+---
+# Copyright 2016, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Container time sync
+  hosts: "{{ lxc_host_group | default('lxc_hosts')}}"
+  gather_facts: false
+  max_fail_percentage: 20
+  user: root
+  tasks:
+    - name: Ensure localtime is in sync
+      shell: |
+        EXIT_CODE=0
+        for i in $(lxc-ls --running); do
+          CONTAINER_ROOT="/proc/$(lxc-info -n $i -p | awk '{print $2}')/root"
+          DATE_BEFORE="$(chroot ${CONTAINER_ROOT} date +%Z)"
+          rm "${CONTAINER_ROOT}/etc/localtime"
+          cp -fP /etc/localtime "${CONTAINER_ROOT}/etc/localtime"
+          DATE_AFTER="$(chroot ${CONTAINER_ROOT} date +%Z)"
+          echo $DATE_AFTER $DATE_BEFORE
+          if [ "${DATE_BEFORE}" != "${DATE_AFTER}" ]; then
+            export EXIT_CODE=3
+          fi
+        done
+        exit ${EXIT_CODE}
+      args:
+        executable: /bin/bash
+      register: tz_data
+      failed_when: tz_data.rc == 1
+      changed_when: tz_data.rc == 3
+  tags:
+    - lxc-containers-create
+
