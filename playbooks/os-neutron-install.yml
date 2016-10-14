@@ -19,9 +19,6 @@
   max_fail_percentage: 20
   user: root
   pre_tasks:
-    - include: common-tasks/rabbitmq-servers-sort.yml
-      vars:
-        sort_group_name: "neutron_all"
     - include: common-tasks/os-lxc-container-setup.yml
       static: no
       vars:
