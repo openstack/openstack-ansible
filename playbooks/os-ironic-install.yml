@@ -18,9 +18,6 @@
   gather_facts: "{{ gather_facts | default(True) }}"
   user: root
   pre_tasks:
-    - include: common-tasks/rabbitmq-servers-sort.yml
-      vars:
-        sort_group_name: "ironic_all"
     - include: common-tasks/os-lxc-container-setup.yml
     - include: common-tasks/rabbitmq-vhost-user.yml
       static: no

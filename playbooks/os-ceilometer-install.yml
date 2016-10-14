@@ -19,9 +19,6 @@
   max_fail_percentage: 20
   user: root
   pre_tasks:
-    - include: common-tasks/rabbitmq-servers-sort.yml
-      vars:
-        sort_group_name: "ceilometer_all"
     - include: common-tasks/os-lxc-container-setup.yml
     - include: common-tasks/rabbitmq-vhost-user.yml
       static: no
