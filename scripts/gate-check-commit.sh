@@ -72,10 +72,16 @@ iptables -P OUTPUT ACCEPT
 
 # Bootstrap an AIO
 pushd "$(dirname "${0}")/../tests"
-  ansible-playbook -i test-inventory.ini \
-                   -e "${BOOTSTRAP_OPTS}" \
-                   ${ANSIBLE_PARAMETERS} \
-                   bootstrap-aio.yml
+  if [ -z "${BOOTSTRAP_OPTS}" ]; then
+    ansible-playbook bootstrap-aio.yml \
+                     -i test-inventory.ini \
+                     ${ANSIBLE_PARAMETERS}
+  else
+    ansible-playbook bootstrap-aio.yml \
+                     -i test-inventory.ini \
+                     -e "${BOOTSTRAP_OPTS}" \
+                     ${ANSIBLE_PARAMETERS}
+  fi
 popd
 
 # Implement the log directory
