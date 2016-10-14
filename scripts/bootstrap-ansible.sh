@@ -43,6 +43,7 @@ info_block "Bootstrapping System with Ansible"
 
 # Set the variable to the role file to be the absolute path
 ANSIBLE_ROLE_FILE="$(readlink -f "${ANSIBLE_ROLE_FILE}")"
+OSA_INVENTORY_PATH="$(readlink -f playbooks/inventory)"
 
 # Create the ssh dir if needed
 ssh_key_create
@@ -132,10 +133,9 @@ if [ -f "${ANSIBLE_ROLE_FILE}" ]; then
   fi
 fi
 
-# Copy the OSA Ansible rc file into place
-if [[ ! -f "/usr/local/bin/openstack-ansible.rc" ]]; then
-  cp scripts/openstack-ansible.rc /usr/local/bin/openstack-ansible.rc
-fi
+# Write the OSA Ansible rc file
+sed "s|OSA_INVENTORY_PATH|${OSA_INVENTORY_PATH}|g" scripts/openstack-ansible.rc > /usr/local/bin/openstack-ansible.rc
+
 
 # Create openstack ansible wrapper tool
 cat > /usr/local/bin/openstack-ansible <<EOF
