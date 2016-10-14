@@ -82,7 +82,7 @@ function successerator {
 
 function install_bits {
   # Use the successerator to run openstack-ansible
-  successerator openstack-ansible ${ANSIBLE_PARAMETERS} $@
+  successerator openstack-ansible $@ ${ANSIBLE_PARAMETERS}
 }
 
 function ssh_key_create {
