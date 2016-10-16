@@ -33,6 +33,8 @@ Network configuration
 Network CIDR/VLAN assignments
 -----------------------------
 
+The following CIDR and VLAN assignments are used for this environment.
+
 +-----------------------+-----------------+------+
 | Network               | CIDR            | VLAN |
 +=======================+=================+======+
@@ -45,6 +47,9 @@ Network CIDR/VLAN assignments
 
 IP assignments
 --------------
+
+The following host name and IP address assignments are used for this
+environment.
 
 +------------------+----------------+-------------------+----------------+
 | Host name        | Management IP  | Tunnel (VxLAN) IP | Storage IP     |
@@ -68,6 +73,16 @@ IP assignments
 
 Host network configuration
 --------------------------
+
+Each host will require the correct network bridges to be implemented. The
+following is the ``/etc/network/interfaces`` file for ``infra1``.
+
+.. note::
+
+   If your environment does not have ``eth0``, but instead has ``p1p1`` or
+   some other interface name, ensure that all references to ``eth0`` in all
+   configuration files are replaced with the appropriate name. The same
+   applies to additional network interfaces.
 
 .. literalinclude:: ../../../etc/network/interfaces.d/openstack_interface.cfg.prod.example
 
