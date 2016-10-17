@@ -27,9 +27,6 @@
         log_dirs:
           - src: "/openstack/log/{{ inventory_hostname }}-magnum"
             dest: "/var/log/magnum"
-    - include: common-tasks/rabbitmq-servers-sort.yml
-      vars:
-        sort_group_name: "magnum_all"
     - include: common-tasks/rabbitmq-vhost-user.yml
       static: no
       vars:
