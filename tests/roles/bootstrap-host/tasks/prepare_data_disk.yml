@@ -23,7 +23,7 @@
     parted --script -l -m | egrep -q ':ext4:openstack-data[12]:;$'
   register: data_disk_partitions
   changed_when: false
-  ignore_errors: yes
+  failed_when: false
   tags:
     - check-data-disk-partitions
 

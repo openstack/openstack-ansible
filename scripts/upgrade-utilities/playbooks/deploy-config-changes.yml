@@ -27,7 +27,7 @@
 
       - name: Retrieve differences
         shell: rsync -avun "{{ repo_root_dir }}/playbooks/inventory/env.d/" "/etc/openstack_deploy/env.d/" | grep "yml$"
-        ignore_errors: yes
+        failed_when: false
         register: diff_result
 
       - name: Copy new env.d files into place
