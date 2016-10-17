@@ -59,7 +59,7 @@ rebuilt it will be brought into the cluster using a compliant hostname.
 .. _restart-rabbitmq:
 
 ``restart-rabbitmq-containers``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This playbook restarts the rabbitmq nodes serially (1 at a time), and waits
 for rabbitmq to be back up before continuing.
@@ -103,8 +103,21 @@ current version of MariaDB and Galera and upgrade to the 10.x series.
 
 Sends "flush_all" to memcached with the help of nc.
 
-rfc1034_1035-cleanup.yml
-~~~~~~~~~~~~~~~~~~~~~~~~
+.. _neutron-mtu-migration:
+
+``neutron-mtu-migration.yml``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Update the MTU setting for networks within neutron. When migrating from Liberty to Mitaka
+neutron does not automatically set or migrate networks. Neutron has no migration to
+correctly set the MTU on existing networks created in Liberty or below. This work-around
+sets the MTU on these networks before the upgrade starts so that instances booted on these
+networks after the upgrade has finished will have their MTUs set correctly.
+
+.. _rfc1034-1035-cleanup:
+
+``rfc1034_1035-cleanup.yml``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This playbook ensures the OpenStack service databases for heat, nova, neutron,
 and cinder are cleaned up with regard to actively registered services. These
@@ -112,8 +125,6 @@ OpenStack services register nodes within the environment using the hostname as
 a unique key and in previous releases containers had invalid hostnames. This
 playbook will remove invalid service/agent entries that are found within the
 database and meet the invalid hostname criteria.
-
-.. _rfc1034-1035-cleanup:
 
 --------------
 

@@ -1,0 +1,12 @@
+---
+upgrade:
+  - When migrating from Liberty to Mitaka neutron does not automatically
+    set or migrate networks MTU settings. Neutron has no migration to
+    correctly set the MTU on existing networks so we've created an OSA
+    MTU migration playbook to work-around this issue. The playbook will
+    set the MTU on networks created before the upgrade by iterating on
+    known values from the user_variables and facts. Should any known
+    network name be encountered the MTU will be set to the known value.
+    If no MTU and no global override is present the playbook will
+    fall back to using 1500 for vlan/flat networks and 1450 for vxlan
+    networks.

@@ -1,0 +1,79 @@
+---
+# Copyright 2016, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Update neutron MTU for vlan, vxlan, and flat networks
+  hosts: galera_all[0]
+  gather_facts: false
+  user: root
+  tasks:
+    - name: Retrieve networks
+      shell: |
+        mysql -sNL \
+              --unbuffered \
+              -e "SELECT network_id, network_type, physical_network FROM ml2_network_segments WHERE network_type IN ('vlan','flat','vxlan','gre') AND network_id IN (select id from networks where mtu=0);" {{ neutron_galera_database | default('neutron') }} | tr "\t" "|"
+      register: networks
+
+    - name: Create neutron MTU migration script
+      copy:
+        content: |
+          {% for item in networks.stdout_lines %}
+          {% set network_mtu = [] %}
+          {%-   for pn in provider_networks %}
+          {%     if not network_mtu %}
+          {%       if pn['network']['net_name'] is defined and
+                      pn['network']['net_name'] == item.split('|')[-1] and
+                      pn['network']['container_mtu'] is defined %}
+          {%         if not network_mtu %}
+          {%           if network_mtu.append(pn['network']['container_mtu']) %}{% endif %}
+          {%         endif %}
+          # Defined network mtu: {{ network_mtu }} {{ item.split('|')[-1] }}
+          {%       endif %}
+          {%     endif %}
+          {%   endfor %}
+
+          {%-  if neutron_network_device_mtu is defined and not network_mtu %}
+          {%       if not network_mtu %}
+          {%         if network_mtu.append(neutron_network_device_mtu) %}{% endif %}
+          {%       endif %}
+          # Global Defined network mtu: {{ network_mtu }} {{ item.split('|')[-1] }}
+          {%  endif %}
+
+          {%-   if not network_mtu %}
+          {%     if item.split('|')[1] == 'vlan' or item.split('|')[1] == 'flat' %}
+          {%       if not network_mtu %}
+          {%         if network_mtu.append('1500') %}{% endif %}
+          {%       endif %}
+          # Using standard fallback MTU of 1500 for {{ item.split('|')[1] }} type network
+          {%     elif item.split('|')[1] == 'gre' %}
+          {%       if not network_mtu %}
+          {%         if network_mtu.append('1476') %}{% endif %}
+          {%       endif %}
+          # Using gre fallback MTU of 1476 for {{ item.split('|')[1] }} type network
+          {%     elif item.split('|')[1] == 'vxlan' or item.split('|')[1] == 'NULL' %}
+          {%       if not network_mtu %}
+          {%         if network_mtu.append('1450') %}{% endif %}
+          {%       endif %}
+          # Using vxlan fallback MTU of 1450 for {{ item.split('|')[1] }} type network
+          {%     endif %}
+          {%   endif %}
+
+          {%-   if network_mtu %}
+          mysql -sNL --unbuffered -e "UPDATE networks SET mtu={{ network_mtu[0] }} WHERE id='{{ item.split('|')[0] }}';" {{ neutron_galera_database | default('neutron') }}
+          {%   endif %}
+          {% endfor %}
+        dest: /tmp/neutron-mtu-script.sh
+
+    - name: Run neutron MTU migration script
+      command: bash /tmp/neutron-mtu-script.sh

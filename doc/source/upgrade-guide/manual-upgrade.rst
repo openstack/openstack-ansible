@@ -215,6 +215,16 @@ See :ref:`memcached-flush` for details.
 
     # openstack-ansible "${UPGRADE_PLAYBOOKS}/memcached-flush.yml"
 
+Populate neutron MTUs
+~~~~~~~~~~~~~~~~~~~~~
+
+See :ref:`neutron-mtu-migration` for details.
+
+.. code-block:: console
+
+    # openstack-ansible "${UPGRADE_PLAYBOOKS}/neutron-mtu-migration.yml"
+
+
 Upgrade OpenStack
 ~~~~~~~~~~~~~~~~~
 
