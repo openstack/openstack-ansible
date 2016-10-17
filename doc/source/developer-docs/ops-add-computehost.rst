@@ -7,8 +7,9 @@ Adding a compute host
 Use the following procedure to add a compute host to an operational
 cluster.
 
-#. Configure the host as a target host. See `Chapter 3, *Target
-   hosts* <targethosts.html>`_ for more information.
+#. Configure the host as a target host. See `Prepare target hosts
+   <http://docs.openstack.org/developer/openstack-ansible/newton/install-guide/targethosts.html>`_
+   for more information.
 
 #. Edit the ``/etc/openstack_deploy/openstack_user_config.yml`` file and
    add the host to the ``compute_hosts`` stanza.
