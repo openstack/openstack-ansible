@@ -50,11 +50,23 @@
   vars:
     is_metal: "{{ properties.is_metal|default(false) }}"
 
-# NOTE(mancdaz): rabbitmq cannot be upgraded in serial, so when
-# rabbitmq_upgrade=True, serial is set to 0, else it is 1 for installs
+# The cluster must be stopped when doing major/minor upgrades
+# http://www.rabbitmq.com/clustering.html#upgrading
+- name: Stop RabbitMQ nodes that are not the upgrader
+  hosts: rabbitmq_all:!rabbitmq_all[0]
+  serial: 1
+  max_fail_percentage: 0
+  user: root
+  tasks:
+    - name: "Stop RabbitMQ"
+      service:
+        name: "rabbitmq-server"
+        state: "stopped"
+      when: rabbitmq_upgrade | default(false) | bool
+
 - name: Install rabbitmq server
   hosts: rabbitmq_all
-  serial: "{{ rabbitmq_upgrade|default(false) | bool | ternary(0, 1)}}"
+  serial: 1
   max_fail_percentage: 20
   user: root
   roles:
