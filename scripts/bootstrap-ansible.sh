@@ -26,6 +26,8 @@ export ANSIBLE_PACKAGE=${ANSIBLE_PACKAGE:-"ansible==2.1.1.0"}
 export ANSIBLE_ROLE_FILE=${ANSIBLE_ROLE_FILE:-"ansible-role-requirements.yml"}
 export SSH_DIR=${SSH_DIR:-"/root/.ssh"}
 export DEBIAN_FRONTEND=${DEBIAN_FRONTEND:-"noninteractive"}
+# Set the location of the constraints to use for all pip installations
+export UPPER_CONSTRAINTS_FILE=${UPPER_CONSTRAINTS_FILE:-"http://git.openstack.org/cgit/openstack/requirements/plain/upper-constraints.txt?id=$(awk '/requirements_git_install_branch:/ {print $2}' playbooks/defaults/repo_packages/openstack_services.yml)"}
 # Set the role fetch mode to any option [galaxy, git-clone]
 export ANSIBLE_ROLE_FETCH_MODE=${ANSIBLE_ROLE_FETCH_MODE:-galaxy}
 # virtualenv vars
@@ -94,7 +96,7 @@ PYTHON_EXEC_PATH="$(which python2 || which python)"
 virtualenv --clear ${VIRTUALENV_OPTIONS} --system-site-packages --python="${PYTHON_EXEC_PATH}" /opt/ansible-runtime
 
 # Install ansible
-PIP_OPTS+=" --upgrade"
+PIP_OPTS+=" --upgrade --constraint ${UPPER_CONSTRAINTS_FILE}"
 PIP_COMMAND="/opt/ansible-runtime/bin/pip"
 
 # When upgrading there will already be a pip.conf file locking pip down to the
