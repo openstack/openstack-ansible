@@ -81,10 +81,6 @@ cache_timeout: {{ cache_timeout }}
 repo_build_git_cache: {{ repo_build_git_cache }}
 {% endif %}
 
-## Instruct the gate to always build libvirt-python from pip source
-repo_build_pip_no_binary:
-  - libvirt-python
-
 # The container backing store is set to 'overlayfs' to speed up the
 # AIO build time.
 lxc_container_backing_store: "{{ ((ansible_kernel | version_compare('3.18.0-0-generic', '<')) or (ansible_distribution_release | lower == 'trusty')) | ternary('dir', 'overlayfs') }}"
