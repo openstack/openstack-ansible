@@ -41,6 +41,7 @@
     dest: "/etc/openstack_deploy/openstack_user_config.yml"
     config_overrides: "{{ openstack_user_config_overrides | default({}) }}"
     config_type: "yaml"
+    list_extend: false
   tags:
     - deploy-openstack-user-config
 
