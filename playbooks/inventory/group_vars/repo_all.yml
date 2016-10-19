@@ -45,3 +45,12 @@ repo_build_service_group_name: "{{ repo_service_group_name }}"
 
 # Disable the pip lock down for the repo servers
 pip_lock_to_internal_repo: False
+
+# The following package must always build from source.
+#
+# libvirt-python:
+# A pre-built wheel can be missing libvirt capabilities from the installed
+# version of libvirt-bin, leading to nova-compute failing to start.
+#
+repo_build_pip_no_binary:
+  - libvirt-python
