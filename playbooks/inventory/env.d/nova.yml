@@ -20,9 +20,6 @@ component_skel:
   nova_api_os_compute:
     belongs_to:
       - nova_all
-  nova_cert:
-    belongs_to:
-      - nova_all
   nova_compute:
     belongs_to:
       - nova_all
@@ -52,14 +49,6 @@ container_skel:
       - os-infra_containers
     contains:
       - nova_api_os_compute
-    properties:
-      service_name: nova
-  nova_cert_container:
-    belongs_to:
-      - compute-infra_containers
-      - os-infra_containers
-    contains:
-      - nova_cert
     properties:
       service_name: nova
   nova_compute_container:
