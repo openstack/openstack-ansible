@@ -24,8 +24,8 @@ Install the operating system
 Install one of the following supported operating systems on the deployment
 hosts:
 
- * `Ubuntu server 16.04 (Xenial Xerus) LTS 64-bit <http://releases.ubuntu.com/16.04/>`_
- * `Ubuntu server 14.04 (Trusty Tahr) LTS 64-bit <http://releases.ubuntu.com/14.04/>`_
+* `Ubuntu server 16.04 (Xenial Xerus) LTS 64-bit <http://releases.ubuntu.com/16.04/>`_
+* `Ubuntu server 14.04 (Trusty Tahr) LTS 64-bit <http://releases.ubuntu.com/14.04/>`_
 
 Configure at least one network interface to access the Internet or suitable
 local repositories.
@@ -36,29 +36,29 @@ Configure the operating system
 Install additional software packages and configure Network Time Protocol (NTP).
 Before you begin, we recommend upgrading your system packages and kernel.
 
- #. Update package source lists:
+#. Update package source lists:
 
-    .. code-block:: shell-session
+   .. code-block:: shell-session
 
-        # apt-get update
+       # apt-get update
 
- #. Upgrade the system packages and kernel:
+#. Upgrade the system packages and kernel:
 
-    .. code-block:: shell-session
+   .. code-block:: shell-session
 
        # apt-get dist-upgrade
 
- #. Reboot the host.
+#. Reboot the host.
 
- #. Install additional software packages if they were not installed
-    during the operating system installation:
+#. Install additional software packages if they were not installed
+   during the operating system installation:
 
-    .. code-block:: shell-session
+   .. code-block:: shell-session
 
-        # apt-get install aptitude build-essential git ntp ntpdate \
-          openssh-server python-dev sudo
+       # apt-get install aptitude build-essential git ntp ntpdate \
+         openssh-server python-dev sudo
 
- #. Configure NTP to synchronize with a suitable time source.
+#. Configure NTP to synchronize with a suitable time source.
 
 Configure the network
 ~~~~~~~~~~~~~~~~~~~~~
