@@ -217,7 +217,7 @@ OpenStack Manuals or service documentation and OpenStack-Ansible documentation
 should link to those documents when available, rather than duplicate their
 content.
 
-.. _keystone role documentation: http://docs.openstack.org/developer/openstack-ansible-os_keystone/
+.. _keystone role documentation: http://docs.openstack.org/developer/openstack-ansible-os_keystone/newton/
 
 Release Notes
 -------------

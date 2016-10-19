@@ -33,7 +33,7 @@ audit an environment by using a playbook supplied with OpenStack-Ansible:
 For more information about the security configurations, see the
 `OpenStack-Ansible host security`_ hardening documentation.
 
-.. _openstack-ansible-security: http://docs.openstack.org/developer/openstack-ansible-security/
+.. _openstack-ansible-security: http://docs.openstack.org/developer/openstack-ansible-security/newton/
 .. _Security Technical Implementation Guide (STIG): https://en.wikipedia.org/wiki/Security_Technical_Implementation_Guide
-.. _OpenStack-Ansible host security: http://docs.openstack.org/developer/openstack-ansible-security/
+.. _OpenStack-Ansible host security: http://docs.openstack.org/developer/openstack-ansible-security/newton/
 .. _Appendix H: ../install-guide/app-custom-layouts.html
