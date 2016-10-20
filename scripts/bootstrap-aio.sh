@@ -25,8 +25,13 @@ export BOOTSTRAP_OPTS=${BOOTSTRAP_OPTS:-''}
 
 # Run AIO bootstrap playbook
 pushd tests
-  ansible-playbook -i test-inventory.ini \
-                   -e "${BOOTSTRAP_OPTS}" \
-                   bootstrap-aio.yml
+  if [ -z "${BOOTSTRAP_OPTS}" ]; then
+    ansible-playbook bootstrap-aio.yml \
+                     -i test-inventory.ini
+  else
+    ansible-playbook bootstrap-aio.yml \
+                     -i test-inventory.ini \
+                     -e "${BOOTSTRAP_OPTS}"
+  fi
 popd
 
