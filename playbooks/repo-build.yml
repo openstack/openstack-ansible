@@ -31,6 +31,9 @@
   user: root
   serial: 1
   pre_tasks:
+
+    - include: common-tasks/set-upper-constraints.yml
+
     - name: Load local packages
       debug:
         msg: "Loading Packages"
@@ -108,6 +111,8 @@
       when:
         - "groups['repo_servers_{{ ansible_architecture }}'] | length > 0"
         - "inventory_hostname == groups['repo_servers_{{ ansible_architecture }}'][0]"
+  vars_files:
+    - defaults/repo_packages/openstack_services.yml
   vars:
     pkg_locations:
       - ../
