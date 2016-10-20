@@ -8,7 +8,6 @@ In the following example, all but one node was shut down gracefully:
 
 .. code-block:: shell-session
 
-    # . /usr/local/bin/openstack-ansible.rc
     # ansible galera_container -m shell -a "mysql -h localhost \
     -e 'show status like \"%wsrep_cluster_%\";'"
     node3_galera_container-3ea2cbd3 | FAILED | rc=1 >>

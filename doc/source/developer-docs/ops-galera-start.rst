@@ -13,7 +13,6 @@ one of the nodes.
 
    .. code-block:: shell-session
 
-       # . /usr/local/bin/openstack-ansible.rc
        # ansible galera_container -m shell -a "cat /var/lib/mysql/grastate.dat"
        node2_galera_container-49a47d25 | success | rc=0 >>
        # GALERA saved state version: 2.1
