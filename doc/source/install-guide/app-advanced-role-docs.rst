@@ -13,79 +13,79 @@ The following options are optional.
 Infrastructure service roles
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- `galera_server <http://docs.openstack.org/developer/openstack-ansible-galera_server>`_
+- `galera_server <http://docs.openstack.org/developer/openstack-ansible-galera_server/newton>`_
 
-- `haproxy_server <http://docs.openstack.org/developer/openstack-ansible-haproxy_server>`_
+- `haproxy_server <http://docs.openstack.org/developer/openstack-ansible-haproxy_server/newton>`_
 
-- `memcached_server <http://docs.openstack.org/developer/openstack-ansible-memcached_server>`_
+- `memcached_server <http://docs.openstack.org/developer/openstack-ansible-memcached_server/newton>`_
 
-- `rabbitmq_server <http://docs.openstack.org/developer/openstack-ansible-rabbitmq_server>`_
+- `rabbitmq_server <http://docs.openstack.org/developer/openstack-ansible-rabbitmq_server/newton>`_
 
-- `repo_build <http://docs.openstack.org/developer/openstack-ansible-repo_build>`_
+- `repo_build <http://docs.openstack.org/developer/openstack-ansible-repo_build/newton>`_
 
-- `repo_server <http://docs.openstack.org/developer/openstack-ansible-repo_server>`_
+- `repo_server <http://docs.openstack.org/developer/openstack-ansible-repo_server/newton>`_
 
-- `rsyslog_server <http://docs.openstack.org/developer/openstack-ansible-rsyslog_server>`_
+- `rsyslog_server <http://docs.openstack.org/developer/openstack-ansible-rsyslog_server/newton>`_
 
 
 OpenStack service roles
 ~~~~~~~~~~~~~~~~~~~~~~~
 
--  `os_aodh <http://docs.openstack.org/developer/openstack-ansible-os_aodh>`_
+-  `os_aodh <http://docs.openstack.org/developer/openstack-ansible-os_aodh/newton>`_
 
--  `os_ceilometer <http://docs.openstack.org/developer/openstack-ansible-os_ceilometer>`_
+-  `os_ceilometer <http://docs.openstack.org/developer/openstack-ansible-os_ceilometer/newton>`_
 
--  `os_cinder <http://docs.openstack.org/developer/openstack-ansible-os_cinder>`_
+-  `os_cinder <http://docs.openstack.org/developer/openstack-ansible-os_cinder/newton>`_
 
--  `os_glance <http://docs.openstack.org/developer/openstack-ansible-os_glance>`_
+-  `os_glance <http://docs.openstack.org/developer/openstack-ansible-os_glance/newton>`_
 
--  `os_gnocchi <http://docs.openstack.org/developer/openstack-ansible-os_gnocchi>`_
+-  `os_gnocchi <http://docs.openstack.org/developer/openstack-ansible-os_gnocchi/newton>`_
 
--  `os_heat <http://docs.openstack.org/developer/openstack-ansible-os_heat>`_
+-  `os_heat <http://docs.openstack.org/developer/openstack-ansible-os_heat/newton>`_
 
--  `os_horizon <http://docs.openstack.org/developer/openstack-ansible-os_horizon>`_
+-  `os_horizon <http://docs.openstack.org/developer/openstack-ansible-os_horizon/newton>`_
 
--  `os_ironic <http://docs.openstack.org/developer/openstack-ansible-os_ironic>`_
+-  `os_ironic <http://docs.openstack.org/developer/openstack-ansible-os_ironic/newton>`_
 
--  `os_keystone <http://docs.openstack.org/developer/openstack-ansible-os_keystone>`_
+-  `os_keystone <http://docs.openstack.org/developer/openstack-ansible-os_keystone/newton>`_
 
--  `os_magnum <http://docs.openstack.org/developer/openstack-ansible-os_magnum>`_
+-  `os_magnum <http://docs.openstack.org/developer/openstack-ansible-os_magnum/newton>`_
 
--  `os_neutron <http://docs.openstack.org/developer/openstack-ansible-os_neutron>`_
+-  `os_neutron <http://docs.openstack.org/developer/openstack-ansible-os_neutron/newton>`_
 
--  `os_nova <http://docs.openstack.org/developer/openstack-ansible-os_nova>`_
+-  `os_nova <http://docs.openstack.org/developer/openstack-ansible-os_nova/newton>`_
 
--  `os_rally <http://docs.openstack.org/developer/openstack-ansible-os_rally>`_
+-  `os_rally <http://docs.openstack.org/developer/openstack-ansible-os_rally/newton>`_
 
--  `os_sahara <http://docs.openstack.org/developer/openstack-ansible-os_sahara>`_
+-  `os_sahara <http://docs.openstack.org/developer/openstack-ansible-os_sahara/newton>`_
 
--  `os_swift <http://docs.openstack.org/developer/openstack-ansible-os_swift>`_
+-  `os_swift <http://docs.openstack.org/developer/openstack-ansible-os_swift/newton>`_
 
--  `os_tempest <http://docs.openstack.org/developer/openstack-ansible-os_tempest>`_
+-  `os_tempest <http://docs.openstack.org/developer/openstack-ansible-os_tempest/newton>`_
 
 
 Other roles
 ~~~~~~~~~~~
 
-- `ansible-plugins <http://docs.openstack.org/developer/openstack-ansible-plugins>`_
+- `ansible-plugins <http://docs.openstack.org/developer/openstack-ansible-plugins/newton>`_
 
-- `apt_package_pinning <http://docs.openstack.org/developer/openstack-ansible-apt_package_pinning/>`_
+- `apt_package_pinning <http://docs.openstack.org/developer/openstack-ansible-apt_package_pinning/newton/>`_
 
-- `ceph_client <http://docs.openstack.org/developer/openstack-ansible-ceph_client>`_
+- `ceph_client <http://docs.openstack.org/developer/openstack-ansible-ceph_client/newton>`_
 
-- `galera_client <http://docs.openstack.org/developer/openstack-ansible-galera_client>`_
+- `galera_client <http://docs.openstack.org/developer/openstack-ansible-galera_client/newton>`_
 
-- `lxc_container_create <http://docs.openstack.org/developer/openstack-ansible-lxc_container_create>`_
+- `lxc_container_create <http://docs.openstack.org/developer/openstack-ansible-lxc_container_create/newton>`_
 
-- `lxc_hosts <http://docs.openstack.org/developer/openstack-ansible-lxc_hosts>`_
+- `lxc_hosts <http://docs.openstack.org/developer/openstack-ansible-lxc_hosts/newton>`_
 
-- `pip_install <http://docs.openstack.org/developer/openstack-ansible-pip_install/>`_
+- `pip_install <http://docs.openstack.org/developer/openstack-ansible-pip_install/newton/>`_
 
-- `openstack_openrc <http://docs.openstack.org/developer/openstack-ansible-openstack_openrc>`_
+- `openstack_openrc <http://docs.openstack.org/developer/openstack-ansible-openstack_openrc/newton>`_
 
-- `openstack_hosts <http://docs.openstack.org/developer/openstack-ansible-openstack_hosts>`_
+- `openstack_hosts <http://docs.openstack.org/developer/openstack-ansible-openstack_hosts/newton>`_
 
-- `rsyslog_client <http://docs.openstack.org/developer/openstack-ansible-rsyslog_client>`_
+- `rsyslog_client <http://docs.openstack.org/developer/openstack-ansible-rsyslog_client/newton>`_
 
 
 
