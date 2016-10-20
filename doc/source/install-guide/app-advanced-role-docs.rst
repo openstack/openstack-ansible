@@ -63,6 +63,8 @@ OpenStack service roles
 
 -  `os_tempest <http://docs.openstack.org/developer/openstack-ansible-os_tempest>`_
 
+-  `os_trove <http://docs.openstack.org/developer/openstack-ansible-os_trove>`_
+
 
 Other roles
 ~~~~~~~~~~~
