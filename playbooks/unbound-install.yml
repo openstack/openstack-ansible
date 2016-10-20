@@ -18,6 +18,8 @@
     - unbound_all
   gather_facts: "{{ gather_facts | default(True) }}"
   user: root
+  pre_tasks:
+    - include: common-tasks/set-upper-constraints.yml
   roles:
     - role: "unbound"
       tags:
@@ -25,6 +27,8 @@
     - role: "system_crontab_coordination"
       tags:
         - "system-crontab-coordination"
+  vars_files:
+    - defaults/repo_packages/openstack_services.yml
   vars:
     is_metal: "{{ properties.is_metal|default(false) }}"
 

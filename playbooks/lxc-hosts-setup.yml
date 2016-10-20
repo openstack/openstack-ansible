@@ -19,6 +19,7 @@
   max_fail_percentage: 20
   user: root
   pre_tasks:
+    - include: common-tasks/set-upper-constraints.yml
     - name: Check the state of the default LXC service log directory
       stat:
         path: "/var/log/lxc"
@@ -49,6 +50,8 @@
       rsyslog_client_config_name: "99-lxc-rsyslog-client.conf"
       tags:
         - rsyslog
+  vars_files:
+    - defaults/repo_packages/openstack_services.yml
   vars:
     pip_lock_to_internal_repo: False
   tags:

@@ -20,6 +20,8 @@
   user: root
   pre_tasks:
 
+    - include: common-tasks/set-upper-constraints.yml
+
     - name: Check if the git cache exists on deployment host
       local_action:
         module: stat
@@ -65,6 +67,8 @@
       rsyslog_client_config_name: "99-lsyncd-rsyslog-client.conf"
       tags:
         - rsyslog
+  vars_files:
+    - defaults/repo_packages/openstack_services.yml
   vars:
     is_metal: "{{ properties.is_metal|default(false) }}"
   tags:
