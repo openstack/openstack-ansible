@@ -45,3 +45,11 @@
       - ../
       - /etc/ansible/roles
       - /etc/openstack_deploy
+    # The following package must always build from source.
+    #
+    # libvirt-python:
+    # A pre-built wheel can be missing libvirt capabilities from the installed
+    # version of libvirt-bin, leading to nova-compute failing to start.
+    #
+    repo_build_pip_no_binary:
+      - libvirt-python
