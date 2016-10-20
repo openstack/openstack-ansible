@@ -243,6 +243,7 @@ heat_rabbitmq_telemetry_host_group: "{{ heat_rabbitmq_host_group }}"
 heat_ceilometer_enabled: "{{ (groups['ceilometer_all'] is defined) and (groups['ceilometer_all'] | length > 0) }}"
 
 ## Ironic
+ironic_keystone_auth_plugin: password
 ironic_rabbitmq_userid: ironic
 ironic_rabbitmq_vhost: /ironic
 ironic_rabbitmq_port: "{{ rabbitmq_port }}"
