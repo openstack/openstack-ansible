@@ -90,7 +90,6 @@ Run the playbooks to install OpenStack
 
    .. code-block:: console
 
-      # . /usr/local/bin/openstack-ansible.rc
       # ansible galera_container -m shell \
         -a "mysql -h localhost -e 'show status like \"%wsrep_cluster_%\";'"
 
