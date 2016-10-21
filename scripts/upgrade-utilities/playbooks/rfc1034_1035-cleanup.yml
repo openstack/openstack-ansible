@@ -144,3 +144,106 @@
             neutron port-delete $portid
             done
       when: destroy | bool
+
+- hosts: rabbitmq_all[0]
+  gather_facts: no
+  tasks:
+    - name: List the container inventory hostnames
+      set_fact:
+        neutron_invalid_hostnames: "{{ groups['neutron_all'] | difference(groups['hosts']) }}"
+        heat_invalid_hostnames: "{{ groups['heat_all'] | difference(groups['hosts']) }}"
+        nova_invalid_hostnames: "{{ groups['nova_all'] | difference(groups['hosts']) }}"
+        cinder_invalid_hostnames: "{{ groups['cinder_all'] | difference(groups['hosts']) }}"
+      tags:
+        - rabbitmq-queues-cleanup
+
+    - name: List queues matching old hostname
+      shell: "rabbitmqctl list_queues -p {{ item.vhost }} | grep -e {{ item.search_pattern }} | cut -f 1 "
+      register: rabbit_queues
+      with_items:
+        - vhost: "{{ neutron_rabbitmq_vhost }}"
+          search_pattern: "{{ neutron_invalid_hostnames | join(' -e ') }}"
+        - vhost: "{{ heat_rabbitmq_vhost }}"
+          search_pattern: "{{ heat_invalid_hostnames | join(' -e ') }}"
+        - vhost: "{{ nova_rabbitmq_vhost }}"
+          search_pattern: "{{ nova_invalid_hostnames | join(' -e ') }}"
+        - vhost: "{{ cinder_rabbitmq_vhost }}"
+          search_pattern: "{{ cinder_invalid_hostnames | join(' -e ') }}"
+      tags:
+        - rabbitmq-queues-cleanup
+        - rabbitmq-queues-list
+
+    - name: Dropping rabbitmqadmin
+      get_url:
+        url: "http://127.0.0.1:15672/cli/rabbitmqadmin"
+        dest: /usr/local/bin/rabbitmqadmin
+      tags:
+        - rabbitmq-queues-cleanup
+        - rabbitmqadmin-tool-dl
+
+    - file:
+        path: "/usr/local/bin/rabbitmqadmin"
+        mode: "u+x"
+      tags:
+        - rabbitmq-queues-cleanup
+        - rabbitmqadmin-tool-dl-perms
+
+    - name: Create rabbitmq temp admin user
+      rabbitmq_user:
+        user: "rabbitmqcleanup"
+        password: "{{ lookup('password','/tmp/rabbitmqcleanup_tmp_passwd') }}"
+        vhost: "/"
+        configure_priv: ".*"
+        read_priv: ".*"
+        write_priv: ".*"
+        tags: "administrator"
+        state: "present"
+      tags:
+        - rabbitmq-queues-cleanup
+        - rabbitmq-temp-user-create
+
+    - name: Ensure rabbitmq temp admin user has access to all necessary vhosts
+      rabbitmq_user:
+        user: "rabbitmqcleanup"
+        password: "{{ lookup('file','/tmp/rabbitmqcleanup_tmp_passwd') }}"
+        vhost: "{{ item.item.vhost }}"
+        configure_priv: ".*"
+        read_priv: ".*"
+        write_priv: ".*"
+        tags: "administrator"
+        state: "present"
+      with_items: "{{ rabbit_queues.results }}"
+      tags:
+        - rabbitmq-queues-cleanup
+        - rabbitmq-temp-user-privileges
+
+    - name: Delete queues using rabbitmqadmin (needs admin rights)
+      shell: "/usr/local/bin/rabbitmqadmin -u rabbitmqcleanup -p {{ lookup('file','/tmp/rabbitmqcleanup_tmp_passwd') }} --vhost={{ item.0.item.vhost }} delete queue name={{ item.1 }}"
+      with_subelements:
+        - rabbit_queues.results
+        - stdout_lines
+      tags:
+        - rabbitmq-queues-cleanup
+        - rabbitmq-queues-delete
+
+    - name: Delete rabbitmq temp admin user
+      rabbitmq_user:
+        user: "rabbitmqcleanup"
+        password: "{{ lookup('file','/tmp/rabbitmqcleanup_tmp_passwd') }}"
+        vhost: "/"
+        configure_priv: ".*"
+        read_priv: ".*"
+        write_priv: ".*"
+        tags: "administrator"
+        state: "absent"
+      tags:
+        - rabbitmq-queues-cleanup
+        - rabbitmq-temp-user-delete
+
+    - name: Delete rabbitmq temp admin user password
+      file:
+        path: "/tmp/rabbitmqcleanup_tmp_passwd"
+        state: absent
+      tags:
+        - rabbitmq-queues-cleanup
+        - rabbitmq-temp-user-delete
