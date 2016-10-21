@@ -5,9 +5,8 @@ OpenStack-Ansible Documentation
 OpenStack-Ansible provides Ansible playbooks and roles for the deployment and
 configuration of an OpenStack environment.
 
-OpenStack-Ansible's Newton series is planned to be released with the 14.0.0
-tag between 6 October 2016 and 20 October 2016. A release candidate is
-currently available for testing.
+OpenStack-Ansible's Newton series was first released with the 14.0.0 tag on
+20 October 2016.
 
 * `Newton Series Release Notes`_
 * `Newton Series Timeline`_
