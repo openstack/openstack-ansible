@@ -167,8 +167,10 @@ function main {
         # explicitly perform controlled galera cluster restart
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/galera-cluster-rolling-restart.yml")
         # individually run each of the remaining plays from setup-infrastructure
+        RUN_TASKS+=("unbound-install.yml")
         RUN_TASKS+=("memcached-install.yml")
         RUN_TASKS+=("rabbitmq-install.yml -e 'rabbitmq_upgrade=true'")
+        RUN_TASKS+=("etcd-install.yml")
         RUN_TASKS+=("utility-install.yml")
         RUN_TASKS+=("rsyslog-install.yml")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/memcached-flush.yml")

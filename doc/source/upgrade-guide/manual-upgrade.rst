@@ -246,8 +246,10 @@ See :ref:`setup-infra-playbook` for details.
 
 .. code-block:: console
 
+    # openstack-ansible unbound-install.yml
     # openstack-ansible memcached-install.yml
     # openstack-ansible rabbitmq-install.yml -e 'rabbitmq_upgrade=true'
+    # openstack-ansible etcd-install.yml
     # openstack-ansible utility-install.yml
     # openstack-ansible rsyslog-install.yml
 
