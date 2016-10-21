@@ -9,8 +9,8 @@ configuration of an OpenStack environment.
 
 Documentation for each of the following releases is available.
 
-Ocata (unreleased)
-~~~~~~~~~~~~~~~~~~~
+Ocata: Pre-release
+~~~~~~~~~~~~~~~~~~
 
 OpenStack-Ansible Ocata is currently in development. The
 `Ocata series timeline`_ and `Ocata series release notes`_ are available for
@@ -26,12 +26,11 @@ review.
 .. _Ocata series timeline: https://launchpad.net/openstack-ansible/trunk
 .. _Ocata series release notes: http://docs.openstack.org/releasenotes/openstack-ansible/unreleased.html
 
-Newton (Current release candidate)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Newton: Current stable release, security supported
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible's Newton series is planned to be released with the 14.0.0
-tag between 6 October 2016 and 20 October 2016. A release candidate is
-currently available for testing.
+OpenStack-Ansible's Newton series was first released with the 14.0.0 tag on
+20 October 2016.
 
 * `OpenStack-Ansible Newton documentation`_
 
@@ -43,8 +42,8 @@ currently available for testing.
 .. _OpenStack-Ansible Newton series timeline: https://launchpad.net/openstack-ansible/newton
 .. _OpenStack-Ansible Newton series release notes: http://docs.openstack.org/releasenotes/openstack-ansible/newton.html
 
-Mitaka (Current stable release, security-supported)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Mitaka: Security-supported (EOL: 2017-04-10)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 OpenStack-Ansible's Mitaka Series was first released with the 13.0.0 tag on
 1 April 2016.
