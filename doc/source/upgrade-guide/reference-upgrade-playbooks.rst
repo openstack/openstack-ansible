@@ -89,7 +89,7 @@ commands:
 .. code-block:: console
 
     # openstack-ansible setup-infrastructure.yml -e 'rabbitmq_upgrade=true' \
-    # -e 'galera_upgrade=true'
+      -e 'galera_upgrade=true'
 
 The ``rabbitmq_upgrade`` variable tells the ``rabbitmq_server`` role to
 upgrade RabbitMQ.
