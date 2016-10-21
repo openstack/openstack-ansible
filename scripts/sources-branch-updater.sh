@@ -29,8 +29,8 @@ IFS=$'\n'
 if echo "$@" | grep -e '-h' -e '--help';then
     echo "
 Options:
-  -b|--openstack-branch (name of OpenStack branch, eg: stable/mitaka)
-  -o|--osa-branch       (name of the OSA branch, eg: stable/mitaka)
+  -b|--openstack-branch (name of OpenStack branch, eg: stable/newton)
+  -o|--osa-branch       (name of the OSA branch, eg: stable/newton)
   -s|--service-file     (path to service file to parse)
 "
 exit 0
