@@ -69,18 +69,6 @@ Before starting with the new version, you should do pre-flight checks
 to ensure everything is fine. If any of those check fail, the upgrade
 should stop to let the deployer chose what to do.
 
-Making sure LBaaS v1 isn't in the way
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Because LBaaS was deprecated, this playbook checks if it was previously
-deployed, and fails if this is the case.
-
-See :ref:`lbaas-version-check` for more details.
-
-.. code-block:: console
-
-    # openstack-ansible "${UPGRADE_PLAYBOOKS}/lbaas-version-check.yml"
-
 Cleanup old facts
 ~~~~~~~~~~~~~~~~~
 
@@ -117,26 +105,6 @@ See :ref:`user-secrets-playbook` for more details.
 .. code-block:: console
 
     # openstack-ansible "${UPGRADE_PLAYBOOKS}/user-secrets-adjustment.yml"
-
-Cleanup old MariaDB apt repositories
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The default MariaDB apt repositories have been changed to use HTTP instead of
-HTTPS. This playbook removes existing repositories of the previous default.
-
-.. code-block:: console
-
-    # openstack-ansible "${UPGRADE_PLAYBOOKS}/mariadb-apt-cleanup.yml"
-
-Update database collations
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The default database collation has been changed to `utf8_general_ci`. This play
-performs a conversion on existing databases and tables.
-
-.. code-block:: console
-
-    # openstack-ansible "${UPGRADE_PLAYBOOKS}/db-collation-alter.yml"
 
 Cleanup pip.conf file
 ~~~~~~~~~~~~~~~~~~~~~
@@ -210,17 +178,6 @@ the |current_release_formal_name| release.
 
     # openstack-ansible repo-install.yml
 
-Ensure hostname aliases are created for non-RFC1034/35 hostnames
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Ensure an alias is created for non-RFC1034/35 hostnames.
-
-See :ref:`old-hostname-compatibility` for details.
-
-.. code-block:: console
-
-    # openstack-ansible "${UPGRADE_PLAYBOOKS}/old-hostname-compatibility.yml"
-
 Perform a mariadb version upgrade
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -261,15 +218,6 @@ See :ref:`memcached-flush` for details.
 .. code-block:: console
 
     # openstack-ansible "${UPGRADE_PLAYBOOKS}/memcached-flush.yml"
-
-Stop and remove ``aodh-api`` service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-See :ref:`aodh-api-init-delete` for details.
-
-.. code-block:: console
-
-    # openstack-ansible "${UPGRADE_PLAYBOOKS}/aodh-api-init-delete.yml"
 
 Upgrade OpenStack
 ~~~~~~~~~~~~~~~~~

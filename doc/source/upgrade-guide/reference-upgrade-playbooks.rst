@@ -9,20 +9,6 @@ Within the main :file:`scripts` directory there is an :file:`upgrade-utilities`
 directory, which contains an additional playbooks directory. These playbooks
 facilitate the upgrade process.
 
-.. _lbaas-version-check:
-
-lbaas-version-check.yml
-~~~~~~~~~~~~~~~~~~~~~~~
-
-This playbook is part of the general pre-flight checks.
-
-Because LBaaS v1 isn't supported in |current_release_formal_name|
-and above, and there is no migration path, the deployer will have
-to manually disable LBaaS v1 before upgrading. For
-openstack-ansible, we are checking if ``neutron_lbaas`` is set to
-``False``, but additional operations are to be done by the deployer
-for the cleanup.
-
 .. _fact-cleanup-playbook:
 
 ansible_fact_cleanup.yml
@@ -61,18 +47,6 @@ pip-conf-removal.yml
 The presence of ``pip.conf`` locks down all Python installations to packages
 on the repo servers. If ``pip.conf`` exists on a repo server or a physical
 node, it will cause a circular dependency issue and the upgrade will fail.
-
-.. _old-hostname-compatibility:
-
-old-hostname-compatibility.yml
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-This playbook ensures an alias is created for old hostnames that may not be
-RFC 1034 or 1035 compatible. Using a hostname alias allows agents to continue
-working in cases where the hostname is also the registered agent name. This
-playbook is only needed for upgrades of in-place upgrades of existing nodes or
-if a node is replaced or rebuilt it will be brought into the cluster using a
-compliant hostname.
 
 .. _setup-infra-playbook:
 
@@ -113,13 +87,3 @@ memcached-flush.yml
 ~~~~~~~~~~~~~~~~~~~
 
 Sends "flush_all" to memcached with the help of nc.
-
-.. _aodh-api-init-delete:
-
-aodh-api-init-delete.yml
-~~~~~~~~~~~~~~~~~~~~~~~~
-
-Stops the ``aodh-api`` service and removes the init file since ``aodh-api``
-now runs under Apache ``mod_wsgi``.
-Run the ``os-aodh-install.yml`` playbook during the OpenStack services upgrade
-to ensure ``aodh-api`` is available after running ``aodh-api-init-delete.yml``.

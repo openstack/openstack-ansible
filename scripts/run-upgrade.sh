@@ -147,12 +147,9 @@ function main {
     "${SCRIPTS_PATH}/bootstrap-ansible.sh"
 
     pushd ${MAIN_PATH}/playbooks
-        RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/lbaas-version-check.yml")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/ansible_fact_cleanup.yml")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/deploy-config-changes.yml")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/user-secrets-adjustment.yml")
-        RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/mariadb-apt-cleanup.yml")
-        RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/db-collation-alter.yml")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/pip-conf-removal.yml")
         # we don't want to trigger galera container restarts yet
         RUN_TASKS+=("setup-hosts.yml --limit '!galera_all'")
@@ -161,7 +158,6 @@ function main {
         RUN_TASKS+=("haproxy-install.yml")
 	# rebuild the repo servers
         RUN_TASKS+=("repo-install.yml")
-        RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/old-hostname-compatibility.yml")
         # explicitly perform mariadb upgrade
         RUN_TASKS+=("galera-install.yml -e 'galera_upgrade=true'")
         # explicitly perform controlled galera cluster restart
@@ -174,7 +170,6 @@ function main {
         RUN_TASKS+=("utility-install.yml")
         RUN_TASKS+=("rsyslog-install.yml")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/memcached-flush.yml")
-        RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/aodh-api-init-delete.yml")
         RUN_TASKS+=("setup-openstack.yml")
         # Run the tasks in order
         for item in ${!RUN_TASKS[@]}; do
