@@ -110,7 +110,7 @@ def get_inventory(clean=True, extra_args=None):
 class TestArgParser(unittest.TestCase):
     def test_no_args(self):
         arg_dict = dynamic_inventory.args([])
-        self.assertEqual(arg_dict['config'], None)
+        self.assertIsNone(arg_dict['config'])
         self.assertEqual(arg_dict['list'], False)
 
     def test_list_arg(self):
