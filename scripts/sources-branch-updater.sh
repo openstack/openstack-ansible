@@ -266,8 +266,9 @@ else
 fi
 
 # Update the release version in playbooks/inventory/group_vars/all.yml
-# We don't want to be doing this for the master branch
-if [[ "${OSA_BRANCH}" != "master" ]]; then
+# We don't want to be doing this for the master branch and we only want
+# to do it once, so we key off of a specific repo source file name.
+if [[ "${OSA_BRANCH}" != "master" ]] && [[ "${SERVICE_FILE}" == "playbooks/defaults/repo_packages/openstack_services.yml" ]]; then
 
   echo "Updating the release version..."
   currentversion=$(awk '/openstack_release:/ {print $2}' playbooks/inventory/group_vars/all.yml)
