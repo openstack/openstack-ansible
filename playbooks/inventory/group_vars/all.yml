@@ -46,6 +46,9 @@ pip_links:
   - { name: "openstack_release", link: "{{ openstack_repo_url }}/os-releases/{{ openstack_release }}/" }
 pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"
 
+# The upper constraints to apply to all pip installations
+pip_install_upper_constraints: "{{ openstack_repo_url }}/os-releases/{{ openstack_release }}/requirements_constraints.txt"
+
 ## OpenStack source options
 # URL for the frozen internal openstack repo.
 repo_server_port: 8181
