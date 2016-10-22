@@ -269,6 +269,15 @@ See :ref:`aodh-api-init-delete` for details.
 
     # openstack-ansible "${UPGRADE_PLAYBOOKS}/aodh-api-init-delete.yml"
 
+Stop and remove ``ceilometer-api`` service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+See :ref:`ceilometer-api-init-delete` for details.
+
+.. code-block:: console
+
+    # openstack-ansible "${UPGRADE_PLAYBOOKS}/ceilometer-api-init-delete.yml"
+
 Upgrade OpenStack
 ~~~~~~~~~~~~~~~~~
 
