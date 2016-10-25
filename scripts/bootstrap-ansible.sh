@@ -98,8 +98,8 @@ fi
 PYTHON_EXEC_PATH="$(which python2 || which python)"
 virtualenv --clear ${VIRTUALENV_OPTIONS} --system-site-packages --python="${PYTHON_EXEC_PATH}" /opt/ansible-runtime
 
-# Install ansible
-PIP_OPTS+=" --upgrade --constraint ${UPPER_CONSTRAINTS_FILE}"
+# The vars used to prepare the Ansible runtime venv
+PIP_OPTS+=" --upgrade"
 PIP_COMMAND="/opt/ansible-runtime/bin/pip"
 
 # When upgrading there will already be a pip.conf file locking pip down to the
@@ -108,6 +108,9 @@ PIP_COMMAND="/opt/ansible-runtime/bin/pip"
 
 # Ensure we are running the required versions of pip, wheel and setuptools
 ${PIP_COMMAND} install ${PIP_OPTS} ${PIP_INSTALL_OPTIONS} || ${PIP_COMMAND} install ${PIP_OPTS} --isolated ${PIP_INSTALL_OPTIONS}
+
+# Set the constraints now that we know we're using the right version of pip
+PIP_OPTS+=" --constraint ${UPPER_CONSTRAINTS_FILE}"
 
 # Install the required packages for ansible
 $PIP_COMMAND install $PIP_OPTS -r requirements.txt ${ANSIBLE_PACKAGE} || $PIP_COMMAND install --isolated $PIP_OPTS -r requirements.txt ${ANSIBLE_PACKAGE}
