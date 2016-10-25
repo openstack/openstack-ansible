@@ -42,7 +42,6 @@ INVENTORY_SKEL = {
 REQUIRED_HOSTVARS = [
     'properties',
     'ansible_host',
-    'ansible_ssh_host',
     'physical_host_group',
     'container_address',
     'container_name',
@@ -244,7 +243,6 @@ def _build_container_hosts(container_affinity, container_hosts, type_and_name,
             hostvars_options.update({
                 'properties': properties,
                 'ansible_host': address,
-                'ansible_ssh_host': address,
                 'container_address': address,
                 'container_name': container_host_name,
                 'physical_host': host_type,
@@ -459,7 +457,6 @@ def user_defined_setup(config, inventory):
 
                 hvs[_key].update({
                     'ansible_host': _value['ip'],
-                    'ansible_ssh_host': _value['ip'],
                     'container_address': _value['ip'],
                     'is_metal': True,
                     'physical_host_group': key
@@ -590,7 +587,7 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
     :param netmask: ``str`` netmask to use.
     :param interface: ``str`` interface name to set for the network.
     :param user_config: ``dict`` user defined configuration details.
-    :param is_ssh_address: ``bol`` set this address as ansible_ssh_host.
+    :param is_ssh_address: ``bol`` set this address as ansible_host.
     :param is_container_address: ``bol`` set this address to container_address.
     :param static_routes: ``list`` List containing static route dicts.
     """
@@ -684,7 +681,6 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
 
         if is_ssh_address is True:
             container['ansible_host'] = networks[old_address]['address']
-            container['ansible_ssh_host'] = networks[old_address]['address']
 
         if is_container_address is True:
             container['container_address'] = networks[old_address]['address']
@@ -1235,7 +1231,7 @@ def main(config=None, check=False, debug=False, environment=None, **kwargs):
     for _host, _vars in dynamic_inventory['_meta']['hostvars'].iteritems():
         host_hash = hostnames_ips[_host] = {}
         for _key, _value in _vars.iteritems():
-            if _key.endswith('address') or _key == 'ansible_ssh_host':
+            if _key.endswith('address') or _key == 'ansible_host':
                 host_hash[_key] = _value
 
     # Save a list of all hosts and their given IP addresses
