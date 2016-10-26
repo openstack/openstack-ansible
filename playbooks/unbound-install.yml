@@ -60,9 +60,9 @@
           {% if physical_host is defined
             and hostvars[i]['physical_host'] is defined
             and physical_host == hostvars[i]['physical_host'] -%}
-          {% if _var.append(dict(host=hostvars[i]['ansible_ssh_host'], priority=100)) -%}{% endif -%}
+          {% if _var.append(dict(host=hostvars[i]['ansible_host'], priority=100)) -%}{% endif -%}
           {% else -%}
-          {% if _var.append(dict(host=hostvars[i]['ansible_ssh_host'], priority=50)) -%}{% endif -%}
+          {% if _var.append(dict(host=hostvars[i]['ansible_host'], priority=50)) -%}{% endif -%}
           {% endif -%}
           {% endfor -%}
           {{ _var }}

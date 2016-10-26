@@ -141,7 +141,7 @@
         - always
     - name: Set nova management address (unknown management network)
       set_fact:
-        management_address: "{{ ansible_ssh_host }}"
+        management_address: "{{ ansible_host }}"
       when:
         - "management_address is undefined"
       tags:
