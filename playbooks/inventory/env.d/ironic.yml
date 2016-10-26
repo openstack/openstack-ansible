@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 component_skel:
   ironic_api:
     belongs_to:
@@ -23,6 +24,10 @@ component_skel:
   ironic_server:
     belongs_to:
       - ironic_servers
+  ironic_compute:
+    belongs_to:
+      - nova_all
+
 
 container_skel:
   ironic_api_container:
@@ -47,6 +52,18 @@ container_skel:
     properties:
       is_metal: true
       service_name: ironic
+  ironic_compute_container:
+    belongs_to:
+      - ironic-compute_containers
+    contains:
+      - ironic_compute
+      - nova_compute
+      - nova_scheduler
+      - neutron_linuxbridge_agent
+      - neutron_openvswitch_agent
+    properties:
+      is_metal: false
+      service_name: nova
 
 
 physical_skel:
@@ -60,5 +77,11 @@ physical_skel:
     belongs_to:
       - all_containers
   ironic-server_hosts:
+    belongs_to:
+      - hosts
+  ironic-compute_containers:
+    belongs_to:
+      - all_containers
+  ironic-compute_hosts:
     belongs_to:
       - hosts
