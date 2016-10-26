@@ -21,12 +21,22 @@
         key: repo_servers_{{ ansible_architecture }}
       tags:
         - always
+    - local_action:
+        module: "add_host"
+        name: "{{ item }}"
+        groups: "repo_nodes"
+      when:
+        - item != groups['repo_all'][0]
+      with_items: "{{ groups['repo_servers_' + ansible_architecture][0] }}"
   tags:
     - repo-build
 
 # repo_all[0] is built last to ensure it has all build artifacts for final indexing
+#  The repo_nodes group will be populated with the first node of any other system running
+#  different architectures. This group is a meta group created in the previous play and
+#  will not be found within inventory.
 - name: Build new repo packages for a given release
-  hosts: repo_all[1:],repo_all[0]
+  hosts: repo_nodes, repo_all[0]
   gather_facts: "{{ gather_facts | default(True) }}"
   user: root
   serial: 1
@@ -37,9 +47,6 @@
     - name: Load local packages
       debug:
         msg: "Loading Packages"
-      when:
-        - "groups['repo_servers_{{ ansible_architecture }}'] | length > 0"
-        - "inventory_hostname == groups['repo_servers_{{ ansible_architecture }}'][0]"
       with_py_pkgs: "{{ pkg_locations }}"
       register: local_packages
       tags:
@@ -108,9 +115,6 @@
   roles:
     - role: "repo_build"
       repo_build_release_tag: "{{ openstack_release }}"
-      when:
-        - "groups['repo_servers_{{ ansible_architecture }}'] | length > 0"
-        - "inventory_hostname == groups['repo_servers_{{ ansible_architecture }}'][0]"
   vars_files:
     - defaults/repo_packages/openstack_services.yml
   vars:
