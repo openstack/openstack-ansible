@@ -397,7 +397,7 @@
 #
 # --------
 #
-# Level: compute_hosts (required)
+# Level: compute_hosts (optional)
 # List of target hosts on which to deploy the nova compute service. Recommend
 # one minimum target host for this service. Typically contains target hosts
 # that do not reside in other levels.
@@ -415,6 +415,28 @@
 #
 # compute_hosts:
 #   compute1:
+#     ip: 172.29.236.121
+#
+# --------
+#
+# Level: ironic-compute_hosts (optional)
+# List of target hosts on which to deploy the nova compute service for Ironic.
+# Recommend one minimum target host for this service. Typically contains target
+# hosts that do not reside in other levels.
+#
+#   Level: <value> (required, string)
+#   Hostname of a target host.
+#
+#     Option: ip (required, string)
+#     IP address of this target host, typically the IP address assigned to
+#     the management bridge.
+#
+# Example:
+#
+# Define an OpenStack compute host:
+#
+# ironic-compute_hosts:
+#   ironic-infra1:
 #     ip: 172.29.236.121
 #
 # --------

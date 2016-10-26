@@ -2,3 +2,9 @@
 ironic-infra_hosts:
   aio1:
     ip: 172.29.236.100
+
+# Ironic compute hosts. These compute hosts will be used to
+#  facilitate ironic's interactions through nova.
+ironic-compute_hosts:
+  aio1:
+    ip: 172.29.236.100
