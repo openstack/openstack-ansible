@@ -42,6 +42,13 @@ aodh_git_dest: "/opt/aodh_{{ aodh_git_install_branch | replace('/', '_') }}"
 aodh_git_project_group: aodh_all
 
 
+## Barbican service
+barbican_git_repo: https://git.openstack.org/openstack/barbican
+barbican_git_install_branch: b8bbd3264e3e9201b23a081c1d810f1b5da5a580 # HEAD of "master" as of 12.10.2016
+barbican_git_dest: "/opt/barbican_{{ barbican_git_install_branch | replace('/', '_') }}"
+barbican_git_project_group: barbican_all
+
+
 ## Ceilometer service
 ceilometer_git_repo: https://git.openstack.org/openstack/ceilometer
 ceilometer_git_install_branch: a3f4a777336c413a214364af80a3880f27ea5e04 # HEAD of "master" as of 12.10.2016
