@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- name: Gather lxc container host facts
+  hosts: "{{ lxc_host_group | default('lxc_hosts')}}"
+  gather_facts: "{{ gather_facts | default(True) }}"
+
 - name: Create container(s)
   hosts: "{{ container_group|default('all_containers') }}"
   gather_facts: false
