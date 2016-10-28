@@ -14,7 +14,7 @@
 # limitations under the License.
 
 - name: Create sparse Nova file
-  shell: "truncate -s {{ bootstrap_host_loopback_nova_size }}G /openstack/nova.img"
+  command: "truncate -s {{ bootstrap_host_loopback_nova_size }}G /openstack/nova.img"
   args:
     creates: /openstack/nova.img
   register: nova_create

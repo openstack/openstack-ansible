@@ -85,7 +85,7 @@
       tags:
         - always
     - name: Add net/tun device to the compute
-      shell: |
+      command: |
         lxc-device -n {{ container_name }} add /dev/net/tun /dev/net/tun
       delegate_to: "{{ physical_host }}"
       when:
@@ -104,7 +104,7 @@
       tags:
         - always
     - name: Add kvm device to the compute
-      shell: |
+      command: |
         lxc-device -n {{ container_name }} add /dev/kvm /dev/kvm
       delegate_to: "{{ physical_host }}"
       register: device_add

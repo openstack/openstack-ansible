@@ -38,6 +38,7 @@ tempest_service_available_swift: "{{ groups['swift_all'] is defined and groups['
 
 # Ensure that the package state matches the global setting
 utility_package_state: "{{ package_state }}"
+utility_pip_package_state: "latest"
 
 # Distribution packages to be installed into the utility container
 utility_distro_packages:

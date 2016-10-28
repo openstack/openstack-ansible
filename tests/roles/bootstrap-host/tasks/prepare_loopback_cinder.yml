@@ -14,7 +14,7 @@
 # limitations under the License.
 
 - name: Create sparse Cinder file
-  shell: "truncate -s {{ bootstrap_host_loopback_cinder_size }}G /openstack/cinder.img"
+  command: "truncate -s {{ bootstrap_host_loopback_cinder_size }}G /openstack/cinder.img"
   args:
     creates: /openstack/cinder.img
   register: cinder_create
@@ -22,14 +22,14 @@
     - cinder-file-create
 
 - name: Get a loopback device for cinder file
-  shell: losetup -f
+  command: losetup -f
   when: cinder_create | changed
   register: cinder_losetup
   tags:
     - cinder-device-get
 
 - name: Create the loopback device
-  shell: "losetup {{ cinder_losetup.stdout }} /openstack/cinder.img"
+  command: "losetup {{ cinder_losetup.stdout }} /openstack/cinder.img"
   when: cinder_create | changed
   tags:
     - cinder-device-create
@@ -55,7 +55,7 @@
     - cinder-rc-config
 
 - name: Make LVM physical volume on the cinder device
-  shell: "{{ item }}"
+  command: "{{ item }}"
   when: cinder_create | changed
   with_items:
     - "pvcreate {{ cinder_losetup.stdout }}"
@@ -70,4 +70,3 @@
   when: cinder_create | changed
   tags:
     - cinder-lvm-vg
-

@@ -14,7 +14,7 @@
 # limitations under the License.
 
 - name: Create swap file
-  shell: "fallocate -l {{ bootstrap_host_swap_size }}G /openstack/swap.img"
+  command: "fallocate -l {{ bootstrap_host_swap_size }}G /openstack/swap.img"
   args:
     creates: /openstack/swap.img
   register: swap_create
@@ -29,7 +29,7 @@
     - swap-permissions
 
 - name: Format the swap file
-  shell: mkswap /openstack/swap.img
+  command: mkswap /openstack/swap.img
   when: swap_create | changed
   tags:
     - swap-format
@@ -47,7 +47,8 @@
     - swap-fstab
 
 - name: Bring swap file online
-  shell: swapon /openstack/swap.img
+  command: swapon /openstack/swap.img
+  changed_when: false
   tags:
     - swap-online
 
@@ -58,4 +59,3 @@
     state: present
   tags:
     - swap-sysctl
-

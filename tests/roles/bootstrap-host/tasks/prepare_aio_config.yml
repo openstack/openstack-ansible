@@ -55,7 +55,8 @@
     - deploy-user-secrets
 
 - name: Generate any missing values in user_secrets
-  shell: ../scripts/pw-token-gen.py --file /etc/openstack_deploy/user_secrets.yml
+  command: ../scripts/pw-token-gen.py --file /etc/openstack_deploy/user_secrets.yml
+  changed_when: false
   tags:
     - generate_secrets
 
@@ -84,7 +85,7 @@
   register: pip_conf_file
 
 - name: Determine the fastest available OpenStack-Infra wheel mirror
-  shell: ../scripts/fastest-infra-wheel-mirror.py
+  command: ../scripts/fastest-infra-wheel-mirror.py
   register: fastest_wheel_mirror
   when: not pip_conf_file.stat.exists
 

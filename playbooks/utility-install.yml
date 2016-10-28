@@ -59,14 +59,14 @@
     - name: Install apt packages
       apt:
         pkg: "{{ item }}"
-        state: latest
+        state: "{{ utility_package_state }}"
       with_items: "{{ utility_distro_packages | default([]) }}"
       when: ansible_pkg_mgr == 'apt'
 
     - name: Install yum packages
       yum:
         pkg: "{{ item }}"
-        state: latest
+        state: "{{ utility_package_state }}"
       with_items: "{{ utility_distro_packages | default([]) }}"
       when: ansible_pkg_mgr == 'yum'
 
@@ -82,8 +82,10 @@
     - name: Install pip packages
       pip:
         name: "{{ client_list.stdout_lines | union(utility_pip_packages) | join(' ') }}"
-        state: latest
-        extra_args: "{{ pip_install_options|default('') }}"
+        state: "{{ utility_pip_package_state }}"
+        extra_args: >-
+          {{ (pip_install_upper_constraints is defined) | ternary('--constraint ' + pip_install_upper_constraints | default(''),'') }}
+          {{ pip_install_options | default('') }}
       register: install_packages
       until: install_packages|success
       retries: 5
