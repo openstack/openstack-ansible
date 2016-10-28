@@ -1,6 +1,6 @@
-==================
-Installation Guide
-==================
+==================================
+OpenStack-Ansible Deployment Guide
+==================================
 
 This guide provides instructions for performing an OpenStack-Ansible
 installation in a test environment and a production environment, and is

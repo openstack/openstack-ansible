@@ -14,7 +14,7 @@ OpenStack-Ansible's Newton series was first released with the 14.0.0 tag on
 .. toctree::
    :maxdepth: 2
 
-   install-guide/index
+   .. TODO: Add deploy guide once asettle has live link
    upgrade-guide/index
    developer-docs/index
 
