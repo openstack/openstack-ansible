@@ -53,7 +53,8 @@ For examples, please see :ref:`test-environment-config` and
 :ref:`production-environment-config`.
 
 For details about how the inventory is generated from the environment
-configuration, see :ref:`developer-inventory`.
+configuration, see
+`developer-inventory <http://docs.openstack.org/developer/openstack-ansible/developer-docs/inventory.html>`_.
 
 Configuring additional services
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

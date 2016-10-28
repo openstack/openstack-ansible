@@ -73,7 +73,7 @@ of failure caused by connectivity issues.
 
 The following network information is used as an example:
 
-.. code-block::
+.. code-block:: ini
 
    Container management: 172.29.236.0/22 (VLAN 10)
 

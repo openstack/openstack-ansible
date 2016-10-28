@@ -71,7 +71,7 @@ following is the ``/etc/network/interfaces`` file for ``infra1``.
    configuration files are replaced with the appropriate name. The same
    applies to additional network interfaces.
 
-.. literalinclude:: ../../../etc/network/interfaces.d/openstack_interface.cfg.test.example
+.. literalinclude:: ../../etc/network/interfaces.d/openstack_interface.cfg.test.example
 
 Deployment configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -84,7 +84,7 @@ environment layout.
 
 The following configuration describes the layout for this environment.
 
-.. literalinclude:: ../../../etc/openstack_deploy/openstack_user_config.yml.test.example
+.. literalinclude:: ../../etc/openstack_deploy/openstack_user_config.yml.test.example
 
 Environment customizations
 --------------------------
