@@ -78,6 +78,13 @@ designate_dashboard_git_dest: "/opt/designate_dashboard_{{ designate_dashboard_g
 designate_dashboard_git_project_group: horizon_all
 
 
+## Dragonflow service
+dragonflow_git_repo: https://git.openstack.org/openstack/dragonflow
+dragonflow_git_install_branch:  3018c4db7d827157667559e23f7c27ff48aa4863 # HEAD of "master" as of 23.01.2017
+dragonflow_git_dest: "/opt/dragonflow_{{ dragonflow_git_install_branch | replace('/', '_') }}"
+dragonflow_git_project_group: neutron_all
+
+
 ## Glance service
 glance_git_repo: https://git.openstack.org/openstack/glance
 glance_git_install_branch: 9d829d3141ed8caa9b31220a208b557c7041078f # HEAD of "master" as of 15.02.2017
