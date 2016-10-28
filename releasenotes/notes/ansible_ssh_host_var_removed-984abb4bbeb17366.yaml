@@ -1,0 +1,6 @@
+---
+upgrades:
+  - The `ansible_ssh_host` variable is removed in favor of `ansible_host`.
+    Generated inventory will no longer contain the `ssh` variant. For more
+    details, see
+    http://docs.ansible.com/ansible/intro_inventory.html#hosts-and-groups.
