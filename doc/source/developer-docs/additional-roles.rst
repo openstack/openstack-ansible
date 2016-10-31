@@ -262,7 +262,7 @@ The development of a role will usually go through the following stages:
 
      This is implemented into the dynamic inventory through the definition of
      content in an ``env.d`` file. A description of how these work can be
-     found in `Appendix H`_ of the Installation Guide.
+     found in `Appendix C`_ of the Installation Guide.
 
    * Load balancer configuration
 
@@ -323,7 +323,7 @@ The development of a role will usually go through the following stages:
      required last step before a service can remove the experimental warning
      from the documentation.
 
-   .. _Appendix H: ../install-guide/app-custom-layouts.html
+   .. _Appendix C: ../install-guide/app-custom-layouts.html
 
 --------------
 
