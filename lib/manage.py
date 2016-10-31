@@ -20,43 +20,11 @@
 """Returns data about containers and groups in tabular formats."""
 import argparse
 import json
-import os
 import prettytable
 
 from dictutils import recursive_dict_removal
-
-
-def file_find(filename, user_file=None, pass_exception=False):
-    """Return the path to a file.
-
-    If no file is found the system will exit.
-    The file lookup will be done in the following directories:
-      /etc/openstack_deploy/
-      $(pwd)/openstack_deploy/
-
-    :param filename: ``str``  Name of the file to find
-    :param user_file: ``str`` Additional location to look in FIRST for a file
-    """
-    file_check = [
-        os.path.join(
-            '/etc', 'openstack_deploy', filename
-        ),
-        os.path.join(
-            os.getcwd(), filename
-        )
-    ]
-
-    if user_file is not None:
-        file_check.insert(0, os.path.expanduser(user_file))
-
-    for filename in file_check:
-        if os.path.isfile(filename):
-            return filename
-    else:
-        if pass_exception is False:
-            raise SystemExit('No file found at: {}'.format(file_check))
-        else:
-            return False
+from filesystem import load_from_json
+from filesystem import save_to_json
 
 
 def args():
@@ -338,10 +306,8 @@ def main():
     # Parse user args
     user_args = args()
 
-    # Get the contents of the system environment json
-    environment_file = file_find(filename=user_args['file'])
-    with open(environment_file, 'rb') as f_handle:
-        inventory = json.loads(f_handle.read())
+    # Get the contents of the system inventory
+    inventory = load_from_json(user_args['file'])
 
     # Make a table with hosts in the left column and details about each in the
     # columns to the right
@@ -359,15 +325,12 @@ def main():
         print(json.dumps(export_host_info(inventory), indent=2))
     elif user_args['clear_ips'] is True:
         remove_ip_addresses(inventory)
-        with open(environment_file, 'wb') as f_handle:
-            f_handle.write(json.dumps(inventory, indent=2))
+        save_to_json(user_args['file'], inventory)
         print('Success. . .')
     else:
         recursive_dict_removal(inventory, user_args['remove_item'])
-        with open(environment_file, 'wb') as f_handle:
-            f_handle.write(json.dumps(inventory, indent=2))
+        save_to_json(user_args['file'], inventory)
         print('Success. . .')
-
 
 if __name__ == "__main__":
     main()
