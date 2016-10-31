@@ -28,6 +28,9 @@ import uuid
 import warnings
 import yaml
 
+from dictutils import append_if
+from dictutils import merge_dict
+
 logger = logging.getLogger('osa-inventory')
 
 USED_IPS = set()
@@ -901,39 +904,6 @@ def _parse_global_variables(user_cidr, inventory, user_defined_config):
                     del inventory['all']['vars'][key]
 
 
-def append_if(array, item):
-    """Append an ``item`` to an ``array`` if its not already in it.
-
-    :param array: ``list``  List object to append to
-    :param item: ``object``  Object to append to the list
-    :returns bool:  Flag indicating whether the append happend (True)
-        or not (False)
-    """
-    if item not in array:
-        array.append(item)
-        return True
-    return False
-
-
-def _merge_dict(base_items, new_items):
-    """Recursively merge new_items into some base_items.
-
-    If an empty dictionary is provided as a new value, it will
-    completely replace the existing dictionary.
-
-    :param base_items: ``dict``
-    :param new_items: ``dict``
-    :return dictionary:
-    """
-    for key, value in new_items.iteritems():
-        if isinstance(value, dict) and value:
-            base_merge = _merge_dict(base_items.get(key, {}), value)
-            base_items[key] = base_merge
-        else:
-            base_items[key] = new_items[key]
-    return base_items
-
-
 def _extra_config(user_defined_config, base_dir):
     """Discover new items in any extra directories and add the new values.
 
@@ -944,7 +914,7 @@ def _extra_config(user_defined_config, base_dir):
         for name in files:
             if name.endswith(('.yml', '.yaml')):
                 with open(os.path.join(root_dir, name), 'rb') as f:
-                    _merge_dict(
+                    merge_dict(
                         user_defined_config,
                         yaml.safe_load(f.read()) or {}
                     )
