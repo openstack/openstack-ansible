@@ -15,21 +15,20 @@
 #
 # (c) 2014, Kevin Carter <kevin.carter@rackspace.com>
 
-import copy
-import datetime
 import json
 import logging
 import netaddr
 import os
 import Queue
 import random
-import tarfile
 import uuid
 import warnings
 import yaml
 
 from dictutils import append_if
 from dictutils import merge_dict
+from filesystem import load_inventory
+from filesystem import save_inventory
 
 logger = logging.getLogger('osa-inventory')
 
@@ -1102,40 +1101,6 @@ def load_user_configuration(config_path):
     return user_defined_config
 
 
-def make_backup(config_path, inventory_file_path):
-    # Create a backup of all previous inventory files as a tar archive
-    inventory_backup_file = os.path.join(
-        config_path,
-        'backup_openstack_inventory.tar'
-    )
-    with tarfile.open(inventory_backup_file, 'a') as tar:
-        basename = os.path.basename(inventory_file_path)
-        backup_name = get_backup_name(basename)
-        tar.add(inventory_file_path, arcname=backup_name)
-    logger.debug("Backup written to %s", inventory_backup_file)
-
-
-def get_backup_name(basename):
-    utctime = datetime.datetime.utcnow()
-    utctime = utctime.strftime("%Y%m%d_%H%M%S")
-    return '{}-{}.json'.format(basename, utctime)
-
-
-def get_inventory(config_path, inventory_file_path):
-    if os.path.isfile(inventory_file_path):
-        with open(inventory_file_path, 'rb') as f:
-            dynamic_inventory = json.loads(f.read())
-            logger.debug("Loaded existing inventory from %s",
-                         inventory_file_path)
-
-        make_backup(config_path, inventory_file_path)
-    else:
-        dynamic_inventory = copy.deepcopy(INVENTORY_SKEL)
-        logger.debug("No existing inventory, created fresh skeleton.")
-
-    return dynamic_inventory
-
-
 def main(config=None, check=False, debug=False, environment=None, **kwargs):
     """Run the main application.
 
@@ -1164,11 +1129,7 @@ def main(config=None, check=False, debug=False, environment=None, **kwargs):
     environment = load_environment(config_path, base_env)
 
     # Load existing inventory file if found
-    dynamic_inventory_file = os.path.join(
-        config_path, 'openstack_inventory.json'
-    )
-
-    dynamic_inventory = get_inventory(config_path, dynamic_inventory_file)
+    dynamic_inventory = load_inventory(config_path, INVENTORY_SKEL)
 
     # Save the users container cidr as a group variable
     cidr_networks = user_defined_config.get('cidr_networks')
@@ -1255,8 +1216,6 @@ def main(config=None, check=False, debug=False, environment=None, **kwargs):
         logger.debug("%d hosts found." % num_hosts)
 
     # Save new dynamic inventory
-    with open(dynamic_inventory_file, 'wb') as f:
-        f.write(dynamic_inventory_json)
-        logger.info("Inventory written")
+    save_inventory(dynamic_inventory_json, config_path)
 
     return dynamic_inventory_json

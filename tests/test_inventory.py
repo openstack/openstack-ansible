@@ -20,6 +20,7 @@ sys.path.append(path.join(os.getcwd(), LIB_DIR))
 sys.path.append(path.join(os.getcwd(), INV_DIR))
 
 import dynamic_inventory
+import filesystem as fs
 import generate as di
 
 TARGET_DIR = path.join(os.getcwd(), 'tests', 'inventory')
@@ -843,18 +844,18 @@ class TestMultipleRuns(unittest.TestCase):
     def test_creating_backup_file(self):
         inventory_file_path = os.path.join(TARGET_DIR,
                                            'openstack_inventory.json')
-        get_backup_name_path = 'generate.get_backup_name'
+        get_backup_name_path = 'filesystem.get_backup_name'
         backup_name = 'openstack_inventory.json-20160531_171804.json'
 
         tar_file = mock.MagicMock()
         tar_file.__enter__.return_value = tar_file
 
         # run make backup with faked tarfiles and date
-        with mock.patch('generate.tarfile.open') as tar_open:
+        with mock.patch('filesystem.tarfile.open') as tar_open:
             tar_open.return_value = tar_file
             with mock.patch(get_backup_name_path) as backup_mock:
                 backup_mock.return_value = backup_name
-                di.make_backup(TARGET_DIR, inventory_file_path)
+                fs.make_backup(TARGET_DIR, inventory_file_path)
 
         backup_path = path.join(TARGET_DIR, 'backup_openstack_inventory.tar')
 
@@ -881,9 +882,7 @@ class TestMultipleRuns(unittest.TestCase):
         # Generate the initial inventory files
         get_inventory(clean=False)
 
-        inventory_file_path = os.path.join(TARGET_DIR,
-                                           'openstack_inventory.json')
-        inv = di.get_inventory(TARGET_DIR, inventory_file_path)
+        inv = fs.load_inventory(TARGET_DIR)
         self.assertIsInstance(inv, dict)
         self.assertIn('_meta', inv)
         # This test is basically just making sure we get more than
@@ -1046,7 +1045,7 @@ class TestOverridingEnvIntegration(OverridingEnvBase):
         self.user_defined_config = get_config()
 
         # Inventory is necessary since keys are assumed present
-        self.inv = di.get_inventory(TARGET_DIR, '')
+        self.inv = fs.load_inventory(TARGET_DIR, di.INVENTORY_SKEL)
 
     def skel_setup(self):
         self.environment = di.load_environment(TARGET_DIR, self.base_env)
@@ -1198,7 +1197,7 @@ class TestDebugLogging(unittest.TestCase):
         self.assertFalse(mock_logging.basicConfig.called)
         # Even though logging is disabled, we still call these
         # all over the place; they just choose not to do anything.
-        self.assertTrue(mock_logger.info.called)
+        # NOTE: No info messages are published when debug is False
         self.assertTrue(mock_logger.debug.called)
 
 
