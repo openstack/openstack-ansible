@@ -473,7 +473,7 @@ class TestIps(unittest.TestCase):
             # tearDown is ineffective for this loop, so clean the USED_IPs
             # on each run
             inventory = None
-            di.USED_IPS = set()
+            di.ip.USED_IPS = set()
 
             # Mock out the context manager being used to write files.
             # We don't need to hit the file system for this test.
@@ -496,7 +496,8 @@ class TestIps(unittest.TestCase):
     def test_empty_ip_queue(self):
         q = Queue.Queue()
         with self.assertRaises(SystemExit) as context:
-            di.get_ip_address('test', q)
+            # TODO(nrb): import and use ip module directly
+            di.ip.get_ip_address('test', q)
         expectedLog = ("Cannot retrieve requested amount of IP addresses. "
                        "Increase the test range in your "
                        "openstack_user_config.yml.")
@@ -505,7 +506,7 @@ class TestIps(unittest.TestCase):
     def tearDown(self):
         # Since the get_ip_address function touches USED_IPS,
         # and USED_IPS is currently a global var, make sure we clean it out
-        di.USED_IPS = set()
+        di.ip.USED_IPS = set()
 
 
 class TestConfigCheckBase(unittest.TestCase):
@@ -1118,7 +1119,7 @@ class TestOverridingEnvIntegration(OverridingEnvBase):
 class TestSetUsedIPS(unittest.TestCase):
     def setUp(self):
         # Clean up the used ips in case other tests didn't.
-        di.USED_IPS = set()
+        di.ip.USED_IPS = set()
 
         # Create a fake inventory just for this test.
         self.inventory = {'_meta': {'hostvars': {
@@ -1133,14 +1134,16 @@ class TestSetUsedIPS(unittest.TestCase):
     def test_adding_inventory_used_ips(self):
         config = {'used_ips': None}
 
-        di._set_used_ips(config, self.inventory)
+        # TODO(nrb): This is a smell, needs to set more directly
 
-        self.assertEqual(len(di.USED_IPS), 2)
-        self.assertIn('172.12.1.1', di.USED_IPS)
-        self.assertIn('172.12.1.2', di.USED_IPS)
+        di.ip.set_used_ips(config, self.inventory)
+
+        self.assertEqual(len(di.ip.USED_IPS), 2)
+        self.assertIn('172.12.1.1', di.ip.USED_IPS)
+        self.assertIn('172.12.1.2', di.ip.USED_IPS)
 
     def tearDown(self):
-        di.USED_IPS = set()
+        di.ip.USED_IPS = set()
 
 
 class TestConfigCheckFunctional(TestConfigCheckBase):

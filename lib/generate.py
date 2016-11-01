@@ -15,12 +15,11 @@
 #
 # (c) 2014, Kevin Carter <kevin.carter@rackspace.com>
 
+import ip
 import json
 import logging
 import netaddr
 import os
-import Queue
-import random
 import uuid
 import warnings
 import yaml
@@ -32,7 +31,6 @@ from filesystem import save_inventory
 
 logger = logging.getLogger('osa-inventory')
 
-USED_IPS = set()
 INVENTORY_SKEL = {
     '_meta': {
         'hostvars': {}
@@ -125,40 +123,6 @@ class LxcHostsDefined(Exception):
 
     def __str__(self):
         return self.message
-
-
-def get_ip_address(name, ip_q):
-    """Return an IP address from our IP Address queue."""
-    try:
-        ip_addr = ip_q.get(timeout=1)
-        while ip_addr in USED_IPS:
-            ip_addr = ip_q.get(timeout=1)
-        else:
-            USED_IPS.add(ip_addr)
-            return str(ip_addr)
-    except AttributeError:
-        return None
-    except Queue.Empty:
-        raise SystemExit(
-            'Cannot retrieve requested amount of IP addresses. Increase the {}'
-            ' range in your openstack_user_config.yml.'.format(name)
-        )
-
-
-def _load_ip_q(cidr, ip_q):
-    """Load the IP queue with all IP address from a given cidr.
-
-    :param cidr: ``str``  IP address with cidr notation
-    """
-    _all_ips = [str(i) for i in list(netaddr.IPNetwork(cidr))]
-    base_exclude = [
-        str(netaddr.IPNetwork(cidr).network),
-        str(netaddr.IPNetwork(cidr).broadcast)
-    ]
-    USED_IPS.update(base_exclude)
-    for ip in random.sample(_all_ips, len(_all_ips)):
-        if ip not in USED_IPS:
-            ip_q.put(ip)
 
 
 def _parse_belongs_to(key, belongs_to, inventory):
@@ -480,7 +444,7 @@ def user_defined_setup(config, inventory):
                     for _k, _v in _value['host_vars'].items():
                         hvs[_key][_k] = _v
 
-                USED_IPS.add(_value['ip'])
+                ip.USED_IPS.add(_value['ip'])
                 appended = append_if(array=inventory[key]['hosts'], item=_key)
                 if appended:
                     logger.debug("Added host %s to group %s",
@@ -535,20 +499,6 @@ def skel_load(skeleton, inventory):
             belongs_to=value['belongs_to'],
             inventory=inventory
         )
-
-
-def _load_optional_q(config, cidr_name):
-    """Load optional queue with ip addresses.
-
-    :param config: ``dict``  User defined information
-    :param cidr_name: ``str``  Name of the cidr name
-    """
-    cidr = config.get(cidr_name)
-    ip_q = None
-    if cidr is not None:
-        ip_q = Queue.Queue()
-        _load_ip_q(cidr=cidr, ip_q=ip_q)
-    return ip_q
 
 
 def network_entry(is_metal, interface,
@@ -663,7 +613,7 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
             if old_address in container and container[old_address]:
                 network['address'] = container.pop(old_address)
             elif not is_metal:
-                address = get_ip_address(name=q_name, ip_q=ip_q)
+                address = ip.get_ip_address(name=q_name, ip_q=ip_q)
                 if address:
                     network['address'] = address
 
@@ -737,7 +687,7 @@ def container_skel_load(container_skel, inventory, config):
         cidr_networks = config.get('cidr_networks')
         provider_queues = {}
         for net_name in cidr_networks:
-            ip_q = _load_optional_q(
+            ip_q = ip.load_optional_q(
                 cidr_networks, cidr_name=net_name
             )
             provider_queues[net_name] = ip_q
@@ -804,38 +754,6 @@ def find_config_path(user_config_path=None):
             return f
     else:
         raise SystemExit('No config found at: {}'.format(path_check))
-
-
-def _set_used_ips(user_defined_config, inventory):
-    """Set all of the used ips into a global list.
-
-    :param user_defined_config: ``dict`` User defined configuration
-    :param inventory: ``dict`` Living inventory of containers and hosts
-    """
-    used_ips = user_defined_config.get('used_ips')
-    if isinstance(used_ips, list):
-        for ip in used_ips:
-            split_ip = ip.split(',')
-            if len(split_ip) >= 2:
-                ip_range = list(
-                    netaddr.iter_iprange(
-                        split_ip[0],
-                        split_ip[-1]
-                    )
-                )
-                USED_IPS.update([str(i) for i in ip_range])
-            else:
-                logger.debug("IP %s set as used", split_ip[0])
-                USED_IPS.add(split_ip[0])
-
-    # Find all used IP addresses and ensure that they are not used again
-    for host_entry in inventory['_meta']['hostvars'].values():
-        networks = host_entry.get('container_networks', dict())
-        for network_entry in networks.values():
-            address = network_entry.get('address')
-            if address:
-                logger.debug("IP %s set as used", address)
-                USED_IPS.add(address)
 
 
 def _ensure_inventory_uptodate(inventory, container_skel):
@@ -1155,7 +1073,7 @@ def main(config=None, check=False, debug=False, environment=None, **kwargs):
     _parse_global_variables(user_cidr, dynamic_inventory, user_defined_config)
 
     # Load all of the IP addresses that we know are used and set the queue
-    _set_used_ips(user_defined_config, dynamic_inventory)
+    ip.set_used_ips(user_defined_config, dynamic_inventory)
     user_defined_setup(user_defined_config, dynamic_inventory)
     skel_setup(environment, dynamic_inventory)
     logger.debug("Loading physical skel.")
