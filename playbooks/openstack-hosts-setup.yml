@@ -17,5 +17,12 @@
   hosts: "{{ openstack_host_group|default('hosts') }}"
   max_fail_percentage: 20
   user: root
+  pre_tasks:
+    - name: Check for a supported Operating System
+      assert:
+        that:
+          - ansible_distribution | lower == 'ubuntu'
+          - ansible_distribution_release | lower == 'trusty'
+        msg: "The only supported platform for this release is Ubuntu 14.04 LTS (Trusty)"
   roles:
     - { role: "openstack_hosts", tags: [ "openstack-hosts-setup" ] }
