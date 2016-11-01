@@ -488,7 +488,7 @@ class TestIps(unittest.TestCase):
         expectedLog = ("Cannot retrieve requested amount of IP addresses. "
                        "Increase the test range in your "
                        "openstack_user_config.yml.")
-        self.assertEqual(context.exception.message, expectedLog)
+        self.assertEqual(str(context.exception), expectedLog)
 
     def tearDown(self):
         # Since the get_ip_address function touches USED_IPS,
@@ -567,7 +567,7 @@ class TestConfigChecks(TestConfigCheckBase):
             get_inventory()
         expectedLog = ("No container or management network specified in "
                        "user config.")
-        self.assertEqual(context.exception.message, expectedLog)
+        self.assertEqual(str(context.exception), expectedLog)
 
     def test_management_network_malformed(self):
         self.delete_provider_network_key('container', 'is_container_address')
@@ -579,7 +579,7 @@ class TestConfigChecks(TestConfigCheckBase):
         expectedLog = ("Provider network with queue 'container' "
                        "requires 'is_container_address' and "
                        "'is_ssh_address' to be set to True.")
-        self.assertEqual(context.exception.message, expectedLog)
+        self.assertEqual(str(context.exception), expectedLog)
         self.restore_config()
 
     def test_missing_cidr_network_present_in_provider(self):
@@ -587,7 +587,7 @@ class TestConfigChecks(TestConfigCheckBase):
         with self.assertRaises(SystemExit) as context:
             get_inventory()
         expectedLog = "can't find storage in cidr_networks"
-        self.assertEqual(context.exception.message, expectedLog)
+        self.assertEqual(str(context.exception), expectedLog)
 
     def test_missing_cidr_networks_key(self):
         del self.user_defined_config['cidr_networks']
@@ -595,7 +595,7 @@ class TestConfigChecks(TestConfigCheckBase):
         with self.assertRaises(SystemExit) as context:
             get_inventory()
         expectedLog = "No container CIDR specified in user config"
-        self.assertEqual(context.exception.message, expectedLog)
+        self.assertEqual(str(context.exception), expectedLog)
 
     def test_provider_networks_check(self):
         # create config file without provider networks
@@ -604,7 +604,7 @@ class TestConfigChecks(TestConfigCheckBase):
         with self.assertRaises(SystemExit) as context:
             get_inventory()
         expectedLog = "provider networks can't be found under global_overrides"
-        self.assertIn(expectedLog, context.exception.message)
+        self.assertIn(expectedLog, str(context.exception))
 
     def test_global_overrides_check(self):
         # create config file without global_overrides
@@ -613,7 +613,7 @@ class TestConfigChecks(TestConfigCheckBase):
         with self.assertRaises(SystemExit) as context:
             get_inventory()
         expectedLog = "global_overrides can't be found in user config"
-        self.assertEqual(context.exception.message, expectedLog)
+        self.assertEqual(str(context.exception), expectedLog)
 
     def test_two_hosts_same_ip(self):
         # Use an OrderedDict to be certain our testing order is preserved
@@ -645,7 +645,7 @@ class TestConfigChecks(TestConfigCheckBase):
         expectedLog = ("Both host:aio1 and host:hap have "
                        "address:172.29.236.100 assigned.  Cannot "
                        "assign same ip to both hosts")
-        self.assertEqual(context.exception.message, expectedLog)
+        self.assertEqual(str(context.exception), expectedLog)
 
     def test_one_host_two_ips_externally(self):
         # haproxy chosen because it was last in the config file as of
@@ -656,7 +656,7 @@ class TestConfigChecks(TestConfigCheckBase):
             get_inventory()
         expectedLog = ("Host aio1 has both 172.29.236.100 and 172.29.236.101 "
                        "assigned")
-        self.assertEqual(context.exception.message, expectedLog)
+        self.assertEqual(str(context.exception), expectedLog)
 
     def test_two_ips(self):
         # Use an OrderedDict to be certain our testing order is preserved
