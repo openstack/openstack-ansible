@@ -90,3 +90,7 @@ neutron_plugin_base:
   - router
   - metering
   - neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPluginv2
+
+## Always setup tempest, the resources for it, then execute tests
+tempest_install: yes
+tempest_run: yes
