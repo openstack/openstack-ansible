@@ -18,6 +18,14 @@
   gather_facts: "{{ gather_facts | default(True) }}"
   max_fail_percentage: 20
   user: root
+  pre_tasks:
+    - name: Check for a supported Operating System
+      assert:
+        that:
+          - ansible_distribution | lower == 'ubuntu'
+          - ansible_distribution_release | lower == 'trusty' or
+            ansible_distribution_release | lower == 'xenial'
+        msg: "The only supported platforms for this release are Ubuntu 14.04 LTS (Trusty) and Ubuntu 16.04 LTS (Xenial)"
   roles:
     - role: "openstack_hosts"
   tags:
