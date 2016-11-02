@@ -260,3 +260,11 @@ haproxy_default_services:
       haproxy_balance_type: http
       haproxy_backend_options:
         - "httpchk HEAD /"
+  - service:
+      haproxy_service_name: barbican
+      haproxy_backend_nodes: "{{ groups['barbican_api'] | default([]) }}"
+      haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_port: 9311
+      haproxy_balance_type: tcp
+      haproxy_backend_options:
+        - tcp-check
