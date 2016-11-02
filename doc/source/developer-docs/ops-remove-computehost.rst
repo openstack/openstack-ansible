@@ -4,7 +4,7 @@
 Removing a compute host
 =======================
 
-The `openstack-ansible-ops <https://github.com/openstack/openstack-ansible-ops>`_
+The `openstack-ansible-ops <https://git.openstack.org/cgit/openstack/openstack-ansible-ops>`_
 repository contains a playbook for removing a compute host from an
 OpenStack-Ansible (OSA) environment.
 To remove a compute host, follow the below procedure.
@@ -34,7 +34,7 @@ To remove a compute host, follow the below procedure.
 
   .. code-block:: console
 
-     $ git clone https://github.com/openstack/openstack-ansible-ops \
+     $ git clone https://git.openstack.org/openstack/openstack-ansible-ops \
        /opt/openstack-ansible-ops
 
 #. Run the ``remove_compute_node.yml`` Ansible playbook with the
