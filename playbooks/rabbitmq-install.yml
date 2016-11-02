@@ -31,7 +31,7 @@
 # The cluster must be stopped when doing major/minor upgrades
 # http://www.rabbitmq.com/clustering.html#upgrading
 - name: Stop RabbitMQ nodes that are not the upgrader
-  hosts: rabbitmq_all[1:]
+  hosts: "{{ rabbitmq_host_group | default('rabbitmq_all') }}[1:]"
   serial: 1
   max_fail_percentage: 0
   user: root
