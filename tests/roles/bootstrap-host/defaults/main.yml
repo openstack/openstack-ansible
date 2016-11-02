@@ -74,26 +74,26 @@ vlan_range: "172.29.248"
 netmask: "255.255.252.0"
 #
 # NICs
-public_interface: eth0
-encapsulation_interface: eth1
+bootstrap_host_public_interface: eth0
+bootstrap_host_encapsulation_interface: eth1
 #
 #Encapsulations
 bootstrap_host_encapsulation_interfaces:
   encap-mgmt:
     id: 236
-    underlay_device: "{{ encapsulation_interface }}"
+    underlay_device: "{{ bootstrap_host_encapsulation_interface }}"
     friendly_name: "Encapsulation of br-mgmt with VXLAN"
   encap-vxlan:
     id: 240
-    underlay_device: "{{ encapsulation_interface }}"
+    underlay_device: "{{ bootstrap_host_encapsulation_interface }}"
     friendly_name: "Encapsulation of br-vxlan with VXLAN"
   encap-storage:
     id: 244
-    underlay_device: "{{ encapsulation_interface }}"
+    underlay_device: "{{ bootstrap_host_encapsulation_interface }}"
     friendly_name: "Encapsulation of br-storage with VXLAN"
   encap-vlan:
     id: 248
-    underlay_device: "{{ encapsulation_interface }}"
+    underlay_device: "{{ bootstrap_host_encapsulation_interface }}"
     friendly_name: "Encapsulation of br-vlan with VXLAN"
 #
 # Bridges
@@ -125,11 +125,11 @@ bridge_vlan_state_change_scripts: |
   post-down ip link del br-vlan-veth || true
 bridge_iptables_rules: |
   # To ensure ssh checksum is correct
-  up /sbin/iptables -A POSTROUTING -t mangle -p tcp -o {{ public_interface }} -j CHECKSUM --checksum-fill
-  down /sbin/iptables -D POSTROUTING -t mangle -p tcp -o {{ public_interface }} -j CHECKSUM --checksum-fill
+  up /sbin/iptables -A POSTROUTING -t mangle -p tcp -o {{ bootstrap_host_public_interface }} -j CHECKSUM --checksum-fill
+  down /sbin/iptables -D POSTROUTING -t mangle -p tcp -o {{ bootstrap_host_public_interface }} -j CHECKSUM --checksum-fill
   # To provide internet connectivity to instances
-  up /sbin/iptables -t nat -A POSTROUTING -o {{ public_interface }} -j MASQUERADE
-  down /sbin/iptables -t nat -D POSTROUTING -o {{ public_interface }} -j MASQUERADE
+  up /sbin/iptables -t nat -A POSTROUTING -o {{ bootstrap_host_public_interface }} -j MASQUERADE
+  down /sbin/iptables -t nat -D POSTROUTING -o {{ bootstrap_host_public_interface }} -j MASQUERADE
 
 ## Extra storage
 # An AIO may optionally be built using a second storage device. If a
