@@ -80,8 +80,8 @@ Steps to writing the role:
       discover a need for them. You can also develop documentation for your
       role at the same time.
 
-.. _(see also the spec template): https://github.com/openstack/openstack-ansible-specs/blob/master/specs/template.rst
-.. _specs repository: https://github.com/openstack/openstack-ansible-specs
+.. _(see also the spec template): https://git.openstack.org/cgit/openstack/openstack-ansible-specs/tree/specs/templates/template.rst
+.. _specs repository: https://git.openstack.org/cgit/openstack/openstack-ansible-specs
 .. _unmerged specs: https://review.openstack.org/#/q/status:+open+project:openstack/openstack-ansible-specs
 .. _Best Practice: https://docs.ansible.com/ansible/playbooks_best_practices.html#directory-layout
 

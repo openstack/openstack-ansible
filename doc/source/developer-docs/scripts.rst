@@ -162,7 +162,7 @@ A consolidated set of all lint tests may be done locally by executing:
     tox -e linters
 
 .. _PEP8: https://www.python.org/dev/peps/pep-0008/
-.. _Bashate: https://github.com/openstack-dev/bashate
+.. _Bashate: https://git.openstack.org/cgit/openstack-dev/bashate
 .. _ansible-lint: https://github.com/willthames/ansible-lint
 
 Documentation Build

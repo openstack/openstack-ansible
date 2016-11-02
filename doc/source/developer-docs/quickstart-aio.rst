@@ -62,7 +62,7 @@ repository root directory:
 
 .. code-block:: shell-session
 
-   # git clone https://github.com/openstack/openstack-ansible \
+   # git clone https://git.openstack.org/openstack/openstack-ansible \
        /opt/openstack-ansible
    # cd /opt/openstack-ansible
 
@@ -95,7 +95,7 @@ host is bootstrapped. This is useful when you wish the AIO to make use of
 a secondary data disk, or when using this role to bootstrap a multi-node
 development environment.
 
-.. _bootstrap-host role defaults: https://github.com/openstack/openstack-ansible/blob/master/tests/roles/bootstrap-host/defaults/main.yml
+.. _bootstrap-host role defaults: https://git.openstack.org/cgit/openstack/openstack-ansible/tree/tests/roles/bootstrap-host/defaults/main.yml
 
 The bootstrap script is pre-set to pass the environment variable
 ``BOOTSTRAP_OPTS`` as an additional option to the bootstrap process. For
@@ -271,7 +271,7 @@ soon as the instance starts. Save this file as ``user_data.yml``:
    runcmd:
      - export ANSIBLE_FORCE_COLOR=true
      - export PYTHONUNBUFFERED=1
-     - export REPO=https://github.com/openstack/openstack-ansible
+     - export REPO=https://git.openstack.org/openstack/openstack-ansible
      - export BRANCH=stable/|previous_release_branch_name|
      - git clone -b ${BRANCH} ${REPO} /opt/openstack-ansible
      - cd /opt/openstack-ansible && scripts/bootstrap-ansible.sh
