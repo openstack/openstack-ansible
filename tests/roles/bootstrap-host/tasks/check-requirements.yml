@@ -15,7 +15,11 @@
 
 - name: Check for a supported Operating System
   assert:
-    that: ansible_distribution | lower == 'ubuntu'
+    that:
+      - ansible_distribution | lower == 'ubuntu'
+      - ansible_distribution_release | lower == 'trusty' or
+        ansible_distribution_release | lower == 'xenial'
+    msg: "The only supported platforms for this release are Ubuntu 14.04 LTS (Trusty) and Ubuntu 16.04 LTS (Xenial)"
   tags:
     - check-operating-system
 
