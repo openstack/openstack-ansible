@@ -146,6 +146,7 @@ function main {
     "${SCRIPTS_PATH}/bootstrap-ansible.sh"
 
     pushd ${MAIN_PATH}/playbooks
+        RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/disable_hatool.yml")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/01_ansible_fact_cleanup.yml")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/deploy-config-changes.yml")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/user-secrets-adjustment.yml")
