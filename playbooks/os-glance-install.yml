@@ -25,7 +25,9 @@
         list_of_bind_mounts:
           - bind_dir_path: "/var/lib/glance/images"
             mount_path: "/openstack/{{ inventory_hostname }}"
-      when: (glance_default_store == "file") and (glance_nfs_client is not defined)
+      when:
+        - glance_default_store == "file"
+        - (glance_nfs_client is not defined) or (glance_nfs_client | length == 0)
     - include: common-tasks/os-lxc-container-setup.yml
       static: no
       when: (glance_default_store != "file") or (glance_nfs_client is defined)
