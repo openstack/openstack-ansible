@@ -39,6 +39,8 @@ OpenStack service roles
 
 -  `os_cinder <http://docs.openstack.org/developer/openstack-ansible-os_cinder>`_
 
+-  `os_designate <http://docs.openstack.org/developer/openstack-ansible-os_designate>`_
+
 -  `os_glance <http://docs.openstack.org/developer/openstack-ansible-os_glance>`_
 
 -  `os_gnocchi <http://docs.openstack.org/developer/openstack-ansible-os_gnocchi>`_
@@ -90,7 +92,3 @@ Other roles
 - `openstack_hosts <http://docs.openstack.org/developer/openstack-ansible-openstack_hosts>`_
 
 - `rsyslog_client <http://docs.openstack.org/developer/openstack-ansible-rsyslog_client>`_
-
-
-
-

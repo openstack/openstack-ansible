@@ -332,6 +332,8 @@ neutron_rabbitmq_telemetry_servers: "{{ neutron_rabbitmq_servers }}"
 neutron_rabbitmq_telemetry_use_ssl: "{{ neutron_rabbitmq_use_ssl }}"
 neutron_rabbitmq_telemetry_host_group: "{{ neutron_rabbitmq_host_group }}"
 
+# If there are any Designate hosts in the environment, then enable its usage
+neutron_designate_enabled: "{{ (groups['designate_all'] is defined) and (groups['designate_all'] | length > 0) }}"
 # If there are any Ceilometer hosts in the environment, then enable its usage
 neutron_ceilometer_enabled: "{{ (groups['ceilometer_all'] is defined) and (groups['ceilometer_all'] | length > 0) }}"
 
@@ -375,6 +377,8 @@ nova_rabbitmq_telemetry_servers: "{{ nova_rabbitmq_servers }}"
 nova_rabbitmq_telemetry_use_ssl: "{{ nova_rabbitmq_use_ssl }}"
 nova_rabbitmq_telemetry_host_group: "{{ nova_rabbitmq_host_group }}"
 
+# If there are any Designate hosts in the environment, then enable its usage
+nova_designate_enabled: "{{ (groups['designate_all'] is defined) and (groups['designate_all'] | length > 0) }}"
 # If there are any Ceilometer hosts in the environment, then enable its usage
 nova_ceilometer_enabled: "{{ (groups['ceilometer_all'] is defined) and (groups['ceilometer_all'] | length > 0) }}"
 

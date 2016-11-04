@@ -268,3 +268,12 @@ haproxy_default_services:
       haproxy_balance_type: tcp
       haproxy_backend_options:
         - tcp-check
+  - service:
+      haproxy_service_name: designate_api
+      haproxy_backend_nodes: "{{ groups['designate_api'] | default([]) }}"
+      haproxy_port: 9001
+      haproxy_balance_type: http
+      haproxy_backend_options:
+        - "forwardfor"
+        - "httpchk /versions"
+        - "httplog"

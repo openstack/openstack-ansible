@@ -1,0 +1,52 @@
+---
+# Copyright 2016 Internet Solutions (Pty) Ltd
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+designate_service_port: 9001
+designate_service_proto: http
+designate_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(designate_service_proto) }}"
+designate_service_adminuri: "{{ designate_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ designate_service_port }}"
+designate_service_adminurl: "{{ designate_service_adminuri }}"
+designate_service_region: "{{ service_region }}"
+
+# Galera
+designate_galera_address: "{{ galera_address }}"
+designate_galera_user: designate
+designate_galera_database_name: designate
+designate_pool_manager_galera_user: designate_pool_manager
+designate_pool_manager_galera_address: "{{ galera_address }}"
+designate_pool_manager_galera_database_name: designate_pool_manager
+
+# RPC
+designate_rabbitmq_userid: designate
+designate_rabbitmq_vhost: /designate
+designate_rabbitmq_port: "{{ rabbitmq_port }}"
+designate_rabbitmq_servers: "{{ rabbitmq_servers }}"
+designate_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
+designate_rabbitmq_host_group: "{{ rabbitmq_host_group }}"
+
+# Telemetry notifications
+designate_rabbitmq_telemetry_userid: "{{ designate_rabbitmq_userid }}"
+designate_rabbitmq_telemetry_password: "{{ designate_rabbitmq_password }}"
+designate_rabbitmq_telemetry_vhost: "{{ designate_rabbitmq_vhost }}"
+designate_rabbitmq_telemetry_port: "{{ designate_rabbitmq_port }}"
+designate_rabbitmq_telemetry_servers: "{{ designate_rabbitmq_servers }}"
+designate_rabbitmq_telemetry_use_ssl: "{{ designate_rabbitmq_use_ssl }}"
+designate_rabbitmq_telemetry_host_group: "{{ designate_rabbitmq_host_group }}"
+
+# If there are any Ceilometer hosts in the environment, then enable its usage
+designate_ceilometer_enabled: "{{ (groups['designate_all'] is defined) and (groups['designate_all'] | length > 0) and (groups['ceilometer_all'] is defined) and (groups['ceilometer_all'] | length > 0) }}"
+
+# Ensure that the package state matches the global setting
+designate_package_state: "{{ package_state }}"

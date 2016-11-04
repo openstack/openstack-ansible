@@ -63,6 +63,13 @@ cinder_git_dest: "/opt/cinder_{{ cinder_git_install_branch | replace('/', '_') }
 cinder_git_project_group: cinder_all
 
 
+## Designate service
+designate_git_repo: https://git.openstack.org/openstack/designate
+designate_git_install_branch: 7dd477815ebea4f7cdf230dec7f2a3e19605a3bb # HEAD of "master" as of 12.10.2016
+designate_git_dest: "/opt/designate_{{ designate_git_install_branch | replace('/', '_') }}"
+designate_git_project_group: designate_all
+
+
 ## Glance service
 glance_git_repo: https://git.openstack.org/openstack/glance
 glance_git_install_branch: 7a89cf7d26c478f7400a3d8ab27ad6429a299deb # HEAD of "master" as of 12.10.2016
