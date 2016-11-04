@@ -121,6 +121,9 @@ class LxcHostsDefined(Exception):
         self.message = ("The group 'lxc_hosts' must not be defined in config;"
                         " it will be dynamically generated.")
 
+    def __str__(self):
+        return self.message
+
 
 def get_ip_address(name, ip_q):
     """Return an IP address from our IP Address queue."""
