@@ -301,8 +301,8 @@ pdf_documents = [
 
 latest_tag = os.popen('git describe --abbrev=0 --tags').read().strip('\n')
 
-previous_release_branch_name='mitaka'
-current_release_branch_name='newton'
+previous_release_branch_name='newton'
+current_release_branch_name='ocata'
 
 previous_release_capital_name=previous_release_branch_name.upper()
 previous_release_formal_name=previous_release_branch_name.capitalize()

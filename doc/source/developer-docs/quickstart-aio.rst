@@ -84,7 +84,8 @@ development) build it is usually best to checkout the latest tagged version.
    # git checkout |latest_tag|
 
 .. note::
-   The |previous_release_formal_name| release is only compatible with Ubuntu 14.04 (Trusy Tahr).
+   The |previous_release_formal_name| release is only compatible with Ubuntu
+   14.04 (Trusy Tahr) and Ubuntu 16.04 (Xenial Xerus).
 
 By default the scripts deploy all OpenStack services with sensible defaults
 for the purpose of a gate check, development or testing system.
