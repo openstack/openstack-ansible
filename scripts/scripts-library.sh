@@ -18,7 +18,7 @@
 ## Vars ----------------------------------------------------------------------
 LINE='----------------------------------------------------------------------'
 MAX_RETRIES=${MAX_RETRIES:-5}
-ANSIBLE_PARAMETERS=${ANSIBLE_PARAMETERS:-" -e 'gather_facts=False' "}
+ANSIBLE_PARAMETERS=${ANSIBLE_PARAMETERS:--e gather_facts=False}
 STARTTIME="${STARTTIME:-$(date +%s)}"
 PIP_INSTALL_OPTIONS=${PIP_INSTALL_OPTIONS:-'pip==9.0.0 setuptools==28.7.1 wheel==0.29.0 '}
 COMMAND_LOGS=${COMMAND_LOGS:-"/openstack/log/ansible_cmd_logs"}
@@ -59,9 +59,9 @@ function successerator {
   false
   for ((RETRY=0; $? != 0 && RETRY < MAX_RETRIES; RETRY++)); do
     if [ ${RETRY} -gt 1 ];then
-      $@ -vvvv
+      "$@" -vvvv
     else
-      $@
+      "$@"
     fi
   done
   # If max retires were hit, fail.
@@ -82,7 +82,7 @@ function successerator {
 
 function install_bits {
   # Use the successerator to run openstack-ansible
-  successerator openstack-ansible $@ ${ANSIBLE_PARAMETERS}
+  successerator openstack-ansible "$@" ${ANSIBLE_PARAMETERS}
 }
 
 function ssh_key_create {
