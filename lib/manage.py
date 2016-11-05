@@ -23,6 +23,8 @@ import json
 import os
 import prettytable
 
+from dictutils import recursive_dict_removal
+
 
 def file_find(filename, user_file=None, pass_exception=False):
     """Return the path to a file.
@@ -55,39 +57,6 @@ def file_find(filename, user_file=None, pass_exception=False):
             raise SystemExit('No file found at: %s' % file_check)
         else:
             return False
-
-
-def recursive_list_removal(inventory, purge_list):
-    """Remove items from a list.
-
-    Keyword arguments:
-    inventory -- inventory dictionary
-    purge_list -- list of items to remove
-    """
-    for item in purge_list:
-        for _item in inventory:
-            if item == _item:
-                inventory.pop(inventory.index(item))
-
-
-def recursive_dict_removal(inventory, purge_list):
-    """Remove items from a dictionary.
-
-    Keyword arguments:
-    inventory -- inventory dictionary
-    purge_list -- list of items to remove
-    """
-    for key, value in inventory.iteritems():
-        if isinstance(value, dict):
-            for _key, _value in value.iteritems():
-                if isinstance(_value, dict):
-                    for item in purge_list:
-                        if item in _value:
-                            del(_value[item])
-                elif isinstance(_value, list):
-                    recursive_list_removal(_value, purge_list)
-        elif isinstance(value, list):
-            recursive_list_removal(value, purge_list)
 
 
 def args():
@@ -365,6 +334,7 @@ def main():
         with open(environment_file, 'wb') as f_handle:
             f_handle.write(json.dumps(inventory, indent=2))
         print('Success. . .')
+
 
 if __name__ == "__main__":
     main()
