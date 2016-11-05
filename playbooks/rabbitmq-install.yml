@@ -20,6 +20,10 @@
   user: root
   pre_tasks:
     - include: common-tasks/os-lxc-container-setup.yml
+      static:
+      vars:
+        extra_container_config_no_restart:
+          - "lxc.start.order=99"
     - include: common-tasks/package-cache-proxy.yml
   roles:
     - role: "system_crontab_coordination"

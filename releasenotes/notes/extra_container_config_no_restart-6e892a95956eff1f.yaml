@@ -1,0 +1,13 @@
+---
+features:
+  - Container boot ordering has been implemented on container types
+    where it would be beneficial. This change ensures that stateful
+    systems running within a container are started ahead of
+    non-stateful systems. While this change has no impact on a running
+    deployment it will assist with faster recovery should any node
+    hosting container go down or simply need to be restarted.
+  - A new task has been added to the "os-lxc-container-setup.yml"
+    common-tasks file. This new task will allow for additional
+    configurations to be added without having to restart the
+    container. This change is helpful in cases where non-impacting
+    config needs to be added or updated to a running containers.

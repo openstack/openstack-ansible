@@ -28,6 +28,8 @@
             mount_path: "/lib/modules"
         extra_container_config:
           - "lxc.cgroup.devices.allow=a *:* rmw"
+        extra_container_config_no_restart:
+          - "lxc.start.order=79"
       when: inventory_hostname in groups['neutron_agent']
     - include: common-tasks/os-lxc-container-setup.yml
       static: no
