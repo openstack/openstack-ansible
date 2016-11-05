@@ -20,6 +20,9 @@
   user: root
   pre_tasks:
     - include: common-tasks/os-lxc-container-setup.yml
+      vars:
+        extra_container_config_no_restart:
+          - "lxc.start.order=69"
     - include: common-tasks/rabbitmq-vhost-user.yml
       static: no
       vars:

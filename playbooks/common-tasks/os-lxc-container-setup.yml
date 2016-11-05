@@ -81,6 +81,16 @@
   register: _ec
   when: not is_metal | bool
 
+- name: Extra lxc config no restart
+  lineinfile:
+    dest: "/var/lib/lxc/{{ inventory_hostname }}/config"
+    line: "{{ item.split('=')[0] }} = {{ item.split('=', 1)[1] }}"
+    insertafter: "^{{ item.split('=')[0] }}"
+    backup: "true"
+  with_items: "{{ extra_container_config_no_restart | default([]) }}"
+  delegate_to: "{{ physical_host }}"
+  when: not is_metal | bool
+
 # Due to https://github.com/ansible/ansible-modules-extras/issues/2691
 # this uses the LXC CLI tools to ensure that we get logging.
 # TODO(odyssey4me): revisit this once the bug is fixed and released
