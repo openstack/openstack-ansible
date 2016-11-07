@@ -1,0 +1,7 @@
+---
+fixes:
+  - The URL of NovaLink uses 'ftp' protocol to provision
+    apt key. It causes apt_key module to fail to retrieve
+    NovaLink gpg public key file. Therefore, change the
+    protocol of URL to 'http'. For more information, see
+    bug 1637348.

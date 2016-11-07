@@ -14,7 +14,7 @@
 # limitations under the License.
 
 ## OpenStack Source Code Release
-openstack_release: 14.0.1
+openstack_release: 14.0.2
 
 ## Verbosity Options
 debug: False
@@ -38,8 +38,8 @@ rsyslog_client_package_state: "{{ package_state }}"
 # These are pinned to ensure exactly the same behaviour forever!
 # These pins are updated through the sources-branch-updater script
 pip_packages:
-  - pip==8.1.2
-  - setuptools==28.6.1
+  - pip==9.0.0
+  - setuptools==28.7.1
   - wheel==0.29.0
 
 pip_links:
