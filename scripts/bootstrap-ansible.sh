@@ -198,7 +198,7 @@ fi
 
 # Execute the Ansible command.
 if [ "\${RUN_CMD}" == "openstack-ansible" ] || [ "\${RUN_CMD}" == "ansible-playbook" ]; then
-  /opt/ansible-runtime/bin/ansible-playbook \${@} \${VAR1}
+  /opt/ansible-runtime/bin/ansible-playbook "\${@}" \${VAR1}
 else
   /opt/ansible-runtime/bin/\${RUN_CMD} "\${@}"
 fi
