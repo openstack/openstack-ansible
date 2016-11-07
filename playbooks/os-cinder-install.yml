@@ -19,6 +19,30 @@
   max_fail_percentage: 20
   user: root
   pre_tasks:
+    - name: Set the cinder storage address
+      set_fact:
+        # NOTE(cloudnull):
+        # Collect the storage address interface data from the host vars of the target node then
+        #  Check if the host is running in a container. If not, pull the bridge data from the
+        #  storage network. If a storage_bridge is defined pull the IP address from the physical
+        #  network device. If no physical bridge is defined collect the storage address from the
+        #  "storage_network_data" variable. If nothing is defined use the "ansible_ssh_host" address.
+        storage_address: >-
+          {%- set storage_network_data = hostvars[inventory_hostname]['container_networks']['storage_address'] | default({}) -%}
+          {%- if is_metal is defined and is_metal | bool -%}
+          {%-   set storage_bridge = storage_network_data['bridge'] | default('no_bridge_defined') | replace('-', '_') -%}
+          {%- else -%}
+          {%-   set storage_bridge = 'no_bridge_defined' -%}
+          {%- endif -%}
+          {%- if storage_bridge != 'no_bridge_defined' -%}
+          {{ hostvars[inventory_hostname]['ansible_' + storage_bridge]['ipv4']['address'] }}
+          {%- elif storage_network_data['address'] is defined -%}
+          {{ storage_network_data['address'] }}
+          {%- else -%}
+          {{ ansible_ssh_host }}
+          {%- endif -%}
+      tags:
+        - always
     - include: common-tasks/os-lxc-container-setup.yml
       static: no
       vars:
@@ -92,46 +116,6 @@
       command: udevadm trigger
       delegate_to: "{{ physical_host }}"
       when: cinder_backend_lvm_inuse | bool
-    - name: Set cinder storage bridge (is_metal)
-      set_fact:
-        storage_bridge: "{{ 'ansible_' + hostvars[inventory_hostname]['container_networks']['storage_address']['bridge'] | replace('-', '_') }}"
-      when:
-        - hostvars[inventory_hostname]['container_networks']['storage_address']['bridge'] is defined
-        - is_metal | bool
-      tags:
-        - always
-    - name: Set cinder storage address (is_metal)
-      set_fact:
-        storage_address: "{{ hostvars[inventory_hostname][storage_bridge]['ipv4']['address'] }}"
-      when:
-        - hostvars[inventory_hostname]['container_networks']['storage_address']['bridge'] is defined
-        - is_metal | bool
-      tags:
-        - always
-    - name: Set cinder storage bridge (is_metal no storage network)
-      set_fact:
-        storage_address: "{{ ansible_ssh_host }}"
-      when:
-        - hostvars[inventory_hostname]['container_networks']['storage_address']['bridge'] is undefined
-        - is_metal | bool
-      tags:
-        - always
-    - name: Set cinder storage address (container)
-      set_fact:
-        storage_address: "{{ hostvars[inventory_hostname]['container_networks']['storage_address']['address'] }}"
-      when:
-        - hostvars[inventory_hostname]['container_networks']['storage_address']['address'] is defined
-        - not is_metal | bool
-      tags:
-        - always
-    - name: Set cinder storage address (container no storage network)
-      set_fact:
-        storage_address: "{{ ansible_ssh_host }}"
-      when:
-        - hostvars[inventory_hostname]['container_networks']['storage_address']['address'] is undefined
-        - not is_metal | bool
-      tags:
-        - always
   roles:
     - role: "os_cinder"
       cinder_venv_tag: "{{ openstack_release }}"
