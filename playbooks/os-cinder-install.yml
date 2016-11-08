@@ -51,6 +51,8 @@
           - "lxc.autodev=0"
           - "lxc.cgroup.devices.allow=a *:* rmw"
           - "lxc.mount.entry=udev dev devtmpfs defaults 0 0"
+        extra_container_config_no_restart:
+          - "lxc.start.order=79"
       when:
         - inventory_hostname in groups['cinder_volume']
         - cinder_backend_lvm_inuse | bool

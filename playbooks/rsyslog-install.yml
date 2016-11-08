@@ -24,6 +24,8 @@
         list_of_bind_mounts:
           - bind_dir_path: "{{ rsyslog_server_storage_directory }}"
             mount_path: "/openstack/{{ inventory_hostname }}/log-storage"
+        extra_container_config_no_restart:
+          - "lxc.start.order=99"
     - include: common-tasks/package-cache-proxy.yml
   roles:
     - role: "rsyslog_server"
