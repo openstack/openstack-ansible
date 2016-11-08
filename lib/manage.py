@@ -54,7 +54,7 @@ def file_find(filename, user_file=None, pass_exception=False):
             return filename
     else:
         if pass_exception is False:
-            raise SystemExit('No file found at: %s' % file_check)
+            raise SystemExit('No file found at: {}'.format(file_check))
         else:
             return False
 

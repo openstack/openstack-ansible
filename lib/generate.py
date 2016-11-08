@@ -138,8 +138,8 @@ def get_ip_address(name, ip_q):
         return None
     except Queue.Empty:
         raise SystemExit(
-            'Cannot retrieve requested amount of IP addresses. Increase the %s'
-            ' range in your openstack_user_config.yml.' % name
+            'Cannot retrieve requested amount of IP addresses. Increase the {}'
+            ' range in your openstack_user_config.yml.'.format(name)
         )
 
 
@@ -201,7 +201,7 @@ def _build_container_hosts(container_affinity, container_hosts, type_and_name,
 
     for make_container in range(container_affinity):
         for i in container_hosts:
-            if '%s-' % type_and_name in i:
+            if '{}-'.format(type_and_name) in i:
                 append_if(array=container_list, item=i)
 
         existing_count = len(list(set(container_list)))
@@ -211,9 +211,9 @@ def _build_container_hosts(container_affinity, container_hosts, type_and_name,
             address = None
 
             if is_metal is False:
-                cuuid = '%s' % uuid.uuid4()
+                cuuid = str(uuid.uuid4())
                 cuuid = cuuid.split('-')[0]
-                container_host_name = '%s-%s' % (type_and_name, cuuid)
+                container_host_name = '{}-{}'.format(type_and_name, cuuid)
                 logger.debug("Generated container name %s",
                              container_host_name)
                 hostvars_options = hostvars[container_host_name] = {}
@@ -241,7 +241,7 @@ def _build_container_hosts(container_affinity, container_hosts, type_and_name,
                 address = host_type_config.get('ip')
 
             # Create a host types containers group and append it to inventory
-            host_type_containers = '%s-host_containers' % host_type
+            host_type_containers = '{}-host_containers'.format(host_type)
             append_if(array=container_mapping, item=host_type_containers)
 
             hostvars_options.update({
@@ -282,7 +282,7 @@ def _append_to_host_groups(inventory, container_type, assignment, host_type,
     :param host_type: ``str``  Name of the host type
     :param type_and_name: ``str`` Combined name of host and container name
     """
-    physical_group_type = '%s_all' % container_type.split('_')[0]
+    physical_group_type = '{}_all'.format(container_type.split('_')[0])
     if physical_group_type not in inventory:
         logger.debug("Added %s group to inventory", physical_group_type)
         inventory[physical_group_type] = {'hosts': []}
@@ -306,7 +306,7 @@ def _append_to_host_groups(inventory, container_type, assignment, host_type,
                 if 'physical_host' not in hdata:
                     hdata['physical_host'] = host_type
 
-                if container.startswith('%s-' % type_and_name):
+                if container.startswith('{}-'.format(type_and_name)):
                     appended = append_if(array=iah, item=container)
                     if appended:
                         logger.debug("Added host %s to %s hosts",
@@ -317,7 +317,7 @@ def _append_to_host_groups(inventory, container_type, assignment, host_type,
                         if appended:
                             logger.debug("Added is_metal host %s to %s hosts",
                                          container, assignment)
-                if container.startswith('%s-' % type_and_name):
+                if container.startswith('{}-'.format(type_and_name)):
                     appended = append_if(array=iph, item=container)
                     if appended:
                         logger.debug("Added host %s to %s hosts",
@@ -365,7 +365,7 @@ def _add_container_hosts(assignment, config, container_name, container_type,
     :param inventory: ``dict``  Living dictionary of inventory
     :param properties: ``dict``  Dict of container properties
     """
-    physical_host_type = '%s_hosts' % container_type.split('_')[0]
+    physical_host_type = '{}_hosts'.format(container_type.split('_')[0])
     # If the physical host type is not in config return
     if physical_host_type not in config:
         return
@@ -389,22 +389,22 @@ def _add_container_hosts(assignment, config, container_name, container_type,
         # Ensures that container names are not longer than 63
         # This section will ensure that we are not it by the following bug:
         # https://bugzilla.mindrot.org/show_bug.cgi?id=2239
-        type_and_name = '%s_%s' % (host_type, container_name)
+        type_and_name = '{}_{}'.format(host_type, container_name)
         logger.debug("Generated container name %s", type_and_name)
         max_hostname_len = 52
         if len(type_and_name) > max_hostname_len:
             raise SystemExit(
-                'The resulting combination of [ "%s" + "%s" ] is longer than'
+                'The resulting combination of [ "{}" + "{}" ] is longer than'
                 ' 52 characters. This combination will result in a container'
                 ' name that is longer than the maximum allowable hostname of'
                 ' 63 characters. Before this process can continue please'
                 ' adjust the host entries in your "openstack_user_config.yml"'
                 ' to use a short hostname. The recommended hostname length is'
-                ' < 20 characters long.' % (host_type, container_name)
+                ' < 20 characters long.'.format(host_type, container_name)
             )
 
         physical_host = inventory['_meta']['hostvars'][host_type]
-        container_host_type = '%s-host_containers' % host_type
+        container_host_type = '{}-host_containers'.format(host_type)
         if 'container_types' not in physical_host:
             physical_host['container_types'] = container_host_type
         elif physical_host['container_types'] != container_host_type:
@@ -627,9 +627,9 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
 
     # TODO(cloudnull) after a few releases this should be removed.
     if q_name:
-        old_address = '%s_address' % q_name
+        old_address = '{}_address'.format(q_name)
     else:
-        old_address = '%s_address' % interface
+        old_address = '{}_address'.format(interface)
 
     for container_host in hosts:
         container = base_hosts[container_host]
@@ -741,7 +741,8 @@ def container_skel_load(container_skel, inventory, config):
             provider_queues[net_name] = ip_q
             if ip_q is not None:
                 net = netaddr.IPNetwork(cidr_networks.get(net_name))
-                provider_queues['%s_netmask' % net_name] = str(net.netmask)
+                q_netmask = '{}_netmask'.format(net_name)
+                provider_queues[q_netmask] = str(net.netmask)
 
         overrides = config['global_overrides']
         # iterate over a list of provider_networks, var=pn
@@ -755,7 +756,7 @@ def container_skel_load(container_skel, inventory, config):
             q_name = p_net.get('ip_from_q')
             ip_from_q = provider_queues.get(q_name)
             if ip_from_q:
-                netmask = provider_queues['%s_netmask' % q_name]
+                netmask = provider_queues['{}_netmask'.format(q_name)]
             else:
                 netmask = None
 
@@ -800,7 +801,7 @@ def find_config_path(user_config_path=None):
         if os.path.isdir(f):
             return f
     else:
-        raise SystemExit('No config found at: %s' % path_check)
+        raise SystemExit('No config found at: {}'.format(path_check))
 
 
 def _set_used_ips(user_defined_config, inventory):
@@ -1077,8 +1078,8 @@ def _check_all_conf_groups_present(config, environment):
 
     for group in config_groups:
         if group not in env_groups:
-            msg = ("Group %s was found in configuration but "
-                   "not the environment." % group)
+            msg = ("Group {} was found in configuration but "
+                   "not the environment.".format(group))
             warnings.warn(msg)
 
             retval = False
@@ -1124,8 +1125,8 @@ def load_user_configuration(config_path):
     if not user_defined_config:
         raise SystemExit(
             'No user config loaded\n'
-            'No openstack_user_config files are available in either \n%s'
-            '\nor \n%s/conf.d directory' % (config_path, config_path)
+            'No openstack_user_config files are available in either \n{}'
+            '\nor \n{}/conf.d directory'.format(config_path, config_path)
         )
     logger.debug("User configuration loaded from: %s", user_config_file)
     return user_defined_config
@@ -1147,7 +1148,7 @@ def make_backup(config_path, inventory_file_path):
 def get_backup_name(basename):
     utctime = datetime.datetime.utcnow()
     utctime = utctime.strftime("%Y%m%d_%H%M%S")
-    return '%s-%s.json' % (basename, utctime)
+    return '{}-{}.json'.format(basename, utctime)
 
 
 def get_inventory(config_path, inventory_file_path):
