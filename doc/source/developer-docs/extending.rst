@@ -145,7 +145,7 @@ Practical guidance for using this feature is available in the `Install Guide`_.
 
 This module has been `submitted for consideration`_ into Ansible Core.
 
-.. _Install Guide: ../install-guide/configure-openstack.html
+.. _Install Guide: ../install-guide/app-advanced-config-override.html
 .. _submitted for consideration: https://github.com/ansible/ansible/pull/12555
 
 

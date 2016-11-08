@@ -207,7 +207,7 @@ This is done by executing the following:
 If this fails to get the database cluster back into a running state, then
 please make use of the `Galera Cluster Recovery`_ page in the Install Guide.
 
-.. _Galera Cluster Recovery: ../install-guide/ops-galera-recovery.html
+.. _Galera Cluster Recovery: http://docs.openstack.org/developer/openstack-ansible/newton/developer-docs/ops-galera-recovery.html
 
 Rebuilding an AIO
 -----------------
