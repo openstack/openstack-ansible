@@ -10,7 +10,10 @@ global
         maxconn 4096
         tune.bufsize 384000
         stats socket /var/run/haproxy.stat level admin mode 600
-        {% if haproxy_ssl | bool %}tune.ssl.default-dh-param {{haproxy_ssl_dh_param}}{% endif %}
+        {% if haproxy_ssl | bool %}
+        ssl-default-bind-options no-sslv3
+        tune.ssl.default-dh-param {{haproxy_ssl_dh_param}}
+        {% endif %}
 
 defaults
         log global
