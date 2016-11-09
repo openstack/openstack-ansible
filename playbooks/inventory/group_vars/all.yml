@@ -47,7 +47,7 @@ pip_links:
 pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"
 
 # The upper constraints to apply to all pip installations
-pip_install_upper_constraints: "{{ openstack_repo_url }}/os-releases/{{ openstack_release }}/requirements_constraints.txt"
+pip_install_upper_constraints: "{{ openstack_repo_url }}/os-releases/{{ openstack_release }}/requirements_absolute_requirements.txt"
 
 ## OpenStack source options
 # URL for the frozen internal openstack repo.
