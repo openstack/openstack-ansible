@@ -208,3 +208,9 @@ trove_git_repo: https://git.openstack.org/openstack/trove
 trove_git_install_branch: 1b2f42dc3d7290d92f8203587a0adcfbd146e00f # HEAD of "master" as of 04.11.2016
 trove_git_dest: "/opt/trove_{{ trove_git_install_branch | replace('/', '_') }}"
 trove_git_project_group: trove_all
+
+## Horizon Trove dashboard plugin
+trove_dashboard_git_repo: https://git.openstack.org/openstack/trove-dashboard
+trove_dashboard_git_install_branch: 4e0cf0a8297516a99e7116915591425ca5f66cf4 # HEAD of "master" as of 10.11.2016
+trove_dashboard_git_dest: "/opt/trove_dashboard_{{ trove_dashboard_git_install_branch | replace('/', '_') }}"
+trove_dashboard_git_project_group: horizon_all
