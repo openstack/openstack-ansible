@@ -70,6 +70,13 @@ designate_git_dest: "/opt/designate_{{ designate_git_install_branch | replace('/
 designate_git_project_group: designate_all
 
 
+## Horizon Designate dashboard plugin
+designate_dashboard_git_repo: https://git.openstack.org/openstack/designate-dashboard
+designate_dashboard_git_install_branch: a0dc4f3eee859a4d5e836607ee952a743643b3d4 # HEAD of "master" as of 10.11.2016
+designate_dashboard_git_dest: "/opt/designate_dashboard_{{ designate_dashboard_git_install_branch | replace('/', '_') }}"
+designate_dashboard_git_project_group: horizon_all
+
+
 ## Glance service
 glance_git_repo: https://git.openstack.org/openstack/glance
 glance_git_install_branch: d1939eb86ff4b04dab7eb6a84af93a90c5002518 # HEAD of "master" as of 04.11.2016
