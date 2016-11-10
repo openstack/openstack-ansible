@@ -20,8 +20,8 @@
   tasks:
     - name: Remove target directory if required
       shell: |
-        if [[ ! -d "{{ item.path | default('/etc/ansible/roles') }}/{{ item.name | default(item.src | basename) }}/.git" ]]; then
-          rm -rf "{{ item.path | default('/etc/ansible/roles') }}/{{ item.name | default(item.src | basename) }}"
+        if [[ ! -d "{{ item.path | default(role_path_default) }}/{{ item.name | default(item.src | basename) }}/.git" ]]; then
+          rm -rf "{{ item.path | default(role_path_default) }}/{{ item.name | default(item.src | basename) }}"
         fi
       args:
         executable: /bin/bash
@@ -31,7 +31,7 @@
     - name: Clone git repos
       git:
         repo: "{{ item.src }}"
-        dest: "{{ item.path | default('/etc/ansible/roles') }}/{{ item.name | default(item.src | basename) }}"
+        dest: "{{ item.path | default(role_path_default) }}/{{ item.name | default(item.src | basename) }}"
         version: "{{ item.version | default('master') }}"
         update: true
         force: true
@@ -41,3 +41,4 @@
   vars:
     roles: "{{ lookup('file', role_file) | from_yaml }}"
     role_file: '../ansible-role-requirements.yml'
+    role_path_default: '/etc/ansible/roles'
