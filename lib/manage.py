@@ -249,7 +249,7 @@ def print_inventory(inventory, sort_key):
         'component',
         'physical_host',
         'tunnel_address',
-        'ansible_ssh_host',
+        'ansible_host',
         'container_types'
     ]
     table = prettytable.PrettyTable(required_list)

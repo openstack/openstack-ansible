@@ -44,7 +44,7 @@
       local_action:
         module: wait_for
         port: "3306"
-        host: "{{ ansible_ssh_host | default(inventory_hostname) }}"
+        host: "{{ ansible_host | default(ansible_ssh_host | default(inventory_hostname)) }}"
       retries: 10
       delay: 10
 
