@@ -120,6 +120,15 @@ def args():
         default=False
     )
 
+    exclusive_action.add_argument(
+        '--clear-ips',
+        help=('Clears IPs from the existing inventory, but leaves ',
+              'all other information intact. LXC interface files and '
+              'load balancers will *not* be modified.'),
+        action='store_true',
+        default=False
+    )
+
     return vars(parser.parse_args())
 
 
@@ -305,6 +314,25 @@ def export_host_info(inventory):
     return export_info
 
 
+def remove_ip_addresses(inventory):
+    """Removes container IP address information from the inventory dictionary
+
+    All container_networks information for containers will be deleted.
+    """
+    hostvars = inventory['_meta']['hostvars']
+
+    for host, variables in hostvars.items():
+        if variables.get('is_metal', False):
+            continue
+
+        ip_vars = ['container_networks', 'container_address',
+                   'ansible_host', 'ansible_ssh_host']
+
+        # Don't raise a KeyError if the entries have already been removed.
+        for ip_var in ip_vars:
+            variables.pop(ip_var, None)
+
+
 def main():
     """Run the main application."""
     # Parse user args
@@ -329,6 +357,11 @@ def main():
         print(print_containers_per_group(inventory))
     elif user_args['export'] is True:
         print(json.dumps(export_host_info(inventory), indent=2))
+    elif user_args['clear_ips'] is True:
+        remove_ip_addresses(inventory)
+        with open(environment_file, 'wb') as f_handle:
+            f_handle.write(json.dumps(inventory, indent=2))
+        print('Success. . .')
     else:
         recursive_dict_removal(inventory, user_args['remove_item'])
         with open(environment_file, 'wb') as f_handle:

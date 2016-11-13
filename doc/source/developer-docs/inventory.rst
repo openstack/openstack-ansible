@@ -147,7 +147,13 @@ Inspecting and Managing the Inventory
 The file ``scripts/inventory-manage.py`` is used to produce human readable
 output based on the ``/etc/openstack_deploy/openstack_inventory.json`` file.
 
-The same script can be used to safely remove hosts from the inventory.
+The same script can be used to safely remove hosts from the inventory, export
+the inventory based on hosts, and clear IP addresses from containers within
+the inventory files.
+
+Operations taken by this script only affect the
+``/etc/opentstack_deploy/openstack_inventory.json`` file; any new or removed
+information must be set by running playbooks.
 
 Viewing the Inventory
 ^^^^^^^^^^^^^^^^^^^^^
@@ -183,6 +189,19 @@ This JSON output has two top-level keys: ``hosts`` and ``all``.
 
 ``all`` contains global network information such as the load balancer IPs and
 provider network metadata.
+
+Clearing Existing Container IP Addresses
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ``--clear-ips`` parameter can be used to remove all container IP address
+information from the ``openstack_inventory.json`` file. Baremetal hosts will
+not be changed.
+
+This will *not* change the LXC configuration until the associated playbooks
+are run and the containers restarted, which will result in API downtime.
+
+Any changes to the containers must also be reflected in the deployment's load
+balancer.
 
 The lxc_hosts Group
 -------------------

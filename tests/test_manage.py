@@ -57,5 +57,48 @@ class TestExportFunction(unittest.TestCase):
                          all_info['internal_lb_vip_address'])
 
 
+class TestRemoveIpfunction(unittest.TestCase):
+    def setUp(self):
+        self.inv = test_inventory.get_inventory()
+
+    def tearDown(self):
+        test_inventory.cleanup()
+
+    def test_ips_removed(self):
+        mi.remove_ip_addresses(self.inv)
+        hostvars = self.inv['_meta']['hostvars']
+
+        for host, variables in hostvars.items():
+            has_networks = 'container_networks' in variables
+            if variables.get('is_metal', False):
+                continue
+            self.assertFalse(has_networks)
+
+    def test_metal_ips_kept(self):
+        mi.remove_ip_addresses(self.inv)
+        hostvars = self.inv['_meta']['hostvars']
+
+        for host, variables in hostvars.items():
+            has_networks = 'container_networks' in variables
+            if not variables.get('is_metal', False):
+                continue
+            self.assertTrue(has_networks)
+
+    def test_ansible_host_vars_removed(self):
+        mi.remove_ip_addresses(self.inv)
+        hostvars = self.inv['_meta']['hostvars']
+
+        for host, variables in hostvars.items():
+            has_host = 'ansible_host' in variables
+            if variables.get('is_metal', False):
+                continue
+            self.assertFalse(has_host)
+
+    def test_multiple_calls(self):
+        """Removal should fail silently if keys are absent."""
+        mi.remove_ip_addresses(self.inv)
+        mi.remove_ip_addresses(self.inv)
+
+
 if __name__ == '__main__':
     unittest.main()
