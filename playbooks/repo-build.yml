@@ -21,13 +21,21 @@
         key: repo_servers_{{ ansible_architecture }}
       tags:
         - always
-    - local_action:
+
+    # Use the 'add_host' module to create the repo_nodes group. The add_hosts module
+    # bypasses the play host loop of ansible and runs only once referencing the first
+    # host.  To run it on each host we have to use with_items.  Also note, we have
+    # to manually lookup the ansible_architecture for the 'item' host.
+    - name: Prepare group of master repo servers
+      local_action:
         module: "add_host"
-        name: "{{ item }}"
+        name: "{{ groups['repo_servers_' + hostvars[item].ansible_architecture][0] }}"
         groups: "repo_nodes"
+      # Process all nodes that don't match the architecture of repo_all[0]
       when:
-        - item != groups['repo_all'][0]
-      with_items: "{{ groups['repo_servers_' + ansible_architecture][0] }}"
+        - hostvars[item].ansible_architecture != hostvars[groups['repo_all'][0]].ansible_architecture
+      with_items:
+        - "{{ groups['repo_all'][1:] }}"
   tags:
     - repo-build
 
