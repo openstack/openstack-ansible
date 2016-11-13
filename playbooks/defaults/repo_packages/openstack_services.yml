@@ -117,22 +117,22 @@ neutron_git_project_group: neutron_all
 neutron_lbaas_git_repo: https://git.openstack.org/openstack/neutron-lbaas
 neutron_lbaas_git_install_branch: bff11c5fa14bce26526d38167d5c67b1afeb45ba # HEAD of "stable/newton" as of 04.11.2016
 neutron_lbaas_git_dest: "/opt/neutron_lbaas_{{ neutron_lbaas_git_install_branch | replace('/', '_') }}"
-neutron_lbaas_git_project_group: neutron_agent
+neutron_lbaas_git_project_group: neutron_all
 
 neutron_vpnaas_git_repo: https://git.openstack.org/openstack/neutron-vpnaas
 neutron_vpnaas_git_install_branch: 89dac51538b711d8e966d4a4a50f9cdfafa92fc5 # HEAD of "stable/newton" as of 04.11.2016
 neutron_vpnaas_git_dest: "/opt/neutron_vpnaas_{{ neutron_vpnaas_git_install_branch | replace('/', '_') }}"
-neutron_vpnaas_git_project_group: neutron_agent
+neutron_vpnaas_git_project_group: neutron_all
 
 neutron_fwaas_git_repo: https://git.openstack.org/openstack/neutron-fwaas
 neutron_fwaas_git_install_branch: 7345510f36d26863c25ba5737b0057b78060d2ad # HEAD of "stable/newton" as of 04.11.2016
 neutron_fwaas_git_dest: "/opt/neutron_fwaas_{{ neutron_fwaas_git_install_branch | replace('/', '_') }}"
-neutron_fwaas_git_project_group: neutron_agent
+neutron_fwaas_git_project_group: neutron_all
 
 neutron_dynamic_routing_git_repo: https://git.openstack.org/openstack/neutron-dynamic-routing
 neutron_dynamic_routing_git_install_branch: 2b27679fb6d690e6f65a98dfa2828bc367aa30ad # HEAD of "stable/newton" as of 04.11.2016
 neutron_dynamic_routing_git_dest: "/opt/neutron_dynamic_routing_{{ neutron_dynamic_routing_git_install_branch | replace('/', '_') }}"
-neutron_dynamic_routing_git_project_group: neutron_agent
+neutron_dynamic_routing_git_project_group: neutron_all
 
 
 ## Nova service
