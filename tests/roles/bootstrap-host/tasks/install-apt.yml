@@ -40,8 +40,8 @@
 
 - name: Set apt repo facts based on discovered information
   set_fact:
-    bootstrap_host_ubuntu_repo: "{{ ubuntu_repo.stdout }}"
-    bootstrap_host_ubuntu_security_repo: "{{ ubuntu_security_repo.stdout }}"
+    bootstrap_host_ubuntu_repo: "{{ ubuntu_repo.stdout_lines[0] }}"
+    bootstrap_host_ubuntu_security_repo: "{{ ubuntu_security_repo.stdout_lines[0] }}"
   when:
     - bootstrap_host_ubuntu_repo is not defined
     - bootstrap_host_ubuntu_security_repo is not defined
