@@ -37,9 +37,15 @@
     dest: "/opt/global-requirement-pins.txt"
   when: (upper_constraints_check.status | default(503)) != 200
 
+# Use https when Python with native SNI support is available
+- name: Set pip install upper constraints protocol
+  set_fact:
+    pip_install_upper_constraints_proto: "{{ ansible_python_version | version_compare('2.7.9', '>=') | ternary('https','http') }}"
+  when: (upper_constraints_check.status | default(503)) != 200
+
 - name: Set pip install upper constraints
   set_fact:
     pip_install_upper_constraints: >-
       /opt/global-requirement-pins.txt
-      --constraint http://git.openstack.org/cgit/openstack/requirements/plain/upper-constraints.txt?id={{ requirements_git_install_branch | regex_replace(' #.*$','') }}
+      --constraint {{ pip_install_upper_constraints_proto }}://git.openstack.org/cgit/openstack/requirements/plain/upper-constraints.txt?id={{ requirements_git_install_branch | regex_replace(' #.*$','') }}
   when: (upper_constraints_check.status | default(503)) != 200
