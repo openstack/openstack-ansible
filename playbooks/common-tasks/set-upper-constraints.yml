@@ -29,4 +29,4 @@
   set_fact:
     pip_install_upper_constraints: >-
       http://git.openstack.org/cgit/openstack/requirements/plain/upper-constraints.txt?id={{ requirements_git_install_branch | regex_replace(' #.*$','') }}
-  when: upper_constraints_check.status != 200
+  when: (upper_constraints_check.status | default(503)) != 200
