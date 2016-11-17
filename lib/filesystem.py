@@ -29,6 +29,13 @@ INVENTORY_FILENAME = 'openstack_inventory.json'
 
 
 def _get_search_paths(preferred_path=None, suffix=None):
+    """Return a list of search paths, including the standard location
+
+    :param preferred_path: A search path to prefer to a standard location
+    :param suffix: Appended to the search paths, e.g. subdirectory or filename
+    :return: ``(list)`` Path strings to search
+    """
+
     search_paths = [
         os.path.join(
             '/etc', 'openstack_deploy'
@@ -48,9 +55,8 @@ def file_find(filename, preferred_path=None, pass_exception=False):
 
     If no file is found and pass_exception is True, the system will exit.
     The file lookup will be done in the following directories:
-      ``preferred_path`` [Optional]
-      /etc/openstack_deploy/
-      $(pwd)/openstack_deploy/
+      * ``preferred_path`` [Optional]
+      * ``/etc/openstack_deploy/``
 
     :param filename: ``str``  Name of the file to find
     :param preferred_path: ``str`` Additional directory to look in FIRST
@@ -70,27 +76,39 @@ def file_find(filename, preferred_path=None, pass_exception=False):
             return False
 
 
-def make_backup(config_path, inventory_file_path):
-    # Create a backup of all previous inventory files as a tar archive
+def _make_backup(backup_path, source_file_path):
+    """ Create a backup of all previous inventory files as a tar archive
+
+    :param backup_path: where to store the backup file
+    :param source_file_path: path of file to backup
+    :return:
+    """
+
     inventory_backup_file = os.path.join(
-        config_path,
+        backup_path,
         'backup_openstack_inventory.tar'
     )
     with tarfile.open(inventory_backup_file, 'a') as tar:
-        basename = os.path.basename(inventory_file_path)
-        backup_name = get_backup_name(basename)
-        tar.add(inventory_file_path, arcname=backup_name)
+        basename = os.path.basename(source_file_path)
+        backup_name = _get_backup_name(basename)
+        tar.add(source_file_path, arcname=backup_name)
     logger.debug("Backup written to {}".format(inventory_backup_file))
 
 
-def get_backup_name(basename):
+def _get_backup_name(basename):
+    """ Return a name for a backup file based on the time
+
+    :param basename: serves as prefix for the return value
+    :return: a name for a backup file based on current time
+    """
+
     utctime = datetime.datetime.utcnow()
     utctime = utctime.strftime("%Y%m%d_%H%M%S")
     return '{}-{}.json'.format(basename, utctime)
 
 
 def load_from_json(filename, preferred_path=None, pass_exception=False):
-    """Return a dictionary found in a given file
+    """Return a dictionary found in json format in a given file
 
     :param filename: ``str``  Name of the file to read from
     :param preferred_path: ``str``  Path to the json file to try FIRST
@@ -124,7 +142,7 @@ def load_inventory(preferred_path=None, default_inv=None):
                                             pass_exception=True)
     if inventory is not False:
         logger.debug("Loaded existing inventory from {}".format(file_loaded))
-        make_backup(preferred_path, file_loaded)
+        _make_backup(preferred_path, file_loaded)
     else:
         logger.debug("No existing inventory, created fresh skeleton.")
         inventory = copy.deepcopy(default_inv)
