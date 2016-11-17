@@ -24,10 +24,8 @@ import uuid
 import warnings
 import yaml
 
-from dictutils import append_if
-from dictutils import merge_dict
-from filesystem import load_inventory
-from filesystem import save_inventory
+import dictutils as du
+import filesystem as filesys
 
 logger = logging.getLogger('osa-inventory')
 
@@ -134,7 +132,8 @@ def _parse_belongs_to(key, belongs_to, inventory):
     """
     for item in belongs_to:
         if key not in inventory[item]['children']:
-            appended = append_if(array=inventory[item]['children'], item=key)
+            appended = du.append_if(array=inventory[item]['children'],
+                                    item=key)
             if appended:
                 logger.debug("Added %s to %s", key, item)
 
@@ -168,7 +167,7 @@ def _build_container_hosts(container_affinity, container_hosts, type_and_name,
     for make_container in range(container_affinity):
         for i in container_hosts:
             if '{}-'.format(type_and_name) in i:
-                append_if(array=container_list, item=i)
+                du.append_if(array=container_list, item=i)
 
         existing_count = len(list(set(container_list)))
         if existing_count < container_affinity:
@@ -188,7 +187,7 @@ def _build_container_hosts(container_affinity, container_hosts, type_and_name,
                         "hosts": [],
                     }
 
-                appended = append_if(
+                appended = du.append_if(
                     array=inventory[container_host_type]["hosts"],
                     item=container_host_name
                 )
@@ -196,7 +195,7 @@ def _build_container_hosts(container_affinity, container_hosts, type_and_name,
                     logger.debug("Added container %s to %s",
                                  container_host_name, container_host_type)
 
-                append_if(array=container_hosts, item=container_host_name)
+                du.append_if(array=container_hosts, item=container_host_name)
             else:
                 if host_type not in hostvars:
                     hostvars[host_type] = {}
@@ -208,7 +207,7 @@ def _build_container_hosts(container_affinity, container_hosts, type_and_name,
 
             # Create a host types containers group and append it to inventory
             host_type_containers = '{}-host_containers'.format(host_type)
-            append_if(array=container_mapping, item=host_type_containers)
+            du.append_if(array=container_mapping, item=host_type_containers)
 
             hostvars_options.update({
                 'properties': properties,
@@ -273,25 +272,25 @@ def _append_to_host_groups(inventory, container_type, assignment, host_type,
                     hdata['physical_host'] = host_type
 
                 if container.startswith('{}-'.format(type_and_name)):
-                    appended = append_if(array=iah, item=container)
+                    appended = du.append_if(array=iah, item=container)
                     if appended:
                         logger.debug("Added host %s to %s hosts",
                                      container, assignment)
                 elif is_metal is True:
                     if component == assignment:
-                        appended = append_if(array=iah, item=container)
+                        appended = du.append_if(array=iah, item=container)
                         if appended:
                             logger.debug("Added is_metal host %s to %s hosts",
                                          container, assignment)
                 if container.startswith('{}-'.format(type_and_name)):
-                    appended = append_if(array=iph, item=container)
+                    appended = du.append_if(array=iph, item=container)
                     if appended:
                         logger.debug("Added host %s to %s hosts",
                                      container, physical_group_type)
 
                 elif is_metal is True:
                     if container.startswith(host_type):
-                        appended = append_if(array=iph, item=container)
+                        appended = du.append_if(array=iph, item=container)
                         if appended:
                             logger.debug("Added is_metal host %s to %s hosts",
                                          container, physical_group_type)
@@ -342,8 +341,8 @@ def _add_container_hosts(assignment, config, container_name, container_type,
         # If host_type is not in config do not append containers to it
         if host_type not in config[physical_host_type]:
             continue
-        appended = append_if(array=inventory['lxc_hosts']['hosts'],
-                             item=host_type)
+        appended = du.append_if(array=inventory['lxc_hosts']['hosts'],
+                                item=host_type)
         if appended:
             logger.debug("%s added to lxc_hosts group", host_type)
 
@@ -445,7 +444,8 @@ def user_defined_setup(config, inventory):
                         hvs[_key][_k] = _v
 
                 ip.USED_IPS.add(_value['ip'])
-                appended = append_if(array=inventory[key]['hosts'], item=_key)
+                appended = du.append_if(array=inventory[key]['hosts'],
+                                        item=_key)
                 if appended:
                     logger.debug("Added host %s to group %s",
                                  _key, key)
@@ -731,6 +731,8 @@ def container_skel_load(container_skel, inventory, config):
 
 
 def find_config_path(user_config_path=None):
+    # TODO(stevelle) REMOVE THIS FUNCTION: after other changes in chain
+    # prevents the clean removal right now
     """Return the path to the user configuration files.
 
     If no directory is found the system will exit.
@@ -831,7 +833,7 @@ def _extra_config(user_defined_config, base_dir):
         for name in files:
             if name.endswith(('.yml', '.yaml')):
                 with open(os.path.join(root_dir, name), 'rb') as f:
-                    merge_dict(
+                    du.merge_dict(
                         user_defined_config,
                         yaml.safe_load(f.read()) or {}
                     )
@@ -973,6 +975,19 @@ def _check_all_conf_groups_present(config, environment):
     return retval
 
 
+def _collect_hostnames(dynamic_inventory):
+
+    # Generate a list of all hosts and their used IP addresses
+    hostnames_ips = {}
+    for _host, _vars in dynamic_inventory['_meta']['hostvars'].iteritems():
+        host_hash = hostnames_ips[_host] = {}
+        for _key, _value in _vars.iteritems():
+            if _key.endswith('address') or _key == 'ansible_host':
+                host_hash[_key] = _value
+
+    return hostnames_ips
+
+
 def load_environment(config_path, environment):
     """Create an environment dictionary from config files
 
@@ -981,9 +996,10 @@ def load_environment(config_path, environment):
     """
 
     # Load all YAML files found in the env.d directory
-    env_plugins = os.path.join(config_path, 'env.d')
+    env_plugins = filesys.dir_find(config_path, 'env.d',
+                                   raise_if_missing=False)
 
-    if os.path.isdir(env_plugins):
+    if env_plugins is not False:
         _extra_config(user_defined_config=environment, base_dir=env_plugins)
     logger.debug("Loaded environment from %s", config_path)
     return environment
@@ -1004,8 +1020,8 @@ def load_user_configuration(config_path):
             user_defined_config.update(yaml.safe_load(f.read()) or {})
 
     # Load anything in a conf.d directory if found
-    base_dir = os.path.join(config_path, 'conf.d')
-    if os.path.isdir(base_dir):
+    base_dir = filesys.dir_find(config_path, 'conf.d', raise_if_missing=False)
+    if base_dir is not False:
         _extra_config(user_defined_config, base_dir)
 
     # Exit if no user_config was found and loaded
@@ -1037,9 +1053,7 @@ def main(config=None, check=False, debug=False, environment=None, **kwargs):
         logger.info("Beginning new inventory run")
 
     # Get the path to the user configuration files
-    config_path = find_config_path(
-        user_config_path=config
-    )
+    config_path = filesys.dir_find(preferred_path=config)
 
     user_defined_config = load_user_configuration(config_path)
     base_env_dir = environment
@@ -1047,7 +1061,7 @@ def main(config=None, check=False, debug=False, environment=None, **kwargs):
     environment = load_environment(config_path, base_env)
 
     # Load existing inventory file if found
-    dynamic_inventory = load_inventory(config_path, INVENTORY_SKEL)
+    dynamic_inventory = filesys.load_inventory(config_path, INVENTORY_SKEL)
 
     # Save the users container cidr as a group variable
     cidr_networks = user_defined_config.get('cidr_networks')
@@ -1109,31 +1123,15 @@ def main(config=None, check=False, debug=False, environment=None, **kwargs):
         if _check_all_conf_groups_present(user_defined_config, environment):
             return 'Configuration ok!'
 
-    # Generate a list of all hosts and their used IP addresses
-    hostnames_ips = {}
-    for _host, _vars in dynamic_inventory['_meta']['hostvars'].iteritems():
-        host_hash = hostnames_ips[_host] = {}
-        for _key, _value in _vars.iteritems():
-            if _key.endswith('address') or _key == 'ansible_host':
-                host_hash[_key] = _value
-
     # Save a list of all hosts and their given IP addresses
-    hostnames_ip_file = os.path.join(
-        config_path, 'openstack_hostnames_ips.yml')
-    with open(hostnames_ip_file, 'wb') as f:
-        f.write(
-            json.dumps(
-                hostnames_ips,
-                indent=4,
-                sort_keys=True
-            )
-        )
+    hostnames_ips = _collect_hostnames(dynamic_inventory)
+    filesys.write_hostnames(config, hostnames_ips)
 
     if logger.isEnabledFor(logging.DEBUG):
         num_hosts = len(dynamic_inventory['_meta']['hostvars'])
         logger.debug("%d hosts found." % num_hosts)
 
     # Save new dynamic inventory
-    save_inventory(dynamic_inventory_json, config_path)
+    filesys.save_inventory(dynamic_inventory_json, config_path)
 
     return dynamic_inventory_json
