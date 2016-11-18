@@ -19,7 +19,7 @@ review.
 .. toctree::
    :maxdepth: 1
 
-   install-guide/index
+   .. TODO: Add deploy guide once asettle has live link
    upgrade-guide/index
    developer-docs/index
 
