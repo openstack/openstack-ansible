@@ -1,0 +1,12 @@
+---
+upgrade:
+  - The variables ``nova_requirements_git_repo`` and
+    ``nova_requirements_git_install_branch`` have been
+    removed in favour of using the URL/path to the
+    upper-constraints file using the
+    variable ``pip_install_upper_constraints`` instead.
+  - The variables ``nova_lxd_requirements_git_repo`` and
+    ``nova_lxd_requirements_git_install_branch`` have been
+    removed in favour of using the URL/path to the
+    upper-constraints file using the
+    variable ``pip_install_upper_constraints`` instead.

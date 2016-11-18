@@ -1,0 +1,7 @@
+---
+upgrade:
+  - The variables ``magnum_requirements_git_repo`` and
+    ``magnum_requirements_git_install_branch`` have been
+    removed in favour of using the URL/path to the
+    upper-constraints file using the
+    variable ``pip_install_upper_constraints`` instead.

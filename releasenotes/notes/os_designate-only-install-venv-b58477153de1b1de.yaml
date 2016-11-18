@@ -1,0 +1,6 @@
+---
+upgrade:
+  - Installation of designate and its dependent pip packages will now only
+    occur within a Python virtual environment. The ``designate_venv_enabled``,
+    ``designate_venv_bin``, ``designate_venv_etc_dir`` and
+    ``designate_non_venv_etc_dir`` variables have been removed.

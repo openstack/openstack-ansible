@@ -1,0 +1,7 @@
+---
+upgrade:
+  - The security role will accept the currently installed version of a package
+    rather than attempting to update it. This reduces unexpected changes on
+    the system from subsequent runs of the security role. Deployers can still
+    set ``security_package_state`` to ``latest`` to ensure that all packages
+    installed by the security role are up to date.

@@ -1,0 +1,11 @@
+---
+features:
+  - The ``swift_rsync_reverse_lookup`` option has been added. This setting
+    will handle whether rsync performs reverse lookups on client IP
+    addresses, and will default to ``False``. We recommend leaving this
+    option at ``False``, unless DNS or host entries exist for each swift
+    host's replication address.
+upgrade:
+  - The default behaviour of rsync, to perform reverse lookups, has
+    been changed to ``False``. This can be set to ``True`` by
+    setting the ``swift_rsync_reverse_lookup`` variable to ``True``.

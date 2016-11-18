@@ -1,0 +1,15 @@
+---
+features:
+  - LXC containers will now generate a fixed mac address on all
+    network interfaces when the option `lxc_container_fixed_mac`
+    is set to **true**. This feature was implemented to resolve
+    issues with dynamic mac addresses in containers generally
+    experienced at scale with network intensive services.
+fixes:
+  - LXC containers will now have the ability to use a fixed mac
+    address on all network interfaces when the option
+    `lxc_container_fixed_mac` is set **true**. This change will
+    assist in resolving a long standing issue where network intensive
+    services, such as neutron and rabbitmq, can enter a confused state
+    for long periods of time and require rolling restarts or internal
+    system resets to recover.

@@ -1,0 +1,4 @@
+---
+fixes:
+  - The haproxy daemon is now able to bind to any port on CentOS 7. The
+    ``haproxy_connect_any`` SELinux boolean is now set to ``on``.
