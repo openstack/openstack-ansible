@@ -1,0 +1,7 @@
+---
+fixes:
+  - Setting the haproxy_bind list on a service is now used as an override to the
+    other VIPs defined in the environment. Previously it was being treated as
+    an append to the other VIPs so there was no path to override the VIP binds
+    for a service. For example, haproxy_bind could be used to bind a service to
+    the internal VIP only.
