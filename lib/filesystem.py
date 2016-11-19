@@ -22,6 +22,9 @@ import json
 import logging
 import os
 import tarfile
+import yaml
+
+import dictutils as du
 
 logger = logging.getLogger('osa-inventory')
 
@@ -103,6 +106,23 @@ def dir_find(preferred_path=None, suffix=None, raise_if_missing=True):
         raise SystemExit('No directory found at:{}'.format(search_paths))
     else:
         return False
+
+
+def _extra_config(user_defined_config, base_dir):
+    """Discover new items in any extra directories and add the new values.
+
+    :param user_defined_config: ``dict``
+    :param base_dir: ``str``
+    """
+    for root_dir, _, files in os.walk(base_dir):
+        for name in files:
+            if name.endswith(('.yml', '.yaml')):
+                with open(os.path.join(root_dir, name), 'rb') as f:
+                    du.merge_dict(
+                        user_defined_config,
+                        yaml.safe_load(f.read()) or {}
+                    )
+                    logger.debug("Merged overrides from file {}".format(name))
 
 
 def _make_backup(backup_path, source_file_path):
@@ -217,3 +237,49 @@ def save_inventory(inventory_json, save_path):
     with open(inventory_file, 'wb') as f:
         f.write(inventory_json)
         logger.info("Inventory written")
+
+
+def load_environment(config_path, environment):
+    """Create an environment dictionary from config files
+
+    :param config_path: ``str`` path where the environment files are kept
+    :param environment: ``dict`` dictionary to populate with environment data
+    """
+
+    # Load all YAML files found in the env.d directory
+    env_plugins = dir_find(config_path, 'env.d', raise_if_missing=False)
+
+    if env_plugins is not False:
+        _extra_config(user_defined_config=environment, base_dir=env_plugins)
+    logger.debug("Loaded environment from {}".format(config_path))
+    return environment
+
+
+def load_user_configuration(config_path):
+    """Create a user configuration dictionary from config files
+
+    :param config_path: ``str`` path where the configuration files are kept
+    """
+
+    user_defined_config = dict()
+
+    # Load the user defined configuration file
+    user_config_file = os.path.join(config_path, 'openstack_user_config.yml')
+    if os.path.isfile(user_config_file):
+        with open(user_config_file, 'rb') as f:
+            user_defined_config.update(yaml.safe_load(f.read()) or {})
+
+    # Load anything in a conf.d directory if found
+    base_dir = dir_find(config_path, 'conf.d', raise_if_missing=False)
+    if base_dir is not False:
+        _extra_config(user_defined_config, base_dir)
+
+    # Exit if no user_config was found and loaded
+    if not user_defined_config:
+        raise SystemExit(
+            'No user config loaded\n'
+            'No openstack_user_config files are available in either \n{}'
+            '\nor \n{}/conf.d directory'.format(config_path, config_path)
+        )
+    logger.debug("User configuration loaded from: {}".format(user_config_file))
+    return user_defined_config
