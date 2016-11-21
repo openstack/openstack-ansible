@@ -50,33 +50,43 @@ def append_if(array, item):
     return False
 
 
-def recursive_list_removal(inventory, purge_list):
+def recursive_list_removal(base_list, purge_list):
     """Remove items from a list.
 
-    :param inventory: ``dict`` Dictionary representing the inventory
+    If base_list and purge_list resolve to the same list in memory,
+    only the first item will be removed due to Python's handling of mutation
+    during iteration.
+
+    :param base_list: ``list`` List representing base_list entries
     :param purge_list: ``list`` List of items to remove
     """
     for item in purge_list:
-        for _item in inventory:
+        for _item in base_list:
             if item == _item:
-                inventory.pop(inventory.index(item))
+                base_list.pop(base_list.index(item))
 
 
+# TODO(nrb): this probably needs to be renamed, as it's not really recursive
 def recursive_dict_removal(inventory, purge_list):
     """Remove items from a dictionary.
 
-    Keyword arguments:
+    Only items in child dictionaries and lists are removed.
+
+    Dictionary keys can only be deleted at the 3rd level (e.g in
+    inventory['top']['middle']['bottom'], only 'bottom' would be targetted by
+    this function)
+
     :param inventory: ``dict`` Dictionary representing the inventory
     :param purge_list: ``list`` List of items to remove
     """
     for key, value in inventory.iteritems():
         if isinstance(value, dict):
-            for _key, _value in value.iteritems():
-                if isinstance(_value, dict):
+            for child_key, child_value in value.iteritems():
+                if isinstance(child_value, dict):
                     for item in purge_list:
-                        if item in _value:
-                            del(_value[item])
-                elif isinstance(_value, list):
-                    recursive_list_removal(_value, purge_list)
+                        if item in child_value:
+                            del(child_value[item])
+                elif isinstance(child_value, list):
+                    recursive_list_removal(child_value, purge_list)
         elif isinstance(value, list):
             recursive_list_removal(value, purge_list)
