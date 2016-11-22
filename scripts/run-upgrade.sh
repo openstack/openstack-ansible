@@ -173,6 +173,7 @@ function main {
         RUN_TASKS+=("rsyslog-install.yml")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/memcached-flush.yml")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/aodh-api-init-delete.yml")
+        RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/ceilometer-api-init-delete.yml")
         RUN_TASKS+=("setup-openstack.yml")
         # Run the tasks in order
         for item in ${!RUN_TASKS[@]}; do
