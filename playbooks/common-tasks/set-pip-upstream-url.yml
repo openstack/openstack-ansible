@@ -1,0 +1,33 @@
+---
+# Copyright 2016, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# This set of tasks checks whether the repo is up yet. If it is it
+# will use the get-pip.py script available there. If it is not yet
+# up, then it will use the standard upstream get-pip.py script URL.
+
+- name: Test internal repo URL for the current get-pip.py script
+  uri:
+    url: "{{ pip_upstream_url }}"
+    method: "HEAD"
+  register: _repo_data_check
+  failed_when: false
+  when: pip_upstream_url != "https://bootstrap.pypa.io/get-pip.py"
+
+- name: Set pip upstream URL
+  set_fact:
+    pip_upstream_url: "https://bootstrap.pypa.io/get-pip.py"
+  when:
+    - pip_upstream_url != "https://bootstrap.pypa.io/get-pip.py"
+    - (_repo_data_check.status | default(503)) != 200

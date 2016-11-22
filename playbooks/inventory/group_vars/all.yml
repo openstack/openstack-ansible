@@ -49,6 +49,9 @@ pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"
 # The upper constraints to apply to all pip installations
 pip_install_upper_constraints: "{{ openstack_repo_url }}/os-releases/{{ openstack_release }}/requirements_absolute_requirements.txt"
 
+# The URL to retrieve the get-pip.py installation script
+pip_upstream_url: "{{ (pip_offline_install | bool) | ternary('https://bootstrap.pypa.io/get-pip.py', openstack_repo_url ~ '/os-releases/' ~ openstack_release ~ '/get-pip.py') }}"
+
 ## OpenStack source options
 # URL for the frozen internal openstack repo.
 repo_server_port: 8181

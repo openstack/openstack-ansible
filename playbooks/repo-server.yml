@@ -20,8 +20,6 @@
   user: root
   pre_tasks:
 
-    - include: common-tasks/set-upper-constraints.yml
-
     - name: Check if the git cache exists on deployment host
       local_action:
         module: stat
