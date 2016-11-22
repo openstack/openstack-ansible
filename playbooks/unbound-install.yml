@@ -18,8 +18,6 @@
     - unbound_all
   gather_facts: "{{ gather_facts | default(True) }}"
   user: root
-  pre_tasks:
-    - include: common-tasks/set-upper-constraints.yml
   roles:
     - role: "unbound"
       tags:
