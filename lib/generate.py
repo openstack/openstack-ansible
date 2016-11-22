@@ -962,16 +962,18 @@ def main(config=None, check=False, debug=False, environment=None, **kwargs):
     if debug:
         _prepare_debug_logger()
 
-    # Get the path to the user configuration files
-    config_path = filesys.dir_find(preferred_path=config)
+    try:
+        user_defined_config = filesys.load_user_configuration(config)
+    except filesys.MissingDataSource as ex:
+        raise SystemExit(ex)
 
-    user_defined_config = filesys.load_user_configuration(config_path)
     base_env_dir = environment
     base_env = filesys.load_environment(base_env_dir, {})
-    environment = filesys.load_environment(config_path, base_env)
+    environment = filesys.load_environment(config, base_env)
 
     # Load existing inventory file if found
-    dynamic_inventory = filesys.load_inventory(config_path, INVENTORY_SKEL)
+    dynamic_inventory, inv_path = filesys.load_inventory(config,
+                                                         INVENTORY_SKEL)
 
     # Save the users container cidr as a group variable
     cidr_networks = user_defined_config.get('cidr_networks')
@@ -1042,6 +1044,6 @@ def main(config=None, check=False, debug=False, environment=None, **kwargs):
         logger.debug("%d hosts found.", num_hosts)
 
     # Save new dynamic inventory
-    filesys.save_inventory(dynamic_inventory_json, config_path)
+    filesys.save_inventory(dynamic_inventory_json, inv_path)
 
     return dynamic_inventory_json

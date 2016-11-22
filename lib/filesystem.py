@@ -31,6 +31,20 @@ logger = logging.getLogger('osa-inventory')
 INVENTORY_FILENAME = 'openstack_inventory.json'
 
 
+class MissingDataSource(Exception):
+    def __init__(self, *sources):
+        self.sources = sources
+
+        error_msg = "Could not read data sources: '{sources}'."
+        self.message = error_msg.format(sources=self.sources)
+
+    def __str__(self):
+        return self.message
+
+    def __repr__(self):
+        return self.message
+
+
 def _get_search_paths(preferred_path=None, suffix=None):
     """Return a list of search paths, including the standard location
 
@@ -56,15 +70,17 @@ def _get_search_paths(preferred_path=None, suffix=None):
 def file_find(filename, preferred_path=None, raise_if_missing=True):
     """Return the path to an existing file, or False if no file is found.
 
-    If no file is found and raise_if_missing is True, the system will exit.
+    If no file is found and raise_if_missing is True, MissingDataSource
+        will be raised.
+
     The file lookup will be done in the following directories:
       * ``preferred_path`` [Optional]
       * ``/etc/openstack_deploy/``
 
     :param filename: ``str``  Name of the file to find
     :param preferred_path: ``str`` Additional directory to look in FIRST
-    :param raise_if_missing: ``bool`` Should a SystemExit be raised if the file
-      is not found
+    :param raise_if_missing: ``bool`` Should a MissingDataSource be raised if
+        the file is not found
     """
 
     search_paths = _get_search_paths(preferred_path, suffix=filename)
@@ -75,7 +91,7 @@ def file_find(filename, preferred_path=None, raise_if_missing=True):
 
     # The file was not found
     if raise_if_missing:
-        raise SystemExit('No file found at: {}'.format(search_paths))
+        raise MissingDataSource(search_paths)
     else:
         return False
 
@@ -92,8 +108,8 @@ def dir_find(preferred_path=None, suffix=None, raise_if_missing=True):
 
     :param preferred_path: ``str`` Additional directory to look in FIRST
     :param suffix: ``str`` Name of a subdirectory to find under standard paths
-    :param raise_if_missing: ``bool`` Should a SystemExit be raised if the
-      directory is not found.
+    :param raise_if_missing: ``bool`` Should a MissingDataSource be raised if
+        the directory is not found.
     """
     search_paths = _get_search_paths(preferred_path, suffix)
 
@@ -103,7 +119,7 @@ def dir_find(preferred_path=None, suffix=None, raise_if_missing=True):
 
     # The directory was not found
     if raise_if_missing:
-        raise SystemExit('No directory found at:{}'.format(search_paths))
+        raise MissingDataSource(search_paths)
     else:
         return False
 
@@ -185,8 +201,8 @@ def load_from_json(filename, preferred_path=None, raise_if_missing=True):
 
     :param filename: ``str``  Name of the file to read from
     :param preferred_path: ``str``  Path to the json file to try FIRST
-    :param raise_if_missing: ``bool`` Should a SystemExit be raised if the file
-      is not found
+    :param raise_if_missing: ``bool`` Should a MissingDataSource be raised if
+        the file is not found
     :return ``(dict, str)`` Dictionary describing the JSON file contents or
         False, and the fully resolved file name loaded or None
     """
@@ -208,19 +224,26 @@ def load_inventory(preferred_path=None, default_inv=None):
     :param preferred_path: ``str`` Path to the inventory directory to try FIRST
     :param default_inv: ``dict`` Default inventory skeleton
 
-    :return: ``dict`` A dictionary found or ``default_inv``
+    :return: ``(dict, str)`` Dictionary describing the JSON file contents or
+        ``default_inv``, and the directory from which the inventory was loaded
+        or should have been loaded from.
     """
 
     inventory, file_loaded = load_from_json(INVENTORY_FILENAME, preferred_path,
                                             raise_if_missing=False)
+    if file_loaded is not False:
+        load_path = os.path.dirname(file_loaded)
+    else:
+        load_path = dir_find(preferred_path)
+
     if inventory is not False:
         logger.debug("Loaded existing inventory from {}".format(file_loaded))
-        _make_backup(preferred_path, file_loaded)
+        _make_backup(load_path, file_loaded)
     else:
         logger.debug("No existing inventory, created fresh skeleton.")
         inventory = copy.deepcopy(default_inv)
 
-    return inventory
+    return inventory, load_path
 
 
 def save_inventory(inventory_json, save_path):
@@ -251,11 +274,12 @@ def load_environment(config_path, environment):
 
     if env_plugins is not False:
         _extra_config(user_defined_config=environment, base_dir=env_plugins)
-    logger.debug("Loaded environment from {}".format(config_path))
+        logger.debug("Loaded environment from {}".format(config_path))
+
     return environment
 
 
-def load_user_configuration(config_path):
+def load_user_configuration(config_path=None):
     """Create a user configuration dictionary from config files
 
     :param config_path: ``str`` path where the configuration files are kept
@@ -264,8 +288,10 @@ def load_user_configuration(config_path):
     user_defined_config = dict()
 
     # Load the user defined configuration file
-    user_config_file = os.path.join(config_path, 'openstack_user_config.yml')
-    if os.path.isfile(user_config_file):
+    user_config_file = file_find('openstack_user_config.yml',
+                                 preferred_path=config_path,
+                                 raise_if_missing=False)
+    if user_config_file is not False:
         with open(user_config_file, 'rb') as f:
             user_defined_config.update(yaml.safe_load(f.read()) or {})
 
@@ -276,10 +302,8 @@ def load_user_configuration(config_path):
 
     # Exit if no user_config was found and loaded
     if not user_defined_config:
-        raise SystemExit(
-            'No user config loaded\n'
-            'No openstack_user_config files are available in either \n{}'
-            '\nor \n{}/conf.d directory'.format(config_path, config_path)
-        )
+        raise MissingDataSource(_get_search_paths(config_path) +
+                                _get_search_paths(config_path, 'conf.d'))
+
     logger.debug("User configuration loaded from: {}".format(user_config_file))
     return user_defined_config
