@@ -50,17 +50,17 @@ def _get_search_paths(preferred_path=None, suffix=None):
     return search_paths
 
 
-def file_find(filename, preferred_path=None, pass_exception=False):
-    """Return the path to a file, or False if no file is found.
+def file_find(filename, preferred_path=None, raise_if_missing=True):
+    """Return the path to an existing file, or False if no file is found.
 
-    If no file is found and pass_exception is True, the system will exit.
+    If no file is found and raise_if_missing is True, the system will exit.
     The file lookup will be done in the following directories:
       * ``preferred_path`` [Optional]
       * ``/etc/openstack_deploy/``
 
     :param filename: ``str``  Name of the file to find
     :param preferred_path: ``str`` Additional directory to look in FIRST
-    :param pass_exception: ``bool`` Should a SystemExit be raised if the file
+    :param raise_if_missing: ``bool`` Should a SystemExit be raised if the file
       is not found
     """
 
@@ -69,11 +69,40 @@ def file_find(filename, preferred_path=None, pass_exception=False):
     for file_candidate in search_paths:
         if os.path.isfile(file_candidate):
             return file_candidate
+
+    # The file was not found
+    if raise_if_missing:
+        raise SystemExit('No file found at: {}'.format(search_paths))
     else:
-        if pass_exception is False:
-            raise SystemExit('No file found at: {}'.format(search_paths))
-        else:
-            return False
+        return False
+
+
+def dir_find(preferred_path=None, suffix=None, raise_if_missing=True):
+    """Return the path to the user configuration files.
+
+    If no directory is found the system will exit.
+
+    The lookup will be done in the following directories:
+
+      * ``preferred_path`` [Optional]
+      * ``/etc/openstack_deploy/``
+
+    :param preferred_path: ``str`` Additional directory to look in FIRST
+    :param suffix: ``str`` Name of a subdirectory to find under standard paths
+    :param raise_if_missing: ``bool`` Should a SystemExit be raised if the
+      directory is not found.
+    """
+    search_paths = _get_search_paths(preferred_path, suffix)
+
+    for f in search_paths:
+        if os.path.isdir(f):
+            return f
+
+    # The directory was not found
+    if raise_if_missing:
+        raise SystemExit('No directory found at:{}'.format(search_paths))
+    else:
+        return False
 
 
 def _make_backup(backup_path, source_file_path):
@@ -107,18 +136,42 @@ def _get_backup_name(basename):
     return '{}-{}.json'.format(basename, utctime)
 
 
-def load_from_json(filename, preferred_path=None, pass_exception=False):
+def write_hostnames(save_path, hostnames_ips):
+    """Write a list of all hosts and their given IP addresses
+
+    NOTE: the file is saved in json format to a file with the name
+    ``openstack_hostnames_ips.yml``
+
+    :param save_path: path to save the file to, will use default location if
+        None or an invalid path is provided
+    :param hostnames_ips: the list of all hosts and their IP addresses
+    """
+
+    file_path = dir_find(save_path)
+    hostnames_ip_file = os.path.join(file_path, 'openstack_hostnames_ips.yml')
+
+    with open(hostnames_ip_file, 'wb') as f:
+        f.write(
+            json.dumps(
+                hostnames_ips,
+                indent=4,
+                sort_keys=True
+            )
+        )
+
+
+def load_from_json(filename, preferred_path=None, raise_if_missing=True):
     """Return a dictionary found in json format in a given file
 
     :param filename: ``str``  Name of the file to read from
     :param preferred_path: ``str``  Path to the json file to try FIRST
-    :param pass_exception: ``bool`` Should a SystemExit be raised if the file
-        is not found
+    :param raise_if_missing: ``bool`` Should a SystemExit be raised if the file
+      is not found
     :return ``(dict, str)`` Dictionary describing the JSON file contents or
         False, and the fully resolved file name loaded or None
     """
 
-    target_file = file_find(filename, preferred_path, pass_exception)
+    target_file = file_find(filename, preferred_path, raise_if_missing)
     dictionary = False
     if target_file is not False:
         with open(target_file, 'rb') as f_handle:
@@ -139,7 +192,7 @@ def load_inventory(preferred_path=None, default_inv=None):
     """
 
     inventory, file_loaded = load_from_json(INVENTORY_FILENAME, preferred_path,
-                                            pass_exception=True)
+                                            raise_if_missing=False)
     if inventory is not False:
         logger.debug("Loaded existing inventory from {}".format(file_loaded))
         _make_backup(preferred_path, file_loaded)
