@@ -19,10 +19,8 @@ import ip
 import json
 import logging
 import netaddr
-import os
 import uuid
 import warnings
-import yaml
 
 import dictutils as du
 import filesystem as filesys
@@ -730,34 +728,6 @@ def container_skel_load(container_skel, inventory, config):
                 )
 
 
-def find_config_path(user_config_path=None):
-    # TODO(stevelle) REMOVE THIS FUNCTION: after other changes in chain
-    # prevents the clean removal right now
-    """Return the path to the user configuration files.
-
-    If no directory is found the system will exit.
-
-    The lookup will be done in the following directories:
-
-      * user_config_path
-      * ``/etc/openstack_deploy/``
-
-    :param user_config_path: ``str`` Location to look in FIRST for a file
-    """
-    path_check = [
-        os.path.join('/etc', 'openstack_deploy'),
-    ]
-
-    if user_config_path is not None:
-        path_check.insert(0, os.path.expanduser(user_config_path))
-
-    for f in path_check:
-        if os.path.isdir(f):
-            return f
-    else:
-        raise SystemExit('No config found at: {}'.format(path_check))
-
-
 def _ensure_inventory_uptodate(inventory, container_skel):
     """Update inventory if needed.
 
@@ -821,23 +791,6 @@ def _parse_global_variables(user_cidr, inventory, user_defined_config):
                 if key not in user_defined_config['global_overrides']:
                     logger.debug("Deleting key %s from inventory", key)
                     del inventory['all']['vars'][key]
-
-
-def _extra_config(user_defined_config, base_dir):
-    """Discover new items in any extra directories and add the new values.
-
-    :param user_defined_config: ``dict``
-    :param base_dir: ``str``
-    """
-    for root_dir, _, files in os.walk(base_dir):
-        for name in files:
-            if name.endswith(('.yml', '.yaml')):
-                with open(os.path.join(root_dir, name), 'rb') as f:
-                    du.merge_dict(
-                        user_defined_config,
-                        yaml.safe_load(f.read()) or {}
-                    )
-                    logger.debug("Merged overrides from file %s", name)
 
 
 def _check_same_ip_to_multiple_host(config):
@@ -988,51 +941,11 @@ def _collect_hostnames(dynamic_inventory):
     return hostnames_ips
 
 
-def load_environment(config_path, environment):
-    """Create an environment dictionary from config files
-
-    :param config_path: ``str`` path where the environment files are kept
-    :param environment: ``dict`` dictionary to populate with environment data
-    """
-
-    # Load all YAML files found in the env.d directory
-    env_plugins = filesys.dir_find(config_path, 'env.d',
-                                   raise_if_missing=False)
-
-    if env_plugins is not False:
-        _extra_config(user_defined_config=environment, base_dir=env_plugins)
-    logger.debug("Loaded environment from %s", config_path)
-    return environment
-
-
-def load_user_configuration(config_path):
-    """Create a user configuration dictionary from config files
-
-    :param config_path: ``str`` path where the configuration files are kept
-    """
-
-    user_defined_config = dict()
-
-    # Load the user defined configuration file
-    user_config_file = os.path.join(config_path, 'openstack_user_config.yml')
-    if os.path.isfile(user_config_file):
-        with open(user_config_file, 'rb') as f:
-            user_defined_config.update(yaml.safe_load(f.read()) or {})
-
-    # Load anything in a conf.d directory if found
-    base_dir = filesys.dir_find(config_path, 'conf.d', raise_if_missing=False)
-    if base_dir is not False:
-        _extra_config(user_defined_config, base_dir)
-
-    # Exit if no user_config was found and loaded
-    if not user_defined_config:
-        raise SystemExit(
-            'No user config loaded\n'
-            'No openstack_user_config files are available in either \n{}'
-            '\nor \n{}/conf.d directory'.format(config_path, config_path)
-        )
-    logger.debug("User configuration loaded from: %s", user_config_file)
-    return user_defined_config
+def _prepare_debug_logger():
+    log_fmt = "%(lineno)d - %(funcName)s: %(message)s"
+    logging.basicConfig(format=log_fmt, filename='inventory.log')
+    logger.setLevel(logging.DEBUG)
+    logger.info("Beginning new inventory run")
 
 
 def main(config=None, check=False, debug=False, environment=None, **kwargs):
@@ -1047,18 +960,15 @@ def main(config=None, check=False, debug=False, environment=None, **kwargs):
     :param environment: ``str`` Directory containing the base env.d
     """
     if debug:
-        log_fmt = "%(lineno)d - %(funcName)s: %(message)s"
-        logging.basicConfig(format=log_fmt, filename='inventory.log')
-        logger.setLevel(logging.DEBUG)
-        logger.info("Beginning new inventory run")
+        _prepare_debug_logger()
 
     # Get the path to the user configuration files
     config_path = filesys.dir_find(preferred_path=config)
 
-    user_defined_config = load_user_configuration(config_path)
+    user_defined_config = filesys.load_user_configuration(config_path)
     base_env_dir = environment
-    base_env = load_environment(base_env_dir, {})
-    environment = load_environment(config_path, base_env)
+    base_env = filesys.load_environment(base_env_dir, {})
+    environment = filesys.load_environment(config_path, base_env)
 
     # Load existing inventory file if found
     dynamic_inventory = filesys.load_inventory(config_path, INVENTORY_SKEL)
@@ -1129,7 +1039,7 @@ def main(config=None, check=False, debug=False, environment=None, **kwargs):
 
     if logger.isEnabledFor(logging.DEBUG):
         num_hosts = len(dynamic_inventory['_meta']['hostvars'])
-        logger.debug("%d hosts found." % num_hosts)
+        logger.debug("%d hosts found.", num_hosts)
 
     # Save new dynamic inventory
     filesys.save_inventory(dynamic_inventory_json, config_path)

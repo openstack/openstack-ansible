@@ -426,7 +426,7 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
 class TestUserConfiguration(unittest.TestCase):
     def setUp(self):
         self.longMessage = True
-        self.loaded_user_configuration = di.load_user_configuration(TARGET_DIR)
+        self.loaded_user_configuration = fs.load_user_configuration(TARGET_DIR)
 
     def test_loading_user_configuration(self):
         """Test that the user configuration can be loaded"""
@@ -436,7 +436,7 @@ class TestUserConfiguration(unittest.TestCase):
 class TestEnvironments(unittest.TestCase):
     def setUp(self):
         self.longMessage = True
-        self.loaded_environment = di.load_environment(BASE_ENV_DIR, {})
+        self.loaded_environment = fs.load_environment(BASE_ENV_DIR, {})
 
     def test_loading_environment(self):
         """Test that the environment can be loaded"""
@@ -458,14 +458,14 @@ class TestIps(unittest.TestCase):
         # Allow custom assertion errors.
         self.longMessage = True
 
-    @mock.patch('generate.load_environment')
-    @mock.patch('generate.load_user_configuration')
+    @mock.patch('filesystem.load_environment')
+    @mock.patch('filesystem.load_user_configuration')
     def test_duplicates(self, mock_load_config, mock_load_env):
         """Test that no duplicate IPs are made on any network."""
 
         # Grab our values read from the file system just once.
         mock_load_config.return_value = get_config()
-        mock_load_env.return_value = di.load_environment(BASE_ENV_DIR, {})
+        mock_load_env.return_value = fs.load_environment(BASE_ENV_DIR, {})
 
         mock_open = mock.mock_open()
 
@@ -843,7 +843,7 @@ class TestGlobalOverridesConfigDeletion(TestConfigCheckBase):
 
 class TestEnsureInventoryUptoDate(unittest.TestCase):
     def setUp(self):
-        self.env = di.load_environment(BASE_ENV_DIR, {})
+        self.env = fs.load_environment(BASE_ENV_DIR, {})
         # Copy because we manipulate the structure in each test;
         # not copying would modify the global var in the target code
         self.inv = copy.deepcopy(di.INVENTORY_SKEL)
@@ -900,7 +900,7 @@ class TestEnsureInventoryUptoDate(unittest.TestCase):
 
 class OverridingEnvBase(unittest.TestCase):
     def setUp(self):
-        self.base_env = di.load_environment(BASE_ENV_DIR, {})
+        self.base_env = fs.load_environment(BASE_ENV_DIR, {})
 
         # Use the cinder configuration as our sample for override testing
         with open(path.join(BASE_ENV_DIR, 'env.d', 'cinder.yml'), 'r') as f:
@@ -926,7 +926,7 @@ class TestOverridingEnvVars(OverridingEnvBase):
 
         self.write_override_env()
 
-        di.load_environment(TARGET_DIR, self.base_env)
+        fs.load_environment(TARGET_DIR, self.base_env)
 
         test_vol = self.base_env['container_skel']['cinder_volumes_container']
         self.assertFalse(test_vol['properties']['is_metal'])
@@ -942,7 +942,7 @@ class TestOverridingEnvVars(OverridingEnvBase):
 
         self.write_override_env()
 
-        di.load_environment(TARGET_DIR, self.base_env)
+        fs.load_environment(TARGET_DIR, self.base_env)
 
         test_vol = self.base_env['container_skel']['cinder_volumes_container']
 
@@ -954,7 +954,7 @@ class TestOverridingEnvVars(OverridingEnvBase):
 
         self.write_override_env()
 
-        di.load_environment(TARGET_DIR, self.base_env)
+        fs.load_environment(TARGET_DIR, self.base_env)
 
         test_vol = self.base_env['container_skel']['cinder_volumes_container']
 
@@ -966,7 +966,7 @@ class TestOverridingEnvVars(OverridingEnvBase):
 
         self.write_override_env()
 
-        di.load_environment(TARGET_DIR, self.base_env)
+        fs.load_environment(TARGET_DIR, self.base_env)
 
         test_vol = self.base_env['container_skel']['cinder_volumes_container']
 
@@ -978,7 +978,7 @@ class TestOverridingEnvVars(OverridingEnvBase):
 
         self.write_override_env()
 
-        di.load_environment(TARGET_DIR, self.base_env)
+        fs.load_environment(TARGET_DIR, self.base_env)
 
         test_vol = self.base_env['container_skel']['cinder_volumes_container']
 
@@ -994,7 +994,7 @@ class TestOverridingEnvIntegration(OverridingEnvBase):
         self.inv = fs.load_inventory(TARGET_DIR, di.INVENTORY_SKEL)
 
     def skel_setup(self):
-        self.environment = di.load_environment(TARGET_DIR, self.base_env)
+        self.environment = fs.load_environment(TARGET_DIR, self.base_env)
 
         di.skel_setup(self.environment, self.inv)
 
@@ -1173,7 +1173,7 @@ class TestLxcHosts(TestConfigCheckBase):
 
 class TestConfigMatchesEnvironment(unittest.TestCase):
     def setUp(self):
-        self.env = di.load_environment(BASE_ENV_DIR, {})
+        self.env = fs.load_environment(BASE_ENV_DIR, {})
 
     def test_matching_keys(self):
         config = get_config()
