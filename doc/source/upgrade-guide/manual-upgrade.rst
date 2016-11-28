@@ -1,21 +1,21 @@
-.. _manual-upgrade:
+.. _upgrading-manually:
 
-===============
-Manual upgrades
-===============
+==================
+Upgrading manually
+==================
 
-Deployers can run the upgrade steps manually. Manual execution is useful for
-scoping the changes in the upgrade process (For example, in very large
-deployments with strict SLA requirements), or for inclusion into other
-orchestration for upgrade automation beyond what OpenStack-Ansible provides.
+Deployers can run the upgrade steps manually. Manual upgrades are useful for
+scoping the changes in the upgrade process (for example, in very large
+deployments with strict SLA requirements), or performing other upgrade
+automations beyond what is provided by OpenStack-Ansible.
 
 The steps detailed here match those performed by the ``run-upgrade.sh``
-script. Any of these steps can safely be run multiple times.
+script. You can safely run these steps multiple times.
 
 Check out the |current_release_formal_name| release
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Ensure your OpenStack-Ansible code is on the latest
+Ensure that your OpenStack-Ansible code is on the latest
 |current_release_formal_name| tagged release.
 
 .. parsed-literal::
@@ -25,10 +25,10 @@ Ensure your OpenStack-Ansible code is on the latest
 Prepare the shell variables
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. note::
-
-    This step is optional, since these environment variables are simply
-    shortcuts. Files can be referenced directly.
+Define these variables to reduce typing when running the remaining upgrade
+tasks. Because these environments variables are shortcuts, this step is
+optional. If you prefer, you can reference the files directly during the
+upgrade.
 
 From the ``openstack-ansible`` root directory, run the following commands:
 
@@ -38,22 +38,20 @@ From the ``openstack-ansible`` root directory, run the following commands:
     # export SCRIPTS_PATH="${MAIN_PATH}/scripts"
     # export UPGRADE_PLAYBOOKS="${SCRIPTS_PATH}/upgrade-utilities/playbooks"
 
-These variables reduce typing when running the remaining upgrade
-tasks.
 
-Re-bootstrap Ansible for |current_release_formal_name|
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Bootstrap Ansible again
+~~~~~~~~~~~~~~~~~~~~~~~
 
-Bootstrapping Ansible again ensures that all OpenStack-Ansible role
-dependencies are in place before running playbooks from the
+Bootstrap Ansible again to ensure that all OpenStack-Ansible role
+dependencies are in place before you run playbooks from the
 |current_release_formal_name| release.
 
 .. code-block:: console
 
     # ${SCRIPTS_PATH}/bootstrap-ansible.sh
 
-Change to playbooks directory
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Change to the playbooks directory
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Change to the playbooks directory so that the OpenStack-Ansible dynamic
 inventory is found automatically.
@@ -62,20 +60,18 @@ inventory is found automatically.
 
     # cd playbooks
 
-Pre-flight checks
-~~~~~~~~~~~~~~~~~
+Preflight checks
+~~~~~~~~~~~~~~~~
 
-Before starting with the new version, you should do pre-flight checks
-to ensure everything is fine. If any of those check fail, the upgrade
-should stop to let the deployer chose what to do.
+Before starting with the upgraded version, perform preflight checks to ensure
+your environment is stable. If any of those checks fail, the upgrade should
+stop to let the deployer chose what to do.
 
-Cleanup old facts
-~~~~~~~~~~~~~~~~~
+Clean up old facts
+~~~~~~~~~~~~~~~~~~
 
-Some configuration changed, and old facts should be purged before
-the upgrade.
-
-See :ref:`fact-cleanup-playbook` for more details.
+Some configurations have changed, so purge old facts before
+the upgrade. For more information, see :ref:`fact-cleanup-playbook`.
 
 .. code-block:: console
 
@@ -84,11 +80,10 @@ See :ref:`fact-cleanup-playbook` for more details.
 Update configuration and environment files
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The user configuration files in ``/etc/openstack_deploy/`` and the environment
-layout in ``/etc/openstack_deploy/env.d`` have new name
-values added in |current_release_formal_name|.
-
-See :ref:`config-change-playbook` for more details.
+The user configuration files in the ``/etc/openstack_deploy/`` directory and
+the environment layout in the ``/etc/openstack_deploy/env.d`` directory have
+new name values added in |current_release_formal_name|. Update the files as
+follows. For more information, see :ref:`config-change-playbook`.
 
 .. code-block:: console
 
@@ -98,22 +93,20 @@ Update user secrets file
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 |current_release_formal_name| introduces new user secrets to the stack.
-These are populated automatically with the following playbook.
-
-See :ref:`user-secrets-playbook` for more details.
+These secrets are populated automatically when you run the following playbook.
+For more information, see :ref:`user-secrets-playbook`.
 
 .. code-block:: console
 
     # openstack-ansible "${UPGRADE_PLAYBOOKS}/user-secrets-adjustment.yml"
 
-Cleanup pip.conf file
-~~~~~~~~~~~~~~~~~~~~~
+Clean up the pip.conf file
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The presence of ``pip.conf`` file can cause build failures when upgrading to
-|current_release_formal_name|. This play removes the ``pip.conf`` file
-on all the physical servers and on the repo containers.
-
-See :ref:`pip-conf-removal` for more details.
+The presence of the ``pip.conf`` file can cause build failures during the
+upgrade to |current_release_formal_name|. This playbook removes the
+``pip.conf`` file on all the physical servers and on the repo containers.
+For more information, see :ref:`pip-conf-removal`.
 
 .. code-block:: console
 
@@ -128,7 +121,7 @@ Before installing the infrastructure and OpenStack, update the host machines.
 
     # openstack-ansible setup-hosts.yml --limit '!galera_all'
 
-This command is the same as doing host setups on a new install. The
+This command is the same setting up hosts on a new installation. The
 ``galera_all`` host group is excluded to prevent reconfiguration and
 restarting of any Galera containers.
 
@@ -143,17 +136,18 @@ Update the Galera container configuration independently.
     'lxc_container_allow_restarts=false' --limit galera_all
 
 This command is a subset of the host setup playbook, limited to the
-``galera_all`` host group. The configuration of those containers will be
-updated but a restart for any changes to take effect will be deferred to a
-later playbook.
+``galera_all`` host group. The configuration of those containers is
+updated but a restart for any changes to take effect is deferred to another
+playbook (see the next section).
 
-Perform a controlled rolling restart of the galera containers
+Perform a controlled rolling restart of the Galera containers
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Restart containers one at a time, ensuring that each is up, responding,
-and synced with the other nodes in the cluster, before moving on to the
-next. This step allows the lxc container config applied earlier to take
-effect, ensuring that the containers are restarted in a controlled fashion.
+Restart containers one at a time, ensuring that each is started, responding,
+and synchronized with the other nodes in the cluster before moving on to the
+next. This step allows the LXC container configuration that you applied earlier
+to take effect, ensuring that the containers are restarted in a controlled
+fashion.
 
 .. code-block:: console
 
@@ -168,38 +162,38 @@ Install and update any new or changed HAProxy service configurations.
 
     # openstack-ansible haproxy-install.yml
 
-Update repo servers
-~~~~~~~~~~~~~~~~~~~
+Update repository servers
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Update the configuration of the repo servers and build new packages required by
-the |current_release_formal_name| release.
+Update the configuration of the repository servers and build new packages
+required by the |current_release_formal_name| release.
 
 .. code-block:: console
 
     # openstack-ansible repo-install.yml
 
-Perform a mariadb version upgrade
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Upgrade the MariaDB version
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Update mariadb to the most 10.0 minor release across the cluster.
+Upgrade MariaDB to the most recent 10.x minor release across the cluster.
 
 .. code-block:: console
 
     # openstack-ansible galera-install.yml -e 'galera_upgrade=true'
 
-Upgrade infrastructure
-~~~~~~~~~~~~~~~~~~~~~~
+Upgrade the infrastructure
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The following commands perform all steps from the setup-infrastructure
-playbook, except for `repo-install.yml``, ``haproxyinstall.yml``, and
-`galera-install.yml`` which we ran earlier.
+The following commands perform all of the steps from the setup-infrastructure
+playbook, except for ``repo-install.yml``, ``haproxyinstall.yml``, and
+``galera-install.yml`` which you ran earlier.
 Running these playbook applies the relevant |current_release_formal_name|
 settings and packages.
 
 For certain versions of |previous_release_formal_name|, you must upgrade
 the RabbitMQ service.
 
-See :ref:`setup-infra-playbook` for details.
+For more information, see :ref:`setup-infra-playbook`.
 
 .. code-block:: console
 
@@ -213,7 +207,8 @@ See :ref:`setup-infra-playbook` for details.
 Flush Memcached cache
 ~~~~~~~~~~~~~~~~~~~~~
 
-See :ref:`memcached-flush` for details.
+Flush all of the caches in Memcached. For more information,
+see :ref:`memcached-flush`.
 
 .. code-block:: console
 
