@@ -142,7 +142,6 @@ pushd "playbooks"
                           -a 'find  /var/www/repo/os-releases -type l' \
                           -t "${COMMAND_LOGS}/repo_data"
 
-    openstack-ansible os-tempest-install.yml
     print_report
   fi
 popd

@@ -106,10 +106,4 @@ bash "$(dirname "${0}")/run-playbooks.sh"
 # Log some data about the instance and the rest of the system
 log_instance_info
 
-# Run the tempest tests
-source "$(dirname "${0}")/run-tempest.sh"
-
-# Log some data about the instance and the rest of the system
-log_instance_info
-
 exit_success
