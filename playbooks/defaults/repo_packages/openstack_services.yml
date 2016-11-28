@@ -93,7 +93,7 @@ heat_git_project_group: heat_all
 
 ## Horizon service
 horizon_git_repo: https://git.openstack.org/openstack/horizon
-horizon_git_install_branch: 24179c740c03fd62f229e431ace1c2fb2cabd462 # HEAD of "master" as of 18.11.2016
+horizon_git_install_branch: 10.0.0.0b1 # Use 10.0.0.0b1 tag because "master" was broken as of 18.11.2016, and is likely to be often broken.
 horizon_git_dest: "/opt/horizon_{{ horizon_git_install_branch | replace('/', '_') }}"
 horizon_git_project_group: horizon_all
 
