@@ -116,7 +116,10 @@
       tags:
         - haproxy-service-config
   roles:
-    - { role: "haproxy_server", tags: [ "haproxy-server" ] }
+    - role: "haproxy_server"
+      haproxy_service_configs: "{{ haproxy_default_services + haproxy_extra_services|default([]) }}"
+      tags:
+        - "haproxy-server"
     - role: "rsyslog_client"
       rsyslog_client_log_rotate_file: haproxy_log_rotate
       rsyslog_client_log_dir: "/var/log/haproxy"

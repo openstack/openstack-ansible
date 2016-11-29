@@ -1,0 +1,8 @@
+---
+features:
+  - Added a new ``haproxy_extra_services`` var which will allow extra haproxy
+    endpoint additions.
+deprecations:
+  - Moved ``haproxy_service_configs`` var to ``haproxy_default_service_configs``
+    so that ``haproxy_service_configs`` can be modified and added to without
+    overriding the entire default service dict.

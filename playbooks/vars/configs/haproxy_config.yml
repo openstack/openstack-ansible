@@ -24,7 +24,7 @@ keystone_ssl_admin: "{% if keystone_ssl is defined and keystone_ssl | bool and k
 keystone_ssl_internal: "{% if keystone_ssl is defined and keystone_ssl | bool and keystone_service_internaluri_proto == 'https' %}true{% else %}false{% endif %}"
 keystone_ssl_public: "{% if keystone_ssl is defined and keystone_ssl | bool and keystone_service_publicuri_proto == 'https' %}true{% else %}false{% endif %}"
 
-haproxy_service_configs:
+haproxy_default_services:
   - service:
       haproxy_service_name: galera
       haproxy_backend_nodes: "{{ [groups['galera_all'][0]] | default([]) }}"  # list expected

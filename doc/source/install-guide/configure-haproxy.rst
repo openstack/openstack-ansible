@@ -145,6 +145,27 @@ certificates and keys to use with HAProxy.
 
 .. _Securing services with SSL certificates: configure-sslcertificates.html
 
+Configuring additional services
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Additional haproxy service entries can be configured by setting
+``haproxy_extra_services`` in ``/etc/openstack_deploy/user_variables.yml``
+
+For more information on the service dict syntax, please reference
+``playbooks/vars/configs/haproxy_config.yml``
+
+An example HTTP service could look like:
+
+.. code-block:: yaml
+
+    haproxy_extra_services:
+      - service:
+          haproxy_service_name: extra-web-service
+          haproxy_backend_nodes: "{{ groups['service_group'] | default([]) }}"
+          haproxy_ssl: "{{ haproxy_ssl }}"
+          haproxy_port: 10000
+          haproxy_balance_type: http
+
 --------------
 
 .. include:: navigation.txt
