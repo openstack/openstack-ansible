@@ -2,7 +2,6 @@
 
 import collections
 import copy
-import glob
 import json
 import mock
 import os
@@ -22,6 +21,7 @@ sys.path.append(path.join(os.getcwd(), INV_DIR))
 import dynamic_inventory
 import filesystem as fs
 import generate as di
+import tools
 
 TARGET_DIR = path.join(os.getcwd(), 'tests', 'inventory')
 BASE_ENV_DIR = INV_DIR
@@ -58,18 +58,10 @@ def make_config():
     """
     # Allow access here so we can populate the dictionary.
     global _BASE_CONFIG
-    config = _BASE_CONFIG
 
-    files = glob.glob(os.path.join(CONFD, '*.aio'))
-    for file_name in files:
-        with open(file_name, 'r') as f:
-            config.update(yaml.safe_load(f.read()))
+    _BASE_CONFIG = tools.make_example_config(AIO_CONFIG_FILE, CONFD)
 
-    with open(AIO_CONFIG_FILE, 'r') as f:
-        config.update(yaml.safe_load(f.read()))
-
-    with open(USER_CONFIG_FILE, 'w') as f:
-        f.write(yaml.dump(config))
+    tools.write_example_config(USER_CONFIG_FILE, _BASE_CONFIG)
 
 
 def setUpModule():
