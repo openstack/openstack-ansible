@@ -17,9 +17,6 @@ intended for deployers.
    verify-operation.rst
    app.rst
 
-Disclaimer
-~~~~~~~~~~
-
 Third-party trademarks and tradenames appearing in this document are the
 property of their respective owners. Such third-party trademarks have
 been printed in caps or initial caps and are used for referential
