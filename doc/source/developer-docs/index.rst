@@ -18,5 +18,5 @@ Contents:
    contribute
    bug-triage
    core-reviewers
-   additional-roles
+   role-services
    inventory
