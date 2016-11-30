@@ -14,9 +14,13 @@ OpenStack-Ansible's Newton series was first released with the 14.0.0 tag on
 .. toctree::
    :maxdepth: 2
 
-   .. TODO: Add deploy guide once asettle has live link
    upgrade-guide/index
    developer-docs/index
 
+The OpenStack-Ansible Newton Deployment Guide is available for review:
+
+* `OpenStack-Ansible Newton Deployment Guide`_
+
 .. _Newton Series Timeline: https://launchpad.net/openstack-ansible/newton
 .. _Newton Series Release Notes: http://docs.openstack.org/releasenotes/openstack-ansible/newton.html
+.. _OpenStack-Ansible Newton Deployment Guide: http://docs.openstack.org/project-deploy-guide/newton/
