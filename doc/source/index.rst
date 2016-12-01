@@ -23,6 +23,7 @@ review.
 
    upgrade-guide/index
    developer-docs/index
+   inventory/index
 
 .. _Ocata series timeline: https://launchpad.net/openstack-ansible/trunk
 .. _Ocata series release notes: http://docs.openstack.org/releasenotes/openstack-ansible/unreleased.html
