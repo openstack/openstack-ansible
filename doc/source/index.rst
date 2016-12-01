@@ -16,20 +16,17 @@ OpenStack-Ansible Ocata is currently in development. The
 `Ocata series timeline`_ and `Ocata series release notes`_ are available for
 review.
 
+* `Deployment Guide`_
+
 .. toctree::
    :maxdepth: 1
 
    upgrade-guide/index
    developer-docs/index
 
-The OpenStack-Ansible Deployment Guide is currently in development. The
-Ocata draft guide is available for review:
-
-* `OpenStack-Ansible Ocata Deployment Guide`_
-
 .. _Ocata series timeline: https://launchpad.net/openstack-ansible/trunk
 .. _Ocata series release notes: http://docs.openstack.org/releasenotes/openstack-ansible/unreleased.html
-.. _OpenStack-Ansible Ocata Deployment Guide: http://docs.openstack.org/project-deploy-guide/draft/
+.. _Deployment Guide: http://docs.openstack.org/project-deploy-guide/draft/
 
 Newton: Current stable release, security supported
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -37,18 +34,15 @@ Newton: Current stable release, security supported
 OpenStack-Ansible's Newton series was first released with the 14.0.0 tag on
 20 October 2016.
 
-* `OpenStack-Ansible Newton documentation`_
-
-* `OpenStack-Ansible Newton Deployment Guide`_
+* `OpenStack-Ansible Newton Documentation`_
 
 * `OpenStack-Ansible Newton series release notes`_
 
 * `OpenStack-Ansible Newton series timeline`_
 
-.. _OpenStack-Ansible Newton documentation: http://docs.openstack.org/developer/openstack-ansible/newton/
+.. _OpenStack-Ansible Newton Documentation: http://docs.openstack.org/developer/openstack-ansible/newton/
 .. _OpenStack-Ansible Newton series timeline: https://launchpad.net/openstack-ansible/newton
 .. _OpenStack-Ansible Newton series release notes: http://docs.openstack.org/releasenotes/openstack-ansible/newton.html
-.. _OpenStack-Ansible Newton Deployment Guide: http://docs.openstack.org/project-deploy-guide/newton/
 
 Mitaka: Security-supported (EOL: 2017-04-10)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
