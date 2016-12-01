@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 
 import collections
 import copy
@@ -18,6 +17,7 @@ LIB_DIR = 'lib'
 sys.path.append(path.join(os.getcwd(), LIB_DIR))
 sys.path.append(path.join(os.getcwd(), INV_DIR))
 
+import dictutils
 import dynamic_inventory
 import filesystem as fs
 import generate as di
@@ -1215,6 +1215,89 @@ class TestConfigMatchesEnvironment(unittest.TestCase):
 
         for key in excluded_keys:
             self.assertIn(key, config.keys())
+
+
+class TestInventoryGroupConstraints(unittest.TestCase):
+    def setUp(self):
+        self.env = fs.load_environment(BASE_ENV_DIR, {})
+
+    def test_group_with_hosts_dont_have_children(self):
+        """Require that groups have children groups or hosts, not both."""
+        inventory = get_inventory()
+
+        # This should only work on groups, but stuff like '_meta' and 'all'
+        # are in here, too.
+        for key, values in inventory.items():
+            # The keys for children/hosts can exist, the important part is being empty lists.
+            has_children = bool(inventory.get('children'))
+            has_hosts = bool(inventory.get('hosts'))
+
+            self.assertFalse(has_children and has_hosts)
+
+    def _create_bad_env(self, env):
+        # This environment setup is used because it was reported with
+        # bug #1646136
+        override = """
+            physical_skel:
+              local-compute_containers:
+                belongs_to:
+                - compute_containers
+              local-compute_hosts:
+                belongs_to:
+                - compute_hosts
+              rbd-compute_containers:
+                belongs_to:
+                - compute_containers
+              rbd-compute_hosts:
+                belongs_to:
+                - compute_hosts
+        """
+
+        bad_env = yaml.load(override)
+
+        # This is essentially what load_environment does, after all the file
+        # system walking
+        dictutils.merge_dict(env, bad_env)
+
+        return env
+
+    def test_group_with_hosts_and_children_fails(self):
+        """Integration test making sure the whole script fails."""
+        env = self._create_bad_env(self.env)
+
+
+        config = get_config()
+
+        kwargs = {
+            'load_environment': mock.DEFAULT,
+            'load_user_configuration': mock.DEFAULT
+        }
+
+        with mock.patch.multiple('filesystem', **kwargs) as mocks:
+            mocks['load_environment'].return_value = env
+            mocks['load_user_configuration'].return_value = config
+
+            with self.assertRaises(di.GroupConflict) as context:
+                get_inventory()
+
+    def test_group_validation_unit(self):
+        env = self._create_bad_env(self.env)
+
+        config = get_config()
+
+        with self.assertRaises(di.GroupConflict):
+            di._check_group_branches(config, env['physical_skel'])
+
+    def test_group_validation_no_config(self):
+        result = di._check_group_branches(None, self.env)
+        self.assertTrue(result)
+
+    def test_group_validation_passes_defaults(self):
+        config = get_config()
+
+        result = di._check_group_branches(config, self.env['physical_skel'])
+
+        self.assertTrue(result)
 
 
 if __name__ == '__main__':

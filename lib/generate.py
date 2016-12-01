@@ -121,8 +121,15 @@ class LxcHostsDefined(Exception):
         return self.message
 
 
+class GroupConflict(Exception):
+    pass
+
+
 def _parse_belongs_to(key, belongs_to, inventory):
     """Parse all items in a `belongs_to` list.
+
+    This function assumes the key defined is a group that has child subgroups,
+    *not* a group with hosts defined in the group configuration.
 
     :param key: ``str``  Name of key to append to a given entry
     :param belongs_to: ``list``  List of items to iterate over
@@ -843,6 +850,38 @@ def _check_lxc_hosts(config):
     logger.debug("lxc_hosts group not defined")
 
 
+def _check_group_branches(config, physical_skel):
+    """Ensure that groups have either hosts or child groups, not both
+
+    The inventory skeleton population assumes that groups will either have
+    hosts as "leaves", or other groups as children, not both. This function
+    ensures this invariant is met by comparing the configuration to the
+    physical skeleton definition.
+
+    :param config: ``dict`` The contents of the user configuration file. Keys
+        present in this dict are assumed to be groups containing host entries.
+    :param config: ``dict`` The physical skeleton tree, defining parent/child
+        relationships between groups. Values in the 'belong_to' key are
+        assumed to be parents of other groups.
+    :raises GroupConflict:
+    """
+    logging.debug("Checking group branches match expectations")
+    for group, relations in physical_skel.items():
+        if 'belongs_to' not in relations:
+            continue
+        parents = relations['belongs_to']
+        for parent in parents:
+            if parent in config.keys():
+                message = (
+                    "Group {parent} has a child group {child}, "
+                    "but also has host entries in user configuration. "
+                    "Hosts cannot be sibling with groups."
+                ).format(parent=parent, child=group)
+                raise GroupConflict(message)
+    logging.debug("Group branches ok.")
+    return True
+
+
 def _check_config_settings(cidr_networks, config, container_skel):
     """check preciseness of config settings
 
@@ -1001,6 +1040,11 @@ def main(config=None, check=False, debug=False, environment=None, **kwargs):
     ip.set_used_ips(user_defined_config, inventory)
     user_defined_setup(user_defined_config, inventory)
     skel_setup(environment, inventory)
+
+    _check_group_branches(
+        user_defined_config,
+        environment.get('physical_skel')
+    )
     logger.debug("Loading physical skel.")
     skel_load(
         environment.get('physical_skel'),
