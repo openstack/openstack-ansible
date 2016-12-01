@@ -1,23 +1,32 @@
-.. _minor-upgrades:
+.. _upgrading-to-a-minor-version:
 
-==============
-Minor upgrades
-==============
+=================================
+Executing a minor version upgrade
+=================================
 
-.. note:: To avoid issues and simplify troubleshooting during an upgrade,
-          first disable the security hardening role by setting your
-          variable ``apply_security_hardening`` to ``False`` in the
-          :file:`user_variables.yml` file.
+Upgrades between minor versions of OpenStack-Ansible require updating the
+repository to the latest minor release tag, and then running playbooks
+against the target hosts. This section provides instructions for those tasks.
+
+Prerequisites
+~~~~~~~~~~~~~
+
+To avoid issues and simplify troubleshooting during the upgrade, disable the
+security hardening role by setting the ``apply_security_hardening`` variable
+to ``False`` in the :file:`user_variables.yml` file.
+
+Execute a minor version upgrade
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 A minor upgrade typically requires the following steps:
 
-#. Change directory into the repository clone root directory:
+#. Change directory to the cloned repository's root directory:
 
    .. code-block:: console
 
       # cd /opt/openstack-ansible
 
-#. Ensure your OpenStack-Ansible code is on the latest
+#. Ensure that your OpenStack-Ansible code is on the latest
    |current_release_formal_name| tagged release:
 
    .. parsed-literal::
@@ -30,7 +39,7 @@ A minor upgrade typically requires the following steps:
 
       # ./scripts/bootstrap-ansible.sh
 
-#. Change into the playbooks directory:
+#. Change to the playbooks directory:
 
    .. code-block:: console
 
@@ -57,34 +66,38 @@ A minor upgrade typically requires the following steps:
 
 .. note::
 
-   Scope upgrades to specific OpenStack components by
-   executing each of the component playbooks using groups.
+   You can limit upgrades to specific OpenStack components. See the following
+   section for details.
 
-For example:
+Upgrade specific components
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#. Update only the Compute hosts:
+You can limit upgrades to specific OpenStack components by running each of the
+component playbooks against groups.
+
+For example, you can update only the Compute hosts by running the following
+command:
 
    .. code-block:: console
 
       # openstack-ansible os-nova-install.yml --limit nova_compute
 
-#. Update only a single Compute host:
-
-   .. note::
-
-      Skipping the ``nova-key`` tag is necessary as the keys on
-      all Compute hosts will not be gathered.
+To update only a single Compute host, run the following command:
 
    .. code-block:: console
 
       # openstack-ansible os-nova-install.yml --limit <node-name> \
           --skip-tags 'nova-key'
 
-To see which hosts belong to which groups, the
-``inventory-manage.py`` script shows all groups and their hosts.
-For example:
+   .. note::
 
-#. Change directory into the repository clone root directory:
+      Skipping the ``nova-key`` tag is necessary so that the keys on
+      all Compute hosts are not gathered.
+
+To see which hosts belong to which groups, use the ``inventory-manage.py``
+script to show all groups and their hosts. For example:
+
+#. Change directory to the repository clone root directory:
 
    .. code-block:: console
 
@@ -96,30 +109,29 @@ For example:
 
       # ./scripts/inventory-manage.py -G
 
-#. Show all hosts and which groups they belong:
+#. Show all hosts and the groups to which they belong:
 
    .. code-block:: console
 
       # ./scripts/inventory-manage.py -g
 
-To see which hosts a playbook will execute against, and to see which
-tasks will execute.
+To see which hosts a playbook runs against, and to see which tasks are
+performed, run the following commands (for example):
 
-#. Change directory into the repository clone playbooks directory:
+#. Change directory to the repository clone playbooks directory:
 
    .. code-block:: console
 
       # cd /opt/openstack-ansible/playbooks
 
-#. See the hosts in the ``nova_compute`` group which a playbook executes
-   against:
+#. See the hosts in the ``nova_compute`` group that a playbook runs against:
 
    .. code-block:: console
 
       # openstack-ansible os-nova-install.yml --limit nova_compute \
                                               --list-hosts
 
-#. See the tasks which will be executed on hosts in the ``nova_compute`` group:
+#. See the tasks that are executed on hosts in the ``nova_compute`` group:
 
    .. code-block:: console
 

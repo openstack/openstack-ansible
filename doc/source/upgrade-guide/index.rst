@@ -2,9 +2,9 @@
 Upgrade Guide
 =============
 
-In this section you can find information on the
+This guide provides information about the upgrade process from
 |previous_release_formal_name| to |current_release_formal_name|
-upgrade process for OpenStack-Ansible.
+for OpenStack-Ansible.
 
 .. toctree::
    :maxdepth: 2

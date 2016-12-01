@@ -1,8 +1,8 @@
-.. _script-upgrade:
+.. _Upgrading-by-using-a-script:
 
-========================
-Upgrading using a script
-========================
+===========================
+Upgrading by using a script
+===========================
 
 The |current_release_formal_name| release series of OpenStack-Ansible contains
 the code for migrating from |previous_release_formal_name| to
@@ -10,19 +10,26 @@ the code for migrating from |previous_release_formal_name| to
 
 .. warning::
 
-   The upgrade script is still under active development and should not be run
+   The upgrade script is still under active development. Do *not* run it
    on a production environment at this time.
 
 Running the upgrade script
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To upgrade from |previous_release_formal_name| to
-|current_release_formal_name| using the upgrade script,
-perform the following steps in the ``openstack-ansible``
-directoy:
+To upgrade from |previous_release_formal_name| to |current_release_formal_name|
+by using the upgrade script, perform the following steps in the
+``openstack-ansible`` directory:
 
-.. parsed-literal::
+#. Change directory to the repository clone root directory:
 
-   # git checkout |latest_tag|
-   # ./scripts/run-upgrade.sh
+   .. code-block:: console
+
+      # cd /opt/openstack-ansible
+
+#. Run the following commands:
+
+   .. parsed-literal::
+
+      # git checkout |latest_tag|
+      # ./scripts/run-upgrade.sh
 
