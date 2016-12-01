@@ -33,7 +33,7 @@ Before running any playbook, check the integrity of the configuration files.
 
    .. note::
 
-      To check your lint online, we using the `YAML Lint program <http://www.yamllint.com/>`_.
+      To check your YAML syntax online, you can use the `YAML Lint program <http://www.yamllint.com/>`_.
 
 #. Change to the ``/opt/openstack-ansible/playbooks`` directory, and run the
    following command:

@@ -43,7 +43,7 @@ In addition to this argument, the base environment skeleton is provided in the
 ``playbooks/inventory/env.d`` directory of the OpenStack-Ansible codebase.
 
 Should an ``env.d`` directory be found in the directory specified by
-``--config``, it's contents will be added to the base environment, overriding
+``--config``, its contents will be added to the base environment, overriding
 any previous contents in the event of conflicts.
 
 .. note:: In all versions prior to |previous_release_formal_name|, this argument was ``--file``.
