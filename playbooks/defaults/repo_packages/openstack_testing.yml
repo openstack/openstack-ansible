@@ -27,7 +27,7 @@
 
 ## Tempest service
 tempest_git_repo: https://git.openstack.org/openstack/tempest
-tempest_git_install_branch: c37195a222ed6f4e192848b3dfb8cd420e3b421d # HEAD of "master" as of 18.11.2016
+tempest_git_install_branch: 742c7ee2ef901f7ba2d2310414d71044cc935ba6 # HEAD of "master" as of 02.12.2016
 tempest_git_dest: "/opt/tempest_{{ tempest_git_install_branch | replace('/', '_') }}"
 tempest_git_project_group: utility_all
 tempest_git_install_fragments: "venvwithindex=True&ignorerequirements=True"
@@ -35,7 +35,7 @@ tempest_git_install_fragments: "venvwithindex=True&ignorerequirements=True"
 
 ## Rally service
 rally_git_repo: https://git.openstack.org/openstack/rally
-rally_git_install_branch: 8f83ee724a834f32494ff2c584ac79f5021d4507 # HEAD of "master" as of 18.11.2016
+rally_git_install_branch: 33aa9110ea0b4eb3dab64e25d891ab211e979e11 # HEAD of "master" as of 02.12.2016
 rally_git_dest: "/opt/rally_{{ rally_git_install_branch | replace('/', '_') }}"
 rally_git_project_group: utility_all
 rally_git_install_fragments: "venvwithindex=True&ignorerequirements=True"
