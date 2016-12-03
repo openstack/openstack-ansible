@@ -1,0 +1,8 @@
+---
+features:
+  - Neutron DHCP options have been set to allow a DHCP server running
+    dnsmasq to coexist with other DHCP servers within the same network.
+    This works by instructing dnsmasq to ignore any clients which are
+    not specified in dhcp-host files.
+  - Neutron DHCP options have been set to provide for logging which
+    makes debugging DHCP and connectivity issues easier by default.
