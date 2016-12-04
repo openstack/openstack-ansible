@@ -76,6 +76,12 @@
         log_dirs:
           - src: "/openstack/log/{{ inventory_hostname }}-neutron"
             dest: "/var/log/neutron"
+    - include: common-tasks/os-log-dir-setup.yml
+      vars:
+        log_dirs:
+          - src: "/openstack/log/{{ inventory_hostname }}-calico"
+            dest: "/var/log/calico"
+      when: "{{ 'neutron_calico_dhcp_agent' in group_names }}"
     - include: common-tasks/mysql-db-user.yml
       static: no
       vars:
