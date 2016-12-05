@@ -33,6 +33,7 @@
         repo: "{{ item.src }}"
         dest: "{{ item.path | default(role_path_default) }}/{{ item.name | default(item.src | basename) }}"
         version: "{{ item.version | default('master') }}"
+        refspec: "{{ item.refspec | default(omit) }}"
         update: true
         force: true
       when:
