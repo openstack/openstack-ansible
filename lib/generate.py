@@ -928,11 +928,11 @@ def _check_all_conf_groups_present(config, environment):
     return retval
 
 
-def _collect_hostnames(dynamic_inventory):
+def _collect_hostnames(inventory):
 
     # Generate a list of all hosts and their used IP addresses
     hostnames_ips = {}
-    for _host, _vars in dynamic_inventory['_meta']['hostvars'].iteritems():
+    for _host, _vars in inventory['_meta']['hostvars'].iteritems():
         host_hash = hostnames_ips[_host] = {}
         for _key, _value in _vars.iteritems():
             if _key.endswith('address') or _key == 'ansible_host':
@@ -972,8 +972,7 @@ def main(config=None, check=False, debug=False, environment=None, **kwargs):
     environment = filesys.load_environment(config, base_env)
 
     # Load existing inventory file if found
-    dynamic_inventory, inv_path = filesys.load_inventory(config,
-                                                         INVENTORY_SKEL)
+    inventory, inv_path = filesys.load_inventory(config, INVENTORY_SKEL)
 
     # Save the users container cidr as a group variable
     cidr_networks = user_defined_config.get('cidr_networks')
@@ -996,37 +995,37 @@ def main(config=None, check=False, debug=False, environment=None, **kwargs):
     )
 
     # Add the container_cidr into the all global ansible group_vars
-    _parse_global_variables(user_cidr, dynamic_inventory, user_defined_config)
+    _parse_global_variables(user_cidr, inventory, user_defined_config)
 
     # Load all of the IP addresses that we know are used and set the queue
-    ip.set_used_ips(user_defined_config, dynamic_inventory)
-    user_defined_setup(user_defined_config, dynamic_inventory)
-    skel_setup(environment, dynamic_inventory)
+    ip.set_used_ips(user_defined_config, inventory)
+    user_defined_setup(user_defined_config, inventory)
+    skel_setup(environment, inventory)
     logger.debug("Loading physical skel.")
     skel_load(
         environment.get('physical_skel'),
-        dynamic_inventory
+        inventory
     )
     logger.debug("Loading component skel")
     skel_load(
         environment.get('component_skel'),
-        dynamic_inventory
+        inventory
     )
     container_skel_load(
         environment.get('container_skel'),
-        dynamic_inventory,
+        inventory,
         user_defined_config
     )
 
     # Look at inventory and ensure all entries have all required values.
     _ensure_inventory_uptodate(
-        inventory=dynamic_inventory,
+        inventory=inventory,
         container_skel=environment.get('container_skel'),
     )
 
     # Load the inventory json
-    dynamic_inventory_json = json.dumps(
-        dynamic_inventory,
+    inventory_json = json.dumps(
+        inventory,
         indent=4,
         sort_keys=True
     )
@@ -1036,14 +1035,14 @@ def main(config=None, check=False, debug=False, environment=None, **kwargs):
             return 'Configuration ok!'
 
     # Save a list of all hosts and their given IP addresses
-    hostnames_ips = _collect_hostnames(dynamic_inventory)
+    hostnames_ips = _collect_hostnames(inventory)
     filesys.write_hostnames(config, hostnames_ips)
 
     if logger.isEnabledFor(logging.DEBUG):
-        num_hosts = len(dynamic_inventory['_meta']['hostvars'])
+        num_hosts = len(inventory['_meta']['hostvars'])
         logger.debug("%d hosts found.", num_hosts)
 
     # Save new dynamic inventory
-    filesys.save_inventory(dynamic_inventory_json, inv_path)
+    filesys.save_inventory(inventory_json, inv_path)
 
-    return dynamic_inventory_json
+    return inventory_json
