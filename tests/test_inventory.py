@@ -983,7 +983,7 @@ class TestOverridingEnvIntegration(OverridingEnvBase):
         self.user_defined_config = get_config()
 
         # Inventory is necessary since keys are assumed present
-        self.inv = fs.load_inventory(TARGET_DIR, di.INVENTORY_SKEL)
+        self.inv, path = fs.load_inventory(TARGET_DIR, di.INVENTORY_SKEL)
 
     def skel_setup(self):
         self.environment = fs.load_environment(TARGET_DIR, self.base_env)

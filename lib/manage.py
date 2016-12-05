@@ -22,9 +22,8 @@ import argparse
 import json
 import prettytable
 
-from dictutils import recursive_dict_removal
-from filesystem import load_from_json
-from filesystem import save_inventory
+import dictutils as du
+import filesystem as filesys
 
 
 def args():
@@ -307,7 +306,7 @@ def main():
     user_args = args()
 
     # Get the contents of the system inventory
-    inventory, filename = load_from_json(user_args['file'])
+    inventory, filename = filesys.load_from_json(user_args['file'])
 
     # Make a table with hosts in the left column and details about each in the
     # columns to the right
@@ -326,12 +325,12 @@ def main():
     elif user_args['clear_ips'] is True:
         remove_ip_addresses(inventory)
         inventory_json = json.dumps(inventory, indent=2)
-        save_inventory(inventory_json, filename)
+        filesys.save_inventory(inventory_json, filename)
         print('Success. . .')
     else:
-        recursive_dict_removal(inventory, user_args['remove_item'])
+        du.recursive_dict_removal(inventory, user_args['remove_item'])
         inventory_json = json.dumps(inventory, indent=2)
-        save_inventory(inventory_json, filename)
+        filesys.save_inventory(inventory_json, filename)
         print('Success. . .')
 
 if __name__ == "__main__":

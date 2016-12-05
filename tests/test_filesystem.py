@@ -75,7 +75,7 @@ class TestMultipleRuns(unittest.TestCase):
         # Generate the initial inventory files
         get_inventory(clean=False)
 
-        inv = fs.load_inventory(TARGET_DIR)
+        inv, path = fs.load_inventory(TARGET_DIR)
         self.assertIsInstance(inv, dict)
         self.assertIn('_meta', inv)
         # This test is basically just making sure we get more than
