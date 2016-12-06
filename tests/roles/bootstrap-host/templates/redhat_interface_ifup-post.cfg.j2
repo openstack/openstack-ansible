@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+if [ "${DEVICE}" == "{{ item[1].name | default('br-mgmt') }}" ]; then
+    # Create veth pair, don't bomb if already exists
+    echo "Creating veth"
+    /usr/sbin/ip link add {{ item[1].name | default('br-mgmt') }}-veth type veth peer name {{ item[1].veth_peer | default('eth0') }} || true
+    # Set both ends UP
+    /usr/sbin/ip link set {{ item[1].name | default('br-mgmt') }}-veth up || true
+    /usr/sbin/ip link set {{ item[1].veth_peer | default('eth0') }} up || true
+    # add eth12 to the bridge
+    /usr/sbin/ip link set {{ item[1].name | default('br-mgmt') }}-veth master {{ item[1].name | default('br-mgmt') }} || true
+fi

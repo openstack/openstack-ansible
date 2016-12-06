@@ -62,6 +62,7 @@
         - name: neutron.yml.aio
         - name: nova.yml.aio
         - name: swift.yml.aio
+    sftp_subsystem: "{{ (ansible_pkg_mgr == 'apt') | ternary('sftp /usr/lib/openssh/sftp-server','sftp /usr/libexec/openssh/sftp-server') }}"
     sshd:
       ListenAddress:
         - 0.0.0.0
@@ -93,7 +94,7 @@
       PrintLastLog: no
       TCPKeepAlive: yes
       AcceptEnv: "LANG LC_*"
-      Subsystem: "sftp /usr/lib/openssh/sftp-server"
+      Subsystem: "{{ sftp_subsystem }}"
       UsePAM: yes
       UseDNS: no
       X11Forwarding: no
@@ -101,3 +102,6 @@
       CompressionLevel: 6
       MaxSessions: 100
       MaxStartups: "100:100:100"
+      GSSAPIAuthentication: no
+      GSSAPICleanupCredentials: no
+

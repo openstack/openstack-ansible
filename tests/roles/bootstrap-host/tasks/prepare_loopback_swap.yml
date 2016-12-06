@@ -19,7 +19,7 @@
 
   rescue:
     - name: Create swap file
-      command: "fallocate -l {{ bootstrap_host_swap_size }}G /openstack/swap.img"
+      command: "{{ swap_create_command }}"
       args:
         creates: /openstack/swap.img
       register: swap_create

@@ -24,12 +24,13 @@ Install one of the following supported operating systems on the deployment
 hosts:
 
 * `Ubuntu server 16.04 (Xenial Xerus) LTS 64-bit <http://releases.ubuntu.com/16.04/>`_
+* `Centos 7 64-bit <https://www.centos.org/download/>`_
 
 Configure at least one network interface to access the Internet or suitable
 local repositories.
 
-Configure the operating system
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Configure the operating system (Ubuntu)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Install additional software packages and configure Network Time Protocol (NTP).
 Before you begin, we recommend upgrading your system packages and kernel.
@@ -39,6 +40,7 @@ Before you begin, we recommend upgrading your system packages and kernel.
    .. code-block:: shell-session
 
        # apt-get update
+
 
 #. Upgrade the system packages and kernel:
 
@@ -55,6 +57,30 @@ Before you begin, we recommend upgrading your system packages and kernel.
 
        # apt-get install aptitude build-essential git ntp ntpdate \
          openssh-server python-dev sudo
+
+#. Configure NTP to synchronize with a suitable time source.
+
+Configure the operating system (CentOS)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Install additional software packages and configure Network Time Protocol (NTP).
+Before you begin, we recommend upgrading your system packages and kernel.
+
+#. Upgrade the system packages and kernel
+
+  .. code-block:: shell-session
+
+      # yum upgrade
+
+#. Reboot the host.
+
+#. Install additional software packages if they were not installed
+   during the operating system installation:
+
+   .. code-block:: shell-session
+
+       # yum install git centos-release-openstack-newton ntp ntpdate \
+         openssh-server python-devel sudo '@Development Tools'
 
 #. Configure NTP to synchronize with a suitable time source.
 

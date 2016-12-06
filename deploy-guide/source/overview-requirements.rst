@@ -11,9 +11,17 @@ Software requirements
 Ensure that all hosts within an OpenStack-Ansible (OSA) environment meet the
 following minimum requirements:
 
-* Ubuntu 16.04 LTS (Xenial Xerus)
+* Ubuntu
 
-* Linux kernel version ``3.13.0-34-generic`` or later is required.
+ * Ubuntu 16.04 LTS (Xenial Xerus)
+
+ * Linux kernel version ``3.13.0-34-generic`` or later is required.
+
+* CentOS (support is experimental)
+
+ * Centos 7, fully updated.
+
+ * Linux kernel verison ``3.10.0`` or later.
 
 * Secure Shell (SSH) client and server that support public key
   authentication

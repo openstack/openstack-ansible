@@ -13,6 +13,7 @@ Install one of the following supported operating systems on the
 target host:
 
 * Ubuntu server 16.04 (Xenial Xerus) LTS 64-bit
+* Centos 7 64-bit
 
 Configure at least one network interface to access the Internet or
 suitable local repositories.
@@ -25,8 +26,8 @@ installation on target hosts that do not have local (console) access.
    We also recommend setting your locale to `en_US.UTF-8`. Other locales might
    work, but they are not tested or supported.
 
-Configure the operating system
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Configure the operating system (Ubuntu)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #. Update package source lists
 
@@ -69,6 +70,48 @@ Configure the operating system
    .. code-block:: shell-session
 
       # service ntp restart
+
+#. Reboot the host to activate the changes and use the new kernel.
+
+Configure the operating system (CentOS)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#. Upgrade the system packages and kernel:
+
+   .. code-block:: shell-session
+
+       # yum upgrade
+
+#. Reboot the host.
+
+#. Ensure that the kernel version is ``3.10`` or later:
+
+   .. code-block:: shell-session
+
+       # uname -r
+
+#. Install additional software packages:
+
+   .. code-block:: shell-session
+
+       # yum install epel-release
+       # yum install bridge-utils debootstrap iputils lsof lvm2 \
+         ntp ntpdate openssh-server sudo tcpdump vconfig
+
+#. Add the appropriate kernel modules to the ``/etc/modules`` file to
+   enable VLAN and bond interfaces:
+
+   .. code-block:: shell-session
+
+      # echo 'bonding' >> /etc/modules-load.d/openstack-ansible.conf
+      # echo '8021q' >> /etc/modules-load.d/openstack-ansible.conf
+
+#. Configure Network Time Protocol (NTP) in ``/etc/ntp.conf`` to
+   synchronize with a suitable time source and restart the service:
+
+   .. code-block:: shell-session
+
+      # service ntpd restart
 
 #. Reboot the host to activate the changes and use the new kernel.
 

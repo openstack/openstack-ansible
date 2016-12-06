@@ -1,0 +1,5 @@
+# This interface is an alias
+DEVICE={{ item.name | default('br-mgmt') }}:0
+IPADDR={{ item.alias | default('10.1.0.1') }}
+NETMASK={{ item.netmask | default('255.255.255.0') }}
+ONBOOT=yes

@@ -1,0 +1,114 @@
+---
+# Copyright 2015, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Ubuntu
+- block:
+  - name: Ensure that apt supports HTTPS package sources
+    apt:
+      name: apt-transport-https
+      state: present
+    tags:
+      - apt-install-prerequisites
+
+  - name: Determine the existing Ubuntu repo configuration
+    command: 'grep -oP "^deb \K(\[?.*\]?.*ubuntu\S*\/?)(?= {{ ansible_distribution_release }} main)" /etc/apt/sources.list'
+    register: ubuntu_repo
+    when:
+      - bootstrap_host_ubuntu_repo is not defined
+    changed_when: false
+    tags:
+      - find-apt-repo
+
+  - name: Determine the existing Ubuntu Security repo configuration
+    command: 'grep -oP "^deb \K(\[?.*\]?.*ubuntu\S*\/?)(?= {{ ansible_distribution_release }}-security main)" /etc/apt/sources.list'
+    register: ubuntu_security_repo
+    when:
+      - bootstrap_host_ubuntu_security_repo is not defined
+    changed_when: false
+    tags:
+      - find-apt-security-repo
+
+  - name: Set apt repo facts based on discovered information
+    set_fact:
+      bootstrap_host_ubuntu_repo: "{{ ubuntu_repo.stdout_lines[0] }}"
+      bootstrap_host_ubuntu_security_repo: "{{ ubuntu_security_repo.stdout_lines[0] }}"
+    when:
+      - bootstrap_host_ubuntu_repo is not defined
+      - bootstrap_host_ubuntu_security_repo is not defined
+      - ubuntu_repo is defined
+      - ubuntu_security_repo is defined
+
+  - name: Configure apt's sources.list (Ubuntu only)
+    template:
+      src: apt-sources.list.j2
+      dest: /etc/apt/sources.list
+      backup: yes
+    when:
+      - ansible_distribution == 'Ubuntu'
+      - bootstrap_host_ubuntu_repo is defined
+      - bootstrap_host_ubuntu_security_repo is defined
+    register: apt_sources_configure
+
+  - name: Update apt-cache
+    apt:
+      update_cache: yes
+    when:
+      - apt_sources_configure is defined
+      - apt_sources_configure | changed
+    tags:
+      - apt-cache-update
+
+  when:
+    - ansible_pkg_mgr == 'apt'
+
+# CentOS
+- block:
+  - name: Install RDO package
+    package:
+      name: "{{ rdo_package }}"
+      state: "present"
+    register: install_cloud_rdo_package
+    until: install_cloud_rdo_package | success
+    retries: 5
+    delay: 2
+
+  - name: Install epel package
+    package:
+      name: "{{ epel_package }}"
+      state: "present"
+    register: install_epel_package
+    until: install_epel_package | success
+    retries: 5
+    delay: 2
+
+  when:
+    - ansible_pkg_mgr == 'yum'
+
+- name: Remove known problem packages
+  package:
+    name: "{{ item }}"
+    state: absent
+  with_items: "{{ packages_remove }}"
+  tags:
+    - remove-packages
+
+- name: Install packages
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ packages_install }}"
+  tags:
+    - install-packages
+
