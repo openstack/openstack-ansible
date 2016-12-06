@@ -13,5 +13,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+rdo_package: "centos-release-openstack-newton"
+epel_package: "epel-release"
+
 packages_install:
+  - '@Development Tools'
+  - bridge-utils
+  - curl
+  - ethtool
+  - git
   - iputils
+  - lvm2
+  - python
+  - python-devel
+  - python-ipython
+  - tmux
+  - vconfig
+  - vim
+  - xfsprogs
+
+packages_remove: []
+
+swap_create_command: "dd if=/dev/zero of=/openstack/swap.img bs={{ bootstrap_host_swap_size }}G count=1"
+rc_local: /etc/rc.d/rc.local
+rc_local_insert_before: "^touch /var/lock/subsys/local$"
+

@@ -1,5 +1,5 @@
----
-# Copyright 2015, Rackspace US, Inc.
+#!/usr/bin/env bash
+# Copyright 2014, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,27 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-packages_install:
-  - bridge-utils
-  - build-essential
-  - curl
-  - ethtool
-  - git-core
-  - ipython
-  - linux-image-extra-{{ ansible_kernel }}
-  - lvm2
-  - python2.7
-  - python-dev
-  - tmux
-  - vim
-  - vlan
-  - xfsprogs
-  - iputils-tracepath
-
-packages_remove:
-  - libmysqlclient18
-  - mysql-common
-
-swap_create_command: "fallocate -l {{ bootstrap_host_swap_size }}G /openstack/swap.img"
-rc_local: /etc/rc.local
-rc_local_insert_before: "^exit 0$"
+if [ "${DEVICE}" == "{{ item[1].name | default('br-mgmt') }}" ]; then
+    /usr/sbin/ip link set {{ item[1].name | default('br-mgmt') }}-veth nomaster || true
+    /usr/sbin/ip link del {{ item[1].name | default('br-mgmt') }}-veth || true
+fi

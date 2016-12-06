@@ -121,6 +121,22 @@ bootstrap_host_encapsulation_interfaces:
     friendly_name: "Encapsulation of br-vlan with VXLAN"
 #
 # Bridges
+bridges:
+  - name: "br-mgmt"
+    ip_addr: "172.29.236.100"
+    netmask: "255.255.252.0"
+  - name: "br-vxlan"
+    ip_addr: "172.29.240.100"
+    netmask: "255.255.252.0"
+  - name: "br-storage"
+    ip_addr: "172.29.244.100"
+    netmask: "255.255.252.0"
+  - name: "br-vlan"
+    ip_addr: "172.29.248.100"
+    alias: "172.29.248.1"
+    veth_peer: "eth12"
+    netmask: "255.255.252.0"
+
 bootstrap_host_bridges_interfaces:
   br-mgmt:
     ports: "{{ bootstrap_host_encapsulation_enabled | bool | ternary ('encap-mgmt', bootstrap_host_bridge_mgmt_ports) }}"

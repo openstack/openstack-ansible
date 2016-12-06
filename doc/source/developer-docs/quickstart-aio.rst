@@ -53,7 +53,15 @@ system packages are upgraded and then reboot into the new kernel:
 
 .. code-block:: shell-session
 
+   ## Ubuntu
    # apt-get dist-upgrade
+   # reboot
+
+.. code-block:: shell-session
+
+   ## CentOS
+   # yum upgrade
+   # yum install centos-release-openstack-newton git
    # reboot
 
 .. note::
@@ -91,7 +99,7 @@ version.
 
 .. note::
    The |current_release_formal_name| release is only compatible with Ubuntu
-   16.04 (Xenial Xerus).
+   16.04 (Xenial Xerus) and Centos 7.
 
 By default the scripts deploy all OpenStack services with sensible defaults
 for the purpose of a gate check, development or testing system.

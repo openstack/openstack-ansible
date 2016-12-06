@@ -1,0 +1,11 @@
+{% if item.veth_peer is defined %}
+# This interface has a veth peer
+{% endif %}
+DEVICE={{ item.name | default('br-mgmt') }}
+TYPE=Bridge
+IPADDR={{ item.ip_addr | default('10.1.0.1') }}
+NETMASK={{ item.netmask | default('255.255.255.0') }}
+ONBOOT=yes
+BOOTPROTO=none
+NM_CONTROLLED=no
+DELAY=0

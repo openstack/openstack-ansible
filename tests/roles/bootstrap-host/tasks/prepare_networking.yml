@@ -13,41 +13,91 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Ensure that /etc/network/interfaces.d/ exists
+- name: Ensure that /etc/network/interfaces.d/ exists (Debian)
   file:
     path: /etc/network/interfaces.d/
     state: directory
   tags:
     - networking-dir-create
+  when:
+    - ansible_pkg_mgr == 'apt'
 
-- name: Copy AIO network configuration
+- name: Copy AIO network configuration (Debian)
   template:
     src: osa_interfaces.cfg.j2
     dest: /etc/network/interfaces.d/osa_interfaces.cfg
   register: osa_interfaces
-  when: bootstrap_host_aio_config | bool
+  when:
+    - bootstrap_host_aio_config | bool
+    - ansible_pkg_mgr == 'apt'
   tags:
     - networking-interfaces-file
 
-- name: Copy multinode network configuration
+- name: Copy network configuration (RedHat)
+  template:
+    src: "redhat_interface_{{ item.type | default('default') }}.cfg.j2"
+    dest: "/etc/sysconfig/network-scripts/ifcfg-{{ item.name | default('br-mgmt') }}"
+  with_items: "{{ bridges }}"
+  register: network_interfaces_rhel
+  when:
+    - ansible_pkg_mgr == 'yum'
+
+- name: Create alias file when required (RedHat)
+  template:
+    src: "redhat_interface_alias.cfg.j2"
+    dest: "/etc/sysconfig/network-scripts/ifcfg-{{ item.name | default('br-mgmt')}}:0"
+  with_items: "{{ bridges }}"
+  when:
+    - ansible_pkg_mgr == 'yum'
+    - item.alias is defined
+
+- name: Put down post-up script for veth-peer interfaces (RedHat)
+  template:
+    src: "redhat_interface_{{ item[0] | default('default') }}.cfg.j2"
+    dest: "/etc/sysconfig/network-scripts/{{ item[0] }}-veth-{{ item[1].name | default('br-mgmt') }}-2-{{ item[1].veth_peer | default('eth1') }}"
+    mode: "0755"
+  with_nested:
+    - [ "ifup-post", "ifdown-post" ]
+    - "{{ bridges }}"
+  when:
+    - item[1].veth_peer is defined
+    - ansible_pkg_mgr == 'yum'
+
+- name: Ensure the postup/postdown scripts are loaded (RedHat)
+  lineinfile:
+    dest: "/etc/sysconfig/network-scripts/{{ item[0] }}"
+    line: ". /etc/sysconfig/network-scripts/{{ item[0] }}-veth-{{ item[1].name | default('br-mgmt') }}-2-{{ item[1].veth_peer | default('eth1') }}"
+    insertbefore: "^exit 0"
+  with_nested:
+    - [ "ifup-post", "ifdown-post" ]
+    - "{{ bridges }}"
+  when:
+    - item[1].veth_peer is defined
+    - ansible_pkg_mgr == 'yum'
+
+- name: Copy multinode network configuration (Debian)
   template:
     src: osa_interfaces_multinode.cfg.j2
     dest: /etc/network/interfaces.d/osa_interfaces.cfg
   register: osa_multinode_interfaces
-  when: not bootstrap_host_aio_config | bool
+  when:
+    - not bootstrap_host_aio_config | bool
+    - ansible_pkg_mgr == 'apt'
   tags:
     - networking-interfaces-file
 
-- name: Ensure our interfaces.d configuration files are loaded automatically
+- name: Ensure our interfaces.d configuration files are loaded automatically (Debian)
   lineinfile:
     dest: /etc/network/interfaces
     line: "source /etc/network/interfaces.d/*.cfg"
+  when:
+    - ansible_pkg_mgr == 'apt'
   tags:
     - networking-interfaces-load
 
 - name: Shut down the network interfaces
   command: "ifdown {{ item }}"
-  when: osa_interfaces | changed or osa_multinode_interfaces | changed
+  when: osa_interfaces | changed or osa_multinode_interfaces | changed or network_interfaces_rhel | changed
   with_items:
     - br-mgmt
     - br-storage
@@ -76,7 +126,7 @@
 
 - name: Start the network interfaces
   command: "ifup {{ item }}"
-  when: osa_interfaces | changed
+  when: osa_interfaces | changed or network_interfaces_rhel | changed
   with_items:
     - br-mgmt
     - br-storage
