@@ -15,6 +15,7 @@
 
 - name: Bootstrap the All-In-One (AIO)
   hosts: localhost
+  gather_facts: True
   user: root
   roles:
     - role: "sshd"
