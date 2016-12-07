@@ -250,58 +250,6 @@ Should an existing AIO environment need to be reinstalled, the most efficient
 method is to destroy the host operating system and start over. For this reason,
 AIOs are best run inside of some form of virtual machine or cloud guest.
 
-Quick AIO build on Rackspace Cloud
-----------------------------------
-
-You can automate the AIO build process with a virtual machine from the
-Rackspace Cloud.
-
-First, we will need a cloud-config file that will allow us to run the build as
-soon as the instance starts. Save this file as ``user_data.yml``:
-
-.. code-block:: yaml
-
-   #cloud-config
-   apt_mirror: http://mirror.rackspace.com/ubuntu/
-   package_upgrade: true
-   packages:
-     - git-core
-   runcmd:
-     - export ANSIBLE_FORCE_COLOR=true
-     - export PYTHONUNBUFFERED=1
-     - export REPO=https://git.openstack.org/openstack/openstack-ansible
-     - export BRANCH=stable/|previous_release_branch_name|
-     - git clone -b ${BRANCH} ${REPO} /opt/openstack-ansible
-     - cd /opt/openstack-ansible && scripts/bootstrap-ansible.sh
-     - cd /opt/openstack-ansible && scripts/bootstrap-aio.sh
-     - cd /opt/openstack-ansible && scripts/run-playbooks.sh
-   output: { all: '| tee -a /var/log/cloud-init-output.log' }
-
-Feel free to customize the YAML file to meet any requirements.
-
-We can pass this YAML file to nova and build a Cloud Server at Rackspace:
-
-.. code-block:: bash
-
-   nova boot \
-        --flavor general1-8 \
-        --image 09de0a66-3156-48b4-90a5-1cf25a905207 \
-        --key-name=public_key_name \
-        --config-drive=true \
-        --user-data user_data.yml
-        --poll
-        openstack-ansible-aio-build
-
-Be sure to replace ``public_key_name`` with the name of the public key that
-to use with this instance.  Within a minute or so, the instance should be
-running and the OpenStack-Ansible installation will be in progress.
-
-To follow along with the progress, ssh to the running instance and execute:
-
-.. code-block:: bash
-
-   tail -F /var/log/cloud-init-output.log
-
 Reference Diagram for an AIO Build
 ----------------------------------
 
