@@ -38,33 +38,20 @@
     path: "{{ item['mount_path'] }}"
     state: "directory"
   with_items:
-    - "{{ list_of_bind_mounts | default([]) }}"
     - "{{ lxc_default_bind_mounts | default([]) }}"
-  delegate_to: "{{ physical_host }}"
-  when:
-    - not is_metal | bool
-
-- name: LXC bind mount directories
-  lxc_container:
-    name: "{{ inventory_hostname }}"
-    container_command: |
-      [[ ! -d "{{ item['bind_dir_path'] }}" ]] && mkdir -p "{{ item['bind_dir_path'] }}"
-  with_items:
     - "{{ list_of_bind_mounts | default([]) }}"
-    - "{{ lxc_default_bind_mounts | default([]) }}"
   delegate_to: "{{ physical_host }}"
-  register: _bm
   when:
     - not is_metal | bool
 
 - name: Add bind mount configuration to container
   lineinfile:
     dest: "/var/lib/lxc/{{ inventory_hostname }}/config"
-    line: "lxc.mount.entry = {{ item['mount_path'] }} {{ item['bind_dir_path'].lstrip('/') }} none bind 0 0"
+    line: "lxc.mount.entry = {{ item['mount_path'] }} {{ item['bind_dir_path'].lstrip('/') }} none bind,create=dir 0 0"
     backup: "true"
   with_items:
-    - "{{ list_of_bind_mounts | default([]) }}"
     - "{{ lxc_default_bind_mounts | default([]) }}"
+    - "{{ list_of_bind_mounts | default([]) }}"
   delegate_to: "{{ physical_host }}"
   when:
     - not is_metal | bool
@@ -134,5 +121,5 @@
   until: ssh_wait_check | success
   retries: 3
   when:
-    - (_bm is defined and _bm | changed) or (_ec is defined and _ec | changed)
+    - (_mc is defined and _mc | changed) or (_ec is defined and _ec | changed)
     - not is_metal | bool
