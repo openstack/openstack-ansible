@@ -13,7 +13,6 @@ Install one of the following supported operating systems on the
 target host:
 
 * Ubuntu server 16.04 (Xenial Xerus) LTS 64-bit
-* Ubuntu server 14.04 (Trusty Tahr) LTS 64-bit
 
 Configure at least one network interface to access the Internet or
 suitable local repositories.

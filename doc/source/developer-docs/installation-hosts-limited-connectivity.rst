@@ -54,9 +54,8 @@ packages. We advise mirroring the repositories that host these packages.
 
 Ubuntu repositories to mirror:
 
-- trusty
-- trusty-updates
-- trusty-backports
+- xenial
+- xenial-updates
 
 Galera-related repositories to mirror:
 
