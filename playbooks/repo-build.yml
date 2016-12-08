@@ -51,6 +51,7 @@
   pre_tasks:
 
     - include: common-tasks/set-upper-constraints.yml
+    - include: common-tasks/set-pip-upstream-url.yml
 
     - name: Load local packages
       debug:
