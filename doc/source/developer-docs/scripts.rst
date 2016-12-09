@@ -112,7 +112,6 @@ Python coding conventions are tested using `PEP8`_, with the following
 convention exceptions:
 
 * F403 - 'from ansible.module_utils.basic import \*'
-* H303 - No wildcard imports
 
 Testing may be done locally by executing:
 
