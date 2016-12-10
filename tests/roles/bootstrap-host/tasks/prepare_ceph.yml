@@ -1,0 +1,74 @@
+---
+# Copyright 2016, Logan Vig <logan2211@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Create sparse ceph OSD files
+  command: truncate -s {{ bootstrap_host_loopback_ceph_size }}G /openstack/{{ item }}.img
+  args:
+    creates: "/openstack/{{ item }}.img"
+  with_items: "{{ ceph_osd_images }}"
+  register: ceph_create
+  changed_when: false
+  tags:
+    - ceph-file-create
+
+- name: Create the ceph loopback device
+  command: losetup -f /openstack/{{ item.item }}.img --show
+  with_items: "{{ ceph_create.results }}"
+  register: ceph_create_loopback
+  when: not item|skipped
+  changed_when: false
+  tags:
+    - skip_ansible_lint
+
+- name: Ensure that rc.local exists
+  file:
+    path: /etc/rc.local
+    state: touch
+    mode: "u+x"
+  tags:
+    - ceph-rc-file
+
+- name: Create ceph loopback at boot time
+  lineinfile:
+    dest: /etc/rc.local
+    line: "losetup -f /openstack/{{ item }}.img"
+  with_items: "{{ ceph_osd_images }}"
+
+# TODO(logan): Move these vars to user_variables.ceph.yml.j2 once LP #1649381
+# is fixed and eliminate this task.
+- name: Write ceph cluster config
+  copy:
+    content: |
+      ---
+      devices: {{ ceph_create_loopback.results | map(attribute='stdout') | list | to_yaml | trim }}
+      # The OSA ceph_client role does not support loading IPs from an inventory group,
+      # so we have to feed it a list of IPs
+      ceph_mons: "{% raw %}[ {% for host in groups[mon_group_name] %}'{{ hostvars[host]['ansible_host'] }}'{% if not loop.last %},{% endif %}{% endfor %} ]{% endraw %}"
+      cinder_backends:
+        "RBD":
+          volume_driver: cinder.volume.drivers.rbd.RBDDriver
+          rbd_pool: volumes
+          rbd_ceph_conf: /etc/ceph/ceph.conf
+          rbd_store_chunk_size: 8
+          volume_backend_name: rbddriver
+          rbd_user: cinder
+          rbd_secret_uuid: "{% raw %}{{ cinder_ceph_client_uuid }}{% endraw %}"
+          report_discard_supported: true
+    dest: /etc/openstack_deploy/user_ceph_aio.yml
+    force: no
+  become: false
+  when: not ceph_create_loopback|skipped
+  tags:
+    - skip_ansible_lint

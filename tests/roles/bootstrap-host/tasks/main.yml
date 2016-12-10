@@ -83,6 +83,13 @@
   tags:
     - prepare-loopback-swift
 
+# Prepare the Ceph cluster UUID and loopback disks
+- include: prepare_ceph.yml
+  when:
+    - bootstrap_host_ceph | bool
+  tags:
+    - prepare-ceph
+
 # Prepare the network interfaces
 - include: prepare_networking.yml
   tags:

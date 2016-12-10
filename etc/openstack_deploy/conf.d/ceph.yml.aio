@@ -1,0 +1,9 @@
+# The infra nodes where the Ceph mon services will run
+ceph-mon_hosts:
+  aio1:
+    ip: 172.29.236.100
+
+# The nodes that the Ceph OSD disks will be running on
+ceph-osd_hosts:
+  aio1:
+    ip: 172.29.236.100

@@ -1,0 +1,53 @@
+---
+# Copyright 2016, Logan Vig <logan2211@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+component_skel:
+  ceph-mon:
+    belongs_to:
+      - ceph_all
+  ceph-osd:
+    belongs_to:
+      - ceph_all
+
+container_skel:
+  ceph-mon_container:
+    belongs_to:
+      - ceph-mon_containers
+    contains:
+      - ceph-mon
+    properties:
+      service_name: ceph
+  ceph-osd_container:
+    belongs_to:
+      - ceph-osd_containers
+    contains:
+      - ceph-osd
+    properties:
+      is_metal: true
+      service_name: ceph
+
+physical_skel:
+  ceph-mon_containers:
+    belongs_to:
+      - all_containers
+  ceph-mon_hosts:
+    belongs_to:
+      - hosts
+  ceph-osd_containers:
+    belongs_to:
+      - all_containers
+  ceph-osd_hosts:
+    belongs_to:
+      - hosts

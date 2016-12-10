@@ -1,0 +1,15 @@
+---
+features:
+  - Playbooks for `ceph-ansible <https://github.com/ceph/ceph-ansible/>`_ have
+    been added to facilitate gate testing of the OpenStack-Ansible integration
+    with Ceph clusters, and can be used to integrate the two projects so that
+    OpenStack-Ansible can deploy and consume its own Ceph installation using
+    ceph-ansible. This should be considered an experimental integration until
+    further testing is been completed by deployers and the OpenStack-Ansible
+    gate to fine tune its stability and completeness. The ceph-install playbook
+    can be activated by adding hosts to the ``ceph-mon_hosts`` and
+    ``ceph-osd_hosts`` in the OSA inventory. A variety of ceph-ansible specific
+    variables will likely need to be configured in ``user_variables.yml`` to
+    configure ceph-ansible for your environment. Please reference the
+    `ceph-ansible repo <https://github.com/ceph/ceph-ansible/blob/master/group_vars/all.yml.sample>`_
+    for a list of variables the project supports.

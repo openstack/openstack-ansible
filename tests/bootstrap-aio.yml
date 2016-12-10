@@ -22,7 +22,7 @@
     - role: "pip_install"
     - role: "bootstrap-host"
       openstack_confd_entries: "{{ confd_overrides[scenario] }}"
-      scenario: "{{ lookup('env','SCENARIO') | default('aio', true) }}"
+      bootstrap_host_scenario: "{{ scenario }}"
       confd_overrides:
         aio:
           - name: aodh.yml.aio
@@ -37,7 +37,17 @@
           - name: neutron.yml.aio
           - name: nova.yml.aio
           - name: swift.yml.aio
+        ceph:
+          - name: ceph.yml.aio
+          - name: cinder.yml.aio
+          - name: glance.yml.aio
+          - name: heat.yml.aio
+          - name: horizon.yml.aio
+          - name: keystone.yml.aio
+          - name: neutron.yml.aio
+          - name: nova.yml.aio
   vars:
+    scenario: "{{ lookup('env','SCENARIO') | default('aio', true) }}"
     sshd:
       ListenAddress:
         - 0.0.0.0
