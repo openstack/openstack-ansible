@@ -74,7 +74,7 @@ vlan_range: "172.29.248"
 netmask: "255.255.252.0"
 #
 # NICs
-bootstrap_host_public_interface: eth0
+bootstrap_host_public_interface: "{{ ansible_default_ipv4.interface }}"
 bootstrap_host_encapsulation_interface: eth1
 #
 #Encapsulations
