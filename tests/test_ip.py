@@ -24,7 +24,7 @@ class TestIPManager(unittest.TestCase):
         self.assertEqual(2, len(manager.used))
         self.assertEqual(254, len(manager.queues['test']))
 
-    def test__instantiation_with_used_list(self):
+    def test_instantiation_with_used_list(self):
         manager = ip.IPManager(used_ips=['192.168.0.0', '192.168.0.255'])
 
         self.assertEqual(2, len(manager.used))
