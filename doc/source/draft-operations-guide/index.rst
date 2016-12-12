@@ -8,11 +8,9 @@ operations guide.
 .. toctree::
    :maxdepth: 2
 
-   ops-lxc-commands.rst
-   ops-add-computehost.rst
-   ops-remove-computehost.rst
-   ops-galera.rst
-   ops-tips.rst
-   ops-troubleshooting.rst
-   extending.rst
-
+   openstack-operations.rst
+   maintenance-tasks.rst
+   monitor-environment.rst
+   troubleshooting.rst
+   advanced-config.rst
+   ref-info.rst
