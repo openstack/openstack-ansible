@@ -6,7 +6,7 @@ This is a draft index page for the proposed OpenStack-Ansible
 operations guide.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
 
    openstack-operations.rst
    maintenance-tasks.rst

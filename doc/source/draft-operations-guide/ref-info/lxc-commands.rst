@@ -35,4 +35,3 @@ The following are some useful commands to manage LXC:
    .. code-block:: shell-session
 
        # lxc-stop --name container_name
-

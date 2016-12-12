@@ -8,4 +8,8 @@ operations guide.
 .. toctree::
    :maxdepth: 2
 
-   verify-deploy.rst
+   openstack-operations/verify-deploy.rst
+   openstack-operations/access-environment.rst
+   openstack-operations/managing-images.rst
+   openstack-operations/managing-instances.rst
+   openstack-operations/network-service.rst
