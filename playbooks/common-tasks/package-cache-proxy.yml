@@ -24,10 +24,17 @@
   copy:
     content: 'Acquire::http { Proxy "{{ repo_pkg_cache_url }}"; };'
     dest: "/etc/apt/apt.conf.d/00apt-cacher-proxy"
+  register: apt_proxy_dropped
   when:
     - proxy_check.status == 200
     - ansible_os_family == 'Debian'
     - repo_pkg_cache_enabled | bool
+
+- name: Update apt when proxy is added
+  apt:
+    update_cache: yes
+  when:
+    - apt_proxy_dropped | changed
 
 - name: Remove apt package manager proxy
   file:
