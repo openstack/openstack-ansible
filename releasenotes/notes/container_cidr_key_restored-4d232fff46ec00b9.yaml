@@ -1,0 +1,8 @@
+---
+fixes:
+  - The 'container_cidr' key has been restored back to openstack_inventory.json
+
+    The fix to remove deleted global override keys mistakenly deleted the
+    'container_cidr' key, as well. This was used by downstream consumers,
+    and cannot be reconstructed with other information inside the inventory
+    file. Regression tests were also added.
