@@ -1,0 +1,10 @@
+---
+features:
+  - When using the pypy python interpreter you can configure the garbage
+    collection (gc) settings for pypy. Set the minimum GC value using the
+    ``swift_pypy_gc_min`` variable. GC will only happen when the memory
+    size is above this value. Set the maximum GC value using the
+    ``swift_pypy_gc_max`` variable. This is the maximum memory heap size
+    for pypy.
+    Both variables are not defined by default, and will only be used if
+    the values are defined and ``swift_pypy_enabled`` is set to ``True``.

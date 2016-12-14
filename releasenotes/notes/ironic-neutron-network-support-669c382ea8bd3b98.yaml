@@ -1,0 +1,17 @@
+features:
+  - Add support for ``neutron`` as an
+    ``enabled_network_interface``.
+  - The ``ironic_neutron_provisioning_network_name`` and
+    ``ironic_neutron_cleaning_network_name`` variable can
+    be set to the name of the neutron network to use for
+    provisioning and cleaning. The ansible tasks will
+    determine the appropriate UUID for that network.
+    Alternatively,
+    ``ironic_neutron_provisioning_network_uuid`` or
+    ``ironic_neutron_cleaning_network`` can be used to
+    directly specify the UUID of the networks. If both
+    ``ironic_neutron_provisioning_network_name`` and
+    ``ironic_neutron_provisioning_network_uuid`` are
+    specified, the specified UUID will be used.
+    If only the provisioning network is specified, the
+    cleaning network will default to the same network.

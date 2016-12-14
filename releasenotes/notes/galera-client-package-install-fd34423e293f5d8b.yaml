@@ -1,0 +1,9 @@
+---
+features:
+  - The ``galera_client_package_install`` option can now
+    be specified to handle whether packages are installed
+    as a result of the ``openstack-ansible-galera_client``
+    role running. This will default to ``true``, but can be
+    set to ``false`` to prevent package installs. This is
+    useful when deploying the ``my.cnf`` client configuration
+    file on hosts that already have Galera installed.

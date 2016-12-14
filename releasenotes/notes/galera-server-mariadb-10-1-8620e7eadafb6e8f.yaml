@@ -1,0 +1,10 @@
+---
+upgrade:
+  - The galera_server role now installs MariaDB server version 10.1.
+  - For systems using the APT package manager, the sources files for
+    the MariaDB and Percona repos now have consistent names,
+    'MariaDB.list' and 'Percona.list'.
+  - The ``galera_mariadb_apt_server_package`` and ``galera_mariadb_yum_server_package``
+    variables have been renamed to ``galera_mariadb_server_package``.
+  - The ``galera_apt_repo_url`` and ``galera_yum_repo_url`` variables have been renamed
+    to ``galera_repo_url``.

@@ -1,0 +1,7 @@
+---
+fixes:
+  - Setup for the PowerVM driver was not properly configuring the system
+    to support RMC configuration for client instances. This fix introduces
+    an interface template for PowerVM that properly supports mixed IPV4/IPV6
+    deploys and adds documentation for PowerVM RMC. For more information see
+    bug 1643988.

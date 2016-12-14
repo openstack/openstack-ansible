@@ -1,0 +1,8 @@
+---
+features:
+  - Swift tempauth users now be specified. The
+    ``swift_tempauth_users`` variable can be defined as a list
+    of tempauth users, and their permissions. You will still
+    need to specify the appropriate Swift middleware using the
+    ``swift_middleware_list`` variable, in order to utilise
+    tempauth.

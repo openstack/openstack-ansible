@@ -1,0 +1,5 @@
+---
+upgrade:
+  - The ``cinder`` project removed the ``shred`` value for the
+    ``volume_clear`` option. The default for the ``os_cinder``
+    OpenStack-Ansible role has changed to ``zero``.

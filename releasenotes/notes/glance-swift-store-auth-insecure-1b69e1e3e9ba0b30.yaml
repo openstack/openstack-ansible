@@ -1,0 +1,7 @@
+---
+features:
+  - Set the ``glance_swift_store_auth_insecure`` variable
+    to override the ``swift_store_auth_inscure`` value in
+    ``/etc/glance/glance-api.conf``. Set this value when
+    using an external Swift store that does not have the
+    same ``insecure`` setting as the local Keystone.
