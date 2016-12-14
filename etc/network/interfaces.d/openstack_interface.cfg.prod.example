@@ -31,7 +31,7 @@ iface eth3 inet manual
 # is because the bond-master has already been set in the raw interfaces for
 # the new bond0.
 auto bond0
-iface bond0 inet static
+iface bond0 inet manual
     bond-slaves none
     bond-mode active-backup
     bond-miimon 100
