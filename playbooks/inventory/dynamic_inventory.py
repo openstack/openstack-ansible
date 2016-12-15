@@ -930,10 +930,12 @@ def _parse_global_variables(user_cidr, inventory, user_defined_config):
                 user_defined_config['global_overrides']
             )
             logger.debug("Applied global_overrides")
+            kept_vars = user_defined_config['global_overrides'].keys()
+            kept_vars.append('container_cidr')
 
             # Remove global overrides that were deleted from inventory, too
             for key in inventory['all']['vars'].keys():
-                if key not in user_defined_config['global_overrides']:
+                if key not in kept_vars:
                     logger.debug("Deleting key %s from inventory", key)
                     del inventory['all']['vars'][key]
 

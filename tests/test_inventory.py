@@ -811,6 +811,33 @@ class TestGlobalOverridesConfigDeletion(TestConfigCheckBase):
 
         self.assertEqual('bar', self.inventory['all']['vars']['foo'])
 
+    def test_container_cidr_key_retained(self):
+        user_cidr = self.user_defined_config['cidr_networks']['container']
+        di._parse_global_variables(user_cidr, self.inventory,
+                                   self.user_defined_config)
+        self.assertIn('container_cidr', self.inventory['all']['vars'])
+        self.assertEqual(self.inventory['all']['vars']['container_cidr'],
+                         user_cidr)
+
+    def test_only_old_vars_deleted(self):
+        self.inventory['all']['vars']['foo'] = 'bar'
+
+        di._parse_global_variables('', self.inventory,
+                                   self.user_defined_config)
+
+        self.assertNotIn('foo', self.inventory['all']['vars'])
+
+    def test_empty_vars(self):
+        del self.inventory['all']
+
+        di._parse_global_variables('', self.inventory,
+                                   self.user_defined_config)
+
+        self.assertIn('container_cidr', self.inventory['all']['vars'])
+
+        for key in self.user_defined_config['global_overrides']:
+            self.assertIn(key, self.inventory['all']['vars'])
+
 
 class TestMultipleRuns(unittest.TestCase):
     def test_creating_backup_file(self):
