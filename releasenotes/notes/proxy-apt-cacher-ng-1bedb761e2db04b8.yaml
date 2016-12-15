@@ -1,0 +1,9 @@
+---
+upgrade:
+  - The variable ``proxy_env_url`` is now used by the apt-cacher-ng jinja2
+    template to set up an HTTP/HTTPS proxy if needed.
+fixes:
+  - The apt-cacher-ng daemon does not use the proxy server specified in
+    environment variables. The proxy server specified in the
+    ``proxy_env_url`` variable is now set inside the apt-cacher-ng
+    configuration file.

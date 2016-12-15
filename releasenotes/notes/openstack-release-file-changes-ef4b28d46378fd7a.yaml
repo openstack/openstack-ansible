@@ -1,0 +1,19 @@
+---
+features:
+  - The copy of the ``/etc/openstack-release`` file is now optional.
+    To disable the copy of the file, set ``openstack_distrib_file``
+    to ``no``.
+  - The location of the ``/etc/openstack-release`` file placement
+    can now be changed. Set the variable ``openstack_distrib_file_path``
+    to place it in a different path.
+upgrade:
+  - |
+    The variables used to produce the ``/etc/openstack-release`` file
+    have been changed in order to improve consistency in the name
+    spacing according to their purpose.
+
+    ``openstack_code_name`` --> ``openstack_distrib_code_name``
+    ``openstack_release`` --> ``openstack_distrib_release``
+
+    Note that the value for ``openstack_distrib_release`` will
+    be taken from the variable ``openstack_release`` if it is set.
