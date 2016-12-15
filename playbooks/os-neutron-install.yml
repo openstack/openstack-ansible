@@ -13,6 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- name: Configure Neutron dynamic host groupings
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - include: common-tasks/dynamic-grouping.yml
+      vars:
+        src_group: "nova_compute"
+        dest_group: "neutron_l3_agent, neutron_metadata_agent"
+      when:
+        - "{{ neutron_plugin_type == 'ml2.ovs.dvr' }}"
+
 - name: Installation and setup of Neutron
   hosts: neutron_all
   gather_facts: "{{ gather_facts | default(True) }}"
