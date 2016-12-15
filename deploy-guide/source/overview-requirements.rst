@@ -11,16 +11,9 @@ Software requirements
 Ensure that all hosts within an OpenStack-Ansible (OSA) environment meet the
 following minimum requirements:
 
-* Ubuntu 16.04 LTS (Xenial Xerus) or Ubuntu 14.04 LTS (Trusty Tahr)
+* Ubuntu 16.04 LTS (Xenial Xerus)
 
-  * OpenStack-Ansible is tested regularly against the latest point releases of
-    Ubuntu 16.04 LTS and Ubuntu 14.04 LTS.
-  * Linux kernel version ``3.13.0-34-generic`` or later is required.
-  * For Trusty hosts, you must enable the ``trusty-backports`` or the
-    repositories in ``/etc/apt/sources.list`` or
-    ``/etc/apt/sources.list.d/``. For detailed instructions, see the
-    `Ubuntu documentation <https://help.ubuntu.com/community/
-    UbuntuBackports#Enabling_Backports_Manually>`_.
+* Linux kernel version ``3.13.0-34-generic`` or later is required.
 
 * Secure Shell (SSH) client and server that support public key
   authentication

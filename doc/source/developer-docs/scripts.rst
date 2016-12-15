@@ -213,8 +213,8 @@ following jobs:
 * ``gate-openstack-ansible-linters-ubuntu-xenial``: This job executes
   the `Lint Tests`_.
 
-* ``gate-openstack-ansible-openstack-ansible-aio-ubuntu-trusty``: where
-  ``aio`` is the scenario, ``ubuntu`` is the distribution, and ``trusty``
+* ``gate-openstack-ansible-openstack-ansible-aio-ubuntu-xenial``: where
+  ``aio`` is the scenario, ``ubuntu`` is the distribution, and ``xenial``
   is the version of the distribution.
 
   The same test is executed against multiple distribution versions, and
