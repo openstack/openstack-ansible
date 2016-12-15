@@ -449,6 +449,7 @@ class TestIps(unittest.TestCase):
     def setUp(self):
         # Allow custom assertion errors.
         self.longMessage = True
+        self.env = fs.load_environment(BASE_ENV_DIR, {})
 
     @mock.patch('filesystem.load_environment')
     @mock.patch('filesystem.load_user_configuration')
@@ -457,7 +458,7 @@ class TestIps(unittest.TestCase):
 
         # Grab our values read from the file system just once.
         mock_load_config.return_value = get_config()
-        mock_load_env.return_value = fs.load_environment(BASE_ENV_DIR, {})
+        mock_load_env.return_value = self.env
 
         mock_open = mock.mock_open()
 
