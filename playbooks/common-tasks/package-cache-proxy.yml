@@ -33,6 +33,8 @@
 - name: Update apt when proxy is added
   apt:
     update_cache: yes
+  retries: 5
+  delay: 2
   when:
     - apt_proxy_dropped | changed
 
