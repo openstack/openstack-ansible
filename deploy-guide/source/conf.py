@@ -62,7 +62,7 @@ copyright = '2014-2016, OpenStack-Ansible Contributors'
 description = 'OpenStack-Ansible deploys OpenStack environments using Ansible.'
 project = 'OpenStack-Ansible'
 target_name = 'openstack-ansible'
-title = 'OpenStack-Ansible Documentation'
+title = 'OpenStack-Ansible Deployment Guide'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -81,7 +81,7 @@ version = version_info.canonical_version_string()
 #   bug_tag: Tag for categorizing the bug. Must be set manually.
 # These variables are passed to the logabug code via html_context.
 giturl = ("http://git.openstack.org/cgit/openstack/{0}"
-          "/tree/doc/source").format(target_name)
+          "/tree/deploy-guide/source").format(target_name)
 git_cmd = "/usr/bin/git log | head -n1 | cut -f2 -d' '"
 gitsha = os.popen(git_cmd).read().strip('\n')
 bug_title = "Documentation bug"
