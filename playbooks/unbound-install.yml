@@ -33,7 +33,8 @@
 - name: Install unbound DNS resolver client configurations
   hosts:
     - "!unbound_all"
-    - all
+    - "{{ openstack_host_group|default('hosts') }}"
+    - "{{ container_group|default('all_containers') }}"
   user: root
   pre_tasks:
     #gather a list of physical_hosts containing unbound containers
