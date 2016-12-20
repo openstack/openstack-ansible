@@ -41,7 +41,7 @@ def append_if(array, item):
 
     :param array: ``list``  List object to append to
     :param item: ``object``  Object to append to the list
-    :returns bool:  Flag indicating whether the append happend (True)
+    :returns bool:  Flag indicating whether the append happened (True)
         or not (False)
     """
     if item not in array:
@@ -73,7 +73,7 @@ def recursive_dict_removal(inventory, purge_list):
     Only items in child dictionaries and lists are removed.
 
     Dictionary keys can only be deleted at the 3rd level (e.g in
-    inventory['top']['middle']['bottom'], only 'bottom' would be targetted by
+    inventory['top']['middle']['bottom'], only 'bottom' would be targeted by
     this function)
 
     :param inventory: ``dict`` Dictionary representing the inventory

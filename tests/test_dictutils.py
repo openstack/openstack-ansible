@@ -99,7 +99,7 @@ class TestListRemovalUnit(unittest.TestCase):
 
 class TestDictRemovalUnit(unittest.TestCase):
     def test_deleting_single_item_in_single_level_noop(self):
-        """The funtion only operates on nested dictionaries"""
+        """The function only operates on nested dictionaries"""
         base = {'key1': 'value1'}
         target = ['value1']
 
