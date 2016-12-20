@@ -1,0 +1,8 @@
+---
+features:
+  - Swift ``versioned_writes`` middleware is added to the
+    pipeline by default. Additionally the
+    ``allow_versioned_writes`` settings in the middleware
+    configuration is set to ``True``. This follows the
+    Swift defaults, and enables the use of the
+    ``X-History-Location`` metadata Header.
