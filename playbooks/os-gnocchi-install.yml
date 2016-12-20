@@ -27,7 +27,9 @@
       when: (gnocchi_storage_driver == "file") or (gnocchi_storage_driver is not defined)
     - include: common-tasks/os-lxc-container-setup.yml
       static: no
-      when: (gnocchi_storage_driver != "file") and (gnocchi_storage_driver is defined)
+      when:
+        - gnocchi_storage_driver is defined
+        - gnocchi_storage_driver != "file"
     - include: common-tasks/os-log-dir-setup.yml
       vars:
         log_dirs:
