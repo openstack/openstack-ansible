@@ -12,10 +12,6 @@ Running the upgrade script
 The Mitaka release series of OpenStack-Ansible contain the code for
 migrating from Liberty to Mitaka.
 
-.. warning::
-
-   The upgrade script is still under active development and should not be run at this time.
-
 To upgrade from Liberty to Mitaka using the upgrade script, perform the
 following steps in the ``openstack-ansible`` directory:
 
