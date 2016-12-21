@@ -1,5 +1,5 @@
 ---
-# Copyright 2014, Rackspace US, Inc.
+# Copyright 2016, Logan Vig <logan2211@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Playbook will sync the swift ring and ssh keys
-# The services need to be installed first though.
-- name: Synchronisation of swift ring and ssh keys
-  hosts: swift_all:swift_remote_all
-  gather_facts: "{{ gather_facts | default(True) }}"
-  max_fail_percentage: 20
-  user: root
-  roles:
-    - role: "os_swift"
-      swift_do_setup: False
-      swift_do_sync: True
-  vars:
-    is_metal: "{{ properties.is_metal|default(false) }}"
-  tags:
-    - swift
+# venv fetch configuration
+rally_venv_tag: "{{ venv_tag }}"
+rally_venv_download_url: "{{ venv_base_download_url }}/rally-{{ openstack_release }}-{{ ansible_architecture | lower }}.tgz"

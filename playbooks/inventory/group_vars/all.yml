@@ -115,6 +115,10 @@ dhcp_domain: openstacklocal
 ## LDAP enabled toggle
 service_ldap_backend_enabled: "{{ keystone_ldap is defined and keystone_ldap.Default is defined }}"
 
+## Base venv configuration
+venv_tag: "{{ openstack_release }}"
+venv_base_download_url: "{{ openstack_repo_url }}/venvs/{{ openstack_release }}/{{ ansible_distribution | lower }}"
+
 ## Aodh
 aodh_service_region: "{{ service_region }}"
 aodh_galera_user: aodh

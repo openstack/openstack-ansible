@@ -90,8 +90,6 @@
         - always
   roles:
     - role: "os_neutron"
-      neutron_venv_tag: "{{ openstack_release }}"
-      neutron_venv_download_url: "{{ openstack_repo_url }}/venvs/{{ openstack_release }}/{{ ansible_distribution | lower }}/neutron-{{ openstack_release }}-{{ ansible_architecture | lower }}.tgz"
       neutron_overlay_network: "{{ _overlay_network }}"
       neutron_provider_networks: "{{ _provider_networks }}"
       neutron_local_ip: "{{ tunnel_address }}"
