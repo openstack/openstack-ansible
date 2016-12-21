@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    If the cinder backup service is enabled with
+    ``cinder_service_backup_program_enabled: True``, then heat will be
+    configured to use the cinder backup service. The
+    ``heat_cinder_backups_enabled`` variable will automatically be set to
+    ``True``.
