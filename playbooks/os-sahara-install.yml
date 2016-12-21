@@ -56,8 +56,6 @@
     - include: common-tasks/package-cache-proxy.yml
   roles:
     - role: "os_sahara"
-      sahara_venv_tag: "{{ openstack_release }}"
-      sahara_venv_download_url: "{{ openstack_repo_url }}/venvs/{{ openstack_release }}/{{ ansible_distribution | lower }}/sahara-{{ openstack_release }}-{{ ansible_architecture | lower }}.tgz"
     - role: "openstack_openrc"
       tags:
         - openrc
@@ -69,6 +67,5 @@
         - rsyslog
   vars:
     is_metal: "{{ properties.is_metal|default(false) }}"
-    pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"
   tags:
     - sahara
