@@ -2,8 +2,6 @@
 Galera cluster maintenance
 ==========================
 
-   maintenance-tasks/ops-galera-recovery.rst
-
 Routine maintenance includes gracefully adding or removing nodes from
 the cluster without impacting operation and also starting a cluster
 after gracefully shutting down all nodes.

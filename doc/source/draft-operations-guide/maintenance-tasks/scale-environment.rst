@@ -40,15 +40,15 @@ needed in an environment, it is possible to create additional nodes.
 
    .. code:: console
 
-      # /opt/rpc-openstack/openstack-ansible/playbooks/inventory/dynamic_inventory.py > /dev/null
+      # /opt/openstack-ansible/playbooks/inventory/dynamic_inventory.py > /dev/null
 
 #. Create the ``/root/add_host.limit`` file, which contains all new node
    host names.
 
    .. code:: console
 
-      # /opt/rpc-openstack/openstack-ansible/scripts/inventory-manage.py  \
-        -f /opt/rpc-openstack/openstack-ansible/playbooks/inventory/dynamic_inventory.py  \
+      # /opt/openstack-ansible/scripts/inventory-manage.py  \
+        -f /opt/openstack-ansible/playbooks/inventory/dynamic_inventory.py  \
         -l |awk -F\| '/<NEW COMPUTE NODE>/ {print $2}' |sort -u | tee /root/add_host.limit
 
 #. Run the ``setup-everything.yml`` playbook with the
@@ -65,26 +65,6 @@ needed in an environment, it is possible to create additional nodes.
       # openstack-ansible setup-everything.yml --limit @/root/add_host.limit
       # openstack-ansible --tags=openstack-host-hostfile setup-hosts.yml
 
-#. Run the rpc-support playbooks.
-
-   .. code:: console
-
-      #  ( cd /opt/rpc-openstack/rpcd/playbooks ; openstack-ansible rpc-support.yml )
-
-#. Generate a new impersonation token, and add that token after the
-   `maas_auth_token` variable in the ``user_rpco_variables_overrides.yml``
-   file.
-
-   .. code:: console
-
-      - Update maas_auth_token /etc/openstack_deploy/user_rpco_variables_overrides.yml
-
-#. Run the MaaS playbook on the deployment host.
-
-   .. code:: console
-
-      # ( cd /opt/rpc-openstack/rpcd/playbooks ; openstack-ansible setup-maas.yml
-        --limit @/root/add_host.limit )
 
 Test new nodes
 ~~~~~~~~~~~~~~
@@ -110,7 +90,7 @@ cluster.
 
    If necessary, also modify the ``used_ips`` stanza.
 
-#. If the cluster is utilizing Telemetry/Metering (Ceilometer),
+#. If the cluster is utilizing Telemetry/Metering (ceilometer),
    edit the ``/etc/openstack_deploy/conf.d/ceilometer.yml`` file and add the
    host to the ``metering-compute_hosts`` stanza.
 
@@ -134,8 +114,8 @@ To remove a compute host, follow the below procedure.
 
 .. note::
 
-   This guide describes how to remove a compute node from an OSA environment
-   completely. Perform these steps with caution, as the compute node will no
+   This guide describes how to remove a compute node from an OpenStack-Ansible
+   environment completely. Perform these steps with caution, as the compute node will no
    longer be in service after the steps have been completed. This guide assumes
    that all data and instances have been properly migrated.
 

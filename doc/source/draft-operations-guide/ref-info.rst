@@ -56,9 +56,6 @@ follow these steps.
 
 #. Log into the ``infra01`` server.
 
-#. Change to the ``/opt/rpc-openstack/openstack-ansible`` directory.
+#. Change to the ``/opt/openstack-ansible`` directory.
 
 #. The ``scripts`` directory contains scripts used in the installation.
-   Generally, directories and subdirectories under ``rpcd``
-   contain files related to RPCO. For example, the
-   ``rpcd/playbooks`` directory contains the RPCO playbooks.

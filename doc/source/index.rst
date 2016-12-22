@@ -21,6 +21,7 @@ review.
 .. toctree::
    :maxdepth: 1
 
+   draft-operations-guide/index
    upgrade-guide/index
    developer-docs/index
    inventory/index
