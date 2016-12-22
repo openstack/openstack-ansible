@@ -36,6 +36,16 @@ goals, then please feel free to reach out to us on the
 `OpenStack Mailing Lists`_ (particularly openstack-operators or openstack-dev)
 or on IRC in ``#openstack-ansible`` on the `freenode network`_.
 
+OpenStack-Ansible Roles
+#######################
+
+OpenStack-Ansible offers seperate role repositories for each individual role
+that OpenStack-Ansible supports. For individual role documentation see the
+`Role Documentation`_ in the OpenStack-Ansible documentation.
+
+An individual role's source code can be found at:
+http://git.openstack.org/cgit/openstack/openstack-ansible-<ROLENAME>.
+
 .. _official OpenStack project: http://governance.openstack.org/reference/projects/index.html
 .. _Home Page: http://governance.openstack.org/reference/projects/openstackansible.html
 .. _Install Guide: http://docs.openstack.org/developer/openstack-ansible/install-guide/index.html
@@ -44,3 +54,4 @@ or on IRC in ``#openstack-ansible`` on the `freenode network`_.
 .. _Source: http://git.openstack.org/cgit/openstack/openstack-ansible
 .. _OpenStack Mailing Lists: http://lists.openstack.org/
 .. _freenode network: https://freenode.net/
+.. _Role Documentation: http://docs.openstack.org/developer/openstack-ansible/developer-docs/advanced-role-docs.html
