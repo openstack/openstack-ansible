@@ -1,6 +1,138 @@
-=======================
+==========================
+Galera cluster maintenance
+==========================
+
+   maintenance-tasks/ops-galera-recovery.rst
+
+Routine maintenance includes gracefully adding or removing nodes from
+the cluster without impacting operation and also starting a cluster
+after gracefully shutting down all nodes.
+
+MySQL instances are restarted when creating a cluster, when adding a
+node, when the service is not running, or when changes are made to the
+``/etc/mysql/my.cnf`` configuration file.
+
+Remove nodes
+~~~~~~~~~~~~
+
+In the following example, all but one node was shut down gracefully:
+
+.. code-block:: shell-session
+
+    # ansible galera_container -m shell -a "mysql -h localhost \
+    -e 'show status like \"%wsrep_cluster_%\";'"
+    node3_galera_container-3ea2cbd3 | FAILED | rc=1 >>
+    ERROR 2002 (HY000): Can't connect to local MySQL server
+    through socket '/var/run/mysqld/mysqld.sock' (2)
+
+    node2_galera_container-49a47d25 | FAILED | rc=1 >>
+    ERROR 2002 (HY000): Can't connect to local MySQL server
+    through socket '/var/run/mysqld/mysqld.sock' (2)
+
+    node4_galera_container-76275635 | success | rc=0 >>
+    Variable_name             Value
+    wsrep_cluster_conf_id     7
+    wsrep_cluster_size        1
+    wsrep_cluster_state_uuid  338b06b0-2948-11e4-9d06-bef42f6c52f1
+    wsrep_cluster_status      Primary
+
+
+Compare this example output with the output from the multi-node failure
+scenario where the remaining operational node is non-primary and stops
+processing SQL requests. Gracefully shutting down the MariaDB service on
+all but one node allows the remaining operational node to continue
+processing SQL requests. When gracefully shutting down multiple nodes,
+perform the actions sequentially to retain operation.
+
+Start a cluster
+~~~~~~~~~~~~~~~
+
+Gracefully shutting down all nodes destroys the cluster. Starting or
+restarting a cluster from zero nodes requires creating a new cluster on
+one of the nodes.
+
+#. Start a new cluster on the most advanced node.
+   Check the ``seqno`` value in the ``grastate.dat`` file on all of the nodes:
+
+   .. code-block:: shell-session
+
+       # ansible galera_container -m shell -a "cat /var/lib/mysql/grastate.dat"
+       node2_galera_container-49a47d25 | success | rc=0 >>
+       # GALERA saved state version: 2.1
+       uuid:    338b06b0-2948-11e4-9d06-bef42f6c52f1
+       seqno:   31
+       cert_index:
+
+       node3_galera_container-3ea2cbd3 | success | rc=0 >>
+       # GALERA saved state version: 2.1
+       uuid:    338b06b0-2948-11e4-9d06-bef42f6c52f1
+       seqno:   31
+       cert_index:
+
+       node4_galera_container-76275635 | success | rc=0 >>
+       # GALERA saved state version: 2.1
+       uuid:    338b06b0-2948-11e4-9d06-bef42f6c52f1
+       seqno:   31
+       cert_index:
+
+   In this example, all nodes in the cluster contain the same positive
+   ``seqno`` values as they were synchronized just prior to
+   graceful shutdown. If all ``seqno`` values are equal, any node can
+   start the new cluster.
+
+   .. code-block:: shell-session
+
+       # /etc/init.d/mysql start --wsrep-new-cluster
+
+   This command results in a cluster containing a single node. The
+   ``wsrep_cluster_size`` value shows the number of nodes in the
+   cluster.
+
+   .. code-block:: shell-session
+
+       node2_galera_container-49a47d25 | FAILED | rc=1 >>
+       ERROR 2002 (HY000): Can't connect to local MySQL server
+       through socket '/var/run/mysqld/mysqld.sock' (111)
+
+       node3_galera_container-3ea2cbd3 | FAILED | rc=1 >>
+       ERROR 2002 (HY000): Can't connect to local MySQL server
+       through socket '/var/run/mysqld/mysqld.sock' (2)
+
+       node4_galera_container-76275635 | success | rc=0 >>
+       Variable_name             Value
+       wsrep_cluster_conf_id     1
+       wsrep_cluster_size        1
+       wsrep_cluster_state_uuid  338b06b0-2948-11e4-9d06-bef42f6c52f1
+       wsrep_cluster_status      Primary
+
+#. Restart MariaDB on the other nodes and verify that they rejoin the
+   cluster.
+
+   .. code-block:: shell-session
+
+       node2_galera_container-49a47d25 | success | rc=0 >>
+       Variable_name             Value
+       wsrep_cluster_conf_id     3
+       wsrep_cluster_size        3
+       wsrep_cluster_state_uuid  338b06b0-2948-11e4-9d06-bef42f6c52f1
+       wsrep_cluster_status      Primary
+
+       node3_galera_container-3ea2cbd3 | success | rc=0 >>
+       Variable_name             Value
+       wsrep_cluster_conf_id     3
+       wsrep_cluster_size        3
+       wsrep_cluster_state_uuid  338b06b0-2948-11e4-9d06-bef42f6c52f1
+       wsrep_cluster_status      Primary
+
+       node4_galera_container-76275635 | success | rc=0 >>
+       Variable_name             Value
+       wsrep_cluster_conf_id     3
+       wsrep_cluster_size        3
+       wsrep_cluster_state_uuid  338b06b0-2948-11e4-9d06-bef42f6c52f1
+       wsrep_cluster_status      Primary
+
 Galera cluster recovery
-=======================
+~~~~~~~~~~~~~~~~~~~~~~~
 
 Run the ``galera-bootstrap`` playbook to automatically recover
 a node or an entire environment. Run the ``galera install`` playbook
@@ -15,8 +147,8 @@ entire environment.
 
 The cluster comes back online after completion of this command.
 
-Single-node failure
-~~~~~~~~~~~~~~~~~~~
+Recover a single-node failure
+-----------------------------
 
 If a single node fails, the other nodes maintain quorum and
 continue to process SQL requests.
@@ -55,8 +187,8 @@ continue to process SQL requests.
    further analysis on the output. As a last resort, rebuild the container
    for the node.
 
-Multi-node failure
-~~~~~~~~~~~~~~~~~~
+Recover a multi-node failure
+----------------------------
 
 When all but one node fails, the remaining node cannot achieve quorum and
 stops processing SQL requests. In this situation, failed nodes that
@@ -143,8 +275,8 @@ recover cannot join the cluster because it no longer exists.
    ``mysqld`` command and perform further analysis on the output. As a
    last resort, rebuild the container for the node.
 
-Complete failure
-~~~~~~~~~~~~~~~~
+Recover a complete environment failure
+--------------------------------------
 
 Restore from backup if all of the nodes in a Galera cluster fail (do not
 shutdown gracefully). Run the following command to determine if all nodes in
@@ -184,8 +316,8 @@ each node has an identical copy of the data, we do not recommend to
 restart the cluster using the ``--wsrep-new-cluster`` command on one
 node.
 
-Rebuilding a container
-~~~~~~~~~~~~~~~~~~~~~~
+Rebuild a container
+-------------------
 
 Recovering from certain failures require rebuilding one or more containers.
 
