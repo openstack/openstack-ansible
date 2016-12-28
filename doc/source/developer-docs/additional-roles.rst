@@ -201,7 +201,7 @@ The development of a role will usually go through the following stages:
      of existing roles in OpenStack-Ansible or Ansible Galaxy is strongly
      encouraged.
 
-   * The role *must* support Ubuntu 14.04 LTS and Ubuntu 16.04 LTS. It should
+   * The role *must* support Ubuntu 16.04 LTS. It should
      ideally also support CentOS7 but this is not required at this time. The
      patterns to achieve this include:
 
