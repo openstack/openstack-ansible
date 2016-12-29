@@ -71,22 +71,22 @@ including the OpenStack-Ansible roles and libraries by putting an
 The relevant options for Ansible 1.9 (included in OpenStack-Ansible)
 are as follows:
 
-    ``library``
-        This variable should point to
-        ``openstack-ansible/playbooks/library``. Doing so allows roles and
-        playbooks to access OpenStack-Ansible's included Ansible modules.
-    ``roles_path``
-        This variable should point to
-        ``openstack-ansible/playbooks/roles``. This allows Ansible to
-        properly look up any OpenStack-Ansible roles that extension roles
-        may reference.
-    ``inventory``
-        This variable should point to
-        ``openstack-ansible/playbooks/inventory``. With this setting,
-        extensions have access to the same dynamic inventory that
-        OpenStack-Ansible uses.
+``library``
+  This variable should point to
+  ``openstack-ansible/playbooks/library``. Doing so allows roles and
+  playbooks to access OpenStack-Ansible's included Ansible modules.
+``roles_path``
+  This variable should point to
+  ``openstack-ansible/playbooks/roles``. This allows Ansible to
+  properly look up any OpenStack-Ansible roles that extension roles
+  may reference.
+``inventory``
+  This variable should point to
+  ``openstack-ansible/playbooks/inventory``. With this setting,
+  extensions have access to the same dynamic inventory that
+  OpenStack-Ansible uses.
 
-Note that the paths to the ``openstack-ansible`` top level directory can be
+The paths to the ``openstack-ansible`` top level directory can be
 relative in this file.
 
 Consider this directory structure::
@@ -103,7 +103,6 @@ Consider this directory structure::
 The variables in ``my_project/custom_stuff/playbooks/ansible.cfg`` would use
 ``../openstack-ansible/playbooks/<directory>``.
 
-
 env.d
 ~~~~~
 
@@ -113,9 +112,8 @@ deployed environment, allowing a deployer to define additional group mappings.
 This directory is used to extend the environment skeleton, or modify the
 defaults defined in the ``playbooks/inventory/env.d`` directory.
 
-See also `Understanding Container Groups`_ in Appendix C.
-
-.. _Understanding Container Groups: ../install-guide/app-custom-layouts.html#understanding-container-groups
+See also `Understanding Container Groups <http://docs.openstack.org/project-deploy-guide/openstack-ansible/newton/app-custom-layouts.html>`_
+in Appendix C of the Deployment Guide.
 
 conf.d
 ~~~~~~
@@ -127,9 +125,8 @@ OpenStack-Ansible in the
 Additional services should be defined with a YAML file in
 ``/etc/openstack_deploy/conf.d``, in order to manage file size.
 
-See also `Understanding Host Groups`_ in Appendix C.
-
-.. _Understanding Host Groups: ../install-guide/app-custom-layouts.html#understanding-host-groups
+See also `Understanding Host Groups <http://docs.openstack.org/project-deploy-guide/openstack-ansible/newton/app-custom-layouts.html>`_
+in Appendix C of the Deployment Guide.
 
 user_*.yml files
 ~~~~~~~~~~~~~~~~
@@ -174,11 +171,11 @@ preset template option. All OpenStack-Ansible roles allow for this
 functionality where applicable. Files available to receive overrides can be
 seen in the ``defaults/main.yml`` file as standard empty dictionaries (hashes).
 
-Practical guidance for using this feature is available in the `Install Guide`_.
+Practical guidance for using this feature is available in the
+`Deployment Guide <http://docs.openstack.org/project-deploy-guide/openstack-ansible/newton/app-advanced-config-override.html>`_.
 
 This module has been `submitted for consideration`_ into Ansible Core.
 
-.. _Install Guide: ../install-guide/app-advanced-config-override.html
 .. _submitted for consideration: https://github.com/ansible/ansible/pull/12555
 
 

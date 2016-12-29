@@ -35,9 +35,8 @@ Using an image, create a new instance via the Dashboard options.
       **Don't boot from a volume** for now.
 
       For more information on attaching Block Storage volumes to
-      instances for persistent storage, see `the
-      “Managing volumes for persistent
-      storage” section <manage-volumes-persistent-storage.html>`__.
+      instances for persistent storage, see the
+      *Managing volumes for persistent storage* section below.
 
    #. Add customisation scripts, if needed, by clicking the
       **Post-Creation** tab. These run after the instance has been

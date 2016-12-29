@@ -5,7 +5,7 @@ Scaling your environment
 This is a draft environment scaling page for the proposed OpenStack-Ansible
 operations guide.
 
-Add a new infrastructure node
+Add a new infrastructure host
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 While three infrastructure hosts are recommended, if further hosts are
@@ -82,7 +82,7 @@ Use the following procedure to add a compute host to an operational
 cluster.
 
 #. Configure the host as a target host. See `Prepare target hosts
-   <http://docs.openstack.org/developer/openstack-ansible/install-guide/targethosts.html>`_
+   <http://docs.openstack.org/project-deploy-guide/openstack-ansible/newton/targethosts.html>`_
    for more information.
 
 #. Edit the ``/etc/openstack_deploy/openstack_user_config.yml`` file and
@@ -153,7 +153,7 @@ To remove a compute host, follow the below procedure.
    OpenStack-Ansible configuration file in
    ``/etc/openstack_deploy/openstack_user_config.yml``.
 
-Recover a Compute node failure
+Recover a compute host failure
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The following procedure addresses Compute node failure if shared storage
@@ -167,48 +167,48 @@ is used.
       performing the following procedure. Please note this method is
       not supported.
 
-   #. Re-launch all instances on the failed node.
+#. Re-launch all instances on the failed node.
 
-   #. Invoke the MySQL command line tool
+#. Invoke the MySQL command line tool
 
-   #. Generate a list of instance UUIDs hosted on the failed node:
+#. Generate a list of instance UUIDs hosted on the failed node:
 
-      .. code::
+   .. code::
 
-         mysql> select uuid from instances where host = '${FAILED_NODE}' and deleted = 0;
+      mysql> select uuid from instances where host = '${FAILED_NODE}' and deleted = 0;
 
-   #. Set instances on the failed node to be hosted on a different node:
+#. Set instances on the failed node to be hosted on a different node:
 
-      .. code::
+   .. code::
 
-         mysql> update instances set host ='${RECEIVING_NODE}' where host = '${FAILED_NODE}' \
-         and deleted = 0;
+      mysql> update instances set host ='${RECEIVING_NODE}' where host = '${FAILED_NODE}' \
+      and deleted = 0;
 
-   #. Reboot each instance on the failed node listed in the previous query
-      to regenerate the XML files:
+#. Reboot each instance on the failed node listed in the previous query
+   to regenerate the XML files:
 
-      .. code::
+   .. code::
 
-         # nova reboot —hard $INSTANCE_UUID
+      # nova reboot —hard $INSTANCE_UUID
 
-      #. Find the volumes to check the instance has successfully booted and is
-         at the login  :
+#. Find the volumes to check the instance has successfully booted and is
+   at the login  :
 
-      .. code::
+   .. code::
 
-         mysql> select nova.instances.uuid as instance_uuid, cinder.volumes.id \
-         as voume_uuid, cinder.volumes.status, cinder.volumes.attach_status, \
-         cinder.volumes.mountpoint, cinder.volumes,display_name from \
-         cinder.volumes inner join nova.instances on cinder.volumes.instance_uuid=nova.instances.uuid \
-         where nova.instances.host = '${FAILED_NODE}';
+      mysql> select nova.instances.uuid as instance_uuid, cinder.volumes.id \
+      as voume_uuid, cinder.volumes.status, cinder.volumes.attach_status, \
+      cinder.volumes.mountpoint, cinder.volumes,display_name from \
+      cinder.volumes inner join nova.instances on cinder.volumes.instance_uuid=nova.instances.uuid \
+      where nova.instances.host = '${FAILED_NODE}';
 
-      #. If rows are found, detach and re-attach the volumes using the values
-         listed in the previous query:
+#. If rows are found, detach and re-attach the volumes using the values
+   listed in the previous query:
 
-      .. code::
+   .. code::
 
-         # nova volume-detach $INSTANCE_UUID $VOLUME_UUID && \
-         nova volume-attach $INSTANCE_UUID $VOLUME_UUID $VOLUME_MOUNTPOINT
+      # nova volume-detach $INSTANCE_UUID $VOLUME_UUID && \
+      # nova volume-attach $INSTANCE_UUID $VOLUME_UUID $VOLUME_MOUNTPOINT
 
-      #. Rebuild or replace the failed node as described in `Adding a Compute
-         node <compute-add-node.html>`_
+#. Rebuild or replace the failed node as described in `Adding a Compute
+   host <scale-environment.html#add-a-compute-host>`_.

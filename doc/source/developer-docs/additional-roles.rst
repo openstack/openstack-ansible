@@ -98,11 +98,11 @@ Deploying the Role
       modifications being sure that group labels in ``env.d`` and ``conf.d``
       files are consistent.
 
-#. Generate secrets, if any, `as described in the Install Guide`_. You can
-   append your keys to an existing ``user_secrets.yml`` file or add a new file
-   to the ``openstack_deploy`` directory to contain them. Provide overrides
-   for any other variables you will need at this time as well, either in
-   ``user_variables.yml`` or another file. This is explained in more depth
+#. Generate secrets, if any, as described in the `Deployment Guide <http://docs.openstack.org/project-deploy-guide/openstack-ansible/newton/configure.html#configuring-service-credentials>`_.
+   You can append your keys to an existing ``user_secrets.yml`` file or add a
+   new file to the ``openstack_deploy`` directory to contain them. Provide
+   overrides for any other variables you will need at this time as well, either
+   in ``user_variables.yml`` or another file. This is explained in more depth
    under `Extending OpenStack-Ansible`_.
 #. If your service is installed from source or relies on python packages which
    need to be installed from source, specify a repository for the source
@@ -132,7 +132,6 @@ Deploying the Role
 .. _Adding Galaxy roles: extending.html#adding-galaxy-roles
 .. _env.d: extending.html#env-d
 .. _conf.d: extending.html#conf-d
-.. _as described in the Install Guide: ../install-guide/configure.html#configuring-service-credentials
 .. _Extending OpenStack-Ansible: extending.html#user-yml-files
 
 Role development maturity
@@ -262,7 +261,8 @@ The development of a role will usually go through the following stages:
 
      This is implemented into the dynamic inventory through the definition of
      content in an ``env.d`` file. A description of how these work can be
-     found in `Appendix C`_ of the Installation Guide.
+     found in `Appendix C <http://docs.openstack.org/project-deploy-guide/openstack-ansible/newton/app-custom-layouts.html>`_
+     of the Deployment Guide.
 
    * Load balancer configuration
 
@@ -322,8 +322,6 @@ The development of a role will usually go through the following stages:
      test must execute a set of functional tests using Tempest. This is the
      required last step before a service can remove the experimental warning
      from the documentation.
-
-   .. _Appendix C: ../install-guide/app-custom-layouts.html
 
 --------------
 
