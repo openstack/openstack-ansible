@@ -70,13 +70,12 @@ the same layer 2 network as the network designated for container management. By
 default, this is the ``br-mgmt`` network. This configuration reduces the rate
 of failure caused by connectivity issues.
 
-The following network information is used as an example:
+Select an IP address from the following example range to assign to the
+deployment host:
 
 .. code-block:: ini
 
    Container management: 172.29.236.0/22 (VLAN 10)
-
-Select an IP address from this range to assign to the deployment host.
 
 Install the source and dependencies
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
