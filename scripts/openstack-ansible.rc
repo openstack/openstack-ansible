@@ -26,6 +26,7 @@ export ANSIBLE_LOOKUP_PLUGINS="${ANSIBLE_LOOKUP_PLUGINS:-/etc/ansible/roles/plug
 export ANSIBLE_FILTER_PLUGINS="${ANSIBLE_FILTER_PLUGINS:-/etc/ansible/roles/plugins/filter}"
 export ANSIBLE_ACTION_PLUGINS="${ANSIBLE_ACTION_PLUGINS:-/etc/ansible/roles/plugins/action}"
 export ANSIBLE_CALLBACK_PLUGINS="${ANSIBLE_CALLBACK_PLUGINS:-/etc/ansible/roles/plugins/callback}"
+export ANSIBLE_TEST_PLUGINS="${ANSIBLE_TEST_PLUGINS:-/etc/ansible/roles/plugins/test}"
 
 export ANSIBLE_GATHERING="${ANSIBLE_GATHERING:-smart}"
 export ANSIBLE_GATHER_SUBSET="${ANSIBLE_GATHER_SUBSET:-network,hardware,virtual}"
