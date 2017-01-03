@@ -1,6 +1,6 @@
-==================================
-OpenStack-Ansible operations guide
-==================================
+================
+Operations guide
+================
 
 This is a draft index page for the proposed OpenStack-Ansible
 operations guide.
