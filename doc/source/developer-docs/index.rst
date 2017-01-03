@@ -4,6 +4,9 @@ Developer Documentation
 In this section, you will find documentation relevant to developing
 OpenStack-Ansible.
 
+For information on how to install and deploy OpenStack-Ansible, see the
+`Deployment Guide`_.
+
 Contents:
 
 .. toctree::
@@ -13,9 +16,9 @@ Contents:
    installation-hosts-limited-connectivity
    scripts
    playbooks
-   extending
-   ops
    contribute
    bug-triage
    core-reviewers
    role-services
+
+.. _Deployment Guide: http://docs.openstack.org/project-deploy-guide/draft/
