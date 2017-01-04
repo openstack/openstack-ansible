@@ -75,6 +75,8 @@ a networking connection test through the :command:`ping` command.
 Log in to your monitoring system, and verify that the monitors
 return a green signal for the new node.
 
+.. _add-compute-host:
+
 Add a compute host
 ~~~~~~~~~~~~~~~~~~
 
@@ -210,5 +212,137 @@ is used.
       # nova volume-detach $INSTANCE_UUID $VOLUME_UUID && \
       # nova volume-attach $INSTANCE_UUID $VOLUME_UUID $VOLUME_MOUNTPOINT
 
-#. Rebuild or replace the failed node as described in `Adding a Compute
-   host <scale-environment.html#add-a-compute-host>`_.
+
+#. Rebuild or replace the failed node as described in add-compute-host_.
+
+Replacing failed hardware
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+It is essential to plan and know how to replace failed hardware in your cluster
+without compromising your cloud environment.
+
+Consider the following to help establish a hardware replacement plan:
+
+- What type of node am I replacing hardware on?
+- Can the hardware replacement be done without the host going down? For
+  example, a single disk in a RAID-10.
+- If the host DOES have to be brought down for the hardware replacement, how
+  should the resources on that host be handled?
+
+If you have a Compute (nova) host that has a disk failure on a
+RAID-10, you can swap the failed disk without powering the host down. On the
+other hand, if the RAM has failed, you would have to power the host down.
+Having a plan in place for how you will manage these types of events is a vital
+part of maintaining your OpenStack environment.
+
+For a Compute host, shut down the instance on the host before
+it goes down. For a Block Storage (cinder) host, shut down any instances with
+volumes attached that require that mount point. Unmount the drive within
+your operating system and re-mount the drive once the Block Storage
+host is back online.
+
+Shutting down the Compute host
+------------------------------
+
+If a Compute host needs to be shut down:
+
+#. Disable the ``nova-compute`` binary:
+
+   .. code-block:: console
+
+      # nova service-disable --reason "Hardware replacement" HOSTNAME nova-compute
+
+#. List all running instances on the Compute host:
+
+   .. code-block:: console
+
+      # nova list --all-t --host <compute_name> | awk '/ACTIVE/ {print $2}' > \
+      /home/user/running_instances && for i in `cat /home/user/running_instances`; do nova stop $i ; done
+
+#. Use SSH to connect to the Compute host.
+
+#. Confirm all instances are down:
+
+   .. code-block:: console
+
+      # virsh list --all
+
+#. Shut down the Compute host:
+
+   .. code-block:: console
+
+      # shutdown -h now
+
+#. Once the Compute host comes back online, confirm everything is in
+   working order and start the instances on the host. For example:
+
+   .. code-block:: console
+
+      # cat /home/user/running_instances
+      # do nova start $instance
+        done
+
+#. Enable the ``nova-compute`` service in the environment:
+
+   .. code-block:: console
+
+      # nova service-enable HOSTNAME nova-compute
+
+Shutting down the Block Storage host
+------------------------------------
+
+If a Block Storage host needs to be shut down:
+
+#. Disable the ``cinder-volume`` service:
+
+   .. code-block:: console
+
+      # cinder service-list --host CINDER SERVICE NAME INCLUDING @BACKEND
+      # cinder service-disable CINDER SERVICE NAME INCLUDING @BACKEND \
+      cinder-volume --reason 'RAM maintenance'
+
+#. List all instances with Block Storage volumes attached:
+
+   .. code-block:: console
+
+      # mysql cinder -BNe 'select instance_uuid from volumes where deleted=0 \
+      and host like "%<cinder host>%"' | tee /home/user/running_instances
+
+#. Shut down the instances:
+
+   .. code-block:: console
+
+      # cat /home/user/running_instances | xargs -n1 nova stop
+
+#. Verify the instances are shutdown:
+
+   .. code-block:: console
+
+      # cat /home/user/running_instances | xargs -n1 nova show | fgrep vm_state
+
+#. Shut down the Block Storage host:
+
+   .. code-block:: console
+
+      # shutdown -h now
+
+#. Replace the failed hardware and validate the new hardware is functioning.
+
+#. Enable the ``cinder-volume`` service:
+
+   .. code-block:: console
+
+      # cinder service-enable CINDER SERVICE NAME INCLUDING @BACKEND cinder-volume
+
+#. Verify the services on the host are reconnected to the environment:
+
+   .. code-block:: console
+
+      # cinder service-list --host CINDER SERVICE NAME INCLUDING @BACKEND
+
+#. Start your instances and confirm all of the instances are started:
+
+   .. code-block:: console
+
+      # cat /home/user/running_instances | xargs -n1 nova start
+      # cat /home/user/running_instances | xargs -n1 nova show | fgrep vm_state
