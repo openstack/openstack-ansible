@@ -70,6 +70,7 @@ container_skel:
       - neutron_openvswitch_agent
       - neutron_l3_agent
       - neutron_metadata_agent
+      - neutron_sriov_nic_agent
       - nova_compute
     properties:
       is_metal: true
