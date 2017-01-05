@@ -31,88 +31,88 @@
 
 ## Global Requirements
 requirements_git_repo: https://git.openstack.org/openstack/requirements
-requirements_git_install_branch: 25bc881333dd31c1889360d7543f246bab3e3cf3 # HEAD of "stable/mitaka" as of 15.12.2016
+requirements_git_install_branch: 48a8df61b69e0996d84260496b5c1e6cc37e4af6 # HEAD of "stable/mitaka" as of 05.01.2017
 requirements_git_dest: "/opt/requirements_{{ requirements_git_install_branch | replace('/', '_') }}"
 
 
 ## Aodh service
 aodh_git_repo: https://git.openstack.org/openstack/aodh
-aodh_git_install_branch: aa2c31369bd32c7ac07ede0ac13785c18255e8be # HEAD of "stable/mitaka" as of 15.12.2016
+aodh_git_install_branch: aa2c31369bd32c7ac07ede0ac13785c18255e8be # HEAD of "stable/mitaka" as of 05.01.2017
 aodh_git_dest: "/opt/aodh_{{ aodh_git_install_branch | replace('/', '_') }}"
 
 
 ## Ceilometer service
 ceilometer_git_repo: https://git.openstack.org/openstack/ceilometer
-ceilometer_git_install_branch: 10639a4299fdedbb8b6dcd5e82e795d573edb6d0 # HEAD of "stable/mitaka" as of 15.12.2016
+ceilometer_git_install_branch: 1c5ad24f221f90310577b1de29acdd4f496ea705 # HEAD of "stable/mitaka" as of 05.01.2017
 ceilometer_git_dest: "/opt/ceilometer_{{ceilometer_git_install_branch | replace('/', '_') }}"
 
 
 ## Cinder service
 cinder_git_repo: https://git.openstack.org/openstack/cinder
-cinder_git_install_branch: 753a147768be3ea9813f45c6adc414df69f50dee # HEAD of "stable/mitaka" as of 15.12.2016
+cinder_git_install_branch: 753a147768be3ea9813f45c6adc414df69f50dee # HEAD of "stable/mitaka" as of 05.01.2017
 cinder_git_dest: "/opt/cinder_{{ cinder_git_install_branch | replace('/', '_') }}"
 
 
 ## Glance service
 glance_git_repo: https://git.openstack.org/openstack/glance
-glance_git_install_branch: 6c4bd0ec5841a9e204649e9f8a055c3c1d7ca9d8 # HEAD of "stable/mitaka" as of 15.12.2016
+glance_git_install_branch: 6c4bd0ec5841a9e204649e9f8a055c3c1d7ca9d8 # HEAD of "stable/mitaka" as of 05.01.2017
 glance_git_dest: "/opt/glance_{{ glance_git_install_branch | replace('/', '_') }}"
 
 
 ## Heat service
 heat_git_repo: https://git.openstack.org/openstack/heat
-heat_git_install_branch: 1d78f3baaebaf98c1a753c3965f082b0d3c55ee1 # HEAD of "stable/mitaka" as of 15.12.2016
+heat_git_install_branch: 1d78f3baaebaf98c1a753c3965f082b0d3c55ee1 # HEAD of "stable/mitaka" as of 05.01.2017
 heat_git_dest: "/opt/heat_{{ heat_git_install_branch | replace('/', '_') }}"
 
 
 ## Horizon service
 horizon_git_repo: https://git.openstack.org/openstack/horizon
-horizon_git_install_branch: 9a460aad76c05c411765af2b2d85b075a5f7004e # HEAD of "stable/mitaka" as of 15.12.2016
+horizon_git_install_branch: 8bb9a1979eb7e76ec53440d41f27b1e9cfd81dac # HEAD of "stable/mitaka" as of 05.01.2017
 horizon_git_dest: "/opt/horizon_{{ horizon_git_install_branch | replace('/', '_') }}"
 
 ## Horizon LBaaS dashboard plugin
 neutron_lbaas_dashboard_git_repo: https://github.com/openstack/neutron-lbaas-dashboard
-neutron_lbaas_dashboard_git_install_branch: b85927dad8169ac672ab2daa111a2b8a113464c0 # HEAD of "stable/mitaka" as of 15.12.2016
+neutron_lbaas_dashboard_git_install_branch: b85927dad8169ac672ab2daa111a2b8a113464c0 # HEAD of "stable/mitaka" as of 05.01.2017
 neutron_lbaas_dashboard_git_dest: "/opt/neutron_lbaas_dashboard_{{ neutron_lbaas_dashboard_git_install_branch | replace('/', '_') }}"
 
 
 ## Keystone service
 keystone_git_repo: https://git.openstack.org/openstack/keystone
-keystone_git_install_branch: 005a1a9a9c16b5d33dc756ef159b884242763616 # HEAD of "stable/mitaka" as of 15.12.2016
+keystone_git_install_branch: a244e9bea6e4691a910b777598121c99384dd089 # HEAD of "stable/mitaka" as of 05.01.2017
 keystone_git_dest: "/opt/keystone_{{ keystone_git_install_branch | replace('/', '_') }}"
 
 
 ## Neutron service
 neutron_git_repo: https://git.openstack.org/openstack/neutron
-neutron_git_install_branch: 2580bcb5bcc68e59a602ab9ead8c2191c162f700 # HEAD of "stable/mitaka" as of 15.12.2016
+neutron_git_install_branch: f84613cc6e4cb03d8bb14f388f4b836b132562ed # HEAD of "stable/mitaka" as of 05.01.2017
 neutron_git_dest: "/opt/neutron_{{ neutron_git_install_branch | replace('/', '_') }}"
 
 neutron_lbaas_git_repo: https://git.openstack.org/openstack/neutron-lbaas
-neutron_lbaas_git_install_branch: efacaecfba9d18960b54cd8fefba36e0e4f2126f # HEAD of "stable/mitaka" as of 15.12.2016
+neutron_lbaas_git_install_branch: efacaecfba9d18960b54cd8fefba36e0e4f2126f # HEAD of "stable/mitaka" as of 05.01.2017
 neutron_lbaas_git_dest: "/opt/neutron_lbaas_{{ neutron_lbaas_git_install_branch | replace('/', '_') }}"
 
 neutron_vpnaas_git_repo: https://git.openstack.org/openstack/neutron-vpnaas
-neutron_vpnaas_git_install_branch: 035f12f9900ff322f5cbb2b134ba4ca26f7fa022 # HEAD of "stable/mitaka" as of 15.12.2016
+neutron_vpnaas_git_install_branch: 035f12f9900ff322f5cbb2b134ba4ca26f7fa022 # HEAD of "stable/mitaka" as of 05.01.2017
 neutron_vpnaas_git_dest: "/opt/neutron_vpnaas_{{ neutron_vpnaas_git_install_branch | replace('/', '_') }}"
 
 neutron_fwaas_git_repo: https://git.openstack.org/openstack/neutron-fwaas
-neutron_fwaas_git_install_branch: 8d1fa056938067e7d8f4c2926d714d5effa8dbe9 # HEAD of "stable/mitaka" as of 15.12.2016
+neutron_fwaas_git_install_branch: 8d1fa056938067e7d8f4c2926d714d5effa8dbe9 # HEAD of "stable/mitaka" as of 05.01.2017
 neutron_fwaas_git_dest: "/opt/neutron_fwaas_{{ neutron_fwaas_git_install_branch | replace('/', '_') }}"
 
 
 ## Nova service
 nova_git_repo: https://git.openstack.org/openstack/nova
-nova_git_install_branch: 752c987789bb600507d388e52ec9ff8c4d144479 # HEAD of "stable/mitaka" as of 15.12.2016
+nova_git_install_branch: d726e0d7008354dcc054b5d8b95b6071c83f8da2 # HEAD of "stable/mitaka" as of 05.01.2017
 nova_git_dest: "/opt/nova_{{ nova_git_install_branch | replace('/', '_') }}"
 
 
 ## Swift service
 swift_git_repo: https://git.openstack.org/openstack/swift
-swift_git_install_branch: 79b0e5bc7c54acf8d607f5010f1f68f295971acf # HEAD of "stable/mitaka" as of 15.12.2016
+swift_git_install_branch: 79b0e5bc7c54acf8d607f5010f1f68f295971acf # HEAD of "stable/mitaka" as of 05.01.2017
 swift_git_dest: "/opt/swift_{{ swift_git_install_branch | replace('/', '_') }}"
 
 
 ## Ironic service
 ironic_git_repo: https://git.openstack.org/openstack/ironic
-ironic_git_install_branch: fac0a5fa8755d3dd5b7c59780f80b52c43b24c90 # HEAD of "stable/mitaka" as of 15.12.2016
+ironic_git_install_branch: 2f5787e5b8db9f843afeb8053e9ee85234c2e690 # HEAD of "stable/mitaka" as of 05.01.2017
 ironic_git_dest: "/opt/ironic_{{ ironic_git_install_branch | replace('/', '_') }}"
