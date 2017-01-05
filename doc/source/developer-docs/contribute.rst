@@ -254,6 +254,9 @@ submitted with patches:
 Ansible Style Guide
 ~~~~~~~~~~~~~~~~~~~
 
+YAML formatting
+---------------
+
 When creating tasks and other roles for use in Ansible please create them
 using the YAML dictionary format.
 
@@ -290,6 +293,29 @@ Example what **NOT** to do:
 Usage of the ">" and "|" operators should be limited to Ansible conditionals
 and command modules such as the Ansible ``shell`` or ``command``.
 
+Tags and tags conventions
+-------------------------
+
+Tags are assigned based on the relevance of each individual item.
+Higher level includes (for example in the ``tasks/main.yml``) need high
+level tags. For example, ``*-config`` or ``*-install``.
+Included tasks can have more detailed tags.
+
+The following convention is used:
+
+* A tag including the word ``install`` handles software installation tasks.
+  Running a playbook with ``--tags <role>-install`` only deploys the
+  necessary software on the target, and will not configure it to your
+  needs or run any service.
+
+* A tag including the word ``config`` prepares the configuration of the
+  software (adapted to your needs), and all the components necessary
+  to run the service(s) configured in the role. Running a playbook with
+  ``--tags <role>-config`` is only possible if the target already ran
+  the tags ``<role>-install``.
+
+* A tag including the word ``upgrade`` handles all the upgrade tasks.
+
 Development cycle checklist
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -302,7 +328,7 @@ development team by performing one of the following recurring tasks:
 
 * By milestone 2:
 
-  * Handle deprecations from upstream projects's previous cycle
+  * Handle deprecations from upstream project's previous cycle
 
   * Handle OpenStack-Ansible roles deprecations from the previous cycle
 
