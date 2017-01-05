@@ -29,7 +29,7 @@ needed in an environment, it is possible to create additional nodes.
       NEW_infra<node-ID>:
         ip: 10.17.136.33
 
-#. Run the ``add_host`` playbook on the deployment host.
+#. Change to playbook folder on the deployment host.
 
    .. code:: console
 
@@ -48,8 +48,7 @@ needed in an environment, it is possible to create additional nodes.
    .. code:: console
 
       # /opt/openstack-ansible/scripts/inventory-manage.py  \
-        -f /opt/openstack-ansible/playbooks/inventory/dynamic_inventory.py  \
-        -l |awk -F\| '/<NEW INFRA NODE>/ {print $2}' |sort -u | tee /root/add_host.limit
+        -l |awk -F '|' '/<NEW INFRA NODE>/ {print $2}' |sort -u | tee /root/add_host.limit
 
 #. Run the ``setup-everything.yml`` playbook with the
    ``limit`` argument.
@@ -129,7 +128,7 @@ To remove a compute host, follow the below procedure.
 
      Ensure this step is performed first
 
-  .. code-block:: console
+   .. code-block:: console
 
      # Run these commands on the compute node to be removed
      # stop nova-compute
@@ -137,7 +136,7 @@ To remove a compute host, follow the below procedure.
 
 #. Clone the ``openstack-ansible-ops`` repository to your deployment host:
 
-  .. code-block:: console
+   .. code-block:: console
 
      $ git clone https://git.openstack.org/openstack/openstack-ansible-ops \
        /opt/openstack-ansible-ops
@@ -145,7 +144,7 @@ To remove a compute host, follow the below procedure.
 #. Run the ``remove_compute_node.yml`` Ansible playbook with the
    ``node_to_be_removed`` user variable set:
 
-  .. code-block:: console
+   .. code-block:: console
 
      $ cd /opt/openstack-ansible-ops/ansible_tools/playbooks
      openstack-ansible remove_compute_node.yml \
