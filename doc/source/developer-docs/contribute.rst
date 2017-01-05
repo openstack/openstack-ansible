@@ -290,6 +290,33 @@ Example what **NOT** to do:
 Usage of the ">" and "|" operators should be limited to Ansible conditionals
 and command modules such as the Ansible ``shell`` or ``command``.
 
+Development cycle checklist
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+On top of the normal cycle goals, a contributor can help the OpenStack-Ansible
+development team by performing one of the following recurring tasks:
+
+* By milestone 1:
+
+  * Community goal acknowledgement
+
+* By milestone 2:
+
+  * Handle deprecations from upstream projects's previous cycle
+
+  * Handle OpenStack-Ansible roles deprecations from the previous cycle
+
+  * Refresh static elements in roles. For example, update a specific version of
+    the software packages.
+
+* By milestone 3:
+
+  * Implement features
+
+* After milestone 3:
+
+  * Feature freeze, bug fixes, and testing improvements
+
 --------------
 
 .. include:: navigation.txt
