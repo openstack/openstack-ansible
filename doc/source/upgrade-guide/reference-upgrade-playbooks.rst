@@ -86,5 +86,5 @@ current version of MariaDB and Galera and upgrade to the 10.*x* series.
 memcached-flush.yml
 ~~~~~~~~~~~~~~~~~~~
 
-This playbook sends the ``flush_all`` command to to Memcached with the help of
+This playbook sends the ``flush_all`` command to Memcached with the help of
 netcat.
