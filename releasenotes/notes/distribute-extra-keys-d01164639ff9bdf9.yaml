@@ -1,0 +1,6 @@
+---
+fixes:
+  - Properly distrubute client keys to nova hypervisors
+    when extra ceph clusters are being deployed.
+  - Properly remove temporary files used to transfer
+    ceph client keys from the deploy host and hypervisors. 

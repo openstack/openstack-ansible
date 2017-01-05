@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    Deployers can set ``heat_cinder_backups_enabled`` to enable or disable
+    the cinder backups feature in heat. If heat has cinder backups enabled,
+    but cinder's backup service is disabled, newly built stacks will be
+    undeletable.
+
+    The ``heat_cinder_backups_enabled`` variable is set to ``false`` by
+    default.
