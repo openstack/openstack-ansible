@@ -43,12 +43,14 @@ needed in an environment, it is possible to create additional nodes.
       # /opt/openstack-ansible/playbooks/inventory/dynamic_inventory.py > /dev/null
 
 #. Create the ``/root/add_host.limit`` file, which contains all new node
-   host names.
+   host names. Replace ``<NEW INFRA NODE>`` with the name of the new host.
 
    .. code:: console
 
       # /opt/openstack-ansible/scripts/inventory-manage.py  \
-        -l |awk -F '|' '/<NEW INFRA NODE>/ {print $2}' |sort -u | tee /root/add_host.limit
+        -l |awk '/<NEW INFRA NODE>/ {print $2}' |sort -u | tee /root/add_host.limit
+      #/opt/openstack-ansible/scripts/inventory-manage.py  \
+        -l | grep 'horizon' | head -1 | awk '{print $2}' >> /root/add_host.limit
 
 #. Run the ``setup-everything.yml`` playbook with the
    ``limit`` argument.
