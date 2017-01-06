@@ -41,7 +41,7 @@ Using an image, create a new instance via the Dashboard options.
    #. Add customisation scripts, if needed, by clicking the
       **Post-Creation** tab. These run after the instance has been
       created. Some instances support user data, such as root passwords,
-      or admin users. Enter the information specific to to the instance
+      or admin users. Enter the information specific to the instance
       here if required.
 
    #. Click **Advanced Options**. Specify whether the instance uses a
