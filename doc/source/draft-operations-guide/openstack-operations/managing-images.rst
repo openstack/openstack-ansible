@@ -13,7 +13,7 @@ that instances may need depending on the project goals. Create images
 first before creating any instances.
 
 Adding images can be done through the Dashboard, or the command line.
-Another option available is the the ``python-openstackclient`` tool, which
+Another option available is the ``python-openstackclient`` tool, which
 can be installed on the controller node, or on a workstation.
 
 Adding an image using the Dashboard

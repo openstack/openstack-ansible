@@ -1241,7 +1241,7 @@ class TestConfigMatchesEnvironment(unittest.TestCase):
             self.assertTrue('bogus_key2' in warn_msgs[1])
 
     def test_confirm_exclusions(self):
-        """Ensure the the excluded keys in the function are present."""
+        """Ensure the excluded keys in the function are present."""
         config = get_config()
         excluded_keys = ('global_overrides', 'cidr_networks', 'used_ips')
 
