@@ -1,5 +1,3 @@
-`Home <index.html>`_ OpenStack-Ansible Installation Guide
-
 ==============
 Removing nodes
 ==============
@@ -32,7 +30,3 @@ processing SQL requests. Gracefully shutting down the MariaDB service on
 all but one node allows the remaining operational node to continue
 processing SQL requests. When gracefully shutting down multiple nodes,
 perform the actions sequentially to retain operation.
-
---------------
-
-.. include:: navigation.txt

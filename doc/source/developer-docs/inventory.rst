@@ -1,7 +1,6 @@
-`Home <index.html>`_ OpenStack-Ansible Developer Documentation
-
 .. _developer-inventory:
 
+===========================
 OpenStack-Ansible Inventory
 ===========================
 
@@ -195,7 +194,3 @@ Dynamic Inventory API documentation
 
 .. automodule:: dynamic_inventory
    :members:
-
---------------
-
-.. include:: navigation.txt

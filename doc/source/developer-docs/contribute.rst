@@ -1,5 +1,3 @@
-`Home <index.html>`_ OpenStack-Ansible Developer Documentation
-
 ======================
 Contributor Guidelines
 ======================
@@ -197,7 +195,7 @@ OpenStack-Ansible has multiple forms of documentation with different intent.
    statements of intent. The work to fulfill the intent is ongoing. Any new
    documentation submissions should try to help this intent where possible.
 
-The `install guide <../install-guide/>`_ intends to help deployers install
+The `install guide <http://docs.openstack.org/project-deploy-guide/openstack-ansible/newton/>`_ intends to help deployers install
 OpenStack-Ansible for the first time. As such, the install guide is somewhat
 opinionated, focusing on ensuring that the deployer has to make very few
 decisions and implement the least amount of configuration possible to deploy
@@ -292,7 +290,3 @@ Example what **NOT** to do:
 
 Usage of the ">" and "|" operators should be limited to Ansible conditionals
 and command modules such as the Ansible ``shell`` or ``command``.
-
---------------
-
-.. include:: navigation.txt

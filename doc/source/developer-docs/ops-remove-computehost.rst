@@ -1,5 +1,3 @@
-`Home <index.html>`_ OpenStack-Ansible Installation Guide
-
 =======================
 Removing a compute host
 =======================

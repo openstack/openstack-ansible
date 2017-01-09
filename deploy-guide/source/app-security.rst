@@ -9,7 +9,7 @@ security enhancements.
 
 For more information about configuring security, see `Appendix F`_.
 
-.. _Appendix F: http://docs.openstack.org/developer/openstack-ansible/install-guide/app-advanced-config-options.html
+.. _Appendix F: http://docs.openstack.org/project-deploy-guide/openstack-ansible/newton/app-advanced-config-options.html
 
 .. note::
 
@@ -35,7 +35,7 @@ certificates, keys, and CA certificates.
 To learn more about how to customize the deployment of encrypted
 communications, see `Securing services with SSL certificates`_.
 
-.. _Securing services with SSL certificates: http://docs.openstack.org/developer/openstack-ansible/install-guide/app-advanced-config-options.html
+.. _Securing services with SSL certificates: http://docs.openstack.org/project-deploy-guide/openstack-ansible/newton/app-advanced-config-options.html
 
 Host security hardening
 ~~~~~~~~~~~~~~~~~~~~~~~

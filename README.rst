@@ -29,7 +29,7 @@ or on IRC in ``#openstack-ansible`` on the `freenode network`_.
 
 .. _official OpenStack project: http://governance.openstack.org/reference/projects/index.html
 .. _Home Page: http://governance.openstack.org/reference/projects/openstackansible.html
-.. _Install Guide: http://docs.openstack.org/developer/openstack-ansible/install-guide/index.html
+.. _Install Guide: http://docs.openstack.org/project-deploy-guide/openstack-ansible/newton/index.html
 .. _Quick Start: http://docs.openstack.org/developer/openstack-ansible/developer-docs/quickstart-aio.html
 .. _Developer Documentation: http://docs.openstack.org/developer/openstack-ansible/developer-docs/index.html
 .. _Source: http://git.openstack.org/cgit/openstack/openstack-ansible

@@ -1,5 +1,3 @@
-`Home <index.html>`_ OpenStack-Ansible Installation Guide
-
 =======================
 Galera cluster recovery
 =======================
@@ -302,7 +300,3 @@ Recovering from certain failures require rebuilding one or more containers.
 
 
 #. Enable the failed node on the load balancer.
-
---------------
-
-.. include:: navigation.txt

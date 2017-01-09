@@ -1,5 +1,4 @@
-`Home <index.html>`_ OpenStack-Ansible Developer Documentation
-
+===========================
 Extending OpenStack-Ansible
 ===========================
 
@@ -82,7 +81,7 @@ defaults defined in the ``playbooks/inventory/env.d`` directory.
 
 See also `Understanding Container Groups`_ in Appendix C.
 
-.. _Understanding Container Groups: ../install-guide/app-custom-layouts.html#understanding-container-groups
+.. _Understanding Container Groups: http://docs.openstack.org/project-deploy-guide/openstack-ansible/newton/app-custom-layouts.html#understanding-container-groups
 
 conf.d
 ------
@@ -96,9 +95,9 @@ Additional services should be defined with a YAML file in
 
 See also `Understanding Host Groups`_ in Appendix C.
 
-.. _Understanding Host Groups: ../install-guide/app-custom-layouts.html#understanding-host-groups
+.. _Understanding Host Groups: http://docs.openstack.org/project-deploy-guide/openstack-ansible/newton/app-custom-layouts.html#understanding-host-groups
 
-user\_*.yml files
+user_*.yml files
 -----------------
 
 Files in ``/etc/openstack_deploy`` beginning with ``user_`` will be
@@ -145,7 +144,7 @@ Practical guidance for using this feature is available in the `Install Guide`_.
 
 This module has been `submitted for consideration`_ into Ansible Core.
 
-.. _Install Guide: ../install-guide/app-advanced-config-override.html
+.. _Install Guide: http://docs.openstack.org/project-deploy-guide/openstack-ansible/newton/app-advanced-config-override.html
 .. _submitted for consideration: https://github.com/ansible/ansible/pull/12555
 
 
@@ -305,7 +304,3 @@ The list of overrides available may be found by executing:
     find . -name "main.yml" -exec grep '_.*_overrides:' {} \; \
         | grep -v "^#" \
         | sort -u
-
---------------
-
-.. include:: navigation.txt

@@ -21,7 +21,7 @@ configuration settings. For more information, see the
 documentation.
 
 .. _OpenStack Configuration Reference: http://docs.openstack.org/draft/config-reference/
-.. _Setting overrides in configuration files: ../developer-docs/extending.html#setting-overrides-in-configuration-files
+.. _Setting overrides in configuration files: http://docs.openstack.org/developer/openstack-ansible/newton/developer-docs/extending.html#setting-overrides-in-configuration-files
 
 Overriding .conf files
 ~~~~~~~~~~~~~~~~~~~~~~

@@ -86,7 +86,3 @@ Other roles
 - `openstack_hosts <http://docs.openstack.org/developer/openstack-ansible-openstack_hosts/newton>`_
 
 - `rsyslog_client <http://docs.openstack.org/developer/openstack-ansible-rsyslog_client/newton>`_
-
-
-
-

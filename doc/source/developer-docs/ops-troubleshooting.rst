@@ -1,5 +1,3 @@
-`Home <index.html>`_ OpenStack-Ansible Installation Guide
-
 ===============
 Troubleshooting
 ===============
@@ -124,7 +122,3 @@ To clear facts for a single host, find its file within
 ``/etc/openstack_deploy/ansible_facts/`` and remove it. Each host has
 a JSON file that is named after its hostname. The facts for that host
 will be regenerated on the next playbook run.
-
---------------
-
-.. include:: navigation.txt

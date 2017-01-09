@@ -1,5 +1,4 @@
-`Home <index.html>`_ OpenStack-Ansible Developer Documentation
-
+=============================
 Adding new Roles and Services
 =============================
 
@@ -132,7 +131,7 @@ Deploying the Role
 .. _Adding Galaxy roles: extending.html#adding-galaxy-roles
 .. _env.d: extending.html#env-d
 .. _conf.d: extending.html#conf-d
-.. _as described in the Install Guide: ../install-guide/configure.html#configuring-service-credentials
+.. _as described in the Install Guide: http://docs.openstack.org/project-deploy-guide/openstack-ansible/newton/configure.html#configuring-service-credentials
 .. _Extending OpenStack-Ansible: extending.html#user-yml-files
 
 Role development maturity
@@ -323,8 +322,4 @@ The development of a role will usually go through the following stages:
      required last step before a service can remove the experimental warning
      from the documentation.
 
-   .. _Appendix C: ../install-guide/app-custom-layouts.html
-
---------------
-
-.. include:: navigation.txt
+   .. _Appendix C: http://docs.openstack.org/project-deploy-guide/openstack-ansible/newton/app-custom-layouts.html

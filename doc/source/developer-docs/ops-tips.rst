@@ -36,7 +36,3 @@ For more information about forks, please see the following references:
 .. _Bug 1479812: https://bugs.launchpad.net/openstack-ansible/+bug/1479812
 .. _forks: http://docs.ansible.com/ansible/intro_configuration.html#forks
 .. _Ansible Performance Tuning: https://www.ansible.com/blog/ansible-performance-tuning
-
---------------
-
-.. include:: navigation.txt

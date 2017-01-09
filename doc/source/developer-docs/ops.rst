@@ -13,7 +13,3 @@ installed environments.
    ops-galera.rst
    ops-tips.rst
    ops-troubleshooting.rst
-
---------------
-
-.. include:: navigation.txt

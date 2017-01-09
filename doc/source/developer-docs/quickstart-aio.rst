@@ -1,5 +1,4 @@
-`Home <index.html>`_ OpenStack-Ansible Developer Documentation
-
+===========
 Quick Start
 ===========
 
@@ -190,7 +189,7 @@ Keystone service, execute:
 that are not requested for deployment, but the service will not be deployed
 in that container.
 
-.. _Install Guide: ../install-guide/
+.. _Install Guide: http://docs.openstack.org/project-deploy-guide/openstack-ansible/newton/
 
 Rebooting an AIO
 ----------------
@@ -309,7 +308,3 @@ built for informational purposes only and should **ONLY** be used as such.
       | |          |                              | |            |      |
       | |          V                              | |            *      |
       ---->[ Compute ]*[ Neutron linuxbridge ]<---| |->[ Swift storage ]-
-
---------------
-
-.. include:: navigation.txt

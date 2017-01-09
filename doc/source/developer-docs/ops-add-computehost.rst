@@ -1,5 +1,3 @@
-`Home <index.html>`_ OpenStack-Ansible Installation Guide
-
 =====================
 Adding a compute host
 =====================
@@ -8,7 +6,7 @@ Use the following procedure to add a compute host to an operational
 cluster.
 
 #. Configure the host as a target host. See `Prepare target hosts
-   <http://docs.openstack.org/developer/openstack-ansible/newton/install-guide/targethosts.html>`_
+   <http://docs.openstack.org/project-deploy-guide/openstack-ansible/newton/targethosts.html>`_
    for more information.
 
 #. Edit the ``/etc/openstack_deploy/openstack_user_config.yml`` file and
@@ -29,7 +27,3 @@ cluster.
        # openstack-ansible setup-hosts.yml --limit NEW_HOST_NAME
        # openstack-ansible setup-openstack.yml --skip-tags nova-key-distribute --limit NEW_HOST_NAME
        # openstack-ansible setup-openstack.yml --tags nova-key --limit compute_hosts
-
---------------
-
-.. include:: navigation.txt
