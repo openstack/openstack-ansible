@@ -261,7 +261,7 @@ The development of a role will usually go through the following stages:
 
      This is implemented into the dynamic inventory through the definition of
      content in an ``env.d`` file. A description of how these work can be
-     found in `Appendix C <http://docs.openstack.org/project-deploy-guide/openstack-ansible/newton/app-custom-layouts.html>`_
+     found in :deploy_guide:`Appendix C <app-custom-layouts.html>`
      of the Deployment Guide.
 
    * Load balancer configuration
