@@ -122,8 +122,7 @@ To omit a component from a deployment, you can use one of several options:
 - Do not run the playbook that installs the component.
   Unless you specify the component to run directly on a host by using the
   ``is_metal`` property, a container is created for this component.
-- Adjust the
-  `affinity <http://docs.openstack.org/developer/openstack-ansible/install-guide/app-advanced-config-affinity.html>`_
+- Adjust the :deploy_guide:`affinity <app-advanced-config-affinity.html>`
   to 0 for the host group. Similar to the second option listed here, Unless
   you specify the component to run directly on a host by using the``is_metal``
   property, a container is created for this component.

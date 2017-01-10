@@ -17,11 +17,11 @@ configuration entries in the ``/etc/openstack_deploy/user_variables.yml``.
 This section describes how to use the configuration entries in the
 ``/etc/openstack_deploy/user_variables.yml`` file to override default
 configuration settings. For more information, see the
-`Setting overrides in configuration files`_ section in the developer
-documentation.
+:dev_docs:`Setting overrides in configuration files
+<extending.html#setting-overrides-in-configuration-files>` section in the
+developer documentation.
 
 .. _OpenStack Configuration Reference: http://docs.openstack.org/draft/config-reference/
-.. _Setting overrides in configuration files: ../developer-docs/extending.html#setting-overrides-in-configuration-files
 
 Overriding .conf files
 ~~~~~~~~~~~~~~~~~~~~~~

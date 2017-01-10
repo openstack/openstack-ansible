@@ -41,7 +41,7 @@ sys.path.insert(0, os.path.abspath('../../playbooks/inventory/'))
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 # TODO(ajaeger): enable PDF building, for example add 'rst2pdf.pdfbuilder'
-extensions = ['sphinx.ext.autodoc','sphinxmark']
+extensions = ['sphinx.ext.autodoc','sphinxmark', 'sphinx.ext.extlinks']
 
 # Add any paths that contain templates here, relative to this directory.
 #templates_path = ['_templates']
@@ -303,12 +303,17 @@ latest_tag = os.popen('git describe --abbrev=0 --tags').read().strip('\n')
 
 previous_release_branch_name='newton'
 current_release_branch_name='ocata'
+# Var specifically for using in URLs; differs because it might be 'draft'
+# on master for deploy guide
+deploy_branch_link_name = current_release_branch_name
+# dev docs have no branch specified on master; for stable braches it's "/branch/"
+dev_branch_link_name = "{}/".format(current_release_branch_name)
 
-previous_release_capital_name=previous_release_branch_name.upper()
-previous_release_formal_name=previous_release_branch_name.capitalize()
-current_release_capital_name=current_release_branch_name.upper()
-current_release_formal_name=current_release_branch_name.capitalize()
-upgrade_backup_dir="``/etc/openstack_deploy."+previous_release_capital_name+"``"
+previous_release_capital_name = previous_release_branch_name.upper()
+previous_release_formal_name = previous_release_branch_name.capitalize()
+current_release_capital_name = current_release_branch_name.upper()
+current_release_formal_name = current_release_branch_name.capitalize()
+upgrade_backup_dir = "``/etc/openstack_deploy."+previous_release_capital_name+"``"
 
 rst_epilog = """
 .. |previous_release_branch_name| replace:: %s
@@ -330,7 +335,16 @@ rst_epilog = """
 
 watermark = os.popen("git branch --contains $(git rev-parse HEAD) | awk -F/ '/stable/ {print $2}'").read().strip(' \n\t').capitalize()
 if watermark == "":
-  watermark = "Pre-release"
+    watermark = "Pre-release"
+    deploy_branch_link_name = "draft"
+    dev_branch_link_name = ""
+
+deploy_guide_prefix = "http://docs.openstack.org/project-deploy-guide/openstack-ansible/{}/%s".format(deploy_branch_link_name)
+dev_docs_prefix = "http://docs.openstack.org/developer/openstack-ansible/developer-docs/{}%s".format(dev_branch_link_name)
+
+extlinks = {'deploy_guide': (deploy_guide_prefix, ''),
+            'dev_docs':  (dev_docs_prefix, '')
+}
 
 # -- Options for sphinxmark -----------------------------------------------
 sphinxmark_enable = True
