@@ -32,6 +32,12 @@ export ANSIBLE_ROLE_FETCH_MODE="git-clone"
 # Set the scenario to execute based on the first CLI parameter
 export SCENARIO=${1:-"aio"}
 
+# TODO(sc68cal) update the job configs to have the stable branch
+# So we have job names like:
+# gate-openstack-ansible-openstack-ansible-upgrade-newton-ubuntu-xenial-nv
+export UPGRADE_BASEBRANCH=${2:-"newton"}
+export SCENARIO_BACKUP=${SCENARIO_BACKUP:-''}
+
 ## Functions -----------------------------------------------------------------
 info_block "Checking for required libraries." 2> /dev/null || source "$(dirname "${0}")/scripts-library.sh"
 
@@ -41,6 +47,16 @@ trap gate_job_exit_tasks EXIT
 
 # Log some data about the instance and the rest of the system
 log_instance_info
+
+
+if [[ "$SCENARIO" == "upgrade" ]]; then
+    # First, check out the base branch and build an AIO
+    git checkout origin/stable/$UPGRADE_BASEBRANCH
+
+    # Do a quick swap of SCENARIO since the newton branch doesn't know about the upgrade scenario
+    export SCENARIO_BACKUP=$SCENARIO
+    SCENARIO="aio"
+fi
 
 # Get minimum disk size
 DATA_DISK_MIN_SIZE="$((1024**3 * $(awk '/bootstrap_host_data_disk_min_size/{print $2}' "$(dirname "${0}")/../tests/roles/bootstrap-host/defaults/main.yml") ))"
@@ -104,5 +120,17 @@ bash "$(dirname "${0}")/run-playbooks.sh"
 
 # Log some data about the instance and the rest of the system
 log_instance_info
+
+if [ ! -z $SCENARIO_BACKUP ]; then
+    # Restore the scenario from L56
+    SCENARIO=$SCENARIO_BACKUP
+fi
+
+if [[ "$SCENARIO" == "upgrade" ]]; then
+    # Hopefully we can re-check out the patch from Zuul.
+    git checkout FETCH_HEAD
+    export I_REALLY_KNOW_WHAT_I_AM_DOING=true
+    bash "$(dirname "${0}")/run-upgrade.sh"
+fi
 
 exit_success
