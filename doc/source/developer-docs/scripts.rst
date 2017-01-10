@@ -1,5 +1,4 @@
-`Home <index.html>`_ OpenStack-Ansible Developer Documentation
-
+================
 Included Scripts
 ================
 
@@ -231,7 +230,3 @@ following jobs:
 
   While this script is primarily developed and maintained for use in
   OpenStack-CI, it can be used in other environments.
-
---------------
-
-.. include:: navigation.txt

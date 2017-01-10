@@ -1,5 +1,3 @@
-`Home <index.html>`_ OpenStack-Ansible Developer Documentation
-
 ============================
 OpenStack-Ansible Bug Triage
 ============================
@@ -142,7 +140,3 @@ Bug skimming duty weekly checklist
 .. _wishlist bugs: https://bugs.launchpad.net/openstack-ansible/+bugs?field.searchtext=&orderby=datecreated&search=Search&field.importance%3Alist=WISHLIST&assignee_option=any&field.assignee=&field.bug_reporter=&field.bug_commenter=&field.subscriber=&field.structural_subscriber=&field.tag=&field.tags_combinator=ANY&field.has_cve.used=&field.omit_dupes.used=&field.omit_dupes=on&field.affects_me.used=&field.has_patch.used=&field.has_branches.used=&field.has_branches=on&field.has_no_branches.used=&field.has_no_branches=on&field.has_blueprints.used=&field.has_blueprints=on&field.has_no_blueprints.used=&field.has_no_blueprints=on
 
 .. _list of bugs to triage: https://bugs.launchpad.net/openstack-ansible/+bugs?search=Search&field.status=New
-
---------------
-
-.. include:: navigation.txt

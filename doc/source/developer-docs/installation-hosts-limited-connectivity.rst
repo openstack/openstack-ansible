@@ -175,7 +175,3 @@ behavior when used in concert with many popular proxy servers and
 configurations. An example Launchpad bug can be found `here
 <https://bugs.launchpad.net/openstack-ansible/+bug/1556975/>`_. The comments
 contain a workaround that has been effective for some deployers.
-
---------------
-
-.. include:: navigation.txt
