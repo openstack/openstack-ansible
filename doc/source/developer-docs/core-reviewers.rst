@@ -1,5 +1,4 @@
-`Home <index.html>`_ OpenStack-Ansible Developer Documentation
-
+==============
 Core Reviewers
 ==============
 
@@ -64,8 +63,3 @@ affects things like documentation, testing, upgrade impacts and interactions
 with other projects. It also means you pay attention to release milestones and
 understand if a patch you are merging is marked for the release, especially
 critical during the feature freeze.
-
-
---------------
-
-.. include:: navigation.txt

@@ -1,5 +1,4 @@
-`Home <index.html>`_ OpenStack-Ansible Developer Documentation
-
+=========
 Playbooks
 =========
 
@@ -68,7 +67,3 @@ After successful deployment, you are able to update variables in
         pass completes, you may introduce unavailability in your cluster.
 
         This should only be used for testing or fully rebalanced clusters.
-
---------------
-
-.. include:: navigation.txt

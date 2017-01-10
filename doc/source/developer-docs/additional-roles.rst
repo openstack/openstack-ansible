@@ -1,5 +1,4 @@
-`Home <index.html>`_ OpenStack-Ansible Developer Documentation
-
+=============================
 Adding new Roles and Services
 =============================
 
@@ -322,7 +321,3 @@ The development of a role will usually go through the following stages:
      test must execute a set of functional tests using Tempest. This is the
      required last step before a service can remove the experimental warning
      from the documentation.
-
---------------
-
-.. include:: navigation.txt

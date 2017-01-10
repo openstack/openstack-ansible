@@ -1,5 +1,4 @@
-`Home <index.html>`_ OpenStack-Ansible Developer Documentation
-
+===========
 Quick Start
 ===========
 
@@ -68,8 +67,9 @@ repository root directory:
 
 Next switch the applicable branch/tag to be deployed from. Note that
 deploying from the head of a branch may result in an unstable build due to
-changes in flight and upstream OpenStack changes. For a test (ie not a
-development) build it is usually best to checkout the latest tagged version.
+changes in flight and upstream OpenStack changes. For a test (for example,
+not a development) build it is usually best to checkout the latest tagged
+version.
 
 .. parsed-literal::
 
@@ -101,8 +101,8 @@ development environment.
 The bootstrap script is pre-set to pass the environment variable
 ``BOOTSTRAP_OPTS`` as an additional option to the bootstrap process. For
 example, if you wish to set the bootstrap to re-partition a specific
-secondary storage device (/dev/sdb), which will erase all of the data on the
-device, then execute:
+secondary storage device (``/dev/sdb``), which will erase all of the data
+on the device, then execute:
 
 .. code-block:: shell-session
 
@@ -116,8 +116,8 @@ a space between each set of options, for example:
    # export BOOTSTRAP_OPTS="bootstrap_host_data_disk_device=sdb"
    # export BOOTSTRAP_OPTS="${BOOTSTRAP_OPTS} bootstrap_host_ubuntu_repo=http://mymirror.example.com/ubuntu"
 
-You may wish to change the role fetch mode. Options are "galaxy" and
-"git-clone". The default for this option is "galaxy".
+You may wish to change the role fetch mode. Options are ``galaxy`` and
+``git-clone``. The default for this option is ``galaxy``.
 
 options:
   :galaxy: Resolve all role dependencies using the ``ansible-galaxy`` resolver
@@ -125,10 +125,10 @@ options:
 
 Notes:
   When doing role development it may be useful to set
-  ``ANSIBLE_ROLE_FETCH_MODE`` to *git-clone*. This will provide you the
+  ``ANSIBLE_ROLE_FETCH_MODE`` to ``git-clone``. This will provide you the
   ability to develop roles within the environment by modifying, patching, or
-  committing changes using an intact git tree while the *galaxy* option scrubs
-  the ``.git`` directory when it resolves a dependency.
+  committing changes using an intact git tree while the ``galaxy`` option
+  scrubs the ``.git`` directory when it resolves a dependency.
 
 .. code-block:: bash
 
@@ -153,7 +153,7 @@ for the OpenStack Deployment. This preparation is completed by executing:
 
 If you wish to add any additional configuration entries for the OpenStack
 configuration then this can be done now by editing
-``/etc/openstack_deploy/user_variables.yml``. Please see the `Install Guide`_
+``/etc/openstack_deploy/user_variables.yml``. See the `Deployment Guide`_
 for more details.
 
 Finally, run the playbooks by executing:
@@ -193,7 +193,7 @@ Keystone service, execute:
 that are not requested for deployment, but the service will not be deployed
 in that container.
 
-.. _Install Guide: ../install-guide/
+.. _Deployment Guide: http://docs.openstack.org/project-deploy-guide/openstack-ansible/draft/
 
 Rebooting an AIO
 ----------------
@@ -210,7 +210,7 @@ This is done by executing the following:
 If this fails to get the database cluster back into a running state, then
 please make use of the `Galera Cluster Recovery`_ page in the Install Guide.
 
-.. _Galera Cluster Recovery: http://docs.openstack.org/developer/openstack-ansible/developer-docs/ops-galera-recovery.html
+.. _Galera Cluster Recovery: http://docs.openstack.org/developer/openstack-ansible/draft-operations-guide/maintenance-tasks/galera.html#galera-cluster-recovery
 
 Rebuilding an AIO
 -----------------
@@ -312,7 +312,3 @@ built for informational purposes only and should **ONLY** be used as such.
       | |          |                              | |            |      |
       | |          V                              | |            *      |
       ---->[ Compute ]*[ Neutron linuxbridge ]<---| |->[ Swift storage ]-
-
---------------
-
-.. include:: navigation.txt

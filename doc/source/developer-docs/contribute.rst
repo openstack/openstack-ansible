@@ -1,5 +1,3 @@
-`Home <index.html>`_ OpenStack-Ansible Developer Documentation
-
 ======================
 Contributor Guidelines
 ======================
@@ -342,7 +340,3 @@ development team by performing one of the following recurring tasks:
 * After milestone 3:
 
   * Feature freeze, bug fixes, and testing improvements
-
---------------
-
-.. include:: navigation.txt
