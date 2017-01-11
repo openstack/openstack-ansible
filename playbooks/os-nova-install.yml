@@ -158,7 +158,7 @@
       nova_management_address: "{{ management_address }}"
     - role: "ceph_client"
       openstack_service_system_user: "{{ nova_system_user_name }}"
-      openstack_service_venv_bin: "/openstack/venvs/nova-{{ openstack_release }}/bin"
+      openstack_service_venv_bin: "{{ nova_bin }}"
       tags:
         - ceph
     - role: "openstack_openrc"

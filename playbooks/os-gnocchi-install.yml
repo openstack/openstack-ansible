@@ -46,7 +46,6 @@
     - include: common-tasks/package-cache-proxy.yml
   roles:
     - role: "ceph_client"
-      gnocchi_venv_bin: "/openstack/venvs/gnocchi-{{ openstack_release }}/bin"
       openstack_service_system_user: "{{ gnocchi_system_user_name }}"
       openstack_service_venv_bin: ""
       tags:

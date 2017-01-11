@@ -75,7 +75,7 @@
         - openrc
     - role: "ceph_client"
       openstack_service_system_user: "{{ glance_system_user_name }}"
-      openstack_service_venv_bin: "/openstack/venvs/glance-{{ openstack_release }}/bin"
+      openstack_service_venv_bin: "{{ glance_bin }}"
       tags:
         - ceph
     - role: "rsyslog_client"
