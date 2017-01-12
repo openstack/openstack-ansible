@@ -67,10 +67,10 @@ needed in an environment, it is possible to create additional nodes.
       # openstack-ansible --tags=openstack-host-hostfile setup-hosts.yml
 
 
-Test new nodes
-~~~~~~~~~~~~~~
+Test new infra nodes
+~~~~~~~~~~~~~~~~~~~~
 
-After creating a new node, test that the node runs correctly by
+After creating a new infra node, test that the node runs correctly by
 launching a new instance. Ensure that the new node can respond to
 a networking connection test through the :command:`ping` command.
 Log in to your monitoring system, and verify that the monitors
@@ -106,6 +106,23 @@ cluster.
        # openstack-ansible setup-hosts.yml --limit NEW_HOST_NAME
        # openstack-ansible setup-openstack.yml --skip-tags nova-key-distribute --limit NEW_HOST_NAME
        # openstack-ansible setup-openstack.yml --tags nova-key --limit compute_hosts
+
+Test new compute nodes
+~~~~~~~~~~~~~~~~~~~~~~
+
+After creating a new node, test that the node runs correctly by
+launching an instance on the new node.
+
+.. code-block:: shell-session
+
+  $ openstack server create --image IMAGE --flavor m1.tiny \
+  --key-name KEY --availability-zone ZONE:HOST:NODE \
+  --nic net-id=UUID SERVER
+
+Ensure that the new instance can respond to a networking connection
+test through the :command:`ping` command. Log in to your monitoring
+system, and verify that the monitors return a green signal for the
+new node.
 
 Remove a compute host
 ~~~~~~~~~~~~~~~~~~~~~
