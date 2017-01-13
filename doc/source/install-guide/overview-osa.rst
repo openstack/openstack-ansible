@@ -40,14 +40,11 @@ A recommended minimal layout for deployments involves five target
 hosts in total: three infrastructure hosts, one compute host, and one
 logging host. All hosts will need at least one networking interface, but
 we recommend multiple bonded interfaces. More information on setting up
-target hosts can be found in `the section called "Host layout"`_.
+target hosts can be found in `Host layout <http://docs.openstack.org/developer/openstack-ansible/mitaka/install-guide/overview-hostlayout.html>`_.
 
 For more information on physical, logical, and virtual network
-interfaces within hosts see `the section called "Host
-networking"`_.
-
-.. _the section called "Host layout": overview-hostlayout.html
-.. _the section called "Host networking": overview-hostnetworking.html
+interfaces within hosts see `Host
+networking <http://docs.openstack.org/developer/openstack-ansible/mitaka/install-guide/configure-networking.html>`_.
 
 
 Linux Containers (LXC)

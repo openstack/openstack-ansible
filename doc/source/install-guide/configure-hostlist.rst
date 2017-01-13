@@ -72,7 +72,7 @@ the ``br-mgmt`` container management bridge on each target host.
    Providing more than one network host in the ``network_hosts`` block will
    enable `L3HA support using VRRP`_ in the ``neutron-agent`` containers.
 
-.. _L3HA support using VRRP: http://docs.openstack.org/liberty/networking-guide/scenario_l3ha_lb.html
+.. _L3HA support using VRRP: http://docs.openstack.org/liberty/networking-guide/scenario-l3ha-lb.html
 
 #. Configure a list containing at least one compute target host in the
    ``compute_hosts`` section:

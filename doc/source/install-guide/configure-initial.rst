@@ -122,7 +122,7 @@ fine-tune certain security configurations.
 
 .. _openstack-ansible-security: http://docs.openstack.org/developer/openstack-ansible-security/
 .. _Security Technical Implementation Guide (STIG): https://en.wikipedia.org/wiki/Security_Technical_Implementation_Guide
-.. _Configuration: http://docs.openstack.org/developer/openstack-ansible-security/configuration.html
+.. _Configuration: http://docs.openstack.org/developer/openstack-ansible-security/mitaka/configuration.html
 
 --------------
 

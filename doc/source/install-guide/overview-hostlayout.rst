@@ -14,9 +14,10 @@ We recommend a layout that contains a minimum of five hosts (or servers):
 
 If using the optional Block Storage (cinder) service, we recommend
 the use of a sixth host. Block Storage hosts require an LVM volume group named
-``cinder-volumes``. See `the section called "Installation
-requirements" <overview-requirements.html>`_ and `the section
-called "Configuring LVM" <targethosts-configlvm.html>`_ for more information.
+``cinder-volumes``. See `Installation
+requirements <http://docs.openstack.org/developer/openstack-ansible/mitaka/install-guide/overview-requirements.html>`_ and
+`Configuring LVM <http://docs.openstack.org/developer/openstack-ansible/mitaka/install-guide/targethosts-prepare.html#configuring-lvm>`_
+for more information.
 
 The hosts are called target hosts because Ansible deploys the OSA
 environment within these hosts. We recommend a

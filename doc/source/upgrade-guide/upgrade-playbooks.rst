@@ -101,7 +101,7 @@ current version of MariaDB and Galera and upgrade to the 10.x series.
 ``memcached-flush.yml``
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Sends "flush_all" to memcached with the help of nc.
+Sends ``flush_all`` to memcached with the help of nc.
 
 .. _neutron-mtu-migration:
 
