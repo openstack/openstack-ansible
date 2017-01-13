@@ -14,9 +14,8 @@ environment, we recommend using one of the infrastructure target hosts as the
 deployment host.
 
 To use a target host as a deployment host, follow the steps in
-`Prepare target hosts`_ on the deployment host.
-
-.. _Prepare target hosts: http://docs.openstack.org/developer/openstack-ansible/install-guide/targethosts.html
+:deploy_guide:`Prepare the target hosts <targethosts.html>` on
+the deployment host.
 
 Install the operating system
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
