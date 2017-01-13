@@ -7,9 +7,8 @@ security enhancements for OpenStack clouds are available in deployments by
 default. This appendix provides a detailed overview of the most important
 security enhancements.
 
-For more information about configuring security, see `Appendix F`_.
-
-.. _Appendix F: http://docs.openstack.org/developer/openstack-ansible/install-guide/app-advanced-config-options.html
+For more information about configuring security, see
+:deploy_guide:`Appendix F <app-advanced-config-options.html>`.
 
 .. note::
 
@@ -33,9 +32,8 @@ certificates by default, but deployers have the option to use their existing
 certificates, keys, and CA certificates.
 
 To learn more about how to customize the deployment of encrypted
-communications, see `Securing services with SSL certificates`_.
-
-.. _Securing services with SSL certificates: http://docs.openstack.org/developer/openstack-ansible/install-guide/app-advanced-config-options.html
+communications, see
+:deploy_guide:`<Securing services with SSL certificates app-advanced-config-sslcertificates.html>`.
 
 Host security hardening
 ~~~~~~~~~~~~~~~~~~~~~~~
