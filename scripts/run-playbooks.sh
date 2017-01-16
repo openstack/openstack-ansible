@@ -95,17 +95,7 @@ function playbook_run {
       # Set the playbook log path so that we can review specific execution later.
       export ANSIBLE_LOG_PATH="${PLAYBOOK_LOGS}/${COUNTER}-${include_file_name}.txt"
       let COUNTER=COUNTER+=1
-      if [[ "${DEPLOY_AIO}" = true ]] && [[ "${include_file_name}" == "security-hardening.yml" ]]; then
-        # NOTE(mattt): We have to skip V-38462 as openstack-infra are now building
-        #              images with apt config Apt::Get::AllowUnauthenticated set
-        #              to true.
-        # NOTE(odyssey4me): We skip V-38471 as it generates a huge amount of log
-        #                   entries in syslog and the syslog files are gathered
-        #                   in OpenStack-CI. ref: bug/1620849
-        # NOTE(mhayden): Skipping V-38660 since it breaks the Xenial gate. The
-        #                CI Xenial image has non-SNMPv3 configurations.
-        install_bits "${include_playbook}" --skip-tag V-38462,V-38471,V-38660
-      else
+      if [[ "${DEPLOY_AIO}" = true ]]; then
         install_bits "${include_playbook}"
       fi
       # Remove the generate playbook when done with it
