@@ -221,3 +221,9 @@ trove_dashboard_git_repo: https://git.openstack.org/openstack/trove-dashboard
 trove_dashboard_git_install_branch: a485b5d79f2fcdc8d37cf61f5043c3d3a4a60313 # HEAD of "master" as of 03.03.2017
 trove_dashboard_git_dest: "/opt/trove_dashboard_{{ trove_dashboard_git_install_branch | replace('/', '_') }}"
 trove_dashboard_git_project_group: horizon_all
+
+## Octavia service
+octavia_git_repo: https://git.openstack.org/openstack/octavia
+octavia_git_install_branch: f7426dcf96874b6e3ce15009d251866f6de01116 # HEAD of "master" as of `28.2.2017
+ocatvia_git_dest: "/opt/octavia_{{ octavia_git_install_branch | replace('/', '_') }}"
+octavia_git_project_group: octavia_all
