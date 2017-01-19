@@ -91,7 +91,7 @@
 
 - name: Set repo_build_pip_extra_indexes fact
   set_fact:
-    repo_build_pip_extra_indexes: "[\"{{ fastest_wheel_mirror.stdout }}\"]"
+    repo_build_pip_extra_indexes: "{{ fastest_wheel_mirror.stdout | list }}"
   when: not pip_conf_file.stat.exists
 
 - name: Check whether the host has a git cache
