@@ -94,3 +94,8 @@ neutron_plugin_base:
 ## Always setup tempest, the resources for it, then execute tests
 tempest_install: yes
 tempest_run: yes
+
+{% if nodepool_dir.stat.exists %}
+# Disable chronyd in OpenStack CI
+security_rhel7_enable_chrony: no
+{% endif %}
