@@ -5,7 +5,7 @@ Accessing your environment
 Viewing and setting environment variables
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To connect to the OpenStack installation using  command line clients, you must
+To connect to the OpenStack installation using command line clients, you must
 set the appropriate environment variables. OpenStack clients use environment
 variables to provide the information necessary to authenticate to the cloud.
 Variables can be viewed and downloaded from the Dashboard and set in the
@@ -24,9 +24,8 @@ Variables can be viewed and downloaded from the Dashboard and set in the
 
    .. important::
 
-      By default, the ``openrc`` file contains administrative credentials.
-      It is automatically maintained by the system, and should not by
-      edited by hand.
+      The ``admin-openrc.sh`` file contains administrative credentials.
+      Ensure you take proper precautions to secure the file.
 
    .. code::
 
