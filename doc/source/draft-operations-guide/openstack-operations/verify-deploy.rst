@@ -16,18 +16,11 @@ the OpenStack API and dashboard.
    The utility container provides a CLI environment for additional
    configuration and testing.
 
-#. Determine the utility container name:
-
-   .. code::
-
-      $ lxc-ls | grep utility
-      infra1_utility_container-161a4084
-
 #. Access the utility container:
 
    .. code::
 
-      $ lxc-attach -n infra1_utility_container-161a4084
+      $ lxc-attach -n `lxc-ls -1 | grep utility`
 
 #. Source the ``admin`` tenant credentials:
 
