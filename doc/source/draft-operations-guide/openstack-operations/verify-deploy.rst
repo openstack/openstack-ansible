@@ -65,4 +65,4 @@ the OpenStack API and dashboard.
 
 #. Authenticate using the username ``admin`` and password defined by
    the ``keystone_auth_admin_password`` option in the
-   ``/etc/openstack_deploy/user_osa_secrets.yml`` file.
+   ``/etc/openstack_deploy/user_secrets.yml`` file.
