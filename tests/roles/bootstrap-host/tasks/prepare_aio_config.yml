@@ -27,7 +27,7 @@
 
 - name: Deploy user conf.d configuration
   config_template:
-    src: "../etc/openstack_deploy/conf.d/{{ item.name }}"
+    src: "{{ item.path | default(bootstrap_host_aio_config_path ~ '/conf.d') }}/{{ item.name }}"
     dest: "/etc/openstack_deploy/conf.d/{{ item.name | regex_replace('.aio$', '') }}"
     config_overrides: "{{ item.override | default({}) }}"
     config_type: "yaml"
@@ -37,7 +37,7 @@
 
 - name: Deploy openstack_user_config
   config_template:
-    src: "../etc/openstack_deploy/openstack_user_config.yml.aio"
+    src: "{{ bootstrap_host_aio_config_path }}/openstack_user_config.yml.aio"
     dest: "/etc/openstack_deploy/openstack_user_config.yml"
     config_overrides: "{{ openstack_user_config_overrides | default({}) }}"
     config_type: "yaml"
@@ -47,15 +47,16 @@
 
 - name: Deploy user_secrets file
   config_template:
-    src: "../etc/openstack_deploy/user_secrets.yml"
-    dest: "/etc/openstack_deploy/user_secrets.yml"
+    src: "{{ bootstrap_host_aio_config_path }}/user_secrets.yml"
+    dest: "/etc/openstack_deploy/{{ bootstrap_host_user_secrets_filename }}"
     config_overrides: "{{ user_secrets_overrides | default({}) }}"
     config_type: "yaml"
   tags:
     - deploy-user-secrets
 
 - name: Generate any missing values in user_secrets
-  shell: ../scripts/pw-token-gen.py --file /etc/openstack_deploy/user_secrets.yml
+  command: "{{ bootstrap_host_aio_script_path }}/pw-token-gen.py --file /etc/openstack_deploy/{{ bootstrap_host_user_secrets_filename }}"
+  changed_when: false
   tags:
     - generate_secrets
 
@@ -84,7 +85,7 @@
   register: pip_conf_file
 
 - name: Determine the fastest available OpenStack-Infra wheel mirror
-  shell: ../scripts/fastest-infra-wheel-mirror.py
+  command: "{{ bootstrap_host_aio_script_path }}/fastest-infra-wheel-mirror.py"
   register: fastest_wheel_mirror
   when: not pip_conf_file.stat.exists
 
@@ -106,7 +107,7 @@
 - name: Set the user_variables
   config_template:
     src: user_variables.aio.yml.j2
-    dest: /etc/openstack_deploy/user_variables.yml
+    dest: "/etc/openstack_deploy/{{ bootstrap_host_user_variables_filename }}"
     config_overrides: "{{ user_variables_overrides | default({}) }}"
     config_type: yaml
 

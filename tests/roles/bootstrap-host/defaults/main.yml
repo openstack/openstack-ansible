@@ -13,9 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+## AIO user-space configuration options
 # Boolean option to implement OpenStack-Ansible configuration for an AIO
 # Switch to no for a multi-node configuration
 bootstrap_host_aio_config: yes
+#
+# Path to the location of the bootstrapping configuration files
+bootstrap_host_aio_config_path: "{{ playbook_dir }}/../etc/openstack_deploy"
+#
+# Path to the location of the scripts the bootstrap scripts use
+bootstrap_host_aio_script_path: "{{ playbook_dir }}/../scripts"
+#
+# The user space configuration file names to use
+bootstrap_host_user_variables_filename: "user_variables.yml"
+bootstrap_host_user_secrets_filename: "user_secrets.yml"
 
 ## Swap memory
 # If there is no swap memory present, the bootstrap will create a loopback disk
