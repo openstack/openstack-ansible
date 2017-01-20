@@ -1074,6 +1074,7 @@ def main(config=None, check=False, debug=False, environment=None, **kwargs):
     inventory_json = json.dumps(
         inventory,
         indent=4,
+        separators=(',', ': '),
         sort_keys=True
     )
 

@@ -191,6 +191,7 @@ def write_hostnames(save_path, hostnames_ips):
             json.dumps(
                 hostnames_ips,
                 indent=4,
+                separators=(',', ': '),
                 sort_keys=True
             )
         )
