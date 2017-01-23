@@ -25,8 +25,21 @@
   register: upper_constraints_check
   failed_when: false
 
+- name: Remove global requirement pins file from host
+  file:
+    path: "/opt/global-requirement-pins.txt"
+    state: absent
+  when: (upper_constraints_check.status | default(503)) == 200
+
+- name: Copy global requirement pins file to host
+  copy:
+    src: "../global-requirement-pins.txt"
+    dest: "/opt/global-requirement-pins.txt"
+  when: (upper_constraints_check.status | default(503)) != 200
+
 - name: Set pip install upper constraints
   set_fact:
     pip_install_upper_constraints: >-
-      http://git.openstack.org/cgit/openstack/requirements/plain/upper-constraints.txt?id={{ requirements_git_install_branch | regex_replace(' #.*$','') }}
+      /opt/global-requirement-pins.txt
+      --constraint http://git.openstack.org/cgit/openstack/requirements/plain/upper-constraints.txt?id={{ requirements_git_install_branch | regex_replace(' #.*$','') }}
   when: (upper_constraints_check.status | default(503)) != 200
