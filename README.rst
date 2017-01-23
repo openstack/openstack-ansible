@@ -39,7 +39,7 @@ or on IRC in ``#openstack-ansible`` on the `freenode network`_.
 OpenStack-Ansible Roles
 #######################
 
-OpenStack-Ansible offers seperate role repositories for each individual role
+OpenStack-Ansible offers separate role repositories for each individual role
 that OpenStack-Ansible supports. For individual role documentation see the
 `Role Documentation`_ in the OpenStack-Ansible documentation.
 
