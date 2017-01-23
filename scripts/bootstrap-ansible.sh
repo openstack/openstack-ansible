@@ -103,7 +103,7 @@ if [ -f "requirements.txt" ];then
 fi
 
 # Install ansible
-PIP_OPTS+=" --constraint ${UPPER_CONSTRAINTS_FILE}"
+PIP_OPTS+=" --constraint global-requirement-pins.txt --constraint ${UPPER_CONSTRAINTS_FILE}"
 
 # When upgrading there will already be a pip.conf file locking pip down to the repo server, in such cases it may be
 # necessary to use --isolated because the repo server does not meet the specified requirements.
