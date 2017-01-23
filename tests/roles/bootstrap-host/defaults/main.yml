@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Scenario used to bootstrap the host
+bootstrap_host_scenario: aio
+
 # Boolean option to implement OpenStack-Ansible configuration for an AIO
 # Switch to no for a multi-node configuration
 bootstrap_host_aio_config: yes
@@ -43,6 +46,16 @@ bootstrap_host_loopback_swift_size: 1024
 bootstrap_host_loopback_nova: yes
 # Size of the Nova loopback disk in gigabytes (GB).
 bootstrap_host_loopback_nova_size: 1024
+
+# Boolean option to deploy the OSD loopback disks and cluster UUID for Ceph
+bootstrap_host_ceph: "{{ (bootstrap_host_scenario == 'ceph') | bool }}"
+# Size of the Ceph OSD loopbacks
+bootstrap_host_loopback_ceph_size: 1024
+# Ceph OSDs to create on the AIO host
+ceph_osd_images:
+  - 'ceph1'
+  - 'ceph2'
+  - 'ceph3'
 
 ## Network configuration
 # The AIO bootstrap configures bridges for use with the AIO deployment.

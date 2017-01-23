@@ -11,4 +11,5 @@ Appendices
    app-security.rst
    app-networking.rst
    app-advanced-config-options.rst
+   app-ceph.rst
    app-resources.rst
