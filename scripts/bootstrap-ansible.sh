@@ -110,7 +110,7 @@ PIP_COMMAND="/opt/ansible-runtime/bin/pip"
 ${PIP_COMMAND} install ${PIP_OPTS} ${PIP_INSTALL_OPTIONS} || ${PIP_COMMAND} install ${PIP_OPTS} --isolated ${PIP_INSTALL_OPTIONS}
 
 # Set the constraints now that we know we're using the right version of pip
-PIP_OPTS+=" --constraint ${UPPER_CONSTRAINTS_FILE}"
+PIP_OPTS+=" --constraint global-requirement-pins.txt --constraint ${UPPER_CONSTRAINTS_FILE}"
 
 # Install the required packages for ansible
 $PIP_COMMAND install $PIP_OPTS -r requirements.txt ${ANSIBLE_PACKAGE} || $PIP_COMMAND install --isolated $PIP_OPTS -r requirements.txt ${ANSIBLE_PACKAGE}
