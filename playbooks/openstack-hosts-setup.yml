@@ -13,6 +13,42 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- name: Install Ansible prerequisites
+  hosts: "{{ openstack_host_group|default('hosts') }}"
+  gather_facts: false
+  user: root
+  pre_tasks:
+    - name: Install Python2
+      register: result
+      raw: >
+        source /etc/os-release
+
+        case ${ID} in
+          centos|rhel)
+            yum list installed python
+            result=$?
+
+            if [ $result -eq 1 ]; then
+              yum -y install python2
+              result=2
+            fi
+
+            exit $result;
+          ;;
+          ubuntu)
+            dpkg -l python
+            result=$?
+
+            if [ $result -eq 1 ]; then
+              apt-get -y install python
+              result=2
+            fi
+
+            exit $result;
+          ;;
+        esac
+      changed_when: "result.rc == 2"
+
 - name: Basic host setup
   hosts: "{{ openstack_host_group|default('hosts') }}"
   gather_facts: "{{ gather_facts | default(True) }}"
