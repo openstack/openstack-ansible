@@ -124,6 +124,7 @@ haproxy_default_services:
       haproxy_service_name: keystone_admin
       haproxy_backend_nodes: "{{ groups['keystone_all'] | default([])  }}"
       haproxy_port: 35357
+      haproxy_ssl: "{{ haproxy_ssl }}"
       haproxy_balance_type: "http"
       haproxy_backend_options:
         - "httpchk HEAD /"
@@ -271,6 +272,7 @@ haproxy_default_services:
   - service:
       haproxy_service_name: designate_api
       haproxy_backend_nodes: "{{ groups['designate_api'] | default([]) }}"
+      haproxy_ssl: "{{ haproxy_ssl }}"
       haproxy_port: 9001
       haproxy_balance_type: http
       haproxy_backend_options:
