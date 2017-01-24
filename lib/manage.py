@@ -324,12 +324,14 @@ def main():
         print(json.dumps(export_host_info(inventory), indent=2))
     elif user_args['clear_ips'] is True:
         remove_ip_addresses(inventory)
-        inventory_json = json.dumps(inventory, indent=2)
+        inventory_json = json.dumps(inventory, indent=2,
+                                    separators=(',', ': '))
         filesys.save_inventory(inventory_json, filename)
         print('Success. . .')
     else:
         du.recursive_dict_removal(inventory, user_args['remove_item'])
-        inventory_json = json.dumps(inventory, indent=2)
+        inventory_json = json.dumps(inventory, indent=2,
+                                    seprators=(',', ': '))
         filesys.save_inventory(inventory_json, filename)
         print('Success. . .')
 
