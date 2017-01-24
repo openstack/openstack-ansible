@@ -1,0 +1,14 @@
+---
+features:
+  - |
+    RabbitMQ Server can now be installed from different
+    methods: a deb file (default), from standard
+    repository package and from external repository.
+    Current behavior is unchanged. Please define
+    ``rabbitmq_install_method: distro`` to use packages
+    provided by your distribution or
+    ``rabbitmq_install_method: external_repo`` to use
+    packages stored in an external repo. In the case
+    ``external_repo`` is used, the process will install
+    RabbitMQ from the packages hosted by packagecloud.io,
+    as recommended by RabbitMQ.

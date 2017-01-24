@@ -1,0 +1,5 @@
+---
+features:
+  - The ``rabbitmq_server`` role now supports disabling listeners that do not
+    use TLS. Deployers can override the ``rabbitmq_disable_non_tls_listeners``
+    variable, setting a value of ``True`` if they wish to enable this feature.

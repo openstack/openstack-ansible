@@ -1,0 +1,9 @@
+---
+fixes:
+  - The percona repository stayed in placed even after
+    a change of the variable ``use_percona_upstream``.
+    From now on, the percona repository will not be
+    present unless the deployer decides to
+    ``use_percona_upstream``. This also fixes a bug
+    of the presence of this apt repository after an
+    upgdrade from Mitaka.
