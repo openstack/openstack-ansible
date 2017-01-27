@@ -1,0 +1,9 @@
+---
+features:
+  - You can specify the ``galera_package_arch`` variable
+    to force a specific architecture when installing
+    percona and qpress packages. This will be automatically
+    calculated based on the architecture of the
+    ``galera_server`` host. Acceptable values are ``x86_64``
+    for ``Ubuntu-16.04`` and ``RHEL 7``, and ``ppc64le`` for
+    ``Ubuntu-16.04``.

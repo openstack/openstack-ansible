@@ -1,0 +1,8 @@
+---
+fixes:
+  - Systems using systemd (like Ubuntu Xenial) were
+    incorrectly limited to a low amount of open files.
+    This was causing issues when restarting galera.
+    A deployer can still define the maximum number
+    of open files with the variable
+    ``galera_file_limits`` (Defaults to 65536).

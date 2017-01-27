@@ -1,0 +1,12 @@
+---
+features:
+  - Specify the ``gnocchi_auth_mode`` var to set the
+    ``auth_mode`` for gnocchi. This defaults to ``basic``
+    which has changed from ``noauth`` to match upstream.
+    If ``gnocchi_keystone_auth`` is ``true`` or ``yes``
+    this value will default to ``keystone``.
+deprecations:
+  - The ``gnocchi_keystone_auth`` is deprecated, and
+    will be removed in the ``Queen`` cycle. Setting
+    ``gnocchi_auth_mode`` to ``keystone`` will achieve
+    the same result.

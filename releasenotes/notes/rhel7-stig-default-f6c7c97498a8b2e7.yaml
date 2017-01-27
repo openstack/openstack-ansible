@@ -1,0 +1,19 @@
+---
+features:
+  - |
+    The Red Hat Enterprise Linux (RHEL) 7 STIG content is now deployed by
+    default. Deployers can continue using the RHEL 7 STIG content by setting
+    the following Ansible variable:
+
+    .. code-block:: yaml
+
+        stig_version: rhel6
+upgrade:
+  - |
+    Deployers should review the new RHEL 7 STIG variables in
+    ``defaults/main.yml`` to provide custom configuration for the Ansible
+    tasks.
+deprecations:
+  - |
+    The Red Hat Enteprise Linux 6 STIG content has been deprecated. The tasks
+    and variables for the RHEL 6 STIG will be removed in a future release.

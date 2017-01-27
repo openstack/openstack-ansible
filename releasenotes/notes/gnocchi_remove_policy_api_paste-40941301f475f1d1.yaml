@@ -1,0 +1,8 @@
+---
+features:
+  - Specify the ``gnocchi_git_config_lookup_location``
+    value to specify the git repository where the
+    ``gnocchi`` config files can be retrieved. The
+    ``api-paste.ini`` and ``policy.json`` files are
+    now retrieved from the specified git repository
+    and are not carried in the ``os_gnocchi`` role.

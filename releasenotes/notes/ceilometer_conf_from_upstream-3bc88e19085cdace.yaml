@@ -1,0 +1,14 @@
+---
+features:
+  - The ceilometer configuration files other than
+    ``ceilometer.conf`` are now retrieved from upstream.
+    You can override the repository from which these are
+    retrieved by setting the
+   ``ceilometer_git_config_lookup_location`` variable
+    which defaults to the git.openstack.org.
+deprecations:
+  - The vars to set ``source_sample_interval`` for the
+    ``os_ceilometer`` role are deprecated and will be
+    removed in the Queen cycle. To override these variables
+    after Queen, utilize the
+    ``ceilometer_pipeline_yaml_overrides`` file.

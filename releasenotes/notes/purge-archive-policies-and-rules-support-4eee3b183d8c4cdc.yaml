@@ -1,0 +1,10 @@
+---
+upgrade:
+  - The gnocchi_archive_policies and
+    gnocchi_archive_policy_rules variables never had full
+    support in the role so were ineffective at the intended
+    purpose. The task references to them have been removed
+    and the library to perform gnocchi operations has also
+    been removed. This eliminates the need for the gnocchi
+    client to be installed outside the virtual environment
+    as well.
