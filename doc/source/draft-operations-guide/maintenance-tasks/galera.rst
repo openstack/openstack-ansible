@@ -132,10 +132,8 @@ one of the nodes.
 Galera cluster recovery
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Run the ``galera-bootstrap`` playbook to automatically recover
-a node or an entire environment. Run the ``galera install`` playbook
-using the ``galera-bootstrap``  tag to auto recover a node or an
-entire environment.
+Run the ``galera-install`` playbook using the ``galera-bootstrap`` tag
+to automatically recover a node or an entire environment.
 
 #. Run the following Ansible command to show the failed nodes:
 
