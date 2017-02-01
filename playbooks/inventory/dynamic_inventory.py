@@ -249,6 +249,7 @@ def _build_container_hosts(container_affinity, container_hosts, type_and_name,
                 append_if(array=container_list, item=i)
 
         existing_count = len(list(set(container_list)))
+
         if existing_count < container_affinity:
             hostvars = inventory['_meta']['hostvars']
             container_mapping = inventory[container_type]['children']
@@ -268,11 +269,14 @@ def _build_container_hosts(container_affinity, container_hosts, type_and_name,
 
                 logger.debug("Adding container %s to %s",
                              container_host_name, container_host_type)
+
                 append_if(
                     array=inventory[container_host_type]["hosts"],
                     item=container_host_name
                 )
+
                 append_if(array=container_hosts, item=container_host_name)
+
             else:
                 if host_type not in hostvars:
                     hostvars[host_type] = {}
@@ -415,8 +419,6 @@ def _add_container_hosts(assignment, config, container_name, container_type,
         # If host_type is not in config do not append containers to it
         if host_type not in config[physical_host_type]:
             continue
-        append_if(array=inventory['lxc_hosts']['hosts'],
-                  item=host_type)
 
         # Get any set host options
         host_options = config[physical_host_type][host_type]
@@ -813,6 +815,46 @@ def container_skel_load(container_skel, inventory, config):
                     is_container_address=p_net.get('is_container_address'),
                     static_routes=p_net.get('static_routes')
                 )
+
+    populate_lxc_hosts(inventory)
+
+
+def populate_lxc_hosts(inventory):
+    """Insert nodes hosting LXC containers into the lxc_hosts group
+
+    The inventory dictionary passed in to this function will be mutated.
+
+    :param inventory: The dictionary containing the Ansible inventory
+    """
+    host_nodes = _find_lxc_hosts(inventory)
+    inventory['lxc_hosts'] = {'hosts': host_nodes}
+    logger.debug("Created lxc_hosts group.")
+
+
+def _find_lxc_hosts(inventory):
+    """Build the lxc_hosts dynamic group
+
+    Inspect the generated inventory for nodes that host LXC containers.
+    Return a list of those that match for insertion into the inventory.
+    Populate the 'lxc_hosts' group with any node that matches.
+
+    This and the populate_lxc_hosts function are split in order to be less
+    coupled and more testable.
+
+    :param inventory: The dictionary containing the Ansible inventory
+    :returns: List of hostnames that are LXC hosts
+    :rtype: list
+    """
+    host_nodes = []
+    for host, hostvars in inventory['_meta']['hostvars'].items():
+        physical_host = hostvars.get('physical_host', None)
+
+        # We want this node's "parent", so append the physical host
+        if not host == physical_host:
+            appended = append_if(array=host_nodes, item=physical_host)
+            if appended:
+                logger.debug("%s added to lxc_hosts group", physical_host)
+    return host_nodes
 
 
 def find_config_path(user_config_path=None):
