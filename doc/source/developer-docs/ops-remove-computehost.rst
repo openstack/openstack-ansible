@@ -36,13 +36,13 @@ To remove a compute host, follow the below procedure.
        /opt/openstack-ansible-ops
 
 #. Run the ``remove_compute_node.yml`` Ansible playbook with the
-   ``node_to_be_removed`` user variable set:
+   ``host_to_be_removed`` user variable set:
 
   .. code-block:: console
 
      $ cd /opt/openstack-ansible-ops/ansible_tools/playbooks
      openstack-ansible remove_compute_node.yml \
-     -e node_to_be_removed="<name-of-compute-host>"
+     -e host_to_be_removed="<name-of-compute-host>"
 
 #. After the playbook completes, remove the compute node from the
    OpenStack-Ansible configuration file in
