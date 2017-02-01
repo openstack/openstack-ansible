@@ -1,0 +1,7 @@
+---
+fixes:
+  - Metal hosts were being inserted into the ``lxc_hosts``
+    group, even if they had no containers (Bug 1660996).
+    This is now corrected for newly configured hosts. In addition, any
+    hosts that did not belong in ``lxc_hosts`` will be removed on the
+    next inventory run or playbook call.
