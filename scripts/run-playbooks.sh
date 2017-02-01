@@ -17,7 +17,6 @@
 set -e -u
 
 ## Variables -----------------------------------------------------------------
-DEPLOY_AIO=${DEPLOY_AIO:-false}
 PLAYBOOK_LOGS=${PLAYBOOK_LOGS:-"/openstack/log/ansible_playbooks/"}
 COMMAND_LOGS=${COMMAND_LOGS:-"/openstack/log/ansible_cmd_logs/"}
 ORIG_ANSIBLE_LOG_PATH=${ANSIBLE_LOG_PATH:-"/openstack/log/ansible-logging/ansible.log"}
@@ -95,9 +94,7 @@ function playbook_run {
       # Set the playbook log path so that we can review specific execution later.
       export ANSIBLE_LOG_PATH="${PLAYBOOK_LOGS}/${COUNTER}-${include_file_name}.txt"
       let COUNTER=COUNTER+=1
-      if [[ "${DEPLOY_AIO}" = true ]]; then
         install_bits "${include_playbook}"
-      fi
       # Remove the generate playbook when done with it
       rm "${include_playbook}"
     done
@@ -122,7 +119,6 @@ pushd "playbooks"
   # Execute setup everything
   playbook_run
 
-  if [[ "${DEPLOY_AIO}" = true ]]; then
     # Log some data about the instance and the rest of the system
     log_instance_info
 
@@ -133,5 +129,4 @@ pushd "playbooks"
                           -t "${COMMAND_LOGS}/repo_data"
 
     print_report
-  fi
 popd
