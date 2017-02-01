@@ -1,0 +1,9 @@
+---
+deprecations:
+  - The global override ``cinder_nfs_client`` is replaced
+    in favor of fully supporting multi backends
+    configuration via the cinder_backends stanza.
+upgrade:
+  - The global override ``cinder_nfs_client`` is replaced
+    in favor of fully supporting multi backends
+    configuration via the cinder_backends stanza.
