@@ -32,5 +32,6 @@
     host: "{{ item }}"
     state: "present"
     priv: "{{ db_name }}.*:ALL"
+    append_privs: "{{ db_append_privs | default(omit) }}"
   delegate_to: "{{ groups['galera_all'][0] }}"
   with_items: "{{ grant_list | default(['localhost', '%']) }}"

@@ -67,6 +67,23 @@
         login_host: "{{ nova_api_galera_address }}"
         db_name: "{{ nova_api_galera_database }}"
       when: inventory_hostname == groups['nova_all'][0]
+    - include: common-tasks/mysql-db-user.yml
+      static: no
+      vars:
+        user_name: "{{ nova_placement_galera_user }}"
+        password: "{{ nova_placement_container_mysql_password }}"
+        login_host: "{{ nova_placement_galera_address }}"
+        db_name: "{{ nova_placement_galera_database }}"
+      when: inventory_hostname == groups['nova_all'][0]
+    - include: common-tasks/mysql-db-user.yml
+      static: no
+      vars:
+        user_name: "{{ nova_api_galera_user }}"
+        password: "{{ nova_api_container_mysql_password }}"
+        login_host: "{{ nova_api_galera_address }}"
+        db_name: "{{ nova_cell0_database }}"
+        db_append_privs: "yes"
+      when: inventory_hostname == groups['nova_all'][0]
     - include: common-tasks/package-cache-proxy.yml
 
     - name: Add nbd devices to the compute
@@ -181,6 +198,9 @@
     nova_galera_database: nova
     nova_api_galera_user: nova_api
     nova_api_galera_database: nova_api
+    nova_placement_galera_user: nova_placement
+    nova_placement_galera_database: nova_placement
+    nova_cell0_database: nova_cell0
     nova_galera_address: "{{ galera_address }}"
     nova_api_galera_address: "{{ galera_address }}"
     nova_placement_galera_address: "{{ galera_address }}"
