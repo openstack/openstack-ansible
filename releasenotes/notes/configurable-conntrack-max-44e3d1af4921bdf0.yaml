@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Deployers can set ``openstack_host_nf_conntrack_max`` to control the
+    maximum size of the netfilter connection tracking table. The default of
+    ``262144`` should be increased if virtual machines will be handling large
+    amounts of concurrent connections.
