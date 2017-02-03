@@ -303,6 +303,7 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'neutron_metadata_agent',
         'neutron_metering_agent',
         'neutron_openvswitch_agent',
+        'neutron_sriov_nic_agent',
         'neutron_server',
         'neutron_server_container',
         'nova_all',
