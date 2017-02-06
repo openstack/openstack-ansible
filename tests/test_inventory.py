@@ -1239,7 +1239,7 @@ class TestConfigMatchesEnvironment(unittest.TestCase):
         with warnings.catch_warnings(record=True) as wl:
             di._check_all_conf_groups_present(bad_config, self.env)
             self.assertEqual(1, len(wl))
-            self.assertTrue('bogus_key' in str(wl[0].message))
+            self.assertIn('bogus_key', str(wl[0].message))
 
     def test_multiple_extra_keys(self):
         bad_config = get_config()
@@ -1251,8 +1251,8 @@ class TestConfigMatchesEnvironment(unittest.TestCase):
             self.assertEqual(2, len(wl))
             warn_msgs = [str(warn.message) for warn in wl]
             warn_msgs.sort()
-            self.assertTrue('bogus_key1' in warn_msgs[0])
-            self.assertTrue('bogus_key2' in warn_msgs[1])
+            self.assertIn('bogus_key1', warn_msgs[0])
+            self.assertIn('bogus_key2', warn_msgs[1])
 
     def test_confirm_exclusions(self):
         """Ensure the excluded keys in the function are present."""
