@@ -142,7 +142,7 @@ def _extra_config(user_defined_config, base_dir):
 
 
 def _make_backup(backup_path, source_file_path):
-    """ Create a backup of all previous inventory files as a tar archive
+    """Create a backup of all previous inventory files as a tar archive
 
     :param backup_path: where to store the backup file
     :param source_file_path: path of file to backup
@@ -161,7 +161,7 @@ def _make_backup(backup_path, source_file_path):
 
 
 def _get_backup_name(basename):
-    """ Return a name for a backup file based on the time
+    """Return a name for a backup file based on the time
 
     :param basename: serves as prefix for the return value
     :return: a name for a backup file based on current time
