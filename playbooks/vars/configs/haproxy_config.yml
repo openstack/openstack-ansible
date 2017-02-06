@@ -23,10 +23,7 @@ haproxy_default_services:
       haproxy_timeout_server: 5000s
       haproxy_backend_options:
         - "mysql-check user {{ galera_monitoring_user }}"
-      haproxy_whitelist_networks:
-        - 192.168.0.0/16
-        - 172.16.0.0/12
-        - 10.0.0.0/8
+      haproxy_whitelist_networks: "{{ haproxy_galera_whitelist_networks }}"
   - service:
       haproxy_service_name: repo_git
       haproxy_backend_nodes: "{{ groups['repo_all'] | default([]) }}"
@@ -35,10 +32,7 @@ haproxy_default_services:
       haproxy_balance_type: tcp
       haproxy_backend_options:
         - tcp-check
-      haproxy_whitelist_networks:
-        - 192.168.0.0/16
-        - 172.16.0.0/12
-        - 10.0.0.0/8
+      haproxy_whitelist_networks: "{{ haproxy_repo_git_whitelist_networks }}"
   - service:
       haproxy_service_name: repo_all
       haproxy_backend_nodes: "{{ groups['repo_all'] | default([]) }}"
@@ -56,10 +50,7 @@ haproxy_default_services:
       haproxy_balance_type: http
       haproxy_backend_options:
         - "httpchk HEAD /acng-report.html"
-      haproxy_whitelist_networks:
-        - 192.168.0.0/16
-        - 172.16.0.0/12
-        - 10.0.0.0/8
+      haproxy_whitelist_networks: "{{ haproxy_repo_cache_whitelist_networks }}"
   - service:
       haproxy_service_name: glance_api
       haproxy_backend_nodes: "{{ groups['glance_api'] | default([]) }}"
@@ -76,10 +67,7 @@ haproxy_default_services:
       haproxy_balance_type: http
       haproxy_backend_options:
         - "httpchk /healthcheck"
-      haproxy_whitelist_networks:
-        - 192.168.0.0/16
-        - 172.16.0.0/12
-        - 10.0.0.0/8
+      haproxy_whitelist_networks: "{{ haproxy_glance_registry_whitelist_networks }}"
   - service:
       haproxy_service_name: gnocchi
       haproxy_backend_nodes: "{{ groups['gnocchi_all'] | default([]) }}"
@@ -128,10 +116,7 @@ haproxy_default_services:
       haproxy_balance_type: "http"
       haproxy_backend_options:
         - "httpchk HEAD /"
-      haproxy_whitelist_networks:
-        - 192.168.0.0/16
-        - 172.16.0.0/12
-        - 10.0.0.0/8
+      haproxy_whitelist_networks: "{{ haproxy_keystone_admin_whitelist_networks }}"
   - service:
       haproxy_service_name: neutron_server
       haproxy_backend_nodes: "{{ groups['neutron_server'] | default([]) }}"
@@ -148,10 +133,7 @@ haproxy_default_services:
       haproxy_balance_type: http
       haproxy_backend_options:
         - "httpchk HEAD /"
-      haproxy_whitelist_networks:
-        - 192.168.0.0/16
-        - 172.16.0.0/12
-        - 10.0.0.0/8
+      haproxy_whitelist_networks: "{{ haproxy_nova_metadata_whitelist_networks }}"
   - service:
       haproxy_service_name: nova_api_os_compute
       haproxy_backend_nodes: "{{ groups['nova_api_os_compute'] | default([]) }}"
@@ -249,10 +231,7 @@ haproxy_default_services:
       haproxy_balance_type: http
       haproxy_backend_options:
         - "httpchk HEAD /"
-      haproxy_whitelist_networks:
-        - 192.168.0.0/16
-        - 172.16.0.0/12
-        - 10.0.0.0/8
+      haproxy_whitelist_networks: "{{ haproxy_rabbitmq_management_whitelist_networks }}"
   - service:
       haproxy_service_name: magnum
       haproxy_backend_nodes: "{{ groups['magnum_all'] | default([]) }}"
