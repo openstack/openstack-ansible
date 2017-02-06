@@ -47,7 +47,7 @@ def get_ip_address(name, ip_q):
 
 
 def load_ip_q(cidr, ip_q):
-    """Load the IP queue with all IP address from a given cidr.
+    """Load the IP queue with all IP addresses from a given cidr.
 
     :param cidr: ``str``  IP address with cidr notation
     """
@@ -118,7 +118,7 @@ class EmptyQueue(Exception):
 
 class IPBasePlugin(object):
     def load(self, queue_name, cidr):
-        """Create a populate a queue with IP addresses
+        """Create and populate a queue with IP addresses
 
         The network address and broadcast addresses should be excluded from
         the IP addresses loaded into the queue.
@@ -136,7 +136,7 @@ class IPBasePlugin(object):
         Should raise NoSuchQueue when the given queue name is not found,
         and EmptyQueue if the queue is empty.
 
-        Some plugin implementations may be transaction, and require a call to
+        Some plugin implementations may be transactional, and require a call to
         ``save`` after reserving an IP.
         """
         raise NotImplementedError
@@ -144,7 +144,7 @@ class IPBasePlugin(object):
     def release(self, ip):
         """Release an IP back into queues as assignable.
 
-        Some plugin implementations may be transaction, and require a call to
+        Some plugin implementations may be transactional, and require a call to
         ``save`` after releasing an IP.
         """
         raise NotImplementedError
@@ -185,7 +185,7 @@ class IPManager(IPBasePlugin):
         if used_ips is None:
             used_ips = set()
 
-        # If we receive a set already, this is esentially a no-op,
+        # If we receive a set already, this is essentially a no-op,
         # not a wrapper.
         self._used_ips = set(used_ips)
         self._queues = queues
@@ -279,8 +279,8 @@ class IPManager(IPBasePlugin):
         IPs returned will be marked as used and removed from the associated
         queue.
 
-        :param queue_name: ``str`` Name of the queue from which to retrive an
-            IP.
+        :param queue_name: ``str`` Name of the queue from which to retrieve
+            an IP.
         :returns: IP address
         :rtype: str
         :raises: ip.NoSuchQueue, ip.EmptyQueue
