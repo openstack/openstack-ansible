@@ -18,3 +18,16 @@ haproxy_use_keepalived: "{% if groups.haproxy|length > 1 %}True{% else %}False{%
 
 # Ensure that the package state matches the global setting
 haproxy_package_state: "{{ package_state }}"
+
+haproxy_whitelist_networks:
+  - 192.168.0.0/16
+  - 172.16.0.0/12
+  - 10.0.0.0/8
+
+haproxy_galera_whitelist_networks: "{{ haproxy_whitelist_networks }}"
+haproxy_glance_registry_whitelist_networks: "{{ haproxy_whitelist_networks }}"
+haproxy_keystone_admin_whitelist_networks: "{{ haproxy_whitelist_networks }}"
+haproxy_nova_metadata_whitelist_networks: "{{ haproxy_whitelist_networks }}"
+haproxy_rabbitmq_management_whitelist_networks: "{{ haproxy_whitelist_networks }}"
+haproxy_repo_git_whitelist_networks: "{{ haproxy_whitelist_networks }}"
+haproxy_repo_cache_whitelist_networks: "{{ haproxy_whitelist_networks }}"
