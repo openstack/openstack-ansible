@@ -49,7 +49,7 @@ function get_includes {
   /opt/ansible-runtime/bin/python <<EOC
 import yaml
 with open("${1}") as f:
-    yaml_list = yaml.load(f.read())
+    yaml_list = yaml.safe_load(f.read())
 for item in yaml_list:
     _item = '---\n' + yaml.safe_dump([item], default_flow_style=False, width=1000)
     print(repr(_item).strip("'").strip('"'))
@@ -60,7 +60,7 @@ function get_include_file {
   /opt/ansible-runtime/bin/python <<EOC
 import yaml
 with open("${1}") as f:
-    yaml_list = yaml.load(f.read())
+    yaml_list = yaml.safe_load(f.read())
 print(yaml_list[0]['include'])
 EOC
 }

@@ -1306,7 +1306,7 @@ class TestInventoryGroupConstraints(unittest.TestCase):
                 - compute_hosts
         """
 
-        bad_env = yaml.load(override)
+        bad_env = yaml.safe_load(override)
 
         # This is essentially what load_environment does, after all the file
         # system walking
