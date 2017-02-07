@@ -14,7 +14,7 @@
 # limitations under the License.
 
 - name: haproxy base config
-  hosts: haproxy_all
+  hosts: haproxy
   gather_facts: "{{ gather_facts | default(True) }}"
   user: root
   pre_tasks:
