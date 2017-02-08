@@ -75,11 +75,3 @@
   with_items: "{{ packages_remove }}"
   tags:
     - remove-packages
-
-- name: Install required packages
-  apt:
-    name: "{{ item }}"
-    state: present
-  with_items: "{{ packages_install }}"
-  tags:
-    - install-packages
