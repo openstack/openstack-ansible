@@ -47,6 +47,14 @@
   tags:
     - install-apt
 
+- name: Install packages
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ packages_install }}"
+  tags:
+    - install-packages
+
 # Prepare the data disk, if one is provided
 - include: prepare_data_disk.yml
   when: bootstrap_host_data_disk_device != None
