@@ -331,7 +331,7 @@ def main():
     else:
         du.recursive_dict_removal(inventory, user_args['remove_item'])
         inventory_json = json.dumps(inventory, indent=2,
-                                    seprators=(',', ': '))
+                                    separators=(',', ': '))
         filesys.save_inventory(inventory_json, filename)
         print('Success. . .')
 
