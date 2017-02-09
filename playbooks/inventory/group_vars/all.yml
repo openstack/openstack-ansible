@@ -388,6 +388,8 @@ nova_rabbitmq_telemetry_host_group: "{{ nova_rabbitmq_host_group }}"
 nova_designate_enabled: "{{ (groups['designate_all'] is defined) and (groups['designate_all'] | length > 0) }}"
 # If there are any Ceilometer hosts in the environment, then enable its usage
 nova_ceilometer_enabled: "{{ (groups['ceilometer_all'] is defined) and (groups['ceilometer_all'] | length > 0) }}"
+# If there are any Barbican hosts in the environment, then enable its usage
+nova_barbican_enabled: "{{ (groups['barbican_all'] is defined) and (groups['barbican_all'] | length > 0) }}"
 
 ## Sahara
 #RPC
