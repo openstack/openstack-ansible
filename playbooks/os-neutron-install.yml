@@ -30,6 +30,9 @@
   max_fail_percentage: 20
   user: root
   pre_tasks:
+    - include: common-tasks/dynamic-address-fact.yml
+      vars:
+        network_address: "tunnel_address"
     - include: common-tasks/os-lxc-container-setup.yml
       # This config is specific to Ubuntu
       vars:
@@ -114,28 +117,13 @@
     - name: Set provider network fact(s)
       set_fact:
         _provider_networks: "{{ pndata }}"
-        _overlay_network: "{{ container_networks.tunnel_address|default({}) }}"
-      tags:
-        - always
-    - name: set local_ip fact (is_metal)
-      set_fact:
-        _local_ip: "{{ hostvars[inventory_hostname]['ansible_' + _overlay_network.bridge|default(ansible_default_ipv4['interface'])|replace('-', '_')]['ipv4']['address']|default(ansible_host) }}"
-      when:
-        - is_metal | bool
-      tags:
-        - always
-    - name: set local_ip fact (container)
-      set_fact:
-        _local_ip: "{{ _overlay_network.address|default(ansible_host) }}"
-      when:
-        - not is_metal | bool
       tags:
         - always
   roles:
     - role: "os_neutron"
       neutron_overlay_network: "{{ _overlay_network }}"
       neutron_provider_networks: "{{ _provider_networks }}"
-      neutron_local_ip: "{{ _local_ip|default('127.0.0.1') }}"
+      neutron_local_ip: "{{ tunnel_address }}"
     - role: "bird"
       when:
         - "'neutron_calico_dhcp_agent' in group_names"

@@ -19,6 +19,9 @@
   max_fail_percentage: 20
   user: root
   pre_tasks:
+    - include: common-tasks/dynamic-address-fact.yml
+      vars:
+        network_address: "management_address"
     - include: common-tasks/os-lxc-container-setup.yml
       vars:
         extra_container_config_no_restart:
@@ -132,38 +135,6 @@
         - "inventory_hostname in groups['nova_compute']"
         - "not is_metal | bool"
         - kvm_device.stat.ischr is defined and kvm_device.stat.ischr
-      tags:
-        - always
-    - name: Set nova management bridge (is_metal)
-      set_fact:
-        management_bridge: "{{ 'ansible_' + hostvars[inventory_hostname]['management_bridge'] | replace('-', '_') }}"
-      when:
-        - "hostvars[inventory_hostname]['management_bridge'] is defined"
-        - "is_metal | bool"
-      tags:
-        - always
-    - name: Set nova management address (is_metal)
-      set_fact:
-        management_address: "{{ hostvars[inventory_hostname][management_bridge]['ipv4']['address'] }}"
-      when:
-        - "hostvars[inventory_hostname][management_bridge]['ipv4']['address'] is defined"
-        - "is_metal | bool"
-      tags:
-        - always
-    - name: Set nova management address (container)
-      set_fact:
-        management_address: "{{ hostvars[inventory_hostname]['container_networks']['container_address']['address'] }}"
-      when:
-        - "management_address is undefined"
-        - "hostvars[inventory_hostname]['container_networks']['container_address']['address'] is defined"
-        - "not is_metal | bool"
-      tags:
-        - always
-    - name: Set nova management address (unknown management network)
-      set_fact:
-        management_address: "{{ ansible_host }}"
-      when:
-        - "management_address is undefined"
       tags:
         - always
   roles:
