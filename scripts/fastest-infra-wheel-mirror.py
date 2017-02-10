@@ -36,7 +36,7 @@ MIRROR_LIST = ["http://mirror.dfw.rax.openstack.org/wheel/",
                "http://mirror.bhs1.ovh.openstack.org/wheel/",
                "http://mirror.sjc1.bluebox.openstack.org/wheel/",
                "http://mirror.nyj01.internap.openstack.org/wheel/",
-               "http://mirror.cloud1.osic.openstack.org/wheel/"]
+               "http://mirror.regionone.osic-cloud1.openstack.org/wheel/"]
 
 
 def TestUrl(workQueue, resultQueue):
