@@ -1,0 +1,11 @@
+---
+features:
+  - The Designate pools.yaml file can now be generated via the
+    designate_pools_yaml attribute, if desired. This allows users to populate
+    the Designate DNS server configuration using attributes from other plays
+    and obviates the need to manage the file outside of the Designate role.
+upgrade:
+  - The Designate pools.yaml file can now be generated via the
+    designate_pools_yaml attribute, if desired. This ability is toggled by
+    the designate_use_pools_yaml_attr attribute. In the future this behavior
+    may become default and designate_pools_yaml may become a required variable.
