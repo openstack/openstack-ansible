@@ -36,7 +36,7 @@
             exit $result;
           ;;
           ubuntu)
-            dpkg-query -s python $> /dev/null
+            dpkg-query -s python &> /dev/null
             result=$?
 
             if [ $result -eq 1 ]; then
