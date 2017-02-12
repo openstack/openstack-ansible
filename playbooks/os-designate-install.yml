@@ -58,14 +58,6 @@
         login_host: "{{ designate_galera_address }}"
         db_name: "{{ designate_galera_database_name }}"
       when: inventory_hostname == groups['designate_all'][0]
-    - include: common-tasks/mysql-db-user.yml
-      static: no
-      vars:
-        user_name: "{{ designate_pool_manager_galera_user }}"
-        password: "{{ designate_pool_manager_galera_password }}"
-        login_host: "{{ designate_pool_manager_galera_address }}"
-        db_name: "{{ designate_pool_manager_galera_database_name }}"
-      when: inventory_hostname == groups['designate_all'][0]
     - include: common-tasks/package-cache-proxy.yml
   roles:
     - role: "os_designate"
