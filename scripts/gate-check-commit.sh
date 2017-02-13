@@ -35,7 +35,7 @@ export SCENARIO=${1:-"aio"}
 # TODO(sc68cal) update the job configs to have the stable branch
 # So we have job names like:
 # gate-openstack-ansible-openstack-ansible-upgrade-newton-ubuntu-xenial-nv
-export UPGRADE_BASEBRANCH=${2:-"newton"}
+export UPGRADE_BASEBRANCH=${2:-"ocata"}
 export SCENARIO_BACKUP=${SCENARIO_BACKUP:-''}
 
 ## Functions -----------------------------------------------------------------
