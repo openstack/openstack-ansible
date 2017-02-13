@@ -19,6 +19,7 @@ import test_inventory
 import unittest
 
 MANAGE_DIR = path.join(os.getcwd(), 'lib')
+TARGET_DIR = path.join(os.getcwd(), 'tests', 'inventory')
 
 sys.path.append(MANAGE_DIR)
 
@@ -78,6 +79,7 @@ class TestRemoveIpfunction(unittest.TestCase):
 
     def test_ips_removed(self):
         mi.remove_ip_addresses(self.inv)
+        mi.remove_ip_addresses(self.inv, TARGET_DIR)
         hostvars = self.inv['_meta']['hostvars']
 
         for host, variables in hostvars.items():
@@ -85,6 +87,18 @@ class TestRemoveIpfunction(unittest.TestCase):
             if variables.get('is_metal', False):
                 continue
             self.assertFalse(has_networks)
+
+    def test_inventory_item_removed(self):
+        inventory = self.inv
+
+        # Make sure we have log_hosts in the original inventory
+        self.assertIn('log_hosts', inventory)
+
+        mi.remove_inventory_item("log_hosts", inventory)
+        mi.remove_inventory_item("log_hosts", inventory, TARGET_DIR)
+
+        # No make sure it's gone
+        self.assertIn('log_hosts', inventory)
 
     def test_metal_ips_kept(self):
         mi.remove_ip_addresses(self.inv)
