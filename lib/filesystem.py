@@ -197,7 +197,7 @@ def write_hostnames(save_path, hostnames_ips):
         )
 
 
-def load_from_json(filename, preferred_path=None, raise_if_missing=True):
+def _load_from_json(filename, preferred_path=None, raise_if_missing=True):
     """Return a dictionary found in json format in a given file
 
     :param filename: ``str``  Name of the file to read from
@@ -217,7 +217,7 @@ def load_from_json(filename, preferred_path=None, raise_if_missing=True):
     return dictionary, target_file
 
 
-def load_inventory(preferred_path=None, default_inv=None):
+def load_inventory(preferred_path=None, default_inv=None, filename=None):
     """Create an inventory dictionary from the given source file or a default
         inventory. If an inventory is found then a backup tarball is created
         as well.
@@ -230,7 +230,12 @@ def load_inventory(preferred_path=None, default_inv=None):
         or should have been loaded from.
     """
 
-    inventory, file_loaded = load_from_json(INVENTORY_FILENAME, preferred_path,
+    if filename:
+        inv_fn = filename
+    else:
+        inv_fn = INVENTORY_FILENAME
+
+    inventory, file_loaded = _load_from_json(inv_fn, preferred_path,
                                             raise_if_missing=False)
     if file_loaded is not False:
         load_path = os.path.dirname(file_loaded)
