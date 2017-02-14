@@ -74,115 +74,85 @@ about the available options.
 Infrastructure service roles
 ----------------------------
 
-- `galera_server
-  <http://docs.openstack.org/developer/openstack-ansible-galera_server>`_
+- :role_docs:`galera_server`
 
-- `haproxy_server
-  <http://docs.openstack.org/developer/openstack-ansible-haproxy_server>`_
+- :role_docs:`haproxy_server`
 
-- `memcached_server
-  <http://docs.openstack.org/developer/openstack-ansible-memcached_server>`_
+- :role_docs:`memcached_server`
 
-- `rabbitmq_server
-  <http://docs.openstack.org/developer/openstack-ansible-rabbitmq_server>`_
+- :role_docs:`rabbitmq_server`
 
-- `repo_build
-  <http://docs.openstack.org/developer/openstack-ansible-repo_build>`_
+- :role_docs:`repo_build`
 
-- `repo_server
-  <http://docs.openstack.org/developer/openstack-ansible-repo_server>`_
+- :role_docs:`repo_server`
 
-- `rsyslog_server
-  <http://docs.openstack.org/developer/openstack-ansible-rsyslog_server>`_
+- :role_docs:`rsyslog_server`
 
 
 OpenStack service roles
 -----------------------
 
--  `os_aodh <http://docs.openstack.org/developer/openstack-ansible-os_aodh>`_
+- :role_docs:`os_aodh`
 
--  `os_barbican
-   <http://docs.openstack.org/developer/openstack-ansible-os_barbican>`_
+- :role_docs:`os_barbican`
 
--  `os_ceilometer
-   <http://docs.openstack.org/developer/openstack-ansible-os_ceilometer>`_
+- :role_docs:`os_ceilometer`
 
--  `os_cinder
-   <http://docs.openstack.org/developer/openstack-ansible-os_cinder>`_
+- :role_docs:`os_cinder`
 
--  `os_designate
-   <http://docs.openstack.org/developer/openstack-ansible-os_designate>`_
+- :role_docs:`os_designate`
 
--  `os_glance
-   <http://docs.openstack.org/developer/openstack-ansible-os_glance>`_
+- :role_docs:`os_glance`
 
--  `os_gnocchi
-   <http://docs.openstack.org/developer/openstack-ansible-os_gnocchi>`_
+- :role_docs:`os_gnocchi`
 
--  `os_heat <http://docs.openstack.org/developer/openstack-ansible-os_heat>`_
+- :role_docs:`os_heat`
 
--  `os_horizon
-   <http://docs.openstack.org/developer/openstack-ansible-os_horizon>`_
+- :role_docs:`os_horizon`
 
--  `os_ironic
-   <http://docs.openstack.org/developer/openstack-ansible-os_ironic>`_
+- :role_docs:`os_ironic`
 
--  `os_keystone
-   <http://docs.openstack.org/developer/openstack-ansible-os_keystone>`_
+- :role_docs:`os_keystone`
 
--  `os_magnum
-   <http://docs.openstack.org/developer/openstack-ansible-os_magnum>`_
+- :role_docs:`os_magnum`
 
--  `os_neutron
-   <http://docs.openstack.org/developer/openstack-ansible-os_neutron>`_
+- :role_docs:`os_neutron`
 
--  `os_nova <http://docs.openstack.org/developer/openstack-ansible-os_nova>`_
+- :role_docs:`os_nova`
 
--  `os_rally <http://docs.openstack.org/developer/openstack-ansible-os_rally>`_
+- :role_docs:`os_rally`
 
--  `os_sahara
-   <http://docs.openstack.org/developer/openstack-ansible-os_sahara>`_
+- :role_docs:`os_sahara`
 
--  `os_swift <http://docs.openstack.org/developer/openstack-ansible-os_swift>`_
+- :role_docs:`os_swift`
 
--  `os_tempest
-   <http://docs.openstack.org/developer/openstack-ansible-os_tempest>`_
+- :role_docs:`os_tempest`
 
--  `os_trove <http://docs.openstack.org/developer/openstack-ansible-os_trove>`_
+- :role_docs:`os_trove`
 
 
 Other roles
 -----------
 
-- `ansible-plugins
-  <http://docs.openstack.org/developer/openstack-ansible-plugins>`_
+- :role_docs:`ansible-plugins`
 
-- `apt_package_pinning
-  <http://docs.openstack.org/developer/openstack-ansible-apt_package_pinning/>`_
+- :role_docs:`apt_package_pinning`
 
-- `ceph_client
-  <http://docs.openstack.org/developer/openstack-ansible-ceph_client>`_
+- :role_docs:`ceph_client`
 
-- `galera_client
-  <http://docs.openstack.org/developer/openstack-ansible-galera_client>`_
+- :role_docs:`galera_client`
 
-- `lxc_container_create
-  <http://docs.openstack.org/developer/openstack-ansible-lxc_container_create>`_
+- :role_docs:`lxc_container_create`
 
-- `lxc_hosts
-  <http://docs.openstack.org/developer/openstack-ansible-lxc_hosts>`_
+- :role_docs:`lxc_hosts`
 
-- `pip_install
-  <http://docs.openstack.org/developer/openstack-ansible-pip_install/>`_
+- :role_docs:`pip_install`
 
-- `openstack_openrc
-  <http://docs.openstack.org/developer/openstack-ansible-openstack_openrc>`_
+- :role_docs:`openstack_openrc`
 
-- `openstack_hosts
-  <http://docs.openstack.org/developer/openstack-ansible-openstack_hosts>`_
+- :role_docs:`openstack_hosts`
 
-- `rsyslog_client
-  <http://docs.openstack.org/developer/openstack-ansible-rsyslog_client>`_
+- :role_docs:`rsyslog_client`
 
 Configuring service credentials
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
