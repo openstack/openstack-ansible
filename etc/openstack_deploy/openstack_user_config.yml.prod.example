@@ -252,7 +252,10 @@ storage_hosts:
     container_vars:
       cinder_backends:
         limit_container_types: cinder_volume
-        cinder_nfs_client:
+        nfs_volume:
+          volume_backend_name: NFS_VOLUME1
+          volume_driver: cinder.volume.drivers.nfs.NfsDriver
+          nfs_mount_options: "rsize=65535,wsize=65535,timeo=1200,actimeo=120"
           nfs_shares_config: /etc/cinder/nfs_shares
           shares:
             - ip: "172.29.244.15"
@@ -262,7 +265,10 @@ storage_hosts:
     container_vars:
       cinder_backends:
         limit_container_types: cinder_volume
-        cinder_nfs_client:
+        nfs_volume:
+          volume_backend_name: NFS_VOLUME1
+          volume_driver: cinder.volume.drivers.nfs.NfsDriver
+          nfs_mount_options: "rsize=65535,wsize=65535,timeo=1200,actimeo=120"
           nfs_shares_config: /etc/cinder/nfs_shares
           shares:
             - ip: "172.29.244.15"
@@ -272,7 +278,10 @@ storage_hosts:
     container_vars:
       cinder_backends:
         limit_container_types: cinder_volume
-        cinder_nfs_client:
+        nfs_volume:
+          volume_backend_name: NFS_VOLUME1
+          volume_driver: cinder.volume.drivers.nfs.NfsDriver
+          nfs_mount_options: "rsize=65535,wsize=65535,timeo=1200,actimeo=120"
           nfs_shares_config: /etc/cinder/nfs_shares
           shares:
             - ip: "172.29.244.15"
