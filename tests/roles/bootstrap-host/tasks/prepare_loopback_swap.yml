@@ -13,43 +13,48 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Create swap file
-  shell: "fallocate -l {{ bootstrap_host_swap_size }}G /openstack/swap.img"
-  args:
-    creates: /openstack/swap.img
-  register: swap_create
-  tags:
-    - swap-file-create
+- block:
+    - name: Check if swap is already enabled
+      command: grep /openstack/swap.img /proc/swaps
 
-- name: Set swap file permissions to 0600
-  file:
-    path: /openstack/swap.img
-    mode: 0600
-  tags:
-    - swap-permissions
+  rescue:
+    - name: Create swap file
+      command: "fallocate -l {{ bootstrap_host_swap_size }}G /openstack/swap.img"
+      args:
+        creates: /openstack/swap.img
+      register: swap_create
+      tags:
+        - swap-file-create
 
-- name: Format the swap file
-  shell: mkswap /openstack/swap.img
-  when: swap_create | changed
-  tags:
-    - swap-format
+    - name: Set swap file permissions to 0600
+      file:
+        path: /openstack/swap.img
+        mode: 0600
+      tags:
+        - swap-permissions
 
-- name: Ensure that the swap file entry is in /etc/fstab
-  mount:
-    name: none
-    src: /openstack/swap.img
-    fstype: swap
-    opts: sw
-    passno: 0
-    dump: 0
-    state: present
-  tags:
-    - swap-fstab
+    - name: Format the swap file
+      command: mkswap /openstack/swap.img
+      when: swap_create | changed
+      tags:
+        - swap-format
 
-- name: Bring swap file online
-  shell: swapon /openstack/swap.img
-  tags:
-    - swap-online
+    - name: Ensure that the swap file entry is in /etc/fstab
+      mount:
+        name: none
+        src: /openstack/swap.img
+        fstype: swap
+        opts: sw
+        passno: 0
+        dump: 0
+        state: present
+      tags:
+        - swap-fstab
+
+    - name: Bring swap file online
+      command: swapon /openstack/swap.img
+      tags:
+        - swap-online
 
 - name: Set system swappiness
   sysctl:
