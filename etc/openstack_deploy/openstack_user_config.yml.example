@@ -530,6 +530,14 @@
 #           Location in which to mount NFS shares, typically
 #           '$state_path/mnt'.
 #
+#           Option: nfs_mount_options (optional, string)
+#           Mount options used for the NFS mount points.
+#
+#           Option: shares (required)
+#           List of shares to populate the 'nfs_shares_config' file. Each share
+#           uses the following format:
+#           - { ip: "{{ ip_nfs_server }}", share "/vol/cinder" }
+#
 #           The following options apply to the NetApp backend driver:
 #
 #           Option: volume_driver (required, string)
@@ -560,20 +568,6 @@
 #
 #           Option: netapp_password (required, string)
 #           NetApp server password.
-#
-#        Level: cinder_nfs_client (optional)
-#        Automates management of the file that cinder references for a list of
-#        NFS mounts.
-#
-#          Option: nfs_shares_config (required, string)
-#          File containing list of NFS shares available to cinder, typically
-#          typically /etc/cinder/nfs_shares.
-#
-#          Level: shares (required)
-#          List of shares to populate the 'nfs_shares_config' file. Each share
-#          uses the following format:
-#
-#          - { ip: "{{ ip_nfs_server }}", share: "/vol/cinder" }
 #
 # Example:
 #
