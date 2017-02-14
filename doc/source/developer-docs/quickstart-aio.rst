@@ -74,14 +74,14 @@ development) build it is usually best to checkout the latest tagged version.
    # git tag -l
 
    # # Checkout the stable branch and find just the latest tag
-   # git checkout stable/|previous_release_branch_name|
+   # git checkout stable/|current_release_branch_name|
    # git describe --abbrev=0 --tags
 
    # # Checkout the latest tag from either method of retrieving the tag.
    # git checkout |latest_tag|
 
 .. note::
-   The |previous_release_formal_name| release is only compatible with Ubuntu 14.04 (Trusy Tahr).
+   The |current_release_formal_name| release is only compatible with Ubuntu 14.04 (Trusy Tahr) and Ubuntu 16.04 (Xenial Xerus).
 
 By default the scripts deploy all OpenStack services with sensible defaults
 for the purpose of a gate check, development or testing system.
