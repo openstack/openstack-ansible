@@ -11,4 +11,3 @@ in maintaining it.
    :maxdepth: 2
 
    additional-roles
-   advanced-role-docs
