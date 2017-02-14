@@ -1,0 +1,8 @@
+---
+other:
+  - The limits.conf file for galera servers will now be
+    deployed under ``/etc/security/limits.d/99-limits.conf``.
+    This is being done to ensure our changes do not clobber
+    existing settings within the system's default
+    ``/etc/security/limits.conf`` file when the file is
+    templated.
