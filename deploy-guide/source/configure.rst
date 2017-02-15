@@ -134,8 +134,6 @@ OpenStack service roles
 Other roles
 -----------
 
-- :role_docs:`ansible-plugins`
-
 - :role_docs:`apt_package_pinning`
 
 - :role_docs:`ceph_client`
@@ -148,9 +146,11 @@ Other roles
 
 - :role_docs:`pip_install`
 
-- :role_docs:`openstack_openrc`
+- :role_docs:`plugins`
 
 - :role_docs:`openstack_hosts`
+
+- :role_docs:`openstack_openrc`
 
 - :role_docs:`rsyslog_client`
 
