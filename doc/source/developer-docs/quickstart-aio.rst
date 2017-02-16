@@ -54,6 +54,12 @@ system packages are upgraded and then reboot into the new kernel:
    # apt-get dist-upgrade
    # reboot
 
+.. note::
+
+   If you are installing with limited connectivity, please review
+   the *Installing with limited connectivity* appendix in the
+   `Deployment Guide`_ before proceeding.
+
 Start by cloning the OpenStack-Ansible repository and changing into the
 repository root directory:
 
@@ -149,8 +155,8 @@ for the OpenStack Deployment. This preparation is completed by executing:
 
 If you wish to add any additional configuration entries for the OpenStack
 configuration then this can be done now by editing
-``/etc/openstack_deploy/user_variables.yml``. Please see the `Install Guide`_
-for more details.
+``/etc/openstack_deploy/user_variables.yml``. Please see the
+`Deployment Guide`_ for more details.
 
 Finally, run the playbooks by executing:
 
@@ -189,7 +195,7 @@ Keystone service, execute:
 that are not requested for deployment, but the service will not be deployed
 in that container.
 
-.. _Install Guide: http://docs.openstack.org/project-deploy-guide/openstack-ansible/newton/
+.. _Deployment Guide: http://docs.openstack.org/project-deploy-guide/openstack-ansible/newton/
 
 Rebooting an AIO
 ----------------
@@ -204,7 +210,8 @@ This is done by executing the following:
    # openstack-ansible -e galera_ignore_cluster_state=true galera-install.yml
 
 If this fails to get the database cluster back into a running state, then
-please make use of the `Galera Cluster Recovery`_ page in the Install Guide.
+please make use of the `Galera Cluster Recovery`_ page in the Deployment
+Guide.
 
 .. _Galera Cluster Recovery: http://docs.openstack.org/developer/openstack-ansible/newton/developer-docs/ops-galera-recovery.html
 
