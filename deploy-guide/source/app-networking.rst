@@ -58,16 +58,36 @@ connected to the host's bridges and physical network interfaces:
 Network diagrams
 ~~~~~~~~~~~~~~~~
 
+Hosts with services running in containers
+-----------------------------------------
+
 The following diagram shows how all of the interfaces and bridges interconnect
 to provide network connectivity to the OpenStack deployment:
 
 .. image:: figures/networkarch-container-external.png
+
+The interface ``lxcbr0`` provides connectivity for the containers to the
+outside world, thanks to dnsmasq (dhcp/dns) + NAT.
+
+.. note::
+
+   If you require additional network configuration for your container interfaces
+   (like changing the routes on eth1 for routes on the management network),
+   please adapt your ``openstack_user_config.yml`` file, with the help of the
+   heavily documented ``openstack_user_config.yml.example`` file.
+
+
+Services running "on metal" (deploying directly on the physical hosts)
+----------------------------------------------------------------------
 
 OpenStack-Ansible deploys the Compute service on the physical host rather than
 in a container. The following diagram shows how to use bridges for
 network connectivity:
 
 .. image:: figures/networkarch-bare-external.png
+
+Neutron traffic
+---------------
 
 The following diagram shows how the Networking service (neutron) agents
 work with the ``br-vlan`` and ``br-vxlan`` bridges. Neutron is configured to
