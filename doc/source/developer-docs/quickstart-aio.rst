@@ -56,6 +56,12 @@ system packages are upgraded and then reboot into the new kernel:
    # apt-get dist-upgrade
    # reboot
 
+.. note::
+
+   If you are installing with limited connectivity, please review
+   the *Installing with limited connectivity* appendix in the
+   `Deployment Guide`_ before proceeding.
+
 Start by cloning the OpenStack-Ansible repository and changing into the
 repository root directory:
 

@@ -36,4 +36,3 @@ For more information about the security configurations, see the
 .. _openstack-ansible-security: http://docs.openstack.org/developer/openstack-ansible-security/
 .. _Security Technical Implementation Guide (STIG): https://en.wikipedia.org/wiki/Security_Technical_Implementation_Guide
 .. _OpenStack-Ansible host security: http://docs.openstack.org/developer/openstack-ansible-security/
-.. _Appendix H: ../install-guide/app-custom-layouts.html
