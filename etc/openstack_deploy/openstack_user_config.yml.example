@@ -150,6 +150,17 @@
 #       Name of mechanism that connects interfaces in containers to the bridge
 #       on target hosts for this network. Typically 'veth'.
 #
+#       Option: host_bind_override (optional, string)
+#       Name of the physical network interface on the same L2 network being
+#       used with the br-vlan device. This host_bind_override should only
+#       be set for the ' container_bridge: "br-vlan" '.
+#       This interface is optional but highly recommended for vlan based
+#       OpenStack networking.
+#       If no additional network interface is available, a deployer can create
+#       a veth pair, and plug it into the the br-vlan bridge to provide
+#       this interface. An example could be found in the aio_interfaces.cfg
+#       file.
+#
 #       Option: container_mtu (optional, string)
 #       Sets the MTU within LXC for a given network type.
 #
@@ -178,6 +189,18 @@
 #       (VNI). For 'vlan' type neutron networks, range of VLAN tags. Supports
 #       more than one range of VLANs on a particular network. Coincides with
 #       ML2 plug-in configuration options.
+#
+#       Option: static_routes (optional, list)
+#       List of additional routes to give to the container interface.
+#       Each item is composed of cidr and gateway. The items will be
+#       translated into the container network interfaces configuration
+#       as a `post-up ip route add <cidr> via <gateway> || true`.
+#
+#       Option: gateway (optional, string)
+#       String containing the IP of the default gateway used by the
+#       container. Generally not needed: the containers will have
+#       their default gateway set with dnsmasq, poitining to the host
+#       which does natting for container connectivity.
 #
 #   Example:
 #
