@@ -14,7 +14,6 @@ Contents:
    :maxdepth: 2
 
    quickstart-aio
-   installation-hosts-limited-connectivity
    scripts
    playbooks
    contribute

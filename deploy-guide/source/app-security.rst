@@ -8,7 +8,7 @@ default. This appendix provides a detailed overview of the most important
 security enhancements.
 
 For more information about configuring security, see
-:deploy_guide:`Appendix F <app-advanced-config-options.html>`.
+:deploy_guide:`Appendix G <app-advanced-config-options.html>`.
 
 .. note::
 

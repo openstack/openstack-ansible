@@ -64,6 +64,12 @@ system packages are upgraded and then reboot into the new kernel:
    # yum install centos-release-openstack-newton git
    # reboot
 
+.. note::
+
+   If you are installing with limited connectivity, please review
+   the *Installing with limited connectivity* appendix in the
+   `Deployment Guide`_ before proceeding.
+
 Start by cloning the OpenStack-Ansible repository and changing into the
 repository root directory:
 
@@ -201,7 +207,7 @@ Keystone service, execute:
 that are not requested for deployment, but the service will not be deployed
 in that container.
 
-.. _Deployment Guide: http://docs.openstack.org/project-deploy-guide/openstack-ansible/draft/
+.. _Deployment Guide: http://docs.openstack.org/project-deploy-guide/openstack-ansible/ocata/
 
 Rebooting an AIO
 ----------------
