@@ -77,17 +77,3 @@ on 11 September 2015.
 .. _OpenStack-Ansible Liberty Documentation: http://docs.openstack.org/developer/openstack-ansible/liberty/
 .. _OpenStack-Ansible Liberty Series Release Notes: http://docs.openstack.org/releasenotes/openstack-ansible/liberty.html
 .. _OpenStack-Ansible Liberty Series Timeline: https://launchpad.net/openstack-ansible/liberty
-
-Kilo: End of Life (2016-07-05)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-OpenStack-Ansible's Kilo series was first released with the 11.0.0 tag on
-30 April 2015.
-
-* `OpenStack-Ansible Kilo Documentation`_
-
-* `OpenStack-Ansible Kilo Series Timeline`_
-
-.. _OpenStack-Ansible Kilo Documentation: http://docs.openstack.org/developer/openstack-ansible/kilo/
-.. _OpenStack-Ansible Kilo Series Timeline: https://launchpad.net/openstack-ansible/kilo
-
