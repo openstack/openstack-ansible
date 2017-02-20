@@ -15,6 +15,7 @@
 
 - name: Installation and setup of Keystone
   hosts: keystone_all
+  serial: "{{ keystone_serial }}"
   gather_facts: "{{ gather_facts | default(True) }}"
   max_fail_percentage: 20
   user: root
@@ -76,6 +77,9 @@
       with_items:
         - { key: "net.ipv4.ip_local_reserved_ports", value: "{{ keystone_admin_port }}"}
       when: is_metal | bool
+    - include: common-tasks/haproxy-endpoint-manage.yml
+      haproxy_state: disabled
+      when: "{{ groups['keystone_all'] | length > 1 }}"
   roles:
     - role: "os_keystone"
     - role: "openstack_openrc"
@@ -90,8 +94,15 @@
     - role: "system_crontab_coordination"
       tags:
         - crontab
+  post_tasks:
+    - include: common-tasks/haproxy-endpoint-manage.yml
+      haproxy_state: enabled
+      when: "{{ groups['keystone_all'] | length > 1 }}"
   vars:
     is_metal: "{{ properties.is_metal|default(false) }}"
+    keystone_serial:
+      - 1
+      - 100%
     keystone_admin_port: 35357
     keystone_galera_user: keystone
     keystone_galera_database: keystone
