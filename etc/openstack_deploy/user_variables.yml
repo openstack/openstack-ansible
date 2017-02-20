@@ -164,11 +164,3 @@ debug: false
 # All the previous variables are used in a var file, fed to the keepalived role.
 # To use another file to feed the role, override the following var:
 # haproxy_keepalived_vars_file: 'vars/configs/keepalived_haproxy.yml'
-
-## Host security hardening
-# The openstack-ansible-security role provides security hardening for hosts
-# by applying security configurations from the STIG. Hardening is disabled by
-# default, but an option to opt-in is available by setting the following
-# variable to 'true'.
-# Docs: http://docs.openstack.org/developer/openstack-ansible-security/
-# apply_security_hardening: true
