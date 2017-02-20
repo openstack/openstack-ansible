@@ -468,3 +468,13 @@ fetch_directory: /etc/openstack_deploy/ceph-fetch/
 # exists. we handle the log dir creation so this is not something we need
 # ceph-common to prepare for us.
 rbd_client_directories: false
+
+# Magnum
+magnum_bind_port: 9511
+magnum_service_proto: http
+magnum_service_publicuri_proto: "{{ openstack_service_publicuri_proto | default(magnum_service_proto) }}"
+magnum_service_publicurl: "{{ magnum_service_publicuri_proto }}://{{ external_lb_vip_address }}:{{ magnum_bind_port }}"
+magnum_service_internaluri_proto: "{{ openstack_service_internaluri_proto | default(magnum_service_proto) }}"
+magnum_service_internalurl: "{{ magnum_service_internaluri_proto }}://{{ internal_lb_vip_address }}:{{ magnum_bind_port }}"
+magnum_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(magnum_service_proto) }}"
+magnum_service_adminurl: "{{ magnum_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ magnum_bind_port }}"
