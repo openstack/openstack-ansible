@@ -37,6 +37,11 @@ only needed to execute a command on ``compute1`` and ``compute4``:
 
    Each host is comma-separated with no spaces.
 
+.. note::
+
+   Run the ad-hoc Ansible commands from the ``openstack-ansible/playbooks``
+   directory.
+
 For more information, see `Inventory <http://docs.ansible.com/ansible/intro_inventory.html>`_
 and `Patterns <http://docs.ansible.com/ansible/intro_patterns.html>`_.
 
