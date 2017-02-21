@@ -2,12 +2,11 @@
 Networking service
 ==================
 
+The os_neutron role provides for a lot of flexibility. See the `neutron`_ role
+for a full list of all available options.
+
 Load-Balancer-as-a-Service (LBaaS)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The LBaaS functionality is configured and deployed using
-OpenStack-Ansible. For more information about LBaaS operations,
-see `LBaaS`_ in the OpenStack Networking guide.
 
 Understand the following characteristics of the OpenStack-Ansible LBaaS
 technical preview:
@@ -26,16 +25,15 @@ technical preview:
    listeners, pools, members, and health checks.
  * SDN integration is not supported.
 
-
-In Mitaka, you can `enable Dashboard (horizon) panels`_ for LBaaS.
-Additionally, a customer can specify a list of servers behind a
+Since Mitaka, you can `enable Dashboard (horizon) panels`_ for LBaaS.
+Additionally, a deployer can specify a list of servers behind a
 listener and reuse that list for another listener. This feature,
 called *shared pools*, only applies to customers that have a large
 number of listeners (ports) behind a load balancer.
 
-.. _LBaaS:
-   http://docs.openstack.org/mitaka/networking-guide/config-lbaas.html
+.. _neutron:
+   https://docs.openstack.org/developer/openstack-ansible-os_neutron
 
 .. _enable Dashboard (horizon) panels:
-   http://docs.openstack.org/developer/openstack-ansible/mitaka/install-guide/
-   configure-network-services.html#deploying-lbaas-v2
+   https://docs.openstack.org/developer/openstack-ansible-os_horizon
+
