@@ -124,9 +124,11 @@ cache host facts and information.
 OpenStack-Ansible enables fact caching by default. The facts are
 cached in JSON files within ``/etc/openstack_deploy/ansible_facts``.
 
-Fact caching can be disabled by commenting out the ``fact_caching``
-parameter in ``playbooks/ansible.cfg``. Refer to the Ansible
-documentation on `fact caching`_ for more details.
+Fact caching can be disabled by running
+``export ANSIBLE_CACHE_PLUGIN=memory``.
+To set this permanently, set this variable in
+``/usr/local/bin/openstack-ansible.rc``.
+Refer to the Ansible documentation on `fact caching`_ for more details.
 
 .. _fact caching: http://docs.ansible.com/ansible/playbooks_variables.html#fact-caching
 
