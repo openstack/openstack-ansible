@@ -280,12 +280,12 @@ Example task using the config_template module
      config_template:
        src: test.ini.j2
        dest: /tmp/test.ini
-       config_overrides: {{ test_overrides }}
+       config_overrides: "{{ test_overrides }}"
        config_type: ini
 
 
-Example overrides dictionary(hash)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Example overrides dictionary (hash)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: yaml
 
@@ -294,8 +294,8 @@ Example overrides dictionary(hash)
        new_item: 12345
 
 
-Original template file test.ini.j2
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Original template file ``test.ini.j2``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: ini
 
@@ -304,8 +304,8 @@ Original template file test.ini.j2
    value2 = 123
 
 
-Rendered on disk file /tmp/test.ini
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Rendered on disk file ``/tmp/test.ini``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: ini
 
@@ -317,7 +317,7 @@ Rendered on disk file /tmp/test.ini
 
 In this task the ``test.ini.j2`` file is a template which will be rendered and
 written to disk at ``/tmp/test.ini``. The **config_overrides** entry is a
-dictionary(hash) which allows a deployer to set arbitrary data as overrides to
+dictionary (hash) which allows a deployer to set arbitrary data as overrides to
 be written into the configuration file at run time. The **config_type** entry
 specifies the type of configuration file the module will be interacting with;
 available options are "yaml", "json", and "ini".
