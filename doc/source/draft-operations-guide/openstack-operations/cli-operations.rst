@@ -23,35 +23,23 @@ List images
        +------------------+--------------+--------+
 
 
-List services
-~~~~~~~~~~~~~
+List compute services
+~~~~~~~~~~~~~~~~~~~~~
 
-    The :command:`nova service-list` command details the currently running
-    services:
-
-    .. code::
-
-       $ nova service-list
-       +----+------------------+------------+----------+---------+-------+----------------------------+-----------------+
-       | Id | Binary           | Host       | Zone     | Status  | State | Updated_at                 | Disabled Reason |
-       +----+------------------+------------+----------+---------+-------+----------------------------+-----------------+
-       | 4  | nova-consoleauth | controller | internal | enabled | up    | 2016-12-14T04:06:03.000000 | -               |
-       | 5  | nova-scheduler   | controller | internal | enabled | up    | 2016-12-14T04:06:03.000000 | -               |
-       | 6  | nova-conductor   | controller | internal | enabled | up    | 2016-12-14T04:05:59.000000 | -               |
-       | 9  | nova-compute     | compute    | nova     | enabled | down  | 2016-10-21T02:35:03.000000 | -               |
-       +----+------------------+------------+----------+---------+-------+----------------------------+-----------------+
-
-
-View logs
-~~~~~~~~~
-
-    All logs are available in the ``/var/log/`` directory and its
-    subdirectories. The **tail** command shows the most recent entries
-    in a specified log file:
+    The :command:`openstack compute service list` command details the currently
+    running compute services:
 
     .. code::
 
-       $ tail /var/log/nova/nova.log
+       $ openstack compute service list
+       +------------------+------------+----------+---------+-------+----------------------------+
+       | Binary           | Host       | Zone     | Status  | State | Updated_at                 |
+       +------------------+------------+----------+---------+-------+----------------------------+
+       | nova-consoleauth | controller | internal | enabled | up    | 2017-02-21T20:25:17.000000 |
+       | nova-scheduler   | controller | internal | enabled | up    | 2017-02-21T20:25:18.000000 |
+       | nova-conductor   | controller | internal | enabled | up    | 2017-02-21T20:25:20.000000 |
+       | nova-compute     | compute    | nova     | enabled | up    | 2017-02-21T20:25:20.000000 |
+       +------------------+------------+----------+---------+-------+----------------------------+
 
 
 List flavors
@@ -63,21 +51,17 @@ List flavors
 
     .. code::
 
-       $ nova flavor-list
-       +----+-----------+-----------+------+-----------+------+-------+-------------+
-       | ID |    Name   | Memory_MB | Disk | Ephemeral | Swap | VCPUs | RXTX_Factor |
-       +----+-----------+-----------+------+-----------+------+-------+-------------+
-       | 1  | m1.tiny   | 512       | 0    | 0         |      | 1     | 1.0         |
-       | 2  | m1.small  | 2048      | 10   | 20        |      | 1     | 1.0         |
-       | 3  | m1.medium | 4096      | 10   | 40        |      | 2     | 1.0         |
-       | 4  | m1.large  | 8192      | 10   | 80        |      | 4     | 1.0         |
-       | 5  | m1.xlarge | 16384     | 10   | 160       |      | 8     | 1.0         |
-       +----+-----------+-----------+------+-----------+------+-------+-------------+
+       $ openstack flavor list
+       +-----+-----------+-------+------+-----------+-------+-----------+
+       | ID  | Name      |   RAM | Disk | Ephemeral | VCPUs | Is Public |
+       +-----+-----------+-------+------+-----------+-------+-----------+
+       | 1   | m1.tiny   |   512 |    1 |         0 |     1 | True      |
+       | 2   | m1.small  |  2048 |   20 |         0 |     1 | True      |
+       | 3   | m1.medium |  4096 |   40 |         0 |     2 | True      |
+       | 4   | m1.large  |  8192 |   80 |         0 |     4 | True      |
+       | 5   | m1.xlarge | 16384 |  160 |         0 |     8 | True      |
+       +-----+-----------+-------+------+-----------+-------+-----------+
 
-
-    .. important::
-
-       Do not remove the default flavors.
 
 List floating IP addresses
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
