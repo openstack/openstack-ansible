@@ -2,36 +2,25 @@
 Backups
 =======
 
-This is a draft backups page for the proposed OpenStack-Ansible
-operations guide.
-
-Checking for recent back ups
+Creating backups of database
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Before adding new nodes to your OpenStack-Ansible environment, it is possible
-to confirm that a recent back up resides inside the ``holland_backups``
-repository:
+Content to be written. Patches welcome!
 
-#. Log in to the Infra host where the Galera service creates backups.
+Restoring the database
+~~~~~~~~~~~~~~~~~~~~~~
 
-#. Run the :command:``ls -ls`` command to view the contents of the
-   back up files:
+Content to be written. Patches welcome!
 
-   .. code::
-
-      <node-ID>-Infra01~#: ls -ls /openstack/backup/XXXX_galera_containe
+`Backup Recovery <https://docs.openstack.org/ops-guide/ops-backup-recovery.html>`_
 
 Backup of /etc/openstack_deploy
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Details about our inventory backup we are already doing, but also more
-content can go there on how to backup and restore this.
+Save the files into a remote location. They hold live inventory, host
+structure, network information, passwords and many other variables.
 
-Backup of Galera data
-~~~~~~~~~~~~~~~~~~~~~
+Restore /etc/openstack_deploy
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Backup your environment
-~~~~~~~~~~~~~~~~~~~~~~~
-
-Backup procedure
-----------------
+Copy the files back. Simple as that.
