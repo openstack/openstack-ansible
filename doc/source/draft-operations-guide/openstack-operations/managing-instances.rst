@@ -122,19 +122,19 @@ Using an image, create a new instance via the Dashboard options.
 Creating an instance using the command line
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-On the command line, image creation is managed with the **nova boot**
-command. Before launching an image, determine what images and flavors
-are available to create a new instance using the **nova image-list** and
-**nova flavor-list** commands.
+On the command line, instance creation is managed with the **openstack server
+create** command. Before launching an instance, determine what images and
+flavors are available to create a new instance using the **openstack image
+list** and **openstack flavor list** commands.
 
-#. Log in to the controller node.
+#. Log in to any utility container.
 
-#. Issue the **nova boot** command with a name for the instance, along
-   with the name of the image and flavor to use:
+#. Issue the **openstack server create** command with a name for the instance,
+   along with the name of the image and flavor to use:
 
    .. code::
 
-      $ nova boot --image precise-image --flavor=2 --key-name example-key example-instance
+      $ openstack server create --image precise-image --flavor=2 --key-name example-key example-instance
       +-------------------------------------+--------------------------------------+
       |               Property              |                Value                 |
       +-------------------------------------+--------------------------------------+
@@ -165,17 +165,17 @@ are available to create a new instance using the **nova image-list** and
       +-------------------------------------+--------------------------------------+
 
 
-#. To check that the instance was created successfully, issue the **nova
-   list** command:
+#. To check that the instance was created successfully, issue the **openstack
+   server list** command:
 
    .. code::
 
-      $ nova list
-      +------------------+------------------+--------+-------------------+
-      |        ID        |       Name       | Status |      Networks     |
-      +------------------+------------------+--------+-------------------+
-      | [ID truncated]   | example-instance | ACTIVE |  public=192.0.2.0 |
-      +------------------+------------------+--------+-------------------+
+      $ openstack server list
+      +------------------+------------------+--------+-------------------+---------------+
+      |        ID        |       Name       | Status |      Networks     |   Image Name  |
+      +------------------+------------------+--------+-------------------+---------------+
+      | [ID truncated]   | example-instance | ACTIVE |  public=192.0.2.0 | precise-image |
+      +------------------+------------------+--------+-------------------+---------------+
 
 
 Managing an instance
