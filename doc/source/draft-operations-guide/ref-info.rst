@@ -46,15 +46,15 @@ Finding Ansible scripts after installation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 All scripts used to install OpenStack with Ansible can be viewed from
-the repository on GitHub, and on the local infrastructure server.
+the repository on GitHub, and on the deployment host.
 
 The repository containing the scripts and playbooks is located at
 https://github.com/openstack/openstack-ansible.
 
-To access the scripts and playbooks on the local ``infra01`` server,
+To access the scripts and playbooks on your deployment host,
 follow these steps.
 
-#. Log into the ``infra01`` server.
+#. Log into your deployment host.
 
 #. Change to the ``/opt/openstack-ansible`` directory.
 
