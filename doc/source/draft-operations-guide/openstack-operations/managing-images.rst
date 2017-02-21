@@ -47,79 +47,16 @@ Images can be compressed using ``.zip`` or ``.tar.gz``.
 Adding an image using the command line
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Log into the controller node directly to add images using the command
-line with OpenStack command line clients. Glance commands allow users to
-add, manipulate, and manage images.
+The utility container provides a CLI environment for additional
+configuration and management.
 
-Alternatively, configure the environment with administrative access to
-the controller.
+#. Access the utility container:
 
-#. Log into the controller node.
+   .. code::
 
-#. Run the ``openstack image create`` command, and specify the image name.
-   Use the
-   ``--file <The Image File>`` variable to specify the image file.
+      $ lxc-attach -n `lxc-ls -1 | grep utility | head -n 1`
 
-#. Run the ``openstack image set`` command, and specify the image name with the
-   ``--name <The Image Name>`` variable.
+Use the openstack client within the utility container to manage all glance images.
+`See the openstack client official documentation on managing images
+<https://docs.openstack.org/image-guide/create-images-manually.html>`_.
 
-#. View a list of all the images currently available with ``openstack
-   image list``.
-
-#. Run the ``openstack image list`` command to view more details on each image.
-
- .. list-table:: **glance image details**
-    :widths: 33 33 33
-    :header-rows: 1
-
-    * - Variable
-      - Required
-      - Details
-    * - ``--name NAME``
-      - Optional
-      - A name for the image
-    * - ``--public [True|False]``
-      - Optional
-      - If set to ``true``, makes the image available to all users. Permission
-        to set this variable is admin only by default.
-    * - ``--protected [True|False]``
-      - Optional
-      - If set to ``true``, this variable prevents an image from being deleted.
-    * - ``--container-format CONTAINER_FORMAT``
-      - Required
-      - The type of container format, one of ``ami``, ``ari``, ``aki``,
-        ``bare``, or ``ovf``
-    * - ``--disk-format DISK_FORMAT``
-      - Required
-      - The type of disk format, one of ``ami``, ``ari``, ``aki``, ``vhd``,
-        ``vdi``, and ``iso``
-    * - ``--owner PROJECT_ID``
-      - Optional
-      - The tenant who should own the image.
-    * - ``--size SIZE``
-      - Optional
-      - Size of the image data, which is measured in bytes.
-    * - ``--min-disk DISK_GB``
-      - Optional
-      - The minimum size of the disk needed to boot the image being configured,
-        which is measured in gigabytes.
-    * - ``--min-ram DISK_GB``
-      - Optional
-      - The minimum amount of RAM needed to boot the image being configured,
-        which is measured in megabytes.
-    * - ``--location IMAGE_URL``
-      - Optional
-      - The location where the image data resides. This variables sets the
-        location as a URL. If the image data is stored on a swift service,
-        specify:  swift://account:<key@example.com>/container/obj.
-    * - ``--checksum CHECKSUM``
-      - Optional
-      - Image data hash used for verification.
-    * - ``--copy-from IMAGE_URL``
-      - Optional
-      - Indicates that the image server should copy data immediately, and store
-        it in its configured image store.
-    * - ``--property KEY=VALUE``
-      - Optional
-      - This variable associates an arbitrary property to the image, and can be
-        used multiple times.
