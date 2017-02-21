@@ -1,6 +1,8 @@
-===============================================
-Installation on hosts with limited connectivity
-===============================================
+.. _limited-connectivity-appendix:
+
+================================================
+Appendix F: Installing with limited connectivity
+================================================
 
 Many playbooks and roles in OpenStack-Ansible retrieve dependencies from the
 public Internet by default. Many deployers block direct outbound connectivity
@@ -17,23 +19,6 @@ Example internet dependencies
 - LXC container images
 - Source code repositories
 - GPG keys for package validation
-
-Install pip through deployment host
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-You may install pip via the deployment host in environments where the
-deployment host has internet connectivity, but the containers do not.
-
-Configure the ``pip_offline_install`` variable to enable the deployment
-host to fetch pip along with its dependencies, then transfer them to the
-remote container for installation.
-
-Configuration changes are made in ``/etc/openstack_deploy/user_variables.yml``.
-
-.. code-block:: yaml
-
-      # Install pip via deployment host
-      pip_offline_install: true
 
 Practice A: Mirror internet resources locally
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -101,8 +86,7 @@ automation for creating the proxy server(s).
 .. note::
 
    We recommend you set your ``/etc/environment`` variables with proxy
-   settings before launching ``scripts/run-playbooks.sh`` to avoid
-   failure.
+   settings before launching any scripts or playbooks to avoid failure.
 
 Basic proxy configuration
 -------------------------
@@ -167,12 +151,3 @@ The list above is intentionally not exhaustive. Additional variables may exist
 within the project and will be named using the `*_validate_certs` pattern.
 Disable certificate chain validation on a case by case basis and only after
 encountering failures that are known to only be caused by the proxy server(s).
-
-Ansible support for proxy servers
----------------------------------
-
-The `get_url` and `uri` modules in Ansible 1.9.x have inconsistent and buggy
-behavior when used in concert with many popular proxy servers and
-configurations. An example Launchpad bug can be found `here
-<https://bugs.launchpad.net/openstack-ansible/+bug/1556975/>`_. The comments
-contain a workaround that has been effective for some deployers.
