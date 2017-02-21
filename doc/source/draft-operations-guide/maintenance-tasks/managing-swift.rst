@@ -5,11 +5,13 @@ Managing Object Storage for multiple regions
 This is a draft Object Storage page for the proposed OpenStack-Ansible
 operations guide.
 
-Failovers for multi-region Object Storage
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Accessibility for multi-region Object Storage
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In multi-region Object Storage, objects are retrievable from an
-alternate location if the default location becomes unavailable.
+In multi-region Object Storage utilizing separate database backends, objects
+are retrievable from an alternate location if the ``default_project_id``
+for a user in the keystone database is the same across each database
+backend.
 
 .. important::
 
