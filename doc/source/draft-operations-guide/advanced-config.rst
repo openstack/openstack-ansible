@@ -147,8 +147,11 @@ sourced alongside those used exclusively by OpenStack-Ansible.
 Ordering and precedence
 -----------------------
 
-``user_*.yml`` variables are just YAML variable files. They will be sourced
-in alphanumeric order by ``openstack-ansible``.
+``user_*.yml`` files contain YAML variables which are applied as extra-vars
+when executing ``openstack-ansible`` to run playbooks. They will be sourced
+in alphanumeric order by ``openstack-ansible``. If duplicate variables occur
+in the ``user_*.yml`` files, the variable in the last file read will take
+precedence.
 
 .. _adding-galaxy-roles:
 
