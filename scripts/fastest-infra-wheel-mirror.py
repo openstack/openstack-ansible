@@ -131,8 +131,11 @@ numThreads = min(MAX_THREADS, len(MIRROR_LIST))
 workQueue = Queue.Queue()
 for url in MIRROR_LIST:
     # Build the complete URL
-    distro = platform.linux_distribution()[0].lower()
-    version = platform.linux_distribution()[1]
+    distro = platform.linux_distribution()[0].split(' ')[0].lower()
+    if distro == 'centos':
+        version = platform.linux_distribution()[1].split('.')[0]
+    else:
+        version = platform.linux_distribution()[1]
     architecture = platform.machine()
     fullUrl = url + distro + "-" + version + "-" + architecture + "/"
     workQueue.put(fullUrl)
