@@ -160,7 +160,7 @@ Failed ansible playbooks during an upgrade
 Container networking issues
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-All LXC containers on the host have two virtual Ethernet interfaces:
+All LXC containers on the host have at least two virtual Ethernet interfaces:
 
 * `eth0` in the container connects to `lxcbr0` on the host
 * `eth1` in the container connects to `br-mgmt` on the host
