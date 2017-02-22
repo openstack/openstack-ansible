@@ -34,7 +34,7 @@
 
 - name: Ensure that rc.local exists
   file:
-    path: /etc/rc.local
+    path: "{{ rc_local }}"
     state: touch
     mode: "u+x"
   tags:
@@ -42,8 +42,9 @@
 
 - name: Create ceph loopback at boot time
   lineinfile:
-    dest: /etc/rc.local
+    dest: "{{ rc_local }}"
     line: "losetup -f /openstack/{{ item }}.img"
+    insertbefore: "{{ rc_local_insert_before }}"
   with_items: "{{ ceph_osd_images }}"
 
 # TODO(logan): Move these vars to user_variables.ceph.yml.j2 once LP #1649381
