@@ -144,7 +144,9 @@ encouraged to observe the below-mentioned patterns in the existing roles.
    Many of the existing roles may not fully implement all the patterns
    just yet. It is important to look through multiple roles to get an
    idea of the common patterns rather than to fixate on a single role's
-   pattern.
+   pattern. Another good place to look is `role maturity table`_.
+
+.. _role maturity table: role-maturity.html
 
 The development of a role will usually go through the following stages:
 
