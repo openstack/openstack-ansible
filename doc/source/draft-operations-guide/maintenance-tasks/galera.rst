@@ -10,10 +10,11 @@ MySQL instances are restarted when creating a cluster, when adding a
 node, when the service is not running, or when changes are made to the
 ``/etc/mysql/my.cnf`` configuration file.
 
-Remove nodes
-~~~~~~~~~~~~
+Verify cluster status
+~~~~~~~~~~~~~~~~~~~~~
 
-In the following example, all but one node was shut down gracefully:
+Compare the output of the following command with the following output.
+It should give you information about the status of your cluster.
 
 .. code-block:: shell-session
 
@@ -34,11 +35,10 @@ In the following example, all but one node was shut down gracefully:
     wsrep_cluster_state_uuid  338b06b0-2948-11e4-9d06-bef42f6c52f1
     wsrep_cluster_status      Primary
 
+In the previous example, all but one node was responding.
 
-Compare this example output with the output from the multi-node failure
-scenario where the remaining operational node is non-primary and stops
-processing SQL requests. Gracefully shutting down the MariaDB service on
-all but one node allows the remaining operational node to continue
+Gracefully shutting down the MariaDB service on all but one node
+allows the remaining operational node to continue
 processing SQL requests. When gracefully shutting down multiple nodes,
 perform the actions sequentially to retain operation.
 
@@ -50,7 +50,8 @@ restarting a cluster from zero nodes requires creating a new cluster on
 one of the nodes.
 
 #. Start a new cluster on the most advanced node.
-   Check the ``seqno`` value in the ``grastate.dat`` file on all of the nodes:
+   Change to the ``playbooks`` directory and check the ``seqno``
+   value in the ``grastate.dat`` file on all of the nodes:
 
    .. code-block:: shell-session
 
@@ -80,7 +81,19 @@ one of the nodes.
 
    .. code-block:: shell-session
 
+       ## for init
        # /etc/init.d/mysql start --wsrep-new-cluster
+       ## for systemd
+       # systemctl start mysql --wsrep-new-cluster
+
+   Please also have a look at `upstream starting a cluster page <http://galeracluster.com/documentation-webpages/startingcluster.html>`_
+
+   This can also be done with the help of ansible using the shell
+   module:
+
+   .. code-block:: shell-session
+
+       # ansible galera_container -m shell -a "/etc/init.d/mysql start --wsrep-new-cluster" --limit galera_container[0]
 
    This command results in a cluster containing a single node. The
    ``wsrep_cluster_size`` value shows the number of nodes in the
@@ -103,7 +116,8 @@ one of the nodes.
        wsrep_cluster_state_uuid  338b06b0-2948-11e4-9d06-bef42f6c52f1
        wsrep_cluster_status      Primary
 
-#. Restart MariaDB on the other nodes and verify that they rejoin the
+#. Restart MariaDB on the other nodes (replace [0] from previous
+   ansible command with [1:]) and verify that they rejoin the
    cluster.
 
    .. code-block:: shell-session
@@ -149,7 +163,8 @@ Recover a single-node failure
 If a single node fails, the other nodes maintain quorum and
 continue to process SQL requests.
 
-#. Run the following Ansible command to determine the failed node:
+#. Change to the ``playbooks`` directory and run the following
+   Ansible command to determine the failed node:
 
    .. code-block:: shell-session
 
@@ -275,7 +290,8 @@ Recover a complete environment failure
 --------------------------------------
 
 Restore from backup if all of the nodes in a Galera cluster fail (do not
-shutdown gracefully). Run the following command to determine if all nodes in
+shutdown gracefully). Change to the ``playbook`` directory and run the
+following command to determine if all nodes in
 the cluster have failed:
 
 .. code-block:: shell-session
@@ -352,7 +368,7 @@ Recovering from certain failures require rebuilding one or more containers.
    .. code-block:: shell-session
 
        # openstack-ansible setup-infrastructure.yml \
-       -l node3_galera_container-3ea2cbd3
+       --limit node3_galera_container-3ea2cbd3
 
 
    .. warning::
@@ -427,4 +443,4 @@ Recovering from certain failures require rebuilding one or more containers.
        wsrep_cluster_status      Primary
 
 
-#. Enable the failed node on the load balancer.
+#. Enable the previously failed node on the load balancer.
