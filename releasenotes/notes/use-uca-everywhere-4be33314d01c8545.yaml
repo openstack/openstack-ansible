@@ -1,0 +1,9 @@
+---
+other:
+  - Ubuntu Cloud Archive (UCA) was installed by default
+    on repo, nova, neutron nodes, but not on the other
+    nodes. From now on, we are using UCA everywhere to
+    avoid dependency issues (like having virtualenv
+    build with incompatible versions of
+    python-cryptography). The same reasoning applies
+    to CentOS and RDO packages.
