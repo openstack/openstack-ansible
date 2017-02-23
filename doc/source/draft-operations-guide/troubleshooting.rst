@@ -2,8 +2,8 @@
 Troubleshooting
 ===============
 
-This is a draft troubleshooting page for the proposed OpenStack-Ansible
-operations guide.
+This chapter is intended to help troubleshoot and resolve operational issues in
+an OpenStack-Ansible deployment.
 
 Networking
 ~~~~~~~~~~
@@ -20,73 +20,27 @@ Troubleshooting Instance connectivity issues
 Diagnose Image service issues
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Test the OpenStack Image service by downloading and running a virtual
-machine image.
+The glance-registry handles the database operations for managing the storage
+of the image index and properties. The glance-api handles the API interactions
+and image store.
 
-#. Change into a temporary directory when logged into the target
-   OpenStack environment and download a copy of the image:
+To troubleshoot problems or errors with the Image service, refer to
+:file:`/var/log/glance-api.log` and :file:`/var/log/glance-registry.log` inside
+the glance api container.
 
-   .. code::
+You can also conduct the following activities which may generate logs to help
+identity problems:
 
-      $ mkdir /tmp/images
+#. Download an image to ensure that an image can be read from the store.
+#. Upload an image to test whether the image is registering and writing to the
+   image store.
+#. Run the ``openstack image list`` command to ensure that the API and
+   registry is working.
 
-   .. code::
-
-      $ cd /tmp/images/
-
-   .. code::
-
-      $ wget http://cdn.download.cirros-cloud.net/0.3.2/cirros-0.3.2-x86_64-disk.img
-
-#. Upload the image into the Image Service:
-
-   .. code::
-
-      $ glance image-create --name=IMAGELABEL --disk-format=FILEFORMAT \
-      --container-format=CONTAINERFORMAT --is-public=ACCESSVALUE > IMAGEFILE
-
-   For the arguments attached to the ``openstack image create``, modify the
-   names of each argument as needed:
-
-   IMAGELABEL
-       A label or name for the image.
-
-   FILEFORMAT
-       This argument specifies the file format of the image. Valid
-       vmdk. Verify an images file format with the **File** command.
-
-   CONTAINERFORMAT
-       This argument specifies container format. Use bare to indicate
-       the image file is not a file format that contains metadata from
-       the virtual machine.
-
-   ACCESSVALUE
-       Specifies whether a user or an admin can access and view the
-       image. True enables all users with access privelages, while false
-       restricts access to admins.
-
-   IMAGEFILE
-       This specifies the name of the downloaded image file.
-
-   .. note::
-
-      The image ID returned will differ between OpenStack environments
-      since the ID is dynamic and variable, generated differently for
-      each image uploaded.
-
-#. Run the ``openstack image list`` command to confirm the image was
-   uploaded successfully.
-
-#. Remove the locally downloaded image, since the Image Service now
-   stores a copy of the downloaded image.
-
-   .. code::
-
-      $ rm -r /tmp/images
-
-For investigating problems or errors, the Image service directs all
-activity to the /var/log/glance-api.log and /var/log/glance-registry.log
-inside the glance api container.
+For an example and more information, see `Verify operation
+<https://docs.openstack.org/newton/install-guide-ubuntu/glance-verify.html>_`.
+and `Manage Images
+<https://docs.openstack.org/user-guide/common/cli-manage-images.html>_`
 
 RabbitMQ issues
 ~~~~~~~~~~~~~~~
@@ -94,25 +48,27 @@ RabbitMQ issues
 Analyze RabbitMQ queues
 -----------------------
 
+.. The title should state what issue is being resolved? DC
+
 Analyze OpenStack service logs and RabbitMQ logs
 ------------------------------------------------
+
+.. The title should state what issue is being resolved? DC
 
 Failed security hardening after host kernel upgrade from version 3.13
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Ubuntu kernel packages newer than version 3.13 contain a change in
 module naming from ``nf_conntrack`` to ``br_netfilter``. After
-upgrading the kernel, re-run the ``openstack-hosts-setup.yml``
-playbook against those hosts. See `OSA bug 157996`_ for more
-information.
-
-.. _OSA bug 157996: https://bugs.launchpad.net/openstack-ansible/+bug/1579963
+upgrading the kernel, run the ``openstack-hosts-setup.yml``
+playbook against those hosts. For more information, see
+`OSA bug 157996 <https://bugs.launchpad.net/openstack-ansible/+bug/1579963>`_.
 
 Cached Ansible facts issues
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-At the beginning of a playbook run, information about each host is gathered.
-Examples of the information gathered are:
+At the beginning of a playbook run, information about each host is gathered,
+such as:
 
     * Linux distribution
     * Kernel version
@@ -138,8 +94,8 @@ Forcing regeneration of cached facts
 Cached facts may be incorrect if the host receives a kernel upgrade or new
 network interfaces. Newly created bridges also disrupt cache facts.
 
-This can lead to unexpected errors while running playbooks, and
-require that the cached facts be regenerated.
+This can lead to unexpected errors while running playbooks, and require cached
+facts to be regenerated.
 
 Run the following command to remove all currently cached facts for all hosts:
 
@@ -170,7 +126,7 @@ All LXC containers on the host have at least two virtual Ethernet interfaces:
 .. note::
 
    Some containers, such as ``cinder``, ``glance``, ``neutron_agents``, and
-   ``swift_proxy``, have more than two interfaces to support their
+   ``swift_proxy`` have more than two interfaces to support their
    functions.
 
 Predictable interface naming
@@ -188,7 +144,7 @@ container called `aio1_utility_container-d13b7132`. That container
 will have two network interfaces: `d13b7132_eth0` and `d13b7132_eth1`.
 
 Another option would be to use the LXC tools to retrieve information
-about the utility container:
+about the utility container. For example:
 
    .. code-block:: shell-session
 
@@ -222,4 +178,3 @@ To dump traffic on the ``br-mgmt`` bridge, use ``tcpdump`` to see all
 communications between the various containers. To narrow the focus,
 run ``tcpdump`` only on the desired network interface of the
 containers.
-
