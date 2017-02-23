@@ -25,6 +25,8 @@ import prettytable
 import dictutils as du
 import filesystem as filesys
 
+import os.path
+
 
 def args():
     """Setup argument Parsing."""
@@ -331,8 +333,8 @@ def main():
     else:
         du.recursive_dict_removal(inventory, user_args['remove_item'])
         inventory_json = json.dumps(inventory, indent=2,
-                                    seprators=(',', ': '))
-        filesys.save_inventory(inventory_json, filename)
+                                    separators=(',', ': '))
+        filesys.save_inventory(inventory_json, os.path.dirname(filename))
         print('Success. . .')
 
 if __name__ == "__main__":
