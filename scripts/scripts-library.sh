@@ -20,7 +20,7 @@ LINE='----------------------------------------------------------------------'
 MAX_RETRIES=${MAX_RETRIES:-5}
 ANSIBLE_PARAMETERS=${ANSIBLE_PARAMETERS:--e gather_facts=False}
 STARTTIME="${STARTTIME:-$(date +%s)}"
-PIP_INSTALL_OPTIONS=${PIP_INSTALL_OPTIONS:-'pip==9.0.1 setuptools==34.2.0 wheel==0.29.0 '}
+PIP_INSTALL_OPTIONS=${PIP_INSTALL_OPTIONS:-'pip==9.0.1 setuptools==33.1.1 wheel==0.29.0 '}
 COMMAND_LOGS=${COMMAND_LOGS:-"/openstack/log/ansible_cmd_logs"}
 
 # The default SSHD configuration has MaxSessions = 10. If a deployer changes
