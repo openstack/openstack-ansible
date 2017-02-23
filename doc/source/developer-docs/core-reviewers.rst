@@ -56,7 +56,7 @@ Code Merge Responsibilities
 ---------------------------
 
 While everyone is encouraged to review changes, members of the core reviewer
-team have the ability to +2/-2 and +A changes to these repositories. This is
+team have the ability to +2/-2 and +W changes to these repositories. This is
 an extra level of responsibility not to be taken lightly. Correctly merging
 code requires not only understanding the code itself, but also how the code
 affects things like documentation, testing, upgrade impacts and interactions
