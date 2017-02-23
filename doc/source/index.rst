@@ -9,14 +9,13 @@ configuration of an OpenStack environment.
 
 Documentation for each of the following releases is available.
 
-Ocata: Pre-release
-~~~~~~~~~~~~~~~~~~
+Pike: Pre-release
+~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible Ocata is currently in development. The
-`Ocata series timeline`_ and `Ocata series release notes`_ are available for
-review.
+OpenStack-Ansible Pike is currently in development.
 
 * `Deployment Guide`_
+* `Release Notes`_
 
 .. toctree::
    :maxdepth: 1
@@ -26,9 +25,21 @@ review.
    developer-docs/index
    inventory/index
 
-.. _Ocata series timeline: https://launchpad.net/openstack-ansible/trunk
-.. _Ocata series release notes: http://docs.openstack.org/releasenotes/openstack-ansible/unreleased.html
 .. _Deployment Guide: http://docs.openstack.org/project-deploy-guide/draft/
+.. _Release Notes: http://docs.openstack.org/releasenotes/openstack-ansible/unreleased.html
+
+Ocata: Release Candidate
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+OpenStack-Ansible's Ocata series is scheduled to be released with the 15.0.0
+tag by 10 Mar 2017.
+
+* `OpenStack-Ansible Ocata Documentation`_
+
+* `OpenStack-Ansible Ocata series release notes`_
+
+.. _OpenStack-Ansible Ocata Documentation: http://docs.openstack.org/developer/openstack-ansible/ocata/
+.. _OpenStack-Ansible Ocata series release notes: http://docs.openstack.org/releasenotes/openstack-ansible/ocata.html
 
 Newton: Current stable release, security supported
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
