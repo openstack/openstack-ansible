@@ -150,8 +150,6 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'ceilometer_all',
         'ceilometer_api',
         'ceilometer_api_container',
-        'ceilometer_collector',
-        'ceilometer_collector_container',
         'ceph_all',
         'ceph-mon_all',
         'ceph-mon_containers',
