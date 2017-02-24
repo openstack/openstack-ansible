@@ -1,0 +1,6 @@
+---
+features:
+  - The variable ``trove_conductor_workers`` can be configured for defining
+    the number of workers for the trove conductor service. The default value
+    is half the number of vCPUs available on the machine with a capping
+    value of 16.
