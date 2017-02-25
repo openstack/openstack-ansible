@@ -16,11 +16,13 @@
 - name: Set haproxy service state
   haproxy:
     socket: /var/run/haproxy.stat
+    backend: "{{ haproxy_backend | default(omit) }}"
     host: "{{ inventory_hostname }}"
     state: "{{ haproxy_state | default('enabled') }}"
     shutdown_sessions: "{{ haproxy_shutdown_sessions | default(False) | bool }}"
-    wait: "{{ haproxy_wait | default(True) | bool }}"
+    wait: "{{ haproxy_wait | default(False) | bool }}"
     wait_interval: "{{ haproxy_wait_interval | default(5) }}"
     wait_retries: "{{ haproxy_wait_retries | default(24) }}"
+    weight: "{{ haproxy_weight | default(omit) }}"
   delegate_to: "{{ item }}"
   with_items: "{{ groups['haproxy'] }}"
