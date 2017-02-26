@@ -40,6 +40,7 @@ def args():
         required=False,
         default='openstack_inventory.json'
     )
+
     parser.add_argument(
         '-s',
         '--sort',
@@ -281,8 +282,10 @@ def export_host_info(inventory):
     return export_info
 
 
-def remove_ip_addresses(inventory):
+def remove_ip_addresses(inventory, filepath=None):
     """Removes container IP address information from the inventory dictionary
+
+    Writes the changes into the inventory file in filepath if specified
 
     All container_networks information for containers will be deleted.
     """
@@ -299,6 +302,26 @@ def remove_ip_addresses(inventory):
         for ip_var in ip_vars:
             variables.pop(ip_var, None)
 
+    if filepath is not None:
+        inventory_json = json.dumps(inventory, indent=2,
+                                    separators=(',', ': '))
+        filesys.save_inventory(inventory_json, filepath)
+
+
+def remove_inventory_item(remove_item, inventory, filepath=None):
+    """Removes inventory item from the inventory dictionary
+
+    Writes the changes into the inventory file in filepath if available
+
+    All container_networks information for containers will be deleted.
+    """
+    du.recursive_dict_removal(inventory, remove_item)
+
+    if filepath is not None:
+        inventory_json = json.dumps(inventory, indent=2,
+                                    separators=(',', ': '))
+        filesys.save_inventory(inventory_json, filepath)
+
 
 def main():
     """Run the main application."""
@@ -306,7 +329,7 @@ def main():
     user_args = args()
 
     # Get the contents of the system inventory
-    inventory, filename = filesys.load_from_json(user_args['file'])
+    inventory, filepath = filesys.load_inventory(filename=user_args['file'])
 
     # Make a table with hosts in the left column and details about each in the
     # columns to the right
@@ -323,16 +346,10 @@ def main():
     elif user_args['export'] is True:
         print(json.dumps(export_host_info(inventory), indent=2))
     elif user_args['clear_ips'] is True:
-        remove_ip_addresses(inventory)
-        inventory_json = json.dumps(inventory, indent=2,
-                                    separators=(',', ': '))
-        filesys.save_inventory(inventory_json, filename)
+        remove_ip_addresses(inventory, filepath)
         print('Success. . .')
     else:
-        du.recursive_dict_removal(inventory, user_args['remove_item'])
-        inventory_json = json.dumps(inventory, indent=2,
-                                    seprators=(',', ': '))
-        filesys.save_inventory(inventory_json, filename)
+        remove_inventory_item(user_args['remove_item'], inventory, filepath)
         print('Success. . .')
 
 if __name__ == "__main__":
