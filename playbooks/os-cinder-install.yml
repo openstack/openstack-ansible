@@ -103,6 +103,9 @@
     - role: "ceph_client"
       openstack_service_system_user: "{{ cinder_system_user_name }}"
       openstack_service_venv_bin: "{{ cinder_bin }}"
+      when:
+        - inventory_hostname in groups['cinder_volume']
+        - cinder_backend_rbd_inuse | default(false) | bool
       tags:
         - ceph
     - role: "rsyslog_client"
