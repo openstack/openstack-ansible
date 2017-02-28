@@ -1,0 +1,6 @@
+---
+features:
+  - The number of worker threads for neutron will now be capped at 16 unless
+    a specific value is specified. Previously, the calculated number of workers
+    could get too high on systems with a large number of processors.  This was
+    particularly evident on POWER systems.

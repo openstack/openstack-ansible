@@ -1,0 +1,6 @@
+---
+features:
+  - Capping the default value for the variables ``glance_api_workers`` and
+    ``glance_registry_workers`` to 16 when the user doesn't configure
+    these variables. Default value is half the number of vCPUs available
+    on the machine with a capping value of 16.
