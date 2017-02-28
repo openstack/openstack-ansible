@@ -27,9 +27,7 @@
             dest: "/var/log/mysql_logs"
     - include: common-tasks/os-lxc-container-setup.yml
       vars:
-        list_of_bind_mounts:
-          - bind_dir_path: "/var/lib/mysql"
-            mount_path: "/openstack/{{ inventory_hostname }}"
+        list_of_bind_mounts: "{{ galera_container_bind_mounts }}"
         extra_container_config_no_restart:
           - "lxc.start.order=99"
     - include: common-tasks/package-cache-proxy.yml
