@@ -21,9 +21,7 @@
     - include: common-tasks/os-lxc-container-setup.yml
       static: no
       vars:
-        list_of_bind_mounts:
-          - bind_dir_path: "/var/lib/gnocchi"
-            mount_path: "/openstack/{{ inventory_hostname }}"
+        list_of_bind_mounts: "{{ gnocchi_container_bind_mounts }}"
       when: (gnocchi_storage_driver == "file") or (gnocchi_storage_driver is not defined)
     - include: common-tasks/os-lxc-container-setup.yml
       static: no
