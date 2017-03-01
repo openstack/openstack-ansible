@@ -214,7 +214,7 @@ haproxy_default_services:
       haproxy_port: 6385
       haproxy_balance_type: http
       haproxy_backend_options:
-        - "httpchk HEAD /"
+        - "httpchk GET /"
   - service:
       haproxy_service_name: rabbitmq_mgmt
       haproxy_backend_nodes: "{{ groups['rabbitmq'] | default([]) }}"
