@@ -147,6 +147,10 @@
     - role: "ceph_client"
       openstack_service_system_user: "{{ nova_system_user_name }}"
       openstack_service_venv_bin: "{{ nova_bin }}"
+      when:
+        - inventory_hostname in groups['nova_compute']
+        - nova_libvirt_images_rbd_pool is defined or
+          cinder_backends_rbd_inuse | default(false) | bool
       tags:
         - ceph
     - role: "openstack_openrc"
