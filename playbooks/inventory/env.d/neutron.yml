@@ -41,6 +41,9 @@ component_skel:
   neutron_metadata_agent:
     belongs_to:
       - neutron_all
+  neutron_sriov_nic_agent:
+    belongs_to:
+      - neutron_all
   neutron_server:
     belongs_to:
       - neutron_all
