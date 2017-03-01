@@ -1224,6 +1224,38 @@ class TestLxcHosts(TestConfigCheckBase):
         with self.assertRaises(di.LxcHostsDefined):
             get_inventory()
 
+    def test_host_without_containers(self):
+        self.add_host('compute_hosts', 'compute1', '172.29.236.102')
+        inventory = get_inventory()
+        self.assertNotIn('compute1', inventory['lxc_hosts']['hosts'])
+
+    def test_cleaning_bad_hosts(self):
+        self.add_host('compute_hosts', 'compute1', '172.29.236.102')
+        inventory = get_inventory()
+        # insert compute1 into lxc_hosts, which mimicks bug behavior
+        inventory['lxc_hosts']['hosts'].append('compute1')
+
+        with mock.patch('dynamic_inventory.get_inventory') as inv_mock:
+            inv_mock.return_value = inventory
+            new_inventory = get_inventory()
+        # host should no longer be in lxc_hosts
+
+        self.assertNotIn('compute1', new_inventory['lxc_hosts']['hosts'])
+
+    def test_emptying_lxc_hosts(self):
+        """If lxc_hosts is deleted between runs, it should re-populate"""
+
+        inventory = get_inventory()
+        original_lxc_hosts = inventory.pop('lxc_hosts')
+
+        self.assertNotIn('lxc_hosts', inventory.keys())
+
+        with mock.patch('dynamic_inventory.get_inventory') as inv_mock:
+            inv_mock.return_value = inventory
+            new_inventory = get_inventory()
+
+        self.assertEqual(original_lxc_hosts, new_inventory['lxc_hosts'])
+
 
 if __name__ == '__main__':
     unittest.main()
