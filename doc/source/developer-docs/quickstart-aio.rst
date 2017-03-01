@@ -61,7 +61,8 @@ system packages are upgraded and then reboot into the new kernel:
 
    ## CentOS
    # yum upgrade
-   # yum install centos-release-openstack-newton git
+   # yum install https://rdoproject.org/repos/openstack-ocata/rdo-release-ocata.rpm
+   # yum install git
    # reboot
 
 .. note::
