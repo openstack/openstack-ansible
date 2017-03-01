@@ -79,8 +79,9 @@ Before you begin, we recommend upgrading your system packages and kernel.
 
    .. code-block:: shell-session
 
-       # yum install git centos-release-openstack-newton ntp ntpdate \
-         openssh-server python-devel sudo '@Development Tools'
+       # yum install https://rdoproject.org/repos/openstack-ocata/rdo-release-ocata.rpm
+       # yum install git ntp ntpdate openssh-server python-devel \
+         sudo '@Development Tools'
 
 #. Configure NTP to synchronize with a suitable time source.
 
