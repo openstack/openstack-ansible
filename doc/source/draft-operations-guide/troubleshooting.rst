@@ -11,8 +11,79 @@ Networking
 Checking services
 ~~~~~~~~~~~~~~~~~
 
+You can check the status of an OpenStack service by accessing every controller
+node and running the :command:`service <SERVICE_NAME> status`.
+
+See the following links for additional information to verify OpenStack
+services:
+
+- `Identity service (keystone) <https://ask.openstack.org/en/question/101127/how-to-check-if-keystone-is-running.html>`_
+- `Image service (glance) <https://docs.openstack.org/ocata/install-guide-ubuntu/glance-verify.html>`_
+- `Compute service (nova) <https://docs.openstack.org/ocata/install-guide-ubuntu/nova-verify.html>`_
+- `Networking service (neutron) <https://docs.openstack.org/ocata/install-guide-ubuntu/neutron-verify.html>`_
+- `Block Storage service <https://docs.openstack.org/ocata/install-guide-rdo/cinder-verify.html>`_
+- `Object Storage service (swift) <https://docs.openstack.org/project-install-guide/object-storage/ocata/verify.html>`_
+
 Restarting services
 ~~~~~~~~~~~~~~~~~~~
+
+Restart your OpenStack services by accessing every controller node. Some
+OpenStack services will require restart from other nodes in your environment.
+The following table lists the commands to restart an OpenStack service.
+
+.. list-table:: Restarting OpenStack services
+   :widths: 30 70
+   :header-rows: 1
+
+   * - OpenStack service
+     - Commands
+   * - Image service
+     - .. code-block: console
+          # service glance-registry restart
+          # service glance-api restart
+   * - Compute service (controller node)
+     - .. code-block: console
+          # service openstack-nova-api restart
+          # service openstack-nova-cert restart
+          # service openstack-nova-consoleauth restart
+          # service openstack-nova-scheduler restart
+          # service openstack-nova-conductor restart
+          # service openstack-nova-novncproxy restart
+   * - Compute service (compute node)
+     - .. code-block: console
+          # service openstack-nova-compute restart
+          # service openstack-nova-compute status
+   * - Networking service
+     - .. code-block: console
+          # service neutron-server restart
+          # service neutron-dhcp-agent restart
+          # service neutron-l3-agent restart
+          # service neutron-metadata-agent restart
+   * - Block Storage service
+     - .. code-block: console
+          # service openstack-cinder-api restart
+          # service openstack-cinder-backup restart
+          # service openstack-cinder-scheduler restart
+          # service openstack-cinder-volume restart
+   * - Object Storage service
+     - .. code-block: console
+          # service swift-account-auditor restart
+          # service swift-account restart
+          # service swift-account-reaper restart
+          # service swift-account-replicator restart
+          # service swift-container-auditor restart
+          # service swift-container restart
+          # service swift-container-reconciler restart
+          # service swift-container-replicator restart
+          # service swift-container-sync restart
+          # service swift-container-updater restart
+          # service swift-object-auditor restart
+          # service swift-object restart
+          # service swift-object-reconstructor restart
+          # service swift-object-replicator restart
+          # service swift-object-updater restart
+          # service swift-proxy restart
+
 
 Troubleshooting Instance connectivity issues
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
