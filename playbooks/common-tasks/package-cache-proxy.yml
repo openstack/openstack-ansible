@@ -19,6 +19,8 @@
     method: "HEAD"
   register: proxy_check
   failed_when: false
+  tags:
+    - common-proxy
 
 - name: Drop apt package manager proxy
   copy:
@@ -29,6 +31,8 @@
     - proxy_check.status == 200
     - ansible_os_family == 'Debian'
     - repo_pkg_cache_enabled | bool
+  tags:
+    - common-proxy
 
 - name: Update apt when proxy is added
   apt:
@@ -37,6 +41,8 @@
   delay: 2
   when:
     - apt_proxy_dropped | changed
+  tags:
+    - common-proxy
 
 - name: Remove apt package manager proxy
   file:
@@ -46,6 +52,8 @@
     - proxy_check.status != 200
     - ansible_os_family == 'Debian'
     - repo_pkg_cache_enabled | bool
+  tags:
+    - common-proxy
 
 - name: Drop yum package manager proxy
   lineinfile:
@@ -55,4 +63,5 @@
   when:
     - ansible_os_family == 'RedHat'
     - repo_pkg_cache_enabled | bool
-
+  tags:
+    - common-proxy
