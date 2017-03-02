@@ -32,6 +32,8 @@
     lxc_default_bind_mounts: '{{ lxc_default_bind_mounts | default([{"bind_dir_path": "/var/log", "mount_path": "/openstack/log/{{ inventory_hostname }}"}]) }}'
   when:
     - default_bind_mount_logs | bool
+  tags:
+    - common-lxc
 
 - name: Ensure mount directories exists
   file:
@@ -43,6 +45,8 @@
   delegate_to: "{{ physical_host }}"
   when:
     - not is_metal | bool
+  tags:
+    - common-lxc
 
 - name: Add bind mount configuration to container
   lineinfile:
@@ -56,6 +60,8 @@
   when:
     - not is_metal | bool
   register: _mc
+  tags:
+    - common-lxc
 
 - name: Extra lxc config
   lineinfile:
@@ -67,6 +73,8 @@
   delegate_to: "{{ physical_host }}"
   register: _ec
   when: not is_metal | bool
+  tags:
+    - common-lxc
 
 - name: Extra lxc config no restart
   lineinfile:
@@ -77,6 +85,8 @@
   with_items: "{{ extra_container_config_no_restart | default([]) }}"
   delegate_to: "{{ physical_host }}"
   when: not is_metal | bool
+  tags:
+    - common-lxc
 
 # Due to https://github.com/ansible/ansible-modules-extras/issues/2691
 # this uses the LXC CLI tools to ensure that we get logging.
@@ -93,6 +103,8 @@
   when:
     - not is_metal | bool
     - (_mc is defined and _mc | changed) or (_ec is defined and _ec | changed)
+  tags:
+    - common-lxc
 
 # Due to https://github.com/ansible/ansible-modules-extras/issues/2691
 # this uses the LXC CLI tools to ensure that we get logging.
@@ -109,6 +121,8 @@
   when:
     - not is_metal | bool
     - (_mc is defined and _mc | changed) or (_ec is defined and _ec | changed)
+  tags:
+    - common-lxc
 
 - name: Wait for container ssh
   wait_for:
@@ -123,3 +137,5 @@
   when:
     - (_mc is defined and _mc | changed) or (_ec is defined and _ec | changed)
     - not is_metal | bool
+  tags:
+    - common-lxc

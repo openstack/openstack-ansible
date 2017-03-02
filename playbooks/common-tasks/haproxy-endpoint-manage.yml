@@ -26,3 +26,5 @@
     weight: "{{ haproxy_weight | default(omit) }}"
   delegate_to: "{{ item }}"
   with_items: "{{ groups['haproxy'] }}"
+  tags:
+    - common-haproxy

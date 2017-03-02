@@ -20,3 +20,5 @@
   with_items: "{{ groups[src_group] }}"
   when:
     - "{{ groups[src_group] is defined }}"
+  tags:
+    - common-grouping
