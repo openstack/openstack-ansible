@@ -24,7 +24,7 @@ from test_inventory import get_inventory
 from test_inventory import make_config
 
 INV_DIR = 'playbooks/inventory'
-LIB_DIR = 'lib'
+LIB_DIR = 'osa_toolkit'
 
 sys.path.append(path.join(os.getcwd(), LIB_DIR))
 sys.path.append(path.join(os.getcwd(), INV_DIR))
