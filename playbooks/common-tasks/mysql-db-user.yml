@@ -21,6 +21,8 @@
     name: "{{ db_name }}"
     state: "present"
   delegate_to: "{{ groups['galera_all'][0] }}"
+  tags:
+    - common-mysql
 
 - name: Grant access to the DB for the service
   mysql_user:
@@ -35,3 +37,5 @@
     append_privs: "{{ db_append_privs | default(omit) }}"
   delegate_to: "{{ groups['galera_all'][0] }}"
   with_items: "{{ grant_list | default(['localhost', '%']) }}"
+  tags:
+    - common-mysql

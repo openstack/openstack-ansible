@@ -29,6 +29,8 @@
     state: directory
   with_items: "{{ log_dirs }}"
   when: is_metal | bool
+  tags:
+    - common-log
 
 - name: Create log aggregation links
   file:
@@ -40,3 +42,5 @@
     force: "yes"
   with_items: "{{ log_dirs }}"
   when: is_metal | bool
+  tags:
+    - common-log
