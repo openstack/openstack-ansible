@@ -326,7 +326,6 @@ built for informational purposes only and should **ONLY** be used as such.
       |        [ Nova api os ]<----------|->|  |                        |
       |        [ Nova console ]<---------|  |  |                        |
       |        [ Nova Cert ]<------------|->|  |                        |
-      |        [ Ceilometer api ]<-------|->|  |                        |
       |        [ Cinder api ]<-----------|->|  |                        |
       |        [ Glance api ]<-----------|->|  |                        |
       |        [ Heat apis ]<------------|->|  | [ Loop back devices ]*-*

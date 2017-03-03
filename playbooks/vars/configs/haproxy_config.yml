@@ -200,14 +200,6 @@ haproxy_default_services:
       haproxy_backend_options:
         - "httpchk /healthcheck"
   - service:
-      haproxy_service_name: ceilometer_api
-      haproxy_backend_nodes: "{{ groups['ceilometer_api_container'] | default([]) }}"
-      haproxy_ssl: "{{ haproxy_ssl }}"
-      haproxy_port: 8777
-      haproxy_balance_type: tcp
-      haproxy_backend_options:
-        - tcp-check
-  - service:
       haproxy_service_name: aodh_api
       haproxy_backend_nodes: "{{ groups['aodh_api'] | default([]) }}"
       haproxy_ssl: "{{ haproxy_ssl }}"
