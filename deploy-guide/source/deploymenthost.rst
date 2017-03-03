@@ -94,7 +94,7 @@ Install the source and dependencies for the deployment host.
 
    .. parsed-literal::
 
-       # git clone -b TAG https://git.openstack.org/openstack/openstack-ansible \
+       # git clone -b |latest_tag| https://git.openstack.org/openstack/openstack-ansible \
        /opt/openstack-ansible
 
 #. Change to the ``/opt/openstack-ansible`` directory, and run the
