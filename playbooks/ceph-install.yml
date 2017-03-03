@@ -25,9 +25,7 @@
             dest: "/var/log/ceph"
     - include: common-tasks/os-lxc-container-setup.yml
       vars:
-        list_of_bind_mounts:
-          - bind_dir_path: "/var/lib/ceph"
-            mount_path: "/openstack/{{ inventory_hostname }}"
+        list_of_bind_mounts: "{{ ceph_container_bind_mounts }}"
     - include: common-tasks/package-cache-proxy.yml
   roles:
     - role: "ceph-mon"
