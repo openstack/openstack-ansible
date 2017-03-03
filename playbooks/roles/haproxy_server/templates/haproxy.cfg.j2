@@ -11,7 +11,7 @@ global
         tune.bufsize 384000
         stats socket /var/run/haproxy.stat level admin mode 600
         {% if haproxy_ssl | bool %}
-        ssl-default-bind-options no-sslv3
+        ssl-default-bind-options {{ haproxy_ssl_bind_options }}
         tune.ssl.default-dh-param {{haproxy_ssl_dh_param}}
         {% endif %}
 
