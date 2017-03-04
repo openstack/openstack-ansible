@@ -141,6 +141,13 @@
         - /var/log/conntrackd-stats.log
       tags:
         - rsyslog
+    - role: "rsyslog_client"
+      rsyslog_client_log_rotate_file: calico_log_rotate
+      rsyslog_client_log_dir: "/var/log/calico"
+      rsyslog_client_config_name: "99-calico-rsyslog-client.conf"
+      when: "{{ 'neutron_calico_dhcp_agent' in group_names }}"
+      tags:
+        - rsyslog
     - role: "system_crontab_coordination"
       tags:
         - crontab
