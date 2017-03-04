@@ -90,7 +90,6 @@
       until: install_packages|success
       retries: 5
       delay: 2
-      with_items: "{{ utility_pip_packages }}"
 
     - name: Distribute private ssh key
       copy:
