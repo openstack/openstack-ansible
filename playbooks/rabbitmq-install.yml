@@ -15,6 +15,7 @@
 
 - name: Create and configure rabbitmq container
   hosts: "{{ rabbitmq_host_group | default('rabbitmq_all') }}"
+  serial: 1
   gather_facts: "{{ gather_facts | default(True) }}"
   max_fail_percentage: 0
   user: root
