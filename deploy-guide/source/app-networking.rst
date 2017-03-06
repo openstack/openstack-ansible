@@ -73,8 +73,8 @@ outside world, thanks to dnsmasq (dhcp/dns) + NAT.
 
    If you require additional network configuration for your container interfaces
    (like changing the routes on eth1 for routes on the management network),
-   please adapt your ``openstack_user_config.yml`` file, with the help of the
-   heavily documented ``openstack_user_config.yml.example`` file.
+   please adapt your ``openstack_user_config.yml`` file.
+   See :ref:`openstack-user-config-reference` for more details.
 
 
 Services running "on metal" (deploying directly on the physical hosts)
@@ -102,4 +102,17 @@ The following diagram shows how virtual machines connect to the ``br-vlan`` and
 ``br-vxlan`` bridges and send traffic to the network outside the host:
 
 .. image:: figures/networking-compute.png
+
+.. _openstack-user-config-reference:
+
+Reference for openstack_user_config settings
+--------------------------------------------
+
+The ``openstack_user_config.yml.example`` file is heavily commented with the
+details of how to do more advanced container networking configuration. The
+contents of the file are shown here for reference.
+
+.. literalinclude:: ../../etc/openstack_deploy/openstack_user_config.yml.example
+   :language: yaml
+   :start-after: under the License.
 
