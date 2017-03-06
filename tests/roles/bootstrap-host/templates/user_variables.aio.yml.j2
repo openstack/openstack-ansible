@@ -68,6 +68,12 @@ repo_build_pip_extra_indexes:
 uca_apt_repo_url: {{ uca_apt_repo_url }}
 {% endif %}
 
+{% if galera_repo_url is defined %}
+## MariaDB mirror to use
+galera_repo_url: {{ galera_repo_url }}
+galera_client_apt_repo_url: {{ galera_repo_url }}
+{% endif %}
+
 {% if cache_timeout is defined %}
 ## Package cache timeout
 cache_timeout: {{ cache_timeout }}

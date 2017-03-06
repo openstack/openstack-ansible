@@ -72,6 +72,13 @@
     - nodepool_dir.stat.exists
     - bootstrap_host_ubuntu_repo is defined
 
+- name: Set the MariaDB repository URL in OpenStack-CI
+  set_fact:
+    galera_repo_url: "{{ bootstrap_host_ubuntu_repo | netorigin }}/ubuntu-mariadb/10.1"
+  when:
+    - nodepool_dir.stat.exists
+    - bootstrap_host_ubuntu_repo is defined
+
 - name: Set the package cache timeout to 60 mins in OpenStack-CI
   set_fact:
     cache_timeout: 3600
