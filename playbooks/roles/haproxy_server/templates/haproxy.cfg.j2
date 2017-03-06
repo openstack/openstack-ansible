@@ -22,6 +22,7 @@ defaults
         retries 3
         timeout client 50s
         timeout connect 10s
+        timeout http-request {{ haproxy_http_request_timeout }}
         timeout server 50s
         maxconn 4096
 

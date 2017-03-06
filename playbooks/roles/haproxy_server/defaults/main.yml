@@ -85,3 +85,6 @@ haproxy_ssl_ca_cert: /etc/ssl/certs/haproxy-ca.pem
 haproxy_ssl_self_signed_subject: "/C=US/ST=Texas/L=San Antonio/O=IT/CN={{ internal_lb_vip_address }}/subjectAltName=IP.1={{ external_lb_vip_address }}"
 haproxy_ssl_cipher_suite: "{{ ssl_cipher_suite }}"
 haproxy_ssl_bind_options: "no-sslv3"
+
+## haproxy default timeouts
+haproxy_http_request_timeout: "5s"
