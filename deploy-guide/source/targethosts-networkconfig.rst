@@ -22,5 +22,8 @@ The following table shows bridges that are to be configured on hosts.
 |             | On every compute node | Never                               |
 +-------------+-----------------------+-------------------------------------+
 
+For a detailed reference of how the host and container networking is
+implemented, refer to :ref:`network-appendix`.
+
 For use case examples, refer to :ref:`test-environment-config` and
 :ref:`production-environment-config`.
