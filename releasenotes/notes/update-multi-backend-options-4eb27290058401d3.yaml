@@ -1,0 +1,9 @@
+---
+features:
+  - Added new variable ``tempest_volume_backend_names`` and updated
+    templates/tempest.conf.j2 to point ``backend_names`` at this variable
+deprecations:
+  - Removed ``tempest_volume_backend1_name`` and
+    ``tempest_volume_backend1_name`` since ``backend1_name`` and
+    ``backend2_name`` were removed from tempest in commit 27905cc (merged
+    26/04/2016)
