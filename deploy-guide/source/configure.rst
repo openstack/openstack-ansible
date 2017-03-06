@@ -40,6 +40,7 @@ host.
    .. note::
 
       The file is heavily commented with details about the various options.
+      See :ref:`openstack-user-config-reference` for more details.
 
 The configuration in the ``openstack_user_config.yml`` file defines which hosts
 run the containers and services deployed by OpenStack-Ansible. For
