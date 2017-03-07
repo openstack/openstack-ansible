@@ -24,6 +24,8 @@
   register: _repo_data_check
   failed_when: false
   when: pip_upstream_url != "https://bootstrap.pypa.io/get-pip.py"
+  tags:
+    - common-pip
 
 - name: Set pip upstream URL
   set_fact:
@@ -31,3 +33,5 @@
   when:
     - pip_upstream_url != "https://bootstrap.pypa.io/get-pip.py"
     - (_repo_data_check.status | default(503)) != 200
+  tags:
+    - common-pip

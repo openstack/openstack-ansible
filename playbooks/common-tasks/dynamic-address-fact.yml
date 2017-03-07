@@ -37,6 +37,7 @@
       {{ ansible_host }}
       {%- endif -%}
   tags:
+    - common-address
     - always
 
 # NOTE(cloudnull):
@@ -46,4 +47,5 @@
 - name: Set address fact
   set_fact: "{{ network_address }}={{ _lookup_address }}"
   tags:
+    - common-address
     - always
