@@ -100,7 +100,10 @@ function check_for_current {
 
 function pre_flight {
     ## Library Check -------------------------------------------------------------
-    echo "Checking for required libraries." 2> /dev/null || source "$(dirname "${0}")/scripts-library.sh"
+
+    info_block "Checking for required libraries." 2> /dev/null ||
+        source ${SCRIPTS_PATH}/scripts-library.sh
+
     ## Pre-flight Check ----------------------------------------------------------
     # Clear the screen and make sure the user understands whats happening.
     clear
