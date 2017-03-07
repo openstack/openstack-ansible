@@ -12,6 +12,12 @@ used_ips:
 
 global_overrides:
   internal_lb_vip_address: 172.29.236.9
+  #
+  # The below domain name must resolve to an IP address
+  # in the CIDR specified in haproxy_keepalived_external_vip_cidr.
+  # If using different protocols (https/http) for the public/internal
+  # endpoints the two addresses must be different.
+  #
   external_lb_vip_address: openstack.example.com
   tunnel_bridge: "br-vxlan"
   management_bridge: "br-mgmt"
