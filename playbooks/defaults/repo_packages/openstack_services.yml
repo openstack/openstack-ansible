@@ -37,7 +37,7 @@ requirements_git_dest: "/opt/requirements_{{ requirements_git_install_branch | r
 
 ## Aodh service
 aodh_git_repo: https://git.openstack.org/openstack/aodh
-aodh_git_install_branch: ec2bebedca00bc7a58963c570d685f3b03726ddb # HEAD of "master" as of 03.03.2017
+aodh_git_install_branch: 60ad8b0afcdede263a7151f25a1d8e047d8170bc # HEAD of "master" as of 07.03.2017
 aodh_git_dest: "/opt/aodh_{{ aodh_git_install_branch | replace('/', '_') }}"
 aodh_git_project_group: aodh_all
 
