@@ -73,7 +73,7 @@
       openstack_service_venv_bin: "{{ glance_bin }}"
       when:
         - inventory_hostname in groups['glance_api']
-        - (glance_default_store | default('none') | lower == 'rbd')
+        - "{{ 'rbd' in [glance_default_store | default('none')] + glance_additional_stores | default([]) }}"
       tags:
         - ceph
     - role: "openstack_openrc"
