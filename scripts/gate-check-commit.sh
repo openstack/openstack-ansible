@@ -30,6 +30,9 @@ export PYTHONUNBUFFERED=1
 # Extra options to pass to the AIO bootstrap process
 export BOOTSTRAP_OPTS=${BOOTSTRAP_OPTS:-''}
 
+# Ensure the terminal type is set
+export TERM=linux
+
 # This variable is being added to ensure the gate job executes an exit
 #  function at the end of the run.
 export OSA_GATE_JOB=true
