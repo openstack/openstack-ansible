@@ -27,4 +27,4 @@ major upgrade process performs the following actions:
 - Upgrades the RabbitMQ server. See :ref:`setup-infra-playbook` for details.
 
 For more information about the major upgrade process, see
-:ref:`` and :ref:`Upgrading-manually`.
+:ref:`upgrading-by-using-a-script` and :ref:`upgrading-manually`.

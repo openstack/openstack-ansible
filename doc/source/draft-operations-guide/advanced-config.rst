@@ -112,7 +112,8 @@ deployed environment, allowing a deployer to define additional group mappings.
 This directory is used to extend the environment skeleton, or modify the
 defaults defined in the ``playbooks/inventory/env.d`` directory.
 
-See also `Understanding Container Groups <http://docs.openstack.org/project-deploy-guide/openstack-ansible/newton/app-custom-layouts.html>`_
+See also
+:deploy_guide:`Understanding Container Groups <app-custom-layouts.html>`
 in Appendix C of the Deployment Guide.
 
 conf.d
@@ -125,7 +126,7 @@ OpenStack-Ansible in the
 Additional services should be defined with a YAML file in
 ``/etc/openstack_deploy/conf.d``, in order to manage file size.
 
-See also `Understanding Host Groups <http://docs.openstack.org/project-deploy-guide/openstack-ansible/newton/app-custom-layouts.html>`_
+See also :deploy_guide:`Understanding Host Groups <app-custom-layouts.html>`
 in Appendix C of the Deployment Guide.
 
 user_*.yml files
@@ -175,7 +176,7 @@ functionality where applicable. Files available to receive overrides can be
 seen in the ``defaults/main.yml`` file as standard empty dictionaries (hashes).
 
 Practical guidance for using this feature is available in the
-`Deployment Guide <http://docs.openstack.org/project-deploy-guide/openstack-ansible/newton/app-advanced-config-override.html>`_.
+:deploy_guide:`Deployment Guide <app-advanced-config-override.html>`.
 
 This module has been `submitted for consideration`_ into Ansible Core.
 
