@@ -106,7 +106,7 @@ By default the scripts deploy all OpenStack services with sensible defaults
 for the purpose of a gate check, development or testing system.
 
 Review the `bootstrap-host role defaults`_ file to see
-various configuration options.  Deployers have the option to change how the
+various configuration options. Deployers have the option to change how the
 host is bootstrapped. This is useful when you wish the AIO to make use of
 a secondary data disk, or when using this role to bootstrap a multi-node
 development environment.
@@ -160,16 +160,35 @@ following to bootstrap Ansible:
 
 In order for all the services to run, the host must be prepared with the
 appropriate disks, packages, network configuration and a base configuration
-for the OpenStack Deployment. This preparation is completed by executing:
+for the OpenStack Deployment. For the default AIO scenario, this preparation
+is completed by executing:
 
 .. code-block:: shell-session
 
    # scripts/bootstrap-aio.sh
 
-If you wish to add any additional configuration entries for the OpenStack
-configuration then this can be done now by editing
-``/etc/openstack_deploy/user_variables.yml``. See the `Deployment Guide`_
-for more details.
+If you wish to use a different scenario, for example, the Ceph scenario,
+execute the following:
+
+.. code-block:: shell-session
+
+   # export SCENARIO='ceph'
+   # scripts/bootstrap-aio.sh
+
+To add OpenStack Services over and above the `bootstrap-aio default services`_
+for the applicable scenario, copy the ``conf.d`` files with the ``.aio`` file
+extension into ``/etc/openstack_deploy`` and rename then to ``.yml`` files.
+For example, in order to enable the OpenStack Telemetry services, execute the
+following:
+
+.. code-block:: shell-session
+
+   cp etc/openstack_deploy/conf.d/{aodh,gnocchi,ceilometer}.yml.aio /etc/openstack_deploy/conf.d/
+   for f in $(ls -1 /etc/openstack_deploy/conf.d/*.aio); do mv -v ${f} ${f%.*}; done
+
+To add any global overrides, over and above the defaults for the applicable
+scenario, edit  ``/etc/openstack_deploy/user_variables.yml``. See the
+`Deployment Guide`_ for more details.
 
 Finally, run the playbooks by executing:
 
@@ -209,6 +228,7 @@ that are not requested for deployment, but the service will not be deployed
 in that container.
 
 .. _Deployment Guide: http://docs.openstack.org/project-deploy-guide/openstack-ansible/draft/
+.. _bootstrap-aio default services: https://git.openstack.org/cgit/openstack/openstack-ansible/tree/tests/bootstrap-aio.yml
 
 Rebooting an AIO
 ----------------
