@@ -101,8 +101,12 @@ User variables
 --------------
 
 The ``/etc/openstack_deploy/user_variables.yml`` file defines the global
-overrides for the default variables
+overrides for the default variables.
 
-For this environment you do not need the
-``/etc/openstack_deploy/user_variables.yml`` file as the defaults set by
-OpenStack-Ansible are suitable.
+For this environment, you are using the same IP address for the internal
+and external endpoints. You will need to ensure that the internal and public
+OpenStack endpoints are served with the same protocol. This is done with
+the following content:
+
+.. literalinclude:: ../../etc/openstack_deploy/user_variables.yml.test.example
+
