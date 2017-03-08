@@ -94,9 +94,8 @@ Configure the operating system (CentOS)
 
    .. code-block:: shell-session
 
-       # yum install epel-release
-       # yum install bridge-utils debootstrap iputils lsof lvm2 \
-         ntp ntpdate openssh-server sudo tcpdump vconfig
+       # yum install bridge-utils iputils lsof lvm2 \
+         ntp ntpdate openssh-server sudo tcpdump
 
 #. Add the appropriate kernel modules to the ``/etc/modules`` file to
    enable VLAN and bond interfaces:
