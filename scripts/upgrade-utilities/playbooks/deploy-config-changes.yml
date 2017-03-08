@@ -18,39 +18,52 @@
   connection: local
   gather_facts: false
   user: root
+  vars:
+      upgrade_scripts: "{{ playbook_dir }}/../scripts"
+      repo_root_dir: "{{ playbook_dir }}/../../../"
+      source_series: "mitaka"
   tasks:
       - name: Create an old copy of openstack_deploy
         copy:
           src: "/etc/openstack_deploy/"
-          dest: "/etc/openstack_deploy.NEWTON/"
+          dest: "/etc/openstack_deploy.{{ source_series | upper }}/"
           force: no
 
-      - name: Retrieve differences
-        shell: rsync -avun "{{ repo_root_dir }}/playbooks/inventory/env.d/" "/etc/openstack_deploy/env.d/" | grep "yml$"
-        failed_when: false
-        register: diff_result
+      - name: Check if there is a user-space env.d directory
+        stat:
+          path: "/etc/openstack_deploy/env.d"
+        register: _envd_dir
 
-      - name: Copy new env.d files into place
-        copy:
-            src: "{{ repo_root_dir }}/playbooks/inventory/env.d/{{ item }}"
-            dest: "/etc/openstack_deploy/env.d/{{ item }}"
-            force: no
-        with_items:
-            - "{{ diff_result.stdout_lines }}"
-        when: diff_result.stdout != ""
+      - block:
 
-      - name: Check result for emptiness
-        debug: msg="All new env.d files are placed in the stock repo. No new changes"
-        when: diff_result.stdout == ""
+        - name: Retrieve differences
+          shell: rsync -avun "{{ repo_root_dir }}/playbooks/inventory/env.d/" "/etc/openstack_deploy/env.d/" | grep "yml$"
+          failed_when: false
+          register: diff_result
+
+        - name: Copy new env.d files into place
+          copy:
+              src: "{{ repo_root_dir }}/playbooks/inventory/env.d/{{ item }}"
+              dest: "/etc/openstack_deploy/env.d/{{ item }}"
+              force: no
+          with_items:
+              - "{{ diff_result.stdout_lines }}"
+          when: diff_result.stdout != ""
+
+        - name: Check result for emptiness
+          debug: msg="All new env.d files are placed in the stock repo. No new changes"
+          when: diff_result.stdout == ""
+
+        when: _envd_dir.stat.exists | bool
 
       - name: Update OpenStack variable names
         command: "{{ upgrade_scripts }}/migrate_openstack_vars.py {{ item }} {{ (item | basename)[:-4] }}"
         args:
-            creates: "/etc/openstack_deploy.NEWTON/VARS_MIGRATED_{{ (item | basename)[:-4] }}"
+            creates: "/etc/openstack_deploy.{{ source_series | upper }}/VARS_MIGRATED_{{ (item | basename)[:-4] }}"
         with_fileglob:
           - "/etc/openstack_deploy/user_*.yml"
 
-      - name: Write vars required for upgrade from Mitaka
+      - name: Write vars required for upgrade
         lineinfile:
           dest: /etc/openstack_deploy/user_variables.yml
           regexp: "^{{ item.key }}"
@@ -59,6 +72,3 @@
         with_items:
           - key: "default_bind_mount_logs"
             value: false
-  vars:
-      upgrade_scripts: "{{ playbook_dir }}/../scripts"
-      repo_root_dir: "{{ playbook_dir }}/../../../"

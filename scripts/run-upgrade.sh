@@ -19,12 +19,28 @@
 
 
 ## Shell Opts ----------------------------------------------------------------
+
 set -e -u -v
 
+## Vars ----------------------------------------------------------------------
+
+# The path from which this script is being run
 export SCRIPTS_PATH="$(dirname "$(readlink -f "${0}")")"
+
+# The git checkout root path
 export MAIN_PATH="$(dirname "${SCRIPTS_PATH}")"
+
+# The path to find all the upgrade playbooks
 export UPGRADE_PLAYBOOKS="${SCRIPTS_PATH}/upgrade-utilities/playbooks"
+
+# The toggle which guards against using this script prematurely
 export I_REALLY_KNOW_WHAT_I_AM_DOING=${I_REALLY_KNOW_WHAT_I_AM_DOING:-"false"}
+
+# The expected source series name
+export SOURCE_SERIES="mitaka"
+
+# The expected target series name
+export TARGET_SERIES="newton"
 
 ## Functions -----------------------------------------------------------------
 
@@ -44,12 +60,12 @@ function run_lock {
     fi
   done
 
-  if [ ! -d  "/etc/openstack_deploy/upgrade-newton" ]; then
-      mkdir -p "/etc/openstack_deploy/upgrade-newton"
+  if [ ! -d  "/etc/openstack_deploy/upgrade-${TARGET_SERIES}" ]; then
+      mkdir -p "/etc/openstack_deploy/upgrade-${TARGET_SERIES}"
   fi
 
   upgrade_marker_file=$(basename ${file_part} .yml)
-  upgrade_marker="/etc/openstack_deploy/upgrade-newton/$upgrade_marker_file.complete"
+  upgrade_marker="/etc/openstack_deploy/upgrade-${TARGET_SERIES}/$upgrade_marker_file.complete"
 
   if [ ! -f "$upgrade_marker" ];then
     # note(sigmavirus24): use eval so that we properly turn strings like
@@ -110,13 +126,12 @@ function pre_flight {
 
     # Notify the user.
     echo -e "
-    This script will perform a v13.x to v14.x upgrade.
+    This script will perform a ${SOURCE_SERIES^} to ${TARGET_SERIES^} upgrade.
     Once you start the upgrade there's no going back.
 
-    Note, this is an online upgrade and while the
-    in progress running VMs will not be impacted.
-    However, you can expect some hiccups with OpenStack
-    API services while the upgrade is running.
+    Note that the upgrade targets impacting the data
+    plane as little as possible, but assumes that the
+    control plane can experience some down time.
 
     Are you ready to perform this upgrade now?
     "
@@ -124,7 +139,7 @@ function pre_flight {
     # Confirm the user is ready to upgrade.
     read -p 'Enter "YES" to continue or anything else to quit: ' UPGRADE
     if [ "${UPGRADE}" == "YES" ]; then
-      echo "Running Upgrade from v13.x to v14.x"
+      echo "Running Upgrade from ${SOURCE_SERIES^} to ${TARGET_SERIES^}"
     else
       exit 99
     fi
