@@ -18,11 +18,15 @@
   connection: local
   gather_facts: false
   user: root
+  vars:
+      upgrade_scripts: "{{ playbook_dir }}/../scripts"
+      repo_root_dir: "{{ playbook_dir }}/../../../"
+      source_series: "ocata"
   tasks:
       - name: Create an old copy of openstack_deploy
         copy:
           src: "/etc/openstack_deploy/"
-          dest: "/etc/openstack_deploy.OCATA/"
+          dest: "/etc/openstack_deploy.{{ source_series | upper }}/"
           force: no
 
       - name: Check if there is a user-space env.d directory
@@ -55,7 +59,7 @@
       - name: Update OpenStack variable names
         command: "{{ upgrade_scripts }}/migrate_openstack_vars.py {{ item }} {{ (item | basename)[:-4] }}"
         args:
-            creates: "/etc/openstack_deploy.NEWTON/VARS_MIGRATED_{{ (item | basename)[:-4] }}"
+            creates: "/etc/openstack_deploy.{{ source_series | upper }}/VARS_MIGRATED_{{ (item | basename)[:-4] }}"
         with_fileglob:
           - "/etc/openstack_deploy/user_*.yml"
 
@@ -68,6 +72,3 @@
         with_items:
           - key: "default_bind_mount_logs"
             value: false
-  vars:
-      upgrade_scripts: "{{ playbook_dir }}/../scripts"
-      repo_root_dir: "{{ playbook_dir }}/../../../"
