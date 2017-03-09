@@ -25,14 +25,14 @@ OpenStack-Ansible Pike is currently in development.
    developer-docs/index
    inventory/index
 
-.. _Deployment Guide: http://docs.openstack.org/project-deploy-guide/draft/
+.. _Deployment Guide: http://docs.openstack.org/project-deploy-guide/openstack-ansible/draft/
 .. _Release Notes: http://docs.openstack.org/releasenotes/openstack-ansible/unreleased.html
 
 Ocata: Release Candidate
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible's Ocata series is scheduled to be released with the 15.0.0
-tag by 10 Mar 2017.
+OpenStack-Ansible's Ocata series was first released with the 15.0.0 tag on
+8 March 2017.
 
 * `OpenStack-Ansible Ocata Documentation`_
 

@@ -1,4 +1,4 @@
-.. _Upgrading-by-using-a-script:
+.. _upgrading-by-using-a-script:
 
 ===========================
 Upgrading by using a script

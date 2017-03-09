@@ -48,7 +48,7 @@ http://git.openstack.org/cgit/openstack/openstack-ansible-<ROLENAME>.
 
 .. _official OpenStack project: http://governance.openstack.org/reference/projects/index.html
 .. _Home Page: http://governance.openstack.org/reference/projects/openstackansible.html
-.. _Deployment Guide: https://docs.openstack.org/project-deploy-guide/openstack-ansible/ocata/
+.. _Deployment Guide: https://docs.openstack.org/project-deploy-guide/openstack-ansible
 .. _Quick Start: http://docs.openstack.org/developer/openstack-ansible/developer-docs/quickstart-aio.html
 .. _Developer Documentation: http://docs.openstack.org/developer/openstack-ansible/developer-docs/index.html
 .. _Source: http://git.openstack.org/cgit/openstack/openstack-ansible

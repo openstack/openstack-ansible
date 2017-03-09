@@ -97,7 +97,8 @@ Deploying the Role
       modifications being sure that group labels in ``env.d`` and ``conf.d``
       files are consistent.
 
-#. Generate secrets, if any, as described in the `Deployment Guide <http://docs.openstack.org/project-deploy-guide/openstack-ansible/newton/configure.html#configuring-service-credentials>`_.
+#. Generate secrets, if any, as described in the :deploy_guide:`Configure
+   Service Credentials <configure.html#configuring-service-credentials>`.
    You can append your keys to an existing ``user_secrets.yml`` file or add a
    new file to the ``openstack_deploy`` directory to contain them. Provide
    overrides for any other variables you will need at this time as well, either
