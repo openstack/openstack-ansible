@@ -65,6 +65,6 @@ if __name__ == '__main__':
     flag_ref = sys.argv[2]
     main(filename)
 
-    flag_file = '/etc/openstack_deploy.NEWTON/VARS_MIGRATED_%s' % flag_ref
+    flag_file = '/etc/openstack_deploy.OCATA/VARS_MIGRATED_%s' % flag_ref
     with open(flag_file, 'w') as f:
-        f.write('OpenStack Newton variables migrated.')
+        f.write('OpenStack-Ansible variables migrated.')
