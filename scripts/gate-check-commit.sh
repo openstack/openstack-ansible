@@ -17,20 +17,37 @@
 set -e -u -x
 
 ## Variables -----------------------------------------------------------------
+
+# Successerator: How many times do we try before failing
 export MAX_RETRIES=${MAX_RETRIES:-"2"}
+
 # tempest and testr options, default is to run tempest in serial
 export TESTR_OPTS=${TESTR_OPTS:-''}
+
 # Disable the python output buffering so that jenkins gets the output properly
 export PYTHONUNBUFFERED=1
+
 # Extra options to pass to the AIO bootstrap process
 export BOOTSTRAP_OPTS=${BOOTSTRAP_OPTS:-''}
+
 # This variable is being added to ensure the gate job executes an exit
 #  function at the end of the run.
 export OSA_GATE_JOB=true
+
 # Set the role fetch mode to any option [galaxy, git-clone]
 export ANSIBLE_ROLE_FETCH_MODE="git-clone"
+
 # Set the scenario to execute based on the first CLI parameter
 export SCENARIO=${1:-"aio"}
+
+# Set the action base on the second CLI parameter
+# Actions available: [ 'deploy', 'upgrade' ]
+export ACTION=${2:-"deploy"}
+
+# Set the source branch for upgrade tests
+# Be sure to change this whenever a new stable branch
+# is created. The checkout must always be N-1.
+export UPGRADE_SOURCE_BRANCH=${UPGRADE_SOURCE_BRANCH:-'stable/mitaka'}
 
 ## Functions -----------------------------------------------------------------
 info_block "Checking for required libraries." 2> /dev/null || source "$(dirname "${0}")/scripts-library.sh"
@@ -41,6 +58,17 @@ trap gate_job_exit_tasks EXIT
 
 # Log some data about the instance and the rest of the system
 log_instance_info
+
+# If the action is to upgrade, then store the current SHA,
+# checkout the source SHA before executing the greenfield
+# deployment.
+if [[ "${ACTION}" == "upgrade" ]]; then
+    # Store the target SHA/branch
+    export UPGRADE_TARGET_BRANCH=$(git rev-parse HEAD)
+
+    # Now checkout the source SHA/branch
+    git checkout origin/${UPGRADE_SOURCE_BRANCH}
+fi
 
 # Get minimum disk size
 DATA_DISK_MIN_SIZE="$((1024**3 * $(awk '/bootstrap_host_data_disk_min_size/{print $2}' "$(dirname "${0}")/../tests/roles/bootstrap-host/defaults/main.yml") ))"
@@ -116,5 +144,22 @@ source "$(dirname "${0}")/run-tempest.sh"
 
 # Log some data about the instance and the rest of the system
 log_instance_info
+
+# If the action is to upgrade, then checkout the original SHA for
+# the checkout, and execute the upgrade.
+if [[ "${ACTION}" == "upgrade" ]]; then
+
+    # Checkout the original HEAD we started with
+    git checkout ${UPGRADE_TARGET_BRANCH}
+
+    # There is a protection in the run-upgrade script
+    # to prevent people doing anything silly. We need
+    # to bypass that for an automated test.
+    export I_REALLY_KNOW_WHAT_I_AM_DOING=true
+
+    # Execute the upgrade script.
+    bash "$(dirname "${0}")/run-upgrade.sh"
+
+fi
 
 exit_success
