@@ -37,18 +37,24 @@
     when:
       - bootstrap_host_ubuntu_security_repo is not defined
     changed_when: false
+    failed_when: false
     tags:
       - find-apt-security-repo
 
   - name: Set apt repo facts based on discovered information
     set_fact:
       bootstrap_host_ubuntu_repo: "{{ ubuntu_repo.stdout_lines[0] }}"
-      bootstrap_host_ubuntu_security_repo: "{{ ubuntu_security_repo.stdout_lines[0] }}"
     when:
       - bootstrap_host_ubuntu_repo is not defined
-      - bootstrap_host_ubuntu_security_repo is not defined
       - ubuntu_repo is defined
+
+  - name: Set apt security repo facts based on discovered information
+    set_fact:
+      bootstrap_host_ubuntu_security_repo: "{{ ubuntu_security_repo.stdout_lines[0] }}"
+    when:
+      - bootstrap_host_ubuntu_security_repo is not defined
       - ubuntu_security_repo is defined
+      - ubuntu_security_repo.stdout_lines | length > 0
 
   - name: Configure apt's sources.list (Ubuntu only)
     template:
@@ -58,7 +64,6 @@
     when:
       - ansible_distribution == 'Ubuntu'
       - bootstrap_host_ubuntu_repo is defined
-      - bootstrap_host_ubuntu_security_repo is defined
     register: apt_sources_configure
 
   - name: Update apt-cache
