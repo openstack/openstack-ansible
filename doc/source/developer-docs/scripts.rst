@@ -70,15 +70,6 @@ test environments and is also used for automated testing. It executes actions
 which are definitely **not** suitable for production environments and must
 therefore **not** be used for that purpose.
 
-In order to scope the playbook execution there are several ``DEPLOY_``
-environment variables available near the top of the script. These are used
-by simply exporting an override before executing the script. For example,
-to skip the execution of the Ceilometer playbook, execute:
-
-.. code-block:: bash
-
-    export DEPLOY_CEILOMETER='no'
-
 The default MaxSessions setting for the OpenSSH Daemon is 10. Each Ansible
 fork makes use of a Session. By default Ansible sets the number of forks to 5,
 but the ``run-playbooks.sh`` script sets the number of forks used based on the
@@ -90,19 +81,6 @@ script, override the ANSIBLE_FORKS environment variable. For example:
 .. code-block:: bash
 
     export ANSIBLE_FORKS=20
-
-run-tempest.sh
---------------
-
-The ``run-tempest.sh`` script runs Tempest tests from the first utility
-container. This is primarily used for automated gate testing, but may also be
-used through manual execution.
-
-Configurable environment variables:
-
-* ``TEMPEST_SCRIPT_PARAMETERS`` - Defines tests to run. Values are passed to
-  ``openstack_tempest_gate.sh`` script, defined in the ``os_tempest`` role.
-  Defaults to ``scenario heat_api cinder_backup``.
 
 Lint Tests
 ----------
@@ -174,6 +152,7 @@ Documentation may be built locally by executing:
 .. code-block:: bash
 
     tox -e docs
+    tox -e deploy-guide
 
 .. _reStructuredText: http://docutils.sourceforge.net/rst.html
 
@@ -200,8 +179,8 @@ Release notes may be built locally by executing:
 Gating
 ^^^^^^
 
-Every commit to OpenStack-Ansible is verified by OpenStack-CI through the
-following jobs:
+Every commit to the OpenStack-Ansible integrated build is verified by
+OpenStack-CI through the following jobs:
 
 * ``gate-openstack-ansible-releasenotes``: This job executes the
   `Release Notes Build`_.
