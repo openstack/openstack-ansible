@@ -196,6 +196,11 @@ bootstrap_host_data_disk_min_size: 50
 #bootstrap_host_ubuntu_repo: http://archive.ubuntu.com/ubuntu/
 #bootstrap_host_ubuntu_security_repo: http://archive.ubuntu.com/ubuntu/
 
+# Set the distribution suffixes that will be included in the apt repository configuration
+bootstrap_host_apt_distribution_suffix_list:
+  - updates
+  - backports
+
 # Set the components that will be included in the apt repository configuration
 bootstrap_host_apt_components:
   - main

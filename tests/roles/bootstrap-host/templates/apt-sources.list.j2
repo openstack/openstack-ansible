@@ -1,10 +1,16 @@
 # {{ ansible_managed }}
 
-# Base repositories
+# Base repository
 deb {{ bootstrap_host_ubuntu_repo }} {{ ansible_distribution_release }} {{ bootstrap_host_apt_components | join(" ") }}
-# Updates repositories
-deb {{ bootstrap_host_ubuntu_repo }} {{ ansible_distribution_release }}-updates {{ bootstrap_host_apt_components | join(" ") }}
-# Backports repositories
-deb {{ bootstrap_host_ubuntu_repo }} {{ ansible_distribution_release }}-backports {{ bootstrap_host_apt_components | join(" ") }}
-# Security repositories
+
+{% if bootstrap_host_apt_distribution_suffix_list | length > 0 %}
+# Additional distribution repositories
+{%   for suffix in bootstrap_host_apt_distribution_suffix_list %}
+deb {{ bootstrap_host_ubuntu_repo }} {{ ansible_distribution_release }}-{{ suffix }} {{ bootstrap_host_apt_components | join(" ") }}
+{%   endfor %}
+{% endif %}
+
+{% if bootstrap_host_ubuntu_security_repo is defined %}
+# Security repository
 deb {{ bootstrap_host_ubuntu_security_repo }} {{ ansible_distribution_release }}-security {{ bootstrap_host_apt_components | join(" ") }}
+{% endif %}
