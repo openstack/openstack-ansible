@@ -74,25 +74,14 @@
     - ansible_pkg_mgr == 'apt'
 
 # CentOS
-- block:
-  - name: Install RDO package
-    package:
-      name: "{{ rdo_package }}"
-      state: "present"
-    register: install_cloud_rdo_package
-    until: install_cloud_rdo_package | success
-    retries: 5
-    delay: 2
-
-  - name: Install epel package
-    package:
-      name: "{{ epel_package }}"
-      state: "present"
-    register: install_epel_package
-    until: install_epel_package | success
-    retries: 5
-    delay: 2
-
+- name: Install RDO package
+  package:
+    name: "{{ rdo_package }}"
+    state: "present"
+  register: install_cloud_rdo_package
+  until: install_cloud_rdo_package | success
+  retries: 5
+  delay: 2
   when:
     - ansible_pkg_mgr == 'yum'
 
