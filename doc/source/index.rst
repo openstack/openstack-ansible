@@ -14,19 +14,15 @@ Pike: Pre-release
 
 OpenStack-Ansible Pike is currently in development.
 
-* `Deployment Guide`_
-* `Release Notes`_
-
 .. toctree::
    :maxdepth: 1
 
+   Deployment Guide <http://docs.openstack.org/project-deploy-guide/openstack-ansible/draft/>
+   Release Notes <http://docs.openstack.org/releasenotes/openstack-ansible/unreleased.html>
    draft-operations-guide/index
    upgrade-guide/index
    developer-docs/index
    inventory/index
-
-.. _Deployment Guide: http://docs.openstack.org/project-deploy-guide/openstack-ansible/draft/
-.. _Release Notes: http://docs.openstack.org/releasenotes/openstack-ansible/unreleased.html
 
 Ocata: Release Candidate
 ~~~~~~~~~~~~~~~~~~~~~~~~
