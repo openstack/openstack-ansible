@@ -14,7 +14,6 @@
 # limitations under the License.
 
 rdo_package: "https://rdoproject.org/repos/openstack-ocata/rdo-release-ocata.rpm"
-epel_package: "epel-release"
 
 packages_install:
   - '@Development Tools'
@@ -26,9 +25,7 @@ packages_install:
   - lvm2
   - python
   - python-devel
-  - python-ipython
   - tmux
-  - vconfig
   - vim
   - xfsprogs
 
