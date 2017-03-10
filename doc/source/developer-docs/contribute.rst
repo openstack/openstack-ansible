@@ -195,7 +195,7 @@ OpenStack-Ansible has multiple forms of documentation with different intent.
    statements of intent. The work to fulfill the intent is ongoing. Any new
    documentation submissions should try to help this intent where possible.
 
-The `Deployment Guide <http://docs.openstack.org/project-deploy-guide/openstack-ansible/newton/>`_
+The `Deployment Guide <http://docs.openstack.org/project-deploy-guide/openstack-ansible>`_
 intends to help deployers deploy OpenStack-Ansible for the first time.
 
 The role documentation (for example, the `keystone role documentation`_)

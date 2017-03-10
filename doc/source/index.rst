@@ -5,8 +5,8 @@ OpenStack-Ansible Documentation
 OpenStack-Ansible provides Ansible playbooks and roles for the deployment and
 configuration of an OpenStack environment.
 
-OpenStack-Ansible's Ocata series is scheduled to be released with the 15.0.0
-tag by 10 Mar 2017.
+OpenStack-Ansible's Ocata series was first released with the 15.0.0 tag on
+8 March 2017.
 
 * `Ocata Series Release Notes`_
 * `OpenStack-Ansible Ocata Deployment Guide`_
