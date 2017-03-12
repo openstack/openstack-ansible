@@ -39,7 +39,13 @@
       when:
         - item.scm == "git" or item.scm is undefined
       with_items: "{{ roles }}"
+      register: git_clone
+      until: git_clone | success
+      retries: "{{ git_clone_retries }}"
+      delay: "{{ git_clone_retry_delay }}"
   vars:
     roles: "{{ lookup('file', role_file) | from_yaml }}"
     role_file: '../ansible-role-requirements.yml'
     role_path_default: '/etc/ansible/roles'
+    git_clone_retries: 2
+    git_clone_retry_delay: 5
