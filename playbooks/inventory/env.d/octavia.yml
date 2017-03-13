@@ -1,0 +1,49 @@
+---
+# Copyright 2017, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+component_skel:
+  octavia-api:
+    belongs_to:
+      - octavia_all
+  octavia-worker:
+    belongs_to:
+      - octavia_all
+  octavia-housekeeping:
+    belongs_to:
+      - octavia_all
+  octavia-health-manager:
+    belongs_to:
+      - octavia_all
+
+
+container_skel:
+  octavia_server_container:
+    belongs_to:
+      - octavia-infra_containers
+    contains:
+      - octavia-api
+      - octavia-worker
+      - octavia-housekeeping
+      - octavia-health-manager
+    properties:
+      service_name: octavia
+
+physical_skel:
+  octavia-infra_containers:
+    belongs_to:
+      - all_containers
+  octavia_hosts:
+    belongs_to:
+      - hosts

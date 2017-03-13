@@ -266,3 +266,14 @@ haproxy_default_services:
         - "forwardfor"
         - "httpchk /versions"
         - "httplog"
+  - service:
+      haproxy_service_name: octavia
+      haproxy_backend_nodes: "{{ groups['octavia_all'] | default([]) }}"
+      haproxy_port: 9876
+      haproxy_balance_type: http
+      haproxy_backend_options:
+        - "httpchk GET /"
+      haproxy_whitelist_networks:
+        - 192.168.0.0/16
+        - 172.16.0.0/12
+        - 10.0.0.0/8

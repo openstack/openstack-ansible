@@ -1,0 +1,68 @@
+---
+# Copyright 2017, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Install octavia server
+  hosts: octavia_all
+  gather_facts: "{{ gather_facts | default(True) }}"
+  max_fail_percentage: 20
+  user: root
+  pre_tasks:
+    - include: common-tasks/os-lxc-container-setup.yml
+      static: no
+    - include: common-tasks/rabbitmq-vhost-user.yml
+      static: no
+      vars:
+        user: "{{ octavia_rabbitmq_userid }}"
+        password: "{{ octavia_rabbitmq_password }}"
+        vhost: "{{ octavia_rabbitmq_vhost }}"
+        _rabbitmq_host_group: "{{ octavia_rabbitmq_host_group }}"
+      when:
+        - inventory_hostname == groups['octavia_all'][0]
+        - groups[octavia_rabbitmq_host_group] | length > 0
+    - include: common-tasks/os-log-dir-setup.yml
+      vars:
+        log_dirs:
+          - src: "/openstack/log/{{ inventory_hostname }}-octavia"
+            dest: "/var/log/octavia"
+    - include: common-tasks/mysql-db-user.yml
+      static: no
+      vars:
+        user_name: "{{ octavia_galera_user }}"
+        password: "{{ octavia_container_mysql_password }}"
+        login_host: "{{ octavia_galera_address }}"
+        db_name: "{{ octavia_galera_database }}"
+      when: inventory_hostname == groups['octavia_all'][0]
+    - include: common-tasks/package-cache-proxy.yml
+  roles:
+    - role: "os_octavia"
+    - role: "openstack_openrc"
+      tags:
+        - openrc
+    - role: "rsyslog_client"
+      rsyslog_client_log_rotate_file: octavia_log_rotate
+      rsyslog_client_log_dir: "/var/log/ocgtavia"
+      rsyslog_client_config_name: " 100-octavia-rsyslog-client.conf"
+      tags:
+        - rsyslog
+    - role: "system_crontab_coordination"
+      tags:
+        - crontab
+  vars:
+    is_metal: "{{ properties.is_metal|default(false) }}"
+    octavia_galera_user: octavia
+    octavia_galera_database: octavia
+    octavia_galera_address: "{{ galera_address }}"
+  tags:
+    - octavia
