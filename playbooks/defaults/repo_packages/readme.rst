@@ -27,7 +27,6 @@ Repository data can be set in any of the following locations by default.
 The basic structure of all of these files:
   * git_repo: ``string`` URI to the git repository to clone from.
   * git_fallback_repo: ``string`` URI to an alternative git repository to clone from when **git_repo** fails.
-  * git_dest: ``string`` full path to place a cloned git repository. This will normally incorporate the **repo_path** variable for consistency purposes.
   * git_install_branch: ``string`` branch, tag or SHA of a git repository to clone into.
   * git_repo_plugins: ``list`` of ``hashes`` with keys: path, package | This is used to install additional packages which may be installable from the same base repository.
   * git_package_name: ``string`` that will override the "egg" name given for the repo.
