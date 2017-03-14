@@ -29,6 +29,7 @@ Restarting services
 
 Restart your OpenStack services by accessing every controller node. Some
 OpenStack services will require restart from other nodes in your environment.
+
 The following table lists the commands to restart an OpenStack service.
 
 .. list-table:: Restarting OpenStack services
@@ -43,46 +44,51 @@ The following table lists the commands to restart an OpenStack service.
           # service glance-api restart
    * - Compute service (controller node)
      - .. code-block: console
-          # service openstack-nova-api restart
-          # service openstack-nova-cert restart
-          # service openstack-nova-consoleauth restart
-          # service openstack-nova-scheduler restart
-          # service openstack-nova-conductor restart
-          # service openstack-nova-novncproxy restart
+          # service nova-api-os-compute restart
+          # service nova-consoleauth restart
+          # service nova-scheduler restart
+          # service nova-conductor restart
+          # service nova-api-metadata restart
+          # service nova-novncproxy restart (if using novnc)
+          # service nova-spicehtml5proxy restart (if using spice)
    * - Compute service (compute node)
      - .. code-block: console
-          # service openstack-nova-compute restart
-          # service openstack-nova-compute status
+          # service nova-compute restart
    * - Networking service
      - .. code-block: console
           # service neutron-server restart
           # service neutron-dhcp-agent restart
           # service neutron-l3-agent restart
           # service neutron-metadata-agent restart
+          # service neutron-linuxbridge-agent restart
+   * - Networking service (compute node)
+     - .. code-block: console
+          # service neutron-linuxbridge-agent restart
    * - Block Storage service
      - .. code-block: console
-          # service openstack-cinder-api restart
-          # service openstack-cinder-backup restart
-          # service openstack-cinder-scheduler restart
-          # service openstack-cinder-volume restart
+          # service cinder-api restart
+          # service cinder-backup restart
+          # service cinder-scheduler restart
+          # service cinder-volume restart
    * - Object Storage service
      - .. code-block: console
           # service swift-account-auditor restart
-          # service swift-account restart
+          # service swift-account-server restart
           # service swift-account-reaper restart
           # service swift-account-replicator restart
           # service swift-container-auditor restart
-          # service swift-container restart
+          # service swift-container-server restart
           # service swift-container-reconciler restart
           # service swift-container-replicator restart
           # service swift-container-sync restart
           # service swift-container-updater restart
           # service swift-object-auditor restart
-          # service swift-object restart
+          # service swift-object-expirer restart
+          # service swift-object-server restart
           # service swift-object-reconstructor restart
           # service swift-object-replicator restart
           # service swift-object-updater restart
-          # service swift-proxy restart
+          # service swift-proxy-server restart
 
 
 Troubleshooting Instance connectivity issues
