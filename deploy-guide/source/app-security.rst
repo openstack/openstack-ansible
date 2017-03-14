@@ -33,7 +33,7 @@ certificates, keys, and CA certificates.
 
 To learn more about how to customize the deployment of encrypted
 communications, see
-:deploy_guide:`<Securing services with SSL certificates app-advanced-config-sslcertificates.html>`.
+:deploy_guide:`Securing services with SSL certificates <app-advanced-config-sslcertificates.html>`.
 
 Host security hardening
 ~~~~~~~~~~~~~~~~~~~~~~~
