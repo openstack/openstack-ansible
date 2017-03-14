@@ -26,6 +26,7 @@ export ANSIBLE_LOOKUP_PLUGINS="${ANSIBLE_LOOKUP_PLUGINS:-/etc/ansible/roles/plug
 export ANSIBLE_FILTER_PLUGINS="${ANSIBLE_FILTER_PLUGINS:-/etc/ansible/roles/plugins/filter}"
 export ANSIBLE_ACTION_PLUGINS="${ANSIBLE_ACTION_PLUGINS:-/etc/ansible/roles/plugins/action}"
 export ANSIBLE_CALLBACK_PLUGINS="${ANSIBLE_CALLBACK_PLUGINS:-/etc/ansible/roles/plugins/callback}"
+export ANSIBLE_VARS_PLUGINS="${ANSIBLE_VARS_PLUGINS:-/etc/ansible/roles/plugins/vars_plugins}"
 
 export ANSIBLE_GATHERING="${ANSIBLE_GATHERING:-smart}"
 export ANSIBLE_GATHER_SUBSET="${ANSIBLE_GATHER_SUBSET:-network,hardware,virtual}"
@@ -49,3 +50,9 @@ export ANSIBLE_STRATEGY_PLUGINS="${ANSIBLE_STRATEGY_PLUGINS:-/etc/ansible/roles/
 export ANSIBLE_CONNECTION_PLUGINS="${ANSIBLE_CONNECTION_PLUGINS:-/etc/ansible/roles/plugins/connection}"
 
 export ANSIBLE_FORCE_HANDLERS="${ANSIBLE_FORCE_HANDLERS:-True}"
+# Extra non-ansible default variables to use with vars_plugin.
+# Allow the usage of userspace group_vars host_vars with user
+# defined precedence until this behavior is merged in the
+# inventory
+export GROUP_VARS_PATH="${GROUP_VARS_PATH:-/etc/openstack_deploy/group_vars/}"
+export HOST_VARS_PATH="${HOST_VARS_PATH:-/etc/openstack_deploy/host_vars/}"
