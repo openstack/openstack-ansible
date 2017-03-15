@@ -54,3 +54,7 @@ pip_lock_to_internal_repo: False
 #
 repo_build_pip_no_binary:
   - libvirt-python
+
+# Set the build tag and the repo version
+repo_build_release_tag: "{{ openstack_release }}"
+repo_build_os_distro_version: "{{ os_distro_version }}"

@@ -71,7 +71,7 @@
       when: ansible_pkg_mgr == 'yum'
 
     - name: Get list of python clients
-      shell: "curl -s {{ openstack_repo_url }}/os-releases/{{ openstack_release }}/requirements_absolute_requirements.txt  | grep client | cut -d'=' -f1"
+      shell: "curl -s {{ repo_release_path }}/requirements_absolute_requirements.txt  | grep client | cut -d'=' -f1"
       register: client_list
       run_once: true
       changed_when: false
