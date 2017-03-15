@@ -29,11 +29,25 @@ package_state: "latest"
 # Set "/var/log" to be a bind mount to the physical host.
 default_bind_mount_logs: true
 
+# Set distro variable
+os_distro_version: "{{ ansible_distribution | lower }}-{{ ansible_distribution_version.split('.')[:2] | join('.') }}-{{ ansible_architecture | lower }}"
+
 # Ensure that the package state matches the global setting
 ceph_client_package_state: "{{ package_state }}"
 galera_client_package_state: "{{ package_state }}"
 pip_install_package_state: "{{ package_state }}"
 rsyslog_client_package_state: "{{ package_state }}"
+
+## OpenStack source options
+openstack_repo_url: "http://{{ internal_lb_vip_address }}:{{ repo_server_port }}"
+openstack_repo_git_url: "git://{{ internal_lb_vip_address }}"
+
+# URL for the frozen internal openstack repo.
+repo_server_port: 8181
+repo_pkg_cache_enabled: true
+repo_pkg_cache_port: 3142
+repo_pkg_cache_url: "http://{{ internal_lb_vip_address }}:{{ repo_pkg_cache_port }}"
+repo_release_path: "{{ openstack_repo_url }}/os-releases/{{ openstack_release }}/{{ os_distro_version }}"
 
 # These are pinned to ensure exactly the same behaviour forever!
 # These pins are updated through the sources-branch-updater script
@@ -43,23 +57,14 @@ pip_packages:
   - wheel==0.29.0
 
 pip_links:
-  - { name: "openstack_release", link: "{{ openstack_repo_url }}/os-releases/{{ openstack_release }}/" }
+  - { name: "openstack_release", link: "{{ repo_release_path }}" }
 pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"
 
 # The upper constraints to apply to all pip installations
-pip_install_upper_constraints: "{{ openstack_repo_url }}/os-releases/{{ openstack_release }}/requirements_absolute_requirements.txt"
+pip_install_upper_constraints: "{{ repo_release_path }}/requirements_absolute_requirements.txt"
 
 # The URL to retrieve the get-pip.py installation script
-pip_upstream_url: "{{ (pip_offline_install | bool) | ternary('https://bootstrap.pypa.io/get-pip.py', openstack_repo_url ~ '/os-releases/' ~ openstack_release ~ '/get-pip.py') }}"
-
-## OpenStack source options
-# URL for the frozen internal openstack repo.
-repo_server_port: 8181
-repo_pkg_cache_enabled: true
-repo_pkg_cache_port: 3142
-repo_pkg_cache_url: "http://{{ internal_lb_vip_address }}:{{ repo_pkg_cache_port }}"
-openstack_repo_url: "http://{{ internal_lb_vip_address }}:{{ repo_server_port }}"
-openstack_repo_git_url: "git://{{ internal_lb_vip_address }}"
+pip_upstream_url: "{{ (pip_offline_install | bool) | ternary('https://bootstrap.pypa.io/get-pip.py', repo_release_path ~ '/get-pip.py') }}"
 
 ## kernel modules for specific group hosts
 # :param name: name of the kernel module
@@ -117,7 +122,7 @@ service_ldap_backend_enabled: "{{ keystone_ldap is defined and keystone_ldap.Def
 
 ## Base venv configuration
 venv_tag: "{{ openstack_release }}"
-venv_base_download_url: "{{ openstack_repo_url }}/venvs/{{ openstack_release }}/{{ ansible_distribution | lower }}"
+venv_base_download_url: "{{ openstack_repo_url }}/venvs/{{ openstack_release }}/{{ os_distro_version }}"
 
 ## Aodh
 aodh_service_region: "{{ service_region }}"
