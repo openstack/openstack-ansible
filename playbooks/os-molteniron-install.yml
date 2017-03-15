@@ -1,0 +1,51 @@
+---
+# Copyright (c) 2017 IBM Corporation.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Installation and setup of molteniron
+  hosts: molteniron_all
+  gather_facts: "{{ gather_facts | default(True) }}"
+  user: root
+  pre_tasks:
+    - include: common-tasks/os-lxc-container-setup.yml
+      vars:
+        extra_container_config_no_restart:
+          - "lxc.start.order=79"
+    - include: common-tasks/os-log-dir-setup.yml
+      vars:
+        log_dirs:
+          - src: "/openstack/log/{{ inventory_hostname }}-molteniron"
+            dest: "/var/log/molteniron"
+            owner: "syslog"
+            group: "syslog"
+  roles:
+    - role: "os_molteniron"
+      molteniron_venv_tag: "{{ openstack_release }}"
+      molteniron_venv_download_url: "{{ openstack_repo_url }}/venvs/{{ openstack_release }}/{{ ansible_distribution | lower }}/molteniron-{{ openstack_release }}-{{ ansible_architecture | lower }}.tgz"
+    - role: "openstack_openrc"
+      tags:
+        - openrc
+    - role: "rsyslog_client"
+      rsyslog_client_log_rotate_file: ironic_log_rotate
+      rsyslog_client_log_dir: "/var/log/ironic"
+      rsyslog_client_config_name: "99-ironic-rsyslog-client.conf"
+      tags:
+        - rsyslog
+    - role: "system_crontab_coordination"
+      tags:
+        - crontab
+  vars:
+    is_metal: "{{ properties.is_metal|default(false) }}"
+  tags:
+    - molteniron
