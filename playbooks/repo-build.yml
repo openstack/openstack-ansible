@@ -29,11 +29,12 @@
     - name: Prepare group of master repo servers
       local_action:
         module: "add_host"
-        name: "{{ groups['repo_servers_' + hostvars[item].ansible_architecture][0] }}"
+        name: "{{ groups['repo_servers_' + (hostvars[item].ansible_distribution_version.split('.')[:2] | join('.')) + hostvars[item].ansible_architecture][0] }}"
         groups: "repo_nodes"
       # Process all nodes that don't match the architecture of repo_all[0]
-      when:
-        - hostvars[item].ansible_architecture != hostvars[groups['repo_all'][0]].ansible_architecture
+      when: >
+        hostvars[item].ansible_architecture != hostvars[groups['repo_all'][0]].ansible_architecture or
+        (hostvars[item].ansible_distribution_version.split('.')[:2] | join('.')) != (hostvars[groups['repo_all'][0]].ansible_distribution_version.split('.')[:2] | join('.'))
       with_items:
         - "{{ groups['repo_all'][1:] }}"
   tags:
@@ -123,7 +124,6 @@
 
   roles:
     - role: "repo_build"
-      repo_build_release_tag: "{{ openstack_release }}"
   vars_files:
     - defaults/repo_packages/openstack_services.yml
   vars:
