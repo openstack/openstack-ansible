@@ -1,0 +1,9 @@
+---
+features:
+  - The ``galera_client`` role will default to using the ``galera_repo_url``
+    URL if the value for it is set. This simplifies using an alternative
+    mirror for the MariaDB server and client as only one variable needs to
+    be set to cover them both.
+deprecations:
+  - The variables ``galera_client_apt_repo_url`` and ``galera_client_yum_repo_url``
+    are deprecated in favour of the common variable ``galera_client_repo_url``.
