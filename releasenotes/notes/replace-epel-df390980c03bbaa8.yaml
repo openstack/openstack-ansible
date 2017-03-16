@@ -1,0 +1,9 @@
+---
+upgrade:
+  - |
+    The EPEL repository is now removed in favor of the RDO repository.
+
+    **This is a breaking change for existing CentOS deployments.** The ``yum``
+    package manager will have errors when it finds that certain packages that
+    it installed from EPEL are no longer available.  Deployers may need to
+    rebuild container or reinstall packages to complete this change.
