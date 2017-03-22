@@ -124,7 +124,7 @@ haproxy_default_services:
       haproxy_ssl: "{{ haproxy_ssl }}"
       haproxy_balance_type: http
       haproxy_backend_options:
-        - "httpchk HEAD /"
+        - "httpchk GET /"
   - service:
       haproxy_service_name: nova_api_metadata
       haproxy_backend_nodes: "{{ groups['nova_api_metadata'] | default([]) }}"
