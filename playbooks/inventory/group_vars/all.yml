@@ -57,7 +57,7 @@ pip_packages:
   - wheel==0.29.0
 
 pip_links:
-  - { name: "openstack_release", link: "{{ repo_release_path }}" }
+  - { name: "openstack_release", link: "{{ repo_release_path }}/" }
 pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"
 
 # The upper constraints to apply to all pip installations
