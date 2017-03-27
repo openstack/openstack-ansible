@@ -37,6 +37,7 @@
 - include: os-magnum-install.yml
 - include: os-trove-install.yml
 - include: os-sahara-install.yml
+- include: os-molteniron-install.yml
 - include: os-tempest-install.yml
   when: (tempest_install | default(False)) | bool or (tempest_run | default(False)) | bool
 
