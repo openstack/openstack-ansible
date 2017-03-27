@@ -28,7 +28,7 @@
         vhost: "{{ ceilometer_rabbitmq_vhost }}"
         _rabbitmq_host_group: "{{ ceilometer_rabbitmq_host_group }}"
       when:
-        - inventory_hostname == groups['ceilometer_api'][0]
+        - inventory_hostname == groups['ceilometer_central_container'][0]
         - groups[ceilometer_rabbitmq_host_group] | length > 0
     - include: common-tasks/os-log-dir-setup.yml
       vars:

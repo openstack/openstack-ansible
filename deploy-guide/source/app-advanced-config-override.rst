@@ -194,7 +194,6 @@ Galera:
 Telemetry service (ceilometer):
     * ceilometer_policy_overrides
     * ceilometer_ceilometer_conf_overrides
-    * ceilometer_api_paste_ini_overrides
     * ceilometer_event_definitions_yaml_overrides
     * ceilometer_event_pipeline_yaml_overrides
     * ceilometer_pipeline_yaml_overrides

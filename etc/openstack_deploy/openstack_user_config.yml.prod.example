@@ -206,7 +206,7 @@ network_hosts:
   infra3:
     ip: 172.29.236.13
 
-# ceilometer (telemetry API)
+# ceilometer (telemetry data collection)
 metering-infra_hosts:
   infra1:
     ip: 172.29.236.11
@@ -240,7 +240,7 @@ compute_hosts:
   compute2:
     ip: 172.29.236.17
 
-# ceilometer compute agent (telemetry)
+# ceilometer compute agent (telemetry data collection)
 metering-compute_hosts:
   compute1:
     ip: 172.29.236.16
