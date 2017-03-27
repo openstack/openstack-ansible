@@ -333,6 +333,9 @@ development team by performing one of the following recurring tasks:
   * Refresh static elements in roles. For example, update a specific version of
     the software packages.
 
+  * Bump ``ceph_stable_release`` to latest Ceph LTS release in the integrated
+    OpenStack-Ansible repo, and inside the ``ceph_client`` role defaults.
+
 * By milestone 3:
 
   * Implement features
