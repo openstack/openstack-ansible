@@ -1,6 +1,6 @@
-===================================
+==================================
 Appendix G: Advanced configuration
-===================================
+==================================
 
 .. TODO: include intro on what advanced configuration is, whether it’s required
    or optional, and when someone should do it
