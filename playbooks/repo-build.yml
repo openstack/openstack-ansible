@@ -128,7 +128,7 @@
     - defaults/repo_packages/openstack_services.yml
   vars:
     pkg_locations:
-      - ../
+      - "{{ playbook_dir }}/../"
       - /etc/ansible/roles
       - /etc/openstack_deploy
   tags:
