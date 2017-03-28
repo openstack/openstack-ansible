@@ -58,7 +58,7 @@ configuration, see
 `developer-inventory <http://docs.openstack.org/developer/openstack-ansible/developer-docs/inventory.html>`_.
 
 Installing additional services
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To install additional services, the files in
 ``/etc/openstack_deploy/conf.d`` provide examples showing
@@ -172,10 +172,10 @@ password for both the OpenStack API and Dashboard access.
 We recommend that you use the ``pw-token-gen.py`` script to generate random
 values for the variables in each file that contains service credentials:
 
-   .. code-block:: shell-session
+.. code-block:: shell-session
 
-      # cd /opt/openstack-ansible/scripts
-      # python pw-token-gen.py --file /etc/openstack_deploy/user_secrets.yml
+   # cd /opt/openstack-ansible/scripts
+   # python pw-token-gen.py --file /etc/openstack_deploy/user_secrets.yml
 
 To regenerate existing passwords, add the ``--regen`` flag.
 

@@ -1,6 +1,6 @@
-=====================
+====================
 Appendix D: Security
-=====================
+====================
 
 Security is one of the top priorities within OpenStack-Ansible (OSA), and many
 security enhancements for OpenStack clouds are available in deployments by

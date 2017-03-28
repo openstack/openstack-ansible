@@ -131,7 +131,7 @@ overrides, the general format for the variable name is
 ``<service>_policy_overrides``.
 
 Overriding .yml files
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
 
 You can override ``.yml`` file values by supplying replacement YAML content.
 
