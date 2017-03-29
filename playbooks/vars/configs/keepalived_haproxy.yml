@@ -31,7 +31,7 @@ keepalived_sync_groups:
 
 keepalived_scripts:
   haproxy_check_script:
-    check_script: "killall -0 haproxy"
+    check_script: "kill -0 `cat /var/run/haproxy.pid`"
   pingable_check_script:
     check_script: "ping -c {{ keepalived_ping_count }} {{ keepalived_ping_address }} 1>&2"
     interval: "{{ keepalived_ping_interval }}"
