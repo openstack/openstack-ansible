@@ -1,6 +1,6 @@
-==================================================
+================================================
 Appendix C: Customizing host and service layouts
-==================================================
+================================================
 
 The default layout of containers and services in OpenStack-Ansible (OSA) is
 determined by the ``/etc/openstack_deploy/openstack_user_config.yml`` file and

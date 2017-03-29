@@ -74,7 +74,7 @@ following is the ``/etc/network/interfaces`` file for ``infra1``.
 .. literalinclude:: ../../etc/network/interfaces.d/openstack_interface.cfg.test.example
 
 Deployment configuration
-~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 Environment layout
 ------------------
