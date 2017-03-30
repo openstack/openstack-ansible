@@ -27,6 +27,37 @@
       vars:
         list_of_bind_mounts: "{{ ceph_container_bind_mounts }}"
     - include: common-tasks/package-cache-proxy.yml
+    #TODO: mgariepy, revisit to use include_role when https://github.com/ansible/ansible/issues/20077 is fixed
+    - name: install the ceph stable repository key
+      rpm_key:
+        key: "{{ ceph_stable_key }}"
+        state: present
+      when:
+        - ceph_stable
+        - ansible_pkg_mgr == 'yum'
+    - name: add ceph stable repository
+      package:
+        name: http://download.ceph.com/rpm-{{ ceph_stable_release }}/{{ ceph_stable_redhat_distro }}/noarch/ceph-release-1-0.{{ ceph_stable_redhat_distro|replace('rhel', 'el') }}.noarch.rpm
+        state: present
+      changed_when: false
+      when:
+        - ceph_stable
+        - ansible_pkg_mgr == 'yum'
+    - name: purge yum cache
+      command: yum clean all
+      when:
+        ansible_pkg_mgr == 'yum'
+      tags:
+        - skip_ansible_lint
+    - name: Increase priority for Ceph repos
+      command: >
+         yum-config-manager
+           --enable Ceph
+           --setopt="Ceph.priority=50"
+           --enable Ceph-noarch
+           --setopt="Ceph-noarch.priority=50"
+      when:
+        - ansible_pkg_mgr == 'yum'
   roles:
     - role: "ceph-mon"
       tags:
@@ -70,6 +101,37 @@
           - src: "/openstack/log/{{ inventory_hostname }}-ceph"
             dest: "/var/log/ceph"
     - include: common-tasks/package-cache-proxy.yml
+    #TODO: mgariepy, revisit to use include_role when https://github.com/ansible/ansible/issues/20077 is fixed
+    - name: install the ceph stable repository key
+      rpm_key:
+        key: "{{ ceph_stable_key }}"
+        state: present
+      when:
+        - ceph_stable
+        - ansible_pkg_mgr == 'yum'
+    - name: add ceph stable repository
+      package:
+        name: http://download.ceph.com/rpm-{{ ceph_stable_release }}/{{ ceph_stable_redhat_distro }}/noarch/ceph-release-1-0.{{ ceph_stable_redhat_distro|replace('rhel', 'el') }}.noarch.rpm
+        state: present
+      changed_when: false
+      when:
+        - ceph_stable
+        - ansible_pkg_mgr == 'yum'
+    - name: purge yum cache
+      command: yum clean all
+      when:
+        ansible_pkg_mgr == 'yum'
+      tags:
+        - skip_ansible_lint
+    - name: Increase priority for Ceph repos
+      command: >
+         yum-config-manager
+           --enable Ceph
+           --setopt="Ceph.priority=50"
+           --enable Ceph-noarch
+           --setopt="Ceph-noarch.priority=50"
+      when:
+        - ansible_pkg_mgr == 'yum'
   roles:
     - role: "ceph-osd"
       tags:
