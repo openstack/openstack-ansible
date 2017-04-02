@@ -155,12 +155,14 @@ haproxy_default_services:
       haproxy_backend_nodes: "{{ groups['nova_console'] | default([]) }}"
       haproxy_ssl: "{{ haproxy_ssl }}"
       haproxy_port: "{{ nova_console_port }}"
-      haproxy_balance_type: tcp
+      haproxy_balance_type: http
       haproxy_timeout_client: 60m
       haproxy_timeout_server: 60m
       haproxy_balance_alg: source
       haproxy_backend_options:
-        - tcp-check
+        - "httpchk HEAD /"
+      haproxy_backend_httpcheck_options:
+        - "expect status 404"
   - service:
       haproxy_service_name: cinder_api
       haproxy_backend_nodes: "{{ groups['cinder_api'] | default([]) }}"
@@ -204,9 +206,11 @@ haproxy_default_services:
       haproxy_backend_nodes: "{{ groups['aodh_api'] | default([]) }}"
       haproxy_ssl: "{{ haproxy_ssl }}"
       haproxy_port: 8042
-      haproxy_balance_type: tcp
+      haproxy_balance_type: http
       haproxy_backend_options:
-        - tcp-check
+        - "httpchk HEAD /"
+      haproxy_backend_httpcheck_options:
+        - "expect status 401"
   - service:
       haproxy_service_name: ironic_api
       haproxy_backend_nodes: "{{ groups['ironic_api'] | default([]) }}"
@@ -245,9 +249,11 @@ haproxy_default_services:
       haproxy_backend_nodes: "{{ groups['barbican_api'] | default([]) }}"
       haproxy_ssl: "{{ haproxy_ssl }}"
       haproxy_port: 9311
-      haproxy_balance_type: tcp
+      haproxy_balance_type: http
       haproxy_backend_options:
-        - tcp-check
+        - "httpchk HEAD /"
+      haproxy_backend_httpcheck_options:
+        - "expect status 401"
   - service:
       haproxy_service_name: designate_api
       haproxy_backend_nodes: "{{ groups['designate_api'] | default([]) }}"
