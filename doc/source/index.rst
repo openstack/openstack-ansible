@@ -24,8 +24,8 @@ OpenStack-Ansible Pike is currently in development.
    developer-docs/index
    inventory/index
 
-Ocata: Release Candidate
-~~~~~~~~~~~~~~~~~~~~~~~~
+Ocata: Current stable release, security supported
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 OpenStack-Ansible's Ocata series was first released with the 15.0.0 tag on
 8 March 2017.
