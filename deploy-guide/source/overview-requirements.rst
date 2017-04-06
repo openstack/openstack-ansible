@@ -21,7 +21,7 @@ following minimum requirements:
 
   * Centos 7, fully updated.
 
-  * Linux kernel verison ``3.10.0`` or later.
+  * Linux kernel version ``3.10.0`` or later.
 
 * Secure Shell (SSH) client and server that support public key
   authentication
