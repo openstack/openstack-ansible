@@ -39,7 +39,7 @@ The ``container_bridge`` setting defines the physical network bridge used
 to connect the veth pair from the physical host to the container.
 Inside the container, the ``container_interface`` setting defines the name
 at which the physical network will be made available.
-Make sure that both settings are uniquely defined across ther provider
+Make sure that both settings are uniquely defined across their provider
 networks and that the network interface is correctly configured inside your
 operating system.
 ``group_binds`` define where this network need to attached to, to either
