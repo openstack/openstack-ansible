@@ -17,7 +17,7 @@ from os import path
 import sys
 import unittest
 
-LIB_DIR = 'lib'
+LIB_DIR = 'osa_toolkit'
 
 sys.path.append(path.join(os.getcwd(), LIB_DIR))
 

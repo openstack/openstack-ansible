@@ -20,7 +20,7 @@ import os
 import sys
 
 current_path = os.path.abspath(os.path.dirname(os.path.realpath(__file__)))
-lib_path = os.path.join(current_path, '..', '..', 'lib')
+lib_path = os.path.join(current_path, '..', '..', 'osa_toolkit')
 sys.path.append(lib_path)
 
 import generate

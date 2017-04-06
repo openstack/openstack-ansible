@@ -18,7 +18,7 @@ import sys
 import test_inventory
 import unittest
 
-MANAGE_DIR = path.join(os.getcwd(), 'lib')
+MANAGE_DIR = path.join(os.getcwd(), 'osa_toolkit')
 TARGET_DIR = path.join(os.getcwd(), 'tests', 'inventory')
 
 sys.path.append(MANAGE_DIR)
