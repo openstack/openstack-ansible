@@ -28,9 +28,9 @@
     dest: "/etc/apt/apt.conf.d/00apt-cacher-proxy"
   register: apt_proxy_dropped
   when:
+    - repo_pkg_cache_enabled | bool
     - proxy_check.status == 200
     - ansible_os_family == 'Debian'
-    - repo_pkg_cache_enabled | bool
   tags:
     - common-proxy
 
@@ -49,9 +49,9 @@
     dest: "/etc/apt/apt.conf.d/00apt-cacher-proxy"
     state: "absent"
   when:
+    - repo_pkg_cache_enabled | bool
     - proxy_check.status != 200
     - ansible_os_family == 'Debian'
-    - repo_pkg_cache_enabled | bool
   tags:
     - common-proxy
 
