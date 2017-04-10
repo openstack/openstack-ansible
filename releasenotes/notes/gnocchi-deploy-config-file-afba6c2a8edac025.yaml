@@ -1,0 +1,7 @@
+---
+features:
+  - The ``os_gnocchi`` role now includes a facility where you can place your
+    own default ``api-paste.ini`` or ``policy.json`` file in
+    ``/etc/openstack_deploy/gnocchi`` (by default) and it will be
+    deployed to the target host after being interpreted by the
+    template engine.

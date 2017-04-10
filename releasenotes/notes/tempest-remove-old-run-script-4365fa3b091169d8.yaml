@@ -1,0 +1,10 @@
+---
+upgrade:
+  - The ``openstack_tempest_gate.sh`` script has been removed
+    as it requires the use of the ``run_tempest.sh`` script
+    which has been deprecated in Tempest. In order to
+    facilitate the switch, the default for the variable
+    ``tempest_run`` has been set to ``yes``, forcing the role
+    to execute tempest by default. This default can be changed
+    by overriding the value to ``no``. The test whitelist may
+    be set through the list variable ``tempest_test_whitelist``.

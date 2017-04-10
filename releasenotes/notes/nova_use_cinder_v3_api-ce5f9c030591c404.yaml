@@ -1,0 +1,6 @@
+---
+upgrade:
+  - When upgrading nova the cinder ``catalog_info`` will
+    change to use the ``cinderv3`` endpoint. Ensure that
+    you have upgraded cinder so that the ``cinderv3``
+    endpoint exists in the keystone catalog.

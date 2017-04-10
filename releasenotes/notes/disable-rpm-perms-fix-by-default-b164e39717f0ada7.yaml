@@ -1,0 +1,6 @@
+---
+security:
+  - |
+    The security role will no longer fix file permissions and ownership based
+    on the contents of the RPM database by default. Deployers can opt in for
+    these changes by setting ``security_reset_perm_ownership`` to ``yes``.

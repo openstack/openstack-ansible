@@ -1,0 +1,7 @@
+---
+features:
+  - In the lxc_container_create role, the keys ``preup``, ``postup``,
+    ``predown``, and ``postdown`` are now supported in the
+    ``container_networks`` dict for Ubuntu systems. This allows operators to
+    configure custom scripts to be run by Ubuntu's ifupdown system when network
+    interface states are changed.

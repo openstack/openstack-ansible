@@ -1,0 +1,11 @@
+---
+upgrade:
+  - |
+    The ceilometer-api service/container can be removed as part of O->P
+    upgrades. A ceilometer-central container will be created to contain
+    the central ceilometer agents.
+deprecations:
+  - |
+    The ceilometer API service is now deprecated. OpenStack-Ansible no longer
+    deploys this service. To make queries against metrics, alarms, and/or
+    events, please use the the gnocchi, aodh, and panko APIs, respectively.

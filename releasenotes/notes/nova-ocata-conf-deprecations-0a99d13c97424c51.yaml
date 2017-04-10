@@ -1,0 +1,13 @@
+---
+deprecations:
+  - Several ``nova.conf`` options that were deprecated have
+    been removed from the ``os_nova`` role. The
+    following OpenStack-Ansible variables are no longer
+    used and should be removed from any variable override
+    files.
+
+    * ``nova_dhcp_domain``
+    * ``nova_quota_fixed_ips``
+    * ``nova_quota_floating_ips``
+    * ``nova_quota_security_group_rules``
+    * ``nova_quota_security_groups``

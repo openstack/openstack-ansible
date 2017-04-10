@@ -1,0 +1,6 @@
+---
+features:
+  - Capping the default value for the variable ``ironic_wsgi_processes``
+    to 16 when the user doesn't configure this variable. Default value
+    is one fourth the number of vCPUs available on the machine with a
+    capping value of 16.

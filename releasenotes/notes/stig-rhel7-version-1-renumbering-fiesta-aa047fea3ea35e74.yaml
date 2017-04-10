@@ -1,0 +1,20 @@
+---
+prelude: >
+    The first release of the Red Hat Enterprise Linux 7 STIG was entirely
+    renumbered from the pre-release versions. Many of the STIG configurations
+    simply changed numbers, but some were removed or changed. A few new
+    configurations were added as well.
+security:
+  - |
+    The latest version of the RHEL 7 STIG requires that a standard login banner
+    is presented to users when they log into the system (V-71863). The
+    security role now deploys a login banner that is used for console and ssh
+    sessions.
+  - |
+    The ``cn_map`` permissions and ownership adjustments included as part of
+    RHEL-07-040070 and RHEL-07-040080 has been removed. This STIG
+    configuration was removed in the most recent release of the RHEL 7 STIG.
+  - |
+    The PKI-based authentication checks for RHEL-07-040030, RHEL-07-040040,
+    and RHEL-07-040050 are no longer included in the RHEL 7 STIG. The tasks
+    and documentation for these outdated configurations are removed.

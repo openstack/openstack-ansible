@@ -1,0 +1,10 @@
+---
+features:
+  - Several configuration files that were not
+    templated for the ``os_gnocchi` role are now
+    retrieved from git. The git repository used can
+    be changed using the
+    ``gnocchi_git_config_lookup_location`` variable.
+    By default this points to ``git.openstack.org``.
+    These files can still be changed using the
+    ``gnocchi_x_overrides`` variables.
