@@ -301,13 +301,20 @@ pdf_documents = [
 
 latest_tag = os.popen('git describe --abbrev=0 --tags').read().strip('\n')
 
-previous_release_branch_name='ocata'
-current_release_branch_name='pike'
-# Var specifically for using in URLs; differs because it might be 'draft'
-# on master for deploy guide
-deploy_branch_link_name = current_release_branch_name
+previous_release_branch_name = 'ocata'
+current_release_branch_name = 'pike'
 # dev docs have no branch specified on master; for stable braches it's "/branch/"
-dev_branch_link_name = "{}/".format(current_release_branch_name)
+watermark = os.popen("git branch --contains $(git rev-parse HEAD) | awk -F/ '/stable/ {print $2}'").read().strip(' \n\t').capitalize()
+if watermark == "":
+    watermark = "Pre-release"
+    deploy_branch_link_name = "draft"
+    dev_branch_link_name = ""
+    current_release_git_branch_name = "master"
+else:
+    deploy_branch_link_name = current_release_branch_name
+    dev_branch_link_name = "{}/".format(current_release_branch_name)
+    current_release_branch_name = watermark
+    current_release_git_branch_name = 'stable/' + current_release_branch_name
 
 previous_release_capital_name = previous_release_branch_name.upper()
 previous_release_formal_name = previous_release_branch_name.capitalize()
@@ -315,9 +322,13 @@ current_release_capital_name = current_release_branch_name.upper()
 current_release_formal_name = current_release_branch_name.capitalize()
 upgrade_backup_dir = "``/etc/openstack_deploy."+previous_release_capital_name+"``"
 
+deploy_guide_prefix = "http://docs.openstack.org/project-deploy-guide/openstack-ansible/{}/%s".format(deploy_branch_link_name)
+dev_docs_prefix = "http://docs.openstack.org/developer/openstack-ansible/developer-docs/{}%s".format(dev_branch_link_name)
+
 rst_epilog = """
 .. |previous_release_branch_name| replace:: %s
 .. |current_release_branch_name| replace:: %s
+.. |current_release_git_branch_name| replace:: %s
 .. |previous_release_capital_name| replace:: %s
 .. |previous_release_formal_name| replace:: %s
 .. |current_release_capital_name| replace:: %s
@@ -326,21 +337,13 @@ rst_epilog = """
 .. |latest_tag| replace:: %s
 """ % (previous_release_branch_name,
        current_release_branch_name,
+       current_release_git_branch_name,
        previous_release_capital_name,
        previous_release_formal_name,
        current_release_capital_name,
        current_release_formal_name,
        upgrade_backup_dir,
        latest_tag)
-
-watermark = os.popen("git branch --contains $(git rev-parse HEAD) | awk -F/ '/stable/ {print $2}'").read().strip(' \n\t').capitalize()
-if watermark == "":
-    watermark = "Pre-release"
-    deploy_branch_link_name = "draft"
-    dev_branch_link_name = ""
-
-deploy_guide_prefix = "http://docs.openstack.org/project-deploy-guide/openstack-ansible/{}/%s".format(deploy_branch_link_name)
-dev_docs_prefix = "http://docs.openstack.org/developer/openstack-ansible/developer-docs/{}%s".format(dev_branch_link_name)
 
 extlinks = {'deploy_guide': (deploy_guide_prefix, ''),
             'dev_docs':  (dev_docs_prefix, '')
