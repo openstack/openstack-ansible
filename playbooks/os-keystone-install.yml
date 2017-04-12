@@ -78,7 +78,8 @@
         - { key: "net.ipv4.ip_local_reserved_ports", value: "{{ keystone_admin_port }}"}
       when: is_metal | bool
     - include: common-tasks/haproxy-endpoint-manage.yml
-      haproxy_state: disabled
+      vars:
+        haproxy_state: disabled
       when: "{{ groups['keystone_all'] | length > 1 }}"
   roles:
     - role: "os_keystone"
@@ -96,7 +97,8 @@
         - crontab
   post_tasks:
     - include: common-tasks/haproxy-endpoint-manage.yml
-      haproxy_state: enabled
+      vars:
+        haproxy_state: enabled
       when: "{{ groups['keystone_all'] | length > 1 }}"
   vars:
     is_metal: "{{ properties.is_metal|default(false) }}"
