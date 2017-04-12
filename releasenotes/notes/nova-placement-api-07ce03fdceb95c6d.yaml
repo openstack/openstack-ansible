@@ -1,0 +1,12 @@
+---
+features:
+  - The ``nova-placement`` service is now configured
+    by default. ``nova_placement_service_enabled``
+    can be set to ``False`` to disable the
+    ``nova-placement`` service.
+  - The ``nova-placement`` api service will run as
+    its own ansible group ``nova_api_placement``.
+  - Nova cell_v2 support has been added. The default
+    cell is ``cell1`` which can be overridden by the
+    ``nova_cell1_name``. Support for multiple cells
+    is not yet available.

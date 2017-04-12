@@ -1,0 +1,19 @@
+---
+features:
+  - The ``cinder_sigkill_timeout`` was introduced to control
+    the time between sending a SIGTERM signal and a SIGKILL signal when
+    stopping or restarting services. This can help in letting long-lived
+    sessions drain while preventing new ones from starting before a
+    restart. Default is 120 seconds (was harcoded to 300 seconds).
+  - The ``cinder_restart_wait`` variable has been added to control the time
+    between restarts of cinder services. Default is 5 seconds (was
+    hardcoded to 150 seconds).
+upgrade:
+  - The ``cinder_sigkill_timeout`` was introduced to control
+    the time between sending a SIGTERM signal and a SIGKILL signal when
+    stopping or restarting services. This can help in letting long-lived
+    sessions drain while preventing new ones from starting before a
+    restart. Default is 120 seconds (was harcoded to 300 seconds).
+  - The ``cinder_restart_wait`` variable has been added to control the time
+    between restarts of cinder services. Default is 5 seconds (was
+    hardcoded to 150 seconds).

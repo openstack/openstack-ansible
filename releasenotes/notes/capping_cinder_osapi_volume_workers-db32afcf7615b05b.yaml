@@ -1,0 +1,5 @@
+---
+features:
+  - Capping the default value for the variable ``cinder_osapi_volume_workers``
+    to 16 when the user doesn't configure this variable. Default value is half
+    the number of vCPUs available on the machine with a capping value of 16.

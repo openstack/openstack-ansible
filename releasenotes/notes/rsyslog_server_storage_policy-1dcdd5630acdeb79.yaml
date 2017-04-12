@@ -1,0 +1,5 @@
+---
+features:
+  - Added storage policy so that deployers can override how to store the logs.
+    ``per_host`` stores logs in a sub-directory per host. ``per_program`` stores logs
+    in a single file per application which facilitates troubleshooting easy.

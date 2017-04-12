@@ -1,0 +1,9 @@
+---
+features:
+  - The repo server file system structure has been updated to
+    allow for multiple Operating systems running multiple
+    architectures to be run at the same time and served from
+    a single server without impacting pools, venvs, wheel
+    archives, and manifests. The new structure follows the
+    following pattern `$RELEASE/$OS_TYPE-$ARCH` and has been
+    applied to *os-releases*, *venvs*, and *pools*.

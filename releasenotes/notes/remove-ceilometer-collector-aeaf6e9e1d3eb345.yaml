@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    Gnocchi is now used as the default publisher.
+deprecations:
+  - |
+    Per https://review.openstack.org/#/c/413920/20, the ceilometer-collector
+    service is now deprecated and its respective container is no longer
+    deployed by default. Gnocchi is now used as the default publisher.

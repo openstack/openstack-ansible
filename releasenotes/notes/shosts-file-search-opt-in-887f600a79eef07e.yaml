@@ -1,0 +1,7 @@
+---
+security:
+  - |
+    The tasks that search for ``.shosts`` and ``shosts.equiv`` files
+    (STIG ID: RHEL-07-040330) are now skipped by default. The search takes a
+    long time to complete on systems with lots of files and it also causes a
+    significant amount of disk I/O while it runs.

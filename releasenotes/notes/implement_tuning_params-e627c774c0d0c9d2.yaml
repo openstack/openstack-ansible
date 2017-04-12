@@ -1,0 +1,10 @@
+---
+features:
+  - Haproxy-server role allows to set up tunable parameters.
+    For doing that it is necessary to set up a dictionary of options in the
+    config files, mentioning those which have to be changed (defaults for the
+    remaining ones are programmed in the template). Also "maxconn" global option
+    made to be tunable.
+upgrade:
+  - The ``haproxy_bufsize`` variable has been removed and made a part of the
+    ``haproxy_tuning_params`` dictionary.
