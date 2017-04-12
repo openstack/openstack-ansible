@@ -18,6 +18,8 @@
     - unbound
   gather_facts: "{{ gather_facts | default(True) }}"
   user: root
+  pre_tasks:
+    - include: common-tasks/package-cache-proxy.yml
   roles:
     - role: "unbound"
       tags:
