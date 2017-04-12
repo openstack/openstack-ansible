@@ -106,11 +106,13 @@ Configure the operating system (CentOS)
       # echo '8021q' >> /etc/modules-load.d/openstack-ansible.conf
 
 #. Configure Network Time Protocol (NTP) in ``/etc/ntp.conf`` to
-   synchronize with a suitable time source and restart the service:
+   synchronize with a suitable time source and start the service:
 
    .. code-block:: shell-session
 
-      # service ntpd restart
+      # systemctl enable ntpd.service
+      # systemctl start ntpd.service
+
 
 #. Reboot the host to activate the changes and use the new kernel.
 
