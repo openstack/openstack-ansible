@@ -17,7 +17,7 @@ OpenStack-Ansible Pike is currently in development.
 .. toctree::
    :maxdepth: 1
 
-   Deployment Guide <http://docs.openstack.org/project-deploy-guide/openstack-ansible/draft/>
+   Deployment Guide <https://docs.openstack.org/project-deploy-guide/openstack-ansible/draft/>
    Release Notes <http://docs.openstack.org/releasenotes/openstack-ansible/unreleased.html>
    draft-operations-guide/index
    upgrade-guide/index

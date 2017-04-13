@@ -21,4 +21,4 @@ Contents:
    core-reviewers
    role-services
 
-.. _Deployment Guide: http://docs.openstack.org/project-deploy-guide/draft/
+.. _Deployment Guide: https://docs.openstack.org/project-deploy-guide/openstack-ansible/draft/
