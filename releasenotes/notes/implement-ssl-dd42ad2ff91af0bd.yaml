@@ -1,0 +1,6 @@
+---
+features:
+  - Implements SSL connection ability to MySQL. ``galera_use_ssl`` option has to
+    be set to ``true`` (default), in this case playbooks create self-signed
+    SSL bundle and sets up MySQL configs to use it or distributes user-provided
+    bundle throughout Galera nodes.
