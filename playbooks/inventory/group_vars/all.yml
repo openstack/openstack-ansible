@@ -315,6 +315,11 @@ keystone_service_internaluri_insecure: "{% if keystone_service_internaluri_proto
 keystone_service_internaluri: "{{ keystone_service_internaluri_proto }}://{{ internal_lb_vip_address }}:{{ keystone_service_port }}"
 keystone_service_internalurl: "{{ keystone_service_internaluri }}/v3"
 
+keystone_service_publicuri_proto: "{{ openstack_service_publicuri_proto | default(keystone_service_proto) }}"
+keystone_service_publicuri_insecure: "{% if keystone_service_publicuri_proto == 'https' and (keystone_user_ssl_cert is not defined or haproxy_user_ssl_cert is not defined) | bool %}true{% else %}false{% endif %}"
+keystone_service_publicuri: "{{ keystone_service_publicuri_proto }}://{{ external_lb_vip_address }}:{{ keystone_service_port }}"
+keystone_service_publicurl: "{{ keystone_service_publicuri }}/v3"
+
 ## Neutron
 neutron_service_port: 9696
 neutron_service_proto: http
