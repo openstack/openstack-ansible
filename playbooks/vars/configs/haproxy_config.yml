@@ -267,6 +267,7 @@ haproxy_default_services:
   - service:
       haproxy_service_name: octavia
       haproxy_backend_nodes: "{{ groups['octavia_all'] | default([]) }}"
+      haproxy_ssl: "{{ haproxy_ssl }}"
       haproxy_port: 9876
       haproxy_balance_type: http
       haproxy_backend_options:
