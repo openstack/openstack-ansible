@@ -40,8 +40,8 @@ OpenStack-Ansible Roles
 #######################
 
 OpenStack-Ansible offers separate role repositories for each individual role
-that OpenStack-Ansible supports. For individual role documentation see the
-`Role Documentation`_ in the OpenStack-Ansible documentation.
+that OpenStack-Ansible supports. For individual role configuration options,
+see the `Role Documentation`_.
 
 An individual role's source code can be found at:
 http://git.openstack.org/cgit/openstack/openstack-ansible-<ROLENAME>.
@@ -54,4 +54,4 @@ http://git.openstack.org/cgit/openstack/openstack-ansible-<ROLENAME>.
 .. _Source: http://git.openstack.org/cgit/openstack/openstack-ansible
 .. _OpenStack Mailing Lists: http://lists.openstack.org/
 .. _freenode network: https://freenode.net/
-.. _Role Documentation: http://docs.openstack.org/developer/openstack-ansible/developer-docs/advanced-role-docs.html
+.. _Role Documentation: https://docs.openstack.org/project-deploy-guide/openstack-ansible/draft/configure.html#advanced-service-configuration
