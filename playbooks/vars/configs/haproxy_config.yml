@@ -17,6 +17,7 @@ haproxy_default_services:
       haproxy_service_name: galera
       haproxy_backend_nodes: "{{ [groups['galera_all'][0]] | default([]) }}"  # list expected
       haproxy_backup_nodes: "{{ groups['galera_all'][1:] | default([]) }}"
+      haproxy_bind: "{{ [internal_lb_vip_address] }}"
       haproxy_port: 3306
       haproxy_balance_type: tcp
       haproxy_timeout_client: 5000s
@@ -27,7 +28,7 @@ haproxy_default_services:
   - service:
       haproxy_service_name: repo_git
       haproxy_backend_nodes: "{{ groups['repo_all'] | default([]) }}"
-      haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_bind: "{{ [internal_lb_vip_address] }}"
       haproxy_port: 9418
       haproxy_balance_type: tcp
       haproxy_backend_options:
@@ -36,7 +37,7 @@ haproxy_default_services:
   - service:
       haproxy_service_name: repo_all
       haproxy_backend_nodes: "{{ groups['repo_all'] | default([]) }}"
-      haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_bind: "{{ [internal_lb_vip_address] }}"
       haproxy_port: 8181
       haproxy_balance_type: http
       haproxy_backend_options:
@@ -45,7 +46,7 @@ haproxy_default_services:
       haproxy_service_name: repo_cache
       haproxy_backend_nodes: "{{ [groups['repo_all'][0]] | default([]) }}"  # list expected
       haproxy_backup_nodes: "{{ groups['repo_all'][1:] | default([]) }}"
-      haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_bind: "{{ [internal_lb_vip_address] }}"
       haproxy_port: "{{ repo_pkg_cache_port }}"
       haproxy_balance_type: http
       haproxy_backend_options:
