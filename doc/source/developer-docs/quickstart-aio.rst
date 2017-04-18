@@ -92,7 +92,7 @@ version.
    # git tag -l
 
    # # Checkout the stable branch and find just the latest tag
-   # git checkout stable/|current_release_branch_name|
+   # git checkout |current_release_git_branch_name|
    # git describe --abbrev=0 --tags
 
    # # Checkout the latest tag from either method of retrieving the tag.
