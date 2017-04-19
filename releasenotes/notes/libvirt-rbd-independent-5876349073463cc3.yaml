@@ -1,0 +1,8 @@
+---
+features:
+  - Removed dependency for ``cinder_backends_rbd_inuse`` in nova.conf
+    when setting ``rbd_user`` and ``rbd_secret_uuid`` variables.
+    Cinder delivers all necessary values via RPC when attaching the
+    volume, so those variables are only necessary for ephemeral
+    disks stored in Ceph. These variables are required to be set up
+    on cinder-volume side under backend section.

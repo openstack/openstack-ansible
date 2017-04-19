@@ -1,0 +1,6 @@
+---
+fixes:
+  - Nova features that use libguestfs (libvirt password/key injection) now work on compute hosts
+    running Ubuntu. When Nova is deployed to Ubuntu compute hosts and either
+    ``nova_libvirt_inject_key`` or ``nova_libvirt_inject_password`` are set to True, then kernels
+    stored in /boot/vmlinuz-* will be made readable to nova user. See launchpad bug 1507915.
