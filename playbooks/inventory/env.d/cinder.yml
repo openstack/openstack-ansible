@@ -34,12 +34,6 @@ container_skel:
       - storage-infra_containers
     contains:
       - cinder_api
-    properties:
-      service_name: cinder
-  cinder_scheduler_container:
-    belongs_to:
-      - storage-infra_containers
-    contains:
       - cinder_scheduler
     properties:
       service_name: cinder

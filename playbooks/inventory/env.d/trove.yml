@@ -33,19 +33,7 @@ container_skel:
       - trove-infra_containers
     contains:
       - trove_api
-    properties:
-      service_name: trove
-  trove_conductor_container:
-    belongs_to:
-      - trove-infra_containers
-    contains:
       - trove_conductor
-    properties:
-      service_name: trove
-  trove_taskmanager_container:
-    belongs_to:
-      - trove-infra_containers
-    contains:
       - trove_taskmanager
     properties:
       service_name: trove

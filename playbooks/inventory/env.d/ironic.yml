@@ -23,7 +23,7 @@ component_skel:
       - ironic_all
   ironic_server:
     belongs_to:
-      - ironic_servers
+      - ironic_all
   ironic_compute:
     belongs_to:
       - nova_all
@@ -35,22 +35,9 @@ container_skel:
       - ironic-infra_containers
     contains:
       - ironic_api
-    properties:
-      service_name: ironic
-  ironic_conductor_container:
-    belongs_to:
-      - ironic-infra_containers
-    contains:
       - ironic_conductor
-    properties:
-      service_name: ironic
-  ironic_server_container:
-    belongs_to:
-      - ironic-server_containers
-    contains:
       - ironic_server
     properties:
-      is_metal: true
       service_name: ironic
   ironic_compute_container:
     belongs_to:
@@ -71,12 +58,6 @@ physical_skel:
     belongs_to:
       - all_containers
   ironic-infra_hosts:
-    belongs_to:
-      - hosts
-  ironic-server_containers:
-    belongs_to:
-      - all_containers
-  ironic-server_hosts:
     belongs_to:
       - hosts
   ironic-compute_containers:
