@@ -37,6 +37,12 @@ iface br-mgmt inet static
     gateway 172.29.236.1
     dns-nameservers 8.8.8.8 8.8.4.4
 
+# Bind the External VIP
+auto br-mgmt:0
+iface br-mgmt:0 inet static
+    address 172.29.236.10
+    netmask 255.255.252.0
+
 # OpenStack Networking VXLAN (tunnel/overlay) bridge
 #
 # Only the COMPUTE and NETWORK nodes must have an IP address
