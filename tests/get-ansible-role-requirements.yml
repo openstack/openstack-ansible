@@ -18,6 +18,16 @@
   connection: local
   user: root
   tasks:
+
+    - name: Check whether zuul-cloner is installed and provide the path to it
+      shell: |
+        which zuul-cloner || { [[ -x /usr/zuul-env/bin/zuul-cloner ]] && echo '/usr/zuul-env/bin/zuul-cloner'; }
+      args:
+        executable: /bin/bash
+      changed_when: false
+      failed_when: false
+      register: _zuul_cloner_check
+
     - name: Remove target directory if required
       shell: |
         if [[ ! -d "{{ item.path | default(role_path_default) }}/{{ item.name | default(item.src | basename) }}/.git" ]]; then
@@ -28,7 +38,29 @@
       when:
         - item.scm == "git" or item.scm is undefined
       with_items: "{{ roles }}"
-    - name: Clone git repos
+
+    - name: Prepare git clone list
+      set_fact:
+        git_roles: >
+          {%- set filtered_role_list = [] %}
+          {%- for role in roles %}
+          {%-   if not role.src | match(".*git.openstack.org.*") %}
+          {%-     set _ = filtered_role_list.append(role) %}
+          {%-   endif %}
+          {%- endfor %}
+          {{- filtered_role_list -}}
+        zuul_roles: >
+          {%- set filtered_role_list = [] %}
+          {%- for role in roles %}
+          {%-   if role.src | match(".*git.openstack.org.*") %}
+          {%-     set _ = filtered_role_list.append(role) %}
+          {%-   endif %}
+          {%- endfor %}
+          {{- filtered_role_list -}}
+      when:
+        - _zuul_cloner_check.rc == 0
+
+    - name: Clone git repos (with git)
       git:
         repo: "{{ item.src }}"
         dest: "{{ item.path | default(role_path_default) }}/{{ item.name | default(item.src | basename) }}"
@@ -38,11 +70,36 @@
         force: true
       when:
         - item.scm == "git" or item.scm is undefined
-      with_items: "{{ roles }}"
+      with_items: "{{ git_roles | default(roles) }}"
       register: git_clone
       until: git_clone | success
       retries: "{{ git_clone_retries }}"
       delay: "{{ git_clone_retry_delay }}"
+
+    - name: Create clone map
+      copy:
+        content: |
+          clonemap:
+            - name: 'openstack/openstack-ansible-security'
+              dest: '{{ role_path_default }}/openstack-ansible-security'
+            - name: 'openstack/openstack-ansible-(?!security)(.*)'
+              dest: '{{ role_path_default }}/\1'
+        dest: "/tmp/zuul-clonemap.yml"
+      when:
+        - _zuul_cloner_check.rc == 0
+
+    - name: Clone git repos (with zuul-cloner)
+      shell: |
+        {{ _zuul_cloner_check.stdout }} \
+                -m /tmp/zuul-clonemap.yml \
+                --cache-dir /opt/git \
+                git://git.openstack.org \
+        {% for role in zuul_roles %}
+                {{ role.src | regex_replace('https://git.openstack.org/', '') }} \
+        {% endfor %}
+      when:
+        - _zuul_cloner_check.rc == 0
+
   vars:
     roles: "{{ lookup('file', role_file) | from_yaml }}"
     role_file: '../ansible-role-requirements.yml'
