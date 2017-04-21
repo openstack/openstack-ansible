@@ -95,7 +95,7 @@ function playbook_run {
       # Set the playbook log path so that we can review specific execution later.
       export ANSIBLE_LOG_PATH="${PLAYBOOK_LOGS}/${COUNTER}-${include_file_name}.txt"
       let COUNTER=COUNTER+=1
-      if [[ "${DEPLOY_AIO}" = true ]] && [[ "${include_file_name}" == "security-hardening.yml" ]]; then
+      if [[ -d /etc/nodepool ]] && [[ "${include_file_name}" == "security-hardening.yml" ]]; then
         # NOTE(mattt): We have to skip V-38462 as openstack-infra are now building
         #              images with apt config Apt::Get::AllowUnauthenticated set
         #              to true.
