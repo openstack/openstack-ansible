@@ -154,6 +154,12 @@ if [[ "${ACTION}" == "upgrade" ]]; then
     # to bypass that for an automated test.
     export I_REALLY_KNOW_WHAT_I_AM_DOING=true
 
+    # Unset environment variables used by the bootstrap-ansible
+    # script to allow newer versions of Ansible and global
+    # requirements to be installed.
+    unset ANSIBLE_PACKAGE
+    unset UPPER_CONSTRAINTS_FILE
+
     # To execute the upgrade script we need to provide
     # an affirmative response to the warning that the
     # upgrade is irreversable.
