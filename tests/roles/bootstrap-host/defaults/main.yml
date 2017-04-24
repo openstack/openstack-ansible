@@ -31,6 +31,9 @@ bootstrap_host_aio_script_path: "{{ playbook_dir }}/../scripts"
 bootstrap_host_user_variables_filename: "user_variables.yml"
 bootstrap_host_user_secrets_filename: "user_secrets.yml"
 
+# The user variables template to use
+bootstrap_user_variables_template: "user_variables.{{ bootstrap_host_scenario }}.yml.j2"
+
 ## Swap memory
 # If there is no swap memory present, the bootstrap will create a loopback disk
 # for the purpose of having swap memory available. Swap is required for some of
