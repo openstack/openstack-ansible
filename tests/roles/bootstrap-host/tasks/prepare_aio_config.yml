@@ -113,7 +113,7 @@
 
 - name: Set the user_variables
   config_template:
-    src: "user_variables.{{ bootstrap_host_scenario }}.yml.j2"
+    src: "{{ bootstrap_user_variables_template }}"
     dest: "/etc/openstack_deploy/{{ bootstrap_host_user_variables_filename }}"
     config_overrides: "{{ user_variables_overrides | default({}) }}"
     config_type: yaml
