@@ -66,9 +66,25 @@
       - name: Write vars required for upgrade
         lineinfile:
           dest: /etc/openstack_deploy/user_variables.yml
-          regexp: "^{{ item.key }}"
+          regexp: "{{ item.regexp | default('^' + item.key) }}"
           line: "{{ item.key }}: {{ item.value }}"
+          backrefs: "{{ item.backrefs | default('no') }}"
           state: present
         with_items:
           - key: "default_bind_mount_logs"
-            value: false
+            value: "false"
+          # Replace "10.0" with "10.1" within galera_repo_url
+          - key: "galera_repo_url"
+            regexp: '^galera_repo_url: (https?://.*10)\.0(.*)$'
+            value: '\1.1\2'
+            backrefs: yes
+          # Replace "10.0" with "10.1" within galera_client_apt_repo_url
+          - key: "galera_client_apt_repo_url"
+            regexp: '^galera_client_apt_repo_url: (https?://.*10)\.0(.*)$'
+            value: '\1.1\2'
+            backrefs: yes
+          # Replace "10.0" with "10.1" within galera_client_repo_url
+          - key: "galera_client_repo_url"
+            regexp: '^galera_client_repo_url: (https?://.*10)\.0(.*)$'
+            value: '\1.1\2'
+            backrefs: yes
