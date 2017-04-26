@@ -103,7 +103,7 @@ sahara_dashboard_git_project_group: horizon_all
 
 ## Keystone service
 keystone_git_repo: https://git.openstack.org/openstack/keystone
-keystone_git_install_branch: 5eba745d962412d0589da78a7e2c87d2cb0626d6 # HEAD of "stable/newton" as of 13.04.2017
+keystone_git_install_branch: 05a129e54573b6cbda1ec095f4526f2b9ba90a90 # HEAD of "stable/newton" as of 26.04.2017
 keystone_git_dest: "/opt/keystone_{{ keystone_git_install_branch | replace('/', '_') }}"
 keystone_git_project_group: keystone_all
 
