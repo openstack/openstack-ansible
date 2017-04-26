@@ -1,9 +1,9 @@
-=============================
-Adding new Roles and Services
-=============================
+==================================
+Contributing to Roles and Services
+==================================
 
 If you would like to contribute towards a role to introduce an OpenStack
-service or an infrastructure service to support an OpenStack deployment, the
+or infrastructure service, or to improve an existing role, the
 OpenStack-Ansible project would welcome that contribution and your assistance
 in maintaining it.
 
@@ -22,8 +22,8 @@ Recommended procedure to develop a Role
 
 .. _an AIO: quickstart-aio.html
 
-Writing the Role
-----------------
+Writing a new Role
+------------------
 Most OpenStack services will follow a common series of stages to install or
 update a service deployment. This is apparent when you review `tasks/main.yml`
 for existing roles.
@@ -83,6 +83,33 @@ Steps to writing the role:
 .. _specs repository: https://git.openstack.org/cgit/openstack/openstack-ansible-specs
 .. _unmerged specs: https://review.openstack.org/#/q/status:+open+project:openstack/openstack-ansible-specs
 .. _Best Practice: https://docs.ansible.com/ansible/playbooks_best_practices.html#directory-layout
+
+Adding tests to a Role
+----------------------
+
+Each of the role tests is in its tests/ folder.
+
+This folder contains at least the following files:
+
+#. ``test.yml`` ("super" playbook acting as test router to sub-playbooks)
+#. ``<role name>-overrides.yml``. This var file is automatically loaded
+   by our shell script in our `tests repository`_.
+#. ``inventory``. A static inventory for role testing.
+   It's possible some roles have multiple inventories. See for example the
+   neutron role with its ``lxb_inventory``, ``calico_inventory``.
+#. ``group_vars`` and ``host_vars``. These folders will hold override the
+   necessary files for testing. For example, this is where you override
+   the IP addresses, IP ranges, and ansible connection details.
+#. ``ansible-role-requirements.yml``. This should be fairly straightforward:
+   this file contains all the roles to clone before running your role.
+   The roles' relative playbooks will have to be listed in the ``test.yml``
+   file. However, keep in mind to NOT re-invent the wheel. For example,
+   if your role needs keystone, you don't need to create your own keystone
+   install playbook, because we have a generic keystone install playbook
+   in the `tests repository`.
+
+.. _tests repository: https://git.openstack.org/cgit/openstack/openstack-ansible-tests
+
 
 Deploying the Role
 ------------------
