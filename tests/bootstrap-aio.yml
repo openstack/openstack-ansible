@@ -27,8 +27,7 @@
     confd_overrides:
       aio:
         - name: cinder.yml.aio
-# TODO: (andymccr) Disable designate until https://review.openstack.org/#/c/445069/ merges
-#       - name: designate.yml.aio
+        - name: designate.yml.aio
         - name: glance.yml.aio
         - name: heat.yml.aio
         - name: horizon.yml.aio
