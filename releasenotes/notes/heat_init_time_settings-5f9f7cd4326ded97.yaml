@@ -1,0 +1,23 @@
+---
+features:
+  - For the ``os_heat`` role, the systemd unit ``TimeoutSec`` value which
+    controls the time between sending a SIGTERM signal and a SIGKILL signal
+    when stopping or restarting the service has been reduced from 300 seconds
+    to 120 seconds. This provides 2 minutes for long-lived sessions to drain
+    while preventing new ones from starting before a restart or a stop. The
+    ``RestartSec`` value which controls the time between the service stop and
+    start when restarting has been reduced from 150 seconds to 2 seconds to
+    make the restart happen faster. These values can be adjusted by using the
+    ``heat_*_init_config_overrides`` variables which use the
+    ``config_template`` task to change template defaults.
+upgrade:
+  - For the ``os_heat`` role, the systemd unit ``TimeoutSec`` value which
+    controls the time between sending a SIGTERM signal and a SIGKILL signal
+    when stopping or restarting the service has been reduced from 300 seconds
+    to 120 seconds. This provides 2 minutes for long-lived sessions to drain
+    while preventing new ones from starting before a restart or a stop. The
+    ``RestartSec`` value which controls the time between the service stop and
+    start when restarting has been reduced from 150 seconds to 2 seconds to
+    make the restart happen faster. These values can be adjusted by using the
+    ``heat_*_init_config_overrides`` variables which use the
+    ``config_template`` task to change template defaults.

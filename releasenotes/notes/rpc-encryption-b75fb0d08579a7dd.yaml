@@ -1,0 +1,7 @@
+---
+features:
+  - In the Ocata release, Trove added support for encrypting the rpc
+    communication between the guest DBaaS instances and the control plane.
+    The default values for ``trove_taskmanager_rpc_encr_key`` and
+    ``trove_inst_rpc_key_encr_key`` should be overridden to specify
+    installation specific values.
