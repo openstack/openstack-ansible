@@ -21,3 +21,11 @@ lxc_container_config_list:
 # Needed by playbooks/common-tasks/os-lxc-container-setup.yml
 lxc_container_log_path: "/var/log/lxc"
 
+## Parameters provided to the wait_for_connection module after a container
+## reboot is triggered by the playbook
+lxc_container_wait_params:
+  # Wait 3 seconds before attempting the first connection
+  delay: 3
+  # Wait 60 seconds for the container to respond
+  timeout: 60
+

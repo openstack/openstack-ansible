@@ -124,16 +124,12 @@
   tags:
     - common-lxc
 
-- name: Wait for container ssh
-  wait_for:
-    port: "22"
-    delay: "{{ ssh_delay }}"
-    search_regex: "OpenSSH"
-    host: "{{ ansible_host }}"
-  delegate_to: "{{ physical_host }}"
-  register: ssh_wait_check
-  until: ssh_wait_check | success
-  retries: 3
+- name: Wait for container connectivity
+  wait_for_connection:
+    connect_timeout: "{{ lxc_container_wait_params.connect_timeout | default(omit) }}"
+    delay: "{{ lxc_container_wait_params.delay | default(omit) }}"
+    sleep: "{{ lxc_container_wait_params.sleep | default(omit) }}"
+    timeout: "{{ lxc_container_wait_params.timeout | default(omit) }}"
   when:
     - (_mc is defined and _mc | changed) or (_ec is defined and _ec | changed)
     - not is_metal | bool
