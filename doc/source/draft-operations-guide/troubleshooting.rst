@@ -8,6 +8,162 @@ an OpenStack-Ansible deployment.
 Networking
 ~~~~~~~~~~
 
+This section focuses on troubleshooting general host-to-host communication
+required for the OpenStack control plane to function properly.
+
+This does not cover any networking related to instance connectivity.
+
+These instructions assume an OpenStack-Ansible installation using LXC
+containers, VXLAN overlay, and the Linuxbridge ml2 driver.
+
+Network List
+------------
+
+1. ``HOST_NET`` (Physical Host Management and Access to Internet)
+2. ``CONTAINER_NET`` (LXC container network used Openstack Services)
+3. ``OVERLAY_NET`` (VXLAN overlay network)
+
+Useful network utilities and commands:
+
+.. code-block:: console
+
+   # ip link show [dev INTERFACE_NAME]
+   # arp -n [-i INTERFACE_NAME]
+   # ip [-4 | -6] address show [dev INTERFACE_NAME]
+   # ping <TARGET_IP_ADDRESS>
+   # tcpdump [-n -nn] < -i INTERFACE_NAME > [host SOURCE_IP_ADDRESS]
+   # brctl show [BRIDGE_ID]
+   # iptables -nL
+   # arping [-c NUMBER] [-d] <TARGET_IP_ADDRESS>
+
+
+Troubleshooting host-to-host traffic on HOST_NET
+------------------------------------------------
+
+Perform the following checks:
+
+- Check physical connectivity of hosts to physical network
+- Check interface bonding (if applicable)
+- Check VLAN configurations and any necessary trunking to edge ports
+  on physical switch
+- Check VLAN configurations and any necessary trunking to uplink ports
+  on physical switches (if applicable)
+- Check that hosts are in the same IP subnet
+  or have proper routing between them
+- Check there are no iptables applied to the hosts that would deny traffic
+
+IP addresses should be applied to physical interface, bond interface,
+tagged sub-interface, or in some cases the bridge interface:
+
+.. code-block:: console
+
+   # ip address show dev bond0
+   14: bond0: <BROADCAST,MULTICAST,MASTER,UP,LOWER_UP> mtu 1500..UP...
+   link/ether a0:a0:a0:a0:a0:01 brd ff:ff:ff:ff:ff:ff
+   inet 10.240.0.44/22 brd 10.240.3.255 scope global bond0
+      valid_lft forever preferred_lft forever
+   ...
+
+Troubleshooting host-to-host traffic on CONTAINER_NET
+-----------------------------------------------------
+
+Perform the following checks:
+
+- Check physical connectivity of hosts to physical network
+- Check interface bonding (if applicable)
+- Check VLAN configurations and any necessary trunking to edge ports on
+  physical switch
+- Check VLAN configurations and any necessary trunking to uplink ports
+  on physical switches (if applicable)
+- Check that hosts are in the same subnet or have proper routing between them
+- Check there are no iptables applied to the hosts that would deny traffic
+- Check to verify that physical interface is in the bridge
+- Check to verify that veth-pair end from container is in ``br-mgmt``
+
+IP address should be applied to ``br-mgmt``:
+
+.. code-block:: console
+
+   # ip address show dev br-mgmt
+   18: br-mgmt: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500...UP...
+   link/ether a0:a0:a0:a0:a0:01 brd ff:ff:ff:ff:ff:ff
+   inet 172.29.236.44/22 brd 172.29.239.255 scope global br-mgmt
+      valid_lft forever preferred_lft forever
+   ...
+
+IP address should be applied to ``eth1`` inside the LXC container:
+
+.. code-block:: console
+
+   # ip address show dev eth1
+   59: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500...UP...
+   link/ether b1:b1:b1:b1:b1:01 brd ff:ff:ff:ff:ff:ff
+   inet 172.29.236.55/22 brd 172.29.239.255 scope global eth1
+      valid_lft forever preferred_lft forever
+      ...
+
+``br-mgmt`` should contain veth-pair ends from all containers and a
+physical interface or tagged-subinterface:
+
+.. code-block:: console
+
+   # brctl show br-mgmt
+   bridge name bridge id          STP enabled  interfaces
+   br-mgmt     8000.abcdef12345   no           11111111_eth1
+                                               22222222_eth1
+                                               ...
+                                               bond0.100
+                                               99999999_eth1
+                                               ...
+
+Troubleshooting host-to-host traffic on OVERLAY_NET
+---------------------------------------------------
+
+Perform the following checks:
+
+- Check physical connectivity of hosts to physical network
+- Check interface bonding (if applicable)
+- Check VLAN configurations and any necessary trunking to edge ports
+  on physical switch
+- Check VLAN configurations and any necessary trunking to uplink ports
+  on physical switches (if applicable)
+- Check that hosts are in the same subnet or have proper routing between them
+- Check there are no iptables applied to the hosts that would deny traffic
+- Check to verify that physcial interface is in the bridge
+- Check to verify that veth-pair end from container is in ``br-vxlan``
+
+IP address should be applied to ``br-vxlan``:
+
+.. code-block:: console
+
+   # ip address show dev br-vxlan
+   21: br-vxlan: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500...UP...
+   link/ether a0:a0:a0:a0:a0:02 brd ff:ff:ff:ff:ff:ff
+   inet 172.29.240.44/22 brd 172.29.243.255 scope global br-vxlan
+      valid_lft forever preferred_lft forever
+      ...
+
+IP address should be applied to eth10 inside the required LXC containers:
+
+.. code-block:: console
+
+   # ip address show dev eth10
+   67: eth10: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 150...UP...
+   link/ether b1:b1:b1:b1:b1:02 brd ff:ff:ff:ff:ff:ff
+   inet 172.29.240.55/22 brd 172.29.243.255 scope global eth10
+      valid_lft forever preferred_lft forever
+      ...
+
+``br-vxlan`` should contain veth-pair ends from required LXC containers and
+a physical interface or tagged-subinterface:
+
+.. code-block:: console
+
+   # brctl show br-vxlan
+   bridge name     bridge id          STP enabled  interfaces
+   br-vxlan        8000.ghijkl123456  no           bond1.100
+                                                   3333333_eth10
+
 Checking services
 ~~~~~~~~~~~~~~~~~
 
@@ -94,12 +250,216 @@ The following table lists the commands to restart an OpenStack service.
 Troubleshooting Instance connectivity issues
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+This section will focus on troubleshooting general instance (VM)
+connectivity communication. This does not cover any networking related
+to instance connectivity. This is assuming a OpenStack-Ansible install using
+LXC containers, VXLAN overlay and the Linuxbridge ml2 driver.
+
+**Data flow example**
+
+.. code-block:: console
+
+   COMPUTE NODE
+                                                  +-------------+    +-------------+
+                                  +->"If VXLAN"+->+  *br vxlan  +--->+  bond#.#00  +---+
+                                  |               +-------------+    +-------------+   |
+                   +-------------+                                                      |   +-----------------+
+   Instance +--->  | brq bridge  |++                                                    +-->| physical network|
+                   +-------------+                                                      |   +-----------------+
+                                  |               +-------------+    +-------------+   |
+                                  +->"If  VLAN"+->+   br vlan   +--->+    bond1    +---+
+                                                  +-------------+    +-------------+
+
+
+
+   NETWORK NODE
+                                     +-------------+    +-------------+   +-----------------+
+                     +->"If VXLAN"+->+  *bond#.#00 +--->+ *br vxlan   +-->+*Container eth10 +
+                     |               +-------------+    +-------------+   +-----------------+
+   +----------------+                                                                         |       +-------------+
+   |physical network|++                                                                       +--->+ |  brq bridge  |+--> Neutron DHCP/Router
+   +----------------+                                                                         |       +-------------+
+                     |               +-------------+    +-------------+   +-----------------+
+                     +->"If  VLAN"+->+   bond1     +--->+  br vlan    +-->+ Container eth11 +
+                                     +-------------+    +-------------+   +-----------------+
+
+Preliminary troubleshooting questions to answer:
+------------------------------------------------
+
+- Which compute node is hosting the VM in question?
+- Which interface is used for provider network traffic?
+- Which interface is used for VXLAN overlay?
+- Is the connectivity issue ingress to the instance?
+- Is the connectivity issue egress from the instance?
+- What is the source address of the traffic?
+- What is the destination address of the traffic?
+- Is there a Neutron router in play?
+- Which network node (container) is the router hosted?
+- What is the tenant network type?
+
+If VLAN:
+
+Does physical interface show link and all VLANs properly trunked
+across physical network?
+
+No:
+    - Check cable, seating, physical switchport configuration,
+      interface/bonding configuration, and general network configuration.
+      See general network troubleshooting documentation.
+
+Yes:
+    - Good!
+    - Continue!
+
+.. important::
+
+   Do not continue until physical network is properly configured.
+
+Does the instance's IP address ping from network's DHCP namespace
+or other instances in the same network?
+
+No:
+    - Check nova console logs to see if the instance
+      ever received its IP address initially.
+    - Check Neutron ``security-group-rules``,
+      consider adding allow ICMP rule for testing.
+    - Check that linux bridges contain the proper interfaces.
+      on compute and network nodes.
+    - Check Neutron DHCP agent logs.
+    - Check syslogs.
+    - Check Neutron linux bridge logs.
+
+Yes:
+    - Good! This suggests that the instance received its IP address
+      and can reach local network resources.
+    - Continue!
+
+.. important::
+
+   Do not continue until instance has an IP address and can reach local
+   network resources like DHCP.
+
+Does the instance's IP address ping from the gateway device
+(Neutron router namespace or another gateway device)?
+
+No:
+    - Check Neutron L3 agent logs (if applicable).
+    - Check Neutron linuxbridge logs.
+    - Check physical interface mappings.
+    - Check Neutron Router ports (if applicable).
+    - Check that linux bridges contain the proper interfaces
+      on compute and network nodes.
+    - Check Neutron ``security-group-rules``,
+      consider adding allow ICMP rule for testing.
+
+Yes:
+    - Good! The instance can ping its intended gateway.
+      The issue may be north of the gateway
+      or related to the provider network.
+    - Check "gateway" or host routes on the Neutron subnet.
+    - Check Neutron ``security-group-rules``,
+      consider adding ICMP rule for testing.
+    - Check Neutron FloatingIP associations (if applicable).
+    - Check Neutron Router external gateway information (if applicable).
+    - Check upstream routes, NATs or access-control-lists.
+
+.. important::
+
+   Do not continue until the instance can reach its gateway.
+
+If VXLAN:
+
+Does physical interface show link and all VLANs properly trunked
+across physical network?
+
+No:
+    - Check cable, seating, physical switchport configuration,
+      interface/bonding configuration, and general network configuration.
+      See general network troubleshooting documentation.
+
+Yes:
+    - Good!
+    - Continue!
+
+.. important::
+
+   Do not continue until physical network is properly configured.
+
+Are VXLAN VTEP addresses able to ping each other?
+
+No:
+    - Check ``br-vxlan`` interface on Compute and ``eth10``
+      inside the Neutron network agent container.
+    - Check veth pairs between containers and linux bridges on the host.
+    - Check that linux bridges contain the proper interfaces
+      on compute and network nodes.
+
+Yes:
+    - Check ml2 config file for local VXLAN IP
+      and other VXLAN configuration settings.
+    - Check VTEP learning method (multicast or l2population):
+        - If multicast, make sure the physical switches are properly
+          allowing and distributing multicast traffic.
+
+.. important::
+
+   Do not continue until VXLAN endpoints have reachability to each other.
+
+Does the instance's IP address ping from network's DHCP namespace
+or other instances in the same network?
+
+No:
+    - Check Nova console logs to see if the instance
+      ever received its IP address initially.
+    - Check Neutron ``security-group-rules``,
+      consider adding allow ICMP rule for testing.
+    - Check that linux bridges contain the proper interfaces
+      on compute and network nodes.
+    - Check Neutron DHCP agent logs.
+    - Check syslogs.
+    - Check Neutron linux bridge logs.
+    - Check that Bridge Forwarding Database (fdb) contains the proper
+      entries on both the compute and Neutron agent container.
+
+Yes:
+    - Good! This suggests that the instance received its IP address
+      and can reach local network resources.
+
+.. important::
+
+   Do not continue until instance has an IP address and can reach local network
+   resources.
+
+Does the instance's IP address ping from the gateway device
+(Neutron router namespace or another gateway device)?
+
+No:
+    - Check Neutron L3 agent logs (if applicable).
+    - Check Neutron linux bridge logs.
+    - Check physical interface mappings.
+    - Check Neutron router ports (if applicable).
+    - Check that linux bridges contain the proper interfaces
+      on compute and network nodes.
+    - Check Neutron ``security-group-rules``,
+      consider adding allow ICMP rule for testing.
+    - Check that Bridge Forwarding Database (fdb) contains
+      the proper entries on both the compute and Neutron agent container.
+
+Yes:
+    - Good! The instance can ping its intended gateway.
+    - Check gateway or host routes on the Neutron subnet.
+    - Check Neutron ``security-group-rules``,
+      consider adding ICMP rule for testing.
+    - Check Neutron FloatingIP associations (if applicable).
+    - Check Neutron Router external gateway information (if applicable).
+    - Check upstream routes, NATs or ``access-control-lists``.
+
 Diagnose Image service issues
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The glance-registry handles the database operations for managing the storage
-of the image index and properties. The glance-api handles the API interactions
-and image store.
+The ``glance-registry`` handles the database operations for managing the
+storage of the image index and properties. The ``glance-api`` handles the
+API interactions and image store.
 
 To troubleshoot problems or errors with the Image service, refer to
 :file:`/var/log/glance-api.log` and :file:`/var/log/glance-registry.log` inside
