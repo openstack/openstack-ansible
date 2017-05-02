@@ -46,29 +46,13 @@
         - openrc
 
   post_tasks:
-    - name: Update apt sources
-      apt:
-        update_cache: yes
-        cache_valid_time: 600
-      register: apt_update
-      until: apt_update|success
-      retries: 5
-      delay: 2
-      when: ansible_pkg_mgr == 'apt'
 
-    - name: Install apt packages
-      apt:
-        pkg: "{{ item }}"
+    - name: Install distro packages
+      package:
+        name: "{{ utility_distro_packages | default([]) }}"
         state: "{{ utility_package_state }}"
-      with_items: "{{ utility_distro_packages | default([]) }}"
-      when: ansible_pkg_mgr == 'apt'
-
-    - name: Install yum packages
-      yum:
-        pkg: "{{ item }}"
-        state: "{{ utility_package_state }}"
-      with_items: "{{ utility_distro_packages | default([]) }}"
-      when: ansible_pkg_mgr == 'yum'
+        update_cache: "{{ (ansible_pkg_mgr == 'apt') | ternary('yes', omit) }}"
+        cache_valid_time: "{{ (ansible_pkg_mgr == 'apt') | ternary(cache_timeout, omit) }}"
 
     - name: Get list of python clients
       shell: "curl -s {{ repo_release_path }}/requirements_absolute_requirements.txt  | grep client | cut -d'=' -f1"
