@@ -56,19 +56,11 @@
       delay: 2
       when: ansible_pkg_mgr == 'apt'
 
-    - name: Install apt packages
-      apt:
+    - name: Install distro packages
+      package:
         pkg: "{{ item }}"
-        state: latest
+        state: "{{ utility_package_state }}"
       with_items: "{{ utility_distro_packages | default([]) }}"
-      when: ansible_pkg_mgr == 'apt'
-
-    - name: Install yum packages
-      yum:
-        pkg: "{{ item }}"
-        state: latest
-      with_items: "{{ utility_distro_packages | default([]) }}"
-      when: ansible_pkg_mgr == 'yum'
 
     - name: Get list of python clients
       shell: "curl -s {{ repo_release_path }}/requirements_absolute_requirements.txt  | grep client | cut -d'=' -f1"
