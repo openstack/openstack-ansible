@@ -103,7 +103,13 @@ source "$(dirname "${0}")/bootstrap-ansible.sh"
 
 # Install ARA and add it to the callback path provided by bootstrap-ansible.sh/openstack-ansible.rc
 # This is added *here* instead of bootstrap-ansible so it's used for CI purposes only.
-/opt/ansible-runtime/bin/pip install ara
+if [[ -d "/tmp/openstack/ara" ]]; then
+  # This installs from a git checkout
+  /opt/ansible-runtime/bin/pip install /tmp/openstack/ara
+else
+  # This installs from pypi
+  /opt/ansible-runtime/bin/pip install ara
+fi
 export ANSIBLE_CALLBACK_PLUGINS="/etc/ansible/roles/plugins/callback:/opt/ansible-runtime/lib/python2.7/site-packages/ara/plugins/callbacks"
 
 # Log some data about the instance and the rest of the system
