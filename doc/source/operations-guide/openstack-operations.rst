@@ -2,8 +2,8 @@
 OpenStack operations
 ====================
 
-This is a draft OpenStack operations page for the proposed OpenStack-Ansible
-operations guide.
+This chapter is intended to document basic OpenStack operations tasks that
+are integral to the operations support in an OpenStack-Ansible deployment.
 
 .. toctree::
    :maxdepth: 2

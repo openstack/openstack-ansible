@@ -2,8 +2,8 @@
 Maintenance tasks
 =================
 
-This is a draft maintenance tasks page for the proposed OpenStack-Ansible
-operations guide.
+This chapter is intended for OpenStack-Ansible specific
+maintenance tasks.
 
 .. toctree::
    :maxdepth: 2

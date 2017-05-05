@@ -19,7 +19,7 @@ OpenStack-Ansible Pike is currently in development.
 
    Deployment Guide <https://docs.openstack.org/project-deploy-guide/openstack-ansible/draft/>
    Release Notes <http://docs.openstack.org/releasenotes/openstack-ansible/unreleased.html>
-   draft-operations-guide/index
+   operations-guide/index
    upgrade-guide/index
    developer-docs/index
    inventory/index
