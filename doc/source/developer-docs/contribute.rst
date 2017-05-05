@@ -314,6 +314,35 @@ The following convention is used:
 
 * A tag including the word ``upgrade`` handles all the upgrade tasks.
 
+Variable files conventions
+--------------------------
+
+The variables files in a role are split in 3 locations:
+
+#. The `defaults/main.yml` file
+#. The `vars/main.yml` file
+#. The `vars/<platform specific>.yml` file
+
+The variables with lower priority should be in the `defaults/main.yml`.
+This allows their overriding with group variables or host variables.
+A good example for this are default database connection details, default
+queues connection details, or debug mode.
+
+In other words, `defaults/main.yml` contains variables that are meant to
+be overridable by a deployer or a continuous integration system.
+These variables should be limited as much as possible, to avoid
+increasing the test matrix.
+
+The `vars/main.yml` is always included. It contains generic
+variables that aren't meant to be changed by a deployer. This includes
+for example static information that aren't distribution specific (like
+aggregation of role internal variables for example).
+
+The `vars/<platform specific>.yml` is the place where distribution
+specific content will be stored. For example, this file will hold
+the package names, repositories urls and keys, file paths, service
+names/init scripts.
+
 Development cycle checklist
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

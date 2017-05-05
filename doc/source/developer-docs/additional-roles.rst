@@ -7,7 +7,7 @@ service or an infrastructure service to support an OpenStack deployment, the
 OpenStack-Ansible project would welcome that contribution and your assistance
 in maintaining it.
 
-Recommended procedure to develop a Role
+Recommended procedure to develop a role
 ---------------------------------------
 
 #. Deploy OpenStack-Ansible (possibly using
@@ -22,36 +22,10 @@ Recommended procedure to develop a Role
 
 .. _an AIO: quickstart-aio.html
 
-Writing the Role
-----------------
-Most OpenStack services will follow a common series of stages to install or
-update a service deployment. This is apparent when you review `tasks/main.yml`
-for existing roles.
+Writing a new role
+------------------
 
-#. pre-install: prepare the service user group and filesystem directory paths
-   on the host or container
-#. install: install system packages, prepare the (optional) service virtual
-   environment, install service and requirements (into a virtual environment)
-#. post-install: apply all configuration files
-#. messaging and db setup: db user and database prepared, message queue vhost
-   and user prepared
-#. service add: register the service (each of: service type, service project,
-   service user, and endpoints) within Keystone's service catalog.
-#. service setup: install a service-startup script (init, upstart, SystemD,
-   etc.) so that the service will start up when the container or host next
-   starts.
-#. service init/startup: signal to the host or container to start the services
-
-There may be other specialized steps required by some services but most of the
-roles will perform all of these at a minimum. Begin by reviewing a role for a
-service that has something in common with your service and think about how you
-can fit most of the common service setup and configuration steps into that
-model.
-
-.. HINT:: Following the patterns you find in other roles can help ensure your role
-   is easier to use and maintain.
-
-Steps to writing the role:
+Here are the steps to write the role:
 
 #. You can review roles which may be currently in development by checking our
    `specs repository`_ and `unmerged specs`_ on review.openstack.org. If you
@@ -69,6 +43,7 @@ Steps to writing the role:
 #. Generate a meta/main.yml right away. This file is important to Ansible to
    ensure your dependent roles are installed and available and provides others
    with the information they will need to understand the purpose of your role.
+
 #. Develop task files for each of the install stages in turn, creating any
    handlers and templates as needed. Ensure that you notify handlers after any
    task which impacts the way the service would run (such as configuration
@@ -79,13 +54,77 @@ Steps to writing the role:
       discover a need for them. You can also develop documentation for your
       role at the same time.
 
+#. Add tests to the role.
+#. Ensuring the role deploys with an AIO.
+
+Writing tasks in a role
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Most OpenStack services will follow a common series of stages to install or
+update a service deployment. This is apparent when you review `tasks/main.yml`
+for existing roles.
+
+#. pre-install: prepare the service user group and filesystem directory paths
+   on the host or container
+#. install: install system packages, prepare the (optional) service virtual
+   environment, install service and requirements (into a virtual environment)
+#. post-install: apply all configuration files
+#. service add: register the service (each of: service type, service project,
+   service user, and endpoints) within Keystone's service catalog.
+#. service setup: install a service-startup script (init, upstart, systemd,
+   etc.) so that the service will start up when the container or host next
+   starts.
+#. service init/startup: signal to the host or container to start the services,
+   make sure the service runs on boot.
+
+There may be other specialized steps required by some services but most of the
+roles will perform all of these at a minimum. Begin by reviewing a role for a
+service that has something in common with your service and think about how you
+can fit most of the common service setup and configuration steps into that
+model.
+
+.. HINT:: Following the patterns you find in other roles can help ensure your role
+   is easier to use and maintain.
+
 .. _(see also the spec template): https://git.openstack.org/cgit/openstack/openstack-ansible-specs/tree/specs/templates/template.rst
 .. _specs repository: https://git.openstack.org/cgit/openstack/openstack-ansible-specs
 .. _unmerged specs: https://review.openstack.org/#/q/status:+open+project:openstack/openstack-ansible-specs
 .. _Best Practice: https://docs.ansible.com/ansible/playbooks_best_practices.html#directory-layout
 
-Deploying the Role
-------------------
+Keep in mind a role candidate for inclusion should respect our
+`Ansible Style Guide`_.
+
+.. _Ansible Style Guide: contribute.html#ansible-style-guide
+
+Adding tests to a role
+^^^^^^^^^^^^^^^^^^^^^^
+
+Each of the role tests is in its tests/ folder.
+
+This folder contains at least the following files:
+
+#. ``test.yml`` ("super" playbook acting as test router to sub-playbooks)
+#. ``<role name>-overrides.yml``. This var file is automatically loaded
+   by our shell script in our `tests repository`_.
+#. ``inventory``. A static inventory for role testing.
+   It's possible some roles have multiple inventories. See for example the
+   neutron role with its ``lxb_inventory``, ``calico_inventory``.
+#. ``group_vars`` and ``host_vars``. These folders will hold override the
+   necessary files for testing. For example, this is where you override
+   the IP addresses, IP ranges, and ansible connection details.
+#. ``ansible-role-requirements.yml``. This should be fairly straightforward:
+   this file contains all the roles to clone before running your role.
+   The roles' relative playbooks will have to be listed in the ``test.yml``
+   file. However, keep in mind to NOT re-invent the wheel. For example,
+   if your role needs keystone, you don't need to create your own keystone
+   install playbook, because we have a generic keystone install playbook
+   in the `tests repository`.
+
+.. _tests repository: https://git.openstack.org/cgit/openstack/openstack-ansible-tests
+
+Deploying the role
+^^^^^^^^^^^^^^^^^^
+
 #. Include your role on the deploy host. See also `Adding Galaxy roles`_.
 #. Perform any other host preparation (such as the tasks performed by the
    ``bootstrap-aio.yml`` playbook). This includes any preparation tasks that
