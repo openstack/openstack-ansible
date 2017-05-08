@@ -34,8 +34,6 @@ container_skel:
       - swift-proxy_containers
     contains:
       - swift_proxy
-    properties:
-      service_name: swift
   swift_acc_container:
     belongs_to:
       - swift_containers
@@ -43,7 +41,6 @@ container_skel:
       - swift_acc
     properties:
       is_metal: true
-      service_name: swift
   swift_obj_container:
     belongs_to:
       - swift_containers
@@ -51,7 +48,6 @@ container_skel:
       - swift_obj
     properties:
       is_metal: true
-      service_name: swift
   swift_cont_container:
     belongs_to:
       - swift_containers
@@ -59,7 +55,6 @@ container_skel:
       - swift_cont
     properties:
       is_metal: true
-      service_name: swift
 
 
 physical_skel:

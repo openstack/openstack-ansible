@@ -17,8 +17,6 @@ container_skel:
     contains:
       - ceilometer_agent_central
       - ceilometer_agent_notification
-    properties:
-      service_name: ceilometer
   metering-compute_container:
     belongs_to:
     - metering-compute_containers
@@ -26,7 +24,6 @@ container_skel:
     - ceilometer_agent_compute
     properties:
       is_metal: true
-      service_name: ceilometer
 
 physical_skel:
   metering-compute_containers:

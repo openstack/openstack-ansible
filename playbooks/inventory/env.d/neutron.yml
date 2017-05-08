@@ -63,15 +63,11 @@ container_skel:
       - neutron_dhcp_agent
       - neutron_lbaas_agent
       - neutron_bgp_dragent
-    properties:
-      service_name: neutron
   neutron_server_container:
     belongs_to:
       - network_containers
     contains:
       - neutron_server
-    properties:
-      service_name: neutron
 
 
 physical_skel:

@@ -24,8 +24,6 @@ container_skel:
       - key-manager_containers
     contains:
       - barbican_api
-    properties:
-      service_name: barbican
 
 physical_skel:
   key-manager_containers:

@@ -27,8 +27,6 @@ container_skel:
       - ceph-mon_containers
     contains:
       - ceph-mon
-    properties:
-      service_name: ceph
   ceph-osd_container:
     belongs_to:
       - ceph-osd_containers
@@ -36,7 +34,6 @@ container_skel:
       - ceph-osd
     properties:
       is_metal: true
-      service_name: ceph
 
 physical_skel:
   ceph-mon_containers:
