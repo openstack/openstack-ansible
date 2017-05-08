@@ -196,15 +196,21 @@ function get_instance_info {
     "/openstack/log/instance-info/host_tracepath_info_${TS}.log" || true
   tracepath6 "2001:4860:4860::8888" -m 5 >> \
     "/openstack/log/instance-info/host_tracepath_info_${TS}.log" || true
-  lxc-ls --fancy > \
-    "/openstack/log/instance-info/host_lxc_container_info_${TS}.log" || true
-  lxc-checkconfig > \
-    "/openstack/log/instance-info/host_lxc_config_info_${TS}.log" || true
+  if [ "$(which lxc-ls)" ]; then
+    lxc-ls --fancy > \
+      "/openstack/log/instance-info/host_lxc_container_info_${TS}.log" || true
+  fi
+  if [ "$(which lxc-checkconfig)" ]; then
+    lxc-checkconfig > \
+      "/openstack/log/instance-info/host_lxc_config_info_${TS}.log" || true
+  fi
   (iptables -vnL && iptables -t nat -vnL && iptables -t mangle -vnL) > \
     "/openstack/log/instance-info/host_firewall_info_${TS}.log" || true
-  ANSIBLE_HOST_KEY_CHECKING=False \
-    ansible -i "localhost," localhost -m setup > \
-      "/openstack/log/instance-info/host_system_info_${TS}.log" || true
+  if [ "$(which ansible)" ]; then
+    ANSIBLE_HOST_KEY_CHECKING=False \
+      ansible -i "localhost," localhost -m setup > \
+        "/openstack/log/instance-info/host_system_info_${TS}.log" || true
+  fi
   get_repos_info > \
     "/openstack/log/instance-info/host_repo_info_${TS}.log" || true
 
