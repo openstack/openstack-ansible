@@ -53,10 +53,21 @@
           {%- set filtered_role_list = [] %}
           {%- for role in roles %}
           {%-   if role.src | match(".*git.openstack.org.*") %}
-          {%-     set _ = filtered_role_list.append(role) %}
+          {%-     set role_src_cleaned = role.src | regex_replace('https://git.openstack.org/', '') %}
+          {%-     set _ = filtered_role_list.append(role_src_cleaned) %}
           {%-   endif %}
           {%- endfor %}
           {{- filtered_role_list -}}
+        openstack_repo_list: >
+          {%- set filtered_repo_list = [] %}
+          {%- set repo_list = lookup('env', 'ZUUL_CHANGES').split('^') %}
+          {%- for repo in repo_list %}
+          {%-   set repo_cleaned = repo | regex_replace(':.*$', '') %}
+          {%-   if not repo_cleaned | match("^openstack/openstack-ansible.*") %}
+          {%-     set _ = filtered_repo_list.append(repo_cleaned) %}
+          {%-   endif %}
+          {%- endfor %}
+          {{- filtered_repo_list -}}
       when:
         - _zuul_cloner_check.rc == 0
 
@@ -84,6 +95,8 @@
               dest: '{{ role_path_default }}/openstack-ansible-security'
             - name: 'openstack/openstack-ansible-(?!security)(.*)'
               dest: '{{ role_path_default }}/\1'
+            - name: 'openstack/(?!openstack-ansible)(.*)'
+              dest: '/tmp/openstack/\1'
         dest: "/tmp/zuul-clonemap.yml"
       when:
         - _zuul_cloner_check.rc == 0
@@ -94,8 +107,8 @@
                 -m /tmp/zuul-clonemap.yml \
                 --cache-dir /opt/git \
                 git://git.openstack.org \
-        {% for role in zuul_roles %}
-                {{ role.src | regex_replace('https://git.openstack.org/', '') }} \
+        {% for repo in zuul_roles + openstack_repo_list %}
+                {{ repo }} \
         {% endfor %}
       when:
         - _zuul_cloner_check.rc == 0
