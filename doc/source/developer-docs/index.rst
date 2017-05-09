@@ -1,5 +1,5 @@
 =======================
-Developer documentation
+Developer Documentation
 =======================
 
 In this section, you will find documentation relevant to developing
