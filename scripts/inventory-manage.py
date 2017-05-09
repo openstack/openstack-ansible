@@ -33,4 +33,4 @@ sys.path.append(import_path)
 import manage
 
 if __name__ == "__main__":
-        manage.main()
+    manage.main()
