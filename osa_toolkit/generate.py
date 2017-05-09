@@ -682,7 +682,7 @@ def container_skel_load(container_skel, inventory, config):
                         key,
                         container_type,
                         inventory,
-                        value.get('properties')
+                        value.get('properties', {})
                     )
     else:
         cidr_networks = config.get('cidr_networks')
@@ -932,7 +932,7 @@ def _check_config_settings(cidr_networks, config, container_skel):
     # search for any container that doesn't have is_metal flag set to true
     is_provider_networks_needed = False
     for key, value in container_skel.iteritems():
-        properties = value.get('properties')
+        properties = value.get('properties', {})
         is_metal = properties.get('is_metal', False)
         if not is_metal:
             is_provider_networks_needed = True

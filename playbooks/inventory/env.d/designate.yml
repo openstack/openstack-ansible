@@ -44,8 +44,6 @@ container_skel:
       - designate_worker
       - designate_producer
       - designate_sink
-    properties:
-      service_name: designate
 
 physical_skel:
   dnsaas_containers:

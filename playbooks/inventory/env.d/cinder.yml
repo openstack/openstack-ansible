@@ -35,8 +35,6 @@ container_skel:
     contains:
       - cinder_api
       - cinder_scheduler
-    properties:
-      service_name: cinder
   cinder_volumes_container:
     belongs_to:
       - storage_containers
@@ -51,7 +49,6 @@ container_skel:
 # leave is_metal off, alternatively you will have to migrate your volumes once
 # deployed on metal.
       is_metal: true
-      service_name: cinder
 
 
 physical_skel:

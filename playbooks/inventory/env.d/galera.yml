@@ -26,9 +26,6 @@ container_skel:
       - shared-infra_containers
     contains:
       - galera
-    properties:
-      log_directory: mysql_logs
-      service_name: galera
 
 
 physical_skel:

@@ -44,24 +44,18 @@ container_skel:
       - os-infra_containers
     contains:
       - nova_api_metadata
-    properties:
-      service_name: nova
   nova_api_os_compute_container:
     belongs_to:
       - compute-infra_containers
       - os-infra_containers
     contains:
       - nova_api_os_compute
-    properties:
-      service_name: nova
   nova_api_placement_container:
     belongs_to:
       - compute-infra_containers
       - os-infra_containers
     contains:
       - nova_api_placement
-    properties:
-      service_name: nova
   nova_compute_container:
     belongs_to:
       - compute_containers
@@ -72,31 +66,24 @@ container_skel:
       - nova_compute
     properties:
       is_metal: true
-      service_name: nova
   nova_conductor_container:
     belongs_to:
       - compute-infra_containers
       - os-infra_containers
     contains:
       - nova_conductor
-    properties:
-      service_name: nova
   nova_scheduler_container:
     belongs_to:
       - compute-infra_containers
       - os-infra_containers
     contains:
       - nova_scheduler
-    properties:
-      service_name: nova
   nova_console_container:
     belongs_to:
       - compute-infra_containers
       - os-infra_containers
     contains:
       - nova_console
-    properties:
-      service_name: nova
 
 
 physical_skel:

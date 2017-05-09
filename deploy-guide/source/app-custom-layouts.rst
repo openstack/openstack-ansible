@@ -148,8 +148,6 @@ following steps:
          contains:
            - galera
          properties:
-           log_directory: mysql_logs
-           service_name: galera
            is_metal: true
 
    .. note::
