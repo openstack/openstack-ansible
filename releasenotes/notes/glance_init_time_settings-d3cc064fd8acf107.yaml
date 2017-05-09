@@ -1,0 +1,15 @@
+---
+features:
+  - For the ``os_glance`` role, the systemd unit ``RestartSec`` value which
+    controls the time between the service stop and start when restarting has
+    been reduced from 150 seconds to 2 seconds to make the restart happen
+    faster. This value can be adjusted by using the
+    ``glance_*_init_config_overrides`` variables which use the
+    ``config_template`` task to change template defaults.
+upgrade:
+  - For the ``os_glance`` role, the systemd unit ``RestartSec`` value which
+    controls the time between the service stop and start when restarting has
+    been reduced from 150 seconds to 2 seconds to make the restart happen
+    faster. This value can be adjusted by using the
+    ``glance_*_init_config_overrides`` variables which use the
+    ``config_template`` task to change template defaults.
