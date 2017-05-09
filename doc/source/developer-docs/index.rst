@@ -15,7 +15,6 @@ Contents:
 
    quickstart-aio
    scripts
-   playbooks
    contribute
    bug-triage
    core-reviewers
