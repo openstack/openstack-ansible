@@ -1,5 +1,5 @@
 ================
-Operations guide
+Operations Guide
 ================
 
 This guide provides information about operating your OpenStack-Ansible
