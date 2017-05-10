@@ -31,7 +31,7 @@ packages_install:
 
 packages_remove: []
 
-swap_create_command: "dd if=/dev/zero of=/openstack/swap.img bs={{ bootstrap_host_swap_size }}G count=1"
+swap_create_command: "dd if=/dev/zero of=/openstack/swap.img bs=1M count={{ (bootstrap_host_swap_size | int) * 1024 }}"
 rc_local: /etc/rc.d/rc.local
 rc_local_insert_before: "^touch /var/lock/subsys/local$"
 
