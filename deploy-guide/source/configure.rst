@@ -50,8 +50,8 @@ these services include databases, Memcached, and RabbitMQ. Several other
 host types contain other types of containers, and all of these are listed
 in the ``openstack_user_config.yml`` file.
 
-For examples, please see :ref:`test-environment-config` and
-:ref:`production-environment-config`.
+For examples, please see :ref:`test-environment-config`,
+:ref:`production-environment-config`, and :ref:`pod-environment-config`
 
 For details about how the inventory is generated from the environment
 configuration, see

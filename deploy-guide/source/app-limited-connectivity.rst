@@ -1,7 +1,7 @@
 .. _limited-connectivity-appendix:
 
 ================================================
-Appendix F: Installing with limited connectivity
+Appendix G: Installing with limited connectivity
 ================================================
 
 Many playbooks and roles in OpenStack-Ansible retrieve dependencies from the

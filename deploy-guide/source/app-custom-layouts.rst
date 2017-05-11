@@ -1,5 +1,5 @@
 ================================================
-Appendix C: Customizing host and service layouts
+Appendix D: Customizing host and service layouts
 ================================================
 
 The default layout of containers and services in OpenStack-Ansible (OSA) is

@@ -1,5 +1,5 @@
 ====================================
-Appendix H: Ceph-Ansible integration
+Appendix I: Ceph-Ansible integration
 ====================================
 
 OpenStack-Ansible allows `Ceph storage <https://ceph.com>`_ cluster integration

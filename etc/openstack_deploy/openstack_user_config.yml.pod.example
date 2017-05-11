@@ -1,0 +1,511 @@
+---
+cidr_networks:
+  pod1_container: 172.29.236.0/24
+  pod2_container: 172.29.237.0/24
+  pod3_container: 172.29.238.0/24
+  pod4_container: 172.29.239.0/24
+  pod1_tunnel: 172.29.240.0/24
+  pod2_tunnel: 172.29.241.0/24
+  pod3_tunnel: 172.29.242.0/24
+  pod4_tunnel: 172.29.243.0/24
+  pod1_storage: 172.29.244.0/24
+  pod2_storage: 172.29.245.0/24
+  pod3_storage: 172.29.246.0/24
+  pod4_storage: 172.29.247.0/24
+
+used_ips:
+  - "172.29.236.1,172.29.236.50"
+  - "172.29.237.1,172.29.237.50"
+  - "172.29.238.1,172.29.238.50"
+  - "172.29.239.1,172.29.239.50"
+  - "172.29.240.1,172.29.240.50"
+  - "172.29.241.1,172.29.241.50"
+  - "172.29.242.1,172.29.242.50"
+  - "172.29.243.1,172.29.243.50"
+  - "172.29.244.1,172.29.244.50"
+  - "172.29.245.1,172.29.245.50"
+  - "172.29.246.1,172.29.246.50"
+  - "172.29.247.1,172.29.247.50"
+
+global_overrides:
+  internal_lb_vip_address: internal-openstack.example.com
+  #
+  # The below domain name must resolve to an IP address
+  # in the CIDR specified in haproxy_keepalived_external_vip_cidr.
+  # If using different protocols (https/http) for the public/internal
+  # endpoints the two addresses must be different.
+  #
+  external_lb_vip_address: openstack.example.com
+  tunnel_bridge: "br-vxlan"
+  management_bridge: "br-mgmt"
+  provider_networks:
+    - network:
+        container_bridge: "br-mgmt"
+        container_type: "veth"
+        container_interface: "eth1"
+        ip_from_q: "pod1_container"
+        address_prefix: "container"
+        type: "raw"
+        group_binds:
+          - all_containers
+          - hosts
+        reference_group: "pod1_hosts"
+        is_container_address: true
+        is_ssh_address: true
+        # Containers in pod1 need routes to the container networks of other pods
+        static_routes:
+          # Route to container networks
+          - cidr: 172.29.236.0/22
+            gateway: 172.29.236.1
+    - network:
+        container_bridge: "br-mgmt"
+        container_type: "veth"
+        container_interface: "eth1"
+        ip_from_q: "pod2_container"
+        address_prefix: "container"
+        type: "raw"
+        group_binds:
+          - all_containers
+          - hosts
+        reference_group: "pod2_hosts"
+        is_container_address: true
+        is_ssh_address: true
+        # Containers in pod2 need routes to the container networks of other pods
+        static_routes:
+          # Route to container networks
+          - cidr: 172.29.236.0/22
+            gateway: 172.29.237.1
+    - network:
+        container_bridge: "br-mgmt"
+        container_type: "veth"
+        container_interface: "eth1"
+        ip_from_q: "pod3_container"
+        address_prefix: "container"
+        type: "raw"
+        group_binds:
+          - all_containers
+          - hosts
+        reference_group: "pod3_hosts"
+        is_container_address: true
+        is_ssh_address: true
+        # Containers in pod3 need routes to the container networks of other pods
+        static_routes:
+          # Route to container networks
+          - cidr: 172.29.236.0/22
+            gateway: 172.29.238.1
+    - network:
+        container_bridge: "br-mgmt"
+        container_type: "veth"
+        container_interface: "eth1"
+        ip_from_q: "pod4_container"
+        address_prefix: "container"
+        type: "raw"
+        group_binds:
+          - all_containers
+          - hosts
+        reference_group: "pod4_hosts"
+        is_container_address: true
+        is_ssh_address: true
+        # Containers in pod4 need routes to the container networks of other pods
+        static_routes:
+          # Route to container networks
+          - cidr: 172.29.236.0/22
+            gateway: 172.29.239.1
+    - network:
+        container_bridge: "br-vxlan"
+        container_type: "veth"
+        container_interface: "eth10"
+        ip_from_q: "pod1_tunnel"
+        address_prefix: "tunnel"
+        type: "vxlan"
+        range: "1:1000"
+        net_name: "vxlan"
+        group_binds:
+          - neutron_linuxbridge_agent
+        reference_group: "pod1_hosts"
+        # Containers in pod1 need routes to the tunnel networks of other pods
+        static_routes:
+          # Route to tunnel networks
+          - cidr: 172.29.240.0/22
+            gateway: 172.29.240.1
+    - network:
+        container_bridge: "br-vxlan"
+        container_type: "veth"
+        container_interface: "eth10"
+        ip_from_q: "pod2_tunnel"
+        address_prefix: "tunnel"
+        type: "vxlan"
+        range: "1:1000"
+        net_name: "vxlan"
+        group_binds:
+          - neutron_linuxbridge_agent
+        reference_group: "pod2_hosts"
+        # Containers in pod2 need routes to the tunnel networks of other pods
+        static_routes:
+          # Route to tunnel networks
+          - cidr: 172.29.240.0/22
+            gateway: 172.29.241.1
+    - network:
+        container_bridge: "br-vxlan"
+        container_type: "veth"
+        container_interface: "eth10"
+        ip_from_q: "pod3_tunnel"
+        address_prefix: "tunnel"
+        type: "vxlan"
+        range: "1:1000"
+        net_name: "vxlan"
+        group_binds:
+          - neutron_linuxbridge_agent
+        reference_group: "pod3_hosts"
+        # Containers in pod3 need routes to the tunnel networks of other pods
+        static_routes:
+          # Route to tunnel networks
+          - cidr: 172.29.240.0/22
+            gateway: 172.29.242.1
+    - network:
+        container_bridge: "br-vxlan"
+        container_type: "veth"
+        container_interface: "eth10"
+        ip_from_q: "pod4_tunnel"
+        address_prefix: "tunnel"
+        type: "vxlan"
+        range: "1:1000"
+        net_name: "vxlan"
+        group_binds:
+          - neutron_linuxbridge_agent
+        reference_group: "pod4_hosts"
+        # Containers in pod4 need routes to the tunnel networks of other pods
+        static_routes:
+          # Route to tunnel networks
+          - cidr: 172.29.240.0/22
+            gateway: 172.29.243.1
+    - network:
+        container_bridge: "br-vlan"
+        container_type: "veth"
+        container_interface: "eth12"
+        host_bind_override: "eth12"
+        type: "flat"
+        net_name: "flat"
+        group_binds:
+          - neutron_linuxbridge_agent
+    - network:
+        container_bridge: "br-vlan"
+        container_type: "veth"
+        container_interface: "eth11"
+        type: "vlan"
+        range: "1:1"
+        net_name: "vlan"
+        group_binds:
+          - neutron_linuxbridge_agent
+    - network:
+        container_bridge: "br-storage"
+        container_type: "veth"
+        container_interface: "eth2"
+        ip_from_q: "pod1_storage"
+        address_prefix: "storage"
+        type: "raw"
+        group_binds:
+          - glance_api
+          - cinder_api
+          - cinder_volume
+          - nova_compute
+        reference_group: "pod1_hosts"
+        # Containers in pod1 need routes to the storage networks of other pods
+        static_routes:
+          # Route to storage networks
+          - cidr: 172.29.244.0/22
+            gateway: 172.29.244.1
+    - network:
+        container_bridge: "br-storage"
+        container_type: "veth"
+        container_interface: "eth2"
+        ip_from_q: "pod2_storage"
+        address_prefix: "storage"
+        type: "raw"
+        group_binds:
+          - glance_api
+          - cinder_api
+          - cinder_volume
+          - nova_compute
+        reference_group: "pod2_hosts"
+        # Containers in pod2 need routes to the storage networks of other pods
+        static_routes:
+          # Route to storage networks
+          - cidr: 172.29.244.0/22
+            gateway: 172.29.245.1
+    - network:
+        container_bridge: "br-storage"
+        container_type: "veth"
+        container_interface: "eth2"
+        ip_from_q: "pod3_storage"
+        address_prefix: "storage"
+        type: "raw"
+        group_binds:
+          - glance_api
+          - cinder_api
+          - cinder_volume
+          - nova_compute
+        reference_group: "pod3_hosts"
+        # Containers in pod3 need routes to the storage networks of other pods
+        static_routes:
+          # Route to storage networks
+          - cidr: 172.29.244.0/22
+            gateway: 172.29.246.1
+    - network:
+        container_bridge: "br-storage"
+        container_type: "veth"
+        container_interface: "eth2"
+        ip_from_q: "pod4_storage"
+        address_prefix: "storage"
+        type: "raw"
+        group_binds:
+          - glance_api
+          - cinder_api
+          - cinder_volume
+          - nova_compute
+        reference_group: "pod4_hosts"
+        # Containers in pod4 need routes to the storage networks of other pods
+        static_routes:
+          # Route to storage networks
+          - cidr: 172.29.244.0/22
+            gateway: 172.29.247.1
+
+###
+### Infrastructure
+###
+
+pod1_hosts:
+  infra1:
+    ip: 172.29.236.10
+  log1:
+    ip: 172.29.236.11
+
+pod2_hosts:
+  infra2:
+    ip: 172.29.239.10
+
+pod3_hosts:
+  infra3:
+    ip: 172.29.242.10
+
+pod4_hosts:
+  compute1:
+    ip: 172.29.245.10
+  compute2:
+    ip: 172.29.245.11
+
+# galera, memcache, rabbitmq, utility
+shared-infra_hosts:
+  infra1:
+    ip: 172.29.236.10
+  infra2:
+    ip: 172.29.239.10
+  infra3:
+    ip: 172.29.242.10
+
+# repository (apt cache, python packages, etc)
+repo-infra_hosts:
+  infra1:
+    ip: 172.29.236.10
+  infra2:
+    ip: 172.29.239.10
+  infra3:
+    ip: 172.29.242.10
+
+# load balancer
+# Ideally the load balancer should not use the Infrastructure hosts.
+# Dedicated hardware is best for improved performance and security.
+haproxy_hosts:
+  infra1:
+    ip: 172.29.236.10
+  infra2:
+    ip: 172.29.239.10
+  infra3:
+    ip: 172.29.242.10
+
+# rsyslog server
+log_hosts:
+  log1:
+    ip: 172.29.236.11
+
+###
+### OpenStack
+###
+
+# keystone
+identity_hosts:
+  infra1:
+    ip: 172.29.236.10
+  infra2:
+    ip: 172.29.239.10
+  infra3:
+    ip: 172.29.242.10
+
+# cinder api services
+storage-infra_hosts:
+  infra1:
+    ip: 172.29.236.10
+  infra2:
+    ip: 172.29.239.10
+  infra3:
+    ip: 172.29.242.10
+
+# glance
+# The settings here are repeated for each infra host.
+# They could instead be applied as global settings in
+# user_variables, but are left here to illustrate that
+# each container could have different storage targets.
+image_hosts:
+  infra1:
+    ip: 172.29.236.11
+    container_vars:
+      limit_container_types: glance
+      glance_nfs_client:
+        - server: "172.29.244.15"
+          remote_path: "/images"
+          local_path: "/var/lib/glance/images"
+          type: "nfs"
+          options: "_netdev,auto"
+  infra2:
+    ip: 172.29.236.12
+    container_vars:
+      limit_container_types: glance
+      glance_nfs_client:
+        - server: "172.29.244.15"
+          remote_path: "/images"
+          local_path: "/var/lib/glance/images"
+          type: "nfs"
+          options: "_netdev,auto"
+  infra3:
+    ip: 172.29.236.13
+    container_vars:
+      limit_container_types: glance
+      glance_nfs_client:
+        - server: "172.29.244.15"
+          remote_path: "/images"
+          local_path: "/var/lib/glance/images"
+          type: "nfs"
+          options: "_netdev,auto"
+
+# nova api, conductor, etc services
+compute-infra_hosts:
+  infra1:
+    ip: 172.29.236.10
+  infra2:
+    ip: 172.29.239.10
+  infra3:
+    ip: 172.29.242.10
+
+# heat
+orchestration_hosts:
+  infra1:
+    ip: 172.29.236.10
+  infra2:
+    ip: 172.29.239.10
+  infra3:
+    ip: 172.29.242.10
+
+# horizon
+dashboard_hosts:
+  infra1:
+    ip: 172.29.236.10
+  infra2:
+    ip: 172.29.239.10
+  infra3:
+    ip: 172.29.242.10
+
+# neutron server, agents (L3, etc)
+network_hosts:
+  infra1:
+    ip: 172.29.236.10
+  infra2:
+    ip: 172.29.239.10
+  infra3:
+    ip: 172.29.242.10
+
+# ceilometer (telemetry data collection)
+metering-infra_hosts:
+  infra1:
+    ip: 172.29.236.10
+  infra2:
+    ip: 172.29.239.10
+  infra3:
+    ip: 172.29.242.10
+
+# aodh (telemetry alarm service)
+metering-alarm_hosts:
+  infra1:
+    ip: 172.29.236.10
+  infra2:
+    ip: 172.29.239.10
+  infra3:
+    ip: 172.29.242.10
+
+# gnocchi (telemetry metrics storage)
+metrics_hosts:
+  infra1:
+    ip: 172.29.236.10
+  infra2:
+    ip: 172.29.239.10
+  infra3:
+    ip: 172.29.242.10
+
+# nova hypervisors
+compute_hosts:
+  compute1:
+    ip: 172.29.245.10
+  compute2:
+    ip: 172.29.245.11
+
+# ceilometer compute agent (telemetry data collection)
+metering-compute_hosts:
+  compute1:
+    ip: 172.29.245.10
+  compute2:
+    ip: 172.29.245.11
+
+# cinder volume hosts (NFS-backed)
+# The settings here are repeated for each infra host.
+# They could instead be applied as global settings in
+# user_variables, but are left here to illustrate that
+# each container could have different storage targets.
+storage_hosts:
+  infra1:
+    ip: 172.29.236.11
+    container_vars:
+      cinder_backends:
+        limit_container_types: cinder_volume
+        nfs_volume:
+          volume_backend_name: NFS_VOLUME1
+          volume_driver: cinder.volume.drivers.nfs.NfsDriver
+          nfs_mount_options: "rsize=65535,wsize=65535,timeo=1200,actimeo=120"
+          nfs_shares_config: /etc/cinder/nfs_shares
+          shares:
+            - ip: "172.29.244.15"
+              share: "/vol/cinder"
+  infra2:
+    ip: 172.29.236.12
+    container_vars:
+      cinder_backends:
+        limit_container_types: cinder_volume
+        nfs_volume:
+          volume_backend_name: NFS_VOLUME1
+          volume_driver: cinder.volume.drivers.nfs.NfsDriver
+          nfs_mount_options: "rsize=65535,wsize=65535,timeo=1200,actimeo=120"
+          nfs_shares_config: /etc/cinder/nfs_shares
+          shares:
+            - ip: "172.29.244.15"
+              share: "/vol/cinder"
+  infra3:
+    ip: 172.29.236.13
+    container_vars:
+      cinder_backends:
+        limit_container_types: cinder_volume
+        nfs_volume:
+          volume_backend_name: NFS_VOLUME1
+          volume_driver: cinder.volume.drivers.nfs.NfsDriver
+          nfs_mount_options: "rsize=65535,wsize=65535,timeo=1200,actimeo=120"
+          nfs_shares_config: /etc/cinder/nfs_shares
+          shares:
+            - ip: "172.29.244.15"
+              share: "/vol/cinder"

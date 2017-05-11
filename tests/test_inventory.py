@@ -557,9 +557,20 @@ class TestConfigCheckBase(unittest.TestCase):
         self.user_defined_config[key] = value
         self.write_config()
 
+    def add_provider_network(self, net_name, cidr):
+        self.user_defined_config['cidr_networks'][net_name] = cidr
+        self.write_config()
+
     def delete_provider_network(self, net_name):
         del self.user_defined_config['cidr_networks'][net_name]
         self.write_config()
+
+    def add_provider_network_key(self, net_name, key, value):
+        pns = self.user_defined_config['global_overrides']['provider_networks']
+        for net in pns:
+            if 'ip_from_q' in net['network']:
+                if net['network']['ip_from_q'] == net_name:
+                    net['network'][key] = value
 
     def delete_provider_network_key(self, net_name, key):
         pns = self.user_defined_config['global_overrides']['provider_networks']
@@ -1401,6 +1412,33 @@ class TestInventoryGroupConstraints(unittest.TestCase):
 
         self.assertTrue(result)
 
+class TestL3ProviderNetworkConfig(TestConfigCheckBase):
+    def setUp(self):
+        super(TestL3ProviderNetworkConfig, self).setUp()
+        self.delete_provider_network('container')
+        self.add_provider_network('pod1_container', '172.29.236.0/22')
+        self.add_provider_network_key('container', 'ip_from_q',
+                                      'pod1_container')
+        self.add_provider_network_key('pod1_container', 'address_prefix',
+                                      'management')
+        self.add_provider_network_key('pod1_container', 'reference_group',
+                                      'pod1_hosts')
+        self.add_config_key('pod1_hosts', {})
+        self.add_host('pod1_hosts', 'aio2', '172.29.236.101')
+        self.add_host('compute_hosts', 'aio2', '172.29.236.101')
+        self.write_config()
+        self.inventory = get_inventory()
+
+    def test_address_prefix_name_applied(self):
+         aio2_host_vars = self.inventory['_meta']['hostvars']['aio2']
+         aio2_container_networks = aio2_host_vars['container_networks']
+         self.assertIsInstance(aio2_container_networks['management_address'],
+                               dict)
+
+    def test_host_outside_reference_group_excluded(self):
+         aio1_host_vars = self.inventory['_meta']['hostvars']['aio1']
+         aio1_container_networks = aio1_host_vars['container_networks']
+         self.assertNotIn('management_address', aio1_container_networks)
 
 if __name__ == '__main__':
     unittest.main(catchbreak=True)

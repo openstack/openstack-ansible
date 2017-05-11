@@ -1,0 +1,157 @@
+# This is a multi-NIC bonded configuration to implement the required bridges
+# for OpenStack-Ansible. This illustrates the configuration of the first
+# Infrastructure host and the IP addresses assigned should be adapted
+# for implementation on the other hosts.
+#
+# After implementing this configuration, the host will need to be
+# rebooted.
+
+# Assuming that eth0/1 and eth2/3 are dual port NIC's we pair
+# eth0 with eth2 and eth1 with eth3 for increased resiliency
+# in the case of one interface card failing.
+auto eth0
+iface eth0 inet manual
+    bond-master bond0
+    bond-primary eth0
+
+auto eth1
+iface eth1 inet manual
+    bond-master bond1
+    bond-primary eth1
+
+auto eth2
+iface eth2 inet manual
+    bond-master bond0
+
+auto eth3
+iface eth3 inet manual
+    bond-master bond1
+
+# Create a bonded interface. Note that the "bond-slaves" is set to none. This
+# is because the bond-master has already been set in the raw interfaces for
+# the new bond0.
+auto bond0
+iface bond0 inet manual
+    bond-slaves none
+    bond-mode active-backup
+    bond-miimon 100
+    bond-downdelay 200
+    bond-updelay 200
+
+# This bond will carry VLAN and VXLAN traffic to ensure isolation from
+# control plane traffic on bond0.
+auto bond1
+iface bond1 inet manual
+    bond-slaves none
+    bond-mode active-backup
+    bond-miimon 100
+    bond-downdelay 250
+    bond-updelay 250
+
+# Container/Host management VLAN interface
+auto bond0.10
+iface bond0.10 inet manual
+    vlan-raw-device bond0
+
+# OpenStack Networking VXLAN (tunnel/overlay) VLAN interface
+auto bond1.30
+iface bond1.30 inet manual
+    vlan-raw-device bond1
+
+# Storage network VLAN interface (optional)
+auto bond0.20
+iface bond0.20 inet manual
+    vlan-raw-device bond0
+
+# Container/Host management bridge
+auto br-mgmt
+iface br-mgmt inet static
+    bridge_stp off
+    bridge_waitport 0
+    bridge_fd 0
+    bridge_ports bond0.10
+    address 172.29.236.10
+    netmask 255.255.255.0
+    gateway 172.29.236.1
+    dns-nameservers 8.8.8.8 8.8.4.4
+
+# OpenStack Networking VXLAN (tunnel/overlay) bridge
+#
+# Only the COMPUTE and NETWORK nodes must have an IP address
+# on this bridge. When used by infrastructure nodes, the
+# IP addresses are assigned to containers which use this
+# bridge.
+#
+auto br-vxlan
+iface br-vxlan inet manual
+    bridge_stp off
+    bridge_waitport 0
+    bridge_fd 0
+    bridge_ports bond1.30
+
+# compute1 VXLAN (tunnel/overlay) bridge config
+#auto br-vxlan
+#iface br-vxlan inet static
+#    bridge_stp off
+#    bridge_waitport 0
+#    bridge_fd 0
+#    bridge_ports bond1.30
+#    address 172.29.246.10
+#    netmask 255.255.255.0
+
+# OpenStack Networking VLAN bridge
+auto br-vlan
+iface br-vlan inet manual
+    bridge_stp off
+    bridge_waitport 0
+    bridge_fd 0
+    bridge_ports bond1
+
+# compute1 Network VLAN bridge
+#auto br-vlan
+#iface br-vlan inet manual
+#    bridge_stp off
+#    bridge_waitport 0
+#    bridge_fd 0
+#
+# For tenant vlan support, create a veth pair to be used when the neutron
+# agent is not containerized on the compute hosts. 'eth12' is the value used on
+# the host_bind_override parameter of the br-vlan network section of the
+# openstack_user_config example file. The veth peer name must match the value
+# specified on the host_bind_override parameter.
+#
+# When the neutron agent is containerized it will use the container_interface
+# value of the br-vlan network, which is also the same 'eth12' value.
+#
+# Create veth pair, do not abort if already exists
+#    pre-up ip link add br-vlan-veth type veth peer name eth12 || true
+# Set both ends UP
+#    pre-up ip link set br-vlan-veth up
+#    pre-up ip link set eth12 up
+# Delete veth pair on DOWN
+#    post-down ip link del br-vlan-veth || true
+#    bridge_ports bond1 br-vlan-veth
+
+# Storage bridge (optional)
+#
+# Only the COMPUTE and STORAGE nodes must have an IP address
+# on this bridge. When used by infrastructure nodes, the
+# IP addresses are assigned to containers which use this
+# bridge.
+#
+auto br-storage
+iface br-storage inet manual
+    bridge_stp off
+    bridge_waitport 0
+    bridge_fd 0
+    bridge_ports bond0.20
+
+# compute1 Storage bridge
+#auto br-storage
+#iface br-storage inet static
+#    bridge_stp off
+#    bridge_waitport 0
+#    bridge_fd 0
+#    bridge_ports bond0.20
+#    address 172.29.247.10
+#    netmask 255.255.255.0

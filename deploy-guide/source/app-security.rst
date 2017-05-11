@@ -1,5 +1,5 @@
 ====================
-Appendix D: Security
+Appendix E: Security
 ====================
 
 Security is one of the top priorities within OpenStack-Ansible (OSA), and many
@@ -8,7 +8,7 @@ default. This appendix provides a detailed overview of the most important
 security enhancements.
 
 For more information about configuring security, see
-:deploy_guide:`Appendix G <app-advanced-config-options.html>`.
+:deploy_guide:`Appendix H <app-advanced-config-options.html>`.
 
 .. note::
 
