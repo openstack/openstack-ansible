@@ -17,5 +17,5 @@ OpenStack-Ansible's Ocata series was first released with the 15.0.0 tag on
    upgrade-guide/index
    developer-docs/index
 
-.. _Ocata Series Release Notes: http://docs.openstack.org/releasenotes/openstack-ansible/ocata.html
-.. _OpenStack-Ansible Ocata Deployment Guide: http://docs.openstack.org/project-deploy-guide/ocata/
+.. _Ocata Series Release Notes: https://docs.openstack.org/releasenotes/openstack-ansible/ocata.html
+.. _OpenStack-Ansible Ocata Deployment Guide: https://docs.openstack.org/project-deploy-guide/openstack-ansible/ocata/
