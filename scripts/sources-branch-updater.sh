@@ -108,8 +108,10 @@ for repo in $(grep 'git_repo\:' ${SERVICE_FILE}); do
           popd > /dev/null
 
           # Update the policy files
-          find ${os_repo_tmp_path}/etc -name "policy.json" -exec \
-            cp {} "${osa_repo_tmp_path}/templates/policy.json.j2" \;
+          if [ "${repo_name}" != "keystone" ] && [ "${repo_name}" != "gnocchi" ] && [ "${repo_name}" != "ceilometer" ]; then
+            find ${os_repo_tmp_path}/etc -name "policy.json" -exec \
+              cp {} "${osa_repo_tmp_path}/templates/policy.json.j2" \;
+          fi
 
           # Tweak the paste files for any hmac key entries
           find ${os_repo_tmp_path}/etc -name "*[_-]paste.ini" -exec \
@@ -121,15 +123,11 @@ for repo in $(grep 'git_repo\:' ${SERVICE_FILE}); do
               sed -i.bak 's|\/v1\: barbican-api-keystone|\/v1\: {{ (barbican_keystone_auth \| bool) \| ternary('barbican-api-keystone', 'barbican_api') }}|'{} \;
           fi
 
-          # Tweak the gnocchi paste file to support keystone auth
-          if [ "${repo_name}" = "gnocchi" ]; then
-            find ${os_repo_tmp_path}/etc -name "*[_-]paste.ini" -exec \
-              sed -i.bak "s|pipeline = gnocchi+noauth|pipeline = {{ (gnocchi_keystone_auth \| bool) \| ternary('gnocchi+auth', 'gnocchi+noauth') }}|" {} \;
-          fi
-
           # Update the paste files
-          find ${os_repo_tmp_path}/etc -name "*[_-]paste.ini" -exec \
-            bash -c "name=\"{}\"; cp \${name} \"${osa_repo_tmp_path}/templates/\$(basename \${name}).j2\"" \;
+          if [ "${repo_name}" != "keystone" ] && [ "${repo_name}" != "gnocchi" ] && [ "${repo_name}" != "ceilometer" ]; then
+            find ${os_repo_tmp_path}/etc -name "*[_-]paste.ini" -exec \
+              bash -c "name=\"{}\"; cp \${name} \"${osa_repo_tmp_path}/templates/\$(basename \${name}).j2\"" \;
+          fi
 
           # Tweak the rootwrap conf filters_path (for neutron only)
           if [ "${repo_name}" = "neutron" ]; then
@@ -148,12 +146,6 @@ for repo in $(grep 'git_repo\:' ${SERVICE_FILE}); do
           # Update the rootwrap filters
           find ${os_repo_tmp_path}/etc -name "*.filters" -exec \
             bash -c "name=\"{}\"; cp \${name} \"${osa_repo_tmp_path}/files/rootwrap.d/\$(basename \${name})\"" \;
-
-          # Update the yaml files for Ceilometer
-          if [ "${repo_name}" = "ceilometer" ]; then
-            find ${os_repo_tmp_path}/etc -name "*.yaml" -exec \
-              bash -c "name=\"{}\"; cp \${name} \"${osa_repo_tmp_path}/templates/\$(basename \${name}).j2\"" \;
-          fi
 
           # Update the yaml files for Heat
           if [ "${repo_name}" = "heat" ]; then
