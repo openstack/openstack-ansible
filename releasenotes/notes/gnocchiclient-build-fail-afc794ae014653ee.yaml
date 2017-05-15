@@ -1,0 +1,15 @@
+---
+issues:
+  - |
+    When executing a deployment which includes the telemetry systems
+    (ceilometer, gnocchi, aodh), the repo build will fail due to the
+    inability for pip to read the constraints properly from the
+    extras section in ceilometer's setup.cfg. The current workaround
+    for this is to add the following content to
+    ``/etc/openstack_deploy/user_variables.yml``.
+
+    .. code-block:: yaml
+
+       repo_build_upper_constraints_overrides:
+         - gnocchiclient<3.0.0
+
