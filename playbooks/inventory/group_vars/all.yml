@@ -158,14 +158,13 @@ cinder_backend_rbd_inuse: '{{ (cinder_backends|default("")|to_json).find("cinder
 # cinder_volume host uses Ceph RBD
 # http://stackoverflow.com/questions/9486393/jinja2-change-the-value-of-a-variable-inside-a-loop
 cinder_backends_rbd_inuse: >-
-  {% set _var = {'rbd_inuse': False} %}{%
-  for host in groups.cinder_volume %}{%
-  if hostvars[host].cinder_backend_rbd_inuse | bool %}{%
-  if _var.update({'rbd_inuse': True }) %}{%
-  endif %}{%
-  endif %}{%
-  endfor %}{{
-  _var.rbd_inuse }}
+  {% set _var = False -%}
+  {% for host in groups['cinder_volume'] -%}
+  {%   if hostvars[host]['cinder_backend_rbd_inuse'] | bool -%}
+  {%     set _var = True -%}
+  {%   endif -%}
+  {% endfor -%}
+  {{ _var }}
 cinder_ceph_client: cinder
 
 # These are here rather than in cinder_all because
