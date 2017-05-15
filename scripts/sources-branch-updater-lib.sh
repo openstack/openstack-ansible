@@ -210,11 +210,13 @@ update_ansible_role_requirements() {
   local role_name role_version osa_repo_tmp_path role_git_sources current_source_dir
   local osa_branch=${1}
   local pre_release=${2}
+  local force_master=${3}
   current_source_dir="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
 
   # Update the ansible-role-requirements.yml file
-  # We don't want to be doing this for the master branch
-  if [ "${osa_branch}" != "master" ] || [ "${pre_release}" == "true" ]; then
+  if [ "${osa_branch}" != "master" ] || \
+      [ "${pre_release}" == "true" ] || \
+      [ "${force_master}" == "true" ]; then
     echo "Updating ansible-role-requirements.yml"
 
     if [ "${pre_release}" == "true" ]; then
