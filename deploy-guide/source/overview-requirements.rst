@@ -55,26 +55,31 @@ Different hosts have different disk space requirements based on the
 services running on each host:
 
 Deployment hosts
-  Ten GB of disk space is sufficient for holding the OpenStack-Ansible
-  repository content and additional required software.
+  A minimum of ``10 GB`` of disk space is sufficient for holding the
+  OpenStack-Ansible repository content and additional required software.
 
 Compute hosts
   Disk space requirements depend on the total number of instances
   running on each host and the amount of disk space allocated to each instance.
-  Compute hosts must have a minimum of 1 TB of disk space available. Consider
-  disks that provide higher I/O throughput with lower latency, such as SSD
-  drives in a RAID array.
+
+  * Compute hosts must have a minimum of ``1 TB`` of disk space available.
+
+  * Consider disks that provide higher I/O throughput with lower latency,
+    such as SSD drives in a RAID array.
 
 Storage hosts
   Hosts running the Block Storage (cinder) service often consume the most disk
-  space in OpenStack environments. Storage hosts must have a minimum of 1 TB
-  of disk space. As with Compute hosts, choose disks that provide the highest
-  I/O throughput with the lowest latency.
+  space in OpenStack environments.
+
+  * Storage hosts must have a minimum of ``1 TB`` of disk space.
+
+  * As with Compute hosts, choose disks that provide the highest
+    I/O throughput with the lowest latency.
 
 Infrastructure (control plane) hosts
   The OpenStack control plane contains storage-intensive services, such as the
   Image service (glance), and MariaDB. These hosts must have a minimum of
-  100 GB of disk space.
+  ``100 GB`` of disk space.
 
 Logging hosts
   An OpenStack-Ansible deployment generates a significant amount of log
@@ -83,7 +88,7 @@ Logging hosts
   hosts need sufficient disk space to hold live and rotated (historical) log
   files. In addition, the storage performance must be able to keep pace with
   the log traffic coming from various hosts and containers within the OpenStack
-  environment. Reserve a minimum of 50 GB of disk space for storing logs on
+  environment. Reserve a minimum of ``50 GB`` of disk space for storing logs on
   the logging hosts.
 
 Hosts that provide Block Storage volumes must have Logical Volume
