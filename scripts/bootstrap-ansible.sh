@@ -105,7 +105,7 @@ UPPER_CONSTRAINTS_PROTO=$([ "$PYTHON_VERSION" == $(echo -e "$PYTHON_VERSION\n2.7
 export UPPER_CONSTRAINTS_FILE=${UPPER_CONSTRAINTS_FILE:-"$UPPER_CONSTRAINTS_PROTO://git.openstack.org/cgit/openstack/requirements/plain/upper-constraints.txt?id=$(awk '/requirements_git_install_branch:/ {print $2}' playbooks/defaults/repo_packages/openstack_services.yml)"}
 
 # Create a Virtualenv for the Ansible runtime
-virtualenv --clear ${VIRTUALENV_OPTIONS} --system-site-packages --python="${PYTHON_EXEC_PATH}" /opt/ansible-runtime
+virtualenv --clear ${VIRTUALENV_OPTIONS} --python="${PYTHON_EXEC_PATH}" /opt/ansible-runtime
 
 # The vars used to prepare the Ansible runtime venv
 PIP_OPTS+=" --upgrade"
@@ -166,7 +166,7 @@ cat > /usr/local/bin/openstack-ansible <<EOF
 
 # OpenStack wrapper tool to ease the use of ansible with multiple variable files.
 
-export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:${PATH}"
+export PATH="/opt/ansible-runtime/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:${PATH}"
 
 function info() {
     if [ "\${ANSIBLE_NOCOLOR:-0}" -eq "1" ]; then
@@ -207,9 +207,9 @@ fi
 
 # Execute the Ansible command.
 if [ "\${RUN_CMD}" == "openstack-ansible" ] || [ "\${RUN_CMD}" == "ansible-playbook" ]; then
-  /opt/ansible-runtime/bin/ansible-playbook "\${@}" \${VAR1}
+  ansible-playbook "\${@}" \${VAR1}
 else
-  /opt/ansible-runtime/bin/\${RUN_CMD} "\${@}"
+  \${RUN_CMD} "\${@}"
 fi
 EOF
 
