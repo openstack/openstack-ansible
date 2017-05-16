@@ -92,17 +92,15 @@
 
 - name: Remove known problem packages
   package:
-    name: "{{ item }}"
+    name: "{{ packages_remove }}"
     state: absent
-  with_items: "{{ packages_remove }}"
   tags:
     - remove-packages
 
 - name: Install packages
   package:
-    name: "{{ item }}"
+    name: "{{ packages_install }}"
     state: present
-  with_items: "{{ packages_install }}"
   tags:
     - install-packages
 
