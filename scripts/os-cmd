@@ -47,7 +47,7 @@ __check_cmd_avail ${LXCATTACH}
 __check_cmd_avail ${LXCLS}
 
 # Find the first utility container to execute in
-UTIL=$(${LXCLS} | grep utility | head -n 1)
+UTIL=$(${LXCLS} -1 --filter utility | head -n 1)
 if [ "z${UTIL}" == "z" ]; then
   echo "*** Couldn't find a utility container.  Exiting..."
   exit 1
