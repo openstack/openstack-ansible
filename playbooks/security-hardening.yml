@@ -24,5 +24,6 @@
   roles:
     - role: "openstack-ansible-security"
       when: apply_security_hardening | bool
+  environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - security

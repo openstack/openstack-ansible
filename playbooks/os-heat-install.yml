@@ -75,5 +75,6 @@
     heat_galera_user: heat
     heat_galera_database: heat
     heat_galera_address: "{{ galera_address }}"
+  environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - heat

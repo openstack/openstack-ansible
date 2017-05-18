@@ -122,5 +122,6 @@
     cinder_galera_user: cinder
     cinder_galera_database: cinder
     cinder_galera_address: "{{ galera_address }}"
+  environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - cinder

@@ -118,6 +118,7 @@ debug: false
 # placed both on the hosts and inside the containers.
 
 ## Example environment variable setup:
+## (1) This sets up a permanent environment, used during and after deployment:
 # proxy_env_url: http://username:pa$$w0rd@10.10.10.9:9000/
 # no_proxy_env: "localhost,127.0.0.1,{{ internal_lb_vip_address }},{{ external_lb_vip_address }},{% for host in groups['all_containers'] %}{{ hostvars[host]['container_address'] }}{% if not loop.last %},{% endif %}{% endfor %}"
 # global_environment_variables:
@@ -127,6 +128,12 @@ debug: false
 #   http_proxy: "{{ proxy_env_url }}"
 #   https_proxy: "{{ proxy_env_url }}"
 #   no_proxy: "{{ no_proxy_env }}"
+#
+## (2) This is applied only during deployment, nothing is left after deployment is complete:
+# deployment_environment_variables:
+#   http_proxy: http://username:pa$$w0rd@10.10.10.9:9000/
+#   https_proxy: http://username:pa$$w0rd@10.10.10.9:9000/
+#   no_proxy: "localhost,127.0.0.1,{{ internal_lb_vip_address }},{{ external_lb_vip_address }}"
 
 
 ## SSH connection wait time

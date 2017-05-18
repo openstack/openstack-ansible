@@ -64,5 +64,6 @@
         msg: "The only supported platforms for this release are Ubuntu 16.04 LTS (Xenial) and CentOS 7 (WIP)"
   roles:
     - role: "openstack_hosts"
+  environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - openstack-hosts
