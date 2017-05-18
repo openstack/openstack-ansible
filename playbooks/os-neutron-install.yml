@@ -154,5 +154,6 @@
   vars:
     is_metal: "{{ properties.is_metal|default(false) }}"
     bind_prefix: "{{ provider_network_bind_prefix|default('') }}"
+  environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - neutron

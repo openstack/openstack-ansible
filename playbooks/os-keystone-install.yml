@@ -109,5 +109,6 @@
     keystone_galera_user: keystone
     keystone_galera_database: keystone
     keystone_galera_address: "{{ galera_address }}"
+  environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - keystone

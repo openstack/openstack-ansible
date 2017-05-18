@@ -28,3 +28,4 @@
       when: inventory_hostname == groups['utility_all'][0]
   roles:
     - role: "os_rally"
+  environment: "{{ deployment_environment_variables | default({}) }}"

@@ -64,5 +64,6 @@
     octavia_galera_user: octavia
     octavia_galera_database: octavia
     octavia_galera_address: "{{ galera_address }}"
+  environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - octavia

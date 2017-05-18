@@ -55,5 +55,6 @@
     - defaults/repo_packages/openstack_services.yml
   vars:
     pip_lock_to_internal_repo: False
+  environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - lxc-hosts

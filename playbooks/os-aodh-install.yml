@@ -62,5 +62,6 @@
     aodh_rabbitmq_servers: "{{ rabbitmq_servers }}"
     aodh_rabbitmq_port: "{{ rabbitmq_port }}"
     aodh_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
+  environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - aodh

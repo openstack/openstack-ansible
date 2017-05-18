@@ -93,5 +93,6 @@
     glance_galera_user: glance
     glance_galera_database: glance
     glance_galera_address: "{{ galera_address }}"
+  environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - glance

@@ -66,5 +66,6 @@
     gnocchi_galera_user: gnocchi
     gnocchi_galera_database: gnocchi
     gnocchi_galera_address: "{{ galera_address }}"
+  environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - gnocchi

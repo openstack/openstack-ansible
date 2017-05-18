@@ -85,5 +85,6 @@
       when: utility_ssh_private_key is defined
   vars:
     is_metal: "{{ properties.is_metal|default(false) }}"
+  environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - utility

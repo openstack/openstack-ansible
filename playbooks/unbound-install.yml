@@ -97,3 +97,4 @@
   vars:
     #Only run the resolvconf role when DNS containers are deployed to the env.
     resolvconf_enabled: "{{ groups['unbound'] is defined and groups['unbound'] | length > 0 }}"
+  environment: "{{ deployment_environment_variables | default({}) }}"

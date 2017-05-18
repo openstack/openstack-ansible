@@ -33,6 +33,7 @@
     - include: common-tasks/package-cache-proxy.yml
   vars:
     is_metal: "{{ properties.is_metal|default(false) }}"
+  environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - galera
 
@@ -64,5 +65,6 @@
     galera_address: 127.0.0.1
     galera_server_id: "{{ inventory_hostname | string_2_int }}"
     galera_wsrep_node_name: "{{ container_name }}"
+  environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - galera

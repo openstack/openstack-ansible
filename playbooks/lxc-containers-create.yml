@@ -33,5 +33,6 @@
         timeout: "{{ lxc_container_wait_params.timeout | default(omit) }}"
   vars:
     is_metal: "{{ properties.is_metal|default(false) }}"
+  environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - lxc-containers-create

@@ -180,5 +180,6 @@
     nova_api_galera_address: "{{ galera_address }}"
     nova_placement_galera_address: "{{ galera_address }}"
     glance_host: "{{ internal_lb_vip_address }}"
+  environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - nova
