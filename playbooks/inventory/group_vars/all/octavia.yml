@@ -1,0 +1,31 @@
+---
+# Copyright 2017, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+octavia_service_port: 9876
+octavia_service_proto: http
+octavia_service_internaluri_proto: "{{ openstack_service_internaluri_proto | default(octavia_service_proto) }}"
+octavia_service_internaluri: "{{ octavia_service_internaluri_proto }}://{{ internal_lb_vip_address }}:{{ octavia_service_port }}"
+octavia_service_internalurl: "{{ octavia_service_internaluri }}/v1/%(tenant_id)s"
+
+octavia_service_user_name: octavia
+octavia_service_url: "{{ octavia_service_internaluri }}"
+
+# RPC
+octavia_rabbitmq_userid: octavia
+octavia_rabbitmq_vhost: /octavia
+octavia_rabbitmq_port: "{{ rabbitmq_port }}"
+octavia_rabbitmq_servers: "{{ rabbitmq_servers }}"
+octavia_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
+octavia_rabbitmq_host_group: "{{ rabbitmq_host_group }}"
