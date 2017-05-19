@@ -1,0 +1,9 @@
+---
+upgrade:
+  - |
+    If you had your own keepalived configuration file, please rename and
+    move it to the openstack-ansible user space, for example by moving
+    it to ```/etc/openstack_deploy/keepalived/keepalived.yml```.
+    Our haproxy playbook does not load an external variable files anymore.
+    The keepalived variable override system has been standardised to the
+    same method used elsewhere.

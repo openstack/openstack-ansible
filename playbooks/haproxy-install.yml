@@ -29,8 +29,6 @@
       when: haproxy_use_keepalived | bool
       tags:
         - keepalived
-  vars_files:
-    - "{{ haproxy_keepalived_vars_file | default('vars/configs/keepalived_haproxy.yml') }}"
   vars:
     is_metal: "{{ properties.is_metal|default(false) }}"
   environment: "{{ deployment_environment_variables | default({}) }}"
@@ -70,8 +68,6 @@
         - rsyslog
   post_tasks:
     - include: common-tasks/package-cache-proxy.yml
-  vars_files:
-    - vars/configs/haproxy_config.yml
   vars:
     is_metal: "{{ properties.is_metal|default(false) }}"
   environment: "{{ deployment_environment_variables | default({}) }}"

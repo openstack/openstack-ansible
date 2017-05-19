@@ -27,7 +27,7 @@ keepalived_sync_groups:
     ##if a src_*_script is defined, it will be uploaded from src_*_script
     ##on the deploy host to the *_script location. Make sure *_script is
     ##a location in that case.
-    src_notify_script: vars/configs/keepalived_haproxy_notifications.sh
+    src_notify_script: "{{ playbook_dir }}/../scripts/keepalived_haproxy_notifications.sh"
 
 keepalived_scripts:
   haproxy_check_script:

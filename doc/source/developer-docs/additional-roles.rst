@@ -152,11 +152,12 @@ Deploying the role
    run the ``repo-build.yml`` play later so that wheels for your packages will
    be included in the repository infrastructure.
 #. Make any required adjustments to the load balancer configuration
-   (e.g. modify ``playbooks/vars/configs/haproxy_config.yml`` in the
+   (e.g. modify ``playbooks/inventory/group_vars/all/haproxy.yml`` in the
    OpenStack-Ansible source repository on your deploy host) so that your
    service can be reached through a load balancer, if appropriate, and be sure
    to run the ``haproxy-install.yml`` play later so your changes will be
-   applied.
+   applied. Please note, you can also use ``haproxy_extra_services`` variable
+   if you don't want to provide your service as default for everyone.
 #. Put together a service install playbook file for your role. This can also
    be modeled from any existing service playbook that has similar
    dependencies to your service (database, messaging, storage drivers,
