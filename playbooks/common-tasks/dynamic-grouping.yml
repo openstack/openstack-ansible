@@ -19,6 +19,6 @@
     name: "{{ item }}"
   with_items: "{{ groups[src_group] }}"
   when:
-    - "{{ groups[src_group] is defined }}"
+    - "src_group in groups"
   tags:
     - common-grouping
