@@ -7,6 +7,14 @@ manage networks. For example, adding new provider networks to the
 OpenStack-Ansible managed cloud. The following sections are the most
 common administrative tasks outlined to complete those tasks.
 
+For more generic information on troubleshooting your network,
+see the
+`Network Troubleshooting chapter <https://docs.openstack.org/ops-guide/ops-network-troubleshooting.html>`_
+in the Operations Guide.
+
+For more in-depth information on Networking, see the
+`Networking Guide <https://docs.openstack.org/ocata/networking-guide/>`_.
+
 Add provider bridges using new network interfaces
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -156,11 +164,12 @@ Move from  Open vSwitch to LinuxBridge and vice versa
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-Restart a Neutron agent container
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Restart a Networking agent container
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Under some circumstances, configuration or temporary issues, one specific
-or all Neutron agents container need to be restarted.
+or all neutron agents container need to be restarted.
+
 This can be accomplished with multiple commands:
 
 #. Example of rebooting still accessible containers.
