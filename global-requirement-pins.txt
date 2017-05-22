@@ -5,6 +5,13 @@
 #
 # Use this file with caution!
 #
+
+# Due to https://bugs.launchpad.net/ceilometer/+bug/1660800, gnocchiclient
+# must be pinned to < 3.0.0. This constraint matches what is defined in
+# the optional dependencies specified here:
+# https://github.com/openstack/ceilometer/blob/stable/newton/setup.cfg#L36
+gnocchiclient>=2.2.0,<3.0.0
+
 ###
 ### These are pinned to ensure exactly the same behaviour forever!   ###
 ### These pins are updated through the sources-branch-updater script ###

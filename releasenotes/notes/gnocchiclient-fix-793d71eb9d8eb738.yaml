@@ -1,0 +1,6 @@
+---
+fixes:
+  - The workaround of requiring the addition of gnocchiclient
+    to the ``repo_build_upper_constraints_overrides`` variable
+    is no longer required. The appropriate constraints have
+    been implemented as a global pin.
