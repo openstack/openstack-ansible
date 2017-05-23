@@ -96,13 +96,15 @@
     - networking-interfaces-load
 
 - name: Shut down the network interfaces
-  command: "ifdown {{ item }}"
+  command: "ifdown {{ item.name }}"
   when: osa_interfaces | changed or osa_multinode_interfaces | changed or network_interfaces_rhel | changed
   with_items:
-    - br-mgmt
-    - br-storage
-    - br-vlan
-    - br-vxlan
+    - { name: br-mgmt }
+    - { name: br-storage }
+    - { name: br-vlan }
+    - { name: br-vxlan }
+    - { name: br-dbaas, enabled: "{{ (bootstrap_host_scenario == 'translations') | bool }}" }
+  when: item.enabled | default(True)
   tags:
     - networking-interfaces-stop
 
@@ -125,13 +127,15 @@
     - networking-interfaces-start
 
 - name: Start the network interfaces
-  command: "ifup {{ item }}"
+  command: "ifup {{ item.name }}"
   when: osa_interfaces | changed or network_interfaces_rhel | changed
   with_items:
-    - br-mgmt
-    - br-storage
-    - br-vlan
-    - br-vxlan
+    - { name: br-mgmt }
+    - { name: br-storage }
+    - { name: br-vlan }
+    - { name: br-vxlan }
+    - { name: br-dbaas, enabled: "{{ (bootstrap_host_scenario == 'translations') | bool }}" }
+  when: item.enabled | default(True)
   tags:
     - networking-interfaces-start
 
