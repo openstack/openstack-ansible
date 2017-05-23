@@ -22,7 +22,7 @@
         src_group: "nova_compute"
         dest_group: "neutron_l3_agent, neutron_metadata_agent"
       when:
-        - "{{ neutron_plugin_type == 'ml2.ovs.dvr' }}"
+        - "neutron_plugin_type == 'ml2.ovs.dvr'"
 
 - name: Installation and setup of Neutron
   hosts: neutron_all
@@ -145,7 +145,7 @@
       rsyslog_client_log_rotate_file: calico_log_rotate
       rsyslog_client_log_dir: "/var/log/calico"
       rsyslog_client_config_name: "99-calico-rsyslog-client.conf"
-      when: "{{ 'neutron_calico_dhcp_agent' in group_names }}"
+      when: "'neutron_calico_dhcp_agent' in group_names"
       tags:
         - rsyslog
     - role: "system_crontab_coordination"
