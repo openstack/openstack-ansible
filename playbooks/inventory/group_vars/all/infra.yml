@@ -1,0 +1,31 @@
+---
+# Copyright 2017, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+## Rabbit options
+rabbitmq_host_group: "rabbitmq_all"
+rabbitmq_port: "{{ (rabbitmq_use_ssl | bool) | ternary(5671, 5672) }}"
+
+rabbitmq_use_ssl: True
+rabbitmq_servers: "{% for host in groups[rabbitmq_host_group] %}{{ hostvars[host]['ansible_host'] }}{% if not loop.last %},{% endif %}{% endfor %}"
+
+## Galera options
+galera_client_package_state: "{{ package_state }}"
+galera_address: "{{ internal_lb_vip_address }}"
+galera_root_user: "root"
+
+## Memcached options
+memcached_port: 11211
+memcached_servers: "{% for host in groups['memcached'] %}{{ hostvars[host]['ansible_host'] }}:{{ memcached_port }}{% if not loop.last %},{% endif %}{% endfor %}"
+

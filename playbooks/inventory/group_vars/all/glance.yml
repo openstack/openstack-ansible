@@ -1,0 +1,51 @@
+---
+# Copyright 2017, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+glance_service_port: 9292
+glance_service_proto: http
+glance_service_publicuri_proto: "{{ openstack_service_publicuri_proto | default(glance_service_proto) }}"
+glance_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(glance_service_proto) }}"
+glance_service_internaluri_proto: "{{ openstack_service_internaluri_proto | default(glance_service_proto) }}"
+glance_service_publicuri: "{{ glance_service_publicuri_proto }}://{{ external_lb_vip_address }}:{{ glance_service_port }}"
+glance_service_publicurl: "{{ glance_service_publicuri }}"
+glance_service_internaluri: "{{ glance_service_internaluri_proto }}://{{ internal_lb_vip_address }}:{{ glance_service_port }}"
+glance_service_internalurl: "{{ glance_service_internaluri }}"
+glance_service_adminuri: "{{ glance_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ glance_service_port }}"
+glance_service_adminurl: "{{ glance_service_adminuri }}"
+glance_api_servers: "{{ glance_service_internaluri }}"
+glance_service_user_name: glance
+
+# These are here rather than in glance_all because
+# both the os_ceilometer and os_glance roles require them
+
+# RPC
+glance_rabbitmq_userid: glance
+glance_rabbitmq_vhost: /glance
+glance_rabbitmq_port: "{{ rabbitmq_port }}"
+glance_rabbitmq_servers: "{{ rabbitmq_servers }}"
+glance_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
+glance_rabbitmq_host_group: "{{ rabbitmq_host_group }}"
+
+# Telemetry notifications
+glance_rabbitmq_telemetry_userid: "{{ glance_rabbitmq_userid }}"
+glance_rabbitmq_telemetry_password: "{{ glance_rabbitmq_password }}"
+glance_rabbitmq_telemetry_vhost: "{{ glance_rabbitmq_vhost }}"
+glance_rabbitmq_telemetry_port: "{{ glance_rabbitmq_port }}"
+glance_rabbitmq_telemetry_servers: "{{ glance_rabbitmq_servers }}"
+glance_rabbitmq_telemetry_use_ssl: "{{ glance_rabbitmq_use_ssl }}"
+glance_rabbitmq_telemetry_host_group: "{{ glance_rabbitmq_host_group }}"
+
+# If there are any Ceilometer hosts in the environment, then enable its usage
+glance_ceilometer_enabled: "{{ (groups['ceilometer_all'] is defined) and (groups['ceilometer_all'] | length > 0) }}"
