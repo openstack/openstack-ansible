@@ -189,6 +189,9 @@ if [[ "${ACTION}" == "upgrade" ]]; then
     unset GROUP_VARS_PATH
     unset HOST_VARS_PATH
 
+    # Kick off the data plane tester
+    $(dirname "${0}")/../tests/data-plane-test.sh &
+
     # Fetch script to execute API availability tests, then
     # background them while the upgrade runs.
     get_bowling_ball_tests
@@ -199,10 +202,30 @@ if [[ "${ACTION}" == "upgrade" ]]; then
     # upgrade is irreversable.
     echo 'YES' | bash "$(dirname "${0}")/run-upgrade.sh"
 
+    # Terminate the API availability tests
     kill_bowling_ball_tests
-    # Wait to let all the processes finish before looking for output.
+
+    # Terminate the data plane tester
+    rm -f /var/run/data-plane-test.socket
+
+    # Wait 10s for the tests to complete
     sleep 10
+
+    # Output the API availability test results
     print_bowling_ball_results
+
+    # Check for any data plane failures, and fail if there are
+    if ! egrep -q "^FAIL: 0$" /var/log/data-plane-test.log; then
+        echo -e "\n\nFAIL: The L3 data plane check failed!\n\n"
+        exit 1
+    fi
+
+    # Check for any disk access failures, and fail if there are
+    if ! egrep -q "^FAIL: 0$" /var/log/disk-access-test.log; then
+        echo -e "\n\nFAIL: The disk access data plane check failed!\n\n"
+        exit 1
+    fi
+
 fi
 
 exit_success
