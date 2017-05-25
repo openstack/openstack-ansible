@@ -14,6 +14,7 @@ Contents:
    :maxdepth: 2
 
    quickstart-aio
+   inventory-and-vars
    scripts
    contribute
    bug-triage

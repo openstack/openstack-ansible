@@ -143,6 +143,8 @@ popd
 
 # Write the OSA Ansible rc file
 sed "s|OSA_INVENTORY_PATH|${OSA_INVENTORY_PATH}|g" scripts/openstack-ansible.rc > /usr/local/bin/openstack-ansible.rc
+sed -i "s|OSA_GROUP_VARS_DIR|${OSA_CLONE_DIR}/group_vars/|g" /usr/local/bin/openstack-ansible.rc
+sed -i "s|OSA_HOST_VARS_DIR|${OSA_CLONE_DIR}/host_vars/|g" /usr/local/bin/openstack-ansible.rc
 
 
 # Create openstack ansible wrapper tool

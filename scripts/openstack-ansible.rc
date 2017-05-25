@@ -56,5 +56,5 @@ export ANSIBLE_FORCE_HANDLERS="${ANSIBLE_FORCE_HANDLERS:-True}"
 # Allow the usage of userspace group_vars host_vars with user
 # defined precedence until this behavior is merged in the
 # inventory
-export GROUP_VARS_PATH="${GROUP_VARS_PATH:-/etc/openstack_deploy/group_vars/}"
-export HOST_VARS_PATH="${HOST_VARS_PATH:-/etc/openstack_deploy/host_vars/}"
+export GROUP_VARS_PATH="${GROUP_VARS_PATH:-OSA_GROUP_VARS_DIR:/etc/openstack_deploy/group_vars/}"
+export HOST_VARS_PATH="${HOST_VARS_PATH:-OSA_HOST_VARS_DIR:/etc/openstack_deploy/host_vars/}"

@@ -127,13 +127,17 @@ iptables -P FORWARD ACCEPT
 iptables -P OUTPUT ACCEPT
 
 # Bootstrap an AIO
+unset ANSIBLE_VARS_PLUGINS
+unset HOST_VARS_PATH
+unset GROUP_VARS_PATH
+
 pushd "$(dirname "${0}")/../tests"
   if [ -z "${BOOTSTRAP_OPTS}" ]; then
-    ansible-playbook bootstrap-aio.yml \
+    /opt/ansible-runtime/bin/ansible-playbook bootstrap-aio.yml \
                      -i test-inventory.ini \
                      ${ANSIBLE_PARAMETERS}
   else
-    ansible-playbook bootstrap-aio.yml \
+    /opt/ansible-runtime/bin/ansible-playbook bootstrap-aio.yml \
                      -i test-inventory.ini \
                      -e "${BOOTSTRAP_OPTS}" \
                      ${ANSIBLE_PARAMETERS}

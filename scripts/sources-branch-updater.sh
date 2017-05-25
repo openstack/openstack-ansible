@@ -197,7 +197,7 @@ sed -i.bak "s|^PIP_INSTALL_OPTIONS=.*|PIP_INSTALL_OPTIONS=\$\{PIP_INSTALL_OPTION
 
 for pin in ${PIP_CURRENT_OPTIONS}; do
   sed -i.bak "s|^$(echo ${pin} | cut -f1 -d=).*|${pin}|" global-requirement-pins.txt
-  sed -i.bak "s|^  - $(echo ${pin} | cut -f1 -d=).*|  - ${pin}|" playbooks/inventory/group_vars/all/pip.yml
+  sed -i.bak "s|^  - $(echo ${pin} | cut -f1 -d=).*|  - ${pin}|" group_vars/all/pip.yml
 done
 
 echo "Updated pip install options/pins"
@@ -263,13 +263,13 @@ else
   echo "Skipping the ansible-role-requirements.yml update as we're working on the master branch"
 fi
 
-# Update the release version in playbooks/inventory/group_vars/all/all.yml
+# Update the release version in group_vars/all/all.yml
 # We don't want to be doing this for the master branch and we only want
 # to do it once, so we key off of a specific repo source file name.
 if [[ "${OSA_BRANCH}" != "master" ]] && [[ "${SERVICE_FILE}" == "playbooks/defaults/repo_packages/openstack_services.yml" ]]; then
 
   echo "Updating the release version..."
-  currentversion=$(awk '/openstack_release:/ {print $2}' playbooks/inventory/group_vars/all/all.yml)
+  currentversion=$(awk '/openstack_release:/ {print $2}' group_vars/all/all.yml)
 
   # Extract the required version info
   major_version=$( echo ${currentversion} | cut -d. -f1 )
@@ -279,7 +279,7 @@ if [[ "${OSA_BRANCH}" != "master" ]] && [[ "${SERVICE_FILE}" == "playbooks/defau
   # increment the patch version
   patch_version=$(( patch_version + 1 ))
 
-  sed -i .bak "s/${currentversion}/${major_version}.${minor_version}.${patch_version}/" playbooks/inventory/group_vars/all/all.yml
+  sed -i .bak "s/${currentversion}/${major_version}.${minor_version}.${patch_version}/" group_vars/all/all.yml
 else
   echo "Skipping the release version update as we're working on the master branch"
 fi

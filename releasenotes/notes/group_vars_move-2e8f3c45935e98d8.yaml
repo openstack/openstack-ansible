@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    From now on, a deployer can override any group_var in userspace, by
+    creating a folder ``/etc/openstack_deploy/group_vars/``. This folder
+    has precedence over OpenStack-Ansible default group_vars, and the
+    merge behavior is similar to Ansible merge behavior.
+    The group_vars folder precedence can still be changed with the
+    GROUP_VARS_PATH. Same applies for host vars.

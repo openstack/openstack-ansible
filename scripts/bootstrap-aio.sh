@@ -24,12 +24,16 @@ export BOOTSTRAP_OPTS=${BOOTSTRAP_OPTS:-''}
 ## Main ----------------------------------------------------------------------
 
 # Run AIO bootstrap playbook
+unset ANSIBLE_VARS_PLUGINS
+unset HOST_VARS_PATH
+unset GROUP_VARS_PATH
+
 pushd tests
   if [ -z "${BOOTSTRAP_OPTS}" ]; then
-    ansible-playbook bootstrap-aio.yml \
+    /opt/ansible-runtime/bin/ansible-playbook bootstrap-aio.yml \
                      -i test-inventory.ini
   else
-    ansible-playbook bootstrap-aio.yml \
+    /opt/ansible-runtime/bin/ansible-playbook bootstrap-aio.yml \
                      -i test-inventory.ini \
                      -e "${BOOTSTRAP_OPTS}"
   fi
