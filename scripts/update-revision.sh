@@ -40,5 +40,4 @@ esac
 shift
 done
 
-sed -i.bak "s/^openstack_release\:.*/openstack_release\: ${REVISION}/" playbooks/inventory/group_vars/all/all.yml
-
+sed -i.bak "s/^openstack_release\:.*/openstack_release\: ${REVISION}/" group_vars/all/all.yml

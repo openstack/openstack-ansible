@@ -57,6 +57,10 @@ For details about how the inventory is generated from the environment
 configuration, see
 `developer-inventory <http://docs.openstack.org/developer/openstack-ansible/developer-docs/inventory.html>`_.
 
+For details about how variable precedence works, and how to override
+group vars, see
+`developer-inventory-and-vars <http://docs.openstack.org/developer/openstack-ansible/developer-docs/inventory-and-vars.html>`_.
+
 Installing additional services
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
