@@ -15,9 +15,17 @@
 
 - name: Memcached cache flush
   hosts: memcached_all
-  gather_facts: false
+  gather_facts: true
   user: root
+  vars:
+    memcached_conf_dest:
+      debian: "/etc/memcached.conf"
+      redhat: "/etc/sysconfig/memcached"
   tasks:
+    - name: Ensuring nc is installed
+      package:
+        name: nc
+        state: present
     - name: Flush all of the cache in memcached
       shell: |
-        echo 'flush_all' | nc $(awk '/^\-l/ {print $2}' /etc/memcached.conf | awk -F, '{ print $1 }') $(awk '/^\-p/ {print $2}' /etc/memcached.conf)
+        echo 'flush_all' | nc $(awk '/^\-l/ {print $2}' {{ memcached_conf_dest.get(ansible_os_family | lower) }} | awk -F, '{ print $1 }') $(awk '/^\-p/ {print $2}' {{ memcached_conf_dest.get(ansible_family | lower) }} )
