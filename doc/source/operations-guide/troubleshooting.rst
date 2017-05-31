@@ -507,9 +507,9 @@ Cached Ansible facts issues
 At the beginning of a playbook run, information about each host is gathered,
 such as:
 
-    * Linux distribution
-    * Kernel version
-    * Network interfaces
+* Linux distribution
+* Kernel version
+* Network interfaces
 
 To improve performance, particularly in large deployments, you can
 cache host facts and information.
@@ -572,9 +572,9 @@ Predictable interface naming
 On the host, all virtual Ethernet devices are named based on their
 container as well as the name of the interface inside the container:
 
-   .. code-block:: shell-session
+.. code-block:: shell-session
 
-      ${CONTAINER_UNIQUE_ID}_${NETWORK_DEVICE_NAME}
+   ${CONTAINER_UNIQUE_ID}_${NETWORK_DEVICE_NAME}
 
 As an example, an all-in-one (AIO) build might provide a utility
 container called `aio1_utility_container-d13b7132`. That container
@@ -583,27 +583,27 @@ will have two network interfaces: `d13b7132_eth0` and `d13b7132_eth1`.
 Another option would be to use the LXC tools to retrieve information
 about the utility container. For example:
 
-   .. code-block:: shell-session
+.. code-block:: shell-session
 
-      # lxc-info -n aio1_utility_container-d13b7132
+   # lxc-info -n aio1_utility_container-d13b7132
 
-      Name:           aio1_utility_container-d13b7132
-      State:          RUNNING
-      PID:            8245
-      IP:             10.0.3.201
-      IP:             172.29.237.204
-      CPU use:        79.18 seconds
-      BlkIO use:      678.26 MiB
-      Memory use:     613.33 MiB
-      KMem use:       0 bytes
-      Link:           d13b7132_eth0
-       TX bytes:      743.48 KiB
-       RX bytes:      88.78 MiB
-       Total bytes:   89.51 MiB
-      Link:           d13b7132_eth1
-       TX bytes:      412.42 KiB
-       RX bytes:      17.32 MiB
-       Total bytes:   17.73 MiB
+   Name:           aio1_utility_container-d13b7132
+   State:          RUNNING
+   PID:            8245
+   IP:             10.0.3.201
+   IP:             172.29.237.204
+   CPU use:        79.18 seconds
+   BlkIO use:      678.26 MiB
+   Memory use:     613.33 MiB
+   KMem use:       0 bytes
+   Link:           d13b7132_eth0
+    TX bytes:      743.48 KiB
+    RX bytes:      88.78 MiB
+    Total bytes:   89.51 MiB
+   Link:           d13b7132_eth1
+    TX bytes:      412.42 KiB
+    RX bytes:      17.32 MiB
+    Total bytes:   17.73 MiB
 
 The ``Link:`` lines will show the network interfaces that are attached
 to the utility container.

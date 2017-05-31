@@ -203,9 +203,9 @@ The **Actions** column includes the following options:
 
 -  Soft or hard reset the instance
 
- .. note::
+.. note::
 
-    Terminate the instance under the **Actions** column.
+   Terminate the instance under the **Actions** column.
 
 
 Managing volumes for persistent storage
@@ -222,9 +222,9 @@ Nova instances live migration
 Nova is capable of live migration instances from one host to
 a different host to support various operational tasks including:
 
- * Host Maintenance
- * Host capacity management
- * Resizing and moving instances to better hardware
+* Host Maintenance
+* Host capacity management
+* Resizing and moving instances to better hardware
 
 
 Nova configuration drive implication
@@ -271,9 +271,9 @@ URL for how to transfer the data from one host to the other.
 Depending on the ``nova_virt_type`` override the following configurations
 are used:
 
- * kvm defaults to ``qemu+tcp://%s/system``
- * qemu defaults to ``qemu+tcp://%s/system``
- * xen defaults to ``xenmigr://%s/system``
+* kvm defaults to ``qemu+tcp://%s/system``
+* qemu defaults to ``qemu+tcp://%s/system``
+* xen defaults to ``xenmigr://%s/system``
 
 Libvirt TCP port to transfer the data to migrate.
 
@@ -365,22 +365,22 @@ The following nova client commands are provided:
 
 * ``host-evacuate-live``
 
-   Live migrate all instances of the specified host
-   to other hosts if resource utilzation allows.
-   It is best to use shared storage like Ceph or NFS
-   for host evacuation.
+  Live migrate all instances of the specified host
+  to other hosts if resource utilzation allows.
+  It is best to use shared storage like Ceph or NFS
+  for host evacuation.
 
 * ``host-servers-migrate``
 
-   This command is similar to host evacuation but
-   migrates all instances off the specified host while
-   they are shutdown.
+  This command is similar to host evacuation but
+  migrates all instances off the specified host while
+  they are shutdown.
 
 * ``resize``
 
-   Changes the flavor of an Nova instance (increase) while rebooting
-   and also migrates (cold) the instance to a new host to accommodate
-   the new resource requirements. This operation can take considerate
-   amount of time, depending disk image sizes.
+  Changes the flavor of an Nova instance (increase) while rebooting
+  and also migrates (cold) the instance to a new host to accommodate
+  the new resource requirements. This operation can take considerate
+  amount of time, depending disk image sizes.
 
 

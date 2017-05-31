@@ -23,11 +23,11 @@ In order to add an image using the Dashboard, prepare an image binary
 file, which must be accessible over HTTP using a valid and direct URL.
 Images can be compressed using ``.zip`` or ``.tar.gz``.
 
- .. note::
+.. note::
 
-    Uploading images using the Dashboard will be available to users
-    with administrator privileges. Operators can set user access
-    privileges.
+   Uploading images using the Dashboard will be available to users
+   with administrator privileges. Operators can set user access
+   privileges.
 
 #. Log in to the Dashboard.
 

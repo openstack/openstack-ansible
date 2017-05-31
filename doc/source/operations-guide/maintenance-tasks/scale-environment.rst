@@ -177,13 +177,13 @@ Recover a compute host failure
 The following procedure addresses Compute node failure if shared storage
 is used.
 
-   .. note::
+.. note::
 
-      If shared storage is not used, data can be copied from the
-      ``/var/lib/nova/instances`` directory on the failed Compute node
-      ``${FAILED_NODE}`` to another node ``${RECEIVING_NODE}``\ before
-      performing the following procedure. Please note this method is
-      not supported.
+   If shared storage is not used, data can be copied from the
+   ``/var/lib/nova/instances`` directory on the failed Compute node
+   ``${FAILED_NODE}`` to another node ``${RECEIVING_NODE}``\ before
+   performing the following procedure. Please note this method is
+   not supported.
 
 #. Re-launch all instances on the failed node.
 

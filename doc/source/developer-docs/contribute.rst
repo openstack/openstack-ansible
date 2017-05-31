@@ -260,32 +260,32 @@ using the YAML dictionary format.
 
 Example YAML dictionary format:
 
-    .. code-block:: yaml
+.. code-block:: yaml
 
-        - name: The name of the tasks
-          module_name:
-            thing1: "some-stuff"
-            thing2: "some-other-stuff"
-          tags:
-            - some-tag
-            - some-other-tag
+   - name: The name of the tasks
+      module_name:
+        thing1: "some-stuff"
+        thing2: "some-other-stuff"
+      tags:
+        - some-tag
+        - some-other-tag
 
 
 Example what **NOT** to do:
 
-    .. code-block:: yaml
+.. code-block:: yaml
 
-        - name: The name of the tasks
-          module_name: thing1="some-stuff" thing2="some-other-stuff"
-          tags: some-tag
+    - name: The name of the tasks
+      module_name: thing1="some-stuff" thing2="some-other-stuff"
+      tags: some-tag
 
-    .. code-block:: yaml
+.. code-block:: yaml
 
-        - name: The name of the tasks
-          module_name: >
-            thing1="some-stuff"
-            thing2="some-other-stuff"
-          tags: some-tag
+    - name: The name of the tasks
+      module_name: >
+        thing1="some-stuff"
+        thing2="some-other-stuff"
+      tags: some-tag
 
 
 Usage of the ">" and "|" operators should be limited to Ansible conditionals

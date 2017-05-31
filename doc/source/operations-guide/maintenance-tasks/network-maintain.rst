@@ -152,12 +152,12 @@ removed, prior to the removal of the OpenStack-Ansible configuration.
    following playbooks:
 
 
-    .. code-block:: console
+   .. code-block:: console
 
-       # openstack-ansible lxc-containers-create.yml --limit infra01:infra01-host_containers
-       # openstack-ansible lxc-containers-create.yml --limit infra02:infra02-host_containers
-       # openstack-ansible lxc-containers-create.yml --limit infra03:infra03-host_containers
-       # openstack-ansible os-neutron-install.yml --tags neutron-config
+      # openstack-ansible lxc-containers-create.yml --limit infra01:infra01-host_containers
+      # openstack-ansible lxc-containers-create.yml --limit infra02:infra02-host_containers
+      # openstack-ansible lxc-containers-create.yml --limit infra03:infra03-host_containers
+      # openstack-ansible os-neutron-install.yml --tags neutron-config
 
 
 Move from  Open vSwitch to LinuxBridge and vice versa
