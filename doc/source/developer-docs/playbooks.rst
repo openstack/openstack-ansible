@@ -39,31 +39,31 @@ Setting up OpenStack
 Running `openstack-ansible setup-openstack.yml` will install the following
 OpenStack services:
 
-    * Keystone
-    * Swift
-    * Glance
-    * Cinder
-    * Nova
-    * Neutron
-    * Heat
-    * Horizon
+* Keystone
+* Swift
+* Glance
+* Cinder
+* Nova
+* Neutron
+* Heat
+* Horizon
 
 After successful deployment, you are able to update variables in
 ``/etc/openstack_deploy/user_variables.yml``.
 
 * Object Storage (swift)
 
-   - The ``pretend_min_part_hours_passed`` option can now be
-     passed to swift-ring-builder prior to performing a rebalance. This is set
-     by the ``swift_pretend_min_part_hours_passed`` boolean variable.
-     The default for this variable is False. However, we recommend using
-     ``-e swift_pretend_min_part_hours_passed=True`` when running the
-     ``os-swift.yml`` playbook to avoid resetting ``min_part_hours``
-     unintentionally.
+  - The ``pretend_min_part_hours_passed`` option can now be
+    passed to swift-ring-builder prior to performing a rebalance. This is set
+    by the ``swift_pretend_min_part_hours_passed`` boolean variable.
+    The default for this variable is False. However, we recommend using
+    ``-e swift_pretend_min_part_hours_passed=True`` when running the
+    ``os-swift.yml`` playbook to avoid resetting ``min_part_hours``
+    unintentionally.
 
-     .. important::
+    .. important::
 
-        If you run this command and deploy rebalanced rings before a replication
-        pass completes, you may introduce unavailability in your cluster.
+       If you run this command and deploy rebalanced rings before a replication
+       pass completes, you may introduce unavailability in your cluster.
 
-        This should only be used for testing or fully rebalanced clusters.
+       This should only be used for testing or fully rebalanced clusters.
