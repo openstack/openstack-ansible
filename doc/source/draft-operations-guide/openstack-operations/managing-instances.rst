@@ -203,9 +203,9 @@ The **Actions** column includes the following options:
 
 -  Soft or hard reset the instance
 
- .. note::
+.. note::
 
-    Terminate the instance under the **Actions** column.
+   Terminate the instance under the **Actions** column.
 
 
 Managing volumes for persistent storage

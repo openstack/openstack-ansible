@@ -219,16 +219,16 @@ Upgrade or remove clients
 
 To upgrade a client, add the **--upgrade** option to the command:
 
- .. code::
+.. code::
 
-    # pip install --upgrade python-PROJECTclient
+   # pip install --upgrade python-PROJECTclient
 
 
 To remove a client, run the **pip uninstall** command:
 
- .. code::
+.. code::
 
-    # pip uninstall python-PROJECTclient
+   # pip uninstall python-PROJECTclient
 
 
 For more information about OpenStack client utilities, see these links:

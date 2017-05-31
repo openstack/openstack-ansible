@@ -45,8 +45,8 @@ Group memberships
 
 When adding groups, keep the following in mind:
 
- * A group can contain hosts
- * A group can contain child groups
+* A group can contain hosts
+* A group can contain child groups
 
 However, groups cannot contain child groups and hosts.
 

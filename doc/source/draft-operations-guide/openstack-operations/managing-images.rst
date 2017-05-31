@@ -23,11 +23,11 @@ In order to add an image using the Dashboard, prepare an image binary
 file, which must be accessible over HTTP using a valid and direct URL.
 Images can be compressed using ``.zip`` or ``.tar.gz``.
 
- .. note::
+.. note::
 
-    Uploading images using the Dashboard will be available to users
-    with administrator privileges. Operators can set user access
-    privileges.
+   Uploading images using the Dashboard will be available to users
+   with administrator privileges. Operators can set user access
+   privileges.
 
 #. Log in to the Dashboard.
 
@@ -68,58 +68,58 @@ the controller.
 
 #. Run the ``openstack image list`` command to view more details on each image.
 
- .. list-table:: **glance image details**
-    :widths: 33 33 33
-    :header-rows: 1
+.. list-table:: **glance image details**
+   :widths: 33 33 33
+   :header-rows: 1
 
-    * - Variable
-      - Required
-      - Details
-    * - ``--name NAME``
-      - Optional
-      - A name for the image
-    * - ``--public [True|False]``
-      - Optional
-      - If set to ``true``, makes the image available to all users. Permission
-        to set this variable is admin only by default.
-    * - ``--protected [True|False]``
-      - Optional
-      - If set to ``true``, this variable prevents an image from being deleted.
-    * - ``--container-format CONTAINER_FORMAT``
-      - Required
-      - The type of container format, one of ``ami``, ``ari``, ``aki``,
-        ``bare``, or ``ovf``
-    * - ``--disk-format DISK_FORMAT``
-      - Required
-      - The type of disk format, one of ``ami``, ``ari``, ``aki``, ``vhd``,
-        ``vdi``, and ``iso``
-    * - ``--owner PROJECT_ID``
-      - Optional
-      - The tenant who should own the image.
-    * - ``--size SIZE``
-      - Optional
-      - Size of the image data, which is measured in bytes.
-    * - ``--min-disk DISK_GB``
-      - Optional
-      - The minimum size of the disk needed to boot the image being configured,
-        which is measured in gigabytes.
-    * - ``--min-ram DISK_GB``
-      - Optional
-      - The minimum amount of RAM needed to boot the image being configured,
-        which is measured in megabytes.
-    * - ``--location IMAGE_URL``
-      - Optional
-      - The location where the image data resides. This variables sets the
-        location as a URL. If the image data is stored on a swift service,
-        specify:  swift://account:<key@example.com>/container/obj.
-    * - ``--checksum CHECKSUM``
-      - Optional
-      - Image data hash used for verification.
-    * - ``--copy-from IMAGE_URL``
-      - Optional
-      - Indicates that the image server should copy data immediately, and store
-        it in its configured image store.
-    * - ``--property KEY=VALUE``
-      - Optional
-      - This variable associates an arbitrary property to the image, and can be
-        used multiple times.
+   * - Variable
+     - Required
+     - Details
+   * - ``--name NAME``
+     - Optional
+     - A name for the image
+   * - ``--public [True|False]``
+     - Optional
+     - If set to ``true``, makes the image available to all users. Permission
+       to set this variable is admin only by default.
+   * - ``--protected [True|False]``
+     - Optional
+     - If set to ``true``, this variable prevents an image from being deleted.
+   * - ``--container-format CONTAINER_FORMAT``
+     - Required
+     - The type of container format, one of ``ami``, ``ari``, ``aki``,
+       ``bare``, or ``ovf``
+   * - ``--disk-format DISK_FORMAT``
+     - Required
+     - The type of disk format, one of ``ami``, ``ari``, ``aki``, ``vhd``,
+       ``vdi``, and ``iso``
+   * - ``--owner PROJECT_ID``
+     - Optional
+     - The tenant who should own the image.
+   * - ``--size SIZE``
+     - Optional
+     - Size of the image data, which is measured in bytes.
+   * - ``--min-disk DISK_GB``
+     - Optional
+     - The minimum size of the disk needed to boot the image being configured,
+       which is measured in gigabytes.
+   * - ``--min-ram DISK_GB``
+     - Optional
+     - The minimum amount of RAM needed to boot the image being configured,
+       which is measured in megabytes.
+   * - ``--location IMAGE_URL``
+     - Optional
+     - The location where the image data resides. This variables sets the
+       location as a URL. If the image data is stored on a swift service,
+       specify:  swift://account:<key@example.com>/container/obj.
+   * - ``--checksum CHECKSUM``
+     - Optional
+     - Image data hash used for verification.
+   * - ``--copy-from IMAGE_URL``
+     - Optional
+     - Indicates that the image server should copy data immediately, and store
+       it in its configured image store.
+   * - ``--property KEY=VALUE``
+     - Optional
+     - This variable associates an arbitrary property to the image, and can be
+       used multiple times.

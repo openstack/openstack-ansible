@@ -41,13 +41,13 @@ any previous contents in the event of conflicts.
 
 The following file must be present in the configuration directory:
 
-    * ``openstack_user_config.yml``
+* ``openstack_user_config.yml``
 
 Additionally, the configuration or environment could be spread between two
 additional sub-directories:
 
-    * ``conf.d``
-    * ``env.d`` (for environment customization)
+* ``conf.d``
+* ``env.d`` (for environment customization)
 
 The dynamic inventory script does the following:
 
