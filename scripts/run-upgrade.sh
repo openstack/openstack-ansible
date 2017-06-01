@@ -113,7 +113,7 @@ function pre_flight {
     This script will perform a v13.x to v14.x upgrade.
     Once you start the upgrade there's no going back.
 
-    Note, this is an online upgrade and while the
+    Note, this is an online upgrade and the
     in progress running VMs will not be impacted.
     However, you can expect some hiccups with OpenStack
     API services while the upgrade is running.
