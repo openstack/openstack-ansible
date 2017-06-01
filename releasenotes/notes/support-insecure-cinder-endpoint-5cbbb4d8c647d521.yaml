@@ -1,0 +1,11 @@
+---
+features:
+  - |
+    The ability to disable the certificate validation when checking
+    and interacting with the internal cinder endpoint has been
+    implemented. In order to do so, set the following in
+    ``/etc/openstack_deploy/user_variables.yml``.
+
+    .. code-block:: yaml
+
+       cinder_service_internaluri_insecure: yes
