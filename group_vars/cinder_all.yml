@@ -27,7 +27,6 @@ glance_default_store: "{{ ((groups['swift_all'] is defined) and (groups['swift_a
 cinder_backend_lvm_inuse: '{{ (cinder_backends|default("")|to_json).find("cinder.volume.drivers.lvm.LVMVolumeDriver") != -1 }}'
 cinder_service_in_ldap: "{{ service_ldap_backend_enabled }}"
 cinder_glance_api_servers: "{{ glance_api_servers }}"
-cinder_glance_api_version: "{{ (cinder_backends_rbd_inuse|bool and glance_default_store == 'rbd') | ternary('2','1') }}"
 
 # Ensure that the package state matches the global setting
 cinder_package_state: "{{ package_state }}"
