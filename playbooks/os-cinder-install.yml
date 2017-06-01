@@ -13,115 +13,220 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Install cinder server
+- name: Prepare MQ/DB services
   hosts: cinder_all
   gather_facts: "{{ gather_facts | default(True) }}"
-  max_fail_percentage: 20
   user: root
-  pre_tasks:
-    - include: common-tasks/dynamic-address-fact.yml
-      vars:
-        network_address: "storage_address"
-    - include: common-tasks/os-lxc-container-setup.yml
-      static: no
-      vars:
-        aa_profile: "unconfined"
-        extra_container_config:
-          - "lxc.autodev=0"
-          - "lxc.cgroup.devices.allow=a *:* rmw"
-          - "lxc.mount.entry=udev dev devtmpfs defaults 0 0"
-        extra_container_config_no_restart:
-          - "lxc.start.order=79"
-      when:
-        - inventory_hostname in groups['cinder_volume']
-        - cinder_backend_lvm_inuse | bool
-    - include: common-tasks/os-lxc-container-setup.yml
-      static: no
-      when:
-        - inventory_hostname not in groups['cinder_volume']
-    - include: common-tasks/rabbitmq-vhost-user.yml
-      static: no
+  environment: "{{ deployment_environment_variables | default({}) }}"
+  tags:
+    - cinder
+  tasks:
+
+    - name: Configure rabbitmq vhost/user
+      include: common-tasks/rabbitmq-vhost-user.yml
       vars:
         user: "{{ cinder_rabbitmq_userid }}"
         password: "{{ cinder_rabbitmq_password }}"
         vhost: "{{ cinder_rabbitmq_vhost }}"
         _rabbitmq_host_group: "{{ cinder_rabbitmq_host_group }}"
       when:
-        - inventory_hostname == groups['cinder_all'][0]
-        - groups[cinder_rabbitmq_host_group] | length > 0
-    - include: common-tasks/rabbitmq-vhost-user.yml
-      static: no
+        - "groups[cinder_rabbitmq_host_group] | length > 0"
+      run_once: yes
+
+    - name: Configure rabbitmq vhost/user (telemetry)
+      include: common-tasks/rabbitmq-vhost-user.yml
       vars:
         user: "{{ cinder_rabbitmq_telemetry_userid }}"
         password: "{{ cinder_rabbitmq_telemetry_password }}"
         vhost: "{{ cinder_rabbitmq_telemetry_vhost }}"
         _rabbitmq_host_group: "{{ cinder_rabbitmq_telemetry_host_group }}"
       when:
-        - cinder_ceilometer_enabled | bool
-        - inventory_hostname == groups['cinder_all'][0]
-        - groups[cinder_rabbitmq_telemetry_host_group] is defined
-        - groups[cinder_rabbitmq_telemetry_host_group] | length > 0
-        - groups[cinder_rabbitmq_telemetry_host_group] != groups[cinder_rabbitmq_host_group]
-    - include: common-tasks/os-log-dir-setup.yml
-      vars:
-        log_dirs:
-          - src: "/openstack/log/{{ inventory_hostname }}-cinder"
-            dest: "/var/log/cinder"
-    - include: common-tasks/mysql-db-user.yml
-      static: no
+        - "cinder_ceilometer_enabled | bool"
+        - "groups[cinder_rabbitmq_telemetry_host_group] is defined"
+        - "groups[cinder_rabbitmq_telemetry_host_group] | length > 0"
+        - "groups[cinder_rabbitmq_telemetry_host_group] != groups[cinder_rabbitmq_host_group]"
+      run_once: yes
+
+    - name: Configure MySQL user
+      include: common-tasks/mysql-db-user.yml
       vars:
         user_name: "{{ cinder_galera_user }}"
         password: "{{ cinder_container_mysql_password }}"
         login_host: "{{ cinder_galera_address }}"
         db_name: "{{ cinder_galera_database }}"
-      when: inventory_hostname == groups['cinder_all'][0]
-    - include: common-tasks/package-cache-proxy.yml
+      run_once: yes
 
-    - name: Add volume group block device to cinder
-      shell: |
-        {% if item.value.volume_group is defined %}
-        if [ "$(pvdisplay | grep -B1 {{ item.value.volume_group }} | awk '/PV/ {print $3}')" ];then
-          for device in `pvdisplay | grep -B1 {{ item.value.volume_group }} | awk '/PV/ {print $3}'`
-            do lxc-device -n {{ container_name }} add $device
-          done
-        fi
-        {% else %}
-        echo "{{ item.key }} volume_group not defined"
-        {% endif %}
-      with_dict: "{{ cinder_backends | default({}) }}"
-      when:
-        - physical_host != container_name
-        - cinder_backend_lvm_inuse | bool
-      delegate_to: "{{ physical_host }}"
-    - name: udevadm trigger
-      command: udevadm trigger
-      delegate_to: "{{ physical_host }}"
-      when: cinder_backend_lvm_inuse | bool
-  roles:
-    - role: "os_cinder"
-      cinder_storage_address: "{{ storage_address }}"
-    - role: "ceph_client"
-      openstack_service_system_user: "{{ cinder_system_user_name }}"
-      openstack_service_venv_bin: "{{ cinder_bin }}"
-      when:
-        - inventory_hostname in groups['cinder_volume']
-        - cinder_backend_rbd_inuse | default(false) | bool
-      tags:
-        - ceph
-    - role: "rsyslog_client"
-      rsyslog_client_log_rotate_file: cinder_log_rotate
-      rsyslog_client_log_dir: "/var/log/cinder"
-      rsyslog_client_config_name: "99-cinder-rsyslog-client.conf"
-      tags:
-        - rsyslog
-    - role: "system_crontab_coordination"
-      tags:
-        - crontab
+
+
+- name: Install cinder API services
+  include: common-playbooks/cinder.yml
   vars:
-    is_metal: "{{ properties.is_metal|default(false) }}"
-    cinder_galera_user: cinder
-    cinder_galera_database: cinder
-    cinder_galera_address: "{{ galera_address }}"
+    cinder_hosts: "cinder_api"
+    cinder_serial: "{{ cinder_api_serial | default(['1', '100%']) }}"
+
+
+
+- name: Install cinder scheduler services
+  include: common-playbooks/cinder.yml
+  vars:
+    cinder_hosts: "cinder_scheduler:!cinder_api"
+    cinder_serial: "{{ cinder_scheduler_serial | default(['1', '100%']) }}"
+
+
+
+- name: Install cinder volume services
+  include: common-playbooks/cinder.yml
+  vars:
+    cinder_hosts: "cinder_volume:!cinder_scheduler:!cinder_api"
+    cinder_serial: "{{ cinder_backend_serial | default('1') }}"
+
+
+
+- name: Install cinder backup services
+  include: common-playbooks/cinder.yml
+  vars:
+    cinder_hosts: "cinder_backup:!cinder_volume:!cinder_scheduler:!cinder_api"
+    cinder_serial: "{{ cinder_backend_serial | default('1') }}"
+
+
+
+# These facts are set against the deployment host to ensure that
+# they are fast to access. This is done in preference to setting
+# them against each target as the hostvars extraction will take
+# a long time if executed against a large inventory.
+- name: Refresh local facts after all software changes are made
+  hosts: cinder_all
+  max_fail_percentage: 20
+  user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - cinder
+  tasks:
+    - name: refresh local facts
+      setup:
+        filter: ansible_local
+        gather_subset: "!all"
+
+    # This variable contains the values of the local fact set for the cinder
+    # venv tag for all hosts in the 'cinder_all' host group.
+    - name: Gather software version list
+      set_fact:
+        cinder_all_software_versions: "{{ (groups['cinder_all'] | map('extract', hostvars, ['ansible_local', 'openstack_ansible', 'cinder', 'venv_tag'])) | list }}"
+      delegate_to: localhost
+      run_once: yes
+
+    # This variable outputs a boolean value which is True when
+    # cinder_all_software_versions contains a list of defined
+    # values. If they are not defined, it means that not all
+    # hosts have their software deployed yet.
+    - name: Set software deployed fact
+      set_fact:
+        cinder_all_software_deployed: "{{ (cinder_all_software_versions | select('defined')) | list == cinder_all_software_versions }}"
+      delegate_to: localhost
+      run_once: yes
+
+    # This variable outputs a boolean when all the values in
+    # cinder_all_software_versions are the same and the software
+    # has been deployed to all hosts in the group.
+    - name: Set software updated fact
+      set_fact:
+        cinder_all_software_updated: "{{ ((cinder_all_software_versions | unique) | length == 1) and (cinder_all_software_deployed | bool) }}"
+      delegate_to: localhost
+      run_once: yes
+
+
+
+- name: Restart cinder agents to ensure new RPC object version is used
+  hosts: cinder_backup,cinder_volume,cinder_scheduler
+  gather_facts: no
+  serial: "{{ cinder_backend_serial | default('1') }}"
+  max_fail_percentage: 20
+  user: root
+  environment: "{{ deployment_environment_variables | default({}) }}"
+  tags:
+    - cinder
+  tasks:
+    - name: Execute cinder service reload
+      include: common-tasks/restart-service.yml
+      vars:
+        service_name: "{{ item }}"
+        service_action: "reloaded"
+        service_fact: "cinder"
+      with_items:
+        - cinder-backup
+        - cinder-volume
+        - cinder-scheduler
+      when:
+        - "cinder_all_software_updated | bool"
+        - "ansible_local['openstack_ansible']['cinder']['need_service_restart'] | bool"
+
+
+
+- name: Restart cinder API to ensure new RPC object version is used
+  hosts: cinder_api
+  gather_facts: no
+  serial: "{{ cinder_api_serial | default(['1','100%']) }}"
+  max_fail_percentage: 20
+  user: root
+  environment: "{{ deployment_environment_variables | default({}) }}"
+  tags:
+    - cinder
+  tasks:
+    # In order to ensure that the service restart does not
+    # cause an unexpected outage, we drain the load balancer
+    # back end for this container.
+    - include: common-tasks/haproxy-endpoint-manage.yml
+      vars:
+        haproxy_state: disabled
+      when:
+        - "cinder_all_software_updated | bool"
+        - "ansible_local['openstack_ansible']['cinder']['need_service_restart'] | bool"
+        - "groups['cinder_api'] | length > 1"
+
+    - name: Execute cinder service restart
+      include: common-tasks/restart-service.yml
+      vars:
+        service_name: "cinder-api"
+        service_action: "restarted"
+        service_fact: "cinder"
+      when:
+        - "cinder_all_software_updated | bool"
+        - "ansible_local['openstack_ansible']['cinder']['need_service_restart'] | bool"
+
+    # Now that service restart is done, we can set
+    # the load balancer back end for this container
+    # to available again.
+    - include: common-tasks/haproxy-endpoint-manage.yml
+      vars:
+        haproxy_state: enabled
+      when: "groups['cinder_api'] | length > 1"
+
+
+
+- name: Perform online database migrations
+  hosts: cinder_api[0]
+  gather_facts: no
+  user: root
+  environment: "{{ deployment_environment_variables | default({}) }}"
+  tags:
+    - cinder
+  tasks:
+    - name: Perform online data migrations
+      command: "{{ cinder_bin }}/cinder-manage db online-data-migrations"
+      become: yes
+      become_user: "{{ cinder_system_user_name }}"
+      when:
+        - "cinder_all_software_updated | bool"
+        - "ansible_local['openstack_ansible']['cinder']['need_online_data_migrations'] | bool"
+      changed_when: false
+      register: data_migrations
+
+    - name: Disable the online migrations requirement
+      ini_file:
+        dest: "/etc/ansible/facts.d/openstack_ansible.fact"
+        section: cinder
+        option: need_online_data_migrations
+        value: False
+      when:
+        - data_migrations | succeeded
+

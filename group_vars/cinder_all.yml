@@ -13,8 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# The MySQL details for the cinder service
+cinder_galera_user: cinder
+cinder_galera_database: cinder
+cinder_galera_address: "{{ galera_address }}"
+
+# The address used to listen for communications
 cinder_management_address: "{{ ansible_host }}"
 
+# The address used for communications with the glance service
 cinder_glance_host: "{{ internal_lb_vip_address }}"
 cinder_glance_service_port: "{{ glance_service_port }}"
 
@@ -30,6 +37,9 @@ cinder_glance_api_servers: "{{ glance_api_servers }}"
 
 # Ensure that the package state matches the global setting
 cinder_package_state: "{{ package_state }}"
+
+# The system user for all cinder services
+cinder_system_user_name: cinder
 
 # venv fetch configuration
 cinder_venv_tag: "{{ venv_tag }}"
