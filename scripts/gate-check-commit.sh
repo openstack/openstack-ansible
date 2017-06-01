@@ -183,6 +183,12 @@ if [[ "${ACTION}" == "upgrade" ]]; then
     unset ANSIBLE_PACKAGE
     unset UPPER_CONSTRAINTS_FILE
 
+    # Unset environment variables used by the override_folder
+    # plugin to set paths for group and host vars since the
+    # default locations have changed between Ocata and Pike.
+    unset GROUP_VARS_PATH
+    unset HOST_VARS_PATH
+
     # To execute the upgrade script we need to provide
     # an affirmative response to the warning that the
     # upgrade is irreversable.
