@@ -16,36 +16,31 @@
 - name: Group repo servers by architecture
   hosts: repo_all
   tasks:
-    - name: Group repo servers by architecture
+    - name: Group repo servers by architecture and os version
       group_by:
-        key: repo_servers_{{ ansible_architecture }}
-      tags:
-        - always
+        key: repo_servers_{{ ansible_distribution_version }}_{{ ansible_architecture }}
 
-    # Use the 'add_host' module to create the repo_nodes group. The add_hosts module
-    # bypasses the play host loop of ansible and runs only once referencing the first
-    # host.  To run it on each host we have to use with_items.  Also note, we have
-    # to manually lookup the ansible_architecture for the 'item' host.
+    # Use the 'add_host' module to create the repo_masters group which consists of a
+    # single host in each distribution/architecture combination. This ensures that
+    # the repo build happens per architecture and per distribution, covering the needs
+    # of each of these combinations when deploying.
     - name: Prepare group of master repo servers
       local_action:
         module: "add_host"
-        name: "{{ groups['repo_servers_' + (hostvars[item].ansible_distribution_version.split('.')[:2] | join('.')) + hostvars[item].ansible_architecture][0] }}"
-        groups: "repo_nodes"
-      # Process all nodes that don't match the architecture of repo_all[0]
-      when: >
-        hostvars[item].ansible_architecture != hostvars[groups['repo_all'][0]].ansible_architecture or
-        (hostvars[item].ansible_distribution_version.split('.')[:2] | join('.')) != (hostvars[groups['repo_all'][0]].ansible_distribution_version.split('.')[:2] | join('.'))
-      with_items:
-        - "{{ groups['repo_all'][1:] }}"
+        name: "{{ item }}"
+        groups: repo_masters
+      when:
+        - "inventory_hostname in groups['repo_servers_' + ansible_distribution_version + '_' + ansible_architecture][0]"
+      with_inventory_hostnames:
+        - repo_all
   tags:
+    - always
     - repo-build
 
-# repo_all[0] is built last to ensure it has all build artifacts for final indexing
-#  The repo_nodes group will be populated with the first node of any other system running
-#  different architectures. This group is a meta group created in the previous play and
-#  will not be found within inventory.
+
+
 - name: Build new repo packages for a given release
-  hosts: repo_nodes, repo_all[0]
+  hosts: repo_masters
   gather_facts: "{{ gather_facts | default(True) }}"
   user: root
   serial: 1
