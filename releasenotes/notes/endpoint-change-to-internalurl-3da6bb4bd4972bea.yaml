@@ -1,0 +1,7 @@
+---
+upgrade:
+  - The endpoint which designate uses to communicate with neutron
+    has been set to the internalURL by default. This change has
+    been done within the template ``designate.conf.j2`` and can be
+    changed using the ``designate_designate_conf_overrides``
+    variable.

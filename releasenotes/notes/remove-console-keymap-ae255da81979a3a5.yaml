@@ -1,0 +1,13 @@
+---
+deprecations:
+  - |
+    The upstream noVNC developers recommend that the keymap be automatically
+    detected for virtual machine consoles. Three Ansible variables have been
+    removed:
+
+    * nova_console_keymap
+    * nova_novncproxy_vnc_keymap
+    * nova_spice_console_keymap
+
+    Deployers can still set a specific keymap using a nova configuration
+    override if necessary.

@@ -1,0 +1,9 @@
+---
+features:
+  - The ``os_keystone`` role will now (by default) source the
+    ``keystone-paste.ini``, ``policy.json`` and ``sso_callback_template.html``
+    templates from the service git source instead of from the role. It also
+    now includes a facility where you can place your own templates in
+    ``/etc/openstack_deploy/keystone`` (by default) and it will be
+    deployed to the target host after being interpreted by the
+    template engine.

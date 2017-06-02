@@ -1,0 +1,13 @@
+---
+features:
+  - The ``os_ceilometer`` role now includes a facility where you
+    can place your own templates in ``/etc/openstack_deploy/ceilometer``
+    (by default) and it will be deployed to the target host after being
+    interpreted by the template engine. If no file is found there, the
+    fallback of the git sourced template is used.
+upgrade:
+  - The following variables have been removed from the ``os_ceilometer``
+    role as their respective upstream files are no longer present.
+
+    * ``ceilometer_event_definitions_yaml_overrides``
+    * ``ceilometer_event_pipeline_yaml_overrides``

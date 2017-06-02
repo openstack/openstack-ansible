@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Deployers may provide a list of custom haproxy template files to copy from
+    the deployment host through the ``octavia_user_haproxy_templates`` variable
+    and configure Octavia to make use of a custom haproxy template file with
+    with ``octavia_haproxy_amphora_template`` variable.

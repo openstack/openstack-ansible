@@ -1,0 +1,13 @@
+---
+upgrade:
+  - The magnum client interaction will now make use of the public endpoints by
+    default. Previously this was set to use internal endpoints.
+  - The keystone endpoints for instances spawned by magnum will now be provided
+    with the public endpoints by default. Previously this was set to use
+    internal endpoints.
+security:
+  - The magnum client interaction will now make use of the public endpoints by
+    default. Previously this was set to use internal endpoints.
+  - The keystone endpoints for instances spawned by magnum will now be provided
+    with the public endpoints by default. Previously this was set to use
+    internal endpoints.
