@@ -1,0 +1,12 @@
+---
+upgrade:
+  - The var ``lxc_container_ssh_delay`` along with SSH specific ping checks
+    have been removed in favor of using Ansible's wait_for_connection module,
+    which will not rely on SSH to the container to verify connectivity. A new
+    variable called ``lxc_container_wait_params`` has been added to allow
+    configuration of the parameters passed to the ``wait_for_connection``
+    module.
+deprecations:
+  - The var ``lxc_container_ssh_delay`` along with SSH specific ping checks
+    have been removed in favor of using Ansible's wait_for_connection module,
+    which will not rely on SSH to the container.
