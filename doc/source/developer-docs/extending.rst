@@ -16,9 +16,9 @@ Including OpenStack-Ansible in your project
 Including the openstack-ansible repository within another project can be
 done in several ways.
 
-    1. A git submodule pointed to a released tag.
-    2. A script to automatically perform a git checkout of
-       openstack-ansible
+1. A git submodule pointed to a released tag.
+2. A script to automatically perform a git checkout of
+   openstack-ansible
 
 When including OpenStack-Ansible in a project, consider using a parallel
 directory structure as shown in the `ansible.cfg files`_ section.
@@ -37,20 +37,20 @@ including the OpenStack-Ansible roles and libraries by putting an
 The relevant options for Ansible 1.9 (included in OpenStack-Ansible)
 are as follows:
 
-    ``library``
-        This variable should point to
-        ``openstack-ansible/playbooks/library``. Doing so allows roles and
-        playbooks to access OpenStack-Ansible's included Ansible modules.
-    ``roles_path``
-        This variable should point to
-        ``openstack-ansible/playbooks/roles``. This allows Ansible to
-        properly look up any OpenStack-Ansible roles that extension roles
-        may reference.
-    ``inventory``
-        This variable should point to
-        ``openstack-ansible/playbooks/inventory``. With this setting,
-        extensions have access to the same dynamic inventory that
-        OpenStack-Ansible uses.
+``library``
+    This variable should point to
+    ``openstack-ansible/playbooks/library``. Doing so allows roles and
+    playbooks to access OpenStack-Ansible's included Ansible modules.
+``roles_path``
+    This variable should point to
+    ``openstack-ansible/playbooks/roles``. This allows Ansible to
+    properly look up any OpenStack-Ansible roles that extension roles
+    may reference.
+``inventory``
+    This variable should point to
+    ``openstack-ansible/playbooks/inventory``. With this setting,
+    extensions have access to the same dynamic inventory that
+    OpenStack-Ansible uses.
 
 Note that the paths to the ``openstack-ansible`` top level directory can be
 relative in this file.

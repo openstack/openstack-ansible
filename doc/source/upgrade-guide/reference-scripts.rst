@@ -16,9 +16,9 @@ do so manually.
 
 It provides the following environment variables:
 
-    * ``SCRIPTS_PATH`` - path to the top level scripts directory
-    * ``MAIN_PATH`` - openstack_ansible root directory.
-    * ``UPGRADE_PLAYBOOKS`` - path to the playbooks used in upgrading
+* ``SCRIPTS_PATH`` - path to the top level scripts directory
+* ``MAIN_PATH`` - openstack_ansible root directory.
+* ``UPGRADE_PLAYBOOKS`` - path to the playbooks used in upgrading
 
 The upgrade script also bootstraps OpenStack-Ansible (using
 ``bootstrap-ansible.sh``) in order to provide the new role dependencies
