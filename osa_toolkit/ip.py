@@ -19,7 +19,10 @@
 import copy
 import logging
 import netaddr
-import Queue
+try:
+    import Queue
+except ImportError:
+    import queue as Queue
 import random
 
 logger = logging.getLogger('osa-inventory')

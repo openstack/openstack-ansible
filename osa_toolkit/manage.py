@@ -169,7 +169,7 @@ def print_groups_per_container(inventory):
     ]
     table = prettytable.PrettyTable(required_list)
 
-    for container_name, groups in containers.iteritems():
+    for container_name, groups in containers.items():
         row = [container_name, ', '.join(sorted(groups))]
         table.add_row(row)
 
@@ -230,7 +230,7 @@ def print_inventory(inventory, sort_key):
         'container_types'
     ]
     table = prettytable.PrettyTable(required_list)
-    for key, values in _meta_data.iteritems():
+    for key, values in _meta_data.items():
         for rl in required_list:
             if rl not in values:
                 values[rl] = None

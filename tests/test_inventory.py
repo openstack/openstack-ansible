@@ -16,7 +16,10 @@ import json
 import mock
 import os
 from os import path
-import Queue
+try:
+    import Queue
+except ImportError:
+    import queue as Queue
 import sys
 import unittest
 import warnings
