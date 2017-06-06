@@ -1,0 +1,15 @@
+---
+deprecations:
+  - |
+    The variable ``keepalived_uca_enable`` is deprecated, and replaced
+    by ``keepalived_ubuntu_src``. The ``keepalived_uca_enable`` variable will
+    be removed in future versions of the keepalived role. The value of
+    ``keepalived_ubuntu_src`` should be either "uca", "ppa", or "native",
+    for respectively installing from the Ubuntu Cloud archive, from keepalived
+    stable ppa, or not installing from an external source.
+  - |
+    The variable ``keepalived_use_latest_stable`` is deprecated, and replaced
+    by ``keepalived_package_state``. The ``keepalived_use_latest_stable``
+    variable will be removed in future versions of the keepalived role.
+    The value of ``keepalived_package_state`` should be either "latest" or
+    "present".

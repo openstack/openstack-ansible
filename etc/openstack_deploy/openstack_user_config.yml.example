@@ -718,7 +718,7 @@
 #
 # To always deploy (or upgrade to) the latest stable version of keepalived.
 # Edit the ``/etc/openstack_deploy/user_variables.yml``:
-#   keepalived_use_latest_stable: True
+#   keepalived_package_state: latest
 #
 # The group_vars/all/keepalived.yml contains the keepalived
 # variables that are fed into the keepalived role during
