@@ -718,7 +718,7 @@
 #
 # To always deploy (or upgrade to) the latest stable version of keepalived.
 # Edit the ``/etc/openstack_deploy/user_variables.yml``:
-#   keepalived_use_latest_stable: True
+#   keepalived_package_state: latest
 #
 # The HAProxy playbook reads the ``vars/configs/keepalived_haproxy.yml``
 # variable file and provides content to the keepalived role for
