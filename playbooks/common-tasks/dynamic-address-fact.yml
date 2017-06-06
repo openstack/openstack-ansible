@@ -29,7 +29,7 @@
       {%- else -%}
       {%-   set _bridge = 'no_bridge_defined' -%}
       {%- endif -%}
-      {%- if _bridge != 'no_bridge_defined' -%}
+      {%- if _bridge != 'no_bridge_defined' and hostvars[inventory_hostname]['ansible_' + _bridge]['ipv4'] is defined-%}
       {{ hostvars[inventory_hostname]['ansible_' + _bridge]['ipv4']['address'] }}
       {%- elif _network_data['address'] is defined -%}
       {{ _network_data['address'] }}
