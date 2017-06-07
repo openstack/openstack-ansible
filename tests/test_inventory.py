@@ -570,7 +570,7 @@ class TestConfigCheckBase(unittest.TestCase):
         self.config_changed = True
         # Save new user_config_file
         with open(USER_CONFIG_FILE, 'wb') as f:
-            f.write(yaml.dump(self.user_defined_config))
+            f.write(yaml.dump(self.user_defined_config).encode('ascii'))
 
     def restore_config(self):
         # get back our initial user config file

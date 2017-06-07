@@ -193,7 +193,7 @@ def write_hostnames(save_path, hostnames_ips):
                 indent=4,
                 separators=(',', ': '),
                 sort_keys=True
-            )
+            ).encode('ascii')
         )
 
 
@@ -212,7 +212,7 @@ def _load_from_json(filename, preferred_path=None, raise_if_missing=True):
     dictionary = False
     if target_file is not False:
         with open(target_file, 'rb') as f_handle:
-            dictionary = json.loads(f_handle.read())
+            dictionary = json.loads(f_handle.read().decode('ascii'))
 
     return dictionary, target_file
 
@@ -264,7 +264,7 @@ def save_inventory(inventory_json, save_path):
     else:
         inventory_file = os.path.join(save_path, INVENTORY_FILENAME)
     with open(inventory_file, 'wb') as f:
-        f.write(inventory_json)
+        f.write(inventory_json.encode('ascii'))
         logger.info("Inventory written")
 
 
