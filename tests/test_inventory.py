@@ -988,9 +988,14 @@ class TestOverridingEnvVars(OverridingEnvBase):
         # a partial override file
 
         vol = self.cinder_config['container_skel']['cinder_volumes_container']
+        keys = vol.keys()
+        to_delete = []
         for key in vol.keys():
             if not key == 'properties':
-                del vol[key]
+                to_delete.append(key)
+
+        for key in to_delete:
+            del vol[key]
 
         self.write_override_env()
 

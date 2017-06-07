@@ -829,14 +829,22 @@ def _parse_global_variables(user_cidr, inventory, user_defined_config):
             )
             logger.debug("Applied global_overrides")
 
-            kept_vars = user_defined_config['global_overrides'].keys()
+            # NOTE (palendae): wrapped in a list to support python3,
+            # which uses `dict_keys` objects that can't be appended
+            kept_vars = list(user_defined_config['global_overrides'].keys())
             kept_vars.append('container_cidr')
 
             # Remove global overrides that were deleted from inventory, too
+            # We use the to_delete list due to Python 3 disallowing dict
+            # size mutation during iteration
+            to_delete = []
             for key in inventory['all']['vars'].keys():
                 if key not in kept_vars:
-                    logger.debug("Deleting key %s from inventory", key)
-                    del inventory['all']['vars'][key]
+                    to_delete.append(key)
+
+            for key in to_delete:
+                logger.debug("Deleting key %s from inventory", key)
+                del inventory['all']['vars'][key]
 
 
 def _check_same_ip_to_multiple_host(config):
