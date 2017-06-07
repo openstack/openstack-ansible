@@ -27,7 +27,7 @@ def merge_dict(base_items, new_items):
     :param new_items: ``dict``
     :return dictionary:
     """
-    for key, value in new_items.iteritems():
+    for key, value in new_items.items():
         if isinstance(value, dict) and value:
             base_merge = merge_dict(base_items.get(key, {}), value)
             base_items[key] = base_merge
@@ -79,9 +79,9 @@ def recursive_dict_removal(inventory, purge_list):
     :param inventory: ``dict`` Dictionary representing the inventory
     :param purge_list: ``list`` List of items to remove
     """
-    for key, value in inventory.iteritems():
+    for key, value in inventory.items():
         if isinstance(value, dict):
-            for child_key, child_value in value.iteritems():
+            for child_key, child_value in value.items():
                 if isinstance(child_value, dict):
                     for item in purge_list:
                         if item in child_value:
