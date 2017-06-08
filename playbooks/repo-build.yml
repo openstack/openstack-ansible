@@ -42,6 +42,7 @@
 - name: Build new repo packages for a given release
   hosts: repo_masters
   gather_facts: "{{ gather_facts | default(True) }}"
+  any_errors_fatal: true
   user: root
   serial: 1
   pre_tasks:
