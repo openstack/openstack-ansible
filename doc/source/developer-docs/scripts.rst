@@ -28,7 +28,7 @@ For example:
 
 .. code:: bash
 
-   $ export ANSIBLE_PACKAGE="ansible==2.1.0"
+   $ export ANSIBLE_PACKAGE="ansible==2.2.3.0"
 
 Installing directly from git is also supported. For example, from the tip of
 Ansible development branch:
