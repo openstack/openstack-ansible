@@ -91,11 +91,11 @@
       copy:
         content: |
           clonemap:
-            - name: 'openstack/openstack-ansible-security'
-              dest: '{{ role_path_default }}/openstack-ansible-security'
-            - name: 'openstack/openstack-ansible-(?!security)(.*)'
+            - name: 'openstack/ansible-hardening'
+              dest: '{{ role_path_default }}/ansible-hardening'
+            - name: 'openstack/openstack-ansible-(.*)'
               dest: '{{ role_path_default }}/\1'
-            - name: 'openstack/(?!openstack-ansible)(.*)'
+            - name: 'openstack/(?!(openstack-ansible|ansible-hardening))(.*)'
               dest: '/tmp/openstack/\1'
         dest: "/tmp/zuul-clonemap.yml"
       when:

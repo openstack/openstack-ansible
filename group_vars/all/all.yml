@@ -94,11 +94,11 @@ openrc_os_domain_name: "Default"
 openrc_region_name: "{{ service_region }}"
 
 ## Host security hardening
-# The openstack-ansible-security role provides security hardening for hosts
+# The ansible-hardening role provides security hardening for hosts
 # by applying security configurations from the STIG. Hardening is enabled by
 # default, but an option to opt out is available by setting the following
 # variable to 'false'.
-# Docs: http://docs.openstack.org/developer/openstack-ansible-security/
+# Docs: http://docs.openstack.org/developer/ansible-hardening/
 apply_security_hardening: true
 
 ## Ansible ssh configuration
