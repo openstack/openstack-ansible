@@ -22,7 +22,7 @@
   gather_facts: "{{ gather_facts | default(True) }}"
   user: root
   roles:
-    - role: "openstack-ansible-security"
+    - role: "ansible-hardening"
       when: apply_security_hardening | bool
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:

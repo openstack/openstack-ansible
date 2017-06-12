@@ -1,3 +1,7 @@
+- name: ansible-hardening
+  scm: git
+  src: https://git.openstack.org/openstack/ansible-hardening
+  version: master
 - name: apt_package_pinning
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-apt_package_pinning
@@ -37,10 +41,6 @@
 - name: memcached_server
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-memcached_server
-  version: master
-- name: openstack-ansible-security
-  scm: git
-  src: https://git.openstack.org/openstack/openstack-ansible-security
   version: master
 - name: openstack_hosts
   scm: git
