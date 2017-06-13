@@ -126,5 +126,6 @@
       - ../
       - /etc/ansible/roles
       - /etc/openstack_deploy
+  environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - repo-build

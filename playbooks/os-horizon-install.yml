@@ -50,5 +50,6 @@
     horizon_galera_user: horizon
     horizon_galera_database: horizon
     horizon_galera_address: "{{ galera_address }}"
+  environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - horizon
