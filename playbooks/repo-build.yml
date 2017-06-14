@@ -15,29 +15,35 @@
 
 - name: Group repo servers by architecture
   hosts: repo_all
+  # Serial 1 avoids race conditions, and makes sures the repo_servers
+  # are added in the same order as the repo_all inventory
+  serial: 1
   tasks:
     - name: Group repo servers by architecture and os version
       group_by:
         key: repo_servers_{{ ansible_distribution_version }}_{{ ansible_architecture }}
+  tags:
+    - always
+    - repo-build
 
-    # Use the 'add_host' module to create the repo_masters group which consists of a
-    # single host in each distribution/architecture combination. This ensures that
-    # the repo build happens per architecture and per distribution, covering the needs
-    # of each of these combinations when deploying.
+# Use the 'add_host' module to create the repo_masters group which consists of a
+# single host in each distribution/architecture combination. This ensures that
+# the repo build happens per architecture and per distribution, covering the needs
+# of each of these combinations when deploying.
+- name: Prepare group of master repo servers
+  hosts: localhost
+  tasks:
     - name: Prepare group of master repo servers
-      local_action:
-        module: "add_host"
+      add_host:
         name: "{{ item }}"
         groups: repo_masters
       when:
-        - "inventory_hostname in groups['repo_servers_' + ansible_distribution_version + '_' + ansible_architecture][0]"
+        - "item in groups['repo_servers_' + ansible_distribution_version + '_' + ansible_architecture][0]"
       with_inventory_hostnames:
         - repo_all
   tags:
     - always
     - repo-build
-
-
 
 - name: Build new repo packages for a given release
   hosts: repo_masters
