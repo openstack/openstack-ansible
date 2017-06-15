@@ -235,7 +235,7 @@ update_ansible_role_requirements() {
 
       # Grab the latest SHA that matches the specified branch
       if [[ -z "${role_version}" ]]; then
-        role_version=$(git ls-remote ${role_src} | grep "${OSA_BRANCH}$" | awk '{print $1}')
+        role_version=$(git ls-remote ${role_src} | grep "${osa_branch}$" | awk '{print $1}')
       fi
 
       # For OSA roles, get the release notes
@@ -249,7 +249,7 @@ update_ansible_role_requirements() {
           rsync -aq ${osa_repo_tmp_path}/releasenotes/notes/*.yaml releasenotes/notes/
         fi
 
-        osa_helper_cleanu_files $osa_repo_tmp_path
+        osa_helper_cleanup_files $osa_repo_tmp_path
       fi
 
       # Now use the information we have to update the ansible-role-requirements file
