@@ -207,9 +207,11 @@ update_pip_options() {
 # Updates ansible-role-requirements file SHAs
 #
 update_ansible_role_requirements() {
-  local role_name role_version osa_repo_tmp_path role_git_sources
+  local role_name role_version osa_repo_tmp_path role_git_sources current_source_dir
   local osa_branch=${1}
   local pre_release=${2}
+  current_source_dir="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
+
   # Update the ansible-role-requirements.yml file
   # We don't want to be doing this for the master branch
   if [ "${osa_branch}" != "master" ] || [ "${pre_release}" == "true" ]; then
@@ -253,7 +255,7 @@ update_ansible_role_requirements() {
       fi
 
       # Now use the information we have to update the ansible-role-requirements file
-      "$(dirname "${0}")/ansible-role-requirements-editor.py" -f ansible-role-requirements.yml -n "${role_name}" -v "${role_version}"
+      "$current_source_dir/ansible-role-requirements-editor.py" -f ansible-role-requirements.yml -n "${role_name}" -v "${role_version}"
 
       unset role_version
     done
