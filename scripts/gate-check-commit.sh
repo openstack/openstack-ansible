@@ -183,12 +183,6 @@ if [[ "${ACTION}" == "upgrade" ]]; then
     unset ANSIBLE_PACKAGE
     unset UPPER_CONSTRAINTS_FILE
 
-    # Unset environment variables used by the override_folder
-    # plugin to set paths for group and host vars since the
-    # default locations have changed between Ocata and Pike.
-    unset GROUP_VARS_PATH
-    unset HOST_VARS_PATH
-
     # Kick off the data plane tester
     $(dirname "${0}")/../tests/data-plane-test.sh &
 

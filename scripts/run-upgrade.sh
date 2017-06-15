@@ -164,6 +164,12 @@ function main {
 
     "${SCRIPTS_PATH}/bootstrap-ansible.sh"
 
+    # Unset environment variables used by the override_folder
+    # plugin to set paths for group and host vars since the
+    # default locations have changed between Ocata and Pike.
+    unset GROUP_VARS_PATH
+    unset HOST_VARS_PATH
+
     pushd ${MAIN_PATH}/playbooks
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/ansible_fact_cleanup.yml")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/deploy-config-changes.yml")
