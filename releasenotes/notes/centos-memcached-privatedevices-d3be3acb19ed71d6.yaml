@@ -1,0 +1,14 @@
+---
+issues:
+  - |
+    OpenStack-Ansible sets a new variable, `memcached_disable_privatedevices`,
+    that controls whether the `PrivateDevices` configuration in MemcacheD's
+    systemd unit file is enabled.
+
+    If the `memcached_server` role is deployed on a bare metal host, the
+    default is maintained (`PrivateDevices=true`). If the role is deployed
+    within a container, the `PrivateDevices` configuration is set to `true`
+    to work around a systemd bug with a bind mounted `/dev/ptmx`.
+
+    See `Launchpad Bug 1697531 <https://bugs.launchpad.net/openstack-ansible/+bug/1697531>`_
+    for more details.
