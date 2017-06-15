@@ -189,11 +189,20 @@ if [[ "${ACTION}" == "upgrade" ]]; then
     unset GROUP_VARS_PATH
     unset HOST_VARS_PATH
 
+    # Fetch script to execute API availability tests, then
+    # background them while the upgrade runs.
+    get_bowling_ball_tests
+    start_bowling_ball_tests
+
     # To execute the upgrade script we need to provide
     # an affirmative response to the warning that the
     # upgrade is irreversable.
     echo 'YES' | bash "$(dirname "${0}")/run-upgrade.sh"
 
+    kill_bowling_ball_tests
+    # Wait to let all the processes finish before looking for output.
+    sleep 10
+    print_bowling_ball_results
 fi
 
 exit_success
