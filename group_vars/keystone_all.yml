@@ -13,6 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# The MySQL details for the keystone service
+keystone_galera_user: keystone
+keystone_galera_database: keystone
+keystone_galera_address: "{{ galera_address }}"
+
+# The system user for all keystone services
+keystone_system_user_name: keystone
+
 keystone_external_ssl: "{{ openstack_external_ssl }}"
 
 keystone_cache_backend_argument: "url:{% for host in groups['memcached'] %}{{ hostvars[host]['container_address'] }}{% if not loop.last %},{% endif %}{% endfor %}:{{ memcached_port }}"
@@ -24,6 +32,7 @@ keystone_package_state: "{{ package_state }}"
 
 # venv fetch configuration
 keystone_venv_tag: "{{ venv_tag }}"
+keystone_bin: "/openstack/venvs/keystone-{{ keystone_venv_tag }}/bin"
 keystone_venv_download_url: "{{ venv_base_download_url }}/keystone-{{ openstack_release }}-{{ ansible_architecture | lower }}.tgz"
 
 # locations for fetching the default files from the git source
