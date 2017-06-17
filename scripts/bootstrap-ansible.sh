@@ -90,6 +90,9 @@ elif [ -n "$HTTP_PROXY" ]; then
   PIP_OPTS="--proxy $HTTP_PROXY"
 fi
 
+# Install ansible
+PIP_OPTS+=" --constraint global-requirement-pins.txt --constraint ${UPPER_CONSTRAINTS_FILE}"
+
 PIP_COMMAND=pip2
 if [ ! $(which "$PIP_COMMAND") ]; then
   PIP_COMMAND=pip
@@ -101,9 +104,6 @@ if [ -f "requirements.txt" ];then
   # necessary to use --isolated because the repo server does not meet the specified requirements.
   $PIP_COMMAND install $PIP_OPTS -r requirements.txt || $PIP_COMMAND install --isolated $PIP_OPTS -r requirements.txt
 fi
-
-# Install ansible
-PIP_OPTS+=" --constraint global-requirement-pins.txt --constraint ${UPPER_CONSTRAINTS_FILE}"
 
 # When upgrading there will already be a pip.conf file locking pip down to the repo server, in such cases it may be
 # necessary to use --isolated because the repo server does not meet the specified requirements.
