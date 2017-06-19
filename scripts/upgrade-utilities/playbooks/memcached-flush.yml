@@ -21,11 +21,14 @@
     memcached_conf_dest:
       debian: "/etc/memcached.conf"
       redhat: "/etc/sysconfig/memcached"
+    netcat_package:
+      debian: "netcat-openbsd"
+      redhat: "nmap-ncat"
   tasks:
-    - name: Ensuring nc is installed
+    - name: Ensuring netcat is installed
       package:
-        name: nc
+        name: "{{ netcat_package.get(ansible_os_family | lower) }}"
         state: present
     - name: Flush all of the cache in memcached
       shell: |
-        echo 'flush_all' | nc $(awk '/^\-l/ {print $2}' {{ memcached_conf_dest.get(ansible_os_family | lower) }} | awk -F, '{ print $1 }') $(awk '/^\-p/ {print $2}' {{ memcached_conf_dest.get(ansible_family | lower) }} )
+        echo 'flush_all' | nc $(awk '/^\-l/ {print $2}' {{ memcached_conf_dest.get(ansible_os_family | lower) }} | awk -F, '{ print $1 }') $(awk '/^\-p/ {print $2}' {{ memcached_conf_dest.get(ansible_os_family | lower) }} )
