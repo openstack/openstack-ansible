@@ -58,7 +58,7 @@ to all deployments. The role has been carefully designed to perform as follows:
 For more information about configuring the role in OpenStack-Ansible, see
 :ref:`security_hardening`.
 
-.. _security hardening role: http://docs.openstack.org/developer/openstack-ansible-security/
+.. _security hardening role: http://docs.openstack.org/developer/ansible-hardening/
 .. _Security Technical Implementation Guide: https://en.wikipedia.org/wiki/Security_Technical_Implementation_Guide
 .. _Defense Information Systems Agency: http://www.disa.mil/
 .. _Payment Card Industry Data Security Standard: https://www.pcisecuritystandards.org/pci_security/
