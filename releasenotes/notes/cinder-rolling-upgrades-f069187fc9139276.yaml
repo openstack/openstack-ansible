@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    The ``os-cinder-install.yml`` playbook will now execute a rolling
+    upgrade of cinder including database migrations (both schema and
+    online) as per the procedure described in the
+    `cinder documentation <https://docs.openstack.org/developer/cinder/upgrade.html>`_.
+    When haproxy is used as the load balancer, the backend being
+    changed will be drained before changes are made, then added back
+    to the pool once the changes are complete.
