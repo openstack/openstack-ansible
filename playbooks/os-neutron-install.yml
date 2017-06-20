@@ -16,6 +16,8 @@
 - name: Configure Neutron dynamic host groupings
   hosts: localhost
   gather_facts: no
+  tags:
+    - neutron
   tasks:
     - include: common-tasks/dynamic-grouping.yml
       vars:
@@ -24,56 +26,31 @@
       when:
         - "neutron_plugin_type == 'ml2.ovs.dvr'"
 
-- name: Installation and setup of Neutron
+
+
+- name: Prepare MQ/DB services
   hosts: neutron_all
   gather_facts: "{{ gather_facts | default(True) }}"
   max_fail_percentage: 20
   user: root
-  pre_tasks:
-    - include: common-tasks/dynamic-address-fact.yml
-      vars:
-        network_address: "tunnel_address"
-    - include: common-tasks/os-lxc-container-setup.yml
-      # This config is specific to Ubuntu
-      vars:
-        aa_profile: "unconfined"
-        list_of_bind_mounts:
-          - bind_dir_path: "/lib/modules"
-            mount_path: "/lib/modules"
-        extra_container_config:
-          - "lxc.cgroup.devices.allow=a *:* rmw"
-        extra_container_config_no_restart:
-          - "lxc.start.order=79"
-      when:
-        - inventory_hostname in groups['neutron_agent']
-        - ansible_pkg_mgr == 'apt'
-    - include: common-tasks/os-lxc-container-setup.yml
-      # This config is specific to CentOS.
-      vars:
-        aa_profile: "unconfined"
-        list_of_bind_mounts:
-          - bind_dir_path: "/usr/lib/modules"
-            mount_path: "/usr/lib/modules"
-        extra_container_config:
-          - "lxc.cgroup.devices.allow=a *:* rmw"
-      when:
-        - inventory_hostname in groups['neutron_agent']
-        - ansible_pkg_mgr == 'yum'
-    - include: common-tasks/os-lxc-container-setup.yml
-      static: no
-      when: inventory_hostname not in groups['neutron_agent']
-    - include: common-tasks/rabbitmq-vhost-user.yml
-      static: no
+  environment: "{{ deployment_environment_variables | default({}) }}"
+  tags:
+    - neutron
+  tasks:
+
+    - name: Configure rabbitmq vhost/user
+      include: common-tasks/rabbitmq-vhost-user.yml
       vars:
         user: "{{ neutron_rabbitmq_userid }}"
         password: "{{ neutron_rabbitmq_password }}"
         vhost: "{{ neutron_rabbitmq_vhost }}"
         _rabbitmq_host_group: "{{ neutron_rabbitmq_host_group }}"
       when:
-        - inventory_hostname == groups['neutron_all'][0]
         - groups[neutron_rabbitmq_host_group] | length > 0
-    - include: common-tasks/rabbitmq-vhost-user.yml
-      static: no
+      run_once: yes
+
+    - name: Configure rabbitmq vhost/user (telemetry)
+      include: common-tasks/rabbitmq-vhost-user.yml
       vars:
         user: "{{ neutron_rabbitmq_telemetry_userid }}"
         password: "{{ neutron_rabbitmq_telemetry_password }}"
@@ -81,79 +58,41 @@
         _rabbitmq_host_group: "{{ neutron_rabbitmq_telemetry_host_group }}"
       when:
         - neutron_ceilometer_enabled | bool
-        - inventory_hostname == groups['neutron_all'][0]
         - groups[neutron_rabbitmq_telemetry_host_group] is defined
         - groups[neutron_rabbitmq_telemetry_host_group] | length > 0
         - groups[neutron_rabbitmq_telemetry_host_group] != groups[neutron_rabbitmq_host_group]
-    - include: common-tasks/os-log-dir-setup.yml
-      vars:
-        log_dirs:
-          - src: "/openstack/log/{{ inventory_hostname }}-neutron"
-            dest: "/var/log/neutron"
-    - include: common-tasks/os-log-dir-setup.yml
-      vars:
-        log_dirs:
-          - src: "/openstack/log/{{ inventory_hostname }}-calico"
-            dest: "/var/log/calico"
-      when: "{{ 'neutron_calico_dhcp_agent' in group_names }}"
-    - include: common-tasks/mysql-db-user.yml
+      run_once: yes
+
+    - name: Configure MySQL user
+      include: common-tasks/mysql-db-user.yml
       static: no
       vars:
         user_name: "{{ neutron_galera_user }}"
         password: "{{ neutron_container_mysql_password }}"
         login_host: "{{ neutron_galera_address }}"
         db_name: "{{ neutron_galera_database }}"
-      when: inventory_hostname == groups['neutron_all'][0]
-    - include: common-tasks/package-cache-proxy.yml
+      run_once: yes
 
-    - name: Create the neutron provider networks facts
-      provider_networks:
-        provider_networks: "{{ provider_networks }}"
-        bind_prefix: "{{ bind_prefix }}"
-        is_metal: "{{ is_metal }}"
-      register: pndata
-      tags:
-        - always
-    - name: Set provider network fact(s)
-      set_fact:
-        _provider_networks: "{{ pndata }}"
-      tags:
-        - always
-  roles:
-    - role: "os_neutron"
-      neutron_overlay_network: "{{ _overlay_network }}"
-      neutron_provider_networks: "{{ _provider_networks }}"
-      neutron_local_ip: "{{ tunnel_address }}"
-    - role: "bird"
-      when:
-        - "'neutron_calico_dhcp_agent' in group_names"
-      tags:
-        - bird
-    - role: "openstack_openrc"
-      tags:
-        - openrc
-    - role: "rsyslog_client"
-      rsyslog_client_log_rotate_file: neutron_log_rotate
-      rsyslog_client_log_dir: "/var/log/neutron"
-      rsyslog_client_config_name: "99-neutron-rsyslog-client.conf"
-      rsyslog_client_log_files:
-        - /var/log/conntrackd.log
-        - /var/log/conntrackd-stats.log
-      tags:
-        - rsyslog
-    - role: "rsyslog_client"
-      rsyslog_client_log_rotate_file: calico_log_rotate
-      rsyslog_client_log_dir: "/var/log/calico"
-      rsyslog_client_config_name: "99-calico-rsyslog-client.conf"
-      when: "'neutron_calico_dhcp_agent' in group_names"
-      tags:
-        - rsyslog
-    - role: "system_crontab_coordination"
-      tags:
-        - crontab
+
+
+- name: Install neutron server
+  include: common-playbooks/neutron.yml
   vars:
-    is_metal: "{{ properties.is_metal|default(false) }}"
-    bind_prefix: "{{ provider_network_bind_prefix|default('') }}"
-  environment: "{{ deployment_environment_variables | default({}) }}"
-  tags:
-    - neutron
+    neutron_hosts: "neutron_server"
+    neutron_serial: "{{ neutron_server_serial | default('100%') }}"
+
+
+
+- name: Install neutron L2 agents
+  include: common-playbooks/neutron.yml
+  vars:
+    neutron_hosts: "neutron_linuxbridge_agent:neutron_openvswitch_agent:!neutron_server"
+    neutron_serial: "{{ neutron_agent_serial | default('20%') }}"
+
+
+
+- name: Install all other neutron agents
+  include: common-playbooks/neutron.yml
+  vars:
+    neutron_hosts: "neutron_all:!neutron_linuxbridge_agent:!neutron_openvswitch_agent:!neutron_server"
+    neutron_serial: "{{ neutron_other_serial | default('1') }}"

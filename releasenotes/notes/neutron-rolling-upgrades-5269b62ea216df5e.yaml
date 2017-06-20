@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    The ``os-neutron-install.yml`` playbook will now execute a rolling
+    upgrade of neutron including database migrations (both expand and
+    contract) as per the procedure described in the
+    `neutron documentation <https://docs.openstack.org/developer/neutron/devref/upgrade.html>`_.
