@@ -13,54 +13,90 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Installation and setup of Keystone
+- name: Prepare MQ/DB services
   hosts: keystone_all
-  serial: "{{ keystone_serial }}"
   gather_facts: "{{ gather_facts | default(True) }}"
-  max_fail_percentage: 20
   user: root
-  pre_tasks:
-    - include: common-tasks/os-lxc-container-setup.yml
-      vars:
-        extra_container_config_no_restart:
-          - "lxc.start.order=89"
-    - include: common-tasks/rabbitmq-vhost-user.yml
-      static: no
+  environment: "{{ deployment_environment_variables | default({}) }}"
+  tags:
+    - keystone
+  tasks:
+
+    - name: Configure rabbitmq vhost/user
+      include: common-tasks/rabbitmq-vhost-user.yml
       vars:
         user: "{{ keystone_rabbitmq_userid }}"
         password: "{{ keystone_rabbitmq_password }}"
         vhost: "{{ keystone_rabbitmq_vhost }}"
         _rabbitmq_host_group: "{{ keystone_rabbitmq_host_group }}"
       when:
-        - inventory_hostname == groups['keystone_all'][0]
-        - groups[keystone_rabbitmq_host_group] | length > 0
-    - include: common-tasks/rabbitmq-vhost-user.yml
-      static: no
+        - "groups[keystone_rabbitmq_host_group] | length > 0"
+      run_once: yes
+
+    - name: Configure rabbitmq vhost/user (telemetry)
+      include: common-tasks/rabbitmq-vhost-user.yml
       vars:
         user: "{{ keystone_rabbitmq_telemetry_userid }}"
         password: "{{ keystone_rabbitmq_telemetry_password }}"
         vhost: "{{ keystone_rabbitmq_telemetry_vhost }}"
         _rabbitmq_host_group: "{{ keystone_rabbitmq_telemetry_host_group }}"
       when:
-        - keystone_ceilometer_enabled | bool
-        - inventory_hostname == groups['keystone_all'][0]
-        - groups[keystone_rabbitmq_telemetry_host_group] is defined
-        - groups[keystone_rabbitmq_telemetry_host_group] | length > 0
-        - groups[keystone_rabbitmq_telemetry_host_group] != groups[keystone_rabbitmq_host_group]
-    - include: common-tasks/os-log-dir-setup.yml
-      vars:
-        log_dirs:
-          - src: "/openstack/log/{{ inventory_hostname }}-keystone"
-            dest: "/var/log/keystone"
-    - include: common-tasks/mysql-db-user.yml
-      static: no
+        - "keystone_ceilometer_enabled | bool"
+        - "groups[keystone_rabbitmq_telemetry_host_group] is defined"
+        - "groups[keystone_rabbitmq_telemetry_host_group] | length > 0"
+        - "groups[keystone_rabbitmq_telemetry_host_group] != groups[keystone_rabbitmq_host_group]"
+      run_once: yes
+
+    - name: Configure MySQL user
+      include: common-tasks/mysql-db-user.yml
       vars:
         user_name: "{{ keystone_galera_user }}"
         password: "{{ keystone_container_mysql_password }}"
         login_host: "{{ keystone_galera_address }}"
         db_name: "{{ keystone_galera_database }}"
-      when: inventory_hostname == groups['keystone_all'][0]
-    - include: common-tasks/package-cache-proxy.yml
+      run_once: yes
+
+
+
+- name: Installation and setup of Keystone
+  hosts: keystone_all
+  serial: "{{ keystone_serial | default(['1', '100%']) }}"
+  gather_facts: "{{ gather_facts | default(True) }}"
+  max_fail_percentage: 20
+  user: root
+  environment: "{{ deployment_environment_variables | default({}) }}"
+  tags:
+    - keystone
+  pre_tasks:
+
+    # In order to ensure that any container, software or
+    # config file changes which causes a container/service
+    # restart do not cause an unexpected outage, we drain
+    # the load balancer back end for this container.
+    - include: common-tasks/haproxy-endpoint-manage.yml
+      vars:
+        haproxy_backend: "{{ item }}"
+        haproxy_state: disabled
+      when: "{{ groups['keystone_all'] | length > 1 }}"
+      with_items:
+        - "keystone_service-back"
+        - "keystone_admin-back"
+
+    - name: Configure container
+      include: common-tasks/os-lxc-container-setup.yml
+      vars:
+        extra_container_config_no_restart:
+          - "lxc.start.order=89"
+
+    - name: Configure log directories (on metal)
+      include: common-tasks/os-log-dir-setup.yml
+      vars:
+        log_dirs:
+          - src: "/openstack/log/{{ inventory_hostname }}-keystone"
+            dest: "/var/log/keystone"
+
+    - name: Configure package proxy cache
+      include: common-tasks/package-cache-proxy.yml
 
     # todo(cloudnull): this task is being run only if/when keystone is installed on a physical host.
     #  This is not being run within a container because it is an unsupported action due to this
@@ -77,10 +113,7 @@
       with_items:
         - { key: "net.ipv4.ip_local_reserved_ports", value: "{{ keystone_admin_port }}"}
       when: is_metal | bool
-    - include: common-tasks/haproxy-endpoint-manage.yml
-      vars:
-        haproxy_state: disabled
-      when: "{{ groups['keystone_all'] | length > 1 }}"
+
   roles:
     - role: "os_keystone"
     - role: "openstack_openrc"
@@ -95,20 +128,92 @@
     - role: "system_crontab_coordination"
       tags:
         - crontab
+
   post_tasks:
+    # Now that container changes are done, we can set
+    # the load balancer back end for this container
+    # to available again.
     - include: common-tasks/haproxy-endpoint-manage.yml
       vars:
+        haproxy_backend: "{{ item }}"
         haproxy_state: enabled
       when: "{{ groups['keystone_all'] | length > 1 }}"
-  vars:
-    is_metal: "{{ properties.is_metal|default(false) }}"
-    keystone_serial:
-      - 1
-      - 100%
-    keystone_admin_port: 35357
-    keystone_galera_user: keystone
-    keystone_galera_database: keystone
-    keystone_galera_address: "{{ galera_address }}"
+      with_items:
+        - "keystone_service-back"
+        - "keystone_admin-back"
+
+# These facts are set against the deployment host to ensure that
+# they are fast to access. This is done in preference to setting
+# them against each target as the hostvars extraction will take
+# a long time if executed against a large inventory.
+- name: Refresh local facts after all software changes are made
+  hosts: keystone_all
+  max_fail_percentage: 20
+  user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - keystone
+  tasks:
+    - name: refresh local facts
+      setup:
+        filter: ansible_local
+        gather_subset: "!all"
+
+    # This variable contains the values of the local fact set for the keystone
+    # venv tag for all hosts in the 'keystone_all' host group.
+    - name: Gather software version list
+      set_fact:
+        keystone_all_software_versions: "{{ (groups['keystone_all'] | map('extract', hostvars, ['ansible_local', 'openstack_ansible', 'keystone', 'venv_tag'])) | list }}"
+      delegate_to: localhost
+      run_once: yes
+
+    # This variable outputs a boolean value which is True when
+    # keystone_all_software_versions contains a list of defined
+    # values. If they are not defined, it means that not all
+    # hosts have their software deployed yet.
+    - name: Set software deployed fact
+      set_fact:
+        keystone_all_software_deployed: "{{ (keystone_all_software_versions | select('defined')) | list == keystone_all_software_versions }}"
+      delegate_to: localhost
+      run_once: yes
+
+    # This variable outputs a boolean when all the values in
+    # keystone_all_software_versions are the same and the software
+    # has been deployed to all hosts in the group.
+    - name: Set software updated fact
+      set_fact:
+        keystone_all_software_updated: "{{ ((keystone_all_software_versions | unique) | length == 1) and (keystone_all_software_deployed | bool) }}"
+      delegate_to: localhost
+      run_once: yes
+
+
+
+
+- name: Perform the final stage of the database migrations
+  hosts: keystone_all[0]
+  gather_facts: no
+  user: root
+  environment: "{{ deployment_environment_variables | default({}) }}"
+  tags:
+    - keystone
+  tasks:
+    - name: Perform a Keystone DB sync contract
+      command: "{{ keystone_bin }}/keystone-manage db_sync --contract"
+      become: yes
+      become_user: "{{ keystone_system_user_name }}"
+      when:
+        - "keystone_all_software_updated | bool"
+        - "ansible_local['openstack_ansible']['keystone']['need_db_contract'] | bool"
+      register: dbsync_contract
+
+    - name: Disable the need for any further db sync
+      ini_file:
+        dest: "/etc/ansible/facts.d/openstack_ansible.fact"
+        section: keystone
+        option: "{{ item }}"
+        value: False
+      with_items:
+        - "need_db_sync"
+        - "need_db_contract"
+      when:
+        - "dbsync_contract | succeeded"
