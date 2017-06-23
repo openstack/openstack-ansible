@@ -24,6 +24,7 @@ OSA_BRANCH=${OSA_BRANCH:-"$OS_BRANCH"}
 SERVICE_FILE=${SERVICE_FILE:-"playbooks/defaults/repo_packages/openstack_services.yml"}
 OPENSTACK_SERVICE_LIST=${OPENSTACK_SERVICE_LIST:-"$(grep 'git_repo\:' ${SERVICE_FILE} | awk -F '/' '{ print $NF }' | egrep -v 'requirements|-' | tr '\n' ' ')"}
 PRE_RELEASE=${PRE_RELEASE:-"false"}
+FORCE_MASTER=${FORCE_MASTER:-"false"}
 
 source scripts/sources-branch-updater-lib.sh || { echo "Failed to source updater library"; exit 1; }
 
@@ -95,6 +96,6 @@ sync_roles_and_packages ${OS_BRANCH} ${OSA_BRANCH} ${SERVICE_FILE} ${OPENSTACK_S
 
 update_pip_options
 
-update_ansible_role_requirements ${OSA_BRANCH} ${PRE_RELEASE}
+update_ansible_role_requirements ${OSA_BRANCH} ${PRE_RELEASE} ${FORCE_MASTER}
 
 update_release_version ${OSA_BRANCH} ${SERVICE_FILE}
