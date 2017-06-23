@@ -10,9 +10,4 @@ enable the ``ceph-install`` playbook by adding hosts to the
 <https://github.com/ceph/ceph-ansible/blob/master/group_vars/all.yml.sample>`_
 in the OpenStack-Ansible ``user_variables.yml`` file.
 
-.. warning::
-
-   Ceph-Ansible integration in OpenStack-Ansible should be considered
-   experimental and for testing purposes only.
-
 .. _Ceph-Ansible: https://github.com/ceph/ceph-ansible/
