@@ -461,6 +461,9 @@ ansible_ssh_extra_args: >
   -o ForwardAgent=yes
   -T
 
+# Toggle whether the service is deployed in a container or not
+is_metal: "{{ properties.is_metal | default(false) }}"
+
 ## ceph-ansible configuration
 mon_group_name: ceph-mon
 osd_group_name: ceph-osd
