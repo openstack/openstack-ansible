@@ -142,7 +142,9 @@ function gate_job_exit_tasks {
     rsync --archive --verbose --safe-links --ignore-errors /openstack/log/ "${GATE_LOG_DIR}/openstack" || true
     # Rename all files gathered to have a .txt suffix so that the compressed
     # files are viewable via a web browser in OpenStack-CI.
-    find "${GATE_LOG_DIR}/" -type f -exec mv {} {}.txt \;
+    # except tempest results testrepository.subunit and testr_results.html
+    find "${GATE_LOG_DIR}/" -type f -not -name "testrepository.subunit" -not -name "testr_results.html" -exec mv {} {}.txt \;
+
     # Generate the ARA report
     /opt/ansible-runtime/bin/ara generate html "${GATE_LOG_DIR}/ara" || true
     # Compress the files gathered so that they do not take up too much space.
