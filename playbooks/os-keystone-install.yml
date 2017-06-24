@@ -190,7 +190,7 @@
 
 
 - name: Perform the final stage of the database migrations
-  hosts: keystone_all[0]
+  hosts: keystone_all
   gather_facts: no
   user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
@@ -205,6 +205,7 @@
         - "keystone_all_software_updated | bool"
         - "ansible_local['openstack_ansible']['keystone']['need_db_contract'] | bool"
       register: dbsync_contract
+      run_once: yes
 
     - name: Disable the need for any further db sync
       ini_file:
