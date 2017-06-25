@@ -41,15 +41,15 @@ keepalived_scripts:
 
 # If you have more than 5 keepalived nodes, you should build your own script
 # (handling master and backups servers), and replace in keepalived_instances:
-#    priority: "{{ ((play_hosts|length-play_hosts.index(inventory_hostname))*100)-((play_hosts|length-play_hosts.index(inventory_hostname))*50) }}"
+#    priority: "{{ ((ansible_play_hosts|length-ansible_play_hosts.index(inventory_hostname))*100)-((ansible_play_hosts|length-ansible_play_hosts.index(inventory_hostname))*50) }}"
 # by
-#    priority: "{{ (play_hosts.index(inventory_hostname) == 0) | ternary('100','50') }}"
+#    priority: "{{ (ansible_play_hosts.index(inventory_hostname) == 0) | ternary('100','50') }}"
 keepalived_instances:
   external:
     interface: "{{ haproxy_keepalived_external_interface | default(management_bridge) }}"
-    state: "{{ (play_hosts.index(inventory_hostname) == 0) | ternary('MASTER', 'BACKUP') }}"
+    state: "{{ (ansible_play_hosts.index(inventory_hostname) == 0) | ternary('MASTER', 'BACKUP') }}"
     virtual_router_id: "{{ haproxy_keepalived_external_virtual_router_id | default ('10') }}"
-    priority: "{{ ((play_hosts|length-play_hosts.index(inventory_hostname))*100)-((play_hosts|length-play_hosts.index(inventory_hostname))*50) }}"
+    priority: "{{ ((ansible_play_hosts|length-ansible_play_hosts.index(inventory_hostname))*100)-((ansible_play_hosts|length-ansible_play_hosts.index(inventory_hostname))*50) }}"
     authentication_password: "{{ haproxy_keepalived_authentication_password }}"
     vips:
       - "{{ haproxy_keepalived_external_vip_cidr | default('169.254.1.1/24')  }} dev {{ haproxy_keepalived_external_interface | default(management_bridge) }}"
@@ -58,9 +58,9 @@ keepalived_instances:
       - pingable_check_script
   internal:
     interface: "{{ haproxy_keepalived_internal_interface | default(management_bridge) }}"
-    state: "{{ (play_hosts.index(inventory_hostname) == 0) | ternary('MASTER', 'BACKUP') }}"
+    state: "{{ (ansible_play_hosts.index(inventory_hostname) == 0) | ternary('MASTER', 'BACKUP') }}"
     virtual_router_id: "{{ haproxy_keepalived_internal_virtual_router_id | default ('11') }}"
-    priority: "{{ ((play_hosts|length-play_hosts.index(inventory_hostname))*100)-((play_hosts|length-play_hosts.index(inventory_hostname))*50) }}"
+    priority: "{{ ((ansible_play_hosts|length-ansible_play_hosts.index(inventory_hostname))*100)-((ansible_play_hosts|length-ansible_play_hosts.index(inventory_hostname))*50) }}"
     authentication_password: "{{ haproxy_keepalived_authentication_password }}"
     track_scripts:
       - haproxy_check_script
