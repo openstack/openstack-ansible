@@ -146,7 +146,7 @@
 # they are fast to access. This is done in preference to setting
 # them against each target as the hostvars extraction will take
 # a long time if executed against a large inventory.
-- name: Refresh local facts after all software changes are made
+- name: Finalise data migrations if required
   hosts: keystone_all
   max_fail_percentage: 20
   user: root
@@ -186,17 +186,6 @@
       delegate_to: localhost
       run_once: yes
 
-
-
-
-- name: Perform the final stage of the database migrations
-  hosts: keystone_all
-  gather_facts: no
-  user: root
-  environment: "{{ deployment_environment_variables | default({}) }}"
-  tags:
-    - keystone
-  tasks:
     - name: Perform a Keystone DB sync contract
       command: "{{ keystone_bin }}/keystone-manage db_sync --contract"
       become: yes
