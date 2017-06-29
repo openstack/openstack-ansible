@@ -162,6 +162,9 @@ neutron_dynamic_routing_git_install_branch: 4b6afd41961743353400f78ddcbc4a5d3466
 neutron_dynamic_routing_git_dest: "/opt/neutron_dynamic_routing_{{ neutron_dynamic_routing_git_install_branch | replace('/', '_') }}"
 neutron_dynamic_routing_git_project_group: neutron_all
 
+networking_calico_git_repo: https://git.openstack.org/openstack/networking-calico
+networking_calico_git_install_branch: e794848060e7ab3edf320b1847151de4eb6af142 # HEAD of "master" as of 29.06.2017
+networking_calico_git_project_group: neutron_all
 
 ## Nova service
 nova_git_repo: https://git.openstack.org/openstack/nova
