@@ -5,13 +5,6 @@
 #
 # Use this file with caution!
 #
-
-# Due to https://bugs.launchpad.net/openstack-ansible/+bug/1693793,
-# ldappool must be pinned to == 2.1.0.
-# https://review.openstack.org/#/c/468420/
-# TODO: mgariepy, remove this once upstream is fixed.
-ldappool==2.1.0
-
 ###
 ### These are pinned to ensure exactly the same behaviour forever!   ###
 ### These pins are updated through the sources-branch-updater script ###
