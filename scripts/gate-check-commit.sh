@@ -37,6 +37,9 @@ export TERM=linux
 #  function at the end of the run.
 export OSA_GATE_JOB=true
 
+# Store the clone repo root location
+export OSA_CLONE_DIR="$(readlink -f $(dirname ${0})/..)"
+
 # Set the role fetch mode to git-clone to avoid interactions
 # with the Ansible galaxy API.
 export ANSIBLE_ROLE_FETCH_MODE="git-clone"
@@ -54,9 +57,10 @@ export ACTION=${2:-"deploy"}
 export UPGRADE_SOURCE_BRANCH=${UPGRADE_SOURCE_BRANCH:-'stable/ocata'}
 
 ## Functions -----------------------------------------------------------------
-info_block "Checking for required libraries." 2> /dev/null || source "$(dirname "${0}")/scripts-library.sh"
+info_block "Checking for required libraries." 2> /dev/null || source "${OSA_CLONE_DIR}/scripts/scripts-library.sh"
 
 ## Main ----------------------------------------------------------------------
+
 # Set gate job exit traps, this is run regardless of exit state when the job finishes.
 trap gate_job_exit_tasks EXIT
 
@@ -75,7 +79,7 @@ if [[ "${ACTION}" == "upgrade" ]]; then
 fi
 
 # Get minimum disk size
-DATA_DISK_MIN_SIZE="$((1024**3 * $(awk '/bootstrap_host_data_disk_min_size/{print $2}' "$(dirname "${0}")/../tests/roles/bootstrap-host/defaults/main.yml") ))"
+DATA_DISK_MIN_SIZE="$((1024**3 * $(awk '/bootstrap_host_data_disk_min_size/{print $2}' "${OSA_CLONE_DIR}/tests/roles/bootstrap-host/defaults/main.yml") ))"
 
 # Determine the largest secondary disk device that meets the minimum size
 DATA_DISK_DEVICE=$(lsblk -brndo NAME,TYPE,RO,SIZE | awk '/d[b-z]+ disk 0/{ if ($4>m && $4>='$DATA_DISK_MIN_SIZE'){m=$4; d=$1}}; END{print d}')
@@ -99,7 +103,7 @@ if [ -f zuul.env ]; then
 fi
 
 # Bootstrap Ansible
-source "$(dirname "${0}")/bootstrap-ansible.sh"
+source "${OSA_CLONE_DIR}/scripts/bootstrap-ansible.sh"
 
 # Install ARA and add it to the callback path provided by bootstrap-ansible.sh/openstack-ansible.rc
 # This is added *here* instead of bootstrap-ansible so it's used for CI purposes only.
@@ -131,7 +135,7 @@ unset ANSIBLE_VARS_PLUGINS
 unset HOST_VARS_PATH
 unset GROUP_VARS_PATH
 
-pushd "$(dirname "${0}")/../tests"
+pushd "${OSA_CLONE_DIR}/tests"
   if [ -z "${BOOTSTRAP_OPTS}" ]; then
     /opt/ansible-runtime/bin/ansible-playbook bootstrap-aio.yml \
                      -i test-inventory.ini \
@@ -147,7 +151,7 @@ popd
 # Implement the log directory
 mkdir -p /openstack/log
 
-pushd "$(dirname "${0}")/../playbooks"
+pushd "${OSA_CLONE_DIR}/playbooks"
   # Disable Ansible color output
   export ANSIBLE_NOCOLOR=1
 
@@ -160,7 +164,7 @@ popd
 log_instance_info
 
 # Execute the Playbooks
-bash "$(dirname "${0}")/run-playbooks.sh"
+bash "${OSA_CLONE_DIR}/scripts/run-playbooks.sh"
 
 # Log some data about the instance and the rest of the system
 log_instance_info
@@ -184,7 +188,7 @@ if [[ "${ACTION}" == "upgrade" ]]; then
     unset UPPER_CONSTRAINTS_FILE
 
     # Kick off the data plane tester
-    $(dirname "${0}")/../tests/data-plane-test.sh &
+    ${OSA_CLONE_DIR}/tests/data-plane-test.sh &
 
     # Fetch script to execute API availability tests, then
     # background them while the upgrade runs.
@@ -194,7 +198,7 @@ if [[ "${ACTION}" == "upgrade" ]]; then
     # To execute the upgrade script we need to provide
     # an affirmative response to the warning that the
     # upgrade is irreversable.
-    echo 'YES' | bash "$(dirname "${0}")/run-upgrade.sh"
+    echo 'YES' | bash "${OSA_CLONE_DIR}/scripts/run-upgrade.sh"
 
     # Terminate the API availability tests
     kill_bowling_ball_tests
