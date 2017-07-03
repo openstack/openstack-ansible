@@ -13,6 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# The MySQL details for the nova service
+nova_galera_user: nova
+nova_galera_database: nova
+nova_galera_address: "{{ galera_address }}"
+nova_api_galera_user: nova_api
+nova_api_galera_database: nova_api
+nova_api_galera_address: "{{ galera_address }}"
+nova_placement_galera_user: nova_placement
+nova_placement_galera_database: nova_placement
+nova_placement_galera_address: "{{ galera_address }}"
+nova_cell0_database: nova_cell0
+
 nova_external_ssl: "{{ openstack_external_ssl }}"
 nova_ceph_client_uuid: '{{ cinder_ceph_client_uuid | default() }}'
 nova_dhcp_domain: "{{ dhcp_domain }}"
@@ -21,6 +33,9 @@ nova_glance_api_servers: "{{ glance_api_servers }}"
 
 # Ensure that the package state matches the global setting
 nova_package_state: "{{ package_state }}"
+
+# The system user for all nova services
+nova_system_user_name: nova
 
 # venv fetch configuration
 nova_venv_tag: "{{ venv_tag }}"
