@@ -61,7 +61,7 @@ addressable name inside the Neutron configuration.
 This configuration also need to be unique across other provider networks.
 
 For more information, see
-`Configure the deployment <https://docs.openstack.org/project-deploy-guide/openstack-ansible/draft/configure.html>`_
+:deploy_guide:`Configure the deployment <configure.html>`
 in the OpenStack-Ansible Deployment Guide.
 
 OpenStack-Ansible playbooks
