@@ -34,7 +34,7 @@ OpenStack-Ansible's Ocata series was first released with the 15.0.0 tag on
 
 * `OpenStack-Ansible Ocata series release notes`_
 
-.. _OpenStack-Ansible Ocata Documentation: http://docs.openstack.org/developer/openstack-ansible/ocata/
+.. _OpenStack-Ansible Ocata Documentation: https://docs.openstack.org/openstack-ansible/ocata/ocata/
 .. _OpenStack-Ansible Ocata series release notes: http://docs.openstack.org/releasenotes/openstack-ansible/ocata.html
 
 Newton: Current stable release, security supported
