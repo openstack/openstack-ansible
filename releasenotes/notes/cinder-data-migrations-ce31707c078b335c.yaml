@@ -1,0 +1,9 @@
+---
+features:
+  - The ``os_cinder`` role now provides for doing
+    online data migrations once the db sync has
+    been completed. The data migrations will not
+    be executed until the boolean variable
+    ``cinder_all_software_updated`` is true. This
+    variable will need to be set by the playbook
+    consuming the role.
