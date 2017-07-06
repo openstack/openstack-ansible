@@ -31,6 +31,9 @@ The command can also be run manually as follows:
 
 This invocation is useful when testing changes to the dynamic inventory script.
 
+.. note:: When running the ``dynamic_inventory.py`` script on a local
+          development machine, use ``python dynamic_inventory.py`` instead.
+
 Inputs
 ^^^^^^
 

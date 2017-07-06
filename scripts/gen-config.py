@@ -19,11 +19,7 @@ import argparse
 import os
 import sys
 
-cwd = os.path.abspath(os.path.dirname(__file__))
-import_path = os.path.join(cwd, '..', 'osa_toolkit')
-sys.path.append(import_path)
-
-import tools
+from osa_toolki import tools
 
 
 def args(arg_list):
@@ -58,6 +54,7 @@ def args(arg_list):
 
 if __name__ == "__main__":
     script_args = args(sys.argv[1:])
+
     config = tools.make_example_config(
         script_args['base'],
         script_args['conf_dir']

@@ -12,16 +12,9 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-import os
-from os import path
-import sys
 import unittest
 
-LIB_DIR = 'osa_toolkit'
-
-sys.path.append(path.join(os.getcwd(), LIB_DIR))
-
-import dictutils as du
+from osa_toolkit import dictutils as du
 
 
 class TestMergeDictUnit(unittest.TestCase):

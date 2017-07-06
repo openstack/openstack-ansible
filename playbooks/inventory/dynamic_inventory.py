@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/opt/ansible-runtime/bin/python
 # Copyright 2014, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,11 +19,13 @@ import argparse
 import os
 import sys
 
-current_path = os.path.abspath(os.path.dirname(os.path.realpath(__file__)))
-lib_path = os.path.join(current_path, '..', '..', 'osa_toolkit')
-sys.path.append(lib_path)
-
-import generate
+try:
+    from osa_toolkit import generate
+except ImportError:
+    current_path = os.path.abspath(os.path.dirname(os.path.realpath(__file__)))
+    lib_path = os.path.join(current_path, '..', '..', 'osa_toolkit')
+    sys.path.append(lib_path)
+    from osa_toolkit import generate
 
 
 # Function kept in order to use relative pathing for the env.d directory
