@@ -6,7 +6,7 @@ This guide provides information about operating your OpenStack-Ansible
 deployment.
 
 For information how to deploy your OpenStack-Ansible cloud, refer to the
-`Deployment Guide <https://docs.openstack.org/project-deploy-guide/openstack-ansible/draft/>`_
+:deploy_guide:`Deployment Guide <index.html>`
 for step-by-step instructions on how to deploy the OpenStack packages and
 dependencies on your cloud using OpenStack-Ansible.
 
