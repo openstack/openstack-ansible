@@ -1,23 +1,23 @@
 - name: apt_package_pinning
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-apt_package_pinning
-  version: 8e23f54ce0cb582cd2c8322dc4e01b84819fb7cf
+  version: mitaka-eol
 - name: pip_install
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-pip_install
-  version: a0ab14cb30d8b907d1af5e7411a8367de8e6f8a3
+  version: mitaka-eol
 - name: pip_lock_down
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-pip_lock_down
-  version: b24d3ca1c6b87a6df2081beca55f6e1df69b1561
+  version: mitaka-eol
 - name: galera_client
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-galera_client
-  version: 3f33d8061466f66e70ff938736d992a10c46c9bf
+  version: mitaka-eol
 - name: galera_server
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-galera_server
-  version: ec7734e49dbaa64b3023329c4d9bd4c7b3234e32
+  version: mitaka-eol
 - name: keepalived
   scm: git
   src: https://github.com/evrardjp/ansible-keepalived
@@ -25,100 +25,100 @@
 - name: lxc_container_create
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-lxc_container_create
-  version: 816695ac9d448606dab724ae2675c41566ad6a50
+  version: mitaka-eol
 - name: lxc_hosts
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-lxc_hosts
-  version: bd515981c798b5af7cf7ddcbf2e7b7979f943dc8
+  version: mitaka-eol
 - name: memcached_server
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-memcached_server
-  version: 61498e75984a05692767872ca0ab61c0c4a0e51a
+  version: mitaka-eol
 - name: openstack-ansible-security
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-security
-  version: 65b28f95bb8f8ef51e2e30f5bc6025235ee200af
+  version: mitaka-eol
 - name: openstack_hosts
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-openstack_hosts
-  version: 8f7859b8a62945ef0faec6c00b132bf19fa39634
+  version: mitaka-eol
 - name: os_keystone
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_keystone
-  version: b1a6a71594b30f9baa113fa8da0581278e840ca1
+  version: mitaka-eol
 - name: openstack_openrc
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-openstack_openrc
-  version: 19fc513786da3a1947a5c8c0f7c8af34c98ff012
+  version: mitaka-eol
 - name: os_aodh
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_aodh
-  version: 45c0bd4e940a1a53db1cdac8110a30dd6cab668a
+  version: mitaka-eol
 - name: os_ceilometer
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_ceilometer
-  version: 434f14dc9fd57a12af0b092266476af830f2d35a
+  version: mitaka-eol
 - name: os_cinder
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_cinder
-  version: 8dbb426743fab9ead3011280f5142c52b93c6efb
+  version: mitaka-eol
 - name: os_glance
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_glance
-  version: 7a4f9e58d7a623e1498da1847f745fc0146a63af
+  version: mitaka-eol
 - name: os_heat
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_heat
-  version: 7570dd781ff64f3b4a650c8a8e793a0224ef1bbf
+  version: mitaka-eol
 - name: os_horizon
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_horizon
-  version: f984441e0ad07d81840cf3e7208a936a3ef408d0
+  version: mitaka-eol
 - name: os_ironic
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_ironic
-  version: 495b3cfea6884e7011f0b335e989929aea98cc58
+  version: mitaka-eol
 - name: os_neutron
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_neutron
-  version: 2cce5e6e8fec00125f912baa86890e4302f67f18
+  version: mitaka-eol
 - name: os_nova
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_nova
-  version: 7ca8d77157c9fee4592883b5a6e374014eccbb54
+  version: mitaka-eol
 - name: os_swift
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_swift
-  version: 5effea40dc7c2f3eec865e7a6613624fb7e55e5b
+  version: mitaka-eol
 - name: os_tempest
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_tempest
-  version: 3e58cd1dc1bb6be85d75e9ea3afac729eb2ec966
+  version: mitaka-eol
 - name: plugins
   path: /etc/ansible
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-plugins
-  version: 6fd7a88711bd2625185547d143271a0972e95e7a
+  version: mitaka-eol
 - name: rabbitmq_server
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-rabbitmq_server
-  version: 444039001a60a30a783644d863cef9d9e0eb2168
+  version: mitaka-eol
 - name: repo_build
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-repo_build
-  version: 2042e834b434182090fbe910d3dd183ba0c16e25
+  version: mitaka-eol
 - name: repo_server
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-repo_server
-  version: c98ba3847804d9864c10ed2ceb64a6d5e87ed245
+  version: mitaka-eol
 - name: rsyslog_client
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-rsyslog_client
-  version: b05f931d2a8a86252930b5c8d676c10b5bfeb176
+  version: mitaka-eol
 - name: rsyslog_server
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-rsyslog_server
-  version: 98aa939b38ba5a3ba4ccbf77199d1dbae6d4bc3c
+  version: mitaka-eol
 - name: sshd
   scm: git
   src: https://github.com/willshersystems/ansible-sshd
