@@ -58,6 +58,25 @@ iface br-vlan inet static
     post-down ip link del br-vlan-veth || true
     bridge_ports br-vlan-veth
 
+{% if bootstrap_host_scenario == "translations" %}
+auto br-dbaas
+iface br-dbaas inet static
+    bridge_stp off
+    bridge_waitport 0
+    bridge_fd 0
+    address 172.29.232.100
+    netmask 255.255.252.0
+    offload-sg off
+    # Create veth pair, don't bomb if already exists
+    pre-up ip link add br-dbaas-veth type veth peer name eth13 || true
+    # Set both ends UP
+    pre-up ip link set br-dbaas-veth up
+    pre-up ip link set eth13 up
+    # Delete veth pair on DOWN
+    post-down ip link del br-dbaas-veth || true
+    bridge_ports br-dbaas-veth
+
+{% endif %}
 # Add an additional address to br-vlan
 iface br-vlan inet static
     # Flat network default gateway

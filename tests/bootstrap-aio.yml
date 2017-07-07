@@ -44,6 +44,20 @@
         - name: keystone.yml.aio
         - name: neutron.yml.aio
         - name: nova.yml.aio
+      translations:
+        - name: cinder.yml.aio
+        - name: designate.yml.aio
+        - name: glance.yml.aio
+        - name: heat.yml.aio
+        - name: horizon.yml.aio
+        - name: keystone.yml.aio
+        - name: neutron.yml.aio
+        - name: nova.yml.aio
+        - name: swift.yml.aio
+        - name: sahara.yml.aio
+        - name: magnum.yml.aio
+        - name: octavia.yml.aio
+        - name: trove.yml.aio
     sftp_subsystem: "{{ (ansible_pkg_mgr == 'apt') | ternary('sftp /usr/lib/openssh/sftp-server','sftp /usr/libexec/openssh/sftp-server') }}"
     sshd:
       ListenAddress:
