@@ -22,7 +22,7 @@ set -e -u -x
 ## Vars ----------------------------------------------------------------------
 export HTTP_PROXY=${HTTP_PROXY:-""}
 export HTTPS_PROXY=${HTTPS_PROXY:-""}
-export ANSIBLE_PACKAGE=${ANSIBLE_PACKAGE:-"git+https://github.com/ansible/ansible@022ba4fbea5b0a7daf0e38616e462865259ab0bf"} # 2.3.2.0-0.2.rc2 include_role dependency fix
+export ANSIBLE_PACKAGE=${ANSIBLE_PACKAGE:-"ansible==2.3.2.0"}
 export ANSIBLE_ROLE_FILE=${ANSIBLE_ROLE_FILE:-"ansible-role-requirements.yml"}
 export SSH_DIR=${SSH_DIR:-"/root/.ssh"}
 export DEBIAN_FRONTEND=${DEBIAN_FRONTEND:-"noninteractive"}
