@@ -14,7 +14,7 @@
 # limitations under the License.
 
 ## Shell Opts ----------------------------------------------------------------
-set -e
+set -e -x
 
 ## Vars ----------------------------------------------------------------------
 
@@ -145,9 +145,14 @@ if [ -z ${INSTANCE_PUBLIC_ADDRESS+x} ]; then
     echo "INSTANCE_PUBLIC_ADDRESS=${INSTANCE_PUBLIC_ADDRESS}" >> /root/demorc
 fi
 
+# Wait for the server to be ready
+while [[ "$(openstack server show ${INSTANCE_UUID} --column status --format value)" != "ACTIVE" ]]; do
+  sleep 4
+done
+
 # If the floating IP is not associated with the test instance, associate it
-if ! openstack server show test1 --column addresses --format value | grep -q ${INSTANCE_PUBLIC_ADDRESS}; then
-    openstack server add floating ip ${INSTANCE_NAME} ${INSTANCE_PUBLIC_ADDRESS}
+if ! openstack server show ${INSTANCE_UUID} --column addresses --format value | grep -q ${INSTANCE_PUBLIC_ADDRESS}; then
+    openstack server add floating ip ${INSTANCE_UUID} ${INSTANCE_PUBLIC_ADDRESS}
 fi
 
 # Wait for the volume to be ready

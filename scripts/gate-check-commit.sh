@@ -189,7 +189,7 @@ if [[ "${ACTION}" == "upgrade" ]]; then
     unset VIRTUALENV_OPTIONS
 
     # Kick off the data plane tester
-    ${OSA_CLONE_DIR}/tests/data-plane-test.sh &
+    bash ${OSA_CLONE_DIR}/tests/data-plane-test.sh &> /var/log/data-plane-error.log &
 
     # Fetch script to execute API availability tests, then
     # background them while the upgrade runs.
