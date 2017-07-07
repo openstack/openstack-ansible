@@ -58,6 +58,25 @@
            --setopt="Ceph-noarch.priority=50"
       when:
         - ansible_pkg_mgr == 'yum'
+    - name: Create systemd service directory
+      file:
+        path: "/etc/systemd/system/ceph-mon@.service.d/"
+        state: directory
+        group: "root"
+        owner: "root"
+        mode: "0755"
+      when:
+        - ansible_pkg_mgr == 'yum'
+        - ansible_service_mgr == 'systemd'
+    - name: Add systemd override for PrivateDevices
+      copy:
+        dest: "/etc/systemd/system/ceph-mon@.service.d/ceph-mon-systemd-overrides.conf"
+        content: |
+          [Service]
+          PrivateDevices=false
+      when:
+        - ansible_pkg_mgr == 'yum'
+        - ansible_service_mgr == 'systemd'
   roles:
     - role: "ceph-mon"
       tags:
