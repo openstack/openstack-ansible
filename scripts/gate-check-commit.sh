@@ -186,6 +186,7 @@ if [[ "${ACTION}" == "upgrade" ]]; then
     # requirements to be installed.
     unset ANSIBLE_PACKAGE
     unset UPPER_CONSTRAINTS_FILE
+    unset VIRTUALENV_OPTIONS
 
     # Kick off the data plane tester
     ${OSA_CLONE_DIR}/tests/data-plane-test.sh &
