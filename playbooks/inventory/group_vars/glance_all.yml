@@ -13,6 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# MariaDB details for the glance service
+glance_galera_user: glance
+glance_galera_database: glance
+glance_galera_address: "{{ galera_address }}"
+
 glance_service_region: "{{ service_region }}"
 glance_service_in_ldap: "{{ service_ldap_backend_enabled }}"
 
