@@ -62,7 +62,6 @@ case ${DISTRO_ID} in
           python-pyasn1 pyOpenSSL python-ndg_httpsclient \
           python-netaddr python-prettytable python-crypto PyYAML \
           python-virtualenv
-          VIRTUALENV_OPTIONS=""
         ;;
     ubuntu)
         apt-get update
@@ -98,10 +97,15 @@ export UPPER_CONSTRAINTS_FILE=${UPPER_CONSTRAINTS_FILE:-"$UPPER_CONSTRAINTS_PROT
 # Figure out the right virtualenv command and options
 if [[ ${PYTHON_VERSION} =~ ^3 ]]; then
   VIRTUALENV_COMMAND="python3 -m venv"
-  VIRTUALENV_OPTIONS=${VIRTUALENV_OPTIONS:-"--copies"}
+  VIRTUALENV_OPTIONS="--copies"
 else
   VIRTUALENV_COMMAND="virtualenv --python=${PYTHON_EXEC_PATH}"
-  VIRTUALENV_OPTIONS=${VIRTUALENV_OPTIONS:-"--always-copy"}
+  VIRTUALENV_OPTIONS="--always-copy"
+fi
+
+# Trying to use the copy option on CentOS fails miserably, so we override it.
+if [[ "${DISTRO_ID}" == "centos" ]] || [[ "${DISTRO_ID}" == "rhel" ]]; then
+  VIRTUALENV_OPTIONS=""
 fi
 
 # Create a Virtualenv for the Ansible runtime
