@@ -114,6 +114,7 @@
         - _zuul_cloner_check.rc == 0
 
   vars:
+    ansible_python_interpreter: "/usr/bin/python"
     roles: "{{ lookup('file', role_file) | from_yaml }}"
     role_file: '../ansible-role-requirements.yml'
     role_path_default: '/etc/ansible/roles'
