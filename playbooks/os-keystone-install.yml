@@ -200,10 +200,7 @@
       ini_file:
         dest: "/etc/ansible/facts.d/openstack_ansible.fact"
         section: keystone
-        option: "{{ item }}"
+        option: "need_db_contract"
         value: False
-      with_items:
-        - "need_db_sync"
-        - "need_db_contract"
       when:
         - "dbsync_contract | succeeded"
