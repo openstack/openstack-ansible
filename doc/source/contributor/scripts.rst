@@ -62,26 +62,6 @@ configured using environment variables - more details are provided on the
 Development and Testing
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-run-playbooks.sh
-----------------
-
-The ``run-playbooks`` script is designed to be executed in development and
-test environments and is also used for automated testing. It executes actions
-which are definitely **not** suitable for production environments and must
-therefore **not** be used for that purpose.
-
-The default MaxSessions setting for the OpenSSH Daemon is 10. Each Ansible
-fork makes use of a Session. By default Ansible sets the number of forks to 5,
-but the ``run-playbooks.sh`` script sets the number of forks used based on the
-number of CPU's on the deployment host up to a maximum of 10.
-
-If a developer wishes to increase the number of forks used when using this
-script, override the ANSIBLE_FORKS environment variable. For example:
-
-.. code-block:: bash
-
-    export ANSIBLE_FORKS=20
-
 Lint Tests
 ----------
 

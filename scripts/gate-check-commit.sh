@@ -44,6 +44,9 @@ export OSA_CLONE_DIR="$(readlink -f $(dirname ${0})/..)"
 # with the Ansible galaxy API.
 export ANSIBLE_ROLE_FETCH_MODE="git-clone"
 
+# The directory in which the ansible logs will be placed
+export ANSIBLE_LOG_DIR="/openstack/log/ansible-logging"
+
 # Set the scenario to execute based on the first CLI parameter
 export SCENARIO=${1:-"aio"}
 
@@ -155,19 +158,44 @@ pushd "${OSA_CLONE_DIR}/playbooks"
   # Disable Ansible color output
   export ANSIBLE_NOCOLOR=1
 
-  # Create ansible logging directory and add in a log file export
-  mkdir -p /openstack/log/ansible-logging
-  export ANSIBLE_LOG_PATH="/openstack/log/ansible-logging/ansible.log"
+  # Create ansible logging directory
+  mkdir -p ${ANSIBLE_LOG_DIR}
+
+  # Log some data about the instance and the rest of the system
+  log_instance_info
+
+  # First we gather facts about the hosts to populate the fact cache.
+  # We can't gather the facts for all hosts yet because the containers
+  # aren't built yet.
+  ansible -m setup -a 'gather_subset=network,hardware,virtual' hosts 2>${ANSIBLE_LOG_DIR}/facts-hosts.log
+
+  # Prepare the hosts
+  export ANSIBLE_LOG_PATH="${ANSIBLE_LOG_DIR}/setup-hosts.log"
+  openstack-ansible setup-hosts.yml -e gather_facts=False
+
+  # Log some data about the instance and the rest of the system
+  log_instance_info
+
+  # Once setup-hosts is complete, we should gather facts for everything
+  # (now including containers) so that the fact cache is complete for the
+  # remainder of the run.
+  ansible -m setup -a 'gather_subset=network,hardware,virtual' all 1>${ANSIBLE_LOG_DIR}/facts-all.log
+
+  # Prepare the infrastructure
+  export ANSIBLE_LOG_PATH="${ANSIBLE_LOG_DIR}/setup-infrastructure.log"
+  openstack-ansible setup-infrastructure.yml -e gather_facts=False
+
+  # Log some data about the instance and the rest of the system
+  log_instance_info
+
+  # Setup OpenStack
+  export ANSIBLE_LOG_PATH="${ANSIBLE_LOG_DIR}/setup-openstack.log"
+  openstack-ansible setup-openstack.yml -e gather_facts=False
+
+  # Log some data about the instance and the rest of the system
+  log_instance_info
+
 popd
-
-# Log some data about the instance and the rest of the system
-log_instance_info
-
-# Execute the Playbooks
-bash "${OSA_CLONE_DIR}/scripts/run-playbooks.sh"
-
-# Log some data about the instance and the rest of the system
-log_instance_info
 
 # If the action is to upgrade, then checkout the original SHA for
 # the checkout, and execute the upgrade.
