@@ -96,3 +96,9 @@ neutron_plugin_base:
   - router
   - metering
   - neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPluginv2
+
+# For testing purposes in public clouds, we need to ignore these
+# services when trying to do a reload of nova services.
+nova_service_negate:
+  - "nova-agent.service"
+  - "nova-resetnetwork.service"

@@ -33,7 +33,7 @@
   service:
     name: "{{ service_file }}"
     state: "{{ service_action }}"
-  with_items: "{{ _enabled_services.stdout_lines }}"
+  with_items: "{{ (_enabled_services.stdout_lines | difference(service_negate | default([]))) | list }}"
   loop_control:
     loop_var: service_file
 
