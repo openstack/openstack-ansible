@@ -2,8 +2,8 @@
 Team and repository tags
 ========================
 
-.. image:: http://governance.openstack.org/badges/openstack-ansible.svg
-    :target: http://governance.openstack.org/reference/tags/index.html
+.. image:: https://governance.openstack.org/badges/openstack-ansible.svg
+    :target: https://governance.openstack.org/reference/tags/index.html
 
 .. Change things from this point on
 
@@ -44,14 +44,14 @@ that OpenStack-Ansible supports. For individual role configuration options,
 see the `Role Documentation`_.
 
 An individual role's source code can be found at:
-http://git.openstack.org/cgit/openstack/openstack-ansible-<ROLENAME>.
+https://git.openstack.org/cgit/openstack/openstack-ansible-<ROLENAME>.
 
-.. _official OpenStack project: http://governance.openstack.org/reference/projects/index.html
-.. _Home Page: http://governance.openstack.org/reference/projects/openstackansible.html
+.. _official OpenStack project: https://governance.openstack.org/reference/projects/index.html
+.. _Home Page: https://governance.openstack.org/reference/projects/openstackansible.html
 .. _Deployment Guide: https://docs.openstack.org/project-deploy-guide/openstack-ansible
-.. _Quick Start: http://docs.openstack.org/developer/openstack-ansible/developer-docs/quickstart-aio.html
-.. _Developer Documentation: http://docs.openstack.org/developer/openstack-ansible/developer-docs/index.html
-.. _Source: http://git.openstack.org/cgit/openstack/openstack-ansible
+.. _Quick Start: https://docs.openstack.org/developer/openstack-ansible/developer-docs/quickstart-aio.html
+.. _Developer Documentation: https://docs.openstack.org/developer/openstack-ansible/developer-docs/index.html
+.. _Source: https://git.openstack.org/cgit/openstack/openstack-ansible
 .. _OpenStack Mailing Lists: http://lists.openstack.org/
 .. _freenode network: https://freenode.net/
 .. _Role Documentation: https://docs.openstack.org/project-deploy-guide/openstack-ansible/draft/configure.html#advanced-service-configuration
