@@ -145,6 +145,7 @@
       vars:
         service_name: "glance-api"
         service_action: "restarted"
+        service_fact: "glance"
       when:
         - "glance_all_software_updated | bool"
         - "ansible_local['openstack_ansible']['glance']['need_service_restart'] | bool"
