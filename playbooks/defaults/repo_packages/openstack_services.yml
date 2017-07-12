@@ -146,14 +146,14 @@ nova_git_project_group: nova_all
 nova_powervm_git_repo: https://git.openstack.org/openstack/nova-powervm
 nova_powervm_git_install_branch: f0baf3e65624d0d97edb9be3ce9739e8e7b90a59 # HEAD of "stable/newton" as of 30.06.2017
 nova_powervm_git_dest: "/opt/nova_powervm_{{ nova_powervm_git_install_branch | replace('/', '_') }}"
-nova_powervm_git_project_group: nova_compute
+nova_powervm_git_project_group: nova_all
 
 
 ## LXD Virt Driver
 nova_lxd_git_repo: https://git.openstack.org/openstack/nova-lxd
 nova_lxd_git_install_branch: 3bff6d0234fced139c8b34e6f9e530d3fc0aa584 # HEAD of "stable/newton" as of 30.06.2017
 nova_lxd_git_dest: "/opt/nova_lxd_{{ nova_lxd_git_install_branch | replace('/', '_') }}"
-nova_lxd_git_project_group: nova_compute
+nova_lxd_git_project_group: nova_all
 
 
 ## Sahara service
