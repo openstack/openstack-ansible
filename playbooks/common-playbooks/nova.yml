@@ -122,16 +122,7 @@
       nova_spicehtml5_git_repo: "{{ openstack_repo_git_url }}/spice-html5"
       nova_spicehtml5_git_install_branch: "{{ spicehtml5_git_install_branch }}"
       nova_management_address: "{{ management_address }}"
-
-    - role: "ceph_client"
-      openstack_service_system_user: "{{ nova_system_user_name }}"
-      openstack_service_venv_bin: "{{ nova_bin }}"
-      when:
-        - "'nova_compute' in group_names"
-        - "(nova_libvirt_images_rbd_pool is defined) or
-           (cinder_backends_rbd_inuse | default(false)) | bool"
-      tags:
-        - ceph
+      nova_cinder_rbd_inuse: "{{ hostvars['localhost']['cinder_backends_rbd_inuse'] }}"
 
     - role: "openstack_openrc"
       tags:
