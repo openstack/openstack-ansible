@@ -17,19 +17,6 @@ cinder_service_region: "{{ service_region }}"
 cinder_service_port: 8776
 # If there are Swift hosts in the environment, then enable cinder backups to it
 cinder_service_backup_program_enabled: "{{ groups['swift_all'] is defined and groups['swift_all'] | length > 0 }}"
-# cinder_backend_rbd_inuse: True if current host has an rbd backend
-cinder_backend_rbd_inuse: '{{ (cinder_backends|default("")|to_json).find("cinder.volume.drivers.rbd.RBDDriver") != -1 }}'
-# cinder_backends_rbd_inuse: true if at least 1 cinder_backend on any
-# cinder_volume host uses Ceph RBD
-# http://stackoverflow.com/questions/9486393/jinja2-change-the-value-of-a-variable-inside-a-loop
-cinder_backends_rbd_inuse: >-
-  {% set _var = False -%}
-  {% for host in groups['cinder_volume'] -%}
-  {%   if hostvars[host]['cinder_backend_rbd_inuse'] | bool -%}
-  {%     set _var = True -%}
-  {%   endif -%}
-  {% endfor -%}
-  {{ _var }}
 cinder_ceph_client: cinder
 
 # These are here rather than in cinder_all because

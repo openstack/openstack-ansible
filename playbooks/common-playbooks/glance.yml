@@ -61,15 +61,6 @@
   roles:
     - role: "os_glance"
 
-    - role: "ceph_client"
-      openstack_service_system_user: "{{ glance_system_user_name }}"
-      openstack_service_venv_bin: "{{ glance_bin }}"
-      when:
-        - "'glance_api' in group_names"
-        - "{{ 'rbd' in [glance_default_store | default('none')] + glance_additional_stores | default([]) }}"
-      tags:
-        - ceph
-
     - role: "openstack_openrc"
       tags:
         - openrc

@@ -13,5 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# cinder_backend_rbd_inuse: True if current host has an rbd backend
+# this is defined identically downstream in the os_cinder role, but redefined
+# here so it can be consumed by the nova group vars
+cinder_backend_rbd_inuse: '{{ (cinder_backends|default("")|to_json).find("cinder.volume.drivers.rbd.RBDDriver") != -1 }}'
+
 lxc_container_config_list:
   - "lxc.aa_profile=unconfined"
