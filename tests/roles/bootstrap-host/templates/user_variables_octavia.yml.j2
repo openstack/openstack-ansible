@@ -1,0 +1,25 @@
+---
+# Copyright 2017, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Octavia specific stuff
+octavia_system_home_folder: {{ bootstrap_host_octavia_tmp }}
+neutron_lbaas_octavia: True
+octavia_amp_image_file_name: {{ bootstrap_host_octavia_tmp }}/amphora-x64-haproxy.qcow2
+octavia_amp_image_upload_enabled: True
+octavia_glance_image_tag:
+octavia_management_net_subnet_cidr: 172.29.252.0/22
+
+# make glance only use file
+glance_default_store: file

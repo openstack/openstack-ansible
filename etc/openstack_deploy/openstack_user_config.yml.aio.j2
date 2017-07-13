@@ -1,16 +1,24 @@
 ---
 cidr_networks:
+{% if bootstrap_host_scenario == "translations" %}
   dbaas: 172.29.232.0/22
+{% endif %}
+{% if bootstrap_host_scenario in ["translations", "octavia"] %}
   lbaas: 172.29.252.0/22
+{% endif %}
   container: 172.29.236.0/22
   tunnel: 172.29.240.0/22
   storage: 172.29.244.0/22
 
 used_ips:
+{% if bootstrap_host_scenario == "translations" %}
   - "172.29.232.1,172.29.232.50"
   - "172.29.232.100"
+{% endif %}
+{% if bootstrap_host_scenario in ["translations", "octavia"] %}
   - "172.29.252.1,172.29.252.50"
   - "172.29.252.100"
+{% endif %}
   - "172.29.236.1,172.29.236.50"
   - "172.29.236.100"
   - "172.29.240.1,172.29.240.50"
@@ -49,6 +57,7 @@ global_overrides:
         net_name: "vxlan"
         group_binds:
           - neutron_linuxbridge_agent
+{% if bootstrap_host_scenario == "translations" %}
     - network:
         container_bridge: "br-dbaas"
         container_type: "veth"
@@ -60,6 +69,8 @@ global_overrides:
         group_binds:
           - neutron_linuxbridge_agent
           - rabbitmq
+{% endif %}
+{% if bootstrap_host_scenario in ["translations", "octavia"] %}
     - network:
         container_bridge: "br-lbaas"
         container_type: "veth"
@@ -73,6 +84,7 @@ global_overrides:
           - octavia-worker
           - octavia-housekeeping
           - octavia-health-manager
+{% endif %}
     - network:
         container_bridge: "br-vlan"
         container_type: "veth"
