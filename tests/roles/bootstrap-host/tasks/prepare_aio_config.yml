@@ -144,6 +144,13 @@
     config_type: yaml
   with_items: "{{ bootstrap_user_variables_extra_templates[bootstrap_host_scenario] | default([]) }}"
 
+- name: Copy modified cinder-volume env.d file for ceph scenario
+  copy:
+    src: "{{ playbook_dir }}/../etc/openstack_deploy/env.d/cinder-volume.yml.container.example"
+    dest: "/etc/openstack_deploy/env.d/cinder-volume.yml"
+  when:
+    - "bootstrap_host_scenario == 'ceph'"
+
 - name: Add user_conf_files to contain the list of files to copy into containers
   file:
     path: /etc/openstack_deploy/user_conf_files.yml
