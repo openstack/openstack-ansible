@@ -24,6 +24,24 @@
   tags:
     - nova
   pre_tasks:
+    # Enable execution of ceph_client on the nova compute hosts if cinder RBD
+    # backends are used. This is necessary to ensure that volume-backed Nova
+    # instances can function when RBD is the volume backend.
+    - name: Set cinder RBD inuse fact
+      set_fact:
+        nova_cinder_rbd_inuse: |-
+          {% set _var = False %}
+          {% for host in groups['cinder_volume'] %}
+          {%   if hostvars[host]['cinder_backend_rbd_inuse'] | bool %}
+          {%     set _var = True %}
+          {%   endif %}
+          {% endfor %}
+          {{ _var }}
+      delegate_to: localhost
+      delegate_facts: True
+      run_once: yes
+      tags:
+        - always
 
     # In order to ensure that any container, software or
     # config file changes which causes a container/service
@@ -122,16 +140,7 @@
       nova_spicehtml5_git_repo: "{{ openstack_repo_git_url }}/spice-html5"
       nova_spicehtml5_git_install_branch: "{{ spicehtml5_git_install_branch }}"
       nova_management_address: "{{ management_address }}"
-
-    - role: "ceph_client"
-      openstack_service_system_user: "{{ nova_system_user_name }}"
-      openstack_service_venv_bin: "{{ nova_bin }}"
-      when:
-        - "'nova_compute' in group_names"
-        - "(nova_libvirt_images_rbd_pool is defined) or
-           (cinder_backends_rbd_inuse | default(false)) | bool"
-      tags:
-        - ceph
+      nova_cinder_rbd_inuse: "{{ hostvars['localhost']['nova_cinder_rbd_inuse'] }}"
 
     - role: "openstack_openrc"
       tags:
