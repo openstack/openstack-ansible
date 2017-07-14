@@ -30,7 +30,7 @@
 
 - name: Prepare MQ/DB services
   hosts: neutron_all
-  gather_facts: "{{ gather_facts | default(True) }}"
+  gather_facts: no
   max_fail_percentage: 20
   user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
