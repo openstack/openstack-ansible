@@ -29,14 +29,7 @@
     # instances can function when RBD is the volume backend.
     - name: Set cinder RBD inuse fact
       set_fact:
-        nova_cinder_rbd_inuse: |-
-          {% set _var = False %}
-          {% for host in groups['cinder_volume'] %}
-          {%   if hostvars[host]['cinder_backend_rbd_inuse'] | bool %}
-          {%     set _var = True %}
-          {%   endif %}
-          {% endfor %}
-          {{ _var }}
+        nova_cinder_rbd_inuse: "{{ True in groups['cinder_volume'] | map('extract', hostvars, 'cinder_backend_rbd_inuse') }}"
       delegate_to: localhost
       delegate_facts: True
       when:
