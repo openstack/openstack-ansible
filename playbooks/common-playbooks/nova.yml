@@ -39,7 +39,10 @@
           {{ _var }}
       delegate_to: localhost
       delegate_facts: True
-      run_once: yes
+      when:
+        - "'nova_compute' in group_names"
+        - "inventory_hostname == ((groups['nova_compute'] | intersect(ansible_play_hosts)) | list)[0]"
+        - "hostvars['localhost']['nova_cinder_rbd_inuse'] is not defined"
       tags:
         - always
 
