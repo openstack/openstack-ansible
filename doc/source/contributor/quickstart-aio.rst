@@ -183,8 +183,9 @@ following:
 
 .. code-block:: shell-session
 
-   cp etc/openstack_deploy/conf.d/{aodh,gnocchi,ceilometer}.yml.aio /etc/openstack_deploy/conf.d/
-   for f in $(ls -1 /etc/openstack_deploy/conf.d/*.aio); do mv -v ${f} ${f%.*}; done
+   # cd /opt/openstack-ansible/playbooks
+   # cp etc/openstack_deploy/conf.d/{aodh,gnocchi,ceilometer}.yml.aio /etc/openstack_deploy/conf.d/
+   # for f in $(ls -1 /etc/openstack_deploy/conf.d/*.aio); do mv -v ${f} ${f%.*}; done
 
 To add any global overrides, over and above the defaults for the applicable
 scenario, edit  ``/etc/openstack_deploy/user_variables.yml``. See the
@@ -194,17 +195,10 @@ Finally, run the playbooks by executing:
 
 .. code-block:: shell-session
 
-   # scripts/run-playbooks.sh
-
-.. note::
-   Do not execute the ``run-playbooks.sh`` more than once. If something goes
-   wrong, it is necessary to start over as described below in the
-   `Rebuilding an AIO`_ section. Alternatively, it may be possible to
-   individually run each playbook rather than starting over. If any playbooks
-   need to be re-run after the initial deploy, they should be run from the
-   playbooks directory with the openstack-ansible command. Executing
-   ``run-playbooks.sh`` a second time results in an inconsistent state for LXC
-   IPtables rules and causes network connectivity issues from within containers.
+   # cd /opt/openstack-ansible/playbooks
+   # openstack-ansible setup-hosts.yml
+   # openstack-ansible setup-infrastructure.yml
+   # openstack-ansible setup-openstack.yml
 
 The installation process will take a while to complete, but here are some
 general estimates:
@@ -222,10 +216,6 @@ Keystone service, execute:
 
    # cd /opt/openstack-ansible/playbooks
    # openstack-ansible os-keystone-install.yml
-
-**Note:** The AIO bootstrap playbook will still build containers for services
-that are not requested for deployment, but the service will not be deployed
-in that container.
 
 .. _bootstrap-aio default services: https://git.openstack.org/cgit/openstack/openstack-ansible/tree/tests/bootstrap-aio.yml
 

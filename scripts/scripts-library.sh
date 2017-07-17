@@ -18,7 +18,7 @@
 ## Vars ----------------------------------------------------------------------
 LINE='----------------------------------------------------------------------'
 MAX_RETRIES=${MAX_RETRIES:-5}
-ANSIBLE_PARAMETERS=${ANSIBLE_PARAMETERS:--e gather_facts=False}
+ANSIBLE_PARAMETERS=${ANSIBLE_PARAMETERS:-""}
 STARTTIME="${STARTTIME:-$(date +%s)}"
 PIP_INSTALL_OPTIONS=${PIP_INSTALL_OPTIONS:-'pip==9.0.1 setuptools==36.2.0 wheel==0.29.0 '}
 COMMAND_LOGS=${COMMAND_LOGS:-"/openstack/log/ansible_cmd_logs"}
@@ -48,41 +48,6 @@ function determine_distro {
     export DISTRO_ID="${ID}"
     export DISTRO_NAME="${NAME}"
     export DISTRO_VERSION_ID="${VERSION_ID}"
-}
-
-# Used to retry a process that may fail due to random issues.
-function successerator {
-  set +e
-  # Get the time that the method was started.
-  OP_START_TIME=$(date +%s)
-  # Set the initial return value to failure.
-  false
-  for ((RETRY=0; $? != 0 && RETRY < MAX_RETRIES; RETRY++)); do
-    if [ ${RETRY} -gt 1 ];then
-      "$@" -vvvv
-    else
-      "$@"
-    fi
-  done
-  # If max retires were hit, fail.
-  if [ $? -ne 0 ] && [ ${RETRY} -eq ${MAX_RETRIES} ];then
-    echo -e "\nHit maximum number of retries, giving up...\n"
-    exit_fail
-  fi
-  # Ensure the log directory exists
-  if [[ ! -d "${COMMAND_LOGS}" ]];then
-    mkdir -p "${COMMAND_LOGS}"
-  fi
-  # Log the time that the method completed.
-  OP_TOTAL_SECONDS="$(( $(date +%s) - OP_START_TIME ))"
-  echo -e "- Operation: [ $@ ]\t${OP_TOTAL_SECONDS} seconds\tNumber of Attempts [ ${RETRY} ]" \
-    >> ${COMMAND_LOGS}/ansible_runtime_report.txt
-  set -e
-}
-
-function install_bits {
-  # Use the successerator to run openstack-ansible
-  successerator openstack-ansible "$@" ${ANSIBLE_PARAMETERS}
 }
 
 function ssh_key_create {
@@ -227,11 +192,6 @@ function get_instance_info {
             "/openstack/log/instance-info/host_packages_info_${TS}.log" || true
           ;;
   esac
-}
-
-function print_report {
-  # Print the stored report data
-  cat ${COMMAND_LOGS}/ansible_runtime_report.txt
 }
 
 function get_pip {
