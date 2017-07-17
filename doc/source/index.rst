@@ -17,8 +17,8 @@ OpenStack-Ansible Pike is currently in development.
 .. toctree::
    :maxdepth: 1
 
-   :deploy_guide:Deployment Guide <index.html>
-   releasenotes/unreleased
+   Deployment guide <https://docs.openstack.org/project-deploy-guide/openstack-ansible/draft/>
+   Release notes <https://docs.openstack.org/releasenotes/openstack-ansible/unreleased.html>
    admin/index
    user/index
    contributor/index
@@ -52,3 +52,11 @@ OpenStack-Ansible's Newton series was first released with the 14.0.0 tag on
 .. _OpenStack-Ansible Newton Documentation: http://docs.openstack.org/openstack-ansible/newton/
 .. _OpenStack-Ansible Newton series timeline: https://launchpad.net/openstack-ansible/newton
 .. _OpenStack-Ansible Newton series release notes: http://docs.openstack.org/releasenotes/openstack-ansible/newton.html
+
+Mitaka: EOL (end-of-life)
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+OpenStack-Ansible's Mitaka series was EOL'd on 10 April 2017.
+
+To view the documentation only,
+see the `OpenStack-Ansible Mitaka Documentation <https://docs.openstack.org/openstack-ansible/mitaka/>`_.

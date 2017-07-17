@@ -6,7 +6,7 @@ In this section, you will find documentation relevant to developing
 OpenStack-Ansible.
 
 For information on how to install and deploy OpenStack-Ansible, see the
-:deploy_guide:`Deployment Guide <index.html>`.
+`Deployment Guide <https://docs.openstack.org/project-deploy-guide/openstack-ansible/draft/>`_.
 
 Contents:
 
