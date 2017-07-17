@@ -250,24 +250,18 @@ function get_pip {
   # when pip is not installed, install it
   else
 
+    # Download the get-pip script using the primary or secondary URL
+    GETPIP_CMD="curl --silent --show-error --retry 5"
+    GETPIP_FILE="/opt/get-pip.py"
     # If GET_PIP_URL is set, then just use it
     if [ -n "${GET_PIP_URL:-}" ]; then
-      curl --silent ${GET_PIP_URL} > /opt/get-pip.py
-      if head -n 1 /opt/get-pip.py | grep python; then
-        python /opt/get-pip.py ${PIP_INSTALL_OPTIONS}
-        return
-      fi
+      ${CURL_CMD} ${GET_PIP_URL} > ${OUTPUT_FILE}
+    else
+      # Otherwise, try the two standard URL's
+      ${CURL_CMD} https://bootstrap.pypa.io/get-pip.py > ${OUTPUT_FILE}\
+        || ${CURL_CMD} https://raw.githubusercontent.com/pypa/get-pip/master/get-pip.py > ${OUTPUT_FILE}
     fi
 
-    # Try getting pip from bootstrap.pypa.io as a primary source
-    curl --silent https://bootstrap.pypa.io/get-pip.py > /opt/get-pip.py
-    if head -n 1 /opt/get-pip.py | grep python; then
-      python /opt/get-pip.py ${PIP_INSTALL_OPTIONS}
-      return
-    fi
-
-    # Try the get-pip.py from the github repository as a primary source
-    curl --silent https://raw.githubusercontent.com/pypa/get-pip/master/get-pip.py > /opt/get-pip.py
     if head -n 1 /opt/get-pip.py | grep python; then
       python /opt/get-pip.py ${PIP_INSTALL_OPTIONS}
       return

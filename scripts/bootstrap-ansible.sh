@@ -57,19 +57,19 @@ determine_distro
 # Install the base packages
 case ${DISTRO_ID} in
     centos|rhel)
-        yum -y install git python2 curl autoconf gcc-c++ \
-          python2-devel gcc libffi-devel nc openssl-devel \
-          python-pyasn1 pyOpenSSL python-ndg_httpsclient \
-          python-netaddr python-prettytable python-crypto PyYAML \
-          python-virtualenv
+        yum -y install \
+          git curl autoconf gcc gcc-c++ nc \
+          python2 python2-devel \
+          openssl-devel libffi-devel \
+          libselinux-python
         ;;
     ubuntu)
         apt-get update
         DEBIAN_FRONTEND=noninteractive apt-get -y install \
-          git python3-all python3-dev curl python3.5-dev build-essential \
-          libssl-dev libffi-dev netcat python3-requests python3-openssl python3-pyasn1 \
-          python3-netaddr python3-prettytable python3-crypto python3-yaml \
-          python3-virtualenv python3-venv
+          git-core curl gcc netcat \
+          python3 python3-dev \
+          libssl-dev libffi-dev \
+          python3-apt
         ;;
 esac
 
@@ -94,19 +94,14 @@ UPPER_CONSTRAINTS_PROTO=$([ "$PYTHON_VERSION" == $(echo -e "$PYTHON_VERSION\n2.7
 # Set the location of the constraints to use for all pip installations
 export UPPER_CONSTRAINTS_FILE=${UPPER_CONSTRAINTS_FILE:-"$UPPER_CONSTRAINTS_PROTO://git.openstack.org/cgit/openstack/requirements/plain/upper-constraints.txt?id=$(awk '/requirements_git_install_branch:/ {print $2}' playbooks/defaults/repo_packages/openstack_services.yml)"}
 
-# Figure out the right virtualenv command and options
-if [[ ${PYTHON_VERSION} =~ ^3 ]]; then
-  VIRTUALENV_COMMAND="python3 -m venv"
-  VIRTUALENV_OPTIONS="--copies"
-else
-  VIRTUALENV_COMMAND="virtualenv --python=${PYTHON_EXEC_PATH}"
-  VIRTUALENV_OPTIONS="--always-copy"
-fi
-
-# Trying to use the copy option on CentOS fails miserably, so we override it.
-if [[ "${DISTRO_ID}" == "centos" ]] || [[ "${DISTRO_ID}" == "rhel" ]]; then
-  VIRTUALENV_OPTIONS=""
-fi
+# Make sure that host requirements are installed
+pip install ${PIP_OPTS} \
+  --requirement requirements.txt \
+  --constraint ${UPPER_CONSTRAINTS_FILE} \
+  || pip install ${PIP_OPTS} \
+       --requirement requirements.txt \
+       --constraint ${UPPER_CONSTRAINTS_FILE} \
+       --isolated
 
 # Create a Virtualenv for the Ansible runtime
 if [ -f "/opt/ansible-runtime/bin/python" ]; then
@@ -115,7 +110,9 @@ if [ -f "/opt/ansible-runtime/bin/python" ]; then
     rm -rf /opt/ansible-runtime
   fi
 fi
-${VIRTUALENV_COMMAND} --clear ${VIRTUALENV_OPTIONS} /opt/ansible-runtime
+virtualenv --python=${PYTHON_EXEC_PATH} \
+           --clear \
+           /opt/ansible-runtime
 
 # The vars used to prepare the Ansible runtime venv
 PIP_OPTS+=" --upgrade"
