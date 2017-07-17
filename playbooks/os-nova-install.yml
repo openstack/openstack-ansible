@@ -63,6 +63,7 @@
         password: "{{ nova_api_container_mysql_password }}"
         login_host: "{{ nova_api_galera_address }}"
         db_name: "{{ nova_api_galera_database }}"
+        db_append_privs: "yes"
       run_once: yes
 
     - name: Configure MySQL user (nova-placement)
