@@ -77,6 +77,16 @@ case ${DISTRO_ID} in
           libssl-dev libffi-dev \
           python-apt python3-apt
         ;;
+    opensuse)
+        zypper -n install -l git-core curl autoconf gcc gcc-c++ \
+            netcat-openbsd python python-xml python-devel gcc \
+            libffi-devel libopenssl-devel python-pip
+        # Leap ships with python3.4 which is not supported by ansible and as
+        # such we are using python2
+        # See https://github.com/ansible/ansible/issues/24180
+        PYTHON_EXEC_PATH="/usr/bin/python2"
+        alternatives --set pip /usr/bin/pip2.7
+        ;;
 esac
 
 # Ensure we use the HTTPS/HTTP proxy with pip if it is specified
