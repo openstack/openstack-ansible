@@ -1,0 +1,14 @@
+---
+features:
+  - OpenStack-Ansible now supports the openSUSE Leap 42.X
+    distributions mainly targeting the latest 42.3 release.
+issues:
+  - Ceph storage backend is known not to work on openSUSE
+    Leap 42.X yet. This is due to missing openSUSE support
+    in the upstream Ceph Ansible playbooks.
+other:
+  - openSUSE Leap 42.X support is still work in progress and
+    not fully tested besides basic coverange in the OpenStack CI and
+    individual manual testing. Even though backporting fixes to the
+    Pike release will be done on best effort basis, it's advised to
+    use the master branch when working on openSUSE hosts.
