@@ -102,4 +102,4 @@ class TestMultipleRuns(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    unittest.main(catchbreak=True)
