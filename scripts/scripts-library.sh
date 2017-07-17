@@ -170,7 +170,7 @@ function log_instance_info {
 }
 
 function get_repos_info {
-  for i in /etc/apt/sources.list /etc/apt/sources.list.d/* /etc/yum.conf /etc/yum.repos.d/*; do
+  for i in /etc/apt/sources.list /etc/apt/sources.list.d/* /etc/yum.conf /etc/yum.repos.d/* /etc/zypp/repos.d/*; do
     if [ -f "${i}" ]; then
       echo -e "\n$i"
       cat $i
@@ -210,7 +210,7 @@ function get_instance_info {
 
   determine_distro
   case ${DISTRO_ID} in
-      centos|rhel|fedora)
+      centos|rhel|fedora|opensuse)
           rpm -qa > \
             "/openstack/log/instance-info/host_packages_info_${TS}.log" || true
           ;;
