@@ -15,13 +15,6 @@
 
 pip_install_package_state: "{{ package_state }}"
 
-# These are pinned to ensure exactly the same behaviour forever!
-# These pins are updated through the sources-branch-updater script
-pip_packages:
-  - pip==9.0.1
-  - setuptools==36.2.0
-  - wheel==0.29.0
-
 pip_links:
   - { name: "openstack_release", link: "{{ repo_release_path }}/" }
 pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"

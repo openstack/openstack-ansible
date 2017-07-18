@@ -188,19 +188,16 @@ sync_roles_and_packages() {
 }
 
 #
-# Updates pip options using PIP_CURRENT_OPTIONS env variable
+# Updates global requirement pins for pip, setuptools and wheel
 #
 update_pip_options() {
-  # Update the PIP_INSTALL_OPTIONS with the current versions of pip, wheel and setuptools
   PIP_CURRENT_OPTIONS=$(./scripts/get-pypi-pkg-version.py -p pip setuptools wheel -l horizontal)
-  sed -i.bak "s|^PIP_INSTALL_OPTIONS=.*|PIP_INSTALL_OPTIONS=\$\{PIP_INSTALL_OPTIONS:-'${PIP_CURRENT_OPTIONS}'\}|" scripts/scripts-library.sh
 
   for pin in ${PIP_CURRENT_OPTIONS}; do
     sed -i.bak "s|^$(echo ${pin} | cut -f1 -d=).*|${pin}|" global-requirement-pins.txt
-    sed -i.bak "s|^  - $(echo ${pin} | cut -f1 -d=).*|  - ${pin}|" group_vars/all/pip.yml
   done
 
-  echo "Updated pip install options/pins"
+  echo "Updated global requirement pins"
 }
 
 #

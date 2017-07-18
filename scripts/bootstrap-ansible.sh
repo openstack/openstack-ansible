@@ -33,9 +33,11 @@ export ANSIBLE_ROLE_FETCH_MODE=${ANSIBLE_ROLE_FETCH_MODE:-git-clone}
 # This script should be executed from the root directory of the cloned repo
 cd "$(dirname "${0}")/.."
 
+
 ## Functions -----------------------------------------------------------------
 info_block "Checking for required libraries." 2> /dev/null ||
     source scripts/scripts-library.sh
+
 
 ## Main ----------------------------------------------------------------------
 info_block "Bootstrapping System with Ansible"
@@ -73,9 +75,6 @@ case ${DISTRO_ID} in
         ;;
 esac
 
-# Install pip
-get_pip
-
 # Ensure we use the HTTPS/HTTP proxy with pip if it is specified
 PIP_OPTS=""
 if [ -n "$HTTPS_PROXY" ]; then
@@ -94,7 +93,17 @@ UPPER_CONSTRAINTS_PROTO=$([ "$PYTHON_VERSION" == $(echo -e "$PYTHON_VERSION\n2.7
 # Set the location of the constraints to use for all pip installations
 export UPPER_CONSTRAINTS_FILE=${UPPER_CONSTRAINTS_FILE:-"$UPPER_CONSTRAINTS_PROTO://git.openstack.org/cgit/openstack/requirements/plain/upper-constraints.txt?id=$(awk '/requirements_git_install_branch:/ {print $2}' playbooks/defaults/repo_packages/openstack_services.yml)"}
 
-# Make sure that host requirements are installed
+# Install pip on the host if it is not already installed,
+# but also make sure that it is at least version 9.x or above.
+PIP_VERSION=$(pip --version 2>/dev/null | awk '{print $2}' | cut -d. -f1)
+if [[ "${PIP_VERSION}" -lt "9" ]]; then
+  get_pip ${PYTHON_EXEC_PATH}
+  # Ensure that our shell knows about the new pip
+  hash -r pip
+fi
+
+# Install the requirements for the various python scripts
+# on to the host, including virtualenv.
 pip install ${PIP_OPTS} \
   --requirement requirements.txt \
   --constraint ${UPPER_CONSTRAINTS_FILE} \
@@ -112,24 +121,24 @@ if [ -f "/opt/ansible-runtime/bin/python" ]; then
 fi
 virtualenv --python=${PYTHON_EXEC_PATH} \
            --clear \
+           --no-pip --no-setuptools --no-wheel \
            /opt/ansible-runtime
 
+# Install pip, setuptools and wheel into the venv
+get_pip /opt/ansible-runtime/bin/python
+
 # The vars used to prepare the Ansible runtime venv
-PIP_OPTS+=" --upgrade"
 PIP_COMMAND="/opt/ansible-runtime/bin/pip"
+PIP_OPTS+=" --constraint global-requirement-pins.txt"
+PIP_OPTS+=" --constraint ${UPPER_CONSTRAINTS_FILE}"
 
 # When upgrading there will already be a pip.conf file locking pip down to the
 # repo server, in such cases it may be necessary to use --isolated because the
 # repo server does not meet the specified requirements.
 
-# Ensure we are running the required versions of pip, wheel and setuptools
-${PIP_COMMAND} install ${PIP_OPTS} ${PIP_INSTALL_OPTIONS} || ${PIP_COMMAND} install ${PIP_OPTS} --isolated ${PIP_INSTALL_OPTIONS}
-
-# Set the constraints now that we know we're using the right version of pip
-PIP_OPTS+=" --constraint global-requirement-pins.txt --constraint ${UPPER_CONSTRAINTS_FILE}"
-
-# Install the required packages for ansible
-$PIP_COMMAND install $PIP_OPTS -r requirements.txt ${ANSIBLE_PACKAGE} || $PIP_COMMAND install --isolated $PIP_OPTS -r requirements.txt ${ANSIBLE_PACKAGE}
+# Install ansible and the other required packages
+${PIP_COMMAND} install ${PIP_OPTS} -r requirements.txt ${ANSIBLE_PACKAGE} \
+  || ${PIP_COMMAND} install --isolated ${PIP_OPTS} -r requirements.txt ${ANSIBLE_PACKAGE}
 
 # Ensure that Ansible binaries run from the venv
 pushd /opt/ansible-runtime/bin
