@@ -215,6 +215,7 @@
       vars:
         service_name: "nova-placement-api"
         service_action: "restarted"
+        service_fact: "nova"
       when:
         - "nova_all_software_updated | bool"
         - "ansible_local['openstack_ansible']['nova']['need_service_restart'] | bool"
