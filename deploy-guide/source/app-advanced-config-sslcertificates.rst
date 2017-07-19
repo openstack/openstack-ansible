@@ -5,17 +5,15 @@ Securing services with SSL certificates
 The `OpenStack Security Guide`_ recommends providing secure communication
 between various services in an OpenStack deployment. The OpenStack-Ansible
 project currently offers the ability to configure SSL certificates for secure
-communication with the following services:
+communication between services:
 
 .. _OpenStack Security Guide: http://docs.openstack.org/security-guide/secure-communication.html
 
-* HAProxy
-* Dashboard (horizon)
-* Identity (keystone)
-* RabbitMQ
+All public endpoints reside behind haproxy, resulting in the only certificate
+management most environments need are those for haproxy.
 
-For each service, you can either use self-signed certificates that are
-generated during the deployment process or provide SSL certificates,
+When deploying with OpenStack-Ansible, you can either use self-signed certificates
+that are generated during the deployment process or provide SSL certificates,
 keys, and CA certificates from your own trusted certificate authority. Highly
 secured environments use trusted, user-provided certificates for as
 many services as possible.
@@ -23,8 +21,15 @@ many services as possible.
 .. note::
 
    Perform all SSL certificate configuration in
-   ``/etc/openstack_deploy/user_variables.yml`` file and not in the playbook
-   roles themselves.
+   ``/etc/openstack_deploy/user_variables.yml`` file and not in the playbooks
+   or roles themselves. The variables to set which provide the path on the deployment
+   node to the certificates for HAProxy configuration are:
+
+.. code-block:: yaml
+
+   haproxy_user_ssl_cert: /etc/openstack_deploy/ssl/example.com.crt
+   haproxy_user_ssl_key: /etc/openstack_deploy/ssl/example.com.key
+   haproxy_user_ssl_ca_cert: /etc/openstack_deploy/ssl/ExampleCA.crt
 
 Self-signed certificates
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -32,15 +37,8 @@ Self-signed certificates
 Self-signed certificates enable you to start quickly and encrypt data in
 transit. However, they do not provide a high level of trust for highly
 secure environments. By default, self-signed certificates are used in
-OpenStack-Ansible. When self-signed certificates are used, you must disable
-certificate verification by using the following user variables, depending on
-your configuration. Add these variables in the
-``/etc/openstack_deploy/user_variables.yml`` file.
-
-.. code-block:: yaml
-
-    keystone_service_adminuri_insecure: true
-    keystone_service_internaluri_insecure: true
+OpenStack-Ansible. When self-signed certificates are used, certificate
+verification is automatically disabled.
 
 Setting subject data for self-signed certificates
 -------------------------------------------------
@@ -80,14 +78,14 @@ following ways:
 
 * To force a self-signed certificate to regenerate with every playbook run,
   set the appropriate regeneration option to ``true``.  For example, if
-  you have already run the ``os-horizon`` playbook, but you want to regenerate
-  the self-signed certificate, set the ``horizon_ssl_self_signed_regen``
+  you have already run the ``haproxy`` playbook, but you want to regenerate
+  the self-signed certificate, set the ``haproxy_ssl_self_signed_regen``
   variable to ``true`` in the ``/etc/openstack_deploy/user_variables.yml``
   file:
 
   .. code-block:: yaml
 
-     horizon_ssl_self_signed_regen: true
+     haproxy_ssl_self_signed_regen: true
 
 .. note::
 
@@ -122,9 +120,9 @@ three variables:
 
 .. code-block:: yaml
 
-    rabbitmq_user_ssl_cert:    /tmp/example.com.crt
-    rabbitmq_user_ssl_key:     /tmp/example.com.key
-    rabbitmq_user_ssl_ca_cert: /tmp/ExampleCA.crt
+    rabbitmq_user_ssl_cert:    /etc/openstack_deploy/ssl/example.com.crt
+    rabbitmq_user_ssl_key:     /etc/openstack_deploy/ssl/example.com.key
+    rabbitmq_user_ssl_ca_cert: /etc/openstack_deploy/ssl/ExampleCA.crt
 
 Then, run the playbook to apply the certificates:
 
