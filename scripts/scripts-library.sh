@@ -215,11 +215,11 @@ function get_pip {
     GETPIP_FILE="/opt/get-pip.py"
     # If GET_PIP_URL is set, then just use it
     if [ -n "${GET_PIP_URL:-}" ]; then
-      ${CURL_CMD} ${GET_PIP_URL} > ${OUTPUT_FILE}
+      ${CURL_CMD} ${GET_PIP_URL} > ${GETPIP_FILE}
     else
       # Otherwise, try the two standard URL's
-      ${CURL_CMD} https://bootstrap.pypa.io/get-pip.py > ${OUTPUT_FILE}\
-        || ${CURL_CMD} https://raw.githubusercontent.com/pypa/get-pip/master/get-pip.py > ${OUTPUT_FILE}
+      ${GETPIP_CMD} https://bootstrap.pypa.io/get-pip.py > ${GETPIP_FILE}\
+        || ${GETPIP_CMD} https://raw.githubusercontent.com/pypa/get-pip/master/get-pip.py > ${GETPIP_FILE}
     fi
 
     if head -n 1 /opt/get-pip.py | grep python; then
