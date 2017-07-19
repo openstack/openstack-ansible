@@ -1,0 +1,36 @@
+---
+# Copyright 2017, SUSE LINUX GmbH
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+tacker_service_publicuri: "{{ openstack_service_publicuri_proto|default(tacker_service_proto) }}://{{ external_lb_vip_address }}:{{ tacker_service_port }}"
+tacker_service_adminurl: "{{ tacker_service_adminuri }}/"
+tacker_service_region: "{{ service_region }}"
+tacker_service_in_ldap: "{{ service_ldap_backend_enabled }}"
+
+tacker_aodh_enabled: "{{ groups['aodh_all'] is defined and groups['aodh_all'] | length > 0 }}"
+tacker_gnocchi_enabled: "{{ groups['gnocchi_all'] is defined and groups['gnocchi_all'] | length > 0 }}"
+
+# NOTE: these and their swift_all.yml counterpart should be moved back to all.yml once swift with tacker gets proper SSL support
+# swift_rabbitmq_telemetry_port: "{{ rabbitmq_port }}"
+# swift_rabbitmq_telemetry_use_ssl: "{{ rabbitmq_use_ssl }}"
+
+# Ensure that the package state matches the global setting
+tacker_package_state: "{{ package_state }}"
+
+# venv fetch configuration
+tacker_venv_tag: "{{ venv_tag }}"
+tacker_venv_download_url: "{{ venv_base_download_url }}/tacker-{{ openstack_release }}-{{ ansible_architecture | lower }}.tgz"
+
+# locations for fetching the default files from the git source
+tacker_git_config_lookup_location: "{{ openstack_repo_url }}/openstackgit/tacker"

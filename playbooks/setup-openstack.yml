@@ -39,6 +39,7 @@
 - include: os-sahara-install.yml
 - include: os-molteniron-install.yml
 - include: os-octavia-install.yml
+- include: os-tacker-install.yml
 - include: os-tempest-install.yml
   when: (tempest_install | default(False)) | bool or (tempest_run | default(False)) | bool
 
