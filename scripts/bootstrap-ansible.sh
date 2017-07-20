@@ -69,7 +69,8 @@ case ${DISTRO_ID} in
         apt-get update
         DEBIAN_FRONTEND=noninteractive apt-get -y install \
           git-core curl gcc netcat \
-          python-minimal python3 python3-dev \
+          python-minimal python-dev \
+          python3 python3-dev \
           libssl-dev libffi-dev \
           python3-apt
         ;;
