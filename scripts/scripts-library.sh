@@ -197,7 +197,7 @@ function get_pip {
 
   # The python executable to use when executing get-pip is passed
   # as a parameter to this function.
-  GETPIP_PYTHON_EXEC_PATH="${1}"
+  GETPIP_PYTHON_EXEC_PATH="${1:-$(which python)}"
 
   # Download the get-pip script using the primary or secondary URL
   GETPIP_CMD="curl --silent --show-error --retry 5"
