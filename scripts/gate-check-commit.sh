@@ -59,6 +59,20 @@ export ACTION=${2:-"deploy"}
 # is created. The checkout must always be N-1.
 export UPGRADE_SOURCE_BRANCH=${UPGRADE_SOURCE_BRANCH:-'stable/ocata'}
 
+## Change branch for Upgrades ------------------------------------------------
+# If the action is to upgrade, then store the current SHA,
+# checkout the source SHA before executing the greenfield
+# deployment.
+# This needs to be done before the first "source" to ensure
+# the correct functions are used for the branch.
+if [[ "${ACTION}" == "upgrade" ]]; then
+    # Store the target SHA/branch
+    export UPGRADE_TARGET_BRANCH=$(git rev-parse HEAD)
+
+    # Now checkout the source SHA/branch
+    git checkout origin/${UPGRADE_SOURCE_BRANCH}
+fi
+
 ## Functions -----------------------------------------------------------------
 info_block "Checking for required libraries." 2> /dev/null || source "${OSA_CLONE_DIR}/scripts/scripts-library.sh"
 
@@ -69,17 +83,6 @@ trap gate_job_exit_tasks EXIT
 
 # Log some data about the instance and the rest of the system
 log_instance_info
-
-# If the action is to upgrade, then store the current SHA,
-# checkout the source SHA before executing the greenfield
-# deployment.
-if [[ "${ACTION}" == "upgrade" ]]; then
-    # Store the target SHA/branch
-    export UPGRADE_TARGET_BRANCH=$(git rev-parse HEAD)
-
-    # Now checkout the source SHA/branch
-    git checkout origin/${UPGRADE_SOURCE_BRANCH}
-fi
 
 # Get minimum disk size
 DATA_DISK_MIN_SIZE="$((1024**3 * $(awk '/bootstrap_host_data_disk_min_size/{print $2}' "${OSA_CLONE_DIR}/tests/roles/bootstrap-host/defaults/main.yml") ))"
@@ -214,6 +217,9 @@ if [[ "${ACTION}" == "upgrade" ]]; then
     # requirements to be installed.
     unset ANSIBLE_PACKAGE
     unset UPPER_CONSTRAINTS_FILE
+
+    # Source the current scripts-library.sh functions
+    source "${OSA_CLONE_DIR}/scripts/scripts-library.sh"
 
     # Kick off the data plane tester
     bash ${OSA_CLONE_DIR}/tests/data-plane-test.sh &> /var/log/data-plane-error.log &
