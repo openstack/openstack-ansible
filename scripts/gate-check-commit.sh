@@ -53,16 +53,7 @@ export ACTION=${2:-"deploy"}
 # is created. The checkout must always be N-1.
 export UPGRADE_SOURCE_BRANCH=${UPGRADE_SOURCE_BRANCH:-'stable/newton'}
 
-## Functions -----------------------------------------------------------------
-info_block "Checking for required libraries." 2> /dev/null || source "$(dirname "${0}")/scripts-library.sh"
-
-## Main ----------------------------------------------------------------------
-# Set gate job exit traps, this is run regardless of exit state when the job finishes.
-trap gate_job_exit_tasks EXIT
-
-# Log some data about the instance and the rest of the system
-log_instance_info
-
+## Change branch for Upgrades ------------------------------------------------
 # If the action is to upgrade, then store the current SHA,
 # checkout the source SHA before executing the greenfield
 # deployment.
@@ -73,6 +64,16 @@ if [[ "${ACTION}" == "upgrade" ]]; then
     # Now checkout the source SHA/branch
     git checkout ${UPGRADE_SOURCE_BRANCH}
 fi
+
+## Functions -----------------------------------------------------------------
+info_block "Checking for required libraries." 2> /dev/null || source "$(dirname "${0}")/scripts-library.sh"
+
+## Main ----------------------------------------------------------------------
+# Set gate job exit traps, this is run regardless of exit state when the job finishes.
+trap gate_job_exit_tasks EXIT
+
+# Log some data about the instance and the rest of the system
+log_instance_info
 
 # Get minimum disk size
 DATA_DISK_MIN_SIZE="$((1024**3 * $(awk '/bootstrap_host_data_disk_min_size/{print $2}' "$(dirname "${0}")/../tests/roles/bootstrap-host/defaults/main.yml") ))"
