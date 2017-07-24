@@ -1,0 +1,21 @@
+---
+issues:
+  - |
+    MariaDB 10.1+ includes `PrivateDevices=true` in its systemd unit files to
+    add extra security around mount namespaces for MariaDB. While this is
+    useful when running MariaDB on a bare metal host with other services, it
+    is less useful when MariaDB is already in a container with its own
+    namespaces. In addition, LXC 2.0.8 presents `/dev/ptmx` as a bind mount
+    within the container and systemd 219 (on CentOS 7) cannot make an
+    additional bind mount of `/dev/ptmx` when `PrivateDevices` is enabled.
+
+    Deployers can `galera_disable_privatedevices` to `yes` to set
+    `PrivateDevices=false` in the systemd unit file for MariaDB on CentOS 7.
+    The default is `no`, which keeps the default systemd unit file settings
+    from the MariaDB package.
+
+    For additional information, refer to the following bugs:
+
+    * https://bugs.launchpad.net/openstack-ansible/+bug/1697531
+    * https://github.com/lxc/lxc/issues/1623
+    * https://github.com/systemd/systemd/issues/6121

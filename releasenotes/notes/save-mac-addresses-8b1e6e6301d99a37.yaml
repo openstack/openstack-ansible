@@ -1,0 +1,7 @@
+---
+features:
+  - MAC addresses for containers with a fixed MAC (`lxc_container_fixed_mac`
+    variable) are now saved to the ``/etc/ansible/facts.d/mac.fact`` file.
+    Should such a container be destroyed but not removed from inventory,
+    the interfaces will be recreated with the same MAC address when the
+    container is recreated.

@@ -1,0 +1,25 @@
+---
+features:
+  - A new repository for installing modern erlang from ESL
+    (erlang solutions) has been added giving us the ability
+    to install and support modern stable erlang over numerous
+    operating systems.
+  - The ability to set the RabbitMQ repo URL for both erlang
+    and RabbitMQ itself has been added. This has been done to
+    allow deployers to define the location of a given repo without
+    having to fully redefine the entire set of definitions for a
+    specific repository. The default variables `rabbitmq_gpg_keys`,
+    `rabbitmq_repo_url`, and `rabbitmq_erlang_repo_url` have been
+    created to facilitate this capability.
+upgrade:
+  - Changing to the ESL repos has no upgrade impact. The version
+    of erlang provided by ESL is newer than that what is found in
+    the distro repos. Furthermore, a pin has been added to
+    ensure that APT always uses the ESL repos as it's preferred
+    source which has been done to simply ensure APT is always
+    pointed at ESL.
+fixes:
+  - Based on documentation from RabbitMQ
+    [ https://www.rabbitmq.com/which-erlang.html ] this change
+    ensures the version of erlang we're using across distros is
+    consistent and supported by RabbitMQ.

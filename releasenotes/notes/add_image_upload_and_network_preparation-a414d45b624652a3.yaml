@@ -1,0 +1,11 @@
+---
+features:
+  - Adds a way for the system to automatically create the Octavia management
+    network if octavia_service_net_setup is enabled (DEFAULT). Additional
+    parameters can control the setup.
+  - Adds support for glance-image-id and automatic uploading of the image
+    if octavia_amp_image_upload_enabled is True (Default is False). This is
+    mostly tp work around the limitations of Ansible's OpenStack support
+    and should not be used in prodcution settings. Instead refer to the
+    documentation to upload images yourself.
+

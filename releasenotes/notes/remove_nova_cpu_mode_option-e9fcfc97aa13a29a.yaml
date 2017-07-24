@@ -1,0 +1,9 @@
+---
+deprecations:
+  - |
+    The ``nova_cpu_mode`` Ansible variable has been removed by default,
+    to allow Nova to detect the default value automatically. Hard-coded
+    values can cause problems. You can still set ``nova_cpu_mode`` to
+    enforce a ``cpu_mode`` for Nova.
+    Additionally, the default value for the ``qemu`` ``libvirt_type``
+    is set to ``none`` to avoid issues caused with ``qemu`` 2.6.0.
