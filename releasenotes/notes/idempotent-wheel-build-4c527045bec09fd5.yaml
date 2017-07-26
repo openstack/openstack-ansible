@@ -1,0 +1,22 @@
+---
+upgrade:
+  - The entire repo build process is now idempotent. From now on when
+    the repo build is re-run, it will only fetch updated git
+    repositories and rebuild the wheels/venvs if the requirements
+    have changed, or a new release is being deployed.
+  - The git clone part of the repo build process now only happens when
+    the requirements change. A git reclone can be forced by using the
+    boolean variable ``repo_build_git_reclone``.
+  - The python wheel build process now only happens when requirements
+    change. A wheel rebuild may be forced by using the boolean variable
+    ``repo_build_wheel_rebuild``.
+  - The python venv build process now only happens when requirements
+    change. A venv rebuild may be forced by using the boolean variable
+    ``repo_build_venv_rebuild``.
+  - The repo build process now only has the following tags, providing
+    a clear path for each deliverable. The tag ``repo-build-install``
+    completes the installation of required packages. The tag
+    ``repo-build-wheels`` completes the wheel build process. The tag
+    ``repo-build-venvs`` completes the venv build process. Finally, the
+    tag ``repo-build-index`` completes the manifest preparation and
+    indexing of the os-releases and links folders.

@@ -1,0 +1,10 @@
+---
+upgrade:
+  - Keystone now uses uWSGI exclusively (instead of Apache with mod_wsgi)
+    and has the web server acting as a reverse proxy. The default web
+    server is now set to Nginx instead of Apache, but Apache will
+    automatically used if federation is configured.
+deprecations:
+  - The variables ``keystone_apache_enabled`` and ``keystone_mod_wsgi_enabled``
+    have been removed and replaced with a single variable ``keystone_web_server``
+    to optionally set the web server used for keystone.

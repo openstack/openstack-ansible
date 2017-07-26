@@ -1,0 +1,8 @@
+---
+features:
+  - You can force update the translations direct
+    from Zanata by setting ``horizon_translations_update``
+    to ``True``. This will call the ``pull_catalog``
+    option built into ``horizon-manage.py``. You should
+    only use this when testing translations, otherwise
+    this should remain set to the default of ``False``.

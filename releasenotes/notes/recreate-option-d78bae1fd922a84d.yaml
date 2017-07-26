@@ -1,0 +1,6 @@
+---
+features:
+  - Added the ``lxc_container_recreate`` option, which will destroy then
+    recreate LXC containers. The container names and IP addresses will remain
+    the same, as will the MAC addresses of any containers using the
+    ``lxc_container_fixed_mac`` setting.

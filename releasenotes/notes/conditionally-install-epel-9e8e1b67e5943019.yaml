@@ -1,0 +1,16 @@
+---
+upgrade:
+  - |
+    The EPEL repository is only installed and configured when the deployer sets
+    ``security_enable_virus_scanner`` to ``yes``. This allows the ClamAV
+    packages to be installed. If ``security_enable_virus_scanner`` is set to
+    ``no`` (the default), the EPEL repository will not be added.
+
+    See
+    `Bug 1702167 <https://bugs.launchpad.net/openstack-ansible/+bug/1702167>`_
+    for more details.
+  - |
+    Deployers now have the option to prevent the EPEL repository from being
+    installed by the role. Setting ``security_epel_install_repository`` to
+    ``no`` prevents EPEL from being installed. This setting may prevent certain
+    packages from installing, such as ClamAV.
