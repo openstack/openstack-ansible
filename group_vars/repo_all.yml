@@ -52,8 +52,16 @@ pip_lock_to_internal_repo: False
 # A pre-built wheel can be missing libvirt capabilities from the installed
 # version of libvirt-bin, leading to nova-compute failing to start.
 #
+# NOTE(hwoarang) cryptography may bundle openssl in the wheel and that
+# causes symbol conflicts if a different openssl is provided by the
+# distribution. As such, it's probably safer to re-build cryptography
+# ourselves just to be sure that the correct distro libraries are used
+# see https://github.com/pyca/cryptography/issues/3804
+# This keeps popping up every now and then so it might worth keeping this
+# around even if the upstream issue is resolved
 repo_build_pip_no_binary:
   - libvirt-python
+  - cryptography
 
 # Set the build tag and the repo version
 repo_build_release_tag: "{{ openstack_release }}"
