@@ -53,7 +53,7 @@
 
 - name: Put down post-up script for veth-peer interfaces (RedHat)
   template:
-    src: "redhat_interface_{{ item[0] | default('default') }}.cfg.j2"
+    src: "rpm_interface_{{ item[0] }}.cfg.j2"
     dest: "/etc/sysconfig/network-scripts/{{ item[0] }}-veth-{{ item[1].name | default('br-mgmt') }}-2-{{ item[1].veth_peer | default('eth1') }}"
     mode: "0755"
   with_nested:
@@ -74,6 +74,49 @@
   when:
     - item[1].veth_peer is defined
     - ansible_pkg_mgr in ['yum', 'dnf']
+
+- name: Copy network configuration (SUSE)
+  template:
+    src: "suse_interface_default.cfg.j2"
+    dest: "/etc/sysconfig/network/ifcfg-{{ item.name | default('br-mgmt') }}"
+  with_items: "{{ bridges }}"
+  register: network_interfaces_suse
+  when:
+    - ansible_pkg_mgr == 'zypper'
+
+- name: Put down post-up script for veth-peer interfaces (SUSE)
+  template:
+    src: "rpm_interface_{{ item[0] }}.cfg.j2"
+    dest: "/etc/sysconfig/network/scripts/{{ item[0] }}-veth-{{ item[1].name | default('br-mgmt') }}-2-{{ item[1].veth_peer | default('eth1') }}"
+    mode: "0755"
+  with_nested:
+    - [ "ifup-post", "ifdown-post" ]
+    - "{{ bridges }}"
+  when:
+    - item[1].veth_peer is defined
+    - ansible_pkg_mgr == 'zypper'
+
+- name: Ensure the postup scripts are loaded (SUSE)
+  lineinfile:
+    dest: "/etc/sysconfig/network/ifcfg-{{ item[1].name | default('br-mgmt') }}"
+    line: "POST_UP_SCRIPTS=\"compat:suse:{{ item[0] }}-veth-{{ item[1].name | default('br-mgmt') }}-2-{{ item[1].veth_peer | default('eth1') }}\""
+  with_nested:
+    - [ "ifup-post" ]
+    - "{{ bridges }}"
+  when:
+    - item[1].veth_peer is defined
+    - ansible_pkg_mgr == 'zypper'
+
+- name: Ensure the postdown scripts are loaded (SUSE)
+  lineinfile:
+    dest: "/etc/sysconfig/network/ifcfg-{{ item[1].name | default('br-mgmt') }}"
+    line: "POST_DOWN_SCRIPTS=\"compat:suse:{{ item[0] }}-veth-{{ item[1].name | default('br-mgmt') }}-2-{{ item[1].veth_peer | default('eth1') }}\""
+  with_nested:
+    - [ "ifdown-post" ]
+    - "{{ bridges }}"
+  when:
+    - item[1].veth_peer is defined
+    - ansible_pkg_mgr == 'zypper'
 
 - name: Copy multinode network configuration (Debian)
   template:
@@ -131,7 +174,7 @@
 - name: Start the network interfaces
   command: "ifup {{ item.name }}"
   when:
-    - osa_interfaces | changed or network_interfaces_rhel | changed
+    - osa_interfaces | changed or network_interfaces_rhel | changed or network_interfaces_suse | changed
     - item.enabled | default(True)
   with_items:
     - { name: br-mgmt }

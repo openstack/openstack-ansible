@@ -1,0 +1,8 @@
+{% if item.veth_peer is defined %}
+# This interface has a veth peer
+{% endif %}
+BRIDGE='yes'
+IPADDR={{ item.ip_addr | default('10.1.0.1') }}
+NETMASK={{ item.netmask | default('255.255.255.0') }}
+STARTMODE='auto'
+BOOTPROTO='static'
