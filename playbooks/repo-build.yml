@@ -37,9 +37,7 @@
       add_host:
         name: "{{ groups[item][0] }}"
         groups: repo_masters
-      when:
-        - "item.find('repo_servers_') != -1"
-      with_items: "{{ groups }}"
+      with_items: "{{ groups | select('match', '^repo_servers_') | list }}"
   tags:
     - always
     - repo-build
