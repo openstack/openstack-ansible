@@ -1,0 +1,9 @@
+# The infra nodes that will be running the etcd containers (only used if the
+# calico plugin is enabled for Neutron)
+etcd_hosts:
+  infra1:
+    ip: 172.20.236.111
+  infra2:
+    ip: 172.20.236.112
+  infra3:
+    ip: 172.20.236.113
