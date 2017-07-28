@@ -129,6 +129,14 @@
     config_overrides: "{{ user_variables_overrides | default({}) }}"
     config_type: yaml
 
+- name: Drop the extra user_variables files for this scenario
+  config_template:
+    src: "{{ item.src }}"
+    dest: "/etc/openstack_deploy/{{ item.dest }}"
+    config_overrides: "{{ item.config_overrides | default({}) }}"
+    config_type: yaml
+  with_items: "{{ bootstrap_user_variables_extra_templates[bootstrap_host_scenario] | default([]) }}"
+
 - name: Add user_conf_files to contain the list of files to copy into containers
   file:
     path: /etc/openstack_deploy/user_conf_files.yml
