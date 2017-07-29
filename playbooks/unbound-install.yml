@@ -19,6 +19,8 @@
   gather_facts: "{{ gather_facts | default(True) }}"
   user: root
   pre_tasks:
+    - include: common-tasks/os-log-dir-setup.yml
+    - include: common-tasks/os-lxc-container-setup.yml
     - include: common-tasks/package-cache-proxy.yml
   roles:
     - role: "unbound"
