@@ -148,7 +148,7 @@ Release notes may be built locally by executing:
 
     tox -e releasenotes
 
-.. _the reno tool: http://docs.openstack.org/developer/reno/usage.html
+.. _the reno tool: https://docs.openstack.org/developer/reno/usage.html
 
 .. note::
 

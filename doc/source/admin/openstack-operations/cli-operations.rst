@@ -83,34 +83,34 @@ associated with:
 For more information about OpenStack client utilities, see these links:
 
 -  `OpenStack API Quick
-   Start <http://developer.openstack.org/api-guide/quick-start/index.html>`__
+   Start <https://developer.openstack.org/api-guide/quick-start/index.html>`__
 
 -  `OpenStackClient
-   commands <http://docs.openstack.org/developer/python-openstackclient/command-list.html>`__
+   commands <https://docs.openstack.org/python-openstackclient/latest/>`__
 
 -  `Image Service (glance) CLI
-   commands <http://docs.openstack.org/cli-reference/glance.html>`__
+   commands <https://docs.openstack.org/glance/latest/cli/index.html>`__
 
 -  `Image Service (glance) CLI command cheat
-   sheet <http://docs.openstack.org/user-guide/cli-cheat-sheet.html#images-glance>`__
+   sheet <https://docs.openstack.org/python-glanceclient/latest/cli/glance.html>`__
 
 -  `Compute (nova) CLI
-   commands <http://docs.openstack.org/cli-reference/nova.html>`__
+   commands <https://docs.openstack.org/nova/latest/cli/index.html>`__
 
 -  `Compute (nova) CLI command cheat
-   sheet <http://docs.openstack.org/user-guide/cli-cheat-sheet.html#compute-nova>`__
+   sheet <https://docs.openstack.org/python-novaclient/latest/cli/nova.html>`__
 
 -  `Networking (neutron) CLI
-   commands <http://docs.openstack.org/cli-reference/neutron.html>`__
+   commands <https://docs.openstack.org/neutron/latest/cli/index.html>`__
 
 -  `Networking (neutron) CLI command cheat
-   sheet <http://docs.openstack.org/user-guide/cli-cheat-sheet.html#networking-neutron>`__
+   sheet <https://docs.openstack.org/python-neutronclient/latest/cli/neutron.html>`__
 
 -  `Block Storage (cinder) CLI commands
-   <http://docs.openstack.org/cli-reference/cinder.html>`__
+   <https://docs.openstack.org/python-cinderclient/latest/user/cinder.html>`__
 
 -  `Block Storage (cinder) CLI command cheat
-   sheet <http://docs.openstack.org/user-guide/cli-cheat-sheet.html#block-storage-cinder>`__
+   sheet <https://docs.openstack.org/python-cinderclient/latest/cli/details.html>`__
 
 -  `python-keystoneclient <https://pypi.python.org/pypi/python-keystoneclient/>`__
 

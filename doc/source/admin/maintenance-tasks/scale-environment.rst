@@ -83,7 +83,7 @@ Use the following procedure to add a compute host to an operational
 cluster.
 
 #. Configure the host as a target host. See `Prepare target hosts
-   <http://docs.openstack.org/project-deploy-guide/openstack-ansible/newton/targethosts.html>`_
+   <https://docs.openstack.org/project-deploy-guide/openstack-ansible/newton/targethosts.html>`_
    for more information.
 
 #. Edit the ``/etc/openstack_deploy/openstack_user_config.yml`` file and
