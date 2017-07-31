@@ -38,7 +38,18 @@ bootstrap_host_target_config_paths:
   - /etc/openstack_deploy/env.d
 
 # The user variables template to use
-bootstrap_user_variables_template: "user_variables.{{ bootstrap_host_scenario }}.yml.j2"
+bootstrap_user_variables_template: user_variables.aio.yml.j2
+
+# Extra user variables files can be loaded into /etc/openstack_deploy by
+# test scenarios. The dict uses scenario as the key to load a list of extra
+# templates if necessary.
+bootstrap_user_variables_extra_templates:
+  ceph:
+    - src: user_variables_ceph.yml.j2
+      dest: user_variables_ceph.yml
+  translations:
+    - src: user_variables_translations.yml.j2
+      dest: user_variables_translations.yml
 
 ## Swap memory
 # If there is no swap memory present, the bootstrap will create a loopback disk
