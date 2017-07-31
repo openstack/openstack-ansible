@@ -80,10 +80,10 @@ General Guidelines for Submitting Code
   review. See `Development and Testing`_ for more information.
 
 .. _Git Commit Good Practice: https://wiki.openstack.org/wiki/GitCommitMessages
-.. _workflow documented here: http://docs.openstack.org/infra/manual/developers.html#development-workflow
+.. _workflow documented here: https://docs.openstack.org/infra/manual/developers.html#development-workflow
 .. _advanced gerrit usage: http://www.mediawiki.org/wiki/Gerrit/Advanced_usage
 .. _Ansible best practices: http://docs.ansible.com/playbooks_best_practices.html
-.. _the reno tool: http://docs.openstack.org/developer/reno/usage.html
+.. _the reno tool: https://docs.openstack.org/developer/reno/usage.html
 .. _Development and Testing: scripts.html#development-and-testing
 
 Working on Features
@@ -116,8 +116,8 @@ Working on Features
   documentation should then describe how it is implemented in
   OpenStack-Ansible and what configuration options there are.
 
-.. _Working on Specifications and Blueprints: http://docs.openstack.org/infra/manual/developers.html#working-on-specifications-and-blueprints
-.. _Tempest: http://docs.openstack.org/developer/tempest/
+.. _Working on Specifications and Blueprints: https://docs.openstack.org/infra/manual/developers.html#working-on-specifications-and-blueprints
+.. _Tempest: https://docs.openstack.org/developer/tempest/
 
 Backporting
 ~~~~~~~~~~~
@@ -147,7 +147,7 @@ Backporting
   `OpenStack Guidelines for stable branches`_ can be used as a reference.
 
 .. _Submitting a change to a branch for review: http://www.mediawiki.org/wiki/Gerrit/Advanced_usage#Submitting_a_change_to_a_branch_for_review_.28.22backporting.22.29
-.. _OpenStack Guidelines for stable branches: http://docs.openstack.org/project-team-guide/stable-branches.html
+.. _OpenStack Guidelines for stable branches: https://docs.openstack.org/project-team-guide/stable-branches.html
 
 Documentation and Release Note Guidelines
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -168,7 +168,7 @@ Guide`_, with particular reference to the following sections:
 * Writing style
 * RST formatting conventions
 
-.. _OpenStack Documentation Contributor Guide: http://docs.openstack.org/contributor-guide/
+.. _OpenStack Documentation Contributor Guide: https://docs.openstack.org/contributor-guide/
 
 Code Comments
 -------------
@@ -195,7 +195,7 @@ OpenStack-Ansible has multiple forms of documentation with different intent.
    statements of intent. The work to fulfill the intent is ongoing. Any new
    documentation submissions should try to help this intent where possible.
 
-The `Deployment Guide <http://docs.openstack.org/project-deploy-guide/openstack-ansible>`_
+The `Deployment Guide <https://docs.openstack.org/project-deploy-guide/openstack-ansible>`_
 intends to help deployers deploy OpenStack-Ansible for the first time.
 
 The role documentation (for example, the `keystone role documentation`_)
@@ -212,7 +212,7 @@ OpenStack Manuals or service documentation and OpenStack-Ansible documentation
 should link to those documents when available, rather than duplicate their
 content.
 
-.. _keystone role documentation: http://docs.openstack.org/developer/openstack-ansible-os_keystone/
+.. _keystone role documentation: https://docs.openstack.org/developer/openstack-ansible-os_keystone/
 
 Release Notes
 -------------

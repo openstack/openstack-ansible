@@ -21,7 +21,7 @@ The bug triage practices in OpenStack-Ansible are based on the
 `OpenStack Bug Triage Documentation`_ and on the `Nova Bug triage page`_.
 
 .. _Nova Bug triage page: https://wiki.openstack.org/wiki/Nova/BugTriage
-.. _OpenStack Bug Triage Documentation: http://docs.openstack.org/infra/manual/developers.html#working-on-bugs
+.. _OpenStack Bug Triage Documentation: https://docs.openstack.org/infra/manual/developers.html#working-on-bugs
 
 Bug classification
 ~~~~~~~~~~~~~~~~~~
