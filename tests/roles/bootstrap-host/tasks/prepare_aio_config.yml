@@ -18,9 +18,7 @@
   file:
     path: "{{ item }}"
     state: directory
-  with_items:
-    - "/etc/openstack_deploy/"
-    - "/etc/openstack_deploy/conf.d"
+  with_items: "{{ bootstrap_host_target_config_paths }}"
   tags:
     - create-directories
 
