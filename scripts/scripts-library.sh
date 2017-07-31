@@ -246,7 +246,7 @@ function get_pip {
     GETPIP_FILE="/opt/get-pip.py"
     # If GET_PIP_URL is set, then just use it
     if [ -n "${GET_PIP_URL:-}" ]; then
-      ${CURL_CMD} ${GET_PIP_URL} > ${GETPIP_FILE}
+      ${GETPIP_CMD} ${GET_PIP_URL} > ${GETPIP_FILE}
     else
       # Otherwise, try the two standard URL's
       ${GETPIP_CMD} https://bootstrap.pypa.io/get-pip.py > ${GETPIP_FILE}\
