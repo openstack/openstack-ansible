@@ -24,12 +24,10 @@ from test_inventory import get_inventory
 from test_inventory import make_config
 
 INV_DIR = 'playbooks/inventory'
-LIB_DIR = 'osa_toolkit'
 
-sys.path.append(path.join(os.getcwd(), LIB_DIR))
 sys.path.append(path.join(os.getcwd(), INV_DIR))
 
-import filesystem as fs
+from osa_toolkit import filesystem as fs
 
 TARGET_DIR = path.join(os.getcwd(), 'tests', 'inventory')
 USER_CONFIG_FILE = path.join(TARGET_DIR, 'openstack_user_config.yml')
@@ -50,14 +48,14 @@ class TestMultipleRuns(unittest.TestCase):
     def test_creating_backup_file(self):
         inventory_file_path = os.path.join(TARGET_DIR,
                                            'openstack_inventory.json')
-        get_backup_name_path = 'filesystem._get_backup_name'
+        get_backup_name_path = 'osa_toolkit.filesystem._get_backup_name'
         backup_name = 'openstack_inventory.json-20160531_171804.json'
 
         tar_file = mock.MagicMock()
         tar_file.__enter__.return_value = tar_file
 
         # run make backup with faked tarfiles and date
-        with mock.patch('filesystem.tarfile.open') as tar_open:
+        with mock.patch('osa_toolkit.filesystem.tarfile.open') as tar_open:
             tar_open.return_value = tar_file
             with mock.patch(get_backup_name_path) as backup_mock:
                 backup_mock.return_value = backup_name

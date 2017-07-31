@@ -80,6 +80,7 @@ esac
 PIP_OPTS=""
 if [ -n "$HTTPS_PROXY" ]; then
   PIP_OPTS="--proxy $HTTPS_PROXY"
+
 elif [ -n "$HTTP_PROXY" ]; then
   PIP_OPTS="--proxy $HTTP_PROXY"
 fi
@@ -140,6 +141,9 @@ PIP_OPTS+=" --constraint ${UPPER_CONSTRAINTS_FILE}"
 # Install ansible and the other required packages
 ${PIP_COMMAND} install ${PIP_OPTS} -r requirements.txt ${ANSIBLE_PACKAGE} \
   || ${PIP_COMMAND} install --isolated ${PIP_OPTS} -r requirements.txt ${ANSIBLE_PACKAGE}
+
+# Install our osa_toolkit code from the current checkout
+$PIP_COMMAND install -e .
 
 # Ensure that Ansible binaries run from the venv
 pushd /opt/ansible-runtime/bin

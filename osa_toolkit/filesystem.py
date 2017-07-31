@@ -21,10 +21,10 @@ import datetime
 import json
 import logging
 import os
+from osa_toolkit import dictutils as du
 import tarfile
 import yaml
 
-import dictutils as du
 
 logger = logging.getLogger('osa-inventory')
 

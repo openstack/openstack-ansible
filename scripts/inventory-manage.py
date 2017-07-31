@@ -23,14 +23,8 @@
 # to manage.py in order to facilitate importing of the python code
 
 # This file remains for backwards compatibility
-import os
-import sys
 
-cwd = os.path.abspath(os.path.dirname(__file__))
-import_path = os.path.join(cwd, '..', 'osa_toolkit')
-sys.path.append(import_path)
-
-import manage
+from osa_toolkit import manage
 
 if __name__ == "__main__":
     manage.main()

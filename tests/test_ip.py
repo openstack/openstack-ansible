@@ -12,16 +12,9 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-import os
-from os import path
-import sys
 import unittest
 
-LIB_DIR = path.join(os.getcwd(), 'osa_toolkit')
-
-sys.path.append(LIB_DIR)
-
-import ip
+from osa_toolkit import ip
 
 
 class TestIPManager(unittest.TestCase):

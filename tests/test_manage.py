@@ -14,16 +14,12 @@
 
 import os
 from os import path
-import sys
 import test_inventory
 import unittest
 
-MANAGE_DIR = path.join(os.getcwd(), 'osa_toolkit')
 TARGET_DIR = path.join(os.getcwd(), 'tests', 'inventory')
 
-sys.path.append(MANAGE_DIR)
-
-import manage as mi
+from osa_toolkit import manage as mi
 
 
 def setUpModule():

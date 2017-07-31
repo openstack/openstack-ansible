@@ -26,16 +26,14 @@ import warnings
 import yaml
 
 INV_DIR = 'playbooks/inventory'
-LIB_DIR = 'osa_toolkit'
 
-sys.path.append(path.join(os.getcwd(), LIB_DIR))
 sys.path.append(path.join(os.getcwd(), INV_DIR))
 
-import dictutils
+from osa_toolkit import dictutils
 import dynamic_inventory
-import filesystem as fs
-import generate as di
-import tools
+from osa_toolkit import filesystem as fs
+from osa_toolkit import generate as di
+from osa_toolkit import tools
 
 TARGET_DIR = path.join(os.getcwd(), 'tests', 'inventory')
 BASE_ENV_DIR = INV_DIR
@@ -488,8 +486,8 @@ class TestIps(unittest.TestCase):
         self.longMessage = True
         self.env = fs.load_environment(BASE_ENV_DIR, {})
 
-    @mock.patch('filesystem.load_environment')
-    @mock.patch('filesystem.load_user_configuration')
+    @mock.patch('osa_toolkit.filesystem.load_environment')
+    @mock.patch('osa_toolkit.filesystem.load_user_configuration')
     def test_duplicates(self, mock_load_config, mock_load_env):
         """Test that no duplicate IPs are made on any network."""
 
@@ -1187,8 +1185,8 @@ class TestNetworkEntry(unittest.TestCase):
 
 
 class TestDebugLogging(unittest.TestCase):
-    @mock.patch('generate.logging')
-    @mock.patch('generate.logger')
+    @mock.patch('osa_toolkit.generate.logging')
+    @mock.patch('osa_toolkit.generate.logger')
     def test_logging_enabled(self, mock_logger, mock_logging):
         # Shadow the real value so tests don't complain about it
         mock_logging.DEBUG = 10
@@ -1199,8 +1197,8 @@ class TestDebugLogging(unittest.TestCase):
         self.assertTrue(mock_logger.info.called)
         self.assertTrue(mock_logger.debug.called)
 
-    @mock.patch('generate.logging')
-    @mock.patch('generate.logger')
+    @mock.patch('osa_toolkit.generate.logging')
+    @mock.patch('osa_toolkit.generate.logger')
     def test_logging_disabled(self, mock_logger, mock_logging):
         get_inventory(extra_args={"debug": False})
 
@@ -1244,7 +1242,7 @@ class TestLxcHosts(TestConfigCheckBase):
         inventory['lxc_hosts']['hosts'].append('compute1')
         faked_path = INV_DIR
 
-        with mock.patch('filesystem.load_inventory') as inv_mock:
+        with mock.patch('osa_toolkit.filesystem.load_inventory') as inv_mock:
             inv_mock.return_value = (inventory, faked_path)
             new_inventory = get_inventory()
         # host should no longer be in lxc_hosts
@@ -1260,7 +1258,7 @@ class TestLxcHosts(TestConfigCheckBase):
         self.assertNotIn('lxc_hosts', inventory.keys())
 
         faked_path = INV_DIR
-        with mock.patch('filesystem.load_inventory') as inv_mock:
+        with mock.patch('osa_toolkit.filesystem.load_inventory') as inv_mock:
             inv_mock.return_value = (inventory, faked_path)
             new_inventory = get_inventory()
 
@@ -1377,7 +1375,7 @@ class TestInventoryGroupConstraints(unittest.TestCase):
             'load_user_configuration': mock.DEFAULT
         }
 
-        with mock.patch.multiple('filesystem', **kwargs) as mocks:
+        with mock.patch.multiple('osa_toolkit.filesystem', **kwargs) as mocks:
             mocks['load_environment'].return_value = env
             mocks['load_user_configuration'].return_value = config
 

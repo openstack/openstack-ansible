@@ -15,15 +15,15 @@
 #
 # (c) 2014, Kevin Carter <kevin.carter@rackspace.com>
 
-import ip
 import json
 import logging
 import netaddr
+from osa_toolkit import dictutils as du
+from osa_toolkit import filesystem as filesys
+from osa_toolkit import ip
 import uuid
 import warnings
 
-import dictutils as du
-import filesystem as filesys
 
 logger = logging.getLogger('osa-inventory')
 
