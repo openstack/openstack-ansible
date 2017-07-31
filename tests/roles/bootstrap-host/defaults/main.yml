@@ -30,6 +30,12 @@ bootstrap_host_aio_script_path: "{{ playbook_dir }}/../scripts"
 # The user space configuration file names to use
 bootstrap_host_user_variables_filename: "user_variables.yml"
 bootstrap_host_user_secrets_filename: "user_secrets.yml"
+#
+# Paths to configuration file targets that should be created by the bootstrap
+bootstrap_host_target_config_paths:
+  - /etc/openstack_deploy
+  - /etc/openstack_deploy/conf.d
+  - /etc/openstack_deploy/env.d
 
 # The user variables template to use
 bootstrap_user_variables_template: "user_variables.{{ bootstrap_host_scenario }}.yml.j2"
