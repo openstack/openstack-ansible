@@ -5,7 +5,7 @@ Managing images
 .. FROM JP TO ADD:
    I think a far more interesting section for operations is how to handle the
    CHANGES of images. For example, deprecation of images, re-uploading new
-   ones... The process is dependant on each company, but at least it would be
+   ones... The process is dependent on each company, but at least it would be
    original content, and far more valuable IMO. But it implies research.
 
 An image represents the operating system, software, and any settings
