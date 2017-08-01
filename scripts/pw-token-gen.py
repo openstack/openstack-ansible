@@ -166,7 +166,7 @@ def main():
 
     changed = False
     generator = CredentialGenerator()
-    for entry, value in user_vars.iteritems():
+    for entry, value in user_vars.items():
         if value is None or all_args['regen'] is True:
             if entry.endswith('password') or entry.endswith('secret'):
                 changed = True
@@ -198,7 +198,7 @@ def main():
             backup_name = '%s-%s' % (basename, utctime)
             tar.add(user_vars_file, arcname=backup_name)
 
-    with open(user_vars_file, 'wb') as f:
+    with open(user_vars_file, 'w') as f:
         os.chmod(user_vars_file, 0o600)
         f.write(
             yaml.safe_dump(
