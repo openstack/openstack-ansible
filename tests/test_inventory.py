@@ -331,6 +331,7 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'nova_console_container',
         'nova_scheduler',
         'nova_scheduler_container',
+        'opendaylight',
         'operator_containers',
         'operator_hosts',
         'orchestration_all',
