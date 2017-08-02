@@ -1,5 +1,5 @@
 {% if bootstrap_host_encapsulation_enabled | bool %}
-{% for nic_name, nic_details in bootstrap_host_encapsulation_interfaces.iteritems() %}
+{% for nic_name, nic_details in bootstrap_host_encapsulation_interfaces.items() %}
 # {{ nic_details.friendly_name }}
 auto {{ nic_name }}
 iface {{ nic_name }} inet manual
@@ -10,7 +10,7 @@ iface {{ nic_name }} inet manual
 
 {% endfor %}
 {% endif %}
-{%- for nic_name, nic_details in bootstrap_host_bridges_interfaces.iteritems() -%}
+{%- for nic_name, nic_details in bootstrap_host_bridges_interfaces.items() -%}
 auto {{ nic_name }}
 iface {{ nic_name }} inet {{ nic_details.mode | default('static') }}
     bridge_stp off
