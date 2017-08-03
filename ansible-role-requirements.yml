@@ -70,6 +70,10 @@
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_cinder
   version: b3f53ea50e35e7c8821329ca926ae5413621eb3f
+- name: os_designate
+  scm: git
+  src: https://git.openstack.org/openstack/openstack-ansible-os_designate
+  version: 56cf5e273fe6241482e840fc75c9d5e9adc228ee
 - name: os_glance
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_glance
@@ -94,10 +98,10 @@
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_magnum
   version: 57d2552d564754eeae792be6cdf45ff345c6d0b1
-- name: os_trove
+- name: os_molteniron
   scm: git
-  src: https://git.openstack.org/openstack/openstack-ansible-os_trove
-  version: a34541fca18fb7b48e2a67dfaa8ea8c067e3b1b7
+  src: https://git.openstack.org/openstack/openstack-ansible-os_molteniron
+  version: 9c9612a71e0166eef56105e8da34fa3564c7891e
 - name: os_neutron
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_neutron
@@ -106,6 +110,10 @@
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_nova
   version: 2fbb2159df98e9cffd38ca619d30a341043e7711
+- name: os_octavia
+  scm: git
+  src: https://git.openstack.org/openstack/openstack-ansible-os_octavia
+  version: deae241495122d6c9b8602c7a201b604ef604086
 - name: os_rally
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_rally
@@ -122,6 +130,10 @@
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_tempest
   version: 81e4153aa527f7145acb3bce496ead049a528933
+- name: os_trove
+  scm: git
+  src: https://git.openstack.org/openstack/openstack-ansible-os_trove
+  version: a34541fca18fb7b48e2a67dfaa8ea8c067e3b1b7
 - name: plugins
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-plugins
@@ -166,35 +178,27 @@
   scm: git
   src: https://github.com/logan2211/ansible-resolvconf
   version: '1.3'
-- name: os_designate
+- name: ceph-defaults
   scm: git
-  src: https://git.openstack.org/openstack/openstack-ansible-os_designate
-  version: 56cf5e273fe6241482e840fc75c9d5e9adc228ee
-- name: ceph.ceph-common
+  src: https://github.com/ceph/ansible-ceph-defaults
+  version: 'v3.0.4'
+- name: ceph-common
   scm: git
   src: https://github.com/ceph/ansible-ceph-common
-  version: cac97d5ee370c23d00371038fa87e23ee3b37739
-- name: ceph.ceph-docker-common
+  version: 'v3.0.4'
+- name: ceph-config
   scm: git
-  src: https://github.com/ceph/ansible-ceph-docker-common
-  version: ca86fd0ef6d24aa2c750a625acdcb8012c374aa0
+  src: https://github.com/ceph/ansible-ceph-config
+  version: 'v3.0.4'
 - name: ceph-mon
   scm: git
   src: https://github.com/ceph/ansible-ceph-mon
-  version: 235ea7526a2bb621317b5263f3841deef7ab49e6
+  version: 'v3.0.4'
 - name: ceph-mgr
   scm: git
   src: https://github.com/ceph/ansible-ceph-mgr
-  version: d9ddb83bae6b054549efa1c96b0a37c63073ebea
+  version: 'v3.0.4'
 - name: ceph-osd
   scm: git
   src: https://github.com/ceph/ansible-ceph-osd
-  version: 6ac48fc2373f100b3e5285e42446de132b561f47
-- name: os_octavia
-  scm: git
-  src: https://git.openstack.org/openstack/openstack-ansible-os_octavia
-  version: deae241495122d6c9b8602c7a201b604ef604086
-- name: os_molteniron
-  scm: git
-  src: https://git.openstack.org/openstack/openstack-ansible-os_molteniron
-  version: 9c9612a71e0166eef56105e8da34fa3564c7891e
+  version: 'v3.0.4'

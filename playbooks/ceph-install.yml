@@ -33,7 +33,8 @@
         key: "{{ ceph_stable_key }}"
         state: present
       when:
-        - ceph_stable
+        - ceph_origin == 'repository'
+        - ceph_repository == 'community'
         - ansible_pkg_mgr in ['yum', 'dnf']
     - name: add ceph stable repository
       package:
@@ -41,7 +42,8 @@
         state: present
       changed_when: false
       when:
-        - ceph_stable
+        - ceph_origin == 'repository'
+        - ceph_repository == 'community'
         - ansible_pkg_mgr in ['yum', 'dnf']
     - name: Purge yum/dnf cache
       command: "{{ ansible_pkg_mgr }} clean all"
@@ -84,19 +86,28 @@
       when:
         - ansible_pkg_mgr in ['yum', 'dnf']
   roles:
-    - role: "ceph-mon"
+    - role: ceph-defaults
       tags:
         - skip_ansible_lint
-    - role: "ceph-mgr"
+    - role: ceph-common
       tags:
         - skip_ansible_lint
-    - role: "rsyslog_client"
+    - role: ceph-config
+      tags:
+        - skip_ansible_lint
+    - role: ceph-mon
+      tags:
+        - skip_ansible_lint
+    - role: ceph-mgr
+      tags:
+        - skip_ansible_lint
+    - role: rsyslog_client
       rsyslog_client_log_rotate_file: ceph_log_rotate
       rsyslog_client_log_dir: "/var/log/ceph"
       rsyslog_client_config_name: "99-ceph-rsyslog-client.conf"
       tags:
         - rsyslog
-    - role: "system_crontab_coordination"
+    - role: system_crontab_coordination
       tags:
         - crontab
   vars:
@@ -136,7 +147,8 @@
         key: "{{ ceph_stable_key }}"
         state: present
       when:
-        - ceph_stable
+        - ceph_origin == 'repository'
+        - ceph_repository == 'community'
         - ansible_pkg_mgr in ['yum', 'dnf']
     - name: add ceph stable repository
       package:
@@ -144,7 +156,8 @@
         state: present
       changed_when: false
       when:
-        - ceph_stable
+        - ceph_origin == 'repository'
+        - ceph_repository == 'community'
         - ansible_pkg_mgr in ['yum', 'dnf']
     - name: Purge yum/dnf cache
       command: "{{ ansible_pkg_mgr }} clean all"
@@ -162,16 +175,25 @@
       when:
         - ansible_pkg_mgr in ['yum', 'dnf']
   roles:
-    - role: "ceph-osd"
+    - role: ceph-defaults
       tags:
         - skip_ansible_lint
-    - role: "rsyslog_client"
+    - role: ceph-common
+      tags:
+        - skip_ansible_lint
+    - role: ceph-config
+      tags:
+        - skip_ansible_lint
+    - role: ceph-osd
+      tags:
+        - skip_ansible_lint
+    - role: rsyslog_client
       rsyslog_client_log_rotate_file: ceph_log_rotate
       rsyslog_client_log_dir: "/var/log/ceph"
       rsyslog_client_config_name: "99-ceph-rsyslog-client.conf"
       tags:
         - rsyslog
-    - role: "system_crontab_coordination"
+    - role: system_crontab_coordination
       tags:
         - crontab
   environment: "{{ deployment_environment_variables | default({}) }}"

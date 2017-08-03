@@ -13,17 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-## ceph-ansible AIO settings
-common_single_host_mode: true
-monitor_interface: eth1 # Management network in the AIO
-public_network: "{{ (mgmt_range ~ '.0/' ~ netmask) | ipaddr('net') }}"
-journal_size: 100
-osd_scenario: collocated
-pool_default_pg_num: 32
-openstack_config: true # Ceph ansible automatically creates pools & keys
-cinder_ceph_client: cinder
-cinder_default_volume_type: RBD
-glance_ceph_client: glance
-glance_default_store: rbd
-glance_rbd_store_pool: images
-nova_libvirt_images_rbd_pool: vms
+- name: Remove the ceph galaxy named roles
+  hosts: localhost
+  gather_facts: true
+  user: root
+  tasks:
+    # These roles used to be named using galaxy format due to the naming of the
+    # meta dependencies in ceph-ansible. Now the meta dependencies no longer
+    # exist so we are free to name them more consistently with the rest of
+    # OSA's roles.
+    - name: Remove ceph galaxy named roles if found
+      file:
+        path: "/etc/ansible/roles/{{ item }}"
+        state: "absent"
+      with_items:
+        - ceph.ceph-docker-common
+        - ceph.ceph-common
