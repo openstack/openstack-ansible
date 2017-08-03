@@ -56,10 +56,13 @@ ssh_key_create
 # Determine the distribution which the host is running on
 determine_distro
 
+# Prefer dnf over yum for CentOS.
+which dnf &>/dev/null && RHT_PKG_MGR='dnf' || RHT_PKG_MGR='yum'
+
 # Install the base packages
 case ${DISTRO_ID} in
     centos|rhel)
-        yum -y install \
+        $RHT_PKG_MGR -y install \
           git curl autoconf gcc gcc-c++ nc \
           python2 python2-devel \
           openssl-devel libffi-devel \
