@@ -70,6 +70,10 @@
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_cinder
   version: master
+- name: os_designate
+  scm: git
+  src: https://git.openstack.org/openstack/openstack-ansible-os_designate
+  version: master
 - name: os_glance
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_glance
@@ -94,9 +98,9 @@
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_magnum
   version: master
-- name: os_trove
+- name: os_molteniron
   scm: git
-  src: https://git.openstack.org/openstack/openstack-ansible-os_trove
+  src: https://git.openstack.org/openstack/openstack-ansible-os_molteniron
   version: master
 - name: os_neutron
   scm: git
@@ -105,6 +109,10 @@
 - name: os_nova
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_nova
+  version: master
+- name: os_octavia
+  scm: git
+  src: https://git.openstack.org/openstack/openstack-ansible-os_octavia
   version: master
 - name: os_rally
   scm: git
@@ -118,9 +126,17 @@
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_swift
   version: master
+- name: os_tacker
+  scm: git
+  src: https://git.openstack.org/openstack/openstack-ansible-os_tacker
+  version: master
 - name: os_tempest
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_tempest
+  version: master
+- name: os_trove
+  scm: git
+  src: https://git.openstack.org/openstack/openstack-ansible-os_trove
   version: master
 - name: plugins
   scm: git
@@ -166,45 +182,33 @@
   scm: git
   src: https://github.com/logan2211/ansible-resolvconf
   version: master
-- name: os_designate
+- name: ceph-defaults
   scm: git
-  src: https://git.openstack.org/openstack/openstack-ansible-os_designate
+  src: https://github.com/ceph/ansible-ceph-defaults
   version: master
-- name: ceph.ceph-common
+- name: ceph-common
   scm: git
   src: https://github.com/ceph/ansible-ceph-common
-  version: 41b7be03dec81e16502386ef17b7af96db6f0d6f
-- name: ceph.ceph-docker-common
+  version: master
+- name: ceph-config
   scm: git
-  src: https://github.com/ceph/ansible-ceph-docker-common
-  version: ca86fd0ef6d24aa2c750a625acdcb8012c374aa0
+  src: https://github.com/ceph/ansible-ceph-config
+  version: master
 - name: ceph-mon
   scm: git
   src: https://github.com/ceph/ansible-ceph-mon
-  version: 235ea7526a2bb621317b5263f3841deef7ab49e6
+  version: master
 - name: ceph-mgr
   scm: git
   src: https://github.com/ceph/ansible-ceph-mgr
-  version: d9ddb83bae6b054549efa1c96b0a37c63073ebea
+  version: master
 - name: ceph-osd
   scm: git
   src: https://github.com/ceph/ansible-ceph-osd
-  version: 3d4fceb960fbaa0331b965d0a9a4f3511022b86b
-- name: os_octavia
-  scm: git
-  src: https://git.openstack.org/openstack/openstack-ansible-os_octavia
-  version: master
-- name: os_molteniron
-  scm: git
-  src: https://git.openstack.org/openstack/openstack-ansible-os_molteniron
   version: master
 - name: opendaylight
   scm: git
   src: https://git.opendaylight.org/gerrit/p/integration/packaging/ansible-opendaylight.git
-  version: master
-- name: os_tacker
-  scm: git
-  src: https://git.openstack.org/openstack/openstack-ansible-os_tacker
   version: master
 - name: haproxy_endpoints
   scm: git

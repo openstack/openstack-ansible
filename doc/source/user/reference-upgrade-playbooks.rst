@@ -48,6 +48,18 @@ packages on the repo servers. If this file exists on a repo server or a
 physical node, it causes a circular dependency issue and the upgrade fails.
 This playbook removes the file on all the repo servers and physical nodes.
 
+.. _ceph-galaxy-removal:
+
+ceph-galaxy-removal.yml
+~~~~~~~~~~~~~~~~~~~~~~~
+
+The ceph-ansible common roles are no longer namespaced with a galaxy-style
+'.' (ie. ``ceph.ceph-common`` is now cloned as ``ceph-common``), due to a
+change in the way upstream meta dependencies are handled in the ceph roles.
+The roles will be cloned according to the new naming, and an upgrade
+playbook ``ceph-galaxy-removal.yml`` has been added to clean up the stale
+galaxy-named roles.
+
 .. _setup-infra-playbook:
 
 setup-infrastructure.yml
