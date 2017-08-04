@@ -120,7 +120,10 @@ else
   # This installs from pypi
   /opt/ansible-runtime/bin/pip install ara
 fi
-export ANSIBLE_CALLBACK_PLUGINS="/etc/ansible/roles/plugins/callback:/opt/ansible-runtime/lib/python2.7/site-packages/ara/plugins/callbacks"
+# Dynamically retrieve the location of the ARA callback so we are able to find
+# it on both py2 and py3
+ara_location=$(/opt/ansible-runtime/bin/python -c "import os,ara; print(os.path.dirname(ara.__file__))")
+export ANSIBLE_CALLBACK_PLUGINS="/etc/ansible/roles/plugins/callback:${ara_location}/plugins/callbacks"
 
 # Log some data about the instance and the rest of the system
 log_instance_info
