@@ -13,6 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- include: common-playbooks/unbound-clients.yml
+  vars:
+    unbound_group: "octavia_all"
+  when:
+    - resolvconf_enabled | bool
+
 - name: Install octavia server
   hosts: octavia_all
   gather_facts: "{{ gather_facts | default(True) }}"

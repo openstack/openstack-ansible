@@ -13,6 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- include: common-playbooks/unbound-clients.yml
+  vars:
+    unbound_group: "rabbitmq_all"
+  when:
+    - resolvconf_enabled | bool
+
 - name: Create and configure rabbitmq container
   hosts: "{{ rabbitmq_host_group | default('rabbitmq_all') }}"
   serial: 1

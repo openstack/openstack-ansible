@@ -13,12 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- include: common-playbooks/unbound-clients.yml
+  vars:
+    unbound_group: "utility_all"
+  when:
+    - resolvconf_enabled | bool
+
 - name: Setup the utility location(s)
   hosts: utility_all
   max_fail_percentage: 20
   user: root
   pre_tasks:
-
     - include: common-tasks/os-lxc-container-setup.yml
 
     - include: common-tasks/os-log-dir-setup.yml

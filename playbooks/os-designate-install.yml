@@ -16,6 +16,12 @@
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
 
+- include: common-playbooks/unbound-clients.yml
+  vars:
+    unbound_group: "designate_all"
+  when:
+    - resolvconf_enabled | bool
+
 - name: Install designate server
   hosts: designate_all
   gather_facts: "{{ gather_facts | default(True) }}"

@@ -16,6 +16,12 @@
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
 
+- include: common-playbooks/unbound-clients.yml
+  vars:
+    unbound_group: "magnum_all"
+  when:
+    - resolvconf_enabled | bool
+
 - name: Install magnum server
   hosts: magnum_all
   max_fail_percentage: 20

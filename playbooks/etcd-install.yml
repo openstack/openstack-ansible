@@ -13,6 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- include: common-playbooks/unbound-clients.yml
+  vars:
+    unbound_group: "etcd_all"
+  when:
+    - resolvconf_enabled | bool
+
 - name: Install etcd server cluster
   hosts: etcd_all
   gather_facts: "{{ gather_facts | default(True) }}"
@@ -30,4 +36,3 @@
   vars:
     is_metal: "{{ properties.is_metal|default(false) }}"
   environment: "{{ deployment_environment_variables | default({}) }}"
-
