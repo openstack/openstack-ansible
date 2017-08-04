@@ -1,5 +1,5 @@
 ==================================
-Appendix G: Advanced configuration
+Appendix H: Advanced configuration
 ==================================
 
 .. TODO: include intro on what advanced configuration is, whether it’s required

@@ -168,6 +168,13 @@
 #       Name of network in 'cidr_networks' level to use for IP address pool. Only
 #       valid for 'raw' and 'vxlan' types.
 #
+#       Option: address_prefix (option, string)
+#       Override for the prefix of the key added to each host that contains IP
+#       address information for this network. By default, this will be the name
+#       given in 'ip_from_q' with a fallback of the name of the interface given in
+#       'container_interface'.
+#       (e.g., 'ip_from_q'_address and 'container_interface'_address)
+#
 #       Option: is_container_address (required, boolean)
 #       If true, the load balancer uses this IP address to access services
 #       in the container. Only valid for networks with 'ip_from_q' option.
@@ -179,6 +186,10 @@
 #       Option: group_binds (required, string)
 #       List of one or more Ansible groups that contain this
 #       network. For more information, see the env.d YAML files.
+#
+#       Option: reference_group (optional, string)
+#       An Ansible group that a host must be a member of, in addition to any of the
+#       groups within 'group_binds', for this network to apply.
 #
 #       Option: net_name (optional, string)
 #       Name of network for 'flat' or 'vlan' types. Only valid for these
