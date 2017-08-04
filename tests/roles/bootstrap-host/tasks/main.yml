@@ -87,6 +87,13 @@
   tags:
     - prepare-ceph
 
+# Prepare the Octavia certs and image
+- include: prepare_octavia.yml
+  when:
+    - bootstrap_host_octavia | bool
+  tags:
+    - prepare-octavia
+
 # Prepare the network interfaces
 - include: prepare_networking.yml
   tags:

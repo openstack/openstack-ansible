@@ -59,6 +59,12 @@
         - name: magnum.yml.aio
         - name: octavia.yml.aio
         - name: trove.yml.aio
+      octavia:
+        - name: glance.yml.aio
+        - name: keystone.yml.aio
+        - name: neutron.yml.aio
+        - name: nova.yml.aio
+        - name: octavia.yml.aio
     sftp_subsystem: "{{ (ansible_pkg_mgr == 'apt') | ternary('sftp /usr/lib/openssh/sftp-server','sftp /usr/libexec/openssh/sftp-server') }}"
     sshd:
       ListenAddress:

@@ -77,6 +77,26 @@ iface br-dbaas inet static
     bridge_ports br-dbaas-veth
 
 {% endif %}
+{% if bootstrap_host_scenario in ["translations", "octavia"] %}
+auto br-lbaas
+iface br-lbaas inet static
+    bridge_stp off
+    bridge_waitport 0
+    bridge_fd 0
+    address 172.29.252.100
+    netmask 255.255.252.0
+    offload-sg off
+    # Create veth pair, don't bomb if already exists
+    pre-up ip link add br-lbaas-veth type veth peer name eth14 || true
+    # Set both ends UP
+    pre-up ip link set br-lbaas-veth up
+    pre-up ip link set eth14 up
+    # Delete veth pair on DOWN
+    post-down ip link del br-lbaas-veth || true
+    bridge_ports br-lbaas-veth
+
+{% endif %}
+
 # Add an additional address to br-vlan
 iface br-vlan inet static
     # Flat network default gateway
