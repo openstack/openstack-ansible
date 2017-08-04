@@ -22,6 +22,15 @@ ANSIBLE_PARAMETERS=${ANSIBLE_PARAMETERS:-""}
 STARTTIME="${STARTTIME:-$(date +%s)}"
 COMMAND_LOGS=${COMMAND_LOGS:-"/openstack/log/ansible_cmd_logs"}
 
+GATE_EXIT_LOG_COPY="${GATE_EXIT_LOG_COPY:-false}"
+GATE_EXIT_LOG_GZIP="${GATE_EXIT_LOG_GZIP:-true}"
+# If this is a gate node from OpenStack-Infra Store all logs into the
+#  execution directory after gate run.
+if [[ -d "/etc/nodepool" ]]; then
+  GATE_EXIT_LOG_COPY=true
+fi
+
+
 # The default SSHD configuration has MaxSessions = 10. If a deployer changes
 #  their SSHD config, then the ANSIBLE_FORKS may be set to a higher number. We
 #  set the value to 10 or the number of CPU's, whichever is less. This is to
@@ -99,7 +108,7 @@ function exit_fail {
 function gate_job_exit_tasks {
   # If this is a gate node from OpenStack-Infra Store all logs into the
   #  execution directory after gate run.
-  if [[ -d "/etc/nodepool" ]];then
+  if [ "$GATE_EXIT_LOG_COPY" == true ]; then
     GATE_LOG_DIR="$(dirname "${0}")/../logs"
     mkdir -p "${GATE_LOG_DIR}/host" "${GATE_LOG_DIR}/openstack"
     rsync --archive --verbose --safe-links --ignore-errors /var/log/ "${GATE_LOG_DIR}/host" || true
@@ -113,7 +122,9 @@ function gate_job_exit_tasks {
     /opt/ansible-runtime/bin/ara generate html "${GATE_LOG_DIR}/ara" || true
     # Compress the files gathered so that they do not take up too much space.
     # We use 'command' to ensure that we're not executing with some sort of alias.
-    command gzip --best --recursive "${GATE_LOG_DIR}/"
+    if [ "$GATE_EXIT_LOG_GZIP" == true ]; then
+      command gzip --best --recursive "${GATE_LOG_DIR}/"
+    fi
     # Ensure that the files are readable by all users, including the non-root
     # OpenStack-CI jenkins user.
     chmod -R 0777 "${GATE_LOG_DIR}"
