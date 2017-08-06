@@ -24,6 +24,7 @@ COMMAND_LOGS=${COMMAND_LOGS:-"/openstack/log/ansible_cmd_logs"}
 
 GATE_EXIT_LOG_COPY="${GATE_EXIT_LOG_COPY:-false}"
 GATE_EXIT_LOG_GZIP="${GATE_EXIT_LOG_GZIP:-true}"
+GATE_EXIT_RUN_ARA="${GATE_EXIT_RUN_ARA:-true}"
 # If this is a gate node from OpenStack-Infra Store all logs into the
 #  execution directory after gate run.
 if [[ -d "/etc/nodepool" ]]; then
@@ -134,9 +135,11 @@ function gate_job_exit_tasks {
     # except tempest results testrepository.subunit and testr_results.html
     find "${GATE_LOG_DIR}/" -type f -not -name "testrepository.subunit" -not -name "testr_results.html" -exec mv {} {}.txt \;
 
-    # Generate the ARA report
-    /opt/ansible-runtime/bin/ara generate html "${GATE_LOG_DIR}/ara" || true
-    /opt/ansible-runtime/bin/ara generate subunit "${GATE_LOG_DIR}/ara/testrepository.subunit" || true
+    # Generate the ARA report if enabled
+    if [ "$GATE_EXIT_RUN_ARA" == true ]; then
+      /opt/ansible-runtime/bin/ara generate html "${GATE_LOG_DIR}/ara" || true
+      /opt/ansible-runtime/bin/ara generate subunit "${GATE_LOG_DIR}/ara/testrepository.subunit" || true
+    fi
     # Compress the files gathered so that they do not take up too much space.
     # We use 'command' to ensure that we're not executing with some sort of alias.
     if [ "$GATE_EXIT_LOG_GZIP" == true ]; then
