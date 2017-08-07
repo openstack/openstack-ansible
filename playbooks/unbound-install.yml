@@ -33,3 +33,9 @@
     - defaults/repo_packages/openstack_services.yml
   vars:
     is_metal: "{{ properties.is_metal|default(false) }}"
+
+- include: common-playbooks/unbound-clients.yml
+  vars:
+    unbound_group: "{{ openstack_host_group|default('hosts') }}:{{ lxc_host_group | default('lxc_hosts') }}"
+  when:
+    - resolvconf_enabled | bool
