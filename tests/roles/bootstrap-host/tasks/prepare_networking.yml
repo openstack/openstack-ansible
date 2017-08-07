@@ -40,7 +40,7 @@
   with_items: "{{ bridges }}"
   register: network_interfaces_rhel
   when:
-    - ansible_pkg_mgr == 'yum'
+    - ansible_pkg_mgr in ['yum', 'dnf']
 
 - name: Create alias file when required (RedHat)
   template:
@@ -48,7 +48,7 @@
     dest: "/etc/sysconfig/network-scripts/ifcfg-{{ item.name | default('br-mgmt')}}:0"
   with_items: "{{ bridges }}"
   when:
-    - ansible_pkg_mgr == 'yum'
+    - ansible_pkg_mgr in ['yum', 'dnf']
     - item.alias is defined
 
 - name: Put down post-up script for veth-peer interfaces (RedHat)
@@ -61,7 +61,7 @@
     - "{{ bridges }}"
   when:
     - item[1].veth_peer is defined
-    - ansible_pkg_mgr == 'yum'
+    - ansible_pkg_mgr in ['yum', 'dnf']
 
 - name: Ensure the postup/postdown scripts are loaded (RedHat)
   lineinfile:
@@ -73,7 +73,7 @@
     - "{{ bridges }}"
   when:
     - item[1].veth_peer is defined
-    - ansible_pkg_mgr == 'yum'
+    - ansible_pkg_mgr in ['yum', 'dnf']
 
 - name: Copy multinode network configuration (Debian)
   template:

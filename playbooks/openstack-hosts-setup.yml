@@ -24,35 +24,11 @@
   gather_facts: false
   user: root
   pre_tasks:
-    - name: Install Python2
+    - name: Ensure python is installed
       register: result
-      raw: >
-        source /etc/os-release
-
-        case ${ID} in
-          centos|rhel)
-            yum list installed python
-            result=$?
-
-            if [ $result -eq 1 ]; then
-              yum -y install python2
-              result=2
-            fi
-
-            exit $result;
-          ;;
-          ubuntu)
-            dpkg-query -s python &> /dev/null
-            result=$?
-
-            if [ $result -eq 1 ]; then
-              apt-get -y install python
-              result=2
-            fi
-
-            exit $result;
-          ;;
-        esac
+      raw: apt-get -y install python
+      when:
+        - ansible_pkg_mgr == 'apt'
       changed_when: "result.rc == 2"
       failed_when: "{{ result.rc not in [0, 2] }}"
 
