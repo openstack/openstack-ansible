@@ -34,7 +34,7 @@
         state: present
       when:
         - ceph_stable
-        - ansible_pkg_mgr == 'yum'
+        - ansible_pkg_mgr in ['yum', 'dnf']
     - name: add ceph stable repository
       package:
         name: http://download.ceph.com/rpm-{{ ceph_stable_release }}/{{ ceph_stable_redhat_distro }}/noarch/ceph-release-1-0.{{ ceph_stable_redhat_distro|replace('rhel', 'el') }}.noarch.rpm
@@ -42,11 +42,11 @@
       changed_when: false
       when:
         - ceph_stable
-        - ansible_pkg_mgr == 'yum'
-    - name: purge yum cache
-      command: yum clean all
+        - ansible_pkg_mgr in ['yum', 'dnf']
+    - name: Purge yum/dnf cache
+      command: "{{ ansible_pkg_mgr }} clean all"
       when:
-        ansible_pkg_mgr == 'yum'
+        - ansible_pkg_mgr in ['yum', 'dnf']
       tags:
         - skip_ansible_lint
     - name: Increase priority for Ceph repos
@@ -57,7 +57,7 @@
            --enable Ceph-noarch
            --setopt="Ceph-noarch.priority=50"
       when:
-        - ansible_pkg_mgr == 'yum'
+        - ansible_pkg_mgr in ['yum', 'dnf']
     - name: Create systemd service directory
       file:
         path: "/etc/systemd/system/ceph-mon@.service.d/"
@@ -66,7 +66,7 @@
         owner: "root"
         mode: "0755"
       when:
-        - ansible_pkg_mgr == 'yum'
+        - ansible_pkg_mgr in ['yum', 'dnf']
         - ansible_service_mgr == 'systemd'
     - name: Add systemd override for PrivateDevices
       copy:
@@ -75,8 +75,14 @@
           [Service]
           PrivateDevices=false
       when:
-        - ansible_pkg_mgr == 'yum'
+        - ansible_pkg_mgr in ['yum', 'dnf']
         - ansible_service_mgr == 'systemd'
+    - name: Ensure Ansible can work with SELinux
+      package:
+        name: libselinux-python
+        state: present
+      when:
+        - ansible_pkg_mgr in ['yum', 'dnf']
   roles:
     - role: "ceph-mon"
       tags:
@@ -128,7 +134,7 @@
         state: present
       when:
         - ceph_stable
-        - ansible_pkg_mgr == 'yum'
+        - ansible_pkg_mgr in ['yum', 'dnf']
     - name: add ceph stable repository
       package:
         name: http://download.ceph.com/rpm-{{ ceph_stable_release }}/{{ ceph_stable_redhat_distro }}/noarch/ceph-release-1-0.{{ ceph_stable_redhat_distro|replace('rhel', 'el') }}.noarch.rpm
@@ -136,11 +142,11 @@
       changed_when: false
       when:
         - ceph_stable
-        - ansible_pkg_mgr == 'yum'
-    - name: purge yum cache
-      command: yum clean all
+        - ansible_pkg_mgr in ['yum', 'dnf']
+    - name: Purge yum/dnf cache
+      command: "{{ ansible_pkg_mgr }} clean all"
       when:
-        ansible_pkg_mgr == 'yum'
+        - ansible_pkg_mgr in ['yum', 'dnf']
       tags:
         - skip_ansible_lint
     - name: Increase priority for Ceph repos
@@ -151,7 +157,7 @@
            --enable Ceph-noarch
            --setopt="Ceph-noarch.priority=50"
       when:
-        - ansible_pkg_mgr == 'yum'
+        - ansible_pkg_mgr in ['yum', 'dnf']
   roles:
     - role: "ceph-osd"
       tags:
