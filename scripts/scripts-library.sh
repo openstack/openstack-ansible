@@ -120,6 +120,7 @@ function gate_job_exit_tasks {
 
     # Generate the ARA report
     /opt/ansible-runtime/bin/ara generate html "${GATE_LOG_DIR}/ara" || true
+    /opt/ansible-runtime/bin/ara generate subunit "${GATE_LOG_DIR}/ara/testrepository.subunit" || true
     # Compress the files gathered so that they do not take up too much space.
     # We use 'command' to ensure that we're not executing with some sort of alias.
     if [ "$GATE_EXIT_LOG_GZIP" == true ]; then
