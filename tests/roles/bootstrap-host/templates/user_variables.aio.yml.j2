@@ -21,32 +21,121 @@ tempest_public_subnet_cidr: 172.29.248.0/22
 tempest_public_subnet_allocation_pools: "172.29.249.110-172.29.249.200"
 
 ## Galera settings
-galera_innodb_buffer_pool_size: 256M
-galera_innodb_log_buffer_size: 32M
+galera_innodb_buffer_pool_size: 16M
+galera_innodb_log_buffer_size: 4M
 galera_wsrep_provider_options:
- - { option: "gcache.size", value: "32M" }
+ - { option: "gcache.size", value: "4M" }
 
 ## Neutron settings
 neutron_metadata_checksum_fix: True
 
-## Set workers for all services to optimise memory usage
-ceilometer_notification_workers: 2
-cinder_osapi_volume_workers: 2
-glance_api_threads: 2
-heat_api_threads: 2
-horizon_wsgi_processes: 2
-horizon_wsgi_threads: 2
-keystone_wsgi_processes: 2
-neutron_api_workers: 2
-neutron_metadata_workers: 1
-neutron_rpc_workers: 1
-nova_api_threads: 2
-nova_wsgi_processes: 2
+### Set workers for all services to optimise memory usage
+
+## Repo
 repo_nginx_threads: 2
-swift_account_server_workers: 2
-swift_container_server_workers: 2
-swift_object_server_workers: 2
-swift_proxy_server_workers: 2
+
+## Keystone
+keystone_httpd_mpm_start_servers: 2
+keystone_httpd_mpm_min_spare_threads: 1
+keystone_httpd_mpm_max_spare_threads: 2
+keystone_httpd_mpm_thread_limit: 2
+keystone_httpd_mpm_thread_child: 1
+keystone_wsgi_threads: 1
+keystone_wsgi_processes_max: 2
+
+## Barbican
+barbican_wsgi_processes: 2
+barbican_wsgi_threads: 1
+
+## Cinder
+cinder_wsgi_processes_max: 2
+cinder_wsgi_threads: 1
+cinder_wsgi_buffer_size: 16384
+cinder_osapi_volume_workers_max: 2
+
+## Glance
+glance_api_threads_max: 2
+glance_api_threads: 1
+glance_api_workers: 1
+glance_registry_workers: 1
+
+## Nova
+nova_wsgi_threads: 1
+nova_wsgi_processes_max: 2
+nova_wsgi_processes: 2
+nova_wsgi_buffer_size: 16384
+nova_api_threads_max: 2
+nova_api_threads: 1
+nova_osapi_compute_workers: 1
+nova_conductor_workers: 1
+nova_metadata_workers: 1
+
+## Neutron
+neutron_rpc_workers: 1
+neutron_metadata_workers: 1
+neutron_api_workers: 1
+neutron_api_threads_max: 2
+neutron_api_threads: 2
+neutron_num_sync_threads: 1
+
+## Heat
+heat_api_workers: 1
+heat_api_threads_max: 2
+heat_api_threads: 1
+heat_wsgi_threads: 1
+heat_wsgi_processes_max: 2
+heat_wsgi_processes: 1
+heat_wsgi_buffer_size: 16384
+
+## Horizon
+horizon_wsgi_processes: 1
+horizon_wsgi_threads: 1
+horizon_wsgi_threads_max: 2
+horizon_wsgi_threads: 1
+
+## Ceilometer
+ceilometer_notification_workers_max: 2
+ceilometer_notification_workers: 1
+
+## AODH
+aodh_wsgi_threads: 1
+aodh_wsgi_processes_max: 2
+aodh_wsgi_processes: 1
+
+## Gnocchi
+gnocchi_wsgi_threads: 1
+gnocchi_wsgi_processes_max: 2
+gnocchi_wsgi_processes: 1
+
+## Swift
+swift_account_server_replicator_workers: 1
+swift_server_replicator_workers: 1
+swift_object_replicator_workers: 1
+swift_account_server_workers: 1
+swift_container_server_workers: 1
+swift_object_server_workers: 1
+swift_proxy_server_workers_max: 2
+swift_proxy_server_workers_not_capped: 1
+swift_proxy_server_workers_capped: 1
+swift_proxy_server_workers: 1
+
+## Ironic
+ironic_wsgi_threads: 1
+ironic_wsgi_processes_max: 2
+ironic_wsgi_processes: 1
+
+## Trove
+trove_api_workers_max: 2
+trove_api_workers: 1
+trove_conductor_workers_max: 2
+trove_conductor_workers: 1
+trove_wsgi_threads: 1
+trove_wsgi_processes_max: 2
+trove_wsgi_processes: 1
+
+## Sahara
+sahara_api_workers_max: 2
+sahara_api_workers: 1
 
 # NOTE: hpcloud-b4's eth0 uses 10.0.3.0/24, which overlaps with the
 #       lxc_net_address default
