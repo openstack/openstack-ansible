@@ -75,6 +75,11 @@ galera_repo_url: {{ galera_repo_url }}
 galera_client_apt_repo_url: {{ galera_repo_url }}
 {% endif %}
 
+{% if lxc_image_cache_server is defined %}
+## images.linuxcontainers.org reverse proxy
+lxc_image_cache_server: {{ lxc_image_cache_server }}
+{% endif %}
+
 {% if cache_timeout is defined %}
 ## Package cache timeout
 cache_timeout: {{ cache_timeout }}
