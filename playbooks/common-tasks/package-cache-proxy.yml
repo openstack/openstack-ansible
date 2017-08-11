@@ -73,7 +73,7 @@
 - name: Deploy dnf package manager proxy
   lineinfile:
     line: 'proxy={{ repo_pkg_cache_url }}'
-    dest: "/etc/dnf.conf"
+    dest: "/etc/dnf/dnf.conf"
     state: "{{ (proxy_check.status == 200) | ternary('present', 'absent') }}"
   when:
     - ansible_os_family == 'RedHat'
