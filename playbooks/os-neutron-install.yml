@@ -31,7 +31,6 @@
 - name: Prepare MQ/DB services
   hosts: neutron_all
   gather_facts: no
-  max_fail_percentage: 20
   user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
@@ -87,7 +86,7 @@
   include: common-playbooks/neutron.yml
   vars:
     neutron_hosts: "neutron_linuxbridge_agent:neutron_openvswitch_agent:!neutron_server"
-    neutron_serial: "{{ neutron_agent_serial | default('20%') }}"
+    neutron_serial: "{{ neutron_agent_serial | default('50%') }}"
 
 
 
@@ -95,4 +94,4 @@
   include: common-playbooks/neutron.yml
   vars:
     neutron_hosts: "neutron_all:!neutron_linuxbridge_agent:!neutron_openvswitch_agent:!neutron_server"
-    neutron_serial: "{{ neutron_other_serial | default('1') }}"
+    neutron_serial: "{{ neutron_other_serial | default('20%') }}"
