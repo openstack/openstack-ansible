@@ -77,6 +77,13 @@
     - nodepool_dir.stat.exists
     - bootstrap_host_ubuntu_repo is defined
 
+- name: Set the LXC image repository URL in OpenStack-CI
+  set_fact:
+    lxc_image_cache_server: "{{ bootstrap_host_ubuntu_repo | netloc_no_port }}:8080/images.linuxcontainers"
+  when:
+    - nodepool_dir.stat.exists | bool
+    - bootstrap_host_ubuntu_repo is defined
+
 - name: Set the package cache timeout to 60 mins in OpenStack-CI
   set_fact:
     cache_timeout: 3600
