@@ -29,14 +29,21 @@ import urllib
 HTTP_TIMEOUT = 10.0         # Max. seconds to wait for a response
 HTTP_TITLE = "Wheel Index"  # HTTP Title to look for to validate the page
 MAX_THREADS = 10
-MIRROR_LIST = ["http://mirror.dfw.rax.openstack.org/wheel/",
-               "http://mirror.ord.rax.openstack.org/wheel/",
-               "http://mirror.iad.rax.openstack.org/wheel/",
-               "http://mirror.gra1.ovh.openstack.org/wheel/",
-               "http://mirror.bhs1.ovh.openstack.org/wheel/",
-               "http://mirror.sjc1.bluebox.openstack.org/wheel/",
-               "http://mirror.nyj01.internap.openstack.org/wheel/",
-               "http://mirror.regionone.osic-cloud1.openstack.org/wheel/"]
+MIRROR_LIST = [
+    "http://mirror.dfw.rax.openstack.org/wheel/",
+    "http://mirror.ord.rax.openstack.org/wheel/",
+    "http://mirror.iad.rax.openstack.org/wheel/",
+    "http://mirror.gra1.ovh.openstack.org/wheel/",
+    "http://mirror.bhs1.ovh.openstack.org/wheel/",
+    "http://mirror.sjc1.bluebox.openstack.org/wheel/",
+    "http://mirror.nyj01.internap.openstack.org/wheel/",
+    "http://mirror.regionone.infracloud-chocolate.openstack.org/wheel/",
+    "http://mirror.regionone.infracloud-vanilla.openstack.org/wheel/",
+    "http://mirror.kna1.citycloud.openstack.org/wheel/",
+    "http://mirror.la1.citycloud.openstack.org/wheel/",
+    "http://mirror.lon1.citycloud.openstack.org/wheel/",
+    "http://mirror.sto2.citycloud.openstack.org/wheel/"
+]
 
 
 def TestUrl(workQueue, resultQueue):
