@@ -31,6 +31,10 @@
         delay: "{{ lxc_container_wait_params.delay | default(omit) }}"
         sleep: "{{ lxc_container_wait_params.sleep | default(omit) }}"
         timeout: "{{ lxc_container_wait_params.timeout | default(omit) }}"
+    - name: Set local facts for new container(s)
+      setup:
+        filter: ansible_local
+        gather_subset: "!all"
   vars:
     is_metal: "{{ properties.is_metal|default(false) }}"
   environment: "{{ deployment_environment_variables | default({}) }}"
