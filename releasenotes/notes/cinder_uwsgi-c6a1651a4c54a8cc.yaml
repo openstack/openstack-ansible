@@ -1,0 +1,15 @@
+---
+features:
+  - The ``cinder-api`` service has moved to run as a
+    uWSGI application. You can set the max number of
+    WSGI processes, the number of processes, threads,
+    and buffer size utilizing the
+    ``cinder_wsgi_processes_max``,
+    ``cinder_wsgi_processes``, ``cinder_wsgi_threads``,
+    and ``cinder_wsgi_buffer_size``.
+    Additionally, you can override any settings in the
+    uWSGI ini configuration file using the
+    ``cinder_api_uwsgi_ini_overrides`` setting.
+    The uWSGI application will listen on the address
+    specified by ``cinder_uwsgi_bind_address`` which
+    defaults to ``0.0.0.0``.

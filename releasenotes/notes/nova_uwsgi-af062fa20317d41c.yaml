@@ -1,0 +1,23 @@
+---
+features:
+  - The ``nova-api``, and ``nova-metadata``  services
+    have moved to run as uWSGI applications. You can
+    override their uwsgi configuration files using the
+    ``nova_api_os_compute_uwsgi_ini_overrides``, and
+    ``nova_api_metadata_uwsgi_ini_overrides`` settings.
+upgrade:
+  - The ``nova-placement`` service now runs as a uWSGI
+    application that is not fronted by an nginx
+    web-server by default. After upgrading, if the
+    ``nova-placement`` service was running on a host
+    or container without any other services requiring
+    nginx, you should manually remove nginx.
+deprecations:
+  - Settings related to nginx and the placement
+    will no longer serve any purpose, and should
+    be removed. Those settings are as follows -
+    ``nova_placement_nginx_access_log_format_extras``,
+    ``nova_placement_nginx_access_log_format_combined``,
+    ``nova_placement_nginx_extra_conf``,
+    ``nova_placement_uwsgi_socket_port``, and
+    ``nova_placement_pip_packages``.

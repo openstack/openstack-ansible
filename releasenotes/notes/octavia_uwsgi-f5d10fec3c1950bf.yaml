@@ -1,0 +1,15 @@
+---
+features:
+  - The ``octavia-api`` service has moved to run as a
+    uWSGI application. You can set the max number of
+    WSGI processes, the number of processes, threads,
+    and buffer size utilizing the
+    ``octavia_wsgi_processes_max``,
+    ``octavia_wsgi_processes``, ``octavia_wsgi_threads``,
+    and ``octavia_wsgi_buffer_size``.
+    Additionally, you can override any settings in the
+    uWSGI ini configuration file using the
+    ``octavia_api_uwsgi_ini_overrides`` setting.
+    The uWSGI application will listen on the address
+    specified by ``octavia_uwsgi_bind_address`` which
+    defaults to ``0.0.0.0``.

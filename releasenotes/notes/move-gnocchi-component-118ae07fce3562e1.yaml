@@ -1,0 +1,6 @@
+---
+deprecations:
+  - |
+    The gnocchi ceph component has been moved out as a default component
+    required by the ceph_client role. It can now be optionally specified
+    through the use of the ``ceph_extra_components`` variable.

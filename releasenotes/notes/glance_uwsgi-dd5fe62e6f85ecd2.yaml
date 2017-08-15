@@ -1,0 +1,12 @@
+---
+features:
+  - The ``glance-api`` service has moved to run as a
+    uWSGI application. You can set the max number of WSGI
+    processes, the number of processes, threads, and
+    buffer size utilizing the
+    ``glance_wsgi_processes_max``,
+    ``glance_wsgi_processes``, ``glance_wsgi_threads``,
+    and ``glance_wsgi_buffer_size``.
+    Additionally, you can override any settings in the
+    uWSGI ini configuration file using the
+    ``glance_api_uwsgi_ini_overrides`` setting.

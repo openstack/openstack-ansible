@@ -1,0 +1,15 @@
+---
+features:
+  - The ``sahara-api`` service has moved to run as a
+    uWSGI application. You can set the max number of
+    WSGI processes, the number of processes, threads,
+    and buffer size utilizing the
+    ``sahara_wsgi_processes_max``,
+    ``sahara_wsgi_processes``, ``sahara_wsgi_threads``,
+    and ``sahara_wsgi_buffer_size``.
+    Additionally, you can override any settings in the
+    uWSGI ini configuration file using the
+    ``sahara_api_uwsgi_ini_overrides`` setting.
+    The uWSGI application will listen on the address
+    specified by ``sahara_uwsgi_bind_address`` which
+    defaults to ``0.0.0.0``.

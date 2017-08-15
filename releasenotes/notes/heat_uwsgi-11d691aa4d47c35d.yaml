@@ -1,0 +1,20 @@
+---
+features:
+  - The ``heat-api``, ``heat-api-cfn``, and
+    ``heat-api-cloudwatch`` services have moved to run
+    as a uWSGI applications. You can set the max number
+    of WSGI processes, the number of processes, threads,
+    and buffer size utilizing the
+    ``heat_wsgi_processes_max``,
+    ``heat_wsgi_processes``, ``heat_wsgi_threads``,
+    and ``heat_wsgi_buffer_size``.
+    Additionally, you can override any settings in the
+    uWSGI ini configuration file using the
+    ``heat_api_uwsgi_ini_overrides``,
+    ``heat_api_cfn_uwsgi_ini_overrides``, and
+    ``heat_api_cloudwatch_uwsgi_ini_overrides`` settings.
+    The uWSGI applications will listen on the addresses
+    specified by ``heat_api_uwsgi_bind_address``,
+    ``heat_api_cfn_uwsgi_bind_address``, and
+    ``heat_api_cloudwatch_uwsgi_bind_address``
+    respectively. Which all default to ``0.0.0.0``.

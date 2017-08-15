@@ -174,7 +174,7 @@ sync_roles_and_packages() {
         fi
 
         # post-sync user hook
-        post_sync_hook ${repo_name} ${os_branch} ${osa_branch} ${repo_address}
+        osa_post_sync_hook ${repo_name} ${os_branch} ${osa_branch} ${repo_address}
 
         osa_helper_cleanup_files ${osa_repo_tmp_path} ${os_repo_tmp_path}
       fi
