@@ -15,6 +15,9 @@
 
 haproxy_bind_on_non_local: "{% if groups.haproxy|length > 1 %}True{% else %}False{% endif %}"
 haproxy_use_keepalived: "{% if groups.haproxy|length > 1 %}True{% else %}False{% endif %}"
+keepalived_selinux_compile_rules:
+  - keepalived_ping
+  - keepalived_haproxy_pid_file
 
 # Ensure that the package state matches the global setting
 haproxy_package_state: "{{ package_state }}"
