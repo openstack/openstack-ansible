@@ -93,7 +93,7 @@ class TestRemoveIpfunction(unittest.TestCase):
         mi.remove_inventory_item("log_hosts", inventory)
         mi.remove_inventory_item("log_hosts", inventory, TARGET_DIR)
 
-        # No make sure it's gone
+        # Now make sure it's gone
         self.assertIn('log_hosts', inventory)
 
     def test_metal_ips_kept(self):

@@ -19,7 +19,7 @@ import argparse
 import os
 import sys
 
-from osa_toolki import tools
+from osa_toolkit import tools
 
 
 def args(arg_list):
