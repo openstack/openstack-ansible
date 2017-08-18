@@ -264,3 +264,8 @@ Tempest:
 pip:
     * pip_global_conf_overrides
 
+  .. note::
+
+     Possible additional overrides can be found in the "Tunable Section"
+     of each role's ``main.yml`` file, such as
+     ``/etc/ansible/roles/role_name/defaults/main.yml``.
