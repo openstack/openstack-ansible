@@ -74,6 +74,14 @@ playbook is only needed for upgrades of in-place upgrades of existing nodes or
 if a node is replaced or rebuilt it will be brought into the cluster using a
 compliant hostname.
 
+.. _lxc-container-tz-sync:
+
+lxc-container-tz-sync.yml
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This playbook ensures that all containers are running on the same TZ settings
+as the physical host.
+
 .. _setup-infra-playbook:
 
 setup-infrastructure.yml
