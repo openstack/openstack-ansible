@@ -22,7 +22,7 @@ Vagrant.configure(2) do |config|
 
   # Configure all VM specs.
   config.vm.provider "virtualbox" do |v|
-    v.memory = 8192
+    v.memory = 12288
     v.cpus = 4
   end
 
