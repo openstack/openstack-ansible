@@ -182,7 +182,7 @@ function get_repos_info {
 function get_instance_info {
   TS="$(date +"%H-%M-%S")"
   (cat /etc/resolv.conf && \
-    which systemd-resolve && \
+    which systemd-resolve &> /dev/null && \
       systemd-resolve --statistics && \
         cat /etc/systemd/resolved.conf) > \
           "/openstack/log/instance-info/host_dns_info_${TS}.log" || true
