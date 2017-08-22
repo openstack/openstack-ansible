@@ -95,9 +95,25 @@ function ssh_key_create {
     mkdir -p ${key_path}
     chmod 700 ${key_path}
   fi
-  if [ ! -f "${key_file}" -a ! -f "${key_file}.pub" ]; then
-    rm -f ${key_file}*
-    ssh-keygen -t rsa -f ${key_file} -N ''
+
+  # Ensure a full keypair exists
+  if [ ! -f "${key_file}" -o ! -f "${key_file}.pub" ]; then
+
+    # Regenrate public key if private key exists
+    if [ -f "${key_file}" ]; then
+      ssh-keygen -f ${key_file} -y > ${key_file}.pub
+    fi
+
+    # Delete public key if private key missing
+    if [ ! -f "${key_file}" ]; then
+      rm -f ${key_file}.pub
+    fi
+
+    # Regenerate keypair if both keys missing
+    if [ ! -f "${key_file}" -a ! -f "${key_file}.pub" ]; then
+      ssh-keygen -t rsa -f ${key_file} -N ''
+    fi
+
   fi
 
   # Ensure that the public key is included in the authorized_keys
