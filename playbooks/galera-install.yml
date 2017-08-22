@@ -46,9 +46,6 @@
   max_fail_percentage: 20
   user: root
   roles:
-    - role: "pip_install"
-      tags:
-        - pip
     - role: "galera_server"
     - role: "rsyslog_client"
       rsyslog_client_log_rotate_file: galera_log_rotate
