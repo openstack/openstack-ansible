@@ -44,7 +44,6 @@
 # http://www.rabbitmq.com/clustering.html#upgrading
 - name: Stop RabbitMQ nodes that are not the upgrader
   hosts: "{{ rabbitmq_host_group | default('rabbitmq_all') }}[1:]"
-  serial: 1
   max_fail_percentage: 0
   user: root
   tasks:
@@ -56,7 +55,7 @@
 
 - name: Install rabbitmq server
   hosts: "{{ rabbitmq_host_group | default('rabbitmq_all') }}"
-  serial: 1
+  serial: 20%
   max_fail_percentage: 20
   user: root
   roles:
