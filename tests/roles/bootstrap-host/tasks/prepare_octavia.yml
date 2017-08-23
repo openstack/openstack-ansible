@@ -58,7 +58,7 @@
     version: "{{ octavia_git_install_branch }}"
 # Build Octavia amphora image
 - name: Create amphora image
-  shell: "./diskimage-create.sh -o {{ bootstrap_host_octavia_tmp }}/amphora-x64-haproxy.qcow2"
+  shell: "./diskimage-create.sh -o {{ bootstrap_host_octavia_tmp }}/amphora-x64-haproxy.qcow2 -s3"
   args:
     chdir: "{{ bootstrap_host_octavia_tmp }}/octavia/diskimage-create"
     creates: "{{ bootstrap_host_octavia_tmp }}/amphora-x64-haproxy.qcow2"
