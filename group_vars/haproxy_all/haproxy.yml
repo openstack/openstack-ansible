@@ -35,6 +35,7 @@ haproxy_rabbitmq_management_whitelist_networks: "{{ haproxy_whitelist_networks }
 haproxy_repo_git_whitelist_networks: "{{ haproxy_whitelist_networks }}"
 haproxy_repo_cache_whitelist_networks: "{{ haproxy_whitelist_networks }}"
 haproxy_octavia_whitelist_networks: "{{ haproxy_whitelist_networks }}"
+haproxy_opendaylight_whitelist_networks: "{{ haproxy_whitelist_networks }}"
 
 haproxy_default_services:
   - service:
@@ -308,3 +309,23 @@ haproxy_default_services:
         - "forwardfor"
         - "httpchk"
         - "httplog"
+  - service:
+      haproxy_service_name: opendaylight
+      haproxy_backend_nodes: "{{ groups['neutron_server'] | default([]) }}"
+      haproxy_bind: "{{ [internal_lb_vip_address] }}"
+      haproxy_port: 8181
+      haproxy_balance_type: tcp
+      haproxy_timeout_client: 5000s
+      haproxy_timeout_server: 5000s
+      haproxy_whitelist_networks: "{{ haproxy_opendaylight_whitelist_networks }}"
+      haproxy_service_enabled: "{{ neutron_plugin_type == 'ml2.opendaylight' }}"
+  - service:
+      haproxy_service_name: opendaylight-neutron
+      haproxy_backend_nodes: "{{ groups['neutron_server'] | default([]) }}"
+      haproxy_bind: "{{ [internal_lb_vip_address] }}"
+      haproxy_port: 8080
+      haproxy_balance_type: tcp
+      haproxy_timeout_client: 5000s
+      haproxy_timeout_server: 5000s
+      haproxy_whitelist_networks: "{{ haproxy_opendaylight_whitelist_networks }}"
+      haproxy_service_enabled: "{{ neutron_plugin_type == 'ml2.opendaylight' }}"
