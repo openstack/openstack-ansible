@@ -24,7 +24,12 @@
 
 from __future__ import print_function
 from cStringIO import StringIO
-from urlparse import urlparse
+
+try:
+    from urllib.parse import urlparse
+except ImportError:
+    from urlparse import urlparse
+
 
 import argparse
 import re
