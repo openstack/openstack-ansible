@@ -9,10 +9,10 @@ configuration of an OpenStack environment.
 
 Documentation for each of the following releases is available.
 
-Pike: Pre-release
-~~~~~~~~~~~~~~~~~
+Queens: Pre-release
+~~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible Pike is currently in development.
+OpenStack-Ansible Queens is currently in development.
 
 .. toctree::
    :maxdepth: 1
@@ -23,6 +23,19 @@ OpenStack-Ansible Pike is currently in development.
    user/index
    contributor/index
    reference/index
+
+Pike: Release Candidate
+~~~~~~~~~~~~~~~~~~~~~~~
+
+OpenStack-Ansible Pike is currently a release candidate, expected to release
+with the 16.0.0 tag by 15 September 2017.
+
+* `OpenStack-Ansible Pike Documentation`_
+
+* `OpenStack-Ansible Pike series release notes`_
+
+.. _OpenStack-Ansible Pike Documentation: https://docs.openstack.org/openstack-ansible/pike/
+.. _OpenStack-Ansible Pike series release notes: https://docs.openstack.org/releasenotes/openstack-ansible/pike.html
 
 Ocata: Current stable release, security supported
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
