@@ -29,10 +29,18 @@
     - curl
     - kpartx
     - git
+- name: Create Temp Dir
+  tempfile:
+    state: directory
+  register: tmp_dir
+- name: Set Temp Dir Path
+  set_fact:
+    bootstrap_host_octavia_tmp: "{{ tmp_dir.path }}"
 - name: Install pip requirements
   pip:
     name: "{{ item }}"
     state: "present"
+    extra_args: "-c {{ pip_install_upper_constraints_proto }}://git.openstack.org/cgit/openstack/requirements/plain/upper-constraints.txt?id={{ requirements_git_install_branch | regex_replace(' #.*$','') }}"
   register: install_packages
   until: install_packages|success
   retries: 5
@@ -43,18 +51,11 @@
     - dib-utils
     - PyYAML
     - diskimage-builder
-- name: Create Temp Dir
-  tempfile:
-    state: directory
-  register: tmp_dir
-- name: Set Temp Dir Path
-  set_fact:
-    bootstrap_host_octavia_tmp: "{{ tmp_dir.path }}"
 - name: Clone Octavia
   git:
     repo: "https://git.openstack.org/openstack/octavia"
     dest: "{{ bootstrap_host_octavia_tmp }}/octavia"
-    version: "master"
+    version: "{{ octavia_git_install_branch }}"
 # Build Octavia amphora image
 - name: Create amphora image
   shell: "./diskimage-create.sh -o {{ bootstrap_host_octavia_tmp }}/amphora-x64-haproxy.qcow2"
