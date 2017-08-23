@@ -78,7 +78,7 @@
   include: common-playbooks/cinder.yml
   vars:
     cinder_hosts: "cinder_volume:!cinder_scheduler:!cinder_api"
-    cinder_serial: "{{ cinder_backend_serial | default('1') }}"
+    cinder_serial: "{{ cinder_backend_serial | default('100%') }}"
 
 
 
@@ -86,7 +86,7 @@
   include: common-playbooks/cinder.yml
   vars:
     cinder_hosts: "cinder_backup:!cinder_volume:!cinder_scheduler:!cinder_api"
-    cinder_serial: "{{ cinder_backend_serial | default('1') }}"
+    cinder_serial: "{{ cinder_backend_serial | default('100%') }}"
 
 
 
@@ -97,7 +97,6 @@
 - name: Refresh local facts after all software changes are made
   hosts: cinder_all
   gather_facts: no
-  max_fail_percentage: 20
   user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
@@ -140,7 +139,7 @@
 - name: Restart cinder agents to ensure new RPC object version is used
   hosts: cinder_backup,cinder_volume,cinder_scheduler
   gather_facts: no
-  serial: "{{ cinder_backend_serial | default('1') }}"
+  serial: "{{ cinder_backend_serial | default('100%') }}"
   max_fail_percentage: 20
   user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
