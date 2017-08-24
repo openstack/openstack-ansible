@@ -114,7 +114,7 @@ if [[ -d "/tmp/openstack/ara" ]]; then
   /opt/ansible-runtime/bin/pip install /tmp/openstack/ara
 else
   # This installs from pypi
-  /opt/ansible-runtime/bin/pip install ara
+  /opt/ansible-runtime/bin/pip install ara==0.14.0
 fi
 # Dynamically retrieve the location of the ARA callback so we are able to find
 # it on both py2 and py3
