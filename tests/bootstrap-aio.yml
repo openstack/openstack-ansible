@@ -70,6 +70,7 @@
         - name: heat.yml.aio
         - name: tacker.yml.aio
 
+    pip_install_upper_constraints_proto: "{{ ansible_python_version | version_compare('2.7.9', '>=') | ternary('https','http') }}"
     sftp_subsystem: "{{ (ansible_pkg_mgr == 'apt') | ternary('sftp /usr/lib/openssh/sftp-server','sftp /usr/libexec/openssh/sftp-server') }}"
     sshd:
       ListenAddress:
@@ -112,4 +113,5 @@
       MaxStartups: "100:100:100"
       GSSAPIAuthentication: no
       GSSAPICleanupCredentials: no
-
+  vars_files:
+    - "{{ playbook_dir }}/../playbooks/defaults/repo_packages/openstack_services.yml"
