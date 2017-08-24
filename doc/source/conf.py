@@ -301,8 +301,8 @@ pdf_documents = [
 latest_tag = os.popen('git describe --abbrev=0 --tags').read().strip('\n')
 
 # Used for the upgrade documentation
-previous_release_branch_name = 'ocata'
-current_release_branch_name = 'pike'
+previous_release_branch_name = 'pike'
+current_release_branch_name = 'queens'
 
 # dev docs have no branch specified on master; for stable braches it's "/branch/"
 watermark = os.popen("git branch --contains $(git rev-parse HEAD) | awk -F/ '/stable/ {print $2}'").read().strip(' \n\t').capitalize()

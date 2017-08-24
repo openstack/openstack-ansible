@@ -53,7 +53,7 @@ export ACTION=${2:-"deploy"}
 # Set the source branch for upgrade tests
 # Be sure to change this whenever a new stable branch
 # is created. The checkout must always be N-1.
-export UPGRADE_SOURCE_BRANCH=${UPGRADE_SOURCE_BRANCH:-'stable/ocata'}
+export UPGRADE_SOURCE_BRANCH=${UPGRADE_SOURCE_BRANCH:-'stable/pike'}
 
 ## Change branch for Upgrades ------------------------------------------------
 # If the action is to upgrade, then store the current SHA,
