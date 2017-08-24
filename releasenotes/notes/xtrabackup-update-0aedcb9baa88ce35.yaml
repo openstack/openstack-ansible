@@ -1,0 +1,10 @@
+---
+fixes:
+  - MariaDB 10.0.32 released on Aug 17 which, when configured
+    to use xtrabackup for the SST, requires percona xtrabackup
+    version 2.3.5 or higher. As xtrabackup is the default SST
+    mechanism in the ``galera_server`` role, the version used
+    has been updated from 2.2.13 to 2.3.5 for the x86_64
+    hardware architecture. See `the percona release notes for
+    2.3.2 <https://www.percona.com/doc/percona-xtrabackup/LATEST/release-notes/2.3/2.3.2.html#new-features>`_
+    for more details of what was included in the fix.
