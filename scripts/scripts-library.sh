@@ -125,7 +125,7 @@ function gate_job_exit_tasks {
   # If this is a gate node from OpenStack-Infra Store all logs into the
   #  execution directory after gate run.
   if [ "$GATE_EXIT_LOG_COPY" == true ]; then
-    GATE_LOG_DIR="$(dirname "${0}")/../logs"
+    GATE_LOG_DIR="${OSA_CLONE_DIR:-$(dirname $0)/..}/logs"
     mkdir -p "${GATE_LOG_DIR}/host" "${GATE_LOG_DIR}/openstack"
     rsync --archive --verbose --safe-links --ignore-errors /var/log/ "${GATE_LOG_DIR}/host" || true
     rsync --archive --verbose --safe-links --ignore-errors /openstack/log/ "${GATE_LOG_DIR}/openstack" || true
