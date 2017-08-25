@@ -30,7 +30,7 @@
       static:
       vars:
         extra_container_config_no_restart:
-          - "lxc.start.order=99"
+          - "lxc.start.order=19"
     - include: common-tasks/package-cache-proxy.yml
   roles:
     - role: "system_crontab_coordination"
