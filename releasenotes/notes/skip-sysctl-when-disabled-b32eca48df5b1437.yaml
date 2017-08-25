@@ -1,0 +1,10 @@
+---
+fixes:
+  - |
+    The sysctl configuration task was not skipping configurations where
+    ``enabled`` was set to ``no``. Instead, it was removing configurations
+    when ``enabled: no`` was set.
+
+    There is now a fix in place that ensures any sysctl configuration with
+    ``enabled: no`` will be skipped and the configuration will be left
+    unaltered on the system.
