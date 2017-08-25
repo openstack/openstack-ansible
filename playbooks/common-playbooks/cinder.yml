@@ -50,7 +50,7 @@
           - "lxc.cgroup.devices.allow=a *:* rmw"
           - "lxc.mount.entry=udev dev devtmpfs defaults 0 0"
         extra_container_config_no_restart:
-          - "lxc.start.order=79"
+          - "lxc.start.order=39"
       when:
         - "'cinder_volume' in group_names"
         - "cinder_backend_lvm_inuse | bool"

@@ -31,7 +31,7 @@
           - bind_dir_path: "/var/lib/mysql"
             mount_path: "/openstack/{{ inventory_hostname }}"
         extra_container_config_no_restart:
-          - "lxc.start.order=99"
+          - "lxc.start.order=10"
     - include: common-tasks/package-cache-proxy.yml
   vars:
     is_metal: "{{ properties.is_metal|default(false) }}"
