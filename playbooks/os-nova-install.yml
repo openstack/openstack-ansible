@@ -129,7 +129,7 @@
   include: common-playbooks/nova.yml
   vars:
     nova_hosts: "nova_compute:!nova_conductor:!nova_scheduler:!nova_consoleauth:!nova_api_os_compute:!nova_api_placement:!nova_api_metadata:!nova_console"
-    nova_serial: "{{ nova_compute_serial | default('50%') }}"
+    nova_serial: "{{ nova_compute_serial | default('100%') }}"
 
 
 
