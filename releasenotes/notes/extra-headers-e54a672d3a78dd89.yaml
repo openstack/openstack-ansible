@@ -1,0 +1,15 @@
+---
+features:
+  - |
+    Extra headers can be added to Keystone responses by adding items to
+    ``keystone_extra_headers``. Example:
+
+    .. code-block:: yaml
+
+        keystone_extra_headers:
+          - parameter: "Access-Control-Expose-Headers"
+            value: "X-Subject-Token"
+          - parameter: "Access-Control-Allow-Headers"
+            value: "Content-Type, X-Auth-Token"
+          - parameter: "Access-Control-Allow-Origin"
+            value: "*"
