@@ -1,0 +1,10 @@
+---
+fixes:
+  - |
+    In Ubuntu the ``dnsmasq`` package actually includes
+    init scripts and service configuration which
+    conflict with LXC and are best not included. The
+    actual dependent package is ``dnsmasq-base``. The
+    package list has been adjusted and a task added
+    to remove the ``dnsmasq`` package and purge the
+    related configuration files from all LXC hosts.

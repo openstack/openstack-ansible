@@ -1,0 +1,8 @@
+---
+fixes:
+  - |
+    Mysql cnf files can now be properly overridden. The config_template
+    module has been extended to support valueless options, such as those that
+    are found in the my.cnf file(i.e. `quick` under the `mysqldump` section).
+    To use valueless options, use the `ignore_none_type` attribute of the
+    config_template module.
