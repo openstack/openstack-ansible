@@ -38,7 +38,7 @@
         extra_container_config:
           - "lxc.cgroup.devices.allow=a *:* rmw"
         extra_container_config_no_restart:
-          - "lxc.start.order=79"
+          - "lxc.start.order=29"
       when:
         - "'neutron_agent' in group_names"
 
