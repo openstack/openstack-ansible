@@ -13,7 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-if [ "${DEVICE}" == "{{ item[1].name | default('br-mgmt') }}" ]; then
-    /usr/sbin/ip link set {{ item[1].name | default('br-mgmt') }}-veth nomaster || true
-    /usr/sbin/ip link del {{ item[1].name | default('br-mgmt') }}-veth || true
+source /etc/os-release || source /usr/lib/os-release
+
+case "${ID}" in
+    *suse*) INTERFACE="${1}"; break ;;
+    centos|rhel|fedora) INTERFACE="${DEVICE}"; break ;;
+    *) echo "Unsupported distribution ${ID}"; exit 1;
+esac
+
+_ip=$(which ip 2>/dev/null || { echo "Failed to find ip executable"; exit 1; })
+
+if [ "${INTERFACE}" == "{{ item[1].name | default('br-mgmt') }}" ]; then
+    eval $_ip link set {{ item[1].name | default('br-mgmt') }}-veth nomaster || true
+    eval $_ip link del {{ item[1].name | default('br-mgmt') }}-veth || true
 fi
