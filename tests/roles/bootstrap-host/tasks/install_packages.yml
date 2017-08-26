@@ -101,6 +101,9 @@
   package:
     name: "{{ packages_install }}"
     state: present
+    # NOTE(hwoarang) Ubuntu has updated its cache before so no need to do it
+    # again
+    update_cache: "{{ (ansible_pkg_mgr == 'zypper') | ternary('yes', omit) }}"
   tags:
     - install-packages
 
