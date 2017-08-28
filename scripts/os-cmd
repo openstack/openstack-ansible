@@ -21,7 +21,7 @@
 
 __check_cmd_avail ()
 {
-    if [ "z$(which $1)" == "z" ]; then
+    if hash ${1} &> /dev/null; then
         echo "The command '$1' could not be found, exiting"
         exit 1
     fi
