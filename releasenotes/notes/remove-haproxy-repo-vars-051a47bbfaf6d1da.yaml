@@ -1,0 +1,8 @@
+---
+upgrade:
+  - |
+    The following variables have been removed from the ``haproxy_server`` role
+    as they are no longer necessary or used.
+    - haproxy_repo
+    - haproxy_gpg_keys
+    - haproxy_required_distro_packages
