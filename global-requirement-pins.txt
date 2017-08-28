@@ -6,12 +6,6 @@
 # Use this file with caution!
 #
 
-# Due to https://bugs.launchpad.net/openstack-ansible/+bug/1693793,
-# ldappool must be pinned to == 2.1.0.
-# https://review.openstack.org/#/c/468508/
-# TODO: mgariepy, remove this once upstream is fixed.
-ldappool==2.1.0
-
 # Due to https://bugs.launchpad.net/ceilometer/+bug/1660800, gnocchiclient
 # must be pinned to < 3.0.0. This constraint matches what is defined in
 # the optional dependencies specified here:
