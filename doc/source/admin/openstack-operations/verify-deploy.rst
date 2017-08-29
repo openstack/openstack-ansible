@@ -26,7 +26,7 @@ the OpenStack API and dashboard.
 
    .. code::
 
-      $ source ~/openrc
+      $ . ~/openrc
 
 #. Run an OpenStack command that uses one or more APIs. For example:
 
