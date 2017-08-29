@@ -340,8 +340,8 @@ if watermark == "":
     dev_branch_link_name = ""
 
 deploy_guide_prefix = "http://docs.openstack.org/project-deploy-guide/openstack-ansible/{}/%s".format(deploy_branch_link_name)
-dev_docs_prefix = "http://docs.openstack.org/developer/openstack-ansible/developer-docs/{}%s".format(dev_branch_link_name)
-role_docs_prefix = "http://docs.openstack.org/developer/openstack-ansible-%s/{}".format(dev_branch_link_name)
+dev_docs_prefix = "http://docs.openstack.org/openstack-ansible/{}%s".format(dev_branch_link_name)
+role_docs_prefix = "http://docs.openstack.org/openstack-ansible-%s/{}".format(dev_branch_link_name)
 
 extlinks = {'deploy_guide': (deploy_guide_prefix, ''),
             'dev_docs':  (dev_docs_prefix, ''),
