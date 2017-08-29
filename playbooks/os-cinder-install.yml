@@ -200,33 +200,3 @@
       vars:
         haproxy_state: enabled
       when: "groups['cinder_api'] | length > 1"
-
-
-
-- name: Perform online database migrations
-  hosts: cinder_api[0]
-  gather_facts: no
-  user: root
-  environment: "{{ deployment_environment_variables | default({}) }}"
-  tags:
-    - cinder
-  tasks:
-    - name: Perform online data migrations
-      command: "{{ cinder_bin }}/cinder-manage db online-data-migrations"
-      become: yes
-      become_user: "{{ cinder_system_user_name }}"
-      when:
-        - "cinder_all_software_updated | bool"
-        - "ansible_local['openstack_ansible']['cinder']['need_online_data_migrations'] | bool"
-      changed_when: false
-      register: data_migrations
-
-    - name: Disable the online migrations requirement
-      ini_file:
-        dest: "/etc/ansible/facts.d/openstack_ansible.fact"
-        section: cinder
-        option: need_online_data_migrations
-        value: False
-      when:
-        - data_migrations | succeeded
-
