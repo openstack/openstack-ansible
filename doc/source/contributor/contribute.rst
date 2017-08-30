@@ -365,6 +365,10 @@ development team by performing one of the following recurring tasks:
   * Bump ``ceph_stable_release`` to latest Ceph LTS release in the integrated
     OpenStack-Ansible repo, and inside the ``ceph_client`` role defaults.
 
+  * Check and bump galera versions if required.
+
+  * Check and bump rabbitmq versions if required.
+
 * By milestone 3:
 
   * Implement features
