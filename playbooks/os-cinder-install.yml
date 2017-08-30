@@ -217,7 +217,7 @@
     - cinder
   tasks:
     - name: Perform online data migrations
-      command: "{{ cinder_bin }}/cinder-manage db online-data-migrations"
+      command: "{{ cinder_bin }}/cinder-manage db online_data_migrations"
       become: yes
       become_user: "{{ cinder_system_user_name }}"
       when:
