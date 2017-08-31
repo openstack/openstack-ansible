@@ -243,8 +243,8 @@ The development of a role will usually go through the following stages:
      encouraged.
 
    * The role *must* support Ubuntu 16.04 LTS. It should
-     ideally also support CentOS7 but this is not required at this time. The
-     patterns to achieve this include:
+     ideally also support CentOS 7 and openSUSE 42.X but this is not required
+     at this time. The patterns to achieve this include:
 
      * The separation of platform specific variables into role vars files.
      * The detection and handling of different init systems (init.d, SystemD).
