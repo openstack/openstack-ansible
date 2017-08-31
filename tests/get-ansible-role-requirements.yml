@@ -39,53 +39,43 @@
         - item.scm == "git" or item.scm is undefined
       with_items: "{{ roles }}"
 
-    - name: Prepare git clone list
+    - name: Prepare zuul changes clone list
       set_fact:
-        git_roles: >
-          {%- set filtered_role_list = [] %}
-          {%- for role in roles %}
-          {%-   if not role.src | match(".*git.openstack.org.*") %}
-          {%-     set _ = filtered_role_list.append(role) %}
-          {%-   endif %}
-          {%- endfor %}
-          {{- filtered_role_list -}}
-        zuul_roles: >
-          {%- set filtered_role_list = [] %}
-          {%- for role in roles %}
-          {%-   if role.src | match(".*git.openstack.org.*") %}
-          {%-     set role_src_cleaned = role.src | regex_replace('https://git.openstack.org/', '') %}
-          {%-     set _ = filtered_role_list.append(role_src_cleaned) %}
-          {%-   endif %}
-          {%- endfor %}
-          {{- filtered_role_list -}}
-        openstack_repo_list: >
+        zuul_changes: >
           {%- set filtered_repo_list = [] %}
           {%- set repo_list = lookup('env', 'ZUUL_CHANGES').split('^') %}
           {%- for repo in repo_list %}
           {%-   set repo_cleaned = repo | regex_replace(':.*$', '') %}
-          {%-   if not repo_cleaned | match("^openstack/openstack-ansible.*") %}
-          {%-     set _ = filtered_repo_list.append(repo_cleaned) %}
-          {%-   endif %}
+          {%-   set _ = filtered_repo_list.append(repo_cleaned) %}
           {%- endfor %}
           {{- filtered_repo_list -}}
       when:
         - _zuul_cloner_check.rc == 0
 
-    - name: Clone git repos (with git)
-      git:
-        repo: "{{ item.src }}"
-        dest: "{{ item.path | default(role_path_default) }}/{{ item.name | default(item.src | basename) }}"
-        version: "{{ item.version | default('master') }}"
-        refspec: "{{ item.refspec | default(omit) }}"
-        update: true
-        force: true
+    - name: Prepare zuul/git clone list
+      set_fact:
+        zuul_roles: >
+          {%- set filtered_role_list = [] %}
+          {%- for role in roles %}
+          {%-   if role.src | match(".*git.openstack.org.*") %}
+          {%-     set role_src_cleaned = role.src | regex_replace('https://git.openstack.org/', '') %}
+          {%-     if role_src_cleaned not in zuul_changes %}
+          {%-       set _ = filtered_role_list.append(role_src_cleaned) %}
+          {%-     endif %}
+          {%-   endif %}
+          {%- endfor %}
+          {{- filtered_role_list -}}
+        git_roles: >
+          {%- set filtered_role_list = [] %}
+          {%- for role in roles %}
+          {%-   set role_src_cleaned = role.src | regex_replace('https://git.openstack.org/', '') %}
+          {%-   if role_src_cleaned not in zuul_changes %}
+          {%-     set _ = filtered_role_list.append(role) %}
+          {%-   endif %}
+          {%- endfor %}
+          {{- filtered_role_list -}}
       when:
-        - item.scm == "git" or item.scm is undefined
-      with_items: "{{ git_roles | default(roles) }}"
-      register: git_clone
-      until: git_clone | success
-      retries: "{{ git_clone_retries }}"
-      delay: "{{ git_clone_retry_delay }}"
+        - _zuul_cloner_check.rc == 0
 
     - name: Create clone map
       copy:
@@ -104,14 +94,34 @@
     - name: Clone git repos (with zuul-cloner)
       shell: |
         {{ _zuul_cloner_check.stdout }} \
-                -m /tmp/zuul-clonemap.yml \
+                --map /tmp/zuul-clonemap.yml \
                 --cache-dir /opt/git \
                 git://git.openstack.org \
-        {% for repo in zuul_roles + openstack_repo_list %}
+        {% for repo in zuul_roles + zuul_changes %}
                 {{ repo }} \
         {% endfor %}
       when:
         - _zuul_cloner_check.rc == 0
+      register: zuul_clone
+      until: zuul_clone | success
+      retries: "{{ git_clone_retries }}"
+      delay: "{{ git_clone_retry_delay }}"
+
+    - name: Clone git repos (with git)
+      git:
+        repo: "{{ item.src }}"
+        dest: "{{ item.path | default(role_path_default) }}/{{ item.name | default(item.src | basename) }}"
+        version: "{{ item.version | default('master') }}"
+        refspec: "{{ item.refspec | default(omit) }}"
+        update: true
+        force: true
+      when:
+        - item.scm == "git" or item.scm is undefined
+      with_items: "{{ git_roles | default(roles) }}"
+      register: git_clone
+      until: git_clone | success
+      retries: "{{ git_clone_retries }}"
+      delay: "{{ git_clone_retry_delay }}"
 
   vars:
     ansible_python_interpreter: "/usr/bin/python"
