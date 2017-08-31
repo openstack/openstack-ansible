@@ -13,12 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: common-playbooks/unbound-clients.yml
-  vars:
-    unbound_group: "cinder_all"
-  when:
-    - resolvconf_enabled | bool
-
 - name: Prepare MQ/DB services
   hosts: cinder_all
   gather_facts: no
@@ -27,6 +21,7 @@
   tags:
     - cinder
   tasks:
+
     - name: Configure rabbitmq vhost/user
       include: common-tasks/rabbitmq-vhost-user.yml
       vars:
@@ -234,3 +229,4 @@
         value: False
       when:
         - data_migrations | succeeded
+

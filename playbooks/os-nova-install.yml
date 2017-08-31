@@ -13,12 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: common-playbooks/unbound-clients.yml
-  vars:
-    unbound_group: "nova_all"
-  when:
-    - resolvconf_enabled | bool
-
 - name: Prepare MQ/DB services
   hosts: nova_conductor
   gather_facts: no
