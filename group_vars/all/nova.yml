@@ -30,7 +30,8 @@ nova_keystone_auth_plugin: password
 nova_console_type: spice
 nova_novncproxy_port: 6080
 nova_spice_html5proxy_base_port: 6082
-nova_console_port: "{% if nova_console_type == 'spice' %}{{ nova_spice_html5proxy_base_port }}{% else %}{{ nova_novncproxy_port }}{% endif %}"
+nova_serialconsoleproxy_port: 6083
+nova_console_port: "{% if nova_console_type == 'spice' %}{{ nova_spice_html5proxy_base_port }}{% elif nova_console_type == 'novnc' %}{{ nova_novncproxy_port }}{% else %}{{ nova_serialconsoleproxy_port }} {% endif %}"
 
 # These are here rather than in nova_all because
 # both the os_ceilometer and os_nova roles require them
