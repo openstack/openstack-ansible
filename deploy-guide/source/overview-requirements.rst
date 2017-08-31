@@ -23,6 +23,12 @@ following minimum requirements:
 
   * Linux kernel version ``3.10.0`` or later.
 
+* openSUSE (support is experimental)
+
+  * Leap 42.X, fully updated.
+
+  * Linux kernel version ``4.4.X`` or later.
+
 * Secure Shell (SSH) client and server that support public key
   authentication
 
