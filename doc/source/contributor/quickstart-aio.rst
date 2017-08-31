@@ -65,6 +65,13 @@ system packages are upgraded and then reboot into the new kernel:
    # yum install git
    # reboot
 
+.. code-block:: shell-session
+
+   ## openSUSE
+   # zypper up
+   # zypper in git-core
+   # reboot
+
 .. note::
 
    If you are installing with limited connectivity, please review
@@ -100,7 +107,7 @@ version.
 
 .. note::
    The |current_release_formal_name| release is only compatible with Ubuntu
-   16.04 (Xenial Xerus) and Centos 7.
+   16.04 (Xenial Xerus), Centos 7 and openSUSE Leap 42.X.
 
 By default the scripts deploy all OpenStack services with sensible defaults
 for the purpose of a gate check, development or testing system.

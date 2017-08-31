@@ -14,6 +14,7 @@ target host:
 
 * Ubuntu server 16.04 (Xenial Xerus) LTS 64-bit
 * Centos 7 64-bit
+* openSUSE 42.X 64-bit
 
 Configure at least one network interface to access the Internet or
 suitable local repositories.
@@ -96,6 +97,49 @@ Configure the operating system (CentOS)
 
        # yum install bridge-utils iputils lsof lvm2 \
          ntp ntpdate openssh-server sudo tcpdump
+
+#. Add the appropriate kernel modules to the ``/etc/modules`` file to
+   enable VLAN and bond interfaces:
+
+   .. code-block:: shell-session
+
+      # echo 'bonding' >> /etc/modules-load.d/openstack-ansible.conf
+      # echo '8021q' >> /etc/modules-load.d/openstack-ansible.conf
+
+#. Configure Network Time Protocol (NTP) in ``/etc/ntp.conf`` to
+   synchronize with a suitable time source and start the service:
+
+   .. code-block:: shell-session
+
+      # systemctl enable ntpd.service
+      # systemctl start ntpd.service
+
+
+#. Reboot the host to activate the changes and use the new kernel.
+
+Configure the operating system (openSUSE)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#. Upgrade the system packages and kernel:
+
+   .. code-block:: shell-session
+
+       # zypper up
+
+#. Reboot the host.
+
+#. Ensure that the kernel version is ``4.4`` or later:
+
+   .. code-block:: shell-session
+
+       # uname -r
+
+#. Install additional software packages:
+
+   .. code-block:: shell-session
+
+       # zypper install bridge-utils iputils lsof lvm2 \
+         ntp opensshr sudo tcpdump
 
 #. Add the appropriate kernel modules to the ``/etc/modules`` file to
    enable VLAN and bond interfaces:
