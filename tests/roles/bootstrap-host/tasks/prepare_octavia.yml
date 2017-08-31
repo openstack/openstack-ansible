@@ -29,13 +29,13 @@
     - curl
     - kpartx
     - git
-- name: Create Temp Dir
-  tempfile:
+- name: Create Octavia tmp dir
+  file:
     state: directory
-  register: tmp_dir
-- name: Set Temp Dir Path
+    path: "/var/lib/octavia"
+- name: Set Octavia tmp dir
   set_fact:
-    bootstrap_host_octavia_tmp: "{{ tmp_dir.path }}"
+    bootstrap_host_octavia_tmp: "/var/lib/octavia"
 - name: Install pip requirements
   pip:
     name: "{{ item }}"
