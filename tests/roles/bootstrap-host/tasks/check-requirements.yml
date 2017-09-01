@@ -23,8 +23,16 @@
     - check-operating-system
 
 - name: Identify the space available in /
+  # NOTE(hwoarang): df does not work reliably on btrfs filesystems
+  # https://btrfs.wiki.kernel.org/index.php/FAQ#How_much_free_space_do_I_have.3F
+  # As such, use the btrfs tools to determine the real available size on the
+  # disk
   shell: |
-    df -BK / | awk '/^[^Filesystem]/ {print $4}' | sed 's/K//'
+    if [[ $(df -T / | tail -n 1 | awk '{print $2}') == "btrfs" ]]; then
+        btrfs fi usage --kbytes / | awk '/^.*Free / {print $3}'| sed 's/\..*//'
+    else
+        df -BK / | awk '/^[^Filesystem]/ {print $4}' | sed 's/K//'
+    fi
   when: bootstrap_host_data_disk_device == None
   changed_when: false
   register: root_space_available
