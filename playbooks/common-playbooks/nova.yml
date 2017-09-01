@@ -65,7 +65,7 @@
       include: ../common-tasks/os-lxc-container-setup.yml
       vars:
         extra_container_config_no_restart:
-          - "lxc.start.order=69"
+          - "lxc.start.order=39"
 
     - name: Configure log directories (on metal)
       include: ../common-tasks/os-log-dir-setup.yml

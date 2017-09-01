@@ -82,7 +82,7 @@
     line: "{{ item.split('=')[0] }} = {{ item.split('=', 1)[1] }}"
     insertafter: "^{{ item.split('=')[0] }}"
     backup: "true"
-  with_items: "{{ extra_container_config_no_restart | default([]) }}"
+  with_items: "{{ extra_container_config_no_restart | default(['lxc.start.order=100']) }}"
   delegate_to: "{{ physical_host }}"
   when: not is_metal | bool
   tags:

@@ -29,7 +29,7 @@
       vars:
         list_of_bind_mounts: "{{ galera_container_bind_mounts }}"
         extra_container_config_no_restart:
-          - "lxc.start.order=99"
+          - "lxc.start.order=10"
     - include: common-tasks/package-cache-proxy.yml
   vars:
     is_metal: "{{ properties.is_metal|default(false) }}"
