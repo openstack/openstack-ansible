@@ -29,7 +29,9 @@
           - src: "/openstack/log/{{ inventory_hostname }}-swift"
             dest: "/var/log/swift"
             owner: "syslog"
-            group: "syslog"
+            # NOTE(hwoarang) The syslog user on openSUSE belongs to the 'users'
+            # group. There is no dedicated syslog group.
+            group: "{{ (ansible_pkg_mgr == 'zypper') | ternary ('users', 'syslog') }}"
     - include: common-tasks/package-cache-proxy.yml
 
     # If we're using ceilometer then swift needs a rabbitmq/vhost & usera
