@@ -30,7 +30,10 @@ package_state: "latest"
 default_bind_mount_logs: true
 
 # Set distro variable
-os_distro_version: "{{ ansible_distribution | lower }}-{{ ansible_distribution_version.split('.')[:2] | join('.') }}-{{ ansible_architecture | lower }}"
+# NOTE(hwoarang): ansible_distribution may return a string with spaces
+# such as "openSUSE Leap" so we need to replace the space with underscore
+# in order to create a more sensible repo name for the distro.
+os_distro_version: "{{ (ansible_distribution | lower) | replace(' ', '_') }}-{{ ansible_distribution_version.split('.')[:2] | join('.') }}-{{ ansible_architecture | lower }}"
 
 # Ensure that the package state matches the global setting
 rsyslog_client_package_state: "{{ package_state }}"
