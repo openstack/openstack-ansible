@@ -16,8 +16,8 @@
 source /etc/os-release || source /usr/lib/os-release
 
 case "${ID}" in
-    *suse*) INTERFACE="${1}"; break ;;
-    centos|rhel|fedora) INTERFACE="${DEVICE}"; break ;;
+    *suse*) INTERFACE="${1}"; ;;
+    centos|rhel|fedora) INTERFACE="${DEVICE}"; ;;
     *) echo "Unsupported distribution ${ID}"; exit 1;
 esac
 
