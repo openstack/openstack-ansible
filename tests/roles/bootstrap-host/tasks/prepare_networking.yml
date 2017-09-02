@@ -99,7 +99,7 @@
 - name: Ensure the postup scripts are loaded (SUSE)
   lineinfile:
     dest: "/etc/sysconfig/network/ifcfg-{{ item[1].name | default('br-mgmt') }}"
-    line: "POST_UP_SCRIPTS=\"compat:suse:{{ item[0] }}-veth-{{ item[1].name | default('br-mgmt') }}-2-{{ item[1].veth_peer | default('eth1') }}\""
+    line: "POST_UP_SCRIPT=\"compat:suse:{{ item[0] }}-veth-{{ item[1].name | default('br-mgmt') }}-2-{{ item[1].veth_peer | default('eth1') }}\""
   with_nested:
     - [ "ifup-post" ]
     - "{{ bridges }}"
@@ -110,7 +110,7 @@
 - name: Ensure the postdown scripts are loaded (SUSE)
   lineinfile:
     dest: "/etc/sysconfig/network/ifcfg-{{ item[1].name | default('br-mgmt') }}"
-    line: "POST_DOWN_SCRIPTS=\"compat:suse:{{ item[0] }}-veth-{{ item[1].name | default('br-mgmt') }}-2-{{ item[1].veth_peer | default('eth1') }}\""
+    line: "POST_DOWN_SCRIPT=\"compat:suse:{{ item[0] }}-veth-{{ item[1].name | default('br-mgmt') }}-2-{{ item[1].veth_peer | default('eth1') }}\""
   with_nested:
     - [ "ifdown-post" ]
     - "{{ bridges }}"
