@@ -186,9 +186,9 @@ function get_instance_info {
       systemd-resolve --statistics && \
         cat /etc/systemd/resolved.conf) > \
           "/openstack/log/instance-info/host_dns_info_${TS}.log" || true
-  tracepath "8.8.8.8" -m 5 || tracepath "8.8.8.8" > \
+  { tracepath "8.8.8.8" -m 5 2>/dev/null || tracepath "8.8.8.8"; } > \
     "/openstack/log/instance-info/host_tracepath_info_${TS}.log" || true
-  tracepath6 "2001:4860:4860::8888" -m 5 || tracepath6 "2001:4860:4860::8888" >> \
+  { tracepath6 "2001:4860:4860::8888" -m 5 2>/dev/null || tracepath6 "2001:4860:4860::8888"; } >> \
     "/openstack/log/instance-info/host_tracepath_info_${TS}.log" || true
   if [ "$(which lxc-ls)" ]; then
     lxc-ls --fancy > \
