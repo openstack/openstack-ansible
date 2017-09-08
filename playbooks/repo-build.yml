@@ -125,11 +125,6 @@
     - role: "repo_build"
   vars_files:
     - defaults/repo_packages/openstack_services.yml
-  vars:
-    pkg_locations:
-      - "{{ playbook_dir }}/../"
-      - /etc/ansible/roles
-      - /etc/openstack_deploy
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - repo-build

@@ -66,3 +66,8 @@ repo_build_pip_no_binary:
 # Set the build tag and the repo version
 repo_build_release_tag: "{{ openstack_release }}"
 repo_build_os_distro_version: "{{ os_distro_version }}"
+
+pkg_locations:
+  - "{{ playbook_dir }}/../"
+  - /etc/ansible/roles
+  - /etc/openstack_deploy
