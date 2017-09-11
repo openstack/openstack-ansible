@@ -351,13 +351,13 @@ development team by performing one of the following recurring tasks:
 
 * By milestone 1:
 
-  * Community goal acknowledgement
+  * Community goal acknowledgement.
 
 * By milestone 2:
 
-  * Handle deprecations from upstream project's previous cycle
+  * Handle deprecations from upstream project's previous cycle.
 
-  * Handle OpenStack-Ansible roles deprecations from the previous cycle
+  * Handle OpenStack-Ansible roles deprecations from the previous cycle.
 
   * Refresh static elements in roles. For example, update a specific version of
     the software packages.
@@ -376,3 +376,8 @@ development team by performing one of the following recurring tasks:
 * After milestone 3:
 
   * Feature freeze, bug fixes, and testing improvements
+
+* After official project release, before official OpenStack-Ansible release:
+
+  * Bump RDO, Ubuntu Cloud Archive and openSUSE OBS OpenStack Cloud
+    repositories if they are ready on time.
