@@ -64,6 +64,10 @@ case ${DISTRO_ID} in
           python2 python2-devel \
           openssl-devel libffi-devel \
           libselinux-python
+          # CentOS base does not include a recent
+          # enough version of virtualenv or pip,
+          # so we do not bother trying to install
+          # them.
         ;;
     ubuntu)
         apt-get update
@@ -71,7 +75,7 @@ case ${DISTRO_ID} in
           git-core curl gcc netcat \
           python2.7 python2.7-dev \
           libssl-dev libffi-dev \
-          python-apt
+          python-apt python-virtualenv
         ;;
 esac
 
@@ -93,24 +97,34 @@ UPPER_CONSTRAINTS_PROTO=$([ "$PYTHON_VERSION" == $(echo -e "$PYTHON_VERSION\n2.7
 # Set the location of the constraints to use for all pip installations
 export UPPER_CONSTRAINTS_FILE=${UPPER_CONSTRAINTS_FILE:-"$UPPER_CONSTRAINTS_PROTO://git.openstack.org/cgit/openstack/requirements/plain/upper-constraints.txt?id=$(awk '/requirements_git_install_branch:/ {print $2}' playbooks/defaults/repo_packages/openstack_services.yml)"}
 
-# Install pip on the host if it is not already installed,
-# but also make sure that it is at least version 9.x or above.
-PIP_VERSION=$(pip --version 2>/dev/null | awk '{print $2}' | cut -d. -f1)
-if [[ "${PIP_VERSION}" -lt "9" ]]; then
-  get_pip ${PYTHON_EXEC_PATH}
-  # Ensure that our shell knows about the new pip
-  hash -r pip
-fi
+# Install virtualenv if it is not already installed,
+# but also make sure it is at least version 13.x or above
+# so that it supports using the no-pip, no-setuptools
+# and no-wheels options (the last one was added in v13.0.0).
+VIRTUALENV_VERSION=$(virtualenv --version 2>/dev/null | cut -d. -f1)
+if [[ "${VIRTUALENV_VERSION}" -lt "13" ]]; then
 
-# Install the requirements for the various python scripts
-# on to the host, including virtualenv.
-pip install ${PIP_OPTS} \
-  --requirement requirements.txt \
-  --constraint ${UPPER_CONSTRAINTS_FILE} \
-  || pip install ${PIP_OPTS} \
-       --requirement requirements.txt \
-       --constraint ${UPPER_CONSTRAINTS_FILE} \
-       --isolated
+  # Install pip on the host if it is not already installed,
+  # but also make sure that it is at least version 7.x or above
+  # so that it supports the use of the constraint option which
+  # was added in pip 7.1.
+  PIP_VERSION=$(pip --version 2>/dev/null | awk '{print $2}' | cut -d. -f1)
+  if [[ "${PIP_VERSION}" -lt "7" ]]; then
+    get_pip ${PYTHON_EXEC_PATH}
+    # Ensure that our shell knows about the new pip
+    hash -r pip
+  fi
+
+  pip install ${PIP_OPTS} \
+    --constraint ${UPPER_CONSTRAINTS_FILE} \
+    virtualenv \
+    || pip install ${PIP_OPTS} \
+         --constraint ${UPPER_CONSTRAINTS_FILE} \
+         --isolated \
+         virtualenv
+  # Ensure that our shell knows about the new virtualenv
+  hash -r virtualenv
+fi
 
 # Create a Virtualenv for the Ansible runtime
 virtualenv --python="${PYTHON_EXEC_PATH}" \
