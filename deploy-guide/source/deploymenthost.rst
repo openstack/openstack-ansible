@@ -80,7 +80,7 @@ Before you begin, we recommend upgrading your system packages and kernel.
 
    .. code-block:: shell-session
 
-       # yum install https://rdoproject.org/repos/openstack-ocata/rdo-release-ocata.rpm
+       # yum install https://rdoproject.org/repos/openstack-pike/rdo-release-pike.rpm
        # yum install git ntp ntpdate openssh-server python-devel \
          sudo '@Development Tools'
 
