@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/opt/ansible-runtime/bin/python
 # Copyright 2014, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
