@@ -5,7 +5,7 @@ Security hardening
 ==================
 
 OpenStack-Ansible automatically applies host security hardening configurations
-by using the `openstack-ansible-security`_ role. The role uses a version of the
+by using the `ansible-hardening`_ role. The role uses a version of the
 `Security Technical Implementation Guide (STIG)`_ that has been adapted for
 Ubuntu 14.04 and OpenStack.
 
@@ -33,6 +33,6 @@ audit an environment by using a playbook supplied with OpenStack-Ansible:
 For more information about the security configurations, see the
 `OpenStack-Ansible host security`_ hardening documentation.
 
-.. _openstack-ansible-security: http://docs.openstack.org/developer/openstack-ansible-security/newton/
+.. _ansible-hardening: https://docs.openstack.org/ansible-hardening/newton/
 .. _Security Technical Implementation Guide (STIG): https://en.wikipedia.org/wiki/Security_Technical_Implementation_Guide
-.. _OpenStack-Ansible host security: http://docs.openstack.org/developer/openstack-ansible-security/newton/
+.. _OpenStack-Ansible host security: https://docs.openstack.org/ansible-hardening/newton/

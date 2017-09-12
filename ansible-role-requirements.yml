@@ -1,3 +1,7 @@
+- name: ansible-hardening
+  scm: git
+  src: https://git.openstack.org/openstack/ansible-hardening
+  version: 31bfec7b28d60518a31fcc16a10904b701b4ba40
 - name: apt_package_pinning
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-apt_package_pinning
@@ -38,10 +42,6 @@
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-memcached_server
   version: 0afdcad49d6d08410f1f0227619e9a984a34570f
-- name: openstack-ansible-security
-  scm: git
-  src: https://git.openstack.org/openstack/openstack-ansible-security
-  version: e9e425247ec00b8b2613560c84bdb8404900029c
 - name: openstack_hosts
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-openstack_hosts
