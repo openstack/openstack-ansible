@@ -14,6 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+opensuse_openstack_repos:
+  - name: "OBS:Cloud:OpenStack:Pike"
+    uri: "http://download.opensuse.org/repositories/Cloud:/OpenStack:/Pike/openSUSE_Leap_{{ ansible_distribution_version }}"
+
 packages_install:
   - bridge-utils
   - curl

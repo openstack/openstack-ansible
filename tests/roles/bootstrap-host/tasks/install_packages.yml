@@ -90,6 +90,20 @@
   when:
     - ansible_pkg_mgr in ['yum', 'dnf']
 
+# openSUSE
+- name: Add zypper cloud repositories
+  zypper_repository:
+    auto_import_keys: yes
+    autorefresh: yes
+    name: "{{ item.name }}"
+    repo: "{{ item.uri }}"
+    runrefresh: yes
+  with_items: "{{ opensuse_openstack_repos }}"
+  retries: 5
+  delay: 2
+  when:
+    - ansible_pkg_mgr == 'zypper'
+
 - name: Remove known problem packages
   package:
     name: "{{ packages_remove }}"
