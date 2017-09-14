@@ -141,6 +141,13 @@
   when:
     - "bootstrap_host_scenario == 'ceph'"
 
+- name: Copy modified env.d file for metal scenario
+  copy:
+    src: "{{ playbook_dir }}/../etc/openstack_deploy/env.d/aio_metal.yml.example"
+    dest: "/etc/openstack_deploy/env.d/aio_metal.yml"
+  when:
+    - "bootstrap_host_scenario == 'aio_metal'"
+
 - name: Add user_conf_files to contain the list of files to copy into containers
   file:
     path: /etc/openstack_deploy/user_conf_files.yml

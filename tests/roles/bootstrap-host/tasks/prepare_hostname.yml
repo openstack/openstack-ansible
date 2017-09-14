@@ -1,5 +1,5 @@
 ---
-# Copyright 2015, Rackspace US, Inc.
+# Copyright 2018, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,29 +13,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-packages_install:
-  - bridge-utils
-  - build-essential
-  - curl
-  - dbus
-  - ethtool
-  - git-core
-  - ipython
-  - linux-image-extra-{{ ansible_kernel }}
-  - lvm2
-  - python2.7
-  - python-dev
-  - sshpass
-  - tmux
-  - vim
-  - vlan
-  - xfsprogs
-  - iputils-tracepath
+- name: Ensure the hosts file is templated appropriately
+  copy:
+    content: |
+      127.0.0.1 localhost aio1
+      127.0.1.1 aio1.openstack.local aio1
 
-packages_remove:
-  - libmysqlclient18
-  - mysql-common
+      # The following lines are desirable for IPv6 capable hosts
+      ::1 ip6-localhost ip6-loopback
+      fe00::0 ip6-localnet
+      ff00::0 ip6-mcastprefix
+      ff02::1 ip6-allnodes
+      ff02::2 ip6-allrouters
+      ff02::3 ip6-allhosts
+    dest: /etc/hosts
+    backup: yes
 
-swap_create_command: "fallocate -l {{ bootstrap_host_swap_size }}G /openstack/swap.img"
-rc_local: /etc/rc.local
-rc_local_insert_before: "^exit 0$"
+- name: Ensure hostname is set
+  hostname:
+    name: aio1

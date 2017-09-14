@@ -15,6 +15,7 @@
 
 confd_overrides:
   aio_lxc:
+    - name: haproxy.yml.aio
     - name: cinder.yml.aio
     - name: designate.yml.aio
     - name: glance.yml.aio
@@ -24,7 +25,16 @@ confd_overrides:
     - name: neutron.yml.aio
     - name: nova.yml.aio
     - name: swift.yml.aio
+  aio_metal:
+    - name: cinder.yml.aio
+    - name: glance.yml.aio
+    - name: heat.yml.aio
+    - name: keystone.yml.aio
+    - name: neutron.yml.aio
+    - name: nova.yml.aio
+    - name: swift.yml.aio
   ceph:
+    - name: haproxy.yml.aio
     - name: ceph.yml.aio
     - name: cinder.yml.aio
     - name: glance.yml.aio
@@ -32,6 +42,7 @@ confd_overrides:
     - name: neutron.yml.aio
     - name: nova.yml.aio
   translations:
+    - name: haproxy.yml.aio
     - name: cinder.yml.aio
     - name: designate.yml.aio
     - name: glance.yml.aio
@@ -46,12 +57,14 @@ confd_overrides:
     - name: octavia.yml.aio
     - name: trove.yml.aio
   octavia:
+    - name: haproxy.yml.aio
     - name: glance.yml.aio
     - name: keystone.yml.aio
     - name: neutron.yml.aio
     - name: nova.yml.aio
     - name: octavia.yml.aio
   tacker:
+    - name: haproxy.yml.aio
     - name: keystone.yml.aio
     - name: heat.yml.aio
     - name: tacker.yml.aio
