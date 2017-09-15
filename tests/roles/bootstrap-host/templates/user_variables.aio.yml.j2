@@ -163,7 +163,8 @@ galera_client_apt_repo_url: {{ galera_repo_url }}
 
 {% if lxc_image_cache_server is defined %}
 ## images.linuxcontainers.org reverse proxy
-lxc_image_cache_server: {{ lxc_image_cache_server }}
+lxc_image_cache_server_mirrors:
+  - http://{{ lxc_image_cache_server }}
 {% endif %}
 
 {% if cache_timeout is defined %}
