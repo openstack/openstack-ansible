@@ -13,12 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: common-playbooks/unbound-clients.yml
-  vars:
-    unbound_group: "swift_all"
-  when:
-    - resolvconf_enabled | bool
-
 - name: Installation and setup of Swift
   hosts: swift_all:swift_remote_all
   gather_facts: "{{ gather_facts | default(True) }}"
@@ -38,6 +32,10 @@
             # NOTE(hwoarang) The syslog user on openSUSE belongs to the 'users'
             # group. There is no dedicated syslog group.
             group: "{{ (ansible_pkg_mgr == 'zypper') | ternary ('users', 'syslog') }}"
+    - include: common-tasks/unbound-clients.yml
+      static: no
+      when:
+        - hostvars['localhost']['resolvconf_enabled'] | bool
     - include: common-tasks/package-cache-proxy.yml
 
     # If we're using ceilometer then swift needs a rabbitmq/vhost & usera

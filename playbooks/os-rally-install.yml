@@ -13,17 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: common-playbooks/unbound-clients.yml
-  vars:
-    unbound_group: "utility_all"
-  when:
-    - resolvconf_enabled | bool
-
 - name: Installation and setup of Rally
   hosts: utility_all
   gather_facts: "{{ gather_facts | default(True) }}"
   user: root
   pre_tasks:
+    - include: common-tasks/unbound-clients.yml
+      static: no
+      when:
+        - hostvars['localhost']['resolvconf_enabled'] | bool
     - include: common-tasks/mysql-db-user.yml
       static: no
       vars:

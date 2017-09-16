@@ -13,12 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: common-playbooks/unbound-clients.yml
-  vars:
-    unbound_group: "ironic_all"
-  when:
-    - resolvconf_enabled | bool
-
 - name: Installation and setup of Ironic
   hosts: ironic_all
   gather_facts: "{{ gather_facts | default(True) }}"
@@ -43,6 +37,10 @@
         login_host: "{{ ironic_galera_address }}"
         db_name: "{{ ironic_galera_database }}"
       when: inventory_hostname == groups['ironic_all'][0]
+    - include: common-tasks/unbound-clients.yml
+      static: no
+      when:
+        - hostvars['localhost']['resolvconf_enabled'] | bool
     - include: common-tasks/package-cache-proxy.yml
   roles:
     - role: "os_ironic"

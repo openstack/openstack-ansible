@@ -13,12 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: common-playbooks/unbound-clients.yml
-  vars:
-    unbound_group: "neutron_all"
-  when:
-    - resolvconf_enabled | bool
-
 - name: Configure Neutron dynamic host groupings
   hosts: localhost
   gather_facts: no

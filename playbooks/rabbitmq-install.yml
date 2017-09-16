@@ -13,12 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: common-playbooks/unbound-clients.yml
-  vars:
-    unbound_group: "rabbitmq_all"
-  when:
-    - resolvconf_enabled | bool
-
 - name: Create and configure rabbitmq container
   hosts: "{{ rabbitmq_host_group | default('rabbitmq_all') }}"
   serial: 1
@@ -31,6 +25,10 @@
       vars:
         extra_container_config_no_restart:
           - "lxc.start.order=19"
+    - include: common-tasks/unbound-clients.yml
+      static: no
+      when:
+        - hostvars['localhost']['resolvconf_enabled'] | bool
     - include: common-tasks/package-cache-proxy.yml
   roles:
     - role: "system_crontab_coordination"

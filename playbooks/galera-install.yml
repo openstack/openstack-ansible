@@ -13,12 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: common-playbooks/unbound-clients.yml
-  vars:
-    unbound_group: "galera_all"
-  when:
-    - resolvconf_enabled | bool
-
 - name: Galera container config
   hosts: galera_all
   gather_facts: "{{ gather_facts | default(True) }}"
@@ -36,6 +30,10 @@
         list_of_bind_mounts: "{{ galera_container_bind_mounts }}"
         extra_container_config_no_restart:
           - "lxc.start.order=10"
+    - include: common-tasks/unbound-clients.yml
+      static: no
+      when:
+        - hostvars['localhost']['resolvconf_enabled'] | bool
     - include: common-tasks/package-cache-proxy.yml
   vars:
     is_metal: "{{ properties.is_metal|default(false) }}"

@@ -13,12 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: common-playbooks/unbound-clients.yml
-  vars:
-    unbound_group: "keystone_all"
-  when:
-    - resolvconf_enabled | bool
-
 - name: Prepare MQ/DB services
   hosts: keystone_all
   gather_facts: no
@@ -100,6 +94,11 @@
         log_dirs:
           - src: "/openstack/log/{{ inventory_hostname }}-keystone"
             dest: "/var/log/keystone"
+
+    - include: common-tasks/unbound-clients.yml
+      static: no
+      when:
+        - hostvars['localhost']['resolvconf_enabled'] | bool
 
     - name: Configure package proxy cache
       include: common-tasks/package-cache-proxy.yml

@@ -63,6 +63,11 @@
       when:
         - "'neutron_calico_dhcp_agent' in group_names"
 
+    - include: ../common-tasks/unbound-clients.yml
+      static: no
+      when:
+        - hostvars['localhost']['resolvconf_enabled'] | bool
+
     - name: Configure package proxy cache
       include: ../common-tasks/package-cache-proxy.yml
 

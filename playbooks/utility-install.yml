@@ -13,12 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: common-playbooks/unbound-clients.yml
-  vars:
-    unbound_group: "utility_all"
-  when:
-    - resolvconf_enabled | bool
-
 - name: Setup the utility location(s)
   hosts: utility_all
   max_fail_percentage: 20
@@ -31,6 +25,11 @@
         log_dirs:
           - src: "/openstack/log/{{ inventory_hostname }}-utility"
             dest: "/var/log/utility"
+
+    - include: common-tasks/unbound-clients.yml
+      static: no
+      when:
+        - hostvars['localhost']['resolvconf_enabled'] | bool
 
     - include: common-tasks/package-cache-proxy.yml
 

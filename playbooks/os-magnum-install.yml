@@ -16,12 +16,6 @@
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
 
-- include: common-playbooks/unbound-clients.yml
-  vars:
-    unbound_group: "magnum_all"
-  when:
-    - resolvconf_enabled | bool
-
 - name: Install magnum server
   hosts: magnum_all
   max_fail_percentage: 20
@@ -33,6 +27,10 @@
         log_dirs:
           - src: "/openstack/log/{{ inventory_hostname }}-magnum"
             dest: "/var/log/magnum"
+    - include: common-tasks/unbound-clients.yml
+      static: no
+      when:
+        - hostvars['localhost']['resolvconf_enabled'] | bool
     - include: common-tasks/rabbitmq-vhost-user.yml
       static: no
       vars:

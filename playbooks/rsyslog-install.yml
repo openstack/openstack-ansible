@@ -13,12 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: common-playbooks/unbound-clients.yml
-  vars:
-    unbound_group: "rsyslog"
-  when:
-    - resolvconf_enabled | bool
-
 - name: Install rsyslog
   hosts: rsyslog
   gather_facts: "{{ gather_facts | default(True) }}"
@@ -32,6 +26,10 @@
             mount_path: "/openstack/{{ inventory_hostname }}/log-storage"
         extra_container_config_no_restart:
           - "lxc.start.order=19"
+    - include: common-tasks/unbound-clients.yml
+      static: no
+      when:
+        - hostvars['localhost']['resolvconf_enabled'] | bool
     - include: common-tasks/package-cache-proxy.yml
   roles:
     - role: "rsyslog_server"
