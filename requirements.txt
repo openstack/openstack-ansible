@@ -1,7 +1,7 @@
 # The order of packages is significant, because pip processes them in the order
 # of appearance. Changing the order has an impact on the overall integration
 # process, which may cause wedges in the gate later.
-pyasn1!=0.2.3 # BSD
+pyasn1!=0.2.3,>=0.1.8 # BSD
 pyOpenSSL>=16.2.0 # Apache-2.0
 ndg-httpsclient>=0.4.2;python_version<'3.0' # BSD
 netaddr>=0.7.18 # BSD
