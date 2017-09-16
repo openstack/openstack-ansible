@@ -26,3 +26,7 @@ galera_container_bind_mounts:
 # Disable PrivateDevices for MariaDB on CentOS 7
 # See https://bugs.launchpad.net/openstack-ansible/+bug/1697531 for details.
 galera_disable_privatedevices: "{{ ((properties.is_metal | default(false)) | bool) | ternary('false', 'true') }}"
+
+# Galera sessions are long lived, so if we do endpoint maintenance we will
+# force kill the sessions to force a failover to the active endpoint.
+haproxy_shutdown_sessions: yes
