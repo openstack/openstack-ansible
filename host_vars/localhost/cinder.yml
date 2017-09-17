@@ -1,5 +1,5 @@
 ---
-# Copyright 2017, SUSE LINUX GmbH
+# Copyright 2017, Logan Vig <logan2211@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,12 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-tacker_service_user_name: tacker
-tacker_service_tenant_name: service
-
-tacker_rabbitmq_userid: tacker
-tacker_rabbitmq_vhost: /tacker
-tacker_rabbitmq_port: "{{ rabbitmq_port }}"
-tacker_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
-tacker_rabbitmq_servers: "{{ rabbitmq_servers }}"
-tacker_rabbitmq_host_group: "{{ rabbitmq_host_group }}"
+# If there are Swift hosts in the environment, then enable cinder backups to it
+# cinder and tempest groups consume this
+cinder_service_backup_program_enabled: "{{ groups['swift_all'] is defined and groups['swift_all'] | length > 0 }}"

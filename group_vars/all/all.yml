@@ -85,7 +85,6 @@ service_ldap_backend_enabled: "{{ keystone_ldap is defined and keystone_ldap.Def
 venv_tag: "{{ openstack_release }}"
 venv_base_download_url: "{{ openstack_repo_url }}/venvs/{{ openstack_release }}/{{ os_distro_version }}"
 
-
 ## Gnocchi
 # Used in both Gnocchi and Swift roles.
 gnocchi_service_project_name: "{{ (gnocchi_storage_driver is defined and gnocchi_storage_driver == 'swift') | ternary('gnocchi_swift', 'service') }}"

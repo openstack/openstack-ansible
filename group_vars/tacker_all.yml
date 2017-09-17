@@ -13,6 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+tacker_service_user_name: tacker
+tacker_service_tenant_name: service
+
+tacker_rabbitmq_userid: tacker
+tacker_rabbitmq_vhost: /tacker
+tacker_rabbitmq_port: "{{ rabbitmq_port }}"
+tacker_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
+tacker_rabbitmq_servers: "{{ rabbitmq_servers }}"
+tacker_rabbitmq_host_group: "{{ rabbitmq_host_group }}"
+
 tacker_service_publicuri: "{{ openstack_service_publicuri_proto|default(tacker_service_proto) }}://{{ external_lb_vip_address }}:{{ tacker_service_port }}"
 tacker_service_adminurl: "{{ tacker_service_adminuri }}/"
 tacker_service_region: "{{ service_region }}"

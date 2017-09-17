@@ -28,4 +28,3 @@ galera_root_user: "root"
 ## Memcached options
 memcached_port: 11211
 memcached_servers: "{% for host in groups['memcached'] %}{{ hostvars[host]['ansible_host'] }}:{{ memcached_port }}{% if not loop.last %},{% endif %}{% endfor %}"
-

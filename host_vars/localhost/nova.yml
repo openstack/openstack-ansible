@@ -1,5 +1,5 @@
 ---
-# Copyright 2017, Rackspace US, Inc.
+# Copyright 2017, Logan Vig <logan2211@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,14 +13,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ceilometer_service_user_name: ceilometer
-ceilometer_service_tenant_name: service
-
-# These are here rather than in ceilometer_all because
-# both the os_ceilometer and os_swift roles require them
-ceilometer_rabbitmq_userid: ceilometer
-ceilometer_rabbitmq_vhost: /ceilometer
-ceilometer_rabbitmq_port: "{{ rabbitmq_port }}"
-ceilometer_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
-ceilometer_rabbitmq_servers: "{{ rabbitmq_servers }}"
-ceilometer_rabbitmq_host_group: "{{ rabbitmq_host_group }}"
+# Enable barbican if the group is populated. repo and nova use this.
+nova_barbican_enabled: "{{ (groups['barbican_all'] is defined) and (groups['barbican_all'] | length > 0) }}"

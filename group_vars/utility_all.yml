@@ -33,6 +33,9 @@ utility_pip_packages:
   - cryptography
   - python-memcached
 
+# Determines whether Cinder backup should be tested
+cinder_service_backup_program_enabled: "{{ hostvars['localhost']['cinder_service_backup_program_enabled'] }}"
+
 #
 # Tempest settings
 #

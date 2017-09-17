@@ -13,35 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# OpenRC and various OpenStack roles require the vars below so they are scoped
+# to 'all' hosts.
+
 keystone_admin_user_name: admin
 keystone_admin_tenant_name: admin
 keystone_admin_port: 35357
 keystone_service_port: 5000
 keystone_service_proto: http
 keystone_service_region: "{{ service_region }}"
-
-# These are here rather than in keystone_all because
-# both the os_ceilometer and os_keystone roles require them
-
-# RPC
-keystone_rabbitmq_userid: keystone
-keystone_rabbitmq_vhost: /keystone
-keystone_rabbitmq_port: "{{ rabbitmq_port }}"
-keystone_rabbitmq_servers: "{{ rabbitmq_servers }}"
-keystone_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
-keystone_rabbitmq_host_group: "{{ rabbitmq_host_group }}"
-
-# Telemetry notifications
-keystone_rabbitmq_telemetry_userid: "{{ keystone_rabbitmq_userid }}"
-keystone_rabbitmq_telemetry_password: "{{ keystone_rabbitmq_password }}"
-keystone_rabbitmq_telemetry_vhost: "{{ keystone_rabbitmq_vhost }}"
-keystone_rabbitmq_telemetry_port: "{{ keystone_rabbitmq_port }}"
-keystone_rabbitmq_telemetry_servers: "{{ keystone_rabbitmq_servers }}"
-keystone_rabbitmq_telemetry_use_ssl: "{{ keystone_rabbitmq_use_ssl }}"
-keystone_rabbitmq_telemetry_host_group: "{{ keystone_rabbitmq_host_group }}"
-
-# If there are any Ceilometer hosts in the environment, then enable its usage
-keystone_ceilometer_enabled: "{{ (groups['ceilometer_all'] is defined) and (groups['ceilometer_all'] | length > 0) }}"
 
 keystone_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(keystone_service_proto) }}"
 keystone_service_adminuri_insecure: "{% if keystone_service_adminuri_proto == 'https' and (keystone_user_ssl_cert is not defined or haproxy_user_ssl_cert is not defined) | bool %}true{% else %}false{% endif %}"
@@ -52,8 +32,3 @@ keystone_service_internaluri_proto: "{{ openstack_service_internaluri_proto | de
 keystone_service_internaluri_insecure: "{% if keystone_service_internaluri_proto == 'https' and (keystone_user_ssl_cert is not defined or haproxy_user_ssl_cert is not defined) | bool %}true{% else %}false{% endif %}"
 keystone_service_internaluri: "{{ keystone_service_internaluri_proto }}://{{ internal_lb_vip_address }}:{{ keystone_service_port }}"
 keystone_service_internalurl: "{{ keystone_service_internaluri }}/v3"
-
-keystone_service_publicuri_proto: "{{ openstack_service_publicuri_proto | default(keystone_service_proto) }}"
-keystone_service_publicuri_insecure: "{% if keystone_service_publicuri_proto == 'https' and (keystone_user_ssl_cert is not defined or haproxy_user_ssl_cert is not defined) | bool %}true{% else %}false{% endif %}"
-keystone_service_publicuri: "{{ keystone_service_publicuri_proto }}://{{ external_lb_vip_address }}:{{ keystone_service_port }}"
-keystone_service_publicurl: "{{ keystone_service_publicuri }}/v3"

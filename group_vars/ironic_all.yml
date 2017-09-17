@@ -13,6 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+ironic_keystone_auth_plugin: password
+ironic_rabbitmq_userid: ironic
+ironic_rabbitmq_vhost: /ironic
+ironic_rabbitmq_port: "{{ rabbitmq_port }}"
+ironic_rabbitmq_servers: "{{ rabbitmq_servers }}"
+ironic_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
+ironic_rabbitmq_host_group: "{{ rabbitmq_host_group }}"
+ironic_service_name: ironic
+ironic_service_user_name: ironic
+ironic_service_proto: http
+ironic_service_port: 6385
+ironic_service_project_name: service
+ironic_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(ironic_service_proto) }}"
+ironic_service_adminurl: "{{ ironic_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ ironic_service_port }}"
+
 ironic_galera_database: ironic
 ironic_galera_user: ironic
 ironic_service_adminurl: "{{ ironic_service_adminuri }}/v1"
