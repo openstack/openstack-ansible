@@ -314,7 +314,6 @@ if watermark == "":
 else:
     deploy_branch_link_name = current_release_branch_name
     dev_branch_link_name = "{}/".format(current_release_branch_name)
-    current_release_branch_name = watermark
     current_release_git_branch_name = 'stable/' + current_release_branch_name
 
 previous_release_capital_name = previous_release_branch_name.upper()
