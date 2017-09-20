@@ -5,8 +5,8 @@ OpenStack-Ansible Documentation
 OpenStack-Ansible provides Ansible playbooks and roles for the deployment and
 configuration of an OpenStack environment.
 
-OpenStack-Ansible Pike series was first released with the 16.0.0 tag on
-13 September 2017.
+OpenStack-Ansible's Pike series was first released with the 16.0.0 tag on
+14 September 2017.
 
 .. toctree::
    :maxdepth: 2
