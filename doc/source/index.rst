@@ -24,11 +24,11 @@ OpenStack-Ansible Queens is currently in development.
    contributor/index
    reference/index
 
-Pike: Release Candidate
-~~~~~~~~~~~~~~~~~~~~~~~
+Pike: Current stable release, security supported
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible Pike is currently a release candidate, expected to release
-with the 16.0.0 tag by 15 September 2017.
+OpenStack-Ansible's Pike series was first released with the 16.0.0 tag on
+14 September 2017.
 
 * `OpenStack-Ansible Pike Documentation`_
 
