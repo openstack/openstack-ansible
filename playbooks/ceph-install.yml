@@ -87,6 +87,9 @@
     - role: "ceph-mon"
       tags:
         - skip_ansible_lint
+    - role: "ceph-mgr"
+      tags:
+        - skip_ansible_lint
     - role: "rsyslog_client"
       rsyslog_client_log_rotate_file: ceph_log_rotate
       rsyslog_client_log_dir: "/var/log/ceph"

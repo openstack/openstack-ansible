@@ -173,7 +173,7 @@
 - name: ceph.ceph-common
   scm: git
   src: https://github.com/ceph/ansible-ceph-common
-  version: v2.2.9
+  version: cac97d5ee370c23d00371038fa87e23ee3b37739
 - name: ceph.ceph-docker-common
   scm: git
   src: https://github.com/ceph/ansible-ceph-docker-common
@@ -181,11 +181,15 @@
 - name: ceph-mon
   scm: git
   src: https://github.com/ceph/ansible-ceph-mon
-  version: v2.2.9
+  version: 235ea7526a2bb621317b5263f3841deef7ab49e6
+- name: ceph-mgr
+  scm: git
+  src: https://github.com/ceph/ansible-ceph-mgr
+  version: d9ddb83bae6b054549efa1c96b0a37c63073ebea
 - name: ceph-osd
   scm: git
   src: https://github.com/ceph/ansible-ceph-osd
-  version: v2.2.9
+  version: 6ac48fc2373f100b3e5285e42446de132b561f47
 - name: os_octavia
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_octavia
