@@ -1,0 +1,65 @@
+---
+# Copyright 2017, Logan Vig <logan2211@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+#create a sorted resolver list with affinity toward unbound container(s)
+#on the same physical_host
+- name: Apply resolver sorting
+  set_fact:
+    resolver_list: |-
+      {% set _var = [] %}
+      {% for host in groups[resolvconf_resolver_group] %}
+      {%   if physical_host is defined and
+              hostvars[host]['physical_host'] is defined
+              and physical_host == hostvars[host]['physical_host'] %}
+      {%     set _prio = 100 %}
+      {%   else %}
+      {%     set _prio = 50 %}
+      {%   endif %}
+      {%   set _ = _var.append({
+             'host': hostvars[host]['ansible_host'],
+             'priority': _prio
+           })
+      %}
+      {% endfor %}
+      {{ _var |
+         sort(reverse=true, attribute='priority') |
+         map(attribute='host') |
+         list
+      }}
+  when:
+    - physical_host is defined
+    - physical_host in hostvars['localhost']['unbound_physical_hosts']
+
+- name: Set resolver IP list fact
+  set_fact:
+    resolvconf_resolver_ips: "{{ resolver_list }}"
+    resolvconf_options:
+      - 'timeout:1'
+  when:
+    - resolver_list is defined
+    - resolver_list | length > 0
+
+#rotate is only used when no physical_host affinity is defined
+- name: Set resolver rotate when physical_host is not an unbound host
+  set_fact:
+    resolvconf_options:
+      - 'timeout:1'
+      - 'rotate'
+  when:
+    - resolver_list is not defined
+
+- name: Include the resolvconf role
+  include_role:
+    name: resolvconf

@@ -13,12 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: common-playbooks/unbound-clients.yml
-  vars:
-    unbound_group: "molteniron_all"
-  when:
-    - resolvconf_enabled | bool
-
 - name: Installation and setup of molteniron
   hosts: molteniron_all
   gather_facts: "{{ gather_facts | default(True) }}"
@@ -35,6 +29,10 @@
             dest: "/var/log/molteniron"
             owner: "syslog"
             group: "syslog"
+    - include: common-tasks/unbound-clients.yml
+      static: no
+      when:
+        - hostvars['localhost']['resolvconf_enabled'] | bool
   roles:
     - role: "os_molteniron"
       molteniron_venv_tag: "{{ openstack_release }}"

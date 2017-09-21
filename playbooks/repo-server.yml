@@ -13,12 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: common-playbooks/unbound-clients.yml
-  vars:
-    unbound_group: "repo_all"
-  when:
-    - resolvconf_enabled | bool
-
 - name: Setup repo servers
   hosts: repo_all
   gather_facts: "{{ gather_facts | default(True) }}"
@@ -52,6 +46,11 @@
       when:
         - repo_build_git_cache is defined
         - _local_git_cache.stat.exists
+
+    - include: common-tasks/unbound-clients.yml
+      static: no
+      when:
+        - hostvars['localhost']['resolvconf_enabled'] | bool
   roles:
     - role: "repo_server"
     - role: "rsyslog_client"

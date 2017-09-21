@@ -13,12 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: common-playbooks/unbound-clients.yml
-  vars:
-    unbound_group: "octavia_all"
-  when:
-    - resolvconf_enabled | bool
-
 - name: Install octavia server
   hosts: octavia_all
   gather_facts: "{{ gather_facts | default(True) }}"
@@ -50,6 +44,10 @@
         login_host: "{{ octavia_galera_address }}"
         db_name: "{{ octavia_galera_database }}"
       when: inventory_hostname == groups['octavia_all'][0]
+    - include: common-tasks/unbound-clients.yml
+      static: no
+      when:
+        - hostvars['localhost']['resolvconf_enabled'] | bool
     - include: common-tasks/package-cache-proxy.yml
   roles:
     - role: "os_octavia"

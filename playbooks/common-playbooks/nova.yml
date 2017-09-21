@@ -74,6 +74,11 @@
           - src: "/openstack/log/{{ inventory_hostname }}-nova"
             dest: "/var/log/nova"
 
+    - include: ../common-tasks/unbound-clients.yml
+      static: no
+      when:
+        - hostvars['localhost']['resolvconf_enabled'] | bool
+
     - name: Configure package proxy cache
       include: ../common-tasks/package-cache-proxy.yml
 
