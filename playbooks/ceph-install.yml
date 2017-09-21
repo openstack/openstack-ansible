@@ -122,19 +122,6 @@
     - ceph
     - ceph-mon
 
-- name: Gather ceph-mon facts
-  hosts: ceph-mon
-  user: root
-  gather_facts: no
-  tasks:
-    - name: Gather ceph-mon facts
-      action: setup
-      tags:
-        - ceph-mon-facts
-  tags:
-    - ceph
-    - ceph-osd
-
 - name: Install ceph osds
   hosts: ceph-osd
   max_fail_percentage: 20
@@ -183,6 +170,16 @@
            --setopt="Ceph-noarch.priority=50"
       when:
         - ansible_pkg_mgr in ['yum', 'dnf']
+    - name: Gather ceph-mon facts
+      action: setup
+      delegate_to: "{{ item }}"
+      delegate_facts: yes
+      with_items: "{{ groups[mon_group_name] }}"
+      when:
+        - inventory_hostname == ansible_play_hosts[0]
+      tags:
+        - ceph-osd
+        - ceph-mon-facts
   roles:
     - role: ceph-defaults
       tags:
