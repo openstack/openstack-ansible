@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Referenced by nova role and must remain in 'all' group scoping
 neutron_service_port: 9696
 neutron_service_proto: http
 neutron_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(neutron_service_proto) }}"
@@ -22,29 +23,5 @@ neutron_service_user_name: neutron
 neutron_service_project_name: service
 neutron_service_region: "{{ service_region }}"
 
-# These are here rather than in neutron_all because
-# both the os_ceilometer and os_neutron roles require them
-
-# RPC
-neutron_rabbitmq_userid: neutron
-neutron_rabbitmq_vhost: /neutron
-neutron_rabbitmq_port: "{{ rabbitmq_port }}"
-neutron_rabbitmq_servers: "{{ rabbitmq_servers }}"
-neutron_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
-neutron_rabbitmq_host_group: "{{ rabbitmq_host_group }}"
-
-# Telemetry notifications
-neutron_rabbitmq_telemetry_userid: "{{ neutron_rabbitmq_userid }}"
-neutron_rabbitmq_telemetry_password: "{{ neutron_rabbitmq_password }}"
-neutron_rabbitmq_telemetry_vhost: "{{ neutron_rabbitmq_vhost }}"
-neutron_rabbitmq_telemetry_port: "{{ neutron_rabbitmq_port }}"
-neutron_rabbitmq_telemetry_servers: "{{ neutron_rabbitmq_servers }}"
-neutron_rabbitmq_telemetry_use_ssl: "{{ neutron_rabbitmq_use_ssl }}"
-neutron_rabbitmq_telemetry_host_group: "{{ neutron_rabbitmq_host_group }}"
-
-# If there are any Designate hosts in the environment, then enable its usage
-neutron_designate_enabled: "{{ (groups['designate_all'] is defined) and (groups['designate_all'] | length > 0) }}"
-# If there are any Ceilometer hosts in the environment, then enable its usage
-neutron_ceilometer_enabled: "{{ (groups['ceilometer_all'] is defined) and (groups['ceilometer_all'] | length > 0) }}"
-
+# Horizon consumes this var so it must be in the global vars namespace
 neutron_plugin_type: ml2.lxb

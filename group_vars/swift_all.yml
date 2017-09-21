@@ -13,6 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+swift_proxy_port: 8080
+swift_system_user_name: swift
+swift_system_shell: /bin/bash
+swift_system_comment: swift system user
+swift_system_home_folder: "/var/lib/{{ swift_system_user_name }}"
+
+# Swift Telemetry notifications
+swift_rabbitmq_telemetry_userid: "swift"
+swift_rabbitmq_telemetry_vhost: "/swift"
+swift_rabbitmq_telemetry_servers: "{{ rabbitmq_servers }}"
+swift_rabbitmq_telemetry_host_group: "{{ rabbitmq_host_group }}"
+
+# If there are any Ceilometer and Swift hosts in the environment, then enable its usage
+swift_ceilometer_enabled: "{{ (groups['ceilometer_all'] is defined) and (groups['swift_proxy'] is defined) and (groups['ceilometer_all'] | length > 0) and (groups['swift_proxy'] | length > 0) }}"
+
 swift_service_region: "{{ service_region }}"
 swift_service_in_ldap: "{{ service_ldap_backend_enabled }}"
 

@@ -67,6 +67,10 @@ repo_build_pip_no_binary:
 repo_build_release_tag: "{{ openstack_release }}"
 repo_build_os_distro_version: "{{ os_distro_version }}"
 
+# This is required because the nova package list has a conditional package
+# based on this var.
+nova_barbican_enabled: "{{ hostvars['localhost']['nova_barbican_enabled'] }}"
+
 pkg_locations:
   - "{{ playbook_dir }}/../"
   - /etc/ansible/roles

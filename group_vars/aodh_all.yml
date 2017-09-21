@@ -13,6 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+aodh_service_region: "{{ service_region }}"
+aodh_galera_user: aodh
+aodh_galera_database: aodh
+aodh_galera_address: "{{ internal_lb_vip_address }}"
+aodh_connection_string: "mysql+pymysql://{{ aodh_galera_user }}:{{ aodh_container_db_password }}@{{ aodh_galera_address }}/{{ aodh_galera_database }}?charset=utf8"
+aodh_rabbitmq_host_group: "{{ rabbitmq_host_group }}"
+
 aodh_service_in_ldap: "{{ service_ldap_backend_enabled }}"
 aodh_service_publicuri: "{{ openstack_service_publicuri_proto|default(aodh_service_proto) }}://{{ external_lb_vip_address }}:{{ aodh_service_port }}"
 

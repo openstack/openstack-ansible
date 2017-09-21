@@ -13,6 +13,31 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# These are here rather than in neutron_all because
+# both the os_ceilometer and os_neutron roles require them
+
+# RPC
+neutron_rabbitmq_userid: neutron
+neutron_rabbitmq_vhost: /neutron
+neutron_rabbitmq_port: "{{ rabbitmq_port }}"
+neutron_rabbitmq_servers: "{{ rabbitmq_servers }}"
+neutron_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
+neutron_rabbitmq_host_group: "{{ rabbitmq_host_group }}"
+
+# Telemetry notifications
+neutron_rabbitmq_telemetry_userid: "{{ neutron_rabbitmq_userid }}"
+neutron_rabbitmq_telemetry_password: "{{ neutron_rabbitmq_password }}"
+neutron_rabbitmq_telemetry_vhost: "{{ neutron_rabbitmq_vhost }}"
+neutron_rabbitmq_telemetry_port: "{{ neutron_rabbitmq_port }}"
+neutron_rabbitmq_telemetry_servers: "{{ neutron_rabbitmq_servers }}"
+neutron_rabbitmq_telemetry_use_ssl: "{{ neutron_rabbitmq_use_ssl }}"
+neutron_rabbitmq_telemetry_host_group: "{{ neutron_rabbitmq_host_group }}"
+
+# If there are any Designate hosts in the environment, then enable its usage
+neutron_designate_enabled: "{{ hostvars['localhost']['neutron_designate_enabled'] }}"
+# If there are any Ceilometer hosts in the environment, then enable its usage
+neutron_ceilometer_enabled: "{{ hostvars['localhost']['neutron_ceilometer_enabled'] }}"
+
 neutron_dns_domain: "{{ dhcp_domain }}"
 neutron_service_in_ldap: "{{ service_ldap_backend_enabled }}"
 
