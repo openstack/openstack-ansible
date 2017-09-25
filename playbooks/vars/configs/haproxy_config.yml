@@ -260,9 +260,7 @@ haproxy_default_services:
       haproxy_port: 9311
       haproxy_balance_type: http
       haproxy_backend_options:
-        - "httpchk HEAD /"
-      haproxy_backend_httpcheck_options:
-        - "expect status 401"
+        - "httpchk GET /"
   - service:
       haproxy_service_name: designate_api
       haproxy_backend_nodes: "{{ groups['designate_api'] | default([]) }}"
