@@ -80,6 +80,10 @@ trap gate_job_exit_tasks EXIT
 # Log some data about the instance and the rest of the system
 log_instance_info
 
+if [ "$GATE_EXIT_RUN_DSTAT" == true ]; then
+  run_dstat
+fi
+
 # Get minimum disk size
 DATA_DISK_MIN_SIZE="$((1024**3 * $(awk '/bootstrap_host_data_disk_min_size/{print $2}' "${OSA_CLONE_DIR}/tests/roles/bootstrap-host/defaults/main.yml") ))"
 
@@ -153,9 +157,6 @@ pushd "${OSA_CLONE_DIR}/tests"
                      ${ANSIBLE_PARAMETERS}
   fi
 popd
-
-# Implement the log directory
-mkdir -p /openstack/log
 
 pushd "${OSA_CLONE_DIR}/playbooks"
   # Disable Ansible color output

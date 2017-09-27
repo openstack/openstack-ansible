@@ -24,6 +24,7 @@ COMMAND_LOGS=${COMMAND_LOGS:-"/openstack/log/ansible_cmd_logs"}
 
 GATE_EXIT_LOG_COPY="${GATE_EXIT_LOG_COPY:-false}"
 GATE_EXIT_LOG_GZIP="${GATE_EXIT_LOG_GZIP:-true}"
+GATE_EXIT_RUN_DSTAT="${GATE_EXIT_RUN_DSTAT:-true}"
 # If this is a gate node from OpenStack-Infra Store all logs into the
 #  execution directory after gate run.
 if [[ -d "/etc/nodepool" ]]; then
@@ -125,6 +126,9 @@ function gate_job_exit_tasks {
   # If this is a gate node from OpenStack-Infra Store all logs into the
   #  execution directory after gate run.
   if [ "$GATE_EXIT_LOG_COPY" == true ]; then
+    if [ "$GATE_EXIT_RUN_DSTAT" == true ]; then
+      generate_dstat_charts || true
+    fi
     GATE_LOG_DIR="${OSA_CLONE_DIR:-$(dirname $0)/..}/logs"
     mkdir -p "${GATE_LOG_DIR}/host" "${GATE_LOG_DIR}/openstack"
     rsync --archive --verbose --safe-links --ignore-errors /var/log/ "${GATE_LOG_DIR}/host" || true
@@ -132,7 +136,7 @@ function gate_job_exit_tasks {
     # Rename all files gathered to have a .txt suffix so that the compressed
     # files are viewable via a web browser in OpenStack-CI.
     # except tempest results testrepository.subunit and testr_results.html
-    find "${GATE_LOG_DIR}/" -type f -not -name "testrepository.subunit" -not -name "testr_results.html" -exec mv {} {}.txt \;
+    find "${GATE_LOG_DIR}/" -type f -not -name "testrepository.subunit" -not -name "testr_results.html" -not -name "dstat.html" -exec mv {} {}.txt \;
 
     # Generate the ARA report
     /opt/ansible-runtime/bin/ara generate html "${GATE_LOG_DIR}/ara" || true
@@ -146,6 +150,35 @@ function gate_job_exit_tasks {
     # OpenStack-CI jenkins user.
     chmod -R 0777 "${GATE_LOG_DIR}"
   fi
+}
+
+function run_dstat {
+  case ${DISTRO_ID} in
+    centos|rhel)
+        # Prefer dnf over yum for CentOS.
+        which dnf &>/dev/null && RHT_PKG_MGR='dnf' || RHT_PKG_MGR='yum'
+        $RHT_PKG_MGR -y install dstat
+        ;;
+    ubuntu)
+        apt-get update
+        DEBIAN_FRONTEND=noninteractive apt-get -y install dstat
+        ;;
+    opensuse)
+        zypper -n install -l dstat
+        ;;
+  esac
+
+  dstat -tcmsdn --top-cpu --top-mem --top-bio --nocolor --output /openstack/log/instance-info/dstat.csv 3 > /openstack/log/instance-info/dstat.log&
+}
+
+function generate_dstat_charts {
+  kill $(pgrep dstat)
+  if [[ ! -d /opt/dstat_graph ]]; then
+    git clone https://github.com/Dabz/dstat_graph /opt/dstat_graph
+  fi
+  pushd /opt/dstat_graph
+    /usr/bin/env bash -e ./generate_page.sh /openstack/log/instance-info/dstat.csv >> /openstack/log/instance-info/dstat.html
+  popd
 }
 
 function print_info {
