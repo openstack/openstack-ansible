@@ -645,6 +645,28 @@
 #           netapp_login: username
 #           netapp_password: password
 #
+# Example
+#
+# Use the QNAP iSCSI backend in availability zone
+# 'cinderAZ_2':
+#
+#    container_vars:
+#      cinder_storage_availability_zone: cinderAZ_2
+#      cinder_default_availability_zone: cinderAZ_1
+#      cinder_backends:
+#        limit_container_types: cinder_volume
+#        qnap:
+#          volume_backend_name: "QNAP 1 VOLUME"
+#          volume_driver: cinder.volume.drivers.qnap.QnapISCSIDriver
+#          qnap_management_url : http://10.10.10.5:8080
+#          qnap_poolname: "Storage Pool 1"
+#          qnap_storage_protocol: iscsi
+#          qnap_server_port: 8080
+#          iscsi_ip_address: 172.29.244.5
+#          san_login: username
+#          san_password: password
+#          san_thin_provision: True
+#
 #
 # Example:
 #
