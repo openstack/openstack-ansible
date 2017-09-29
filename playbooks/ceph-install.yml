@@ -17,6 +17,7 @@
   hosts: ceph-mon
   max_fail_percentage: 20
   user: root
+  serial: 1
   pre_tasks:
     - include: common-tasks/os-log-dir-setup.yml
       vars:
