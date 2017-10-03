@@ -229,8 +229,8 @@ update_ansible_role_requirements() {
       role_name=$(sed 's/^[ \t-]*//' ansible-role-requirements.yml | awk '/src: / || /name: / {print $2}' | grep -B1 "${role_src}" | head -n 1)
       echo "... updating ${role_name}"
 
-      # If the role_src is NOT from git.openstack.org, try to get a tag first
-      if [[ ${role_src} != *"git.openstack.org"* ]]; then
+      # If the role_src is NOT from git.openstack.org, try to get a tag first unless we are working on master
+      if [[ ${role_src} != *"git.openstack.org"* ]] && [[ "${force_master}" != "true" ]]; then
         role_version=$(git ls-remote --tags ${role_src} | awk '{print $2}' | grep -v '{}' | cut -d/ -f 3 | sort -n | tail -n 1)
       fi
 
