@@ -91,7 +91,7 @@ case ${DISTRO_ID} in
         # such we are using python2
         # See https://github.com/ansible/ansible/issues/24180
         PYTHON_EXEC_PATH="/usr/bin/python2"
-        alternatives --set pip /usr/bin/pip2.7
+        alternatives --set pip /usr/bin/pip2.7 || true
         ;;
 esac
 
