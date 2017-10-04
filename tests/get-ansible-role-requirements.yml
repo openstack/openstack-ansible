@@ -86,7 +86,7 @@
             - name: 'openstack/openstack-ansible-(.*)'
               dest: '{{ role_path_default }}/\1'
             - name: 'openstack/(?!(openstack-ansible|ansible-hardening))(.*)'
-              dest: '/tmp/openstack/\1'
+              dest: '/tmp/openstack/\2'
         dest: "/tmp/zuul-clonemap.yml"
       when:
         - _zuul_cloner_check.rc == 0
