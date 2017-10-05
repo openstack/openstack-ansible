@@ -122,6 +122,7 @@ Before you begin, we recommend upgrading your system packages and kernel.
 
    .. code-block:: shell-session
 
+       # zypper ar http://download.opensuse.org/repositories/Cloud:/OpenStack:/Pike/openSUSE_Leap_42.3 OBS:Cloud:OpenStack:Pike
        # zypper install git-core ntp openssh python-devel \
          sudo gcc libffi-devel libopenssl-devel
 
