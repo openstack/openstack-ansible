@@ -237,8 +237,6 @@ haproxy_default_services:
       haproxy_balance_type: http
       haproxy_backend_options:
         - "httpchk HEAD /"
-      haproxy_backend_httpcheck_options:
-        - "expect status 401"
   - service:
       haproxy_service_name: ironic_api
       haproxy_backend_nodes: "{{ groups['ironic_api'] | default([]) }}"
