@@ -91,16 +91,11 @@
 # Due to https://github.com/ansible/ansible-modules-extras/issues/2691
 # this uses the LXC CLI tools to ensure that we get logging.
 # TODO(odyssey4me): revisit this once the bug is fixed and released
-# NOTE(hwoarang): We pass the timeout (-t) option on openSUSE due to
-# https://bugzilla.opensuse.org/show_bug.cgi?id=1054609. Feel free to
-# remove this workaround when the bug is closed or lxc-2.X.X becomes the
-# default on openSUSE.
 - name: Lxc container restart
   command: >
     lxc-stop --name {{ inventory_hostname }}
     --logfile {{ lxc_container_log_path }}/lxc-{{ inventory_hostname }}.log
     --logpriority {{ (debug | bool) | ternary('DEBUG', 'INFO') }}
-    "{{ (hostvars[physical_host]['ansible_pkg_mgr'] == 'zypper') | ternary('-t 10', '') }}"
   delegate_to: "{{ physical_host }}"
   register: container_stop
   until: container_stop | success
