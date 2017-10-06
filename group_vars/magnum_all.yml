@@ -21,6 +21,7 @@ magnum_service_internaluri_proto: "{{ openstack_service_internaluri_proto | defa
 magnum_service_internalurl: "{{ magnum_service_internaluri_proto }}://{{ internal_lb_vip_address }}:{{ magnum_bind_port }}"
 magnum_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(magnum_service_proto) }}"
 magnum_service_adminurl: "{{ magnum_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ magnum_bind_port }}"
+magnum_service_region: "{{ service_region }}"
 
 magnum_galera_user: magnum
 magnum_galera_database_name: magnum_service
