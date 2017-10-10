@@ -16,7 +16,7 @@
 - name: Install unbound DNS resolvers
   hosts:
     - unbound
-  gather_facts: "{{ gather_facts | default(True) }}"
+  gather_facts: "{{ osa_gather_facts | default(True) }}"
   user: root
   pre_tasks:
     - include: common-tasks/os-log-dir-setup.yml

@@ -173,7 +173,7 @@ pushd "${OSA_CLONE_DIR}/playbooks"
 
   # Prepare the hosts
   export ANSIBLE_LOG_PATH="${ANSIBLE_LOG_DIR}/setup-hosts.log"
-  openstack-ansible setup-hosts.yml -e gather_facts=False
+  openstack-ansible setup-hosts.yml -e osa_gather_facts=False
 
   # Log some data about the instance and the rest of the system
   log_instance_info
@@ -185,14 +185,14 @@ pushd "${OSA_CLONE_DIR}/playbooks"
 
   # Prepare the infrastructure
   export ANSIBLE_LOG_PATH="${ANSIBLE_LOG_DIR}/setup-infrastructure.log"
-  openstack-ansible setup-infrastructure.yml -e gather_facts=False
+  openstack-ansible setup-infrastructure.yml -e osa_gather_facts=False
 
   # Log some data about the instance and the rest of the system
   log_instance_info
 
   # Setup OpenStack
   export ANSIBLE_LOG_PATH="${ANSIBLE_LOG_DIR}/setup-openstack.log"
-  openstack-ansible setup-openstack.yml -e gather_facts=False
+  openstack-ansible setup-openstack.yml -e osa_gather_facts=False
 
   # Log some data about the instance and the rest of the system
   log_instance_info

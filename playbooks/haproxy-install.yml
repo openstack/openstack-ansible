@@ -15,7 +15,7 @@
 
 - name: haproxy base config
   hosts: haproxy
-  gather_facts: "{{ gather_facts | default(True) }}"
+  gather_facts: "{{ osa_gather_facts | default(True) }}"
   user: root
   pre_tasks:
     - include: common-tasks/os-lxc-container-setup.yml
@@ -42,7 +42,7 @@
 
 - name: Install haproxy
   hosts: haproxy
-  gather_facts: "{{ gather_facts | default(True) }}"
+  gather_facts: "{{ osa_gather_facts | default(True) }}"
   max_fail_percentage: 20
   user: root
   pre_tasks:

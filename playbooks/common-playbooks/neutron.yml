@@ -16,7 +16,7 @@
 - name: Install neutron services
   hosts: "{{ neutron_hosts }}"
   serial: "{{ neutron_serial }}"
-  gather_facts: "{{ gather_facts | default(True) }}"
+  gather_facts: "{{ osa_gather_facts | default(True) }}"
   user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
