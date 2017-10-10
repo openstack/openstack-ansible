@@ -1,0 +1,9 @@
+---
+features:
+  - New hypervisor groups have been added allowing deployers to
+    better define their compute workloads. While the generic
+    "compute_hosts" group will still work explicit definitions
+    for compute hosts can now be defined using the
+    `ironic-compute_hosts`, `kvm-compute_hosts`, `lxd-compute_hosts`,
+    `qemu-compute_hosts`, and `powervm-compute_hosts` groups
+    accordingly
