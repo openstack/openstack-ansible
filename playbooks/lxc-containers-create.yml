@@ -15,7 +15,7 @@
 
 - name: Gather lxc container host facts
   hosts: "{{ lxc_host_group | default('lxc_hosts')}}"
-  gather_facts: "{{ gather_facts | default(True) }}"
+  gather_facts: "{{ osa_gather_facts | default(True) }}"
 
 - name: Create container(s)
   hosts: "{{ container_group|default('all_containers') }}"

@@ -15,7 +15,7 @@
 
 - name: Galera container config
   hosts: galera_all
-  gather_facts: "{{ gather_facts | default(True) }}"
+  gather_facts: "{{ osa_gather_facts | default(True) }}"
   serial: 1
   max_fail_percentage: 0
   user: root
@@ -39,7 +39,7 @@
 
 - name: Install galera server
   hosts: galera_all
-  gather_facts: "{{ gather_facts | default(True) }}"
+  gather_facts: "{{ osa_gather_facts | default(True) }}"
   serial: 1
   max_fail_percentage: 20
   user: root

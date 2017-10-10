@@ -17,7 +17,7 @@
 # The services need to be installed first though.
 - name: Synchronisation of swift ring and ssh keys
   hosts: swift_all:swift_remote_all
-  gather_facts: "{{ gather_facts | default(True) }}"
+  gather_facts: "{{ osa_gather_facts | default(True) }}"
   max_fail_percentage: 20
   user: root
   roles:
