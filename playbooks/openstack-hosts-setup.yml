@@ -48,7 +48,7 @@
           ;;
         esac
       changed_when: "result.rc == 2"
-      failed_when: "{{ result.rc not in [0, 2] }}"
+      failed_when: "result.rc not in [0, 2]"
 
 - name: Basic host setup
   hosts: "{{ openstack_host_group|default('hosts') }}"
