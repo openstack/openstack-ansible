@@ -102,6 +102,7 @@ cluster.
 
        # cd /opt/openstack-ansible/playbooks
        # openstack-ansible setup-hosts.yml --limit NEW_HOST_NAME
+       # ansible nova_all -m setup -a 'filter=ansible_local gather_subset="!all"'
        # openstack-ansible setup-openstack.yml --skip-tags nova-key-distribute --limit NEW_HOST_NAME
        # openstack-ansible setup-openstack.yml --tags nova-key --limit compute_hosts
 
