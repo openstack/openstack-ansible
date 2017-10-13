@@ -124,6 +124,11 @@ function exit_fail {
 }
 
 function gate_job_exit_tasks {
+  # This environment variable captures the exit code
+  # which was present when the trap was initiated.
+  # This would be the success/failure of the test.
+  export TEST_EXIT_CODE=$?
+
   # If this is a gate node from OpenStack-Infra Store all logs into the
   #  execution directory after gate run.
   if [ "$GATE_EXIT_LOG_COPY" == true ]; then
@@ -141,7 +146,17 @@ function gate_job_exit_tasks {
 
     # Generate the ARA report if enabled
     if [ "$GATE_EXIT_RUN_ARA" == true ]; then
-      /opt/ansible-runtime/bin/ara generate html "${GATE_LOG_DIR}/ara" || true
+      # In order to reduce the quantity of unnecessary log content
+      # being kept in OpenStack-Infra we only generate the ARA report
+      # when the test result is a failure.
+      if [[ "${TEST_EXIT_CODE}" != "0" ]]; then
+        echo "Generating ARA report due to non-zero exit code (${TEST_EXIT_CODE})."
+        /opt/ansible-runtime/bin/ara generate html "${GATE_LOG_DIR}/ara" || true
+      else
+        echo "Not generating ARA report due to test pass."
+      fi
+      # We still want the subunit report though, as that reflects
+      # success/failure in OpenStack Health
       /opt/ansible-runtime/bin/ara generate subunit "${GATE_LOG_DIR}/ara/testrepository.subunit" || true
     fi
     # Compress the files gathered so that they do not take up too much space.
