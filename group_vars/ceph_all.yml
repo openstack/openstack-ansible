@@ -17,3 +17,8 @@
 ceph_container_bind_mounts:
   - bind_dir_path: "/var/lib/ceph"
     mount_path: "/openstack/{{ inventory_hostname }}"
+
+# Disable the NFS gateway PPA and package install by default as it is not
+# needed.
+nfs_file_gw: False
+nfs_obj_gw: False
