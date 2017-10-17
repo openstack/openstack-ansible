@@ -62,6 +62,7 @@
         dest: "{{ item.path | default(role_path_default) }}/{{ item.name | default(item.src | basename) }}"
         version: "{{ item.version | default('master') }}"
         refspec: "{{ item.refspec | default(omit) }}"
+        depth: "{{ item.depth | default('10') }}"
         update: true
         force: true
       when:
