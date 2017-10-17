@@ -72,9 +72,21 @@
                        map(attribute='item') | list)
                       | default(roles, True) }}"
       register: git_clone
-      until: git_clone | success
       retries: "{{ git_clone_retries }}"
       delay: "{{ git_clone_retry_delay }}"
+      async: 1800
+      poll: 0
+
+    - name: Wait for git clones to complete
+      async_status:
+        jid: "{{ item['ansible_job_id'] }}"
+      register: _git_jobs
+      until: _git_jobs['finished'] | bool
+      delay: 5
+      retries: 360
+      with_items: "{{ git_clone['results'] }}"
+      when:
+        - item['ansible_job_id'] is defined
 
   vars:
     ansible_python_interpreter: "/usr/bin/python"
