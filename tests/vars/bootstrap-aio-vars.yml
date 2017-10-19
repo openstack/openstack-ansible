@@ -52,6 +52,12 @@ confd_overrides:
     - name: keystone.yml.aio
     - name: neutron.yml.aio
     - name: nova.yml.aio
+  congress:
+    - name: haproxy.yml.aio
+    - name: nova.yml.aio
+    - name: neutron.yml.aio
+    - name: keystone.yml.aio
+    - name: congress.yml.aio
   translations:
     - name: haproxy.yml.aio
     - name: cinder.yml.aio

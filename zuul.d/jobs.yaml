@@ -112,6 +112,14 @@
       action: deploy
       scenario: translations
 
+- job:
+    name: openstack-ansible-deploy-congress-ubuntu-xenial
+    parent: openstack-ansible-deploy-aio_lxc-ubuntu-xenial
+    voting: false
+    vars:
+      action: deploy
+      scenario: congress
+
 # centos
 - job:
     name: openstack-ansible-deploy-aio_lxc-centos-7

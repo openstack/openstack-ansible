@@ -47,6 +47,9 @@ bootstrap_user_variables_extra_templates:
   ceph:
     - src: user_variables_ceph.yml.j2
       dest: user_variables_ceph.yml
+  congress:
+    - src: user_variables_congress.yml.j2
+      dest: user_variables_congress.yml
   translations:
     - src: user_variables_translations.yml.j2
       dest: user_variables_translations.yml
