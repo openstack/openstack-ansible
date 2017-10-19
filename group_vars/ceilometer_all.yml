@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ceilometer_service_user_name: ceilometer
-ceilometer_service_tenant_name: service
+ceilometer_service_user_name: "{{ hostvars['localhost']['ceilometer_service_user_name'] }}"
+ceilometer_service_tenant_name: "{{ hostvars['localhost']['ceilometer_service_tenant_name'] }}"
 
 # These are here rather than in ceilometer_all because
 # both the os_ceilometer and os_swift roles require them
@@ -46,3 +46,9 @@ ceilometer_venv_download_url: "{{ venv_base_download_url }}/ceilometer-{{ openst
 
 # locations for fetching the default files from the git source
 ceilometer_git_config_lookup_location: "{{ openstack_repo_url }}/openstackgit/ceilometer"
+
+# Swift vars used when swift is enabled
+swift_system_user_name: "{{ hostvars['localhost']['swift_system_user_name'] }}"
+swift_system_shell: "{{ hostvars['localhost']['swift_system_shell'] }}"
+swift_system_comment: "{{ hostvars['localhost']['swift_system_comment'] }}"
+swift_system_home_folder: "{{ hostvars['localhost']['swift_system_home_folder'] }}"
