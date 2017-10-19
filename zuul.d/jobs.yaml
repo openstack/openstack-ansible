@@ -1,0 +1,161 @@
+---
+# Copyright 2017, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- job:
+    name: openstack-ansible-deploy-aio
+    parent: base
+    description: |
+      Run functional tests for an OpenStack-Ansible project.
+      Uses the gate-check-commit.sh script, running a default
+      aio deploy.
+    run: zuul.d/playbooks/run
+    timeout: 7200
+    irrelevant-files:
+      - ^\.git.*
+      - ^.*\.(example|md|rst)$
+      - ^deploy-guide/.*
+      - ^doc/.*
+      - ^releasenotes/.*
+      - ^setup\.(cfg|py)$
+      - ^tox.ini$
+      - ^Vagrantfile
+    vars:
+      action: deploy
+      scenario: aio
+
+# ubuntu
+- job:
+    name: openstack-ansible-deploy-aio-ubuntu-xenial
+    parent: openstack-ansible-deploy-aio
+    nodeset: ubuntu-xenial
+    branches:
+      - master
+      - stable/pike
+      - stable/ocata
+- job:
+    name: openstack-ansible-deploy-ceph-ubuntu-xenial
+    parent: openstack-ansible-deploy-aio-ubuntu-xenial
+    vars:
+      action: deploy
+      scenario: ceph
+    branches:
+      - master
+      - stable/pike
+      - stable/ocata
+- job:
+    name: openstack-ansible-upgrade-aio-ubuntu-xenial
+    parent: openstack-ansible-deploy-aio-ubuntu-xenial
+    timeout: 10800
+    vars:
+      action: upgrade
+      scenario: aio
+    branches:
+      - master
+      - stable/pike
+      - stable/ocata
+- job:
+    name: openstack-ansible-upgrade-ceph-ubuntu-xenial
+    parent: openstack-ansible-deploy-aio-ubuntu-xenial
+    timeout: 10800
+    vars:
+      action: upgrade
+      scenario: ceph
+    branches:
+      - master
+      - stable/pike
+- job:
+    name: openstack-ansible-deploy-octavia-ubuntu-xenial
+    parent: openstack-ansible-deploy-aio-ubuntu-xenial
+    vars:
+      action: deploy
+      scenario: octavia
+    branches:
+      - master
+- job:
+    name: openstack-ansible-deploy-translations-ubuntu-xenial
+    parent: openstack-ansible-deploy-aio-ubuntu-xenial
+    vars:
+      action: deploy
+      scenario: translations
+    branches:
+      - master
+
+# centos
+- job:
+    name: openstack-ansible-deploy-aio-centos-7
+    parent: openstack-ansible-deploy-aio
+    nodeset: centos-7
+    voting: false
+    branches:
+      - master
+      - stable/pike
+      - stable/ocata
+- job:
+    name: openstack-ansible-deploy-ceph-centos-7
+    parent: openstack-ansible-deploy-aio-centos-7
+    vars:
+      action: deploy
+      scenario: ceph
+    branches:
+      - master
+      - stable/pike
+      - stable/ocata
+- job:
+    name: openstack-ansible-upgrade-aio-centos-7
+    parent: openstack-ansible-deploy-aio-centos-7
+    timeout: 10800
+    vars:
+      action: upgrade
+      scenario: aio
+    branches:
+      - master
+      - stable/pike
+- job:
+    name: openstack-ansible-upgrade-ceph-centos-7
+    parent: openstack-ansible-deploy-aio-centos-7
+    timeout: 10800
+    vars:
+      action: upgrade
+      scenario: ceph
+    branches:
+      - master
+      - stable/pike
+
+# opensuse
+- job:
+    name: openstack-ansible-deploy-aio-opensuse-423
+    parent: openstack-ansible-deploy-aio
+    nodeset: opensuse-423
+    voting: false
+    branches:
+      - master
+      - stable/pike
+- job:
+    name: openstack-ansible-deploy-ceph-opensuse-423
+    parent: openstack-ansible-deploy-aio-opensuse-423
+    branches:
+      - master
+    vars:
+      action: deploy
+      scenario: ceph
+- job:
+    name: openstack-ansible-upgrade-aio-opensuse-423
+    parent: openstack-ansible-deploy-aio-opensuse-423
+    timeout: 10800
+    branches:
+      - master
+    vars:
+      action: upgrade
+      scenario: aio
