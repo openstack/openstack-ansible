@@ -1,0 +1,13 @@
+---
+security:
+  - |
+    The ``net.bridge.bridge-nf-call-*`` kernel parameters were set to ``0``
+    in previous releases to improve performance and it was left up to neutron
+    to adjust these parameters when security groups are applied. This could
+    cause situations where bridge traffic was not sent through iptables and
+    this rendered security groups ineffective. This could allow unexpected
+    ingress and egress traffic within the cloud.
+
+    These kernel parameters are now set to ``1`` on all hosts by the
+    ``openstack_hosts`` role, which ensures that bridge traffic is always
+    sent through iptables.

@@ -1,0 +1,21 @@
+---
+features:
+  - The tag options when creating an LXC container have been simplified. The two
+    tags now supported by the `lxc_container_create` role are
+    **lxc-{create,config}**.
+upgrade:
+  - The LXC container create option `lxc_container_backing_store` is now defined
+    by default and has a value of "dir". Prior to this release the backend store
+    option was using several auto-detection methods to try and guess the store
+    type based on facts fed into the role and derived from the physical host.
+    While the auto-detection methods worked, they created a cumbersome set of
+    conditionals and limited our ability to leverage additional container
+    stores. Having this option be a default allows deployers to mix and match
+    container stores to suit the needs of the deployment. Existing deployments
+    should set this option within group or user variables to ensure
+    there's no change in the backend store when new container be provisioned.
+other:
+  - The LXC container create role will now check for the LXC volume group if
+    the option `lxc_container_backing_store` is set to "lvm". If this volume
+    group is not found, the role will halt and instruct the deployer to update
+    their configuration options and inspect their host setup.

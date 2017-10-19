@@ -1,0 +1,14 @@
+---
+features:
+  - The variable ``lxc_image_cache_server_mirrors`` has been added to
+    the "lxc_hosts" role. This is a list type variable and gives
+    deployers the ability to specify multiple lxc-image mirrors at the
+    same time.
+
+deprecations:
+  - The variable ``lxc_image_cache_server`` has been deprecated in the
+    "lxc_hosts" role. By default this value will pull the first item
+    out of ``lxc_image_cache_server_mirrors`` list which is only done
+    for compatibility (legacy) purposes. The default string type
+    variable, ``lxc_image_cache_server``, will be removed from the
+    "lxc_hosts" role in the in "R" release.

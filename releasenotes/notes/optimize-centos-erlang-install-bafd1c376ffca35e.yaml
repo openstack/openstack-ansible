@@ -1,0 +1,15 @@
+---
+features:
+  - |
+    The installation of Erlang and is now optimized for CentOS.
+    Erlang 19.x is now installed via a single package that is maintained by
+    RabbitMQ developers and it provides the minimal features required for
+    RabbitMQ to function. It also includes HiPE support for increased
+    performance.
+
+    The version of Erlang is kept constant using yum's versionlock plugin.
+  - |
+    RabbitMQ is now installed via an RPM repository provided by RabbitMQ
+    developers. The version is kept constant via yum's versionlock plugin.
+    This allows the tasks to lock the RabbitMQ version to a particular
+    revision and prevent changes to that version.
