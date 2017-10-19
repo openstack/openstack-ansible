@@ -111,10 +111,10 @@ source "${OSA_CLONE_DIR}/scripts/bootstrap-ansible.sh"
 # This is added *here* instead of bootstrap-ansible so it's used for CI purposes only.
 if [[ -d "/tmp/openstack/ara" ]]; then
   # This installs from a git checkout
-  /opt/ansible-runtime/bin/pip install /tmp/openstack/ara
+  /opt/ansible-runtime/bin/pip install /tmp/openstack/ara "${ANSIBLE_PACKAGE:-ansible}"
 else
   # This installs from pypi
-  /opt/ansible-runtime/bin/pip install ara==0.14.0
+  /opt/ansible-runtime/bin/pip install ara==0.14.0 "${ANSIBLE_PACKAGE:-ansible}"
 fi
 # Dynamically retrieve the location of the ARA callback so we are able to find
 # it on both py2 and py3
