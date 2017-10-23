@@ -182,7 +182,7 @@ haproxy_default_services:
       haproxy_service_name: nova_console
       haproxy_backend_nodes: "{{ groups['nova_console'] | default([]) }}"
       haproxy_ssl: "{{ haproxy_ssl }}"
-      haproxy_port: "{{ nova_console_port }}"
+      haproxy_port: "{{ hostvars[groups['nova_console'][0]]['nova_console_port'] }}"
       haproxy_balance_type: http
       haproxy_timeout_client: 60m
       haproxy_timeout_server: 60m
