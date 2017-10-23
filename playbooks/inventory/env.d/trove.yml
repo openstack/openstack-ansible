@@ -27,22 +27,16 @@ component_skel:
     belongs_to:
       - trove_all
 
+
 container_skel:
   trove_api_container:
     belongs_to:
       - trove-infra_containers
     contains:
       - trove_api
-  trove_conductor_container:
-    belongs_to:
-      - trove-infra_containers
-    contains:
       - trove_conductor
-  trove_taskmanager_container:
-    belongs_to:
-      - trove-infra_containers
-    contains:
       - trove_taskmanager
+
 
 physical_skel:
   trove-infra_containers:
