@@ -13,12 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Add {{ inventory_hostname }} to dynamic inventory group
+- name: Add hosts to dynamic inventory group
   add_host:
     group: "{{ dest_group }}"
     name: "{{ item }}"
   with_items: "{{ groups[src_group] }}"
   when:
-    - "src_group in groups"
+    - "group_when | default(True)"
   tags:
     - common-grouping
