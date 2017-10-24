@@ -13,14 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-octavia_service_port: 9876
-octavia_service_proto: http
-octavia_service_internaluri_proto: "{{ openstack_service_internaluri_proto | default(octavia_service_proto) }}"
-octavia_service_internaluri: "{{ octavia_service_internaluri_proto }}://{{ internal_lb_vip_address }}:{{ octavia_service_port }}"
 octavia_service_internalurl: "{{ octavia_service_internaluri }}/v1/%(tenant_id)s"
-
 octavia_service_user_name: octavia
-octavia_service_url: "{{ octavia_service_internaluri }}"
 
 # RPC
 octavia_rabbitmq_userid: octavia
