@@ -55,7 +55,7 @@ Configure the operating system (Ubuntu)
    .. code-block:: shell-session
 
        # apt-get install bridge-utils debootstrap ifenslave ifenslave-2.6 \
-         lsof lvm2 ntp ntpdate openssh-server sudo tcpdump vlan
+         lsof lvm2 ntp ntpdate openssh-server sudo tcpdump vlan python
 
 #. Add the appropriate kernel modules to the ``/etc/modules`` file to
    enable VLAN and bond interfaces:
@@ -96,7 +96,7 @@ Configure the operating system (CentOS)
    .. code-block:: shell-session
 
        # yum install bridge-utils iputils lsof lvm2 \
-         ntp ntpdate openssh-server sudo tcpdump
+         ntp ntpdate openssh-server sudo tcpdump python
 
 #. Add the appropriate kernel modules to the ``/etc/modules`` file to
    enable VLAN and bond interfaces:
@@ -139,7 +139,7 @@ Configure the operating system (openSUSE)
    .. code-block:: shell-session
 
        # zypper install bridge-utils iputils lsof lvm2 \
-         ntp opensshr sudo tcpdump
+         ntp opensshr sudo tcpdump python
 
 #. Add the appropriate kernel modules to the ``/etc/modules`` file to
    enable VLAN and bond interfaces:
