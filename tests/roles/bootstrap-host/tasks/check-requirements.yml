@@ -32,7 +32,7 @@
     if [[ $(df -T / | tail -n 1 | awk '{print $2}') == "btrfs" ]]; then
         btrfs fi usage --kbytes / | awk '/^.*Free / {print $3}'| sed 's/\..*//'
     else
-        df -BK / | awk '/^[^Filesystem]/ {print $4}' | sed 's/K//'
+        df -BK / | awk '!/^Filesystem/ {print $4}' | sed 's/K//'
     fi
   when: bootstrap_host_data_disk_device == None
   changed_when: false
