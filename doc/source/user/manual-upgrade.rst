@@ -112,6 +112,20 @@ For more information, see :ref:`pip-conf-removal`.
 
     # openstack-ansible "${UPGRADE_PLAYBOOKS}/pip-conf-removal.yml"
 
+Clean up the ceph-ansible galaxy namespaced roles
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The ceph-ansible common roles are no longer namespaced with a galaxy-style
+'.' (ie. ``ceph.ceph-common`` is now cloned as ``ceph-common``), due to a
+change in the way upstream meta dependencies are handled in the ceph roles.
+The roles will be cloned according to the new naming, and an upgrade
+playbook ``ceph-galaxy-removal.yml`` has been added to clean up the stale
+galaxy-named roles.
+
+.. code-block:: console
+
+    # openstack-ansible "${UPGRADE_PLAYBOOKS}/ceph-galaxy-removal.yml"
+
 Upgrade hosts
 ~~~~~~~~~~~~~
 
