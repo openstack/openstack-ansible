@@ -49,13 +49,6 @@ repo_pkg_cache_port: 3142
 repo_pkg_cache_url: "http://{{ internal_lb_vip_address }}:{{ repo_pkg_cache_port }}"
 repo_release_path: "{{ openstack_repo_url }}/os-releases/{{ openstack_release }}/{{ os_distro_version }}"
 
-## kernel modules for specific group hosts
-# :param name: name of the kernel module
-# :param pattern: pattern to search for in /boot/config-$kernel_version to check how module is configured inside kernel
-# :param group: group of hosts where the module will be loaded
-openstack_host_specific_kernel_modules:
-  - { name: "ebtables", pattern: "CONFIG_BRIDGE_NF_EBTABLES", group: "network_hosts" }
-
 ## DNS resolution (resolvconf) options
 #Group containing resolvers to configure
 resolvconf_resolver_group: unbound
