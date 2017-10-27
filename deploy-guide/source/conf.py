@@ -331,7 +331,7 @@ rst_epilog = """
 watermark = os.popen("git branch --contains $(git rev-parse HEAD) | awk -F/ '/stable/ {print $2}'").read().strip(' \n\t').capitalize()
 if watermark == "":
     watermark = "Pre-release"
-    deploy_branch_link_name = "draft"
+    deploy_branch_link_name = "latest"
     dev_branch_link_name = ""
 
 deploy_guide_prefix = "http://docs.openstack.org/project-deploy-guide/openstack-ansible/{}/%s".format(deploy_branch_link_name)
