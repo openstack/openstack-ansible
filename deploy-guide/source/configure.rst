@@ -70,7 +70,7 @@ Installing additional services
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To install additional services, the files in
-``/etc/openstack_deploy/conf.d`` provide examples showing
+``etc/openstack_deploy/conf.d`` provide examples showing
 the correct host groups to use. To add another service, add the host group,
 allocate hosts to it, and then execute the playbooks.
 
