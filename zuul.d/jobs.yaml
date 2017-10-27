@@ -40,20 +40,13 @@
     name: openstack-ansible-deploy-aio-ubuntu-xenial
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-xenial
-    branches:
-      - master
-      - stable/pike
-      - stable/ocata
 - job:
     name: openstack-ansible-deploy-ceph-ubuntu-xenial
     parent: openstack-ansible-deploy-aio-ubuntu-xenial
     vars:
       action: deploy
       scenario: ceph
-    branches:
-      - master
-      - stable/pike
-      - stable/ocata
+
 - job:
     name: openstack-ansible-upgrade-aio-ubuntu-xenial
     parent: openstack-ansible-deploy-aio-ubuntu-xenial
@@ -61,10 +54,7 @@
     vars:
       action: upgrade
       scenario: aio
-    branches:
-      - master
-      - stable/pike
-      - stable/ocata
+
 - job:
     name: openstack-ansible-upgrade-ceph-ubuntu-xenial
     parent: openstack-ansible-deploy-aio-ubuntu-xenial
@@ -72,25 +62,20 @@
     vars:
       action: upgrade
       scenario: ceph
-    branches:
-      - master
-      - stable/pike
+
 - job:
     name: openstack-ansible-deploy-octavia-ubuntu-xenial
     parent: openstack-ansible-deploy-aio-ubuntu-xenial
     vars:
       action: deploy
       scenario: octavia
-    branches:
-      - master
+
 - job:
     name: openstack-ansible-deploy-translations-ubuntu-xenial
     parent: openstack-ansible-deploy-aio-ubuntu-xenial
     vars:
       action: deploy
       scenario: translations
-    branches:
-      - master
 
 # centos
 - job:
@@ -98,20 +83,14 @@
     parent: openstack-ansible-deploy-aio
     nodeset: centos-7
     voting: false
-    branches:
-      - master
-      - stable/pike
-      - stable/ocata
+
 - job:
     name: openstack-ansible-deploy-ceph-centos-7
     parent: openstack-ansible-deploy-aio-centos-7
     vars:
       action: deploy
       scenario: ceph
-    branches:
-      - master
-      - stable/pike
-      - stable/ocata
+
 - job:
     name: openstack-ansible-upgrade-aio-centos-7
     parent: openstack-ansible-deploy-aio-centos-7
@@ -119,9 +98,7 @@
     vars:
       action: upgrade
       scenario: aio
-    branches:
-      - master
-      - stable/pike
+
 - job:
     name: openstack-ansible-upgrade-ceph-centos-7
     parent: openstack-ansible-deploy-aio-centos-7
@@ -129,9 +106,6 @@
     vars:
       action: upgrade
       scenario: ceph
-    branches:
-      - master
-      - stable/pike
 
 # opensuse
 - job:
@@ -139,14 +113,10 @@
     parent: openstack-ansible-deploy-aio
     nodeset: opensuse-423
     voting: false
-    branches:
-      - master
-      - stable/pike
+
 - job:
     name: openstack-ansible-deploy-ceph-opensuse-423
     parent: openstack-ansible-deploy-aio-opensuse-423
-    branches:
-      - master
     vars:
       action: deploy
       scenario: ceph
@@ -154,8 +124,6 @@
     name: openstack-ansible-upgrade-aio-opensuse-423
     parent: openstack-ansible-deploy-aio-opensuse-423
     timeout: 10800
-    branches:
-      - master
     vars:
       action: upgrade
       scenario: aio
