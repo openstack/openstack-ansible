@@ -1,0 +1,12 @@
+- hosts: all
+  tasks:
+    - name: Run gate-check-commit.sh script
+      become: yes
+      become_user: root
+      command: "scripts/gate-check-commit.sh {{ scenario }} {{ action }}"
+      args:
+        chdir: "src/{{ zuul.project.canonical_name }}"
+      environment:
+        # ZUUL_PROJECT is used by tests/get-ansible-role-requirements to
+        # determine when CI provided repos should be used.
+        ZUUL_PROJECT: "{{ zuul.project.short_name }}"
