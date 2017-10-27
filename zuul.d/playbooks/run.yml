@@ -1,0 +1,7 @@
+- hosts: all
+  tasks:
+    - name: Run gate-check-commit.sh script
+      command: "sudo scripts/gate-check-commit.sh {{ scenario }} {{ action }}"
+      args:
+        chdir: "src/{{ zuul.project.canonical_name }}"
+      environment: '{{ zuul | zuul_legacy_vars }}'
