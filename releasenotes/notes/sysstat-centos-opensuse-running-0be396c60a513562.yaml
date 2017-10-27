@@ -1,0 +1,8 @@
+---
+fixes:
+  - |
+    The ``sysstat`` package was installed on all distributions, but it was
+    only configured to run on Ubuntu and OpenSUSE. It would not run on CentOS
+    due to bad SELinux contexts and file permissions on
+    ``/etc/cron.d/sysstat``. This has been fixed and ``sysstat`` now runs
+    properly on CentOS.
