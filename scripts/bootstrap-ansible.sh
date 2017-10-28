@@ -47,7 +47,7 @@ export OSA_CLONE_DIR="$(pwd)"
 
 # Set the variable to the role file to be the absolute path
 ANSIBLE_ROLE_FILE="$(readlink -f "${ANSIBLE_ROLE_FILE}")"
-OSA_INVENTORY_PATH="$(readlink -f playbooks/inventory)"
+OSA_INVENTORY_PATH="$(readlink -f inventory)"
 OSA_PLAYBOOK_PATH="$(readlink -f playbooks)"
 
 # Create the ssh dir if needed

@@ -40,7 +40,7 @@ needed in an environment, it is possible to create additional nodes.
 
    .. code:: console
 
-      # /opt/openstack-ansible/playbooks/inventory/dynamic_inventory.py > /dev/null
+      # /opt/openstack-ansible/inventory/dynamic_inventory.py > /dev/null
 
 #. Create the ``/root/add_host.limit`` file, which contains all new node
    host names. Replace ``<NEW INFRA NODE>`` with the name of the new host.

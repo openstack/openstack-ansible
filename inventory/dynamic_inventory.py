@@ -23,7 +23,7 @@ try:
     from osa_toolkit import generate
 except ImportError:
     current_path = os.path.abspath(os.path.dirname(os.path.realpath(__file__)))
-    lib_path = os.path.join(current_path, '..', '..', 'osa_toolkit')
+    lib_path = os.path.join(current_path, '..')
     sys.path.append(lib_path)
     from osa_toolkit import generate
 
@@ -67,7 +67,7 @@ def args(arg_list):
         '-e',
         '--environment',
         help=('Directory that contains the base env.d directory.\n'
-              'Defaults to <OSA_ROOT>/playbooks/inventory/.'),
+              'Defaults to <OSA_ROOT>/inventory/.'),
         required=False,
         default=os.path.dirname(__file__),
     )

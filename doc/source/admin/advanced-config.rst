@@ -82,7 +82,7 @@ OpenStack-Ansible) are as follows:
   may reference.
 ``ANSIBLE_INVENTORY``
   This variable should point to
-  ``openstack-ansible/playbooks/inventory``. With this setting,
+  ``openstack-ansible/inventory/dynamic_inventory.py``. With this setting,
   extensions have access to the same dynamic inventory that
   OpenStack-Ansible uses.
 
@@ -110,7 +110,7 @@ The ``/etc/openstack_deploy/env.d`` directory sources all YAML files into the
 deployed environment, allowing a deployer to define additional group mappings.
 
 This directory is used to extend the environment skeleton, or modify the
-defaults defined in the ``playbooks/inventory/env.d`` directory.
+defaults defined in the ``inventory/env.d`` directory.
 
 See also
 :deploy_guide:`Understanding Container Groups <app-custom-layouts.html>`

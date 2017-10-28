@@ -3,7 +3,7 @@ Generating the Inventory
 ========================
 
 The script that creates the inventory is located at
-``playbooks/inventory/dynamic_inventory.py``.
+``inventory/dynamic_inventory.py``.
 
 Executing the dynamic_inventory.py script
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -16,7 +16,7 @@ Run the following command:
 
 .. code-block:: bash
 
-    # from the playbooks directory
+    # from the root folder of cloned OpenStack-Ansible repository
     inventory/dynamic_inventory.py --config /etc/openstack_deploy/
 
 This invocation is useful when testing changes to the dynamic inventory script.
@@ -29,7 +29,7 @@ holding configuration from which to create the inventory. If not specified,
 the default is ``/etc/openstack_deploy/``.
 
 In addition to this argument, the base environment skeleton is provided in the
-``playbooks/inventory/env.d`` directory of the OpenStack-Ansible codebase.
+``inventory/env.d`` directory of the OpenStack-Ansible codebase.
 
 Should an ``env.d`` directory be found in the directory specified by
 ``--config``, its contents will be added to the base environment, overriding
@@ -70,13 +70,13 @@ As an example, consider the following excerpt from
 
 The ``identity_hosts`` dictionary defines an Ansible inventory group named
 ``identity_hosts`` containing the three infra hosts. The configuration file
-``playbooks/inventory/env.d/keystone.yml`` defines additional Ansible
+``inventory/env.d/keystone.yml`` defines additional Ansible
 inventory groups for the containers that are deployed onto the three hosts
 named with the prefix *infra*.
 
 Note that any services marked with ``is_metal: true`` will run on the allocated
 physical host and not in a container. For an example of ``is_metal: true``
-being used refer to ``playbooks/inventory/env.d/cinder.yml`` in the
+being used refer to ``inventory/env.d/cinder.yml`` in the
 ``container_skel`` section.
 
 Outputs

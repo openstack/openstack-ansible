@@ -275,7 +275,7 @@ Deploying the role
    run the ``repo-build.yml`` play later so that wheels for your packages will
    be included in the repository infrastructure.
 #. Make any required adjustments to the load balancer configuration
-   (e.g. modify ``playbooks/inventory/group_vars/all/haproxy.yml`` in the
+   (e.g. modify ``inventory/group_vars/all/haproxy.yml`` in the
    OpenStack-Ansible source repository on your deploy host) so that your
    service can be reached through a load balancer, if appropriate, and be sure
    to run the ``haproxy-install.yml`` play later so your changes will be
@@ -295,7 +295,7 @@ Deploying the role
    hosts, Ansible skips the playbook's tasks automatically.
 #. Any variables needed by other roles to connect to the new role, or by the
    new role to connect to other roles, should be implemented in
-   ``playbooks/inventory/group_vars``. The group vars are essentially the
+   ``inventory/group_vars``. The group vars are essentially the
    glue which playbooks use to ensure that all roles are given the
    appropriate information. When group vars are implemented it should be a
    minimum set to achieve the goal of integrating the new role into the

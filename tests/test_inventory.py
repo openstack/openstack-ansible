@@ -25,7 +25,7 @@ import unittest
 import warnings
 import yaml
 
-INV_DIR = 'playbooks/inventory'
+INV_DIR = 'inventory'
 
 sys.path.append(path.join(os.getcwd(), INV_DIR))
 
