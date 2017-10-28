@@ -5,6 +5,16 @@ Networking service
 The os_neutron role provides for a lot of flexibility. See the `neutron`_ role
 for a full list of all available options.
 
+Adding networks to a newly deployed openstack cloud
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A newly deployed OpenStack-Ansible has no networks by default. If you need to
+add networks, you can use the openstack CLI, or you can use the ansible modules
+for it.
+
+An example for the latter is in the ``openstack-ansible-ops`` repository,
+under the ``openstack-service-setup.yml`` playbook.
+
 Load-Balancer-as-a-Service (LBaaS)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
