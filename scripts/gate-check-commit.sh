@@ -74,9 +74,6 @@ info_block "Checking for required libraries." 2> /dev/null || source "${OSA_CLON
 
 ## Main ----------------------------------------------------------------------
 
-# Set gate job exit traps, this is run regardless of exit state when the job finishes.
-trap gate_job_exit_tasks EXIT
-
 # Log some data about the instance and the rest of the system
 log_instance_info
 

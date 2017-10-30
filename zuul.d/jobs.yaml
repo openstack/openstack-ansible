@@ -21,6 +21,7 @@
       Uses the gate-check-commit.sh script, running a default
       aio deploy.
     run: zuul.d/playbooks/run.yml
+    post-run: zuul.d/playbooks/post.yml
     timeout: 9000
     irrelevant-files:
       - ^\.git.*
