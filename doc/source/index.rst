@@ -17,7 +17,7 @@ OpenStack-Ansible Queens is currently in development.
 .. toctree::
    :maxdepth: 1
 
-   Deployment guide <https://docs.openstack.org/project-deploy-guide/openstack-ansible/draft/>
+   Deployment guide <https://docs.openstack.org/project-deploy-guide/openstack-ansible/latest/>
    Release notes <https://docs.openstack.org/releasenotes/openstack-ansible/unreleased.html>
    admin/index
    user/index
