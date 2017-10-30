@@ -134,7 +134,7 @@ list** and **openstack flavor list** commands.
 
    .. code::
 
-      $ openstack server create --image precise-image --flavor=2 --key-name example-key example-instance
+      $ openstack server create --image precise-image --flavor 2 --key-name example-key example-instance
       +-------------------------------------+--------------------------------------+
       |               Property              |                Value                 |
       +-------------------------------------+--------------------------------------+
