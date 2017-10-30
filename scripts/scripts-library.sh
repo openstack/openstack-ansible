@@ -22,13 +22,14 @@ ANSIBLE_PARAMETERS=${ANSIBLE_PARAMETERS:-""}
 STARTTIME="${STARTTIME:-$(date +%s)}"
 COMMAND_LOGS=${COMMAND_LOGS:-"/openstack/log/ansible_cmd_logs"}
 
+ZUUL_PROJECT="${ZUUL_PROJECT:-}"
 GATE_EXIT_LOG_COPY="${GATE_EXIT_LOG_COPY:-false}"
 GATE_EXIT_LOG_GZIP="${GATE_EXIT_LOG_GZIP:-true}"
 GATE_EXIT_RUN_ARA="${GATE_EXIT_RUN_ARA:-true}"
 GATE_EXIT_RUN_DSTAT="${GATE_EXIT_RUN_DSTAT:-true}"
 # If this is a gate node from OpenStack-Infra Store all logs into the
 #  execution directory after gate run.
-if [[ -d "/etc/nodepool" ]]; then
+if [[ -n "$ZUUL_PROJECT" ]]; then
   GATE_EXIT_LOG_COPY=true
 fi
 
@@ -137,9 +138,9 @@ function gate_job_exit_tasks {
     fi
     GATE_LOG_DIR="${OSA_CLONE_DIR:-$(dirname $0)/..}/logs"
     mkdir -p "${GATE_LOG_DIR}/host" "${GATE_LOG_DIR}/openstack"
-    RSYNC_CMD="rsync --archive --safe-links --ignore-errors --quiet --no-perms --no-owner --no-group"
-    ${RSYNC_CMD} /var/log/ "${GATE_LOG_DIR}/host" || true
-    ${RSYNC_CMD} /openstack/log/ "${GATE_LOG_DIR}/openstack" || true
+    RSYNC_OPTS="--archive --safe-links --ignore-errors --quiet --no-perms --no-owner --no-group"
+    rsync $RSYNC_OPTS /var/log/ "${GATE_LOG_DIR}/host" || true
+    rsync $RSYNC_OPTS /openstack/log/ "${GATE_LOG_DIR}/openstack" || true
     # Rename all files gathered to have a .txt suffix so that the compressed
     # files are viewable via a web browser in OpenStack-CI.
     # except tempest results testrepository.subunit and testr_results.html
@@ -167,7 +168,8 @@ function gate_job_exit_tasks {
     fi
     # Ensure that the files are readable by all users, including the non-root
     # OpenStack-CI jenkins user.
-    chmod -R 0777 "${GATE_LOG_DIR}"
+    chmod -R ugo+rX "${GATE_LOG_DIR}"
+    chown -R $(whoami) "${GATE_LOG_DIR}"
   fi
 }
 
@@ -187,7 +189,10 @@ function run_dstat {
         ;;
   esac
 
-  dstat -tcmsdn --top-cpu --top-mem --top-bio --nocolor --output /openstack/log/instance-info/dstat.csv 3 > /openstack/log/instance-info/dstat.log&
+  # https://stackoverflow.com/a/20338327 executing in ()& decouples the dstat
+  # process from scripts-library to prevent hung builds if dstat fails to exit
+  # for any reason.
+  (dstat -tcmsdn --top-cpu --top-mem --top-bio --nocolor --output /openstack/log/instance-info/dstat.csv 3 > /openstack/log/instance-info/dstat.log)&
 }
 
 function generate_dstat_charts {
