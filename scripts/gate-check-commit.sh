@@ -93,19 +93,6 @@ if [ -n "${DATA_DISK_DEVICE}" ]; then
   export BOOTSTRAP_OPTS="${BOOTSTRAP_OPTS} bootstrap_host_data_disk_device=${DATA_DISK_DEVICE}"
 fi
 
-# Grab all the zuul environment variables that
-# were exported by the jenkins user into a file.
-# This is used for cross-repo testing.
-if [ -f zuul.env ]; then
-  # The ZUUL variables we get in the file are
-  # not quoted, so we change the file to ensure
-  # that they are. We also ensure that each
-  # var is exported so that it's accessible in
-  # any subshell.
-  sed -i 's|\(.*\)=\(.*\)$|export \1="\2"|' zuul.env
-  source zuul.env
-fi
-
 # Bootstrap Ansible
 source "${OSA_CLONE_DIR}/scripts/bootstrap-ansible.sh"
 
