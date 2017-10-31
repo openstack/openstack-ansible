@@ -100,9 +100,10 @@ source "${OSA_CLONE_DIR}/scripts/bootstrap-ansible.sh"
 
 # Install ARA and add it to the callback path provided by bootstrap-ansible.sh/openstack-ansible.rc
 # This is added *here* instead of bootstrap-ansible so it's used for CI purposes only.
-if [[ -d "/tmp/openstack/ara" ]]; then
+ARA_SRC_HOME="${HOME}/src/git.openstack.org/openstack/ara"
+if [[ -d "${ARA_SRC_HOME}" ]]; then
   # This installs from a git checkout
-  /opt/ansible-runtime/bin/pip install /tmp/openstack/ara "${ANSIBLE_PACKAGE:-ansible}"
+  /opt/ansible-runtime/bin/pip install ${ARA_SRC_HOME} "${ANSIBLE_PACKAGE:-ansible}"
 else
   # This installs from pypi
   /opt/ansible-runtime/bin/pip install ara "${ANSIBLE_PACKAGE:-ansible}"
