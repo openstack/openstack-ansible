@@ -16,14 +16,6 @@
 # These are here rather than in neutron_all because
 # both the os_ceilometer and os_neutron roles require them
 
-# RPC
-neutron_rabbitmq_userid: neutron
-neutron_rabbitmq_vhost: /neutron
-neutron_rabbitmq_port: "{{ rabbitmq_port }}"
-neutron_rabbitmq_servers: "{{ rabbitmq_servers }}"
-neutron_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
-neutron_rabbitmq_host_group: "{{ rabbitmq_host_group }}"
-
 # Telemetry notifications
 neutron_rabbitmq_telemetry_userid: "{{ neutron_rabbitmq_userid }}"
 neutron_rabbitmq_telemetry_password: "{{ neutron_rabbitmq_password }}"
