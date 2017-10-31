@@ -6,7 +6,7 @@ Our dynamic Inventory
 ^^^^^^^^^^^^^^^^^^^^^
 
 OpenStack-Ansible ships with its own dynamic inventory. You can
-find more explanations on the `inventory`_.
+find more explanations on the `inventory here`_.
 
 Variable precedence
 ^^^^^^^^^^^^^^^^^^^
@@ -48,4 +48,4 @@ If you want to override a playbook or a role variable, you can define
 the variable you want to override in a
 ``/etc/openstack_deploy/user_*.yml`` file.
 
-.. _Inventory: inventory.html
+.. _inventory here: ../reference/index.html
