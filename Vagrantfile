@@ -60,24 +60,6 @@ Vagrant.configure(2) do |config|
       SHELL
   end
 
-  config.vm.define "opensuse422" do |leap422|
-    leap422.disksize.size = disk_size
-    leap422.vm.box = "opensuse/openSUSE-42.2-x86_64"
-    leap422.vm.provision "shell",
-      # NOTE(hwoarang) The parted version in Leap 42.2 can't do an online
-      # partition resize so we must create a new one and attach it to the
-      # btrfs filesystem.
-      privileged: true,
-      inline: <<-SHELL
-        cd /vagrant
-        echo -e 'd\n2\nn\np\n\n\n\nn\nw' | fdisk /dev/sda
-        PART_END=$(fdisk -l /dev/sda | grep ^/dev/sda2 | awk '{print $4}')
-        resizepart /dev/sda 2 $PART_END
-        btrfs fi resize max /
-        ./scripts/gate-check-commit.sh
-      SHELL
-  end
-
   config.vm.define "opensuse423" do |leap423|
     leap423.disksize.size = disk_size
     leap423.vm.box = "opensuse/openSUSE-42.3-x86_64"
