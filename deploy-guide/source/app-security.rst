@@ -1,5 +1,5 @@
 ====================
-Appendix E: Security
+Appendix F: Security
 ====================
 
 Security is one of the top priorities within OpenStack-Ansible (OSA), and many

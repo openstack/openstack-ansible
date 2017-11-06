@@ -1,5 +1,5 @@
 ================================
-Appendix J: Additional resources
+Appendix K: Additional resources
 ================================
 
 Ansible resources:
