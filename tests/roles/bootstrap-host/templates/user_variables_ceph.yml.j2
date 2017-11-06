@@ -19,7 +19,7 @@ monitor_interface: eth1 # Management network in the AIO
 public_network: "{{ (mgmt_range ~ '.0/' ~ netmask) | ipaddr('net') }}"
 journal_size: 100
 osd_scenario: collocated
-pool_default_pg_num: 32
+pool_default_pg_num: 16
 openstack_config: true # Ceph ansible automatically creates pools & keys
 cinder_ceph_client: cinder
 cinder_default_volume_type: RBD
