@@ -1,7 +1,7 @@
 .. _network-appendix:
 
 ================================
-Appendix F: Container networking
+Appendix G: Container networking
 ================================
 
 OpenStack-Ansible deploys Linux containers (LXC) and uses Linux
