@@ -14,11 +14,34 @@
 # limitations under the License.
 
 - job:
-    name: openstack-ansible-deploy-aio-ubuntu-xenial-nv
+    name: openstack-ansible-deploy-aio
+    parent: base
+    description: |
+      Run functional tests for an OpenStack-Ansible project.
+      Uses the gate-check-commit.sh script, running a default
+      aio deploy.
+    run: zuul.d/playbooks/run.yml
+    timeout: 7200
+    irrelevant-files:
+      - ^\.git.*
+      - ^.*\.(example|md|rst)$
+      - ^deploy-guide/.*
+      - ^doc/.*
+      - ^releasenotes/.*
+      - ^setup\.(cfg|py)$
+      - ^tox.ini$
+      - ^Vagrantfile
+    vars:
+      action: deploy
+      scenario: aio
+
+- job:
+    name: openstack-ansible-deploy-aio-ubuntu-xenial
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-xenial
 
 - job:
-    name: openstack-ansible-deploy-aio-ubuntu-trusty
+    name: openstack-ansible-deploy-aio-ubuntu-trusty-nv
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-trusty
+    voting: false
