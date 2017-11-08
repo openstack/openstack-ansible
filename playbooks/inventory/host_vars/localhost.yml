@@ -14,7 +14,3 @@
 # limitations under the License.
 
 ansible_python_interpreter: /usr/bin/python
-
-# cinder_backends_rbd_inuse: true if at least 1 cinder_backend on any
-# cinder_volume host uses Ceph RBD
-cinder_backends_rbd_inuse: "{{ True in groups['cinder_volume'] | map('extract', hostvars, 'cinder_backend_rbd_inuse') }}"

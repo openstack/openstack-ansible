@@ -22,6 +22,18 @@
   tags:
     - cinder
   pre_tasks:
+    # Switch to glance api v2 if cinder uses RBD backends
+    - name: Set cinder RBD inuse fact
+      set_fact:
+        cinder_backends_rbd_inuse: "{{ True in groups['cinder_volume'] | map('extract', hostvars, 'cinder_backend_rbd_inuse') }}"
+      delegate_to: localhost
+      delegate_facts: True
+      when:
+        - "'cinder_all' in group_names"
+        - "inventory_hostname == ((groups['cinder_all'] | intersect(ansible_play_hosts)) | list)[0]"
+        - "hostvars['localhost']['cinder_backends_rbd_inuse'] is not defined"
+      tags:
+        - always
 
     # In order to ensure that any container, software or
     # config file changes which causes a container/service
