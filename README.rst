@@ -48,9 +48,9 @@ https://git.openstack.org/cgit/openstack/openstack-ansible-<ROLENAME>.
 
 .. _official OpenStack project: https://governance.openstack.org/reference/projects/index.html
 .. _Home Page: https://governance.openstack.org/reference/projects/openstackansible.html
-.. _Deployment Guide: https://docs.openstack.org/project-deploy-guide/openstack-ansible
-.. _Quick Start: https://docs.openstack.org/developer/openstack-ansible/developer-docs/quickstart-aio.html
-.. _Developer Documentation: https://docs.openstack.org/developer/openstack-ansible/developer-docs/index.html
+.. _Deployment Guide: https://docs.openstack.org/project-deploy-guide/openstack-ansible/latest
+.. _Quick Start: https://docs.openstack.org/openstack-ansible/latest/contributor/quickstart-aio.html
+.. _Developer Documentation: https://docs.openstack.org/openstack-ansible/latest/contributor/index.html
 .. _Source: https://git.openstack.org/cgit/openstack/openstack-ansible
 .. _OpenStack Mailing Lists: http://lists.openstack.org/
 .. _freenode network: https://freenode.net/
