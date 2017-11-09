@@ -20,7 +20,7 @@
       Run functional tests for an OpenStack-Ansible project.
       Uses the gate-check-commit.sh script, running a default
       aio deploy.
-    run: zuul.d/playbooks/run
+    run: zuul.d/playbooks/run.yml
     timeout: 7200
     irrelevant-files:
       - ^\.git.*
