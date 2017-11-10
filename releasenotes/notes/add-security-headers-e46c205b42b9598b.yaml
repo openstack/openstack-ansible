@@ -1,0 +1,8 @@
+---
+security:
+  - |
+    The following headers were added as additional default (and static) values.
+    `X-Content-Type-Options nosniff`, `X-XSS-Protection "1; mode=block"`, and
+    `Content-Security-Policy "default-src 'self' https: wss:;"`.  Additionally,
+    the `X-Frame-Options DENY` header was added, defaulting to DENY.  You may
+    override the header via the `keystone_x_frame_options` variable.
