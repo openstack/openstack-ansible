@@ -1,0 +1,13 @@
+---
+issues:
+  - |
+    If the protocol of either the keystone admin or internal endpoints is
+    'https' and SSL is being terminated at a load balancer, tasks which verify
+    that services are responsive and perform the initial service setup through
+    through the keystone hosts' web server ports may fail.
+
+    Set ``keystone_mod_wsgi_enabled`` to ``false`` to deploy Keystone under
+    Uwsgi and allow the web server to be bypassed during these tasks.
+
+    See `Launchpad Bug 1699191 <https://bugs.launchpad.net/openstack-ansible/+bug/1699191>`_
+    for more details.
