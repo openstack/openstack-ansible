@@ -311,7 +311,8 @@ haproxy_default_services:
       haproxy_service_name: opendaylight
       haproxy_backend_nodes: "{{ groups['neutron_server'] | default([]) }}"
       haproxy_bind: "{{ [internal_lb_vip_address] }}"
-      haproxy_port: 8181
+      haproxy_port: 8282
+      haproxy_backend_port: 8181
       haproxy_balance_type: tcp
       haproxy_timeout_client: 5000s
       haproxy_timeout_server: 5000s
