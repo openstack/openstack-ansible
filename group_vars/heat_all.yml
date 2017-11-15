@@ -41,7 +41,7 @@ heat_package_state: "{{ package_state }}"
 
 # Only enable the heat cinder backups functionality if the cinder backup
 # service is enabled.
-heat_cinder_backups_enabled: "{{ (cinder_service_backup_program_enabled is defined and cinder_service_backup_program_enabled | bool) | ternary(True, False) }}"
+heat_cinder_backups_enabled: "{{ hostvars['localhost']['cinder_service_backup_program_enabled'] }}"
 
 # venv fetch configuration
 heat_venv_tag: "{{ venv_tag }}"
