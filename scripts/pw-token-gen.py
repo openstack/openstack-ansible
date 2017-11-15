@@ -22,7 +22,6 @@ import random
 import tarfile
 import uuid
 
-from Crypto import Random
 try:
     import yaml
 except ImportError:
@@ -69,7 +68,7 @@ class CredentialGenerator(object):
     @staticmethod
     def _random_bytes():
         """Returns 1024 random bytes of data."""
-        return Random.get_random_bytes(1024)
+        return os.urandom(1024)
 
     def _encode_bytes(self):
         """Builds random strings based on random data.
