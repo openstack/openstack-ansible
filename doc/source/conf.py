@@ -22,9 +22,21 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
+import imp
 import os
 import pbr.version
 import sys
+
+# Create dynamic table file.
+CONF_PATH = os.path.dirname(os.path.realpath(__file__))
+SCENARIO_TABLE = 'contributor/scenario-table-gen.html'
+TABLE_FILE = os.path.join(CONF_PATH, SCENARIO_TABLE)
+stg = imp.load_source(
+    'scenario_table_gen',
+    os.path.join(CONF_PATH, 'scenario_table_gen.py')
+)
+with open(TABLE_FILE, 'a+') as f:
+    f.write(stg.main())
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the

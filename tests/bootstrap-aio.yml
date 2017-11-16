@@ -23,52 +23,8 @@
     - role: "bootstrap-host"
   vars:
     ansible_python_interpreter: "/usr/bin/python"
-    openstack_confd_entries: "{{ confd_overrides[bootstrap_host_scenario] }}"
     bootstrap_host_scenario: "{{ lookup('env','SCENARIO') | default('aio', true) }}"
-    confd_overrides:
-      aio:
-        - name: cinder.yml.aio
-        - name: designate.yml.aio
-        - name: glance.yml.aio
-        - name: heat.yml.aio
-        - name: horizon.yml.aio
-        - name: keystone.yml.aio
-        - name: neutron.yml.aio
-        - name: nova.yml.aio
-        - name: swift.yml.aio
-      ceph:
-        - name: ceph.yml.aio
-        - name: cinder.yml.aio
-        - name: glance.yml.aio
-        - name: heat.yml.aio
-        - name: horizon.yml.aio
-        - name: keystone.yml.aio
-        - name: neutron.yml.aio
-        - name: nova.yml.aio
-      translations:
-        - name: cinder.yml.aio
-        - name: designate.yml.aio
-        - name: glance.yml.aio
-        - name: heat.yml.aio
-        - name: horizon.yml.aio
-        - name: keystone.yml.aio
-        - name: neutron.yml.aio
-        - name: nova.yml.aio
-        - name: swift.yml.aio
-        - name: sahara.yml.aio
-        - name: magnum.yml.aio
-        - name: octavia.yml.aio
-        - name: trove.yml.aio
-      octavia:
-        - name: glance.yml.aio
-        - name: keystone.yml.aio
-        - name: neutron.yml.aio
-        - name: nova.yml.aio
-        - name: octavia.yml.aio
-      tacker:
-        - name: keystone.yml.aio
-        - name: heat.yml.aio
-        - name: tacker.yml.aio
+    openstack_confd_entries: "{{ confd_overrides[bootstrap_host_scenario] }}"
     pip_install_upper_constraints_proto: "{{ ansible_python_version | version_compare('2.7.9', '>=') | ternary('https','http') }}"
     sftp_subsystem:
         'apt': 'sftp /usr/lib/openssh/sftp-server'
@@ -117,4 +73,5 @@
       GSSAPICleanupCredentials: no
   vars_files:
     - "{{ playbook_dir }}/../playbooks/defaults/repo_packages/openstack_services.yml"
+    - vars/bootstrap-aio-vars.yml
   environment: "{{ deployment_environment_variables | default({}) }}"
