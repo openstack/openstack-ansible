@@ -44,11 +44,12 @@ haproxy_default_services:
       haproxy_backup_nodes: "{{ (groups['galera_all'] | default([]))[1:] }}"
       haproxy_bind: "{{ [internal_lb_vip_address] }}"
       haproxy_port: 3306
+      haproxy_check_port: 9200
       haproxy_balance_type: tcp
       haproxy_timeout_client: 5000s
       haproxy_timeout_server: 5000s
       haproxy_backend_options:
-        - "mysql-check user {{ galera_monitoring_user }}"
+        - "httpchk HEAD /"
       haproxy_whitelist_networks: "{{ haproxy_galera_whitelist_networks }}"
   - service:
       haproxy_service_name: repo_git
