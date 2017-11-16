@@ -17,3 +17,9 @@ galera_client_drop_config_file: true
 
 # Ensure that the package state matches the global setting
 galera_server_package_state: "{{ package_state }}"
+
+# By default galera_monitoring xinetd app is open to 0.0.0.0/0
+# This makes sure the monitoring is only restricted to the necessary nodes:
+# the load balancers, and the galera nodes.
+galera_monitoring_allowed_source: "{% for node in groups['galera_all'] + groups['haproxy_all'] %}{{ hostvars[node]['ansible_host'] }} {% endfor %} 127.0.0.1"
+
