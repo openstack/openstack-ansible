@@ -1,20 +1,469 @@
-<table>
-<tr>
-    <th> Project Name </th>
-    <th> Integrated into ansible-role-requirements </th>
-    <th> List of supported distributions </th>
-    <th> Tempest testing </th>
-    <th> Follows tags best practices </th>
-    <th> Date of introduction in releases </th>
-    <th> Scenarii explained in the docs </th>
-</tr>
-<tr>
-    <td> Project Name </td>
-    <td> Integrated into ansible-role-requirements </td>
-    <td> List of supported distributions </td>
-    <td> Tempest testing </td>
-    <td> Follows tags best practices </td>
-    <td> Date of introduction in releases </td>
-    <td> Scenarii explained in the docs </td>
-</tr>
-</table>
+<h3>Active roles</h3>
+<table class="table table-bordered">
+    <tr>
+        <th>Role name</th>
+        <th>Created during cycle</th>
+        <th>Maturity level</th>
+        <th>Included into openstack-ansible by default</th>
+        <th>Supports Ubuntu</th>
+        <th>Supports CentOS</th>
+        <th>Supports OpenSUSE</th>
+    </tr>
+    <tr >
+        <td>ansible-hardening</td>
+        <td>Liberty</td>
+        <td>Complete</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+    </tr>
+    <tr >
+        <td>apt_package_pinning</td>
+        <td>Mitaka</td>
+        <td>Complete</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✘</td>
+        <td>✘</td>
+    </tr>
+    <tr class="warning">
+        <td>ceph_client</td>
+        <td>Newton</td>
+        <td>Incubated</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+    </tr>
+    <tr >
+        <td>galera_client</td>
+        <td>Mitaka</td>
+        <td>Complete</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+    </tr>
+    <tr >
+        <td>galera_server</td>
+        <td>Mitaka</td>
+        <td>Complete</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✘</td>
+    </tr>
+    <tr class="warning">
+        <td>haproxy_server</td>
+        <td>Newton</td>
+        <td>Incubated</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+    </tr>
+    <tr >
+        <td>lxc_container_create</td>
+        <td>Mitaka</td>
+        <td>Complete</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+    </tr>
+    <tr >
+        <td>lxc_hosts</td>
+        <td>Mitaka</td>
+        <td>Complete</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+    </tr>
+    <tr >
+        <td>memcached_server</td>
+        <td>Mitaka</td>
+        <td>Complete</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+    </tr>
+    <tr >
+        <td>openstack_hosts</td>
+        <td>Mitaka</td>
+        <td>Complete</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+    </tr>
+    <tr >
+        <td>openstack_openrc</td>
+        <td>Mitaka</td>
+        <td>Complete</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+    </tr>
+    <tr >
+        <td>os_almanach</td>
+        <td>Queens</td>
+        <td>Complete</td>
+        <td>✘</td>
+        <td>✔</td>
+        <td>✘</td>
+        <td>✘</td>
+    </tr>
+    <tr >
+        <td>os_aodh</td>
+        <td>Mitaka</td>
+        <td>Complete</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✘</td>
+        <td>✘</td>
+    </tr>
+    <tr >
+        <td>os_barbican</td>
+        <td>Ocata</td>
+        <td>Complete</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✘</td>
+        <td>✘</td>
+    </tr>
+    <tr >
+        <td>os_ceilometer</td>
+        <td>Mitaka</td>
+        <td>Complete</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+    </tr>
+    <tr >
+        <td>os_cinder</td>
+        <td>Mitaka</td>
+        <td>Complete</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+    </tr>
+    <tr class="warning">
+        <td>os_cloudkitty</td>
+        <td>Ocata</td>
+        <td>Incubated</td>
+        <td>✘</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✘</td>
+    </tr>
+    <tr class="info">
+        <td>os_congress</td>
+        <td>Unknown</td>
+        <td>Unknown</td>
+        <td>✘</td>
+        <td>✔</td>
+        <td>✘</td>
+        <td>✘</td>
+    </tr>
+    <tr >
+        <td>os_designate</td>
+        <td>Mitaka</td>
+        <td>Complete</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+    </tr>
+    <tr >
+        <td>os_glance</td>
+        <td>Mitaka</td>
+        <td>Complete</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+    </tr>
+    <tr >
+        <td>os_gnocchi</td>
+        <td>Newton</td>
+        <td>Complete</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+    </tr>
+    <tr >
+        <td>os_heat</td>
+        <td>Mitaka</td>
+        <td>Complete</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+    </tr>
+    <tr >
+        <td>os_horizon</td>
+        <td>Mitaka</td>
+        <td>Complete</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+    </tr>
+    <tr >
+        <td>os_ironic</td>
+        <td>Mitaka</td>
+        <td>Complete</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✘</td>
+        <td>✘</td>
+    </tr>
+    <tr >
+        <td>os_keystone</td>
+        <td>Mitaka</td>
+        <td>Complete</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+    </tr>
+    <tr >
+        <td>os_magnum</td>
+        <td>Newton</td>
+        <td>Complete</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+    </tr>
+    <tr class="warning">
+        <td>os_molteniron</td>
+        <td>Pike</td>
+        <td>Incubated</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✘</td>
+        <td>✘</td>
+    </tr>
+    <tr class="danger">
+        <td>os_monasca</td>
+        <td>Ocata</td>
+        <td>Unmaintained</td>
+        <td>✘</td>
+        <td>✔</td>
+        <td>✘</td>
+        <td>✘</td>
+    </tr>
+    <tr class="danger">
+        <td>os_monasca-agent</td>
+        <td>Ocata</td>
+        <td>Unmaintained</td>
+        <td>✘</td>
+        <td>✔</td>
+        <td>✘</td>
+        <td>✘</td>
+    </tr>
+    <tr class="danger">
+        <td>os_monasca-ui</td>
+        <td>Ocata</td>
+        <td>Unmaintained</td>
+        <td>✘</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✘</td>
+    </tr>
+    <tr >
+        <td>os_neutron</td>
+        <td>Mitaka</td>
+        <td>Complete</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+    </tr>
+    <tr >
+        <td>os_nova</td>
+        <td>Mitaka</td>
+        <td>Complete</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+    </tr>
+    <tr >
+        <td>os_octavia</td>
+        <td>Pike</td>
+        <td>Complete</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✘</td>
+        <td>✘</td>
+    </tr>
+    <tr >
+        <td>os_rally</td>
+        <td>Newton</td>
+        <td>Complete</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✘</td>
+        <td>✘</td>
+    </tr>
+    <tr >
+        <td>os_sahara</td>
+        <td>Newton</td>
+        <td>Complete</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+    </tr>
+    <tr >
+        <td>os_searchlight</td>
+        <td>Queens</td>
+        <td>Complete</td>
+        <td>✘</td>
+        <td>✔</td>
+        <td>✘</td>
+        <td>✘</td>
+    </tr>
+    <tr >
+        <td>os_swift</td>
+        <td>Mitaka</td>
+        <td>Complete</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+    </tr>
+    <tr >
+        <td>os_tacker</td>
+        <td>Queens</td>
+        <td>Complete</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✘</td>
+        <td>✘</td>
+    </tr>
+    <tr >
+        <td>os_tempest</td>
+        <td>Mitaka</td>
+        <td>Complete</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+    </tr>
+    <tr >
+        <td>os_trove</td>
+        <td>Ocata</td>
+        <td>Complete</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✘</td>
+        <td>✘</td>
+    </tr>
+    <tr class="warning">
+        <td>os_watcher</td>
+        <td>Queens</td>
+        <td>Incubated</td>
+        <td>✘</td>
+        <td>✔</td>
+        <td>✘</td>
+        <td>✘</td>
+    </tr>
+    <tr >
+        <td>os_zaqar</td>
+        <td>Queens</td>
+        <td>Complete</td>
+        <td>✘</td>
+        <td>✔</td>
+        <td>✘</td>
+        <td>✘</td>
+    </tr>
+    <tr >
+        <td>pip_install</td>
+        <td>Mitaka</td>
+        <td>Complete</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+    </tr>
+    <tr >
+        <td>plugins</td>
+        <td>Mitaka</td>
+        <td>Complete</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+    </tr>
+    <tr >
+        <td>rabbitmq_server</td>
+        <td>Mitaka</td>
+        <td>Complete</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+    </tr>
+    <tr >
+        <td>repo_build</td>
+        <td>Mitaka</td>
+        <td>Complete</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+    </tr>
+    <tr >
+        <td>repo_server</td>
+        <td>Mitaka</td>
+        <td>Complete</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+    </tr>
+    <tr >
+        <td>rsyslog_client</td>
+        <td>Mitaka</td>
+        <td>Complete</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+    </tr>
+    <tr >
+        <td>rsyslog_server</td>
+        <td>Mitaka</td>
+        <td>Complete</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+    </tr></table>
+
+<h3>Retired roles</h3>
+<table class="table table-bordered">
+    <tr>
+        <th>Role name</th>
+        <th>Created during cycle</th>
+        <th>Retired during cycle</th>
+    </tr>
+    <tr>
+        <td>openstack-ansible-security</td>
+        <td>Liberty</td>
+        <td>Pike</td>
+    </tr>
+        <td>pip_lock_down</td>
+        <td>Liberty</td>
+        <td>Newton</td>
+    </tr></table>
