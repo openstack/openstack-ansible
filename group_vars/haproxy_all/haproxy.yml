@@ -40,8 +40,8 @@ haproxy_opendaylight_whitelist_networks: "{{ haproxy_whitelist_networks }}"
 haproxy_default_services:
   - service:
       haproxy_service_name: galera
-      haproxy_backend_nodes: "{{ [groups['galera_all'][0]] | default([]) }}"  # list expected
-      haproxy_backup_nodes: "{{ groups['galera_all'][1:] | default([]) }}"
+      haproxy_backend_nodes: "{{ (groups['galera_all'] | default([]))[:1] }}"  # list expected
+      haproxy_backup_nodes: "{{ (groups['galera_all'] | default([]))[1:] }}"
       haproxy_bind: "{{ [internal_lb_vip_address] }}"
       haproxy_port: 3306
       haproxy_balance_type: tcp
@@ -69,8 +69,8 @@ haproxy_default_services:
         - "httpchk HEAD /"
   - service:
       haproxy_service_name: repo_cache
-      haproxy_backend_nodes: "{{ [groups['repo_all'][0]] | default([]) }}"  # list expected
-      haproxy_backup_nodes: "{{ groups['repo_all'][1:] | default([]) }}"
+      haproxy_backend_nodes: "{{ (groups['repo_all'] | default([]))[:1] }}"  # list expected
+      haproxy_backup_nodes: "{{ (groups['repo_all'] | default([]))[1:] }}"
       haproxy_bind: "{{ [internal_lb_vip_address] }}"
       haproxy_port: "{{ repo_pkg_cache_port }}"
       haproxy_balance_type: http
@@ -182,7 +182,7 @@ haproxy_default_services:
       haproxy_service_name: nova_console
       haproxy_backend_nodes: "{{ groups['nova_console'] | default([]) }}"
       haproxy_ssl: "{{ haproxy_ssl }}"
-      haproxy_port: "{{ hostvars[groups['nova_console'][0]]['nova_console_port'] }}"
+      haproxy_port: "{{ hostvars[(groups['nova_console'] | default(['localhost']))[0] | default('localhost')]['nova_console_port'] | default(6082) }}"
       haproxy_balance_type: http
       haproxy_timeout_client: 60m
       haproxy_timeout_server: 60m
