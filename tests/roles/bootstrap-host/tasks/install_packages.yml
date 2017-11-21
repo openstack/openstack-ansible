@@ -72,6 +72,10 @@
     when:
       - apt_sources_configure is defined
       - apt_sources_configure | changed
+    register: _update
+    retries: 5
+    delay: 2
+    until: _update | succeeded
     tags:
       - apt-cache-update
 
