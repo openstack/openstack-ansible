@@ -28,24 +28,10 @@
       when: repo_build_git_cache is defined
 
     - include: common-tasks/os-lxc-container-setup.yml
-      static: no
       vars:
         list_of_bind_mounts:
           - mount_path: "/openstack/{{ inventory_hostname }}"
             bind_dir_path: "/var/www"
-      when: repo_build_git_cache is not defined or not _local_git_cache.stat.exists
-
-    - include: common-tasks/os-lxc-container-setup.yml
-      static: no
-      vars:
-        list_of_bind_mounts:
-          - mount_path: "/openstack/{{ inventory_hostname }}"
-            bind_dir_path: "/var/www"
-          - mount_path: "{{ repo_build_git_cache }}"
-            bind_dir_path: "{{ repo_build_git_cache }}"
-      when:
-        - repo_build_git_cache is defined
-        - _local_git_cache.stat.exists
 
     - include: common-tasks/unbound-clients.yml
       static: no
