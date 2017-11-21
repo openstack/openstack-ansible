@@ -42,5 +42,5 @@ cinder_backends:
     rbd_store_chunk_size: 8
     volume_backend_name: rbddriver
     rbd_user: "{{ cinder_ceph_client }}"
-    rbd_secret_uuid: "{{ fsid }}"
+    rbd_secret_uuid: "{{ cinder_ceph_client_uuid }}"
     report_discard_supported: true
