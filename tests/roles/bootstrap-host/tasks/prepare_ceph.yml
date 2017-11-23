@@ -54,9 +54,6 @@
     content: |
       ---
       devices: {{ ceph_create_loopback.results | map(attribute='stdout') | list | to_yaml | trim }}
-      # The OSA ceph_client role does not support loading IPs from an inventory group,
-      # so we have to feed it a list of IPs
-      ceph_mons: "{% raw %}[ {% for host in groups[mon_group_name] %}'{{ hostvars[host]['ansible_host'] }}'{% if not loop.last %},{% endif %}{% endfor %} ]{% endraw %}"
       cinder_backends:
         "RBD":
           volume_driver: cinder.volume.drivers.rbd.RBDDriver
