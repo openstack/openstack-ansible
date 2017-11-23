@@ -184,3 +184,28 @@
   when: pip_conf_file.stat.exists
   tags:
     - container-conf-files
+
+- name: Create vars override folders if we need to test them
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - /etc/openstack_deploy/group_vars
+    - /etc/openstack_deploy/host_vars
+  when: "{{ (lookup('env','ACTION') | default(false,true)) == 'varstest' }}"
+
+- name: Create user-space overrides
+  lineinfile:
+    path: "{{ item.path }}"
+    state: present
+    line:  "{{ item.line }}"
+    create: yes
+  with_items:
+    - path: /etc/openstack_deploy/group_vars/hosts.yml
+      line: 'babar: "elephant"'
+    - path: /etc/openstack_deploy/group_vars/hosts.yml
+      line: 'lxc_hosts_package_state: "present"'
+    - path: /etc/openstack_deploy/host_vars/localhost.yml
+      line: 'security_package_state: "present"'
+    - path: /etc/openstack_deploy/host_vars/localhost.yml
+      line: 'tintin: "milou"'

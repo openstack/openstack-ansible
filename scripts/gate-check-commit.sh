@@ -145,48 +145,54 @@ pushd "${OSA_CLONE_DIR}/tests"
   fi
 popd
 
-pushd "${OSA_CLONE_DIR}/playbooks"
-  # Disable Ansible color output
-  export ANSIBLE_NOCOLOR=1
+if [[ "${ACTION}" == "varstest" ]]; then
+  pushd "${OSA_CLONE_DIR}/tests"
+      openstack-ansible test-vars-overrides.yml
+  popd
+else
+  pushd "${OSA_CLONE_DIR}/playbooks"
+    # Disable Ansible color output
+    export ANSIBLE_NOCOLOR=1
 
-  # Create ansible logging directory
-  mkdir -p ${ANSIBLE_LOG_DIR}
+    # Create ansible logging directory
+    mkdir -p ${ANSIBLE_LOG_DIR}
 
-  # Log some data about the instance and the rest of the system
-  log_instance_info
+    # Log some data about the instance and the rest of the system
+    log_instance_info
 
-  # First we gather facts about the hosts to populate the fact cache.
-  # We can't gather the facts for all hosts yet because the containers
-  # aren't built yet.
-  ansible -m setup -a 'gather_subset=network,hardware,virtual' hosts 2>${ANSIBLE_LOG_DIR}/facts-hosts.log
+    # First we gather facts about the hosts to populate the fact cache.
+    # We can't gather the facts for all hosts yet because the containers
+    # aren't built yet.
+    ansible -m setup -a 'gather_subset=network,hardware,virtual' hosts 2>${ANSIBLE_LOG_DIR}/facts-hosts.log
 
-  # Prepare the hosts
-  export ANSIBLE_LOG_PATH="${ANSIBLE_LOG_DIR}/setup-hosts.log"
-  openstack-ansible setup-hosts.yml -e osa_gather_facts=False
+    # Prepare the hosts
+    export ANSIBLE_LOG_PATH="${ANSIBLE_LOG_DIR}/setup-hosts.log"
+    openstack-ansible setup-hosts.yml -e osa_gather_facts=False
 
-  # Log some data about the instance and the rest of the system
-  log_instance_info
+    # Log some data about the instance and the rest of the system
+    log_instance_info
 
-  # Once setup-hosts is complete, we should gather facts for everything
-  # (now including containers) so that the fact cache is complete for the
-  # remainder of the run.
-  ansible -m setup -a 'gather_subset=network,hardware,virtual' all 1>${ANSIBLE_LOG_DIR}/facts-all.log
+    # Once setup-hosts is complete, we should gather facts for everything
+    # (now including containers) so that the fact cache is complete for the
+    # remainder of the run.
+    ansible -m setup -a 'gather_subset=network,hardware,virtual' all 1>${ANSIBLE_LOG_DIR}/facts-all.log
 
-  # Prepare the infrastructure
-  export ANSIBLE_LOG_PATH="${ANSIBLE_LOG_DIR}/setup-infrastructure.log"
-  openstack-ansible setup-infrastructure.yml -e osa_gather_facts=False
+    # Prepare the infrastructure
+    export ANSIBLE_LOG_PATH="${ANSIBLE_LOG_DIR}/setup-infrastructure.log"
+    openstack-ansible setup-infrastructure.yml -e osa_gather_facts=False
 
-  # Log some data about the instance and the rest of the system
-  log_instance_info
+    # Log some data about the instance and the rest of the system
+    log_instance_info
 
-  # Setup OpenStack
-  export ANSIBLE_LOG_PATH="${ANSIBLE_LOG_DIR}/setup-openstack.log"
-  openstack-ansible setup-openstack.yml -e osa_gather_facts=False
+    # Setup OpenStack
+    export ANSIBLE_LOG_PATH="${ANSIBLE_LOG_DIR}/setup-openstack.log"
+    openstack-ansible setup-openstack.yml -e osa_gather_facts=False
 
-  # Log some data about the instance and the rest of the system
-  log_instance_info
+    # Log some data about the instance and the rest of the system
+    log_instance_info
 
-popd
+  popd
+fi
 
 # If the action is to upgrade, then checkout the original SHA for
 # the checkout, and execute the upgrade.
