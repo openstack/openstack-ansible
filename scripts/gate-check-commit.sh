@@ -70,7 +70,7 @@ if [[ "${ACTION}" == "upgrade" ]]; then
     export UPGRADE_TARGET_BRANCH=$(git rev-parse HEAD)
 
     # Now checkout the source SHA/branch
-    git checkout origin/${UPGRADE_SOURCE_BRANCH}
+    git checkout ${UPGRADE_SOURCE_BRANCH}
 fi
 
 # Get minimum disk size
