@@ -1,0 +1,193 @@
+---
+# Copyright 2017, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Ensuring haproxy runs
+- name: Ensuring haproxy runs
+  hosts: haproxy
+  gather_facts: no
+  tasks:
+    # Fails if HAProxy is not running
+    - name: Recording haproxy stats as a way to ensure haproxy runs
+      shell: 'echo "show info;show stat" | nc -U /var/run/haproxy.stat'
+      changed_when: false
+      register: haproxy_stats
+      tags:
+        - haproxy
+    # Run this playbook with -v and you'll see your DOWN issues
+    - name: Printing the output of haproxy stats
+      debug:
+        var: haproxy_stats
+        verbosity: 1
+      tags:
+        - haproxy
+
+# We are looking up from the first container.
+- name: Ensure that all the repos have data
+  hosts: all_containers[0]
+  gather_facts: yes
+  vars:
+    repo_requirements_file: "os-releases/{{ openstack_release }}/{{ os_distro_version }}/requirements_constraints.txt"
+  tasks:
+    - name: Check the upper constraint on each repo server
+      uri:
+        url: "http://{{ hostvars[item]['container_address'] }}:{{ repo_server_port }}/{{ repo_requirements_file }}"
+      with_inventory_hostnames: "{{ groups['repo_all'] }}"
+      tags:
+        - repo
+
+- name: Ensure all the containers can connect to the repos
+  hosts: all_containers
+  gather_facts: yes
+  serial:
+    - 3
+    - 100%
+  tasks:
+    # Repo release path points to the internal LB vip
+    - name: Check the presence of upper constraints on your repos and check load balancing
+      uri:
+        url: "{{ repo_release_path }}/requirements_constraints.txt"
+      tags:
+        - repo
+
+- name: Sanity checks for all containers
+  hosts: all_containers
+  gather_facts: no
+  tasks:
+    - name: Ensure everyone can reach apt proxy
+      uri:
+        url: "{{ repo_pkg_cache_url }}/acng-report.html"
+        method: "HEAD"
+      tags:
+        - proxy
+    - name: Connect to galera port
+      wait_for:
+        port: 3306
+        host: "{{ internal_lb_vip_address }}"
+        state: started
+      tags:
+        - galera
+
+# Specific checks: Memcached
+- name: Check memcached for keystone
+  hosts: keystone_all
+  gather_facts: no
+  tasks:
+    - name: Set facts about memcached
+      setup:
+      delegate_to: "{{ item }}"
+      delegate_facts: true
+      with_items: "{{ groups['memcached'] }}"
+      tags:
+        - memcached
+    - package:
+        name: netcat
+        state: present
+      tags:
+        - memcached
+    - name: Connect to remote memcache servers (full mesh testing)
+      shell:  "echo stats | nc {{ hostvars[memcached_host]['container_address'] }} {{ memcached_port }}"
+      changed_when: false
+      register: memcache_stats
+      with_items: "{{ groups['memcached'] }}"
+      loop_control:
+        loop_var: memcached_host
+      tags:
+        - memcached
+    - name: Output memcache stats if in verbose mode
+      debug:
+        var: memcache_stats
+        verbosity: 1
+      tags:
+        - memcached
+
+# Specific checks: Rabbit
+- name: Ask if rabbitmq test should run
+  hosts: all_containers
+  connection: local
+  gather_facts: no
+  vars_prompt:
+    - name: "rabbit_test_prompt"
+      prompt: "Are you sure you want to run rabbit tests? It runs pip install on all your containers."
+      default: "no"
+      private: no
+  tasks:
+    - name: Mark the usage of rabbitmq tests.
+      set_fact:
+        run_rabbit_tests: "{{ rabbit_test_prompt | bool }}"
+      tags:
+        - rabbitmq
+
+- name: Add a user for rabbitmq
+  hosts: rabbitmq_all[0]
+  gather_facts: no
+  tasks:
+    - name: Create credentials on vhost
+      include: common-tasks/rabbitmq-vhost-user.yml
+      vars:
+        user: testguest
+        password: secrete
+        vhost: "/test"
+        _rabbitmq_host_group: "rabbitmq_all"
+      tags:
+        - rabbitmq
+      when: run_rabbit_tests | default(false)
+
+- name: Ensure all the usual openstack containers can connect to rabbit
+  hosts: all_containers:!etcd_all:!galera_all:!memcached:!haproxy:!rabbitmq_all:!rsyslog:!unbound:!repo_all
+  gather_facts: no
+  vars:
+    venv_path: /tmp/rabbitmqtest
+  roles:
+    - role: pip_install
+      when: run_rabbit_tests | default(false)
+      tags:
+        - rabbitmq
+  post_tasks:
+    - name: Generate venv for rabbitmq testing
+      pip:
+        name: pika
+        virtualenv: "{{ venv_path }}"
+      when: run_rabbit_tests | default(false)
+      tags:
+        - rabbitmq
+    - name: Copying test script
+      copy:
+        src: "../scripts/rabbitmq-test.py"
+        dest: "{{ venv_path }}/rabbitmq-test.py"
+        mode: 0755
+      when: run_rabbit_tests | default(false)
+      tags:
+        - rabbitmq
+    - name: Connect to rabbitmq
+      command: "{{ venv_path }}/bin/python2 {{ venv_path }}/rabbitmq-test.py {{ hostvars[groups['rabbitmq_all'][0]]['container_address'] }}"
+      when: run_rabbit_tests | default(false)
+      tags:
+        - rabbitmq
+
+- name: Remove guest user for rabbitmq
+  hosts: rabbitmq_all[0]
+  gather_facts: no
+  tasks:
+    - name: Remove test user
+      rabbitmq_user:
+        user: testguest
+        password: secrete
+        vhost: "/test"
+        state: absent
+      when: run_rabbit_tests | default(false)
+      tags:
+        - rabbitmq
+
+# TODO(evrardjp): Specific checks: Etcd
