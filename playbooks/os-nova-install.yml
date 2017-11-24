@@ -173,11 +173,11 @@
       run_once: yes
 
 
-# Note that the placement API service does not understand how to reload,
-# so it fails when you try to make it do so. We therefore skip the reload
-# for that service.
-- name: Reload all nova services to ensure new RPC object version is used
-  hosts: "nova_all:!nova_api_placement"
+# Note that the placement API service and the console services do not
+# understand how to reload, so they fail when you try to make them do
+# so. We therefore restart them instead.
+- name: Reload all nova services which support a reload to ensure new RPC object version is used
+  hosts: "nova_all:!nova_api_placement:!nova_console"
   gather_facts: no
   serial: "{{ nova_serial | default('100%') }}"
   max_fail_percentage: 20
@@ -191,17 +191,18 @@
       vars:
         service_name: "nova"
         service_action: "reloaded"
-        service_negate: "{{ ['nova-placement-api.service'] + nova_service_negate | default([]) }}"
+        service_negate: "{{ ['nova-placement-api.service', 'nova-novncproxy.service', 'nova-spicehtml5proxy.service' ] + nova_service_negate | default([]) }}"
       when:
         - "nova_all_software_updated | bool"
         - "ansible_local['openstack_ansible']['nova']['need_service_restart'] | bool"
 
 
 
-# Note that the placement API service does not understand how to reload,
-# so it fails when you try to make it do so. We therefore restart it instead.
-- name: Restart the nova placement API service to ensure new RPC object version is used
-  hosts: "nova_api_placement"
+# Note that the placement API service and the console services do not
+# understand how to reload, so they fail when you try to make them do
+# so. We therefore restart them instead.
+- name: Restart the remaining nova services to ensure new RPC object version is used
+  hosts: "nova_api_placement:nova_console"
   gather_facts: no
   serial: "{{ nova_api_serial | default(['1', '100%']) }}"
   max_fail_percentage: 20
@@ -213,7 +214,7 @@
     - name: Execute nova service restart
       include: common-tasks/restart-service.yml
       vars:
-        service_name: "nova-placement-api"
+        service_name: "nova"
         service_action: "restarted"
         service_fact: "nova"
       when:
