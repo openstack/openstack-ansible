@@ -18,6 +18,7 @@
     check:
       jobs:
         - openstack-ansible-linters
+        - openstack-ansible-varstest-aio-ubuntu-xenial
         - openstack-ansible-deploy-aio-centos-7
         - openstack-ansible-deploy-aio-opensuse-423
         - openstack-ansible-deploy-aio-ubuntu-xenial
@@ -30,6 +31,7 @@
     gate:
       jobs:
         - openstack-ansible-linters
+        - openstack-ansible-varstest-aio-ubuntu-xenial
         - openstack-ansible-deploy-aio-ubuntu-xenial
         - openstack-ansible-deploy-ceph-ubuntu-xenial
     periodic:

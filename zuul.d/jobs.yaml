@@ -35,6 +35,13 @@
       action: deploy
       scenario: aio
 
+# Ensuring overrides work
+- job:
+    name: openstack-ansible-varstest-aio-ubuntu-xenial
+    parent: openstack-ansible-deploy-aio-ubuntu-xenial
+    vars:
+      action: varstest
+
 # ubuntu
 - job:
     name: openstack-ansible-deploy-aio-ubuntu-xenial
