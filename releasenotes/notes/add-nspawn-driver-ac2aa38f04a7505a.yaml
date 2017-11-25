@@ -1,0 +1,16 @@
+---
+features:
+  - Deployers can now set the ``container_tech`` to **nspawn** when deploying
+    OSA within containers. When making the decision to deploy container types
+    the deployer only needs to define the desired ``container_tech`` and
+    continue the deployment as normal.
+  - The addition of the ``container_tech`` option and the inclusion of
+    **nspawn** support deployers now have the availability to define a desired
+    containerization strategy globally or on specific hosts.
+  - When using the **nspawn** driver containers will connect to the system
+    bridges using a MACVLAN, more on this type of network setup can be seen
+    `here <https://www.systutorials.com/docs/linux/man/8-ip-link/>`_.
+  - When using the **nspawn** driver container networking is managed by
+    systemd-networkd both on the host and within the container. This gives us a
+    single interface to manage regardless of distro and allows systemd to
+    efficiently manage the resources.

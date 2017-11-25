@@ -24,10 +24,12 @@
         - openstack-ansible-deploy-ceph-ubuntu-xenial
         - openstack-ansible-deploy-ceph-opensuse-423
         - openstack-ansible-deploy-aio_metal-ubuntu-xenial
+        - openstack-ansible-deploy-aio_nspawn-ubuntu-xenial
     experimental:
       jobs:
         - openstack-ansible-deploy-octavia-ubuntu-xenial
         - openstack-ansible-deploy_with_ansible_devel-aio-ubuntu-xenial
+        - openstack-ansible-deploy-aio_nspawn-centos-7
     gate:
       jobs:
         - openstack-ansible-linters

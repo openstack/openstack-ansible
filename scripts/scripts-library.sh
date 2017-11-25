@@ -261,6 +261,20 @@ function get_instance_info {
     lxc-checkconfig > \
       "/openstack/log/instance-info/host_lxc_config_info_${TS}.log" || true
   fi
+  if [ "$(which machinectl)" ]; then
+    machinectl list > \
+      "/openstack/log/instance-info/host_nspawn_container_info_${TS}.log" || true
+    machinectl list-images > \
+      "/openstack/log/instance-info/host_nspawn_container_image_info_${TS}.log" || true
+  fi
+  if [ "$(which networkctl)" ]; then
+    networkctl list > \
+      "/openstack/log/instance-info/host_netowrkd_list_${TS}.log" || true
+    networkctl status >> \
+      "/openstack/log/instance-info/host_netowrkd_status_${TS}.log" || true
+    networkctl lldp >> \
+      "/openstack/log/instance-info/host_netowrkd_lldp_${TS}.log" || true
+  fi
   (iptables -vnL && iptables -t nat -vnL && iptables -t mangle -vnL) > \
     "/openstack/log/instance-info/host_firewall_info_${TS}.log" || true
   if [ "$(which ansible)" ]; then
@@ -270,6 +284,14 @@ function get_instance_info {
   fi
   get_repos_info > \
     "/openstack/log/instance-info/host_repo_info_${TS}.log" || true
+
+  for i in nspawn-macvlan.service nspawn-networking.slice nspawn.slice; do
+    systemctl status ${i} > "/openstack/log/instance-info/${i}_${TS}.log" || true
+    journalctl -u ${i} >> "/openstack/log/instance-info/${i}_${TS}.log" || true
+  done
+
+  ip route get 1 > "/openstack/log/instance-info/routes_${TS}.log" || true
+  ip link show > "/openstack/log/instance-info/links_${TS}.log" || true
 
   determine_distro
   case ${DISTRO_ID} in

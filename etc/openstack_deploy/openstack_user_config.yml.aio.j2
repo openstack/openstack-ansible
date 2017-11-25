@@ -120,6 +120,9 @@ global_overrides:
 shared-infra_hosts:
   aio1:
     ip: 172.29.236.100
+    container_vars:
+      # Optional | container_tech for a target host, default is "lxc".
+      container_tech: "{{ container_tech }}"
 
 repo-infra_hosts:
   aio1:

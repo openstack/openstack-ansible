@@ -325,6 +325,37 @@
 #   infra3:
 #     ip: 172.29.236.103
 #
+# List of target hosts on which to deploy shared infrastructure services
+# and define the the container_tech for a specific infra node. If this setting
+# is omitted the inventory generation system will default to "lxc". Accpetable
+# options are "lxc" and "nspawn".
+#
+#   Level: <value> (required, string)
+#   Hostname of a target host.
+#
+#     Option: ip (required, string)
+#     IP address of this target host, typically the IP address assigned to
+#     the management bridge.
+#
+#     Level: container_vars (required)
+#     Contains storage options for this target host.
+#
+# Example:
+#
+# Define three shared infrastructure hosts with different "container_tech":
+#
+# shared-infra_hosts:
+#   infra1:
+#     ip: 172.29.236.101
+#     container_vars:
+#       container_tech: nspawn
+#   infra2:
+#     ip: 172.29.236.102
+#     container_vars:
+#       container_tech: lxc
+#   infra3:
+#     ip: 172.29.236.103
+#
 # --------
 #
 # Level: repo-infra_hosts (required)
@@ -764,4 +795,3 @@
 # address is ``193.0.14.129``. To change this default,
 # set the ``keepalived_ping_address`` variable in the
 # ``user_variables.yml`` file.
-

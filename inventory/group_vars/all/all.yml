@@ -66,7 +66,8 @@ service_region: RegionOne
 
 ## OpenStack Domain
 openstack_domain: openstack.local
-lxc_container_domain: "{{ openstack_domain }}"
+lxc_container_domain: "{{ container_domain }}"
+container_domain: "{{ openstack_domain }}"
 
 ## DHCP Domain Name
 dhcp_domain: openstacklocal

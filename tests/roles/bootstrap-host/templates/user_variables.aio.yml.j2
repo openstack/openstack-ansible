@@ -204,6 +204,3 @@ nova_service_negate:
 {% if _pypi_mirror is defined and _pypi_mirror.stdout is defined %}
 repo_nginx_pypi_upstream: "{{ _pypi_mirror.stdout | netloc }}"
 {% endif %}
-
-# Set the container tech. Options are "lxc"
-container_tech: "{{ container_tech }}"
