@@ -13,11 +13,6 @@ haproxy_keepalived_internal_interface: br-mgmt
 generate_fsid: false
 fsid: 116f14c4-7fe1-40e4-94eb-9240b63de5c1 # Replace with your generated UUID
 
-## Provide the ceph_mons list which is used by the OSA ceph_client role
-ceph_mons: "{{ groups[mon_group_name]
-               | map('extract', hostvars, 'ansible_host')
-               | list }}"
-
 ## ceph-ansible settings
 ## See https://github.com/ceph/ceph-ansible/tree/master/group_vars for
 ## additional configuration options availble.
