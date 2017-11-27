@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+swift_proxy_port: "{{ hostvars['localhost']['swift_proxy_port'] }}"
+
 trove_service_region: "{{ service_region }}"
 trove_galera_user: trove
 trove_galera_database_name: trove_service

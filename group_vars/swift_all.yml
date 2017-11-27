@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-swift_proxy_port: 8080
+swift_proxy_port: "{{ hostvars['localhost']['swift_proxy_port'] }}"
 swift_system_user_name: "{{ hostvars['localhost']['swift_system_user_name'] }}"
 swift_system_shell: "{{ hostvars['localhost']['swift_system_shell'] }}"
 swift_system_comment: "{{ hostvars['localhost']['swift_system_comment'] }}"
