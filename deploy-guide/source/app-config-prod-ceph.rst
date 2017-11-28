@@ -112,9 +112,9 @@ customization of Ansible groups. This allows the deployer to set whether
 the services will run in a container (the default), or on the host (on
 metal).
 
-For this environment, the ``cinder-volume`` runs in a container on the
-infrastructure hosts. To achieve this, implement
-``/etc/openstack_deploy/env.d/cinder.yml`` with the following content:
+For a ceph environment, you can run the ``cinder-volume`` in a container.
+To do this you will need to create a ``/etc/openstack_deploy/env.d/cinder.yml`` file
+with the following content:
 
 .. literalinclude:: ../../etc/openstack_deploy/env.d/cinder-volume.yml.container.example
 
@@ -124,8 +124,10 @@ User variables
 The ``/etc/openstack_deploy/user_variables.yml`` file defines the global
 overrides for the default variables.
 
-For this environment, implement the load balancer on the infrastructure
-hosts. Ensure that keepalived is also configured with HAProxy in
-``/etc/openstack_deploy/user_variables.yml`` with the following content.
+For this example environment, we configure a HA load balancer.
+We implement the load balancer (HAProxy) with an HA layer (keepalived)
+on the infrastructure hosts.
+Your ``/etc/openstack_deploy/user_variables.yml`` must have the following content
+to configure haproxy, keepalived and ceph:
 
 .. literalinclude:: ../../etc/openstack_deploy/user_variables.yml.prod-ceph.example
