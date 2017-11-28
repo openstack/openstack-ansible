@@ -19,6 +19,10 @@
   connection: local
   user: root
   tasks:
+    - name: Ensuring existing group vars are well applied
+      assert:
+        that:
+          - "openstack_release is defined"
     - name: Ensuring babar is well defined
       assert:
         that:
