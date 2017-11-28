@@ -13,11 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-keystone_service_publicuri_proto: "{{ openstack_service_publicuri_proto | default(keystone_service_proto) }}"
-keystone_service_publicuri_insecure: "{% if keystone_service_publicuri_proto == 'https' and (keystone_user_ssl_cert is not defined or haproxy_user_ssl_cert is not defined) | bool %}true{% else %}false{% endif %}"
-keystone_service_publicuri: "{{ keystone_service_publicuri_proto }}://{{ external_lb_vip_address }}:{{ keystone_service_port }}"
-keystone_service_publicurl: "{{ keystone_service_publicuri }}/v3"
-
 # These are here rather than in keystone_all because
 # both the os_ceilometer and os_keystone roles require them
 
