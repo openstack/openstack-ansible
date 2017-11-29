@@ -27,6 +27,11 @@ galera_container_bind_mounts:
 # See https://bugs.launchpad.net/openstack-ansible/+bug/1697531 for details.
 galera_disable_privatedevices: "{{ ((properties.is_metal | default(false)) | bool) | ternary('false', 'true') }}"
 
+# By default galera_monitoring xinetd app is open to 0.0.0.0/0
+# This makes sure the monitoring is only restricted to the necessary nodes:
+# the load balancers, and the galera nodes.
+galera_monitoring_allowed_source: "{% for node in galera_cluster_members + groups['haproxy_all'] %}{{ node }} {% endfor %}"
+
 # Galera sessions are long lived, so if we do endpoint maintenance we will
 # force kill the sessions to force a failover to the active endpoint.
 haproxy_shutdown_sessions: yes
