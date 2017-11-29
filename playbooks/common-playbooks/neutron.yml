@@ -82,7 +82,7 @@
 
     - name: Set provider network fact(s)
       set_fact:
-        _provider_networks: "{{ pndata }}"
+        _provider_networks: "{{ neutron_provider_networks | default(pndata) }}"
       tags:
         - always
 
