@@ -31,6 +31,7 @@ haproxy_galera_whitelist_networks: "{{ haproxy_whitelist_networks }}"
 haproxy_glance_registry_whitelist_networks: "{{ haproxy_whitelist_networks }}"
 haproxy_keystone_admin_whitelist_networks: "{{ haproxy_whitelist_networks }}"
 haproxy_nova_metadata_whitelist_networks: "{{ haproxy_whitelist_networks }}"
+haproxy_nova_placement_whitelist_networks: "{{ haproxy_whitelist_networks }}"
 haproxy_rabbitmq_management_whitelist_networks: "{{ haproxy_whitelist_networks }}"
 haproxy_repo_git_whitelist_networks: "{{ haproxy_whitelist_networks }}"
 haproxy_repo_cache_whitelist_networks: "{{ haproxy_whitelist_networks }}"
@@ -179,6 +180,7 @@ haproxy_default_services:
         - "httpchk HEAD /"
       haproxy_backend_httpcheck_options:
         - "expect status 401"
+      haproxy_whitelist_networks: "{{ haproxy_nova_placement_whitelist_networks }}"
   - service:
       haproxy_service_name: nova_console
       haproxy_backend_nodes: "{{ groups['nova_console'] | default([]) }}"
