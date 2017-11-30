@@ -51,12 +51,12 @@
     - role: haproxy_endpoints
       haproxy_state: disabled
       static: no
-      when: "{{ groups['haproxy'] | default([]) | length > 0 }}"
+      when: "groups['haproxy'] | default([]) | length > 0"
     - role: "galera_server"
     - role: haproxy_endpoints
       haproxy_state: enabled
       static: no
-      when: "{{ groups['haproxy'] | default([]) | length > 0 }}"
+      when: "groups['haproxy'] | default([]) | length > 0"
     - role: "rsyslog_client"
       rsyslog_client_log_rotate_file: galera_log_rotate
       rsyslog_client_log_dir: "/var/log/mysql_logs"
