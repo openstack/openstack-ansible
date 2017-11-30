@@ -1,0 +1,11 @@
+---
+features:
+  - A new LXC container template has been added which will allow us to better
+    manage containers on the host machines we support. The new template uses
+    the `machinectl` command to create container rootfs using the existing
+    cache. This in-turn will provide easier management of container images,
+    faster build times, and the ability to instantly clone a container (or a
+    given variant) without impacting a containers state. This new lxc container
+    create template, and the features it provides, will only impact new
+    containers created allowing deployers to safely adopt this change in any
+    existing environment.

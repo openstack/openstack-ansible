@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Searching for world-writable files is now disabled by default. The search
+    causes delays in playbook runs and it can consume a significant amount of
+    CPU and I/O resources. Deployers can re-enable the search by setting
+    ``security_find_world_writable_dirs`` to ``yes``.
