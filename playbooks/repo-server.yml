@@ -20,6 +20,9 @@
   user: root
   pre_tasks:
 
+    - include: common-tasks/set-upper-constraints.yml
+    - include: common-tasks/set-pip-upstream-url.yml
+
     - name: Check if the git cache exists on deployment host
       local_action:
         module: stat
@@ -53,6 +56,7 @@
         - hostvars['localhost']['resolvconf_enabled'] | bool
   roles:
     - role: "repo_server"
+
     - role: "rsyslog_client"
       rsyslog_client_log_rotate_file: repo_nginx_log_rotate
       rsyslog_client_log_dir: "/var/log/nginx"
@@ -61,12 +65,21 @@
       rsyslog_client_config_name: "99-repo-nginx-rsyslog-client.conf"
       tags:
         - rsyslog
+
     - role: "rsyslog_client"
       rsyslog_client_log_rotate_file: lsyncd_log_rotate
       rsyslog_client_log_dir: "/var/log/lsyncd"
       rsyslog_client_config_name: "99-lsyncd-rsyslog-client.conf"
       tags:
         - rsyslog
+
+    - role: "rsyslog_client"
+      rsyslog_client_log_rotate_file: pypiserver_log_rotate
+      rsyslog_client_log_dir: "/var/log/pypiserver"
+      rsyslog_client_config_name: "99-pypiserver-rsyslog-client.conf"
+      tags:
+        - rsyslog
+
   vars_files:
     - defaults/repo_packages/openstack_services.yml
   vars:
