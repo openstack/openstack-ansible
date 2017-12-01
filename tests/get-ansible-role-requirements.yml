@@ -27,7 +27,7 @@
         executable: /bin/bash
       when:
         - item.scm == "git" or item.scm is undefined
-      with_items: "{{ roles }}"
+      with_items: "{{ required_roles }}"
 
     - name: Ensure the default roles directory exists
       file:
@@ -42,7 +42,7 @@
           register: zuul_roles
           when:
             - item.scm == "git" or item.scm is undefined
-          with_items: "{{ roles }}"
+          with_items: "{{ required_roles }}"
         - name: Link the Zuul provided roles
           file:
             src: "/home/zuul/src/{{ item.item.src.split('/')[-3:] | join('/') }}"
@@ -70,7 +70,7 @@
                        selectattr('stat', 'defined') |
                        rejectattr('stat.exists') |
                        map(attribute='item') | list)
-                      | default(roles, True) }}"
+                      | default(required_roles, True) }}"
       register: git_clone
       until: git_clone | success
       retries: "{{ git_clone_retries }}"
@@ -78,7 +78,7 @@
 
   vars:
     ansible_python_interpreter: "/usr/bin/python"
-    roles: "{{ lookup('file', role_file) | from_yaml }}"
+    required_roles: "{{ lookup('file', role_file) | from_yaml }}"
     role_file: '../ansible-role-requirements.yml'
     role_path_default: '/etc/ansible/roles'
     git_clone_retries: 2
