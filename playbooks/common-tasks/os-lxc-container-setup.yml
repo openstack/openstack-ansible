@@ -106,6 +106,7 @@
   until: container_stop | success
   retries: 3
   when:
+    - lxc_container_allow_restarts | default(True) | bool
     - not is_metal | bool
     - (_mc is defined and _mc | changed) or (_ec is defined and _ec | changed)
   tags:
