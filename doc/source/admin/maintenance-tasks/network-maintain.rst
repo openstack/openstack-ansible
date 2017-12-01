@@ -9,11 +9,11 @@ common administrative tasks outlined to complete those tasks.
 
 For more generic information on troubleshooting your network,
 see the
-`Network Troubleshooting chapter <https://docs.openstack.org/ops-guide/ops-network-troubleshooting.html>`_
+`Network Troubleshooting chapter <https://wiki.openstack.org/wiki/OpsGuide/Network_Troubleshooting>`_
 in the Operations Guide.
 
 For more in-depth information on Networking, see the
-`Networking Guide <https://docs.openstack.org/ocata/networking-guide/>`_.
+`Networking Guide <https://docs.openstack.org/neutron/latest/admin/>`_.
 
 Add provider bridges using new network interfaces
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
