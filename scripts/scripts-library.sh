@@ -172,7 +172,7 @@ function run_dstat {
 }
 
 function generate_dstat_charts {
-  kill $(pgrep dstat)
+  kill $(pgrep -f dstat)
   if [[ ! -d /opt/dstat_graph ]]; then
     git clone https://github.com/Dabz/dstat_graph /opt/dstat_graph
   fi
