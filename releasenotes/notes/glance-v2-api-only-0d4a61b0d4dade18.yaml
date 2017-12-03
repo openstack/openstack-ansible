@@ -1,0 +1,23 @@
+---
+upgrade:
+  - |
+    The glance registry service for the v2 API is now disabled by default
+    as it is not required and is scheduled to be removed in the future.
+    The service can be enabled by setting ``glance_enable_v2_registry``
+    to ``True``. As the glance v1 API is still enabled by default, and
+    it requires the registry service, the glance-registry service will
+    still remain running and operational as before. If the variable
+    ``glance_enable_v1_api`` is set to ``False`` then both the v1 API
+    and the registry service will be disabled and removed.
+deprecations:
+  - |
+    The ``glance_enable_v1_registry`` variable has been removed. When using
+    the glance v1 API the registry service is required, so having a variable
+    to disable it makes little sense. The service is now enabled/disabled
+    for the v1 API using the ``glance_enable_v1_api`` variable.
+fixes:
+  - |
+    When the ``glance_enable_v2_registry`` variable is set to ``True`` the
+    corresponding ``data_api`` setting is now correctly set. Previously it
+    was not set and therefore the API service was not correctly informed
+    that the registry was operating.
