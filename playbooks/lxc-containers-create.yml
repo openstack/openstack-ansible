@@ -40,3 +40,15 @@
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - lxc-containers-create
+
+- name: Configure containers default software
+  hosts: "{{ container_group|default('all_containers') }}"
+  gather_facts: true
+  user: root
+  roles:
+    - role: "openstack_hosts"
+  vars:
+    is_metal: "{{ properties.is_metal|default(false) }}"
+  environment: "{{ deployment_environment_variables | default({}) }}"
+  tags:
+    - lxc-containers-create
