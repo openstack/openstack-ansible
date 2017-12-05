@@ -209,3 +209,15 @@
       line: 'security_package_state: "present"'
     - path: /etc/openstack_deploy/host_vars/localhost.yml
       line: 'tintin: "milou"'
+
+- name: Discover the pypi mirror URL when in nodepool
+  shell: |
+    source /etc/ci/mirror_info.sh
+    echo "${NODEPOOL_PYPI_MIRROR}"
+  args:
+    executable: /bin/bash
+  register: _pypi_mirror
+  when:
+    - nodepool_dir.stat.exists | bool
+  tags:
+    - skip_ansible_lint

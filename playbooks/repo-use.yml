@@ -1,5 +1,5 @@
 ---
-# Copyright 2014, Rackspace US, Inc.
+# Copyright 2017, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,17 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: unbound-install.yml
-- include: repo-install.yml
-- include: haproxy-install.yml
-# TODO(evrardjp): Remove the following when repo_build is done
-# before lxc_container_create, and haproxy is moved with it as
-# second step.
-- include: repo-use.yml
-- include: memcached-install.yml
-- include: galera-install.yml
-- include: rabbitmq-install.yml
-- include: etcd-install.yml
-- include: ceph-install.yml
-- include: utility-install.yml
-- include: rsyslog-install.yml
+# TODO(evrardjp): Remove this playbook when the repo_build process
+# is done upfront. This would mean that the openstack_hosts role
+# can run once and for all directly after the
+# lxc-container-create playbook.
+
+- name: Configure all nodes to use repo
+  hosts: all:!repo_all
+  roles:
+    - pip_install
+
+  environment: "{{ deployment_environment_variables | default({}) }}"
+  tags:
+    - always
+    - repo-config

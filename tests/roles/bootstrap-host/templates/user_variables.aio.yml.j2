@@ -205,3 +205,7 @@ security_rhel7_enable_chrony: no
 nova_service_negate:
   - "nova-agent.service"
   - "nova-resetnetwork.service"
+
+{% if _pypi_mirror is defined and _pypi_mirror.stdout is defined %}
+repo_nginx_pypi_upstream: "{{ _pypi_mirror.stdout | netloc }}"
+{% endif %}

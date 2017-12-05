@@ -43,9 +43,6 @@ repo_service_group_name: www-data
 repo_build_service_user_name: "{{ repo_service_user_name }}"
 repo_build_service_group_name: "{{ repo_service_group_name }}"
 
-# Disable the pip lock down for the repo servers
-pip_lock_to_internal_repo: False
-
 # The following package must always build from source.
 #
 # libvirt-python:
@@ -75,3 +72,14 @@ pkg_locations:
   - "{{ playbook_dir }}/../"
   - /etc/ansible/roles
   - /etc/openstack_deploy
+
+# On repo server, don't go through load balancer, directly hit the local
+# instances. It's all tested anyway before using.
+pip_links:
+  - { name: "openstack_release", link: "{{ repo_release_path | replace(internal_lb_vip_address, '127.0.0.1') }}/" }
+
+# The URL to retrieve the get-pip.py installation script locally
+pip_upstream_url: "{{ repo_release_path | replace(internal_lb_vip_address, '127.0.0.1') }}/get-pip.py"
+
+# The URL to the local PyPI reverse proxy
+pip_default_index: "{{ openstack_repo_url | replace(internal_lb_vip_address, '127.0.0.1') }}/simple"

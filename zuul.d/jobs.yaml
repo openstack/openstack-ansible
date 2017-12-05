@@ -50,6 +50,10 @@
 - job:
     name: openstack-ansible-deploy-ceph-ubuntu-xenial
     parent: openstack-ansible-deploy-aio-ubuntu-xenial
+    # temporarily moved to non voting until
+    # https://bugs.launchpad.net/cinder/+bug/1737015
+    # has been fixed.
+    voting: false
     vars:
       action: deploy
       scenario: ceph
