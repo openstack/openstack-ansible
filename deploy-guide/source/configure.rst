@@ -60,11 +60,11 @@ For examples, please see :ref:`test-environment-config`,
 
 For details about how the inventory is generated from the environment
 configuration, see
-`developer-inventory <http://docs.openstack.org/developer/openstack-ansible/developer-docs/inventory.html>`_.
+`developer-inventory <https://docs.openstack.org/openstack-ansible/latest/reference/index.html>`_.
 
 For details about how variable precedence works, and how to override
 group vars, see
-`developer-inventory-and-vars <http://docs.openstack.org/developer/openstack-ansible/developer-docs/inventory-and-vars.html>`_.
+`developer-inventory-and-vars <https://docs.openstack.org/openstack-ansible/latest/contributor/inventory-and-vars.html>`_.
 
 Installing additional services
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
