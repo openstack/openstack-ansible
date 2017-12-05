@@ -1,11 +1,23 @@
 - hosts: all
   tasks:
+    - name: Set current test repo (cross-repo)
+      set_fact:
+        current_test_repo: "git.openstack.org/{{ osa_test_repo }}"
+      when:
+        - osa_test_repo is defined
+
+    - name: Set current test repo (non-cross-repo)
+      set_fact:
+        current_test_repo: "{{ zuul.project.canonical_name }}"
+      when:
+        - osa_test_repo is not defined
+
     - name: Run gate-check-commit.sh script
       become: yes
       become_user: root
       command: "scripts/gate-check-commit.sh {{ scenario }} {{ action }}"
       args:
-        chdir: "src/{{ zuul.project.canonical_name }}"
+        chdir: "src/{{ current_test_repo }}"
       environment:
         # ZUUL_PROJECT is used by tests/get-ansible-role-requirements to
         # determine when CI provided repos should be used.
