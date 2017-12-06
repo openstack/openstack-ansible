@@ -309,21 +309,20 @@ haproxy_default_services:
         - "httpchk"
         - "httplog"
   - service:
-      haproxy_service_name: opendaylight
+      haproxy_service_name: opendaylight-neutron
       haproxy_backend_nodes: "{{ groups['neutron_server'] | default([]) }}"
       haproxy_bind: "{{ [internal_lb_vip_address] }}"
-      haproxy_port: 8282
-      haproxy_backend_port: 8181
+      haproxy_port: 8180
       haproxy_balance_type: tcp
       haproxy_timeout_client: 5000s
       haproxy_timeout_server: 5000s
       haproxy_whitelist_networks: "{{ haproxy_opendaylight_whitelist_networks }}"
       haproxy_service_enabled: "{{ neutron_plugin_type == 'ml2.opendaylight' }}"
   - service:
-      haproxy_service_name: opendaylight-neutron
+      haproxy_service_name: opendaylight-websocket
       haproxy_backend_nodes: "{{ groups['neutron_server'] | default([]) }}"
       haproxy_bind: "{{ [internal_lb_vip_address] }}"
-      haproxy_port: 8180
+      haproxy_port: 8185
       haproxy_balance_type: tcp
       haproxy_timeout_client: 5000s
       haproxy_timeout_server: 5000s
