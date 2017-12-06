@@ -266,7 +266,7 @@ if [ -f "${ANSIBLE_ROLE_FILE}" ]; then
                            --force
   elif [[ "${ANSIBLE_ROLE_FETCH_MODE}" == 'git-clone' ]];then
     pushd tests
-      ansible-playbook get-ansible-role-requirements.yml \
+      /opt/ansible-runtime/bin/ansible-playbook get-ansible-role-requirements.yml \
                        -i ${OSA_CLONE_DIR}/tests/test-inventory.ini \
                        -e role_file="${ANSIBLE_ROLE_FILE}" \
                        -vvv
