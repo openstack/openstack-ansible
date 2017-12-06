@@ -164,6 +164,14 @@ Install the source and dependencies for the deployment host.
        # git clone -b |latest_tag| https://git.openstack.org/openstack/openstack-ansible \\
          /opt/openstack-ansible
 
+   If git.openstack.org can not be accessed to run git clone, github.com can be used
+   as an alternative repo:
+
+   .. parsed-literal::
+
+       # git clone -b |latest_tag| https://github.com/openstack/openstack-ansible.git \\
+         /opt/openstack-ansible
+
 #. Change to the ``/opt/openstack-ansible`` directory, and run the
    Ansible bootstrap script:
 
