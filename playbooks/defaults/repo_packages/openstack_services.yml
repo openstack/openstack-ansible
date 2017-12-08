@@ -31,7 +31,7 @@
 
 ## Global Requirements
 requirements_git_repo: https://git.openstack.org/openstack/requirements
-requirements_git_install_branch: aec3ee5a34ae9a99c877c36c16d35018e6626fb6 # HEAD of "stable/newton" as of 24.11.2017
+requirements_git_install_branch: aec3ee5a34ae9a99c877c36c16d35018e6626fb6 # HEAD of "stable/newton" as of 08.12.2017
 requirements_git_dest: "/opt/requirements_{{ requirements_git_install_branch | replace('/', '_') }}"
 
 
@@ -137,7 +137,7 @@ neutron_dynamic_routing_git_project_group: neutron_all
 
 ## Nova service
 nova_git_repo: https://git.openstack.org/openstack/nova
-nova_git_install_branch: 2033b5d1e2e09abdb7a54c5ab9ad149a1bbf0246 # HEAD of "stable/newton" as of 24.11.2017
+nova_git_install_branch: 4cbfcc590c17134fd14e3aab90ffbb7c17006a95 # HEAD of "stable/newton" as of 08.12.2017
 nova_git_dest: "/opt/nova_{{ nova_git_install_branch | replace('/', '_') }}"
 nova_git_project_group: nova_all
 
@@ -172,7 +172,7 @@ swift_git_project_group: swift_all
 
 ## Ironic service
 ironic_git_repo: https://git.openstack.org/openstack/ironic
-ironic_git_install_branch: 58a41817fde4088cbf4a51991ed71663f86348fb # HEAD of "stable/newton" as of 24.11.2017
+ironic_git_install_branch: 58a41817fde4088cbf4a51991ed71663f86348fb # HEAD of "stable/newton" as of 08.12.2017
 ironic_git_dest: "/opt/ironic_{{ ironic_git_install_branch | replace('/', '_') }}"
 ironic_git_project_group: ironic_all
 
