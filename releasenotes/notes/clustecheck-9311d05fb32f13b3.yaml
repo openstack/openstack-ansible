@@ -1,0 +1,7 @@
+---
+features:
+  - The galera cluster now supports cluster health checks over HTTP using port
+    9200. The new cluster check ensures a node is healthy by running a simple
+    query against the wsrep sync status using monitoring user. This change will
+    provide for a more robust cluster check ensuring we have the most fault
+    tolerant galera cluster possible.

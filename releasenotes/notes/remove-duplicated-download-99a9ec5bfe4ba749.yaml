@@ -1,0 +1,37 @@
+---
+features:
+  - |
+    The ``tempest_images`` data structure for the ``os_tempest`` role
+    now expects the values for each image to include ``name`` (optionally)
+    and ``format`` (the disk format). Also, the optional variable ``checksum``
+    may be used to set the checksum expected for the file in the format
+    ``<algorithm>:<checksum>``.
+  - |
+    The default location for the image downloads in the ``os_tempest``
+    role set by the ``tempest_image_dir`` variable has now been changed
+    to be ``/opt/cache/files`` in order to match the default location
+    in nodepool. This improves the reliability of CI testing in
+    OpenStack CI as it will find the file already cached there.
+  - |
+    A new variable has been introduced into the ``os_tempest`` role
+    named ``tempest_image_downloader``. When set to ``deployment-host``
+    (which is the default) it uses the deployment host to handle the
+    download of images to be used for tempest testing. The images are
+    then uploaded to the target host for uploading into Glance.
+deprecations:
+  - |
+    The following variables have been removed from the ``os_tempest``
+    role to simplify it. They have been replaced through the use of
+    the data structure ``tempest_images`` which now has equivalent
+    variables per image.
+    - cirros_version
+    - tempest_img_url
+    - tempest_image_file
+    - tempest_img_disk_format
+    - tempest_img_name
+    - tempest_images.sha256 (replaced by checksum)
+fixes:
+  - |
+    The ``os_tempest`` tempest role was downloading images twice - once
+    arbitrarily, and once to use for testing. This has been consolidated
+    into a single download to a consistent location.

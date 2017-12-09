@@ -1,0 +1,17 @@
+---
+features:
+  - |
+    A typical OSA install will put the neutron and octavia queues on different
+    vhosts thus preventing the event streamer from working While octavia is
+    streaming to its own queue the consumer on the neutron side listens to the
+    neutron queue. With a recent octavia enhancement a separate queue for the
+    event streamer can be configured. This patch will set up the event
+    streamer to post into the neutron queue using neutron's credentials. Thus
+    reaching the consumer on the neutron-lbaas side and allowing for
+    streaming.
+security:
+  - |
+    Since we use neutron's credentials to access the queue, security conscious
+    people might want to set up an extra user for octavia on the neutron queue
+    restricted to the topics octavia posts to.
+

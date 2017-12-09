@@ -1,0 +1,25 @@
+---
+upgrade:
+  - |
+    If you have overriden your
+    ``openstack_host_specific_kernel_modules``, please
+    remove its group matching, and move that override
+    directly to the appropriate group.
+
+    Example, for an override like:
+
+    .. code-block:: yaml
+
+        - name: "ebtables"
+          pattern: "CONFIG_BRIDGE_NF_EBTABLES"
+          group: "network_hosts"
+
+    You can create a file for the network_host group,
+    inside its group vars folder
+    ``/etc/openstack_deploy/group_vars/network_hosts``,
+    with the content:
+
+    .. code-block:: yaml
+
+        - name: "ebtables"
+          pattern: "CONFIG_BRIDGE_NF_EBTABLES"

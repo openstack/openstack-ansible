@@ -1,0 +1,5 @@
+---
+upgrade:
+  - KSM configuration is changed to disabled by default on Ubuntu.
+    If you overcommit the RAM on your hypervisor it's a good
+    idea to set ``nova_compute_ksm_enabled`` to ``True``.

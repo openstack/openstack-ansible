@@ -1,0 +1,8 @@
+---
+features:
+  - The ``security_sshd_permit_root_login`` setting can
+    now be set to change the ``PermitRootLogin`` setting
+    in ``/etc/ssh/sshd_config`` to any of the possible
+    options. Set ``security_sshd_permit_root_login`` to
+    one of ``without-password``, ``prohibit-password``,
+    ``forced-commands-only``, ``yes`` or ``no``.
