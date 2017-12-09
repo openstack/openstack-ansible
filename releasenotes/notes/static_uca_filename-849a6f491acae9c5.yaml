@@ -1,0 +1,11 @@
+---
+upgrade:
+  - |
+    Any user that is coming from Pike or below on Ubuntu should modify
+    its ``user_external_repos_list``, switching its ubuntu cloud archive
+    repository from ``state: present`` to ``state: absent``.
+    From now on, UCA will be defined with the filename ``uca``. If the deployer
+    wants to use its mirror, he can still override the variable ``uca_repo``
+    to point to its mirror. Alternatively, the deployer can completely define
+    which repos to add and remove, ignoring our defaults, by overriding
+    ``openstack_hosts_package_repos``.

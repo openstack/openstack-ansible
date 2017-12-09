@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    The maximum amount of time to wait until forcibly failing the
+    LXC cache preparation process is now configurable using the
+    ``lxc_cache_prep_timeout`` variable. The value is specified
+    in seconds, with the default being 20 minutes.

@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Galera healthcheck has been improved, and relies on an xinetd service.
+    By default, the service is unaccessible (filtered with the no_access
+    directive). You can override the directive by setting any xinetd
+    valid value to ``galera_monitoring_allowed_source``.

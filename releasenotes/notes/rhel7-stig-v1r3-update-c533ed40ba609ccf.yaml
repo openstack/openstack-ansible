@@ -1,0 +1,15 @@
+---
+features:
+  - |
+    The tasks within the ansible-hardening role are now based on Version 1,
+    Release 3 of the Red Hat Enteprise Linux Security Technical Implementation
+    Guide.
+  - |
+    The ``sysctl`` parameter ``kernel.randomize_va_space`` is now set to
+    ``2`` by default. This matches the default of most modern Linux
+    distributions and it ensures that Address Space Layout Randomization
+    (ASLR) is enabled.
+  - |
+    The Datagram Congestion Control Protocol (DCCP) kernel module is now
+    disabled by default, but a reboot is required to make the change
+    effective.

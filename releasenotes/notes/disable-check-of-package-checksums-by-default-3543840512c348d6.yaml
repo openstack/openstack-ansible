@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Generating and validating checksums for all files installed by packages is now
+    disabled by default. The check causes delays in playbook runs and it can
+    consume a significant amount of CPU and I/O resources. Deployers can re-enable
+    the check by setting ``security_check_package_checksums`` to ``yes``.
