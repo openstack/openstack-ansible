@@ -2,22 +2,39 @@
 # before the execution of any tests.
 #
 # See the following for details:
-#  - http://docs.openstack.org/infra/bindep/
-#  - https://git.openstack.org/openstack-infra/bindep
+#  - https://docs.openstack.org/infra/bindep/
+#  - https://git.openstack.org/cgit/openstack-infra/bindep
 #
 # Even if the role does not make use of this facility, it
 # is better to have this file empty, otherwise OpenStack-CI
 # will fall back to installing its default packages which
 # will potentially be detrimental to the tests executed.
 
-# Required for compressing collected log files in CI
-gzip
+# The gcc compiler
+gcc
 
-# Requirements for Paramiko 2.0
+# Base requirements for Ubuntu
+git-core          [platform:dpkg]
 libssl-dev        [platform:dpkg]
 libffi-dev        [platform:dpkg]
+python2.7         [platform:dpkg]
+python-apt        [platform:dpkg]
+python-dev        [platform:dpkg]
+python3           [platform:dpkg]
+python3-apt       [platform:dpkg]
+python3-dev       [platform:dpkg]
+
+# Base requirements for RPM distros
+gcc-c++           [platform:rpm]
+git               [platform:rpm]
 libffi-devel      [platform:rpm]
 openssl-devel     [platform:rpm]
+python-devel      [platform:rpm]
+python2-dnf       [platform:fedora]
 
-# For selinux
-libselinux-python [platform:rpm]
+# For SELinux
+libselinux-python [platform:redhat]
+libsemanage-python [platform:redhat]
+
+# Required for compressing collected log files in CI
+gzip
