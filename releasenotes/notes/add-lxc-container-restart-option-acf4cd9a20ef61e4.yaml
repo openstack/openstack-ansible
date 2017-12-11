@@ -1,0 +1,15 @@
+---
+features:
+  - A new variable has been added to allow a deployer to control
+    the restart of containers from common-tasks/os-lxc-container-setup.yml.
+    This new option is ``lxc_container_allow_restarts`` and has a
+    default of ``true``. If a deployer wishes to disable the
+    auto-restart functionality they can set this value to ``false``
+    and automatic container restarts will be disabled.
+
+    This is a complement to the same option already present in the
+    lxc_container_create role.
+
+    This option is useful to avoid uncoordinated restarts of galera
+    or rabbitmq containers if the LXC container configuration changes
+    in a way that requires a restart.
