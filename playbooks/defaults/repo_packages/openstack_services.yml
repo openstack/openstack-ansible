@@ -150,6 +150,11 @@ networking_calico_git_repo: https://git.openstack.org/openstack/networking-calic
 networking_calico_git_install_branch: 9688df1a3d1d8b3fd9ba367e82fe6b0559416728 # HEAD of "master" as of 24.11.2017
 networking_calico_git_project_group: neutron_all
 
+networking_odl_git_repo: https://git.openstack.org/openstack/networking-odl
+networking_odl_git_install_branch: 7a3c5fee7deb01d9237f5d1cc43a17931999af02 # HEAD of "master" as of 24.11.2017
+networking_odl_git_project_group: neutron_all
+
+
 ## Nova service
 nova_git_repo: https://git.openstack.org/openstack/nova
 nova_git_install_branch: 22a790ef45b0523e8cf2ed97d14e050431c90fd9 # HEAD of "master" as of 24.11.2017
@@ -191,10 +196,12 @@ ironic_git_repo: https://git.openstack.org/openstack/ironic
 ironic_git_install_branch: 27ce77142bfb9ac56e85db37e0923a0eb47f2f7a # HEAD of "master" as of 24.11.2017
 ironic_git_project_group: ironic_all
 
+
 ## Magnum service
 magnum_git_repo: https://git.openstack.org/openstack/magnum
 magnum_git_install_branch: 4bf3b3263870a4ec81cf372713cacec446b3ee84 # HEAD of "master" as of 24.11.2017
 magnum_git_project_group: magnum_all
+
 
 ## Trove service
 trove_git_repo: https://git.openstack.org/openstack/trove
@@ -206,15 +213,18 @@ trove_dashboard_git_repo: https://git.openstack.org/openstack/trove-dashboard
 trove_dashboard_git_install_branch: 14a4609606d42cae827b8fc6b44453caea258976 # HEAD of "master" as of 24.11.2017
 trove_dashboard_git_project_group: horizon_all
 
+
 ## Octavia service
 octavia_git_repo: https://git.openstack.org/openstack/octavia
 octavia_git_install_branch: bb9bb2d05b268cff9846e0a09ad3940be5fe5a80 # HEAD of "master" as of 24.11.2017
 octavia_git_project_group: octavia_all
 
+
 ## Molteniron service
 molteniron_git_repo: https://git.openstack.org/openstack/molteniron
 molteniron_git_install_branch: 094276cda77d814d07ad885e7d63de8d1243750a # HEAD of "master" as of 24.11.2017
 molteniron_git_project_group: molteniron_all
+
 
 ## Tacker service
 tacker_git_repo: https://git.openstack.org/openstack/tacker
