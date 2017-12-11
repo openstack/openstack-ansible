@@ -49,8 +49,6 @@
     - role: "system_crontab_coordination"
       tags:
         - crontab
-  vars:
-    is_metal: "{{ properties.is_metal|default(false) }}"
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - molteniron

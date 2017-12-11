@@ -35,8 +35,6 @@
       setup:
         filter: ansible_local
         gather_subset: "!all"
-  vars:
-    is_metal: "{{ properties.is_metal|default(false) }}"
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - lxc-containers-create
@@ -50,7 +48,6 @@
   roles:
     - role: "openstack_hosts"
   vars:
-    is_metal: "{{ properties.is_metal|default(false) }}"
     host_need_pip: False
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:

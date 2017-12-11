@@ -116,7 +116,6 @@
       tags:
         - crontab
   vars:
-    is_metal: "{{ properties.is_metal|default(false) }}"
     ansible_python_interpreter: "/usr/bin/python"
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:

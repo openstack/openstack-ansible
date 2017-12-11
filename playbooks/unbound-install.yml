@@ -31,8 +31,6 @@
         - "system-crontab-coordination"
   vars_files:
     - defaults/repo_packages/openstack_services.yml
-  vars:
-    is_metal: "{{ properties.is_metal|default(false) }}"
 
 - name: Install unbound DNS resolver client configurations
   hosts:

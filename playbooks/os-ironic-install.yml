@@ -57,7 +57,6 @@
       tags:
         - crontab
   vars:
-    is_metal: "{{ properties.is_metal|default(false) }}"
     ironic_galera_user: ironic
     ironic_galera_database: ironic
     ironic_galera_address: "{{ galera_address }}"
