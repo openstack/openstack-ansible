@@ -22,7 +22,7 @@ set -e -u -x
 ## Vars ----------------------------------------------------------------------
 export HTTP_PROXY=${HTTP_PROXY:-""}
 export HTTPS_PROXY=${HTTPS_PROXY:-""}
-export ANSIBLE_PACKAGE=${ANSIBLE_PACKAGE:-"ansible==2.3.2.0"}
+export ANSIBLE_PACKAGE=${ANSIBLE_PACKAGE:-"ansible==2.4.2.0"}
 export ANSIBLE_ROLE_FILE=${ANSIBLE_ROLE_FILE:-"ansible-role-requirements.yml"}
 export SSH_DIR=${SSH_DIR:-"/root/.ssh"}
 export DEBIAN_FRONTEND=${DEBIAN_FRONTEND:-"noninteractive"}
@@ -194,8 +194,6 @@ popd
 # Write the OSA Ansible rc file
 sed "s|OSA_INVENTORY_PATH|${OSA_INVENTORY_PATH}|g" scripts/openstack-ansible.rc > /usr/local/bin/openstack-ansible.rc
 sed -i "s|OSA_PLAYBOOK_PATH|${OSA_PLAYBOOK_PATH}|g" /usr/local/bin/openstack-ansible.rc
-sed -i "s|OSA_GROUP_VARS_DIR|${OSA_CLONE_DIR}/group_vars/|g" /usr/local/bin/openstack-ansible.rc
-sed -i "s|OSA_HOST_VARS_DIR|${OSA_CLONE_DIR}/host_vars/|g" /usr/local/bin/openstack-ansible.rc
 
 
 # Create openstack ansible wrapper tool
@@ -237,6 +235,13 @@ if [[ "\${PWD}" == *"${OSA_CLONE_DIR}"* ]] || [ "\${RUN_CMD}" == "openstack-ansi
 
   # Source the Ansible configuration.
   . /usr/local/bin/openstack-ansible.rc
+
+  # Load userspace group vars
+  if [[ -d /etc/openstack_deploy/group_vars || -d /etc/openstack_deploy/host_vars ]]; then
+     if [[ ! -f /etc/openstack_deploy/inventory.ini ]]; then
+        echo '[all]' > /etc/openstack_deploy/inventory.ini
+     fi
+  fi
 
   # Check whether there are any user configuration files
   if ls -1 /etc/openstack_deploy/user_*.yml &> /dev/null; then
