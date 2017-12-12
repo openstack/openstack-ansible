@@ -35,8 +35,6 @@
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
     - include: common-tasks/package-cache-proxy.yml
-  vars:
-    is_metal: "{{ properties.is_metal|default(false) }}"
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - galera

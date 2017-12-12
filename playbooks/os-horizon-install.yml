@@ -50,7 +50,6 @@
       tags:
         - crontab
   vars:
-    is_metal: "{{ properties.is_metal|default(false) }}"
     horizon_galera_user: horizon
     horizon_galera_database: horizon
     horizon_galera_address: "{{ galera_address }}"

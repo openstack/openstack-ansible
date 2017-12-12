@@ -56,7 +56,6 @@
       tags:
         - rsyslog
   vars:
-    is_metal: "{{ properties.is_metal|default(false) }}"
     tacker_galera_address: "{{ internal_lb_vip_address }}"
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:

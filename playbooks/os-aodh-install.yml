@@ -60,7 +60,6 @@
       tags:
         - rsyslog
   vars:
-    is_metal: "{{ properties.is_metal|default(false) }}"
     aodh_rabbitmq_userid: aodh
     aodh_rabbitmq_vhost: /aodh
     aodh_rabbitmq_servers: "{{ rabbitmq_servers }}"

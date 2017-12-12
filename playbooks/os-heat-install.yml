@@ -75,7 +75,6 @@
   vars_files:
     - defaults/repo_packages/openstack_services.yml
   vars:
-    is_metal: "{{ properties.is_metal|default(false) }}"
     heat_galera_user: heat
     heat_galera_database: heat
     heat_galera_address: "{{ galera_address }}"
