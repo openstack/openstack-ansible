@@ -1,0 +1,16 @@
+---
+features:
+    - Neutron connectivity agents will now be deployed on baremetal within the
+      "network_hosts" defined within the ``openstack_user_config.yml``.
+
+upgrade:
+    - When upgrading there is nothing a deployer **must** immediately do to
+      run neutron agent services on hosts within the ``network_hosts`` group.
+      Simply executing the playbooks will deploy the neutron servers on the
+      baremetal machines and will leave all existing agents containers alone.
+    - It is recommended for deployers to clean up the **neutron_agents**
+      container(s) after an upgrade is complete and the cluster has been
+      verified as stable. This can be done by simply disabling the neutron
+      agents running in the **neutron_agent** container(s), re-balancing the
+      agent services targeting the new baremetal agents, deleting the
+      container(s), and finally removing the container(s) from inventory.
