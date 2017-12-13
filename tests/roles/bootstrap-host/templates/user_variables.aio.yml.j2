@@ -172,11 +172,6 @@ lxc_image_cache_server_mirrors:
 cache_timeout: {{ cache_timeout }}
 {% endif %}
 
-{% if repo_build_git_cache is defined %}
-## Git cache to use for the repo build process
-repo_build_git_cache: {{ repo_build_git_cache }}
-{% endif %}
-
 # The container backing store is set to 'machinectl' to speed up the
 # AIO build time. Options are: [machinectl, overlayfs, btrfs, zfs, dir, lvm]
 lxc_container_backing_store: "machinectl"
