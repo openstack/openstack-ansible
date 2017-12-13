@@ -137,8 +137,9 @@ function gate_job_exit_tasks {
     fi
     GATE_LOG_DIR="${OSA_CLONE_DIR:-$(dirname $0)/..}/logs"
     mkdir -p "${GATE_LOG_DIR}/host" "${GATE_LOG_DIR}/openstack"
-    rsync --archive --verbose --safe-links --ignore-errors /var/log/ "${GATE_LOG_DIR}/host" || true
-    rsync --archive --verbose --safe-links --ignore-errors /openstack/log/ "${GATE_LOG_DIR}/openstack" || true
+    RSYNC_CMD="rsync --archive --safe-links --ignore-errors --quiet --no-perms --no-owner --no-group"
+    ${RSYNC_CMD} /var/log/ "${GATE_LOG_DIR}/host" || true
+    ${RSYNC_CMD} /openstack/log/ "${GATE_LOG_DIR}/openstack" || true
     # Rename all files gathered to have a .txt suffix so that the compressed
     # files are viewable via a web browser in OpenStack-CI.
     # except tempest results testrepository.subunit and testr_results.html
