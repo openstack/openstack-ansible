@@ -1,0 +1,58 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Basic lxc host setup
+  hosts: "{{ lxc_host_group | default('lxc_hosts')}}"
+  gather_facts: "{{ osa_gather_facts | default(True) }}"
+  max_fail_percentage: 20
+  user: root
+  pre_tasks:
+    - include: common-tasks/set-upper-constraints.yml
+    - include: common-tasks/set-pip-upstream-url.yml
+    - name: Check the state of the default LXC service log directory
+      stat:
+        path: "/var/log/lxc"
+      register: _lxc_log_dir
+    - name: Create the log aggregation parent directory
+      file:
+        path: "/openstack/log"
+        state: directory
+    - name: Move the existing folder to the log aggregation parent
+      command: "mv /var/log/lxc /openstack/log/{{ inventory_hostname }}-lxc"
+      when:
+        - _lxc_log_dir.stat.isdir is defined
+        - _lxc_log_dir.stat.isdir | bool
+    - name: Create the new LXC service log directory
+      file:
+        path: "/openstack/log/{{ inventory_hostname }}-lxc"
+        state: directory
+    - name: Create the LXC service log aggregation link
+      file:
+        src: "/openstack/log/{{ inventory_hostname }}-lxc"
+        dest: "/var/log/lxc"
+        state: "link"
+  roles:
+    - role: "lxc_hosts"
+    - role: "rsyslog_client"
+      rsyslog_client_log_rotate_file: lxc_log_rotate
+      rsyslog_client_log_dir: "/var/log/lxc"
+      rsyslog_client_config_name: "99-lxc-rsyslog-client.conf"
+      tags:
+        - rsyslog
+  vars_files:
+    - defaults/repo_packages/openstack_services.yml
+  environment: "{{ deployment_environment_variables | default({}) }}"
+  tags:
+    - lxc-hosts

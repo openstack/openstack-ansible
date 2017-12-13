@@ -1,5 +1,5 @@
 ---
-# Copyright 2014, Rackspace US, Inc.
+# Copyright 2017, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,6 +13,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: openstack-hosts-setup.yml
-- include: security-hardening.yml
-- include: containers-deploy.yml
+- include: "containers-{{ container_tech | default('lxc') }}-host.yml"
+- include: "containers-{{ container_tech | default('lxc') }}-create.yml"

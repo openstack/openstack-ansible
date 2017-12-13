@@ -36,7 +36,7 @@
 
     - name: Configure container (non-nfs)
       static: no
-      include: ../common-tasks/os-lxc-container-setup.yml
+      include: "../common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       vars:
         list_of_bind_mounts: "{{ glance_container_bind_mounts }}"
       when:
@@ -44,7 +44,7 @@
         - (glance_nfs_client is not defined) or (glance_nfs_client | length == 0)
 
     - name: Configure container (nfs)
-      include: ../common-tasks/os-lxc-container-setup.yml
+      include: "../common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       static: no
       when: (glance_default_store != "file") or (glance_nfs_client is defined)
 

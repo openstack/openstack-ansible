@@ -1,0 +1,54 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Gather lxc container host facts
+  hosts: "{{ lxc_host_group | default('lxc_hosts')}}"
+  gather_facts: "{{ osa_gather_facts | default(True) }}"
+
+- name: Create container(s)
+  hosts: "{{ container_group|default('all_containers') }}"
+  gather_facts: false
+  max_fail_percentage: 20
+  user: root
+  roles:
+    - role: "lxc_container_create"
+  post_tasks:
+    - name: Wait for container connectivity
+      wait_for_connection:
+        connect_timeout: "{{ lxc_container_wait_params.connect_timeout | default(omit) }}"
+        delay: "{{ lxc_container_wait_params.delay | default(omit) }}"
+        sleep: "{{ lxc_container_wait_params.sleep | default(omit) }}"
+        timeout: "{{ lxc_container_wait_params.timeout | default(omit) }}"
+    - name: Set local facts for new container(s)
+      setup:
+        filter: ansible_local
+        gather_subset: "!all"
+  environment: "{{ deployment_environment_variables | default({}) }}"
+  tags:
+    - lxc-containers-create
+
+# TODO(evrardjp): Remove host_need_pip in the future
+# when the process building the repo is done before this step.
+- name: Configure containers default software, but don't run pip yet
+  hosts: "{{ container_group|default('all_containers') }}"
+  gather_facts: true
+  user: root
+  roles:
+    - role: "openstack_hosts"
+  vars:
+    host_need_pip: False
+  environment: "{{ deployment_environment_variables | default({}) }}"
+  tags:
+    - lxc-containers-create

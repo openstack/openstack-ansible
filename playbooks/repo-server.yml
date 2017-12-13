@@ -30,7 +30,8 @@
       register: _local_git_cache
       when: repo_build_git_cache is defined
 
-    - include: common-tasks/os-lxc-container-setup.yml
+    - include: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
+      static: no
       vars:
         list_of_bind_mounts:
           - mount_path: "/openstack/{{ inventory_hostname }}"

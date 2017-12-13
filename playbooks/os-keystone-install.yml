@@ -83,7 +83,7 @@
         - "keystone_admin-back"
 
     - name: Configure container
-      include: common-tasks/os-lxc-container-setup.yml
+      include: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       vars:
         extra_container_config_no_restart:
           - "lxc.start.order=19"

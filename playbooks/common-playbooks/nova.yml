@@ -62,7 +62,7 @@
         network_address: "management_address"
 
     - name: Configure container
-      include: ../common-tasks/os-lxc-container-setup.yml
+      include: "../common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       vars:
         extra_container_config_no_restart:
           - "lxc.start.order=39"
@@ -93,6 +93,7 @@
         'added' in device_add.stdout.lower()
       delegate_to: "{{ physical_host }}"
       when:
+        - container_tech == 'lxc'
         - "'nova_compute' in group_names"
         - "not is_metal | bool"
       tags:
@@ -103,6 +104,7 @@
         lxc-device -n {{ container_name }} add /dev/net/tun /dev/net/tun
       delegate_to: "{{ physical_host }}"
       when:
+        - container_tech == 'lxc'
         - "'nova_compute' in group_names"
         - "not is_metal | bool"
       tags:
@@ -114,6 +116,7 @@
       delegate_to: "{{ physical_host }}"
       register: kvm_device
       when:
+        - container_tech == 'lxc'
         - "'nova_compute' in group_names"
         - "not is_metal | bool"
       tags:
@@ -128,6 +131,7 @@
       changed_when: >
         'added' in device_add.stdout.lower()
       when:
+        - container_tech == 'lxc'
         - "'nova_compute' in group_names"
         - "not is_metal | bool"
         - "'ischr' in kvm_device.stat and kvm_device.stat.ischr | bool"

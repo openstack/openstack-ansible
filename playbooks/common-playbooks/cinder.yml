@@ -41,7 +41,7 @@
         network_address: "storage_address"
 
     - name: Configure container (cinder-volume)
-      include: ../common-tasks/os-lxc-container-setup.yml
+      include: "../common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       static: no
       vars:
         aa_profile: "unconfined"
@@ -56,7 +56,7 @@
         - "cinder_backend_lvm_inuse | bool"
 
     - name: Configure container (other services)
-      include: ../common-tasks/os-lxc-container-setup.yml
+      include: "../common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       static: no
       when:
         - "'cinder_volume' not in group_names"
@@ -89,6 +89,7 @@
         {% endif %}
       with_dict: "{{ cinder_backends | default({}) }}"
       when:
+        - container_tech == 'lxc'
         - physical_host != container_name
         - cinder_backend_lvm_inuse | bool
       delegate_to: "{{ physical_host }}"
