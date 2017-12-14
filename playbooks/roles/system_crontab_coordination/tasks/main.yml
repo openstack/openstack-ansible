@@ -20,3 +20,5 @@
     owner: "root"
     group: "root"
     mode: "0644"
+  when:
+    - ansible_os_family == 'Debian'
