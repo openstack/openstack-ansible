@@ -28,6 +28,8 @@
     executable: "/bin/bash"
   register: _enabled_services
   changed_when: false
+  tags:
+    - skip_ansible_lint
 
 - name: Execute service action
   service:
