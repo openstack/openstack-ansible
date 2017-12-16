@@ -104,7 +104,7 @@ def main():
     projects = []
 
     # Prepare the regex match
-    regex = re.compile('^.*openstack/openstack-ansible.*$')
+    regex = re.compile('^.*openstack/(ansible-hardening|openstack-ansible.*)$')
 
     # Loop through the list of roles
     for role_data in reqs:
