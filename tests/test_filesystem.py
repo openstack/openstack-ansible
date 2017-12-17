@@ -23,7 +23,7 @@ from test_inventory import cleanup
 from test_inventory import get_inventory
 from test_inventory import make_config
 
-INV_DIR = 'playbooks/inventory'
+INV_DIR = 'inventory'
 
 sys.path.append(path.join(os.getcwd(), INV_DIR))
 
