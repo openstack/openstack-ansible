@@ -53,6 +53,7 @@
 # Prepare the swap space loopback disk
 # This is only necessary if there isn't swap already
 - include: prepare_loopback_swap.yml
+  static: no
   when:
     - ansible_swaptotal_mb < 1
   tags:
