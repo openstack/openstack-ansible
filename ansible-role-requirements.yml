@@ -182,29 +182,9 @@
   scm: git
   src: https://github.com/logan2211/ansible-resolvconf
   version: master
-- name: ceph-defaults
+- name: ceph-ansible
   scm: git
-  src: https://github.com/ceph/ansible-ceph-defaults
-  version: master
-- name: ceph-common
-  scm: git
-  src: https://github.com/ceph/ansible-ceph-common
-  version: master
-- name: ceph-config
-  scm: git
-  src: https://github.com/ceph/ansible-ceph-config
-  version: master
-- name: ceph-mon
-  scm: git
-  src: https://github.com/ceph/ansible-ceph-mon
-  version: master
-- name: ceph-mgr
-  scm: git
-  src: https://github.com/ceph/ansible-ceph-mgr
-  version: master
-- name: ceph-osd
-  scm: git
-  src: https://github.com/ceph/ansible-ceph-osd
+  src: https://github.com/ceph/ceph-ansible
   version: master
 - name: opendaylight
   scm: git
