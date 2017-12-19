@@ -130,7 +130,7 @@ sync_roles_and_packages() {
         # Tweak the barbican paste file to support keystone auth
         if [ "${repo_name}" = "barbican" ]; then
           find ${os_repo_tmp_path}/etc -name "*[_-]paste.ini" -exec \
-            sed -i.bak 's|\/v1\: barbican-api-keystone|\/v1\: {{ (barbican_keystone_auth \| bool) \| ternary('barbican-api-keystone', 'barbican_api') }}|'{} \;
+            sed -i.bak "s|\/v1\: barbican-api-keystone|\/v1\: {{ (barbican_keystone_auth \| bool) \| ternary('barbican-api-keystone', 'barbican_api') }}|" {} \;
         fi
 
         # Tweak the gnocchi paste file to support keystone auth
