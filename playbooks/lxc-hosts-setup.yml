@@ -15,7 +15,7 @@
 
 - name: Basic lxc host setup
   hosts: "{{ lxc_host_group | default('lxc_hosts')}}"
-  gather_facts: "{{ gather_facts | default(True) }}"
+  gather_facts: "{{ osa_gather_facts | default(True) }}"
   max_fail_percentage: 20
   user: root
   pre_tasks:
