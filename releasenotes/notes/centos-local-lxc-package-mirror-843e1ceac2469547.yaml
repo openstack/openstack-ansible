@@ -1,0 +1,16 @@
+---
+other:
+  - |
+    CentOS deployments require a special COPR repository for modern LXC
+    packages. The COPR repository is not mirrored at this time and this causes
+    failed gate tests and production deployments.
+
+    The role now syncs the LXC packages down from COPR to each host and builds
+    a local LXC package repository in `/opt/thm-lxc2.0`. This greatly reduces
+    the amount of times that packages must be downloaded from the COPR server
+    during deployments, which will reduce failures until the packages can be
+    hosted with a more reliable source.
+
+    In addition, this should speed up playbook runs since ``yum`` can check a
+    locally-hosted repository instead of a remote repository with availability
+    and performance challenges.
