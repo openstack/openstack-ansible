@@ -369,6 +369,9 @@ development team by performing one of the following recurring tasks:
 
   * Check and bump rabbitmq versions if required.
 
+  * Check outstanding reviews and move to merge or abandon them if no longer
+    valid.
+
 * By milestone 3:
 
   * Implement features
