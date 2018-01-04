@@ -38,6 +38,22 @@ From the ``openstack-ansible`` root directory, run the following commands:
     # export SCRIPTS_PATH="${MAIN_PATH}/scripts"
     # export UPGRADE_PLAYBOOKS="${SCRIPTS_PATH}/upgrade-utilities/playbooks"
 
+Deal with existing OpenStack-Ansible artifacts
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The deployment node may have previous branch artifacts.
+
+Unset the following environment variables first:
+
+.. code-block:: console
+
+    # unset ANSIBLE_INVENTORY
+
+Optionally, take a backup of your environment:
+
+.. code-block:: console
+
+    # tar zcf /openstack/previous-ansible_`date +%F_%H%M`.tar.gz /etc/openstack_deploy /etc/ansible/ /usr/local/bin/openstack-ansible.rc
 
 Bootstrap Ansible again
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -167,15 +183,6 @@ fashion.
 
     # openstack-ansible "${UPGRADE_PLAYBOOKS}/galera-cluster-rolling-restart.yml"
 
-Update HAProxy configuration
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Install and update any new or changed HAProxy service configurations.
-
-.. code-block:: console
-
-    # openstack-ansible haproxy-install.yml
-
 Update repository servers
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -185,6 +192,24 @@ required by the |current_release_formal_name| release.
 .. code-block:: console
 
     # openstack-ansible repo-install.yml
+
+Update HAProxy configuration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Install and update any new or changed HAProxy service configurations.
+
+.. code-block:: console
+
+    # openstack-ansible haproxy-install.yml
+
+Use the repository servers
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Now all containers can be pointed to the repo server's VIPs.
+
+.. code-block:: console
+
+    # openstack-ansible repo-use.yml
 
 Upgrade the MariaDB version
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~

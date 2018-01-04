@@ -217,7 +217,6 @@ def _build_container_hosts(container_affinity, container_hosts, type_and_name,
             du.append_if(array=container_mapping, item=host_type_containers)
 
             hostvars_options.update({
-                'properties': properties,
                 'ansible_host': address,
                 'container_address': address,
                 'container_name': container_host_name,
@@ -225,6 +224,8 @@ def _build_container_hosts(container_affinity, container_hosts, type_and_name,
                 'physical_host_group': physical_host_type,
                 'component': assignment
             })
+            if 'properties' not in hostvars_options:
+                hostvars_options['properties'] = properties
 
 
 def _append_container_types(inventory, host_type):
@@ -810,7 +811,7 @@ def _ensure_inventory_uptodate(inventory, container_skel):
         if hosts:
             for host in hosts:
                 container = host_vars[host]
-                if 'properties' in type_vars:
+                if 'properties' in type_vars and 'properties' not in container:
                     logger.debug("Copied propeties for %s from skeleton",
                                  container)
                     container['properties'] = type_vars['properties']
