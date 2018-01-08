@@ -57,14 +57,6 @@
 
 
 
-- name: Install cinder API services
-  include: common-playbooks/cinder.yml
-  vars:
-    cinder_hosts: "cinder_api"
-    cinder_serial: "{{ cinder_api_serial | default(['1', '100%']) }}"
-
-
-
 - name: Install cinder scheduler services
   include: common-playbooks/cinder.yml
   vars:
@@ -86,6 +78,14 @@
   vars:
     cinder_hosts: "cinder_backup:!cinder_volume:!cinder_scheduler:!cinder_api"
     cinder_serial: "{{ cinder_backend_serial | default(['1', '100%']) }}"
+
+
+
+- name: Install cinder API services
+  include: common-playbooks/cinder.yml
+  vars:
+    cinder_hosts: "cinder_api"
+    cinder_serial: "{{ cinder_api_serial | default(['1', '100%']) }}"
 
 
 
@@ -148,13 +148,13 @@
     - name: Execute cinder service reload
       include: common-tasks/restart-service.yml
       vars:
-        service_name: "{{ item.name }}"
-        service_action: "{{ item.action }}"
+        service_name: "{{ item }}"
+        service_action: "reloaded"
         service_fact: "cinder"
       with_items:
-        - { name: "cinder-backup", action: "restarted" }
-        - { name: "cinder-volume", action: "restarted" }
-        - { name: "cinder-scheduler", action: "restarted" }
+        - "cinder-scheduler"
+        - "cinder-backup"
+        - "cinder-volume"
       when:
         - "cinder_all_software_updated | bool"
         - "ansible_local['openstack_ansible']['cinder']['need_service_restart'] | bool"
