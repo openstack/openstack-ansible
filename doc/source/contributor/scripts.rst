@@ -16,7 +16,7 @@ Bootstrapping
 bootstrap-ansible.sh
 --------------------
 
-The ``bootstrap-ansible.sh`` script installs Ansible including `core`_ and
+The ``bootstrap-ansible.sh`` script installs Ansible, including the `core`_ and
 `extras`_ module repositories and Galaxy roles.
 
 While there are several configurable environment variables which this script
@@ -189,3 +189,57 @@ OpenStack-CI through the following jobs:
 
   While this script is primarily developed and maintained for use in
   OpenStack-CI, it can be used in other environments.
+
+Dependency Updates
+^^^^^^^^^^^^^^^^^^
+
+The dependencies for OpenStack-Ansible are updated approximately every two
+weeks through the use of ``scripts/sources-branch-updater.sh``. This script
+updates all pinned SHA's for OpenStack services, OpenStack-Ansible roles,
+and other python dependencies which are not handled by the OpenStack global
+requirements management process. This script also updates the statically
+held templates/files in each role to ensure that they are always up to date.
+Finally, it also does a minor version increment of the value for
+``openstack_release``.
+
+The update script is used as follows:
+
+.. parsed-literal::
+
+   # change directory to the openstack-ansible checkout
+   cd ~/code/openstack-ansible
+
+   # ensure that the correct branch is checked out
+   git checkout |current_release_git_branch_name|
+
+   # ensure that the branch is up to date
+   git pull
+
+   # create the local branch for the update
+   git checkout -b sha-update
+
+   # execute the script for all openstack services
+   ./scripts/sources-branch-updater.sh -b |current_release_git_branch_name| -o |current_release_git_branch_name|
+
+   # execute the script for gnocchi
+   ./scripts/sources-branch-updater.sh -s playbooks/defaults/repo_packages/gnocchi.yml -b |current_release_gnocchi_git_branch_name| -o |current_release_git_branch_name|
+
+   # the console code should only be updated when necessary for a security fix, or for the OSA master branch
+   ./scripts/sources-branch-updater.sh -s playbooks/defaults/repo_packages/nova_consoles.yml -b master
+
+   # the testing repositories should not be updated for stable branches as the new tests
+   # or other changes introduced may not work for older branches
+   ./scripts/sources-branch-updater.sh -s playbooks/defaults/repo_packages/openstack_testing.yml -b master
+
+   # commit the changes
+   new_version=$(awk '/^openstack_release/ {print $2}' inventory/group_vars/all/all.yml)
+   git add --all
+   git commit -a -m "Update all SHAs for ${new_version}" \
+   -m "This patch updates all the roles to the latest available stable
+   SHA's, copies the release notes from the updated roles into the
+   integrated repo, updates all the OpenStack Service SHA's, and
+   updates the appropriate python requirements pins.
+
+   # push the changes up to gerrit
+   git review
+

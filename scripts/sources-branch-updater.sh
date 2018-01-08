@@ -22,9 +22,50 @@
 OS_BRANCH=${OS_BRANCH:-"master"}
 OSA_BRANCH=${OSA_BRANCH:-"$OS_BRANCH"}
 SERVICE_FILE=${SERVICE_FILE:-"playbooks/defaults/repo_packages/openstack_services.yml"}
-OPENSTACK_SERVICE_LIST=${OPENSTACK_SERVICE_LIST:-"$(grep 'git_repo\:' ${SERVICE_FILE} | awk -F '/' '{ print $NF }' | egrep -v 'requirements|-' | tr '\n' ' ')"}
+OPENSTACK_SERVICE_LIST=${OPENSTACK_SERVICE_LIST:-""}
 PRE_RELEASE=${PRE_RELEASE:-"false"}
 FORCE_MASTER=${FORCE_MASTER:-"false"}
+
+# Here we inspect the service file to compile the list of repositories
+# we're interested in inspecting for the purpose of doing in-repo updates
+# of static files that we template/copy when doing installs.
+#
+# If a predefined list is provided, skip all this.
+if [[ -z ${OPENSTACK_SERVICE_LIST} ]]; then
+  # Setup an array of all the repositories in the
+  # service file provided.
+  OPENSTACK_REPO_LIST=( $(grep 'git_repo\:' ${SERVICE_FILE} | awk -F '/' '{ print $NF }') )
+
+  # Define the repositories to skip in an array.
+  # These items are removed as they are not service projects
+  # and therefore do not have policy/api-paste/etc files.
+  OPENSTACK_REPO_SKIP_LIST=( requirements dragonflow swift3 )
+
+  # Define the skip regex for any additional items to remove.
+  # Items with a '-' are removed as those repositories are
+  # typically extensions/drivers/dashboards and therefore
+  # do not include policy/api-paste/etc files.
+  OPENSTACK_REPO_SKIP_REGEX='.*-.*'
+
+  # Loop through each item and if it does not match
+  # an item in the SKIP_LIST or match the SKIP_REGEX
+  # then add it to the OPENSTACK_SERVICE_LIST string.
+  for item_to_check in "${OPENSTACK_REPO_LIST[@]}"; do
+    add_item="yes"
+    if [[ ! "${item_to_check}" =~ ${OPENSTACK_REPO_SKIP_REGEX} ]]; then
+      for item_to_delete in "${OPENSTACK_REPO_SKIP_LIST[@]}"; do
+        if [[ "${item_to_delete}" == "${item_to_check}" ]]; then
+          add_item="no"
+        fi
+      done
+    else
+      add_item="no"
+    fi
+    if [[ "${add_item}" == "yes" ]]; then
+      OPENSTACK_SERVICE_LIST="${OPENSTACK_SERVICE_LIST} ${item_to_check}"
+    fi
+  done
+fi
 
 source scripts/sources-branch-updater-lib.sh || { echo "Failed to source updater library"; exit 1; }
 

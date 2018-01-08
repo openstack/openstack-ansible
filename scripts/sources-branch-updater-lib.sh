@@ -119,58 +119,75 @@ sync_roles_and_packages() {
         # pre-sync user hook
         osa_pre_sync_hook ${repo_name} ${os_branch} ${osa_branch} ${repo_address}
 
-        # Update the policy files
-        find ${os_repo_tmp_path}/etc -name "policy.json" -exec \
-          cp {} "${osa_repo_tmp_path}/templates/policy.json.j2" \;
+        # We have implemented tooling to dynamically fetch the
+        # api-paste and other static/template files from these
+        # repositories, so skip trying to update their templates
+        # and static files.
+        local static_file_repo_skip_list=( ceilometer gnocchi keystone )
 
-        # Tweak the paste files for any hmac key entries
-        find ${os_repo_tmp_path}/etc -name "*[_-]paste.ini" -exec \
-          sed -i.bak "s|hmac_keys = SECRET_KEY|hmac_keys = {{ ${repo_name}_profiler_hmac_key }}|" {} \;
+        # Check if this repo is in the static file skip list
+        local skip_this_repo="no"
+        for skip_list_item in "${static_file_repo_skip_list[@]}"; do
+          if [[ "${repo_name}" == "${skip_list_item}" ]]; then
+            skip_this_repo="yes"
+          fi
+        done
 
-        # Tweak the barbican paste file to support keystone auth
-        if [ "${repo_name}" = "barbican" ]; then
+        if [[ "${skip_this_repo}" != "yes" ]] && [[ -e "${os_repo_tmp_path}/etc" ]]; then
+          # Update the policy files
+          find ${os_repo_tmp_path}/etc -name "policy.json" -exec \
+            cp {} "${osa_repo_tmp_path}/templates/policy.json.j2" \;
+
+          # Tweak the paste files for any hmac key entries
           find ${os_repo_tmp_path}/etc -name "*[_-]paste.ini" -exec \
-            sed -i.bak 's|\/v1\: barbican-api-keystone|\/v1\: {{ (barbican_keystone_auth \| bool) \| ternary('barbican-api-keystone', 'barbican_api') }}|'{} \;
-        fi
+            sed -i.bak "s|hmac_keys = SECRET_KEY|hmac_keys = {{ ${repo_name}_profiler_hmac_key }}|" {} \;
 
-        # Tweak the gnocchi paste file to support keystone auth
-        if [ "${repo_name}" = "gnocchi" ]; then
+          # Tweak the barbican paste file to support keystone auth
+          if [[ "${repo_name}" == "barbican" ]]; then
+            find ${os_repo_tmp_path}/etc -name "*[_-]paste.ini" -exec \
+              sed -i.bak "s|\/v1\: barbican-api-keystone|\/v1\: {{ (barbican_keystone_auth \| bool) \| ternary('barbican-api-keystone', 'barbican_api') }}|" {} \;
+          fi
+
+          # Tweak the gnocchi paste file to support keystone auth
+          if [[ "${repo_name}" == "gnocchi" ]]; then
+            find ${os_repo_tmp_path}/etc -name "*[_-]paste.ini" -exec \
+              sed -i.bak "s|pipeline = gnocchi+noauth|pipeline = {{ (gnocchi_keystone_auth \| bool) \| ternary('gnocchi+auth', 'gnocchi+noauth') }}|" {} \;
+          fi
+
+          # Update the paste files
           find ${os_repo_tmp_path}/etc -name "*[_-]paste.ini" -exec \
-            sed -i.bak "s|pipeline = gnocchi+noauth|pipeline = {{ (gnocchi_keystone_auth \| bool) \| ternary('gnocchi+auth', 'gnocchi+noauth') }}|" {} \;
-        fi
-
-        # Update the paste files
-        find ${os_repo_tmp_path}/etc -name "*[_-]paste.ini" -exec \
-          bash -c "name=\"{}\"; cp \${name} \"${osa_repo_tmp_path}/templates/\$(basename \${name}).j2\"" \;
-
-        # Tweak the rootwrap conf filters_path (for neutron only)
-        if [ "${repo_name}" = "neutron" ]; then
-          find ${os_repo_tmp_path}/etc -name "rootwrap.conf" -exec \
-            sed -i.bak "s|filters_path=/etc/neutron|filters_path={{ ${repo_name}_conf_dir }}|" {} \;
-        fi
-
-        # Tweak the rootwrap conf exec_dirs
-        find ${os_repo_tmp_path}/etc -name "rootwrap.conf" -exec \
-          sed -i.bak "s|exec_dirs=|exec_dirs={{ ${repo_name}_bin }},|" {} \;
-
-        # Update the rootwrap conf files
-        find ${os_repo_tmp_path}/etc -name "rootwrap.conf" -exec \
-          cp {} "${osa_repo_tmp_path}/templates/rootwrap.conf.j2" \;
-
-        # Update the rootwrap filters
-        find ${os_repo_tmp_path}/etc -name "*.filters" -exec \
-          bash -c "name=\"{}\"; cp \${name} \"${osa_repo_tmp_path}/files/rootwrap.d/\$(basename \${name})\"" \;
-
-        # Update the yaml files for Ceilometer
-        if [ "${repo_name}" = "ceilometer" ]; then
-          find ${os_repo_tmp_path}/etc -name "*.yaml" -exec \
             bash -c "name=\"{}\"; cp \${name} \"${osa_repo_tmp_path}/templates/\$(basename \${name}).j2\"" \;
+
+          # Update the yaml files for Heat
+          if [[ "${repo_name}" == "heat" ]]; then
+            find ${os_repo_tmp_path}/etc -name "*.yaml" -exec \
+              bash -c "name=\"{}\"; cp \${name} \"${osa_repo_tmp_path}/templates/\$(echo \${name} | rev | cut -sd / -f -2 | rev).j2\"" \;
+          fi
         fi
 
-        # Update the yaml files for Heat
-        if [ "${repo_name}" = "heat" ]; then
-          find ${os_repo_tmp_path}/etc -name "*.yaml" -exec \
-            bash -c "name=\"{}\"; cp \${name} \"${osa_repo_tmp_path}/templates/\$(echo \${name} | rev | cut -sd / -f -2 | rev).j2\"" \;
+        # We have to check for rootwrap files in *all* service repositories
+        # as we have no dynamic way of fetching them at this stage.
+        if [[ -e "${os_repo_tmp_path}/etc" ]]; then
+
+          # Tweak the rootwrap conf filters_path (for neutron only)
+          if [[ "${repo_name}" == "neutron" ]]; then
+            find ${os_repo_tmp_path}/etc -name "rootwrap.conf" -exec \
+              sed -i.bak "s|filters_path=/etc/neutron|filters_path={{ ${repo_name}_conf_dir }}|" {} \;
+          fi
+
+          # Tweak the rootwrap conf exec_dirs
+          find ${os_repo_tmp_path}/etc -name "rootwrap.conf" -exec \
+            sed -i.bak "s|exec_dirs=|exec_dirs={{ ${repo_name}_bin }},|" {} \;
+
+          # Update the rootwrap conf files
+          find ${os_repo_tmp_path}/etc -name "rootwrap.conf" -exec \
+            cp {} "${osa_repo_tmp_path}/templates/rootwrap.conf.j2" \;
+
+          # Update the rootwrap filters
+          mkdir -p ${osa_repo_tmp_path}/files/rootwrap.d
+          find ${os_repo_tmp_path}/etc -name "*.filters" -exec \
+            bash -c "name=\"{}\"; cp \${name} \"${osa_repo_tmp_path}/files/rootwrap.d/\$(basename \${name})\"" \;
+
         fi
 
         # post-sync user hook
@@ -229,8 +246,8 @@ update_ansible_role_requirements() {
       role_name=$(sed 's/^[ \t-]*//' ansible-role-requirements.yml | awk '/src: / || /name: / {print $2}' | grep -B1 "${role_src}" | head -n 1)
       echo "... updating ${role_name}"
 
-      # If the role_src is NOT from git.openstack.org, try to get a tag first
-      if [[ ${role_src} != *"git.openstack.org"* ]]; then
+      # If the role_src is NOT from git.openstack.org, try to get a tag first unless we are working on master
+      if [[ ${role_src} != *"git.openstack.org"* ]] && [[ "${force_master}" != "true" ]]; then
         role_version=$(git ls-remote --tags ${role_src} | awk '{print $2}' | grep -v '{}' | cut -d/ -f 3 | sort -n | tail -n 1)
       fi
 
