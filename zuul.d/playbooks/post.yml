@@ -15,18 +15,30 @@
 
 - hosts: all
   tasks:
+    - name: Set current test repo (cross-repo)
+      set_fact:
+        current_test_repo: "git.openstack.org/{{ osa_test_repo }}"
+      when:
+        - osa_test_repo is defined
+
+    - name: Set current test repo (non-cross-repo)
+      set_fact:
+        current_test_repo: "{{ zuul.project.canonical_name }}"
+      when:
+        - osa_test_repo is not defined
+
     - name: Run log collection script
       command: scripts/test-log-collect.sh
       become: yes
       become_user: root
       args:
-        chdir: "src/{{ zuul.project.canonical_name }}"
+        chdir: "src/{{ current_test_repo }}"
       environment:
         # ZUUL_PROJECT is used by the log collection functions to enable
         # log collection configuration specific to OpenStack CI
         ZUUL_PROJECT: "{{ zuul.project.short_name }}"
     - name: Copy logs back to the executor
       synchronize:
-        src: "src/{{ zuul.project.canonical_name }}/logs"
+        src: "src/{{ current_test_repo }}/logs"
         dest: "{{ zuul.executor.log_root }}"
         mode: pull
