@@ -213,7 +213,6 @@ Additional lists of python packages can also be overridden using a
 
     swift_requires_pip_packages:
       - virtualenv
-      - virtualenv-tools
       - python-keystoneclient
       - NEW-SPECIAL-PACKAGE
 
