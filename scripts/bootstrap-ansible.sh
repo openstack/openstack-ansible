@@ -286,12 +286,37 @@ if [ -f "${ANSIBLE_ROLE_FILE}" ]; then
     ansible-galaxy install --role-file="${ANSIBLE_ROLE_FILE}" \
                            --force
   elif [[ "${ANSIBLE_ROLE_FETCH_MODE}" == 'git-clone' ]];then
+    # NOTE(cloudnull): When bootstrapping we don't want ansible to interact
+    #                  with our plugins by default. This change will force
+    #                  ansible to ignore our plugins during this process.
+    export ANSIBLE_LIBRARY="/dev/null"
+    export ANSIBLE_LOOKUP_PLUGINS="/dev/null"
+    export ANSIBLE_FILTER_PLUGINS="/dev/null"
+    export ANSIBLE_ACTION_PLUGINS="/dev/null"
+    export ANSIBLE_CALLBACK_PLUGINS="/dev/null"
+    export ANSIBLE_CALLBACK_WHITELIST="/dev/null"
+    export ANSIBLE_TEST_PLUGINS="/dev/null"
+    export ANSIBLE_VARS_PLUGINS="/dev/null"
+    export ANSIBLE_STRATEGY_PLUGINS="/dev/null"
+    export ANSIBLE_CONFIG="none-ansible.cfg"
+
     pushd tests
       /opt/ansible-runtime/bin/ansible-playbook get-ansible-role-requirements.yml \
                        -i ${OSA_CLONE_DIR}/tests/test-inventory.ini \
                        -e role_file="${ANSIBLE_ROLE_FILE}" \
                        -vvv
     popd
+
+    unset ANSIBLE_LIBRARY
+    unset ANSIBLE_LOOKUP_PLUGINS
+    unset ANSIBLE_FILTER_PLUGINS
+    unset ANSIBLE_ACTION_PLUGINS
+    unset ANSIBLE_CALLBACK_PLUGINS
+    unset ANSIBLE_CALLBACK_WHITELIST
+    unset ANSIBLE_TEST_PLUGINS
+    unset ANSIBLE_VARS_PLUGINS
+    unset ANSIBLE_STRATEGY_PLUGINS
+    unset ANSIBLE_CONFIG
   else
     echo "Please set the ANSIBLE_ROLE_FETCH_MODE to either of the following options ['galaxy', 'git-clone']"
     exit 99
