@@ -52,6 +52,7 @@ haproxy_default_services:
       haproxy_backend_options:
         - "httpchk HEAD /"
       haproxy_whitelist_networks: "{{ haproxy_galera_whitelist_networks }}"
+      haproxy_service_enabled: "{{ groups['galera_all'] is defined and groups['galera_all'] | length > 0 }}"
   - service:
       haproxy_service_name: repo_git
       haproxy_backend_nodes: "{{ groups['repo_all'] | default([]) }}"
@@ -61,6 +62,7 @@ haproxy_default_services:
       haproxy_backend_options:
         - tcp-check
       haproxy_whitelist_networks: "{{ haproxy_repo_git_whitelist_networks }}"
+      haproxy_service_enabled: "{{ groups['repo_all'] is defined and groups['repo_all'] | length > 0 }}"
   - service:
       haproxy_service_name: repo_all
       haproxy_backend_nodes: "{{ groups['repo_all'] | default([]) }}"
@@ -69,6 +71,7 @@ haproxy_default_services:
       haproxy_balance_type: http
       haproxy_backend_options:
         - "httpchk HEAD /"
+      haproxy_service_enabled: "{{ groups['repo_all'] is defined and groups['repo_all'] | length > 0 }}"
   - service:
       haproxy_service_name: repo_cache
       haproxy_backend_nodes: "{{ (groups['repo_all'] | default([]))[:1] }}"  # list expected
@@ -79,6 +82,7 @@ haproxy_default_services:
       haproxy_backend_options:
         - "httpchk HEAD /acng-report.html"
       haproxy_whitelist_networks: "{{ haproxy_repo_cache_whitelist_networks }}"
+      haproxy_service_enabled: "{{ groups['repo_all'] is defined and groups['repo_all'] | length > 0 }}"
   - service:
       haproxy_service_name: glance_api
       haproxy_backend_nodes: "{{ groups['glance_api'] | default([]) }}"
@@ -87,6 +91,7 @@ haproxy_default_services:
       haproxy_balance_type: http
       haproxy_backend_options:
         - "httpchk /healthcheck"
+      haproxy_service_enabled: "{{ groups['glance_api'] is defined and groups['glance_api'] | length > 0 }}"
   - service:
       haproxy_service_name: glance_registry
       haproxy_backend_nodes: "{{ groups['glance_registry'] | default([]) }}"
@@ -96,6 +101,11 @@ haproxy_default_services:
       haproxy_backend_options:
         - "httpchk /healthcheck"
       haproxy_whitelist_networks: "{{ haproxy_glance_registry_whitelist_networks }}"
+      haproxy_service_enabled: >-
+        {{ groups['glance_registry'] is defined and
+           groups['glance_registry'] | length > 0 and
+           (glance_enable_v2_registry | default(False)) | bool and
+           (glance_enable_v1_api | default(False)) | bool }}
   - service:
       haproxy_service_name: gnocchi
       haproxy_backend_nodes: "{{ groups['gnocchi_all'] | default([]) }}"
@@ -104,6 +114,7 @@ haproxy_default_services:
       haproxy_balance_type: http
       haproxy_backend_options:
         - "httpchk /healthcheck"
+      haproxy_service_enabled: "{{ groups['gnocchi_all'] is defined and groups['gnocchi_all'] | length > 0 }}"
   - service:
       haproxy_service_name: heat_api_cfn
       haproxy_backend_nodes: "{{ groups['heat_api_cfn'] | default([]) }}"
@@ -112,6 +123,7 @@ haproxy_default_services:
       haproxy_balance_type: http
       haproxy_backend_options:
         - "httpchk HEAD /"
+      haproxy_service_enabled: "{{ groups['heat_api_cfn'] is defined and groups['heat_api_cfn'] | length > 0 }}"
   - service:
       haproxy_service_name: heat_api_cloudwatch
       haproxy_backend_nodes: "{{ groups['heat_api_cloudwatch'] | default([]) }}"
@@ -120,6 +132,7 @@ haproxy_default_services:
       haproxy_balance_type: http
       haproxy_backend_options:
         - "httpchk HEAD /"
+      haproxy_service_enabled: "{{ groups['heat_api_cloudwatch'] is defined and groups['heat_api_cloudwatch'] | length > 0 }}"
   - service:
       haproxy_service_name: heat_api
       haproxy_backend_nodes: "{{ groups['heat_api'] | default([]) }}"
@@ -128,6 +141,7 @@ haproxy_default_services:
       haproxy_balance_type: http
       haproxy_backend_options:
         - "httpchk HEAD /"
+      haproxy_service_enabled: "{{ groups['heat_api'] is defined and groups['heat_api'] | length > 0 }}"
   - service:
       haproxy_service_name: keystone_service
       haproxy_backend_nodes: "{{ groups['keystone_all'] | default([])  }}"
@@ -136,6 +150,7 @@ haproxy_default_services:
       haproxy_balance_type: "http"
       haproxy_backend_options:
         - "httpchk HEAD /"
+      haproxy_service_enabled: "{{ groups['keystone_all'] is defined and groups['keystone_all'] | length > 0 }}"
   - service:
       haproxy_service_name: keystone_admin
       haproxy_backend_nodes: "{{ groups['keystone_all'] | default([])  }}"
@@ -145,6 +160,7 @@ haproxy_default_services:
       haproxy_backend_options:
         - "httpchk HEAD /"
       haproxy_whitelist_networks: "{{ haproxy_keystone_admin_whitelist_networks }}"
+      haproxy_service_enabled: "{{ groups['keystone_all'] is defined and groups['keystone_all'] | length > 0 }}"
   - service:
       haproxy_service_name: neutron_server
       haproxy_backend_nodes: "{{ groups['neutron_server'] | default([]) }}"
@@ -153,6 +169,7 @@ haproxy_default_services:
       haproxy_balance_type: http
       haproxy_backend_options:
         - "httpchk GET /"
+      haproxy_service_enabled: "{{ groups['neutron_server'] is defined and groups['neutron_server'] | length > 0 }}"
   - service:
       haproxy_service_name: nova_api_metadata
       haproxy_backend_nodes: "{{ groups['nova_api_metadata'] | default([]) }}"
@@ -162,6 +179,7 @@ haproxy_default_services:
       haproxy_backend_options:
         - "httpchk HEAD /"
       haproxy_whitelist_networks: "{{ haproxy_nova_metadata_whitelist_networks }}"
+      haproxy_service_enabled: "{{ groups['nova_api_metadata'] is defined and groups['nova_api_metadata'] | length > 0 }}"
   - service:
       haproxy_service_name: nova_api_os_compute
       haproxy_backend_nodes: "{{ groups['nova_api_os_compute'] | default([]) }}"
@@ -170,6 +188,7 @@ haproxy_default_services:
       haproxy_balance_type: http
       haproxy_backend_options:
         - "httpchk HEAD /"
+      haproxy_service_enabled: "{{ groups['nova_api_os_compute'] is defined and groups['nova_api_os_compute'] | length > 0 }}"
   - service:
       haproxy_service_name: nova_api_placement
       haproxy_backend_nodes: "{{ groups['nova_api_placement'] | default([]) }}"
@@ -181,6 +200,7 @@ haproxy_default_services:
       haproxy_backend_httpcheck_options:
         - "expect status 401"
       haproxy_whitelist_networks: "{{ haproxy_nova_placement_whitelist_networks }}"
+      haproxy_service_enabled: "{{ groups['nova_api_placement'] is defined and groups['nova_api_placement'] | length > 0 }}"
   - service:
       haproxy_service_name: nova_console
       haproxy_backend_nodes: "{{ groups['nova_console'] | default([]) }}"
@@ -194,6 +214,7 @@ haproxy_default_services:
         - "httpchk HEAD /"
       haproxy_backend_httpcheck_options:
         - "expect status 404"
+      haproxy_service_enabled: "{{ groups['nova_console'] is defined and groups['nova_console'] | length > 0 }}"
   - service:
       haproxy_service_name: cinder_api
       haproxy_backend_nodes: "{{ groups['cinder_api'] | default([]) }}"
@@ -202,6 +223,7 @@ haproxy_default_services:
       haproxy_balance_type: http
       haproxy_backend_options:
         - "httpchk HEAD /"
+      haproxy_service_enabled: "{{ groups['cinder_api'] is defined and groups['cinder_api'] | length > 0 }}"
   - service:
       haproxy_service_name: horizon
       haproxy_backend_nodes: "{{ groups['horizon_all'] | default([]) }}"
@@ -214,6 +236,7 @@ haproxy_default_services:
       haproxy_balance_alg: source
       haproxy_backend_options:
         - "httpchk HEAD /"
+      haproxy_service_enabled: "{{ groups['horizon_all'] is defined and groups['horizon_all'] | length > 0 }}"
   - service:
       haproxy_service_name: sahara_api
       haproxy_backend_nodes: "{{ groups['sahara_api'] | default([]) }}"
@@ -223,6 +246,7 @@ haproxy_default_services:
       haproxy_balance_type: http
       haproxy_backend_options:
         - "httpchk /healthcheck"
+      haproxy_service_enabled: "{{ groups['sahara_api'] is defined and groups['sahara_api'] | length > 0 }}"
   - service:
       haproxy_service_name: swift_proxy
       haproxy_backend_nodes: "{{ groups['swift_proxy'] | default([]) }}"
@@ -232,6 +256,7 @@ haproxy_default_services:
       haproxy_balance_type: http
       haproxy_backend_options:
         - "httpchk /healthcheck"
+      haproxy_service_enabled: "{{ groups['swift_proxy'] is defined and groups['swift_proxy'] | length > 0 }}"
   - service:
       haproxy_service_name: aodh_api
       haproxy_backend_nodes: "{{ groups['aodh_api'] | default([]) }}"
@@ -240,6 +265,7 @@ haproxy_default_services:
       haproxy_balance_type: http
       haproxy_backend_options:
         - "httpchk HEAD /"
+      haproxy_service_enabled: "{{ groups['aodh_api'] is defined and groups['aodh_api'] | length > 0 }}"
   - service:
       haproxy_service_name: ironic_api
       haproxy_backend_nodes: "{{ groups['ironic_api'] | default([]) }}"
@@ -248,6 +274,7 @@ haproxy_default_services:
       haproxy_balance_type: http
       haproxy_backend_options:
         - "httpchk GET /"
+      haproxy_service_enabled: "{{ groups['ironic_api'] is defined and groups['ironic_api'] | length > 0 }}"
   - service:
       haproxy_service_name: rabbitmq_mgmt
       haproxy_backend_nodes: "{{ groups['rabbitmq'] | default([]) }}"
@@ -257,6 +284,7 @@ haproxy_default_services:
       haproxy_backend_options:
         - "httpchk HEAD /"
       haproxy_whitelist_networks: "{{ haproxy_rabbitmq_management_whitelist_networks }}"
+      haproxy_service_enabled: "{{ groups['rabbitmq'] is defined and groups['rabbitmq'] | length > 0 }}"
   - service:
       haproxy_service_name: magnum
       haproxy_backend_nodes: "{{ groups['magnum_all'] | default([]) }}"
@@ -265,6 +293,7 @@ haproxy_default_services:
       haproxy_balance_type: http
       haproxy_backend_options:
         - "httpchk GET /"
+      haproxy_service_enabled: "{{ groups['magnum_all'] is defined and groups['magnum_all'] | length > 0 }}"
   - service:
       haproxy_service_name: trove
       haproxy_backend_nodes: "{{ groups['trove_api'] | default([]) }}"
@@ -273,6 +302,7 @@ haproxy_default_services:
       haproxy_balance_type: http
       haproxy_backend_options:
         - "httpchk HEAD /"
+      haproxy_service_enabled: "{{ groups['trove_api'] is defined and groups['trove_api'] | length > 0 }}"
   - service:
       haproxy_service_name: barbican
       haproxy_backend_nodes: "{{ groups['barbican_api'] | default([]) }}"
@@ -281,6 +311,7 @@ haproxy_default_services:
       haproxy_balance_type: http
       haproxy_backend_options:
         - "httpchk GET /"
+      haproxy_service_enabled: "{{ groups['barbican_api'] is defined and groups['barbican_api'] | length > 0 }}"
   - service:
       haproxy_service_name: designate_api
       haproxy_backend_nodes: "{{ groups['designate_api'] | default([]) }}"
@@ -291,6 +322,7 @@ haproxy_default_services:
         - "forwardfor"
         - "httpchk /versions"
         - "httplog"
+      haproxy_service_enabled: "{{ groups['designate_api'] is defined and groups['designate_api'] | length > 0 }}"
   - service:
       haproxy_service_name: octavia
       haproxy_backend_nodes: "{{ groups['octavia_all'] | default([]) }}"
@@ -300,6 +332,7 @@ haproxy_default_services:
       haproxy_backend_options:
         - "httpchk GET /"
       haproxy_whitelist_networks: "{{ haproxy_octavia_whitelist_networks }}"
+      haproxy_service_enabled: "{{ groups['octavia_all'] is defined and groups['octavia_all'] | length > 0 }}"
   - service:
       haproxy_service_name: tacker
       haproxy_backend_nodes: "{{ groups['tacker_all'] | default([]) }}"
@@ -310,6 +343,7 @@ haproxy_default_services:
         - "forwardfor"
         - "httpchk"
         - "httplog"
+      haproxy_service_enabled: "{{ groups['tacker_all'] is defined and groups['tacker_all'] | length > 0 }}"
   - service:
       haproxy_service_name: opendaylight-neutron
       haproxy_backend_nodes: "{{ groups['neutron_server'] | default([]) }}"
