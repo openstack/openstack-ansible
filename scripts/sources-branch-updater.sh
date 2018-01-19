@@ -21,7 +21,7 @@
 OS_BRANCH=${OS_BRANCH:-"master"}
 OSA_BRANCH=${OSA_BRANCH:-"$OS_BRANCH"}
 SERVICE_FILE=${SERVICE_FILE:-"playbooks/defaults/repo_packages/openstack_services.yml"}
-OPENSTACK_SERVICE_LIST=${OPENSTACK_SERVICE_LIST:-"$(grep 'git_repo\:' ${SERVICE_FILE} | awk -F '/' '{ print $NF }' | egrep -v 'requirements|-' | tr '\n' ' ')"}
+OPENSTACK_SERVICE_LIST=${OPENSTACK_SERVICE_LIST:-""}
 PRE_RELEASE=${PRE_RELEASE:-"false"}
 
 IFS=$'\n'
@@ -58,6 +58,47 @@ esac
 shift
 done
 
+# Here we inspect the service file to compile the list of repositories
+# we're interested in inspecting for the purpose of doing in-repo updates
+# of static files that we template/copy when doing installs.
+#
+# If a predefined list is provided, skip all this.
+if [[ -z ${OPENSTACK_SERVICE_LIST} ]]; then
+  # Setup an array of all the repositories in the
+  # service file provided.
+  OPENSTACK_REPO_LIST=( $(grep 'git_repo\:' ${SERVICE_FILE} | awk -F '/' '{ print $NF }') )
+
+  # Define the repositories to skip in an array.
+  # These items are removed as they are not service projects
+  # and therefore do not have policy/api-paste/etc files.
+  OPENSTACK_REPO_SKIP_LIST=( requirements dragonflow swift3 )
+
+  # Define the skip regex for any additional items to remove.
+  # Items with a '-' are removed as those repositories are
+  # typically extensions/drivers/dashboards and therefore
+  # do not include policy/api-paste/etc files.
+  OPENSTACK_REPO_SKIP_REGEX='.*-.*'
+
+  # Loop through each item and if it does not match
+  # an item in the SKIP_LIST or match the SKIP_REGEX
+  # then add it to the OPENSTACK_SERVICE_LIST string.
+  for item_to_check in "${OPENSTACK_REPO_LIST[@]}"; do
+    add_item="yes"
+    if [[ ! "${item_to_check}" =~ ${OPENSTACK_REPO_SKIP_REGEX} ]]; then
+      for item_to_delete in "${OPENSTACK_REPO_SKIP_LIST[@]}"; do
+        if [[ "${item_to_delete}" == "${item_to_check}" ]]; then
+          add_item="no"
+        fi
+      done
+    else
+      add_item="no"
+    fi
+    if [[ "${add_item}" == "yes" ]]; then
+      OPENSTACK_SERVICE_LIST="${OPENSTACK_SERVICE_LIST} ${item_to_check}"
+    fi
+  done
+fi
+
 # Iterate through the service file
 for repo in $(grep 'git_repo\:' ${SERVICE_FILE}); do
 
@@ -86,6 +127,7 @@ for repo in $(grep 'git_repo\:' ${SERVICE_FILE}); do
 
     # If the repo is in the specified list, then action the additional updates
     if [[ "${OPENSTACK_SERVICE_LIST}" =~ "${repo_name}" ]]; then
+
       os_repo_tmp_path="/tmp/os_${repo_name}"
       osa_repo_tmp_path="/tmp/osa_${repo_name}"
 
@@ -107,50 +149,71 @@ for repo in $(grep 'git_repo\:' ${SERVICE_FILE}); do
             git checkout --quiet origin/${OSA_BRANCH}
           popd > /dev/null
 
-          # Update the policy files
-          if [ "${repo_name}" != "gnocchi" ] && [ "${repo_name}" != "ceilometer" ]; then
-            find ${os_repo_tmp_path}/etc -name "policy.json" -exec \
-              cp {} "${osa_repo_tmp_path}/templates/policy.json.j2" \;
-          fi
+          # We have implemented tooling to dynamically fetch the
+          # api-paste and other static/template files from these
+          # repositories, so skip trying to update their templates
+          # and static files.
+          static_file_repo_skip_list=( ceilometer gnocchi )
 
-          # Tweak the paste files for any hmac key entries
-          find ${os_repo_tmp_path}/etc -name "*[_-]paste.ini" -exec \
-            sed -i.bak "s|hmac_keys = SECRET_KEY|hmac_keys = {{ ${repo_name}_profiler_hmac_key }}|" {} \;
+          # Check if this repo is in the static file skip list
+          skip_this_repo="no"
+          for skip_list_item in "${static_file_repo_skip_list[@]}"; do
+            if [[ "${repo_name}" == "${skip_list_item}" ]]; then
+              skip_this_repo="yes"
+            fi
+          done
 
-          # Tweak the barbican paste file to support keystone auth
-          if [ "${repo_name}" = "barbican" ]; then
+          if [[ "${skip_this_repo}" != "yes" ]] && [[ -e "${os_repo_tmp_path}/etc" ]]; then
+
+            # Update the policy files
+            if [ "${repo_name}" != "gnocchi" ] && [ "${repo_name}" != "ceilometer" ]; then
+              find ${os_repo_tmp_path}/etc -name "policy.json" -exec \
+                cp {} "${osa_repo_tmp_path}/templates/policy.json.j2" \;
+            fi
+
+            # Tweak the paste files for any hmac key entries
             find ${os_repo_tmp_path}/etc -name "*[_-]paste.ini" -exec \
-              sed -i.bak 's|\/v1\: barbican-api-keystone|\/v1\: {{ (barbican_keystone_auth \| bool) \| ternary('barbican-api-keystone', 'barbican_api') }}|'{} \;
-          fi
+              sed -i.bak "s|hmac_keys = SECRET_KEY|hmac_keys = {{ ${repo_name}_profiler_hmac_key }}|" {} \;
 
-          if [ "${repo_name}" != "gnocchi" ] && [ "${repo_name}" != "ceilometer" ]; then
+            # Tweak the barbican paste file to support keystone auth
+            if [ "${repo_name}" = "barbican" ]; then
+              find ${os_repo_tmp_path}/etc -name "*[_-]paste.ini" -exec \
+                sed -i.bak "s|\/v1\: barbican-api-keystone|\/v1\: {{ (barbican_keystone_auth \| bool) \| ternary('barbican-api-keystone', 'barbican_api') }}|" {} \;
+            fi
+
             # Update the paste files
             find ${os_repo_tmp_path}/etc -name "*[_-]paste.ini" -exec \
               bash -c "name=\"{}\"; cp \${name} \"${osa_repo_tmp_path}/templates/\$(basename \${name}).j2\"" \;
+
+            # Update the yaml files for Heat
+            if [ "${repo_name}" = "heat" ]; then
+              find ${os_repo_tmp_path}/etc -name "*.yaml" -exec \
+                bash -c "name=\"{}\"; cp \${name} \"${osa_repo_tmp_path}/templates/\$(echo \${name} | rev | cut -sd / -f -2 | rev).j2\"" \;
+            fi
           fi
 
-          # Tweak the rootwrap conf filters_path (for neutron only)
-          if [ "${repo_name}" = "neutron" ]; then
+          # We have to check for rootwrap files in *all* service repositories
+          # as we have no dynamic way of fetching them at this stage.
+          if [[ -e "${os_repo_tmp_path}/etc" ]]; then
+
+            # Tweak the rootwrap conf filters_path (for neutron only)
+            if [ "${repo_name}" = "neutron" ]; then
+              find ${os_repo_tmp_path}/etc -name "rootwrap.conf" -exec \
+                sed -i.bak "s|filters_path=/etc/neutron|filters_path={{ ${repo_name}_conf_dir }}|" {} \;
+            fi
+
+            # Tweak the rootwrap conf exec_dirs
             find ${os_repo_tmp_path}/etc -name "rootwrap.conf" -exec \
-              sed -i.bak "s|filters_path=/etc/neutron|filters_path={{ ${repo_name}_conf_dir }}|" {} \;
-          fi
+              sed -i.bak "s|exec_dirs=|exec_dirs={{ ${repo_name}_bin }},|" {} \;
 
-          # Tweak the rootwrap conf exec_dirs
-          find ${os_repo_tmp_path}/etc -name "rootwrap.conf" -exec \
-            sed -i.bak "s|exec_dirs=|exec_dirs={{ ${repo_name}_bin }},|" {} \;
+            # Update the rootwrap conf files
+            find ${os_repo_tmp_path}/etc -name "rootwrap.conf" -exec \
+              cp {} "${osa_repo_tmp_path}/templates/rootwrap.conf.j2" \;
 
-          # Update the rootwrap conf files
-          find ${os_repo_tmp_path}/etc -name "rootwrap.conf" -exec \
-            cp {} "${osa_repo_tmp_path}/templates/rootwrap.conf.j2" \;
-
-          # Update the rootwrap filters
-          find ${os_repo_tmp_path}/etc -name "*.filters" -exec \
-            bash -c "name=\"{}\"; cp \${name} \"${osa_repo_tmp_path}/files/rootwrap.d/\$(basename \${name})\"" \;
-
-          # Update the yaml files for Heat
-          if [ "${repo_name}" = "heat" ]; then
-            find ${os_repo_tmp_path}/etc -name "*.yaml" -exec \
-              bash -c "name=\"{}\"; cp \${name} \"${osa_repo_tmp_path}/templates/\$(echo \${name} | rev | cut -sd / -f -2 | rev).j2\"" \;
+            # Update the rootwrap filters
+            mkdir -p ${osa_repo_tmp_path}/files/rootwrap.d
+            find ${os_repo_tmp_path}/etc -name "*.filters" -exec \
+              bash -c "name=\"{}\"; cp \${name} \"${osa_repo_tmp_path}/files/rootwrap.d/\$(basename \${name})\"" \;
           fi
 
           # Switch into the OSA git directory to work with it

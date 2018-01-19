@@ -209,3 +209,44 @@ OpenStack-CI through the following jobs:
 
   While this script is primarily developed and maintained for use in
   OpenStack-CI, it can be used in other environments.
+
+Dependency Updates
+^^^^^^^^^^^^^^^^^^
+
+The dependencies for OpenStack-Ansible are updated approximately every two
+weeks through the use of ``scripts/sources-branch-updater.sh``. This script
+updates all pinned SHA's for OpenStack services, OpenStack-Ansible roles
+and other python dependencies which are not handles by the OpenStack global
+requirements management process. This script also handles the updating of
+the statically held templates/files in each role to ensure that they are
+always up to date. Finally, it also does a minor version increment of the
+value for ``openstack_release``.
+
+The update script is used as follows:
+
+.. parsed-literal::
+
+   # change directory to the openstack-ansible checkout
+   cd ~/code/openstack-ansible
+
+   # create the local branch for the update
+   git checkout -b sha-update
+
+   # execute the script for all openstack services
+   ./scripts/sources-branch-updater.sh -b stable/|current_release_branch_name| -o stable/|current_release_branch_name|
+
+   # execute the script for gnocchi
+   ./scripts/sources-branch-updater.sh -s playbooks/defaults/repo_packages/gnocchi.yml -b stable/3.1 -o stable/|current_release_branch_name|
+
+   # commit the changes
+   new_version=$(awk '/openstack_release/ {print $2}' playbooks/inventory/group_vars/all.yml | head -n 1)
+   git add --all
+   git commit -a -m "Update all SHAs for ${new_version}" \
+   -m "This patch updates all the roles to the latest available stable
+   SHA's, copies the release notes from the updated roles into the
+   integrated repo, updates all the OpenStack Service SHA's, and
+   updates the appropriate python requirements pins.
+
+   # push the changes up to gerrit
+   git review
+
