@@ -136,6 +136,7 @@
       nova_spicehtml5_git_repo: "{{ openstack_repo_git_url }}/spice-html5"
       nova_spicehtml5_git_install_branch: "{{ spicehtml5_git_install_branch }}"
       nova_management_address: "{{ management_address }}"
+      nova_cinder_rbd_inuse: "{{ hostvars['localhost']['nova_cinder_rbd_inuse'] }}"
 
     - role: "openstack_openrc"
       tags:
