@@ -162,13 +162,14 @@ function main {
     pre_flight
     check_for_current
 
-    "${SCRIPTS_PATH}/bootstrap-ansible.sh"
+    # ANSIBLE_INVENTORY location has changed between P and Q, so we ensure
+    # we don't point to previous inventory.
+    unset ANSIBLE_INVENTORY
 
-    # Unset environment variables used by the override_folder
-    # plugin to set paths for group and host vars since the
-    # default locations have changed between Ocata and Pike.
-    unset GROUP_VARS_PATH
-    unset HOST_VARS_PATH
+    # Archive previous version artifacts
+    tar zcf /openstack/previous-ansible_`date +%F_%H%M`.tar.gz /etc/openstack_deploy /etc/ansible/ /usr/local/bin/openstack-ansible.rc
+
+    "${SCRIPTS_PATH}/bootstrap-ansible.sh"
 
     pushd ${MAIN_PATH}/playbooks
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/ansible_fact_cleanup.yml")
@@ -180,15 +181,16 @@ function main {
         RUN_TASKS+=("setup-hosts.yml --limit '!galera_all'")
         # add new container config to galera containers but don't restart
         RUN_TASKS+=("lxc-containers-create.yml -e 'lxc_container_allow_restarts=false' --limit galera_all")
-        RUN_TASKS+=("haproxy-install.yml")
-	# rebuild the repo servers
+        # setup infra
+        RUN_TASKS+=("unbound-install.yml")
         RUN_TASKS+=("repo-install.yml")
+        RUN_TASKS+=("haproxy-install.yml")
+        RUN_TASKS+=("repo-use.yml")
         # explicitly perform mariadb upgrade
         RUN_TASKS+=("galera-install.yml -e 'galera_upgrade=true'")
         # explicitly perform controlled galera cluster restart
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/galera-cluster-rolling-restart.yml")
         # individually run each of the remaining plays from setup-infrastructure
-        RUN_TASKS+=("unbound-install.yml")
         RUN_TASKS+=("memcached-install.yml")
         RUN_TASKS+=("rabbitmq-install.yml -e 'rabbitmq_upgrade=true'")
         RUN_TASKS+=("etcd-install.yml")
