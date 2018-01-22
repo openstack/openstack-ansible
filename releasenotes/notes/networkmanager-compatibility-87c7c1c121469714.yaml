@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    The ``lxcbr0`` bridge now allows NetworkManager to control it, which
+    allows for networks to start in the correct order when the system boots.
+    In addition, the ``NetworkManager-wait-online.service`` is enabled to
+    ensure that all services that require networking to function, such as
+    ``keepalived``, will only start when network configuration is complete.
+    These changes are only applied if a deployer is actively using
+    NetworkManager in their environment.
