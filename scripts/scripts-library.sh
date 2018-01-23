@@ -174,25 +174,27 @@ function gate_job_exit_tasks {
 }
 
 function run_dstat {
-  case ${DISTRO_ID} in
-    centos|rhel)
-        # Prefer dnf over yum for CentOS.
-        which dnf &>/dev/null && RHT_PKG_MGR='dnf' || RHT_PKG_MGR='yum'
-        $RHT_PKG_MGR -y install dstat
-        ;;
-    ubuntu)
-        apt-get update
-        DEBIAN_FRONTEND=noninteractive apt-get -y install dstat
-        ;;
-    opensuse)
-        zypper -n install -l dstat
-        ;;
-  esac
+  if [ "$GATE_EXIT_RUN_DSTAT" == true ]; then
+    case ${DISTRO_ID} in
+      centos|rhel)
+          # Prefer dnf over yum for CentOS.
+          which dnf &>/dev/null && RHT_PKG_MGR='dnf' || RHT_PKG_MGR='yum'
+          $RHT_PKG_MGR -y install dstat
+          ;;
+      ubuntu)
+          apt-get update
+          DEBIAN_FRONTEND=noninteractive apt-get -y install dstat
+          ;;
+      opensuse)
+          zypper -n install -l dstat
+          ;;
+    esac
 
-  # https://stackoverflow.com/a/20338327 executing in ()& decouples the dstat
-  # process from scripts-library to prevent hung builds if dstat fails to exit
-  # for any reason.
-  (dstat -tcmsdn --top-cpu --top-mem --top-bio --nocolor --output /openstack/log/instance-info/dstat.csv 3 > /openstack/log/instance-info/dstat.log)&
+    # https://stackoverflow.com/a/20338327 executing in ()& decouples the dstat
+    # process from scripts-library to prevent hung builds if dstat fails to exit
+    # for any reason.
+    (dstat -tcmsdn --top-cpu --top-mem --top-bio --nocolor --output /openstack/log/instance-info/dstat.csv 3 > /openstack/log/instance-info/dstat.log)&
+  fi
 }
 
 function generate_dstat_charts {
