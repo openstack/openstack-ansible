@@ -1,0 +1,6 @@
+---
+features:
+  - HAProxy services that use backend nodes that are not
+    in the Ansible inventory can now be specified manually
+    by setting ``haproxy_backend_nodes`` to a list of
+    ``name`` and ``ip_addr`` settings.
