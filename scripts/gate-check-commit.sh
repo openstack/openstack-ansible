@@ -77,10 +77,7 @@ info_block "Checking for required libraries." 2> /dev/null || source "${OSA_CLON
 # Log some data about the instance and the rest of the system
 log_instance_info
 
-GATE_EXIT_RUN_DSTAT="${GATE_EXIT_RUN_DSTAT:-true}"
-if [ "$GATE_EXIT_RUN_DSTAT" == true ]; then
-  run_dstat
-fi
+run_dstat || true
 
 # Get minimum disk size
 DATA_DISK_MIN_SIZE="$((1024**3 * $(awk '/bootstrap_host_data_disk_min_size/{print $2}' "${OSA_CLONE_DIR}/tests/roles/bootstrap-host/defaults/main.yml") ))"
