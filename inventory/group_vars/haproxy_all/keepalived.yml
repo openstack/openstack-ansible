@@ -30,11 +30,14 @@ keepalived_sync_groups:
     ##a location in that case.
     src_notify_script: "{{ playbook_dir }}/../scripts/keepalived_haproxy_notifications.sh"
 
+keepalived_global_defs:
+  - "enable_script_security"
+
 keepalived_scripts:
   haproxy_check_script:
-    check_script: "kill -0 `cat /var/run/haproxy.pid`"
+    check_script: "/bin/kill -0 `cat /var/run/haproxy.pid`"
   pingable_check_script:
-    check_script: "ping -c {{ keepalived_ping_count }} {{ keepalived_ping_address }} 1>&2"
+    check_script: "/bin/ping -c {{ keepalived_ping_count }} {{ keepalived_ping_address }} 1>&2"
     interval: "{{ keepalived_ping_interval }}"
     fall: 2
     rise: 4
