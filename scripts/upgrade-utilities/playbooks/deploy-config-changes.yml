@@ -72,8 +72,6 @@
           backrefs: "{{ item.backrefs | default('no') }}"
           state: present
         with_items:
-          - key: "default_bind_mount_logs"
-            value: "false"
           # Replace "10.0" with "10.1" within galera_repo_url
           - key: "galera_repo_url"
             regexp: '^galera_repo_url: (https?://.*10)\.0(.*)$'
