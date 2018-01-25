@@ -647,7 +647,10 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
                 cphg = container.get('physical_host_group')
 
                 # user_config data from the container physical host group
-                phg = user_config[cphg][container_host]
+                if user_config[cphg].get(container_host) is not None:
+                    phg = user_config[cphg][container_host]
+                else:
+                    phg = user_config[cphg][physical_host]
                 network['address'] = phg['ip']
 
         if is_ssh_address is True:
