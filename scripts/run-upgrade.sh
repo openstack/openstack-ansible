@@ -173,13 +173,13 @@ function main {
         RUN_TASKS+=("setup-hosts.yml --limit '!galera_all'")
         # add new container config to galera containers but don't restart
         RUN_TASKS+=("lxc-containers-create.yml -e 'lxc_container_allow_restarts=false' --limit galera_all")
-        RUN_TASKS+=("haproxy-install.yml")
-	# rebuild the repo servers
+        # rebuild the repo servers
         RUN_TASKS+=("repo-install.yml")
         # explicitly perform mariadb upgrade
         RUN_TASKS+=("galera-install.yml -e 'galera_upgrade=true'")
         # explicitly perform controlled galera cluster restart
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/galera-cluster-rolling-restart.yml")
+        RUN_TASKS+=("haproxy-install.yml")
         # individually run each of the remaining plays from setup-infrastructure
         RUN_TASKS+=("unbound-install.yml")
         RUN_TASKS+=("memcached-install.yml")

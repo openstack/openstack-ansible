@@ -140,6 +140,25 @@ This command is a subset of the host setup playbook, limited to the
 updated but a restart for any changes to take effect is deferred to another
 playbook (see the next section).
 
+Update repository servers
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Update the configuration of the repository servers and build new packages
+required by the |current_release_formal_name| release.
+
+.. code-block:: console
+
+    # openstack-ansible repo-install.yml
+
+Upgrade the MariaDB version
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Upgrade MariaDB to the most recent 10.x minor release across the cluster.
+
+.. code-block:: console
+
+    # openstack-ansible galera-install.yml -e 'galera_upgrade=true'
+
 Perform a controlled rolling restart of the Galera containers
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -161,25 +180,6 @@ Install and update any new or changed HAProxy service configurations.
 .. code-block:: console
 
     # openstack-ansible haproxy-install.yml
-
-Update repository servers
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Update the configuration of the repository servers and build new packages
-required by the |current_release_formal_name| release.
-
-.. code-block:: console
-
-    # openstack-ansible repo-install.yml
-
-Upgrade the MariaDB version
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Upgrade MariaDB to the most recent 10.x minor release across the cluster.
-
-.. code-block:: console
-
-    # openstack-ansible galera-install.yml -e 'galera_upgrade=true'
 
 Upgrade the infrastructure
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
