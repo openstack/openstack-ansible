@@ -1,0 +1,11 @@
+---
+features:
+  - When using Glance and NFS the NFS mount point will now be managed using a
+    systemd mount unit file. This change ensures the deployment of glance is not
+    making potentially system impacting changes to the ``/etc/fstab`` and
+    modernizes how we deploy glance when using shared storage.
+  - New variables have been added to the glance role allowing a deployer to set
+    the UID and GID of the glance user. The new options are,
+    ``glance_system_user_uid`` and ``glance_system_group_uid``. These options
+    are useful when deploying glance with shared storage as the back-end for
+    images and will only set the UID and GID of the glance user when defined.

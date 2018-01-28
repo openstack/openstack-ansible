@@ -1,0 +1,12 @@
+---
+deprecations:
+  - |
+    In OSA deployments prior to Queens, if ``repo_git_cache_dir`` was set
+    to a folder which existed on a repo container host then that folder
+    would be symlinked to the repo container bind mount instead of
+    synchronising its contents to the repo container. This functionality
+    is deprecated in Queens and will be removed in Rocky. The ability to
+    make use of the git cache still exists, but the folder contents will
+    be synchronised from the deploy host to the repo container. If you
+    have made use of the symlink functionality previously, please move
+    the contents to a standard folder and remove the symlink.

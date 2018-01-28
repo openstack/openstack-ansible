@@ -1,0 +1,8 @@
+---
+other:
+  - |
+    The variables ``nova_scheduler_use_baremetal_filters`` and
+    ``nova_metadata_host`` have been removed, matching upstream nova changes.
+    The ``nova_virt_types`` dict no longer needs the
+    ``nova_scheduler_use_baremetal_filters`` and ``nova_firewall_driver``
+    keys as well.
