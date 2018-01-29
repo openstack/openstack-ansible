@@ -26,6 +26,8 @@ Vagrant.configure(2) do |config|
     v.cpus = 4
   end
 
+  config.vm.synced_folder ".", "/vagrant", type: "rsync"
+
   # Configure the disk size.
   disk_size = "60GB"
 
