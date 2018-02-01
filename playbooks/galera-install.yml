@@ -25,7 +25,7 @@
         log_dirs:
           - src: "/openstack/log/{{ inventory_hostname }}-mysql_logs"
             dest: "/var/log/mysql_logs"
-    - include: common-tasks/os-lxc-container-setup.yml
+    - include: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       vars:
         list_of_bind_mounts: "{{ galera_container_bind_mounts }}"
         extra_container_config_no_restart:

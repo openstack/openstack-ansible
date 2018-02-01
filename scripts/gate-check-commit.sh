@@ -44,7 +44,7 @@ export ANSIBLE_ROLE_FETCH_MODE="git-clone"
 export ANSIBLE_LOG_DIR="/openstack/log/ansible-logging"
 
 # Set the scenario to execute based on the first CLI parameter
-export SCENARIO=${1:-"aio"}
+export SCENARIO=${1:-"aio_lxc"}
 
 # Set the action base on the second CLI parameter
 # Actions available: [ 'deploy', 'upgrade' ]

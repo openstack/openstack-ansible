@@ -194,6 +194,9 @@ bridge_iptables_rules: |
   up /sbin/iptables -t nat -A POSTROUTING -o {{ bootstrap_host_public_interface }} -j MASQUERADE
   down /sbin/iptables -t nat -D POSTROUTING -o {{ bootstrap_host_public_interface }} -j MASQUERADE
 
+# Set the container technology in service. Options are lxc.
+container_tech: "lxc"
+
 ## Extra storage
 # An AIO may optionally be built using a second storage device. If a
 # secondary disk device to use is not specified, then the AIO will be

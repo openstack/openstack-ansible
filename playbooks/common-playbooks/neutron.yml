@@ -29,7 +29,7 @@
         network_address: "tunnel_address"
 
     - name: Configure container (neutron-agent)
-      include: ../common-tasks/os-lxc-container-setup.yml
+      include: "../common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       vars:
         aa_profile: "unconfined"
         list_of_bind_mounts:
@@ -43,7 +43,7 @@
         - "'neutron_agent' in group_names"
 
     - name: Configure container (other services)
-      include: ../common-tasks/os-lxc-container-setup.yml
+      include: "../common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       when:
         - "'neutron_agent' not in group_names"
 

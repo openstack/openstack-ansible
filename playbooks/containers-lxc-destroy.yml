@@ -1,0 +1,64 @@
+---
+# Copyright 2016, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Destroy lxc containers
+  hosts: "{{ container_group|default('all_containers') }}"
+  gather_facts: false
+  max_fail_percentage: 20
+  user: root
+  tasks:
+    - name: Destroy a container
+      lxc_container:
+        name: "{{ container_name }}"
+        state: "absent"
+      delegate_to: "{{ physical_host }}"
+      when:
+        - force_containers_destroy | bool
+        - force_containers_data_destroy | bool
+    - name: Destroy container service directories
+      file:
+        path: "{{ item }}"
+        state: "absent"
+      with_items:
+        - "/var/lib/lxc/{{ container_name }}"
+      delegate_to: "{{ physical_host }}"
+      when:
+        - force_containers_destroy | bool
+    - name: Destroy container data
+      file:
+        path: "{{ item }}"
+        state: "absent"
+      with_items:
+        - "/openstack/{{ container_name }}"
+        - "/openstack/backup/{{ container_name }}"
+        - "/openstack/log/{{ container_name }}"
+        - "/var/log/lxc/lxc-{{ container_name }}.log"
+      delegate_to: "{{ physical_host }}"
+      when:
+        - force_containers_destroy | bool
+        - force_containers_data_destroy | bool
+  vars_prompt:
+    - name: "force_containers_destroy"
+      prompt: "Are you sure you want to destroy the LXC containers?"
+      default: "no"
+      private: no
+      when: force_containers_destroy is undefined
+    - name: "force_containers_data_destroy"
+      prompt: "Are you sure you want to destroy the LXC container data?"
+      default: "no"
+      private: no
+      when: force_containers_data_destroy is undefined
+  tags:
+    - lxc-containers-destroy

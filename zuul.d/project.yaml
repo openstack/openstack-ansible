@@ -18,10 +18,10 @@
     check:
       jobs:
         - openstack-ansible-linters
-        - openstack-ansible-varstest-aio-ubuntu-xenial
-        - openstack-ansible-deploy-aio-centos-7
-        - openstack-ansible-deploy-aio-opensuse-423
-        - openstack-ansible-deploy-aio-ubuntu-xenial
+        - openstack-ansible-varstest-aio_lxc-ubuntu-xenial
+        - openstack-ansible-deploy-aio_lxc-centos-7
+        - openstack-ansible-deploy-aio_lxc-opensuse-423
+        - openstack-ansible-deploy-aio_lxc-ubuntu-xenial
         - openstack-ansible-deploy-ceph-centos-7
         - openstack-ansible-deploy-ceph-ubuntu-xenial
         - openstack-ansible-deploy-ceph-opensuse-423
@@ -31,21 +31,21 @@
     gate:
       jobs:
         - openstack-ansible-linters
-        - openstack-ansible-varstest-aio-ubuntu-xenial
-        - openstack-ansible-deploy-aio-ubuntu-xenial
+        - openstack-ansible-varstest-aio_lxc-ubuntu-xenial
         # Removed temporarily until
         # https://bugs.launchpad.net/cinder/+bug/1737015 is fixed
         # - openstack-ansible-deploy-ceph-ubuntu-xenial
+        - openstack-ansible-deploy-aio_lxc-ubuntu-xenial
     periodic:
       jobs:
-        - openstack-ansible-deploy-aio-centos-7
-        - openstack-ansible-deploy-aio-opensuse-423
-        - openstack-ansible-deploy-aio-ubuntu-xenial
+        - openstack-ansible-deploy-aio_lxc-centos-7
+        - openstack-ansible-deploy-aio_lxc-opensuse-423
+        - openstack-ansible-deploy-aio_lxc-ubuntu-xenial
         - openstack-ansible-deploy-ceph-centos-7
         - openstack-ansible-deploy-ceph-ubuntu-xenial
         - openstack-ansible-deploy-translations-ubuntu-xenial
-        - openstack-ansible-upgrade-aio-centos-7
-        - openstack-ansible-upgrade-aio-opensuse-423
-        - openstack-ansible-upgrade-aio-ubuntu-xenial
+        - openstack-ansible-upgrade-aio_lxc-centos-7
+        - openstack-ansible-upgrade-aio_lxc-opensuse-423
+        - openstack-ansible-upgrade-aio_lxc-ubuntu-xenial
         - openstack-ansible-upgrade-ceph-centos-7
         - openstack-ansible-upgrade-ceph-ubuntu-xenial

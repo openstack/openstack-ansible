@@ -21,7 +21,7 @@
   max_fail_percentage: 20
   user: root
   pre_tasks:
-    - include: common-tasks/os-lxc-container-setup.yml
+    - include: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
     - include: common-tasks/os-log-dir-setup.yml
       vars:
         log_dirs:
