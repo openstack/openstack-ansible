@@ -195,11 +195,13 @@ The following table lists the commands to restart an OpenStack service.
    * - OpenStack service
      - Commands
    * - Image service
-     - .. code-block: console
+     - .. code-block:: console
+
           # service glance-registry restart
           # service glance-api restart
    * - Compute service (controller node)
-     - .. code-block: console
+     - .. code-block:: console
+
           # service nova-api-os-compute restart
           # service nova-consoleauth restart
           # service nova-scheduler restart
@@ -208,26 +210,31 @@ The following table lists the commands to restart an OpenStack service.
           # service nova-novncproxy restart (if using novnc)
           # service nova-spicehtml5proxy restart (if using spice)
    * - Compute service (compute node)
-     - .. code-block: console
+     - .. code-block:: console
+
           # service nova-compute restart
    * - Networking service
-     - .. code-block: console
+     - .. code-block:: console
+
           # service neutron-server restart
           # service neutron-dhcp-agent restart
           # service neutron-l3-agent restart
           # service neutron-metadata-agent restart
           # service neutron-linuxbridge-agent restart
    * - Networking service (compute node)
-     - .. code-block: console
+     - .. code-block:: console
+
           # service neutron-linuxbridge-agent restart
    * - Block Storage service
-     - .. code-block: console
+     - .. code-block:: console
+
           # service cinder-api restart
           # service cinder-backup restart
           # service cinder-scheduler restart
           # service cinder-volume restart
    * - Object Storage service
-     - .. code-block: console
+     - .. code-block:: console
+
           # service swift-account-auditor restart
           # service swift-account-server restart
           # service swift-account-reaper restart
