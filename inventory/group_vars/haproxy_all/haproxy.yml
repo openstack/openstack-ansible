@@ -50,7 +50,7 @@ haproxy_default_services:
       haproxy_timeout_client: 5000s
       haproxy_timeout_server: 5000s
       haproxy_backend_options:
-        - "httpchk HEAD /"
+        - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
       haproxy_whitelist_networks: "{{ haproxy_galera_whitelist_networks }}"
       haproxy_service_enabled: "{{ groups['galera_all'] is defined and groups['galera_all'] | length > 0 }}"
   - service:
@@ -70,7 +70,7 @@ haproxy_default_services:
       haproxy_port: 8181
       haproxy_balance_type: http
       haproxy_backend_options:
-        - "httpchk HEAD /"
+        - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
       haproxy_service_enabled: "{{ groups['repo_all'] is defined and groups['repo_all'] | length > 0 }}"
   - service:
       haproxy_service_name: repo_cache
@@ -80,7 +80,7 @@ haproxy_default_services:
       haproxy_port: "{{ repo_pkg_cache_port }}"
       haproxy_balance_type: http
       haproxy_backend_options:
-        - "httpchk HEAD /acng-report.html"
+        - "httpchk HEAD /acng-report.html HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
       haproxy_whitelist_networks: "{{ haproxy_repo_cache_whitelist_networks }}"
       haproxy_service_enabled: "{{ groups['repo_all'] is defined and groups['repo_all'] | length > 0 }}"
   - service:
@@ -90,7 +90,7 @@ haproxy_default_services:
       haproxy_port: 9292
       haproxy_balance_type: http
       haproxy_backend_options:
-        - "httpchk /healthcheck"
+        - "httpchk GET /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
       haproxy_service_enabled: "{{ groups['glance_api'] is defined and groups['glance_api'] | length > 0 }}"
   - service:
       haproxy_service_name: glance_registry
@@ -99,7 +99,7 @@ haproxy_default_services:
       haproxy_port: 9191
       haproxy_balance_type: http
       haproxy_backend_options:
-        - "httpchk /healthcheck"
+        - "httpchk GET /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
       haproxy_whitelist_networks: "{{ haproxy_glance_registry_whitelist_networks }}"
       haproxy_service_enabled: >-
         {{ groups['glance_registry'] is defined and
@@ -113,7 +113,7 @@ haproxy_default_services:
       haproxy_ssl: "{{ haproxy_ssl }}"
       haproxy_balance_type: http
       haproxy_backend_options:
-        - "httpchk /healthcheck"
+        - "httpchk GET /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
       haproxy_service_enabled: "{{ groups['gnocchi_all'] is defined and groups['gnocchi_all'] | length > 0 }}"
   - service:
       haproxy_service_name: heat_api_cfn
@@ -122,7 +122,7 @@ haproxy_default_services:
       haproxy_ssl: "{{ haproxy_ssl }}"
       haproxy_balance_type: http
       haproxy_backend_options:
-        - "httpchk HEAD /"
+        - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
       haproxy_service_enabled: "{{ groups['heat_api_cfn'] is defined and groups['heat_api_cfn'] | length > 0 }}"
   - service:
       haproxy_service_name: heat_api_cloudwatch
@@ -131,7 +131,7 @@ haproxy_default_services:
       haproxy_ssl: "{{ haproxy_ssl }}"
       haproxy_balance_type: http
       haproxy_backend_options:
-        - "httpchk HEAD /"
+        - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
       haproxy_service_enabled: "{{ groups['heat_api_cloudwatch'] is defined and groups['heat_api_cloudwatch'] | length > 0 }}"
   - service:
       haproxy_service_name: heat_api
@@ -140,7 +140,7 @@ haproxy_default_services:
       haproxy_ssl: "{{ haproxy_ssl }}"
       haproxy_balance_type: http
       haproxy_backend_options:
-        - "httpchk HEAD /"
+        - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
       haproxy_service_enabled: "{{ groups['heat_api'] is defined and groups['heat_api'] | length > 0 }}"
   - service:
       haproxy_service_name: keystone_service
@@ -149,7 +149,7 @@ haproxy_default_services:
       haproxy_ssl: "{{ haproxy_ssl }}"
       haproxy_balance_type: "http"
       haproxy_backend_options:
-        - "httpchk HEAD /"
+        - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
       haproxy_service_enabled: "{{ groups['keystone_all'] is defined and groups['keystone_all'] | length > 0 }}"
   - service:
       haproxy_service_name: keystone_admin
@@ -158,7 +158,7 @@ haproxy_default_services:
       haproxy_ssl: "{{ haproxy_ssl }}"
       haproxy_balance_type: "http"
       haproxy_backend_options:
-        - "httpchk HEAD /"
+        - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
       haproxy_whitelist_networks: "{{ haproxy_keystone_admin_whitelist_networks }}"
       haproxy_service_enabled: "{{ groups['keystone_all'] is defined and groups['keystone_all'] | length > 0 }}"
   - service:
@@ -168,7 +168,7 @@ haproxy_default_services:
       haproxy_ssl: "{{ haproxy_ssl }}"
       haproxy_balance_type: http
       haproxy_backend_options:
-        - "httpchk GET /"
+        - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
       haproxy_service_enabled: "{{ groups['neutron_server'] is defined and groups['neutron_server'] | length > 0 }}"
   - service:
       haproxy_service_name: nova_api_metadata
@@ -177,7 +177,7 @@ haproxy_default_services:
       haproxy_ssl: "{{ haproxy_ssl }}"
       haproxy_balance_type: http
       haproxy_backend_options:
-        - "httpchk HEAD /"
+        - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
       haproxy_whitelist_networks: "{{ haproxy_nova_metadata_whitelist_networks }}"
       haproxy_service_enabled: "{{ groups['nova_api_metadata'] is defined and groups['nova_api_metadata'] | length > 0 }}"
   - service:
@@ -187,7 +187,7 @@ haproxy_default_services:
       haproxy_port: 8774
       haproxy_balance_type: http
       haproxy_backend_options:
-        - "httpchk HEAD /"
+        - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
       haproxy_service_enabled: "{{ groups['nova_api_os_compute'] is defined and groups['nova_api_os_compute'] | length > 0 }}"
   - service:
       haproxy_service_name: nova_api_placement
@@ -196,7 +196,7 @@ haproxy_default_services:
       haproxy_port: 8780
       haproxy_balance_type: http
       haproxy_backend_options:
-        - "httpchk HEAD /"
+        - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
       haproxy_backend_httpcheck_options:
         - "expect status 401"
       haproxy_whitelist_networks: "{{ haproxy_nova_placement_whitelist_networks }}"
@@ -211,7 +211,7 @@ haproxy_default_services:
       haproxy_timeout_server: 60m
       haproxy_balance_alg: source
       haproxy_backend_options:
-        - "httpchk HEAD /"
+        - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
       haproxy_backend_httpcheck_options:
         - "expect status 404"
       haproxy_service_enabled: "{{ groups['nova_console'] is defined and groups['nova_console'] | length > 0 }}"
@@ -222,7 +222,7 @@ haproxy_default_services:
       haproxy_port: 8776
       haproxy_balance_type: http
       haproxy_backend_options:
-        - "httpchk HEAD /"
+        - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
       haproxy_service_enabled: "{{ groups['cinder_api'] is defined and groups['cinder_api'] | length > 0 }}"
   - service:
       haproxy_service_name: horizon
@@ -235,7 +235,7 @@ haproxy_default_services:
       haproxy_balance_type: http
       haproxy_balance_alg: source
       haproxy_backend_options:
-        - "httpchk HEAD /"
+        - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
       haproxy_service_enabled: "{{ groups['horizon_all'] is defined and groups['horizon_all'] | length > 0 }}"
   - service:
       haproxy_service_name: sahara_api
@@ -245,7 +245,7 @@ haproxy_default_services:
       haproxy_port: 8386
       haproxy_balance_type: http
       haproxy_backend_options:
-        - "httpchk /healthcheck"
+        - "httpchk GET /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
       haproxy_service_enabled: "{{ groups['sahara_api'] is defined and groups['sahara_api'] | length > 0 }}"
   - service:
       haproxy_service_name: swift_proxy
@@ -255,7 +255,7 @@ haproxy_default_services:
       haproxy_port: 8080
       haproxy_balance_type: http
       haproxy_backend_options:
-        - "httpchk /healthcheck"
+        - "httpchk GET /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
       haproxy_service_enabled: "{{ groups['swift_proxy'] is defined and groups['swift_proxy'] | length > 0 }}"
   - service:
       haproxy_service_name: aodh_api
@@ -264,7 +264,7 @@ haproxy_default_services:
       haproxy_port: 8042
       haproxy_balance_type: http
       haproxy_backend_options:
-        - "httpchk HEAD /"
+        - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
       haproxy_service_enabled: "{{ groups['aodh_api'] is defined and groups['aodh_api'] | length > 0 }}"
   - service:
       haproxy_service_name: ironic_api
@@ -273,7 +273,7 @@ haproxy_default_services:
       haproxy_port: 6385
       haproxy_balance_type: http
       haproxy_backend_options:
-        - "httpchk GET /"
+        - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
       haproxy_service_enabled: "{{ groups['ironic_api'] is defined and groups['ironic_api'] | length > 0 }}"
   - service:
       haproxy_service_name: rabbitmq_mgmt
@@ -282,7 +282,7 @@ haproxy_default_services:
       haproxy_port: 15672
       haproxy_balance_type: http
       haproxy_backend_options:
-        - "httpchk HEAD /"
+        - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
       haproxy_whitelist_networks: "{{ haproxy_rabbitmq_management_whitelist_networks }}"
       haproxy_service_enabled: "{{ groups['rabbitmq'] is defined and groups['rabbitmq'] | length > 0 }}"
   - service:
@@ -292,7 +292,7 @@ haproxy_default_services:
       haproxy_port: 9511
       haproxy_balance_type: http
       haproxy_backend_options:
-        - "httpchk GET /"
+        - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
       haproxy_service_enabled: "{{ groups['magnum_all'] is defined and groups['magnum_all'] | length > 0 }}"
   - service:
       haproxy_service_name: trove
@@ -301,7 +301,7 @@ haproxy_default_services:
       haproxy_port: 8779
       haproxy_balance_type: http
       haproxy_backend_options:
-        - "httpchk HEAD /"
+        - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
       haproxy_service_enabled: "{{ groups['trove_api'] is defined and groups['trove_api'] | length > 0 }}"
   - service:
       haproxy_service_name: barbican
@@ -310,7 +310,7 @@ haproxy_default_services:
       haproxy_port: 9311
       haproxy_balance_type: http
       haproxy_backend_options:
-        - "httpchk GET /"
+        - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
       haproxy_service_enabled: "{{ groups['barbican_api'] is defined and groups['barbican_api'] | length > 0 }}"
   - service:
       haproxy_service_name: designate_api
@@ -320,7 +320,7 @@ haproxy_default_services:
       haproxy_balance_type: http
       haproxy_backend_options:
         - "forwardfor"
-        - "httpchk /versions"
+        - "httpchk GET /versions HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
         - "httplog"
       haproxy_service_enabled: "{{ groups['designate_api'] is defined and groups['designate_api'] | length > 0 }}"
   - service:
@@ -330,7 +330,7 @@ haproxy_default_services:
       haproxy_port: 9876
       haproxy_balance_type: http
       haproxy_backend_options:
-        - "httpchk GET /"
+        - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
       haproxy_whitelist_networks: "{{ haproxy_octavia_whitelist_networks }}"
       haproxy_service_enabled: "{{ groups['octavia_all'] is defined and groups['octavia_all'] | length > 0 }}"
   - service:
@@ -341,7 +341,7 @@ haproxy_default_services:
       haproxy_balance_type: http
       haproxy_backend_options:
         - "forwardfor"
-        - "httpchk"
+        - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
         - "httplog"
       haproxy_service_enabled: "{{ groups['tacker_all'] is defined and groups['tacker_all'] | length > 0 }}"
   - service:
