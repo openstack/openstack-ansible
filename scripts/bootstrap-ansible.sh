@@ -174,6 +174,11 @@ ${PIP_COMMAND} install ${PIP_OPTS} -r requirements.txt ${ANSIBLE_PACKAGE} \
 # Install our osa_toolkit code from the current checkout
 $PIP_COMMAND install -e .
 
+# Add SELinux support to the venv
+if [ -d "/usr/lib64/python2.7/site-packages/selinux/" ]; then
+  rsync -avX /usr/lib64/python2.7/site-packages/selinux/ /opt/ansible-runtime/lib64/python2.7/selinux/
+fi
+
 # Ensure that Ansible binaries run from the venv
 pushd /opt/ansible-runtime/bin
   for ansible_bin in $(ls -1 ansible*); do
