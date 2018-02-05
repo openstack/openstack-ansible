@@ -23,8 +23,6 @@ keystone_system_user_name: keystone
 
 keystone_external_ssl: "{{ openstack_external_ssl }}"
 
-keystone_cache_backend_argument: "url:{% for host in groups['memcached'] %}{{ hostvars[host]['container_address'] }}{% if not loop.last %},{% endif %}{% endfor %}:{{ memcached_port }}"
-keystone_memcached_servers: "{% for host in groups['keystone_all'] %}{{ hostvars[host]['container_address'] }}:{{ memcached_port }}{% if not loop.last %},{% endif %}{% endfor %}"
 keystone_service_in_ldap: "{{ service_ldap_backend_enabled }}"
 
 # Ensure that the package state matches the global setting
