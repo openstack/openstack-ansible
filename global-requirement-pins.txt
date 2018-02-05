@@ -17,5 +17,7 @@ gnocchiclient>=2.2.0,<3.0.0
 ### These pins are updated through the sources-branch-updater script ###
 ###
 pip==9.0.1
+### Do not bump to latest, due to repo-build failure on felix package
+### https://github.com/projectcalico/felix/blob/1.4.4/setup.py
 setuptools==33.1.1
 wheel==0.29.0
