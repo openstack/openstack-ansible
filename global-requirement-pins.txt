@@ -12,6 +12,14 @@
 # https://github.com/openstack/ceilometer/blob/stable/newton/setup.cfg#L36
 gnocchiclient>=2.2.0,<3.0.0
 
+# Due to changes in LXD the pylxd library version set in the
+# openstack/requirements repo upper-constraints file no longer
+# works. We override that constraint with a newer release.
+# See:
+#  https://bugs.launchpad.net/ubuntu/+source/python-pylxd/+bug/1736454
+#  https://launchpad.net/bugs/1746068
+pylxd===2.0.6
+
 ###
 ### These are pinned to ensure exactly the same behaviour forever!   ###
 ### These pins are updated through the sources-branch-updater script ###

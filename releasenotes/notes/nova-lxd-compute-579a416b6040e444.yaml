@@ -1,0 +1,17 @@
+---
+issues:
+  - |
+    LXD 2.0.11 grew a new feature ('description' tag for a container)
+    and this has been added to the stable Ubuntu Xenial 16.04 release.
+    Unfortunately, pylxd 2.0.5 can't handle this extra attribute and
+    crashes out.
+
+    For newton releases 14.2.14 and earlier, we recommend pinning the
+    LXD version for all newton deployments at a version less than
+    2.0.11. For newton releases 14.2.15 onwards, the newer release of
+    LXD should be usable again.
+
+    Related-Bugs:
+
+    * https://bugs.launchpad.net/ubuntu/+source/python-pylxd/+bug/1736454
+    * https://bugs.launchpad.net/nova-lxd/+bug/1746068
