@@ -149,7 +149,7 @@ Before installing the infrastructure and OpenStack, update the host machines.
 
 .. code-block:: console
 
-    # openstack-ansible setup-hosts.yml --limit '!galera_all'
+    # openstack-ansible setup-hosts.yml --limit '!galera_all:!neutron_agent:!rabbitmq_all'
 
 This command is the same setting up hosts on a new installation. The
 ``galera_all`` host group is excluded to prevent reconfiguration and
@@ -163,7 +163,7 @@ Update the Galera container configuration independently.
 .. code-block:: console
 
     # openstack-ansible lxc-containers-create.yml -e \
-    'lxc_container_allow_restarts=false' --limit galera_all
+    'lxc_container_allow_restarts=false' --limit 'galera_all:neutron_agent:rabbitmq_all'
 
 This command is a subset of the host setup playbook, limited to the
 ``galera_all`` host group. The configuration of those containers is
