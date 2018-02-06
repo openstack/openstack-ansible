@@ -89,7 +89,7 @@
         {% endif %}
       with_dict: "{{ cinder_backends | default({}) }}"
       when:
-        - container_tech == 'lxc'
+        - container_tech | default('lxc') == 'lxc'
         - physical_host != container_name
         - cinder_backend_lvm_inuse | bool
       delegate_to: "{{ physical_host }}"
