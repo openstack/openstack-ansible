@@ -1,0 +1,18 @@
+---
+issues:
+  - |
+    For all pike releases up to 16.0.7 when executing the os-nova-install.yml
+    playbook the ``nova-novncproxy`` and ``nova-spicehtml5proxy`` services will
+    fail. The workaround to resolve this issue is to restart the services.
+
+    .. code-block:: shell-session
+
+      cd /opt/rpc-openstack/openstack-ansible/playbooks
+      # start the service again
+      # replace nova-novncproxy with nova-spicehtml5proxy when appropriate
+      ansible nova_console -m service -a 'name=nova-novncproxy state=restarted'
+      # set the appropriate facts to prevent the playbook trying
+      # to reload it again when the playbook is run again
+      ansible nova_console -m ini_file -a 'dest=/etc/ansible/facts.d/openstack_ansible.fact section=nova option=need_service_restart value=False'
+
+    This issue has been resolved in the 16.0.8 release.
