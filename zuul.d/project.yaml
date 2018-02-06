@@ -30,9 +30,7 @@
       jobs:
         - openstack-ansible-linters
         - openstack-ansible-varstest-aio_lxc-ubuntu-xenial
-        # Removed temporarily until
-        # https://bugs.launchpad.net/cinder/+bug/1737015 is fixed
-        # - openstack-ansible-deploy-ceph-ubuntu-xenial
+        - openstack-ansible-deploy-ceph-ubuntu-xenial
         - openstack-ansible-deploy-aio_lxc-ubuntu-xenial
     periodic:
       jobs:
