@@ -43,6 +43,14 @@
     vars:
       action: varstest
 
+# Experimental job for checking our AIO can deploy with
+# a different ansible version
+- job:
+    name: openstack-ansible-deploy_with_ansible_devel-aio-ubuntu-xenial
+    parent: openstack-ansible-deploy-aio-ubuntu-xenial
+    vars:
+      ansible_package: "git+https://github.com/ansible/ansible@devel"
+
 # ubuntu
 - job:
     name: openstack-ansible-deploy-aio_lxc-ubuntu-xenial

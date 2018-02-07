@@ -22,3 +22,4 @@
         # ZUUL_PROJECT is used by tests/get-ansible-role-requirements to
         # determine when CI provided repos should be used.
         ZUUL_PROJECT: "{{ zuul.project.short_name }}"
+        ANSIBLE_PACKAGE: "{{ ansible_package | default('') }}"
