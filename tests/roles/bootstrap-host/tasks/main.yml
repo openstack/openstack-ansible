@@ -95,6 +95,11 @@
   tags:
     - prepare-octavia
 
+# Ensure hostname/ip is consistent with inventory
+- include: prepare_hostname.yml
+  tags:
+    - prepare-hostname
+
 # Prepare the network interfaces
 - include: prepare_networking.yml
   tags:
