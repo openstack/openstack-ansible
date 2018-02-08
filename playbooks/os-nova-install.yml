@@ -66,15 +66,6 @@
         db_append_privs: "yes"
       run_once: yes
 
-    - name: Configure MySQL user (nova-placement)
-      include: common-tasks/mysql-db-user.yml
-      vars:
-        user_name: "{{ nova_placement_galera_user }}"
-        password: "{{ nova_placement_container_mysql_password }}"
-        login_host: "{{ nova_placement_galera_address }}"
-        db_name: "{{ nova_placement_galera_database }}"
-      run_once: yes
-
     - name: Configure MySQL user (nova-api cell0)
       include: common-tasks/mysql-db-user.yml
       vars:
