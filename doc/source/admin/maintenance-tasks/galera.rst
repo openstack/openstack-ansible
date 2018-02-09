@@ -84,7 +84,9 @@ one of the nodes.
        ## for init
        # /etc/init.d/mysql start --wsrep-new-cluster
        ## for systemd
-       # systemctl start mysql --wsrep-new-cluster
+       # systemctl set-environment _WSREP_NEW_CLUSTER='--wsrep-new-cluster'
+       # systemctl start mysql
+       # systemctl set-environment _WSREP_NEW_CLUSTER=''
 
    Please also have a look at `upstream starting a cluster page <http://galeracluster.com/documentation-webpages/startingcluster.html>`_
 
