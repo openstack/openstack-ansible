@@ -1,0 +1,34 @@
+---
+issues:
+  - |
+    All the ocata versions 15.1.15 and before use mariadb-server 10.1 with no
+    minor version frozen. The latest version, 10.1.31, has presented problems
+    with the state transfer for multi-node environments when the variable
+    ``galera_wsrep_sst_method`` is set to ``xtrabackup-v2`` (the default
+    value). This causes a new cluster to fail, or an existing cluster to be
+    unable to transfer state when a node is rebooted.
+
+    To work around this issue, the recommendation is to set the following
+    overrides in ``/etc/openstack_deploy/user_variables.yml`` to ensure that
+    the last known good version of MariaDB is used.
+
+    From 15.1.16 onwards, these values are set as defaults and will be updated
+    from time to time after verifying that the new versions work. As such,
+    setting these overrides is not required for 15.1.16 onwards.
+
+    .. code-block:: yaml
+
+       # Use these values for Ubuntu
+       galera_repo_url: https://downloads.mariadb.com/MariaDB/mariadb-10.1.30/repo/ubuntu
+       galera_client_repo_url:  "{{ galera_repo_url }}"
+
+       # Use these overrides for CentOS/RHEL:
+       galera_repo_url: https://downloads.mariadb.com/MariaDB/mariadb-10.1.30/yum/centos7-amd64/
+       galera_client_repo_url:  "{{ galera_repo_url }}"
+
+       # Use these values for SuSE
+       galera_repo_url: https://downloads.mariadb.com/MariaDB/mariadb-10.1.30/yum/opensuse42-amd64
+       galera_client_repo_url:  "{{ galera_repo_url }}"
+
+    The problem has been registered upstream and progresson the issue can
+    be followed there: https://jira.mariadb.org/browse/MDEV-15254
