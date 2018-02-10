@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    Persistent systemd journals are now enabled. This allows deployers to keep
+    older systemd journals on disk for review. The disk space requirements are
+    extremely low since the journals are stored in binary format. The default
+    location for persistent journals is in ``/var/log/journal``.
+
+    Deployers can opt out of this change by setting
+    ``openstack_host_keep_journals`` to ``no``.
