@@ -125,15 +125,6 @@ haproxy_default_services:
         - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
       haproxy_service_enabled: "{{ groups['heat_api_cfn'] is defined and groups['heat_api_cfn'] | length > 0 }}"
   - service:
-      haproxy_service_name: heat_api_cloudwatch
-      haproxy_backend_nodes: "{{ groups['heat_api_cloudwatch'] | default([]) }}"
-      haproxy_port: 8003
-      haproxy_ssl: "{{ haproxy_ssl }}"
-      haproxy_balance_type: http
-      haproxy_backend_options:
-        - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
-      haproxy_service_enabled: "{{ groups['heat_api_cloudwatch'] is defined and groups['heat_api_cloudwatch'] | length > 0 }}"
-  - service:
       haproxy_service_name: heat_api
       haproxy_backend_nodes: "{{ groups['heat_api'] | default([]) }}"
       haproxy_port: 8004
@@ -196,9 +187,9 @@ haproxy_default_services:
       haproxy_port: 8780
       haproxy_balance_type: http
       haproxy_backend_options:
-        - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+        - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
       haproxy_backend_httpcheck_options:
-        - "expect status 401"
+        - "expect status 200"
       haproxy_whitelist_networks: "{{ haproxy_nova_placement_whitelist_networks }}"
       haproxy_service_enabled: "{{ groups['nova_api_placement'] is defined and groups['nova_api_placement'] | length > 0 }}"
   - service:
@@ -320,7 +311,7 @@ haproxy_default_services:
       haproxy_balance_type: http
       haproxy_backend_options:
         - "forwardfor"
-        - "httpchk GET /versions HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+        - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
         - "httplog"
       haproxy_service_enabled: "{{ groups['designate_api'] is defined and groups['designate_api'] | length > 0 }}"
   - service:

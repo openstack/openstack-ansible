@@ -214,7 +214,6 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'heat_all',
         'heat_api',
         'heat_api_cfn',
-        'heat_api_cloudwatch',
         'heat_api_container',
         'heat_engine',
         'horizon',

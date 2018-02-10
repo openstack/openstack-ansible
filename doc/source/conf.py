@@ -328,7 +328,7 @@ else:
     deploy_branch_link_name = current_release_branch_name
     dev_branch_link_name = "{}/".format(current_release_branch_name)
     current_release_git_branch_name = 'stable/' + current_release_branch_name
-    current_release_gnocchi_git_branch_name = "4.1"
+    current_release_gnocchi_git_branch_name = "4.2"
 
 previous_release_capital_name = previous_release_branch_name.upper()
 previous_release_formal_name = previous_release_branch_name.capitalize()

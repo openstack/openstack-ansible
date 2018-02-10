@@ -20,9 +20,6 @@ component_skel:
   heat_api_cfn:
     belongs_to:
       - heat_all
-  heat_api_cloudwatch:
-    belongs_to:
-      - heat_all
   heat_engine:
     belongs_to:
       - heat_all
@@ -34,7 +31,6 @@ container_skel:
       - orchestration_containers
       - os-infra_containers
     contains:
-      - heat_api_cloudwatch
       - heat_api_cfn
       - heat_api
       - heat_engine

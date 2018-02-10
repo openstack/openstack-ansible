@@ -219,7 +219,6 @@ Orchestration service (heat):
     * heat_heat_conf_overrides
     * heat_api_paste_ini_overrides
     * heat_default_yaml_overrides
-    * heat_aws_cloudwatch_alarm_yaml_overrides
     * heat_aws_rds_dbinstance_yaml_overrides
     * heat_policy_overrides
 

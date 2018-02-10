@@ -31,210 +31,210 @@
 
 ## Global Requirements
 requirements_git_repo: https://git.openstack.org/openstack/requirements
-requirements_git_install_branch: 2ffaa4cc24f145cc9188c8cd04a4cf542fa0d8d1 # HEAD of "master" as of 19.12.2017
+requirements_git_install_branch: 46890f5b5654c14c54a3c1990cb51a8e01b35791 # HEAD of "stable/queens" as of 13.02.2018
 
 
 ## Aodh service
 aodh_git_repo: https://git.openstack.org/openstack/aodh
-aodh_git_install_branch: b4a64743780b7a930146b195df64c06a342cd855 # HEAD of "master" as of 19.12.2017
+aodh_git_install_branch: a1e60be0b8018fea95f2c0020545d0e6cd63fdbf # HEAD of "master" as of 10.02.2018 because no stable/queens branch yet
 aodh_git_project_group: aodh_all
 
 
 ## Barbican service
 barbican_git_repo: https://git.openstack.org/openstack/barbican
-barbican_git_install_branch: a74f8987523e98e0babfb53a3401d377e5c0d045 # HEAD of "master" as of 19.12.2017
+barbican_git_install_branch: 5b525f6b0a7cf5342a9ffa3ca3618028d6d53649 # HEAD of "stable/queens" as of 13.02.2018
 barbican_git_project_group: barbican_all
 
 
 ## Ceilometer service
 ceilometer_git_repo: https://git.openstack.org/openstack/ceilometer
-ceilometer_git_install_branch: 0ae26d72f280b14222244623112aa4c219965923 # HEAD of "master" as of 19.12.2017
+ceilometer_git_install_branch: 71a13e1b831e782e7ca25aa0fcd9ebf92a830302 # HEAD of "stable/queens" as of 10.02.2018
 ceilometer_git_project_group: ceilometer_all
 
 
 ## Cinder service
 cinder_git_repo: https://git.openstack.org/openstack/cinder
-cinder_git_install_branch: 8b389b8b21c98bafa368c421ab4f44c81b8a8552 # HEAD of "master" as of 19.12.2017
+cinder_git_install_branch: d02b6894f50f07ebd6f4e424f2438e58c234630d # HEAD of "stable/queens" as of 10.02.2018
 cinder_git_project_group: cinder_all
 
 
 ## Designate service
 designate_git_repo: https://git.openstack.org/openstack/designate
-designate_git_install_branch: 0740dbb53d8e3d5be40f12a377c63385a3108d5d # HEAD of "master" as of 19.12.2017
+designate_git_install_branch: 5772ec049be2ae7570d98b4815be16947a045ff9 # HEAD of "stable/queens" as of 10.02.2018
 designate_git_project_group: designate_all
 
 
 ## Horizon Designate dashboard plugin
 designate_dashboard_git_repo: https://git.openstack.org/openstack/designate-dashboard
-designate_dashboard_git_install_branch: 642edf494b0f12e05de69b98a4a9fd618950ba4f # HEAD of "master" as of 19.12.2017
+designate_dashboard_git_install_branch: df336662cbda7befe177b780c95a61c72df6973d # HEAD of "stable/queens" as of 10.02.2018
 designate_dashboard_git_project_group: horizon_all
 
 
 ## Dragonflow service
 dragonflow_git_repo: https://git.openstack.org/openstack/dragonflow
-dragonflow_git_install_branch: 66cb5582b070d05a2afc1eac04ca6493ccda2cf0 # HEAD of "master" as of 19.12.2017
+dragonflow_git_install_branch: 8285aff0bc1c2c1c28e2f16a341ab769b93c40d6 # HEAD of "master" as of 10.02.2018 because no stable/queens branch yet
 dragonflow_git_project_group: neutron_all
 
 
 ## Glance service
 glance_git_repo: https://git.openstack.org/openstack/glance
-glance_git_install_branch: 3ac9fa6503456ff3e6847082d33920694a683c23 # HEAD of "master" as of 19.12.2017
+glance_git_install_branch: cbd6c08c35b6469765ae9519513c46b2a563a586 # HEAD of "stable/queens" as of 10.02.2018
 glance_git_project_group: glance_all
 
 
 ## Heat service
 heat_git_repo: https://git.openstack.org/openstack/heat
-heat_git_install_branch: 622af9952b9fceae328d815ceb7f651c2cb73c61 # HEAD of "master" as of 19.12.2017
+heat_git_install_branch: 98636290c5a4ed9c7d608a1944124b5d92678107 # HEAD of "stable/queens" as of 10.02.2018
 heat_git_project_group: heat_all
 
 
 ## Horizon service
 horizon_git_repo: https://git.openstack.org/openstack/horizon
-horizon_git_install_branch: 0f598182919df31e40c7630ee1bd42bea259310d # HEAD of "master" as of 19.12.2017
+horizon_git_install_branch: d3b403a96cd32e5c2c14261c75daf35275dda66f # HEAD of "stable/queens" as of 10.02.2018
 horizon_git_project_group: horizon_all
 
 ## Horizon Ironic dashboard plugin
 ironic_dashboard_git_repo: https://git.openstack.org/openstack/ironic-ui
-ironic_dashboard_git_install_branch: 65f0af6887c8a3e8b48a404f3630b6824dcea44a # HEAD of "master" as of 19.12.2017
+ironic_dashboard_git_install_branch: 7614aa2504df1e6370b6d36fba57d27315287179 # HEAD of "stable/queens" as of 10.02.2018
 ironic_dashboard_git_project_group: horizon_all
 
 ## Horizon Magnum dashboard plugin
 magnum_dashboard_git_repo: https://git.openstack.org/openstack/magnum-ui
-magnum_dashboard_git_install_branch: 8f7a4ec5f005de37ceb8d86b4ba27980a770f0a3 # HEAD of "master" as of 19.12.2017
+magnum_dashboard_git_install_branch: c7692de7c046cab3a5669520818fbe61f17811c8 # HEAD of "master" as of 10.02.2018 because no stable/queens branch yet
 magnum_dashboard_git_project_group: horizon_all
 
 ## Horizon LBaaS dashboard plugin
 neutron_lbaas_dashboard_git_repo: https://git.openstack.org/openstack/neutron-lbaas-dashboard
-neutron_lbaas_dashboard_git_install_branch: bc50c49f7d77f8b7057820a9cf90fd36f67876b2 # HEAD of "master" as of 19.12.2017
+neutron_lbaas_dashboard_git_install_branch: a42434a21bf95566472dc6c8ce078ca84432423d # HEAD of "stable/queens" as of 10.02.2018
 neutron_lbaas_dashboard_git_project_group: horizon_all
 
 ## Horizon FWaaS dashboard plugin
 neutron_fwaas_dashboard_git_repo: https://git.openstack.org//openstack/neutron-fwaas-dashboard
-neutron_fwaas_dashboard_git_install_branch: 79434afbf5847dde3c69eb8bd2df6c3763bb0dce # HEAD of "master" as of 19.12.2017
+neutron_fwaas_dashboard_git_install_branch: 193940f465f9b5f1798f22239cc629d3ff3beece # HEAD of "stable/queens" as of 10.02.2018
 neutron_fwaas_dashboard_git_project_group: horizon_all
 
 ## Horizon Sahara dashboard plugin
 sahara_dashboard_git_repo: https://git.openstack.org/openstack/sahara-dashboard
-sahara_dashboard_git_install_branch: f1a4018f65b330b667db3e74e6ed0d93a0e3105f # HEAD of "master" as of 19.12.2017
+sahara_dashboard_git_install_branch: 03ef0ca66f72e3ccc6a7f01b26d6f43590701db9 # HEAD of "stable/queens" as of 10.02.2018
 sahara_dashboard_git_project_group: horizon_all
 
 
 ## Keystone service
 keystone_git_repo: https://git.openstack.org/openstack/keystone
-keystone_git_install_branch: 07bba320ae3d0e7fb9d2fb2a1c5df51735761bac # HEAD of "master" as of 19.12.2017
+keystone_git_install_branch: 30afb87247b6f6b7afbe431139e3471a2739aa1a # HEAD of "stable/queens" as of 10.02.2018
 keystone_git_project_group: keystone_all
 
 
 ## Neutron service
 neutron_git_repo: https://git.openstack.org/openstack/neutron
-neutron_git_install_branch: 92bd6b20b031ccb6aa898fc7dc27ec5adda28033 # HEAD of "master" as of 19.12.2017
+neutron_git_install_branch: e6b4fe995d903844c5d4c3dcd98bb424814eeb04 # HEAD of "stable/queens" as of 10.02.2018
 neutron_git_project_group: neutron_all
 
 neutron_lbaas_git_repo: https://git.openstack.org/openstack/neutron-lbaas
-neutron_lbaas_git_install_branch: 3014d52287f858487df72ce4132e5c013e128d73 # HEAD of "master" as of 19.12.2017
+neutron_lbaas_git_install_branch: f6b8b5b0ad2c19ddf6a7c102c706cbfdb0b2bf05 # HEAD of "stable/queens" as of 10.02.2018
 neutron_lbaas_git_project_group: neutron_all
 
 neutron_vpnaas_git_repo: https://git.openstack.org/openstack/neutron-vpnaas
-neutron_vpnaas_git_install_branch: 84db0e747bb4a27c55c7c628088b6c653dd86947 # HEAD of "master" as of 19.12.2017
+neutron_vpnaas_git_install_branch: 2e01dfec9fda930cf8c5ce4abca23b354859274a # HEAD of "stable/queens" as of 10.02.2018
 neutron_vpnaas_git_project_group: neutron_all
 
 neutron_fwaas_git_repo: https://git.openstack.org/openstack/neutron-fwaas
-neutron_fwaas_git_install_branch: cef88d227d576018d805b084428a612ec458c004 # HEAD of "master" as of 19.12.2017
+neutron_fwaas_git_install_branch: 74c90445f8e25d0ae4fb45a48bfb5d5e670c82d8 # HEAD of "stable/queens" as of 10.02.2018
 neutron_fwaas_git_project_group: neutron_all
 
 neutron_dynamic_routing_git_repo: https://git.openstack.org/openstack/neutron-dynamic-routing
-neutron_dynamic_routing_git_install_branch: 6588364116a51ad4ef5748440b0ec282170c970e # HEAD of "master" as of 19.12.2017
+neutron_dynamic_routing_git_install_branch: 4115b4972dc2e8e9ead82d9b7e63a516e404d28f # HEAD of "stable/queens" as of 10.02.2018
 neutron_dynamic_routing_git_project_group: neutron_all
 
 networking_calico_git_repo: https://git.openstack.org/openstack/networking-calico
-networking_calico_git_install_branch: 9688df1a3d1d8b3fd9ba367e82fe6b0559416728 # HEAD of "master" as of 19.12.2017
+networking_calico_git_install_branch: cc3628125775f2f1b3c57c95db3d6b50278dc92b # HEAD of "stable/queens" as of 10.02.2018 because no stable/queens branch yet
 networking_calico_git_project_group: neutron_all
 
 networking_odl_git_repo: https://git.openstack.org/openstack/networking-odl
-networking_odl_git_install_branch: 55ad38a606680e5cbe4463ee7e4f84ffbde6dcbb # HEAD of "master" as of 19.12.2017
+networking_odl_git_install_branch: ff80c7decc196cae5d7940aabbf14e5c37a94335 # HEAD of "stable/queens" as of 10.02.2018
 networking_odl_git_project_group: neutron_all
 
 networking_bgpvpn_git_repo: https://git.openstack.org/openstack/networking-bgpvpn
-networking_bgpvpn_git_install_branch: e289789620635ffdfd7d53a076959a4254141d97 # HEAD of "master" as of 19.12.2017
+networking_bgpvpn_git_install_branch: 38781f232fa457c4032d6697ca9239dc538bc5c9 # HEAD of "stable/queens" as of 10.02.2018
 networking_bgpvpn_git_project_group: neutron_all
 
 networking_sfc_git_repo: https://git.openstack.org/openstack/networking-sfc
-networking_sfc_git_install_branch: 06536b65f8277fe3955f2a94809514f695bd6855 # HEAD of "master" as of 19.12.2017
+networking_sfc_git_install_branch: 86f958ec212efdaa0508f71ebc389cc1b060ea34 # HEAD of "stable/queens" as of 10.02.2018
 networking_sfc_git_project_group: neutron_all
 
 
 ## Nova service
 nova_git_repo: https://git.openstack.org/openstack/nova
-nova_git_install_branch: e502f0d073d01ffc1a62c3df482c34687628fb61 # HEAD of "master" as of 19.12.2017
+nova_git_install_branch: 01b756f960ed19ab801994d08d749dd94d729a22 # HEAD of "stable/queens" as of 10.02.2018
 nova_git_project_group: nova_all
 
 
 ## PowerVM Virt Driver
 nova_powervm_git_repo: https://git.openstack.org/openstack/nova-powervm
-nova_powervm_git_install_branch: ce0d45daf4e0fc975c6cdd34ae12deadd185c959 # HEAD of "master" as of 19.12.2017
+nova_powervm_git_install_branch: a4e0721c6b307ab0046c3314aaa2b691ff8053df # HEAD of "stable/queens" as of 10.02.2018
 nova_powervm_git_project_group: nova_all
 
 
 ## LXD Virt Driver
 nova_lxd_git_repo: https://git.openstack.org/openstack/nova-lxd
-nova_lxd_git_install_branch: 1440684e3bed48b2bbaa4ee69d2c5ea451aed00c # HEAD of "master" as of 19.12.2017
+nova_lxd_git_install_branch: 16d06d149ed979745aa0ccd2b6db23122d17b57f # HEAD of "master" as of 10.02.2018 becayse no stable/queens branch yet
 nova_lxd_git_project_group: nova_all
 
 
 ## Sahara service
 sahara_git_repo: https://git.openstack.org/openstack/sahara
-sahara_git_install_branch: 13184124829f8473f713289be043162b221eec7e # HEAD of "master" as of 19.12.2017
+sahara_git_install_branch: 4e2cf14ef9fb7c5c0009a2a6e53a28ac1748d9cb # HEAD of "stable/queens" as of 10.02.2018
 sahara_git_project_group: sahara_all
 
 
 ## Swift service
 swift_git_repo: https://git.openstack.org/openstack/swift
-swift_git_install_branch: 8dcef649757dc029d2fc7d776b9e7f8926f2bbd5 # HEAD of "master" as of 19.12.2017
+swift_git_install_branch: 700a6756da70026fbffe3977bd40fc73404b5e25 # HEAD of "stable/queens" as of 10.02.2018
 swift_git_project_group: swift_all
 
 
 ## Swift3 middleware
 swift_swift3_git_repo: https://git.openstack.org/openstack/swift3
-swift_swift3_git_install_branch: f0215ae853adc29fcb8b3df5f8d335f4f7fc1896 # HEAD of "master" as of 19.12.2017
+swift_swift3_git_install_branch: 1c117c96dda8113c3398c16e68b61efef397de74 # HEAD of "stable/queens" as of 10.02.2018
 swift_swift3_git_project_group: swift_all
 
 
 ## Ironic service
 ironic_git_repo: https://git.openstack.org/openstack/ironic
-ironic_git_install_branch: 435328e54f1da43f75b53f5c3a2c33f6a22bdb85 # HEAD of "master" as of 19.12.2017
+ironic_git_install_branch: 6ab2908f829f39f6fb438a7bae9b671abfa97588 # HEAD of "stable/queens" as of 10.02.2018
 ironic_git_project_group: ironic_all
 
 
 ## Magnum service
 magnum_git_repo: https://git.openstack.org/openstack/magnum
-magnum_git_install_branch: 273405cb5a8cdbcec816f646cfe82f13784b3bf1 # HEAD of "master" as of 19.12.2017
+magnum_git_install_branch: 8e879f67dd21202f90504a86d617470fbe605338 # HEAD of "stable/queens" as of 10.02.2018
 magnum_git_project_group: magnum_all
 
 
 ## Trove service
 trove_git_repo: https://git.openstack.org/openstack/trove
-trove_git_install_branch: ccb6752f6973a7d1c8bb08675fde421710942998 # HEAD of "master" as of 19.12.2017
+trove_git_install_branch: 9e5186b95bba51d911a0de9e6d6bd412c478aef4 # HEAD of "stable/queens" as of 10.02.2018
 trove_git_project_group: trove_all
 
 ## Horizon Trove dashboard plugin
 trove_dashboard_git_repo: https://git.openstack.org/openstack/trove-dashboard
-trove_dashboard_git_install_branch: 9362f2dbe042fa492e0330de140833a2297ef659 # HEAD of "master" as of 19.12.2017
+trove_dashboard_git_install_branch: bd33e730f52889a6979e7d751e6732ce06806774 # HEAD of "stable/queens" as of 10.02.2018
 trove_dashboard_git_project_group: horizon_all
 
 
 ## Octavia service
 octavia_git_repo: https://git.openstack.org/openstack/octavia
-octavia_git_install_branch: 0008afb88fd70500531df336e67cccf0f20b53d9 # HEAD of "master" as of 19.12.2017
+octavia_git_install_branch: 45be6ff7cb06134c2b5a90af7d246316cd0495f8 # HEAD of "stable/queens" as of 10.02.2018
 octavia_git_project_group: octavia_all
 
 
 ## Molteniron service
 molteniron_git_repo: https://git.openstack.org/openstack/molteniron
-molteniron_git_install_branch: 094276cda77d814d07ad885e7d63de8d1243750a # HEAD of "master" as of 19.12.2017
+molteniron_git_install_branch: 094276cda77d814d07ad885e7d63de8d1243750a # HEAD of "master" as of 10.02.2018 because no stable/queens branch yet
 molteniron_git_project_group: molteniron_all
 
 
 ## Tacker service
 tacker_git_repo: https://git.openstack.org/openstack/tacker
-tacker_git_install_branch: 4cb1b76222e4397030112a2364b8ef4a0df2d14e # HEAD of "master" as of 19.12.2017
+tacker_git_install_branch: 6932f5642598d53d93f94514eaed55cc93ea19d7 # HEAD of "stable/queens" as of 10.02.2018
 tacker_git_project_group: tacker_all
