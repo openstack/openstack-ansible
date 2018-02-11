@@ -1,0 +1,7 @@
+---
+security:
+  - The PermitRootLogin in sshd_config changed from 'yes'
+    to 'prohibit-password' in the containers. By default
+    there is no password set in the containers but the ssh
+    pub key from the deployment host is injected in the
+    targets nodes authorized_keys.

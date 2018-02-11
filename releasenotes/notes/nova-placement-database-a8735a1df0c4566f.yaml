@@ -1,0 +1,15 @@
+---
+deprecations:
+  - |
+    The nova_placement database which was implemented in the ocata release of
+    OpenStack-Ansible was never actually used for anything due to reverts in
+    the upstream code. The database should be empty and can be deleted. With
+    this the following variables also no longer have any function and have
+    been removed.
+
+    * ``nova_placement_galera_user``
+    * ``nova_placement_galera_database``
+    * ``nova_placement_db_max_overflow``
+    * ``nova_placement_db_max_pool_size``
+    * ``nova_placement_db_pool_timeout``
+

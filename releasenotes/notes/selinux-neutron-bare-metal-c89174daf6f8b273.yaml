@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    SELinux policy for neutron on CentOS 7 is now provided to fix SELinux
+    AVCs that occur when neutron's agents attempt to start daemons such as
+    haproxy and dnsmasq.
