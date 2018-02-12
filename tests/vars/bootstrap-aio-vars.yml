@@ -68,3 +68,10 @@ confd_overrides:
     - name: keystone.yml.aio
     - name: heat.yml.aio
     - name: tacker.yml.aio
+  aio_basekit:
+    - name: haproxy.yml.aio
+    - name: cinder.yml.aio
+    - name: glance.yml.aio
+    - name: keystone.yml.aio
+    - name: neutron.yml.aio
+    - name: nova.yml.aio
