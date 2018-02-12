@@ -59,10 +59,6 @@
 
 - job:
     name: openstack-ansible-deploy-ceph-ubuntu-xenial
-    # temporarily moved to non voting until
-    # https://bugs.launchpad.net/cinder/+bug/1737015
-    # has been fixed.
-    voting: false
     parent: openstack-ansible-deploy-aio_lxc-ubuntu-xenial
     vars:
       action: deploy
