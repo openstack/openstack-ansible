@@ -77,7 +77,7 @@
       vars:
         haproxy_backend: "{{ item }}"
         haproxy_state: disabled
-      when: "{{ groups['keystone_all'] | length > 1 }}"
+      when: "groups['keystone_all'] | length > 1"
       with_items:
         - "keystone_service-back"
         - "keystone_admin-back"
