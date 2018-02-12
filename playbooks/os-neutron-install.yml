@@ -23,9 +23,7 @@
       vars:
         src_group: "nova_compute"
         dest_group: "neutron_l3_agent, neutron_metadata_agent"
-        group_when:
-          - "neutron_plugin_type == 'ml2.ovs.dvr'"
-
+        group_when: "{{ neutron_plugin_type == 'ml2.ovs.dvr' }}"
 
 
 - name: Prepare MQ/DB services
