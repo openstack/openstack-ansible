@@ -20,10 +20,10 @@
 # before lxc_container_create, and haproxy is moved with it as
 # second step.
 - include: repo-use.yml
+- include: utility-install.yml
 - include: memcached-install.yml
 - include: galera-install.yml
 - include: rabbitmq-install.yml
 - include: etcd-install.yml
 - include: ceph-install.yml
-- include: utility-install.yml
 - include: rsyslog-install.yml
