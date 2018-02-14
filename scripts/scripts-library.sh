@@ -309,7 +309,7 @@ function get_instance_info {
   determine_distro
   case ${DISTRO_ID} in
       centos|rhel|fedora|opensuse)
-          rpm -qa > \
+          rpm -qa | sort > \
             "/openstack/log/instance-info/host_packages_info_${TS}.log" || true
           ;;
       ubuntu|debian)
