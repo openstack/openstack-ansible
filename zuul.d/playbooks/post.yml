@@ -16,17 +16,37 @@
 - hosts: all
   tasks:
     - name: Run log collection script
-      command: scripts/test-log-collect.sh
+      shell: |
+        source scripts/scripts-library.sh
+        gate_job_exit_tasks
       become: yes
       become_user: root
       args:
-        chdir: "src/{{ zuul.project.canonical_name }}"
+        chdir: "{{ ansible_user_dir }}/src/{{ zuul.project.canonical_name }}"
+        executable: /bin/bash
       environment:
         # ZUUL_PROJECT is used by the log collection functions to enable
         # log collection configuration specific to OpenStack CI
         ZUUL_PROJECT: "{{ zuul.project.short_name }}"
+        TEST_EXIT_CODE: "{{ zuul_success | lower }}"
+        GATE_LOG_DIR: "{{ ansible_user_dir }}/src/{{ zuul.project.canonical_name }}/logs"
+
+    - name: Check whether a logs folder exists
+      stat:
+        path: "{{ ansible_user_dir }}/src/{{ zuul.project.canonical_name }}/logs"
+        get_attributes: no
+        get_checksum: no
+        get_md5: no
+        get_mime: no
+      register: logs_folder
+
     - name: Copy logs back to the executor
       synchronize:
-        src: "src/{{ zuul.project.canonical_name }}/logs"
-        dest: "{{ zuul.executor.log_root }}"
+        src: "{{ ansible_user_dir }}/src/{{ zuul.project.canonical_name }}/logs"
+        dest: "{{ zuul.executor.log_root }}/"
         mode: pull
+        rsync_opts:
+          - "--quiet"
+      when:
+        - logs_folder.stat is defined
+        - logs_folder.stat.exists | bool
