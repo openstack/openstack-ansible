@@ -7,7 +7,7 @@ installation in a test environment and a production environment, and is
 intended for deployers.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    overview.rst
    deploymenthost.rst
