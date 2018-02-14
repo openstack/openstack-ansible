@@ -128,7 +128,12 @@ function gate_job_exit_tasks {
   # This environment variable captures the exit code
   # which was present when the trap was initiated.
   # This would be the success/failure of the test.
-  export TEST_EXIT_CODE=$?
+  TEST_EXIT_CODE=${TEST_EXIT_CODE:-$?}
+
+  # Specify a default location to capture logs into,
+  # just in case one is not provided (eg: when not run
+  # by zuul).
+  GATE_LOG_DIR=${GATE_LOG_DIR:-/opt/openstack-ansible/logs}
 
   # If this is a gate node from OpenStack-Infra Store all logs into the
   #  execution directory after gate run.
@@ -136,7 +141,7 @@ function gate_job_exit_tasks {
     if [ "$GATE_EXIT_RUN_DSTAT" == true ]; then
       generate_dstat_charts || true
     fi
-    GATE_LOG_DIR="${OSA_CLONE_DIR:-$(dirname $0)/..}/logs"
+
     mkdir -p "${GATE_LOG_DIR}/host" "${GATE_LOG_DIR}/openstack"
     RSYNC_OPTS="--archive --safe-links --ignore-errors --quiet --no-perms --no-owner --no-group"
     rsync $RSYNC_OPTS /var/log/ "${GATE_LOG_DIR}/host" || true
@@ -148,18 +153,26 @@ function gate_job_exit_tasks {
 
     # Generate the ARA report if enabled
     if [ "$GATE_EXIT_RUN_ARA" == true ]; then
+
+      # Define the ARA path for reusability
+      ARA_CMD="/opt/ansible-runtime/bin/ara"
+
+      # Create the ARA log directory and store the sqlite source database
+      mkdir ${GATE_LOG_DIR}/ara
+      rsync $RSYNC_OPTS "${HOME}/.ara/ansible.sqlite" "${GATE_LOG_DIR}/ara/"
+
       # In order to reduce the quantity of unnecessary log content
       # being kept in OpenStack-Infra we only generate the ARA report
       # when the test result is a failure.
-      if [[ "${TEST_EXIT_CODE}" != "0" ]]; then
+      if [[ "${TEST_EXIT_CODE}" != "0" ]] && [[ "${TEST_EXIT_CODE}" != "true" ]]; then
         echo "Generating ARA report due to non-zero exit code (${TEST_EXIT_CODE})."
-        /opt/ansible-runtime/bin/ara generate html "${GATE_LOG_DIR}/ara" || true
+        ${ARA_CMD} generate html "${GATE_LOG_DIR}/ara" || true
       else
         echo "Not generating ARA report due to test pass."
       fi
       # We still want the subunit report though, as that reflects
       # success/failure in OpenStack Health
-      /opt/ansible-runtime/bin/ara generate subunit "${GATE_LOG_DIR}/ara/testrepository.subunit" || true
+      ${ARA_CMD} generate subunit "${GATE_LOG_DIR}/ara/testrepository.subunit" || true
     fi
     # Compress the files gathered so that they do not take up too much space.
     # We use 'command' to ensure that we're not executing with some sort of alias.
