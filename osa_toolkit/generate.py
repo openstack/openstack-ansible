@@ -114,8 +114,9 @@ class MissingStaticRouteInfo(Exception):
 
 class LxcHostsDefined(Exception):
     def __init__(self):
-        self.message = ("The group 'lxc_hosts' must not be defined in config;"
-                        " it will be dynamically generated.")
+        self.message = ("The group 'lxc_hosts' or 'nspawn_hosts' must not"
+                        " be defined in config; it will be dynamically "
+                        " generated.")
 
     def __str__(self):
         return self.message
@@ -754,9 +755,10 @@ def populate_lxc_hosts(inventory):
 
     :param inventory: The dictionary containing the Ansible inventory
     """
-    host_nodes = _find_lxc_hosts(inventory)
-    inventory['lxc_hosts'] = {'hosts': host_nodes}
-    logger.debug("Created lxc_hosts group.")
+    lxc_host_nodes, nspawn_host_nodes = _find_lxc_hosts(inventory)
+    inventory['nspawn_hosts'] = {'hosts': nspawn_host_nodes}
+    inventory['lxc_hosts'] = {'hosts': lxc_host_nodes}
+    logger.debug("Created lxc_hosts and nspawn_hosts group.")
 
 
 def _find_lxc_hosts(inventory):
@@ -773,16 +775,33 @@ def _find_lxc_hosts(inventory):
     :returns: List of hostnames that are LXC hosts
     :rtype: list
     """
-    host_nodes = []
+    lxc_host_nodes = []
+    nspawn_host_nodes = []
     for host, hostvars in inventory['_meta']['hostvars'].items():
         physical_host = hostvars.get('physical_host', None)
+        container_tech = hostvars.get('container_tech', 'lxc')
+        hostvars['container_tech'] = container_tech
 
         # We want this node's "parent", so append the physical host
         if not host == physical_host:
-            appended = du.append_if(array=host_nodes, item=physical_host)
+            if container_tech == 'lxc':
+                appended = du.append_if(
+                    array=lxc_host_nodes,
+                    item=physical_host
+                )
+            elif container_tech == 'nspawn':
+                appended = du.append_if(
+                    array=nspawn_host_nodes,
+                    item=physical_host
+                )
+            else:
+                appended = None
+
             if appended:
-                logger.debug("%s added to lxc_hosts group", physical_host)
-    return host_nodes
+                logger.debug("%s added to lxc_hosts and nspawn_hosts group",
+                             physical_host)
+
+    return lxc_host_nodes, nspawn_host_nodes
 
 
 def _ensure_inventory_uptodate(inventory, container_skel):
@@ -908,7 +927,9 @@ def _check_multiple_ips_to_host(config):
 def _check_lxc_hosts(config):
     if 'lxc_hosts' in config.keys():
         raise LxcHostsDefined()
-    logger.debug("lxc_hosts group not defined")
+    elif 'nspawn_hosts' in config.keys():
+        raise LxcHostsDefined()
+    logger.debug("lxc_hosts or nspawn_hosts group not defined")
 
 
 def _check_group_branches(config, physical_skel):

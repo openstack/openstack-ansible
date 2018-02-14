@@ -13,7 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: "containers-lxc-host.yml"
-- include: "containers-lxc-create.yml"
-- include: "containers-nspawn-host.yml"
-- include: "containers-nspawn-create.yml"
+- name: Additional nspawn host setup
+  hosts: "{{ nspawn_host_group | default('nspawn_hosts') }}"
+  gather_facts: true
+  user: root
+  roles:
+    - role: "nspawn_host"
+  environment: "{{ deployment_environment_variables | default({}) }}"
+  tags:
+    - nspawn-hosts

@@ -194,3 +194,14 @@
   scm: git
   src: https://github.com/logan2211/ansible-haproxy-endpoints
   version: 49901861b16b8afaa9bccdbc649ac956610ff22b
+
+# Once the initial commit for nspawn has been merged we can work on porting
+# these roles over into the openstack-ansible namspace.
+- name: nspawn_container_create
+  src: https://github.com/cloudnull/ansible-nspawn_container_create
+  scm: git
+  version: master
+- name: nspawn_host
+  src: https://github.com/cloudnull/ansible-nspawn_host
+  scm: git
+  version: master
