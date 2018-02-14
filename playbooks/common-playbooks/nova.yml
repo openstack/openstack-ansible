@@ -51,6 +51,16 @@
       vars:
         extra_container_config_no_restart:
           - "lxc.start.order=39"
+      when:
+        - "'nova_conductor' in group_names"
+
+    - name: Configure container
+      include: ../common-tasks/os-lxc-container-setup.yml
+      vars:
+        extra_container_config_no_restart:
+          - "lxc.start.order=49"
+      when:
+        - "'nova_conductor' not in group_names"
 
     - name: Configure log directories (on metal)
       include: ../common-tasks/os-log-dir-setup.yml
