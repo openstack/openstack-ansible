@@ -48,15 +48,36 @@ Host security hardening is required by several compliance and regulatory
 programs, such as the `Payment Card Industry Data Security Standard`_ (PCI
 DSS) (Requirement 2.2).
 
-By default, OpenStack-Ansible automatically applies the security hardening role
+By default, OpenStack-Ansible automatically applies the ansible-hardening role
 to all deployments. The role has been carefully designed to perform as follows:
 
 * Apply nondisruptively to a production OpenStack environment
 * Balance security with OpenStack performance and functionality
 * Run as quickly as possible
 
-For more information about configuring the role in OpenStack-Ansible, see
-:ref:`security_hardening`.
+The role is applicable to physical hosts within an OpenStack-Ansible deployment
+that are operating as any type of node, infrastructure or compute. By
+default, the role is enabled. You can disable it by changing the value of
+the ``apply_security_hardening`` variable in the ``user_variables.yml`` file
+to ``false``:
+
+.. code-block:: yaml
+
+    apply_security_hardening: false
+
+You can apply security hardening configurations to an existing environment or
+audit an environment by using a playbook supplied with OpenStack-Ansible:
+
+.. code-block:: bash
+
+    # Apply security hardening configurations
+      openstack-ansible security-hardening.yml
+
+    # Perform a quick audit by using Ansible's check mode
+      openstack-ansible --check security-hardening.yml
+
+For more information about the security configurations, see the
+`security hardening role`_ documentation.
 
 .. _security hardening role: http://docs.openstack.org/developer/ansible-hardening/
 .. _Security Technical Implementation Guide: https://en.wikipedia.org/wiki/Security_Technical_Implementation_Guide
