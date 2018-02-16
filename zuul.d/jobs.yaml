@@ -48,8 +48,12 @@
 - job:
     name: openstack-ansible-deploy_with_ansible_devel-aio-ubuntu-xenial
     parent: openstack-ansible-deploy-aio-ubuntu-xenial
+    branches: ^(devel|master)$
+    required-projects:
+      - name: github.com/ansible/ansible
+        override-checkout: devel
     vars:
-      ansible_package: "git+https://github.com/ansible/ansible@devel"
+      ansible_package: "file://{{ ansible_user_dir }}/src/github.com/ansible/ansible"
 
 # ubuntu
 - job:
