@@ -1,0 +1,13 @@
+---
+issues:
+  - |
+    For all ocata releases prior to OpenStack-Ansible 15.1.16,
+    several of the magnum requirements were not constrained.
+    This resulted in the kubernetes version changing over time
+    unexpectedly, rather than by intention. Most recently this
+    lack of constraint causes the repo build to fail when trying
+    to build the magnum venv due to incompatible requirements.
+
+    The kubernetes version deployed with ocata is now constrained
+    to version 2.0.0, matching the same version as deployed in
+    all pike releases.
