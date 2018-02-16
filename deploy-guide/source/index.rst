@@ -6,6 +6,16 @@ This guide provides instructions for performing an OpenStack-Ansible
 installation in a test environment and a production environment, and is
 intended for deployers.
 
+.. note::
+
+   If you want to do a quick proof of concept of OpenStack, read the
+   `All-In-One quickstart Guide <https://docs.openstack.org/openstack-ansible/latest/contributor/quickstart-aio.html>`_
+   instead of this document. This document is a walkthrough of a deploy
+   using OpenStack-Ansible, with all its configurability.
+
+
+Contents:
+
 .. toctree::
    :maxdepth: 2
 
@@ -16,6 +26,7 @@ intended for deployers.
    run-playbooks.rst
    verify-operation.rst
    app.rst
+
 
 Third-party trademarks and tradenames appearing in this document are the
 property of their respective owners. Such third-party trademarks have
