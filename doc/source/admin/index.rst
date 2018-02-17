@@ -23,6 +23,7 @@ more complex operations like upgrading.
    maintenance-tasks.rst
    scale-environment.rst
    monitoring-systems.rst
+   backup-restore.rst
    troubleshooting.rst
    advanced-config.rst
    ref-info.rst
