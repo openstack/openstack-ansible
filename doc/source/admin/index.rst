@@ -19,7 +19,7 @@ adding images, booting instances, and attaching volumes.
 
    openstack-operations.rst
    maintenance-tasks.rst
-   monitor-environment.rst
+   monitor-environment/monitoring-systems.rst
    troubleshooting.rst
    advanced-config.rst
    ref-info.rst
