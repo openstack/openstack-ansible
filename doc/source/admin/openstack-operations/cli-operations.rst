@@ -1,49 +1,11 @@
-=========================================
-Managing the cloud using the command line
-=========================================
+Use the command line clients
+============================
 
-This section describes some of the more common commands to view and
-manage the cloud.
+This section describes some of the more common commands to
+use your OpenStack cloud.
 
-Log in to any utility container to run the following commands:
-
-List images
-~~~~~~~~~~~
-
-The :command:`openstack image list` command shows details about currently
-available images:
-
-.. code::
-
-   $ openstack image list
-   +------------------+--------------+--------+
-   |         ID       |    Name      | Status |
-   +------------------+--------------+--------+
-   | [ID truncated]   | ExaeImage | active |
-   +------------------+--------------+--------+
-
-
-List compute services
-~~~~~~~~~~~~~~~~~~~~~
-
-The :command:`openstack compute service list` command details the currently
-running compute services:
-
-.. code::
-
-   $ openstack compute service list
-   +------------------+------------+----------+---------+-------+----------------------------+
-   | Binary           | Host       | Zone     | Status  | State | Updated_at                 |
-   +------------------+------------+----------+---------+-------+----------------------------+
-   | nova-consoleauth | controller | internal | enabled | up    | 2017-02-21T20:25:17.000000 |
-   | nova-scheduler   | controller | internal | enabled | up    | 2017-02-21T20:25:18.000000 |
-   | nova-conductor   | controller | internal | enabled | up    | 2017-02-21T20:25:20.000000 |
-   | nova-compute     | compute    | nova     | enabled | up    | 2017-02-21T20:25:20.000000 |
-   +------------------+------------+----------+---------+-------+----------------------------+
-
-
-List flavors
-~~~~~~~~~~~~
+Log in to any utility container or install the openstack client on
+your machine, and run the following commands:
 
 The **openstack flavor list** command lists the *flavors* that are
 available. These are different disk sizes that can be assigned to
@@ -62,11 +24,7 @@ images:
    | 5   | m1.xlarge | 16384 |  160 |         0 |     8 | True      |
    +-----+-----------+-------+------+-----------+-------+-----------+
 
-
-List floating IP addresses
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-he **openstack floating ip list** command lists the currently
+The **openstack floating ip list** command lists the currently
 available floating IP addresses and the instances they are
 associated with:
 
