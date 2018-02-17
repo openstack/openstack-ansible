@@ -1,31 +1,23 @@
-.. _production-environment-config:
+========================
+Test environment example
+========================
 
-========================================================
-Appendix B: Example production environment configuration
-========================================================
-
-Introduction
-~~~~~~~~~~~~
-
-This appendix describes an example production environment for a working
-OpenStack-Ansible (OSA) deployment with high availability services.
+Here is an example test environment for a working
+OpenStack-Ansible (OSA) deployment with a small number of servers.
 
 This example environment has the following characteristics:
 
-* Three infrastructure (control plane) hosts
-* Two compute hosts
-* One NFS storage device
-* One log aggregation host
-* Multiple Network Interface Cards (NIC) configured as bonded pairs for each
-  host
-* Full compute kit with the Telemetry service (ceilometer) included,
-  with NFS configured as a storage back end for the Image (glance), and Block
-  Storage (cinder) services
+* One infrastructure (control plane) host (8 vCPU, 8 GB RAM, 60 GB HDD)
+* One compute host (8 vCPU, 8 GB RAM, 60 GB HDD)
+* One Network Interface Card (NIC) for each host
+* A basic compute kit environment, with the Image (glance) and Compute (nova)
+  services set to use file-backed storage.
 * Internet access via the router address 172.29.236.1 on the
   Management Network
 
-.. image:: figures/arch-layout-production.png
+.. image:: ../figures/arch-layout-test.png
    :width: 100%
+   :alt: Test environment host layout
 
 Network configuration
 ~~~~~~~~~~~~~~~~~~~~~
@@ -54,21 +46,11 @@ environment.
 +------------------+----------------+-------------------+----------------+
 | Host name        | Management IP  | Tunnel (VxLAN) IP | Storage IP     |
 +==================+================+===================+================+
-| lb_vip_address   | 172.29.236.9   |                   |                |
-+------------------+----------------+-------------------+----------------+
 | infra1           | 172.29.236.11  |                   |                |
 +------------------+----------------+-------------------+----------------+
-| infra2           | 172.29.236.12  |                   |                |
+| compute1         | 172.29.236.12  | 172.29.240.12     | 172.29.244.12  |
 +------------------+----------------+-------------------+----------------+
-| infra3           | 172.29.236.13  |                   |                |
-+------------------+----------------+-------------------+----------------+
-| log1             | 172.29.236.14  |                   |                |
-+------------------+----------------+-------------------+----------------+
-| NFS Storage      |                |                   | 172.29.244.15  |
-+------------------+----------------+-------------------+----------------+
-| compute1         | 172.29.236.16  | 172.29.240.16     | 172.29.244.16  |
-+------------------+----------------+-------------------+----------------+
-| compute2         | 172.29.236.17  | 172.29.240.17     | 172.29.244.17  |
+| storage1         | 172.29.236.13  |                   | 172.29.244.13  |
 +------------------+----------------+-------------------+----------------+
 
 Host network configuration
@@ -84,7 +66,7 @@ following is the ``/etc/network/interfaces`` file for ``infra1``.
    configuration files are replaced with the appropriate name. The same
    applies to additional network interfaces.
 
-.. literalinclude:: ../../etc/network/interfaces.d/openstack_interface.cfg.prod.example
+.. literalinclude:: ../../../../etc/network/interfaces.d/openstack_interface.cfg.test.example
 
 Deployment configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -97,7 +79,7 @@ environment layout.
 
 The following configuration describes the layout for this environment.
 
-.. literalinclude:: ../../etc/openstack_deploy/openstack_user_config.yml.prod.example
+.. literalinclude:: ../../../../etc/openstack_deploy/openstack_user_config.yml.test.example
 
 Environment customizations
 --------------------------
@@ -107,11 +89,8 @@ customization of Ansible groups. This allows the deployer to set whether
 the services will run in a container (the default), or on the host (on
 metal).
 
-For this environment, the ``cinder-volume`` runs in a container on the
-infrastructure hosts. To achieve this, implement
-``/etc/openstack_deploy/env.d/cinder.yml`` with the following content:
-
-.. literalinclude:: ../../etc/openstack_deploy/env.d/cinder-volume.yml.container.example
+For this environment you do not need the ``/etc/openstack_deploy/env.d``
+folder as the defaults set by OpenStack-Ansible are suitable.
 
 User variables
 --------------
@@ -119,8 +98,10 @@ User variables
 The ``/etc/openstack_deploy/user_variables.yml`` file defines the global
 overrides for the default variables.
 
-For this environment, implement the load balancer on the infrastructure
-hosts. Ensure that keepalived is also configured with HAProxy in
-``/etc/openstack_deploy/user_variables.yml`` with the following content.
+For this environment, if you want to use the same IP address for the internal
+and external endpoints, you will need to ensure that the internal and public
+OpenStack endpoints are served with the same protocol. This is done with
+the following content:
 
-.. literalinclude:: ../../etc/openstack_deploy/user_variables.yml.prod.example
+.. literalinclude:: ../../../../etc/openstack_deploy/user_variables.yml.test.example
+

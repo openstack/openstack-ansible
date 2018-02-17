@@ -1,32 +1,29 @@
-.. _production-ceph-environment-config:
+.. _production-environment-config:
 
-=============================================================
-Appendix D: Example Ceph production environment configuration
-=============================================================
+======================
+Production environment
+======================
 
-Introduction
-~~~~~~~~~~~~
-
-This appendix describes an example production environment for a working
-OpenStack-Ansible (OSA) deployment with high availability services and using
-the Ceph backend for images, volumes, and instances.
+This is an example production environment for a working
+OpenStack-Ansible (OSA) deployment with high availability services.
 
 This example environment has the following characteristics:
 
-* Three infrastructure (control plane) hosts with ceph-mon containers
+* Three infrastructure (control plane) hosts
 * Two compute hosts
-* Three Ceph OSD storage hosts
+* One NFS storage device
 * One log aggregation host
 * Multiple Network Interface Cards (NIC) configured as bonded pairs for each
   host
 * Full compute kit with the Telemetry service (ceilometer) included,
-  with Ceph configured as a storage back end for the Image (glance), and Block
+  with NFS configured as a storage back end for the Image (glance), and Block
   Storage (cinder) services
 * Internet access via the router address 172.29.236.1 on the
   Management Network
 
-.. image:: figures/arch-layout-production-ceph.png
+.. image:: ../figures/arch-layout-production.png
    :width: 100%
+   :alt: Production environment host layout
 
 Network configuration
 ~~~~~~~~~~~~~~~~~~~~~
@@ -65,15 +62,11 @@ environment.
 +------------------+----------------+-------------------+----------------+
 | log1             | 172.29.236.14  |                   |                |
 +------------------+----------------+-------------------+----------------+
+| NFS Storage      |                |                   | 172.29.244.15  |
++------------------+----------------+-------------------+----------------+
 | compute1         | 172.29.236.16  | 172.29.240.16     | 172.29.244.16  |
 +------------------+----------------+-------------------+----------------+
 | compute2         | 172.29.236.17  | 172.29.240.17     | 172.29.244.17  |
-+------------------+----------------+-------------------+----------------+
-| osd1             | 172.29.236.18  | 172.29.240.18     | 172.29.244.18  |
-+------------------+----------------+-------------------+----------------+
-| osd2             | 172.29.236.19  | 172.29.240.19     | 172.29.244.19  |
-+------------------+----------------+-------------------+----------------+
-| osd3             | 172.29.236.20  | 172.29.240.20     | 172.29.244.20  |
 +------------------+----------------+-------------------+----------------+
 
 Host network configuration
@@ -89,7 +82,7 @@ following is the ``/etc/network/interfaces`` file for ``infra1``.
    configuration files are replaced with the appropriate name. The same
    applies to additional network interfaces.
 
-.. literalinclude:: ../../etc/network/interfaces.d/openstack_interface.cfg.prod.example
+.. literalinclude:: ../../../../etc/network/interfaces.d/openstack_interface.cfg.prod.example
 
 Deployment configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -102,7 +95,7 @@ environment layout.
 
 The following configuration describes the layout for this environment.
 
-.. literalinclude:: ../../etc/openstack_deploy/openstack_user_config.yml.prod-ceph.example
+.. literalinclude:: ../../../../etc/openstack_deploy/openstack_user_config.yml.prod.example
 
 Environment customizations
 --------------------------
@@ -112,11 +105,11 @@ customization of Ansible groups. This allows the deployer to set whether
 the services will run in a container (the default), or on the host (on
 metal).
 
-For a ceph environment, you can run the ``cinder-volume`` in a container.
-To do this you will need to create a ``/etc/openstack_deploy/env.d/cinder.yml`` file
-with the following content:
+For this environment, the ``cinder-volume`` runs in a container on the
+infrastructure hosts. To achieve this, implement
+``/etc/openstack_deploy/env.d/cinder.yml`` with the following content:
 
-.. literalinclude:: ../../etc/openstack_deploy/env.d/cinder-volume.yml.container.example
+.. literalinclude:: ../../../../etc/openstack_deploy/env.d/cinder-volume.yml.container.example
 
 User variables
 --------------
@@ -124,10 +117,8 @@ User variables
 The ``/etc/openstack_deploy/user_variables.yml`` file defines the global
 overrides for the default variables.
 
-For this example environment, we configure a HA load balancer.
-We implement the load balancer (HAProxy) with an HA layer (keepalived)
-on the infrastructure hosts.
-Your ``/etc/openstack_deploy/user_variables.yml`` must have the following content
-to configure haproxy, keepalived and ceph:
+For this environment, implement the load balancer on the infrastructure
+hosts. Ensure that keepalived is also configured with HAProxy in
+``/etc/openstack_deploy/user_variables.yml`` with the following content.
 
-.. literalinclude:: ../../etc/openstack_deploy/user_variables.yml.prod-ceph.example
+.. literalinclude:: ../../../../etc/openstack_deploy/user_variables.yml.prod.example

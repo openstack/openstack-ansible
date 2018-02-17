@@ -1,14 +1,12 @@
-====================
-Appendix F: Security
-====================
+.. _security-design:
+
+Security
+========
 
 Security is one of the top priorities within OpenStack-Ansible (OSA), and many
 security enhancements for OpenStack clouds are available in deployments by
-default. This appendix provides a detailed overview of the most important
+default. This section provides a detailed overview of the most important
 security enhancements.
-
-For more information about configuring security, see
-:deploy_guide:`Appendix H <app-advanced-config-options.html>`.
 
 .. note::
 
@@ -33,7 +31,8 @@ certificates, keys, and CA certificates.
 
 To learn more about how to customize the deployment of encrypted
 communications, see
-:deploy_guide:`Securing services with SSL certificates <app-advanced-config-sslcertificates.html>`.
+:deploy_guide:`Securing services with SSL
+certificates <app-advanced-config-sslcertificates.html>`.
 
 Host security hardening
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -54,27 +53,6 @@ to all deployments. The role has been carefully designed to perform as follows:
 * Apply nondisruptively to a production OpenStack environment
 * Balance security with OpenStack performance and functionality
 * Run as quickly as possible
-
-The role is applicable to physical hosts within an OpenStack-Ansible deployment
-that are operating as any type of node, infrastructure or compute. By
-default, the role is enabled. You can disable it by changing the value of
-the ``apply_security_hardening`` variable in the ``user_variables.yml`` file
-to ``false``:
-
-.. code-block:: yaml
-
-    apply_security_hardening: false
-
-You can apply security hardening configurations to an existing environment or
-audit an environment by using a playbook supplied with OpenStack-Ansible:
-
-.. code-block:: bash
-
-    # Apply security hardening configurations
-      openstack-ansible security-hardening.yml
-
-    # Perform a quick audit by using Ansible's check mode
-      openstack-ansible --check security-hardening.yml
 
 For more information about the security configurations, see the
 `security hardening role`_ documentation.

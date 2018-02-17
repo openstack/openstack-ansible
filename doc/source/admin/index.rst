@@ -5,15 +5,21 @@ Operations Guide
 This guide provides information about operating your OpenStack-Ansible
 deployment.
 
-For information how to deploy your OpenStack-Ansible cloud, refer to the
-`Deployment Guide <https://docs.openstack.org/project-deploy-guide/openstack-ansible/latest/>`_.
-for step-by-step instructions on how to deploy the OpenStack packages and
+For information on how to deploy your OpenStack-Ansible cloud, refer to the
+:deploy_guide:`Deployment Guide <index.html>` for step-by-step
+instructions on how to deploy the OpenStack packages and
 dependencies on your cloud using OpenStack-Ansible.
 
-This guide is recommended for users of a successfully deployed
-OpenStack-Ansible cloud. This explains from basic operations such as
-adding images, booting instances, and attaching volumes, to the
-more complex operations like upgrading.
+For user guides, see the :dev_docs:`User Guide <user/index.html>`.
+
+For information on how to contribute, extend or develop OpenStack-Ansible,
+see the :dev_docs:`Contributors Guide <contributor/index.html>`.
+
+For in-depth technical information, see the
+:dev_docs:`OpenStack-Ansible Reference <reference/index.html>`.
+
+This guide ranges from first operations to verify your deployment, to
+the major upgrades procedures.
 
 .. toctree::
    :maxdepth: 1
@@ -22,7 +28,7 @@ more complex operations like upgrading.
    openstack-operations.rst
    maintenance-tasks.rst
    scale-environment.rst
-   monitoring-systems.rst
+   monitor-environment/monitoring-systems.rst
    backup-restore.rst
    troubleshooting.rst
    upgrades/minor-updates.rst

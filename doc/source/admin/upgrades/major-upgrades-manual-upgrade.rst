@@ -1,6 +1,5 @@
 .. _upgrading-manually:
 
-==================
 Upgrading manually
 ==================
 

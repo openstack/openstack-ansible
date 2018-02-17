@@ -1,6 +1,6 @@
-================================
-Appendix K: Additional resources
-================================
+====================
+Additional resources
+====================
 
 Ansible resources:
 

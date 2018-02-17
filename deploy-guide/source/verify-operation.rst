@@ -29,17 +29,11 @@ configuration and testing.
 
       # lxc-attach -n infra1_utility_container-161a4084
 
-#. Source the ``admin`` tenant credentials:
+#. List your openstack users:
 
    .. code-block:: console
 
-      # source /root/openrc
-
-#. Run an OpenStack command that uses one or more APIs. For example:
-
-   .. code-block:: console
-
-      # openstack user list
+      # openstack user list --os-cloud=default
       +----------------------------------+--------------------+
       | ID                               | Name               |
       +----------------------------------+--------------------+
@@ -60,7 +54,7 @@ configuration and testing.
       +----------------------------------+--------------------+
 
 Verifying the Dashboard (horizon)
----------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #. With a web browser, access the Dashboard by using the external load
    balancer IP address defined by the ``external_lb_vip_address`` option
