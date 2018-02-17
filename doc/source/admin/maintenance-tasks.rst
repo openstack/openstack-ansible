@@ -8,7 +8,6 @@ maintenance tasks.
 .. toctree::
    :maxdepth: 2
 
-   maintenance-tasks/network-maintain.rst
    maintenance-tasks/galera.rst
    maintenance-tasks/rabbitmq-maintain.rst
    maintenance-tasks/backups.rst
