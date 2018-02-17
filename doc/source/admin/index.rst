@@ -21,7 +21,8 @@ more complex operations like upgrading.
    openstack-firstrun.rst
    openstack-operations.rst
    maintenance-tasks.rst
-   monitor-environment/monitoring-systems.rst
+   scale-environment.rst
+   monitoring-systems.rst
    troubleshooting.rst
    advanced-config.rst
    ref-info.rst
