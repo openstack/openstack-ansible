@@ -166,3 +166,11 @@ the OpenStack API and dashboard, as an administrator.
       +--------------------------------------+--------+--------+
       | 6092d7b3-87c1-4d6c-a822-66c0c6171bd3 | cirros | active |
       +--------------------------------------+--------+--------+
+
+#. Check the backend API health on your load balancer nodes.
+   For example, if using haproxy, ensure no backend is marked
+   as "DOWN":
+
+   .. code ::
+
+      $ hatop -s /var/run/haproxy.stat
