@@ -39,16 +39,17 @@
   tags:
     - lxc-containers-create
 
-# TODO(evrardjp): Remove host_need_pip in the future
-# when the process building the repo is done before this step.
-- name: Configure containers default software, but don't run pip yet
+- name: Configure containers default software
   hosts: "{{ container_group|default('all_containers') }}"
   gather_facts: true
   user: root
+  pre_tasks:
+    - include: common-tasks/set-upper-constraints.yml
+    - include: common-tasks/set-pip-upstream-url.yml
   roles:
     - role: "openstack_hosts"
-  vars:
-    host_need_pip: False
+  vars_files:
+    - defaults/repo_packages/openstack_services.yml
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - lxc-containers-create
