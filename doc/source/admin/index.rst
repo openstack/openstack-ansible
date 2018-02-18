@@ -10,10 +10,8 @@ For information how to deploy your OpenStack-Ansible cloud, refer to the
 for step-by-step instructions on how to deploy the OpenStack packages and
 dependencies on your cloud using OpenStack-Ansible.
 
-This guide is recommended for users of a successfully deployed
-OpenStack-Ansible cloud. This explains from basic operations such as
-adding images, booting instances, and attaching volumes, to the
-more complex operations like upgrading.
+This guide ranges from first operations to verify your deployment, to
+the major upgrades procedures.
 
 .. toctree::
    :maxdepth: 1
@@ -25,5 +23,7 @@ more complex operations like upgrading.
    monitoring-systems.rst
    backup-restore.rst
    troubleshooting.rst
+   upgrades/minor-updates.rst
+   upgrades/major-upgrades.rst
    advanced-config.rst
    ref-info.rst
