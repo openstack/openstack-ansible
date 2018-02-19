@@ -1,6 +1,6 @@
-=======================================================
-Integrate OpenStack-Ansible into your monitoring system
-=======================================================
+===========================
+Monitoring your environment
+===========================
 
 This is a draft monitoring system page for the proposed OpenStack-Ansible
 operations guide.
