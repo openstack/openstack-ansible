@@ -9,5 +9,4 @@ Appendix I: Advanced configuration
    :maxdepth: 2
 
    app-advanced-config-override
-   app-advanced-config-sslcertificates
    app-advanced-config-affinity
