@@ -22,4 +22,3 @@ adding images, booting instances, and attaching volumes.
    monitor-environment.rst
    troubleshooting.rst
    advanced-config.rst
-   ref-info.rst
