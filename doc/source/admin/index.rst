@@ -21,4 +21,5 @@ adding images, booting instances, and attaching volumes.
    maintenance-tasks.rst
    monitor-environment.rst
    troubleshooting.rst
-   advanced-config.rst
+   upgrades/minor-updates.rst
+   upgrades/major-upgrades.rst

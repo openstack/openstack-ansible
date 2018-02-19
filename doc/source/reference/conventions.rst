@@ -40,6 +40,14 @@ There is no ``ansible.cfg`` provided with OpenStack-Ansible.
 Environment variables are used to alter the default
 Ansible behavior if necessary.
 
+Ansible roles fetching
+~~~~~~~~~~~~~~~~~~~~~~
+
+Any roles defined in ``openstack-ansible/ansible-role-requirements.yml``
+will be installed by the
+``openstack-ansible/scripts/bootstrap-ansible.sh`` script, and fetched
+into the ansible roles folder.
+
 Inventory conventions
 ~~~~~~~~~~~~~~~~~~~~~
 
