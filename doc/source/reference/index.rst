@@ -1,17 +1,12 @@
-=========
-Inventory
-=========
+===========================
+OpenStack-Ansible Reference
+===========================
 
-OpenStack-Ansible uses an included script to generate the inventory of hosts
-and containers within the environment. This script is called by Ansible
-through its `dynamic inventory functionality <http://docs.ansible.com/ansible/intro_dynamic_inventory.html>`_.
-
-In this section, you will find documentation relevant to the inventory
-for OpenStack-Ansible.
+This chapter contains all the extra reference information
+to deploy, configure, or upgrade an OpenStack-Ansible cloud.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
-   generate-inventory
-   configure-inventory
-   manage-inventory
+   inventory/inventory.rst
+   upgrades/reference.rst

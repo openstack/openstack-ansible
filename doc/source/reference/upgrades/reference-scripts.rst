@@ -1,6 +1,5 @@
-=======
-Scripts
-=======
+Major Upgrade Scripts
+=====================
 
 This section describes in detail the scripts that are used in the upgrade
 process.
