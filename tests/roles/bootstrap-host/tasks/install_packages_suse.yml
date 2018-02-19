@@ -13,22 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: "install_packages_{{ ansible_os_family | lower }}.yml"
-
-- name: Remove known problem packages
-  package:
-    name: "{{ packages_remove }}"
-    state: absent
-  tags:
-    - remove-packages
-
-- name: Install packages
-  package:
-    name: "{{ packages_install }}"
-    state: present
-    # NOTE(hwoarang) Ubuntu has updated its cache before so no need to do it
-    # again
-    update_cache: "{{ (ansible_pkg_mgr == 'zypper') | ternary('yes', omit) }}"
-  tags:
-    - install-packages
-
+- name: Add zypper cloud repositories
+  zypper_repository:
+    auto_import_keys: yes
+    autorefresh: yes
+    name: "{{ item.name }}"
+    repo: "{{ item.uri }}"
+    runrefresh: yes
+  with_items: "{{ opensuse_openstack_repos }}"
+  retries: 5
+  delay: 2
