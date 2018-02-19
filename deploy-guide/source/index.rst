@@ -25,6 +25,7 @@ Contents:
    configure.rst
    run-playbooks.rst
    verify-operation.rst
+   next-steps.rst
    app.rst
 
 
