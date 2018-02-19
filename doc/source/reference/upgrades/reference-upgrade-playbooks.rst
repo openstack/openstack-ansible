@@ -1,6 +1,5 @@
-=========
-Playbooks
-=========
+Major Upgrade Playbooks
+=======================
 
 This section provides details about the playbooks that are used in the
 upgrade process. Within the main :file:`scripts` directory there is an
