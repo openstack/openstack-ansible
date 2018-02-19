@@ -25,4 +25,3 @@ the major upgrades procedures.
    troubleshooting.rst
    upgrades/minor-updates.rst
    upgrades/major-upgrades.rst
-   advanced-config.rst
