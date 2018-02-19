@@ -1,6 +1,5 @@
-======================
-Networking maintenance
-======================
+Managing networks
+=================
 
 Operational considerations, like compliance, can make it necessary to
 manage networks. For example, adding new provider networks to the
@@ -158,11 +157,6 @@ removed, prior to the removal of the OpenStack-Ansible configuration.
       # openstack-ansible lxc-containers-create.yml --limit infra02:infra02-host_containers
       # openstack-ansible lxc-containers-create.yml --limit infra03:infra03-host_containers
       # openstack-ansible os-neutron-install.yml --tags neutron-config
-
-
-Move from  Open vSwitch to LinuxBridge and vice versa
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 
 Restart a Networking agent container
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
