@@ -26,4 +26,3 @@ the major upgrades procedures.
    upgrades/minor-updates.rst
    upgrades/major-upgrades.rst
    advanced-config.rst
-   ref-info.rst
