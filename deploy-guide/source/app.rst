@@ -13,7 +13,6 @@ Appendices
    app-security.rst
    app-networking.rst
    app-limited-connectivity.rst
-   app-advanced-config-sslcertificates
-   app-advanced-config-options.rst
+   app-advanced-config-sslcertificates.rst
    app-ceph.rst
    app-resources.rst
