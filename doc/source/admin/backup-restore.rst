@@ -1,3 +1,5 @@
+.. _backup-restore:
+
 ==============================
 Back up and restore your cloud
 ==============================
@@ -26,4 +28,4 @@ Database backups and recovery
 MySQL data is available on the infrastructure nodes.
 You can recover databases, and rebuild the galera cluster.
 For more information, see
-:ref:`galera-cluster-maintenance`.
+:ref:`galera-cluster-recovery`.

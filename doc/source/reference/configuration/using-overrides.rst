@@ -1,3 +1,5 @@
+.. _user-overrides:
+
 Overriding default configuration
 ================================
 

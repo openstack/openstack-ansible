@@ -160,7 +160,7 @@ Notes:
 
 The next step is to bootstrap Ansible and the Ansible roles for the
 development environment.  Deployers can customize roles by adding variables to
-override the defaults in each role (see :ref:`adding-galaxy-roles`).  Run the
+override the defaults in each role (see :ref:`user-overrides`).  Run the
 following to bootstrap Ansible:
 
 .. code-block:: shell-session

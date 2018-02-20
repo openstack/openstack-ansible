@@ -144,6 +144,8 @@ one of the nodes.
        wsrep_cluster_state_uuid  338b06b0-2948-11e4-9d06-bef42f6c52f1
        wsrep_cluster_status      Primary
 
+.. _galera-cluster-recovery:
+
 Galera cluster recovery
 ~~~~~~~~~~~~~~~~~~~~~~~
 
