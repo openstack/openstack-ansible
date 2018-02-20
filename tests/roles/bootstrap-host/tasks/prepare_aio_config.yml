@@ -96,6 +96,18 @@
     path: /etc/pip.conf
   register: pip_conf_file
 
+# NOTE(mhayden): The OpenStack CI images for CentOS 7 recently set SELinux to
+# Enforcing mode by default. While I am normally a supporter of this change,
+# the SELinux policy work for CentOS 7 is not done yet.
+- name: Set SELinux to permissive mode in OpenStack-CI
+  selinux:
+    policy: targeted
+    state: permissive
+  when:
+    - ansible_selinux.status is defined
+    - ansible_selinux.status == "enabled"
+
+
 # This is a very dirty hack due to images.linuxcontainers.org
 # constantly failing to resolve in openstack-infra.
 - name: Implement hard-coded hosts entries for consistently failing name
