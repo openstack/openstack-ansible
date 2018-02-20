@@ -39,8 +39,9 @@ host.
 
    .. note::
 
-      The file is heavily commented with details about the various options.
-      See :ref:`openstack-user-config-reference` for more details.
+      This file is heavily commented with details about the various options.
+      See our :dev_docs:`User Guide <user/index.html>` and
+      :dev_docs:`Reference Guide <reference/index.html>` for more details.
 
 The configuration in the ``openstack_user_config.yml`` file defines which hosts
 run the containers and services deployed by OpenStack-Ansible. For
@@ -55,16 +56,12 @@ individually in the example file as they are contained in the os-infra hosts.
 You can specify image-hosts or dashboard-hosts if you want to scale out in a
 specific manner.
 
-For examples, please see :ref:`test-environment-config`,
-:ref:`production-environment-config`, and :ref:`pod-environment-config`
+For examples, please see our :dev_docs:`User Guides <user/index.html>`
 
-For details about how the inventory is generated from the environment
-configuration, see
-`developer-inventory <https://docs.openstack.org/openstack-ansible/latest/reference/index.html>`_.
-
-For details about how variable precedence works, and how to override
-group vars, see
-`developer-inventory-and-vars <https://docs.openstack.org/openstack-ansible/latest/contributor/inventory-and-vars.html>`_.
+For details about how the inventory is generated, from the environment
+configuration and the variable precedence, see our
+:dev_docs:`Reference Guide <reference/index.html>` under the inventory
+section.
 
 Installing additional services
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

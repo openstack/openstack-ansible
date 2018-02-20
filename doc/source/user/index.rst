@@ -23,3 +23,4 @@ For in-depth technical information, see the
    :maxdepth: 1
 
    aio/quickstart.rst
+   test/example.rst

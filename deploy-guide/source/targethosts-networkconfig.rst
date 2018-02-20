@@ -23,7 +23,9 @@ The following table shows bridges that are to be configured on hosts.
 +-------------+-----------------------+-------------------------------------+
 
 For a detailed reference of how the host and container networking is
-implemented, refer to :ref:`network-appendix`.
+implemented, refer to
+:dev_docs:`OpenStack-Ansible Reference Architecture, section Container
+Networking <reference/architecture/index.html>`.
 
-For use case examples, refer to :ref:`test-environment-config` and
-:ref:`production-environment-config`.
+For use case examples, refer to
+:dev_docs:`User Guides <user/index.html>`.
