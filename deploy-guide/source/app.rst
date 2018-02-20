@@ -5,8 +5,6 @@ Appendices
 .. toctree::
    :maxdepth: 2
 
-   app-config-prod.rst
-   app-config-pod.rst
    app-config-prod-ceph.rst
    app-custom-layouts.rst
    app-security.rst

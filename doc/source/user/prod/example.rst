@@ -1,13 +1,10 @@
 .. _production-environment-config:
 
-========================================================
-Appendix B: Example production environment configuration
-========================================================
+======================
+Production environment
+======================
 
-Introduction
-~~~~~~~~~~~~
-
-This appendix describes an example production environment for a working
+This is an example production environment for a working
 OpenStack-Ansible (OSA) deployment with high availability services.
 
 This example environment has the following characteristics:
@@ -24,8 +21,9 @@ This example environment has the following characteristics:
 * Internet access via the router address 172.29.236.1 on the
   Management Network
 
-.. image:: figures/arch-layout-production.png
+.. image:: ../figures/arch-layout-production.png
    :width: 100%
+   :alt: Production environment host layout
 
 Network configuration
 ~~~~~~~~~~~~~~~~~~~~~
@@ -84,7 +82,7 @@ following is the ``/etc/network/interfaces`` file for ``infra1``.
    configuration files are replaced with the appropriate name. The same
    applies to additional network interfaces.
 
-.. literalinclude:: ../../etc/network/interfaces.d/openstack_interface.cfg.prod.example
+.. literalinclude:: ../../../../etc/network/interfaces.d/openstack_interface.cfg.prod.example
 
 Deployment configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -97,7 +95,7 @@ environment layout.
 
 The following configuration describes the layout for this environment.
 
-.. literalinclude:: ../../etc/openstack_deploy/openstack_user_config.yml.prod.example
+.. literalinclude:: ../../../../etc/openstack_deploy/openstack_user_config.yml.prod.example
 
 Environment customizations
 --------------------------
@@ -111,7 +109,7 @@ For this environment, the ``cinder-volume`` runs in a container on the
 infrastructure hosts. To achieve this, implement
 ``/etc/openstack_deploy/env.d/cinder.yml`` with the following content:
 
-.. literalinclude:: ../../etc/openstack_deploy/env.d/cinder-volume.yml.container.example
+.. literalinclude:: ../../../../etc/openstack_deploy/env.d/cinder-volume.yml.container.example
 
 User variables
 --------------
@@ -123,4 +121,4 @@ For this environment, implement the load balancer on the infrastructure
 hosts. Ensure that keepalived is also configured with HAProxy in
 ``/etc/openstack_deploy/user_variables.yml`` with the following content.
 
-.. literalinclude:: ../../etc/openstack_deploy/user_variables.yml.prod.example
+.. literalinclude:: ../../../../etc/openstack_deploy/user_variables.yml.prod.example
