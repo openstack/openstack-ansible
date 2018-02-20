@@ -29,7 +29,7 @@ import sys
 
 # Create dynamic table file.
 CONF_PATH = os.path.dirname(os.path.realpath(__file__))
-SCENARIO_TABLE = 'contributor/scenario-table-gen.html'
+SCENARIO_TABLE = 'user/aio/scenario-table-gen.html'
 TABLE_FILE = os.path.join(CONF_PATH, SCENARIO_TABLE)
 stg = imp.load_source(
     'scenario_table_gen',

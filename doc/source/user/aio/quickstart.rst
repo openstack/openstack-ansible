@@ -1,6 +1,8 @@
-===========
-Quick Start
-===========
+.. _quickstart-aio:
+
+===============
+Quickstart: AIO
+===============
 
 All-in-one (AIO) builds are a great way to perform an OpenStack-Ansible build
 for:
@@ -234,6 +236,7 @@ Keystone service, execute:
 
 Rebooting an AIO
 ----------------
+
 As the AIO includes all three cluster members of MariaDB/Galera, the cluster
 has to be re-initialized after the host is rebooted.
 
@@ -251,6 +254,7 @@ section in the operations guide.
 
 Rebuilding an AIO
 -----------------
+
 Sometimes it may be useful to destroy all the containers and rebuild the AIO.
 While it is preferred that the AIO is entirely destroyed and rebuilt, this
 isn't always practical. As such the following may be executed instead:

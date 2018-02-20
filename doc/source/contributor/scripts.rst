@@ -51,13 +51,12 @@ arguments to ``ansible-playbook`` as a convenience.
 bootstrap-aio.sh
 ----------------
 
-The ``bootstrap-aio.sh`` script prepares a host for an `All-In-One`_ (AIO)
+The ``bootstrap-aio.sh`` script prepares a host for an
+:ref:`All-In-One <quickstart-aio>` (AIO)
 deployment for the purposes of development and gating. The script creates the
 necessary partitions, directories, and configurations. The script can be
 configured using environment variables - more details are provided on the
-`All-In-One`_ page.
-
-.. _All-In-One: quickstart-aio.html
+:ref:`All-In-One <quickstart-aio>` page.
 
 Development and Testing
 ^^^^^^^^^^^^^^^^^^^^^^^

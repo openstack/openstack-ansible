@@ -24,7 +24,6 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
-   quickstart-aio
    inventory-and-vars
    scripts
    contribute

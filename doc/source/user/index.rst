@@ -18,3 +18,8 @@ see the :dev_docs:`Contributors Guide <contributor/index.html>`.
 
 For in-depth technical information, see the
 :dev_docs:`OpenStack-Ansible Reference <reference/index.html>`.
+
+.. toctree::
+   :maxdepth: 1
+
+   aio/quickstart.rst
