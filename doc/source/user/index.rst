@@ -26,3 +26,4 @@ For in-depth technical information, see the
    test/example.rst
    prod/example.rst
    l3pods/example.rst
+   ceph/full-deploy.rst

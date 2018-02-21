@@ -1,13 +1,10 @@
 .. _production-ceph-environment-config:
 
-=============================================================
-Appendix D: Example Ceph production environment configuration
-=============================================================
+=======================
+Ceph production example
+=======================
 
-Introduction
-~~~~~~~~~~~~
-
-This appendix describes an example production environment for a working
+This section describes an example production environment for a working
 OpenStack-Ansible (OSA) deployment with high availability services and using
 the Ceph backend for images, volumes, and instances.
 
@@ -25,8 +22,29 @@ This example environment has the following characteristics:
 * Internet access via the router address 172.29.236.1 on the
   Management Network
 
-.. image:: figures/arch-layout-production-ceph.png
+.. image:: ../figures/arch-layout-production-ceph.png
    :width: 100%
+
+Integration with Ceph
+~~~~~~~~~~~~~~~~~~~~~
+
+OpenStack-Ansible allows `Ceph storage <https://ceph.com>`_ cluster
+integration in two ways:
+
+* connecting to your own ceph cluster by pointing to its information
+  in ``user_variables.yml``
+* deploying a ceph cluster by using the roles maintained by the
+  `Ceph-Ansible`_ project. Deployers can enable the ``ceph-install``
+  playbook by adding hosts to the ``ceph-mon_hosts`` and ``ceph-osd_hosts``
+  groups in ``openstack_user_config.yml``, and then configuring
+  `Ceph-Ansible specific vars
+  <https://github.com/ceph/ceph-ansible/blob/master/group_vars/all.yml.sample>`_
+  in the OpenStack-Ansible ``user_variables.yml`` file.
+
+.. _Ceph-Ansible: https://github.com/ceph/ceph-ansible/
+
+This example will focus on the deployment of both OpenStack-Ansible
+and its Ceph cluster.
 
 Network configuration
 ~~~~~~~~~~~~~~~~~~~~~
@@ -89,7 +107,7 @@ following is the ``/etc/network/interfaces`` file for ``infra1``.
    configuration files are replaced with the appropriate name. The same
    applies to additional network interfaces.
 
-.. literalinclude:: ../../etc/network/interfaces.d/openstack_interface.cfg.prod.example
+.. literalinclude:: ../../../../etc/network/interfaces.d/openstack_interface.cfg.prod.example
 
 Deployment configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -102,7 +120,7 @@ environment layout.
 
 The following configuration describes the layout for this environment.
 
-.. literalinclude:: ../../etc/openstack_deploy/openstack_user_config.yml.prod-ceph.example
+.. literalinclude:: ../../../../etc/openstack_deploy/openstack_user_config.yml.prod-ceph.example
 
 Environment customizations
 --------------------------
@@ -113,10 +131,11 @@ the services will run in a container (the default), or on the host (on
 metal).
 
 For a ceph environment, you can run the ``cinder-volume`` in a container.
-To do this you will need to create a ``/etc/openstack_deploy/env.d/cinder.yml`` file
-with the following content:
+To do this you will need to create a
+``/etc/openstack_deploy/env.d/cinder.yml`` file with the following
+content:
 
-.. literalinclude:: ../../etc/openstack_deploy/env.d/cinder-volume.yml.container.example
+.. literalinclude:: ../../../../etc/openstack_deploy/env.d/cinder-volume.yml.container.example
 
 User variables
 --------------
@@ -127,7 +146,7 @@ overrides for the default variables.
 For this example environment, we configure a HA load balancer.
 We implement the load balancer (HAProxy) with an HA layer (keepalived)
 on the infrastructure hosts.
-Your ``/etc/openstack_deploy/user_variables.yml`` must have the following content
-to configure haproxy, keepalived and ceph:
+Your ``/etc/openstack_deploy/user_variables.yml`` must have the
+following content to configure haproxy, keepalived and ceph:
 
-.. literalinclude:: ../../etc/openstack_deploy/user_variables.yml.prod-ceph.example
+.. literalinclude:: ../../../../etc/openstack_deploy/user_variables.yml.prod-ceph.example
