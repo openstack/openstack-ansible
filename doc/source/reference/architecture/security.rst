@@ -1,14 +1,10 @@
-====================
-Appendix F: Security
-====================
+Security
+========
 
 Security is one of the top priorities within OpenStack-Ansible (OSA), and many
 security enhancements for OpenStack clouds are available in deployments by
-default. This appendix provides a detailed overview of the most important
+default. This section provides a detailed overview of the most important
 security enhancements.
-
-For more information about configuring security, see
-:deploy_guide:`Appendix H <app-advanced-config-options.html>`.
 
 .. note::
 
@@ -33,7 +29,8 @@ certificates, keys, and CA certificates.
 
 To learn more about how to customize the deployment of encrypted
 communications, see
-:deploy_guide:`Securing services with SSL certificates <app-advanced-config-sslcertificates.html>`.
+:deploy_guide:`Securing services with SSL
+certificates <app-advanced-config-sslcertificates.html>`.
 
 Host security hardening
 ~~~~~~~~~~~~~~~~~~~~~~~

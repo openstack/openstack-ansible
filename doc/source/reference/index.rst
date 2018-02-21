@@ -25,5 +25,6 @@ see the :dev_docs:`Contributors Guide <contributor/index.html>`.
    conventions.rst
    inventory/inventory.rst
    configuration/advanced-config.rst
+   architecture/index.rst
    commands/reference.rst
    upgrades/reference.rst
