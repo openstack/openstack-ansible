@@ -338,7 +338,7 @@ upgrade_backup_dir = "``/etc/openstack_deploy."+previous_release_capital_name+"`
 
 # Used to reference the deploy guide
 deploy_guide_prefix = "http://docs.openstack.org/project-deploy-guide/openstack-ansible/{}/%s".format(deploy_branch_link_name)
-dev_docs_prefix = "http://docs.openstack.org/openstack-ansible/{}%s".format(dev_branch_link_name)
+dev_docs_prefix = "http://docs.openstack.org/openstack-ansible/{}/%s".format(deploy_branch_link_name)
 
 rst_epilog = """
 .. |previous_release_branch_name| replace:: %s
