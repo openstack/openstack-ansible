@@ -46,11 +46,15 @@
   pre_tasks:
     - name: Remove legacy haproxy configuration files
       file:
-        dest: "/etc/haproxy/conf.d/{{ item }}"
+        dest: "/etc/haproxy/conf.d/{{ item.name }}"
         state: "absent"
       with_items:
-        - "keystone_internal"
-      when: internal_lb_vip_address == external_lb_vip_address
+        - name: "keystone_internal"
+          when: "internal_lb_vip_address == external_lb_vip_address"
+        - name: "heat_api_cloudwatch"
+          when: "yes"
+      when:
+       - "item.when | bool"
       tags:
         - haproxy-config  # this tag is present because the task is ONLY a config task
     - name: Remove legacy haproxy logging file
