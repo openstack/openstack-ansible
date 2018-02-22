@@ -9,10 +9,10 @@ configuration of an OpenStack environment.
 
 Documentation for each of the following releases is available.
 
-Queens: Pre-release
-~~~~~~~~~~~~~~~~~~~
+Rocky: Pre-release
+~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible Queens is currently in development.
+OpenStack-Ansible Rocky is currently in development.
 
 .. toctree::
    :maxdepth: 1
@@ -23,6 +23,18 @@ OpenStack-Ansible Queens is currently in development.
    user/index
    contributor/index
    reference/index
+
+Queens: Release Candidate
+~~~~~~~~~~~~~~~~~~~~~~~~~
+OpenStack-Ansible Queens is currently a release candidate, expected to release
+with the 17.0.0 tag by 16 March 2018.
+
+* `OpenStack-Ansible Queens Documentation`_
+
+* `OpenStack-Ansible Queens series release notes`_
+
+.. _OpenStack-Ansible Queens Documentation: https://docs.openstack.org/openstack-ansible/queens/
+.. _OpenStack-Ansible Queens series release notes: https://docs.openstack.org/releasenotes/openstack-ansible/queens.html
 
 Pike: Current stable release, security supported
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
