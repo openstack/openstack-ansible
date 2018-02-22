@@ -1,6 +1,7 @@
-================================================
-Appendix E: Customizing host and service layouts
-================================================
+.. _inventory-in-depth:
+
+Understanding the inventory
+===========================
 
 The default layout of containers and services in OpenStack-Ansible (OSA) is
 determined by the ``/etc/openstack_deploy/openstack_user_config.yml`` file and
@@ -21,8 +22,8 @@ To customize the layout of the components for your deployment, modify the
 host groups and container groups appropriately before running the installation
 playbooks.
 
-Understanding host groups
-~~~~~~~~~~~~~~~~~~~~~~~~~
+Understanding host groups (conf.d structure)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 As part of the initial configuration, each target host appears either in the
 ``/etc/openstack_deploy/openstack_user_config.yml`` file or in files within
@@ -50,8 +51,8 @@ variables to any component containers on the specific host.
    particularly for new services, by using a new file in the
    ``conf.d/`` directory.
 
-Understanding container groups
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Understanding container groups (env.d structure)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Additional group mappings are located within files in the
 ``/etc/openstack_deploy/env.d/`` directory. These groups are treated as
@@ -61,11 +62,11 @@ groups, that define where each service deploys. By reviewing files within the
 in the default layout.
 
 For example, the ``shared-infra.yml`` file defines a container group,
-``shared- infra_containers``, as a subset of the all_containers inventory
-group. The ``shared- infra_containers`` container group is mapped to the
-``shared-infra_hosts`` host group. All of the service components in the
-``shared-infra_containers`` container group are deployed to each target host
-in the ``shared-infra_hosts host`` group.
+``shared-infra_containers``, as a subset of the ``all_containers``
+inventory group. The ``shared- infra_containers`` container group is
+mapped to the ``shared-infra_hosts`` host group. All of the service
+components in the ``shared-infra_containers`` container group are
+deployed to each target host in the ``shared-infra_hosts host`` group.
 
 Within a ``physical_skel`` section, the OpenStack-Ansible dynamic inventory
 expects to find a pair of keys. The first key maps to items in the
@@ -93,98 +94,53 @@ group. Other services might have more complex deployment needs. They define and
 consume inventory container groups differently. Mapping components to several
 groups in this way allows flexible targeting of roles and tasks.
 
-Customizing existing components
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. _affinity:
 
-Deploying directly on hosts
----------------------------
+Affinity
+~~~~~~~~
 
-To deploy a component directly on the host instead of within a container, set
-the ``is_metal`` property to ``true`` for the container group in the
-``container_skel`` section in the appropriate file.
+When OpenStack-Ansible generates its dynamic inventory, the affinity
+setting determines how many containers of a similar type are deployed on a
+single physical host.
 
-The use of ``container_vars`` and mapping from container groups to host groups
-is the same for a service deployed directly onto the host.
+Using ``shared-infra_hosts`` as an example, consider this
+``openstack_user_config.yml`` configuration:
 
-.. note::
+.. code-block:: yaml
 
-   The ``cinder-volume`` component is deployed directly on the host by
-   default. See the ``env.d/cinder.yml`` file for this example.
+    shared-infra_hosts:
+      infra1:
+        ip: 172.29.236.101
+      infra2:
+        ip: 172.29.236.102
+      infra3:
+        ip: 172.29.236.103
 
-Omit a service or component from the deployment
------------------------------------------------
+Three hosts are assigned to the `shared-infra_hosts` group,
+OpenStack-Ansible ensures that each host runs a single database container,
+a single Memcached container, and a single RabbitMQ container. Each host has
+an affinity of 1 by default,  which means that each host runs one of each
+container type.
 
-To omit a component from a deployment, you can use one of several options:
+If you are deploying a stand-alone Object Storage (swift) environment,
+you can skip the deployment of RabbitMQ. If you use this configuration,
+your ``openstack_user_config.yml`` file would look as follows:
 
-- Remove the ``physical_skel`` link between the container group and
-  the host group by deleting the related file located in the ``env.d/``
-  directory.
-- Do not run the playbook that installs the component.
-  Unless you specify the component to run directly on a host by using the
-  ``is_metal`` property, a container is created for this component.
-- Adjust the :deploy_guide:`affinity <app-advanced-config-affinity.html>`
-  to 0 for the host group. Similar to the second option listed here, Unless
-  you specify the component to run directly on a host by using the``is_metal``
-  property, a container is created for this component.
+.. code-block:: yaml
 
-Deploy existing components on dedicated hosts
----------------------------------------------
+    shared-infra_hosts:
+      infra1:
+        affinity:
+          rabbit_mq_container: 0
+        ip: 172.29.236.101
+      infra2:
+        affinity:
+          rabbit_mq_container: 0
+        ip: 172.29.236.102
+      infra3:
+        affinity:
+          rabbit_mq_container: 0
+        ip: 172.29.236.103
 
-To deploy a ``shared-infra`` component to dedicated hosts, modify the
-files that specify the host groups and container groups for the component.
-
-For example, to run Galera directly on dedicated hosts, you would perform the
-following steps:
-
-#. Modify the ``container_skel`` section of the ``env.d/galera.yml`` file.
-   For example:
-
-   .. code-block:: yaml
-
-     container_skel:
-       galera_container:
-         belongs_to:
-           - db_containers
-         contains:
-           - galera
-         properties:
-           is_metal: true
-
-   .. note::
-
-      To deploy within containers on these dedicated hosts, omit the
-      ``is_metal: true`` property.
-
-#. Assign the ``db_containers`` container group (from the preceding step) to a
-   host group by providing a ``physical_skel`` section for the host group
-   in a new or existing file, such as ``env.d/galera.yml``.
-   For example:
-
-   .. code-block:: yaml
-
-     physical_skel:
-       db_containers:
-         belongs_to:
-           - all_containers
-       db_hosts:
-         belongs_to:
-           - hosts
-
-#. Define the host group (``db_hosts``) in a ``conf.d/`` file (such as
-   ``galera.yml``). For example:
-
-   .. code-block:: yaml
-
-     db_hosts:
-       db-host1:
-         ip: 172.39.123.11
-       db-host2:
-         ip: 172.39.123.12
-       db-host3:
-         ip: 172.39.123.13
-
-   .. note::
-
-      Each of the custom group names in this example (``db_containers``
-      and ``db_hosts``) are arbitrary. Choose your own group names,
-      but ensure the references are consistent among all relevant files.
+This configuration deploys a Memcached container and a database container
+on each host, but no RabbitMQ containers.

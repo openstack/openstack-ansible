@@ -78,8 +78,10 @@ physical host and not in a container. For an example of ``is_metal: true``
 being used refer to ``inventory/env.d/cinder.yml`` in the
 ``container_skel`` section.
 
+For more details, see :ref:`configuring-inventory`.
+
 Outputs
-^^^^^^^
+~~~~~~~
 
 Once executed, the script will output an ``openstack_inventory.json`` file into
 the directory specified with the ``--config`` argument. This is used as the
