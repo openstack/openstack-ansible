@@ -1,0 +1,86 @@
+---
+# Copyright 2018, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# This playbook is meant to run after setup-hosts.
+# To succeed, it expects the setup-hosts playbook to have run successfuly.
+
+# Ensuring the openstack hosts are well setup
+# Ensure the containers are properly setup
+- name: Ensuring hosts good behavior
+  hosts: hosts
+  gather_facts: no
+  tasks:
+    - name: Check the right role code was used
+      debug:
+        msg: "To be implemented"
+        verbosity: 1
+
+    # TODO(evrardjp): Add nspawn checking
+    - name: Looking for dnsmasq process
+      command: pgrep dnsmasq
+      changed_when: false
+      when: container_tech | default('lxc') == 'lxc'
+
+- name: Ensuring containers creation, connection and good behavior
+  hosts: all_containers
+  gather_facts: yes
+  tasks:
+    - name: Ensure the physical host has all the proper interfaces defined
+      assert:
+        that:
+          - item.value.bridge in hostvars[physical_host]['ansible_interfaces']
+      with_dict: "{{ container_networks }}"
+
+    - name: Check if dns resolution and external connectivity is fine
+      get_url:
+        url: https://git.openstack.org/cgit/openstack/openstack-ansible/plain/ansible-role-requirements.yml
+        dest: /tmp/osa-master-requirements
+
+- name: Ensure settings are not wrong with the usual suspects issues before trying to deploy infra
+  hosts: haproxy_all
+  gather_facts: yes
+  tasks:
+    - name: Checking that the LB vips are well configured.
+      assert:
+        that:
+          - external_lb_vip_address != internal_lb_vip_address
+        msg: |
+          External and Internal LB vip addresses are the same.
+          Run with -e vipcheck=False if you want to bypass this check.
+      when:
+        - vipcheck | default(True) | bool
+        - inventory_hostname == ansible_play_hosts[0]
+
+    - name: Checking that vip nics are well configured
+      assert:
+        that:
+          - item in ansible_interfaces
+        msg: "Misconfigured keepalived IP, the carrying interface {{ item }} doesn't exist"
+      with_items:
+        - "{{ haproxy_keepalived_external_interface }}"
+        - "{{ haproxy_keepalived_internal_interface }}"
+      when:
+        - groups['haproxy_all'] | length > 1
+
+    - name: Checking that vip address is well formed
+      assert:
+        that:
+          - item | ipaddr('address')
+        msg: "Misconfigured keepalived: The vip {{ item }} is not an IP address, but a network"
+      with_items:
+        - "{{ haproxy_keepalived_internal_vip_cidr }}"
+        - "{{ haproxy_keepalived_external_vip_cidr }}"
+      when:
+        - groups['haproxy_all'] | length > 1
