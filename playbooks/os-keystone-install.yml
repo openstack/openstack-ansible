@@ -62,7 +62,6 @@
   hosts: keystone_all
   serial: "{{ keystone_serial | default(['1', '100%']) }}"
   gather_facts: "{{ osa_gather_facts | default(True) }}"
-  max_fail_percentage: 20
   user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
@@ -154,7 +153,6 @@
 - name: Finalise data migrations if required
   hosts: keystone_all
   gather_facts: no
-  max_fail_percentage: 20
   user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
