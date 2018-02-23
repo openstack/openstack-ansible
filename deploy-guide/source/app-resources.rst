@@ -15,13 +15,10 @@ Ansible resources:
 
 OpenStack resources:
 
-- `OpenStack Documentation <http://docs.openstack.org>`_
-
-- `OpenStack SDK, CLI and API Documentation
-  <http://developer.openstack.org/>`_
+- `OpenStack Documentation <https://docs.openstack.org/>`_
 
 - `OpenStack API Guide
-  <http://developer.openstack.org/api-guide/quick-start>`_
+  <https://developer.openstack.org/api-guide/quick-start>`_
 
 - `OpenStack Project Developer Documentation
-  <http://docs.openstack.org/developer/>`_
+  <https://docs.openstack.org/developer>`_
