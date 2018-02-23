@@ -19,6 +19,16 @@ defaults defined in the ``inventory/env.d`` directory.
 To understand how the dynamic inventory works, see
 :ref:`inventory-in-depth`.
 
+.. warning::
+
+   Never edit or delete the files
+   ``/etc/openstack_deploy/openstack_inventory.json`` or
+   ``/etc/openstack_deploy/openstack_hostnames_ips.yml``. This can
+   lead to file corruptions, and problems with the inventory: hosts
+   and container could disappear and new ones would appear,
+   breaking your existing deployment.
+
+
 Configuration constraints
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
