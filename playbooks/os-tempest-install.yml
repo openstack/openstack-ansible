@@ -16,7 +16,6 @@
 - name: Installation and setup of Tempest
   hosts: utility_all[0]
   gather_facts: "{{ gather_facts | default(True) }}"
-  max_fail_percentage: 20
   user: root
   roles:
     - role: "os_tempest"

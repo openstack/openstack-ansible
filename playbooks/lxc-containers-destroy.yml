@@ -16,7 +16,6 @@
 - name: Destroy lxc containers
   hosts: "{{ container_group|default('all_containers') }}"
   gather_facts: false
-  max_fail_percentage: 20
   user: root
   tasks:
     - name: Destroy a container

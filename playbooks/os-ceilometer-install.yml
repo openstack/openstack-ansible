@@ -16,7 +16,6 @@
 - name: Install the ceilometer components
   hosts: ceilometer_all
   gather_facts: "{{ gather_facts | default(True) }}"
-  max_fail_percentage: 20
   user: root
   pre_tasks:
     - include: common-tasks/os-lxc-container-setup.yml

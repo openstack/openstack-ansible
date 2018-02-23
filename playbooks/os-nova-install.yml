@@ -134,7 +134,6 @@
 - name: Refresh local facts after all software changes are made
   hosts: nova_all
   gather_facts: no
-  max_fail_percentage: 20
   user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
@@ -180,7 +179,6 @@
   hosts: "nova_all:!nova_api_placement:!nova_console"
   gather_facts: no
   serial: "{{ nova_serial | default('100%') }}"
-  max_fail_percentage: 20
   user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
@@ -205,7 +203,6 @@
   hosts: "nova_api_placement:nova_console"
   gather_facts: no
   serial: "{{ nova_api_serial | default(['1', '100%']) }}"
-  max_fail_percentage: 20
   user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:

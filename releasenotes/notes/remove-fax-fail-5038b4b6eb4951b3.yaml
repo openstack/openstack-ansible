@@ -1,0 +1,21 @@
+---
+other:
+  - The `max_fail_percentage` playbook option has been used with the default
+    playbooks since the first release of the playbooks back in **Icehouse**.
+    While the intention was to allow large-scale deployments to succeed in
+    cases where a single node fails due to transient issues, this option has
+    produced more problems that it solves. If a failure occurs that is transient
+    in nature but is under the set failure percentage the playbook will report a
+    success, which can cause silent failures depending on where the failure
+    happened. If a deployer finds themselves in this situation the problems are
+    are then compounded because the tools will report there are no known issues.
+    To ensure deployers have the best deployment experience and the most
+    accurate information a change has been made to remove the
+    `max_fail_percentage` option from all of the default playbooks. The removal
+    of this option has the side effect of requiring the deploy to skip specific
+    hosts should one need to be omitted from a run, but has the benefit of
+    eliminating silent, hard to track down, failures. To skip a failing host
+    for a given playbook run use the `--limit '!$HOSTNAME'` CLI switch for the
+    specific run. Once the issues have been resolved for the failing host rerun
+    the specific playbook without the `--limit` option to ensure everything
+    is in sync.
