@@ -356,6 +356,10 @@ function get_instance_info {
 
 function get_pip {
 
+  # Use pip opts to add options to the pip install command.
+  # This can be used to tell it which index to use, etc.
+  PIP_OPTS=${PIP_OPTS:-""}
+
   # The python executable to use when executing get-pip is passed
   # as a parameter to this function.
   GETPIP_PYTHON_EXEC_PATH="${1:-$(which python)}"
@@ -372,13 +376,10 @@ function get_pip {
       || ${GETPIP_CMD} https://raw.githubusercontent.com/pypa/get-pip/master/3.3/get-pip.py
   fi
 
-  ${GETPIP_PYTHON_EXEC_PATH} ${GETPIP_FILE} \
-    pip setuptools wheel \
-    --constraint global-requirement-pins.txt \
-    || ${GETPIP_PYTHON_EXEC_PATH} ${GETPIP_FILE} \
-         pip setuptools wheel \
-         --constraint global-requirement-pins.txt \
-         --isolated
+  ${GETPIP_PYTHON_EXEC_PATH} ${GETPIP_FILE} ${PIP_OPTS} \
+     pip setuptools wheel \
+     --constraint global-requirement-pins.txt \
+     --isolated
 }
 
 ## Signal traps --------------------------------------------------------------

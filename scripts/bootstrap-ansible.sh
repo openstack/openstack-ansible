@@ -29,6 +29,10 @@ export DEBIAN_FRONTEND=${DEBIAN_FRONTEND:-"noninteractive"}
 # check whether to install the ARA callback plugin
 export SETUP_ARA=${SETUP_ARA:-"false"}
 
+# Use pip opts to add options to the pip install command.
+# This can be used to tell it which index to use, etc.
+export PIP_OPTS=${PIP_OPTS:-""}
+
 # Set the role fetch mode to any option [galaxy, git-clone]
 export ANSIBLE_ROLE_FETCH_MODE=${ANSIBLE_ROLE_FETCH_MODE:-git-clone}
 
@@ -97,12 +101,11 @@ case ${DISTRO_ID} in
 esac
 
 # Ensure we use the HTTPS/HTTP proxy with pip if it is specified
-PIP_OPTS=""
 if [ -n "$HTTPS_PROXY" ]; then
-  PIP_OPTS="--proxy $HTTPS_PROXY"
+  PIP_OPTS+="--proxy $HTTPS_PROXY"
 
 elif [ -n "$HTTP_PROXY" ]; then
-  PIP_OPTS="--proxy $HTTP_PROXY"
+  PIP_OPTS+="--proxy $HTTP_PROXY"
 fi
 
 
@@ -136,11 +139,9 @@ if [[ "${VIRTUALENV_VERSION}" -lt "13" ]]; then
 
   pip install ${PIP_OPTS} \
     --constraint ${UPPER_CONSTRAINTS_FILE} \
-    virtualenv \
-    || pip install ${PIP_OPTS} \
-         --constraint ${UPPER_CONSTRAINTS_FILE} \
-         --isolated \
-         virtualenv
+    --isolated \
+    virtualenv
+
   # Ensure that our shell knows about the new pip
   hash -r virtualenv
 fi
@@ -164,13 +165,14 @@ get_pip /opt/ansible-runtime/bin/python2
 PIP_OPTS+=" --constraint global-requirement-pins.txt"
 PIP_OPTS+=" --constraint ${UPPER_CONSTRAINTS_FILE}"
 
-# When upgrading there will already be a pip.conf file locking pip down to the
-# repo server, in such cases it may be necessary to use --isolated because the
-# repo server does not meet the specified requirements.
+# When executing the installation, we want to specify all our options on the CLI,
+# making sure to completely ignore any config already on the host. This is to
+# prevent the repo server's extra constraints being applied, which include
+# a different version of Ansible to the one we want to install. As such, we
+# use --isolated so that the config file is ignored.
 
 # Install ansible and the other required packages
-${PIP_COMMAND} install ${PIP_OPTS} -r requirements.txt ${ANSIBLE_PACKAGE} \
-  || ${PIP_COMMAND} install --isolated ${PIP_OPTS} -r requirements.txt ${ANSIBLE_PACKAGE}
+${PIP_COMMAND} install --isolated ${PIP_OPTS} -r requirements.txt ${ANSIBLE_PACKAGE}
 
 # Install our osa_toolkit code from the current checkout
 $PIP_COMMAND install -e .
