@@ -17,7 +17,6 @@
   hosts: galera_all
   gather_facts: "{{ gather_facts | default(True) }}"
   serial: 1
-  max_fail_percentage: 0
   user: root
   tasks:
     - include: common-tasks/os-log-dir-setup.yml
@@ -42,7 +41,6 @@
   hosts: galera_all
   gather_facts: "{{ gather_facts | default(True) }}"
   serial: 1
-  max_fail_percentage: 20
   user: root
   roles:
     - role: "galera_server"
