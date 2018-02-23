@@ -139,7 +139,6 @@
   hosts: cinder_backup,cinder_volume,cinder_scheduler
   gather_facts: no
   serial: "{{ cinder_backend_serial | default(['1', '100%']) }}"
-  max_fail_percentage: 20
   user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
@@ -165,7 +164,6 @@
   hosts: cinder_api
   gather_facts: no
   serial: "{{ cinder_api_serial | default(['1','100%']) }}"
-  max_fail_percentage: 20
   user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:

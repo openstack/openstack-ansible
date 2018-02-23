@@ -34,7 +34,6 @@
 - name: Create container(s)
   hosts: all_lxc_containers
   gather_facts: false
-  max_fail_percentage: 20
   user: root
   roles:
     - role: "lxc_container_create"
