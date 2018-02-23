@@ -15,7 +15,6 @@
 
 - name: Install ceph mons
   hosts: ceph-mon
-  max_fail_percentage: 20
   user: root
   pre_tasks:
     - include: common-tasks/os-log-dir-setup.yml
@@ -132,7 +131,6 @@
 
 - name: Install ceph osds
   hosts: ceph-osd
-  max_fail_percentage: 20
   user: root
   pre_tasks:
     - include: common-tasks/os-log-dir-setup.yml

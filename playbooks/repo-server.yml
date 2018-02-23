@@ -16,7 +16,6 @@
 - name: Setup repo servers
   hosts: repo_all
   gather_facts: "{{ osa_gather_facts | default(True) }}"
-  max_fail_percentage: 20
   user: root
   pre_tasks:
 

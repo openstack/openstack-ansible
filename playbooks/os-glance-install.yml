@@ -81,7 +81,6 @@
 - name: Refresh local facts after all software changes are made
   hosts: glance_all
   gather_facts: no
-  max_fail_percentage: 20
   user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
