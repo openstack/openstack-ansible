@@ -154,7 +154,9 @@ Install the source and dependencies for the deployment host.
 .. note::
 
    If you are installing with limited connectivity, please review
-   :ref:`limited-connectivity-appendix` before proceeding.
+   :dev_docs:`Installing with limited connectivity
+   <user/limited-connectivity/index.html>`
+   before proceeding.
 
 #. Clone the latest stable release of the OpenStack-Ansible Git repository in
    the ``/opt/openstack-ansible`` directory:
