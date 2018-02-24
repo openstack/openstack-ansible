@@ -78,6 +78,14 @@ OpenStack-Ansible has many options that you can use for the advanced
 configuration of services. Each role's documentation provides information
 about the available options.
 
+.. important::
+
+   This step is essential to tailoring OpenStack-Ansible to your needs
+   and is generally overlooked by new deployers. Have a look at each
+   role documentation, user guides, and reference if you want a tailor
+   made cloud.
+
+
 Infrastructure service roles
 ----------------------------
 
