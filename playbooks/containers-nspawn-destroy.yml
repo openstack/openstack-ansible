@@ -30,7 +30,6 @@
 - name: Destroy nspawn containers
   hosts: all_nspawn_containers
   gather_facts: false
-  max_fail_percentage: 20
   user: root
   tasks:
     - name: Get container status

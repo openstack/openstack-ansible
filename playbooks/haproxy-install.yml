@@ -41,7 +41,6 @@
 - name: Install haproxy
   hosts: haproxy
   gather_facts: "{{ osa_gather_facts | default(True) }}"
-  max_fail_percentage: 20
   user: root
   pre_tasks:
     - name: Remove legacy haproxy configuration files

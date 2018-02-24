@@ -16,7 +16,6 @@
 - name: Install heat server
   hosts: heat_all
   gather_facts: "{{ osa_gather_facts | default(True) }}"
-  max_fail_percentage: 20
   user: root
   pre_tasks:
     - include: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
