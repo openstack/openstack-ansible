@@ -110,7 +110,7 @@ fi
 # tests repo are not supported.
 if [[ "${CLONE_UPGRADE_TESTS}" == "yes" ]]; then
     if [[ ! -d "${WORKING_DIR}/tests/common/previous" ]]; then
-        git clone -b stable/pike \
+        git clone -b stable/queens \
             https://git.openstack.org/openstack/openstack-ansible-tests \
             ${WORKING_DIR}/tests/common/previous
   fi

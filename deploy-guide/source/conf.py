@@ -296,8 +296,8 @@ pdf_documents = [
 
 latest_tag = os.popen('git describe --abbrev=0 --tags').read().strip('\n')
 
-previous_release_branch_name='pike'
-current_release_branch_name='queens'
+previous_release_branch_name='queens'
+current_release_branch_name='rocky'
 # Var specifically for using in URLs; differs because it might be 'draft'
 # on master for deploy guide
 deploy_branch_link_name = current_release_branch_name
