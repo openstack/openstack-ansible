@@ -13,22 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: "install_packages_{{ ansible_os_family | lower }}.yml"
-
-- name: Remove known problem packages
+- name: Install RDO package
   package:
-    name: "{{ packages_remove }}"
-    state: absent
-  tags:
-    - remove-packages
-
-- name: Install packages
-  package:
-    name: "{{ packages_install }}"
-    state: present
-    # NOTE(hwoarang) Ubuntu has updated its cache before so no need to do it
-    # again
-    update_cache: "{{ (ansible_pkg_mgr == 'zypper') | ternary('yes', omit) }}"
-  tags:
-    - install-packages
-
+    name: "{{ rdo_package }}"
+    state: "present"
+  register: install_cloud_rdo_package
+  until: install_cloud_rdo_package | success
+  retries: 5
+  delay: 2
