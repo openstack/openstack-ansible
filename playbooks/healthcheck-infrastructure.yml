@@ -13,11 +13,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Ensuring haproxy runs
+# This playbook is meant to run after setup-infrastructure, and expects
+# the infrastructure bits to have properly deployed to succeed.
+
+# Ensuring Load Balancer behavior
 - name: Ensuring haproxy runs
-  hosts: haproxy
+  hosts: haproxy_all
   gather_facts: no
   tasks:
+    - name: Check if host can connect to keepalived ping IP
+      command: "ping {{ keepalived_ping_address }}"
+      changed_when: false
+
+    - name: Checking if keepalived is running
+      command: "pgrep keepalived"
+      changed_when: false
+      when: groups['haproxy_all'] | length > 1
+
     # Fails if HAProxy is not running
     - name: Recording haproxy stats as a way to ensure haproxy runs
       shell: 'echo "show info;show stat" | nc -U /var/run/haproxy.stat'
@@ -69,6 +81,8 @@
       uri:
         url: "{{ repo_pkg_cache_url }}/acng-report.html"
         method: "HEAD"
+      when:
+        - "ansible_pkg_mgr == 'apt'"
       tags:
         - proxy
     - name: Connect to galera port
