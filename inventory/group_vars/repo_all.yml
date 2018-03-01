@@ -72,8 +72,3 @@ pkg_locations:
   - "{{ playbook_dir }}/../"
   - /etc/ansible/roles
   - /etc/openstack_deploy
-
-# On repo server, don't go through load balancer, directly hit the local
-# instances. It's all tested anyway before using.
-pip_links:
-  - { name: "openstack_release", link: "{{ repo_release_path | replace(internal_lb_vip_address, '127.0.0.1') }}/" }
