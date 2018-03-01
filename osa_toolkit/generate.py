@@ -72,8 +72,8 @@ class ProviderNetworkMisconfiguration(Exception):
         self.queue_name = queue_name
 
         error_msg = ("Provider network with queue '{queue}' "
-                     "requires 'is_container_address' and "
-                     "'is_ssh_address' to be set to True.")
+                     "requires 'is_container_address' "
+                     "to be set to True.")
 
         self.message = error_msg.format(queue=self.queue_name)
 
@@ -533,8 +533,8 @@ def network_entry(is_metal, interface,
 
 def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
                              bridge, net_type, net_mtu, user_config,
-                             is_ssh_address, is_container_address,
-                             static_routes, reference_group, address_prefix):
+                             is_container_address, static_routes,
+                             reference_group, address_prefix):
     """Process additional ip adds and append then to hosts as needed.
 
     If the host is found to be "is_metal" it will be marked as "on_metal"
@@ -548,7 +548,6 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
     :param netmask: ``str`` netmask to use.
     :param interface: ``str`` interface name to set for the network.
     :param user_config: ``dict`` user defined configuration details.
-    :param is_ssh_address: ``bol`` set this address as ansible_host.
     :param is_container_address: ``bol`` set this address to container_address.
     :param static_routes: ``list`` List containing static route dicts.
     :param reference_group: ``str`` group to filter membership of host against.
@@ -571,7 +570,6 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
                 net_type,
                 net_mtu,
                 user_config,
-                is_ssh_address,
                 is_container_address,
                 static_routes,
                 reference_group,
@@ -640,7 +638,7 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
         elif is_metal:
             network = networks[old_address] = _network
             network['netmask'] = netmask
-            if is_ssh_address or is_container_address:
+            if is_container_address:
                 # Container physical host group
                 cphg = container.get('physical_host_group')
 
@@ -651,7 +649,7 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
                     phg = user_config[cphg][physical_host]
                 network['address'] = phg['ip']
 
-        if is_ssh_address is True:
+        if is_container_address is True:
             container['ansible_host'] = networks[old_address]['address']
 
         if is_container_address is True:
@@ -738,7 +736,6 @@ def container_skel_load(container_skel, inventory, config):
                     net_type=p_net.get('container_type'),
                     net_mtu=p_net.get('container_mtu'),
                     user_config=config,
-                    is_ssh_address=p_net.get('is_ssh_address'),
                     is_container_address=p_net.get('is_container_address'),
                     static_routes=p_net.get('static_routes'),
                     reference_group=p_net.get('reference_group'),
@@ -1007,8 +1004,7 @@ def _check_config_settings(cidr_networks, config, container_skel):
                     )
                 if (p_net.get('container_bridge') ==
                         overrides.get('management_bridge')):
-                    if (not p_net.get('is_ssh_address') or
-                            not p_net.get('is_container_address')):
+                    if not p_net.get('is_container_address'):
                         raise ProviderNetworkMisconfiguration(q_name)
 
     logger.debug("Provider network information OK")

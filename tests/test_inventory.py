@@ -641,14 +641,13 @@ class TestConfigChecks(TestConfigCheckBase):
 
     def test_management_network_malformed(self):
         self.delete_provider_network_key('container', 'is_container_address')
-        self.delete_provider_network_key('container', 'is_ssh_address')
         self.write_config()
 
         with self.assertRaises(di.ProviderNetworkMisconfiguration) as context:
             get_inventory()
         expectedLog = ("Provider network with queue 'container' "
-                       "requires 'is_container_address' and "
-                       "'is_ssh_address' to be set to True.")
+                       "requires 'is_container_address' "
+                       "to be set to True.")
         self.assertEqual(str(context.exception), expectedLog)
         self.restore_config()
 

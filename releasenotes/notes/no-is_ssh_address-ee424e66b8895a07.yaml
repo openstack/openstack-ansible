@@ -1,0 +1,10 @@
+---
+upgrade:
+  - The key **is_ssh_address** has been removed from the
+    `openstack_user_config.yml` and the dynamic inventory. This key was
+    responsible mapping an address to the container which was used for SSH
+    connectivity. Because we've created the SSH connectivity plugin, which
+    allows us the ability to connect to remote containers without SSH, this
+    option is no longer useful. To keep the `openstack_user_config.yml` clean
+    deployers can remove the option however moving forward it no longer has any
+    effect.
