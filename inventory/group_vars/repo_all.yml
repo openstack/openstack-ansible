@@ -73,11 +73,6 @@ pkg_locations:
   - /etc/ansible/roles
   - /etc/openstack_deploy
 
-# On repo server, don't go through load balancer, directly hit the local
-# instances. It's all tested anyway before using.
-pip_links:
-  - { name: "openstack_release", link: "{{ repo_release_path | replace(internal_lb_vip_address, '127.0.0.1') }}/" }
-
 # The URL to retrieve the get-pip.py installation script locally
 pip_upstream_url: "{{ repo_release_path | replace(internal_lb_vip_address, '127.0.0.1') }}/get-pip.py"
 

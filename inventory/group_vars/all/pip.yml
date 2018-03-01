@@ -15,9 +15,6 @@
 
 pip_install_package_state: "{{ package_state }}"
 
-pip_links:
-  - { name: "openstack_release", link: "{{ repo_release_path }}/" }
-
 # The upper constraints to apply to all pip installations
 pip_install_upper_constraints: "{{ repo_release_path }}/requirements_absolute_requirements.txt"
 
