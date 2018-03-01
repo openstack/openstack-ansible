@@ -72,7 +72,6 @@
 - name: Fallback to PyPI
   set_fact:
     pip_default_index: "https://pypi.python.org/simple"
-    pip_lock_to_internal_repo: False
   when: (pip_default_index_check.status | default(503)) != 200
   tags:
     - common-constraints
