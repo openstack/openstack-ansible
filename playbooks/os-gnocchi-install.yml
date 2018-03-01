@@ -15,7 +15,6 @@
 
 - name: Install Gnocchi components
   hosts: gnocchi_all
-  max_fail_percentage: 20
   user: root
   pre_tasks:
     - include: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
