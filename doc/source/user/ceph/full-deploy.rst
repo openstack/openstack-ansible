@@ -35,9 +35,9 @@ integration in two ways:
   in ``user_variables.yml``
 * deploying a ceph cluster by using the roles maintained by the
   `Ceph-Ansible`_ project. Deployers can enable the ``ceph-install``
-  playbook by adding hosts to the ``ceph-mon_hosts`` and ``ceph-osd_hosts``
-  groups in ``openstack_user_config.yml``, and then configuring
-  `Ceph-Ansible specific vars
+  playbook by adding hosts to the ``ceph-mon_hosts``, ``ceph-osd_hosts`` and
+  ``ceph-rgw_hosts`` groups in ``openstack_user_config.yml``, and then
+  configuring `Ceph-Ansible specific vars
   <https://github.com/ceph/ceph-ansible/blob/master/group_vars/all.yml.sample>`_
   in the OpenStack-Ansible ``user_variables.yml`` file.
 

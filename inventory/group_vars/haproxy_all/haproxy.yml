@@ -353,3 +353,15 @@ haproxy_default_services:
       haproxy_timeout_server: 5000s
       haproxy_whitelist_networks: "{{ haproxy_opendaylight_whitelist_networks }}"
       haproxy_service_enabled: "{{ neutron_plugin_type == 'ml2.opendaylight' }}"
+  - service:
+      haproxy_service_name: ceph-rgw
+      haproxy_backend_nodes: "{{ groups['ceph-rgw'] | default([]) }}"
+      haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_balance_alg: source
+      haproxy_port: "{{ hostvars[(groups['ceph-rgw'] | default(['localhost']))[0] | default('localhost')]['radosgw_service_port'] | default(7980) }}"
+      haproxy_balance_type: http
+      haproxy_backend_options:
+        - httpchk HEAD /
+      haproxy_backend_httpcheck_options:
+        - expect status 405
+      haproxy_service_enabled: "{{ groups['ceph-rgw'] is defined and groups['ceph-rgw'] | length > 0 }}"
