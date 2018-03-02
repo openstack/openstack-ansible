@@ -63,28 +63,30 @@ For more information, see
 :deploy_guide:`Configure the deployment <configure.html>`
 in the OpenStack-Ansible Deployment Guide.
 
-OpenStack-Ansible playbooks
----------------------------
+Updating the node with the new configuration
+--------------------------------------------
 
-After the initial configuration, update the container network configuration
-with the following playbook. Ensure you restart the container towards the
-end of the playbook run.
-We advise to either limit, or reduce, the number of forks to make
-sure that enough services are available. For example:
+Run the appropriate playbooks depending on the ``group_binds`` section.
 
-.. code-block:: console
-
-   # openstack-ansible lxc-containers-create.yml --limit infra01:infra01-host_containers
-   # openstack-ansible lxc-containers-create.yml --limit infra02:infra02-host_containers
-   # openstack-ansible lxc-containers-create.yml --limit infra03:infra03-host_containers
-
-Update the Neutron configuration. Specifically, run the
-``neutron-config`` tag, in order to only alter the configration and restart the
-Neutron agent services:
+For example, if you update the networks requiring a change in all
+nodes with a linux bridge agent, assuming you have infra nodes named
+**infra01**, **infra02**, and **infra03**, run:
 
 .. code-block:: console
 
-   # openstack-ansible os-neutron-install.yml --tags neutron-config
+   # openstack-ansible containers-deploy.yml --limit localhost,infra01,infra01-host_containers
+   # openstack-ansible containers-deploy.yml --limit localhost,infra02,infra02-host_containers
+   # openstack-ansible containers-deploy.yml --limit localhost,infra03,infra03-host_containers
+
+Then update the neutron configuration.
+
+.. code-block:: console
+
+   # openstack-ansible os-neutron-install.yml --limit localhost,infra01,infra01-host_containers
+   # openstack-ansible os-neutron-install.yml --limit localhost,infra02,infra02-host_containers
+   # openstack-ansible os-neutron-install.yml --limit localhost,infra03,infra03-host_containers
+
+Then update your compute nodes if necessary.
 
 
 Remove provider bridges from OpenStack
