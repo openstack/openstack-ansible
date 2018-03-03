@@ -2,8 +2,8 @@
 Team and repository tags
 ========================
 
-.. image:: https://governance.openstack.org/badges/openstack-ansible.svg
-    :target: https://governance.openstack.org/reference/tags/index.html
+.. image:: https://governance.openstack.org/tc/badges/openstack-ansible.svg
+    :target: https://governance.openstack.org/tc/reference/tags/index.html
 
 .. Change things from this point on
 
@@ -46,8 +46,8 @@ see the `Role Documentation`_.
 An individual role's source code can be found at:
 https://git.openstack.org/cgit/openstack/openstack-ansible-<ROLENAME>.
 
-.. _official OpenStack project: https://governance.openstack.org/reference/projects/index.html
-.. _Home Page: https://governance.openstack.org/reference/projects/openstackansible.html
+.. _official OpenStack project: https://governance.openstack.org/tc/reference/projects/index.html
+.. _Home Page: https://governance.openstack.org/tc/reference/projects/openstackansible.html
 .. _Deployment Guide: https://docs.openstack.org/project-deploy-guide/openstack-ansible/latest
 .. _Quick Start: https://docs.openstack.org/openstack-ansible/latest/user/aio/quickstart.html
 .. _Developer Documentation: https://docs.openstack.org/openstack-ansible/latest/contributor/index.html
