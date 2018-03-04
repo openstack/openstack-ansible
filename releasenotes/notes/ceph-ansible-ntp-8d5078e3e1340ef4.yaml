@@ -1,0 +1,11 @@
+---
+upgrade:
+  - |
+    Users should purge the 'ntp' package from their hosts if ceph-ansible is
+    enabled. ceph-ansible previously was configured to install ntp by default
+    which conflicts with the OSA ansible-hardening role chrony service.
+fixes:
+  - |
+    ceph-ansible is no longer configured to install ntp by default, which
+    creates a conflict with OSA's ansible-hardening role that is used to
+    implement ntp using 'chrony'.
