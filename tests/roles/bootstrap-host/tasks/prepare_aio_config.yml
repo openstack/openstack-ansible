@@ -104,7 +104,6 @@
     policy: targeted
     state: permissive
   when:
-    - ansible_selinux.status is defined
     - ansible_selinux.status == "enabled"
 
 
