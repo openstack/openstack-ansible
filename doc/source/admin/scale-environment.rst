@@ -26,7 +26,7 @@ needed in an environment, it is possible to create additional nodes.
       [...]
       NEW_infra<node-ID>:
         ip: 10.17.136.32
-      NEW_infra<node-ID>:
+      NEW_infra<node-ID2>:
         ip: 10.17.136.33
 
 #. Change to playbook folder on the deployment host.
@@ -43,26 +43,23 @@ needed in an environment, it is possible to create additional nodes.
       # /opt/openstack-ansible/inventory/dynamic_inventory.py > /dev/null
 
 #. Create the ``/root/add_host.limit`` file, which contains all new node
-   host names. Replace ``<NEW INFRA NODE>`` with the name of the new host.
+   host names and their containers. Add **localhost** to the list of
+   hosts to be able to access deployment host facts.
 
    .. code:: console
 
-      # /opt/openstack-ansible/scripts/inventory-manage.py  \
-        -l |awk '/<NEW INFRA NODE>/ {print $2}' |sort -u | tee /root/add_host.limit
+      localhost
+      NEW_infra<node-ID>
+      NEW_infra<node-ID2>
+      NEW_infra<node-ID>_containers
+      NEW_infra<node-ID2>_containers
 
 #. Run the ``setup-everything.yml`` playbook with the
    ``limit`` argument.
 
-   .. warning::
-
-      Do not run the ``setup-everything.yml`` playbook
-      without the ``--limit`` argument. Without ``--limit``, the
-      playbook will restart all containers inside your environment.
-
    .. code:: console
 
       # openstack-ansible setup-everything.yml --limit @/root/add_host.limit
-      # openstack-ansible --tags=openstack-host-hostfile setup-hosts.yml
 
 
 Test new infra nodes
@@ -82,8 +79,9 @@ Add a compute host
 Use the following procedure to add a compute host to an operational
 cluster.
 
-#. Configure the host as a target host. See `Prepare target hosts
-   <https://docs.openstack.org/project-deploy-guide/openstack-ansible/newton/targethosts.html>`_
+#. Configure the host as a target host. See the
+   :deploy_guide:`target hosts configuration section <targethosts.html>`
+   of the deploy guide.
    for more information.
 
 #. Edit the ``/etc/openstack_deploy/openstack_user_config.yml`` file and
@@ -103,8 +101,7 @@ cluster.
        # cd /opt/openstack-ansible/playbooks
        # openstack-ansible setup-hosts.yml --limit localhost,NEW_HOST_NAME
        # ansible nova_all -m setup -a 'filter=ansible_local gather_subset="!all"'
-       # openstack-ansible setup-openstack.yml --skip-tags nova-key-distribute --limit localhost,NEW_HOST_NAME
-       # openstack-ansible setup-openstack.yml --tags nova-key --limit compute_hosts
+       # openstack-ansible setup-openstack.yml --limit localhost,NEW_HOST_NAME
 
 Test new compute nodes
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -372,7 +369,7 @@ Destroying Containers
   .. code-block:: console
 
      # cd /opt/openstack-ansible/playbooks
-     # openstack-ansible lxc-containers-destroy --limit <container name|container group>
+     # openstack-ansible lxc-containers-destroy --limit localhost,<container name|container group>
 
   .. note::
 
@@ -395,7 +392,7 @@ Destroying Containers
    .. code-block:: console
 
       # cd /opt/openstack-ansible/playbooks
-      # openstack-ansible lxc-containers-destroy --limit lxc_hosts,<container name|container
+      # openstack-ansible lxc-containers-create --limit localhost,lxc_hosts,<container name|container
         group>
 
    The lxc_hosts host group must be included as the playbook and roles executed require the
