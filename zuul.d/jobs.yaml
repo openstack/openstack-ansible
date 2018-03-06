@@ -166,6 +166,13 @@
       action: deploy
       scenario: barbican
 
+- job:
+    name: openstack-ansible-deploy-blazar-ubuntu-bionic
+    parent: openstack-ansible-deploy-aio_lxc-ubuntu-bionic
+    vars:
+      action: deploy
+      scenario: blazar
+
 # centos
 - job:
     name: openstack-ansible-deploy-aio_lxc-centos-7
