@@ -1,0 +1,31 @@
+---
+features:
+  - |
+    The extra packages percona packages used by the ppc64le
+    are now downloaded by the Ansible deployment host by
+    default, as opposed to the target hosts. Once downloaded
+    the packages are pushed up to the target hosts.
+    This behaviour may be adjusted by setting
+    ``galera_server_extra_package_downloader`` to
+    ``target-host``.
+    The packages are downloaded to the path set in
+    ``galera_server_extra_package_path``.
+deprecations:
+  - |
+    The following variables have been removed as they no
+    longer serve any purpose.
+
+    * ``galera_package_arch``
+    * ``percona_package_download_validate_certs``
+    * ``percona_package_url``
+    * ``percona_package_fallback_url``
+    * ``percona_package_sha256``
+    * ``percona_package_path``
+    * ``qpress_package_download_validate_certs``
+    * ``qpress_package_url``
+    * ``qpress_package_fallback_url``
+    * ``qpress_package_sha256``
+    * ``qpress_package_path``
+
+    The functionality previously using these variables has
+    been transitioned to using a simpler data structure.
