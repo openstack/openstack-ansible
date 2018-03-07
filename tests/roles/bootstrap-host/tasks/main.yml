@@ -40,18 +40,31 @@
   tags:
     - create-directories
 
-# Configure apt in a known way to reduce the chance of unexpected failures
-- include: install-apt.yml
-  when:
-    - ansible_pkg_mgr == 'apt'
+- name: Remove known problem packages
+  package:
+    name: "{{ item }}"
+    state: absent
+  with_items: "{{ packages_remove }}"
   tags:
-    - install-apt
+    - remove-packages
+
+- name: Update the apt cache
+  apt:
+    update_cache: yes
+  register: _update
+  retries: 5
+  delay: 2
+  until: _update | succeeded
 
 - name: Install packages
   package:
     name: "{{ item }}"
     state: present
   with_items: "{{ packages_install }}"
+  register: _install
+  retries: 5
+  delay: 2
+  until: _install | succeeded
   tags:
     - install-packages
 
