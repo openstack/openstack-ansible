@@ -14,6 +14,8 @@
 # limitations under the License.
 
 - include: "install_packages_{{ ansible_os_family | lower }}.yml"
+  when:
+    - ansible_pkg_mgr != 'apt'
 
 - name: Remove known problem packages
   package:
@@ -26,9 +28,7 @@
   package:
     name: "{{ packages_install }}"
     state: present
-    # NOTE(hwoarang) Ubuntu has updated its cache before so no need to do it
-    # again
-    update_cache: "{{ (ansible_pkg_mgr == 'zypper') | ternary('yes', omit) }}"
+    update_cache: "{{ (ansible_pkg_mgr in ['apt', 'zypper']) | ternary('yes', omit) }}"
   tags:
     - install-packages
 

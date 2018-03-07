@@ -150,21 +150,10 @@ repo_build_pip_extra_indexes:
 {{ repo_build_pip_extra_indexes | to_nice_yaml }}
 {% endif %}
 
-{% if uca_apt_repo_url is defined %}
-## Ubuntu Cloud Archive mirror to use
-uca_apt_repo_url: {{ uca_apt_repo_url }}
-{% endif %}
-
-{% if galera_repo_url is defined %}
-## MariaDB mirror to use
-galera_repo_url: {{ galera_repo_url }}
-galera_client_apt_repo_url: {{ galera_repo_url }}
-{% endif %}
-
-{% if lxc_image_cache_server is defined %}
+{% if _lxc_mirror is defined and _lxc_mirror.stdout_lines is defined %}
 ## images.linuxcontainers.org reverse proxy
 lxc_image_cache_server_mirrors:
-  - "http://{{ lxc_image_cache_server }}"
+  - "http://{{ _lxc_mirror.stdout_lines[0] }}"
 {% endif %}
 
 {% if cache_timeout is defined %}
@@ -201,6 +190,8 @@ nova_service_negate:
   - "nova-agent.service"
   - "nova-resetnetwork.service"
 
-{% if _pypi_mirror is defined and _pypi_mirror.stdout is defined %}
-repo_nginx_pypi_upstream: "{{ _pypi_mirror.stdout | netloc }}"
+{% if _pypi_wheel_mirror is defined and _pypi_wheel_mirror.stdout_lines is defined %}
+repo_nginx_pypi_upstream: "{{ _pypi_wheel_mirror.stdout_lines[0] | netloc }}"
+repo_build_pip_extra_indexes:
+ - "{{ _pypi_wheel_mirror.stdout_lines[1] }}"
 {% endif %}
