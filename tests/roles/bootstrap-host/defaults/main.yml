@@ -217,21 +217,6 @@ bootstrap_host_octavia: "{{ (bootstrap_host_scenario in ['octavia', 'translation
 
 ### Optional Settings ###
 
-# Set the apt repository URL's configured for the host and containers.
-# By default the configuration will be derived from the host.
-#bootstrap_host_ubuntu_repo: http://archive.ubuntu.com/ubuntu/
-#bootstrap_host_ubuntu_security_repo: http://archive.ubuntu.com/ubuntu/
-
-# Set the distribution suffixes that will be included in the apt repository configuration
-bootstrap_host_apt_distribution_suffix_list:
-  - updates
-  - backports
-
-# Set the components that will be included in the apt repository configuration
-bootstrap_host_apt_components:
-  - main
-  - universe
-
 # Specify the public IP address for the host.
 # By default the address will be set to the ipv4 address of the
 # host's network interface that has the default route on it.
