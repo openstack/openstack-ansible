@@ -22,6 +22,7 @@
   uri:
     url: "{{ pip_install_upper_constraints }}"
     method: "HEAD"
+    timeout: 3
   register: upper_constraints_check
   failed_when: false
   tags:
@@ -31,6 +32,7 @@
   uri:
     url: "{{ pip_default_index }}"
     method: "HEAD"
+    timeout: 3
   register: pip_default_index_check
   failed_when: false
   tags:
