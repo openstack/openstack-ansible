@@ -21,6 +21,7 @@
   uri:
     url: "{{ pip_upstream_url }}"
     method: "HEAD"
+    timeout: 3
   register: _repo_data_check
   failed_when: false
   when: pip_upstream_url != "https://bootstrap.pypa.io/get-pip.py"
