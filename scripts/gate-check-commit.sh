@@ -61,7 +61,17 @@ export UPGRADE_SOURCE_BRANCH=${UPGRADE_SOURCE_BRANCH:-'stable/pike'}
 # deployment.
 # This needs to be done before the first "source" to ensure
 # the correct functions are used for the branch.
+# Also, in queens the 'aio' scenario was renamed to aio_lxc
+# so we handle ensuring that the pike checkout understands
+# which scenario it needs to use.
 if [[ "${ACTION}" == "upgrade" ]]; then
+
+    # Convert the scenario from a queens name
+    # to a pike name
+    if [[ "${SCENARIO}" == "aio_lxc" ]]; then
+      export SCENARIO="aio"
+    fi
+
     # Store the target SHA/branch
     export UPGRADE_TARGET_BRANCH=$(git rev-parse HEAD)
 
