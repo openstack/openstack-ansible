@@ -59,49 +59,49 @@ the OpenStack API and dashboard, as an administrator.
    .. code::
 
       $ openstack endpoint list
-      +----------------+-----------+--------------+----------------+---------+-----------+--------------------------------------------------+
-      | ID             | Region    | Service Name | Service Type   | Enabled | Interface | URL                                              |
-      +----------------+-----------+--------------+----------------+---------+-----------+--------------------------------------------------+
-      | [ID truncated] | RegionOne | cinderv2     | volumev2       | True    | admin     | http://172.29.236.100:8776/v2/%(tenant_id)s      |
-      | [ID truncated] | RegionOne | cinder       | volume         | True    | public    | https://10.23.100.127:8776/v1/%(tenant_id)s      |
-      | [ID truncated] | RegionOne | aodh         | alarming       | True    | internal  | http://172.29.236.100:8042                       |
-      | [ID truncated] | RegionOne | glance       | image          | True    | public    | https://10.23.100.127:9292                       |
-      | [ID truncated] | RegionOne | cinderv2     | volumev2       | True    | internal  | http://172.29.236.100:8776/v2/%(tenant_id)s      |
-      | [ID truncated] | RegionOne | heat-cfn     | cloudformation | True    | admin     | http://172.29.236.100:8000/v1                    |
-      | [ID truncated] | RegionOne | neutron      | network        | True    | admin     | http://172.29.236.100:9696                       |
-      | [ID truncated] | RegionOne | aodh         | alarming       | True    | public    | https://10.23.100.127:8042                       |
-      | [ID truncated] | RegionOne | nova         | compute        | True    | admin     | http://172.29.236.100:8774/v2.1/%(tenant_id)s    |
-      | [ID truncated] | RegionOne | heat-cfn     | cloudformation | True    | internal  | http://172.29.236.100:8000/v1                    |
-      | [ID truncated] | RegionOne | swift        | object-store   | True    | public    | https://10.23.100.127:8080/v1/AUTH_%(tenant_id)s |
-      | [ID truncated] | RegionOne | designate    | dns            | True    | admin     | http://172.29.236.100:9001                       |
-      | [ID truncated] | RegionOne | cinderv2     | volumev2       | True    | public    | https://10.23.100.127:8776/v2/%(tenant_id)s      |
-      | [ID truncated] | RegionOne | keystone     | identity       | True    | admin     | http://172.29.236.100:35357/v3                   |
-      | [ID truncated] | RegionOne | ceilometer   | metering       | True    | admin     | http://172.29.236.100:8777/                      |
-      | [ID truncated] | RegionOne | nova         | compute        | True    | public    | https://10.23.100.127:8774/v2.1/%(tenant_id)s    |
-      | [ID truncated] | RegionOne | keystone     | identity       | True    | internal  | http://172.29.236.100:5000/v3                    |
-      | [ID truncated] | RegionOne | nova         | compute        | True    | internal  | http://172.29.236.100:8774/v2.1/%(tenant_id)s    |
-      | [ID truncated] | RegionOne | gnocchi      | metric         | True    | public    | https://10.23.100.127:8041                       |
-      | [ID truncated] | RegionOne | neutron      | network        | True    | internal  | http://172.29.236.100:9696                       |
-      | [ID truncated] | RegionOne | aodh         | alarming       | True    | admin     | http://172.29.236.100:8042                       |
-      | [ID truncated] | RegionOne | heat         | orchestration  | True    | admin     | http://172.29.236.100:8004/v1/%(tenant_id)s      |
-      | [ID truncated] | RegionOne | glance       | image          | True    | internal  | http://172.29.236.100:9292                       |
-      | [ID truncated] | RegionOne | designate    | dns            | True    | internal  | http://172.29.236.100:9001                       |
-      | [ID truncated] | RegionOne | cinder       | volume         | True    | internal  | http://172.29.236.100:8776/v1/%(tenant_id)s      |
-      | [ID truncated] | RegionOne | heat-cfn     | cloudformation | True    | public    | https://10.23.100.127:8000/v1                    |
-      | [ID truncated] | RegionOne | ceilometer   | metering       | True    | public    | https://10.23.100.127:8777                       |
-      | [ID truncated] | RegionOne | designate    | dns            | True    | public    | http://10.23.100.127:9001                        |
-      | [ID truncated] | RegionOne | swift        | object-store   | True    | admin     | http://172.29.236.100:8080/v1/AUTH_%(tenant_id)s |
-      | [ID truncated] | RegionOne | heat         | orchestration  | True    | internal  | http://172.29.236.100:8004/v1/%(tenant_id)s      |
-      | [ID truncated] | RegionOne | ceilometer   | metering       | True    | internal  | http://172.29.236.100:8777                       |
-      | [ID truncated] | RegionOne | cinder       | volume         | True    | admin     | http://172.29.236.100:8776/v1/%(tenant_id)s      |
-      | [ID truncated] | RegionOne | swift        | object-store   | True    | internal  | http://172.29.236.100:8080/v1/AUTH_%(tenant_id)s |
-      | [ID truncated] | RegionOne | neutron      | network        | True    | public    | https://10.23.100.127:9696                       |
-      | [ID truncated] | RegionOne | heat         | orchestration  | True    | public    | https://10.23.100.127:8004/v1/%(tenant_id)s      |
-      | [ID truncated] | RegionOne | gnocchi      | metric         | True    | admin     | http://172.29.236.100:8041                       |
-      | [ID truncated] | RegionOne | gnocchi      | metric         | True    | internal  | http://172.29.236.100:8041                       |
-      | [ID truncated] | RegionOne | keystone     | identity       | True    | public    | https://10.23.100.127:5000/v3                    |
-      | [ID truncated] | RegionOne | glance       | image          | True    | admin     | http://172.29.236.100:9292                       |
-      +----------------+-----------+--------------+----------------+---------+-----------+--------------------------------------------------+
+      +----------------+-----------+--------------+----------------+---------+-----------+---------------------------------------------------+
+      | ID             | Region    | Service Name | Service Type   | Enabled | Interface | URL                                               |
+      +----------------+-----------+--------------+----------------+---------+-----------+---------------------------------------------------+
+      | [ID truncated] | RegionOne | cinderv2     | volumev2       | True    | admin     | http://172.29.236.100:8776/v2/%(project_id)s      |
+      | [ID truncated] | RegionOne | cinder       | volume         | True    | public    | https://10.23.100.127:8776/v1/%(project_id)s      |
+      | [ID truncated] | RegionOne | aodh         | alarming       | True    | internal  | http://172.29.236.100:8042                        |
+      | [ID truncated] | RegionOne | glance       | image          | True    | public    | https://10.23.100.127:9292                        |
+      | [ID truncated] | RegionOne | cinderv2     | volumev2       | True    | internal  | http://172.29.236.100:8776/v2/%(project_id)s      |
+      | [ID truncated] | RegionOne | heat-cfn     | cloudformation | True    | admin     | http://172.29.236.100:8000/v1                     |
+      | [ID truncated] | RegionOne | neutron      | network        | True    | admin     | http://172.29.236.100:9696                        |
+      | [ID truncated] | RegionOne | aodh         | alarming       | True    | public    | https://10.23.100.127:8042                        |
+      | [ID truncated] | RegionOne | nova         | compute        | True    | admin     | http://172.29.236.100:8774/v2.1/%(project_id)s    |
+      | [ID truncated] | RegionOne | heat-cfn     | cloudformation | True    | internal  | http://172.29.236.100:8000/v1                     |
+      | [ID truncated] | RegionOne | swift        | object-store   | True    | public    | https://10.23.100.127:8080/v1/AUTH_%(project_id)s |
+      | [ID truncated] | RegionOne | designate    | dns            | True    | admin     | http://172.29.236.100:9001                        |
+      | [ID truncated] | RegionOne | cinderv2     | volumev2       | True    | public    | https://10.23.100.127:8776/v2/%(project_id)s      |
+      | [ID truncated] | RegionOne | keystone     | identity       | True    | admin     | http://172.29.236.100:35357/v3                    |
+      | [ID truncated] | RegionOne | ceilometer   | metering       | True    | admin     | http://172.29.236.100:8777/                       |
+      | [ID truncated] | RegionOne | nova         | compute        | True    | public    | https://10.23.100.127:8774/v2.1/%(project_id)s    |
+      | [ID truncated] | RegionOne | keystone     | identity       | True    | internal  | http://172.29.236.100:5000/v3                     |
+      | [ID truncated] | RegionOne | nova         | compute        | True    | internal  | http://172.29.236.100:8774/v2.1/%(project_id)s    |
+      | [ID truncated] | RegionOne | gnocchi      | metric         | True    | public    | https://10.23.100.127:8041                        |
+      | [ID truncated] | RegionOne | neutron      | network        | True    | internal  | http://172.29.236.100:9696                        |
+      | [ID truncated] | RegionOne | aodh         | alarming       | True    | admin     | http://172.29.236.100:8042                        |
+      | [ID truncated] | RegionOne | heat         | orchestration  | True    | admin     | http://172.29.236.100:8004/v1/%(project_id)s      |
+      | [ID truncated] | RegionOne | glance       | image          | True    | internal  | http://172.29.236.100:9292                        |
+      | [ID truncated] | RegionOne | designate    | dns            | True    | internal  | http://172.29.236.100:9001                        |
+      | [ID truncated] | RegionOne | cinder       | volume         | True    | internal  | http://172.29.236.100:8776/v1/%(project_id)s      |
+      | [ID truncated] | RegionOne | heat-cfn     | cloudformation | True    | public    | https://10.23.100.127:8000/v1                     |
+      | [ID truncated] | RegionOne | ceilometer   | metering       | True    | public    | https://10.23.100.127:8777                        |
+      | [ID truncated] | RegionOne | designate    | dns            | True    | public    | http://10.23.100.127:9001                         |
+      | [ID truncated] | RegionOne | swift        | object-store   | True    | admin     | http://172.29.236.100:8080/v1/AUTH_%(project_id)s |
+      | [ID truncated] | RegionOne | heat         | orchestration  | True    | internal  | http://172.29.236.100:8004/v1/%(project_id)s      |
+      | [ID truncated] | RegionOne | ceilometer   | metering       | True    | internal  | http://172.29.236.100:8777                        |
+      | [ID truncated] | RegionOne | cinder       | volume         | True    | admin     | http://172.29.236.100:8776/v1/%(project_id)s      |
+      | [ID truncated] | RegionOne | swift        | object-store   | True    | internal  | http://172.29.236.100:8080/v1/AUTH_%(project_id)s |
+      | [ID truncated] | RegionOne | neutron      | network        | True    | public    | https://10.23.100.127:9696                        |
+      | [ID truncated] | RegionOne | heat         | orchestration  | True    | public    | https://10.23.100.127:8004/v1/%(project_id)s      |
+      | [ID truncated] | RegionOne | gnocchi      | metric         | True    | admin     | http://172.29.236.100:8041                        |
+      | [ID truncated] | RegionOne | gnocchi      | metric         | True    | internal  | http://172.29.236.100:8041                        |
+      | [ID truncated] | RegionOne | keystone     | identity       | True    | public    | https://10.23.100.127:5000/v3                     |
+      | [ID truncated] | RegionOne | glance       | image          | True    | admin     | http://172.29.236.100:9292                        |
+      +----------------+-----------+--------------+----------------+---------+-----------+---------------------------------------------------+
 
 #. Run an OpenStack command to ensure all the compute services are
    working (the output depends on your configuration)
