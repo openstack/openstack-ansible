@@ -206,7 +206,8 @@ function run_dstat {
     # https://stackoverflow.com/a/20338327 executing in ()& decouples the dstat
     # process from scripts-library to prevent hung builds if dstat fails to exit
     # for any reason.
-    (dstat -tcmsdn --top-cpu --top-mem --top-bio --nocolor --output /openstack/log/instance-info/dstat.csv 3 > /openstack/log/instance-info/dstat.log)&
+    (dstat -tcmsdn --top-cpu --top-mem --top-bio --nocolor --output /openstack/log/instance-info/dstat.csv \
+        < /dev/null > /openstack/log/instance-info/dstat.log 2>&1 &)
   fi
 }
 
