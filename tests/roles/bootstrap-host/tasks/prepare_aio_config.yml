@@ -120,7 +120,6 @@
     policy: targeted
     state: permissive
   when:
-    - ansible_selinux.status is defined
     - ansible_selinux.status == "enabled"
 
 # This is a very dirty hack due to images.linuxcontainers.org
