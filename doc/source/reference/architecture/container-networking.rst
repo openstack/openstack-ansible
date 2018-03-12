@@ -1,6 +1,5 @@
 .. _container-networking:
 
-====================
 Container networking
 ====================
 

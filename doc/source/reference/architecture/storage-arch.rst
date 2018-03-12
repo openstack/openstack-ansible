@@ -1,4 +1,3 @@
-====================
 Storage architecture
 ====================
 
@@ -164,4 +163,3 @@ the storage device, the Compute host, the hypervisor, and the instance.
    +----+---------------------------------------------------------------------+
    | 3  | The hypervisor presents the disk as a device to the instance.       |
    +----+---------------------------------------------------------------------+
-
