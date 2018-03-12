@@ -21,7 +21,6 @@
     - 'swift1'
     - 'swift2'
     - 'swift3'
-  register: swift_create
   tags:
     - swift-file-create
 
@@ -30,7 +29,6 @@
     fstype: xfs
     opts: '-K'
     dev: "/openstack/{{ item }}.img"
-  when: swift_create | changed
   with_items:
     - 'swift1'
     - 'swift2'
@@ -38,18 +36,29 @@
   tags:
     - swift-format-file
 
-- name: Create the Swift mount points, fstab entries and mount the file systems
-  mount:
-    name: "/srv/{{ item }}.img"
-    src: "/openstack/{{ item }}.img"
-    fstype: xfs
-    opts: 'loop,noatime,nodiratime,nobarrier,logbufs=8'
-    passno: 0
-    dump: 0
-    state: mounted
-  with_items:
-    - 'swift1'
-    - 'swift2'
-    - 'swift3'
+- name: Run the systemd mount role
+  include_role:
+    name: systemd_mount
+    private: true
+  vars:
+    systemd_mounts:
+      - what: "/openstack/swift1.img"
+        where: "/srv/swift1.img"
+        options: "loop,noatime,nodiratime,nobarrier,logbufs=8"
+        type: "xfs"
+        state: 'started'
+        enabled: true
+      - what: "/openstack/swift2.img"
+        where: "/srv/swift2.img"
+        options: "loop,noatime,nodiratime,nobarrier,logbufs=8"
+        type: "xfs"
+        state: 'started'
+        enabled: true
+      - what: "/openstack/swift3.img"
+        where: "/srv/swift3.img"
+        options: "loop,noatime,nodiratime,nobarrier,logbufs=8"
+        type: "xfs"
+        state: 'started'
+        enabled: true
   tags:
-    - swift-file-mount
+    - swift-config

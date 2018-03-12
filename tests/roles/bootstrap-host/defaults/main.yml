@@ -57,22 +57,16 @@ bootstrap_user_variables_extra_templates:
     - src: user_variables_octavia.yml.j2
       dest: user_variables_octavia.yml
 
-## Swap memory
-# If there is no swap memory present, the bootstrap will create a loopback disk
-# for the purpose of having swap memory available. Swap is required for some of
-# the services deployed and is useful for AIO's built with less than 16GB memory.
-# By default the swap size is set to 8GB unless the host memory is less than 8GB,
-# in which case it is set to 4GB.
-bootstrap_host_swap_size: "{% if ansible_memory_mb['real']['total'] < 8*1024 %}4{% else %}8{% endif %}"
-
 ## Loopback volumes
 # Sparse loopback disks are used for the containers if there is no secondary
 # disk available to partition for btrfs. They are also used for Ceph, Cinder,
 # Swift and Nova (instance storage).
 # The size of the loopback volumes can be customized here (in gigabytes).
 #
-# Size of the machines loopback disk in gigabytes (GB).
-bootstrap_host_loopback_machines_size: 128
+# Boolean option to deploy the loopback disk for Swap
+bootstrap_host_loopback_swap: yes
+# Size of the Swap loopback disk in gigabytes (GB).
+bootstrap_host_loopback_swap_size: 4096
 #
 # Boolean option to deploy the loopback disk for Cinder
 bootstrap_host_loopback_cinder: yes
@@ -88,7 +82,22 @@ bootstrap_host_loopback_swift_size: 1024
 bootstrap_host_loopback_nova: yes
 # Size of the Nova loopback disk in gigabytes (GB).
 bootstrap_host_loopback_nova_size: 1024
-
+#
+# Boolean option to deploy the loopback disk for machines
+bootstrap_host_loopback_machines: yes
+# Size of the machines loopback disk in gigabytes (GB).
+bootstrap_host_loopback_machines_size: 128
+#
+# Boolean option to deploy the loopback disk for btrfs
+bootstrap_host_loopback_btrfs: yes
+# Size of the btrfs loopback disk in gigabytes (GB).
+bootstrap_host_loopback_btrfs_size: 1024
+#
+# Boolean option to deploy the loopback disk for btrfs
+bootstrap_host_loopback_zfs: yes
+# Size of the btrfs loopback disk in gigabytes (GB).
+bootstrap_host_loopback_zfs_size: 1024
+#
 # Boolean option to deploy the OSD loopback disks and cluster UUID for Ceph
 bootstrap_host_ceph: "{{ (bootstrap_host_scenario == 'ceph') | bool }}"
 # Size of the Ceph OSD loopbacks
@@ -210,7 +219,8 @@ bridge_iptables_rules: |
 # WARNING: The data on a secondary storage device specified here will
 # be destroyed and repartitioned.
 #
-# Specify the secondary disk device to use.
+# Specify the secondary disk device to use. When the data disk is in use, no NOT
+# set the full path to the device. IE: "/dev/xvde" should be "xvde".
 bootstrap_host_data_disk_device: null
 #
 # Boolean value to force the repartitioning of the secondary device.
@@ -219,6 +229,19 @@ bootstrap_host_data_disk_device_force: no
 # If the storage capacity on this device is greater than or equal to this
 # size (in GB), the bootstrap process will use it.
 bootstrap_host_data_disk_min_size: 50
+#
+# Set the data disk formats table. If the backing store is set to lvm the option
+# the partition will not actually be formatted however for parted, ext2 is used.
+bootstrap_host_data_disk2_formats:
+  machinectl: btrfs
+  zfs: zfs
+  btrfs: btrfs
+  dir: ext4
+  lvm: ext2
+
+bootstrap_host_data_disk2_fs: "{{ bootstrap_host_data_disk2_formats[lxc_container_backing_store] }}"
+bootstrap_host_data_disk2_path: "{{ (lxc_container_backing_store == 'machinectl' or container_tech == 'nspawn') | ternary('/var/lib/machines', '/var/lib/lxc') }}"
+
 
 # Boolean option to build Amphora image and certs
 bootstrap_host_octavia: "{{ (bootstrap_host_scenario in ['octavia', 'translations']) | bool }}"
@@ -232,3 +255,6 @@ bootstrap_host_octavia: "{{ (bootstrap_host_scenario in ['octavia', 'translation
 
 # Set the container technology in service. Options are nspawn and lxc.
 container_tech: "{{ ('nspawn' in bootstrap_host_scenario) | ternary('nspawn', 'lxc') }}"
+
+# Set the lxc backing store for the job
+lxc_container_backing_store: machinectl

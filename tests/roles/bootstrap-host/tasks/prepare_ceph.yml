@@ -19,33 +19,43 @@
     creates: "/openstack/{{ item }}.img"
   with_items: "{{ ceph_osd_images }}"
   register: ceph_create
-  changed_when: false
   tags:
     - ceph-file-create
 
-- name: Create the ceph loopback device
-  command: losetup -f /openstack/{{ item.item }}.img --show
-  with_items: "{{ ceph_create.results }}"
-  register: ceph_create_loopback
-  when: not item|skipped
+- name: Run the systemd service role
+  include_role:
+    name: systemd_service
+    private: true
+  vars:
+    systemd_services:
+      - service_name: "loop-{{ loopback_var }}"
+        config_overrides:
+          Unit:
+            Description: no
+            After: systemd-udev-settle.service
+          Service:
+            RemainAfterExit: yes
+        service_type: oneshot
+        execstarts:
+          - /bin/bash -c "/sbin/losetup $(/sbin/losetup -f) /openstack/{{ loopback_var }}.img"
+        execstops:
+          - /bin/bash -c "losetup -d $(losetup -l | awk '/{{ loopback_var }}.img/ {print $1}')"
+        enabled: yes
+        state: started
+    systemd_tempd_prefix: openstack
+  with_items: "{{ ceph_osd_images }}"
+  loop_control:
+    loop_var: loopback_var
+  tags:
+    - ceph-config
+
+- name: Get loopback device
+  shell: "losetup -l | awk '/{{ item }}.img/ {print $1}'"
   changed_when: false
+  register: ceph_create_loopback
+  with_items: "{{ ceph_osd_images }}"
   tags:
     - skip_ansible_lint
-
-- name: Ensure that rc.local exists
-  file:
-    path: "{{ rc_local }}"
-    state: touch
-    mode: "u+x"
-  tags:
-    - ceph-rc-file
-
-- name: Create ceph loopback at boot time
-  lineinfile:
-    dest: "{{ rc_local }}"
-    line: "losetup -f /openstack/{{ item }}.img"
-    insertbefore: "{{ rc_local_insert_before }}"
-  with_items: "{{ ceph_osd_images }}"
 
 # TODO(logan): Move these vars to user_variables.ceph.yml.j2 once LP #1649381
 # is fixed and eliminate this task.

@@ -1,0 +1,37 @@
+---
+# Copyright 2018, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Install zfs packages
+  package:
+    name: "{{ packages_install_zfs }}"
+    state: present
+    update_cache: "{{ (ansible_pkg_mgr in ['apt', 'zypper']) | ternary('yes', omit) }}"
+  tags:
+    - install-packages
+
+- name: Create sparse ZFS backing file
+  command: "truncate -s {{ bootstrap_host_loopback_zfs_size }}G /openstack/lxc-zfs.img"
+  args:
+    creates: /openstack/lxc-zfs.img
+
+- name: Create the ZFS pool
+  command: zpool create osa-test-pool /openstack/lxc-zfs.img
+  args:
+    creates: /osa-test-pool
+
+- name: Create the ZFS pool/lxc volume
+  shell: "(zfs list | grep lxc) || zfs create -o mountpoint=/var/lib/lxc osa-test-pool/lxc"
+  tags:
+    - skip_ansible_lint

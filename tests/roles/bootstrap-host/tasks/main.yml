@@ -46,27 +46,47 @@
 
 # Prepare the data disk, if one is provided
 - include: prepare_data_disk.yml
-  when: bootstrap_host_data_disk_device != None
+  when:
+    - bootstrap_host_data_disk_device != None
   tags:
     - prepare-data-disk
-
-# Prepare the Machines storage loopback disk
-# This is only necessary when there is no secondary disk
-# available to partition for btrfs
-- include: prepare_loopback_machines.yml
-  when:
-    - bootstrap_host_data_disk_device == None
-  tags:
-    - prepare-loopback-machines
 
 # Prepare the swap space loopback disk
 # This is only necessary if there isn't swap already
 - include: prepare_loopback_swap.yml
   static: no
   when:
+    - bootstrap_host_loopback_swap | bool
     - ansible_swaptotal_mb < 1
   tags:
-    - prepare-loopback-swap
+    - prepare-loopback
+
+# Prepare the Machines storage loopback disk
+- include: prepare_loopback_machines.yml
+  when:
+    - bootstrap_host_loopback_machines | bool
+    - bootstrap_host_data_disk_device == None
+    - lxc_container_backing_store == 'machinectl' or container_tech == 'nspawn'
+  tags:
+    - prepare-loopback
+
+# Prepare the zfs storage loopback disk
+- include: prepare_loopback_zfs.yml
+  when:
+    - bootstrap_host_loopback_zfs | bool
+    - bootstrap_host_data_disk_device == None
+    - lxc_container_backing_store == 'zfs'
+  tags:
+    - prepare-loopback
+
+# Prepare the btrfs storage loopback disk
+- include: prepare_loopback_btrfs.yml
+  when:
+    - bootstrap_host_loopback_btrfs | bool
+    - bootstrap_host_data_disk_device == None
+    - lxc_container_backing_store == 'btrfs'
+  tags:
+    - prepare-loopback
 
 # Prepare the Cinder LVM VG loopback disk
 # This is only necessary if bootstrap_host_loopback_cinder is set to yes
@@ -74,21 +94,21 @@
   when:
     - bootstrap_host_loopback_cinder | bool
   tags:
-    - prepare-loopback-cinder
+    - prepare-loopback
 
 # Prepare the Nova instance storage loopback disk
 - include: prepare_loopback_nova.yml
   when:
     - bootstrap_host_loopback_nova | bool
   tags:
-    - prepare-loopback-nova
+    - prepare-loopback
 
 # Prepare the Swift data storage loopback disks
 - include: prepare_loopback_swift.yml
   when:
     - bootstrap_host_loopback_swift | bool
   tags:
-    - prepare-loopback-swift
+    - prepare-loopback
 
 # Prepare the Ceph cluster UUID and loopback disks
 - include: prepare_ceph.yml
@@ -121,6 +141,7 @@
 
 # Put the OpenStack-Ansible configuration for an All-In-One on the host
 - include: prepare_aio_config.yml
-  when: bootstrap_host_aio_config | bool
+  when:
+    - bootstrap_host_aio_config | bool
   tags:
     - prepare-aio-config

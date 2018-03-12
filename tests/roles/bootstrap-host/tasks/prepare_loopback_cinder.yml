@@ -21,45 +21,51 @@
   tags:
     - cinder-file-create
 
-- name: Get a loopback device for cinder file
-  command: losetup -f
-  when: cinder_create | changed
+- name: Run the systemd service role
+  include_role:
+    name: systemd_service
+    private: true
+  vars:
+    systemd_services:
+      - service_name: "loop-cinder"
+        config_overrides:
+          Unit:
+            Description: no
+            After: systemd-udev-settle.service
+            Before: lvm2-activation-early.service
+            Wants: systemd-udev-settle.service
+          Service:
+            RemainAfterExit: yes
+        service_type: oneshot
+        execstarts:
+          - /bin/bash -c "/sbin/losetup $(/sbin/losetup -f) /openstack/cinder.img"
+          - /sbin/pvscan
+        execstops:
+          - /bin/bash -c "losetup -d $(losetup -l | awk '/cinder.img/ {print $1}')"
+        enabled: yes
+        state: started
+    systemd_tempd_prefix: openstack
+  tags:
+    - cinder-config
+
+- name: Get loopback device
+  shell: "losetup -l | awk '/cinder.img/ {print $1}'"
+  changed_when: false
   register: cinder_losetup
   tags:
-    - cinder-device-get
-
-- name: Create the loopback device
-  command: "losetup {{ cinder_losetup.stdout }} /openstack/cinder.img"
-  when: cinder_create | changed
-  tags:
-    - cinder-device-create
-
-- name: Ensure that rc.local exists
-  file:
-    path: "{{ rc_local }}"
-    state: touch
-    mode: "u+x"
-  tags:
-    - cinder-rc-file
-
-# As the cinder loopback is an LVM VG, it needs to be mounted differently
-#  to the other loopback files. It requires the use of rc.local to attach
-#  the loopback device on boot so that the VG becomes available immediately
-#  after the boot process completes.
-- name: Create loopback devices at boot time
-  lineinfile:
-    dest:  "{{ rc_local }}"
-    line: "losetup $(losetup -f) /openstack/cinder.img"
-    insertbefore: "{{ rc_local_insert_before }}"
-  tags:
-    - cinder-rc-config
+    - skip_ansible_lint
 
 - name: Make LVM physical volume on the cinder device
-  command: "{{ item }}"
-  when: cinder_create | changed
-  with_items:
-    - "pvcreate {{ cinder_losetup.stdout }}"
-    - "pvscan"
+  shell: "pvcreate {{ cinder_losetup.stdout }} && touch /openstack/cinder.pvcreate"
+  args:
+    creates: "/openstack/cinder.pvcreate"
+  tags:
+    - skip_ansible_lint
+    - cinder-lvm-pv
+
+- name: Run pvscan
+  command: "pvscan"
+  changed_when: false
   tags:
     - cinder-lvm-pv
 
@@ -67,6 +73,5 @@
   lvg:
     vg: cinder-volumes
     pvs: "{{ cinder_losetup.stdout }}"
-  when: cinder_create | changed
   tags:
     - cinder-lvm-vg

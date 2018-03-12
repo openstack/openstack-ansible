@@ -321,14 +321,19 @@ function get_instance_info {
   esac
 
   # Storage reports
-  btrfs filesystem usage /var/lib/machines > \
-    "/openstack/log/instance-info/machines_usage_${TS}.log" || true
-  btrfs filesystem show /var/lib/machines >> \
-    "/openstack/log/instance-info/machines_show_${TS}.log" || true
-  btrfs filesystem df /var/lib/machines >> \
-    "/openstack/log/instance-info/machines_df_${TS}.log" || true
-  btrfs qgroup show --human-readable -pcre --iec /var/lib/machines >> \
-    "/openstack/log/instance-info/machines_quotas_${TS}.log" || true
+  for dir_name in lxc machines; do
+    btrfs filesystem usage /var/lib/${dir_name} > \
+      "/openstack/log/instance-info/btrfs_${dir_name}_usage_${TS}.log" || true
+    btrfs filesystem show /var/lib/${dir_name} > \
+      "/openstack/log/instance-info/btrfs_${dir_name}_show_${TS}.log" || true
+    btrfs filesystem df /var/lib/${dir_name} > \
+      "/openstack/log/instance-info/btrfs_${dir_name}_df_${TS}.log" || true
+    btrfs qgroup show --human-readable -pcre --iec /var/lib/${dir_name} > \
+      "/openstack/log/instance-info/btrfs_${dir_name}_quotas_${TS}.log" || true
+  done
+
+  zfs list > "/openstack/log/instance-info/zfs_lxc_${TS}.log" || true
+
   df -h > "/openstack/log/instance-info/report_fs_df_${TS}.log" || true
 }
 

@@ -1,5 +1,5 @@
 ---
-# Copyright 2015, Rackspace US, Inc.
+# Copyright 2018, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,19 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Create sparse Nova file
-  command: "truncate -s {{ bootstrap_host_loopback_nova_size }}G /openstack/nova.img"
+- name: Create sparse lxc-btrfs file
+  command: "truncate -s {{ bootstrap_host_loopback_btrfs_size }}G /openstack/lxc-btrfs.img"
   args:
-    creates: /openstack/nova.img
-  tags:
-    - nova-file-create
+    creates: /openstack/lxc-btrfs.img
 
-- name: Format the Nova file
+- name: Format the lxc-btrfs file
   filesystem:
-    fstype: ext4
-    dev: /openstack/nova.img
-  tags:
-    - nova-format-file
+    fstype: btrfs
+    dev: /openstack/lxc-btrfs.img
 
 - name: Run the systemd mount role
   include_role:
@@ -33,11 +29,11 @@
     private: true
   vars:
     systemd_mounts:
-      - what: "/openstack/nova.img"
-        where: "/var/lib/nova/instances"
+      - what: "/openstack/lxc-btrfs.img"
+        where: "/var/lib/lxc"
         options: "loop"
-        type: "ext4"
+        type: "btrfs"
         state: 'started'
         enabled: true
   tags:
-    - nova-config
+    - lxc-config

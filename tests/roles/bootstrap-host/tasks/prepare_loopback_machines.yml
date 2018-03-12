@@ -27,11 +27,17 @@
   tags:
     - machines-format-file
 
-- name: Create the mount points, fstab entries and mount the file systems
-  mount:
-    name: /var/lib/machines
-    src: /openstack/machines.img
-    fstype: btrfs
-    state: mounted
+- name: Run the systemd mount role
+  include_role:
+    name: systemd_mount
+    private: true
+  vars:
+    systemd_mounts:
+      - what: "/openstack/machines.img"
+        where: "/var/lib/machines"
+        options: "loop"
+        type: "btrfs"
+        state: 'started'
+        enabled: true
   tags:
-    - machines-file-mount
+    - machines-config

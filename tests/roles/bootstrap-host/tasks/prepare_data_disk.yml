@@ -27,6 +27,13 @@
   tags:
     - check-data-disk-partitions
 
+- name: Set bootstrap host data disk fact
+  set_fact:
+    bootstrap_host_data_disk_device_force: true
+    _bootstrap_host_data_disk_device: "{{ (bootstrap_host_data_disk_device | regex_replace('!','/')).strip() }}"
+  when:
+    - data_disk_partitions.rc == 1
+
 - name: Dismount and remove fstab entries for anything on the data disk device
   mount:
     name: "{{ item.mount }}"
@@ -34,46 +41,112 @@
     fstype: ext4
     state: absent
   when:
-    - data_disk_partitions.rc == 1 or bootstrap_host_data_disk_device_force | bool
+    - bootstrap_host_data_disk_device_force | bool
     - item.device | search(bootstrap_host_data_disk_device)
   with_items:
     - "{{ ansible_mounts }}"
 
 - name: Partition the whole data disk for our usage
   command: "{{ item }}"
-  when: data_disk_partitions.rc == 1 or bootstrap_host_data_disk_device_force | bool
+  when:
+    - bootstrap_host_data_disk_device_force | bool
   with_items:
-    - "parted --script /dev/{{ bootstrap_host_data_disk_device | regex_replace('!','/') }} mklabel gpt"
-    - "parted --align optimal --script /dev/{{ bootstrap_host_data_disk_device | regex_replace('!','/') }} mkpart openstack-data1 ext4 0% 40%"
-    - "parted --align optimal --script /dev/{{ bootstrap_host_data_disk_device | regex_replace('!','/') }} mkpart openstack-data2 btrfs 40% 100%"
+    - "parted --script /dev/{{ _bootstrap_host_data_disk_device }} mklabel gpt"
+    - "parted --align optimal --script /dev/{{ _bootstrap_host_data_disk_device }} mkpart openstack-data1 ext4 0% 40%"
+    - "parted --align optimal --script /dev/{{ _bootstrap_host_data_disk_device }} mkpart openstack-data2 {{ bootstrap_host_data_disk2_fs }} 40% 100%"
   tags:
     - create-data-disk-partitions
 
-- name: Format the partitions
+- name: Format the partition 1
   filesystem:
-    fstype: "{{ item.fstype }}"
-    dev: "{{ item.dev }}"
-  when: data_disk_partitions.rc == 1 or bootstrap_host_data_disk_device_force | bool
-  with_items:
-    - dev: "/dev/{{ bootstrap_host_data_disk_device | regex_replace('!(.*)$','/\\1p') }}1"
-      fstype: "ext4"
-    - dev: "/dev/{{ bootstrap_host_data_disk_device | regex_replace('!(.*)$','/\\1p') }}2"
-      fstype: "btrfs"
+    fstype: ext4
+    dev: "/dev/{{ _bootstrap_host_data_disk_device }}1"
+  when:
+    - bootstrap_host_data_disk_device_force | bool
   tags:
     - format-data-partitions
 
-- name: Create the mount points, fstab entries and mount the file systems
-  mount:
-    name: "{{ item.mount_point }}"
-    src: "{{ item.device }}"
-    fstype: "{{ item.fstype }}"
-    state: mounted
-  with_items:
-    - mount_point: /openstack
-      device: "/dev/{{ bootstrap_host_data_disk_device | regex_replace('!(.*)$','/\\1p') }}1"
-      fstype: ext4
-    - mount_point: /var/lib/machines
-      device: "/dev/{{ bootstrap_host_data_disk_device | regex_replace('!(.*)$','/\\1p') }}2"
-      fstype: btrfs
+- name: Format the partition 2
+  filesystem:
+    fstype: "{{ bootstrap_host_data_disk2_fs }}"
+    dev: "/dev/{{ _bootstrap_host_data_disk_device }}2"
+  when:
+    - bootstrap_host_data_disk_device_force | bool
+    - lxc_container_backing_store != 'lvm'
+    - lxc_container_backing_store != 'zfs'
   tags:
-    - mount-data-partitions
+    - format-data-partitions
+
+- name: Run the systemd mount role
+  include_role:
+    name: systemd_mount
+    private: true
+  vars:
+    systemd_mounts:
+      - what: "/dev/{{ _bootstrap_host_data_disk_device }}1"
+        where: "/openstack"
+        type: "ext4"
+        state: 'started'
+        enabled: true
+  tags:
+    - data-config
+
+- name: Run the systemd mount role
+  include_role:
+    name: systemd_mount
+    private: true
+  vars:
+    systemd_mounts:
+      - what: "/dev/{{ _bootstrap_host_data_disk_device }}2"
+        where: "{{ bootstrap_host_data_disk2_path }}"
+        type: "{{ bootstrap_host_data_disk2_fs }}"
+        state: 'started'
+        enabled: true
+  when:
+    - lxc_container_backing_store != 'lvm'
+    - lxc_container_backing_store != 'zfs'
+  tags:
+    - data-config
+
+- name: Create the ZFS pool
+  command: zpool create osa-test-pool "/dev/{{ _bootstrap_host_data_disk_device }}2"
+  args:
+    creates: /osa-test-pool
+  when:
+    - bootstrap_host_data_disk_device_force | bool
+    - lxc_container_backing_store == 'zfs'
+
+- name: Create the ZFS pool/lxc volume
+  shell: "(zfs list | grep lxc) || zfs create -o mountpoint=/var/lib/lxc osa-test-pool/lxc"
+  when:
+    - bootstrap_host_data_disk_device_force | bool
+    - lxc_container_backing_store == 'zfs'
+  tags:
+    - skip_ansible_lint
+
+- name: Make LVM physical volume on the cinder device
+  shell: "pvcreate /dev/{{ _bootstrap_host_data_disk_device }}2 && touch /openstack/lxc.pvcreate"
+  args:
+    creates: "/openstack/lxc.pvcreate"
+  when:
+    - lxc_container_backing_store == 'lvm'
+  tags:
+    - skip_ansible_lint
+    - data-config
+
+- name: Run pvscan
+  command: "pvscan"
+  changed_when: false
+  when:
+    - lxc_container_backing_store == 'lvm'
+  tags:
+    - cinder-lvm-pv
+
+- name: Add cinder-volumes volume group
+  lvg:
+    vg: lxc
+    pvs: "/dev/{{ _bootstrap_host_data_disk_device }}2"
+  when:
+    - lxc_container_backing_store == 'lvm'
+  tags:
+    - data-config

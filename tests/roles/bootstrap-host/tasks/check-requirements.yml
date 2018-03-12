@@ -34,7 +34,8 @@
     else
         df -BK / | awk '!/^Filesystem/ {print $4}' | sed 's/K//'
     fi
-  when: bootstrap_host_data_disk_device == None
+  when:
+    - bootstrap_host_data_disk_device == None
   changed_when: false
   register: root_space_available
   tags:
@@ -62,7 +63,8 @@
 - name: Calculate data disk size
   set_fact:
     host_data_disk_size_bytes: "{{ ((host_data_disk_sectors | int) * (host_data_disk_sectorsize | int)) | int }}"
-  when: bootstrap_host_data_disk_device != None
+  when:
+    - bootstrap_host_data_disk_device != None
   tags:
     - check-disk-size
 
