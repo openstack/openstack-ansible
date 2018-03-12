@@ -4,11 +4,8 @@
 Prepare the target hosts
 ========================
 
-.. toctree::
-   :maxdepth: 2
-
-   targethosts-prepare.rst
-   targethosts-networkconfig.rst
-
 .. figure:: figures/installation-workflow-targethosts.png
    :width: 100%
+
+.. include:: targethosts-prepare.rst
+.. include:: targethosts-networkconfig.rst

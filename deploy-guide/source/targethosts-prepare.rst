@@ -1,6 +1,5 @@
-============================================
-Configuring the operating system and storage
-============================================
+Configuring the operating system
+================================
 
 This section describes the installation and configuration of operating
 systems for the target hosts, as well as deploying SSH keys and
@@ -27,8 +26,8 @@ installation on target hosts that do not have local (console) access.
    We also recommend setting your locale to `en_US.UTF-8`. Other locales might
    work, but they are not tested or supported.
 
-Configure the operating system (Ubuntu)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Configure Ubuntu
+~~~~~~~~~~~~~~~~
 
 #. Update package source lists
 
@@ -74,8 +73,8 @@ Configure the operating system (Ubuntu)
 
 #. Reboot the host to activate the changes and use the new kernel.
 
-Configure the operating system (CentOS)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Configure CentOS
+~~~~~~~~~~~~~~~~
 
 #. Upgrade the system packages and kernel:
 
@@ -117,8 +116,8 @@ Configure the operating system (CentOS)
 
 #. Reboot the host to activate the changes and use the new kernel.
 
-Configure the operating system (openSUSE)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Configure openSUSE
+~~~~~~~~~~~~~~~~~~
 
 #. Upgrade the system packages and kernel:
 
@@ -160,8 +159,8 @@ Configure the operating system (openSUSE)
 
 #. Reboot the host to activate the changes and use the new kernel.
 
-Deploying Secure Shell (SSH) keys
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Configure SSH keys
+==================
 
 Ansible uses SSH to connect the deployment host and target hosts.
 
@@ -190,16 +189,14 @@ practices, see `GitHub's documentation about generating SSH keys`_.
    ``lxc_container_ssh_key`` variable to the public key for
    the container.
 
-.. _configuring-storage:
-
-Configure storage
-~~~~~~~~~~~~~~~~~
+Configuring the storage
+=======================
 
 `Logical Volume Manager (LVM)`_ enables a single device to be split into
 multiple logical volumes that appear as a physical storage device to the
-operating system. The Block Storage (cinder) service, and the LXC containers
-that run the OpenStack infrastructure, can optionally use LVM for their data
-storage.
+operating system. The Block Storage (cinder) service, and LXC containers
+that optionally run the OpenStack infrastructure,
+can optionally use LVM for their data storage.
 
 .. note::
 
@@ -217,7 +214,8 @@ storage.
        # vgcreate cinder-volumes physical_volume_device_path
 
 #. Optionally, create an LVM volume group named ``lxc`` for container file
-   systems. If the ``lxc`` volume group does not exist, containers are
+   systems if you want to use LXC with LVM.
+   If the ``lxc`` volume group does not exist, containers are
    automatically installed on the file system under ``/var/lib/lxc`` by
    default.
 

@@ -1,8 +1,9 @@
-=====================
-Network configuration
-=====================
+Configuring the network
+=======================
 
-The following table shows bridges that are to be configured on hosts.
+OpenStack-Ansible uses bridges to connect physical and logical network
+interfaces on the host to virtual network interfaces within containers.
+Target hosts need to be configured with the following network bridges:
 
 +-------------+-----------------------+-------------------------------------+
 | Bridge name | Best configured on    | With a static IP                    |
@@ -31,20 +32,14 @@ For use case examples, refer to
 :dev_docs:`User Guides <user/index.html>`.
 
 
-
-Host network bridges
-~~~~~~~~~~~~~~~~~~~~
-
-OpenStack-Ansible uses bridges to connect physical and logical network
-interfaces on the host to virtual network interfaces within containers.
-Target hosts are configured with the following network bridges.
-
+Host network bridges information
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 *  LXC internal: ``lxcbr0``
 
-   The ``lxcbr0`` bridge is **required**, but OpenStack-Ansible configures it
-   automatically. It provides external (typically Internet) connectivity to
-   containers.
+   The ``lxcbr0`` bridge is **required** for LXC, but OpenStack-Ansible
+   configures it automatically. It provides external (typically Internet)
+   connectivity to containers with dnsmasq (DHCP/DNS) + NAT.
 
    This bridge does not directly attach to any physical or logical
    interfaces on the host because iptables handles connectivity. It
@@ -56,7 +51,7 @@ Target hosts are configured with the following network bridges.
 
 *  Container management: ``br-mgmt``
 
-   The ``br-mgmt`` bridge is **required**. It provides management of and
+   The ``br-mgmt`` bridge provides management of and
    communication between the infrastructure and OpenStack services.
 
    The bridge attaches to a physical or logical interface, typically a
@@ -67,9 +62,8 @@ Target hosts are configured with the following network bridges.
 
 *  Storage:``br-storage``
 
-   The ``br-storage`` bridge is **optional**, but recommended for production
-   environments. It provides segregated access to Block Storage devices
-   between OpenStack services and Block Storage devices.
+   The ``br-storage`` bridge provides segregated access to Block Storage
+   devices between OpenStack services and Block Storage devices.
 
    The bridge attaches to a physical or logical interface, typically a
    ``bond0`` VLAN subinterface. It also attaches to ``eth2`` in each
@@ -80,9 +74,9 @@ Target hosts are configured with the following network bridges.
 
 *  OpenStack Networking tunnel: ``br-vxlan``
 
-   The ``br-vxlan`` bridge is **required** if the environment is configured to
-   allow projects to create virtual networks. It provides the interface for
-   virtual (VXLAN) tunnel networks.
+   The ``br-vxlan`` bridge is **required if** the environment is configured to
+   allow projects to create virtual networks using VXLAN.
+   It provides the interface for virtual (VXLAN) tunnel networks.
 
    The bridge attaches to a physical or logical interface, typically a
    ``bond1`` VLAN subinterface. It also attaches to ``eth10`` in each
@@ -93,7 +87,7 @@ Target hosts are configured with the following network bridges.
 
 *  OpenStack Networking provider: ``br-vlan``
 
-   The ``br-vlan`` bridge is **required**. It provides infrastructure for VLAN
+   The ``br-vlan`` bridge is provides infrastructure for VLAN
    tagged or flat (no VLAN tag) networks.
 
    The bridge attaches to a physical or logical interface, typically ``bond1``.
