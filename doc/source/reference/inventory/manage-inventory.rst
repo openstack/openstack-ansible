@@ -1,5 +1,14 @@
-Inspecting and managing the inventory
-=====================================
+Inspecting and manipulating the inventory
+=========================================
+
+.. warning::
+
+   Never edit or delete the files
+   ``/etc/openstack_deploy/openstack_inventory.json`` or
+   ``/etc/openstack_deploy/openstack_hostnames_ips.yml``. This can
+   lead to file corruptions, and problems with the inventory: hosts
+   and container could disappear and new ones would appear,
+   breaking your existing deployment.
 
 The file ``scripts/inventory-manage.py`` is used to produce human readable
 output based on the ``/etc/openstack_deploy/openstack_inventory.json`` file.
