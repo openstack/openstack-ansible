@@ -17,6 +17,9 @@ To use a target host as a deployment host, follow the steps in
 :deploy_guide:`Prepare the target hosts <targethosts.html>` on
 the deployment host.
 
+Configuring the operating system
+================================
+
 Install the operating system
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -30,8 +33,8 @@ hosts:
 Configure at least one network interface to access the Internet or suitable
 local repositories.
 
-Configure the operating system (Ubuntu)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Configure Ubuntu
+~~~~~~~~~~~~~~~~
 
 Install additional software packages and configure Network Time Protocol (NTP).
 Before you begin, we recommend upgrading your system packages and kernel.
@@ -61,8 +64,8 @@ Before you begin, we recommend upgrading your system packages and kernel.
 
 #. Configure NTP to synchronize with a suitable time source.
 
-Configure the operating system (CentOS)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Configure CentOS
+~~~~~~~~~~~~~~~~
 
 Install additional software packages and configure Network Time Protocol (NTP).
 Before you begin, we recommend upgrading your system packages and kernel.
@@ -103,8 +106,8 @@ Before you begin, we recommend upgrading your system packages and kernel.
     deployments. Until that work is complete, deployers must maintain their
     own firewall rulesets or disable the firewall entirely.
 
-Configure the operating system (openSUSE)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Configure openSUSE
+~~~~~~~~~~~~~~~~~~
 
 Install additional software packages and configure Network Time Protocol (NTP).
 Before you begin, we recommend upgrading your system packages and kernel.
@@ -128,8 +131,18 @@ Before you begin, we recommend upgrading your system packages and kernel.
 
 #. Configure NTP to synchronize with a suitable time source.
 
+Configure SSH keys
+==================
+
+Ansible uses SSH with public key authentication to connect the
+deployment host and target hosts. To reduce user
+interaction during Ansible operations, do not include passphrases with
+key pairs. However, if a passphrase is required, consider using the
+``ssh-agent`` and ``ssh-add`` commands to temporarily store the
+passphrase before performing Ansible operations.
+
 Configure the network
-~~~~~~~~~~~~~~~~~~~~~
+=====================
 
 Ansible deployments fail if the deployment server can't use Secure Shell (SSH)
 to connect to the containers.
@@ -147,7 +160,7 @@ deployment host:
    Container management: 172.29.236.0/22 (VLAN 10)
 
 Install the source and dependencies
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+===================================
 
 Install the source and dependencies for the deployment host.
 
@@ -180,14 +193,4 @@ Install the source and dependencies for the deployment host.
    .. code-block:: shell-session
 
        # scripts/bootstrap-ansible.sh
-
-Configure SSH keys
-~~~~~~~~~~~~~~~~~~
-
-Ansible uses SSH with public key authentication to connect the
-deployment host and target hosts. To reduce user
-interaction during Ansible operations, do not include passphrases with
-key pairs. However, if a passphrase is required, consider using the
-``ssh-agent`` and ``ssh-add`` commands to temporarily store the
-passphrase before performing Ansible operations.
 
