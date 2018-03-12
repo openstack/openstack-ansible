@@ -15,8 +15,11 @@ the interfaces for instance traffic, please see the
 
 .. _OpenStack Networking Guide: http://docs.openstack.org/networking-guide/
 
-Bonded network interfaces
-~~~~~~~~~~~~~~~~~~~~~~~~~
+For details on the configuration of networking for your
+environment, please have a look at :ref:`openstack-user-config-reference`.
+
+Physical host interfaces
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 In a typical production environment, physical network interfaces are combined
 in bonded pairs for better redundancy and throughput. Avoid using two ports on
@@ -102,17 +105,3 @@ The following diagram shows how virtual machines connect to the ``br-vlan`` and
 ``br-vxlan`` bridges and send traffic to the network outside the host:
 
 .. image:: ../figures/networking-compute.png
-
-.. _openstack-user-config-reference:
-
-Reference for openstack_user_config settings
---------------------------------------------
-
-The ``openstack_user_config.yml.example`` file is heavily commented with the
-details of how to do more advanced container networking configuration. The
-contents of the file are shown here for reference.
-
-.. literalinclude:: ../../../../etc/openstack_deploy/openstack_user_config.yml.example
-   :language: yaml
-   :start-after: under the License.
-

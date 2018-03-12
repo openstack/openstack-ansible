@@ -3,6 +3,12 @@
 Configuring the inventory
 =========================
 
+In this chapter, you can find the information on how to configure
+the openstack-ansible dynamic inventory to your needs.
+
+Introduction
+~~~~~~~~~~~~
+
 Common OpenStack services and their configuration are defined by
 OpenStack-Ansible in the
 ``/etc/openstack_deploy/openstack_user_config.yml`` settings file.
@@ -12,7 +18,6 @@ Additional services should be defined with a YAML file in
 
 The ``/etc/openstack_deploy/env.d`` directory sources all YAML files into the
 deployed environment, allowing a deployer to define additional group mappings.
-
 This directory is used to extend the environment skeleton, or modify the
 defaults defined in the ``inventory/env.d`` directory.
 
@@ -51,11 +56,8 @@ which the container resides is added to the ``lxc_hosts`` inventory group.
 Using this name for a group in the configuration will result in a runtime
 error.
 
-Customizing existing components
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 Deploying directly on hosts
----------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To deploy a component directly on the host instead of within a container, set
 the ``is_metal`` property to ``true`` for the container group in the
@@ -69,27 +71,8 @@ is the same for a service deployed directly onto the host.
    The ``cinder-volume`` component is deployed directly on the host by
    default. See the ``env.d/cinder.yml`` file for this example.
 
-Omit a service or component from the deployment
------------------------------------------------
-
-To omit a component from a deployment, you can use one of several options:
-
-- Remove the ``physical_skel`` link between the container group and
-  the host group by deleting the related file located in the ``env.d/``
-  directory.
-- Do not run the playbook that installs the component.
-  Unless you specify the component to run directly on a host by using the
-  ``is_metal`` property, a container is created for this component.
-- Adjust the :ref:`affinity`
-  to 0 for the host group. Similar to the second option listed here, Unless
-  you specify the component to run directly on a host by using the ``is_metal``
-  property, a container is created for this component.
-
-Deploy existing components on dedicated hosts
----------------------------------------------
-
-To deploy a ``shared-infra`` component to dedicated hosts, modify the
-files that specify the host groups and container groups for the component.
+Example: Running galera on dedicated hosts
+------------------------------------------
 
 For example, to run Galera directly on dedicated hosts, you would perform the
 following steps:
@@ -147,27 +130,70 @@ following steps:
       and ``db_hosts``) are arbitrary. Choose your own group names,
       but ensure the references are consistent among all relevant files.
 
+.. _affinity:
 
-Checking inventory configuration for errors
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Deploying 0 (or more than one) of component type per host
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Using the ``--check`` flag when running ``dynamic_inventory.py`` will run the
-inventory build process and look for known errors, but not write any files to
-disk.
+When OpenStack-Ansible generates its dynamic inventory, the affinity
+setting determines how many containers of a similar type are deployed on a
+single physical host.
 
-If any groups defined in the ``openstack_user_config.yml`` or ``conf.d`` files
-are not found in the environment, a warning will be raised.
+Using ``shared-infra_hosts`` as an example, consider this
+``openstack_user_config.yml`` configuration:
 
-This check does not do YAML syntax validation, though it will fail if there
-are unparseable errors.
+.. code-block:: yaml
 
-Writing debug logs
-~~~~~~~~~~~~~~~~~~~
+    shared-infra_hosts:
+      infra1:
+        ip: 172.29.236.101
+      infra2:
+        ip: 172.29.236.102
+      infra3:
+        ip: 172.29.236.103
 
-The ``--debug/-d`` parameter allows writing of a detailed log file for
-debugging the inventory script's behavior. The output is written to
-``inventory.log`` in the current working directory.
+Three hosts are assigned to the `shared-infra_hosts` group,
+OpenStack-Ansible ensures that each host runs a single database container,
+a single Memcached container, and a single RabbitMQ container. Each host has
+an affinity of 1 by default,  which means that each host runs one of each
+container type.
 
-The ``inventory.log`` file is appended to, not overwritten.
+If you are deploying a stand-alone Object Storage (swift) environment,
+you can skip the deployment of RabbitMQ. If you use this configuration,
+your ``openstack_user_config.yml`` file would look as follows:
 
-Like ``--check``, this flag is not invoked when running from ansible.
+.. code-block:: yaml
+
+    shared-infra_hosts:
+      infra1:
+        affinity:
+          rabbit_mq_container: 0
+        ip: 172.29.236.101
+      infra2:
+        affinity:
+          rabbit_mq_container: 0
+        ip: 172.29.236.102
+      infra3:
+        affinity:
+          rabbit_mq_container: 0
+        ip: 172.29.236.103
+
+This configuration deploys a Memcached container and a database container
+on each host, but no RabbitMQ containers.
+
+Omit a service or component from the deployment
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To omit a component from a deployment, you can use one of several options:
+
+- Remove the ``physical_skel`` link between the container group and
+  the host group by deleting the related file located in the ``env.d/``
+  directory.
+- Do not run the playbook that installs the component.
+  Unless you specify the component to run directly on a host by using the
+  ``is_metal`` property, a container is created for this component.
+- Adjust the :ref:`affinity`
+  to 0 for the host group. Similar to the second option listed here, Unless
+  you specify the component to run directly on a host by using the ``is_metal``
+  property, a container is created for this component.
+
