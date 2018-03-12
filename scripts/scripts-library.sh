@@ -283,11 +283,11 @@ function get_instance_info {
   fi
   if [ "$(which networkctl)" ]; then
     networkctl list > \
-      "/openstack/log/instance-info/host_netowrkd_list_${TS}.log" || true
+      "/openstack/log/instance-info/host_networkd_list_${TS}.log" || true
     networkctl status >> \
-      "/openstack/log/instance-info/host_netowrkd_status_${TS}.log" || true
+      "/openstack/log/instance-info/host_networkd_status_${TS}.log" || true
     networkctl lldp >> \
-      "/openstack/log/instance-info/host_netowrkd_lldp_${TS}.log" || true
+      "/openstack/log/instance-info/host_networkd_lldp_${TS}.log" || true
   fi
   (iptables -vnL && iptables -t nat -vnL && iptables -t mangle -vnL) > \
     "/openstack/log/instance-info/host_firewall_info_${TS}.log" || true
