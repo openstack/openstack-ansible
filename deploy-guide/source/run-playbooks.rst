@@ -4,6 +4,9 @@
 Run playbooks
 =============
 
+.. figure:: figures/installation-workflow-run-playbooks.png
+   :width: 100%
+
 The installation process requires running three main playbooks:
 
 - The ``setup-hosts.yml`` Ansible foundation playbook prepares the target
@@ -17,9 +20,7 @@ The installation process requires running three main playbooks:
 
 - The ``setup-openstack.yml`` OpenStack playbook installs OpenStack services,
   including Identity (keystone), Image (glance), Block Storage (cinder),
-  Compute (nova), Networking (neutron), Orchestration (heat), Dashboard
-  (horizon), Telemetry (ceilometer and aodh), Object Storage (swift),
-  and Bare Metal (ironic).
+  Compute (nova), Networking (neutron), etc.
 
 Checking the integrity of the configuration files
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -48,9 +49,6 @@ Before running any playbook, check the integrity of the configuration files.
 
 Run the playbooks to install OpenStack
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. figure:: figures/installation-workflow-run-playbooks.png
-   :width: 100%
 
 #. Change to the ``/opt/openstack-ansible/playbooks`` directory.
 
