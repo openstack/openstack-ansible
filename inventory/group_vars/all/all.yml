@@ -24,9 +24,9 @@ ssh_delay: 5
 
 # Set the package install state for distribution packages
 # Options are 'present' and 'latest'.
-# NOTE(mhayden): Allowing CentOS 7 to use package_state=present should give
+# NOTE(mhayden): Allowing CentOS 7 and openSUSE to use package_state=present should give
 # gate jobs a better chance to finish and expose more issues to fix.
-package_state: "{{ (ansible_os_family == 'RedHat') | ternary('present', 'latest') }}"
+package_state: "{{ (ansible_pkg_mgr in ['dnf', 'yum', 'zypper']) | ternary('present', 'latest') }}"
 
 # Set "/var/log" to be a bind mount to the physical host.
 default_bind_mount_logs: true
