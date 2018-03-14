@@ -13,55 +13,149 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: "prepare_networking_{{ ansible_os_family | lower }}.yml"
-
-- name: Shut down the network interfaces
-  command: "ifdown {{ item.name }}"
-  when:
-    - network_interfaces | changed or (network_interfaces_multinode is defined and network_interfaces_multinode | changed)
-    - item.enabled | default(True)
-  with_items:
-    - { name: br-mgmt }
-    - { name: br-storage }
-    - { name: br-vlan }
-    - { name: br-vxlan }
-    - { name: br-dbaas, enabled: "{{ (bootstrap_host_scenario == 'translations') | bool }}" }
-    - { name: br-lbaas, enabled: "{{ (bootstrap_host_scenario in ['translations', 'octavia']) | bool }}" }
+- name: Run the systemd-networkd role
+  include_role:
+    name: systemd_networkd
+    private: true
+  vars:
+    systemd_interface_cleanup: true
+    systemd_run_networkd: true
+    systemd_netdevs:
+      - NetDev:
+          Name: dummy0
+          Kind: dummy
+      - NetDev:
+          Name: dummy1
+          Kind: dummy
+      - NetDev:
+          Name: dummy2
+          Kind: dummy
+      - NetDev:
+          Name: dummy3
+          Kind: dummy
+      - NetDev:
+          Name: dummy4
+          Kind: dummy
+      - NetDev:
+          Name: dummy5
+          Kind: dummy
+      - NetDev:
+          Name: br-mgmt
+          Kind: bridge
+      - NetDev:
+          Name: br-vxlan
+          Kind: bridge
+      - NetDev:
+          Name: br-storage
+          Kind: bridge
+      - NetDev:
+          Name: br-vlan
+          Kind: bridge
+      - NetDev:
+          Name: br-vlan-veth
+          Kind: veth
+        Peer:
+          Name: eth12
+      - NetDev:
+          Name: br-dbaas
+          Kind: bridge
+      - NetDev:
+          Name: br-dbaas-veth
+          Kind: veth
+        Peer:
+          Name: eth13
+      - NetDev:
+          Name: br-lbaas
+          Kind: bridge
+      - NetDev:
+          Name: br-lbaas-veth
+          Kind: veth
+        Peer:
+          Name: eth14
+    systemd_networks:
+      - interface: "dummy0"
+        bridge: "br-mgmt"
+      - interface: "br-mgmt"
+        address: "172.29.236.100"
+        netmask: "255.255.252.0"
+      - interface: "dummy1"
+        bridge: "br-vxlan"
+      - interface: "br-vxlan"
+        address: "172.29.240.100"
+        netmask: "255.255.252.0"
+      - interface: "dummy2"
+        bridge: "br-storage"
+      - interface: "br-storage"
+        address: "172.29.244.100"
+        netmask: "255.255.252.0"
+      - interface: "dummy3"
+        bridge: "br-vlan"
+      - interface: "br-vlan"
+        config_overrides:
+          Network:
+            Address:
+              ? "172.29.248.100/22"
+              ? "172.29.248.1/22"
+      - interface: "br-vlan-veth"
+        bridge: "br-vlan"
+      - interface: "dummy4"
+        bridge: "br-dbaas"
+      - interface: "br-dbaas"
+        address: "172.29.232.100"
+        netmask: "255.255.252.0"
+      - interface: "br-dbaas-veth"
+        bridge: "br-dbaas"
+      - interface: "dummy5"
+        bridge: "br-lbaas"
+      - interface: "br-lbaas"
+        address: "172.29.252.100"
+        netmask: "255.255.252.0"
+      - interface: "br-lbaas-veth"
+        bridge: "br-lbaas"
   tags:
-    - networking-interfaces-stop
+    - network-config
 
-- name: Shut down the encapsulation network interfaces
-  command: "ifdown {{ item.key }}"
-  when:
-   - network_interfaces_multinode is defined and network_interfaces_multinode | changed
-   - bootstrap_host_encapsulation_enabled | bool
-  with_dict: "{{ bootstrap_host_encapsulation_interfaces }}"
+- name: Run the systemd service role
+  include_role:
+    name: systemd_service
+    private: true
+  vars:
+    systemd_services:
+      - service_name: "networking-post-up"
+        config_overrides:
+          Unit:
+            Description: networking-post-up
+            After: network-online.target
+            Wants: network-online.target
+          Service:
+            RemainAfterExit: yes
+        service_type: oneshot
+        execstarts:
+          - "-/sbin/iptables -A POSTROUTING -t mangle -p tcp --dport 22 -j CHECKSUM --checksum-fill"
+          - "-/sbin/iptables -t nat -A POSTROUTING -o {{ bootstrap_host_public_interface }} -j MASQUERADE"
+          - "-/sbin/ethtool -K br-mgmt gso off sg off tso off tx off"
+          - "-/sbin/ethtool -K br-vxlan gso off sg off tso off tx off"
+          - "-/sbin/ethtool -K br-storage gso off sg off tso off tx off"
+          - "-/sbin/ethtool -K br-vlan gso off sg off tso off tx off"
+          - "-/sbin/ethtool -K br-dbaas gso off sg off tso off tx off"
+          - "-/sbin/ethtool -K br-lbaas gso off sg off tso off tx off"
+          - "-/bin/ip link set eth12 up"
+          - "-/bin/ip link set br-vlan-veth up"
+          - "-/sbin/ethtool -K eth12 gso off sg off tso off tx off"
+          - "-/bin/ip link set eth13 up"
+          - "-/bin/ip link set br-dbaas-veth up"
+          - "-/sbin/ethtool -K eth13 gso off sg off tso off tx off"
+          - "-/bin/ip link set eth14 up"
+          - "-/bin/ip link set br-lbaas-veth up"
+          - "-/sbin/ethtool -K eth14 gso off sg off tso off tx off"
+        execstops:
+          - "/sbin/iptables -D POSTROUTING -t mangle -p tcp --dport 22 -j CHECKSUM --checksum-fill"
+          - "/sbin/iptables -t nat -D POSTROUTING -o {{ bootstrap_host_public_interface }} -j MASQUERADE"
+        enabled: yes
+        state: started
+    systemd_tempd_prefix: openstack
   tags:
-    - networking-interfaces-stop
-
-- name: Start the encapsulation network interfaces
-  command: "ifup {{ item.key }}"
-  when:
-    - network_interfaces_multinode is defined and network_interfaces_multinode | changed
-    - bootstrap_host_encapsulation_enabled | bool
-  with_dict: "{{ bootstrap_host_encapsulation_interfaces }}"
-  tags:
-    - networking-interfaces-start
-
-- name: Start the network interfaces
-  command: "ifup {{ item.name }}"
-  when:
-    - network_interfaces | changed
-    - item.enabled | default(True)
-  with_items:
-    - { name: br-mgmt }
-    - { name: br-storage }
-    - { name: br-vlan }
-    - { name: br-vxlan }
-    - { name: br-dbaas, enabled: "{{ (bootstrap_host_scenario == 'translations') | bool }}" }
-    - { name: br-lbaas, enabled: "{{ (bootstrap_host_scenario in ['translations', 'octavia']) | bool }}" }
-  tags:
-    - networking-interfaces-start
+    - network-config
 
 - name: Updating the facts due to net changes
   setup:
