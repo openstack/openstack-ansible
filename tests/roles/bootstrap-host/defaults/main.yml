@@ -63,8 +63,13 @@ bootstrap_user_variables_extra_templates:
 bootstrap_host_swap_size: "{% if ansible_memory_mb['real']['total'] < 8*1024 %}4{% else %}8{% endif %}"
 
 ## Loopback volumes
-# Sparse loopback disks are used for Cinder, Swift and Nova (instance storage).
+# Sparse loopback disks are used for the containers if there is no secondary
+# disk available to partition for btrfs. They are also used for Ceph, Cinder,
+# Swift and Nova (instance storage).
 # The size of the loopback volumes can be customized here (in gigabytes).
+#
+# Size of the machines loopback disk in gigabytes (GB).
+bootstrap_host_loopback_machines_size: 128
 #
 # Boolean option to deploy the loopback disk for Cinder
 bootstrap_host_loopback_cinder: yes
