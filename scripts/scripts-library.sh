@@ -318,6 +318,17 @@ function get_instance_info {
             "/openstack/log/instance-info/host_packages_info_${TS}.log" || true
           ;;
   esac
+
+  # Storage reports
+  btrfs filesystem usage /var/lib/machines > \
+    "/openstack/log/instance-info/machines_usage_${TS}.log" || true
+  btrfs filesystem show /var/lib/machines >> \
+    "/openstack/log/instance-info/machines_show_${TS}.log" || true
+  btrfs filesystem df /var/lib/machines >> \
+    "/openstack/log/instance-info/machines_df_${TS}.log" || true
+  btrfs qgroup show --human-readable -pcre --iec /var/lib/machines >> \
+    "/openstack/log/instance-info/machines_quotas_${TS}.log" || true
+  df -h > "/openstack/log/instance-info/report_fs_df_${TS}.log" || true
 }
 
 function get_pip {

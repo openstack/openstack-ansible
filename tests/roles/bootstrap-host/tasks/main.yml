@@ -50,6 +50,15 @@
   tags:
     - prepare-data-disk
 
+# Prepare the Machines storage loopback disk
+# This is only necessary when there is no secondary disk
+# available to partition for btrfs
+- include: prepare_loopback_machines.yml
+  when:
+    - bootstrap_host_data_disk_device == None
+  tags:
+    - prepare-loopback-machines
+
 # Prepare the swap space loopback disk
 # This is only necessary if there isn't swap already
 - include: prepare_loopback_swap.yml
