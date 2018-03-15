@@ -35,7 +35,7 @@ stg = imp.load_source(
     'scenario_table_gen',
     os.path.join(CONF_PATH, 'scenario_table_gen.py')
 )
-with open(TABLE_FILE, 'a+') as f:
+with open(TABLE_FILE, 'w') as f:
     f.write(stg.main())
 
 # If extensions (or modules to document with autodoc) are in another directory,

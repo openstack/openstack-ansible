@@ -41,7 +41,7 @@ def main():
     for items in scenario_meta_data.values():
         for item in items:
             config_items.add(item['name'].split('.')[0])
-    config_items = list(config_items)
+    config_items = list(sorted(config_items))
 
     for item in config_items:
         HTML_TABLE += '<tr>'
