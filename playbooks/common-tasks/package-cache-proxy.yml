@@ -17,16 +17,17 @@
   uri:
     url: "{{ repo_pkg_cache_url }}/acng-report.html"
     method: "HEAD"
+    timeout: 3
   register: proxy_check
   failed_when: false
   tags:
     - common-proxy
 
-- name: Drop apt package manager proxy
+- name: Add apt package manager proxy
   copy:
     content: 'Acquire::http { Proxy "{{ repo_pkg_cache_url }}"; };'
     dest: "/etc/apt/apt.conf.d/00apt-cacher-proxy"
-  register: apt_proxy_dropped
+  register: _apt_proxy_added
   when:
     - repo_pkg_cache_enabled | bool
     - proxy_check.status == 200
@@ -34,24 +35,26 @@
   tags:
     - common-proxy
 
-- name: Update apt when proxy is added
+- name: Remove apt package manager proxy
+  file:
+    dest: "/etc/apt/apt.conf.d/00apt-cacher-proxy"
+    state: "absent"
+  register: _apt_proxy_removed
+  when:
+    - repo_pkg_cache_enabled | bool
+    - proxy_check.status != 200
+    - ansible_os_family == 'Debian'
+  tags:
+    - common-proxy
+
+- name: Update apt when proxy is added/removed
   apt:
     update_cache: yes
   retries: 5
   delay: 2
   when:
-    - apt_proxy_dropped | changed
-  tags:
-    - common-proxy
-
-- name: Remove apt package manager proxy
-  file:
-    dest: "/etc/apt/apt.conf.d/00apt-cacher-proxy"
-    state: "absent"
-  when:
-    - repo_pkg_cache_enabled | bool
-    - proxy_check.status != 200
-    - ansible_os_family == 'Debian'
+    - (_apt_proxy_added is mapping and _apt_proxy_added | changed) or
+      (_apt_proxy_removed is mapping and _apt_proxy_removed | changed)
   tags:
     - common-proxy
 

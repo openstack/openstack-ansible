@@ -42,7 +42,6 @@
         login_host: "{{ tacker_galera_address }}"
         db_name: "{{ tacker_galera_database }}"
       when: inventory_hostname == groups['tacker_all'][0]
-    - include: common-tasks/package-cache-proxy.yml
   roles:
     - role: "os_tacker"
     - role: "openstack_openrc"
