@@ -10,7 +10,6 @@ for OpenStack-Ansible.
 
    You can only upgrade between sequential releases.
 
-
 Introduction
 ============
 
@@ -30,6 +29,10 @@ major upgrade process performs the following actions:
 
 For more information about the major upgrade process, see
 :ref:`upgrading-by-using-a-script` and :ref:`upgrading-manually`.
+
+.. warning::
+
+   |upgrade_warning| Test this on a development environment first.
 
 .. include:: major-upgrades-with-script.rst
 .. include:: major-upgrades-manual-upgrade.rst

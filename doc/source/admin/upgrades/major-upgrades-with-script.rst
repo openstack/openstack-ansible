@@ -7,11 +7,6 @@ The |current_release_formal_name| release series of OpenStack-Ansible contains
 the code for migrating from |previous_release_formal_name| to
 |current_release_formal_name|.
 
-.. warning::
-
-   The upgrade script is always under active development.
-   Test it on a development environment first.
-
 Running the upgrade script
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
