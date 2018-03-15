@@ -22,9 +22,12 @@ packages_install:
   - dbus
   - ethtool
   - git-core
+  - iptables
+  - iputils-tracepath
   - ipython
   - linux-image-extra-{{ ansible_kernel }}
   - lvm2
+  - parted
   - python2.7
   - python-dev
   - sshpass
@@ -32,7 +35,6 @@ packages_install:
   - vim
   - vlan
   - xfsprogs
-  - iputils-tracepath
 
 packages_remove:
   - libmysqlclient18
