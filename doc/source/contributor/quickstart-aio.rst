@@ -165,6 +165,29 @@ following to bootstrap Ansible:
 
    # scripts/bootstrap-ansible.sh
 
+Notes:
+  You might encounter an error while running the Ansible bootstrap script
+  when building some of the Python extension (like pycrypto) which says:
+
+  .. code-block:: shell-session
+
+     configure: error: cannot run C compiled programs.
+
+  The reason of this failure might be resulting from a noexec mount flag
+  used for the filesystem associated with /tmp which you can check by
+  running the following command:
+
+  .. code-block:: shell-session
+
+     # mount | grep $(df /tmp | tail -n +2 | awk '{print $1}') | grep noexec
+
+  If this is the case you can specify an alternate path which does not
+  have this mount option set:
+
+  .. code-block:: shell-session
+
+     # TMPDIR=/var/tmp scripts/bootstrap-ansible.sh
+
 In order for all the services to run, the host must be prepared with the
 appropriate disks, packages, network configuration and a base configuration
 for the OpenStack Deployment. For the default AIO scenario, this preparation
