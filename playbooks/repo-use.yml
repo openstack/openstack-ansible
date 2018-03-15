@@ -17,12 +17,12 @@
 # is done upfront. This would mean that the openstack_hosts role
 # can run once and for all directly after the
 # lxc-container-create playbook.
-
-- name: Configure all nodes to use repo
+- name: Configure all nodes to use the repo container for python/apt packages
   hosts: all:!repo_all
+  pre_tasks:
+    - include: common-tasks/package-cache-proxy.yml
   roles:
     - pip_install
-
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - always

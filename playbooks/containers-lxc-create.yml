@@ -43,6 +43,7 @@
   gather_facts: true
   user: root
   pre_tasks:
+    - include: common-tasks/package-cache-proxy.yml
     - include: common-tasks/set-upper-constraints.yml
     - include: common-tasks/set-pip-upstream-url.yml
   roles:

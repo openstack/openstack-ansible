@@ -35,7 +35,6 @@
       static: no
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
-    - include: common-tasks/package-cache-proxy.yml
 
     # If we're using ceilometer then swift needs a rabbitmq/vhost & usera
     - include: common-tasks/rabbitmq-vhost-user.yml

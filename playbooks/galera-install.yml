@@ -33,7 +33,6 @@
       static: no
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
-    - include: common-tasks/package-cache-proxy.yml
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - galera

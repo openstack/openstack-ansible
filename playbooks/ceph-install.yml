@@ -30,7 +30,6 @@
       static: no
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
-    - include: common-tasks/package-cache-proxy.yml
     #TODO: mgariepy, revisit to use include_role when https://github.com/ansible/ansible/issues/20077 is fixed
     - name: install the ceph stable repository key
       rpm_key:
@@ -134,7 +133,6 @@
       static: no
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
-    - include: common-tasks/package-cache-proxy.yml
     #TODO: mgariepy, revisit to use include_role when https://github.com/ansible/ansible/issues/20077 is fixed
     - name: install the ceph stable repository key
       rpm_key:
