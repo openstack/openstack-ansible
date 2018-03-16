@@ -73,19 +73,39 @@
   tags:
     - check-disk-size
 
-- name: Fail if there is not enough space available in /
-  assert:
-    that: |
-      (host_root_space_available_bytes | int) >= (host_data_disk_min_size_bytes | int)
+- name: Set size facts
+  set_fact:
+    root_gb_available: "{{ ((host_root_space_available_bytes | int ) / 1024**3) | round(2, 'floor') }}"
   when: bootstrap_host_data_disk_device == None
   tags:
     - check-disk-size
 
-- name: Fail if there is not enough disk space available (disk specified)
-  assert:
-    that: |
-      (host_data_disk_size_bytes | int) >= (host_data_disk_min_size_bytes | int)
+- name: Set disk size facts
+  set_fact:
+    disk_gb_available: "{{ ((host_data_disk_size_bytes | int ) / 1024**3) | round(2, 'floor') }}"
   when: bootstrap_host_data_disk_device != None
+  tags:
+    - check-disk-size
+
+- name: Fail if there is not enough space available in /
+  fail:
+    msg: |
+      Not enough space available in /.
+      Found {{ root_gb_available }} GB, required {{ bootstrap_host_data_disk_min_size }} GB)
+  when:
+    - bootstrap_host_data_disk_device == None
+    - (host_root_space_available_bytes | int) < (host_data_disk_min_size_bytes | int)
+  tags:
+    - check-disk-size
+
+- name: Fail if there is not enough disk space available (disk specified)
+  fail:
+    msg: |
+      Not enough disk space available.
+      Found {{ disk_gb_available }} GB, required {{ bootstrap_host_data_disk_min_size }} GB)
+  when:
+    - bootstrap_host_data_disk_device != None
+    - (host_data_disk_size_bytes | int) < (host_data_disk_min_size_bytes | int)
   tags:
     - check-disk-size
 
