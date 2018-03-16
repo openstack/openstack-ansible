@@ -15,6 +15,7 @@ intended for deployers.
    configure.rst
    run-playbooks.rst
    verify-operation.rst
+   next-steps.rst
    app.rst
 
 Third-party trademarks and tradenames appearing in this document are the
