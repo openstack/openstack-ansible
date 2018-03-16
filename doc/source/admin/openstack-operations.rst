@@ -1,15 +1,12 @@
-====================
-OpenStack operations
-====================
+===================
+Managing your cloud
+===================
 
 This chapter is intended to document basic OpenStack operations tasks that
 are integral to the operations support in an OpenStack-Ansible deployment.
 
-.. toctree::
-   :maxdepth: 2
+It explains operations such as managing images, instances, or networks.
 
-   openstack-operations/verify-deploy.rst
-   openstack-operations/cli-operations.rst
-   openstack-operations/managing-images.rst
-   openstack-operations/managing-instances.rst
-   openstack-operations/network-service.rst
+
+.. include:: openstack-operations/managing-images.rst
+.. include:: openstack-operations/managing-instances.rst
