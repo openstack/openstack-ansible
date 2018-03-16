@@ -26,4 +26,3 @@ more complex operations like upgrading.
    backup-restore.rst
    troubleshooting.rst
    advanced-config.rst
-   ref-info.rst
