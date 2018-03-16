@@ -61,6 +61,7 @@
     - include: common-tasks/set-pip-upstream-url.yml
   roles:
     - role: "openstack_hosts"
+      is_container: true
   vars_files:
     - defaults/repo_packages/openstack_services.yml
   environment: "{{ deployment_environment_variables | default({}) }}"
