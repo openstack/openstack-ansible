@@ -5,12 +5,8 @@ Maintenance tasks
 This chapter is intended for OpenStack-Ansible specific
 maintenance tasks.
 
-.. toctree::
-   :maxdepth: 2
-
-   maintenance-tasks/galera.rst
-   maintenance-tasks/rabbitmq-maintain.rst
-   maintenance-tasks/backups.rst
-   maintenance-tasks/ansible-modules.rst
-   maintenance-tasks/containers.rst
-   maintenance-tasks/firewalls.rst
+.. include :: maintenance-tasks/galera.rst
+.. include :: maintenance-tasks/rabbitmq-maintain.rst
+.. include :: maintenance-tasks/ansible-modules.rst
+.. include :: maintenance-tasks/containers.rst
+.. include :: maintenance-tasks/firewalls.rst
