@@ -86,10 +86,10 @@
 
 
 
-- name: Install nova-scheduler/nova-consoleauth services
+- name: Install nova-scheduler services
   include: common-playbooks/nova.yml
   vars:
-    nova_hosts: "nova_scheduler:nova_consoleauth:!nova_conductor"
+    nova_hosts: "nova_scheduler:!nova_conductor"
     nova_serial: "{{ nova_scheduler_serial | default(['1', '100%']) }}"
 
 
