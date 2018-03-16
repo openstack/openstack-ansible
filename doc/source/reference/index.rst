@@ -10,5 +10,6 @@ to deploy, configure, or upgrade an OpenStack-Ansible cloud.
 
    conventions.rst
    inventory/inventory.rst
+   configuration/advanced-config.rst
    commands/reference.rst
    upgrades/reference.rst

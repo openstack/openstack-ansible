@@ -25,4 +25,5 @@ more complex operations like upgrading.
    monitoring-systems.rst
    backup-restore.rst
    troubleshooting.rst
-   advanced-config.rst
+   upgrades/minor-updates.rst
+   upgrades/major-upgrades.rst
