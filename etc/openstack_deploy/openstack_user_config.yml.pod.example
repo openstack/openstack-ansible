@@ -51,7 +51,6 @@ global_overrides:
           - hosts
         reference_group: "pod1_hosts"
         is_container_address: true
-        is_ssh_address: true
         # Containers in pod1 need routes to the container networks of other pods
         static_routes:
           # Route to container networks
@@ -69,7 +68,6 @@ global_overrides:
           - hosts
         reference_group: "pod2_hosts"
         is_container_address: true
-        is_ssh_address: true
         # Containers in pod2 need routes to the container networks of other pods
         static_routes:
           # Route to container networks
@@ -87,7 +85,6 @@ global_overrides:
           - hosts
         reference_group: "pod3_hosts"
         is_container_address: true
-        is_ssh_address: true
         # Containers in pod3 need routes to the container networks of other pods
         static_routes:
           # Route to container networks
@@ -105,7 +102,6 @@ global_overrides:
           - hosts
         reference_group: "pod4_hosts"
         is_container_address: true
-        is_ssh_address: true
         # Containers in pod4 need routes to the container networks of other pods
         static_routes:
           # Route to container networks

@@ -38,7 +38,6 @@ global_overrides:
           - all_containers
           - hosts
         is_container_address: true
-        is_ssh_address: true
     - network:
         container_bridge: "br-vxlan"
         container_type: "veth"
