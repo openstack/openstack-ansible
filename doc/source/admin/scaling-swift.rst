@@ -1,10 +1,3 @@
-============================================
-Managing Object Storage for multiple regions
-============================================
-
-This is a draft Object Storage page for the proposed OpenStack-Ansible
-operations guide.
-
 Accessibility for multi-region Object Storage
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
