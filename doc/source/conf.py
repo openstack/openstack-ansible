@@ -24,11 +24,79 @@
 
 import imp
 import os
-import pbr.version
+import re
 import sys
 
-# Create dynamic table file.
+import openstackdocstheme
+
+# -- OpenStack-Ansible configuration --------------------------------------
+# Variables to override
+target_name = 'openstack-ansible'
+description = 'OpenStack-Ansible deploys OpenStack environments using Ansible.'
+previous_series_name = 'queens'
+current_series_name = 'rocky'
+
+# General information about the project.
+author = 'OpenStack-Ansible Contributors'
+category = 'Miscellaneous'
+copyright = '2014-2017, OpenStack-Ansible Contributors'
+project = 'OpenStack-Ansible'
+title = 'OpenStack-Ansible Documentation'
+
+# Smart variable replacements
+current_series = openstackdocstheme.get_series_name()
+
+if current_series == "latest":
+  watermark = "Pre-release"
+  latest_tag = "master"
+  branch = "master"
+  upgrade_warning = "Upgrading to master is not recommended. Master is under heavy development, and is not stable."
+else:
+  watermark = series_names = current_series.capitalize()
+  latest_tag = os.popen('git describe --abbrev=0 --tags').read().strip('\n')
+  branch = "stable/{}".format(current_series)
+  upgrade_warning = "The upgrade is always under active development."
+
+# Ensure the top left corner of openstack docs theme
+# is consistent with latest available tag
+version = latest_tag
+
 CONF_PATH = os.path.dirname(os.path.realpath(__file__))
+GNOCCHI_DETAILS = '../../playbooks/defaults/repo_packages/gnocchi.yml'
+with open(os.path.join(CONF_PATH, GNOCCHI_DETAILS), 'r') as fdesc:
+    result = re.search('gnocchi_git_install_branch:.*# HEAD of "(.*)".*', fdesc.read())
+    gnocchi_branch = result.groups()[0]
+
+# References variable for substitutions
+upgrade_backup_dir = "``/etc/openstack_deploy.{branchname}``".format(branchname=previous_series_name.upper())
+deploy_guide_prefix = "http://docs.openstack.org/project-deploy-guide/openstack-ansible/{}/%s".format(current_series)
+dev_docs_prefix = "http://docs.openstack.org/openstack-ansible/{}/%s".format(current_series)
+
+# Substitutions loader
+rst_epilog = """
+.. |current_release_git_branch_name| replace:: {current_release_git_branch_name}
+.. |current_release_gnocchi_git_branch_name| replace:: {current_release_gnocchi_git_branch_name}
+.. |previous_release_formal_name| replace:: {previous_release_formal_name}
+.. |current_release_formal_name| replace:: {current_release_formal_name}
+.. |upgrade_backup_dir| replace:: {upgrade_backup_dir}
+.. |latest_tag| replace:: {latest_tag}
+.. |upgrade_warning| replace:: {upgrade_warning}
+""".format(
+  current_release_git_branch_name=branch,
+  current_release_gnocchi_git_branch_name=gnocchi_branch,
+  previous_release_formal_name=previous_series_name.capitalize(),
+  current_release_formal_name=current_series_name.capitalize(),
+  upgrade_backup_dir=upgrade_backup_dir,
+  latest_tag=latest_tag,
+  upgrade_warning=upgrade_warning,
+)
+
+# Format: Reference name: (string containing %s for substitution, linkname)
+extlinks = {'deploy_guide': (deploy_guide_prefix, ''),
+            'dev_docs':  (dev_docs_prefix, '')
+}
+
+# Generate dynamic table file.
 SCENARIO_TABLE = 'user/aio/scenario-table-gen.html'
 TABLE_FILE = os.path.join(CONF_PATH, SCENARIO_TABLE)
 stg = imp.load_source(
@@ -69,26 +137,6 @@ source_suffix = '.rst'
 
 # The master toctree document.
 master_doc = 'index'
-
-# General information about the project.
-author = 'OpenStack-Ansible Contributors'
-category = 'Miscellaneous'
-copyright = '2014-2017, OpenStack-Ansible Contributors'
-description = 'OpenStack-Ansible deploys OpenStack environments using Ansible.'
-project = 'OpenStack-Ansible'
-target_name = 'openstack-ansible'
-title = 'OpenStack-Ansible Documentation'
-
-# The version info for the project you're documenting, acts as replacement for
-# |version| and |release|, also used in various other places throughout the
-# built documents.
-#
-# The short X.Y version.
-version_info = pbr.version.VersionInfo(target_name)
-# The full version, including alpha/beta/rc tags.
-release = version_info.version_string_with_vcs()
-# The short X.Y version.
-version = version_info.canonical_version_string()
 
 # openstackdocstheme options
 repository_name = 'openstack/' + target_name
@@ -308,63 +356,6 @@ pdf_documents = [
     (master_doc, target_name,
      title, author)
 ]
-
-# Used for the developer documentation
-latest_tag = os.popen('git describe --abbrev=0 --tags').read().strip('\n')
-
-# Used for the upgrade documentation
-previous_release_branch_name = 'pike'
-current_release_branch_name = 'queens'
-
-# dev docs have no branch specified on master; for stable braches it's "/branch/"
-watermark = os.popen("git branch --contains $(git rev-parse HEAD) | awk -F/ '/stable/ {print $2}'").read().strip(' \n\t').capitalize()
-if watermark == "":
-    watermark = "Pre-release"
-    deploy_branch_link_name = "latest"
-    dev_branch_link_name = ""
-    current_release_git_branch_name = "master"
-    current_release_gnocchi_git_branch_name = "master"
-else:
-    deploy_branch_link_name = current_release_branch_name
-    dev_branch_link_name = "{}/".format(current_release_branch_name)
-    current_release_git_branch_name = 'stable/' + current_release_branch_name
-    current_release_gnocchi_git_branch_name = "4.2"
-
-previous_release_capital_name = previous_release_branch_name.upper()
-previous_release_formal_name = previous_release_branch_name.capitalize()
-current_release_capital_name = current_release_branch_name.upper()
-current_release_formal_name = current_release_branch_name.capitalize()
-upgrade_backup_dir = "``/etc/openstack_deploy."+previous_release_capital_name+"``"
-
-# Used to reference the deploy guide
-deploy_guide_prefix = "http://docs.openstack.org/project-deploy-guide/openstack-ansible/{}/%s".format(deploy_branch_link_name)
-dev_docs_prefix = "http://docs.openstack.org/openstack-ansible/{}/%s".format(deploy_branch_link_name)
-
-rst_epilog = """
-.. |previous_release_branch_name| replace:: %s
-.. |current_release_branch_name| replace:: %s
-.. |current_release_git_branch_name| replace:: %s
-.. |current_release_gnocchi_git_branch_name| replace:: %s
-.. |previous_release_capital_name| replace:: %s
-.. |previous_release_formal_name| replace:: %s
-.. |current_release_capital_name| replace:: %s
-.. |current_release_formal_name| replace:: %s
-.. |upgrade_backup_dir| replace:: %s
-.. |latest_tag| replace:: %s
-""" % (previous_release_branch_name,
-       current_release_branch_name,
-       current_release_git_branch_name,
-       current_release_gnocchi_git_branch_name,
-       previous_release_capital_name,
-       previous_release_formal_name,
-       current_release_capital_name,
-       current_release_formal_name,
-       upgrade_backup_dir,
-       latest_tag)
-
-extlinks = {'deploy_guide': (deploy_guide_prefix, ''),
-            'dev_docs':  (dev_docs_prefix, '')
-}
 
 # -- Options for sphinxmark -----------------------------------------------
 sphinxmark_enable = True
