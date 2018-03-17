@@ -16,6 +16,7 @@
 - name: haproxy base config
   hosts: haproxy
   gather_facts: "{{ osa_gather_facts | default(True) }}"
+  serial: "50%"
   user: root
   pre_tasks:
     - include: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
@@ -40,6 +41,7 @@
 
 - name: Install haproxy
   hosts: haproxy
+  serial: "50%"
   gather_facts: "{{ osa_gather_facts | default(True) }}"
   user: root
   pre_tasks:
