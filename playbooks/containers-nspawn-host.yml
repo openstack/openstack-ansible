@@ -18,7 +18,7 @@
   gather_facts: true
   user: root
   roles:
-    - role: "nspawn_host"
+    - role: "nspawn_hosts"
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - nspawn-hosts
