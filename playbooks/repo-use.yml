@@ -18,7 +18,7 @@
 # can run once and for all directly after the
 # lxc-container-create playbook.
 - name: Configure all nodes to use the repo container for python/apt packages
-  hosts: all:!repo_all
+  hosts: "{{ openstack_host_group | default('hosts') }}:all_containers:!repo_all"
   pre_tasks:
     - include: common-tasks/package-cache-proxy.yml
   roles:
