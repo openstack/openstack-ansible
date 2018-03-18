@@ -99,9 +99,6 @@
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
 
-    - name: Configure package proxy cache
-      include: common-tasks/package-cache-proxy.yml
-
     # todo(cloudnull): this task is being run only if/when keystone is installed on a physical host.
     #  This is not being run within a container because it is an unsupported action due to this
     #  issue: (https://bugs.launchpad.net/ubuntu/+source/lxc/+bug/1279041)

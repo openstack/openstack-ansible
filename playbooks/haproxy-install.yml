@@ -73,8 +73,6 @@
       rsyslog_client_config_name: "99-haproxy-rsyslog-client.conf"
       tags:
         - rsyslog
-  post_tasks:
-    - include: common-tasks/package-cache-proxy.yml
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - haproxy

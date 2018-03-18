@@ -44,7 +44,6 @@
       static: no
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
-    - include: common-tasks/package-cache-proxy.yml
   roles:
     - role: "ceph_client"
       openstack_service_system_user: "{{ gnocchi_system_user_name }}"
