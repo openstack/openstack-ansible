@@ -30,4 +30,5 @@ Contents:
    bug-triage
    core-reviewers
    role-services
+   distributions
 
