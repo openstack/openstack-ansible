@@ -512,10 +512,10 @@ def network_entry(is_metal, interface,
     # simplified. The container address checking that is ssh address
     # is only being done to support old inventory.
 
-    if is_metal:
-        _network = dict()
-    else:
-        _network = {'interface': interface}
+    _network = dict()
+
+    if not is_metal:
+        _network['interface'] = interface
 
     if bridge:
         _network['bridge'] = bridge
@@ -615,16 +615,23 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
         if properties:
             is_metal = properties.get('is_metal', False)
 
+        _network = network_entry(
+            is_metal,
+            interface,
+            bridge,
+            net_type,
+            net_mtu
+        )
+
+        # update values from _network in case they have changed
+        if old_address in networks:
+            for key in _network.keys():
+                networks[old_address][key] = _network[key]
+
         # This should convert found addresses based on q_name + "_address"
         #  and then build the network if its not found.
         if not is_metal and old_address not in networks:
-            network = networks[old_address] = network_entry(
-                is_metal,
-                interface,
-                bridge,
-                net_type,
-                net_mtu
-            )
+            network = networks[old_address] = _network
             if old_address in container and container[old_address]:
                 network['address'] = container.pop(old_address)
             elif not is_metal:
@@ -634,13 +641,7 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
 
             network['netmask'] = netmask
         elif is_metal:
-            network = networks[old_address] = network_entry(
-                is_metal,
-                interface,
-                bridge,
-                net_type,
-                net_mtu
-            )
+            network = networks[old_address] = _network
             network['netmask'] = netmask
             if is_ssh_address or is_container_address:
                 # Container physical host group
