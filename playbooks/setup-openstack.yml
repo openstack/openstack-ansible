@@ -44,7 +44,7 @@
 # This is not an OpenStack service, but integrates with Keystone and must be
 # deployed afterward.
 - include: ceph-rgw-install.yml
-
+- include: os-congress-install.yml
 - include: os-tempest-install.yml
   when: (tempest_install | default(False)) | bool or (tempest_run | default(False)) | bool
 
