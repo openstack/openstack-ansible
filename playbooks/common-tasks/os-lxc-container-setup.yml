@@ -103,6 +103,8 @@
 # Due to https://github.com/ansible/ansible-modules-extras/issues/2691
 # this uses the LXC CLI tools to ensure that we get logging.
 # TODO(odyssey4me): revisit this once the bug is fixed and released
+# NOTE(cloudnull): The `lxc-stop` command will have an RC of 2 if the command
+#                  fails due to a container already being in a stopped state.
 - name: Lxc container restart
   command: >
     lxc-stop --name {{ inventory_hostname }}
@@ -112,6 +114,8 @@
   register: container_stop
   until: container_stop | success
   retries: 3
+  failed_when:
+    - container_stop.rc not in [0, 2]
   when:
     - lxc_container_allow_restarts | default(True) | bool
     - not is_metal | bool
