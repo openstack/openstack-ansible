@@ -165,6 +165,7 @@
 - job:
     name: openstack-ansible-deploy-aio_basekit-opensuse-423
     parent: openstack-ansible-deploy-aio_lxc-opensuse-423
+    voting: true
     vars:
       action: deploy
       scenario: aio_basekit
