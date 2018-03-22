@@ -1,14 +1,12 @@
-.. _service-architecture:
-
-====================
 Service architecture
 ====================
 
 Introduction
 ~~~~~~~~~~~~
+
 OpenStack-Ansible has a flexible deployment configuration model that
-can deploy all services in separate LXC containers or on designated hosts
-without using LXC containers, and all network traffic either on a single
+can deploy all services in separate machine containers or on designated hosts
+without using containers, and all network traffic either on a single
 network interface or on many network interfaces.
 
 This flexibility enables deployers to choose how to deploy OpenStack in the
@@ -90,33 +88,6 @@ OpenStack-Ansible deploys the following infrastructure components:
 OpenStack services
 ~~~~~~~~~~~~~~~~~~
 
-OSA is able to deploy the following OpenStack services:
-
-* Bare Metal (`ironic`_)
-* Block Storage (`cinder`_)
-* Compute (`nova`_)
-* Container Infrastructure Management (`magnum`_)
-* Dashboard (`horizon`_)
-* Data Processing (`sahara`_)
-* Identity (`keystone`_)
-* Image (`glance`_)
-* Networking (`neutron`_)
-* Object Storage (`swift`_)
-* Orchestration (`heat`_)
-* Telemetry (`aodh`_, `ceilometer`_, `gnocchi`_)
-
-.. _ironic: http://docs.openstack.org/developer/ironic
-.. _cinder: http://docs.openstack.org/developer/cinder
-.. _nova: http://docs.openstack.org/developer/nova
-.. _magnum: http://docs.openstack.org/developer/magnum
-.. _horizon: http://docs.openstack.org/developer/horizon
-.. _sahara: http://docs.openstack.org/developer/sahara
-.. _keystone: http://docs.openstack.org/developer/keystone
-.. _glance: http://docs.openstack.org/developer/glance
-.. _neutron: http://docs.openstack.org/developer/neutron
-.. _swift: http://docs.openstack.org/developer/swift
-.. _heat: http://docs.openstack.org/developer/heat
-.. _aodh: http://docs.openstack.org/developer/aodh
-.. _ceilometer: http://docs.openstack.org/developer/ceilometer
-.. _gnocchi: http://docs.openstack.org/developer/gnocchi
-
+OSA is able to deploy a multitude of services.
+Have a look at the role maturity matrix to know the status of the
+service you want to deploy.
