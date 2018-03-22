@@ -1,8 +1,6 @@
-.. _limited-connectivity-appendix:
-
-================================================
-Appendix H: Installing with limited connectivity
-================================================
+====================================
+Installing with limited connectivity
+====================================
 
 Many playbooks and roles in OpenStack-Ansible retrieve dependencies from the
 public Internet by default. Many deployers block direct outbound connectivity

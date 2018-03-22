@@ -1,4 +1,3 @@
-=======================================
 Securing services with SSL certificates
 =======================================
 
@@ -12,24 +11,17 @@ communication between services:
 All public endpoints reside behind haproxy, resulting in the only certificate
 management most environments need are those for haproxy.
 
-When deploying with OpenStack-Ansible, you can either use self-signed certificates
-that are generated during the deployment process or provide SSL certificates,
-keys, and CA certificates from your own trusted certificate authority. Highly
-secured environments use trusted, user-provided certificates for as
-many services as possible.
+When deploying with OpenStack-Ansible, you can either use self-signed
+certificates that are generated during the deployment process or provide
+SSL certificates, keys, and CA certificates from your own trusted
+certificate authority. Highly secured environments use trusted,
+user-provided certificates for as many services as possible.
 
 .. note::
 
    Perform all SSL certificate configuration in
-   ``/etc/openstack_deploy/user_variables.yml`` file and not in the playbooks
-   or roles themselves. The variables to set which provide the path on the deployment
-   node to the certificates for HAProxy configuration are:
-
-.. code-block:: yaml
-
-   haproxy_user_ssl_cert: /etc/openstack_deploy/ssl/example.com.crt
-   haproxy_user_ssl_key: /etc/openstack_deploy/ssl/example.com.key
-   haproxy_user_ssl_ca_cert: /etc/openstack_deploy/ssl/ExampleCA.crt
+   ``/etc/openstack_deploy/user_variables.yml`` file. Do not edit the playbooks
+   or roles themselves.
 
 Self-signed certificates
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -113,7 +105,22 @@ OpenStack-Ansible:
    the ``/etc/openstack_deploy/user_variables.yml`` file.
 #. Run the playbook for that service.
 
-For example, to deploy user-provided certificates for RabbitMQ,
+HAProxy example
+---------------
+
+The variables to set which provide the path on the deployment
+node to the certificates for HAProxy configuration are:
+
+.. code-block:: yaml
+
+   haproxy_user_ssl_cert: /etc/openstack_deploy/ssl/example.com.crt
+   haproxy_user_ssl_key: /etc/openstack_deploy/ssl/example.com.key
+   haproxy_user_ssl_ca_cert: /etc/openstack_deploy/ssl/ExampleCA.crt
+
+RabbitMQ example
+----------------
+
+To deploy user-provided certificates for RabbitMQ,
 copy the certificates to the deployment host, edit
 the ``/etc/openstack_deploy/user_variables.yml`` file and set the following
 three variables:

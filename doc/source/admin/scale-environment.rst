@@ -14,7 +14,7 @@ needed in an environment, it is possible to create additional nodes.
 .. warning::
 
    Make sure you back up your current OpenStack environment
-   before adding any new nodes. See :ref:`backing-up` for more
+   before adding any new nodes. See :ref:`backup-restore` for more
    information.
 
 #. Add the node to the ``infra_hosts`` stanza of the

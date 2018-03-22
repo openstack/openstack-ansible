@@ -1,8 +1,8 @@
-.. _network-appendix:
+.. _container-networking:
 
-================================
-Appendix G: Container networking
-================================
+====================
+Container networking
+====================
 
 OpenStack-Ansible deploys Linux containers (LXC) and uses Linux
 bridging between the container and the host interfaces to ensure that
@@ -53,7 +53,7 @@ namespaces.
 The following image demonstrates how the container network interfaces are
 connected to the host's bridges and physical network interfaces:
 
-.. image:: figures/networkcomponents.png
+.. image:: ../figures/networkcomponents.png
 
 Network diagrams
 ~~~~~~~~~~~~~~~~
@@ -64,7 +64,7 @@ Hosts with services running in containers
 The following diagram shows how all of the interfaces and bridges interconnect
 to provide network connectivity to the OpenStack deployment:
 
-.. image:: figures/networkarch-container-external.png
+.. image:: ../figures/networkarch-container-external.png
 
 The interface ``lxcbr0`` provides connectivity for the containers to the
 outside world, thanks to dnsmasq (dhcp/dns) + NAT.
@@ -84,7 +84,7 @@ OpenStack-Ansible deploys the Compute service on the physical host rather than
 in a container. The following diagram shows how to use bridges for
 network connectivity:
 
-.. image:: figures/networkarch-bare-external.png
+.. image:: ../figures/networkarch-bare-external.png
 
 Neutron traffic
 ---------------
@@ -96,12 +96,12 @@ networking-agents container. The diagram shows how DHCP agents provide
 information (IP addresses and DNS servers) to the instances, and how routing
 works on the image.
 
-.. image:: figures/networking-neutronagents.png
+.. image:: ../figures/networking-neutronagents.png
 
 The following diagram shows how virtual machines connect to the ``br-vlan`` and
 ``br-vxlan`` bridges and send traffic to the network outside the host:
 
-.. image:: figures/networking-compute.png
+.. image:: ../figures/networking-compute.png
 
 .. _openstack-user-config-reference:
 
@@ -112,7 +112,7 @@ The ``openstack_user_config.yml.example`` file is heavily commented with the
 details of how to do more advanced container networking configuration. The
 contents of the file are shown here for reference.
 
-.. literalinclude:: ../../etc/openstack_deploy/openstack_user_config.yml.example
+.. literalinclude:: ../../../../etc/openstack_deploy/openstack_user_config.yml.example
    :language: yaml
    :start-after: under the License.
 

@@ -1,17 +1,18 @@
-========
-Overview
-========
+==============
+Major upgrades
+==============
 
-An OpenStack-Ansible environment can upgrade to a minor or a major version.
+This guide provides information about the upgrade process from
+|previous_release_formal_name| to |current_release_formal_name|
+for OpenStack-Ansible.
 
 .. note::
 
    You can only upgrade between sequential releases.
 
-Upgrades between minor versions of OpenStack-Ansible require
-updating the repository clone to the latest minor release tag, and then
-running playbooks against the target hosts. For more information, see
-:ref:`upgrading-to-a-minor-version`.
+
+Introduction
+============
 
 For upgrades between major versions, the OpenStack-Ansible repository provides
 playbooks and scripts to upgrade an environment. The ``run-upgrade.sh``
@@ -24,7 +25,11 @@ major upgrade process performs the following actions:
 - Places flag files that are created by the migration scripts in order to
   achieve idempotency. These files are placed in the |upgrade_backup_dir|
   directory.
-- Upgrades the RabbitMQ server. See :ref:`setup-infra-playbook` for details.
+- Upgrades the infrastructure servers.
+  See :ref:`setup-infra-playbook` for details.
 
 For more information about the major upgrade process, see
 :ref:`upgrading-by-using-a-script` and :ref:`upgrading-manually`.
+
+.. include:: major-upgrades-with-script.rst
+.. include:: major-upgrades-manual-upgrade.rst

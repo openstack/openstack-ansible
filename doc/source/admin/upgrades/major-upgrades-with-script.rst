@@ -1,6 +1,5 @@
 .. _upgrading-by-using-a-script:
 
-===========================
 Upgrading by using a script
 ===========================
 
@@ -10,8 +9,8 @@ the code for migrating from |previous_release_formal_name| to
 
 .. warning::
 
-   The upgrade script is still under active development. Do *not* run it
-   on a production environment at this time.
+   The upgrade script is always under active development.
+   Test it on a development environment first.
 
 Running the upgrade script
 ~~~~~~~~~~~~~~~~~~~~~~~~~~

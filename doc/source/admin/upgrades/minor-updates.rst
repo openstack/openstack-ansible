@@ -1,19 +1,19 @@
-.. _upgrading-to-a-minor-version:
+=====================
+Minor version upgrade
+=====================
 
-=================================
-Executing a minor version upgrade
-=================================
-
-Upgrades between minor versions of OpenStack-Ansible require updating the
-repository to the latest minor release tag, and then running playbooks
-against the target hosts. This section provides instructions for those tasks.
+Upgrades between minor versions of OpenStack-Ansible require
+updating the repository clone to the latest minor release tag, updating
+the ansible roles, and then running playbooks against the target hosts.
+This section provides instructions for those tasks.
 
 Prerequisites
 ~~~~~~~~~~~~~
 
 To avoid issues and simplify troubleshooting during the upgrade, disable the
 security hardening role by setting the ``apply_security_hardening`` variable
-to ``False`` in the :file:`user_variables.yml` file.
+to ``False`` in the :file:`user_variables.yml` file, and
+backup your openstack-ansible installation.
 
 Execute a minor version upgrade
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

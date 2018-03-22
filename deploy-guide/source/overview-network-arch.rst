@@ -9,7 +9,9 @@ hosts requires manual configuration because it varies from one use case to
 another. This section describes the network configuration that must be
 implemented on all target hosts.
 
-For more information about how networking works, see :ref:`network-appendix`.
+For more information about how networking works, see the
+:dev_docs:`OpenStack-Ansible Reference Architecture, section Container
+Networking <reference/architecture/index.html>`.
 
 Host network bridges
 ~~~~~~~~~~~~~~~~~~~~
