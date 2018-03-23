@@ -11,8 +11,9 @@ was architected in this way.
 .. toctree::
    :maxdepth: 1
 
+   manifesto.rst
+   security.rst
    service-arch.rst
    storage-arch.rst
-   security.rst
    container-networking.rst
 
