@@ -54,7 +54,7 @@
         - openrc
     - role: "rsyslog_client"
       rsyslog_client_log_rotate_file: octavia_log_rotate
-      rsyslog_client_log_dir: "/var/log/ocgtavia"
+      rsyslog_client_log_dir: "/var/log/octavia"
       rsyslog_client_config_name: " 100-octavia-rsyslog-client.conf"
       tags:
         - rsyslog
