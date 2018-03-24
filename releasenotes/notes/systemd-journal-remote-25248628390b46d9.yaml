@@ -1,0 +1,9 @@
+---
+features:
+  - A new playbook ``infra-journal-remote.yml`` to ship journals has
+    been added. Physical hosts will now ship the all available systemd
+    journals to the logging infrastructure. The received journals will
+    be split up by host and stored in the `/var/log/journal/remote`
+    directory. This feature will give deployers greater access/insight
+    into how the cloud is functioning requiring nothing more that the
+    systemd built-ins.

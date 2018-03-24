@@ -1,0 +1,104 @@
+---
+# Copyright 2018, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Install Journal-Remote
+  hosts: hosts
+  gather_facts: "{{ osa_gather_facts | default(True) }}"
+  become: true
+  pre_tasks:
+    # At this time there's no suitable package available for systemd-journal-remote/gateway
+    # When installing on SUSE 42.x. For now this playbook will omit suse when the package
+    # manager is "zypper". When a suitable package is available on SUSE this should be removed.
+    - name: Omit suse from this playbook
+      meta: end_play
+      when:
+        - ansible_pkg_mgr == 'zypper'
+
+    - name: Install systemd-journal-remote
+      package:
+        name: "{{ systemd_journal_remote_distro_package[ansible_pkg_mgr] }}"
+        state: "{{ package_state }}"
+
+    - name: Create journal directory
+      file:
+        path: "/var/log/journal"
+        state: "directory"
+        owner: "root"
+        group: "systemd-journal"
+
+    - name: Create journal remote directory
+      file:
+        path: "/var/log/journal/remote"
+        state: "directory"
+        owner: "systemd-journal-remote"
+        group: "systemd-journal"
+
+  roles:
+    - role: "systemd_service"
+      systemd_tempd_prefix: "openstack"
+      systemd_CPUAccounting: true
+      systemd_BlockIOAccounting: true
+      systemd_MemoryAccounting: true
+      systemd_TasksAccounting: true
+      systemd_services:
+        - service_name: "systemd-journal-remote"
+          enabled: "{{ (ansible_host != systemd_journal_remote_target) | ternary('no', 'yes') }}"
+          state: "{{ (ansible_host != systemd_journal_remote_target) | ternary('stopped', 'started') }}"
+          execstarts: >-
+            {{ systemd_utils_prefix }}/systemd-journal-remote
+            --listen-http=-3
+            --split-mode=host
+            --compress
+            --seal
+            --output=/var/log/journal/remote/
+          config_overrides:
+            Unit:
+              Description: "Journal Remote Sink Service"
+              Documentation: "man:systemd-journal-remote(8) man:journal-remote.conf(5)"
+              Requires: "systemd-journal-remote.socket"
+            Service:
+              WatchdogSec: "3min"
+              LimitNOFILE: 16384
+              User: "systemd-journal-remote"
+              Group: "systemd-journal-remote"
+
+        - service_name: "systemd-journal-upload"
+          enabled: "{{ (ansible_host == systemd_journal_remote_target) | ternary('no', 'yes') }}"
+          state: "{{ (ansible_host == systemd_journal_remote_target) | ternary('stopped', 'started') }}"
+          execstarts: >-
+            {{ systemd_utils_prefix }}/systemd-journal-upload
+            --save-state
+            --merge
+            --url=http://{{ systemd_journal_remote_target }}:19532
+          config_overrides:
+            Unit:
+              Description: "Journal Remote Upload Service"
+              Documentation: "man:systemd-journal-upload(8)"
+              After: "network.target"
+            Service:
+              WatchdogSec: "3min"
+              LimitNOFILE: 16384
+              User: "systemd-journal-upload"
+              Group: "systemd-journal"
+
+  vars:
+    systemd_journal_remote_target: "{{ hostvars[groups['log_hosts'][0]]['ansible_host'] }}"
+    systemd_journal_remote_distro_package:
+      apt: "systemd-journal-remote"
+      yum: "systemd-journal-gateway"
+      dnf: "systemd-journal-gateway"
+
+  tags:
+    - journal-remote
