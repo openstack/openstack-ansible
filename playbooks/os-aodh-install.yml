@@ -68,12 +68,14 @@
         - hostvars['localhost']['resolvconf_enabled'] | bool
   roles:
     - role: "os_aodh"
-    - role: "rsyslog_client"
-      rsyslog_client_log_rotate_file: aodh_log_rotate
-      rsyslog_client_log_dir: "/var/log/aodh"
-      rsyslog_client_config_name: "99-aodh-rsyslog-client.conf"
-      tags:
-        - rsyslog
+
+  post_tasks:
+    - include_tasks: "common-tasks/rsyslog-client.yml"
+      vars:
+        rsyslog_client_log_rotate_file: aodh_log_rotate
+        rsyslog_client_log_dir: "/var/log/aodh"
+        rsyslog_client_config_name: "99-aodh-rsyslog-client.conf"
+
   vars:
     aodh_rabbitmq_userid: aodh
     aodh_rabbitmq_vhost: /aodh

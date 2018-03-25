@@ -44,12 +44,13 @@
       include: common-tasks/package-cache-proxy.yml
   roles:
     - role: "os_congress"
-    - role: "rsyslog_client"
-      rsyslog_client_log_rotate_file: congress_log_rotate
-      rsyslog_client_log_dir: "/var/log/congress"
-      rsyslog_client_config_name: "99-congress-rsyslog-client.conf"
-      tags:
-        - rsyslog
     - role: "system_crontab_coordination"
       tags:
         - crontab
+
+  post_tasks:
+    - include_tasks: "common-tasks/rsyslog-client.yml"
+      vars:
+        rsyslog_client_log_rotate_file: congress_log_rotate
+        rsyslog_client_log_dir: "/var/log/congress"
+        rsyslog_client_config_name: "99-congress-rsyslog-client.conf"

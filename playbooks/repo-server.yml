@@ -42,28 +42,27 @@
   roles:
     - role: "repo_server"
 
-    - role: "rsyslog_client"
-      rsyslog_client_log_rotate_file: repo_nginx_log_rotate
-      rsyslog_client_log_dir: "/var/log/nginx"
-      rsyslog_client_log_files:
-        - /var/log/rsyncd.log
-      rsyslog_client_config_name: "99-repo-nginx-rsyslog-client.conf"
-      tags:
-        - rsyslog
-
-    - role: "rsyslog_client"
-      rsyslog_client_log_rotate_file: lsyncd_log_rotate
-      rsyslog_client_log_dir: "/var/log/lsyncd"
-      rsyslog_client_config_name: "99-lsyncd-rsyslog-client.conf"
-      tags:
-        - rsyslog
-
-    - role: "rsyslog_client"
-      rsyslog_client_log_rotate_file: pypiserver_log_rotate
-      rsyslog_client_log_dir: "/var/log/pypiserver"
-      rsyslog_client_config_name: "99-pypiserver-rsyslog-client.conf"
-      tags:
-        - rsyslog
+  post_tasks:
+    - include_tasks: "common-tasks/rsyslog-client.yml"
+      vars:
+        rsyslog_client_log_rotate_file: "{{ rsyslog_var.log_rotate_file }}"
+        rsyslog_client_log_dir: "{{ rsyslog_var.log_dir }}"
+        rsyslog_client_log_files: "{{ rsyslog_var.log_files | default([]) }}"
+        rsyslog_client_config_name: "{{ rsyslog_var.config_name }}"
+      with_items:
+        - log_rotate_file: pypiserver_log_rotate
+          log_dir: "/var/log/pypiserver"
+          config_name: "99-pypiserver-rsyslog-client.conf"
+        - log_rotate_file: lsyncd_log_rotate
+          log_dir: "/var/log/lsyncd"
+          config_name: "99-lsyncd-rsyslog-client.conf"
+        - log_rotate_file: repo_nginx_log_rotate
+          log_dir: "/var/log/nginx"
+          log_files:
+            - /var/log/rsyncd.log
+          config_name: "99-repo-nginx-rsyslog-client.conf"
+      loop_control:
+        loop_var: rsyslog_var
 
   vars_files:
     - defaults/repo_packages/openstack_services.yml

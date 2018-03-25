@@ -52,18 +52,20 @@
       haproxy_state: enabled
       static: no
       when: "groups['haproxy'] | default([]) | length > 0"
-    - role: "rsyslog_client"
-      rsyslog_client_log_rotate_file: galera_log_rotate
-      rsyslog_client_log_dir: "/var/log/mysql_logs"
-      rsyslog_client_log_files:
-        - /var/log/mysql.log
-        - /var/log/mysql.err
-      rsyslog_client_config_name: "99-galera-rsyslog-client.conf"
-      tags:
-        - rsyslog
     - role: "system_crontab_coordination"
       tags:
         - crontab
+
+  post_tasks:
+    - include_tasks: "common-tasks/rsyslog-client.yml"
+      vars:
+        rsyslog_client_log_rotate_file: galera_log_rotate
+        rsyslog_client_log_dir: "/var/log/mysql_logs"
+        rsyslog_client_log_files:
+          - /var/log/mysql.log
+          - /var/log/mysql.err
+        rsyslog_client_config_name: "99-galera-rsyslog-client.conf"
+
   vars:
     galera_server_id: "{{ inventory_hostname | string_2_int }}"
     galera_wsrep_node_name: "{{ container_name }}"

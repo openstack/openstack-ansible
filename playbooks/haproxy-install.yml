@@ -55,12 +55,14 @@
         - keepalived
     - role: "haproxy_server"
       haproxy_service_configs: "{{ haproxy_default_services + haproxy_extra_services|default([]) }}"
-    - role: "rsyslog_client"
-      rsyslog_client_log_rotate_file: haproxy_log_rotate
-      rsyslog_client_log_dir: "/var/log/haproxy"
-      rsyslog_client_config_name: "99-haproxy-rsyslog-client.conf"
-      tags:
-        - rsyslog
+
+  post_tasks:
+    - include_tasks: "common-tasks/rsyslog-client.yml"
+      vars:
+        rsyslog_client_log_rotate_file: haproxy_log_rotate
+        rsyslog_client_log_dir: "/var/log/haproxy"
+        rsyslog_client_config_name: "99-haproxy-rsyslog-client.conf"
+
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - haproxy-config

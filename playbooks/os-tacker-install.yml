@@ -55,12 +55,14 @@
       when: inventory_hostname == groups['tacker_all'][0]
   roles:
     - role: "os_tacker"
-    - role: "rsyslog_client"
-      rsyslog_client_log_rotate_file: tacker_log_rotate
-      rsyslog_client_log_dir: "/var/log/tacker"
-      rsyslog_client_config_name: "99-tacker-rsyslog-client.conf"
-      tags:
-        - rsyslog
+
+  post_tasks:
+    - include_tasks: "common-tasks/rsyslog-client.yml"
+      vars:
+        rsyslog_client_log_rotate_file: tacker_log_rotate
+        rsyslog_client_log_dir: "/var/log/tacker"
+        rsyslog_client_config_name: "99-tacker-rsyslog-client.conf"
+
   vars:
     tacker_galera_address: "{{ internal_lb_vip_address }}"
   environment: "{{ deployment_environment_variables | default({}) }}"

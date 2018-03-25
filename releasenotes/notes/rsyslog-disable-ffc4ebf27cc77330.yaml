@@ -1,0 +1,6 @@
+---
+deprecations:
+  - With the implementation of `systemd-journal-remote` the
+    `rsyslog_client` role is no longer run by default. To enable the legacy
+    functionality, the variable `rsyslog_client_enabled` and
+    `rsyslog_server_enabled` can be set to **true**.

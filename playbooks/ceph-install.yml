@@ -87,6 +87,7 @@
         state: present
       when:
         - ansible_pkg_mgr in ['yum', 'dnf']
+
   roles:
     - role: ceph-defaults
       tags:
@@ -103,15 +104,17 @@
     - role: ceph-mgr
       tags:
         - skip_ansible_lint
-    - role: rsyslog_client
-      rsyslog_client_log_rotate_file: ceph_log_rotate
-      rsyslog_client_log_dir: "/var/log/ceph"
-      rsyslog_client_config_name: "99-ceph-rsyslog-client.conf"
-      tags:
-        - rsyslog
     - role: system_crontab_coordination
       tags:
         - crontab
+
+  post_tasks:
+    - include_tasks: "common-tasks/rsyslog-client.yml"
+      vars:
+        rsyslog_client_log_rotate_file: ceph_log_rotate
+        rsyslog_client_log_dir: "/var/log/ceph"
+        rsyslog_client_config_name: "99-ceph-rsyslog-client.conf"
+
   vars:
     ansible_python_interpreter: "/usr/bin/python"
   environment: "{{ deployment_environment_variables | default({}) }}"
@@ -175,6 +178,7 @@
       tags:
         - ceph-osd
         - ceph-mon-facts
+
   roles:
     - role: ceph-defaults
       tags:
@@ -188,15 +192,17 @@
     - role: ceph-osd
       tags:
         - skip_ansible_lint
-    - role: rsyslog_client
-      rsyslog_client_log_rotate_file: ceph_log_rotate
-      rsyslog_client_log_dir: "/var/log/ceph"
-      rsyslog_client_config_name: "99-ceph-rsyslog-client.conf"
-      tags:
-        - rsyslog
     - role: system_crontab_coordination
       tags:
         - crontab
+
+  post_tasks:
+    - include_tasks: "common-tasks/rsyslog-client.yml"
+      vars:
+        rsyslog_client_log_rotate_file: ceph_log_rotate
+        rsyslog_client_log_dir: "/var/log/ceph"
+        rsyslog_client_config_name: "99-ceph-rsyslog-client.conf"
+
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - ceph

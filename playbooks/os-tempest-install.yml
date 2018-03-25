@@ -19,15 +19,17 @@
   user: root
   roles:
     - role: "os_tempest"
-    - role: "rsyslog_client"
-      rsyslog_client_log_rotate_file: utility_log_rotate
-      rsyslog_client_log_dir: "{{ tempest_log_dir }}"
-      rsyslog_client_config_name: "99-tempest-rsyslog-client.conf"
-      tags:
-        - rsyslog
     - role: "system_crontab_coordination"
       tags:
         - crontab
+
+  post_tasks:
+    - include_tasks: "common-tasks/rsyslog-client.yml"
+      vars:
+        rsyslog_client_log_rotate_file: utility_log_rotate
+        rsyslog_client_log_dir: "{{ tempest_log_dir }}"
+        rsyslog_client_config_name: "99-tempest-rsyslog-client.conf"
+
   vars_files:
     - defaults/repo_packages/openstack_testing.yml
   environment: "{{ deployment_environment_variables | default({}) }}"

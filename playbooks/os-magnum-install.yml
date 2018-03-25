@@ -61,12 +61,14 @@
       when: inventory_hostname == groups['magnum_all'][0]
   roles:
     - role: "os_magnum"
-    - role: "rsyslog_client"
-      rsyslog_client_log_rotate_file: magnum_log_rotate
-      rsyslog_client_log_dir: "/var/log/magnum"
-      rsyslog_client_config_name: "99-magnum-rsyslog-client.conf"
-      tags:
-        - rsyslog
+
+  post_tasks:
+    - include_tasks: "common-tasks/rsyslog-client.yml"
+      vars:
+        rsyslog_client_log_rotate_file: magnum_log_rotate
+        rsyslog_client_log_dir: "/var/log/magnum"
+        rsyslog_client_config_name: "99-magnum-rsyslog-client.conf"
+
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - "magnum"

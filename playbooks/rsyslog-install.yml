@@ -18,6 +18,12 @@
   gather_facts: "{{ osa_gather_facts | default(True) }}"
   user: root
   pre_tasks:
+    # The systemd-journal-remote capability has taken over this functionality.
+    - name: End playbook if disabled
+      meta: end_play
+      when:
+        - not rsyslog_server_enabled | bool
+
     - include: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       vars:
         list_of_bind_mounts:

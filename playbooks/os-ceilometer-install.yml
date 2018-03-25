@@ -60,12 +60,14 @@
         - hostvars['localhost']['resolvconf_enabled'] | bool
   roles:
     - role: "os_ceilometer"
-    - role: "rsyslog_client"
-      rsyslog_client_log_rotate_file: ceilometer_log_rotate
-      rsyslog_client_log_dir: "/var/log/ceilometer"
-      rsyslog_client_config_name: "99-ceilometer-rsyslog-client.conf"
-      tags:
-        - rsyslog
+
+  post_tasks:
+    - include_tasks: "common-tasks/rsyslog-client.yml"
+      vars:
+        rsyslog_client_log_rotate_file: ceilometer_log_rotate
+        rsyslog_client_log_dir: "/var/log/ceilometer"
+        rsyslog_client_config_name: "99-ceilometer-rsyslog-client.conf"
+
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - ceilometer

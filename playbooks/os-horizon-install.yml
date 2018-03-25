@@ -38,15 +38,17 @@
         - hostvars['localhost']['resolvconf_enabled'] | bool
   roles:
     - role: "os_horizon"
-    - role: "rsyslog_client"
-      rsyslog_client_log_rotate_file: horizon_log_rotate
-      rsyslog_client_log_dir: "/var/log/horizon"
-      rsyslog_client_config_name: "99-horizon-rsyslog-client.conf"
-      tags:
-        - rsyslog
     - role: "system_crontab_coordination"
       tags:
         - crontab
+
+  post_tasks:
+    - include_tasks: "common-tasks/rsyslog-client.yml"
+      vars:
+        rsyslog_client_log_rotate_file: horizon_log_rotate
+        rsyslog_client_log_dir: "/var/log/horizon"
+        rsyslog_client_config_name: "99-horizon-rsyslog-client.conf"
+
   vars:
     horizon_galera_user: horizon
     horizon_galera_database: horizon
