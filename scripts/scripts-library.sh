@@ -161,14 +161,15 @@ function gate_job_exit_tasks {
       mkdir ${GATE_LOG_DIR}/ara
       rsync $RSYNC_OPTS "${HOME}/.ara/ansible.sqlite" "${GATE_LOG_DIR}/ara/"
 
-      # In order to reduce the quantity of unnecessary log content
-      # being kept in OpenStack-Infra we only generate the ARA report
-      # when the test result is a failure.
-      if [[ "${TEST_EXIT_CODE}" != "0" ]] && [[ "${TEST_EXIT_CODE}" != "true" ]]; then
-        echo "Generating ARA report due to non-zero exit code (${TEST_EXIT_CODE})."
-        ${ARA_CMD} generate html "${GATE_LOG_DIR}/ara" || true
-      else
-        echo "Not generating ARA report due to test pass."
+      # To avoid consuming lots of inodes in OpenStack's CI infra, we tar up
+      # the ARA report when we have a successful job.
+      ${ARA_CMD} generate html "${GATE_LOG_DIR}/ara/" || true
+      if [[ "${TEST_EXIT_CODE}" == "0" ]] || [[ "${TEST_EXIT_CODE}" == "true" ]]; then
+          pushd $GATE_LOG_DIR
+            tar cvf ara-report.tar ara/
+            rm -rf ara/*
+            mv ara-report.tar ara/
+          popd
       fi
       # We still want the subunit report though, as that reflects
       # success/failure in OpenStack Health
