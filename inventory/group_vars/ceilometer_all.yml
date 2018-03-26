@@ -52,3 +52,60 @@ swift_system_user_name: "{{ hostvars['localhost']['swift_system_user_name'] }}"
 swift_system_shell: "{{ hostvars['localhost']['swift_system_shell'] }}"
 swift_system_comment: "{{ hostvars['localhost']['swift_system_comment'] }}"
 swift_system_home_folder: "{{ hostvars['localhost']['swift_system_home_folder'] }}"
+
+# Telemetry notifications
+glance_rabbitmq_telemetry_host_group: "{{ rabbitmq_host_group }}"
+glance_rabbitmq_telemetry_userid: glance
+glance_rabbitmq_telemetry_password: "{{ glance_rabbitmq_password }}"
+glance_rabbitmq_telemetry_port: "{{ rabbitmq_port }}"
+glance_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
+glance_rabbitmq_telemetry_vhost: "/glance"
+
+cinder_rabbitmq_telemetry_host_group: "{{ rabbitmq_host_group }}"
+cinder_rabbitmq_telemetry_userid: cinder
+cinder_rabbitmq_telemetry_password: "{{ cinder_rabbitmq_password }}"
+cinder_rabbitmq_telemetry_port: "{{ rabbitmq_port }}"
+cinder_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
+cinder_rabbitmq_telemetry_vhost: "/cinder"
+
+nova_rabbitmq_telemetry_host_group: "{{ rabbitmq_host_group }}"
+nova_rabbitmq_telemetry_userid: nova
+nova_rabbitmq_telemetry_password: "{{ nova_rabbitmq_password }}"
+nova_rabbitmq_telemetry_port: "{{ rabbitmq_port }}"
+nova_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
+nova_rabbitmq_telemetry_vhost: "/nova"
+
+heat_rabbitmq_telemetry_host_group: "{{ rabbitmq_host_group }}"
+heat_rabbitmq_telemetry_userid: heat
+heat_rabbitmq_telemetry_password: "{{ heat_rabbitmq_password }}"
+heat_rabbitmq_telemetry_port: "{{ rabbitmq_port }}"
+heat_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
+heat_rabbitmq_telemetry_vhost: "/heat"
+
+keystone_rabbitmq_telemetry_host_group: "{{ rabbitmq_host_group }}"
+keystone_rabbitmq_telemetry_userid: keystone
+keystone_rabbitmq_telemetry_password: "{{ keystone_rabbitmq_password }}"
+keystone_rabbitmq_telemetry_port: "{{ rabbitmq_port }}"
+keystone_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
+keystone_rabbitmq_telemetry_vhost: "/keystone"
+
+neutron_rabbitmq_telemetry_host_group: "{{ rabbitmq_host_group }}"
+neutron_rabbitmq_telemetry_userid: neutron
+neutron_rabbitmq_telemetry_password: "{{ neutron_rabbitmq_password }}"
+neutron_rabbitmq_telemetry_port: "{{ rabbitmq_port }}"
+neutron_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
+neutron_rabbitmq_telemetry_vhost: "/neutron"
+
+swift_rabbitmq_telemetry_host_group: "{{ rabbitmq_host_group }}"
+swift_rabbitmq_telemetry_userid: swift
+swift_rabbitmq_telemetry_password: "{{ swift_rabbitmq_password }}"
+swift_rabbitmq_telemetry_port: "{{ rabbitmq_port }}"
+swift_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
+swift_rabbitmq_telemetry_vhost: "/swift"
+
+sahara_rabbitmq_telemetry_host_group: "{{ rabbitmq_host_group }}"
+sahara_rabbitmq_telemetry_userid: sahara
+sahara_rabbitmq_telemetry_password: "{{ sahara_rabbitmq_password }}"
+sahara_rabbitmq_telemetry_port: "{{ rabbitmq_port }}"
+sahara_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
+sahara_rabbitmq_telemetry_vhost: "/sahara"
