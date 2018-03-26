@@ -8,7 +8,7 @@ built for production which will be available at the successful
 completion of the deployment.
 
 Project scope
-~~~~~~~~~~~~
+~~~~~~~~~~~~~
 
 This project will be a **Batteries included** project. Which means deployer
 can expect that deploying from any of the named feature branches or tags should
@@ -22,7 +22,8 @@ This project does **not** PXE boot hosts. Host setup and lifecycle management
 is left to the deployer. This project also requires that bridges are setup
 within the hosts to allow the containers to attach to a local bridge for
 network access.
-See also the :dev_docs:`Container networking <reference/architecture/container-networking.html>`.
+See also the :dev_docs:`Container networking
+<reference/architecture/container-networking.html>`.
 
 Ansible Usage
 ~~~~~~~~~~~~~
@@ -41,8 +42,9 @@ Ansible allows the deployer to turn an entire deployment into a rather
 simple set of instructions.
 
 Roles within the Openstack-Ansible umbrella are built using Ansible
-best practices and contain namespaced variables that are *human* understandable.
-All roles are independant of each other and testable separately.
+best practices and contain namespaced variables that are *human*
+understandable.  All roles are independant of each other and testable
+separately.
 
 All roles are built as Galaxy compatible roles even when the given role is
 not intended for standalone use. While the project will offer a lot of
@@ -58,7 +60,7 @@ to provide a system able to override any OpenStack upstream
 source code.
 
 This means that OpenStack services and their python
-dependencies are built and installed from source 
+dependencies are built and installed from source
 code as found within the OpenStack Git repositories by default,
 but allow deployers to point to their own repositories.
 
