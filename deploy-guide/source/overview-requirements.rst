@@ -1,10 +1,3 @@
-=============================================
-Installation requirements and recommendations
-=============================================
-
-This section describes software requirements, hardware recommendations, and
-network recommendations for running OpenStack in a production environment.
-
 Software requirements
 ~~~~~~~~~~~~~~~~~~~~~
 
@@ -54,59 +47,78 @@ CPU recommendations
 .. _hardware-assisted virtualization extensions: https://en.wikipedia.org/wiki/Hardware-assisted_virtualization
 .. _Hyper-threading: https://en.wikipedia.org/wiki/Hyper-threading
 
-Disk recommendations
-~~~~~~~~~~~~~~~~~~~~
+Storage/disk recommendations
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Different hosts have different disk space requirements based on the
 services running on each host:
 
 Deployment hosts
-  A minimum of ``10 GB`` of disk space is sufficient for holding the
-  OpenStack-Ansible repository content and additional required software.
+----------------
+
+A minimum of ``10 GB`` of disk space is sufficient for holding the
+OpenStack-Ansible repository content and additional required software.
 
 Compute hosts
-  Disk space requirements depend on the total number of instances
-  running on each host and the amount of disk space allocated to each instance.
+-------------
 
-  * Compute hosts must have a minimum of ``1 TB`` of disk space available.
+Disk space requirements depend on the total number of instances
+running on each host and the amount of disk space allocated to each instance.
 
-  * Consider disks that provide higher I/O throughput with lower latency,
-    such as SSD drives in a RAID array.
+.. tip ::
+
+   Consider disks that provide higher I/O throughput with lower latency,
+   such as SSD drives in a RAID array.
 
 Storage hosts
-  Hosts running the Block Storage (cinder) service often consume the most disk
-  space in OpenStack environments.
+-------------
 
-  * Storage hosts must have a minimum of ``1 TB`` of disk space.
+Hosts running the Block Storage (cinder) service often consume the most disk
+space in OpenStack environments.
 
-  * As with Compute hosts, choose disks that provide the highest
-    I/O throughput with the lowest latency.
+Storage hosts must have a minimum of ``1 TB`` of disk space.
 
-Infrastructure (control plane) hosts
-  The OpenStack control plane contains storage-intensive services, such as the
-  Image service (glance), and MariaDB. These hosts must have a minimum of
-  ``100 GB`` of disk space.
+.. tip ::
 
-Logging hosts
-  An OpenStack-Ansible deployment generates a significant amount of log
-  information. Logs come from a variety of sources, including services running
-  in containers, the containers themselves, and the physical hosts. Logging
-  hosts need sufficient disk space to hold live and rotated (historical) log
-  files. In addition, the storage performance must be able to keep pace with
-  the log traffic coming from various hosts and containers within the OpenStack
-  environment. Reserve a minimum of ``50 GB`` of disk space for storing logs on
-  the logging hosts.
+   As with Compute hosts, choose disks that provide the highest
+   I/O throughput with the lowest latency.
 
 Hosts that provide Block Storage volumes must have Logical Volume
 Manager (LVM) support. Ensure that hosts have a ``cinder-volume`` volume
 group that OpenStack-Ansible can configure for use with Block Storage.
 
-Each infrastructure (control plane) host runs services inside LXC containers.
+Infrastructure (control plane) hosts
+------------------------------------
+
+The OpenStack control plane contains storage-intensive services, such as the
+Image service (glance), and MariaDB. These hosts must have a minimum of
+``100 GB`` of disk space.
+
+Each infrastructure (control plane) host runs services inside machine containers.
 The container file systems are deployed by default on the root file system of
 each control plane host. You have the option to deploy those container file
 systems into logical volumes by creating a volume group called lxc.
 OpenStack-Ansible creates a 5 GB logical volume for the file system of each
 container running on the host.
+
+.. tip ::
+
+   Other technologies leveraging copy-on-write can be used to reduce
+   the disk space requirements on machine containers.
+
+
+Logging hosts
+-------------
+
+An OpenStack-Ansible deployment generates a significant amount of log
+information. Logs come from a variety of sources, including services running
+in containers, the containers themselves, and the physical hosts. Logging
+hosts need sufficient disk space to hold live and rotated (historical) log
+files. In addition, the storage performance must be able to keep pace with
+the log traffic coming from various hosts and containers within the OpenStack
+environment. Reserve a minimum of ``50 GB`` of disk space for storing logs on
+the logging hosts.
+
 
 Network recommendations
 ~~~~~~~~~~~~~~~~~~~~~~~
