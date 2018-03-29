@@ -168,8 +168,10 @@ following to bootstrap Ansible:
    # scripts/bootstrap-ansible.sh
 
 In order for all the services to run, the host must be prepared with the
-appropriate disks, packages, network configuration and a base configuration
-for the OpenStack Deployment. For the default AIO scenario, this preparation
+appropriate disks partitioning, packages, network configuration and
+configurations for the OpenStack Deployment.
+
+For the default AIO scenario, this preparation
 is completed by executing:
 
 .. code-block:: shell-session
