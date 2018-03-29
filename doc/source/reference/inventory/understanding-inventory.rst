@@ -22,6 +22,8 @@ To customize the layout of the components for your deployment, modify the
 host groups and container groups appropriately before running the installation
 playbooks.
 
+.. _inventory-confd:
+
 Understanding host groups (conf.d structure)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -50,6 +52,8 @@ variables to any component containers on the specific host.
    To manage file size, we recommend that you define new inventory groups,
    particularly for new services, by using a new file in the
    ``conf.d/`` directory.
+
+.. _inventory-envd:
 
 Understanding container groups (env.d structure)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

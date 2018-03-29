@@ -1,9 +1,60 @@
-============================
-OpenStack-Ansible Bug Triage
-============================
+==============================
+OpenStack-Ansible Bug Handling
+==============================
+
+.. _bug_reporting:
+
+Bug Reporting
+=============
+
+Bugs should be filed on the `OpenStack-Ansible Launchpad project`_.
+
+When submitting a bug, or working on a bug, please ensure the following
+criteria are met:
+
+* The description clearly states or describes the original problem or root
+  cause of the problem.
+* The description clearly states the expected outcome of the user action.
+* Include historical information on how the problem was identified.
+* Any relevant logs or user configuration are included, either directly
+  or through a pastebin.
+* If the issue is a bug that needs fixing in a branch other than master,
+  please note the associated branch within the launchpad issue.
+* The provided information should be totally self-contained. External access
+  to web services/sites should not be needed.
+* Steps to reproduce the problem if possible.
+
+.. _OpenStack-Ansible Launchpad project: https://bugs.launchpad.net/openstack-ansible
+
+Bug Tags
+^^^^^^^^
+If the reported needs fixing in a branch in addition to master, add a
+'\<release\>-backport-potential' tag (e.g. ``liberty-backport-potential``).
+There are predefined tags that will auto-complete.
+
+Status
+^^^^^^
+Please leave the **status** of an issue alone until someone confirms it or
+a member of the bugs team triages it. While waiting for the issue to be
+confirmed or triaged the status should remain as **New**.
+
+Importance
+^^^^^^^^^^
+Should only be touched if it is a Blocker/Gating issue. If it is, please
+set to **High**, and only use **Critical** if you have found a bug that
+can take down whole infrastructures. Once the importance has been changed
+the status should be changed to **Triaged** by someone other than the bug
+creator.
+
+The triaging process is explained here below.
+
+.. _bug_triage:
+
+Bug triage
+==========
 
 What is a bug triage
-~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^
 
 "Bug triage is a process where tracker issues are screened and
 prioritised. Triage should help ensure we appropriately manage all
@@ -24,7 +75,7 @@ The bug triage practices in OpenStack-Ansible are based on the
 .. _OpenStack Bug Triage Documentation: https://docs.openstack.org/infra/manual/developers.html#working-on-bugs
 
 Bug classification
-~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^
 
 The **Status** of a bug is one of the following:
 
@@ -53,7 +104,7 @@ The **Importance** of a bug is one of the following:
 * *Undecided* - Not decided yet. It might need more discussion.
 
 Bug triage meeting duties
-~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If the bug description is incomplete, or the report is lacking the
 information necessary to reproduce the issue, ask the reporter to
@@ -75,7 +126,7 @@ supervisors rights to also prioritize bugs per importance (on top of
 classifying them on status).
 
 Bug skimming duty
-~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^
 
 To help triaging bugs, one person of the bug team can be on "bug
 skimming duty".
@@ -116,7 +167,7 @@ skimming duty".
     an importance set.
 
 Bug skimming duty weekly checklist
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 - Prioritize or reprioritize OpenStack-Ansible `confirmed bugs`_.
 
