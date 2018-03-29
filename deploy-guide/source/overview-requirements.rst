@@ -76,16 +76,16 @@ Storage hosts
 Hosts running the Block Storage (cinder) service often consume the most disk
 space in OpenStack environments.
 
-Storage hosts must have a minimum of ``1 TB`` of disk space.
-
 .. tip ::
 
    As with Compute hosts, choose disks that provide the highest
    I/O throughput with the lowest latency.
 
-Hosts that provide Block Storage volumes must have Logical Volume
-Manager (LVM) support. Ensure that hosts have a ``cinder-volume`` volume
-group that OpenStack-Ansible can configure for use with Block Storage.
+OpenStack-Ansible is able to deploy Cinder with a series of different
+backends and uses Logical Volume Manager (LVM), by default.
+Hosts that provide Block Storage volumes with LVM are recommended to
+have a large disk space available allocated to a ``cinder-volume``
+volume group, which OpenStack-Ansible can configure for use with Block Storage.
 
 Infrastructure (control plane) hosts
 ------------------------------------
