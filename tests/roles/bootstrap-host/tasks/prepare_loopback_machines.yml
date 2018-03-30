@@ -35,7 +35,7 @@
     systemd_mounts:
       - what: "/openstack/machines.img"
         where: "/var/lib/machines"
-        options: "loop"
+        options: "loop,defaults,noatime,nodiratime,compress=lzo,commit=120,{{ (ansible_kernel is version_compare('4.5', '>=')) | ternary('space_cache=v2', 'space_cache') }}"
         type: "btrfs"
         state: 'started'
         enabled: true
