@@ -9,7 +9,14 @@ IT automation engine to deploy an OpenStack environment on Ubuntu, with CentOS a
 openSUSE currently in Beta release.
 
 For isolation and ease of maintenance, you can install OpenStack components
-into Linux containers (LXC).
+into machine containers.
+
+The OpenStack-Ansible manifesto
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+All the design considerations (the container architecture, the ability to
+override any code, the network considerations, etc.) of this project are
+listed in our :dev_docs:`architecture reference <reference/architecture/index.html>`.
 
 Why choose OpenStack-Ansible?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -43,14 +50,3 @@ When **not** to choose OpenStack-Ansible?
   *systemd-nspawn* in the future (WIP). If you want to go 100% Docker,
   there are other projects in the OpenStack community that can
   help you.
-
-Ansible
-~~~~~~~
-
-Ansible provides an automation platform to simplify system and application
-deployment. Ansible manages systems by using Secure Shell (SSH)
-instead of unique protocols that require remote daemons or agents.
-
-Ansible uses playbooks written in the YAML language for orchestration.
-For more information, see `Ansible - Intro to
-Playbooks <http://docs.ansible.com/playbooks_intro.html>`_.
