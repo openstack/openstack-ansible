@@ -24,7 +24,6 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
-   inventory-and-vars
    scripts
    contribute
    bug-triage

@@ -14,4 +14,5 @@ installation of OpenStack that may include their own software.
    :maxdepth: 1
 
    using-overrides
+   extra-python-software
    extending-osa

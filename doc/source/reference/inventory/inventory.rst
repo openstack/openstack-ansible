@@ -15,5 +15,6 @@ for OpenStack-Ansible.
    generate-inventory
    configure-inventory
    understanding-inventory
+   openstack-user-config-reference
    manage-inventory
    advanced-topics

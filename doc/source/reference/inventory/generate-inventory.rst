@@ -4,11 +4,15 @@ Generating the Inventory
 The script that creates the inventory is located at
 ``inventory/dynamic_inventory.py``.
 
-Executing the dynamic_inventory.py script
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+This section explains how ansible runs the inventory, and how
+you can run it manually to see its behavior.
+
+Executing the dynamic_inventory.py script manually
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 When running an Ansible command (such as ``ansible``, ``ansible-playbook`` or
-``openstack-ansible``) Ansible executes the ``dynamic_inventory.py`` script
+``openstack-ansible``) Ansible automatically executes the
+``dynamic_inventory.py`` script
 and use its output as inventory.
 
 Run the following command:
@@ -97,3 +101,27 @@ source of truth for repeated runs.
 
 The same JSON structure is printed to stdout, which is consumed by Ansible as
 the inventory for the playbooks.
+
+Checking inventory configuration for errors
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Using the ``--check`` flag when running ``dynamic_inventory.py`` will run the
+inventory build process and look for known errors, but not write any files to
+disk.
+
+If any groups defined in the ``openstack_user_config.yml`` or ``conf.d`` files
+are not found in the environment, a warning will be raised.
+
+This check does not do YAML syntax validation, though it will fail if there
+are unparseable errors.
+
+Writing debug logs
+~~~~~~~~~~~~~~~~~~~
+
+The ``--debug/-d`` parameter allows writing of a detailed log file for
+debugging the inventory script's behavior. The output is written to
+``inventory.log`` in the current working directory.
+
+The ``inventory.log`` file is appended to, not overwritten.
+
+Like ``--check``, this flag is not invoked when running from ansible.
