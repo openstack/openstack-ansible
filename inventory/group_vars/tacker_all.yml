@@ -16,6 +16,13 @@
 tacker_service_user_name: tacker
 tacker_service_tenant_name: service
 
+# TODO(ansmith): remove rabbitmq vars once service file is updated
+# to use oslomsg vars
+tacker_oslomsg_rpc_userid: tacker
+tacker_oslomsg_rpc_vhost: /tacker
+tacker_oslomsg_notify_userid: tacker
+tacker_oslomsg_notify_vhost: /tacker
+
 tacker_rabbitmq_userid: tacker
 tacker_rabbitmq_vhost: /tacker
 tacker_rabbitmq_port: "{{ rabbitmq_port }}"

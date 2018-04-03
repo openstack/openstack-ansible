@@ -13,6 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# TODO(ansmith): remove rabbitmq vars once service file is updated
+# to use oslomsg vars
+ironic_oslomsg_rpc_userid: ironic
+ironic_oslomsg_rpc_vhost: /ironic
+ironic_oslomsg_notify_userid: ironic
+ironic_oslomsg_notify_vhost: /ironic
+
 ironic_rabbitmq_userid: ironic
 ironic_rabbitmq_vhost: /ironic
 ironic_rabbitmq_port: "{{ rabbitmq_port }}"

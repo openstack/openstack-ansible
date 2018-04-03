@@ -11,6 +11,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# TODO(ansmith): remove rabbitmq vars once service file is updated
+# to use oslomsg vars
+sahara_oslomsg_rpc_userid: sahara
+sahara_oslomsg_rpc_vhost: /sahara
+sahara_oslomsg_notify_userid: sahara
+sahara_oslomsg_notify_vhost: /sahara
+
 #RPC
 sahara_rabbitmq_userid: sahara
 sahara_rabbitmq_vhost: /sahara

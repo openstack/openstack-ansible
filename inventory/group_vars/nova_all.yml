@@ -46,6 +46,13 @@ nova_rabbitmq_telemetry_servers: "{{ nova_rabbitmq_servers }}"
 nova_rabbitmq_telemetry_use_ssl: "{{ nova_rabbitmq_use_ssl }}"
 nova_rabbitmq_telemetry_host_group: "{{ nova_rabbitmq_host_group }}"
 
+# TODO(ansmith): remove rabbitmq vars once service file is updated
+# to use oslomsg vars
+nova_oslomsg_rpc_userid: nova
+nova_oslomsg_rpc_vhost: /nova
+nova_oslomsg_notify_userid: nova
+nova_oslomsg_notify_vhost: /nova
+
 # If there are any Designate hosts in the environment, then enable its usage
 nova_designate_enabled: "{{ (groups['designate_all'] is defined) and (groups['designate_all'] | length > 0) }}"
 # If there are any Ceilometer hosts in the environment, then enable its usage

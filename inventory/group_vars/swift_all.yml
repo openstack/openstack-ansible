@@ -19,6 +19,13 @@ swift_system_shell: "{{ hostvars['localhost']['swift_system_shell'] }}"
 swift_system_comment: "{{ hostvars['localhost']['swift_system_comment'] }}"
 swift_system_home_folder: "{{ hostvars['localhost']['swift_system_home_folder'] }}"
 
+# TODO(ansmith): remove rabbitmq vars once service file is updated
+# to use oslomsg vars
+swift_oslomsg_rpc_userid: swift
+swift_oslomsg_rpc_vhost: /swift
+swift_oslomsg_notify_userid: swift
+swift_oslomsg_notify_vhost: /swift
+
 # Swift Telemetry notifications
 swift_rabbitmq_telemetry_userid: "swift"
 swift_rabbitmq_telemetry_vhost: "/swift"

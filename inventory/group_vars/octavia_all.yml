@@ -16,6 +16,13 @@
 octavia_service_internalurl: "{{ octavia_service_internaluri }}/v1/%(project_id)s"
 octavia_service_user_name: octavia
 
+# TODO(ansmith): remove rabbitmq vars once service file is updated
+# to use oslomsg vars
+octavia_oslomsg_rpc_userid: octavia
+octavia_oslomsg_rpc_vhost: /octavia
+octavia_oslomsg_notify_userid: octavia
+octavia_oslomsg_notify_vhost: /octavia
+
 # RPC
 octavia_rabbitmq_userid: octavia
 octavia_rabbitmq_vhost: /octavia

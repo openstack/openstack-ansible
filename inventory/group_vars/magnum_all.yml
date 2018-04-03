@@ -27,6 +27,13 @@ magnum_galera_user: magnum
 magnum_galera_database_name: magnum_service
 magnum_galera_address: "{{ galera_address }}"
 
+# TODO(ansmith): remove rabbitmq vars once service file is updated
+# to use oslomsg vars
+magnum_oslomsg_rpc_userid: magnum
+magnum_oslomsg_rpc_vhost: /magnum
+magnum_oslomsg_notify_userid: magnum
+magnum_oslomsg_notify_vhost: /magnum
+
 magnum_rabbitmq_userid: magnum
 magnum_rabbitmq_vhost: /magnum
 magnum_rabbitmq_port: "{{ rabbitmq_port }}"

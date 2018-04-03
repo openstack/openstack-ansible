@@ -20,6 +20,13 @@ trove_galera_user: trove
 trove_galera_database_name: trove_service
 trove_galera_address: "{{ galera_address }}"
 
+# TODO(ansmith): remove rabbitmq vars once service file is updated
+# to use oslomsg vars
+trove_oslomsg_rpc_userid: trove
+trove_oslomsg_rpc_vhost: /trove
+trove_oslomsg_notify_userid: trove
+trove_oslomsg_notify_vhost: /trove
+
 # RPC
 trove_rabbitmq_userid: trove
 trove_rabbitmq_vhost: /trove

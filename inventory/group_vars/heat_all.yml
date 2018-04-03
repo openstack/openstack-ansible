@@ -13,6 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# TODO(ansmith): remove rabbitmq vars once service file is updated
+# to use oslomsg vars
+heat_oslomsg_rpc_userid: heat
+heat_oslomsg_rpc_vhost: /heat
+heat_oslomsg_notify_userid: heat
+heat_oslomsg_notify_vhost: /heat
+
 # RPC
 heat_rabbitmq_userid: heat
 heat_rabbitmq_vhost: /heat
