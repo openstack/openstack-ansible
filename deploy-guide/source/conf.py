@@ -47,20 +47,27 @@ current_series = openstackdocstheme.ext._get_series_name()
 if current_series == "latest":
   watermark = "Pre-release"
   latest_tag = "master"
+  rdo_series = previous_series_name
+  suse_series = previous_series_name.capitalize()
 else:
   watermark = series_names = current_series.capitalize()
   latest_tag = os.popen('git describe --abbrev=0 --tags').read().strip('\n')
+  rdo_series = current_series_name
+  suse_series = current_series_name.capitalize()
 
 deploy_guide_prefix = "http://docs.openstack.org/project-deploy-guide/openstack-ansible/{}/%s".format(current_series)
 dev_docs_prefix = "http://docs.openstack.org/openstack-ansible/{}/%s".format(current_series)
 role_docs_prefix = "http://docs.openstack.org/openstack-ansible-%s/{}".format(current_series)
 
-
 # Substitutions loader
 rst_epilog = """
 .. |latest_tag| replace:: {latest_tag}
+.. |rdo_series| replace:: {rdo_series}
+.. |suse_series| replace:: {suse_series}
 """.format(
   latest_tag=latest_tag,
+  rdo_series=rdo_series,
+  suse_series=suse_series
 )
 
 # Format: Reference name: (string containing %s for substitution, linkname)
