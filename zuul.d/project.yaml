@@ -15,12 +15,10 @@
 - project:
     check:
       jobs:
-        - openstack-ansible-linters
         - openstack-ansible-deploy-aio-ubuntu-trusty-nv
         - openstack-ansible-deploy-aio-ubuntu-xenial
     gate:
       jobs:
-        - openstack-ansible-linters
         - openstack-ansible-deploy-aio-ubuntu-xenial
     periodic:
       jobs:
