@@ -56,8 +56,7 @@ Before you begin, we recommend upgrading your system packages and kernel.
 
    .. code-block:: shell-session
 
-       # apt-get install aptitude build-essential git ntp ntpdate \
-         openssh-server python-dev sudo
+       # apt-get install aptitude build-essential git ntp ntpdate openssh-server python-dev sudo
 
 #. Configure NTP to synchronize with a suitable time source.
 
@@ -78,11 +77,10 @@ Before you begin, we recommend upgrading your system packages and kernel.
 #. Install additional software packages if they were not installed
    during the operating system installation:
 
-   .. code-block:: shell-session
+   .. parsed-literal::
 
-       # yum install https://rdoproject.org/repos/openstack-pike/rdo-release-pike.rpm
-       # yum install git ntp ntpdate openssh-server python-devel \
-         sudo '@Development Tools'
+       # yum install \https://rdoproject.org/repos/openstack-|rdo_series|/rdo-release-|rdo_series|.rpm
+       # yum install git ntp ntpdate openssh-server python-devel sudo '\@Development Tools'
 
 #. Configure NTP to synchronize with a suitable time source.
 
@@ -120,10 +118,10 @@ Before you begin, we recommend upgrading your system packages and kernel.
 #. Install additional software packages if they were not installed
    during the operating system installation:
 
-   .. code-block:: shell-session
+   .. parsed-literal::
 
-       # zypper install git-core ntp openssh python-devel \
-         sudo gcc libffi-devel libopenssl-devel
+       # zypper ar \http://download.opensuse.org/repositories/Cloud:/OpenStack:/|suse_series|/openSUSE_Leap_42.3 OBS:Cloud:OpenStack:|suse_series|
+       # zypper install git-core ntp openssh python-devel sudo gcc libffi-devel libopenssl-devel
 
 #. Configure NTP to synchronize with a suitable time source.
 
@@ -160,8 +158,14 @@ Install the source and dependencies for the deployment host.
 
    .. parsed-literal::
 
-       # git clone -b |latest_tag| https://git.openstack.org/openstack/openstack-ansible \\
-         /opt/openstack-ansible
+       # git clone -b |latest_tag| \https://git.openstack.org/openstack/openstack-ansible /opt/openstack-ansible
+
+   If git.openstack.org can not be accessed to run git clone, github.com can be used
+   as an alternative repo:
+
+   .. parsed-literal::
+
+       # git clone -b |latest_tag| \https://github.com/openstack/openstack-ansible.git /opt/openstack-ansible
 
 #. Change to the ``/opt/openstack-ansible`` directory, and run the
    Ansible bootstrap script:

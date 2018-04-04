@@ -319,6 +319,8 @@ rst_epilog = """
 .. |current_release_formal_name| replace:: %s
 .. |upgrade_backup_dir| replace:: %s
 .. |latest_tag| replace:: %s
+.. |rdo_series| replace:: %s
+.. |suse_series| replace:: %s
 """ % (previous_release_branch_name,
        current_release_branch_name,
        previous_release_capital_name,
@@ -326,7 +328,9 @@ rst_epilog = """
        current_release_capital_name,
        current_release_formal_name,
        upgrade_backup_dir,
-       latest_tag)
+       latest_tag,
+       current_release_branch_name,
+       current_release_formal_name)
 
 watermark = os.popen("git branch --contains $(git rev-parse HEAD) | awk -F/ '/stable/ {print $2}'").read().strip(' \n\t').capitalize()
 if watermark == "":
