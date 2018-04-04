@@ -29,3 +29,4 @@ For in-depth technical information, see the
    l3pods/example.rst
    ceph/full-deploy.rst
    security/index.rst
+   source-overrides/index.rst
