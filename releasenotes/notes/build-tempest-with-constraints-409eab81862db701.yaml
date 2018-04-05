@@ -1,0 +1,11 @@
+---
+features:
+  - When `venvwithindex=True` and `ignorerequirements=True` are both specified
+    in `tempest_git_install_fragments` (as was previously the default), this
+    results in tempest being installed from PyPI without any constraints being
+    applied. This could result in the version of tempest being installed in the
+    integrated build being different than the version being installed in the
+    independent role tests. Going forward, we remove the `tempest_git_*`
+    overrides in playbooks/defaults/repo_packages/openstack_testing.yml so that
+    the integrated build installs tempest from PyPI, but with appropriate
+    constraints applied.
