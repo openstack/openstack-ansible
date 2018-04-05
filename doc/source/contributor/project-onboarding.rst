@@ -98,11 +98,12 @@ IRC channel
 
 The OpenStack-Ansible community communicates a lot through IRC, in
 the #openstack-ansible channel, on freenode. This channel is
-logged, and its logs are published
-`here <http://eavesdrop.openstack.org/irclogs/%23openstack-ansible/>`_.
+logged, and its logs are published on
+http://eavesdrop.openstack.org/irclogs/%23openstack-ansible/.
 
 Weekly meetings are held in our IRC channel. The schedule and
-logs can be found `here<http://eavesdrop.openstack.org/#OpenStack_Ansible_Deployment_Meeting>`_.
+logs can be found on
+http://eavesdrop.openstack.org/#OpenStack_Ansible_Deployment_Meeting.
 Next meeting agenda can be found on our
 `Meetings wiki page <https://wiki.openstack.org/wiki/Meetings/openstack-ansible>`_.
 
