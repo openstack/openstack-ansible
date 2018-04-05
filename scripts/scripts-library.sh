@@ -124,6 +124,30 @@ function exit_fail {
   exit_state 1
 }
 
+function find_log_files {
+  find "${GATE_LOG_DIR}/" -type f \
+    ! -name "*.gz" \
+    ! -name '*.html' \
+    ! -name '*.subunit' \
+    ! -name 'ansible.sqlite'
+}
+
+function rename_log_files {
+  find_files |\
+    while read filename; do \
+      mv ${filename} ${filename}.txt || echo "WARNING: Could not rename ${filename}"; \
+    done
+}
+
+function compress_log_files {
+  # We use 'command' to ensure that we're not executing with an alias.
+  GZIP_CMD="command gzip --force --best"
+  find_files |\
+    while read filename; do \
+      ${GZIP_CMD} ${filename} || echo "WARNING: Could not gzip ${filename}"; \
+    done
+}
+
 function gate_job_exit_tasks {
   # This environment variable captures the exit code
   # which was present when the trap was initiated.
@@ -148,8 +172,7 @@ function gate_job_exit_tasks {
     rsync $RSYNC_OPTS /openstack/log/ "${GATE_LOG_DIR}/openstack" || true
     # Rename all files gathered to have a .txt suffix so that the compressed
     # files are viewable via a web browser in OpenStack-CI.
-    # except tempest results testrepository.subunit and testr_results.html
-    find "${GATE_LOG_DIR}/" -type f -not -name "testrepository.subunit" -not -name "testr_results.html" -not -name "dstat.html" -exec mv {} {}.txt \;
+    rename_log_files
 
     # Generate the ARA report if enabled
     if [ "$GATE_EXIT_RUN_ARA" == true ]; then
@@ -158,27 +181,17 @@ function gate_job_exit_tasks {
       ARA_CMD="/opt/ansible-runtime/bin/ara"
 
       # Create the ARA log directory and store the sqlite source database
-      mkdir ${GATE_LOG_DIR}/ara
-      rsync $RSYNC_OPTS "${HOME}/.ara/ansible.sqlite" "${GATE_LOG_DIR}/ara/"
+      mkdir ${GATE_LOG_DIR}/ara-report
+      rsync $RSYNC_OPTS "${HOME}/.ara/ansible.sqlite" "${GATE_LOG_DIR}/ara-report/"
 
-      # To avoid consuming lots of inodes in OpenStack's CI infra, we tar up
-      # the ARA report when we have a successful job.
-      ${ARA_CMD} generate html "${GATE_LOG_DIR}/ara/" || true
-      if [[ "${TEST_EXIT_CODE}" == "0" ]] || [[ "${TEST_EXIT_CODE}" == "true" ]]; then
-          pushd $GATE_LOG_DIR
-            tar cvf ara-report.tar ara/
-            rm -rf ara/*
-            mv ara-report.tar ara/
-          popd
-      fi
-      # We still want the subunit report though, as that reflects
-      # success/failure in OpenStack Health
-      ${ARA_CMD} generate subunit "${GATE_LOG_DIR}/ara/testrepository.subunit" || true
+      # Generate the ARA subunit report so that the
+      # results reflect in OpenStack-Health
+      mkdir "${GATE_LOG_DIR}/ara-data"
+      ${ARA_CMD} generate subunit "${GATE_LOG_DIR}/ara-data/testrepository.subunit" || true
     fi
     # Compress the files gathered so that they do not take up too much space.
-    # We use 'command' to ensure that we're not executing with some sort of alias.
     if [ "$GATE_EXIT_LOG_GZIP" == true ]; then
-      command gzip --best --recursive "${GATE_LOG_DIR}/"
+      compress_files
     fi
     # Ensure that the files are readable by all users, including the non-root
     # OpenStack-CI jenkins user.
