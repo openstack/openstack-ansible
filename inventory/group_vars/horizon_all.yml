@@ -20,6 +20,7 @@ horizon_enable_heat_ui: "{{ (groups['heat_all'] is defined) and (groups['heat_al
 horizon_enable_ironic_ui: "{{ (groups['ironic_all'] is defined) and (groups['ironic_all'] | length > 0) }}"
 horizon_enable_magnum_ui: "{{ (groups['magnum_all'] is defined) and (groups['magnum_all'] | length > 0) }}"
 horizon_enable_designate_ui: "{{ (groups['designate_all'] is defined) and (groups['designate_all'] | length > 0) }}"
+horizon_enable_octavia_ui: "{{ (groups['octavia-infra_all'] is defined) and (groups['octavia-infra_all'] | length > 0) }}"
 # NOTE(mhayden): neutron-lbaas is a separate plugin and requires the full
 # namespace to be specified. Also, LBaaS v1 was removed in Newton.
 horizon_enable_neutron_lbaas: "{{ neutron_plugin_base is defined and 'neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPluginv2' in neutron_plugin_base }}"
