@@ -1,0 +1,22 @@
+---
+issues:
+  - |
+    If newton is still in use and a new build is executed, the repo-build
+    process will fail due to a new PBR library release which was issued
+    after newton was declared end-of-life (EOL). This issue will show up
+    if gnocchi is being used in the environment and may also show up as
+    a venv build failure for other services.
+    This issue can be resolved either by upgrading the environment to a
+    recent OpenStack-Ansible Ocata release, or by doing the following.
+
+    * Fork the ``openstack/openstack-ansible-repo_build`` git repository.
+    * Create a ``stable/newton`` branch in the fork based on the ``newton-eol``
+      tag.
+    * Cherry-pick https://review.openstack.org/557757 into the fork on that
+      branch.
+    * Fork the ``openstack/openstack-ansible`` git repository.
+    * Change the ``ansible-role-requirements.yml`` file to include the URL
+      and git SHA for your patched fork of the repo_build role.
+
+    Once this is done, the repo build process should complete as it did
+    before and the updated software can now be deployed.
