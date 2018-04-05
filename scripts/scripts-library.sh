@@ -20,7 +20,6 @@ LINE='----------------------------------------------------------------------'
 MAX_RETRIES=${MAX_RETRIES:-5}
 ANSIBLE_PARAMETERS=${ANSIBLE_PARAMETERS:--e gather_facts=False}
 STARTTIME="${STARTTIME:-$(date +%s)}"
-PIP_INSTALL_OPTIONS=${PIP_INSTALL_OPTIONS:-'pip==9.0.1 setuptools==38.5.0 wheel==0.30.0 '}
 COMMAND_LOGS=${COMMAND_LOGS:-"/openstack/log/ansible_cmd_logs"}
 
 # The default SSHD configuration has MaxSessions = 10. If a deployer changes
@@ -242,41 +241,29 @@ function print_report {
 }
 
 function get_pip {
+  # The python executable to use when executing get-pip is passed
+  # as a parameter to this function.
+  GETPIP_PYTHON_EXEC_PATH="${1:-$(which python)}"
 
-  # check if pip is already installed
-  if [ "$(which pip)" ]; then
-
-    # make sure that the right pip base packages are installed
-    # If this fails retry with --isolated to bypass the repo server because the repo server will not have
-    # been updated at this point to include any newer pip packages.
-    pip install --upgrade ${PIP_INSTALL_OPTIONS} || pip install --upgrade --isolated ${PIP_INSTALL_OPTIONS}
-
-    # Ensure that our shell knows about the new pip
-    hash -r pip
-
-  # when pip is not installed, install it
+  # Download the get-pip script using the primary or secondary URL
+  GETPIP_CMD="curl --silent --show-error --retry 5"
+  GETPIP_FILE="/opt/get-pip.py"
+  # If GET_PIP_URL is set, then just use it
+  if [ -n "${GET_PIP_URL:-}" ]; then
+    ${GETPIP_CMD} ${GET_PIP_URL} > ${GETPIP_FILE}
   else
-
-    # Download the get-pip script using the primary or secondary URL
-    GETPIP_CMD="curl --silent --show-error --retry 5"
-    GETPIP_FILE="/opt/get-pip.py"
-    # If GET_PIP_URL is set, then just use it
-    if [ -n "${GET_PIP_URL:-}" ]; then
-      ${GETPIP_CMD} ${GET_PIP_URL} > ${GETPIP_FILE}
-    else
-      # Otherwise, try the two standard URL's
-      ${GETPIP_CMD} https://bootstrap.pypa.io/get-pip.py > ${GETPIP_FILE}\
-        || ${GETPIP_CMD} https://raw.githubusercontent.com/pypa/get-pip/master/get-pip.py > ${GETPIP_FILE}
-    fi
-
-    if head -n 1 /opt/get-pip.py | grep python; then
-      python /opt/get-pip.py ${PIP_INSTALL_OPTIONS}
-      return
-    fi
-
-    echo "A suitable download location for get-pip.py could not be found."
-    exit_fail
+    # Otherwise, try the two standard URL's
+    ${GETPIP_CMD} https://bootstrap.pypa.io/get-pip.py > ${GETPIP_FILE}\
+      || ${GETPIP_CMD} https://raw.githubusercontent.com/pypa/get-pip/master/get-pip.py > ${GETPIP_FILE}
   fi
+
+  ${GETPIP_PYTHON_EXEC_PATH} ${GETPIP_FILE} \
+    pip setuptools wheel \
+    --constraint global-requirement-pins.txt \
+    || ${GETPIP_PYTHON_EXEC_PATH} ${GETPIP_FILE} \
+         pip setuptools wheel \
+         --constraint global-requirement-pins.txt \
+         --isolated
 }
 
 ## Signal traps --------------------------------------------------------------
