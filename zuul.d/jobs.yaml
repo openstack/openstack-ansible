@@ -47,7 +47,7 @@
 # a different ansible version
 - job:
     name: openstack-ansible-deploy_with_ansible_devel-aio-ubuntu-xenial
-    parent: openstack-ansible-deploy-aio-ubuntu-xenial
+    parent: openstack-ansible-deploy-aio_lxc-ubuntu-xenial
     branches: ^(devel|master)$
     required-projects:
       - name: github.com/ansible/ansible
@@ -67,9 +67,10 @@
     vars:
       action: deploy
       scenario: ceph
+
 - job:
     name: openstack-ansible-deploy-aio_metal-ubuntu-xenial
-    parent: openstack-ansible-deploy-aio-ubuntu-xenial
+    parent: openstack-ansible-deploy-aio_lxc-ubuntu-xenial
     voting: false
     vars:
       action: deploy
