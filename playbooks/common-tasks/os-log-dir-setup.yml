@@ -27,7 +27,7 @@
   file:
     path: "{{ item.src }}"
     state: directory
-  with_items: "{{ log_dirs }}"
+  with_items: "{{ log_dirs|default([]) }}"
   when: is_metal | bool
   tags:
     - common-log
@@ -40,7 +40,7 @@
     group: "{{ item.group|default(omit) }}"
     state: "link"
     force: "yes"
-  with_items: "{{ log_dirs }}"
+  with_items: "{{ log_dirs|default([]) }}"
   when: is_metal | bool
   tags:
     - common-log
