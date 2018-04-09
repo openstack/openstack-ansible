@@ -202,11 +202,6 @@ if [[ "${ACTION}" == "upgrade" ]]; then
     # Checkout the original HEAD we started with
     git checkout ${UPGRADE_TARGET_BRANCH}
 
-    # There is a protection in the run-upgrade script
-    # to prevent people doing anything silly. We need
-    # to bypass that for an automated test.
-    export I_REALLY_KNOW_WHAT_I_AM_DOING=true
-
     # Unset environment variables used by the bootstrap-ansible
     # script to allow newer versions of Ansible and global
     # requirements to be installed.
