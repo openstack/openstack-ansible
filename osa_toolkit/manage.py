@@ -22,8 +22,8 @@ import argparse
 import json
 import prettytable
 
-import dictutils as du
-import filesystem as filesys
+from osa_toolkit import dictutils as du
+from osa_toolkit import filesystem as filesys
 
 
 def args():
