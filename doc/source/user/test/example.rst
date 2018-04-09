@@ -46,7 +46,7 @@ environment.
 +------------------+----------------+-------------------+----------------+
 | Host name        | Management IP  | Tunnel (VxLAN) IP | Storage IP     |
 +==================+================+===================+================+
-| infra1           | 172.29.236.11  |                   |                |
+| infra1           | 172.29.236.11  | 172.29.240.11     |                |
 +------------------+----------------+-------------------+----------------+
 | compute1         | 172.29.236.12  | 172.29.240.12     | 172.29.244.12  |
 +------------------+----------------+-------------------+----------------+
@@ -104,4 +104,3 @@ OpenStack endpoints are served with the same protocol. This is done with
 the following content:
 
 .. literalinclude:: ../../../../etc/openstack_deploy/user_variables.yml.test.example
-
