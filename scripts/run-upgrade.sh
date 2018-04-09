@@ -20,7 +20,7 @@
 
 ## Shell Opts ----------------------------------------------------------------
 
-set -e -u -v
+set -e -u
 
 ## Vars ----------------------------------------------------------------------
 
@@ -32,9 +32,6 @@ export MAIN_PATH="$(dirname "${SCRIPTS_PATH}")"
 
 # The path to find all the upgrade playbooks
 export UPGRADE_PLAYBOOKS="${SCRIPTS_PATH}/upgrade-utilities/playbooks"
-
-# The toggle which guards against using this script prematurely
-export I_REALLY_KNOW_WHAT_I_AM_DOING=${I_REALLY_KNOW_WHAT_I_AM_DOING:-"false"}
 
 # The expected source series name
 export SOURCE_SERIES="newton"
@@ -127,11 +124,20 @@ function pre_flight {
     # Notify the user.
     echo -e "
     This script will perform a ${SOURCE_SERIES^} to ${TARGET_SERIES^} upgrade.
-    Once you start the upgrade there's no going back.
+    Once you start the upgrade there is no going back.
 
     Note that the upgrade targets impacting the data
     plane as little as possible, but assumes that the
     control plane can experience some down time.
+
+    This script executes a one-size-fits-all upgrade,
+    and given that the tests implemented for it are
+    not monitored as well as those for a greenfield
+    environment, the results may vary with each release.
+
+    Please use it against a test environment with your
+    configurations to validate whether it suits your
+    needs and does a suitable upgrade.
 
     Are you ready to perform this upgrade now?
     "
@@ -145,20 +151,9 @@ function pre_flight {
     fi
 }
 
-function exit_early {
-    echo -e "
-    The upgrade script is still under active development and should not be
-    run at this time. For test environments the early exit of the script can
-    skipped by executing ``export I_REALLY_KNOW_WHAT_I_AM_DOING=true`` before
-    ``run-upgrade.sh``.
-    "
-    exit 99
-}
-
 ## Main ----------------------------------------------------------------------
 
 function main {
-    [[ "${I_REALLY_KNOW_WHAT_I_AM_DOING}" = true ]] || exit_early
     pre_flight
     check_for_current
 
