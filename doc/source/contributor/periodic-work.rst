@@ -79,6 +79,8 @@ development team by performing one of the following recurring tasks:
 
   * Community goal acknowledgement.
 
+  * Set the ``openstack_release`` version to xx.0.0.0b1
+
 * By milestone 2:
 
   * Handle deprecations from upstream project's previous cycle.
@@ -98,15 +100,46 @@ development team by performing one of the following recurring tasks:
   * Check outstanding reviews and move to merge or abandon them if no longer
     valid.
 
+  * Set the ``openstack_release`` version to xx.0.0.0b2
+
 * By milestone 3:
 
   * Implement features
+
+  * Set the ``openstack_release`` version to xx.0.0.0b3
 
 * After milestone 3:
 
   * Feature freeze, bug fixes, and testing improvements
 
+* After creating a new stable branch:
+
+  * Set the ``openstack_release`` version to xx.0.0
+
+  * For all the repos, update the eventual static files refering
+    to master/previous branch name. The main documentation should
+    be updated to add the new branch. The #openstack-docs team
+    should also be updated, for linking the newly created
+    deployment-guide.
+
+    Use the topic ``create-<branchname>`` (e.g: ``create-queens``)
+    for future reference.
+
+  * Branch all the repos that aren't part of the integrated release
+    in gerrit. See also the ``projects.yaml`` in the governance repo.
+    Manually branched repos need extra
+    editions, like updating the .gitreview, or the reno index.
+    Please reference previous branch creations by using the
+    appropriate topic in gerrit (e.g.: ``create-queens``).
+    The previous new branch creation may be different as the
+    tooling/process may have evolved, so be aware that the changes
+    needed may need to be adapted.
+
 * After official project release, before official OpenStack-Ansible release:
 
   * Bump RDO, Ubuntu Cloud Archive and openSUSE OBS OpenStack Cloud
     repositories if they are ready on time.
+
+* Immediately after official OpenStack-Ansible release:
+
+  * Set the ``openstack_release`` version to xx.0.1
