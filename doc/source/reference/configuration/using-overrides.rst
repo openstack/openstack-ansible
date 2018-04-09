@@ -3,8 +3,54 @@
 Overriding default configuration
 ================================
 
-user_*.yml files
-~~~~~~~~~~~~~~~~
+Variable precedence
+~~~~~~~~~~~~~~~~~~~
+
+Role defaults
+-------------
+
+Every role has a file, ``defaults/main.yml`` which holds the
+usual variables overridable by a deployer, like a regular Ansible
+role. This defaults are the closest possible to OpenStack standards.
+
+They can be overriden at multiple levels.
+
+Group vars and host vars
+------------------------
+
+OpenStack-Ansible provides safe defaults for deployers in its
+group_vars folder. They take care of the wiring between different
+roles, like for example storing information on how to reach
+RabbitMQ from nova role.
+
+You can override the existing group vars (and host vars) by creating
+your own folder in /etc/openstack_deploy/group_vars (and
+/etc/openstack_deploy/host_vars respectively).
+
+If you want to change the location of the override folder, you
+can adapt your openstack-ansible.rc file, or export
+``GROUP_VARS_PATH`` and ``HOST_VARS_PATH`` during your shell session.
+
+Role vars
+---------
+
+Every role makes use of additional variables in ``vars/`` which take
+precedence over group vars.
+
+These variables are typically internal to the role and are not
+designed to be overridden. However, deployers may choose to override
+them using extra-vars by placing the overrides into the user variables
+file.
+
+User variables
+--------------
+
+If you want to globally override variable, you can define
+the variable you want to override in a
+``/etc/openstack_deploy/user_*.yml`` file. It will apply on all hosts.
+
+user_*.yml files in more details
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Files in ``/etc/openstack_deploy`` beginning with ``user_`` will be
 automatically sourced in any ``openstack-ansible`` command. Alternatively,
@@ -19,52 +65,11 @@ of these files more arduous. Rather, recommended practice is to place your own
 variables in files named following the ``user_*.yml`` pattern so they will be
 sourced alongside those used exclusively by OpenStack-Ansible.
 
-Ordering and precedence
-^^^^^^^^^^^^^^^^^^^^^^^
-
 ``user_*.yml`` files contain YAML variables which are applied as extra-vars
 when executing ``openstack-ansible`` to run playbooks. They will be sourced
 in alphanumeric order by ``openstack-ansible``. If duplicate variables occur
 in the ``user_*.yml`` files, the variable in the last file read will take
 precedence.
-
-Adding extra python packages
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The system will allow you to install and build any package that is a python
-installable. The repository infrastructure will look for and create any
-git based or PyPi installable package. When the package is built the repo-build
-role will create the sources as Python wheels to extend the base system and
-requirements.
-
-While the packages pre-built in the repository-infrastructure are
-comprehensive, it may be needed to change the source locations and versions of
-packages to suit different deployment needs. Adding additional repositories as
-overrides is as simple as listing entries within the variable file of your
-choice. Any ``user_.*.yml`` file within the "/etc/openstack_deployment"
-directory will work to facilitate the addition of a new packages.
-
-
-.. code-block:: yaml
-
-    swift_git_repo: https://private-git.example.org/example-org/swift
-    swift_git_install_branch: master
-
-
-Additional lists of python packages can also be overridden using a
-``user_.*.yml`` variable file.
-
-.. code-block:: yaml
-
-    swift_requires_pip_packages:
-      - virtualenv
-      - python-keystoneclient
-      - NEW-SPECIAL-PACKAGE
-
-
-Once the variables are set call the play ``repo-build.yml`` to build all of the
-wheels within the repository infrastructure. When ready run the target plays to
-deploy your overridden source code.
 
 Setting overrides in configuration files with config_template
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -84,7 +89,7 @@ will never be.
 .. _PR2: https://github.com/ansible/ansible/pull/35453
 
 config_template documentation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+-----------------------------
 
 These are the options available as found within the virtual module
 documentation section.
@@ -133,7 +138,7 @@ documentation section.
 
 
 Example task using the config_template module
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+---------------------------------------------
 
 In this task the ``test.ini.j2`` file is a template which will be rendered and
 written to disk at ``/tmp/test.ini``. The **config_overrides** entry is a
@@ -181,7 +186,7 @@ this:
 
 
 Discovering available overrides
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+-------------------------------
 
 All of these options can be specified in any way that suits your deployment.
 In terms of ease of use and flexibility it's recommended that you define your
@@ -297,7 +302,7 @@ configuration entries in the ``/etc/openstack_deploy/user_variables.yml``.
 .. _OpenStack Configuration Reference: http://docs.openstack.org/draft/config-reference/
 
 Overriding .conf files
-^^^^^^^^^^^^^^^^^^^^^^
+----------------------
 
 Most often, overrides are implemented for the ``<service>.conf`` files
 (for example, ``nova.conf``). These files use a standard INI file format.
@@ -364,7 +369,7 @@ Use this method for any files with the ``INI`` format for in OpenStack projects
 deployed in OpenStack-Ansible.
 
 Overriding .json files
-^^^^^^^^^^^^^^^^^^^^^^
+----------------------
 
 To implement access controls that are different from the ones in a standard
 OpenStack environment, you can adjust the default policies applied by services.
@@ -404,7 +409,7 @@ overrides, the general format for the variable name is
 ``<service>_policy_overrides``.
 
 Overriding .yml files
-^^^^^^^^^^^^^^^^^^^^^
+---------------------
 
 You can override ``.yml`` file values by supplying replacement YAML content.
 
