@@ -24,9 +24,14 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
-   scripts
+   project-onboarding
+   bugs
    contribute
-   bug-triage
+   code-rules
+   testing
+   periodic-work
+   inventory-and-vars
+   scripts
    core-reviewers
-   role-services
+   distributions
 
