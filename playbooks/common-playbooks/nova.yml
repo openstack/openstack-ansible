@@ -79,9 +79,6 @@
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
 
-    - name: Configure package proxy cache
-      include: ../common-tasks/package-cache-proxy.yml
-
     - name: Add nbd devices to the compute
       shell: |
         for i in /dev/nbd*;do

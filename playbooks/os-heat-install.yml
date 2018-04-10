@@ -59,7 +59,6 @@
       static: no
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
-    - include: common-tasks/package-cache-proxy.yml
   roles:
     - role: "os_heat"
     - role: "rsyslog_client"
