@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# This var is used by glance and ironic
+glance_service_user_name: glance
+
 glance_service_port: 9292
 glance_service_proto: http
 glance_service_publicuri_proto: "{{ openstack_service_publicuri_proto | default(glance_service_proto) }}"
