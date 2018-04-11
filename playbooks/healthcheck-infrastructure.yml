@@ -200,6 +200,7 @@
         password: secrete
         vhost: "/test"
         state: absent
+      no_log: true
       when: run_rabbit_tests | default(false)
       tags:
         - rabbitmq
