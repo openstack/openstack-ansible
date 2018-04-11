@@ -36,6 +36,7 @@
     write_priv: ".*"
     state: "present"
   delegate_to: "{{ groups[_rabbitmq_host_group][0] }}"
+  no_log: true
   tags:
     - common-rabbitmq
 
