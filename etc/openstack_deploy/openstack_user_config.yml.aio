@@ -25,7 +25,6 @@ global_overrides:
   # The external IP is quoted simply to ensure that the .aio file can be used as input
   # dynamic inventory testing.
   external_lb_vip_address: "{{ bootstrap_host_public_address | default(ansible_default_ipv4.address) }}"
-  tunnel_bridge: "br-vxlan"
   management_bridge: "br-mgmt"
   provider_networks:
     - network:

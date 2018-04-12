@@ -15,7 +15,6 @@ global_overrides:
   # do not need to be on separate networks.
   external_lb_vip_address: 172.29.236.10
   internal_lb_vip_address: 172.29.236.11
-  tunnel_bridge: "br-vxlan"
   management_bridge: "br-mgmt"
   provider_networks:
     - network:
