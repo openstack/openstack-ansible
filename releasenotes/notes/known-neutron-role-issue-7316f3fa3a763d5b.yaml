@@ -1,0 +1,29 @@
+---
+issues:
+  - |
+    The os_neutron role uses the same handler name as the etcd role for
+    executing ``systemcl daemon-reload``. Given that newton uses Ansible
+    2.1.x and that version of Ansible cannot process more than one handler
+    by the same name in a single playbook, only one handler ends up being
+    executed. The handler that does get executed is the etcd handler which
+    is skipped unless the deployment is using Calico.
+
+    This results in any upgrades to the newton software to never end up
+    running the version of neutron software as intended. This can be seen
+    by observing that the running processes are still using the older
+    software venv.
+
+    This issue can be resolved either by upgrading the environment to a
+    recent OpenStack-Ansible Ocata release, or by doing the following.
+
+    * Fork the ``openstack/openstack-ansible-os_neutron`` git repository.
+    * Create a ``stable/newton`` branch in the fork based on the ``newton-eol``
+      tag.
+    * Modify the handler named ``Reload systemd daemon`` and all references to
+      it in the role to something else (e.g. ``os_neutron Reload systemd daemon``).
+    * Fork the ``openstack/openstack-ansible`` git repository.
+    * Change the ``ansible-role-requirements.yml`` file to include the URL
+      and git SHA for your patched fork of the os_neutron role.
+
+    Once this is done, the upgrade process for neutron services will work
+    properly.
