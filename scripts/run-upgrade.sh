@@ -198,6 +198,12 @@ function main {
         RUN_TASKS+=("rsyslog-install.yml")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/memcached-flush.yml")
         RUN_TASKS+=("setup-openstack.yml")
+        # clean up the containers which are no longer required
+        # now that the services are hyperconverged
+        RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/cleanup-nova.yml -e force_containers_destroy=yes -e force_containers_data_destroy=yes")
+        RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/cleanup-cinder.yml -e force_containers_destroy=yes -e force_containers_data_destroy=yes")
+        RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/cleanup-heat.yml -e force_containers_destroy=yes -e force_containers_data_destroy=yes")
+        RUN_TASKS+=("haproxy-install.yml --tags haproxy_server-config")
         # Run the tasks in order
         for item in ${!RUN_TASKS[@]}; do
           run_lock $item "${RUN_TASKS[$item]}"

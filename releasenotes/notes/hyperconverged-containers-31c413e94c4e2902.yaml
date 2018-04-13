@@ -1,0 +1,18 @@
+---
+upgrade:
+  - |
+    When upgrading from pike to queens there are the following
+    changes to the container/service setup.
+
+    * All cinder container services are consolidated into
+      a single ``cinder_api_container``. The previously implemented
+      ``cinder_scheduler_container`` can be removed.
+    * A new ``heat_api`` container is created with all heat services
+      running in it. The previously implemented ``heat_apis_container``
+      and ``heat_engine_container`` can be removed.
+    * All nova services are consolidated into the ``nova_api_container``
+      and the rest of the nova containers can be removed.
+
+    Playbooks have been added to facilitate this process through
+    automation. Please see the ``Major upgrades`` chapter in the
+    Operations Guide.

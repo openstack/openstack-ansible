@@ -261,3 +261,36 @@ playbook, without any additional options.
 .. code-block:: console
 
     # openstack-ansible setup-openstack.yml
+
+Clean up unnecessary containers
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+When upgrading from pike to queens there are the following
+changes to the container/service setup:
+
+# All cinder container services are consolidated into
+  a single ``cinder_api_container``. The previously implemented
+  ``cinder_scheduler_container`` can be removed.
+# A new ``heat_api`` container is created with all heat services
+  running in it. The previously implemented ``heat_apis_container``
+  and ``heat_engine_container`` can be removed.
+# All nova services are consolidated into the ``nova_api_container``
+  and the rest of the nova containers can be removed.
+
+This cleanup can be done by hand, or the playbooks provided
+can be used to do it for you from the deployment node. The
+cleanup process may be disruptive to any transactions in
+progress, so it is advised that this is done during a maintenance
+period.
+
+If each service cleanup is executed manually in different maintenance
+periods, then be sure to execute the haproxy playbook after each so
+that the back-ends which are no longer in the inventory are removed
+from the haproxy configuration.
+
+.. code-block:: console
+
+    # openstack-ansible "${UPGRADE_PLAYBOOKS}/cleanup-cinder.yml" -e force_containers_destroy=yes -e force_containers_data_destroy=yes
+    # openstack-ansible "${UPGRADE_PLAYBOOKS}/cleanup-heat.yml" -e force_containers_destroy=yes -e force_containers_data_destroy=yes
+    # openstack-ansible "${UPGRADE_PLAYBOOKS}/cleanup-nova.yml" -e force_containers_destroy=yes -e force_containers_data_destroy=yes
+    # openstack-ansible --tags haproxy_server-config haproxy-install.yml
