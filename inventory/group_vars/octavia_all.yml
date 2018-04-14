@@ -15,6 +15,7 @@
 
 octavia_service_internalurl: "{{ octavia_service_internaluri }}/v1/%(project_id)s"
 octavia_service_user_name: octavia
+octavia_service_region: "{{ service_region }}"
 
 # venv fetch configuration
 octavia_venv_tag: "{{ venv_tag }}"
