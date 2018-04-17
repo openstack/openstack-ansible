@@ -345,7 +345,9 @@ function get_instance_info {
       "/openstack/log/instance-info/btrfs_${dir_name}_quotas_${TS}.log" || true
   done
 
-  zfs list > "/openstack/log/instance-info/zfs_lxc_${TS}.log" || true
+  if command -v zfs >/dev/null; then
+    zfs list > "/openstack/log/instance-info/zfs_lxc_${TS}.log" || true
+  fi
 
   df -h > "/openstack/log/instance-info/report_fs_df_${TS}.log" || true
 }
