@@ -35,9 +35,11 @@
       until: add_service|success
       retries: 5
       delay: 2
+      no_log: True
       tags:
         - ceph-rgw-setup
         - rgw-service-add
+
     - name: Ensure RGW user
       keystone:
         command: "ensure_user"
@@ -57,9 +59,11 @@
       until: add_service|success
       retries: 5
       delay: 10
+      no_log: True
       tags:
         - ceph-rgw-setup
         - rgw-service-add
+
     - name: Ensure RGW user to admin role
       keystone:
         command: "ensure_user_role"
@@ -78,9 +82,11 @@
       until: add_admin_role|success
       retries: 5
       delay: 10
+      no_log: True
       tags:
         - ceph-rgw-setup
         - rgw-service-add
+
     - name: Ensure swiftoperator role
       keystone:
         command: "ensure_role"
@@ -95,9 +101,11 @@
       until: add_swiftoperator_role|success
       retries: 5
       delay: 10
+      no_log: True
       tags:
         - ceph-rgw-setup
         - rgw-service-add
+
     - name: Ensure RGW endpoint
       keystone:
         command: "ensure_endpoint"
@@ -123,15 +131,19 @@
       until: add_service|success
       retries: 5
       delay: 10
+      no_log: True
       tags:
         - ceph-rgw-setup
         - rgw-service-add
+
     - include: common-tasks/os-log-dir-setup.yml
       vars:
         log_dirs:
           - src: "/openstack/log/{{ inventory_hostname }}-ceph"
             dest: "/var/log/ceph"
+
     - include: common-tasks/os-lxc-container-setup.yml
+
     - name: Gather ceph-mon facts
       action: setup
       delegate_to: "{{ item }}"
