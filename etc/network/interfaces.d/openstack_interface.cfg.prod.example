@@ -77,27 +77,18 @@ iface br-mgmt inet static
 
 # OpenStack Networking VXLAN (tunnel/overlay) bridge
 #
-# Only the COMPUTE and NETWORK nodes must have an IP address
-# on this bridge. When used by infrastructure nodes, the
-# IP addresses are assigned to containers which use this
-# bridge.
+# The COMPUTE, NETWORK and INFRA nodes must have an IP address
+# on this bridge.
 #
+
 auto br-vxlan
-iface br-vxlan inet manual
+iface br-vxlan inet static
     bridge_stp off
     bridge_waitport 0
     bridge_fd 0
     bridge_ports bond1.30
-
-# compute1 VXLAN (tunnel/overlay) bridge config
-#auto br-vxlan
-#iface br-vxlan inet static
-#    bridge_stp off
-#    bridge_waitport 0
-#    bridge_fd 0
-#    bridge_ports bond1.30
-#    address 172.29.240.16
-#    netmask 255.255.252.0
+    address 172.29.240.16
+    netmask 255.255.252.0
 
 # OpenStack Networking VLAN bridge
 auto br-vlan
