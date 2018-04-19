@@ -3,7 +3,7 @@ cidr_networks:
 {% if bootstrap_host_scenario == "translations" %}
   dbaas: 172.29.232.0/22
 {% endif %}
-{% if bootstrap_host_scenario in ["translations", "octavia"] %}
+{% if bootstrap_host_scenario in ["octavia"] %}
   lbaas: 172.29.252.0/22
 {% endif %}
   container: 172.29.236.0/22
@@ -68,7 +68,7 @@ global_overrides:
           - neutron_linuxbridge_agent
           - rabbitmq
 {% endif %}
-{% if bootstrap_host_scenario in ["translations", "octavia"] %}
+{% if bootstrap_host_scenario in ["octavia"] %}
     - network:
         container_bridge: "br-lbaas"
         container_type: "veth"

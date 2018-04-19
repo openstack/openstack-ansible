@@ -244,7 +244,7 @@ bootstrap_host_data_disk2_path: "{{ (lxc_container_backing_store == 'machinectl'
 
 
 # Boolean option to build Amphora image and certs
-bootstrap_host_octavia: "{{ (bootstrap_host_scenario in ['octavia', 'translations']) | bool }}"
+bootstrap_host_octavia: "{{ (bootstrap_host_scenario in ['octavia']) | bool }}"
 
 ### Optional Settings ###
 
