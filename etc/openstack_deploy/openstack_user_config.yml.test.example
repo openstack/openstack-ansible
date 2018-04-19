@@ -53,7 +53,7 @@ global_overrides:
         container_type: "veth"
         container_interface: "eth11"
         type: "vlan"
-        range: "1:1"
+        range: "101:200,301:400"
         net_name: "vlan"
         group_binds:
           - neutron_linuxbridge_agent
