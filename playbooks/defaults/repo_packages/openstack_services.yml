@@ -154,8 +154,10 @@ networking_calico_git_repo: https://git.openstack.org/openstack/networking-calic
 networking_calico_git_install_branch: ebfbf267ab12271ca68412e22a41b2c8e9c49e40 # HEAD of "master" as of 31.03.2018
 networking_calico_git_project_group: neutron_all
 
+# ODL is frozen until further notice due to
+# https://github.com/openstack/networking-odl/commit/391c1d89ef2b8133d3aafbe7612c7908be106e73#diff-b4ef698db8ca845e5845c4618278f29a
 networking_odl_git_repo: https://git.openstack.org/openstack/networking-odl
-networking_odl_git_install_branch: 53ff740b2a78626d5b077278997bdcec6b1b0892 # HEAD of "master" as of 31.03.2018
+networking_odl_git_install_branch: 53ff740b2a78626d5b077278997bdcec6b1b0892 # FROZEN HEAD of "master" as of 31.03.2018
 networking_odl_git_project_group: neutron_all
 
 # BGPVPN is frozen until further notice due to
