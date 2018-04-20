@@ -77,6 +77,7 @@
     if [[ ${NODEPOOL_PYPI_MIRROR} == *.ovh.* ]]; then
       echo "nova_virt_type: 'qemu'" >> ${NODEPOOL_OVERRIDES}
     fi
+    echo "repo_build_pip_default_index: '${NODEPOOL_PYPI_MIRROR}'" >> ${NODEPOOL_OVERRIDES}
   args:
     executable: /bin/bash
   when:
