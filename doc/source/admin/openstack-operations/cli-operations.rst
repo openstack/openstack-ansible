@@ -70,10 +70,10 @@ For more information about OpenStack client utilities, see these links:
 -  `Block Storage (cinder) CLI command cheat
    sheet <https://docs.openstack.org/python-cinderclient/latest/cli/details.html>`__
 
--  `python-keystoneclient <https://pypi.python.org/pypi/python-keystoneclient/>`__
+-  `python-keystoneclient <https://pypi.org/project/python-keystoneclient/>`__
 
--  `python-glanceclient <https://pypi.python.org/pypi/python-glanceclient/>`__
+-  `python-glanceclient <https://pypi.org/project/python-glanceclient/>`__
 
--  `python-novaclient <https://pypi.python.org/pypi/python-novaclient/>`__
+-  `python-novaclient <https://pypi.org/project/python-novaclient/>`__
 
--  `python-neutronclient <https://pypi.python.org/pypi/python-neutronclient/>`__
+-  `python-neutronclient <https://pypi.org/project/python-neutronclient/>`__
