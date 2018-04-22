@@ -69,6 +69,7 @@
       rabbitmq_user:
          user: "{{ rabbitmq_monitoring_userid|default('monitoring') }}"
          password: "{{ rabbitmq_monitoring_password }}"
+         tags: "monitoring"
          state: "present"
       when: rabbitmq_monitoring_password is defined
   environment: "{{ deployment_environment_variables | default({}) }}"
