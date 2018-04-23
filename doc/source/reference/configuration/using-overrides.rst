@@ -13,7 +13,7 @@ Every role has a file, ``defaults/main.yml`` which holds the
 usual variables overridable by a deployer, like a regular Ansible
 role. This defaults are the closest possible to OpenStack standards.
 
-They can be overriden at multiple levels.
+They can be overridden at multiple levels.
 
 Group vars and host vars
 ------------------------
