@@ -19,8 +19,7 @@
   user: root
   pre_tasks:
 
-    - include: common-tasks/set-upper-constraints.yml
-    - include: common-tasks/set-pip-upstream-url.yml
+    - include: common-tasks/set-pip-vars.yml
 
     - name: Check if the git cache exists on deployment host
       local_action:

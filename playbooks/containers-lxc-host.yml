@@ -18,8 +18,7 @@
   gather_facts: "{{ osa_gather_facts | default(True) }}"
   user: root
   pre_tasks:
-    - include: common-tasks/set-upper-constraints.yml
-    - include: common-tasks/set-pip-upstream-url.yml
+    - include: common-tasks/set-pip-vars.yml
     - name: Check the state of the default LXC service log directory
       stat:
         path: "/var/log/lxc"

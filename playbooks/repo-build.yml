@@ -50,8 +50,7 @@
   serial: 1
   pre_tasks:
 
-    - include: common-tasks/set-upper-constraints.yml
-    - include: common-tasks/set-pip-upstream-url.yml
+    - include: common-tasks/set-pip-vars.yml
 
     - name: Load local packages
       debug:
