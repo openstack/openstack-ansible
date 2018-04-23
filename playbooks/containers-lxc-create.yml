@@ -30,10 +30,18 @@
         delay: "{{ lxc_container_wait_params.delay | default(omit) }}"
         sleep: "{{ lxc_container_wait_params.sleep | default(omit) }}"
         timeout: "{{ lxc_container_wait_params.timeout | default(omit) }}"
-    - name: Set local facts for new container(s)
+
+    # When using gather_facts with smart gathering,
+    # the facts aren't fully updated unless they
+    # are old. Using the setup module in a task
+    # does a more thorough collection.
+    # Given we've just created the container, it is
+    # best that we do a full collection of facts -
+    # otherwise we end up with a stale set which
+    # has stuff like the hostname = localhost.
+    - name: Gather facts for new container(s)
       setup:
-        filter: ansible_local
-        gather_subset: "!all"
+        gather_subset: "network,hardware,virtual"
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - lxc-containers-create
