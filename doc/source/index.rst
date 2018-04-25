@@ -62,19 +62,14 @@ OpenStack-Ansible's Ocata series was first released with the 15.0.0 tag on
 .. _OpenStack-Ansible Ocata Documentation: https://docs.openstack.org/openstack-ansible/ocata/
 .. _OpenStack-Ansible Ocata series release notes: https://docs.openstack.org/releasenotes/openstack-ansible/ocata.html
 
-Newton: Current stable release, security supported
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Newton: EOL (end-of-life)
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible's Newton series was first released with the 14.0.0 tag on
-20 October 2016.
+OpenStack-Ansible's Newton series was EOL'd on 3 April 2018.
 
-* `OpenStack-Ansible Newton Documentation`_
+To view the documentation only,
+see the `OpenStack-Ansible Newton Documentation <https://docs.openstack.org/openstack-ansible/newton/>`_.
 
-* `OpenStack-Ansible Newton series release notes`_
-
-* `OpenStack-Ansible Newton series timeline`_
-
-.. _OpenStack-Ansible Newton Documentation: https://docs.openstack.org/openstack-ansible/newton/
 .. _OpenStack-Ansible Newton series timeline: https://launchpad.net/openstack-ansible/newton
 .. _OpenStack-Ansible Newton series release notes: https://docs.openstack.org/releasenotes/openstack-ansible/newton.html
 
