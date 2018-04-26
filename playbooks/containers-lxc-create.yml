@@ -54,8 +54,7 @@
   user: root
   pre_tasks:
     - include: common-tasks/package-cache-proxy.yml
-    - include: common-tasks/set-upper-constraints.yml
-    - include: common-tasks/set-pip-upstream-url.yml
+    - include: common-tasks/set-pip-vars.yml
   roles:
     - role: "openstack_hosts"
       is_container: true
