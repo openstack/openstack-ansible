@@ -20,7 +20,7 @@
   user: root
   pre_tasks:
     - include: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
-      static:
+      static: no
       vars:
         extra_container_config_no_restart:
           - "lxc.start.order=19"
