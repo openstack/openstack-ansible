@@ -1,0 +1,27 @@
+---
+features:
+  - The option ``lxc_hosts_container_image_url`` has been added allowing
+    deployers to define their base image url to whatever it needs to be
+    removing the requirement for operators to maintain an internal LXC
+    index in the event they want to host a private repository.
+  - The option ``lxc_hosts_container_image_download_legacy`` has been
+    added allowing a deployer to enable the use of the legacy lxc image
+    repository. This option is a Boolean and has a default of **false**.
+deprecations:
+  - The variable ``lxc_image_cache_server_mirrors`` has been deprecated
+    in the "lxc_hosts" role. This option has been replaced by the static
+    variable ``lxc_hosts_container_image_url``. This variable will continue
+    to function as a single element list allowing existing automation to
+    function when in legacy image mode but should not be considered in use
+    by default.
+  - The variable ``lxc_image_cache_server`` has been deprecated in the
+    ``lxc_hosts`` role. This option has been replaced by the static
+    variable ``lxc_hosts_container_image_url``.
+other:
+  - The use of **images.linuxcontainers.org** is no longer required. While
+    the images provided by that build system are perfectly functional they
+    have been less than optimal in a lot ways for a very long time. The
+    ``lxc_hosts`` role will now pull a base image from the upstream distro
+    being deployed. If a deployer wishes to continue using the images from
+    **images.linuxcontainers.org** they are welcome to but it is no longer
+    forced.

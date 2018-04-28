@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    The default variable `nova_default_schedule_zone` was previously set by
+    default to ``nova``. This default has been removed to allow the default
+    to be set by the nova code instead. Deployers wishing to maintain the
+    default availability zone of nova must now set the variable as a
+    user_variables.yml or group_vars override.

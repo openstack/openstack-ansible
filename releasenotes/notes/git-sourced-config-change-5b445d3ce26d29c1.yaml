@@ -1,0 +1,17 @@
+---
+upgrade:
+  - |
+    In order to collect the default files used for various templates, the
+    implementation has been changed from using a git source to rather
+    using the built-in templates from the venv build based on the setup.cfg
+    file. As such, the following variables have been removed.
+
+    * ``keystone_git_config_lookup_location``
+    * ``keystone_paste_git_file_path``
+    * ``keystone_sso_callback_git_file_path``
+
+    Instead, a location on the deployment host where the venv defaults are
+    stored is now configurable using the variable
+    ``keystone_config_cache_path`` which defaults to ``cache/keystone`` in
+    the deploy user home directory. This location is used as a template
+    source when deploying the file to the target host.

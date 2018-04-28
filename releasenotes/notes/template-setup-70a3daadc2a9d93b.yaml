@@ -1,0 +1,10 @@
+---
+deprecations:
+  - The option ``cache_prep_commands`` from ``lxc_cache_map`` has been
+    removed. This option has been converted to a template file within
+    the **lxc_hosts** role. In order to set specific cache commands within
+    the template it is recommended that deployers set
+    ``lxc_cache_prep_pre_commands`` or ``lxc_cache_prep_post_commands``. If the
+    entire prep script needs to be overridden deployers can set
+    ``lxc_cache_prep_template`` to the full local path of the prep template and
+    the role will use this script irrespective of the base container type.

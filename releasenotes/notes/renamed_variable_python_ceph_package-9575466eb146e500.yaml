@@ -1,0 +1,8 @@
+---
+other:
+  - |
+    The internal variable ``python_ceph_package`` has been renamed to
+    ``python_ceph_packages`` and is now a list instead of a string.
+    If you are using gnocchi with ceph and are using this internal
+    variable in your ``ceph_extra_components`` overrides,
+    please update it to ``python_ceph_packages``.

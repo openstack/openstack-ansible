@@ -1,0 +1,16 @@
+---
+features:
+  - |
+    This consolidates the amphora image tasks in a common file and adds a way
+    to download an amphora image from an artefact storage over http(s). With
+    the Octavia team providing test images the tests were modified to not
+    build images any longer but download them.
+security:
+  - |
+    It is commonly considered bad practice to downlaod random images from the
+    Internet expecially the test images the Octavia team provides which could
+    potentially include unpatched operating system packages - so for any
+    production deploy adjust the download url to an artifact storage your
+    organization controls. The system also does not authenticate the image
+    (e.g. with an md5) so should only be used on networks your organization
+    controls.

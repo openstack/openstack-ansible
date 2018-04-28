@@ -1,0 +1,15 @@
+---
+features:
+  - |
+    The PIP upgrade strategy can now be controlled using the new
+    ``pip_install_strategy`` variable which can either be ``eager``
+    if the deployers want to upgrade both the package and its dependencies or
+    ``only-if-needed`` if they want to only upgrade what's really necessary.
+    More information can be found on the `PIP user guide
+    <https://pip.pypa.io/en/stable/user_guide/#only-if-needed-recursive-upgrade>`_
+upgrade:
+  - |
+    The default PIP stategy has been changed to ``only-of-needed`` in order to
+    minimize the amount of packages which are updated during installation.
+    Deployers can still override the default option using the ``pip_install_strategy``
+    variable.

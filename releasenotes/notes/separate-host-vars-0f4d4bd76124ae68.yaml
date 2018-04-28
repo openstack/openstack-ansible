@@ -1,0 +1,8 @@
+---
+features:
+  - The variable ``lxc_user_defined_container`` has been added to the lxc_hosts
+    role allowing deployers to define the variable file loaded when preparing a
+    base container image. This option defaults to using a base image most
+    closely associated with the underlying OS however should a deployer need,
+    this option can be used to customize the base container image for a given
+    host.

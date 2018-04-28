@@ -1,0 +1,9 @@
+---
+features:
+  - Within the lxc-container-create role the legacy networking scripts have been
+    converted to use systemd-networkd for ubuntu and centos. This gives us a
+    single, common, networking functionality to across multiple distros.
+  - All of the pre/post up, and pre/post down adhoc command options have been
+    converted to using systemd "oneshot" services. This conversion allows all
+    supported distros to benifit from the ability to run adhoc commands before
+    and after networking is available on both start-up and shut-down.

@@ -1,0 +1,8 @@
+---
+upgrade:
+  - |
+    The Cinder v1 API and the variable to enable it, ``cinder_enable_v1_api``,
+    have been removed. Existing keystone registered endpoints and service for
+    cinder v1 will be removed during an upgrade.
+  - |
+    The ``cinder_enable_v3_api`` variable has been removed as it had no effect.

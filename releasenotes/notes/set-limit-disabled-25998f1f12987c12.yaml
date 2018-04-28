@@ -1,0 +1,20 @@
+---
+upgrade:
+  - The variable ``lxc_host_machine_volume_size`` now accepts any valid size
+    modifier acceptable by ``truncate -s`` and ``machinectl set-limit``.
+    prior to this change the option assumed an integer was set for some value
+    in gigabytes. All acceptable values can be seen within the
+    `documentation for machinectl <https://www.freedesktop.org/software/systemd/man/machinectl.html#set-limit%20%5BNAME%5D%20BYTES>`_
+features:
+  - An option to disable the ``machinectl`` quota system has been added. The
+    variable ``lxc_host_machine_quota_disabled`` is a Boolean with a default of
+    **true**. When this option is set to **true** it will disable the
+    ``machinectl`` quota system.
+other:
+  - The variable ``lxc_host_machine_volume_size`` is used to set the size of
+    the default sparse file as well as define a limit within the ``machinectl``
+    quota system. When the ``machinectl`` quota system is enabled deployers
+    should appropriately set this value to the size of the container volume,
+    even when not using a sparse file.
+  - The container image cache within machinectl has been set to "64G" by
+    default.
