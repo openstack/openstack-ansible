@@ -173,7 +173,7 @@ Configuring service credentials
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Configure credentials for each service in the
-``/etc/openstack_deploy/*_secrets.yml`` files. Consider using the
+``/etc/openstack_deploy/user_secrets.yml`` file. Consider using the
 `Ansible Vault <http://docs.ansible.com/playbooks_vault.html>`_ feature to
 increase security by encrypting any files that contain credentials.
 
