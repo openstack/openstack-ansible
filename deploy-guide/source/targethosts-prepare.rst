@@ -98,7 +98,7 @@ Configure the operating system (CentOS)
        # yum install bridge-utils iputils lsof lvm2 \
          ntp ntpdate openssh-server sudo tcpdump
 
-#. Add the appropriate kernel modules to the ``/etc/modules`` file to
+#. Add the appropriate kernel modules to the ``/etc/modules-load.d`` file to
    enable VLAN and bond interfaces:
 
    .. code-block:: shell-session
@@ -141,7 +141,7 @@ Configure the operating system (openSUSE)
        # zypper install bridge-utils iputils lsof lvm2 \
          ntp opensshr sudo tcpdump
 
-#. Add the appropriate kernel modules to the ``/etc/modules`` file to
+#. Add the appropriate kernel modules to the ``/etc/modules-load.d`` file to
    enable VLAN and bond interfaces:
 
    .. code-block:: shell-session
