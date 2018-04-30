@@ -1,0 +1,14 @@
+---
+features:
+  - In a greenfield deployment containers will now bind link
+    their journals to the physical host machine in the
+    ``/var/log/journal/{{ machine_id }}`` location. During an
+    upgrade this change will be added to the container config but
+    will not go into effect until the container is restarted.
+    Because the restart is not forced the operator can perform
+    restarts to best suit the needs of their environment.
+    Journal linking provides operators the ability to log stream
+    and health check containerized systems without having to
+    attach or otherwise login. If this feature is not needed or
+    desired it can be disabled by setting the option
+    ``lxc_container_journal_link`` to *false*.

@@ -1,0 +1,9 @@
+---
+features:
+  - The variable ``lxc_user_defined_container`` has been added to the
+    lxc_container_create role allowing deployers to define the variable
+    file loaded when creating a container. This option defaults to **null**
+    which will instruct the role to create a container using the OS most closely
+    assosiated with the underlying OS. This option can be set to either one of
+    the roles built-in container types or use any variable file local to the
+    deployment host.
