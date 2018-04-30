@@ -332,27 +332,27 @@ include at least the following:
   are executed on for the Python requirements and the tox execution to
   work. This must be copied from the
   ``openstack-ansible-tests`` repository and will be automatically
-  be overriden by our proposal bot should any change happen.
+  be overridden by our proposal bot should any change happen.
 * ``setup.cfg`` and ``setup.py``:
   Information about the repository used when building artifacts.
 * ``run_tests.sh``:
   A script for developers to execute all standard tests on a
   suitable host. This must be copied from the
   ``openstack-ansible-tests`` repository and will be automatically
-  be overriden by our proposal bot should any change happen.
+  be overridden by our proposal bot should any change happen.
 * ``Vagrantfile``:
   A configuration file to allow a developer to easily create a
   test virtual machine using `Vagrant`_. This must automatically execute
   ``run_tests.sh``. This must be copied from the
   ``openstack-ansible-tests`` repository and will be automatically
-  be overriden by our proposal bot should any change happen.
+  be overridden by our proposal bot should any change happen.
 * ``README.rst``, ``LICENSE``, ``CONTRIBUTING.rst``:
   A set of standard files whose content is self-explanatory.
 * ``.gitignore``:
   A standard git configuration file for the repository which should be
   pretty uniform across all the repositories. This must be copied from the
   ``openstack-ansible-tests`` repository and will be automatically
-  be overriden by our proposal bot should any change happen.
+  be overridden by our proposal bot should any change happen.
 * ``.gitreview``:
   A standard file configured for the project to inform the ``git-review``
   plugin where to find the upstream gerrit remote for the repository.

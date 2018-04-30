@@ -27,7 +27,7 @@
       assert:
         that:
           - "babar == 'elephant'"
-    - name: Ensuring lxc_hosts_package_state is well overriden
+    - name: Ensuring lxc_hosts_package_state is well overridden
       assert:
         that:
           - "lxc_hosts_package_state == 'present'"
@@ -42,7 +42,7 @@
       assert:
         that:
           - "tintin == 'milou'"
-    - name: Ensuring security_package_state is overriden
+    - name: Ensuring security_package_state is overridden
       assert:
         that:
           - "security_package_state == 'present'"
