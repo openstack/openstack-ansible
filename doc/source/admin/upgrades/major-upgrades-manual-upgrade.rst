@@ -274,8 +274,15 @@ changes to the container/service setup:
 # A new ``heat_api`` container is created with all heat services
   running in it. The previously implemented ``heat_apis_container``
   and ``heat_engine_container`` can be removed.
+# The ironic conductor service has been consolidated into
+  the ``ironic_api_container``. The previously implemented
+  ``ironic_conductor_container`` can be removed.
 # All nova services are consolidated into the ``nova_api_container``
   and the rest of the nova containers can be removed.
+# All trove services have been consolidated into the
+  ``trove_api_container``. The previously implemented
+  ``trove_conductor_container`` and ``trove_taskmanager_container``
+  can be removed.
 
 This cleanup can be done by hand, or the playbooks provided
 can be used to do it for you from the deployment node. The
@@ -292,5 +299,7 @@ from the haproxy configuration.
 
     # openstack-ansible "${UPGRADE_PLAYBOOKS}/cleanup-cinder.yml" -e force_containers_destroy=yes -e force_containers_data_destroy=yes
     # openstack-ansible "${UPGRADE_PLAYBOOKS}/cleanup-heat.yml" -e force_containers_destroy=yes -e force_containers_data_destroy=yes
+    # openstack-ansible "${UPGRADE_PLAYBOOKS}/cleanup-ironic.yml" -e force_containers_destroy=yes -e force_containers_data_destroy=yes
     # openstack-ansible "${UPGRADE_PLAYBOOKS}/cleanup-nova.yml" -e force_containers_destroy=yes -e force_containers_data_destroy=yes
+    # openstack-ansible "${UPGRADE_PLAYBOOKS}/cleanup-trove.yml" -e force_containers_destroy=yes -e force_containers_data_destroy=yes
     # openstack-ansible --tags haproxy_server-config haproxy-install.yml
