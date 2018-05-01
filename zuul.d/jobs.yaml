@@ -150,6 +150,14 @@
       scenario: aio_lxc
 
 - job:
+    name: openstack-ansible-deploy-aio_metal-centos-7
+    parent: openstack-ansible-deploy-aio_lxc-centos-7
+    voting: false
+    vars:
+      actio: deploy
+      scenario: aio_metal
+
+- job:
     name: openstack-ansible-deploy-aio_nspawn-centos-7
     parent: openstack-ansible-deploy-aio_lxc-centos-7
     vars:
@@ -192,6 +200,14 @@
     vars:
       action: upgrade
       scenario: aio_lxc
+
+- job:
+    name: openstack-ansible-deploy-aio_metal-opensuse-423
+    parent: openstack-ansible-deploy-aio_lxc-opensuse-423
+    voting: false
+    vars:
+      action: deploy
+      scenario: aio_metal
 
 - job:
     name: openstack-ansible-deploy-aio_nspawn-opensuse-423
