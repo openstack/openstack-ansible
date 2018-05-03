@@ -21,9 +21,11 @@ import datetime
 import json
 import logging
 import os
-from osa_toolkit import dictutils as du
+import subprocess
 import tarfile
 import yaml
+
+from osa_toolkit import dictutils as du
 
 
 logger = logging.getLogger('osa-inventory')
@@ -154,6 +156,19 @@ def _make_backup(backup_path, source_file_path):
         'backup_openstack_inventory.tar'
     )
     with tarfile.open(inventory_backup_file, 'a') as tar:
+        # tar.getmembers() is always ordered with the
+        # tar standard append file order
+        members = [i.name for i in tar.getmembers()]
+        if len(members) > 15:
+            with open(os.devnull, 'w') as null:
+                for member in members[:-15]:
+                    subprocess.call(
+                        ['tar', '-vf', inventory_backup_file,
+                         '--delete', member],
+                        stdout=null,
+                        stderr=subprocess.STDOUT
+                    )
+
         basename = os.path.basename(source_file_path)
         backup_name = _get_backup_name(basename)
         tar.add(source_file_path, arcname=backup_name)
