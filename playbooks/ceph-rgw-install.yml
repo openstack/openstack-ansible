@@ -55,8 +55,8 @@
       delegate_to: "{{ groups['utility_all'][0] }}"
       run_once: true
       when: radosgw_keystone | bool
-      register: add_service
-      until: add_service|success
+      register: add_user
+      until: add_user|success
       retries: 5
       delay: 10
       no_log: True
@@ -126,9 +126,9 @@
             interface: "internal"
       delegate_to: "{{ groups['utility_all'][0] }}"
       run_once: true
-      register: add_service
+      register: add_endpoint
       when: radosgw_keystone | bool
-      until: add_service|success
+      until: add_endpoint|success
       retries: 5
       delay: 10
       no_log: True
