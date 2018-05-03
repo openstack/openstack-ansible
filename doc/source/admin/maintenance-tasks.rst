@@ -10,3 +10,4 @@ maintenance tasks.
 .. include :: maintenance-tasks/ansible-modules.rst
 .. include :: maintenance-tasks/containers.rst
 .. include :: maintenance-tasks/firewalls.rst
+.. include :: maintenance-tasks/inventory-backups.rst
