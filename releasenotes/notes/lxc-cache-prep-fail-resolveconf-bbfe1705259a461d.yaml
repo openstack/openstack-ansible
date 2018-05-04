@@ -1,0 +1,14 @@
+---
+issues:
+  - |
+    In the ``lxc_hosts`` role execution, we make use of the images produced
+    on a daily basis by images.linuxcontainers.org. Recent changes in the
+    way those images are produced have resulted in changes to the default
+    ``/etc/resolve.conf`` in that default image. As such, when executing
+    the cache preparation it fails. For pike releases prior to 16.0.13 the
+    workaround to get past the error is to add the following to the
+    ``/etc/openstack_deploy/user_variables.yml`` file.
+
+    .. code-block:: yaml
+
+      lxc_cache_prep_pre_commands: "rm -f /etc/resolv.conf || true"
