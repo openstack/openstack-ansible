@@ -132,6 +132,13 @@ on the device, then execute:
 
    # export BOOTSTRAP_OPTS="bootstrap_host_data_disk_device=sdb"
 
+By default the filesystem type will be set to ext4, if you want another type
+of filesystem to be used, just use something similar to the following:
+
+.. code-block:: shell-session
+
+   # export BOOTSTRAP_OPTS="bootstrap_host_data_disk_device=sdb bootstrap_host_data_disk_fs_type=xfs"
+
 Additional options may be implemented by simply concatenating them with
 a space between each set of options, for example:
 

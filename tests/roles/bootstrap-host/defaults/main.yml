@@ -223,6 +223,9 @@ bridge_iptables_rules: |
 # set the full path to the device. IE: "/dev/xvde" should be "xvde".
 bootstrap_host_data_disk_device: null
 #
+# Specify the default filesystem type
+bootstrap_host_data_disk_fs_type: ext4
+#
 # Boolean value to force the repartitioning of the secondary device.
 bootstrap_host_data_disk_device_force: no
 #
