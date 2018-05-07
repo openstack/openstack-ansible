@@ -51,7 +51,7 @@ export ACTION=${2:-"deploy"}
 # Set the source branch for upgrade tests
 # Be sure to change this whenever a new stable branch
 # is created. The checkout must always be N-1.
-export UPGRADE_SOURCE_BRANCH=${UPGRADE_SOURCE_BRANCH:-'stable/newton'}
+export UPGRADE_SOURCE_BRANCH=${UPGRADE_SOURCE_BRANCH:-'7b102466b1cbf61e06203e4977e71b72b54755e5'}
 
 ## Change branch for Upgrades ------------------------------------------------
 # If the action is to upgrade, then store the current SHA,
@@ -117,6 +117,12 @@ pushd "$(dirname "${0}")/../tests"
   fi
 popd
 
+# Now add Newton EOL workarounds
+if [[ "${ACTION}" == "upgrade" ]]; then
+    echo 'lxc_cache_prep_pre_commands: "rm -f /etc/resolv.conf || true"' > /etc/openstack_deploy/user_workarounds_newton.yml
+    echo 'lxc_cache_prep_post_commands: "ln -s ../run/resolvconf/resolv.conf /etc/resolv.conf -f"' > /etc/openstack_deploy/user_workarounds_newton.yml
+fi
+
 # Implement the log directory
 mkdir -p /openstack/log
 
@@ -141,6 +147,9 @@ log_instance_info
 # If the action is to upgrade, then checkout the original SHA for
 # the checkout, and execute the upgrade.
 if [[ "${ACTION}" == "upgrade" ]]; then
+
+    # Removing all the newton workarounds
+    rm -f /etc/openstack_deploy/user_workarounds_newton.yml
 
     # Checkout the original HEAD we started with
     git checkout ${UPGRADE_TARGET_BRANCH}
