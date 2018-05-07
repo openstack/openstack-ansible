@@ -53,6 +53,7 @@ tempest_service_available_horizon: "{{ groups['horizon_all'] is defined and grou
 tempest_service_available_neutron: "{{ groups['neutron_all'] is defined and groups['neutron_all'] | length > 0 }}"
 tempest_service_available_nova: "{{ groups['nova_all'] is defined and groups['nova_all'] | length > 0 }}"
 tempest_service_available_swift: "{{ (groups['swift_all'] is defined and groups['swift_all'] | length > 0) or (groups['ceph-rgw'] is defined and groups['ceph-rgw'] | length > 0) }}"
+tempest_service_available_congress: "{{ groups['congress_all'] is defined and groups['congress_all'] | length > 0 }}"
 
 tempest_log_dir: /var/log/utility
 tempest_venv_tag: "{{ openstack_release }}"
