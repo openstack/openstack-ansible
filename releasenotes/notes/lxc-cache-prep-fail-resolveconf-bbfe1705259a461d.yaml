@@ -12,3 +12,4 @@ issues:
     .. code-block:: yaml
 
       lxc_cache_prep_pre_commands: "rm -f /etc/resolv.conf || true"
+      lxc_cache_prep_post_commands: "ln -s ../run/resolvconf/resolv.conf /etc/resolv.conf -f"
