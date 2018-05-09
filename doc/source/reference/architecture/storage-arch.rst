@@ -20,7 +20,7 @@ the storage network by the hypervisor on the Compute host.
 
 The following diagram illustrates how Block Storage is connected to instances.
 
-.. figure:: figures/production-storage-cinder.png
+.. figure:: ../figures/production-storage-cinder.png
    :width: 600px
 
    The diagram shows the following steps.
@@ -77,7 +77,7 @@ eventually consistent object/blob store that is accessible via HTTP/HTTPS.
 
 The following diagram illustrates how data is accessed and replicated.
 
-.. figure:: figures/production-storage-swift.png
+.. figure:: ../figures/production-storage-swift.png
    :width: 600px
 
    The ``swift-proxy`` service is accessed by clients via the load balancer
@@ -105,7 +105,7 @@ The following diagram illustrates the interactions between the Image service,
 the storage device, and the ``nova-compute`` service when an instance is
 created.
 
-.. figure:: figures/production-storage-glance.png
+.. figure:: ../figures/production-storage-glance.png
    :width: 600px
 
    The diagram shows the following steps.
@@ -147,7 +147,7 @@ administrator is able to evacuate the instance to another Compute host and
 boot it up again. The following diagram illustrates the interactions between
 the storage device, the Compute host, the hypervisor, and the instance.
 
-.. figure:: figures/production-storage-nova.png
+.. figure:: ../figures/production-storage-nova.png
    :width: 600px
 
    The diagram shows the following steps.
