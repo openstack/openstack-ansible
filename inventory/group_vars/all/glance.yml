@@ -28,3 +28,22 @@ glance_service_internalurl: "{{ glance_service_internaluri }}"
 glance_service_adminuri: "{{ glance_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ glance_service_port }}"
 glance_service_adminurl: "{{ glance_service_adminuri }}"
 glance_api_servers: "{{ glance_service_internaluri }}"
+
+# When running RBD or horizon image upload mode is direct allow multiple locations.
+# See https://bugs.launchpad.net/openstack-ansible/+bug/1730722 for more on the
+# this topic.
+glance_show_multiple_locations: "{{ (glance_default_store == 'rbd') or (horizon_image_upload_mode == 'direct') }}"
+
+# Define the default required cors to allow image uploads through horizon
+_cors_overrides:
+  cors:
+    # LP bug 1680062
+    allow_headers: >-
+      origin,content-md5,x-image-meta-checksum,x-storage-token,accept-encoding,
+      x-auth-token,x-identity-status,x-roles,x-service-catalog,x-user-id,
+      x-tenant-id,x-openstack-request-id
+    allowed_origin: "{{ external_lb_vip_address }}"
+    allow_methods: "GET,POST,PUT,PATCH,DELETE"
+
+# Default glance API
+glance_glance_api_conf_overrides: "{{ (glance_show_multiple_locations | bool) | ternary(_cors_overrides, {}) }}"
