@@ -62,85 +62,78 @@
     path: /etc/nodepool
   register: nodepool_dir
 
-# OVH nodepool nodes have an issue which causes nested virt
-# instances to crash with a hardware error, then a dump.
-# We therefore detect whether we're running on OVH and
-# force it to use qemu instead.
-- name: Discover the OpenStack-Infra mirrors
-  shell: |
-    source /etc/ci/mirror_info.sh
-    NODEPOOL_OVERRIDES="/etc/openstack_deploy/user_openstackci.yml"
-    echo "uca_apt_repo_url: '${NODEPOOL_UCA_MIRROR}'" >> ${NODEPOOL_OVERRIDES}
-    echo "openstack_hosts_centos_mirror_url: '${NODEPOOL_CENTOS_MIRROR}'" >> ${NODEPOOL_OVERRIDES}
-    if [[ ${NODEPOOL_PYPI_MIRROR} == *.ovh.* ]]; then
-      echo "nova_virt_type: 'qemu'" >> ${NODEPOOL_OVERRIDES}
-    fi
-    echo "repo_build_pip_default_index: '${NODEPOOL_PYPI_MIRROR}'" >> ${NODEPOOL_OVERRIDES}
-  args:
-    executable: /bin/bash
-  when:
-    - nodepool_dir.stat.exists | bool
-  tags:
-    - skip_ansible_lint
-
-- name: Discover the OpenStack-Infra pypi/wheel mirror
-  shell: |
-    source /etc/ci/mirror_info.sh
-    echo "${NODEPOOL_WHEEL_MIRROR}"
-  args:
-    executable: /bin/bash
-  register: _pypi_wheel_mirror
-  when:
-    - nodepool_dir.stat.exists | bool
-  tags:
-    - skip_ansible_lint
-
-- name: Discover the OpenStack-Infra LXC reverse proxy
-  shell: |
-    source /etc/ci/mirror_info.sh
-    echo ${NODEPOOL_LXC_IMAGE_PROXY}
-  register: _lxc_mirror
-  args:
-    executable: /bin/bash
-  when:
-    - nodepool_dir.stat.exists | bool
-  tags:
-    - skip_ansible_lint
-
-- name: Set the package cache timeout to 60 mins in OpenStack-CI
-  set_fact:
-    cache_timeout: 3600
-  when:
-    - cache_timeout is not defined
-    - nodepool_dir.stat.exists
-
-- name: Determine if the host has a global pip config file
-  stat:
-    path: /etc/pip.conf
-  register: pip_conf_file
-
-# This is a very dirty hack due to images.linuxcontainers.org
-# constantly failing to resolve in openstack-infra.
-- name: Implement hard-coded hosts entries for consistently failing name
-  lineinfile:
-    path: "/etc/hosts"
-    line: "{{ item }}"
-    state: present
-  with_items:
-    - "91.189.91.21 images.linuxcontainers.org us.images.linuxcontainers.org"
-    - "91.189.88.37 images.linuxcontainers.org uk.images.linuxcontainers.org"
+- name: Set facts when inside of OpenStack-Infra
   when:
     - nodepool_dir.stat.exists
+  block:
+    # OVH nodepool nodes have an issue which causes nested virt
+    # instances to crash with a hardware error, then a dump.
+    # We therefore detect whether we're running on OVH and
+    # force it to use qemu instead.
+    - name: Discover the OpenStack-Infra mirrors
+      shell: |
+        source /etc/ci/mirror_info.sh
+        NODEPOOL_OVERRIDES="/etc/openstack_deploy/user_openstackci.yml"
+        echo "uca_apt_repo_url: '${NODEPOOL_UCA_MIRROR}'" >> ${NODEPOOL_OVERRIDES}
+        echo "openstack_hosts_centos_mirror_url: '${NODEPOOL_CENTOS_MIRROR}'" >> ${NODEPOOL_OVERRIDES}
+        if [[ ${NODEPOOL_PYPI_MIRROR} == *.ovh.* ]]; then
+          echo "nova_virt_type: 'qemu'" >> ${NODEPOOL_OVERRIDES}
+        fi
+        echo "repo_build_pip_default_index: '${NODEPOOL_PYPI_MIRROR}'" >> ${NODEPOOL_OVERRIDES}
+      args:
+        executable: /bin/bash
+      tags:
+        - skip_ansible_lint
 
-- name: Determine the fastest available OpenStack-Infra wheel mirror
-  command: "{{ bootstrap_host_aio_script_path }}/fastest-infra-wheel-mirror.py"
-  register: fastest_wheel_mirror
-  when: not pip_conf_file.stat.exists
+    - name: Discover the OpenStack-Infra pypi/wheel mirror
+      shell: |
+        source /etc/ci/mirror_info.sh
+        echo "${NODEPOOL_WHEEL_MIRROR}"
+      args:
+        executable: /bin/bash
+      register: _pypi_wheel_mirror
+      tags:
+        - skip_ansible_lint
 
-- name: Set repo_build_pip_extra_indexes fact
-  set_fact:
-    repo_build_pip_extra_indexes: "{{ fastest_wheel_mirror.stdout_lines }}"
-  when: not pip_conf_file.stat.exists
+    - name: Discover the OpenStack-Infra LXC reverse proxy
+      shell: |
+        source /etc/ci/mirror_info.sh
+        echo ${NODEPOOL_LXC_IMAGE_PROXY}
+      register: _lxc_mirror
+      args:
+        executable: /bin/bash
+      tags:
+        - skip_ansible_lint
+
+    - name: Set the package cache timeout to 60 mins in OpenStack-CI
+      set_fact:
+        cache_timeout: 3600
+      when:
+        - cache_timeout is not defined
+
+    # This is a very dirty hack due to images.linuxcontainers.org
+    # constantly failing to resolve in openstack-infra.
+    - name: Implement hard-coded hosts entries for consistently failing name
+      lineinfile:
+        path: "/etc/hosts"
+        line: "{{ item }}"
+        state: present
+      with_items:
+        - "91.189.91.21 images.linuxcontainers.org us.images.linuxcontainers.org"
+        - "91.189.88.37 images.linuxcontainers.org uk.images.linuxcontainers.org"
+
+- name: Set facts when outside of OpenStack-Infra
+  when:
+    - not nodepool_dir.stat.exists
+  block:
+    - name: Determine the fastest available OpenStack-Infra wheel mirror
+      command: "{{ bootstrap_host_aio_script_path }}/fastest-infra-wheel-mirror.py"
+      register: fastest_wheel_mirror
+
+    - name: Set repo_build_pip_extra_indexes fact
+      set_fact:
+        repo_build_pip_extra_indexes: "{{ fastest_wheel_mirror.stdout_lines }}"
+      when: not pip_conf_file.stat.exists
 
 - name: Check whether the host has a git cache
   stat:
@@ -173,37 +166,3 @@
     dest: "/etc/openstack_deploy/env.d/cinder-volume.yml"
   when:
     - "bootstrap_host_scenario == 'ceph'"
-
-- name: Add user_conf_files to contain the list of files to copy into containers
-  file:
-    path: /etc/openstack_deploy/user_conf_files.yml
-    state: touch
-  when: pip_conf_file.stat.exists
-  tags:
-    - container-conf-files
-
-- name: Ensure that the first line in user_conf_files is correct
-  lineinfile:
-    dest: /etc/openstack_deploy/user_conf_files.yml
-    line: "---"
-    insertbefore: BOF
-  when: pip_conf_file.stat.exists
-  tags:
-    - container-conf-files
-
-- name: Ensure that the second line in user_conf_files is correct
-  lineinfile:
-    dest: /etc/openstack_deploy/user_conf_files.yml
-    line: "lxc_container_cache_files:"
-    insertafter: "^---"
-  when: pip_conf_file.stat.exists
-  tags:
-    - container-conf-files
-
-- name: Add the dict to copy the global pip config file into user_conf_files
-  lineinfile:
-    dest: /etc/openstack_deploy/user_conf_files.yml
-    line: " - { src: '/etc/pip.conf', dest: '/etc/pip.conf' }"
-  when: pip_conf_file.stat.exists
-  tags:
-    - container-conf-files
