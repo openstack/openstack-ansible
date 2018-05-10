@@ -22,6 +22,18 @@ This example environment has the following characteristics:
 Network configuration
 ~~~~~~~~~~~~~~~~~~~~~
 
+Switch port configuration
+-------------------------
+
+The following example provides a good reference for switch configuration and cab
+layout. This example may be more that what is required for basic setups however
+it can be adjusted to just about any configuration. Additionally you will need
+to adjust the VLANS noted within this example to match your environment.
+
+.. image:: ../figures/example-switchport-config-and-cabling.png
+   :width: 100%
+   :alt: Switch port configuration example
+
 Network CIDR/VLAN assignments
 -----------------------------
 
