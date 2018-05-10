@@ -60,6 +60,130 @@ If no tempest is provided, some other functional testing should be done.
 For APIs, you can probably check the HTTP response codes, with
 specially crafted requests.
 
+.. _devel_and_testing:
+
+Running tests locally
+=====================
+
+Linting
+-------
+
+Python coding conventions are tested using `PEP8`_, with the following
+convention exceptions:
+
+* F403 - 'from ansible.module_utils.basic import \*'
+
+Testing may be done locally by executing:
+
+.. code-block:: bash
+
+    ./run_tests.sh pep8
+
+Bash coding conventions are tested using `Bashate`_, with the following
+convention exceptions:
+
+* E003: Indent not multiple of 4. We prefer to use multiples of 2 instead.
+* E006: Line longer than 79 columns. As many scripts are deployed as templates
+        and use jinja templating, this is very difficult to achieve. It is
+        still considered a preference and should be a goal to improve
+        readability, within reason.
+* E040: Syntax error determined using `bash -n`. As many scripts are deployed
+        as templates and use jinja templating, this will often fail. This
+        test is reasonably safely ignored as the syntax error will be
+        identified when executing the resulting script.
+
+Testing may be done locally by executing:
+
+.. code-block:: bash
+
+    ./run_tests.sh bashate
+
+Ansible is lint tested using `ansible-lint`_.
+
+Testing may be done locally by executing:
+
+.. code-block:: bash
+
+    ./run_tests.sh ansible-lint
+
+Ansible playbook syntax is tested using ansible-playbook.
+
+Testing may be done locally by executing:
+
+.. code-block:: bash
+
+    ./run_tests.sh ansible-syntax
+
+A consolidated set of all lint tests may be done locally by executing:
+
+.. code-block:: bash
+
+    ./run_tests.sh linters
+
+.. _PEP8: https://www.python.org/dev/peps/pep-0008/
+.. _Bashate: https://git.openstack.org/cgit/openstack-dev/bashate
+.. _ansible-lint: https://github.com/willthames/ansible-lint
+
+Documentation building
+----------------------
+
+Documentation is developed in reStructuredText_ (RST) and compiled into
+HTML using Sphinx.
+
+Documentation may be built locally by executing:
+
+.. code-block:: bash
+
+    ./run_tests.sh docs
+
+.. _reStructuredText: http://docutils.sourceforge.net/rst.html
+
+The OpenStack-Ansible integrated repo also has an extra documentation
+building process, to build the deployment guide.
+
+This guide may be built locally by executing:
+
+.. code-block:: bash
+
+    ./run_tests.sh deploy-guide
+
+Release notes building
+----------------------
+
+Release notes are generated using the `the reno tool`_ and compiled into
+HTML using Sphinx.
+
+Release notes may be built locally by executing:
+
+.. code-block:: bash
+
+    ./run_tests.sh releasenotes
+
+.. _the reno tool: https://docs.openstack.org/developer/reno/usage.html
+
+.. note::
+
+   The ``releasenotes`` build argument only tests committed changes.
+   Ensure your local changes are committed before running the
+   ``releasenotes`` build.
+
+Roles functional or scenario testing
+------------------------------------
+
+To run a functional test of the role, execute:
+
+.. code-block:: bash
+
+    ./run_tests.sh functional
+
+Some roles have extra tests, like neutron, defined in ``tox.ini``.
+
+To run a functional test named "calico", execute:
+
+.. code-block:: bash
+
+    ./run_tests.sh calico
+
 .. _integrate-new-role-with-aio:
 
 Testing a new role with an AIO
@@ -154,134 +278,6 @@ Testing a new role with an AIO
    deployment requirements (secrets and var files, HAProxy yml fragments,
    repo_package files, etc.) in their own files it makes it easy for you to
    automate these additional steps when testing your role.
-
-.. _devel_and_testing:
-
-Running tests locally
-=====================
-
-Linting
--------
-
-Python coding conventions are tested using `PEP8`_, with the following
-convention exceptions:
-
-* F403 - 'from ansible.module_utils.basic import \*'
-
-Testing may be done locally by executing:
-
-.. code-block:: bash
-
-    ./run_tests.sh pep8
-
-Bash coding conventions are tested using `Bashate`_, with the following
-convention exceptions:
-
-* E003: Indent not multiple of 4. We prefer to use multiples of 2 instead.
-* E006: Line longer than 79 columns. As many scripts are deployed as templates
-        and use jinja templating, this is very difficult to achieve. It is
-        still considered a preference and should be a goal to improve
-        readability, within reason.
-* E040: Syntax error determined using `bash -n`. As many scripts are deployed
-        as templates and use jinja templating, this will often fail. This
-        test is reasonably safely ignored as the syntax error will be
-        identified when executing the resulting script.
-
-Testing may be done locally by executing:
-
-.. code-block:: bash
-
-    ./run_tests.sh bashate
-
-Ansible is lint tested using `ansible-lint`_.
-
-Testing may be done locally by executing:
-
-.. code-block:: bash
-
-    ./run_tests.sh ansible-lint
-
-Ansible playbook syntax is tested using ansible-playbook.
-
-Testing may be done locally by executing:
-
-.. code-block:: bash
-
-    ./run_tests.sh ansible-syntax
-
-A consolidated set of all lint tests may be done locally by executing:
-
-.. code-block:: bash
-
-    ./run_tests.sh linters
-
-.. _PEP8: https://www.python.org/dev/peps/pep-0008/
-.. _Bashate: https://git.openstack.org/cgit/openstack-dev/bashate
-.. _ansible-lint: https://github.com/willthames/ansible-lint
-
-Documentation building
-----------------------
-
-Documentation is developed in reStructuredText_ (RST) and compiled into
-HTML using Sphinx.
-
-Documentation may be built locally by executing:
-
-.. code-block:: bash
-
-    ./run_tests.sh docs
-
-.. _reStructuredText: http://docutils.sourceforge.net/rst.html
-
-Deployment guide building
-^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The OpenStack-Ansible integrated repo also has an extra documentation
-building process, to build the deployment guide.
-
-This guide may be built locally by executing:
-
-.. code-block:: bash
-
-    ./run_tests.sh deploy-guide
-
-Release notes building
-----------------------
-
-Release notes are generated using the `the reno tool`_ and compiled into
-HTML using Sphinx.
-
-Release notes may be built locally by executing:
-
-.. code-block:: bash
-
-    ./run_tests.sh releasenotes
-
-.. _the reno tool: https://docs.openstack.org/developer/reno/usage.html
-
-.. note::
-
-   The ``releasenotes`` build argument only tests committed changes.
-   Ensure your local changes are committed before running the
-   ``releasenotes`` build.
-
-Roles functional or scenario testing
-------------------------------------
-
-To run a functional test of the role, execute:
-
-.. code-block:: bash
-
-    ./run_tests.sh functional
-
-Some roles have extra tests, like neutron, defined in ``tox.ini``.
-
-To run a functional test named "calico", execute:
-
-.. code-block:: bash
-
-    ./run_tests.sh calico
-
 Integrated repo functional or scenario testing
 ----------------------------------------------
 
