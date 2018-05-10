@@ -169,7 +169,7 @@ following to bootstrap Ansible:
 
 Notes:
   You might encounter an error while running the Ansible bootstrap script
-  when building some of the Python extension (like pycrypto) which says:
+  when building some of the Python extensions (like pycrypto) which says:
 
   .. code-block:: shell-session
 
@@ -341,7 +341,7 @@ built for informational purposes only and should **ONLY** be used as such.
       |                                 ^                               |
       |                                 |                               |
       |                                 V                               |
-      |                          (BR-Interfaces)<-------                |
+      |                          (BR-Interfaces)<------                 |
       |                                  ^     *      |                 |
       *-[ LXC ]*--*----------------------|-----|------|----|            |
       |           |                      |     |      |  | |            |
