@@ -622,3 +622,30 @@ To dump traffic on the ``br-mgmt`` bridge, use ``tcpdump`` to see all
 communications between the various containers. To narrow the focus,
 run ``tcpdump`` only on the desired network interface of the
 containers.
+
+
+Restoring inventory from backup
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+OpenStack-Ansible maintains a running archive of inventory. If a change has been
+introduced into the system that has broken inventory or otherwise has caused an
+unforseen issue, the inventory can be reverted to an early version. The backup
+file ``/etc/openstack_deploy/backup_openstack_inventory.tar`` contains a set of
+timestamped inventories that can be restored as needed.
+
+Example inventory restore process.
+
+.. code-block:: bash
+
+    mkdir /tmp/inventory_restore
+    cp /etc/openstack_deploy/backup_openstack_inventory.tar /tmp/inventory_restore/backup_openstack_inventory.tar
+    cd /tmp/inventory_restore
+    tar xf backup_openstack_inventory.tar
+    # Identify the inventory you wish to restore as the running inventory
+    cp openstack_inventory.json-YYYYMMDD_SSSSSS.json /etc/openstack_deploy/openstack_inventory.json
+    cd -
+    rm -rf /tmp/inventory_restore
+
+
+At the completion of this operation the inventory will be restored to the ealier
+version.
