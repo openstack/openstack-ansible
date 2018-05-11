@@ -27,7 +27,7 @@ restrictive environments. For more details on that setup, see
    be released in Ansible version 2.3.
 
 Create a RabbitMQ cluster
-~~~~~~~~~~~~~~~~~~~~~~~~~
+-------------------------
 
 RabbitMQ clusters can be formed in two ways:
 
@@ -86,7 +86,7 @@ cluster of the first node.
        Starting node rabbit@rabbit2 ...done.
 
 Check the RabbitMQ cluster status
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+---------------------------------
 
 #. Run ``rabbitmqctl cluster_status`` from either node.
 
@@ -119,7 +119,7 @@ process by stopping the rabbitmq application on the third node.
        ...done.
 
 Stop and restart a RabbitMQ cluster
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------------------
 
 To stop and start the cluster, keep in mind the order in
 which you shut the nodes down. The last node you stop, needs to be the
@@ -130,7 +130,7 @@ it thinks the current `master` should not be the master and drops the messages
 to ensure that no new messages are queued while the real master is down.
 
 RabbitMQ and mnesia
-~~~~~~~~~~~~~~~~~~~
+-------------------
 
 Mnesia is a distributed database that RabbitMQ uses to store information about
 users, exchanges, queues, and bindings. Messages, however
@@ -143,7 +143,7 @@ To view the locations of important Rabbit files, see
 `File Locations <https://www.rabbitmq.com/relocate.html>`_.
 
 Repair a partitioned RabbitMQ cluster for a single-node
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-------------------------------------------------------
 
 Invariably due to something in your environment, you are likely to lose a
 node in your cluster. In this scenario, multiple LXC containers on the same host
@@ -195,7 +195,7 @@ the failing node.
       ...done.
 
 Repair a partitioned RabbitMQ cluster for a multi-node cluster
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+--------------------------------------------------------------
 
 The same concepts apply to a multi-node cluster that exist in a single-node
 cluster. The only difference is that the various nodes will actually be

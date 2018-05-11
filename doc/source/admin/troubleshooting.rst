@@ -627,11 +627,11 @@ containers.
 Restoring inventory from backup
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible maintains a running archive of inventory. If a change has been
-introduced into the system that has broken inventory or otherwise has caused an
-unforseen issue, the inventory can be reverted to an early version. The backup
-file ``/etc/openstack_deploy/backup_openstack_inventory.tar`` contains a set of
-timestamped inventories that can be restored as needed.
+OpenStack-Ansible maintains a running archive of inventory. If a change has
+been introduced into the system that has broken inventory or otherwise has
+caused an unforseen issue, the inventory can be reverted to an early version.
+The backup file ``/etc/openstack_deploy/backup_openstack_inventory.tar``
+contains a set of timestamped inventories that can be restored as needed.
 
 Example inventory restore process.
 
@@ -647,5 +647,5 @@ Example inventory restore process.
     rm -rf /tmp/inventory_restore
 
 
-At the completion of this operation the inventory will be restored to the ealier
-version.
+At the completion of this operation the inventory will be restored to the
+earlier version.

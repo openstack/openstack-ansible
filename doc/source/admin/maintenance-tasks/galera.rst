@@ -10,7 +10,7 @@ node, when the service is not running, or when changes are made to the
 ``/etc/mysql/my.cnf`` configuration file.
 
 Verify cluster status
-~~~~~~~~~~~~~~~~~~~~~
+---------------------
 
 Compare the output of the following command with the following output.
 It should give you information about the status of your cluster.
@@ -42,7 +42,7 @@ processing SQL requests. When gracefully shutting down multiple nodes,
 perform the actions sequentially to retain operation.
 
 Start a cluster
-~~~~~~~~~~~~~~~
+---------------
 
 Gracefully shutting down all nodes destroys the cluster. Starting or
 restarting a cluster from zero nodes requires creating a new cluster on
@@ -147,7 +147,7 @@ one of the nodes.
 .. _galera-cluster-recovery:
 
 Galera cluster recovery
-~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------
 
 Run the ``galera-install`` playbook using the ``galera-bootstrap`` tag
 to automatically recover a node or an entire environment.
@@ -161,7 +161,7 @@ to automatically recover a node or an entire environment.
 The cluster comes back online after completion of this command.
 
 Recover a single-node failure
------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If a single node fails, the other nodes maintain quorum and
 continue to process SQL requests.
@@ -202,7 +202,7 @@ continue to process SQL requests.
    for the node.
 
 Recover a multi-node failure
-----------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 When all but one node fails, the remaining node cannot achieve quorum and
 stops processing SQL requests. In this situation, failed nodes that
@@ -290,7 +290,7 @@ recover cannot join the cluster because it no longer exists.
    last resort, rebuild the container for the node.
 
 Recover a complete environment failure
---------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Restore from backup if all of the nodes in a Galera cluster fail (do not
 shutdown gracefully). Change to the ``playbook`` directory and run the
@@ -332,7 +332,7 @@ restart the cluster using the ``--wsrep-new-cluster`` command on one
 node.
 
 Rebuild a container
--------------------
+~~~~~~~~~~~~~~~~~~~
 
 Recovering from certain failures require rebuilding one or more containers.
 

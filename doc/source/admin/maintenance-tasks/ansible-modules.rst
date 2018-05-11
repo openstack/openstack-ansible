@@ -45,7 +45,7 @@ For more information, see `Inventory <http://docs.ansible.com/ansible/intro_inve
 and `Patterns <http://docs.ansible.com/ansible/intro_patterns.html>`_.
 
 Running the shell module
-~~~~~~~~~~~~~~~~~~~~~~~~
+------------------------
 
 The two most common modules used are the ``shell`` and ``copy`` modules. The
 ``shell``  module takes the command name followed by a list of space delimited
@@ -78,7 +78,7 @@ For more information, see `shell - Execute commands in nodes
 <http://docs.ansible.com/ansible/shell_module.html>`_.
 
 Running the copy module
-~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------
 
 The copy module copies a file on a local machine to remote locations. Use the
 fetch module to copy files from remote locations to the local machine. If you
@@ -126,7 +126,7 @@ from a single Compute host:
    -rw-r--r-- 1 root root 2428624 Dec 15 01:23 /tmp/aio1/var/log/nova/nova-compute.log
 
 Using tags
-~~~~~~~~~~
+----------
 
 Tags are similar to the limit flag for groups except tags are used to only run
 specific tasks within a playbook. For more information on tags, see
@@ -135,7 +135,7 @@ and `Understanding ansible tags
 <http://www.caphrim.net/ansible/2015/05/24/understanding-ansible-tags.html>`_.
 
 Ansible forks
-~~~~~~~~~~~~~
+-------------
 
 The default ``MaxSessions`` setting for the OpenSSH Daemon is 10. Each Ansible
 fork makes use of a session. By default, Ansible sets the number of forks to

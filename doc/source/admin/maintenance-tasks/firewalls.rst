@@ -24,7 +24,7 @@ if you want to use a different port.
    configure your firewall.
 
 Finding ports for your external load balancer
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+---------------------------------------------
 
 As explained in the previous section, you can find (in each role
 documentation) the default variables used for the public

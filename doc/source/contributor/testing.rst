@@ -278,6 +278,7 @@ Testing a new role with an AIO
    deployment requirements (secrets and var files, HAProxy yml fragments,
    repo_package files, etc.) in their own files it makes it easy for you to
    automate these additional steps when testing your role.
+
 Integrated repo functional or scenario testing
 ----------------------------------------------
 

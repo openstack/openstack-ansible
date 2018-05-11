@@ -10,7 +10,7 @@ adding new deployment groups. It is also possible to destroy containers
 if needed after changes and modifications are complete.
 
 Scale individual services
-~~~~~~~~~~~~~~~~~~~~~~~~~
+-------------------------
 
 Individual OpenStack services, and other open source project services,
 run within containers. It is possible to scale out these services by
@@ -63,7 +63,7 @@ modifying the ``/etc/openstack_deploy/openstack_user_config.yml`` file.
       $ openstack-ansible lxc-containers-create.yml rabbitmq-install.yml
 
 Destroy and recreate containers
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-------------------------------
 
 Resolving some issues may require destroying a container, and rebuilding
 that container from the beginning. It is possible to destroy and
