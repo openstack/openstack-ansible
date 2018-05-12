@@ -3,17 +3,30 @@ Installing with limited connectivity
 ====================================
 
 Many playbooks and roles in OpenStack-Ansible retrieve dependencies from the
-public Internet by default. Many deployers block direct outbound connectivity
-to the Internet when implementing network security measures. We recommend a
-set of practices and configuration overrides deployers can use when running
-OpenStack-Ansible in network environments that block Internet connectivity.
+public Internet by default. The example configurations assume that the deployer
+provides good quality Internet connectivity via a router on the OpenStack
+management network.
+
+Deployments may encounter limited external connectivity for a number of
+reasons:
+
+- Unreliable or low bandwidth external connectivity
+- Firewall rules which block external connectivity
+- External connectivity required to be via HTTP or SOCKS proxies
+- Architectural decisions by the deployer to isolate the OpenStack networks
+- High security environments where no external connectivity is permitted
+
+We recommend a set of practices and configuration overrides deployers can use
+when running OpenStack-Ansible in network environments that block Internet
+connectivity.
 
 The options below are not mutually exclusive and may be combined if desired.
 
 Example internet dependencies
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- Software packages
+- Python packages
+- Distribution specific packages
 - LXC container images
 - Source code repositories
 - GPG keys for package validation
@@ -26,28 +39,64 @@ OpenStack dependencies. Mirrors often provide a great deal of risk mitigation
 by reducing dependencies on resources and systems outside of your direct
 control. Mirrors can also provide greater stability, performance and security.
 
-Software package repositories
------------------------------
+Python package repositories
+---------------------------
 
 Many packages used to run OpenStack are installed using `pip`. We advise
-mirroring the PyPi package index used by `pip`.
+mirroring the PyPi package index used by `pip`. A deployer can choose to
+actively mirror the entire upstream PyPi repository but this may require
+a significant amount of storage. Alternatively a caching pip proxy
+can be used to retain local copies of only those packages which are required.
 
-Many software packages are installed on the target hosts using `.deb`
-packages. We advise mirroring the repositories that host these packages.
+Example OpenStack-Ansible configuration for specifying a local pip mirror or
+proxy:
 
-Ubuntu repositories to mirror:
+.. code-block:: yaml
+
+      # Custom upstream pip index used when building repo server contents
+      repo_build_pip_default_index: http://pip.example.org/simple
+
+      # Custom upstream pip mirror host:port which must be able to supply all
+      # packages not built by the repo server itself.
+      repo_nginx_pypi_upstream: pip.example.org:80
+
+You may also choose to create a local copy of
+https://bootstrap.pypa.io/get-pip.py to remove a dependency on an external
+resource.
+
+.. code-block:: yaml
+
+      # Override PIP installer ("Get modern PIP"): https://bootstrap.pypa.io/get-pip.py
+      pip_upstream_url: "http://mirror.example.org/bootstrap.pypa.io/get-pip.py"
+
+Distribution specific packages
+------------------------------
+
+Many software packages are installed on Ubuntu hosts using `.deb` packages.
+Similar packaging mechanisms exist for other Linux distributions. We advise
+mirroring the repositories that host these packages.
+
+Upstream Ubuntu repositories to mirror:
 
 - xenial
 - xenial-updates
 
-Galera-related repositories to mirror:
+OpenStack-Ansible requires several other repositories to install specific
+components such as Galera and Ceph.
 
-- https://mirror.rackspace.com/mariadb/repo/10.0/ubuntu
+Example repositories to mirror (Ubuntu target hosts):
+
+- https://download.ceph.com/debian-luminous/
+- https://www.rabbitmq.com/debian
+- http://ubuntu-cloud.archive.canonical.com/ubuntu
+- https://packages.erlang-solutions.com/ubuntu
+- https://mirror.rackspace.com/mariadb/repo/10.1/ubuntu
 - https://repo.percona.com/apt
 
-These lists are intentionally not exhaustive. Consult the OpenStack-Ansible
-playbooks and role documentation for further repositories and the variables
-that may be used to override the repository location.
+These lists are intentionally not exhaustive and equivalents will be required
+for other Linux distributions. Consult the OpenStack-Ansible playbooks and role
+documentation for further repositories and the variables that may be used to
+override the repository location.
 
 LXC container images
 --------------------
@@ -75,46 +124,18 @@ the path to that file using the environment variable ``ANSIBLE_ROLE_FILE``.
 Practice B: Proxy access to internet resources
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Configure target and deployment hosts to reach public internet resources via
-HTTP or SOCKS proxy server(s). OpenStack-Ansible may be used to configure
-target hosts to use the proxy server(s). OpenStack-Ansible does not provide
-automation for creating the proxy server(s).
+Some networks have no routed access to the Internet, or require certain
+traffic to use application specific gateways such as HTTP or SOCKS proxy
+servers.
 
-.. note::
+Configuration can be applied to target and deployment hosts to reach public
+internet resources via HTTP or SOCKS proxy server(s). OpenStack-Ansible may be
+used to configure target hosts to use the proxy server(s). OpenStack-Ansible
+does not provide automation for creating the proxy server(s).
 
-   We recommend you set your ``/etc/environment`` variables with proxy
-   settings before launching any scripts or playbooks to avoid failure.
-
-Basic proxy configuration
--------------------------
-
-The following configuration configures most network clients on the target
-hosts to connect via the specified proxy. For example, these settings
-affect:
-
-- Most Python network modules
-- `curl`
-- `wget`
-- `openstack`
-
-Use the ``no_proxy`` environment variable to specify hosts that you cannot
-reach through the proxy. These often are the hosts in the management network.
-In the example below, ``no_proxy`` is set to localhost only, but the default
-configuration file suggests using variables to list all the hosts/containers'
-management addresses as well as the load balancer internal/external addresses.
-
-Configuration changes are made in ``/etc/openstack_deploy/user_variables.yml``.
-
-.. code-block:: yaml
-
-      # Used to populate /etc/environment
-      global_environment_variables:
-         HTTP_PROXY: "http://proxy.example.com:3128"
-         HTTPS_PROXY: "http://proxy.example.com:3128"
-         NO_PROXY: "localhost,127.0.0.1"
-         http_proxy: "http://proxy.example.com:3128"
-         https_proxy: "http://proxy.example.com:3128"
-         no_proxy: "localhost,127.0.0.1"
+Initial host deployment is outside the scope of OpenStack-Ansible and the
+deployer must ensure a minimum set of proxy configuration is in place, in
+particular for the system package manager.
 
 ``apt-get`` proxy configuration
 -------------------------------
@@ -123,12 +144,92 @@ See `Setting up apt-get to use a http-proxy`_
 
 .. _Setting up apt-get to use a http-proxy: https://help.ubuntu.com/community/AptGet/Howto#Setting_up_apt-get_to_use_a_http-proxy
 
+Other proxy configuration
+-------------------------
+
+Further to this basic configuration, there are other network clients on the
+target hosts which may be configured to connect via a proxy. For example:
+
+- Most Python network modules
+- `curl`
+- `wget`
+- `openstack`
+
+These tools and their underlying libraries are used by Ansible itself and the
+OpenStack-Ansible playbooks, so there must be a proxy configuration in place
+for the playbooks to successfully access external resources.
+
+Typically these tools read environment variables containing proxy server
+settings. These environment variables can be configured in
+``/etc/environment`` if required.
+
+It is important to note that the proxy server should only be used to access
+external resources, and communication between the internal components of the
+OpenStack deployment should be direct, without going through the proxy.
+The ``no_proxy`` environment variable is used to specify hosts that should
+be reached directly without going through the proxy. These often are the hosts
+in the management network.
+
+OpenStack-Ansible provides two distinct mechanisms for configuring proxy
+server settings:
+
+#. The default configuration file suggests setting a persistent proxy
+configuration on all target hosts and defines a persistent ``no_proxy``
+environment variable which lists all hosts/containers' management addresses as
+well as the load balancer internal/external addresses.
+
+#. An alternative method applies proxy configuration in a transient manner
+during the execution of Ansible playbooks and defines a minimum set of
+management network IP addresses for ``no_proxy`` that are required for the
+playbooks to succeed. These proxy settings do not persist after an Ansible
+playbook run and the completed deployment does not require them in order to be
+functional.
+
+The deployer must decide which of these approaches is more suitable for the
+target hosts, taking into account the following guidance:
+
+#. Persistent proxy configuration is a standard practice and network clients on
+the target hosts will be able to access external resources after deployment.
+
+#. The deployer must ensure that a persistent proxy configuration has complete
+coverage of all OpenStack management network host/containers' IP addresses in
+the ``no_proxy`` environment variable. It is necessary to use a list of IP
+addresses, CIDR notation is not valid for ``no_proxy``.
+
+#. Transient proxy configuration guarantees that proxy environment variables
+will not persist, ensuring direct communication between services on the
+OpenStack management network after deployment. Target host network clients
+such as ``wget`` will not be able to access external resources after
+deployment.
+
+#. The maximum length of ``no_proxy`` should not exceed 1024 characters due to
+a fixed size buffer in the ``pam_env`` PAM module. Longer environment variables
+will be truncated during deployment operations and this will lead to
+unpredictable errors during or after deployment.
+
+Once the number of hosts/containers in a deployment reaches a certain size
+the length of ``no_proxy`` will exceed 1024 characters. It is then mandatory to
+use the transient proxy settings which only requires a subset of the management
+network IP addresses to be present in ``no_proxy`` at deployment time.
+
+Refer to `global_environment_variables:` and
+`deployment_environment_variables:` in the example `user_variables.yml` for
+details of configuring persistent and transient proxy environment variables.
+
 Deployment host proxy configuration for bootstrapping Ansible
 -------------------------------------------------------------
 
 Configure the ``bootstrap-ansible.sh`` script used to install Ansible and
 Ansible role dependencies on the deployment host to use a proxy by setting the
 environment variables ``HTTPS_PROXY`` or ``HTTP_PROXY``.
+
+.. note::
+
+   We recommend you set your ``/etc/environment`` variables with proxy
+   settings before launching any scripts or playbooks to avoid failure.
+
+For larger or complex environments a dedicated deployment host allows the most
+suitable proxy configuration to be applied to both deployment and target hosts.
 
 Considerations when proxying TLS traffic
 ----------------------------------------
