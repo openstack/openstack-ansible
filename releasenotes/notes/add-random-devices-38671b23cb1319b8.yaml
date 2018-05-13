@@ -1,0 +1,12 @@
+---
+fixes:
+  - |
+    Newer releases of CentOS ship a version of libnss that depends on the existance
+    of /dev/random and /dev/urandom in the operating system in order to run.  This
+    causes a problem during the cache preparation process which runs inside chroot
+    that does not contain this, resulting in errors with the following message:
+
+    error: Failed to initialize NSS library
+
+    This has been resolved by introducing a /dev/random and /dev/urandom inside
+    the chroot-ed environment.

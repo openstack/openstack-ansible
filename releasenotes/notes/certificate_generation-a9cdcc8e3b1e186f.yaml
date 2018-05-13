@@ -1,0 +1,14 @@
+---
+
+features:
+  - |
+    Octavia requires SSL certificates for communication with the amphora. This
+    adds the automatic creation of self signed certificates for this purpose.
+    It uses different certificate authorities for amphora and control plane
+    thus insuring maximum security.
+security:
+  - |
+    It is recommended that the certificate generation is always reviewed by
+    security professionals since algorithms and key-lengths considered secure
+    change all the time.
+
