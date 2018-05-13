@@ -1,0 +1,8 @@
+---
+upgrade:
+  - |
+    The distribution package lookup and data output
+    has been removed from the py_pkgs lookup so that
+    the repo-build use of py_pkgs has reduced output
+    and the lookup is purpose specific for python
+    packages only.
