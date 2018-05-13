@@ -44,9 +44,6 @@
       when: inventory_hostname == groups['tacker_all'][0]
   roles:
     - role: "os_tacker"
-    - role: "openstack_openrc"
-      tags:
-        - openrc
     - role: "rsyslog_client"
       rsyslog_client_log_rotate_file: tacker_log_rotate
       rsyslog_client_log_dir: "/var/log/tacker"

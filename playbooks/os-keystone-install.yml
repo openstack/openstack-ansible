@@ -13,6 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
+# The openstack_openrc role gets executed on a designated service
+# host which will handle all service/user/domain/project/role
+# management for the roles. It is executed here as this is the
+# first role which will use it and the implementation of the
+# clouds.yaml file is useless until keystone is in place.
+- name: Implement openrc/clouds.yaml on the designated service host
+  hosts: "{{ openstack_service_setup_host | default('localhost') }}"
+  gather_facts: no
+  become: yes
+  tags:
+    - openrc
+  roles:
+    - role: "openstack_openrc"
+
 - name: Prepare MQ/DB services
   hosts: keystone_all
   gather_facts: no
@@ -117,9 +132,6 @@
 
   roles:
     - role: "os_keystone"
-    - role: "openstack_openrc"
-      tags:
-        - openrc
     - role: "rsyslog_client"
       rsyslog_client_log_rotate_file: keystone_log_rotate
       rsyslog_client_log_dir: "/var/log/keystone"

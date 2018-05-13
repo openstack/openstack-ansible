@@ -95,10 +95,6 @@
       tags:
         - bird
 
-    - role: "openstack_openrc"
-      tags:
-        - openrc
-
     - role: "rsyslog_client"
       rsyslog_client_log_rotate_file: neutron_log_rotate
       rsyslog_client_log_dir: "/var/log/neutron"

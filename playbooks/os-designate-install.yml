@@ -64,9 +64,6 @@
         - hostvars['localhost']['resolvconf_enabled'] | bool
   roles:
     - role: "os_designate"
-    - role: "openstack_openrc"
-      tags:
-        - openrc
     - role: "rsyslog_client"
       rsyslog_client_log_rotate_file: designate_log_rotate
       rsyslog_client_log_dir: "/var/log/designate"
