@@ -34,7 +34,7 @@ It should give you information about the status of your cluster.
     wsrep_cluster_state_uuid  338b06b0-2948-11e4-9d06-bef42f6c52f1
     wsrep_cluster_status      Primary
 
-In the previous example, all but one node was responding.
+In this example, only one node responded.
 
 Gracefully shutting down the MariaDB service on all but one node
 allows the remaining operational node to continue
