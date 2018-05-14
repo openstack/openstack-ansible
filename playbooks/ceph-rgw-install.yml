@@ -14,7 +14,7 @@
 # limitations under the License.
 
 - include: ceph-rgw-keystone-setup.yml
-  when: groups['ceph-rgw'] is defined and groups['ceph-rgw'] | length > 0
+  when: (groups['ceph-rgw'] is defined and groups['ceph-rgw'] | length > 0) or (ceph_rgws | length > 0)
 
 - name: Install ceph radosgw
   hosts: ceph-rgw
