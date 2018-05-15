@@ -179,9 +179,6 @@
   vars:
     is_metal: "{{ properties.is_metal|default(false) }}"
     radosgw_keystone: yes
-    # TODO(logan): Remove the following line once
-    # upstream issue https://github.com/ceph/ceph-ansible/issues/2111 is fixed
-    radosgw_ssl: no
     radosgw_civetweb_port: "{{ radosgw_service_port }}"
   tags:
     - ceph-rgw
