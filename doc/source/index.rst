@@ -24,10 +24,10 @@ OpenStack-Ansible Rocky is currently in development.
    contributor/index
    reference/index
 
-Queens: Release Candidate
-~~~~~~~~~~~~~~~~~~~~~~~~~
-OpenStack-Ansible Queens is currently a release candidate, expected to release
-with the 17.0.0 tag by 16 March 2018.
+Queens: Current stable release, security supported
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+OpenStack-Ansible's Queens series was first released with the 17.0.0 tag on
+14 March 2018.
 
 * `OpenStack-Ansible Queens Documentation`_
 
