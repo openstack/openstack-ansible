@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Prepare MQ/DB services
+- name: Prepare MQ services
   hosts: glance_all
   gather_facts: no
   user: root
@@ -63,15 +63,6 @@
       when:
         - glance_ceilometer_enabled | bool
         - groups[oslomsg_notify_host_group] | length > 0
-
-    - name: Configure MySQL user
-      include: common-tasks/mysql-db-user.yml
-      vars:
-        user_name: "{{ glance_galera_user }}"
-        password: "{{ glance_container_mysql_password }}"
-        login_host: "{{ glance_galera_address }}"
-        db_name: "{{ glance_galera_database }}"
-      run_once: yes
 
 
 
