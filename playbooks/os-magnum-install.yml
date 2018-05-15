@@ -49,9 +49,6 @@
         db_name: "{{ magnum_galera_database_name }}"
       when: inventory_hostname == groups['magnum_all'][0]
   roles:
-    - role: "openstack_openrc"
-      tags:
-        - openrc
     - role: "os_magnum"
     - role: "rsyslog_client"
       rsyslog_client_log_rotate_file: magnum_log_rotate

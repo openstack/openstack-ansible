@@ -54,9 +54,6 @@
       tags:
         - ceph
     - role: "os_gnocchi"
-    - role: "openstack_openrc"
-      tags:
-        - openrc
     - role: "rsyslog_client"
       rsyslog_client_log_rotate_file: gnocchi_log_rotate
       rsyslog_client_log_dir: "/var/log/gnocchi"
