@@ -18,6 +18,14 @@ aodh_galera_user: aodh
 aodh_galera_database: aodh
 aodh_galera_address: "{{ internal_lb_vip_address }}"
 aodh_connection_string: "mysql+pymysql://{{ aodh_galera_user }}:{{ aodh_container_db_password }}@{{ aodh_galera_address }}/{{ aodh_galera_database }}?charset=utf8"
+
+# TODO(ansmith): remove rabbitmq vars once service file is updated
+# to use oslomsg vars
+aodh_oslomsg_rpc_userid: aodh
+aodh_oslomsg_rpc_vhost: /aodh
+aodh_oslomsg_notify_userid: aodh
+aodh_oslomsg_notify_vhost: /aodh
+
 aodh_rabbitmq_host_group: "{{ rabbitmq_host_group }}"
 
 aodh_service_in_ldap: "{{ service_ldap_backend_enabled }}"

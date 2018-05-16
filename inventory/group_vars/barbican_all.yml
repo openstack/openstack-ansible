@@ -21,6 +21,13 @@ barbican_galera_address: "{{ galera_address }}"
 barbican_galera_database: barbican
 barbican_galera_user: barbican
 
+# TODO(ansmith): remove rabbitmq vars once service file is updated
+# to use oslomsg vars
+barbican_oslomsg_rpc_userid: barbican
+barbican_oslomsg_rpc_vhost: /barbican
+barbican_oslomsg_notify_userid: barbican
+barbican_oslomsg_notify_vhost: /barbican
+
 barbican_rabbitmq_host_group: "{{ rabbitmq_host_group }}"
 barbican_rabbitmq_port: "{{ rabbitmq_port }}"
 barbican_rabbitmq_servers: "{{ rabbitmq_servers }}"

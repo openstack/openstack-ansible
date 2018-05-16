@@ -16,6 +16,13 @@
 # These are here rather than in keystone_all because
 # both the os_ceilometer and os_keystone roles require them
 
+# TODO(ansmith): remove rabbitmq vars once service file is updated
+# to use oslomsg vars
+keystone_oslomsg_rpc_userid: keystone
+keystone_oslomsg_rpc_vhost: /keystone
+keystone_oslomsg_notify_userid: keystone
+keystone_oslomsg_notify_vhost: /keystone
+
 # RPC
 keystone_rabbitmq_userid: keystone
 keystone_rabbitmq_vhost: /keystone

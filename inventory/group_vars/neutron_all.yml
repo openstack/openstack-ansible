@@ -16,6 +16,14 @@
 # These are here rather than in neutron_all because
 # both the os_ceilometer and os_neutron roles require them
 
+# TODO(ansmith): remove rabbitmq vars once service file is updated
+# to use oslomsg vars
+# Oslo Messaging
+neutron_oslomsg_rpc_userid: neutron
+neutron_oslomsg_rpc_vhost: /neutron
+neutron_oslomsg_notify_userid: neutron
+neutron_oslomsg_notify_vhost: /neutron
+
 # Telemetry notifications
 neutron_rabbitmq_telemetry_userid: "{{ neutron_rabbitmq_userid }}"
 neutron_rabbitmq_telemetry_password: "{{ neutron_rabbitmq_password }}"

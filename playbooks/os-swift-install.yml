@@ -49,6 +49,19 @@
         - inventory_hostname == groups['swift_all'][0]
       tags:
         - always
+
+    - include: common-tasks/oslomsg-notify-vhost-user.yml
+      static: no
+      vars:
+        notify_user: "{{ swift_oslomsg_notify_userid }}"
+        notify_password: "{{ swift_oslomsg_notify_password }}"
+        notify_vhost: "{{ swift_oslomsg_notify_vhost }}"
+      when:
+        - swift_ceilometer_enabled | bool
+        - inventory_hostname == groups['swift_all'][0]
+      tags:
+        - always
+
   roles:
     - role: "os_swift"
       swift_do_setup: True

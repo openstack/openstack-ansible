@@ -20,6 +20,13 @@ cinder_service_backup_program_enabled: "{{ hostvars['localhost']['cinder_service
 # These are here rather than in cinder_all because
 # both the os_ceilometer and os_cinder roles require them
 
+# TODO(ansmith): remove rabbitmq vars once service file is updated
+# to use oslomsg vars
+cinder_oslomsg_rpc_userid: cinder
+cinder_oslomsg_rpc_vhost: /cinder
+cinder_oslomsg_notify_userid: cinder
+cinder_oslomsg_notify_vhost: /cinder
+
 # RPC
 cinder_rabbitmq_userid: cinder
 cinder_rabbitmq_vhost: /cinder

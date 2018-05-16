@@ -13,6 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# TODO(ansmith): remove rabbitmq vars once service file is updated
+# to use oslomsg vars
+glance_oslomsg_rpc_userid: glance
+glance_oslomsg_rpc_vhost: /glance
+glance_oslomsg_notify_userid: glance
+glance_oslomsg_notify_vhost: /glance
+
 # RPC
 glance_rabbitmq_userid: glance
 glance_rabbitmq_vhost: /glance

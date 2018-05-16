@@ -18,6 +18,13 @@ designate_galera_address: "{{ galera_address }}"
 designate_galera_user: designate
 designate_galera_database_name: designate
 
+# TODO(ansmith): remove rabbitmq vars once service file is updated
+# to use oslomsg vars
+designate_oslomsg_rpc_userid: designate
+designate_oslomsg_rpc_vhost: /designate
+designate_oslomsg_notify_userid: designate
+designate_oslomsg_notify_vhost: /designate
+
 # RPC
 designate_rabbitmq_userid: designate
 designate_rabbitmq_vhost: /designate

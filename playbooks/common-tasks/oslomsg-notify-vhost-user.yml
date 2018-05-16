@@ -1,0 +1,46 @@
+---
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Usage:
+#  To use this common task to create to create the user and vhost if
+#  needed for the messaging backend configured for Notify communications.
+#  To used this common task, the variables "notify_user", "notify_password"
+#  and "notify_vhost" must be set.
+
+- name: Ensure Notify Rabbitmq vhost
+  rabbitmq_vhost:
+    name: "{{ notify_vhost }}"
+    state: "present"
+  delegate_to: "{{ groups[oslomsg_notify_host_group][0] }}"
+  tags:
+    - common-rabbitmq
+  when:
+    - oslomsg_notify_transport == "rabbit"
+
+- name: Ensure Notify Rabbitmq user
+  rabbitmq_user:
+    user: "{{ notify_user }}"
+    password: "{{ notify_password }}"
+    vhost: "{{ vhost }}"
+    configure_priv: ".*"
+    read_priv: ".*"
+    write_priv: ".*"
+    state: "present"
+  delegate_to: "{{ groups[oslomsg_notify_host_group][0] }}"
+  no_log: true
+  tags:
+    - common-rabbitmq
+  when:
+    - oslomsge_notify_transport == "rabbit"
+
