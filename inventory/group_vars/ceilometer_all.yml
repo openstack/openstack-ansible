@@ -32,8 +32,9 @@ ceilometer_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
 ceilometer_rabbitmq_servers: "{{ rabbitmq_servers }}"
 ceilometer_rabbitmq_host_group: "{{ rabbitmq_host_group }}"
 
+ceilometer_service_port: 8777
+ceilometer_service_proto: http
 ceilometer_service_publicuri: "{{ openstack_service_publicuri_proto|default(ceilometer_service_proto) }}://{{ external_lb_vip_address }}:{{ ceilometer_service_port }}"
-ceilometer_service_adminurl: "{{ ceilometer_service_adminuri }}/"
 ceilometer_service_region: "{{ service_region }}"
 ceilometer_service_in_ldap: "{{ service_ldap_backend_enabled }}"
 
