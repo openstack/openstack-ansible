@@ -26,6 +26,7 @@ import imp
 import os
 import re
 import sys
+import subprocess
 
 import openstackdocstheme
 
@@ -53,7 +54,8 @@ if current_series == "latest":
   upgrade_warning = "Upgrading to master is not recommended. Master is under heavy development, and is not stable."
 else:
   watermark = series_names = current_series.capitalize()
-  latest_tag = os.popen('git describe --abbrev=0 --tags').read().strip('\n')
+  git_cmd = ["git", "describe", "--abbrev=0", "--tags"]
+  latest_tag = subprocess.Popen(git_cmd,stdout=subprocess.PIPE).communicate()[0].strip('\n') 
   branch = "stable/{}".format(current_series)
   upgrade_warning = "The upgrade is always under active development."
 
