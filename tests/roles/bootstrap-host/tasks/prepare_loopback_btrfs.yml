@@ -31,7 +31,7 @@
     systemd_mounts:
       - what: "/openstack/lxc-btrfs.img"
         where: "/var/lib/lxc"
-        options: "loop"
+        options: "loop,{{ bootstrap_host_data_mount_options['btrfs'] }}"
         type: "btrfs"
         state: 'started'
         enabled: true

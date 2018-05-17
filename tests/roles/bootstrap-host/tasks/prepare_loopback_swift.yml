@@ -44,19 +44,19 @@
     systemd_mounts:
       - what: "/openstack/swift1.img"
         where: "/srv/swift1.img"
-        options: "loop,noatime,nodiratime,nobarrier,logbufs=8"
+        options: "loop,{{ bootstrap_host_data_mount_options['xfs'] }}"
         type: "xfs"
         state: 'started'
         enabled: true
       - what: "/openstack/swift2.img"
         where: "/srv/swift2.img"
-        options: "loop,noatime,nodiratime,nobarrier,logbufs=8"
+        options: "loop,{{ bootstrap_host_data_mount_options['xfs'] }}"
         type: "xfs"
         state: 'started'
         enabled: true
       - what: "/openstack/swift3.img"
         where: "/srv/swift3.img"
-        options: "loop,noatime,nodiratime,nobarrier,logbufs=8"
+        options: "loop,{{ bootstrap_host_data_mount_options['xfs'] }}"
         type: "xfs"
         state: 'started'
         enabled: true

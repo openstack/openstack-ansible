@@ -22,7 +22,7 @@
 
 - name: Format the Nova file
   filesystem:
-    fstype: ext4
+    fstype: xfs
     dev: /openstack/nova.img
   tags:
     - nova-format-file
@@ -35,8 +35,8 @@
     systemd_mounts:
       - what: "/openstack/nova.img"
         where: "/var/lib/nova/instances"
-        options: "loop"
-        type: "ext4"
+        options: "loop,{{ bootstrap_host_data_mount_options['xfs'] }}"
+        type: "xfs"
         state: 'started'
         enabled: true
   tags:

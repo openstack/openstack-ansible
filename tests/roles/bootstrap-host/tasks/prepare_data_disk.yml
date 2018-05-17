@@ -86,6 +86,7 @@
       - what: "/dev/{{ _bootstrap_host_data_disk_device }}1"
         where: "/openstack"
         type: "ext4"
+        options: "{{ bootstrap_host_data_mount_options['ext4'] }}"
         state: 'started'
         enabled: true
   tags:
@@ -100,6 +101,7 @@
       - what: "/dev/{{ _bootstrap_host_data_disk_device }}2"
         where: "{{ bootstrap_host_data_disk2_path }}"
         type: "{{ bootstrap_host_data_disk2_fs }}"
+        options: "{{ bootstrap_host_data_disk2_fs_mount_options }}"
         state: 'started'
         enabled: true
   when:
