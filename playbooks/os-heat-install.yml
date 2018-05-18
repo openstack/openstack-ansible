@@ -51,7 +51,7 @@
         rpc_vhost: "{{ heat_oslomsg_rpc_vhost }}"
       when:
         - inventory_hostname == groups['heat_all'][0]
-        - groups[oslomsg_rpc_host_group] | length > 0
+        - groups[heat_oslomsg_rpc_host_group] | length > 0
     - include: common-tasks/oslomsg-notify-vhost-user.yml
       static: no
       vars:
@@ -61,7 +61,7 @@
       when:
         - heat_ceilometer_enabled | bool
         - inventory_hostname == groups['heat_all'][0]
-        - groups[oslomsg_notify_host_group] | length > 0
+        - groups[heat_oslomsg_notify_host_group] | length > 0
 
     - include: common-tasks/os-log-dir-setup.yml
       vars:

@@ -11,13 +11,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# TODO(ansmith): remove rabbitmq vars once service file is updated
-# to use oslomsg vars
+# Oslo Messaging
+# RPC
 sahara_oslomsg_rpc_userid: sahara
 sahara_oslomsg_rpc_vhost: /sahara
+sahara_oslomsg_rpc_transport: "{{ oslomsg_rpc_transport }}"
+sahara_oslomsg_rpc_port: "{{ oslomsg_rpc_port }}"
+sahara_oslomsg_rpc_servers: "{{ oslomsg_rpc_servers }}"
+sahara_oslomsg_rpc_use_ssl: "{{ oslomsg_rpc_use_ssl }}"
+sahara_oslomsg_rpc_host_group: "{{ oslomsg_rpc_host_group }}"
+
+# Notify
 sahara_oslomsg_notify_userid: sahara
 sahara_oslomsg_notify_vhost: /sahara
+sahara_oslomsg_notify_transport: "{{ oslomsg_notify_transport }}"
+sahara_oslomsg_notify_port: "{{ oslomsg_notify_port }}"
+sahara_oslomsg_notify_servers: "{{ oslomsg_notify_servers }}"
+sahara_oslomsg_notify_use_ssl: "{{ oslomsg_notify_use_ssl }}"
+sahara_oslomsg_notify_host_group: "{{ oslomsg_notify_host_group }}"
 
+# TODO(ansmith): remove rabbitmq vars once service file is updated
+# to use oslomsg vars
 #RPC
 sahara_rabbitmq_userid: sahara
 sahara_rabbitmq_vhost: /sahara

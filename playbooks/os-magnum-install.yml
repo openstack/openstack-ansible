@@ -49,7 +49,7 @@
         rpc_vhost: "{{ magnum_oslomsg_rpc_vhost }}"
       when:
         - inventory_hostname == groups['magnum_all'][0]
-        - groups[oslomsg_rpc_host_group] | length > 0
+        - groups[magnum_oslomsg_rpc_host_group] | length > 0
 
     - include: common-tasks/mysql-db-user.yml
       static: no

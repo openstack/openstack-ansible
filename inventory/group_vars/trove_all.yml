@@ -20,13 +20,27 @@ trove_galera_user: trove
 trove_galera_database_name: trove_service
 trove_galera_address: "{{ galera_address }}"
 
-# TODO(ansmith): remove rabbitmq vars once service file is updated
-# to use oslomsg vars
+# Oslo Messaging
+# RPC
 trove_oslomsg_rpc_userid: trove
 trove_oslomsg_rpc_vhost: /trove
+trove_oslomsg_rpc_transport: "{{ oslomsg_rpc_transport }}"
+trove_oslomsg_rpc_port: "{{ oslomsg_rpc_port }}"
+trove_oslomsg_rpc_servers: "{{ oslomsg_rpc_servers }}"
+trove_oslomsg_rpc_use_ssl: "{{ oslomsg_rpc_use_ssl }}"
+trove_oslomsg_rpc_host_group: "{{ oslomsg_rpc_host_group }}"
+
+# Notify
 trove_oslomsg_notify_userid: trove
 trove_oslomsg_notify_vhost: /trove
+trove_oslomsg_notify_transport: "{{ oslomsg_notify_transport }}"
+trove_oslomsg_notify_port: "{{ oslomsg_notify_port }}"
+trove_oslomsg_notify_servers: "{{ oslomsg_notify_servers }}"
+trove_oslomsg_notify_use_ssl: "{{ oslomsg_notify_use_ssl }}"
+trove_oslomsg_notify_host_group: "{{ oslomsg_notify_host_group }}"
 
+# TODO(ansmith): remove rabbitmq vars once service file is updated
+# to use oslomsg vars
 # RPC
 trove_rabbitmq_userid: trove
 trove_rabbitmq_vhost: /trove

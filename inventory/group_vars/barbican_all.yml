@@ -21,13 +21,27 @@ barbican_galera_address: "{{ galera_address }}"
 barbican_galera_database: barbican
 barbican_galera_user: barbican
 
-# TODO(ansmith): remove rabbitmq vars once service file is updated
-# to use oslomsg vars
+# Oslo Messaging
+# RPC
 barbican_oslomsg_rpc_userid: barbican
 barbican_oslomsg_rpc_vhost: /barbican
+barbican_oslomsg_rpc_transport: "{{ oslomsg_rpc_transport }}"
+barbican_oslomsg_rpc_port: "{{ oslomsg_rpc_port }}"
+barbican_oslomsg_rpc_servers: "{{ oslomsg_rpc_servers }}"
+barbican_oslomsg_rpc_use_ssl: "{{ oslomsg_rpc_use_ssl }}"
+barbican_oslomsg_rpc_host_group: "{{ oslomsg_rpc_host_group }}"
+
+# Notify
 barbican_oslomsg_notify_userid: barbican
 barbican_oslomsg_notify_vhost: /barbican
+barbican_oslomsg_notify_transport: "{{ oslomsg_notify_transport }}"
+barbican_oslomsg_notify_port: "{{ oslomsg_notify_port }}"
+barbican_oslomsg_notify_servers: "{{ oslomsg_notify_servers }}"
+barbican_oslomsg_notify_use_ssl: "{{ oslomsg_notify_use_ssl }}"
+barbican_oslomsg_notify_host_group: "{{ oslomsg_notify_host_group }}"
 
+# TODO(ansmith): remove rabbitmq vars once service file is updated
+# to use oslomsg vars
 barbican_rabbitmq_host_group: "{{ rabbitmq_host_group }}"
 barbican_rabbitmq_port: "{{ rabbitmq_port }}"
 barbican_rabbitmq_servers: "{{ rabbitmq_servers }}"

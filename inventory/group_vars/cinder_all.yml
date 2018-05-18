@@ -20,13 +20,27 @@ cinder_service_backup_program_enabled: "{{ hostvars['localhost']['cinder_service
 # These are here rather than in cinder_all because
 # both the os_ceilometer and os_cinder roles require them
 
-# TODO(ansmith): remove rabbitmq vars once service file is updated
-# to use oslomsg vars
+# Oslo Messaging
+# RPC
 cinder_oslomsg_rpc_userid: cinder
 cinder_oslomsg_rpc_vhost: /cinder
+cinder_oslomsg_rpc_transport: "{{ oslomsg_rpc_transport }}"
+cinder_oslomsg_rpc_port: "{{ oslomsg_rpc_port }}"
+cinder_oslomsg_rpc_servers: "{{ oslomsg_rpc_servers }}"
+cinder_oslomsg_rpc_use_ssl: "{{ oslomsg_rpc_use_ssl }}"
+cinder_oslomsg_rpc_host_group: "{{ oslomsg_rpc_host_group }}"
+
+# Notify
 cinder_oslomsg_notify_userid: cinder
 cinder_oslomsg_notify_vhost: /cinder
+cinder_oslomsg_notify_transport: "{{ oslomsg_notify_transport }}"
+cinder_oslomsg_notify_port: "{{ oslomsg_notify_port }}"
+cinder_oslomsg_notify_servers: "{{ oslomsg_notify_servers }}"
+cinder_oslomsg_notify_use_ssl: "{{ oslomsg_notify_use_ssl }}"
+cinder_oslomsg_notify_host_group: "{{ oslomsg_notify_host_group }}"
 
+# TODO(ansmith): remove rabbitmq vars once service file is updated
+# to use oslomsg vars
 # RPC
 cinder_rabbitmq_userid: cinder
 cinder_rabbitmq_vhost: /cinder
