@@ -77,9 +77,8 @@ case ${DISTRO_ID} in
         DEBIAN_FRONTEND=noninteractive apt-get -y install \
           git-core curl gcc netcat \
           python-minimal python-dev \
-          python3 python3-dev \
           libssl-dev libffi-dev \
-          python-apt python3-apt \
+          python-apt \
           python-virtualenv
         ;;
     opensuse)
@@ -104,8 +103,9 @@ elif [ -n "$HTTP_PROXY" ]; then
   PIP_OPTS="--proxy $HTTP_PROXY"
 fi
 
+
 # Figure out the version of python is being used
-PYTHON_EXEC_PATH="${PYTHON_EXEC_PATH:-$(which python3 || which python2 || which python)}"
+PYTHON_EXEC_PATH="${PYTHON_EXEC_PATH:-$(which python2)}"
 PYTHON_VERSION="$($PYTHON_EXEC_PATH -c 'import sys; print(".".join(map(str, sys.version_info[:3])))')"
 
 # Use https when Python with native SNI support is available
@@ -156,7 +156,7 @@ virtualenv --python=${PYTHON_EXEC_PATH} \
            /opt/ansible-runtime
 
 # Install pip, setuptools and wheel into the venv
-get_pip /opt/ansible-runtime/bin/python
+get_pip /opt/ansible-runtime/bin/python2
 
 # The vars used to prepare the Ansible runtime venv
 PIP_COMMAND="/opt/ansible-runtime/bin/pip"
