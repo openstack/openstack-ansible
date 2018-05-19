@@ -24,6 +24,7 @@
 
 import os
 import sys
+import subprocess
 
 import openstackdocstheme
 
@@ -51,7 +52,8 @@ if current_series == "latest":
   suse_series = previous_series_name.capitalize()
 else:
   watermark = series_names = current_series.capitalize()
-  latest_tag = os.popen('git describe --abbrev=0 --tags').read().strip('\n')
+  git_cmd = ["git", "describe", "--abbrev=0", "--tags"]
+  latest_tag = subprocess.Popen(git_cmd,stdout=subprocess.PIPE).communicate()[0].strip('\n') 
   rdo_series = current_series_name
   suse_series = current_series_name.capitalize()
 
