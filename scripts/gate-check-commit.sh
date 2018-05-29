@@ -108,10 +108,14 @@ source "${OSA_CLONE_DIR}/scripts/bootstrap-ansible.sh"
 ARA_SRC_HOME="${HOME}/src/git.openstack.org/openstack/ara"
 if [[ -d "${ARA_SRC_HOME}" ]]; then
   # This installs from a git checkout
-  /opt/ansible-runtime/bin/pip install ${ARA_SRC_HOME} "${ANSIBLE_PACKAGE:-ansible}"
+  # PIP_COMMAND and PIP_OPTS are exported by the bootstrap-ansible script.
+  # PIP_OPTS contains the whole set of constraints that need to be applied.
+  ${PIP_COMMAND} install --isolated ${PIP_OPTS} ${ARA_SRC_HOME} "${ANSIBLE_PACKAGE:-ansible}"
 else
   # This installs from pypi
-  /opt/ansible-runtime/bin/pip install ara "${ANSIBLE_PACKAGE:-ansible}"
+  # PIP_COMMAND and PIP_OPTS are exported by the bootstrap-ansible script.
+  # PIP_OPTS contains the whole set of constraints that need to be applied.
+  ${PIP_COMMAND} install --isolated ${PIP_OPTS} ara "${ANSIBLE_PACKAGE:-ansible}"
 fi
 # Dynamically retrieve the location of the ARA callback so we are able to find
 # it on both py2 and py3
