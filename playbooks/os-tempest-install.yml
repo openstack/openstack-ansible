@@ -30,8 +30,6 @@
         rsyslog_client_log_dir: "{{ tempest_log_dir }}"
         rsyslog_client_config_name: "99-tempest-rsyslog-client.conf"
 
-  vars_files:
-    - defaults/repo_packages/openstack_testing.yml
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - tempest

@@ -52,10 +52,6 @@ The update script is used as follows:
    # the console code should only be updated when necessary for a security fix, or for the OSA master branch
    ./scripts/sources-branch-updater.sh -s playbooks/defaults/repo_packages/nova_consoles.yml -b master
 
-   # the testing repositories should not be updated for stable branches as the new tests
-   # or other changes introduced may not work for older branches
-   ./scripts/sources-branch-updater.sh -s playbooks/defaults/repo_packages/openstack_testing.yml -b master
-
    # commit the changes
    new_version=$(awk '/^openstack_release/ {print $2}' inventory/group_vars/all/all.yml)
    git add --all
