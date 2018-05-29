@@ -1,0 +1,7 @@
+---
+issues:
+  - |
+    All OSA releases earlier than 17.0.5, 16.0.4, and 15.1.22 will fail to build the
+    rally venv due to the release of the new cmd2-0.9.0 python library. Deployers are
+    encouraged to update to the latest OSA release which pins to an appropriate version
+    which is compatible with python2.
