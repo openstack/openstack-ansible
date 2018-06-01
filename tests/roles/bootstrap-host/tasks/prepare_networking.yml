@@ -18,6 +18,7 @@
     name: systemd_networkd
     private: true
   vars:
+    systemd_networkd_prefix: "osa_testing"
     systemd_interface_cleanup: true
     systemd_run_networkd: true
     systemd_netdevs:
