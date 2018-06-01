@@ -40,6 +40,8 @@ Overriding the roles
 Overriding the role file has been explained in the reference guide,
 on the :ref:`extend_osa_roles` section.
 
+.. _override_openstack_sources:
+
 Overriding other upstream projects source code
 ==============================================
 

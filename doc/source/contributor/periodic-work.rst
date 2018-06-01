@@ -7,13 +7,7 @@ Periodic Work
 Releasing
 =========
 
-Our release schedule for stable branches is around every two weeks:
-
-* We request an OpenStack release on the second Friday of the month
-* We request an OpenStack release on the last Friday of the month
-
-The releases take generally a few days to get "tagged" and be publicly
-available.
+Our release frequency is discussed in :ref:`reference_release`.
 
 Dependency Updates
 ------------------
