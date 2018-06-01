@@ -1,0 +1,11 @@
+---
+features:
+  - When ``venvwithindex=True`` and ``ignorerequirements=True`` are both specified
+    in ``rally_git_install_fragments`` (as was previously the default), this
+    results in rally being installed from PyPI without any constraints being
+    applied. This results in inconsistent builds from day to day, and can cause
+    build failures for stable implementations due to new library releases.
+    Going forward, we remove the ``rally_git_*`` overrides in
+    ``playbooks/defaults/repo_packages/openstack_testing.yml`` so that
+    the integrated build installs rally from PyPI, but with appropriate
+    constraints applied.
