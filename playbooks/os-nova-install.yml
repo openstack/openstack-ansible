@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Prepare MQ/DB services
+- name: Prepare MQ services
   hosts: nova_conductor
   gather_facts: no
   user: root
@@ -42,35 +42,6 @@
       when:
         - nova_ceilometer_enabled | bool
         - groups[nova_oslomsg_notify_host_group] | length > 0
-      run_once: yes
-
-    - name: Configure MySQL user (nova)
-      include: common-tasks/mysql-db-user.yml
-      vars:
-        user_name: "{{ nova_galera_user }}"
-        password: "{{ nova_container_mysql_password }}"
-        login_host: "{{ nova_galera_address }}"
-        db_name: "{{ nova_galera_database }}"
-      run_once: yes
-
-    - name: Configure MySQL user (nova-api)
-      include: common-tasks/mysql-db-user.yml
-      vars:
-        user_name: "{{ nova_api_galera_user }}"
-        password: "{{ nova_api_container_mysql_password }}"
-        login_host: "{{ nova_api_galera_address }}"
-        db_name: "{{ nova_api_galera_database }}"
-        db_append_privs: "yes"
-      run_once: yes
-
-    - name: Configure MySQL user (nova-api cell0)
-      include: common-tasks/mysql-db-user.yml
-      vars:
-        user_name: "{{ nova_api_galera_user }}"
-        password: "{{ nova_api_container_mysql_password }}"
-        login_host: "{{ nova_api_galera_address }}"
-        db_name: "{{ nova_cell0_database }}"
-        db_append_privs: "yes"
       run_once: yes
 
 
