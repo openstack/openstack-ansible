@@ -68,40 +68,10 @@ go stale. If you care about OpenStack stability but are not wanting to
 actively develop the roles and playbooks used within the OpenStack-Ansible
 project, consider contributing in the area of bug triage.
 
-The bug triage practices in OpenStack-Ansible are based on the
-`OpenStack Bug Triage Documentation`_ and on the `Nova Bug triage page`_.
+Please reference the `Project Team Guide bugs reference_` for information
+about bug status/importance and the life cycle of a bug.
 
-.. _Nova Bug triage page: https://wiki.openstack.org/wiki/Nova/BugTriage
-.. _OpenStack Bug Triage Documentation: https://docs.openstack.org/infra/manual/developers.html#working-on-bugs
-
-Bug classification
-^^^^^^^^^^^^^^^^^^
-
-The **Status** of a bug is one of the following:
-
-* *New* - The bug was just created.
-* *Incomplete* - The bug is waiting on input from the reporter.
-* *Confirmed* - The bug was reproduced or confirmed as a genuine bug.
-* *Triaged* - The bug comments contain a full analysis on how to
-  properly fix the issue.
-* *In Progress* - Work on the fix is in progress and the bug has an assignee.
-* *Fix Committed* - The branch containing the fix was merged into
-  the master branch.
-* *Fix Released* - The fix is included in the proposed branch, a past
-  milestone or a past release.
-* *Invalid* - This is not a bug.
-* *Opinion* - This is a valid issue, but it is an opinion of the reporter.
-* *Won't Fix* - This is a valid issue, but we do not intend to fix that.
-
-The **Importance** of a bug is one of the following:
-
-* *Critical* - The bug can take down infrastructures, or gates are
-  blocked. Handle as soon as possible.
-* *High* - Schedule to be fixed soon.
-* *Medium* - Fix when convenient, or schedule to fix later.
-* *Low* - Fix when convenient.
-* *Wishlist* - Not a bug. It is an enhancement or a new feature.
-* *Undecided* - Not decided yet. It might need more discussion.
+.. _Project Team Guide bugs reference: https://docs.openstack.org/project-team-guide/bugs.html
 
 Bug triage meeting duties
 ^^^^^^^^^^^^^^^^^^^^^^^^^
