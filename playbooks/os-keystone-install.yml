@@ -83,15 +83,6 @@
         - groups[oslomsg_notify_host_group] | length > 0
       run_once: yes
 
-    - name: Configure MySQL user
-      include: common-tasks/mysql-db-user.yml
-      vars:
-        user_name: "{{ keystone_galera_user }}"
-        password: "{{ keystone_container_mysql_password }}"
-        login_host: "{{ keystone_galera_address }}"
-        db_name: "{{ keystone_galera_database }}"
-      run_once: yes
-
 
 
 - name: Installation and setup of Keystone
