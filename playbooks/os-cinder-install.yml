@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Prepare MQ/DB services
+- name: Prepare MQ services
   hosts: cinder_all
   gather_facts: no
   user: root
@@ -64,15 +64,6 @@
       when:
         - "cinder_ceilometer_enabled | bool"
         - groups[cinder_oslomsg_notify_host_group] | length > 0
-      run_once: yes
-
-    - name: Configure MySQL user
-      include: common-tasks/mysql-db-user.yml
-      vars:
-        user_name: "{{ cinder_galera_user }}"
-        password: "{{ cinder_container_mysql_password }}"
-        login_host: "{{ cinder_galera_address }}"
-        db_name: "{{ cinder_galera_database }}"
       run_once: yes
 
 
