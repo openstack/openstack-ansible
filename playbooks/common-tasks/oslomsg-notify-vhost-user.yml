@@ -32,7 +32,7 @@
   rabbitmq_user:
     user: "{{ notify_user }}"
     password: "{{ notify_password }}"
-    vhost: "{{ vhost }}"
+    vhost: "{{ notify_vhost }}"
     configure_priv: ".*"
     read_priv: ".*"
     write_priv: ".*"
