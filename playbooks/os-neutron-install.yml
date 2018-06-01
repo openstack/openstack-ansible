@@ -81,16 +81,6 @@
         - groups[oslomsg_notify_host_group] | length > 0
       run_once: yes
 
-    - name: Configure MySQL user
-      include: common-tasks/mysql-db-user.yml
-      static: no
-      vars:
-        user_name: "{{ neutron_galera_user }}"
-        password: "{{ neutron_container_mysql_password }}"
-        login_host: "{{ neutron_galera_address }}"
-        db_name: "{{ neutron_galera_database }}"
-      run_once: yes
-
 
 
 - name: Install neutron server
