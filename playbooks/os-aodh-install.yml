@@ -38,7 +38,7 @@
         rpc_vhost: "{{ aodh_oslomsg_rpc_vhost }}"
       when:
         - inventory_hostname == groups['aodh_api'][0]
-        - groups[oslomsg_rpc_host_group] | length > 0
+        - groups[aodh_oslomsg_rpc_host_group] | length > 0
     - include: common-tasks/oslomsg-notify-vhost-user.yml
       static: no
       vars:
@@ -47,7 +47,7 @@
         notify_vhost: "{{ aodh_oslomsg_notify_vhost }}"
       when:
         - inventory_hostname == groups['aodh_api'][0]
-        - groups[oslomsg_notify_host_group] | length > 0
+        - groups[aodh_oslomsg_notify_host_group] | length > 0
 
     - include: common-tasks/os-log-dir-setup.yml
       vars:

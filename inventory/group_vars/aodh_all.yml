@@ -19,13 +19,27 @@ aodh_galera_database: aodh
 aodh_galera_address: "{{ internal_lb_vip_address }}"
 aodh_connection_string: "mysql+pymysql://{{ aodh_galera_user }}:{{ aodh_container_db_password }}@{{ aodh_galera_address }}/{{ aodh_galera_database }}?charset=utf8"
 
-# TODO(ansmith): remove rabbitmq vars once service file is updated
-# to use oslomsg vars
+# Oslo Messaging
+# RPC
 aodh_oslomsg_rpc_userid: aodh
 aodh_oslomsg_rpc_vhost: /aodh
+aodh_oslomsg_rpc_transport: "{{ oslomsg_rpc_transport }}"
+aodh_oslomsg_rpc_port: "{{ oslomsg_rpc_port }}"
+aodh_oslomsg_rpc_servers: "{{ oslomsg_rpc_servers }}"
+aodh_oslomsg_rpc_use_ssl: "{{ oslomsg_rpc_use_ssl }}"
+aodh_oslomsg_rpc_host_group: "{{ oslomsg_rpc_host_group }}"
+
+# Notify
 aodh_oslomsg_notify_userid: aodh
 aodh_oslomsg_notify_vhost: /aodh
+aodh_oslomsg_notify_transport: "{{ oslomsg_notify_transport }}"
+aodh_oslomsg_notify_port: "{{ oslomsg_notify_port }}"
+aodh_oslomsg_notify_servers: "{{ oslomsg_notify_servers }}"
+aodh_oslomsg_notify_use_ssl: "{{ oslomsg_notify_use_ssl }}"
+aodh_oslomsg_notify_host_group: "{{ oslomsg_notify_host_group }}"
 
+# TODO(ansmith): remove rabbitmq vars once service file is updated
+# to use oslomsg vars
 aodh_rabbitmq_host_group: "{{ rabbitmq_host_group }}"
 
 aodh_service_in_ldap: "{{ service_ldap_backend_enabled }}"

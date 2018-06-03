@@ -38,7 +38,7 @@
         rpc_vhost: "{{ ironic_oslomsg_rpc_vhost }}"
       when:
         - inventory_hostname == groups['ironic_all'][0]
-        - groups[oslomsg_rpc_host_group] | length > 0
+        - groups[ironic_oslomsg_rpc_host_group] | length > 0
 
     - include: common-tasks/mysql-db-user.yml
       static: no

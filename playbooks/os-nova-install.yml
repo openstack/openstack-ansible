@@ -54,7 +54,7 @@
         rpc_password: "{{ nova_oslomsg_rpc_password }}"
         rpc_vhost: "{{ nova_oslomsg_rpc_vhost }}"
       when:
-        - groups[oslomsg_rpc_host_group] | length > 0
+        - groups[nova_oslomsg_rpc_host_group] | length > 0
       run_once: yes
 
     - include: common-tasks/oslomsg-notify-vhost-user.yml
@@ -65,7 +65,7 @@
         notify_vhost: "{{ nova_oslomsg_notify_vhost }}"
       when:
         - nova_ceilometer_enabled | bool
-        - groups[oslomsg_notify_host_group] | length > 0
+        - groups[nova_oslomsg_notify_host_group] | length > 0
       run_once: yes
 
     - name: Configure MySQL user (nova)

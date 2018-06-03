@@ -13,13 +13,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# TODO(ansmith): remove rabbitmq vars once service file is updated
-# to use oslomsg vars
+# Oslo Messaging
+# RPC
 glance_oslomsg_rpc_userid: glance
 glance_oslomsg_rpc_vhost: /glance
+glance_oslomsg_rpc_transport: "{{ oslomsg_rpc_transport }}"
+glance_oslomsg_rpc_port: "{{ oslomsg_rpc_port }}"
+glance_oslomsg_rpc_servers: "{{ oslomsg_rpc_servers }}"
+glance_oslomsg_rpc_use_ssl: "{{ oslomsg_rpc_use_ssl }}"
+glance_oslomsg_rpc_host_group: "{{ oslomsg_rpc_host_group }}"
+
+# Notify
 glance_oslomsg_notify_userid: glance
 glance_oslomsg_notify_vhost: /glance
+glance_oslomsg_notify_transport: "{{ oslomsg_notify_transport }}"
+glance_oslomsg_notify_port: "{{ oslomsg_notify_port }}"
+glance_oslomsg_notify_servers: "{{ oslomsg_notify_servers }}"
+glance_oslomsg_notify_use_ssl: "{{ oslomsg_notify_use_ssl }}"
+glance_oslomsg_notify_host_group: "{{ oslomsg_notify_host_group }}"
 
+# TODO(ansmith): remove rabbitmq vars once service file is updated
+# to use oslomsg vars
 # RPC
 glance_rabbitmq_userid: glance
 glance_rabbitmq_vhost: /glance

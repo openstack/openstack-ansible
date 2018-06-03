@@ -16,13 +16,27 @@
 # These are here rather than in keystone_all because
 # both the os_ceilometer and os_keystone roles require them
 
-# TODO(ansmith): remove rabbitmq vars once service file is updated
-# to use oslomsg vars
+# Oslo Messaging
+# RPC
 keystone_oslomsg_rpc_userid: keystone
 keystone_oslomsg_rpc_vhost: /keystone
+keystone_oslomsg_rpc_transport: "{{ oslomsg_rpc_transport }}"
+keystone_oslomsg_rpc_port: "{{ oslomsg_rpc_port }}"
+keystone_oslomsg_rpc_servers: "{{ oslomsg_rpc_servers }}"
+keystone_oslomsg_rpc_use_ssl: "{{ oslomsg_rpc_use_ssl }}"
+keystone_oslomsg_rpc_host_group: "{{ oslomsg_rpc_host_group }}"
+
+# Notify
 keystone_oslomsg_notify_userid: keystone
 keystone_oslomsg_notify_vhost: /keystone
+keystone_oslomsg_notify_transport: "{{ oslomsg_notify_transport }}"
+keystone_oslomsg_notify_port: "{{ oslomsg_notify_port }}"
+keystone_oslomsg_notify_servers: "{{ oslomsg_notify_servers }}"
+keystone_oslomsg_notify_use_ssl: "{{ oslomsg_notify_use_ssl }}"
+keystone_oslomsg_notify_host_group: "{{ oslomsg_notify_host_group }}"
 
+# TODO(ansmith): remove rabbitmq vars once service file is updated
+# to use oslomsg vars
 # RPC
 keystone_rabbitmq_userid: keystone
 keystone_rabbitmq_vhost: /keystone

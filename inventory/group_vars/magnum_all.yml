@@ -27,13 +27,27 @@ magnum_galera_user: magnum
 magnum_galera_database_name: magnum_service
 magnum_galera_address: "{{ galera_address }}"
 
-# TODO(ansmith): remove rabbitmq vars once service file is updated
-# to use oslomsg vars
+# Oslo Messaging
+# RPC
 magnum_oslomsg_rpc_userid: magnum
 magnum_oslomsg_rpc_vhost: /magnum
+magnum_oslomsg_rpc_transport: "{{ oslomsg_rpc_transport }}"
+magnum_oslomsg_rpc_port: "{{ oslomsg_rpc_port }}"
+magnum_oslomsg_rpc_servers: "{{ oslomsg_rpc_servers }}"
+magnum_oslomsg_rpc_use_ssl: "{{ oslomsg_rpc_use_ssl }}"
+magnum_oslomsg_rpc_host_group: "{{ oslomsg_rpc_host_group }}"
+
+# Notify
 magnum_oslomsg_notify_userid: magnum
 magnum_oslomsg_notify_vhost: /magnum
+magnum_oslomsg_notify_transport: "{{ oslomsg_notify_transport }}"
+magnum_oslomsg_notify_port: "{{ oslomsg_notify_port }}"
+magnum_oslomsg_notify_servers: "{{ oslomsg_notify_servers }}"
+magnum_oslomsg_notify_use_ssl: "{{ oslomsg_notify_use_ssl }}"
+magnum_oslomsg_notify_host_group: "{{ oslomsg_notify_host_group }}"
 
+# TODO(ansmith): remove rabbitmq vars once service file is updated
+# to use oslomsg vars
 magnum_rabbitmq_userid: magnum
 magnum_rabbitmq_vhost: /magnum
 magnum_rabbitmq_port: "{{ rabbitmq_port }}"

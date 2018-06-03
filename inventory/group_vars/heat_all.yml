@@ -13,13 +13,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# TODO(ansmith): remove rabbitmq vars once service file is updated
-# to use oslomsg vars
+# Oslo Messaging
+# RPC
 heat_oslomsg_rpc_userid: heat
 heat_oslomsg_rpc_vhost: /heat
+heat_oslomsg_rpc_transport: "{{ oslomsg_rpc_transport }}"
+heat_oslomsg_rpc_port: "{{ oslomsg_rpc_port }}"
+heat_oslomsg_rpc_servers: "{{ oslomsg_rpc_servers }}"
+heat_oslomsg_rpc_use_ssl: "{{ oslomsg_rpc_use_ssl }}"
+heat_oslomsg_rpc_host_group: "{{ oslomsg_rpc_host_group }}"
+
+# Notify
 heat_oslomsg_notify_userid: heat
 heat_oslomsg_notify_vhost: /heat
+heat_oslomsg_notify_transport: "{{ oslomsg_notify_transport }}"
+heat_oslomsg_notify_port: "{{ oslomsg_notify_port }}"
+heat_oslomsg_notify_servers: "{{ oslomsg_notify_servers }}"
+heat_oslomsg_notify_use_ssl: "{{ oslomsg_notify_use_ssl }}"
+heat_oslomsg_notify_host_group: "{{ oslomsg_notify_host_group }}"
 
+# TODO(ansmith): remove rabbitmq vars once service file is updated
+# to use oslomsg vars
 # RPC
 heat_rabbitmq_userid: heat
 heat_rabbitmq_vhost: /heat

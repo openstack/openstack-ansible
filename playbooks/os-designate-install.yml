@@ -54,7 +54,7 @@
         rpc_vhost: "{{ designate_oslomsg_rpc_vhost }}"
       when:
         - inventory_hostname == groups['designate_all'][0]
-        - groups[oslomsg_rpc_host_group] | length > 0
+        - groups[designate_oslomsg_rpc_host_group] | length > 0
     - include: common-tasks/oslomsg-notify-vhost-user.yml
       static: no
       vars:
@@ -64,7 +64,7 @@
       when:
         - designate_ceilometer_enabled | bool
         - inventory_hostname == groups['designate_all'][0]
-        - groups[oslomsg_notify_host_group] | length > 0
+        - groups[designate_oslomsg_notify_host_group] | length > 0
 
     - include: common-tasks/os-log-dir-setup.yml
       vars:

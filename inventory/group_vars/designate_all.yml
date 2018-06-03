@@ -18,13 +18,27 @@ designate_galera_address: "{{ galera_address }}"
 designate_galera_user: designate
 designate_galera_database_name: designate
 
-# TODO(ansmith): remove rabbitmq vars once service file is updated
-# to use oslomsg vars
+# Oslo Messaging
+# RPC
 designate_oslomsg_rpc_userid: designate
 designate_oslomsg_rpc_vhost: /designate
+designate_oslomsg_rpc_transport: "{{ oslomsg_rpc_transport }}"
+designate_oslomsg_rpc_port: "{{ oslomsg_rpc_port }}"
+designate_oslomsg_rpc_servers: "{{ oslomsg_rpc_servers }}"
+designate_oslomsg_rpc_use_ssl: "{{ oslomsg_rpc_use_ssl }}"
+designate_oslomsg_rpc_host_group: "{{ oslomsg_rpc_host_group }}"
+
+# Notify
 designate_oslomsg_notify_userid: designate
 designate_oslomsg_notify_vhost: /designate
+designate_oslomsg_notify_transport: "{{ oslomsg_notify_transport }}"
+designate_oslomsg_notify_port: "{{ oslomsg_notify_port }}"
+designate_oslomsg_notify_servers: "{{ oslomsg_notify_servers }}"
+designate_oslomsg_notify_use_ssl: "{{ oslomsg_notify_use_ssl }}"
+designate_oslomsg_notify_host_group: "{{ oslomsg_notify_host_group }}"
 
+# TODO(ansmith): remove rabbitmq vars once service file is updated
+# to use oslomsg vars
 # RPC
 designate_rabbitmq_userid: designate
 designate_rabbitmq_vhost: /designate
