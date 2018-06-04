@@ -22,6 +22,7 @@ see the :dev_docs:`Contributors Guide <contributor/index.html>`.
 .. toctree::
    :maxdepth: 1
 
+   releases.rst
    conventions.rst
    inventory/inventory.rst
    configuration/advanced-config.rst
