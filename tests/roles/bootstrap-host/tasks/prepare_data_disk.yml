@@ -61,6 +61,7 @@
   filesystem:
     fstype: ext4
     dev: "/dev/{{ _bootstrap_host_data_disk_device }}1"
+    opts: "{{ bootstrap_host_format_options['ext4'] | default(omit) }}"
   when:
     - bootstrap_host_data_disk_device_force | bool
   tags:
@@ -70,6 +71,7 @@
   filesystem:
     fstype: "{{ bootstrap_host_data_disk2_fs }}"
     dev: "/dev/{{ _bootstrap_host_data_disk_device }}2"
+    opts: "{{ bootstrap_host_format_options[bootstrap_host_data_disk2_fs] | default(omit) }}"
   when:
     - bootstrap_host_data_disk_device_force | bool
     - lxc_container_backing_store != 'lvm'

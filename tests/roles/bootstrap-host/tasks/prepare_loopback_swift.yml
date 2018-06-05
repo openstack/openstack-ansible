@@ -27,7 +27,7 @@
 - name: Format the Swift files
   filesystem:
     fstype: xfs
-    opts: '-K'
+    opts: "{{ bootstrap_host_format_options['xfs'] | default(omit) }}"
     dev: "/openstack/{{ item }}.img"
   with_items:
     - 'swift1'

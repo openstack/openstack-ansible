@@ -24,6 +24,7 @@
   filesystem:
     fstype: xfs
     dev: /openstack/nova.img
+    opts: "{{ bootstrap_host_format_options['xfs'] | default(omit) }}"
   tags:
     - nova-format-file
 

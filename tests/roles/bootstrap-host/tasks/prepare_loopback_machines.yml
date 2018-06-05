@@ -23,6 +23,7 @@
 - name: Format the machines file
   filesystem:
     fstype: btrfs
+    opts: "{{ bootstrap_host_format_options['btrfs'] | default(omit) }}"
     dev: /openstack/machines.img
   tags:
     - machines-format-file
