@@ -174,6 +174,9 @@ function gate_job_exit_tasks {
     # files are viewable via a web browser in OpenStack-CI.
     rename_log_files
 
+    # System status & Information
+    log_instance_info
+
     # Generate the ARA report if enabled
     if [ "$GATE_EXIT_RUN_ARA" == true ]; then
 
@@ -350,6 +353,11 @@ function get_instance_info {
   fi
 
   df -h > "/openstack/log/instance-info/report_fs_df_${TS}.log" || true
+  lsmod > "/openstack/log/instance-info/lsmod_${TS}.log" || true
+  free -m > "/openstack/log/instance-info/free_${TS}.log" || true
+  cat /proc/cpuinfo > "/openstack/log/instance-info/cpuinfo_${TS}.log" || true
+  ps -eo user,pid,ppid,lwp,%cpu,%mem,size,rss,cmd > "/openstack/log/instance-info/ps_${TS}.log" || true
+  netstat -tulpn > "/openstack/log/instance-info/netstat_${TS}.log" || true
 }
 
 function get_pip {

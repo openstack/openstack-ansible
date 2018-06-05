@@ -16,36 +16,6 @@
 ceilometer_service_user_name: "{{ hostvars['localhost']['ceilometer_service_user_name'] }}"
 ceilometer_service_tenant_name: "{{ hostvars['localhost']['ceilometer_service_tenant_name'] }}"
 
-# Oslo Messaging
-# RPC
-ceilometer_oslomsg_rpc_userid: ceilometer
-ceilometer_oslomsg_rpc_vhost: /ceilometer
-ceilometer_oslomsg_rpc_transport: "{{ oslomsg_rpc_transport }}"
-ceilometer_oslomsg_rpc_port: "{{ oslomsg_rpc_port }}"
-ceilometer_oslomsg_rpc_servers: "{{ oslomsg_rpc_servers }}"
-ceilometer_oslomsg_rpc_use_ssl: "{{ oslomsg_rpc_use_ssl }}"
-ceilometer_oslomsg_rpc_host_group: "{{ oslomsg_rpc_host_group }}"
-
-# Notify
-ceilometer_oslomsg_notify_userid: ceilometer
-ceilometer_oslomsg_notify_vhost: /ceilometer
-ceilometer_oslomsg_notify_transport: "{{ oslomsg_notify_transport }}"
-ceilometer_oslomsg_notify_port: "{{ oslomsg_notify_port }}"
-ceilometer_oslomsg_notify_servers: "{{ oslomsg_notify_servers }}"
-ceilometer_oslomsg_notify_use_ssl: "{{ oslomsg_notify_use_ssl }}"
-ceilometer_oslomsg_notify_host_group: "{{ oslomsg_notify_host_group }}"
-
-# TODO(ansmith): remove rabbitmq vars once service file is updated
-# to use oslomsg vars
-# These are here rather than in ceilometer_all because
-# both the os_ceilometer and os_swift roles require them
-ceilometer_rabbitmq_userid: ceilometer
-ceilometer_rabbitmq_vhost: /ceilometer
-ceilometer_rabbitmq_port: "{{ rabbitmq_port }}"
-ceilometer_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
-ceilometer_rabbitmq_servers: "{{ rabbitmq_servers }}"
-ceilometer_rabbitmq_host_group: "{{ rabbitmq_host_group }}"
-
 ceilometer_service_port: 8777
 ceilometer_service_proto: http
 ceilometer_service_publicuri: "{{ openstack_service_publicuri_proto|default(ceilometer_service_proto) }}://{{ external_lb_vip_address }}:{{ ceilometer_service_port }}"
@@ -54,10 +24,6 @@ ceilometer_service_in_ldap: "{{ service_ldap_backend_enabled }}"
 
 ceilometer_aodh_enabled: "{{ groups['aodh_all'] is defined and groups['aodh_all'] | length > 0 }}"
 ceilometer_gnocchi_enabled: "{{ groups['gnocchi_all'] is defined and groups['gnocchi_all'] | length > 0 }}"
-
-# NOTE: these and their swift_all.yml counterpart should be moved back to all.yml once swift with ceilometer gets proper SSL support
-swift_rabbitmq_telemetry_port: "{{ rabbitmq_port }}"
-swift_rabbitmq_telemetry_use_ssl: "{{ rabbitmq_use_ssl }}"
 
 # Ensure that the package state matches the global setting
 ceilometer_package_state: "{{ package_state }}"
@@ -74,127 +40,3 @@ swift_system_user_name: "{{ hostvars['localhost']['swift_system_user_name'] }}"
 swift_system_shell: "{{ hostvars['localhost']['swift_system_shell'] }}"
 swift_system_comment: "{{ hostvars['localhost']['swift_system_comment'] }}"
 swift_system_home_folder: "{{ hostvars['localhost']['swift_system_home_folder'] }}"
-
-# Oslo.messaging notifications for telemetry
-glance_oslomsg_notify_userid: glance
-glance_oslomsg_notify_vhost: /glance
-glance_oslomsg_notify_password: "{{ glance_oslomsg_notify_password }}"
-glance_oslomsg_notify_transport: "{{ oslomsg_notify_transport }}"
-glance_oslomsg_notify_port: "{{ oslomsg_notify_port }}"
-glance_oslomsg_notify_use_ssl: "{{ oslomsg_notify_use_ssl }}"
-glance_oslomsg_notify_host_group: "{{ oslomsg_notify_host_group }}"
-
-cinder_oslomsg_notify_userid: cinder
-cinder_oslomsg_notify_vhost: /cinder
-cinder_oslomsg_notify_password: "{{ cinder_oslomsg_notify_password }}"
-cinder_oslomsg_notify_transport: "{{ oslomsg_notify_transport }}"
-cinder_oslomsg_notify_port: "{{ oslomsg_notify_port }}"
-cinder_oslomsg_notify_use_ssl: "{{ oslomsg_notify_use_ssl }}"
-cinder_oslomsg_notify_host_group: "{{ oslomsg_notify_host_group }}"
-
-nova_oslomsg_notify_userid: nova
-nova_oslomsg_notify_vhost: /nova
-nova_oslomsg_notify_password: "{{ nova_oslomsg_notify_password }}"
-nova_oslomsg_notify_transport: "{{ oslomsg_notify_transport }}"
-nova_oslomsg_notify_port: "{{ oslomsg_notify_port }}"
-nova_oslomsg_notify_use_ssl: "{{ oslomsg_notify_use_ssl }}"
-nova_oslomsg_notify_host_group: "{{ oslomsg_notify_host_group }}"
-
-heat_oslomsg_notify_userid: heat
-heat_oslomsg_notify_vhost: /heat
-heat_oslomsg_notify_password: "{{ heat_oslomsg_notify_password }}"
-heat_oslomsg_notify_transport: "{{ oslomsg_notify_transport }}"
-heat_oslomsg_notify_port: "{{ oslomsg_notify_port }}"
-heat_oslomsg_notify_use_ssl: "{{ oslomsg_notify_use_ssl }}"
-heat_oslomsg_notify_host_group: "{{ oslomsg_notify_host_group }}"
-
-keystone_oslomsg_notify_userid: keystone
-keystone_oslomsg_notify_vhost: /keystone
-keystone_oslomsg_notify_password: "{{ keystone_oslomsg_notify_password }}"
-keystone_oslomsg_notify_transport: "{{ oslomsg_notify_transport }}"
-keystone_oslomsg_notify_port: "{{ oslomsg_notify_port }}"
-keystone_oslomsg_notify_use_ssl: "{{ oslomsg_notify_use_ssl }}"
-keystone_oslomsg_notify_host_group: "{{ oslomsg_notify_host_group }}"
-
-neutron_oslomsg_notify_userid: neutron
-neutron_oslomsg_notify_vhost: /neutron
-neutron_oslomsg_notify_password: "{{ neutron_oslomsg_notify_password }}"
-neutron_oslomsg_notify_transport: "{{ oslomsg_notify_transport }}"
-neutron_oslomsg_notify_port: "{{ oslomsg_notify_port }}"
-neutron_oslomsg_notify_use_ssl: "{{ oslomsg_notify_use_ssl }}"
-neutron_oslomsg_notify_host_group: "{{ oslomsg_notify_host_group }}"
-
-swift_oslomsg_notify_userid: swift
-swift_oslomsg_notify_vhost: /swift
-swift_oslomsg_notify_password: "{{ swift_oslomsg_notify_password }}"
-swift_oslomsg_notify_transport: "{{ oslomsg_notify_transport }}"
-swift_oslomsg_notify_port: "{{ oslomsg_notify_port }}"
-swift_oslomsg_notify_use_ssl: "{{ oslomsg_notify_use_ssl }}"
-swift_oslomsg_notify_host_group: "{{ oslomsg_notify_host_group }}"
-
-sahara_oslomsg_notify_userid: sahara
-sahara_oslomsg_notify_vhost: /sahara
-sahara_oslomsg_notify_password: "{{ sahara_oslomsg_notify_password }}"
-sahara_oslomsg_notify_transport: "{{ oslomsg_notify_transport }}"
-sahara_oslomsg_notify_port: "{{ oslomsg_notify_port }}"
-sahara_oslomsg_notify_use_ssl: "{{ oslomsg_notify_use_ssl }}"
-sahara_oslomsg_notify_host_group: "{{ oslomsg_notify_host_group }}"
-
-# TODO(ansmith): remove rabbitmq vars once service file is updated
-# to use oslomsg vars
-# Telemetry notifications
-glance_rabbitmq_telemetry_host_group: "{{ rabbitmq_host_group }}"
-glance_rabbitmq_telemetry_userid: glance
-glance_rabbitmq_telemetry_password: "{{ glance_rabbitmq_password }}"
-glance_rabbitmq_telemetry_port: "{{ rabbitmq_port }}"
-glance_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
-glance_rabbitmq_telemetry_vhost: "/glance"
-
-cinder_rabbitmq_telemetry_host_group: "{{ rabbitmq_host_group }}"
-cinder_rabbitmq_telemetry_userid: cinder
-cinder_rabbitmq_telemetry_password: "{{ cinder_rabbitmq_password }}"
-cinder_rabbitmq_telemetry_port: "{{ rabbitmq_port }}"
-cinder_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
-cinder_rabbitmq_telemetry_vhost: "/cinder"
-
-nova_rabbitmq_telemetry_host_group: "{{ rabbitmq_host_group }}"
-nova_rabbitmq_telemetry_userid: nova
-nova_rabbitmq_telemetry_password: "{{ nova_rabbitmq_password }}"
-nova_rabbitmq_telemetry_port: "{{ rabbitmq_port }}"
-nova_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
-nova_rabbitmq_telemetry_vhost: "/nova"
-
-heat_rabbitmq_telemetry_host_group: "{{ rabbitmq_host_group }}"
-heat_rabbitmq_telemetry_userid: heat
-heat_rabbitmq_telemetry_password: "{{ heat_rabbitmq_password }}"
-heat_rabbitmq_telemetry_port: "{{ rabbitmq_port }}"
-heat_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
-heat_rabbitmq_telemetry_vhost: "/heat"
-
-keystone_rabbitmq_telemetry_host_group: "{{ rabbitmq_host_group }}"
-keystone_rabbitmq_telemetry_userid: keystone
-keystone_rabbitmq_telemetry_password: "{{ keystone_rabbitmq_password }}"
-keystone_rabbitmq_telemetry_port: "{{ rabbitmq_port }}"
-keystone_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
-keystone_rabbitmq_telemetry_vhost: "/keystone"
-
-neutron_rabbitmq_telemetry_host_group: "{{ rabbitmq_host_group }}"
-neutron_rabbitmq_telemetry_userid: neutron
-neutron_rabbitmq_telemetry_password: "{{ neutron_rabbitmq_password }}"
-neutron_rabbitmq_telemetry_port: "{{ rabbitmq_port }}"
-neutron_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
-neutron_rabbitmq_telemetry_vhost: "/neutron"
-
-swift_rabbitmq_telemetry_host_group: "{{ rabbitmq_host_group }}"
-swift_rabbitmq_telemetry_userid: swift
-swift_rabbitmq_telemetry_password: "{{ swift_rabbitmq_password }}"
-swift_rabbitmq_telemetry_port: "{{ rabbitmq_port }}"
-swift_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
-swift_rabbitmq_telemetry_vhost: "/swift"
-
-sahara_rabbitmq_telemetry_host_group: "{{ rabbitmq_host_group }}"
-sahara_rabbitmq_telemetry_userid: sahara
-sahara_rabbitmq_telemetry_password: "{{ sahara_rabbitmq_password }}"
-sahara_rabbitmq_telemetry_port: "{{ rabbitmq_port }}"
-sahara_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
-sahara_rabbitmq_telemetry_vhost: "/sahara"

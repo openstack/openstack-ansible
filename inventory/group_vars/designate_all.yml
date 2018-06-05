@@ -18,44 +18,6 @@ designate_galera_address: "{{ galera_address }}"
 designate_galera_user: designate
 designate_galera_database_name: designate
 
-# Oslo Messaging
-# RPC
-designate_oslomsg_rpc_userid: designate
-designate_oslomsg_rpc_vhost: /designate
-designate_oslomsg_rpc_transport: "{{ oslomsg_rpc_transport }}"
-designate_oslomsg_rpc_port: "{{ oslomsg_rpc_port }}"
-designate_oslomsg_rpc_servers: "{{ oslomsg_rpc_servers }}"
-designate_oslomsg_rpc_use_ssl: "{{ oslomsg_rpc_use_ssl }}"
-designate_oslomsg_rpc_host_group: "{{ oslomsg_rpc_host_group }}"
-
-# Notify
-designate_oslomsg_notify_userid: designate
-designate_oslomsg_notify_vhost: /designate
-designate_oslomsg_notify_transport: "{{ oslomsg_notify_transport }}"
-designate_oslomsg_notify_port: "{{ oslomsg_notify_port }}"
-designate_oslomsg_notify_servers: "{{ oslomsg_notify_servers }}"
-designate_oslomsg_notify_use_ssl: "{{ oslomsg_notify_use_ssl }}"
-designate_oslomsg_notify_host_group: "{{ oslomsg_notify_host_group }}"
-
-# TODO(ansmith): remove rabbitmq vars once service file is updated
-# to use oslomsg vars
-# RPC
-designate_rabbitmq_userid: designate
-designate_rabbitmq_vhost: /designate
-designate_rabbitmq_port: "{{ rabbitmq_port }}"
-designate_rabbitmq_servers: "{{ rabbitmq_servers }}"
-designate_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
-designate_rabbitmq_host_group: "{{ rabbitmq_host_group }}"
-
-# Telemetry notifications
-designate_rabbitmq_telemetry_userid: "{{ designate_rabbitmq_userid }}"
-designate_rabbitmq_telemetry_password: "{{ designate_rabbitmq_password }}"
-designate_rabbitmq_telemetry_vhost: "{{ designate_rabbitmq_vhost }}"
-designate_rabbitmq_telemetry_port: "{{ designate_rabbitmq_port }}"
-designate_rabbitmq_telemetry_servers: "{{ designate_rabbitmq_servers }}"
-designate_rabbitmq_telemetry_use_ssl: "{{ designate_rabbitmq_use_ssl }}"
-designate_rabbitmq_telemetry_host_group: "{{ designate_rabbitmq_host_group }}"
-
 # If there are any Ceilometer hosts in the environment, then enable its usage
 designate_ceilometer_enabled: "{{ (groups['designate_all'] is defined) and (groups['designate_all'] | length > 0) and (groups['ceilometer_all'] is defined) and (groups['ceilometer_all'] | length > 0) }}"
 

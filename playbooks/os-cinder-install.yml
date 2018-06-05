@@ -21,32 +21,9 @@
   tags:
     - cinder
   tasks:
-    - name: Configure rabbitmq vhost/user
-      include: common-tasks/rabbitmq-vhost-user.yml
-      vars:
-        user: "{{ cinder_rabbitmq_userid }}"
-        password: "{{ cinder_rabbitmq_password }}"
-        vhost: "{{ cinder_rabbitmq_vhost }}"
-        _rabbitmq_host_group: "{{ cinder_rabbitmq_host_group }}"
-      when:
-        - "groups[cinder_rabbitmq_host_group] | length > 0"
-      run_once: yes
 
-    - name: Configure rabbitmq vhost/user (telemetry)
-      include: common-tasks/rabbitmq-vhost-user.yml
-      vars:
-        user: "{{ cinder_rabbitmq_telemetry_userid }}"
-        password: "{{ cinder_rabbitmq_telemetry_password }}"
-        vhost: "{{ cinder_rabbitmq_telemetry_vhost }}"
-        _rabbitmq_host_group: "{{ cinder_rabbitmq_telemetry_host_group }}"
-      when:
-        - "cinder_ceilometer_enabled | bool"
-        - "groups[cinder_rabbitmq_telemetry_host_group] is defined"
-        - "groups[cinder_rabbitmq_telemetry_host_group] | length > 0"
-        - "groups[cinder_rabbitmq_telemetry_host_group] != groups[cinder_rabbitmq_host_group]"
-      run_once: yes
-
-    - include: common-tasks/oslomsg-rpc-vhost-user.yml
+    - name: Configure oslo messaging rpc vhost/user
+      include: common-tasks/oslomsg-rpc-vhost-user.yml
       static: no
       vars:
         rpc_user: "{{ cinder_oslomsg_rpc_userid }}"
@@ -55,7 +32,9 @@
       when:
         - groups[cinder_oslomsg_rpc_host_group] | length > 0
       run_once: yes
-    - include: common-tasks/oslomsg-notify-vhost-user.yml
+
+    - name: Configure oslo messaging notify vhost/user
+      include: common-tasks/oslomsg-notify-vhost-user.yml
       static: no
       vars:
         notify_user: "{{ cinder_oslomsg_notify_userid }}"

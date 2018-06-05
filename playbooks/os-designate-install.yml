@@ -22,29 +22,6 @@
   user: root
   pre_tasks:
     - include: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
-    - include: common-tasks/rabbitmq-vhost-user.yml
-      static: no
-      vars:
-        user: "{{ designate_rabbitmq_userid }}"
-        password: "{{ designate_rabbitmq_password }}"
-        vhost: "{{ designate_rabbitmq_vhost }}"
-        _rabbitmq_host_group: "{{ designate_rabbitmq_host_group }}"
-      when:
-        - inventory_hostname == groups['designate_all'][0]
-        - groups[designate_rabbitmq_host_group] | length > 0
-    - include: common-tasks/rabbitmq-vhost-user.yml
-      static: no
-      vars:
-        user: "{{ designate_rabbitmq_telemetry_userid }}"
-        password: "{{ designate_rabbitmq_telemetry_password }}"
-        vhost: "{{ designate_rabbitmq_telemetry_vhost }}"
-        _rabbitmq_host_group: "{{ designate_rabbitmq_telemetry_host_group }}"
-      when:
-        - designate_ceilometer_enabled | bool
-        - inventory_hostname == groups['designate_all'][0]
-        - groups[designate_rabbitmq_telemetry_host_group] is defined
-        - groups[designate_rabbitmq_telemetry_host_group] | length > 0
-        - groups[designate_rabbitmq_telemetry_host_group] != groups[designate_rabbitmq_host_group]
 
     - include: common-tasks/oslomsg-rpc-vhost-user.yml
       static: no

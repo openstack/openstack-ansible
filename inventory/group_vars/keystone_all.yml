@@ -16,44 +16,6 @@
 # These are here rather than in keystone_all because
 # both the os_ceilometer and os_keystone roles require them
 
-# Oslo Messaging
-# RPC
-keystone_oslomsg_rpc_userid: keystone
-keystone_oslomsg_rpc_vhost: /keystone
-keystone_oslomsg_rpc_transport: "{{ oslomsg_rpc_transport }}"
-keystone_oslomsg_rpc_port: "{{ oslomsg_rpc_port }}"
-keystone_oslomsg_rpc_servers: "{{ oslomsg_rpc_servers }}"
-keystone_oslomsg_rpc_use_ssl: "{{ oslomsg_rpc_use_ssl }}"
-keystone_oslomsg_rpc_host_group: "{{ oslomsg_rpc_host_group }}"
-
-# Notify
-keystone_oslomsg_notify_userid: keystone
-keystone_oslomsg_notify_vhost: /keystone
-keystone_oslomsg_notify_transport: "{{ oslomsg_notify_transport }}"
-keystone_oslomsg_notify_port: "{{ oslomsg_notify_port }}"
-keystone_oslomsg_notify_servers: "{{ oslomsg_notify_servers }}"
-keystone_oslomsg_notify_use_ssl: "{{ oslomsg_notify_use_ssl }}"
-keystone_oslomsg_notify_host_group: "{{ oslomsg_notify_host_group }}"
-
-# TODO(ansmith): remove rabbitmq vars once service file is updated
-# to use oslomsg vars
-# RPC
-keystone_rabbitmq_userid: keystone
-keystone_rabbitmq_vhost: /keystone
-keystone_rabbitmq_port: "{{ rabbitmq_port }}"
-keystone_rabbitmq_servers: "{{ rabbitmq_servers }}"
-keystone_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
-keystone_rabbitmq_host_group: "{{ rabbitmq_host_group }}"
-
-# Telemetry notifications
-keystone_rabbitmq_telemetry_userid: "{{ keystone_rabbitmq_userid }}"
-keystone_rabbitmq_telemetry_password: "{{ keystone_rabbitmq_password }}"
-keystone_rabbitmq_telemetry_vhost: "{{ keystone_rabbitmq_vhost }}"
-keystone_rabbitmq_telemetry_port: "{{ keystone_rabbitmq_port }}"
-keystone_rabbitmq_telemetry_servers: "{{ keystone_rabbitmq_servers }}"
-keystone_rabbitmq_telemetry_use_ssl: "{{ keystone_rabbitmq_use_ssl }}"
-keystone_rabbitmq_telemetry_host_group: "{{ keystone_rabbitmq_host_group }}"
-
 # If there are any Ceilometer hosts in the environment, then enable its usage
 keystone_ceilometer_enabled: "{{ (groups['ceilometer_all'] is defined) and (groups['ceilometer_all'] | length > 0) }}"
 

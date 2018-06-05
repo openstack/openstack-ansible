@@ -29,44 +29,6 @@ nova_console_port: "{% if nova_console_type == 'spice' %}{{ nova_spice_html5prox
 # These are here rather than in nova_all because
 # both the os_ceilometer and os_nova roles require them
 
-# Oslo Messaging
-# RPC
-nova_oslomsg_rpc_userid: nova
-nova_oslomsg_rpc_vhost: /nova
-nova_oslomsg_rpc_transport: "{{ oslomsg_rpc_transport }}"
-nova_oslomsg_rpc_port: "{{ oslomsg_rpc_port }}"
-nova_oslomsg_rpc_servers: "{{ oslomsg_rpc_servers }}"
-nova_oslomsg_rpc_use_ssl: "{{ oslomsg_rpc_use_ssl }}"
-nova_oslomsg_rpc_host_group: "{{ oslomsg_rpc_host_group }}"
-
-# Notify
-nova_oslomsg_notify_userid: nova
-nova_oslomsg_notify_vhost: /nova
-nova_oslomsg_notify_transport: "{{ oslomsg_notify_transport }}"
-nova_oslomsg_notify_port: "{{ oslomsg_notify_port }}"
-nova_oslomsg_notify_servers: "{{ oslomsg_notify_servers }}"
-nova_oslomsg_notify_use_ssl: "{{ oslomsg_notify_use_ssl }}"
-nova_oslomsg_notify_host_group: "{{ oslomsg_notify_host_group }}"
-
-# TODO(ansmith): remove rabbitmq vars once service file is updated
-# to use oslomsg vars
-# RPC
-nova_rabbitmq_userid: nova
-nova_rabbitmq_vhost: /nova
-nova_rabbitmq_port: "{{ rabbitmq_port }}"
-nova_rabbitmq_servers: "{{ rabbitmq_servers }}"
-nova_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
-nova_rabbitmq_host_group: "{{ rabbitmq_host_group }}"
-
-# Telemetry notifications
-nova_rabbitmq_telemetry_userid: "{{ nova_rabbitmq_userid }}"
-nova_rabbitmq_telemetry_password: "{{ nova_rabbitmq_password }}"
-nova_rabbitmq_telemetry_vhost: "{{ nova_rabbitmq_vhost }}"
-nova_rabbitmq_telemetry_port: "{{ nova_rabbitmq_port }}"
-nova_rabbitmq_telemetry_servers: "{{ nova_rabbitmq_servers }}"
-nova_rabbitmq_telemetry_use_ssl: "{{ nova_rabbitmq_use_ssl }}"
-nova_rabbitmq_telemetry_host_group: "{{ nova_rabbitmq_host_group }}"
-
 # If there are any Designate hosts in the environment, then enable its usage
 nova_designate_enabled: "{{ (groups['designate_all'] is defined) and (groups['designate_all'] | length > 0) }}"
 # If there are any Ceilometer hosts in the environment, then enable its usage

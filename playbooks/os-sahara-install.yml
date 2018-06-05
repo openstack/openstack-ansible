@@ -17,31 +17,9 @@
   user: root
   pre_tasks:
     - include: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
-    - include: common-tasks/rabbitmq-vhost-user.yml
-      static: no
-      vars:
-        user: "{{ sahara_rabbitmq_userid }}"
-        password: "{{ sahara_rabbitmq_password }}"
-        vhost: "{{ sahara_rabbitmq_vhost }}"
-        _rabbitmq_host_group: "{{ sahara_rabbitmq_host_group }}"
-      when:
-        - inventory_hostname == groups['sahara_all'][0]
-        - groups[sahara_rabbitmq_host_group] | length > 0
-    - include: common-tasks/rabbitmq-vhost-user.yml
-      static: no
-      vars:
-        user: "{{ sahara_rabbitmq_telemetry_userid }}"
-        password: "{{ sahara_rabbitmq_telemetry_password }}"
-        vhost: "{{ sahara_rabbitmq_telemetry_vhost }}"
-        _rabbitmq_host_group: "{{ sahara_rabbitmq_telemetry_host_group }}"
-      when:
-        - sahara_ceilometer_enabled | bool
-        - inventory_hostname == groups['sahara_all'][0]
-        - groups[sahara_rabbitmq_telemetry_host_group] is defined
-        - groups[sahara_rabbitmq_telemetry_host_group] | length > 0
-        - groups[sahara_rabbitmq_telemetry_host_group] != groups[sahara_rabbitmq_host_group]
 
-    - include: common-tasks/oslomsg-rpc-vhost-user.yml
+    - name: Configure oslo messaging rpc vhost/user
+      include: common-tasks/oslomsg-rpc-vhost-user.yml
       static: no
       vars:
         rpc_user: "{{ sahara_oslomsg_rpc_userid }}"
@@ -50,7 +28,9 @@
       when:
         - inventory_hostname == groups['sahara_all'][0]
         - groups[sahara_oslomsg_rpc_host_group] | length > 0
-    - include: common-tasks/oslomsg-notify-vhost-user.yml
+
+    - name: Configure oslo messaging notify vhost/user
+      include: common-tasks/oslomsg-notify-vhost-user.yml
       static: no
       vars:
         notify_user: "{{ sahara_oslomsg_notify_userid }}"

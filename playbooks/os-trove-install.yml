@@ -22,30 +22,6 @@
   user: root
   pre_tasks:
     - include: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
-    - include: common-tasks/rabbitmq-vhost-user.yml
-      static: no
-      vars:
-        user: "{{ trove_rabbitmq_userid }}"
-        password: "{{ trove_rabbitmq_password }}"
-        vhost: "{{ trove_rabbitmq_vhost }}"
-        _rabbitmq_host_group: "{{ trove_rabbitmq_host_group }}"
-      when:
-        - inventory_hostname == groups['trove_all'][0]
-        - groups[trove_rabbitmq_host_group] | length > 0
-    - include: common-tasks/rabbitmq-vhost-user.yml
-      static: no
-      vars:
-        user: "{{ trove_rabbitmq_telemetry_userid }}"
-        password: "{{ trove_rabbitmq_telemetry_password }}"
-        vhost: "{{ trove_rabbitmq_telemetry_vhost }}"
-        _rabbitmq_host_group: "{{ trove_rabbitmq_telemetry_host_group }}"
-      when:
-        - trove_ceilometer_enabled | bool
-        - inventory_hostname == groups['trove_all'][0]
-        - groups[trove_rabbitmq_telemetry_host_group] is defined
-        - groups[trove_rabbitmq_telemetry_host_group] | length > 0
-        - groups[trove_rabbitmq_telemetry_host_group] != groups[trove_rabbitmq_host_group]
-
     - include: common-tasks/oslomsg-rpc-vhost-user.yml
       static: no
       vars:

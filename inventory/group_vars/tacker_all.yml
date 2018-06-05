@@ -16,34 +16,6 @@
 tacker_service_user_name: tacker
 tacker_service_tenant_name: service
 
-# Oslo Messaging
-# RPC
-tacker_oslomsg_rpc_userid: tacker
-tacker_oslomsg_rpc_vhost: /tacker
-tacker_oslomsg_rpc_transport: "{{ oslomsg_rpc_transport }}"
-tacker_oslomsg_rpc_port: "{{ oslomsg_rpc_port }}"
-tacker_oslomsg_rpc_servers: "{{ oslomsg_rpc_servers }}"
-tacker_oslomsg_rpc_use_ssl: "{{ oslomsg_rpc_use_ssl }}"
-tacker_oslomsg_rpc_host_group: "{{ oslomsg_rpc_host_group }}"
-
-# Notify
-tacker_oslomsg_notify_userid: tacker
-tacker_oslomsg_notify_vhost: /tacker
-tacker_oslomsg_notify_transport: "{{ oslomsg_notify_transport }}"
-tacker_oslomsg_notify_port: "{{ oslomsg_notify_port }}"
-tacker_oslomsg_notify_servers: "{{ oslomsg_notify_servers }}"
-tacker_oslomsg_notify_use_ssl: "{{ oslomsg_notify_use_ssl }}"
-tacker_oslomsg_notify_host_group: "{{ oslomsg_notify_host_group }}"
-
-# TODO(ansmith): remove rabbitmq vars once service file is updated
-# to use oslomsg vars
-tacker_rabbitmq_userid: tacker
-tacker_rabbitmq_vhost: /tacker
-tacker_rabbitmq_port: "{{ rabbitmq_port }}"
-tacker_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
-tacker_rabbitmq_servers: "{{ rabbitmq_servers }}"
-tacker_rabbitmq_host_group: "{{ rabbitmq_host_group }}"
-
 tacker_service_publicuri: "{{ openstack_service_publicuri_proto|default(tacker_service_proto) }}://{{ external_lb_vip_address }}:{{ tacker_service_port }}"
 tacker_service_adminurl: "{{ tacker_service_adminuri }}/"
 tacker_service_region: "{{ service_region }}"

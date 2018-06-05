@@ -19,28 +19,6 @@ swift_system_shell: "{{ hostvars['localhost']['swift_system_shell'] }}"
 swift_system_comment: "{{ hostvars['localhost']['swift_system_comment'] }}"
 swift_system_home_folder: "{{ hostvars['localhost']['swift_system_home_folder'] }}"
 
-# Oslo Messaging
-# RPC
-swift_oslomsg_rpc_userid: swift
-swift_oslomsg_rpc_vhost: /swift
-
-# Notify
-swift_oslomsg_notify_userid: swift
-swift_oslomsg_notify_vhost: /swift
-swift_oslomsg_notify_transport: "{{ oslomsg_notify_transport }}"
-swift_oslomsg_notify_port: "{{ oslomsg_notify_port }}"
-swift_oslomsg_notify_servers: "{{ oslomsg_notify_servers }}"
-swift_oslomsg_notify_use_ssl: "{{ oslomsg_notify_use_ssl }}"
-swift_oslomsg_notify_host_group: "{{ oslomsg_notify_host_group }}"
-
-# TODO(ansmith): remove rabbitmq vars once service file is updated
-# to use oslomsg vars
-# Swift Telemetry notifications
-swift_rabbitmq_telemetry_userid: "swift"
-swift_rabbitmq_telemetry_vhost: "/swift"
-swift_rabbitmq_telemetry_servers: "{{ rabbitmq_servers }}"
-swift_rabbitmq_telemetry_host_group: "{{ rabbitmq_host_group }}"
-
 # If there are any Ceilometer and Swift hosts in the environment, then enable its usage
 swift_ceilometer_enabled: "{{ (groups['ceilometer_all'] is defined) and (groups['swift_proxy'] is defined) and (groups['ceilometer_all'] | length > 0) and (groups['swift_proxy'] | length > 0) }}"
 
@@ -49,10 +27,6 @@ swift_service_in_ldap: "{{ service_ldap_backend_enabled }}"
 
 # Ensure that the package state matches the global setting
 swift_package_state: "{{ package_state }}"
-
-# TODO: (andymccr) ceilometer with swift does not support SSL rabbitmq connections, so we are hard coding the port and use_ssl var
-swift_rabbitmq_telemetry_port: "5672"
-swift_rabbitmq_telemetry_use_ssl: False
 
 # Used to optionally filter Gnocchi-originated traffic in Ceilometermiddleware
 swift_gnocchi_enabled: "{{ (groups['gnocchi_all'] is defined and groups['gnocchi_all'] | length > 0) }}"

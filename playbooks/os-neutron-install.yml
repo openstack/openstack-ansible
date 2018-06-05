@@ -35,32 +35,8 @@
     - neutron
   tasks:
 
-    - name: Configure rabbitmq vhost/user
-      include: common-tasks/rabbitmq-vhost-user.yml
-      vars:
-        user: "{{ neutron_rabbitmq_userid }}"
-        password: "{{ neutron_rabbitmq_password }}"
-        vhost: "{{ neutron_rabbitmq_vhost }}"
-        _rabbitmq_host_group: "{{ neutron_rabbitmq_host_group }}"
-      when:
-        - groups[neutron_rabbitmq_host_group] | length > 0
-      run_once: yes
-
-    - name: Configure rabbitmq vhost/user (telemetry)
-      include: common-tasks/rabbitmq-vhost-user.yml
-      vars:
-        user: "{{ neutron_rabbitmq_telemetry_userid }}"
-        password: "{{ neutron_rabbitmq_telemetry_password }}"
-        vhost: "{{ neutron_rabbitmq_telemetry_vhost }}"
-        _rabbitmq_host_group: "{{ neutron_rabbitmq_telemetry_host_group }}"
-      when:
-        - neutron_ceilometer_enabled | bool
-        - groups[neutron_rabbitmq_telemetry_host_group] is defined
-        - groups[neutron_rabbitmq_telemetry_host_group] | length > 0
-        - groups[neutron_rabbitmq_telemetry_host_group] != groups[neutron_rabbitmq_host_group]
-      run_once: yes
-
-    - include: common-tasks/oslomsg-rpc-vhost-user.yml
+    - name: Configure oslo messaging rpc vhost/user
+      include: common-tasks/oslomsg-rpc-vhost-user.yml
       static: no
       vars:
         rpc_user: "{{ neutron_oslomsg_rpc_userid }}"
@@ -70,7 +46,8 @@
         - groups[neutron_oslomsg_rpc_host_group] | length > 0
       run_once: yes
 
-    - include: common-tasks/oslomsg-notify-vhost-user.yml
+    - name: Configure oslo messaging notify vhost/user
+      include: common-tasks/oslomsg-notify-vhost-user.yml
       static: no
       vars:
         notify_user: "{{ neutron_oslomsg_notify_userid }}"

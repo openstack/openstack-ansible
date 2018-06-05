@@ -30,17 +30,6 @@
       static: no
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
-    - include: common-tasks/rabbitmq-vhost-user.yml
-      static: no
-      vars:
-        user: "{{ magnum_rabbitmq_userid }}"
-        password: "{{ magnum_rabbitmq_password }}"
-        vhost: "{{ magnum_rabbitmq_vhost }}"
-        _rabbitmq_host_group: "{{ magnum_rabbitmq_host_group }}"
-      when:
-        - inventory_hostname == groups['magnum_all'][0]
-        - groups[magnum_rabbitmq_host_group] | length > 0
-
     - include: common-tasks/oslomsg-rpc-vhost-user.yml
       static: no
       vars:
@@ -50,7 +39,6 @@
       when:
         - inventory_hostname == groups['magnum_all'][0]
         - groups[magnum_oslomsg_rpc_host_group] | length > 0
-
     - include: common-tasks/mysql-db-user.yml
       static: no
       vars:

@@ -13,33 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Oslo Messaging
-# RPC
-ironic_oslomsg_rpc_userid: ironic
-ironic_oslomsg_rpc_vhost: /ironic
-ironic_oslomsg_rpc_transport: "{{ oslomsg_rpc_transport }}"
-ironic_oslomsg_rpc_port: "{{ oslomsg_rpc_port }}"
-ironic_oslomsg_rpc_servers: "{{ oslomsg_rpc_servers }}"
-ironic_oslomsg_rpc_use_ssl: "{{ oslomsg_rpc_use_ssl }}"
-ironic_oslomsg_rpc_host_group: "{{ oslomsg_rpc_host_group }}"
-
-# Notify
-ironic_oslomsg_notify_userid: ironic
-ironic_oslomsg_notify_vhost: /ironic
-ironic_oslomsg_notify_transport: "{{ oslomsg_notify_transport }}"
-ironic_oslomsg_notify_port: "{{ oslomsg_notify_port }}"
-ironic_oslomsg_notify_servers: "{{ oslomsg_notify_servers }}"
-ironic_oslomsg_notify_use_ssl: "{{ oslomsg_notify_use_ssl }}"
-ironic_oslomsg_notify_host_group: "{{ oslomsg_notify_host_group }}"
-
-# TODO(ansmith): remove rabbitmq vars once service file is updated
-# to use oslomsg vars
-ironic_rabbitmq_userid: ironic
-ironic_rabbitmq_vhost: /ironic
-ironic_rabbitmq_port: "{{ rabbitmq_port }}"
-ironic_rabbitmq_servers: "{{ rabbitmq_servers }}"
-ironic_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
-ironic_rabbitmq_host_group: "{{ rabbitmq_host_group }}"
 ironic_service_name: ironic
 
 ironic_galera_database: ironic

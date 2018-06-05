@@ -19,17 +19,6 @@
   user: root
   pre_tasks:
     - include: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
-    - include: common-tasks/rabbitmq-vhost-user.yml
-      static: no
-      vars:
-        user: "{{ ironic_rabbitmq_userid }}"
-        password: "{{ ironic_rabbitmq_password }}"
-        vhost: "{{ ironic_rabbitmq_vhost }}"
-        _rabbitmq_host_group: "{{ ironic_rabbitmq_host_group }}"
-      when:
-        - inventory_hostname == groups['ironic_all'][0]
-        - groups[ironic_rabbitmq_host_group] | length > 0
-
     - include: common-tasks/oslomsg-rpc-vhost-user.yml
       static: no
       vars:

@@ -20,17 +20,6 @@
   pre_tasks:
     - include: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       static: no
-    - include: common-tasks/rabbitmq-vhost-user.yml
-      static: no
-      vars:
-        user: "{{ octavia_rabbitmq_userid }}"
-        password: "{{ octavia_rabbitmq_password }}"
-        vhost: "{{ octavia_rabbitmq_vhost }}"
-        _rabbitmq_host_group: "{{ octavia_rabbitmq_host_group }}"
-      when:
-        - inventory_hostname == groups['octavia_all'][0]
-        - groups[octavia_rabbitmq_host_group] | length > 0
-
     - include: common-tasks/oslomsg-rpc-vhost-user.yml
       static: no
       vars:

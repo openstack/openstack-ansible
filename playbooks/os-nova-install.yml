@@ -21,33 +21,8 @@
   tags:
     - nova
   tasks:
-
-    - name: Configure rabbitmq vhost/user (nova)
-      include: common-tasks/rabbitmq-vhost-user.yml
-      vars:
-        user: "{{ nova_rabbitmq_userid }}"
-        password: "{{ nova_rabbitmq_password }}"
-        vhost: "{{ nova_rabbitmq_vhost }}"
-        _rabbitmq_host_group: "{{ nova_rabbitmq_host_group }}"
-      when:
-        - groups[nova_rabbitmq_host_group] | length > 0
-      run_once: yes
-
-    - name: Configure rabbitmq vhost/user (nova/telemetry)
-      include: common-tasks/rabbitmq-vhost-user.yml
-      vars:
-        user: "{{ nova_rabbitmq_telemetry_userid }}"
-        password: "{{ nova_rabbitmq_telemetry_password }}"
-        vhost: "{{ nova_rabbitmq_telemetry_vhost }}"
-        _rabbitmq_host_group: "{{ nova_rabbitmq_telemetry_host_group }}"
-      when:
-        - nova_ceilometer_enabled | bool
-        - groups[nova_rabbitmq_telemetry_host_group] is defined
-        - groups[nova_rabbitmq_telemetry_host_group] | length > 0
-        - groups[nova_rabbitmq_telemetry_host_group] != groups[nova_rabbitmq_host_group]
-      run_once: yes
-
-    - include: common-tasks/oslomsg-rpc-vhost-user.yml
+    - name: Configure oslo messaging rpc vhost/user
+      include: common-tasks/oslomsg-rpc-vhost-user.yml
       static: no
       vars:
         rpc_user: "{{ nova_oslomsg_rpc_userid }}"
@@ -57,7 +32,8 @@
         - groups[nova_oslomsg_rpc_host_group] | length > 0
       run_once: yes
 
-    - include: common-tasks/oslomsg-notify-vhost-user.yml
+    - name: Configure oslo.messaging notify vhost/user
+      include: common-tasks/oslomsg-notify-vhost-user.yml
       static: no
       vars:
         notify_user: "{{ nova_oslomsg_notify_userid }}"
