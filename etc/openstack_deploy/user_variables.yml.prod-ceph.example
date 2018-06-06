@@ -3,7 +3,7 @@
 # to one active LB IP, and we use keepalived for that.
 ## Load Balancer Configuration (haproxy/keepalived)
 haproxy_keepalived_external_vip_cidr: "<external_ip_address>/<netmask>"
-haproxy_keepalived_internal_vip_cidr: "172.29.236.0/22"
+haproxy_keepalived_internal_vip_cidr: "172.29.236.9/32"
 haproxy_keepalived_external_interface: ens2
 haproxy_keepalived_internal_interface: br-mgmt
 
