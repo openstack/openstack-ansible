@@ -1,0 +1,14 @@
+---
+issues:
+  - |
+    Recently the spice-html5 git repository was entirely moved from
+    ``https://github.com/SPICE/spice-html5`` to
+    ``https://gitlab.freedesktop.org/spice/spice-html5``. This results
+    in a failure in the git clone stage of the ``repo-build.yml``
+    playbook for OSA queens releases earlier than ``17.0.5``.
+    To fix the issue, deployers may upgrade to the most recent release,
+    or may implement the following override in ``user_variables.yml``.
+
+    .. code-block:: yaml
+
+      nova_spicehtml5_git_repo: https://gitlab.freedesktop.org/spice/spice-html5.git
