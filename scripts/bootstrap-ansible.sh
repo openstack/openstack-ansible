@@ -23,8 +23,7 @@ set -e -u -x
 export HTTP_PROXY=${HTTP_PROXY:-""}
 export HTTPS_PROXY=${HTTPS_PROXY:-""}
 # The Ansible version used for testing
-# HEAD of stable-2.4 as of 1st of June 2018 (contains a zypper optimization for installing packages)
-export ANSIBLE_PACKAGE=${ANSIBLE_PACKAGE:-"git+https://github.com/ansible/ansible@eedb78a8ba88d11a8e2d6acf0e42f930912eb9f5"}
+export ANSIBLE_PACKAGE=${ANSIBLE_PACKAGE:-"ansible==2.5.4"}
 export ANSIBLE_ROLE_FILE=${ANSIBLE_ROLE_FILE:-"ansible-role-requirements.yml"}
 export SSH_DIR=${SSH_DIR:-"/root/.ssh"}
 export DEBIAN_FRONTEND=${DEBIAN_FRONTEND:-"noninteractive"}
