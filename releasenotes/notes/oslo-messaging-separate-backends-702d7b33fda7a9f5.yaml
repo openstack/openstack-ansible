@@ -1,0 +1,19 @@
+---
+features:
+  - Support separate oslo.messaging services for RPC and Notifications
+    to enable operation of separate and different messaging backend servers.
+deprecations:
+  - |
+    The rabbitmq server parameters have been replaced by corresponding
+    oslo.messaging RPC and Notify parameters in order to abstract the
+    messaging service from the actual backend server deployment.
+    - sahara_oslomsg_rpc_servers replaces sahara_rabbitmq_servers
+    - sahara_oslomsg_rpc_port replaces sahara_rabbitmq_port
+    - sahara_oslomsg_rpc_use_ssl replaces sahara_rabbitmq_use_ssl
+    - sahara_oslomsg_rpc_userid replaces sahara_rabbitmq_userid
+    - sahara_oslomsg_rpc_vhost replaces sahara_rabbitmq_vhost
+    - sahara_oslomsg_notify_servers replaces sahara_rabbitmq_telemetry_servers
+    - sahara_oslomsg_notify_port replaces sahara_rabbitmq_telemetry_port
+    - sahara_oslomsg_notify_use_ssl replaces sahara_rabbitmq_telemetry_use_ssl
+    - sahara_oslomsg_notify_userid replaces sahara_rabbitmq_telemetry_userid
+    - sahara_oslomsg_notify_vhost replaces sahara_rabbitmq_telemetry_vhost

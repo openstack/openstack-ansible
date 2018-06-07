@@ -1,0 +1,20 @@
+---
+features:
+  - Support separate oslo.messaging services for RPC and Notifications
+    to enable operation of separate and different messaging backend servers.
+deprecations:
+  - |
+    The rabbitmq server parameters have been replaced by corresponding
+    oslo.messaging RPC and Notify parameters in order to abstract the
+    messaging service from the actual backend server deployment.
+    - glance_oslomsg_rpc_servers replaces glance_rabbitmq_servers
+    - glance_oslomsg_rpc_port replaces glance_rabbitmq_port
+    - glance_oslomsg_rpc_use_ssl replaces glance_rabbitmq_use_ssl
+    - glance_oslomsg_rpc_userid replaces glance_rabbitmq_userid
+    - glance_oslomsg_rpc_vhost replaces glance_rabbitmq_vhost
+    - glance_oslomsg_notify_servers replaces glance_rabbitmq_telemetry_servers
+    - glance_oslomsg_notify_port replaces glance_rabbitmq_telemetry_port
+    - glance_oslomsg_notify_use_ssl replaces glance_rabbitmq_telemetry_use_ssl
+    - glance_oslomsg_notify_userid replaces glance_rabbitmq_telemetry_userid
+    - glance_oslomsg_notify_vhost replaces glance_rabbitmq_telemetry_vhost
+    - glance_oslomsg_notify_password replaces glance_rabbitmq_telemetry_password

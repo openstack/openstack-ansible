@@ -1,0 +1,14 @@
+---
+features:
+  - Support separate oslo.messaging services for RPC and Notifications
+    to enable operation of separate and different messaging backend servers.
+deprecations:
+  - |
+    The rabbitmq server parameters have been replaced by corresponding
+    oslo.messaging RPC and Notify parameters in order to abstract the
+    messaging service from the actual backend server deployment.
+    - ironic_oslomsg_rpc_servers replaces ironic_rabbitmq_servers
+    - ironic_oslomsg_rpc_port replaces ironic_rabbitmq_port
+    - ironic_oslomsg_rpc_use_ssl replaces ironic_rabbitmq_use_ssl
+    - ironic_oslomsg_rpc_userid replaces ironic_rabbitmq_userid
+    - ironic_oslomsg_rpc_vhost replaces ironic_rabbitmq_vhost

@@ -1,0 +1,8 @@
+---
+features:
+  - If defined in applicable host or group vars the variable
+    ``container_extra_networks`` will be merged with the existing
+    ``container_networks`` from the dynamic inventory. This allows a deployer
+    to specify special interfaces which may be unique to an indivdual
+    container. An example use for this feature would be applying known
+    fixed IP addresses to public interfaces on BIND servers for designate.

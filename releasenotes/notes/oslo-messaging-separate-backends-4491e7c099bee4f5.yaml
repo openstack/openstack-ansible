@@ -1,0 +1,21 @@
+---
+features:
+  - Support separate oslo.messaging services for RPC and Notifications
+    to enable operation of separate and different messaging backend servers.
+deprecations:
+  - |
+    The rabbitmq server parameters have been replaced by corresponding
+    oslo.messaging RPC and Notify parameters in order to abstract the
+    messaging service from the actual backend server deployment.
+    - heat_oslomsg_rpc_servers replaces heat_rabbitmq_servers
+    - heat_oslomsg_rpc_port replaces heat_rabbitmq_port
+    - heat_oslomsg_rpc_use_ssl replaces heat_rabbitmq_use_ssl
+    - heat_oslomsg_rpc_userid replaces heat_rabbitmq_userid
+    - heat_oslomsg_rpc_vhost replaces heat_rabbitmq_vhost
+    - heat_oslomsg_rpc_password replaces heat_rabbitmq_password
+    - heat_oslomsg_notify_servers replaces heat_rabbitmq_telemetry_servers
+    - heat_oslomsg_notify_port replaces heat_rabbitmq_telemetry_port
+    - heat_oslomsg_notify_use_ssl replaces heat_rabbitmq_telemetry_use_ssl
+    - heat_oslomsg_notify_userid replaces heat_rabbitmq_telemetry_userid
+    - heat_oslomsg_notify_vhost replaces heat_rabbitmq_telemetry_vhost
+    - heat_oslomsg_notify_password replaces heat_rabbitmq_telemetry_password
