@@ -21,10 +21,6 @@ neutron_ceilometer_enabled: "{{ hostvars['localhost']['neutron_ceilometer_enable
 neutron_dns_domain: "{{ dhcp_domain }}"
 neutron_service_in_ldap: "{{ service_ldap_backend_enabled }}"
 
-neutron_galera_user: neutron
-neutron_galera_database: neutron
-neutron_galera_address: "{{ galera_address }}"
-
 # Ensure that the package state matches the global setting
 neutron_package_state: "{{ package_state }}"
 
