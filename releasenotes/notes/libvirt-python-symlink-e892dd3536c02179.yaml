@@ -1,0 +1,19 @@
+---
+issues:
+  - |
+    With the release of CentOS 7.5, all pike releases are broken due to a
+    mismatch in version between the libvirt-python library specified by the
+    OpenStack community, and the version provided in CentOS 7.5. As such OSA
+    is unable build the appropriate python library for libvirt. The only
+    recourse for this is to upgrade the environment to the latest queens
+    release.
+fixes:
+  - |
+    In order to prevent further issues with a libvirt and python-libvirt
+    version mismatch, KVM-based compute nodes will now use the distribution
+    package python library for libvirt. This should resolve the issue seen
+    with pike builds on CentOS 7.5.
+deprecations:
+  - |
+    The variable ``nova_compute_pip_packages`` is no longer used and has
+    been removed.
