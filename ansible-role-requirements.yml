@@ -1,15 +1,15 @@
 - name: ansible-hardening
   scm: git
   src: https://git.openstack.org/openstack/ansible-hardening
-  version: b2eb75a326648e8c716b5f91296d3af435de621f
+  version: 200e4f7a5137de8a7dbba681e87cd1f954e38ee6
 - name: apt_package_pinning
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-apt_package_pinning
-  version: b488ec5ee3092ba5b6765b5888c9ad2e44922ec5
+  version: 36b1161e8e76a76681bac089396a9e89056524d9
 - name: pip_install
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-pip_install
-  version: 407931dcfe5bd15153ddafc0d96467a7ae5b6524
+  version: 39cc72fc6b5414634245a6aa7966bf22fc8f7381
 - name: galera_client
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-galera_client
@@ -17,7 +17,7 @@
 - name: galera_server
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-galera_server
-  version: cdd52534c54ad3e22cb77059e5f26ab150bf455b
+  version: 8ce933e23bc2a4ef7c582ea3280915b74e2aa1ab
 - name: ceph_client
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-ceph_client
@@ -25,7 +25,7 @@
 - name: haproxy_server
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-haproxy_server
-  version: 0c0c9453e8760fcbb0a126e6c97de83f004ae06b
+  version: 746a9b334079081eb6b8d1b98ef2a150b31b11b8
 - name: keepalived
   scm: git
   src: https://github.com/evrardjp/ansible-keepalived
@@ -33,11 +33,11 @@
 - name: lxc_container_create
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-lxc_container_create
-  version: 7d3549c7b89a3c62c7e22847c95249e9081bf2c7
+  version: 3ff8b4c604be5794827941381a399ea3d0110bf2
 - name: lxc_hosts
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-lxc_hosts
-  version: 136acfd8b0b287ae1709d6dfb75d7e0c7b0de598
+  version: b06e48356d845ca8b86560cc6f4c3861add54c5e
 - name: memcached_server
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-memcached_server
@@ -49,11 +49,11 @@
 - name: os_keystone
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_keystone
-  version: fe39da4779925709c93bc338c4d51beac163828a
+  version: 8c694847e10e118ae9778a6f1d0b7bedfaa70834
 - name: openstack_openrc
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-openstack_openrc
-  version: e86c73ef9af547b30a4aab0d39aca96359bf5ce4
+  version: 0d11dd212e2d6494ca0cbe841d8f94f982c255b1
 - name: os_aodh
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_aodh
@@ -101,19 +101,19 @@
 - name: os_molteniron
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_molteniron
-  version: 536fd5b8a0c087641b48970bef6e7b4433cd23cb
+  version: f4ebd7ef37c8f9e8b46f591c9de6cf0888df1135
 - name: os_neutron
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_neutron
-  version: 8e9f26ae2b54025606ddc9d63350f877d0ae4410
+  version: ea57e8aa525a74b73c227f04bb72587b0f4aab74
 - name: os_nova
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_nova
-  version: 0d33c72198cbddbb579f004569ea2700387cf554
+  version: e3d6363b401d3a5e6e0d12cf86a7f1d684e53b17
 - name: os_octavia
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_octavia
-  version: 39e36da08cbc00b25d08bb0e9f0f0894c921e7bb
+  version: 3fd189860605f2c36281fa26c776aa46c870a12a
 - name: os_rally
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_rally
@@ -141,19 +141,19 @@
 - name: plugins
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-plugins
-  version: 878267cf84a8ca84984ef5930b102245a29a1dac
+  version: e1f330786d5f09bb02c3f06b3484a089223419ad
 - name: rabbitmq_server
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-rabbitmq_server
-  version: fc06e9a9314c2f09d99cbd2914fb5bbbab4415b1
+  version: ce90c91857de4a840e5db655a3a42b5de0482ede
 - name: repo_build
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-repo_build
-  version: 82194ee925e34465fb20548f0e47b85892ac2cdd
+  version: a84d11ab04c911c788b534cd61d33e6e2b71dd0b
 - name: repo_server
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-repo_server
-  version: a742e1f72744b3eb17f3f260970690766d9b5fa8
+  version: c97a30063749091ea018c853d6e39e8add5f0d3e
 - name: rsyslog_client
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-rsyslog_client

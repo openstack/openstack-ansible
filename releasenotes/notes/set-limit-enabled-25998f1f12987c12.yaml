@@ -1,0 +1,13 @@
+---
+features:
+  - An option to disable the ``machinectl`` quota system has been changed. The
+    variable ``lxc_host_machine_quota_disabled`` is a Boolean with a default of
+    **false**. When this option is set to **true** it will disable the
+    ``machinectl`` quota system.
+  - The options ``lxc_host_machine_qgroup_space_limit`` and
+    ``lxc_host_machine_qgroup_compression_limit`` have been added allowing a
+    deployer to set **qgroup** limits as they see fit. The default value for
+    these options is "none" which is effectively **unlimited**. These options
+    accept any nominal size value followed by the single letter type, example
+    ``64G``. These options are only effective when the option
+    ``lxc_host_machine_quota_disabled`` is set to **false**.
