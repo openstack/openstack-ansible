@@ -37,3 +37,10 @@ rbd_client_directories: false
 ceph_mons: "{{ groups[mon_group_name]
                | map('extract', hostvars, 'ansible_host')
                | list }}"
+
+# Provide a variable which can be overidden by a deployer to specify a list of
+# dicts describing RadosGW provisioned by means other than OpenStack-Ansible.
+# The ip_addr should be accessible by the haproxy internal interface.
+# - name: ceph-rgw-name
+#   ip_addr: x.x.x.x
+ceph_rgws: []
