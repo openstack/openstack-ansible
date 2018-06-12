@@ -63,10 +63,3 @@
         rsyslog_client_log_rotate_file: aodh_log_rotate
         rsyslog_client_log_dir: "/var/log/aodh"
         rsyslog_client_config_name: "99-aodh-rsyslog-client.conf"
-
-  vars:
-    aodh_rabbitmq_userid: aodh
-    aodh_rabbitmq_vhost: /aodh
-    aodh_rabbitmq_servers: "{{ rabbitmq_servers }}"
-    aodh_rabbitmq_port: "{{ rabbitmq_port }}"
-    aodh_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
