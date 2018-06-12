@@ -85,12 +85,13 @@ case ${DISTRO_ID} in
           python3 python3-dev \
           libssl-dev libffi-dev \
           python-apt python3-apt \
+          python-pip \
           python-virtualenv
         ;;
     opensuse)
         zypper -n install -l git-core curl autoconf gcc gcc-c++ \
             netcat-openbsd python python-xml python-devel gcc \
-            libffi-devel libopenssl-devel \
+            libffi-devel libopenssl-devel python-pip \
             python-virtualenv
         # Leap ships with python3.4 which is not supported by ansible and as
         # such we are using python2
