@@ -23,11 +23,6 @@ cinder_service_backup_program_enabled: "{{ hostvars['localhost']['cinder_service
 # If there are any Ceilometer hosts in the environment, then enable its usage
 cinder_ceilometer_enabled: "{{ (groups['cinder_all'] is defined) and (groups['cinder_all'] | length > 0) and (groups['ceilometer_all'] is defined) and (groups['ceilometer_all'] | length > 0) }}"
 
-# The MySQL details for the cinder service
-cinder_galera_user: cinder
-cinder_galera_database: cinder
-cinder_galera_address: "{{ galera_address }}"
-
 # The address used to listen for communications
 cinder_management_address: "{{ ansible_host }}"
 
