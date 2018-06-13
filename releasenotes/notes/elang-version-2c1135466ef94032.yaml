@@ -1,0 +1,9 @@
+---
+features:
+  - The option ``rabbitmq_erlang_version_spec`` has been added allowing
+    deployers to set the version of erlang used on a given installation.
+deprecations:
+  - The use of the ``apt_package_pinning`` role as a meta dependency
+    has been removed from the rabbitmq_server role. While the package
+    pinning role is still used, it will now only be executed when the
+    apt task file is executed.
