@@ -119,8 +119,23 @@ popd
 
 # Now add Newton EOL workarounds
 if [[ "${ACTION}" == "upgrade" ]]; then
-    echo 'lxc_cache_prep_pre_commands: "rm -f /etc/resolv.conf || true"' > /etc/openstack_deploy/user_workarounds_newton.yml
-    echo 'lxc_cache_prep_post_commands: "ln -s ../run/resolvconf/resolv.conf /etc/resolv.conf -f"' > /etc/openstack_deploy/user_workarounds_newton.yml
+
+cat > /etc/openstack_deploy/user_workarounds_newton.yml <<EOT
+lxc_cache_prep_pre_commands: |
+  if [ -f /etc/resolv.conf ] || [ -L /etc/resolv.conf ]; then
+    mv /etc/resolv.conf /etc/resolv.conf.org
+  fi
+EOT
+
+cat >> /etc/openstack_deploy/user_workarounds_newton.yml <<EOT
+lxc_cache_prep_post_commands: |
+  if [ -f /etc/resolv.conf.org ] || [ -L /etc/resolv.conf.org ]; then
+    mv /etc/resolv.conf.org /etc/resolv.conf
+  else
+    rm -f /etc/resolv.conf
+  fi
+EOT
+
 fi
 
 # Implement the log directory
