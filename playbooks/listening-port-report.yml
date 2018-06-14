@@ -1,0 +1,36 @@
+# Copyright 2018, BBC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Gather listening ports report
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Gather listening ports
+      command: netstat -ln --inet --program
+      register: listening_ports
+
+    - name: create report
+      copy:
+        content: |
+          {% for host in ansible_play_hosts %}
+          hostname: {{ host }}
+          listening_ports:
+          {% for port in hostvars[host].listening_ports['stdout_lines'] %}
+          {{ port }}
+          {% endfor %}
+
+          {% endfor %}
+        dest: /tmp/listening_port_report.txt
+      delegate_to: localhost
+      run_once: true
