@@ -163,8 +163,9 @@ haproxy_default_services:
   - service:
       haproxy_service_name: nova_api_metadata
       haproxy_backend_nodes: "{{ groups['nova_api_metadata'] | default([]) }}"
+      haproxy_bind: "{{ [internal_lb_vip_address] }}"
       haproxy_port: 8775
-      haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_ssl: False
       haproxy_balance_type: http
       haproxy_backend_options:
         - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
@@ -182,7 +183,8 @@ haproxy_default_services:
   - service:
       haproxy_service_name: nova_api_placement
       haproxy_backend_nodes: "{{ groups['nova_api_placement'] | default([]) }}"
-      haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_ssl: False
+      haproxy_bind: "{{ [internal_lb_vip_address] }}"
       haproxy_port: 8780
       haproxy_balance_type: http
       haproxy_backend_options:
@@ -268,7 +270,8 @@ haproxy_default_services:
   - service:
       haproxy_service_name: rabbitmq_mgmt
       haproxy_backend_nodes: "{{ groups['rabbitmq'] | default([]) }}"
-      haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_ssl: False
+      haproxy_bind: "{{ [internal_lb_vip_address] }}"
       haproxy_port: 15672
       haproxy_balance_type: http
       haproxy_backend_options:
