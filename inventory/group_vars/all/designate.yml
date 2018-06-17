@@ -15,15 +15,11 @@
 
 # Used by both neutron and designate, and therefore must be in 'all' scope
 designate_keystone_auth_plugin: password
-designate_service_port: 9001
-designate_service_proto: http
 designate_service_user_name: designate
 designate_service_project_name: service
 designate_service_project_domain_id: default
 designate_service_user_domain_id: default
 designate_service_region: "{{ service_region }}"
 
-designate_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(designate_service_proto) }}"
-designate_service_adminuri: "{{ designate_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ designate_service_port }}"
-designate_service_adminurl: "{{ designate_service_adminuri }}/v2"
+designate_service_adminurl: "http://{{ internal_lb_vip_address }}:9001/v2"
 
