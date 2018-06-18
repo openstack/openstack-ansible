@@ -241,8 +241,8 @@ bootstrap_host_data_disk2_formats:
   lvm: ext2
 
 bootstrap_host_format_options:
-  machinectl: '--metadata single --data single'
-  btrfs: '--metadata single --data single'
+  machinectl: '--metadata single --data single --mixed'
+  btrfs: '--metadata single --data single --mixed'
   xfs: '-K -d agcount=64 -l size=128m'
   ext4: '-O dir_index'
 
