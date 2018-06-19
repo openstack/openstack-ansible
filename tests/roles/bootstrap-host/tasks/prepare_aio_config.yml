@@ -77,6 +77,8 @@
         echo "uca_apt_repo_url: '${NODEPOOL_UCA_MIRROR}'" >> ${NODEPOOL_OVERRIDES}
         echo "openstack_hosts_centos_mirror_url: '${NODEPOOL_CENTOS_MIRROR}'" >> ${NODEPOOL_OVERRIDES}
         echo "opensuse_mirror: '${NODEPOOL_OPENSUSE_MIRROR}'" >> ${NODEPOOL_OVERRIDES}
+        echo "centos_epel_mirror: '${NODEPOOL_EPEL_MIRROR}'" >> ${NODEPOOL_OVERRIDES}
+        echo "galera_percona_xtrabackup_repo_host: '${NODEPOOL_PERCONA_PROXY}'" >> ${NODEPOOL_OVERRIDES}
         if [[ ${NODEPOOL_PYPI_MIRROR} == *.ovh.* ]]; then
           echo "nova_virt_type: 'qemu'" >> ${NODEPOOL_OVERRIDES}
         fi
