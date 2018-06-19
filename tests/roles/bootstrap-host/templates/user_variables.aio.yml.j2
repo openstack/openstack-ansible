@@ -163,7 +163,7 @@ cache_timeout: {{ cache_timeout }}
 
 # The container backing store is set to 'machinectl' to speed up the
 # AIO build time. Options are: [machinectl, overlayfs, btrfs, zfs, dir, lvm]
-lxc_container_backing_store: "machinectl"
+lxc_container_backing_store: "dir"
 
 ## Enable LBaaSv2 in the AIO
 neutron_plugin_base:
