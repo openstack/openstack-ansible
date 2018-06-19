@@ -276,4 +276,4 @@ bootstrap_host_octavia: "{{ (bootstrap_host_scenario in ['octavia']) | bool }}"
 container_tech: "{{ ('nspawn' in bootstrap_host_scenario) | ternary('nspawn', 'lxc') }}"
 
 # Set the lxc backing store for the job
-lxc_container_backing_store: machinectl
+lxc_container_backing_store: dir
