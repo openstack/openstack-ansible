@@ -38,8 +38,8 @@ PASS=0
 FAIL=0
 
 # SSH/SCP prefixes
-CMD_SCP_PREFIX="sshpass -p cubswin:) scp -o StrictHostKeyChecking=no"
-CMD_SSH_PREFIX="sshpass -p cubswin:) ssh -o StrictHostKeyChecking=no"
+CMD_SCP_PREFIX="sshpass -p gocubsgo scp -o StrictHostKeyChecking=no"
+CMD_SSH_PREFIX="sshpass -p gocubsgo ssh -o StrictHostKeyChecking=no"
 
 ## Functions -----------------------------------------------------------------
 
