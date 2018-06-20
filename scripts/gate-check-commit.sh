@@ -98,6 +98,7 @@ fi
 
 # Bootstrap Ansible
 source "${OSA_CLONE_DIR}/scripts/bootstrap-ansible.sh"
+# PIP_COMMAND is now set within the ansible venv and PIP_OPTS is now set with constraints/proxy.
 
 # Install ARA and add it to the callback path provided by bootstrap-ansible.sh/openstack-ansible.rc
 # This is added *here* instead of bootstrap-ansible so it's used for CI purposes only.
