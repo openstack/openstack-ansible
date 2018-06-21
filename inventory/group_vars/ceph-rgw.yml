@@ -8,6 +8,6 @@ ceph_conf_overrides_rgw:
     rgw_keystone_admin_password: "{{ radosgw_admin_password }}"
     rgw_keystone_admin_tenant: "{{ radosgw_admin_tenant }}"
     rgw_keystone_admin_domain: default
-    rgw_keystone_accepted_roles: 'Member, _member_, admin, swiftoperator'
+    rgw_keystone_accepted_roles: 'member, _member_, admin, swiftoperator'
     rgw_s3_auth_use_keystone: true
     rgw_enable_apis: swift
