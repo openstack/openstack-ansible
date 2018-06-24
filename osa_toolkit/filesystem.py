@@ -188,12 +188,13 @@ def write_hostnames(save_path, hostnames_ips):
 
     with open(hostnames_ip_file, 'wb') as f:
         f.write(
-            json.dumps(
+            ('# This file is managed by openstack-ansible. No manual edits.\n'
+            + json.dumps(
                 hostnames_ips,
                 indent=4,
                 separators=(',', ': '),
                 sort_keys=True
-            ).encode('ascii')
+            )).encode('ascii')
         )
 
 
