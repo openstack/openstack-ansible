@@ -74,9 +74,12 @@
       shell: |
         source /etc/ci/mirror_info.sh
         NODEPOOL_OVERRIDES="/etc/openstack_deploy/user_openstackci.yml"
+        echo "lxc_reverse_proxy: '${NODEPOOL_MIRROR_HOST}'" >> ${NODEPOOL_OVERRIDES}
         echo "uca_apt_repo_url: '${NODEPOOL_UCA_MIRROR}'" >> ${NODEPOOL_OVERRIDES}
         echo "openstack_hosts_centos_mirror_url: '${NODEPOOL_CENTOS_MIRROR}'" >> ${NODEPOOL_OVERRIDES}
         echo "opensuse_mirror: '${NODEPOOL_OPENSUSE_MIRROR}'" >> ${NODEPOOL_OVERRIDES}
+        echo "pip_default_index: '${NODEPOOL_PYPI_MIRROR}'" >> ${NODEPOOL_OVERRIDES}
+        echo "pip_wheel_mirror: '${NODEPOOL_WHEEL_MIRROR}'" >> ${NODEPOOL_OVERRIDES}
         echo "centos_epel_mirror: '${NODEPOOL_EPEL_MIRROR}'" >> ${NODEPOOL_OVERRIDES}
         echo "galera_percona_xtrabackup_repo_host: '${NODEPOOL_PERCONA_PROXY}'" >> ${NODEPOOL_OVERRIDES}
         echo "openstack_hosts_rdo_mirror_url: '${NODEPOOL_RDO_PROXY}'" >> ${NODEPOOL_OVERRIDES}
