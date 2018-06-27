@@ -27,8 +27,6 @@
         log_dirs:
           - src: "/openstack/log/{{ inventory_hostname }}-molteniron"
             dest: "/var/log/molteniron"
-            owner: "syslog"
-            group: "syslog"
     - include: common-tasks/unbound-clients.yml
       static: no
       when:
