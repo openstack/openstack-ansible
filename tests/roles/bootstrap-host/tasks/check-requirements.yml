@@ -121,9 +121,11 @@
   tags:
     - check-disk-size
 
-- name: Ensure that the kernel has VXLAN support
+- name: Ensure that the kernel has VXLAN, VLAN, and bonding support
   modprobe:
-    name: vxlan
+    name: "{{ item }}"
     state: present
-  tags:
-    - check-vxlan
+  with_items:
+    - vxlan
+    - bonding
+    - 8021q
