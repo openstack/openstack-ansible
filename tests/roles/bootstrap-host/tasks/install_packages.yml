@@ -13,10 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: "install_packages_{{ ansible_os_family | lower }}.yml"
-  when:
-    - ansible_pkg_mgr != 'apt'
-
 - name: Remove known problem packages
   package:
     name: "{{ packages_remove }}"
