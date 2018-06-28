@@ -17,8 +17,12 @@
   hosts: aodh_all
   gather_facts: "{{ osa_gather_facts | default(True) }}"
   user: root
+  environment: "{{ deployment_environment_variables | default({}) }}"
+  tags:
+    - aodh
   pre_tasks:
     - include: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
+
     - include: common-tasks/oslomsg-rpc-vhost-user.yml
       static: no
       vars:
@@ -28,6 +32,7 @@
       when:
         - inventory_hostname == groups['aodh_api'][0]
         - groups[aodh_oslomsg_rpc_host_group] | length > 0
+
     - include: common-tasks/oslomsg-notify-vhost-user.yml
       static: no
       vars:
@@ -43,18 +48,12 @@
         log_dirs:
           - src: "/openstack/log/{{ inventory_hostname }}-aodh"
             dest: "/var/log/aodh"
-    - include: common-tasks/mysql-db-user.yml
-      static: no
-      vars:
-        user_name: "{{ aodh_galera_user }}"
-        password: "{{ aodh_container_db_password }}"
-        login_host: "{{ aodh_galera_address }}"
-        db_name: "{{ aodh_galera_database }}"
-      when: inventory_hostname == groups['aodh_all'][0]
+
     - include: common-tasks/unbound-clients.yml
       static: no
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
+
   roles:
     - role: "os_aodh"
 
@@ -71,6 +70,3 @@
     aodh_rabbitmq_servers: "{{ rabbitmq_servers }}"
     aodh_rabbitmq_port: "{{ rabbitmq_port }}"
     aodh_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
-  environment: "{{ deployment_environment_variables | default({}) }}"
-  tags:
-    - aodh
