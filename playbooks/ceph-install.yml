@@ -53,13 +53,13 @@
         - ansible_pkg_mgr in ['yum', 'dnf']
       tags:
         - skip_ansible_lint
-    - name: Increase priority for Ceph repos
+    - name: Set default priority for Ceph repos
       command: >
          yum-config-manager
            --enable Ceph
-           --setopt="Ceph.priority=50"
+           --setopt="Ceph.priority=99"
            --enable Ceph-noarch
-           --setopt="Ceph-noarch.priority=50"
+           --setopt="Ceph-noarch.priority=99"
       when:
         - ansible_pkg_mgr in ['yum', 'dnf']
     - name: Create systemd service directory
@@ -159,13 +159,13 @@
         - ansible_pkg_mgr in ['yum', 'dnf']
       tags:
         - skip_ansible_lint
-    - name: Increase priority for Ceph repos
+    - name: Set default priority for Ceph repos
       command: >
          yum-config-manager
            --enable Ceph
-           --setopt="Ceph.priority=50"
+           --setopt="Ceph.priority=99"
            --enable Ceph-noarch
-           --setopt="Ceph-noarch.priority=50"
+           --setopt="Ceph-noarch.priority=99"
       when:
         - ansible_pkg_mgr in ['yum', 'dnf']
     - name: Gather ceph-mon facts
