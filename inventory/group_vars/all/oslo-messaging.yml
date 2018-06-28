@@ -137,30 +137,6 @@ designate_rabbitmq_use_ssl: "{{ oslomsg_rpc_use_ssl }}"
 designate_rabbitmq_userid: "{{ designate_oslomsg_rpc_userid }}"
 designate_rabbitmq_vhost: "{{ designate_oslomsg_rpc_vhost }}"
 
-## Glance
-glance_oslomsg_rpc_userid: glance
-glance_oslomsg_rpc_vhost: /glance
-glance_oslomsg_rpc_transport: "{{ oslomsg_rpc_transport }}"
-glance_oslomsg_rpc_port: "{{ oslomsg_rpc_port }}"
-glance_oslomsg_rpc_servers: "{{ oslomsg_rpc_servers }}"
-glance_oslomsg_rpc_use_ssl: "{{ oslomsg_rpc_use_ssl }}"
-glance_oslomsg_rpc_host_group: "{{ oslomsg_rpc_host_group }}"
-glance_oslomsg_notify_userid: glance
-glance_oslomsg_notify_vhost: /glance
-glance_oslomsg_notify_transport: "{{ oslomsg_notify_transport }}"
-glance_oslomsg_notify_port: "{{ oslomsg_notify_port }}"
-glance_oslomsg_notify_servers: "{{ oslomsg_notify_servers }}"
-glance_oslomsg_notify_use_ssl: "{{ oslomsg_notify_use_ssl }}"
-glance_oslomsg_notify_host_group: "{{ oslomsg_notify_host_group }}"
-# Shim to remove when wiring is done in ceilometer and glance role
-glance_rabbitmq_host_group: "{{ oslomsg_rpc_host_group }}"
-glance_rabbitmq_port: "{{ oslomsg_rpc_port }}"
-glance_rabbitmq_servers: "{{ oslomsg_rpc_servers }}"
-glance_rabbitmq_use_ssl: "{{ oslomsg_rpc_use_ssl }}"
-glance_rabbitmq_userid: "{{ glance_oslomsg_rpc_userid }}"
-glance_rabbitmq_vhost: "{{ glance_oslomsg_rpc_vhost }}"
-
-
 ## Heat
 heat_oslomsg_rpc_userid: heat
 heat_oslomsg_rpc_vhost: /heat
