@@ -37,6 +37,7 @@
     read_priv: ".*"
     write_priv: ".*"
     state: "present"
+    force: true
   delegate_to: "{{ groups[oslomsg_rpc_host_group][0] }}"
   no_log: true
   tags:
