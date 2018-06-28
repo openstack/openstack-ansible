@@ -18,7 +18,3 @@ designate_ceilometer_enabled: "{{ (groups['designate_all'] is defined) and (grou
 
 # Ensure that the package state matches the global setting
 designate_package_state: "{{ package_state }}"
-
-# venv fetch configuration
-designate_venv_tag: "{{ venv_tag }}"
-designate_venv_download_url: "{{ venv_base_download_url }}/designate-{{ openstack_release }}-{{ ansible_architecture | lower }}.tgz"

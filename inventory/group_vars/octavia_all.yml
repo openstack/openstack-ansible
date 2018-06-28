@@ -16,7 +16,3 @@
 octavia_service_internalurl: "{{ octavia_service_internaluri }}/v1/%(project_id)s"
 octavia_service_user_name: octavia
 octavia_service_region: "{{ service_region }}"
-
-# venv fetch configuration
-octavia_venv_tag: "{{ venv_tag }}"
-octavia_venv_download_url: "{{ venv_base_download_url }}/octavia-{{ openstack_release }}-{{ ansible_architecture | lower }}.tgz"

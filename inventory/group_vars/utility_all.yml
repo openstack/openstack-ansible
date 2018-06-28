@@ -65,14 +65,6 @@ tempest_service_available_swift: "{{ (groups['swift_all'] is defined and groups[
 tempest_service_available_congress: "{{ groups['congress_all'] is defined and groups['congress_all'] | length > 0 }}"
 
 tempest_log_dir: /var/log/utility
-tempest_venv_tag: "{{ openstack_release }}"
 
 # This sets the tempest group to the utility group
 tempest_main_group: utility_all
-
-#
-# Rally settings
-#
-
-rally_venv_tag: "{{ venv_tag }}"
-rally_venv_download_url: "{{ venv_base_download_url }}/rally-{{ openstack_release }}-{{ ansible_architecture | lower }}.tgz"

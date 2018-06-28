@@ -16,7 +16,3 @@
 barbican_service_region: "{{ service_region }}"
 barbican_service_in_ldap: "{{ service_ldap_backend_enabled }}"
 barbican_keystone_auth: yes
-
-# venv fetch configuration
-barbican_venv_tag: "{{ venv_tag }}"
-barbican_venv_download_url: "{{ venv_base_download_url }}/barbican-{{ openstack_release }}-{{ ansible_architecture | lower }}.tgz"
