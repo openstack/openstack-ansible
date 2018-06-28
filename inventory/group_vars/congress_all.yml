@@ -16,11 +16,6 @@
 congress_service_region: "{{ service_region }}"
 congress_service_in_ldap: "{{ service_ldap_backend_enabled }}"
 
-# MariaDB details for the congress service
-congress_galera_user: congress
-congress_galera_database: congress
-congress_galera_address: "{{ galera_address }}"
-
 # Ensure that the package state matches the global setting
 congress_package_state: "{{ package_state }}"
 
