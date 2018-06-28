@@ -24,7 +24,8 @@ keystone_system_user_name: keystone
 
 keystone_external_ssl: "{{ openstack_external_ssl }}"
 
-keystone_cache_servers: "[{% for host in groups['memcached_all'] %}\"{{ hostvars[host]['container_address'] }}:{{ memcached_port }}\"{% if not loop.last %},{% endif %}{% endfor %}]"
+keystone_cache_servers: "{{ memcached_servers.split(',') }}"
+
 keystone_service_in_ldap: "{{ service_ldap_backend_enabled }}"
 
 # Hosts allowed to override remote IP with X-Forwarded-For
