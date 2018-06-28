@@ -48,15 +48,6 @@ nova_ceilometer_enabled: "{{ (groups['ceilometer_all'] is defined) and (groups['
 # If there are any Barbican hosts in the environment, then enable its usage
 nova_barbican_enabled: "{{ hostvars['localhost']['nova_barbican_enabled'] }}"
 
-# The MySQL details for the nova service
-nova_galera_user: nova
-nova_galera_database: nova
-nova_galera_address: "{{ galera_address }}"
-nova_api_galera_user: nova_api
-nova_api_galera_database: nova_api
-nova_api_galera_address: "{{ galera_address }}"
-nova_cell0_database: nova_cell0
-
 nova_external_ssl: "{{ openstack_external_ssl }}"
 nova_ceph_client_uuid: '{{ cinder_ceph_client_uuid | default() }}'
 nova_dhcp_domain: "{{ dhcp_domain }}"
