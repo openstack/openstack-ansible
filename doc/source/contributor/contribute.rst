@@ -38,7 +38,7 @@ Review process
 
 Any new code will be reviewed before merging into our repositories.
 
-We follow openstack guidelines for the code reviewing process.
+We follow openstack guidelines for the `code reviewing <https://docs.openstack.org/project-team-guide/review-the-openstack-way.html>`_ process.
 
 Please be aware that any patch can be refused by the community if they
 don't match the :ref:`codeguidelines`.
