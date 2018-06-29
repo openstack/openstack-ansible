@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-haproxy_bind_on_non_local: "{% if groups.haproxy|length > 1 %}True{% else %}False{% endif %}"
-haproxy_use_keepalived: "{% if groups.haproxy|length > 1 %}True{% else %}False{% endif %}"
+haproxy_bind_on_non_local: "{{ (groups.haproxy | length) > 1 }}"
+haproxy_use_keepalived: "{{ (groups.haproxy | length) > 1 }}"
 keepalived_selinux_compile_rules:
   - keepalived_ping
   - keepalived_haproxy_pid_file
