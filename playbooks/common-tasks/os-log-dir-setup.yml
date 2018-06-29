@@ -36,8 +36,6 @@
   file:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
-    owner: "{{ item.owner|default(omit) }}"
-    group: "{{ item.group|default(omit) }}"
     state: "link"
     force: "yes"
   with_items: "{{ log_dirs|default([]) }}"

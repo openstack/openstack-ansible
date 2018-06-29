@@ -27,10 +27,6 @@
         log_dirs:
           - src: "/openstack/log/{{ inventory_hostname }}-swift"
             dest: "/var/log/swift"
-            owner: "syslog"
-            # NOTE(hwoarang) The syslog user on openSUSE belongs to the 'users'
-            # group. There is no dedicated syslog group.
-            group: "{{ (ansible_pkg_mgr == 'zypper') | ternary ('users', 'syslog') }}"
     - include: common-tasks/unbound-clients.yml
       static: no
       when:
