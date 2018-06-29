@@ -253,6 +253,7 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'ironic-compute_hosts',
         'key-manager_containers',
         'key-manager_hosts',
+        'key-manager_all',
         'keystone',
         'keystone_all',
         'keystone_container',

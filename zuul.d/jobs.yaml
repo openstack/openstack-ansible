@@ -161,6 +161,13 @@
     vars:
       install_method: distro
 
+- job:
+    name: openstack-ansible-deploy-barbican-ubuntu-xenial
+    parent: openstack-ansible-deploy-aio_lxc-ubuntu-xenial
+    vars:
+      action: deploy
+      scenario: barbican
+
 # centos
 - job:
     name: openstack-ansible-deploy-aio_lxc-centos-7

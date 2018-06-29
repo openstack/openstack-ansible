@@ -56,6 +56,9 @@ bootstrap_user_variables_extra_templates:
   octavia:
     - src: user_variables_octavia.yml.j2
       dest: user_variables_octavia.yml
+  barbican:
+    - src: user_variables_barbican.yml.j2
+      dest: user_variables_barbican.yml
 
 ## Loopback volumes
 # Sparse loopback disks are used for the containers if there is no secondary
