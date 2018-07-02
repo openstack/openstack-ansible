@@ -16,6 +16,7 @@
 import mock
 import os
 from os import path
+from osa_toolkit import filesystem as fs
 import sys
 import unittest
 
@@ -26,8 +27,6 @@ from test_inventory import make_config
 INV_DIR = 'inventory'
 
 sys.path.append(path.join(os.getcwd(), INV_DIR))
-
-from osa_toolkit import filesystem as fs
 
 TARGET_DIR = path.join(os.getcwd(), 'tests', 'inventory')
 USER_CONFIG_FILE = path.join(TARGET_DIR, 'openstack_user_config.yml')
