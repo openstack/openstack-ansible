@@ -72,7 +72,7 @@
       rabbitmq_user:
          user: "{{ rabbitmq_monitoring_userid|default('monitoring') }}"
          password: "{{ rabbitmq_monitoring_password }}"
-         tags: "monitoring"
+         tags: "{{ rabbitmq_monitoring_tag | default('monitoring') }}"
          state: "present"
       no_log: true
       when: rabbitmq_monitoring_password is defined
