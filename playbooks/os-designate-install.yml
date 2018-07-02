@@ -20,6 +20,9 @@
   hosts: designate_all
   gather_facts: "{{ osa_gather_facts | default(True) }}"
   user: root
+  environment: "{{ deployment_environment_variables | default({}) }}"
+  tags:
+    - designate
   pre_tasks:
     - include: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
 
@@ -32,6 +35,7 @@
       when:
         - inventory_hostname == groups['designate_all'][0]
         - groups[designate_oslomsg_rpc_host_group] | length > 0
+
     - include: common-tasks/oslomsg-notify-vhost-user.yml
       static: no
       vars:
@@ -48,14 +52,7 @@
         log_dirs:
           - src: "/openstack/log/{{ inventory_hostname }}-designate"
             dest: "/var/log/designate"
-    - include: common-tasks/mysql-db-user.yml
-      static: no
-      vars:
-        user_name: "{{ designate_galera_user }}"
-        password: "{{ designate_galera_password }}"
-        login_host: "{{ designate_galera_address }}"
-        db_name: "{{ designate_galera_database_name }}"
-      when: inventory_hostname == groups['designate_all'][0]
+
     - include: common-tasks/unbound-clients.yml
       static: no
       when:
@@ -69,7 +66,3 @@
         rsyslog_client_log_rotate_file: designate_log_rotate
         rsyslog_client_log_dir: "/var/log/designate"
         rsyslog_client_config_name: "99-designate-rsyslog-client.conf"
-
-  environment: "{{ deployment_environment_variables | default({}) }}"
-  tags:
-    - designate
