@@ -17,6 +17,9 @@
   hosts: barbican_all
   gather_facts: "{{ osa_gather_facts | default(True) }}"
   user: root
+  environment: "{{ deployment_environment_variables | default({}) }}"
+  tags:
+    - barbican
   pre_tasks:
     - include: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
 
@@ -45,14 +48,7 @@
         log_dirs:
           - src: "/openstack/log/{{ inventory_hostname }}-barbican"
             dest: "/var/log/barbican"
-    - include: common-tasks/mysql-db-user.yml
-      static: no
-      vars:
-        user_name: "{{ barbican_galera_user }}"
-        password: "{{ barbican_galera_password }}"
-        login_host: "{{ barbican_galera_address }}"
-        db_name: "{{ barbican_galera_database }}"
-      when: inventory_hostname == groups['barbican_all'][0]
+
     - include: common-tasks/unbound-clients.yml
       static: no
       when:
@@ -66,7 +62,3 @@
         rsyslog_client_log_rotate_file: barbican_log_rotate
         rsyslog_client_log_dir: "/var/log/barbican"
         rsyslog_client_config_name: "99-barbican-rsyslog-client.conf"
-
-  environment: "{{ deployment_environment_variables | default({}) }}"
-  tags:
-    - barbican
