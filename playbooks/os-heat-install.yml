@@ -17,8 +17,14 @@
   hosts: heat_all
   gather_facts: "{{ osa_gather_facts | default(True) }}"
   user: root
+  environment: "{{ deployment_environment_variables | default({}) }}"
+  tags:
+    - heat
+  vars_files:
+    - defaults/repo_packages/openstack_services.yml
   pre_tasks:
     - include: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
+
     - include: common-tasks/oslomsg-rpc-vhost-user.yml
       static: no
       vars:
@@ -28,6 +34,7 @@
       when:
         - inventory_hostname == groups['heat_all'][0]
         - groups[heat_oslomsg_rpc_host_group] | length > 0
+
     - include: common-tasks/oslomsg-notify-vhost-user.yml
       static: no
       vars:
@@ -44,14 +51,7 @@
         log_dirs:
           - src: "/openstack/log/{{ inventory_hostname }}-heat"
             dest: "/var/log/heat"
-    - include: common-tasks/mysql-db-user.yml
-      static: no
-      vars:
-        user_name: "{{ heat_galera_user }}"
-        password: "{{ heat_container_mysql_password }}"
-        login_host: "{{ heat_galera_address }}"
-        db_name: "{{ heat_galera_database }}"
-      when: inventory_hostname == groups['heat_all'][0]
+
     - include: common-tasks/unbound-clients.yml
       static: no
       when:
@@ -68,13 +68,3 @@
         rsyslog_client_log_rotate_file: heat_log_rotate
         rsyslog_client_log_dir: "/var/log/heat"
         rsyslog_client_config_name: "99-heat-rsyslog-client.conf"
-
-  vars_files:
-    - defaults/repo_packages/openstack_services.yml
-  vars:
-    heat_galera_user: heat
-    heat_galera_database: heat
-    heat_galera_address: "{{ galera_address }}"
-  environment: "{{ deployment_environment_variables | default({}) }}"
-  tags:
-    - heat
