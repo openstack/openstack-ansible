@@ -15,7 +15,7 @@
     - name: Run gate-check-commit.sh script
       become: yes
       become_user: root
-      command: "scripts/gate-check-commit.sh {{ scenario }} {{ action }}"
+      command: "scripts/gate-check-commit.sh {{ scenario }} {{ action }} {{ install_method }}"
       args:
         chdir: "src/{{ current_test_repo }}"
       environment:

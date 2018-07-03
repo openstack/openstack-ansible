@@ -1,0 +1,74 @@
+---
+# Copyright 2018, SUSE LINUX GmbH.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+#
+# Use $role_install_method=distro so we can test the combined
+# result. We add all the os_* roles here even though some of them
+# may not have been converted to support the dual installation method.
+#
+# NOTE(hwoarang): We need to define the various $role_bin variables because
+# some playbooks in this repository are explicitly using them to perform
+# post deployment actions such as the playbooks/os-{cinder,keystone,nova}-install.yml
+# playbooks.
+#
+almanach_install_method: distro
+aodh_install_method: distro
+barbican_install_method: distro
+blazar_install_method: distro
+ceilometer_install_method: distro
+cinder_install_method: distro
+cinder_bin: /usr/bin
+cloudkitty_install_method: distro
+congress_install_method: distro
+designate_install_method: distro
+glance_install_method: distro
+glance_bin: /usr/bin
+gnocchi_install_method: distro
+heat_install_method: distro
+horizon_install_method: distro
+ironic_install_method: distro
+karbor_install_method: distro
+keystone_install_method: distro
+keystone_bin: /usr/bin
+magnum_install_method: distro
+masakari_install_method: distro
+molteniron_install_method: distro
+monasca_install_method: distro
+monasca-agent_install_method: distro
+monasca-ui_install_method: distro
+neutron_install_method: distro
+neutron_bin: /usr/bin
+nova_install_method: distro
+nova_bin: /usr/bin
+octavia_install_method: distro
+octavia_bin: /usr/bin
+panko_install_method: distro
+rally_install_method: distro
+sahara_install_method: distro
+searchlight_install_method: distro
+swift_install_method: distro
+tacker_install_method: distro
+tempest_install_method: distro
+tempest_bin: /usr/bin
+trove_install_method: distro
+watcher_install_method: distro
+zaqar_install_method: distro
+zun_install_method: distro
+
+# default variables for PIP since we are not using the repo server
+pip_upstream_url: "https://bootstrap.pypa.io/3.3/get-pip.py"
+pip_default_index: "https://pypi.python.org/simple"
+
+tempest_venv_download: false

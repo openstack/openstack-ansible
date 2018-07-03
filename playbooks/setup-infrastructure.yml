@@ -15,11 +15,13 @@
 
 - include: unbound-install.yml
 - include: repo-install.yml
+  when: install_method == "source"
 - include: haproxy-install.yml
 # TODO(evrardjp): Remove the following when repo_build is done
 # before lxc_container_create, and haproxy is moved with it as
 # second step.
 - include: repo-use.yml
+  when: install_method == "source"
 - include: utility-install.yml
 - include: memcached-install.yml
 - include: galera-install.yml

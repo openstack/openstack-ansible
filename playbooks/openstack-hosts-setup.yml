@@ -50,11 +50,14 @@
         msg: "The only supported platforms for this release are Ubuntu 16.04 LTS (Xenial), CentOS 7 (WIP) and openSUSE Leap 42.X (WIP)"
 
     - include: common-tasks/package-cache-proxy.yml
+      when: install_method == "source"
     - include: common-tasks/set-pip-vars.yml
+      when: install_method == "source"
   roles:
     - role: "openstack_hosts"
   vars_files:
     - defaults/repo_packages/openstack_services.yml
+    - "defaults/{{ install_method }}_install.yml"
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - openstack-hosts

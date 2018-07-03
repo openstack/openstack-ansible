@@ -66,13 +66,16 @@
   user: root
   pre_tasks:
     - include: common-tasks/package-cache-proxy.yml
+      when: install_method == "source"
     - include: common-tasks/set-pip-vars.yml
+      when: install_method == "source"
   roles:
     - role: "openstack_hosts"
       is_container: true
       cache_timeout: 0
   vars_files:
     - defaults/repo_packages/openstack_services.yml
+    - "defaults/{{ install_method }}_install.yml"
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - nspawn-containers-create

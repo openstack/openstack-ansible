@@ -19,6 +19,8 @@
   hosts: swift_all:swift_remote_all
   gather_facts: "{{ osa_gather_facts | default(True) }}"
   user: root
+  vars_files:
+    - "defaults/{{ install_method }}_install.yml"
   roles:
     - role: "os_swift"
       swift_do_setup: False

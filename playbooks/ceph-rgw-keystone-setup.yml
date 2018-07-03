@@ -16,6 +16,8 @@
 - name: Configure keystone for radosgw
   hosts: utility_all
   user: root
+  vars_files:
+    - "defaults/{{ install_method }}_install.yml"
   tasks:
     - name: Ensure RGW service
       keystone:

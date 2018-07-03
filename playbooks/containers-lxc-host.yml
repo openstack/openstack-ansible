@@ -16,9 +16,12 @@
 - name: Basic lxc host setup
   hosts: "{{ lxc_host_group | default('lxc_hosts')}}"
   gather_facts: "{{ osa_gather_facts | default(True) }}"
+  vars_files:
+    - "defaults/{{ install_method }}_install.yml"
   user: root
   pre_tasks:
     - include: common-tasks/set-pip-vars.yml
+      when: install_method == "source"
     - name: Check the state of the default LXC service log directory
       stat:
         path: "/var/log/lxc"
