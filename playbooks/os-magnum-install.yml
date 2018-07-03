@@ -19,17 +19,23 @@
 - name: Install magnum server
   hosts: magnum_all
   user: root
+  environment: "{{ deployment_environment_variables | default({}) }}"
+  tags:
+    - magnum
   pre_tasks:
     - include: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
+
     - include: common-tasks/os-log-dir-setup.yml
       vars:
         log_dirs:
           - src: "/openstack/log/{{ inventory_hostname }}-magnum"
             dest: "/var/log/magnum"
+
     - include: common-tasks/unbound-clients.yml
       static: no
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
+
     - include: common-tasks/oslomsg-rpc-vhost-user.yml
       static: no
       vars:
@@ -39,14 +45,6 @@
       when:
         - inventory_hostname == groups['magnum_all'][0]
         - groups[magnum_oslomsg_rpc_host_group] | length > 0
-    - include: common-tasks/mysql-db-user.yml
-      static: no
-      vars:
-        user_name: "{{ magnum_galera_user }}"
-        password: "{{ magnum_galera_password }}"
-        login_host: "{{ magnum_galera_address }}"
-        db_name: "{{ magnum_galera_database_name }}"
-      when: inventory_hostname == groups['magnum_all'][0]
   roles:
     - role: "os_magnum"
 
@@ -56,7 +54,3 @@
         rsyslog_client_log_rotate_file: magnum_log_rotate
         rsyslog_client_log_dir: "/var/log/magnum"
         rsyslog_client_config_name: "99-magnum-rsyslog-client.conf"
-
-  environment: "{{ deployment_environment_variables | default({}) }}"
-  tags:
-    - "magnum"
