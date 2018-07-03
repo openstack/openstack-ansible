@@ -87,7 +87,7 @@
 - name: Set pip upstream URL
   set_fact:
     pip_upstream_url: >-
-      {{ ((_repo_data_check.status | default(503)) != 200) | ternary('https://bootstrap.pypa.io/get-pip.py', __pip_upstream_url) }}
+      {{ ((_repo_data_check.status | default(503)) != 200) | ternary('https://bootstrap.pypa.io/3.2/get-pip.py', __pip_upstream_url) }}
   tags:
     - common-pip
 
