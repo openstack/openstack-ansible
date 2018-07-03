@@ -23,15 +23,15 @@
     method: "HEAD"
   register: _repo_data_check
   failed_when: false
-  when: pip_upstream_url != "https://bootstrap.pypa.io/get-pip.py"
+  when: pip_upstream_url != "https://bootstrap.pypa.io/3.2/get-pip.py"
   tags:
     - common-pip
 
 - name: Set pip upstream URL
   set_fact:
-    pip_upstream_url: "https://bootstrap.pypa.io/get-pip.py"
+    pip_upstream_url: "https://bootstrap.pypa.io/3.2/get-pip.py"
   when:
-    - pip_upstream_url != "https://bootstrap.pypa.io/get-pip.py"
+    - pip_upstream_url != "https://bootstrap.pypa.io/3.2/get-pip.py"
     - (_repo_data_check.status | default(503)) != 200
   tags:
     - common-pip
