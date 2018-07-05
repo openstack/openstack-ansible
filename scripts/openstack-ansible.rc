@@ -14,7 +14,7 @@
 
 export ANSIBLE_RETRY_FILES_ENABLED="${ANSIBLE_RETRY_FILES_ENABLED:-False}"
 
-export ANSIBLE_INVENTORY="${ANSIBLE_INVENTORY:-OSA_INVENTORY_PATH/dynamic_inventory.py,/etc/openstack_deploy/inventory.ini}"
+export ANSIBLE_INVENTORY="${ANSIBLE_INVENTORY:-OSA_INVENTORY_PATH/dynamic_inventory.py,OSA_INVENTORY_PATH/inventory.ini,/etc/openstack_deploy/inventory.ini}"
 
 export ANSIBLE_LOG_PATH="${ANSIBLE_LOG_PATH:-/openstack/log/ansible-logging/ansible.log}"
 mkdir -p "$(dirname ${ANSIBLE_LOG_PATH})" || unset ANSIBLE_LOG_PATH
@@ -53,9 +53,3 @@ export ANSIBLE_STRATEGY_PLUGINS="${ANSIBLE_STRATEGY_PLUGINS:-/etc/ansible/roles/
 export ANSIBLE_CONNECTION_PLUGINS="${ANSIBLE_CONNECTION_PLUGINS:-/etc/ansible/roles/plugins/connection}"
 
 export ANSIBLE_FORCE_HANDLERS="${ANSIBLE_FORCE_HANDLERS:-True}"
-# Extra non-ansible default variables to use with vars_plugin.
-# Allow the usage of userspace group_vars host_vars with user
-# defined precedence until this behavior is merged in the
-# inventory
-export GROUP_VARS_PATH="${GROUP_VARS_PATH:-OSA_GROUP_VARS_DIR:/etc/openstack_deploy/group_vars/}"
-export HOST_VARS_PATH="${HOST_VARS_PATH:-OSA_HOST_VARS_DIR:/etc/openstack_deploy/host_vars/}"
