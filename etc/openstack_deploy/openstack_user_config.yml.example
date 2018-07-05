@@ -783,7 +783,6 @@
 # deployment. Refer to the ``user_variables.yml`` file for
 # more information.
 #
-# Keepalived pings a public IP address to check its status. The default
-# address is ``193.0.14.129``. To change this default,
-# set the ``keepalived_ping_address`` variable in the
+# Keepalived cam ping a public IP address to check its status.  To enable this
+# feature, set the ``keepalived_ping_address`` variable in the
 # ``user_variables.yml`` file.
