@@ -39,12 +39,15 @@
           - "lxc.cgroup.devices.allow=a *:* rmw"
         extra_container_config_no_restart:
           - "lxc.start.order=29"
+      static: no
       when:
+        - "not is_metal"
         - "'neutron_agent' in group_names"
 
     - name: Configure container (other services)
       include: "../common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       when:
+        - "not is_metal"
         - "'neutron_agent' not in group_names"
 
     - name: Configure log directories (on metal)

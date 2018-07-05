@@ -25,6 +25,8 @@
     - designate
   pre_tasks:
     - include: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
+      static: no
+      when: not is_metal
 
     - include: common-tasks/oslomsg-rpc-vhost-user.yml
       static: no

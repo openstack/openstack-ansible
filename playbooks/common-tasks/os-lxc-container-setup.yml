@@ -43,8 +43,6 @@
     - "{{ lxc_default_bind_mounts | default([]) }}"
     - "{{ list_of_bind_mounts | default([]) }}"
   delegate_to: "{{ physical_host }}"
-  when:
-    - not is_metal | bool
   tags:
     - common-lxc
 
@@ -57,8 +55,6 @@
     - "{{ lxc_default_bind_mounts | default([]) }}"
     - "{{ list_of_bind_mounts | default([]) }}"
   delegate_to: "{{ physical_host }}"
-  when:
-    - not is_metal | bool
   register: _mc
   tags:
     - common-lxc
@@ -72,7 +68,6 @@
   with_items: "{{ extra_container_config | default([]) }}"
   delegate_to: "{{ physical_host }}"
   register: _ec
-  when: not is_metal | bool
   tags:
     - common-lxc
 
@@ -84,7 +79,6 @@
     backup: "true"
   with_items: "{{ extra_container_config_no_restart | default(['lxc.start.order=100']) }}"
   delegate_to: "{{ physical_host }}"
-  when: not is_metal | bool
   tags:
     - common-lxc
 
@@ -97,7 +91,6 @@
   retries: 3
   delay: 5
   when:
-    - not is_metal | bool
     - (_mc is defined and _mc | changed) or (_ec is defined and _ec | changed)
 
 # Due to https://github.com/ansible/ansible-modules-extras/issues/2691
@@ -118,7 +111,6 @@
     - container_stop.rc not in [0, 2]
   when:
     - lxc_container_allow_restarts | default(True) | bool
-    - not is_metal | bool
     - (_mc is defined and _mc | changed) or (_ec is defined and _ec | changed)
     - _lxc_container_state.stdout.find('RUNNING') != -1
   tags:
@@ -137,7 +129,6 @@
   until: container_start | success
   retries: 3
   when:
-    - not is_metal | bool
     - (_mc is defined and _mc | changed) or (_ec is defined and _ec | changed)
   tags:
     - common-lxc
@@ -150,6 +141,5 @@
     timeout: "{{ lxc_container_wait_params.timeout | default(omit) }}"
   when:
     - (_mc is defined and _mc | changed) or (_ec is defined and _ec | changed)
-    - not is_metal | bool
   tags:
     - common-lxc

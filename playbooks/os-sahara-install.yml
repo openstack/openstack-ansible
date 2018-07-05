@@ -20,6 +20,8 @@
     - sahara
   pre_tasks:
     - include: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
+      static: no
+      when: not is_metal
 
     - name: Configure oslo messaging rpc vhost/user
       include: common-tasks/oslomsg-rpc-vhost-user.yml
