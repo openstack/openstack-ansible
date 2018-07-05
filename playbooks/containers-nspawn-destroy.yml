@@ -50,6 +50,12 @@
       register: systemd_escape
       delegate_to: "{{ physical_host }}"
 
+    - name: Get machine-id
+      command: >-
+        hostnamectl --machine="{{ inventory_hostname }}" status | awk '/Machine ID/ {print $3}'
+      register: _container_machine_id
+      delegate_to: "{{ physical_host }}"
+
     - name: Disable container
       systemd:
         name: "systemd-nspawn@{{ systemd_escape.stdout }}"
@@ -74,6 +80,10 @@
       when:
         - machinectl_image_status.rc == 0
         - force_containers_destroy | bool
+
+    - include_tasks: "common-tasks/remove_container_journal.yml"
+      vars:
+        container_machine_id: "{{ (_container_machine_id.stdout).strip() }}"
 
     - name: Destroy container data
       file:
