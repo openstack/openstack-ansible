@@ -32,7 +32,7 @@ galera_disable_privatedevices: "{{ ((properties.is_metal | default(false)) | boo
 # the load balancers, and the galera nodes.
 galera_monitoring_allowed_source: >-
   {{
-    groups['galera_all'] | union(groups['haproxy_all'])
+    groups['galera_all'] | union(groups['haproxy'])
       | map('extract', hostvars, 'ansible_host')
       | list
       | join(' ') ~ ' 127.0.0.1'
