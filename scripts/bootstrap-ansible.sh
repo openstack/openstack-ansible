@@ -109,8 +109,9 @@ elif [ -n "$HTTP_PROXY" ]; then
   PIP_OPTS+="--proxy $HTTP_PROXY"
 fi
 
-# Figure out the version of python is being used
-PYTHON_EXEC_PATH="${PYTHON_EXEC_PATH:-$(which python3 || which python2 || which python)}"
+# Force using python2. When python3 and python2 dual stack is supported uncomment the following:
+#PYTHON_EXEC_PATH="${PYTHON_EXEC_PATH:-$(which python3 || which python2 || which python)}"
+PYTHON_EXEC_PATH="${PYTHON_EXEC_PATH:-$(which python2 || which python)}"
 PYTHON_VERSION="$($PYTHON_EXEC_PATH -c 'import sys; print(".".join(map(str, sys.version_info[:3])))')"
 
 # Use https when Python with native SNI support is available
