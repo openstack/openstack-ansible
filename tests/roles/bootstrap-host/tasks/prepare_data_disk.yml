@@ -45,7 +45,7 @@
   with_items:
     - "parted --script /dev/{{ bootstrap_host_data_disk_device | regex_replace('!','/') }} mklabel gpt"
     - "parted --align optimal --script /dev/{{ bootstrap_host_data_disk_device | regex_replace('!','/') }} mkpart openstack-data1 ext4 0% 40%"
-    - "parted --align optimal --script /dev/{{ bootstrap_host_data_disk_device | regex_replace('!','/') }} mkpart openstack-data2 btrfs 40% 100%"
+    - "parted --align optimal --script /dev/{{ bootstrap_host_data_disk_device | regex_replace('!','/') }} mkpart openstack-data2 {{ bootstrap_host_data_disk2_fs }} 40% 100%"
   tags:
     - create-data-disk-partitions
 
@@ -58,7 +58,7 @@
     - dev: "/dev/{{ bootstrap_host_data_disk_device | regex_replace('!(.*)$','/\\1p') }}1"
       fstype: "ext4"
     - dev: "/dev/{{ bootstrap_host_data_disk_device | regex_replace('!(.*)$','/\\1p') }}2"
-      fstype: "btrfs"
+      fstype: "{{ bootstrap_host_data_disk2_fs }}"
   tags:
     - format-data-partitions
 
@@ -72,8 +72,8 @@
     - mount_point: /openstack
       device: "/dev/{{ bootstrap_host_data_disk_device | regex_replace('!(.*)$','/\\1p') }}1"
       fstype: ext4
-    - mount_point: /var/lib/machines
+    - mount_point: "{{ bootstrap_host_data_disk2_path }}"
       device: "/dev/{{ bootstrap_host_data_disk_device | regex_replace('!(.*)$','/\\1p') }}2"
-      fstype: btrfs
+      fstype: "{{ bootstrap_host_data_disk2_fs }}"
   tags:
     - mount-data-partitions
