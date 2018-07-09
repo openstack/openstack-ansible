@@ -9,6 +9,6 @@
 ### These are pinned to ensure exactly the same behaviour forever!   ###
 ### These pins are updated through the sources-branch-updater script ###
 ###
-pip==9.0.3
-setuptools==39.0.1
-wheel==0.31.0
+pip==9.0.3         # Frozen to prevent 10.x empty package list issue
+setuptools==39.0.1 # Frozen to not bump to a new major version in stable branch
+wheel==0.31.1
