@@ -1,7 +1,7 @@
 - name: ansible-hardening
   scm: git
   src: https://git.openstack.org/openstack/ansible-hardening
-  version: f07bb96deb67c396e060342f4b2ee67b1d2652f1
+  version: 18c8d537629606f8e887dac790521b4064180467
 - name: apt_package_pinning
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-apt_package_pinning
@@ -9,7 +9,7 @@
 - name: pip_install
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-pip_install
-  version: f53ff81e3e5a1c6f2ba648376ec9e1eef29df6fb
+  version: 1c8778b5bb8e1275cb599a0f4d21d81c19dfc5a5
 - name: galera_client
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-galera_client
@@ -25,7 +25,7 @@
 - name: haproxy_server
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-haproxy_server
-  version: 19fc0567118faf465bc3b6bea70cff5c0fedbd80
+  version: 343c8cd03c3982163d167f377c9259be57074f4d
 - name: keepalived
   scm: git
   src: https://github.com/evrardjp/ansible-keepalived
@@ -105,7 +105,7 @@
 - name: os_nova
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_nova
-  version: beb752c99a8d90df5d30b175fda523d0b651838b
+  version: bbba18ab60f7f04a441dde7a3ba6cd4875643b69
 - name: os_rally
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_rally
@@ -125,7 +125,7 @@
 - name: plugins
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-plugins
-  version: 6ec52b4cdf78dba12a430e0e7939ee9c5f7f736a
+  version: 18853c8c0d04fa0c0ae1384f4f092d8683083c0f
 - name: rabbitmq_server
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-rabbitmq_server
@@ -153,19 +153,19 @@
 - name: bird
   scm: git
   src: https://github.com/logan2211/ansible-bird
-  version: '1.2'
+  version: '1.5'
 - name: etcd
   scm: git
   src: https://github.com/logan2211/ansible-etcd
-  version: '1.2'
+  version: '1.3'
 - name: unbound
   scm: git
   src: https://github.com/logan2211/ansible-unbound
-  version: '1.3'
+  version: '1.6'
 - name: resolvconf
   scm: git
   src: https://github.com/logan2211/ansible-resolvconf
-  version: '1.2'
+  version: '1.4'
 - name: os_designate
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_designate
@@ -173,7 +173,7 @@
 - name: ceph.ceph-common
   scm: git
   src: https://github.com/ceph/ansible-ceph-common
-  version: v2.2.12
+  version: v2.2.9
 - name: ceph.ceph-docker-common
   scm: git
   src: https://github.com/ceph/ansible-ceph-docker-common
@@ -181,8 +181,8 @@
 - name: ceph-mon
   scm: git
   src: https://github.com/ceph/ansible-ceph-mon
-  version: v2.2.12
+  version: v2.2.9
 - name: ceph-osd
   scm: git
   src: https://github.com/ceph/ansible-ceph-osd
-  version: v2.2.12
+  version: v2.2.9
