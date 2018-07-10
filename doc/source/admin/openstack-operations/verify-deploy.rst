@@ -75,7 +75,7 @@ the OpenStack API and dashboard, as an administrator.
       | [ID truncated] | RegionOne | swift        | object-store   | True    | public    | https://10.23.100.127:8080/v1/AUTH_%(project_id)s |
       | [ID truncated] | RegionOne | designate    | dns            | True    | admin     | http://172.29.236.100:9001                        |
       | [ID truncated] | RegionOne | cinderv2     | volumev2       | True    | public    | https://10.23.100.127:8776/v2/%(project_id)s      |
-      | [ID truncated] | RegionOne | keystone     | identity       | True    | admin     | http://172.29.236.100:35357/v3                    |
+      | [ID truncated] | RegionOne | keystone     | identity       | True    | admin     | http://172.29.236.100:5000/v3                     |
       | [ID truncated] | RegionOne | ceilometer   | metering       | True    | admin     | http://172.29.236.100:8777/                       |
       | [ID truncated] | RegionOne | nova         | compute        | True    | public    | https://10.23.100.127:8774/v2.1/%(project_id)s    |
       | [ID truncated] | RegionOne | keystone     | identity       | True    | internal  | http://172.29.236.100:5000/v3                     |
