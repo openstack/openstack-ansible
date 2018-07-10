@@ -67,7 +67,7 @@
     branches: ^(devel|master)$
     required-projects:
       - name: github.com/ansible/ansible
-        override-checkout: stable-2.6
+        override-checkout: stable-2.7
     vars:
       ansible_package: "file://{{ ansible_user_dir }}/src/github.com/ansible/ansible"
 
