@@ -127,4 +127,7 @@ ansible_ssh_extra_args: >
   -T
 
 # Toggle whether the service is deployed in a container or not
-is_metal: "{{ properties.is_metal | default(false) }}"
+is_metal: >-
+  {{ (properties is defined) and
+     (properties.is_metal is defined) and
+     (properties.is_metal | bool) }}

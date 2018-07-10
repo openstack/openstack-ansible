@@ -20,4 +20,4 @@ memcached_package_state: "{{ package_state }}"
 
 # Disable PrivateDevices for MemcacheD on CentOS 7
 # See https://bugs.launchpad.net/openstack-ansible/+bug/1697531 for details.
-memcached_disable_privatedevices: "{{ ((properties.is_metal | default(false)) | bool) | ternary('false', 'true') }}"
+memcached_disable_privatedevices: "{{ not is_metal }}"
