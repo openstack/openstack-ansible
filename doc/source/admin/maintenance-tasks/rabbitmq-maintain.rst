@@ -11,7 +11,7 @@ Within OpenStack-Ansible, all data and states required for operation of the Rabb
 cluster is replicated across all nodes including the message queues providing
 high availability. RabbitMQ nodes address each other using domain names.
 The hostnames of all cluster members must be resolvable from all cluster
-nodes, as well as any machines where CLI tools related to rabbit might be
+nodes, as well as any machines where CLI tools related to RabbitMQ might be
 used. There are alternatives that may work in more
 restrictive environments. For more details on that setup, see
 `Inet Configuration <http://erlang.org/doc/apps/erts/inet_cfg.html>`_.
@@ -103,8 +103,8 @@ nodes are now grouped together:
    {running_nodes,[rabbit@rabbit2,rabbit@rabbit1]}]
    ...done.
 
-To add the third rabbit node to the cluster, repeat the above
-process by stopping the rabbitmq application on the third node.
+To add the third RabbitMQ node to the cluster, repeat the above
+process by stopping the RabbitMQ application on the third node.
 
 #. Join the cluster, and restart the application on the third node.
 
@@ -160,7 +160,7 @@ However, you may notice some issues with your application as clients may be
 trying to push messages to the un-responsive node. To remedy this, forget the
 node from the cluster by executing the following:
 
-#. Ensure rabbit is not running on the node:
+#. Ensure RabbitMQ is not running on the node:
 
    .. code-block:: console
 
