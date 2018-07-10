@@ -42,7 +42,7 @@
       vars:
         network_address: "storage_address"
 
-    - name: Configure container (cinder-volume)
+    - name: Configure container (cinder-volume) when lvm is in-use
       include: "../common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       static: no
       vars:
@@ -62,7 +62,7 @@
       static: no
       when:
         - "not is_metal"
-        - "'cinder_volume' not in group_names"
+        - "not ( 'cinder_volume' in group_names and cinder_backend_lvm_inuse | bool )"
 
     - name: Configure log directories (on metal)
       include: ../common-tasks/os-log-dir-setup.yml
