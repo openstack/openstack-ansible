@@ -220,9 +220,20 @@ bootstrap_host_data_disk_device_force: no
 # size (in GB), the bootstrap process will use it.
 bootstrap_host_data_disk_min_size: 50
 
+bootstrap_host_data_disk2_formats:
+  machinectl: btrfs
+  zfs: zfs
+  btrfs: btrfs
+  dir: ext4
+  lvm: ext2
+
+bootstrap_host_data_disk2_fs: "{{ bootstrap_host_data_disk2_formats[lxc_container_backing_store] }}"
+bootstrap_host_data_disk2_path: "{{ (lxc_container_backing_store == 'machinectl' or container_tech == 'nspawn') | ternary('/var/lib/machines', '/var/lib/lxc') }}"
+
 # Boolean option to build Amphora image and certs
 bootstrap_host_octavia: "{{ (bootstrap_host_scenario in ['octavia', 'translations']) | bool }}"
 
+lxc_container_backing_store: "dir"
 ### Optional Settings ###
 
 # Specify the public IP address for the host.
