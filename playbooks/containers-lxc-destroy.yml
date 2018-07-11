@@ -32,6 +32,15 @@
   gather_facts: false
   user: root
   tasks:
+    - name: Slurp machine-id
+      slurp:
+        src: "/etc/machine-id"
+      register: _container_machine_id
+      changed_when: false
+      failed_when: false
+      tags:
+        - always
+
     - name: Destroy a container
       lxc_container:
         name: "{{ container_name }}"
@@ -40,6 +49,11 @@
       when:
         - force_containers_destroy | bool
         - force_containers_data_destroy | bool
+
+    - include_tasks: "common-tasks/remove_container_journal.yml"
+      vars:
+        container_machine_id: "{{ ((_container_machine_id.content | default('bm9uZQo=')) | b64decode).strip() }}"
+
     - name: Destroy container service directories
       file:
         path: "{{ item }}"
