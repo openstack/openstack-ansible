@@ -46,7 +46,7 @@ General Guidelines for Submitting Code
 .. _workflow documented here: https://docs.openstack.org/infra/manual/developers.html#development-workflow
 .. _advanced gerrit usage: http://www.mediawiki.org/wiki/Gerrit/Advanced_usage
 .. _Ansible best practices: http://docs.ansible.com/playbooks_best_practices.html
-.. _the reno tool: https://docs.openstack.org/developer/reno/usage.html
+.. _the reno tool: https://docs.openstack.org/reno/latest/
 
 .. _documentation:
 

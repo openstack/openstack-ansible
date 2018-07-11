@@ -159,7 +159,7 @@ Release notes may be built locally by executing:
 
     ./run_tests.sh releasenotes
 
-.. _the reno tool: https://docs.openstack.org/developer/reno/usage.html
+.. _the reno tool: https://docs.openstack.org/reno/latest/
 
 .. note::
 
