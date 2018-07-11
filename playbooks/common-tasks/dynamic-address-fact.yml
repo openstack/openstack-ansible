@@ -13,39 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Gather address fact
-  set_fact:
-    # NOTE(cloudnull):
-    #  Collect the interface address from hostvars of a target node.
-    #  Check if the host is running in a container. If not, pull the bridge data from the
-    #  network interface. If an interface bridge is defined, pull the IP address from the
-    #  physical network device. If no physical bridge is defined collect the address from
-    #  the "<INTERFACE>_network_data" variable. If nothing is defined use the
-    #  "ansible_host" address.
-    _lookup_address: >-
-      {%- set _network_data = hostvars[inventory_hostname]['container_networks'][network_address] | default({}) -%}
-      {%- if is_metal is defined and is_metal | bool -%}
-      {%-   set _bridge = _network_data['bridge'] | default('no_bridge_defined') | replace('-', '_') -%}
-      {%- else -%}
-      {%-   set _bridge = 'no_bridge_defined' -%}
-      {%- endif -%}
-      {%- if _bridge != 'no_bridge_defined' and hostvars[inventory_hostname]['ansible_' + _bridge] is defined and hostvars[inventory_hostname]['ansible_' + _bridge]['ipv4'] is defined-%}
-      {{ hostvars[inventory_hostname]['ansible_' + _bridge]['ipv4']['address'] }}
-      {%- elif _network_data['address'] is defined -%}
-      {{ _network_data['address'] }}
-      {%- else -%}
-      {{ ansible_host }}
-      {%- endif -%}
-  tags:
-    - common-address
-    - always
-
-# NOTE(cloudnull):
-#  This task is not in dict formation because it is
-#  dynamically loading facts based on the network_address
-#  and the _lookup_address.
-- name: Set address fact
-  set_fact: "{{ network_address }}={{ _lookup_address }}"
+- name: Set IP to use for {{ network_address }}
+  set_fact: "{{ network_address }}={{ hostvars[inventory_hostname] | json_query(query) }}"
+  vars:
+    query: "{{ is_metal | ternary(metal_query, non_metal_query) }}"
+    non_metal_query: "container_networks.{{ network_address }}.address || ansible_host"
+    find_bridge: "container_networks.{{ network_address }}.bridge"
+    metal_query: "ansible_{{ hostvars[inventory_hostname]|json_query(find_bridge) | replace('-','_') }}.ipv4.address || {{ non_metal_query }}"
   tags:
     - common-address
     - always
