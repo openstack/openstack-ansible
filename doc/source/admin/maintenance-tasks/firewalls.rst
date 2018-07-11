@@ -31,7 +31,7 @@ documentation) the default variables used for the public
 interface endpoint ports.
 
 For example, the
-`os_glance documentation <https://docs.openstack.org/developer/openstack-ansible-os_glance/#default-variables>`_
+`os_glance documentation <https://docs.openstack.org/openstack-ansible-os_glance/latest/#default-variables>`_
 lists the variable ``glance_service_publicuri``. This contains
 the port used for the reaching the service externally. In
 this example, it is equal to to ``glance_service_port``, whose
