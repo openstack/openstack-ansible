@@ -25,12 +25,15 @@
         - not rsyslog_server_enabled | bool
 
     - include: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
+      static: no
       vars:
         list_of_bind_mounts:
           - bind_dir_path: "{{ rsyslog_server_storage_directory }}"
             mount_path: "/openstack/{{ inventory_hostname }}/log-storage"
         extra_container_config_no_restart:
           - "lxc.start.order=19"
+      when: not is_metal
+
     - include: common-tasks/unbound-clients.yml
       static: no
       when:

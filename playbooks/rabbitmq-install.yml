@@ -24,6 +24,8 @@
       vars:
         extra_container_config_no_restart:
           - "lxc.start.order=19"
+      when: not is_metal
+
     - include: common-tasks/unbound-clients.yml
       static: no
       when:

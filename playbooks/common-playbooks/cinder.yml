@@ -52,6 +52,7 @@
         extra_container_config_no_restart:
           - "lxc.start.order=39"
       when:
+        - "not is_metal"
         - "'cinder_volume' in group_names"
         - "cinder_backend_lvm_inuse | bool"
 
@@ -59,6 +60,7 @@
       include: "../common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       static: no
       when:
+        - "not is_metal"
         - "'cinder_volume' not in group_names"
 
     - name: Configure log directories (on metal)

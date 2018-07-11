@@ -27,6 +27,8 @@
             dest: "/var/log/ceph"
 
     - include: common-tasks/os-lxc-container-setup.yml
+      when: not is_metal
+      static: no
 
     - name: Gather ceph-mon facts
       action: setup

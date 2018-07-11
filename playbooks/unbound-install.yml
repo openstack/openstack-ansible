@@ -21,6 +21,8 @@
   pre_tasks:
     - include: common-tasks/os-log-dir-setup.yml
     - include: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
+      static: no
+      when: not is_metal
   roles:
     - role: "unbound"
       tags:

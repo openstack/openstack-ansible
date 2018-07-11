@@ -23,6 +23,8 @@
     - congress
   pre_tasks:
     - include: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
+      static: no
+      when: not is_metal
 
     - name: Configure log directories (on metal)
       include: common-tasks/os-log-dir-setup.yml

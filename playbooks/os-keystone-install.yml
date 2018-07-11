@@ -90,6 +90,8 @@
       vars:
         extra_container_config_no_restart:
           - "lxc.start.order=19"
+      static: no
+      when: not is_metal
 
     - name: Configure log directories (on metal)
       include: common-tasks/os-log-dir-setup.yml

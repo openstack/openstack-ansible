@@ -34,6 +34,7 @@
         list_of_bind_mounts:
           - mount_path: "/openstack/{{ inventory_hostname }}"
             bind_dir_path: "/var/www"
+      when: not is_metal
 
     - include: common-tasks/unbound-clients.yml
       static: no

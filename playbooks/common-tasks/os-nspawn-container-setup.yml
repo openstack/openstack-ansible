@@ -44,8 +44,6 @@
   with_items:
     - "{{ list_of_bind_mounts | default([]) }}"
   delegate_to: "{{ physical_host }}"
-  when:
-    - not is_metal | bool
   tags:
     - common-nspawn
 
@@ -55,8 +53,6 @@
     state: "directory"
   with_items:
     - "{{ list_of_bind_mounts | default([]) }}"
-  when:
-    - not is_metal | bool
   tags:
     - common-nspawn
 
@@ -71,7 +67,6 @@
   delegate_to: "{{ physical_host }}"
   register: _ec
   when:
-    - not is_metal | bool
     - nspawn_systemd_version | int > 219
   tags:
     - common-nspawn
@@ -104,7 +99,6 @@
       delegate_to: "{{ physical_host }}"
       register: _ec
   when:
-    - not is_metal | bool
     - list_of_bind_mounts | default([])
     - nspawn_systemd_version | int < 220
   tags:
