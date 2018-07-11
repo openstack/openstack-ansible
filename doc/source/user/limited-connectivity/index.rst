@@ -61,13 +61,13 @@ proxy:
       repo_nginx_pypi_upstream: pip.example.org:80
 
 You may also choose to create a local copy of
-https://bootstrap.pypa.io/get-pip.py to remove a dependency on an external
+https://bootstrap.pypa.io/3.2/get-pip.py to remove a dependency on an external
 resource.
 
 .. code-block:: yaml
 
-      # Override PIP installer ("Get modern PIP"): https://bootstrap.pypa.io/get-pip.py
-      pip_upstream_url: "http://mirror.example.org/bootstrap.pypa.io/get-pip.py"
+      # Override PIP installer ("Get modern PIP"): https://bootstrap.pypa.io/3.2/get-pip.py
+      pip_upstream_url: "http://mirror.example.org/bootstrap.pypa.io/3.2/get-pip.py"
 
 Distribution specific packages
 ------------------------------
