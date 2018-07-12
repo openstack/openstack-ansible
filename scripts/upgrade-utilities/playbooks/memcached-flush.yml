@@ -14,7 +14,7 @@
 # limitations under the License.
 
 - name: Memcached cache flush
-  hosts: memcached_all
+  hosts: memcached
   gather_facts: true
   user: root
   vars:
