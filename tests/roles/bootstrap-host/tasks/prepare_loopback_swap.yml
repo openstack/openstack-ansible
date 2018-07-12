@@ -24,7 +24,7 @@
 - name: Format the swap file
   command: mkswap /openstack/swap.img
   when:
-    - swap_create | changed
+    - swap_create  is changed
   tags:
     - swap-format
     - skip_ansible_lint

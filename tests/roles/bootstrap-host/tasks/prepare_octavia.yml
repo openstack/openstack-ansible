@@ -20,7 +20,7 @@
     state: "present"
     update_cache: yes
   register: install_packages
-  until: install_packages|success
+  until: install_packages is success
   retries: 5
   delay: 2
   with_items:
@@ -42,7 +42,7 @@
     state: "present"
     extra_args: "-c {{ pip_install_upper_constraints_proto }}://git.openstack.org/cgit/openstack/requirements/plain/upper-constraints.txt?id={{ requirements_git_install_branch | regex_replace(' #.*$','') }}"
   register: install_packages
-  until: install_packages|success
+  until: install_packages is success
   retries: 5
   delay: 2
   with_items:

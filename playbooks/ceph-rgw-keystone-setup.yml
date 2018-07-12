@@ -30,7 +30,7 @@
         insecure: "{{ keystone_service_adminuri_insecure }}"
       run_once: true
       register: add_service
-      until: add_service|success
+      until: add_service is success
       retries: 5
       delay: 2
       no_log: True
@@ -52,7 +52,7 @@
         insecure: "{{ keystone_service_adminuri_insecure }}"
       run_once: true
       register: add_user
-      until: add_user|success
+      until: add_user is success
       retries: 5
       delay: 10
       no_log: True
@@ -73,7 +73,7 @@
         insecure: "{{ keystone_service_adminuri_insecure }}"
       run_once: true
       register: add_admin_role
-      until: add_admin_role|success
+      until: add_admin_role is success
       retries: 5
       delay: 10
       no_log: True
@@ -92,7 +92,7 @@
         insecure: "{{ keystone_service_adminuri_insecure }}"
       run_once: true
       register: add_swiftoperator_role
-      until: add_swiftoperator_role|success
+      until: add_swiftoperator_role is success
       retries: 5
       delay: 10
       no_log: True
@@ -120,7 +120,7 @@
             interface: "internal"
       run_once: true
       register: add_endpoint
-      until: add_endpoint|success
+      until: add_endpoint is success
       retries: 5
       delay: 10
       no_log: True

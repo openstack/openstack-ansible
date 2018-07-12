@@ -109,12 +109,12 @@
     name: "systemd-nspawn@{{ systemd_escape.stdout }}"
     state: restarted
   register: _container_restart
-  until: _container_restart | success
+  until: _container_restart  is success
   retries: 3
   delay: 5
   delegate_to: "{{ physical_host }}"
   when:
-    - _ec | changed
+    - _ec  is changed
   tags:
     - common-nspawn
 
@@ -123,6 +123,6 @@
     delay: 3
     timeout: 60
   when:
-    - _container_restart | changed
+    - _container_restart  is changed
   tags:
     - common-nspawn
