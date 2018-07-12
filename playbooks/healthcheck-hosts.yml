@@ -49,7 +49,7 @@
         dest: /tmp/osa-master-requirements
 
 - name: Ensure settings are not wrong with the usual suspects issues before trying to deploy infra
-  hosts: haproxy_all
+  hosts: haproxy
   gather_facts: yes
   tasks:
     - name: Checking that the LB vips are well configured.
@@ -72,7 +72,7 @@
         - "{{ haproxy_keepalived_external_interface }}"
         - "{{ haproxy_keepalived_internal_interface }}"
       when:
-        - groups['haproxy_all'] | length > 1
+        - groups['haproxy'] | length > 1
 
     - name: Checking that vip address is well formed
       assert:
@@ -83,4 +83,4 @@
         - "{{ haproxy_keepalived_internal_vip_cidr }}"
         - "{{ haproxy_keepalived_external_vip_cidr }}"
       when:
-        - groups['haproxy_all'] | length > 1
+        - groups['haproxy'] | length > 1
