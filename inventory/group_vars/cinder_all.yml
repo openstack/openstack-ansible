@@ -28,7 +28,6 @@ cinder_management_address: "{{ ansible_host }}"
 
 # The address used for communications with the glance service
 cinder_glance_host: "{{ internal_lb_vip_address }}"
-cinder_glance_service_port: "{{ glance_service_port }}"
 
 # If there are Swift hosts in the environment, then use it as the default Glance store
 # This is specifically duplicated from glance_all for the cinder_glance_api_version
@@ -38,7 +37,6 @@ glance_default_store: "{{ ((groups['swift_all'] is defined) and (groups['swift_a
 # cinder_backend_lvm_inuse: True if current host has an lvm backend
 cinder_backend_lvm_inuse: '{{ (cinder_backends|default("")|to_json).find("cinder.volume.drivers.lvm.LVMVolumeDriver") != -1 }}'
 cinder_service_in_ldap: "{{ service_ldap_backend_enabled }}"
-cinder_glance_api_servers: "{{ glance_api_servers }}"
 
 # Ensure that the package state matches the global setting
 cinder_package_state: "{{ package_state }}"
