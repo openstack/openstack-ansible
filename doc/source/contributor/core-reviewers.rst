@@ -44,10 +44,11 @@ Members of the core reviewer team are expected to:
 * Attend and participate in the weekly IRC meetings
 * Monitor and participate in-channel at #openstack-ansible
 * Monitor and participate in OpenStack-Ansible discussions on the mailing list
-* Participate in related design summit sessions at the OpenStack Summits
+* Participate in team sessions at the OpenStack Projects Team Gatherings (PTG)
+* Participate in Forum sessions at the OpenStack Summits
 * Review patch submissions actively and consistently
 
-Please note in-person attendance at design summits, mid-cycles, and other code
+Please note in-person attendance at PTG, Summit, mid-cycles, and other code
 sprints is not a requirement to be a core reviewer. The team will do its best
 to facilitate virtual attendance at all events. Travel is not to be taken
 lightly, and we realize the costs involved for those who attend these events.
