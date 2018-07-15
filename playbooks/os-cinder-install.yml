@@ -215,4 +215,4 @@
         option: need_online_data_migrations
         value: False
       when:
-        - data_migrations | succeeded
+        - data_migrations  is succeeded

@@ -73,7 +73,7 @@
                        map(attribute='item') | list)
                       | default(required_roles, True) }}"
       register: git_clone
-      until: git_clone | success
+      until: git_clone  is success
       retries: "{{ git_clone_retries }}"
       delay: "{{ git_clone_retry_delay }}"
 
