@@ -109,7 +109,7 @@
     name: "systemd-nspawn@{{ systemd_escape.stdout }}"
     state: restarted
   register: _container_restart
-  until: _container_restart  is success
+  until: _container_restart is success
   retries: 3
   delay: 5
   delegate_to: "{{ physical_host }}"
