@@ -1,0 +1,6 @@
+---
+upgrade:
+  - The ping check that happens inside keepalived to make sure that the server
+    that runs it can reach 193.0.14.129 has been removed by default.  The
+    functionality can continue to be used if you define the `keepalived_ping_address`
+    in your `user_variables.yml` file to `193.0.14.129` or any IP of your choice.
