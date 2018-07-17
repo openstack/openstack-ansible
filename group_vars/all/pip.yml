@@ -23,4 +23,4 @@ pip_lock_to_internal_repo: "{{ (pip_links | length) >= 1 }}"
 pip_install_upper_constraints: "{{ repo_release_path }}/requirements_absolute_requirements.txt"
 
 # The URL to retrieve the get-pip.py installation script
-pip_upstream_url: "{{ (pip_offline_install | bool) | ternary('https://bootstrap.pypa.io/3.2/get-pip.py', repo_release_path ~ '/get-pip.py') }}"
+pip_upstream_url: "{{ (pip_offline_install | bool) | ternary('https://bootstrap.pypa.io/3.3/get-pip.py', repo_release_path ~ '/get-pip.py') }}"
