@@ -360,34 +360,6 @@ function get_instance_info {
   netstat -tulpn > "/openstack/log/instance-info/netstat_${TS}.log" || true
 }
 
-function get_pip {
-
-  # Use pip opts to add options to the pip install command.
-  # This can be used to tell it which index to use, etc.
-  PIP_OPTS=${PIP_OPTS:-""}
-
-  # The python executable to use when executing get-pip is passed
-  # as a parameter to this function.
-  GETPIP_PYTHON_EXEC_PATH="${1:-$(which python)}"
-
-  # Download the get-pip script using the primary or secondary URL
-  GETPIP_CMD="curl --silent --show-error --retry 5"
-  GETPIP_FILE="/opt/get-pip.py"
-  # If GET_PIP_URL is set, then just use it
-  if [ -n "${GET_PIP_URL:-}" ]; then
-    ${GETPIP_CMD} ${GET_PIP_URL} > ${GETPIP_FILE}
-  else
-    # Otherwise, try the two standard URL's
-    ${GETPIP_CMD} https://bootstrap.pypa.io/3.3/get-pip.py > ${GETPIP_FILE}\
-      || ${GETPIP_CMD} https://raw.githubusercontent.com/pypa/get-pip/master/3.3/get-pip.py > ${GETPIP_FILE}
-  fi
-
-  ${GETPIP_PYTHON_EXEC_PATH} ${GETPIP_FILE} ${PIP_OPTS} \
-     pip setuptools wheel \
-     --constraint global-requirement-pins.txt \
-     --isolated
-}
-
 function get_bowling_ball_tests {
   # Retrieve the latest bowling ball test script in case we don't already have it.
   if [ -f scripts/rolling_tests.py ]; then
