@@ -38,6 +38,7 @@
         name: "{{ groups[item][0] }}"
         groups: repo_masters
       with_items: "{{ groups | select('match', '^repo_servers_') | list }}"
+      changed_when: false
   tags:
     - always
     - repo-build
