@@ -41,6 +41,12 @@ component_skel:
   neutron_metadata_agent:
     belongs_to:
       - neutron_all
+  neutron_ovn_controller:
+    belongs_to:
+      - neutron_all
+  neutron_ovn_northd:
+    belongs_to:
+      - neutron_all
   neutron_sriov_nic_agent:
     belongs_to:
       - neutron_all
@@ -50,7 +56,6 @@ component_skel:
   opendaylight:
     belongs_to:
       - neutron_all
-
 
 container_skel:
   neutron_agents_container:
@@ -69,13 +74,17 @@ container_skel:
       - neutron_sriov_nic_agent
     properties:
       is_metal: true
+  neutron_ovn_northd_container:
+    belongs_to:
+      - network_containers
+    contains:
+      - neutron_ovn_northd
   neutron_server_container:
     belongs_to:
       - network_containers
     contains:
       - neutron_server
       - opendaylight
-
 
 physical_skel:
   network_containers:

@@ -59,6 +59,7 @@ container_skel:
     contains:
       - neutron_linuxbridge_agent
       - neutron_openvswitch_agent
+      - neutron_ovn_controller
       - neutron_sriov_nic_agent
       - nova_compute
     properties:

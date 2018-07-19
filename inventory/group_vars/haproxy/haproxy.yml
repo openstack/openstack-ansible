@@ -347,3 +347,39 @@ haproxy_default_services:
       haproxy_backend_httpcheck_options:
         - expect rstatus 200|405
       haproxy_service_enabled: "{{ (groups['ceph-rgw'] is defined and groups['ceph-rgw'] | length > 0) or (ceph_rgws | length > 0) }}"
+  - service:
+      haproxy_service_name: neutron_ovn_northd_northbound
+      haproxy_backend_nodes: "{{ (groups['neutron_ovn_northd'] | default([]))[:1] }}" # list expected
+      haproxy_backup_nodes: "{{ (groups['neutron_ovn_northd'] | default([]))[1:] }}"
+      haproxy_port: 6641
+      haproxy_bind: "{{ [internal_lb_vip_address] }}"
+      haproxy_balance_type: tcp
+      haproxy_timeout_client: 90m
+      haproxy_timeout_server: 90m
+      haproxy_backend_options:
+        - tcpka
+      haproxy_service_enabled: "{{ groups['neutron_ovn_northd'] is defined and groups['neutron_ovn_northd'] | length > 0 }}"
+  - service:
+      haproxy_service_name: neutron_ovn_northd_southbound
+      haproxy_backend_nodes: "{{ (groups['neutron_ovn_northd'] | default([]))[:1] }}"
+      haproxy_backup_nodes: "{{ (groups['neutron_ovn_northd'] | default([]))[1:] }}"
+      haproxy_port: 6642
+      haproxy_bind: "{{ [internal_lb_vip_address] }}"
+      haproxy_balance_type: tcp
+      haproxy_timeout_client: 90m
+      haproxy_timeout_server: 90m
+      haproxy_backend_options:
+        - tcpka
+      haproxy_service_enabled: "{{ groups['neutron_ovn_northd'] is defined and groups['neutron_ovn_northd'] | length > 0 }}"
+  - service:
+      haproxy_service_name: neutron_ovn_ovsdb_server
+      haproxy_backend_nodes: "{{ (groups['neutron_ovn_northd'] | default([]))[:1] }}"
+      haproxy_backup_nodes: "{{ (groups['neutron_ovn_northd'] | default([]))[1:] }}"
+      haproxy_port: 6640
+      haproxy_bind: "{{ [internal_lb_vip_address] }}"
+      haproxy_balance_type: tcp
+      haproxy_timeout_client: 90m
+      haproxy_timeout_server: 90m
+      haproxy_backend_options:
+        - tcpka
+      haproxy_service_enabled: "{{ groups['neutron_ovn_northd'] is defined and groups['neutron_ovn_northd'] | length > 0 }}"
