@@ -77,6 +77,7 @@
         bind_prefix: "{{ provider_network_bind_prefix | default('') }}"
         is_metal: "{{ is_metal }}"
       register: pndata
+      when: neutron_provider_networks is not defined
       tags:
         - always
 
