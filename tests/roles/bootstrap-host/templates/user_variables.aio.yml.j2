@@ -187,7 +187,6 @@ nova_service_negate:
   - "nova-resetnetwork.service"
 
 {% if _pypi_wheel_mirror is defined and _pypi_wheel_mirror.stdout_lines is defined %}
-repo_nginx_pypi_upstream: "{{ _pypi_wheel_mirror.stdout_lines[0] | netloc }}"
 repo_build_pip_extra_indexes:
  - "{{ _pypi_wheel_mirror.stdout_lines[1] }}"
 {% endif %}
