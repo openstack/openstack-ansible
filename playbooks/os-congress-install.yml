@@ -19,6 +19,8 @@
   max_fail_percentage: 20
   user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
+  vars_files:
+    - "defaults/{{ install_method }}_install.yml"
   tags:
     - congress
   pre_tasks:
@@ -40,6 +42,7 @@
 
     - name: Configure package proxy cache
       include: common-tasks/package-cache-proxy.yml
+      when: install_method == "source"
 
   roles:
     - role: "os_congress"

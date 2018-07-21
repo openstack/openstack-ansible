@@ -31,6 +31,8 @@
   gather_facts: no
   user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
+  vars_files:
+    - "defaults/{{ install_method }}_install.yml"
   tags:
     - neutron
   tasks:

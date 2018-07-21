@@ -16,6 +16,8 @@
 - name: Additional nspawn host setup
   hosts: "{{ nspawn_host_group | default('nspawn_hosts') }}"
   gather_facts: true
+  vars_files:
+    - "defaults/{{ install_method }}_install.yml"
   user: root
   roles:
     - role: "nspawn_hosts"

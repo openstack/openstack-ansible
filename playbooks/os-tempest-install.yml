@@ -17,6 +17,8 @@
   hosts: utility_all[0]
   gather_facts: "{{ osa_gather_facts | default(True) }}"
   user: root
+  vars_files:
+    - "defaults/{{ install_method }}_install.yml"
   roles:
     - role: "os_tempest"
     - role: "system_crontab_coordination"

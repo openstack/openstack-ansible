@@ -15,16 +15,7 @@
 
 pip_install_package_state: "{{ package_state }}"
 
-# The upper constraints to apply to all pip installations
-pip_install_upper_constraints: "{{ repo_release_path }}/requirements_absolute_requirements.txt"
-
 # Allow the deployer to force pip to download locally to the deployment host
 # and copy it to the remote container for installation. Useful for environments
 # where the containers lack internet access.
 pip_offline_install: false
-
-# The URL to retrieve the get-pip.py installation script
-pip_upstream_url: "{{ (pip_offline_install | bool) | ternary('https://bootstrap.pypa.io/3.3/get-pip.py', repo_release_path ~ '/get-pip.py') }}"
-
-# The URL to the repo server's pypi reverse proxy simple index
-pip_default_index: "{{ openstack_repo_url }}/simple"

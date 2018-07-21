@@ -50,6 +50,9 @@ export SCENARIO=${1:-"aio_lxc"}
 # Actions available: [ 'deploy', 'upgrade' ]
 export ACTION=${2:-"deploy"}
 
+# Set the installation method for the OpenStack services
+export INSTALL_METHOD=${3:-"source"}
+
 # Set the source branch for upgrade tests
 # Be sure to change this whenever a new stable branch
 # is created. The checkout must always be N-1.

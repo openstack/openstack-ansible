@@ -21,6 +21,7 @@
   hosts: "{{ openstack_host_group | default('hosts') }}:all_containers"
   vars_files:
     - defaults/repo_packages/openstack_services.yml
+    - "defaults/{{ install_method }}_install.yml"
   pre_tasks:
     - include: common-tasks/package-cache-proxy.yml
     - include: common-tasks/set-pip-vars.yml

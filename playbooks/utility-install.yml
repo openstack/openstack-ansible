@@ -46,6 +46,10 @@
         - openrc
 
   post_tasks:
+    - name: Add OpenStack client to distro packages
+      set_fact:
+        utility_distro_packages: "{{ (utility_distro_packages | default([])) + utility_distro_openstack_clients_packages }}"
+      when: install_method == "distro"
 
     - name: Install distro packages
       package:
@@ -61,6 +65,7 @@
       register: client_list
       run_once: true
       changed_when: false
+      when: install_method == "source"
       tags:
         - always
         - skip_ansible_lint
@@ -76,6 +81,8 @@
       until: install_packages is success
       retries: 5
       delay: 2
+      when:
+      when: install_method == "source"
 
     - name: Distribute private ssh key
       copy:
@@ -86,5 +93,7 @@
         group: root
       when: utility_ssh_private_key is defined
   environment: "{{ deployment_environment_variables | default({}) }}"
+  vars_files:
+    - "defaults/{{ install_method }}_install.yml"
   tags:
     - utility

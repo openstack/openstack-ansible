@@ -19,6 +19,11 @@
         - openstack-ansible-varstest-aio_lxc-ubuntu-xenial
         - openstack-ansible-deploy-aio_basekit-centos-7
         - openstack-ansible-deploy-aio_basekit-opensuse-423
+        # NOTE(hwoarang) xenial does not currently work. It needs investigation
+        - openstack-ansible-deploy-aio_distro_basekit-ubuntu-xenial:
+            voting: false
+        - openstack-ansible-deploy-aio_distro_basekit-centos-7
+        - openstack-ansible-deploy-aio_distro_basekit-opensuse-423
         # NOTE(mhayden): Temporarily replacing suse and centos
         # with aio_basekit scenario.
         #- openstack-ansible-deploy-aio_lxc-centos-7

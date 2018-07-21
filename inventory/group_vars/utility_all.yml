@@ -28,6 +28,13 @@ utility_distro_packages:
   - curl
   - git
 
+utility_distro_openstack_clients_packages:
+  - python-keystoneclient
+  - python-neutronclient
+  - python-novaclient
+  - python-cinderclient
+  - python-openstackclient
+
 # Python packages to be installed into the utility container
 utility_pip_packages:
   - cryptography
@@ -57,8 +64,6 @@ tempest_service_available_congress: "{{ groups['congress_all'] is defined and gr
 
 tempest_log_dir: /var/log/utility
 tempest_venv_tag: "{{ openstack_release }}"
-tempest_venv_download_url: "{{ venv_base_download_url }}/tempest-{{ openstack_release }}-{{ ansible_architecture | lower }}.tgz"
-tempest_venv_bin: "/openstack/venvs/tempest-{{ tempest_venv_tag }}/bin"
 
 # This sets the tempest group to the utility group
 tempest_main_group: utility_all

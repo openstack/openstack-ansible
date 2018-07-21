@@ -124,6 +124,10 @@ shared-infra_hosts:
 
 repo-infra_hosts:
   aio1:
+{% if install_method == 'distro' %}
+    affinity:
+      repo_container: 0
+{% endif %}
     ip: 172.29.236.100
 
 log_hosts:
