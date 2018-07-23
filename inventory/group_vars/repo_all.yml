@@ -73,9 +73,3 @@ pkg_locations:
   - "{{ playbook_dir }}/../"
   - /etc/ansible/roles
   - /etc/openstack_deploy
-
-# The URL to retrieve the get-pip.py installation script locally
-pip_upstream_url: "{{ repo_release_path | replace(internal_lb_vip_address, '127.0.0.1') }}/get-pip.py"
-
-# The URL to the local PyPI reverse proxy
-pip_default_index: "{{ openstack_repo_url | replace(internal_lb_vip_address, '127.0.0.1') }}/simple"

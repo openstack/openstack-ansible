@@ -56,10 +56,6 @@ proxy:
       # Custom upstream pip index used when building repo server contents
       repo_build_pip_default_index: http://pip.example.org/simple
 
-      # Custom upstream pip mirror host:port which must be able to supply all
-      # packages not built by the repo server itself.
-      repo_nginx_pypi_upstream: pip.example.org:80
-
 You may also choose to create a local copy of
 https://bootstrap.pypa.io/3.3/get-pip.py to remove a dependency on an external
 resource.
