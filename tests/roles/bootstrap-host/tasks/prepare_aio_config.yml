@@ -156,6 +156,13 @@
     config_overrides: "{{ user_variables_overrides | default({}) }}"
     config_type: yaml
 
+- name: Set http proxy user variables
+  copy:
+    src: "user_variables_proxy.yml"
+    dest: "/etc/openstack_deploy/user_variables_proxy.yml"
+  when:
+    - "lookup('env', 'http_proxy')|length > 0"
+
 - name: Drop the extra user_variables files for this scenario
   config_template:
     src: "{{ item.src }}"
