@@ -27,16 +27,6 @@
       static: no
       when: not is_metal
 
-    - include: common-tasks/oslomsg-rpc-vhost-user.yml
-      static: no
-      vars:
-        rpc_user: "{{ octavia_oslomsg_rpc_userid }}"
-        rpc_password: "{{ octavia_oslomsg_rpc_password }}"
-        rpc_vhost: "{{ octavia_oslomsg_rpc_vhost }}"
-      when:
-        - inventory_hostname == groups['octavia_all'][0]
-        - groups[octavia_oslomsg_rpc_host_group] | length > 0
-
     - include: common-tasks/os-log-dir-setup.yml
       vars:
         log_dirs:

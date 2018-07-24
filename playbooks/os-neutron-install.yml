@@ -26,41 +26,6 @@
         group_when: "{{ neutron_plugin_type == 'ml2.ovs.dvr' }}"
 
 
-- name: Prepare MQ/DB services
-  hosts: neutron_all
-  gather_facts: no
-  user: root
-  environment: "{{ deployment_environment_variables | default({}) }}"
-  vars_files:
-    - "defaults/{{ install_method }}_install.yml"
-  tags:
-    - neutron
-  tasks:
-
-    - name: Configure oslo messaging rpc vhost/user
-      include: common-tasks/oslomsg-rpc-vhost-user.yml
-      static: no
-      vars:
-        rpc_user: "{{ neutron_oslomsg_rpc_userid }}"
-        rpc_password: "{{ neutron_oslomsg_rpc_password }}"
-        rpc_vhost: "{{ neutron_oslomsg_rpc_vhost }}"
-      when:
-        - groups[neutron_oslomsg_rpc_host_group] | length > 0
-      run_once: yes
-
-    - name: Configure oslo messaging notify vhost/user
-      include: common-tasks/oslomsg-notify-vhost-user.yml
-      static: no
-      vars:
-        notify_user: "{{ neutron_oslomsg_notify_userid }}"
-        notify_password: "{{ neutron_oslomsg_notify_password }}"
-        notify_vhost: "{{ neutron_oslomsg_notify_vhost }}"
-      when:
-        - neutron_ceilometer_enabled | bool
-        - groups[neutron_oslomsg_notify_host_group] | length > 0
-      run_once: yes
-
-
 
 - name: Install neutron server
   include: common-playbooks/neutron.yml

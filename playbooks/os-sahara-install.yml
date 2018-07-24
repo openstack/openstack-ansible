@@ -25,29 +25,6 @@
       static: no
       when: not is_metal
 
-    - name: Configure oslo messaging rpc vhost/user
-      include: common-tasks/oslomsg-rpc-vhost-user.yml
-      static: no
-      vars:
-        rpc_user: "{{ sahara_oslomsg_rpc_userid }}"
-        rpc_password: "{{ sahara_oslomsg_rpc_password }}"
-        rpc_vhost: "{{ sahara_oslomsg_rpc_vhost }}"
-      when:
-        - inventory_hostname == groups['sahara_all'][0]
-        - groups[sahara_oslomsg_rpc_host_group] | length > 0
-
-    - name: Configure oslo messaging notify vhost/user
-      include: common-tasks/oslomsg-notify-vhost-user.yml
-      static: no
-      vars:
-        notify_user: "{{ sahara_oslomsg_notify_userid }}"
-        notify_password: "{{ sahara_oslomsg_notify_password }}"
-        notify_vhost: "{{ sahara_oslomsg_notify_vhost }}"
-      when:
-        - sahara_ceilometer_enabled | bool
-        - inventory_hostname == groups['sahara_all'][0]
-        - groups[sahara_oslomsg_notify_host_group] | length > 0
-
     - include: common-tasks/os-log-dir-setup.yml
       vars:
         log_dirs:

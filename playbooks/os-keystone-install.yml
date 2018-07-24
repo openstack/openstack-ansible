@@ -28,40 +28,6 @@
   roles:
     - role: "openstack_openrc"
 
-- name: Prepare MQ/DB services
-  hosts: keystone_all
-  gather_facts: no
-  user: root
-  environment: "{{ deployment_environment_variables | default({}) }}"
-  vars_files:
-    - "defaults/{{ install_method }}_install.yml"
-  tags:
-    - keystone
-  tasks:
-
-    - name: Configure oslo messaging rpc vhost/user
-      include: common-tasks/oslomsg-rpc-vhost-user.yml
-      static: no
-      vars:
-        rpc_user: "{{ keystone_oslomsg_rpc_userid }}"
-        rpc_password: "{{ keystone_oslomsg_rpc_password }}"
-        rpc_vhost: "{{ keystone_oslomsg_rpc_vhost }}"
-      when:
-        - groups[keystone_oslomsg_rpc_host_group] | length > 0
-      run_once: yes
-
-    - name: Configure oslo messaging notify vhost/user
-      include: common-tasks/oslomsg-notify-vhost-user.yml
-      static: no
-      vars:
-        notify_user: "{{ keystone_oslomsg_notify_userid }}"
-        notify_password: "{{ keystone_oslomsg_notify_password }}"
-        notify_vhost: "{{ keystone_oslomsg_notify_vhost }}"
-      when:
-        - "keystone_ceilometer_enabled | bool"
-        - groups[keystone_oslomsg_notify_host_group] | length > 0
-      run_once: yes
-
 
 
 - name: Installation and setup of Keystone

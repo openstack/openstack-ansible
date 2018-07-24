@@ -37,32 +37,6 @@
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
 
-    # If we're using ceilometer then swift needs a rabbitmq/vhost & usera
-    - include: common-tasks/rabbitmq-vhost-user.yml
-      static: no
-      vars:
-        user: "{{ swift_rabbitmq_telemetry_userid }}"
-        password: "{{ swift_rabbitmq_telemetry_password }}"
-        vhost: "{{ swift_rabbitmq_telemetry_vhost }}"
-        _rabbitmq_host_group: "{{ swift_rabbitmq_telemetry_host_group }}"
-      when:
-        - swift_ceilometer_enabled | bool
-        - inventory_hostname == groups['swift_all'][0]
-      tags:
-        - always
-
-    - include: common-tasks/oslomsg-notify-vhost-user.yml
-      static: no
-      vars:
-        notify_user: "{{ swift_oslomsg_notify_userid }}"
-        notify_password: "{{ swift_oslomsg_notify_password }}"
-        notify_vhost: "{{ swift_oslomsg_notify_vhost }}"
-      when:
-        - swift_ceilometer_enabled | bool
-        - inventory_hostname == groups['swift_all'][0]
-      tags:
-        - always
-
   roles:
     - role: "os_swift"
       swift_do_setup: True
