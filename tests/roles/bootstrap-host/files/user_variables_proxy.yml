@@ -1,0 +1,11 @@
+---
+no_proxy_env: "localhost,127.0.0.1,{{ internal_lb_vip_address }},{{ external_lb_vip_address }},{% for host in groups['all_containers'] %}{{ hostvars[host]['container_address'] }}{% if not loop.last %},{% endif %}{% endfor %}"
+http_proxy_env: "{{ lookup('env', 'http_proxy') }}"
+https_proxy_env: "{{ lookup('env', 'https_proxy') }}"
+global_environment_variables:
+   HTTP_PROXY: "{{ http_proxy_env }}"
+   HTTPS_PROXY: "{{ https_proxy_env }}"
+   http_proxy: "{{ http_proxy_env }}"
+   https_proxy: "{{ https_proxy_env }}"
+   NO_PROXY: "{{ no_proxy_env }}"
+   no_proxy: "{{ no_proxy_env }}"
