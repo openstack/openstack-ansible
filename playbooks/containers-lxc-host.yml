@@ -15,10 +15,14 @@
 
 - name: Basic lxc host setup
   hosts: "{{ lxc_host_group | default('lxc_hosts')}}"
+  user: root
   gather_facts: "{{ osa_gather_facts | default(True) }}"
   vars_files:
+    - defaults/repo_packages/openstack_services.yml
     - "defaults/{{ install_method }}_install.yml"
-  user: root
+  environment: "{{ deployment_environment_variables | default({}) }}"
+  tags:
+    - lxc-hosts
   pre_tasks:
     - include: common-tasks/set-pip-vars.yml
       when: install_method == "source"
@@ -53,9 +57,3 @@
         rsyslog_client_log_rotate_file: lxc_log_rotate
         rsyslog_client_log_dir: "/var/log/lxc"
         rsyslog_client_config_name: "99-lxc-rsyslog-client.conf"
-
-  vars_files:
-    - defaults/repo_packages/openstack_services.yml
-  environment: "{{ deployment_environment_variables | default({}) }}"
-  tags:
-    - lxc-hosts
