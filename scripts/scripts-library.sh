@@ -170,6 +170,13 @@ function gate_job_exit_tasks {
     RSYNC_OPTS="--archive --safe-links --ignore-errors --quiet --no-perms --no-owner --no-group"
     rsync $RSYNC_OPTS /var/log/ "${GATE_LOG_DIR}/host" || true
     rsync $RSYNC_OPTS /openstack/log/ "${GATE_LOG_DIR}/openstack" || true
+
+    # Copy the repo os-releases *.txt files
+    # container path
+    rsync $RSYNC_OPTS /openstack/*repo*/repo/os-releases/*/*/*.txt "${GATE_LOG_DIR}/repo" || true
+    # metal path
+    rsync $RSYNC_OPTS /var/www/repo/os-releases/*/*/*.txt "${GATE_LOG_DIR}/repo" || true
+
     # Rename all files gathered to have a .txt suffix so that the compressed
     # files are viewable via a web browser in OpenStack-CI.
     rename_log_files
