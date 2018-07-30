@@ -33,9 +33,13 @@ pushd tests
     /opt/ansible-runtime/bin/ansible-playbook bootstrap-aio.yml \
                      -i test-inventory.ini
   else
+    export BOOTSTRAP_OPTS_ITEMS=''
+    for BOOTSTRAP_OPT in ${BOOTSTRAP_OPTS}; do
+      BOOTSTRAP_OPTS_ITEMS=${BOOTSTRAP_OPTS_ITEMS}"-e "${BOOTSTRAP_OPT}" "
+    done
     /opt/ansible-runtime/bin/ansible-playbook bootstrap-aio.yml \
                      -i test-inventory.ini \
-                     -e ${BOOTSTRAP_OPTS}
+                     ${BOOTSTRAP_OPTS_ITEMS}
   fi
 popd
 
