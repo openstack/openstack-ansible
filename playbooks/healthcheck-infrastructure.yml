@@ -99,14 +99,16 @@
     - healthcheck-repo-use
 
 # Test utility-install.yml
-- name: Ensure utility container has clients
-  hosts: utility_all
+- name: Ensure utility and localhost are ready to run openstack calls
+  hosts: utility_all:localhost
   gather_facts: no
   tasks:
-    - name: Ensure openstackclient is installed and in path
-      command: which openstack
-      register: _openstackclient
-
+    - name: Get openstack client config
+      os_client_config:
+    - name: Show openstack client config
+      debug:
+        var: openstack.clouds
+        verbosity: 1
   tags:
     - healthcheck
     - healthcheck-utility-install
