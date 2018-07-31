@@ -51,7 +51,7 @@
       delegate_to: "{{ physical_host }}"
 
     - name: Get machine-id
-      command: >-
+      shell: >-
         hostnamectl --machine="{{ inventory_hostname }}" status | awk '/Machine ID/ {print $3}'
       register: _container_machine_id
       delegate_to: "{{ physical_host }}"
