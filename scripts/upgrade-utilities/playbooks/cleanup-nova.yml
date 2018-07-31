@@ -50,6 +50,9 @@
                   --host {{ service_host }}
                   --service {{ service_binary }}
       register: _nova_service_to_remove
+      until: _nova_service_to_remove is succeeded
+      retries: 5
+      delay: 2
       vars:
         service_host: "{{ hostvars[item]['ansible_hostname'] }}"
         service_binary: >-
