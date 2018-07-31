@@ -16,22 +16,28 @@
 # This playbook is meant to run after setup-hosts.
 # To succeed, it expects the setup-hosts playbook to have run successfuly.
 
-# Ensuring the openstack hosts are well setup
-# Ensure the containers are properly setup
+# Test if the openstack-hosts-setup play was a success.
+# TO BE IMPLEMENTED
+
+# Test if security-hardening was a success.
+# TO BE IMPLEMENTED
+
+# Test if containers-deploy was a success.
+# Ensure the lxc containers are properly setup
 - name: Ensuring hosts good behavior
-  hosts: hosts
+  hosts: lxc_hosts
   gather_facts: no
   tasks:
-    - name: Check the right role code was used
-      debug:
-        msg: "To be implemented"
-        verbosity: 1
-
-    # TODO(evrardjp): Add nspawn checking
     - name: Looking for dnsmasq process
       command: pgrep dnsmasq
       changed_when: false
-      when: container_tech | default('lxc') == 'lxc'
+
+- name: Ensuring hosts good behavior
+  hosts: nspawn_hosts
+  gather_facts: no
+  tasks:
+    - debug:
+        msg: "To be implemented. Please help."
 
 - name: Ensuring containers creation, connection and good behavior
   hosts: all_containers
@@ -48,6 +54,7 @@
         url: https://git.openstack.org/cgit/openstack/openstack-ansible/plain/ansible-role-requirements.yml
         dest: /tmp/osa-master-requirements
 
+# Test extra settings before setup-infrastructure
 - name: Ensure settings are not wrong with the usual suspects issues before trying to deploy infra
   hosts: haproxy
   gather_facts: yes

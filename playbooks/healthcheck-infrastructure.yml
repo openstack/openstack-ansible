@@ -16,13 +16,32 @@
 # This playbook is meant to run after setup-infrastructure, and expects
 # the infrastructure bits to have properly deployed to succeed.
 
-# Ensuring Load Balancer behavior
+# Test unbound-install.yml
+# TO BE IMPLEMENTED
+
+# Test repo-install.yml
+- name: Ensure all repo-servers are built and are accessible by hosts.
+  hosts: all_containers[0]:physical_hosts[0]
+  gather_facts: yes
+  vars:
+    repo_requirements_file: "os-releases/{{ openstack_release }}/{{ os_distro_version }}/requirements_constraints.txt"
+  tasks:
+    - name: Check the upper constraint on each repo server
+      uri:
+        url: "http://{{ hostvars[item]['container_address'] }}:{{ repo_server_port }}/{{ repo_requirements_file }}"
+      with_inventory_hostnames: "{{ groups['repo_all'] }}"
+      when: install_method == 'source'
+  tags:
+    - healthcheck
+    - healthcheck-repo-install
+
+# Test haproxy-install.yml
 - name: Ensuring haproxy runs
   hosts: haproxy
   gather_facts: no
   tasks:
     - name: Check if host can connect to keepalived ping IP
-      command: "ping {{ keepalived_ping_address }}"
+      command: "ping -c 2 {{ keepalived_ping_address }}"
       changed_when: false
 
     - name: Checking if keepalived is running
@@ -35,33 +54,24 @@
       shell: 'echo "show info;show stat" | nc -U /var/run/haproxy.stat'
       changed_when: false
       register: haproxy_stats
-      tags:
-        - haproxy
+
     # Run this playbook with -v and you'll see your DOWN issues
     - name: Printing the output of haproxy stats
       debug:
         var: haproxy_stats
         verbosity: 1
-      tags:
-        - haproxy
+  tags:
+    - healthcheck
+    - healthcheck-haproxy-install
 
-# We are looking up from the first container.
-- name: Ensure that all the repos have data
-  hosts: all_containers[0]
-  gather_facts: yes
-  vars:
-    repo_requirements_file: "os-releases/{{ openstack_release }}/{{ os_distro_version }}/requirements_constraints.txt"
-  tasks:
-    - name: Check the upper constraint on each repo server
-      uri:
-        url: "http://{{ hostvars[item]['container_address'] }}:{{ repo_server_port }}/{{ repo_requirements_file }}"
-      with_inventory_hostnames: "{{ groups['repo_all'] }}"
-      tags:
-        - repo
-
+# Test repo-use.yml
 - name: Ensure all the containers can connect to the repos
   hosts: all_containers
   gather_facts: yes
+  # By having serial, you ensure that the first three containers are hitting
+  # the load balancer at the same time, which would then cause hitting three
+  # different repos servers.
+  # When this is done, the rest can be done with all the nodes at the same time.
   serial:
     - 3
     - 100%
@@ -70,11 +80,12 @@
     - name: Check the presence of upper constraints on your repos and check load balancing
       uri:
         url: "{{ repo_release_path }}/requirements_constraints.txt"
-      tags:
-        - repo
+  tags:
+    - healthcheck
+    - healthcheck-repo-use
 
 - name: Sanity checks for all containers
-  hosts: all_containers
+  hosts: all_containers:physical_hosts
   gather_facts: no
   tasks:
     - name: Ensure everyone can reach apt proxy
@@ -83,17 +94,24 @@
         method: "HEAD"
       when:
         - "ansible_pkg_mgr == 'apt'"
-      tags:
-        - proxy
-    - name: Connect to galera port
-      wait_for:
-        port: 3306
-        host: "{{ internal_lb_vip_address }}"
-        state: started
-      tags:
-        - galera
+  tags:
+    - healthcheck
+    - healthcheck-repo-use
 
-# Specific checks: Memcached
+# Test utility-install.yml
+- name: Ensure utility container has clients
+  hosts: utility_all
+  gather_facts: no
+  tasks:
+    - name: Ensure openstackclient is installed and in path
+      command: which openstack
+      register: _openstackclient
+
+  tags:
+    - healthcheck
+    - healthcheck-utility-install
+
+# Test memcached-install.yml
 - name: Check memcached for keystone
   hosts: keystone_all
   gather_facts: no
@@ -103,13 +121,11 @@
       delegate_to: "{{ item }}"
       delegate_facts: true
       with_items: "{{ groups['memcached'] }}"
-      tags:
-        - memcached
+
     - package:
         name: netcat
         state: present
-      tags:
-        - memcached
+
     - name: Connect to remote memcache servers (full mesh testing)
       shell:  "echo stats | nc {{ hostvars[memcached_host]['container_address'] }} {{ memcached_port }}"
       changed_when: false
@@ -117,78 +133,74 @@
       with_items: "{{ groups['memcached'] }}"
       loop_control:
         loop_var: memcached_host
-      tags:
-        - memcached
+
     - name: Output memcache stats if in verbose mode
       debug:
         var: memcache_stats
         verbosity: 1
-      tags:
-        - memcached
+  tags:
+    - healthcheck
+    - healthcheck-memcached-install
 
-# Specific checks: Rabbit
-- name: Ask if rabbitmq test should run
-  hosts: all_containers
-  connection: local
+# Test galera-install.yml
+- name: Sanity checks for all containers
+  hosts: all_containers:physical_hosts
   gather_facts: no
-  vars_prompt:
-    - name: "rabbit_test_prompt"
-      prompt: "Are you sure you want to run rabbit tests? It runs pip install on all your containers."
-      default: "no"
-      private: no
   tasks:
-    - name: Mark the usage of rabbitmq tests.
-      set_fact:
-        run_rabbit_tests: "{{ rabbit_test_prompt | bool }}"
-      tags:
-        - rabbitmq
+    - name: Connect to galera port
+      wait_for:
+        port: 3306
+        host: "{{ internal_lb_vip_address }}"
+        state: started
+  tags:
+    - healthcheck
+    - healthcheck-galera-install
 
+# Test rabbitmq-install.yml
 - name: Add a user for rabbitmq
   hosts: rabbitmq_all[0]
   gather_facts: no
   tasks:
-    - name: Create credentials on vhost
-      include: common-tasks/rabbitmq-vhost-user.yml
-      vars:
-        user: testguest
-        password: secrete
-        vhost: "/test"
-        _rabbitmq_host_group: "rabbitmq_all"
-      tags:
-        - rabbitmq
-      when: run_rabbit_tests | default(false)
+    - name: Configure Rabbitmq vhost
+      rabbitmq_vhost:
+        name: "testvhost"
+        state: "present"
+
+    - name: Configure Rabbitmq user
+      rabbitmq_user:
+        user: "testguest"
+        password: "secrete"
+        vhost: "testvhost"
+        configure_priv: ".*"
+        read_priv: ".*"
+        write_priv: ".*"
+        state: "present"
+      no_log: True
+
+  tags:
+    - healthcheck
+    - healthcheck-rabbitmq-install
 
 - name: Ensure all the usual openstack containers can connect to rabbit
   hosts: all_containers:!etcd_all:!galera_all:!memcached:!haproxy:!rabbitmq_all:!rsyslog:!unbound:!repo_all
   gather_facts: no
   vars:
     venv_path: /tmp/rabbitmqtest
-  roles:
-    - role: pip_install
-      when: run_rabbit_tests | default(false)
-      tags:
-        - rabbitmq
   post_tasks:
     - name: Generate venv for rabbitmq testing
       pip:
         name: pika
         virtualenv: "{{ venv_path }}"
-      when: run_rabbit_tests | default(false)
-      tags:
-        - rabbitmq
     - name: Copying test script
       copy:
         src: "../scripts/rabbitmq-test.py"
         dest: "{{ venv_path }}/rabbitmq-test.py"
         mode: 0755
-      when: run_rabbit_tests | default(false)
-      tags:
-        - rabbitmq
     - name: Connect to rabbitmq
       command: "{{ venv_path }}/bin/python2 {{ venv_path }}/rabbitmq-test.py {{ hostvars[groups['rabbitmq_all'][0]]['container_address'] }}"
-      when: run_rabbit_tests | default(false)
-      tags:
-        - rabbitmq
+  tags:
+    - healthcheck
+    - healthcheck-rabbitmq-install
 
 - name: Remove guest user for rabbitmq
   hosts: rabbitmq_all[0]
@@ -198,11 +210,16 @@
       rabbitmq_user:
         user: testguest
         password: secrete
-        vhost: "/test"
+        vhost: "/testvhost"
         state: absent
       no_log: true
-      when: run_rabbit_tests | default(false)
-      tags:
-        - rabbitmq
+    - name: Configure Rabbitmq vhost
+      rabbitmq_vhost:
+        name: "testvhost"
+        state: "absent"
+  tags:
+    - healthcheck
+    - healthcheck-rabbitmq-install
+    - healthcheck-teardown
 
-# TODO(evrardjp): Specific checks: Etcd
+# TODO: Other playbook's tests.
