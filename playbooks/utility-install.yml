@@ -16,6 +16,11 @@
 - name: Setup the utility location(s)
   hosts: utility_all
   user: root
+  environment: "{{ deployment_environment_variables | default({}) }}"
+  vars_files:
+    - "defaults/{{ install_method }}_install.yml"
+  tags:
+    - utility
   pre_tasks:
     - include: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       static: no
@@ -58,31 +63,6 @@
         update_cache: "{{ (ansible_pkg_mgr in ['apt', 'zypper']) | ternary('yes', omit) }}"
         cache_valid_time: "{{ (ansible_pkg_mgr == 'apt') | ternary(cache_timeout, omit) }}"
 
-    - name: Get list of python clients
-      shell: "curl -s {{ repo_release_path }}/requirements_absolute_requirements.txt  | grep client | cut -d'=' -f1"
-      args:
-        warn: no
-      register: client_list
-      run_once: true
-      changed_when: false
-      when: install_method == "source"
-      tags:
-        - always
-        - skip_ansible_lint
-
-    - name: Install pip packages
-      pip:
-        name: "{{ client_list.stdout_lines | union(utility_pip_packages) }}"
-        state: "{{ utility_pip_package_state }}"
-        extra_args: >-
-          {{ (pip_install_upper_constraints is defined) | ternary('--constraint ' + pip_install_upper_constraints | default(''),'') }}
-          {{ pip_install_options | default('') }}
-      register: install_packages
-      until: install_packages is success
-      retries: 5
-      delay: 2
-      when: install_method == "source"
-
     - name: Distribute private ssh key
       copy:
         content: "{{ utility_ssh_private_key }}"
@@ -91,8 +71,60 @@
         owner: root
         group: root
       when: utility_ssh_private_key is defined
-  environment: "{{ deployment_environment_variables | default({}) }}"
-  vars_files:
-    - "defaults/{{ install_method }}_install.yml"
-  tags:
-    - utility
+
+    - name: Install openstack clients (source-based install)
+      when:
+        - install_method == "source"
+      block:
+        - name: Get list of repo packages
+          uri:
+            url: "{{ repo_release_path }}/requirements_absolute_requirements.txt"
+            return_content: yes
+          register: _abs_reqs
+          run_once: true
+          tags:
+            - always
+
+        - name: Derive the list of openstack clients
+          set_fact:
+            _openstack_client_list: >-
+              {%- set package_list = [] %}
+              {%- for l in _abs_reqs.content.split('\n') %}
+              {%-   if (l is match('^python_.*client==.*$')) or (l is match('^(aodh|gnocchi)client==.*$')) %}
+              {%-     set _ = package_list.append(l | regex_replace('==.*$', '')) %}
+              {%-   endif %}
+              {%- endfor %}
+              {{- package_list }}
+          run_once: true
+          tags:
+            - always
+
+        - name: Create the virtualenv (if it does not exist)
+          command: "virtualenv --never-download --no-site-packages {{ utility_venv_bin | dirname }}"
+          args:
+            creates: "{{ utility_venv_bin }}/activate"
+
+        - name: Install pip packages
+          pip:
+            name: "{{ _openstack_client_list | union(utility_pip_packages) }}"
+            state: "{{ utility_pip_package_state }}"
+            virtualenv: "{{ utility_venv_bin | dirname }}"
+            virtualenv_site_packages: "no"
+            extra_args: >-
+              {{ (pip_install_upper_constraints is defined) | ternary('--constraint ' + pip_install_upper_constraints | default(''),'') }}
+              {{ pip_install_options | default('') }}
+          register: install_packages
+          until: install_packages is success
+          retries: 5
+          delay: 2
+
+        - name: Create symlinks for openstack clients
+          shell: |
+            {% set _bin_name = item | regex_replace('^(?:python_)?(\w*)(?:client)$', '\\1') %}
+            if [[ -e "{{ utility_venv_bin }}/{{ _bin_name }}" ]]; then
+              ln -sfn {{ utility_venv_bin }}/{{ _bin_name }} /usr/local/bin/{{ _bin_name }}
+            fi
+          args:
+            executable: /bin/bash
+          with_items: "{{ _openstack_client_list }}"
+
