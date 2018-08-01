@@ -56,16 +56,6 @@
   tags:
     - common-constraints
 
-- name: Test internal repo URL for the availability of the pypi index
-  uri:
-    url: "{{ __pip_default_index }}"
-    method: "HEAD"
-    timeout: 3
-  register: pip_default_index_check
-  failed_when: false
-  tags:
-    - common-constraints
-
 - name: Remove global requirement pins file from host
   file:
     path: "/opt/global-requirement-pins.txt"
@@ -108,6 +98,6 @@
 - name: Fallback to PyPI
   set_fact:
     pip_default_index: >-
-      {{ ((pip_default_index_check.status | default(503)) != 200) | ternary('https://pypi.python.org/simple', __pip_default_index) }}
+      {{ ((upper_constraints_check.status | default(503)) != 200) | ternary('https://pypi.python.org/simple', __pip_default_index) }}
   tags:
     - common-constraints
