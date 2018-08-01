@@ -46,7 +46,6 @@
       include: "../common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       static: no
       vars:
-        aa_profile: "unconfined"
         extra_container_config:
           - "lxc.autodev=0"
           - "lxc.cgroup.devices.allow=a *:* rmw"

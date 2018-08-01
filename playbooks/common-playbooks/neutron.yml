@@ -33,7 +33,6 @@
     - name: Configure container (neutron-agent)
       include: "../common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       vars:
-        aa_profile: "unconfined"
         list_of_bind_mounts:
           - bind_dir_path: "{{ (ansible_pkg_mgr == 'apt') | ternary('/lib/modules', '/usr/lib/modules') }}"
             mount_path: "{{ (ansible_pkg_mgr == 'apt') | ternary('/lib/modules', '/usr/lib/modules') }}"
