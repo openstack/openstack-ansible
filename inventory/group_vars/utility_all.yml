@@ -23,9 +23,11 @@ galera_client_drop_config_file: true
 utility_package_state: "{{ package_state }}"
 utility_pip_package_state: "latest"
 
+# Path to the utility host openstack client venv binaries
+utility_venv_bin: "/openstack/venvs/utility-{{ openstack_release }}/bin"
+
 # Distribution packages to be installed into the utility container
 utility_distro_packages:
-  - curl
   - git
 
 utility_distro_openstack_clients_packages:
