@@ -56,7 +56,7 @@
         user_name: "{{ designate_galera_user }}"
         password: "{{ designate_galera_password }}"
         login_host: "{{ designate_galera_address }}"
-        db_name: "{{ designate_galera_database_name }}"
+        db_name: "{{ designate_galera_database }}"
       when: inventory_hostname == groups['designate_all'][0]
     - include: common-tasks/unbound-clients.yml
       static: no
