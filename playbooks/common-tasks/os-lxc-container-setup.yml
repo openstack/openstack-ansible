@@ -87,7 +87,7 @@
   changed_when: false
   delegate_to: "{{ physical_host }}"
   register: _lxc_container_state
-  until: _lxc_container_state  is success
+  until: _lxc_container_state is success
   retries: 3
   delay: 5
   when:
@@ -105,7 +105,7 @@
     --logpriority {{ (debug | bool) | ternary('DEBUG', 'INFO') }}
   delegate_to: "{{ physical_host }}"
   register: container_stop
-  until: container_stop  is success
+  until: container_stop is success
   retries: 3
   failed_when:
     - container_stop.rc not in [0, 2]
@@ -126,7 +126,7 @@
     --logpriority {{ (debug | bool) | ternary('DEBUG', 'INFO') }}
   delegate_to: "{{ physical_host }}"
   register: container_start
-  until: container_start  is success
+  until: container_start is success
   retries: 3
   when:
     - (_mc is defined and _mc | changed) or (_ec is defined and _ec | changed)
