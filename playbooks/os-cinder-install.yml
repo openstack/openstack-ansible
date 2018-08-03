@@ -13,42 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Prepare MQ services
-  hosts: cinder_all
-  gather_facts: no
-  user: root
-  environment: "{{ deployment_environment_variables | default({}) }}"
-  vars_files:
-    - "defaults/{{ install_method }}_install.yml"
-  tags:
-    - cinder
-  tasks:
-
-    - name: Configure oslo messaging rpc vhost/user
-      include: common-tasks/oslomsg-rpc-vhost-user.yml
-      static: no
-      vars:
-        rpc_user: "{{ cinder_oslomsg_rpc_userid }}"
-        rpc_password: "{{ cinder_oslomsg_rpc_password }}"
-        rpc_vhost: "{{ cinder_oslomsg_rpc_vhost }}"
-      when:
-        - groups[cinder_oslomsg_rpc_host_group] | length > 0
-      run_once: yes
-
-    - name: Configure oslo messaging notify vhost/user
-      include: common-tasks/oslomsg-notify-vhost-user.yml
-      static: no
-      vars:
-        notify_user: "{{ cinder_oslomsg_notify_userid }}"
-        notify_password: "{{ cinder_oslomsg_notify_password }}"
-        notify_vhost: "{{ cinder_oslomsg_notify_vhost }}"
-      when:
-        - "cinder_ceilometer_enabled | bool"
-        - groups[cinder_oslomsg_notify_host_group] | length > 0
-      run_once: yes
-
-
-
 - name: Install cinder scheduler services
   include: common-playbooks/cinder.yml
   vars:

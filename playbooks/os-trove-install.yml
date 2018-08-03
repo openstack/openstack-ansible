@@ -30,27 +30,6 @@
       static: no
       when: not is_metal
 
-    - include: common-tasks/oslomsg-rpc-vhost-user.yml
-      static: no
-      vars:
-        rpc_user: "{{ trove_oslomsg_rpc_userid }}"
-        rpc_password: "{{ trove_oslomsg_rpc_password }}"
-        rpc_vhost: "{{ trove_oslomsg_rpc_vhost }}"
-      when:
-        - inventory_hostname == groups['trove_all'][0]
-        - groups[trove_oslomsg_rpc_host_group] | length > 0
-
-    - include: common-tasks/oslomsg-notify-vhost-user.yml
-      static: no
-      vars:
-        notify_user: "{{ trove_oslomsg_notify_userid }}"
-        notify_password: "{{ trove_oslomsg_notify_password }}"
-        notify_vhost: "{{ trove_oslomsg_notify_vhost }}"
-      when:
-        - trove_ceilometer_enabled | bool
-        - inventory_hostname == groups['trove_all'][0]
-        - groups[trove_oslomsg_notify_host_group] | length > 0
-
     - include: common-tasks/os-log-dir-setup.yml
       vars:
         log_dirs:

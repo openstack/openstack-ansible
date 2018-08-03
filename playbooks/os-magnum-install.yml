@@ -40,15 +40,6 @@
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
 
-    - include: common-tasks/oslomsg-rpc-vhost-user.yml
-      static: no
-      vars:
-        rpc_user: "{{ magnum_oslomsg_rpc_userid }}"
-        rpc_password: "{{ magnum_oslomsg_rpc_password }}"
-        rpc_vhost: "{{ magnum_oslomsg_rpc_vhost }}"
-      when:
-        - inventory_hostname == groups['magnum_all'][0]
-        - groups[magnum_oslomsg_rpc_host_group] | length > 0
   roles:
     - role: "os_magnum"
 
