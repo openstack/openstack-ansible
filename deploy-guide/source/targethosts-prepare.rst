@@ -56,6 +56,12 @@ Configure Ubuntu
        # apt-get install bridge-utils debootstrap ifenslave ifenslave-2.6 \
          lsof lvm2 ntp ntpdate openssh-server sudo tcpdump vlan python
 
+#. Install the kernel extra package if you have one for your kernel version \
+
+   .. code-block:: shell-session
+
+       # apt install linux-image-extra-$(uname -r)
+
 #. Add the appropriate kernel modules to the ``/etc/modules`` file to
    enable VLAN and bond interfaces:
 
