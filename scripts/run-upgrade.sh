@@ -200,7 +200,7 @@ function main {
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/cleanup-heat.yml -e force_containers_destroy=yes -e force_containers_data_destroy=yes")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/cleanup-ironic.yml -e force_containers_destroy=yes -e force_containers_data_destroy=yes")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/cleanup-trove.yml -e force_containers_destroy=yes -e force_containers_data_destroy=yes")
-        RUN_TASKS+=("haproxy-install.yml --tags=haproxy_server-config")
+        RUN_TASKS+=("haproxy-install.yml")
         # Run the tasks in order
         for item in ${!RUN_TASKS[@]}; do
           run_lock $item "${RUN_TASKS[$item]}"
