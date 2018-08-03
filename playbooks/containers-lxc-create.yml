@@ -31,10 +31,13 @@
 
 - name: Create container(s)
   hosts: all_lxc_containers
+  user: root
   gather_facts: false
   vars_files:
     - "defaults/{{ install_method }}_install.yml"
-  user: root
+  environment: "{{ deployment_environment_variables | default({}) }}"
+  tags:
+    - lxc-containers-create
   roles:
     - role: "lxc_container_create"
   post_tasks:
@@ -56,16 +59,17 @@
     - name: Gather facts for new container(s)
       setup:
         gather_subset: "network,hardware,virtual"
-  environment: "{{ deployment_environment_variables | default({}) }}"
-  tags:
-    - lxc-containers-create
 
 - name: Configure containers default software
   hosts: all_lxc_containers
+  user: root
   gather_facts: true
   vars_files:
+    - defaults/repo_packages/openstack_services.yml
     - "defaults/{{ install_method }}_install.yml"
-  user: root
+  environment: "{{ deployment_environment_variables | default({}) }}"
+  tags:
+    - lxc-containers-create
   pre_tasks:
     - include: common-tasks/package-cache-proxy.yml
       when: install_method == "source"
@@ -74,9 +78,3 @@
   roles:
     - role: "openstack_hosts"
       is_container: true
-  vars_files:
-    - defaults/repo_packages/openstack_services.yml
-    - "defaults/{{ install_method }}_install.yml"
-  environment: "{{ deployment_environment_variables | default({}) }}"
-  tags:
-    - lxc-containers-create
