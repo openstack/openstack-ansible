@@ -17,9 +17,13 @@
   hosts: "{{ nspawn_host_group | default('nspawn_hosts') }}"
   gather_facts: true
 
+
 - name: Set nspawn containers group
   hosts: "{{ container_group | default('all_containers') }}"
   gather_facts: false
+  tags:
+    - always
+    - nspawn-containers-create
   tasks:
     - name: Add hosts to dynamic inventory group
       group_by:
@@ -27,14 +31,15 @@
         parents: all_nspawn_containers
       when:
         - container_tech == 'nspawn'
-  tags:
-    - always
-    - nspawn-containers-create
+
 
 - name: Create container(s)
   hosts: all_nspawn_containers
   gather_facts: false
   user: root
+  environment: "{{ deployment_environment_variables | default({}) }}"
+  tags:
+    - nspawn-containers-create
   roles:
     - role: "nspawn_container_create"
   post_tasks:
@@ -44,6 +49,52 @@
         delay: "{{ lxc_container_wait_params.delay | default(omit) }}"
         sleep: "{{ lxc_container_wait_params.sleep | default(omit) }}"
         timeout: "{{ lxc_container_wait_params.timeout | default(omit) }}"
+
+
+- name: Rescan storage quotas
+  hosts: "{{ nspawn_host_group | default('nspawn_hosts') }}"
+  gather_facts: false
+  tags:
+    - nspawn-containers-create
+  tasks:
+    - name: Rescan quotas
+      command: "btrfs quota rescan -w /var/lib/machines"
+      changed_when: false
+
+
+- name: Configure containers default software
+  hosts: all_nspawn_containers
+  gather_facts: true
+  user: root
+  vars_files:
+    - defaults/repo_packages/openstack_services.yml
+    - "defaults/{{ install_method }}_install.yml"
+  environment: "{{ deployment_environment_variables | default({}) }}"
+  tags:
+    - nspawn-containers-create
+  pre_tasks:
+    - name: Update package cache (apt)
+      package:
+        update_cache: yes
+        force_apt_get: yes
+        force: yes
+      register: cache_update
+      until: cache_update is success
+      retries: 5
+      delay: 15
+      when:
+        - ansible_pkg_mgr == 'apt'
+
+    - name: Update package cache (zypper)
+      zypper_repository:
+        repo: '*'
+        runrefresh: yes
+      register: cache_update
+      until: cache_update is success
+      retries: 5
+      delay: 15
+      when:
+        - ansible_pkg_mgr == 'zypper'
 
     # When using gather_facts with smart gathering,
     # the facts aren't fully updated unless they
@@ -56,26 +107,13 @@
     - name: Gather facts for new container(s)
       setup:
         gather_subset: "network,hardware,virtual"
-  environment: "{{ deployment_environment_variables | default({}) }}"
-  tags:
-    - nspawn-containers-create
 
-- name: Configure containers default software
-  hosts: all_nspawn_containers
-  gather_facts: true
-  user: root
-  pre_tasks:
     - include: common-tasks/package-cache-proxy.yml
       when: install_method == "source"
+
     - include: common-tasks/set-pip-vars.yml
       when: install_method == "source"
   roles:
     - role: "openstack_hosts"
       is_container: true
-      cache_timeout: 0
-  vars_files:
-    - defaults/repo_packages/openstack_services.yml
-    - "defaults/{{ install_method }}_install.yml"
-  environment: "{{ deployment_environment_variables | default({}) }}"
-  tags:
-    - nspawn-containers-create
+
