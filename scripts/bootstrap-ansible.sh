@@ -73,11 +73,7 @@ case ${DISTRO_ID} in
           git curl autoconf gcc gcc-c++ nc \
           python2 python2-devel \
           openssl-devel libffi-devel \
-          libselinux-python
-          # CentOS base does not include a recent
-          # enough version of virtualenv or pip,
-          # so we do not bother trying to install
-          # them.
+          libselinux-python python-virtualenv
         ;;
     ubuntu)
         apt-get update
@@ -103,6 +99,9 @@ case ${DISTRO_ID} in
         ;;
 esac
 
+# Ensure that our shell knows about the new virtualenv
+hash -r virtualenv
+
 # Ensure we use the HTTPS/HTTP proxy with pip if it is specified
 if [ -n "$HTTPS_PROXY" ]; then
   PIP_OPTS+="--proxy $HTTPS_PROXY"
@@ -122,47 +121,15 @@ UPPER_CONSTRAINTS_PROTO=$([ "$PYTHON_VERSION" == $(echo -e "$PYTHON_VERSION\n2.7
 # Set the location of the constraints to use for all pip installations
 export UPPER_CONSTRAINTS_FILE=${UPPER_CONSTRAINTS_FILE:-"$UPPER_CONSTRAINTS_PROTO://git.openstack.org/cgit/openstack/requirements/plain/upper-constraints.txt?id=$(awk '/requirements_git_install_branch:/ {print $2}' playbooks/defaults/repo_packages/openstack_services.yml)"}
 
-# Install virtualenv if it is not already installed,
-# but also make sure it is at least version 13.x or above
-# so that it supports using the no-pip, no-setuptools
-# and no-wheels options (the last one was added in v13.0.0).
-VIRTUALENV_VERSION=$(virtualenv --version 2>/dev/null | cut -d. -f1)
-if [[ "${VIRTUALENV_VERSION}" -lt "13" ]]; then
+# All distros have a python-virtualenv > 13.
+# - Centos 7 has 15.1, which holds pip 9.0.1, setuptools 28.8, wheel 0.29
+#   See also: http://mirror.centos.org/centos/7/os/x86_64/Packages/
+# - openSUSE 42.3 has 13.1.2, which holds pip 7.1.2, setuptools 18.2, wheel 0.24.
+#   See also: https://build.opensuse.org/package/show/openSUSE%3ALeap%3A42.3/python-virtualenv
+# - Ubuntu Xenial has 15.0.1, holding pip 8.1.1, setuptools 20.3, wheel 0.29
+#   See also: https://packages.ubuntu.com/xenial/python-virtualenv
 
-  # Install pip on the host if it is not already installed,
-  # but also make sure that it is at least version 7.x or above
-  # so that it supports the use of the constraint option which
-  # was added in pip 7.1.
-  PIP_VERSION=$(pip --version 2>/dev/null | awk '{print $2}' | cut -d. -f1)
-  if [[ "${PIP_VERSION}" -lt "7" ]]; then
-    get_pip ${PYTHON_EXEC_PATH}
-    # Ensure that our shell knows about the new pip
-    hash -r pip
-  fi
-
-  pip install ${PIP_OPTS} \
-    --constraint ${UPPER_CONSTRAINTS_FILE} \
-    --isolated \
-    virtualenv
-
-  # Ensure that our shell knows about the new pip
-  hash -r virtualenv
-fi
-
-# Create a Virtualenv for the Ansible runtime
-if [ -f "/opt/ansible-runtime/bin/python" ]; then
-  VENV_PYTHON_VERSION="$(/opt/ansible-runtime/bin/python -c 'import sys; print(".".join(map(str, sys.version_info[:3])))')"
-  if [ "$PYTHON_VERSION" != "$VENV_PYTHON_VERSION" ]; then
-    rm -rf /opt/ansible-runtime
-  fi
-fi
-virtualenv --python=${PYTHON_EXEC_PATH} \
-           --clear \
-           --no-pip --no-setuptools --no-wheel \
-           /opt/ansible-runtime
-
-# Install pip, setuptools and wheel into the venv
-get_pip /opt/ansible-runtime/bin/python
+virtualenv --python=${PYTHON_EXEC_PATH} --clear /opt/ansible-runtime
 
 # The vars used to prepare the Ansible runtime venv
 PIP_COMMAND="/opt/ansible-runtime/bin/pip"
@@ -174,6 +141,9 @@ PIP_OPTS+=" --constraint ${UPPER_CONSTRAINTS_FILE}"
 # prevent the repo server's extra constraints being applied, which include
 # a different version of Ansible to the one we want to install. As such, we
 # use --isolated so that the config file is ignored.
+
+# Upgrade pip setuptools and wheel to the appropriate version
+${PIP_COMMAND} install --isolated ${PIP_OPTS} --upgrade pip setuptools wheel
 
 # Install ansible and the other required packages
 ${PIP_COMMAND} install --isolated ${PIP_OPTS} -r requirements.txt ${ANSIBLE_PACKAGE}
