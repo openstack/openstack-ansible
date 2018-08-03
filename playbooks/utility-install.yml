@@ -81,7 +81,6 @@
       until: install_packages is success
       retries: 5
       delay: 2
-      when:
       when: install_method == "source"
 
     - name: Distribute private ssh key
