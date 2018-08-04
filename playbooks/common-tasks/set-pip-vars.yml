@@ -95,9 +95,9 @@
   tags:
     - common-constraints
 
-- name: Fallback to PyPI
+- name: Fall back to repo_build_pip_default_index
   set_fact:
     pip_default_index: >-
-      {{ ((upper_constraints_check.status | default(503)) != 200) | ternary('https://pypi.python.org/simple', __pip_default_index) }}
+      {{ ((upper_constraints_check.status | default(503)) != 200) | ternary(repo_build_pip_default_index | default('https://pypi.python.org/simple'), __pip_default_index) }}
   tags:
     - common-constraints
