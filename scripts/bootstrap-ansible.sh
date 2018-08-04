@@ -209,9 +209,8 @@ if [ -f "${ANSIBLE_ROLE_FILE}" ]; then
     export ANSIBLE_STRATEGY_PLUGINS="/dev/null"
     export ANSIBLE_CONFIG="none-ansible.cfg"
 
-    pushd tests
+    pushd scripts
       /opt/ansible-runtime/bin/ansible-playbook get-ansible-role-requirements.yml \
-                       -i ${OSA_CLONE_DIR}/tests/test-inventory.ini \
                        -e role_file="${ANSIBLE_ROLE_FILE}"
     popd
 
