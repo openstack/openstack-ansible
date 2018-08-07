@@ -201,7 +201,7 @@ function gate_job_exit_tasks {
     fi
     # Compress the files gathered so that they do not take up too much space.
     if [ "$GATE_EXIT_LOG_GZIP" == true ]; then
-      compress_files
+      compress_log_files
     fi
     # Ensure that the files are readable by all users, including the non-root
     # OpenStack-CI jenkins user.
