@@ -188,6 +188,12 @@ repo_build_pip_extra_indexes:
  - "{{ _pypi_wheel_mirror.stdout_lines[1] }}"
 {% endif %}
 
+# Set all the distros to the same value: a "quiet" print
+# of kernel log messages.
+openstack_user_kernel_options:
+  - key: 'kernel.printk'
+    value: '4 1 7 4'
+
 {% raw %}
 # We now have access to the branchname in testing variables.
 findgitreview:
