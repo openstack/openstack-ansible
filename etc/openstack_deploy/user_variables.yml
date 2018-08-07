@@ -21,6 +21,12 @@
 ## Debug and Verbose options.
 debug: false
 
+## Installation method for OpenStack services
+# Default option (source) is to install the OpenStack services using PIP
+# packages. An alternative method (distro) is to use the distribution cloud
+# repositories to install OpenStack using distribution packages
+install_method: source
+
 ## Common Glance Overrides
 # Set glance_default_store to "swift" if using Cloud Files backend
 # or "rbd" if using ceph backend; the latter will trigger ceph to get
