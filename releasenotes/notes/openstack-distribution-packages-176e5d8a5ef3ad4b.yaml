@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Deployers can now set the ``install_method`` to either ``source`` (default)
+    or ``distro`` to choose the method for installing OpenStack services on the
+    hosts. This only applies to *new* deployments.  Existing deployments which
+    are source based, cannot be converted to the new ``distro`` method.
+    For more information, please refer to the `Deployment Guide <https://docs.openstack.org/project-deploy-guide/openstack-ansible>`_.
