@@ -133,7 +133,7 @@ function find_log_files {
 }
 
 function rename_log_files {
-  find_files |\
+  find_log_files |\
     while read filename; do \
       mv ${filename} ${filename}.txt || echo "WARNING: Could not rename ${filename}"; \
     done
@@ -142,7 +142,7 @@ function rename_log_files {
 function compress_log_files {
   # We use 'command' to ensure that we're not executing with an alias.
   GZIP_CMD="command gzip --force --best"
-  find_files |\
+  find_log_files |\
     while read filename; do \
       ${GZIP_CMD} ${filename} || echo "WARNING: Could not gzip ${filename}"; \
     done
