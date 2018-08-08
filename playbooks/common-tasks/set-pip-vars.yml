@@ -19,24 +19,28 @@
 # for the SHA currently pinned and will set the default index to pypi.
 
 - name: Backup the default pip_upstream_url
+  run_once: yes
   set_fact:
     __pip_upstream_url: "{{ pip_upstream_url }}"
   when:
     - __pip_upstream_url is not defined
 
 - name: Backup the default pip_install_upper_constraints
+  run_once: yes
   set_fact:
     __pip_install_upper_constraints: "{{ pip_install_upper_constraints }}"
   when:
     - __pip_install_upper_constraints is not defined
 
 - name: Backup the default pip_default_index
+  run_once: yes
   set_fact:
     __pip_default_index: "{{ pip_default_index }}"
   when:
     - __pip_default_index is not defined
 
 - name: Test internal repo URL for the current get-pip.py script
+  run_once: yes
   uri:
     url: "{{ __pip_upstream_url }}"
     method: "HEAD"
@@ -47,6 +51,7 @@
     - common-pip
 
 - name: Test internal repo URL for the current upper constraints file
+  run_once: yes
   uri:
     url: "{{ __pip_install_upper_constraints }}"
     method: "HEAD"
@@ -75,6 +80,7 @@
 # If we can't reach the internal repo, we need to ensure
 # pip isn't locked to it.
 - name: Set pip upstream URL
+  run_once: yes
   set_fact:
     pip_upstream_url: >-
       {{ ((_repo_data_check.status | default(503)) != 200) | ternary('https://bootstrap.pypa.io/3.3/get-pip.py', __pip_upstream_url) }}
@@ -82,6 +88,7 @@
     - common-pip
 
 - name: Set pip install upper constraints
+  run_once: yes
   set_fact:
     pip_install_upper_constraints: >-
       {{ ((upper_constraints_check.status | default(503)) != 200) | ternary(__upstream_constraints, __pip_install_upper_constraints) }}
@@ -96,6 +103,7 @@
     - common-constraints
 
 - name: Fall back to repo_build_pip_default_index
+  run_once: yes
   set_fact:
     pip_default_index: >-
       {{ ((upper_constraints_check.status | default(503)) != 200) | ternary(repo_build_pip_default_index | default('https://pypi.python.org/simple'), __pip_default_index) }}
