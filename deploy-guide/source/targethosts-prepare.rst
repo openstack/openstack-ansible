@@ -119,6 +119,13 @@ Configure CentOS
       # systemctl enable ntpd.service
       # systemctl start ntpd.service
 
+#. (Optional) Reduce the kernel log level by changing the printk
+   value in your sysctls:
+
+   .. code-block:: shell-session
+
+      # echo "kernel.printk='4 1 7 4'" >> /etc/sysctl.conf
+
 
 #. Reboot the host to activate the changes and use the new kernel.
 
