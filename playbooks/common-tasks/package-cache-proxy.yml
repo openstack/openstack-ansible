@@ -13,7 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: test proxy URL for connectivity
+- name: Test proxy URL for connectivity
+  run_once: yes
   uri:
     url: "{{ repo_pkg_cache_url }}/acng-report.html"
     method: "HEAD"
