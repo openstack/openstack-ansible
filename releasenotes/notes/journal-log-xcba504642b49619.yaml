@@ -1,0 +1,6 @@
+---
+deprecations:
+  - The log path, ``/var/log/ceilometer`` is no longer used to capture service
+    logs. All logging for the ceilometer service will now be sent directly to the
+    systemd journal.
+

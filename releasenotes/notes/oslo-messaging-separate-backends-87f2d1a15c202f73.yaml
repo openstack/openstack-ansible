@@ -1,0 +1,20 @@
+---
+features:
+  - Support separate oslo.messaging services for RPC and Notifications
+    to enable operation of separate and different messaging backend servers.
+deprecations:
+  - |
+    The rabbitmq server parameters have been replaced by corresponding
+    oslo.messaging RPC and Notify parameters in order to abstract the
+    messaging service from the actual backend server deployment.
+    - designate_oslomsg_rpc_servers replaces designate_rabbitmq_servers
+    - designate_oslomsg_rpc_port replaces designate_rabbitmq_port
+    - designate_oslomsg_rpc_use_ssl replaces designate_rabbitmq_use_ssl
+    - designate_oslomsg_rpc_userid replaces designate_rabbitmq_userid
+    - designate_oslomsg_rpc_vhost replaces designate_rabbitmq_vhost
+    - designate_oslomsg_notify_servers replaces designate_rabbitmq_telemetry_servers
+    - designate_oslomsg_notify_port replaces designate_rabbitmq_telemetry_port
+    - designate_oslomsg_notify_use_ssl replaces designate_rabbitmq_telemetry_use_ssl
+    - designate_oslomsg_notify_userid replaces designate_rabbitmq_telemetry_userid
+    - designate_oslomsg_notify_vhost replaces designate_rabbitmq_telemetry_vhost
+    - designate_oslomsg_notify_password replaces designate_rabbitmq_telemetry_password

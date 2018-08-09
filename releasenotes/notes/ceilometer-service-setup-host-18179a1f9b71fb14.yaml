@@ -1,0 +1,25 @@
+---
+features:
+  - |
+    The service setup in keystone for ceilometer will now be executed
+    through delegation to the ``ceilometer_service_setup_host`` which,
+    by default, is ``localhost`` (the deploy host). Deployers can
+    opt to rather change this to the utility container by implementing
+    the following override in ``user_variables.yml``.
+
+    .. code-block:: yaml
+
+      ceilometer_service_setup_host: "{{ groups['utility_all'][0] }}"
+
+deprecations:
+  - |
+    The following variables are no longer used and have therefore been
+    removed.
+
+    * ``ceilometer_requires_pip_packages``
+    * ``ceilometer_service_name``
+    * ``ceilometer_service_port``
+    * ``ceilometer_service_proto``
+    * ``ceilometer_service_type``
+    * ``ceilometer_service_description``
+
