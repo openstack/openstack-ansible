@@ -1,0 +1,10 @@
+---
+deprecations:
+  - |
+    The repo server's reverse proxy for pypi has now been removed,
+    leaving only the pypiserver to serve packages already on the
+    repo server. The attempt to reverse proxy upstream pypi turned
+    out to be very unstable with increased complexity for deployers
+    using proxies or offline installs. With this, the variables
+    ``repo_nginx_pypi_upstream`` and ``repo_nginx_proxy_cache_path``
+    have also been removed.

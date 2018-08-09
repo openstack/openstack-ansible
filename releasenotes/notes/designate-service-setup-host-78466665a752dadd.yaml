@@ -1,0 +1,17 @@
+---
+features:
+  - |
+    The service setup in keystone for designate will now be executed
+    through delegation to the ``designate_service_setup_host`` which,
+    by default, is ``localhost`` (the deploy host). Deployers can
+    opt to rather change this to the utility container by implementing
+    the following override in ``user_variables.yml``.
+
+    .. code-block:: yaml
+
+      designate_service_setup_host: "{{ groups['utility_all'][0] }}"
+
+deprecations:
+  - |
+    The variable ``designate_requires_pip_packages`` is no longer required
+    and has therefore been removed.

@@ -1,0 +1,20 @@
+---
+features:
+  - Support separate oslo.messaging services for RPC and Notifications
+    to enable operation of separate and different messaging backend servers.
+deprecations:
+  - |
+    The rabbitmq server parameters have been replaced by corresponding
+    oslo.messaging RPC and Notify parameters in order to abstract the
+    messaging service from the actual backend server deployment.
+    - octavia_oslomsg_rpc_servers replaces octavia_rabbitmq_servers
+    - octavia_oslomsg_rpc_port replaces octavia_rabbitmq_port
+    - octavia_oslomsg_rpc_use_ssl replaces octavia_rabbitmq_use_ssl
+    - octavia_oslomsg_rpc_userid replaces octavia_rabbitmq_userid
+    - octavia_oslomsg_rpc_vhost replaces octavia_rabbitmq_vhost
+    - octavia_oslomsg_notify_servers replaces octavia_rabbitmq_telemetry_servers
+    - octavia_oslomsg_notify_port replaces octavia_rabbitmq_telemetry_port
+    - octavia_oslomsg_notify_use_ssl replaces octavia_rabbitmq_telemetry_use_ssl
+    - octavia_oslomsg_notify_userid replaces octavia_rabbitmq_telemetry_userid
+    - octavia_oslomsg_notify_vhost replaces octavia_rabbitmq_telemetry_vhost
+    - octavia_oslomsg_notify_password replaces octavia_rabbitmq_telemetry_password
