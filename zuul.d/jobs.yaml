@@ -22,7 +22,7 @@
       aio deploy.
     run: zuul.d/playbooks/run.yml
     post-run: zuul.d/playbooks/post.yml
-    timeout: 7200
+    timeout: 8400
     irrelevant-files:
       - ^\.git.*
       - ^.*\.(example|md|rst)$
