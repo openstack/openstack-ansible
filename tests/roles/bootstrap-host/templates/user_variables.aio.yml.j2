@@ -193,27 +193,3 @@ repo_build_pip_extra_indexes:
 openstack_user_kernel_options:
   - key: 'kernel.printk'
     value: '4 1 7 4'
-
-{% raw %}
-# We now have access to the branchname in testing variables.
-findgitreview:
-  files:
-    - ".gitreview"
-  paths:
-    - "{{ playbook_dir }}"
-    - "{{ playbook_dir }}/../"
-    - "{{ playbook_dir }}/../../"
-gitreviewfile: "{{ lookup('first_found', findgitreview) }}"
-currentbranch: "{{ lookup('ini', 'defaultbranch section=gerrit file=' ~ gitreviewfile) | default('master',True) }}"
-
-# This is used to override the group vars for the AIO.
-# Goals:
-# 1) Do not build tempest in repo build (No change)
-# 2) Use developer mode to install tempest from git on master
-# 3) Do not use developer mode on other branches to install tempest from pip packages on stable branches.
-# These two lines can be removed when tempest 18.0.1 or above is released, including
-# https://github.com/openstack/tempest/commit/7d2b636a30057ed8db8cfd4fe2248f509b3570f1#diff-5c9acbc10dc9d27b47985cd74ab100f6
-tempest_developer_mode: "{{ currentbranch == 'master' }}"
-tempest_developer_constraints:
-  - "git+https://git.openstack.org/openstack/tempest@master#egg=tempest"
-{% endraw %}
