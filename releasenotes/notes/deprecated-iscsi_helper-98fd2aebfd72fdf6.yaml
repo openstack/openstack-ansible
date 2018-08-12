@@ -1,0 +1,5 @@
+---
+upgrade:
+  - The variable `cinder_iscsi_helper` has been replaced by the new variable
+    which is `cinder_target_helper` due to the fact that iscsi_helper has
+    been deprecated in Cinder.
