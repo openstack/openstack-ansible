@@ -159,6 +159,9 @@ function gate_job_exit_tasks {
   # by zuul).
   GATE_LOG_DIR=${GATE_LOG_DIR:-/opt/openstack-ansible/logs}
 
+  # Disable logging of every command, as it is too verbose.
+  set +x
+
   # If this is a gate node from OpenStack-Infra Store all logs into the
   #  execution directory after gate run.
   if [ "$GATE_EXIT_LOG_COPY" == true ]; then
@@ -173,6 +176,10 @@ function gate_job_exit_tasks {
     # Rename all files gathered to have a .txt suffix so that the compressed
     # files are viewable via a web browser in OpenStack-CI.
     rename_log_files
+
+    # Disable logging of every command, as it is too verbose.
+    # We have to do this here because log_instance_info does set -x
+    set +x
 
     # Generate the ARA report if enabled
     if [ "$GATE_EXIT_RUN_ARA" == true ]; then
