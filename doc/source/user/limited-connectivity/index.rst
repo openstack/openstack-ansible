@@ -56,15 +56,6 @@ proxy:
       # Custom upstream pip index used when building repo server contents
       repo_build_pip_default_index: http://pip.example.org/simple
 
-You may also choose to create a local copy of
-https://bootstrap.pypa.io/3.3/get-pip.py to remove a dependency on an external
-resource.
-
-.. code-block:: yaml
-
-      # Override PIP installer ("Get modern PIP"): https://bootstrap.pypa.io/3.3/get-pip.py
-      pip_upstream_url: "http://mirror.example.org/bootstrap.pypa.io/3.3/get-pip.py"
-
 Distribution specific packages
 ------------------------------
 
