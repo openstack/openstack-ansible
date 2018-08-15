@@ -99,6 +99,12 @@
       scenario: ceph
 
 - job:
+    name: openstack-ansible-deploy-distro_ceph-ubuntu-xenial
+    parent: openstack-ansible-deploy-ceph-ubuntu-xenial
+    vars:
+      install_method: distro
+
+- job:
     name: openstack-ansible-deploy-aio_metal-ubuntu-xenial
     parent: openstack-ansible-deploy-aio_lxc-ubuntu-xenial
     vars:
@@ -194,6 +200,12 @@
       scenario: ceph
 
 - job:
+    name: openstack-ansible-deploy-distro_ceph-centos-7
+    parent: openstack-ansible-deploy-ceph-centos-7
+    vars:
+      install_method: distro
+
+- job:
     name: openstack-ansible-upgrade-aio_lxc-centos-7
     parent: openstack-ansible-deploy-aio_lxc-centos-7
     timeout: 10800
@@ -253,6 +265,12 @@
     vars:
       action: deploy
       scenario: ceph
+
+- job:
+    name: openstack-ansible-deploy-distro_ceph-opensuse-423
+    parent: openstack-ansible-deploy-ceph-opensuse-423
+    vars:
+      install_method: distro
 
 - job:
     name: openstack-ansible-upgrade-aio_lxc-opensuse-423
