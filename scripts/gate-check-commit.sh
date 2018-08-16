@@ -121,22 +121,7 @@ iptables -P FORWARD ACCEPT
 iptables -P OUTPUT ACCEPT
 
 # Bootstrap an AIO
-unset ANSIBLE_VARS_PLUGINS
-unset HOST_VARS_PATH
-unset GROUP_VARS_PATH
-
-pushd "${OSA_CLONE_DIR}/tests"
-  if [ -z "${BOOTSTRAP_OPTS}" ]; then
-    /opt/ansible-runtime/bin/ansible-playbook bootstrap-aio.yml \
-                     -i test-inventory.ini \
-                     ${ANSIBLE_PARAMETERS}
-  else
-    /opt/ansible-runtime/bin/ansible-playbook bootstrap-aio.yml \
-                     -i test-inventory.ini \
-                     -e "${BOOTSTRAP_OPTS}" \
-                     ${ANSIBLE_PARAMETERS}
-  fi
-popd
+source "${OSA_CLONE_DIR}/scripts/bootstrap-aio.sh"
 
 if [[ "${ACTION}" == "varstest" ]]; then
   pushd "${OSA_CLONE_DIR}/tests"
