@@ -73,6 +73,7 @@
         provider_networks: "{{ provider_networks }}"
         bind_prefix: "{{ provider_network_bind_prefix | default('') }}"
         is_metal: "{{ is_metal }}"
+        group_names: "{{ group_names }}"
       register: pndata
       tags:
         - always
