@@ -1,0 +1,20 @@
+---
+features:
+  - Support separate oslo.messaging services for RPC and Notifications
+    to enable operation of separate and different messaging backend servers.
+deprecations:
+  - |
+    The rabbitmq server parameters have been replaced by corresponding
+    oslo.messaging RPC and Notify parameters in order to abstract the
+    messaging service from the actual backend server deployment.
+    - ceilometer_oslomsg_rpc_servers replaces rabbitmq_servers
+    - ceilometer_oslomsg_rpc_port replaces rabbitmq_port
+    - ceilometer_oslomsg_rpc_userid replaces ceilometer_rabbitmq_userid
+    - ceilometer_oslomsg_rpc_vhost replaces ceilometer_rabbitmq_vhost
+    - added ceilometer_oslomsg_rpc_use_ssl
+    - added ceilometer_oslomsg_notify_servers
+    - added ceilometer_oslomsg_notify_port
+    - added ceilometer_oslomsg_notify_use_ssl
+    - added ceilometer_oslomsg_notify_userid
+    - added ceilometer_oslomsg_notify_vhost
+    - added ceilometer_oslomsg_notify_password

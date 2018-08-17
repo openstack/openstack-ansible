@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    The role now supports using the distribution packages for the OpenStack
+    services instead of the pip ones. This feature is disabled by default
+    and can be enabled by simply setting the ``neutron_install_method``
+    variable to ``distro``.

@@ -1,0 +1,20 @@
+---
+features:
+  - Support separate oslo.messaging services for RPC and Notifications
+    to enable operation of separate and different messaging backend servers.
+deprecations:
+  - |
+    The rabbitmq server parameters have been replaced by corresponding
+    oslo.messaging RPC and Notify parameters in order to abstract the
+    messaging service from the actual backend server deployment.
+    - trove_oslomsg_rpc_servers replaces trove_rabbitmq_servers
+    - trove_oslomsg_rpc_port replaces trove_rabbitmq_port
+    - trove_oslomsg_rpc_use_ssl replaces trove_rabbitmq_use_ssl
+    - trove_oslomsg_rpc_userid replaces trove_rabbitmq_userid
+    - trove_oslomsg_rpc_vhost replaces trove_rabbitmq_vhost
+    - added trove_oslomsg_notify_servers
+    - added trove_oslomsg_notify_port
+    - added trove_oslomsg_notify_use_ssl
+    - added trove_oslomsg_notify_userid
+    - added trove_oslomsg_notify_vhost
+    - added trove_oslomsg_notify_password

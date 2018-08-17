@@ -1,0 +1,20 @@
+---
+features:
+  - Support separate oslo.messaging services for RPC and Notifications
+    to enable operation of separate and different messaging backend servers.
+deprecations:
+  - |
+    The rabbitmq server parameters have been replaced by corresponding
+    oslo.messaging RPC and Notify parameters in order to abstract the
+    messaging service from the actual backend server deployment.
+    - barbican_oslomsg_rpc_servers replaces rabbitmq_servers
+    - barbican_oslomsg_rpc_port replaces rabbitmq_port
+    - barbican_oslomsg_rpc_userid replaces barbican_rabbitmq_userid
+    - barbican_oslomsg_rpc_vhost replaces barbican_rabbitmq_vhost
+    - added barbican_oslomsg_rpc_use_ssl
+    - added barbican_oslomsg_notify_servers
+    - added barbican_oslomsg_notify_port
+    - added barbican_oslomsg_notify_use_ssl
+    - added barbican_oslomsg_notify_userid
+    - added barbican_oslomsg_notify_vhost
+    - added barbican_oslomsg_notify_password

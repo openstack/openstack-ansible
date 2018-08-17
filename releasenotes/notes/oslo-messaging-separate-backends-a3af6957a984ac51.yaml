@@ -1,0 +1,20 @@
+---
+features:
+  - Support separate oslo.messaging services for RPC and Notifications
+    to enable operation of separate and different messaging backend servers.
+deprecations:
+  - |
+    The rabbitmq server parameters have been replaced by corresponding
+    oslo.messaging RPC and Notify parameters in order to abstract the
+    messaging service from the actual backend server deployment.
+    - magnum_oslomsg_rpc_servers replaces rabbitmq_servers
+    - magnum_oslomsg_rpc_port replaces rabbitmq_port
+    - magnum_oslomsg_rpc_userid replaces magnum_rabbitmq_userid
+    - magnum_oslomsg_rpc_vhost replaces magnum_rabbitmq_vhost
+    - added magnum_oslomsg_rpc_use_ssl
+    - added magnum_oslomsg_notify_servers
+    - added magnum_oslomsg_notify_port
+    - added magnum_oslomsg_notify_use_ssl
+    - added magnum_oslomsg_notify_userid
+    - added magnum_oslomsg_notify_vhost
+    - added magnum_oslomsg_notify_password

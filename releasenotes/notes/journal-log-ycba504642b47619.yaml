@@ -1,0 +1,5 @@
+---
+deprecations:
+  - The log path, ``/var/log/designate`` is no longer used to capture service
+    logs. All logging for the designate service will now be sent directly to the
+    systmed journal.
