@@ -109,27 +109,6 @@ ceph_osd_images:
   - 'ceph3'
 
 ## Network configuration
-# The AIO bootstrap configures bridges for use with the AIO deployment.
-# By default, these bridges are configured to be independent of any physical
-# interfaces, and they have their 'bridge_ports' set to 'none'.  However,
-# deployers can add a physical interface to 'bridge_ports' to connect the
-# bridge to a real physical interface.
-#
-# A setting of 'none' keeps the bridges as independent from physical
-# interfaces (the default).
-#
-# Setting the value to 'eth1' would mean that the bridge is directly connected
-# to the eth1 device.
-#
-# See https://wiki.debian.org/BridgeNetworkConnections for more details.
-bootstrap_host_bridge_mgmt_ports: none
-bootstrap_host_bridge_vxlan_ports: none
-bootstrap_host_bridge_storage_ports: none
-bootstrap_host_bridge_vlan_ports: "br-vlan-veth"
-# This enables the VXLAN encapsulation the traditional bridges
-# (br-mgmt, br-vxlan, br-storage)
-bootstrap_host_encapsulation_enabled: "{{ not bootstrap_host_aio_config | bool }}"
-#
 # Default network IP ranges
 mgmt_range: "172.29.236"
 vxlan_range: "172.29.240"
@@ -139,74 +118,6 @@ netmask: "255.255.252.0"
 #
 # NICs
 bootstrap_host_public_interface: "{{ ansible_default_ipv4.interface }}"
-bootstrap_host_encapsulation_interface: eth1
-#
-#Encapsulations
-bootstrap_host_encapsulation_interfaces:
-  encap-mgmt:
-    id: 236
-    underlay_device: "{{ bootstrap_host_encapsulation_interface }}"
-    friendly_name: "Encapsulation of br-mgmt with VXLAN"
-  encap-vxlan:
-    id: 240
-    underlay_device: "{{ bootstrap_host_encapsulation_interface }}"
-    friendly_name: "Encapsulation of br-vxlan with VXLAN"
-  encap-storage:
-    id: 244
-    underlay_device: "{{ bootstrap_host_encapsulation_interface }}"
-    friendly_name: "Encapsulation of br-storage with VXLAN"
-  encap-vlan:
-    id: 248
-    underlay_device: "{{ bootstrap_host_encapsulation_interface }}"
-    friendly_name: "Encapsulation of br-vlan with VXLAN"
-#
-# Bridges
-bridges:
-  - name: "br-mgmt"
-    ip_addr: "172.29.236.100"
-    netmask: "255.255.252.0"
-  - name: "br-vxlan"
-    ip_addr: "172.29.240.100"
-    netmask: "255.255.252.0"
-  - name: "br-storage"
-    ip_addr: "172.29.244.100"
-    netmask: "255.255.252.0"
-  - name: "br-vlan"
-    ip_addr: "172.29.248.100"
-    alias: "172.29.248.1"
-    veth_peer: "eth12"
-    netmask: "255.255.252.0"
-
-bootstrap_host_bridges_interfaces:
-  br-mgmt:
-    ports: "{{ bootstrap_host_encapsulation_enabled | bool | ternary ('encap-mgmt', bootstrap_host_bridge_mgmt_ports) }}"
-    ip_address_range: "{{ mgmt_range }}"
-    ip_netmask: "{{ netmask }}"
-  br-storage:
-    ports: "{{ bootstrap_host_encapsulation_enabled | bool | ternary ('encap-storage', bootstrap_host_bridge_storage_ports) }}"
-    ip_address_range: "{{ storage_range }}"
-    ip_netmask: "{{ netmask }}"
-  br-vxlan:
-    ports: "{{ bootstrap_host_encapsulation_enabled | bool | ternary ('encap-vxlan', bootstrap_host_bridge_vxlan_ports) }}"
-    ip_address_range: "{{ vxlan_range }}"
-    ip_netmask: "{{ netmask }}"
-  br-vlan:
-    mode: "{{ bridge_vlan_inet_mode | default('static') }}"
-    ports: "{{ bootstrap_host_encapsulation_enabled | bool | ternary ('encap-vlan', bootstrap_host_bridge_vlan_ports) }}"
-    ip_address_range: "{{ vlan_range }}"
-    ip_netmask: "{{ netmask }}"
-    state_change_scripts: "{{ bridge_vlan_state_change_scripts }}"
-#
-# Convenience scripts
-bridge_vlan_state_change_scripts: |
-  pre-up ip link add br-vlan-veth type veth peer name eth12 || true
-  pre-up ip link set br-vlan-veth up
-  pre-up ip link set eth12 up
-  post-down ip link del br-vlan-veth || true
-bridge_iptables_rules: |
-  # To provide internet connectivity to instances
-  up /sbin/iptables -t nat -A POSTROUTING -o {{ bootstrap_host_public_interface }} -j MASQUERADE
-  down /sbin/iptables -t nat -D POSTROUTING -o {{ bootstrap_host_public_interface }} -j MASQUERADE
 
 ## Extra storage
 # An AIO may optionally be built using a second storage device. If a
