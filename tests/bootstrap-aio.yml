@@ -19,7 +19,6 @@
   user: root
   roles:
     - role: "sshd"
-    - role: "pip_install"
     - role: "bootstrap-host"
   vars:
     ansible_python_interpreter: "/usr/bin/python"

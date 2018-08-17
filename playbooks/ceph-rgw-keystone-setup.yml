@@ -14,120 +14,95 @@
 # limitations under the License.
 
 - name: Configure keystone for radosgw
-  hosts: utility_all
+  hosts: "{{ openstack_service_setup_host | default('localhost') }}"
   user: root
   vars_files:
     - "defaults/{{ install_method }}_install.yml"
+  vars:
+    ansible_python_interpreter: >-
+      {{ ((openstack_service_setup_host | default('localhost')) == 'localhost') | ternary(ansible_playbook_python, ansible_python['executable']) }}
+  tags:
+    - ceph-rgw
+    - ceph-rgw-setup
+    - rgw-service-add
   tasks:
-    - name: Ensure RGW service
-      keystone:
-        command: "ensure_service"
-        endpoint: "{{ keystone_service_adminurl }}"
-        login_user: "{{ keystone_admin_user_name }}"
-        login_password: "{{ keystone_auth_admin_password }}"
-        login_project_name: "{{ keystone_admin_tenant_name }}"
-        service_name: "{{ radosgw_service_name }}"
+    - name: Add service to the keystone service catalog
+      os_keystone_service:
+        cloud: default
+        state: present
+        name: "{{ radosgw_service_name }}"
         service_type: "{{ radosgw_service_type }}"
         description: "{{ radosgw_service_description }}"
-        insecure: "{{ keystone_service_adminuri_insecure }}"
-      run_once: true
+        interface: admin
+        verify: "{{ not (keystone_service_adminuri_insecure | bool) }}"
       register: add_service
       until: add_service is success
       retries: 5
-      delay: 2
-      no_log: True
+      delay: 10
       tags:
         - ceph-rgw-setup
         - rgw-service-add
 
-    - name: Ensure RGW user
-      keystone:
-        command: "ensure_user"
-        endpoint: "{{ keystone_service_adminurl }}"
-        login_user: "{{ keystone_admin_user_name }}"
-        login_password: "{{ keystone_auth_admin_password }}"
-        login_project_name: "{{ keystone_admin_tenant_name }}"
-        user_name: "{{ radosgw_admin_user }}"
-        tenant_name: "{{ radosgw_admin_tenant }}"
-        role_name: "{{ radosgw_role_name | default('service') }}"
+    - name: Add service user
+      os_user:
+        cloud: default
+        state: present
+        name: "{{ radosgw_admin_user }}"
         password: "{{ radosgw_admin_password }}"
-        insecure: "{{ keystone_service_adminuri_insecure }}"
-      run_once: true
+        domain: default
+        default_project: "{{ radosgw_admin_tenant }}"
+        interface: admin
+        verify: "{{ not (keystone_service_adminuri_insecure | bool) }}"
       register: add_user
       until: add_user is success
       retries: 5
       delay: 10
       no_log: True
-      tags:
-        - ceph-rgw-setup
-        - rgw-service-add
 
-    - name: Ensure RGW user to admin role
-      keystone:
-        command: "ensure_user_role"
-        endpoint: "{{ keystone_service_adminurl }}"
-        login_user: "{{ keystone_admin_user_name }}"
-        login_password: "{{ keystone_auth_admin_password }}"
-        login_project_name: "{{ keystone_admin_tenant_name }}"
-        user_name: "{{ radosgw_admin_user }}"
-        tenant_name: "{{ radosgw_admin_tenant }}"
-        role_name: "{{ radosgw_role_name | default('admin') }}"
-        insecure: "{{ keystone_service_adminuri_insecure }}"
-      run_once: true
-      register: add_admin_role
-      until: add_admin_role is success
+    - name: Add service user to roles
+      os_user_role:
+        cloud: default
+        state: present
+        user: "{{ radosgw_admin_user }}"
+        role: "{{ radosgw_role_name | default('admin') }}"
+        project: "{{ radosgw_admin_tenant }}"
+        interface: admin
+        verify: "{{ not (keystone_service_adminuri_insecure | bool) }}"
+      register: add_user_role
+      until: add_user_role is success
       retries: 5
       delay: 10
-      no_log: True
-      tags:
-        - ceph-rgw-setup
-        - rgw-service-add
 
-    - name: Ensure swiftoperator role
-      keystone:
-        command: "ensure_role"
-        endpoint: "{{ keystone_service_adminurl }}"
-        login_user: "{{ keystone_admin_user_name }}"
-        login_password: "{{ keystone_auth_admin_password }}"
-        login_project_name: "{{ keystone_admin_tenant_name }}"
-        role_name: "swiftoperator"
-        insecure: "{{ keystone_service_adminuri_insecure }}"
-      run_once: true
-      register: add_swiftoperator_role
-      until: add_swiftoperator_role is success
+    - name: Add service role
+      os_keystone_role:
+        cloud: default
+        state: present
+        name: "swiftoperator"
+        interface: admin
+        verify: "{{ not (keystone_service_adminuri_insecure | bool) }}"
+      register: add_role
+      until: add_role is success
       retries: 5
       delay: 10
-      no_log: True
-      tags:
-        - ceph-rgw-setup
-        - rgw-service-add
 
-    - name: Ensure RGW endpoint
-      keystone:
-        command: "ensure_endpoint"
-        endpoint: "{{ keystone_service_adminurl }}"
-        login_user: "{{ keystone_admin_user_name }}"
-        login_password: "{{ keystone_auth_admin_password }}"
-        login_project_name: "{{ keystone_admin_tenant_name }}"
-        region_name: "{{ radosgw_service_region }}"
-        service_name: "{{ radosgw_service_name }}"
-        service_type: "{{ radosgw_service_type }}"
-        insecure: "{{ keystone_service_adminuri_insecure }}"
-        endpoint_list:
-          - url: "{{ radosgw_service_publicurl }}"
-            interface: "public"
-          - url: "{{ radosgw_service_adminurl }}"
-            interface: "admin"
-          - url: "{{ radosgw_service_internalurl }}"
-            interface: "internal"
-      run_once: true
-      register: add_endpoint
-      until: add_endpoint is success
+    - name: Add endpoints to keystone endpoint catalog
+      os_keystone_endpoint:
+        cloud: default
+        state: present
+        service: "{{ radosgw_service_name }}"
+        endpoint_interface: "{{ item.interface }}"
+        url: "{{ item.url }}"
+        region: "{{ radosgw_service_region }}"
+        interface: admin
+        verify: "{{ not (keystone_service_adminuri_insecure | bool) }}"
+      register: add_service
+      until: add_service is success
       retries: 5
       delay: 10
-      no_log: True
-      tags:
-        - ceph-rgw-setup
-        - rgw-service-add
-  tags:
-    - ceph-rgw
+      with_items:
+        - interface: "public"
+          url: "{{ radosgw_service_publicurl }}"
+        - interface: "internal"
+          url: "{{ radosgw_service_internalurl }}"
+        - interface: "admin"
+          url: "{{ radosgw_service_adminurl }}"
