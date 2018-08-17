@@ -18,72 +18,12 @@
       - publish-openstack-sphinx-docs
       - deploy-guide-jobs
       - release-notes-jobs
-    check:
-      jobs:
-        - openstack-ansible-linters
-        - openstack-ansible-varstest-aio_lxc-ubuntu-xenial
-        # NOTE(mnaser): CentOS support is currently not working, enable once
-        #               metal job is passing and voting.
-        # - openstack-ansible-deploy-aio_basekit-centos-7
-        - openstack-ansible-deploy-aio_basekit-opensuse-423
-        # NOTE(hwoarang) xenial does not currently work. It needs investigation
-        # - openstack-ansible-deploy-aio_distro_basekit-ubuntu-xenial:
-        #     voting: false
-        # NOTE(mnaser): CentOS support is currently not working, enable once
-        #               metal job is passing and voting.
-        # - openstack-ansible-deploy-aio_distro_basekit-centos-7
-        - openstack-ansible-deploy-aio_distro_basekit-opensuse-423
-        # NOTE(mhayden): Temporarily replacing suse and centos
-        # with aio_basekit scenario.
-        #- openstack-ansible-deploy-aio_lxc-centos-7
-        #- openstack-ansible-deploy-aio_lxc-opensuse-423
-        - openstack-ansible-deploy-aio_lxc-ubuntu-xenial
-        # NOTE(jrosser): Temporarily mark Bionic as non-voting until other bionic work is complete
-        - openstack-ansible-deploy-aio_lxc-ubuntu-bionic:
-            voting: false
-        - openstack-ansible-deploy-aio_metal-ubuntu-xenial
-        - openstack-ansible-deploy-aio_metal-opensuse-423
-        - openstack-ansible-deploy-aio_metal-centos-7
-        # NOTE(mnaser): nspawn jobs have been failing for a long time
-        # - openstack-ansible-deploy-aio_nspawn-centos-7
-        # - openstack-ansible-deploy-aio_nspawn-opensuse-423
-        # - openstack-ansible-deploy-aio_nspawn-ubuntu-xenial
-        # NOTE(mhayden): Temporarily replacing suse and centos
-        # with aio_basekit scenario.
-        #- openstack-ansible-deploy-ceph-centos-7
-        #- openstack-ansible-deploy-ceph-opensuse-423
-        - openstack-ansible-deploy-ceph-ubuntu-xenial
-        # NOTE(mnaser): CentOS support is currently not working, enable once
-        #               metal job is passing and voting.
-        # - openstack-ansible-deploy-aio_distro_lxc-centos-7
-        - openstack-ansible-deploy-aio_distro_lxc-opensuse-423
-        # NOTE(hwoarang) xenial does not currently work. It needs investigation
-        # - openstack-ansible-deploy-aio_distro_lxc-ubuntu-xenial
-    experimental:
-      jobs:
-        - openstack-ansible-deploy-octavia-ubuntu-xenial
-        - openstack-ansible-deploy_with_ansible_devel-aio-ubuntu-xenial
-        - openstack-ansible-deploy_with_ansible_next-aio-ubuntu-xenial
-        - openstack-ansible-deploy-congress-ubuntu-xenial
-    gate:
-      jobs:
-        - openstack-ansible-linters
-        - openstack-ansible-varstest-aio_lxc-ubuntu-xenial
-        - openstack-ansible-deploy-ceph-ubuntu-xenial
-        - openstack-ansible-deploy-aio_lxc-ubuntu-xenial
-        - openstack-ansible-deploy-aio_metal-ubuntu-xenial
-        - openstack-ansible-deploy-aio_metal-opensuse-423
-    periodic:
-      jobs:
-        # We remove the centos periodics
-        # until they are more likely to pass on time.
-        # (Currently timing out).
-        #- openstack-ansible-deploy-aio_lxc-centos-7
-        - openstack-ansible-deploy-aio_lxc-opensuse-423
-        - openstack-ansible-deploy-aio_lxc-ubuntu-xenial
-        #- openstack-ansible-deploy-ceph-centos-7
-        - openstack-ansible-deploy-ceph-opensuse-423
-        - openstack-ansible-deploy-ceph-ubuntu-xenial
-        - openstack-ansible-deploy-translations-ubuntu-xenial
-        - openstack-ansible-upgrade-aio_lxc-ubuntu-xenial
-        - openstack-ansible-upgrade-ceph-ubuntu-xenial
+      - openstack-ansible-deploy-base-jobs
+      - openstack-ansible-deploy-aio_lxc-jobs
+      - openstack-ansible-deploy-aio_distro_lxc-jobs
+      - openstack-ansible-deploy-aio_metal-jobs
+      - openstack-ansible-deploy-aio_basekit-jobs
+      - openstack-ansible-deploy-aio_distro_basekit-jobs
+      # NOTE(mnaser): All nspawn jobs disabled until issues resolved
+      # - openstack-ansible-deploy-aio_nspawn-jobs
+      - openstack-ansible-deploy-ceph-jobs
