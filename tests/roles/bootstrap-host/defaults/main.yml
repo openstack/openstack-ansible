@@ -118,6 +118,25 @@ netmask: "255.255.252.0"
 #
 # NICs
 bootstrap_host_public_interface: "{{ ansible_default_ipv4.interface }}"
+#
+# Utility paths
+bootstrap_host_network_utils:
+  apt:
+    iptables: /sbin/iptables
+    ethtool: /sbin/ethtool
+    ip: /sbin/ip
+  yum:
+    iptables: /usr/sbin/iptables
+    ethtool: /usr/sbin/ethtool
+    ip: /usr/sbin/ip
+  zypper:
+    iptables: /usr/sbin/iptables
+    ethtool: /sbin/ethtool
+    ip: /sbin/ip
+#
+bootstrap_host_iptables_path: "{{ bootstrap_host_network_utils[ansible_pkg_mgr]['iptables'] }}"
+bootstrap_host_ethtool_path: "{{ bootstrap_host_network_utils[ansible_pkg_mgr]['ethtool'] }}"
+bootstrap_host_ip_path: "{{ bootstrap_host_network_utils[ansible_pkg_mgr]['ip'] }}"
 
 ## Extra storage
 # An AIO may optionally be built using a second storage device. If a
