@@ -19,7 +19,7 @@ neutron_lbaas_octavia: True
 octavia_amp_image_file_name: {{ bootstrap_host_octavia_tmp }}/amphora-x64-haproxy.qcow2
 octavia_amp_image_upload_enabled: True
 octavia_glance_image_tag:
-octavia_management_net_subnet_cidr: 172.29.252.0/22
+octavia_management_net_subnet_cidr: "{{ (container_tech == 'nspawn') | ternary('172.29.240.0/22', '172.29.252.0/22') }}"
 
 # make glance only use file
 glance_default_store: file

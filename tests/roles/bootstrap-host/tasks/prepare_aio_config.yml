@@ -34,7 +34,7 @@
 
 - name: Deploy openstack_user_config
   config_template:
-    src: "{{ bootstrap_host_aio_config_path }}/openstack_user_config.yml.aio.j2"
+    src: "{{ bootstrap_host_aio_config_path }}/openstack_user_config.yml.{{ (container_tech == 'nspawn') | ternary('aio-nspawn', 'aio') }}.j2"
     dest: "/etc/openstack_deploy/openstack_user_config.yml"
     config_overrides: "{{ openstack_user_config_overrides | default({}) }}"
     config_type: "yaml"

@@ -131,6 +131,8 @@
 
 # Prepare the network interfaces
 - include: prepare_networking.yml
+  when:
+    - container_tech != 'nspawn'
   tags:
     - prepare-networking
 
