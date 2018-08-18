@@ -1,0 +1,137 @@
+---
+cidr_networks:
+  container: "172.29.236.0/22"
+  flat: 172.29.240.0/22
+  storage: "172.29.244.0/22"
+  vxlan: "172.29.248.0/22"
+
+
+used_ips:
+  - 172.29.236.100,172.29.236.200
+  - 172.29.240.110,172.29.240.200
+  - 172.29.241.0,172.29.241.254
+  - 172.29.242.100,172.29.242.200
+  - 172.29.244.100,172.29.244.200
+  - 172.29.248.100,172.29.248.200
+
+
+global_overrides:
+  internal_lb_vip_address: 172.29.236.100
+  external_lb_vip_address: "{{ bootstrap_host_public_address | default(ansible_default_ipv4['address']) }}"
+  tunnel_bridge: "mv-vxlan"
+  management_bridge: "mv-{{ ansible_default_ipv4['alias'] }}"
+  provider_networks:
+    - network:
+        container_bridge: "{{ ansible_default_ipv4['alias'] }}"
+        container_interface: "mv-container"
+        ip_from_q: "container"
+        type: "raw"
+        is_container_address: true
+        group_binds:
+          - all_containers
+          - hosts
+    - network:
+        container_bridge: "{{ ansible_default_ipv4['alias'] }}"
+        container_interface: "mv-flat"
+        ip_from_q: "flat"
+        type: "flat"
+        net_name: "flat"
+        group_binds:
+          - neutron_linuxbridge_agent
+          - octavia-worker
+          - octavia-housekeeping
+          - octavia-health-manager
+          - rabbitmq
+          - utility_all
+    - network:
+        container_bridge: "{{ ansible_default_ipv4['alias'] }}"
+        container_interface: "mv-storage"
+        ip_from_q: "storage"
+        type: "raw"
+        is_container_address: true
+        group_binds:
+          - glance_api
+          - cinder_api
+          - cinder_volume
+          - nova_compute
+          - swift_proxy
+    - network:
+        container_bridge: "{{ ansible_default_ipv4['alias'] }}"
+        container_interface: "mv-vxlan"
+        ip_from_q: "vxlan"
+        type: "vxlan"
+        net_name: "vxlan"
+        range: "1:1000"
+        group_binds:
+          - neutron_linuxbridge_agent
+
+
+###
+### Anchors
+###
+# NOTE(cloudull): This section and is only present as a way to show how blocks
+#                 can be used to to simplify config when hosts serve multiple
+#                 roles. In this case the AIO block is defined once and used
+#                 for all other components without needing to duplicate config.
+aio_block: &aio_info_block
+  aio1:
+    ip: 172.29.236.100
+    host_vars:
+      # NOTE(cloudnull): local connection is used in the gate because of the
+      #                  current gate scripts are structured. Once inline fact
+      #                  gathering is moved/removed this option can be removed.
+      ansible_connection: local
+      #
+      # NOTE(cloudnull): Currently set to false to speed up the test, set this
+      #                  true at a later date, when confidence is higher.
+      apply_security_hardening: false
+      #
+      # NOTE(cloudull): This is an example of an extra network that will be
+      #                 created on the host. This is used to setup a local host
+      #                 for testing with tempest and not something that is used
+      #                 in production.
+      #
+      #                 + The flat network configuration option provided here
+      #                   was created so a user can interact with a local flat
+      #                   network without any manual intervention. In a
+      #                   poduction setup with VLAN tagged interfaces or
+      #                   multiple nics this would not be required.
+      #
+      #                 + The "vxlan" network configuration option is provided
+      #                   so test instances can be built using l3 networks. In a
+      #                   normal production environment this would not be needed
+      #                   as a physical device (or vlan tagged interface) would
+      #                   be used and should already have an IP address assigned
+      #                   to it.
+      container_extra_networks:
+        flat_network:
+          bridge: "{{ ansible_default_ipv4['alias'] }}"
+          interface: mv-flat
+          address: 172.29.240.100
+          netmask: 255.255.252.0
+        storage_network:
+          bridge: "{{ ansible_default_ipv4['alias'] }}"
+          interface: mv-storage
+          address: 172.29.244.100
+          netmask: 255.255.252.0
+        vxlan_network:
+          bridge: "{{ ansible_default_ipv4['alias'] }}"
+          interface: mv-vxlan
+          address: 172.29.248.100
+          netmask: 255.255.252.0
+    container_vars:
+      # Optional | container_tech for a target host, default is "lxc".
+      container_tech: "nspawn"
+
+
+###
+### Infrastructure
+###
+# galera, memcache, rabbitmq, utility
+shared-infra_hosts: *aio_info_block
+
+# repository (apt cache, python packages, etc)
+repo-infra_hosts: *aio_info_block
+
+# rsyslog server
+log_hosts: *aio_info_block

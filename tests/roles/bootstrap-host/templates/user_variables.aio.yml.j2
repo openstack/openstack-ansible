@@ -20,8 +20,14 @@ debug: True
 install_method: "{{ lookup('env','INSTALL_METHOD') | default('source', true) }}"
 
 ## Tempest settings
+{% if container_tech == 'nspawn' %}
+tempest_public_subnet_cidr: "172.29.236.0/22"
+tempest_public_subnet_allocation_pools: "172.29.239.110-172.29.239.200"
+{% else %}
+## Tempest settings
 tempest_public_subnet_cidr: 172.29.248.0/22
 tempest_public_subnet_allocation_pools: "172.29.249.110-172.29.249.200"
+{% endif %}
 
 ## Galera settings
 galera_monitoring_allowed_source: "0.0.0.0/0"

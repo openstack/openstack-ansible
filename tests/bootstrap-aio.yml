@@ -81,6 +81,8 @@
           - ansible_eth12['active'] == true
           - ansible_eth13['active'] == true
           - ansible_eth14['active'] == true
+      when:
+        - (container_tech | default('unknown')) != 'nspawn'
   vars_files:
     - "{{ playbook_dir }}/../playbooks/defaults/repo_packages/openstack_services.yml"
     - vars/bootstrap-aio-vars.yml
