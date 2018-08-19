@@ -154,7 +154,7 @@
 #       This interface is optional but highly recommended for vlan based
 #       OpenStack networking.
 #       If no additional network interface is available, a deployer can create
-#       a veth pair, and plug it into the the br-vlan bridge to provide
+#       a veth pair, and plug it into the br-vlan bridge to provide
 #       this interface. An example could be found in the aio_interfaces.cfg
 #       file.
 #
@@ -318,7 +318,7 @@
 #     ip: 172.29.236.103
 #
 # List of target hosts on which to deploy shared infrastructure services
-# and define the the container_tech for a specific infra node. If this setting
+# and define the container_tech for a specific infra node. If this setting
 # is omitted the inventory generation system will default to "lxc". Accpetable
 # options are "lxc" and "nspawn".
 #
