@@ -16,6 +16,7 @@
 - name: Setup the utility location(s)
   hosts: utility_all
   user: root
+  gather_facts: "{{ osa_gather_facts | default(True) }}"
   environment: "{{ deployment_environment_variables | default({}) }}"
   vars_files:
     - "defaults/{{ install_method }}_install.yml"
