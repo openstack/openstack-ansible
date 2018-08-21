@@ -21,7 +21,7 @@
 # clouds.yaml file is useless until keystone is in place.
 - name: Implement openrc/clouds.yaml on the designated service host
   hosts: "{{ openstack_service_setup_host | default('localhost') }}"
-  gather_facts: no
+  gather_facts: "{{ osa_gather_facts | default(True) }}"
   become: yes
   tags:
     - openrc
