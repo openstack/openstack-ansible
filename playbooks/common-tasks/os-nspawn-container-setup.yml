@@ -65,7 +65,7 @@
   with_items:
     - "{{ list_of_bind_mounts | default([]) }}"
   delegate_to: "{{ physical_host }}"
-  register: _ec
+  register: add_bind
   when:
     - nspawn_systemd_version | int > 219
   tags:
@@ -114,7 +114,8 @@
   delay: 5
   delegate_to: "{{ physical_host }}"
   when:
-    - _ec  is changed
+    - (_ec is defined and _ec is changed) or
+      (add_bind is defined and add_bind is changed)
   tags:
     - common-nspawn
 
