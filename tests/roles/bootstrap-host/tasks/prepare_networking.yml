@@ -213,7 +213,6 @@
             RemainAfterExit: yes
         service_type: oneshot
         execstarts:
-          - "-/sbin/iptables -A POSTROUTING -t mangle -p tcp --dport 22 -j CHECKSUM --checksum-fill"
           - "-/sbin/iptables -t nat -A POSTROUTING -o {{ bootstrap_host_public_interface }} -j MASQUERADE"
           - "-/sbin/ethtool -K bond0 gso off sg off tso off tx off"
           - "-/sbin/ethtool -K bond1 gso off sg off tso off tx off"
@@ -233,7 +232,6 @@
           - "-/bin/ip link set br-lbaas-veth up"
           - "-/sbin/ethtool -K eth14 gso off sg off tso off tx off"
         execstops:
-          - "/sbin/iptables -D POSTROUTING -t mangle -p tcp --dport 22 -j CHECKSUM --checksum-fill"
           - "/sbin/iptables -t nat -D POSTROUTING -o {{ bootstrap_host_public_interface }} -j MASQUERADE"
         enabled: yes
         state: started

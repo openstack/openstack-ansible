@@ -204,9 +204,6 @@ bridge_vlan_state_change_scripts: |
   pre-up ip link set eth12 up
   post-down ip link del br-vlan-veth || true
 bridge_iptables_rules: |
-  # To ensure ssh checksum is correct
-  up /sbin/iptables -A POSTROUTING -t mangle -p tcp -o {{ bootstrap_host_public_interface }} -j CHECKSUM --checksum-fill
-  down /sbin/iptables -D POSTROUTING -t mangle -p tcp -o {{ bootstrap_host_public_interface }} -j CHECKSUM --checksum-fill
   # To provide internet connectivity to instances
   up /sbin/iptables -t nat -A POSTROUTING -o {{ bootstrap_host_public_interface }} -j MASQUERADE
   down /sbin/iptables -t nat -D POSTROUTING -o {{ bootstrap_host_public_interface }} -j MASQUERADE
