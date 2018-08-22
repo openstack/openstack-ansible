@@ -21,61 +21,25 @@
     systemd_interface_cleanup: true
     systemd_run_networkd: true
     systemd_netdevs:
-      - NetDev:
-          Name: bond0
-          Kind: bond
-        Bond:
-          Mode: 802.3ad
-          TransmitHashPolicy: layer3+4
-          MIIMonitorSec: 1s
-          LACPTransmitRate: fast
-      - NetDev:
-          Name: bond1
-          Kind: bond
-        Bond:
-          Mode: 802.3ad
-          TransmitHashPolicy: layer3+4
-          MIIMonitorSec: 1s
-          LACPTransmitRate: fast
 
       - NetDev:
-          Name: dummy0
+          Name: dummy-mgmt
           Kind: dummy
       - NetDev:
-          Name: dummy2
+          Name: dummy-vxlan
           Kind: dummy
       - NetDev:
-          Name: dummy1
+          Name: dummy-storage
           Kind: dummy
       - NetDev:
-          Name: dummy3
+          Name: dummy-vlan
           Kind: dummy
-
       - NetDev:
-          Name: bond0.110
-          Kind: vlan
-        VLAN:
-          Id: 110
+          Name: dummy-dbaas
+          Kind: dummy
       - NetDev:
-          Name: bond0.120
-          Kind: vlan
-        VLAN:
-          Id: 120
-      - NetDev:
-          Name: bond0.130
-          Kind: vlan
-        VLAN:
-          Id: 130
-      - NetDev:
-          Name: bond0.140
-          Kind: vlan
-        VLAN:
-          Id: 140
-      - NetDev:
-          Name: bond1.210
-          Kind: vlan
-        VLAN:
-          Id: 210
+          Name: dummy-lbaas
+          Kind: dummy
 
       - NetDev:
           Name: br-mgmt
@@ -113,39 +77,22 @@
           Name: eth14
 
     systemd_networks:
-      - interface: "bond0"
-        config_overrides:
-          Network:
-            VLAN:
-              ? "bond0.110"
-              ? "bond0.120"
-              ? "bond0.130"
-              ? "bond0.140"
-        mtu: 9000
 
-      - interface: "bond1"
-        bridge: "br-vlan"
-        config_overrides:
-          Network:
-            VLAN:
-              ? "bond1.210"
-        mtu: 9000
-
-      - interface: "bond0.110"
+      - interface: "dummy-mgmt"
         bridge: "br-mgmt"
         mtu: 9000
       - interface: "br-mgmt"
         address: "172.29.236.100"
         netmask: "255.255.252.0"
 
-      - interface: "bond0.120"
+      - interface: "dummy-storage"
         bridge: "br-storage"
         mtu: 9000
       - interface: "br-storage"
         address: "172.29.244.100"
         netmask: "255.255.252.0"
 
-      - interface: "bond0.130"
+      - interface: "dummy-dbaas"
         bridge: "br-dbaas"
         mtu: 9000
       - interface: "br-dbaas"
@@ -155,7 +102,7 @@
         bridge: "br-dbaas"
         mtu: 9000
 
-      - interface: "bond0.140"
+      - interface: "dummy-lbaas"
         bridge: "br-lbaas"
         mtu: 9000
       - interface: "br-lbaas"
@@ -165,13 +112,16 @@
         bridge: "br-lbaas"
         mtu: 9000
 
-      - interface: "bond1.210"
+      - interface: "dummy-vxlan"
         bridge: "br-vxlan"
         mtu: 9000
       - interface: "br-vxlan"
         address: "172.29.240.100"
         netmask: "255.255.252.0"
 
+      - interface: "dummy-vlan"
+        bridge: "br-vlan"
+        mtu: 9000
       - interface: "br-vlan"
         config_overrides:
           Network:
@@ -182,18 +132,6 @@
         bridge: "br-vlan"
         mtu: 9000
 
-      - interface: "dummy0"
-        bond: "bond0"
-        mtu: 9000
-      - interface: "dummy2"
-        bond: "bond0"
-        mtu: 9000
-      - interface: "dummy1"
-        bond: "bond1"
-        mtu: 9000
-      - interface: "dummy3"
-        bond: "bond1"
-        mtu: 9000
   tags:
     - network-config
 
@@ -234,8 +172,6 @@
         service_type: oneshot
         execstarts:
           - "-{{ bootstrap_host_iptables_path }} -t nat -A POSTROUTING -o {{ bootstrap_host_public_interface }} -j MASQUERADE"
-          - "-{{ bootstrap_host_ethtool_path }} -K bond0 gso off sg off tso off tx off"
-          - "-{{ bootstrap_host_ethtool_path }} -K bond1 gso off sg off tso off tx off"
           - "-{{ bootstrap_host_ethtool_path }} -K br-mgmt gso off sg off tso off tx off"
           - "-{{ bootstrap_host_ethtool_path }} -K br-vxlan gso off sg off tso off tx off"
           - "-{{ bootstrap_host_ethtool_path }} -K br-storage gso off sg off tso off tx off"
