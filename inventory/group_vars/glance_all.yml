@@ -33,3 +33,5 @@ glance_venv_download_url: "{{ venv_base_download_url }}/glance-{{ openstack_rele
 glance_container_bind_mounts:
   - bind_dir_path: "/var/lib/glance/images"
     mount_path: "/openstack/{{ inventory_hostname }}"
+  - bind_dir_path: "/var/lib/glance/cache"
+    mount_path: "/openstack/{{ inventory_hostname }}"
