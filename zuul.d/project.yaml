@@ -15,9 +15,9 @@
 - project:
     templates:
       - check-requirements
-      - publish-openstack-sphinx-docs
+      - publish-openstack-docs-pti
       - deploy-guide-jobs
-      - release-notes-jobs
+      - release-notes-jobs-python3
     check:
       jobs:
         - openstack-ansible-linters
