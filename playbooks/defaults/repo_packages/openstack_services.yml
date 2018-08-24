@@ -31,43 +31,50 @@
 
 ## Global Requirements
 requirements_git_repo: https://git.openstack.org/openstack/requirements
-requirements_git_install_branch: 1d9d01339b8919982c031a982a38914bb074cc70 # HEAD of "stable/rocky" as of 27.08.2018
+requirements_git_install_branch: 42aae93777c9d0216dad52995efcb623e5f05555 # HEAD of "stable/rocky" as of 17.08.2018
+requirements_git_track_branch: stable/rocky
 
 
 ## Aodh service
 aodh_git_repo: https://git.openstack.org/openstack/aodh
 aodh_git_install_branch: 86a19d58cc8003cf34549fb3a64fd3fd356b7ad2 # HEAD of "stable/rocky" as of 27.08.2018
 aodh_git_project_group: aodh_all
+aodh_git_track_branch: stable/rocky
 
 
 ## Barbican service
 barbican_git_repo: https://git.openstack.org/openstack/barbican
 barbican_git_install_branch: 3f6cccae4982e5a8fe1ca5a3fb198e1481a5891c # HEAD of "stable/rocky" as of 27.08.2018
 barbican_git_project_group: barbican_all
+barbican_git_track_branch: stable/rocky
 
 
 ## Ceilometer service
 ceilometer_git_repo: https://git.openstack.org/openstack/ceilometer
 ceilometer_git_install_branch: 786f90c314ff89f23ebc1227c800bedbeaec204b # HEAD of "stable/rocky" as of 27.08.2018
 ceilometer_git_project_group: ceilometer_all
+ceilometer_git_track_branch: stable/rocky
 
 
 ## Cinder service
 cinder_git_repo: https://git.openstack.org/openstack/cinder
 cinder_git_install_branch: 707b449c47a86dd40f8d264f012061549172389e # HEAD of "stable/rocky" as of 27.08.2018
 cinder_git_project_group: cinder_all
+cinder_git_track_branch: stable/rocky
 
 
 ## Designate service
 designate_git_repo: https://git.openstack.org/openstack/designate
 designate_git_install_branch: 3a33ca85eafc5310afe6578f7c0a1ed8235cd477 # HEAD of "stable/rocky" as of 27.08.2018
 designate_git_project_group: designate_all
+designate_git_track_branch: stable/rocky
 
 
 ## Horizon Designate dashboard plugin
 designate_dashboard_git_repo: https://git.openstack.org/openstack/designate-dashboard
 designate_dashboard_git_install_branch: 630cc303cfd25458fc0a8bc68b0438e2b3721616 # HEAD of "stable/rocky" as of 27.08.2018
 designate_dashboard_git_project_group: horizon_all
+designate_dashboard_git_track_branch: stable/rocky
 
 
 ## Dragonflow service
@@ -75,94 +82,111 @@ designate_dashboard_git_project_group: horizon_all
 dragonflow_git_repo: https://git.openstack.org/openstack/dragonflow
 dragonflow_git_install_branch: 945b1e368c651ffa3655f42df724d9f13a7b6b96 # FROZEN HEAD of "master" as of 17.08.2018
 dragonflow_git_project_group: neutron_all
+dragonflow_git_track_branch: None
 
 
 ## Glance service
 glance_git_repo: https://git.openstack.org/openstack/glance
 glance_git_install_branch: 488d2e4fccc399234fd62c127c8ece262111fe93 # HEAD of "stable/rocky" as of 27.08.2018
 glance_git_project_group: glance_all
+glance_git_track_branch: stable/rocky
 
 
 ## Heat service
 heat_git_repo: https://git.openstack.org/openstack/heat
 heat_git_install_branch: 207498dea1e9ca23485511cadbbdda85079e391f # HEAD of "stable/rocky" as of 27.08.2018
 heat_git_project_group: heat_all
+heat_git_track_branch: stable/rocky
 
 ## Horizon Heat dashboard plugin
 # please update the branch (sha and update the comment) when stable/rocky is branched on this repo.
 heat_dashboard_git_repo: https://git.openstack.org/openstack/heat-dashboard
 heat_dashboard_git_install_branch: bc7f5068bbb6f7974eaffa2d865a859ff0fd0069 # FROZEN HEAD of "master" as of 17.08.2018
 heat_dashboard_git_project_group: horizon_all
+heat_dashboard_git_track_branch: None
 
 ## Horizon service
 horizon_git_repo: https://git.openstack.org/openstack/horizon
 horizon_git_install_branch: 9ced2fff0449d02bf1a5210c36b8635cc981d79e # HEAD of "stable/rocky" as of 27.08.2018
 horizon_git_project_group: horizon_all
+horizon_git_track_branch: stable/rocky
 
 ## Horizon Ironic dashboard plugin
 ironic_dashboard_git_repo: https://git.openstack.org/openstack/ironic-ui
 ironic_dashboard_git_install_branch: 36840aaa0da8053d2e4032c060a6a45af224572b # HEAD of "stable/rocky" as of 27.08.2018
 ironic_dashboard_git_project_group: horizon_all
+ironic_dashboard_git_track_branch: stable/rocky
 
 ## Horizon Magnum dashboard plugin
-# please update the branch (sha and update the comment) when stable/rocky is branched on this repo.
 magnum_dashboard_git_repo: https://git.openstack.org/openstack/magnum-ui
-magnum_dashboard_git_install_branch: cfd93ba5bce986903af3ce113f3ce969390f9d37 # FROZEN HEAD of "master" as of 17.08.2018
+magnum_dashboard_git_install_branch: cfd93ba5bce986903af3ce113f3ce969390f9d37 # HEAD of "stable/rocky" as of 17.08.2018
 magnum_dashboard_git_project_group: horizon_all
+magnum_dashboard_git_track_branch: stable/rocky
 
 ## Horizon LBaaS dashboard plugin
 neutron_lbaas_dashboard_git_repo: https://git.openstack.org/openstack/neutron-lbaas-dashboard
 neutron_lbaas_dashboard_git_install_branch: 0d73ac97ac3fb19d13fc0d0981f005a94cfed224 # HEAD of "stable/rocky" as of 27.08.2018
 neutron_lbaas_dashboard_git_project_group: horizon_all
+neutron_lbaas_dashboard_git_track_branch: stable/rocky
 
 ## Horizon FWaaS dashboard plugin
 neutron_fwaas_dashboard_git_repo: https://git.openstack.org//openstack/neutron-fwaas-dashboard
 neutron_fwaas_dashboard_git_install_branch: e7d3433fe8b671dd6ede65e81e831a0abe1bc859 # HEAD of "stable/rocky" as of 27.08.2018
 neutron_fwaas_dashboard_git_project_group: horizon_all
+neutron_fwaas_dashboard_git_track_branch: stable/rocky
 
 ## Horizon Sahara dashboard plugin
 sahara_dashboard_git_repo: https://git.openstack.org/openstack/sahara-dashboard
 sahara_dashboard_git_install_branch: db8283502a9fe1d3b540dbacf9e607255d81a110 # HEAD of "stable/rocky" as of 27.08.2018
 sahara_dashboard_git_project_group: horizon_all
+sahara_dashboard_git_track_branch: stable/rocky
 
 
 ## Keystone service
 keystone_git_repo: https://git.openstack.org/openstack/keystone
 keystone_git_install_branch: c767e254979c96858a81cc4bbe8d9773d4dd539b # HEAD of "stable/rocky" as of 27.08.2018
 keystone_git_project_group: keystone_all
+keystone_git_track_branch: stable/rocky
 
 
 ## Neutron service
 neutron_git_repo: https://git.openstack.org/openstack/neutron
 neutron_git_install_branch: b6314ea6c3df11c6b27cd39844c53b65be0d9060 # HEAD of "stable/rocky" as of 27.08.2018
 neutron_git_project_group: neutron_all
+neutron_git_track_branch: stable/rocky
 
 neutron_lbaas_git_repo: https://git.openstack.org/openstack/neutron-lbaas
 neutron_lbaas_git_install_branch: 594ccd122bb2e4750392d92427fe1b151c269403 # HEAD of "stable/rocky" as of 27.08.2018
 neutron_lbaas_git_project_group: neutron_all
+neutron_lbaas_git_track_branch: stable/rocky
 
 neutron_vpnaas_git_repo: https://git.openstack.org/openstack/neutron-vpnaas
 neutron_vpnaas_git_install_branch: 1f7708beb71ad371b47a3ee8e552c4f22d96b272 # HEAD of "stable/rocky" as of 27.08.2018
 neutron_vpnaas_git_project_group: neutron_all
+neutron_vpnaas_git_track_branch: stable/rocky
 
 neutron_fwaas_git_repo: https://git.openstack.org/openstack/neutron-fwaas
 neutron_fwaas_git_install_branch: 7567c42e99b298201b30593699d1e180e5bfa759 # HEAD of "stable/rocky" as of 27.08.2018
 neutron_fwaas_git_project_group: neutron_all
+neutron_fwaas_git_track_branch: stable/rocky
 
 neutron_dynamic_routing_git_repo: https://git.openstack.org/openstack/neutron-dynamic-routing
 neutron_dynamic_routing_git_install_branch: ac63f126c6bd0ab12d6cd80077023c3e5c264e98 # HEAD of "stable/rocky" as of 27.08.2018
 neutron_dynamic_routing_git_project_group: neutron_all
+neutron_dynamic_routing_git_track_branch: stable/rocky
 
 # Networking Calico is following master
 networking_calico_git_repo: https://git.openstack.org/openstack/networking-calico
 networking_calico_git_install_branch: 501fc98c428b8dd6b9dd7bf6908dbcd7b94ead5c # HEAD of "master" as of 27.08.2018
 networking_calico_git_project_group: neutron_all
+networking_calico_git_track_branch: stable/rocky
 
 # ODL is frozen until further notice due to
 # https://github.com/openstack/networking-odl/commit/391c1d89ef2b8133d3aafbe7612c7908be106e73#diff-b4ef698db8ca845e5845c4618278f29a
 networking_odl_git_repo: https://git.openstack.org/openstack/networking-odl
-networking_odl_git_install_branch: 53ff740b2a78626d5b077278997bdcec6b1b0892 # FROZEN HEAD of "master" as of 31.03.2018
+networking_odl_git_install_branch: 53ff740b2a78626d5b077278997bdcec6b1b0892 # FROZEN HEAD of "stable/rocky" as of 31.03.2018
 networking_odl_git_project_group: neutron_all
+networking_odl_git_track_branch: None
 
 networking_ovn_git_repo: https://git.openstack.org/openstack/networking-ovn
 networking_ovn_git_install_branch: 44dcb509be15a805e00684cce2fabfc4c5265ad7 # HEAD of "stable/rocky" as of 17.08.2018
@@ -171,24 +195,28 @@ networking_ovn_git_project_group: neutron_all
 # BGPVPN is frozen until further notice due to
 # https://github.com/openstack/networking-bgpvpn/commit/e9a0ea199b47f76f69545e04bdb4db44869c388b#diff-b4ef698db8ca845e5845c4618278f29a
 networking_bgpvpn_git_repo: https://git.openstack.org/openstack/networking-bgpvpn
-networking_bgpvpn_git_install_branch: 3b93ddacd390d92fb144e5660324d4da064ad9a4 # FROZEN HEAD of "master" as of 31.03.2018
+networking_bgpvpn_git_install_branch: 3b93ddacd390d92fb144e5660324d4da064ad9a4 # FROZEN HEAD of "stable/rocky" as of 31.03.2018
 networking_bgpvpn_git_project_group: neutron_all
+networking_bgpvpn_git_track_branch: None
 
 networking_sfc_git_repo: https://git.openstack.org/openstack/networking-sfc
 networking_sfc_git_install_branch: 4c38303620c8a3f38d7261a64ce8532979bf7560 # HEAD of "stable/rocky" as of 27.08.2018
 networking_sfc_git_project_group: neutron_all
+networking_sfc_git_track_branch: stable/rocky
 
 
 ## Nova service
 nova_git_repo: https://git.openstack.org/openstack/nova
 nova_git_install_branch: 5bff489231c16e62f081267a5b433745dba12ded # HEAD of "stable/rocky" as of 27.08.2018
 nova_git_project_group: nova_all
+nova_git_track_branch: stable/rocky
 
 
 ## PowerVM Virt Driver
 nova_powervm_git_repo: https://git.openstack.org/openstack/nova-powervm
 nova_powervm_git_install_branch: 984b122668161703eee33918d570c61ae9c5b1ca # HEAD of "stable/rocky" as of 27.08.2018
 nova_powervm_git_project_group: nova_all
+nova_powervm_git_track_branch: stable/rocky
 
 
 ## LXD Virt Driver
@@ -196,19 +224,21 @@ nova_powervm_git_project_group: nova_all
 nova_lxd_git_repo: https://git.openstack.org/openstack/nova-lxd
 nova_lxd_git_install_branch: bc8d540c95b3209321658000fd74b0e5065a7ee2 # FROZEN HEAD of "master" as of 17.08.2018
 nova_lxd_git_project_group: nova_all
+nova_lxd_git_track_branch: None
 
 
 ## Sahara service
 sahara_git_repo: https://git.openstack.org/openstack/sahara
 sahara_git_install_branch: 7d9483b21c1e45ef4834f3d3d9973d95d181df3c # HEAD of "stable/rocky" as of 27.08.2018
 sahara_git_project_group: sahara_all
+sahara_git_track_branch: stable/rocky
 
 
 ## Swift service
-# please update the branch (sha and update the comment) when stable/rocky is branched on this repo.
 swift_git_repo: https://git.openstack.org/openstack/swift
-swift_git_install_branch: cfc4f30d633dd962cd8d38e0f208b867131082fc # FROZEN HEAD of "master" as of 17.08.2018
+swift_git_install_branch: cfc4f30d633dd962cd8d38e0f208b867131082fc # HEAD of "stable/rocky" as of 17.08.2018
 swift_git_project_group: swift_all
+swift_git_track_branch: stable/rocky
 
 
 ## Swift3 middleware
@@ -216,48 +246,57 @@ swift_git_project_group: swift_all
 swift_swift3_git_repo: https://git.openstack.org/openstack/swift3
 swift_swift3_git_install_branch: 90db5d1510b2a770387961e7bf0fbeae8101ba45 # FROZEN HEAD of "master" as of 17.08.2018
 swift_swift3_git_project_group: swift_all
+swift_swift3_git_track_branch: None
 
 
 ## Ironic service
 ironic_git_repo: https://git.openstack.org/openstack/ironic
 ironic_git_install_branch: 9ceb015a0a1aef961358953839a71dd3be57753e # HEAD of "stable/rocky" as of 27.08.2018
 ironic_git_project_group: ironic_all
+ironic_git_track_branch: stable/rocky
 
 
 ## Magnum service
 magnum_git_repo: https://git.openstack.org/openstack/magnum
 magnum_git_install_branch: 0dbe6806ed51fdc08e7b118ac10eedd53d365b5b # HEAD of "stable/rocky" as of 27.08.2018
 magnum_git_project_group: magnum_all
+magnum_git_track_branch: stable/rocky
 
 
 ## Trove service
 trove_git_repo: https://git.openstack.org/openstack/trove
 trove_git_install_branch: 50a27fafa16918d95eb49b0057b8eaf8593a6357 # HEAD of "stable/rocky" as of 27.08.2018
 trove_git_project_group: trove_all
+trove_git_track_branch: stable/rocky
 
 ## Horizon Trove dashboard plugin
 trove_dashboard_git_repo: https://git.openstack.org/openstack/trove-dashboard
 trove_dashboard_git_install_branch: 68dda48e33d54346d529c67b4a3d039ab79a8c4a # HEAD of "stable/rocky" as of 27.08.2018
 trove_dashboard_git_project_group: horizon_all
+trove_dashboard_git_track_branch: stable/rocky
 
 
 ## Octavia service
 octavia_git_repo: https://git.openstack.org/openstack/octavia
 octavia_git_install_branch: 4ba1ee5ee017b06c58c8f92a7977adfb73304ef7 # HEAD of "stable/rocky" as of 27.08.2018
 octavia_git_project_group: octavia_all
+octavia_git_track_branch: stable/rocky
 
 
 ## Tacker service
 tacker_git_repo: https://git.openstack.org/openstack/tacker
 tacker_git_install_branch: 0779335868b03f328a267794daac6e1817f74136 # HEAD of "stable/rocky" as of 27.08.2018
 tacker_git_project_group: tacker_all
+tacker_git_track_branch: stable/rocky
 
 ## Congress service
 congress_git_repo: https://git.openstack.org/openstack/congress
 congress_git_install_branch: 9f2ae72854fbf1c83bb30a37d24303840340f95b # HEAD of "stable/rocky" as of 27.08.2018
 congress_git_project_group: congress_all
+congress_git_track_branch: stable/rocky
 
 ## Horizon Octavia dashboard plugin
 octavia_dashboard_git_repo: https://git.openstack.org/openstack/octavia-dashboard
 octavia_dashboard_git_install_branch: 4e013a00b2ffa003bdaee019b3aac3df80fb13bf # HEAD of "stable/rocky" as of 27.08.2018
 octavia_dashboard_git_project_group: horizon_all
+octavia_dashboard_git_track_branch: stable/rocky
