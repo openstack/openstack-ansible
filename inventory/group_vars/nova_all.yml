@@ -30,7 +30,7 @@ nova_consoles:
     path: "/spice_auto.html"
   novnc:
     port: "{{ nova_novncproxy_port }}"
-    path: "/vnc_auto.html"
+    path: "/vnc.html"
   serial:
     port: "{{ nova_serialconsoleproxy_port }}"
     path: "/"
