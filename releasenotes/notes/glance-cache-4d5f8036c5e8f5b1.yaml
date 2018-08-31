@@ -1,0 +1,11 @@
+---
+features:
+  - |
+    Glance containers will now bind mount the default glance cache directory
+    from the host when glance_default_store is set to file and nfs is not in
+    use.  With this change, the glance file cache size is no longer restricted
+    to the size of the container file system.
+upgrade:
+  - |
+    Glance containers will be rebooted to add the glance cache bind mount if
+    glance_default_store is set to file and nfs is not in use.
