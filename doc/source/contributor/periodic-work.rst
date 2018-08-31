@@ -112,7 +112,7 @@ development team by performing one of the following recurring tasks:
     should also be updated, for linking the newly created
     deployment-guide.
 
-    Use the topic ``create-<branchname>`` (e.g: ``create-queens``)
+    Use the topic ``create-<branchname>`` (e.g: ``create-rocky``)
     for future reference.
 
   * Branch all the repos that aren't part of the integrated release
@@ -120,7 +120,7 @@ development team by performing one of the following recurring tasks:
     Manually branched repos need extra
     editions, like updating the .gitreview, or the reno index.
     Please reference previous branch creations by using the
-    appropriate topic in gerrit (e.g.: ``create-queens``).
+    appropriate topic in gerrit (e.g.: ``create-rocky``).
     The previous new branch creation may be different as the
     tooling/process may have evolved, so be aware that the changes
     needed may need to be adapted.
