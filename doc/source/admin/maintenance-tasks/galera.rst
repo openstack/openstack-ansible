@@ -157,7 +157,13 @@ to automatically recover a node or an entire environment.
 
        # openstack-ansible galera-install.yml --tags galera-bootstrap
 
-The cluster comes back online after completion of this command.
+The cluster comes back online after completion of this command. If this
+fails, please review `restarting the cluster`_ and `recovering the primary
+component`_ in the galera documentation as they're invaluable for a full
+cluster recovery.
+
+.. _restarting the cluster: http://galeracluster.com/documentation-webpages/restartingcluster.html
+.. _recovering the primary component: http://galeracluster.com/documentation-webpages/pcrecovery.html
 
 Recover a single-node failure
 -----------------------------
