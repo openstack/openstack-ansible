@@ -34,10 +34,10 @@ export MAIN_PATH="$(dirname "${SCRIPTS_PATH}")"
 export UPGRADE_PLAYBOOKS="${SCRIPTS_PATH}/upgrade-utilities/playbooks"
 
 # The expected source series name
-export SOURCE_SERIES="pike"
+export SOURCE_SERIES="rocky"
 
 # The expected target series name
-export TARGET_SERIES="queens"
+export TARGET_SERIES="stein"
 
 ## Functions -----------------------------------------------------------------
 

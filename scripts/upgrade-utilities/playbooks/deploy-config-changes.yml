@@ -21,7 +21,7 @@
   vars:
       upgrade_scripts: "{{ playbook_dir }}/../scripts"
       repo_root_dir: "{{ playbook_dir }}/../../../"
-      source_series: "pike"
+      source_series: "rocky"
       ansible_python_interpreter: "/usr/bin/python"
   tasks:
       - name: Create an old copy of openstack_deploy
