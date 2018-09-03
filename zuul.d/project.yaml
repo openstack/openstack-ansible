@@ -38,6 +38,9 @@
         #- openstack-ansible-deploy-aio_lxc-centos-7
         #- openstack-ansible-deploy-aio_lxc-opensuse-423
         - openstack-ansible-deploy-aio_lxc-ubuntu-xenial
+        # NOTE(jrosser): Temporarily mark Bionic as non-voting until other bionic work is complete
+        - openstack-ansible-deploy-aio_lxc-ubuntu-bionic:
+            voting: false
         - openstack-ansible-deploy-aio_metal-ubuntu-xenial
         - openstack-ansible-deploy-aio_metal-opensuse-423
         - openstack-ansible-deploy-aio_metal-centos-7
