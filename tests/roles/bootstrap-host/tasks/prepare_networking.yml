@@ -135,6 +135,26 @@
   tags:
     - network-config
 
+# NOTE(jrosser) The systemd_networkd role uses a handler to restart the networking service
+# This will normally not run until the end of the play, so we must force it here
+- name: Force systemd_networkd hander to run
+  meta: flush_handlers
+
+# NOTE(jrosser) The intention here is not to proceed further until the network bridges are up
+# This ensures there will be no race between the bridges coming up and subsequent tasks which
+# require functional network interfaces
+- name: Check that network bridges are up
+  wait_for:
+    port: 22
+    timeout: 30
+    host: "{{ item }}"
+  with_items:
+    - 172.29.236.100  # br-mgmt
+    - 172.29.244.100  # br-storage
+    - 172.29.232.100  # br-dbaas
+    - 172.29.252.100  # br-lbaas
+    - 172.29.240.100  # br-vxlan
+
 - name: Run the systemd service role
   include_role:
     name: systemd_service
@@ -177,6 +197,6 @@
 
 - name: Updating the facts due to net changes
   setup:
-    filter: "ansible_br*"
+    gather_subset: network
   tags:
     - networking
