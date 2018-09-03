@@ -26,42 +26,36 @@ cinder_volumes:
   - name: healthcheck1
     size: 1
 
-public_net_cidr: "172.29.248.0/22"
-private_net_cidr: "192.168.0.0/24"
+public_net_cidr: "{{ tempest_public_subnet_cidr | default('10.1.13.0/24') }}"
+private_net_cidr: "{{ tempest_private_subnet_cidr | default('192.168.74.0/28') }}"
 public_dns_servers:
   - "8.8.8.8"
   - "8.8.4.4"
 
 neutron_networks:
   public:
-    name: public
+    name: "{{ tempest_public_net_name | default('public') }}"
     shared: True
     external: True
-    pn_type: flat
-    physical_network: flat
+    pn_type: "{{ tempest_public_net_provider_type | default('flat') }}"
+    physical_network: "{{ tempest_public_net_physical_type | default('flat') }}"
     subnets:
-      - name: public-subnet
+      - name: "{{ tempest_public_subnet_name | default('public-subnet') }}"
         ip_version: 4
         cidr: "{{ public_net_cidr }}"
-        gateway_ip: "{{ public_net_cidr | ipaddr('1') | ipaddr('address') }}"
         enable_dhcp: "yes"
-        allocation_pool_start: "{{ public_net_cidr | ipaddr('201') | ipaddr('address') }}"
-        allocation_pool_end:   "{{ public_net_cidr | ipaddr('255') | ipaddr('address') }}"
         dns_nameservers: "{{ public_dns_servers }}"
   private:
-    name: PRIVATE_NET
+    name: "{{ tempest_private_net_name | default('private') }}"
     shared: True
     external: True
-    pn_type: vxlan
-    segmentation_id: 101
+    pn_type: "{{ tempest_private_net_provider_type | default('vxlan') }}"
+    segmentation_id: "{{ tempest_private_net_seg_id | default('1') }}"
     subnets:
-      - name: PRIVATE_NET_v4
+      - name: "{{ tempest_private_subnet_name | default('private-subnet') }}"
         ip_version: 4
         cidr: "{{ private_net_cidr }}"
-        gateway_ip: "{{ private_net_cidr | ipaddr('1') | ipaddr('address') }}"
         enable_dhcp: "yes"
-        allocation_pool_start: "{{ private_net_cidr | ipaddr('201') | ipaddr('address') }}"
-        allocation_pool_end:   "{{ private_net_cidr | ipaddr('254') | ipaddr('address') }}"
 
 heat_stack:
   # Please use the following for a nova app:
@@ -87,7 +81,7 @@ nova_vm:
   name: vm1-healthcheck
   image: cirros-healthcheck
   flavor: healthcheck1
-  network: "PRIVATE_NET"
+  network: "{{ neutron_networks.private.name }}"
 
 swift_object:
   name: fstab
