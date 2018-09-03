@@ -63,10 +63,15 @@ Many software packages are installed on Ubuntu hosts using `.deb` packages.
 Similar packaging mechanisms exist for other Linux distributions. We advise
 mirroring the repositories that host these packages.
 
-Upstream Ubuntu repositories to mirror:
+Upstream Ubuntu repositories to mirror for Ubuntu 16.04 LTS:
 
 - xenial
 - xenial-updates
+
+Upstream Ubuntu repositories to mirror for Ubuntu 18.04 LTS:
+
+- bionic
+- bionic-updates
 
 OpenStack-Ansible requires several other repositories to install specific
 components such as Galera and Ceph.

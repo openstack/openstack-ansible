@@ -1,0 +1,13 @@
+---
+features:
+  - Support has been added for deploying on Ubuntu 18.04 LTS hosts.
+    The most significant change is a major version increment of LXC
+    from 2.x to 3.x which deprecates some previously used elements
+    of the container configuration file.
+upgrade:
+  - The supported upgrade path from Xenial to Bionic is via
+    re-installation of the host OS across all nodes and redeployment
+    of the required services. The Rocky branch of OSA is intended
+    as the transition point for such upgrades from Xenial to Bionic.
+    At this time there is no support for in-place operating system
+    upgrades (typically via ``do-release-upgrade``).
