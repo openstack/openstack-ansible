@@ -12,6 +12,7 @@ Install one of the following supported operating systems on the
 target host:
 
 * Ubuntu server 16.04 (Xenial Xerus) LTS 64-bit
+* Ubuntu server 18.04 (Bionic Beaver) LTS 64-bit
 * Centos 7 64-bit
 * openSUSE 42.X 64-bit
 
