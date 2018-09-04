@@ -9,10 +9,10 @@ configuration of an OpenStack environment.
 
 Documentation for each of the following releases is available.
 
-Rocky: Pre-release
+Stein: Pre-release
 ~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible Rocky is currently in development.
+OpenStack-Ansible Stein is currently in development.
 
 .. toctree::
    :maxdepth: 1
@@ -23,6 +23,18 @@ OpenStack-Ansible Rocky is currently in development.
    user/index
    contributor/index
    reference/index
+
+Rocky: Release Candidate
+~~~~~~~~~~~~~~~~~~~~~~~~
+OpenStack-Ansible Rocky is currently a release candidate, expected to release
+with the 18.0.0 tag by 28 November 2018.
+
+* `OpenStack-Ansible Rocky Documentation`_
+
+* `OpenStack-Ansible Rocky series release notes`_
+
+.. _OpenStack-Ansible Rocky Documentation: https://docs.openstack.org/openstack-ansible/rocky/
+.. _OpenStack-Ansible Rocky series release notes: https://docs.openstack.org/releasenotes/openstack-ansible/rocky.html
 
 Queens: Current stable release, security supported
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
