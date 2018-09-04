@@ -30,7 +30,7 @@ def rabbitmq_connect(ip=None):
     """Connects to ip using standard port and credentials."""
     credentials = pika.credentials.PlainCredentials('testguest', 'secrete')
     parameters = pika.ConnectionParameters(
-        host=ip, virtual_host='/test', credentials=credentials)
+        host=ip, virtual_host='/testvhost', credentials=credentials)
     try:
         connection = pika.BlockingConnection(parameters)
         connection.channel()
