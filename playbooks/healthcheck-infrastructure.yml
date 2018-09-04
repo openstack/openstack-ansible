@@ -38,7 +38,7 @@
 # Test haproxy-install.yml
 - name: Ensuring haproxy runs
   hosts: haproxy
-  gather_facts: no
+  gather_facts: yes
   tasks:
     - name: Check if host can connect to keepalived ping IP
       command: "ping -c 2 {{ keepalived_ping_address }}"
@@ -75,6 +75,8 @@
   serial:
     - 3
     - 100%
+  vars_files:
+    - defaults/source_install.yml
   tasks:
     # Repo release path points to the internal LB vip
     - name: Check the presence of upper constraints on your repos and check load balancing
@@ -86,7 +88,7 @@
 
 - name: Sanity checks for all containers
   hosts: all_containers:physical_hosts
-  gather_facts: no
+  gather_facts: yes
   tasks:
     - name: Ensure everyone can reach apt proxy
       uri:
@@ -99,8 +101,8 @@
     - healthcheck-repo-use
 
 # Test utility-install.yml
-- name: Ensure utility and localhost are ready to run openstack calls
-  hosts: utility_all:localhost
+- name: Ensure the service setup host is ready to run openstack calls
+  hosts: "{{ openstack_service_setup_host | default('localhost') }}"
   gather_facts: no
   tasks:
     - name: Get openstack client config
@@ -129,7 +131,7 @@
         state: present
 
     - name: Connect to remote memcache servers (full mesh testing)
-      shell:  "echo stats | nc {{ hostvars[memcached_host]['container_address'] }} {{ memcached_port }}"
+      shell:  "echo stats | nc -w 3 {{ hostvars[memcached_host]['container_address'] }} {{ memcached_port }}"
       changed_when: false
       register: memcache_stats
       with_items: "{{ groups['memcached'] }}"
@@ -165,14 +167,14 @@
   tasks:
     - name: Configure Rabbitmq vhost
       rabbitmq_vhost:
-        name: "testvhost"
+        name: "/testvhost"
         state: "present"
 
     - name: Configure Rabbitmq user
       rabbitmq_user:
         user: "testguest"
         password: "secrete"
-        vhost: "testvhost"
+        vhost: "/testvhost"
         configure_priv: ".*"
         read_priv: ".*"
         write_priv: ".*"
@@ -190,9 +192,17 @@
     venv_path: /tmp/rabbitmqtest
   post_tasks:
     - name: Generate venv for rabbitmq testing
-      pip:
-        name: pika
-        virtualenv: "{{ venv_path }}"
+      include_role:
+        name: "python_venv_build"
+        private: yes
+      vars:
+        venv_install_destination_path: "{{ venv_path }}"
+        venv_pip_packages:
+          - pika
+        venv_build_host_wheel_path: "{{ repo_pypiserver_package_path | default('/var/www/repo/pools') }}"
+        venv_pip_install_args: >-
+          --index-url {{ repo_build_pip_default_index | default('https://pypi.python.org/simple') }}
+          --trusted-host {{ (repo_build_pip_default_index | default('https://pypi.python.org/simple')) | netloc_no_port }}
     - name: Copying test script
       copy:
         src: "../scripts/rabbitmq-test.py"
@@ -215,9 +225,9 @@
         vhost: "/testvhost"
         state: absent
       no_log: true
-    - name: Configure Rabbitmq vhost
+    - name: Remove test vhost
       rabbitmq_vhost:
-        name: "testvhost"
+        name: "/testvhost"
         state: "absent"
   tags:
     - healthcheck
