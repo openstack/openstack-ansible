@@ -146,3 +146,17 @@
       jobs:
         - openstack-ansible-deploy-ceph-ubuntu-xenial
         - openstack-ansible-upgrade-ceph-ubuntu-xenial
+
+# NOTE(hwoarang): Ceph distro disabled except openSUSE until stable
+- project-template:
+    name: openstack-ansible-deploy-distro_ceph-jobs
+    check:
+      jobs:
+        #- openstack-ansible-deploy-distro_ceph-centos-7
+        - openstack-ansible-deploy-distro_ceph-opensuse-423
+        #- openstack-ansible-deploy-distro_ceph-ubuntu-xenial
+    gate:
+      jobs:
+        #- openstack-ansible-deploy-distro_ceph-centos-7
+        - openstack-ansible-deploy-distro_ceph-opensuse-423
+        #- openstack-ansible-deploy-distro_ceph-ubuntu-xenial
