@@ -327,7 +327,7 @@
           set_fact:
             _floating_ip: "{{ openstack_servers | json_query(_query) }}"
           vars:
-            _query: "[?name == '{{ nova_vm.name }}'].addresses.PRIVATE_NET[] | [?contains(*,'floating')].addr"
+            _query: "[?name == '{{ nova_vm.name }}'].addresses.{{ nova_vm.network }}[] | [?contains(*,'floating')].addr"
 
         - name: Ensure connection to node works
           command: "scp -o StrictHostKeyChecking=no -i {{ ssh_key }} cirros@{{ _floating_ip[0] }}:/etc/fstab /tmp/fstab"
