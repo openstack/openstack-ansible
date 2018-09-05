@@ -44,6 +44,15 @@ class TestMergeDictUnit(unittest.TestCase):
         self.assertIn('key2', new.keys())
         self.assertIn('key2.1', new['key2'].keys())
 
+    def test_merging_nested_dicts_with_same_key(self):
+        base = {'same_key': {'inside_key1': 'inside_key1'}}
+        target = {'same_key': {'inside_key2': 'inside_key2'}}
+
+        new = du.merge_dict(base, target)
+
+        self.assertIn('inside_key1', new['same_key'].keys())
+        self.assertIn('inside_key2', new['same_key'].keys())
+
 
 class TestAppendIfUnit(unittest.TestCase):
     def test_appending_not_present(self):
