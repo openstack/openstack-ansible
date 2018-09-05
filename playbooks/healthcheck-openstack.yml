@@ -1,0 +1,552 @@
+---
+# Copyright 2018, SUSE LINUX GmbH.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# (c) 2018, Jean-Philippe Evrard <jean-philippe@evrard.me>
+
+# This playbook is meant to run after setup-openstack, and expects
+# the openstack plays to have succeeded.
+
+# Test os-keystone-install.yml
+# Many parts of keystone testing is happening in playbooks already, as
+# we are using it for setting up all the other openstack services.
+- name: Test Keystone
+  gather_facts: no
+  hosts: localhost
+  vars_files:
+    - defaults/healthchecks-vars.yml
+  tasks:
+    - name: Authenticate to the cloud and retrieve the service catalog
+      os_auth:
+        cloud: default
+        interface: internal
+        verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
+
+    - name: Show service catalog
+      debug:
+        var: service_catalog
+  tags:
+    - healthchecks
+    - healthchecks-keystone-install
+
+
+# Test os-barbican-install.yml
+# TO BE IMPLEMENTED -- there is no ansible module for that so cli might be needed.
+
+# Test os-glance-install.yml
+# If tempest is installed, this is tested anyway and can be skipped.
+- name: Test Glance
+  gather_facts: no
+  hosts: localhost
+  vars_files:
+    - defaults/healthchecks-vars.yml
+  tasks:
+    - block:
+        - name: Image(s) download
+          get_url:
+            url: "{{ item.url }}"
+            dest: "{{ item.dest }}"
+            checksum: "{{ item.checksum | default(omit) }}"
+          with_items: "{{ glance_images }}"
+          register: fetch_url
+          until: fetch_url is success
+          retries: 6
+          delay: 5
+
+        - name: Upload tempest images to glance
+          os_image:
+            cloud: default
+            interface: internal
+            verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
+            name: "{{ item.name | default(item.url | basename) }}"
+            filename: "{{ item.dest }}"
+            container_format: bare
+            disk_format: "{{ item.format }}"
+            is_public: True
+          with_items: "{{ glance_images }}"
+          register: image_create
+          until: image_create is success
+          retries: 5
+          delay: 15
+      when:
+        # No point of doing glance tests is glance isn't deployed.
+        - "groups['glance_all'] | length > 0"
+  tags:
+    - healthchecks
+    - healthchecks-glance-install
+
+# Test os-cinder-install.yml
+- name: Test cinder
+  gather_facts: no
+  hosts: localhost
+  vars_files:
+    - defaults/healthchecks-vars.yml
+  tasks:
+    - block:
+        # This automatically waits for completion by default.
+        # There is no module to check the current state of a creation, so we need to run
+        # This synchronously
+        - name: Create volumes
+          os_volume:
+            cloud: default
+            interface: internal
+            verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
+            display_name: "{{ item.name }}"
+            size: "{{ item.size }}"
+            snapshot_id: "{{ item.snapshot_id | default(omit) }}"
+            timeout: "{{ item.timeout | default(600) }}" #By default it's 180 but that's low.
+            volume: "{{ item.volume | default(omit) }}"
+            volume_type: "{{ item.volume_type | default(omit) }}"
+          with_items: "{{ cinder_volumes }}"
+      when:
+        - groups['cinder_all'] | length > 0
+  tags:
+    - healthchecks
+    - healthchecks-cinder-install
+
+# NOTE(evrardjp): This doesn't respect playbook order, as we'll need neutron tests to
+# run before nova tests
+
+# Test os-neutron-install.yml
+- name: Test neutron
+  gather_facts: no
+  hosts: localhost
+  vars_files:
+    - defaults/healthchecks-vars.yml
+  tasks:
+    - block:
+        - name: Create networks
+          os_network:
+            cloud: default
+            interface: internal
+            verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
+            name: "{{ item.value.name }}"
+            provider_network_type: "{{ item.value.pn_type }}"
+            provider_physical_network: "{{ item.value.physical_network | default('') }}"
+            provider_segmentation_id: "{{ item.value.segmentation_id | default(omit) }}"
+            external: "{{ item.value.external | default(omit) }}"
+            project: "{{ item.value.project | default(omit) }}"
+          with_dict: "{{ neutron_networks }}"
+          register: _create_net
+
+        - fail:
+            msg: "Creating network failure"
+          with_items: "{{ _create_net.results }}"
+          when:
+            - "item.msg is defined"
+            - "'Error' in item.msg"
+            - "not 'is in use' in item.msg"
+
+        - name: Store facts to see if everything is ok
+          os_networks_facts:
+            cloud: default
+            interface: internal
+            verify: no
+
+        - name: Show networks
+          debug:
+            var: openstack_networks
+
+        - name: Ensure subnet exists
+          os_subnet:
+            cloud: default
+            interface: internal
+            verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
+            network_name: "{{ item[0].name }}"
+            name: "{{ item[1].name }}"
+            ip_version: "{{ item[1].ip_version }}"
+            cidr: "{{ item[1].cidr }}"
+            gateway_ip: "{{ item[1].gateway_ip | default(omit) }}"
+            enable_dhcp: "{{ item[1].enable_dhcp | default(false) }}"
+            allocation_pool_start: "{{ item[1].allocation_pool_start  | default(omit) }}"
+            allocation_pool_end: "{{ item[1].allocation_pool_end | default(omit) }}"
+            dns_nameservers: "{{ item[1].dns_nameservers | default([]) }}"
+            project: "{{ item[0].project | default(omit) }}"
+          with_subelements:
+            - "{{ neutron_networks }}"
+            - "subnets"
+
+        - name: Create router
+          os_router:
+            cloud: default
+            interface: internal
+            verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
+            name: router
+            network: "{{ neutron_networks['public']['name'] }}"
+            interfaces:
+              - "{{ item.name }}"
+          with_items: "{{ neutron_networks['private']['subnets'] }}"
+      when:
+        - "groups['neutron_all'] | length > 0"
+  tags:
+    - healthchecks
+    - healthchecks-neutron-install
+
+
+# Test os-heat-install.yml
+- name: Test heat
+  gather_facts: no
+  hosts: localhost
+  vars_files:
+    - defaults/healthchecks-vars.yml
+  tasks:
+    - block:
+        - name: Fetch minimum heat stack
+          get_url:
+            url: "{{ heat_stack['source_url'] }}"
+            dest: "{{ heat_stack['dest_file'] }}"
+
+        - name: Create heat stack
+          ignore_errors: True
+          register: stack_create
+          os_stack:
+            cloud: default
+            interface: internal
+            verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
+            name: "{{ heat_stack['name'] }}"
+            tag: "{{ heat_stack['tag'] }}"
+            state: present
+            template: "{{ heat_stack['dest_file'] }}"
+            parameters: "{{ heat_stack['parameters'] }}"
+      when:
+        - "groups['heat_all'] | length > 0"
+  tags:
+    - healthchecks
+    - healthchecks-heat-install
+
+# Test os-nova-install.yml
+- name: Test nova
+  gather_facts: no
+  hosts: localhost
+  vars_files:
+    - defaults/healthchecks-vars.yml
+  tasks:
+    - block:
+        - name: Create keypair for nova
+          shell: "ssh-keygen -b 2048 -t rsa -f {{ ssh_key }} -q -N ''"
+          args:
+            creates: "{{ ssh_key }}"
+
+        - name: Upload keypair
+          os_keypair:
+            cloud: default
+            interface: internal
+            verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
+            state: present
+            name: "healthcheck"
+            public_key_file: "{{ ssh_key }}.pub"
+
+        - name: Create flavors of nova VMs
+          os_nova_flavor:
+            cloud: default
+            interface: internal
+            verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
+            state: present
+            name: "{{ item.name }}"
+            ram: "{{ item.ram }}"
+            vcpus: "{{ item.vcpus }}"
+            disk: "{{ item.disk }}"
+            swap: "{{ item.swap }}"
+            ephemeral: "{{ item.ephemeral }}"
+          with_items: "{{ nova_flavors }}"
+
+        - name: Create security group for healthcheck
+          os_security_group:
+            cloud: default
+            interface: internal
+            verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
+            name: "{{ security_group.name }}"
+            state: present
+            description: "Healthcheck servers"
+
+        - name: Create security group rules
+          os_security_group_rule:
+            cloud: default
+            interface: internal
+            verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
+            security_group: "{{ security_group.name }}"
+            protocol: "{{ item.protocol }}"
+            port_range_min: "{{ item.port_range_min }}"
+            port_range_max: "{{ item.port_range_max }}"
+            remote_ip_prefix: "{{ item.remote_ip_prefix }}"
+            state: present
+          with_items: "{{ security_group.rules }}"
+
+        - name: Create instance in a network
+          os_server:
+            cloud: default
+            interface: internal
+            verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
+            name: "{{ nova_vm.name }}"
+            state: present
+            image: "{{ nova_vm.image }}"
+            flavor: "{{ nova_vm.flavor }}"
+            network: "{{ nova_vm.network }}"
+            floating_ip_pools: "{{ neutron_networks['public']['name'] }}"
+            key_name: "healthcheck"
+            # Ensure user_data is well passed.
+            user_data: |
+              cp /etc/fstab /root/fstab
+            security_groups:
+              - default
+              - "{{ security_group.name }}"
+
+        - name: Attach volume to instance
+          when: "groups['cinder_all'] | length > 0"
+          os_server_volume:
+            cloud: default
+            interface: internal
+            verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
+            state: present
+            server: "{{ nova_vm.name }}"
+            volume: "{{ cinder_volumes[0]['name'] }}"
+
+        - name: Get server facts
+          os_server_facts:
+            cloud: default
+            interface: internal
+            verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
+            server: "{{ nova_vm.name }}"
+
+        - name: Show server facts
+          debug:
+            var: openstack_servers
+
+        - name: Discover the healthcheck vm floating IP
+          set_fact:
+            _floating_ip: "{{ openstack_servers | json_query(_query) }}"
+          vars:
+            _query: "[?name == '{{ nova_vm.name }}'].addresses.{{ nova_vm.network }}[] | [?contains(*,'floating')].addr"
+
+        - name: Ensure connection to node works
+          command: "scp -o StrictHostKeyChecking=no -i {{ ssh_key }} cirros@{{ _floating_ip[0] }}:/etc/fstab /tmp/fstab"
+
+      when:
+        - "groups['nova_all'] | length > 0"
+
+  tags:
+    - healthchecks
+    - healthchecks-nova-install
+
+# Test os-horizon-install.yml
+# TO BE IMPLEMENTED
+
+# Test os-designate-install.yml
+# TO BE IMPLEMENTED with os_recordset
+
+# Test os-swift-install.yml
+- name: Test swift
+  gather_facts: no
+  hosts: localhost
+  vars_files:
+    - defaults/healthchecks-vars.yml
+  tasks:
+    - block:
+        - name: Store data in swift
+          os_object:
+            cloud: default
+            interface: internal
+            verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
+            state: present
+            name: "{{ swift_object['name'] }}"
+            container: "{{ swift_object['container'] }}"
+            filename: "{{ swift_object['filename'] }}"
+      when:
+        - "groups['swift_all'] | length > 0"
+  tags:
+    - healthchecks
+    - healthchecks-swift-install
+
+# Test os-gnocchi-install.yml
+# TO BE IMPLEMENTED
+
+# Test os-ceilometer-install.yml
+# TO BE IMPLEMENTED
+
+# Test os-aodh-install.yml
+# TO BE IMPLEMENTED
+
+# Test os-ironic-install.yml
+# TO BE IMPLEMENTED with os_ironic
+
+# Test os-magnum-install.yml
+# TO BE IMPLEMENTED
+
+# Test os-trove-install.yml
+# TO BE IMPLEMENTED
+
+# Test os-sahara-install.yml
+# TO BE IMPLEMENTED
+
+# Test os-molteniron-install.yml
+# TO BE IMPLEMENTED
+
+# Test os-octavia-install.yml
+# TO BE IMPLEMENTED
+
+# Test os-tacker-install.yml
+# TO BE IMPLEMENTED
+
+# Test os-congress-install.yml
+# TO BE IMPLEMENTED
+
+# Test os-tempest-install.yml
+# Tempest already has a test suite, so nothing should be added here.
+
+# Teardown
+- name: Teardown
+  gather_facts: no
+  hosts: localhost
+  vars_files:
+    - defaults/healthchecks-vars.yml
+  tasks:
+    - block:
+        - name: Remove glance downloads
+          file:
+            state: absent
+            path: "{{ item.dest }}"
+          with_items: "{{ glance_images }}"
+
+        - name: Remove glance image from the cloud
+          os_image:
+            cloud: default
+            interface: internal
+            verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
+            name: "{{ item.name | default(item.url | basename) }}"
+            state: absent
+          with_items: "{{ glance_images }}"
+      when:
+        - "groups['glance_all'] | length > 0"
+        - healthchecks_teardown | default(True) | bool
+      tags:
+        - healthchecks-teardown-glance
+
+    - block:
+        - name: Detach volume if attached
+          when: "groups['nova_all'] | length > 0"
+          os_server_volume:
+            cloud: default
+            interface: internal
+            verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
+            state: absent
+            server: "{{ nova_vm.name }}"
+            volume: "{{ cinder_volumes[0]['name'] }}"
+
+        - name: Remove cinder volumes
+          os_volume:
+            cloud: default
+            interface: internal
+            verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
+            display_name: "{{ item.name }}"
+            state: absent
+          with_items: "{{ cinder_volumes }}"
+      when:
+        - groups['cinder_all'] | length > 0
+        - healthchecks_teardown | default(True) | bool
+      tags:
+        - healthchecks-teardown-cinder
+
+    - block:
+        - name: Remove heat downloads
+          file:
+            path: "{{ heat_stack['dest_file'] }}"
+            state: absent
+
+        - name: Remove heat stack
+          ignore_errors: True
+          register: _stack_destroy
+          os_stack:
+            cloud: default
+            interface: internal
+            verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
+            name: "{{ heat_stack['name'] }}"
+            tag: "{{ heat_stack['tag'] }}"
+            state: absent
+        - name: Show results of heath stack destroy
+          debug:
+            var: _stack_destroy
+      when:
+        - "groups['heat_all'] | length > 0"
+        - healthchecks_teardown | default(True) | bool
+      tags:
+        - healthchecks-teardown-heat
+
+    - block:
+        - name: Remove nova flavor
+          os_nova_flavor:
+            cloud: default
+            interface: internal
+            verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
+            state: absent
+            name: "{{ item.name }}"
+          with_items: "{{ nova_flavors }}"
+
+        - name: Remove nova instance
+          os_server:
+            cloud: default
+            interface: internal
+            verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
+            name: "{{ nova_vm['name'] }}"
+            state: absent
+
+        - name: Remove SSH key(s)
+          file:
+            path: "{{ item }}"
+            state: absent
+          with_items:
+            - "{{ ssh_key }}"
+            - "{{ ssh_key }}.pub"
+            - "{{ ssh_key | dirname }}/known_hosts"
+
+        - name: Remove uploaded keypair
+          os_keypair:
+            cloud: default
+            interface: internal
+            verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
+            state: absent
+            name: healthcheck
+
+      when:
+        - "groups['nova_all'] | length > 0"
+        - healthchecks_teardown | default(True) | bool
+      tags:
+        - healthchecks-teardown-nova
+
+    - block:
+        - name: Teardown swift data
+          os_object:
+            cloud: default
+            interface: internal
+            verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
+            state: absent
+            name: "{{ swift_object['name'] }}"
+            container: "{{ swift_object['container'] }}"
+      when:
+        - "groups['swift_all'] | length > 0"
+        - healthchecks_teardown | default(True) | bool
+      tags:
+        - healthchecks-teardown-swift
+
+#    - block:
+#        - name: Remove
+#
+#      when:
+#        - "groups['_all'] | length > 0"
+#        - healthchecks-teardown | default(True) | bool
+#      tags:
+#        - healthchecks-teardown-
+
+  tags:
+    - healthchecks
+    - healthchecks-teardown
