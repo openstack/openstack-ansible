@@ -100,24 +100,16 @@
           tags:
             - always
 
-        - name: Create the virtualenv (if it does not exist)
-          command: "virtualenv --never-download --no-site-packages {{ utility_venv_bin | dirname }}"
-          args:
-            creates: "{{ utility_venv_bin }}/activate"
-
-        - name: Install pip packages
-          pip:
-            name: "{{ _openstack_client_list | union(utility_pip_packages) }}"
-            state: "{{ utility_pip_package_state }}"
-            virtualenv: "{{ utility_venv_bin | dirname }}"
-            virtualenv_site_packages: "no"
-            extra_args: >-
+        - name: Install the python venv
+          include_role:
+            name: "python_venv_build"
+            private: yes
+          vars:
+            venv_install_destination_path: "{{ utility_venv_bin | dirname }}"
+            venv_pip_install_args: >-
               {{ (pip_install_upper_constraints is defined) | ternary('--constraint ' + pip_install_upper_constraints | default(''),'') }}
               {{ pip_install_options | default('') }}
-          register: install_packages
-          until: install_packages is success
-          retries: 5
-          delay: 2
+            venv_pip_packages: "{{ _openstack_client_list | union(utility_pip_packages) }}"
 
         - name: Create symlinks for openstack clients
           shell: |

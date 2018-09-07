@@ -31,10 +31,6 @@ swift_package_state: "{{ package_state }}"
 # Used to optionally filter Gnocchi-originated traffic in Ceilometermiddleware
 swift_gnocchi_enabled: "{{ (groups['gnocchi_all'] is defined and groups['gnocchi_all'] | length > 0) }}"
 
-# venv fetch configuration
-swift_venv_tag: "{{ venv_tag }}"
-swift_venv_download_url: "{{ venv_base_download_url }}/swift-{{ openstack_release }}-{{ ansible_architecture | lower }}.tgz"
-
 # Ceilometer vars used when ceilometer is enabled
 ceilometer_service_user_name: "{{ hostvars['localhost']['ceilometer_service_user_name'] }}"
 ceilometer_service_tenant_name: "{{ hostvars['localhost']['ceilometer_service_tenant_name'] }}"

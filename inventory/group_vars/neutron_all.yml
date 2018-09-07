@@ -24,8 +24,4 @@ neutron_service_in_ldap: "{{ service_ldap_backend_enabled }}"
 # Ensure that the package state matches the global setting
 neutron_package_state: "{{ package_state }}"
 
-# venv fetch configuration
-neutron_venv_tag: "{{ venv_tag }}"
-neutron_venv_download_url: "{{ venv_base_download_url }}/neutron-{{ openstack_release }}-{{ ansible_architecture | lower }}.tgz"
-
 neutron_lbaas_octavia: "{{ (groups['octavia_all'] is defined) and (groups['octavia_all'] | length > 0) }}"

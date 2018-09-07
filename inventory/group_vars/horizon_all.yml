@@ -35,7 +35,3 @@ horizon_package_state: "{{ package_state }}"
 horizon_enable_sahara_ui: "{{ (groups['sahara_all'] is defined) and (groups['sahara_all'] | length > 0) }}"
 # If there are any Trove hosts in the environment, then enable trove-dashboard
 horizon_enable_trove_ui: "{{ (groups['trove_all'] is defined) and (groups['trove_all'] | length > 0) }}"
-
-# venv fetch configuration
-horizon_venv_tag: "{{ venv_tag }}"
-horizon_venv_download_url: "{{ venv_base_download_url }}/horizon-{{ openstack_release }}-{{ ansible_architecture | lower }}.tgz"

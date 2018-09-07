@@ -25,10 +25,6 @@ glance_default_store: "{{ ((groups['swift_all'] is defined) and (groups['swift_a
 # Ensure that the package state matches the global setting
 glance_package_state: "{{ package_state }}"
 
-# venv fetch configuration
-glance_venv_tag: "{{ venv_tag }}"
-glance_venv_download_url: "{{ venv_base_download_url }}/glance-{{ openstack_release }}-{{ ansible_architecture | lower }}.tgz"
-
 # glance default list of bind mounts
 glance_container_bind_mounts:
   - bind_dir_path: "/var/lib/glance/images"

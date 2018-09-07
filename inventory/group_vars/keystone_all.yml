@@ -33,7 +33,3 @@ keystone_set_real_ip_from: "{{ groups['haproxy'] | map('extract', hostvars, 'con
 
 # Ensure that the package state matches the global setting
 keystone_package_state: "{{ package_state }}"
-
-# venv fetch configuration
-keystone_venv_tag: "{{ venv_tag }}"
-keystone_venv_download_url: "{{ venv_base_download_url }}/keystone-{{ openstack_release }}-{{ ansible_architecture | lower }}.tgz"
