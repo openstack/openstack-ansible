@@ -6,7 +6,7 @@ following minimum requirements:
 
 * Ubuntu
 
-  * Ubuntu 16.04 LTS (Xenial Xerus)
+  * Ubuntu 16.04 LTS (Xenial Xerus) or Ubuntu 18.04 LTS (Bionic Beaver)
 
   * Linux kernel version ``3.13.0-34-generic`` or later is required.
 
