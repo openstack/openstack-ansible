@@ -56,7 +56,7 @@ export INSTALL_METHOD=${3:-"source"}
 # Set the source branch for upgrade tests
 # Be sure to change this whenever a new stable branch
 # is created. The checkout must always be N-1.
-export UPGRADE_SOURCE_BRANCH=${UPGRADE_SOURCE_BRANCH:-'stable/queens'}
+export UPGRADE_SOURCE_BRANCH=${UPGRADE_SOURCE_BRANCH:-'stable/rocky'}
 
 ## Change branch for Upgrades ------------------------------------------------
 # If the action is to upgrade, then store the current SHA,
