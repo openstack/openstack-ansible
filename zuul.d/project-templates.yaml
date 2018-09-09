@@ -1,0 +1,147 @@
+# Copyright 2018, VEXXHOST, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- project-template:
+    name: openstack-ansible-deploy-base-jobs
+    check:
+      jobs:
+        - openstack-ansible-linters
+        - openstack-ansible-varstest-aio_lxc-ubuntu-xenial
+    gate:
+      jobs:
+        - openstack-ansible-linters
+        - openstack-ansible-varstest-aio_lxc-ubuntu-xenial
+    periodic:
+      jobs:
+        - openstack-ansible-deploy-translations-ubuntu-xenial
+    experimental:
+      jobs:
+        - openstack-ansible-deploy-congress-ubuntu-xenial
+        - openstack-ansible-deploy-octavia-ubuntu-xenial
+        - openstack-ansible-deploy_with_ansible_devel-aio-ubuntu-xenial
+        - openstack-ansible-deploy_with_ansible_next-aio-ubuntu-xenial
+
+# NOTE(mnaser):
+# # Some AIO LXC jobs have been disabled due to the fact that they
+# # time out. Instead, we rely on the basekit jobs which do not, but
+# # give some coverage.
+- project-template:
+    name: openstack-ansible-deploy-aio_lxc-jobs
+    check:
+      jobs:
+        # - openstack-ansible-deploy-aio_lxc-centos-7
+        # - openstack-ansible-deploy-aio_lxc-opensuse-423
+        - openstack-ansible-deploy-aio_lxc-ubuntu-bionic:
+            voting: false
+        - openstack-ansible-deploy-aio_lxc-ubuntu-xenial
+    gate:
+      jobs:
+        # - openstack-ansible-deploy-aio_lxc-centos-7
+        # - openstack-ansible-deploy-aio_lxc-opensuse-423
+        # - openstack-ansible-deploy-aio_lxc-ubuntu-bionic
+        - openstack-ansible-deploy-aio_lxc-ubuntu-xenial
+    periodic:
+      jobs:
+        - openstack-ansible-deploy-aio_lxc-ubuntu-bionic
+        - openstack-ansible-deploy-aio_lxc-ubuntu-xenial
+        - openstack-ansible-upgrade-aio_lxc-ubuntu-xenial
+
+# NOTE(mnaser):
+# Some AIO LXC jobs have been disabled due to the fact that they
+# time out. Instead, we rely on the basekit jobs which do not, but
+# give some coverage.
+- project-template:
+    name: openstack-ansible-deploy-aio_distro_lxc-jobs
+    check:
+      jobs:
+        # - openstack-ansible-deploy-aio_distro_lxc-centos-7
+        - openstack-ansible-deploy-aio_distro_lxc-opensuse-423
+        # - openstack-ansible-deploy-aio_distro_lxc-ubuntu-xenial
+    gate:
+      jobs:
+        # - openstack-ansible-deploy-aio_distro_lxc-centos-7
+        - openstack-ansible-deploy-aio_distro_lxc-opensuse-423
+        # - openstack-ansible-deploy-aio_distro_lxc-ubuntu-xenial
+
+- project-template:
+    name: openstack-ansible-deploy-aio_metal-jobs
+    check:
+      jobs:
+        - openstack-ansible-deploy-aio_metal-centos-7
+        - openstack-ansible-deploy-aio_metal-opensuse-423
+        - openstack-ansible-deploy-aio_metal-ubuntu-xenial
+    gate:
+      jobs:
+        - openstack-ansible-deploy-aio_metal-centos-7
+        - openstack-ansible-deploy-aio_metal-opensuse-423
+        - openstack-ansible-deploy-aio_metal-ubuntu-xenial
+
+# NOTE(mnaser): Basekit jobs disabled for other distros until stable
+- project-template:
+    name: openstack-ansible-deploy-aio_basekit-jobs
+    check:
+      jobs:
+        # - openstack-ansible-deploy-aio_basekit-centos-7
+        - openstack-ansible-deploy-aio_basekit-opensuse-423
+        # - openstack-ansible-deploy-aio_basekit-ubuntu-xenial
+    gate:
+      jobs:
+        # - openstack-ansible-deploy-aio_basekit-centos-7
+        - openstack-ansible-deploy-aio_basekit-opensuse-423
+        # - openstack-ansible-deploy-aio_basekit-ubuntu-xenial
+
+# NOTE(mnaser): Distro basekit jobs disabled for other distros until stable
+- project-template:
+    name: openstack-ansible-deploy-aio_distro_basekit-jobs
+    check:
+      jobs:
+        # - openstack-ansible-deploy-aio_distro_basekit-centos-7
+        - openstack-ansible-deploy-aio_distro_basekit-opensuse-423
+        # - openstack-ansible-deploy-aio_distro_basekit-ubuntu-xenial
+    gate:
+      jobs:
+        # - openstack-ansible-deploy-aio_distro_basekit-centos-7
+        - openstack-ansible-deploy-aio_distro_basekit-opensuse-423
+        # - openstack-ansible-deploy-aio_distro_basekit-ubuntu-xenial
+
+- project-template:
+    name: openstack-ansible-deploy-aio_nspawn-jobs
+    check:
+      jobs:
+        - openstack-ansible-deploy-aio_nspawn-centos-7
+        - openstack-ansible-deploy-aio_nspawn-opensuse-423
+        - openstack-ansible-deploy-aio_nspawn-ubuntu-xenial
+    gate:
+      jobs:
+        - openstack-ansible-deploy-aio_nspawn-centos-7
+        - openstack-ansible-deploy-aio_nspawn-opensuse-423
+        - openstack-ansible-deploy-aio_nspawn-ubuntu-xenial
+
+# NOTE(mnaser): Ceph jobs disabled for other distros until stable
+- project-template:
+    name: openstack-ansible-deploy-ceph-jobs
+    check:
+      jobs:
+        #- openstack-ansible-deploy-ceph-centos-7
+        #- openstack-ansible-deploy-ceph-opensuse-423
+        - openstack-ansible-deploy-ceph-ubuntu-xenial
+    gate:
+      jobs:
+        #- openstack-ansible-deploy-ceph-centos-7
+        #- openstack-ansible-deploy-ceph-opensuse-423
+        - openstack-ansible-deploy-ceph-ubuntu-xenial
+    periodic:
+      jobs:
+        - openstack-ansible-deploy-ceph-ubuntu-xenial
+        - openstack-ansible-upgrade-ceph-ubuntu-xenial
