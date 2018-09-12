@@ -70,7 +70,6 @@ system packages are upgraded and then reboot into the new kernel:
 
    ## openSUSE
    # zypper up
-   # zypper ar http://download.opensuse.org/repositories/Cloud:/OpenStack:/Pike/openSUSE_Leap_42.3 OBS:Cloud:OpenStack:Pike
    # zypper in git-core
    # reboot
 
