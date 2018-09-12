@@ -16,7 +16,7 @@
 # This is the default LXC AppArmor profile
 # Groups which need the unbound profile have a specific override
 lxc_container_config_list:
-  - "lxc.{{ lxc_config_key_apparmor }}=lxc-openstack"
+  - "lxc.aa_profile=lxc-openstack"
 
 # Needed by playbooks/common-tasks/os-lxc-container-setup.yml
 lxc_container_log_path: "/var/log/lxc"
