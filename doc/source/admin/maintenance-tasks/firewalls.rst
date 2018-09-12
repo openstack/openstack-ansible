@@ -11,7 +11,7 @@ and needs the TCP port 22 to be opened on all hosts
 internally.
 
 For more information on generic OpenStack firewalling, see the
-`OpenStack default port documentation <https://docs.openstack.org/newton/config-reference/firewalls-default-ports.html>`_
+`Firewalls and default ports <https://docs.openstack.org/install-guide/firewalls-default-ports.html>`_
 
 You can find in each of the role's respective documentatione, the
 default variables for the ports used within the scope of the role.
