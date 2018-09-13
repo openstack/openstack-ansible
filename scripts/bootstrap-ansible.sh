@@ -159,7 +159,6 @@ virtualenv --python=${PYTHON_EXEC_PATH} \
 get_pip /opt/ansible-runtime/bin/python
 
 # The vars used to prepare the Ansible runtime venv
-PIP_COMMAND="/opt/ansible-runtime/bin/pip"
 PIP_OPTS+=" --constraint global-requirement-pins.txt"
 PIP_OPTS+=" --constraint ${UPPER_CONSTRAINTS_FILE}"
 
