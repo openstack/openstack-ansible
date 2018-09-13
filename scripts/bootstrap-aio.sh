@@ -24,6 +24,9 @@ export BOOTSTRAP_OPTS=${BOOTSTRAP_OPTS:-''}
 # Store the clone repo root location
 export OSA_CLONE_DIR="${OSA_CLONE_DIR:-$(readlink -f $(dirname $0)/..)}"
 
+# This script should be executed from the root directory of the cloned repo
+cd "$(dirname "${0}")/.."
+
 ## Main ----------------------------------------------------------------------
 
 # Ensure that some of the wrapper options are overridden

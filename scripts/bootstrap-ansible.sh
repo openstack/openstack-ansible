@@ -18,7 +18,6 @@
 ## Shell Opts ----------------------------------------------------------------
 set -e -u -x
 
-
 ## Vars ----------------------------------------------------------------------
 export HTTP_PROXY=${HTTP_PROXY:-""}
 export HTTPS_PROXY=${HTTPS_PROXY:-""}
@@ -39,7 +38,6 @@ export OSA_WRAPPER_BIN="${OSA_WRAPPER_BIN:-scripts/openstack-ansible.sh}"
 
 # This script should be executed from the root directory of the cloned repo
 cd "$(dirname "${0}")/.."
-
 
 ## Functions -----------------------------------------------------------------
 info_block "Checking for required libraries." 2> /dev/null ||
