@@ -129,7 +129,6 @@ export UPPER_CONSTRAINTS_FILE=${UPPER_CONSTRAINTS_FILE:-"$UPPER_CONSTRAINTS_PROT
 virtualenv --python=${PYTHON_EXEC_PATH} --clear /opt/ansible-runtime
 
 # The vars used to prepare the Ansible runtime venv
-PIP_COMMAND="/opt/ansible-runtime/bin/pip"
 PIP_OPTS+=" --constraint global-requirement-pins.txt"
 PIP_OPTS+=" --constraint ${UPPER_CONSTRAINTS_FILE}"
 
