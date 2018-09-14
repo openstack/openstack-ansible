@@ -246,15 +246,15 @@ function get_pip {
   GETPIP_PYTHON_EXEC_PATH="${1:-$(which python)}"
 
   # Download the get-pip script using the primary or secondary URL
-  GETPIP_CMD="curl --silent --show-error --retry 5"
   GETPIP_FILE="/opt/get-pip.py"
+  GETPIP_CMD="curl --fail --silent --show-error --retry 5 --output ${GETPIP_FILE}"
   # If GET_PIP_URL is set, then just use it
   if [ -n "${GET_PIP_URL:-}" ]; then
-    ${GETPIP_CMD} ${GET_PIP_URL} > ${GETPIP_FILE}
+    ${GETPIP_CMD} ${GET_PIP_URL}
   else
     # Otherwise, try the two standard URL's
-    ${GETPIP_CMD} https://bootstrap.pypa.io/3.3/get-pip.py > ${GETPIP_FILE}\
-      || ${GETPIP_CMD} https://raw.githubusercontent.com/pypa/get-pip/master/3.3/get-pip.py > ${GETPIP_FILE}
+    ${GETPIP_CMD} https://bootstrap.pypa.io/3.3/get-pip.py \
+      || ${GETPIP_CMD} https://raw.githubusercontent.com/pypa/get-pip/master/3.3/get-pip.py
   fi
 
   ${GETPIP_PYTHON_EXEC_PATH} ${GETPIP_FILE} \
