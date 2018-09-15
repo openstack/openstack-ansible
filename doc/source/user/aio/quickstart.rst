@@ -219,7 +219,7 @@ execute the following:
 **Tested Scenarios**
 
 .. raw:: html
-   :file: scenario-table-gen.html
+   :file: _assets/scenario-table-gen.html
 
 
 To add OpenStack Services over and above the `bootstrap-aio default services`_

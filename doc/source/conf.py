@@ -95,7 +95,7 @@ extlinks = {'deploy_guide': (deploy_guide_prefix, ''),
 }
 
 # Generate dynamic table file.
-SCENARIO_TABLE = 'user/aio/scenario-table-gen.html'
+SCENARIO_TABLE = 'user/aio/_assets/scenario-table-gen.html'
 TABLE_FILE = os.path.join(CONF_PATH, SCENARIO_TABLE)
 stg = imp.load_source(
     'scenario_table_gen',
