@@ -68,7 +68,7 @@ To check on the status of your Galera cluster:
 
 When a module is being used as an ad-hoc command, there are a few parameters
 that are not required. For example, for the ``chdir`` command, there is no need
-to :option:`chdir=/home/user ls` when running Ansible from the CLI:
+to :command:`chdir=/home/user ls` when running Ansible from the CLI:
 
 .. code-block:: console
 
@@ -102,7 +102,7 @@ hostname.
 .. note::
 
     This module transfers log files that might not be present, so a missing
-    remote file will not be an error unless :option:`fail_on_missing` is set to
+    remote file will not be an error unless ``fail_on_missing`` is set to
     ``yes``.
 
 
