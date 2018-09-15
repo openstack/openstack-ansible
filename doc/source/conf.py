@@ -94,16 +94,6 @@ extlinks = {'deploy_guide': (deploy_guide_prefix, ''),
             'dev_docs':  (dev_docs_prefix, '')
 }
 
-# Generate dynamic table file.
-SCENARIO_TABLE = 'user/aio/scenario-table-gen.html'
-TABLE_FILE = os.path.join(CONF_PATH, SCENARIO_TABLE)
-stg = imp.load_source(
-    'scenario_table_gen',
-    os.path.join(CONF_PATH, 'scenario_table_gen.py')
-)
-with open(TABLE_FILE, 'w') as f:
-    f.write(stg.main())
-
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
