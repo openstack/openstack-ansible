@@ -218,10 +218,6 @@ execute the following:
 
 **Tested Scenarios**
 
-.. raw:: html
-   :file: _assets/scenario-table-gen.html
-
-
 To add OpenStack Services over and above the `bootstrap-aio default services`_
 for the applicable scenario, copy the ``conf.d`` files with the ``.aio`` file
 extension into ``/etc/openstack_deploy`` and rename then to ``.yml`` files.
