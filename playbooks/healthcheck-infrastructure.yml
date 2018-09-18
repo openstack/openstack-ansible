@@ -49,6 +49,10 @@
       changed_when: false
       when: groups['haproxy'] | length > 1
 
+    - package:
+        name: netcat
+        state: present
+
     # Fails if HAProxy is not running
     - name: Recording haproxy stats as a way to ensure haproxy runs
       shell: 'echo "show info;show stat" | nc -U /var/run/haproxy.stat'
