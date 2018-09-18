@@ -126,7 +126,7 @@ export UPPER_CONSTRAINTS_FILE=${UPPER_CONSTRAINTS_FILE:-"$UPPER_CONSTRAINTS_PROT
 # - Ubuntu Xenial has 15.0.1, holding pip 8.1.1, setuptools 20.3, wheel 0.29
 #   See also: https://packages.ubuntu.com/xenial/python-virtualenv
 
-virtualenv --python=${PYTHON_EXEC_PATH} --clear /opt/ansible-runtime
+virtualenv --python=${PYTHON_EXEC_PATH} --never-download --clear /opt/ansible-runtime
 
 # The vars used to prepare the Ansible runtime venv
 PIP_COMMAND="/opt/ansible-runtime/bin/pip"
