@@ -45,8 +45,10 @@
     # the load balancer back end for this container.
     - include: ../common-tasks/haproxy-endpoint-manage.yml
       vars:
-        haproxy_backend: "{{ item }}-back"
+        haproxy_backend: "{{ backend_name }}-back"
         haproxy_state: disabled
+      loop_control:
+        loop_var: backend_name
       when:
         - "item in group_names"
         - "groups[item] | length > 1"
@@ -159,8 +161,10 @@
     # to available again.
     - include: ../common-tasks/haproxy-endpoint-manage.yml
       vars:
-        haproxy_backend: "{{ item }}-back"
+        haproxy_backend: "{{ backend_name }}-back"
         haproxy_state: enabled
+      loop_control:
+        loop_var: backend_name
       when:
         - "item in group_names"
         - "groups[item] | length > 1"

@@ -24,9 +24,7 @@
     wait_interval: "{{ haproxy_wait_interval | default(5) }}"
     wait_retries: "{{ haproxy_wait_retries | default(24) }}"
     weight: "{{ haproxy_weight | default(omit) }}"
-  delegate_to: "{{ delegate_host }}"
+  delegate_to: "{{ item }}"
   with_items: "{{ groups['haproxy'] }}"
-  loop_control:
-    loop_var: delegate_host
   tags:
     - common-haproxy
