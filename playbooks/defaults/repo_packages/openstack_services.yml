@@ -52,7 +52,7 @@ barbican_git_track_branch: stable/rocky
 ## Ceilometer service
 ceilometer_git_repo: https://git.openstack.org/openstack/ceilometer
 ceilometer_git_install_branch: d4c351fb4b2cbd219141990ed267b096dcbdb25f # HEAD of "stable/rocky" as of 23.09.2018
-ceilometer_git_project_group: ceilometer_all
+ceilometer_git_project_group: all
 ceilometer_git_track_branch: stable/rocky
 
 
@@ -181,12 +181,10 @@ networking_calico_git_install_branch: 501fc98c428b8dd6b9dd7bf6908dbcd7b94ead5c #
 networking_calico_git_project_group: neutron_all
 networking_calico_git_track_branch: stable/rocky
 
-# ODL is frozen until further notice due to
-# https://github.com/openstack/networking-odl/commit/391c1d89ef2b8133d3aafbe7612c7908be106e73#diff-b4ef698db8ca845e5845c4618278f29a
 networking_odl_git_repo: https://git.openstack.org/openstack/networking-odl
-networking_odl_git_install_branch: 53ff740b2a78626d5b077278997bdcec6b1b0892 # FROZEN HEAD of "stable/rocky" as of 31.03.2018
+networking_odl_git_install_branch: 04412a948b94ad784c361e2eeb12bb060b019ede # HEAD of "stable/rocky" as of 23.09.2018
 networking_odl_git_project_group: neutron_all
-networking_odl_git_track_branch: None
+networking_odl_git_track_branch: stable/rocky
 
 networking_ovn_git_repo: https://git.openstack.org/openstack/networking-ovn
 networking_ovn_git_install_branch: 09eef8de9906ae9bfbd7a68818199693cf3d1b51 # HEAD of "stable/rocky" as of 23.09.2018
