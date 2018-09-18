@@ -48,9 +48,11 @@
     # the load balancer back end for this container.
     - include: common-tasks/haproxy-endpoint-manage.yml
       vars:
-        haproxy_backend: "{{ item }}"
+        haproxy_backend: "{{ backend_name }}"
         haproxy_state: disabled
       when: "groups['keystone_all'] | length > 1"
+      loop_control:
+        loop_var: backend_name
       with_items:
         - "keystone_service-back"
         - "keystone_admin-back"
