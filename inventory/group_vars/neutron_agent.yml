@@ -22,7 +22,7 @@ neutron_dhcp_config:
   log-facility: "/var/log/neutron/neutron-dnsmasq.log"
 
 lxc_container_config_list:
-  - "lxc.{{ lxc_config_key_apparmor }}=unconfined"
+  - "lxc.aa_profile=unconfined"
 
 # Ensure that all neutron agent containers get a fixed mac address
 lxc_container_fixed_mac: true
