@@ -28,5 +28,6 @@ For in-depth technical information, see the
    limited-connectivity/index.rst
    l3pods/example.rst
    ceph/full-deploy.rst
+   ceph/ceilometer.rst
    security/index.rst
    source-overrides/index.rst
