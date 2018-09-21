@@ -616,7 +616,7 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
             is_metal = properties.get('is_metal', False)
 
         _network = network_entry(
-            is_metal,
+            is_metal and (container.get('container_tech') != 'nspawn'),
             interface,
             bridge,
             net_type,
