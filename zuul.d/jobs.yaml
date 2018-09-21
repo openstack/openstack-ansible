@@ -236,9 +236,21 @@
     nodeset: opensuse-423
 
 - job:
+    name: openstack-ansible-deploy-aio_lxc-opensuse-150
+    parent: openstack-ansible-deploy-aio
+    nodeset: opensuse-150
+
+- job:
     name: openstack-ansible-deploy-aio_distro_lxc-opensuse-423
     parent: openstack-ansible-deploy-aio
     nodeset: opensuse-423
+    vars:
+      install_method: distro
+
+- job:
+    name: openstack-ansible-deploy-aio_distro_lxc-opensuse-150
+    parent: openstack-ansible-deploy-aio
+    nodeset: opensuse-150
     vars:
       install_method: distro
 
@@ -251,9 +263,26 @@
       scenario: ceph
 
 - job:
+    name: openstack-ansible-deploy-ceph-opensuse-150
+    parent: openstack-ansible-deploy-aio
+    nodeset: opensuse-150
+    vars:
+      action: deploy
+      scenario: ceph
+
+- job:
     name: openstack-ansible-deploy-distro_ceph-opensuse-423
     parent: openstack-ansible-deploy-aio
     nodeset: opensuse-423
+    vars:
+      action: deploy
+      scenario: ceph
+      install_method: distro
+
+- job:
+    name: openstack-ansible-deploy-distro_ceph-opensuse-150
+    parent: openstack-ansible-deploy-aio
+    nodeset: opensuse-150
     vars:
       action: deploy
       scenario: ceph
@@ -277,8 +306,23 @@
       scenario: aio_metal
 
 - job:
+    name: openstack-ansible-deploy-aio_metal-opensuse-150
+    parent: openstack-ansible-deploy-aio
+    nodeset: opensuse-150
+    vars:
+      action: deploy
+      scenario: aio_metal
+
+- job:
     name: openstack-ansible-deploy-aio_nspawn-opensuse-423
     parent: openstack-ansible-deploy-aio
     nodeset: opensuse-423
+    vars:
+      scenario: aio_nspawn
+
+- job:
+    name: openstack-ansible-deploy-aio_nspawn-opensuse-150
+    parent: openstack-ansible-deploy-aio
+    nodeset: opensuse-150
     vars:
       scenario: aio_nspawn

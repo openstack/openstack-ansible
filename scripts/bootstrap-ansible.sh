@@ -86,11 +86,12 @@ case ${DISTRO_ID} in
     opensuse*)
         zypper -n install -l git-core curl autoconf gcc gcc-c++ \
             netcat-openbsd python python-xml python-devel gcc \
-            libffi-devel libopenssl-devel python-virtualenv
-        # Leap ships with python3.4 which is not supported by ansible and as
+            libffi-devel libopenssl-devel python-setuptools python-virtualenv
+        # Leap 42.3 ships with python3.4 which is not supported by ansible and as
         # such we are using python2
         # See https://github.com/ansible/ansible/issues/24180
-        PYTHON_EXEC_PATH="/usr/bin/python2"
+        source /etc/os-release
+        [[ ${VERSION} =~ 42 ]] && PYTHON_EXEC_PATH="/usr/bin/python2"
         ;;
 esac
 
