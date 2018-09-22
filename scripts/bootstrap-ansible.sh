@@ -83,7 +83,7 @@ case ${DISTRO_ID} in
           python-apt python3-apt \
           python-virtualenv
         ;;
-    opensuse)
+    opensuse*)
         zypper -n install -l git-core curl autoconf gcc gcc-c++ \
             netcat-openbsd python python-xml python-devel gcc \
             libffi-devel libopenssl-devel python-virtualenv
