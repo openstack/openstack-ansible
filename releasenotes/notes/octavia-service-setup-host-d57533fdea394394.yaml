@@ -13,6 +13,13 @@ features:
 
 deprecations:
   - |
+    The variable ``octavia_requires_pip_packages`` is no longer required
+    and has therefore been removed.
+  - |
     The variable ``octavia_image_downloader`` has been removed. The image
     download now uses the same host designated by the
     ``octavia_service_setup_host`` for the image download.
+  - |
+    The variable ``octavia_ansible_endpoint_type`` has been removed. The
+    endpoint used for ansible tasks has been hard set to the 'admin'
+    endpoint as is commonly used across all OSA roles.
