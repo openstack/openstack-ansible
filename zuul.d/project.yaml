@@ -21,11 +21,13 @@
     check:
       jobs:
         - openstack-ansible-linters
+        - openstack-ansible-deploy-aio-ubuntu-xenial
+        - openstack-ansible-deploy-ceph-ubuntu-xenial
+    experimental:
+      jobs:
         - openstack-ansible-deploy-aio-centos-7
         - openstack-ansible-deploy-aio-opensuse-423
-        - openstack-ansible-deploy-aio-ubuntu-xenial
         - openstack-ansible-deploy-ceph-centos-7
-        - openstack-ansible-deploy-ceph-ubuntu-xenial
     gate:
       jobs:
         - openstack-ansible-linters
@@ -33,13 +35,7 @@
         - openstack-ansible-deploy-ceph-ubuntu-xenial
     periodic:
       jobs:
-        # We remove the centos and opensuse periodics
-        # until they are more likely to pass on time.
-        # (Currently timing out).
-        #- openstack-ansible-deploy-aio-centos-7
-        #- openstack-ansible-deploy-aio-opensuse-423
         - openstack-ansible-deploy-aio-ubuntu-xenial
-        #- openstack-ansible-deploy-ceph-centos-7
         - openstack-ansible-deploy-ceph-ubuntu-xenial
         - openstack-ansible-upgrade-aio-ubuntu-xenial
         - openstack-ansible-upgrade-ceph-ubuntu-xenial
