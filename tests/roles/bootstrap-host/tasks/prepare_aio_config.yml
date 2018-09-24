@@ -66,12 +66,19 @@
   when:
     - nodepool_dir.stat.exists
   block:
+    # OVH nodepool nodes have an issue which causes nested virt
+    # instances to crash with a hardware error, then a dump.
+    # We therefore detect whether we're running on OVH and
+    # force it to use qemu instead.
     - name: Discover the OpenStack-Infra mirrors
       shell: |
         source /etc/ci/mirror_info.sh
         NODEPOOL_OVERRIDES="/etc/openstack_deploy/user_openstackci.yml"
         echo "uca_apt_repo_url: '${NODEPOOL_UCA_MIRROR}'" >> ${NODEPOOL_OVERRIDES}
         echo "openstack_hosts_centos_mirror_url: '${NODEPOOL_CENTOS_MIRROR}'" >> ${NODEPOOL_OVERRIDES}
+        if [[ ${NODEPOOL_PYPI_MIRROR} == *.ovh.* ]]; then
+          echo "nova_virt_type: 'qemu'" >> ${NODEPOOL_OVERRIDES}
+        fi
         echo "repo_build_pip_default_index: '${NODEPOOL_PYPI_MIRROR}'" >> ${NODEPOOL_OVERRIDES}
       args:
         executable: /bin/bash
