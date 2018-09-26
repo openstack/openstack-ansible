@@ -172,6 +172,7 @@ function main {
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/user-secrets-adjustment.yml")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/pip-conf-removal.yml")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/ceph-galaxy-removal.yml")
+        RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/molteniron-role-removal.yml")
         # we don't want to trigger container restarts for these groups yet
         RUN_TASKS+=("setup-hosts.yml --limit '!galera_all:!neutron_agent:!rabbitmq_all'")
         # add new container config to containers but don't restart
