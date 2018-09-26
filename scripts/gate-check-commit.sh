@@ -200,42 +200,10 @@ if [[ "${ACTION}" == "upgrade" ]]; then
     # Source the current scripts-library.sh functions
     source "${OSA_CLONE_DIR}/scripts/scripts-library.sh"
 
-    # Kick off the data plane tester
-    bash ${OSA_CLONE_DIR}/tests/data-plane-test.sh &> /var/log/data-plane-error.log &
-
-    # Fetch script to execute API availability tests, then
-    # background them while the upgrade runs.
-    get_bowling_ball_tests
-    start_bowling_ball_tests
-
     # To execute the upgrade script we need to provide
     # an affirmative response to the warning that the
     # upgrade is irreversable.
     echo 'YES' | bash "${OSA_CLONE_DIR}/scripts/run-upgrade.sh"
-
-    # Terminate the API availability tests
-    kill_bowling_ball_tests
-
-    # Terminate the data plane tester
-    rm -f /var/run/data-plane-test.socket
-
-    # Wait 10s for the tests to complete
-    sleep 10
-
-    # Output the API availability test results
-    print_bowling_ball_results
-
-    # Check for any data plane failures, and fail if there are
-    if ! egrep -q "^FAIL: 0$" /var/log/data-plane-test.log; then
-        echo -e "\n\nFAIL: The L3 data plane check failed!\n\n"
-        exit 1
-    fi
-
-    # Check for any disk access failures, and fail if there are
-    if ! egrep -q "^FAIL: 0$" /var/log/disk-access-test.log; then
-        echo -e "\n\nFAIL: The disk access data plane check failed!\n\n"
-        exit 1
-    fi
 
 fi
 

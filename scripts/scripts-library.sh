@@ -365,36 +365,6 @@ function get_pip {
          --isolated
 }
 
-function get_bowling_ball_tests {
-  # Retrieve the latest bowling ball test script in case we don't already have it.
-  if [ -f scripts/rolling_tests.py ]; then
-      return
-  fi
-
-  curl --silent https://raw.githubusercontent.com/openstack/openstack-ansible-ops/master/bowling_ball/rolling_tests.py > scripts/rolling_tests.py
-}
-
-function start_bowling_ball_tests {
-  # The tests will pull Keystone information from the env vars defined in openrc
-  source ~/openrc
-  # Get the list of services to test for from the script, so we're not hard coding.
-  for SERVICE in $(python ./scripts/rolling_tests.py list | cut -d - -f 1); do
-   # Start the scripts in the background and wait between each invocation.
-   # Without the wait, they do not all launch.
-   python ./scripts/rolling_tests.py $SERVICE &
-   sleep 1
-   echo "Started $SERVICE test in background"
-  done
-}
-
-function kill_bowling_ball_tests {
-  pkill -f rolling_tests
-}
-
-function print_bowling_ball_results {
-  grep "failure rate" /var/log/*_rolling.log
-}
-
 ## Signal traps --------------------------------------------------------------
 # Trap all Death Signals and Errors
 trap "exit_fail ${LINENO} $? 'Received STOP Signal'" SIGHUP SIGINT SIGTERM
