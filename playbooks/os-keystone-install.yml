@@ -138,9 +138,11 @@
     # to available again.
     - include: common-tasks/haproxy-endpoint-manage.yml
       vars:
-        haproxy_backend: "{{ item }}"
+        haproxy_backend: "{{ backend_name }}"
         haproxy_state: enabled
       when: "groups['keystone_all'] | length > 1"
+      loop_control:
+        loop_var: backend_name
       with_items:
         - "keystone_service-back"
         - "keystone_admin-back"
