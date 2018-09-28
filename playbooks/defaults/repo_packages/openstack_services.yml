@@ -178,12 +178,10 @@ networking_calico_git_install_branch: 5d852f653552f2332dce48aa425ee842b5b684ad #
 networking_calico_git_project_group: neutron_all
 networking_calico_git_track_branch: master
 
-# ODL is frozen until further notice due to
-# https://github.com/openstack/networking-odl/commit/391c1d89ef2b8133d3aafbe7612c7908be106e73#diff-b4ef698db8ca845e5845c4618278f29a
 networking_odl_git_repo: https://git.openstack.org/openstack/networking-odl
-networking_odl_git_install_branch: 53ff740b2a78626d5b077278997bdcec6b1b0892 # FROZEN HEAD of "master" as of 31.03.2018
+networking_odl_git_install_branch: ecde0a165f6145d8257fd52d50ee6f417b0b6ff0 # HEAD of "master" as of 08.08.2018
 networking_odl_git_project_group: neutron_all
-networking_odl_git_track_branch: None
+networking_odl_git_track_branch: master
 
 networking_ovn_git_repo: https://git.openstack.org/openstack/networking-ovn
 networking_ovn_git_install_branch: 378f4ec58e16a363aeabd16da1911775d0b36487 # HEAD of "master" as of 08.08.2018
