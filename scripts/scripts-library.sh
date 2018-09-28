@@ -132,7 +132,7 @@ function find_log_files {
     ! -name "*.gz" \
     ! -name '*.html' \
     ! -name '*.subunit' \
-    ! -name 'ansible.sqlite'
+    ! -name 'ansible.sqlite' | grep -v 'stackviz'
 }
 
 function rename_log_files {
