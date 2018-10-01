@@ -167,6 +167,10 @@ function main {
     "${SCRIPTS_PATH}/bootstrap-ansible.sh"
 
     pushd ${MAIN_PATH}/playbooks
+        # create a symlink to haproxy-install so that we can run a second time at end
+        if [ ! -f haproxy-install-rerun.yml ]; then
+          ln -s haproxy-install.yml haproxy-install-rerun.yml
+        fi
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/ansible_fact_cleanup.yml")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/deploy-config-changes.yml")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/user-secrets-adjustment.yml")
@@ -200,11 +204,15 @@ function main {
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/cleanup-heat.yml -e force_containers_destroy=yes -e force_containers_data_destroy=yes")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/cleanup-ironic.yml -e force_containers_destroy=yes -e force_containers_data_destroy=yes")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/cleanup-trove.yml -e force_containers_destroy=yes -e force_containers_data_destroy=yes")
-        RUN_TASKS+=("haproxy-install.yml")
+        RUN_TASKS+=("haproxy-install-rerun.yml --tags=haproxy_server-config")
         # Run the tasks in order
         for item in ${!RUN_TASKS[@]}; do
           run_lock $item "${RUN_TASKS[$item]}"
         done
+        # remove symlink to keep tree clean
+        if [ -f haproxy-install-rerun.yml ]; then
+          rm -f haproxy-install-rerun.yml
+        fi
     popd
 }
 
