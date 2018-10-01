@@ -106,7 +106,7 @@
       tags:
         - memcached
     - package:
-        name: netcat
+        name: "{% if ansible_distribution | lower == 'centos' %}nc{% elif ansible_distribution | lower == 'suse' %}netcat-openbsd{% else %}netcat{% endif %}"
         state: present
       tags:
         - memcached
