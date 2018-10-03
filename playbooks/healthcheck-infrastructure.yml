@@ -22,7 +22,7 @@
   gather_facts: no
   tasks:
     - name: Check if host can connect to keepalived ping IP
-      command: "ping {{ keepalived_ping_address }}"
+      command: "ping -c 2 {{ keepalived_ping_address }}"
       changed_when: false
 
     - name: Checking if keepalived is running
