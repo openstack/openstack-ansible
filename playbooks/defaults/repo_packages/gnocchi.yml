@@ -33,7 +33,7 @@
 ## This service has a different stable branch strategy to the rest of OpenStack.
 ## The SHA is recorded here to make the SHA updating easier.
 gnocchi_git_repo: https://github.com/gnocchixyz/gnocchi
-gnocchi_git_install_branch: fc5d8b22548a89913150e76d1823328333e44034 # HEAD of "stable/3.1" as of 23.09.2018
+gnocchi_git_install_branch: fc5d8b22548a89913150e76d1823328333e44034 # HEAD of "stable/3.1" as of 04.10.2018
 gnocchi_git_dest: "/opt/gnocchi_{{ gnocchi_git_install_branch | replace('/', '_') }}"
 gnocchi_git_project_group: gnocchi_all
 gnocchi_git_track_branch: "stable/3.1"
