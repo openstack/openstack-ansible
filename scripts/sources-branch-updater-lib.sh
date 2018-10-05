@@ -259,7 +259,7 @@ update_ansible_role_requirements() {
       # If we are forcing master and we still don't have a role_version defined, then we need
       # to fallback to master branch
       if [[ -z "${role_version}" ]] && [[ "${force_master}" == "true" ]]; then
-        role_version=$(git ls-remote ${role_src} | grep master | awk '{print $1}')
+        role_version=$(git ls-remote ${role_src} | grep /master$ | awk '{print $1}')
       fi
 
       # For OSA roles, get the release notes
