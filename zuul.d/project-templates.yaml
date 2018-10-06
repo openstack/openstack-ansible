@@ -44,17 +44,18 @@
       jobs:
         # - openstack-ansible-deploy-aio_lxc-centos-7
         # - openstack-ansible-deploy-aio_lxc-opensuse-423
-        - openstack-ansible-deploy-aio_lxc-ubuntu-bionic
+        - openstack-ansible-deploy-aio_lxc-ubuntu-bionic:
+            voting: false
         - openstack-ansible-deploy-aio_lxc-ubuntu-xenial
     gate:
       jobs:
         # - openstack-ansible-deploy-aio_lxc-centos-7
         # - openstack-ansible-deploy-aio_lxc-opensuse-423
-        - openstack-ansible-deploy-aio_lxc-ubuntu-bionic
+        # - openstack-ansible-deploy-aio_lxc-ubuntu-bionic
         - openstack-ansible-deploy-aio_lxc-ubuntu-xenial
     periodic:
       jobs:
-        - openstack-ansible-deploy-aio_lxc-ubuntu-bionic
+        # - openstack-ansible-deploy-aio_lxc-ubuntu-bionic
         - openstack-ansible-deploy-aio_lxc-ubuntu-xenial
         - openstack-ansible-upgrade-aio_lxc-ubuntu-xenial
 
@@ -67,12 +68,13 @@
     check:
       jobs:
         # - openstack-ansible-deploy-aio_distro_lxc-centos-7
-        - openstack-ansible-deploy-aio_distro_lxc-opensuse-423
+        - openstack-ansible-deploy-aio_distro_lxc-opensuse-423:
+            voting: false
         # - openstack-ansible-deploy-aio_distro_lxc-ubuntu-xenial
     gate:
-      jobs:
+      jobs: []
         # - openstack-ansible-deploy-aio_distro_lxc-centos-7
-        - openstack-ansible-deploy-aio_distro_lxc-opensuse-423
+        # - openstack-ansible-deploy-aio_distro_lxc-opensuse-423
         # - openstack-ansible-deploy-aio_distro_lxc-ubuntu-xenial
 
 - project-template:
@@ -94,12 +96,13 @@
     check:
       jobs:
         - openstack-ansible-deploy-aio_basekit-centos-7
-        - openstack-ansible-deploy-aio_basekit-opensuse-423
+        - openstack-ansible-deploy-aio_basekit-opensuse-423:
+             voting: false
         # - openstack-ansible-deploy-aio_basekit-ubuntu-xenial
     gate:
       jobs:
         - openstack-ansible-deploy-aio_basekit-centos-7
-        - openstack-ansible-deploy-aio_basekit-opensuse-423
+        # - openstack-ansible-deploy-aio_basekit-opensuse-423
         # - openstack-ansible-deploy-aio_basekit-ubuntu-xenial
 
 # NOTE(mnaser): Distro basekit jobs disabled for other distros until stable
@@ -108,12 +111,13 @@
     check:
       jobs:
         # - openstack-ansible-deploy-aio_distro_basekit-centos-7
-        - openstack-ansible-deploy-aio_distro_basekit-opensuse-423
+        - openstack-ansible-deploy-aio_distro_basekit-opensuse-423:
+            voting: false
         # - openstack-ansible-deploy-aio_distro_basekit-ubuntu-xenial
     gate:
-      jobs:
+      jobs: []
         # - openstack-ansible-deploy-aio_distro_basekit-centos-7
-        - openstack-ansible-deploy-aio_distro_basekit-opensuse-423
+        # - openstack-ansible-deploy-aio_distro_basekit-opensuse-423
         # - openstack-ansible-deploy-aio_distro_basekit-ubuntu-xenial
 
 - project-template:
@@ -153,10 +157,11 @@
     check:
       jobs:
         #- openstack-ansible-deploy-distro_ceph-centos-7
-        - openstack-ansible-deploy-distro_ceph-opensuse-423
+        - openstack-ansible-deploy-distro_ceph-opensuse-423:
+            voting: false
         #- openstack-ansible-deploy-distro_ceph-ubuntu-xenial
     gate:
-      jobs:
+      jobs: []
         #- openstack-ansible-deploy-distro_ceph-centos-7
-        - openstack-ansible-deploy-distro_ceph-opensuse-423
+        # - openstack-ansible-deploy-distro_ceph-opensuse-423
         #- openstack-ansible-deploy-distro_ceph-ubuntu-xenial
