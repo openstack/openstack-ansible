@@ -72,17 +72,6 @@ haproxy_default_services:
         - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
       haproxy_service_enabled: "{{ groups['repo_all'] is defined and groups['repo_all'] | length > 0 }}"
   - service:
-      haproxy_service_name: repo_cache
-      haproxy_backend_nodes: "{{ (groups['repo_all'] | default([]))[:1] }}"  # list expected
-      haproxy_backup_nodes: "{{ (groups['repo_all'] | default([]))[1:] }}"
-      haproxy_bind: "{{ [internal_lb_vip_address] }}"
-      haproxy_port: "{{ repo_pkg_cache_port }}"
-      haproxy_balance_type: http
-      haproxy_backend_options:
-        - "httpchk HEAD /acng-report.html HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
-      haproxy_whitelist_networks: "{{ haproxy_repo_cache_whitelist_networks }}"
-      haproxy_service_enabled: "{{ groups['repo_all'] is defined and groups['repo_all'] | length > 0 }}"
-  - service:
       haproxy_service_name: glance_api
       haproxy_backend_nodes: "{{ groups['glance_api'] | default([]) }}"
       haproxy_ssl: "{{ haproxy_ssl }}"
