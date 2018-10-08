@@ -90,20 +90,6 @@
     - healthcheck
     - healthcheck-repo-use
 
-- name: Sanity checks for all containers
-  hosts: all_containers:physical_hosts
-  gather_facts: yes
-  tasks:
-    - name: Ensure everyone can reach apt proxy
-      uri:
-        url: "{{ repo_pkg_cache_url }}/acng-report.html"
-        method: "HEAD"
-      when:
-        - "ansible_pkg_mgr == 'apt'"
-  tags:
-    - healthcheck
-    - healthcheck-repo-use
-
 # Test utility-install.yml
 - name: Ensure the service setup host is ready to run openstack calls
   hosts: "{{ openstack_service_setup_host | default('localhost') }}"
