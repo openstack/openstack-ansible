@@ -65,6 +65,6 @@ if __name__ == '__main__':
     flag_ref = sys.argv[2]
     main(filename)
 
-    flag_file = '/etc/openstack_deploy.PIKE/VARS_MIGRATED_%s' % flag_ref
+    flag_file = '/etc/openstack_deploy.ROCKY/VARS_MIGRATED_%s' % flag_ref
     with open(flag_file, 'w') as f:
         f.write('OpenStack-Ansible variables migrated.')
