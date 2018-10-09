@@ -50,7 +50,7 @@
       when: groups['haproxy'] | length > 1
 
     - package:
-        name: netcat
+        name: "{% if ansible_distribution | lower == 'centos' %}nc{% elif ansible_distribution | lower == 'suse' %}netcat-openbsd{% else %}netcat{% endif %}"
         state: present
 
     # Fails if HAProxy is not running
