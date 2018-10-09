@@ -13,28 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Test proxy URL for connectivity
-  run_once: yes
-  uri:
-    url: "{{ repo_pkg_cache_url }}/acng-report.html"
-    method: "HEAD"
-    timeout: 3
-  register: proxy_check
-  failed_when: false
-  tags:
-    - common-proxy
-
-- name: Add apt package manager proxy
-  copy:
-    content: 'Acquire::http { Proxy "{{ repo_pkg_cache_url }}"; };'
-    dest: "/etc/apt/apt.conf.d/00apt-cacher-proxy"
-  register: _apt_proxy_added
-  when:
-    - repo_pkg_cache_enabled | bool
-    - proxy_check.status == 200
-    - ansible_os_family == 'Debian'
-  tags:
-    - common-proxy
+# TODO(odyssey4me):
+# Remove these tasks in T. They are only present for the
+# Q->R upgrade or for R->S upgrades for environments which
+# were installed prior to R's release.
 
 - name: Remove apt package manager proxy
   file:
@@ -42,8 +24,6 @@
     state: "absent"
   register: _apt_proxy_removed
   when:
-    - repo_pkg_cache_enabled | bool
-    - proxy_check.status != 200
     - ansible_os_family == 'Debian'
   tags:
     - common-proxy
@@ -54,34 +34,34 @@
   retries: 5
   delay: 2
   when:
-    - (_apt_proxy_added is mapping and _apt_proxy_added | changed) or
-      (_apt_proxy_removed is mapping and _apt_proxy_removed | changed)
+    - _apt_proxy_removed is mapping
+    - _apt_proxy_removed | changed
   tags:
     - common-proxy
 
 # NOTE(mhayden): We always deploy the proxy configuration for yum on CentOS
 # even if dnf is present.
-- name: Deploy yum package manager proxy
+- name: Remove yum package manager proxy
   lineinfile:
-    line: 'proxy={{ repo_pkg_cache_url }}'
+    line: >-
+      proxy="http://{{ internal_lb_vip_address }}:{{ repo_pkg_cache_port | default('3142') }}"
     dest: "/etc/yum.conf"
-    state: "{{ (proxy_check.status == 200) | ternary('present', 'absent') }}"
+    state: absent
   when:
     - ansible_os_family == 'RedHat'
-    - repo_pkg_cache_enabled | bool
   tags:
     - common-proxy
 
 # NOTE(mhayden): If dnf and yum are installed on CentOS, we need to configure
 # a proxy for dnf as well.
-- name: Deploy dnf package manager proxy
+- name: Remove dnf package manager proxy
   lineinfile:
-    line: 'proxy={{ repo_pkg_cache_url }}'
+    line: >-
+      proxy="http://{{ internal_lb_vip_address }}:{{ repo_pkg_cache_port | default('3142') }}"
     dest: "/etc/dnf/dnf.conf"
-    state: "{{ (proxy_check.status == 200) | ternary('present', 'absent') }}"
+    state: absent
   when:
     - ansible_os_family == 'RedHat'
     - ansible_pkg_mgr == 'dnf'
-    - repo_pkg_cache_enabled | bool
   tags:
     - common-proxy

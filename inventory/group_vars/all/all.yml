@@ -56,9 +56,6 @@ rsyslog_server_enabled: "{{ ansible_pkg_mgr == 'zypper' }}"
 
 # URL for the frozen internal openstack repo.
 repo_server_port: 8181
-repo_pkg_cache_enabled: true
-repo_pkg_cache_port: 3142
-repo_pkg_cache_url: "http://{{ internal_lb_vip_address }}:{{ repo_pkg_cache_port }}"
 
 ## Default installation method for OpenStack services
 install_method: "source"
