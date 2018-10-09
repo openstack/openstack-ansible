@@ -353,3 +353,4 @@ sphinxmark_image = 'text'
 sphinxmark_text = watermark
 sphinxmark_text_color = (128, 128, 128)
 sphinxmark_text_size = 70
+locale_dirs = ['locale/']
