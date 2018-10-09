@@ -112,8 +112,8 @@
         service_fact: "cinder"
       with_items:
         - "cinder-scheduler"
-        - "cinder-backup"
         - "cinder-volume"
+        - "cinder-backup"
       when:
         - "cinder_all_software_updated | bool"
         - "ansible_local['openstack_ansible']['cinder']['need_service_restart'] | bool"
