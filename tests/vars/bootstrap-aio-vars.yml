@@ -15,35 +15,27 @@
 
 confd_overrides:
   aio_lxc:
-    - name: haproxy.yml.aio
     - name: cinder.yml.aio
-    - name: designate.yml.aio
     - name: glance.yml.aio
-    - name: heat.yml.aio
+    - name: haproxy.yml.aio
     - name: horizon.yml.aio
     - name: keystone.yml.aio
     - name: neutron.yml.aio
     - name: nova.yml.aio
-    - name: swift.yml.aio
   aio_metal:
     - name: cinder.yml.aio
     - name: glance.yml.aio
-    - name: heat.yml.aio
     - name: keystone.yml.aio
     - name: neutron.yml.aio
     - name: nova.yml.aio
-    - name: swift.yml.aio
   aio_nspawn:
-    - name: haproxy.yml.aio
     - name: cinder.yml.aio
-    - name: designate.yml.aio
     - name: glance.yml.aio
-    - name: heat.yml.aio
+    - name: haproxy.yml.aio
     - name: horizon.yml.aio
     - name: keystone.yml.aio
     - name: neutron.yml.aio
     - name: nova.yml.aio
-    - name: swift.yml.aio
   ceph:
     - name: haproxy.yml.aio
     - name: ceph.yml.aio
@@ -53,45 +45,38 @@ confd_overrides:
     - name: neutron.yml.aio
     - name: nova.yml.aio
   congress:
+    - name: congress.yml.aio
     - name: haproxy.yml.aio
+    - name: glance.yml.aio
+    - name: keystone.yml.aio
     - name: nova.yml.aio
     - name: neutron.yml.aio
-    - name: keystone.yml.aio
-    - name: glance.yml.aio
-    - name: congress.yml.aio
   translations:
-    - name: haproxy.yml.aio
     - name: cinder.yml.aio
     - name: designate.yml.aio
     - name: glance.yml.aio
+    - name: haproxy.yml.aio
     - name: heat.yml.aio
     - name: horizon.yml.aio
     - name: keystone.yml.aio
+    - name: magnum.yml.aio
     - name: neutron.yml.aio
     - name: nova.yml.aio
-    - name: swift.yml.aio
     - name: sahara.yml.aio
-    - name: magnum.yml.aio
+    - name: swift.yml.aio
     - name: trove.yml.aio
   octavia:
-    - name: haproxy.yml.aio
     - name: glance.yml.aio
+    - name: haproxy.yml.aio
     - name: keystone.yml.aio
     - name: neutron.yml.aio
     - name: nova.yml.aio
     - name: octavia.yml.aio
   tacker:
     - name: haproxy.yml.aio
-    - name: keystone.yml.aio
     - name: heat.yml.aio
-    - name: tacker.yml.aio
-  aio_basekit:
-    - name: haproxy.yml.aio
-    - name: cinder.yml.aio
-    - name: glance.yml.aio
     - name: keystone.yml.aio
-    - name: neutron.yml.aio
-    - name: nova.yml.aio
+    - name: tacker.yml.aio
   barbican:
     - name: haproxy.yml.aio
     - name: keystone.yml.aio
