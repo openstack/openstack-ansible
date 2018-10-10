@@ -59,6 +59,18 @@ The roles will be cloned according to the new naming, and an upgrade
 playbook ``ceph-galaxy-removal.yml`` has been added to clean up the stale
 galaxy-named roles.
 
+.. _molteniron-role-removal:
+
+Clean up the molteniron role
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The molteniron service is not an official OpenStack project, and has been
+removed from the integrated build. It can still be optionally added, but
+due to the fact that it was previously integrated we need to remove it
+during this major upgrade to ensure that the repo build process does not
+try to build its wheels. The upgrade playbook ``molteniron-role-removal.yml``
+has been added to clean it up.
+
 .. _setup-infra-playbook:
 
 setup-infrastructure.yml

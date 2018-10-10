@@ -141,6 +141,19 @@ galaxy-named roles.
 
     # openstack-ansible "${UPGRADE_PLAYBOOKS}/ceph-galaxy-removal.yml"
 
+Clean up the molteniron role
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The molteniron service is not an official OpenStack project, and has been
+removed from the integrated build. It can still be optionally added, but
+due to the fact that it was previously integrated we need to remove it
+during this major upgrade to ensure that the repo build process does not
+try to build its wheels.
+
+.. code-block:: console
+
+    # openstack-ansible "${UPGRADE_PLAYBOOKS}/molteniron-role-removal.yml"
+
 Upgrade hosts
 ~~~~~~~~~~~~~
 
