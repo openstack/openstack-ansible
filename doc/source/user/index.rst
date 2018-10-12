@@ -33,3 +33,4 @@ For in-depth technical information, see the
    security/index.rst
    source-overrides/index.rst
    prod/gnocchi_redis.rst
+   messaging/messaging.rst
