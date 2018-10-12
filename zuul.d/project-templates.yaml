@@ -94,10 +94,14 @@
     name: openstack-ansible-deploy-ceph-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-ceph-ubuntu-bionic:
-            voting: false
+        - openstack-ansible-deploy-ceph-ubuntu-bionic
     gate:
-      jobs: []
+      jobs:
+        - openstack-ansible-deploy-ceph-ubuntu-bionic
+    periodic:
+      jobs:
+        - openstack-ansible-deploy-ceph-ubuntu-bionic
+        - openstack-ansible-upgrade-ceph-ubuntu-bionic
 
 - project-template:
     name: openstack-ansible-deploy-distro_ceph-jobs
