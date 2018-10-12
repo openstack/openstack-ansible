@@ -25,7 +25,7 @@ ceph_repository: community
 # The _stable_release var is used by both the OSA ceph_client role and the
 # ceph-ansible roles. It is defaulted in ceph_client but set here to keep the
 # OSA/ceph-ansible integrations in sync.
-ceph_stable_release: luminous
+ceph_stable_release: mimic
 fetch_directory: /etc/openstack_deploy/ceph-fetch/
 # tries to create /var/log/ceph as a directory and fails if the log link already
 # exists. we handle the log dir creation so this is not something we need
