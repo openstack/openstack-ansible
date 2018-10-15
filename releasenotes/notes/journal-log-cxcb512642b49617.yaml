@@ -2,7 +2,7 @@
 deprecations:
   - The log path, ``/var/log/aodh`` is no longer used to capture service
     logs. All logging for the aodh service will now be sent directly to the
-    systmed journal.
+    systemd journal.
 other:
   - When running aodh with apache(httpd) all apache logs will be stored in
     the standard apache log directory which is controlled by the distro specific
