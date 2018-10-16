@@ -1,0 +1,84 @@
+---
+# Copyright 2017, Logan Vig <logan2211@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- import_tasks: common-tasks/os-log-dir-setup.yml
+  vars:
+    log_dirs:
+      - src: "/openstack/log/{{ inventory_hostname }}-ceph"
+        dest: "/var/log/ceph"
+
+- include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
+  when: not is_metal
+  vars:
+    list_of_bind_mounts: "{{ ceph_container_bind_mounts }}"
+
+- include_tasks: common-tasks/unbound-clients.yml
+  when:
+    - hostvars['localhost']['resolvconf_enabled'] | bool
+
+#TODO: mgariepy, revisit to use include_role when https://github.com/ansible/ansible/issues/20077 is fixed
+- name: Ensure Ansible can work with SELinux
+  package:
+    name: libselinux-python
+    state: present
+  when:
+    - ansible_pkg_mgr in ['yum', 'dnf']
+
+- name: install the ceph stable repository key
+  rpm_key:
+    key: "{{ ceph_stable_key }}"
+    state: present
+  when:
+    - ceph_origin == 'repository'
+    - ceph_repository == 'community'
+    - ansible_pkg_mgr in ['yum', 'dnf']
+
+- name: add ceph stable repository
+  package:
+    name: http://download.ceph.com/rpm-{{ ceph_stable_release }}/{{ ceph_stable_redhat_distro }}/noarch/ceph-release-1-0.{{ ceph_stable_redhat_distro|replace('rhel', 'el') }}.noarch.rpm
+    state: present
+  changed_when: false
+  when:
+    - ceph_origin == 'repository'
+    - ceph_repository == 'community'
+    - ansible_pkg_mgr in ['yum', 'dnf']
+
+- name: Purge yum/dnf cache
+  command: "{{ ansible_pkg_mgr }} clean all"
+  when:
+    - ansible_pkg_mgr in ['yum', 'dnf']
+  tags:
+    - skip_ansible_lint
+
+- name: Set default priority for Ceph repos
+  command: >
+     yum-config-manager
+       --enable Ceph
+       --setopt="Ceph.priority=99"
+       --enable Ceph-noarch
+       --setopt="Ceph-noarch.priority=99"
+  when:
+    - ansible_pkg_mgr in ['yum', 'dnf']
+
+# Set the priority of the ceph community apt repo either above or below that of UCA or distro sources
+- name: Set apt package pins
+  include_role:
+    name: apt_package_pinning
+  vars:
+    apt_package_pinning_file_name: "ceph_community_pin.pref"
+    apt_package_pinning_priority: "{{ (ceph_repository == 'community') | ternary(1000, 100) }}"
+    apt_pinned_packages: [{ package: '*', release: 'ceph.com' }]
+  when:
+    - ansible_pkg_mgr == 'apt'
