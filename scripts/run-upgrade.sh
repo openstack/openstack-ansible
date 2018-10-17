@@ -185,6 +185,8 @@ function main {
         RUN_TASKS+=("repo-install.yml")
         RUN_TASKS+=("haproxy-install.yml")
         RUN_TASKS+=("repo-use.yml")
+        # stop mariadb on all nodes except first for quorum reset
+        RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/mariadb-shutdown.yml")
         # explicitly perform mariadb upgrade
         RUN_TASKS+=("galera-install.yml -e 'galera_upgrade=true'")
         # explicitly perform controlled galera cluster restart
