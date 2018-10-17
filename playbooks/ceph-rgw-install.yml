@@ -21,7 +21,7 @@
   user: root
   vars_files:
     - "defaults/{{ install_method }}_install.yml"
-  tasks:
+  pre_tasks:
     - include: common-tasks/os-log-dir-setup.yml
       vars:
         log_dirs:
