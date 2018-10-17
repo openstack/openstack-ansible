@@ -41,6 +41,18 @@
         - inventory_hostname == ansible_play_hosts[0]
       tags:
         - ceph-mon-facts
+
+    # Set the priority of the ceph community apt repo either above or below that of UCA or distro sources
+    - name: Set apt package pins
+      include_role:
+        name: apt_package_pinning
+      vars:
+        apt_package_pinning_file_name: "ceph_community_pin.pref"
+        apt_package_pinning_priority: "{{ (ceph_repository == 'community') | ternary(1000, 100) }}"
+        apt_pinned_packages: [{ package: '*', release: 'ceph.com' }]
+      when:
+        - ansible_pkg_mgr == 'apt'
+
   roles:
     - role: ceph-defaults
       tags:
