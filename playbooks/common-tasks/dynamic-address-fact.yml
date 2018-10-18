@@ -19,7 +19,7 @@
     query: "{{ is_metal | ternary(metal_query, non_metal_query) }}"
     non_metal_query: "container_networks.{{ network_address }}.address || ansible_host"
     find_bridge: "container_networks.{{ network_address }}.bridge"
-    metal_query: "ansible_{{ hostvars[inventory_hostname]|json_query(find_bridge) | replace('-','_') }}.ipv4.address || {{ non_metal_query }}"
+    metal_query: "'ansible_{{ hostvars[inventory_hostname] | json_query(find_bridge) | replace('-','_') }}'.ipv4.address || {{ non_metal_query }}"
   tags:
     - common-address
     - always
