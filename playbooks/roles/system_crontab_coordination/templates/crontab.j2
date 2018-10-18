@@ -23,7 +23,7 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
     {%- if ((hosts | length) | int) > (period | int) -%}
         0
     {%- else -%}
-        {{ (((period | int) / ((hosts | length) | int)) | int) | random }}
+        {{ (((period | int) / ((hosts | length) | int)) | int) | random(seed=inventory_hostname) }}
     {%- endif -%}
 {%- endmacro %}
 {% for host in ansible_play_hosts %}
