@@ -51,8 +51,8 @@
       loop_control:
         loop_var: backend_name
       when:
-        - "item in group_names"
-        - "groups[item] | length > 1"
+        - "backend_name in group_names"
+        - "groups[backend_name] | length > 1"
       with_items:
         - "nova_api_metadata"
         - "nova_api_os_compute"
@@ -182,8 +182,8 @@
       loop_control:
         loop_var: backend_name
       when:
-        - "item in group_names"
-        - "groups[item] | length > 1"
+        - "backend_name in group_names"
+        - "groups[backend_name] | length > 1"
       with_items:
         - "nova_api_metadata"
         - "nova_api_os_compute"
