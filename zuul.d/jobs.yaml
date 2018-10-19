@@ -255,6 +255,8 @@
     parent: openstack-ansible-deploy-aio
     nodeset: opensuse-423
     vars:
+      action: deploy
+      scenario: ceph
       install_method: distro
 
 - job:
