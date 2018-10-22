@@ -39,12 +39,12 @@
     check:
       jobs:
         - openstack-ansible-deploy-aio_lxc-centos-7
-        - openstack-ansible-deploy-aio_lxc-opensuse-423:
-            voting: false
+        - openstack-ansible-deploy-aio_lxc-opensuse-423
         - openstack-ansible-deploy-aio_lxc-ubuntu-bionic
     gate:
       jobs:
         - openstack-ansible-deploy-aio_lxc-centos-7
+        - openstack-ansible-deploy-aio_lxc-opensuse-423
         - openstack-ansible-deploy-aio_lxc-ubuntu-bionic
     periodic:
       jobs:
@@ -69,12 +69,12 @@
     check:
       jobs:
         - openstack-ansible-deploy-aio_metal-centos-7
-        - openstack-ansible-deploy-aio_metal-opensuse-423:
-            voting: false
+        - openstack-ansible-deploy-aio_metal-opensuse-423
         - openstack-ansible-deploy-aio_metal-ubuntu-bionic
     gate:
       jobs:
         - openstack-ansible-deploy-aio_metal-centos-7
+        - openstack-ansible-deploy-aio_metal-opensuse-423
         - openstack-ansible-deploy-aio_metal-ubuntu-bionic
 
 - project-template:
