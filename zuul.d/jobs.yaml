@@ -39,22 +39,18 @@
 
 # Ensuring overrides work
 - job:
-    name: openstack-ansible-varstest-aio_lxc-ubuntu-bionic
-    parent: openstack-ansible-deploy-aio_lxc-ubuntu-bionic
-    vars:
-      action: varstest
-
-- job:
-    name: openstack-ansible-varstest-aio_lxc-ubuntu-xenial
-    parent: openstack-ansible-deploy-aio_lxc-ubuntu-xenial
+    name: openstack-ansible-varstest-aio
+    parent: openstack-ansible-deploy-aio
+    nodeset: ubuntu-bionic
     vars:
       action: varstest
 
 # Experimental job for checking our AIO can deploy with
 # a different ansible version
 - job:
-    name: openstack-ansible-deploy_with_ansible_devel-aio-ubuntu-xenial
-    parent: openstack-ansible-deploy-aio_lxc-ubuntu-xenial
+    name: openstack-ansible-deploy_with_ansible_devel-aio-ubuntu-bionic
+    parent: openstack-ansible-deploy-aio
+    nodeset: ubuntu-bionic
     branches: ^(devel|master)$
     required-projects:
       - name: github.com/ansible/ansible
@@ -65,8 +61,9 @@
 # Experimental job for checking our AIO can deploy with
 # a different ansible version
 - job:
-    name: openstack-ansible-deploy_with_ansible_next-aio-ubuntu-xenial
-    parent: openstack-ansible-deploy-aio_lxc-ubuntu-xenial
+    name: openstack-ansible-deploy_with_ansible_next-aio-ubuntu-bionic
+    parent: openstack-ansible-deploy-aio
+    nodeset: ubuntu-bionic
     branches: ^(devel|master)$
     required-projects:
       - name: github.com/ansible/ansible
@@ -86,90 +83,106 @@
     nodeset: ubuntu-xenial
 
 - job:
-    name: openstack-ansible-deploy-aio_distro_lxc-ubuntu-xenial
-    parent: openstack-ansible-deploy-aio_lxc-ubuntu-xenial
+    name: openstack-ansible-deploy-aio_distro_lxc-ubuntu-bionic
+    parent: openstack-ansible-deploy-aio
+    nodeset: ubuntu-bionic
     vars:
       install_method: distro
 
 - job:
-    name: openstack-ansible-deploy-ceph-ubuntu-xenial
-    parent: openstack-ansible-deploy-aio_lxc-ubuntu-xenial
+    name: openstack-ansible-deploy-ceph-ubuntu-bionic
+    parent: openstack-ansible-deploy-aio
+    nodeset: ubuntu-bionic
     vars:
       action: deploy
       scenario: ceph
 
 - job:
-    name: openstack-ansible-deploy-distro_ceph-ubuntu-xenial
-    parent: openstack-ansible-deploy-ceph-ubuntu-xenial
+    name: openstack-ansible-deploy-ceph-ubuntu-xenial
+    parent: openstack-ansible-deploy-aio
+    nodeset: ubuntu-xenial
     vars:
+      action: deploy
+      scenario: ceph
+
+- job:
+    name: openstack-ansible-deploy-distro_ceph-ubuntu-bionic
+    parent: openstack-ansible-deploy-aio
+    nodeset: ubuntu-bionic
+    vars:
+      action: deploy
+      scenario: ceph
       install_method: distro
 
 - job:
+    name: openstack-ansible-deploy-aio_metal-ubuntu-bionic
+    parent: openstack-ansible-deploy-aio
+    nodeset: ubuntu-bionic
+    vars:
+      action: deploy
+      scenario: aio_metal
+
+- job:
     name: openstack-ansible-deploy-aio_metal-ubuntu-xenial
-    parent: openstack-ansible-deploy-aio_lxc-ubuntu-xenial
+    parent: openstack-ansible-deploy-aio
+    nodeset: ubuntu-xenial
     vars:
       action: deploy
       scenario: aio_metal
 
 - job:
     name: openstack-ansible-upgrade-aio_lxc-ubuntu-xenial
-    parent: openstack-ansible-deploy-aio_lxc-ubuntu-xenial
+    parent: openstack-ansible-deploy-aio
+    nodeset: ubuntu-xenial
     timeout: 10800
     vars:
       action: upgrade
       scenario: aio_lxc
 
 - job:
-    name: openstack-ansible-deploy-aio_nspawn-ubuntu-xenial
-    parent: openstack-ansible-deploy-aio_lxc-ubuntu-xenial
+    name: openstack-ansible-deploy-aio_nspawn-ubuntu-bionic
+    parent: openstack-ansible-deploy-aio
+    nodeset: ubuntu-bionic
     vars:
       scenario: aio_nspawn
 
 - job:
     name: openstack-ansible-upgrade-ceph-ubuntu-xenial
-    parent: openstack-ansible-deploy-aio_lxc-ubuntu-xenial
+    parent: openstack-ansible-deploy-aio
+    nodeset: ubuntu-xenial
     timeout: 10800
     vars:
       action: upgrade
       scenario: ceph
 
 - job:
-    name: openstack-ansible-deploy-octavia-ubuntu-xenial
-    parent: openstack-ansible-deploy-aio_lxc-ubuntu-xenial
+    name: openstack-ansible-deploy-octavia-ubuntu-bionic
+    parent: openstack-ansible-deploy-aio
+    nodeset: ubuntu-bionic
     vars:
       action: deploy
       scenario: octavia
 
 - job:
-    name: openstack-ansible-deploy-translations-ubuntu-xenial
-    parent: openstack-ansible-deploy-aio_lxc-ubuntu-xenial
+    name: openstack-ansible-deploy-translations-ubuntu-bionic
+    parent: openstack-ansible-deploy-aio
+    nodeset: ubuntu-bionic
     vars:
       action: deploy
       scenario: translations
 
 - job:
-    name: openstack-ansible-deploy-congress-ubuntu-xenial
-    parent: openstack-ansible-deploy-aio_lxc-ubuntu-xenial
+    name: openstack-ansible-deploy-congress-ubuntu-bionic
+    parent: openstack-ansible-deploy-aio
+    nodeset: ubuntu-bionic
     vars:
       action: deploy
       scenario: congress
 
 - job:
-    name: openstack-ansible-deploy-aio_basekit-ubuntu-xenial
-    parent: openstack-ansible-deploy-aio_lxc-ubuntu-xenial
-    vars:
-      action: deploy
-      scenario: aio_basekit
-
-- job:
-    name: openstack-ansible-deploy-aio_distro_basekit-ubuntu-xenial
-    parent: openstack-ansible-deploy-aio_basekit-ubuntu-xenial
-    vars:
-      install_method: distro
-
-- job:
-    name: openstack-ansible-deploy-barbican-ubuntu-xenial
-    parent: openstack-ansible-deploy-aio_lxc-ubuntu-xenial
+    name: openstack-ansible-deploy-barbican-ubuntu-bionic
+    parent: openstack-ansible-deploy-aio
+    nodeset: ubuntu-bionic
     vars:
       action: deploy
       scenario: barbican
@@ -182,39 +195,32 @@
 
 - job:
     name: openstack-ansible-deploy-aio_distro_lxc-centos-7
-    parent: openstack-ansible-deploy-aio_lxc-centos-7
-    vars:
-      install_method: distro
-
-- job:
-    name: openstack-ansible-deploy-aio_basekit-centos-7
-    parent: openstack-ansible-deploy-aio_lxc-centos-7
-    vars:
-      action: deploy
-      scenario: aio_basekit
-
-- job:
-    name: openstack-ansible-deploy-aio_distro_basekit-centos-7
-    parent: openstack-ansible-deploy-aio_basekit-centos-7
+    parent: openstack-ansible-deploy-aio
+    nodeset: centos-7
     vars:
       install_method: distro
 
 - job:
     name: openstack-ansible-deploy-ceph-centos-7
-    parent: openstack-ansible-deploy-aio_lxc-centos-7
+    parent: openstack-ansible-deploy-aio
+    nodeset: centos-7
     vars:
       action: deploy
       scenario: ceph
 
 - job:
     name: openstack-ansible-deploy-distro_ceph-centos-7
-    parent: openstack-ansible-deploy-ceph-centos-7
+    parent: openstack-ansible-deploy-aio
+    nodeset: centos-7
     vars:
+      action: deploy
+      scenario: ceph
       install_method: distro
 
 - job:
     name: openstack-ansible-upgrade-aio_lxc-centos-7
-    parent: openstack-ansible-deploy-aio_lxc-centos-7
+    parent: openstack-ansible-deploy-aio
+    nodeset: centos-7
     timeout: 10800
     vars:
       action: upgrade
@@ -222,20 +228,23 @@
 
 - job:
     name: openstack-ansible-deploy-aio_metal-centos-7
-    parent: openstack-ansible-deploy-aio_lxc-centos-7
+    parent: openstack-ansible-deploy-aio
+    nodeset: centos-7
     vars:
       actio: deploy
       scenario: aio_metal
 
 - job:
     name: openstack-ansible-deploy-aio_nspawn-centos-7
-    parent: openstack-ansible-deploy-aio_lxc-centos-7
+    parent: openstack-ansible-deploy-aio
+    nodeset: centos-7
     vars:
       scenario: aio_nspawn
 
 - job:
     name: openstack-ansible-upgrade-ceph-centos-7
-    parent: openstack-ansible-deploy-aio_lxc-centos-7
+    parent: openstack-ansible-deploy-aio
+    nodeset: centos-7
     timeout: 10800
     vars:
       action: upgrade
@@ -249,39 +258,30 @@
 
 - job:
     name: openstack-ansible-deploy-aio_distro_lxc-opensuse-423
-    parent: openstack-ansible-deploy-aio_lxc-opensuse-423
-    vars:
-      install_method: distro
-
-- job:
-    name: openstack-ansible-deploy-aio_basekit-opensuse-423
-    parent: openstack-ansible-deploy-aio_lxc-opensuse-423
-    vars:
-      action: deploy
-      scenario: aio_basekit
-
-- job:
-    name: openstack-ansible-deploy-aio_distro_basekit-opensuse-423
-    parent: openstack-ansible-deploy-aio_basekit-opensuse-423
+    parent: openstack-ansible-deploy-aio
+    nodeset: opensuse-423
     vars:
       install_method: distro
 
 - job:
     name: openstack-ansible-deploy-ceph-opensuse-423
-    parent: openstack-ansible-deploy-aio_lxc-opensuse-423
+    parent: openstack-ansible-deploy-aio
+    nodeset: opensuse-423
     vars:
       action: deploy
       scenario: ceph
 
 - job:
     name: openstack-ansible-deploy-distro_ceph-opensuse-423
-    parent: openstack-ansible-deploy-ceph-opensuse-423
+    parent: openstack-ansible-deploy-aio
+    nodeset: opensuse-423
     vars:
       install_method: distro
 
 - job:
     name: openstack-ansible-upgrade-aio_lxc-opensuse-423
-    parent: openstack-ansible-deploy-aio_lxc-opensuse-423
+    parent: openstack-ansible-deploy-aio
+    nodeset: opensuse-423
     timeout: 10800
     vars:
       action: upgrade
@@ -289,13 +289,15 @@
 
 - job:
     name: openstack-ansible-deploy-aio_metal-opensuse-423
-    parent: openstack-ansible-deploy-aio_lxc-opensuse-423
+    parent: openstack-ansible-deploy-aio
+    nodeset: opensuse-423
     vars:
       action: deploy
       scenario: aio_metal
 
 - job:
     name: openstack-ansible-deploy-aio_nspawn-opensuse-423
-    parent: openstack-ansible-deploy-aio_lxc-opensuse-423
+    parent: openstack-ansible-deploy-aio
+    nodeset: opensuse-423
     vars:
       scenario: aio_nspawn
