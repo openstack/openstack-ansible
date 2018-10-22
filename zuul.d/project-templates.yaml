@@ -18,10 +18,12 @@
       jobs:
         - openstack-ansible-linters
         - openstack-ansible-varstest-aio
+        - openstack-tox-docs
     gate:
       jobs:
         - openstack-ansible-linters
         - openstack-ansible-varstest-aio
+        - openstack-tox-docs
     periodic:
       jobs:
         - openstack-ansible-deploy-translations-ubuntu-bionic
