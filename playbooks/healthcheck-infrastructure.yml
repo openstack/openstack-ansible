@@ -169,6 +169,12 @@
       tags:
         - rabbitmq
   post_tasks:
+    - package:
+        name: python-virtualenv
+        state: present
+      when: run_rabbit_tests | default(false)
+      tags:
+        - rabbitmq
     - name: Generate venv for rabbitmq testing
       pip:
         name: pika
