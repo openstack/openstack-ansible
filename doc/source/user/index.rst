@@ -31,3 +31,4 @@ For in-depth technical information, see the
    ceph/ceilometer.rst
    security/index.rst
    source-overrides/index.rst
+   prod/gnocchi_redis.rst
