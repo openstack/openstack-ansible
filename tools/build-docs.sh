@@ -40,22 +40,29 @@ for locale in `find ${DIRECTORY}/source/locale/ -maxdepth 1 -type d` ; do
         # get filename
         potname=$(basename $pot)
         resname=${potname%.pot}
-        # skip if it is not a valid language translation resource.
-        if [ ! -e ${locale}/LC_MESSAGES/${DOCNAME}-${resname}.po ]; then
-            continue
-        fi
         # merge all translation resources
-        msgmerge -q -o \
-            ${DIRECTORY}/source/locale/${language}/LC_MESSAGES/${resname}.po \
-            ${DIRECTORY}/source/locale/${language}/LC_MESSAGES/${DOCNAME}-${resname}.po \
-            ${DIRECTORY}/source/locale/${potname}
+        # "{resname}.pot" needs to be merged with "doc-{resname}.po" if exists
+        if [ -e ${DIRECTORY}/source/locale/${language}/LC_MESSAGES/${DOCNAME}-${resname}.po ]; then
+            msgmerge -q -o \
+                ${DIRECTORY}/source/locale/${language}/LC_MESSAGES/${resname}.po \
+                ${DIRECTORY}/source/locale/${language}/LC_MESSAGES/${DOCNAME}-${resname}.po \
+                ${DIRECTORY}/source/locale/${potname}
+        elif [ -e ${DIRECTORY}/source/locale/${language}/LC_MESSAGES/${DOCNAME}.po ]; then
+            msgmerge -q -o \
+                ${DIRECTORY}/source/locale/${language}/LC_MESSAGES/${resname}.po \
+                ${DIRECTORY}/source/locale/${language}/LC_MESSAGES/${DOCNAME}.po \
+                ${DIRECTORY}/source/locale/${potname}
+        else
+            msgcat ${DIRECTORY}/source/locale/${potname} > \
+                ${DIRECTORY}/source/locale/${language}/LC_MESSAGES/${resname}.po
+        fi
         # compile all translation resources
         msgfmt -o \
             ${DIRECTORY}/source/locale/${language}/LC_MESSAGES/${resname}.mo \
             ${DIRECTORY}/source/locale/${language}/LC_MESSAGES/${resname}.po
     done
 
-    # build lamguage version
+    # build language version
     sphinx-build -a -b html -D language=${language} \
             -d ${DIRECTORY}/build/doctrees.languages/${language} \
             ${DIRECTORY}/source ${DIRECTORY}/build/html/${language}
@@ -65,8 +72,10 @@ for locale in `find ${DIRECTORY}/source/locale/ -maxdepth 1 -type d` ; do
     git clean -f -x -q ${DIRECTORY}/source/locale/${language}/LC_MESSAGES/*.mo
     git clean -f -x -q ${DIRECTORY}/source/locale/.doctrees
     # revert changes to po file
-    git reset -q ${DIRECTORY}/source/locale/${language}/LC_MESSAGES/${DOCNAME}.po
-    git checkout -q -- ${DIRECTORY}/source/locale/${language}/LC_MESSAGES/${DOCNAME}.po
+    git reset -q ${DIRECTORY}/source/locale/${language}/LC_MESSAGES/
+    for po in `git ls-files ${DIRECTORY}/source/locale/${language}/LC_MESSAGES` ; do
+        git checkout -q -- $po
+    done
 done
 # remove generated pot files
 git clean -f -q ${DIRECTORY}/source/locale/*.pot
