@@ -345,5 +345,5 @@ haproxy_default_services:
       haproxy_backend_options:
         - httpchk HEAD /
       haproxy_backend_httpcheck_options:
-        - expect status 405
+        - expect rstatus 200|405
       haproxy_service_enabled: "{{ (groups['ceph-rgw'] is defined and groups['ceph-rgw'] | length > 0) or (ceph_rgws | length > 0) }}"
