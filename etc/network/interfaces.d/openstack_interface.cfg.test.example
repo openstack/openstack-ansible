@@ -53,7 +53,7 @@ iface br-vxlan inet static
     bridge_stp off
     bridge_waitport 0
     bridge_fd 0
-    bridge_ports bond1.30
+    bridge_ports eth0.30
     address 172.29.240.11
     netmask 255.255.252.0
 
