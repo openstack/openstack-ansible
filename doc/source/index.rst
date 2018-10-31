@@ -5,8 +5,8 @@ OpenStack-Ansible Documentation
 OpenStack-Ansible provides Ansible playbooks and roles for the deployment and
 configuration of an OpenStack environment.
 
-OpenStack-Ansible Rocky is currently a release candidate, expected to release
-with the 18.0.0 tag by 28 November 2018.
+OpenStack-Ansible's Rocky series was first released with the 18.0.0 tag on
+16 October 2018.
 
 .. toctree::
    :maxdepth: 1
