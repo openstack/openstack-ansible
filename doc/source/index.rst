@@ -24,10 +24,10 @@ OpenStack-Ansible Stein is currently in development.
    contributor/index
    reference/index
 
-Rocky: Release Candidate
-~~~~~~~~~~~~~~~~~~~~~~~~
-OpenStack-Ansible Rocky is currently a release candidate, expected to release
-with the 18.0.0 tag by 28 November 2018.
+Rocky: Maintained
+~~~~~~~~~~~~~~~~~
+OpenStack-Ansible's Rocky series was first released with the 18.0.0 tag on
+16 October 2018.
 
 * `OpenStack-Ansible Rocky Documentation`_
 
@@ -36,8 +36,8 @@ with the 18.0.0 tag by 28 November 2018.
 .. _OpenStack-Ansible Rocky Documentation: https://docs.openstack.org/openstack-ansible/rocky/
 .. _OpenStack-Ansible Rocky series release notes: https://docs.openstack.org/releasenotes/openstack-ansible/rocky.html
 
-Queens: Current stable release, security supported
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Queens: Maintained
+~~~~~~~~~~~~~~~~~~
 OpenStack-Ansible's Queens series was first released with the 17.0.0 tag on
 14 March 2018.
 
@@ -48,8 +48,8 @@ OpenStack-Ansible's Queens series was first released with the 17.0.0 tag on
 .. _OpenStack-Ansible Queens Documentation: https://docs.openstack.org/openstack-ansible/queens/
 .. _OpenStack-Ansible Queens series release notes: https://docs.openstack.org/releasenotes/openstack-ansible/queens.html
 
-Pike: Current stable release, security supported
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Pike: Maintained
+~~~~~~~~~~~~~~~~
 
 OpenStack-Ansible's Pike series was first released with the 16.0.0 tag on
 14 September 2017.
@@ -61,8 +61,8 @@ OpenStack-Ansible's Pike series was first released with the 16.0.0 tag on
 .. _OpenStack-Ansible Pike Documentation: https://docs.openstack.org/openstack-ansible/pike/
 .. _OpenStack-Ansible Pike series release notes: https://docs.openstack.org/releasenotes/openstack-ansible/pike.html
 
-Ocata: Current stable release, security supported
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Ocata: Extended Maintenance
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 OpenStack-Ansible's Ocata series was first released with the 15.0.0 tag on
 8 March 2017.
