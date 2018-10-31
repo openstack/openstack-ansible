@@ -19,14 +19,12 @@
   user: root
   tasks:
     - name: Remove target directory if required
-      shell: |
-        if [[ ! -d "{{ item.path | default(role_path_default) }}/{{ item.name | default(item.src | basename) }}/.git" ]]; then
-          rm -rf "{{ item.path | default(role_path_default) }}/{{ item.name | default(item.src | basename) }}"
-        fi
-      args:
-        executable: /bin/bash
+      file:
+        path: "{{ item.path | default(role_path_default) }}/{{ item.name | default(item.src | basename) }}"
+        state: absent
       when:
         - item.scm == "git" or item.scm is undefined
+        - "(item.path | default(role_path_default) ~ '/' ~ item.name | default(item.src | basename) ~ '/.git') is not directory"
       with_items: "{{ required_roles }}"
 
     - name: Ensure the default roles directory exists
