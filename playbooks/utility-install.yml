@@ -105,6 +105,23 @@
           args:
             creates: "{{ utility_venv_bin }}/activate"
 
+        - name: Upgrade pip/setuptools/wheel to the versions we want
+          pip:
+            name:
+              - pip
+              - setuptools
+              - wheel
+            state: "{{ utility_pip_package_state }}"
+            virtualenv: "{{ utility_venv_bin | dirname }}"
+            virtualenv_site_packages: "no"
+            extra_args: >-
+              {{ (pip_install_upper_constraints is defined) | ternary('--constraint ' + pip_install_upper_constraints | default(''),'') }}
+              {{ pip_install_options | default('') }}
+          register: install_packages
+          until: install_packages is success
+          retries: 5
+          delay: 2
+
         - name: Install pip packages
           pip:
             name: "{{ _openstack_client_list | union(utility_pip_packages) }}"
