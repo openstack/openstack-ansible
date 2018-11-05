@@ -58,6 +58,9 @@ export INSTALL_METHOD=${3:-"source"}
 # is created. The checkout must always be N-1.
 export UPGRADE_SOURCE_BRANCH=${UPGRADE_SOURCE_BRANCH:-'stable/rocky'}
 
+# enable the ARA callback plugin
+export SETUP_ARA=true
+
 ## Change branch for Upgrades ------------------------------------------------
 # If the action is to upgrade, then store the current SHA,
 # checkout the source SHA before executing the greenfield
@@ -101,9 +104,6 @@ fi
 
 # Bootstrap Ansible
 source "${OSA_CLONE_DIR}/scripts/bootstrap-ansible.sh"
-
-# Install and export the ARA callback plugin
-setup_ara
 
 # Log some data about the instance and the rest of the system
 log_instance_info
