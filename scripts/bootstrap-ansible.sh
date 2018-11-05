@@ -26,6 +26,8 @@ export ANSIBLE_PACKAGE=${ANSIBLE_PACKAGE:-"ansible==2.4.4.0"}
 export ANSIBLE_ROLE_FILE=${ANSIBLE_ROLE_FILE:-"ansible-role-requirements.yml"}
 export SSH_DIR=${SSH_DIR:-"/root/.ssh"}
 export DEBIAN_FRONTEND=${DEBIAN_FRONTEND:-"noninteractive"}
+# check whether to install the ARA callback plugin
+export SETUP_ARA=${SETUP_ARA:-"false"}
 
 # Set the role fetch mode to any option [galaxy, git-clone]
 export ANSIBLE_ROLE_FETCH_MODE=${ANSIBLE_ROLE_FETCH_MODE:-git-clone}
@@ -287,6 +289,11 @@ EOF
 chmod +x /usr/local/bin/openstack-ansible
 
 echo "openstack-ansible wrapper created."
+
+# Install and export the ARA callback plugin
+if [ "${SETUP_ARA}" == "true" ]; then
+  setup_ara
+fi
 
 # If the Ansible plugins are in the old location remove them.
 [[ -d "/etc/ansible/plugins" ]] && rm -rf "/etc/ansible/plugins"
