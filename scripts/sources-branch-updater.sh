@@ -39,7 +39,7 @@ if [[ -z ${OPENSTACK_SERVICE_LIST} ]]; then
   # Define the repositories to skip in an array.
   # These items are removed as they are not service projects
   # and therefore do not have policy/api-paste/etc files.
-  OPENSTACK_REPO_SKIP_LIST=( requirements dragonflow swift3 )
+  OPENSTACK_REPO_SKIP_LIST=( requirements swift3 )
 
   # Define the skip regex for any additional items to remove.
   # Items with a '-' are removed as those repositories are
