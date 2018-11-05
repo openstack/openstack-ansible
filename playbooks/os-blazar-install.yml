@@ -1,0 +1,55 @@
+---
+# Copyright 2018, taseer94@gmail.com
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Install blazar components
+  hosts: blazar_all
+  gather_facts: "{{ osa_gather_facts | default(True) }}"
+  environment: "{{ deployment_environment_variables | default({}) }}"
+  user: root
+  vars_files:
+    - "defaults/{{ install_method }}_install.yml"
+  tags:
+    - blazar
+  pre_tasks:
+    - include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
+      when: not is_metal
+
+    - name: Configure log directories (on metal)
+      include_tasks: common-tasks/os-log-dir-setup.yml
+      vars:
+        log_dirs:
+          - src: "/openstack/log/{{ inventory_hostname }}-blazar"
+            dest: "/var/log/blazar"
+
+    - include_tasks: common-tasks/unbound-clients.yml
+      when:
+        - hostvars['localhost']['resolvconf_enabled'] | bool
+
+    - name: Configure package proxy cache
+      include_tasks: common-tasks/package-cache-proxy.yml
+      when: install_method == "source"
+
+  roles:
+    - role: "os_blazar"
+    - role: "system_crontab_coordination"
+      tags:
+        - crontab
+
+  post_tasks:
+    - include_tasks: "common-tasks/rsyslog-client.yml"
+      vars:
+        rsyslog_client_log_rotate_file: blazar_log_rotate
+        rsyslog_client_log_dir: "/var/log/blazar"
+        rsyslog_client_config_name: "99-blazar-rsyslog-client.conf"

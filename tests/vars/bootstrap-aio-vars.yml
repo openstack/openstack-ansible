@@ -36,6 +36,13 @@ confd_overrides:
     - name: keystone.yml.aio
     - name: neutron.yml.aio
     - name: nova.yml.aio
+  blazar:
+    - name: haproxy.yml.aio
+    - name: nova.yml.aio
+    - name: neutron.yml.aio
+    - name: keystone.yml.aio
+    - name: glance.yml.aio
+    - name: blazar.yml.aio
   ceph:
     - name: haproxy.yml.aio
     - name: ceph.yml.aio
