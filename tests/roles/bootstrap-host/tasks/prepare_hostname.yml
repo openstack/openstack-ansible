@@ -30,5 +30,15 @@
     backup: yes
 
 - name: Ensure hostname is set
-  hostname:
-    name: aio1
+  block:
+    - name: Set hostname using the Ansible module
+      hostname:
+        name: aio1
+  # NOTE(hwoarang) The hostname module does not work on Leap 15 because of
+  # https://bugzilla.novell.com/show_bug.cgi?id=997614
+  # As such we need to fallback to using the command directly.
+  rescue:
+    - name: Set hostname using hostnamectl
+      command: hostnamectl set-hostname aio1
+  tags:
+    - skip_ansible_lint

@@ -80,4 +80,19 @@ Vagrant.configure(2) do |config|
       SHELL
   end
 
+  config.vm.define "opensuse150" do |leap150|
+    leap150.disksize.size = disk_size
+    leap150.vm.box = "opensuse/openSUSE-15.0-x86_64"
+    leap150.vm.provision "shell",
+      privileged: true,
+      inline: <<-SHELL
+        cd /vagrant
+        zypper -qn in gdisk
+        echo -e 'x\ne\nw\ny\n' | gdisk /dev/sda
+        parted -s /dev/sda unit GB resizepart 3 100%
+        btrfs fi resize max /
+        ./scripts/gate-check-commit.sh
+      SHELL
+  end
+
 end
