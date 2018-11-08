@@ -1,0 +1,21 @@
+---
+issues:
+  - The original ``stable/rocky`` release (18.0.x) contained a
+    reference to a pre-release state of the ceph-ansible role (its
+    3.2.0beta1 release). That role --- and hence, any OpenStack-Ansible
+    ``stable/rocky`` release prior to 18.1.0 --- should not be used to
+    deploy production Ceph clusters. As of this release,
+    ``stable/rocky`` tracks the ceph-ansible role's ``stable-3.1``
+    branch.
+upgrade:
+  - Configurations using the ``ceph-ansible`` role (that is, those
+    applying the ``ceph-install.yml`` or ``ceph-rgw-install.yml``
+    playbooks) should be very carefully reviewed if you are upgrading
+    from prior ``stable/rocky`` releases. Those releases shipped a
+    pre-release version of ``ceph-ansible`` that was unintentionally
+    included in ``ansible-role-requirements.yml``.
+fixes:
+  - The ``ansible-role-requirements.yml`` reference to the
+    ``ceph-ansible`` role has been fixed to refer to the current
+    ``HEAD`` of that role's ``stable-3.1`` branch. It previously
+    pointed to the pre-release 3.2.0beta1 version.
