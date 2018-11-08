@@ -147,13 +147,13 @@
     - name: Execute cinder service reload
       include: common-tasks/restart-service.yml
       vars:
-        service_name: "{{ item }}"
-        service_action: "reloaded"
+        service_name: "{{ item.name }}"
+        service_action: "{{ item.action }}"
         service_fact: "cinder"
       with_items:
-        - "cinder-scheduler"
-        - "cinder-backup"
-        - "cinder-volume"
+        - { name: "cinder-scheduler", action: "restarted" }
+        - { name: "cinder-backup", action: "reloaded" }
+        - { name: "cinder-volume", action: "reloaded" }
       when:
         - "cinder_all_software_updated | bool"
         - "ansible_local['openstack_ansible']['cinder']['need_service_restart'] | bool"
