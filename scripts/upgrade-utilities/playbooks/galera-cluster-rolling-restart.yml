@@ -41,12 +41,12 @@
 
   post_tasks:
     - name: Wait for mariadb port 3306 to be available
-      local_action:
-        module: wait_for
+      wait_for:
         port: "3306"
         host: "{{ ansible_host | default(ansible_ssh_host | default(inventory_hostname)) }}"
       retries: 10
       delay: 10
+      delegate_to: "{{ groups['utility_all'][0] }}"
 
     - name: Check that WSREP is ready and Synced
       shell: "/usr/bin/mysqladmin extended-status | egrep '(wsrep_local_state_comment)'"
