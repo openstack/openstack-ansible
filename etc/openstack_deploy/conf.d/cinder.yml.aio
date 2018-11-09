@@ -2,6 +2,29 @@
 storage-infra_hosts:
   aio1:
     ip: 172.29.236.100
+    container_vars:
+      cinder_qos_specs:
+        - name: low-iops
+          options:
+            consumer: front-end
+            read_iops_sec: 75
+            write_iops_sec: 75
+          cinder_volume_types:
+            - low-iops
+        - name: high-iops
+          options:
+            consumer: front-end
+            read_iops_sec: 150
+            write_iops_sec: 150
+          cinder_volume_types:
+            - high-iops
+        - name: ultra-high-iops
+          options:
+            consumer: front-end
+            read_iops_sec: 300
+            write_iops_sec: 300
+          cinder_volume_types:
+            - ultra-high-iops
 
 storage_hosts:
   aio1:
@@ -15,3 +38,7 @@ storage_hosts:
           volume_backend_name: LVM_iSCSI
           iscsi_ip_address: "172.29.236.100"
           lvm_type: "thin"
+          extra_volume_types:
+            - low-iops
+            - high-iops
+            - ultra-high-iops
