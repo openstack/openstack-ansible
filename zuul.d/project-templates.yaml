@@ -60,8 +60,7 @@
       jobs:
         - openstack-ansible-deploy-aio_distro_lxc-centos-7:
             voting: false
-        - openstack-ansible-deploy-aio_distro_lxc-opensuse-423:
-            voting: false
+        - openstack-ansible-deploy-aio_distro_lxc-opensuse-423
         - openstack-ansible-deploy-aio_distro_lxc-ubuntu-bionic:
             voting: false
     gate:
@@ -110,7 +109,6 @@
     name: openstack-ansible-deploy-distro_ceph-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-distro_ceph-opensuse-423:
-            voting: false
+        - openstack-ansible-deploy-distro_ceph-opensuse-423
     gate:
       jobs: []
