@@ -182,11 +182,6 @@ chmod +x /usr/local/bin/openstack-ansible
 
 echo "openstack-ansible wrapper created."
 
-# Install and export the ARA callback plugin
-if [ "${SETUP_ARA}" == "true" ]; then
-  setup_ara
-fi
-
 # If the Ansible plugins are in the old location remove them.
 [[ -d "/etc/ansible/plugins" ]] && rm -rf "/etc/ansible/plugins"
 
@@ -230,6 +225,11 @@ if [ -f "${ANSIBLE_ROLE_FILE}" ]; then
     echo "Please set the ANSIBLE_ROLE_FETCH_MODE to either of the following options ['galaxy', 'git-clone']"
     exit 99
   fi
+fi
+
+# Install and export the ARA callback plugin
+if [ "${SETUP_ARA}" == "true" ]; then
+  setup_ara
 fi
 
 echo "System is bootstrapped and ready for use."
