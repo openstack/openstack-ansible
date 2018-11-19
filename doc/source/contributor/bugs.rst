@@ -152,7 +152,7 @@ Bug skimming duty weekly checklist
 - Move bugs that can not be reproduced to an invalid state if they are
   unmodified for more than a month.
 
-- Send an email to the openstack-dev list with the `list of bugs to
+- Send an email to the openstack-discuss list with the `list of bugs to
   triage`_ during the week. A new bug marked as *Critical* or *High* must
   be treated in priority.
 
