@@ -17,15 +17,15 @@
 debug: True
 
 ## Installation method for OpenStack services
-install_method: "{{ lookup('env','INSTALL_METHOD') | default('source', true) }}"
+install_method: "{{ bootstrap_host_install_method }}"
 
 ## Tempest settings
-{% if container_tech == 'nspawn' %}
+{% if bootstrap_host_container_tech == 'nspawn' %}
 tempest_public_subnet_cidr: "172.29.236.0/22"
 tempest_public_subnet_allocation_pools: "172.29.239.110-172.29.239.200"
 {% else %}
 ## Tempest settings
-tempest_public_subnet_cidr: 172.29.248.0/22
+tempest_public_subnet_cidr: "172.29.248.0/22"
 tempest_public_subnet_allocation_pools: "172.29.249.110-172.29.249.200"
 {% endif %}
 
@@ -155,7 +155,7 @@ lxc_net_address: 10.255.255.1
 lxc_net_netmask: 255.255.255.0
 lxc_net_dhcp_range: 10.255.255.2,10.255.255.253
 
-{% if repo_build_pip_extra_indexes is defined and repo_build_pip_extra_indexes|length > 0 %}
+{% if repo_build_pip_extra_indexes is defined and repo_build_pip_extra_indexes | length > 0 %}
 ## Wheel mirrors for the repo_build to use
 repo_build_pip_extra_indexes:
 {{ repo_build_pip_extra_indexes | to_nice_yaml }}
@@ -205,5 +205,5 @@ openstack_user_kernel_options:
 {% if bootstrap_host_scenario in ['octavia'] %}
 # Octavia specific stuff
 neutron_lbaas_octavia: True
-octavia_management_net_subnet_cidr: "{{ (container_tech == 'nspawn') | ternary('172.29.240.0/22', '172.29.252.0/22') }}"
+octavia_management_net_subnet_cidr: "{{ (bootstrap_host_container_tech == 'nspawn') | ternary('172.29.240.0/22', '172.29.252.0/22') }}"
 {% endif %}

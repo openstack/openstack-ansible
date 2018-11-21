@@ -15,7 +15,7 @@
 
 ## AIO user-space configuration options
 # Scenario used to bootstrap the host
-bootstrap_host_scenario: aio_lxc
+bootstrap_host_scenario: "{{ lookup('env','SCENARIO') | default('aio_lxc', true) }}"
 #
 # Boolean option to implement OpenStack-Ansible configuration for an AIO
 # Switch to no for a multi-node configuration
@@ -188,9 +188,9 @@ bootstrap_host_data_mount_options:
   lvm: "defaults"
   swap: "%%"
 
-bootstrap_host_data_disk2_fs: "{{ bootstrap_host_data_disk2_formats[((container_tech == 'nspawn') | ternary('btrfs', lxc_container_backing_store))] }}"
-bootstrap_host_data_disk2_fs_mount_options: "{{ bootstrap_host_data_mount_options[((container_tech == 'nspawn') | ternary('btrfs', lxc_container_backing_store))] }}"
-bootstrap_host_data_disk2_path: "{{ (lxc_container_backing_store == 'machinectl' or container_tech == 'nspawn') | ternary('/var/lib/machines', '/var/lib/lxc') }}"
+bootstrap_host_data_disk2_fs: "{{ bootstrap_host_data_disk2_formats[((bootstrap_host_container_tech == 'nspawn') | ternary('btrfs', lxc_container_backing_store))] }}"
+bootstrap_host_data_disk2_fs_mount_options: "{{ bootstrap_host_data_mount_options[((bootstrap_host_container_tech == 'nspawn') | ternary('btrfs', lxc_container_backing_store))] }}"
+bootstrap_host_data_disk2_path: "{{ (lxc_container_backing_store == 'machinectl' or bootstrap_host_container_tech == 'nspawn') | ternary('/var/lib/machines', '/var/lib/lxc') }}"
 
 ### Optional Settings ###
 
@@ -199,8 +199,11 @@ bootstrap_host_data_disk2_path: "{{ (lxc_container_backing_store == 'machinectl'
 # host's network interface that has the default route on it.
 #bootstrap_host_public_address: 0.0.0.0
 
+# Set the install method for the deployment. Options are ['source', 'distro']
+bootstrap_host_install_method: "{{ lookup('env', 'INSTALL_METHOD') | default('source', true)  }}"
+
 # Set the container technology in service. Options are nspawn and lxc.
-container_tech: "{{ ('nspawn' in bootstrap_host_scenario) | ternary('nspawn', 'lxc') }}"
+bootstrap_host_container_tech: "{{ (bootstrap_host_scenario is search('nspawn')) | ternary('nspawn', 'lxc') }}"
 
 # Set the lxc backing store for the job
 lxc_container_backing_store: dir
