@@ -202,7 +202,7 @@ openstack_user_kernel_options:
   - key: 'kernel.printk'
     value: '4 1 7 4'
 
-{% if bootstrap_host_scenario in ['octavia'] %}
+{% if 'octavia' in bootstrap_host_services %}
 # Octavia specific stuff
 neutron_lbaas_octavia: True
 octavia_management_net_subnet_cidr: "{{ (bootstrap_host_container_tech == 'nspawn') | ternary('172.29.240.0/22', '172.29.252.0/22') }}"

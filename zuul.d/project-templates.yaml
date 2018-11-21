@@ -29,8 +29,8 @@
       jobs:
         - openstack-ansible-deploy-aio_nspawn-ubuntu-bionic
         - openstack-ansible-deploy-barbican-ubuntu-bionic
-        - openstack-ansible-deploy-congress-ubuntu-bionic
-        - openstack-ansible-deploy-octavia-ubuntu-bionic
+        - openstack-ansible-deploy-aio_congress-ubuntu-bionic
+        - openstack-ansible-deploy-aio_octavia-ubuntu-bionic
         - openstack-ansible-deploy_with_ansible_devel-aio-ubuntu-bionic
         - openstack-ansible-deploy_with_ansible_next-aio-ubuntu-bionic
 
@@ -98,18 +98,18 @@
     name: openstack-ansible-deploy-ceph-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-ceph-ubuntu-bionic:
+        - openstack-ansible-deploy-aio_ceph-ubuntu-bionic:
             voting: false
-        - openstack-ansible-deploy-ceph-ubuntu-xenial
+        - openstack-ansible-deploy-aio_ceph-ubuntu-xenial
     gate:
       jobs:
-        - openstack-ansible-deploy-ceph-ubuntu-xenial
+        - openstack-ansible-deploy-aio_ceph-ubuntu-xenial
 
 - project-template:
     name: openstack-ansible-deploy-distro_ceph-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-distro_ceph-opensuse-423:
+        - openstack-ansible-deploy-aio_distro_ceph-opensuse-423:
             voting: false
     gate:
       jobs: []

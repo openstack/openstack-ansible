@@ -40,23 +40,6 @@ bootstrap_host_target_config_paths:
 # The user variables template to use
 bootstrap_user_variables_template: user_variables.aio.yml.j2
 
-# Extra user variables files can be loaded into /etc/openstack_deploy by
-# test scenarios. The dict uses scenario as the key to load a list of extra
-# templates if necessary.
-bootstrap_user_variables_extra_templates:
-  ceph:
-    - src: user_variables_ceph.yml.j2
-      dest: user_variables_ceph.yml
-  congress:
-    - src: user_variables_congress.yml.j2
-      dest: user_variables_congress.yml
-  translations:
-    - src: user_variables_translations.yml.j2
-      dest: user_variables_translations.yml
-  barbican:
-    - src: user_variables_barbican.yml.j2
-      dest: user_variables_barbican.yml
-
 ## Loopback volumes
 # Sparse loopback disks are used for the containers if there is no secondary
 # disk available to partition for btrfs. They are also used for Ceph, Cinder,
@@ -99,7 +82,7 @@ bootstrap_host_loopback_zfs: yes
 bootstrap_host_loopback_zfs_size: 1024
 #
 # Boolean option to deploy the OSD loopback disks and cluster UUID for Ceph
-bootstrap_host_ceph: "{{ (bootstrap_host_scenario == 'ceph') | bool }}"
+bootstrap_host_ceph: "{{ 'ceph' in bootstrap_host_services }}"
 # Size of the Ceph OSD loopbacks
 bootstrap_host_loopback_ceph_size: 1024
 # Ceph OSDs to create on the AIO host
