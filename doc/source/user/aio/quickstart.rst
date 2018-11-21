@@ -204,14 +204,6 @@ executing:
 
    # scripts/bootstrap-aio.sh
 
-If you wish to use a different scenario, for example, the Ceph scenario,
-execute the following:
-
-.. code-block:: shell-session
-
-   # export SCENARIO='ceph'
-   # scripts/bootstrap-aio.sh
-
 To add OpenStack Services over and above the bootstrap-aio default services
 for the applicable scenario, copy the ``conf.d`` files with the ``.aio`` file
 extension into ``/etc/openstack_deploy`` and rename then to ``.yml`` files.
@@ -223,6 +215,29 @@ following:
    # cd /opt/openstack-ansible/
    # cp etc/openstack_deploy/conf.d/{aodh,gnocchi,ceilometer}.yml.aio /etc/openstack_deploy/conf.d/
    # for f in $(ls -1 /etc/openstack_deploy/conf.d/*.aio); do mv -v ${f} ${f%.*}; done
+
+It is possible to also do this (and change other defaults) during the bootstrap
+script initial execution by changing the SCENARIO environment variable before
+running the script. The key word 'aio' will ensure that a basic set of
+OpenStack services (cinder, glance, horizon, neutron, nova) will be deployed.
+The key words 'lxc' and 'nspawn' can be used to set the container back-end,
+while the key word 'metal' will deploy all services without containers. In
+order to implement any other services, add the name of the conf.d file name
+without the `.yml.aio` extension into the SCENARIO environment variable. Each
+key word should be delimited by an underscore. For example, the following will
+implement an AIO with barbican, cinder, glance, horizon, neutron, and nova. It
+will set the cinder storage back-end to ceph and will make use of LXC as the
+container back-end.
+
+.. code-block:: shell-session
+
+   # export SCENARIO='aio_lxc_barbican'
+   # scripts/bootstrap-aio.sh
+
+.. note::
+   If the 'metal' and 'aio' key words are used together, horizon will not be
+   deployed because haproxy and horizon will conflict on the same listening
+   ports.
 
 To add any global overrides, over and above the defaults for the applicable
 scenario, edit ``/etc/openstack_deploy/user_variables.yml``. In order to
