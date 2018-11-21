@@ -120,11 +120,11 @@ shared-infra_hosts:
     ip: 172.29.236.100
     container_vars:
       # Optional | container_tech for a target host, default is "lxc".
-      container_tech: "{{ container_tech }}"
+      container_tech: "{{ bootstrap_host_container_tech }}"
 
 repo-infra_hosts:
   aio1:
-{% if install_method == 'distro' %}
+{% if bootstrap_host_install_method == 'distro' %}
     affinity:
       repo_container: 0
 {% endif %}
