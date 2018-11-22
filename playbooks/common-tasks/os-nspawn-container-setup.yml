@@ -37,7 +37,7 @@
     - skip_ansible_lint
     - always
 
-- name: Ensure mount directories exists (container)
+- name: Ensure mount directories exists (physical host)
   file:
     path: "{{ item['mount_path'] }}"
     state: "directory"
@@ -47,7 +47,7 @@
   tags:
     - common-nspawn
 
-- name: Ensure mount directories exists (physical host)
+- name: Ensure mount directories exists (container)
   file:
     path: "{{ item['bind_dir_path'] }}"
     state: "directory"
