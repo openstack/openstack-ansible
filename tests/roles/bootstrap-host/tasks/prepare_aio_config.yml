@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 - name: Create the required deployment directories
   file:
     path: "{{ item }}"
@@ -75,6 +74,7 @@
         echo "opensuse_mirror: '${NODEPOOL_OPENSUSE_MIRROR}'" >> ${NODEPOOL_OVERRIDES}
         echo "centos_epel_mirror: '${NODEPOOL_EPEL_MIRROR}'" >> ${NODEPOOL_OVERRIDES}
         echo "galera_percona_xtrabackup_repo_host: '${NODEPOOL_PERCONA_PROXY}'" >> ${NODEPOOL_OVERRIDES}
+        echo "galera_repo_host: '${NODEPOOL_MIRROR_HOST}:8080'" >> ${NODEPOOL_OVERRIDES}
         echo "openstack_hosts_rdo_mirror_url: '${NODEPOOL_RDO_PROXY}'" >> ${NODEPOOL_OVERRIDES}
         echo "lxc_centos_package_baseurl: 'http://${NODEPOOL_MIRROR_HOST}:8080/copr-lxc2/epel-7-x86_64/'" >> ${NODEPOOL_OVERRIDES}
         echo "lxc_centos_package_key: 'http://${NODEPOOL_MIRROR_HOST}:8080/copr-lxc2/pubkey.gpg'" >> ${NODEPOOL_OVERRIDES}
