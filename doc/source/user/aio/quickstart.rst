@@ -30,9 +30,10 @@ Recommended server resources:
   `Building an AIO`_ for more details.
 * 16GB RAM
 
-It's `possible` to perform AIO builds within a virtual machine for
-demonstration and evaluation, but your virtual machines will perform poorly.
-For production workloads, multiple nodes for specific roles are recommended.
+It is `possible` to perform AIO builds within a virtual machine for
+demonstration and evaluation, but your virtual machines will perform poorly
+unless nested virtualization is available. For production workloads, multiple
+nodes for specific roles are recommended.
 
 .. _hardware-assisted virtualization: https://en.wikipedia.org/wiki/Hardware-assisted_virtualization
 
@@ -40,13 +41,19 @@ For production workloads, multiple nodes for specific roles are recommended.
 Building an AIO
 ---------------
 
+Overview
+~~~~~~~~
+
 There are three steps to running an AIO build, with an optional first step
 should you need to customize your build:
 
-* Configuration *(this step is optional)*
-* Install and bootstrap Ansible
-* Initial host bootstrap
+* Prepare the host
+* Bootstrap Ansible and the required roles
+* Bootstrap the AIO configuration
 * Run playbooks
+
+Prepare the host
+~~~~~~~~~~~~~~~~
 
 When building an AIO on a new server, it is recommended that all
 system packages are upgraded and then reboot into the new kernel:
@@ -79,6 +86,9 @@ system packages are upgraded and then reboot into the new kernel:
    the *Installing with limited connectivity* appendix in the
    :deploy_guide:`Deployment Guide <index.html>` before proceeding.
 
+Bootstrap Ansible and the required roles
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 Start by cloning the OpenStack-Ansible repository and changing into the
 repository root directory:
 
@@ -108,73 +118,27 @@ version.
 
 .. note::
    The |current_release_formal_name| release is only compatible with Ubuntu
-   16.04 (Xenial Xerus), Ubuntu 18.04 (Bionic Beaver) Centos 7 and
+   16.04 (Xenial Xerus), Ubuntu 18.04 (Bionic Beaver) CentOS 7 and
    openSUSE Leap 42.X.
 
-By default the scripts deploy all OpenStack services with sensible defaults
-for the purpose of a gate check, development or testing system.
-
-Review the `bootstrap-host role defaults`_ file to see
-various configuration options. Deployers have the option to change how the
-host is bootstrapped. This is useful when you wish the AIO to make use of
-a secondary data disk, or when using this role to bootstrap a multi-node
+The next step is to bootstrap Ansible and the Ansible roles for the
 development environment.
 
-.. _bootstrap-host role defaults: https://git.openstack.org/cgit/openstack/openstack-ansible/tree/tests/roles/bootstrap-host/defaults/main.yml
-
-The bootstrap script is pre-set to pass the environment variable
-``BOOTSTRAP_OPTS`` as an additional option to the bootstrap process. For
-example, if you wish to set the bootstrap to re-partition a specific
-secondary storage device (``/dev/sdb``), which will erase all of the data
-on the device, then execute:
-
-.. code-block:: shell-session
-
-   # export BOOTSTRAP_OPTS="bootstrap_host_data_disk_device=sdb"
-
-By default the filesystem type will be set to ext4, if you want another type
-of filesystem to be used, just use something similar to the following:
-
-.. code-block:: shell-session
-
-   # export BOOTSTRAP_OPTS="bootstrap_host_data_disk_device=sdb bootstrap_host_data_disk_fs_type=xfs"
-
-Additional options may be implemented by simply concatenating them with
-a space between each set of options, for example:
-
-.. code-block:: shell-session
-
-   # export BOOTSTRAP_OPTS="bootstrap_host_data_disk_device=sdb"
-   # export BOOTSTRAP_OPTS="${BOOTSTRAP_OPTS} bootstrap_host_ubuntu_repo=http://mymirror.example.com/ubuntu"
-
 You may wish to change the role fetch mode. Options are ``galaxy`` and
-``git-clone``. The default for this option is ``galaxy``.
+``git-clone``. The default for this option is ``git-clone``. The mode may
+be changed by setting the ``ANSIBLE_ROLE_FETCH_MODE`` environment variable.
 
 options:
   :galaxy: Resolve all role dependencies using the ``ansible-galaxy`` resolver
   :git-clone: Clone all of the role dependencies using native git
 
-Notes:
-  When doing role development it may be useful to set
-  ``ANSIBLE_ROLE_FETCH_MODE`` to ``git-clone``. This will provide you the
-  ability to develop roles within the environment by modifying, patching, or
-  committing changes using an intact git tree while the ``galaxy`` option
-  scrubs the ``.git`` directory when it resolves a dependency.
-
-.. code-block:: bash
-
-   $ export ANSIBLE_ROLE_FETCH_MODE=git-clone
-
-The next step is to bootstrap Ansible and the Ansible roles for the
-development environment.  Deployers can customize roles by adding variables to
-override the defaults in each role (see :ref:`user-overrides`).  Run the
-following to bootstrap Ansible:
+Run the following to bootstrap Ansible and the required roles:
 
 .. code-block:: shell-session
 
    # scripts/bootstrap-ansible.sh
 
-Notes:
+.. note::
   You might encounter an error while running the Ansible bootstrap script
   when building some of the Python extensions (like pycrypto) which says:
 
@@ -197,12 +161,44 @@ Notes:
 
      # TMPDIR=/var/tmp scripts/bootstrap-ansible.sh
 
+Bootstrap the AIO configuration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 In order for all the services to run, the host must be prepared with the
 appropriate disks partitioning, packages, network configuration and
 configurations for the OpenStack Deployment.
 
-For the default AIO scenario, this preparation
-is completed by executing:
+By default the AIO bootstrap scripts deploy a base set of OpenStack services
+with sensible defaults for the purpose of a gate check, development or testing
+system.
+
+Review the `bootstrap-host role defaults`_ file to see various configuration
+options. Deployers have the option to change how the host is bootstrapped.
+This is useful when you wish the AIO to make use of a secondary data disk,
+or when using this role to bootstrap a multi-node development environment.
+
+.. _bootstrap-host role defaults: https://git.openstack.org/cgit/openstack/openstack-ansible/tree/tests/roles/bootstrap-host/defaults/main.yml
+
+The bootstrap script is pre-set to pass the environment variable
+``BOOTSTRAP_OPTS`` as an additional option to the bootstrap process. For
+example, if you wish to set the bootstrap to re-partition a specific
+secondary storage device (``/dev/sdb``), which will erase all of the data
+on the device, then execute:
+
+.. code-block:: shell-session
+
+   # export BOOTSTRAP_OPTS="bootstrap_host_data_disk_device=sdb"
+
+Additional options may be implemented by simply concatenating them with
+a space between each set of options, for example:
+
+.. code-block:: shell-session
+
+   # export BOOTSTRAP_OPTS="bootstrap_host_data_disk_device=sdb"
+   # export BOOTSTRAP_OPTS="${BOOTSTRAP_OPTS} bootstrap_host_data_disk_fs_type=xfs"
+
+For the default AIO scenario, the AIO configuration preparation is completed by
+executing:
 
 .. code-block:: shell-session
 
@@ -216,9 +212,7 @@ execute the following:
    # export SCENARIO='ceph'
    # scripts/bootstrap-aio.sh
 
-**Tested Scenarios**
-
-To add OpenStack Services over and above the `bootstrap-aio default services`_
+To add OpenStack Services over and above the bootstrap-aio default services
 for the applicable scenario, copy the ``conf.d`` files with the ``.aio`` file
 extension into ``/etc/openstack_deploy`` and rename then to ``.yml`` files.
 For example, in order to enable the OpenStack Telemetry services, execute the
@@ -231,8 +225,16 @@ following:
    # for f in $(ls -1 /etc/openstack_deploy/conf.d/*.aio); do mv -v ${f} ${f%.*}; done
 
 To add any global overrides, over and above the defaults for the applicable
-scenario, edit  ``/etc/openstack_deploy/user_variables.yml``. See the
-:deploy_guide:`Deployment Guide <index.html>` for more details.
+scenario, edit ``/etc/openstack_deploy/user_variables.yml``. In order to
+understand the various ways that you can override the default behaviour
+set out in the roles, playbook and group variables, see :ref:`user-overrides`.
+
+See the :deploy_guide:`Deployment Guide <index.html>` for a more detailed break
+down of how to implement your own configuration rather than to use the AIO
+bootstrap.
+
+Run playbooks
+~~~~~~~~~~~~~
 
 Finally, run the playbooks by executing:
 
@@ -259,8 +261,6 @@ Keystone service, execute:
 
    # cd /opt/openstack-ansible/playbooks
    # openstack-ansible os-keystone-install.yml
-
-.. _bootstrap-aio default services: https://git.openstack.org/cgit/openstack/openstack-ansible/tree/tests/bootstrap-aio.yml
 
 Rebooting an AIO
 ----------------
