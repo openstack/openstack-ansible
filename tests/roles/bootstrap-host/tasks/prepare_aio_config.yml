@@ -76,9 +76,8 @@
         NODEPOOL_OVERRIDES="/etc/openstack_deploy/user_openstackci.yml"
         echo "uca_apt_repo_url: '${NODEPOOL_UCA_MIRROR}'" >> ${NODEPOOL_OVERRIDES}
         echo "openstack_hosts_centos_mirror_url: '${NODEPOOL_CENTOS_MIRROR}'" >> ${NODEPOOL_OVERRIDES}
-        if [[ ${NODEPOOL_PYPI_MIRROR} == *.ovh.* ]]; then
-          echo "nova_virt_type: 'qemu'" >> ${NODEPOOL_OVERRIDES}
-        fi
+        echo "galera_repo_host: '${NODEPOOL_MIRROR_HOST}:8080'" >> ${NODEPOOL_OVERRIDES}
+        echo "nova_virt_type: 'qemu'" >> ${NODEPOOL_OVERRIDES}
         echo "repo_build_pip_default_index: '${NODEPOOL_PYPI_MIRROR}'" >> ${NODEPOOL_OVERRIDES}
       args:
         executable: /bin/bash
