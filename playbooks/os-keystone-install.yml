@@ -183,4 +183,4 @@
         option: "need_db_contract"
         value: False
       when:
-        - "dbsync_contract | succeeded"
+        - "dbsync_contract is succeeded"
