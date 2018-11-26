@@ -33,7 +33,7 @@ at `Source`_.
 
 If you have some questions, or would like some assistance with achieving your
 goals, then please feel free to reach out to us on the
-`OpenStack Mailing Lists`_ (particularly openstack-operators or openstack-dev)
+`OpenStack Mailing Lists`_ (particularly openstack-discuss)
 or on IRC in ``#openstack-ansible`` on the `freenode network`_.
 
 OpenStack-Ansible Roles

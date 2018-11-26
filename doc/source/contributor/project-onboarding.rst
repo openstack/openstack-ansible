@@ -111,7 +111,7 @@ Mailing lists
 ^^^^^^^^^^^^^
 
 A member of the OpenStack-Ansible community should monitor the
-**OpenStack-dev** and **OpenStack-operators** `mailing lists`_.
+**OpenStack-discuss** `mailing lists`_.
 
 .. _mailing lists: http://lists.openstack.org/cgi-bin/mailman/listinfo
 
