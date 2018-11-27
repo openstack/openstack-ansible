@@ -75,11 +75,21 @@
         echo "centos_epel_mirror: '${NODEPOOL_EPEL_MIRROR}'" >> ${NODEPOOL_OVERRIDES}
         echo "galera_percona_xtrabackup_repo_host: '${NODEPOOL_PERCONA_PROXY}'" >> ${NODEPOOL_OVERRIDES}
         echo "galera_repo_host: '${NODEPOOL_MIRROR_HOST}:8080'" >> ${NODEPOOL_OVERRIDES}
-        echo "openstack_hosts_rdo_mirror_url: '${NODEPOOL_RDO_PROXY}'" >> ${NODEPOOL_OVERRIDES}
         echo "lxc_centos_package_baseurl: 'http://${NODEPOOL_MIRROR_HOST}:8080/copr-lxc2/epel-7-x86_64/'" >> ${NODEPOOL_OVERRIDES}
         echo "lxc_centos_package_key: 'http://${NODEPOOL_MIRROR_HOST}:8080/copr-lxc2/pubkey.gpg'" >> ${NODEPOOL_OVERRIDES}
         echo "nova_virt_type: 'qemu'" >> ${NODEPOOL_OVERRIDES}
         echo "repo_build_pip_default_index: '${NODEPOOL_PYPI_MIRROR}'" >> ${NODEPOOL_OVERRIDES}
+
+        # NOTE(mnaser): We need to make sure we pull the latest RDO mirror
+        #               which is hashed to avoid cache going stale during CI.
+        export DLRN_BASE=${DLRN_BASE:-centos7-rocky/current-passed-ci}
+        rdo_dlrn=`curl --silent ${NODEPOOL_RDO_PROXY}/${DLRN_BASE}/delorean.repo | grep baseurl | cut -d= -f2`
+        if [[ -z "$rdo_dlrn" ]]; then
+            echo "Failed to parse dlrn hash"
+            exit 1
+        fi
+        RDO_MIRROR_HOST=${rdo_dlrn/https:\/\/trunk.rdoproject.org/$NODEPOOL_RDO_PROXY}
+        echo "openstack_hosts_rdo_repo_url: '${RDO_MIRROR_HOST}'" >> ${NODEPOOL_OVERRIDES}
       args:
         executable: /bin/bash
       tags:
