@@ -55,7 +55,7 @@ Configure the operating system (Ubuntu)
    .. code-block:: shell-session
 
        # apt-get install bridge-utils debootstrap ifenslave ifenslave-2.6 \
-         lsof lvm2 ntp ntpdate openssh-server sudo tcpdump vlan
+         lsof lvm2 chrony openssh-server sudo tcpdump vlan
 
 #. Install the kernel extra package if you have one for your kernel version \
 
@@ -71,12 +71,12 @@ Configure the operating system (Ubuntu)
       # echo 'bonding' >> /etc/modules
       # echo '8021q' >> /etc/modules
 
-#. Configure Network Time Protocol (NTP) in ``/etc/ntp.conf`` to
+#. Configure Network Time Protocol (NTP) in ``/etc/chrony/chrony.conf`` to
    synchronize with a suitable time source and restart the service:
 
    .. code-block:: shell-session
 
-      # service ntp restart
+      # service chrony restart
 
 #. Reboot the host to activate the changes and use the new kernel.
 
@@ -102,7 +102,7 @@ Configure the operating system (CentOS)
    .. code-block:: shell-session
 
        # yum install bridge-utils iputils lsof lvm2 \
-         ntp ntpdate openssh-server sudo tcpdump
+         chrony openssh-server sudo tcpdump
 
 #. Add the appropriate kernel modules to the ``/etc/modules-load.d`` file to
    enable VLAN and bond interfaces:
@@ -112,13 +112,13 @@ Configure the operating system (CentOS)
       # echo 'bonding' >> /etc/modules-load.d/openstack-ansible.conf
       # echo '8021q' >> /etc/modules-load.d/openstack-ansible.conf
 
-#. Configure Network Time Protocol (NTP) in ``/etc/ntp.conf`` to
+#. Configure Network Time Protocol (NTP) in ``/etc/chrony.conf`` to
    synchronize with a suitable time source and start the service:
 
    .. code-block:: shell-session
 
-      # systemctl enable ntpd.service
-      # systemctl start ntpd.service
+      # systemctl enable chronyd.service
+      # systemctl start chronyd.service
 
 
 #. Reboot the host to activate the changes and use the new kernel.
@@ -145,7 +145,7 @@ Configure the operating system (openSUSE)
    .. code-block:: shell-session
 
        # zypper install bridge-utils iputils lsof lvm2 \
-         ntp opensshr sudo tcpdump
+         chrony opensshr sudo tcpdump
 
 #. Add the appropriate kernel modules to the ``/etc/modules-load.d`` file to
    enable VLAN and bond interfaces:
@@ -155,13 +155,13 @@ Configure the operating system (openSUSE)
       # echo 'bonding' >> /etc/modules-load.d/openstack-ansible.conf
       # echo '8021q' >> /etc/modules-load.d/openstack-ansible.conf
 
-#. Configure Network Time Protocol (NTP) in ``/etc/ntp.conf`` to
+#. Configure Network Time Protocol (NTP) in ``/etc/chrony.conf`` to
    synchronize with a suitable time source and start the service:
 
    .. code-block:: shell-session
 
-      # systemctl enable ntpd.service
-      # systemctl start ntpd.service
+      # systemctl enable chronyd.service
+      # systemctl start chronyd.service
 
 
 #. Reboot the host to activate the changes and use the new kernel.
