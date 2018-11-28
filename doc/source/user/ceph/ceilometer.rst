@@ -33,7 +33,7 @@ user_variables.yml file:
 
 
 You also have to configure Ceilometer to actually query radosgw. When your
-ceilometer isn’t configured to poll everything, add these pollsters to your
+ceilometer isn't configured to poll everything, add these pollsters to your
 polling.yml file:
 
 .. code-block:: yaml
