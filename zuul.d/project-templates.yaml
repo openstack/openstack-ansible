@@ -109,6 +109,7 @@
     name: openstack-ansible-deploy-distro_ceph-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-distro_ceph-opensuse-423
+        - openstack-ansible-deploy-distro_ceph-opensuse-423:
+            voting: false
     gate:
       jobs: []
