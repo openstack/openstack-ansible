@@ -358,3 +358,8 @@ haproxy_default_services:
       haproxy_backend_httpcheck_options:
         - expect status 405
       haproxy_service_enabled: "{{ (groups['ceph-rgw'] is defined and groups['ceph-rgw'] | length > 0) or (ceph_rgws | length > 0) }}"
+  # NOTE(mnaser): The repo_cache service has been removed in Rocky, so this
+  #               removes it to avoid having downed endpoints
+  - service:
+      haproxy_service_name: repo_cache
+      state: absent
