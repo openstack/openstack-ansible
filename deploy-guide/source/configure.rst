@@ -156,6 +156,8 @@ OpenStack service roles
 
 - :role_docs:`os_nova`
 
+- :role_docs:`os_octavia`
+
 - :role_docs:`os_rally`
 
 - :role_docs:`os_sahara`
