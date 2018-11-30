@@ -31,6 +31,7 @@ keepalived_sync_groups:
 
 keepalived_global_defs:
   - "enable_script_security"
+  - script_user root
 
 keepalived_scripts:
   haproxy_check_script:
