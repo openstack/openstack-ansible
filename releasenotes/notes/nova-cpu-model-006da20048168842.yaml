@@ -1,0 +1,18 @@
+---
+features:
+  - You can now set the Libvirt CPU model and feature flags from the
+    appropriate entry under the ``nova_virt_types`` dictionary variable
+    (normally ``kvm``).
+    ``nova_cpu_model`` is a string value that sets the CPU model; this
+    value is ignored if you set any ``nova_cpu_mode`` other than
+    ``custom``.
+    ``nova_cpu_model_extra_flags`` is a list that allows you to specify
+    extra CPU feature flags not normally passed through with
+    ``host-model``, or the ``custom`` CPU model of your choice.
+upgrade:
+  - If your configuration previously set the ``libvirt/cpu_model``
+    and/or ``libvirt/cpu_model_extra_flags`` variables in a
+    ``nova_nova_conf_overrides`` dictionary, you should consider
+    moving those to ``nova_cpu_model`` and
+    ``nova_cpu_model_extra_flags`` in the appropriate entry (normally
+    ``kvm``) in the ``nova_virt_types`` dictionary.

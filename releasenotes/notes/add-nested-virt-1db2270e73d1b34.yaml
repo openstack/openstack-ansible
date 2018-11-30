@@ -1,0 +1,7 @@
+---
+features:
+    - This role now optionally enables your compute nodes' KVM kernel
+      module nested virtualization capabilities, by setting nova_nested_virt_enabled
+      to true. Depending on your distribution and libvirt version, you might need to
+      set additional variables to fully enabled nested virtualization.
+      For details, please see https://docs.openstack.org/nova/latest/admin/configuration/hypervisor-kvm.html#nested-guest-support.
