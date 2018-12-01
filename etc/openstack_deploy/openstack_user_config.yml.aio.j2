@@ -1,9 +1,9 @@
 ---
 cidr_networks:
-{% if bootstrap_host_scenario == "translations" %}
+{% if 'trove' in bootstrap_host_services %}
   dbaas: 172.29.232.0/22
 {% endif %}
-{% if bootstrap_host_scenario in ["octavia"] %}
+{% if 'octavia' in bootstrap_host_services %}
   lbaas: 172.29.252.0/22
 {% endif %}
   container: 172.29.236.0/22
@@ -11,11 +11,11 @@ cidr_networks:
   storage: 172.29.244.0/22
 
 used_ips:
-{% if bootstrap_host_scenario == "translations" %}
+{% if 'trove' in bootstrap_host_services %}
   - "172.29.232.1,172.29.232.50"
   - "172.29.232.100"
 {% endif %}
-{% if bootstrap_host_scenario in ["translations", "octavia"] %}
+{% if 'octavia' in bootstrap_host_services %}
   - "172.29.252.1,172.29.252.50"
   - "172.29.252.100"
 {% endif %}
@@ -55,7 +55,7 @@ global_overrides:
         net_name: "vxlan"
         group_binds:
           - neutron_linuxbridge_agent
-{% if bootstrap_host_scenario == "translations" %}
+{% if 'trove' in bootstrap_host_services %}
     - network:
         container_bridge: "br-dbaas"
         container_type: "veth"
@@ -68,7 +68,7 @@ global_overrides:
           - neutron_linuxbridge_agent
           - rabbitmq
 {% endif %}
-{% if bootstrap_host_scenario in ["octavia"] %}
+{% if 'octavia' in bootstrap_host_services %}
     - network:
         container_bridge: "br-lbaas"
         container_type: "veth"

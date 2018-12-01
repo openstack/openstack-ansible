@@ -23,11 +23,11 @@
 
 - name: Deploy user conf.d configuration
   config_template:
-    src: "{{ item.path | default(bootstrap_host_aio_config_path ~ '/conf.d') }}/{{ item.name }}"
-    dest: "/etc/openstack_deploy/conf.d/{{ item.name | regex_replace('.aio$', '') }}"
+    src: "{{ bootstrap_host_aio_config_path }}/conf.d/{{ item }}.yml.aio"
+    dest: "/etc/openstack_deploy/conf.d/{{ item }}.yml"
     config_overrides: "{{ item.override | default({}) }}"
     config_type: "yaml"
-  with_items: "{{ confd_overrides[bootstrap_host_scenario] | default([]) }}"
+  with_items: "{{ bootstrap_host_services }}"
   tags:
     - deploy-confd
 
@@ -175,21 +175,35 @@
     dest: "/etc/openstack_deploy/{{ item.dest }}"
     config_overrides: "{{ item.config_overrides | default({}) }}"
     config_type: yaml
-  with_items: "{{ bootstrap_user_variables_extra_templates[bootstrap_host_scenario] | default([]) }}"
+  when:
+    - "item.condition | bool"
+  with_items:
+    - src: user_variables_ceph.yml.j2
+      dest: user_variables_ceph.yml
+      condition: "{{ 'ceph' in bootstrap_host_services }}"
+    - src: user_variables_congress.yml.j2
+      dest: user_variables_congress.yml
+      condition: "{{ 'congress' in bootstrap_host_services }}"
+    - src: user_variables_translations.yml.j2
+      dest: user_variables_translations.yml
+      condition: "{{ bootstrap_host_scenario is search('translations') }}"
+    - src: user_variables_barbican.yml.j2
+      dest: user_variables_barbican.yml
+      condition: "{{ 'barbican' in bootstrap_host_services }}"
 
 - name: Copy modified cinder-volume env.d file for ceph scenario
   copy:
     src: "{{ playbook_dir }}/../etc/openstack_deploy/env.d/cinder-volume.yml.container.example"
     dest: "/etc/openstack_deploy/env.d/cinder-volume.yml"
   when:
-    - "bootstrap_host_scenario == 'ceph'"
+    - "'ceph' in bootstrap_host_services"
 
 - name: Copy modified env.d file for metal scenario
   copy:
     src: "{{ playbook_dir }}/../etc/openstack_deploy/env.d/aio_metal.yml.example"
     dest: "/etc/openstack_deploy/env.d/aio_metal.yml"
   when:
-    - "bootstrap_host_scenario == 'aio_metal'"
+    - "bootstrap_host_scenario is search('metal')"
 
 - name: Create vars override folders if we need to test them
   file:
