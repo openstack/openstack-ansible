@@ -1,0 +1,30 @@
+---
+upgrade:
+  - >
+    The ``ceph-rgw`` playbooks now set ``rgw_swift_account_in_url =
+    true`` and update the corresponding Keystone service catalog entry
+    accordingly. Applications (such as monitoring scripts) that do
+    *not* rely on service catalog lookup must be updated with the new
+    endpoint URL that includes ``AUTH_%(tenant_id)s`` just like native
+    Swift does --- or, alternatively, should be updated to honor the
+    service catalog after all.
+  - >
+    The ``ceph-rgw`` playbooks now set ``rgw_swift_versioning_enabled =
+    true``, adding support for object versioning for the ``object-store``
+    service.
+fixes:
+  - >
+    The ``ceph-rgw`` playbooks now include the ``AUTH_%(tenant_id)s``
+    suffix in the Keystone ``object-store`` endpoint. This aligns
+    radosgw's behavior with that of native Swift. It also enables
+    radosgw to support public read ACLs on containers, and temporary
+    URLs on objects, in the same way that Swift does
+    (`bug 1800637 <https://bugs.launchpad.net/openstack-ansible/+bug/1800637>`_).
+issues:
+  - >
+    Although the ``ceph-rgw`` playbooks do enable Swift object
+    versioning, support in radosgw is currently limited to setting
+    ``X-Versions-Location`` on a container. ``X-History-Location``,
+    understood by native Swift, is currently not supported by radosgw
+    (although the feature is `pending
+    <https://github.com/ceph/ceph/pull/15020>`_ upstream).
