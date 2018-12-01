@@ -29,6 +29,7 @@ utility_venv_bin: "/openstack/venvs/utility-{{ openstack_release }}/bin"
 # Distribution packages to be installed into the utility container
 utility_distro_packages:
   - git
+  - bash-completion
 
 utility_distro_openstack_clients_packages:
   - python-keystoneclient
