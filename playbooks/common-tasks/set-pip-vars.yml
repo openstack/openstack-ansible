@@ -66,7 +66,7 @@
       {{ ((upper_constraints_check.status | default(503)) != 200) | ternary(__upstream_constraints, __pip_install_upper_constraints) }}
   vars:
     # Use https when Python with native SNI support is available
-    __pip_install_upper_constraints_proto: "{{ ansible_python_version | version_compare('2.7.9', '>=') | ternary('https','http') }}"
+    __pip_install_upper_constraints_proto: "{{ (ansible_python_version is version_compare('2.7.9', '>=')) | ternary('https','http') }}"
     __upstream_constraints: >-
       /opt/global-requirement-pins.txt
       --constraint {{ __pip_install_upper_constraints_proto }}://git.openstack.org/cgit/openstack/requirements/plain/upper-constraints.txt?id={{ requirements_git_install_branch | regex_replace(' #.*$','') }}

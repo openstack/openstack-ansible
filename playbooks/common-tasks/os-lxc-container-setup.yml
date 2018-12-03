@@ -91,7 +91,7 @@
   retries: 3
   delay: 5
   when:
-    - (_mc is defined and _mc | changed) or (_ec is defined and _ec | changed)
+    - (_mc is defined and _mc is changed) or (_ec is defined and _ec is changed)
 
 # Due to https://github.com/ansible/ansible-modules-extras/issues/2691
 # this uses the LXC CLI tools to ensure that we get logging.
@@ -111,7 +111,7 @@
     - container_stop.rc not in [0, 2]
   when:
     - lxc_container_allow_restarts | default(True) | bool
-    - (_mc is defined and _mc | changed) or (_ec is defined and _ec | changed)
+    - (_mc is defined and _mc is changed) or (_ec is defined and _ec is changed)
     - _lxc_container_state.stdout.find('RUNNING') != -1
   tags:
     - common-lxc
@@ -129,7 +129,7 @@
   until: container_start is success
   retries: 3
   when:
-    - (_mc is defined and _mc | changed) or (_ec is defined and _ec | changed)
+    - (_mc is defined and _mc is changed) or (_ec is defined and _ec is changed)
   tags:
     - common-lxc
 
@@ -140,6 +140,6 @@
     sleep: "{{ lxc_container_wait_params.sleep | default(omit) }}"
     timeout: "{{ lxc_container_wait_params.timeout | default(omit) }}"
   when:
-    - (_mc is defined and _mc | changed) or (_ec is defined and _ec | changed)
+    - (_mc is defined and _mc is changed) or (_ec is defined and _ec is changed)
   tags:
     - common-lxc
