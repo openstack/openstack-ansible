@@ -42,6 +42,17 @@ Vagrant.configure(2) do |config|
       SHELL
   end
 
+  config.vm.define "ubuntu1804" do |bionic|
+    bionic.vm.box = "ubuntu/bionic64"
+    bionic.disksize.size = disk_size
+    config.vm.provision "shell",
+      privileged: true,
+      inline: <<-SHELL
+          cd /vagrant
+          ./scripts/gate-check-commit.sh
+      SHELL
+  end
+
   config.vm.define "centos7" do |centos7|
     centos7.vm.box = "centos/7"
     centos7.disksize.size = disk_size
