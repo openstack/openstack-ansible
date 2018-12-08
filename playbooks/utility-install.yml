@@ -63,6 +63,10 @@
         state: "{{ utility_package_state }}"
         update_cache: "{{ (ansible_pkg_mgr in ['apt', 'zypper']) | ternary('yes', omit) }}"
         cache_valid_time: "{{ (ansible_pkg_mgr == 'apt') | ternary(cache_timeout, omit) }}"
+      register: install_packages
+      until: install_packages is success
+      retries: 5
+      delay: 2
 
     - name: Distribute private ssh key
       copy:
