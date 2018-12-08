@@ -21,6 +21,18 @@
 ## Debug and Verbose options.
 debug: false
 
+## Set the service setup host
+# The default is to use localhost (the deploy host where ansible runs),
+# but any other host can be used. If using an alternative host with all
+# required libraries in a venv (eg: the utility container) then the
+# python interpreter needs to be set. If it is not, the default is to
+# the system python interpreter.
+# If you wish to use the first utility container in the inventory for
+# all service setup tasks, uncomment the following.
+#
+#openstack_service_setup_host: "{{ groups['utility_all'][0] }}"
+#openstack_service_setup_host_python_interpreter: "/openstack/venvs/utility-{{ openstack_release }}/bin/python"
+
 ## Installation method for OpenStack services
 # Default option (source) is to install the OpenStack services using PIP
 # packages. An alternative method (distro) is to use the distribution cloud
