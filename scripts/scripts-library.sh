@@ -395,7 +395,14 @@ function get_instance_info {
   free -m > "/openstack/log/instance-info/free_${TS}.log" || true
   cat /proc/cpuinfo > "/openstack/log/instance-info/cpuinfo_${TS}.log" || true
   ps -eo user,pid,ppid,lwp,%cpu,%mem,size,rss,cmd > "/openstack/log/instance-info/ps_${TS}.log" || true
-  netstat -tulpn > "/openstack/log/instance-info/netstat_${TS}.log" || true
+
+  # Check if system has netstat or iproute2
+  if command -v ss >/dev/null; then
+    ss -tulpn > "/openstack/log/instance-info/ss_${TS}.log" || true
+  fi
+  if command -v netstat >/dev/null; then
+    netstat -tulpn > "/openstack/log/instance-info/netstat_${TS}.log" || true
+  fi
 }
 
 ## Signal traps --------------------------------------------------------------
