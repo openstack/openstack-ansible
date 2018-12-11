@@ -358,7 +358,7 @@ haproxy_default_services:
       haproxy_timeout_server: 90m
       haproxy_backend_options:
         - tcpka
-      haproxy_service_enabled: "{{ groups['neutron_ovn_northd'] is defined and groups['neutron_ovn_northd'] | length > 0 }}"
+      haproxy_service_enabled: "{{ (neutron_plugin_type == 'ml2.ovn') and (groups['neutron_ovn_northd'] is defined and groups['neutron_ovn_northd'] | length > 0) }}"
   - service:
       haproxy_service_name: neutron_ovn_northd_southbound
       haproxy_backend_nodes: "{{ (groups['neutron_ovn_northd'] | default([]))[:1] }}"
@@ -370,7 +370,7 @@ haproxy_default_services:
       haproxy_timeout_server: 90m
       haproxy_backend_options:
         - tcpka
-      haproxy_service_enabled: "{{ groups['neutron_ovn_northd'] is defined and groups['neutron_ovn_northd'] | length > 0 }}"
+      haproxy_service_enabled: "{{ (neutron_plugin_type == 'ml2.ovn') and (groups['neutron_ovn_northd'] is defined and groups['neutron_ovn_northd'] | length > 0) }}"
   - service:
       haproxy_service_name: neutron_ovn_ovsdb_server
       haproxy_backend_nodes: "{{ (groups['neutron_ovn_northd'] | default([]))[:1] }}"
@@ -382,4 +382,4 @@ haproxy_default_services:
       haproxy_timeout_server: 90m
       haproxy_backend_options:
         - tcpka
-      haproxy_service_enabled: "{{ groups['neutron_ovn_northd'] is defined and groups['neutron_ovn_northd'] | length > 0 }}"
+      haproxy_service_enabled: "{{ (neutron_plugin_type == 'ml2.ovn') and (groups['neutron_ovn_northd'] is defined and groups['neutron_ovn_northd'] | length > 0) }}"
