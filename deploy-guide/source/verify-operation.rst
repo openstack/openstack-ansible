@@ -29,6 +29,12 @@ configuration and testing.
 
       # lxc-attach -n infra1_utility_container-161a4084
 
+#. Source the ``admin`` tenant credentials:
+
+   .. code::
+
+      $ . ~/openrc
+
 #. List your openstack users:
 
    .. code-block:: console
