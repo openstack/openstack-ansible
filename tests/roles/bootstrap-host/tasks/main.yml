@@ -117,13 +117,6 @@
   tags:
     - prepare-ceph
 
-# Prepare the Octavia certs and image
-- include: prepare_octavia.yml
-  when:
-    - bootstrap_host_octavia | bool
-  tags:
-    - prepare-octavia
-
 # Ensure hostname/ip is consistent with inventory
 - include: prepare_hostname.yml
   tags:

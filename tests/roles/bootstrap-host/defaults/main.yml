@@ -53,9 +53,6 @@ bootstrap_user_variables_extra_templates:
   translations:
     - src: user_variables_translations.yml.j2
       dest: user_variables_translations.yml
-  octavia:
-    - src: user_variables_octavia.yml.j2
-      dest: user_variables_octavia.yml
   barbican:
     - src: user_variables_barbican.yml.j2
       dest: user_variables_barbican.yml
@@ -194,9 +191,6 @@ bootstrap_host_data_mount_options:
 bootstrap_host_data_disk2_fs: "{{ bootstrap_host_data_disk2_formats[((container_tech == 'nspawn') | ternary('btrfs', lxc_container_backing_store))] }}"
 bootstrap_host_data_disk2_fs_mount_options: "{{ bootstrap_host_data_mount_options[((container_tech == 'nspawn') | ternary('btrfs', lxc_container_backing_store))] }}"
 bootstrap_host_data_disk2_path: "{{ (lxc_container_backing_store == 'machinectl' or container_tech == 'nspawn') | ternary('/var/lib/machines', '/var/lib/lxc') }}"
-
-# Boolean option to build Amphora image and certs
-bootstrap_host_octavia: "{{ (bootstrap_host_scenario in ['octavia']) | bool }}"
 
 ### Optional Settings ###
 
