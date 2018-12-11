@@ -1,0 +1,33 @@
+---
+# Copyright 2017, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+bootstrap_host_services: >-
+  {%- set scenario_list = (bootstrap_host_scenario.split('_') | reject('equalto', '')) | list %}
+  {%- set service_list = ['keystone'] %}
+  {%- set service_list_extra = scenario_list | difference(['aio', 'distro', 'lxc', 'nspawn', 'metal', 'source', 'translations']) %}
+  {%- if 'metal' not in scenario_list %}
+  {%-   set _ = service_list.append('haproxy') %}
+  {%- endif %}
+  {%- if 'aio' in scenario_list or 'translations' in scenario_list %}
+  {%-   set _ = service_list.extend(['cinder', 'glance', 'neutron', 'nova']) %}
+  {%-   if 'metal' not in scenario_list %}
+  {%-     set _ = service_list.append('horizon') %}
+  {%-   endif %}
+  {%- endif %}
+  {%- if 'translations' in scenario_list %}
+  {%-   set _ = service_list.extend(['designate', 'heat', 'magnum', 'sahara', 'swift', 'trove']) %}
+  {%- endif %}
+  {%- set _ = service_list.extend(service_list_extra) %}
+  {{- (service_list | unique) | sort }}
