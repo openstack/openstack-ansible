@@ -20,11 +20,12 @@
   roles:
     - role: "sshd"
     - role: "bootstrap-host"
+  vars_files:
+    - "{{ playbook_dir }}/../playbooks/defaults/repo_packages/openstack_services.yml"
+    - vars/bootstrap-aio-vars.yml
+  environment: "{{ deployment_environment_variables | default({}) }}"
   vars:
     ansible_python_interpreter: "/usr/bin/python"
-    bootstrap_host_scenario: "{{ lookup('env','SCENARIO') | default('aio_lxc', true) }}"
-    install_method: "{{ lookup('env', 'INSTALL_METHOD') | default('source', true)  }}"
-    openstack_confd_entries: "{{ confd_overrides[bootstrap_host_scenario] }}"
     pip_install_upper_constraints_proto: "{{ ansible_python_version | version_compare('2.7.9', '>=') | ternary('https','http') }}"
     pip_install_upper_constraints: >-
         {{ (playbook_dir ~ '/../global-requirement-pins.txt') | realpath }}
@@ -82,8 +83,4 @@
           - ansible_eth13['active'] == true
           - ansible_eth14['active'] == true
       when:
-        - (container_tech | default('unknown')) != 'nspawn'
-  vars_files:
-    - "{{ playbook_dir }}/../playbooks/defaults/repo_packages/openstack_services.yml"
-    - vars/bootstrap-aio-vars.yml
-  environment: "{{ deployment_environment_variables | default({}) }}"
+        - (bootstrap_host_container_tech | default('unknown')) != 'nspawn'

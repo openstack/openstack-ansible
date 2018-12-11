@@ -18,7 +18,7 @@ trove_provider_net_name: flat-db
 trove_service_net_phys_net: flat-db
 trove_service_net_setup: True
 
-{% if container_tech == 'nspawn' %}
+{% if bootstrap_host_container_tech == 'nspawn' %}
 trove_service_net_subnet_cidr: "172.29.236.0/22"
 trove_service_net_allocation_pool_start: "172.29.237.110"
 trove_service_net_allocation_pool_end: "172.29.237.200"
