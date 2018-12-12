@@ -1,0 +1,97 @@
+---
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Prepare environment and configuration for deploying the new release
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  user: root
+  vars:
+    repo_root_dir: "{{ (playbook_dir ~ '/../../') | realpath }}"
+    ansible_python_interpreter: "/usr/bin/python"
+  tasks:
+    - name: Remove unnecessary env.d override files
+      shell: |
+        set -e
+        exit_code=0
+        if [[ -e /etc/openstack_deploy/env.d ]]; then
+          for f in $(diff --brief --report-identical-files /etc/openstack_deploy/env.d /opt/openstack-ansible/inventory/env.d | awk '/identical/ {print $2}' 2>/dev/null); do
+            echo "Deleting ${f} because it is identical to the defaults."
+            rm -f ${f}
+            exit_code=2
+          done
+        fi
+        exit ${exit_code}
+      args:
+        executable: /bin/bash
+      register: _envd_dir_cleanup
+      changed_when: _envd_dir_cleanup.rc == 2
+      failed_when: _envd_dir_cleanup.rc not in [0,2]
+      tags:
+        - identical-envd-file-cleanup
+
+    - name: Find any config files in the user-space env.d directory
+      find:
+        paths:
+          - "/etc/openstack_deploy/env.d"
+        patterns: '*.yml'
+      register: _envd_dir_contents
+      tags:
+        - custom-envd-file-check
+
+    - name: Halt the upgrade and warn the user to inspect the env.d files for changes
+      fail:
+        msg: |
+          There are files in /etc/openstack_deploy/env.d which override the default inventory
+          layout in {{ repo_root_dir }}/inventory/env.d. The difference between these files
+          should be carefully reviewed to understand whether the changes are still necessary
+          and applicable to the environment. If all the user-space env.d files are necessary,
+          then please re-run this playbook with the CLI option '--skip-tags custom-envd-file-check'.
+      when:
+        - _envd_dir_contents.matched > 0
+      tags:
+        - custom-envd-file-check
+
+    - name: Read example user secrets file
+      shell: "grep '^[a-zA-Z]' {{ repo_root_dir }}/etc/openstack_deploy/user_secrets.yml"
+      register: new_secrets
+      tags:
+        - update-secrets
+
+    - name: Read existing user secrets file
+      shell: "grep '^[a-zA-Z]' /etc/openstack_deploy/user_secrets.yml"
+      register: user_secrets
+      tags:
+        - update-secrets
+
+    - name: Add missing secrets
+      lineinfile:
+        dest: "/etc/openstack_deploy/user_secrets.yml"
+        line: "{{ item }}"
+      with_items: "{{ new_secrets.stdout_lines }}"
+      when:
+        - "user_secrets.stdout.find(item) == -1"
+      tags:
+        - update-secrets
+
+    - name: Generate new secrets
+      shell: "{{ repo_root_dir }}/scripts/pw-token-gen.py --file /etc/openstack_deploy/user_secrets.yml"
+      tags:
+        - update-secrets
+
+    - name: Remove fact cache to ensure a fresh one is built during the upgrade
+      file:
+        path: "/etc/openstack_deploy/ansible_facts"
+        state: absent
+      tags:
+        - remove-fact-cache
