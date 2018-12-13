@@ -168,3 +168,34 @@ Install the source and dependencies for the deployment host.
 
        # scripts/bootstrap-ansible.sh
 
+
+Configure Docker with Alpine
+============================
+
+It is an alternative realization of deploy host configuration which includes usage of the Docker
+container as the deploy host.
+
+This is also neither supported nor tested in CI, so you should use it at your own risk.
+
+Before you begin, we recommend upgrading your Docker host system packages and kernel.
+
+#. Prepare your OpenStack Ansible Dockerfile
+
+   .. code-block:: dockerfile
+
+       FROM alpine
+       RUN apk add --no-cache bash build-base git python3-dev openssh-client openssh-keygen sudo py3-virtualenv iptables libffi-dev openssl-dev linux-headers coreutils curl
+       RUN git clone -b |latest_tag| \https://git.openstack.org/openstack/openstack-ansible /opt/openstack-ansible
+       WORKDIR /opt/openstack-ansible
+       RUN /opt/openstack-ansible/scripts/bootstrap-ansible.sh
+       ENTRYPOINT ["bash"]
+
+#. Build and run your deploy host container
+
+   .. code-block:: shell-session
+
+       # docker build . -t openstack-ansible:|latest_tag|
+       # docker run -dit --name osa-deploy openstack-ansible:|latest_tag|
+       # docker exec -it osa-deploy bash
+
+#. Configure NTP to synchronize with a suitable time source on the Docker host.
