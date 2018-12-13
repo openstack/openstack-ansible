@@ -174,9 +174,9 @@ function main {
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/ceph-galaxy-removal.yml")
         RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/molteniron-role-removal.yml")
         # we don't want to trigger container restarts for these groups yet
-        RUN_TASKS+=("setup-hosts.yml --limit '!galera_all:!neutron_agent:!rabbitmq_all'")
+        RUN_TASKS+=("setup-hosts.yml --limit '!galera_all:!rabbitmq_all'")
         # add new container config to containers but don't restart
-        RUN_TASKS+=("lxc-containers-create.yml -e 'lxc_container_allow_restarts=false' --limit 'galera_all:neutron_agent:rabbitmq_all'")
+        RUN_TASKS+=("lxc-containers-create.yml -e 'lxc_container_allow_restarts=false' --limit 'galera_all:rabbitmq_all'")
         # setup infra
         RUN_TASKS+=("unbound-install.yml")
         RUN_TASKS+=("repo-install.yml")
