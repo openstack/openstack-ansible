@@ -134,6 +134,13 @@
   tags:
     - prepare-ssh-keys
 
+# Prepare local squid proxy
+- include: prepare_squid.yml
+  when:
+    - "bootstrap_host_scenario is search('proxy')"
+  tags:
+    - prepare-squid
+
 # Put the OpenStack-Ansible configuration for an All-In-One on the host
 - include: prepare_aio_config.yml
   when:

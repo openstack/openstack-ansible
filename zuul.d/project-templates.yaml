@@ -115,6 +115,15 @@
         - openstack-ansible-upgrade-aio_ceph-ubuntu-bionic
 
 - project-template:
+    name: openstack-ansible-deploy-proxy-jobs
+    check:
+      jobs:
+        - openstack-ansible-deploy-aio_proxy-ubuntu-bionic
+    gate:
+      jobs:
+        - openstack-ansible-deploy-aio_proxy-ubuntu-bionic
+
+- project-template:
     name: openstack-ansible-deploy-distro_ceph-jobs
     check:
       jobs:
