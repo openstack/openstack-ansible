@@ -136,9 +136,14 @@ function find_log_files {
 }
 
 function rename_log_files {
+  JOURNALCTL_CMD="journalctl --output=short --file"
   find_log_files |\
     while read filename; do \
-      mv ${filename} ${filename}.txt || echo "WARNING: Could not rename ${filename}"; \
+      if [[ $filename =~ \.journal$ ]]; then
+        ${JOURNALCTL_CMD} ${filename} > ${filename}.txt || echo "WARNING: Could not rename ${filename}"; \
+      else
+        mv ${filename} ${filename}.txt || echo "WARNING: Could not rename ${filename}"; \
+      fi
     done
 }
 
