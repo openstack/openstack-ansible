@@ -42,7 +42,7 @@
     state: absent
   when:
     - bootstrap_host_data_disk_device_force | bool
-    - item.device | search(bootstrap_host_data_disk_device)
+    - item.device is search(bootstrap_host_data_disk_device)
   with_items:
     - "{{ ansible_mounts }}"
 

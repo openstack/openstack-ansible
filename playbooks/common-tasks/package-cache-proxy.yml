@@ -35,7 +35,7 @@
   delay: 2
   when:
     - _apt_proxy_removed is mapping
-    - _apt_proxy_removed | changed
+    - _apt_proxy_removed is changed
   tags:
     - common-proxy
 
