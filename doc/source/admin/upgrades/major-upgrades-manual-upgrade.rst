@@ -164,13 +164,13 @@ Before installing the infrastructure and OpenStack, update the host machines.
     # openstack-ansible setup-hosts.yml --limit '!galera_all:!neutron_agent:!rabbitmq_all'
 
 This command is the same setting up hosts on a new installation. The
-``galera_all`` host group is excluded to prevent reconfiguration and
-restarting of any Galera containers.
+``galera_all``, ``neutron_agent`` and ``rabbitmq_all`` host groups are excluded
+to prevent reconfiguration and restarting of any of those containers.
 
-Update Galera LXC container configuration
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Update the other LXC container configuration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Update the Galera container configuration independently.
+Update the other container configuration independently.
 
 .. code-block:: console
 
@@ -178,9 +178,10 @@ Update the Galera container configuration independently.
     'lxc_container_allow_restarts=false' --limit 'galera_all:neutron_agent:rabbitmq_all'
 
 This command is a subset of the host setup playbook, limited to the
-``galera_all`` host group. The configuration of those containers is
-updated but a restart for any changes to take effect is deferred to another
-playbook (see the next section).
+``galera_all``, ``neutron_agent`` and ``rabbitmq_all`` host groups.
+The configuration of those containers is updated but a restart for
+any changes to take effect is deferred to another playbook or later
+(see the next section).
 
 Perform a controlled rolling restart of the Galera containers
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -236,7 +237,7 @@ Upgrade the infrastructure
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The following commands perform all of the steps from the setup-infrastructure
-playbook, except for ``repo-install.yml``, ``haproxyinstall.yml``, and
+playbook, except for ``repo-install.yml``, ``haproxy-install.yml``, and
 ``galera-install.yml`` which you ran earlier.
 Running these playbook applies the relevant |current_release_formal_name|
 settings and packages.
