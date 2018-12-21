@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: ceph-rgw-keystone-setup.yml
+- import_playbook: ceph-rgw-keystone-setup.yml
   when: (groups['ceph-rgw'] is defined and groups['ceph-rgw'] | length > 0) or (ceph_rgws | length > 0)
 
 - name: Install ceph radosgw
@@ -22,15 +22,8 @@
   vars_files:
     - "defaults/{{ install_method }}_install.yml"
   pre_tasks:
-    - include: common-tasks/os-log-dir-setup.yml
-      vars:
-        log_dirs:
-          - src: "/openstack/log/{{ inventory_hostname }}-ceph"
-            dest: "/var/log/ceph"
 
-    - include: common-tasks/os-lxc-container-setup.yml
-      when: not is_metal
-      static: no
+    - import_tasks: common-tasks/ceph-server.yml
 
     - name: Gather ceph-mon facts
       action: setup
@@ -41,17 +34,7 @@
         - inventory_hostname == ansible_play_hosts[0]
       tags:
         - ceph-mon-facts
-
-    # Set the priority of the ceph community apt repo either above or below that of UCA or distro sources
-    - name: Set apt package pins
-      include_role:
-        name: apt_package_pinning
-      vars:
-        apt_package_pinning_file_name: "ceph_community_pin.pref"
-        apt_package_pinning_priority: "{{ (ceph_repository == 'community') | ternary(1000, 100) }}"
-        apt_pinned_packages: [{ package: '*', release: 'ceph.com' }]
-      when:
-        - ansible_pkg_mgr == 'apt'
+        - ceph-rgw
 
   roles:
     - role: ceph-defaults

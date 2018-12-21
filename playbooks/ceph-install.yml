@@ -19,53 +19,9 @@
   vars_files:
     - "defaults/{{ install_method }}_install.yml"
   pre_tasks:
-    - include: common-tasks/os-log-dir-setup.yml
-      vars:
-        log_dirs:
-          - src: "/openstack/log/{{ inventory_hostname }}-ceph"
-            dest: "/var/log/ceph"
-    - include: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
-      when: not is_metal
-      static: no
-      vars:
-        list_of_bind_mounts: "{{ ceph_container_bind_mounts }}"
-    - include: common-tasks/unbound-clients.yml
-      static: no
-      when:
-        - hostvars['localhost']['resolvconf_enabled'] | bool
-    #TODO: mgariepy, revisit to use include_role when https://github.com/ansible/ansible/issues/20077 is fixed
-    - name: install the ceph stable repository key
-      rpm_key:
-        key: "{{ ceph_stable_key }}"
-        state: present
-      when:
-        - ceph_origin == 'repository'
-        - ceph_repository == 'community'
-        - ansible_pkg_mgr in ['yum', 'dnf']
-    - name: add ceph stable repository
-      package:
-        name: http://download.ceph.com/rpm-{{ ceph_stable_release }}/{{ ceph_stable_redhat_distro }}/noarch/ceph-release-1-0.{{ ceph_stable_redhat_distro|replace('rhel', 'el') }}.noarch.rpm
-        state: present
-      changed_when: false
-      when:
-        - ceph_origin == 'repository'
-        - ceph_repository == 'community'
-        - ansible_pkg_mgr in ['yum', 'dnf']
-    - name: Purge yum/dnf cache
-      command: "{{ ansible_pkg_mgr }} clean all"
-      when:
-        - ansible_pkg_mgr in ['yum', 'dnf']
-      tags:
-        - skip_ansible_lint
-    - name: Set default priority for Ceph repos
-      command: >
-         yum-config-manager
-           --enable Ceph
-           --setopt="Ceph.priority=99"
-           --enable Ceph-noarch
-           --setopt="Ceph-noarch.priority=99"
-      when:
-        - ansible_pkg_mgr in ['yum', 'dnf']
+
+    - import_tasks: common-tasks/ceph-server.yml
+
     - name: Create systemd service directory
       file:
         path: "/etc/systemd/system/ceph-mon@.service.d/"
@@ -76,6 +32,7 @@
       when:
         - ansible_pkg_mgr in ['yum', 'dnf']
         - ansible_service_mgr == 'systemd'
+
     - name: Add systemd override for PrivateDevices
       copy:
         dest: "/etc/systemd/system/ceph-mon@.service.d/ceph-mon-systemd-overrides.conf"
@@ -85,12 +42,6 @@
       when:
         - ansible_pkg_mgr in ['yum', 'dnf']
         - ansible_service_mgr == 'systemd'
-    - name: Ensure Ansible can work with SELinux
-      package:
-        name: libselinux-python
-        state: present
-      when:
-        - ansible_pkg_mgr in ['yum', 'dnf']
 
     # Set the priority of the ceph community apt repo either above or below that of UCA or distro sources
     - name: Set apt package pins
@@ -146,48 +97,9 @@
   vars_files:
     - "defaults/{{ install_method }}_install.yml"
   pre_tasks:
-    - include: common-tasks/os-log-dir-setup.yml
-      vars:
-        log_dirs:
-          - src: "/openstack/log/{{ inventory_hostname }}-ceph"
-            dest: "/var/log/ceph"
-    - include: common-tasks/unbound-clients.yml
-      static: no
-      when:
-        - hostvars['localhost']['resolvconf_enabled'] | bool
-    #TODO: mgariepy, revisit to use include_role when https://github.com/ansible/ansible/issues/20077 is fixed
-    - name: install the ceph stable repository key
-      rpm_key:
-        key: "{{ ceph_stable_key }}"
-        state: present
-      when:
-        - ceph_origin == 'repository'
-        - ceph_repository == 'community'
-        - ansible_pkg_mgr in ['yum', 'dnf']
-    - name: add ceph stable repository
-      package:
-        name: http://download.ceph.com/rpm-{{ ceph_stable_release }}/{{ ceph_stable_redhat_distro }}/noarch/ceph-release-1-0.{{ ceph_stable_redhat_distro|replace('rhel', 'el') }}.noarch.rpm
-        state: present
-      changed_when: false
-      when:
-        - ceph_origin == 'repository'
-        - ceph_repository == 'community'
-        - ansible_pkg_mgr in ['yum', 'dnf']
-    - name: Purge yum/dnf cache
-      command: "{{ ansible_pkg_mgr }} clean all"
-      when:
-        - ansible_pkg_mgr in ['yum', 'dnf']
-      tags:
-        - skip_ansible_lint
-    - name: Set default priority for Ceph repos
-      command: >
-         yum-config-manager
-           --enable Ceph
-           --setopt="Ceph.priority=99"
-           --enable Ceph-noarch
-           --setopt="Ceph-noarch.priority=99"
-      when:
-        - ansible_pkg_mgr in ['yum', 'dnf']
+
+    - import_tasks: common-tasks/ceph-server.yml
+
     - name: Gather ceph-mon facts
       action: setup
       delegate_to: "{{ item }}"
