@@ -25,13 +25,13 @@ the OpenStack-Ansible project. These include, but are not limited to:
 
 In essence, core reviewers share the following common ideals:
 
-* They share responsibility in the project’s success in its `mission`_.
+* They share responsibility in the project's success in its `mission`_.
 * They value a healthy, vibrant, and active developer and user community.
 * They have made a long-term, recurring time investment to improve the
   project.
 * They spend their time doing what needs to be done to ensure the project's
   success, not necessarily what is the most interesting or fun.
-* A core reviewer’s responsibility doesn’t end with merging code.
+* A core reviewer's responsibility doesn't end with merging code.
 
 .. _OpenStack-Ansible Core Reviewer Team: https://review.openstack.org/#/admin/groups/490,members
 .. _mission: https://governance.openstack.org/tc/reference/projects/openstackansible.html#mission
