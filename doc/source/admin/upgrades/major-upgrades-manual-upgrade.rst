@@ -252,6 +252,26 @@ see :ref:`memcached-flush`.
 
     # openstack-ansible "${UPGRADE_PLAYBOOKS}/memcached-flush.yml"
 
+Implement inventory to deploy neutron agents on network_hosts
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In releases prior to Queens, neutron agents were deployed in a container. This
+turned out to be problematic in major upgrades where the LXC container
+configuration may have changed, resulting in the containers restarting and
+therefore all L3 networking going down for some time.
+
+To prevent this happening in the future, the neutron agents are now deployed
+on the network_hosts directly (not in containers). This ensures that whenever
+an upgrade is run, the L3 networks do not go down.
+
+In order to handle this transition, we need to temporarily implement a
+temporary inventory change which adds the network_hosts into each of the
+agent groups so that the os-neutron-install playbook installs agents on them.
+
+.. code-block:: console
+
+    # openstack-ansible "${UPGRADE_PLAYBOOKS}/neutron-tmp-inventory.yml"
+
 Upgrade OpenStack
 ~~~~~~~~~~~~~~~~~
 
@@ -279,6 +299,9 @@ changes to the container/service setup:
   ``ironic_conductor_container`` can be removed.
 # All nova services are consolidated into the ``nova_api_container``
   and the rest of the nova containers can be removed.
+# All neutron agents are moved from containers onto the network_hosts.
+  The previously implemented ``neutron_agents_container`` can therefore
+  be removed.
 # All trove services have been consolidated into the
   ``trove_api_container``. The previously implemented
   ``trove_conductor_container`` and ``trove_taskmanager_container``
@@ -303,3 +326,4 @@ from the haproxy configuration.
     # openstack-ansible "${UPGRADE_PLAYBOOKS}/cleanup-nova.yml" -e force_containers_destroy=yes -e force_containers_data_destroy=yes
     # openstack-ansible "${UPGRADE_PLAYBOOKS}/cleanup-trove.yml" -e force_containers_destroy=yes -e force_containers_data_destroy=yes
     # openstack-ansible --tags haproxy_server-config haproxy-install.yml
+    # openstack-ansible "${UPGRADE_PLAYBOOKS}/cleanup-neutron.yml" -e force_containers_destroy=yes -e force_containers_data_destroy=yes

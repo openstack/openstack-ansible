@@ -1,0 +1,121 @@
+---
+# Copyright 2018, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- hosts: neutron_agents_container
+  become: yes
+  gather_facts: no
+  tasks:
+    - name: Gather the necessary facts
+      setup:
+        gather_subset: "!facter,!ohai"
+
+- hosts: utility[0]
+  become: yes
+  gather_facts: no
+  tasks:
+    - name: Collect the ID's for the neutron services to delete
+      command: >-
+        openstack --os-cloud default network agent list
+                  --format value --column ID
+                  --host {{ service_host }}
+      register: _neutron_service_to_remove
+      until: _neutron_service_to_remove is succeeded
+      retries: 5
+      delay: 2
+      vars:
+        service_host: "{{ hostvars[item]['ansible_hostname'] }}"
+      with_items: "{{ groups['neutron_agents_container'] }}"
+
+    - name: Disable neutron services in containers which will be deleted
+      command: >-
+        openstack --os-cloud default network agent set --disable {{ item }}
+      with_items: "{{ _neutron_service_to_remove.results | json_query('[].stdout_lines[]') }}"
+      register: _neutron_service_disable
+      until: _neutron_service_disable is succeeded
+      retries: 5
+      delay: 2
+
+- hosts: neutron_agents_container
+  become: yes
+  gather_facts: no
+  tasks:
+    - name: Discover the list of services to shut down in containers which will be deleted
+      shell: "systemctl list-unit-files --state=enabled --type=service | awk '/neutron.* enabled$/ {print $1}'"
+      args:
+        executable: "/bin/bash"
+      register: _enabled_services
+      changed_when: false
+
+    - name: Shut down neutron services in containers which will be deleted
+      service:
+        name: "{{ item }}"
+        enabled: no
+        state: stopped
+      with_items: "{{ _enabled_services.stdout_lines }}"
+
+- include: "{{ playbook_dir }}/../../../playbooks/lxc-containers-destroy.yml"
+  vars:
+    container_group: "neutron_agents_container"
+
+- hosts: utility[0]
+  become: yes
+  gather_facts: no
+  tasks:
+    - name: Collect the ID's for the neutron services to delete
+      command: >-
+        openstack --os-cloud default network agent list
+                  --format value --column ID
+                  --host {{ service_host }}
+      register: _neutron_service_to_remove
+      until: _neutron_service_to_remove is succeeded
+      retries: 5
+      delay: 2
+      vars:
+        service_host: "{{ hostvars[item]['ansible_hostname'] }}"
+      with_items: "{{ groups['neutron_agents_container'] }}"
+
+    - name: Delete the neutron services which were running in the deleted containers
+      command: >-
+        openstack --os-cloud default network agent delete {{ item }}
+      with_items: "{{ _neutron_service_to_remove.results | json_query('[].stdout_lines[]') }}"
+      register: _neutron_service_delete
+      until: _neutron_service_delete is succeeded
+      retries: 5
+      delay: 2
+
+- hosts: localhost
+  connection: local
+  become: yes
+  gather_facts: no
+  tasks:
+    - name: Remove the inventory entries for the deleted containers
+      command: >-
+        {{ playbook_dir }}/../../inventory-manage.py -r {{ item }}
+      with_items: "{{ groups['neutron_agents_container'] }}"
+
+    - name: Remove the transitional user-space inventory file
+      shell: |
+        set -e
+        if [[ -e /etc/openstack_deploy/inventory.ini.org ]]; then
+          echo "Reverting the inventory.ini in /etc/openstack_deploy to the original backup"
+          mv /etc/openstack_deploy/inventory.ini.org /etc/openstack_deploy/inventory.ini
+          exit 2
+        fi
+      args:
+        executable: /bin/bash
+      register: _remove_ini
+      changed_when: _remove_ini.rc == 2
+      failed_when: _remove_ini.rc not in [0,2]
+

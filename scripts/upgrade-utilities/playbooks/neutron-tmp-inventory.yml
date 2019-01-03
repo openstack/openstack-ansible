@@ -1,0 +1,40 @@
+---
+# Copyright 2018, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- hosts: localhost
+  connection: local
+  become: yes
+  gather_facts: no
+  tasks:
+    - name: Implement the user-space transitional inventory
+      shell: |
+        set -e
+        if [[ ! -e /etc/openstack_deploy/inventory.ini.org ]]; then
+          if [[ -e /etc/openstack_deploy/inventory.ini ]]; then
+            echo "Backing up the existing inventory.ini in /etc/openstack_deploy"
+            mv /etc/openstack_deploy/inventory.ini /etc/openstack_deploy/inventory.ini.org
+          else
+            echo "Adding a new inventory.ini into /etc/openstack_deploy"
+            echo '[all]' > /etc/openstack_deploy/inventory.ini.org
+          fi
+          echo "Copying the transitional inventory.ini for neutron into /etc/openstack_deploy"
+          cp {{ playbook_dir }}/../files/neutron-migration-inventory.ini /etc/openstack_deploy/inventory.ini
+          exit 2
+        fi
+      args:
+        executable: /bin/bash
+      register: _add_ini
+      changed_when: _add_ini.rc == 2
+      failed_when: _add_ini.rc not in [0,2]

@@ -1,0 +1,9 @@
+---
+upgrade:
+  - |
+    During an upgrade using the run-upgrade script, the neutron agents will
+    now automatically be migrated from the neutron_agents containers on to
+    the network_hosts. The neutron_agents containers will be deleted as they
+    are no longer necessary. Any environments which previously upgraded to
+    Queens can make use of the same playbooks to handle to migration, or
+    inspect the playbooks to determine how to do it by hand if preferred.
