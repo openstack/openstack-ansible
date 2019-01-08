@@ -57,6 +57,12 @@
   tags:
     - skip_ansible_lint
 
+- name: Set permissions on loopback devices
+  file:
+    path: "{{ item.stdout }}"
+    mode: "0777"
+  with_items: "{{ ceph_create_loopback.results }}"
+
 # TODO(logan): Move these vars to user_variables.ceph.yml.j2 once LP #1649381
 # is fixed and eliminate this task.
 - name: Write ceph cluster config
