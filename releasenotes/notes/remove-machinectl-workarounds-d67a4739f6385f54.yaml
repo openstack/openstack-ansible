@@ -1,0 +1,7 @@
+---
+fixes:
+  - With the release of CentOS 7.6, deployments were breaking and becoming very
+    slow when we restart dbus in order to catch some PolicyKit changes. However,
+    those changes were never actaully used so they were happening for no reason.
+    We no longer make any modifications to the systemd-machined configuration
+    and/or PolicyKit to maintain upstream compatibility.
