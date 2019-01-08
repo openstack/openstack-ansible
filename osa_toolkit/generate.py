@@ -533,7 +533,7 @@ def network_entry(is_metal, interface,
 
 def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
                              bridge, net_type, net_mtu, user_config,
-                             is_container_address, static_routes,
+                             is_container_address, static_routes, gateway,
                              reference_group, address_prefix):
     """Process additional ip adds and append then to hosts as needed.
 
@@ -550,6 +550,7 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
     :param user_config: ``dict`` user defined configuration details.
     :param is_container_address: ``bol`` set this address to container_address.
     :param static_routes: ``list`` List containing static route dicts.
+    :param gateway: ``str`` gateway address to use in container
     :param reference_group: ``str`` group to filter membership of host against.
     :param address_prefix: ``str`` override prefix of key for network address.
     """
@@ -572,6 +573,7 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
                 user_config,
                 is_container_address,
                 static_routes,
+                gateway,
                 reference_group,
                 address_prefix
             )
@@ -640,6 +642,7 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
                     network['address'] = address
 
             network['netmask'] = netmask
+
         elif is_metal:
             network = networks[old_address] = _network
             network['netmask'] = netmask
@@ -659,6 +662,12 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
 
         if is_container_address is True:
             container['container_address'] = networks[old_address]['address']
+
+        if gateway:
+            # if specified, gateway address will be used for default route in
+            # container and routes offered by DHCP will be ignored
+            container['gateway'] = gateway
+            networks[old_address]['gateway'] = gateway
 
         if static_routes:
             # NOTE: networks[old_address]['static_routes'] will get
@@ -743,6 +752,7 @@ def container_skel_load(container_skel, inventory, config):
                     user_config=config,
                     is_container_address=p_net.get('is_container_address'),
                     static_routes=p_net.get('static_routes'),
+                    gateway=p_net.get('gateway'),
                     reference_group=p_net.get('reference_group'),
                     address_prefix=p_net.get('address_prefix')
                 )
