@@ -21,6 +21,7 @@ nova_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(nova
 nova_service_adminuri: "{{ nova_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ nova_service_port }}"
 nova_service_adminurl: "{{ nova_service_adminuri }}/v2.1"
 nova_console_type: spice
+nova_console_agent_enabled: "{{ ansible_architecture != 'aarch64' }}"
 nova_novncproxy_port: 6080
 nova_spice_html5proxy_base_port: 6082
 nova_serialconsoleproxy_port: 6083
