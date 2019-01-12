@@ -29,6 +29,7 @@ import sys
 import subprocess
 
 import openstackdocstheme
+import yaml
 
 # -- OpenStack-Ansible configuration --------------------------------------
 # Variables to override
@@ -62,8 +63,8 @@ else:
 CONF_PATH = os.path.dirname(os.path.realpath(__file__))
 GNOCCHI_DETAILS = '../../playbooks/defaults/repo_packages/gnocchi.yml'
 with open(os.path.join(CONF_PATH, GNOCCHI_DETAILS), 'r') as fdesc:
-    result = re.search('gnocchi_git_install_branch:.*# HEAD of "(.*)".*', fdesc.read())
-    gnocchi_branch = result.groups()[0]
+    gnocchi_file_content = yaml.safe_load(fdesc)
+    gnocchi_branch = gnocchi_file_content['gnocchi_git_track_branch']
 
 # References variable for substitutions
 upgrade_backup_dir = "``/etc/openstack_deploy.{branchname}``".format(branchname=previous_series_name.upper())
