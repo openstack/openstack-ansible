@@ -140,7 +140,10 @@
 #
 #       Option: container_interface (required, string)
 #       Name of unique interface in containers to use for this network.
-#       Typical values include 'eth1', 'eth2', etc.
+#       Typical values include 'eth1', 'eth2', etc. This option is OPTIONAL
+#       for Neutron provider network definitions when Neutron agents are
+#       deployed on bare metal (default), but REQUIRED when agents are
+#       deployed in containers and for all other non-Neutron use-cases.
 #       NOTE: Container interface is different from host interfaces.
 #
 #       Option: container_type (required, string)

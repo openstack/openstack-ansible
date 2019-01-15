@@ -45,7 +45,9 @@ add a new block underneath the ``provider_networks`` section:
 The ``container_bridge`` setting defines the physical network bridge used
 to connect the veth pair from the physical host to the container.
 Inside the container, the ``container_interface`` setting defines the name
-at which the physical network will be made available.
+at which the physical network will be made available. The
+``container_interface`` setting is not required when Neutron agents are
+deployed on bare metal.
 Make sure that both settings are uniquely defined across their provider
 networks and that the network interface is correctly configured inside your
 operating system.
