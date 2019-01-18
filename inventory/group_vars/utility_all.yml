@@ -53,18 +53,6 @@ cinder_service_backup_program_enabled: "{{ hostvars['localhost']['cinder_service
 # If cinder has a backup service enabled, make sure that Tempest tests it
 tempest_volume_backup_enabled: "{{ cinder_service_backup_program_enabled | bool }}"
 
-# Activate tempest testing based on the inventory content
-tempest_service_available_aodh: "{{ groups['aodh_all'] is defined and groups['aodh_all'] | length > 0 }}"
-tempest_service_available_ceilometer: "{{ groups['ceilometer_all'] is defined and groups['ceilometer_all'] | length > 0 }}"
-tempest_service_available_cinder: "{{ groups['cinder_all'] is defined and groups['cinder_all'] | length > 0 }}"
-tempest_service_available_glance: "{{ groups['glance_all'] is defined and groups['glance_all'] | length > 0 }}"
-tempest_service_available_heat: "{{ groups['heat_all'] is defined and groups['heat_all'] | length > 0 }}"
-tempest_service_available_horizon: "{{ groups['horizon_all'] is defined and groups['horizon_all'] | length > 0 }}"
-tempest_service_available_neutron: "{{ groups['neutron_all'] is defined and groups['neutron_all'] | length > 0 }}"
-tempest_service_available_nova: "{{ groups['nova_all'] is defined and groups['nova_all'] | length > 0 }}"
-tempest_service_available_swift: "{{ (groups['swift_all'] is defined and groups['swift_all'] | length > 0) or (groups['ceph-rgw'] is defined and groups['ceph-rgw'] | length > 0) or (ceph_rgws | length > 0) }}"
-tempest_service_available_congress: "{{ groups['congress_all'] is defined and groups['congress_all'] | length > 0 }}"
-
 tempest_log_dir: /var/log/utility
 
 # This sets the tempest group to the utility group
