@@ -745,7 +745,7 @@ def container_skel_load(container_skel, inventory, config):
                     ip_q=ip_from_q,
                     q_name=q_name,
                     netmask=netmask,
-                    interface=p_net['container_interface'],
+                    interface=p_net.get('container_interface'),
                     bridge=p_net['container_bridge'],
                     net_type=p_net.get('container_type'),
                     net_mtu=p_net.get('container_mtu'),
