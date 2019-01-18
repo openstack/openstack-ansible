@@ -49,7 +49,7 @@ host.
 
    .. note::
 
-      One imporant variable is the ``install_method`` which configures the installation
+      One important variable is the ``install_method`` which configures the installation
       method for the OpenStack services. The services can either be deployed from
       source (default) or from distribution packages. Source based deployments are closer
       to a vanilla OpenStack installation and allow for more tweaking and customizations. On
@@ -200,7 +200,7 @@ Configure credentials for each service in the
 `Ansible Vault <http://docs.ansible.com/playbooks_vault.html>`_ feature to
 increase security by encrypting any files that contain credentials.
 
-Adjust permissions on these files to restrict access by nonprivileged
+Adjust permissions on these files to restrict access by non-privileged
 users.
 
 The ``keystone_auth_admin_password`` option configures the ``admin`` tenant
