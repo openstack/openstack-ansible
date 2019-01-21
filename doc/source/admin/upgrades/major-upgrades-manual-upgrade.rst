@@ -161,11 +161,11 @@ Before installing the infrastructure and OpenStack, update the host machines.
 
 .. code-block:: console
 
-    # openstack-ansible setup-hosts.yml --limit '!galera_all:!neutron_agent:!rabbitmq_all'
+    # openstack-ansible setup-hosts.yml --limit '!galera_all:!rabbitmq_all'
 
 This command is the same setting up hosts on a new installation. The
-``galera_all``, ``neutron_agent`` and ``rabbitmq_all`` host groups are excluded
-to prevent reconfiguration and restarting of any of those containers.
+``galera_all`` and ``rabbitmq_all`` host groups are excluded to prevent
+reconfiguration and restarting of any of those containers.
 
 Update the other LXC container configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -175,13 +175,12 @@ Update the other container configuration independently.
 .. code-block:: console
 
     # openstack-ansible lxc-containers-create.yml -e \
-    'lxc_container_allow_restarts=false' --limit 'galera_all:neutron_agent:rabbitmq_all'
+    'lxc_container_allow_restarts=false' --limit 'galera_all:rabbitmq_all'
 
 This command is a subset of the host setup playbook, limited to the
-``galera_all``, ``neutron_agent`` and ``rabbitmq_all`` host groups.
-The configuration of those containers is updated but a restart for
-any changes to take effect is deferred to another playbook or later
-(see the next section).
+``galera_all`` and ``rabbitmq_all`` host groups. The configuration of those
+containers is updated but a restart forany changes to take effect is deferred
+to another playbook or later (see the next section).
 
 Perform a controlled rolling restart of the Galera containers
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
