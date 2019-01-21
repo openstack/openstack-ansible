@@ -178,27 +178,7 @@
   scm: git
   src: https://github.com/logan2211/ansible-resolvconf
   version: '1.4'
-- name: ceph-defaults
+- name: ceph-ansible
   scm: git
-  src: https://github.com/ceph/ansible-ceph-defaults
-  version: v3.0.8
-- name: ceph-common
-  scm: git
-  src: https://github.com/ceph/ansible-ceph-common
-  version: v3.0.9
-- name: ceph-config
-  scm: git
-  src: https://github.com/ceph/ansible-ceph-config
-  version: v3.0.8
-- name: ceph-mon
-  scm: git
-  src: https://github.com/ceph/ansible-ceph-mon
-  version: v3.0.9
-- name: ceph-mgr
-  scm: git
-  src: https://github.com/ceph/ansible-ceph-mgr
-  version: v3.0.8
-- name: ceph-osd
-  scm: git
-  src: https://github.com/ceph/ansible-ceph-osd
-  version: v3.0.9
+  src: https://github.com/ceph/ceph-ansible
+  version: b0aa2d6ee565c0cd9d7d85d015d98fff3cc2e334

@@ -19,7 +19,7 @@ export ANSIBLE_INVENTORY="${ANSIBLE_INVENTORY:-OSA_INVENTORY_PATH}"
 export ANSIBLE_LOG_PATH="${ANSIBLE_LOG_PATH:-/openstack/log/ansible-logging/ansible.log}"
 mkdir -p "$(dirname ${ANSIBLE_LOG_PATH})" || unset ANSIBLE_LOG_PATH
 
-export ANSIBLE_ROLES_PATH="${ANSIBLE_ROLES_PATH:-/etc/ansible/roles:OSA_PLAYBOOK_PATH/roles}"
+export ANSIBLE_ROLES_PATH="${ANSIBLE_ROLES_PATH:-/etc/ansible/roles:OSA_PLAYBOOK_PATH/roles:/etc/ansible/roles/ceph-ansible/roles}"
 
 export ANSIBLE_LIBRARY="${ANSIBLE_LIBRARY:-/etc/ansible/roles/plugins/library}"
 export ANSIBLE_LOOKUP_PLUGINS="${ANSIBLE_LOOKUP_PLUGINS:-/etc/ansible/roles/plugins/lookup}"
