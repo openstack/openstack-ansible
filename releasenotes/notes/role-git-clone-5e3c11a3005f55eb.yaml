@@ -1,0 +1,16 @@
+---
+upgrade:
+  - |
+    The default method for download roles has been switched from ``galaxy`` to
+    ``git-clone``. This has no functional effect, but is now required in order
+    to successfully download the ``ceph-ansible`` repository. In order to
+    prevent clashes between the old and new roles, the existing
+    ``/etc/ansible/roles/ceph*`` folders should be removed prior to running
+    ``scripts/bootstrap-ansible.sh`` during the minor upgrade process.
+fixes:
+  - |
+    The ``ceph-ansible`` individual role repositories were all removed from
+    github on around 16 January 2019, causing the bootstrap-ansible script to
+    fail for any new deployments, or during upgrades for environments which
+    had these roles previously. To replace them, the ``ceph-ansible`` git
+    repository is used instead.

@@ -28,7 +28,7 @@ export SSH_DIR=${SSH_DIR:-"/root/.ssh"}
 export DEBIAN_FRONTEND=${DEBIAN_FRONTEND:-"noninteractive"}
 
 # Set the role fetch mode to any option [galaxy, git-clone]
-export ANSIBLE_ROLE_FETCH_MODE=${ANSIBLE_ROLE_FETCH_MODE:-galaxy}
+export ANSIBLE_ROLE_FETCH_MODE=${ANSIBLE_ROLE_FETCH_MODE:-git-clone}
 
 # This script should be executed from the root directory of the cloned repo
 cd "$(dirname "${0}")/.."

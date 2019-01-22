@@ -37,10 +37,6 @@ export TERM=linux
 #  function at the end of the run.
 export OSA_GATE_JOB=true
 
-# Set the role fetch mode to git-clone to avoid interactions
-# with the Ansible galaxy API.
-export ANSIBLE_ROLE_FETCH_MODE="git-clone"
-
 # Set the scenario to execute based on the first CLI parameter
 export SCENARIO=${1:-"aio"}
 

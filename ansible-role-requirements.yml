@@ -170,19 +170,7 @@
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_designate
   version: 4c7d75e71c894040e9222816d29bb4831512af94
-- name: ceph.ceph-common
+- name: ceph-ansible
   scm: git
-  src: https://github.com/ceph/ansible-ceph-common
-  version: v2.2.9
-- name: ceph.ceph-docker-common
-  scm: git
-  src: https://github.com/ceph/ansible-ceph-docker-common
-  version: ca86fd0ef6d24aa2c750a625acdcb8012c374aa0
-- name: ceph-mon
-  scm: git
-  src: https://github.com/ceph/ansible-ceph-mon
-  version: v2.2.9
-- name: ceph-osd
-  scm: git
-  src: https://github.com/ceph/ansible-ceph-osd
+  src: https://github.com/ceph/ceph-ansible
   version: v2.2.9
