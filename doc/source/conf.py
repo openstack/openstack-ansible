@@ -56,7 +56,7 @@ if current_series == "latest":
 else:
   watermark = series_names = current_series.capitalize()
   git_cmd = ["git", "describe", "--abbrev=0", "--tags"]
-  latest_tag = subprocess.Popen(git_cmd,stdout=subprocess.PIPE).communicate()[0].strip('\n') 
+  latest_tag = subprocess.Popen(git_cmd,stdout=subprocess.PIPE).communicate()[0].strip('\n')
   branch = "stable/{}".format(current_series)
   upgrade_warning = "The upgrade is always under active development."
 
@@ -67,7 +67,6 @@ with open(os.path.join(CONF_PATH, GNOCCHI_DETAILS), 'r') as fdesc:
     gnocchi_branch = gnocchi_file_content['gnocchi_git_track_branch']
 
 # References variable for substitutions
-upgrade_backup_dir = "``/etc/openstack_deploy.{branchname}``".format(branchname=previous_series_name.upper())
 deploy_guide_prefix = "http://docs.openstack.org/project-deploy-guide/openstack-ansible/{}/%s".format(current_series)
 dev_docs_prefix = "http://docs.openstack.org/openstack-ansible/{}/%s".format(current_series)
 
@@ -75,17 +74,17 @@ dev_docs_prefix = "http://docs.openstack.org/openstack-ansible/{}/%s".format(cur
 rst_epilog = """
 .. |current_release_git_branch_name| replace:: {current_release_git_branch_name}
 .. |current_release_gnocchi_git_branch_name| replace:: {current_release_gnocchi_git_branch_name}
+.. |previous_series_name| replace:: {previous_series_name}
 .. |previous_release_formal_name| replace:: {previous_release_formal_name}
 .. |current_release_formal_name| replace:: {current_release_formal_name}
-.. |upgrade_backup_dir| replace:: {upgrade_backup_dir}
 .. |latest_tag| replace:: {latest_tag}
 .. |upgrade_warning| replace:: {upgrade_warning}
 """.format(
   current_release_git_branch_name=branch,
   current_release_gnocchi_git_branch_name=gnocchi_branch,
+  previous_series_name=previous_series_name,
   previous_release_formal_name=previous_series_name.capitalize(),
   current_release_formal_name=current_series_name.capitalize(),
-  upgrade_backup_dir=upgrade_backup_dir,
   latest_tag=latest_tag,
   upgrade_warning=upgrade_warning,
 )

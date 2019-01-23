@@ -31,5 +31,5 @@ the major upgrades procedures.
    monitoring-systems.rst
    backup-restore.rst
    troubleshooting.rst
-   upgrades/minor-updates.rst
+   upgrades/minor-upgrades.rst
    upgrades/major-upgrades.rst

@@ -30,9 +30,6 @@ export SCRIPTS_PATH="$(dirname "$(readlink -f "${0}")")"
 # The git checkout root path
 export MAIN_PATH="$(dirname "${SCRIPTS_PATH}")"
 
-# The path to find all the upgrade playbooks
-export UPGRADE_PLAYBOOKS="${SCRIPTS_PATH}/upgrade-utilities/playbooks"
-
 # The expected source series name
 export SOURCE_SERIES="rocky"
 
@@ -157,41 +154,29 @@ function main {
     pre_flight
     check_for_current
 
-    # ANSIBLE_INVENTORY location has changed between P and Q, so we ensure
-    # we don't point to previous inventory.
-    unset ANSIBLE_INVENTORY
+    # Backup source series artifacts
+    source_series_backup_file="/openstack/backup-openstack-ansible-${SOURCE_SERIES}.tar.gz"
+    if [[ ! -e ${source_series_backup_file} ]]; then
+      tar zcf ${source_series_backup_file} /etc/openstack_deploy /etc/ansible/ /usr/local/bin/openstack-ansible.rc
+    fi
 
-    # Archive previous version artifacts
-    tar zcf /openstack/previous-ansible_`date +%F_%H%M`.tar.gz /etc/openstack_deploy /etc/ansible/ /usr/local/bin/openstack-ansible.rc
+    # ANSIBLE_INVENTORY may be set to a previous/incorrect location. To
+    # ensure this is not the case, we unset the environment variable.
+    unset ANSIBLE_INVENTORY
 
     "${SCRIPTS_PATH}/bootstrap-ansible.sh"
 
     pushd ${MAIN_PATH}/playbooks
-        RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/ansible_fact_cleanup.yml")
-        RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/deploy-config-changes.yml")
-        RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/user-secrets-adjustment.yml")
-        RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/pip-conf-removal.yml")
-        RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/ceph-galaxy-removal.yml")
+        RUN_TASKS+=("${SCRIPTS_PATH}/upgrade-utilities/deploy-config-changes.yml")
         # we don't want to trigger container restarts for these groups yet
         RUN_TASKS+=("setup-hosts.yml --limit '!galera_all:!rabbitmq_all'")
         # add new container config to containers but don't restart
-        RUN_TASKS+=("lxc-containers-create.yml -e 'lxc_container_allow_restarts=false' --limit 'galera_all:rabbitmq_all'")
-        # setup infra
-        RUN_TASKS+=("unbound-install.yml")
-        RUN_TASKS+=("repo-install.yml")
-        RUN_TASKS+=("haproxy-install.yml")
-        RUN_TASKS+=("repo-use.yml")
-        # explicitly perform mariadb upgrade
-        RUN_TASKS+=("galera-install.yml -e 'galera_upgrade=true'")
-        # explicitly perform controlled galera cluster restart
-        RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/galera-cluster-rolling-restart.yml")
-        # individually run each of the remaining plays from setup-infrastructure
-        RUN_TASKS+=("memcached-install.yml")
-        RUN_TASKS+=("rabbitmq-install.yml -e 'rabbitmq_upgrade=true'")
-        RUN_TASKS+=("etcd-install.yml")
-        RUN_TASKS+=("utility-install.yml")
-        RUN_TASKS+=("rsyslog-install.yml")
-        RUN_TASKS+=("${UPGRADE_PLAYBOOKS}/memcached-flush.yml")
+        RUN_TASKS+=("setup-hosts.yml -e 'lxc_container_allow_restarts=false' --limit 'galera_all:rabbitmq_all'")
+        # upgrade infrastructure
+        RUN_TASKS+=("setup-infrastructure.yml -e 'galera_upgrade=true' -e 'rabbitmq_upgrade=true'")
+        # explicitly perform controlled galera cluster restart with new lxc config
+        RUN_TASKS+=("${SCRIPTS_PATH}/upgrade-utilities/galera-cluster-rolling-restart.yml")
+        # upgrade openstack
         RUN_TASKS+=("setup-openstack.yml")
         # Run the tasks in order
         for item in ${!RUN_TASKS[@]}; do
