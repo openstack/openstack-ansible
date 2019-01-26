@@ -1,0 +1,12 @@
+---
+upgrade:
+  - |
+    The data structure for ``galera_gpg_keys`` has been changed to be
+    a dict passed directly to the applicable apt_key/rpm_key module. As such
+    any overrides would need to be reviewed to ensure that they do not pass
+    any key/value pairs which would cause the module to fail.
+  - |
+    The default values for ``galera_gpg_keys`` have been changed for
+    all supported platforms will use vendored keys. This means that the task
+    execution will no longer reach out to the internet to add the keys,
+    making offline or proxy-based installations easier and more reliable.
