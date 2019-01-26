@@ -1,0 +1,15 @@
+---
+fixes:
+  - |
+    When using LXC containers with a copy-on-write back-end, the ``lxc_hosts``
+    role execution would fail due to undefined variables with the
+    ``nspawn_host_`` prefix. This issue has now been fixed.
+deprecations:
+  - |
+    The following variable name changes have been implemented in order to
+    better reflect their purpose.
+
+    * ``lxc_host_machine_quota_disabled`` -> ``lxc_host_btrfs_quota_disabled``
+    * ``lxc_host_machine_qgroup_space_limit`` -> ``lxc_host_btrfs_qgroup_space_limit``
+    * ``lxc_host_machine_qgroup_compression_limit`` -> ``lxc_host_btrfs_qgroup_compression_limit``
+
