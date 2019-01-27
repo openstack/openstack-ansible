@@ -17,6 +17,11 @@
   hosts: hosts
   gather_facts: "{{ osa_gather_facts | default(True) }}"
   become: true
+  handlers:
+    - name: Restart systemd-journald
+      systemd:
+        name: systemd-journald
+        state: restarted
   pre_tasks:
     # At this time there's no suitable package available for systemd-journal-remote/gateway
     # When installing on SUSE 42.x. For now this playbook will omit suse when the package
@@ -50,6 +55,29 @@
         owner: "systemd-journal-remote"
         group: "systemd-journal"
 
+    - name: Ensure receiving hosts are tuned
+      ini_file:
+        path: "/etc/systemd/journald.conf"
+        section: Journal
+        option: "{{ item.key }}"
+        value: "{{ item.value }}"
+        backup: yes
+      with_items:
+        - key: RuntimeMaxFiles
+          value: "{{ ((((groups['hosts'] | length) * 1.5) + (groups['hosts'] | length)) // 1) | int }}"
+        - key: RuntimeMaxFileSize
+          value: "5G"
+        - key: Compress
+          value: "yes"
+        - key: MaxFileSec
+          value: "1d"
+        - key: MaxRetentionSec
+          value: "2d"
+      when:
+        - (ansible_host == systemd_journal_remote_target)
+      notify:
+        - Restart systemd-journald
+
   roles:
     - role: "systemd_service"
       systemd_tempd_prefix: "openstack"
@@ -68,16 +96,6 @@
             --compress
             --seal
             --output=/var/log/journal/remote/
-          config_overrides:
-            Unit:
-              Description: "Journal Remote Sink Service"
-              Documentation: "man:systemd-journal-remote(8) man:journal-remote.conf(5)"
-              Requires: "systemd-journal-remote.socket"
-            Service:
-              WatchdogSec: "3min"
-              LimitNOFILE: 16384
-              User: "systemd-journal-remote"
-              Group: "systemd-journal-remote"
 
         - service_name: "systemd-journal-upload"
           enabled: "{{ (ansible_host == systemd_journal_remote_target) | ternary('no', 'yes') }}"
@@ -87,16 +105,6 @@
             --save-state
             --merge
             --url=http://{{ systemd_journal_remote_target }}:19532
-          config_overrides:
-            Unit:
-              Description: "Journal Remote Upload Service"
-              Documentation: "man:systemd-journal-upload(8)"
-              After: "network.target"
-            Service:
-              WatchdogSec: "3min"
-              LimitNOFILE: 16384
-              User: "systemd-journal-upload"
-              Group: "systemd-journal"
 
   vars:
     systemd_journal_remote_target: "{{ hostvars[groups['log_hosts'][0]]['ansible_host'] }}"
