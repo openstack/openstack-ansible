@@ -3,7 +3,7 @@
 # process, which may cause wedges in the gate later.
 
 # Keep hacking first, it pulls in the right versions of flake8, mccabe and pyflakes
-hacking<0.11,>=0.10.0
+hacking>=1.1.0,<1.2.0 # Apache-2.0
 bashate>=0.5.1 # Apache-2.0
 coverage!=4.4,>=4.0 # Apache-2.0
 mock>=2.0.0 # BSD
