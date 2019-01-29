@@ -1,0 +1,11 @@
+---
+fixes:
+  - |
+    The ``ceph-ansible`` individual role repositories were all removed from
+    github on around 16 January 2019, causing the bootstrap-ansible script to
+    fail for any new deployments, or during upgrades for environments which
+    had these roles previously. To replace them, the ``ceph-ansible`` git
+    repository is used instead. In order to prevent clashes between the old
+    and new roles, the existing ``/etc/ansible/roles/ceph*`` folders should be
+    removed prior to running ``scripts/bootstrap-ansible.sh`` during the minor
+    upgrade process.
