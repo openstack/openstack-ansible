@@ -33,9 +33,6 @@ export SETUP_ARA=${SETUP_ARA:-"false"}
 # This can be used to tell it which index to use, etc.
 export PIP_OPTS=${PIP_OPTS:-""}
 
-# Set the role fetch mode to any option [galaxy, git-clone]
-export ANSIBLE_ROLE_FETCH_MODE=${ANSIBLE_ROLE_FETCH_MODE:-git-clone}
-
 export OSA_WRAPPER_BIN="${OSA_WRAPPER_BIN:-scripts/openstack-ansible.sh}"
 
 # This script should be executed from the root directory of the cloned repo
@@ -187,11 +184,6 @@ echo "openstack-ansible wrapper created."
 
 # Update dependent roles
 if [ -f "${ANSIBLE_ROLE_FILE}" ]; then
-  if [[ "${ANSIBLE_ROLE_FETCH_MODE}" == 'galaxy' ]];then
-    # Pull all required roles.
-    ansible-galaxy install --role-file="${ANSIBLE_ROLE_FILE}" \
-                           --force
-  elif [[ "${ANSIBLE_ROLE_FETCH_MODE}" == 'git-clone' ]];then
     # NOTE(cloudnull): When bootstrapping we don't want ansible to interact
     #                  with our plugins by default. This change will force
     #                  ansible to ignore our plugins during this process.
@@ -221,10 +213,6 @@ if [ -f "${ANSIBLE_ROLE_FILE}" ]; then
     unset ANSIBLE_VARS_PLUGINS
     unset ANSIBLE_STRATEGY_PLUGINS
     unset ANSIBLE_CONFIG
-  else
-    echo "Please set the ANSIBLE_ROLE_FETCH_MODE to either of the following options ['galaxy', 'git-clone']"
-    exit 99
-  fi
 fi
 
 # Install and export the ARA callback plugin
