@@ -173,6 +173,9 @@ PIP_OPTS+=" --constraint ${UPPER_CONSTRAINTS_FILE}"
 # a different version of Ansible to the one we want to install. As such, we
 # use --isolated so that the config file is ignored.
 
+# Get current code version (this runs at the root of OSA clone)
+CURRENT_OSA_VERSION=$(cd ${OSA_CLONE_DIR}; /opt/ansible-runtime/bin/python setup.py --version)
+
 # Install ansible and the other required packages
 ${PIP_COMMAND} install --isolated ${PIP_OPTS} -r requirements.txt ${ANSIBLE_PACKAGE}
 
@@ -205,6 +208,8 @@ sed -i "s|OSA_HOST_VARS_DIR|${OSA_CLONE_DIR}/host_vars/|g" /usr/local/bin/openst
 # Create openstack ansible wrapper tool
 cp -v ${OSA_WRAPPER_BIN} /usr/local/bin/openstack-ansible
 sed -i "s|OSA_CLONE_DIR|${OSA_CLONE_DIR}|g" /usr/local/bin/openstack-ansible
+# Mark the current OSA version in the wrapper, so we don't need to compute it everytime.
+sed -i "s|CURRENT_OSA_VERSION|${CURRENT_OSA_VERSION}|g" /usr/local/bin/openstack-ansible
 
 # Ensure wrapper tool is executable
 chmod +x /usr/local/bin/openstack-ansible
