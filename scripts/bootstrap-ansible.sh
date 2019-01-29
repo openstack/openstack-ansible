@@ -113,6 +113,9 @@ fi
 PYTHON_EXEC_PATH="${PYTHON_EXEC_PATH:-$(which python2 || which python)}"
 PYTHON_VERSION="$($PYTHON_EXEC_PATH -c 'import sys; print(".".join(map(str, sys.version_info[:3])))')"
 
+# Get current code version (this runs at the root of OSA clone)
+CURRENT_OSA_VERSION=$(cd ${OSA_CLONE_DIR}; ${PYTHON_EXEC_PATH} setup.py --version)
+
 # Use https when Python with native SNI support is available
 UPPER_CONSTRAINTS_PROTO=$([ "$PYTHON_VERSION" == $(echo -e "$PYTHON_VERSION\n2.7.9" | sort -V | tail -1) ] && echo "https" || echo "http")
 
@@ -177,6 +180,8 @@ sed -i "s|OSA_PLAYBOOK_PATH|${OSA_PLAYBOOK_PATH}|g" /usr/local/bin/openstack-ans
 # Create openstack ansible wrapper tool
 cp -v ${OSA_WRAPPER_BIN} /usr/local/bin/openstack-ansible
 sed -i "s|OSA_CLONE_DIR|${OSA_CLONE_DIR}|g" /usr/local/bin/openstack-ansible
+# Mark the current OSA version in the wrapper, so we don't need to compute it everytime.
+sed -i "s|CURRENT_OSA_VERSION|${CURRENT_OSA_VERSION}|g" /usr/local/bin/openstack-ansible
 
 # Ensure wrapper tool is executable
 chmod +x /usr/local/bin/openstack-ansible
