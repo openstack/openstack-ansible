@@ -18,6 +18,7 @@
 # OpenStack wrapper tool to ease the use of ansible with multiple variable files.
 
 export PATH="/opt/ansible-runtime/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:${PATH}"
+export OSA_VERSION="CURRENT_OSA_VERSION"
 
 function info {
     if [ "${ANSIBLE_NOCOLOR:-0}" -eq "1" ]; then
