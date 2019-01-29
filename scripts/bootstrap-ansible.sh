@@ -177,6 +177,7 @@ sed -i "s|OSA_PLAYBOOK_PATH|${OSA_PLAYBOOK_PATH}|g" /usr/local/bin/openstack-ans
 
 # Create openstack ansible wrapper tool
 cp -v ${OSA_WRAPPER_BIN} /usr/local/bin/openstack-ansible
+sed -i "s|OSA_CLONE_DIR|${OSA_CLONE_DIR}|g" /usr/local/bin/openstack-ansible
 
 # Ensure wrapper tool is executable
 chmod +x /usr/local/bin/openstack-ansible
