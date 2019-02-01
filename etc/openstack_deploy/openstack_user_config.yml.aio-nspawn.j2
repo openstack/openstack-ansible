@@ -33,6 +33,7 @@ global_overrides:
     - network:
         container_bridge: "{{ ansible_default_ipv4['alias'] }}"
         container_interface: "mv-flat"
+        host_bind_override: "mv-flat"
         ip_from_q: "flat"
         type: "flat"
         net_name: "flat"
