@@ -23,7 +23,7 @@
 # - service_action: The action to execute [stop, start, restart, reload].
 
 - name: Gather service list
-  shell: "systemctl list-unit-files --state=enabled --type=service | awk '/{{ service_name }}.* enabled$/ {print $1}'"
+  shell: "systemctl list-unit-files --state=enabled --type=service | awk '/^{{ service_name }}.* enabled$/ {print $1}'"
   args:
     executable: "/bin/bash"
   register: _enabled_services
