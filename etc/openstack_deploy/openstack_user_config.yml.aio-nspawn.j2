@@ -104,6 +104,11 @@ aio_block: &aio_info_block
       #                   be used and should already have an IP address assigned
       #                   to it.
       container_extra_networks:
+        container_network:
+          bridge: "{{ ansible_default_ipv4['alias'] }}"
+          interface: mv-container
+          address: 172.29.236.100
+          netmask: 255.255.252.0
         flat_network:
           bridge: "{{ ansible_default_ipv4['alias'] }}"
           interface: mv-flat
