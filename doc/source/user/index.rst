@@ -23,8 +23,10 @@ For in-depth technical information, see the
    :maxdepth: 1
 
    aio/quickstart.rst
+   network-arch/example.rst
    test/example.rst
    prod/example.rst
+   prod/provnet_groups.rst
    limited-connectivity/index.rst
    l3pods/example.rst
    ceph/full-deploy.rst
