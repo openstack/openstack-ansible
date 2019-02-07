@@ -1,0 +1,12 @@
+---
+fixes:
+  - |
+    In https://review.openstack.org/582633 an adjustment was made to the
+    ``openstack-ansible`` wrapper which mistakenly changed the intended
+    behaviour. The wrapper is only meant to include the extra-vars and
+    invoke the inventory if ``ansible-playbook`` was executed from inside
+    the ``openstack-ansible`` repository clone (typically
+    ``/opt/openstack-ansible``), but the change made the path irrelevant.
+    This has now been fixed - ``ansible-playbook`` and ``ansible`` will
+    only invoke the inventory and include extra vars if it is invoked
+    from inside the git clone path.
