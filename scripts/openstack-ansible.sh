@@ -31,7 +31,7 @@ function info {
 RUN_CMD=$(basename ${0})
 
 # Apply the OpenStack-Ansible configuration selectively.
-if [[ "${PWD}" == *"${OSA_CLONE_DIR}"* ]] || [ "${RUN_CMD}" == "openstack-ansible" ]; then
+if [[ "${PWD}" == *"OSA_CLONE_DIR"* ]] || [ "${RUN_CMD}" == "openstack-ansible" ]; then
 
   # Source the Ansible configuration.
   . /usr/local/bin/openstack-ansible.rc
