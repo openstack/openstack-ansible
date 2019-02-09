@@ -354,6 +354,9 @@ def _add_container_hosts(assignment, config, container_name, container_type,
         # Get any set host options
         host_options = config[physical_host_type][host_type]
         affinity = host_options.get('affinity', {})
+        no_containers = host_options.get('no_containers', False)
+        if no_containers:
+            properties['is_metal'] = True
 
         container_affinity = affinity.get(container_name, 1)
         # Ensures that container names are not longer than 63
