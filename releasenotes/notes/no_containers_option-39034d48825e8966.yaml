@@ -1,0 +1,18 @@
+---
+features:
+  - |
+    A new option has been added allowing deployers to disable any and all
+    containers on a given host. The option `no_containers` is a boolean
+    which, if undefined, will default to *false*. This option can be added
+    to any host in the `openstack_user_config.yml` or via an override in
+    `conf.d`. When this option is set to *true* the given host will be
+    treated as a baremetal machine. The new option mirrors the existing
+    environmental option `is_metal` but allows deployers to target
+    specific hosts instead of entire groups.
+
+    .. code-block:: yaml
+
+        log_hosts:
+          infra-1:
+            ip: 172.16.24.2
+            no_containers: true
