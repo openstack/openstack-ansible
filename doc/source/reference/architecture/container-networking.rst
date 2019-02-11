@@ -104,3 +104,18 @@ The following diagram shows how virtual machines connect to the ``br-vlan`` and
 ``br-vxlan`` bridges and send traffic to the network outside the host:
 
 .. image:: ../figures/networking-compute.png
+
+When Neutron agents are deployed "on metal" on a network node or collapsed
+infra/network node, the ``Neutron Agents`` container and respective virtual
+interfaces are no longer implemented. In addition, use of the
+``host_bind_override`` override when defining provider networks allows
+Neutron to interface directly with a physical interface or bond instead of the
+``br-vlan`` bridge. The following diagram reflects the differences in the
+virtual network layout.
+
+.. image:: ../figures/networking-neutronagents-nobridge.png
+
+The absence of ``br-vlan`` in-path of instance traffic is also reflected on
+compute nodes, as shown in the following diagram.
+
+.. image:: ../figures/networking-compute-nobridge.png
