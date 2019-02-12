@@ -14,7 +14,7 @@
 # limitations under the License.
 
 ## OpenStack Source Code Release
-openstack_release: 19.0.0.0b1
+openstack_release: "{{ lookup('env', 'OSA_VERSION') | default('undefined', true) }}"
 
 ## Verbosity Options
 debug: False
