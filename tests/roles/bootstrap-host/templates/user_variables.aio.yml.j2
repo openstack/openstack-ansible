@@ -21,8 +21,8 @@ install_method: "{{ bootstrap_host_install_method }}"
 
 ## Tempest settings
 {% if bootstrap_host_container_tech == 'nspawn' %}
-tempest_public_subnet_cidr: "172.29.236.0/22"
-tempest_public_subnet_allocation_pools: "172.29.239.110-172.29.239.200"
+tempest_public_subnet_cidr: "172.29.240.0/22"
+tempest_public_subnet_allocation_pools: "172.29.243.110-172.29.243.200"
 {% else %}
 tempest_public_subnet_cidr: "172.29.248.0/22"
 tempest_public_subnet_allocation_pools: "172.29.249.110-172.29.249.200"
