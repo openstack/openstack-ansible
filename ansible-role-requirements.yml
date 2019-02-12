@@ -6,6 +6,10 @@
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-apt_package_pinning
   version: master
+- name: config_template
+  scm: git
+  src: https://git.openstack.org/openstack/ansible-config_template
+  version: master
 - name: pip_install
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-pip_install

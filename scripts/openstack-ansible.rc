@@ -21,10 +21,10 @@ mkdir -p "$(dirname ${ANSIBLE_LOG_PATH})" || unset ANSIBLE_LOG_PATH
 
 export ANSIBLE_ROLES_PATH="${ANSIBLE_ROLES_PATH:-/etc/ansible/roles:OSA_PLAYBOOK_PATH/roles:/etc/ansible/roles/ceph-ansible/roles}"
 
-export ANSIBLE_LIBRARY="${ANSIBLE_LIBRARY:-/etc/ansible/roles/plugins/library:/etc/ansible/roles/ceph-ansible/library}"
+export ANSIBLE_LIBRARY="${ANSIBLE_LIBRARY:-/etc/ansible/roles/config_template/library:/etc/ansible/roles/plugins/library:/etc/ansible/roles/ceph-ansible/library}"
 export ANSIBLE_LOOKUP_PLUGINS="${ANSIBLE_LOOKUP_PLUGINS:-/etc/ansible/roles/plugins/lookup}"
 export ANSIBLE_FILTER_PLUGINS="${ANSIBLE_FILTER_PLUGINS:-/etc/ansible/roles/plugins/filter}"
-export ANSIBLE_ACTION_PLUGINS="${ANSIBLE_ACTION_PLUGINS:-/etc/ansible/roles/plugins/action:/etc/ansible/roles/ceph-ansible/plugins/actions}"
+export ANSIBLE_ACTION_PLUGINS="${ANSIBLE_ACTION_PLUGINS:-/etc/ansible/roles/config_template/action:/etc/ansible/roles/plugins/action:/etc/ansible/roles/ceph-ansible/plugins/actions}"
 export ANSIBLE_CALLBACK_PLUGINS="${ANSIBLE_CALLBACK_PLUGINS:-/etc/ansible/roles/plugins/callback:/etc/ansible/roles/ceph-ansible/plugins/callback}"
 export ANSIBLE_TEST_PLUGINS="${ANSIBLE_TEST_PLUGINS:-/etc/ansible/roles/plugins/test}"
 export ANSIBLE_VARS_PLUGINS="${ANSIBLE_VARS_PLUGINS:-/etc/ansible/roles/plugins/vars_plugins}"
