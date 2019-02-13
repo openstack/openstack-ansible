@@ -36,10 +36,6 @@ export TERM=linux
 # Store the clone repo root location
 export OSA_CLONE_DIR="$(readlink -f $(dirname ${0})/..)"
 
-# Set the role fetch mode to git-clone to avoid interactions
-# with the Ansible galaxy API.
-export ANSIBLE_ROLE_FETCH_MODE="git-clone"
-
 # The directory in which the ansible logs will be placed
 export ANSIBLE_LOG_DIR="/openstack/log/ansible-logging"
 
