@@ -63,6 +63,7 @@ system packages are upgraded and then reboot into the new kernel:
 .. code-block:: shell-session
 
    ## Ubuntu
+   # apt-get update
    # apt-get dist-upgrade
    # reboot
 
