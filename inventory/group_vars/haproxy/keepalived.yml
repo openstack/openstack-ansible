@@ -35,9 +35,11 @@ keepalived_global_defs:
 
 keepalived_scripts:
   haproxy_check_script:
-    check_script: "/bin/kill -0 `cat /var/run/haproxy.pid`"
+    check_script: "/etc/keepalived/haproxy_check.sh"
+    src_check_script: "{{ playbook_dir }}/../scripts/keepalived_haproxy_check.sh"
   pingable_check_script:
-    check_script: "/bin/ping -c {{ keepalived_ping_count }} {{ keepalived_ping_address }} 1>&2"
+    check_script: "/etc/keepalived/pingable_check.sh {{ keepalived_ping_count }} {{ keepalived_ping_address }}"
+    src_ping_script: "{{ playbook_dir }}/../scripts/keepalived_pingable_check.sh"
     interval: "{{ keepalived_ping_interval }}"
     fall: 2
     rise: 4
