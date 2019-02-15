@@ -110,9 +110,6 @@ fi
 PYTHON_EXEC_PATH="${PYTHON_EXEC_PATH:-$(which python2 || which python)}"
 PYTHON_VERSION="$($PYTHON_EXEC_PATH -c 'import sys; print(".".join(map(str, sys.version_info[:3])))')"
 
-# Get current code version (this runs at the root of OSA clone)
-CURRENT_OSA_VERSION=$(cd ${OSA_CLONE_DIR}; ${PYTHON_EXEC_PATH} setup.py --version)
-
 # Use https when Python with native SNI support is available
 UPPER_CONSTRAINTS_PROTO=$([ "$PYTHON_VERSION" == $(echo -e "$PYTHON_VERSION\n2.7.9" | sort -V | tail -1) ] && echo "https" || echo "http")
 
@@ -141,6 +138,9 @@ PIP_OPTS+=" --constraint ${UPPER_CONSTRAINTS_FILE}"
 
 # Upgrade pip setuptools and wheel to the appropriate version
 ${PIP_COMMAND} install --isolated ${PIP_OPTS} --upgrade pip setuptools wheel
+
+# Get current code version (this runs at the root of OSA clone)
+CURRENT_OSA_VERSION=$(cd ${OSA_CLONE_DIR}; /opt/ansible-runtime/bin/python setup.py --version)
 
 # Install ansible and the other required packages
 ${PIP_COMMAND} install --isolated ${PIP_OPTS} -r requirements.txt ${ANSIBLE_PACKAGE}
