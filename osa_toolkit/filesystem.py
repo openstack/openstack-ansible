@@ -245,7 +245,6 @@ def load_inventory(preferred_path=None, default_inv=None, filename=None):
 
     if inventory is not False:
         logger.debug("Loaded existing inventory from {}".format(file_loaded))
-        _make_backup(load_path, file_loaded)
     else:
         logger.debug("No existing inventory, created fresh skeleton.")
         inventory = copy.deepcopy(default_inv)
@@ -264,6 +263,10 @@ def save_inventory(inventory_json, save_path):
         inventory_file = file_find(save_path)
     else:
         inventory_file = os.path.join(save_path, INVENTORY_FILENAME)
+
+    if os.path.isfile(inventory_file):
+        _make_backup(save_path, inventory_file)
+
     with open(inventory_file, 'wb') as f:
         f.write(inventory_json.encode('ascii'))
         logger.info("Inventory written")
