@@ -15,6 +15,7 @@
 #
 # (c) 2014, Kevin Carter <kevin.carter@rackspace.com>
 
+import copy
 import json
 import logging
 import netaddr
@@ -1109,6 +1110,9 @@ def main(config=None, check=False, debug=False, environment=None, **kwargs):
     # Load existing inventory file if found
     inventory, inv_path = filesys.load_inventory(config, INVENTORY_SKEL)
 
+    # Make a deep copy for change comparison
+    orig_inventory = copy.deepcopy(inventory)
+
     # Save the users container cidr as a group variable
     cidr_networks = user_defined_config.get('cidr_networks')
     if not cidr_networks:
@@ -1199,7 +1203,9 @@ def main(config=None, check=False, debug=False, environment=None, **kwargs):
         num_hosts = len(inventory['_meta']['hostvars'])
         logger.debug("%d hosts found.", num_hosts)
 
-    # Save new dynamic inventory
-    filesys.save_inventory(inventory_json, inv_path)
+    # Save new dynamic inventory only if modified
+    if orig_inventory != inventory:
+        logger.debug("Saving modified inventory")
+        filesys.save_inventory(inventory_json, inv_path)
 
     return inventory_json
