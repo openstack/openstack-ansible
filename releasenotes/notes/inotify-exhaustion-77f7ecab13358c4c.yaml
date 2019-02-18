@@ -1,0 +1,16 @@
+---
+issues:
+  - |
+    The number of inotify watch instances available is limited system wide
+    via a sysctl setting. It is possible for certain processes, such as
+    pypi-server, or elasticsearch from the ops repo to consume a large number
+    of inotify watches. If the system wide maximum is reached then any process
+    on the host or in any container on the host will be unable to create a new
+    inotify watch. Systemd uses inotify watches, and if there are none available
+    it is unable to restart services. The processes which synchronise the repo
+    server contents between infra nodes also relies on inotify watches. If the
+    repo servers fail to synchronise, or services fail to restart when expected
+    check the the inotify watch limit which is defined in the sysctl value
+    fs.inotify.max_user_watches. Patches have merged to increase these limits,
+    but for existing environments or those which have not upgraded to a recent
+    enough point release may have to apply an increased limit manually.
