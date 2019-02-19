@@ -36,10 +36,14 @@ keepalived_global_defs:
 keepalived_scripts:
   haproxy_check_script:
     check_script: "/etc/keepalived/haproxy_check.sh"
+    ##if a src_check_script is defined, it will be uploaded from src_check_script
+    ##on the deploy host to the check_script location. If the check_script needs
+    ##parameters, you can define the location under dest_check_script.
     src_check_script: "{{ playbook_dir }}/../scripts/keepalived_haproxy_check.sh"
   pingable_check_script:
     check_script: "/etc/keepalived/pingable_check.sh {{ keepalived_ping_count }} {{ keepalived_ping_address }}"
-    src_ping_script: "{{ playbook_dir }}/../scripts/keepalived_pingable_check.sh"
+    dest_check_script: "/etc/keepalived/pingable_check.sh"
+    src_check_script: "{{ playbook_dir }}/../scripts/keepalived_pingable_check.sh"
     interval: "{{ keepalived_ping_interval }}"
     fall: 2
     rise: 4
