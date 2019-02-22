@@ -26,14 +26,8 @@
       vars:
         list_of_bind_mounts: "{{ gnocchi_container_bind_mounts }}"
       when:
-        - (gnocchi_storage_driver == "file") or (gnocchi_storage_driver is not defined)
         - not is_metal
-
-    - include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
-      when:
-        - not is_metal
-        - gnocchi_storage_driver is defined
-        - gnocchi_storage_driver != "file"
+        - (gnocchi_storage_driver | default('file')) != "file"
 
     - include_tasks: common-tasks/os-log-dir-setup.yml
       vars:
@@ -55,6 +49,7 @@
         - ceph
 
     - role: "os_gnocchi"
+      gnocchi_identity_only: "{{ ((gnocchi_storage_driver | default('file')) == 'swift') | ternary(true, false)}}"
 
   post_tasks:
     - include_tasks: "common-tasks/rsyslog-client.yml"
