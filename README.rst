@@ -55,3 +55,12 @@ https://git.openstack.org/cgit/openstack/openstack-ansible-<ROLENAME>.
 .. _OpenStack Mailing Lists: http://lists.openstack.org/
 .. _freenode network: https://freenode.net/
 .. _Role Documentation: https://docs.openstack.org/project-deploy-guide/openstack-ansible/draft/configure.html#advanced-service-configuration
+
+Resources
+#########
+
+* License: Apache License, Version 2.0
+* Documentation: https://docs.openstack.org/openstack-ansible/latest/
+* Source: https://git.openstack.org/cgit/openstack/openstack-ansible
+* Bugs: https://bugs.launchpad.net/openstack-ansible
+* Release notes:  https://docs.openstack.org/releasenotes/openstack-ansible/
