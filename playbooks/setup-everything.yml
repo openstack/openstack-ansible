@@ -13,6 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: setup-hosts.yml
-- include: setup-infrastructure.yml
-- include: setup-openstack.yml
+- import_playbook: setup-hosts.yml
+- import_playbook: setup-infrastructure.yml
+- import_playbook: setup-openstack.yml

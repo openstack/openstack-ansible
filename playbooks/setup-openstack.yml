@@ -13,38 +13,38 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: os-keystone-install.yml
-- include: os-barbican-install.yml
-- include: os-glance-install.yml
-- include: os-cinder-install.yml
-- include: os-nova-install.yml
-- include: os-neutron-install.yml
-- include: os-heat-install.yml
-- include: os-horizon-install.yml
-- include: os-designate-install.yml
+- import_playbook: os-keystone-install.yml
+- import_playbook: os-barbican-install.yml
+- import_playbook: os-glance-install.yml
+- import_playbook: os-cinder-install.yml
+- import_playbook: os-nova-install.yml
+- import_playbook: os-neutron-install.yml
+- import_playbook: os-heat-install.yml
+- import_playbook: os-horizon-install.yml
+- import_playbook: os-designate-install.yml
 #NOTE(stevelle) Ensure Gnocchi identities exist before Swift
-- include: os-gnocchi-install.yml
+- import_playbook: os-gnocchi-install.yml
   when:
     - gnocchi_storage_driver is defined
     - gnocchi_storage_driver == 'swift'
   vars:
     gnocchi_identity_only: True
-- include: os-swift-install.yml
-- include: os-gnocchi-install.yml
-- include: os-ceilometer-install.yml
-- include: os-aodh-install.yml
-- include: os-ironic-install.yml
-- include: os-magnum-install.yml
-- include: os-trove-install.yml
-- include: os-sahara-install.yml
-- include: os-octavia-install.yml
-- include: os-tacker-install.yml
-- include: os-blazar-install.yml
+- import_playbook: os-swift-install.yml
+- import_playbook: os-gnocchi-install.yml
+- import_playbook: os-ceilometer-install.yml
+- import_playbook: os-aodh-install.yml
+- import_playbook: os-ironic-install.yml
+- import_playbook: os-magnum-install.yml
+- import_playbook: os-trove-install.yml
+- import_playbook: os-sahara-install.yml
+- import_playbook: os-octavia-install.yml
+- import_playbook: os-tacker-install.yml
+- import_playbook: os-blazar-install.yml
 
 # This is not an OpenStack service, but integrates with Keystone and must be
 # deployed afterward.
-- include: ceph-rgw-install.yml
-- include: os-congress-install.yml
-- include: os-tempest-install.yml
+- import_playbook: ceph-rgw-install.yml
+- import_playbook: os-congress-install.yml
+- import_playbook: os-tempest-install.yml
   when: (tempest_install | default(False)) | bool or (tempest_run | default(False)) | bool
 

@@ -19,20 +19,18 @@
   serial: 1
   user: root
   tasks:
-    - include: common-tasks/os-log-dir-setup.yml
+    - include_tasks: common-tasks/os-log-dir-setup.yml
       vars:
         log_dirs:
           - src: "/openstack/log/{{ inventory_hostname }}-mysql_logs"
             dest: "/var/log/mysql_logs"
-    - include: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
-      static: no
+    - include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       when: not is_metal
       vars:
         list_of_bind_mounts: "{{ galera_container_bind_mounts }}"
         extra_container_config_no_restart:
           - "lxc.start.order=10"
-    - include: common-tasks/unbound-clients.yml
-      static: no
+    - include_tasks: common-tasks/unbound-clients.yml
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
   environment: "{{ deployment_environment_variables | default({}) }}"
@@ -47,12 +45,10 @@
   roles:
     - role: haproxy_endpoints
       haproxy_state: disabled
-      static: no
       when: "groups['haproxy'] | default([]) | length > 0"
     - role: "galera_server"
     - role: haproxy_endpoints
       haproxy_state: enabled
-      static: no
       when: "groups['haproxy'] | default([]) | length > 0"
     - role: "system_crontab_coordination"
       tags:

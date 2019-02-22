@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: "containers-lxc-host.yml"
-- include: "containers-lxc-create.yml"
-- include: "containers-nspawn-host.yml"
-- include: "containers-nspawn-create.yml"
+- import_playbook: "containers-lxc-host.yml"
+- import_playbook: "containers-lxc-create.yml"
+- import_playbook: "containers-nspawn-host.yml"
+- import_playbook: "containers-nspawn-create.yml"

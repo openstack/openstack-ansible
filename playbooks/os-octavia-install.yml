@@ -23,18 +23,16 @@
   tags:
     - octavia
   pre_tasks:
-    - include: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
-      static: no
+    - include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       when: not is_metal
 
-    - include: common-tasks/os-log-dir-setup.yml
+    - include_tasks: common-tasks/os-log-dir-setup.yml
       vars:
         log_dirs:
           - src: "/openstack/log/{{ inventory_hostname }}-octavia"
             dest: "/var/log/octavia"
 
-    - include: common-tasks/unbound-clients.yml
-      static: no
+    - include_tasks: common-tasks/unbound-clients.yml
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
   roles:

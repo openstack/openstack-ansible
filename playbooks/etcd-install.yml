@@ -18,11 +18,9 @@
   gather_facts: "{{ osa_gather_facts | default(True) }}"
   user: root
   pre_tasks:
-    - include: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
-      static: no
+    - include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       when: not is_metal
-    - include: common-tasks/unbound-clients.yml
-      static: no
+    - include_tasks: common-tasks/unbound-clients.yml
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
   roles:

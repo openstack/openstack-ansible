@@ -29,7 +29,7 @@
     # config file changes which causes a container/service
     # restart do not cause an unexpected outage, we drain
     # the load balancer back end for this container.
-    - include: ../common-tasks/haproxy-endpoint-manage.yml
+    - include_tasks: ../common-tasks/haproxy-endpoint-manage.yml
       vars:
         haproxy_backend: cinder_api-back
         haproxy_state: disabled
@@ -38,13 +38,12 @@
         - "groups['cinder_api'] | length > 1"
 
     - name: Determine storage bridge IP address
-      include: ../common-tasks/dynamic-address-fact.yml
+      include_tasks: ../common-tasks/dynamic-address-fact.yml
       vars:
         network_address: "storage_address"
 
     - name: Configure container (cinder-volume) when lvm is in-use
-      include: "../common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
-      static: no
+      include_tasks: "../common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       vars:
         extra_container_config:
           - "lxc.autodev=0"
@@ -58,21 +57,19 @@
         - "cinder_backend_lvm_inuse | bool"
 
     - name: Configure container (other services)
-      include: "../common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
-      static: no
+      include_tasks: "../common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       when:
         - "not is_metal"
         - "not ( 'cinder_volume' in group_names and cinder_backend_lvm_inuse | bool )"
 
     - name: Configure log directories (on metal)
-      include: ../common-tasks/os-log-dir-setup.yml
+      include_tasks: ../common-tasks/os-log-dir-setup.yml
       vars:
         log_dirs:
           - src: "/openstack/log/{{ inventory_hostname }}-cinder"
             dest: "/var/log/cinder"
 
-    - include: ../common-tasks/unbound-clients.yml
-      static: no
+    - include_tasks: ../common-tasks/unbound-clients.yml
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
 
@@ -117,7 +114,7 @@
     # Now that container changes are done, we can set
     # the load balancer back end for this container
     # to available again.
-    - include: ../common-tasks/haproxy-endpoint-manage.yml
+    - include_tasks: ../common-tasks/haproxy-endpoint-manage.yml
       vars:
         haproxy_backend: cinder_api-back
         haproxy_state: enabled

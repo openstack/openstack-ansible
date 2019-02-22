@@ -19,7 +19,7 @@
   user: root
   pre_tasks:
 
-    - include: common-tasks/set-pip-vars.yml
+    - include_tasks: common-tasks/set-pip-vars.yml
 
     - name: Check if the git cache exists on deployment host
       local_action:
@@ -28,16 +28,14 @@
       register: _local_git_cache
       when: repo_build_git_cache is defined
 
-    - include: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
-      static: no
+    - include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       vars:
         list_of_bind_mounts:
           - mount_path: "/openstack/{{ inventory_hostname }}"
             bind_dir_path: "/var/www"
       when: not is_metal
 
-    - include: common-tasks/unbound-clients.yml
-      static: no
+    - include_tasks: common-tasks/unbound-clients.yml
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
   roles:

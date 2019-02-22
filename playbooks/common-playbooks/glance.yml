@@ -28,7 +28,7 @@
     # config file changes which causes a container/service
     # restart do not cause an unexpected outage, we drain
     # the load balancer back end for this container.
-    - include: ../common-tasks/haproxy-endpoint-manage.yml
+    - include_tasks: ../common-tasks/haproxy-endpoint-manage.yml
       vars:
         haproxy_backend: glance_api-back
         haproxy_state: disabled
@@ -37,31 +37,28 @@
         - "groups['glance_api'] | length > 1"
 
     - name: Configure container (non-nfs)
-      include: "../common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
+      include_tasks: "../common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       vars:
         list_of_bind_mounts: "{{ glance_container_bind_mounts }}"
-      static: no
       when:
         - not is_metal
         - glance_default_store == "file"
         - (glance_nfs_client is not defined) or (glance_nfs_client | length == 0)
 
     - name: Configure container (nfs)
-      include: "../common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
-      static: no
+      include_tasks: "../common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       when:
         - not is_metal
         - (glance_default_store != "file") or (glance_nfs_client is defined)
 
     - name: Configure log directories (on metal)
-      include: ../common-tasks/os-log-dir-setup.yml
+      include_tasks: ../common-tasks/os-log-dir-setup.yml
       vars:
         log_dirs:
           - src: "/openstack/log/{{ inventory_hostname }}-glance"
             dest: "/var/log/glance"
 
-    - include: ../common-tasks/unbound-clients.yml
-      static: no
+    - include_tasks: ../common-tasks/unbound-clients.yml
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
 
@@ -81,7 +78,7 @@
     # Now that container changes are done, we can set
     # the load balancer back end for this container
     # to available again.
-    - include: ../common-tasks/haproxy-endpoint-manage.yml
+    - include_tasks: ../common-tasks/haproxy-endpoint-manage.yml
       vars:
         haproxy_backend: glance_api-back
         haproxy_state: enabled
