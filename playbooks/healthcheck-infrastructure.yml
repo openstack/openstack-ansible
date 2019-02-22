@@ -184,7 +184,6 @@
     - name: Generate venv for rabbitmq testing
       include_role:
         name: "python_venv_build"
-        private: yes
       vars:
         venv_install_destination_path: "{{ venv_path }}"
         venv_pip_packages:
