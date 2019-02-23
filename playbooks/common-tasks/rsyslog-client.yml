@@ -16,7 +16,6 @@
 - name: Run the rsyslog client role
   include_role:
     name: rsyslog_client
-    private: true
   when:
     - rsyslog_client_enabled | bool
   tags:
