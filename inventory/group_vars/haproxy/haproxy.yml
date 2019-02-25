@@ -124,6 +124,9 @@ haproxy_default_services:
         - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
       haproxy_service_enabled: "{{ groups['heat_api_cfn'] is defined and groups['heat_api_cfn'] | length > 0 }}"
   - service:
+      haproxy_service_name: heat_api_cloudwatch
+      state: absent
+  - service:
       haproxy_service_name: heat_api
       haproxy_backend_nodes: "{{ groups['heat_api'] | default([]) }}"
       haproxy_port: 8004
