@@ -95,6 +95,14 @@
       scenario: aio_ceph
 
 - job:
+    name: openstack-ansible-deploy-aio_proxy-ubuntu-bionic
+    parent: openstack-ansible-deploy-aio
+    nodeset: ubuntu-bionic
+    vars:
+      action: deploy
+      scenario: aio_proxy
+
+- job:
     name: openstack-ansible-deploy-aio_distro_ceph-ubuntu-bionic
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-bionic

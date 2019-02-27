@@ -16,7 +16,7 @@
 bootstrap_host_services: >-
   {%- set scenario_list = (bootstrap_host_scenario.split('_') | reject('equalto', '')) | list %}
   {%- set service_list = ['keystone'] %}
-  {%- set service_list_extra = scenario_list | difference(['aio', 'distro', 'lxc', 'nspawn', 'metal', 'source', 'translations']) %}
+  {%- set service_list_extra = scenario_list | difference(['aio', 'distro', 'lxc', 'nspawn', 'metal', 'source', 'translations', 'proxy']) %}
   {%- if 'metal' not in scenario_list %}
   {%-   set _ = service_list.append('haproxy') %}
   {%- endif %}

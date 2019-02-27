@@ -206,3 +206,17 @@ openstack_user_kernel_options:
 neutron_lbaas_octavia: True
 octavia_management_net_subnet_cidr: "{{ (bootstrap_host_container_tech == 'nspawn') | ternary('172.29.240.0/22', '172.29.252.0/22') }}"
 {% endif %}
+
+{% if bootstrap_host_scenario is search('proxy') %}
+# For testing with the 'proxy' scenario configure deployment environment
+# to point to the local squid
+# Playbooks will set a runtime proxy to the AIO host squid
+deployment_environment_variables:
+  http_proxy: http://172.29.236.100:3128/
+  https_proxy: http://172.29.236.100:3128/
+  no_proxy: "localhost,127.0.0.1,172.29.236.100,{{ bootstrap_host_public_address | default(ansible_default_ipv4.address) }}"
+
+# Remove eth0 from all container so there is no default route and everything
+# must go via the http proxy
+lxc_container_networks: {}
+{% endif %}

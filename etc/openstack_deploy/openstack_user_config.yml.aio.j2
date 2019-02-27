@@ -45,6 +45,16 @@ global_overrides:
           - all_containers
           - hosts
         is_container_address: true
+        # define static routes to the neutron public IP ranges via br-mgmt
+        # this is AIO specific and relies on the host forwarding to reach instance
+        # floating ips using the br-mgmt interface as a gateway
+        static_routes:
+          # neutron public addresses, LXC
+          - cidr: 172.29.248.0/22
+            gateway: 172.29.236.100
+          # neutron public networks, nspawn
+          - cidr: 172.29.240.0/22
+            gateway: 172.29.236.100
     - network:
         container_bridge: "br-vxlan"
         container_type: "veth"
