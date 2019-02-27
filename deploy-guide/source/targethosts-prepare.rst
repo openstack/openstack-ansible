@@ -89,6 +89,14 @@ Configure CentOS
 
        # yum upgrade
 
+#. Disable SELinux. Edit ``/etc/sysconfig/selinux``, make sure that
+   ``SELINUX=enforcing`` is changed to ``SELINUX=disabled``.
+
+   .. note::
+
+      SELinux enabled is not currently supported in OpenStack-Ansible
+      for CentOS/RHEL due to a lack of maintainers for the feature.
+
 #. Reboot the host.
 
 #. Ensure that the kernel version is ``3.10`` or later:
