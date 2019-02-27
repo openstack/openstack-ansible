@@ -179,6 +179,9 @@ lxc_container_backing_store: "{{ lxc_container_backing_store }}"
 tempest_install: yes
 tempest_run: yes
 
+# Do a gateway ping test once the tempest role creates it
+tempest_network_ping_gateway: yes
+
 {% if nodepool_dir.stat.exists %}
 # Disable chronyd in OpenStack CI
 security_rhel7_enable_chrony: no
