@@ -13,6 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: openstack-hosts-setup.yml
-- include: security-hardening.yml
-- include: containers-deploy.yml
+- import_playbook: openstack-hosts-setup.yml
+- import_playbook: security-hardening.yml
+- import_playbook: containers-deploy.yml

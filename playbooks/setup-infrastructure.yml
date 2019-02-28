@@ -13,20 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: unbound-install.yml
-- include: repo-install.yml
+- import_playbook: unbound-install.yml
+- import_playbook: repo-install.yml
   when: install_method == "source"
-- include: haproxy-install.yml
+- import_playbook: haproxy-install.yml
 # TODO(evrardjp): Remove the following when repo_build is done
 # before lxc_container_create, and haproxy is moved with it as
 # second step.
-- include: repo-use.yml
+- import_playbook: repo-use.yml
   when: install_method == "source"
-- include: utility-install.yml
-- include: memcached-install.yml
-- include: galera-install.yml
-- include: rabbitmq-install.yml
-- include: etcd-install.yml
-- include: ceph-install.yml
-- include: rsyslog-install.yml
-- include: infra-journal-remote.yml
+- import_playbook: utility-install.yml
+- import_playbook: memcached-install.yml
+- import_playbook: galera-install.yml
+- import_playbook: rabbitmq-install.yml
+- import_playbook: etcd-install.yml
+- import_playbook: ceph-install.yml
+- import_playbook: rsyslog-install.yml
+- import_playbook: infra-journal-remote.yml

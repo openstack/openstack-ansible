@@ -26,12 +26,12 @@
   pre_tasks:
 
     - name: Determine tunnel bridge IP address
-      include: ../common-tasks/dynamic-address-fact.yml
+      include_tasks: ../common-tasks/dynamic-address-fact.yml
       vars:
         network_address: "tunnel_address"
 
     - name: Configure container (neutron-agent)
-      include: "../common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
+      include_tasks: "../common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       vars:
         list_of_bind_mounts:
           - bind_dir_path: "{{ (ansible_pkg_mgr == 'apt') | ternary('/lib/modules', '/usr/lib/modules') }}"
@@ -40,26 +40,25 @@
           - "lxc.cgroup.devices.allow=a *:* rmw"
         extra_container_config_no_restart:
           - "lxc.start.order=29"
-      static: no
       when:
         - "not is_metal"
         - "'neutron_agent' in group_names"
 
     - name: Configure container (other services)
-      include: "../common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
+      include_tasks: "../common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       when:
         - "not is_metal"
         - "'neutron_agent' not in group_names"
 
     - name: Configure log directories (on metal)
-      include: ../common-tasks/os-log-dir-setup.yml
+      include_tasks: ../common-tasks/os-log-dir-setup.yml
       vars:
         log_dirs:
           - src: "/openstack/log/{{ inventory_hostname }}-neutron"
             dest: "/var/log/neutron"
 
     - name: Configure log directories (on metal) (calico)
-      include: ../common-tasks/os-log-dir-setup.yml
+      include_tasks: ../common-tasks/os-log-dir-setup.yml
       vars:
         log_dirs:
           - src: "/openstack/log/{{ inventory_hostname }}-calico"
@@ -67,8 +66,7 @@
       when:
         - "'neutron_calico_dhcp_agent' in group_names"
 
-    - include: ../common-tasks/unbound-clients.yml
-      static: no
+    - include_tasks: ../common-tasks/unbound-clients.yml
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
 

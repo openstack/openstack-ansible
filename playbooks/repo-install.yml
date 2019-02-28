@@ -13,5 +13,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: repo-server.yml
-- include: repo-build.yml
+- import_playbook: repo-server.yml
+- import_playbook: repo-build.yml

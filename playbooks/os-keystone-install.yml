@@ -46,29 +46,27 @@
     # config file changes which causes a container/service
     # restart do not cause an unexpected outage, we drain
     # the load balancer back end for this container.
-    - include: common-tasks/haproxy-endpoint-manage.yml
+    - include_tasks: common-tasks/haproxy-endpoint-manage.yml
       vars:
         haproxy_backend: "keystone_service-back"
         haproxy_state: disabled
       when: "groups['keystone_all'] | length > 1"
 
     - name: Configure container
-      include: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
+      include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       vars:
         extra_container_config_no_restart:
           - "lxc.start.order=19"
-      static: no
       when: not is_metal
 
     - name: Configure log directories (on metal)
-      include: common-tasks/os-log-dir-setup.yml
+      include_tasks: common-tasks/os-log-dir-setup.yml
       vars:
         log_dirs:
           - src: "/openstack/log/{{ inventory_hostname }}-keystone"
             dest: "/var/log/keystone"
 
-    - include: common-tasks/unbound-clients.yml
-      static: no
+    - include_tasks: common-tasks/unbound-clients.yml
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
 
@@ -88,7 +86,7 @@
     # Now that container changes are done, we can set
     # the load balancer back end for this container
     # to available again.
-    - include: common-tasks/haproxy-endpoint-manage.yml
+    - include_tasks: common-tasks/haproxy-endpoint-manage.yml
       vars:
         haproxy_backend: "keystone_service-back"
         haproxy_state: enabled

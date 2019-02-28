@@ -51,7 +51,7 @@
   serial: 1
   pre_tasks:
 
-    - include: common-tasks/set-pip-vars.yml
+    - include_tasks: common-tasks/set-pip-vars.yml
 
     - name: Load local packages
       debug:

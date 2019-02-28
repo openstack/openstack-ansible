@@ -24,8 +24,7 @@
       when:
         - not rsyslog_server_enabled | bool
 
-    - include: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
-      static: no
+    - include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       vars:
         list_of_bind_mounts:
           - bind_dir_path: "{{ rsyslog_server_storage_directory }}"
@@ -34,8 +33,7 @@
           - "lxc.start.order=19"
       when: not is_metal
 
-    - include: common-tasks/unbound-clients.yml
-      static: no
+    - include_tasks: common-tasks/unbound-clients.yml
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
   roles:

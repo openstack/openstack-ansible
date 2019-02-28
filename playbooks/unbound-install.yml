@@ -19,9 +19,8 @@
   gather_facts: "{{ osa_gather_facts | default(True) }}"
   user: root
   pre_tasks:
-    - include: common-tasks/os-log-dir-setup.yml
-    - include: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
-      static: no
+    - include_tasks: common-tasks/os-log-dir-setup.yml
+    - include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       when: not is_metal
   roles:
     - role: "unbound"
@@ -39,8 +38,7 @@
     - "{{ openstack_host_group|default('hosts') }}"
   user: root
   tasks:
-    - include: common-tasks/unbound-clients.yml
-      static: no
+    - include_tasks: common-tasks/unbound-clients.yml
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
   environment: "{{ deployment_environment_variables | default({}) }}"

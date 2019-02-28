@@ -50,9 +50,9 @@
             (ansible_os_family == 'Suse' and ansible_distribution_major_version in ['15', '42'])
         msg: "The only supported platforms for this release are Ubuntu 16.04 LTS (Xenial), Ubuntu 18.04 LTS (Bionic),  CentOS 7 (WIP) and openSUSE Leap 42.X and openSUSE Leap 15.X"
 
-    - include: common-tasks/package-cache-proxy.yml
+    - include_tasks: common-tasks/package-cache-proxy.yml
       when: install_method == "source"
-    - include: common-tasks/set-pip-vars.yml
+    - include_tasks: common-tasks/set-pip-vars.yml
       when: install_method == "source"
   roles:
     - role: "openstack_hosts"
