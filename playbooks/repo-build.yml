@@ -18,6 +18,12 @@
   # Serial 1 avoids race conditions, and makes sures the repo_servers
   # are added in the same order as the repo_all inventory
   serial: 1
+  pre_tasks:
+    - name: End playbook
+      meta: end_play
+      when:
+        - (install_method | default('source')) != "source"
+
   tasks:
     - name: Group repo servers by architecture and os version
       group_by:
@@ -32,6 +38,12 @@
 # of each of these combinations when deploying.
 - name: Prepare group of master repo servers
   hosts: localhost
+  pre_tasks:
+    - name: End playbook
+      meta: end_play
+      when:
+        - (install_method | default('source')) != "source"
+
   tasks:
     - name: Prepare group of master repo servers
       add_host:
@@ -50,6 +62,10 @@
   user: root
   serial: 1
   pre_tasks:
+    - name: End playbook
+      meta: end_play
+      when:
+        - (install_method | default('source')) != "source"
 
     - include_tasks: common-tasks/set-pip-vars.yml
 

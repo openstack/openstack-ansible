@@ -26,6 +26,11 @@
     - always
     - repo-config
   pre_tasks:
+    - name: End playbook
+      meta: end_play
+      when:
+        - (install_method | default('source')) != "source"
+
     - include_tasks: common-tasks/package-cache-proxy.yml
     - include_tasks: common-tasks/set-pip-vars.yml
   roles:
