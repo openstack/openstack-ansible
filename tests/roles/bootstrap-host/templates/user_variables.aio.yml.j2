@@ -185,6 +185,8 @@ tempest_network_ping_gateway: yes
 {% if nodepool_dir.stat.exists %}
 # Disable chronyd in OpenStack CI
 security_rhel7_enable_chrony: no
+# The location where images are downloaded in openstack-infra
+tempest_image_dir: "/opt/cache/files"
 {% endif %}
 
 # For testing purposes in public clouds, we need to ignore these
