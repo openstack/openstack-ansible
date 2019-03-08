@@ -118,7 +118,14 @@
       include: common-tasks/restart-service.yml
       vars:
         service_name: "nova"
-        service_action: "reloaded"
+        # NOTE(mnaser): There is a bug in oslo.service which actually restarts
+        #               the entire service instead of resetting it, but it
+        #               leaves Nova in a broken state.  This should be moved
+        #               to "reloaded" once it's resolved.
+        #
+        #               https://bugs.launchpad.net/openstack-ansible/+bug/1715374
+        #
+        service_action: "restarted"
         service_negate: "{{ ['nova-placement-api.service', 'nova-novncproxy.service', 'nova-spicehtml5proxy.service' ] + nova_service_negate | default([]) }}"
       when:
         - "nova_all_software_updated | bool"
