@@ -42,49 +42,43 @@
     check:
       jobs:
         - openstack-ansible-deploy-aio_lxc-centos-7
-        - openstack-ansible-deploy-aio_lxc-opensuse-423
-        - openstack-ansible-deploy-aio_lxc-opensuse-150
         - openstack-ansible-deploy-aio_lxc-ubuntu-bionic
     gate:
       jobs:
         - openstack-ansible-deploy-aio_lxc-centos-7
-        - openstack-ansible-deploy-aio_lxc-opensuse-423
-        - openstack-ansible-deploy-aio_lxc-opensuse-150
         - openstack-ansible-deploy-aio_lxc-ubuntu-bionic
     periodic:
       jobs:
         - openstack-ansible-deploy-aio_lxc-ubuntu-bionic
         - openstack-ansible-upgrade-aio_lxc-ubuntu-bionic
+    experimental:
+      jobs:
+        - openstack-ansible-deploy-aio_lxc-opensuse-423
+        - openstack-ansible-deploy-aio_lxc-opensuse-150
 
 - project-template:
     name: openstack-ansible-deploy-aio_distro_lxc-jobs
-    check:
+    experimental:
       jobs:
-        - openstack-ansible-deploy-aio_distro_lxc-centos-7:
-            voting: false
-        - openstack-ansible-deploy-aio_distro_lxc-opensuse-423:
-            voting: false
-        - openstack-ansible-deploy-aio_distro_lxc-opensuse-150:
-            voting: false
-        - openstack-ansible-deploy-aio_distro_lxc-ubuntu-bionic:
-            voting: false
-    gate:
-      jobs: []
+        - openstack-ansible-deploy-aio_distro_lxc-centos-7
+        - openstack-ansible-deploy-aio_distro_lxc-opensuse-423
+        - openstack-ansible-deploy-aio_distro_lxc-opensuse-150
+        - openstack-ansible-deploy-aio_distro_lxc-ubuntu-bionic
 
 - project-template:
     name: openstack-ansible-deploy-aio_metal-jobs
     check:
       jobs:
         - openstack-ansible-deploy-aio_metal-centos-7
-        - openstack-ansible-deploy-aio_metal-opensuse-423
-        - openstack-ansible-deploy-aio_metal-opensuse-150
         - openstack-ansible-deploy-aio_metal-ubuntu-bionic
     gate:
       jobs:
         - openstack-ansible-deploy-aio_metal-centos-7
+        - openstack-ansible-deploy-aio_metal-ubuntu-bionic
+    experimental:
+      jobs:
         - openstack-ansible-deploy-aio_metal-opensuse-423
         - openstack-ansible-deploy-aio_metal-opensuse-150
-        - openstack-ansible-deploy-aio_metal-ubuntu-bionic
 
 - project-template:
     name: openstack-ansible-deploy-aio_nspawn-jobs
@@ -125,11 +119,7 @@
 
 - project-template:
     name: openstack-ansible-deploy-distro_ceph-jobs
-    check:
+    experimental:
       jobs:
-        - openstack-ansible-deploy-aio_distro_ceph-opensuse-423:
-            voting: false
-        - openstack-ansible-deploy-aio_distro_ceph-opensuse-150:
-            voting: false
-    gate:
-      jobs: []
+        - openstack-ansible-deploy-aio_distro_ceph-opensuse-423
+        - openstack-ansible-deploy-aio_distro_ceph-opensuse-150
