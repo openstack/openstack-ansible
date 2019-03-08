@@ -101,9 +101,6 @@ fi
 # Bootstrap Ansible
 source "${OSA_CLONE_DIR}/scripts/bootstrap-ansible.sh"
 
-# Log some data about the instance and the rest of the system
-log_instance_info
-
 # Flush all the iptables rules set by openstack-infra
 iptables -F
 iptables -X

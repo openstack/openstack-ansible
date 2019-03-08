@@ -127,45 +127,11 @@ function exit_fail {
   exit_state 1
 }
 
-function find_log_files {
-  find "${GATE_LOG_DIR}/" -type f \
-    ! -name "*.gz" \
-    ! -name '*.html' \
-    ! -name '*.subunit' \
-    ! -name 'ansible.sqlite' | grep -v 'stackviz'
-}
-
-function rename_log_files {
-  JOURNALCTL_CMD="journalctl --output=short --file"
-  find_log_files |\
-    while read filename; do \
-      if [[ $filename =~ \.journal$ ]]; then
-        ${JOURNALCTL_CMD} ${filename} > ${filename}.txt || echo "WARNING: Could not rename ${filename}"; \
-      else
-        mv ${filename} ${filename}.txt || echo "WARNING: Could not rename ${filename}"; \
-      fi
-    done
-}
-
-function compress_log_files {
-  # We use 'command' to ensure that we're not executing with an alias.
-  GZIP_CMD="command gzip --force --best"
-  find_log_files |\
-    while read filename; do \
-      ${GZIP_CMD} ${filename} || echo "WARNING: Could not gzip ${filename}"; \
-    done
-}
-
 function gate_job_exit_tasks {
   # This environment variable captures the exit code
   # which was present when the trap was initiated.
   # This would be the success/failure of the test.
   TEST_EXIT_CODE=${TEST_EXIT_CODE:-$?}
-
-  # Specify a default location to capture logs into,
-  # just in case one is not provided (eg: when not run
-  # by zuul).
-  GATE_LOG_DIR=${GATE_LOG_DIR:-/opt/openstack-ansible/logs}
 
   # Disable logging of every command, as it is too verbose.
   set +x
@@ -177,52 +143,13 @@ function gate_job_exit_tasks {
       generate_dstat_charts || true
     fi
 
-    mkdir -p "${GATE_LOG_DIR}/host" "${GATE_LOG_DIR}/openstack"
-    RSYNC_OPTS="--archive --safe-links --ignore-errors --quiet --no-perms --no-owner --no-group"
-    rsync $RSYNC_OPTS /var/log/ "${GATE_LOG_DIR}/host" || true
-    rsync $RSYNC_OPTS /openstack/log/ "${GATE_LOG_DIR}/openstack" || true
-
-    # Copy the repo os-releases *.txt files
-    # container path
-    rsync $RSYNC_OPTS /openstack/*repo*/repo/os-releases/*/*/*.txt "${GATE_LOG_DIR}/repo" || true
-    # metal path
-    rsync $RSYNC_OPTS /var/www/repo/os-releases/*/*/*.txt "${GATE_LOG_DIR}/repo" || true
-
-    # Rename all files gathered to have a .txt suffix so that the compressed
-    # files are viewable via a web browser in OpenStack-CI.
-    rename_log_files
-
-    # System status & Information
-    log_instance_info
-
     # Disable logging of every command, as it is too verbose.
     # We have to do this here because log_instance_info does set -x
     set +x
-
-    # Generate the ARA report if enabled
-    if [ "$GATE_EXIT_RUN_ARA" == true ]; then
-
-      # Define the ARA path for reusability
-      ARA_CMD="/opt/ansible-runtime/bin/ara"
-
-      # Create the ARA log directory and store the sqlite source database
-      mkdir ${GATE_LOG_DIR}/ara-report
-      rsync $RSYNC_OPTS "${HOME}/.ara/ansible.sqlite" "${GATE_LOG_DIR}/ara-report/"
-
-      # Generate the ARA subunit report so that the
-      # results reflect in OpenStack-Health
-      mkdir "${GATE_LOG_DIR}/ara-data"
-      ${ARA_CMD} generate subunit "${GATE_LOG_DIR}/ara-data/testrepository.subunit" || true
-    fi
-    # Compress the files gathered so that they do not take up too much space.
-    if [ "$GATE_EXIT_LOG_GZIP" == true ]; then
-      compress_log_files
-    fi
-    # Ensure that the files are readable by all users, including the non-root
-    # OpenStack-CI jenkins user.
-    chmod -R ugo+rX "${GATE_LOG_DIR}"
-    chown -R $(whoami) "${GATE_LOG_DIR}"
   fi
+
+  # System status & Information
+  log_instance_info
 }
 
 function setup_ara {
@@ -299,6 +226,10 @@ function log_instance_info {
     mkdir -p "/openstack/log/instance-info"
   fi
   get_instance_info
+  # Run log collection when needed
+  if [ "${1:-false}" = "true" ]; then
+    RUN_ARA="${GATE_EXIT_RUN_ARA}" WORKING_DIR="${GATE_LOG_DIR:-${HOME:-/opt}/osa-logs}" bash -e "$(dirname $(readlink -f ${BASH_SOURCE[0]}))/log-collect.sh"
+  fi
   set -x
 }
 

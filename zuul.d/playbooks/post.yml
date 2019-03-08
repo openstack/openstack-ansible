@@ -16,20 +16,18 @@
 - hosts: all
   tasks:
     - name: Run log collection script
-      shell: |
-        source scripts/scripts-library.sh
-        gate_job_exit_tasks
+      command: scripts/log-collect.sh
       become: yes
       become_user: root
       args:
         chdir: "src/git.openstack.org/openstack/openstack-ansible"
-        executable: /bin/bash
       environment:
         # ZUUL_PROJECT is used by the log collection functions to enable
         # log collection configuration specific to OpenStack CI
         ZUUL_PROJECT: "{{ zuul.project.short_name }}"
         TEST_EXIT_CODE: "{{ zuul_success | lower }}"
-        GATE_LOG_DIR: "{{ ansible_user_dir }}/src/git.openstack.org/openstack/openstack-ansible/logs"
+        RUN_ARA: "true"
+        WORKING_DIR: "{{ ansible_user_dir }}/src/git.openstack.org/openstack/openstack-ansible"
 
     - name: Check whether a logs folder exists
       stat:
