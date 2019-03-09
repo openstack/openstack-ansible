@@ -1,0 +1,25 @@
+---
+features:
+  - |
+    The list of enabled filters for the Cinder scheduler,
+    `scheduler_default_filters` in `cinder.conf`, could previously be
+    defined only via an entry in ``cinder_cinder_conf_overrides``. You now
+    have the option to instead define a list variable,
+    ``cinder_scheduler_default_filters``, that defines the enabled
+    filters. This is helpful if you either want to disable one of the
+    filters enabled by default (at the time of writing, these are
+    `AvailabilityZoneFilter`, `CapacityFilter`, and
+    `CapabilitiesFilter`), or if conversely you want to add a filter
+    that is normally not enabled, such as `DifferentBackendFilter` or
+    `InstanceLocalityFilter`.
+
+    For example, to enable the `InstanceLocalityFilter` in addition to
+    the normally enabled scheduler filters, use the following variable.
+
+    .. code-block:: yaml
+
+      cinder_scheduler_default_filters:
+        - AvailabilityZoneFilter
+        - CapacityFilter
+        - CapabilitiesFilter
+        - InstanceLocalityFilter
