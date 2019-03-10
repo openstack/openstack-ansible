@@ -1,0 +1,7 @@
+---
+upgrade:
+  - |
+    The tasks creating a keystone service user have been removed, along with
+    related variables ``keystone_service_user_name`` and
+    ``keystone_service_password``. This user can be deleted in existing
+    deployments.

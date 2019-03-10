@@ -1,7 +1,7 @@
 ---
 fixes:
   - |
-    Newer releases of CentOS ship a version of libnss that depends on the existance
+    Newer releases of CentOS ship a version of libnss that depends on the existence
     of /dev/random and /dev/urandom in the operating system in order to run.  This
     causes a problem during the cache preparation process which runs inside chroot
     that does not contain this, resulting in errors with the following message.

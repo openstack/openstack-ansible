@@ -1,0 +1,8 @@
+---
+fixes:
+  - |
+    The quota for security group rules was erroneously set
+    to 100 with the aim to have 100 security group rules
+    per security group instead of to 100*#security group rules.
+    This patch fixes this discrepancy.
+

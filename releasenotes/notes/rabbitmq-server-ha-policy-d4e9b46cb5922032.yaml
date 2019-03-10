@@ -1,0 +1,8 @@
+---
+upgrade:
+  - |
+    The default queue policy has changed to ``^(?!(amq\.)|(.*_fanout_)|(reply_)).*``
+    instead of ``^(?!amq\.).*`` for efficiency.
+    The new HA policy excludes reply queues (these queues have a single consumer and TTL policy),
+    fanout queues (they have the TTL policy) and
+    amq queues (they are auto-delete queues, with a single consumer).

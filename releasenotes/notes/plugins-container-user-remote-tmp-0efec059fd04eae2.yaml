@@ -1,0 +1,6 @@
+---
+issues:
+  - |
+    When using the connection plugin's ``container_user`` option,
+    ``ansible_remote_tmp`` should be set to a system writable path
+    such as '/var/tmp/'.

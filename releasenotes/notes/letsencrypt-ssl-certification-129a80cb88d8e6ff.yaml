@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    If Horizon dashboard of OSA installation has a public FQDN, is it
+    now possible to use LetsEncrypt certification service. Certificate
+    will be generated within HAProxy installation and a cron entry to
+    renew the certificate daily will be setup.
+    Note that there is no certificate distribution implementation at
+    this time, so this will only work for a single haproxy-server
+    environment.

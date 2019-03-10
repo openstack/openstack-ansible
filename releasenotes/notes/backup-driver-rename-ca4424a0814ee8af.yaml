@@ -1,0 +1,12 @@
+---
+upgrade:
+  - |
+    In Stein, Cinder stopped supporting configuring backup drivers without
+    the full class path.  This means that you must now use the following
+    values for ``cinder_service_backup_driver``.
+
+    * ``cinder.backup.drivers.swift.SwiftBackupDriver``
+    * ``cinder.backup.drivers.ceph.CephBackupDriver``
+
+    If you do not make this change, the Cinder backup service will refuse
+    to start properly.

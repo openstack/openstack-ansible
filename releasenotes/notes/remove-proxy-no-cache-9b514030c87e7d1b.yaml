@@ -1,0 +1,14 @@
+---
+other:
+  - |
+    Code which added 'Acquire::http:No-Cache true' to the host and container
+    apt preferences when http proxy environment variables were set has been
+    removed. This setting is only required when working around issues
+    introduced by badly configured http proxies. In some cases proxies can
+    improperly cache the apt Releases and Packages files leading to package
+    installation errors. If a deployment is behind a badly configured proxy,
+    the deployer can add the necessary apt config fragment as part of host
+    provisioning. OSA will replicate that config into any containers that
+    are created. This setting can be removed from existing deployments if
+    required by manually deleting the file
+    ``/etc/apt/apt.conf.d/00apt-no-cache`` from all host and containers.

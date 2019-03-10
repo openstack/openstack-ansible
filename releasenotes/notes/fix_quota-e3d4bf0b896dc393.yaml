@@ -1,0 +1,12 @@
+---
+features:
+  - |
+    Octavia is creating vms, securitygroups, and other things in its
+    project. In most cases the default quotas are not big enough. This
+    will adjust them to (configurable) reasonable values.
+security:
+  - |
+    Avoid setting the quotas too high for your cloud since this can
+    impact the performance of other servcies and lead to a potential
+    Denial-of-Service attack if Loadbalancer quotas are not set
+    properly or RBAC is not properly set up.

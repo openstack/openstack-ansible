@@ -1,0 +1,21 @@
+---
+deprecations:
+  - |
+    The repo build process no longer builds packaged venvs. Instead, the venvs
+    are created on the target hosts as the install process for each service
+    needs to. This opens up the opportunity for roles to be capable of creating
+    multiple venvs, and for any role to create venvs - neither of these options
+    were possible in previous releases.
+
+    The following variables therefore have been removed.
+
+    * ``repo_build_venv_selective``
+    * ``repo_build_venv_rebuild``
+    * ``repo_build_venv_timeout``
+    * ``repo_build_concurrency``
+    * ``repo_build_venv_build_dir``
+    * ``repo_build_venv_dir``
+    * ``repo_build_venv_pip_install_options``
+    * ``repo_build_venv_command_options``
+    * ``repo_venv_default_pip_packages``
+

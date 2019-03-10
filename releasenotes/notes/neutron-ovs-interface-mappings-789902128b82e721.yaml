@@ -1,0 +1,22 @@
+---
+features:
+  - |
+    The ``provider_networks`` library has been updated to support the
+    definition of network interfaces that can automatically be added as ports
+    to OVS provider bridges setup during a deployment. To activate this feature,
+    add the ``network_interface`` key to the respective flat and/or vlan provider
+    network definition in ``openstack_user_config.yml``. For more information,
+    refer to the latest Open vSwitch deployment guide.
+upgrade:
+  - |
+    The ``provider_networks`` library has been updated to support the
+    definition of network interfaces that can automatically be added as ports
+    to OVS provider bridges setup during a deployment. As a result, the
+    ``network_interface`` value applied to the ``neutron_provider_networks``
+    override in ``user_variables.yml``, as described in previous Open vSwitch
+    deployment guides, is no longer effective. If overrides are
+    necessary, use ``network_interface_mappings`` within the provider network
+    override and specify the respective bridge-to-interface mapping
+    (e.g. "br-provider:bond1"). For more information, refer to the latest Open
+    vSwitch deployment guide.
+

@@ -1,0 +1,11 @@
+---
+features:
+  - |
+    The nova configuration is updated to always specify an LXD storage pool
+    name when 'nova_virt_type' is 'lxd'. The variable 'lxd_storage_pool' is
+    defaulted to 'default', the LXD default storage pool name. A new variable
+    'lxd_init_storage_pool' is introduced which specifies the underlying
+    storage pool name. 'lxd_init_storage_pool' is used by lxd init when setting
+    up the storage pool. If not provided, lxd init will not use this parameter
+    at all. Please see the lxd man page for further information about the
+    storage pool parameter.

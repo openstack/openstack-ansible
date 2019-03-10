@@ -1,0 +1,22 @@
+---
+deprecations:
+  - |
+    The package cache on the repo server has been removed. If caching of
+    packages is desired, it should be setup outside of OpenStack-Ansible
+    and the variable ``lxc_container_cache_files`` (for LXC containers)
+    or ``nspawn_container_cache_files_from_host`` (for nspawn containers)
+    can be used to copy the appropriate host configuration from the host
+    into the containers on creation. Alternatively, environment variables
+    can be set to use the cache in the host /etc/environment file prior
+    to container creation, or the ``deployment_environment_variables``
+    can have the right variables set to use it. The following variables
+    have been removed.
+
+    * ``repo_pkg_cache_enabled``
+    * ``repo_pkg_cache_port``
+    * ``repo_pkg_cache_bind``
+    * ``repo_pkg_cache_dirname``
+    * ``repo_pkg_cache_dir``
+    * ``repo_pkg_cache_owner``
+    * ``repo_pkg_cache_group``
+
