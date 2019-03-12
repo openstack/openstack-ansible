@@ -39,3 +39,15 @@ memcached_servers: >-
       | list
       | join(',')
   }}
+
+## Qdrouterd options
+qdrouterd_host_group: "qdrouterd_all"
+qdrouterd_port: "{{ (qdrouterd_use_ssl | bool) | ternary(31459, 31460) }}"
+
+qdrouterd_use_ssl: False
+qdrouterd_servers: >-
+  {{
+    groups[qdrouterd_host_group]
+      | map('extract', hostvars, 'ansible_host')
+      | list | join(',')
+  }}

@@ -153,6 +153,14 @@
       scenario: aio_octavia
 
 - job:
+    name: openstack-ansible-deploy-aio_qdrouterd-ubuntu-bionic
+    parent: openstack-ansible-deploy-aio
+    nodeset: ubuntu-bionic
+    vars:
+      action: deploy
+      scenario: aio_qdrouterd
+
+- job:
     name: openstack-ansible-deploy-translations-ubuntu-bionic
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-bionic
