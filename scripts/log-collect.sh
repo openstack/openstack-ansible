@@ -275,3 +275,4 @@ sudo chmod -R ugo+rX "${WORKING_DIR}/logs"
 sudo chown -R $(whoami) "${WORKING_DIR}/logs"
 
 echo "#### END LOG COLLECTION ###"
+
