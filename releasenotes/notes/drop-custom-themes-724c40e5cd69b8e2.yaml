@@ -1,0 +1,10 @@
+---
+features:
+  - The ``os_horizon`` role now supports distribution of user custom themes.
+    Deployers can use the new key ``theme_src_archive`` of ``horizon_custom_themes``
+    dictionary to provide absolute path to the archived theme.
+    Only .tar.gz, .tgz, .zip, .tar.bz, .tar.bz2, .tbz, .tbz2 archives are supported.
+    Structure inside archive should be as a standard theme, without any leading folders.
+fixes:
+  - Fixes bug https://bugs.launchpad.net/openstack-ansible/+bug/1778098 where playbook failed, if
+    ``horizon_custom_themes`` is specified, and directory for theme is not provided

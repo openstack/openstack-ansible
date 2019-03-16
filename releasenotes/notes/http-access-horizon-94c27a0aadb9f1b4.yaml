@@ -1,0 +1,22 @@
+---
+features:
+  - |
+    Horizon has, since OSA's inception, been deployed with HTTPS
+    access enabled, and has had no way to turn it off. Some use-cases
+    may want to access via HTTP instead, so this patch enables
+    the following.
+
+    * Listen via HTTPS on a load balancer, but via HTTP on the
+      horizon host and have the load balancer forward the correct
+      headers. It will do this by default in the integrated build
+      due to the presence of the load balancer, so the current
+      behaviour is retained.
+
+    * Enable HTTPS on the horizon host without a load balancer.
+      This is the role's default behaviour which matches what it
+      always has been.
+
+    * Disable HTTPS entirely by setting ``haproxy_ssl: no`` (which
+      will also disable https on haproxy. This setting is inherited
+      by the new ``horizon_enable_ssl`` variable by default. This
+      is a new option.

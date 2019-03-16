@@ -1,0 +1,16 @@
+---
+upgrade:
+  - |
+    Due to the smart-reources implementation, variables, related to custom git path
+    of exact config files were removed. Now all config files are taken from
+    upstream git repo, but overrides and client configs are still supported.
+    The following variables are not supported now:
+    * ceilometer_git_config_lookup_location
+    * ceilometer_data_meters_git_file_path
+    * ceilometer_event_definitions_git_file_path
+    * ceilometer_gnocchi_resources_git_file_path
+    * ceilometer_loadbalancer_v2_meter_definitions_git_file_path
+    * ceilometer_osprofiler_event_definitions_git_file_path
+    * ceilometer_polling_git_file_path
+    If you are maintaining custom ceilometer git repository, you still may use
+    ``ceilometer_git_repo`` variable, to provide url to your git repository.

@@ -1,0 +1,7 @@
+---
+security:
+  - |
+    The default TLS version has been set to force-tlsv12.  This only allows
+    version 1.2 of the protocol to be used when terminating or creating TLS
+    connections.  You can change the value with the haproxy_ssl_bind_options
+    variable.

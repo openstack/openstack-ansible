@@ -1,0 +1,6 @@
+---
+upgrade:
+  - The variables ``ceilometer_oslomsg_rpc_servers`` and
+    ``ceilometer_oslomsg_notify_servers`` have been
+    removed in favour of using ``ceilometer_oslomsg_rpc_host_group``
+    and ``ceilometer_oslomsg_notify_host_group`` instead.

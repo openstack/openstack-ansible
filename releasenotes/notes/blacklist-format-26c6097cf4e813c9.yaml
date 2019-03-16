@@ -1,0 +1,12 @@
+---
+upgrade: >
+    Data structure for ``tempest_test_blacklist`` has been updated to
+    add launchpad and/or bugzilla linked with the test being skipped.
+features:
+  - |
+    Add the launchpad and bugzilla keys in tempest_test_blacklist ansible
+    variable.
+    Developers must have a way to trackdown why a test was inserted in the
+    skiplist, and one of the ways is through bugs. This feature add the
+    information regarding it in the list of skipped tests on os_tempest
+

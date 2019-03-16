@@ -1,0 +1,11 @@
+---
+features:
+  - |
+    The ``os_tempest`` role now has the ability to install from distribution packages by setting
+    ``tempest_install_method`` to ``distro``.
+  - |
+    The new variable ``tempest_workspace`` has been introduced to set the location of the tempest
+    workspace.
+  - |
+    The default location of the default tempest configuration is now ``/etc/tempest/tempest.conf``
+    rather than the previous default of ``$HOME/.tempest/etc``.

@@ -1,0 +1,29 @@
+---
+features:
+  - |
+    The Neutron Service Function Chaining Extension (SFC) can optionally be deployed and
+    configured by defining the following service plugins:
+
+    * ``flow_classifier``
+    * ``sfc``
+
+    .. code-block:: yaml
+
+      neutron_plugin_base:
+      - router
+      - metering
+      - flow_classifier
+      - sfc
+
+    For more information about SFC in Neutron, refer to the following:
+
+    * `Service Function Chaining Extension for OpenStack Networking
+      <https://docs.openstack.org/networking-sfc/latest/>`_
+
+upgrade:
+  - |
+    The plugin names for the classifier and sfc changed:
+
+    * networking_sfc.services.flowclassifier.plugin.FlowClassifierPlugin => flow_classifier
+
+    * networking_sfc.services.sfc.plugin.SfcPlugin => sfc

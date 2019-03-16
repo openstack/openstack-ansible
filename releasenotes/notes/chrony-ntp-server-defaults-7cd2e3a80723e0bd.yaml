@@ -1,0 +1,6 @@
+---
+upgrade:
+  - Changed the default NTP server options in ``chrony.conf``. The ``offline``
+    option has been removed, ``minpoll``/``maxpoll`` have been removed in favour of
+    the upstream defaults, while the ``iburst`` option was added to speed up
+    initial time synchronization.

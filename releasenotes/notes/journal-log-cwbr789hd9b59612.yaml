@@ -1,0 +1,5 @@
+---
+deprecations:
+  - The log path, ``/var/log/blazar`` is no longer used to capture service
+    logs. All logging for the blazar service will now be sent directly to the
+    systemd journal.
