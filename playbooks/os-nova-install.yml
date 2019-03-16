@@ -14,7 +14,7 @@
 # limitations under the License.
 
 - name: Install nova-conductor services
-  include: common-playbooks/nova.yml
+  import_playbook: common-playbooks/nova.yml
   vars:
     nova_hosts: "nova_conductor"
     nova_serial: "{{ nova_conductor_serial | default(['1', '100%']) }}"
@@ -22,7 +22,7 @@
 
 
 - name: Install nova-scheduler services
-  include: common-playbooks/nova.yml
+  import_playbook: common-playbooks/nova.yml
   vars:
     nova_hosts: "nova_scheduler:!nova_conductor"
     nova_serial: "{{ nova_scheduler_serial | default(['1', '100%']) }}"
@@ -30,7 +30,7 @@
 
 
 - name: Install nova API services
-  include: common-playbooks/nova.yml
+  import_playbook: common-playbooks/nova.yml
   vars:
     nova_hosts: "nova_api_os_compute:nova_api_placement:!nova_conductor:!nova_scheduler:!nova_consoleauth"
     nova_serial: "{{ nova_api_serial | default(['1', '100%']) }}"
@@ -38,7 +38,7 @@
 
 
 - name: Install nova console/metadata services
-  include: common-playbooks/nova.yml
+  import_playbook: common-playbooks/nova.yml
   vars:
     nova_hosts: "nova_api_metadata:nova_console:!nova_conductor:!nova_scheduler:!nova_consoleauth:!nova_api_os_compute:!nova_api_placement"
     nova_serial: "{{ nova_console_serial | default(['1', '100%']) }}"
@@ -46,7 +46,7 @@
 
 
 - name: Install nova compute
-  include: common-playbooks/nova.yml
+  import_playbook: common-playbooks/nova.yml
   vars:
     nova_hosts: "nova_compute:!nova_conductor:!nova_scheduler:!nova_consoleauth:!nova_api_os_compute:!nova_api_placement:!nova_api_metadata:!nova_console"
     nova_serial: "{{ nova_compute_serial | default('100%') }}"
@@ -115,7 +115,7 @@
     - nova
   tasks:
     - name: Execute nova service reload
-      include: common-tasks/restart-service.yml
+      import_tasks: common-tasks/restart-service.yml
       vars:
         service_name: "nova"
         # NOTE(mnaser): There is a bug in oslo.service which actually restarts
@@ -148,7 +148,7 @@
     - nova
   tasks:
     - name: Execute nova service restart
-      include: common-tasks/restart-service.yml
+      import_tasks: common-tasks/restart-service.yml
       vars:
         service_name: "nova"
         service_action: "restarted"
