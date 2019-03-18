@@ -32,11 +32,10 @@ fetch_directory: /etc/openstack_deploy/ceph-fetch/
 # ceph-common to prepare for us.
 rbd_client_directories: false
 
-# The OSA ceph_client role does not support loading IPs from an inventory group,
-# so we have to feed it a list of IPs
-ceph_mons: "{{ groups[mon_group_name]
-               | map('extract', hostvars, 'ansible_host')
-               | list }}"
+# Configure the ceph-mons host list for the OSA ceph_client role
+# The role will connect to one of these mons (first available) in order to
+# download a copy of the cluster's ceph.conf.
+ceph_mons: "{{ groups[mon_group_name] }}"
 
 # Provide a variable which can be overidden by a deployer to specify a list of
 # dicts describing RadosGW provisioned by means other than OpenStack-Ansible.
