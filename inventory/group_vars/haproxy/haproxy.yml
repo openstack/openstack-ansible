@@ -278,6 +278,15 @@ haproxy_default_services:
         - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
       haproxy_service_enabled: "{{ groups['magnum_all'] is defined and groups['magnum_all'] | length > 0 }}"
   - service:
+      haproxy_service_name: mistral
+      haproxy_backend_nodes: "{{ groups['mistral_all'] | default([]) }}"
+      haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_port: 8989
+      haproxy_balance_type: http
+      haproxy_backend_options:
+        - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+      haproxy_service_enabled: "{{ groups['mistral_all'] is defined and groups['mistral_all'] | length > 0 }}"
+  - service:
       haproxy_service_name: trove
       haproxy_backend_nodes: "{{ groups['trove_api'] | default([]) }}"
       haproxy_ssl: "{{ haproxy_ssl }}"
