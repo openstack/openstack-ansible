@@ -50,6 +50,7 @@
         - openstack-ansible-deploy-aio_lxc-ubuntu-bionic
     periodic:
       jobs:
+        - openstack-ansible-deploy-aio_lxc-opensuse-150
         - openstack-ansible-deploy-aio_lxc-ubuntu-bionic
         - openstack-ansible-upgrade-aio_lxc-ubuntu-bionic
     experimental:
@@ -58,6 +59,10 @@
 
 - project-template:
     name: openstack-ansible-deploy-aio_distro_lxc-jobs
+    periodic:
+      jobs:
+        - openstack-ansible-deploy-aio_distro_lxc-opensuse-150
+
     experimental:
       jobs:
         - openstack-ansible-deploy-aio_distro_lxc-centos-7
