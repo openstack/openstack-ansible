@@ -1,0 +1,9 @@
+---
+deprecations:
+  - |
+    There was previously an environment variable (``ANSIBLE_ROLE_FETCH_MODE``)
+    to set whether the roles in ansible-role-requirements.yml were fetched using
+    ansible-galaxy or using git, however the default has been git for some time
+    ansible since the use of the ``ceph-ansible`` respoitory for ceph deployment,
+    using ansible-galaxy to download the roles does not work properly. This
+    functionality has therefore been removed.
