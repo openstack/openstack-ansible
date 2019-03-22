@@ -1,0 +1,33 @@
+---
+# Copyright 2019, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Set the available protocol list
+manila_enabled_share_protocols:
+  - NFS
+  - CIFS
+  - CEPHFS
+
+_manila_default_share_type: "{{ (manila_backends | default({})).keys() }}"
+manila_default_share_type: "{{ ((_manila_default_share_type | length) > 0) | ternary(_manila_default_share_type[0], null) }}"
+
+# V1 api config
+manila_service_publicuri: "{{ openstack_service_publicuri_proto|default(manila_service_proto) }}://{{ external_lb_vip_address }}:{{ manila_service_port }}"
+manila_service_internaluri: "{{ openstack_service_internaluri_proto|default(manila_service_proto) }}://{{ internal_lb_vip_address }}:{{ manila_service_port }}"
+manila_service_adminuri: "{{ openstack_service_adminuri_proto|default(manila_service_proto) }}://{{ internal_lb_vip_address }}:{{ manila_service_port }}"
+
+# V2 api config
+manila_service_v2_publicuri: "{{ openstack_service_publicuri_proto|default(manila_service_proto) }}://{{ external_lb_vip_address }}:{{ manila_service_v2_port }}"
+manila_service_v2_internaluri: "{{ openstack_service_internaluri_proto|default(manila_service_proto) }}://{{ internal_lb_vip_address }}:{{ manila_service_v2_port }}"
+manila_service_v2_adminuri: "{{ openstack_service_adminuri_proto|default(manila_service_proto) }}://{{ internal_lb_vip_address }}:{{ manila_service_v2_port }}"

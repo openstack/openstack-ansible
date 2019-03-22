@@ -1,0 +1,77 @@
+---
+# Copyright 2015, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Create sparse manila file
+  command: "truncate -s {{ bootstrap_host_loopback_manila_size }}G /openstack/manila.img"
+  args:
+    creates: /openstack/manila.img
+  register: manila_create
+  tags:
+    - manila-file-create
+
+- name: Run the systemd service role
+  include_role:
+    name: systemd_service
+    private: true
+  vars:
+    systemd_services:
+      - service_name: "loop-manila"
+        config_overrides:
+          Unit:
+            Description: no
+            After: systemd-udev-settle.service
+            Before: lvm2-activation-early.service
+            Wants: systemd-udev-settle.service
+          Service:
+            RemainAfterExit: yes
+        service_type: oneshot
+        execstarts:
+          - /bin/bash -c "/sbin/losetup $(/sbin/losetup -f) /openstack/manila.img"
+          - /sbin/pvscan
+        execstops:
+          - /bin/bash -c "losetup -d $(losetup -l | awk '/manila.img/ {print $1}')"
+        enabled: yes
+        state: started
+    systemd_tempd_prefix: openstack
+  tags:
+    - manila-config
+
+- name: Get loopback device
+  shell: "losetup -l | awk '/manila.img/ {print $1}'"
+  changed_when: false
+  register: manila_losetup
+  tags:
+    - skip_ansible_lint
+
+- name: Make LVM physical volume on the manila device
+  shell: "pvcreate {{ manila_losetup.stdout }} && touch /openstack/manila.pvcreate"
+  args:
+    creates: "/openstack/manila.pvcreate"
+  tags:
+    - skip_ansible_lint
+    - manila-lvm-pv
+
+- name: Run pvscan
+  command: "pvscan"
+  changed_when: false
+  tags:
+    - manila-lvm-pv
+
+- name: Add manila-shares volume group
+  lvg:
+    vg: manila-shares
+    pvs: "{{ manila_losetup.stdout }}"
+  tags:
+    - manila-lvm-vg

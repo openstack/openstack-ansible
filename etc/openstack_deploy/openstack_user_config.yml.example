@@ -716,6 +716,79 @@
 #           rbd_secret_uuid: "{{ cinder_ceph_client_uuid }}"
 #
 #
+# Example:
+#
+# Use the cephfs (NATIVE) backend with manila:
+#
+#     container_vars:
+#       manila_default_share_type: cephfs1
+#       manila_backends:
+#         cephfs1:
+#           driver_handles_share_servers: False
+#           share_backend_name: CEPHFS1
+#           share_driver: manila.share.drivers.cephfs.driver.CephFSDriver
+#           cephfs_conf_path: /etc/ceph/ceph.conf
+#           cephfs_auth_id: manila
+#           cephfs_cluster_name: ceph
+#           cephfs_enable_snapshots: False
+#           filter_function: "share.size >= 0"
+#           goodness_function: "share.size >= 0"
+#
+#
+# Use the cephfs + NFS backend with manila:
+#
+#     container_vars:
+#       manila_default_share_type: cephfsnfs1
+#       manila_backends:
+#         cephfsnfs1:
+#           driver_handles_share_servers: False
+#           share_backend_name: CEPHFSNFS1
+#           share_driver: manila.share.drivers.cephfs.driver.CephFSDriver
+#           cephfs_ganesha_server_ip: 172.16.24.200
+#           cephfs_protocol_helper_type: NFS
+#           cephfs_conf_path: /etc/ceph/ceph.conf
+#           cephfs_auth_id: manila
+#           filter_function: "share.size >= 0"
+#           goodness_function: "share.size >= 0"
+#
+#
+# Example:
+#
+# Use the lvm backend with manila:
+#
+#     container_vars:
+#       manila_default_share_type: nfs-share1
+#       manila_backends:
+#         nfs-share1:
+#           share_backend_name: NFS_SHARE1
+#           share_driver: manila.share.drivers.lvm.LVMShareDriver
+#           driver_handles_share_servers: False
+#           lvm_share_volume_group: manila-shares
+#           lvm_share_export_ip: "10.1.1.1"
+#           filter_function: "share.size >= 0"
+#           goodness_function: "share.size >= 0"
+#
+#
+#
+# Example:
+#
+# Use the generic backend with manila:
+#
+#     container_vars:
+#       manila_default_share_type: generic
+#       manila_backends:
+#         generic:
+#           share_backend_name: GENERIC
+#           share_driver: manila.share.drivers.generic.GenericShareDriver
+#           driver_handles_share_servers: True
+#           service_instance_flavor_id: 100
+#           service_image_name: manila-service-image
+#           service_instance_user: manila
+#           service_instance_password: manila
+#           interface_driver: manila.network.linux.interface.BridgeInterfaceDriver
+#           filter_function: "share.size >= 0"
+#           goodness_function: "share.size >= 0"
+#
 # --------
 #
 # Level: log_hosts (optional)

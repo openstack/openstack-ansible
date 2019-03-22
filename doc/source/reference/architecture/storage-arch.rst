@@ -7,6 +7,7 @@ OpenStack has multiple storage realms to consider:
 * Object Storage (swift)
 * Image storage (glance)
 * Ephemeral storage (nova)
+* Filesystem storage (manila)
 
 Block Storage (cinder)
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -163,3 +164,17 @@ the storage device, the Compute host, the hypervisor, and the instance.
    +----+---------------------------------------------------------------------+
    | 3  | The hypervisor presents the disk as a device to the instance.       |
    +----+---------------------------------------------------------------------+
+
+Filesystem storage (manila)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The shared filesystem service (manila) can be configured to provide file
+systems on a variety of storage back ends as supported by the
+`manila_store drivers`_.
+
+.. figure:: ../figures/manila-overview.png
+   :width: 600px
+
+   The diagram shows a basic overview of the manila service.
+
+.. _manila_store drivers: https://docs.openstack.org/manila/latest/configuration/shared-file-systems/drivers.html
