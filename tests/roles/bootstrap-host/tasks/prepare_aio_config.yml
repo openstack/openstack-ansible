@@ -172,7 +172,14 @@
     src: "{{ playbook_dir }}/../etc/openstack_deploy/env.d/aio_metal.yml.example"
     dest: "/etc/openstack_deploy/env.d/aio_metal.yml"
   when:
-    - "bootstrap_host_scenario == 'aio_metal'"
+    - "bootstrap_host_scenario is search('metal')"
+
+- name: Copy modified env.d file for calico scenario
+  copy:
+    src: "{{ playbook_dir }}/../etc/openstack_deploy/env.d/calico.yml.example"
+    dest: "/etc/openstack_deploy/env.d/calico.yml"
+  when:
+    - "bootstrap_host_scenario is search('calico')"
 
 - name: Create vars override folders if we need to test them
   file:
