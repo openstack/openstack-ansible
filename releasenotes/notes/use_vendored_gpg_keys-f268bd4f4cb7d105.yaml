@@ -1,0 +1,16 @@
+---
+upgrade:
+  - |
+    The data structure for ``ceph_gpg_keys`` has been changed to be a list of
+    dicts, each of which is passed directly to the applicable apt_key/rpm_key
+    module. As such any overrides would need to be reviewed to ensure that they
+    do not pass any key/value pairs which would cause the module to fail.
+  - |
+    The default values for ``ceph_gpg_keys`` have been changed for all
+    supported platforms and now use vendored keys. This means that the task
+    execution will no longer reach out to the internet to add the keys,
+    making offline or proxy-based installations easier and more reliable.
+  - |
+    A new value ``epel_gpg_keys`` can be overridden to use a different GPG key
+    for the EPEL-7 RPM package repo instead of the vendored key used by default.
+
