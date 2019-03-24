@@ -66,7 +66,7 @@ if [[ -x /usr/zuul-env/bin/zuul-cloner ]] && [[ "${ZUUL_REF:-none}" != "none" ]]
     /usr/zuul-env/bin/zuul-cloner \
         --cache-dir /opt/git \
         --map ${TESTING_HOME}/tests-clonemap.yaml \
-        git://git.openstack.org \
+        https://git.openstack.org \
         openstack/openstack-ansible-tests
 
     # Clean up the clonemap.
