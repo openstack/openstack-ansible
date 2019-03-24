@@ -113,7 +113,7 @@ add Zookeeper as coordination backend. To setup Zookeeper, you can use
 
 Create containers for Zookeeper:
 
-.. code-block:: yaml
+.. code-block:: console
 
     ## conf.d
     zookeeper_hosts:
@@ -122,7 +122,7 @@ Create containers for Zookeeper:
       ip: {{ hostvars[server]['ansible_default_ipv4']['address'] }}
     {% endfor%}
 
-.. code-block:: yaml
+.. code-block:: console
 
     ## env.d
     component_skel:
@@ -142,13 +142,13 @@ Create containers for Zookeeper:
 
 Now you can set up Zookeeper as coordination backend for Gnocchi:
 
-.. code-block:: yaml
+.. code-block:: console
 
     gnocchi_coordination_url: "zookeeper://{% for host in groups['zookeeper_all'] %}{{ hostvars[host]['container_address'] }}:2181{% if not loop.last %},{% endif %}{% endfor %}"
 
 You also have to install additional packages:
 
-.. code-block:: yaml
+.. code-block:: console
 
     gnocchi_pip_packages:
     - cryptography

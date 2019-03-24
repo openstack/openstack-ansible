@@ -30,7 +30,6 @@ Contents:
    code-rules
    testing
    periodic-work
-   scripts
    core-reviewers
    distributions
 
