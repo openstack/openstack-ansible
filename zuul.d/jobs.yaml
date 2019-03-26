@@ -177,29 +177,6 @@
       action: deploy
       scenario: translations
 
-- job:
-    name: openstack-ansible-deploy-aio_congress-ubuntu-bionic
-    parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-bionic
-    vars:
-      action: deploy
-      scenario: aio_congress
-
-- job:
-    name: openstack-ansible-deploy-barbican-ubuntu-bionic
-    parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-bionic
-    vars:
-      action: deploy
-      scenario: barbican
-
-- job:
-    name: openstack-ansible-deploy-blazar-ubuntu-bionic
-    parent: openstack-ansible-deploy-aio_lxc-ubuntu-bionic
-    vars:
-      action: deploy
-      scenario: blazar
-
 # centos
 - job:
     name: openstack-ansible-deploy-aio_lxc-centos-7
