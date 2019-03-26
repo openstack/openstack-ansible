@@ -84,6 +84,22 @@
         - openstack-ansible-deploy-aio_metal-opensuse-150
 
 - project-template:
+    name: openstack-ansible-deploy-aio_distro_metal-jobs
+    check:
+      jobs:
+        - openstack-ansible-deploy-aio_distro_metal-centos-7
+    gate:
+      jobs:
+        - openstack-ansible-deploy-aio_distro_metal-centos-7
+    experimental:
+      jobs:
+        # NOTE(hwoarang) SUSE and Ubuntu distro jobs remain non-voting
+        # on master branches. See
+        # http://eavesdrop.openstack.org/meetings/openstack_ansible_meeting/2018/openstack_ansible_meeting.2018-10-23-16.01.log.html#l-188
+        - openstack-ansible-deploy-aio_distro_metal-ubuntu-bionic
+        - openstack-ansible-deploy-aio_distro_metal-opensuse-150
+
+- project-template:
     name: openstack-ansible-deploy-aio_nspawn-jobs
     check:
       jobs:
