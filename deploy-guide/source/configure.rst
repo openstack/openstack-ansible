@@ -152,6 +152,8 @@ OpenStack service roles
 
 - :role_docs:`os_magnum`
 
+- :role_docs:`os_masakari`
+
 - :role_docs:`os_neutron`
 
 - :role_docs:`os_nova`
