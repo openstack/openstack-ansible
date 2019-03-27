@@ -24,7 +24,7 @@
       - name: openstack/openstack-ansible
     run: zuul.d/playbooks/run.yml
     post-run: zuul.d/playbooks/post.yml
-    timeout: 8400
+    timeout: 9000
     irrelevant-files:
       - ^\.git.*
       - ^.*\.(example|md|rst)$
