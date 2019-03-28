@@ -25,7 +25,7 @@
     - "../defaults/{{ install_method }}_install.yml"
   tags:
     - nova
-  tasks:
+  pre_tasks:
     # Enable execution of ceph_client on the nova compute hosts if cinder RBD
     # backends are used. This is necessary to ensure that volume-backed Nova
     # instances can function when RBD is the volume backend.
@@ -139,32 +139,16 @@
       tags:
         - always
 
-    - name: Installing the Nova service (source)
-      include_role:
-        name: "os_nova"
-      vars:
-        nova_novncproxy_git_repo: "{{ openstack_repo_git_url }}/novnc"
-        nova_novncproxy_git_install_branch: "{{ novncproxy_git_install_branch }}"
-        nova_spicehtml5_git_repo: "{{ openstack_repo_git_url }}/spice-html5"
-        nova_spicehtml5_git_install_branch: "{{ spicehtml5_git_install_branch }}"
-        nova_management_address: "{{ management_address }}"
-        nova_cinder_rbd_inuse: "{{ hostvars['localhost']['nova_cinder_rbd_inuse'] }}"
-      when: install_method == "source"
+  roles:
+    - role: "os_nova"
+      nova_management_address: "{{ management_address }}"
+      nova_cinder_rbd_inuse: "{{ hostvars['localhost']['nova_cinder_rbd_inuse'] }}"
 
-    - name: Installing the Nova service (distro)
-      include_role:
-        name: "os_nova"
-      vars:
-        nova_management_address: "{{ management_address }}"
-        nova_cinder_rbd_inuse: "{{ hostvars['localhost']['nova_cinder_rbd_inuse'] }}"
-      when: install_method == "distro"
-
-    - name: Configuring system crontab
-      include_role:
-        name: "system_crontab_coordination"
+    - role: "system_crontab_coordination"
       tags:
         - crontab
 
+  post_tasks:
     - include_tasks: "../common-tasks/rsyslog-client.yml"
       vars:
         rsyslog_client_log_rotate_file: nova_log_rotate
