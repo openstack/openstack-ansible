@@ -26,18 +26,3 @@ repo_release_path: "{{ openstack_repo_url }}/os-releases/{{ openstack_release }}
 ## OpenStack source options
 openstack_repo_url: "http://{{ internal_lb_vip_address }}:{{ repo_server_port }}"
 openstack_repo_git_url: "git://{{ internal_lb_vip_address }}"
-
-venv_base_download_url: "{{ openstack_repo_url }}/venvs/{{ openstack_release }}/{{ os_distro_version }}"
-tempest_venv_download_url: "{{ venv_base_download_url }}/tempest-{{ openstack_release }}-{{ ansible_architecture | lower }}.tgz"
-# The URL to the repo server's pypi reverse proxy simple index
-pip_default_index: "{{ openstack_repo_url }}/simple"
-# The upper constraints to apply to all pip installations
-pip_install_upper_constraints: "{{ repo_release_path }}/requirements_absolute_requirements.txt"
-# locations for fetching the default files from the git source
-gnocchi_git_config_lookup_location: "{{ openstack_repo_url }}/openstackgit/gnocchi"
-# locations for fetching the default files from the git source
-ceilometer_git_config_lookup_location: "{{ openstack_repo_url }}/openstackgit/ceilometer"
-# locations for fetching the default files from the git source
-tacker_git_config_lookup_location: "{{ openstack_repo_url }}/openstackgit/tacker"
-# locations for fetching the default files from the git source
-keystone_git_config_lookup_location: "{{ openstack_repo_url }}/openstackgit/keystone"

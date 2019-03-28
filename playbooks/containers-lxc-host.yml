@@ -24,8 +24,6 @@
   tags:
     - lxc-hosts
   pre_tasks:
-    - include_tasks: common-tasks/set-pip-vars.yml
-      when: install_method == "source"
     - name: Check the state of the default LXC service log directory
       stat:
         path: "/var/log/lxc"

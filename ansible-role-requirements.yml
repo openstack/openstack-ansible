@@ -13,11 +13,6 @@
   src: https://git.openstack.org/openstack/ansible-config_template
   version: master
   trackbranch: master
-- name: pip_install
-  scm: git
-  src: https://git.openstack.org/openstack/openstack-ansible-pip_install
-  version: master
-  trackbranch: master
 - name: galera_client
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-galera_client
@@ -206,11 +201,6 @@
 - name: rabbitmq_server
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-rabbitmq_server
-  version: master
-  trackbranch: master
-- name: repo_build
-  scm: git
-  src: https://git.openstack.org/openstack/openstack-ansible-repo_build
   version: master
   trackbranch: master
 - name: repo_server
