@@ -6,6 +6,9 @@ container_skel:
   barbican_container:
     properties:
       is_metal: true
+  blazar_container:
+    properties:
+      is_metal: true
   ceilometer_central_container:
     properties:
       is_metal: true
@@ -15,13 +18,16 @@ container_skel:
   ceph-mon_container:
     properties:
       is_metal: true
+  ceph-rgw_container:
+    properties:
+      is_metal: true
   cinder_api_container:
     properties:
       is_metal: true
-  cinder_scheduler_container:
+  cinder_volumes_container:
     properties:
       is_metal: true
-  cinder_volumes_container:
+  congress_container:
     properties:
       is_metal: true
   designate_container:
@@ -42,22 +48,13 @@ container_skel:
   haproxy_container:
     properties:
       is_metal: true
-  heat_apis_container:
-    properties:
-      is_metal: true
   heat_api_container:
-    properties:
-      is_metal: true
-  heat_engine_container:
     properties:
       is_metal: true
   horizon_container:
     properties:
       is_metal: true
   ironic_api_container:
-    properties:
-      is_metal: true
-  ironic_conductor_container:
     properties:
       is_metal: true
   ironic_server_container:
@@ -87,31 +84,16 @@ container_skel:
   nova_api_container:
     properties:
       is_metal: true
-  nova_api_metadata_container:
-    properties:
-      is_metal: true
-  nova_api_os_compute_container:
-    properties:
-      is_metal: true
-  nova_api_placement_container:
-    properties:
-      is_metal: true
   nova_compute_container:
-    properties:
-      is_metal: true
-  nova_conductor_container:
-    properties:
-      is_metal: true
-  nova_scheduler_container:
-    properties:
-      is_metal: true
-  nova_console_container:
     properties:
       is_metal: true
   octavia_server_container:
     properties:
       is_metal: true
   repo_container:
+    properties:
+      is_metal: true
+  qdrouterd_container:
     properties:
       is_metal: true
   rabbit_mq_container:
@@ -142,12 +124,6 @@ container_skel:
     properties:
       is_metal: true
   trove_api_container:
-    properties:
-      is_metal: true
-  trove_conductor_container:
-    properties:
-      is_metal: true
-  trove_taskmanager_container:
     properties:
       is_metal: true
   unbound_container:
