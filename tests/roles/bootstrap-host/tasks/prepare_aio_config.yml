@@ -78,7 +78,6 @@
         echo "lxc_centos_package_baseurl: 'http://${NODEPOOL_MIRROR_HOST}:8080/copr-lxc2/epel-7-x86_64/'" >> ${NODEPOOL_OVERRIDES}
         echo "lxc_centos_package_key: 'http://${NODEPOOL_MIRROR_HOST}:8080/copr-lxc2/pubkey.gpg'" >> ${NODEPOOL_OVERRIDES}
         echo "nova_virt_type: 'qemu'" >> ${NODEPOOL_OVERRIDES}
-        echo "repo_build_pip_default_index: '${NODEPOOL_PYPI_MIRROR}'" >> ${NODEPOOL_OVERRIDES}
 
         # NOTE(mnaser): We need to make sure we pull the latest RDO mirror
         #               which is hashed to avoid cache going stale during CI.
@@ -92,17 +91,6 @@
         echo "openstack_hosts_rdo_repo_url: '${RDO_MIRROR_HOST}'" >> ${NODEPOOL_OVERRIDES}
       args:
         executable: /bin/bash
-      tags:
-        - skip_ansible_lint
-
-    - name: Discover the OpenStack-Infra pypi/wheel mirror
-      shell: |
-        source /etc/ci/mirror_info.sh
-        echo "${NODEPOOL_PYPI_MIRROR}"
-        echo "${NODEPOOL_WHEEL_MIRROR}"
-      args:
-        executable: /bin/bash
-      register: _pypi_wheel_mirror
       tags:
         - skip_ansible_lint
 
@@ -132,18 +120,6 @@
       with_items:
         - "91.189.91.21 images.linuxcontainers.org us.images.linuxcontainers.org"
         - "91.189.88.37 images.linuxcontainers.org uk.images.linuxcontainers.org"
-
-- name: Set facts when outside of OpenStack-Infra
-  when:
-    - not nodepool_dir.stat.exists
-  block:
-    - name: Determine the fastest available OpenStack-Infra wheel mirror
-      command: "{{ bootstrap_host_aio_script_path }}/fastest-infra-wheel-mirror.py"
-      register: fastest_wheel_mirror
-
-    - name: Set repo_build_pip_extra_indexes fact
-      set_fact:
-        repo_build_pip_extra_indexes: "{{ fastest_wheel_mirror.stdout_lines }}"
 
 # NOTE(mhayden): The OpenStack CI images for CentOS 7 recently set SELinux to
 # Enforcing mode by default. While I am normally a supporter of this change,

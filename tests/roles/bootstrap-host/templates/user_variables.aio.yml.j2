@@ -166,12 +166,6 @@ lxc_net_address: 10.255.255.1
 lxc_net_netmask: 255.255.255.0
 lxc_net_dhcp_range: 10.255.255.2,10.255.255.253
 
-{% if repo_build_pip_extra_indexes is defined and repo_build_pip_extra_indexes | length > 0 %}
-## Wheel mirrors for the repo_build to use
-repo_build_pip_extra_indexes:
-{{ repo_build_pip_extra_indexes | to_nice_yaml }}
-{% endif %}
-
 {% if _lxc_mirror is defined and _lxc_mirror.stdout_lines is defined %}
 ## images.linuxcontainers.org reverse proxy
 lxc_image_cache_server_mirrors:
@@ -206,11 +200,6 @@ tempest_image_dir: "/opt/cache/files"
 nova_service_negate:
   - "nova-agent.service"
   - "nova-resetnetwork.service"
-
-{% if _pypi_wheel_mirror is defined and _pypi_wheel_mirror.stdout_lines is defined %}
-repo_build_pip_extra_indexes:
- - "{{ _pypi_wheel_mirror.stdout_lines[1] }}"
-{% endif %}
 
 # Set all the distros to the same value: a "quiet" print
 # of kernel log messages.

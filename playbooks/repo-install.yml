@@ -13,5 +13,51 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- import_playbook: repo-server.yml
-- import_playbook: repo-build.yml
+- name: Setup repo servers
+  hosts: repo_all
+  gather_facts: "{{ osa_gather_facts | default(True) }}"
+  user: root
+  pre_tasks:
+    - name: End playbook
+      meta: end_play
+      when:
+        - (install_method | default('source')) != "source"
+
+    - include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
+      vars:
+        list_of_bind_mounts:
+          - mount_path: "/openstack/{{ inventory_hostname }}"
+            bind_dir_path: "/var/www"
+      when: not is_metal
+
+    - include_tasks: common-tasks/unbound-clients.yml
+      when:
+        - hostvars['localhost']['resolvconf_enabled'] | bool
+  roles:
+    - role: "repo_server"
+
+  post_tasks:
+    - include_tasks: "common-tasks/rsyslog-client.yml"
+      vars:
+        rsyslog_client_log_rotate_file: "{{ rsyslog_var.log_rotate_file }}"
+        rsyslog_client_log_dir: "{{ rsyslog_var.log_dir }}"
+        rsyslog_client_log_files: "{{ rsyslog_var.log_files | default([]) }}"
+        rsyslog_client_config_name: "{{ rsyslog_var.config_name }}"
+      with_items:
+        - log_rotate_file: lsyncd_log_rotate
+          log_dir: "/var/log/lsyncd"
+          config_name: "99-lsyncd-rsyslog-client.conf"
+        - log_rotate_file: repo_nginx_log_rotate
+          log_dir: "/var/log/nginx"
+          log_files:
+            - /var/log/rsyncd.log
+          config_name: "99-repo-nginx-rsyslog-client.conf"
+      loop_control:
+        loop_var: rsyslog_var
+
+  vars_files:
+    - defaults/repo_packages/openstack_services.yml
+    - "defaults/{{ install_method }}_install.yml"
+  environment: "{{ deployment_environment_variables | default({}) }}"
+  tags:
+    - repo-server

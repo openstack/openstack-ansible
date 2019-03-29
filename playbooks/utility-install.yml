@@ -19,7 +19,10 @@
   gather_facts: "{{ osa_gather_facts | default(True) }}"
   environment: "{{ deployment_environment_variables | default({}) }}"
   vars_files:
+    - "defaults/repo_packages/openstack_services.yml"
     - "defaults/{{ install_method }}_install.yml"
+  vars:
+    utility_upper_constraints_url: "{{ requirements_git_url | default('https://git.openstack.org/cgit/openstack/requirements/plain/upper-constraints.txt?h=' ~ requirements_git_install_branch | default('master')) }}"
   tags:
     - utility
   pre_tasks:
@@ -81,7 +84,7 @@
       block:
         - name: Get list of repo packages
           uri:
-            url: "{{ repo_release_path }}/requirements_absolute_requirements.txt"
+            url: "{{ utility_upper_constraints_url }}"
             return_content: yes
           register: _abs_reqs
           run_once: true
@@ -93,7 +96,7 @@
             _openstack_client_list: >-
               {%- set package_list = [] %}
               {%- for l in _abs_reqs.content.split('\n') %}
-              {%-   if (l is match('^python_.*client==.*$')) or (l is match('^(aodh|gnocchi)client==.*$')) %}
+              {%-   if (l is match('^python-.*client==.*$')) or (l is match('^(aodh|gnocchi)client==.*$')) %}
               {%-     set _ = package_list.append(l | regex_replace('==.*$', '')) %}
               {%-   endif %}
               {%- endfor %}
@@ -107,14 +110,14 @@
             name: "python_venv_build"
           vars:
             venv_install_destination_path: "{{ utility_venv_bin | dirname }}"
-            venv_pip_install_args: >-
-              {{ (pip_install_upper_constraints is defined) | ternary('--constraint ' + pip_install_upper_constraints | default(''),'') }}
-              {{ pip_install_options | default('') }}
+            venv_pip_install_args: "{{ pip_install_options | default('') }}"
+            venv_build_constraints:
+              - "--constraint {{ utility_upper_constraints_url }}"
             venv_pip_packages: "{{ _openstack_client_list | union(utility_pip_packages) }}"
 
         - name: Create symlinks for openstack clients
           shell: |
-            {% set _bin_name = item | regex_replace('^(?:python_)?(\w*)(?:client)$', '\\1') %}
+            {% set _bin_name = item | regex_replace('^(?:python-)?(\w*)(?:client)$', '\\1') %}
             if [[ -e "{{ utility_venv_bin }}/{{ _bin_name }}" ]]; then
               ln -sfn {{ utility_venv_bin }}/{{ _bin_name }} /usr/local/bin/{{ _bin_name }}
             fi

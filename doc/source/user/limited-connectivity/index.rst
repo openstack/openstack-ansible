@@ -48,13 +48,23 @@ actively mirror the entire upstream PyPi repository but this may require
 a significant amount of storage. Alternatively a caching pip proxy
 can be used to retain local copies of only those packages which are required.
 
-Example OpenStack-Ansible configuration for specifying a local pip mirror or
-proxy:
+In order to configure the build to use an alternative index, create the file
+`/etc/pip.conf` with the following content and ensure that it is placed on
+all hosts in the environment.
+
+.. code-block:: shell-session
+
+   [global]
+   index-url = http://pip.example.org/simple
+
+Then, in `/etc/openstack_deploy/user_variables.yml`, inform the deployment
+that it needs to copy that file from the host into the container cache image.
 
 .. code-block:: yaml
 
-      # Custom upstream pip index used when building repo server contents
-      repo_build_pip_default_index: http://pip.example.org/simple
+   # Copy these files from the host into the containers
+   lxc_container_cache_files_from_host:
+     - /etc/pip.conf
 
 Distribution specific packages
 ------------------------------

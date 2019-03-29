@@ -188,10 +188,6 @@
         venv_install_destination_path: "{{ venv_path }}"
         venv_pip_packages:
           - pika
-        venv_build_host_wheel_path: "{{ repo_pypiserver_package_path | default('/var/www/repo/pools') }}"
-        venv_pip_install_args: >-
-          --index-url {{ repo_build_pip_default_index | default('https://pypi.python.org/simple') }}
-          --trusted-host {{ (repo_build_pip_default_index | default('https://pypi.python.org/simple')) | urlsplit('hostname') }}
     - name: Copying test script
       copy:
         src: "../scripts/rabbitmq-test.py"

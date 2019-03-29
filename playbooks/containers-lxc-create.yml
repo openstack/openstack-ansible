@@ -73,8 +73,6 @@
   pre_tasks:
     - include_tasks: common-tasks/package-cache-proxy.yml
       when: install_method == "source"
-    - include_tasks: common-tasks/set-pip-vars.yml
-      when: install_method == "source"
   roles:
     - role: "openstack_hosts"
       is_container: true

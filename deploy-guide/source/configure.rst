@@ -118,8 +118,6 @@ Infrastructure service roles
 
 - :role_docs:`rabbitmq_server`
 
-- :role_docs:`repo_build`
-
 - :role_docs:`repo_server`
 
 - :role_docs:`rsyslog_server`
@@ -183,8 +181,6 @@ Other roles
 - :role_docs:`lxc_container_create`
 
 - :role_docs:`lxc_hosts`
-
-- :role_docs:`pip_install`
 
 - :role_docs:`plugins`
 
