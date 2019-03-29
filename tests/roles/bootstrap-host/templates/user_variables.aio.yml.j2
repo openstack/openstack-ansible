@@ -52,6 +52,14 @@ keystone_wsgi_processes_max: 2
 ## Barbican
 barbican_wsgi_processes: 2
 barbican_wsgi_threads: 1
+{% if 'metal' in bootstrap_host_scenario %}
+# NOTE(mnaser): Barbican's tempest plugin does not support specific endpoints
+#               in it's config which result in it attempting to use the public
+#               URL which does not have any SSL encryption by default in metal
+#               jobs.  We should remove this once we have HAproxy running in
+#               our metal scenarios.
+barbican_service_publicuri_proto: http
+{% endif %}
 
 ## Cinder
 cinder_wsgi_processes_max: 2
