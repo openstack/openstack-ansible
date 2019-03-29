@@ -2,8 +2,8 @@
 global_overrides:
   swift:
     part_power: 8
-    storage_network: "{{ (container_tech != 'nspawn') | ternary('br-storage', ansible_default_ipv4['alias']) }}"
-    replication_network: "{{ (container_tech != 'nspawn') | ternary('br-storage', ansible_default_ipv4['alias']) }}"
+    storage_network: br-storage
+    replication_network: br-storage
     drives:
       - name: swift1.img
       - name: swift2.img
