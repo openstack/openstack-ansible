@@ -187,6 +187,12 @@ tempest_run: yes
 tempest_network_ping_gateway: yes
 
 {% if nodepool_dir.stat.exists %}
+# Copy /etc/pip.conf into containers to get mirrors for wheels
+# and due to extra-index-url bugs in Ubuntu, we workaround it
+# by ignoring the config file during PIP upgrade time
+venv_pip_upgrade_noconf: true
+lxc_container_cache_files_from_host:
+  - /etc/pip.conf
 # Disable chronyd in OpenStack CI
 security_rhel7_enable_chrony: no
 # The location where images are downloaded in openstack-infra
