@@ -152,6 +152,16 @@ trove_wsgi_threads: 1
 trove_wsgi_processes_max: 2
 trove_wsgi_processes: 1
 
+## Octavia
+{% if 'metal' in bootstrap_host_scenario %}
+# TODO(mnaser): The Octavia role relies on gathering IPs of hosts in the
+#               LBaaS network and using those in the health manager pool
+#               IPs.  We don't store those IPs when running metal so we
+#               have to override it manually.  We should remove this and
+#               fix the role (or the inventory tool) eventually.
+octavia_hm_hosts: 172.29.252.100 # br-lbaas IP
+{% endif %}
+
 ## Sahara
 sahara_api_workers_max: 2
 sahara_api_workers: 1
