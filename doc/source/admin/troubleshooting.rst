@@ -232,6 +232,13 @@ The following table lists the commands to restart an OpenStack service.
           # service cinder-backup restart
           # service cinder-scheduler restart
           # service cinder-volume restart
+   * - Block Storage service
+     - .. code-block:: console
+
+          # service manila-api restart
+          # service manila-data restart
+          # service manila-share restart
+          # service manila-scheduler restart
    * - Object Storage service
      - .. code-block:: console
 

@@ -66,6 +66,11 @@ bootstrap_host_loopback_nova: yes
 # Size of the Nova loopback disk in gigabytes (GB).
 bootstrap_host_loopback_nova_size: 1024
 #
+# Boolean option to deploy the loopback disk for Manila
+bootstrap_host_loopback_manila: yes
+# Size of the Manila loopback disk in gigabytes (GB).
+bootstrap_host_loopback_manila_size: 1024
+#
 # Boolean option to deploy the loopback disk for machines
 bootstrap_host_loopback_machines: yes
 # Size of the machines loopback disk in gigabytes (GB).

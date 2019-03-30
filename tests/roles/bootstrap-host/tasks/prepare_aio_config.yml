@@ -166,6 +166,9 @@
     - src: user_variables_barbican.yml.j2
       dest: user_variables_barbican.yml
       condition: "{{ 'barbican' in bootstrap_host_services }}"
+    - src: user_variables_manila.yml.j2
+      dest: user_variables_manila.yml
+      condition: "{{ 'manila' in bootstrap_host_services }}"
 
 - name: Copy modified cinder-volume env.d file for ceph scenario
   copy:

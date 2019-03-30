@@ -110,6 +110,13 @@
   tags:
     - prepare-loopback
 
+# Prepare the Manila data storage loopback disks
+- include: prepare_loopback_manila.yml
+  when:
+    - bootstrap_host_loopback_manila | bool
+  tags:
+    - prepare-loopback
+
 # Prepare the Ceph cluster UUID and loopback disks
 - include: prepare_ceph.yml
   when:

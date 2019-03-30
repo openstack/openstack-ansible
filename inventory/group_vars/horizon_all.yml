@@ -19,6 +19,7 @@ horizon_enable_cinder_backup: "{{ hostvars['localhost']['cinder_service_backup_p
 horizon_enable_heat_ui: "{{ (groups['heat_all'] is defined) and (groups['heat_all'] | length > 0) }}"
 horizon_enable_ironic_ui: "{{ (groups['ironic_all'] is defined) and (groups['ironic_all'] | length > 0) }}"
 horizon_enable_magnum_ui: "{{ (groups['magnum_all'] is defined) and (groups['magnum_all'] | length > 0) }}"
+horizon_enable_manila_ui: "{{ (groups['manila_all'] is defined) and (groups['manila_all'] | length > 0) }}"
 horizon_enable_masakari_ui: "{{ (groups['masakari_all'] is defined) and (groups['masakari_all'] | length > 0) }}"
 horizon_enable_designate_ui: "{{ (groups['designate_all'] is defined) and (groups['designate_all'] | length > 0) }}"
 horizon_enable_octavia_ui: "{{ (groups['octavia-infra_all'] is defined) and (groups['octavia-infra_all'] | length > 0) }}"
