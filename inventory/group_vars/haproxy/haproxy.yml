@@ -78,7 +78,7 @@ haproxy_default_services:
       haproxy_port: 9292
       haproxy_balance_type: http
       haproxy_backend_options:
-        - "httpchk GET /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+        - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
       haproxy_service_enabled: "{{ groups['glance_api'] is defined and groups['glance_api'] | length > 0 }}"
   - service:
       haproxy_service_name: glance_registry
@@ -87,7 +87,7 @@ haproxy_default_services:
       haproxy_port: 9191
       haproxy_balance_type: http
       haproxy_backend_options:
-        - "httpchk GET /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+        - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
       haproxy_whitelist_networks: "{{ haproxy_glance_registry_whitelist_networks }}"
       haproxy_service_enabled: >-
         {{ groups['glance_registry'] is defined and
