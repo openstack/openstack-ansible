@@ -1,0 +1,7 @@
+---
+
+issues:
+ - We are limiting the tarred inventory backups to 15 in addition to changes
+   that only apply backups when the config has changed. These changes are to
+   address an issue where the inventory was corruped with parallel runs on
+   large clusters.
