@@ -27,9 +27,12 @@
 
 ## NOVNC from source
 novncproxy_git_repo: https://github.com/novnc/noVNC
-novncproxy_git_install_branch: dcc41bde618ade458ec516736b375a19db3b13ed  # HEAD as of 29.03.2019
+# NOTE(mnaser): NoVNC broke downstream Nova with their change, we can start tracking
+#               master again once the following is fixed.
+#               https://bugs.launchpad.net/openstack-ansible/+bug/1822676
+novncproxy_git_install_branch: 8c2866df3619e49d629b5f98c20d27a7c72d102a
 novncproxy_git_project_group: nova_console
-novncproxy_git_track_branch: master
+novncproxy_git_track_branch: None
 
 
 ## spice-html5 from source
