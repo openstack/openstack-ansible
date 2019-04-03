@@ -12,9 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+export OSA_CONFIG_DIR="${OSA_CONFIG_DIR:-/etc/openstack_deploy}"
+
 export ANSIBLE_RETRY_FILES_ENABLED="${ANSIBLE_RETRY_FILES_ENABLED:-False}"
 
-export ANSIBLE_INVENTORY="${ANSIBLE_INVENTORY:-OSA_INVENTORY_PATH/dynamic_inventory.py,OSA_INVENTORY_PATH/inventory.ini,/etc/openstack_deploy/inventory.ini}"
+export ANSIBLE_INVENTORY="${ANSIBLE_INVENTORY:-OSA_INVENTORY_PATH/dynamic_inventory.py,OSA_INVENTORY_PATH/inventory.ini,${OSA_CONFIG_DIR}/inventory.ini}"
 
 export ANSIBLE_LOG_PATH="${ANSIBLE_LOG_PATH:-/openstack/log/ansible-logging/ansible.log}"
 mkdir -p "$(dirname ${ANSIBLE_LOG_PATH})" || unset ANSIBLE_LOG_PATH
@@ -33,7 +35,7 @@ export ANSIBLE_GATHERING="${ANSIBLE_GATHERING:-smart}"
 export ANSIBLE_GATHER_SUBSET="${ANSIBLE_GATHER_SUBSET:-network,hardware,virtual}"
 
 export ANSIBLE_CACHE_PLUGIN="${ANSIBLE_CACHE_PLUGIN:-jsonfile}"
-export ANSIBLE_CACHE_PLUGIN_CONNECTION="${ANSIBLE_CACHE_PLUGIN_CONNECTION:-/etc/openstack_deploy/ansible_facts}"
+export ANSIBLE_CACHE_PLUGIN_CONNECTION="${ANSIBLE_CACHE_PLUGIN_CONNECTION:-${OSA_CONFIG_DIR}/ansible_facts}"
 export ANSIBLE_CACHE_PLUGIN_TIMEOUT="${ANSIBLE_CACHE_PLUGIN_TIMEOUT:-86400}"
 
 if [[ "${ANSIBLE_CACHE_PLUGIN}" == "memcached" ]];then
