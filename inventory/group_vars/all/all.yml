@@ -16,6 +16,9 @@
 ## OpenStack Source Code Release
 openstack_release: "{{ lookup('env', 'OSA_VERSION') | default('undefined', true) }}"
 
+## OpenStack Configuration directory
+openstack_config_dir: "{{ lookup('env', 'OSA_CONFIG_DIR') | default('/etc/openstack_deploy') }}"
+
 ## Verbosity Options
 debug: False
 
