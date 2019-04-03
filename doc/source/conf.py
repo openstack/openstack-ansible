@@ -110,8 +110,7 @@ sys.path.insert(0, os.path.abspath('../../inventory/'))
 extensions = [
     'openstackdocstheme',
     'sphinx.ext.autodoc',
-    'sphinx.ext.extlinks',
-    'sphinxmark'
+    'sphinx.ext.extlinks'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -348,11 +347,4 @@ pdf_documents = [
      title, author)
 ]
 
-# -- Options for sphinxmark -----------------------------------------------
-sphinxmark_enable = True
-sphinxmark_div = 'docs-body'
-sphinxmark_image = 'text'
-sphinxmark_text = watermark
-sphinxmark_text_color = (128, 128, 128)
-sphinxmark_text_size = 70
 locale_dirs = ['locale/']

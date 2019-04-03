@@ -96,7 +96,6 @@ sys.path.insert(0, os.path.abspath('../../inventory/'))
 extensions = [
     'openstackdocstheme',
     'sphinx.ext.autodoc',
-    'sphinxmark',
     'sphinx.ext.extlinks'
 ]
 
@@ -326,11 +325,3 @@ pdf_documents = [
     (master_doc, target_name,
      title, author)
 ]
-
-# -- Options for sphinxmark -----------------------------------------------
-sphinxmark_enable = True
-sphinxmark_div = 'docs-body'
-sphinxmark_image = 'text'
-sphinxmark_text = watermark
-sphinxmark_text_color = (128, 128, 128)
-sphinxmark_text_size = 70
