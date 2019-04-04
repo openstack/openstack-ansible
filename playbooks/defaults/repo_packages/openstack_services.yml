@@ -260,8 +260,14 @@ magnum_git_track_branch: stable/stein
 ## Masakari service
 masakari_git_repo: https://git.openstack.org/openstack/masakari
 masakari_git_install_branch: 150a835d95e599471e965ad75bb8ec817d93b46d # HEAD as of 29.03.2019
-masakari_git_project_group: masakari_all
+masakari_git_project_group: masakari_api
 masakari_git_track_branch: stable/stein
+
+## Masakari monitors services
+masakari_monitors_git_repo: https://git.openstack.org/openstack/masakari-monitors
+masakari_monitors_git_install_branch: 5b338058abfdc5066eba375e182932f5e0f7436f # HEAD as of 29.03.2019
+masakari_monitors_git_project_group: masakari_monitor
+masakari_monitors_git_track_branch: stable/stein
 
 ## Mistral service
 mistral_git_repo: https://git.openstack.org/openstack/mistral
