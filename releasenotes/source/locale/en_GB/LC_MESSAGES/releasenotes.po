@@ -1,0 +1,290 @@
+# Andi Chandler <andi@gowling.com>, 2018. #zanata
+msgid ""
+msgstr ""
+"Project-Id-Version: openstack-ansible\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-04-04 04:41+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2018-08-13 12:14+0000\n"
+"Last-Translator: Andi Chandler <andi@gowling.com>\n"
+"Language-Team: English (United Kingdom)\n"
+"Language: en_GB\n"
+"X-Generator: Zanata 4.3.3\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+msgid ""
+"**NOTE:** This fix is partially applied for existing OpenStack-Ansible "
+"deployments. See the upgrade section of the release notes for the work "
+"required to fully apply the fix."
+msgstr ""
+"**NOTE:** This fix is partially applied for existing OpenStack-Ansible "
+"deployments. See the upgrade section of the release notes for the work "
+"required to fully apply the fix."
+
+msgid ""
+"**This is a breaking change for existing CentOS deployments.** The ``yum`` "
+"package manager will have errors when it finds that certain packages that it "
+"installed from EPEL are no longer available.  Deployers may need to rebuild "
+"container or reinstall packages to complete this change."
+msgstr ""
+"**This is a breaking change for existing CentOS deployments.** The ``yum`` "
+"package manager will have errors when it finds that certain packages that it "
+"installed from EPEL are no longer available.  Deployers may need to rebuild "
+"container or reinstall packages to complete this change."
+
+msgid ""
+"**lxc_cache_validate_certs**: Removed because the Ansible ``get_url`` module "
+"is no longer used."
+msgstr ""
+"**lxc_cache_validate_certs**: Removed because the Ansible ``get_url`` module "
+"is no longer used."
+
+msgid ""
+"**lxc_container_base_delete**: Removed because the cache will be refreshed "
+"upon role execution."
+msgstr ""
+"**lxc_container_base_delete**: Removed because the cache will be refreshed "
+"upon role execution."
+
+msgid ""
+"**lxc_container_caches**: Removed because the container create process will "
+"build a cached image based on the host OS."
+msgstr ""
+"**lxc_container_caches**: Removed because the container create process will "
+"build a cached image based on the host OS."
+
+msgid ""
+"**lxc_container_release**: Removed because image is now tied with the host "
+"operating system."
+msgstr ""
+"**lxc_container_release**: Removed because image is now tied with the host "
+"operating system."
+
+msgid ""
+"**lxc_container_template**: Removed because the template option is now "
+"contained within the operating system specific variable file loaded at "
+"runtime."
+msgstr ""
+"**lxc_container_template**: Removed because the template option is now "
+"contained within the operating system specific variable file loaded at "
+"runtime."
+
+msgid ""
+"**lxc_container_template_main_apt_repo**: Removed because this option is now "
+"being set within the cache creation process and is no longer needed here."
+msgstr ""
+"**lxc_container_template_main_apt_repo**: Removed because this option is now "
+"being set within the cache creation process and is no longer needed here."
+
+msgid ""
+"**lxc_container_template_options**: This option was renamed to "
+"*lxc_cache_download_template_options*. The deprecation filter was not used "
+"because the values provided from this option have been fundamentally changed "
+"and potentially old overrides will cause problems."
+msgstr ""
+"**lxc_container_template_options**: This option was renamed to "
+"*lxc_cache_download_template_options*. The deprecation filter was not used "
+"because the values provided from this option have been fundamentally changed "
+"and potentially old overrides will cause problems."
+
+msgid ""
+"**lxc_container_template_options**: This option was renamed to "
+"*lxc_container_download_template_options*. The deprecation filter was not "
+"used because the values provided from this option have been fundamentally "
+"changed and old overrides will cause problems."
+msgstr ""
+"**lxc_container_template_options**: This option was renamed to "
+"*lxc_container_download_template_options*. The deprecation filter was not "
+"used because the values provided from this option have been fundamentally "
+"changed and old overrides will cause problems."
+
+msgid ""
+"**lxc_container_template_security_apt_repo**: Removed because this option is "
+"now being set within the cache creation process and is no longer needed here."
+msgstr ""
+"**lxc_container_template_security_apt_repo**: Removed because this option is "
+"now being set within the cache creation process and is no longer needed here."
+
+msgid ""
+"**lxc_container_user_name**: Removed because the default users are no longer "
+"created when the cached image is created."
+msgstr ""
+"**lxc_container_user_name**: Removed because the default users are no longer "
+"created when the cached image is created."
+
+msgid ""
+"**lxc_container_user_password**: Removed because the default lxc container "
+"user is no longer created by the lxc container template."
+msgstr ""
+"**lxc_container_user_password**: Removed because the default lxc container "
+"user is no longer created by the lxc container template."
+
+msgid ""
+"**lxc_container_user_password**: Removed because the default users are no "
+"longer created when the cached image is created."
+msgstr ""
+"**lxc_container_user_password**: Removed because the default users are no "
+"longer created when the cached image is created."
+
+msgid "12.0.10"
+msgstr "12.0.10"
+
+msgid "12.0.11"
+msgstr "12.0.11"
+
+msgid "12.0.12"
+msgstr "12.0.12"
+
+msgid "12.0.13"
+msgstr "12.0.13"
+
+msgid "12.0.14"
+msgstr "12.0.14"
+
+msgid "12.0.15"
+msgstr "12.0.15"
+
+msgid "12.0.16"
+msgstr "12.0.16"
+
+msgid "12.0.6"
+msgstr "12.0.6"
+
+msgid "12.0.7"
+msgstr "12.0.7"
+
+msgid "12.0.8"
+msgstr "12.0.8"
+
+msgid "12.0.9"
+msgstr "12.0.9"
+
+msgid "12.1.0"
+msgstr "12.1.0"
+
+msgid "12.2.0"
+msgstr "12.2.0"
+
+msgid "12.2.2"
+msgstr "12.2.2"
+
+msgid "12.2.4"
+msgstr "12.2.4"
+
+msgid "12.2.5"
+msgstr "12.2.5"
+
+msgid "13.0.0"
+msgstr "13.0.0"
+
+msgid "13.0.1"
+msgstr "13.0.1"
+
+msgid "13.1.0"
+msgstr "13.1.0"
+
+msgid "13.1.1"
+msgstr "13.1.1"
+
+msgid "13.1.2"
+msgstr "13.1.2"
+
+msgid "13.1.3"
+msgstr "13.1.3"
+
+msgid "13.1.4"
+msgstr "13.1.4"
+
+msgid "13.2.0"
+msgstr "13.2.0"
+
+msgid "13.3.0"
+msgstr "13.3.0"
+
+msgid "Current Series Release Notes"
+msgstr "Current Series Release Notes"
+
+msgid "Liberty Series Release Notes"
+msgstr "Liberty Series Release Notes"
+
+msgid "Mitaka Series Release Notes"
+msgstr "Mitaka Series Release Notes"
+
+msgid "Newton Series Release Notes"
+msgstr "Newton Series Release Notes"
+
+msgid "Ocata Series Release Notes"
+msgstr "Ocata Series Release Notes"
+
+msgid "OpenStack-Ansible Release Notes"
+msgstr "OpenStack-Ansible Release Notes"
+
+msgid "Pike Series Release Notes"
+msgstr "Pike Series Release Notes"
+
+msgid "Queens Series Release Notes"
+msgstr "Queens Series Release Notes"
+
+msgid "Rocky Series Release Notes"
+msgstr "Rocky Series Release Notes"
+
+msgid "keystone_identity_driver"
+msgstr "keystone_identity_driver"
+
+msgid "keystone_ldap_identity_driver"
+msgstr "keystone_ldap_identity_driver"
+
+msgid "keystone_resource_driver"
+msgstr "keystone_resource_driver"
+
+msgid "keystone_revocation_driver"
+msgstr "keystone_revocation_driver"
+
+msgid "keystone_token_driver"
+msgstr "keystone_token_driver"
+
+msgid "keystone_token_provider"
+msgstr "keystone_token_provider"
+
+msgid ""
+"liberty release notes: https://wiki.openstack.org/wiki/ReleaseNotes/"
+"Liberty#OpenStack_Image_Service_.28Glance.29"
+msgstr ""
+"Liberty release notes: https://wiki.openstack.org/wiki/ReleaseNotes/"
+"Liberty#OpenStack_Image_Service_.28Glance.29"
+
+msgid "nova_v3_service_password"
+msgstr "nova_v3_service_password"
+
+msgid ""
+"openSUSE Leap 42.X support is still work in progress and not fully tested "
+"besides basic coverange in the OpenStack CI and individual manual testing. "
+"Even though backporting fixes to the Pike release will be done on best "
+"effort basis, it's advised to use the master branch when working on openSUSE "
+"hosts."
+msgstr ""
+"openSUSE Leap 42.X support is still work in progress and not fully tested "
+"besides basic coverage in the OpenStack CI and individual manual testing. "
+"Even though backporting fixes to the Pike release will be done on best "
+"effort basis, it's advised to use the master branch when working on openSUSE "
+"hosts."
+
+msgid ""
+"pip can be installed via the deployment host using the new variable "
+"``pip_offline_install``. This can be useful in environments where the "
+"containers lack internet connectivity. Please refer to the `limited "
+"connectivity installation guide <http://docs.openstack.org/developer/"
+"openstack-ansible/install-guide/app-no-internet-connectivity.html#install-"
+"pip-through-deployment-host>`_ for more information."
+msgstr ""
+"pip can be installed via the deployment host using the new variable "
+"``pip_offline_install``. This can be useful in environments where the "
+"containers lack internet connectivity. Please refer to the `limited "
+"connectivity installation guide <http://docs.openstack.org/developer/"
+"openstack-ansible/install-guide/app-no-internet-connectivity.html#install-"
+"pip-through-deployment-host>`_ for more information."
+
+msgid "swift_container_mysql_password"
+msgstr "swift_container_mysql_password"
