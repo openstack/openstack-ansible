@@ -26,7 +26,7 @@ ceph_repository: community
 # ceph-ansible roles. It is defaulted in ceph_client but set here to keep the
 # OSA/ceph-ansible integrations in sync.
 ceph_stable_release: mimic
-fetch_directory: /etc/openstack_deploy/ceph-fetch/
+fetch_directory: "{{ openstack_config_dir }}/ceph-fetch/"
 # tries to create /var/log/ceph as a directory and fails if the log link already
 # exists. we handle the log dir creation so this is not something we need
 # ceph-common to prepare for us.

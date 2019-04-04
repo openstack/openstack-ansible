@@ -40,7 +40,7 @@ def args(arg_list):
         '--config',
         help='Path containing the user defined configuration files',
         required=False,
-        default=None
+        default=os.getenv('OSA_CONFIG_DIR', None)
     )
     parser.add_argument(
         '--list',

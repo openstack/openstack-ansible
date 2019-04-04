@@ -38,17 +38,17 @@ if [[ "${PWD}" == *"OSA_CLONE_DIR"* ]] || [ "${RUN_CMD}" == "openstack-ansible" 
   . /usr/local/bin/openstack-ansible.rc
 
   # Load userspace group vars
-  if [[ -d /etc/openstack_deploy/group_vars || -d /etc/openstack_deploy/host_vars ]]; then
-     if [[ ! -f /etc/openstack_deploy/inventory.ini ]]; then
-        echo '[all]' > /etc/openstack_deploy/inventory.ini
+  if [[ -d ${OSA_CONFIG_DIR}/group_vars || -d ${OSA_CONFIG_DIR}/host_vars ]]; then
+     if [[ ! -f ${OSA_CONFIG_DIR}/inventory.ini ]]; then
+        echo '[all]' > ${OSA_CONFIG_DIR}/inventory.ini
      fi
   fi
 
   # Check whether there are any user configuration files
-  if ls -1 /etc/openstack_deploy/user_*.yml &> /dev/null; then
+  if ls -1 ${OSA_CONFIG_DIR}/user_*.yml &> /dev/null; then
 
     # Discover the variable files.
-    VAR1="$(for i in $(ls /etc/openstack_deploy/user_*.yml); do echo -ne "-e @$i "; done)"
+    VAR1="$(for i in $(ls ${OSA_CONFIG_DIR}/user_*.yml); do echo -ne "-e @$i "; done)"
 
     # Provide information on the discovered variables.
     info "Variable files: \"${VAR1}\""
