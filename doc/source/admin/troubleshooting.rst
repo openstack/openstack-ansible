@@ -489,9 +489,9 @@ identity problems:
    registry is working.
 
 For an example and more information, see `Verify operation
-<https://docs.openstack.org/glance/latest/install/verify.html>_`.
+<https://docs.openstack.org/glance/stein/install/verify.html>_`.
 and `Manage Images
-<https://docs.openstack.org/glance/latest/admin/manage-images.html>_`
+<https://docs.openstack.org/glance/stein/admin/manage-images.html>_`
 
 RabbitMQ issues
 ~~~~~~~~~~~~~~~
