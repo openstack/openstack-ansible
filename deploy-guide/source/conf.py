@@ -26,6 +26,7 @@ import os
 import sys
 import subprocess
 
+import pbr.version
 import openstackdocstheme
 
 # -- OpenStack-Ansible configuration --------------------------------------
@@ -46,14 +47,12 @@ title = 'OpenStack-Ansible Documentation'
 current_series = openstackdocstheme.ext._get_series_name()
 
 if current_series == "latest":
-  watermark = "Pre-release"
   latest_tag = "master"
   rdo_series = previous_series_name
   suse_series = previous_series_name.capitalize()
 else:
-  watermark = series_names = current_series.capitalize()
-  git_cmd = ["git", "describe", "--abbrev=0", "--tags"]
-  latest_tag = subprocess.Popen(git_cmd,stdout=subprocess.PIPE).communicate()[0].strip('\n') 
+  series_names = current_series.capitalize()
+  latest_tag = pbr.version.VersionInfo('osa_toolkit').__str__()
   rdo_series = current_series_name
   suse_series = current_series_name.capitalize()
 
