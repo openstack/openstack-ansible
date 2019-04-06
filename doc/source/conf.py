@@ -29,6 +29,7 @@ import sys
 import subprocess
 
 import openstackdocstheme
+import pbr.version
 import yaml
 
 # -- OpenStack-Ansible configuration --------------------------------------
@@ -49,14 +50,12 @@ title = 'OpenStack-Ansible Documentation'
 current_series = openstackdocstheme.ext._get_series_name()
 
 if current_series == "latest":
-  watermark = "Pre-release"
   latest_tag = "master"
   branch = "master"
   upgrade_warning = "Upgrading to master is not recommended. Master is under heavy development, and is not stable."
 else:
-  watermark = series_names = current_series.capitalize()
-  git_cmd = ["git", "describe", "--abbrev=0", "--tags"]
-  latest_tag = subprocess.Popen(git_cmd,stdout=subprocess.PIPE).communicate()[0].strip('\n')
+  series_names = current_series.capitalize()
+  latest_tag = pbr.version.VersionInfo('osa_toolkit').__str__()
   branch = "stable/{}".format(current_series)
   upgrade_warning = "The upgrade is always under active development."
 
