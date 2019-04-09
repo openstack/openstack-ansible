@@ -283,6 +283,11 @@
       action: deploy
       scenario: aio_telemetry_metal
 
+- job:
+    name: openstack-ansible-deploy-aio_lxc-debian-stable
+    parent: openstack-ansible-deploy-aio
+    nodeset: debian-stable
+
 # opensuse
 - job:
     name: openstack-ansible-deploy-aio_lxc-opensuse-150
