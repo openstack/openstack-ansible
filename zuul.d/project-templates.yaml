@@ -39,10 +39,12 @@
     check:
       jobs:
         - openstack-ansible-deploy-aio_lxc-centos-7
+        - openstack-ansible-deploy-aio_lxc-debian-stable
         - openstack-ansible-deploy-aio_lxc-ubuntu-bionic
     gate:
       jobs:
         - openstack-ansible-deploy-aio_lxc-centos-7
+        - openstack-ansible-deploy-aio_lxc-debian-stable
         - openstack-ansible-deploy-aio_lxc-ubuntu-bionic
     periodic:
       jobs:
