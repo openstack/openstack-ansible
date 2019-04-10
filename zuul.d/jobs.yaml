@@ -274,6 +274,15 @@
       action: upgrade
       scenario: aio_ceph
 
+# debian
+- job:
+    name: openstack-ansible-deploy-aio_telemetry_metal-debian-stable
+    parent: openstack-ansible-deploy-aio
+    nodeset: debian-stable
+    vars:
+      action: deploy
+      scenario: aio_telemetry_metal
+
 # opensuse
 - job:
     name: openstack-ansible-deploy-aio_lxc-opensuse-150
