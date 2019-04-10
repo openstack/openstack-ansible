@@ -87,9 +87,12 @@
     name: openstack-ansible-deploy-aio_telemetry_metal-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-aio_telemetry_metal-centos-7
-        - openstack-ansible-deploy-aio_telemetry_metal-debian-stable
-        - openstack-ansible-deploy-aio_telemetry_metal-ubuntu-bionic
+        - openstack-ansible-deploy-aio_telemetry_metal-centos-7:
+            voting: false
+        - openstack-ansible-deploy-aio_telemetry_metal-debian-stable:
+            voting: false
+        - openstack-ansible-deploy-aio_telemetry_metal-ubuntu-bionic:
+            voting: false
     gate:
       jobs:
         - openstack-ansible-deploy-aio_telemetry_metal-centos-7
