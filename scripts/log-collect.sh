@@ -55,7 +55,7 @@ COMMON_ETC_LOG_NAMES="apt \
     sasl2 \
     sysconfig/network-scripts \
     sysconfig/network \
-    systemd/network \
+    systemd \
     yum \
     yum.repos.d \
     zypp"
