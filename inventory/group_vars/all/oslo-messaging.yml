@@ -19,6 +19,7 @@ oslomsg_rpc_port: "{{ (groups[qdrouterd_host_group] | length > 0) | ternary(qdro
 oslomsg_rpc_servers: "{{ (groups[qdrouterd_host_group] | length > 0) | ternary(qdrouterd_servers, rabbitmq_servers) }}"
 oslomsg_rpc_use_ssl: "{{ (groups[qdrouterd_host_group] | length > 0) | ternary(qdrouterd_use_ssl, rabbitmq_use_ssl) }}"
 oslomsg_rpc_host_group: "{{ (groups[qdrouterd_host_group] | length > 0) | ternary(qdrouterd_host_group, rabbitmq_host_group) }}"
+oslomsg_rpc_policies: "{{ rabbitmq_policies }}"
 
 # Notify
 oslomsg_notify_transport: "{{ (groups[rabbitmq_host_group] | length > 0) | ternary('rabbit', 'none') }}"
@@ -26,3 +27,4 @@ oslomsg_notify_port: "{{ rabbitmq_port }}"
 oslomsg_notify_servers: "{{ rabbitmq_servers }}"
 oslomsg_notify_use_ssl: "{{ rabbitmq_use_ssl }}"
 oslomsg_notify_host_group: "{{ rabbitmq_host_group }}"
+oslomsg_notify_policies: "{{ rabbitmq_policies }}"
