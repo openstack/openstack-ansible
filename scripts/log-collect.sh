@@ -29,7 +29,7 @@ export RUN_ARA=${RUN_ARA:-false}
 export TESTING_HOME=${TESTING_HOME:-$HOME}
 export TS=$(date +"%H-%M-%S")
 
-export RSYNC_CMD="rsync --archive --safe-links --ignore-errors --quiet --no-perms --no-owner --no-group --whole-file --inplace"
+export RSYNC_CMD="rsync --archive --copy-links --ignore-errors --quiet --no-perms --no-owner --no-group --whole-file --inplace"
 
 # NOTE(cloudnull): This is a very simple list of common directories in /etc we
 #                  wish to search for when storing gate artifacts. When adding
