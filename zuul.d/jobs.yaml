@@ -73,6 +73,15 @@
     vars:
       ansible_package: "file://{{ ansible_user_dir }}/src/github.com/ansible/ansible"
 
+# debian
+- job:
+    name: openstack-ansible-deploy-aio_metal-debian-stable
+    parent: openstack-ansible-deploy-aio
+    nodeset: debian-stable
+    vars:
+      action: deploy
+      scenario: aio_metal
+
 # ubuntu
 - job:
     name: openstack-ansible-deploy-aio_lxc-ubuntu-bionic
