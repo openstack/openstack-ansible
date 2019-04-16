@@ -72,7 +72,7 @@ case ${DISTRO_ID} in
           openssl-devel libffi-devel \
           libselinux-python python-virtualenv
         ;;
-    ubuntu)
+    ubuntu|debian)
         apt-get update
         DEBIAN_FRONTEND=noninteractive apt-get -y install \
           git-core curl gcc netcat \
