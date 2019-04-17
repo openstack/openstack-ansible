@@ -176,8 +176,9 @@ sed -i "s|OSA_PLAYBOOK_PATH|${OSA_PLAYBOOK_PATH}|g" /usr/local/bin/openstack-ans
 
 # Create openstack ansible wrapper tool
 cp -v ${OSA_WRAPPER_BIN} /usr/local/bin/openstack-ansible
+# Mark the current OSA git repo clone directory, so we don't need to compute it every time.
 sed -i "s|OSA_CLONE_DIR|${OSA_CLONE_DIR}|g" /usr/local/bin/openstack-ansible
-# Mark the current OSA version in the wrapper, so we don't need to compute it everytime.
+# Mark the current OSA version in the wrapper, so we don't need to compute it every time.
 sed -i "s|CURRENT_OSA_VERSION|${CURRENT_OSA_VERSION}|g" /usr/local/bin/openstack-ansible
 
 # Ensure wrapper tool is executable
