@@ -125,3 +125,9 @@ is_metal: >-
   {{ (properties is defined) and
      (properties.is_metal is defined) and
      (properties.is_metal | bool) }}
+
+_global_pins_file_path: >-
+  {{ (lookup('env', 'OSA_CLONE_ROOT') | default('/opt/openstack-ansible', true)) ~ '/global-requirement-pins.txt' }}
+
+venv_build_global_constraints: >-
+  {{ lookup('file', _global_pins_file_path).splitlines() | reject('match','^#.*$') | reject('equalto', '') | list }}
