@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    Added 2 new varibles for all groups - `oslomsg_notify_policies` and
+    `oslomsg_rpc_policies`. These variables contain default rabbitmq
+    policies, which will be applied for every rabbitmq vhost. As for now they
+    will enable [HA mode](https://www.rabbitmq.com/ha.html) for all vhosts.
+    If you would like to disable HA mode just set these variables to empty
+    lists inside your `user_config.yml`
