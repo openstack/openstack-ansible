@@ -24,6 +24,11 @@ rabbitmq_servers: >-
       | map('extract', hostvars, 'ansible_host')
       | list | join(',')
   }}
+rabbitmq_policies:
+  - name: "HA"
+    pattern: '^(?!(amq\.)|(.*_fanout_)|(reply_)).*'
+    priority: 0
+    tags: "ha-mode=all"
 
 ## Galera options
 galera_client_package_state: "{{ package_state }}"
