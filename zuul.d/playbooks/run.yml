@@ -6,7 +6,7 @@
 
     - name: Set current test repo (cross-repo)
       set_fact:
-        current_test_repo: "git.openstack.org/{{ osa_test_repo }}"
+        current_test_repo: "opendev.org/{{ osa_test_repo }}"
       when:
         - osa_test_repo is defined
 
