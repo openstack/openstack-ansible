@@ -6,7 +6,7 @@
       shell: >-
         scripts/gate-check-commit.sh {{ scenario }} {{ action }} {{ install_method }}
       args:
-        chdir: "src/git.openstack.org/openstack/openstack-ansible"
+        chdir: "src/opendev.org/openstack/openstack-ansible"
         executable: /bin/bash
       environment:
         # ZUUL_SRC_PATH is used by tests/get-ansible-role-requirements to
