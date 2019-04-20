@@ -51,7 +51,7 @@
 
     - name: Check if dns resolution and external connectivity is fine
       get_url:
-        url: https://git.openstack.org/cgit/openstack/openstack-ansible/plain/ansible-role-requirements.yml
+        url: https://opendev.org/openstack/openstack-ansible/raw/ansible-role-requirements.yml
         dest: /tmp/osa-master-requirements
       environment: "{{ deployment_environment_variables | default({}) }}"
 

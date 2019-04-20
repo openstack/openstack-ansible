@@ -30,7 +30,7 @@ This folder contains at least the following files:
 * Only add a ``zuul.d`` folder when your role is imported into the
   openstack-ansible namespace.
 
-.. _tests repository: https://git.openstack.org/cgit/openstack/openstack-ansible-tests
+.. _tests repository: https://opendev.org/openstack/openstack-ansible-tests
 
 Extending tests of an existing role
 ===================================
@@ -121,7 +121,7 @@ A consolidated set of all lint tests may be done locally by executing:
     ./run_tests.sh linters
 
 .. _PEP8: https://www.python.org/dev/peps/pep-0008/
-.. _Bashate: https://git.openstack.org/cgit/openstack-dev/bashate
+.. _Bashate: https://opendev.org/openstack-dev/bashate
 .. _ansible-lint: https://github.com/willthames/ansible-lint
 
 Documentation building

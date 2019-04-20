@@ -59,8 +59,8 @@ neutron_networks:
 
 heat_stack:
   # Please use the following for a nova app:
-  # http://git.openstack.org/cgit/openstack/heat-templates/plain/hot/hello_world.yaml
-  source_url: http://git.openstack.org/cgit/openstack/heat-templates/plain/hot/keystone/keystone_domain.yaml
+  # https://opendev.org/openstack/heat-templates/raw/hot/hello_world.yaml
+  source_url: https://opendev.org/openstack/heat-templates/raw/hot/keystone/keystone_domain.yaml
   dest_file: /tmp/mystack.yaml
   name: babar
   tag: dumbo

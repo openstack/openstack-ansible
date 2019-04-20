@@ -44,14 +44,14 @@ that OpenStack-Ansible supports. For individual role configuration options,
 see the `Role Documentation`_.
 
 An individual role's source code can be found at:
-https://git.openstack.org/cgit/openstack/openstack-ansible-<ROLENAME>.
+https://opendev.org/openstack/openstack-ansible-<ROLENAME>.
 
 .. _official OpenStack project: https://governance.openstack.org/tc/reference/projects/index.html
 .. _Home Page: https://governance.openstack.org/tc/reference/projects/openstackansible.html
 .. _Deployment Guide: https://docs.openstack.org/project-deploy-guide/openstack-ansible/latest
 .. _Quick Start: https://docs.openstack.org/openstack-ansible/latest/user/aio/quickstart.html
 .. _Developer Documentation: https://docs.openstack.org/openstack-ansible/latest/contributor/index.html
-.. _Source: https://git.openstack.org/cgit/openstack/openstack-ansible
+.. _Source: https://opendev.org/openstack/openstack-ansible
 .. _OpenStack Mailing Lists: http://lists.openstack.org/
 .. _freenode network: https://freenode.net/
 .. _Role Documentation: https://docs.openstack.org/project-deploy-guide/openstack-ansible/draft/configure.html#advanced-service-configuration
@@ -61,6 +61,6 @@ Resources
 
 * License: Apache License, Version 2.0
 * Documentation: https://docs.openstack.org/openstack-ansible/latest/
-* Source: https://git.openstack.org/cgit/openstack/openstack-ansible
+* Source: https://opendev.org/openstack/openstack-ansible
 * Bugs: https://bugs.launchpad.net/openstack-ansible
 * Release notes:  https://docs.openstack.org/releasenotes/openstack-ansible/

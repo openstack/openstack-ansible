@@ -165,8 +165,8 @@ Here are the steps to write the role:
    openstack-ansible integrated repository, and deploy
    the role on an AIO. See also :ref:`integrate-new-role-with-aio`.
 
-.. _specs repository: https://git.openstack.org/cgit/openstack/openstack-ansible-specs
-.. _unmerged specs: https://review.openstack.org/#/q/status:+open+project:openstack/openstack-ansible-specs
+.. _specs repository: https://opendev.org/openstack/openstack-ansible-specs
+.. _unmerged specs: https://review.opendev.org/#/q/status:+open+project:openstack/openstack-ansible-specs
 .. _Best Practice: https://docs.ansible.com/ansible/playbooks_best_practices.html#directory-layout
 
 Example process for adding a feature to an existing role
@@ -199,7 +199,7 @@ with no constraint like writing a specification, or creating a bug.
 Instead, the new code has to be isolated on a separate folder of the
 `openstack-ansible-ops repo`_.
 
-.. _openstack-ansible-ops repo: https://git.openstack.org/cgit/openstack/openstack-ansible-ops
+.. _openstack-ansible-ops repo: https://opendev.org/openstack/openstack-ansible-ops
 
 
 .. _backport:
