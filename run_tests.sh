@@ -21,7 +21,7 @@
 
 # WARNING:
 # This file is maintained in the openstack-ansible-tests repository.
-# https://git.openstack.org/cgit/openstack/openstack-ansible-tests/tree/run_tests.sh
+# https://opendev.org/openstack/openstack-ansible-tests/src/run_tests.sh
 # If you need to modify this file, update the one in the openstack-ansible-tests
 # repository and then update this file as well. The purpose of this file is to
 # prepare the host and then execute all the tox tests.
@@ -75,7 +75,7 @@ if [[ ! -d "${COMMON_TESTS_PATH}" ]]; then
         ln -s "${WORKING_DIR}" "${COMMON_TESTS_PATH}"
 
     # In zuul v3 any dependent repository is placed into
-    # /home/zuul/src/git.openstack.org, so we check to see
+    # /home/zuul/src/opendev.org, so we check to see
     # if there is a tests checkout there already. If so, we
     # symlink that and use it.
     elif [[ -d "${ZUUL_TESTS_CLONE_LOCATION}" ]]; then
@@ -85,7 +85,7 @@ if [[ ! -d "${COMMON_TESTS_PATH}" ]]; then
     # repo in some way, so just clone it from upstream.
     else
         git clone -b "${TESTING_BRANCH}" \
-            https://git.openstack.org/openstack/openstack-ansible-tests \
+            https://opendev.org/openstack/openstack-ansible-tests \
             "${COMMON_TESTS_PATH}"
     fi
 fi

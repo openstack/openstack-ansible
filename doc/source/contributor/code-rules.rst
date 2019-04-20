@@ -187,7 +187,7 @@ However, to help you in the writing of the specification, we have a
 `specification template`_ that can be copied into the latest release
 name folder. Rename and edit it for your needs.
 
-.. _specification template: https://git.openstack.org/cgit/openstack/openstack-ansible-specs/tree/specs/templates/template.rst
+.. _specification template: https://opendev.org/openstack/openstack-ansible-specs/src/specs/templates/template.rst
 
 .. _Ansible Style Guide:
 

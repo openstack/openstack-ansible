@@ -54,7 +54,7 @@ osa_helper_clone_os_package() {
 osa_helper_clone_osa_role() {
     local repo_name="${1}"
     local osa_branch="${2}"
-    local osa_repo_address="${3:-https://git.openstack.org/openstack/openstack-ansible-os_${repo_name}}"
+    local osa_repo_address="${3:-https://opendev.org/openstack/openstack-ansible-os_${repo_name}}"
     local osa_repo_tmp_path="/tmp/osa_${repo_name}"
 
     osa_helper_cleanup_files ${osa_repo_tmp_path}
@@ -79,7 +79,7 @@ sync_roles_and_packages() {
   local osa_branch="${1}"; shift
   local service_file="${1}"; shift
   local openstack_service_list="$@"
-  local osa_repo_address="https://git.openstack.org/openstack/openstack-ansible-os_${repo_name}"
+  local osa_repo_address="https://opendev.org/openstack/openstack-ansible-os_${repo_name}"
 
   IFS=$'\n'
 
@@ -246,8 +246,8 @@ update_ansible_role_requirements() {
       role_name=$(sed 's/^[ \t-]*//' ansible-role-requirements.yml | awk '/src: / || /name: / {print $2}' | grep -B1 "${role_src}" | head -n 1)
       echo "... updating ${role_name}"
 
-      # If the role_src is NOT from git.openstack.org, try to get a tag first unless we are working on master
-      if [[ ${role_src} != *"git.openstack.org"* ]] && [[ "${force_master}" != "true" ]]; then
+      # If the role_src is NOT from opendev.org, try to get a tag first unless we are working on master
+      if [[ ${role_src} != *"opendev.org"* ]] && [[ "${force_master}" != "true" ]]; then
         role_version=$(git ls-remote --tags ${role_src} | awk '{print $2}' | grep -v '{}' | cut -d/ -f 3 | sort --version-sort | tail -n 1)
       fi
 
@@ -263,7 +263,7 @@ update_ansible_role_requirements() {
       fi
 
       # For OSA roles, get the release notes
-      if [[ ${role_src} == *"git.openstack.org"* ]]; then
+      if [[ ${role_src} == *"opendev.org"* ]]; then
         local osa_repo_tmp_path="/tmp/osa_${role_name}"
 
         osa_helper_clone_osa_role $role_name $osa_branch $role_src

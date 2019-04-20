@@ -102,7 +102,7 @@ repository root directory:
 
 .. code-block:: shell-session
 
-   # git clone https://git.openstack.org/openstack/openstack-ansible \
+   # git clone https://opendev.org/openstack/openstack-ansible \
        /opt/openstack-ansible
    # cd /opt/openstack-ansible
 
@@ -177,7 +177,7 @@ options. Deployers have the option to change how the host is bootstrapped.
 This is useful when you wish the AIO to make use of a secondary data disk,
 or when using this role to bootstrap a multi-node development environment.
 
-.. _bootstrap-host role defaults: https://git.openstack.org/cgit/openstack/openstack-ansible/tree/tests/roles/bootstrap-host/defaults/main.yml?h=stable/stein
+.. _bootstrap-host role defaults: https://opendev.org/openstack/openstack-ansible/src/branch/stable/stein/tests/roles/bootstrap-host/defaults/main.yml
 
 The bootstrap script is pre-set to pass the environment variable
 ``BOOTSTRAP_OPTS`` as an additional option to the bootstrap process. For
