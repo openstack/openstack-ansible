@@ -166,5 +166,5 @@ For more information about forks, please see the following references:
 * `Ansible Performance Tuning`_
 
 .. _Bug 1479812: https://bugs.launchpad.net/openstack-ansible/+bug/1479812
-.. _forks: http://docs.ansible.com/ansible/intro_configuration.html#forks
+.. _forks: https://docs.ansible.com/ansible/latest/cli/ansible-playbook.html#cmdoption-ansible-playbook-f
 .. _Ansible Performance Tuning: https://www.ansible.com/blog/ansible-performance-tuning

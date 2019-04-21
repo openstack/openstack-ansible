@@ -65,7 +65,7 @@ For more information about OpenStack client utilities, see these links:
    sheet <https://docs.openstack.org/python-neutronclient/latest/cli/neutron.html>`__
 
 -  `Block Storage (cinder) CLI commands
-   <https://docs.openstack.org/python-cinderclient/latest/user/cinder.html>`__
+   <https://docs.openstack.org/python-cinderclient/latest/user/shell.html>`__
 
 -  `Block Storage (cinder) CLI command cheat
    sheet <https://docs.openstack.org/python-cinderclient/latest/cli/details.html>`__
