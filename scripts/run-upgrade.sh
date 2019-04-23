@@ -54,10 +54,6 @@ function run_lock {
     fi
   done
 
-  if [ ! -d  "/etc/openstack_deploy/upgrade-${TARGET_SERIES}" ]; then
-      mkdir -p "/etc/openstack_deploy/upgrade-${TARGET_SERIES}"
-  fi
-
   upgrade_marker_file=$(basename ${file_part} .yml)
   upgrade_marker="/etc/openstack_deploy/upgrade-${TARGET_SERIES}/$upgrade_marker_file.complete"
 
@@ -108,6 +104,21 @@ function check_for_current {
     fi
 }
 
+function create_working_dir {
+    if [ ! -d  "/etc/openstack_deploy/upgrade-${TARGET_SERIES}" ]; then
+        mkdir -p "/etc/openstack_deploy/upgrade-${TARGET_SERIES}"
+    fi
+}
+
+function bootstrap_ansible {
+    if [ ! -f "/etc/openstack_deploy/upgrade-${TARGET_SERIES}/bootstrap-ansible.complete" ]; then
+      "${SCRIPTS_PATH}/bootstrap-ansible.sh"
+      touch /etc/openstack_deploy/upgrade-${TARGET_SERIES}/bootstrap-ansible.complete
+    else
+      echo "Ansible has been bootstrapped for ${TARGET_SERIES} already, skipping..."
+    fi
+}
+
 function pre_flight {
     ## Library Check -------------------------------------------------------------
 
@@ -153,6 +164,7 @@ function pre_flight {
 function main {
     pre_flight
     check_for_current
+    create_working_dir
 
     # Backup source series artifacts
     source_series_backup_file="/openstack/backup-openstack-ansible-${SOURCE_SERIES}.tar.gz"
@@ -164,7 +176,7 @@ function main {
     # ensure this is not the case, we unset the environment variable.
     unset ANSIBLE_INVENTORY
 
-    "${SCRIPTS_PATH}/bootstrap-ansible.sh"
+    bootstrap_ansible
 
     pushd ${MAIN_PATH}/playbooks
         RUN_TASKS+=("${SCRIPTS_PATH}/upgrade-utilities/deploy-config-changes.yml")
