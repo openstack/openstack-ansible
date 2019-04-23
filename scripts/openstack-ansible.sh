@@ -18,7 +18,10 @@
 # OpenStack wrapper tool to ease the use of ansible with multiple variable files.
 
 export PATH="/opt/ansible-runtime/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:${PATH}"
+
+# These environment variables are used in group_vars
 export OSA_VERSION="CURRENT_OSA_VERSION"
+export OSA_CLONE_ROOT="OSA_CLONE_DIR"
 
 function info {
     if [ "${ANSIBLE_NOCOLOR:-0}" -eq "1" ]; then
@@ -32,7 +35,7 @@ function info {
 RUN_CMD=$(basename ${0})
 
 # Apply the OpenStack-Ansible configuration selectively.
-if [[ "${PWD}" == *"OSA_CLONE_DIR"* ]] || [ "${RUN_CMD}" == "openstack-ansible" ]; then
+if [[ "${PWD}" == *"${OSA_CLONE_ROOT}"* ]] || [ "${RUN_CMD}" == "openstack-ansible" ]; then
 
   # Source the Ansible configuration.
   . /usr/local/bin/openstack-ansible.rc
