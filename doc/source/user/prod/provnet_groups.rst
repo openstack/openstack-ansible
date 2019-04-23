@@ -107,9 +107,6 @@ the built-in groups provided by OpenStack-Ansible.
 
 Before creating custom groups, please review the following:
 
-* :dev_docs:`OpenStack-Ansible Inventory
-  <contributor/inventory.html>`
-
 * :dev_docs:`Configuring the inventory
   <reference/inventory/configure-inventory.html>`
 

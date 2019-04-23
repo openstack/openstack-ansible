@@ -299,7 +299,7 @@ OpenStack-Ansible enables you to reference any options in the
 `OpenStack Configuration Reference`_ through the use of a simple set of
 configuration entries in the ``/etc/openstack_deploy/user_variables.yml``.
 
-.. _OpenStack Configuration Reference: http://docs.openstack.org/draft/config-reference/
+.. _OpenStack Configuration Reference: https://docs.openstack.org/latest/configuration/
 
 Overriding .conf files
 ----------------------

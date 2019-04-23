@@ -174,4 +174,3 @@ For more ideas how to tune your Gnocchi stack, take a look at these
 presentations:
 
 * https://docs.openstack.org/developer/performance-docs/test_results/telemetry_gnocchi_with_ceph/index.html
-* https://julien.danjou.info/talks/OpenStack_Telemetry_and_the_10000_Instances.pdf

@@ -49,7 +49,7 @@ change the SSL certificate subject data for HAProxy, adjust the
 For more information about the available fields in the certificate subject,
 see the OpenSSL documentation for the `req subcommand`_.
 
-.. _req subcommand: https://www.openssl.org/docs/manmaster/apps/req.html
+.. _req subcommand: https://www.openssl.org/docs/manmaster/man1/req.html
 
 Generating and regenerating self-signed certificates
 ----------------------------------------------------

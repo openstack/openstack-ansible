@@ -31,16 +31,15 @@ certificates, keys, and CA certificates.
 
 To learn more about how to customize the deployment of encrypted
 communications, see
-:deploy_guide:`Securing services with SSL
-certificates <app-advanced-config-sslcertificates.html>`.
+`Securing services with SSL certificates </user/security/index.html>`_.
 
 Host security hardening
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 OpenStack-Ansible provides a comprehensive `security hardening role`_ that
 applies over 200 security configurations as recommended by the `Security
-Technical Implementation Guide`_ (STIG) provided by the `Defense Information
-Systems Agency`_ (DISA). These security configurations are widely used and are
+Technical Implementation Guide`_ (STIG) provided by the Defense Information
+Systems Agency (DISA). These security configurations are widely used and are
 distributed in the public domain by the United States government.
 
 Host security hardening is required by several compliance and regulatory
@@ -59,7 +58,6 @@ For more information about the security configurations, see the
 
 .. _security hardening role: http://docs.openstack.org/developer/ansible-hardening/
 .. _Security Technical Implementation Guide: https://en.wikipedia.org/wiki/Security_Technical_Implementation_Guide
-.. _Defense Information Systems Agency: http://www.disa.mil/
 .. _Payment Card Industry Data Security Standard: https://www.pcisecuritystandards.org/pci_security/
 
 Isolation
