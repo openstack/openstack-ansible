@@ -56,9 +56,11 @@
           layout in {{ repo_root_dir }}/inventory/env.d. The difference between these files
           should be carefully reviewed to understand whether the changes are still necessary
           and applicable to the environment. If all the user-space env.d files are necessary,
-          then please re-run this playbook with the CLI option '--skip-tags custom-envd-file-check'.
+          then please export SKIP_CUSTOM_ENVD_CHECK=true and re-run the playbook or
+          run-upgrade.sh script.
       when:
         - _envd_dir_contents.matched > 0
+        - not(lookup('env', 'SKIP_CUSTOM_ENVD_CHECK') | bool)
       tags:
         - custom-envd-file-check
 
