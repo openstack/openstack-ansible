@@ -25,7 +25,6 @@
 - name: Run the systemd service role
   include_role:
     name: systemd_service
-    private: true
   vars:
     systemd_services:
       - service_name: "loop-{{ loopback_var }}"
