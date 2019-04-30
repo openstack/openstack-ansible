@@ -1,0 +1,19 @@
+---
+features:
+  - |
+    The override ``rabbitmq_memory_high_watermark`` can be used to set the
+    maximum size of the erlang Virtual Machine before the garbage collection
+    is triggered. The default is lowered to ``0.2``, from ``0.4`` as the
+    garbage collection can require 2x of allocated amount during its
+    operation. This can result in a equivalent use of ``0.4``, resulting in
+    40% of memory usage, visible to the rabbitMQ container. The original
+    default setting of ``0.4`` can lead to 80% memory allocation of rabbitMQ,
+    potentially leading to a scenario where the underlying Linux kernel
+    is killing the process due to shortage of virtual memory.
+upgrade:
+  - |
+    The rabbitMQ high watermark is set to ``0.2`` rather than ``0.4`` to
+    prevent possible OOM situations, which limits the maximum memory usage
+    by rabbitMQ to 40% rather than 80% of the memory visible to the rabbitMQ
+    container. The override ``rabbitmq_memory_high_watermark`` can be used
+    to alter the limit.

@@ -1,0 +1,12 @@
+---
+upgrade:
+  - |
+    The default Mnesia ``dump_log_write_threshold`` value
+    has changed to ``300`` instead of ``100`` for efficiency.
+    ``dump_log_write_threshold`` specifies the maximum number of writes
+    allowed to the transaction log before a new dump of the log is performed.
+    Increasing this value can increase the performances
+    during the queues/exchanges/bindings creation/destroying.
+    The values should be between 100 and 1000. More detail [1].
+
+    [1] http://erlang.org/doc/man/mnesia.html#dump_log_write_threshold

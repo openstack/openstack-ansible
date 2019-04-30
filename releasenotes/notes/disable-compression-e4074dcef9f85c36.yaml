@@ -1,0 +1,15 @@
+---
+deprecations:
+  - The compression option in the ``galera_server`` role has been removed due
+    to the fact that it is not recommended by MariaDB anymore.  This means that
+    all the dependencies from Percona such as QPress are no longer necessary.
+
+  - The following variables have been removed because they are no longer used.
+
+    * ``galera_percona_xtrabackup_repo``
+    * ``use_percona_upstream``
+    * ``galera_xtrabackup_compression``
+    * ``galera_server_percona_distro_packages``
+
+  - The variable ``galera_xtrabackup_threads`` has been renamed to
+    ``galera_mariabackup_threads`` to reflect the change in the SST provider.

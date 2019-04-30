@@ -1,0 +1,7 @@
+---
+deprecations:
+  - |
+    In the ``ceph_client`` role, the only valid values for ``ceph_pkg_source``
+    are now ``ceph`` and ``distro``. For Ubuntu, the Ubuntu Cloud Archive apt
+    source is already setup by the ``openstack_hosts`` role, so there is no
+    need for it to also be setup by the ``ceph_client`` role.
