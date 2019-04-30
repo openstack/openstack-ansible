@@ -41,6 +41,14 @@
         name: "{{ systemd_journal_remote_distro_package[ansible_pkg_mgr] }}"
         state: "{{ package_state }}"
 
+    - name: Ensure systemd-journal-remote socket is enabled on receiving host
+      systemd:
+        name: systemd-journal-remote.socket
+        enabled: yes
+        state: started
+      when:
+        - (ansible_host == systemd_journal_remote_target)
+
     - name: Create journal directory
       file:
         path: "/var/log/journal"
