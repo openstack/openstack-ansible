@@ -33,10 +33,11 @@ set -xeu
 ## Vars ----------------------------------------------------------------------
 
 WORKING_DIR="$(readlink -f $(dirname $0))"
+OSA_PROJECT_NAME="$(sed -n 's|^project=openstack/\(.*\).git$|\1|p' $(pwd)/.gitreview)"
 
 COMMON_TESTS_PATH="${WORKING_DIR}/tests/common"
 TESTING_HOME=${TESTING_HOME:-$HOME}
-ZUUL_TESTS_CLONE_LOCATION="/home/zuul/src/git.openstack.org/openstack/openstack-ansible-tests"
+ZUUL_TESTS_CLONE_LOCATION="/home/zuul/src/opendev.org/openstack/openstack-ansible-tests"
 
 # Use .gitreview as the key to determine the appropriate
 # branch to clone for tests.
@@ -58,32 +59,34 @@ case ${ID,,} in
     *suse*) pkg_mgr_cmd="zypper -n in" ;;
     centos|rhel|fedora) pkg_mgr_cmd="${RHT_PKG_MGR} install -y" ;;
     ubuntu|debian) pkg_mgr_cmd="apt-get install -y" ;;
+    # Gentoo needs to have version set since it's rolling
+    gentoo) pkg_mgr_cmd="emerge --jobs=4"; VERSION="rolling" ;;
     *) echo "unsupported distribution: ${ID,,}"; exit 1 ;;
 esac
 
-# Install git so that we can clone the tests repo
-eval sudo $pkg_mgr_cmd git
+# Install git so that we can clone the tests repo if git is not available
+which git &>/dev/null || eval sudo "${pkg_mgr_cmd}" git
 
 # Clone the tests repo for access to the common test script
-if [[ ! -d ${COMMON_TESTS_PATH} ]]; then
+if [[ ! -d "${COMMON_TESTS_PATH}" ]]; then
     # The tests repo doesn't need a clone, we can just
     # symlink it.
-    if [[ "$(basename ${WORKING_DIR})" == "openstack-ansible-tests" ]]; then
-        ln -s ${WORKING_DIR} ${COMMON_TESTS_PATH}
+    if [[ "${OSA_PROJECT_NAME}" == "openstack-ansible-tests" ]]; then
+        ln -s "${WORKING_DIR}" "${COMMON_TESTS_PATH}"
 
     # In zuul v3 any dependent repository is placed into
     # /home/zuul/src/git.openstack.org, so we check to see
     # if there is a tests checkout there already. If so, we
     # symlink that and use it.
     elif [[ -d "${ZUUL_TESTS_CLONE_LOCATION}" ]]; then
-        ln -s "${ZUUL_TESTS_CLONE_LOCATION}" ${COMMON_TESTS_PATH}
+        ln -s "${ZUUL_TESTS_CLONE_LOCATION}" "${COMMON_TESTS_PATH}"
 
     # Otherwise we're clearly not in zuul or using a previously setup
     # repo in some way, so just clone it from upstream.
     else
-        git clone -b ${TESTING_BRANCH} \
+        git clone -b "${TESTING_BRANCH}" \
             https://git.openstack.org/openstack/openstack-ansible-tests \
-            ${COMMON_TESTS_PATH}
+            "${COMMON_TESTS_PATH}"
     fi
 fi
 
