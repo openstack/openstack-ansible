@@ -160,18 +160,17 @@ haproxy_default_services:
         - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
       haproxy_service_enabled: "{{ groups['nova_api_os_compute'] is defined and groups['nova_api_os_compute'] | length > 0 }}"
   - service:
-      haproxy_service_name: nova_api_placement
-      haproxy_backend_nodes: "{{ groups['nova_api_placement'] | default([]) }}"
-      haproxy_ssl: False
-      haproxy_bind: "{{ [internal_lb_vip_address] }}"
+      haproxy_service_name: placement
+      haproxy_backend_nodes: "{{ groups['placement_all'] | default([]) }}"
+      haproxy_ssl: "{{ haproxy_ssl }}"
       haproxy_port: 8780
       haproxy_balance_type: http
       haproxy_backend_options:
         - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
-      haproxy_backend_httpcheck_options:
-        - "expect status 200"
-      haproxy_whitelist_networks: "{{ haproxy_nova_placement_whitelist_networks }}"
-      haproxy_service_enabled: "{{ groups['nova_api_placement'] is defined and groups['nova_api_placement'] | length > 0 }}"
+      haproxy_service_enabled: "{{ groups['placement_all'] is defined and groups['placement_all'] | length > 0 }}"
+  - service:
+      haproxy_service_name: nova_api_placement
+      state: absent
   - service:
       haproxy_service_name: nova_console
       haproxy_backend_nodes: "{{ groups['nova_console'] | default([]) }}"

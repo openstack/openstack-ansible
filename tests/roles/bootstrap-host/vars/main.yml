@@ -33,7 +33,7 @@ bootstrap_host_services: >-
   {%-   set _ = service_list.append('haproxy') %}
   {%- endif %}
   {%- if 'aio' in scenario_list or 'translations' in scenario_list %}
-  {%-   set _ = service_list.extend(['cinder', 'glance', 'neutron', 'nova']) %}
+  {%-   set _ = service_list.extend(['cinder', 'glance', 'neutron', 'nova', 'placement']) %}
   {%-   if 'metal' not in scenario_list %}
   {%-     set _ = service_list.append('horizon') %}
   {%-   endif %}
