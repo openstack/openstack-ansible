@@ -14,7 +14,7 @@
 # limitations under the License.
 
 - name: Install etcd server cluster
-  hosts: etcd_all
+  hosts: etcd
   gather_facts: "{{ osa_gather_facts | default(True) }}"
   user: root
   pre_tasks:
