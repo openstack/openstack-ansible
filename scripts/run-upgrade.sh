@@ -40,35 +40,24 @@ export TARGET_SERIES="stein"
 
 function run_lock {
   set +e
-  run_item="${RUN_TASKS[$1]}"
-  file_part="${run_item}"
+  run_item_index="$1"
+  run_item="$2"
+  hashed_run_item=($(echo $run_item | md5sum))
 
-  # note(sigmavirus24): this handles tasks like:
-  # "-e 'rabbitmq_upgrade=true' setup-infrastructure.yml"
-  # "/tmp/fix_container_interfaces.yml || true"
-  # so we can get the appropriate basename for the upgrade_marker
-  for part in $run_item; do
-    if [[ "$part" == *.yml ]];then
-      file_part="$part"
-      break
-    fi
-  done
-
-  upgrade_marker_file=$(basename ${file_part} .yml)
-  upgrade_marker="/etc/openstack_deploy/upgrade-${TARGET_SERIES}/$upgrade_marker_file.complete"
+  upgrade_marker="/etc/openstack_deploy/upgrade-${TARGET_SERIES}/$hashed_run_item.complete"
 
   if [ ! -f "$upgrade_marker" ];then
     # note(sigmavirus24): use eval so that we properly turn strings like
     # "/tmp/fix_container_interfaces.yml || true"
     # into a command, otherwise we'll get an error that there's no playbook
     # named ||
-    eval "openstack-ansible $2"
+    eval "openstack-ansible $run_item"
     playbook_status="$?"
     echo "ran $run_item"
 
     if [ "$playbook_status" == "0" ];then
       RUN_TASKS=("${RUN_TASKS[@]/$run_item}")
-      touch "$upgrade_marker"
+      echo "$run_item" > "$upgrade_marker"
       echo "$run_item has been marked as success"
     else
       echo "******************** failure ********************"
@@ -78,10 +67,10 @@ function run_lock {
       echo "execute the remaining tasks manually:"
       # NOTE:
       # List the remaining, incompleted tasks from the tasks array.
-      # Using seq to genertate a sequence which starts from the spot
+      # Using seq to generate a sequence which starts from the spot
       # where previous exception or failures happened.
       # run the tasks in order
-      for item in $(seq $1 $((${#RUN_TASKS[@]} - 1))); do
+      for item in $(seq $run_item_index $((${#RUN_TASKS[@]} - 1))); do
         if [ -n "${RUN_TASKS[$item]}" ]; then
           echo "openstack-ansible ${RUN_TASKS[$item]}"
         fi
@@ -192,6 +181,7 @@ function main {
         RUN_TASKS+=("setup-openstack.yml")
         # Run the tasks in order
         for item in ${!RUN_TASKS[@]}; do
+          echo "### NOW RUNNING: ${RUN_TASKS[$item]}"
           run_lock $item "${RUN_TASKS[$item]}"
         done
     popd
