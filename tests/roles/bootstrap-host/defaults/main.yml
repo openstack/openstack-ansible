@@ -170,7 +170,7 @@ bootstrap_host_data_mount_options:
   machinectl: "noatime,nodiratime,compress=lzo,commit=120,{{ (ansible_kernel is version_compare('4.5', '>=')) | ternary('space_cache=v2', 'space_cache') }}"
   zfs: "defaults"
   btrfs: "noatime,nodiratime,compress=lzo,commit=120,{{ (ansible_kernel is version_compare('4.5', '>=')) | ternary('space_cache=v2', 'space_cache') }}"
-  xfs: "noatime,nodiratime,nobarrier,logbufs=8,logbsize=256k"
+  xfs: "noatime,nodiratime,logbufs=8,logbsize=256k"
   ext4: "noatime,nobh,barrier=0,data=writeback"
   dir: "defaults"
   lvm: "defaults"
