@@ -97,8 +97,10 @@
     name: openstack-ansible-deploy-aio_distro_metal-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-aio_distro_metal-centos-7:
-            voting: false
+        - openstack-ansible-deploy-aio_distro_metal-centos-7
+    gate:
+      jobs:
+        - openstack-ansible-deploy-aio_distro_metal-centos-7
     experimental:
       jobs:
         # NOTE(hwoarang) SUSE and Ubuntu distro jobs remain non-voting
