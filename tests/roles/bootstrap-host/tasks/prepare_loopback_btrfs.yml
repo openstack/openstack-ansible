@@ -27,7 +27,6 @@
 - name: Run the systemd mount role
   include_role:
     name: systemd_mount
-    private: true
   vars:
     systemd_mounts:
       - what: "/openstack/lxc-btrfs.img"

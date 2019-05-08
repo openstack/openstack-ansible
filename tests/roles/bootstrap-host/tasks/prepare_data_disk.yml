@@ -82,7 +82,6 @@
 - name: Run the systemd mount role
   include_role:
     name: systemd_mount
-    private: true
   vars:
     systemd_mounts:
       - what: "/dev/{{ _bootstrap_host_data_disk_device }}1"
@@ -97,7 +96,6 @@
 - name: Run the systemd mount role
   include_role:
     name: systemd_mount
-    private: true
   vars:
     systemd_mounts:
       - what: "/dev/{{ _bootstrap_host_data_disk_device }}2"
