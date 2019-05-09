@@ -174,9 +174,9 @@ Install the source and dependencies for the deployment host.
 
    .. parsed-literal::
 
-       # git clone -b |latest_tag| \https://git.openstack.org/openstack/openstack-ansible /opt/openstack-ansible
+       # git clone -b |latest_tag| \https://opendev.org/openstack/openstack-ansible /opt/openstack-ansible
 
-   If git.openstack.org can not be accessed to run git clone, github.com can be used
+   If opendev.org can not be accessed to run git clone, github.com can be used
    as an alternative repo:
 
    .. parsed-literal::
