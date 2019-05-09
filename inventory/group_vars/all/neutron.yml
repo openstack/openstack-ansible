@@ -13,15 +13,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Referenced by nova role and must remain in 'all' group scoping
-neutron_service_port: 9696
-neutron_service_proto: http
-neutron_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(neutron_service_proto) }}"
-neutron_service_adminuri: "{{ neutron_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ neutron_service_port }}"
-neutron_service_adminurl: "{{ neutron_service_adminuri }}"
-neutron_service_user_name: neutron
-neutron_service_project_name: service
-neutron_service_region: "{{ service_region }}"
-
 # Horizon consumes this var so it must be in the global vars namespace
 neutron_plugin_type: ml2.lxb
