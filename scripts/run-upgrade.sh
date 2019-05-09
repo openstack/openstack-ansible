@@ -180,6 +180,7 @@ function main {
 
     pushd ${MAIN_PATH}/playbooks
         RUN_TASKS+=("${SCRIPTS_PATH}/upgrade-utilities/deploy-config-changes.yml")
+        RUN_TASKS+=("${SCRIPTS_PATH}/upgrade-utilities/pip-conf-removal.yml")
         # we don't want to trigger container restarts for these groups yet
         RUN_TASKS+=("setup-hosts.yml --limit '!galera_all:!rabbitmq_all'")
         # add new container config to containers but don't restart
