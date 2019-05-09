@@ -22,8 +22,3 @@ placement_service_internalurl: "{{ placement_service_internaluri_proto }}://{{ i
 placement_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(placement_service_proto) }}"
 placement_service_adminurl: "{{ placement_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ placement_service_port }}"
 placement_service_region: "{{ service_region }}"
-
-# TODO(logan): Remove this before releasing Train after adding
-# placement_service_password to user_secrets and cleaning up the old
-# secret in an upgrade playbook
-placement_service_password: "{{ nova_placement_service_password }}"
