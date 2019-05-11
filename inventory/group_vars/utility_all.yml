@@ -41,7 +41,10 @@ utility_distro_openstack_clients_packages:
 # Python packages to be installed into the utility container
 utility_pip_packages:
   - cryptography
+  - pip
   - python-memcached
+  - setuptools
+  - wheel
 
 # Determines whether Cinder backup should be tested
 cinder_service_backup_program_enabled: "{{ hostvars['localhost']['cinder_service_backup_program_enabled'] }}"
