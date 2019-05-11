@@ -182,7 +182,7 @@
     src: "{{ playbook_dir }}/../etc/openstack_deploy/env.d/aio_metal.yml.example"
     dest: "/etc/openstack_deploy/env.d/aio_metal.yml"
   when:
-    - "bootstrap_host_scenario is search('metal')"
+    - "'metal' in bootstrap_host_scenarios"
 
 - name: Create vars override folders if we need to test them
   file:
