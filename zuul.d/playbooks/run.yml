@@ -14,7 +14,8 @@
         chdir: "src/opendev.org/openstack/openstack-ansible"
         executable: /bin/bash
       environment:
-        # ZUUL_SRC_PATH is used by tests/get-ansible-role-requirements to
-        # where the CI provided git sources were cloned.
-        ZUUL_SRC_PATH: "{{ ansible_user_dir }}/src"
-        ANSIBLE_PACKAGE: "{{ ansible_package | default('') }}"
+        # NOTE(logan): The project is bootstrapped in the pre playbook so the
+        # bootstrapping can be skipped here
+        SKIP_OSA_RUNTIME_VENV_BUILD: 1
+        SKIP_OSA_BOOTSTRAP_AIO: 1
+        SKIP_OSA_ROLE_CLONE: 1

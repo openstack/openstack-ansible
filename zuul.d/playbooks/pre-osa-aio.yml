@@ -1,0 +1,43 @@
+---
+# Copyright 2019, Logan Vig <logan2211@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Bootstrap the OSA AIO
+  hosts: all[0]
+  vars_files:
+    - "{{ zuul.executor.work_root }}/osa-gate-scenario.yml"
+  tasks:
+    - name: Run bootstrap-ansible script
+      become: yes
+      become_user: root
+      shell: scripts/bootstrap-ansible.sh
+      args:
+        chdir: "src/opendev.org/openstack/openstack-ansible"
+        executable: /bin/bash
+      environment:
+        # ZUUL_SRC_PATH is used by tests/get-ansible-role-requirements to
+        # where the CI provided git sources were cloned.
+        ZUUL_SRC_PATH: "{{ ansible_user_dir }}/src"
+        ANSIBLE_PACKAGE: "{{ ansible_package | default('') }}"
+    - name: Run bootstrap-aio script
+      become: yes
+      become_user: root
+      shell: scripts/bootstrap-aio.sh
+      args:
+        chdir: "src/opendev.org/openstack/openstack-ansible"
+        executable: /bin/bash
+      environment:
+        SCENARIO: "{{ scenario }}"
+        ACTION: "{{ action }}"
+        INSTALL_METHOD: "{{ install_method }}"

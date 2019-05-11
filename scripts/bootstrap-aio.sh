@@ -47,14 +47,14 @@ export GROUP_VARS_PATH="/dev/null"
 # Run AIO bootstrap playbook
 pushd tests
   if [ -z "${BOOTSTRAP_OPTS}" ]; then
-    ansible-playbook bootstrap-aio.yml
+    /usr/local/bin/ansible-playbook bootstrap-aio.yml
   else
     export BOOTSTRAP_OPTS_ITEMS=''
     for BOOTSTRAP_OPT in ${BOOTSTRAP_OPTS}; do
       BOOTSTRAP_OPTS_ITEMS=${BOOTSTRAP_OPTS_ITEMS}"-e "${BOOTSTRAP_OPT}" "
     done
-    ansible-playbook bootstrap-aio.yml \
-                     ${BOOTSTRAP_OPTS_ITEMS}
+    /usr/local/bin/ansible-playbook bootstrap-aio.yml \
+                                    ${BOOTSTRAP_OPTS_ITEMS}
   fi
 popd
 
