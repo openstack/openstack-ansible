@@ -113,7 +113,9 @@ iptables -P FORWARD ACCEPT
 iptables -P OUTPUT ACCEPT
 
 # Bootstrap an AIO
-source "${OSA_CLONE_DIR}/scripts/bootstrap-aio.sh"
+if [[ -z "${SKIP_OSA_BOOTSTRAP_AIO+defined}" ]]; then
+    source "${OSA_CLONE_DIR}/scripts/bootstrap-aio.sh"
+fi
 
 if [[ "${ACTION}" == "varstest" ]]; then
   pushd "${OSA_CLONE_DIR}/tests"

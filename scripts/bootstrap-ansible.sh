@@ -116,42 +116,12 @@ UPPER_CONSTRAINTS_PROTO=$([ "$PYTHON_VERSION" == $(echo -e "$PYTHON_VERSION\n2.7
 # Set the location of the constraints to use for all pip installations
 export UPPER_CONSTRAINTS_FILE=${UPPER_CONSTRAINTS_FILE:-"$UPPER_CONSTRAINTS_PROTO://opendev.org/openstack/requirements/raw/$(awk '/requirements_git_install_branch:/ {print $2}' playbooks/defaults/repo_packages/openstack_services.yml)/upper-constraints.txt"}
 
-# All distros have a python-virtualenv > 13.
-# - Centos 7 has 15.1, which holds pip 9.0.1, setuptools 28.8, wheel 0.29
-#   See also: http://mirror.centos.org/centos/7/os/x86_64/Packages/
-# - openSUSE 42.3 has 13.1.2, which holds pip 7.1.2, setuptools 18.2, wheel 0.24.
-#   See also: https://build.opensuse.org/package/show/openSUSE%3ALeap%3A42.3/python-virtualenv
-# - Ubuntu Xenial has 15.0.1, holding pip 8.1.1, setuptools 20.3, wheel 0.29
-#   See also: https://packages.ubuntu.com/xenial/python-virtualenv
-
-virtualenv --python=${PYTHON_EXEC_PATH} --never-download --clear /opt/ansible-runtime
-
-# The vars used to prepare the Ansible runtime venv
-PIP_OPTS+=" --constraint global-requirement-pins.txt"
-PIP_OPTS+=" --constraint ${UPPER_CONSTRAINTS_FILE}"
-
-# When executing the installation, we want to specify all our options on the CLI,
-# making sure to completely ignore any config already on the host. This is to
-# prevent the repo server's extra constraints being applied, which include
-# a different version of Ansible to the one we want to install. As such, we
-# use --isolated so that the config file is ignored.
-
-# Upgrade pip setuptools and wheel to the appropriate version
-${PIP_COMMAND} install --isolated ${PIP_OPTS} --upgrade pip setuptools wheel
+if [[ -z "${SKIP_OSA_RUNTIME_VENV_BUILD+defined}" ]]; then
+    build_ansible_runtime_venv
+fi
 
 # Get current code version (this runs at the root of OSA clone)
 CURRENT_OSA_VERSION=$(cd ${OSA_CLONE_DIR}; /opt/ansible-runtime/bin/python setup.py --version)
-
-# Install ansible and the other required packages
-${PIP_COMMAND} install --isolated ${PIP_OPTS} -r requirements.txt ${ANSIBLE_PACKAGE}
-
-# Install our osa_toolkit code from the current checkout
-$PIP_COMMAND install -e .
-
-# Add SELinux support to the venv
-if [ -d "/usr/lib64/python2.7/site-packages/selinux/" ]; then
-  rsync -avX /usr/lib64/python2.7/site-packages/selinux/ /opt/ansible-runtime/lib64/python2.7/selinux/
-fi
 
 # Ensure that Ansible binaries run from the venv
 pushd /opt/ansible-runtime/bin
@@ -190,7 +160,7 @@ echo "openstack-ansible wrapper created."
 [[ -d "/etc/ansible/plugins" ]] && rm -rf "/etc/ansible/plugins"
 
 # Update dependent roles
-if [ -f "${ANSIBLE_ROLE_FILE}" ]; then
+if [ -f "${ANSIBLE_ROLE_FILE}" ] && [[ -z "${SKIP_OSA_ROLE_CLONE+defined}" ]]; then
     # NOTE(cloudnull): When bootstrapping we don't want ansible to interact
     #                  with our plugins by default. This change will force
     #                  ansible to ignore our plugins during this process.
