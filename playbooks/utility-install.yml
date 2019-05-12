@@ -25,6 +25,14 @@
     utility_upper_constraints_url: "{{ requirements_git_url | default('https://git.openstack.org/cgit/openstack/requirements/plain/upper-constraints.txt?h=' ~ requirements_git_install_branch | default('master')) }}"
   tags:
     - utility
+  handlers:
+    - name: Create openstack client bash_completion script
+      shell: >-
+        openstack complete > /etc/bash_completion.d/openstack_client
+      args:
+        executable: /bin/bash
+      listen:
+        - "venv changed"
   pre_tasks:
     - include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       when: not is_metal
@@ -118,13 +126,17 @@
         - name: Create symlinks for openstack clients
           shell: |
             {% set _bin_name = item | regex_replace('^(?:python-)?(\w*)(?:client)$', '\\1') %}
-            if [[ -e "{{ utility_venv_bin }}/{{ _bin_name }}" ]]; then
+            set -e
+            return_code=0
+            if [[ -e "{{ utility_venv_bin }}/{{ _bin_name }}" && ! -L "/usr/local/bin/{{ _bin_name }}" ]]; then
               ln -sfn {{ utility_venv_bin }}/{{ _bin_name }} /usr/local/bin/{{ _bin_name }}
+              return_code=2
             fi
+            exit ${return_code}
           args:
             executable: /bin/bash
           with_items: "{{ _openstack_client_list }}"
-
-        - name: Create openstack client bash_completion script
-          shell: |
-             openstack complete > /etc/bash_completion.d/openstack_client
+          register: _client_symlink
+          changed_when: _client_symlink.rc == 2
+          failed_when: _client_symlink.rc not in [0,2]
+          notify: "Create openstack client bash_completion script"
