@@ -1,5 +1,31 @@
 - hosts: all
+  vars:
+    scenario_map:
+      aodh: telemetry
+      ceilometer: telemetry
+      gnocchi: telemetry
+      horizon: lxc
   tasks:
+    - name: Dynamically determine additional scenario elements
+      when:
+        - zuul.project.short_name is match("^openstack-ansible-os_(.*)$")
+        - (dynamic_scenario | default(True)) | bool
+      block:
+        - name: Set service_name
+          set_fact:
+            service_name: "{{ zuul.project.short_name | regex_replace('^openstack-ansible-os_(.*)$', '\\1') }}"
+
+        - name: Set scenario_suffix
+          set_fact:
+            scenario_suffix: "{{ scenario_map[service_name] | default(service_name) }}"
+
+        # Horizon's apache uses the same ip:port combinations as
+        # the repo server's nginx service. As such, we force the
+        # use of containers to ensure that they do not conflict.
+        - name: Add services based on test repo name
+          set_fact:
+            scenario: "{{ (service_name == 'horizon') | ternary(scenario | regex_replace('_metal', ''), scenario) }}_{{ scenario_suffix }}"
+
     - name: Run gate-check-commit.sh script
       become: yes
       become_user: root
