@@ -21,13 +21,23 @@
   tags:
     - create-directories
 
+- name: Find user conf.d configurations to deploy
+  stat:
+    path: "{{ bootstrap_host_aio_config_path }}/conf.d/{{ item }}.yml.aio"
+  register: conf_d_stat
+  with_items: "{{ bootstrap_host_scenarios_expanded }}"
+
 - name: Deploy user conf.d configuration
   config_template:
-    src: "{{ bootstrap_host_aio_config_path }}/conf.d/{{ item }}.yml.aio"
-    dest: "/etc/openstack_deploy/conf.d/{{ item }}.yml"
-    config_overrides: "{{ item.override | default({}) }}"
+    src: "{{ bootstrap_host_aio_config_path }}/conf.d/{{ item.item }}.yml.aio"
+    dest: "/etc/openstack_deploy/conf.d/{{ item.item }}.yml"
+    config_overrides: "{{ item.item.override | default({}) }}"
     config_type: "yaml"
-  with_items: "{{ bootstrap_host_services }}"
+  with_items: "{{ conf_d_stat.results | default([]) }}"
+  loop_control:
+    label: "{{ item.item }}"
+  when:
+    - item.stat.exists | bool
   tags:
     - deploy-confd
 
@@ -156,29 +166,29 @@
   with_items:
     - src: user_variables_ceph.yml.j2
       dest: user_variables_ceph.yml
-      condition: "{{ 'ceph' in bootstrap_host_services }}"
+      condition: "{{ 'ceph' in bootstrap_host_scenarios_expanded }}"
     - src: user_variables_congress.yml.j2
       dest: user_variables_congress.yml
-      condition: "{{ 'congress' in bootstrap_host_services }}"
+      condition: "{{ 'congress' in bootstrap_host_scenarios_expanded }}"
     - src: user_variables_translations.yml.j2
       dest: user_variables_translations.yml
       condition: "{{ 'translations' in bootstrap_host_scenarios }}"
     - src: user_variables_barbican.yml.j2
       dest: user_variables_barbican.yml
-      condition: "{{ 'barbican' in bootstrap_host_services }}"
+      condition: "{{ 'barbican' in bootstrap_host_scenarios_expanded }}"
     - src: user_variables_manila.yml.j2
       dest: user_variables_manila.yml
-      condition: "{{ 'manila' in bootstrap_host_services }}"
+      condition: "{{ 'manila' in bootstrap_host_scenarios_expanded }}"
     - src: user_variables_calico.yml.j2
       dest: user_variables_calico.yml
-      condition: "{{ 'calico' in bootstrap_host_scenarios }}"
+      condition: "{{ 'calico' in bootstrap_host_scenarios_expanded }}"
 
 - name: Copy modified cinder-volume env.d file for ceph scenario
   copy:
     src: "{{ playbook_dir }}/../etc/openstack_deploy/env.d/cinder-volume.yml.container.example"
     dest: "/etc/openstack_deploy/env.d/cinder-volume.yml"
   when:
-    - "'ceph' in bootstrap_host_services"
+    - "'ceph' in bootstrap_host_scenarios_expanded"
 
 - name: Copy modified env.d file for metal scenario
   copy:
