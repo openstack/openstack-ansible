@@ -22,7 +22,7 @@
     - "defaults/repo_packages/openstack_services.yml"
     - "defaults/{{ install_method }}_install.yml"
   vars:
-    utility_upper_constraints_url: "{{ requirements_git_url | default('https://git.openstack.org/cgit/openstack/requirements/plain/upper-constraints.txt?h=' ~ requirements_git_install_branch | default('master')) }}"
+    utility_upper_constraints_url: "{{ requirements_git_url | default('https://opendev.org/openstack/requirements/raw/' ~ requirements_git_install_branch | default('master')) ~ '/upper-constraints.txt' }}"
   tags:
     - utility
   handlers:

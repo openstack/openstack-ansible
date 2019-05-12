@@ -78,6 +78,6 @@ You can override the ansible-role-requirement file used by defining
 the environment variable ``ANSIBLE_ROLE_FILE`` before running the
 ``bootstrap-ansible.sh`` script.
 
-.. _ansible-role-requirements: https://git.openstack.org/cgit/openstack/openstack-ansible/tree/ansible-role-requirements.yml
+.. _ansible-role-requirements: https://opendev.org/openstack/openstack-ansible/src/ansible-role-requirements.yml
 
 

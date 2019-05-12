@@ -63,7 +63,7 @@ title = u'OpenStack-Ansible Release Notes'
 
 # The link to the browsable source code (for the left hand menu)
 oslosphinx_cgit_link = (
-    "https://git.openstack.org/cgit/openstack/{}".format(target_name)
+    "https://opendev.org/openstack/{}".format(target_name)
 )
 
 # Release notes are version independent
