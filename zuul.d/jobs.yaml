@@ -22,8 +22,11 @@
       aio deploy.
     required-projects:
       - name: openstack/openstack-ansible
+    pre-run:
+      - zuul.d/playbooks/pre-gate-scenario.yml
     run: zuul.d/playbooks/run.yml
-    post-run: zuul.d/playbooks/post.yml
+    post-run:
+      - zuul.d/playbooks/post.yml
     timeout: 10800
     irrelevant-files:
       - ^\.git.*
