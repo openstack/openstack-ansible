@@ -1,0 +1,89 @@
+---
+# Copyright 2019, Logan Vig <logan2211@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Calculate the dynamic OSA gate scenario
+  hosts: all[0]
+  vars:
+    scenario_map:
+      aodh: telemetry
+      ceilometer: telemetry
+      gnocchi: telemetry
+      horizon: lxc
+    install_methods:
+      - distro
+      - source
+  tasks:
+    - name: Dynamically create scenario if not set
+      set_fact:
+        scenario: |-
+          {% set _scenario = [] %}
+          {# Add the scenarios based on the job name #}
+          {# ex. openstack-ansible-deploy-$scenario1_$scenario2-$os #}
+          {% if zuul.job is match('^openstack-ansible-deploy-([^-]+)-.*$') %}
+          {%   set _ = _scenario.extend(
+                 (zuul.job |
+                  regex_replace('^openstack-ansible-deploy-([^-]+)-.*$', '\\1')).split('_')
+               )
+          %}
+          {% endif %}
+          {# If testing a role, add the role service name to the scenario list #}
+          {% if zuul.project.short_name is match('^openstack-ansible-os_(.*)$') %}
+          {%   set role_service_name = zuul.project.short_name |
+                                       regex_replace('^openstack-ansible-os_(.*)$', '\\1')
+          %}
+          {%   set _ = _scenario.append(role_service_name) %}
+          {#   Add special scenarios based on the project name #}
+          {%   if role_service_name in scenario_map %}
+          {%     set _ = _scenario.extend(scenario_map[service_name].split('_')) %}
+          {%   endif %}
+          {% endif %}
+          {{ _scenario | join('_') }}
+      when:
+        - scenario is not defined
+
+    - name: Dynamically set action if not set
+      set_fact:
+        action: "{{ zuul.job | regex_replace('^openstack-ansible-([^-]+)-.*$', '\\1') }}"
+      when:
+        - action is not defined
+
+    - name: Dynamically set install method if not set
+      set_fact:
+        install_method: "{{ (scenario.split('_') | intersect(install_methods))[0] }}"
+      when:
+        - install_method is not defined
+        - scenario.split('_') | intersect(install_methods) | length > 0
+
+    - name: Set install method to source as a baseline default
+      set_fact:
+        install_method: source
+      when:
+        - install_method is not defined
+
+    - name: Print gate check configuration
+      debug:
+        msg: |-
+          Running gate-check-commit with the following arguments:
+          Scenario: {{ scenario }}
+          Action: {{ action }}
+          Install Method: {{ install_method }}
+
+    # Other playbooks can consume this vars file as shown in run.yml
+    # This file is stored in work/osa-gate-scenario.yml on the Zuul executor
+    - name: Log the gate check configuration to a vars file
+      template:
+        src: osa-gate-scenario.yml.j2
+        dest: "{{ zuul.executor.work_root }}/osa-gate-scenario.yml"
+      delegate_to: localhost
