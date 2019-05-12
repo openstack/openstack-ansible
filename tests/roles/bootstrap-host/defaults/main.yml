@@ -87,7 +87,7 @@ bootstrap_host_loopback_zfs: yes
 bootstrap_host_loopback_zfs_size: 1024
 #
 # Boolean option to deploy the OSD loopback disks and cluster UUID for Ceph
-bootstrap_host_ceph: "{{ 'ceph' in bootstrap_host_services }}"
+bootstrap_host_ceph: "{{ 'ceph' in bootstrap_host_scenarios_expanded }}"
 # Size of the Ceph OSD loopbacks
 bootstrap_host_loopback_ceph_size: 1024
 # Ceph OSDs to create on the AIO host
