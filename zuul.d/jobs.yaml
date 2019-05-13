@@ -34,10 +34,6 @@
       - ^setup\.(cfg|py)$
       - ^tox.ini$
       - ^Vagrantfile
-    vars:
-      action: deploy
-      scenario: aio_lxc
-      install_method: source
 
 # Ensuring overrides work
 - job:
@@ -78,9 +74,6 @@
     name: openstack-ansible-deploy-aio_metal-debian-stable
     parent: openstack-ansible-deploy-aio
     nodeset: debian-stable
-    vars:
-      action: deploy
-      scenario: aio_metal
 
 # ubuntu
 - job:
@@ -92,107 +85,68 @@
     name: openstack-ansible-deploy-aio_distro_lxc-ubuntu-bionic
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-bionic
-    vars:
-      install_method: distro
 
 - job:
     name: openstack-ansible-deploy-aio_ceph-ubuntu-bionic
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-bionic
-    vars:
-      action: deploy
-      scenario: aio_ceph
 
 - job:
     name: openstack-ansible-deploy-aio_proxy-ubuntu-bionic
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-bionic
-    vars:
-      action: deploy
-      scenario: aio_proxy
 
 - job:
     name: openstack-ansible-deploy-aio_distro_ceph-ubuntu-bionic
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-bionic
-    vars:
-      action: deploy
-      scenario: aio_ceph
-      install_method: distro
 
 - job:
     name: openstack-ansible-deploy-aio_metal-ubuntu-bionic
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-bionic
-    vars:
-      action: deploy
-      scenario: aio_metal
 
 - job:
     name: openstack-ansible-deploy-aio_telemetry_metal-ubuntu-bionic
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-bionic
-    vars:
-      action: deploy
-      scenario: aio_telemetry_metal
 
 - job:
     name: openstack-ansible-deploy-aio_distro_metal-ubuntu-bionic
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-bionic
-    vars:
-      action: deploy
-      scenario: aio_metal
-      install_method: distro
 
 - job:
     name: openstack-ansible-upgrade-aio_lxc-ubuntu-bionic
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-bionic
     timeout: 10800
-    vars:
-      action: upgrade
-      scenario: aio_lxc
 
 - job:
     name: openstack-ansible-deploy-aio_nspawn-ubuntu-bionic
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-bionic
-    vars:
-      scenario: aio_nspawn
 
 - job:
     name: openstack-ansible-upgrade-aio_ceph-ubuntu-bionic
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-bionic
     timeout: 10800
-    vars:
-      action: upgrade
-      scenario: aio_ceph
 
 - job:
     name: openstack-ansible-deploy-aio_octavia-ubuntu-bionic
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-bionic
-    vars:
-      action: deploy
-      scenario: aio_octavia
 
 - job:
     name: openstack-ansible-deploy-aio_qdrouterd-ubuntu-bionic
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-bionic
-    vars:
-      action: deploy
-      scenario: aio_qdrouterd
 
 - job:
     name: openstack-ansible-deploy-translations-ubuntu-bionic
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-bionic
-    vars:
-      action: deploy
-      scenario: translations
 
 # centos
 - job:
@@ -204,84 +158,54 @@
     name: openstack-ansible-deploy-aio_distro_lxc-centos-7
     parent: openstack-ansible-deploy-aio
     nodeset: centos-7
-    vars:
-      install_method: distro
 
 - job:
     name: openstack-ansible-deploy-aio_ceph-centos-7
     parent: openstack-ansible-deploy-aio
     nodeset: centos-7
-    vars:
-      action: deploy
-      scenario: aio_ceph
 
 - job:
     name: openstack-ansible-deploy-aio_distro_ceph-centos-7
     parent: openstack-ansible-deploy-aio
     nodeset: centos-7
-    vars:
-      action: deploy
-      scenario: aio_ceph
-      install_method: distro
 
 - job:
     name: openstack-ansible-upgrade-aio_lxc-centos-7
     parent: openstack-ansible-deploy-aio
     nodeset: centos-7
     timeout: 10800
-    vars:
-      action: upgrade
-      scenario: aio_lxc
 
 - job:
     name: openstack-ansible-deploy-aio_metal-centos-7
     parent: openstack-ansible-deploy-aio
     nodeset: centos-7
-    vars:
-      actio: deploy
-      scenario: aio_metal
 
 - job:
     name: openstack-ansible-deploy-aio_telemetry_metal-centos-7
     parent: openstack-ansible-deploy-aio
     nodeset: centos-7
-    vars:
-      action: deploy
-      scenario: aio_telemetry_metal
 
 - job:
     name: openstack-ansible-deploy-aio_distro_metal-centos-7
     parent: openstack-ansible-deploy-aio
     nodeset: centos-7
-    vars:
-      action: deploy
-      scenario: aio_metal
-      install_method: distro
 
 - job:
     name: openstack-ansible-deploy-aio_nspawn-centos-7
     parent: openstack-ansible-deploy-aio
     nodeset: centos-7
-    vars:
-      scenario: aio_nspawn
 
 - job:
     name: openstack-ansible-upgrade-aio_ceph-centos-7
     parent: openstack-ansible-deploy-aio
     nodeset: centos-7
     timeout: 10800
-    vars:
-      action: upgrade
-      scenario: aio_ceph
 
 # debian
 - job:
     name: openstack-ansible-deploy-aio_telemetry_metal-debian-stable
     parent: openstack-ansible-deploy-aio
     nodeset: debian-stable
-    vars:
-      action: deploy
-      scenario: aio_telemetry_metal
 
 - job:
     name: openstack-ansible-deploy-aio_lxc-debian-stable
@@ -298,54 +222,33 @@
     name: openstack-ansible-deploy-aio_distro_lxc-opensuse-150
     parent: openstack-ansible-deploy-aio
     nodeset: opensuse-150
-    vars:
-      install_method: distro
 
 - job:
     name: openstack-ansible-deploy-aio_ceph-opensuse-150
     parent: openstack-ansible-deploy-aio
     nodeset: opensuse-150
-    vars:
-      action: deploy
-      scenario: aio_ceph
 
 - job:
     name: openstack-ansible-deploy-aio_distro_ceph-opensuse-150
     parent: openstack-ansible-deploy-aio
     nodeset: opensuse-150
-    vars:
-      action: deploy
-      scenario: aio_ceph
-      install_method: distro
 
 - job:
     name: openstack-ansible-deploy-aio_metal-opensuse-150
     parent: openstack-ansible-deploy-aio
     nodeset: opensuse-150
-    vars:
-      action: deploy
-      scenario: aio_metal
 
 - job:
     name: openstack-ansible-deploy-aio_telemetry_metal-opensuse-150
     parent: openstack-ansible-deploy-aio
     nodeset: opensuse-150
-    vars:
-      action: deploy
-      scenario: aio_telemetry_metal
 
 - job:
     name: openstack-ansible-deploy-aio_distro_metal-opensuse-150
     parent: openstack-ansible-deploy-aio
     nodeset: opensuse-150
-    vars:
-      action: deploy
-      scenario: aio_metal
-      install_method: distro
 
 - job:
     name: openstack-ansible-deploy-aio_nspawn-opensuse-150
     parent: openstack-ansible-deploy-aio
     nodeset: opensuse-150
-    vars:
-      scenario: aio_nspawn

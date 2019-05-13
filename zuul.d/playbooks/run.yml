@@ -5,32 +5,73 @@
       ceilometer: telemetry
       gnocchi: telemetry
       horizon: lxc
+    install_methods:
+      - distro
+      - source
   tasks:
-    - name: Dynamically determine additional scenario elements
+    - name: Dynamically create scenario if not set
+      set_fact:
+        scenario: |-
+          {% set _scenario = [] %}
+          {# Add the scenarios based on the job name #}
+          {# ex. openstack-ansible-deploy-$scenario1_$scenario2-$os #}
+          {% if zuul.job is match('^openstack-ansible-deploy-([^-]+)-.*$') %}
+          {%   set _ = _scenario.extend(
+                 (zuul.job |
+                  regex_replace('^openstack-ansible-deploy-([^-]+)-.*$', '\\1')).split('_')
+               )
+          %}
+          {% endif %}
+          {# If testing a role, add the role service name to the scenario list #}
+          {% if zuul.project.short_name is match('^openstack-ansible-os_(.*)$') %}
+          {%   set role_service_name = zuul.project.short_name |
+                                       regex_replace('^openstack-ansible-os_(.*)$', '\\1')
+          %}
+          {%   set _ = _scenario.append(role_service_name) %}
+          {#   Add special scenarios based on the project name #}
+          {%   if role_service_name in scenario_map %}
+          {%     set _ = _scenario.extend(scenario_map[service_name].split('_')) %}
+          {%   endif %}
+          {% endif %}
+          {{ _scenario | join('_') }}
       when:
-        - zuul.project.short_name is match("^openstack-ansible-os_(.*)$")
-        - (dynamic_scenario | default(True)) | bool
-      block:
-        - name: Set service_name
-          set_fact:
-            service_name: "{{ zuul.project.short_name | regex_replace('^openstack-ansible-os_(.*)$', '\\1') }}"
+        - scenario is not defined
 
-        - name: Set scenario_suffix
-          set_fact:
-            scenario_suffix: "{{ scenario_map[service_name] | default(service_name) }}"
+    - name: Dynamically set action if not set
+      set_fact:
+        action: "{{ zuul.job | regex_replace('^openstack-ansible-([^-]+)-.*$', '\\1') }}"
+      when:
+        - action is not defined
 
-        # Horizon's apache uses the same ip:port combinations as
-        # the repo server's nginx service. As such, we force the
-        # use of containers to ensure that they do not conflict.
-        - name: Add services based on test repo name
-          set_fact:
-            scenario: "{{ (service_name == 'horizon') | ternary(scenario | regex_replace('_metal', ''), scenario) }}_{{ scenario_suffix }}"
+    - name: Dynamically set install method if not set
+      set_fact:
+        install_method: "{{ (scenario.split('_') | intersect(install_methods))[0] }}"
+      when:
+        - install_method is not defined
+        - scenario.split('_') | intersect(install_methods) | length > 0
+
+    - name: Set install method to source as a baseline default
+      set_fact:
+        install_method: source
+      when:
+        - install_method is not defined
+
+    - name: Print gate check configuration
+      debug:
+        msg: |-
+          Running gate-check-commit with the following arguments:
+          Scenario: {{ scenario }}
+          Action: {{ action }}
+          Install Method: {{ install_method }}
 
     - name: Run gate-check-commit.sh script
       become: yes
       become_user: root
       shell: >-
-        scripts/gate-check-commit.sh {{ scenario }} {{ action }} {{ install_method }}
+        scripts/gate-check-commit.sh
+        {{ scenario | quote }}
+        {{ action | quote }}
+        {{ install_method | quote }}
       args:
         chdir: "src/opendev.org/openstack/openstack-ansible"
         executable: /bin/bash

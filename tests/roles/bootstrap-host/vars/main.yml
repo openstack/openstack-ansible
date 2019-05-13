@@ -24,6 +24,7 @@ bootstrap_host_special_word_list:
  - source
  - telemetry
  - translations
+ - varstest
 
 bootstrap_host_services: >-
   {%- set scenario_list = (bootstrap_host_scenario.split('_') | reject('equalto', '')) | list %}
