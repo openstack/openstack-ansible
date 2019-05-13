@@ -1,0 +1,27 @@
+---
+# Copyright 2019, Logan Vig <logan2211@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Locate data disk candidates
+  shell: >
+    lsblk -brndo NAME,TYPE,RO,SIZE |
+    awk '/d[b-z]+ disk 0/{ if ($4>m && $4>={{ bootstrap_host_data_disk_min_size }}){m=$4; d=$1}}; END{print d}'
+  changed_when: false
+  register: _data_disk
+
+- name: Set the data disk device
+  set_fact:
+    bootstrap_host_data_disk_device: "{{ _data_disk.stdout }}"
+  when:
+    - _data_disk.stdout != ''
