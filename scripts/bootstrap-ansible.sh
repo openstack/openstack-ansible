@@ -97,6 +97,9 @@ esac
 # Ensure that our shell knows about the new virtualenv
 hash -r virtualenv
 
+# Load nodepool PIP mirror settings
+load_nodepool_pip_opts
+
 # Ensure we use the HTTPS/HTTP proxy with pip if it is specified
 if [ -n "$HTTPS_PROXY" ]; then
   PIP_OPTS+="--proxy $HTTPS_PROXY"
