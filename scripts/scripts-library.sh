@@ -203,10 +203,6 @@ function setup_ara {
     # PIP_OPTS contains the whole set of constraints that need to be applied.
     ${PIP_COMMAND} install --isolated ${PIP_OPTS} ara "${ANSIBLE_PACKAGE:-ansible}"
   fi
-  # Dynamically retrieve the location of the ARA callback so we are able to find
-  # it on both py2 and py3
-  ara_location=$(/opt/ansible-runtime/bin/python -c "import os,ara; print(os.path.dirname(ara.__file__))")
-  export ANSIBLE_CALLBACK_PLUGINS="/etc/ansible/roles/plugins/callback:${ara_location}/plugins/callbacks"
 }
 
 function run_dstat {
