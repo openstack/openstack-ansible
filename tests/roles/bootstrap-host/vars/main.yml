@@ -13,43 +13,47 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-bootstrap_host_special_word_list:
- - aio
- - distro
- - lxc
- - metal
- - nspawn
- - octaviav2
- - proxy
- - source
- - telemetry
- - translations
- - varstest
+bootstrap_host_scenarios: "{{ (bootstrap_host_scenario.split('_') | reject('equalto', '')) | list }}"
 
-bootstrap_host_services: >-
-  {%- set scenario_list = (bootstrap_host_scenario.split('_') | reject('equalto', '')) | list %}
-  {%- set service_list = ['keystone'] %}
-  {%- set service_list_extra = scenario_list | difference(bootstrap_host_special_word_list) %}
-  {%- if 'metal' not in scenario_list %}
-  {%-   set _ = service_list.append('haproxy') %}
-  {%- endif %}
-  {%- if 'aio' in scenario_list or 'translations' in scenario_list %}
-  {%-   set _ = service_list.extend(['cinder', 'glance', 'neutron', 'nova', 'placement']) %}
-  {%-   if 'metal' not in scenario_list %}
-  {%-     set _ = service_list.append('horizon') %}
-  {%-   endif %}
-  {%- endif %}
-  {%- if 'ironic' in scenario_list %}
-  {%-   set _ = service_list.extend(['swift']) %}
-  {%- endif %}
-  {%- if 'octaviav2' in scenario_list %}
-  {%-   set _ = service_list.extend(['octavia']) %}
-  {%- endif %}
-  {%- if 'telemetry' in scenario_list %}
-  {%-   set _ = service_list.extend(['aodh', 'ceilometer', 'gnocchi', 'panko']) %}
-  {%- endif %}
-  {%- if 'translations' in scenario_list %}
-  {%-   set _ = service_list.extend(['designate', 'heat', 'magnum', 'sahara', 'swift', 'trove']) %}
-  {%- endif %}
-  {%- set _ = service_list.extend(service_list_extra) %}
-  {{- (service_list | unique) | sort }}
+_non_service_scenarios:
+  - aio
+  - distro
+  - lxc
+  - metal
+  - nspawn
+  - octaviav2
+  - proxy
+  - source
+  - telemetry
+  - translations
+  - varstest
+
+bootstrap_host_services: |-
+  {% set service_list = ['keystone'] %}
+  {% set service_list_extra = bootstrap_host_scenarios | difference(_non_service_scenarios) %}
+  {% if 'metal' not in bootstrap_host_scenarios %}
+  {%   set _ = service_list.append('haproxy') %}
+  {% endif %}
+  {% if ['aio', 'translations'] | intersect(bootstrap_host_scenarios) | length > 0 %}
+  {#   Base services deployed with aio and translations scenarios #}
+  {%   set _ = service_list.extend(['cinder', 'glance', 'neutron', 'nova', 'placement']) %}
+  {%   if 'metal' not in bootstrap_host_scenarios %}
+  {#     Horizon is a base service in container jobs #}
+  {%     set _ = service_list.append('horizon') %}
+  {%   endif %}
+  {% endif %}
+  {# Service additions based on scenario presence #}
+  {% if 'ironic' in bootstrap_host_scenarios %}
+  {%   set _ = service_list.extend(['swift']) %}
+  {% endif %}
+  {% if 'octaviav2' in bootstrap_host_scenarios %}
+  {%   set _ = service_list.extend(['octavia']) %}
+  {% endif %}
+  {% if 'telemetry' in bootstrap_host_scenarios %}
+  {%   set _ = service_list.extend(['aodh', 'ceilometer', 'gnocchi', 'panko']) %}
+  {% endif %}
+  {% if 'translations' in bootstrap_host_scenarios %}
+  {%   set _ = service_list.extend(['designate', 'heat', 'magnum', 'sahara', 'swift', 'trove']) %}
+  {% endif %}
+  {% set _ = service_list.extend(service_list_extra) %}
+  {{ (service_list | unique) | sort }}
