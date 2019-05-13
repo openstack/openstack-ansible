@@ -120,6 +120,11 @@ if [[ -z "${SKIP_OSA_RUNTIME_VENV_BUILD+defined}" ]]; then
     build_ansible_runtime_venv
 fi
 
+# Install and export the ARA callback plugin
+if [ "${SETUP_ARA}" == "true" ]; then
+  setup_ara
+fi
+
 # Get current code version (this runs at the root of OSA clone)
 CURRENT_OSA_VERSION=$(cd ${OSA_CLONE_DIR}; /opt/ansible-runtime/bin/python setup.py --version)
 
@@ -190,11 +195,6 @@ if [ -f "${ANSIBLE_ROLE_FILE}" ] && [[ -z "${SKIP_OSA_ROLE_CLONE+defined}" ]]; t
     unset ANSIBLE_VARS_PLUGINS
     unset ANSIBLE_STRATEGY_PLUGINS
     unset ANSIBLE_CONFIG
-fi
-
-# Install and export the ARA callback plugin
-if [ "${SETUP_ARA}" == "true" ]; then
-  setup_ara
 fi
 
 echo "System is bootstrapped and ready for use."
