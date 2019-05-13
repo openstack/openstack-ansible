@@ -55,7 +55,7 @@ export INSTALL_METHOD=${3:-"source"}
 export UPGRADE_SOURCE_BRANCH=${UPGRADE_SOURCE_BRANCH:-'stable/rocky'}
 
 # enable the ARA callback plugin
-export SETUP_ARA=true
+export SETUP_ARA=${SETUP_ARA:-true}
 
 ## Change branch for Upgrades ------------------------------------------------
 # If the action is to upgrade, then store the current SHA,
