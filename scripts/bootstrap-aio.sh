@@ -29,6 +29,14 @@ cd "$(dirname "${0}")/.."
 
 ## Main ----------------------------------------------------------------------
 
+# When running in the gate, enable data device detection in the bootstrap
+# role. This is needed on RAX nodepool instances because the root data disk
+# is too small for an OSA AIO, and a second data disk is attached which must
+# be formatted and used.
+if [[ -d '/etc/nodepool' ]]; then
+  export BOOTSTRAP_HOST_DETECT_DATA_DISK=true
+fi
+
 # Ensure that some of the wrapper options are overridden
 # to prevent interference with the AIO bootstrap.
 export ANSIBLE_INVENTORY="${OSA_CLONE_DIR}/tests/test-inventory.ini"

@@ -13,6 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Attempt data device detection if enabled
+- include_tasks: detect_data_disk_device.yml
+  when:
+    - bootstrap_host_data_disk_device is none
+    - bootstrap_host_data_disk_device_detect | bool
+
 # Before we do anything, check the minimum requirements
 - include: check-requirements.yml
   tags:

@@ -81,17 +81,6 @@ log_instance_info
 
 run_dstat || true
 
-# Get minimum disk size
-DATA_DISK_MIN_SIZE="$((1024**3 * $(awk '/bootstrap_host_data_disk_min_size/{print $2}' "${OSA_CLONE_DIR}/tests/roles/bootstrap-host/defaults/main.yml") ))"
-
-# Determine the largest secondary disk device that meets the minimum size
-DATA_DISK_DEVICE=$(lsblk -brndo NAME,TYPE,RO,SIZE | awk '/d[b-z]+ disk 0/{ if ($4>m && $4>='$DATA_DISK_MIN_SIZE'){m=$4; d=$1}}; END{print d}')
-
-# Only set the secondary disk device option if there is one
-if [ -n "${DATA_DISK_DEVICE}" ]; then
-  export BOOTSTRAP_OPTS="${BOOTSTRAP_OPTS} bootstrap_host_data_disk_device=${DATA_DISK_DEVICE}"
-fi
-
 # If in OpenStack-Infra, set some vars to use the mirror when bootstrapping Ansible
 if [[ -e /etc/ci/mirror_info.sh ]]; then
   source /etc/ci/mirror_info.sh
