@@ -46,7 +46,7 @@
           {%   set _ = _scenario.append(role_service_name) %}
           {#   Add special scenarios based on the project name #}
           {%   if role_service_name in scenario_map %}
-          {%     set _ = _scenario.extend(scenario_map[service_name].split('_')) %}
+          {%     set _ = _scenario.append(scenario_map[role_service_name]) %}
           {%   endif %}
           {% endif %}
           {{ _scenario | join('_') }}
