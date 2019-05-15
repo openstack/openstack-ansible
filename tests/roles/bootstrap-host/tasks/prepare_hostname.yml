@@ -37,6 +37,9 @@
   # NOTE(hwoarang) The hostname module does not work on Leap 15 because of
   # https://bugzilla.novell.com/show_bug.cgi?id=997614
   # As such we need to fallback to using the command directly.
+  # NOTE(evrardjp): Remove this when Ansible 2.8 is out, as Ansible now
+  # vendors in the distro python package, which _should_ technically help.
+  # (To be tested)
   rescue:
     - name: Set hostname using hostnamectl
       command: hostnamectl set-hostname aio1
