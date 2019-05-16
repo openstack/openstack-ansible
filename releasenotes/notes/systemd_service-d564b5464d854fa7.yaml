@@ -1,0 +1,8 @@
+---
+upgrade:
+  - |
+    Tacker role now uses default systemd_service role. Due to this upstart
+    is not supported anymore. Was added variable tacker_init_config_overrides,
+    with wich deployer may override predifined options.
+    Also variable program_override has no effect now, and tacker_service_names
+    was removed in favor of tacker_service_name.

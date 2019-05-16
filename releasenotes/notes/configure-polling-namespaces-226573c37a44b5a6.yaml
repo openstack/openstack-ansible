@@ -1,0 +1,8 @@
+---
+fixes:
+  - |
+    ceilometer-polling services running on compute nodes did not have the
+    polling namespace configured. Because of this they used the default value of
+    running all pollsters from the central and compute namespaces. But the
+    pollsters from the central namespace don't have to run on every compute
+    node. This is fixed by only running the compute pollsters on compute nodes.
