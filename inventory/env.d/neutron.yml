@@ -32,9 +32,6 @@ component_skel:
   neutron_l3_agent:
     belongs_to:
       - neutron_all
-  neutron_lbaas_agent:
-    belongs_to:
-      - neutron_all
   neutron_bgp_dragent:
     belongs_to:
       - neutron_all
@@ -60,7 +57,6 @@ container_skel:
       - neutron_bgp_dragent
       - neutron_dhcp_agent
       - neutron_l3_agent
-      - neutron_lbaas_agent
       - neutron_linuxbridge_agent
       - neutron_metadata_agent
       - neutron_metering_agent

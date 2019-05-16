@@ -23,9 +23,6 @@ horizon_enable_manila_ui: "{{ (groups['manila_all'] is defined) and (groups['man
 horizon_enable_masakari_ui: "{{ (groups['masakari_all'] is defined) and (groups['masakari_all'] | length > 0) }}"
 horizon_enable_designate_ui: "{{ (groups['designate_all'] is defined) and (groups['designate_all'] | length > 0) }}"
 horizon_enable_octavia_ui: "{{ (groups['octavia-infra_all'] is defined) and (groups['octavia-infra_all'] | length > 0) }}"
-# NOTE(mhayden): neutron-lbaas is a separate plugin and requires the full
-# namespace to be specified. Also, LBaaS v1 was removed in Newton.
-horizon_enable_neutron_lbaas: "{{ neutron_plugin_base is defined and 'neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPluginv2' in neutron_plugin_base }}"
 horizon_enable_neutron_fwaas: "{{ neutron_plugin_base is defined and (neutron_plugin_base | intersect(['firewall', 'firewall_v2']) | length > 0) }}"
 horizon_enable_neutron_vpnaas: "{{ neutron_plugin_base is defined and 'vpnaas' in neutron_plugin_base }}"
 horizon_enable_ha_router: "{{ neutron_plugin_type.split('.')[0] == 'ml2' and (groups['neutron_l3_agent'] | length >= 2) }}"

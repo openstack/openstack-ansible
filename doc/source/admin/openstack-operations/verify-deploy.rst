@@ -130,7 +130,6 @@ the OpenStack API and dashboard, as an administrator.
       | ID                                   | Agent Type           | Host                                   | Availability Zone | Alive | State | Binary                    |
       +--------------------------------------+----------------------+----------------------------------------+-------------------+-------+-------+---------------------------+
       | 262b29fe-e60e-44b0-ae3c-065565f8deb7 | Metering agent       | aio1-neutron-agents-container-2b0569d5 | None              | :-)   | UP    | neutron-metering-agent    |
-      | 3f305216-46ea-42c4-9f9f-9910f58323ea | Loadbalancerv2 agent | aio1-neutron-agents-container-2b0569d5 | None              | :-)   | UP    | neutron-lbaasv2-agent     |
       | 41135f7f-9e6c-4122-b6b3-d131bfaae53e | Linux bridge agent   | ubuntu-xenial                          | None              | :-)   | UP    | neutron-linuxbridge-agent |
       | 615d12a8-e738-490a-8552-2a03c8544b51 | Metadata agent       | aio1-neutron-agents-container-2b0569d5 | None              | :-)   | UP    | neutron-metadata-agent    |
       | 99b2abd3-a330-4ca7-b524-ed176c10b31c | DHCP agent           | aio1-neutron-agents-container-2b0569d5 | nova              | :-)   | UP    | neutron-dhcp-agent        |

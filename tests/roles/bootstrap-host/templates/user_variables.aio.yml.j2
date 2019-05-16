@@ -223,17 +223,12 @@ openstack_user_kernel_options:
     value: '4 1 7 4'
 
 {% if 'octaviav2' in bootstrap_host_scenario %}
-# Disable Octavia support in Neutron
-neutron_lbaas_octavia: False
-# Disable LBaaS V2
-neutron_lbaasv2: False
 # Enable Octavia V2 API/standalone
 octavia_v2: True
 # Disable Octavia V1 API
 octavia_v1: False
 octavia_management_net_subnet_cidr: "{{ (bootstrap_host_container_tech == 'nspawn') | ternary('172.29.240.0/22', '172.29.252.0/22') }}"
 {% elif 'octavia' in bootstrap_host_scenarios_expanded %}
-neutron_lbaas_octavia: True
 octavia_management_net_subnet_cidr: "{{ (bootstrap_host_container_tech == 'nspawn') | ternary('172.29.240.0/22', '172.29.252.0/22') }}"
 {% endif %}
 

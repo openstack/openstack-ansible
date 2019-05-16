@@ -23,5 +23,3 @@ neutron_service_in_ldap: "{{ service_ldap_backend_enabled }}"
 
 # Ensure that the package state matches the global setting
 neutron_package_state: "{{ package_state }}"
-
-neutron_lbaas_octavia: "{{ (groups['octavia_all'] is defined) and (groups['octavia_all'] | length > 0) }}"
