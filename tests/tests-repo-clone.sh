@@ -33,7 +33,7 @@ set -e
 export TESTING_HOME=${TESTING_HOME:-$HOME}
 export WORKING_DIR=${WORKING_DIR:-$(pwd)}
 export CLONE_UPGRADE_TESTS=${CLONE_UPGRADE_TESTS:-no}
-export ZUUL_TESTS_CLONE_LOCATION="/home/zuul/src/git.openstack.org/openstack/openstack-ansible-tests"
+export ZUUL_TESTS_CLONE_LOCATION="/home/zuul/src/opendev.org/openstack/openstack-ansible-tests"
 
 ## Functions -----------------------------------------------------------------
 
@@ -66,7 +66,7 @@ if [[ -x /usr/zuul-env/bin/zuul-cloner ]] && [[ "${ZUUL_REF:-none}" != "none" ]]
     /usr/zuul-env/bin/zuul-cloner \
         --cache-dir /opt/git \
         --map ${TESTING_HOME}/tests-clonemap.yaml \
-        https://git.openstack.org \
+        https://opendev.org \
         openstack/openstack-ansible-tests
 
     # Clean up the clonemap.
@@ -97,7 +97,7 @@ elif [[ ! -d tests/common ]]; then
     # repo in some way, so just clone it from upstream.
     else
         git clone -b stable/queens \
-            https://git.openstack.org/openstack/openstack-ansible-tests \
+            https://opendev.org/openstack/openstack-ansible-tests \
             ${WORKING_DIR}/tests/common
     fi
 fi
@@ -111,7 +111,7 @@ fi
 if [[ "${CLONE_UPGRADE_TESTS}" == "yes" ]]; then
     if [[ ! -d "${WORKING_DIR}/tests/common/previous" ]]; then
         git clone -b stable/pike \
-            https://git.openstack.org/openstack/openstack-ansible-tests \
+            https://opendev.org/openstack/openstack-ansible-tests \
             ${WORKING_DIR}/tests/common/previous
   fi
 fi
