@@ -1,0 +1,7 @@
+---
+deprecations:
+  - |
+    Removal of the magnum module.
+    Please use the ansible native module 'os_coe_cluster_template'. More information:
+    https://docs.ansible.com/ansible/latest/modules/os_coe_cluster_template_module.html
+    This module was not used in the openstack repos therefore no updates were required.

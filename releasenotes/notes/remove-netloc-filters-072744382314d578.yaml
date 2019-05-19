@@ -1,0 +1,6 @@
+---
+deprecations:
+  - |
+    Removal of the netloc, netloc_no_port and netorigin filters.
+    Please use the urlsplit filter instead.
+    All usages of the deprecated filters in openstack repos have been updated.

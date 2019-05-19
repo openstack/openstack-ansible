@@ -1,0 +1,6 @@
+---
+deprecations:
+  - |
+    nova-placement-api has been removed from the os_nova role, along with all
+    `nova_placement_*` variables. Please review the `os_placement` role for
+    information about how to configure the new placement service.

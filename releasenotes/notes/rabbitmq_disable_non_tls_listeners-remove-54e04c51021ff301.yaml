@@ -1,0 +1,6 @@
+---
+upgrade:
+  - The option `rabbitmq_disable_non_tls_listeners` has been removed in favor of setting
+    the bind address and port configuration directly using a new option
+    `rabbitmq_port_bindings`. This new option is a hash allowing for multiple bind
+    addresses and port configurations.

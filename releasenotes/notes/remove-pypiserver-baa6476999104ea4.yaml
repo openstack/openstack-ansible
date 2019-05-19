@@ -1,0 +1,13 @@
+---
+upgrade:
+  - |
+    The repo server no longer uses pypiserver, so it has been removed.
+    Along with this, the following variables have also been removed.
+
+    * ``repo_pypiserver_port``
+    * ``repo_pypiserver_pip_packages``
+    * ``repo_pypiserver_package_path``
+    * ``repo_pypiserver_bin``
+    * ``repo_pypiserver_working_dir``
+    * ``repo_pypiserver_start_options``
+    * ``repo_pypiserver_init_overrides``
