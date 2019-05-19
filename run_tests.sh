@@ -36,7 +36,7 @@ WORKING_DIR="$(readlink -f $(dirname $0))"
 
 COMMON_TESTS_PATH="${WORKING_DIR}/tests/common"
 TESTING_HOME=${TESTING_HOME:-$HOME}
-ZUUL_TESTS_CLONE_LOCATION="/home/zuul/src/git.openstack.org/openstack/openstack-ansible-tests"
+ZUUL_TESTS_CLONE_LOCATION="/home/zuul/src/opendev.org/openstack/openstack-ansible-tests"
 
 # Use .gitreview as the key to determine the appropriate
 # branch to clone for tests.
@@ -82,7 +82,7 @@ if [[ ! -d ${COMMON_TESTS_PATH} ]]; then
     # repo in some way, so just clone it from upstream.
     else
         git clone -b ${TESTING_BRANCH} \
-            https://git.openstack.org/openstack/openstack-ansible-tests \
+            https://opendev.org/openstack/openstack-ansible-tests \
             ${COMMON_TESTS_PATH}
     fi
 fi
