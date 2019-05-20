@@ -82,6 +82,6 @@
     dest: /etc/openstack_deploy/user_ceph_aio.yml
     force: no
   become: false
-  when: not ceph_create_loopback|skipped
+  when: not ceph_create_loopback is skipped
   tags:
     - skip_ansible_lint
