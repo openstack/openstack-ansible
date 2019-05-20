@@ -20,8 +20,7 @@
       - release-notes-jobs
     check:
       jobs:
-        - openstack-ansible-linters:
-            voting: false
+        - openstack-ansible-linters
         - openstack-ansible-varstest-aio_lxc-ubuntu-xenial
         - openstack-ansible-deploy-aio_lxc-ubuntu-xenial
         - openstack-ansible-deploy-ceph-ubuntu-xenial
@@ -39,6 +38,7 @@
         - openstack-ansible-deploy_with_ansible_devel-aio-ubuntu-xenial
     gate:
       jobs:
+        - openstack-ansible-linters
         - openstack-ansible-varstest-aio_lxc-ubuntu-xenial
         - openstack-ansible-deploy-ceph-ubuntu-xenial
         - openstack-ansible-deploy-aio_lxc-ubuntu-xenial
