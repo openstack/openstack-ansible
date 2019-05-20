@@ -46,6 +46,7 @@ COMMON_ETC_LOG_NAMES="apt \
     netplan \
     network \
     nginx \
+    openstack_deploy \
     pip.conf \
     qpid-dispatch \
     rabbitmq \
