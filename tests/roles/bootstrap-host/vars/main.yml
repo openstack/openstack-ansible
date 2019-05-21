@@ -13,20 +13,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+bootstrap_host_scenarios: "{{ (bootstrap_host_scenario.split('_') | reject('equalto', '')) | list }}"
+
 bootstrap_host_services: >-
-  {%- set scenario_list = (bootstrap_host_scenario.split('_') | reject('equalto', '')) | list %}
   {%- set service_list = ['keystone'] %}
-  {%- set service_list_extra = scenario_list | difference(['aio', 'distro', 'lxc', 'nspawn', 'metal', 'source', 'translations']) %}
-  {%- if 'metal' not in scenario_list %}
+  {%- set service_list_extra = bootstrap_host_scenarios | difference(['aio', 'distro', 'lxc', 'nspawn', 'metal', 'source', 'translations', 'calico']) %}
+  {%- if 'metal' not in bootstrap_host_scenarios %}
   {%-   set _ = service_list.append('haproxy') %}
   {%- endif %}
-  {%- if 'aio' in scenario_list or 'translations' in scenario_list %}
+  {%- if 'aio' in bootstrap_host_scenarios or 'translations' in bootstrap_host_scenarios %}
   {%-   set _ = service_list.extend(['cinder', 'glance', 'neutron', 'nova']) %}
-  {%-   if 'metal' not in scenario_list %}
+  {%-   if 'metal' not in bootstrap_host_scenarios %}
   {%-     set _ = service_list.append('horizon') %}
   {%-   endif %}
   {%- endif %}
-  {%- if 'translations' in scenario_list %}
+  {%- if 'calico' in bootstrap_host_scenarios %}
+  {%-   set _ = service_list.extend(['etcd']) %}
+  {%- endif %}
+  {%- if 'translations' in bootstrap_host_scenarios %}
   {%-   set _ = service_list.extend(['designate', 'heat', 'magnum', 'sahara', 'swift', 'trove']) %}
   {%- endif %}
   {%- set _ = service_list.extend(service_list_extra) %}
