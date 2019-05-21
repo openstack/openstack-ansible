@@ -24,9 +24,9 @@
   hosts: all_containers[0]:physical_hosts[0]
   gather_facts: yes
   vars:
-    repo_requirements_file: "os-releases/{{ openstack_release }}/{{ os_distro_version }}/"
+    repo_requirements_file: "repo_sync_complete"
   tasks:
-    - name: Check the upper constraint on each repo server
+    - name: Check the repo sync file on each repo server
       uri:
         url: "http://{{ hostvars[item]['container_address'] }}:{{ repo_server_port }}/{{ repo_requirements_file }}"
       with_inventory_hostnames: "{{ groups['repo_all'] }}"
