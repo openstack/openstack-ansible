@@ -216,7 +216,12 @@
 - name: etcd
   scm: git
   src: https://github.com/logan2211/ansible-etcd
-  version: '1.3'
+  version: '2.1'
+  trackbranch:
+- name: systemd_service
+  src: https://opendev.org/openstack/ansible-role-systemd_service
+  scm: git
+  version: 487e2179c31d2aed565e58a838491d34b75000b3
   trackbranch:
 - name: unbound
   scm: git
