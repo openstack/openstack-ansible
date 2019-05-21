@@ -44,6 +44,9 @@ bootstrap_user_variables_template: user_variables.aio.yml.j2
 # test scenarios. The dict uses scenario as the key to load a list of extra
 # templates if necessary.
 bootstrap_user_variables_extra_templates:
+  aio_metal_calico:
+    - src: user_variables_calico.yml.j2
+      dest: user_variables_calico.yml
   ceph:
     - src: user_variables_ceph.yml.j2
       dest: user_variables_ceph.yml
