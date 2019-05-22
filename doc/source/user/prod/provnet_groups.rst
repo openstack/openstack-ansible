@@ -137,7 +137,7 @@ hosts, and has been created at
 Define the group and its members in a corresponding file in
 ``/etc/openstack_deploy/conf.d/``. The following is an example of a group
 named ``custom2_hosts`` defined in
-``/etc/openstack_deploy/env.d/custom2_hosts.yml`` consisting of a single
+``/etc/openstack_deploy/conf.d/custom2_hosts.yml`` consisting of a single
 member, ``compute2``:
 
 .. code-block:: console
