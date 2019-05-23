@@ -20,7 +20,7 @@
     - "defaults/{{ install_method }}_install.yml"
   vars:
     ansible_python_interpreter: >-
-      {{ ((openstack_service_setup_host | default('localhost')) == 'localhost') | ternary(ansible_playbook_python, ansible_python['executable']) }}
+      {{ openstack_service_setup_host_python_interpreter | default((openstack_service_setup_host | default('localhost') == 'localhost') | ternary(ansible_playbook_python, ansible_python['executable'])) }}
   tags:
     - ceph-rgw
     - ceph-rgw-setup
