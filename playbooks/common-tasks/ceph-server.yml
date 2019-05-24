@@ -36,42 +36,6 @@
   when:
     - ansible_pkg_mgr in ['yum', 'dnf']
 
-- name: install the ceph stable repository key
-  rpm_key:
-    key: "{{ ceph_stable_key }}"
-    state: present
-  when:
-    - ceph_origin == 'repository'
-    - ceph_repository == 'community'
-    - ansible_pkg_mgr in ['yum', 'dnf']
-
-- name: add ceph stable repository
-  package:
-    name: http://download.ceph.com/rpm-{{ ceph_stable_release }}/{{ ceph_stable_redhat_distro }}/noarch/ceph-release-1-0.{{ ceph_stable_redhat_distro|replace('rhel', 'el') }}.noarch.rpm
-    state: present
-  changed_when: false
-  when:
-    - ceph_origin == 'repository'
-    - ceph_repository == 'community'
-    - ansible_pkg_mgr in ['yum', 'dnf']
-
-- name: Purge yum/dnf cache
-  command: "{{ ansible_pkg_mgr }} clean all"
-  when:
-    - ansible_pkg_mgr in ['yum', 'dnf']
-  tags:
-    - skip_ansible_lint
-
-- name: Set default priority for Ceph repos
-  command: >
-     yum-config-manager
-       --enable Ceph
-       --setopt="Ceph.priority=99"
-       --enable Ceph-noarch
-       --setopt="Ceph-noarch.priority=99"
-  when:
-    - ansible_pkg_mgr in ['yum', 'dnf']
-
 # Set the priority of the ceph community apt repo either above or below that of UCA or distro sources
 - name: Set apt package pins
   include_role:
