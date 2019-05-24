@@ -227,8 +227,8 @@ function setup_ara {
   fi
   # Dynamically retrieve the location of the ARA callback so we are able to find
   # it on both py2 and py3
-  ara_location=$(/opt/ansible-runtime/bin/python -c "import os,ara; print(os.path.dirname(ara.__file__))")
-  export ANSIBLE_CALLBACK_PLUGINS="/etc/ansible/roles/plugins/callback:${ara_location}/plugins/callbacks"
+  ara_location=$(/opt/ansible-runtime/bin/python -m ara.setup.callback_plugins)
+  export ANSIBLE_CALLBACK_PLUGINS="/etc/ansible/roles/plugins/callback:${ara_location}"
 }
 
 function run_dstat {
