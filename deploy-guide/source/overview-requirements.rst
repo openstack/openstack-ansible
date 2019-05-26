@@ -4,11 +4,17 @@ Software requirements
 Ensure that all hosts within an OpenStack-Ansible (OSA) environment meet the
 following minimum requirements:
 
+* Debian
+
+  * Debian 9 (stretch)
+
+  * Linux kernel version ``4.9.0-0-amd64`` or later is required.
+
 * Ubuntu
 
-  * Ubuntu 16.04 LTS (Xenial Xerus) or Ubuntu 18.04 LTS (Bionic Beaver)
+  * Ubuntu 18.04 LTS (Bionic Beaver)
 
-  * Linux kernel version ``3.13.0-34-generic`` or later is required.
+  * Linux kernel version ``4.15.0-0-generic`` or later is required.
 
 * CentOS (support is experimental)
 
@@ -18,7 +24,7 @@ following minimum requirements:
 
 * openSUSE (support is experimental)
 
-  * Leap 42.X, fully updated.
+  * Leap 15.X, fully updated.
 
   * Linux kernel version ``4.4.X`` or later.
 

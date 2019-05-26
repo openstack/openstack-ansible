@@ -125,9 +125,9 @@ version.
    # git checkout |latest_tag|
 
 .. note::
-   The |current_release_formal_name| release is only compatible with Ubuntu
-   16.04 (Xenial Xerus), Ubuntu 18.04 (Bionic Beaver) CentOS 7 and
-   openSUSE Leap 42.X.
+   The |current_release_formal_name| release is only compatible with
+   Debian 9 (stretch), Ubuntu 18.04 (Bionic Beaver), CentOS 7
+   and openSUSE Leap 15.X.
 
 The next step is to bootstrap Ansible and the Ansible roles for the
 development environment.
