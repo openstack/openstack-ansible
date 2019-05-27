@@ -25,7 +25,7 @@
   include: common-playbooks/cinder.yml
   vars:
     cinder_hosts: "cinder_volume:!cinder_scheduler:!cinder_api"
-    cinder_serial: "{{ cinder_backend_serial | default('1', '100%') }}"
+    cinder_serial: "{{ cinder_backend_serial | default(['1', '100%']) }}"
 
 
 
