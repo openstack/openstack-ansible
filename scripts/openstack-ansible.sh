@@ -43,9 +43,9 @@ if [[ "${PWD}" == *"${OSA_CLONE_ROOT}"* ]] || [ "${RUN_CMD}" == "openstack-ansib
   # Load ARA into callback plugins if it is installed
   # Dynamically retrieve the location of the ARA callback so we are able to find
   # it on both py2 and py3
-  ara_location=$(python -c "import os,ara; print(os.path.dirname(ara.__file__))" 2>/dev/null || true)
+  ara_location=$(python -m ara.setup.callback_plugins || true)
   if [[ -n "$ara_location" ]]; then
-    export ANSIBLE_CALLBACK_PLUGINS="${ANSIBLE_CALLBACK_PLUGINS}:${ara_location}/plugins/callbacks"
+    export ANSIBLE_CALLBACK_PLUGINS="${ANSIBLE_CALLBACK_PLUGINS}:${ara_location}"
   fi
 
   # Load userspace group vars
