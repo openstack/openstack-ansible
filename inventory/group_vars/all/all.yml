@@ -64,6 +64,9 @@ install_method: "source"
 #Group containing resolvers to configure
 resolvconf_resolver_group: unbound
 
+# Disable /etc/hosts management if unbound DNS resolution containers exist
+openstack_host_manage_hosts_file: "{{ groups['unbound'] is not defined or groups['unbound'] | length < 1 }}"
+
 ## Enable external SSL handling for general OpenStack services
 openstack_external_ssl: true
 
