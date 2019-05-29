@@ -79,5 +79,5 @@ if [ "${RUN_CMD}" == "openstack-ansible" ] || [ "${RUN_CMD}" == "ansible-playboo
   echo "==============================================================================="
   exit "${PLAYBOOK_RC}"
 else
-  ${RUN_CMD} "${@}"
+  ${RUN_CMD} "${@}" ${VAR1}
 fi
