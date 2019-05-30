@@ -17,11 +17,11 @@
 mistral_bind_port: 8989
 mistral_service_proto: http
 mistral_service_publicuri_proto: "{{ openstack_service_publicuri_proto | default(mistral_service_proto) }}"
-mistral_service_publicurl: "{{ mistral_service_publicuri_proto }}://{{ external_lb_vip_address }}:{{ mistral_bind_port }}"
+mistral_service_publicurl: "{{ mistral_service_publicuri_proto }}://{{ external_lb_vip_address }}:{{ mistral_bind_port }}/v2"
 mistral_service_internaluri_proto: "{{ openstack_service_internaluri_proto | default(mistral_service_proto) }}"
-mistral_service_internalurl: "{{ mistral_service_internaluri_proto }}://{{ internal_lb_vip_address }}:{{ mistral_bind_port }}"
+mistral_service_internalurl: "{{ mistral_service_internaluri_proto }}://{{ internal_lb_vip_address }}:{{ mistral_bind_port }}/v2"
 mistral_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(mistral_service_proto) }}"
-mistral_service_adminurl: "{{ mistral_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ mistral_bind_port }}"
+mistral_service_adminurl: "{{ mistral_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ mistral_bind_port }}/v2"
 mistral_service_region: "{{ service_region }}"
 
 # venv fetch configuration
