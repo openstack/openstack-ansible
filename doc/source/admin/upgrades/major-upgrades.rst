@@ -160,7 +160,7 @@ upgrade to |current_release_formal_name|. This playbook removes the
 
 .. code-block:: console
 
-    # openstack-ansible ""${SCRIPTS_PATH}/upgrade-utilities/pip-conf-removal.yml"
+    # openstack-ansible "${SCRIPTS_PATH}/upgrade-utilities/pip-conf-removal.yml"
 
 Upgrade hosts
 ~~~~~~~~~~~~~
