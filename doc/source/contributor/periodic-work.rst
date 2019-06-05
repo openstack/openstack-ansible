@@ -9,55 +9,93 @@ Releasing
 
 Our release frequency is discussed in :ref:`reference_release`.
 
-Dependency Updates
-------------------
+OSA CLI tooling
+---------------
 
-The dependencies for OpenStack-Ansible are updated
-through the use of ``scripts/sources-branch-updater.sh``. This script
-updates all pinned SHA's for OpenStack services, OpenStack-Ansible roles,
-and other python dependencies which are not handled by the OpenStack global
-requirements management process. This script also updates the statically
-held templates/files in each role to ensure that they are always up to date.
-Finally, it also increments the patch version of the
-``openstack_release`` variable.
+OpenStack-Ansible used to bump everything in a single script, which
+made it hard to maintain, and was very branch specific. It made it
+hard for users to consume either an update of the upstream shas, or
+to bump roles with their own pace.
 
-The update script is used as follows:
+Since then, the OpenStack-Ansible has agreed to provide more metadata
+necessary for releasing into the openstack-ansible code tree. This
+allowed the tooling for releasing to be more flexible,
+and lighter, over time.
+
+Now, all the functions are separated, and included into a branch
+independent tooling, `osa_cli_releases`.
+
+.. _osa_cli_releases: https://github.com/evrardjp/osa_cli_releases
+
+You can install the latest version of this tooling by running:
 
 .. parsed-literal::
 
-   # change directory to the openstack-ansible checkout
-   cd ~/code/openstack-ansible
+   pip install -e git+https://github.com/evrardjp/osa-cli.git#egg=openstack_ansible_cli
+   pip install -e git+https://github.com/evrardjp/osa_cli_releases.git#egg=osa_cli_releases
 
-   # ensure that the correct branch is checked out
-   git checkout |current_release_git_branch_name|
+This tooling can then be called using ``osa releases``.
+Each subcommand contains help by default.
 
-   # ensure that the branch is up to date
-   git pull
+Updating upstream SHAs
+----------------------
 
-   # create the local branch for the update
-   git checkout -b sha-update
+The dependencies for OpenStack-Ansible are updated
+through the use of ``osa releases bump_upstream_shas``. This script
+updates the project's pinned SHAs, located in the
+`repo_packages folder`, based on their ``_git_track_branch`` value.
 
-   # execute the script for all openstack services
-   ./scripts/sources-branch-updater.sh -b |current_release_git_branch_name| -o |current_release_git_branch_name|
+.. _repo_packages folder: https://github.com/openstack/openstack-ansible/tree/master/playbooks/defaults/repo_packages
 
-   # execute the script for gnocchi
-   ./scripts/sources-branch-updater.sh -s playbooks/defaults/repo_packages/gnocchi.yml -b |current_release_gnocchi_git_branch_name| -o |current_release_git_branch_name|
+Updating OpenStack-Ansible roles
+--------------------------------
 
-   # the console code should only be updated when necessary for a security fix, or for the OSA master branch
-   ./scripts/sources-branch-updater.sh -s playbooks/defaults/repo_packages/nova_consoles.yml -b master
+Updating the roles to their latest version per branch is done through
+``osa releases bump_roles $gitbranchname``.
 
-   # commit the changes
-   new_version=$(awk '/^openstack_release/ {print $2}' inventory/group_vars/all/all.yml)
-   git add --all
-   git commit -a -m "Update all SHAs for ${new_version}" \
-   -m "This patch updates all the roles to the latest available stable
-   SHA's, copies the release notes from the updated roles into the
-   integrated repo, updates all the OpenStack Service SHA's, and
-   updates the appropriate python requirements pins.
+This can do multiple things:
 
-   # push the changes up to gerrit
-   git review
+* Freeze ansible-role-requirements to their latest SHAs for the branch
+  they are tracking.
+* Copy release notes relevant to the freeze.
+* Unfreeze of master.
 
+Master doesn't get frozen, unless explicitly asked for it for release
+milestones, using the command ``osa releases freeze_roles_for_milestone``
+
+Check current pins status
+-------------------------
+
+You can check the current PyPI pins that are used in openstack-ansible
+repository by running ``osa releases check_pins``. This will display
+a table, showing the current pin in OSA, and what is available upstream on
+PyPI.
+
+This doesn't patch the ``global-requirements-pins``, as this should be
+a manual operation. See the :ref:`cycle-checklist` to know when to bump
+the global-requirements-pins.
+
+Adding patch in releases repo
+-----------------------------
+
+When the patches to update SHAs and roles have landed, you can propose the
+parent SHA as a release in the releases repo.
+
+This can be done using the ``new-release`` command, and then editing
+the SHA used for openstack-ansible. See also `new_releases page`_ for an
+explanation of this command.
+
+Please note that branches before Stein will require cleanup of the YAML file
+generated by new_releases, as it will contain ALL the roles and
+openstack-ansible repo SHAs. We have decided to NOT tag the roles anymore,
+so you will need to remove all the lines which are not relevant to
+the `openstack-ansible` repository.
+
+.. _new_releases page: https://releases.openstack.org/reference/using.html#using-new-release-command
+
+
+
+.. _cycle-checklist:
 
 Development cycle checklist
 ===========================
@@ -69,7 +107,7 @@ development team by performing one of the following recurring tasks:
 
   * Community goal acknowledgement.
 
-  * Set the ``openstack_release`` version to xx.0.0.0b1
+  * Update ``global-requirements-pins``
 
 * By milestone 2:
 
@@ -90,21 +128,19 @@ development team by performing one of the following recurring tasks:
   * Check outstanding reviews and move to merge or abandon them if no longer
     valid.
 
-  * Set the ``openstack_release`` version to xx.0.0.0b2
+  * Update ``global-requirements-pins``
 
 * By milestone 3:
 
   * Implement features
 
-  * Set the ``openstack_release`` version to xx.0.0.0b3
+  * Update ``global-requirements-pins``
 
 * After milestone 3:
 
-  * Feature freeze, bug fixes, and testing improvements
+  * Feature freeze, bug fixes, and testing improvements.
 
 * After creating a new stable branch:
-
-  * Set the ``openstack_release`` version to xx.0.0
 
   * For all the repos, update the eventual static files refering
     to master/previous branch name. The main documentation should
@@ -115,7 +151,7 @@ development team by performing one of the following recurring tasks:
     Use the topic ``create-<branchname>`` (e.g: ``create-stein``)
     for future reference.
 
-  * Branch all the repos that aren't part of the integrated release
+  * Branch all the independent repos that aren't part of the release
     in gerrit. See also the ``projects.yaml`` in the governance repo.
     Manually branched repos need extra
     editions, like updating the .gitreview, or the reno index.
@@ -132,4 +168,5 @@ development team by performing one of the following recurring tasks:
 
 * Immediately after official OpenStack-Ansible release:
 
-  * Set the ``openstack_release`` version to xx.0.1
+  * Send a thank you note to all the contributors through the mailing lists.
+    They deserve it.
