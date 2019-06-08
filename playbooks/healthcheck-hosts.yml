@@ -56,6 +56,15 @@
       environment: "{{ deployment_environment_variables | default({}) }}"
 
 # Test extra settings before setup-infrastructure
+- name: Ensure the internal_interfaces are well in the right range
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Check your internal network is using private ips
+      assert:
+        that:
+          - internal_lb_vip_address | ipaddr('private')
+
 - name: Ensure settings are not wrong with the usual suspects issues before trying to deploy infra
   hosts: haproxy
   gather_facts: yes
