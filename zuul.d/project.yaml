@@ -27,11 +27,8 @@
         - openstack-ansible-deploy-aio_metal-ubuntu-xenial
         # NOTE(mhayden): Temporarily replacing with aio_basekit scenario.
         # - openstack-ansible-deploy-aio_lxc-centos-7
-        # - openstack-ansible-deploy-aio_lxc-opensuse-423
         # - openstack-ansible-deploy-ceph-centos-7
-        # - openstack-ansible-deploy-ceph-opensuse-423
         - openstack-ansible-deploy-aio_basekit-centos-7
-        - openstack-ansible-deploy-aio_basekit-opensuse-423
     experimental:
       jobs:
         - openstack-ansible-deploy-octavia-ubuntu-xenial
@@ -48,7 +45,6 @@
         # until they are more likely to pass on time.
         # (Currently timing out).
         #- openstack-ansible-deploy-aio_lxc-centos-7
-        #- openstack-ansible-deploy-aio_lxc-opensuse-423
         - openstack-ansible-deploy-aio_lxc-ubuntu-xenial
         #- openstack-ansible-deploy-ceph-centos-7
         - openstack-ansible-deploy-ceph-ubuntu-xenial
