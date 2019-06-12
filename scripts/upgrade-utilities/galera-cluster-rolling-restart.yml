@@ -32,12 +32,22 @@
         name: "{{ inventory_hostname }}"
         state: "stopped"
       delegate_to: "{{ physical_host }}"
+      when: not hostvars[inventory_hostname]['is_metal']
 
     - name: Start container
       lxc_container:
         name: "{{ inventory_hostname }}"
         state: "started"
       delegate_to: "{{ physical_host }}"
+      when: not hostvars[inventory_hostname]['is_metal']
+
+    - name: Start mariadb
+      service:
+        name: mysql
+        state: started
+      retries: 5
+      delay: 10
+      when: hostvars[inventory_hostname]['is_metal']
 
   post_tasks:
     - name: Wait for mariadb port 3306 to be available

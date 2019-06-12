@@ -82,7 +82,7 @@
         line: "{{ item }}"
       with_items: "{{ new_secrets.stdout_lines }}"
       when:
-        - "user_secrets.stdout.find(item) == -1"
+        - not (user_secrets.stdout | regex_search('((^|\n)' ~ item ~ ')'))
       tags:
         - update-secrets
 
@@ -97,3 +97,30 @@
         state: absent
       tags:
         - remove-fact-cache
+
+    - name: Define placement service hosts
+      copy:
+        dest: /etc/openstack_deploy/conf.d/placement.yml
+        content: |-
+          {% set config = {'placement-infra_hosts': {}} %}
+          {% for host in groups['compute-infra_hosts'] %}
+          {%   set _ = config['placement-infra_hosts'].update(
+                 {
+                   host: {
+                     'ip': hostvars[host]['container_address']
+                     }
+                 }
+               ) %}
+          {% endfor %}
+          {{ config | to_yaml }}
+      when:
+        - placement_migrate_flag | default(False)
+        - not ('placement-infra_hosts' in groups and groups['placement-infra_hosts'])
+
+    - name: Set placement service is_metal property
+      copy:
+        dest: /etc/openstack_deploy/env.d/placement_metal.yml
+        content: "{{ '---\n' ~ {'container_skel': {'placement_container': {'properties': {'is_metal': true}}}} | to_yaml }}"
+      when:
+        - placement_migrate_flag | default(False)
+        - hostvars[groups['nova_api_placement'][0]]['is_metal'] | default(False)
