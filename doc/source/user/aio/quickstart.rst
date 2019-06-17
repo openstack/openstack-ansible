@@ -231,7 +231,7 @@ container back-end.
 
 .. code-block:: shell-session
 
-   # export SCENARIO='aio_lxc_barbican'
+   # export SCENARIO='aio_lxc_barbican_ceph'
    # scripts/bootstrap-aio.sh
 
 .. note::
