@@ -68,14 +68,17 @@
       jobs:
         - openstack-ansible-deploy-aio_metal-debian-stable
         - openstack-ansible-deploy-aio_metal-centos-7
-        - openstack-ansible-deploy-aio_metal-opensuse-150
+        - openstack-ansible-deploy-aio_metal-opensuse-15
         - openstack-ansible-deploy-aio_metal-ubuntu-bionic
     gate:
       jobs:
         - openstack-ansible-deploy-aio_metal-debian-stable
         - openstack-ansible-deploy-aio_metal-centos-7
-        - openstack-ansible-deploy-aio_metal-opensuse-150
+        - openstack-ansible-deploy-aio_metal-opensuse-15
         - openstack-ansible-deploy-aio_metal-ubuntu-bionic
+    periodic:
+      jobs:
+        - openstack-ansible-deploy-aio_metal-opensuse-15
 
 - project-template:
     name: openstack-ansible-deploy-aio_telemetry_metal-jobs
@@ -98,16 +101,20 @@
     check:
       jobs:
         - openstack-ansible-deploy-aio_distro_metal-centos-7
+        - openstack-ansible-deploy-aio_distro_metal-opensuse-15:
+            voting: false
     gate:
       jobs:
         - openstack-ansible-deploy-aio_distro_metal-centos-7
+    periodic:
+      jobs:
+        - openstack-ansible-deploy-aio_distro_metal-opensuse-15
     experimental:
       jobs:
         # NOTE(hwoarang) SUSE and Ubuntu distro jobs remain non-voting
         # on master branches. See
         # http://eavesdrop.openstack.org/meetings/openstack_ansible_meeting/2018/openstack_ansible_meeting.2018-10-23-16.01.log.html#l-188
         - openstack-ansible-deploy-aio_distro_metal-ubuntu-bionic
-        - openstack-ansible-deploy-aio_distro_metal-opensuse-150
 
 - project-template:
     name: openstack-ansible-deploy-aio_nspawn-jobs
