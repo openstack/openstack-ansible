@@ -153,7 +153,8 @@ bootstrap_host_data_disk_device_force: no
 #
 # If the storage capacity on this device is greater than or equal to this
 # size (in GB), the bootstrap process will use it.
-bootstrap_host_data_disk_min_size: 50
+# If metal, we don't need that much storage space.
+bootstrap_host_data_disk_min_size: "{{ (bootstrap_host_scenario is search('metal')) | ternary(10,50) }}"
 #
 # Set the data disk formats table. If the backing store is set to lvm the option
 # the partition will not actually be formatted however for parted, ext2 is used.
