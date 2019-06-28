@@ -167,6 +167,10 @@ octavia_hm_hosts: 172.29.252.100 # br-lbaas IP
 ## Sahara
 sahara_api_workers_max: 2
 sahara_api_workers: 1
+sahara_wsgi_threads: 1
+sahara_wsgi_processes_max: 2
+sahara_wsgi_processes: 2
+sahara_wsgi_buffer_size: 16384
 
 # NOTE: hpcloud-b4's eth0 uses 10.0.3.0/24, which overlaps with the
 #       lxc_net_address default
