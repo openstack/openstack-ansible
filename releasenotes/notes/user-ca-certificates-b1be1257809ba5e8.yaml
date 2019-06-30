@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Deployers may require custom CA certificates installing on their openstack
+    hosts or service containers. A new variable openstack_host_ca_certificates
+    is added which is a list of certificates that should be copied from the
+    deploy host to the target hosts. Certificates may be selectively deployed
+    by defining the variable either in user_variables.yml or via host/group vars.
