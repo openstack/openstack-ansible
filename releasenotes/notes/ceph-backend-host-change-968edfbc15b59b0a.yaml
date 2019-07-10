@@ -1,0 +1,9 @@
+---
+issues:
+  - Due to a change in how backend_host is defined when using Ceph, all the
+    Cinder volumes will restart under the same backend name.  This will mean
+    that any volumes which previously were assigned to the host or container
+    that hosted the volume will no longer be managable.  The workaround for
+    this is to use the `cinder-manage volume update_host` command to move
+    those volumes to the new backend host.  This known issue will be resolved
+    soon with an upgrade playbook.
