@@ -13,6 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+rabbitmq_port_bindings: |-
+  {%- set _rabbitmq_port_bindings = {} %}
+  {%- set _ = _rabbitmq_port_bindings.update({ 'ssl_listeners': { management_address: '5671' } }) %}
+  {%- set _ = _rabbitmq_port_bindings.update({ 'tcp_listeners': { management_address: '5672' } }) %}
+  {{ _rabbitmq_port_bindings }}
+
+rabbitmq_management_bind_address: "{{ management_address }}"
+
 rabbitmq_cluster_name: openstack
 
 # Ensure that the package state matches the global setting

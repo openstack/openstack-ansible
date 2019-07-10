@@ -34,6 +34,9 @@ debug: False
 ## SSH connection wait time
 ssh_delay: 5
 
+management_address: "{{ container_address }}"
+openstack_service_bind_address: "{{ management_address }}"
+
 # Set the package install state for distribution packages
 # Options are 'present' and 'latest'.
 # NOTE(mhayden): Allowing CentOS 7 and openSUSE to use package_state=present should give

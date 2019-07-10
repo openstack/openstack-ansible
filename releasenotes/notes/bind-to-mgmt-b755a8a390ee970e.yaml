@@ -1,0 +1,20 @@
+---
+features:
+  - |
+    Openstack services and infrastructure such as galera, rabbitmq
+    and memcached already have defaults in their ansible roles to control the
+    IP address which those services bind to. Prior to this release the default
+    of 0.0.0.0 was used. A global setting in the openstack-ansible group
+    variables now overrides those default bind address to be the local address
+    on the openstack management network (typically br-mgmt) for the relevant
+    host or container.
+upgrade:
+  - |
+    The default bind address for all openstack services and infrastructure
+    services such as galera, rabbitmq and memcached has changed from 0.0.0.0
+    to the IP address of the openstack mangement network on the relevent host
+    or container. Deployers should ensure that any additional systems that
+    expect to communicate with internal components of their openstack-ansible
+    deployment do so over the managment network. Services which are bound to
+    the management network IP will not be accessible via other interfaces.
+
