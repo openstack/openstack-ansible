@@ -726,7 +726,7 @@ def container_skel_load(container_skel, inventory, config):
                 q_netmask = '{}_netmask'.format(net_name)
                 provider_queues[q_netmask] = str(net.netmask)
 
-        overrides = config['global_overrides']
+        overrides = config.get('global_overrides', dict())
         # iterate over a list of provider_networks, var=pn
         pns = overrides.get('provider_networks', list())
         for pn in pns:
