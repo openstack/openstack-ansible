@@ -16,8 +16,8 @@
 - name: Ensure the hosts file is templated appropriately
   copy:
     content: |
-      127.0.0.1 localhost aio1
-      127.0.1.1 aio1.openstack.local aio1
+      127.0.0.1 localhost
+      172.29.236.100 aio1.openstack.local aio1
 
       # The following lines are desirable for IPv6 capable hosts
       ::1 ip6-localhost ip6-loopback
