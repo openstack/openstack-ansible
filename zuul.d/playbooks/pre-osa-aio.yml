@@ -31,6 +31,7 @@
         ZUUL_SRC_PATH: "{{ ansible_user_dir }}/src"
         ANSIBLE_PACKAGE: "{{ ansible_package | default('') }}"
         SETUP_ARA: 'true'
+      when: action != 'upgrade'
     - name: Run bootstrap-aio script
       become: yes
       become_user: root
@@ -42,3 +43,4 @@
         SCENARIO: "{{ scenario }}"
         ACTION: "{{ action }}"
         INSTALL_METHOD: "{{ install_method }}"
+      when: action != 'upgrade'
