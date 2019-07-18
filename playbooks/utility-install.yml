@@ -104,7 +104,10 @@
             _openstack_client_list: >-
               {%- set package_list = [] %}
               {%- for l in _abs_reqs.content.split('\n') %}
-              {%-   if (l is match('^python-.*client==.*$')) or (l is match('^(aodh|gnocchi)client==.*$')) %}
+              {%-   if (l is match('^python-.*client==.*$')) or
+                       (l is match('^(aodh|gnocchi)client==.*$')) or
+                       (l is match('^osc-placement==.*$'))
+              %}
               {%-     set _ = package_list.append(l | regex_replace('==.*$', '')) %}
               {%-   endif %}
               {%- endfor %}
