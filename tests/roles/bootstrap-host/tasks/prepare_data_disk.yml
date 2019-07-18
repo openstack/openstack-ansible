@@ -61,7 +61,7 @@
   filesystem:
     fstype: "{{ bootstrap_host_data_disk_fs_type }}"
     dev: "/dev/{{ _bootstrap_host_data_disk_device }}1"
-    opts: "{{ bootstrap_host_format_options['ext4'] | default(omit) }}"
+    opts: "{{ bootstrap_host_format_options[bootstrap_host_data_disk_fs_type] | default(omit) }}"
   when:
     - bootstrap_host_data_disk_device_force | bool
   tags:
