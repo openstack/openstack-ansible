@@ -13,12 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- import_tasks: common-tasks/os-log-dir-setup.yml
-  vars:
-    log_dirs:
-      - src: "/openstack/log/{{ inventory_hostname }}-ceph"
-        dest: "/var/log/ceph"
-
 - include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
   when: not is_metal
   vars:

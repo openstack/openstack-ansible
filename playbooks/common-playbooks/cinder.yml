@@ -63,13 +63,6 @@
         - "not is_metal"
         - "not ( 'cinder_volume' in group_names and cinder_backend_lvm_inuse | bool )"
 
-    - name: Configure log directories (on metal)
-      include_tasks: ../common-tasks/os-log-dir-setup.yml
-      vars:
-        log_dirs:
-          - src: "/openstack/log/{{ inventory_hostname }}-cinder"
-            dest: "/var/log/cinder"
-
     - include_tasks: ../common-tasks/unbound-clients.yml
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
@@ -106,12 +99,6 @@
         - crontab
 
   post_tasks:
-    - include_tasks: "../common-tasks/rsyslog-client.yml"
-      vars:
-        rsyslog_client_log_rotate_file: cinder_log_rotate
-        rsyslog_client_log_dir: "/var/log/cinder"
-        rsyslog_client_config_name: "99-cinder-rsyslog-client.conf"
-
     # Now that container changes are done, we can set
     # the load balancer back end for this container
     # to available again.

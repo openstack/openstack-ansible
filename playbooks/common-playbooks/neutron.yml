@@ -51,22 +51,6 @@
         - "not is_metal"
         - "'neutron_agent' not in group_names"
 
-    - name: Configure log directories (on metal)
-      include_tasks: ../common-tasks/os-log-dir-setup.yml
-      vars:
-        log_dirs:
-          - src: "/openstack/log/{{ inventory_hostname }}-neutron"
-            dest: "/var/log/neutron"
-
-    - name: Configure log directories (on metal) (calico)
-      include_tasks: ../common-tasks/os-log-dir-setup.yml
-      vars:
-        log_dirs:
-          - src: "/openstack/log/{{ inventory_hostname }}-calico"
-            dest: "/var/log/calico"
-      when:
-        - "'neutron_calico_dhcp_agent' in group_names"
-
     - include_tasks: ../common-tasks/unbound-clients.yml
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
@@ -103,21 +87,3 @@
     - role: "system_crontab_coordination"
       tags:
         - crontab
-
-  post_tasks:
-    - include_tasks: "../common-tasks/rsyslog-client.yml"
-      vars:
-        rsyslog_client_log_rotate_file: neutron_log_rotate
-        rsyslog_client_log_dir: "/var/log/neutron"
-        rsyslog_client_log_files:
-          - /var/log/conntrackd.log
-          - /var/log/conntrackd-stats.log
-        rsyslog_client_config_name: "99-neutron-rsyslog-client.conf"
-
-    - include_tasks: "../common-tasks/rsyslog-client.yml"
-      vars:
-        rsyslog_client_log_rotate_file: calico_log_rotate
-        rsyslog_client_log_dir: "/var/log/calico"
-        rsyslog_client_config_name: "99-calico-rsyslog-client.conf"
-      when:
-        - "'neutron_calico_dhcp_agent' in group_names"

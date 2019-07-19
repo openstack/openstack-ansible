@@ -19,7 +19,6 @@
 #  neutron DHCP.
 neutron_dhcp_config:
   dhcp-ignore: "tag:!known"
-  log-facility: "/var/log/neutron/neutron-dnsmasq.log"
 
 lxc_container_config_list:
   - "lxc.aa_profile=unconfined"

@@ -36,11 +36,6 @@
     - include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       when: not is_metal
 
-    - include_tasks: common-tasks/os-log-dir-setup.yml
-      vars:
-        log_dirs:
-          - src: "/openstack/log/{{ inventory_hostname }}-masakari"
-            dest: "/var/log/masakari"
     - include_tasks: common-tasks/unbound-clients.yml
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
@@ -49,11 +44,6 @@
     - role: "os_masakari"
 
   post_tasks:
-    - include_tasks: "common-tasks/rsyslog-client.yml"
-      vars:
-        rsyslog_client_log_rotate_file: masakari_log_rotate
-        rsyslog_client_log_dir: "/var/log/masakari"
-        rsyslog_client_config_name: "99-masakari-rsyslog-client.conf"
     # Now that container changes are done, we can set
     # the load balancer back end for this container
     # to available again.

@@ -18,6 +18,7 @@
   user: root
   vars_files:
     - "defaults/{{ install_method }}_install.yml"
+    - "defaults/ceph_ansible.yml"
   pre_tasks:
 
     - import_tasks: common-tasks/ceph-server.yml
@@ -99,6 +100,7 @@
   user: root
   vars_files:
     - "defaults/{{ install_method }}_install.yml"
+    - "defaults/ceph_ansible.yml"
   pre_tasks:
 
     - import_tasks: common-tasks/ceph-server.yml

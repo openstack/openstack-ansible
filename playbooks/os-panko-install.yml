@@ -25,18 +25,5 @@
   pre_tasks:
     - include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       when: not is_metal
-
-    - include_tasks: common-tasks/os-log-dir-setup.yml
-      vars:
-        log_dirs:
-          - src: "/openstack/log/{{ inventory_hostname }}-panko"
-            dest: "/var/log/panko"
   roles:
     - role: "os_panko"
-
-  post_tasks:
-    - include_tasks: "common-tasks/rsyslog-client.yml"
-      vars:
-        rsyslog_client_log_rotate_file: panko_log_rotate
-        rsyslog_client_log_dir: "/var/log/panko"
-        rsyslog_client_config_name: "99-panko-rsyslog-client.conf"
