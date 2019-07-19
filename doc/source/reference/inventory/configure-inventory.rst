@@ -66,10 +66,31 @@ the ``is_metal`` property to ``true`` for the container group in the
 The use of ``container_vars`` and mapping from container groups to host groups
 is the same for a service deployed directly onto the host.
 
+You can also use the ``no_containers`` option to specify a host that will have
+all services deployed on metal inside of it.
+
 .. note::
 
    The ``cinder-volume`` component is deployed directly on the host by
    default. See the ``env.d/cinder.yml`` file for this example.
+
+Example: Running all controllers on metal
+-----------------------------------------
+For example, if you'd like to run all your controllers on metal, you would
+have the following inside your ``openstack_user_config.yml``.
+
+   .. code-block:: yaml
+
+     infra_hosts:
+       infra1:
+         ip: 172.39.123.11
+         no_containers: true
+       infra2:
+         ip: 172.39.123.12
+         no_containers: true
+       infra3:
+         ip: 172.39.123.13
+         no_containers: true
 
 Example: Running galera on dedicated hosts
 ------------------------------------------

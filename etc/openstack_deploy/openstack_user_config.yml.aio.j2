@@ -35,6 +35,7 @@ global_overrides:
   # dynamic inventory testing.
   external_lb_vip_address: "{{ bootstrap_host_public_address | default(ansible_default_ipv4.address) }}"
   management_bridge: "br-mgmt"
+  no_containers: {{ true if 'metal' in bootstrap_host_scenarios else false }}
   provider_networks:
     - network:
         container_bridge: "br-mgmt"
