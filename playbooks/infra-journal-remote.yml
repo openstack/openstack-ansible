@@ -104,6 +104,9 @@
             --compress
             --seal
             --output=/var/log/journal/remote/
+          config_overrides:
+            Unit:
+              Requires: "systemd-journal-remote.socket"
 
         - service_name: "systemd-journal-upload"
           enabled: "{{ (ansible_host == systemd_journal_remote_target) | ternary('no', 'yes') }}"
