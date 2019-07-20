@@ -17,7 +17,6 @@
 
 ## Vars ----------------------------------------------------------------------
 LINE='----------------------------------------------------------------------'
-MAX_RETRIES=${MAX_RETRIES:-5}
 ANSIBLE_PARAMETERS=${ANSIBLE_PARAMETERS:-""}
 STARTTIME="${STARTTIME:-$(date +%s)}"
 COMMAND_LOGS=${COMMAND_LOGS:-"/openstack/log/ansible_cmd_logs"}

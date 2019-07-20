@@ -18,9 +18,6 @@ set -e -u -x
 
 ## Variables -----------------------------------------------------------------
 
-# Successerator: How many times do we try before failing
-export MAX_RETRIES=${MAX_RETRIES:-"2"}
-
 # tempest and testr options, default is to run tempest in serial
 export TESTR_OPTS=${TESTR_OPTS:-''}
 
