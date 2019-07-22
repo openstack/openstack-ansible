@@ -18,7 +18,7 @@ OpenStack resources:
 - `OpenStack Documentation <https://docs.openstack.org/>`_
 
 - `OpenStack API Guide
-  <https://developer.openstack.org/api-guide/quick-start>`_
+  <https://docs.openstack.org/api-quick-start>`_
 
 - `OpenStack Project Developer Documentation
   <https://docs.openstack.org/developer>`_

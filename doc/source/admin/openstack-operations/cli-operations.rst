@@ -41,7 +41,7 @@ associated with:
 For more information about OpenStack client utilities, see these links:
 
 -  `OpenStack API Quick
-   Start <https://developer.openstack.org/api-guide/quick-start/index.html>`__
+   Start <https://docs.openstack.org/api-quick-start/index.html>`__
 
 -  `OpenStackClient
    commands <https://docs.openstack.org/python-openstackclient/latest/>`__
