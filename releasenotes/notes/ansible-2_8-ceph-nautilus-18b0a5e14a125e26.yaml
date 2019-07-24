@@ -1,0 +1,18 @@
+---
+features:
+  - |
+    The ansible version used by OSA is updated from the 2.7 to the 2.8 series.
+    This requires an upgrade of ceph-ansible to 4.0 and this in turn
+    requires an upgrade of ceph from Mimic to Nautilus. This version dependancy
+    applies where OSA uses ceph-ansible directly to deploy the ceph infrastructure,
+    but not when OSA is integrated with an externally provisioned ceph cluster.
+upgrade:
+  - |
+    Any ceph infrastructure components (OSDs, MONs etc) deployed using the
+    OSA/ceph-ansible tooling will be upgraded to the Ceph Nautilus release.
+    Deployers should verify that this upgrade is suitable for their environment
+    before commencing a major upgrade to Train, and consult the ceph-ansible
+    and ceph release notes for Nautilus. For integration with external ceph
+    clusters where OSA does not deploy any of the ceph cluster infrastructure,
+    overrides can be used to select the specific version of ceph repositories
+    used by the OSA ceph_client ansible role.

@@ -62,13 +62,34 @@
     mode: "0777"
   with_items: "{{ ceph_create_loopback.results }}"
 
+# NOTE(jrosser) ceph-volume is unwilling to automatically create OSD
+# directly on loop devices - see http://tracker.ceph.com/issues/36603
+# Work around this with manual LVM creation and the advanced lvm OSD
+# scenario
+- name: Create LVM VG
+  lvg:
+    vg: "vg-{{ item.stdout | basename }}"
+    pvs: "{{ item.stdout }}"
+  loop: "{{ ceph_create_loopback.results }}"
+
+- name: Create LVM LV
+  lvol:
+    lv: "lv-{{ item.stdout | basename }}"
+    vg: "vg-{{ item.stdout | basename }}"
+    size: 100%FREE
+  loop: "{{ ceph_create_loopback.results }}"
+
 # TODO(logan): Move these vars to user_variables.ceph.yml.j2 once LP #1649381
 # is fixed and eliminate this task.
 - name: Write ceph cluster config
   copy:
     content: |
       ---
-      devices: {{ ceph_create_loopback.results | map(attribute='stdout') | list | to_yaml | trim }}
+      lvm_volumes:
+      {% for d in ceph_create_loopback | json_query('results[].stdout') %}
+        - data_vg: vg-{{ d | basename }}
+          data: lv-{{ d | basename }}
+      {% endfor %}
       cinder_backends:
         "RBD":
           volume_driver: cinder.volume.drivers.rbd.RBDDriver

@@ -1,6 +1,6 @@
 ---
 ceph_conf_overrides_rgw:
-  "client.rgw.{{ hostvars[inventory_hostname]['ansible_hostname'] }}":
+  "client.rgw.{{ hostvars[inventory_hostname]['ansible_hostname'] }}.rgw0":
     # OpenStack integration with Keystone
     rgw_keystone_url: "{{ keystone_service_adminuri }}"
     rgw_keystone_api_version: 3
