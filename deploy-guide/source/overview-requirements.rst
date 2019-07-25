@@ -10,7 +10,7 @@ following minimum requirements:
 
   * Linux kernel version ``3.13.0-34-generic`` or later is required.
 
-* CentOS (support is experimental)
+* CentOS
 
   * Centos 7, fully updated.
 
