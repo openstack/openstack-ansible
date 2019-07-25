@@ -24,6 +24,7 @@ export HTTPS_PROXY=${HTTPS_PROXY:-""}
 # The Ansible version used for testing
 export ANSIBLE_PACKAGE=${ANSIBLE_PACKAGE:-"ansible==2.8.2"}
 export ANSIBLE_ROLE_FILE=${ANSIBLE_ROLE_FILE:-"ansible-role-requirements.yml"}
+export USER_ROLE_FILE=${USER_ROLE_FILE:-"user-role-requirements.yml"}
 export SSH_DIR=${SSH_DIR:-"/root/.ssh"}
 export DEBIAN_FRONTEND=${DEBIAN_FRONTEND:-"noninteractive"}
 # check whether to install the ARA callback plugin
@@ -185,7 +186,7 @@ if [ -f "${ANSIBLE_ROLE_FILE}" ] && [[ -z "${SKIP_OSA_ROLE_CLONE+defined}" ]]; t
 
     pushd scripts
       /opt/ansible-runtime/bin/ansible-playbook get-ansible-role-requirements.yml \
-                       -e role_file="${ANSIBLE_ROLE_FILE}"
+                       -e role_file="${ANSIBLE_ROLE_FILE}" -e user_role_file="${USER_ROLE_FILE}"
     popd
 
     unset ANSIBLE_LIBRARY
