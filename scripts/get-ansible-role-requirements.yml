@@ -57,6 +57,21 @@
           with_items: "{{ zuul_roles.results
                           | selectattr('stat.exists')
                           | list }}"
+        # NOTE(mnaser): We need to make sure that all the roles
+        #               are checked out by Zuul so we hard fail
+        #               if any roles are not.
+        - name: Fail if any roles were not cloned
+          fail:
+            msg: |
+              The following roles were not cloned automatically by Zuul,
+              make sure that they're included in required-projects {{ uncloned_roles|join(',') }}
+          when: uncloned_roles | length > 0
+          vars:
+            uncloned_roles: "{{ zuul_roles.results | rejectattr('stat.exists')
+                                                   | map(attribute='item')
+                                                   | map(attribute='src')
+                                                   | select('match', 'opendev.org')
+                                                   | list }}"
       when:
         - "lookup('env', 'ZUUL_SRC_PATH') != ''"
 
