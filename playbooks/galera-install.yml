@@ -19,11 +19,6 @@
   serial: 1
   user: root
   tasks:
-    - include_tasks: common-tasks/os-log-dir-setup.yml
-      vars:
-        log_dirs:
-          - src: "/openstack/log/{{ inventory_hostname }}-mysql_logs"
-            dest: "/var/log/mysql_logs"
     - include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       when: not is_metal
       vars:
@@ -53,17 +48,6 @@
     - role: "system_crontab_coordination"
       tags:
         - crontab
-
-  post_tasks:
-    - include_tasks: "common-tasks/rsyslog-client.yml"
-      vars:
-        rsyslog_client_log_rotate_file: galera_log_rotate
-        rsyslog_client_log_dir: "/var/log/mysql_logs"
-        rsyslog_client_log_files:
-          - /var/log/mysql.log
-          - /var/log/mysql.err
-        rsyslog_client_config_name: "99-galera-rsyslog-client.conf"
-
   vars:
     galera_server_id: "{{ inventory_hostname | string_2_int }}"
     galera_wsrep_node_name: "{{ container_name | default(inventory_hostname) }}"

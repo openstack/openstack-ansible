@@ -72,13 +72,6 @@
         extra_container_config_no_restart:
           - "lxc.start.order=39"
 
-    - name: Configure log directories (on metal)
-      include_tasks: ../common-tasks/os-log-dir-setup.yml
-      vars:
-        log_dirs:
-          - src: "/openstack/log/{{ inventory_hostname }}-nova"
-            dest: "/var/log/nova"
-
     - include_tasks: ../common-tasks/unbound-clients.yml
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
@@ -149,12 +142,6 @@
         - crontab
 
   post_tasks:
-    - include_tasks: "../common-tasks/rsyslog-client.yml"
-      vars:
-        rsyslog_client_log_rotate_file: nova_log_rotate
-        rsyslog_client_log_dir: "/var/log/nova"
-        rsyslog_client_config_name: "99-nova-rsyslog-client.conf"
-
     # Now that container changes are done, we can set
     # the load balancer back end for this container
     # to available again.

@@ -27,12 +27,6 @@
     - include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       when: not is_metal
 
-    - include_tasks: common-tasks/os-log-dir-setup.yml
-      vars:
-        log_dirs:
-          - src: "/openstack/log/{{ inventory_hostname }}-octavia"
-            dest: "/var/log/octavia"
-
     - include_tasks: common-tasks/unbound-clients.yml
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
@@ -41,10 +35,3 @@
     - role: "system_crontab_coordination"
       tags:
         - crontab
-
-  post_tasks:
-    - include_tasks: "common-tasks/rsyslog-client.yml"
-      vars:
-        rsyslog_client_log_rotate_file: octavia_log_rotate
-        rsyslog_client_log_dir: "/var/log/octavia"
-        rsyslog_client_config_name: "100-octavia-rsyslog-client.conf"

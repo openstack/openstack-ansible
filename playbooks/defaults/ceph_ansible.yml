@@ -1,5 +1,5 @@
 ---
-# Copyright 2017, SUSE LINUX GmbH.
+# Copyright 2019, VEXXHOST, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Install the tacker components
-  hosts: tacker_all
-  gather_facts: "{{ osa_gather_facts | default(True) }}"
-  user: root
-  environment: "{{ deployment_environment_variables | default({}) }}"
-  vars_files:
-    - "defaults/repo_packages/openstack_services.yml"
-    - "defaults/{{ install_method }}_install.yml"
-  tags:
-    - tacker
-  pre_tasks:
-    - include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
-      when: not is_metal
-  roles:
-    - role: "os_tacker"
+ceph_conf_overrides:
+  global:
+    log_file: none
+    log_to_syslog: true
+    err_to_syslog: true
+  mon:
+    mon_cluster_log_to_syslog: true
+    mon_cluster_log_file: none

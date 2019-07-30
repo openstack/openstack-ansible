@@ -21,11 +21,6 @@
   pre_tasks:
     - include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       when: not is_metal
-    - include_tasks: common-tasks/os-log-dir-setup.yml
-      vars:
-        log_dirs:
-          - src: "/openstack/log/{{ inventory_hostname }}-haproxy"
-            dest: "/var/log/haproxy"
     - include_tasks: common-tasks/unbound-clients.yml
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
@@ -42,12 +37,6 @@
        - "item.when | bool"
       tags:
         - haproxy-config  # this tag is present because the task is ONLY a config task
-    - name: Remove legacy haproxy logging file
-      file:
-        dest: "/etc/rsyslog.d/haproxy.conf"
-        state: "absent"
-      tags:
-        - haproxy-config  # this tag is present because the task is ONLY a config task
   roles:
     - role: "keepalived"
       when: haproxy_use_keepalived | bool
@@ -55,14 +44,6 @@
         - keepalived
     - role: "haproxy_server"
       haproxy_service_configs: "{{ haproxy_default_services + haproxy_extra_services|default([]) }}"
-
-  post_tasks:
-    - include_tasks: "common-tasks/rsyslog-client.yml"
-      vars:
-        rsyslog_client_log_rotate_file: haproxy_log_rotate
-        rsyslog_client_log_dir: "/var/log/haproxy"
-        rsyslog_client_config_name: "99-haproxy-rsyslog-client.conf"
-
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - haproxy-config

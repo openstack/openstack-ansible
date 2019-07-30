@@ -35,10 +35,3 @@
     - role: "system_crontab_coordination"
       tags:
         - crontab
-
-  post_tasks:
-    - include_tasks: "common-tasks/rsyslog-client.yml"
-      vars:
-        rsyslog_client_log_rotate_file: ironic_log_rotate
-        rsyslog_client_log_dir: "/var/log/ironic"
-        rsyslog_client_config_name: "99-ironic-rsyslog-client.conf"

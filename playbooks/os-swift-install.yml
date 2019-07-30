@@ -27,11 +27,6 @@
           - "lxc.start.order=39"
       when: not is_metal
 
-    - include_tasks: common-tasks/os-log-dir-setup.yml
-      vars:
-        log_dirs:
-          - src: "/openstack/log/{{ inventory_hostname }}-swift"
-            dest: "/var/log/swift"
     - include_tasks: common-tasks/unbound-clients.yml
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
@@ -51,16 +46,6 @@
     - role: "system_crontab_coordination"
       tags:
         - crontab
-
-  post_tasks:
-    - include_tasks: "common-tasks/rsyslog-client.yml"
-      vars:
-        rsyslog_client_log_rotate_file: swift_log_rotate
-        rsyslog_client_log_dir: "/var/log/swift"
-        rsyslog_client_config_name: "99-swift-rsyslog-client.conf"
-        rsyslog_client_log_files:
-          - /var/log/rsyncd.log
-
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - swift

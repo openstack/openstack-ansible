@@ -30,12 +30,6 @@
         - not is_metal
         - (gnocchi_storage_driver | default('file')) != "file"
 
-    - include_tasks: common-tasks/os-log-dir-setup.yml
-      vars:
-        log_dirs:
-          - src: "/openstack/log/{{ inventory_hostname }}-gnocchi"
-            dest: "/var/log/gnocchi"
-
     - include_tasks: common-tasks/unbound-clients.yml
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
@@ -51,10 +45,3 @@
 
     - role: "os_gnocchi"
       gnocchi_identity_only: "{{ ((gnocchi_storage_driver | default('file')) == 'swift') | ternary(true, false)}}"
-
-  post_tasks:
-    - include_tasks: "common-tasks/rsyslog-client.yml"
-      vars:
-        rsyslog_client_log_rotate_file: gnocchi_log_rotate
-        rsyslog_client_log_dir: "/var/log/gnocchi"
-        rsyslog_client_config_name: "99-gnocchi-rsyslog-client.conf"

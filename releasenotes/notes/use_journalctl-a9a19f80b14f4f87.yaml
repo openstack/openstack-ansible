@@ -1,0 +1,11 @@
+---
+features:
+  - |
+    All roles are migrated from usage of regular log files to systemd-journald
+deprecations:
+  - |
+    Due to usage of systemd-journald mapping of /openstack/log/ to
+    /var/log/$SERVICE is not present anymore. Also rsyslog_client role is not
+    called for projects since logs are stored in journald.
+    Also variables like service_log_dir are not supported anymore and have no
+    effect.
