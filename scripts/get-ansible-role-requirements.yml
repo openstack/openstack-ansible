@@ -75,6 +75,26 @@
       when:
         - "lookup('env', 'ZUUL_SRC_PATH') != ''"
 
+    - name: Generate a list of user overridden roles
+      set_fact:
+        user_overridden_roles: "{{ user_roles | json_query('[*].name') }}"
+
+    - name: Generate a list of roles excluding user overridden roles
+      set_fact:
+        clone_roles: "{{ (clone_roles | default([])) + [ item ] }}"
+      when:
+        - item.scm == "git" or item.scm is undefined
+        - item.name not in user_overridden_roles
+      with_items: "{{ (zuul_roles.results | default([]) |
+                       selectattr('stat', 'defined') |
+                       rejectattr('stat.exists') |
+                       map(attribute='item') | list)
+                      | default(required_roles, True) }}"
+
+    - name: Append user overridden roles
+      set_fact:
+        clone_roles: "{{ clone_roles + user_roles }}"
+
     - name: Clone git repos (with git)
       git:
         repo: "{{ item.src }}"
@@ -84,13 +104,7 @@
         depth: "{{ item.depth | default('10') }}"
         update: true
         force: true
-      when:
-        - item.scm == "git" or item.scm is undefined
-      with_items: "{{ (zuul_roles.results | default([]) |
-                       selectattr('stat', 'defined') |
-                       rejectattr('stat.exists') |
-                       map(attribute='item') | list)
-                      | default(required_roles, True) }}"
+      with_items: "{{ clone_roles }}"
       register: git_clone
       until: git_clone is success
       retries: "{{ git_clone_retries }}"
@@ -100,5 +114,7 @@
     required_roles: "{{ lookup('file', role_file) | from_yaml }}"
     role_file: "{{ playbook_dir }}/../ansible-role-requirements.yml"
     role_path_default: '/etc/ansible/roles'
+    user_roles: "{{ lookup('file', user_role_path, errors='ignore')|default([], true) | from_yaml }}"
+    user_role_path: "{{ lookup('env', 'OSA_CONFIG_DIR')|default('/etc/openstack_deploy') ~ '/' ~ user_role_file }}"
     git_clone_retries: 2
     git_clone_retry_delay: 5

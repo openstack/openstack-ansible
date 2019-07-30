@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    A new optional file /etc/openstack_deploy/user-role-requirements.yml is
+    now available for a deployer to override individual entries in the upstream
+    ansible-role-requirements file. This can be used to point to alternative repos
+    containing local fixes, or to add supplementary ansible roles that are not
+    specified in the standard ansible-role-requirements.
