@@ -183,7 +183,7 @@ haproxy_default_services:
       haproxy_backend_options:
         - "httpchk HEAD {{ hostvars[(groups['nova_console'] | default(['localhost']))[0] | default('localhost')]['nova_console_path'] | default('/spice_auto.html') }} HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
       haproxy_backend_httpcheck_options:
-        - "expect string OK"
+        - "expect status 200"
       haproxy_service_enabled: "{{ groups['nova_console'] is defined and groups['nova_console'] | length > 0 }}"
   - service:
       haproxy_service_name: cinder_api
