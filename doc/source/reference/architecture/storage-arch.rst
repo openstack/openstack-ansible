@@ -64,7 +64,7 @@ the `LVMVolumeDriver`_ and many of the drivers for commercial storage devices.
     `cinder-manage CLI tool`_. This configuration might change if
     `cinder volume active-active support spec`_ is implemented.
 
-.. _cinder driver: http://docs.openstack.org/developer/cinder/drivers.html
+.. _cinder driver: https://docs.openstack.org/cinder/drivers.html
 .. _LVMVolumeDriver: https://docs.openstack.org/cinder/latest/drivers.html#lvmvolumedriver
 .. _limitation with container iSCSI connectivity: https://bugs.launchpad.net/ubuntu/+source/lxc/+bug/1226855
 .. _cinder-manage CLI tool: https://docs.openstack.org/cinder/latest/cli/cinder-manage.html
@@ -128,7 +128,7 @@ created.
    |    | image cache.                                                        |
    +----+---------------------------------------------------------------------+
 
-.. _glance_store drivers: http://docs.openstack.org/developer/glance_store/drivers/
+.. _glance_store drivers: https://docs.openstack.org/glance_store/drivers/
 
 Ephemeral storage (nova)
 ~~~~~~~~~~~~~~~~~~~~~~~~

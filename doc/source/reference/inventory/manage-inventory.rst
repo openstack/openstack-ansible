@@ -41,7 +41,7 @@ A host can be removed with the ``--remove-item/-r`` parameter.
 
 Use the host's name as an argument.
 
-..  _`dynamic inventory functionality`: http://docs.ansible.com/ansible/intro_dynamic_inventory.html
+..  _`dynamic inventory functionality`: https://docs.ansible.com/ansible/intro_dynamic_inventory.html
 
 Exporting host information
 ~~~~~~~~~~~~~~~~~~~~~~~~~~

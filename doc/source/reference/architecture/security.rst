@@ -31,7 +31,7 @@ certificates, keys, and CA certificates.
 
 To learn more about how to customize the deployment of encrypted
 communications, see
-`Securing services with SSL certificates </user/security/index.html>`_.
+:ref:`Securing services with SSL certificates <security_settings>`.
 
 Host security hardening
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -56,7 +56,7 @@ to all deployments. The role has been carefully designed to perform as follows:
 For more information about the security configurations, see the
 `security hardening role`_ documentation.
 
-.. _security hardening role: http://docs.openstack.org/developer/ansible-hardening/
+.. _security hardening role: https://docs.openstack.org/ansible-hardening/
 .. _Security Technical Implementation Guide: https://en.wikipedia.org/wiki/Security_Technical_Implementation_Guide
 .. _Payment Card Industry Data Security Standard: https://www.pcisecuritystandards.org/pci_security/
 
@@ -154,5 +154,5 @@ For more information about recommended network policies for OpenStack clouds,
 see the `API endpoint process isolation and policy`_ section of the
 `OpenStack Security Guide`_
 
-.. _API endpoint process isolation and policy: http://docs.openstack.org/security-guide/api-endpoints/api-endpoint-configuration-recommendations.html#network-policy
-.. _OpenStack Security Guide: http://docs.openstack.org/security-guide
+.. _API endpoint process isolation and policy: https://docs.openstack.org/security-guide/api-endpoints/api-endpoint-configuration-recommendations.html#network-policy
+.. _OpenStack Security Guide: https://docs.openstack.org/security-guide

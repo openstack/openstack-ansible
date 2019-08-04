@@ -87,7 +87,7 @@ one of the nodes.
        # systemctl start mysql
        # systemctl set-environment _WSREP_NEW_CLUSTER=''
 
-   Please also have a look at `upstream starting a cluster page <http://galeracluster.com/documentation-webpages/startingcluster.html>`_
+   Please also have a look at `upstream starting a cluster page <https://galeracluster.com/documentation-webpages/startingcluster.html>`_
 
    This can also be done with the help of ansible using the shell
    module:
@@ -163,8 +163,8 @@ fails, please review `restarting the cluster`_ and `recovering the primary
 component`_ in the galera documentation as they're invaluable for a full
 cluster recovery.
 
-.. _restarting the cluster: http://galeracluster.com/documentation-webpages/restartingcluster.html
-.. _recovering the primary component: http://galeracluster.com/documentation-webpages/pcrecovery.html
+.. _restarting the cluster: https://galeracluster.com/library/training/tutorials/restarting-cluster.html
+.. _recovering the primary component: https://galeracluster.com/documentation-webpages/pcrecovery.html
 
 Recover a single-node failure
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -239,7 +239,7 @@ recover cannot join the cluster because it no longer exists.
    server indicates ``non-Primary`` because it cannot achieve quorum.
 
 #. Run the following command to
-   `rebootstrap <http://galeracluster.com/documentation-webpages/quorumreset.html#id1>`_
+   `rebootstrap <https://galeracluster.com/documentation-webpages/quorumreset.html>`_
    the operational node into the cluster:
 
    .. code-block:: shell-session

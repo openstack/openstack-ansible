@@ -6,7 +6,7 @@ between various services in an OpenStack deployment. The OpenStack-Ansible
 project currently offers the ability to configure SSL certificates for secure
 communication between services:
 
-.. _OpenStack Security Guide: http://docs.openstack.org/security-guide/secure-communication.html
+.. _OpenStack Security Guide: https://docs.openstack.org/security-guide/secure-communication.html
 
 All public endpoints reside behind haproxy, resulting in the only certificate
 management most environments need are those for haproxy.

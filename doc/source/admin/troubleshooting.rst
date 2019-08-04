@@ -173,7 +173,7 @@ node and running the :command:`service <SERVICE_NAME> status`.
 See the following links for additional information to verify OpenStack
 services:
 
-- `Identity service (keystone) <https://ask.openstack.org/en/question/101127/how-to-check-if-keystone-is-running.html>`_
+- `Identity service (keystone) <https://ask.openstack.org/en/question/101127/how-to-check-if-keystone-is-running/>`_
 - `Image service (glance) <https://docs.openstack.org/ocata/install-guide-ubuntu/glance-verify.html>`_
 - `Compute service (nova) <https://docs.openstack.org/ocata/install-guide-ubuntu/nova-verify.html>`_
 - `Networking service (neutron) <https://docs.openstack.org/ocata/install-guide-ubuntu/neutron-verify.html>`_
@@ -537,7 +537,8 @@ To set this permanently, set this variable in
 ``/usr/local/bin/openstack-ansible.rc``.
 Refer to the Ansible documentation on `fact caching`_ for more details.
 
-.. _fact caching: http://docs.ansible.com/ansible/playbooks_variables.html#fact-caching
+.. _fact caching: https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#fact-caching
+
 
 Forcing regeneration of cached facts
 ------------------------------------

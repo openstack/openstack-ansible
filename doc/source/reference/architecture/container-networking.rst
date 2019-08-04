@@ -12,7 +12,7 @@ For more information about how the OpenStack Networking service (neutron) uses
 the interfaces for instance traffic, please see the
 `OpenStack Networking Guide`_.
 
-.. _OpenStack Networking Guide: http://docs.openstack.org/networking-guide/
+.. _OpenStack Networking Guide: https://docs.openstack.org/neutron/latest/admin/index.html
 
 For details on the configuration of networking for your
 environment, please have a look at :ref:`openstack-user-config-reference`.

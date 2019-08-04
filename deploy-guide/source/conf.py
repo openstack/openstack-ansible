@@ -56,9 +56,9 @@ else:
   rdo_series = current_series_name
   suse_series = current_series_name.capitalize()
 
-deploy_guide_prefix = "http://docs.openstack.org/project-deploy-guide/openstack-ansible/{}/%s".format(current_series)
-dev_docs_prefix = "http://docs.openstack.org/openstack-ansible/{}/%s".format(current_series)
-role_docs_prefix = "http://docs.openstack.org/openstack-ansible-%s/{}".format(current_series)
+deploy_guide_prefix = "https://docs.openstack.org/project-deploy-guide/openstack-ansible/{}/%s".format(current_series)
+dev_docs_prefix = "https://docs.openstack.org/openstack-ansible/{}/%s".format(current_series)
+role_docs_prefix = "https://docs.openstack.org/openstack-ansible-%s/{}".format(current_series)
 
 # Substitutions loader
 rst_epilog = """

@@ -20,8 +20,8 @@ module.
 
 Modules can be used to control system resources, or handle the execution of
 system commands. For a more information about modules , see
-`Module Index <http://docs.ansible.com/ansible/modules_by_category.html>`_ and
-`About Modules <http://docs.ansible.com/ansible/modules.html>`_.
+`Module Index <https://docs.ansible.com/ansible/modules_by_category.html>`_ and
+`About Modules <https://docs.ansible.com/ansible/modules.html>`_.
 
 If you need to run a particular command against a subset of a group, you
 could use the limit flag ``-l``. For example, if a ``compute_hosts`` group
@@ -41,8 +41,8 @@ only needed to execute a command on ``compute1`` and ``compute4``:
    Run the ad-hoc Ansible commands from the ``openstack-ansible/playbooks``
    directory.
 
-For more information, see `Inventory <http://docs.ansible.com/ansible/intro_inventory.html>`_
-and `Patterns <http://docs.ansible.com/ansible/intro_patterns.html>`_.
+For more information, see `Inventory <https://docs.ansible.com/ansible/intro_inventory.html>`_
+and `Patterns <https://docs.ansible.com/ansible/intro_patterns.html>`_.
 
 Running the shell module
 ------------------------
@@ -75,7 +75,7 @@ to :command:`chdir=/home/user ls` when running Ansible from the CLI:
    $ ansible compute_hosts -m shell -a 'ls -la /home/user'
 
 For more information, see `shell - Execute commands in nodes
-<http://docs.ansible.com/ansible/shell_module.html>`_.
+<https://docs.ansible.com/ansible/shell_module.html>`_.
 
 Running the copy module
 -----------------------
@@ -84,7 +84,7 @@ The copy module copies a file on a local machine to remote locations. Use the
 fetch module to copy files from remote locations to the local machine. If you
 need variable interpolation in copied files, use the template module. For more
 information, see `copy - Copies files to remote locations
-<http://docs.ansible.com/ansible/copy_module.html>`_.
+<https://docs.ansible.com/ansible/copy_module.html>`_.
 
 The following example shows how to move a file from your deployment host to the
 ``/tmp`` directory on a set of remote machines:

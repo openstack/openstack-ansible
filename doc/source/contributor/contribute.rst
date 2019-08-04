@@ -105,7 +105,7 @@ Here are a few rules to get started:
   See also the :ref:`documentation` section.
 
 .. _Working on Specifications and Blueprints: https://docs.openstack.org/infra/manual/developers.html#working-on-specifications-and-blueprints
-.. _Tempest: https://docs.openstack.org/developer/tempest/
+.. _Tempest: https://docs.openstack.org/tempest/
 
 
 Example process to develop a new role
@@ -231,5 +231,5 @@ Backporting
   patch on any existing environment deployed by OpenStack-Ansible. The general
   `OpenStack Guidelines for stable branches`_ can be used as a reference.
 
-.. _Submitting a change to a branch for review: http://www.mediawiki.org/wiki/Gerrit/Advanced_usage#Submitting_a_change_to_a_branch_for_review_.28.22backporting.22.29
+.. _Submitting a change to a branch for review: https://www.mediawiki.org/wiki/Gerrit/Advanced_usage#Submitting_a_change_to_a_branch_for_review_.28.22backporting.22.29
 .. _OpenStack Guidelines for stable branches: https://docs.openstack.org/project-team-guide/stable-branches.html

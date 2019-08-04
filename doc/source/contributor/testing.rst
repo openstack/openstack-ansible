@@ -121,8 +121,8 @@ A consolidated set of all lint tests may be done locally by executing:
     ./run_tests.sh linters
 
 .. _PEP8: https://www.python.org/dev/peps/pep-0008/
-.. _Bashate: https://opendev.org/openstack-dev/bashate
-.. _ansible-lint: https://github.com/willthames/ansible-lint
+.. _Bashate: https://opendev.org/openstack/bashate
+.. _ansible-lint: https://github.com/ansible/ansible-lint
 
 Documentation building
 ----------------------
@@ -303,7 +303,7 @@ See also the `zuul user guide`_.
 However, for reliability purposes, a few variables are defined
 to point to the OpenStack infra pypi and packages mirrors.
 
-.. _zuul user guide: https://docs.openstack.org/infra/zuul/user/index.html
+.. _zuul user guide: https://zuul-ci.org/docs/zuul/user/index.html
 
 The integrated repo functional test is using the
 ``scripts/gate-check-commit.sh`` script, which receives arguments

@@ -66,8 +66,8 @@ with open(os.path.join(CONF_PATH, GNOCCHI_DETAILS), 'r') as fdesc:
     gnocchi_branch = gnocchi_file_content['gnocchi_git_track_branch']
 
 # References variable for substitutions
-deploy_guide_prefix = "http://docs.openstack.org/project-deploy-guide/openstack-ansible/{}/%s".format(current_series)
-dev_docs_prefix = "http://docs.openstack.org/openstack-ansible/{}/%s".format(current_series)
+deploy_guide_prefix = "https://docs.openstack.org/project-deploy-guide/openstack-ansible/{}/%s".format(current_series)
+dev_docs_prefix = "https://docs.openstack.org/openstack-ansible/{}/%s".format(current_series)
 
 # Substitutions loader
 rst_epilog = """

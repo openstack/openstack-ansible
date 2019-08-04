@@ -28,7 +28,7 @@ This example environment has the following characteristics:
 Integration with Ceph
 ~~~~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible allows `Ceph storage <https://ceph.com>`_ cluster
+OpenStack-Ansible allows `Ceph storage <https://ceph.io>`_ cluster
 integration in two ways:
 
 * connecting to your own ceph cluster by pointing to its information

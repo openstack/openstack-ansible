@@ -1,3 +1,5 @@
+.. _security_settings:
+
 =================
 Security settings
 =================

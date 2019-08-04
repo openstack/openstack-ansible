@@ -44,8 +44,8 @@ General Guidelines for Submitting Code
 
 .. _Git Commit Good Practice: https://wiki.openstack.org/wiki/GitCommitMessages
 .. _workflow documented here: https://docs.openstack.org/infra/manual/developers.html#development-workflow
-.. _advanced gerrit usage: http://www.mediawiki.org/wiki/Gerrit/Advanced_usage
-.. _Ansible best practices: http://docs.ansible.com/playbooks_best_practices.html
+.. _advanced gerrit usage: https://www.mediawiki.org/wiki/Gerrit/Advanced_usage
+.. _Ansible best practices: https://docs.ansible.com/playbooks_best_practices.html
 .. _the reno tool: https://docs.openstack.org/reno/latest/
 
 .. _documentation:
@@ -73,7 +73,7 @@ Guide`_, with particular reference to the following sections:
 * Writing style
 * RST formatting conventions
 
-.. _OpenStack Documentation Contributor Guide: https://docs.openstack.org/contributor-guide/
+.. _OpenStack Documentation Contributor Guide: https://docs.openstack.org/doc-contrib-guide/
 
 .. _codecomments:
 
@@ -131,7 +131,7 @@ OpenStack Manuals or service documentation and OpenStack-Ansible documentation
 should link to those documents when available, rather than duplicate their
 content.
 
-.. _keystone role documentation: https://docs.openstack.org/developer/openstack-ansible-os_keystone/
+.. _keystone role documentation: https://docs.openstack.org/openstack-ansible-os_keystone/
 
 .. _reno:
 
