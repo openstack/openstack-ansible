@@ -16,11 +16,15 @@
 # Set the available protocol list
 manila_enabled_share_protocols:
   - NFS
-  - CIFS
   - CEPHFS
 
 _manila_default_share_type: "{{ (manila_backends | default({})).keys() }}"
 manila_default_share_type: "{{ ((_manila_default_share_type | length) > 0) | ternary(_manila_default_share_type[0], null) }}"
+
+# manila_backend_lvm_inuse: True if current host has an lvm backend
+manila_backend_lvm_inuse: "{{ (manila_backends | default({}) | to_json).find('lvm') != -1 }}"
+# manila_backend_rbd_inuse: True if the current host has an rbd backend
+manila_backend_rbd_inuse: "{{ (manila_backends | default({}) | to_json).find('manila.share.drivers.cephfs') != -1 }}"
 
 # V1 api config
 manila_service_publicuri: "{{ openstack_service_publicuri_proto|default(manila_service_proto) }}://{{ external_lb_vip_address }}:{{ manila_service_port }}"

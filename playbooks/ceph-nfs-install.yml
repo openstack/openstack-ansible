@@ -48,6 +48,9 @@
     - role: ceph-handler
       tags:
         - skip_ansible_lint
+    - role: ceph-common
+      tags:
+        - skip_ansible_lint
     - role: ceph-nfs
       tags:
         - skip_ansible_lint

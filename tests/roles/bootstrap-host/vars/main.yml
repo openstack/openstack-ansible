@@ -41,6 +41,9 @@ bootstrap_host_scenarios_expanded: |-
   {% if 'magnum' in bootstrap_host_scenarios %}
   {%   set _ = scenario_list.extend(['heat'])  %}
   {% endif %}
+  {% if 'manila' in bootstrap_host_scenarios %}
+  {%   set _ = scenario_list.extend(['ceph'])  %}
+  {% endif %}
   {% if 'murano' in bootstrap_host_scenarios %}
   {%   set _ = scenario_list.extend(['heat'])  %}
   {% endif %}

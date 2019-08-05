@@ -22,11 +22,6 @@
   vars_files:
     - "defaults/{{ install_method }}_install.yml"
   pre_tasks:
-    - import_tasks: common-tasks/os-log-dir-setup.yml
-      vars:
-        log_dirs:
-          - src: "/openstack/log/{{ inventory_hostname }}-ceph"
-            dest: "/var/log/ceph"
 
     - import_tasks: common-tasks/ceph-server.yml
 

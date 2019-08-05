@@ -70,6 +70,7 @@ global_overrides:
           - glance_api
           - cinder_api
           - cinder_volume
+          - manila_share
           - nova_compute
           - ceph-osd
 
@@ -105,6 +106,12 @@ shared-infra_hosts: *infrastructure_hosts
 
 # ceph-mon containers
 ceph-mon_hosts: *infrastructure_hosts
+
+# ceph-mds containers
+ceph-mds_hosts: *infrastructure_hosts
+
+# ganesha-nfs hosts
+ceph-nfs_hosts: *infrastructure_hosts
 
 # repository (apt cache, python packages, etc)
 repo-infra_hosts: *infrastructure_hosts
@@ -155,6 +162,10 @@ metering-alarm_hosts: *infrastructure_hosts
 
 # gnocchi (telemetry metrics storage)
 metrics_hosts: *infrastructure_hosts
+
+# manila (share service)
+manila-infra_hosts: *infrastructure_hosts
+manila-data_hosts: *infrastructure_hosts
 
 # ceilometer compute agent (telemetry data collection)
 metering-compute_hosts: *compute_hosts
