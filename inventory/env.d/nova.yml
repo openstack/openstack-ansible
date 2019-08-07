@@ -53,7 +53,6 @@ container_skel:
     belongs_to:
       - compute_containers
       - kvm-compute_containers
-      - lxd-compute_containers
       - qemu-compute_containers
       - powervm-compute_containers
     contains:
@@ -76,12 +75,6 @@ physical_skel:
     belongs_to:
       - all_containers
   compute_hosts:
-    belongs_to:
-      - hosts
-  lxd-compute_containers:
-    belongs_to:
-      - all_containers
-  lxd-compute_hosts:
     belongs_to:
       - hosts
   kvm-compute_containers:

@@ -270,8 +270,6 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'log_containers',
         'log_hosts',
         'lxc_hosts',
-        'lxd-compute_containers',
-        'lxd-compute_hosts',
         'magnum',
         'magnum-infra_all',
         'magnum-infra_containers',
