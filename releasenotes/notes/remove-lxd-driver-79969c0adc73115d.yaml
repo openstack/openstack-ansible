@@ -1,0 +1,15 @@
+---
+deprecations:
+  - |
+    The nova-lxd driver is no longer supported upstream, and the git repo
+    for it's source code has been retired on the master branch. All code
+    for deploying or testing nova-lxd has been removed from the os_nova
+    ansible role. The following variables have been removed:
+
+    * nova_supported_virt_types 'lxd' list entry
+    * nova_compute_lxd_pip_packages
+    * lxd_bind_address
+    * lxd_bind_port
+    * lxd_storage_backend
+    * lxd_trust_password
+    * lxd_storage_create_device
