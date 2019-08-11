@@ -334,8 +334,6 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'policy_all',
         'policy_containers',
         'policy_hosts',
-        'powervm-compute_containers',
-        'powervm-compute_hosts',
         'qemu-compute_containers',
         'qemu-compute_hosts',
         'reservation_all',
