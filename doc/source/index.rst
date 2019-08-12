@@ -9,10 +9,10 @@ configuration of an OpenStack environment.
 
 Documentation for each of the following releases is available.
 
-Stein: Pre-release
-~~~~~~~~~~~~~~~~~~
+Train: Under development
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible Stein is currently in development.
+OpenStack-Ansible Train is currently in development.
 
 .. toctree::
    :maxdepth: 1
@@ -24,8 +24,23 @@ OpenStack-Ansible Stein is currently in development.
    contributor/index
    reference/index
 
+Stein: Maintained
+~~~~~~~~~~~~~~~~~
+
+OpenStack-Ansible's Stein series was first released with the 19.0.0 tag on
+30 June 2019.
+
+* `OpenStack-Ansible Stein Documentation`_
+
+* `OpenStack-Ansible Stein series release notes`_
+
+.. _OpenStack-Ansible Stein Documentation: https://docs.openstack.org/openstack-ansible/stein/
+.. _OpenStack-Ansible Stein series release notes: https://docs.openstack.org/releasenotes/openstack-ansible/stein.html
+
+
 Rocky: Maintained
 ~~~~~~~~~~~~~~~~~
+
 OpenStack-Ansible's Rocky series was first released with the 18.0.0 tag on
 16 October 2018.
 
