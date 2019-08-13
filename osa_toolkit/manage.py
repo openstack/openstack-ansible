@@ -90,9 +90,9 @@ def args():
 
     exclusive_action.add_argument(
         '--clear-ips',
-        help=('Clears IPs from the existing inventory, but leaves ',
-              'all other information intact. LXC interface files and '
-              'load balancers will *not* be modified.'),
+        help='''Clears IPs from the existing inventory, but leaves
+              all other information intact. LXC interface files and
+              load balancers will *not* be modified.''',
         action='store_true',
         default=False
     )
