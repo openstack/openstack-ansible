@@ -174,6 +174,8 @@ function main {
         RUN_TASKS+=("setup-hosts.yml --limit '!galera_all:!rabbitmq_all'")
         # add new container config to containers but don't restart
         RUN_TASKS+=("setup-hosts.yml -e 'lxc_container_allow_restarts=false' --limit 'galera_all:rabbitmq_all'")
+        #setting SST method to rsync
+        RUN_TASKS+=("galera-install.yml -e galera_wsrep_sst_method=rsync -e galera_upgrade=true")
         # upgrade infrastructure
         RUN_TASKS+=("setup-infrastructure.yml -e 'galera_upgrade=true' -e 'rabbitmq_upgrade=true'")
         # explicitly perform controlled galera cluster restart with new lxc config

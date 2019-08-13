@@ -183,6 +183,18 @@ container restarts.
 
     # openstack-ansible setup-hosts.yml -e 'lxc_container_allow_restarts=false' --limit 'galera_all:rabbitmq_all'
 
+Upgrade Galera
+~~~~~~~~~~~~~~
+
+Upgrades galera version from 10.1 to 10.3 and changes the WSREP SST
+method from xtrabackup-v2 to mariabackup. In the following command
+we set WSREP SST method to ``rsync`` which is backward compatible between
+10.1 and 10.3.
+
+.. code-block:: console
+
+    # openstack-ansible galera-install.yml -e galera_wsrep_sst_method=rsync -e galera_upgrade=true
+
 Upgrade infrastructure
 ~~~~~~~~~~~~~~~~~~~~~~
 
