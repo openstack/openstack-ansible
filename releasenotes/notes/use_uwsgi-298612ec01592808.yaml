@@ -1,0 +1,17 @@
+---
+upgrade:
+  - |
+    Gnocchi migrated from usage of Apache mod_wsgi or native daemon to uWSGI
+    daemon. This means, that some variables are not available and has no effect
+    anymore, specifically
+    * `gnocchi_use_mod_wsgi`
+    * `gnocchi_apache_*`
+    * `gnocchi_ssl*` (except `gnocchi_ssl_external` - it's still in place)
+    * `gnocchi_user_ssl_*`
+
+    During upgrade process role will drop `gnocchi_service_port` from apache
+    listeners (ports.conf) and gnocchi virtualhost, which by default means
+    misconfigured apache service (since it won't have any listeners) unless
+    it's aio build and this apache server is in use by other role/service.
+    Apache server won't be dropped from gnocchi_api hosts, so deployers
+    are encoureged to remove it manually.

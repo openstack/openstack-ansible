@@ -1,0 +1,12 @@
+---
+features:
+  - Cinder is deployed with Active-Active enabled by default if you are using
+    Ceph as a backend storage.
+issues:
+  - The previous way of using a common backend_host across all deployments
+    was not recommended by the Cinder team and it will cause duplicate
+    messages that cause problems in the environment.
+upgrade:
+  - It is possible that you may need to use the cinder-manage command to migrate
+    volumes to a specific host.  In addition, you will have to remove the old
+    ``rbd:volumes`` service which will be stale.
