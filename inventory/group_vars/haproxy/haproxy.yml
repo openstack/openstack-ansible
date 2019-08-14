@@ -363,7 +363,7 @@ haproxy_default_services:
       haproxy_service_enabled: "{{ neutron_plugin_type == 'ml2.opendaylight' }}"
   - service:
       haproxy_service_name: ceph-rgw
-      haproxy_backend_nodes: "{{ groups['ceph-rgw'] | default(ceph_rgws) }}"
+      haproxy_backend_nodes: "{{ (groups['ceph-rgw'] is defined and groups['ceph-rgw'] | length > 0) | ternary(groups['ceph-rgw'], ceph_rgws) }}"
       haproxy_ssl: "{{ haproxy_ssl }}"
       haproxy_balance_alg: source
       haproxy_port: "{{ radosgw_service_port | default(7980) }}"
