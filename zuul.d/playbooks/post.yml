@@ -27,6 +27,8 @@
         ZUUL_PROJECT: "{{ zuul.project.short_name }}"
         TEST_EXIT_CODE: "{{ zuul_success | lower }}"
         RUN_ARA: "true"
+        # Some Zuul environments (such as OpenStack CI) use html based ara reports
+        ARA_REPORT_TYPE: "{{ ara_report_type | default('database') }}"
         WORKING_DIR: "{{ ansible_user_dir }}/src/opendev.org/openstack/openstack-ansible"
 
     - name: Check whether a logs folder exists
