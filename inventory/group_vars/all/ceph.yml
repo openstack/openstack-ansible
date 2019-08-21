@@ -43,3 +43,14 @@ ceph_mons: "{{ groups[mon_group_name] }}"
 # - name: ceph-rgw-name
 #   ip_addr: x.x.x.x
 ceph_rgws: []
+
+# NOTE(jrosser) temporary overrides, see
+# https://github.com/ceph/ceph-ansible/pull/4329
+# https://github.com/ceph/ceph-ansible/issues/2296
+openstack_keys:
+  - { name: client.glance, caps: { mon: "profile rbd", osd: "allow class-read object_prefix rbd_children, profile rbd pool={{ openstack_glance_pool.name }}"}, mode: "0600" }
+  - { name: client.cinder, caps: { mon: "profile rbd", osd: "allow class-read object_prefix rbd_children, profile rbd pool={{ openstack_cinder_pool.name }}, profile rbd pool={{ openstack_nova_pool.name }}, profile rbd pool={{ openstack_glance_pool.name }}"}, mode: "0600" }
+  - { name: client.cinder-backup, caps: { mon: "profile rbd", osd: "profile rbd pool={{ openstack_cinder_backup_pool.name }}"}, mode: "0600" }
+  - { name: client.gnocchi, caps: { mon: "profile rbd", osd: "profile rbd pool={{ openstack_gnocchi_pool.name }}"}, mode: "0600", }
+  - { name: client.openstack, caps: { mon: "profile rbd", osd: "profile rbd pool={{ openstack_glance_pool.name }}, profile rbd pool={{ openstack_nova_pool.name }}, profile rbd pool={{ openstack_cinder_pool.name }}, profile rbd pool={{ openstack_cinder_backup_pool.name }}"}, mode: "0600" }
+
