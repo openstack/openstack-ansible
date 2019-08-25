@@ -1,0 +1,41 @@
+---
+upgrade:
+  - The following Nova tunables have been removed, users need to start
+    using the `nova_nova_conf_overrides` dictionary to override them.
+    If those values were not previously overridden, there should be no
+    need to override them.
+
+    - nova_quota_cores
+    - nova_quota_injected_file_content_bytes
+    - nova_quota_injected_file_path_length
+    - nova_quota_injected_files
+    - nova_quota_instances
+    - nova_quota_key_pairs
+    - nova_quota_metadata_items
+    - nova_quota_ram
+    - nova_quota_server_group_members
+    - nova_quota_server_groups
+    - nova_max_instances_per_host
+    - nova_scheduler_available_filters
+    - nova_scheduler_weight_classes
+    - nova_scheduler_driver
+    - nova_scheduler_driver_task_period
+    - nova_rpc_conn_pool_size
+    - nova_rpc_thread_pool_size
+    - nova_rpc_response_timeout
+    - nova_force_config_drive
+    - nova_enable_instance_password
+    - nova_default_schedule_zone
+    - nova_fatal_deprecations
+    - nova_resume_guests_state_on_host_boot
+    - nova_cross_az_attach
+    - nova_remove_unused_resized_minimum_age_seconds
+    - nova_cpu_model
+    - nova_cpu_model_extra_flags
+
+  - The following Nova variables have been removed because they have no
+    effect in the current release of Nova.
+
+    - nova_max_age
+    - nova_osapi_compute_workers
+    - nova_metadata_workers
