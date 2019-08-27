@@ -31,8 +31,8 @@ You can install the latest version of this tooling by running:
 
 .. parsed-literal::
 
-   pip install -e git+https://github.com/evrardjp/osa-cli.git#egg=openstack_ansible_cli
-   pip install -e git+https://github.com/evrardjp/osa_cli_releases.git#egg=osa_cli_releases
+   pip3 install -e git+https://github.com/evrardjp/osa-cli.git#egg=openstack_ansible_cli
+   pip3 install -e git+https://github.com/evrardjp/osa_cli_releases.git#egg=osa_cli_releases
 
 This tooling can then be called using ``osa releases``.
 Each subcommand contains help by default.
