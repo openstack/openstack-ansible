@@ -152,3 +152,12 @@
     experimental:
       jobs:
         - openstack-ansible-deploy-aio_distro_ceph-opensuse-150
+
+- project-template:
+    name: openstack-ansible-linters-jobs
+    check:
+      jobs:
+        - openstack-ansible-linters-ubuntu-bionic
+    gate:
+      jobs:
+        - openstack-ansible-linters-ubuntu-bionic

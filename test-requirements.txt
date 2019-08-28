@@ -8,3 +8,9 @@ bashate>=0.5.1 # Apache-2.0
 coverage!=4.4,>=4.0 # Apache-2.0
 mock>=2.0.0 # BSD
 virtualenv>=14.0.6 # MIT
+# TODO(noonedeadpunk) Upgrade linters versions and drop pycodestyle
+# once we stop doing linters check for the integrated repo with
+# openstack-ansible-tests/test-ansible-lint.sh
+flake8<2.6.0,>=2.5.4 # MIT
+ansible-lint==3.4.21 # MIT
+pycodestyle>=2.5.0,<2.6.0
