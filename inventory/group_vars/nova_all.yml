@@ -67,7 +67,3 @@ nova_reserved_host_disk_mb: 0
 neutron_designate_enabled: "{{ hostvars['localhost']['neutron_designate_enabled'] }}"
 # If there are any Ceilometer hosts in the environment, then enable its usage
 neutron_ceilometer_enabled: "{{ hostvars['localhost']['neutron_ceilometer_enabled'] }}"
-
-# TODO(logan): Remove this once placement is removed from os_nova
-# Placement is now implemented as a separate service
-nova_placement_service_enabled: False
