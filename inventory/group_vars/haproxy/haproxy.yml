@@ -292,6 +292,17 @@ haproxy_default_services:
         - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
       haproxy_service_enabled: "{{ groups['mistral_all'] is defined and groups['mistral_all'] | length > 0 }}"
   - service:
+      haproxy_service_name: murano
+      haproxy_backend_nodes: "{{ groups['murano_all'] | default([]) }}"
+      haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_port: 8082
+      haproxy_balance_type: http
+      haproxy_backend_options:
+        - "httpchk GET /v1 HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+      haproxy_backend_httpcheck_options:
+        - "expect status 401"
+      haproxy_service_enabled: "{{ groups['murano_all'] is defined and groups['murano_all'] | length > 0 }}"
+  - service:
       haproxy_service_name: trove
       haproxy_backend_nodes: "{{ groups['trove_api'] | default([]) }}"
       haproxy_ssl: "{{ haproxy_ssl }}"
