@@ -60,6 +60,7 @@ COMMON_ETC_LOG_NAMES="apt \
     sysconfig/network-scripts \
     sysconfig/network \
     systemd \
+    uwsgi \
     yum \
     yum.repos.d \
     zypp"
