@@ -1,0 +1,16 @@
+---
+features:
+  - |
+    Several environment variables have been added in the bootstrapping functions
+    used by the gate-check-commit script. These variables can be used to skip
+    various phases of the bootstrap during the gate-check-commit or
+    bootstrap-ansible script execution.
+
+    The environment variables added are:
+
+    * ``SKIP_OSA_RUNTIME_VENV_BUILD``: Skip bootstrapping of the OSA ansible venv
+      in bootstrap-ansible.sh
+    * ``SKIP_OSA_BOOTSTRAP_AIO``: Skip execution of the bootstrap-aio playbook
+      in gate-check-commit
+    * ``SKIP_OSA_ROLE_CLONE``: Skip execution of the
+      get-role-requirements-playbook in the bootstrap-ansible.sh script
