@@ -74,6 +74,7 @@
       - name: openstack/ansible-role-systemd_mount
       - name: openstack/ansible-role-systemd_networkd
       - name: openstack/ansible-role-python_venv_build
+      - name: openstack/ansible-role-uwsgi
     pre-run:
       - zuul.d/playbooks/pre-gate-scenario.yml
       - zuul.d/playbooks/pre-osa-aio.yml
