@@ -28,7 +28,9 @@ component_skel:
   ironic_compute:
     belongs_to:
       - nova_all
-
+  ironic_inspector:
+    belongs_to:
+      - ironic_all
 
 container_skel:
   ironic_api_container:
@@ -55,7 +57,11 @@ container_skel:
       - neutron_openvswitch_agent
     properties:
       is_metal: false
-
+  ironic_inspector_container:
+    belongs_to:
+      - ironic-inspector_containers
+    contains:
+      - ironic_inspector
 
 physical_skel:
   ironic-infra_containers:
@@ -74,5 +80,11 @@ physical_skel:
     belongs_to:
       - all_containers
   ironic-compute_hosts:
+    belongs_to:
+      - hosts
+  ironic-inspector_containers:
+    belongs_to:
+      - all_containers
+  ironic-inspector_hosts:
     belongs_to:
       - hosts

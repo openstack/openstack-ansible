@@ -245,6 +245,15 @@ haproxy_default_services:
         - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
       haproxy_service_enabled: "{{ groups['ironic_api'] is defined and groups['ironic_api'] | length > 0 }}"
   - service:
+      haproxy_service_name: ironic_inspector
+      haproxy_backend_nodes: "{{ groups['ironic_inspector'] | default([]) }}"
+      haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_port: 5050
+      haproxy_balance_type: http
+      haproxy_backend_options:
+        - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+      haproxy_service_enabled: "{{ groups['ironic_inspector'] is defined and groups['ironic_inspector'] | length > 0 }}"
+  - service:
       haproxy_service_name: rabbitmq_mgmt
       haproxy_backend_nodes: "{{ groups['rabbitmq'] | default([]) }}"
       haproxy_ssl: False
