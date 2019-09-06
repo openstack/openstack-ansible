@@ -355,7 +355,11 @@ def _add_container_hosts(assignment, config, container_name, container_type,
         # Get any set host options
         host_options = config[physical_host_type][host_type]
         affinity = host_options.get('affinity', {})
-        no_containers = host_options.get('no_containers', False)
+        # Try to get no_containers from host_options and
+        # fallback to global_overrides if nothing found
+        no_containers = host_options.get(
+            'no_containers',
+            config['global_overrides'].get('no_containers', False))
         if no_containers:
             properties['is_metal'] = True
 
