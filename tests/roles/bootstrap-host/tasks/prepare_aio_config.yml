@@ -190,13 +190,6 @@
   when:
     - "'ceph' in bootstrap_host_scenarios_expanded"
 
-- name: Copy modified env.d file for metal scenario
-  copy:
-    src: "{{ playbook_dir }}/../etc/openstack_deploy/env.d/aio_metal.yml.example"
-    dest: "/etc/openstack_deploy/env.d/aio_metal.yml"
-  when:
-    - "'metal' in bootstrap_host_scenarios"
-
 - name: Copy modified env.d file for calico scenario
   copy:
     src: "{{ playbook_dir }}/../etc/openstack_deploy/env.d/calico.yml.example"
