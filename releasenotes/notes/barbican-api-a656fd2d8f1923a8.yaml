@@ -1,0 +1,9 @@
+---
+upgrade:
+  - |
+    Barbican service was renamed to barbican-api. During upgrade old barbican
+    service will be stopped and barbican-api will be started instead. Also
+    `barbican_*_program_name` was removed since had no effect and wasn't used.
+    Instead variable `barbican_*_enabled` was introduced to ease enabling
+    barbican services like barbican-worker, barbican-keystone-listener and
+    barbican-retry.

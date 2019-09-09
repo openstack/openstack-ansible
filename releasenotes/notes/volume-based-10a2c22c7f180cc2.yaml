@@ -1,0 +1,14 @@
+---
+features:
+  - |
+    Now you can use cinder-volume with Octavia. To enable the feature set
+    ``octavia_cinder_enabled`` to ``True``. Also you may need to override
+    the default settings:
+
+    .. code-block:: yaml
+
+       octavia_octavia_conf_overrides:
+         cinder:
+           volume_type: 'my-volume-type'
+           volume_size: 32
+
