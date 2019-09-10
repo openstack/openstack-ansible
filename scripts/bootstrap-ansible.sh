@@ -86,12 +86,8 @@ case ${DISTRO_ID} in
     opensuse*)
         zypper -n install -l git-core curl autoconf gcc gcc-c++ \
             netcat-openbsd python python-xml python-devel gcc \
-            libffi-devel libopenssl-devel python-setuptools python-virtualenv
-        # Leap 42.3 ships with python3.4 which is not supported by ansible and as
-        # such we are using python2
-        # See https://github.com/ansible/ansible/issues/24180
-        source /etc/os-release
-        [[ ${VERSION} =~ 42 ]] && PYTHON_EXEC_PATH="/usr/bin/python2"
+            libffi-devel libopenssl-devel python-setuptools python-virtualenv \
+            patterns-devel-python-devel_python3
         ;;
 esac
 
@@ -109,9 +105,7 @@ elif [ -n "$HTTP_PROXY" ]; then
   PIP_OPTS+="--proxy $HTTP_PROXY"
 fi
 
-# Force using python2. When python3 and python2 dual stack is supported uncomment the following:
-#PYTHON_EXEC_PATH="${PYTHON_EXEC_PATH:-$(which python3 || which python2 || which python)}"
-PYTHON_EXEC_PATH="${PYTHON_EXEC_PATH:-$(which python2 || which python)}"
+PYTHON_EXEC_PATH="${PYTHON_EXEC_PATH:-$(which python3 || which python2 || which python)}"
 PYTHON_VERSION="$($PYTHON_EXEC_PATH -c 'import sys; print(".".join(map(str, sys.version_info[:3])))')"
 
 # Use https when Python with native SNI support is available
