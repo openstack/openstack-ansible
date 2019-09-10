@@ -133,9 +133,8 @@ def get_groups_for_container(inventory, container_name):
     """
     # Beware, this dictionary comprehension requires Python 2.7, but we should
     # have this on openstack-ansible hosts already.
-    groups = {k for (k, v) in inventory.items() if
-              ('hosts' in v and
-              container_name in v['hosts'])}
+    groups = {k for (k, v) in inventory.items()
+              if ('hosts' in v and container_name in v['hosts'])}
     return groups
 
 
@@ -351,6 +350,7 @@ def main():
     else:
         remove_inventory_item(user_args['remove_item'], inventory, filepath)
         print('Success. . .')
+
 
 if __name__ == "__main__":
     main()

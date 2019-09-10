@@ -52,6 +52,7 @@ def args(arg_list):
 
     return vars(parser.parse_args(arg_list))
 
+
 if __name__ == "__main__":
     script_args = args(sys.argv[1:])
 

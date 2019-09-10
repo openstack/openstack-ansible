@@ -606,9 +606,8 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
         container = base_hosts[container_host]
 
         physical_host = container.get('physical_host')
-        if (reference_group and
-                physical_host not in
-                inventory.get(reference_group).get('hosts')):
+        if (reference_group and physical_host
+                not in inventory.get(reference_group).get('hosts')):
             continue
 
         # TODO(cloudnull) after a few releases this should be removed.
@@ -1025,8 +1024,8 @@ def _check_config_settings(cidr_networks, config, container_skel):
                     raise SystemExit(
                         "can't find " + q_name + " in cidr_networks"
                     )
-                if (p_net.get('container_bridge') ==
-                        overrides.get('management_bridge')):
+                if (p_net.get('container_bridge') == overrides.get(
+                        'management_bridge')):
                     if not p_net.get('is_container_address'):
                         raise ProviderNetworkMisconfiguration(q_name)
 
