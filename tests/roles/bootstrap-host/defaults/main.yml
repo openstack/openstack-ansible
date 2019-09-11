@@ -175,9 +175,9 @@ bootstrap_host_format_options:
 #
 # Set the data disk mount options.
 bootstrap_host_data_mount_options:
-  machinectl: "noatime,nodiratime,compress=lzo,commit=120,{{ (ansible_kernel is version_compare('4.5', '>=')) | ternary('space_cache=v2', 'space_cache') }}"
+  machinectl: "noatime,nodiratime,compress=lzo,commit=120,{{ (ansible_kernel is version('4.5', '>=')) | ternary('space_cache=v2', 'space_cache') }}"
   zfs: "defaults"
-  btrfs: "noatime,nodiratime,compress=lzo,commit=120,{{ (ansible_kernel is version_compare('4.5', '>=')) | ternary('space_cache=v2', 'space_cache') }}"
+  btrfs: "noatime,nodiratime,compress=lzo,commit=120,{{ (ansible_kernel is version('4.5', '>=')) | ternary('space_cache=v2', 'space_cache') }}"
   xfs: "noatime,nodiratime,logbufs=8,logbsize=256k"
   ext4: "noatime,nobh,barrier=0,data=writeback"
   dir: "defaults"
