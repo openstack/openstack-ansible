@@ -78,6 +78,13 @@ case ${DISTRO_ID} in
         if `/bin/grep -q "stretch" /etc/os-release` && [ -f "/etc/apt/sources.list.d/security.list" ]; then
           echo "deb http://security.debian.org stretch/updates main contrib" > /etc/apt/sources.list.d/security.list
         fi
+	# NOTE(jrosser) remove this once infra debian repos are fixed for buster
+        if `/bin/grep -q "buster" /etc/os-release` && [ -f "/etc/apt/sources.list.d/security.list" ]; then
+          echo "deb http://deb.debian.org/debian buster main" > /etc/apt/sources.list.d/default.list
+          echo "deb http://deb.debian.org/debian buster-backports" main > /etc/apt/sources.list.d/backports.list
+          echo "deb http://security.debian.org buster/updates main contrib" > /etc/apt/sources.list.d/security.list
+          echo "deb http://deb.debian.org/debian buster-updates main" > /etc/apt/sources.list.d/updates.list
+        fi
         apt-get update
         DEBIAN_FRONTEND=noninteractive apt-get -y install \
           git-core curl gcc netcat \
