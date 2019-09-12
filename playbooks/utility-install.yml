@@ -120,6 +120,7 @@
           include_role:
             name: "python_venv_build"
           vars:
+            venv_python_executable: "{{ utility_venv_python_executable | default(openstack_venv_python_executable) }}"
             venv_install_destination_path: "{{ utility_venv_bin | dirname }}"
             venv_pip_install_args: "{{ pip_install_options | default('') }}"
             venv_build_constraints:
