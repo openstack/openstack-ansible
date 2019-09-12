@@ -77,7 +77,7 @@ fi
 
 # Execute the Ansible command.
 if [ "${RUN_CMD}" == "openstack-ansible" ] || [ "${RUN_CMD}" == "ansible-playbook" ]; then
-  ansible-playbook "${@}" ${VAR1}
+  ansible-playbook ${VAR1} "${@}"
   PLAYBOOK_RC="$?"
   if [[ "${PLAYBOOK_RC}" -ne "0" ]]; then
     echo -e "\nEXIT NOTICE [Playbook execution failure] **************************************"
@@ -87,5 +87,5 @@ if [ "${RUN_CMD}" == "openstack-ansible" ] || [ "${RUN_CMD}" == "ansible-playboo
   echo "==============================================================================="
   exit "${PLAYBOOK_RC}"
 else
-  ${RUN_CMD} "${@}" ${VAR1}
+  ${RUN_CMD} ${VAR1} "${@}"
 fi
