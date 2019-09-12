@@ -126,8 +126,8 @@ version.
 
 .. note::
    The |current_release_formal_name| release is only compatible with
-   Debian 9 (stretch), Ubuntu 18.04 (Bionic Beaver), CentOS 7
-   and openSUSE Leap 15.X.
+   Debian 9 (stretch), Debian 10 (buster), Ubuntu 18.04 (Bionic Beaver),
+   CentOS 7 and openSUSE Leap 15.X.
 
 The next step is to bootstrap Ansible and the Ansible roles for the
 development environment.

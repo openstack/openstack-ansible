@@ -132,6 +132,11 @@
 
 # debian
 - job:
+    name: openstack-ansible-deploy-aio_metal-debian-buster
+    parent: openstack-ansible-deploy-aio
+    nodeset: debian-buster
+
+- job:
     name: openstack-ansible-deploy-aio_metal-debian-stable
     parent: openstack-ansible-deploy-aio
     nodeset: debian-stable
@@ -276,9 +281,20 @@
 
 # debian
 - job:
+    name: openstack-ansible-deploy-aio_telemetry_metal-debian-buster
+    parent: openstack-ansible-deploy-aio
+    nodeset: debian-buster
+
+- job:
     name: openstack-ansible-deploy-aio_telemetry_metal-debian-stable
     parent: openstack-ansible-deploy-aio
     nodeset: debian-stable
+
+- job:
+    name: openstack-ansible-deploy-aio_lxc-debian-buster
+    parent: openstack-ansible-deploy-aio
+    nodeset: debian-buster
+
 
 - job:
     name: openstack-ansible-deploy-aio_lxc-debian-stable
