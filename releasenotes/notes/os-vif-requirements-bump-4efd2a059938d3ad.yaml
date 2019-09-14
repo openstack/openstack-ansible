@@ -1,0 +1,10 @@
+---
+security:
+  - |
+    The requirements version has bumped to pull in os-vif 1.15.2, which contains
+    the fix for OSSA-2019-004 / CVE-2019-15753. Operators using linuxbridge
+    networking (the default in openstack-ansible) should update immediately.
+    The fixed package will be installed in the nova venv upon re-deployment
+    of nova using the os-nova-install.yml playbook. Afterwards, verify that
+    the ageing timer on neutron-controlled linux bridges displays as "300.00"
+    raher than "0.00" using ``brctl showstp <bridge name>``.
