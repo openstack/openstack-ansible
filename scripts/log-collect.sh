@@ -173,7 +173,7 @@ store_artifacts /var/log/ "${WORKING_DIR}/logs/host"
 # Build the ARA static html report if required
 if [[ "$ARA_REPORT_TYPE" == "html" ]]; then
     echo "Generating ARA static html report."
-    /opt/ansible-runtime/bin/ara generate html "${WORKING_DIR}/logs/ara-report"
+    /opt/ansible-runtime/bin/ara-manage generate "${WORKING_DIR}/logs/ara-report"
 fi
 
 # Store the ara sqlite database in the openstack-ci expected path
