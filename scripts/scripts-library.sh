@@ -259,6 +259,19 @@ function info_block {
 }
 
 function log_instance_info {
+  # ensure packages are installed to get instance info
+  determine_distro
+  case ${DISTRO_ID} in
+      ubuntu|debian)
+          apt-get update
+          DEBIAN_FRONTEND=noninteractive apt-get -y install iproute2 net-tools
+          ;;
+      centos|rhel)
+          # Prefer dnf over yum for CentOS.
+          which dnf &>/dev/null && RHT_PKG_MGR='dnf' || RHT_PKG_MGR='yum'
+          $RHT_PKG_MGR -y install iproute
+          ;;
+  esac
   set +x
   # Get host information post initial setup and reset verbosity
   if [ ! -d "/openstack/log/instance-info" ];then
