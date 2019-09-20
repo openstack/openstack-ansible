@@ -131,6 +131,7 @@ def TestUrl(workQueue, resultQueue):
             # Subthread returned a time.  Store it.
             resultQueue.put((url, result[0]))
 
+
 # Set the number of threads to use
 numThreads = min(MAX_THREADS, len(MIRROR_LIST))
 
