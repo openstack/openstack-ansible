@@ -172,7 +172,7 @@ if [ -f "${ANSIBLE_ROLE_FILE}" ] && [[ -z "${SKIP_OSA_ROLE_CLONE+defined}" ]]; t
     # NOTE(cloudnull): When bootstrapping we don't want ansible to interact
     #                  with our plugins by default. This change will force
     #                  ansible to ignore our plugins during this process.
-    export ANSIBLE_LIBRARY="/dev/null"
+    export ANSIBLE_LIBRARY="${OSA_CLONE_DIR}/playbooks/library"
     export ANSIBLE_LOOKUP_PLUGINS="/dev/null"
     export ANSIBLE_FILTER_PLUGINS="/dev/null"
     export ANSIBLE_ACTION_PLUGINS="/dev/null"

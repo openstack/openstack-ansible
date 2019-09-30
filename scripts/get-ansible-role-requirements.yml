@@ -116,22 +116,19 @@
       set_fact:
         clone_roles: "{{ clone_roles + user_roles }}"
 
-    - name: Clone git repos (with git)
-      git:
-        repo: "{{ item.src }}"
-        dest: "{{ item.path | default(role_path_default) }}/{{ item.name | default(item.src | basename) }}"
-        version: "{{ item.version | default('master') }}"
-        refspec: "{{ item.refspec | default(omit) }}"
-        depth: "{{ item.depth | default('10') }}"
-        update: true
+    - name: Clone git repos (parallel)
+      git_requirements:
+        default_path: "{{ role_path_default }}"
+        default_depth: 10
+        default_version: "master"
+        repo_info: "{{ clone_roles }}"
+        retries: "{{ git_clone_retries }}"
+        delay: "{{ git_clone_retry_delay }}"
         force: true
-      with_items: "{{ clone_roles }}"
-      register: git_clone
-      until: git_clone is success
-      retries: "{{ git_clone_retries }}"
-      delay: "{{ git_clone_retry_delay }}"
+        core_multiplier: 4
 
   vars:
+    ansible_python_interpreter: "/opt/ansible-runtime/bin/python"
     required_roles: "{{ lookup('file', role_file) | from_yaml }}"
     openstack_services_file: "{{ playbook_dir }}/../playbooks/defaults/repo_packages/openstack_services.yml"
     role_file: "{{ playbook_dir }}/../ansible-role-requirements.yml"
