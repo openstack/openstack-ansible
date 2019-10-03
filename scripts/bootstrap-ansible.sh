@@ -73,6 +73,10 @@ case ${DISTRO_ID} in
           libselinux-python python-virtualenv
         ;;
     ubuntu|debian)
+        # NOTE(jrosser) remove this once infra debian images point to the upstream security repo
+        if `/bin/grep -q "stretch" /etc/os-release` && [ -f "/etc/apt/sources.list.d/security.list" ]; then
+          echo "deb http://security.debian.org stretch/updates main contrib" > /etc/apt/sources.list.d/security.list
+        fi
         apt-get update
         DEBIAN_FRONTEND=noninteractive apt-get -y install \
           git-core curl gcc netcat \
