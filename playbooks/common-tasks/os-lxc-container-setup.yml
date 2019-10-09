@@ -29,7 +29,7 @@
 
 - name: Set default bind mounts (bind var/log)
   set_fact:
-    lxc_default_bind_mounts: '{{ lxc_default_bind_mounts | default([{"bind_dir_path": "/var/log", "mount_path": "/openstack/log/{{ inventory_hostname }}"}]) }}'
+    lxc_default_bind_mounts: '{{ lxc_default_bind_mounts | default([{"bind_dir_path": "/var/log", "mount_path": "/openstack/log/" ~ inventory_hostname}]) }}'
   when:
     - default_bind_mount_logs | bool
   tags:
