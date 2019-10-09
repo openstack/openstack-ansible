@@ -35,6 +35,17 @@
       include_tasks: common-tasks/package-cache-proxy.yml
       when: install_method == "source"
 
+    - name: Stop nova-placement-api services for the upgrade
+      delegate_to: "{{ item }}"
+      service:
+        name: nova-placement-api
+        state: stopped
+        enabled: no
+      when: placement_migrate_flag | default(False)
+      with_items: "{{ groups['nova_api_placement'] }}"
+      run_once: true
+      ignore_errors: true
+
   roles:
     - role: "os_placement"
     - role: "system_crontab_coordination"
