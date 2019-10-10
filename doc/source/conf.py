@@ -109,7 +109,8 @@ sys.path.insert(0, os.path.abspath('../../inventory/'))
 extensions = [
     'openstackdocstheme',
     'sphinx.ext.autodoc',
-    'sphinx.ext.extlinks'
+    'sphinx.ext.extlinks',
+    'sphinxcontrib.rsvgconverter'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -278,9 +279,11 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, target_name + '.tex',
+    (master_doc, 'doc-' + target_name + '.tex',
      title, author, 'manual'),
 ]
+
+latex_use_xindy = False
 
 # The name of an image file (relative to this directory) to place at the top of
 # the title page.
