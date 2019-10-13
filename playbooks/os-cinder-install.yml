@@ -115,6 +115,7 @@
         - { name: "cinder-volume", action: "reloaded" }
         - { name: "cinder-backup", action: "reloaded" }
       when:
+        - "cinder_all_software_updated is defined"
         - "cinder_all_software_updated | bool"
         - "ansible_local['openstack_ansible']['cinder']['need_service_restart'] | bool"
 
