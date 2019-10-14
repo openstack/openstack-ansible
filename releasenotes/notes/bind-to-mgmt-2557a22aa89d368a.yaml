@@ -1,0 +1,11 @@
+---
+features:
+  - |
+    Each openstack service role has a new variable <role>_bind_address which
+    defaults to 0.0.0.0. A global override openstack_service_bind_address may
+    be used by a deployer either in group_vars or user_variables to define an
+    alternative IP address for services to bind to. This feature allows a
+    deployer to bind all of the services to a specific network, for example
+    the openstack management network. In this release the default binding
+    remains 0.0.0.0, and future releases may default the binding to the
+    management network.
