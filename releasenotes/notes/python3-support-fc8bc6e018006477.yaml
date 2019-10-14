@@ -1,0 +1,17 @@
+---
+features:
+  - |
+    Deployments will now default to using python3 when a python3 interpreter
+    is present in the operating system. Each openstack-ansible role has a new
+    variable for the form <role>_venv_python_executable which defaults to python2
+    but a global variable openstack_venv_python_executable in the openstack-ansible
+    group variables sets this to python3 on supporting operating systems. This
+    enables a deployer is to selectively use python2 or python3 on a per service
+    basis if required. The ansible-runtime venv is also created using python3 on
+    the deploy host if possible.
+upgrade:
+  - |
+    New virtual environments will be created using python3, giving
+    a straightforward transition from python2 to python3 during the major upgrade.
+    The ansible-runtime virtual environment on the deployment host will also
+    be upgraded from python2 to python3 where the operating system allows.
