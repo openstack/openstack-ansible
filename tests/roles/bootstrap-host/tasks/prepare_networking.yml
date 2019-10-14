@@ -13,6 +13,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- name: Check if firewalld is installed
+  command: rpm -q firewalld
+  register: firewalld_check
+  changed_when: false
+  failed_when: firewalld_check.rc > 1
+  args:
+    warn: false
+  when: ansible_os_family == 'RedHat'
+
+- name: Disable firewalld
+  become: True
+  service:
+    name: "{{ item }}"
+    enabled: false
+    state: stopped
+  with_items:
+    - firewalld
+  when:
+    - ansible_os_family == 'RedHat'
+    - firewalld_check.rc == 0
+
 - name: Run the systemd-networkd role
   include_role:
     name: systemd_networkd
