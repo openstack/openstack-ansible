@@ -98,6 +98,12 @@
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-bionic
 
+# Running linters check
+- job:
+    name: openstack-ansible-linters-ubuntu-bionic
+    parent: openstack-ansible-deploy-aio
+    nodeset: ubuntu-bionic
+
 # Experimental job for checking our AIO can deploy with
 # a different ansible version
 - job:

@@ -36,17 +36,28 @@
                   regex_replace('^openstack-ansible-deploy-([^-]+)-.*$', '\\1')).split('_')
                )
           %}
-          {% endif %}
-          {# If testing a role, add the role service name to the scenario list #}
-          {% if zuul.project.short_name is match('^openstack-ansible-os_(.*)$') %}
-          {%   set role_service_name = zuul.project.short_name |
+          {#   If testing a role, add the role service name to the scenario list #}
+          {%   if zuul.project.short_name is match('^openstack-ansible-os_(.*)$') %}
+          {%     set role_service_name = zuul.project.short_name |
                                        regex_replace('^openstack-ansible-os_(.*)$', '\\1')
           %}
-          {%   set _ = _scenario.append(role_service_name) %}
-          {#   Add special scenarios based on the project name #}
-          {%   if role_service_name in scenario_map %}
-          {%     set _ = _scenario.append(scenario_map[role_service_name]) %}
+          {%     set _ = _scenario.append(role_service_name) %}
+          {#     Add special scenarios based on the project name #}
+          {%     if role_service_name in scenario_map %}
+          {%       set _ = _scenario.append(scenario_map[role_service_name]) %}
+          {%     endif %}
           {%   endif %}
+          {% endif %}
+          {# If running linters we need to provide name of the role as a scenario w/o splitting #}
+          {% if zuul.job is match('^openstack-ansible-linters-.*$') %}
+          {%   for prefix in ['openstack-ansible', 'ansible-role'] %}
+          {%     if zuul.project.short_name is match('^' ~ prefix ~ '-([^-]+)$') %}
+          {%        set _ = _scenario.append(
+                      zuul.project.short_name | regex_replace('^' ~ prefix ~'-([^-]+)$', '\\1')
+                    )
+          %}
+          {%     endif%}
+          {%   endfor %}
           {% endif %}
           {{ _scenario | join('_') }}
       when:
@@ -78,6 +89,7 @@
           Scenario: {{ scenario }}
           Action: {{ action }}
           Install Method: {{ install_method }}
+          Zuul project name: {{ zuul.project.short_name }}
 
     # Other playbooks can consume this vars file as shown in run.yml
     # This file is stored in work/osa-gate-scenario.yml on the Zuul executor

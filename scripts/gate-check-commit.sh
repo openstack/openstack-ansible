@@ -40,7 +40,7 @@ export ANSIBLE_LOG_DIR="/openstack/log/ansible-logging"
 export SCENARIO=${1:-"aio_lxc"}
 
 # Set the action base on the second CLI parameter
-# Actions available: [ 'deploy', 'upgrade' ]
+# Actions available: [ 'deploy', 'upgrade', 'varstest', 'linters' ]
 export ACTION=${2:-"deploy"}
 
 # Set the installation method for the OpenStack services
@@ -102,6 +102,49 @@ fi
 if [[ "${ACTION}" == "varstest" ]]; then
   pushd "${OSA_CLONE_DIR}/tests"
       openstack-ansible test-vars-overrides.yml
+  popd
+elif [[ "${ACTION}" == "linters" ]]; then
+  pushd "${OSA_CLONE_DIR}/playbooks"
+    # Install linter tools
+    ${PIP_COMMAND} install --isolated ${PIP_OPTS} -r ${OSA_CLONE_DIR}/test-requirements.txt
+    # Disable Ansible color output
+    export ANSIBLE_NOCOLOR=1
+    # Create ansible logging directory
+    mkdir -p ${ANSIBLE_LOG_DIR}
+
+    # Prepare the hosts
+    export ANSIBLE_LOG_PATH="${ANSIBLE_LOG_DIR}/ansible-syntax-check.log"
+
+    # defining working directories
+    VENV_BIN_DIR=$(dirname ${PIP_COMMAND})
+    ROLE_DIR="/etc/ansible/roles/${SCENARIO}"
+
+    ANSIBLE_LINT_EXCLUDES="204,metadata"
+    # Check if we have test playbook and running checks
+    if [[ -f "${ROLE_DIR}/examples/playbook.yml" ]]; then
+      ${VENV_BIN_DIR}/ansible-lint ${ROLE_DIR}/examples/playbook.yml -x ${ANSIBLE_LINT_EXCLUDES}
+      ${VENV_BIN_DIR}/ansible-playbook --syntax-check --list-tasks ${ROLE_DIR}/examples/playbook.yml
+    else
+      ${VENV_BIN_DIR}/ansible-lint ${ROLE_DIR} -x ${ANSIBLE_LINT_EXCLUDES}
+      ${VENV_BIN_DIR}/ansible-playbook --syntax-check --list-tasks setup-everything.yml
+    fi
+
+    # Run bashate
+    grep --recursive --binary-files=without-match \
+      --files-with-match '^.!.*\(ba\)\?sh$' \
+      --exclude-dir .tox \
+      --exclude-dir .git \
+      "${ROLE_DIR}" | xargs -r -n1 ${VENV_BIN_DIR}/bashate --error . --verbose --ignore=E003,E006,E040
+
+    # Run pep8 check
+    grep --recursive --binary-files=without-match \
+      --files-with-match '^.!.*python$' \
+      --exclude-dir .eggs \
+      --exclude-dir .git \
+      --exclude-dir .tox \
+      --exclude-dir *.egg-info \
+      --exclude-dir doc \
+      "${ROLE_DIR}" | xargs -r ${VENV_BIN_DIR}/flake8 --verbose
   popd
 else
   pushd "${OSA_CLONE_DIR}/playbooks"
