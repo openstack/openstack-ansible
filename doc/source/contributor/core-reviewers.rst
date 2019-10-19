@@ -33,7 +33,7 @@ In essence, core reviewers share the following common ideals:
   success, not necessarily what is the most interesting or fun.
 * A core reviewer's responsibility doesn't end with merging code.
 
-.. _OpenStack-Ansible Core Reviewer Team: https://review.openstack.org/#/admin/groups/490,members
+.. _OpenStack-Ansible Core Reviewer Team: https://review.opendev.org/#/admin/groups/490,members
 .. _mission: https://governance.openstack.org/tc/reference/projects/openstackansible.html#mission
 
 Core Reviewer Expectations
