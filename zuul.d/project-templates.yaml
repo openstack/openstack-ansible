@@ -39,7 +39,7 @@
     check:
       jobs:
         - openstack-ansible-deploy-aio_lxc-centos-7
-        - openstack-ansible-deploy-aio_lxc-opensuse-150:
+        - openstack-ansible-deploy-aio_lxc-opensuse-15:
             voting: false
         - openstack-ansible-deploy-aio_lxc-ubuntu-bionic
         - openstack-ansible-deploy-aio_lxc-ubuntu-xenial
@@ -60,7 +60,7 @@
       jobs:
         - openstack-ansible-deploy-aio_distro_lxc-centos-7:
             voting: false
-        - openstack-ansible-deploy-aio_distro_lxc-opensuse-150:
+        - openstack-ansible-deploy-aio_distro_lxc-opensuse-15:
             voting: false
         - openstack-ansible-deploy-aio_distro_lxc-ubuntu-bionic:
             voting: false
@@ -72,7 +72,7 @@
     check:
       jobs:
         - openstack-ansible-deploy-aio_metal-centos-7
-        - openstack-ansible-deploy-aio_metal-opensuse-150:
+        - openstack-ansible-deploy-aio_metal-opensuse-15:
             voting: false
         - openstack-ansible-deploy-aio_metal-ubuntu-bionic
         - openstack-ansible-deploy-aio_metal-ubuntu-xenial
