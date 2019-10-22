@@ -172,7 +172,7 @@
       condition: "{{ 'congress' in bootstrap_host_scenarios_expanded }}"
     - src: user_variables_translations.yml.j2
       dest: user_variables_translations.yml
-      condition: "{{ bootstrap_host_scenario is search('translations') }}"
+      condition: "{{ 'translations' in bootstrap_host_scenarios_expanded }}"
     - src: user_variables_barbican.yml.j2
       dest: user_variables_barbican.yml
       condition: "{{ 'barbican' in bootstrap_host_scenarios_expanded }}"
@@ -195,7 +195,7 @@
     src: "{{ playbook_dir }}/../etc/openstack_deploy/env.d/calico.yml.example"
     dest: "/etc/openstack_deploy/env.d/calico.yml"
   when:
-    - "'calico' in bootstrap_host_scenarios"
+    - "'calico' in bootstrap_host_scenarios_expanded"
 
 - name: Create vars override folders if we need to test them
   file:

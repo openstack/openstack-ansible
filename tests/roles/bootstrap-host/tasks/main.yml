@@ -150,7 +150,7 @@
 # Prepare local squid proxy
 - include: prepare_squid.yml
   when:
-    - "bootstrap_host_scenario is search('proxy')"
+    - "'proxy' in bootstrap_host_scenarios_expanded"
   tags:
     - prepare-squid
 
