@@ -52,14 +52,14 @@
         - openstack-ansible-upgrade-aio_lxc-ubuntu-bionic
     experimental:
       jobs:
-        - openstack-ansible-deploy-aio_lxc-opensuse-150
+        - openstack-ansible-deploy-aio_lxc-opensuse-15
 
 - project-template:
     name: openstack-ansible-deploy-aio_distro_lxc-jobs
     experimental:
       jobs:
         - openstack-ansible-deploy-aio_distro_lxc-centos-7
-        - openstack-ansible-deploy-aio_distro_lxc-opensuse-150
+        - openstack-ansible-deploy-aio_distro_lxc-opensuse-15
         - openstack-ansible-deploy-aio_distro_lxc-ubuntu-bionic
 
 - project-template:
@@ -76,7 +76,7 @@
         - openstack-ansible-deploy-aio_metal-ubuntu-bionic
     experimental:
       jobs:
-        - openstack-ansible-deploy-aio_metal-opensuse-150
+        - openstack-ansible-deploy-aio_metal-opensuse-15
 
 - project-template:
     name: openstack-ansible-deploy-aio_telemetry_metal-jobs
@@ -92,7 +92,7 @@
         - openstack-ansible-deploy-aio_telemetry_metal-ubuntu-bionic
     experimental:
       jobs:
-        - openstack-ansible-deploy-aio_telemetry_metal-opensuse-150
+        - openstack-ansible-deploy-aio_telemetry_metal-opensuse-15
 
 - project-template:
     name: openstack-ansible-deploy-aio_distro_metal-jobs
@@ -109,7 +109,7 @@
         # NOTE(hwoarang) SUSE distro jobs remain non-voting
         # on master branches. See
         # http://eavesdrop.openstack.org/meetings/openstack_ansible_meeting/2018/openstack_ansible_meeting.2018-10-23-16.01.log.html#l-188
-        - openstack-ansible-deploy-aio_distro_metal-opensuse-150
+        - openstack-ansible-deploy-aio_distro_metal-opensuse-15
 
 - project-template:
     name: openstack-ansible-deploy-aio_nspawn-jobs
@@ -117,7 +117,7 @@
       jobs:
         - openstack-ansible-deploy-aio_nspawn-centos-7:
             voting: false
-        - openstack-ansible-deploy-aio_nspawn-opensuse-150:
+        - openstack-ansible-deploy-aio_nspawn-opensuse-15:
             voting: false
         - openstack-ansible-deploy-aio_nspawn-ubuntu-bionic:
             voting: false
@@ -150,4 +150,4 @@
     name: openstack-ansible-deploy-distro_ceph-jobs
     experimental:
       jobs:
-        - openstack-ansible-deploy-aio_distro_ceph-opensuse-150
+        - openstack-ansible-deploy-aio_distro_ceph-opensuse-15
