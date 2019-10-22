@@ -44,9 +44,17 @@
 - name: Remove yum package manager proxy
   lineinfile:
     line: >-
-      proxy="http://{{ internal_lb_vip_address }}:{{ repo_pkg_cache_port | default('3142') }}"
+      proxy=http://{{ internal_lb_vip_address }}:{{ repo_pkg_cache_port | default('3142') }}
     dest: "/etc/yum.conf"
     state: absent
+  when:
+    - ansible_os_family == 'RedHat'
+  tags:
+    - common-proxy
+
+- name: Remove yum package manager proxy in repo definitions
+  shell: |
+    sed -i -e '/proxy = http:\/\/{{ internal_lb_vip_address }}:{{ repo_pkg_cache_port | default('3142') }}/d' /etc/yum.repos.d/*
   when:
     - ansible_os_family == 'RedHat'
   tags:
