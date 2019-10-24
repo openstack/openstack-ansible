@@ -1,0 +1,10 @@
+---
+upgrade:
+  - |
+    `horizon_listen_ports` variable was transformed to the dictionary with
+    required keys `http` and `https` to have effect not only for apache
+    ports.conf file, but also for the virtual host.
+features:
+  - |
+    Added variable `horizon_bind_address` which defines IP address where Apache
+    will listen on `horizon_listen_ports`
