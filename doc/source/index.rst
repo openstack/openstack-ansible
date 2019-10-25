@@ -9,10 +9,10 @@ configuration of an OpenStack environment.
 
 Documentation for each of the following releases is available.
 
-Train: Under development
-~~~~~~~~~~~~~~~~~~~~~~~~
+Ussuri: Under development
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible Train is currently in development.
+OpenStack-Ansible Ussuri is currently in development.
 
 .. toctree::
    :maxdepth: 1
@@ -23,6 +23,18 @@ OpenStack-Ansible Train is currently in development.
    user/index
    contributor/index
    reference/index
+
+Train: Release Candidate
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+OpenStack-Ansible Train is currently in development.
+
+* `OpenStack-Ansible Train Documentation`_
+
+* `OpenStack-Ansible Train series release notes`_
+
+.. _OpenStack-Ansible Train Documentation: https://docs.openstack.org/openstack-ansible/train/
+.. _OpenStack-Ansible Train series release notes: https://docs.openstack.org/releasenotes/openstack-ansible/train.html
 
 Stein: Maintained
 ~~~~~~~~~~~~~~~~~
@@ -51,8 +63,8 @@ OpenStack-Ansible's Rocky series was first released with the 18.0.0 tag on
 .. _OpenStack-Ansible Rocky Documentation: https://docs.openstack.org/openstack-ansible/rocky/
 .. _OpenStack-Ansible Rocky series release notes: https://docs.openstack.org/releasenotes/openstack-ansible/rocky.html
 
-Queens: Maintained
-~~~~~~~~~~~~~~~~~~
+Queens: Extended Maintenance
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 OpenStack-Ansible's Queens series was first released with the 17.0.0 tag on
 14 March 2018.
 
@@ -63,8 +75,8 @@ OpenStack-Ansible's Queens series was first released with the 17.0.0 tag on
 .. _OpenStack-Ansible Queens Documentation: https://docs.openstack.org/openstack-ansible/queens/
 .. _OpenStack-Ansible Queens series release notes: https://docs.openstack.org/releasenotes/openstack-ansible/queens.html
 
-Pike: Maintained
-~~~~~~~~~~~~~~~~
+Pike: Extended Maintenance
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 OpenStack-Ansible's Pike series was first released with the 16.0.0 tag on
 14 September 2017.
