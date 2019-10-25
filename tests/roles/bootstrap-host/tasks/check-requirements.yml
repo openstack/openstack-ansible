@@ -55,6 +55,8 @@
     else
         df -BK / | awk '!/^Filesystem/ {print $4}' | sed 's/K//'
     fi
+  environment:
+    LC_ALL: en_US.UTF-8
   when:
     - bootstrap_host_data_disk_device == None
   changed_when: false
