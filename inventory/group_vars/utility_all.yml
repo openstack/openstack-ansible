@@ -31,12 +31,24 @@ utility_distro_packages:
   - git
   - bash-completion
 
-utility_distro_openstack_clients_packages:
-  - python-keystoneclient
-  - python-neutronclient
-  - python-novaclient
-  - python-cinderclient
-  - python-openstackclient
+# Packages installed into the utility container for distro installs
+# NOTE(jrosser) this can be simplified when all supported
+# distros use python3
+utility_distro_openstack_clients_python_version: "{{ (ansible_distribution == 'CentOS') | ternary('2', '3') }}"
+
+_utility_distro_openstack_clients_packages:
+  2:
+    - python-keystoneclient
+    - python-neutronclient
+    - python-novaclient
+    - python-cinderclient
+    - python-openstackclient
+  3:
+    - python3-keystoneclient
+    - python3-neutronclient
+    - python3-novaclient
+    - python3-cinderclient
+    - python3-openstackclient
 
 # Python packages to be installed into the utility container
 utility_pip_packages:
