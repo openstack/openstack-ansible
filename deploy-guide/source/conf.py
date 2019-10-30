@@ -33,8 +33,8 @@ import openstackdocstheme
 # Variables to override
 target_name = 'openstack-ansible'
 description = 'OpenStack-Ansible deploys OpenStack environments using Ansible.'
-previous_series_name = 'stein'
-current_series_name = 'train'
+previous_series_name = 'train'
+current_series_name = 'ussuri'
 
 # General information about the project.
 author = 'OpenStack-Ansible Contributors'
