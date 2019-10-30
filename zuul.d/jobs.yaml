@@ -275,29 +275,24 @@
 
 # opensuse
 - job:
-    name: openstack-ansible-deploy-aio_lxc-opensuse-150
+    name: openstack-ansible-deploy-aio_lxc-opensuse-15
     parent: openstack-ansible-deploy-aio
-    nodeset: opensuse-150
+    nodeset: opensuse-15
 
 - job:
-    name: openstack-ansible-deploy-aio_distro_lxc-opensuse-150
+    name: openstack-ansible-deploy-aio_distro_lxc-opensuse-15
     parent: openstack-ansible-deploy-aio
-    nodeset: opensuse-150
+    nodeset: opensuse-15
 
 - job:
-    name: openstack-ansible-deploy-aio_ceph-opensuse-150
+    name: openstack-ansible-deploy-aio_ceph-opensuse-15
     parent: openstack-ansible-deploy-aio
-    nodeset: opensuse-150
+    nodeset: opensuse-15
 
 - job:
-    name: openstack-ansible-deploy-aio_distro_ceph-opensuse-150
+    name: openstack-ansible-deploy-aio_distro_ceph-opensuse-15
     parent: openstack-ansible-deploy-aio
-    nodeset: opensuse-150
-
-- job:
-    name: openstack-ansible-deploy-aio_metal-opensuse-150
-    parent: openstack-ansible-deploy-aio
-    nodeset: opensuse-150
+    nodeset: opensuse-15
 
 - job:
     name: openstack-ansible-deploy-aio_metal-opensuse-15
@@ -305,14 +300,9 @@
     nodeset: opensuse-15
 
 - job:
-    name: openstack-ansible-deploy-aio_telemetry_metal-opensuse-150
+    name: openstack-ansible-deploy-aio_telemetry_metal-opensuse-15
     parent: openstack-ansible-deploy-aio
-    nodeset: opensuse-150
-
-- job:
-    name: openstack-ansible-deploy-aio_distro_metal-opensuse-150
-    parent: openstack-ansible-deploy-aio
-    nodeset: opensuse-150
+    nodeset: opensuse-15
 
 - job:
     name: openstack-ansible-deploy-aio_distro_metal-opensuse-15
@@ -320,6 +310,6 @@
     nodeset: opensuse-15
 
 - job:
-    name: openstack-ansible-deploy-aio_nspawn-opensuse-150
+    name: openstack-ansible-deploy-aio_nspawn-opensuse-15
     parent: openstack-ansible-deploy-aio
-    nodeset: opensuse-150
+    nodeset: opensuse-15
