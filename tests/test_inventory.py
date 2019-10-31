@@ -488,7 +488,18 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'unbound_hosts',
         'utility',
         'utility_all',
-        'utility_container'
+        'utility_container',
+        'zun-infra_all',
+        'zun-infra_containers',
+        'zun-infra_hosts',
+        'zun_all',
+        'zun_api',
+        'zun_api_container',
+        'zun_compute',
+        'zun-compute_containers',
+        'zun-compute_hosts',
+        'zun-compute_all',
+        'zun_compute_container',
     ]
 
     @classmethod

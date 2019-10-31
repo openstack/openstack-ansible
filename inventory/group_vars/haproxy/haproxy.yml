@@ -439,3 +439,12 @@ haproxy_default_services:
         - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
         - "httplog"
       haproxy_service_enabled: "{{ groups['panko_all'] is defined and groups['panko_all'] | length > 0 }}"
+  - service:
+      haproxy_service_name: zun_api
+      haproxy_backend_nodes: "{{ groups['zun_api'] | default([]) }}"
+      haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_port: 9517
+      haproxy_balance_type: http
+      haproxy_backend_options:
+        - "httpchk GET /v1 HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+      haproxy_service_enabled: "{{ groups['zun_api'] is defined and groups['zun_api'] | length > 0 }}"

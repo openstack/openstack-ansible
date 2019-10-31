@@ -1,0 +1,36 @@
+---
+component_skel:
+  zun_api:
+    belongs_to:
+      - zun_all
+  zun_compute:
+    belongs_to:
+      - zun_all
+
+container_skel:
+  zun_api_container:
+    belongs_to:
+      - zun-infra_containers
+    contains:
+      - zun_api
+  zun_compute_container:
+    belongs_to:
+      - zun-compute_containers
+    contains:
+      - zun_compute
+    properties:
+      is_metal: true
+
+physical_skel:
+  zun-compute_containers:
+    belongs_to:
+    - all_containers
+  zun-compute_hosts:
+    belongs_to:
+    - hosts
+  zun-infra_containers:
+    belongs_to:
+    - all_containers
+  zun-infra_hosts:
+    belongs_to:
+    - hosts
