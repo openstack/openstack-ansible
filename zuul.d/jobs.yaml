@@ -254,54 +254,54 @@
 
 # opensuse
 - job:
-    name: openstack-ansible-deploy-aio_lxc-opensuse-150
+    name: openstack-ansible-deploy-aio_lxc-opensuse-15
     parent: openstack-ansible-deploy-aio
-    nodeset: opensuse-150
+    nodeset: opensuse-15
 
 - job:
-    name: openstack-ansible-deploy-aio_distro_lxc-opensuse-150
+    name: openstack-ansible-deploy-aio_distro_lxc-opensuse-15
     parent: openstack-ansible-deploy-aio
-    nodeset: opensuse-150
+    nodeset: opensuse-15
     vars:
       install_method: distro
 
 - job:
-    name: openstack-ansible-deploy-aio_ceph-opensuse-150
+    name: openstack-ansible-deploy-aio_ceph-opensuse-15
     parent: openstack-ansible-deploy-aio
-    nodeset: opensuse-150
+    nodeset: opensuse-15
     vars:
       action: deploy
       scenario: aio_ceph
 
 - job:
-    name: openstack-ansible-deploy-aio_distro_ceph-opensuse-150
+    name: openstack-ansible-deploy-aio_distro_ceph-opensuse-15
     parent: openstack-ansible-deploy-aio
-    nodeset: opensuse-150
+    nodeset: opensuse-15
     vars:
       action: deploy
       scenario: aio_ceph
       install_method: distro
 
 - job:
-    name: openstack-ansible-upgrade-aio_lxc-opensuse-150
+    name: openstack-ansible-upgrade-aio_lxc-opensuse-15
     parent: openstack-ansible-deploy-aio
-    nodeset: opensuse-150
+    nodeset: opensuse-15
     timeout: 10800
     vars:
       action: upgrade
       scenario: aio_lxc
 
 - job:
-    name: openstack-ansible-deploy-aio_metal-opensuse-150
+    name: openstack-ansible-deploy-aio_metal-opensuse-15
     parent: openstack-ansible-deploy-aio
-    nodeset: opensuse-150
+    nodeset: opensuse-15
     vars:
       action: deploy
       scenario: aio_metal
 
 - job:
-    name: openstack-ansible-deploy-aio_nspawn-opensuse-150
+    name: openstack-ansible-deploy-aio_nspawn-opensuse-15
     parent: openstack-ansible-deploy-aio
-    nodeset: opensuse-150
+    nodeset: opensuse-15
     vars:
       scenario: aio_nspawn
