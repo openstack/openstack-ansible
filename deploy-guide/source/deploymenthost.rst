@@ -26,7 +26,6 @@ Install the operating system
 Install one of the following supported operating systems on the deployment
 hosts:
 
-* `Ubuntu server 16.04 (Xenial Xerus) LTS 64-bit <http://releases.ubuntu.com/16.04/>`_
 * `Ubuntu server 18.04 (Bionic Beaver) LTS 64-bit <http://releases.ubuntu.com/18.04/>`_
 * `Centos 7 64-bit <https://www.centos.org/download/>`_
 * `openSUSE 42.X 64-bit <https://software.opensuse.org/distributions/leap>`_
