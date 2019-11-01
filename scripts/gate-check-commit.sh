@@ -49,7 +49,7 @@ export INSTALL_METHOD=${3:-"source"}
 # Set the source branch for upgrade tests
 # Be sure to change this whenever a new stable branch
 # is created. The checkout must always be N-1.
-export UPGRADE_SOURCE_BRANCH=${UPGRADE_SOURCE_BRANCH:-'stable/rocky'}
+export UPGRADE_SOURCE_BRANCH=${UPGRADE_SOURCE_BRANCH:-'stable/stein'}
 
 # enable the ARA callback plugin
 export SETUP_ARA=${SETUP_ARA:-true}
@@ -63,9 +63,14 @@ export SETUP_ARA=${SETUP_ARA:-true}
 if [[ "${ACTION}" == "upgrade" ]]; then
     # Store the target SHA/branch
     export UPGRADE_TARGET_BRANCH=$(git rev-parse HEAD)
+    export OPENSTACK_SETUP_EXTRA_ARGS="-e tempest_install=no -e tempest_run=no"
 
     # Now checkout the source SHA/branch
     git checkout ${UPGRADE_SOURCE_BRANCH}
+
+    unset SKIP_OSA_RUNTIME_VENV_BUILD
+    unset SKIP_OSA_BOOTSTRAP_AIO
+    unset SKIP_OSA_ROLE_CLONE
 fi
 
 ## Functions -----------------------------------------------------------------
@@ -183,7 +188,7 @@ else
 
     # Setup OpenStack
     export ANSIBLE_LOG_PATH="${ANSIBLE_LOG_DIR}/setup-openstack.log"
-    openstack-ansible setup-openstack.yml -e osa_gather_facts=False
+    openstack-ansible setup-openstack.yml -e osa_gather_facts=False ${OPENSTACK_SETUP_EXTRA_ARGS:-}
 
     # Log some data about the instance and the rest of the system
     log_instance_info
@@ -209,7 +214,9 @@ if [[ "${ACTION}" == "upgrade" ]]; then
 
     # Source the current scripts-library.sh functions
     source "${OSA_CLONE_DIR}/scripts/scripts-library.sh"
-
+    # We need this as in stein we were deploying custom
+    # /etc/openstack_deploy/env.d/aio_metal.yml for metal installs
+    export SKIP_CUSTOM_ENVD_CHECK=true
     # To execute the upgrade script we need to provide
     # an affirmative response to the warning that the
     # upgrade is irreversable.

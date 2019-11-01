@@ -184,6 +184,12 @@
     timeout: 10800
 
 - job:
+    name: openstack-ansible-upgrade-aio_metal-ubuntu-bionic
+    parent: openstack-ansible-deploy-aio
+    nodeset: ubuntu-bionic
+    timeout: 10800
+
+- job:
     name: openstack-ansible-deploy-aio_nspawn-ubuntu-bionic
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-bionic
@@ -255,6 +261,12 @@
     name: openstack-ansible-deploy-aio_nspawn-centos-7
     parent: openstack-ansible-deploy-aio
     nodeset: centos-7
+
+- job:
+    name: openstack-ansible-upgrade-aio_metal-centos-7
+    parent: openstack-ansible-deploy-aio
+    nodeset: centos-7
+    timeout: 10800
 
 - job:
     name: openstack-ansible-upgrade-aio_ceph-centos-7
