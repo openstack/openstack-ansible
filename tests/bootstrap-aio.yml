@@ -70,6 +70,13 @@
       MaxStartups: "100:100:100"
       GSSAPIAuthentication: no
       GSSAPICleanupCredentials: no
+  pre_tasks:
+    - name: Run setup module
+      setup:
+        gather_subset:
+          - network
+          - hardware
+          - virtual
   post_tasks:
     - name: Check that new network interfaces are up
       assert:
