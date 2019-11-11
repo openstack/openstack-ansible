@@ -41,6 +41,7 @@ COMMON_ETC_LOG_NAMES="apt \
     auditd \
     calico \
     ceph \
+    etcd \
     haproxy \
     httpd \
     memcached \
