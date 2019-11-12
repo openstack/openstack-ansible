@@ -39,6 +39,7 @@ export RSYNC_CMD="rsync --archive --copy-links --ignore-errors --quiet --no-perm
 COMMON_ETC_LOG_NAMES="apt \
     apache2 \
     calico \
+    etcd \
     haproxy \
     httpd \
     memcached \
