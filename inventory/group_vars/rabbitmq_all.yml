@@ -16,7 +16,7 @@
 rabbitmq_cluster_name: openstack
 
 # Ensure that the package state matches the global setting
-rabbitmq_package_state: "{{ package_state }}"
+rabbitmq_package_state: "{{ rabbitmq_upgrade | default(False) | bool | ternary('latest', 'present') }}"
 
 # Ensure that all rabbitmq containers get a fixed mac address
 lxc_container_fixed_mac: true
