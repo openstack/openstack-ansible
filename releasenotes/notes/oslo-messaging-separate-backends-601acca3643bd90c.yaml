@@ -1,0 +1,19 @@
+---
+features:
+  - Support separate oslo.messaging services for RPC and Notifications
+    to enable operation of separate and different messaging backend servers.
+deprecations:
+  - |
+    The rabbitmq server parameters have been replaced by corresponding
+    oslo.messaging RPC and Notify parameters in order to abstract the
+    messaging service from the actual backend server deployment.
+    - cloudkitty_oslomsg_rpc_servers replaces rabbitmq_servers
+    - cloudkitty_oslomsg_rpc_port replaces rabbitmq_port
+    - cloudkitty_oslomsg_rpc_userid replaces rabbitmq_userid
+    - cloudkitty_oslomsg_rpc_vhost replaces rabbitmq_vhost
+    - cloudkitty_oslomsg_rpc_use_ssl replaces rabbitmq_use_ssl
+    - added cloudkitty_oslomsg_notify_servers
+    - added cloudkitty_oslomsg_notify_port
+    - added cloudkitty_oslomsg_notify_use_ssl
+    - added cloudkitty_oslomsg_notify_userid
+    - added cloudkitty_oslomsg_notify_vhost
