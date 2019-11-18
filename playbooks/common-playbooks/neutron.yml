@@ -29,6 +29,8 @@
       include: ../common-tasks/dynamic-address-fact.yml
       vars:
         network_address: "tunnel_address"
+      tags:
+        - always
 
     - name: Configure container (neutron-agent)
       include: "../common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"

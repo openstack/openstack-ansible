@@ -41,6 +41,8 @@
       include: ../common-tasks/dynamic-address-fact.yml
       vars:
         network_address: "storage_address"
+      tags:
+        - always
 
     - name: Configure container (cinder-volume) when lvm is in-use
       include: "../common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
