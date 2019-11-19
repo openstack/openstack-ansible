@@ -1,0 +1,13 @@
+---
+issues:
+  - |
+    The journald-remote is disabled from execution inside setup-infrastructure until
+    https://github.com/systemd/systemd/issues/2376 has been incorporated in current
+    systemd packages.
+    The playbook can be enabled by setting ``journald_remote_enabled`` to ``True``
+upgrade:
+  - |
+    The journald-remote playbook is disabled from execution inside
+    setup-infrastructure until setting ``journald_remote_enabled`` is set to ``True``
+    due to https://github.com/systemd/systemd/issues/2376
+
