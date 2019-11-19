@@ -73,3 +73,30 @@ tempest_log_dir: /var/log/utility
 
 # This sets the tempest group to the utility group
 tempest_main_group: utility_all
+
+# NOTE(jrosser)
+#
+# The os_tempest role now defaults to running the smoke tests which breaks some of the roles
+# Overriding the test whitelist here puts the behaviour back, but leaves the default in os_tempest
+# being the smoke tests.
+#
+# Remove this override when the tempest smoke test passes for all OSA repos.
+#
+# Tests to execute:
+# This sets up a list of tests to execute based on what's deployed in the environment.
+# The list gets added to the whitelist which tempest executes.
+tempest_test_whitelist:
+  - "{{ (ansible_pkg_mgr == 'apt' and tempest_install_method == 'distro') |
+         ternary('(?!.*\\.test_list_all_implied_roles)', '') ~ 'tempest.api.identity.admin.v3' }}"
+  - "tempest.api.identity.v3"
+  - "{{ (tempest_service_available_ceilometer | bool) | ternary('tempest.api.telemetry', '') }}"
+  - "{{ (tempest_service_available_heat | bool) | ternary('tempest.api.orchestration.stacks.test_non_empty_stack', '') }}"
+  # TODO(odyssey4me):
+  # Once the issue with this test is worked out, re-enable it.
+  #- "{{ (tempest_service_available_nova | bool) | ternary('tempest.scenario.test_minimum_basic', '') }}"
+  - "{{ (tempest_service_available_nova | bool) | ternary('tempest.scenario.test_server_basic_ops', '') }}"
+  - "{{ (tempest_service_available_swift | bool) | ternary('tempest.scenario.test_object_storage_basic_ops', '') }}"
+  - "{{ (tempest_volume_multi_backend_enabled | bool) | ternary('tempest.api.volume.admin.test_multi_backend', '') }}"
+  # TODO(evrardjp): Bring this back when upstream is fixed
+  # (revert of https://github.com/openstack/cinder/commit/737c50b4ea54e2e63d6e3fe8a73d22b393df4205)
+  #  - "{{ (tempest_volume_backup_enabled | bool) | ternary('tempest.api.volume.admin.test_volumes_backup', '') }}"
