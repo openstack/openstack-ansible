@@ -47,6 +47,8 @@
       ignore_errors: true
 
   roles:
+    - role: "galera_client"
+      when: placement_migrate_flag | default(False)
     - role: "os_placement"
     - role: "system_crontab_coordination"
       tags:
