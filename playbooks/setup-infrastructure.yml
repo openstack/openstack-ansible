@@ -24,4 +24,9 @@
 - import_playbook: etcd-install.yml
 - import_playbook: ceph-install.yml
 - import_playbook: rsyslog-install.yml
+
+# The journald-remote should be disabled by default until
+# https://github.com/systemd/systemd/issues/2376 has been
+# incorporated in current systemd packages
 - import_playbook: infra-journal-remote.yml
+  when: journald_remote_enabled | default (false) | bool
