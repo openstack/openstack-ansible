@@ -64,6 +64,8 @@
       include_tasks: ../common-tasks/dynamic-address-fact.yml
       vars:
         network_address: "management_address"
+      tags:
+        - always
 
     - name: Configure container
       include_tasks: "../common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
