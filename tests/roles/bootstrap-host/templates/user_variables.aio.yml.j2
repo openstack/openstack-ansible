@@ -155,6 +155,11 @@ ironic_wsgi_threads: 1
 ironic_wsgi_processes_max: 2
 ironic_wsgi_processes: 1
 
+## Ironic  Inspector
+ironic_inspector_wsgi_threads: 1
+ironic_inspector_wsgi_processes_max: 2
+ironic_inspector_wsgi_processes: 1
+
 ## Trove
 trove_api_workers_max: 2
 trove_service_net_setup: true
@@ -259,4 +264,9 @@ deployment_environment_variables:
 # Remove eth0 from all container so there is no default route and everything
 # must go via the http proxy
 lxc_container_networks: {}
+{% endif %}
+
+{% if 'ironic' in bootstrap_host_scenario %}
+# The ironic inspector DHCP address that hands out DHCP offers
+ironic_inspector_dhcp_address: 192.168.0.100
 {% endif %}
