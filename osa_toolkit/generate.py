@@ -993,12 +993,17 @@ def _check_config_settings(cidr_networks, config, container_skel):
 
     # search for any container that doesn't have is_metal flag set to true
     is_provider_networks_needed = False
-    for key, value in container_skel.items():
-        properties = value.get('properties', {})
-        is_metal = properties.get('is_metal', False)
-        if not is_metal:
-            is_provider_networks_needed = True
-            break
+    if 'global_overrides' in config:
+        no_containers = config['global_overrides'].get('no_containers', False)
+    else:
+        no_containers = False
+    if not no_containers:
+        for key, value in container_skel.items():
+            properties = value.get('properties', {})
+            is_metal = properties.get('is_metal', False)
+            if not is_metal:
+                is_provider_networks_needed = True
+                break
 
     if is_provider_networks_needed:
         if ('global_overrides' not in config):
