@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Added possibility to override ceph.conf partially by defining
+    `ceph_client_ceph_conf_overrides` variable. It uses regular format of
+    OpenStack-Ansible overrides.
+    From now on, config_template plugin should be present for ansible.
