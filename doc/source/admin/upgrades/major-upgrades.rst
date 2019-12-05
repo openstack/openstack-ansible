@@ -187,13 +187,11 @@ Upgrade infrastructure
 ~~~~~~~~~~~~~~~~~~~~~~
 
 We can now go ahead with the upgrade of all the infrastructure components. To
-ensure that rabbitmq and mariadb are upgraded, and to handle the transition
-from the nova placement service to the extracted placement service, we pass
-the appropriate flags.
+ensure that rabbitmq and mariadb are upgraded, we pass the appropriate flags.
 
 .. code-block:: console
 
-    # openstack-ansible setup-infrastructure.yml -e 'galera_upgrade=true' -e 'rabbitmq_upgrade=true' -e 'placement_migrate_flag=true'
+    # openstack-ansible setup-infrastructure.yml -e 'galera_upgrade=true' -e 'rabbitmq_upgrade=true'
 
 With this complete, we can now restart the mariadb containers one at a time,
 ensuring that each is started, responding, and synchronized with the other
@@ -208,21 +206,8 @@ ensuring that the containers are restarted in a controlled fashion.
 Upgrade OpenStack
 ~~~~~~~~~~~~~~~~~
 
-We can now go ahead with the upgrade of all the OpenStack components, passing
-the flag that enabled the transition from the nova placement service to the
-extracted placement service.
+We can now go ahead with the upgrade of all the OpenStack components.
 
 .. code-block:: console
 
-    # openstack-ansible setup-openstack.yml -e 'placement_migrate_flag=true'
-
-Remove legacy nova placement service backends
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Now that the new extracted placement service is operational, we can remove the
-legacy implementation from the load balancer.
-
-.. code-block:: console
-
-    # openstack-ansible haproxy-install.yml
-
+    # openstack-ansible setup-openstack.yml

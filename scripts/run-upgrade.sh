@@ -169,7 +169,7 @@ function main {
 
     pushd ${MAIN_PATH}/playbooks
         RUN_TASKS+=("${SCRIPTS_PATH}/upgrade-utilities/pip-conf-removal.yml")
-        RUN_TASKS+=("${SCRIPTS_PATH}/upgrade-utilities/deploy-config-changes.yml -e 'placement_migrate_flag=true'")
+        RUN_TASKS+=("${SCRIPTS_PATH}/upgrade-utilities/deploy-config-changes.yml")
         # we don't want to trigger container restarts for galera and rabbit
         # but as there will be no hosts available for metal deployments,
         # as a fallback option we just run setup-hosts.yml without any arguments
@@ -177,13 +177,11 @@ function main {
                      openstack-ansible setup-hosts.yml -e 'lxc_container_allow_restarts=false' --limit 'galera_all:rabbitmq_all' || \
                      openstack-ansible setup-hosts.yml")
         # upgrade infrastructure
-        RUN_TASKS+=("setup-infrastructure.yml -e 'galera_upgrade=true' -e 'rabbitmq_upgrade=true' -e 'placement_migrate_flag=true'")
+        RUN_TASKS+=("setup-infrastructure.yml -e 'galera_upgrade=true' -e 'rabbitmq_upgrade=true'")
         # explicitly perform controlled galera cluster restart with new lxc config
         RUN_TASKS+=("${SCRIPTS_PATH}/upgrade-utilities/galera-cluster-rolling-restart.yml")
         # upgrade openstack
-        RUN_TASKS+=("setup-openstack.yml -e 'placement_migrate_flag=true'")
-        # run haproxy setup again without the placement migrate flag to remove the nova placement api backends
-        RUN_TASKS+=("haproxy-install.yml")
+        RUN_TASKS+=("setup-openstack.yml")
         # Run the tasks in order
         for item in ${!RUN_TASKS[@]}; do
           echo "### NOW RUNNING: ${RUN_TASKS[$item]}"
