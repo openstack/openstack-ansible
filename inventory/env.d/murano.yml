@@ -24,7 +24,6 @@ component_skel:
 container_skel:
   murano_container:
     belongs_to:
-      - os-infra_containers
       - murano-infra_containers
     contains:
       - murano_api
