@@ -39,11 +39,13 @@
     check:
       jobs:
         - openstack-ansible-deploy-aio_lxc-centos-7
+        - openstack-ansible-deploy-aio_lxc-debian-buster
         - openstack-ansible-deploy-aio_lxc-debian-stable
         - openstack-ansible-deploy-aio_lxc-ubuntu-bionic
     gate:
       jobs:
         - openstack-ansible-deploy-aio_lxc-centos-7
+        - openstack-ansible-deploy-aio_lxc-debian-buster
         - openstack-ansible-deploy-aio_lxc-debian-stable
         - openstack-ansible-deploy-aio_lxc-ubuntu-bionic
     periodic:
@@ -66,6 +68,7 @@
     name: openstack-ansible-deploy-aio_metal-jobs
     check:
       jobs:
+        - openstack-ansible-deploy-aio_metal-debian-buster
         - openstack-ansible-deploy-aio_metal-debian-stable
         - openstack-ansible-deploy-aio_metal-centos-7
         - openstack-ansible-deploy-aio_metal-opensuse-15
@@ -75,6 +78,7 @@
         - openstack-ansible-upgrade-aio_metal-ubuntu-bionic
     gate:
       jobs:
+        - openstack-ansible-deploy-aio_metal-debian-buster
         - openstack-ansible-deploy-aio_metal-debian-stable
         - openstack-ansible-deploy-aio_metal-centos-7
         - openstack-ansible-deploy-aio_metal-opensuse-15
@@ -89,11 +93,13 @@
     check:
       jobs:
         - openstack-ansible-deploy-aio_telemetry_metal-centos-7
+        - openstack-ansible-deploy-aio_telemetry_metal-debian-buster
         - openstack-ansible-deploy-aio_telemetry_metal-debian-stable
         - openstack-ansible-deploy-aio_telemetry_metal-ubuntu-bionic
     gate:
       jobs:
         - openstack-ansible-deploy-aio_telemetry_metal-centos-7
+        - openstack-ansible-deploy-aio_telemetry_metal-debian-buster
         - openstack-ansible-deploy-aio_telemetry_metal-debian-stable
         - openstack-ansible-deploy-aio_telemetry_metal-ubuntu-bionic
     experimental:
