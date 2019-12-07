@@ -28,7 +28,10 @@
       register: result
       raw: |
         if which apt-get >/dev/null && ! which python >/dev/null ; then
-          apt-get -y install python
+          if ! which python3 >/dev/null ; then
+            apt-get -y install python3
+          fi
+          update-alternatives --install /usr/bin/python python /usr/bin/python3 10
           exit 2
         else
           exit 0
