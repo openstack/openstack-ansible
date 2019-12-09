@@ -336,8 +336,10 @@ function get_instance_info {
     networkctl lldp >> \
       "/openstack/log/instance-info/host_networkd_lldp_${TS}.log" || true
   fi
-  (iptables -vnL && iptables -t nat -vnL && iptables -t mangle -vnL) > \
-    "/openstack/log/instance-info/host_firewall_info_${TS}.log" || true
+  if [ "$(which iptables)" ]; then
+    (iptables -vnL && iptables -t nat -vnL && iptables -t mangle -vnL) > \
+      "/openstack/log/instance-info/host_firewall_info_${TS}.log" || true
+  fi
   if [ "$(which ansible)" ]; then
     ANSIBLE_HOST_KEY_CHECKING=False \
       ansible -i "localhost," localhost -m setup > \
@@ -347,8 +349,10 @@ function get_instance_info {
     "/openstack/log/instance-info/host_repo_info_${TS}.log" || true
 
   for i in nspawn-macvlan.service nspawn-networking.slice nspawn.slice; do
-    systemctl status ${i} > "/openstack/log/instance-info/${i}_${TS}.log" || true
-    journalctl -u ${i} >> "/openstack/log/instance-info/${i}_${TS}.log" || true
+    if [ "$(systemctl is-active --quiet ${i})" ]; then
+      systemctl status ${i} > "/openstack/log/instance-info/${i}_${TS}.log" || true
+      journalctl -u ${i} >> "/openstack/log/instance-info/${i}_${TS}.log" || true
+    fi
   done
 
   ip route get 1 > "/openstack/log/instance-info/routes_${TS}.log" || true
@@ -366,7 +370,21 @@ function get_instance_info {
           ;;
   esac
 
-  if command -v zfs >/dev/null; then
+  # Storage reports
+  for dir_name in lxc machines; do
+    if [ "$(which btrfs)" ]; then
+      btrfs filesystem usage /var/lib/${dir_name} > \
+        "/openstack/log/instance-info/btrfs_${dir_name}_usage_${TS}.log" || true
+      btrfs filesystem show /var/lib/${dir_name} > \
+        "/openstack/log/instance-info/btrfs_${dir_name}_show_${TS}.log" || true
+      btrfs filesystem df /var/lib/${dir_name} > \
+        "/openstack/log/instance-info/btrfs_${dir_name}_df_${TS}.log" || true
+      btrfs qgroup show --human-readable -pcre --iec /var/lib/${dir_name} > \
+        "/openstack/log/instance-info/btrfs_${dir_name}_quotas_${TS}.log" || true
+    fi
+  done
+
+  if [ "$(which zfs)" ]; then
     zfs list > "/openstack/log/instance-info/zfs_lxc_${TS}.log" || true
   fi
 
