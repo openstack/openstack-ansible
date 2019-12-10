@@ -9,10 +9,10 @@ configuration of an OpenStack environment.
 
 Documentation for each of the following releases is available.
 
-Train: Release Candidate
+Train: Maintained
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible Train is currently in development.
+OpenStack-Ansible Train series was first released with the 20.0.0 tag
 
 .. toctree::
    :maxdepth: 1
