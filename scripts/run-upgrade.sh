@@ -168,7 +168,6 @@ function main {
     bootstrap_ansible
 
     pushd ${MAIN_PATH}/playbooks
-        RUN_TASKS+=("${SCRIPTS_PATH}/upgrade-utilities/pip-conf-removal.yml")
         RUN_TASKS+=("${SCRIPTS_PATH}/upgrade-utilities/deploy-config-changes.yml -e 'placement_migrate_flag=true'")
         # we don't want to trigger container restarts for galera and rabbit
         # but as there will be no hosts available for metal deployments,
