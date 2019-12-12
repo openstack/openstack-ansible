@@ -24,8 +24,8 @@
       shell: |
         set -e
         exit_code=0
-        if [[ -e /etc/openstack_deploy/env.d ]]; then
-          for f in $(diff --brief --report-identical-files /etc/openstack_deploy/env.d /opt/openstack-ansible/inventory/env.d | awk '/identical/ {print $2}' 2>/dev/null); do
+        if [[ -e {{ openstack_config_dir }}/env.d ]]; then
+          for f in $(diff --brief --report-identical-files {{ openstack_config_dir }}/env.d {{ openstack_clone_root }}/inventory/env.d | awk '/identical/ {print $2}' 2>/dev/null); do
             echo "Deleting ${f} because it is identical to the defaults."
             rm -f ${f}
             exit_code=2
@@ -43,7 +43,7 @@
     - name: Find any config files in the user-space env.d directory
       find:
         paths:
-          - "/etc/openstack_deploy/env.d"
+          - "{{ openstack_config_dir }}/env.d"
         patterns: '*.yml'
       register: _envd_dir_contents
       tags:
@@ -71,14 +71,14 @@
         - update-secrets
 
     - name: Read existing user secrets file
-      shell: "grep '^[a-zA-Z]' /etc/openstack_deploy/user_secrets.yml"
+      shell: "grep '^[a-zA-Z]' {{ openstack_config_dir }}/user_secrets.yml"
       register: user_secrets
       tags:
         - update-secrets
 
     - name: Add missing secrets
       lineinfile:
-        dest: "/etc/openstack_deploy/user_secrets.yml"
+        dest: "{{ openstack_config_dir }}/user_secrets.yml"
         line: "{{ item }}"
       with_items: "{{ new_secrets.stdout_lines }}"
       when:
@@ -87,13 +87,13 @@
         - update-secrets
 
     - name: Generate new secrets
-      shell: "{{ repo_root_dir }}/scripts/pw-token-gen.py --file /etc/openstack_deploy/user_secrets.yml"
+      shell: "{{ repo_root_dir }}/scripts/pw-token-gen.py --file {{ openstack_config_dir }}/user_secrets.yml"
       tags:
         - update-secrets
 
     - name: Remove fact cache to ensure a fresh one is built during the upgrade
       file:
-        path: "/etc/openstack_deploy/ansible_facts"
+        path: "{{ openstack_config_dir }}/ansible_facts"
         state: absent
       tags:
         - remove-fact-cache
