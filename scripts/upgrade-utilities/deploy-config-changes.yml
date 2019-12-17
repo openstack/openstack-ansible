@@ -100,7 +100,7 @@
 
     - name: Define placement service hosts
       copy:
-        dest: /etc/openstack_deploy/conf.d/placement.yml
+        dest: "{{ openstack_config_dir }}/conf.d/placement.yml"
         content: |-
           {% set config = {'placement-infra_hosts': {}} %}
           {% for host in groups['compute-infra_hosts'] %}
@@ -119,7 +119,7 @@
 
     - name: Set placement service is_metal property
       copy:
-        dest: /etc/openstack_deploy/env.d/placement_metal.yml
+        dest: "{{ openstack_config_dir }}/env.d/placement_metal.yml"
         content: "{{ '---\n' ~ {'container_skel': {'placement_container': {'properties': {'is_metal': true}}}} | to_yaml }}"
       when:
         - placement_migrate_flag | default(False)

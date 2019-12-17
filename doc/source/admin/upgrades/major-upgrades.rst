@@ -149,7 +149,7 @@ Please review the contents of the playbook for more information.
 
 .. code-block:: console
 
-    # openstack-ansible "${SCRIPTS_PATH}/upgrade-utilities/deploy-config-changes.yml"
+    # openstack-ansible "${SCRIPTS_PATH}/upgrade-utilities/deploy-config-changes.yml" -e 'placement_migrate_flag=true'
 
 Clean up the pip.conf file
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
