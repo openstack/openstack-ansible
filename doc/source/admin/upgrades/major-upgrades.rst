@@ -151,17 +151,6 @@ Please review the contents of the playbook for more information.
 
     # openstack-ansible "${SCRIPTS_PATH}/upgrade-utilities/deploy-config-changes.yml" -e 'placement_migrate_flag=true'
 
-Clean up the pip.conf file
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The presence of the ``pip.conf`` file can cause build failures during the
-upgrade to |current_release_formal_name|. This playbook removes the
-``pip.conf`` file on all servers and containers.
-
-.. code-block:: console
-
-    # openstack-ansible "${SCRIPTS_PATH}/upgrade-utilities/pip-conf-removal.yml"
-
 Upgrade hosts
 ~~~~~~~~~~~~~
 
