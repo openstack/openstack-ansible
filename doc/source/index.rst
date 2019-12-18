@@ -24,10 +24,11 @@ OpenStack-Ansible Ussuri is currently in development.
    contributor/index
    reference/index
 
-Train: Release Candidate
+Train: Maintained
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible Train is currently in development.
+OpenStack-Ansible Train series was first released with the 20.0.0 tag on
+16 December 2019.
 
 * `OpenStack-Ansible Train Documentation`_
 
