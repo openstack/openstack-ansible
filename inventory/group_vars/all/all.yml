@@ -23,7 +23,7 @@ openstack_config_dir: "{{ lookup('env', 'OSA_CONFIG_DIR') | default('/etc/openst
 openstack_clone_root: "{{ (lookup('env', 'OSA_CLONE_ROOT') | default('/opt/openstack-ansible', true)) }}"
 
 ## OpenStack service python version
-openstack_venv_python_executable: "{{ (ansible_distribution == 'CentOS') | ternary('python2', 'python3') }}"
+openstack_venv_python_executable: "python3"
 
 #uwsgi venv deploys the same python version as OpenStack service venv
 uwsgi_python_executable: "{{ openstack_venv_python_executable }}"
