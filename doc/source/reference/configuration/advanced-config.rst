@@ -15,4 +15,5 @@ installation of OpenStack that may include their own software.
 
    using-overrides
    extra-python-software
+   extra-networks
    extending-osa
