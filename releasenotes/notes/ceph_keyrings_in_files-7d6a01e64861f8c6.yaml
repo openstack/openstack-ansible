@@ -1,0 +1,15 @@
+---
+features:
+  - |
+    Get ceph keyrings from files, if variable``ceph_keyrings_dir`` is defined
+    the keyrings will be extracted from files. All files in the directory
+    must have ``.keyring`` extention and be named with its corresponding
+    ``ceph_client`` name. For example, if ``cinder_ceph_client`` is ``cinder``
+    the cinder keyring file must be named ``cinder.keyring``.
+    Each file must contain username and the key and nothing more, below
+    an example for cinder.keyring content.
+
+    .. code-block:: text
+
+    [client.cinder]
+    key = XXXXXXXXXXX
