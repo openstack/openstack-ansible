@@ -23,6 +23,12 @@ component_skel:
   ceph-rgw:
     belongs_to:
       - ceph_all
+  ceph-mds:
+    belongs_to:
+      - ceph_all
+  ceph-nfs:
+    belongs_to:
+      - ceph_all
 
 container_skel:
   ceph-mon_container:
@@ -42,6 +48,16 @@ container_skel:
       - ceph-rgw_containers
     contains:
       - ceph-rgw
+  ceph-mds_container:
+    belongs_to:
+      - ceph-mds_containers
+    contains:
+      - ceph-mds
+  ceph-nfs_container:
+    belongs_to:
+      - ceph-nfs_containers
+    contains:
+      - ceph-nfs
 
 physical_skel:
   ceph-mon_containers:
@@ -60,5 +76,17 @@ physical_skel:
     belongs_to:
       - all_containers
   ceph-rgw_hosts:
+    belongs_to:
+      - hosts
+  ceph-mds_containers:
+    belongs_to:
+      - all_containers
+  ceph-mds_hosts:
+    belongs_to:
+      - hosts
+  ceph-nfs_containers:
+    belongs_to:
+      - all_containers
+  ceph-nfs_hosts:
     belongs_to:
       - hosts
