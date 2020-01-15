@@ -156,15 +156,6 @@ function rename_files {
         done
 }
 
-function compress_files {
-    # We use 'command' to ensure that we're not executing with an alias.
-    GZIP_CMD="command gzip --force --best"
-    find_files |\
-        while read filename; do \
-            ${GZIP_CMD} ${filename} || echo "WARNING: Could not gzip ${filename}"; \
-        done
-}
-
 ## Main ----------------------------------------------------------------------
 
 echo "#### BEGIN LOG COLLECTION ###"
@@ -278,9 +269,6 @@ if which ethtool &> /dev/null; then
 else
     echo "No ethtool available" | tee -a "${WORKING_DIR}/logs/ethtool-${TS}-${interface}-cfg.txt"
 fi
-
-# Compress the files gathered so that they do not take up too much space.
-compress_files
 
 # Ensure that the files are readable by all users, including the non-root
 # OpenStack-CI jenkins user.
