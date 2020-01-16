@@ -135,6 +135,9 @@ storage_hosts: *infrastructure_hosts
 # glance
 image_hosts: *infrastructure_hosts
 
+# placement
+placement-infra_hosts: *infrastructure_hosts
+
 # nova api, conductor, etc services
 compute-infra_hosts: *infrastructure_hosts
 
