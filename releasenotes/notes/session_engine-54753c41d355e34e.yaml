@@ -1,0 +1,11 @@
+---
+upgrade:
+  - |
+    `SESSION_ENGINE` has been changed to memcached by default. So that
+    horizon do not require it's own database for storing session
+    information anymore. `horizon_galera_*` variables has no effect now.
+features:
+  - |
+    Added variables `horizon_session_engine` and `horizon_session_caches`
+    which can be used to configure horizon session engine and a backend
+    for it.
