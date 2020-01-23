@@ -78,6 +78,28 @@ You can override the ansible-role-requirement file used by defining
 the environment variable ``ANSIBLE_ROLE_FILE`` before running the
 ``bootstrap-ansible.sh`` script.
 
+It is now the responsibility of the deployer to maintain appropriate
+versions pins of the ansible roles if an upgrade is required.
+
+Maintaining local forks of ansible roles
+----------------------------------------
+
+The Train release of openstack-ansible adds an optional new config file
+which defaults to ``/etc/openstack_deploy/user-role-requirements.yml``.
+It is in the same format as ``ansible-role-requirements.yml`` and can be
+used to add new roles or selectively override existing ones. New roles
+listed in ``user-role-requirements.yml`` will be merged with those
+in ``ansible-role-requirements.yml``, and roles with matching names
+will override those in ``ansible-role-requirements.yml``. It is easy
+for a deployer to keep this file under their own version control and out
+of the openstack-ansible tree.
+
+
+This allows a deployer to
+either add new ansible roles, or override the location or SHA of
+existing individual roles without replacing the original file
+entirely. It is also straightforward to include the
+
 .. _ansible-role-requirements: https://opendev.org/openstack/openstack-ansible/src/ansible-role-requirements.yml
 
 
