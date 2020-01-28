@@ -161,3 +161,47 @@
   tags:
     - ceph
     - ceph-osd
+
+- name: Install ceph metadata servers
+  hosts: ceph-mds
+  user: root
+  vars_files:
+    - "defaults/{{ install_method }}_install.yml"
+    - "defaults/ceph_ansible.yml"
+  pre_tasks:
+    - name: Gather ceph-mon facts
+      action: setup
+      delegate_to: "{{ item }}"
+      delegate_facts: yes
+      with_items: "{{ groups[mon_group_name] }}"
+      when:
+        - inventory_hostname == ansible_play_hosts[0]
+      tags:
+        - ceph-mon-facts
+        - ceph-mds
+  roles:
+    - role: ceph-defaults
+      tags:
+        - skip_ansible_lint
+    - role: ceph-facts
+      tags:
+        - skip_ansible_lint
+    - role: ceph-handler
+      tags:
+        - skip_ansible_lint
+    - role: ceph-common
+      tags:
+        - skip_ansible_lint
+    - role: ceph-config
+      tags:
+        - skip_ansible_lint
+    - role: ceph-mds
+      tags:
+        - skip_ansible_lint
+    - role: "system_crontab_coordination"
+      tags:
+        - "system-crontab-coordination"
+  vars:
+    is_metal: "{{ properties.is_metal|default(false) }}"
+  tags:
+    - ceph-mds

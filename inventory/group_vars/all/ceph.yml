@@ -20,6 +20,8 @@ mon_group_name: ceph-mon
 mgr_group_name: "{{ mon_group_name }}"
 osd_group_name: ceph-osd
 rgw_group_name: ceph-rgw
+mds_group_name: ceph-mds
+nfs_group_name: nfss
 ceph_origin: "{{ (ansible_pkg_mgr == 'zypper') | ternary('distro', 'repository') }}"
 ceph_repository: community
 # The _stable_release var is used by both the OSA ceph_client role and the
