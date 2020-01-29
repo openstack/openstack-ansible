@@ -79,7 +79,7 @@
     - name: Add missing secrets
       lineinfile:
         dest: "{{ openstack_config_dir }}/user_secrets.yml"
-        line: "{{ item }}"
+        line: "{{ item }}{% if (item == 'placement_service_password:') %} {{ nova_placement_service_password }}{% endif %}"
       with_items: "{{ new_secrets.stdout_lines }}"
       when:
         - not (user_secrets.stdout | regex_search('((^|\n)' ~ item ~ ')'))
