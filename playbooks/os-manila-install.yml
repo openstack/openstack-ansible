@@ -13,8 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Install manila services
-  hosts: "manila_all"
+- name: Install ganesha-nfs
+  import_playbook: ceph-nfs-install.yml
+
+- name: Install manila API services
+  hosts: manila_api:manila_scheduler
   gather_facts: "{{ osa_gather_facts | default(True) }}"
   user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
@@ -42,11 +45,6 @@
 
   roles:
    - role: "os_manila"
-     when:
-       - inventory_hostname in groups['manila_api']
-   - role: "os_manila"
-     when:
-       - not inventory_hostname in groups['manila_api']
 
   post_tasks:
     # Now that container changes are done, we can set
@@ -59,3 +57,22 @@
       when:
         - "'manila_api' in group_names"
         - "groups['manila_api'] | length > 1"
+
+- name: Install manila data services
+  hosts: manila_data:manila_share
+  gather_facts: "{{ osa_gather_facts | default(True) }}"
+  user: root
+  environment: "{{ deployment_environment_variables | default({}) }}"
+  vars_files:
+    - "defaults/repo_packages/openstack_services.yml"
+    - "defaults/{{ install_method }}_install.yml"
+  tags:
+    - manila
+
+  pre_tasks:
+    - include_tasks: common-tasks/unbound-clients.yml
+      when:
+        - hostvars['localhost']['resolvconf_enabled'] | bool
+
+  roles:
+   - role: "os_manila"
