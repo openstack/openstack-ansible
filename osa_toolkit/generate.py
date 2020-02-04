@@ -370,15 +370,27 @@ def _add_container_hosts(assignment, config, container_name, container_type,
         type_and_name = '{}_{}'.format(host_type, container_name)
         logger.debug("Generated container name %s", type_and_name)
         max_hostname_len = 52
-        if len(type_and_name) > max_hostname_len:
+        if len(type_and_name) > max_hostname_len and \
+                not properties['is_metal']:
             raise SystemExit(
                 'The resulting combination of [ "{}" + "{}" ] is longer than'
-                ' 52 characters. This combination will result in a container'
+                ' {} characters. This combination will result in a container'
                 ' name that is longer than the maximum allowable hostname of'
                 ' 63 characters. Before this process can continue please'
                 ' adjust the host entries in your "openstack_user_config.yml"'
                 ' to use a short hostname. The recommended hostname length is'
-                ' < 20 characters long.'.format(host_type, container_name)
+                ' < 20 characters long.'.format(
+                    host_type, container_name, max_hostname_len
+                )
+            )
+        elif len(host_type) > 63 and properties['is_metal']:
+            raise SystemExit(
+                'The resulting hostname "{0}" is longer than 63 characters.'
+                ' This combination may result in a name that is longer than'
+                ' the maximum allowable hostname of 63 characters. Before'
+                ' this process can continue please adjust the host entries'
+                ' in your "openstack_user_config.yml" to use a short hostname'
+                '.'.format(host_type)
             )
 
         physical_host = inventory['_meta']['hostvars'][host_type]
