@@ -155,15 +155,6 @@ function rename_log_files {
     done
 }
 
-function compress_log_files {
-  # We use 'command' to ensure that we're not executing with an alias.
-  GZIP_CMD="command gzip --force --best"
-  find_log_files |\
-    while read filename; do \
-      ${GZIP_CMD} ${filename} || echo "WARNING: Could not gzip ${filename}"; \
-    done
-}
-
 function gate_job_exit_tasks {
   # This environment variable captures the exit code
   # which was present when the trap was initiated.
@@ -221,10 +212,6 @@ function gate_job_exit_tasks {
       # results reflect in OpenStack-Health
       mkdir "${GATE_LOG_DIR}/ara-data"
       ${ARA_CMD} generate subunit "${GATE_LOG_DIR}/ara-data/testrepository.subunit" || true
-    fi
-    # Compress the files gathered so that they do not take up too much space.
-    if [ "$GATE_EXIT_LOG_GZIP" == true ]; then
-      compress_log_files
     fi
     # Ensure that the files are readable by all users, including the non-root
     # OpenStack-CI jenkins user.
