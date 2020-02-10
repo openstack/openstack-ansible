@@ -35,3 +35,6 @@ manila_service_adminuri: "{{ openstack_service_adminuri_proto|default(manila_ser
 manila_service_v2_publicuri: "{{ openstack_service_publicuri_proto|default(manila_service_proto) }}://{{ external_lb_vip_address }}:{{ manila_service_v2_port }}"
 manila_service_v2_internaluri: "{{ openstack_service_internaluri_proto|default(manila_service_proto) }}://{{ internal_lb_vip_address }}:{{ manila_service_v2_port }}"
 manila_service_v2_adminuri: "{{ openstack_service_adminuri_proto|default(manila_service_proto) }}://{{ internal_lb_vip_address }}:{{ manila_service_v2_port }}"
+
+# Region
+manila_service_region: "{{ service_region }}"
