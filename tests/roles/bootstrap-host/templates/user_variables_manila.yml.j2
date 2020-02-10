@@ -15,33 +15,65 @@ tempest_plugins:
     repo: https://opendev.org/openstack/manila-tempest-plugin
     branch: master
 
+tempest_flavors:
+  - name: tempest1
+    id: 201
+    ram: 256
+    disk: 1
+    vcpus: 1
+  - name: tempest2
+    id: 202
+    ram: 512
+    disk: 1
+    vcpus: 1
+  - name: manila-service-flavor
+    id: 100
+    ram: 256
+    disk: 2
+    vcpus: 1
+
 tempest_test_whitelist:
   - manila_tempest_tests.tests.scenario.test_share_basic_ops
 
+tempest_run_concurrency: 0
+
 tempest_tempest_conf_overrides:
   share:
+    run_consistency_group_tests: False
+    run_snapshot_tests: False
+    multitenancy_enabled: False
+    run_shrink_tests: True
+    run_extend_tests: True
+    multi_backend: False
+    enable_protocols: nfs
+    run_ipv6_tests: False
+    share_creation_retry_number: 2
+    suppress_errors_in_cleanup: True
+    capability_storage_protocol: NFS
+    enable_ip_rules_for_protocols: nfs
     image_with_share_tools: manila-service-image
     image_password: manila
-    enable_protocols: nfs
-    enable_ip_rules_for_protocols: nfs
-    enable_ro_access_level_for_protocols: nfs
-    suppress_errors_in_cleanup: true
-    share_creation_retry_number: 3
-    run_ipv6_tests: False
+
+tempest_images:
+  - url: "http://download.cirros-cloud.net/0.4.0/cirros-0.4.0-x86_64-disk.img"
+    checksum: "sha256:a8dd75ecffd4cdd96072d60c2237b448e0c8b2bc94d57f10fdbc8c481d9005b8"
+    format: "qcow2"
+    name: "cirros"
+  - url: "http://tarballs.openstack.org/manila-image-elements/images/manila-service-image-master.qcow2"
+    format: "qcow2"
+    name: "manila-service-image"
 
 manila_backends:
-  nfs-share1:
-    share_backend_name: NFS_SHARE1
-    share_driver: manila.share.drivers.lvm.LVMShareDriver
+  cephfsnfs1:
+    cephfs_auth_id: manila
+    cephfs_cluster_name: ceph
+    cephfs_conf_path: /etc/ceph/ceph.conf
+    cephfs_enable_snapshots: False
+    cephfs_ganesha_server_ip: 172.29.236.100
+    cephfs_ganesha_server_is_remote: False
+    cephfs_protocol_helper_type: NFS
     driver_handles_share_servers: False
-    lvm_share_volume_group: manila-shares
-    lvm_share_export_ips: 172.29.244.100
-  generic:
-    share_backend_name: GENERIC
-    share_driver: manila.share.drivers.generic.GenericShareDriver
-    driver_handles_share_servers: True
-    service_instance_flavor_id: 100
-    service_image_name: manila-service-image
-    service_instance_user: manila
-    service_instance_password: manila
-    interface_driver: manila.network.linux.interface.BridgeInterfaceDriver
+    share_backend_name: CEPHFSNFS1
+    share_driver: manila.share.drivers.cephfs.driver.CephFSDriver
+    ganesha_rados_store_enable: False
+    ganesha_rados_store_pool_name: manila_data

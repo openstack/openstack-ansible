@@ -23,6 +23,7 @@
 - import_playbook: rabbitmq-install.yml
 - import_playbook: etcd-install.yml
 - import_playbook: ceph-install.yml
+- import_playbook: ceph-nfs-install.yml
 - import_playbook: rsyslog-install.yml
 
 # The journald-remote should be disabled by default until

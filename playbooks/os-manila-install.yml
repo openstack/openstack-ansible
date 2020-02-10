@@ -36,21 +36,6 @@
         - "'manila_api' in group_names"
         - "groups['manila_api'] | length > 1"
 
-    - name: Configure container (non-nfs)
-      include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
-      vars:
-        list_of_bind_mounts: "{{ manila_container_bind_mounts }}"
-      when:
-        - not is_metal
-        - manila_default_store == "file"
-        - (manila_nfs_client is not defined) or (manila_nfs_client | length == 0)
-
-    - name: Configure container (nfs)
-      include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
-      when:
-        - not is_metal
-        - (manila_default_store != "file") or (manila_nfs_client is defined)
-
     - include_tasks: common-tasks/unbound-clients.yml
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
