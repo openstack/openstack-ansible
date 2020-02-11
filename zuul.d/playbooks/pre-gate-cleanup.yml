@@ -1,0 +1,55 @@
+---
+# Copyright 2020, VEXXHOST, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Cleanup gate images
+  hosts: all
+  become: yes
+  become_user: root
+  tasks:
+    - name: Gather variables for each operating system
+      include_vars: "{{ ansible_os_family | lower }}.yml"
+
+    - name: Remove known problem distro packages
+      package:
+        name: "{{ gate_packages_remove }}"
+        state: absent
+
+    - name: Remove known problem pip packages
+      pip:
+        name:
+          - appdirs
+          - backports
+          - contextlib2
+          - distlib
+          - filelock
+          - importlib_metadata
+          - importlib_resources
+          - six
+          - virtualenv
+          - zipp
+        state: absent
+
+    - name: Remove package blacklist for yum/dnf
+      lineinfile:
+        dest: "{{ (ansible_pkg_mgr == 'dnf') | ternary('/etc/dnf/dnf.conf', '/etc/yum.conf') }}"
+        regexp: "^exclude="
+        state: absent
+      when: ansible_pkg_mgr in ['dnf', 'yum']
+
+    - name: Remove package blacklist for zypper
+      file:
+        path: /etc/zypp/locks
+        state: absent
+      when: ansible_pkg_mgr == 'zypper'
