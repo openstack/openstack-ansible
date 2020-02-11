@@ -88,11 +88,10 @@ case ${DISTRO_ID} in
         apt-get update
         DEBIAN_FRONTEND=noninteractive apt-get -y install \
           git-core curl gcc netcat \
-          python-minimal python-dev \
           python3 python3-dev \
           libssl-dev libffi-dev \
-          python-apt python3-apt \
-          python-virtualenv
+          python3-apt virtualenv \
+          python3-minimal
         ;;
     opensuse*)
         zypper -n install -l git-core curl autoconf gcc gcc-c++ \
