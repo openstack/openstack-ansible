@@ -82,7 +82,7 @@ case ${DISTRO_ID} in
           python3 python3-dev \
           libssl-dev libffi-dev \
           python-apt python3-apt \
-          python-virtualenv
+          virtualenv
         ;;
     opensuse)
         zypper -n install -l git-core curl autoconf gcc gcc-c++ \

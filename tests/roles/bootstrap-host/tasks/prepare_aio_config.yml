@@ -78,7 +78,6 @@
         echo "lxc_centos_package_baseurl: 'http://${NODEPOOL_MIRROR_HOST}:8080/copr-lxc2/epel-7-x86_64/'" >> ${NODEPOOL_OVERRIDES}
         echo "lxc_centos_package_key: 'http://${NODEPOOL_MIRROR_HOST}:8080/copr-lxc2/pubkey.gpg'" >> ${NODEPOOL_OVERRIDES}
         echo "nova_virt_type: 'qemu'" >> ${NODEPOOL_OVERRIDES}
-        echo "repo_build_pip_default_index: '${NODEPOOL_PYPI_MIRROR}'" >> ${NODEPOOL_OVERRIDES}
 
         # NOTE(mnaser): We need to make sure we pull the latest RDO mirror
         #               which is hashed to avoid cache going stale during CI.
