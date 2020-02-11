@@ -84,7 +84,9 @@ run_dstat || true
 load_nodepool_pip_opts
 
 # Bootstrap Ansible
-source "${OSA_CLONE_DIR}/scripts/bootstrap-ansible.sh"
+if [[ -z "${SKIP_OSA_BOOTSTRAP_AIO+defined}" ]]; then
+  source "${OSA_CLONE_DIR}/scripts/bootstrap-ansible.sh"
+fi
 
 # Flush all the iptables rules set by openstack-infra
 iptables -F

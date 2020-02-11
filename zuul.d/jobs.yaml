@@ -23,6 +23,7 @@
     required-projects:
       - name: openstack/openstack-ansible
     pre-run:
+      - zuul.d/playbooks/pre-gate-cleanup.yml
       - zuul.d/playbooks/pre-gate-scenario.yml
       - zuul.d/playbooks/pre-osa-aio.yml
     run: zuul.d/playbooks/run.yml
