@@ -176,6 +176,9 @@
     - src: user_variables_barbican.yml.j2
       dest: user_variables_barbican.yml
       condition: "{{ 'barbican' in bootstrap_host_scenarios_expanded }}"
+    - src: user_variables_magnum.yml.j2
+      dest: user_variables_magnum.yml
+      condition: "{{ 'magnum' in bootstrap_host_scenarios_expanded }}"
     - src: user_variables_manila.yml.j2
       dest: user_variables_manila.yml
       condition: "{{ 'manila' in bootstrap_host_scenarios_expanded }}"
