@@ -61,9 +61,9 @@
 
 - name: Extra lxc config
   lineinfile:
-    dest: "/var/lib/lxc/{{ inventory_hostname }}/config"
+    path: "/var/lib/lxc/{{ inventory_hostname }}/config"
+    regexp: "^{{ item.split('=')[0] }} ="
     line: "{{ item.split('=')[0] }} = {{ item.split('=', 1)[1] }}"
-    insertafter: "^{{ item.split('=')[0] }}"
     backup: "true"
   with_items: "{{ extra_container_config | default([]) }}"
   delegate_to: "{{ physical_host }}"
@@ -73,9 +73,9 @@
 
 - name: Extra lxc config no restart
   lineinfile:
-    dest: "/var/lib/lxc/{{ inventory_hostname }}/config"
+    path: "/var/lib/lxc/{{ inventory_hostname }}/config"
+    regexp: "^{{ item.split('=')[0] }} ="
     line: "{{ item.split('=')[0] }} = {{ item.split('=', 1)[1] }}"
-    insertafter: "^{{ item.split('=')[0] }}"
     backup: "true"
   with_items: "{{ extra_container_config_no_restart | default(['lxc.start.order=100']) }}"
   delegate_to: "{{ physical_host }}"
