@@ -99,7 +99,7 @@
       vars:
         apt_package_pinning_file_name: "ceph_community_pin.pref"
         apt_package_pinning_priority: "{{ (ceph_repository == 'community') | ternary(1000, 100) }}"
-        apt_pinned_packages: [{ package: '*', release: 'ceph.com' }]
+        apt_pinned_packages: [{ package: '*', release: "{{ (ansible_distribution_release == 'bionic') | ternary('Ubuntu', 'ceph.com') }}" }]
       when:
         - ansible_pkg_mgr == 'apt'
 
@@ -203,7 +203,7 @@
       vars:
         apt_package_pinning_file_name: "ceph_community_pin.pref"
         apt_package_pinning_priority: "{{ (ceph_repository == 'community') | ternary(1000, 100) }}"
-        apt_pinned_packages: [{ package: '*', release: 'ceph.com' }]
+        apt_pinned_packages: [{ package: '*', release: "{{ (ansible_distribution_release == 'bionic') | ternary('Ubuntu', 'ceph.com') }}" }]
       when:
         - ansible_pkg_mgr == 'apt'
 
