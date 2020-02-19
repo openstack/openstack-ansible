@@ -127,20 +127,23 @@
               - "--constraint {{ utility_upper_constraints_url }}"
             venv_pip_packages: "{{ _openstack_client_list | union(utility_pip_packages) }}"
 
+        - name: Create list of binaries to symlink
+          set_fact:
+             _openstack_client_to_symlink: >-
+              {%- set binary_list = [] %}
+              {%- for l in _openstack_client_list %}
+              {%-   set _ = binary_list.append(l | regex_replace('^(?:python-)?(\w*)(?:client)$', '\\1')) %}
+              {%- endfor %}
+              {{- binary_list }}
+          run_once: true
+
         - name: Create symlinks for openstack clients
-          shell: |
-            {% set _bin_name = item | regex_replace('^(?:python-)?(\w*)(?:client)$', '\\1') %}
-            set -e
-            return_code=0
-            if [[ -e "{{ utility_venv_bin }}/{{ _bin_name }}" && ! -L "/usr/local/bin/{{ _bin_name }}" ]]; then
-              ln -sfn {{ utility_venv_bin }}/{{ _bin_name }} /usr/local/bin/{{ _bin_name }}
-              return_code=2
-            fi
-            exit ${return_code}
-          args:
-            executable: /bin/bash
-          with_items: "{{ _openstack_client_list }}"
-          register: _client_symlink
-          changed_when: _client_symlink.rc == 2
-          failed_when: _client_symlink.rc not in [0,2]
+          file:
+            src: "{{ utility_venv_bin }}/{{ item }}"
+            path: "/usr/local/bin/{{ item }}"
+            state: link
+            force: yes
+            follow: false
+          with_items:
+            - "{{ _openstack_client_to_symlink }}"
           notify: "Create openstack client bash_completion script"
