@@ -18,7 +18,6 @@ fsid: 116f14c4-7fe1-40e4-94eb-9240b63de5c1 # Replace with your generated UUID
 monitor_address_block: "{{ cidr_networks.container }}"
 public_network: "{{ cidr_networks.container }}"
 cluster_network: "{{ cidr_networks.storage }}"
-osd_scenario: collocated
 journal_size: 10240 # size in MB
 # ceph-ansible automatically creates pools & keys for OpenStack services
 openstack_config: true
