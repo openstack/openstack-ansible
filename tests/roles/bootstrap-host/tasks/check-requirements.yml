@@ -21,6 +21,7 @@
         (ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'bionic') or
         (ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'focal') or
         (ansible_os_family == 'RedHat' and ansible_distribution_major_version == '7') or
+        (ansible_os_family == 'RedHat' and ansible_distribution_major_version == '8') or
         (ansible_os_family == 'Suse' and ansible_distribution_major_version in ['42', '15'])
     msg: >-
       The only supported platforms for this release are Debian Stretch, Ubuntu 18.04 LTS (Bionic),

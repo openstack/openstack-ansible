@@ -27,6 +27,7 @@
     sftp_subsystem:
         'apt': 'sftp /usr/lib/openssh/sftp-server'
         'yum': 'sftp /usr/libexec/openssh/sftp-server'
+        'dnf': 'sftp /usr/libexec/openssh/sftp-server'
         'zypper': 'sftp /usr/lib/ssh/sftp-server'
     sshd:
       ListenAddress:

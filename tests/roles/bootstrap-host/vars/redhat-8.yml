@@ -1,3 +1,4 @@
+---
 # Copyright 2017, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,17 +13,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- project:
-    templates:
-      - deploy-guide-jobs
-      - openstack-ansible-deploy-base-jobs
-      - openstack-ansible-deploy-aio_lxc-jobs
-      - openstack-ansible-deploy-aio_distro_lxc-jobs
-      - openstack-ansible-deploy-aio_metal-jobs
-      - openstack-ansible-deploy-aio_distro_metal-jobs
-      - openstack-ansible-deploy-ceph-jobs
-      - openstack-ansible-deploy-proxy-jobs
-      - openstack-ansible-deploy-distro_ceph-jobs
-      - check-requirements
-      - publish-openstack-docs-pti
-      - release-notes-jobs-python3
+packages_install:
+  # - bridge-utils  bridge-utils is not available in 8
+  # - btrfs-progs  BTRFS is not available in 8
+  - curl
+  - dbus
+  - ethtool
+  - git
+  - iputils
+  - lvm2
+  - python3
+  - python3-devel
+  # - sshpass  sshpass is not available in 8
+  #- systemd-networkd  networkd is not available in 8
+  - vim
+  - xfsprogs
+
+packages_remove: []
+
+rc_local: /etc/rc.d/rc.local
+rc_local_insert_before: "^touch /var/lock/subsys/local$"

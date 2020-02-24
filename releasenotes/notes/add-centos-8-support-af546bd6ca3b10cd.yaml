@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Support is added for deploying OpenStack on CentOS 8 with
+    source and distro based installs. However, nspawn support
+    can't be offered, as machinectl relies on btrfs which has
+    been dropped by CentOS.

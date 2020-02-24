@@ -91,15 +91,17 @@ if [[ -z "${SKIP_OSA_BOOTSTRAP_AIO+defined}" ]]; then
 fi
 
 # Flush all the iptables rules set by openstack-infra
-iptables -F
-iptables -X
-iptables -t nat -F
-iptables -t nat -X
-iptables -t mangle -F
-iptables -t mangle -X
-iptables -P INPUT ACCEPT
-iptables -P FORWARD ACCEPT
-iptables -P OUTPUT ACCEPT
+if which iptables; then
+  iptables -F
+  iptables -X
+  iptables -t nat -F
+  iptables -t nat -X
+  iptables -t mangle -F
+  iptables -t mangle -X
+  iptables -P INPUT ACCEPT
+  iptables -P FORWARD ACCEPT
+  iptables -P OUTPUT ACCEPT
+fi
 
 # Bootstrap an AIO
 if [[ -z "${SKIP_OSA_BOOTSTRAP_AIO+defined}" ]]; then
