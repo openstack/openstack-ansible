@@ -87,7 +87,11 @@ function build_ansible_runtime_venv {
 
     # Add SELinux support to the venv
     if [ -d "/usr/lib64/python3.6/site-packages/selinux/" ]; then
-      rsync -avX /usr/lib64/python3.6/site-packages/selinux/ /opt/ansible-runtime/lib64/python3.6/selinux/
+      rsync -avX /usr/lib64/python3.6/site-packages/selinux/ /opt/ansible-runtime/lib64/python3.6/site-packages/selinux/
+    fi
+    # NOTE(noonedeadpunk) Conditional is here for compatability with CentOS 7
+    if [ -f "/usr/lib64/python3.6/site-packages/_selinux.cpython-36m-x86_64-linux-gnu.so" ]; then
+      rsync -avX /usr/lib64/python3.6/site-packages/_selinux.cpython-36m-x86_64-linux-gnu.so /opt/ansible-runtime/lib64/python3.6/site-packages/
     fi
 }
 
@@ -361,18 +365,6 @@ function get_instance_info {
             "/openstack/log/instance-info/host_packages_info_${TS}.log" || true
           ;;
   esac
-
-  # Storage reports
-  for dir_name in lxc machines; do
-    btrfs filesystem usage /var/lib/${dir_name} > \
-      "/openstack/log/instance-info/btrfs_${dir_name}_usage_${TS}.log" || true
-    btrfs filesystem show /var/lib/${dir_name} > \
-      "/openstack/log/instance-info/btrfs_${dir_name}_show_${TS}.log" || true
-    btrfs filesystem df /var/lib/${dir_name} > \
-      "/openstack/log/instance-info/btrfs_${dir_name}_df_${TS}.log" || true
-    btrfs qgroup show --human-readable -pcre --iec /var/lib/${dir_name} > \
-      "/openstack/log/instance-info/btrfs_${dir_name}_quotas_${TS}.log" || true
-  done
 
   if command -v zfs >/dev/null; then
     zfs list > "/openstack/log/instance-info/zfs_lxc_${TS}.log" || true

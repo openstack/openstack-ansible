@@ -34,7 +34,7 @@ utility_distro_packages:
 # Packages installed into the utility container for distro installs
 # NOTE(jrosser) this can be simplified when all supported
 # distros use python3
-utility_distro_openstack_clients_python_version: "{{ (ansible_distribution == 'CentOS') | ternary('2', '3') }}"
+utility_distro_openstack_clients_python_version: "{{ (ansible_distribution == 'CentOS' and ansible_distribution_major_version is version('8', '<')) | ternary('2', '3') }}"
 
 _utility_distro_openstack_clients_packages:
   2:
