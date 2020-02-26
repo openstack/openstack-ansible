@@ -86,8 +86,8 @@ function build_ansible_runtime_venv {
     $PIP_COMMAND install -e .
 
     # Add SELinux support to the venv
-    if [ -d "/usr/lib64/python2.7/site-packages/selinux/" ]; then
-      rsync -avX /usr/lib64/python2.7/site-packages/selinux/ /opt/ansible-runtime/lib64/python2.7/selinux/
+    if [ -d "/usr/lib64/python3.6/site-packages/selinux/" ]; then
+      rsync -avX /usr/lib64/python3.6/site-packages/selinux/ /opt/ansible-runtime/lib64/python3.6/selinux/
     fi
 }
 

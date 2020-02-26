@@ -64,12 +64,19 @@ determine_distro
 # Prefer dnf over yum for CentOS.
 which dnf &>/dev/null && RHT_PKG_MGR='dnf' || RHT_PKG_MGR='yum'
 
+
 # Install the base packages
 case ${DISTRO_ID} in
     centos|rhel)
+        # NOTE(mnaser): libselinux-python3 will likely not exist until CentOS 7.8 and
+        #               we need to unblock our gates to be able to use Python 3, so we
+        #               use this temporary repository.  This should be removed once
+        #               CentOS 7 releases libselinux-2.5-15.
+        curl https://object-storage-ca-ymq-1.vexxhost.net/swift/v1/8709ca2640344a4ba85cba0a1d6eea69/libselinux-2.5-15/libselinux.repo \
+          -o /etc/yum.repos.d/libselinux.repo
         $RHT_PKG_MGR -y install \
           git curl autoconf gcc gcc-c++ nc \
-          python2 python2-devel \
+          python3 python3-devel libselinux-python3 \
           openssl-devel libffi-devel \
           libselinux-python python-virtualenv
         ;;
