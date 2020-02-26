@@ -1,0 +1,52 @@
+---
+# Copyright 2020, VEXXHOST, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+magnum_glance_images:
+  - name: fedora-atomic-latest
+    disk_format: qcow2
+    image_format: bare
+    public: true
+    file: https://dl.fedoraproject.org/pub/alt/atomic/stable/Fedora-29-updates-20191126.0/AtomicHost/x86_64/images/Fedora-AtomicHost-29-20191126.0.x86_64.qcow2
+    distro: fedora-atomic
+    checksum: "sha1:7c1a88749d31a3828ac6a6b02e82d64f4c5823a5"
+
+magnum_cluster_templates:
+  - name: k8s
+    cloud: default
+    coe: kubernetes
+    docker_volume_size: 5
+    flavor_id: s1.magnum
+    master_flavor_id: m1.magnum
+    network_driver: flannel
+    volume_driver: cinder
+    image_id: fedora-atomic-latest
+    labels:
+      kube_tag: v1.16.0
+      etcd_tag: 3.3.17
+      kube_version: v1.16.0
+      boot_volume_size: 5
+      cloud_provider_tag: v1.15.0
+
+magnum_flavors:
+  - name: s1.magnum
+    cloud: default
+    ram: 256
+    vcpus: 1
+    disk: 5
+  - name: m1.magnum
+    cloud: default
+    ram: 512
+    vcpus: 1
+    disk: 5
