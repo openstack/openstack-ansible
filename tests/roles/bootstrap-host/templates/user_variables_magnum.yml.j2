@@ -18,9 +18,9 @@ magnum_glance_images:
     disk_format: qcow2
     image_format: bare
     public: true
-    file: https://dl.fedoraproject.org/pub/alt/atomic/stable/Fedora-29-updates-20191126.0/AtomicHost/x86_64/images/Fedora-AtomicHost-29-20191126.0.x86_64.qcow2
+    file: https://builds.coreos.fedoraproject.org/prod/streams/stable/builds/31.20200210.3.0/x86_64/fedora-coreos-31.20200210.3.0-openstack.x86_64.qcow2.xz
     distro: fedora-atomic
-    checksum: "sha1:7c1a88749d31a3828ac6a6b02e82d64f4c5823a5"
+    checksum: "sha256:9a5252e24b82a5edb1ce75b05653f59895685b0f1028112462e908a12deae518"
 
 magnum_cluster_templates:
   - name: k8s
@@ -50,3 +50,19 @@ magnum_flavors:
     ram: 512
     vcpus: 1
     disk: 5
+
+tempest_test_whitelist:
+  - magnum_tempest_plugin.tests
+
+
+# NOTE(noonedeadpunk): We comment these tests out because of weird magnum things happening like
+# http://paste.openstack.org/show/790131/
+# But when "b''" around auth toke is dropped, everything is fine.
+tempest_test_blacklist:
+  - magnum_tempest_plugin.tests.api.v1.test_cluster.ClusterTest.test_create_list_sign_delete_clusters
+  - magnum_tempest_plugin.tests.api.v1.test_cluster.ClusterTest.test_create_cluster_with_nonexisting_flavor
+
+tempest_tempest_conf_overrides:
+  magnum:
+    coe: kubernetes
+    network_driver: flannel
