@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    Variable `libvirt_package` in ceph_client role has been renamed to
+    `libvirt_packages` and converted from string to a list.
