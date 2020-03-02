@@ -34,3 +34,4 @@ the major upgrades procedures.
    upgrades/compatibility-matrix.rst
    upgrades/minor-upgrades.rst
    upgrades/major-upgrades.rst
+   upgrades/distribution-upgrades.rst
