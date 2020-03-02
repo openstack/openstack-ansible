@@ -33,3 +33,4 @@ the major upgrades procedures.
    troubleshooting.rst
    upgrades/minor-upgrades.rst
    upgrades/major-upgrades.rst
+   upgrades/distribution-upgrades.rst
