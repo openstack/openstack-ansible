@@ -103,6 +103,20 @@ cluster.
        # ansible nova_all -m setup -a 'filter=ansible_local gather_subset="!all"'
        # openstack-ansible setup-openstack.yml --limit localhost,NEW_HOST_NAME
 
+   Alternatively you can try using new compute nodes deployment script
+   ``/opt/openstack-ansible/scripts/add-compute.sh``.
+
+   You can provide this script with extra tasks that will be executed
+   before or right after OSA roles. To do so you should set environment
+   variables ``PRE_OSA_TASKS`` or ``POST_OSA_TASKS`` with plays to run devided
+   with semicolon:
+
+   .. code-block:: shell-session
+
+      # export POST_OSA_TASKS="/opt/custom/setup.yml --limit HOST_NAME;/opt/custom/tasks.yml --tags deploy"
+      # /opt/openstack-ansible/scripts/add-compute.sh HOST_NAME,HOST_NAME_2
+
+
 Test new compute nodes
 ~~~~~~~~~~~~~~~~~~~~~~
 
