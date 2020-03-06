@@ -29,16 +29,17 @@
     - name: Remove known problem pip packages
       pip:
         name:
+          - virtualenv
+          - tox
           - appdirs
-          - backports
           - contextlib2
           - distlib
           - filelock
           - importlib_metadata
           - importlib_resources
           - six
-          - virtualenv
-          - zipp 
+          - zipp
+          - backports
         state: absent
 
     - name: Remove package blacklist for yum/dnf
