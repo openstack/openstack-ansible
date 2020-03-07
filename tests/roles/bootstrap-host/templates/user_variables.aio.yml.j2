@@ -217,6 +217,11 @@ cache_timeout: {{ cache_timeout }}
 # AIO build time. Options are: [machinectl, overlayfs, btrfs, zfs, dir, lvm]
 lxc_container_backing_store: "{{ lxc_container_backing_store }}"
 
+# bind mount the zuul repos into the containers
+lxc_container_bind_mounts:
+  - host_directory: "/home/zuul/src"
+    container_directory: "/openstack/src"
+
 ## Always setup tempest, the resources for it, then execute tests
 tempest_install: yes
 tempest_run: yes
