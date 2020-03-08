@@ -48,10 +48,10 @@
     - role: ceph-facts
       tags:
         - skip_ansible_lint
-    - role: ceph-handler
+    - role: ceph-common
       tags:
         - skip_ansible_lint
-    - role: ceph-common
+    - role: ceph-handler
       tags:
         - skip_ansible_lint
     - role: ceph-config
