@@ -57,14 +57,27 @@ all hosts in the environment.
    [global]
    index-url = http://pip.example.org/simple
 
+In addition it is necessary to configure easy_install to use an alternative
+index. easy_install is used instead of pip to install anything listed under
+setup_requires in setup.py during wheel builds. See https://pip.pypa.io/en/latest/reference/pip_install/#controlling-setup-requires
+
+To configure easy_install to use an alternative index, create the file
+`/root/.pydistutils.cfg` with the following content.
+
+.. code-block:: shell-session
+
+   [easy_install]
+   index_url = https://pip.example.org/simple
+
 Then, in `/etc/openstack_deploy/user_variables.yml`, inform the deployment
-that it needs to copy that file from the host into the container cache image.
+that it needs to copy these files from the host into the container cache image.
 
 .. code-block:: yaml
 
    # Copy these files from the host into the containers
    lxc_container_cache_files_from_host:
      - /etc/pip.conf
+     - /root/.pydistutils.cfg
 
 Distribution specific packages
 ------------------------------
