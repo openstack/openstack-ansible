@@ -1,0 +1,7 @@
+---
+upgrade:
+  - |
+    Variable `uca_repo` has been removed. Deployers are appreciated to use
+    `user_external_repos_list` instead if they want to define extra repository
+    Variable `uca_apt_repo_url` was renamed to `apt_repo_url` in order
+    to correspond it's usage as it also affect Debian deployments now.
