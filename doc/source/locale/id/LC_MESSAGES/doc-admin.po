@@ -1,15 +1,16 @@
 # suhartono <cloudsuhartono@gmail.com>, 2018. #zanata
 # Frank Kloeker <eumel@arcor.de>, 2019. #zanata
 # suhartono <cloudsuhartono@gmail.com>, 2019. #zanata
+# suhartono <cloudsuhartono@gmail.com>, 2020. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: openstack-ansible\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-18 08:46+0000\n"
+"POT-Creation-Date: 2020-03-18 17:43+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2019-10-12 06:12+0000\n"
+"PO-Revision-Date: 2020-03-20 08:20+0000\n"
 "Last-Translator: suhartono <cloudsuhartono@gmail.com>\n"
 "Language-Team: Indonesian\n"
 "Language: id\n"
@@ -203,6 +204,13 @@ msgid ""
 msgstr ""
 "Semua node telah gagal jika ``mysqld`` tidak berjalan di salah satu node dan "
 "semua node mengandung nilai ``seqno`` dari -1."
+
+msgid ""
+"Alternatively you can try using new compute nodes deployment script ``/opt/"
+"openstack-ansible/scripts/add-compute.sh``."
+msgstr ""
+"Atau Anda dapat mencoba menggunakan skrip penyebaran node komputasi baru ``/"
+"opt/openstack-ansible/scripts/add-compute.sh``."
 
 msgid ""
 "An example for the latter is in the ``openstack-ansible-ops`` repository, "
@@ -3795,6 +3803,17 @@ msgstr ""
 
 msgid "You can only upgrade between sequential releases."
 msgstr "Anda hanya dapat memutakhirkan di antara rilis berurutan."
+
+msgid ""
+"You can provide this script with extra tasks that will be executed before or "
+"right after OSA roles. To do so you should set environment variables "
+"``PRE_OSA_TASKS`` or ``POST_OSA_TASKS`` with plays to run devided with "
+"semicolon:"
+msgstr ""
+"Anda dapat memberikan skrip ini tugas tambahan yang akan dieksekusi sebelum "
+"atau tepat setelah peran OSA. Untuk melakukannya, Anda harus mengatur "
+"variabel lingkungan ``PRE_OSA_TASKS`` atau ``POST_OSA_TASKS`` dengan "
+"memainkan untuk menjalankan dibagi dengan titik koma (semicolon):"
 
 msgid "You will be asked two questions:"
 msgstr "Anda akan ditanya dua pertanyaan:"
