@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Added variables `magnum_cluster_templates` and `magnum_flavors`
+    which allow deployers to define coe cluster template and nova flavors
+    creation during role execution. These variables may contain list of
+    resources to add. All keys supported by appropriate ansible modules
+    may be passed as items in the list.

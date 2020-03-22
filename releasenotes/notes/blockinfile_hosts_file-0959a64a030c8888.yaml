@@ -1,0 +1,7 @@
+---
+upgrade:
+  - |
+    Generation of records for `/etc/hosts` is now made with blockinfile
+    ansible module. During upgrade you will have records doubled in yours
+    `/etc/hosts` as we don't drop previously created records for safety
+    reasons if `openstack_host_manage_hosts_file` is set to true.
