@@ -10,5 +10,11 @@
 # See also ChangeId: I8be207c359388d00b34448318bc17c8b0039c4db
 argparse==1.2.1;python_version=='2.7'
 pip==19.3
+# NOTE(noonedeadpunk) we bump rally as it's not release-specific but now supports
+# only py3 deployments.
+rally-openstack==1.7.0;python_version=='2.7'
 setuptools==41.4.0
+# NOTE(noonedeadpunk) we bump this on top of u-c as older version cause
+# random failures during compilation.
+ujson==2.0.3
 wheel==0.33.6

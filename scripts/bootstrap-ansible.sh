@@ -72,6 +72,7 @@ case ${DISTRO_ID} in
           python2 python2-devel \
           openssl-devel libffi-devel \
           libselinux-python python-virtualenv
+        PYTHON_EXEC_PATH="$(which python2)"
         ;;
     ubuntu|debian)
         # NOTE(jrosser) remove this once infra debian images point to the upstream security repo

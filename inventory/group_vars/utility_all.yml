@@ -73,3 +73,6 @@ tempest_log_dir: /var/log/utility
 
 # This sets the tempest group to the utility group
 tempest_main_group: utility_all
+
+rally_upper_constraints_branch: "{{ (ansible_distribution == 'CentOS' or (ansible_distribution == 'Debian' and ansible_distribution_major_version is version('9', '='))) | ternary('tag/1.7.0', 'branch/master')  }}"
+rally_upper_constraints_url: "https://opendev.org/openstack/rally-openstack/raw/{{ rally_upper_constraints_branch }}/upper-constraints.txt"
