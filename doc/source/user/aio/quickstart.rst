@@ -72,6 +72,8 @@ system packages are upgraded and then reboot into the new kernel:
    ## CentOS
    # yum upgrade
    # yum install git
+   # systemctl stop firewalld
+   # systemctl mask firewalld
    # reboot
 
 .. note::
