@@ -1,0 +1,14 @@
+---
+features:
+  - |
+    Adds new variable `tempest_tempestconf_profile_extras` which allows
+    to extend `tempest_tempestconf_profile` dictionary without need to
+    override all existing keys. `tempest_tempestconf_profile_extras` has
+    presedence over `tempest_tempestconf_profile`. For example, it may be
+    used to define extra image or it's format.
+fixes:
+  - |
+    Usage of tempest_tempest_conf_overrides, where it could have 2 different
+    formats. one for config_template and another one for tempestconf.profile
+    Now for tempestconf.profile overrides `tempest_tempestconf_profile_overrides`
+    variable should be used.
