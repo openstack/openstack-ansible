@@ -16,9 +16,9 @@
 # (c) 2018, Jean-Philippe Evrard <jean-philippe@evrard.me>
 #ansible_python_interpreter: "{{ ansible_playbook_python }}"
 glance_images:
-  - url: "http://download.cirros-cloud.net/0.3.5/cirros-0.3.5-x86_64-disk.img"
-    dest: "/tmp/cirros-0.3.5.img"
-    checksum: "sha256:e137062a4dfbb4c225971b67781bc52183d14517170e16a3841d16f962ae7470"
+  - url: "https://download.cirros-cloud.net/0.5.1/cirros-0.5.1-x86_64-disk.img"
+    dest: "/tmp/cirros-0.5.1.img"
+    checksum: "sha256:c4110030e2edf06db87f5b6e4efc27300977683d53f040996d15dcc0ad49bb5a"
     format: "qcow2"
     name: "cirros-healthcheck"
 
