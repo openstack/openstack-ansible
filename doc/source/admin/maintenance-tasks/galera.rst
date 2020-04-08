@@ -36,10 +36,10 @@ It should give you information about the status of your cluster.
 
 In this example, only one node responded.
 
-Gracefully shutting down the MariaDB service on all but one node
-allows the remaining operational node to continue
-processing SQL requests. When gracefully shutting down multiple nodes,
-perform the actions sequentially to retain operation.
+Gracefully shutting down the MariaDB service on all but one node allows the
+remaining operational node to continue processing SQL requests. When
+gracefully shutting down multiple nodes, perform the actions sequentially to
+retain operation.
 
 Start a cluster
 ---------------
