@@ -76,6 +76,7 @@ haproxy_default_services:
       haproxy_ssl: "{{ haproxy_ssl }}"
       haproxy_port: 9292
       haproxy_balance_type: http
+      haproxy_balance_alg: source
       haproxy_backend_options:
         - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
       haproxy_service_enabled: "{{ groups['glance_api'] is defined and groups['glance_api'] | length > 0 }}"
