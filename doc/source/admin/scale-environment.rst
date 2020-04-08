@@ -102,6 +102,7 @@ cluster.
        # openstack-ansible setup-hosts.yml --limit localhost,NEW_HOST_NAME
        # ansible nova_all -m setup -a 'filter=ansible_local gather_subset="!all"'
        # openstack-ansible setup-openstack.yml --limit localhost,NEW_HOST_NAME
+       # openstack-ansible os-nova-install.yml --tags nova-key --limit nova_compute
 
    Alternatively you can try using new compute nodes deployment script
    ``/opt/openstack-ansible/scripts/add-compute.sh``.
