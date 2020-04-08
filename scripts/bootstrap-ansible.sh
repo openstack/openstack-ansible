@@ -24,6 +24,7 @@ export HTTPS_PROXY=${HTTPS_PROXY:-""}
 # The Ansible version used for testing
 export ANSIBLE_PACKAGE=${ANSIBLE_PACKAGE:-"ansible==2.9.9"}
 export ANSIBLE_ROLE_FILE=${ANSIBLE_ROLE_FILE:-"ansible-role-requirements.yml"}
+export ANSIBLE_COLLECTION_FILE=${ANSIBLE_COLLECTION_FILE:-"ansible-collection-requirements.yml"}
 export USER_ROLE_FILE=${USER_ROLE_FILE:-"user-role-requirements.yml"}
 export SSH_DIR=${SSH_DIR:-"/root/.ssh"}
 export DEBIAN_FRONTEND=${DEBIAN_FRONTEND:-"noninteractive"}
@@ -153,6 +154,8 @@ pushd /opt/ansible-runtime/bin
     fi
   done
 popd
+
+/opt/ansible-runtime/bin/ansible-galaxy collection install -r ${ANSIBLE_COLLECTION_FILE} -p /etc/ansible
 
 # Write the OSA Ansible rc file
 sed "s|OSA_INVENTORY_PATH|${OSA_INVENTORY_PATH}|g" scripts/openstack-ansible.rc > /usr/local/bin/openstack-ansible.rc
