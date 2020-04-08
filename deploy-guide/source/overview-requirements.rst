@@ -6,7 +6,7 @@ following minimum requirements:
 
 * Debian
 
-  * Debian 9 (stretch)
+  * Debian 10 (buster)
 
   * Linux kernel version ``4.9.0-0-amd64`` or later is required.
 
@@ -34,7 +34,7 @@ following minimum requirements:
 * Network Time Protocol (NTP) client for time synchronization (such as
   ``ntpd`` or ``chronyd``)
 
-* Python 2.7.*x*
+* Python 3.6.*x* or 3.7.*x*
 
 * en_US.UTF-8 as the locale
 
