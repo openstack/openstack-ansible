@@ -27,7 +27,7 @@
     - rgw-service-add
   tasks:
     - name: Add service to the keystone service catalog
-      os_keystone_service:
+      openstack.cloud.os_keystone_service:
         cloud: default
         state: present
         name: "{{ radosgw_service_name }}"
@@ -44,7 +44,7 @@
         - rgw-service-add
 
     - name: Add service user
-      os_user:
+      openstack.cloud.os_user:
         cloud: default
         state: present
         name: "{{ radosgw_admin_user }}"
@@ -60,7 +60,7 @@
       no_log: True
 
     - name: Add service user to roles
-      os_user_role:
+      openstack.cloud.os_user_role:
         cloud: default
         state: present
         user: "{{ radosgw_admin_user }}"
@@ -74,7 +74,7 @@
       delay: 10
 
     - name: Add service role
-      os_keystone_role:
+      openstack.cloud.os_keystone_role:
         cloud: default
         state: present
         name: "swiftoperator"
@@ -86,7 +86,7 @@
       delay: 10
 
     - name: Add endpoints to keystone endpoint catalog
-      os_keystone_endpoint:
+      openstack.cloud.os_keystone_endpoint:
         cloud: default
         state: present
         service: "{{ radosgw_service_name }}"
