@@ -23,8 +23,8 @@
 # serve to show the default.
 
 import os
-import sys
 import subprocess
+import sys
 
 import openstackdocstheme
 
@@ -46,18 +46,22 @@ title = 'OpenStack-Ansible Documentation'
 current_series = openstackdocstheme.ext._get_series_name()
 
 if current_series == "latest":
-  latest_tag = "master"
-  rdo_series = previous_series_name
-  suse_series = previous_series_name.capitalize()
+    latest_tag = "master"
+    rdo_series = previous_series_name
+    suse_series = previous_series_name.capitalize()
 else:
-  series_names = current_series.capitalize()
-  latest_tag = subprocess.check_output(["git", "describe", "--abbrev=0", "--tag"]).strip().decode()
-  rdo_series = current_series_name
-  suse_series = current_series_name.capitalize()
+    series_names = current_series.capitalize()
+    latest_tag = subprocess.check_output(["git", "describe", "--abbrev=0",
+                                          "--tag"]).strip().decode()
+    rdo_series = current_series_name
+    suse_series = current_series_name.capitalize()
 
-deploy_guide_prefix = "https://docs.openstack.org/project-deploy-guide/openstack-ansible/{}/%s".format(current_series)
-dev_docs_prefix = "https://docs.openstack.org/openstack-ansible/{}/%s".format(current_series)
-role_docs_prefix = "https://docs.openstack.org/openstack-ansible-%s/{}".format(current_series)
+deploy_guide_prefix = ("https://docs.openstack.org/project-deploy-guide/"
+                       "openstack-ansible/{}/%s".format(current_series))
+dev_docs_prefix = ("https://docs.openstack.org/openstack-ansible/"
+                   "{}/%s".format(current_series))
+role_docs_prefix = ("https://docs.openstack.org/openstack-ansible-"
+                    "%s/{}".format(current_series))
 
 # Substitutions loader
 rst_epilog = """
@@ -65,14 +69,14 @@ rst_epilog = """
 .. |rdo_series| replace:: {rdo_series}
 .. |suse_series| replace:: {suse_series}
 """.format(
-  latest_tag=latest_tag,
-  rdo_series=rdo_series,
-  suse_series=suse_series
+    latest_tag=latest_tag,
+    rdo_series=rdo_series,
+    suse_series=suse_series
 )
 
 # Format: Reference name: (string containing %s for substitution, linkname)
 extlinks = {'deploy_guide': (deploy_guide_prefix, ''),
-            'dev_docs':  (dev_docs_prefix, ''),
+            'dev_docs': (dev_docs_prefix, ''),
             'role_docs': (role_docs_prefix, '')
 }
 
@@ -98,7 +102,7 @@ extensions = [
 ]
 
 # Add any paths that contain templates here, relative to this directory.
-#templates_path = ['_templates']
+# templates_path = ['_templates']
 
 # The suffix of source filenames.
 source_suffix = '.rst'

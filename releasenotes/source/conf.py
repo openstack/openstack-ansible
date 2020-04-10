@@ -53,13 +53,13 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-author = u'OpenStack-Ansible Contributors'
-category = u'Miscellaneous'
-copyright = u'2014-2016, OpenStack-Ansible Contributors'
-description = u'OpenStack-Ansible deploys OpenStack environments using Ansible.'
-project = u'OpenStack-Ansible'
-target_name = u'openstack-ansible'
-title = u'OpenStack-Ansible Release Notes'
+author = 'OpenStack-Ansible Contributors'
+category = 'Miscellaneous'
+copyright = '2014-2016, OpenStack-Ansible Contributors'
+description = 'OpenStack-Ansible deploys OpenStack environments using Ansible.'
+project = 'OpenStack-Ansible'
+target_name = 'openstack-ansible'
+title = 'OpenStack-Ansible Release Notes'
 
 # The link to the browsable source code (for the left hand menu)
 oslosphinx_cgit_link = (

@@ -29,11 +29,11 @@ INV_DIR = 'inventory'
 
 sys.path.append(path.join(os.getcwd(), INV_DIR))
 
-from osa_toolkit import dictutils
-import dynamic_inventory
-from osa_toolkit import filesystem as fs
-from osa_toolkit import generate as di
-from osa_toolkit import tools
+import dynamic_inventory  # noqa: E402
+from osa_toolkit import dictutils  # noqa: E402
+from osa_toolkit import filesystem as fs  # noqa: E402
+from osa_toolkit import generate as di  # noqa: E402
+from osa_toolkit import tools  # noqa: E402
 
 TARGET_DIR = path.join(os.getcwd(), 'tests', 'inventory')
 BASE_ENV_DIR = INV_DIR
@@ -1106,7 +1106,6 @@ class TestOverridingEnvVars(OverridingEnvBase):
         # a partial override file
 
         vol = self.cinder_config['container_skel']['cinder_volumes_container']
-        keys = vol.keys()
         to_delete = []
         for key in vol.keys():
             if not key == 'properties':
@@ -1445,7 +1444,8 @@ class TestInventoryGroupConstraints(unittest.TestCase):
         # This should only work on groups, but stuff like '_meta' and 'all'
         # are in here, too.
         for key, values in inventory.items():
-            # The keys for children/hosts can exist, the important part is being empty lists.
+            # The keys for children/hosts can exist, the important part is
+            # being empty lists.
             has_children = bool(inventory.get('children'))
             has_hosts = bool(inventory.get('hosts'))
 
@@ -1482,7 +1482,6 @@ class TestInventoryGroupConstraints(unittest.TestCase):
         """Integration test making sure the whole script fails."""
         env = self._create_bad_env(self.env)
 
-
         config = get_config()
 
         kwargs = {
@@ -1494,7 +1493,7 @@ class TestInventoryGroupConstraints(unittest.TestCase):
             mocks['load_environment'].return_value = env
             mocks['load_user_configuration'].return_value = config
 
-            with self.assertRaises(di.GroupConflict) as context:
+            with self.assertRaises(di.GroupConflict):
                 get_inventory()
 
     def test_group_validation_unit(self):
@@ -1516,6 +1515,7 @@ class TestInventoryGroupConstraints(unittest.TestCase):
 
         self.assertTrue(result)
 
+
 class TestL3ProviderNetworkConfig(TestConfigCheckBase):
     def setUp(self):
         super(TestL3ProviderNetworkConfig, self).setUp()
@@ -1534,15 +1534,16 @@ class TestL3ProviderNetworkConfig(TestConfigCheckBase):
         self.inventory = get_inventory()
 
     def test_address_prefix_name_applied(self):
-         aio2_host_vars = self.inventory['_meta']['hostvars']['aio2']
-         aio2_container_networks = aio2_host_vars['container_networks']
-         self.assertIsInstance(aio2_container_networks['management_address'],
-                               dict)
+        aio2_host_vars = self.inventory['_meta']['hostvars']['aio2']
+        aio2_container_networks = aio2_host_vars['container_networks']
+        self.assertIsInstance(aio2_container_networks['management_address'],
+                              dict)
 
     def test_host_outside_reference_group_excluded(self):
-         aio1_host_vars = self.inventory['_meta']['hostvars']['aio1']
-         aio1_container_networks = aio1_host_vars['container_networks']
-         self.assertNotIn('management_address', aio1_container_networks)
+        aio1_host_vars = self.inventory['_meta']['hostvars']['aio1']
+        aio1_container_networks = aio1_host_vars['container_networks']
+        self.assertNotIn('management_address', aio1_container_networks)
+
 
 if __name__ == '__main__':
     unittest.main(catchbreak=True)

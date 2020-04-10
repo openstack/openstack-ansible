@@ -31,13 +31,15 @@ import yaml
 # we setup a representation for dict objects and register it
 # with the yaml class.
 def represent_dict(self, data):
-    def key_function((key, value)):
+    def key_function(elem):
+        key = elem[0]
         # Prioritizes certain keys when sorting.
         prio = {"model": 0, "pk": 1, "fields": 2}.get(key, 99)
         return (prio, key)
     items = data.items()
     items.sort(key=key_function)
     return self.represent_mapping(u'tag:yaml.org,2002:map', items)
+
 
 yaml.add_representer(dict, represent_dict)
 
@@ -99,6 +101,7 @@ def main():
             yaml.dump(reqs, role_req_file, default_flow_style=False)
         except yaml.YAMLError as exc:
             print(exc)
+
 
 if __name__ == "__main__":
     main()

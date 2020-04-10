@@ -22,11 +22,9 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-import imp
 import os
-import re
-import sys
 import subprocess
+import sys
 
 import openstackdocstheme
 import yaml
@@ -38,7 +36,7 @@ description = 'OpenStack-Ansible deploys OpenStack environments using Ansible.'
 previous_series_name = 'stein'
 current_series_name = 'train'
 
-## General information about the project.
+# General information about the project.
 author = 'OpenStack-Ansible Contributors'
 category = 'Miscellaneous'
 copyright = '2014-2018, OpenStack-Ansible Contributors'
@@ -49,14 +47,16 @@ title = 'OpenStack-Ansible Documentation'
 current_series = openstackdocstheme.ext._get_series_name()
 
 if current_series == "latest":
-  latest_tag = "master"
-  branch = "master"
-  upgrade_warning = "Upgrading to master is not recommended. Master is under heavy development, and is not stable."
+    latest_tag = "master"
+    branch = "master"
+    upgrade_warning = ("Upgrading to master is not recommended. "
+                       "Master is under heavy development, and is not stable.")
 else:
-  series_names = current_series.capitalize()
-  latest_tag = subprocess.check_output(["git", "describe", "--abbrev=0", "--tag"]).strip().decode()
-  branch = "stable/{}".format(current_series)
-  upgrade_warning = "The upgrade is always under active development."
+    series_names = current_series.capitalize()
+    latest_tag = subprocess.check_output(["git", "describe", "--abbrev=0",
+                                          "--tag"]).strip().decode()
+    branch = "stable/{}".format(current_series)
+    upgrade_warning = "The upgrade is always under active development."
 
 CONF_PATH = os.path.dirname(os.path.realpath(__file__))
 GNOCCHI_DETAILS = '../../playbooks/defaults/repo_packages/gnocchi.yml'
@@ -65,8 +65,11 @@ with open(os.path.join(CONF_PATH, GNOCCHI_DETAILS), 'r') as fdesc:
     gnocchi_branch = gnocchi_file_content['gnocchi_git_track_branch']
 
 # References variable for substitutions
-deploy_guide_prefix = "https://docs.openstack.org/project-deploy-guide/openstack-ansible/{}/%s".format(current_series)
-dev_docs_prefix = "https://docs.openstack.org/openstack-ansible/{}/%s".format(current_series)
+deploy_guide_prefix = ("https://docs.openstack.org/"
+                       "project-deploy-guide/openstack-ansible/"
+                       "{}/%s".format(current_series))
+dev_docs_prefix = ("https://docs.openstack.org/openstack-ansible/"
+                   "{}/%s".format(current_series))
 
 # Substitutions loader
 rst_epilog = """
@@ -77,19 +80,19 @@ rst_epilog = """
 .. |current_release_formal_name| replace:: {current_release_formal_name}
 .. |latest_tag| replace:: {latest_tag}
 .. |upgrade_warning| replace:: {upgrade_warning}
-""".format(
-  current_release_git_branch_name=branch,
-  current_release_gnocchi_git_branch_name=gnocchi_branch,
-  previous_series_name=previous_series_name,
-  previous_release_formal_name=previous_series_name.capitalize(),
-  current_release_formal_name=current_series_name.capitalize(),
-  latest_tag=latest_tag,
-  upgrade_warning=upgrade_warning,
+""".format(  # noqa: E501
+    current_release_git_branch_name=branch,
+    current_release_gnocchi_git_branch_name=gnocchi_branch,
+    previous_series_name=previous_series_name,
+    previous_release_formal_name=previous_series_name.capitalize(),
+    current_release_formal_name=current_series_name.capitalize(),
+    latest_tag=latest_tag,
+    upgrade_warning=upgrade_warning,
 )
 
 # Format: Reference name: (string containing %s for substitution, linkname)
 extlinks = {'deploy_guide': (deploy_guide_prefix, ''),
-            'dev_docs':  (dev_docs_prefix, '')
+            'dev_docs': (dev_docs_prefix, '')
 }
 
 # If extensions (or modules to document with autodoc) are in another directory,
@@ -142,9 +145,7 @@ language = None
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = [
-  'admin/maintenance-tasks/galera.rst'
-]
+exclude_patterns = ['admin/maintenance-tasks/galera.rst']
 
 # The reST default role (used for this markup: `text`) to use for all
 # documents.
