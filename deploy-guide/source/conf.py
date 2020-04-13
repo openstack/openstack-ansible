@@ -26,7 +26,6 @@ import os
 import sys
 import subprocess
 
-import pbr.version
 import openstackdocstheme
 
 # -- OpenStack-Ansible configuration --------------------------------------
@@ -52,7 +51,7 @@ if current_series == "latest":
   suse_series = previous_series_name.capitalize()
 else:
   series_names = current_series.capitalize()
-  latest_tag = pbr.version.VersionInfo('osa_toolkit').__str__()
+  latest_tag = subprocess.check_output(["git", "describe", "--abbrev=0", "--tag"]).strip().decode()
   rdo_series = current_series_name
   suse_series = current_series_name.capitalize()
 
