@@ -164,3 +164,27 @@
     gate:
       jobs:
         - openstack-ansible-linters-ubuntu-bionic
+
+- project-template:
+    name: openstack-ansible-deploy-guide-jobs
+    description: |
+      Build the deploy-guide document and publish the result
+      using a promote job.
+    check:
+      jobs:
+        - build-openstack-deploy-guide:
+            files: &deploy-guide-triggers
+              - ^deploy-guide/.*
+              - ansible-role-requirements.yml
+              - bindep.txt
+              - doc/requirements.txt
+              - test-requirements.txt
+              - tox.ini
+    gate:
+      jobs:
+        - build-openstack-deploy-guide:
+            files: *deploy-guide-triggers
+    promote:
+      jobs:
+        - promote-deploy-guide:
+            files: *deploy-guide-triggers
