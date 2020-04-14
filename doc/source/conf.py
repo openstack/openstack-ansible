@@ -29,7 +29,6 @@ import sys
 import subprocess
 
 import openstackdocstheme
-import pbr.version
 import yaml
 
 # -- OpenStack-Ansible configuration --------------------------------------
@@ -55,7 +54,7 @@ if current_series == "latest":
   upgrade_warning = "Upgrading to master is not recommended. Master is under heavy development, and is not stable."
 else:
   series_names = current_series.capitalize()
-  latest_tag = pbr.version.VersionInfo('osa_toolkit').__str__()
+  latest_tag = subprocess.check_output(["git", "describe", "--abbrev=0", "--tag"]).strip().decode()
   branch = "stable/{}".format(current_series)
   upgrade_warning = "The upgrade is always under active development."
 
