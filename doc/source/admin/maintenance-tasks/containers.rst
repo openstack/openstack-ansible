@@ -5,9 +5,9 @@ With Ansible, the OpenStack installation process is entirely automated
 using playbooks written in YAML. After installation, the settings
 configured by the playbooks can be changed and modified. Services and
 containers can shift to accommodate certain environment requirements.
-Scaling services is achieved by adjusting services within containers, or
-adding new deployment groups. It is also possible to destroy containers
-if needed after changes and modifications are complete.
+Scaling services are achieved by adjusting services within containers, or
+adding new deployment groups. It is also possible to destroy containers,
+if needed, after changes and modifications are complete.
 
 Scale individual services
 -------------------------

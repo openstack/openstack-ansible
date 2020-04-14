@@ -2,7 +2,7 @@ Running ad-hoc Ansible plays
 ============================
 
 Being familiar with running ad-hoc Ansible commands is helpful when
-operating your OpenStack-Ansible deployment. For example, if we look at the
+operating your OpenStack-Ansible deployment. For a review, we can look at the
 structure of the following ansible command:
 
 .. code-block:: console
@@ -10,23 +10,24 @@ structure of the following ansible command:
    $ ansible example_group -m shell -a 'hostname'
 
 This command calls on Ansible to run the ``example_group`` using
-the ``-m`` shell module with the ``-a`` argument being the hostname command.
-You can substitute the group for any other groups you may have defined. For
-example, if you had ``compute_hosts`` in one group and
-``infra_hosts`` in  another, supply either group name and run the
-commands. You can also use the ``*`` wild card if you only know the first part
-of the group name, for example,  ``compute_h*``. The ``-m`` argument is for
-module.
+the ``-m`` shell module with the ``-a`` argument which is the hostname command.
+You can substitute example_group for any groups you may have defined. For
+example, if you had ``compute_hosts`` in one group and ``infra_hosts`` in
+another, supply either group name and run the command. You can also use the
+``*`` wild card if you only know the first part of the group name, for
+instance if you know the group name starts with compute you would use
+``compute_h*``. The ``-m`` argument is for module.
 
-Modules can be used to control system resources, or handle the execution of
-system commands. For a more information about modules , see
+Modules can be used to control system resources or handle the execution of
+system commands. For more information about modules, see
 `Module Index <https://docs.ansible.com/ansible/modules_by_category.html>`_ and
 `About Modules <https://docs.ansible.com/ansible/modules.html>`_.
 
 If you need to run a particular command against a subset of a group, you
 could use the limit flag ``-l``. For example, if a ``compute_hosts`` group
 contained ``compute1``, ``compute2``, ``compute3``, and ``compute4``, and you
-only needed to execute a command on ``compute1`` and ``compute4``:
+only needed to execute a command on ``compute1`` and ``compute4`` you could
+limit the command as follows:
 
 .. code-block:: console
 
@@ -80,10 +81,10 @@ For more information, see `shell - Execute commands in nodes
 Running the copy module
 -----------------------
 
-The copy module copies a file on a local machine to remote locations. Use the
-fetch module to copy files from remote locations to the local machine. If you
-need variable interpolation in copied files, use the template module. For more
-information, see `copy - Copies files to remote locations
+The copy module copies a file on a local machine to remote locations. To copy
+files from remote locations to the local machine you would use the fetch
+module. If you need variable interpolation in copied files, use the template
+module. For more information, see `copy - Copies files to remote locations
 <https://docs.ansible.com/ansible/copy_module.html>`_.
 
 The following example shows how to move a file from your deployment host to the
@@ -94,10 +95,9 @@ The following example shows how to move a file from your deployment host to the
    $ ansible remote_machines -m copy -a 'src=/root/FILE \
    dest=/tmp/FILE'
 
-If you want to gather files from remote machines, use the fetch module. The
-fetch module stores files locally in a file tree, organized by the hostname
-from remote machines and stores them locally in a file tree, organized by
-hostname.
+The fetch module gathers files from remote machines and stores the files
+locally in a file tree, organized by the hostname from remote machines and
+stores them locally in a file tree, organized by hostname.
 
 .. note::
 
@@ -128,7 +128,7 @@ from a single Compute host:
 Using tags
 ----------
 
-Tags are similar to the limit flag for groups except tags are used to only run
+Tags are similar to the limit flag for groups, except tags are used to only run
 specific tasks within a playbook. For more information on tags, see
 `Tags <http://ansible-docs.readthedocs.io/zh/stable-2.0/rst/playbooks_tags.html>`_
 and `Understanding ansible tags
@@ -142,10 +142,10 @@ fork makes use of a session. By default, Ansible sets the number of forks to
 5. However, you can increase the number of forks used in order to improve
 deployment performance in large environments.
 
-Note that more than 10 forks will cause issues for any playbooks
-which use ``delegate_to`` or ``local_action`` in the tasks. It is
-recommended that the number of forks are not raised when executing against the
-control plane, as this is where delegation is most often used.
+Note that more than 10 forks will cause issues for any playbooks which use
+``delegate_to`` or ``local_action`` in the tasks. It is recommended that the
+number of forks are not raised when executing against the control plane, as
+this is where delegation is most often used.
 
 The number of forks used may be changed on a permanent basis by including
 the appropriate change to the ``ANSIBLE_FORKS`` in your ``.bashrc`` file.

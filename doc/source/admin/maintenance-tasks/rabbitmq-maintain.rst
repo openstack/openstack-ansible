@@ -7,13 +7,13 @@ exchanges, bindings, and runtime parameters. A collection of nodes is often
 referred to as a `cluster`. For more information on RabbitMQ clustering, see
 `RabbitMQ cluster <https://www.rabbitmq.com/clustering.html>`_.
 
-Within OpenStack-Ansible, all data and states required for operation of the RabbitMQ
-cluster is replicated across all nodes including the message queues providing
-high availability. RabbitMQ nodes address each other using domain names.
-The hostnames of all cluster members must be resolvable from all cluster
+Within OpenStack-Ansible, all data and states required for operation of the
+RabbitMQ cluster is replicated across all nodes including the message queues
+providing high availability. RabbitMQ nodes address each other using domain
+names. The hostnames of all cluster members must be resolvable from all cluster
 nodes, as well as any machines where CLI tools related to RabbitMQ might be
-used. There are alternatives that may work in more
-restrictive environments. For more details on that setup, see
+used. There are alternatives that may work in more restrictive environments.
+For more details on that setup, see
 `Inet Configuration <http://erlang.org/doc/apps/erts/inet_cfg.html>`_.
 
 
@@ -121,9 +121,9 @@ process by stopping the RabbitMQ application on the third node.
 Stop and restart a RabbitMQ cluster
 -----------------------------------
 
-To stop and start the cluster, keep in mind the order in
-which you shut the nodes down. The last node you stop, needs to be the
-first node you start. This node is the `master`.
+To stop and start the cluster, keep in mind the order in which you shut the
+nodes down. The last node you stop, needs to be the first node you start.
+This node is the `master`.
 
 If you start the nodes out of order, you could run into an issue where
 it thinks the current `master` should not be the master and drops the messages
@@ -146,8 +146,8 @@ Repair a partitioned RabbitMQ cluster for a single-node
 -------------------------------------------------------
 
 Invariably due to something in your environment, you are likely to lose a
-node in your cluster. In this scenario, multiple LXC containers on the same host
-are running Rabbit and are in a single Rabbit cluster.
+node in your cluster. In this scenario, multiple LXC containers on the same
+host are running Rabbit and are in a single Rabbit cluster.
 
 If the host still shows as part of the cluster, but it is not running,
 execute:
@@ -186,7 +186,8 @@ the failing node.
       rabbit1$ rabbitmqctl start_app
       Starting node rabbit@rabbit1 ...
 
-      Error: inconsistent_cluster: Node rabbit@rabbit1 thinks it's clustered with node rabbit@rabbit2, but rabbit@rabbit2 disagrees
+      Error: inconsistent_cluster: Node rabbit@rabbit1 thinks it's clustered
+             with node rabbit@rabbit2, but rabbit@rabbit2 disagrees
 
       rabbit1$ rabbitmqctl reset
       Resetting node rabbit@rabbit1 ...done.
@@ -216,4 +217,3 @@ multi-node cluster are:
   bootable again.
 
 Consult the rabbitmqctl manpage for more information.
-

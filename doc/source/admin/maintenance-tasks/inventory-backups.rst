@@ -8,7 +8,7 @@ period of time.
 Bulk pruning
 ------------
 
-It's possible to do mass pruning of the inventory backup. The following
+It is possible to do mass pruning of the inventory backup. The following
 example will prune all but the last 15 inventories from the running archive.
 
 .. code-block:: bash
@@ -22,7 +22,7 @@ example will prune all but the last 15 inventories from the running archive.
 Selective Pruning
 -----------------
 
-To prune the inventory archive selectively first identify the files you wish
+To prune the inventory archive selectively, first identify the files you wish
 to remove by listing them out.
 
 .. code-block:: bash
