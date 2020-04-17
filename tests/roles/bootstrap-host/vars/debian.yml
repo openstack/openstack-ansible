@@ -44,3 +44,10 @@ packages_remove:
 
 rc_local: /etc/rc.local
 rc_local_insert_before: "^exit 0$"
+
+# NOTE (noonedeadpunk): We disable this as ubuntu distro packages until U release do
+#                       not have membership_expires_at attribute which is already in
+#                       tempest since [1]
+# [1] https://opendev.org/openstack/tempest/commit/30638b53a4f9a277a821f7988d8c18b6de52bf77
+_tempest_test_distro_blacklist:
+  - 'tempest.api.identity.admin.v3.test_groups.GroupsV3TestJSON.test_list_user_groups'

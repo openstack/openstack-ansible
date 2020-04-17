@@ -27,6 +27,9 @@ tempest_public_subnet_allocation_pools: "172.29.243.110-172.29.243.200"
 tempest_public_subnet_cidr: "172.29.248.0/22"
 tempest_public_subnet_allocation_pools: "172.29.249.110-172.29.249.200"
 {% endif %}
+{% if bootstrap_host_install_method == 'distro' %}
+tempest_test_blacklist: {{ _tempest_test_distro_blacklist | default([]) }}
+{% endif %}
 
 ## Galera settings
 galera_monitoring_allowed_source: "0.0.0.0/0"
