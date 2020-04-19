@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Support for the networking-generic-switch mechanism driver has been implemented.
+    This allows Ironic to interface with Neutron when the ``neutron`` network interface
+    has been configured. This feature may be enabled by adding ``ml2.genericswitch``
+    to the ``neutron_plugin_types`` list in ``/etc/openstack_deploy/user_variables.yml``.
