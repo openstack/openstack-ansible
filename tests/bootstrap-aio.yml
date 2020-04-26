@@ -24,7 +24,6 @@
     - "{{ playbook_dir }}/../playbooks/defaults/repo_packages/openstack_services.yml"
   environment: "{{ deployment_environment_variables | default({}) }}"
   vars:
-    ansible_python_interpreter: "/usr/bin/python"
     sftp_subsystem:
         'apt': 'sftp /usr/lib/openssh/sftp-server'
         'yum': 'sftp /usr/libexec/openssh/sftp-server'
