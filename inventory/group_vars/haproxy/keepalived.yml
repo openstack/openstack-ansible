@@ -62,17 +62,13 @@ keepalived_instances:
     authentication_password: "{{ haproxy_keepalived_authentication_password }}"
     vips:
       - "{{ haproxy_keepalived_external_vip_cidr | default('169.254.1.1/24')  }} dev {{ haproxy_keepalived_external_interface | default(management_bridge) }}"
-    track_scripts:
-      - haproxy_check_script
-      - pingable_check_script
+    track_scripts: "{{ keepalived_scripts.keys() }}"
   internal:
     interface: "{{ haproxy_keepalived_internal_interface | default(management_bridge) }}"
     state: "{{ (groups['haproxy'].index(inventory_hostname) == 0) | ternary('MASTER', 'BACKUP') }}"
     virtual_router_id: "{{ haproxy_keepalived_internal_virtual_router_id | default ('11') }}"
     priority: "{{ (groups['haproxy']|length-groups['haproxy'].index(inventory_hostname))*50 }}"
     authentication_password: "{{ haproxy_keepalived_authentication_password }}"
-    track_scripts:
-      - haproxy_check_script
-      - pingable_check_script
+    track_scripts: "{{ keepalived_scripts.keys() }}"
     vips:
       - "{{ haproxy_keepalived_internal_vip_cidr | default('169.254.2.1/24') }} dev {{ haproxy_keepalived_internal_interface | default(management_bridge) }}"
