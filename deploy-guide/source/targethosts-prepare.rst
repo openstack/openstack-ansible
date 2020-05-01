@@ -54,7 +54,7 @@ Configure Ubuntu
    .. code-block:: shell-session
 
        # apt-get install bridge-utils debootstrap ifenslave ifenslave-2.6 \
-         lsof lvm2 chrony openssh-server sudo tcpdump vlan python
+         lsof lvm2 chrony openssh-server sudo tcpdump vlan python3
 
 #. Install the kernel extra package if you have one for your kernel version \
 
@@ -159,7 +159,7 @@ Configure openSUSE
    .. code-block:: shell-session
 
        # zypper install bridge-utils iputils lsof lvm2 \
-         chrony opensshr sudo tcpdump python
+         chrony opensshr sudo tcpdump python3
 
 #. Add the appropriate kernel modules to the ``/etc/modules-load.d`` file to
    enable VLAN and bond interfaces:
@@ -235,9 +235,9 @@ can optionally use LVM for their data storage.
        # vgcreate cinder-volumes physical_volume_device_path
 
 #. Optionally, create an LVM volume group named ``lxc`` for container file
-   systems if you want to use LXC with LVM.
-   If the ``lxc`` volume group does not exist, containers are
-   automatically installed on the file system under ``/var/lib/lxc`` by
-   default.
+   systems and set ``lxc_container_backing_store: lvm`` in user_variables.yml
+   if you want to use LXC with LVM. If the ``lxc`` volume group does not
+   exist, containers are automatically installed on the file system under
+   ``/var/lib/lxc`` by default.
 
 .. _Logical Volume Manager (LVM): https://en.wikipedia.org/wiki/Logical_Volume_Manager_(Linux)
