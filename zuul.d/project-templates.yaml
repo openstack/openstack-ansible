@@ -68,7 +68,6 @@
       jobs:
         - openstack-ansible-deploy-aio_metal-debian-buster
         - openstack-ansible-deploy-aio_metal-centos-7
-        - openstack-ansible-deploy-aio_metal-opensuse-15
         - openstack-ansible-deploy-aio_metal-ubuntu-bionic
         - openstack-ansible-upgrade-aio_metal-centos-7:
             voting: false
@@ -77,9 +76,8 @@
       jobs:
         - openstack-ansible-deploy-aio_metal-debian-buster
         - openstack-ansible-deploy-aio_metal-centos-7
-        - openstack-ansible-deploy-aio_metal-opensuse-15
         - openstack-ansible-deploy-aio_metal-ubuntu-bionic
-    periodic:
+    experimental:
       jobs:
         - openstack-ansible-deploy-aio_metal-opensuse-15
 
@@ -104,14 +102,12 @@
     check:
       jobs:
         - openstack-ansible-deploy-aio_distro_metal-centos-7
-        - openstack-ansible-deploy-aio_distro_metal-opensuse-15:
-            voting: false
         - openstack-ansible-deploy-aio_distro_metal-ubuntu-bionic
     gate:
       jobs:
         - openstack-ansible-deploy-aio_distro_metal-centos-7
         - openstack-ansible-deploy-aio_distro_metal-ubuntu-bionic
-    periodic:
+    experimental:
       jobs:
         - openstack-ansible-deploy-aio_distro_metal-opensuse-15
 
