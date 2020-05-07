@@ -91,7 +91,7 @@
 
         # NOTE(mnaser): We need to make sure we pull the latest RDO mirror
         #               which is hashed to avoid cache going stale during CI.
-        export DLRN_BASE=${DLRN_BASE:-centos7-master/puppet-passed-ci}
+        export DLRN_BASE=${DLRN_BASE:-centos7-train/puppet-passed-ci}
         rdo_dlrn=`curl --silent ${NODEPOOL_RDO_PROXY}/${DLRN_BASE}/delorean.repo | grep baseurl | cut -d= -f2`
         if [[ -z "$rdo_dlrn" ]]; then
             echo "Failed to parse dlrn hash"
