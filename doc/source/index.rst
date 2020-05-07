@@ -21,6 +21,7 @@ OpenStack-Ansible Ussuri is currently in development.
    Release notes <https://docs.openstack.org/releasenotes/openstack-ansible/unreleased.html>
    admin/index
    user/index
+   contributor/contributing
    contributor/index
    reference/index
 
