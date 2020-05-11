@@ -23,4 +23,4 @@ glance_service_adminurl: "{{ openstack_service_adminuri_proto }}://{{ internal_l
 # When running RBD or horizon image upload mode is direct allow multiple locations.
 # See https://bugs.launchpad.net/openstack-ansible/+bug/1730722 for more on the
 # this topic.
-glance_show_multiple_locations: "{{ (glance_default_store == 'rbd') or (horizon_image_upload_mode == 'direct') }}"
+glance_show_multiple_locations: "{{ (glance_default_store == 'rbd') or (horizon_images_upload_mode == 'direct') }}"
