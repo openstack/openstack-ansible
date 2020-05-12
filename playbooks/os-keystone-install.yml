@@ -141,6 +141,6 @@
         dest: "/etc/ansible/facts.d/openstack_ansible.fact"
         section: keystone
         option: "need_db_contract"
-        value: False
+        value: "False"
       when:
         - "dbsync_contract is succeeded"
