@@ -40,13 +40,15 @@ import yaml
 # we setup a representation for dict objects and register it
 # with the yaml class.
 def represent_dict(self, data):
-    def key_function((key, value)):
+    def key_function(elem):
+        key = elem[0]
         # Prioritizes certain keys when sorting.
         prio = {"version": 0, "projects": 1, "repo": 2, "hash": 3}.get(key, 99)
         return (prio, key)
     items = data.items()
     items.sort(key=key_function)
     return self.represent_mapping(u'tag:yaml.org,2002:map', items)
+
 
 yaml.add_representer(dict, represent_dict)
 
@@ -56,7 +58,7 @@ yaml.add_representer(dict, represent_dict)
 def yaml_dump(dump, indentSize=2):
     stream = StringIO(dump)
     out = StringIO()
-    pat = re.compile('(\s*)([^:]*)(:*)')
+    pat = re.compile(r'(\s*)([^:]*)(:*)')
     last = None
 
     prefix = 0
@@ -133,6 +135,7 @@ def main():
 
     # Print the output, formatted as expected
     print(yaml_dump(output))
+
 
 if __name__ == "__main__":
     main()
