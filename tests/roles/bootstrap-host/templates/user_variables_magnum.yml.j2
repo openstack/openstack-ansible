@@ -14,12 +14,12 @@
 # limitations under the License.
 
 magnum_glance_images:
-  - name: fedora-atomic-latest
+  - name: fedora-coreos-latest
     disk_format: qcow2
     image_format: bare
     public: true
     file: https://builds.coreos.fedoraproject.org/prod/streams/stable/builds/31.20200210.3.0/x86_64/fedora-coreos-31.20200210.3.0-openstack.x86_64.qcow2.xz
-    distro: fedora-atomic
+    distro: "fedora-{{ (ansible_os_family | lower == 'redhat' and ansible_distribution_major_version is version('8', '<') and bootstrap_host_install_method == 'distro') | ternary('atomic', 'coreos') }}"
     checksum: "sha256:9a5252e24b82a5edb1ce75b05653f59895685b0f1028112462e908a12deae518"
 
 magnum_cluster_templates:
@@ -31,7 +31,7 @@ magnum_cluster_templates:
     master_flavor_id: m1.magnum
     network_driver: flannel
     volume_driver: cinder
-    image_id: fedora-atomic-latest
+    image_id: fedora-coreos-latest
     labels:
       kube_tag: v1.16.0
       etcd_tag: 3.3.17
@@ -66,3 +66,6 @@ tempest_tempest_conf_overrides:
   magnum:
     coe: kubernetes
     network_driver: flannel
+    master_flavor_id: m1.magnum
+    flavor_id: s1.magnum
+    image_id: fedora-coreos-latest
