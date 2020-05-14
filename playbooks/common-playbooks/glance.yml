@@ -13,10 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- name: Gather glance facts
+  hosts: "{{ glance_hosts }}"
+  gather_facts: "{{ osa_gather_facts | default(True) }}"
+  tags:
+    - always
+
 - name: Install glance services
   hosts: "{{ glance_hosts }}"
   serial: "{{ glance_serial }}"
-  gather_facts: "{{ osa_gather_facts | default(True) }}"
+  gather_facts: false
   user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
   vars_files:

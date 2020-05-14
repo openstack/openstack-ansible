@@ -13,9 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Setup repo servers
+- name: Gather repo facts
   hosts: repo_all
   gather_facts: "{{ osa_gather_facts | default(True) }}"
+  tags:
+    - always
+
+- name: Setup repo servers
+  hosts: repo_all
+  gather_facts: false
   user: root
   pre_tasks:
     - name: End playbook

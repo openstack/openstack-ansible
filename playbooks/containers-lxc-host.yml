@@ -13,10 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Basic lxc host setup
-  hosts: "{{ lxc_host_group | default('lxc_hosts')}}"
-  user: root
+- name: Gather lxc hosts facts
+  hosts: "{{ lxc_host_group | default('lxc_hosts') }}"
   gather_facts: "{{ osa_gather_facts | default(True) }}"
+  tags:
+    - always
+
+- name: Basic lxc host setup
+  hosts: "{{ lxc_host_group | default('lxc_hosts') }}"
+  user: root
+  gather_facts: false
   vars_files:
     - defaults/repo_packages/openstack_services.yml
     - "defaults/{{ install_method }}_install.yml"

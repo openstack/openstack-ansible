@@ -60,10 +60,16 @@
       setup:
         gather_subset: "network,hardware,virtual"
 
+- name: Gather lxc containers facts
+  hosts: all_lxc_containers
+  gather_facts: true
+  tags:
+    - always
+
 - name: Configure containers default software
   hosts: all_lxc_containers
   user: root
-  gather_facts: true
+  gather_facts: false
   vars_files:
     - defaults/repo_packages/openstack_services.yml
     - "defaults/{{ install_method }}_install.yml"

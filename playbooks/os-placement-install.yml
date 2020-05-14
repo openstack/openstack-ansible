@@ -13,9 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Install placement components
+- name: Gather placement facts
   hosts: placement_all
   gather_facts: "{{ osa_gather_facts | default(True) }}"
+  tags:
+    - always
+
+- name: Install placement components
+  hosts: placement_all
+  gather_facts: false
   environment: "{{ deployment_environment_variables | default({}) }}"
   user: root
   vars_files:

@@ -13,9 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Install the tacker components
+- name: Gather tacker facts
   hosts: tacker_all
   gather_facts: "{{ osa_gather_facts | default(True) }}"
+  tags:
+    - always
+
+- name: Install the tacker components
+  hosts: tacker_all
+  gather_facts: false
   user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
   vars_files:
