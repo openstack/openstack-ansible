@@ -13,9 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Installation and setup of Tempest
+- name: Gather tempest facts
   hosts: utility_all[0]
   gather_facts: "{{ osa_gather_facts | default(True) }}"
+  tags:
+    - always
+
+- name: Installation and setup of Tempest
+  hosts: utility_all[0]
+  gather_facts: false
   user: root
   vars_files:
     - "defaults/repo_packages/openstack_services.yml"

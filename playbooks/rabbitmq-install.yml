@@ -13,10 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- name: Gather etcd facts
+  hosts: "{{ rabbitmq_host_group | default('rabbitmq_all') }}"
+  gather_facts: "{{ osa_gather_facts | default(True) }}"
+  tags:
+    - always
+
 - name: Create and configure rabbitmq container
   hosts: "{{ rabbitmq_host_group | default('rabbitmq_all') }}"
   serial: 1
-  gather_facts: "{{ osa_gather_facts | default(True) }}"
+  gather_facts: false
   user: root
   pre_tasks:
     - include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
@@ -38,6 +44,7 @@
 # http://www.rabbitmq.com/clustering.html#upgrading
 - name: Stop RabbitMQ nodes that are not the upgrader
   hosts: "{{ rabbitmq_host_group | default('rabbitmq_all') }}[1:]"
+  gather_facts: false
   user: root
   tasks:
     - name: "Stop RabbitMQ"
@@ -48,6 +55,7 @@
 
 - name: Install rabbitmq server
   hosts: "{{ rabbitmq_host_group | default('rabbitmq_all') }}"
+  gather_facts: false
   serial: 20%
   user: root
   roles:
@@ -66,6 +74,7 @@
 
 - name: Ensure rabbitmq user for monitoring GUI
   hosts: "{{ rabbitmq_host_group | default('rabbitmq_all') }}[0]"
+  gather_facts: false
   user: root
   tasks:
     - name: Create rabbitmq user for monitoring GUI

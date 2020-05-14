@@ -17,9 +17,15 @@
 # 'apply_security_hardening' boolean set to True for it to apply security
 # hardening standards to a system.
 
-- name: Apply security hardening configurations
+- name: Gather security hardening facts
   hosts: "{{ security_host_group|default('hosts') }}"
   gather_facts: "{{ osa_gather_facts | default(True) }}"
+  tags:
+    - always
+
+- name: Apply security hardening configurations
+  hosts: "{{ security_host_group|default('hosts') }}"
+  gather_facts: false
   user: root
   roles:
     - role: "ansible-hardening"

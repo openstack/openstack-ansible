@@ -13,9 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- name: Gather congress facts
+  hosts: congress_all
+  gather_facts: "{{ osa_gather_facts | default(True) }}"
+  tags:
+    - always
+
 - name: Install congress components
   hosts: congress_all
-  gather_facts: "{{ gather_facts | default(True) }}"
+  gather_facts: false
   max_fail_percentage: 20
   user: root
   environment: "{{ deployment_environment_variables | default({}) }}"

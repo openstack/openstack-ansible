@@ -13,9 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Additional nspawn host setup
+- name: Gather nspawn hosts facts
   hosts: "{{ nspawn_host_group | default('nspawn_hosts') }}"
   gather_facts: true
+  tags:
+    - always
+
+- name: Additional nspawn host setup
+  hosts: "{{ nspawn_host_group | default('nspawn_hosts') }}"
+  gather_facts: false
   vars_files:
     - "defaults/{{ install_method }}_install.yml"
   user: root

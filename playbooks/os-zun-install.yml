@@ -13,9 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- name: Gather zun facts
+  hosts: zun
+  gather_facts: "{{ osa_gather_facts | default(True) }}"
+  tags:
+    - always
+
 - name: Install the zun components
   hosts: zun_all
-  gather_facts: "{{ osa_gather_facts | default(True) }}"
+  gather_facts: false
   user: root
   vars_files:
     - "defaults/repo_packages/openstack_services.yml"

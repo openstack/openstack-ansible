@@ -28,12 +28,16 @@
   roles:
     - role: "openstack_openrc"
 
-
+- name: Gather keystone facts
+  hosts: keystone_all
+  gather_facts: "{{ osa_gather_facts | default(True) }}"
+  tags:
+    - always
 
 - name: Installation and setup of Keystone
   hosts: keystone_all
   serial: "{{ keystone_serial | default(['1', '100%']) }}"
-  gather_facts: "{{ osa_gather_facts | default(True) }}"
+  gather_facts: false
   user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
   vars_files:

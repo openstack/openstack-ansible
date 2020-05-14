@@ -16,9 +16,15 @@
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
 
-- name: Install trove server
+- name: Gather trove facts
   hosts: trove_all
   gather_facts: "{{ osa_gather_facts | default(True) }}"
+  tags:
+    - always
+
+- name: Install trove server
+  hosts: trove_all
+  gather_facts: false
   user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
   vars_files:
