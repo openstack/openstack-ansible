@@ -1,0 +1,16 @@
+---
+features:
+  - Added support for using mod_auth_openidc instead of shibboleth as a
+    service provider for supporting users who have a preference to use OIDC
+    for federation. Mod_auth_openidc is the apache module that is recommended
+    in the keystone documentation for implementing openidc.
+    Added a variable to called apache_mod to keystone_sp, if left undefined
+    shibboleth will continue to be installed by default provided keystone_sp is
+    not empty. Mod_auth_openidc will not be installed unless it is spelled
+    correctly, any misspellings will result in a shibboleth install.
+    Note that installing shibboleth on Debian based metal distro deployments
+    may break services that depend on libcurl4, as shib2 requires libcurl3,
+    and they are unable to coexist. This can be resolved when there is a
+    shib3 package available in a future release of Ubuntu/Debian.
+    There is currently no support for simultaneous use of shibboleth2 and
+    mod_auth_openidc.
