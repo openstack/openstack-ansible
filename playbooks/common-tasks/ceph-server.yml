@@ -40,3 +40,25 @@
     apt_pinned_packages: [{ package: '*', release: 'ceph.com' }]
   when:
     - ansible_pkg_mgr == 'apt'
+
+
+
+# We need to have PyYAML for ceph-ansible roles
+- block:
+    - name: Install python3-yaml
+      package:
+        name: "{{ (ansible_os_family | lower == 'debian') | ternary('python3-yaml', 'python3-pyyaml') }}"
+        state: present
+  # Rescue is mainly for CentOS 7
+  rescue:
+    # Installing both pip's not to fail
+    - name: Installing pip
+      package:
+        name:
+          - python-pip
+          - python3-pip
+        state: present
+
+    - name: Install PyYAML
+      pip:
+        name: PyYAML
