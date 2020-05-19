@@ -1,0 +1,11 @@
+---
+features:
+  - |
+    Multiple HAProxy nodes can now be deployed in an HA configuration with
+    keepalived and LetsEncrypt certificates. Certbot can be treated as a
+    backend service for haproxy and acme-challenge requests from LetsEncrypt
+    can be directed to whichever HAProxy server is running a certificate
+    renewal. New variables are defined for frontend ACLs and options
+    to be passed to Certbot which enable this new feature, but the majority
+    of the required configuration is done via the existing HAProxy service
+    setup. An example is provided in the documentation.

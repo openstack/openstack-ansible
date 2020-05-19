@@ -27,16 +27,13 @@
 
 ## NOVNC from source
 novncproxy_git_repo: https://github.com/novnc/noVNC
-# NOTE(mnaser): NoVNC broke downstream Nova with their change, we can start tracking
-#               master again once the following is fixed.
-#               https://bugs.launchpad.net/openstack-ansible/+bug/1822676
-novncproxy_git_install_branch: 8c2866df3619e49d629b5f98c20d27a7c72d102a
+novncproxy_git_install_branch: 42e3b03fa8af4373a36c73af2a207eca8490f6ac  # HEAD as of 19.05.2020
 novncproxy_git_project_group: nova_console
-novncproxy_git_track_branch: None
+novncproxy_git_track_branch: master
 
 
 ## spice-html5 from source
 spicehtml5_git_repo: https://github.com/freedesktop/spice-html5
-spicehtml5_git_install_branch: 5fae52199b9726053449007189ab15aba57cffa1 # HEAD as of 19.04.2020
+spicehtml5_git_install_branch: 5fae52199b9726053449007189ab15aba57cffa1 # HEAD as of 19.05.2020
 spicehtml5_git_project_group: nova_console
 spicehtml5_git_track_branch: master

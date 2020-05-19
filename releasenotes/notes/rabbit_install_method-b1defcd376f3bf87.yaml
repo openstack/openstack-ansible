@@ -1,0 +1,13 @@
+---
+deprecations:
+  - |
+    `rabbitmq_install_method: file` is deprecated now and will be removed in
+    the Wallaby release. As for now supported options are only `external_repo`
+    and `distro`. Among with that the following variables are deprecated and
+    prepared for the removal:
+
+    * rabbitmq_package_url
+    * rabbitmq_package_sha256
+    * rabbitmq_package_path
+
+    Variable `rabbitmq_release_version` has been removed as not used anymore.

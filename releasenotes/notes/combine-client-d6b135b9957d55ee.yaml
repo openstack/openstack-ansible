@@ -1,0 +1,17 @@
+---
+features:
+  - |
+    The galera_server role now includes the functionality from the
+    galera_client role, and can optionally install the client and server
+    components. This is controlled using two booleans, galera_install_server
+    and galera_install_client, both of which default to false.
+upgrade:
+  - |
+    The galera_server role now includes the functionality from the
+    galera_client role, and as a result a number of the variables from
+    the galera_client defaults are now available to override in the
+    galera_server role defaults. In addition, a number of default variables
+    have been generalised, removing the specific `_client_` or `_server_`
+    parts of the names. Users of this role should check that any overrides
+    they are using have the correct variables names for the new combined
+    role.
