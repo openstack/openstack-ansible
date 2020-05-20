@@ -18,6 +18,7 @@
   user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
   vars_files:
+    - "defaults/repo_packages/openstack_services.yml"
     - "defaults/repo_packages/gnocchi.yml"
     - "defaults/{{ install_method }}_install.yml"
   tags:
