@@ -48,7 +48,6 @@
       delegate_to: "{{ physical_host }}"
       when:
         - force_containers_destroy | bool
-        - force_containers_data_destroy | bool
 
     - include_tasks: "common-tasks/remove_container_journal.yml"
       vars:
