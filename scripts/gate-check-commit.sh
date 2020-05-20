@@ -211,6 +211,7 @@ if [[ "${ACTION}" == "upgrade" ]]; then
     unset ANSIBLE_PACKAGE
     unset UPPER_CONSTRAINTS_FILE
     unset PIP_OPTS
+    unset UPGRADE_TARGET_BRANCH
 
     load_nodepool_pip_opts
 
@@ -219,6 +220,11 @@ if [[ "${ACTION}" == "upgrade" ]]; then
     # We need this as in stein we were deploying custom
     # /etc/openstack_deploy/env.d/aio_metal.yml for metal installs
     export SKIP_CUSTOM_ENVD_CHECK=true
+    export DROP_ROLE_DIRS=true
+    # NOTE(noonedeadpunk): This might be moved to zuul.d/playbooks/run.yaml
+    export ZUUL_SRC_PATH="/home/zuul/src"
+    # Doing symlinking here, as bootstrap role won't be called
+    ln -s $ZUUL_SRC_PATH /openstack/src
     # To execute the upgrade script we need to provide
     # an affirmative response to the warning that the
     # upgrade is irreversable.

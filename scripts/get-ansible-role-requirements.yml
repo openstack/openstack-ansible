@@ -23,8 +23,8 @@
         path: "{{ item.path | default(role_path_default) }}/{{ item.name | default(item.src | basename) }}"
         state: absent
       when:
-        - item.scm == "git" or item.scm is undefined
-        - "(item.path | default(role_path_default) ~ '/' ~ item.name | default(item.src | basename) ~ '/.git') is not directory"
+        - ((item.path | default(role_path_default) ~ '/' ~ item.name | default(item.src | basename) ~ '/.git') is not directory) or
+          (lookup('env', 'DROP_ROLE_DIRS') | bool)
       with_items: "{{ required_roles }}"
 
     - name: Ensure the default roles directory exists
@@ -93,7 +93,7 @@
 
       when:
         - "lookup('env', 'ZUUL_SRC_PATH') != ''"
-
+        - "lookup('env', 'UPGRADE_TARGET_BRANCH') == ''"
     - name: Generate a list of user overridden roles
       set_fact:
         user_overridden_roles: "{{ user_roles | json_query('[*].name') }}"
