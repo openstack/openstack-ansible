@@ -55,7 +55,10 @@
       when: not is_metal | bool
 
   roles:
-    - role: "galera_client"
+    - role: "galera_server"
+      vars:
+        galera_install_client: true
+        galera_install_server: false
     - role: "openstack_openrc"
       tags:
         - openrc
