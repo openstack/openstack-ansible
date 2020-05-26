@@ -236,6 +236,9 @@ def print_inventory(inventory, sort_key):
         else:
             row = []
             for _rl in required_list:
+                if _rl == 'component':
+                    if values.get(_rl) is None:
+                        values[_rl] = "-undefined-"
                 if _rl == 'container_name':
                     if values.get(_rl) is None:
                         values[_rl] = key
