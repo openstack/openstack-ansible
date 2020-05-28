@@ -78,7 +78,8 @@
         - name: Generate list of openstack service repositories
           set_fact:
             service_git_repos: "{{ lookup('file', openstack_services_file).splitlines() |
-                                   select('contains', 'git_repo') | list |
+                                   select('contains', 'git_repo') |
+                                   select('contains', 'opendev.org') | list |
                                    replace('https://', 'file:///openstack/src/') }}"
 
         - name: Ensure overrides directory exists
