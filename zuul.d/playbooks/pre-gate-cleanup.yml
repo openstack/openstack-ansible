@@ -26,6 +26,14 @@
         name: "{{ gate_packages_remove }}"
         state: absent
 
+    - name: Switch apt source from https to http
+      replace:
+        path: /etc/apt/sources.list
+        regexp: 'https'
+        replace: "http"
+      when:
+        - ansible_distribution_release in ['bionic']
+
     - name: Remove known problem pip packages
       pip:
         name:
