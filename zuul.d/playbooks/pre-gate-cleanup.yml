@@ -24,6 +24,14 @@
         - name: Gather variables for each operating system
           include_vars: "{{ ansible_os_family | lower }}.yml"
 
+        - name: Switch apt source from https to http
+          replace:
+            path: /etc/apt/sources.list
+            regexp: 'https'
+            replace: "http"
+          when:
+            - ansible_distribution_release in ['bionic']
+
         - name: Remove known problem distro packages
           package:
             name: "{{ gate_packages_remove }}"
