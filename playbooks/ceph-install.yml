@@ -13,9 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- name: Gather ceph-mon facts
+  hosts: ceph-mon
+  gather_facts: "{{ osa_gather_facts | default(True) }}"
+  tags:
+    - always
+
 - name: Install ceph mons
   hosts: ceph-mon
   user: root
+  gather_facts: false
   vars_files:
     - "defaults/{{ install_method }}_install.yml"
     - "defaults/ceph_ansible.yml"
@@ -43,17 +50,6 @@
       when:
         - ansible_pkg_mgr in ['yum', 'dnf']
         - ansible_service_mgr == 'systemd'
-
-    # Set the priority of the ceph community apt repo either above or below that of UCA or distro sources
-    - name: Set apt package pins
-      include_role:
-        name: apt_package_pinning
-      vars:
-        apt_package_pinning_file_name: "ceph_community_pin.pref"
-        apt_package_pinning_priority: "{{ (ceph_repository == 'community') | ternary(1000, 100) }}"
-        apt_pinned_packages: [{ package: '*', release: 'ceph.com' }]
-      when:
-        - ansible_pkg_mgr == 'apt'
 
   roles:
     - role: ceph-defaults
@@ -95,37 +91,22 @@
     - ceph
     - ceph-mon
 
+- name: Gather ceph-osd facts
+  hosts: ceph-osd
+  gather_facts: "{{ osa_gather_facts | default(True) }}"
+  tags:
+    - always
+
 - name: Install ceph osds
   hosts: ceph-osd
   user: root
+  gather_facts: false
   vars_files:
     - "defaults/{{ install_method }}_install.yml"
     - "defaults/ceph_ansible.yml"
   pre_tasks:
 
     - import_tasks: common-tasks/ceph-server.yml
-
-    - name: Gather ceph-mon facts
-      action: setup
-      delegate_to: "{{ item }}"
-      delegate_facts: yes
-      with_items: "{{ groups[mon_group_name] }}"
-      when:
-        - inventory_hostname == ansible_play_hosts[0]
-      tags:
-        - ceph-osd
-        - ceph-mon-facts
-
-    # Set the priority of the ceph community apt repo either above or below that of UCA or distro sources
-    - name: Set apt package pins
-      include_role:
-        name: apt_package_pinning
-      vars:
-        apt_package_pinning_file_name: "ceph_community_pin.pref"
-        apt_package_pinning_priority: "{{ (ceph_repository == 'community') | ternary(1000, 100) }}"
-        apt_pinned_packages: [{ package: '*', release: 'ceph.com' }]
-      when:
-        - ansible_pkg_mgr == 'apt'
 
   roles:
     - role: ceph-defaults
@@ -162,23 +143,19 @@
     - ceph
     - ceph-osd
 
+- name: Gather ceph-mds facts
+  hosts: ceph-mds
+  gather_facts: "{{ osa_gather_facts | default(True) }}"
+  tags:
+    - always
+
 - name: Install ceph metadata servers
   hosts: ceph-mds
+  gather_facts: false
   user: root
   vars_files:
     - "defaults/{{ install_method }}_install.yml"
     - "defaults/ceph_ansible.yml"
-  pre_tasks:
-    - name: Gather ceph-mon facts
-      action: setup
-      delegate_to: "{{ item }}"
-      delegate_facts: yes
-      with_items: "{{ groups[mon_group_name] }}"
-      when:
-        - inventory_hostname == ansible_play_hosts[0]
-      tags:
-        - ceph-mon-facts
-        - ceph-mds
   roles:
     - role: ceph-defaults
       tags:

@@ -16,9 +16,15 @@
 - name: Install ganesha-nfs
   import_playbook: ceph-nfs-install.yml
 
+- name: Gather manila facts
+  hosts: manila_all
+  gather_facts: "{{ osa_gather_facts | default(True) }}"
+  tags:
+    - always
+
 - name: Install manila API services
   hosts: manila_api:manila_scheduler
-  gather_facts: "{{ osa_gather_facts | default(True) }}"
+  gather_facts: false
   user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
   vars_files:
@@ -60,7 +66,7 @@
 
 - name: Install manila data services
   hosts: manila_data:manila_share
-  gather_facts: "{{ osa_gather_facts | default(True) }}"
+  gather_facts: false
   user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
   vars_files:

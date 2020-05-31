@@ -13,9 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Galera container config
+- name: Gather galera facts
   hosts: galera_all
   gather_facts: "{{ osa_gather_facts | default(True) }}"
+  tags:
+    - always
+
+- name: Galera container config
+  hosts: galera_all
+  gather_facts: false
   serial: 1
   user: root
   tasks:
@@ -34,7 +40,7 @@
 
 - name: Install galera server
   hosts: galera_all
-  gather_facts: "{{ osa_gather_facts | default(True) }}"
+  gather_facts: false
   serial: 1
   user: root
   roles:

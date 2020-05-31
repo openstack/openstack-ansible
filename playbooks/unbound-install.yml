@@ -13,10 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Install unbound DNS resolvers
-  hosts:
-    - unbound
+- name: Gather unbound facts
+  hosts: unbound
   gather_facts: "{{ osa_gather_facts | default(True) }}"
+  tags:
+    - always
+
+- name: Install unbound DNS resolvers
+  hosts: unbound
+  gather_facts: false
   user: root
   pre_tasks:
     - include_tasks: common-tasks/os-log-dir-setup.yml
