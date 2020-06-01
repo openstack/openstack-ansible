@@ -28,7 +28,7 @@
             regexp: 'https'
             replace: "http"
           when:
-            - ansible_distribution_release in ['bionic']
+            - ansible_distribution_release in ['bionic', 'focal']
 
     - name: Remove package blacklist for yum/dnf
       lineinfile:
