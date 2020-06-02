@@ -1,0 +1,16 @@
+component_skel:
+  neutron_ovn_controller:
+    belongs_to:
+      - neutron_all
+  neutron_ovn_northd:
+    belongs_to:
+      - neutron_all
+
+container_skel:
+  neutron_agents_container:
+    contains: {}
+  neutron_ovn_northd_container:
+    belongs_to:
+      - network_containers
+    contains:
+      - neutron_ovn_northd

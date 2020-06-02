@@ -200,6 +200,9 @@
     - src: user_variables_ironic.yml.j2
       dest: user_variables_ironic.yml
       condition: "{{ 'ironic' in bootstrap_host_scenarios_expanded }}"
+    - src: user_variables_neutron_ovn.yml.j2
+      dest: user_variables_neutron_ovn.yml
+      condition: "{{ 'ovn' in bootstrap_host_scenarios_expanded }}"
 
 
 - name: Copy modified cinder-volume env.d file for ceph scenario
@@ -215,6 +218,20 @@
     dest: "/etc/openstack_deploy/env.d/calico.yml"
   when:
     - "'calico' in bootstrap_host_scenarios_expanded"
+
+- name: Copy modified neutron env.d for for ovn scenario
+  copy:
+    src: "{{ playbook_dir }}/../etc/openstack_deploy/env.d/neutron_ovn.yml.example"
+    dest: "/etc/openstack_deploy/env.d/neutron.yml"
+  when:
+    - "'ovn' in bootstrap_host_scenarios_expanded"
+
+- name: Copy modified nova env.d for ovn scenario
+  copy:
+    src: "{{ playbook_dir }}/../etc/openstack_deploy/env.d/nova_ovn.yml.example"
+    dest: "/etc/openstack_deploy/env.d/nova.yml"
+  when:
+    - "'ovn' in bootstrap_host_scenarios_expanded"
 
 - name: Create vars override folders if we need to test them
   file:
