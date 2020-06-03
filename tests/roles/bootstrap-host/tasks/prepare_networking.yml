@@ -104,8 +104,11 @@
         bridge: "br-mgmt"
         mtu: 9000
       - interface: "br-mgmt"
-        address: "172.29.236.100"
-        netmask: "255.255.252.0"
+        config_overrides:
+          Network:
+            Address:
+              ? "172.29.236.100/22"
+              ? "172.29.236.101/22"
 
       - interface: "dummy-storage"
         bridge: "br-storage"

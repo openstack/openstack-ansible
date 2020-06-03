@@ -40,12 +40,6 @@ galera_wsrep_provider_options:
 ## Repo
 repo_nginx_threads: 2
 
-{% if 'metal' in bootstrap_host_scenarios %}
-# NOTE(mnaser): We don't currently deploy HAproxy in metal scenarios therefore
-#               all URLs which be using HTTP instead of HTTPS.
-openstack_service_publicuri_proto: http
-{% endif %}
-
 ## Keystone
 keystone_httpd_mpm_start_servers: 2
 keystone_httpd_mpm_min_spare_threads: 1

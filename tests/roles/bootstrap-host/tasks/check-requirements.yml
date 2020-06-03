@@ -44,8 +44,6 @@
       msg: "The scenario key words 'lxc' and 'metal' are mutually exclusive."
     - conditional: "{{ (bootstrap_host_scenario is search('metal')) and (bootstrap_host_scenario is search('nspawn')) }}"
       msg: "The scenario key words 'metal' and 'nspawn' are mutually exclusive."
-    - conditional: "{{ (bootstrap_host_scenario is search('metal')) and (bootstrap_host_scenario is search('haproxy')) }}"
-      msg: "The scenario key words 'metal' and 'haproxy' are mutually exclusive."
 
 - name: Identify the space available in /
   # NOTE(hwoarang): df does not work reliably on btrfs filesystems
