@@ -26,3 +26,7 @@ repo_release_path: "{{ openstack_repo_url }}/os-releases/{{ openstack_release }}
 ## OpenStack source options
 openstack_repo_url: "http://{{ internal_lb_vip_address }}:{{ repo_server_port }}"
 openstack_repo_git_url: "git://{{ internal_lb_vip_address }}"
+
+## Delegate all service setup tasks to the utility host, and use the utility venv python interpreter
+openstack_service_setup_host: "{{ groups['utility_all'][0] }}"
+openstack_service_setup_host_python_interpreter: "/openstack/venvs/utility-{{ openstack_release }}/bin/python"
