@@ -96,7 +96,7 @@
   gather_facts: no
   tasks:
     - name: Get openstack client config
-      os_client_config:
+      openstack.cloud.os_client_config:
     - name: Show openstack client config
       debug:
         var: openstack.clouds

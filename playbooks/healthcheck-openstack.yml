@@ -28,7 +28,7 @@
     - defaults/healthchecks-vars.yml
   tasks:
     - name: Authenticate to the cloud and retrieve the service catalog
-      os_auth:
+      openstack.cloud.os_auth:
         cloud: default
         interface: internal
         verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
@@ -65,7 +65,7 @@
           delay: 5
 
         - name: Upload tempest images to glance
-          os_image:
+          openstack.cloud.os_image:
             cloud: default
             interface: internal
             verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
@@ -98,7 +98,7 @@
         # There is no module to check the current state of a creation, so we need to run
         # This synchronously
         - name: Create volumes
-          os_volume:
+          openstack.cloud.os_volume:
             cloud: default
             interface: internal
             verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
@@ -127,7 +127,7 @@
   tasks:
     - block:
         - name: Create networks
-          os_network:
+          openstack.cloud.os_network:
             cloud: default
             interface: internal
             verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
@@ -149,7 +149,7 @@
             - "not 'is in use' in item.msg"
 
         - name: Store facts to see if everything is ok
-          os_networks_facts:
+          openstack.cloud.os_networks_facts:
             cloud: default
             interface: internal
             verify: no
@@ -159,7 +159,7 @@
             var: openstack_networks
 
         - name: Ensure subnet exists
-          os_subnet:
+          openstack.cloud.os_subnet:
             cloud: default
             interface: internal
             verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
@@ -178,7 +178,7 @@
             - "subnets"
 
         - name: Create router
-          os_router:
+          openstack.cloud.os_router:
             cloud: default
             interface: internal
             verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
@@ -210,7 +210,7 @@
         - name: Create heat stack
           ignore_errors: True
           register: stack_create
-          os_stack:
+          openstack.cloud.os_stack:
             cloud: default
             interface: internal
             verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
@@ -239,7 +239,7 @@
             creates: "{{ ssh_key }}"
 
         - name: Upload keypair
-          os_keypair:
+          openstack.cloud.os_keypair:
             cloud: default
             interface: internal
             verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
@@ -248,7 +248,7 @@
             public_key_file: "{{ ssh_key }}.pub"
 
         - name: Create flavors of nova VMs
-          os_nova_flavor:
+          openstack.cloud.os_nova_flavor:
             cloud: default
             interface: internal
             verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
@@ -262,7 +262,7 @@
           with_items: "{{ nova_flavors }}"
 
         - name: Create security group for healthcheck
-          os_security_group:
+          openstack.cloud.os_security_group:
             cloud: default
             interface: internal
             verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
@@ -271,7 +271,7 @@
             description: "Healthcheck servers"
 
         - name: Create security group rules
-          os_security_group_rule:
+          openstack.cloud.os_security_group_rule:
             cloud: default
             interface: internal
             verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
@@ -284,7 +284,7 @@
           with_items: "{{ security_group.rules }}"
 
         - name: Create instance in a network
-          os_server:
+          openstack.cloud.os_server:
             cloud: default
             interface: internal
             verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
@@ -304,7 +304,7 @@
 
         - name: Attach volume to instance
           when: "groups['cinder_all'] | length > 0"
-          os_server_volume:
+          openstack.cloud.os_server_volume:
             cloud: default
             interface: internal
             verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
@@ -313,7 +313,7 @@
             volume: "{{ cinder_volumes[0]['name'] }}"
 
         - name: Get server facts
-          os_server_facts:
+          openstack.cloud.os_server_facts:
             cloud: default
             interface: internal
             verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
@@ -354,7 +354,7 @@
   tasks:
     - block:
         - name: Store data in swift
-          os_object:
+          openstack.cloud.os_object:
             cloud: default
             interface: internal
             verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
@@ -419,7 +419,7 @@
           with_items: "{{ glance_images }}"
 
         - name: Remove glance image from the cloud
-          os_image:
+          openstack.cloud.os_image:
             cloud: default
             interface: internal
             verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
@@ -435,7 +435,7 @@
     - block:
         - name: Detach volume if attached
           when: "groups['nova_all'] | length > 0"
-          os_server_volume:
+          openstack.cloud.os_server_volume:
             cloud: default
             interface: internal
             verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
@@ -444,7 +444,7 @@
             volume: "{{ cinder_volumes[0]['name'] }}"
 
         - name: Remove cinder volumes
-          os_volume:
+          openstack.cloud.os_volume:
             cloud: default
             interface: internal
             verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
@@ -466,7 +466,7 @@
         - name: Remove heat stack
           ignore_errors: True
           register: _stack_destroy
-          os_stack:
+          openstack.cloud.os_stack:
             cloud: default
             interface: internal
             verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
@@ -484,7 +484,7 @@
 
     - block:
         - name: Remove nova flavor
-          os_nova_flavor:
+          openstack.cloud.os_nova_flavor:
             cloud: default
             interface: internal
             verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
@@ -493,7 +493,7 @@
           with_items: "{{ nova_flavors }}"
 
         - name: Remove nova instance
-          os_server:
+          openstack.cloud.os_server:
             cloud: default
             interface: internal
             verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
@@ -510,7 +510,7 @@
             - "{{ ssh_key | dirname }}/known_hosts"
 
         - name: Remove uploaded keypair
-          os_keypair:
+          openstack.cloud.os_keypair:
             cloud: default
             interface: internal
             verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
@@ -525,7 +525,7 @@
 
     - block:
         - name: Teardown swift data
-          os_object:
+          openstack.cloud.os_object:
             cloud: default
             interface: internal
             verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
