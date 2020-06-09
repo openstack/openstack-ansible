@@ -54,6 +54,7 @@ export OSA_CLONE_DIR="$(pwd)"
 ANSIBLE_ROLE_FILE="$(readlink -f "${ANSIBLE_ROLE_FILE}")"
 OSA_INVENTORY_PATH="$(readlink -f inventory)"
 OSA_PLAYBOOK_PATH="$(readlink -f playbooks)"
+OSA_ANSIBLE_PYTHON_INTERPRETER="auto"
 
 # Create the ssh dir if needed
 ssh_key_create
@@ -79,12 +80,16 @@ case ${DISTRO_ID} in
         if `/bin/grep -q "stretch" /etc/os-release` && [ -f "/etc/apt/sources.list.d/security.list" ]; then
           echo "deb http://security.debian.org stretch/updates main contrib" > /etc/apt/sources.list.d/security.list
         fi
-	# NOTE(jrosser) remove this once infra debian repos are fixed for buster
+        # NOTE(jrosser) remove this once infra debian repos are fixed for buster
         if `/bin/grep -q "buster" /etc/os-release` && [ -f "/etc/apt/sources.list.d/security.list" ]; then
           echo "deb http://deb.debian.org/debian buster main" > /etc/apt/sources.list.d/default.list
           echo "deb http://deb.debian.org/debian buster-backports" main > /etc/apt/sources.list.d/backports.list
           echo "deb http://security.debian.org buster/updates main contrib" > /etc/apt/sources.list.d/security.list
           echo "deb http://deb.debian.org/debian buster-updates main" > /etc/apt/sources.list.d/updates.list
+        fi
+        # NOTE(mgariepy) remove this on ansible 2.10 if debian is in the config/base.yml file
+        if `/bin/grep -q "buster" /etc/os-release`; then
+          OSA_ANSIBLE_PYTHON_INTERPRETER="/usr/bin/python3"
         fi
         apt-get update
         DEBIAN_FRONTEND=noninteractive apt-get -y install \
@@ -157,6 +162,7 @@ popd
 # Write the OSA Ansible rc file
 sed "s|OSA_INVENTORY_PATH|${OSA_INVENTORY_PATH}|g" scripts/openstack-ansible.rc > /usr/local/bin/openstack-ansible.rc
 sed -i "s|OSA_PLAYBOOK_PATH|${OSA_PLAYBOOK_PATH}|g" /usr/local/bin/openstack-ansible.rc
+sed -i "s|OSA_ANSIBLE_PYTHON_INTERPRETER|${OSA_ANSIBLE_PYTHON_INTERPRETER}|g" /usr/local/bin/openstack-ansible.rc
 
 # Create openstack ansible wrapper tool
 cp -v ${OSA_WRAPPER_BIN} /usr/local/bin/openstack-ansible
