@@ -61,6 +61,7 @@ haproxy_default_services:
         - tcp-check
       haproxy_whitelist_networks: "{{ haproxy_repo_git_whitelist_networks }}"
       haproxy_service_enabled: "{{ groups['repo_all'] is defined and groups['repo_all'] | length > 0 }}"
+      state: absent
   - service:
       haproxy_service_name: repo_all
       haproxy_backend_nodes: "{{ groups['repo_all'] | default([]) }}"
