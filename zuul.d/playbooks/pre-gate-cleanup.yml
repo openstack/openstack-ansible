@@ -18,14 +18,6 @@
   become: yes
   become_user: root
   tasks:
-    - name: Gather variables for each operating system
-      include_vars: "{{ ansible_os_family | lower }}.yml"
-
-    - name: Remove known problem distro packages
-      package:
-        name: "{{ gate_packages_remove }}"
-        state: absent
-
     - name: Switch apt source from https to http
       replace:
         path: /etc/apt/sources.list
@@ -33,21 +25,6 @@
         replace: "http"
       when:
         - ansible_distribution_release in ['bionic']
-
-    - name: Remove known problem pip packages
-      pip:
-        name:
-          - appdirs
-          - backports
-          - contextlib2
-          - distlib
-          - filelock
-          - importlib_metadata
-          - importlib_resources
-          - six
-          - virtualenv
-          - zipp
-        state: absent
 
     - name: Remove package blacklist for yum/dnf
       lineinfile:
