@@ -19,39 +19,13 @@
   become_user: root
   tasks:
 
-    - name: Cleanup gate images
-      block:
-        - name: Gather variables for each operating system
-          include_vars: "{{ ansible_os_family | lower }}.yml"
-
-        - name: Switch apt source from https to http
-          replace:
-            path: /etc/apt/sources.list
-            regexp: 'https'
-            replace: "http"
-          when:
-            - ansible_distribution_release in ['bionic']
-
-        - name: Remove known problem distro packages
-          package:
-            name: "{{ gate_packages_remove }}"
-            state: absent
-
-        - name: Remove known problem pip packages
-          pip:
-            name:
-              - virtualenv
-              - appdirs
-              - contextlib2
-              - distlib
-              - filelock
-              - importlib_metadata
-              - importlib_resources
-              - six
-              - zipp
-              - backports
-            state: absent
-      when: ansible_os_family | lower in ['debian', 'redhat']
+    - name: Switch apt source from https to http
+      replace:
+        path: /etc/apt/sources.list
+        regexp: 'https'
+        replace: "http"
+      when:
+         - ansible_distribution_release in ['bionic']
 
     - name: Remove package blacklist for yum/dnf
       lineinfile:
