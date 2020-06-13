@@ -22,7 +22,7 @@
   tasks:
     - name: Stop mariadb
       service:
-        name: mysql
+        name: mariadb
         state: stopped
       retries: 5
       delay: 10
@@ -43,7 +43,7 @@
 
     - name: Start mariadb
       service:
-        name: mysql
+        name: mariadb
         state: started
       retries: 5
       delay: 10
