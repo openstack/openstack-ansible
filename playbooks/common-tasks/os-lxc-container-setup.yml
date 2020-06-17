@@ -133,6 +133,14 @@
   tags:
     - common-lxc
 
+- name: Wait for container tmpfiles-setup finish
+  raw: systemctl status systemd-tmpfiles-setup.service | grep Process | grep 'code=exited' >/dev/null
+  register: systemd_tmpfiles
+  until: systemd_tmpfiles.rc == 0
+  retries: 20
+  delay: 2
+  changed_when: false
+
 - name: Wait for container connectivity
   wait_for_connection:
     connect_timeout: "{{ lxc_container_wait_params.connect_timeout | default(omit) }}"
