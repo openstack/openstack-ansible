@@ -88,8 +88,6 @@
         rsyslog_client_log_dir: "/var/log/ceph"
         rsyslog_client_config_name: "99-ceph-rsyslog-client.conf"
 
-  vars:
-    ansible_python_interpreter: "/usr/bin/python"
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - ceph
