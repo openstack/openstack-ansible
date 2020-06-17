@@ -41,11 +41,13 @@
         - openstack-ansible-deploy-aio_lxc-centos-7
         - openstack-ansible-deploy-aio_lxc-debian-buster
         - openstack-ansible-deploy-aio_lxc-ubuntu-bionic
+        - openstack-ansible-deploy-aio_lxc-ubuntu-focal
     gate:
       jobs:
         - openstack-ansible-deploy-aio_lxc-centos-7
         - openstack-ansible-deploy-aio_lxc-debian-buster
         - openstack-ansible-deploy-aio_lxc-ubuntu-bionic
+        - openstack-ansible-deploy-aio_lxc-ubuntu-focal
     periodic:
       jobs:
         - openstack-ansible-deploy-aio_lxc-ubuntu-bionic
@@ -69,6 +71,7 @@
         - openstack-ansible-deploy-aio_metal-debian-buster
         - openstack-ansible-deploy-aio_metal-centos-7
         - openstack-ansible-deploy-aio_metal-ubuntu-bionic
+        - openstack-ansible-deploy-aio_metal-ubuntu-focal
         - openstack-ansible-upgrade-aio_metal-centos-7:
             voting: false
         - openstack-ansible-upgrade-aio_metal-ubuntu-bionic
@@ -77,6 +80,7 @@
         - openstack-ansible-deploy-aio_metal-debian-buster
         - openstack-ansible-deploy-aio_metal-centos-7
         - openstack-ansible-deploy-aio_metal-ubuntu-bionic
+        - openstack-ansible-deploy-aio_metal-ubuntu-focal
     experimental:
       jobs:
         - openstack-ansible-deploy-aio_metal-opensuse-15
@@ -129,6 +133,8 @@
     check:
       jobs:
         - openstack-ansible-deploy-aio_ceph-ubuntu-bionic
+        - openstack-ansible-deploy-aio_ceph-ubuntu-focal:
+            voting: false
     gate:
       jobs:
         - openstack-ansible-deploy-aio_ceph-ubuntu-bionic
@@ -141,10 +147,10 @@
     name: openstack-ansible-deploy-proxy-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-aio_proxy-ubuntu-bionic
+        - openstack-ansible-deploy-aio_proxy-ubuntu-focal
     gate:
       jobs:
-        - openstack-ansible-deploy-aio_proxy-ubuntu-bionic
+        - openstack-ansible-deploy-aio_proxy-ubuntu-focal
 
 - project-template:
     name: openstack-ansible-deploy-distro_ceph-jobs
