@@ -18,7 +18,6 @@
   user: root
   vars:
     repo_root_dir: "{{ (playbook_dir ~ '/../../') | realpath }}"
-    ansible_python_interpreter: "/usr/bin/python"
   tasks:
     - name: Remove unnecessary env.d override files
       shell: |
