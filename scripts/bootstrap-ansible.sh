@@ -77,19 +77,8 @@ case ${DISTRO_ID} in
           libselinux-python python-virtualenv
         ;;
     ubuntu|debian)
-        # NOTE(jrosser) remove this once infra debian images point to the upstream security repo
-        if `/bin/grep -q "stretch" /etc/os-release` && [ -f "/etc/apt/sources.list.d/security.list" ]; then
-          echo "deb http://security.debian.org stretch/updates main contrib" > /etc/apt/sources.list.d/security.list
-        fi
-        # NOTE(jrosser) remove this once infra debian repos are fixed for buster
-        if `/bin/grep -q "buster" /etc/os-release` && [ -f "/etc/apt/sources.list.d/security.list" ]; then
-          echo "deb http://deb.debian.org/debian buster main" > /etc/apt/sources.list.d/default.list
-          echo "deb http://deb.debian.org/debian buster-backports" main > /etc/apt/sources.list.d/backports.list
-          echo "deb http://security.debian.org buster/updates main contrib" > /etc/apt/sources.list.d/security.list
-          echo "deb http://deb.debian.org/debian buster-updates main" > /etc/apt/sources.list.d/updates.list
-        fi
         # NOTE(mgariepy) remove this on ansible 2.10 if debian is in the config/base.yml file
-        if `/bin/grep -q "buster" /etc/os-release`; then
+        if [[ ${VERSION_ID} == "10" ]]; then
           OSA_ANSIBLE_PYTHON_INTERPRETER="/usr/bin/python3"
         fi
         apt-get update
