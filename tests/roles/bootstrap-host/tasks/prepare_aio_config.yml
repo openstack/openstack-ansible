@@ -197,6 +197,9 @@
     - src: user_variables_octavia.yml.j2
       dest: user_variables_octavia.yml
       condition: "{{ 'octavia' in bootstrap_host_scenarios_expanded }}"
+    - src: user_variables_ironic.yml.j2
+      dest: user_variables_ironic.yml
+      condition: "{{ 'ironic' in bootstrap_host_scenarios_expanded }}"
 
 
 - name: Copy modified cinder-volume env.d file for ceph scenario
