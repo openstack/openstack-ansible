@@ -11,6 +11,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- name: Gather sahara facts
+  hosts: sahara_all
+  gather_facts: "{{ osa_gather_facts | default(True) }}"
+  tags:
+    - always
+
 - name: Install sahara server
   hosts: sahara_all
   gather_facts: "{{ osa_gather_facts | default(True) }}"

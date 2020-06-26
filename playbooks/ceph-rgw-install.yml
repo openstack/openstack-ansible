@@ -14,10 +14,17 @@
 # limitations under the License.
 
 - import_playbook: ceph-rgw-keystone-setup.yml
-  when: (groups['ceph-rgw'] is defined and groups['ceph-rgw'] | length > 0) or (ceph_rgws | length > 0)
+  when: (groups[rgw_group_name] is defined and groups[rgw_group_name] | length > 0) or (ceph_rgws | length > 0)
+
+- name: Gather ceph-rgw facts
+  hosts: ceph-rgw
+  gather_facts: "{{ osa_gather_facts | default(True) }}"
+  tags:
+    - always
 
 - name: Install ceph radosgw
   hosts: ceph-rgw
+  gather_facts: false
   user: root
   vars_files:
     - "defaults/{{ install_method }}_install.yml"

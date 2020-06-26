@@ -13,9 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Install rsyslog
+- name: Gather rsyslog facts
   hosts: rsyslog
   gather_facts: "{{ osa_gather_facts | default(True) }}"
+  tags:
+    - always
+
+- name: Install rsyslog
+  hosts: rsyslog
+  gather_facts: false
   user: root
   pre_tasks:
     # The systemd-journal-remote capability has taken over this functionality.

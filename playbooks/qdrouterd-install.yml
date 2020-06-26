@@ -13,10 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- name: Gather qdrouterd facts
+  hosts: "{{ qdrouterd_host_group | default('qdrouterd_all') }}"
+  gather_facts: "{{ osa_gather_facts | default(True) }}"
+  tags:
+    - always
+
 - name: Create and configure qdrouterd container
   hosts: "{{ qdrouterd_host_group | default('qdrouterd_all') }}"
   serial: 1
-  gather_facts: "{{ osa_gather_facts | default(True) }}"
+  gather_facts: false
   user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
@@ -39,6 +45,7 @@
   hosts: "{{ qdrouterd_host_group | default('qdrouterd_all') }}"
   serial: 20%
   user: root
+  gather_facts: false
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - qdrouterd

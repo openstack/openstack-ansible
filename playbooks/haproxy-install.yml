@@ -13,9 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: haproxy base config
+- name: Gather haproxy facts
   hosts: haproxy
   gather_facts: "{{ osa_gather_facts | default(True) }}"
+  tags:
+    - always
+
+- name: haproxy base config
+  hosts: haproxy
+  gather_facts: false
   serial: "50%"
   user: root
   pre_tasks:

@@ -16,9 +16,16 @@
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
 
+- name: Gather magnum facts
+  hosts: magnum_all
+  gather_facts: "{{ osa_gather_facts | default(True) }}"
+  tags:
+    - always
+
 - name: Install magnum server
   hosts: magnum_all
   user: root
+  gather_facts: false
   environment: "{{ deployment_environment_variables | default({}) }}"
   vars_files:
     - "defaults/repo_packages/openstack_services.yml"

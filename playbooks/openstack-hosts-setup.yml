@@ -39,9 +39,15 @@
       changed_when: "result.rc == 2"
       failed_when: "result.rc not in [0, 2]"
 
-- name: Basic host setup
+- name: Gather host facts
   hosts: "{{ openstack_host_group|default('hosts') }}"
   gather_facts: "{{ osa_gather_facts | default(True) }}"
+  tags:
+    - always
+
+- name: Basic host setup
+  hosts: "{{ openstack_host_group|default('hosts') }}"
+  gather_facts: false
   user: root
   pre_tasks:
     - name: Check for a supported Operating System
