@@ -27,3 +27,6 @@ glance_ceph_client: glance
 glance_default_store: rbd
 glance_rbd_store_pool: images
 nova_libvirt_images_rbd_pool: vms
+# NOTE(noonedeadpunk): ceph bug to track the issue https://tracker.ceph.com/issues/46295
+tempest_test_blacklist:
+    - tempest.scenario.test_object_storage_basic_ops.TestObjectStorageBasicOps.test_swift_acl_anonymous_download
