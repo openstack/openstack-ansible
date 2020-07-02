@@ -19,6 +19,18 @@
   tags:
     - always
 
+- name: Setup corosync cluster
+  hosts: masakari_monitor
+  gather_facts: false
+  user: root
+  vars:
+    pacemaker_corosync_group: masakari_monitor
+    pacemaker_corosync_ring_interface: "{{ masakari_monitor_corosync_multicast_interface }}"
+    haveged_enabled: false
+  roles:
+    - role: "pacemaker_corosync"
+      tags: pacemaker-corosync
+
 - name: Install the masakari components
   hosts: masakari_all
   gather_facts: false
