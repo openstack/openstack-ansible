@@ -60,9 +60,9 @@
 
     - name: Check that WSREP is ready and Synced
       shell: "/usr/bin/mysqladmin extended-status | egrep '(wsrep_local_state_comment)'"
-      register: mysql_ready
+      register: mariadb_ready
       until:
-        - mysql_ready.rc == 0
-        - (mysql_ready.stdout).find("Synced") != -1
+        - mariadb_ready.rc == 0
+        - (mariadb_ready.stdout).find("Synced") != -1
       retries: 60
       delay: 1
