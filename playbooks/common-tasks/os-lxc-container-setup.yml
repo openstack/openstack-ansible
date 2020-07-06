@@ -134,7 +134,7 @@
     - common-lxc
 
 - name: Wait for container tmpfiles-setup finish
-  raw: systemctl status systemd-tmpfiles-setup.service | grep Process | grep 'code=exited' >/dev/null
+  raw: systemctl list-units systemd-tmpfiles-setup.service --no-legend | grep 'exited' >/dev/null
   register: systemd_tmpfiles
   until: systemd_tmpfiles.rc == 0
   retries: 20
