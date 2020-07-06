@@ -131,6 +131,7 @@
           vars:
             venv_python_executable: "{{ utility_venv_python_executable | default(openstack_venv_python_executable) }}"
             venv_install_destination_path: "{{ utility_venv_bin | dirname }}"
+            venv_build_distro_package_list: "{{ utility_devel_distro_packages }}"
             venv_pip_install_args: "{{ pip_install_options | default('') }}"
             venv_build_constraints:
               - "--constraint {{ utility_upper_constraints_url }}"
