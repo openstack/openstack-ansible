@@ -144,3 +144,72 @@ The process is identical for the other services. Replace `rabbitmq` in
 the preceding configuration variables with `horizon`, `haproxy`, or `keystone`,
 and then run the playbook for that service to deploy user-provided certificates
 to those services.
+
+LetsEncrypt certificates
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+The HAProxy ansible role supports using LetsEncrypt to automatically deploy
+trusted SSL certificates for the public endpoint. Each HAProxy server will
+individually request a LetsEncrypt certificate.
+
+The http-01 type challenge is used by certbot to deploy certificates so
+it is required that the public endpoint is accessible directly on the
+internet.
+
+Deployment of certificates using LetsEncrypt has been validated for
+openstack-ansible using Ubuntu Bionic. Other distributions should work
+but are not tested.
+
+To deploy certificates with LetsEncrypt, add the following to
+``/etc/openstack_deploy/user_variables.yml`` to enable the
+letsencrypt function in the haproxy ansible role, and to
+create a new backend service called ``letsencrypt`` to service
+http-01 challenge requests.
+
+.. code-block:: shell-session
+
+    haproxy_ssl: true
+    haproxy_ssl_letsencrypt_enable: True
+    haproxy_ssl_letsencrypt_install_method: "distro"
+    haproxy_ssl_letsencrypt_setup_extra_params: "--http-01-address {{ ansible_host }} --http-01-port 8888"
+    haproxy_ssl_letsencrypt_email: "email.address@example.com"
+
+    haproxy_extra_services:
+      # an internal only service for acme-challenge whose backend is certbot running on any haproxy instance
+      - service:
+          haproxy_service_name: letsencrypt
+          haproxy_backend_nodes: "{{ groups['haproxy_all'] }}"
+          backend_rise: 1                       #rise quickly to detect certbot running without delay
+          backend_fall: 2
+          haproxy_bind:
+            - 127.0.0.1                         #bind to the localhost as the host internal IP will be used by certbot
+          haproxy_port: 8888
+          haproxy_balance_type: http
+
+
+Copy the whole variable ``haproxy_default_services`` from
+``/opt/openstack-ansible/inventory/group_vars/haproxy/haproxy.yml``
+to ``/etc/openstack_deploy/group_vars/haproxy/haproxy_all.yml`` and
+update the section for horizon to include the ACL redirects http-01
+challenges to the HAProxy ``letsencrypt`` backend as follows:
+
+.. code-block:: shell-session
+
+  - service:
+      haproxy_service_name: horizon
+      haproxy_backend_nodes: "{{ groups['horizon_all'] | default([]) }}"
+      haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_ssl_all_vips: true
+      haproxy_port: "{{ haproxy_ssl | ternary(443,80) }}"
+      haproxy_backend_port: 80
+      haproxy_redirect_http_port: 80
+      haproxy_balance_type: http
+      haproxy_balance_alg: source
+      haproxy_backend_options:
+        - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+      haproxy_service_enabled: "{{ groups['horizon_all'] is defined and groups['horizon_all'] | length > 0 }}"
+      haproxy_redirect_scheme: "https if !{ ssl_fc } !{ path_beg /.well-known/acme-challenge/ }"   #redirect all non-ssl traffic to ssl except acme-challenge
+      haproxy_frontend_acls:                                 #use a frontend ACL specify the backend to use for acme-challenge
+        letsencrypt-acl:
+            rule: "path_beg /.well-known/acme-challenge/"
+            backend_name: letsencrypt
