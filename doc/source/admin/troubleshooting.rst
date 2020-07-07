@@ -197,7 +197,6 @@ The following table lists the commands to restart an OpenStack service.
    * - Image service
      - .. code-block:: console
 
-          # service glance-registry restart
           # service glance-api restart
    * - Compute service (controller node)
      - .. code-block:: console
@@ -471,13 +470,10 @@ Yes:
 Diagnose Image service issues
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The ``glance-registry`` handles the database operations for managing the
-storage of the image index and properties. The ``glance-api`` handles the
-API interactions and image store.
+The ``glance-api`` handles the API interactions and image store.
 
 To troubleshoot problems or errors with the Image service, refer to
-:file:`/var/log/glance-api.log` and :file:`/var/log/glance-registry.log` inside
-the glance api container.
+:file:`/var/log/glance-api.log` inside the glance api container.
 
 You can also conduct the following activities which may generate logs to help
 identity problems:
