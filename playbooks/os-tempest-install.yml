@@ -31,8 +31,7 @@
     - name: End playbook
       meta: end_play
       when:
-        - (not (tempest_install | default(false)) | bool) or
-          (not (tempest_run | default(false)) | bool)
+        - (not (tempest_install | default(false)) | bool)
 
   roles:
     - role: "os_tempest"
