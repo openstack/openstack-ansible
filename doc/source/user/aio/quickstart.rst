@@ -129,8 +129,8 @@ version.
 .. note::
    The |current_release_formal_name| release is only compatible with
    Debian 9 (stretch), Debian 10 (buster), Ubuntu 18.04 (Bionic Beaver),
-   CentOS 7. Experimentat support is provided for openSUSE Leap 15.X
-   but this is expected to be removed in the next major release.
+   CentOS 7 and CentOS 8. Experimentat support is provided for openSUSE
+   Leap 15.X but this is expected to be removed in the next major release.
 
 The next step is to bootstrap Ansible and the Ansible roles for the
 development environment.

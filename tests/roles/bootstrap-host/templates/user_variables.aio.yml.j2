@@ -257,6 +257,8 @@ openstack_user_kernel_options:
   - key: 'kernel.printk'
     value: '4 1 7 4'
 
+openstack_hosts_package_state: latest
+
 {% if 'octavia' in bootstrap_host_scenarios_expanded %}
 # Enable Octavia V2 API/standalone
 octavia_v2: True

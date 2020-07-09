@@ -74,7 +74,7 @@ case ${DISTRO_ID} in
           git curl autoconf gcc gcc-c++ nc \
           python3 python3-devel libselinux-python3 \
           openssl-devel libffi-devel \
-          libselinux-python python-virtualenv
+          $(if [[ ${VERSION_ID} == '7' ]]; then echo "python-virtualenv"; else echo "python3-virtualenv"; fi)
         ;;
     ubuntu|debian)
         # NOTE(jrosser) remove this once infra debian images point to the upstream security repo
