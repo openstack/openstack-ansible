@@ -1,33 +1,33 @@
 - name: ansible-hardening
   scm: git
   src: https://opendev.org/openstack/ansible-hardening
-  version: 17ccd9f06c62116573f40ddca354adab2120f655
-  trackbranch: master
+  version: d8bc30764ac9a82977803446be1b38cf7969b079
+  trackbranch: stable/ussuri
 - name: apt_package_pinning
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-apt_package_pinning
-  version: 2e1008fee47927f56f4d6f0a0038a4006d7562f6
-  trackbranch: master
+  version: c219ae77146c1a65a5272eb12eb22a84e8fdc807
+  trackbranch: stable/ussuri
 - name: config_template
   scm: git
   src: https://opendev.org/openstack/ansible-config_template
-  version: 51356b811c0ab318572011e638ecdf61cfe3fd71
+  version: 4ed672e3992f41dc4020ba68b8ea12d657a11710
   trackbranch: master
 - name: galera_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-galera_server
-  version: c567405b567dc6276c0c83b3d166328bd4327e37
-  trackbranch: master
+  version: 1daad2e41817322077e11a4477591fe8368d90d5
+  trackbranch: stable/ussuri
 - name: ceph_client
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-ceph_client
-  version: 662bf12050dfb429517db74624ae6b35807eea42
-  trackbranch: master
+  version: 0edc1e21af53e16cacb3991dfba976624882c0bb
+  trackbranch: stable/ussuri
 - name: haproxy_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-haproxy_server
-  version: 6574de7090c70b12317bda0fc1a863cbee85f67a
-  trackbranch: master
+  version: 8a9d35fa959f1fd30a5296c2e893866bd9d0c382
+  trackbranch: stable/ussuri
 - name: keepalived
   scm: git
   src: https://github.com/evrardjp/ansible-keepalived
@@ -36,213 +36,213 @@
 - name: lxc_container_create
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-lxc_container_create
-  version: 1cb7920aff171fe1f5d4aa43ec6a00f1542e1d2a
-  trackbranch: master
+  version: 634471b8e36331bbd72b74db68e224f35dd1ac6c
+  trackbranch: stable/ussuri
 - name: lxc_hosts
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-lxc_hosts
-  version: 3f015e6fed9adf44b96d8d6ccaaceaa881ab0295
-  trackbranch: master
+  version: 2265f38b1b70eafb39e5a4e27e9d3e9b2e8c107c
+  trackbranch: stable/ussuri
 - name: memcached_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-memcached_server
-  version: 5080c42f0ad7c58ba9101948207c4d8633ad1e00
-  trackbranch: master
+  version: 78ff2fc3c77750338731d5a36a6e4bfb4a1b8a62
+  trackbranch: stable/ussuri
 - name: openstack_hosts
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-openstack_hosts
-  version: fc6b619b73e4a2f2b1a5e9d0cd1667c323a74ba5
-  trackbranch: master
+  version: 57ee30ff297dbde1002bab5a68e8e4213d801290
+  trackbranch: stable/ussuri
 - name: os_keystone
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_keystone
-  version: eda646382a53364078d87bf30877a5ea22f5a082
-  trackbranch: master
+  version: dcf1da03a17070a0eb68b84fe4515ba35107a806
+  trackbranch: stable/ussuri
 - name: openstack_openrc
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-openstack_openrc
-  version: 25649c5ac548358f39a74a81ac35cae12cb25be3
-  trackbranch: master
+  version: 26795692ec50c47ca6985e0f0e678f04eb5f9d99
+  trackbranch: stable/ussuri
 - name: os_aodh
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_aodh
-  version: b081a34be91844249b6085643a16de5aedf05ea8
-  trackbranch: master
+  version: b57af92bf9507d28b12a8d6f4cd5080399d0e688
+  trackbranch: stable/ussuri
 - name: os_barbican
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_barbican
-  version: 774c41934eb86302cfbd4c84efcf966ffd0f863c
-  trackbranch: master
+  version: fb8f9ecded0f6ee779de01f2091ed18342c8f567
+  trackbranch: stable/ussuri
 - name: os_blazar
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_blazar
-  version: 83f9b3daf6fcf8b88c19d926c544e379e3f954ba
-  trackbranch: master
+  version: e143ea1b37d8c37a71ffde818c711e67412ec5ba
+  trackbranch: stable/ussuri
 - name: os_ceilometer
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_ceilometer
-  version: e6beb1c1665a357a6a5f661467d8b20ee0a08478
-  trackbranch: master
+  version: 4fd352f36327e78209efa11669e82dc49f02cff3
+  trackbranch: stable/ussuri
 - name: os_cinder
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_cinder
-  version: c6b9f011b777aa0513e99a35fba7d976a4c9d4c1
-  trackbranch: master
+  version: d5c49ab82757befa0a2b6b2b99eb1072c1108796
+  trackbranch: stable/ussuri
 - name: os_cloudkitty
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_cloudkitty
-  version: d980181caa728faa318a7a053485cf8230f112dd
-  trackbranch: master
+  version: 7bbc66563ca803f63549e05e21c6bbf7e050a843
+  trackbranch: stable/ussuri
 - name: os_congress
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_congress
-  version: d49e5819c5d0fd45e66d6943a9b3c66c83c6a099
-  trackbranch: master
+  version: 6c4fa2b4d23fcfc198a74266105b1b1bc3443da0
+  trackbranch: stable/ussuri
 - name: os_designate
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_designate
-  version: dc0a9588b12bbf1e9d6427c0d6e4bd1b2d1aef47
-  trackbranch: master
+  version: 44641f3617dce01814b371906dd07a880b87dc56
+  trackbranch: stable/ussuri
 - name: os_glance
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_glance
-  version: 912a8346047207a4f3c3473e3760baf4c987158e
-  trackbranch: master
+  version: 293abff24be1f302638b7d87f69a81d752d5fafb
+  trackbranch: stable/ussuri
 - name: os_gnocchi
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_gnocchi
-  version: 95d02e709ade6ebedc38e125214b4bab64473d02
-  trackbranch: master
+  version: 7583558cdbbc62c20f5a6467becb24c73ead77ab
+  trackbranch: stable/ussuri
 - name: os_heat
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_heat
-  version: 87a369485c75e8421947d9f0bf378ca704f9e357
-  trackbranch: master
+  version: d7e43d2cf6d22c6943c425d926107ed22095df95
+  trackbranch: stable/ussuri
 - name: os_horizon
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_horizon
-  version: de5066a8a87843a816ad64761861ddfcd56f2906
-  trackbranch: master
+  version: 57c10221fef3f9eb5ab8e448fbf0f4e58a760455
+  trackbranch: stable/ussuri
 - name: os_ironic
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_ironic
-  version: 1f1ac6744a8d274bc847bbf6b07ade5e6096c1ba
-  trackbranch: master
+  version: 1879026cc524fdaf221c5542a41bb58181e733f3
+  trackbranch: stable/ussuri
 - name: os_magnum
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_magnum
-  version: 6188087fba7d8e0ba4c3a16191ec51a2b4e6cf85
-  trackbranch: master
+  version: 5b956f8f21bb9ec82e1c73cdf81c6ddf44aebf3a
+  trackbranch: stable/ussuri
 - name: os_manila
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_manila
-  version: 51fc04490b90c58cc42d9ae5b639fd775d51cb74
-  trackbranch: master
+  version: 5b48dbd22fb0264eb219da70a946698cf80fb93d
+  trackbranch: stable/ussuri
 - name: os_masakari
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_masakari
-  version: 398cb2b9a5c7a119d865c7bc990c24fc08e07834
-  trackbranch: master
+  version: e7550df9741c80f428dccc5d6e85b6ff4a551604
+  trackbranch: stable/ussuri
 - name: os_mistral
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_mistral
-  version: 684a077919dff299fb47188d441cfde761cd0910
-  trackbranch: master
+  version: d958df78e573c35960ee2ba03375cd1a2eb91797
+  trackbranch: stable/ussuri
 - name: os_murano
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_murano
-  version: 5e0a408fdb89ff2d5a0fe890230e083113e89451
-  trackbranch: master
+  version: d106eabcb897f678ecc1c0501614abd7fdee2f2d
+  trackbranch: stable/ussuri
 - name: os_neutron
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_neutron
-  version: 6390c3b0ef6ad0ac8490d6afea62b7d26af1b38f
-  trackbranch: master
+  version: 94dfad9fe166625abc4eb9ecd2aff0e7dc43ec0f
+  trackbranch: stable/ussuri
 - name: os_nova
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_nova
-  version: 682f65d8ba534787f67388c263df3ff5cfb46407
-  trackbranch: master
+  version: aeae89242e370737f39031be7c785dc2597e2875
+  trackbranch: stable/ussuri
 - name: os_octavia
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_octavia
-  version: 35f2dcef3cfe9981dded1487cd9528313f4aa801
-  trackbranch: master
+  version: b117f6e888842918bceed7e209987fa761e77c9d
+  trackbranch: stable/ussuri
 - name: os_panko
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_panko
-  version: 7b70b263d60a555772a10ca18acc2b8a0bb17b3b
-  trackbranch: master
+  version: e3db524d95759d6a7f285d0b2fe25fa1109463e9
+  trackbranch: stable/ussuri
 - name: os_placement
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_placement
-  version: 91181f7c4b55e992b1eb16493a9973ab9d02a057
-  trackbranch: master
+  version: 70de4e9fa2fa1f97abcdf89ff3be2441983bd1e6
+  trackbranch: stable/ussuri
 - name: os_rally
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_rally
-  version: 33653b4626ae69ec15347a743b3439b26c2275fc
-  trackbranch: master
+  version: b1d866a56aa58a4e6b2816bfc18aed4047526cff
+  trackbranch: stable/ussuri
 - name: os_sahara
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_sahara
-  version: e46b5437d797e5630bfcc2f580e5021a6d2380de
-  trackbranch: master
+  version: 0572fb00fb2d92a13e05e1bf51367cc03ba0f240
+  trackbranch: stable/ussuri
 - name: os_swift
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_swift
-  version: abb1c721e50258a0fede787b810e3b17e59d85f7
-  trackbranch: master
+  version: 1713e53d309712dc649eb6ab4b4fdc01f08d2f3b
+  trackbranch: stable/ussuri
 - name: os_tacker
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_tacker
-  version: a32e9b7cd919e911d1f26347413479eb6903e92f
-  trackbranch: master
+  version: 0f72ef14fba8a7f273aa6e5b57398ca1c63a8640
+  trackbranch: stable/ussuri
 - name: os_tempest
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_tempest
-  version: 0e6ed14a4fe60b49297315e0abdb44b1388db6af
-  trackbranch: master
+  version: 2d993bacca00e579dcf454bbae39c588b7fd21e2
+  trackbranch: stable/ussuri
 - name: os_trove
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_trove
-  version: 9e4b4ac8c68464625e6b9466541e61fcdb1a4b61
-  trackbranch: master
+  version: d287b8567739bfa074ac83ac8d20408e249945be
+  trackbranch: stable/ussuri
 - name: os_zun
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_zun
-  version: bc3de56005fb9a69a5cadb2313f3a8518d857bb0
-  trackbranch: master
+  version: c12f2aa0e2db2582a247efb03dfc880d724c8555
+  trackbranch: stable/ussuri
 - name: plugins
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-plugins
-  version: 8f7b6b7749e4a271db670e438b52c6c44bbe6e55
-  trackbranch: master
+  version: cc289f1451c28659f95e0af8274f832292074db4
+  trackbranch: stable/ussuri
 - name: qdrouterd
   scm: git
   src: https://opendev.org/openstack/ansible-role-qdrouterd
-  version: bc2f958d6c7371ccafdd6a2f612d034fcebb3c17
-  trackbranch: master
+  version: 6427fa2702fded025369a6776435c843518f5047
+  trackbranch: stable/ussuri
 - name: rabbitmq_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-rabbitmq_server
-  version: fc27e735a68b64cb3c67dd8abeaf324803a9845b
-  trackbranch: master
+  version: 7d2bf72d58a70db6b53a52220efe24b04e2147ad
+  trackbranch: stable/ussuri
 - name: repo_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-repo_server
-  version: d4a793fc7863f877744eb6b875f9455c6e1df2ff
-  trackbranch: master
+  version: cd3552d140a11ac4c54a5419069ab70cc48e86bc
+  trackbranch: stable/ussuri
 - name: rsyslog_client
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-rsyslog_client
-  version: d616af7883bd6e7a208be3a4f56d129bc2aa92ca
-  trackbranch: master
+  version: 7efbc764c3a935d933fdedd1af008f7610f75992
+  trackbranch: stable/ussuri
 - name: rsyslog_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-rsyslog_server
-  version: 1461e60486c44677bdc2c5f5a2dcb1e74b4139f0
-  trackbranch: master
+  version: 288cda462f764f0b347bb3af6fe3b30efa40a819
+  trackbranch: stable/ussuri
 - name: sshd
   scm: git
   src: https://github.com/willshersystems/ansible-sshd
@@ -251,7 +251,7 @@
 - name: bird
   scm: git
   src: https://github.com/logan2211/ansible-bird
-  version: c755eb300b12ecb659e92375fa0572efec74846f
+  version: 9e5a7d7fc8b72ad4aa73280a7638b0554cf20d5c
   trackbranch: master
 - name: etcd
   scm: git
@@ -271,7 +271,7 @@
 - name: ceph-ansible
   scm: git
   src: https://github.com/ceph/ceph-ansible
-  version: 48fd6e6b163f0a8c80f3a993cedcdae9ca754190
+  version: b7fd3bc844f445c694449b1ee22c14798a522551
   trackbranch: stable-5.0
 - name: opendaylight
   scm: git
@@ -286,35 +286,35 @@
 - name: nspawn_container_create
   src: https://opendev.org/openstack/openstack-ansible-nspawn_container_create
   scm: git
-  version: e20e45fd41daa8374863a47bec8bed3a1e496a6a
-  trackbranch: master
+  version: 6ba2ecdb1a84d1e8ab1bb63bb4e004411f8e5a5c
+  trackbranch: stable/ussuri
 - name: nspawn_hosts
   src: https://opendev.org/openstack/openstack-ansible-nspawn_hosts
   scm: git
-  version: 1b3763c4b850efc6c1f853ab938aed16331d0d76
-  trackbranch: master
+  version: 8a7fd3226c9d63b39669192c55b9d9488e53b6d1
+  trackbranch: stable/ussuri
 - name: systemd_service
   src: https://opendev.org/openstack/ansible-role-systemd_service
   scm: git
-  version: b701c30e62f005f0b1f4dc1a7753e00b24601bc4
-  trackbranch: master
+  version: aff4b131ba331cfc55b4900187593aad10278c8a
+  trackbranch: stable/ussuri
 - name: systemd_mount
   src: https://opendev.org/openstack/ansible-role-systemd_mount
   scm: git
-  version: 720524c5cd1c318a40f7dd589d5cfac6fbf3a176
-  trackbranch: master
+  version: b3fce60dd1db07b28b075e76658e824b52923de7
+  trackbranch: stable/ussuri
 - name: systemd_networkd
   src: https://opendev.org/openstack/ansible-role-systemd_networkd
   scm: git
-  version: 15a0be8cbb725c42b201dcf54f95b309b9b13305
-  trackbranch: master
+  version: 0640f99363b3db845bae6bfbe22538502fe20b7f
+  trackbranch: stable/ussuri
 - name: python_venv_build
   src: https://opendev.org/openstack/ansible-role-python_venv_build
   scm: git
-  version: cf3b1dbe7b3bdbe5632a88db5cac894ec8e7bb1e
-  trackbranch: master
+  version: e7a165b1d05ae9b07b4a75e096af184da9609a6c
+  trackbranch: stable/ussuri
 - name: uwsgi
   src: https://opendev.org/openstack/ansible-role-uwsgi
   scm: git
-  version: fe4d46af1001a5426205612eb7a68a83abe143be
-  trackbranch: master
+  version: 7912bcb4eed5487f21aa46ca4764eed657691fab
+  trackbranch: stable/ussuri

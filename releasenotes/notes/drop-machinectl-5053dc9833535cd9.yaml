@@ -1,0 +1,8 @@
+---
+deprecations:
+  - |
+    To provide compatibility with Centos-8 the LXC cache preparation has
+    been greatly simplified to remove the requirement for machinectl and
+    btrfs, which is a combination not available on Centos-8. This has
+    the side effect of machinectl no longer being a supported backing
+    store for LXC.
