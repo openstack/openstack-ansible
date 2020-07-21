@@ -44,4 +44,4 @@ nfs_ganesha_stable: "{{ (ansible_distribution_release not in ['bionic', 'focal']
 # ceph-ansible's default enabling of ntpd conflicts with the OSA defaults
 ntp_service_enabled: False
 
-dashboard_enabled: "{{ not (ansible_os_family | lower == 'redhat' and ansible_distribution_major_version is version('7', '=')) }}"
+dashboard_enabled: True

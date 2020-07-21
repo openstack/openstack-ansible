@@ -19,7 +19,7 @@ magnum_glance_images:
     image_format: bare
     public: true
     file: https://builds.coreos.fedoraproject.org/prod/streams/stable/builds/31.20200210.3.0/x86_64/fedora-coreos-31.20200210.3.0-openstack.x86_64.qcow2.xz
-    distro: "fedora-{{ (ansible_os_family | lower == 'redhat' and ansible_distribution_major_version is version('8', '<') and bootstrap_host_install_method == 'distro') | ternary('atomic', 'coreos') }}"
+    distro: "coreos"
     checksum: "sha256:9a5252e24b82a5edb1ce75b05653f59895685b0f1028112462e908a12deae518"
 
 magnum_cluster_templates:

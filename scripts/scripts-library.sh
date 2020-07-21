@@ -57,7 +57,7 @@ fi
 # Build ansible-runtime venv
 function build_ansible_runtime_venv {
     # All distros have a python-virtualenv > 13.
-    # - Centos 7 has 15.1, which holds pip 9.0.1, setuptools 28.8, wheel 0.29
+    # - Centos 8 has 15.1, which holds pip 9.0.1, setuptools 28.8, wheel 0.29
     #   See also: http://mirror.centos.org/centos/7/os/x86_64/Packages/
     # - openSUSE 42.3 has 13.1.2, which holds pip 7.1.2, setuptools 18.2, wheel 0.24.
     #   See also: https://build.opensuse.org/package/show/openSUSE%3ALeap%3A42.3/python-virtualenv
@@ -220,9 +220,7 @@ function run_dstat {
   if [ "$GATE_EXIT_RUN_DSTAT" == true ]; then
     case ${DISTRO_ID} in
       centos|rhel)
-          # Prefer dnf over yum for CentOS.
-          which dnf &>/dev/null && RHT_PKG_MGR='dnf' || RHT_PKG_MGR='yum'
-          $RHT_PKG_MGR -y install dstat
+          dnf -y install dstat
           ;;
       ubuntu)
           apt-get update
@@ -271,9 +269,7 @@ function log_instance_info {
           DEBIAN_FRONTEND=noninteractive apt-get -y install iproute2 net-tools
           ;;
       centos|rhel)
-          # Prefer dnf over yum for CentOS.
-          which dnf &>/dev/null && RHT_PKG_MGR='dnf' || RHT_PKG_MGR='yum'
-          $RHT_PKG_MGR -y install iproute
+          dnf -y install iproute
           ;;
   esac
   set +x
