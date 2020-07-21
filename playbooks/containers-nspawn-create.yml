@@ -114,8 +114,6 @@
       setup:
         gather_subset: "network,hardware,virtual"
 
-    - include_tasks: common-tasks/package-cache-proxy.yml
-      when: install_method == "source"
   roles:
     - role: "openstack_hosts"
       is_container: true
