@@ -31,6 +31,17 @@ utility_distro_packages:
   - git
   - bash-completion
 
+_utility_devel_distro_packages_debian:
+  - gcc
+  - python3-dev
+
+_utility_devel_distro_packages_redhat:
+  - gcc
+  - "{{ ansible_distribution_major_version is version('8', '<') | ternary('python-devel', 'python36-devel') }}"
+
+# Distribution packages needed for the utility pip package wheel build
+utility_devel_distro_packages: "{{ (ansible_os_family == 'RedHat') | ternary(_utility_devel_distro_packages_redhat, _utility_devel_distro_packages_debian) }}"
+
 # Packages installed into the utility container for distro installs
 # NOTE(jrosser) this can be simplified when all supported
 # distros use python3
