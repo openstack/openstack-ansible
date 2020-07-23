@@ -76,9 +76,6 @@
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - lxc-containers-create
-  pre_tasks:
-    - include_tasks: common-tasks/package-cache-proxy.yml
-      when: install_method == "source"
   roles:
     - role: "openstack_hosts"
       is_container: true

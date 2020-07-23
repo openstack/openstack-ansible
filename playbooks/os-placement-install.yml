@@ -37,10 +37,6 @@
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
 
-    - name: Configure package proxy cache
-      include_tasks: common-tasks/package-cache-proxy.yml
-      when: install_method == "source"
-
   roles:
     - role: "os_placement"
     - role: "system_crontab_coordination"
