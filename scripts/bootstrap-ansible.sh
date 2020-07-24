@@ -71,7 +71,7 @@ which dnf &>/dev/null && RHT_PKG_MGR='dnf' || RHT_PKG_MGR='yum'
 case ${DISTRO_ID} in
     centos|rhel)
         $RHT_PKG_MGR -y install \
-          git curl autoconf gcc gcc-c++ nc \
+          git curl autoconf gcc gcc-c++ nc rsync \
           python3 python3-devel libselinux-python3 \
           openssl-devel libffi-devel \
           $(if [[ ${VERSION_ID} == '7' ]]; then echo "python-virtualenv"; else echo "python3-virtualenv"; fi)
