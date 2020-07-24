@@ -123,6 +123,7 @@
       - name: openstack/octavia-dashboard
       - name: openstack/blazar
       - name: openstack/blazar-nova
+      - name: openstack/zun
     pre-run:
       - zuul.d/playbooks/pre-gate-cleanup.yml
       - zuul.d/playbooks/pre-gate-scenario.yml
