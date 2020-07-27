@@ -25,7 +25,7 @@
 #TODO: mgariepy, revisit to use include_role when https://github.com/ansible/ansible/issues/20077 is fixed
 - name: Ensure Ansible can work with SELinux
   package:
-    name: libselinux-python
+    name: libselinux-python3
     state: present
   when:
     - ansible_pkg_mgr in ['yum', 'dnf']
@@ -51,11 +51,48 @@
         state: present
   # Rescue is mainly for CentOS 7
   rescue:
+    - name: Download EPEL gpg keys
+      get_url:
+        url: "{{ centos_epel_key | default('http://download.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-7') }}"
+        dest: /etc/pki/rpm-gpg
+      register: _get_yum_keys
+      until: _get_yum_keys is success
+      retries: 5
+      delay: 2
+      when:
+        - ansible_os_family | lower == 'redhat'
+        - ansible_distribution_major_version is version('7', '=')
+
+    - name: Install EPEL gpg keys
+      rpm_key:
+        key: "/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7"
+        state: present
+      when:
+        - ansible_os_family | lower == 'redhat'
+        - ansible_distribution_major_version is version('7', '=')
+
+    - name: Install the EPEL repository
+      yum_repository:
+        name: epel-ceph
+        baseurl: "{{ centos_epel_mirror | default('http://download.fedoraproject.org/pub/epel') ~ '/' ~ ansible_distribution_major_version ~ '/' ~ ansible_architecture }}"
+        description: 'Extra Packages for Enterprise Linux 7 - $basearch'
+        gpgcheck: yes
+        enabled: yes
+        state: present
+        includepkgs: 'python2-pip'
+      register: install_epel_repo
+      until: install_epel_repo is success
+      retries: 5
+      delay: 2
+      when:
+        - ansible_os_family | lower == 'redhat'
+        - ansible_distribution_major_version is version('7', '=')
+
     # Installing both pip's not to fail
     - name: Installing pip
       package:
         name:
-          - python-pip
+          - "{{ (ansible_os_family | lower == 'redhat' and ansible_distribution_major_version is version('8', '<')) | ternary('python2-pip', 'python-pip') }}"
           - python3-pip
         state: present
 
