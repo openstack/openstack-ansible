@@ -207,6 +207,11 @@
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-focal
 
+- job:
+    name: openstack-ansible-deploy-aio_distro_metal-ubuntu-focal
+    parent: openstack-ansible-deploy-aio
+    nodeset: ubuntu-focal
+
 # ubuntu
 - job:
     name: openstack-ansible-deploy-aio_lxc-ubuntu-bionic
