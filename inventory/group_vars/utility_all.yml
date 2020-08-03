@@ -37,6 +37,7 @@ _utility_devel_distro_packages_debian:
 
 _utility_devel_distro_packages_redhat:
   - gcc
+  - libselinux-python3
   - "{{ ansible_distribution_major_version is version('8', '<') | ternary('python-devel', 'python36-devel') }}"
 
 # Distribution packages needed for the utility pip package wheel build
@@ -65,7 +66,9 @@ _utility_distro_openstack_clients_packages:
 utility_pip_packages:
   - cryptography
   - pip
+  - PyMySQL
   - python-memcached
+  - selinux
   - setuptools
   - wheel
   - openstacksdk
