@@ -75,6 +75,40 @@
         utility_distro_packages: "{{ (utility_distro_packages | default([])) + _utility_distro_openstack_clients_packages[utility_distro_openstack_clients_python_version|int] }}"
       when: install_method == "distro"
 
+    - name: Add EPEL repsitory
+      block:
+        - name: Download EPEL gpg keys
+          get_url:
+            url: "{{ centos_epel_key | default('http://download.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-' ~ ansible_distribution_major_version) }}"
+            dest: /etc/pki/rpm-gpg
+          register: _get_yum_keys
+          until: _get_yum_keys is success
+          retries: 5
+          delay: 2
+
+        - name: Install EPEL gpg keys
+          rpm_key:
+            key: "/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-{{ ansible_distribution_major_version }}"
+            state: present
+
+        - name: Install the EPEL repository
+          yum_repository:
+            name: epel-utility
+            baseurl: "{{ centos_epel_mirror | default('http://download.fedoraproject.org/pub/epel') ~ '/' ~ ansible_distribution_major_version ~ '/' ~ ansible_architecture }}"
+            description: 'Extra Packages for Enterprise Linux 7 - $basearch'
+            gpgcheck: yes
+            enabled: yes
+            state: present
+            includepkgs: 'python3-PyMySQL python36-PyMySQL'
+          register: install_epel_repo
+          until: install_epel_repo is success
+          retries: 5
+          delay: 2
+      when:
+        - install_method == "distro"
+        - ansible_os_family | lower == 'redhat'
+        - ansible_distribution_major_version is version('8', '<')
+
     - name: Install distro packages
       package:
         name: "{{ utility_distro_packages | default([]) }}"
