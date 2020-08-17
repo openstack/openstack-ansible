@@ -399,7 +399,6 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'nova_api_metadata',
         'nova_api_os_compute',
         'nova_api_container',
-        'nova_api_placement',
         'nova_compute',
         'nova_compute_container',
         'nova_conductor',
