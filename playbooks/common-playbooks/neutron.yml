@@ -32,6 +32,18 @@
     - neutron
   pre_tasks:
 
+    # In order to ensure that any container, software or
+    # config file changes which causes a container/service
+    # restart do not cause an unexpected outage, we drain
+    # the load balancer back end for this container.
+    - include_tasks: ../common-tasks/haproxy-endpoint-manage.yml
+      vars:
+        haproxy_backend: neutron_server-back
+        haproxy_state: disabled
+      when:
+        - "'neutron_server' in group_names"
+        - "groups['neutron_server'] | length > 1"
+
     - name: Determine tunnel bridge IP address
       include_tasks: ../common-tasks/dynamic-address-fact.yml
       vars:
@@ -95,3 +107,15 @@
     - role: "system_crontab_coordination"
       tags:
         - crontab
+
+  post_tasks:
+    # Now that container changes are done, we can set
+    # the load balancer back end for this container
+    # to available again.
+    - include_tasks: ../common-tasks/haproxy-endpoint-manage.yml
+      vars:
+        haproxy_backend: neutron_server-back
+        haproxy_state: enabled
+      when:
+        - "'neutron_server' in group_names"
+        - "groups['neutron_server'] | length > 1"
