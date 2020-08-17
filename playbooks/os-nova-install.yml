@@ -16,14 +16,14 @@
 - name: Install nova-conductor services
   import_playbook: common-playbooks/nova.yml
   vars:
-    nova_hosts: "nova_conductor:nova_scheduler:nova_api_os_compute:nova_api_placement:nova_api_metadata:nova_console"
+    nova_hosts: "nova_conductor:nova_scheduler:nova_api_os_compute:nova_api_metadata:nova_console"
     nova_serial: "{{ nova_conductor_serial | default(['1', '100%']) }}"
 
 
 - name: Install nova compute
   import_playbook: common-playbooks/nova.yml
   vars:
-    nova_hosts: "nova_compute:!nova_conductor:!nova_scheduler:!nova_api_os_compute:!nova_api_placement:!nova_api_metadata:!nova_console"
+    nova_hosts: "nova_compute:!nova_conductor:!nova_scheduler:!nova_api_os_compute:!nova_api_metadata:!nova_console"
     nova_serial: "{{ nova_compute_serial | default('100%') }}"
 
 
@@ -75,11 +75,10 @@
       run_once: yes
 
 
-# Note that the placement API service and the console services do not
-# understand how to reload, so they fail when you try to make them do
-# so. We therefore restart them instead.
+# Note that the console services do not understand how to reload, so they fail
+# when you try to make them do so. We therefore restart them instead.
 - name: Reload all nova services which support a reload to ensure new RPC object version is used
-  hosts: "nova_all:!nova_api_placement:!nova_console"
+  hosts: "nova_all:!nova_console"
   gather_facts: no
   serial: "{{ nova_serial | default('100%') }}"
   user: root
@@ -101,18 +100,17 @@
         #               https://bugs.launchpad.net/openstack-ansible/+bug/1715374
         #
         service_action: "restarted"
-        service_negate: "{{ ['nova-placement-api.service', 'nova-novncproxy.service', 'nova-spicehtml5proxy.service' ] + nova_service_negate | default([]) }}"
+        service_negate: "{{ ['nova-novncproxy.service', 'nova-spicehtml5proxy.service' ] + nova_service_negate | default([]) }}"
       when:
         - "nova_all_software_updated | bool"
         - "ansible_local['openstack_ansible']['nova']['need_service_restart'] | bool"
 
 
 
-# Note that the placement API service and the console services do not
-# understand how to reload, so they fail when you try to make them do
-# so. We therefore restart them instead.
+# Note that the console services do not understand how to reload, so they fail
+# when you try to make them do so. We therefore restart them instead.
 - name: Restart the remaining nova services to ensure new RPC object version is used
-  hosts: "nova_api_placement:nova_console"
+  hosts: "nova_console"
   gather_facts: no
   serial: "{{ nova_api_serial | default(['1', '100%']) }}"
   user: root
