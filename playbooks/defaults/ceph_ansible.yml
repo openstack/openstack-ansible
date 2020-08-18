@@ -15,9 +15,7 @@
 
 ceph_conf_overrides:
   global:
-    log_file: none
     log_to_syslog: true
     err_to_syslog: true
   mon:
     mon_cluster_log_to_syslog: true
-    mon_cluster_log_file: none
