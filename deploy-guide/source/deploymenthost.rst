@@ -27,8 +27,11 @@ Install one of the following supported operating systems on the deployment
 hosts:
 
 * `Ubuntu server 18.04 (Bionic Beaver) LTS 64-bit <http://releases.ubuntu.com/18.04/>`_
-* `Centos 7 64-bit <https://www.centos.org/download/>`_
-* `openSUSE 42.X 64-bit <https://software.opensuse.org/distributions/leap>`_
+* `Ubuntu server 20.04 (Focal Fossa) LTS 64-bit <http://releases.ubuntu.com/20.04/>`_
+* `Debian 10 (Buster) LTS 64-bit <https://www.debian.org/distrib/>`_
+* `Centos 7 64-bit <http://isoredirect.centos.org/centos/7/isos/x86_64/>`_
+* `Centos 8 64-bit <http://isoredirect.centos.org/centos/8/isos/x86_64/>`_
+* `openSUSE 15.X (experimental) 64-bit <https://software.opensuse.org/distributions/leap>`_
 
 Configure at least one network interface to access the Internet or suitable
 local repositories.

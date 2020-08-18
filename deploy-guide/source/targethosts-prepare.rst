@@ -12,8 +12,10 @@ Install one of the following supported operating systems on the
 target host:
 
 * Ubuntu server 18.04 (Bionic Beaver) LTS 64-bit
+* Ubuntu server 20.04 (Focal Fossa) LTS 64-bit
 * Debian 10 64-bit
 * Centos 7 64-bit
+* Centos 8 64-bit
 * openSUSE 15.X 64-bit
 
 Configure at least one network interface to access the Internet or
