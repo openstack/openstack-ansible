@@ -5,8 +5,8 @@ About OpenStack-Ansible
 =======================
 
 OpenStack-Ansible (OSA) uses the `Ansible <https://www.ansible.com/how-ansible-works>`_
-IT automation engine to deploy an OpenStack environment on Ubuntu, with CentOS and
-openSUSE currently in Beta release.
+IT automation engine to deploy an OpenStack environment on Ubuntu, Debian
+and CentOS.
 
 For isolation and ease of maintenance, you can install OpenStack components
 into machine containers.
@@ -21,8 +21,7 @@ listed in our :dev_docs:`architecture reference <reference/architecture/index.ht
 Why choose OpenStack-Ansible?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-* Supports the major Linux distributions Ubuntu, CentOS, Debian
-  and OpenSUSE (experimental).
+* Supports the major Linux distributions Ubuntu, CentOS, Debian.
 * Supports the major CPU architectures x86, ppc64, s390x (WIP).
 * Offers automation for upgrades between major OpenStack releases.
 * Uses OpenStack defaults for each of the project roles, and provides

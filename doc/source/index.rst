@@ -9,11 +9,10 @@ configuration of an OpenStack environment.
 
 Documentation for each of the following releases is available.
 
-Ussuri: Maintained
-~~~~~~~~~~~~~~~~~~~~~~~~~
+Victoria: Under Development
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible Ussuri series was first released with the 21.0.0 tag on
-14 August 2020.
+OpenStack-Ansible Victoria is currently in development.
 
 .. toctree::
    :maxdepth: 1
@@ -25,6 +24,21 @@ OpenStack-Ansible Ussuri series was first released with the 21.0.0 tag on
    contributor/contributing
    contributor/index
    reference/index
+
+
+Ussuri: Maintained
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+OpenStack-Ansible Ussuri series was first released with the 21.0.0 tag on
+14 August 2020.
+
+* `OpenStack-Ansible Ussuri Documentation`_
+
+* `OpenStack-Ansible Ussuri series release notes`_
+
+.. _OpenStack-Ansible Ussuri Documentation: https://docs.openstack.org/openstack-ansible/ussuri/
+.. _OpenStack-Ansible Ussuri series release notes: https://docs.openstack.org/releasenotes/openstack-ansible/ussuri.html
+
 
 Train: Maintained
 ~~~~~~~~~~~~~~~~~~~~~~~~

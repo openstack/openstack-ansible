@@ -163,8 +163,7 @@ development team by performing one of the following recurring tasks:
 
 * After official project release, before official OpenStack-Ansible release:
 
-  * Bump RDO, Ubuntu Cloud Archive and openSUSE OBS OpenStack Cloud
-    repositories if they are ready on time.
+  * Bump RDO and Ubuntu Cloud Archive repositories if they are ready on time.
 
 * Immediately after official OpenStack-Ansible release:
 
