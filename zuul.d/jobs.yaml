@@ -181,12 +181,6 @@
     vars:
       ansible_package: "file://{{ ansible_user_dir }}/src/github.com/ansible/ansible"
 
-# debian
-- job:
-    name: openstack-ansible-deploy-aio_metal-debian-buster
-    parent: openstack-ansible-deploy-aio
-    nodeset: debian-buster
-
 # ubuntu focal
 - job:
     name: openstack-ansible-deploy-aio_lxc-ubuntu-focal
@@ -210,6 +204,28 @@
 
 - job:
     name: openstack-ansible-deploy-aio_distro_metal-ubuntu-focal
+    parent: openstack-ansible-deploy-aio
+    nodeset: ubuntu-focal
+
+- job:
+    name: openstack-ansible-upgrade-aio_metal-ubuntu-focal
+    parent: openstack-ansible-deploy-aio
+    nodeset: ubuntu-focal
+    timeout: 10800
+
+- job:
+    name: openstack-ansible-upgrade-aio_lxc-ubuntu-focal
+    parent: openstack-ansible-deploy-aio
+    nodeset: ubuntu-focal
+    timeout: 10800
+
+- job:
+    name: openstack-ansible-deploy-aio_distro_lxc-ubuntu-focal
+    parent: openstack-ansible-deploy-aio
+    nodeset: ubuntu-focal
+
+- job:
+    name: openstack-ansible-deploy-aio_telemetry_metal-ubuntu-focal
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-focal
 
@@ -404,6 +420,12 @@
     nodeset: centos-8
     timeout: 10800
 
+- job:
+    name: openstack-ansible-upgrade-aio_metal-centos-8
+    parent: openstack-ansible-deploy-aio
+    nodeset: centos-8
+    timeout: 10800
+
 # debian
 - job:
     name: openstack-ansible-deploy-aio_telemetry_metal-debian-buster
@@ -415,43 +437,17 @@
     parent: openstack-ansible-deploy-aio
     nodeset: debian-buster
 
-# opensuse
 - job:
-    name: openstack-ansible-deploy-aio_lxc-opensuse-15
+    name: openstack-ansible-deploy-aio_distro_lxc-debian-buster
     parent: openstack-ansible-deploy-aio
-    nodeset: opensuse-15
+    nodeset: debian-buster
 
 - job:
-    name: openstack-ansible-deploy-aio_distro_lxc-opensuse-15
+    name: openstack-ansible-deploy-aio_metal-debian-buster
     parent: openstack-ansible-deploy-aio
-    nodeset: opensuse-15
+    nodeset: debian-buster
 
 - job:
-    name: openstack-ansible-deploy-aio_ceph-opensuse-15
+    name: openstack-ansible-deploy-aio_distro_metal-debian-buster
     parent: openstack-ansible-deploy-aio
-    nodeset: opensuse-15
-
-- job:
-    name: openstack-ansible-deploy-aio_distro_ceph-opensuse-15
-    parent: openstack-ansible-deploy-aio
-    nodeset: opensuse-15
-
-- job:
-    name: openstack-ansible-deploy-aio_metal-opensuse-15
-    parent: openstack-ansible-deploy-aio
-    nodeset: opensuse-15
-
-- job:
-    name: openstack-ansible-deploy-aio_telemetry_metal-opensuse-15
-    parent: openstack-ansible-deploy-aio
-    nodeset: opensuse-15
-
-- job:
-    name: openstack-ansible-deploy-aio_distro_metal-opensuse-15
-    parent: openstack-ansible-deploy-aio
-    nodeset: opensuse-15
-
-- job:
-    name: openstack-ansible-deploy-aio_nspawn-opensuse-15
-    parent: openstack-ansible-deploy-aio
-    nodeset: opensuse-15
+    nodeset: debian-buster

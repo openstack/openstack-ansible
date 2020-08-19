@@ -38,100 +38,76 @@
     name: openstack-ansible-deploy-aio_lxc-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-aio_lxc-centos-7
         - openstack-ansible-deploy-aio_lxc-centos-8
         - openstack-ansible-deploy-aio_lxc-debian-buster
-        - openstack-ansible-deploy-aio_lxc-ubuntu-bionic
         - openstack-ansible-deploy-aio_lxc-ubuntu-focal
     gate:
       jobs:
-        - openstack-ansible-deploy-aio_lxc-centos-7
         - openstack-ansible-deploy-aio_lxc-centos-8
         - openstack-ansible-deploy-aio_lxc-debian-buster
-        - openstack-ansible-deploy-aio_lxc-ubuntu-bionic
         - openstack-ansible-deploy-aio_lxc-ubuntu-focal
     periodic:
       jobs:
-        - openstack-ansible-deploy-aio_lxc-ubuntu-bionic
-        - openstack-ansible-upgrade-aio_lxc-ubuntu-bionic
-    experimental:
-      jobs:
-        - openstack-ansible-deploy-aio_lxc-opensuse-15
+        - openstack-ansible-deploy-aio_lxc-ubuntu-focal
+        - openstack-ansible-upgrade-aio_lxc-ubuntu-focal
 
 - project-template:
     name: openstack-ansible-deploy-aio_distro_lxc-jobs
     experimental:
       jobs:
-        - openstack-ansible-deploy-aio_distro_lxc-centos-7
         - openstack-ansible-deploy-aio_distro_lxc-centos-8
-        - openstack-ansible-deploy-aio_distro_lxc-opensuse-15
-        - openstack-ansible-deploy-aio_distro_lxc-ubuntu-bionic
+        - openstack-ansible-deploy-aio_distro_lxc-debian-buster
+        - openstack-ansible-deploy-aio_distro_lxc-ubuntu-focal
 
 - project-template:
     name: openstack-ansible-deploy-aio_metal-jobs
     check:
       jobs:
         - openstack-ansible-deploy-aio_metal-debian-buster
-        - openstack-ansible-deploy-aio_metal-centos-7
         - openstack-ansible-deploy-aio_metal-centos-8
         - openstack-ansible-deploy-aio_metal-ubuntu-bionic
         - openstack-ansible-deploy-aio_metal-ubuntu-focal
-        - openstack-ansible-upgrade-aio_metal-centos-7:
+        - openstack-ansible-upgrade-aio_metal-centos-8:
             voting: false
-        - openstack-ansible-upgrade-aio_metal-ubuntu-bionic
+        - openstack-ansible-upgrade-aio_metal-ubuntu-focal
     gate:
       jobs:
         - openstack-ansible-deploy-aio_metal-debian-buster
-        - openstack-ansible-deploy-aio_metal-centos-7
         - openstack-ansible-deploy-aio_metal-centos-8
         - openstack-ansible-deploy-aio_metal-ubuntu-bionic
         - openstack-ansible-deploy-aio_metal-ubuntu-focal
-    experimental:
-      jobs:
-        - openstack-ansible-deploy-aio_metal-opensuse-15
 
 - project-template:
     name: openstack-ansible-deploy-aio_telemetry_metal-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-aio_telemetry_metal-centos-7
+        - openstack-ansible-deploy-aio_telemetry_metal-centos-8
         - openstack-ansible-deploy-aio_telemetry_metal-debian-buster
-        - openstack-ansible-deploy-aio_telemetry_metal-ubuntu-bionic
+        - openstack-ansible-deploy-aio_telemetry_metal-ubuntu-focal
     gate:
       jobs:
-        - openstack-ansible-deploy-aio_telemetry_metal-centos-7
+        - openstack-ansible-deploy-aio_telemetry_metal-centos-8
         - openstack-ansible-deploy-aio_telemetry_metal-debian-buster
-        - openstack-ansible-deploy-aio_telemetry_metal-ubuntu-bionic
-    experimental:
-      jobs:
-        - openstack-ansible-deploy-aio_telemetry_metal-opensuse-15
+        - openstack-ansible-deploy-aio_telemetry_metal-ubuntu-focal
 
 - project-template:
     name: openstack-ansible-deploy-aio_distro_metal-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-aio_distro_metal-centos-7
         - openstack-ansible-deploy-aio_distro_metal-centos-8
-        - openstack-ansible-deploy-aio_distro_metal-ubuntu-bionic
         - openstack-ansible-deploy-aio_distro_metal-ubuntu-focal
     gate:
       jobs:
-        - openstack-ansible-deploy-aio_distro_metal-centos-7
         - openstack-ansible-deploy-aio_distro_metal-centos-8
-        - openstack-ansible-deploy-aio_distro_metal-ubuntu-bionic
         - openstack-ansible-deploy-aio_distro_metal-ubuntu-focal
     experimental:
       jobs:
-        - openstack-ansible-deploy-aio_distro_metal-opensuse-15
+        - openstack-ansible-deploy-aio_distro_metal-debian-buster
 
 - project-template:
     name: openstack-ansible-deploy-aio_nspawn-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-aio_nspawn-centos-7:
-            voting: false
-        - openstack-ansible-deploy-aio_nspawn-opensuse-15:
-            voting: false
         - openstack-ansible-deploy-aio_nspawn-ubuntu-bionic:
             voting: false
     gate:
@@ -160,12 +136,6 @@
     gate:
       jobs:
         - openstack-ansible-deploy-aio_proxy-ubuntu-focal
-
-- project-template:
-    name: openstack-ansible-deploy-distro_ceph-jobs
-    experimental:
-      jobs:
-        - openstack-ansible-deploy-aio_distro_ceph-opensuse-15
 
 - project-template:
     name: openstack-ansible-linters-jobs
