@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    OpenStack-Ansible now provided corosync and pacemaker cluster setup as part
+    of the os-masakari-install playbook. Corosync/pacemaker cluster is required
+    for the proper work of masakari hostmonitors, as they identify hosts state
+    with help of corosync.

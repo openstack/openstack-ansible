@@ -312,6 +312,7 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'masakari-infra_containers',
         'masakari-infra_hosts',
         'masakari_monitor',
+        'masakari-monitor_all',
         'masakari-monitor_containers',
         'masakari_monitors_container',
         'masakari-monitor_hosts',

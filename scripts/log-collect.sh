@@ -40,6 +40,7 @@ COMMON_ETC_LOG_NAMES="apt \
     apache2 \
     auditd \
     calico \
+    corosync \
     ceph \
     etcd \
     ganesha \
@@ -53,6 +54,7 @@ COMMON_ETC_LOG_NAMES="apt \
     network \
     nginx \
     openstack_deploy \
+    pacemaker \
     pip.conf \
     qpid-dispatch \
     rabbitmq \
