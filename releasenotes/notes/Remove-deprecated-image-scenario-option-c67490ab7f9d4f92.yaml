@@ -1,0 +1,7 @@
+---
+upgrade:
+  - |
+    Remove ``CONF.scenario.img_dir`` option as it is being removed from
+    Tempest after ~4 year deprecation period.
+    ``CONF.scenario.img_file`` option needs to contain the full path to an
+    image to upload to glance.
