@@ -168,9 +168,6 @@ haproxy_default_services:
         - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
       haproxy_service_enabled: "{{ groups['placement_all'] is defined and groups['placement_all'] | length > 0 }}"
   - service:
-      haproxy_service_name: nova_api_placement
-      state: absent
-  - service:
       haproxy_service_name: nova_console
       haproxy_backend_nodes: "{{ groups['nova_console'] | default([]) }}"
       haproxy_ssl: "{{ haproxy_ssl }}"
