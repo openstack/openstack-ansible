@@ -20,9 +20,6 @@ component_skel:
   nova_api_os_compute:
     belongs_to:
       - nova_all
-  nova_api_placement:
-    belongs_to:
-      - nova_all
   nova_compute:
     belongs_to:
       - nova_all
@@ -45,7 +42,6 @@ container_skel:
     contains:
       - nova_api_metadata
       - nova_api_os_compute
-      - nova_api_placement
       - nova_conductor
       - nova_scheduler
       - nova_console
