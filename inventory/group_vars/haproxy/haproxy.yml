@@ -75,6 +75,7 @@ haproxy_default_services:
       haproxy_service_name: glance_api
       haproxy_backend_nodes: "{{ groups['glance_api'] | default([]) }}"
       haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
       haproxy_port: 9292
       haproxy_balance_type: http
       haproxy_balance_alg: source
@@ -85,6 +86,7 @@ haproxy_default_services:
       haproxy_service_name: glance_registry
       haproxy_backend_nodes: "{{ groups['glance_registry'] | default([]) }}"
       haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
       haproxy_port: 9191
       haproxy_balance_type: http
       haproxy_backend_options:
@@ -100,6 +102,7 @@ haproxy_default_services:
       haproxy_backend_nodes: "{{ groups['gnocchi_all'] | default([]) }}"
       haproxy_port: 8041
       haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
       haproxy_balance_type: http
       haproxy_backend_options:
         - "httpchk GET /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
@@ -109,6 +112,7 @@ haproxy_default_services:
       haproxy_backend_nodes: "{{ groups['heat_api_cfn'] | default([]) }}"
       haproxy_port: 8000
       haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
       haproxy_balance_type: http
       haproxy_backend_options:
         - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
@@ -118,6 +122,7 @@ haproxy_default_services:
       haproxy_backend_nodes: "{{ groups['heat_api'] | default([]) }}"
       haproxy_port: 8004
       haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
       haproxy_balance_type: http
       haproxy_backend_options:
         - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
@@ -127,6 +132,7 @@ haproxy_default_services:
       haproxy_backend_nodes: "{{ groups['keystone_all'] | default([])  }}"
       haproxy_port: 5000
       haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
       haproxy_balance_type: "http"
       haproxy_backend_options:
         - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
@@ -136,6 +142,7 @@ haproxy_default_services:
       haproxy_backend_nodes: "{{ groups['neutron_server'] | default([]) }}"
       haproxy_port: 9696
       haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
       haproxy_balance_type: http
       haproxy_backend_options:
         - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
@@ -155,6 +162,7 @@ haproxy_default_services:
       haproxy_service_name: nova_api_os_compute
       haproxy_backend_nodes: "{{ groups['nova_api_os_compute'] | default([]) }}"
       haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
       haproxy_port: 8774
       haproxy_balance_type: http
       haproxy_backend_options:
@@ -164,6 +172,7 @@ haproxy_default_services:
       haproxy_service_name: placement
       haproxy_backend_nodes: "{{ groups['placement_all'] | default([]) }}"
       haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
       haproxy_port: 8780
       haproxy_balance_type: http
       haproxy_backend_options:
@@ -173,6 +182,7 @@ haproxy_default_services:
       haproxy_service_name: nova_console
       haproxy_backend_nodes: "{{ groups['nova_console'] | default([]) }}"
       haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
       haproxy_port: "{{ hostvars[(groups['nova_console'] | default(['localhost']))[0] | default('localhost')]['nova_console_port'] | default(6082) }}"
       haproxy_balance_type: http
       haproxy_timeout_client: 60m
@@ -187,6 +197,7 @@ haproxy_default_services:
       haproxy_service_name: cinder_api
       haproxy_backend_nodes: "{{ groups['cinder_api'] | default([]) }}"
       haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
       haproxy_port: 8776
       haproxy_balance_type: http
       haproxy_backend_options:
@@ -209,6 +220,7 @@ haproxy_default_services:
       haproxy_service_name: sahara_api
       haproxy_backend_nodes: "{{ groups['sahara_api'] | default([]) }}"
       haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
       haproxy_balance_alg: source
       haproxy_port: 8386
       haproxy_balance_type: http
@@ -219,6 +231,7 @@ haproxy_default_services:
       haproxy_service_name: swift_proxy
       haproxy_backend_nodes: "{{ groups['swift_proxy'] | default([]) }}"
       haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
       haproxy_balance_alg: source
       haproxy_port: 8080
       haproxy_balance_type: http
@@ -229,6 +242,7 @@ haproxy_default_services:
       haproxy_service_name: aodh_api
       haproxy_backend_nodes: "{{ groups['aodh_api'] | default([]) }}"
       haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
       haproxy_port: 8042
       haproxy_balance_type: http
       haproxy_backend_options:
@@ -238,6 +252,7 @@ haproxy_default_services:
       haproxy_service_name: ironic_api
       haproxy_backend_nodes: "{{ groups['ironic_api'] | default([]) }}"
       haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
       haproxy_port: 6385
       haproxy_balance_type: http
       haproxy_backend_options:
@@ -247,6 +262,7 @@ haproxy_default_services:
       haproxy_service_name: ironic_inspector
       haproxy_backend_nodes: "{{ groups['ironic_inspector'] | default([]) }}"
       haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
       haproxy_port: 5050
       haproxy_balance_type: http
       haproxy_backend_options:
@@ -267,6 +283,7 @@ haproxy_default_services:
       haproxy_service_name: magnum
       haproxy_backend_nodes: "{{ groups['magnum_all'] | default([]) }}"
       haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
       haproxy_port: 9511
       haproxy_balance_type: http
       haproxy_backend_options:
@@ -276,6 +293,7 @@ haproxy_default_services:
       haproxy_service_name: manila
       haproxy_backend_nodes: "{{ groups['manila_api'] | default([]) }}"
       haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
       haproxy_port: 8786
       haproxy_balance_type: http
       haproxy_backend_options:
@@ -285,6 +303,7 @@ haproxy_default_services:
       haproxy_service_name: masakari_api
       haproxy_backend_nodes: "{{ groups['masakari_api'] | default([]) }}"
       haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
       haproxy_port: 15868
       haproxy_balance_type: http
       haproxy_backend_options:
@@ -294,6 +313,7 @@ haproxy_default_services:
       haproxy_service_name: mistral
       haproxy_backend_nodes: "{{ groups['mistral_all'] | default([]) }}"
       haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
       haproxy_port: 8989
       haproxy_balance_type: http
       haproxy_backend_options:
@@ -303,6 +323,7 @@ haproxy_default_services:
       haproxy_service_name: murano
       haproxy_backend_nodes: "{{ groups['murano_all'] | default([]) }}"
       haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
       haproxy_port: 8082
       haproxy_balance_type: http
       haproxy_backend_options:
@@ -314,6 +335,7 @@ haproxy_default_services:
       haproxy_service_name: trove
       haproxy_backend_nodes: "{{ groups['trove_api'] | default([]) }}"
       haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
       haproxy_port: 8779
       haproxy_balance_type: http
       haproxy_backend_options:
@@ -323,6 +345,7 @@ haproxy_default_services:
       haproxy_service_name: barbican
       haproxy_backend_nodes: "{{ groups['barbican_api'] | default([]) }}"
       haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
       haproxy_port: 9311
       haproxy_balance_type: http
       haproxy_backend_options:
@@ -332,6 +355,7 @@ haproxy_default_services:
       haproxy_service_name: designate_api
       haproxy_backend_nodes: "{{ groups['designate_api'] | default([]) }}"
       haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
       haproxy_port: 9001
       haproxy_balance_type: http
       haproxy_backend_options:
@@ -343,6 +367,7 @@ haproxy_default_services:
       haproxy_service_name: octavia
       haproxy_backend_nodes: "{{ groups['octavia_all'] | default([]) }}"
       haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
       haproxy_port: 9876
       haproxy_balance_type: http
       haproxy_backend_options:
@@ -352,6 +377,7 @@ haproxy_default_services:
       haproxy_service_name: tacker
       haproxy_backend_nodes: "{{ groups['tacker_all'] | default([]) }}"
       haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
       haproxy_port: 9890
       haproxy_balance_type: http
       haproxy_backend_options:
@@ -383,6 +409,7 @@ haproxy_default_services:
       haproxy_service_name: ceph-rgw
       haproxy_backend_nodes: "{{ (groups['ceph-rgw'] is defined and groups['ceph-rgw'] | length > 0) | ternary(groups['ceph-rgw'], ceph_rgws) }}"
       haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
       haproxy_balance_alg: source
       haproxy_port: "{{ radosgw_service_port | default(7980) }}"
       haproxy_balance_type: http
@@ -431,6 +458,7 @@ haproxy_default_services:
       haproxy_service_name: panko_api
       haproxy_backend_nodes: "{{ groups['panko_api'] | default([]) }}"
       haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
       haproxy_port: 8777
       haproxy_balance_type: http
       haproxy_backend_options:
@@ -442,6 +470,7 @@ haproxy_default_services:
       haproxy_service_name: zun_api
       haproxy_backend_nodes: "{{ groups['zun_api'] | default([]) }}"
       haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
       haproxy_port: 9517
       haproxy_balance_type: http
       haproxy_backend_options:
