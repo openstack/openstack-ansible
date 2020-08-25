@@ -30,3 +30,4 @@ nova_libvirt_images_rbd_pool: vms
 # NOTE(noonedeadpunk): ceph bug to track the issue https://tracker.ceph.com/issues/46295
 tempest_test_blacklist:
     - tempest.scenario.test_object_storage_basic_ops.TestObjectStorageBasicOps.test_swift_acl_anonymous_download
+    - tempest.api.identity.admin.v3.test_groups.GroupsV3TestJSON.test_list_user_groups
