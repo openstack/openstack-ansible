@@ -9,10 +9,11 @@ configuration of an OpenStack environment.
 
 Documentation for each of the following releases is available.
 
-Ussuri: Under development
+Ussuri: Maintained
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible Ussuri is currently in development.
+OpenStack-Ansible Ussuri series was first released with the 21.0.0 tag on
+14 August 2020.
 
 .. toctree::
    :maxdepth: 1

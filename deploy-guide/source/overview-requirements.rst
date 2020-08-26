@@ -14,11 +14,20 @@ following minimum requirements:
 
   * Ubuntu 18.04 LTS (Bionic Beaver)
 
+  * Ubuntu 20.04 LTS (Focal Fossa)
+
   * Linux kernel version ``4.15.0-0-generic`` or later is required.
 
 * CentOS
 
+  .. note::
+
+    CentOS 7 supports only source installs, installation of OpenStack
+    with distro packages is not supported.
+
   * Centos 7, fully updated.
+
+  * Centos 8
 
   * Linux kernel version ``3.10.0`` or later.
 

@@ -21,8 +21,8 @@ listed in our :dev_docs:`architecture reference <reference/architecture/index.ht
 Why choose OpenStack-Ansible?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-* Supports the major Linux distributions Ubuntu, CentOS (WIP) and OpenSUSE
-  (WIP).
+* Supports the major Linux distributions Ubuntu, CentOS, Debian
+  and OpenSUSE (experimental).
 * Supports the major CPU architectures x86, ppc64, s390x (WIP).
 * Offers automation for upgrades between major OpenStack releases.
 * Uses OpenStack defaults for each of the project roles, and provides
