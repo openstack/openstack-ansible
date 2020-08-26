@@ -62,7 +62,7 @@ system packages are upgraded and then reboot into the new kernel:
 
 .. code-block:: shell-session
 
-   ## Ubuntu
+   ## Ubuntu / Debian
    # apt-get update
    # apt-get dist-upgrade
    # reboot
@@ -70,8 +70,8 @@ system packages are upgraded and then reboot into the new kernel:
 .. code-block:: shell-session
 
    ## CentOS
-   # yum upgrade
-   # yum install git
+   # dnf upgrade
+   # dnf install git-core
    # systemctl stop firewalld
    # systemctl mask firewalld
    # reboot
@@ -83,12 +83,6 @@ system packages are upgraded and then reboot into the new kernel:
    SELinux enabled is not currently supported in OpenStack-Ansible
    for CentOS/RHEL due to a lack of maintainers for the feature.
 
-.. code-block:: shell-session
-
-   ## openSUSE
-   # zypper up
-   # zypper in git-core
-   # reboot
 
 .. note::
 
@@ -129,9 +123,7 @@ version.
 .. note::
    The |current_release_formal_name| release is only compatible with
    Debian 10 (buster), Ubuntu 18.04 (Bionic Beaver), Ubuntu 20.04
-   (Focal Fossa), CentOS 7 and CentOS 8. Experimentat support is
-   provided for openSUSE Leap 15.X but this is expected to be removed
-   in the next major release.
+   (Focal Fossa) and CentOS 8.
 
 The next step is to bootstrap Ansible and the Ansible roles for the
 development environment.

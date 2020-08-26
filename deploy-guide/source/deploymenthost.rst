@@ -29,9 +29,7 @@ hosts:
 * `Ubuntu server 18.04 (Bionic Beaver) LTS 64-bit <http://releases.ubuntu.com/18.04/>`_
 * `Ubuntu server 20.04 (Focal Fossa) LTS 64-bit <http://releases.ubuntu.com/20.04/>`_
 * `Debian 10 (Buster) LTS 64-bit <https://www.debian.org/distrib/>`_
-* `Centos 7 64-bit <http://isoredirect.centos.org/centos/7/isos/x86_64/>`_
 * `Centos 8 64-bit <http://isoredirect.centos.org/centos/8/isos/x86_64/>`_
-* `openSUSE 15.X (experimental) 64-bit <https://software.opensuse.org/distributions/leap>`_
 
 Configure at least one network interface to access the Internet or suitable
 local repositories.
@@ -107,29 +105,6 @@ Before you begin, we recommend upgrading your system packages and kernel.
     deployments. Until that work is complete, deployers must maintain their
     own firewall rulesets or disable the firewall entirely.
 
-Configure openSUSE
-~~~~~~~~~~~~~~~~~~
-
-Install additional software packages and configure Network Time Protocol (NTP).
-Before you begin, we recommend upgrading your system packages and kernel.
-
-#. Upgrade the system packages and kernel
-
-   .. code-block:: shell-session
-
-       # zypper up
-
-#. Reboot the host.
-
-#. Install additional software packages if they were not installed
-   during the operating system installation:
-
-   .. parsed-literal::
-
-       # zypper ar \http://download.opensuse.org/repositories/Cloud:/OpenStack:/|suse_series|/openSUSE_Leap_42.3 OBS:Cloud:OpenStack:|suse_series|
-       # zypper install git-core ntp openssh python-devel sudo gcc libffi-devel libopenssl-devel
-
-#. Configure NTP to synchronize with a suitable time source.
 
 Configure SSH keys
 ==================

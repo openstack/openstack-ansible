@@ -20,22 +20,9 @@ following minimum requirements:
 
 * CentOS
 
-  .. note::
-
-    CentOS 7 supports only source installs, installation of OpenStack
-    with distro packages is not supported.
-
-  * Centos 7, fully updated.
-
   * Centos 8
 
   * Linux kernel version ``3.10.0`` or later.
-
-* openSUSE (support is experimental)
-
-  * Leap 15.X, fully updated.
-
-  * Linux kernel version ``4.4.X`` or later.
 
 * Secure Shell (SSH) client and server that support public key
   authentication

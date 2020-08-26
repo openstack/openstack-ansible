@@ -16,7 +16,6 @@ target host:
 * Debian 10 64-bit
 * Centos 7 64-bit
 * Centos 8 64-bit
-* openSUSE 15.X 64-bit
 
 Configure at least one network interface to access the Internet or
 suitable local repositories.
@@ -140,48 +139,6 @@ Configure CentOS
 
 #. Reboot the host to activate the changes and use the new kernel.
 
-Configure openSUSE
-~~~~~~~~~~~~~~~~~~
-
-#. Upgrade the system packages and kernel:
-
-   .. code-block:: shell-session
-
-       # zypper up
-
-#. Reboot the host.
-
-#. Ensure that the kernel version is ``4.4`` or later:
-
-   .. code-block:: shell-session
-
-       # uname -r
-
-#. Install additional software packages:
-
-   .. code-block:: shell-session
-
-       # zypper install bridge-utils iputils lsof lvm2 \
-         chrony opensshr sudo tcpdump python3
-
-#. Add the appropriate kernel modules to the ``/etc/modules-load.d`` file to
-   enable VLAN and bond interfaces:
-
-   .. code-block:: shell-session
-
-      # echo 'bonding' >> /etc/modules-load.d/openstack-ansible.conf
-      # echo '8021q' >> /etc/modules-load.d/openstack-ansible.conf
-
-#. Configure Network Time Protocol (NTP) in ``/etc/chrony.conf`` to
-   synchronize with a suitable time source and start the service:
-
-   .. code-block:: shell-session
-
-      # systemctl enable chronyd.service
-      # systemctl start chronyd.service
-
-
-#. Reboot the host to activate the changes and use the new kernel.
 
 Configure SSH keys
 ==================
