@@ -32,8 +32,8 @@ import openstackdocstheme
 # Variables to override
 target_name = 'openstack-ansible'
 description = 'OpenStack-Ansible deploys OpenStack environments using Ansible.'
-previous_series_name = 'train'
-current_series_name = 'ussuri'
+previous_series_name = 'ussuri'
+current_series_name = 'victoria'
 
 # General information about the project.
 author = 'OpenStack-Ansible Contributors'
@@ -48,13 +48,11 @@ current_series = openstackdocstheme.ext._get_series_name()
 if current_series == "latest":
     latest_tag = "master"
     rdo_series = previous_series_name
-    suse_series = previous_series_name.capitalize()
 else:
     series_names = current_series.capitalize()
     latest_tag = subprocess.check_output(["git", "describe", "--abbrev=0",
                                           "--tag"]).strip().decode()
     rdo_series = current_series_name
-    suse_series = current_series_name.capitalize()
 
 deploy_guide_prefix = ("https://docs.openstack.org/project-deploy-guide/"
                        "openstack-ansible/{}/%s".format(current_series))
@@ -67,11 +65,9 @@ role_docs_prefix = ("https://docs.openstack.org/openstack-ansible-"
 rst_epilog = """
 .. |latest_tag| replace:: {latest_tag}
 .. |rdo_series| replace:: {rdo_series}
-.. |suse_series| replace:: {suse_series}
 """.format(
     latest_tag=latest_tag,
     rdo_series=rdo_series,
-    suse_series=suse_series
 )
 
 # Format: Reference name: (string containing %s for substitution, linkname)
