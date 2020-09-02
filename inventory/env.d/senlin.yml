@@ -1,0 +1,31 @@
+component_skel:
+  senlin_api:
+    belongs_to:
+      - senlin_all
+  senlin_engine:
+    belongs_to:
+      - senlin_all
+  senlin_conductor:
+    belongs_to:
+      - senlin_all
+  senlin_health_manager:
+    belongs_to:
+      - senlin_all
+
+container_skel:
+  senlin_container:
+    belongs_to:
+      - senlin-infra_containers
+    contains:
+      - senlin_api
+      - senlin_engine
+      - senlin_conductor
+      - senlin_health_manager
+
+physical_skel:
+  senlin-infra_containers:
+    belongs_to:
+      - all_containers
+  senlin-infra_hosts:
+    belongs_to:
+      - hosts
