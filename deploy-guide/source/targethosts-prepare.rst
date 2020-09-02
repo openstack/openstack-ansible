@@ -14,7 +14,6 @@ target host:
 * Ubuntu server 18.04 (Bionic Beaver) LTS 64-bit
 * Ubuntu server 20.04 (Focal Fossa) LTS 64-bit
 * Debian 10 64-bit
-* Centos 7 64-bit
 * Centos 8 64-bit
 
 Configure at least one network interface to access the Internet or
@@ -35,13 +34,13 @@ Configure Ubuntu
 
    .. code-block:: shell-session
 
-       # apt-get update
+       # apt update
 
 #. Upgrade the system packages and kernel:
 
    .. code-block:: shell-session
 
-       # apt-get dist-upgrade
+       # apt dist-upgrade
 
 #. Reboot the host.
 
@@ -55,7 +54,7 @@ Configure Ubuntu
 
    .. code-block:: shell-session
 
-       # apt-get install bridge-utils debootstrap ifenslave ifenslave-2.6 \
+       # apt install bridge-utils debootstrap ifenslave ifenslave-2.6 \
          lsof lvm2 chrony openssh-server sudo tcpdump vlan python3
 
 #. Install the kernel extra package if you have one for your kernel version \
@@ -88,7 +87,7 @@ Configure CentOS
 
    .. code-block:: shell-session
 
-       # yum upgrade
+       # dnf upgrade
 
 #. Disable SELinux. Edit ``/etc/sysconfig/selinux``, make sure that
    ``SELINUX=enforcing`` is changed to ``SELINUX=disabled``.
@@ -110,8 +109,8 @@ Configure CentOS
 
    .. code-block:: shell-session
 
-       # yum install bridge-utils iputils lsof lvm2 \
-         chrony openssh-server sudo tcpdump python3
+       # dnf install iputils lsof lvm2 chrony \
+         openssh-server sudo tcpdump python3
 
 #. Add the appropriate kernel modules to the ``/etc/modules-load.d`` file to
    enable VLAN and bond interfaces:

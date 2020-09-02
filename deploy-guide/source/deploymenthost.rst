@@ -44,14 +44,14 @@ Before you begin, we recommend upgrading your system packages and kernel.
 
    .. code-block:: shell-session
 
-       # apt-get update
+       # apt update
 
 
 #. Upgrade the system packages and kernel:
 
    .. code-block:: shell-session
 
-       # apt-get dist-upgrade
+       # apt dist-upgrade
 
 #. Reboot the host.
 
@@ -60,7 +60,7 @@ Before you begin, we recommend upgrading your system packages and kernel.
 
    .. code-block:: shell-session
 
-       # apt-get install aptitude build-essential git ntp ntpdate openssh-server python-dev sudo
+       # apt install build-essential git ntp ntpdate openssh-server python3-dev sudo
 
 #. Configure NTP to synchronize with a suitable time source.
 
@@ -74,7 +74,7 @@ Before you begin, we recommend upgrading your system packages and kernel.
 
    .. code-block:: shell-session
 
-       # yum upgrade
+       # dnf upgrade
 
 #. Reboot the host.
 
@@ -83,8 +83,9 @@ Before you begin, we recommend upgrading your system packages and kernel.
 
    .. parsed-literal::
 
-       # yum install \https://rdoproject.org/repos/openstack-|rdo_series|/rdo-release-|rdo_series|.rpm
-       # yum install git ntp ntpdate openssh-server python-devel sudo '\@Development Tools'
+       # dnf install \https://repos.fedorapeople.org/repos/openstack/openstack-|rdo_series|/rdo-release-|rdo_series|.el8.rpm
+       # dnf install git chrony openssh-server python3-devel sudo
+       # dnf group install "Development Tools"
 
 #. Configure NTP to synchronize with a suitable time source.
 
