@@ -18,7 +18,7 @@ manila_enabled_share_protocols:
   - NFS
   - CEPHFS
 
-_manila_default_share_type: "{{ (manila_backends | default({})).keys() }}"
+_manila_default_share_type: "{{ (manila_backends | default({})).keys() | list }}"
 manila_default_share_type: "{{ ((_manila_default_share_type | length) > 0) | ternary(_manila_default_share_type[0], null) }}"
 
 # manila_backend_lvm_inuse: True if current host has an lvm backend
