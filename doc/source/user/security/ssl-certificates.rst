@@ -171,45 +171,28 @@ http-01 challenge requests.
     haproxy_ssl: true
     haproxy_ssl_letsencrypt_enable: True
     haproxy_ssl_letsencrypt_install_method: "distro"
-    haproxy_ssl_letsencrypt_setup_extra_params: "--http-01-address {{ ansible_host }} --http-01-port 8888"
     haproxy_ssl_letsencrypt_email: "email.address@example.com"
 
-    haproxy_extra_services:
-      # an internal only service for acme-challenge whose backend is certbot running on any haproxy instance
-      - service:
-          haproxy_service_name: letsencrypt
-          haproxy_backend_nodes: "{{ groups['haproxy_all'] }}"
-          backend_rise: 1                       #rise quickly to detect certbot running without delay
-          backend_fall: 2
-          haproxy_bind:
-            - 127.0.0.1                         #bind to the localhost as the host internal IP will be used by certbot
-          haproxy_port: 8888
-          haproxy_balance_type: http
 
-
-Copy the whole variable ``haproxy_default_services`` from
-``/opt/openstack-ansible/inventory/group_vars/haproxy/haproxy.yml``
-to ``/etc/openstack_deploy/group_vars/haproxy/haproxy_all.yml`` and
-update the section for horizon to include the ACL redirects http-01
-challenges to the HAProxy ``letsencrypt`` backend as follows:
+If you don't have horizon deployed, you will need to define dummy service that
+will listen on 80 and 443 ports and will be used for acme-challenge, whose
+backend is certbot on the haproxy host:
 
 .. code-block:: shell-session
 
-  - service:
-      haproxy_service_name: horizon
-      haproxy_backend_nodes: "{{ groups['horizon_all'] | default([]) }}"
-      haproxy_ssl: "{{ haproxy_ssl }}"
-      haproxy_ssl_all_vips: true
-      haproxy_port: "{{ haproxy_ssl | ternary(443,80) }}"
-      haproxy_backend_port: 80
-      haproxy_redirect_http_port: 80
-      haproxy_balance_type: http
-      haproxy_balance_alg: source
-      haproxy_backend_options:
-        - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
-      haproxy_service_enabled: "{{ groups['horizon_all'] is defined and groups['horizon_all'] | length > 0 }}"
-      haproxy_redirect_scheme: "https if !{ ssl_fc } !{ path_beg /.well-known/acme-challenge/ }"   #redirect all non-ssl traffic to ssl except acme-challenge
-      haproxy_frontend_acls:                                 #use a frontend ACL specify the backend to use for acme-challenge
-        letsencrypt-acl:
-            rule: "path_beg /.well-known/acme-challenge/"
-            backend_name: letsencrypt
+  haproxy_extra_services:
+    # the external facing service which serves the apache test site, with a acl for LE requests
+    - service:
+        haproxy_service_name: certbot
+        haproxy_redirect_http_port: 80                         #redirect port 80 to port ssl
+        haproxy_redirect_scheme: "https if !{ ssl_fc } !{ path_beg /.well-known/acme-challenge/ }"   #redirect all non-ssl traffic to ssl except acme-challenge
+        haproxy_port: 443
+        haproxy_frontend_acls: "{{ haproxy_ssl_letsencrypt_acl }}"       #use a frontend ACL specify the backend to use for acme-challenge
+        haproxy_ssl: True
+        haproxy_backend_nodes:                                 #apache is running on locally on 127.0.0.1:80 serving a dummy site
+          - name: local-test-service
+            ip_addr: 127.0.0.1
+        haproxy_balance_type: http
+        haproxy_backend_port: 80
+        haproxy_backend_options:
+          - "httpchk HEAD /"                                   # request to use for health check for the example service
