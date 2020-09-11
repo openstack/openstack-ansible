@@ -222,13 +222,11 @@
 #     nova compute and all storage service containers. Optionally applies to
 #     to the swift proxy service.
 #   - Network of type 'vxlan' that contains neutron VXLAN tenant networks
-#     1 to 1000 and uses 'br-vxlan' bridge on target hosts. Maps to the
-#     'eth10' device in containers. Applies to all neutron agent containers
-#     and neutron agents on bare metal hosts.
+#     1 to 1000 and uses 'br-vxlan' bridge on target hosts. Applies to all
+#     neutron agents on bare metal hosts.
 #   - Network of type 'vlan' that contains neutron VLAN networks 101 to 200
-#     and 301 to 400 and uses the 'br-vlan' bridge on target hosts. Maps to
-#     the 'eth11' device in containers. Applies to all neutron agent
-#     containers and neutron agents on bare metal hosts.
+#     and 301 to 400 and uses the 'br-vlan' bridge on target hosts. Applies
+#     to all neutron agent containers and neutron agents on bare metal hosts.
 #   - Network of type 'flat' that contains one neutron flat network and uses
 #     the 'br-vlan' bridge on target hosts. Maps to the 'eth12' device in
 #     containers. Applies to all neutron agent containers and neutron agents
