@@ -50,6 +50,7 @@
   lineinfile:
     dest: "/var/lib/lxc/{{ inventory_hostname }}/config"
     line: "lxc.mount.entry = {{ item['mount_path'] }} {{ item['bind_dir_path'].lstrip('/') }} none bind,create=dir 0 0"
+    insertbefore: "^lxc.mount.entry = .*\\s{{ item['bind_dir_path'].lstrip('/') | regex_replace('/', '\/') }}.*"
     backup: "true"
   with_items:
     - "{{ lxc_default_bind_mounts | default([]) }}"
