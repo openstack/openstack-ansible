@@ -228,6 +228,16 @@ haproxy_default_services:
         - "httpchk GET /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
       haproxy_service_enabled: "{{ groups['sahara_api'] is defined and groups['sahara_api'] | length > 0 }}"
   - service:
+      haproxy_service_name: senlin_api
+      haproxy_backend_nodes: "{{ groups['senlin_api'] | default([]) }}"
+      haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
+      haproxy_port: 8778
+      haproxy_balance_type: http
+      haproxy_backend_options:
+        - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+      haproxy_service_enabled: "{{ groups['senlin_api'] is defined and groups['senlin_api'] | length > 0 }}"
+  - service:
       haproxy_service_name: swift_proxy
       haproxy_backend_nodes: "{{ groups['swift_proxy'] | default([]) }}"
       haproxy_ssl: "{{ haproxy_ssl }}"

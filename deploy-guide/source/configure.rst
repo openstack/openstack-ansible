@@ -166,6 +166,8 @@ OpenStack service roles
 
 - :role_docs:`os_sahara`
 
+- :role_docs:`os_senlin`
+
 - :role_docs:`os_swift`
 
 - :role_docs:`os_tempest`
