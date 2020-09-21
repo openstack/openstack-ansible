@@ -143,27 +143,6 @@ IP address should be applied to ``br-vxlan``:
       valid_lft forever preferred_lft forever
       ...
 
-IP address should be applied to eth10 inside the required LXC containers:
-
-.. code-block:: console
-
-   # ip address show dev eth10
-   67: eth10: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 150...UP...
-   link/ether b1:b1:b1:b1:b1:02 brd ff:ff:ff:ff:ff:ff
-   inet 172.29.240.55/22 brd 172.29.243.255 scope global eth10
-      valid_lft forever preferred_lft forever
-      ...
-
-``br-vxlan`` should contain veth-pair ends from required LXC containers and
-a physical interface or tagged-subinterface:
-
-.. code-block:: console
-
-   # brctl show br-vxlan
-   bridge name     bridge id          STP enabled  interfaces
-   br-vxlan        8000.ghijkl123456  no           bond1.100
-                                                   3333333_eth10
-
 Checking services
 ~~~~~~~~~~~~~~~~~
 
@@ -287,15 +266,15 @@ LXC containers, VXLAN overlay and the Linuxbridge ml2 driver.
 
 
    NETWORK NODE
-                                     +-------------+    +-------------+   +-----------------+
-                     +->"If VXLAN"+->+  *bond#.#00 +--->+ *br vxlan   +-->+*Container eth10 +
-                     |               +-------------+    +-------------+   +-----------------+
-   +----------------+                                                                         |       +-------------+
-   |physical network|++                                                                       +--->+ |  brq bridge  |+--> Neutron DHCP/Router
-   +----------------+                                                                         |       +-------------+
-                     |               +-------------+    +-------------+   +-----------------+
-                     +->"If  VLAN"+->+   bond1     +--->+  br vlan    +-->+ Container eth11 +
-                                     +-------------+    +-------------+   +-----------------+
+                                     +-------------+    +-------------+
+                     +->"If VXLAN"+->+  *bond#.#00 +--->+ *br vxlan   +-->
+                     |               +-------------+    +-------------+  |
+   +----------------+                                                     |     +-------------+
+   |physical network|++                                                   +--->+|  brq bridge |+--> Neutron DHCP/Router
+   +----------------+                                                     |     +-------------+
+                     |               +-------------+    +-------------+  |
+                     +->"If  VLAN"+->+   bond1     +--->+  br vlan    +-->
+                                     +-------------+    +-------------+
 
 Preliminary troubleshooting questions to answer:
 ------------------------------------------------
@@ -402,8 +381,7 @@ Yes:
 Are VXLAN VTEP addresses able to ping each other?
 
 No:
-    - Check ``br-vxlan`` interface on Compute and ``eth10``
-      inside the Neutron network agent container.
+    - Check ``br-vxlan`` interface on Compute and Network nodes
     - Check veth pairs between containers and linux bridges on the host.
     - Check that linux bridges contain the proper interfaces
       on compute and network nodes.

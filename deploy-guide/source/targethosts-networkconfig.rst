@@ -74,13 +74,14 @@ Host network bridges information
 
 *  OpenStack Networking tunnel: ``br-vxlan``
 
-   The ``br-vxlan`` bridge is **required if** the environment is configured to
+   The ``br-vxlan`` interface is **required if** the environment is configured to
    allow projects to create virtual networks using VXLAN.
-   It provides the interface for virtual (VXLAN) tunnel networks.
+   It provides the interface for encapsulated virtual (VXLAN) tunnel network traffic.
 
-   The bridge attaches to a physical or logical interface, typically a
-   ``bond1`` VLAN subinterface. It also attaches to ``eth10`` in each
-   associated container.
+   Note that ``br-vxlan`` is not required to be a bridge at all, a physical interface
+   or a bond VLAN subinterface can be used directly and will be more efficient. The name
+   ``br-vxlan`` is maintained here for consistency in the documentation and example
+   configurations.
 
    The container network interface it attaches to is configurable in
    the ``openstack_user_config.yml`` file.
@@ -91,8 +92,7 @@ Host network bridges information
    tagged or flat (no VLAN tag) networks.
 
    The bridge attaches to a physical or logical interface, typically ``bond1``.
-   It attaches to ``eth11`` for VLAN type networks in each associated
-   container. It is not assigned an IP address because it handles only
+   It is not assigned an IP address because it handles only
    layer 2 connectivity.
 
    The container network interface that the bridge attaches to is configurable
