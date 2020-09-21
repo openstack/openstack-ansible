@@ -214,6 +214,17 @@
 
 # ubuntu
 - job:
+    name: openstack-ansible-deploy-aio_ovn_lxc-ubuntu-focal
+    parent: openstack-ansible-deploy-aio
+    nodeset: ubuntu-focal
+
+- job:
+    name: openstack-ansible-deploy-aio_metal_ovn-ubuntu-focal
+    parent: openstack-ansible-deploy-aio
+    nodeset: ubuntu-focal
+
+# ubuntu bionic
+- job:
     name: openstack-ansible-deploy-aio_lxc-ubuntu-bionic
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-bionic
@@ -229,6 +240,11 @@
     nodeset: ubuntu-bionic
 
 - job:
+    name: openstack-ansible-deploy-aio_ovn_lxc-ubuntu-bionic
+    parent: openstack-ansible-deploy-aio
+    nodeset: ubuntu-bionic
+
+- job:
     name: openstack-ansible-deploy-aio_proxy-ubuntu-bionic
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-bionic
@@ -240,6 +256,11 @@
 
 - job:
     name: openstack-ansible-deploy-aio_metal-ubuntu-bionic
+    parent: openstack-ansible-deploy-aio
+    nodeset: ubuntu-bionic
+
+- job:
+    name: openstack-ansible-deploy-aio_metal_ovn-ubuntu-bionic
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-bionic
 
