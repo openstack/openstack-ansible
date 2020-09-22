@@ -142,16 +142,13 @@
     name: openstack-ansible-deploy-ceph-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-aio_ceph-ubuntu-bionic
-        - openstack-ansible-deploy-aio_ceph-ubuntu-focal:
-            voting: false
+        - openstack-ansible-deploy-aio_ceph-ubuntu-focal
     gate:
       jobs:
-        - openstack-ansible-deploy-aio_ceph-ubuntu-bionic
+        - openstack-ansible-deploy-aio_ceph-ubuntu-focal
     periodic:
       jobs:
-        - openstack-ansible-deploy-aio_ceph-ubuntu-bionic
-        - openstack-ansible-upgrade-aio_ceph-ubuntu-bionic
+        - openstack-ansible-deploy-aio_ceph-ubuntu-focal
 
 - project-template:
     name: openstack-ansible-deploy-proxy-jobs
