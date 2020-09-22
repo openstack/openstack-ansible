@@ -38,7 +38,7 @@ ceph_conf_overrides: "{{ (ceph_conf_overrides_rgw | default({})) | combine(ceph_
 # needed.
 nfs_file_gw: "{{ (('ceph-nfs' in groups) and ('ceph-mds' in groups)) }}"
 nfs_obj_gw: False
-nfs_ganesha_stable: "{{ (ansible_distribution_release != 'bionic') }}"
+nfs_ganesha_stable: "{{ (ansible_distribution_release not in ['bionic', 'focal']) }}"
 
 # NTP in an OSA environment is handled by ansible-hardening using chrony
 # ceph-ansible's default enabling of ntpd conflicts with the OSA defaults
