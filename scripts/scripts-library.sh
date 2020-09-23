@@ -207,12 +207,12 @@ function setup_ara {
     # This installs from a git checkout
     # PIP_COMMAND and PIP_OPTS are exported by the bootstrap-ansible script.
     # PIP_OPTS contains the whole set of constraints that need to be applied.
-    ${PIP_COMMAND} install --isolated ${PIP_OPTS} ${ARA_SRC_HOME} "${ANSIBLE_PACKAGE:-ansible}"
+    ${PIP_COMMAND} install --isolated ${PIP_OPTS} ${ARA_SRC_HOME}
   else
     # This installs from pypi
     # PIP_COMMAND and PIP_OPTS are exported by the bootstrap-ansible script.
     # PIP_OPTS contains the whole set of constraints that need to be applied.
-    ${PIP_COMMAND} install --isolated ${PIP_OPTS} 'ara<1.0.0' "${ANSIBLE_PACKAGE:-ansible}"
+    ${PIP_COMMAND} install --isolated ${PIP_OPTS} "ara[server]"
   fi
 }
 
