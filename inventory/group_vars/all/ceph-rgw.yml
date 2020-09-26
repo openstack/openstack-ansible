@@ -7,7 +7,7 @@ radosgw_admin_user: radosgw
 radosgw_admin_tenant: service
 
 radosgw_service_port: "{{ (groups['swift_proxy'] is defined and groups['swift_proxy'] | length > 0) | ternary(7980,8080) }}"
-radosgw_address: "{{ container_address }}"
+radosgw_address: "{{ management_address }}"
 radosgw_service_proto: http
 radosgw_service_publicuri_proto: "{{ openstack_service_publicuri_proto | default(radosgw_service_proto) }}"
 radosgw_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(radosgw_service_proto) }}"
