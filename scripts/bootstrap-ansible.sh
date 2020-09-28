@@ -22,7 +22,7 @@ set -e -u -x
 export HTTP_PROXY=${HTTP_PROXY:-""}
 export HTTPS_PROXY=${HTTPS_PROXY:-""}
 # The Ansible version used for testing
-export ANSIBLE_PACKAGE=${ANSIBLE_PACKAGE:-"ansible==2.9.13"}
+export ANSIBLE_PACKAGE=${ANSIBLE_PACKAGE:-"ansible-base==2.10.1"}
 export ANSIBLE_ROLE_FILE=${ANSIBLE_ROLE_FILE:-"ansible-role-requirements.yml"}
 export ANSIBLE_COLLECTION_FILE=${ANSIBLE_COLLECTION_FILE:-"ansible-collection-requirements.yml"}
 export USER_ROLE_FILE=${USER_ROLE_FILE:-"user-role-requirements.yml"}
@@ -186,6 +186,7 @@ if [ -f "${ANSIBLE_ROLE_FILE}" ] && [[ -z "${SKIP_OSA_ROLE_CLONE+defined}" ]]; t
     export ANSIBLE_VARS_PLUGINS="/dev/null"
     export ANSIBLE_STRATEGY_PLUGINS="/dev/null"
     export ANSIBLE_CONFIG="none-ansible.cfg"
+    export ANSIBLE_COLLECTIONS_PATH="/etc/ansible"
 
     pushd scripts
       /opt/ansible-runtime/bin/ansible-playbook get-ansible-role-requirements.yml \
@@ -202,6 +203,7 @@ if [ -f "${ANSIBLE_ROLE_FILE}" ] && [[ -z "${SKIP_OSA_ROLE_CLONE+defined}" ]]; t
     unset ANSIBLE_VARS_PLUGINS
     unset ANSIBLE_STRATEGY_PLUGINS
     unset ANSIBLE_CONFIG
+    unset ANSIBLE_COLLECTIONS_PATH
 fi
 
 echo "System is bootstrapped and ready for use."
