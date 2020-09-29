@@ -68,7 +68,9 @@
     # venv tag for all hosts in the 'cinder_all' host group.
     - name: Gather software version list
       set_fact:
-        cinder_all_software_versions: "{{ (groups['cinder_all'] | map('extract', hostvars, ['ansible_local', 'openstack_ansible', 'cinder', 'venv_tag'])) | list }}"
+        cinder_all_software_versions: "{{ (groups['cinder_all'] |
+                                           map('extract', hostvars, ['ansible_local', 'openstack_ansible', 'cinder', 'venv_tag'])) |
+                                           list }}"
       delegate_to: localhost
       run_once: yes
 

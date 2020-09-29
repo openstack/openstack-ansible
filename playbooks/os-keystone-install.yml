@@ -107,7 +107,9 @@
     # venv tag for all hosts in the 'keystone_all' host group.
     - name: Gather software version list
       set_fact:
-        keystone_all_software_versions: "{{ (groups['keystone_all'] | map('extract', hostvars, ['ansible_local', 'openstack_ansible', 'keystone', 'venv_tag'])) | list }}"
+        keystone_all_software_versions: "{{ (groups['keystone_all'] |
+                                             map('extract', hostvars, ['ansible_local', 'openstack_ansible', 'keystone', 'venv_tag'])) |
+                                             list }}"
       delegate_to: localhost
       run_once: yes
 

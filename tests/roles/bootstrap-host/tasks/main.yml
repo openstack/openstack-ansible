@@ -65,7 +65,7 @@
     dest: '/openstack/src'
     state: link
   when:
-    - "lookup('env', 'ZUUL_SRC_PATH') != ''"
+    - "lookup('env', 'ZUUL_SRC_PATH') | length > 0"
 
 # Prepare the swap space loopback disk
 # This is only necessary if there isn't swap already

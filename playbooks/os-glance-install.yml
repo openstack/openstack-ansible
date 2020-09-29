@@ -52,7 +52,9 @@
     # venv tag for all hosts in the 'glance_all' host group.
     - name: Gather software version list
       set_fact:
-        glance_all_software_versions: "{{ (groups['glance_all'] | map('extract', hostvars, ['ansible_local', 'openstack_ansible', 'glance', 'venv_tag'])) | list }}"
+        glance_all_software_versions: "{{ (groups['glance_all'] |
+                                           map('extract', hostvars, ['ansible_local', 'openstack_ansible', 'glance', 'venv_tag'])) |
+                                           list }}"
       delegate_to: localhost
       run_once: yes
 

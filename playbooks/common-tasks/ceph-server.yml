@@ -74,7 +74,9 @@
     - name: Install the EPEL repository
       yum_repository:
         name: epel-ceph
-        baseurl: "{{ centos_epel_mirror | default('http://download.fedoraproject.org/pub/epel') ~ '/' ~ ansible_distribution_major_version ~ '/' ~ ansible_architecture }}"
+        baseurl: "{{ centos_epel_mirror | default('http://download.fedoraproject.org/pub/epel') ~ '/'
+                   ~ ansible_distribution_major_version ~ '/'
+                   ~ ansible_architecture }}"
         description: 'Extra Packages for Enterprise Linux 7 - $basearch'
         gpgcheck: yes
         enabled: yes

@@ -61,7 +61,10 @@
     - deploy-user-secrets
 
 - name: Generate any missing values in user_secrets
-  command: "/opt/ansible-runtime/bin/python {{ bootstrap_host_aio_script_path }}/pw-token-gen.py --file /etc/openstack_deploy/{{ bootstrap_host_user_secrets_filename }}"
+  command: >
+    /opt/ansible-runtime/bin/python
+    {{ bootstrap_host_aio_script_path }}/pw-token-gen.py
+    --file /etc/openstack_deploy/{{ bootstrap_host_user_secrets_filename }}
   changed_when: false
   tags:
     - generate_secrets

@@ -25,7 +25,6 @@
   user: root
   vars_files:
     - "defaults/{{ install_method }}_install.yml"
-    - "defaults/ceph_ansible.yml"
   pre_tasks:
     - name: Gather ceph-mon facts
       action: setup

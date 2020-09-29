@@ -77,6 +77,7 @@
 
     - name: Add volume group block device to cinder
       shell: |
+        set -o pipefail
         {% if item.value.volume_group is defined %}
         if [ "$(pvdisplay | grep -B1 {{ item.value.volume_group }} | awk '/PV/ {print $3}')" ];then
           for device in `pvdisplay | grep -B1 {{ item.value.volume_group }} | awk '/PV/ {print $3}'`
@@ -86,6 +87,8 @@
         {% else %}
         echo "{{ item.key }} volume_group not defined"
         {% endif %}
+      args:
+        executable: /bin/bash
       with_dict: "{{ cinder_backends | default({}) }}"
       when:
         - container_tech | default('lxc') == 'lxc'

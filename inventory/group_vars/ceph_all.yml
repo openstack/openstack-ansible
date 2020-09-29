@@ -18,6 +18,12 @@ ceph_container_bind_mounts:
   - bind_dir_path: "/var/lib/ceph"
     mount_path: "/openstack/{{ inventory_hostname }}"
 
+ceph_conf_overrides_log:
+  global:
+    log_to_syslog: true
+    err_to_syslog: true
+  mon:
+    mon_cluster_log_to_syslog: true
 
 ceph_conf_overrides_manila:
   client.manila:
@@ -26,7 +32,7 @@ ceph_conf_overrides_manila:
 # To extend ceph_conf_overrides use the ceph_conf_overrides_custom which will
 # combine any ceph_conf_overrides with other RGW specific overrides.
 ceph_conf_overrides_custom: {}
-ceph_conf_overrides: "{{ (ceph_conf_overrides_rgw | default({})) | combine(ceph_conf_overrides_manila, recursive=True) | combine(ceph_conf_overrides_custom, recursive=True) }}"
+ceph_conf_overrides: "{{ (ceph_conf_overrides_rgw | default({})) | combine(ceph_conf_overrides_manila, recursive=True) | combine(ceph_conf_overrides_custom, recursive=True) | combine(ceph_conf_overrides_log, recursive=True) }}"
 
 # Disable the NFS gateway PPA and package install by default as it is not
 # needed.
@@ -38,30 +44,4 @@ nfs_ganesha_stable: "{{ (ansible_distribution_release != 'bionic') }}"
 # ceph-ansible's default enabling of ntpd conflicts with the OSA defaults
 ntp_service_enabled: False
 
-
-openstack_cephfs_data_pool:
-  name: "manila_data"
-  pg_num: "{{ osd_pool_default_pg_num }}"
-  pgp_num: "{{ osd_pool_default_pg_num }}"
-  rule_name: "replicated_rule"
-  type: 1
-  erasure_profile: ""
-  expected_num_objects: ""
-  application: "cephfs"
-  size: "{{ osd_pool_default_size }}"
-  min_size: "{{ osd_pool_default_min_size }}"
-openstack_cephfs_metadata_pool:
-  name: "manila_metadata"
-  pg_num: "{{ osd_pool_default_pg_num }}"
-  pgp_num: "{{ osd_pool_default_pg_num }}"
-  rule_name: "replicated_rule"
-  type: 1
-  erasure_profile: ""
-  expected_num_objects: ""
-  application: "cephfs"
-  size: "{{ osd_pool_default_size }}"
-  min_size: "{{ osd_pool_default_min_size }}"
-
-cephfs_data_pool: "{{ openstack_cephfs_data_pool }}"
-cephfs_metadata_pool: "{{ openstack_cephfs_metadata_pool }}"
 dashboard_enabled: "{{ not (ansible_os_family | lower == 'redhat' and ansible_distribution_major_version is version('7', '=')) }}"

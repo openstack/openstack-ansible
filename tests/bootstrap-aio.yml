@@ -81,8 +81,8 @@
     - name: Check that new network interfaces are up
       assert:
         that:
-          - ansible_eth12['active'] == true
-          - ansible_eth13['active'] == true
-          - ansible_eth14['active'] == true
+          - ansible_eth12['active'] | bool
+          - ansible_eth13['active'] | bool
+          - ansible_eth14['active'] | bool
       when:
         - (bootstrap_host_container_tech | default('unknown')) != 'nspawn'

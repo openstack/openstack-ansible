@@ -15,8 +15,11 @@
 
 - name: Locate data disk candidates
   shell: >
+    set -o pipefail;
     lsblk -brndo NAME,TYPE,RO,SIZE |
-    awk '/d[b-z]+ disk 0/{ if ($4>m && $4>={{ bootstrap_host_data_disk_min_size }}){m=$4; d=$1}}; END{print d}'
+    awk '/d[b-z]+ disk 0/{ if ($4>m && $4>={{ bootstrap_host_data_disk_min_size }}){m=$4; d=$1} }; END{print d}'
+  args:
+    executable: /bin/bash
   changed_when: false
   register: _data_disk
 
@@ -24,4 +27,4 @@
   set_fact:
     bootstrap_host_data_disk_device: "{{ _data_disk.stdout }}"
   when:
-    - _data_disk.stdout != ''
+    - _data_disk.stdout | length > 0

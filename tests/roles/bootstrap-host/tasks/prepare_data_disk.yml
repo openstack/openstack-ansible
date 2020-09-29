@@ -20,7 +20,10 @@
 #  in case these tasks are executed multiple times.
 - name: Determine whether partitions labeled openstack-data{1,2} are present
   shell: |
+    set -o pipefail;
     parted --script -l -m | egrep -q ':{{ bootstrap_host_data_disk_fs_type }}:openstack-data[12]:;$'
+  args:
+    executable: /bin/bash
   register: data_disk_partitions
   changed_when: false
   failed_when: false

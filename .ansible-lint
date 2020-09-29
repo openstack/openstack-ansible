@@ -1,0 +1,13 @@
+skip_list:
+  - '106'  # Role name {} does not match ``^[a-z][a-z0-9_]+$`` pattern
+  - '208'  # File permissions unset or incorrect
+
+warn_list:
+  - '204'  # Lines should be no longer than 160 chars
+  - '303'  # Using command rather than module
+  - '305'  # Use shell only when shell functionality is required
+  - '306'  # Shells that use pipes should set the pipefail option
+  - '502'  # All tasks should be named
+  - '602'  # Don't compare to empty string
+  - '701'  # meta/main.yml should contain relevant info
+  - '702'  # Tags must contain lowercase letters and digits only

@@ -53,11 +53,14 @@
   # As such, use the btrfs tools to determine the real available size on the
   # disk
   shell: |
+    set -o pipefail
     if [[ $(df -T / | tail -n 1 | awk '{print $2}') == "btrfs" ]]; then
         btrfs fi usage --kbytes / | awk '/^.*Free / {print $3}'| sed 's/\..*//'
     else
         df -BK / | awk '!/^Filesystem/ {print $4}' | sed 's/K//'
     fi
+  args:
+    executable: /bin/bash
   environment:
     LC_ALL: en_US.UTF-8
   when:
