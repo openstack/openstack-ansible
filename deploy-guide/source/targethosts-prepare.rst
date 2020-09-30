@@ -27,6 +27,32 @@ installation on target hosts that do not have local (console) access.
    We also recommend setting your locale to `en_US.UTF-8`. Other locales might
    work, but they are not tested or supported.
 
+
+Configure Debian
+~~~~~~~~~~~~~~~~
+
+#. Update package source lists
+
+   .. code-block:: shell-session
+
+       # apt update
+
+#. Upgrade the system packages and kernel:
+
+   .. code-block:: shell-session
+
+       # apt dist-upgrade
+
+#. Install additional software packages:
+
+   .. code-block:: shell-session
+
+       # apt install bridge-utils debootstrap ifenslave ifenslave-2.6 \
+         lsof lvm2 openssh-server sudo tcpdump vlan python3
+
+#. Reboot the host to activate the changes and use the new kernel.
+
+
 Configure Ubuntu
 ~~~~~~~~~~~~~~~~
 
@@ -42,43 +68,21 @@ Configure Ubuntu
 
        # apt dist-upgrade
 
-#. Reboot the host.
-
-#. Ensure that the kernel version is ``3.13.0-34-generic`` or later:
-
-   .. code-block:: shell-session
-
-       # uname -r
-
 #. Install additional software packages:
 
    .. code-block:: shell-session
 
-       # apt install bridge-utils debootstrap ifenslave ifenslave-2.6 \
-         lsof lvm2 chrony openssh-server sudo tcpdump vlan python3
+       # apt install bridge-utils debootstrap openssh-server \
+         tcpdump vlan python3
 
 #. Install the kernel extra package if you have one for your kernel version \
 
    .. code-block:: shell-session
 
-       # apt install linux-image-extra-$(uname -r)
-
-#. Add the appropriate kernel modules to the ``/etc/modules`` file to
-   enable VLAN and bond interfaces:
-
-   .. code-block:: shell-session
-
-      # echo 'bonding' >> /etc/modules
-      # echo '8021q' >> /etc/modules
-
-#. Configure Network Time Protocol (NTP) in ``/etc/chrony/chrony.conf`` to
-   synchronize with a suitable time source and restart the service:
-
-   .. code-block:: shell-session
-
-      # service chrony restart
+       # apt install linux-modules-extra-$(uname -r)
 
 #. Reboot the host to activate the changes and use the new kernel.
+
 
 Configure CentOS
 ~~~~~~~~~~~~~~~~
@@ -97,36 +101,14 @@ Configure CentOS
       SELinux enabled is not currently supported in OpenStack-Ansible
       for CentOS/RHEL due to a lack of maintainers for the feature.
 
-#. Reboot the host.
-
-#. Ensure that the kernel version is ``3.10`` or later:
-
-   .. code-block:: shell-session
-
-       # uname -r
 
 #. Install additional software packages:
 
    .. code-block:: shell-session
 
-       # dnf install iputils lsof lvm2 chrony \
-         openssh-server sudo tcpdump python3
+       # dnf install iputils lsof openssh-server\
+         sudo tcpdump python3
 
-#. Add the appropriate kernel modules to the ``/etc/modules-load.d`` file to
-   enable VLAN and bond interfaces:
-
-   .. code-block:: shell-session
-
-      # echo 'bonding' >> /etc/modules-load.d/openstack-ansible.conf
-      # echo '8021q' >> /etc/modules-load.d/openstack-ansible.conf
-
-#. Configure Network Time Protocol (NTP) in ``/etc/chrony.conf`` to
-   synchronize with a suitable time source and start the service:
-
-   .. code-block:: shell-session
-
-      # systemctl enable chronyd.service
-      # systemctl start chronyd.service
 
 #. (Optional) Reduce the kernel log level by changing the printk
    value in your sysctls:

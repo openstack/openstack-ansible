@@ -60,7 +60,7 @@ Before you begin, we recommend upgrading your system packages and kernel.
 
    .. code-block:: shell-session
 
-       # apt install build-essential git ntp ntpdate openssh-server python3-dev sudo
+       # apt install build-essential git chrony openssh-server python3-dev sudo
 
 #. Configure NTP to synchronize with a suitable time source.
 
