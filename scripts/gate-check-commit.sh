@@ -190,6 +190,11 @@ else
     # Log some data about the instance and the rest of the system
     log_instance_info
 
+    if [[ $SCENARIO =~ "infra" ]]; then
+      # Verify our infra setup and do not continue with openstack part
+      openstack-ansible healthcheck-infrastructure.yml -e osa_gather_facts=False
+    fi
+
     # Setup OpenStack
     export ANSIBLE_LOG_PATH="${ANSIBLE_LOG_DIR}/setup-openstack.log"
     openstack-ansible setup-openstack.yml -e osa_gather_facts=False ${OPENSTACK_SETUP_EXTRA_ARGS:-}
