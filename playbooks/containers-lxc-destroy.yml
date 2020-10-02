@@ -81,11 +81,9 @@
       prompt: "Are you sure you want to destroy the LXC containers?"
       default: "no"
       private: no
-      when: force_containers_destroy is undefined
     - name: "force_containers_data_destroy"
       prompt: "Are you sure you want to destroy the LXC container data?"
       default: "no"
       private: no
-      when: force_containers_data_destroy is undefined
   tags:
     - lxc-containers-destroy
