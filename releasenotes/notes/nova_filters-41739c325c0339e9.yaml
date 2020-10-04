@@ -1,0 +1,11 @@
+---
+features:
+  - |
+    Added variable `nova_scheduler_extra_filters` which allows to extend
+    list of defaulted `nova_scheduler_default_filters`
+upgrade:
+  - |
+    String value of `nova_scheduler_default_filters` is converted to the list
+    At the moment there is compatability for overriden values, that are string,
+    but this support will be removed in the future releases. So deployers are
+    recommended to replace their string overrides with list ones.
