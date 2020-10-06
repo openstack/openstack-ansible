@@ -247,6 +247,17 @@ haproxy_default_services:
         - "httpchk GET /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
       haproxy_service_enabled: "{{ groups['swift_proxy'] is defined and groups['swift_proxy'] | length > 0 }}"
   - service:
+      haproxy_service_name: adjutant_api
+      haproxy_backend_nodes: "{{ groups['adjutant_api'] | default([]) }}"
+      haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
+      haproxy_port: 5050
+      haproxy_balance_type: http
+      haproxy_balance_alg: source
+      haproxy_backend_options:
+        - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+      haproxy_service_enabled: "{{ groups['adjutant_api'] is defined and groups['adjutant_api'] | length > 0 }}"
+  - service:
       haproxy_service_name: aodh_api
       haproxy_backend_nodes: "{{ groups['aodh_api'] | default([]) }}"
       haproxy_ssl: "{{ haproxy_ssl }}"

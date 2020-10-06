@@ -126,6 +126,8 @@ Infrastructure service roles
 OpenStack service roles
 -----------------------
 
+- :role_docs:`os_adjutant`
+
 - :role_docs:`os_aodh`
 
 - :role_docs:`os_barbican`

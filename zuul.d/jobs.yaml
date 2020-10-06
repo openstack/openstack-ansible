@@ -36,6 +36,7 @@
       - name: openstack/openstack-ansible-openstack_hosts
       - name: openstack/openstack-ansible-os_keystone
       - name: openstack/openstack-ansible-openstack_openrc
+      - name: openstack/openstack-ansible-os_adjutant
       - name: openstack/openstack-ansible-os_aodh
       - name: openstack/openstack-ansible-os_barbican
       - name: openstack/openstack-ansible-os_blazar
@@ -79,6 +80,7 @@
       - name: openstack/ansible-role-uwsgi
       # OpenStack service repos - listed here to make cached repos available in CI
       - name: openstack/requirements
+      - name: openstack/adjutant
       - name: openstack/aodh
       - name: openstack/barbican
       - name: openstack/ceilometer
