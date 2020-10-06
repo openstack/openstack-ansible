@@ -21,7 +21,7 @@ neutron_dhcp_config:
   dhcp-ignore: "tag:!known"
 
 lxc_container_config_list:
-  - "lxc.aa_profile=unconfined"
+  - "lxc.apparmor.profile=unconfined"
 
 # Ensure that all neutron agent containers get a fixed mac address
 lxc_container_fixed_mac: true

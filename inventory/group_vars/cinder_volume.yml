@@ -19,4 +19,4 @@
 cinder_backend_rbd_inuse: '{{ (cinder_backends|default("")|to_json).find("cinder.volume.drivers.rbd.RBDDriver") != -1 }}'
 
 lxc_container_config_list:
-  - "lxc.aa_profile=unconfined"
+  - "lxc.apparmor.profile=unconfined"

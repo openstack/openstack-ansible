@@ -16,7 +16,7 @@
 # This is the default LXC AppArmor profile
 # Groups which need the unbound profile have a specific override
 lxc_container_config_list:
-  - "{{ (hostvars[physical_host]['ansible_distribution'] == 'Debian' and hostvars[physical_host]['ansible_distribution_major_version'] == '10' ) | ternary('lxc.aa_profile=unconfined', 'lxc.aa_profile=lxc-openstack') }}"
+  - "lxc.apparmor.profile={{ (hostvars[physical_host]['ansible_distribution'] == 'Debian' and hostvars[physical_host]['ansible_distribution_major_version'] == '10' ) | ternary('unconfined', 'lxc-openstack') }}"
 
 # Needed by playbooks/common-tasks/os-lxc-container-setup.yml
 lxc_container_log_path: "/var/log/lxc"
