@@ -84,9 +84,6 @@
         - openstack-ansible-deploy-aio_metal-opensuse-15
         - openstack-ansible-deploy-aio_metal-ubuntu-bionic
         - openstack-ansible-upgrade-aio_metal-ubuntu-bionic
-    periodic:
-      jobs:
-        - openstack-ansible-deploy-aio_metal-opensuse-15
 
 - project-template:
     name: openstack-ansible-deploy-aio_telemetry_metal-jobs
@@ -118,9 +115,6 @@
       jobs:
         - openstack-ansible-deploy-aio_distro_metal-centos-7
         - openstack-ansible-deploy-aio_distro_metal-ubuntu-bionic
-    periodic:
-      jobs:
-        - openstack-ansible-deploy-aio_distro_metal-opensuse-15
 
 - project-template:
     name: openstack-ansible-deploy-aio_nspawn-jobs
