@@ -21,8 +21,10 @@
     check:
       jobs:
         - openstack-ansible-linters
-        - openstack-ansible-deploy-aio-ubuntu-xenial
-        - openstack-ansible-deploy-ceph-ubuntu-xenial
+        - openstack-ansible-deploy-aio-ubuntu-xenial:
+            voting: false
+        - openstack-ansible-deploy-ceph-ubuntu-xenial:
+            voting: false
     experimental:
       jobs:
         - openstack-ansible-deploy-aio-centos-7
@@ -30,11 +32,7 @@
     gate:
       jobs:
         - openstack-ansible-linters
-        - openstack-ansible-deploy-aio-ubuntu-xenial
-        - openstack-ansible-deploy-ceph-ubuntu-xenial
-    periodic:
-      jobs:
-        - openstack-ansible-deploy-aio-ubuntu-xenial
-        - openstack-ansible-deploy-ceph-ubuntu-xenial
-        - openstack-ansible-upgrade-aio-ubuntu-xenial
-        - openstack-ansible-upgrade-ceph-ubuntu-xenial
+        - openstack-ansible-deploy-aio-ubuntu-xenial:
+            voting: false
+        - openstack-ansible-deploy-ceph-ubuntu-xenial:
+            voting: false
