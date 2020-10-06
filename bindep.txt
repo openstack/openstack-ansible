@@ -17,9 +17,6 @@ gcc
 git-core          [platform:dpkg]
 libssl-dev        [platform:dpkg]
 libffi-dev        [platform:dpkg]
-python2.7         [platform:dpkg]
-python-apt        [platform:dpkg]
-python-dev        [platform:dpkg]
 python3           [platform:dpkg]
 python3-apt       [platform:dpkg]
 python3-dev       [platform:dpkg]
@@ -29,12 +26,11 @@ gcc-c++           [platform:rpm]
 git               [platform:rpm]
 libffi-devel      [platform:rpm]
 openssl-devel     [platform:rpm]
-python-devel      [platform:rpm]
-python2-dnf       [platform:fedora]
+python3-devel     [platform:rpm]
 
 # For SELinux
-libselinux-python [platform:redhat]
-libsemanage-python [platform:redhat]
+python3-libselinux [platform:redhat]
+python3-libsemanage [platform:redhat]
 
 # Required for compressing collected log files in CI
 gzip
