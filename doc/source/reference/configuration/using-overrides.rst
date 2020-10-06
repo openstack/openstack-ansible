@@ -227,8 +227,6 @@ Image service (glance):
     * glance_glance_api_conf_overrides
     * glance_glance_cache_conf_overrides
     * glance_glance_manage_conf_overrides
-    * glance_glance_registry_paste_ini_overrides
-    * glance_glance_registry_conf_overrides
     * glance_glance_scrubber_conf_overrides
     * glance_glance_scheme_json_overrides
     * glance_policy_overrides
