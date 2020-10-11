@@ -26,6 +26,7 @@ export ANSIBLE_PACKAGE=${ANSIBLE_PACKAGE:-"ansible-base==2.10.1"}
 export ANSIBLE_ROLE_FILE=${ANSIBLE_ROLE_FILE:-"ansible-role-requirements.yml"}
 export ANSIBLE_COLLECTION_FILE=${ANSIBLE_COLLECTION_FILE:-"ansible-collection-requirements.yml"}
 export USER_ROLE_FILE=${USER_ROLE_FILE:-"user-role-requirements.yml"}
+export USER_COLLECTION_FILE=${USER_COLLECTION_FILE:-"user-collection-requirements.yml"}
 export SSH_DIR=${SSH_DIR:-"/root/.ssh"}
 export DEBIAN_FRONTEND=${DEBIAN_FRONTEND:-"noninteractive"}
 # check whether to install the ARA callback plugin
@@ -149,8 +150,6 @@ pushd /opt/ansible-runtime/bin
   done
 popd
 
-/opt/ansible-runtime/bin/ansible-galaxy collection install -r ${ANSIBLE_COLLECTION_FILE} -p /etc/ansible
-
 # Write the OSA Ansible rc file
 sed "s|OSA_INVENTORY_PATH|${OSA_INVENTORY_PATH}|g" scripts/openstack-ansible.rc > /usr/local/bin/openstack-ansible.rc
 sed -i "s|OSA_PLAYBOOK_PATH|${OSA_PLAYBOOK_PATH}|g" /usr/local/bin/openstack-ansible.rc
@@ -189,6 +188,9 @@ if [ -f "${ANSIBLE_ROLE_FILE}" ] && [[ -z "${SKIP_OSA_ROLE_CLONE+defined}" ]]; t
     export ANSIBLE_COLLECTIONS_PATH="/etc/ansible"
 
     pushd scripts
+      /opt/ansible-runtime/bin/ansible-playbook get-ansible-collection-requirements.yml \
+                       -e collection_file="${ANSIBLE_COLLECTION_FILE}" -e user_collection_file="${USER_COLLECTION_FILE}"
+
       /opt/ansible-runtime/bin/ansible-playbook get-ansible-role-requirements.yml \
                        -e role_file="${ANSIBLE_ROLE_FILE}" -e user_role_file="${USER_ROLE_FILE}"
     popd

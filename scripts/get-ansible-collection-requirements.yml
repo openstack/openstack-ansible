@@ -1,0 +1,77 @@
+---
+# Copyright 2020 BBC R&D.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Clone the role ansible-role-requirements
+  hosts: localhost
+  connection: local
+  user: root
+  gather_facts: false
+  tasks:
+    - name: Ensure the default collections directory exists
+      file:
+        path: "{{ collection_path_default }}"
+        state: directory
+
+    - name: Read the list of user collections
+      set_fact:
+        user_collection_names: "{{ user_collections.collections | default([]) | map(attribute='name') | list }}"
+
+    - name: Generate a list of required collections excluding user overridden collections
+      set_fact:
+         galaxy_collections_list : "{{ galaxy_collections_list + [ item ] }}"
+      when:
+        - item.name not in user_collection_names
+      with_items: "{{ required_collections.collections }}"
+
+    - name: Append user collections to filtered required collections
+      set_fact:
+        galaxy_collections_list: "{{ galaxy_collections_list + [ item ] }}"
+      with_items: "{{ user_collections.collections }}"
+      when:
+        - user_collections.collections is defined
+
+    - name: Create temporary file for galaxy collection requirements
+      tempfile:
+      register: collection_requirements_tmpfile
+
+    - name: Copy content into galaxy collection requirements temporary file
+      copy:
+        content: "{{ galaxy_collections | to_nice_yaml }}"
+        dest: "{{ collection_requirements_tmpfile.path }}"
+
+    - name: Install collection requirements with ansible galaxy
+      command: >
+        /opt/ansible-runtime/bin/ansible-galaxy collection install
+        -r "{{ collection_requirements_tmpfile.path }}"
+        -p "{{ collection_path_default }}"
+      register: collection_install
+
+    - name: Show collection install output
+      debug: msg="{{ collection_install.stdout.split('\n') }}"
+
+    - name: Clean up temporary file
+      file:
+        path: "{{ collection_requirements_tmpfile.path }}"
+        state: absent
+
+  vars:
+    galaxy_collections_list: []
+    galaxy_collections:
+      collections: "{{ galaxy_collections_list }}"
+    collections_file: "{{ playbook_dir }}/../ansible-collection-requirements.yml"
+    required_collections: "{{ lookup('file', collections_file) | from_yaml }}"
+    collection_path_default: '/etc/ansible/'
+    user_collections: "{{ lookup('file', user_collections_path, errors='ignore')|default([], true) | from_yaml }}"
+    user_collections_path: "{{ lookup('env', 'OSA_CONFIG_DIR') | default('/etc/openstack_deploy', true) ~ '/' ~ (user_collection_file|default('')) }}"
