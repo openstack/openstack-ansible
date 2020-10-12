@@ -216,6 +216,18 @@ haproxy_default_services:
       haproxy_backend_options:
         - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
       haproxy_service_enabled: "{{ groups['horizon_all'] is defined and groups['horizon_all'] | length > 0 }}"
+      haproxy_redirect_scheme: "{{ (haproxy_ssl_letsencrypt_enable | bool and haproxy_ssl | bool) | ternary('https if !{ ssl_fc } !{ path_beg /.well-known/acme-challenge/ }', 'https if !{ ssl_fc }') }}"
+      haproxy_frontend_acls: "{{ (haproxy_ssl_letsencrypt_enable | bool and haproxy_ssl | bool) | ternary(haproxy_ssl_letsencrypt_acl, {}) }}"
+  - service:
+      haproxy_service_name: letsencrypt
+      haproxy_backend_nodes: "{{ groups['haproxy_all'] }}"
+      backend_rise: 1
+      backend_fall: 2
+      haproxy_bind:
+        - 127.0.0.1
+      haproxy_port: "{{ haproxy_ssl_letsencrypt_certbot_backend_port }}"
+      haproxy_balance_type: http
+      haproxy_service_enabled: "{{ (haproxy_ssl_letsencrypt_enable | bool and haproxy_ssl | bool) }}"
   - service:
       haproxy_service_name: sahara_api
       haproxy_backend_nodes: "{{ groups['sahara_api'] | default([]) }}"

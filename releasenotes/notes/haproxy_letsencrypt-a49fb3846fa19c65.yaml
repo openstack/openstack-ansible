@@ -1,0 +1,7 @@
+---
+upgrade:
+  - |
+    There's no need in keeping `letsencrypt` service in haproxy_extra_services
+    as well as copying and maintaining whole haproxy_default_services in order
+    to get overrides for horizon. From now on required adjustments are provided
+    by defualt and letsecrypt installation path has been simplified.
