@@ -128,13 +128,13 @@ elif [[ "${ACTION}" == "linters" ]]; then
     VENV_BIN_DIR=$(dirname ${PIP_COMMAND})
     ROLE_DIR="/etc/ansible/roles/${SCENARIO}"
 
-    ANSIBLE_LINT_EXCLUDES="204,metadata"
+    ANSIBLE_LINT_WARNINGS="-w 204 -w 208 -w 306 -w metadata"
     # Check if we have test playbook and running checks
     if [[ -f "${ROLE_DIR}/examples/playbook.yml" ]]; then
-      ${VENV_BIN_DIR}/ansible-lint ${ROLE_DIR}/examples/playbook.yml -x ${ANSIBLE_LINT_EXCLUDES}
+      ${VENV_BIN_DIR}/ansible-lint ${ROLE_DIR}/examples/playbook.yml ${ANSIBLE_LINT_WARNINGS}
       ${VENV_BIN_DIR}/ansible-playbook --syntax-check --list-tasks ${ROLE_DIR}/examples/playbook.yml
     else
-      ${VENV_BIN_DIR}/ansible-lint ${ROLE_DIR} -x ${ANSIBLE_LINT_EXCLUDES}
+      ${VENV_BIN_DIR}/ansible-lint ${ROLE_DIR} ${ANSIBLE_LINT_WARNINGS}
       ${VENV_BIN_DIR}/ansible-playbook --syntax-check --list-tasks setup-everything.yml
     fi
 
