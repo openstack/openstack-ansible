@@ -153,9 +153,10 @@
 
 # Running linters check
 - job:
-    name: openstack-ansible-linters-ubuntu-bionic
+    name: openstack-ansible-linters-ubuntu-focal
     parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-bionic
+    nodeset: ubuntu-focal
+    irrelevant-files: []
 
 # Experimental job for checking our AIO can deploy with
 # a different ansible version

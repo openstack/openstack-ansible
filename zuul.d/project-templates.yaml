@@ -142,10 +142,10 @@
     name: openstack-ansible-linters-jobs
     check:
       jobs:
-        - openstack-ansible-linters-ubuntu-bionic
+        - openstack-ansible-linters-ubuntu-focal
     gate:
       jobs:
-        - openstack-ansible-linters-ubuntu-bionic
+        - openstack-ansible-linters-ubuntu-focal
 
 - project-template:
     name: openstack-ansible-deploy-guide-jobs
