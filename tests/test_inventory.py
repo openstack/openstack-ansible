@@ -13,7 +13,6 @@
 import collections
 import copy
 import json
-import mock
 import os
 from os import path
 try:
@@ -22,6 +21,7 @@ except ImportError:
     import queue as Queue
 import sys
 import unittest
+from unittest import mock
 import warnings
 import yaml
 

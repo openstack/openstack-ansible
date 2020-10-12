@@ -13,12 +13,12 @@
 # under the License.
 #
 
-import mock
 import os
 from os import path
 from osa_toolkit import filesystem as fs
 import sys
 import unittest
+from unittest import mock
 
 from test_inventory import cleanup
 from test_inventory import get_inventory
