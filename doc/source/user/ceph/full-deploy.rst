@@ -32,7 +32,8 @@ OpenStack-Ansible allows `Ceph storage <https://ceph.io>`_ cluster
 integration in two ways:
 
 * connecting to your own ceph cluster by pointing to its information
-  in ``user_variables.yml``
+  in ``user_variables.yml``. This is described
+  `here <https://docs.openstack.org/openstack-ansible-ceph_client/latest/config-from-file.html>`_.
 * deploying a ceph cluster by using the roles maintained by the
   `Ceph-Ansible`_ project. Deployers can enable the ``ceph-install``
   playbook by adding hosts to the ``ceph-mon_hosts``, ``ceph-osd_hosts`` and
