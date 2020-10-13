@@ -24,7 +24,7 @@
   hosts: all_containers[0]:physical_hosts[0]
   gather_facts: yes
   vars:
-    repo_requirements_file: "os-releases/{{ openstack_release }}/{{ os_distro_version }}/requirements_constraints.txt"
+    repo_requirements_file: "os-releases/{{ openstack_release }}/{{ os_distro_version }}/"
   tasks:
     - name: Check the upper constraint on each repo server
       uri:
@@ -50,7 +50,7 @@
       when: groups['haproxy'] | length > 1
 
     - package:
-        name: "{% if ansible_distribution | lower == 'centos' %}nc{% elif ansible_distribution | lower == 'suse' %}netcat-openbsd{% else %}netcat{% endif %}"
+        name: "{% if ansible_os_family | lower == 'redhat' %}nmap-ncat{% else %}netcat-openbsd{% endif %}"
         state: present
 
     # Fails if HAProxy is not running
@@ -85,7 +85,7 @@
     # Repo release path points to the internal LB vip
     - name: Check the presence of upper constraints on your repos and check load balancing
       uri:
-        url: "{{ repo_release_path }}/requirements_constraints.txt"
+        url: "{{ repo_release_path }}/"
   tags:
     - healthcheck
     - healthcheck-repo-use
@@ -94,6 +94,10 @@
 - name: Ensure the service setup host is ready to run openstack calls
   hosts: "{{ openstack_service_setup_host | default('localhost') }}"
   gather_facts: no
+  vars_files:
+    - "defaults/{{ install_method }}_install.yml"
+  vars:
+    ansible_python_interpreter: "{{ openstack_service_setup_host_python_interpreter | default(ansible_python['executable']) }}"
   tasks:
     - name: Get openstack client config
       openstack.cloud.os_client_config:
@@ -117,7 +121,7 @@
       with_items: "{{ groups['memcached'] }}"
 
     - package:
-        name: netcat
+        name: "{% if ansible_os_family | lower == 'redhat' %}nmap-ncat{% else %}netcat-openbsd{% endif %}"
         state: present
 
     - name: Connect to remote memcache servers (full mesh testing)
@@ -150,18 +154,146 @@
     - healthcheck
     - healthcheck-galera-install
 
+- name: Run functional tests
+  hosts: galera_all
+  user: root
+  gather_facts: true
+  tasks:
+    - name: Wait for cluster to be ready
+      block:
+        - name: Wait for cluster ready state
+          command: |
+            mysql -h {{ ansible_host }} \
+                  -p"{{ galera_root_password }}" \
+                  -e "show status like 'wsrep_incoming_addresses';" \
+                  --silent \
+                  --skip-column-names
+          register: mysql_instance_ready
+          retries: 20
+          delay: 5
+          changed_when: false
+          until: mysql_instance_ready is success and mysql_instance_ready.stdout.split()[-1].split(',') | length == groups['galera_all'] | length
+      rescue:
+        - name: Restarting weird maria instance
+          service:
+            name: mariadb
+            state: restarted
+        - name: Wait for cluster ready state
+          command: |
+            mysql -h {{ ansible_host }} \
+                  -p"{{ galera_root_password }}" \
+                  -e "show status like 'wsrep_incoming_addresses';" \
+                  --silent \
+                  --skip-column-names
+          register: mysql_instance_ready
+          retries: 20
+          delay: 5
+          changed_when: false
+          until: mysql_instance_ready is success and mysql_instance_ready.stdout.split()[-1].split(',') | length == groups['galera_all'] | length
+
+    - name: Check cluster local state
+      command: |
+        mysql -h {{ ansible_host }} \
+              -p"{{ galera_root_password }}" \
+              -e "show status like 'wsrep_local_state_comment';" \
+              --silent \
+              --skip-column-names
+      register: wsrep_local_state_comment
+      changed_when: false
+      tags:
+        - skip_ansible_lint
+
+    - name: Check cluster evs state
+      command: |
+        mysql -h {{ ansible_host }} \
+              -p"{{ galera_root_password }}" \
+              -e "show status like 'wsrep_evs_state';" \
+              --silent \
+              --skip-column-names
+      register: wsrep_evs_state
+      changed_when: false
+      tags:
+        - skip_ansible_lint
+
+    - name: Check contents
+      assert:
+        that:
+          - "'Synced' in wsrep_local_state_comment.stdout"
+          - "'OPERATIONAL' in wsrep_evs_state.stdout"
+
+    - name: Create DB for service on "{{ groups['galera_all'][0] }}"
+      community.mysql.mysql_db:
+        login_user: "{{ galera_root_user | default('root') }}"
+        login_password: "{{ galera_root_password }}"
+        login_host: "{{ ansible_host }}"
+        name: "OSA-test"
+        state: "present"
+      when: inventory_hostname == groups['galera_all'][0]
+      tags:
+        - skip_ansible_lint
+
+    - name: Grant access to the DB on "{{ groups['galera_all'][-1] }}"
+      community.mysql.mysql_user:
+        login_user: "{{ galera_root_user | default('root') }}"
+        login_password: "{{ galera_root_password }}"
+        login_host: "{{ ansible_host }}"
+        name: "osa-tester"
+        password: "tester-secrete"
+        host: "{{ item }}"
+        state: "present"
+        priv: "OSA-test.*:ALL"
+      with_items:
+        - "localhost"
+        - "%"
+      when: inventory_hostname == groups['galera_all'][-1]
+
+    - name: Try to login with user to DB
+      delegate_to: "{{ groups['utility_all'][0] }}"
+      command: |
+        mysql -h {{ internal_lb_vip_address }} \
+              -p"tester-secrete" \
+              -u osa-tester \
+              OSA-test \
+              -e "SHOW TABLES;"
+      when: inventory_hostname == groups['galera_all'][-1]
+
+    - name: Remove created user
+      community.mysql.mysql_user:
+        login_user: "{{ galera_root_user | default('root') }}"
+        login_password: "{{ galera_root_password }}"
+        login_host: "{{ ansible_host }}"
+        name: "osa-tester"
+        state: "absent"
+        host: "{{ item }}"
+      with_items:
+        - "localhost"
+        - "%"
+      when: inventory_hostname == groups['galera_all'][-1]
+
+    - name: Remove created DB
+      community.mysql.mysql_db:
+        login_user: "{{ galera_root_user | default('root') }}"
+        login_password: "{{ galera_root_password }}"
+        login_host: "{{ ansible_host }}"
+        name: "OSA-test"
+        state: "absent"
+      when: inventory_hostname == groups['galera_all'][0]
+      tags:
+        - skip_ansible_lint
+
+
 # Test rabbitmq-install.yml
 - name: Add a user for rabbitmq
   hosts: rabbitmq_all[0]
   gather_facts: no
   tasks:
     - name: Configure Rabbitmq vhost
-      rabbitmq_vhost:
+      community.rabbitmq.rabbitmq_vhost:
         name: "/testvhost"
         state: "present"
 
     - name: Configure Rabbitmq user
-      rabbitmq_user:
+      community.rabbitmq.rabbitmq_user:
         user: "testguest"
         password: "secrete"
         vhost: "/testvhost"
@@ -180,6 +312,8 @@
   gather_facts: no
   vars:
     venv_path: /tmp/rabbitmqtest
+  vars_files:
+    - "defaults/{{ install_method }}_install.yml"
   post_tasks:
     - name: Generate venv for rabbitmq testing
       include_role:
@@ -194,7 +328,7 @@
         dest: "{{ venv_path }}/rabbitmq-test.py"
         mode: 0755
     - name: Connect to rabbitmq
-      command: "{{ venv_path }}/bin/python2 {{ venv_path }}/rabbitmq-test.py {{ hostvars[groups['rabbitmq_all'][0]]['container_address'] }}"
+      command: "{{ venv_path }}/bin/python {{ venv_path }}/rabbitmq-test.py {{ hostvars[groups['rabbitmq_all'][0]]['container_address'] }}"
   tags:
     - healthcheck
     - healthcheck-rabbitmq-install
@@ -204,14 +338,14 @@
   gather_facts: no
   tasks:
     - name: Remove test user
-      rabbitmq_user:
+      community.rabbitmq.rabbitmq_user:
         user: testguest
         password: secrete
         vhost: "/testvhost"
         state: absent
       no_log: true
     - name: Remove test vhost
-      rabbitmq_vhost:
+      community.rabbitmq.rabbitmq_vhost:
         name: "/testvhost"
         state: "absent"
   tags:
