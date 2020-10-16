@@ -28,7 +28,6 @@ haproxy_whitelist_networks:
   - 10.0.0.0/8
 
 haproxy_galera_whitelist_networks: "{{ haproxy_whitelist_networks }}"
-haproxy_glance_registry_whitelist_networks: "{{ haproxy_whitelist_networks }}"
 haproxy_keystone_admin_whitelist_networks: "{{ haproxy_whitelist_networks }}"
 haproxy_nova_metadata_whitelist_networks: "{{ haproxy_whitelist_networks }}"
 haproxy_rabbitmq_management_whitelist_networks: "{{ haproxy_whitelist_networks }}"
@@ -82,21 +81,6 @@ haproxy_default_services:
       haproxy_backend_options:
         - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
       haproxy_service_enabled: "{{ groups['glance_api'] is defined and groups['glance_api'] | length > 0 }}"
-  - service:
-      haproxy_service_name: glance_registry
-      haproxy_backend_nodes: "{{ groups['glance_registry'] | default([]) }}"
-      haproxy_ssl: "{{ haproxy_ssl }}"
-      haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
-      haproxy_port: 9191
-      haproxy_balance_type: http
-      haproxy_backend_options:
-        - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
-      haproxy_whitelist_networks: "{{ haproxy_glance_registry_whitelist_networks }}"
-      haproxy_service_enabled: >-
-        {{ groups['glance_registry'] is defined and
-           groups['glance_registry'] | length > 0 and
-           (glance_enable_v2_registry | default(False)) | bool and
-           (glance_enable_v1_api | default(False)) | bool }}
   - service:
       haproxy_service_name: gnocchi
       haproxy_backend_nodes: "{{ groups['gnocchi_all'] | default([]) }}"

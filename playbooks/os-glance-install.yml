@@ -13,19 +13,73 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Install glance API services
-  include: common-playbooks/glance.yml
-  vars:
-    glance_hosts: "glance_api"
-    glance_serial: "{{ glance_api_serial | default(['1', '100%']) }}"
+- name: Gather glance facts
+  hosts: "glance_all"
+  gather_facts: "{{ osa_gather_facts | default(True) }}"
+  tags:
+    - always
 
+- name: Install glance services
+  hosts: "glance_all"
+  serial: "{{ glance_api_serial | default(['1', '100%']) }}"
+  gather_facts: false
+  user: root
+  environment: "{{ deployment_environment_variables | default({}) }}"
+  vars_files:
+    - "defaults/repo_packages/openstack_services.yml"
+    - "defaults/{{ install_method }}_install.yml"
+  tags:
+    - glance
+  pre_tasks:
+    # In order to ensure that any container, software or
+    # config file changes which causes a container/service
+    # restart do not cause an unexpected outage, we drain
+    # the load balancer back end for this container.
+    - include_tasks: common-tasks/haproxy-endpoint-manage.yml
+      vars:
+        haproxy_backend: glance_api-back
+        haproxy_state: disabled
+      when:
+        - "'glance_api' in group_names"
+        - "groups['glance_api'] | length > 1"
 
+    - name: Configure container (non-nfs)
+      include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
+      vars:
+        list_of_bind_mounts: "{{ glance_container_bind_mounts }}"
+      when:
+        - not is_metal
+        - glance_default_store == "file"
+        - (glance_nfs_client is not defined) or (glance_nfs_client | length == 0)
 
-- name: Install glance registry services
-  include: common-playbooks/glance.yml
-  vars:
-    glance_hosts: "glance_registry:!glance_api"
-    glance_serial: "{{ glance_registry_serial | default(['1', '100%']) }}"
+    - name: Configure container (nfs)
+      include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
+      when:
+        - not is_metal
+        - (glance_default_store != "file") or (glance_nfs_client is defined)
+
+    - include_tasks: common-tasks/unbound-clients.yml
+      when:
+        - hostvars['localhost']['resolvconf_enabled'] | bool
+
+  roles:
+    - role: "os_glance"
+    - role: "system_crontab_coordination"
+      tags:
+        - crontab
+
+  post_tasks:
+    # Now that container changes are done, we can set
+    # the load balancer back end for this container
+    # to available again.
+    - include_tasks: common-tasks/haproxy-endpoint-manage.yml
+      vars:
+        haproxy_backend: glance_api-back
+        haproxy_state: enabled
+      when:
+        - "'glance_api' in group_names"
+        - "groups['glance_api'] | length > 1"
+
 
 
 
@@ -79,7 +133,7 @@
 
 
 - name: Restart glance API to ensure new RPC object version is used
-  hosts: glance_api
+  hosts: glance_all
   gather_facts: no
   serial: "{{ glance_api_serial | default(['1','100%']) }}"
   user: root

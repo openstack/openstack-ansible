@@ -226,7 +226,6 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'glance_all',
         'glance_api',
         'glance_container',
-        'glance_registry',
         'gnocchi_all',
         'gnocchi_api',
         'gnocchi_container',
