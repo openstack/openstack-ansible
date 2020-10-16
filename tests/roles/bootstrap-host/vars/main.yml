@@ -19,10 +19,10 @@ bootstrap_host_scenarios: "{{ (bootstrap_host_scenario.split('_') | reject('equa
 # as part of the scenario
 bootstrap_host_scenarios_expanded: |-
   {# Keystone is included in every scenario #}
-  {% set scenario_list = bootstrap_host_scenarios + ['keystone'] %}
+  {% set scenario_list = bootstrap_host_scenarios + ['keystone', 'haproxy'] %}
   {% if ['aio', 'translations'] | intersect(bootstrap_host_scenarios) | length > 0 %}
   {#   Base services deployed with aio and translations scenarios #}
-  {%   set _ = scenario_list.extend(['cinder', 'glance', 'neutron', 'nova', 'placement', 'haproxy']) %}
+  {%   set _ = scenario_list.extend(['cinder', 'glance', 'neutron', 'nova', 'placement']) %}
   {%   if 'metal' not in bootstrap_host_scenarios %}
   {#     Horizon is a base service in container jobs #}
   {%     set _ = scenario_list.append('horizon') %}
