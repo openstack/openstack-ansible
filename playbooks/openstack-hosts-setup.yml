@@ -60,6 +60,11 @@
         msg: >
           The only supported platforms for this release are Debian 10 (Buster),
           Ubuntu 18.04 LTS (Bionic), Ubuntu 20.04 LTS (Focal) and  CentOS 8
+    - name: Check for a supported path
+      assert:
+        that:
+          - not (ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'bionic' and install_method == 'distro')
+        msg: Distro installation path is not supported for this release for Ubuntu 18.04 (bionic)
   roles:
     - role: "openstack_hosts"
   vars_files:

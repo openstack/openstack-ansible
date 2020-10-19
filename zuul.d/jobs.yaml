@@ -254,11 +254,6 @@
     nodeset: ubuntu-bionic
 
 - job:
-    name: openstack-ansible-deploy-aio_distro_lxc-ubuntu-bionic
-    parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-bionic
-
-- job:
     name: openstack-ansible-deploy-aio_ceph-ubuntu-bionic
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-bionic
@@ -274,11 +269,6 @@
     nodeset: ubuntu-bionic
 
 - job:
-    name: openstack-ansible-deploy-aio_distro_ceph-ubuntu-bionic
-    parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-bionic
-
-- job:
     name: openstack-ansible-deploy-aio_metal-ubuntu-bionic
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-bionic
@@ -290,11 +280,6 @@
 
 - job:
     name: openstack-ansible-deploy-aio_telemetry_metal-ubuntu-bionic
-    parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-bionic
-
-- job:
-    name: openstack-ansible-deploy-aio_distro_metal-ubuntu-bionic
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-bionic
 
