@@ -1,19 +1,21 @@
 collections:
+  # NOTE(noonedeadpunk): needs galaxy.yml to be able to pull from git
   - name: openstack.cloud
-    version: 1.0.0
+    version: 1.2.0
     source: https://galaxy.ansible.com
-  - name: community.general
-    version: 1.1.0
-    source: https://galaxy.ansible.com
-  - name: community.rabbitmq
+  - name: https://github.com/ansible-collections/community.general
+    version: 1.2.0
+    type: git
+  - name: https://github.com/ansible-collections/community.rabbitmq
     version: 1.0.1
-    source: https://galaxy.ansible.com
-  - name: community.mysql
-    version: 1.0.0
-    source: https://galaxy.ansible.com
-  - name: community.crypto
-    version: 1.1.1
-    source: https://galaxy.ansible.com
+    type: git
+  - name: https://github.com/ansible-collections/community.mysql
+    version: 1.1.0
+    type: git
+  - name: https://github.com/ansible-collections/community.crypto
+    version: 1.2.0
+    type: git
+  # NOTE(noonedeadpunk): needs version in galaxy.yml to pull from git
   - name: openvswitch.openvswitch
     version: 1.0.5
     source: https://galaxy.ansible.com

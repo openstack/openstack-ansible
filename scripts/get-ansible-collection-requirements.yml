@@ -53,10 +53,13 @@
 
     - name: Install collection requirements with ansible galaxy
       command: >
-        /opt/ansible-runtime/bin/ansible-galaxy collection install
+        /opt/ansible-runtime/bin/ansible-galaxy collection install --force
         -r "{{ collection_requirements_tmpfile.path }}"
         -p "{{ collection_path_default }}"
       register: collection_install
+      until: collection_install is success
+      retries: 5
+      delay: 2
 
     - name: Show collection install output
       debug: msg="{{ collection_install.stdout.split('\n') }}"
