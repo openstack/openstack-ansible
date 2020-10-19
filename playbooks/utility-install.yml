@@ -73,8 +73,7 @@
   post_tasks:
     - name: Add OpenStack client to distro packages
       set_fact:
-        utility_distro_packages: "{{ (utility_distro_packages | default([])) +
-                                      _utility_distro_openstack_clients_packages[utility_distro_openstack_clients_python_version|int] }}"
+        utility_distro_packages: "{{ (utility_distro_packages | default([])) + utility_distro_openstack_clients_packages }}"
       when: install_method == "distro"
 
     - name: Add EPEL repsitory

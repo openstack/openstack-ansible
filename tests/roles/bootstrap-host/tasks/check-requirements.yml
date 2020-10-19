@@ -20,12 +20,11 @@
         (ansible_distribution == 'Debian' and ansible_distribution_release == 'buster') or
         (ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'bionic') or
         (ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'focal') or
-        (ansible_os_family == 'RedHat' and ansible_distribution_major_version == '7') or
         (ansible_os_family == 'RedHat' and ansible_distribution_major_version == '8') or
         (ansible_os_family == 'Suse' and ansible_distribution_major_version in ['42', '15'])
     msg: >-
       The only supported platforms for this release are Debian Stretch, Ubuntu 18.04 LTS (Bionic),
-      Centos 7, openSUSE Leap 42.X and openSUSE Leap 15.X
+      Centos 8, openSUSE Leap 42.X and openSUSE Leap 15.X
   when: (check_operating_system | default(True))| bool
   tags:
     - check-operating-system

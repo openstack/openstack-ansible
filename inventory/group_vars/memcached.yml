@@ -18,6 +18,6 @@ memcached_listen: "{{ ansible_host }}"
 # Ensure that the package state matches the global setting
 memcached_package_state: "{{ package_state }}"
 
-# Disable PrivateDevices for MemcacheD on CentOS 7
+# Disable PrivateDevices for MemcacheD on CentOS
 # See https://bugs.launchpad.net/openstack-ansible/+bug/1697531 for details.
 memcached_disable_privatedevices: "{{ not is_metal }}"

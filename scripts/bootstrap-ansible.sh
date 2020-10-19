@@ -64,18 +64,14 @@ ssh_key_create
 # Determine the distribution which the host is running on
 determine_distro
 
-# Prefer dnf over yum for CentOS.
-which dnf &>/dev/null && RHT_PKG_MGR='dnf' || RHT_PKG_MGR='yum'
-
-
 # Install the base packages
 case ${DISTRO_ID} in
     centos|rhel)
-        $RHT_PKG_MGR -y install \
-          git curl autoconf gcc gcc-c++ nc rsync \
+        dnf -y install \
+          git curl autoconf gcc gcc-c++ nc \
           python3 python3-devel libselinux-python3 \
           openssl-devel libffi-devel \
-          $(if [[ ${VERSION_ID} == '7' ]]; then echo "python-virtualenv"; else echo "python3-virtualenv"; fi)
+          python3-virtualenv
         ;;
     ubuntu|debian)
         # NOTE(mgariepy) remove this on ansible 2.10 if debian is in the config/base.yml file

@@ -31,6 +31,7 @@ utility_distro_packages:
   - git
   - bash-completion
 
+# Distribution packages needed for the utility pip package wheel build
 _utility_devel_distro_packages_debian:
   - gcc
   - python3-dev
@@ -38,30 +39,17 @@ _utility_devel_distro_packages_debian:
 _utility_devel_distro_packages_redhat:
   - gcc
   - libselinux-python3
-  - "{{ ansible_distribution_major_version is version('8', '<') | ternary('python-devel', 'python36-devel') }}"
+  - python36-devel
 
-# Distribution packages needed for the utility pip package wheel build
 utility_devel_distro_packages: "{{ (ansible_os_family == 'RedHat') | ternary(_utility_devel_distro_packages_redhat, _utility_devel_distro_packages_debian) }}"
 
-# Packages installed into the utility container for distro installs
-# NOTE(jrosser) this can be simplified when all supported
-# distros use python3
-utility_distro_openstack_clients_python_version: "{{ (ansible_distribution == 'CentOS' and ansible_distribution_major_version is version('8', '<')) | ternary('2', '3') }}"
-
-_utility_distro_openstack_clients_packages:
-  2:
-    - python-keystoneclient
-    - python-neutronclient
-    - python-novaclient
-    - python-cinderclient
-    - python-openstackclient
-  3:
+# Client packages required for distro installs
+utility_distro_openstack_clients_packages:
     - python3-keystoneclient
     - python3-neutronclient
     - python3-novaclient
     - python3-cinderclient
     - python3-openstackclient
-    - "{{ (ansible_os_family | lower == 'redhat') | ternary('python3-PyMySQL', 'python3-pymysql') }}"
 
 # Python packages to be installed into the utility container
 utility_pip_packages:

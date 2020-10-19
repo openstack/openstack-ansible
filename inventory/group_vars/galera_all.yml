@@ -23,7 +23,7 @@ galera_container_bind_mounts:
   - bind_dir_path: "/var/lib/mysql"
     mount_path: "/openstack/{{ inventory_hostname }}"
 
-# Disable PrivateDevices for MariaDB on CentOS 7
+# Disable PrivateDevices for MariaDB on CentOS
 # See https://bugs.launchpad.net/openstack-ansible/+bug/1697531 for details.
 galera_disable_privatedevices: "{{ not is_metal }}"
 
