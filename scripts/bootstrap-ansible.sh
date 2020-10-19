@@ -154,6 +154,7 @@ popd
 sed "s|OSA_INVENTORY_PATH|${OSA_INVENTORY_PATH}|g" scripts/openstack-ansible.rc > /usr/local/bin/openstack-ansible.rc
 sed -i "s|OSA_PLAYBOOK_PATH|${OSA_PLAYBOOK_PATH}|g" /usr/local/bin/openstack-ansible.rc
 sed -i "s|OSA_ANSIBLE_PYTHON_INTERPRETER|${OSA_ANSIBLE_PYTHON_INTERPRETER}|g" /usr/local/bin/openstack-ansible.rc
+sed -i "s|OSA_ANSIBLE_FORKS|${ANSIBLE_FORKS}|g" /usr/local/bin/openstack-ansible.rc
 
 # Create openstack ansible wrapper tool
 cp -v ${OSA_WRAPPER_BIN} /usr/local/bin/openstack-ansible
