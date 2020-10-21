@@ -42,7 +42,7 @@ class CredentialGenerator(object):
     password: 16 - 64 character string
     secret:  16 - 64 character string
     token: 64 - 72 character string
-    key: 24, or 32 character string (Needs to be AES compatible)
+    key: 32 character string (Needs to be AES compatible)
 
     Usage:
     >>> generator = CredentialGenerator()
@@ -96,14 +96,14 @@ class CredentialGenerator(object):
         return encoded_bytes[:random.randrange(64, 72)]
 
     def _key_gen(self, encoded_bytes):
-        """Returns ``str`` with a length of 24 or 32.
+        """Returns ``str`` with a length of 32.
 
         Length restriction are required for key type secrets because of
         requirements in AES.
 
         :param encoded_bytes: ``str`` must be at least 32 charters long
         """
-        return encoded_bytes[:random.choice([24, 32])]
+        return encoded_bytes[:32]
 
 
 def args():
