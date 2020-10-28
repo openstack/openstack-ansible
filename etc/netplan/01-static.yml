@@ -1,0 +1,65 @@
+network:
+    version: 2
+    ethernets:
+        eno1:
+            mtu: 9000
+        eno2:
+            mtu: 9000
+    bonds:
+        bond0:
+            interfaces:
+            - eno1
+            - eno2
+            mtu: 9000
+            parameters:
+                lacp-rate: fast
+                mii-monitor-interval: 100
+                mode: 802.3ad
+                transmit-hash-policy: layer3+4
+    vlans:
+        bond0.10:
+            id: 10
+            link: bond0
+        bond0.20:
+            id: 20
+            link: bond0
+        bond0.30:
+            id: 30
+            link: bond0
+        bond0.40:
+            id: 40
+            link: bond0
+    bridges:
+        br-mgmt:
+            addresses:
+            - 172.29.236.10/22
+            interfaces:
+            - bond0
+            mtu: 9000
+            nameservers:
+                addresses:
+                - 8.8.8.8
+                - 8.8.4.4
+                search:
+                - example.com
+        br-storage:
+            addresses:
+            - 172.21.244.10/22
+            interfaces:
+            - bond0.20
+            mtu: 9000
+        br-vxlan:
+            addresses:
+            - 172.29.240.10/22
+            interfaces:
+            - bond0.30
+            mtu: 9000
+        br-ext:
+            addresses:
+            - 192.1.1.10/22
+            interfaces:
+            - bond0.40
+            gateway4: 192.1.1.1
+        br-vlan:
+            interfaces: bond0
+            mtu: 9000
