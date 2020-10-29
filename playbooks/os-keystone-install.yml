@@ -150,3 +150,19 @@
         value: "False"
       when:
         - "dbsync_contract is succeeded"
+
+# note(jrosser) this can only be done once the DB contract has completed so we must put it as
+# the last part of the keystone setup
+- name: SP/IDP setup
+  hosts: keystone_all
+  gather_facts: no
+  user: root
+  environment: "{{ deployment_environment_variables | default({}) }}"
+  vars_files:
+    - "defaults/{{ install_method }}_install.yml"
+  tags:
+    - keystone
+  roles:
+    - role: os_keystone
+      tasks_from: main_keystone_federation_sp_idp_setup.yml
+
