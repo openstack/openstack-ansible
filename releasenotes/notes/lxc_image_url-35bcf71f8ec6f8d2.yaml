@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Since Ubuntu has dropped older base images, which resulted in all previous
+    tags being broken, we've switched to downloading always latest base image
+    available. This should guarantee that we retrieve relevant images only.

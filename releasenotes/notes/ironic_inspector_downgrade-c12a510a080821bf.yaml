@@ -1,0 +1,8 @@
+---
+upgrade:
+  - |
+    Ironic Inspector service was bumped to master version instead of
+    stable/ussuri. Which means that during upgrade to this version Inspector
+    version will be downgraded, which may result in problems with migrations.
+    We recommend to ensure you have full DB backup before Inspector upgrade
+    or overwrite ironic_inspector_git_install_branch with 10.4.0 tag
