@@ -1,0 +1,28 @@
+---
+prelude: >
+    This is minor bugfix release that brings up overall improvements and
+    bugfixes to the roles.
+features:
+  - |
+    Added variable `nova_scheduler_extra_filters` which allows to extend
+    list of defaulted `nova_scheduler_default_filters`
+  - |
+    Added deployment of the `keystone_auth_default_policy.json` file
+    for Magnum.
+fixes:
+  - |
+    uWSGI service restart is now properly triggered upon service config change
+  - |
+    Notifications are enabled now if either ceilometer or designate service is
+    present in the inventory
+  - |
+    Fixed ceph_client role for distro installs
+upgrade:
+  - |
+    String value of `nova_scheduler_default_filters` is converted to the list
+    At the moment there is compatability for overriden values, that are string,
+    but this support will be removed in the Wallaby release. So deployers are
+    recommended to replace their string overrides with list ones.
+security:
+  - |
+    MariaDB version updated to 10.3.25, which covers CVE-2020-2574
