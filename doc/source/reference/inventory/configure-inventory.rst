@@ -221,12 +221,11 @@ To omit a component from a deployment, you can use one of several options:
 Deploying using a different container technology
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. note::
+.. warning::
 
    While nspawn is an available containerization technology it should be
-   considered experemental at this time. Even though this subsystem is not yet
-   recommended for production, it is stable enough to introduce to the community
-   and something we'd like feedback on as we improve it over the next cycle.
+   considered unmaintained and it's support will be removed in the upcoming
+   release.
 
 OpenStack-Ansible presently supports two different container technologies, LXC
 and nspawn. These two container technologies can be used separately or together
