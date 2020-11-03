@@ -1,0 +1,9 @@
+---
+upgrade:
+  - |
+    As support for Centos-7 is removed from openstack-ansible in the Victoria
+    release it is no longer necessary to support LXC2 configuration syntax in
+    the lxc_container_create ansible role. The version of LXC is now assumed
+    to be 3 or greater, and any LXC configuration keys that are being overriden
+    by the deployer in the variable lxc_container_config_list should be updated
+    to be LXC3 syntax as these will no longer be be converted by ansible code..

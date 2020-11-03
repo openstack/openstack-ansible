@@ -1,0 +1,16 @@
+---
+upgrade:
+  - |
+    There's no need in providing neither `http-01-address` nor `http-01-port`
+    options with `haproxy_ssl_letsencrypt_setup_extra_params`, as they are now
+    configured with corresponding variables
+    `haproxy_ssl_letsencrypt_certbot_bind_address` and
+    `haproxy_ssl_letsencrypt_certbot_backend_port`
+features:
+  - |
+    Added variable `haproxy_ssl_letsencrypt_certbot_challenge` which is default
+    to `http-01`. As for now really tested in only `http-01` but we keep door
+    open for adding support for more challanges, like `dns-01`. For `http-01`
+    all required arguments are passed, but oth other challanges you might want
+    to use `haproxy_ssl_letsencrypt_setup_extra_params` to pass missing
+    arguments.
