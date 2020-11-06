@@ -1,0 +1,6 @@
+---
+other:
+  - |
+    HAProxy now verifies if repo server is healthy by ``repo_sync_complete``
+    file that is created with repo_server role. This should prevent
+    non-synced repo containers from participating in load balancing.
