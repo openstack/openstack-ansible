@@ -1,12 +1,12 @@
 - name: ansible-hardening
   scm: git
   src: https://opendev.org/openstack/ansible-hardening
-  version: a9e1753ecc40ad7e2827853f483d70cad6227835
+  version: stable/stein
   trackbranch: stable/stein
 - name: apt_package_pinning
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-apt_package_pinning
-  version: 14c2620785303097dbddf1b7dc58c418b8e95819
+  version: stable/stein
   trackbranch: stable/stein
 - name: config_template
   scm: git
@@ -16,217 +16,217 @@
 - name: galera_client
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-galera_client
-  version: afdbacc5f16af04021a046e153fe100e1574901a
+  version: stable/stein
   trackbranch: stable/stein
 - name: galera_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-galera_server
-  version: 829b749732cfcf9fcc87aa66963f9f2fead40dc0
+  version: stable/stein
   trackbranch: stable/stein
 - name: ceph_client
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-ceph_client
-  version: c1edab7aabd1fea17bce04c54b94d3dbf3872163
+  version: stable/stein
   trackbranch: stable/stein
 - name: haproxy_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-haproxy_server
-  version: bc9c3548c41681017feb1eef20269eee70ff4d77
+  version: stable/stein
   trackbranch: stable/stein
 - name: keepalived
   scm: git
   src: https://github.com/evrardjp/ansible-keepalived
-  version: 709f5aadf0bd969b54046f9e891c28dddcfe79b0
+  version: 3.13.2
   trackbranch: master
 - name: lxc_container_create
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-lxc_container_create
-  version: 2eb9cfd1be8a5f01c1ae6aa1879dd057345aab1b
+  version: stable/stein
   trackbranch: stable/stein
 - name: lxc_hosts
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-lxc_hosts
-  version: c52784341834de13bb04cedd9b4529d1b3ca12ea
+  version: stable/stein
   trackbranch: stable/stein
 - name: memcached_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-memcached_server
-  version: 53c47874e5daa67741d6cb773be7589bd1d95722
+  version: stable/stein
   trackbranch: stable/stein
 - name: openstack_hosts
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-openstack_hosts
-  version: 2d5e7a4bf4da0a71106855869d3aa8311c4fc0f0
+  version: stable/stein
   trackbranch: stable/stein
 - name: os_keystone
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_keystone
-  version: 50ebe7835bd3616b02098f586e55568484ad484f
+  version: stable/stein
   trackbranch: stable/stein
 - name: openstack_openrc
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-openstack_openrc
-  version: 0e3aa057e3246d72051f4cad218233619fecdf8d
+  version: stable/stein
   trackbranch: stable/stein
 - name: os_aodh
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_aodh
-  version: f292913132a80986f348de4d54a6cfcad9048e98
+  version: stable/stein
   trackbranch: stable/stein
 - name: os_barbican
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_barbican
-  version: 7781f24af089276d7fb1252ccaead6b6a9afa355
+  version: stable/stein
   trackbranch: stable/stein
 - name: os_blazar
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_blazar
-  version: d16a1906e91e6f13da2ff70dbe345481f71ee4a6
+  version: stable/stein
   trackbranch: stable/stein
 - name: os_ceilometer
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_ceilometer
-  version: e613a300669070ee29c0cf4ee1efee93c2c7170d
+  version: stable/stein
   trackbranch: stable/stein
 - name: os_cinder
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_cinder
-  version: 20698cb76c257e62df57654cc46a3f33db922e1c
+  version: stable/stein
   trackbranch: stable/stein
 - name: os_congress
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_congress
-  version: 526ec716bc6095c42cb15c99833c484e4e341063
+  version: stable/stein
   trackbranch: stable/stein
 - name: os_designate
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_designate
-  version: c7ffaaafb416b697af1f67ef985f012db3078f53
+  version: stable/stein
   trackbranch: stable/stein
 - name: os_glance
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_glance
-  version: 0e7457a35ddf1bc3f380a1ea1afe9c6faf5c6c8f
+  version: stable/stein
   trackbranch: stable/stein
 - name: os_gnocchi
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_gnocchi
-  version: 7c78bdcf7fdce01363369d5568718de3ffe51618
+  version: stable/stein
   trackbranch: stable/stein
 - name: os_heat
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_heat
-  version: 283a521d926f67da6c1208723a5e3739e0209068
+  version: stable/stein
   trackbranch: stable/stein
 - name: os_horizon
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_horizon
-  version: 4df265206ff680ba982a8b9d52db78a84590c89d
+  version: stable/stein
   trackbranch: stable/stein
 - name: os_ironic
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_ironic
-  version: a6608a8da7e54c70e48d1616f042a915053d56a9
+  version: stable/stein
   trackbranch: stable/stein
 - name: os_magnum
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_magnum
-  version: 1e9804858ae52ce7e8edc1cf9684e45343783e84
+  version: stable/stein
   trackbranch: stable/stein
 - name: os_manila
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_manila
-  version: e04744c79836f680aee087d7973dae6699286220
+  version: stable/stein
   trackbranch: stable/stein
 - name: os_masakari
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_masakari
-  version: 6bff0044e46a392ca433c3e37784ebc57f28bf81
+  version: stable/stein
   trackbranch: stable/stein
 - name: os_mistral
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_mistral
-  version: b774f0e62f17d0337cc401ad69664bccc48a8813
+  version: stable/stein
   trackbranch: stable/stein
 - name: os_neutron
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_neutron
-  version: d2af6918e97dd27c96fb1c4972e915f8fddfb127
+  version: stable/stein
   trackbranch: stable/stein
 - name: os_nova
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_nova
-  version: dda91ae04925fea37884864b3d5fb314647f3c15
+  version: stable/stein
   trackbranch: stable/stein
 - name: os_octavia
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_octavia
-  version: 2b8f71c85dfc6f57f2ccbaaa515508fde4af0df3
+  version: stable/stein
   trackbranch: stable/stein
 - name: os_panko
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_panko
-  version: 0f8684a54a8cba97d923bec0d4d18b674ca67269
+  version: stable/stein
   trackbranch: stable/stein
 - name: os_rally
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_rally
-  version: 1af78bb2b6331cb1a79c01660e4c04b7df50e039
+  version: stable/stein
   trackbranch: stable/stein
 - name: os_sahara
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_sahara
-  version: 7316b92e6ab0ad5030297f95a46400f68013f1d9
+  version: stable/stein
   trackbranch: stable/stein
 - name: os_swift
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_swift
-  version: e54ba6fe3166e09a77abeb0fb4d9b88b42630cb5
+  version: stable/stein
   trackbranch: stable/stein
 - name: os_tacker
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_tacker
-  version: 524efabe97d4942acc8aa58913c2e7f8deb2fdbf
+  version: stable/stein
   trackbranch: stable/stein
 - name: os_tempest
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_tempest
-  version: cfbfd94b3df42470f5a8aa85f9644a261f2b3bed
+  version: stable/stein
   trackbranch: stable/stein
 - name: os_trove
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_trove
-  version: d9fed6ebe0c376d0420fa666403b4731af4a6de2
+  version: stable/stein
   trackbranch: stable/stein
 - name: plugins
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-plugins
-  version: f3efb647e3f48d40627a1dd81045ae6db6bb68b8
+  version: stable/stein
   trackbranch: stable/stein
 - name: qdrouterd
   scm: git
   src: https://opendev.org/openstack/ansible-role-qdrouterd
-  version: eac5f430863fb71b90fd89a0077558192517da17
+  version: stable/stein
   trackbranch: stable/stein
 - name: rabbitmq_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-rabbitmq_server
-  version: d371e41167dd0378e56836b15fa309c54c1ac498
+  version: stable/stein
   trackbranch: stable/stein
 - name: repo_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-repo_server
-  version: c801daedaf07d4df36869685a27637e4de7768e0
+  version: stable/stein
   trackbranch: stable/stein
 - name: rsyslog_client
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-rsyslog_client
-  version: ef875a488a1a3e4450afeb7e90ea48762413e0a5
+  version: stable/stein
   trackbranch: stable/stein
 - name: rsyslog_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-rsyslog_server
-  version: 9efa53f36c2c10926adac48ea9ecfb3d9c5590b0
+  version: stable/stein
   trackbranch: stable/stein
 - name: sshd
   scm: git
@@ -256,7 +256,7 @@
 - name: ceph-ansible
   scm: git
   src: https://github.com/ceph/ceph-ansible
-  version: 8b6aedc8715aa33fba8fe2fa8205b69b37e7961d
+  version: stable-3.2
   trackbranch: stable-3.2
 - name: opendaylight
   scm: git
@@ -271,30 +271,30 @@
 - name: nspawn_container_create
   src: https://opendev.org/openstack/openstack-ansible-nspawn_container_create
   scm: git
-  version: 0de6bf805343b265f018ab3c17dff6a12a93bd45
+  version: stable/stein
   trackbranch: stable/stein
 - name: nspawn_hosts
   src: https://opendev.org/openstack/openstack-ansible-nspawn_hosts
   scm: git
-  version: ddb1b6e69b1660f24f345806cf27dbc86dd4afb3
+  version: stable/stein
   trackbranch: stable/stein
 - name: systemd_service
   src: https://opendev.org/openstack/ansible-role-systemd_service
   scm: git
-  version: 7f22ad73e990f8a15d9cda697f1d15d35ba5936c
+  version: stable/stein
   trackbranch: stable/stein
 - name: systemd_mount
   src: https://opendev.org/openstack/ansible-role-systemd_mount
   scm: git
-  version: 16c7fb71efd218559718dfc903a4a2cabf6a53f5
+  version: stable/stein
   trackbranch: stable/stein
 - name: systemd_networkd
   src: https://opendev.org/openstack/ansible-role-systemd_networkd
   scm: git
-  version: 311961b7e93b8f23011cdff9fbf927e970a9e2e8
+  version: stable/stein
   trackbranch: stable/stein
 - name: python_venv_build
   src: https://opendev.org/openstack/ansible-role-python_venv_build
   scm: git
-  version: 0f2f4e2eaba638949d42fb0b2793b6ba203519a0
+  version: stable/stein
   trackbranch: stable/stein
