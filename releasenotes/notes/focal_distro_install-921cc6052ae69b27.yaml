@@ -1,0 +1,12 @@
+---
+issues:
+  - |
+    Ubuntu Cloud Archive (UCA) does not contain Ubuntu Bionic distro packages
+    for Victoria, so only source install/upgrade path (default) will work
+    correctly for Ubuntu 18.04.
+upgrade:
+  - |
+    Deployments which follows distro path (services are installed from distro
+    packages rather then in virtualenvs) should upgrade Ubuntu 18.04 -> 20.04
+    before performing OpenStack Ussuri -> Victoria upgrade, since Ubuntu Cloud
+    Archive does not provide Victoria system packages for 18.04.

@@ -1,0 +1,6 @@
+---
+features:
+  - New variables have been added to allow a deployer to enable
+    iPXE support for Ironic Conductor, which uses HTTP rather
+    than TFTP, and can speed up baremetal provisioning considerably.
+    To enable, simply set the ``ironic_ipxe_enabled`` override to ``True``.
