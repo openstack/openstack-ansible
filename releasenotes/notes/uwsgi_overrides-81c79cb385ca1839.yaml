@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Added variable `uwsgi_ini_overrides` and `uwsgi_init_config_overrides`
+    which might be useful if deployer wants to adjust some uwsgi parameter
+    for all services, so that there was no necessity to use bunch of the
+    overrides for each service.
