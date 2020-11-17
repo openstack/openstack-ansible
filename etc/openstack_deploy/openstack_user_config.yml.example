@@ -321,7 +321,8 @@
 # List of target hosts on which to deploy shared infrastructure services
 # and define the container_tech for a specific infra node. If this setting
 # is omitted the inventory generation system will default to "lxc". Accpetable
-# options are "lxc" and "nspawn".
+# options are "lxc" and "nspawn". Please note, that nspawn is unmaintained
+# and will be removed in the upcoming release
 #
 #   Level: <value> (required, string)
 #   Hostname of a target host.

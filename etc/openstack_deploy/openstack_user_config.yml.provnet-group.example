@@ -132,14 +132,8 @@ global_overrides:
 shared-infra_hosts:
   infra1:
     ip: 172.29.236.11
-    container_vars:
-      # Optional | Example setting the container_tech for a target host.
-      container_tech: lxc
   infra2:
     ip: 172.29.236.12
-    container_vars:
-      # Optional | Example setting the container_tech for a target host.
-      container_tech: nspawn
   infra3:
     ip: 172.29.236.13
 
