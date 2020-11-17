@@ -29,16 +29,22 @@ Integration with Ceph
 ~~~~~~~~~~~~~~~~~~~~~
 
 OpenStack-Ansible allows `Ceph storage <https://ceph.io>`_ cluster
-integration in two ways:
+integration in three ways:
 
-* connecting to your own ceph cluster by pointing to its information
-  in ``user_variables.yml``. This is described
+* connecting to your own pre-deployed ceph cluster by pointing to its
+  information in ``user_variables.yml`` and allowing openstack-ansible
+  to ssh to the ceph monitors to retrieve the contents of ceph.conf
+  and the keyrings.
+* connecting to your own pre-deployed ceph cluster by pointing to its
+  information in ``user_variables.yml`` and providing data to populate
+  ceph.conf and ceph keyring files on the deploy host.  This is described
   `here <https://docs.openstack.org/openstack-ansible-ceph_client/latest/config-from-file.html>`_.
-* deploying a ceph cluster by using the roles maintained by the
-  `Ceph-Ansible`_ project. Deployers can enable the ``ceph-install``
-  playbook by adding hosts to the ``ceph-mon_hosts``, ``ceph-osd_hosts`` and
-  ``ceph-rgw_hosts`` groups in ``openstack_user_config.yml``, and then
-  configuring `Ceph-Ansible specific vars
+  No ssh access by openstack-ansible is required to the ceph cluster.
+* deploying a ceph cluster as part of the openstack-ansible deployment
+  by using the roles maintained by the `Ceph-Ansible`_ project. Deployers
+  can enable the ``ceph-install`` playbook by adding hosts to the
+  ``ceph-mon_hosts``, ``ceph-osd_hosts`` and ``ceph-rgw_hosts`` groups in
+  ``openstack_user_config.yml``, and then configuring `Ceph-Ansible specific vars
   <https://github.com/ceph/ceph-ansible/blob/master/group_vars/all.yml.sample>`_
   in the OpenStack-Ansible ``user_variables.yml`` file.
 
