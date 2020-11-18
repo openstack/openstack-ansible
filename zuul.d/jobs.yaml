@@ -126,6 +126,7 @@
       - name: openstack/blazar
       - name: openstack/blazar-nova
       - name: openstack/zun
+      - name: openstack/kuryr-libnetwork
     pre-run:
       - zuul.d/playbooks/pre-gate-cleanup.yml
       - zuul.d/playbooks/pre-gate-scenario.yml
