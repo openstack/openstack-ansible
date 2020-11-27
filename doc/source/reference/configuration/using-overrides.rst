@@ -197,93 +197,16 @@ The list of overrides available may be found by executing:
 
 .. code-block:: bash
 
-    find . -name "main.yml" -exec grep '_.*_overrides:' {} \; \
-        | grep -v "^#" \
+    ls /etc/ansible/roles/*/defaults/main.yml -1 \
+        | xargs -I {} grep '_.*_overrides:' {} \
+        | egrep -v "^#|^\s" \
         | sort -u
 
-The following override variables are currently available:
+.. note::
 
-Galera:
-    * galera_client_my_cnf_overrides
-    * galera_my_cnf_overrides
-    * galera_cluster_cnf_overrides
-    * galera_debian_cnf_overrides
-
-Telemetry service (ceilometer):
-    * ceilometer_policy_overrides
-    * ceilometer_ceilometer_conf_overrides
-    * ceilometer_event_definitions_yaml_overrides
-    * ceilometer_event_pipeline_yaml_overrides
-    * ceilometer_pipeline_yaml_overrides
-
-Block Storage (cinder):
-    * cinder_policy_overrides
-    * cinder_rootwrap_conf_overrides
-    * cinder_api_paste_ini_overrides
-    * cinder_cinder_conf_overrides
-
-Image service (glance):
-    * glance_glance_api_paste_ini_overrides
-    * glance_glance_api_conf_overrides
-    * glance_glance_cache_conf_overrides
-    * glance_glance_manage_conf_overrides
-    * glance_glance_scrubber_conf_overrides
-    * glance_glance_scheme_json_overrides
-    * glance_policy_overrides
-
-Orchestration service (heat):
-    * heat_heat_conf_overrides
-    * heat_api_paste_ini_overrides
-    * heat_default_yaml_overrides
-    * heat_aws_rds_dbinstance_yaml_overrides
-    * heat_policy_overrides
-
-Identity service (keystone):
-    * keystone_keystone_conf_overrides
-    * keystone_keystone_default_conf_overrides
-    * keystone_keystone_paste_ini_overrides
-    * keystone_policy_overrides
-
-Networking service (neutron):
-    * neutron_neutron_conf_overrides
-    * neutron_ml2_conf_ini_overrides
-    * neutron_dhcp_agent_ini_overrides
-    * neutron_api_paste_ini_overrides
-    * neutron_rootwrap_conf_overrides
-    * neutron_policy_overrides
-    * neutron_dnsmasq_neutron_conf_overrides
-    * neutron_l3_agent_ini_overrides
-    * neutron_metadata_agent_ini_overrides
-    * neutron_metering_agent_ini_overrides
-
-Compute service (nova):
-    * nova_nova_conf_overrides
-    * nova_rootwrap_conf_overrides
-    * nova_api_paste_ini_overrides
-    * nova_policy_overrides
-
-Object Storage service (swift):
-    * swift_swift_conf_overrides
-    * swift_swift_dispersion_conf_overrides
-    * swift_proxy_server_conf_overrides
-    * swift_account_server_conf_overrides
-    * swift_account_server_replicator_conf_overrides
-    * swift_container_server_conf_overrides
-    * swift_container_server_replicator_conf_overrides
-    * swift_object_server_conf_overrides
-    * swift_object_server_replicator_conf_overrides
-
-Tempest:
-    * tempest_tempest_conf_overrides
-
-pip:
-    * pip_global_conf_overrides
-
-  .. note::
-
-     Possible additional overrides can be found in the "Tunable Section"
-     of each role's ``main.yml`` file, such as
-     ``/etc/ansible/roles/role_name/defaults/main.yml``.
+   Possible additional overrides can be found in the "Tunable Section"
+   of each role's ``main.yml`` file, such as
+   ``/etc/ansible/roles/role_name/defaults/main.yml``.
 
 Overriding OpenStack configuration defaults
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -342,6 +265,21 @@ To do this, you use the following configuration entry in the
    ``<service>_<filename>_<file extension>_overrides``. For example, the variable
    name used in these examples to add parameters to the ``nova.conf`` file is
    ``nova_nova_conf_overrides``.
+
+The same way you can apply overrides to the uwsgi services. For example:
+
+.. code-block:: yaml
+
+    nova_api_os_compute_uwsgi_ini_overrides:
+      uwsgi:
+        limit: 1024
+
+.. note::
+
+  Some roles, like uwsgi, are used for lot of roles, and have "special" overrides,
+  (like `uwsgi_ini_overrides`) which can be defined to impact all services which
+  are using uwsgi. These variables are "special" as they will have precedence over
+  role defined `*_uwsgi_ini_overrides`.
 
 You can also apply overrides on a per-host basis with the following
 configuration in the ``/etc/openstack_deploy/openstack_user_config.yml``
