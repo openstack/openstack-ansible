@@ -1,0 +1,15 @@
+---
+features:
+  - |
+    The role now supports creating system scoped credentials alongside
+    project scoped credentials. The default behavior of the role did not
+    changed, until ``openrc_system_scope`` variable was set to ``true``.
+    If the ``openrc_system_scope`` is ``true`` the default cloud in
+    clouds.yaml will set to system scoped credentials and another credentials
+    named ``default_project_scope`` will get created with project scoped
+    credentials. Due to usage of openrc file in other roles, the opposite
+    logic applies to openrc files, which means if ``openrc_system_scope``
+    is set to ``true`` the credentials in openrc will set to project scoped
+    credentials and another openrc filec named ``openrc.system_scope`` will
+    get created with system scoped credentials and will be placed in
+    destination of ``openrc_system_file_dest`` variable.

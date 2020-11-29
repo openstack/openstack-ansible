@@ -1,0 +1,12 @@
+---
+features:
+  - |
+    Added variable `ceilometer_pipeline_default_file_path` to be able to define
+    user provided pipeline file like for other ceilometer configs. In order to
+    avoid deployment of pipeline.yaml you can set in your user variables:
+    `_ceilometer_pipeline_yaml_overrides: {}`
+upgrade:
+  - |
+    We have changed a way of the deployment of ceilometer pipeline.yml. Now we
+    use overrides to leave the behaviour and defaults, however you might want
+    to double check if no conflicts with your current overrides exist.
