@@ -13,12 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-nova_service_port: 8774
 # Consumed by Neutron role and must remained scoped to 'all' group
 nova_metadata_port: 8775
+nova_metadata_protocol: "{{ openstack_service_internaluri_proto | default('http') }}"
+nova_metadata_insecure: "{{ keystone_service_internaluri_insecure | default(False) }}"
 nova_service_region: "{{ service_region }}"
 nova_service_user_name: nova
 nova_service_project_name: service
 nova_service_project_domain_id: default
 nova_service_user_domain_id: default
-nova_keystone_auth_plugin: password
