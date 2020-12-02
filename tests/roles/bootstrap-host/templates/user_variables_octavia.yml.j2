@@ -13,8 +13,15 @@
 tempest_test_whitelist:
   - octavia_tempest_plugin.tests.scenario.v2.test_load_balancer.LoadBalancerScenarioTest
 
+octavia_octavia_conf_overrides:
+  health_manager:
+    failover_threads: 2
+    health_update_threads: 2
+    stats_update_threads: 2
+
 octavia_legacy_policy: True
 octavia_ssh_key_name: ''
+octavia_amp_ram: 512
 tempest_run_concurrency: 0
 tempest_service_available_octavia: true
 tempest_tempest_conf_overrides:
