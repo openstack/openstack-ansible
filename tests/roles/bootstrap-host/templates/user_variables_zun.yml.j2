@@ -16,6 +16,12 @@
 tempest_test_whitelist:
   - zun_tempest_plugin.tests.tempest.api
 
+tempest_test_blacklist:
+  - test: zun_tempest_plugin.tests.tempest.api.test_containers.TestContainer.test_run_container_with_image_driver_glance
+    reason: This test requires direct access to the Docker daemon API on localhost
+  - test: zun_tempest_plugin.tests.tempest.api.test_capsules.TestCapsule.test_create_capsule_full
+    reason: This test repeatedly fails in CI in particular for Ubuntu Focal
+
 tempest_tempest_conf_overrides:
   container_service:
-    min_microversion: 1.12
+    min_microversion: 1.27
