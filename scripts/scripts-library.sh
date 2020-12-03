@@ -369,13 +369,13 @@ function get_instance_info {
   # Storage reports
   for dir_name in lxc machines; do
     if [ "$(which btrfs)" ]; then
-      btrfs filesystem usage /var/lib/${dir_name} > \
+      btrfs filesystem usage /var/lib/${dir_name} 2>/dev/null > \
         "/openstack/log/instance-info/btrfs_${dir_name}_usage_${TS}.log" || true
-      btrfs filesystem show /var/lib/${dir_name} > \
+      btrfs filesystem show /var/lib/${dir_name} 2>/dev/null > \
         "/openstack/log/instance-info/btrfs_${dir_name}_show_${TS}.log" || true
-      btrfs filesystem df /var/lib/${dir_name} > \
+      btrfs filesystem df /var/lib/${dir_name} 2>/dev/null > \
         "/openstack/log/instance-info/btrfs_${dir_name}_df_${TS}.log" || true
-      btrfs qgroup show --human-readable -pcre --iec /var/lib/${dir_name} > \
+      btrfs qgroup show --human-readable -pcre --iec /var/lib/${dir_name} 2>/dev/null > \
         "/openstack/log/instance-info/btrfs_${dir_name}_quotas_${TS}.log" || true
     fi
   done
