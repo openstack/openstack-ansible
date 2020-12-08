@@ -21,5 +21,5 @@ designate_service_project_domain_id: default
 designate_service_user_domain_id: default
 designate_service_region: "{{ service_region }}"
 
-designate_service_adminurl: "http://{{ internal_lb_vip_address }}:9001/v2"
-
+designate_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(designate_service_proto | default('http')) }}"
+designate_service_adminurl: "{{ designate_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ designate_service_port | default('9001') }}/v2"

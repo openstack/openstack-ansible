@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ironic_service_name: ironic
+ironic_service_region: "{{ service_region }}"
 
 # Ensure that the package state matches the global setting
 ironic_package_state: "{{ package_state }}"

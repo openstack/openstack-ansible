@@ -13,11 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-nova_service_port: 8774
-nova_service_proto: http
-nova_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(nova_service_proto) }}"
-nova_service_adminuri: "{{ nova_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ nova_service_port }}"
-nova_service_adminurl: "{{ nova_service_adminuri }}/v2.1"
+
 nova_console_type: novnc
 nova_console_agent_enabled: "{{ ansible_architecture != 'aarch64' }}"
 nova_novncproxy_port: 6080

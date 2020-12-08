@@ -26,15 +26,7 @@ manila_backend_lvm_inuse: "{{ (manila_backends | default({}) | to_json).find('lv
 # manila_backend_rbd_inuse: True if the current host has an rbd backend
 manila_backend_rbd_inuse: "{{ (manila_backends | default({}) | to_json).find('manila.share.drivers.cephfs') != -1 }}"
 
-# V1 api config
-manila_service_publicuri: "{{ openstack_service_publicuri_proto|default(manila_service_proto) }}://{{ external_lb_vip_address }}:{{ manila_service_port }}"
-manila_service_internaluri: "{{ openstack_service_internaluri_proto|default(manila_service_proto) }}://{{ internal_lb_vip_address }}:{{ manila_service_port }}"
-manila_service_adminuri: "{{ openstack_service_adminuri_proto|default(manila_service_proto) }}://{{ internal_lb_vip_address }}:{{ manila_service_port }}"
-
-# V2 api config
-manila_service_v2_publicuri: "{{ openstack_service_publicuri_proto|default(manila_service_proto) }}://{{ external_lb_vip_address }}:{{ manila_service_v2_port }}"
-manila_service_v2_internaluri: "{{ openstack_service_internaluri_proto|default(manila_service_proto) }}://{{ internal_lb_vip_address }}:{{ manila_service_v2_port }}"
-manila_service_v2_adminuri: "{{ openstack_service_adminuri_proto|default(manila_service_proto) }}://{{ internal_lb_vip_address }}:{{ manila_service_v2_port }}"
+manila_package_state: "{{ package_state }}"
 
 # Region
 manila_service_region: "{{ service_region }}"
