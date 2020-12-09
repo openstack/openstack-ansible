@@ -178,6 +178,11 @@ else
     # Log some data about the instance and the rest of the system
     log_instance_info
 
+    # Reload environment file and apply variables for the session
+    set -a
+    . /etc/environment
+    set +a
+
     # Once setup-hosts is complete, we should gather facts for everything
     # (now including containers) so that the fact cache is complete for the
     # remainder of the run.

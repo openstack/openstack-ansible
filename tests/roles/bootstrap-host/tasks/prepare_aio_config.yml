@@ -144,6 +144,14 @@
   when:
     - ansible_selinux.status == "enabled"
 
+- name: Get systemd version
+  command: "rpm -q systemd"
+  changed_when: false
+  register: systemd_version
+  when: ansible_os_family | lower == 'redhat'
+  tags:
+    - skip_ansible_lint
+
 - name: Set the user_variables
   config_template:
     src: "{{ bootstrap_user_variables_template }}"
