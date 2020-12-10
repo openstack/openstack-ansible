@@ -35,6 +35,11 @@ haproxy_repo_git_whitelist_networks: "{{ haproxy_whitelist_networks }}"
 haproxy_repo_cache_whitelist_networks: "{{ haproxy_whitelist_networks }}"
 haproxy_opendaylight_whitelist_networks: "{{ haproxy_whitelist_networks }}"
 
+haproxy_security_txt_acl:
+  keystone-security-txt-acl:
+    rule: "path_end /security.txt"
+    backend_name: keystone_service
+
 haproxy_default_services:
   - service:
       haproxy_service_name: galera
@@ -205,6 +210,7 @@ haproxy_default_services:
       haproxy_service_enabled: "{{ groups['horizon_all'] is defined and groups['horizon_all'] | length > 0 }}"
       haproxy_redirect_scheme: "{{ (haproxy_ssl_letsencrypt_enable | bool and haproxy_ssl | bool) | ternary('https if !{ ssl_fc } !{ path_beg /.well-known/acme-challenge/ }', 'https if !{ ssl_fc }') }}"
       haproxy_frontend_acls: "{{ (haproxy_ssl_letsencrypt_enable | bool and haproxy_ssl | bool) | ternary(haproxy_ssl_letsencrypt_acl, {}) }}"
+      haproxy_acls: "{{ keystone_security_txt_content is defined | ternary(haproxy_security_txt_acl, {}) }}"
   - service:
       haproxy_service_name: letsencrypt
       haproxy_backend_nodes: "{{ groups['haproxy_all'] }}"
