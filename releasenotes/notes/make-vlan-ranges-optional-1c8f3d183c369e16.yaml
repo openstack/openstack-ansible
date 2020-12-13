@@ -1,0 +1,17 @@
+---
+fixes:
+  - |
+    When defining provider networks, vlan ranges are no longer required.
+    When a vlan range is not specified, the provider label ``net_name``
+    still be set in ``network_vlan_ranges``, but automatic VLAN
+    allocation will not be available.
+
+    Implementation Example:
+
+    .. code-block:: text
+
+       host_bind_override: "bond1"
+       type: "vlan"
+       net_name: "physnet1"
+       group_binds:
+       - neutron_linuxbridge_agent
