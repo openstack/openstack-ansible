@@ -16,9 +16,10 @@
 # This var is used by glance and ironic
 glance_service_user_name: glance
 
-glance_service_publicurl: "{{ openstack_service_publicuri_proto }}://{{ external_lb_vip_address }}:9292"
-glance_service_internalurl: "{{ openstack_service_internaluri_proto }}://{{ internal_lb_vip_address }}:9292"
-glance_service_adminurl: "{{ openstack_service_adminuri_proto }}://{{ internal_lb_vip_address }}:9292"
+glance_service_port: 9292
+glance_service_internaluri_proto: "{{ openstack_service_internaluri_proto | default(glance_service_proto | default('http')) }}"
+glance_service_internaluri: "{{ glance_service_internaluri_proto }}://{{ internal_lb_vip_address }}:{{ glance_service_port }}"
+glance_service_internalurl: "{{ glance_service_internaluri }}"
 
 # When running RBD or horizon image upload mode is direct allow multiple locations.
 # See https://bugs.launchpad.net/openstack-ansible/+bug/1730722 for more on the

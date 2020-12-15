@@ -13,11 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-gnocchi_service_port: 8041
-gnocchi_service_proto: http
-gnocchi_service_internaluri_proto: "{{ openstack_service_internaluri_proto | default(gnocchi_service_proto) }}"
-gnocchi_service_internalurl: "{{ gnocchi_service_internaluri_proto }}://{{ internal_lb_vip_address }}:{{ gnocchi_service_port }}"
-
 gnocchi_ssl_external: "{{ openstack_external_ssl }}"
 gnocchi_service_region: "{{ service_region }}"
 

@@ -18,7 +18,4 @@ panko_service_publicuri: "{{ openstack_service_publicuri_proto|default(panko_ser
 
 # Ensure that the package state matches the global setting
 panko_package_state: "{{ package_state }}"
-
-# venv fetch configuration
-panko_venv_tag: "{{ venv_tag }}"
-panko_venv_download_url: "{{ venv_base_download_url }}/panko-{{ openstack_release }}-{{ ansible_architecture | lower }}.tgz"
+panko_service_region: "{{ service_region }}"

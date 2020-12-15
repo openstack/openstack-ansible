@@ -15,5 +15,6 @@
 
 barbican_service_region: "{{ service_region }}"
 barbican_service_in_ldap: "{{ service_ldap_backend_enabled }}"
+barbican_package_state: "{{ package_state }}"
 barbican_keystone_auth: yes
 barbican_ceilometer_enabled: "{{ (groups['ceilometer_all'] is defined) and (groups['ceilometer_all'] | length > 0) }}"
