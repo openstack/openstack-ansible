@@ -288,7 +288,7 @@ This is done by executing the following:
 
 If this fails to get the database cluster back into a running state, then
 please make use of the
-`Galera Cluster Recovery </admin/maintenance-tasks.html#galera-cluster-recovery>`
+`Galera Cluster Recovery </admin/maintenance-tasks.html#galera-cluster-recovery>`_
 section in the operations guide.
 
 Rebuilding an AIO
