@@ -531,6 +531,22 @@ haproxy_zun_api_service:
     - "httpchk GET /v1 HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
   haproxy_service_enabled: "{{ groups['zun_api'] is defined and groups['zun_api'] | length > 0 }}"
 
+haproxy_zun_console_service:
+  haproxy_service_name: zun_console
+  haproxy_backend_nodes: "{{ groups['zun_api'] | default([]) }}"
+  haproxy_ssl: "{{ haproxy_ssl }}"
+  haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
+  haproxy_port: 6784
+  haproxy_balance_type: http
+  haproxy_timeout_client: 60m
+  haproxy_timeout_server: 60m
+  haproxy_balance_alg: source
+  haproxy_backend_options:
+    - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+  haproxy_backend_httpcheck_options:
+    - "expect status 405"
+  haproxy_service_enabled: "{{ groups['zun_api'] is defined and groups['zun_api'] | length > 0 }}"
+
 haproxy_default_services:
   - service: "{{ haproxy_adjutant_api_service }}"
   - service: "{{ haproxy_aodh_api_service }}"
@@ -573,3 +589,4 @@ haproxy_default_services:
   - service: "{{ haproxy_tacker_service }}"
   - service: "{{ haproxy_trove_service }}"
   - service: "{{ haproxy_zun_api_service }}"
+  - service: "{{ haproxy_zun_console_service }}"
