@@ -1,0 +1,8 @@
+---
+features:
+  - It is now possible to have a service which only have a frontend.
+    by using `haproxy_frontend_only` inside your service.
+  - Add the possibility to have a haproxy_frontend_raw entry to control
+    haproxy config for the frontend, the entry will be literally copied in
+    to the service. You can set a list under the key `haproxy_frontend_raw`
+

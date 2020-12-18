@@ -1,0 +1,7 @@
+---
+features:
+  - Add ``horizon_allowed_hosts`` to be able to configure django ALLOWED_HOSTS.
+    The default is still the same as it was but you can create a list of allowed
+    hosts in ``/etc/openstack_deploy/user_variables.yml``. to set the correct
+    value, see https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
+    for more details.

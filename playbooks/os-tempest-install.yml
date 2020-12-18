@@ -25,7 +25,6 @@
   user: root
   vars_files:
     - "defaults/repo_packages/openstack_services.yml"
-    - "defaults/repo_packages/openstack_testing.yml"
     - "defaults/{{ install_method }}_install.yml"
   pre_tasks:
     - name: End playbook
