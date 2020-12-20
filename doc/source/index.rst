@@ -9,10 +9,10 @@ configuration of an OpenStack environment.
 
 Documentation for each of the following releases is available.
 
-Victoria: Under Development
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Wallaby: Under Development
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible Victoria is currently in development.
+OpenStack-Ansible Wallaby is currently in development.
 
 .. toctree::
    :maxdepth: 1
@@ -24,6 +24,20 @@ OpenStack-Ansible Victoria is currently in development.
    contributor/contributing
    contributor/index
    reference/index
+
+
+Victoria: Release Candidate
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+OpenStack-Ansible Victoria series has released RC1 released with the 22.0.0.0RC1 tag on
+20 December 2020.
+
+* `OpenStack-Ansible Victoria Documentation`_
+
+* `OpenStack-Ansible Victoria series release notes`_
+
+.. _OpenStack-Ansible Victoria Documentation: https://docs.openstack.org/openstack-ansible/victoria/
+.. _OpenStack-Ansible Victoria series release notes: https://docs.openstack.org/releasenotes/openstack-ansible/victoria.html
 
 
 Ussuri: Maintained
