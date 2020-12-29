@@ -18,8 +18,8 @@ OpenStack-Ansible Ussuri series was first released with the 21.0.0 tag on
 .. toctree::
    :maxdepth: 1
 
-   Deployment guide <https://docs.openstack.org/project-deploy-guide/openstack-ansible/latest/>
-   Release notes <https://docs.openstack.org/releasenotes/openstack-ansible/unreleased.html>
+   Deployment guide <https://docs.openstack.org/project-deploy-guide/openstack-ansible/ussuri/>
+   Release notes <https://docs.openstack.org/releasenotes/openstack-ansible/ussuri.html>
    admin/index
    user/index
    contributor/contributing
