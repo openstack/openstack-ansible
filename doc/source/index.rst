@@ -9,16 +9,17 @@ configuration of an OpenStack environment.
 
 Documentation for each of the following releases is available.
 
-Victoria: Under Development
+Victoria: Release Candidate
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible Victoria is currently in development.
+OpenStack-Ansible Victoria Release Candidate has been created with the
+22.0.0.0rc1 tag on 26 December 2020
 
 .. toctree::
    :maxdepth: 1
 
-   Deployment guide <https://docs.openstack.org/project-deploy-guide/openstack-ansible/latest/>
-   Release notes <https://docs.openstack.org/releasenotes/openstack-ansible/unreleased.html>
+   Deployment guide <https://docs.openstack.org/project-deploy-guide/openstack-ansible/victoria/>
+   Release notes <https://docs.openstack.org/releasenotes/openstack-ansible/victoria.html>
    admin/index
    user/index
    contributor/contributing
