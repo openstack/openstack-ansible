@@ -8,8 +8,11 @@ OpenStack-Ansible (OSA) uses the `Ansible <https://www.ansible.com/how-ansible-w
 IT automation engine to deploy an OpenStack environment on Ubuntu, Debian
 and CentOS.
 
-For isolation and ease of maintenance, you can install OpenStack components
-into machine containers.
+For isolation and ease of maintenance, all OpenStack services are installed by
+default from source code into python virtual environments.
+
+The services are further isolated via the use of LXC containers, but these are
+optional and a bare metal based installation is also possible.
 
 The OpenStack-Ansible manifesto
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -22,7 +25,6 @@ Why choose OpenStack-Ansible?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 * Supports the major Linux distributions Ubuntu, CentOS, Debian.
-* Supports the major CPU architectures x86, ppc64, s390x (WIP).
 * Offers automation for upgrades between major OpenStack releases.
 * Uses OpenStack defaults for each of the project roles, and provides
   extra wiring and optimised configuration when combining projects
@@ -45,7 +47,10 @@ When **not** to choose OpenStack-Ansible?
   re-using your knowledge and experimenting with a different
   OpenStack deployment project.
 * You want to deploy OpenStack with 100% application containers.
-  We currently support machine containers, with lxc and we will support
-  *systemd-nspawn* in the future (WIP). If you want to go 100% Docker,
+  We currently support LXC containers, if you want to go 100% Docker,
   there are other projects in the OpenStack community that can
   help you.
+* You want to deploy OpenStack services from distribution packages
+  (deb or rpm). Whilst there is some support for this, coverage of the
+  services is incomplete and a lot of operator flexibility is lost
+  when using this approach.
