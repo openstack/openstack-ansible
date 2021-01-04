@@ -162,7 +162,9 @@
     - "defaults/{{ install_method }}_install.yml"
   tags:
     - keystone
-  roles:
-    - role: os_keystone
-      tasks_from: main_keystone_federation_sp_idp_setup.yml
+  tasks:
+    - name: "Post configure SP/IDP"
+      include_role:
+        name: os_keystone
+        tasks_from: main_keystone_federation_sp_idp_setup.yml
 
