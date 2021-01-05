@@ -31,10 +31,10 @@ export SCRIPTS_PATH="$(dirname "$(readlink -f "${0}")")"
 export MAIN_PATH="$(dirname "${SCRIPTS_PATH}")"
 
 # The expected source series name
-export SOURCE_SERIES="ussuri"
+export SOURCE_SERIES="victoria"
 
 # The expected target series name
-export TARGET_SERIES="victoria"
+export TARGET_SERIES="wallaby"
 
 ## Functions -----------------------------------------------------------------
 
