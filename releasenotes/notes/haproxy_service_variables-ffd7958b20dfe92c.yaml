@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Created series of variables ``haproxy_*_service`` that contain specific to
+    the service haproxy configuration block. This allows deployers to
+    selectively adjust haproxy frontend/backend configuration for specific
+    service only, without need to override whole haproxy_default_services.
