@@ -60,7 +60,7 @@ options:
   force:
     description:
       Boolean. Apply --force flags to git clones wherever
-      possible. Defaults to True. Not required.
+      possible. Defaults to False. Not required.
   core_multiplier:
     description:
       Integer multiplier on the number of cores
@@ -258,7 +258,7 @@ def main():
                   "default": 0},
         "force": {"required": False,
                   "type": "bool",
-                  "default": True},
+                  "default": False},
         "core_multiplier": {"required": False,
                             "type": "int",
                             "default": 4},
