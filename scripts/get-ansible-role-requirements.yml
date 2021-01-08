@@ -19,6 +19,10 @@
   user: root
   gather_facts: false
   tasks:
+    - name: Gather minimal facts
+      setup:
+        gather_subset: '!all'
+
     - name: Remove target directory if required
       file:
         path: "{{ item.path | default(role_path_default) }}/{{ item.name | default(item.src | basename) }}"
