@@ -13,15 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-gnocchi_ssl_external: "{{ openstack_external_ssl }}"
-gnocchi_service_region: "{{ service_region }}"
-
-# Ensure that the package state matches the global setting
-gnocchi_package_state: "{{ package_state }}"
-
-# Ensure that keystone authentication is enabled for gnocchi
-gnocchi_keystone_auth: "{{ (groups['keystone_all'] is defined) and (groups['keystone_all'] | length > 0) }}"
-
 # Gnocchi default list of bind mounts
 gnocchi_container_bind_mounts:
   - bind_dir_path: "/var/lib/gnocchi"

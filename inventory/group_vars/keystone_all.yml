@@ -16,20 +16,5 @@
 # These are here rather than in keystone_all because
 # both the os_ceilometer and os_keystone roles require them
 
-# If there are any Ceilometer hosts in the environment, then enable its usage
-keystone_ceilometer_enabled: "{{ (groups['ceilometer_all'] is defined) and (groups['ceilometer_all'] | length > 0) }}"
-
-# The system user for all keystone services
-keystone_system_user_name: keystone
-
-keystone_external_ssl: "{{ openstack_external_ssl }}"
-
-keystone_cache_servers: "{{ memcached_servers.split(',') }}"
-
-keystone_service_in_ldap: "{{ service_ldap_backend_enabled }}"
-
 # Hosts allowed to override remote IP with X-Forwarded-For
 keystone_set_real_ip_from: "{{ groups['haproxy'] | map('extract', hostvars, 'container_address') | list }}"
-
-# Ensure that the package state matches the global setting
-keystone_package_state: "{{ package_state }}"

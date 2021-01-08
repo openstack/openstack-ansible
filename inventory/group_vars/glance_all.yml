@@ -13,17 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# If there are any Ceilometer hosts in the environment, then enable its usage
-glance_ceilometer_enabled: "{{ (groups['ceilometer_all'] is defined) and (groups['ceilometer_all'] | length > 0) }}"
-
-glance_service_region: "{{ service_region }}"
-glance_service_in_ldap: "{{ service_ldap_backend_enabled }}"
-
 # If there are Swift hosts in the environment, then use it as the default Glance store
 glance_default_store: "{{ ((groups['swift_all'] is defined) and (groups['swift_all'] | length > 0)) | ternary('swift', 'file') }}"
-
-# Ensure that the package state matches the global setting
-glance_package_state: "{{ package_state }}"
 
 # glance default list of bind mounts
 glance_container_bind_mounts:

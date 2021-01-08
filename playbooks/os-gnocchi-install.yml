@@ -42,13 +42,4 @@
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
   roles:
-    - role: "ceph_client"
-      openstack_service_system_user: "{{ gnocchi_system_user_name }}"
-      openstack_service_venv_bin: ""
-      when:
-        - inventory_hostname in groups['gnocchi_api']
-        - (gnocchi_storage_driver | default('none') | lower == 'ceph')
-      tags:
-        - ceph
-
     - role: "os_gnocchi"

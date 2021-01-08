@@ -145,7 +145,7 @@
     - name: Perform online data migrations
       command: "{{ nova_bin }}/nova-manage db online_data_migrations"
       become: yes
-      become_user: "{{ nova_system_user_name }}"
+      become_user: "{{ nova_system_user_name | default('nova') }}"
       when:
         - "nova_all_software_updated | bool"
         - "ansible_local['openstack_ansible']['nova']['need_online_data_migrations'] | bool"

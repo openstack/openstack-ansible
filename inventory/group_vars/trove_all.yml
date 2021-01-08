@@ -14,11 +14,3 @@
 # limitations under the License.
 
 swift_proxy_port: "{{ hostvars['localhost']['swift_proxy_port'] }}"
-
-trove_service_region: "{{ service_region }}"
-
-# If there are any Ceilometer hosts in the environment, then enable its usage
-trove_ceilometer_enabled: "{{ (groups['trove_all'] is defined) and (groups['trove_all'] | length > 0) and (groups['ceilometer_all'] is defined) and (groups['ceilometer_all'] | length > 0) }}"
-
-# Ensure that the package state matches the global setting
-trove_package_state: "{{ package_state }}"
