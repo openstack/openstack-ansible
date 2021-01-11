@@ -9,11 +9,11 @@ configuration of an OpenStack environment.
 
 Documentation for each of the following releases is available.
 
-Victoria: Release Candidate
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Victoria: Released
+~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible Victoria Release Candidate has been created with the
-22.0.0.0rc1 tag on 26 December 2020
+OpenStack-Ansible Victoria series was first released with the 22.0.0 tag on
+11 January 2021.
 
 .. toctree::
    :maxdepth: 1
