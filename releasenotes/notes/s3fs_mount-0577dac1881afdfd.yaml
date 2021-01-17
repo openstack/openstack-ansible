@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Added option to be able to mount s3fs with systemd as shared filesystem.
+    Type should be stated as 'fuse.s3fs', and extra key 'credentials' should
+    be set for systemd_mounts. S3 url should be placed in the options. Please
+    follow https://github.com/s3fs-fuse/s3fs-fuse#examples for docs regarding
+    s3fs.
