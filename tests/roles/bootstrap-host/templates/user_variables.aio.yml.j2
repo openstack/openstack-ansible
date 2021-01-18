@@ -197,6 +197,11 @@ sahara_wsgi_buffer_size: 16384
 zun_api_threads: 1
 zun_wsgi_threads: 1
 
+## Senlin
+senlin_api_threads: 1
+senlin_wsgi_threads: 1
+senlin_wsgi_processes: 1
+
 # NOTE: hpcloud-b4's eth0 uses 10.0.3.0/24, which overlaps with the
 #       lxc_net_address default
 # TODO: We'll need to implement a mechanism to determine valid lxc_net_address
