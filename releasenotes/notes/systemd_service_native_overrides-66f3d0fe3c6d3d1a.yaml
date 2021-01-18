@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    Added `systemd_overrides` and `systemd_overrides_only` keys to the
+    `systemd_services` dictionary. With help of the `systemd_overrides`
+    you can define systemd native overrides, which will be placed in
+    /etc/systemd/system/service_name.service.d/overrides.
+    `systemd_overrides_only` shows that no service_name.service should not
+    be created and create only overrides.

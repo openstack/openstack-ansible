@@ -1,0 +1,6 @@
+---
+upgrade:
+  - |
+    Variable ``cinder_service_internaluri_insecure`` has been replaced with
+    ``keystone_service_internaluri_insecure`` that is used across all roles
+    for the exact same purpose.

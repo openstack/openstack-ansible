@@ -1,0 +1,10 @@
+---
+upgrade:
+  - |
+    Variable ``haproxy_hatop_downloader`` has been removed, Deployers
+    supposed to use ``haproxy_hatop_download_url`` override if needed
+    to install in deployments with limited internet connection.
+features:
+  - |
+    Added new variable ``haproxy_hatop_install``, that allows to conditionally
+    enable or disable hatop installation.
