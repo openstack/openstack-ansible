@@ -244,11 +244,6 @@ container back-end.
    # export SCENARIO='aio_lxc_barbican_ceph'
    # scripts/bootstrap-aio.sh
 
-.. note::
-   If the 'metal' and 'aio' key words are used together, horizon will not be
-   deployed because haproxy and horizon will conflict on the same listening
-   ports.
-
 To add any global overrides, over and above the defaults for the applicable
 scenario, edit ``/etc/openstack_deploy/user_variables.yml``. In order to
 understand the various ways that you can override the default behaviour
