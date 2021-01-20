@@ -179,6 +179,7 @@ function main {
         RUN_TASKS+=("setup-infrastructure.yml -e 'galera_upgrade=true' -e 'rabbitmq_upgrade=true' -e 'placement_migrate_flag=true'")
         # explicitly perform controlled galera cluster restart with new lxc config
         RUN_TASKS+=("${SCRIPTS_PATH}/upgrade-utilities/galera-cluster-rolling-restart.yml")
+        RUN_TASKS+=("${SCRIPTS_PATH}/upgrade-utilities/galera-row-format-switch.yml")
         # upgrade openstack
         RUN_TASKS+=("setup-openstack.yml -e 'placement_migrate_flag=true'")
         # run haproxy setup again without the placement migrate flag to remove the nova placement api backends

@@ -1,0 +1,25 @@
+---
+
+- hosts: galera_all[0]
+  gather_facts: no
+
+  tasks:
+
+    - name: Find tables to change row format to DYNAMIC
+      command: >-
+        mysql -uroot
+        --silent --skip-column-names
+        -e "SELECT NAME
+            FROM information_schema.INNODB_SYS_TABLES
+            WHERE ROW_FORMAT IN('Redundant', 'Compact')
+            AND NAME like 'nova%';"
+      changed_when: False
+      register: tables_needing_row_format_change
+
+    - name: Change row format to DYNAMIC for legacy tables
+      command: >-
+        mysql -u root
+        --silent --skip-column-names
+        -e "{% for table in tables_needing_row_format_change.stdout_lines %}ALTER TABLE {{ table | regex_replace('/', '.') }} ROW_FORMAT=DYNAMIC;{% endfor %}"
+      changed_when: True
+      when: tables_needing_row_format_change.stdout | length > 0
