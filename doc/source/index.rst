@@ -26,11 +26,11 @@ OpenStack-Ansible Wallaby is currently in development.
    reference/index
 
 
-Victoria: Release Candidate
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Victoria: Maintained
+~~~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible Victoria series has released RC1 released with the 22.0.0.0RC1 tag on
-20 December 2020.
+OpenStack-Ansible Victoria series was first released with the 22.0.0 tag on
+21 January 2021.
 
 * `OpenStack-Ansible Victoria Documentation`_
 
@@ -41,7 +41,7 @@ OpenStack-Ansible Victoria series has released RC1 released with the 22.0.0.0RC1
 
 
 Ussuri: Maintained
-~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~
 
 OpenStack-Ansible Ussuri series was first released with the 21.0.0 tag on
 14 August 2020.
@@ -55,7 +55,7 @@ OpenStack-Ansible Ussuri series was first released with the 21.0.0 tag on
 
 
 Train: Maintained
-~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~
 
 OpenStack-Ansible Train series was first released with the 20.0.0 tag on
 16 December 2019.
@@ -67,8 +67,8 @@ OpenStack-Ansible Train series was first released with the 20.0.0 tag on
 .. _OpenStack-Ansible Train Documentation: https://docs.openstack.org/openstack-ansible/train/
 .. _OpenStack-Ansible Train series release notes: https://docs.openstack.org/releasenotes/openstack-ansible/train.html
 
-Stein: Maintained
-~~~~~~~~~~~~~~~~~
+Stein: Extended Maintenance
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 OpenStack-Ansible's Stein series was first released with the 19.0.0 tag on
 30 June 2019.
@@ -81,8 +81,8 @@ OpenStack-Ansible's Stein series was first released with the 19.0.0 tag on
 .. _OpenStack-Ansible Stein series release notes: https://docs.openstack.org/releasenotes/openstack-ansible/stein.html
 
 
-Rocky: Maintained
-~~~~~~~~~~~~~~~~~
+Rocky: Extended Maintenance
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 OpenStack-Ansible's Rocky series was first released with the 18.0.0 tag on
 16 October 2018.
