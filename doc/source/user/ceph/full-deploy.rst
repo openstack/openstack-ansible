@@ -35,10 +35,25 @@ integration in three ways:
   information in ``user_variables.yml`` and allowing openstack-ansible
   to ssh to the ceph monitors to retrieve the contents of ceph.conf
   and the keyrings.
+
+  This method only requires a very small amount of configuration
+  in ``user_variables.yml`` to point to the external ceph cluster monitors.
+  The whole configuration for ceph-ansible would live outside the
+  openstack-ansible deployment and there is no duplication.
+  The ``ceph_mons`` variable expects a list of IP addresses for the
+  Ceph Monitor servers in the external ceph deployment:
+
+.. code-block:: yaml
+
+  ceph_mons:
+      - 172.29.244.151
+      - 172.29.244.152
+      - 172.29.244.153
+
 * connecting to your own pre-deployed ceph cluster by pointing to its
-  information in ``user_variables.yml`` and providing data to populate
-  ceph.conf and ceph keyring files on the deploy host.  This is described
-  `here <https://docs.openstack.org/openstack-ansible-ceph_client/latest/config-from-file.html>`_.
+  monitors in ``user_variables.yml`` as above and providing data to
+  populate ceph.conf and ceph keyring files on the deploy host.
+  This is described `here <https://docs.openstack.org/openstack-ansible-ceph_client/latest/config-from-file.html>`_.
   No ssh access by openstack-ansible is required to the ceph cluster.
 * deploying a ceph cluster as part of the openstack-ansible deployment
   by using the roles maintained by the `Ceph-Ansible`_ project. Deployers
