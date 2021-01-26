@@ -71,7 +71,7 @@ case ${DISTRO_ID} in
           git curl autoconf gcc gcc-c++ nc \
           python3 python3-devel libselinux-python3 \
           openssl-devel libffi-devel \
-          python3-virtualenv
+          python3-virtualenv rsync
         ;;
     ubuntu|debian)
         # NOTE(mgariepy) remove this on ansible 2.10 if debian is in the config/base.yml file
