@@ -88,9 +88,6 @@ function build_ansible_runtime_venv {
     # Add SELinux support to the venv
     if [ -d "/usr/lib64/python3.6/site-packages/selinux/" ]; then
       rsync -avX /usr/lib64/python3.6/site-packages/selinux/ /opt/ansible-runtime/lib64/python3.6/site-packages/selinux/
-    fi
-    # NOTE(noonedeadpunk) Conditional is here for compatability with CentOS 7
-    if [ -f "/usr/lib64/python3.6/site-packages/_selinux.cpython-36m-x86_64-linux-gnu.so" ]; then
       rsync -avX /usr/lib64/python3.6/site-packages/_selinux.cpython-36m-x86_64-linux-gnu.so /opt/ansible-runtime/lib64/python3.6/site-packages/
     fi
 }
