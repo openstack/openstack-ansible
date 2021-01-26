@@ -325,20 +325,25 @@ haproxy_nova_api_compute_service:
     - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
   haproxy_service_enabled: "{{ groups['nova_api_os_compute'] is defined and groups['nova_api_os_compute'] | length > 0 }}"
 
+# By default the nova console service on HAProxy is configured in HTTP mode to
+# allow for more fine grained control. But if the SSL connection is terminated
+# on the nova console container it has to be run in TCP mode.
+haproxy_nova_console_http_mode: "{{ not (nova_console_user_ssl_cert is defined
+                                         and nova_console_user_ssl_key is defined) }}"
 haproxy_nova_console_service:
   haproxy_service_name: nova_console
   haproxy_backend_nodes: "{{ groups['nova_console'] | default([]) }}"
   haproxy_ssl: "{{ haproxy_ssl }}"
   haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
   haproxy_port: "{{ hostvars[(groups['nova_console'] | default(['localhost']))[0] | default('localhost')]['nova_console_port'] | default(6082) }}"
-  haproxy_balance_type: http
+  haproxy_balance_type: "{{ haproxy_nova_console_http_mode | ternary('http', 'tcp') }}"
   haproxy_timeout_client: 60m
   haproxy_timeout_server: 60m
   haproxy_balance_alg: source
-  haproxy_backend_options:
-    - "httpchk HEAD {{ hostvars[(groups['nova_console'] | default(['localhost']))[0] | default('localhost')]['nova_console_path'] | default('/spice_auto.html') }} HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
-  haproxy_backend_httpcheck_options:
-    - "expect status 200"
+  haproxy_backend_options: "{{ haproxy_nova_console_http_mode
+                               | ternary(['httpchk HEAD ' + hostvars[(groups['nova_console'] | default(['localhost']))[0] | default('localhost')]['nova_console_path'] | default('/spice_auto.html') + ' HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck'], []) }}"
+  haproxy_backend_httpcheck_options: "{{ haproxy_nova_console_http_mode
+                                         | ternary(['expect status 200'], []) }}"
   haproxy_service_enabled: "{{ groups['nova_console'] is defined and groups['nova_console'] | length > 0 }}"
 
 haproxy_octavia_service:
