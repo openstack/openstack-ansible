@@ -1,0 +1,6 @@
+---
+upgrade:
+  - |
+    Older deployments should check for the presence of legacy '127.0.1.1'
+    entries in their /etc/hosts files. These will need to be removed before
+    upgrading, particularly on RabbitMQ hosts and containers.
