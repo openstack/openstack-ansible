@@ -17,7 +17,7 @@ It should give you information about the status of your cluster.
 
 .. code-block:: shell-session
 
-    # ansible galera_container -m shell -a "mysql -h 127.0.0.1 \
+    # ansible galera_container -m shell -a "mysql \
     -e 'show status like \"%wsrep_cluster_%\";'"
     node3_galera_container-3ea2cbd3 | FAILED | rc=1 >>
     ERROR 2002 (HY000): Can't connect to local MySQL server
@@ -177,7 +177,7 @@ continue to process SQL requests.
 
    .. code-block:: shell-session
 
-       # ansible galera_container -m shell -a "mysql -h 127.0.0.1 \
+       # ansible galera_container -m shell -a "mysql \
        -e 'show status like \"%wsrep_cluster_%\";'"
        node3_galera_container-3ea2cbd3 | FAILED | rc=1 >>
        ERROR 2002 (HY000): Can't connect to local MySQL server through
@@ -219,7 +219,7 @@ recover cannot join the cluster because it no longer exists.
    .. code-block:: shell-session
 
        # ansible galera_container -m shell -a "mysql \
-       -h 127.0.0.1 -e 'show status like \"%wsrep_cluster_%\";'"
+       -e 'show status like \"%wsrep_cluster_%\";'"
        node2_galera_container-49a47d25 | FAILED | rc=1 >>
        ERROR 2002 (HY000): Can't connect to local MySQL server
        through socket '/var/run/mysqld/mysqld.sock' (111)
@@ -269,7 +269,7 @@ recover cannot join the cluster because it no longer exists.
    .. code-block:: shell-session
 
        # ansible galera_container -m shell -a "mysql \
-       -h 127.0.0.1 -e 'show status like \"%wsrep_cluster_%\";'"
+       -e 'show status like \"%wsrep_cluster_%\";'"
        node3_galera_container-3ea2cbd3 | success | rc=0 >>
        Variable_name             Value
        wsrep_cluster_conf_id     17
@@ -389,7 +389,7 @@ Recovering from certain failures require rebuilding one or more containers.
    .. code-block:: shell-session
 
        # ansible galera_container -m shell -a "mysql \
-       -h 127.0.0.1 -e 'show status like \"%wsrep_cluster_%\";'"
+       -e 'show status like \"%wsrep_cluster_%\";'"
        node3_galera_container-3ea2cbd3 | success | rc=0 >>
        Variable_name             Value
        wsrep_cluster_conf_id     1
@@ -429,7 +429,7 @@ Recovering from certain failures require rebuilding one or more containers.
    .. code-block:: shell-session
 
        # ansible galera_container -m shell -a "mysql \
-       -h 127.0.0.1 -e 'show status like \"%wsrep_cluster_%\";'"
+       -e 'show status like \"%wsrep_cluster_%\";'"
        node2_galera_container-49a47d25 | success | rc=0 >>
        Variable_name             Value
        wsrep_cluster_conf_id     5
