@@ -17,7 +17,7 @@
 rabbitmq_host_group: "rabbitmq_all"
 rabbitmq_port: "{{ (rabbitmq_use_ssl | bool) | ternary(5671, 5672) }}"
 
-rabbitmq_use_ssl: True
+rabbitmq_use_ssl: False
 rabbitmq_servers: >-
   {{
     groups[rabbitmq_host_group]
