@@ -3,15 +3,16 @@
 # suhartono <cloudsuhartono@gmail.com>, 2019. #zanata
 # Andreas Jaeger <jaegerandi@gmail.com>, 2020. #zanata
 # suhartono <cloudsuhartono@gmail.com>, 2020. #zanata
+# suhartono <cloudsuhartono@gmail.com>, 2021. #zanata
 msgid ""
 msgstr ""
-"Project-Id-Version: openstack-ansible 21.1.0.dev180\n"
+"Project-Id-Version: openstack-ansible 22.0.0.0rc2.dev36\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-19 03:01+0000\n"
+"POT-Creation-Date: 2021-01-28 16:24+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2020-02-13 04:40+0000\n"
+"PO-Revision-Date: 2021-01-31 04:10+0000\n"
 "Last-Translator: suhartono <cloudsuhartono@gmail.com>\n"
 "Language-Team: Indonesian\n"
 "Language: id\n"
@@ -440,9 +441,6 @@ msgstr ""
 msgid "Block Storage (cinder)"
 msgstr "Block Storage (cinder)"
 
-msgid "Block Storage (cinder):"
-msgstr "Block Storage (cinder):"
-
 msgid ""
 "Bridges provide layer 2 connectivity (similar to switches) among physical, "
 "logical, and virtual network interfaces within a host. After a bridge is "
@@ -502,9 +500,6 @@ msgid ""
 msgstr ""
 "Layanan OpenStack umum dan konfigurasinya ditentukan oleh OpenStack-Ansible "
 "di file pengaturan ``/etc/openstack_deploy/openstack_user_config.yml``."
-
-msgid "Compute service (nova):"
-msgstr "Layanan Compute (nova):"
 
 msgid "Configuration constraints"
 msgstr "Kendala konfigurasi"
@@ -808,9 +803,6 @@ msgid "For user guides, see the :dev_docs:`User Guide <user/index.html>`."
 msgstr ""
 "Untuk panduan pengguna, lihat :dev_docs:`User Guide <user/index.html>`."
 
-msgid "Galera:"
-msgstr "Galera:"
-
 msgid "Generates the names of each container that runs a service"
 msgstr "Menghasilkan nama setiap container yang menjalankan layanan"
 
@@ -865,9 +857,6 @@ msgid ""
 msgstr ""
 "Namun, proyek ini hanya berfokus pada penyebaran OpenStack dan "
 "persyaratannya."
-
-msgid "Identity service (keystone):"
-msgstr "Layanan Identity (keystone):"
 
 msgid ""
 "If a tool or object does not require a dedicated container, or if it is "
@@ -951,9 +940,6 @@ msgstr ""
 "Jika Anda ingin mengubah SHA ke SHA/tag/branch, tertentu, atau ingin "
 "menggunakan garpu sendiri (your own fork) dari layanan OpenStack, silakan "
 "lihat bagian berjudul :ref:`override_openstack_sources` dalam buku petunjuk."
-
-msgid "Image service (glance):"
-msgstr "Layanan Image (glance):"
 
 msgid "Image storage (glance)"
 msgstr "Image storage (glance)"
@@ -1257,9 +1243,6 @@ msgstr ""
 msgid "Network diagrams"
 msgstr "Diagram jaringan"
 
-msgid "Networking service (neutron):"
-msgstr "Layanan Networking (neutron):"
-
 msgid "Neutron traffic"
 msgstr "Lalu lintas Neutron"
 
@@ -1323,9 +1306,6 @@ msgstr ""
 
 msgid "Object Storage (swift)"
 msgstr "Object Storage (swift)"
-
-msgid "Object Storage service (swift):"
-msgstr "Layanan Object Storage (swift):"
 
 msgid "Omit a service or component from the deployment"
 msgstr "Hapus layanan atau komponen dari penerapan"
@@ -1571,9 +1551,6 @@ msgstr ""
 "opentstack_deploy/openstack_inventory.json``; setiap informasi baru atau "
 "yang dihapus harus disetel dengan menjalankan playbook."
 
-msgid "Orchestration service (heat):"
-msgstr "Layanan Orchestration (heat):"
-
 msgid ""
 "Our ``openstack-ansible`` cli is located in ``/usr/bin/openstack-ansible``. "
 "It sources an environment variable file located in: ``/usr/bin/openstack-"
@@ -1723,6 +1700,18 @@ msgstr ""
 "Tampilkan detail container termasuk keadaan operasional, pemanfaatan sumber "
 "daya, dan pasangan ``veth``:"
 
+msgid ""
+"Some roles, like uwsgi, are used for lot of roles, and have \"special\" "
+"overrides, (like `uwsgi_ini_overrides`) which can be defined to impact all "
+"services which are using uwsgi. These variables are \"special\" as they will "
+"have precedence over role defined `*_uwsgi_ini_overrides`."
+msgstr ""
+"Beberapa peran, seperti uwsgi, digunakan untuk banyak peran, dan memiliki "
+"penggantian \"special\", (seperti `uwsgi_ini_overrides`) yang dapat "
+"ditentukan untuk memengaruhi semua layanan yang menggunakan uwsgi. Variabel "
+"ini \"special\" karena akan didahulukan daripada peran yang ditentukan `* "
+"_uwsgi_ini_overrides`."
+
 msgid "Source based deployments"
 msgstr "Sumber berdasarkan penyebaran"
 
@@ -1740,12 +1729,6 @@ msgstr "Swift storage (untuk akses langsung ke drive)"
 
 msgid "Systemd nspawn commands"
 msgstr "Perintah systemd nspawn"
-
-msgid "Telemetry service (ceilometer):"
-msgstr "Telemetry service (ceilometer):"
-
-msgid "Tempest:"
-msgstr "Tempest:"
 
 msgid ""
 "The \"containerized\" applications are sometimes grouped within a single "
@@ -2218,9 +2201,6 @@ msgstr ""
 "Image berikut menunjukkan bagaimana antarmuka jaringan kontainer terhubung "
 "ke jembatan host (host's bridge) dan antarmuka jaringan fisik:"
 
-msgid "The following override variables are currently available:"
-msgstr "Variabel override berikut saat ini tersedia:"
-
 msgid ""
 "The following sections describe the services that OpenStack-Ansible deploys."
 msgstr "Bagian berikut menjelaskan layanan yang digunakan OpenStack-Ansible."
@@ -2331,6 +2311,12 @@ msgstr ""
 "Skrip yang sama dapat digunakan untuk menghapus host dengan aman dari "
 "inventory, mengekspor inventory berdasarkan host, dan menghapus alamat IP "
 "dari kontainer di dalam file inventory."
+
+msgid ""
+"The same way you can apply overrides to the uwsgi services. For example:"
+msgstr ""
+"Dengan cara yang sama Anda dapat menerapkan penggantian ke layanan uwsgi. "
+"Sebagai contoh:"
 
 msgid ""
 "The script that creates the inventory is located at ``inventory/"
@@ -2944,16 +2930,12 @@ msgstr ""
 
 msgid ""
 "While nspawn is an available containerization technology it should be "
-"considered experemental at this time. Even though this subsystem is not yet "
-"recommended for production, it is stable enough to introduce to the "
-"community and something we'd like feedback on as we improve it over the next "
-"cycle."
+"considered unmaintained and it's support will be removed in the upcoming "
+"release."
 msgstr ""
-"Meskipun nspawn adalah teknologi kontainerisasi yang tersedia, itu harus "
-"dipertimbangkan sebagai pengalaman saat ini. Meskipun subsistem ini belum "
-"direkomendasikan untuk produksi, ini cukup stabil untuk diperkenalkan kepada "
-"masyarakat dan kami ingin umpan balik ketika kami memperbaikinya pada siklus "
-"berikutnya."
+"Meskipun nspawn adalah teknologi containerization yang tersedia, itu harus "
+"dianggap tidak dipertahankan dan dukungannya akan dihapus dalam rilis "
+"mendatang."
 
 msgid ""
 "While the pre-built packages in the repository-infrastructure are "
@@ -3135,176 +3117,11 @@ msgstr ""
 "bernama mengikuti pola ``user_*.yml`` sehingga mereka akan bersumber di "
 "samping yang digunakan secara eksklusif oleh OpenStack-Ansible."
 
-msgid "ceilometer_ceilometer_conf_overrides"
-msgstr "ceilometer_ceilometer_conf_overrides"
-
-msgid "ceilometer_event_definitions_yaml_overrides"
-msgstr "ceilometer_event_definitions_yaml_overrides"
-
-msgid "ceilometer_event_pipeline_yaml_overrides"
-msgstr "ceilometer_event_pipeline_yaml_overrides"
-
-msgid "ceilometer_pipeline_yaml_overrides"
-msgstr "ceilometer_pipeline_yaml_overrides"
-
-msgid "ceilometer_policy_overrides"
-msgstr "ceilometer_policy_overrides"
-
-msgid "cinder_api_paste_ini_overrides"
-msgstr "cinder_api_paste_ini_overrides"
-
-msgid "cinder_cinder_conf_overrides"
-msgstr "cinder_cinder_conf_overrides"
-
-msgid "cinder_policy_overrides"
-msgstr "cinder_policy_overrides"
-
-msgid "cinder_rootwrap_conf_overrides"
-msgstr "cinder_rootwrap_conf_overrides"
-
 msgid "config_template documentation"
 msgstr "dokumentasi config_template"
 
-msgid "galera_client_my_cnf_overrides"
-msgstr "galera_client_my_cnf_overrides"
-
-msgid "galera_cluster_cnf_overrides"
-msgstr "galera_cluster_cnf_overrides"
-
-msgid "galera_debian_cnf_overrides"
-msgstr "galera_debian_cnf_overrides"
-
-msgid "galera_my_cnf_overrides"
-msgstr "galera_my_cnf_overrides"
-
-msgid "glance_glance_api_conf_overrides"
-msgstr "glance_glance_api_conf_overrides"
-
-msgid "glance_glance_api_paste_ini_overrides"
-msgstr "glance_glance_api_paste_ini_overrides"
-
-msgid "glance_glance_cache_conf_overrides"
-msgstr "glance_glance_cache_conf_overrides"
-
-msgid "glance_glance_manage_conf_overrides"
-msgstr "glance_glance_manage_conf_overrides"
-
-msgid "glance_glance_scheme_json_overrides"
-msgstr "glance_glance_scheme_json_overrides"
-
-msgid "glance_glance_scrubber_conf_overrides"
-msgstr "glance_glance_scrubber_conf_overrides"
-
-msgid "glance_policy_overrides"
-msgstr "glance_policy_overrides"
-
-msgid "heat_api_paste_ini_overrides"
-msgstr "heat_api_paste_ini_overrides"
-
-msgid "heat_aws_rds_dbinstance_yaml_overrides"
-msgstr "heat_aws_rds_dbinstance_yaml_overrides"
-
-msgid "heat_default_yaml_overrides"
-msgstr "heat_default_yaml_overrides"
-
-msgid "heat_heat_conf_overrides"
-msgstr "heat_heat_conf_overrides"
-
-msgid "heat_policy_overrides"
-msgstr "heat_policy_overrides"
-
-msgid "keystone_keystone_conf_overrides"
-msgstr "keystone_keystone_conf_overrides"
-
-msgid "keystone_keystone_default_conf_overrides"
-msgstr "keystone_keystone_default_conf_overrides"
-
-msgid "keystone_keystone_paste_ini_overrides"
-msgstr "keystone_keystone_paste_ini_overrides"
-
-msgid "keystone_policy_overrides"
-msgstr "keystone_policy_overrides"
-
-msgid "neutron_api_paste_ini_overrides"
-msgstr "neutron_api_paste_ini_overrides"
-
-msgid "neutron_dhcp_agent_ini_overrides"
-msgstr "neutron_dhcp_agent_ini_overrides"
-
-msgid "neutron_dnsmasq_neutron_conf_overrides"
-msgstr "neutron_dnsmasq_neutron_conf_overrides"
-
-msgid "neutron_l3_agent_ini_overrides"
-msgstr "neutron_l3_agent_ini_overrides"
-
-msgid "neutron_metadata_agent_ini_overrides"
-msgstr "neutron_metadata_agent_ini_overrides"
-
-msgid "neutron_metering_agent_ini_overrides"
-msgstr "neutron_metering_agent_ini_overrides"
-
-msgid "neutron_ml2_conf_ini_overrides"
-msgstr "neutron_ml2_conf_ini_overrides"
-
-msgid "neutron_neutron_conf_overrides"
-msgstr "neutron_neutron_conf_overrides"
-
-msgid "neutron_policy_overrides"
-msgstr "neutron_policy_overrides"
-
-msgid "neutron_rootwrap_conf_overrides"
-msgstr "neutron_rootwrap_conf_overrides"
-
-msgid "nova_api_paste_ini_overrides"
-msgstr "nova_api_paste_ini_overrides"
-
-msgid "nova_nova_conf_overrides"
-msgstr "nova_nova_conf_overrides"
-
-msgid "nova_policy_overrides"
-msgstr "nova_policy_overrides"
-
-msgid "nova_rootwrap_conf_overrides"
-msgstr "nova_rootwrap_conf_overrides"
-
 msgid "openstack_user_config settings reference"
 msgstr "referensi pengaturan openstack_user_config"
-
-msgid "pip:"
-msgstr "pip:"
-
-msgid "pip_global_conf_overrides"
-msgstr "pip_global_conf_overrides"
-
-msgid "swift_account_server_conf_overrides"
-msgstr "swift_account_server_conf_overrides"
-
-msgid "swift_account_server_replicator_conf_overrides"
-msgstr "swift_account_server_replicator_conf_overrides"
-
-msgid "swift_container_server_conf_overrides"
-msgstr "swift_container_server_conf_overrides"
-
-msgid "swift_container_server_replicator_conf_overrides"
-msgstr "swift_container_server_replicator_conf_overrides"
-
-msgid "swift_object_server_conf_overrides"
-msgstr "swift_object_server_conf_overrides"
-
-msgid "swift_object_server_replicator_conf_overrides"
-msgstr "swift_object_server_replicator_conf_overrides"
-
-msgid "swift_proxy_server_conf_overrides"
-msgstr "swift_proxy_server_conf_overrides"
-
-msgid "swift_swift_conf_overrides"
-msgstr "swift_swift_conf_overrides"
-
-msgid "swift_swift_dispersion_conf_overrides"
-msgstr "swift_swift_dispersion_conf_overrides"
-
-msgid "tempest_tempest_conf_overrides"
-msgstr "tempest_tempest_conf_overrides"
 
 msgid "user_*.yml files in more details"
 msgstr "file user_*.yml lebih detail"

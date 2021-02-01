@@ -3,9 +3,9 @@
 # Frank Kloeker <eumel@arcor.de>, 2019. #zanata
 msgid ""
 msgstr ""
-"Project-Id-Version: openstack-ansible 21.1.0.dev180\n"
+"Project-Id-Version: openstack-ansible 22.0.0.0rc2.dev36\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-19 03:01+0000\n"
+"POT-Creation-Date: 2021-01-28 16:24+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -442,9 +442,6 @@ msgstr ""
 msgid "Block Storage (cinder)"
 msgstr "Blockspeicher (cinder)"
 
-msgid "Block Storage (cinder):"
-msgstr "Blockspeicher (cinder):"
-
 msgid ""
 "Bridges provide layer 2 connectivity (similar to switches) among physical, "
 "logical, and virtual network interfaces within a host. After a bridge is "
@@ -508,9 +505,6 @@ msgstr ""
 "Gängige OpenStack-Dienste und ihre Konfiguration werden von OpenStack-"
 "Ansible in der Einstellungsdatei ``/etc/openstack_deploy/"
 "openstack_user_config.yml`` definiert."
-
-msgid "Compute service (nova):"
-msgstr "Compute-Service (nova):"
 
 msgid "Configuration constraints"
 msgstr "Konfigurationsbeschränkungen"
@@ -802,9 +796,6 @@ msgid "For user guides, see the :dev_docs:`User Guide <user/index.html>`."
 msgstr ""
 "Benutzerhandbücher finden Sie im :dev_docs:`User Guide <user/index.html>`."
 
-msgid "Galera:"
-msgstr "Galera:"
-
 msgid "Generates the names of each container that runs a service"
 msgstr "Erzeugt die Namen jedes Containers, der einen Service ausführt"
 
@@ -860,9 +851,6 @@ msgid ""
 msgstr ""
 "Dieses Projekt konzentriert sich jedoch ausschließlich auf den Einsatz von "
 "OpenStack und seinen Anforderungen."
-
-msgid "Identity service (keystone):"
-msgstr "Identitätsdienst (Keystone):"
 
 msgid ""
 "If a tool or object does not require a dedicated container, or if it is "
@@ -947,9 +935,6 @@ msgstr ""
 "eigenen Fork eines OpenStack-Dienstes verwenden möchten, lesen Sie den "
 "Abschnitt mit dem Titel :ref:`override_openstack_sources` im "
 "Benutzerhandbuch."
-
-msgid "Image service (glance):"
-msgstr "Abbildservice (glance):"
 
 msgid "Image storage (glance)"
 msgstr "Abbildspeicher (glance)"
@@ -1236,9 +1221,6 @@ msgstr ""
 msgid "Network diagrams"
 msgstr "Netzwerkdiagramme"
 
-msgid "Networking service (neutron):"
-msgstr "Vernetzungsdienst (neutron):"
-
 msgid "Neutron traffic"
 msgstr "Neutron Verkehr"
 
@@ -1306,9 +1288,6 @@ msgstr ""
 
 msgid "Object Storage (swift)"
 msgstr "Objektspeicher (swift)"
-
-msgid "Object Storage service (swift):"
-msgstr "Objektspeicherdienst (swift):"
 
 msgid "Omit a service or component from the deployment"
 msgstr ""
@@ -1563,9 +1542,6 @@ msgstr ""
 "entfernten Informationen müssen durch Ausführen von Playbooks festgelegt "
 "werden."
 
-msgid "Orchestration service (heat):"
-msgstr "Orchestrierungsdienst (heat):"
-
 msgid ""
 "Our ``openstack-ansible`` cli is located in ``/usr/bin/openstack-ansible``. "
 "It sources an environment variable file located in: ``/usr/bin/openstack-"
@@ -1737,12 +1713,6 @@ msgstr "Swift-Speicher (für direkten Zugriff auf Laufwerk)"
 
 msgid "Systemd nspawn commands"
 msgstr "Systemd nspawn-Befehle"
-
-msgid "Telemetry service (ceilometer):"
-msgstr "Telemetriedienst (Ceilometer):"
-
-msgid "Tempest:"
-msgstr "Tempest:"
 
 msgid ""
 "The \"containerized\" applications are sometimes grouped within a single "
@@ -2199,9 +2169,6 @@ msgid ""
 msgstr ""
 "Das folgende Abbild zeigt, wie die Containernetzwerkschnittstellen mit den "
 "Bridges und physischen Netzwerkschnittstellen des Hosts verbunden sind:"
-
-msgid "The following override variables are currently available:"
-msgstr "Die folgenden Übersteuerungsvariablen sind derzeit verfügbar:"
 
 msgid ""
 "The following sections describe the services that OpenStack-Ansible deploys."
@@ -2908,19 +2875,6 @@ msgstr ""
 "Speicherplatzes."
 
 msgid ""
-"While nspawn is an available containerization technology it should be "
-"considered experemental at this time. Even though this subsystem is not yet "
-"recommended for production, it is stable enough to introduce to the "
-"community and something we'd like feedback on as we improve it over the next "
-"cycle."
-msgstr ""
-"Während es sich bei nspawn um eine verfügbare Containerisierungstechnologie "
-"handelt, sollte sie zu diesem Zeitpunkt als experimentell betrachtet werden. "
-"Obwohl dieses Subsystem noch nicht für die Produktion empfohlen wird, ist es "
-"stabil genug, um es der Community vorzustellen, und etwas, auf das wir gerne "
-"Rückmeldungen erhalten würden, wenn wir es im nächsten Zyklus verbessern."
-
-msgid ""
 "While the pre-built packages in the repository-infrastructure are "
 "comprehensive, it may be needed to change the source locations and versions "
 "of packages to suit different deployment needs. Adding additional "
@@ -3087,176 +3041,11 @@ msgstr ""
 "zusammen mit denen verwendet werden, die ausschließlich von OpenStack-"
 "Ansible verwendet werden."
 
-msgid "ceilometer_ceilometer_conf_overrides"
-msgstr "ceilometer_ceilometer_conf_overrides"
-
-msgid "ceilometer_event_definitions_yaml_overrides"
-msgstr "ceilometer_event_definitions_yaml_overrides"
-
-msgid "ceilometer_event_pipeline_yaml_overrides"
-msgstr "ceilometer_event_pipeline_yaml_overrides"
-
-msgid "ceilometer_pipeline_yaml_overrides"
-msgstr "ceilometer_pipeline_yaml_overrides"
-
-msgid "ceilometer_policy_overrides"
-msgstr "ceilometer_policy_overrides"
-
-msgid "cinder_api_paste_ini_overrides"
-msgstr "cinder_api_paste_ini_overrides"
-
-msgid "cinder_cinder_conf_overrides"
-msgstr "cinder_cinder_conf_overrides"
-
-msgid "cinder_policy_overrides"
-msgstr "cinder_policy_overrides"
-
-msgid "cinder_rootwrap_conf_overrides"
-msgstr "cinder_rootwrap_conf_overrides"
-
 msgid "config_template documentation"
 msgstr "Dokumentation der config_template"
 
-msgid "galera_client_my_cnf_overrides"
-msgstr "galera_client_my_cnf_overrides"
-
-msgid "galera_cluster_cnf_overrides"
-msgstr "galera_cluster_cnf_overrides"
-
-msgid "galera_debian_cnf_overrides"
-msgstr "galera_debian_cnf_overrides"
-
-msgid "galera_my_cnf_overrides"
-msgstr "galera_my_cnf_overrides"
-
-msgid "glance_glance_api_conf_overrides"
-msgstr "glance_glance_api_conf_overrides"
-
-msgid "glance_glance_api_paste_ini_overrides"
-msgstr "glance_glance_api_paste_ini_overrides"
-
-msgid "glance_glance_cache_conf_overrides"
-msgstr "glance_glance_cache_conf_overrides"
-
-msgid "glance_glance_manage_conf_overrides"
-msgstr "glance_glance_manage_conf_overrides"
-
-msgid "glance_glance_scheme_json_overrides"
-msgstr "glance_glance_scheme_json_overrides"
-
-msgid "glance_glance_scrubber_conf_overrides"
-msgstr "glance_glance_scrubber_conf_overrides"
-
-msgid "glance_policy_overrides"
-msgstr "glance_policy_overrides"
-
-msgid "heat_api_paste_ini_overrides"
-msgstr "heat_api_paste_ini_overrides"
-
-msgid "heat_aws_rds_dbinstance_yaml_overrides"
-msgstr "heat_aws_rds_dbinstance_yaml_overrides"
-
-msgid "heat_default_yaml_overrides"
-msgstr "heat_default_yaml_overrides"
-
-msgid "heat_heat_conf_overrides"
-msgstr "heat_heat_conf_overrides"
-
-msgid "heat_policy_overrides"
-msgstr "heat_policy_overrides"
-
-msgid "keystone_keystone_conf_overrides"
-msgstr "keystone_keystone_conf_overrides"
-
-msgid "keystone_keystone_default_conf_overrides"
-msgstr "keystone_keystone_default_conf_overrides"
-
-msgid "keystone_keystone_paste_ini_overrides"
-msgstr "keystone_keystone_paste_ini_overrides"
-
-msgid "keystone_policy_overrides"
-msgstr "keystone_policy_overrides"
-
-msgid "neutron_api_paste_ini_overrides"
-msgstr "neutron_api_paste_ini_overrides"
-
-msgid "neutron_dhcp_agent_ini_overrides"
-msgstr "neutron_dhcp_agent_ini_overrides"
-
-msgid "neutron_dnsmasq_neutron_conf_overrides"
-msgstr "neutron_dnsmasq_neutron_conf_overrides"
-
-msgid "neutron_l3_agent_ini_overrides"
-msgstr "neutron_l3_agent_ini_overrides"
-
-msgid "neutron_metadata_agent_ini_overrides"
-msgstr "neutron_metadata_agent_ini_overrides"
-
-msgid "neutron_metering_agent_ini_overrides"
-msgstr "neutron_metering_agent_ini_overrides"
-
-msgid "neutron_ml2_conf_ini_overrides"
-msgstr "neutron_ml2_conf_ini_overrides"
-
-msgid "neutron_neutron_conf_overrides"
-msgstr "neutron_neutron_conf_overrides"
-
-msgid "neutron_policy_overrides"
-msgstr "neutron_policy_overrides"
-
-msgid "neutron_rootwrap_conf_overrides"
-msgstr "neutron_rootwrap_conf_overrides"
-
-msgid "nova_api_paste_ini_overrides"
-msgstr "nova_api_paste_ini_overrides"
-
-msgid "nova_nova_conf_overrides"
-msgstr "nova_nova_conf_overrides"
-
-msgid "nova_policy_overrides"
-msgstr "nova_policy_overrides"
-
-msgid "nova_rootwrap_conf_overrides"
-msgstr "nova_rootwrap_conf_overrides"
-
 msgid "openstack_user_config settings reference"
 msgstr "openstack_user_config Einstellungsreferenz"
-
-msgid "pip:"
-msgstr "Pip:"
-
-msgid "pip_global_conf_overrides"
-msgstr "pip_global_conf_overrides"
-
-msgid "swift_account_server_conf_overrides"
-msgstr "swift_account_server_conf_overrides"
-
-msgid "swift_account_server_replicator_conf_overrides"
-msgstr "swift_account_server_replicator_conf_overrides"
-
-msgid "swift_container_server_conf_overrides"
-msgstr "swift_container_server_conf_overrides"
-
-msgid "swift_container_server_replicator_conf_overrides"
-msgstr "swift_container_server_replicator_conf_overrides"
-
-msgid "swift_object_server_conf_overrides"
-msgstr "swift_object_server_conf_overrides"
-
-msgid "swift_object_server_replicator_conf_overrides"
-msgstr "swift_object_server_replicator_conf_overrides"
-
-msgid "swift_proxy_server_conf_overrides"
-msgstr "swift_proxy_server_conf_overrides"
-
-msgid "swift_swift_conf_overrides"
-msgstr "swift_swift_conf_overrides"
-
-msgid "swift_swift_dispersion_conf_overrides"
-msgstr "swift_swift_dispersion_conf_overrides"
-
-msgid "tempest_tempest_conf_overrides"
-msgstr "tempest_tempest_conf_overrides"
 
 msgid "user_*.yml files in more details"
 msgstr "user_*.yml-Dateien in weiteren Einzelheiten"
