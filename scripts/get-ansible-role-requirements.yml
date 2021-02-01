@@ -125,7 +125,7 @@
         - name: Clone git repos (parallel)
           git_requirements:
             default_path: "{{ role_path_default }}"
-            default_depth: 10
+            default_depth: 20
             default_version: "master"
             repo_info: "{{ clone_roles }}"
             retries: "{{ git_clone_retries }}"
@@ -139,7 +139,7 @@
             dest: "{{ item.path | default(role_path_default) }}/{{ item.name | default(item.src | basename) }}"
             version: "{{ item.version | default('master') }}"
             refspec: "{{ item.refspec | default(omit) }}"
-            depth: "{{ item.depth | default('10') }}"
+            depth: "{{ item.depth | default('20') }}"
             update: true
             force: true
           with_items: "{{ clone_roles }}"
