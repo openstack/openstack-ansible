@@ -124,6 +124,9 @@
       - name: openstack/octavia-dashboard
       - name: openstack/blazar
       - name: openstack/blazar-nova
+      - name: openstack/zun
+      - name: openstack/kuryr-libnetwork
+      - name: openstack/kuryr
     pre-run:
       - zuul.d/playbooks/pre-gate-cleanup.yml
       - zuul.d/playbooks/pre-gate-scenario.yml
