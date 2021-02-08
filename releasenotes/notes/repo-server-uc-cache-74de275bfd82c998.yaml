@@ -1,0 +1,27 @@
+---
+features:
+  - |
+    The repository server can now retrieve and cache upper-constraints files
+    and serve them as required to pip during the build of python wheels. By
+    default the relevant version of upper-constraints will be downloaded once
+    from https://releases.openstack.org/constraints/upper/, or the url in a 
+    new override user_requirements_git_url. Additional constraints files can
+    be placed in /etc/openstack_deploy/upper-constraints on the deploy host
+    and these will be copied to the repo server and will be available to
+    reference in other overrides such as magnum_upper_constraints_url. This
+    is useful if deploying a different branch of a service such as magnum/master
+    onto a deployment of openstack/victoria. If the target hosts are in an
+    air-gapped environment, setting requirements_git_repo to an empty string
+    will disable downloading of upper-constraints to the repo server and
+    rely on the deployer providing suitable copies of upper-constraints in
+    through the deploy host /etc/openstack_deploy/upper-constraints directory.
+upgrade:
+  - |
+    If a deployment uses local copies or caches of the openstack requirements
+    repo or upper-constraints files, the repo server is now able to natively
+    host copies of the relevant upper-constraints files and serve them to pip
+    during wheel builds. It is now also possible to supply custom constraints
+    files in the deploy host /etc/openstack_deploy/upper-constraints directory.
+    Deployers should take account of the new capability in the repo server and
+    adjust any special handling of downloading upper-constraints that they
+    may have made via overrides, in particular requirements_git_url.
