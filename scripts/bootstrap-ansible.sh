@@ -108,14 +108,20 @@ elif [ -n "$HTTP_PROXY" ]; then
   PIP_OPTS+="--proxy $HTTP_PROXY"
 fi
 
-PYTHON_EXEC_PATH="${PYTHON_EXEC_PATH:-$(which python3 || which python2 || which python)}"
-PYTHON_VERSION="$($PYTHON_EXEC_PATH -c 'import sys; print(".".join(map(str, sys.version_info[:3])))')"
+PYTHON_EXEC_PATH="${PYTHON_EXEC_PATH:-$(which python3)}"
 
-# Use https when Python with native SNI support is available
-UPPER_CONSTRAINTS_PROTO=$([ "$PYTHON_VERSION" == $(echo -e "$PYTHON_VERSION\n2.7.9" | sort -V | tail -1) ] && echo "https" || echo "http")
+# Obtain the SHA of the upper-constraints to use for the ansible runtime venv
+UPPER_CONSTRAINTS_SHA=$(awk '/requirements_git_install_branch:/ {print $2}' playbooks/defaults/repo_packages/openstack_services.yml)
 
-# Set the location of the constraints to use for all pip installations
-export UPPER_CONSTRAINTS_FILE=${UPPER_CONSTRAINTS_FILE:-"$UPPER_CONSTRAINTS_PROTO://opendev.org/openstack/requirements/raw/$(awk '/requirements_git_install_branch:/ {print $2}' playbooks/defaults/repo_packages/openstack_services.yml)/upper-constraints.txt"}
+# if we are in CI, grab the u-c file from the locally cached repo, otherwise download
+UPPER_CONSTRAINTS_PATH="/opt/ansible-runtime-constraints-${UPPER_CONSTRAINTS_SHA}.txt"
+if [[ -z "${ZUUL_SRC_PATH+defined}" ]]; then
+  wget ${UPPER_CONSTRAINTS_FILE:-"https://opendev.org/openstack/requirements/raw/${UPPER_CONSTRAINTS_SHA}/upper-constraints.txt"} -O ${UPPER_CONSTRAINTS_PATH}
+else
+  git --git-dir=${ZUUL_SRC_PATH}/opendev.org/openstack/requirements/.git show ${UPPER_CONSTRAINTS_SHA}:upper-constraints.txt > ${UPPER_CONSTRAINTS_PATH}
+fi
+
+export UPPER_CONSTRAINTS_FILE="file://${UPPER_CONSTRAINTS_PATH}"
 
 if [[ -z "${SKIP_OSA_RUNTIME_VENV_BUILD+defined}" ]]; then
     build_ansible_runtime_venv
