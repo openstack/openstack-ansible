@@ -54,6 +54,22 @@ Additional VLANs may be required for the following purposes:
 Network interfaces
 ~~~~~~~~~~~~~~~~~~
 
+Configuring network interfaces
+------------------------------
+
+OpenStack-Ansible does not mandate any specific method of configuring
+network interfaces on the host. You may choose any tool, such as ifupdown,
+netplan, systemd-networkd, networkmanager or another operating-system
+specific tool. The only requirement is that a set of functioning network
+bridges and interfaces are created which match those expected by
+OpenStack-Ansible, plus any that you choose to specify for neutron
+physical interfaces.
+
+A selection of network configuration example files are given in
+the ``etc/network`` and ``etc/netplan`` for ubuntu systems, and it is
+expected that these will need adjustment for the specific requirements
+of each deployment.
+
 Single interface or bond
 ------------------------
 
