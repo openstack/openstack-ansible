@@ -53,6 +53,17 @@
         - openstack-ansible-upgrade-aio_lxc-ubuntu-focal
 
 - project-template:
+    name: openstack-ansible-upgrade-infra_lxc-jobs
+    check:
+      jobs:
+        - openstack-ansible-upgrade-infra_lxc-centos-8:
+            voting: false
+        - openstack-ansible-upgrade-infra_lxc-ubuntu-focal
+    gate:
+      jobs:
+        - openstack-ansible-upgrade-infra_lxc-ubuntu-focal
+
+- project-template:
     name: openstack-ansible-upgrade-aio_metal-jobs
     check:
       jobs:
@@ -78,6 +89,51 @@
     periodic:
       jobs:
         - openstack-ansible-deploy-infra_lxc-ubuntu-focal
+
+- project-template:
+    name: openstack-ansible-deploy-hosts_lxc-jobs
+    check:
+      jobs:
+        - openstack-ansible-deploy-hosts_lxc-centos-8
+        - openstack-ansible-deploy-hosts_lxc-debian-buster
+        - openstack-ansible-deploy-hosts_lxc-ubuntu-focal
+    gate:
+      jobs:
+        - openstack-ansible-deploy-hosts_lxc-centos-8
+        - openstack-ansible-deploy-hosts_lxc-debian-buster
+        - openstack-ansible-deploy-hosts_lxc-ubuntu-focal
+    periodic:
+      jobs:
+        - openstack-ansible-deploy-hosts_lxc-ubuntu-focal
+
+- project-template:
+    name: openstack-ansible-deploy-hosts_metal-jobs
+    check:
+      jobs:
+        - openstack-ansible-deploy-hosts_metal-centos-8
+        - openstack-ansible-deploy-hosts_metal-debian-buster
+        - openstack-ansible-deploy-hosts_metal-ubuntu-focal
+    gate:
+      jobs:
+        - openstack-ansible-deploy-hosts_metal-centos-8
+        - openstack-ansible-deploy-hosts_metal-debian-buster
+        - openstack-ansible-deploy-hosts_metal-ubuntu-focal
+    periodic:
+      jobs:
+        - openstack-ansible-deploy-hosts_metal-ubuntu-focal
+
+- project-template:
+    name: openstack-ansible-deploy-hosts_distro_lxc-jobs
+    check:
+      jobs:
+        - openstack-ansible-deploy-hosts_distro_lxc-centos-8
+        - openstack-ansible-deploy-hosts_distro_lxc-debian-buster
+        - openstack-ansible-deploy-hosts_distro_lxc-ubuntu-focal
+    gate:
+      jobs:
+        - openstack-ansible-deploy-hosts_distro_lxc-centos-8
+        - openstack-ansible-deploy-hosts_distro_lxc-debian-buster
+        - openstack-ansible-deploy-hosts_distro_lxc-ubuntu-focal
 
 - project-template:
     name: openstack-ansible-deploy-aio_distro_lxc-jobs
