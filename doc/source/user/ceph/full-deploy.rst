@@ -43,6 +43,12 @@ integration in three ways:
   The ``ceph_mons`` variable expects a list of IP addresses for the
   Ceph Monitor servers in the external ceph deployment:
 
+.. note::
+
+  Overriding ceph_mons is required only when you are using external
+  cluster which does not present in the OpenStack-Ansible's inventory
+  (ie group ``mon_group_name`` is not defined).
+
 .. code-block:: yaml
 
   ceph_mons:
