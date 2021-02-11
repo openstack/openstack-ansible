@@ -100,6 +100,8 @@
       - name: openstack/ansible-role-systemd_networkd
       - name: openstack/ansible-role-python_venv_build
       - name: openstack/ansible-role-uwsgi
+      # OpenStack service repos - listed here to make cached repos available in CI
+      - name: openstack/requirements
 
 - job:
     name: openstack-ansible-deploy-aio
