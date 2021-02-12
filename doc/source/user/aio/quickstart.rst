@@ -125,6 +125,14 @@ version.
    Debian 10 (buster), Ubuntu 18.04 (Bionic Beaver), Ubuntu 20.04
    (Focal Fossa) and CentOS 8.
 
+.. warning::
+   The announcement of early end-of-life for CentOS 8 and the migration
+   to CentOS Stream leaves OpenStack-Ansible currently un-installable on
+   CentOS Stream. A number of critical dependencies are taken from the
+   EPEL repository and currently these will not install onto a CentOS
+   Stream host. Careful consideration should be given to the life-cycle
+   of any new deployments on CentOS 8.
+
 The next step is to bootstrap Ansible and the Ansible roles for the
 development environment.
 
