@@ -201,6 +201,13 @@ a space between each set of options, for example:
    # export BOOTSTRAP_OPTS="bootstrap_host_data_disk_device=sdb"
    # export BOOTSTRAP_OPTS="${BOOTSTRAP_OPTS} bootstrap_host_data_disk_fs_type=xfs"
 
+If you are installing with limited connectivity, or you don't have default
+route set, you will need to define interface for outgoing connections manually
+
+.. code-block:: shell-session
+
+   # export BOOTSTRAP_OPTS="bootstrap_host_public_interface=eth1"
+
 For the default AIO scenario, the AIO configuration preparation is completed by
 executing:
 
