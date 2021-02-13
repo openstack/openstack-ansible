@@ -297,7 +297,28 @@
     timeout: 10800
 
 - job:
+    name: openstack-ansible-upgrade-infra_lxc-ubuntu-focal
+    parent: openstack-ansible-deploy-aio
+    nodeset: ubuntu-focal
+    timeout: 10800
+
+- job:
     name: openstack-ansible-deploy-infra_lxc-ubuntu-focal
+    parent: openstack-ansible-deploy-aio
+    nodeset: ubuntu-focal
+
+- job:
+    name: openstack-ansible-deploy-hosts_lxc-ubuntu-focal
+    parent: openstack-ansible-deploy-aio
+    nodeset: ubuntu-focal
+
+- job:
+    name: openstack-ansible-deploy-hosts_distro_lxc-ubuntu-focal
+    parent: openstack-ansible-deploy-aio
+    nodeset: ubuntu-focal
+
+- job:
+    name: openstack-ansible-deploy-hosts_metal-ubuntu-focal
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-focal
 
@@ -408,6 +429,21 @@
     nodeset: centos-8
 
 - job:
+    name: openstack-ansible-deploy-hosts_distro_lxc-centos-8
+    parent: openstack-ansible-deploy-aio
+    nodeset: centos-8
+
+- job:
+    name: openstack-ansible-deploy-hosts_lxc-centos-8
+    parent: openstack-ansible-deploy-aio
+    nodeset: centos-8
+
+- job:
+    name: openstack-ansible-deploy-hosts_metal-centos-8
+    parent: openstack-ansible-deploy-aio
+    nodeset: centos-8
+
+- job:
     name: openstack-ansible-deploy-aio_distro_lxc-centos-8
     parent: openstack-ansible-deploy-aio-distro
     nodeset: centos-8
@@ -424,6 +460,12 @@
 
 - job:
     name: openstack-ansible-upgrade-aio_lxc-centos-8
+    parent: openstack-ansible-deploy-aio
+    nodeset: centos-8
+    timeout: 10800
+
+- job:
+    name: openstack-ansible-upgrade-infra_lxc-centos-8
     parent: openstack-ansible-deploy-aio
     nodeset: centos-8
     timeout: 10800
@@ -474,6 +516,21 @@
 
 - job:
     name: openstack-ansible-deploy-infra_lxc-debian-buster
+    parent: openstack-ansible-deploy-aio
+    nodeset: debian-buster
+
+- job:
+    name: openstack-ansible-deploy-hosts_lxc-debian-buster
+    parent: openstack-ansible-deploy-aio
+    nodeset: debian-buster
+
+- job:
+    name: openstack-ansible-deploy-hosts_distro_lxc-debian-buster
+    parent: openstack-ansible-deploy-aio
+    nodeset: debian-buster
+
+- job:
+    name: openstack-ansible-deploy-hosts_metal-debian-buster
     parent: openstack-ansible-deploy-aio
     nodeset: debian-buster
 

@@ -178,6 +178,12 @@ else
     # Log some data about the instance and the rest of the system
     log_instance_info
 
+    if [[ $SCENARIO =~ "hosts" ]]; then
+      # Verify our hosts setup and do not continue with openstack/infra part
+      openstack-ansible healthcheck-hosts.yml -e osa_gather_facts=False
+      exit $?
+    fi
+
     # Reload environment file and apply variables for the session
     set -a
     . /etc/environment
@@ -195,7 +201,7 @@ else
     # Log some data about the instance and the rest of the system
     log_instance_info
 
-    if [[ $SCENARIO =~ "infra" ]]; then
+    if [[ $SCENARIO =~ "infra" && $ACTION != "upgrade"  ]]; then
       # Verify our infra setup and do not continue with openstack part
       openstack-ansible healthcheck-infrastructure.yml -e osa_gather_facts=False
     fi
@@ -241,6 +247,11 @@ if [[ "${ACTION}" == "upgrade" ]]; then
     # an affirmative response to the warning that the
     # upgrade is irreversable.
     echo 'YES' | bash "${OSA_CLONE_DIR}/scripts/run-upgrade.sh"
+
+    if [[ $SCENARIO =~ "infra" ]]; then
+      # Verify our infra setup after upgrade
+      openstack-ansible ${OSA_CLONE_DIR}/playbooks/healthcheck-infrastructure.yml -e osa_gather_facts=False
+    fi
 
 fi
 

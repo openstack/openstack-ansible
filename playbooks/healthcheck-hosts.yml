@@ -65,39 +65,63 @@
         that:
           - internal_lb_vip_address | ipaddr('private')
 
-- name: Ensure settings are not wrong with the usual suspects issues before trying to deploy infra
-  hosts: haproxy
-  gather_facts: yes
+# Test openstack_hosts role
+- name: Playbook for role testing
+  hosts: localhost
+  become: true
+  gather_facts: true
   tasks:
-    - name: Checking that the LB vips are well configured.
-      assert:
-        that:
-          - external_lb_vip_address != internal_lb_vip_address
-        msg: |
-          External and Internal LB vip addresses are the same.
-          Run with -e vipcheck=False if you want to bypass this check.
-      when:
-        - vipcheck | default(True) | bool
-        - inventory_hostname == ansible_play_hosts[0]
+    - name: Open modules file
+      slurp:
+        src: "{{ (ansible_os_family | lower == 'debian') | ternary('/etc/modules', '/etc/modules-load.d/openstack-ansible.conf') }}"
+      register: modules_file
 
-    - name: Checking that vip nics are well configured
-      assert:
-        that:
-          - item in ansible_interfaces
-        msg: "Misconfigured keepalived IP, the carrying interface {{ item }} doesn't exist"
-      with_items:
-        - "{{ haproxy_keepalived_external_interface }}"
-        - "{{ haproxy_keepalived_internal_interface }}"
-      when:
-        - groups['haproxy'] | length > 1
+    - name: Open sysctl file
+      slurp:
+        src: /etc/sysctl.conf
+      register: sysctl_file
 
-    - name: Checking that vip address is well formed
+    - name: Open hosts file
+      slurp:
+        src: /etc/hosts
+      register: hosts_file
+
+    - name: Open /etc/environment file
+      slurp:
+        src: /etc/environment
+      register: environment_file
+
+    - name: Read files
+      set_fact:
+        modules_content: "{{ modules_file.content | b64decode }}"
+        sysctl_content: "{{ sysctl_file.content | b64decode }}"
+        hosts_content: "{{ hosts_file.content | b64decode }}"
+        environment_content: "{{ environment_file.content | b64decode }}"
+
+    - name: Check for release file
+      stat:
+        path: /etc/openstack-release
+      register: release_file
+
+    - name: Check for systat file
+      stat:
+        path: "{{ (ansible_os_family | lower == 'debian') | ternary('/etc/default/sysstat', '/etc/sysconfig/sysstat') }}"
+      register: systat_file
+
+    - name: Check for ssh dir
+      stat:
+        path: "{{ ansible_env.HOME }}/.ssh"
+      register: ssh_dir
+
+    - name: Check role functions
       assert:
         that:
-          - item | ipaddr('address')
-        msg: "Misconfigured keepalived: The vip {{ item }} is not an IP address, but a network"
-      with_items:
-        - "{{ haproxy_keepalived_internal_vip_cidr }}"
-        - "{{ haproxy_keepalived_external_vip_cidr }}"
-      when:
-        - groups['haproxy'] | length > 1
+          - "'dm_multipath' in modules_content"
+          - "'ebtables' in modules_content"
+          - "'vm.swappiness' in sysctl_content"
+          - "'172.29.236.100 {{ ansible_fqdn }} {{ ansible_hostname }}' in hosts_content"
+          - "'{{ hostvars[groups['galera_all'][0]]['container_address'] }} {{ hostvars[groups['galera_all'][0]]['ansible_hostname'] }}.openstack.local {{ hostvars[groups['galera_all'][0]]['ansible_hostname'] ~ ((hostvars[groups['galera_all'][0]]['ansible_hostname'] != groups['galera_all'][0]) | ternary(' ' ~ groups['galera_all'][0], '')) }}' in hosts_content"
+          - "release_file.stat.exists"
+          - "systat_file.stat.exists"
+          - "'PATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' in environment_content"
+          - "ssh_dir.stat.isdir"
