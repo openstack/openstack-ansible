@@ -164,6 +164,7 @@
         - name: Wait for cluster ready state
           command: |
             mysql -h {{ ansible_host }} \
+                  -u "{{ galera_root_user | default('root') }}" \
                   -p"{{ galera_root_password }}" \
                   -e "show status like 'wsrep_incoming_addresses';" \
                   --silent \
@@ -181,6 +182,7 @@
         - name: Wait for cluster ready state
           command: |
             mysql -h {{ ansible_host }} \
+                  -u "{{ galera_root_user | default('root') }}" \
                   -p"{{ galera_root_password }}" \
                   -e "show status like 'wsrep_incoming_addresses';" \
                   --silent \
@@ -194,6 +196,7 @@
     - name: Check cluster local state
       command: |
         mysql -h {{ ansible_host }} \
+              -u "{{ galera_root_user | default('root') }}" \
               -p"{{ galera_root_password }}" \
               -e "show status like 'wsrep_local_state_comment';" \
               --silent \
@@ -206,6 +209,7 @@
     - name: Check cluster evs state
       command: |
         mysql -h {{ ansible_host }} \
+              -u "{{ galera_root_user | default('root') }}" \
               -p"{{ galera_root_password }}" \
               -e "show status like 'wsrep_evs_state';" \
               --silent \
