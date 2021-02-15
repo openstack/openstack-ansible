@@ -42,6 +42,7 @@ COMMON_ETC_LOG_NAMES="apt \
     calico \
     corosync \
     ceph \
+    dnf \
     etcd \
     ganesha \
     haproxy \
