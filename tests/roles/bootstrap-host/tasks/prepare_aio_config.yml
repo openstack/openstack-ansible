@@ -81,6 +81,9 @@
           centos_epel_mirror: "{{ nodepool_vars.NODEPOOL_EPEL_MIRROR }}"
           galera_repo_host: "{{ nodepool_vars.NODEPOOL_MIRROR_HOST }}:8080"
           nova_virt_type: 'qemu'
+          # NOTE(jrosser)
+          # we only run ceph jobs on ubuntu in CI so this is sufficient
+          ceph_stable_repo: "http://{{ nodepool_vars.NODEPOOL_MIRROR_HOST }}/ceph-deb-octopus"
       copy:
         dest: /etc/openstack_deploy/user_openstackci.yml
         content: "{{ nodepool_overrides | to_nice_yaml }}"
