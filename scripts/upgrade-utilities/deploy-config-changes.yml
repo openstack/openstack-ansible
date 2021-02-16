@@ -85,6 +85,16 @@
       tags:
         - update-secrets
 
+    - name: Define Barbican simple crypto key
+      lineinfile:
+        dest: "{{ openstack_config_dir }}/user_secrets.yml"
+        regexp: "^barbican_simple_crypto_key"
+        line: "barbican_simple_crypto_key: {{ barbican_simple_crypto_key | default('abcdefghijklmnopqrstuvwxyz123456') }}"
+      when:
+        - not (user_secrets.stdout | regex_search('((^|\n)barbican_simple_crypto_key)'))
+      tags:
+        - update-secrets
+
     - name: Generate new secrets
       shell: "{{ repo_root_dir }}/scripts/pw-token-gen.py --file {{ openstack_config_dir }}/user_secrets.yml"
       tags:
