@@ -92,8 +92,8 @@ The following example shows how to move a file from your deployment host to the
 
 .. code-block:: console
 
-   $ ansible remote_machines -m copy -a 'src=/root/FILE \
-   dest=/tmp/FILE'
+   $ ansible remote_machines -m copy -a 'src=/root/FILE '\
+   'dest=/tmp/FILE'
 
 The fetch module gathers files from remote machines and stores the files
 locally in a file tree, organized by the hostname from remote machines and

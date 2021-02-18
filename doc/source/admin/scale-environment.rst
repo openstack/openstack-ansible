@@ -334,8 +334,8 @@ If a LVM backed Block Storage host needs to be shut down:
 
    .. code-block:: console
 
-      # mysql cinder -BNe 'select instance_uuid from volumes where deleted=0 \
-      and host like "%<cinder host>%"' | tee /home/user/running_instances
+      # mysql cinder -BNe 'select instance_uuid from volumes where deleted=0 '\
+      'and host like "%<cinder host>%"' | tee /home/user/running_instances
 
 #. Shut down the instances:
 
