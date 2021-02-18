@@ -81,6 +81,18 @@ the environment variable ``ANSIBLE_ROLE_FILE`` before running the
 It is now the responsibility of the deployer to maintain appropriate
 versions pins of the ansible roles if an upgrade is required.
 
+Adding new collections in your OpenStack-Ansible installation
+-------------------------------------------------------------
+
+The Victoria release of openstack-ansible adds an optional new config
+file which defaults to
+``/etc/openstack_deploy/user-collection-requirements.yml``. It should be
+in the native format of the ansible-galaxy requirements file and can be
+used to add new collections to the deploy host.
+You can override location of the ``user-collection-requirements.yml`` by
+setting ``USER_COLLECTION_FILE`` environment variable before running the
+``bootstrap-ansible.sh`` script.
+
 Maintaining local forks of ansible roles
 ----------------------------------------
 
@@ -102,4 +114,4 @@ entirely. It is also straightforward to include the
 
 .. _ansible-role-requirements: https://opendev.org/openstack/openstack-ansible/src/ansible-role-requirements.yml
 
-
+.. _ansible-galaxy: https://docs.ansible.com/ansible/latest/galaxy/user_guide.html#install-multiple-collections-with-a-requirements-file
