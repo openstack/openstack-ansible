@@ -79,7 +79,7 @@ system packages are upgraded and then reboot into the new kernel:
 .. note::
 
    Before rebooting, in ``/etc/sysconfig/selinux``, make sure that
-   ``SELINUX=enforcing``is changed to ``SELINUX=disabled``.
+   ``SELINUX=enforcing`` is changed to ``SELINUX=disabled``.
    SELinux enabled is not currently supported in OpenStack-Ansible
    for CentOS/RHEL due to a lack of maintainers for the feature.
 
