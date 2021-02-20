@@ -7,21 +7,6 @@ netaddr>=0.7.18 # BSD
 python-memcached>=1.56 # PSF
 PyYAML>=3.12 # MIT
 
-# We use this for our own keystone module.
-# TODO(odyssey4me): Remove this once we no
-# longer use our own keystone module.
-python-keystoneclient>=3.8.0  # Apache-2.0
-
-# We use this for the octavia role to be able
-# to upload a tagged image.
-# Remove this once Ansible can do this with
-# modules instead.
-python-openstackclient>=3.14.2
-
-# We use this for the Ansible openstack
-# modules.
-openstacksdk>=0.14.0 # Apache-2.0
-
 # We use this for the json_query filter
 jmespath>=0.9.3 # MIT
 
