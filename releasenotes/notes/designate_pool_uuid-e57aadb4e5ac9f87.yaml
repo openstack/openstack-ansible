@@ -1,0 +1,12 @@
+---
+upgrade:
+  - |
+    For Designate ``designate_pool_uuid`` was hardcoded in os_designate role.
+    Now it's dynamically generated in secrets.yml and unique per deployment.
+    However, before upgrade you must set ``designate_pool_uuid`` to the
+    current uuid. Most likely it is `794ccc2c-d751-44fe-b57f-8894c9f5c842`
+    since that value has been defaulted in the role and it would remain the same
+    unless explicitly overwritten.
+    You can check your pool uuid with the command
+    `/openstack/venvs/designate-20.1.1.dev7/bin/designate-manage pool show_config`
+    that should be executed from the Designate venv.

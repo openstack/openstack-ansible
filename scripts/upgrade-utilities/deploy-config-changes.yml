@@ -85,6 +85,17 @@
       tags:
         - update-secrets
 
+    # TODO(noonedeadpunk): Remove after W cycle
+    - name: Define Designate pool id
+      lineinfile:
+        dest: "{{ openstack_config_dir }}/user_secrets.yml"
+        regexp: "^designate_pool_uuid"
+        line: "designate_pool_uuid: {{ designate_pool_uuid | default('794ccc2c-d751-44fe-b57f-8894c9f5c842') }}"
+      when:
+        - not (user_secrets.stdout | regex_search('((^|\n)designate_pool_uuid)'))
+      tags:
+        - update-secrets
+
     - name: Generate new secrets
       shell: "{{ repo_root_dir }}/scripts/pw-token-gen.py --file {{ openstack_config_dir }}/user_secrets.yml"
       tags:
