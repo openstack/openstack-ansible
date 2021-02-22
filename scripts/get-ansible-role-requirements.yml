@@ -130,7 +130,7 @@
             repo_info: "{{ clone_roles }}"
             retries: "{{ git_clone_retries }}"
             delay: "{{ git_clone_retry_delay }}"
-            force: "{{ not (ansible_distribution | lower == 'ubuntu' and ansible_distribution_version is version('20.04', '>=')) }}"
+            force: true
             core_multiplier: 4
       rescue:
         - name: Clone git repos (with git)

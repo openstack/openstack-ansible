@@ -121,8 +121,7 @@ def reset_to_version(path, version, reset_type='--hard', force=False,
         return ["Failed to fetch %s\n%s" % (modify_repo.working_dir, str(e))]
 
     try:
-        modify_repo.git.reset(reset_type, version,
-                              force=force, refspec=refspec)
+        modify_repo.git.reset(reset_type, version, refspec=refspec)
     except Exception as e:
         return ["Failed to reset %s\n%s" % (modify_repo.working_dir, str(e))]
 
