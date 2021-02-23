@@ -232,6 +232,8 @@ lxc_container_backing_store: "{{ lxc_container_backing_store }}"
 lxc_container_bind_mounts:
   - host_directory: "/home/zuul/src"
     container_directory: "/openstack/src"
+  - host_directory: "/opt/cache/files"
+    container_directory: "/opt/cache/files"
 
 ## Always setup tempest, the resources for it, then execute tests
 tempest_install: yes
