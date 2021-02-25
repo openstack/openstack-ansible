@@ -1,0 +1,15 @@
+---
+upgrade:
+  - |
+    For Barbican in ``[simple_crypto_plugin]`` section of the barbican.conf
+    kek has been hardcoded. Now it's dynamically generated in secrets.yml and
+    unique per deployment.
+    However, before upgrade you must set ``barbican_simple_crypto_key`` to the
+    current value, which is passed through base64 decoding first. Most likely
+    decoded value will be `abcdefghijklmnopqrstuvwxyz123456` since that value
+    has been hardcoded in the template.
+    Upgrade script will set the value of ``barbican_simple_crypto_key`` in
+    user_secrets.yml to the `abcdefghijklmnopqrstuvwxyz123456` unless variable
+    has been already defined.
+    So everyone who used overrides to modify kek for simple_crypto_plugin
+    should manually define valid barbican_simple_crypto_key in user_secrets.yml
