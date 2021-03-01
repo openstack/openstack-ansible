@@ -88,7 +88,7 @@
           ceph_apt_repos:
             ceph:
               state: "present"
-              repo: "deb http://{{ nodepool_vars.NODEPOOL_MIRROR_HOST }}/ceph-deb-octopus {{ ansible_distribution_release }} main"
+              repo: "deb http://{{ nodepool_vars.NODEPOOL_MIRROR_HOST }}/ceph-deb-octopus {{ ansible_facts['distribution_release'] }} main"
       copy:
         dest: /etc/openstack_deploy/user_openstackci.yml
         content: "{{ nodepool_overrides | to_nice_yaml }}"
@@ -118,13 +118,13 @@
     policy: targeted
     state: permissive
   when:
-    - ansible_selinux.status == "enabled"
+    - ansible_facts['selinux']['status'] == "enabled"
 
 - name: Get systemd version
   command: "rpm -q systemd"
   changed_when: false
   register: systemd_version
-  when: ansible_os_family | lower == 'redhat'
+  when: ansible_facts['os_family'] | lower == 'redhat'
 
 - name: Set the user_variables
   config_template:

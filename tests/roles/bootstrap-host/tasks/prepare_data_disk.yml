@@ -47,7 +47,7 @@
     - bootstrap_host_data_disk_device_force | bool
     - item.device is search(bootstrap_host_data_disk_device)
   with_items:
-    - "{{ ansible_mounts }}"
+    - "{{ ansible_facts['mounts'] }}"
 
 - name: Partition the whole data disk for our usage
   command: "{{ item }}"

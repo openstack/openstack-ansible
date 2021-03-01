@@ -105,7 +105,7 @@ vlan_range: "172.29.248"
 netmask: "255.255.252.0"
 #
 # NICs
-bootstrap_host_public_interface: "{{ ansible_default_ipv4.interface }}"
+bootstrap_host_public_interface: "{{ ansible_facts['default_ipv4']['interface'] }}"
 #
 # Utility paths
 bootstrap_host_network_utils:
@@ -126,9 +126,9 @@ bootstrap_host_network_utils:
     ethtool: /sbin/ethtool
     ip: /sbin/ip
 #
-bootstrap_host_iptables_path: "{{ bootstrap_host_network_utils[ansible_pkg_mgr]['iptables'] }}"
-bootstrap_host_ethtool_path: "{{ bootstrap_host_network_utils[ansible_pkg_mgr]['ethtool'] }}"
-bootstrap_host_ip_path: "{{ bootstrap_host_network_utils[ansible_pkg_mgr]['ip'] }}"
+bootstrap_host_iptables_path: "{{ bootstrap_host_network_utils[ansible_facts['pkg_mgr']]['iptables'] }}"
+bootstrap_host_ethtool_path: "{{ bootstrap_host_network_utils[ansible_facts['pkg_mgr']]['ethtool'] }}"
+bootstrap_host_ip_path: "{{ bootstrap_host_network_utils[ansible_facts['pkg_mgr']]['ip'] }}"
 
 ## Extra storage
 # An AIO may optionally be built using a second storage device. If a
@@ -179,9 +179,9 @@ bootstrap_host_format_options:
 #
 # Set the data disk mount options.
 bootstrap_host_data_mount_options:
-  machinectl: "noatime,nodiratime,compress=lzo,commit=120,{{ (ansible_kernel is version('4.5', '>=')) | ternary('space_cache=v2', 'space_cache') }}"
+  machinectl: "noatime,nodiratime,compress=lzo,commit=120,{{ (ansible_facts['kernel'] is version('4.5', '>=')) | ternary('space_cache=v2', 'space_cache') }}"
   zfs: "defaults"
-  btrfs: "noatime,nodiratime,compress=lzo,commit=120,{{ (ansible_kernel is version('4.5', '>=')) | ternary('space_cache=v2', 'space_cache') }}"
+  btrfs: "noatime,nodiratime,compress=lzo,commit=120,{{ (ansible_facts['kernel'] is version('4.5', '>=')) | ternary('space_cache=v2', 'space_cache') }}"
   xfs: "noatime,nodiratime,logbufs=8,logbsize=256k"
   ext4: "noatime,nobh,barrier=0,data=writeback"
   dir: "defaults"
