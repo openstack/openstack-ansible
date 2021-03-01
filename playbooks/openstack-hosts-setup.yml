@@ -17,7 +17,7 @@
 # that Ubuntu nodes may not have python by default. Ansible doesn't work very
 # well if Python isn't installed.
 #
-# Also, we can't use a 'when' to check for the ansible_pkg_mgr here because
+# Also, we can't use a 'when' to check for the ansible_facts['pkg_mgr'] here because
 # we haven't gathered facts yet.
 - name: Install Ansible prerequisites
   hosts: "{{ openstack_host_group|default('hosts') }}"
@@ -41,7 +41,14 @@
 
 - name: Gather host facts
   hosts: "{{ openstack_host_group|default('hosts') }}"
-  gather_facts: "{{ osa_gather_facts | default(True) }}"
+  tasks:
+    - setup:
+        gather_subset:
+          - '!all'
+          - min
+          - virtual
+      when:
+        - osa_gather_facts | default(True)
   tags:
     - always
 
@@ -53,17 +60,17 @@
     - name: Check for a supported Operating System
       assert:
         that:
-          - (ansible_distribution == 'Debian' and ansible_distribution_release == 'buster') or
-            (ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'bionic') or
-            (ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'focal') or
-            (ansible_os_family == 'RedHat' and ansible_distribution_major_version == '8')
+          - (ansible_facts['distribution'] == 'Debian' and ansible_facts['distribution_release'] == 'buster') or
+            (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_release'] == 'bionic') or
+            (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_release'] == 'focal') or
+            (ansible_facts['os_family'] == 'RedHat' and ansible_facts['distribution_major_version'] == '8')
         msg: >
           The only supported platforms for this release are Debian 10 (Buster),
           Ubuntu 18.04 LTS (Bionic), Ubuntu 20.04 LTS (Focal) and  CentOS 8
     - name: Check for a supported path
       assert:
         that:
-          - not (ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'bionic' and install_method == 'distro')
+          - not (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_release'] == 'bionic' and install_method == 'distro')
         msg: Distro installation path is not supported for this release for Ubuntu 18.04 (bionic)
   roles:
     - role: "openstack_hosts"

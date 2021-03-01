@@ -69,7 +69,7 @@ zun_install_method: distro
 
 ## Delegate all database setup tasks to the utility host, and use the utility venv python interpreter
 openstack_db_setup_host: "{{ groups['utility_all'][0] }}"
-openstack_db_setup_python_interpreter: "{{ ansible_python['executable'] }}"
+openstack_db_setup_python_interpreter: "{{ ansible_facts['python']['executable'] }}"
 
 openstack_service_setup_host: "{{ groups['utility_all'][0] }}"
 openstack_service_setup_host_python_interpreter: "/usr/bin/python3"

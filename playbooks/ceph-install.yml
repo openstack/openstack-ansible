@@ -37,8 +37,8 @@
         owner: "root"
         mode: "0755"
       when:
-        - ansible_pkg_mgr in ['yum', 'dnf']
-        - ansible_service_mgr == 'systemd'
+        - ansible_facts['pkg_mgr'] in ['yum', 'dnf']
+        - ansible_facts['service_mgr'] == 'systemd'
 
     - name: Add systemd override for PrivateDevices
       copy:
@@ -47,8 +47,8 @@
           [Service]
           PrivateDevices=false
       when:
-        - ansible_pkg_mgr in ['yum', 'dnf']
-        - ansible_service_mgr == 'systemd'
+        - ansible_facts['pkg_mgr'] in ['yum', 'dnf']
+        - ansible_facts['service_mgr'] == 'systemd'
 
   roles:
     - role: ceph-defaults

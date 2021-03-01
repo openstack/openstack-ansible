@@ -80,7 +80,7 @@
       block:
         - name: Download EPEL gpg keys
           get_url:
-            url: "{{ centos_epel_key | default('http://download.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-' ~ ansible_distribution_major_version) }}"
+            url: "{{ centos_epel_key | default('http://download.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-' ~ ansible_facts['distribution_major_version']) }}"
             dest: /etc/pki/rpm-gpg
           register: _get_yum_keys
           until: _get_yum_keys is success
@@ -89,15 +89,15 @@
 
         - name: Install EPEL gpg keys
           rpm_key:
-            key: "/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-{{ ansible_distribution_major_version }}"
+            key: "/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-{{ ansible_facts['ansible_distribution_major_version'] }}"
             state: present
 
         - name: Install the EPEL repository
           yum_repository:
             name: epel-utility
             baseurl: "{{ centos_epel_mirror | default('http://download.fedoraproject.org/pub/epel') ~ '/'
-                                                      ~ ansible_distribution_major_version ~ '/'
-                                                      ~ ansible_architecture }}"
+                                                      ~ ansible_facts['distribution_major_version'] ~ '/'
+                                                      ~ ansible_facts['architecture'] }}"
             description: 'Extra Packages for Enterprise Linux 7 - $basearch'
             gpgcheck: yes
             enabled: yes
@@ -109,15 +109,15 @@
           delay: 2
       when:
         - install_method == "distro"
-        - ansible_os_family | lower == 'redhat'
+        - ansible_facts['os_family'] | lower == 'redhat'
         - ansible_distribution_major_version is version('8', '<')
 
     - name: Install distro packages
       package:
         name: "{{ utility_distro_packages | default([]) }}"
         state: "{{ utility_package_state }}"
-        update_cache: "{{ (ansible_pkg_mgr in ['apt', 'zypper']) | ternary('yes', omit) }}"
-        cache_valid_time: "{{ (ansible_pkg_mgr == 'apt') | ternary(cache_timeout, omit) }}"
+        update_cache: "{{ (ansible_facts['pkg_mgr'] in ['apt', 'zypper']) | ternary('yes', omit) }}"
+        cache_valid_time: "{{ (ansible_facts['pkg_mgr'] == 'apt') | ternary(cache_timeout, omit) }}"
       register: install_packages
       until: install_packages is success
       retries: 5

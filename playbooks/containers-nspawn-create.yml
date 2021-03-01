@@ -89,7 +89,7 @@
       retries: 5
       delay: 15
       when:
-        - ansible_pkg_mgr == 'apt'
+        - ansible_facts['pkg_mgr'] == 'apt'
 
     - name: Update package cache (zypper)
       zypper_repository:
@@ -100,7 +100,7 @@
       retries: 5
       delay: 15
       when:
-        - ansible_pkg_mgr == 'zypper'
+        - ansible_facts['pkg_mgr'] == 'zypper'
 
     # When using gather_facts with smart gathering,
     # the facts aren't fully updated unless they
