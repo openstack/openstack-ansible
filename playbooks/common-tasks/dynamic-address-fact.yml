@@ -13,13 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- name: Gathering facts for {{ network_address }} interface on metal hosts
+  setup:
+    gather_subset: "!all,network"
+    filter: "{{ dynamic_address_gather_filter | default(('ansible_' ~ container_networks[network_address]['bridge']) | replace('-','_')) }}"
+  when:
+    - is_metal
+    - (dynamic_address_gather_filter is defined) or (container_networks[network_address] is defined and container_networks[network_address]['bridge'] is defined)
+
 - name: Set IP to use for {{ network_address }}
   set_fact: "{{ network_address }}={{ hostvars[inventory_hostname] | json_query(query) }}"
   vars:
     query: "{{ is_metal | ternary(metal_query, non_metal_query) }}"
     non_metal_query: "container_networks.{{ network_address }}.address || ansible_host"
     find_bridge: "container_networks.{{ network_address }}.bridge"
-    metal_query: "\"ansible_{{ hostvars[inventory_hostname] | json_query(find_bridge) | replace('-','_') }}\".ipv4.address || {{ non_metal_query }}"
+    metal_query: "ansible_facts.\"{{ hostvars[inventory_hostname] | json_query(find_bridge) | replace('-','_') }}\".ipv4.address || {{ non_metal_query }}"
   tags:
     - common-address
     - always
