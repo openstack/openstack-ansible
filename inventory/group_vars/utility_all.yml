@@ -42,7 +42,7 @@ _utility_devel_distro_packages_redhat:
   - libselinux-python3
   - python36-devel
 
-utility_devel_distro_packages: "{{ (ansible_os_family == 'RedHat') | ternary(_utility_devel_distro_packages_redhat, _utility_devel_distro_packages_debian) }}"
+utility_devel_distro_packages: "{{ (ansible_facts['os_family'] == 'RedHat') | ternary(_utility_devel_distro_packages_redhat, _utility_devel_distro_packages_debian) }}"
 
 # Client packages required for distro installs
 utility_distro_openstack_clients_packages:
@@ -90,7 +90,7 @@ tempest_main_group: utility_all
 # This sets up a list of tests to execute based on what's deployed in the environment.
 # The list gets added to the whitelist which tempest executes.
 tempest_test_whitelist:
-  - "{{ (ansible_pkg_mgr == 'apt' and tempest_install_method == 'distro') |
+  - "{{ (ansible_facts['pkg_mgr'] == 'apt' and tempest_install_method == 'distro') |
          ternary('(?!.*\\.test_list_all_implied_roles)', '') ~ 'tempest.api.identity.admin.v3' }}"
   - "tempest.api.identity.v3"
   - "{{ (tempest_service_available_ceilometer | bool) | ternary('tempest.api.telemetry', '') }}"

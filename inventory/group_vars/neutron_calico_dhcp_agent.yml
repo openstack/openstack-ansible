@@ -27,15 +27,15 @@
 # Set to your iBGP ASN
 bird_bgp_asn: 65000
 
-bird_bgp_ipv4_peer_ip: "{{ ansible_default_ipv4['gateway'] }}"
+bird_bgp_ipv4_peer_ip: "{{ ansible_facts['default_ipv4']['gateway'] }}"
 #calculate the first address in the subnet since the IPv6 "gateway" may be a
 #link local address that we cannot peer to.
 bird_bgp_ipv6_peer_ip: >-
-  {% if ansible_default_ipv6['address'] is defined
-        and ansible_default_ipv6['prefix'] is defined %}
+  {% if ansible_facts['default_ipv6']['address'] is defined
+        and ansible_facts['default_ipv6']['prefix'] is defined %}
   {{
-     ((ansible_default_ipv6['address'] ~ '/' ~ ansible_default_ipv6['prefix']) |
-     ipaddr('network') ~ '/' ~ ansible_default_ipv6['prefix']
+     ((ansible_facts['default_ipv6']['address'] ~ '/' ~ ansible_facts['default_ipv6']['prefix']) |
+     ipaddr('network') ~ '/' ~ ansible_facts['default_ipv6']['prefix']
      ) | ipaddr('net') | ipaddr(1) | ipaddr('address')
   }}
   {% endif %}

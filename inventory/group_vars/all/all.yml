@@ -41,16 +41,16 @@ openstack_service_bind_address: "{{ management_address }}"
 # Options are 'present' and 'latest'.
 # NOTE(mhayden): Allowing CentOS and openSUSE to use package_state=present should give
 # gate jobs a better chance to finish and expose more issues to fix.
-package_state: "{{ (ansible_pkg_mgr in ['dnf', 'zypper']) | ternary('present', 'latest') }}"
+package_state: "{{ (ansible_facts['pkg_mgr'] in ['dnf', 'zypper']) | ternary('present', 'latest') }}"
 
 # Set "/var/log" to be a bind mount to the physical host.
 default_bind_mount_logs: true
 
 # Set distro variable
-# NOTE(hwoarang): ansible_distribution may return a string with spaces
+# NOTE(hwoarang): ansible_facts['distribution'] may return a string with spaces
 # such as "openSUSE Leap" so we need to replace the space with underscore
 # in order to create a more sensible repo name for the distro.
-os_distro_version: "{{ (ansible_distribution | lower) | replace(' ', '_') }}-{{ ansible_distribution_version.split('.')[:2] | join('.') }}-{{ ansible_architecture | lower }}"
+os_distro_version: "{{ (ansible_facts['distribution'] | lower) | replace(' ', '_') }}-{{ ansible_facts['distribution_version'].split('.')[:2] | join('.') }}-{{ ansible_facts['architecture'] | lower }}"
 
 # Set the systemd prefix based on the base OS.
 systemd_utils_distro_prefix:
@@ -59,15 +59,15 @@ systemd_utils_distro_prefix:
   dnf: "/lib/systemd"
   zypper: "/usr/lib/systemd"
 
-systemd_utils_prefix: "{{ systemd_utils_distro_prefix[ansible_pkg_mgr] }}"
+systemd_utils_prefix: "{{ systemd_utils_distro_prefix[ansible_facts['pkg_mgr']] }}"
 
 # Ensure that the package state matches the global setting
 rsyslog_client_package_state: "{{ package_state }}"
 # At this time there's no suitable package available for systemd-journal-remote/gateway
 # When installing on SUSE 42.x. For now this playbook will omit suse when the package
 # manager is "zypper". When a suitable package is available on SUSE this should be removed.
-rsyslog_client_enabled: "{{ ansible_pkg_mgr == 'zypper' }}"
-rsyslog_server_enabled: "{{ ansible_pkg_mgr == 'zypper' }}"
+rsyslog_client_enabled: "{{ ansible_facts['pkg_mgr'] == 'zypper' }}"
+rsyslog_server_enabled: "{{ ansible_facts['pkg_mgr'] == 'zypper' }}"
 
 # URL for the frozen internal openstack repo.
 repo_server_port: 8181
