@@ -24,7 +24,7 @@ global_overrides:
   internal_lb_vip_address: 172.29.236.100
   # The external IP is quoted simply to ensure that the .aio file can be used as input
   # dynamic inventory testing.
-  external_lb_vip_address: "{{ bootstrap_host_public_address | default(ansible_default_ipv4.address) }}"
+  external_lb_vip_address: "{{ bootstrap_host_public_address | default(ansible_facts['default_ipv4']['address']) }}"
   management_bridge: "br-mgmt"
   provider_networks:
     - network:
