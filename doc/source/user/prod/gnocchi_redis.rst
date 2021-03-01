@@ -122,7 +122,7 @@ Create containers for Zookeeper:
     zookeeper_hosts:
     {% for server in groups['control_nodes'] %}
     {{ server }}:
-      ip: {{ hostvars[server]['ansible_default_ipv4']['address'] }}
+      ip: {{ hostvars[server]['ansible_facts']['default_ipv4']['address'] }}
     {% endfor%}
 
 .. code-block:: console
