@@ -15,14 +15,27 @@
 
 - name: Gather nova facts
   hosts: "{{ nova_hosts }}"
-  gather_facts: "{{ osa_gather_facts | default(True) }}"
+  gather_facts: false
   tags:
     - always
+  tasks:
+    - name: Gather minimal facts for nova
+      setup:
+        gather_subset:
+          - "!all"
+          - min
+      when: osa_gather_facts | default(True)
+
+    - name: Gather additional facts for nova
+      setup:
+        gather_subset: "{{ nova_gather_subset | default('processor_count') }}"
+        filter: "{{ nova_gather_filter | default('ansible_processor*') }}"
+      when: osa_gather_facts | default(True)
 
 - name: Install nova services
   hosts: "{{ nova_hosts }}"
   serial: "{{ nova_serial }}"
-  gather_facts: "{{ osa_gather_facts | default(True) }}"
+  gather_facts: false
   user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
   vars_files:
