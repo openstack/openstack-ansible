@@ -181,7 +181,7 @@ Before you begin, we recommend upgrading your Docker host system packages and ke
 
 #. Prepare your OpenStack Ansible Dockerfile
 
-   .. code-block:: dockerfile
+   .. parsed-literal::
 
        FROM alpine
        RUN apk add --no-cache bash build-base git python3-dev openssh-client openssh-keygen sudo py3-virtualenv iptables libffi-dev openssl-dev linux-headers coreutils curl
@@ -192,7 +192,7 @@ Before you begin, we recommend upgrading your Docker host system packages and ke
 
 #. Build and run your deploy host container
 
-   .. code-block:: shell-session
+   .. parsed-literal::
 
        # docker build . -t openstack-ansible:|latest_tag|
        # docker run -dit --name osa-deploy openstack-ansible:|latest_tag|
