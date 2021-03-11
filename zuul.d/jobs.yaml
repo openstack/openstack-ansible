@@ -102,6 +102,8 @@
       - name: openstack/ansible-role-uwsgi
       # OpenStack service repos - listed here to make cached repos available in CI
       - name: openstack/requirements
+      # OpenStack service repos - listed here as the corresponding OSA role cannot do distro install
+      - name: openstack/panko
 
 - job:
     name: openstack-ansible-deploy-aio
