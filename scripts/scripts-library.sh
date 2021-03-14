@@ -201,7 +201,7 @@ function setup_ara {
   # This is added *here* instead of bootstrap-ansible so it's used for CI purposes only.
   # PIP_COMMAND and PIP_OPTS are exported by the bootstrap-ansible script.
   # PIP_OPTS contains the whole set of constraints that need to be applied.
-  ${PIP_COMMAND} install --isolated ${PIP_OPTS} "ara[server]"
+  ${PIP_COMMAND} install --isolated ${PIP_OPTS} "ara[server]" "dynaconf<3.1.3"
 }
 
 function run_dstat {
