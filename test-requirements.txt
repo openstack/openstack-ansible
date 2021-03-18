@@ -3,7 +3,7 @@
 # process, which may cause wedges in the gate later.
 
 # Keep hacking first, it pulls in the right versions of flake8, mccabe and pyflakes
-hacking>=3.0.1,<3.1.0 # Apache-2.0
+hacking>=3.2.0,<4.0 # Apache-2.0
 bashate>=0.5.1 # Apache-2.0
 coverage!=4.4,>=4.0 # Apache-2.0
 virtualenv>=14.0.6 # MIT
@@ -12,4 +12,3 @@ virtualenv>=14.0.6 # MIT
 # openstack-ansible-tests/test-ansible-lint.sh
 flake8==3.8.3 # MIT
 ansible-lint==4.3.5 # MIT
-pycodestyle>=2.5.0,<2.6.0
