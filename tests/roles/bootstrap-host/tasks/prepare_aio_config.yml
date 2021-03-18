@@ -66,56 +66,21 @@
   tags:
     - generate_secrets
 
-- name: Detect whether the host is an OpenStack-CI host
-  stat:
-    path: /etc/nodepool
-  register: nodepool_dir
-
 - name: Set facts when inside of OpenStack-Infra
   when:
-    - nodepool_dir.stat.exists
+    - nodepool_vars is defined
   block:
-    - name: Discover the OpenStack-Infra mirrors
-      shell: |
-        source /etc/ci/mirror_info.sh
-        NODEPOOL_OVERRIDES="/etc/openstack_deploy/user_openstackci.yml"
-        echo "uca_apt_repo_url: '${NODEPOOL_UCA_MIRROR}'" >> ${NODEPOOL_OVERRIDES}
-        echo "openstack_hosts_centos_mirror_url: '${NODEPOOL_CENTOS_MIRROR}'" >> ${NODEPOOL_OVERRIDES}
-        echo "opensuse_mirror: '${NODEPOOL_OPENSUSE_MIRROR}'" >> ${NODEPOOL_OVERRIDES}
-        echo "centos_epel_mirror: '${NODEPOOL_EPEL_MIRROR}'" >> ${NODEPOOL_OVERRIDES}
-        echo "galera_percona_xtrabackup_repo_host: '${NODEPOOL_PERCONA_PROXY}'" >> ${NODEPOOL_OVERRIDES}
-        echo "galera_repo_host: '${NODEPOOL_MIRROR_HOST}:8080'" >> ${NODEPOOL_OVERRIDES}
-        echo "nova_virt_type: 'qemu'" >> ${NODEPOOL_OVERRIDES}
-
-        source /etc/os-release
-        if [[ $ID == 'centos' && VERSION_ID == '7' ]]; then
-          echo "lxc_centos_package_baseurl: 'http://${NODEPOOL_MIRROR_HOST}:8080/copr-lxc2/epel-7-x86_64/'" >> ${NODEPOOL_OVERRIDES}
-          echo "lxc_centos_package_key: 'http://${NODEPOOL_MIRROR_HOST}:8080/copr-lxc2/pubkey.gpg'" >> ${NODEPOOL_OVERRIDES}
-          # NOTE(mnaser): We need to make sure we pull the latest RDO mirror
-          #               which is hashed to avoid cache going stale during CI.
-          export DLRN_BASE=${DLRN_BASE:-centos7-master/puppet-passed-ci}
-          rdo_dlrn=`curl --silent ${NODEPOOL_RDO_PROXY}/${DLRN_BASE}/delorean.repo | grep baseurl | cut -d= -f2`
-          if [[ -z "$rdo_dlrn" ]]; then
-              echo "Failed to parse dlrn hash"
-              exit 1
-          fi
-          RDO_MIRROR_HOST=${rdo_dlrn/https:\/\/trunk.rdoproject.org/$NODEPOOL_RDO_PROXY}
-          echo "openstack_hosts_rdo_repo_url: '${RDO_MIRROR_HOST}'" >> ${NODEPOOL_OVERRIDES}
-        fi
-      args:
-        executable: /bin/bash
-      tags:
-        - skip_ansible_lint
-
-    - name: Discover the OpenStack-Infra LXC reverse proxy
-      shell: |
-        source /etc/ci/mirror_info.sh
-        echo ${NODEPOOL_LXC_IMAGE_PROXY}
-      register: _lxc_mirror
-      args:
-        executable: /bin/bash
-      tags:
-        - skip_ansible_lint
+    - name: Configure the OpenStack-Infra mirrors
+      vars:
+        nodepool_overrides:
+          uca_apt_repo_url: "{{ nodepool_vars.NODEPOOL_UCA_MIRROR }}"
+          openstack_hosts_centos_mirror_url: "{{ nodepool_vars.NODEPOOL_CENTOS_MIRROR }}"
+          centos_epel_mirror: "{{ nodepool_vars.NODEPOOL_EPEL_MIRROR }}"
+          galera_repo_host: "{{ nodepool_vars.NODEPOOL_MIRROR_HOST }}:8080"
+          nova_virt_type: 'qemu'
+      copy:
+        dest: /etc/openstack_deploy/user_openstackci.yml
+        content: "{{ nodepool_overrides | default('') | to_nice_yaml }}"
 
     - name: Set the package cache timeout to 60 mins in OpenStack-CI
       set_fact:

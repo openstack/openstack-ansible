@@ -214,10 +214,10 @@ lxc_net_address: 10.255.255.1
 lxc_net_netmask: 255.255.255.0
 lxc_net_dhcp_range: 10.255.255.2,10.255.255.253
 
-{% if _lxc_mirror is defined and _lxc_mirror.stdout_lines is defined %}
+{% if nodepool_vars is defined and nodepool_vars.NODEPOOL_LXC_IMAGE_PROXY is defined %}
 ## images.linuxcontainers.org reverse proxy
 lxc_image_cache_server_mirrors:
-  - "http://{{ _lxc_mirror.stdout_lines[0] }}"
+  - "http://{{ nodepool_vars.NODEPOOL_LXC_IMAGE_PROXY }}"
 {% endif %}
 
 {% if cache_timeout is defined %}

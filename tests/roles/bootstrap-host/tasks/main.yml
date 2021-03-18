@@ -37,6 +37,9 @@
   tags:
     - always
 
+- name: Gather nodepool variables
+  include: gather_nodepool_vars.yml
+
 - name: Create the required directories
   file:
     path: "{{ item }}"

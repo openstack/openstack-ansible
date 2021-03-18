@@ -39,6 +39,7 @@
     name: systemd_networkd
   vars:
     systemd_networkd_prefix: "osa_testing"
+    systemd_networkd_epel_mirror: "{{ nodepool_vars is defined | ternary(nodepool_vars.NODEPOOL_EPEL_MIRROR, 'http://download.fedoraproject.org/pub/epel') }}"
     systemd_interface_cleanup: true
     systemd_run_networkd: true
     systemd_netdevs:
