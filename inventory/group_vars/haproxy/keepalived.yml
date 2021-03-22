@@ -18,17 +18,6 @@ keepalived_ping_interval: 10
 keepalived_ubuntu_src: "native"
 keepalived_ping_address: "{{ ansible_default_ipv4['gateway'] | default('127.0.0.1') }}"
 
-keepalived_sync_groups:
-  haproxy:
-    instances:
-      - external
-      - internal
-    notify_script: /etc/keepalived/haproxy_notify.sh
-    ##if a src_*_script is defined, it will be uploaded from src_*_script
-    ##on the deploy host to the *_script location. Make sure *_script is
-    ##a location in that case.
-    src_notify_script: "{{ playbook_dir }}/../scripts/keepalived_haproxy_notifications.sh"
-
 keepalived_global_defs:
   - "enable_script_security"
   - script_user root
