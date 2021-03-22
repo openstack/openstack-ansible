@@ -40,8 +40,12 @@
   hosts: haproxy
   gather_facts: yes
   tasks:
-    - name: Check if host can connect to keepalived ping IP
-      command: "ping -c 2 {{ keepalived_ping_address }}"
+    - name: Check if host can connect to external keepalived ping IP
+      command: "ping -c 2 {{ keepalived_external_ping_address }}"
+      changed_when: false
+
+    - name: Check if host can connect to internal keepalived ping IP
+      command: "ping -c 2 {{ keepalived_internal_ping_address }}"
       changed_when: false
 
     - name: Checking if keepalived is running
