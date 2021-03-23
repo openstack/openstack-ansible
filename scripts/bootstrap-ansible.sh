@@ -90,12 +90,6 @@ case ${DISTRO_ID} in
           python3-apt python3-venv \
           python3-minimal wget
         ;;
-    opensuse*)
-        zypper -n install -l git-core curl autoconf gcc gcc-c++ \
-            netcat-openbsd python python-xml python-devel gcc \
-            libffi-devel libopenssl-devel python-setuptools \
-            patterns-devel-python-devel_python3
-        ;;
 esac
 
 # Load nodepool PIP mirror settings

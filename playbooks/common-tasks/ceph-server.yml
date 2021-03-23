@@ -28,7 +28,7 @@
     name: libselinux-python3
     state: present
   when:
-    - ansible_facts['pkg_mgr'] in ['yum', 'dnf']
+    - ansible_facts['pkg_mgr'] == 'dnf'
 
 # Set the priority of the ceph community apt repo either above or below that of UCA or distro sources
 - name: Set apt package pins

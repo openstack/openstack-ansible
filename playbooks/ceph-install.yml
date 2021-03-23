@@ -63,7 +63,7 @@
         owner: "root"
         mode: "0755"
       when:
-        - ansible_facts['pkg_mgr'] in ['yum', 'dnf']
+        - ansible_facts['pkg_mgr'] == 'dnf'
         - ansible_facts['service_mgr'] == 'systemd'
 
     - name: Add systemd override for PrivateDevices
@@ -73,7 +73,7 @@
           [Service]
           PrivateDevices=false
       when:
-        - ansible_facts['pkg_mgr'] in ['yum', 'dnf']
+        - ansible_facts['pkg_mgr'] == 'dnf'
         - ansible_facts['service_mgr'] == 'systemd'
 
   roles:

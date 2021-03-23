@@ -17,7 +17,7 @@
   package:
     name: "{{ packages_install_zfs }}"
     state: present
-    update_cache: "{{ (ansible_facts['pkg_mgr'] in ['apt', 'zypper']) | ternary('yes', omit) }}"
+    update_cache: "{{ (ansible_facts['pkg_mgr'] == 'apt') | ternary('yes', omit) }}"
   tags:
     - install-packages
 

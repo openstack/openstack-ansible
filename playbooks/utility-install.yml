@@ -88,7 +88,7 @@
       package:
         name: "{{ utility_distro_packages | default([]) }}"
         state: "{{ utility_package_state }}"
-        update_cache: "{{ (ansible_facts['pkg_mgr'] in ['apt', 'zypper']) | ternary('yes', omit) }}"
+        update_cache: "{{ (ansible_facts['pkg_mgr'] == 'apt') | ternary('yes', omit) }}"
         cache_valid_time: "{{ (ansible_facts['pkg_mgr'] == 'apt') | ternary(cache_timeout, omit) }}"
       register: install_packages
       until: install_packages is success
