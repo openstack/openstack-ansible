@@ -163,7 +163,6 @@ bootstrap_host_data_disk_min_size: "{{ (bootstrap_host_scenario is search('metal
 # Set the data disk formats table. If the backing store is set to lvm the option
 # the partition will not actually be formatted however for parted, ext2 is used.
 bootstrap_host_data_disk2_formats:
-  machinectl: btrfs
   zfs: zfs
   btrfs: btrfs
   xfs: xfs
@@ -171,7 +170,6 @@ bootstrap_host_data_disk2_formats:
   lvm: ext2
 
 bootstrap_host_format_options:
-  machinectl: '--metadata single --data single --mixed'
   btrfs: '--metadata single --data single --mixed'
   xfs: '-K -d agcount=64 -l size=128m'
   ext4: '-O dir_index'
@@ -179,7 +177,6 @@ bootstrap_host_format_options:
 #
 # Set the data disk mount options.
 bootstrap_host_data_mount_options:
-  machinectl: "noatime,nodiratime,compress=lzo,commit=120,{{ (ansible_facts['kernel'] is version('4.5', '>=')) | ternary('space_cache=v2', 'space_cache') }}"
   zfs: "defaults"
   btrfs: "noatime,nodiratime,compress=lzo,commit=120,{{ (ansible_facts['kernel'] is version('4.5', '>=')) | ternary('space_cache=v2', 'space_cache') }}"
   xfs: "noatime,nodiratime,logbufs=8,logbsize=256k"
@@ -188,9 +185,9 @@ bootstrap_host_data_mount_options:
   lvm: "defaults"
   swap: "%%"
 
-bootstrap_host_data_disk2_fs: "{{ bootstrap_host_data_disk2_formats[((bootstrap_host_container_tech == 'nspawn') | ternary('btrfs', lxc_container_backing_store))] }}"
-bootstrap_host_data_disk2_fs_mount_options: "{{ bootstrap_host_data_mount_options[((bootstrap_host_container_tech == 'nspawn') | ternary('btrfs', lxc_container_backing_store))] }}"
-bootstrap_host_data_disk2_path: "{{ (lxc_container_backing_store == 'machinectl' or bootstrap_host_container_tech == 'nspawn') | ternary('/var/lib/machines', '/var/lib/lxc') }}"
+bootstrap_host_data_disk2_fs: "{{ bootstrap_host_data_disk2_formats[lxc_container_backing_store] }}"
+bootstrap_host_data_disk2_fs_mount_options: "{{ bootstrap_host_data_mount_options[lxc_container_backing_store] }}"
+bootstrap_host_data_disk2_path: '/var/lib/lxc'
 
 ### Optional Settings ###
 
@@ -201,9 +198,6 @@ bootstrap_host_data_disk2_path: "{{ (lxc_container_backing_store == 'machinectl'
 
 # Set the install method for the deployment. Options are ['source', 'distro']
 bootstrap_host_install_method: "{{ lookup('env', 'INSTALL_METHOD') | default('source', true)  }}"
-
-# Set the container technology in service. Options are nspawn and lxc.
-bootstrap_host_container_tech: "{{ (bootstrap_host_scenario is search('nspawn')) | ternary('nspawn', 'lxc') }}"
 
 # Set the lxc backing store for the job
 lxc_container_backing_store: dir

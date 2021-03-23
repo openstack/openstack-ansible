@@ -231,7 +231,7 @@ It is possible to also do this (and change other defaults) during the bootstrap
 script initial execution by changing the SCENARIO environment variable before
 running the script. The key word 'aio' will ensure that a basic set of
 OpenStack services (cinder, glance, horizon, neutron, nova) will be deployed.
-The key words 'lxc' and 'nspawn' can be used to set the container back-end,
+The key words 'lxc' can be used to set the container back-end,
 while the key word 'metal' will deploy all services without containers. In
 order to implement any other services, add the name of the conf.d file name
 without the `.yml.aio` extension into the SCENARIO environment variable. Each

@@ -83,15 +83,6 @@
   tags:
     - prepare-loopback
 
-# Prepare the Machines storage loopback disk
-- include: prepare_loopback_machines.yml
-  when:
-    - bootstrap_host_loopback_machines | bool
-    - bootstrap_host_data_disk_device == None
-    - lxc_container_backing_store == 'machinectl' or bootstrap_host_container_tech == 'nspawn'
-  tags:
-    - prepare-loopback
-
 # Prepare the zfs storage loopback disk
 - include: prepare_loopback_zfs.yml
   when:
@@ -153,8 +144,6 @@
 
 # Prepare the network interfaces
 - include: prepare_networking.yml
-  when:
-    - bootstrap_host_container_tech != 'nspawn'
   tags:
     - prepare-networking
 

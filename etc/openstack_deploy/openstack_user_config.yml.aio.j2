@@ -54,9 +54,6 @@ global_overrides:
           # neutron public addresses, LXC
           - cidr: 172.29.248.0/22
             gateway: 172.29.236.100
-          # neutron public networks, nspawn
-          - cidr: 172.29.240.0/22
-            gateway: 172.29.236.100
 {% if 'ovn' in bootstrap_host_scenarios_expanded %}
     - network:
         container_bridge: "br-vxlan"
@@ -193,9 +190,6 @@ global_overrides:
 shared-infra_hosts:
   aio1:
     ip: 172.29.236.100
-    container_vars:
-      # Optional | container_tech for a target host, default is "lxc".
-      container_tech: "{{ bootstrap_host_container_tech }}"
 {% if 'infra' in bootstrap_host_scenarios_expanded %}
     affinity:
       galera_container: 3

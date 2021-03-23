@@ -32,13 +32,6 @@
       command: pgrep dnsmasq
       changed_when: false
 
-- name: Ensuring hosts good behavior
-  hosts: nspawn_hosts
-  gather_facts: yes
-  tasks:
-    - debug:
-        msg: "To be implemented. Please help."
-
 - name: Ensuring containers creation, connection and good behavior
   hosts: all_containers
   gather_facts: yes

@@ -35,12 +35,8 @@
   with_items:
     - conditional: "{{ (bootstrap_host_scenario is search('distro')) and (bootstrap_host_scenario is search('source')) }}"
       msg: "The scenario key words 'distro' and 'source' are mutually exclusive."
-    - conditional: "{{ (bootstrap_host_scenario is search('lxc')) and (bootstrap_host_scenario is search('nspawn')) }}"
-      msg: "The scenario key words 'lxc' and 'nspawn' are mutually exclusive."
     - conditional: "{{ (bootstrap_host_scenario is search('lxc')) and (bootstrap_host_scenario is search('metal')) }}"
       msg: "The scenario key words 'lxc' and 'metal' are mutually exclusive."
-    - conditional: "{{ (bootstrap_host_scenario is search('metal')) and (bootstrap_host_scenario is search('nspawn')) }}"
-      msg: "The scenario key words 'metal' and 'nspawn' are mutually exclusive."
 
 - name: Identify the space available in /
   # NOTE(hwoarang): df does not work reliably on btrfs filesystems

@@ -39,6 +39,3 @@ The following are some useful commands to manage LXC:
 
        # lxc-stop --name container_name
 
-Systemd nspawn commands
-=======================
-

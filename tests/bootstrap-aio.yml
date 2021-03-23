@@ -84,7 +84,5 @@
           - ansible_facts['eth12']['active'] | bool
           - ansible_facts['eth13']['active'] | bool
           - ansible_facts['eth14']['active'] | bool
-      when:
-        - (bootstrap_host_container_tech | default('unknown')) != 'nspawn'
     - name: Clear facts
       meta: clear_facts
