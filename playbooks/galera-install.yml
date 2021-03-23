@@ -49,7 +49,7 @@
       when: "groups['haproxy'] | default([]) | length > 0"
     - role: "galera_server"
       vars:
-        galera_install_client: true
+        galera_install_client: "{{ (galera_root_user == 'root') }}"
         galera_install_server: true
     - role: haproxy_endpoints
       haproxy_state: enabled

@@ -33,7 +33,7 @@ rabbitmq_policies:
 ## Galera options
 galera_client_package_state: "{{ package_state }}"
 galera_address: "{{ internal_lb_vip_address }}"
-galera_root_user: "root"
+galera_root_user: "admin"
 
 ## Memcached options
 memcached_port: 11211
