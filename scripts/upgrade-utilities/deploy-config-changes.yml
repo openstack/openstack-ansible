@@ -75,6 +75,23 @@
       tags:
         - update-secrets
 
+    # TODO(jonher): Remove after W cycle
+    - name: Add Cloudkitty secrets to user_secrets if defined elsewhere
+      lineinfile:
+        dest: "{{ openstack_config_dir }}/user_secrets.yml"
+        regexp: "^{{ item.key }}"
+        line: "{{ item.key }}: {{ item.value }}"
+      loop:
+        - { key: "cloudkitty_container_mysql_password", value: "{{ cloudkitty_container_mysql_password | default([]) }}" }
+        - { key: "cloudkitty_service_password", value: "{{ cloudkitty_service_password | default([]) }}" }
+        - { key: "cloudkitty_oslomsg_rpc_password", value: "{{ cloudkitty_oslomsg_rpc_password | default([]) }}" }
+        - { key: "cloudkitty_oslomsg_notify_password", value: "{{ cloudkitty_oslomsg_notify_password | default([]) }}" }
+      when:
+        - item.value
+        - not (user_secrets.stdout | regex_search('((^|\n)' ~ item.key ~ ')'))
+      tags:
+        - update-secrets
+
     - name: Add missing secrets
       lineinfile:
         dest: "{{ openstack_config_dir }}/user_secrets.yml"

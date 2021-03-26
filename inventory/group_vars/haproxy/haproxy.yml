@@ -99,6 +99,18 @@ haproxy_cinder_api_service:
     - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
   haproxy_service_enabled: "{{ groups['cinder_api'] is defined and groups['cinder_api'] | length > 0 }}"
 
+haproxy_cloudkitty_api_service:
+  haproxy_service_name: cloudkitty_api
+  haproxy_backend_nodes: "{{ groups['cloudkitty_api'] | default([]) }}"
+  haproxy_ssl: "{{ haproxy_ssl }}"
+  haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
+  haproxy_port: 8089
+  haproxy_balance_type: http
+  haproxy_balance_alg: source
+  haproxy_backend_options:
+    - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+  haproxy_service_enabled: "{{ groups['cloudkitty_api'] is defined and groups['cloudkitty_api'] | length > 0 }}"
+
 haproxy_designate_api_service:
   haproxy_service_name: designate_api
   haproxy_backend_nodes: "{{ groups['designate_api'] | default([]) }}"
@@ -537,6 +549,7 @@ haproxy_default_services:
   - service: "{{ haproxy_barbican_service }}"
   - service: "{{ haproxy_ceph_rgw_service }}"
   - service: "{{ haproxy_cinder_api_service }}"
+  - service: "{{ haproxy_cloudkitty_api_service }}"
   - service: "{{ haproxy_designate_api_service }}"
   - service: "{{ haproxy_galera_service }}"
   - service: "{{ haproxy_glance_api_service }}"
