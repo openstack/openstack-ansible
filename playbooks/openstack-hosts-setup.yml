@@ -61,12 +61,13 @@
       assert:
         that:
           - (ansible_facts['distribution'] == 'Debian' and ansible_facts['distribution_release'] == 'buster') or
+            (ansible_facts['distribution'] == 'Debian' and ansible_facts['distribution_release'] == 'bullseye') or
             (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_release'] == 'bionic') or
             (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_release'] == 'focal') or
             (ansible_facts['os_family'] == 'RedHat' and ansible_facts['distribution_major_version'] == '8')
         msg: >
-          The only supported platforms for this release are Debian 10 (Buster),
-          Ubuntu 18.04 LTS (Bionic), Ubuntu 20.04 LTS (Focal) and  CentOS 8
+          The only supported platforms for this release are Debian 10 (Buster), Debian 11 (Bullseye),
+          Ubuntu 18.04 LTS (Bionic), Ubuntu 20.04 LTS (Focal), CentOS 8 and CentOS 8 Stream.
     - name: Check for a supported path
       assert:
         that:
