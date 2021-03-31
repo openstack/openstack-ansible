@@ -121,7 +121,7 @@
         bridge: "br-dbaas"
         mtu: 9000
       - interface: "br-dbaas"
-        address: "172.29.232.100"
+        address: "172.29.252.100"
         netmask: "255.255.252.0"
       - interface: "br-dbaas-veth"
         bridge: "br-dbaas"
@@ -131,7 +131,7 @@
         bridge: "br-lbaas"
         mtu: 9000
       - interface: "br-lbaas"
-        address: "172.29.252.100"
+        address: "172.29.232.100"
         netmask: "255.255.252.0"
       - interface: "br-lbaas-veth"
         bridge: "br-lbaas"
@@ -176,8 +176,8 @@
   with_items:
     - 172.29.236.100  # br-mgmt
     - 172.29.244.100  # br-storage
-    - 172.29.232.100  # br-dbaas
-    - 172.29.252.100  # br-lbaas
+    - 172.29.252.100  # br-dbaas
+    - 172.29.232.100  # br-lbaas
     - 172.29.240.100  # br-vxlan
 
 - name: Run the systemd service role
