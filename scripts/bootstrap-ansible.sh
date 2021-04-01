@@ -70,6 +70,7 @@ case ${DISTRO_ID} in
         dnf -y install \
           git curl autoconf gcc gcc-c++ nc \
           python3 python3-devel libselinux-python3 \
+          systemd-devel pkgconf \
           openssl-devel libffi-devel \
           python3-virtualenv rsync
         ;;
@@ -83,6 +84,7 @@ case ${DISTRO_ID} in
           git-core curl gcc netcat \
           python3 python3-dev \
           libssl-dev libffi-dev \
+          libsystemd-dev pkg-config \
           python3-apt virtualenv \
           python3-minimal
         ;;

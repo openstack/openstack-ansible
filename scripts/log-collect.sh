@@ -118,32 +118,6 @@ function store_artifacts {
     fi
 }
 
-function store_journal_artifacts {
-    # Store lines from a known unit's journal as a plain-text log file.
-    # USAGE: store_journal_artifacts UNIT_TO_MATCH /path/to/store
-    if [ $? == 0 ]; then
-        if [[ ! -d "${2}" ]]; then
-            mkdir -vp "${2}"
-        fi
-        if [[ ${3:-false} != false ]]; then
-            if [[ -f "${3}/system.journal" ]]; then
-                SYSTEMD_UNITS=$(sudo journalctl --file="${3}/system.journal" -F _SYSTEMD_UNIT | grep "${service}")
-                for service_unit in $(echo -e "${SYSTEMD_UNITS}"); do
-                    echo "Pulling journal for ${service_unit}"
-                    sudo journalctl --file="${3}/system.journal" \
-                                    --unit="${service_unit}" | sudo tee "${2}/${service_unit}.journal-${TS}.log" &>/dev/null
-                done
-            fi
-        else
-            SYSTEMD_UNITS=$(sudo journalctl --output=json-pretty -F _SYSTEMD_UNIT | grep "${service}")
-            for service_unit in $(echo -e "${SYSTEMD_UNITS}"); do
-                echo "Pulling journal for ${service_unit}"
-                sudo journalctl --unit="${service_unit}" | sudo tee "${2}/${service_unit}.journal-${TS}.log" &>/dev/null
-            done
-        fi
-    fi
-}
-
 function find_files {
     find "${WORKING_DIR}/logs/" -type f \
         ! -name "*.gz" \
@@ -190,11 +164,6 @@ store_artifacts /openstack/*repo*/repo/os-releases/*/*/*.txt "${WORKING_DIR}/rep
 # metal path
 store_artifacts /var/www/repo/os-releases/*/*/*.txt "${WORKING_DIR}/repo"
 
-# Verify the integrity of the journal files but do not fail if one of them is not usable
-echo "Verifying journal files consistency..."
-find /var/log/journal/ -type f -name "*.journal" -exec bash -c 'sudo journalctl --file={} --verify || true' \;
-
-
 # Gather host etc artifacts
 PIDS=()
 for service in ${COMMON_ETC_LOG_NAMES}; do
@@ -202,7 +171,6 @@ for service in ${COMMON_ETC_LOG_NAMES}; do
     store_artifacts "/etc/${service}" "${WORKING_DIR}/logs/etc/host/" &
     pid=$!
     PIDS[${pid}]=${pid}
-    store_journal_artifacts "${service}" "${WORKING_DIR}/logs/host" &
     pid=$!
     PIDS[${pid}]=${pid}
 done
@@ -217,9 +185,7 @@ if which lxc-ls &> /dev/null; then
     for CONTAINER_NAME in $(sudo lxc-ls -1); do
         CONTAINER_PID=$(sudo lxc-info -p -n ${CONTAINER_NAME} | awk '{print $2}')
         ETC_DIR="/proc/${CONTAINER_PID}/root/etc"
-        MACHINE_ID="$(sudo cat ${ETC_DIR}/machine-id)"
         LOG_DIR="/proc/${CONTAINER_PID}/root/var/log"
-        JOURNAL_DIR="/proc/${CONTAINER_PID}/root/run/log/journal/${MACHINE_ID}"
         repo_information ${CONTAINER_NAME}
         PIDS=()
         for service in ${COMMON_ETC_LOG_NAMES}; do
@@ -230,7 +196,6 @@ if which lxc-ls &> /dev/null; then
             store_artifacts ${LOG_DIR}/${service} "${WORKING_DIR}/logs/openstack/${CONTAINER_NAME}/" &
             pid=$!
             PIDS[${pid}]=${pid}
-            store_journal_artifacts ${service} "${WORKING_DIR}/logs/openstack/${CONTAINER_NAME}" "${JOURNAL_DIR}" &
             pid=$!
             PIDS[${pid}]=${pid}
         done
@@ -241,6 +206,9 @@ if which lxc-ls &> /dev/null; then
     done
 fi
 
+# gather host and container journals and deprecation warnings
+__dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+/opt/ansible-runtime/bin/python ${__dir}/journal_dump.py ${__dir}/../ansible-role-requirements.yml ${COMMON_ETC_LOG_NAMES}
 
 # Rename all files gathered to have a .txt suffix so that the compressed
 # files are viewable via a web browser in OpenStack-CI.

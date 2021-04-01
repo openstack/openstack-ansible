@@ -85,6 +85,11 @@ function build_ansible_runtime_venv {
     # Install our osa_toolkit code from the current checkout
     $PIP_COMMAND install -e .
 
+    # If we are in openstack-CI, install systemd-python for the log collection python script
+    if [[ -e /etc/ci/mirror_info.sh ]]; then
+      ${PIP_COMMAND} install --isolated ${PIP_OPTS} systemd-python
+    fi
+
     # Add SELinux support to the venv
     if [ -d "/usr/lib64/python3.6/site-packages/selinux/" ]; then
       rsync -avX /usr/lib64/python3.6/site-packages/selinux/ /opt/ansible-runtime/lib64/python3.6/site-packages/selinux/
