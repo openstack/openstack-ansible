@@ -15,9 +15,22 @@
 
 - name: Gather cinder facts
   hosts: "{{ cinder_hosts }}"
-  gather_facts: "{{ osa_gather_facts | default(True) }}"
+  gather_facts: false
   tags:
     - always
+  tasks:
+    - name: Gather minimal facts for cinder
+      setup:
+        gather_subset:
+          - "!all"
+          - min
+      when: osa_gather_facts | default(True)
+
+    - name: Gather additional facts for cinder
+      setup:
+        gather_subset: "{{ cinder_gather_subset | default('processor_count') }}"
+        filter: "{{ cinder_gather_filter | default('ansible_processor*') }}"
+      when: osa_gather_facts | default(True)
 
 - name: Install cinder services
   hosts: "{{ cinder_hosts }}"
