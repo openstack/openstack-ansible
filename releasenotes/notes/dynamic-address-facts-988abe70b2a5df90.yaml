@@ -1,0 +1,19 @@
+---
+features:
+  - |
+    Only minimal facts are gathered when calculating the 'dynamic address fact'
+    for the neutron, nova and cinder playbooks. On compute and network nodes
+    this previously took a significant amount of time, and gathering minimal
+    facts will speed this up. Facts are instead gathered for interfaces
+    specified in provider_networks for the storage, overlay and management
+    networks. 
+upgrade:
+  - |
+    Only minimal facts are gathered when calculating the 'dynamic address fact'
+    for the neutron, nova and cinder playbooks. If overrides are in use for
+    setting the neutron tunnel address, or various storage or management
+    addresses which rely on ansible fact gathering to provide variables of the
+    form ansible_<interface>, it is likley that these facts will no longer be
+    gathered by default. The new variable dynamic_address_gather_filter is
+    available to specify a shell-style (fnmatch) wildcard to specify the set
+    of facts gathered early in the neutron/nova/cinder playbooks.
