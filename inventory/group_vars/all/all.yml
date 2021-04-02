@@ -25,9 +25,6 @@ openstack_clone_root: "{{ (lookup('env', 'OSA_CLONE_ROOT') | default('/opt/opens
 ## OpenStack service python version
 openstack_venv_python_executable: "python3"
 
-#uwsgi venv deploys the same python version as OpenStack service venv
-uwsgi_python_executable: "{{ openstack_venv_python_executable }}"
-
 ## Verbosity Options
 debug: False
 
