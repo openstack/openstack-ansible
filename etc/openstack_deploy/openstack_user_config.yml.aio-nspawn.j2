@@ -17,12 +17,12 @@ used_ips:
 
 global_overrides:
   internal_lb_vip_address: 172.29.236.100
-  external_lb_vip_address: "{{ bootstrap_host_public_address | default(ansible_default_ipv4['address']) }}"
+  external_lb_vip_address: "{{ bootstrap_host_public_address | default(ansible_facts['default_ipv4']['address']) }}"
   tunnel_bridge: "mv-vxlan"
-  management_bridge: "mv-{{ ansible_default_ipv4['alias'] }}"
+  management_bridge: "mv-{{ ansible_facts['default_ipv4']['alias'] }}"
   provider_networks:
     - network:
-        container_bridge: "{{ ansible_default_ipv4['alias'] }}"
+        container_bridge: "{{ ansible_facts['default_ipv4']['alias'] }}"
         container_interface: "mv-container"
         ip_from_q: "container"
         type: "raw"
@@ -31,7 +31,7 @@ global_overrides:
           - all_containers
           - hosts
     - network:
-        container_bridge: "{{ ansible_default_ipv4['alias'] }}"
+        container_bridge: "{{ ansible_facts['default_ipv4']['alias'] }}"
         container_interface: "mv-flat"
         host_bind_override: "mv-flat"
         ip_from_q: "flat"
@@ -45,7 +45,7 @@ global_overrides:
           - rabbitmq
           - utility_all
     - network:
-        container_bridge: "{{ ansible_default_ipv4['alias'] }}"
+        container_bridge: "{{ ansible_facts['default_ipv4']['alias'] }}"
         container_interface: "mv-storage"
         ip_from_q: "storage"
         type: "raw"
@@ -57,7 +57,7 @@ global_overrides:
           - nova_compute
           - swift_proxy
     - network:
-        container_bridge: "{{ ansible_default_ipv4['alias'] }}"
+        container_bridge: "{{ ansible_facts['default_ipv4']['alias'] }}"
         container_interface: "mv-vxlan"
         ip_from_q: "vxlan"
         type: "vxlan"
@@ -106,22 +106,22 @@ aio_block: &aio_info_block
       #                   to it.
       container_extra_networks:
         container_network:
-          bridge: "{{ ansible_default_ipv4['alias'] }}"
+          bridge: "{{ ansible_facts['default_ipv4']['alias'] }}"
           interface: mv-container
           address: 172.29.236.100
           netmask: 255.255.252.0
         flat_network:
-          bridge: "{{ ansible_default_ipv4['alias'] }}"
+          bridge: "{{ ansible_facts['default_ipv4']['alias'] }}"
           interface: mv-flat
           address: 172.29.240.100
           netmask: 255.255.252.0
         storage_network:
-          bridge: "{{ ansible_default_ipv4['alias'] }}"
+          bridge: "{{ ansible_facts['default_ipv4']['alias'] }}"
           interface: mv-storage
           address: 172.29.244.100
           netmask: 255.255.252.0
         vxlan_network:
-          bridge: "{{ ansible_default_ipv4['alias'] }}"
+          bridge: "{{ ansible_facts['default_ipv4']['alias'] }}"
           interface: mv-vxlan
           address: 172.29.248.100
           netmask: 255.255.252.0
