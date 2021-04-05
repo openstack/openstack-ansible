@@ -14,9 +14,13 @@
 # limitations under the License.
 
 rabbitmq_port_bindings: |-
-  {%- set _rabbitmq_port_bindings = {} %}
-  {%- set _ = _rabbitmq_port_bindings.update({ 'ssl_listeners': { management_address: '5671' } }) %}
-  {%- set _ = _rabbitmq_port_bindings.update({ 'tcp_listeners': { management_address: '5672' } }) %}
+  {%- set _rabbitmq_port_bindings = {'ssl_listeners': {}, 'tcp_listeners': {}} %}
+  {%- for network, data in container_networks.items() %}
+  {%-   if 'address' in data %}
+  {%-     set _ = _rabbitmq_port_bindings['ssl_listeners'].update({ container_networks[network]['address']: '5671' }) %}
+  {%-     set _ = _rabbitmq_port_bindings['tcp_listeners'].update({ container_networks[network]['address']: '5672' }) %}
+  {%-   endif %}
+  {%- endfor %}
   {{ _rabbitmq_port_bindings }}
 
 rabbitmq_management_bind_address: "{{ management_address }}"
