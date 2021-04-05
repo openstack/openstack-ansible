@@ -50,7 +50,7 @@
       when: groups['haproxy'] | length > 1
 
     - package:
-        name: "{% if ansible_os_family | lower == 'redhat' %}nmap-ncat{% else %}netcat-openbsd{% endif %}"
+        name: "{% if ansible_facts['os_family'] | lower == 'redhat' %}nmap-ncat{% else %}netcat-openbsd{% endif %}"
         state: present
 
     # Fails if HAProxy is not running
@@ -97,7 +97,7 @@
   vars_files:
     - "defaults/{{ install_method }}_install.yml"
   vars:
-    ansible_python_interpreter: "{{ openstack_service_setup_host_python_interpreter | default(ansible_python['executable']) }}"
+    ansible_python_interpreter: "{{ openstack_service_setup_host_python_interpreter | default(ansible_facts['python']['executable']) }}"
   tasks:
     - name: Get openstack client config
       openstack.cloud.os_client_config:
@@ -121,7 +121,7 @@
       with_items: "{{ groups['memcached'] }}"
 
     - package:
-        name: "{% if ansible_os_family | lower == 'redhat' %}nmap-ncat{% else %}netcat-openbsd{% endif %}"
+        name: "{% if ansible_facts['os_family'] | lower == 'redhat' %}nmap-ncat{% else %}netcat-openbsd{% endif %}"
         state: present
 
     - name: Connect to remote memcache servers (full mesh testing)

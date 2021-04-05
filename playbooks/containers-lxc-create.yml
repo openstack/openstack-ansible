@@ -48,17 +48,8 @@
         sleep: "{{ lxc_container_wait_params.sleep | default(omit) }}"
         timeout: "{{ lxc_container_wait_params.timeout | default(omit) }}"
 
-    # When using gather_facts with smart gathering,
-    # the facts aren't fully updated unless they
-    # are old. Using the setup module in a task
-    # does a more thorough collection.
-    # Given we've just created the container, it is
-    # best that we do a full collection of facts -
-    # otherwise we end up with a stale set which
-    # has stuff like the hostname = localhost.
-    - name: Gather facts for new container(s)
-      setup:
-        gather_subset: "network,hardware,virtual"
+    - name: Clear facts for new container(s)
+      meta: clear_facts
 
 - name: Gather lxc containers facts
   hosts: all_lxc_containers

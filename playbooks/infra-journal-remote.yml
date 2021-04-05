@@ -35,7 +35,7 @@
     - name: Omit suse from this playbook
       meta: end_play
       when:
-        - ansible_pkg_mgr == 'zypper'
+        - ansible_facts['pkg_mgr'] == 'zypper'
 
     - name: Skip playbook if log_hosts group is empty
       meta: end_play
@@ -44,7 +44,7 @@
 
     - name: Install systemd-journal-remote
       package:
-        name: "{{ systemd_journal_remote_distro_package[ansible_pkg_mgr] }}"
+        name: "{{ systemd_journal_remote_distro_package[ansible_facts['pkg_mgr']] }}"
         state: "{{ package_state }}"
 
     - name: Ensure systemd-journal-remote socket is enabled on receiving host

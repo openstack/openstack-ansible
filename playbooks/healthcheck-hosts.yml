@@ -46,7 +46,7 @@
     - name: Ensure the physical host has all the proper interfaces defined
       assert:
         that:
-          - item.value.bridge in hostvars[physical_host]['ansible_interfaces']
+          - item.value.bridge in hostvars[physical_host]['ansible_facts']['interfaces']
       with_dict: "{{ container_networks }}"
 
     - name: Check if dns resolution and external connectivity is fine
@@ -73,7 +73,7 @@
   tasks:
     - name: Open modules file
       slurp:
-        src: "{{ (ansible_os_family | lower == 'debian') | ternary('/etc/modules', '/etc/modules-load.d/openstack-ansible.conf') }}"
+        src: "{{ (ansible_facts['os_family'] | lower == 'debian') | ternary('/etc/modules', '/etc/modules-load.d/openstack-ansible.conf') }}"
       register: modules_file
 
     - name: Open sysctl file
@@ -105,12 +105,12 @@
 
     - name: Check for systat file
       stat:
-        path: "{{ (ansible_os_family | lower == 'debian') | ternary('/etc/default/sysstat', '/etc/sysconfig/sysstat') }}"
+        path: "{{ (ansible_facts['os_family'] | lower == 'debian') | ternary('/etc/default/sysstat', '/etc/sysconfig/sysstat') }}"
       register: systat_file
 
     - name: Check for ssh dir
       stat:
-        path: "{{ ansible_env.HOME }}/.ssh"
+        path: "{{ ansible_facts['env']['HOME'] }}/.ssh"
       register: ssh_dir
 
     - name: Check role functions
@@ -119,8 +119,8 @@
           - "'dm_multipath' in modules_content"
           - "'ebtables' in modules_content"
           - "'vm.swappiness' in sysctl_content"
-          - "'172.29.236.100 {{ ansible_fqdn }} {{ ansible_hostname }}' in hosts_content"
-          - "'{{ hostvars[groups['galera_all'][0]]['container_address'] }} {{ hostvars[groups['galera_all'][0]]['ansible_hostname'] }}.openstack.local {{ hostvars[groups['galera_all'][0]]['ansible_hostname'] ~ ((hostvars[groups['galera_all'][0]]['ansible_hostname'] != groups['galera_all'][0]) | ternary(' ' ~ groups['galera_all'][0], '')) }}' in hosts_content"
+          - "'172.29.236.100 {{ ansible_facts['fqdn'] }} {{ ansible_facts['hostname'] }}' in hosts_content"
+          - "'{{ hostvars[groups['galera_all'][0]]['container_address'] }} {{ hostvars[groups['galera_all'][0]]['ansible_facts']['hostname'] }}.openstack.local {{ hostvars[groups['galera_all'][0]]['ansible_facts']['hostname'] ~ ((hostvars[groups['galera_all'][0]]['ansible_facts']['hostname'] != groups['galera_all'][0]) | ternary(' ' ~ groups['galera_all'][0], '')) }}' in hosts_content"
           - "release_file.stat.exists"
           - "systat_file.stat.exists"
           - "'PATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' in environment_content"

@@ -28,7 +28,7 @@
     name: libselinux-python3
     state: present
   when:
-    - ansible_pkg_mgr in ['yum', 'dnf']
+    - ansible_facts['pkg_mgr'] in ['yum', 'dnf']
 
 # Set the priority of the ceph community apt repo either above or below that of UCA or distro sources
 - name: Set apt package pins
@@ -39,9 +39,9 @@
     apt_package_pinning_priority: "{{ (ceph_repository == 'community') | ternary(1000, 100) }}"
     apt_pinned_packages: [{ package: '*', release: 'ceph.com' }]
   when:
-    - ansible_pkg_mgr == 'apt'
+    - ansible_facts['pkg_mgr'] == 'apt'
 
 - name: Install python3-yaml
   package:
-    name: "{{ (ansible_os_family | lower == 'debian') | ternary('python3-yaml', 'python3-pyyaml') }}"
+    name: "{{ (ansible_facts['os_family'] | lower == 'debian') | ternary('python3-yaml', 'python3-pyyaml') }}"
     state: present
