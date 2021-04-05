@@ -29,6 +29,12 @@
     - always
     - lxc-containers-create
 
+- name: Gather lxc hosts facts
+  hosts: "{{ lxc_host_group | default('lxc_hosts') }}"
+  gather_facts: true
+  tags:
+    - always
+
 - name: Create container(s)
   hosts: all_lxc_containers
   user: root
