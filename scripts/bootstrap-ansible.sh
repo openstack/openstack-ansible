@@ -72,7 +72,7 @@ case ${DISTRO_ID} in
           python3 python3-devel libselinux-python3 \
           systemd-devel pkgconf \
           openssl-devel libffi-devel \
-          python3-virtualenv rsync
+          python3-virtualenv rsync wget
         ;;
     ubuntu|debian)
         # NOTE(mgariepy) remove this on ansible 2.10 if debian is in the config/base.yml file
@@ -86,7 +86,7 @@ case ${DISTRO_ID} in
           libssl-dev libffi-dev \
           libsystemd-dev pkg-config \
           python3-apt virtualenv \
-          python3-minimal
+          python3-minimal wget
         ;;
     opensuse*)
         zypper -n install -l git-core curl autoconf gcc gcc-c++ \
