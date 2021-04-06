@@ -16,7 +16,7 @@
 keepalived_ping_count: 1
 keepalived_ping_interval: 10
 keepalived_ubuntu_src: "native"
-keepalived_ping_address: "{{ ansible_default_ipv4['gateway'] | default('127.0.0.1') }}"
+keepalived_ping_address: "{{ ansible_facts['default_ipv4']['gateway'] | default('127.0.0.1') }}"
 
 keepalived_sync_groups:
   haproxy:

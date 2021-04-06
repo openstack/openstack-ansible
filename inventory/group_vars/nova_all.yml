@@ -15,7 +15,7 @@
 
 
 nova_console_type: novnc
-nova_console_agent_enabled: "{{ ansible_architecture != 'aarch64' }}"
+nova_console_agent_enabled: "{{ ansible_facts['architecture'] != 'aarch64' }}"
 nova_novncproxy_port: 6080
 nova_spice_html5proxy_base_port: 6082
 nova_serialconsoleproxy_port: 6083
