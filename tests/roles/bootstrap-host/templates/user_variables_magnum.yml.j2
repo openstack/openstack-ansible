@@ -18,25 +18,25 @@ magnum_glance_images:
     disk_format: qcow2
     image_format: bare
     public: true
-    file: https://builds.coreos.fedoraproject.org/prod/streams/stable/builds/31.20200210.3.0/x86_64/fedora-coreos-31.20200210.3.0-openstack.x86_64.qcow2.xz
-    distro: "coreos"
-    checksum: "sha256:9a5252e24b82a5edb1ce75b05653f59895685b0f1028112462e908a12deae518"
+    file: https://builds.coreos.fedoraproject.org/prod/streams/stable/builds/33.20210117.3.2/x86_64/fedora-coreos-33.20210117.3.2-openstack.x86_64.qcow2.xz
+    distro: "fedora-coreos"
+    checksum: "sha256:e7604b7ca881b01befa3a3759b40b17836cafc1cb521c00f3cddef4dc1229595"
 
 magnum_cluster_templates:
   - name: k8s
     cloud: default
     coe: kubernetes
-    docker_volume_size: 5
+    docker_volume_size: 10
     flavor_id: s1.magnum
     master_flavor_id: m1.magnum
     network_driver: flannel
     volume_driver: cinder
     image_id: fedora-coreos-latest
     labels:
-      kube_tag: v1.16.0
+      kube_tag: v1.18.2
       etcd_tag: 3.3.17
-      kube_version: v1.16.0
-      boot_volume_size: 5
+      kube_version: v1.18.2
+      boot_volume_size: 10
       cloud_provider_tag: v1.15.0
 
 magnum_flavors:
