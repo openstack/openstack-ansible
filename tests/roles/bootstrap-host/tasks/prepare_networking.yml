@@ -20,7 +20,7 @@
   failed_when: firewalld_check.rc > 1
   args:
     warn: false
-  when: ansible_os_family == 'RedHat'
+  when: ansible_facts['os_family'] == 'RedHat'
 
 - name: Disable firewalld
   become: True
@@ -31,7 +31,7 @@
   with_items:
     - firewalld
   when:
-    - ansible_os_family == 'RedHat'
+    - ansible_facts['os_family'] == 'RedHat'
     - firewalld_check.rc == 0
 
 - name: Run the systemd-networkd role

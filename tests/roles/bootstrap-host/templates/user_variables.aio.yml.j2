@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-{% if ansible_os_family | lower == 'redhat' %}
+{% if ansible_facts['os_family'] | lower == 'redhat' %}
 deployment_environment_variables:
   LIBSYSTEMD_VERSION: {{ systemd_version.stdout_lines[0].split('-')[1] }}
 {% endif %}
@@ -285,7 +285,7 @@ tempest_run_concurrency: 0
 deployment_environment_variables:
   http_proxy: http://172.29.236.100:3128/
   https_proxy: http://172.29.236.100:3128/
-  no_proxy: "localhost,127.0.0.1,172.29.236.100,{{ bootstrap_host_public_address | default(ansible_default_ipv4.address) }}"
+  no_proxy: "localhost,127.0.0.1,172.29.236.100,{{ bootstrap_host_public_address | default(ansible_facts['default_ipv4']['address']) }}"
 
 # Remove eth0 from all container so there is no default route and everything
 # must go via the http proxy

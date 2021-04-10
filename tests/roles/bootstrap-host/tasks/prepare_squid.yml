@@ -17,7 +17,7 @@
   package:
     name: squid
     state: present
-    update_cache: "{{ (ansible_pkg_mgr in ['apt', 'zypper']) | ternary('yes', omit) }}"
+    update_cache: "{{ (ansible_facts['pkg_mgr'] in ['apt', 'zypper']) | ternary('yes', omit) }}"
   notify: Restart squid
   tags:
     - install-packages
