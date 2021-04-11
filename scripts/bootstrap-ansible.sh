@@ -22,7 +22,7 @@ set -e -u -x
 export HTTP_PROXY=${HTTP_PROXY:-""}
 export HTTPS_PROXY=${HTTPS_PROXY:-""}
 # The Ansible version used for testing
-export ANSIBLE_PACKAGE=${ANSIBLE_PACKAGE:-"ansible-base==2.10.6"}
+export ANSIBLE_PACKAGE=${ANSIBLE_PACKAGE:-"ansible-base==2.10.7"}
 export ANSIBLE_ROLE_FILE=${ANSIBLE_ROLE_FILE:-"ansible-role-requirements.yml"}
 export ANSIBLE_COLLECTION_FILE=${ANSIBLE_COLLECTION_FILE:-"ansible-collection-requirements.yml"}
 export USER_ROLE_FILE=${USER_ROLE_FILE:-"user-role-requirements.yml"}
