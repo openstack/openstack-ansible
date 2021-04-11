@@ -1,0 +1,13 @@
+---
+features:
+  - |
+    In deployments where a separate host is used to manage the OpenStack
+    Ansible configuration, the '/etc/hosts' file on that host will now include
+    a section adding hostname to IP resolution for all hosts in the inventory.
+    This can be enabled/disabled via 'openstack_host_manage_deploy_hosts_file'.
+issues:
+  - |
+    Where a single OSA deploy host is used to manage multiple deployments, some
+    delegated Ansible tasks are performed using hostnames rather than IP
+    addresses due to Ansible issue 72776. Hostnames such as 'infra1' will be
+    ambiguous, so use of separate hosts for each deployment is recommended.
