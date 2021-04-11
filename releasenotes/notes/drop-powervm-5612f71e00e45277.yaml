@@ -1,0 +1,7 @@
+---
+deprecations:
+  - |
+    The custom PowerVM code has been removed as it is not tested. The
+    code in question can be replaced with the following setting;
+
+    neutron_firewall_driver: openvswitch

@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Adds a 'zun-docker-cleanup' script to the Zun compute virtualenv which can
+    be used to clean up cached Docker images held on compute hosts. This can be
+    run on a timer by setting the 'zun_docker_prune_images' variable or
+    executed manually by adding '--force' to the script.

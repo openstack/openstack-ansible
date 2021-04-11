@@ -1,0 +1,24 @@
+---
+prelude: >
+    Historically, Open vSwitch (OVS) could not interact directly with iptables
+    to implement security groups. Thus, the OVS agent and Compute service use a
+    Linux bridge between each instance (VM) and the OVS integration bridge
+    br-int to implement security groups. Now the OVS agent includes an optional
+    firewall driver that natively implements security groups as flows in OVS
+    rather than the Linux bridge device and iptables. This increases
+    scalability and performance.
+features:
+  - |
+    You can override the default ``iptables_hybrid`` firewall driver for Open
+    vSwitch by setting ``neutron_firewall_driver: openvswitch``
+upgrade:
+  - |
+    Introduce this feature to empty compute nodes, and migrate VMs over once
+    the agents have been restarted.
+critical:
+  - |
+    This feature requires kernel and user space support for conntrack, thus
+    requiring minimum versions of the Linux kernel and Open vSwitch. All cases
+    require Open vSwitch version 2.5 or newer. Kernel version 4.3 or newer
+    includes conntrack support. Kernel version 3.3, but less than 4.3, does not
+    include conntrack support and requires building the OVS modules.

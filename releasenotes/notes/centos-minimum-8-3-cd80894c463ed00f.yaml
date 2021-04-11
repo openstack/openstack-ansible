@@ -1,0 +1,9 @@
+---
+upgrade:
+  - |
+    In order to accomodate Centos-8 Stream support, it is necessary require
+    the minimum version of Centos-8 Classic to be 8.3. There are breaking
+    changes between Stream and Classic versions prior to 8.3 which break
+    ansible code that detects major/minor versions of Centos. Before
+    upgrading to Wallaby, deployers should ensure that their Centos hosts
+    are updated to 8.3.

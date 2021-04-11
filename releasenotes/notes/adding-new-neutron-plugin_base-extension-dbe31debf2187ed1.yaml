@@ -1,0 +1,7 @@
+---
+upgrade:
+  - |
+    Adds the ``subnet_dns_publish_fixed_ip`` option extension in ml2 plugin.
+    The subnet-dns-publish-fixed-ip extension adds a new attribute to the
+    definition of the subnet resource. When set to true it will allow
+    publishing DNS records for fixed IPs.

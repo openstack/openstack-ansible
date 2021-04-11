@@ -1,0 +1,10 @@
+---
+deprecations:
+  - |
+    Support for an Open vSwitch dataplate with NSH support using the
+    ``ovs_nsh_support`` variable has been immediately deprecated and
+    removed due to built-in support for NSH in recent Open vSwitch
+    releases. The prior PPA provided a custom release of OVS 2.9, which
+    is no longer appropriate for recent releases of OSA and respective
+    operating systems.
+
