@@ -96,9 +96,9 @@
           yum_repository:
             name: epel-utility
             baseurl: "{{ centos_epel_mirror | default('http://download.fedoraproject.org/pub/epel') ~ '/'
-                                                      ~ ansible_facts['distribution_major_version'] ~ '/'
+                                                      ~ ansible_facts['distribution_major_version'] ~ '/Everything/'
                                                       ~ ansible_facts['architecture'] }}"
-            description: 'Extra Packages for Enterprise Linux 7 - $basearch'
+            description: "Extra Packages for Enterprise Linux {{ ansible_facts['ansible_distribution_major_version'] }} - $basearch"
             gpgcheck: yes
             enabled: yes
             state: present
