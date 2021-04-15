@@ -44,7 +44,6 @@
     gate:
       jobs:
         - openstack-ansible-deploy-aio_lxc-centos-8
-        - openstack-ansible-deploy-aio_lxc-debian-buster
         - openstack-ansible-deploy-aio_lxc-ubuntu-focal
     periodic:
       jobs:
@@ -83,7 +82,6 @@
     gate:
       jobs:
         - openstack-ansible-deploy-infra_lxc-centos-8
-        - openstack-ansible-deploy-infra_lxc-debian-buster
         - openstack-ansible-deploy-infra_lxc-ubuntu-focal
     periodic:
       jobs:
@@ -99,7 +97,6 @@
     gate:
       jobs:
         - openstack-ansible-deploy-hosts_lxc-centos-8
-        - openstack-ansible-deploy-hosts_lxc-debian-buster
         - openstack-ansible-deploy-hosts_lxc-ubuntu-focal
     periodic:
       jobs:
@@ -115,7 +112,6 @@
     gate:
       jobs:
         - openstack-ansible-deploy-hosts_metal-centos-8
-        - openstack-ansible-deploy-hosts_metal-debian-buster
         - openstack-ansible-deploy-hosts_metal-ubuntu-focal
     periodic:
       jobs:
@@ -131,7 +127,6 @@
     gate:
       jobs:
         - openstack-ansible-deploy-hosts_distro_lxc-centos-8-stream
-        - openstack-ansible-deploy-hosts_distro_lxc-debian-buster
         - openstack-ansible-deploy-hosts_distro_lxc-ubuntu-focal
 
 - project-template:
@@ -155,7 +150,6 @@
         - openstack-ansible-upgrade-aio_metal-ubuntu-focal
     gate:
       jobs:
-        - openstack-ansible-deploy-aio_metal-debian-buster
         - openstack-ansible-deploy-aio_metal-centos-8
         - openstack-ansible-deploy-aio_metal-ubuntu-bionic
         - openstack-ansible-deploy-aio_metal-ubuntu-focal
@@ -170,7 +164,6 @@
     gate:
       jobs:
         - openstack-ansible-deploy-aio_telemetry_metal-centos-8
-        - openstack-ansible-deploy-aio_telemetry_metal-debian-buster
         - openstack-ansible-deploy-aio_telemetry_metal-ubuntu-focal
 
 - project-template:
