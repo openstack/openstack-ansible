@@ -185,6 +185,9 @@
     - src: user_variables_neutron_ovs.yml.j2
       dest: user_variables_neutron_ovs.yml
       condition: "{{ 'ovs' in bootstrap_host_scenarios_expanded }}"
+    - src: user_variables_horizon.yml.j2
+      dest: user_variables_horizon.yml
+      condition: "{{ 'horizon' in bootstrap_host_scenarios }}"
 
 - name: Copy modified cinder-volume env.d file for ceph scenario
   copy:
