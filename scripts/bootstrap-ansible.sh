@@ -141,7 +141,7 @@ if [ "${SETUP_ARA}" == "true" ]; then
 fi
 
 # Get current code version (this runs at the root of OSA clone)
-CURRENT_OSA_VERSION=$(cd ${OSA_CLONE_DIR}; /opt/ansible-runtime/bin/python setup.py --version)
+export CURRENT_OSA_VERSION=$(cd ${OSA_CLONE_DIR}; /opt/ansible-runtime/bin/python setup.py --version)
 
 # Ensure that Ansible binaries run from the venv
 pushd /opt/ansible-runtime/bin

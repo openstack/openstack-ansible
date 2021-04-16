@@ -19,6 +19,24 @@
   user: root
   gather_facts: false
   tasks:
+    - name: Gather minimal facts
+      setup:
+        gather_subset: '!all'
+
+    - name: Find the git version
+      command:
+        cmd: "git --version"
+      register: _git_version
+      changed_when: false
+      tags:
+        - skip_ansible_lint
+
+    - name: Set the git user agent for the deploy host
+      git_config:
+        scope: system
+        name: http.https://opendev.org/.userAgent
+        value: "{{ 'git/' ~ _git_version.stdout.split(' ')[2] ~ ' (osa/' ~ lookup('env', 'CURRENT_OSA_VERSION') ~ '/deploy)' }}"
+
     - name: Remove target directory if required
       file:
         path: "{{ item.path | default(role_path_default) }}/{{ item.name | default(item.src | basename) }}"
