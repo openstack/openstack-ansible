@@ -45,6 +45,7 @@ COMMON_ETC_LOG_NAMES="apt \
     dnf \
     etcd \
     ganesha \
+    gitconfig \
     haproxy \
     httpd \
     memcached \
