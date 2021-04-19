@@ -1,16 +1,22 @@
 ---
 cidr_networks:
-  dbaas: 172.29.232.0/22
-  lbaas: 172.29.252.0/22
+  lbaas: 172.29.232.0/22
+  dbaas: 172.29.252.0/22
   container: 172.29.236.0/22
   tunnel: 172.29.240.0/22
   storage: 172.29.244.0/22
 
+# For dbaas and lbaas network, most part of the network we should make available for
+# neutron subnet as guest/amphora instances will be spawned within this network. We
+# reserve network keeping in mind the following:
+#   - 2x2.1 -> 10 : physical routers / SVI (or br-[l|d]baas if you route via the infra host)
+#   - 2x2.11 -> 49 : available for container interface ip auto-allocation in LXC deploys
+#   - 2x2.50 -? 2x5.254 : available for neutron allocation
 used_ips:
-  - "172.29.232.1,172.29.232.50"
-  - "172.29.232.100"
-  - "172.29.252.1,172.29.252.50"
-  - "172.29.252.100"
+  - "172.29.232.1,172.29.232.10"
+  - "172.29.232.50,172.29.235.255"
+  - "172.29.252.1,172.29.252.10"
+  - "172.29.252.50,172.29.255.255"
   - "172.29.236.1,172.29.236.50"
   - "172.29.236.100"
   - "172.29.240.1,172.29.240.50"

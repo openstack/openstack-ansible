@@ -1,10 +1,10 @@
 ---
 cidr_networks:
 {% if 'trove' in bootstrap_host_scenarios_expanded %}
-  dbaas: 172.29.232.0/22
+  dbaas: 172.29.252.0/22
 {% endif %}
 {% if 'octavia' in bootstrap_host_scenarios_expanded %}
-  lbaas: 172.29.252.0/22
+  lbaas: 172.29.232.0/22
 {% endif %}
   container: 172.29.236.0/22
   tunnel: 172.29.240.0/22
@@ -12,13 +12,12 @@ cidr_networks:
 
 used_ips:
 {% if 'trove' in bootstrap_host_scenarios_expanded %}
-  - "172.29.232.1,172.29.232.50"
-  - "172.29.232.100"
+  - "172.29.252.1,172.29.252.10"
+  - "172.29.252.50,172.29.255.255"
 {% endif %}
 {% if 'octavia' in bootstrap_host_scenarios_expanded %}
-  - "172.29.252.1,172.29.252.50"
-  - "172.29.252.100"
-  - "172.29.253.1,172.29.253.200"
+  - "172.29.232.1,172.29.232.10"
+  - "172.29.232.50,172.29.235.255"
 {% endif %}
   - "172.29.236.1,172.29.236.50"
   - "172.29.236.100"
