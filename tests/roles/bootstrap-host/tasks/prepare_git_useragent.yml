@@ -1,0 +1,28 @@
+---
+# Copyright 2021, BBC R&D
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Find the git version
+  command:
+    cmd: "git --version"
+  register: _git_version
+  changed_when: false
+  tags:
+    - skip_ansible_lint
+
+- name: Set the git user agent for the AIO
+  git_config:
+    scope: system
+    name: http.https://opendev.org/.userAgent
+    value: "{{ 'git/' ~ _git_version.stdout.split(' ')[2] ~ ' (osa/' ~ lookup('env', 'OSA_VERSION') ~ '/aio)' }}"
