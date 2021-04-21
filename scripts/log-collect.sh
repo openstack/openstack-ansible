@@ -215,16 +215,6 @@ __dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # files are viewable via a web browser in OpenStack-CI.
 rename_files
 
-# If we could not find ARA, assume it was not installed
-# and skip all the related activities.
-if [ "${RUN_ARA}" = true ]; then
-    # Generate the ARA subunit report so that the
-    # results reflect in OpenStack-Health
-    mkdir -vp "${WORKING_DIR}/logs/ara-data"
-    echo "Generating ARA report subunit report."
-    /opt/ansible-runtime/bin/ara generate subunit "${WORKING_DIR}/logs/ara-data/testrepository.subunit" || true
-fi
-
 # Get a dmesg output so we can look for kernel failures
 dmesg > "${WORKING_DIR}/logs/dmesg-${TS}.txt" || true
 
