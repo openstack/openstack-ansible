@@ -34,3 +34,6 @@ openstack_service_setup_host_python_interpreter: "/openstack/venvs/utility-{{ op
 ## Delegate all database setup tasks to the utility host, and use the utility venv python interpreter
 openstack_db_setup_host: "{{ openstack_service_setup_host }}"
 openstack_db_setup_python_interpreter: "{{ openstack_service_setup_host_python_interpreter }}"
+
+# Locally cached copy on the repo server for the OpenStack upper-constraints.txt
+requirements_git_url: "{{ openstack_service_internaluri_proto ~ '://' ~ internal_lb_vip_address ~ ':' ~ repo_server_port ~ '/constraints/upper_constraints_' ~ requirements_git_install_branch ~ '.txt' }}"
