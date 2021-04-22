@@ -35,7 +35,7 @@ export ANSIBLE_TEST_PLUGINS="${ANSIBLE_TEST_PLUGINS:-/etc/ansible/roles/plugins/
 export ANSIBLE_VARS_PLUGINS="${ANSIBLE_VARS_PLUGINS:-/etc/ansible/roles/plugins/vars_plugins}"
 
 export ANSIBLE_GATHERING="${ANSIBLE_GATHERING:-smart}"
-export ANSIBLE_GATHER_SUBSET="${ANSIBLE_GATHER_SUBSET:-network,hardware,virtual}"
+export ANSIBLE_GATHER_SUBSET="${ANSIBLE_GATHER_SUBSET:-!all,min}"
 
 export ANSIBLE_CACHE_PLUGIN="${ANSIBLE_CACHE_PLUGIN:-jsonfile}"
 export ANSIBLE_CACHE_PLUGIN_CONNECTION="${ANSIBLE_CACHE_PLUGIN_CONNECTION:-${OSA_CONFIG_DIR}/ansible_facts}"
