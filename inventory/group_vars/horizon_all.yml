@@ -16,6 +16,7 @@
 horizon_external_ssl: "{{ openstack_external_ssl }}"
 horizon_service_region: "{{ service_region }}"
 horizon_enable_cinder_backup: "{{ hostvars['localhost']['cinder_service_backup_program_enabled'] }}"
+horizon_enable_cloudkitty_ui: "{{ (groups['cloudkitty_all'] is defined) and (groups['cloudkitty_all'] | length > 0) }}"
 horizon_enable_adjutant_ui: "{{ (groups['adjutant_all'] is defined) and (groups['adjutant_all'] | length > 0) }}"
 horizon_enable_blazar_ui: "{{ (groups['blazar_all'] is defined) and (groups['blazar_all'] | length > 0) }}"
 horizon_enable_heat_ui: "{{ (groups['heat_all'] is defined) and (groups['heat_all'] | length > 0) }}"
