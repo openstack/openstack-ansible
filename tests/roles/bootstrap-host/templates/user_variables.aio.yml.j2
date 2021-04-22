@@ -274,7 +274,7 @@ openstack_hosts_package_state: latest
 octavia_v2: True
 # Disable Octavia V1 API
 octavia_v1: False
-octavia_management_net_subnet_cidr: "{{ (bootstrap_host_container_tech == 'nspawn') | ternary('172.29.240.0/22', '172.29.252.0/22') }}"
+octavia_management_net_subnet_cidr: "{{ (bootstrap_host_container_tech == 'nspawn') | ternary('172.29.240.0/22', '172.29.232.0/22') }}"
 tempest_run_concurrency: 0
 {% endif %}
 
