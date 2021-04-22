@@ -29,7 +29,6 @@
         - openstack-ansible-deploy-translations-ubuntu-bionic
     experimental:
       jobs:
-        - openstack-ansible-deploy-aio_nspawn-ubuntu-bionic
         - openstack-ansible-deploy-aio_qdrouterd-ubuntu-bionic
         - openstack-ansible-deploy_with_ansible_devel-aio-ubuntu-bionic
         - openstack-ansible-deploy_with_ansible_next-aio-ubuntu-bionic
@@ -179,15 +178,6 @@
     experimental:
       jobs:
         - openstack-ansible-deploy-aio_distro_metal-debian-buster
-
-- project-template:
-    name: openstack-ansible-deploy-aio_nspawn-jobs
-    check:
-      jobs:
-        - openstack-ansible-deploy-aio_nspawn-ubuntu-bionic:
-            voting: false
-    gate:
-      jobs: []
 
 - project-template:
     name: openstack-ansible-deploy-ceph-jobs

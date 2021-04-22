@@ -334,7 +334,6 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'mano_all',
         'mano_containers',
         'mano_hosts',
-        'nspawn_hosts',
         'octavia-infra_hosts',
         'octavia_all',
         'octavia-api',
