@@ -372,7 +372,7 @@ function get_pip {
     ${GETPIP_CMD} ${GET_PIP_URL}
   else
     # Otherwise, try the two standard URL's
-    ${GETPIP_CMD} https://bootstrap.pypa.io/3.3/get-pip.py \
+    ${GETPIP_CMD} https://bootstrap.pypa.io/pip/3.3/get-pip.py \
       || ${GETPIP_CMD} https://raw.githubusercontent.com/pypa/get-pip/master/3.3/get-pip.py
   fi
 
