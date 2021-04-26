@@ -54,5 +54,5 @@ openstack_keys:
   - { name: client.cinder, caps: { mon: "profile rbd", osd: "allow class-read object_prefix rbd_children, profile rbd pool={{ openstack_cinder_pool.name }}, profile rbd pool={{ openstack_nova_pool.name }}, profile rbd pool={{ openstack_glance_pool.name }}"}, mode: "0600" }
   - { name: client.cinder-backup, caps: { mon: "profile rbd", osd: "profile rbd pool={{ openstack_cinder_backup_pool.name }}"}, mode: "0600" }
   - { name: client.gnocchi, caps: { mon: "profile rbd", osd: "profile rbd pool={{ openstack_gnocchi_pool.name }}"}, mode: "0600", }
-  - { name: client.manila, caps: { mon: "allow r, allow command 'auth del', allow command 'auth caps', allow command 'auth get', allow command 'auth get-or-create'", mgr: "allow r", mds: "allow *", osd: "allow rw"}, mode: "0600", }
+  - { name: client.manila, caps: { mon: "allow r", mgr: "allow rw", osd: "allow rw pool={{ openstack_cephfs_data_pool.name }}"}, mode: "0600", }
   - { name: client.openstack, caps: { mon: "profile rbd", osd: "profile rbd pool={{ openstack_glance_pool.name }}, profile rbd pool={{ openstack_nova_pool.name }}, profile rbd pool={{ openstack_cinder_pool.name }}, profile rbd pool={{ openstack_cinder_backup_pool.name }}"}, mode: "0600" }
