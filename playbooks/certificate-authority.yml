@@ -1,5 +1,4 @@
----
-# Copyright 2014, Rackspace US, Inc.
+# Copyright 2021, BBC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,7 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- import_playbook: certificate-authority.yml
-- import_playbook: openstack-hosts-setup.yml
-- import_playbook: containers-deploy.yml
-- import_playbook: security-hardening.yml
+- name: Create CA certificates
+  hosts: "{{ openstack_pki_setup_host | default('localhost') }}"
+  gather_facts: "{{ osa_gather_facts | default(True) }}"
+  tags:
+    - always
+  tasks:
+    - name: "Create CA certificates"
+      include_role:
+        name: pki
+        tasks_from: main_ca.yml
+      vars:
+        pki_dir: "{{ openstack_pki_dir }}"
+        pki_create_ca: "{{ openstack_pki_authorities is defined | bool }}"
+        pki_authorities: "{{ openstack_pki_authorities }}"
