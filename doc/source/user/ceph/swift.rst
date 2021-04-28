@@ -24,24 +24,11 @@ Swift API. In order to do so, you need to override the
 ``ceph_conf_overrides_rgw`` variable in ``user_variables.yml``. Below
 is an example configuration snippet:
 
-.. code-block:: yaml
+.. note::
 
-    ceph_conf_overrides_rgw:
-      "client.rgw.{{ hostvars[inventory_hostname]['ansible_hostname'] }}":
-        # OpenStack integration with Keystone
-        rgw_keystone_url: "{{ keystone_service_adminuri }}"
-        rgw_keystone_api_version: 3
-        rgw_keystone_admin_user: "{{ radosgw_admin_user }}"
-        rgw_keystone_admin_password: "{{ radosgw_admin_password }}"
-        rgw_keystone_admin_tenant: "{{ radosgw_admin_tenant }}"
-        rgw_keystone_admin_domain: default
-        rgw_keystone_accepted_roles: 'member, _member_, admin, swiftoperator'
-        rgw_keystone_implicit_tenants: 'true'
-        rgw_swift_account_in_url: true
-        rgw_swift_versioning_enabled: 'true'
-        # Add S3 support, in addition to Swift
-        rgw_enable_apis: 'swift, s3'
-        rgw_s3_auth_use_keystone: 'true'
+   Mentioned below overrides are default ones and will be applied to `ceph-rgw` group
+
+.. literalinclude:: ../../../../inventory/group_vars/ceph-rgw.yml
 
 You may also want to add the ``rgw_dns_name`` option if you want to
 enable bucket hostnames with the S3 API.
