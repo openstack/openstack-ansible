@@ -122,6 +122,8 @@
             --save-state
             --merge
             --url=http://{{ systemd_journal_remote_target }}:19532
+          dynamic_user: true
+          state_directory: systemd/journal-upload
 
   vars:
     systemd_journal_remote_target: "{{ hostvars[groups['log_hosts'][0]]['ansible_host'] }}"
