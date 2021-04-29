@@ -42,6 +42,7 @@ tempest_tempest_conf_overrides:
   share:
     run_consistency_group_tests: False
     run_snapshot_tests: False
+    capability_snapshot_support: True
     multitenancy_enabled: False
     run_shrink_tests: True
     run_extend_tests: True
@@ -70,7 +71,6 @@ manila_backends:
     cephfs_auth_id: manila
     cephfs_cluster_name: ceph
     cephfs_conf_path: /etc/ceph/ceph.conf
-    cephfs_enable_snapshots: False
     cephfs_ganesha_server_ip: 172.29.236.100
     cephfs_ganesha_server_is_remote: False
     cephfs_protocol_helper_type: NFS
