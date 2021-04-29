@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Identify AIO builds in the git user-agent
+- include_tasks: prepare_git_useragent.yml
+
 # Attempt data device detection if enabled
 - include_tasks: detect_data_disk_device.yml
   when:
