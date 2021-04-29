@@ -34,7 +34,7 @@ def get_container_journals():
     journals = []
 
     try:
-        s = subprocess.run(['lxc-ls', '-1'], capture_output=True)
+        s = subprocess.run(['lxc-ls', '-1'], stdout=subprocess.PIPE)
     except FileNotFoundError:
         return journals
 
@@ -44,9 +44,9 @@ def get_container_journals():
         info = {}
         info['name'] = container_name
         info['subdir'] = "openstack"
-        s = subprocess.run(['lxc-info', '--pid', '--no-humanize', container_name], capture_output=True)
+        s = subprocess.run(['lxc-info', '--pid', '--no-humanize', container_name], stdout=subprocess.PIPE)
         info['pid'] = s.stdout.decode('utf-8').strip()
- 
+
         if(len(info['pid']) == 0):
           continue
 
