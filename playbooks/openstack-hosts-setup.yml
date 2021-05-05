@@ -41,14 +41,7 @@
 
 - name: Gather host facts
   hosts: "{{ openstack_host_group|default('hosts') }}"
-  tasks:
-    - setup:
-        gather_subset:
-          - '!all'
-          - min
-          - virtual
-      when:
-        - osa_gather_facts | default(True)
+  gather_facts: "{{ osa_gather_facts | default(True) }}"
   tags:
     - always
 
