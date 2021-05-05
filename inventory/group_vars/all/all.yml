@@ -145,3 +145,6 @@ _global_pins_file_path: "{{ openstack_clone_root }}/global-requirement-pins.txt"
 
 venv_build_global_constraints: >-
   {{ lookup('file', _global_pins_file_path).splitlines() | reject('match','^#.*$') | reject('equalto', '') | list }}
+
+deployment_extra_facts_subset: hardware
+deployment_extra_facts_filter: ansible_processor_*

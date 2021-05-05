@@ -27,6 +27,14 @@
   hosts: "{{ security_host_group|default('hosts') }}"
   gather_facts: false
   user: root
+  pre_tasks:
+    - name: Gather additional facts
+      include_tasks: "common-tasks/gather-hardware-facts.yml"
+      vars:
+        deployment_extra_facts_filter: ansible_mounts
+        deployment_extra_facts_subset: "!all,hardware"
+      tags:
+        - always
   roles:
     - role: "ansible-hardening"
       when: apply_security_hardening | bool

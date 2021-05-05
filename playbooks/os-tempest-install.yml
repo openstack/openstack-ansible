@@ -33,6 +33,11 @@
       when:
         - (not (tempest_install | default(false)) | bool)
 
+    - name: Gather additional facts
+      include_tasks: "common-tasks/gather-hardware-facts.yml"
+      tags:
+        - always
+
   roles:
     - role: "os_tempest"
     - role: "system_crontab_coordination"
