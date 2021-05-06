@@ -64,6 +64,7 @@ if [[ "${ACTION}" == "upgrade" ]]; then
     # Store the target SHA/branch
     export UPGRADE_TARGET_BRANCH=$(git rev-parse HEAD)
     export OPENSTACK_SETUP_EXTRA_ARGS="-e tempest_install=no -e tempest_run=no"
+    export ANSIBLE_GATHER_SUBSET="network,hardware,virtual"
 
     # Now checkout the source SHA/branch
     git checkout ${UPGRADE_SOURCE_BRANCH}
@@ -166,6 +167,7 @@ else
   pushd "${OSA_CLONE_DIR}/playbooks"
     # Disable Ansible color output
     export ANSIBLE_NOCOLOR=1
+    export ANSIBLE_GATHER_SUBSET="${ANSIBLE_GATHER_SUBSET:-!all,min}"
 
     # Create ansible logging directory
     mkdir -p ${ANSIBLE_LOG_DIR}
@@ -176,7 +178,7 @@ else
     # First we gather facts about the hosts to populate the fact cache.
     # We can't gather the facts for all hosts yet because the containers
     # aren't built yet.
-    ansible -m setup -a 'gather_subset=network,hardware,virtual' hosts 2>${ANSIBLE_LOG_DIR}/facts-hosts.log
+    ansible -m setup -a "gather_subset=${ANSIBLE_GATHER_SUBSET}" hosts 2>${ANSIBLE_LOG_DIR}/facts-hosts.log
 
     # Prepare the hosts
     export ANSIBLE_LOG_PATH="${ANSIBLE_LOG_DIR}/setup-hosts.log"
@@ -199,7 +201,7 @@ else
     # Once setup-hosts is complete, we should gather facts for everything
     # (now including containers) so that the fact cache is complete for the
     # remainder of the run.
-    ansible -m setup -a 'gather_subset=network,hardware,virtual' all 1>${ANSIBLE_LOG_DIR}/facts-all.log
+    ansible -m setup -a "gather_subset=${ANSIBLE_GATHER_SUBSET}" all 1>${ANSIBLE_LOG_DIR}/facts-all.log
 
     # Prepare the infrastructure
     export ANSIBLE_LOG_PATH="${ANSIBLE_LOG_DIR}/setup-infrastructure.log"
