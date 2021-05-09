@@ -1,0 +1,71 @@
+---
+features:
+  - |
+    Added variable ``trove_management_security_groups`` to set list of
+    security groups that will be set for management interface of Trove
+    guest instances.
+  - |
+    Added following variables to control endpoint types that trove will search
+    in the catalog:
+
+    - trove_service_endpoint_type
+    - trove_service_neutron_endpoint_type
+    - trove_service_cinder_endpoint_type
+    - trove_service_nova_endpoint_type
+    - trove_service_glance_endpoint_type
+    - trove_service_swift_endpoint_type
+    - trove_guest_endpoint_type
+
+  - |
+    Added following variables to control when to add specific service blocks
+    to the config file and enable support for these services:
+
+    - trove_swift_enabled
+    - trove_designate_enabled
+    - trove_cinder_enabled
+
+  - |
+    Added following variables to ease designate integration with trove:
+
+    - trove_dns_domain_name
+    - trove_dns_domain_id
+    - trove_notifications_designate
+
+  - |
+    Added Trove guest specific variables to be able to use standalone rabbitmq
+    along with defaulting behaviour to enable guests to use
+    ``trove_container_net_name`` for rabbitmq servers:
+
+    - trove_guest_oslomsg_rpc_hostgroup
+    - trove_guest_oslomsg_notify_hostgroup
+
+upgrade:
+  - |
+    Trove service specific config files, like ``trove-conductor.conf`` and
+    ``trove-taskmanager.conf``, were removed and all functionality was merged
+    to the ``trove.conf`` file. So you need to ensure, that all overriden
+    options are now placed for the trove.conf file.
+  - |
+    Default Trove service username has been changed from ``admin_trove_user``
+    to ``trove``. You might want to manually delete ``admin_trove_user``
+    after upgrade or override new default.
+  - |
+    Default Trove service project name has been changed from
+    ``trove_for_trove_usage`` to ``service``. You might want to manually delete
+    ``trove_for_trove_usage`` project after upgrade or override new default.
+deprecations:
+  - |
+    Variables ``trove_taskmanager_config_overrides`` and
+    ``trove_conductor_config_overrides`` were removed along with affected config
+    files. You should use ``trove_config_overrides`` to override trove
+    configuration.
+  - |
+    Removed variable ``trove_provider_ip_from_q`` and
+    ``trove_container_net_name``. If you need to change network which will be
+    used for guests inside trove containers, please use variables
+    ``trove_provider_network`` or ``trove_provider_net_iface``.
+  - |
+    Removed variables ``trove_admin_user_name`` and
+    ``trove_service_tenant_name``. Please use ``trove_service_user_name``
+    and ``trove_service_project_name`` correspondingly to manage username
+    and project name which will be used for auth in keystone.

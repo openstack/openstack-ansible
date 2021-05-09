@@ -1,0 +1,11 @@
+---
+upgrade:
+  - |
+    All supported operating systems now build their LXC images locally on the
+    lxc container hosts rather than relying on external pre-built base images.
+    debootstrap and dnf are used on debian and Centos variants respectively.
+    All variables controlling the download of images have been removed from
+    the lxc_hosts role, and a new override, lxc_apt_mirror is added to allow
+    local mirrors to be specified for debootstrap. Centos systems will use
+    the mirror configuration already present on the host when building
+    the container rootfs with dnf.
