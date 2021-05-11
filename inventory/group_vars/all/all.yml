@@ -145,3 +145,5 @@ _global_pins_file_path: "{{ openstack_clone_root }}/global-requirement-pins.txt"
 
 venv_build_global_constraints: >-
   {{ lookup('file', _global_pins_file_path).splitlines() | reject('match','^#.*$') | reject('equalto', '') | list }}
+
+requirements_git_url: "https://releases.openstack.org/constraints/upper/{{ requirements_git_install_branch.split('/') | last }}"
