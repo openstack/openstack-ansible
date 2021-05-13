@@ -826,6 +826,7 @@
 # deployment. Refer to the ``user_variables.yml`` file for
 # more information.
 #
-# Keepalived cam ping a public IP address to check its status.  To enable this
-# feature, set the ``keepalived_ping_address`` variable in the
-# ``user_variables.yml`` file.
+# Keepalived can ping a public and private IP address to check its status.  To
+# enable this feature, set the ``keepalived_external_ping_address`` and
+# ``keepalived_internal_ping_address`` variables in the ``user_variables.yml``
+# file.

@@ -17,6 +17,8 @@ keepalived_ping_count: 1
 keepalived_ping_interval: 10
 keepalived_ubuntu_src: "native"
 keepalived_ping_address: "{{ ansible_facts['default_ipv4']['gateway'] | default('127.0.0.1') }}"
+keepalived_external_ping_address: "{{ keepalived_ping_address }}"
+keepalived_internal_ping_address: "{{ keepalived_ping_address }}"
 
 keepalived_global_defs:
   - "enable_script_security"
@@ -29,11 +31,20 @@ keepalived_scripts:
     ##on the deploy host to the check_script location. If the check_script needs
     ##parameters, you can define the location under dest_check_script.
     src_check_script: "{{ playbook_dir }}/../scripts/keepalived_haproxy_check.sh"
-  pingable_check_script:
-    check_script: "/etc/keepalived/pingable_check.sh {{ keepalived_ping_count }} {{ keepalived_ping_address }}"
+  pingable_check_script_external:
+    check_script: "/etc/keepalived/pingable_check.sh {{ keepalived_ping_count }} {{ keepalived_external_ping_address }}"
     dest_check_script: "/etc/keepalived/pingable_check.sh"
     src_check_script: "{{ playbook_dir }}/../scripts/keepalived_pingable_check.sh"
     interval: "{{ keepalived_ping_interval }}"
+    instance: external
+    fall: 2
+    rise: 4
+  pingable_check_script_internal:
+    check_script: "/etc/keepalived/pingable_check.sh {{ keepalived_ping_count }} {{ keepalived_internal_ping_address }}"
+    dest_check_script: "/etc/keepalived/pingable_check.sh"
+    src_check_script: "{{ playbook_dir }}/../scripts/keepalived_pingable_check.sh"
+    interval: "{{ keepalived_ping_interval }}"
+    instance: internal
     fall: 2
     rise: 4
 
@@ -51,13 +62,13 @@ keepalived_instances:
     authentication_password: "{{ haproxy_keepalived_authentication_password }}"
     vips:
       - "{{ haproxy_keepalived_external_vip_cidr | default('169.254.1.1/24')  }} dev {{ haproxy_keepalived_external_interface | default(management_bridge) }}"
-    track_scripts: "{{ keepalived_scripts.keys() | list }}"
+    track_scripts: "{{ keepalived_scripts | dict2items | json_query('[*].{name: key, instance: value.instance}') | rejectattr('instance', 'equalto', 'internal') | map(attribute='name') | list }}"
   internal:
     interface: "{{ haproxy_keepalived_internal_interface | default(management_bridge) }}"
     state: "{{ (groups['haproxy'].index(inventory_hostname) == 0) | ternary('MASTER', 'BACKUP') }}"
     virtual_router_id: "{{ haproxy_keepalived_internal_virtual_router_id | default ('11') }}"
     priority: "{{ (groups['haproxy']|length-groups['haproxy'].index(inventory_hostname))*50 }}"
     authentication_password: "{{ haproxy_keepalived_authentication_password }}"
-    track_scripts: "{{ keepalived_scripts.keys() | list }}"
     vips:
       - "{{ haproxy_keepalived_internal_vip_cidr | default('169.254.2.1/24') }} dev {{ haproxy_keepalived_internal_interface | default(management_bridge) }}"
+    track_scripts: "{{ keepalived_scripts | dict2items | json_query('[*].{name: key, instance: value.instance}') | rejectattr('instance', 'equalto', 'external') | map(attribute='name') | list }}"
