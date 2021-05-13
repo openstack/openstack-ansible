@@ -33,10 +33,7 @@ tempest_flavors:
     vcpus: 1
 
 tempest_test_whitelist:
-  - manila_tempest_tests.tests.scenario.test_share_basic_ops
-
-tempest_test_blacklist:
-  - manila_tempest_tests.tests.scenario.test_share_basic_ops.TestShareBasicOpsNFS.test_read_write_two_vms
+  - manila_tempest_tests.tests.scenario.test_share_basic_ops.TestShareBasicOpsNFS.test_mount_share_one_vm
 
 tempest_tempest_conf_overrides:
   share:
