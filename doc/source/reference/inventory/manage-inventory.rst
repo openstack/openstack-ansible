@@ -43,6 +43,15 @@ Use the host's name as an argument.
 
 ..  _`dynamic inventory functionality`: https://docs.ansible.com/ansible/intro_dynamic_inventory.html
 
+Removing a group
+~~~~~~~~~~~~~~~~
+
+A host group can be removed with the ``--remove-group/-d`` parameter.
+
+Use the groups's name as an argument. You can repeat argument multiple times
+to remove several groups at once.
+
+
 Exporting host information
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
