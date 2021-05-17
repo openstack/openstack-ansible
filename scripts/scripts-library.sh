@@ -68,7 +68,7 @@ function build_ansible_runtime_venv {
 
     # The vars used to prepare the Ansible runtime venv
     PIP_OPTS+=" --constraint global-requirement-pins.txt"
-    PIP_OPTS+=" --constraint ${UPPER_CONSTRAINTS_FILE}"
+    PIP_OPTS+=" --constraint ${TOX_CONSTRAINTS_FILE}"
 
     # When executing the installation, we want to specify all our options on the CLI,
     # making sure to completely ignore any config already on the host. This is to
