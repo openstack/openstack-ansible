@@ -59,6 +59,14 @@ def args():
         default=[]
     )
     exclusive_action.add_argument(
+        '-d',
+        '--remove-group',
+        help='group name to remove from inventory, this can be used multiple'
+             ' times.',
+        action='append',
+        default=[]
+    )
+    exclusive_action.add_argument(
         '-l',
         '--list-host',
         help='',
@@ -310,6 +318,16 @@ def remove_ip_addresses(inventory, filepath=None):
         filesys.save_inventory(inventory_json, filepath)
 
 
+def remove_inventory_group(remove_group, inventory, filepath=None):
+    for group in remove_group:
+        inventory.pop(group, None)
+
+    if filepath is not None:
+        inventory_json = json.dumps(inventory, indent=2,
+                                    separators=(',', ': '))
+        filesys.save_inventory(inventory_json, filepath)
+
+
 def remove_inventory_item(remove_item, inventory, filepath=None):
     """Removes inventory item from the inventory dictionary
 
@@ -349,6 +367,9 @@ def main():
         print(json.dumps(export_host_info(inventory), indent=2))
     elif user_args['clear_ips'] is True:
         remove_ip_addresses(inventory, filepath)
+        print('Success. . .')
+    elif user_args['remove_group']:
+        remove_inventory_group(user_args['remove_group'], inventory, filepath)
         print('Success. . .')
     else:
         remove_inventory_item(user_args['remove_item'], inventory, filepath)
