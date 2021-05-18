@@ -225,7 +225,9 @@ haproxy_default_services:
       haproxy_port: 8386
       haproxy_balance_type: http
       haproxy_backend_options:
-        - "httpchk GET /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+        - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+      haproxy_backend_httpcheck_options:
+        - "expect rstatus 300|200"
       haproxy_service_enabled: "{{ groups['sahara_api'] is defined and groups['sahara_api'] | length > 0 }}"
   - service:
       haproxy_service_name: swift_proxy
