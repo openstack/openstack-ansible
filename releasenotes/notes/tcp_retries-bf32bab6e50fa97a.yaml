@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    Added variable ``keepalived_sysctl_tcp_retries`` that allows to control
+    number of retries kernel will make to give up on connection. It controls
+    net.ipv4.tcp_retries2 sysctl setting which default value of which is 15.
+    Default value of ``keepalived_sysctl_tcp_retries`` is 8, so VIP failover
+    time will be ~1min. Setting ``keepalived_sysctl_tcp_retries`` to 0 will
+    remove mentioned sysctl setting.

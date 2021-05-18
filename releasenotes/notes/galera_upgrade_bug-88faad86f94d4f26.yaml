@@ -1,0 +1,7 @@
+---
+upgrade:
+  - |
+    MariaDB version 10.5.9 is know to have `bug <https://jira.mariadb.org/browse/MDEV-25030?>`_
+    which results in broken root permissions after upgrade. We have implemented
+    a workarond for it which will be triggered automatically. This note
+    is informative only.

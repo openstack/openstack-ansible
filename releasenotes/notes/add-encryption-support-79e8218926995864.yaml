@@ -1,0 +1,15 @@
+---
+features:
+  - |
+    Add support for encryption of databases. This is disabled by default and
+    can be enabled by setting ``galera_mariadb_encryption_enabled`` to ``true``.
+    For now only the ``file_key_management`` encryption plugin is supported.
+    You can override enryption options with ``galera_encryption_overrides``.
+    The role creates ``galera_db_encryption_keys`` for you, if they're not specified.
+    To specify your on encryption keys, provide them like this.
+
+    .. code-block:: yaml
+
+        galera_db_encryption_keys: |
+           1;5bbc03648be8db3d2087815717eabdec9fbc310f2b7fd53705b36fbdc80333e3
+           2;5bbc03648be8db3d2087815717eabdec9fbc310f2b7fd53705b36ebdc80333e3

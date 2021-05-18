@@ -1,0 +1,7 @@
+---
+
+features:
+  - |
+    Re-added ``nova_dhcp_domain`` variable that defaults to the
+    ``dhcp_domain``. When set to empty string, only the hostname without
+    a domain will be configured for the instances.

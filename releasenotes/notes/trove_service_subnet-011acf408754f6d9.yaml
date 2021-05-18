@@ -1,0 +1,10 @@
+---
+upgrade:
+  - |
+    Default value for ``trove_service_net_subnet_cidr`` has been changed from
+    "192.168.20.0/24" to "172.29.252.0/22". Along with that pool start and
+    pool end has changed as well, which is represented with variables
+    ``trove_service_net_allocation_pool_start`` and
+    ``trove_service_net_allocation_pool_end``.
+    Please, define these variables user_variables in case you used default
+    values in production endironments.

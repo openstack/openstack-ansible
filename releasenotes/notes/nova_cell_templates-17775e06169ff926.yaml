@@ -1,0 +1,9 @@
+---
+upgrade:
+  - |
+    During upgrade your current Nova cell mapings will be converted to usage
+    of the `Template URLs <https://docs.openstack.org/nova/latest/user/cells.html#template-urls-in-cell-mappings>`_.
+    This means, that your changes of transport_url or [database]/connection
+    in ``nova.conf`` will be reflected by nova-conductor in cells just after
+    service restart, without need to explicitly run
+    ``nova-manage cell_v2 update_cell``.

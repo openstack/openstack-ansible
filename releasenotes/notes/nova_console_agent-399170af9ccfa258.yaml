@@ -1,0 +1,12 @@
+---
+deprecations:
+  - |
+    Variables ``nova_novncproxy_agent_enabled``,
+    ``nova_serialconsoleproxy_enabled`` and ``nova_console_agent_enabled``
+    are removed and won't have any effect in the future. If you want to
+    disable console functionality, set ``nova_console_type: disabled``
+    in your user_variables.yml
+fixes:
+  - |
+    Fixed behaviour of variable ``nova_spice_console_agent_enabled``. It can
+    be safely used now to disable spice agent when needed.
