@@ -75,10 +75,6 @@ case ${DISTRO_ID} in
           python3-virtualenv rsync wget
         ;;
     ubuntu|debian)
-        # NOTE(mgariepy) remove this on ansible 2.10 if debian is in the config/base.yml file
-        if [[ ${VERSION_ID} == "10" ]]; then
-          OSA_ANSIBLE_PYTHON_INTERPRETER="/usr/bin/python3"
-        fi
         apt-get update
         DEBIAN_FRONTEND=noninteractive apt-get -y install \
           git-core curl gcc netcat \
