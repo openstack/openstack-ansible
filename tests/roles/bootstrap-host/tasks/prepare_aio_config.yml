@@ -121,7 +121,7 @@
     - ansible_facts['selinux']['status'] == "enabled"
 
 - name: Get systemd version
-  command: "rpm -q systemd"
+  command: "rpm -q systemd" # noqa command-instead-of-module
   changed_when: false
   register: systemd_version
   when: ansible_facts['os_family'] | lower == 'redhat'

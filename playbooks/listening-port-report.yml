@@ -19,6 +19,7 @@
     - name: Gather listening ports
       command: netstat -ln --inet --program
       register: listening_ports
+      changed_when: false
 
     - name: create report
       copy:

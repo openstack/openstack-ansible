@@ -104,7 +104,7 @@ if which iptables; then
 fi
 
 # Bootstrap an AIO
-if [[ -z "${SKIP_OSA_BOOTSTRAP_AIO+defined}" ]]; then
+if [[ -z "${SKIP_OSA_BOOTSTRAP_AIO+defined}" && "${ACTION}" != "linters" ]]; then
     source "${OSA_CLONE_DIR}/scripts/bootstrap-aio.sh"
 fi
 
@@ -113,7 +113,7 @@ if [[ "${ACTION}" == "varstest" ]]; then
       openstack-ansible test-vars-overrides.yml
   popd
 elif [[ "${ACTION}" == "linters" ]]; then
-  pushd "${OSA_CLONE_DIR}/playbooks"
+  pushd "${OSA_CLONE_DIR}"
     # Install linter tools
     ${PIP_COMMAND} install --isolated ${PIP_OPTS} -r ${OSA_CLONE_DIR}/test-requirements.txt
     # Disable Ansible color output
@@ -126,16 +126,21 @@ elif [[ "${ACTION}" == "linters" ]]; then
 
     # defining working directories
     VENV_BIN_DIR=$(dirname ${PIP_COMMAND})
-    ROLE_DIR="/etc/ansible/roles/${SCENARIO}"
 
-    ANSIBLE_LINT_WARNINGS="-w 204 -w 208 -w 306 -w metadata"
+    # Due to ansible-lint bug, it can't run from venv without sourcing it
+    # https://github.com/ansible-community/ansible-lint/issues/1507
+    source ${VENV_BIN_DIR}/activate
+    source /usr/local/bin/openstack-ansible.rc
     # Check if we have test playbook and running checks
-    if [[ -f "${ROLE_DIR}/examples/playbook.yml" ]]; then
-      ${VENV_BIN_DIR}/ansible-lint ${ROLE_DIR}/examples/playbook.yml ${ANSIBLE_LINT_WARNINGS}
-      ${VENV_BIN_DIR}/ansible-playbook --syntax-check --list-tasks ${ROLE_DIR}/examples/playbook.yml
+    if [[ -f "/etc/ansible/roles/${SCENARIO}/examples/playbook.yml" ]]; then
+      ROLE_DIR="/etc/ansible/roles/${SCENARIO}"
+      ${VENV_BIN_DIR}/ansible-lint ${ROLE_DIR}/examples/playbook.yml -c ${OSA_CLONE_DIR}/.ansible-lint
+      ansible-playbook --syntax-check --list-tasks ${ROLE_DIR}/examples/playbook.yml
+    # If we don't have test playbook we assume that we're testing integrated repo
     else
-      ${VENV_BIN_DIR}/ansible-lint ${ROLE_DIR} ${ANSIBLE_LINT_WARNINGS}
-      ${VENV_BIN_DIR}/ansible-playbook --syntax-check --list-tasks setup-everything.yml
+      ROLE_DIR="${OSA_CLONE_DIR}"
+      ${VENV_BIN_DIR}/ansible-lint playbooks/ --exclude /etc/ansible/roles
+      ansible-playbook --syntax-check --list-tasks playbooks/setup-everything.yml
     fi
 
     # Run bashate
@@ -154,6 +159,8 @@ elif [[ "${ACTION}" == "linters" ]]; then
       --exclude-dir *.egg-info \
       --exclude-dir doc \
       "${ROLE_DIR}" | xargs -r ${VENV_BIN_DIR}/flake8 --verbose
+
+    deactivate
   popd
 else
   pushd "${OSA_CLONE_DIR}/playbooks"

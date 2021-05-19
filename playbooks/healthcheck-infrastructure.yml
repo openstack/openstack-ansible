@@ -243,10 +243,10 @@
     - name: Grant access to the DB on "{{ groups['galera_all'][-1] }}"
       community.mysql.mysql_user:
         login_user: "{{ galera_root_user | default('root') }}"
-        login_password: "{{ galera_root_password }}"
+        login_password: "{{ galera_root_password }}" # noqa no-log-password
         login_host: "{{ ansible_host }}"
         name: "osa-tester"
-        password: "tester-secrete"
+        password: "tester-secrete" # noqa no-log-password
         host: "{{ item }}"
         state: "present"
         priv: "OSA-test.*:ALL"
@@ -268,7 +268,7 @@
     - name: Remove created user
       community.mysql.mysql_user:
         login_user: "{{ galera_root_user | default('root') }}"
-        login_password: "{{ galera_root_password }}"
+        login_password: "{{ galera_root_password }}" # noqa no-log-password
         login_host: "{{ ansible_host }}"
         name: "osa-tester"
         state: "absent"
@@ -281,7 +281,7 @@
     - name: Remove created DB
       community.mysql.mysql_db:
         login_user: "{{ galera_root_user | default('root') }}"
-        login_password: "{{ galera_root_password }}"
+        login_password: "{{ galera_root_password }}" # noqa no-log-password
         login_host: "{{ ansible_host }}"
         name: "OSA-test"
         state: "absent"
@@ -303,13 +303,12 @@
     - name: Configure Rabbitmq user
       community.rabbitmq.rabbitmq_user:
         user: "testguest"
-        password: "secrete"
+        password: "secrete" # noqa no-log-password
         vhost: "/testvhost"
         configure_priv: ".*"
         read_priv: ".*"
         write_priv: ".*"
         state: "present"
-      no_log: True
 
   tags:
     - healthcheck
@@ -337,6 +336,7 @@
         mode: 0755
     - name: Connect to rabbitmq
       command: "{{ venv_path }}/bin/python {{ venv_path }}/rabbitmq-test.py {{ hostvars[groups['rabbitmq_all'][0]]['container_address'] }}"
+      changed_when: false
   tags:
     - healthcheck
     - healthcheck-rabbitmq-install

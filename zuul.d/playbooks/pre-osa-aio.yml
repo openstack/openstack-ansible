@@ -48,4 +48,6 @@
         SCENARIO: "{{ scenario }}"
         ACTION: "{{ action }}"
         INSTALL_METHOD: "{{ install_method }}"
-      when: action != 'upgrade'
+      when:
+        - action != 'upgrade'
+        - action != 'linters'
