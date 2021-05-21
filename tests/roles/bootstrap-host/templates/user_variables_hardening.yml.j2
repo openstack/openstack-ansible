@@ -1,0 +1,29 @@
+---
+
+security_disable_account_if_password_expires: yes
+security_enable_firewalld: yes
+security_pwquality_apply_rules: yes
+security_enable_pwquality_password_set: yes
+security_lock_session: yes
+security_pwquality_require_minimum_password_length: yes
+security_package_clean_on_remove: yes
+security_pam_faillock_enable: yes
+security_password_remember_password: 5
+security_reset_perm_ownership: yes
+security_require_grub_authentication: yes
+security_rhel7_automatic_package_updates: yes
+security_rhel7_initialize_aide: yes
+security_rhel7_remove_shosts_files: yes
+security_search_for_invalid_owner: yes
+security_search_for_invalid_group_owner: yes
+security_set_home_directory_permissions_and_owners: yes
+security_set_minimum_password_lifetime: yes
+security_unattended_upgrades_enabled: yes
+security_unattended_upgrades_notifications: yes
+# NOTE(mhayden): clamav is only available if EPEL is installed. There needs
+# to be some work done to figure out how to install EPEL for use with
+# this role without causing disruptions on the system.
+security_enable_virus_scanner: no
+security_run_virus_scanner_update: no
+# Enable the contrib tasks.
+security_contrib_enabled: yes
