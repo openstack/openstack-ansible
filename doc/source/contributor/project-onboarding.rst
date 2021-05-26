@@ -96,8 +96,16 @@ Community communication channels
 IRC channel
 ^^^^^^^^^^^
 
+
+.. warning::
+
+  The OpenStack Community will be moving the IRC network from Freenode to OFTC on May 31,
+  2021. All the current IRC channels used in The OpenStack community are registered in OFTC
+  network too. More details on how to use OFTC on various platform are coming
+  soon.
+
 The OpenStack-Ansible community communicates a lot through IRC, in
-the #openstack-ansible channel, on freenode. This channel is
+the #openstack-ansible channel, on OFTC. This channel is
 logged, and its logs are published on
 http://eavesdrop.openstack.org/irclogs/%23openstack-ansible/.
 

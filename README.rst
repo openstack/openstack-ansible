@@ -34,7 +34,7 @@ at `Source`_.
 If you have some questions, or would like some assistance with achieving your
 goals, then please feel free to reach out to us on the
 `OpenStack Mailing Lists`_ (particularly openstack-discuss)
-or on IRC in ``#openstack-ansible`` on the `freenode network`_.
+or on IRC in ``#openstack-ansible`` on the `OFTC network`_.
 
 OpenStack-Ansible Roles
 #######################
@@ -53,7 +53,7 @@ https://opendev.org/openstack/openstack-ansible-<ROLENAME>.
 .. _Developer Documentation: https://docs.openstack.org/openstack-ansible/latest/contributor/index.html
 .. _Source: https://opendev.org/openstack/openstack-ansible
 .. _OpenStack Mailing Lists: http://lists.openstack.org/
-.. _freenode network: https://freenode.net/
+.. _OFTC network: https://www.oftc.net/
 .. _Role Documentation: https://docs.openstack.org/project-deploy-guide/openstack-ansible/draft/configure.html#advanced-service-configuration
 
 Resources
