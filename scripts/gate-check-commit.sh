@@ -234,7 +234,7 @@ if [[ "${ACTION}" == "upgrade" ]]; then
     # script to allow newer versions of Ansible and global
     # requirements to be installed.
     unset ANSIBLE_PACKAGE
-    unset UPPER_CONSTRAINTS_FILE
+    unset TOX_CONSTRAINTS_FILE
     unset PIP_OPTS
     unset UPGRADE_TARGET_BRANCH
 

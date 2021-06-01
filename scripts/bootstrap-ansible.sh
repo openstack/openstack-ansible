@@ -109,17 +109,17 @@ fi
 PYTHON_EXEC_PATH="${PYTHON_EXEC_PATH:-$(which python3)}"
 
 # Obtain the SHA of the upper-constraints to use for the ansible runtime venv
-UPPER_CONSTRAINTS_SHA=$(awk '/requirements_git_install_branch:/ {print $2}' playbooks/defaults/repo_packages/openstack_services.yml)
+TOX_CONSTRAINTS_SHA=$(awk '/requirements_git_install_branch:/ {print $2}' playbooks/defaults/repo_packages/openstack_services.yml)
 
 # if we are in CI, grab the u-c file from the locally cached repo, otherwise download
-UPPER_CONSTRAINTS_PATH="/opt/ansible-runtime-constraints-${UPPER_CONSTRAINTS_SHA}.txt"
+TOX_CONSTRAINTS_PATH="/opt/ansible-runtime-constraints-${TOX_CONSTRAINTS_SHA}.txt"
 if [[ -z "${ZUUL_SRC_PATH+defined}" ]]; then
-  wget ${UPPER_CONSTRAINTS_FILE:-"https://opendev.org/openstack/requirements/raw/${UPPER_CONSTRAINTS_SHA}/upper-constraints.txt"} -O ${UPPER_CONSTRAINTS_PATH}
+  wget ${TOX_CONSTRAINTS_FILE:-"https://opendev.org/openstack/requirements/raw/${TOX_CONSTRAINTS_SHA}/upper-constraints.txt"} -O ${TOX_CONSTRAINTS_PATH}
 else
-  git --git-dir=${ZUUL_SRC_PATH}/opendev.org/openstack/requirements/.git show ${UPPER_CONSTRAINTS_SHA}:upper-constraints.txt > ${UPPER_CONSTRAINTS_PATH}
+  git --git-dir=${ZUUL_SRC_PATH}/opendev.org/openstack/requirements/.git show ${TOX_CONSTRAINTS_SHA}:upper-constraints.txt > ${TOX_CONSTRAINTS_PATH}
 fi
 
-export UPPER_CONSTRAINTS_FILE="file://${UPPER_CONSTRAINTS_PATH}"
+export TOX_CONSTRAINTS_FILE="file://${TOX_CONSTRAINTS_PATH}"
 
 if [[ -z "${SKIP_OSA_RUNTIME_VENV_BUILD+defined}" ]]; then
     build_ansible_runtime_venv
