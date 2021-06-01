@@ -41,6 +41,14 @@
           {%     set role_service_name = zuul.project.short_name |
                                        regex_replace('^openstack-ansible-os_(.*)$', '\\1')
           %}
+          {%   elif zuul.project.short_name is match('^ansible-role-(.*)$') %}
+          {%     set role_service_name = zuul.project.short_name |
+                                       regex_replace('^ansible-role-(.*)$', '\\1')
+          %}
+          {%   elif zuul.project.short_name == 'ansible-hardening' %}
+          {%     set role_service_name = 'hardening' %}
+          {%   endif %}
+          {%   if role_service_name is defined %}
           {%     set _ = _scenario.append(role_service_name) %}
           {#     Add special scenarios based on the project name #}
           {%     if role_service_name in scenario_map %}
@@ -58,6 +66,10 @@
           %}
           {%     endif%}
           {%   endfor %}
+          {# Hardening role is special as our regular filters don't work for it #}
+          {%   if zuul.project.short_name == 'ansible-hardening' %}
+          {%     set _ = _scenario.append('hardening') %}
+          {%   endif %}
           {% endif %}
           {{ _scenario | join('_') }}
       when:
