@@ -85,16 +85,11 @@ def init_signal():
 
 
 def check_out_version(repo, version, pull=False, force=False,
-                      refspec=None, depth=10):
+                      refspec=None, tag=False, depth=10):
     try:
-        repo.git.fetch(force=force, refspec=refspec, depth=depth)
+        repo.git.fetch(tags=tag, force=force, refspec=refspec, depth=depth)
     except Exception as e:
         return ["Failed to fetch %s\n%s" % (repo.working_dir, str(e))]
-
-    try:
-        repo.git.fetch(tags=True, force=force, refspec=refspec, depth=depth)
-    except Exception as e:
-        return ["Failed to fetch tags for %s\n%s" % (repo.working_dir, str(e))]
 
     try:
         repo.git.checkout(version, force=force)
@@ -103,28 +98,19 @@ def check_out_version(repo, version, pull=False, force=False,
             "Failed to check out version %s for %s\n%s" %
             (version, repo.working_dir, str(e))]
 
+    if repo.is_dirty(untracked_files=True) and force:
+        try:
+            repo.git.clean(force=force)
+        except Exception as e:
+            return [
+                "Failed to clean up repository% s\n%s" %
+                (repo.working_dir, str(e))]
+
     if pull:
         try:
             repo.git.pull(force=force, refspec=refspec, depth=depth)
         except Exception as e:
             return ["Failed to pull repo %s\n%s" % (repo.working_dir, str(e))]
-    return []
-
-
-def reset_to_version(path, version, reset_type='--hard', force=False,
-                     refspec=None, depth=10):
-    """Function to reset to a specific hash commit"""
-    modify_repo = git.Repo(path)
-    try:
-        modify_repo.git.fetch(force=force, refspec=refspec, depth=depth)
-    except Exception as e:
-        return ["Failed to fetch %s\n%s" % (modify_repo.working_dir, str(e))]
-
-    try:
-        modify_repo.git.reset(reset_type, version, refspec=refspec)
-    except Exception as e:
-        return ["Failed to reset %s\n%s" % (modify_repo.working_dir, str(e))]
-
     return []
 
 
@@ -153,17 +139,21 @@ def pull_role(info):
         if len(required_version) == 40:
             version_hash = True
 
-    # if repo exists
-    if os.path.exists(role["dest"]):
+    def get_repo(dest):
         try:
-            repo = git.Repo(role["dest"])
+            return git.Repo(dest)
         except Exception:
             failtxt = "Role in {0} is broken/not a git repo.".format(
                 role["dest"])
             failtxt += "Please delete or fix it manually"
             failures.append(failtxt)
-            return False  # go to next role
+            return False
 
+    # if repo exists
+    if os.path.exists(role["dest"]):
+        repo = get_repo(role["dest"])
+        if not repo:
+            return False  # go to next role
         repo_url = list(repo.remote().urls)[0]
         if repo_url != role["src"]:
             repo.remote().set_url(role["src"])
@@ -178,11 +168,10 @@ def pull_role(info):
 
         # If we have a hash then reset it to
         elif version_hash:
-            fail = reset_to_version(role["dest"],
-                                    required_version,
-                                    force=config["force"],
-                                    refspec=role["refspec"],
-                                    depth=role["depth"])
+            fail = check_out_version(repo, required_version,
+                                     force=config["force"],
+                                     refspec=role["refspec"],
+                                     depth=role["depth"])
         else:
             # describe can fail in some cases so be careful:
             try:
@@ -196,25 +185,30 @@ def pull_role(info):
                 fail = check_out_version(repo, required_version,
                                          force=config["force"],
                                          refspec=role["refspec"],
-                                         depth=role["depth"])
+                                         depth=role["depth"],
+                                         tag=True)
 
     else:
         try:
             # If we have a hash id then treat this a little differently
-            if not version_hash:
+            if version_hash:
+                git.Repo.clone_from(role["src"], role["dest"],
+                                    branch='master',
+                                    no_single_branch=True,
+                                    depth=role["depth"])
+                repo = get_repo(role["dest"])
+                if not repo:
+                    return False  # go to next role
+                fail = check_out_version(repo, required_version,
+                                         force=config["force"],
+                                         refspec=role["refspec"],
+                                         depth=role["depth"])
+            else:
                 git.Repo.clone_from(role["src"], role["dest"],
                                     branch=required_version,
                                     depth=role["depth"],
                                     no_single_branch=True)
                 fail = []
-            else:
-                git.Repo.clone_from(role["src"], role["dest"],
-                                    branch='master',
-                                    no_single_branch=True,
-                                    depth=role["depth"])
-                fail = reset_to_version(role["dest"], required_version,
-                                        refspec=role["refspec"],
-                                        depth=role["depth"])
 
         except Exception as e:
             fail = ('Failed cloning repo %s\n%s' % (role["dest"], str(e)))
