@@ -30,6 +30,11 @@
   tags:
     - ironic
   pre_tasks:
+    - name: Gather additional facts
+      include_tasks: "common-tasks/gather-hardware-facts.yml"
+      tags:
+        - always
+
     - include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       when: not is_metal
 
