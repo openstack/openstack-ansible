@@ -17,8 +17,18 @@
 nova_metadata_port: 8775
 nova_metadata_protocol: "{{ openstack_service_internaluri_proto | default('http') }}"
 nova_metadata_insecure: "{{ keystone_service_internaluri_insecure | default(False) }}"
-nova_service_region: "{{ service_region }}"
-nova_service_user_name: nova
-nova_service_project_name: service
-nova_service_project_domain_id: default
-nova_service_user_domain_id: default
+
+# Consumed by haproxy endpoints
+nova_consoles:
+  spice:
+    port: "{{ nova_spice_html5proxy_base_port | default('6082') }}"
+    path: "/spice_auto.html"
+  novnc:
+    port: "{{ nova_novncproxy_port | default('6080') }}"
+    path: "/vnc.html"
+  serial:
+    port: "{{ nova_serialconsoleproxy_port | default('6083') }}"
+    path: "/"
+nova_console_type: "{{ (ansible_architecture == 'aarch64') | ternary('serialconsole', 'novnc') }}"
+nova_console_port: "{{ nova_consoles[nova_console_type]['port'] }}"
+nova_console_path: "{{ nova_consoles[nova_console_type]['path'] }}"

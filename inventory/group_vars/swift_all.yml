@@ -18,19 +18,3 @@ swift_system_user_name: "{{ hostvars['localhost']['swift_system_user_name'] }}"
 swift_system_shell: "{{ hostvars['localhost']['swift_system_shell'] }}"
 swift_system_comment: "{{ hostvars['localhost']['swift_system_comment'] }}"
 swift_system_home_folder: "{{ hostvars['localhost']['swift_system_home_folder'] }}"
-
-# If there are any Ceilometer and Swift hosts in the environment, then enable its usage
-swift_ceilometer_enabled: "{{ (groups['ceilometer_all'] is defined) and (groups['swift_proxy'] is defined) and (groups['ceilometer_all'] | length > 0) and (groups['swift_proxy'] | length > 0) }}"
-
-swift_service_region: "{{ service_region }}"
-swift_service_in_ldap: "{{ service_ldap_backend_enabled }}"
-
-# Ensure that the package state matches the global setting
-swift_package_state: "{{ package_state }}"
-
-# Used to optionally filter Gnocchi-originated traffic in Ceilometermiddleware
-swift_gnocchi_enabled: "{{ (groups['gnocchi_all'] is defined and groups['gnocchi_all'] | length > 0) }}"
-
-# Ceilometer vars used when ceilometer is enabled
-ceilometer_service_user_name: "{{ hostvars['localhost']['ceilometer_service_user_name'] }}"
-ceilometer_service_tenant_name: "{{ hostvars['localhost']['ceilometer_service_tenant_name'] }}"

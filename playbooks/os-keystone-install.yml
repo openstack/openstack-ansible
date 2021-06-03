@@ -139,7 +139,7 @@
     - name: Perform a Keystone DB sync contract
       command: "{{ keystone_bin }}/keystone-manage db_sync --contract"
       become: yes
-      become_user: "{{ keystone_system_user_name }}"
+      become_user: "{{ keystone_system_user_name | default('keystone') }}"
       when:
         - "keystone_all_software_updated | bool"
         - "ansible_local['openstack_ansible']['keystone']['need_db_contract'] | bool"

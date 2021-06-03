@@ -104,10 +104,6 @@ service_ldap_backend_enabled: "{{ keystone_ldap is defined and keystone_ldap.Def
 ## Base venv configuration
 venv_tag: "{{ openstack_release }}"
 
-## Gnocchi
-# Used in both Gnocchi and Swift roles.
-gnocchi_service_project_name: "{{ (gnocchi_storage_driver is defined and gnocchi_storage_driver == 'swift') | ternary('gnocchi_swift', 'service') }}"
-
 ## OpenStack Openrc
 openrc_os_auth_url: "{{ keystone_service_internalurl }}"
 openrc_os_password: "{{ keystone_auth_admin_password }}"

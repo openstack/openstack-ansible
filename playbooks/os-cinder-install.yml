@@ -178,7 +178,7 @@
     - name: Perform online data migrations
       command: "{{ cinder_bin }}/cinder-manage db online_data_migrations"
       become: yes
-      become_user: "{{ cinder_system_user_name }}"
+      become_user: "{{ cinder_system_user_name | default('cinder') }}"
       when:
         - "cinder_all_software_updated | bool"
         - "ansible_local['openstack_ansible']['cinder']['need_online_data_migrations'] | bool"

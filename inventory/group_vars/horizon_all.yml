@@ -13,31 +13,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-horizon_external_ssl: "{{ openstack_external_ssl }}"
-horizon_service_region: "{{ service_region }}"
 horizon_enable_cinder_backup: "{{ hostvars['localhost']['cinder_service_backup_program_enabled'] }}"
-horizon_enable_cloudkitty_ui: "{{ (groups['cloudkitty_all'] is defined) and (groups['cloudkitty_all'] | length > 0) }}"
-horizon_enable_adjutant_ui: "{{ (groups['adjutant_all'] is defined) and (groups['adjutant_all'] | length > 0) }}"
-horizon_enable_blazar_ui: "{{ (groups['blazar_all'] is defined) and (groups['blazar_all'] | length > 0) }}"
-horizon_enable_heat_ui: "{{ (groups['heat_all'] is defined) and (groups['heat_all'] | length > 0) }}"
-horizon_enable_ironic_ui: "{{ (groups['ironic_all'] is defined) and (groups['ironic_all'] | length > 0) }}"
-horizon_enable_magnum_ui: "{{ (groups['magnum_all'] is defined) and (groups['magnum_all'] | length > 0) }}"
-horizon_enable_manila_ui: "{{ (groups['manila_all'] is defined) and (groups['manila_all'] | length > 0) }}"
-horizon_enable_masakari_ui: "{{ (groups['masakari_all'] is defined) and (groups['masakari_all'] | length > 0) }}"
-horizon_enable_mistral_ui: "{{ (groups['mistral_all'] is defined) and (groups['mistral_all'] | length > 0) }}"
-horizon_enable_murano_ui: "{{ (groups['murano_all'] is defined) and (groups['murano_all'] | length > 0) }}"
-horizon_enable_designate_ui: "{{ (groups['designate_all'] is defined) and (groups['designate_all'] | length > 0) }}"
-horizon_enable_octavia_ui: "{{ (groups['octavia-infra_all'] is defined) and (groups['octavia-infra_all'] | length > 0) }}"
-horizon_enable_neutron_fwaas: "{{ neutron_plugin_base is defined and (neutron_plugin_base | intersect(['firewall', 'firewall_v2']) | length > 0) }}"
-horizon_enable_neutron_vpnaas: "{{ neutron_plugin_base is defined and 'vpnaas' in neutron_plugin_base }}"
-horizon_enable_senlin_ui: "{{ (groups['senlin_all'] is defined) and (groups['senlin_all'] | length > 0) }}"
-horizon_enable_zun_ui: "{{ (groups['zun_all'] is defined) and (groups['zun_all'] | length > 0) }}"
 horizon_enable_ha_router: "{{ neutron_plugin_type.split('.')[0] == 'ml2' and (groups['neutron_l3_agent'] | length >= 2) }}"
-
-# Ensure that the package state matches the global setting
-horizon_package_state: "{{ package_state }}"
-
-# If there are any Sahara hosts in the environment, then enable sahara-dashboard
-horizon_enable_sahara_ui: "{{ (groups['sahara_all'] is defined) and (groups['sahara_all'] | length > 0) }}"
-# If there are any Trove hosts in the environment, then enable trove-dashboard
-horizon_enable_trove_ui: "{{ (groups['trove_all'] is defined) and (groups['trove_all'] | length > 0) }}"

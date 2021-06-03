@@ -13,15 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# If there are any Ceilometer hosts in the environment, then enable its usage
-heat_ceilometer_enabled: "{{ (groups['ceilometer_all'] is defined) and (groups['ceilometer_all'] | length > 0) }}"
-
-heat_service_region: "{{ service_region }}"
-heat_service_in_ldap: "{{ service_ldap_backend_enabled }}"
-
-# Ensure that the package state matches the global setting
-heat_package_state: "{{ package_state }}"
-
 # Only enable the heat cinder backups functionality if the cinder backup
 # service is enabled.
 heat_cinder_backups_enabled: "{{ hostvars['localhost']['cinder_service_backup_program_enabled'] }}"
