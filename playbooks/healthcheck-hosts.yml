@@ -36,6 +36,13 @@
   hosts: all_containers
   gather_facts: yes
   tasks:
+    - name: Gather additional facts
+      setup:
+        gather_subset: "!all,network"
+        filter: ansible_interfaces
+      delegate_to: "{{ physical_host }}"
+      delegate_facts: true
+
     - name: Ensure the physical host has all the proper interfaces defined
       assert:
         that:
