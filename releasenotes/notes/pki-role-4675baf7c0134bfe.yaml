@@ -1,0 +1,29 @@
+---
+features:
+  - |
+    A new ansible role (ansible-role-pki) is introduced to manage the creation
+    of server certificates and certificate authorities. A self signed Root CA
+    and Intermediate CA are created on the deploy host and are used to provide
+    TLS for RabbitMQ, and with the default configuration also a self-signed server
+    certificate for HAProxy. A set of new variables with the prefix
+    openstack_pki_* are introduced which allow a deployer to customise and
+    extend the set of certificate authorities which are created. Root certificate
+    authorities are installed into the trust store of all hosts and containers
+    allowing a complete trust chain to be formed across the deployment which
+    has never previously been possible.
+upgrade:
+  - |
+    It is now mandatory to use a verifiable SSL certificate and Certificate
+    Authority trust chain for the RabbitMQ installation. This can be achieved
+    automatically through the new ansible role ansibe-role-pki with appropriate
+    addition of openstack_pki_* variables.
+    Any existing deployments which use the rabbitmq_user_ssl_* variables must
+    ensure that the supplied certificates can be verified by a CA certificate
+    installed into the trust store of each host and container. This can be
+    achieved through supplying the CA certificate on the deploy host and using
+    overrides from the openstack_hosts role to install it.
+deprecations:
+  - |
+    The variables `haproxy_ssl_self_signed_regen` and `haproxy_ssl_self_signed_subject`
+    are removed and the equivalent functionaility from the ansible-role-pki
+    variables should be used instead.

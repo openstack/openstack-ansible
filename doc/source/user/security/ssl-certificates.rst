@@ -9,7 +9,8 @@ communication between services:
 .. _OpenStack Security Guide: https://docs.openstack.org/security-guide/secure-communication.html
 
 All public endpoints reside behind haproxy, resulting in the only certificate
-management most environments need are those for haproxy.
+management for externally visible https services are those for haproxy.
+Certain internal services such as RabbitMQ also require proper SSL configuration.
 
 When deploying with OpenStack-Ansible, you can either use self-signed
 certificates that are generated during the deployment process or provide
@@ -23,33 +24,47 @@ user-provided certificates for as many services as possible.
    ``/etc/openstack_deploy/user_variables.yml`` file. Do not edit the playbooks
    or roles themselves.
 
+Openstack-Ansible uses an ansible role `ansible_role_pki`_ as a general tool to
+manage and install self-signed and user provided certificates.
+
+.. _ansible_role_pki: https://opendev.org/openstack/ansible-role-pki
+
 Self-signed certificates
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 Self-signed certificates enable you to start quickly and encrypt data in
-transit. However, they do not provide a high level of trust for highly
-secure environments. By default, self-signed certificates are used in
-OpenStack-Ansible. When self-signed certificates are used, certificate
-verification is automatically disabled.
+transit. However, they do not provide a high level of trust for public
+endpoints in highly secure environments. By default, self-signed certificates
+are used in OpenStack-Ansible. When self-signed certificates are used,
+certificate verification is automatically disabled.
 
-Setting subject data for self-signed certificates
--------------------------------------------------
+Self-signed certificates can play an important role in securing internal
+services within the Openstack-Ansible deployment, as they can only be issued
+by the private CA associated with the deployment. Using mutual TLS between
+backend services such as RabbitMQ and MariaDB with self-signed certificates
+and a robust CA setup can ensure that only correctly authenticated clients
+can connect to these internal services.
 
-Change the subject data of any self-signed certificate by using
-configuration variables. The configuration variable for each service
-is formatted as ``<servicename>_ssl_self_signed_subject``. For example, to
-change the SSL certificate subject data for HAProxy, adjust the
-``/etc/openstack_deploy/user_variables.yml`` file as follows:
+Generating and regenerating self-signed certificate authorities
+---------------------------------------------------------------
 
-.. code-block:: yaml
+A self-signed certificate authority is generated on the deploy host
+during the first run of the playbook.
 
-    haproxy_ssl_self_signed_subject: "/C=US/ST=Texas/L=San Antonio/O=IT/CN=haproxy.example.com"
+To regenerate the certificate authority you must set the
+``openstack_pki_regen_ca`` variable to either the name of the root CA
+or intermediate CA you wish or regenerate, or to ``true`` to regenerate
+all self-signed certificate authorities.
 
+  .. code-block:: shell-session
 
-For more information about the available fields in the certificate subject,
-see the OpenSSL documentation for the `req subcommand`_.
+     # openstack-ansible -e "openstack_pki_regen_ca=ExampleCorpIntermediate" certificate-authority.yml
 
-.. _req subcommand: https://www.openssl.org/docs/manmaster/man1/req.html
+Take particular care not to regenerate Root or Intermediate certificate
+authorities in a way that may invalidate existing server certificates in the
+deployment. It may be preferable to create new Intermediate CA certificates
+rather than regenerate existing ones in order to maintain existing chains of
+trust.
 
 Generating and regenerating self-signed certificates
 ----------------------------------------------------
@@ -58,7 +73,7 @@ Self-signed certificates are generated for each service during the first
 run of the playbook.
 
 To generate a new self-signed certificate for a service, you must set
-the ``<servicename>_ssl_self_signed_regen`` variable to true in one of the
+the ``<servicename>_pki_regen_cert`` variable to true in one of the
 following ways:
 
 * To force a self-signed certificate to regenerate, you can pass the variable
@@ -66,23 +81,18 @@ following ways:
 
   .. code-block:: shell-session
 
-     # openstack-ansible -e "horizon_ssl_self_signed_regen=true" os-horizon-install.yml
+     # openstack-ansible -e "haproxy_pki_regen_cert=true" haproxy-install.yml
 
 * To force a self-signed certificate to regenerate with every playbook run,
   set the appropriate regeneration option to ``true``.  For example, if
   you have already run the ``haproxy`` playbook, but you want to regenerate
-  the self-signed certificate, set the ``haproxy_ssl_self_signed_regen``
+  the self-signed certificate, set the ``haproxy_pki_regen_cert``
   variable to ``true`` in the ``/etc/openstack_deploy/user_variables.yml``
   file:
 
   .. code-block:: yaml
 
-     haproxy_ssl_self_signed_regen: true
-
-.. note::
-
-   Regenerating self-signed certificates replaces the existing
-   certificates whether they are self-signed or user-provided.
+     haproxy_pki_regen_cert: true
 
 
 User-provided certificates
