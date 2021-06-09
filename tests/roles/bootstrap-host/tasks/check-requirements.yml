@@ -17,12 +17,14 @@
   assert:
     that:
         (ansible_facts['distribution'] == 'Debian' and ansible_facts['distribution_release'] == 'buster') or
+        (ansible_facts['distribution'] == 'Debian' and ansible_facts['distribution_release'] == 'bullseye') or
         (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_release'] == 'bionic') or
         (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_release'] == 'focal') or
         (ansible_facts['os_family'] == 'RedHat' and ansible_facts['distribution_major_version'] == '8')
     msg: >-
-      The only supported platforms for this release are Debian Stretch, Ubuntu 18.04 LTS (Bionic),
-      Centos 8, openSUSE Leap 42.X and openSUSE Leap 15.X
+      The only supported platforms for this release are Debian Buster, Debian Bullseye,
+      Ubuntu 18.04 LTS (Bionic), Ubuntu 20.04 (Focal),
+      CentOS 8, CentOS 8 Stream
   when: (check_operating_system | default(True))| bool
   tags:
     - check-operating-system

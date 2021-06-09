@@ -8,6 +8,8 @@ following minimum requirements:
 
   * Debian 10 (buster)
 
+  * Debian 11 (bullseye)
+
   * Linux kernel version ``4.9.0-0-amd64`` or later is required.
 
 * Ubuntu
@@ -21,6 +23,8 @@ following minimum requirements:
 * CentOS
 
   * Centos 8
+
+  * Centos 8 Stream
 
   * Linux kernel version ``3.10.0`` or later.
 
