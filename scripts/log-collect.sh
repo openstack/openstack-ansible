@@ -56,6 +56,7 @@ COMMON_ETC_LOG_NAMES="apt \
     network \
     nginx \
     openstack_deploy \
+    openvswitch \
     pacemaker \
     pip.conf \
     qpid-dispatch \
