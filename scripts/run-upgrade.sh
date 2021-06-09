@@ -169,6 +169,7 @@ function main {
 
     pushd ${MAIN_PATH}/playbooks
         RUN_TASKS+=("${SCRIPTS_PATH}/upgrade-utilities/deploy-config-changes.yml")
+        RUN_TASKS+=("certificate-authority.yml")
         # we don't want to trigger container restarts for galera and rabbit
         # but as there will be no hosts available for metal deployments,
         # as a fallback option we just run setup-hosts.yml without any arguments
