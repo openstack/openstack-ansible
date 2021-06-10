@@ -1,0 +1,7 @@
+---
+upgrade:
+  - |
+    Variable ``cinder_enable_v2_api`` is set to ``False`` by default. This will
+    result in Cinder v2 API removal from keystone catalog during upgrade.
+    If you want to preserve v2 API you must override ``cinder_enable_v2_api``
+    in user_variables.yml

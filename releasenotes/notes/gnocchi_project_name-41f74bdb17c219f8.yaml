@@ -1,0 +1,8 @@
+---
+upgrade:
+  - |
+    ``gnocchi_service_project_name`` now set by to ``service`` even for
+    deployments involving Swift. Nowadays cielometer.middleware exclude
+    ``service`` project by default, so no additional protection is required.
+    In case you want to preserve current ``gnocchi_service_project_name``,
+    define it equal to ``gnocchi_swift`` in your user_variables.yml

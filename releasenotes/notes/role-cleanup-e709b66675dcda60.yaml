@@ -1,0 +1,11 @@
+---
+upgrade:
+  - cloudkitty_package_state inherits `package_state` and defaults to "latest"
+  - cloudkitty_uwsgi_bind_address inherits `openstack_service_bind_address`
+    and defaults to 0.0.0.0
+  - cloudkitty_galera_port inherits `galera_port` and defaults to "3306"
+  - cloudkitty_service_region inherits `service_region` and defaults to
+    "RegionOne"
+deprecations:
+  - cloudkitty_collected_services is deprecated and should instead
+    be configured in Cloudkitty metrics config
