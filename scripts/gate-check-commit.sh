@@ -248,10 +248,14 @@ if [[ "${ACTION}" == "upgrade" ]]; then
     # /etc/openstack_deploy/env.d/aio_metal.yml for metal installs
     export SKIP_CUSTOM_ENVD_CHECK=true
     export DROP_ROLE_DIRS=true
-    # NOTE(noonedeadpunk): This might be moved to zuul.d/playbooks/run.yaml
-    export ZUUL_SRC_PATH="/home/zuul/src"
-    # Doing symlinking here, as bootstrap role won't be called
-    ln -s $ZUUL_SRC_PATH /openstack/src
+
+    # Export ZUUL_SRC_PATH only when integrated repo folder exists. Based on that
+    # we make an assumption about if we're in CI or not
+    if [[ -d "/home/zuul/src/opendev.org/openstack/openstack-ansible" ]]; then
+      export ZUUL_SRC_PATH="/home/zuul/src"
+      # Doing symlinking here, as bootstrap role won't be called
+      ln -s $ZUUL_SRC_PATH /openstack/src
+    fi
     # To execute the upgrade script we need to provide
     # an affirmative response to the warning that the
     # upgrade is irreversable.
