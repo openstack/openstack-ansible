@@ -10,13 +10,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-tempest_test_whitelist:
+tempest_test_includelist:
   - 'ironic_tempest_plugin.tests.api.admin.test_api_discovery.TestApiDiscovery'
   - 'ironic_tempest_plugin.tests.api.admin.test_conductor.TestConductors'
   - 'ironic_tempest_plugin.tests.api.admin.test_deploy_templates'
   - 'ironic_tempest_plugin.tests.api.admin.test_chassis.TestChassis'
 
-tempest_test_blacklist:
+tempest_test_excludelist:
   - 'ironic_tempest_plugin.tests.api.admin.test_chassis.TestChassis.test_chassis_node_list'
 
 tempest_service_available_ironic: true

@@ -51,14 +51,14 @@ magnum_flavors:
     vcpus: 1
     disk: 5
 
-tempest_test_whitelist:
+tempest_test_includelist:
   - magnum_tempest_plugin.tests
 
 
 # NOTE(noonedeadpunk): We comment these tests out because of weird magnum things happening like
 # http://paste.openstack.org/show/790131/
 # But when "b''" around auth toke is dropped, everything is fine.
-tempest_test_blacklist:
+tempest_test_excludelist:
   - magnum_tempest_plugin.tests.api.v1.test_cluster.ClusterTest.test_create_list_sign_delete_clusters
   - magnum_tempest_plugin.tests.api.v1.test_cluster.ClusterTest.test_create_cluster_with_nonexisting_flavor
   - magnum_tempest_plugin.tests.api.v1.test_cluster.ClusterTest.test_create_cluster_with_zero_nodes
