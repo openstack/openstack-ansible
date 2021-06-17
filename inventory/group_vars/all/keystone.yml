@@ -24,31 +24,19 @@ keystone_service_proto: http
 keystone_service_region: "{{ service_region }}"
 
 keystone_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(keystone_service_proto) }}"
-keystone_service_adminuri_insecure: >-
-  {{
-    (keystone_service_adminuri_proto == 'https') and
-    (not (keystone_user_ssl_cert is defined or haproxy_user_ssl_cert is defined))
-  }}
+keystone_service_adminuri_insecure: False
 
 keystone_service_adminuri: "{{ keystone_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ keystone_admin_port }}"
 keystone_service_adminurl: "{{ keystone_service_adminuri }}/v3"
 
 keystone_service_internaluri_proto: "{{ openstack_service_internaluri_proto | default(keystone_service_proto) }}"
-keystone_service_internaluri_insecure: >-
-  {{
-    (keystone_service_internaluri_proto == 'https') and
-    (not (keystone_user_ssl_cert is defined or haproxy_user_ssl_cert is defined))
-  }}
+keystone_service_internaluri_insecure: False
 
 keystone_service_internaluri: "{{ keystone_service_internaluri_proto }}://{{ internal_lb_vip_address }}:{{ keystone_service_port }}"
 keystone_service_internalurl: "{{ keystone_service_internaluri }}/v3"
 
 keystone_service_publicuri_proto: "{{ openstack_service_publicuri_proto | default(keystone_service_proto) }}"
-keystone_service_publicuri_insecure: >-
-  {{
-    (keystone_service_publicuri_proto == 'https') and
-    (not (keystone_user_ssl_cert is defined or haproxy_user_ssl_cert is defined))
-  }}
+keystone_service_publicuri_insecure: False
 
 keystone_service_publicuri: "{{ keystone_service_publicuri_proto }}://{{ external_lb_vip_address }}:{{ keystone_service_port }}"
 keystone_service_publicurl: "{{ keystone_service_publicuri }}/v3"
