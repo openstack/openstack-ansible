@@ -86,9 +86,8 @@ system packages are upgraded and then reboot into the new kernel:
 
 .. note::
 
-   If you are installing with limited connectivity, please review
-   the *Installing with limited connectivity* appendix in the
-   :deploy_guide:`Deployment Guide <index.html>` before proceeding.
+   If you are installing with limited connectivity, please review :ref:`Installing
+   with limited connectivity <limited-connectivity>` before proceeding.
 
 Bootstrap Ansible and the required roles
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
