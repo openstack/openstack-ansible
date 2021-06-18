@@ -82,15 +82,15 @@ tempest_main_group: utility_all
 # NOTE(jrosser)
 #
 # The os_tempest role now defaults to running the smoke tests which breaks some of the roles
-# Overriding the test whitelist here puts the behaviour back, but leaves the default in os_tempest
+# Overriding the test includelist here puts the behaviour back, but leaves the default in os_tempest
 # being the smoke tests.
 #
 # Remove this override when the tempest smoke test passes for all OSA repos.
 #
 # Tests to execute:
 # This sets up a list of tests to execute based on what's deployed in the environment.
-# The list gets added to the whitelist which tempest executes.
-tempest_test_whitelist:
+# The list gets added to the includelist which tempest executes.
+tempest_test_includelist:
   - "{{ (ansible_facts['pkg_mgr'] == 'apt' and tempest_install_method == 'distro') |
          ternary('(?!.*\\.test_list_all_implied_roles)', '') ~ 'tempest.api.identity.admin.v3' }}"
   - "tempest.api.identity.v3"

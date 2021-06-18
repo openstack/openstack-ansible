@@ -173,7 +173,7 @@ class IPManager(IPBasePlugin):
 
     """
     def __init__(self, queues=None, used_ips=None):
-        """Create a manager with various queues and a used IP blacklist
+        """Create a manager with various queues and a used IP excludelist
 
         :param queues: ``dict`` A dictionary containing queue names for keys
             and CIDR specifications for values.
