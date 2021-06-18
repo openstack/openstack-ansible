@@ -20,9 +20,9 @@ The code is generally located into ``/opt/openstack-ansible``.
 OpenStack-Ansible wrapper
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Our ``openstack-ansible`` cli is located in ``/usr/bin/openstack-ansible``.
+Our ``openstack-ansible`` cli is located in ``/usr/local/bin/openstack-ansible``.
 It sources an environment variable file located in:
-``/usr/bin/openstack-ansible.rc``.
+``/usr/local/bin/openstack-ansible.rc``.
 
 Userspace configurations
 ~~~~~~~~~~~~~~~~~~~~~~~~~
