@@ -1,3 +1,5 @@
+.. _limited-connectivity:
+
 ====================================
 Installing with limited connectivity
 ====================================
