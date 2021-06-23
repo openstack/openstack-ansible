@@ -31,6 +31,6 @@ the major upgrades procedures.
    monitoring-systems.rst
    backup-restore.rst
    troubleshooting.rst
-   upgrades/compatability-matrix.rst
+   upgrades/compatibility-matrix.rst
    upgrades/minor-upgrades.rst
    upgrades/major-upgrades.rst

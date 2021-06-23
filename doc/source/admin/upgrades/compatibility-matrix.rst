@@ -1,7 +1,7 @@
-Compatability Matrix
+Compatibility Matrix
 --------------------
 
-All of the OpenStack-Ansible releases are compatable with specific sets of
+All of the OpenStack-Ansible releases are compatible with specific sets of
 operating systems and their versions. Operating Systems have their own
 lifecycles, however we may drop their support before end of their EOL because
 of various reasons:
@@ -21,4 +21,4 @@ Below you will find the support matrix of Operating Systems for
 OpenStack-Ansible releases.
 
 .. raw:: html
-    :file: os-compatability-matrix.html
+    :file: os-compatibility-matrix.html
