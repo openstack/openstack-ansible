@@ -204,14 +204,23 @@ dashboard_hosts:
   infra3:
     ip: 172.29.236.13
 
-# neutron server, agents (L3, etc)
-network_hosts:
+# neutron api
+network-infra_hosts:
   infra1:
     ip: 172.29.236.11
   infra2:
     ip: 172.29.236.12
   infra3:
     ip: 172.29.236.13
+
+# neutron agents (L3, DHCP, etc)
+network-agent_hosts:
+  net1:
+    ip: 172.29.236.21
+  net2:
+    ip: 172.29.236.22
+  net3:
+    ip: 172.29.236.23
 
 # ceilometer (telemetry data collection)
 metering-infra_hosts:
