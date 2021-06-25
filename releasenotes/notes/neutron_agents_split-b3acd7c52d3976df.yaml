@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    In order to use dedicated net nodes, override of env.d is no longer
+    required.
+    Deployers can set ``network-infra_hosts`` to their infra (LXC) hosts
+    and ``network-agent_hosts`` to their net nodes inside their
+    openstack_user_config.yml or conf.d files.

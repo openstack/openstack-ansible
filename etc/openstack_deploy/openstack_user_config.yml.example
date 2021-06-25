@@ -422,6 +422,28 @@
 #   infra3:
 #     ip: 172.29.236.103
 #
+# If you want to deploy neutron agents to different set of hosts (net nodes)
+# rather then neutron API, you should define 'network-infra_hosts' and
+# 'network-agent_hosts' instead.
+#
+# Example:
+#
+# network-infra_hosts:
+#   infra1:
+#     ip: 172.29.236.101
+#   infra2:
+#     ip: 172.29.236.102
+#   infra3:
+#     ip: 172.29.236.103
+#
+# network-agent_hosts:
+#   net1:
+#     ip: 172.29.236.201
+#   net2:
+#     ip: 172.29.236.202
+#   net3:
+#     ip: 172.29.236.203
+#
 # --------
 #
 # Level: compute_hosts (optional)

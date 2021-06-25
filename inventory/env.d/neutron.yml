@@ -52,6 +52,7 @@ container_skel:
   neutron_agents_container:
     belongs_to:
       - network_containers
+      - network-agent_containers
     contains:
       - neutron_agent
       - neutron_bgp_dragent
@@ -67,6 +68,7 @@ container_skel:
   neutron_server_container:
     belongs_to:
       - network_containers
+      - network-infra_containers
     contains:
       - neutron_server
       - opendaylight
@@ -76,5 +78,17 @@ physical_skel:
     belongs_to:
       - all_containers
   network_hosts:
+    belongs_to:
+      - hosts
+  network-agent_containers:
+    belongs_to:
+      - all_containers
+  network-agent_hosts:
+    belongs_to:
+      - hosts
+  network-infra_containers:
+    belongs_to:
+      - all_containers
+  network-infra_hosts:
     belongs_to:
       - hosts
