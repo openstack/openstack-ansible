@@ -12,4 +12,7 @@ virtualenv>=14.0.6 # MIT
 # openstack-ansible-tests/test-ansible-lint.sh
 flake8==3.8.3 # MIT
 ansible-lint==4.3.5 # MIT
+# Workaround for old ansible-lint that otherwise will try to install
+# latest ansible along with ansible-core, which will break linting.
+ansible<3.0.0
 pycodestyle>=2.5.0,<2.6.0
