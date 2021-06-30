@@ -1,0 +1,6 @@
+---
+upgrade:
+  - |
+    HAProxy ``haproxy_whitelist_networks`` key inside
+    ``haproxy_service_configs`` dictionary has been replaced with
+    ``haproxy_allowlist_networks``.

@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Added variable ``galera_init_overrides`` that can be leveraged to override
+    default set of systemd unit file for mariadb.
+    This also brings requirement of `systemd_service <https://opendev.org/openstack/ansible-role-systemd_service>`_
+    role.

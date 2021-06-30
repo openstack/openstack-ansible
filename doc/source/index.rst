@@ -9,16 +9,18 @@ configuration of an OpenStack environment.
 
 Documentation for each of the following releases is available.
 
-Wallaby: Under Development
-~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible Wallaby is currently in development.
+Wallaby: Maintained
+~~~~~~~~~~~~~~~~~~~
+
+OpenStack-Ansible Wallaby series was first released with the 23.0.0 tag on
+02 July 2021.
 
 .. toctree::
    :maxdepth: 1
 
-   Deployment guide <https://docs.openstack.org/project-deploy-guide/openstack-ansible/latest/>
-   Release notes <https://docs.openstack.org/releasenotes/openstack-ansible/unreleased.html>
+   Deployment guide <https://docs.openstack.org/project-deploy-guide/openstack-ansible/wallaby/>
+   Release notes <https://docs.openstack.org/releasenotes/openstack-ansible/wallaby.html>
    admin/index
    user/index
    contributor/contributing

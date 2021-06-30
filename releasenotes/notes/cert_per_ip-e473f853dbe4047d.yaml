@@ -1,0 +1,16 @@
+---
+deprecations:
+  - |
+    The following variables have been deprecated and will have no effect:
+
+      * ``haproxy_ssl_cert_path``
+      * ``haproxy_ssl_key``
+      * ``haproxy_ssl_pem``
+      * ``haproxy_ssl_ca_cert``
+
+    These variables were responsible for the path haproxy looked for
+    certificates on the destination hosts.
+
+    Variables were replaced in favor of ``haproxy_ssl_cert_path`` since the exact
+    path to certificates will be dynamically set based on the VIP that is used
+    for the frontend

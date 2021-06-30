@@ -1,0 +1,15 @@
+---
+features:
+  - |
+    New variable ``openstack_ca_bundle_path`` has been added which defines
+    the path to the ca-bundle certificate which contains all system-trusted CA
+    and will be used by the Python Requests module.
+  - |
+    Added variable ``openstack_systemd_global_overrides`` that defines
+    some defaults for all systemd services. It will be deployed to all hosts
+    and containers, but can be controlled with group_vars or host_vars as well
+    if needed.
+deprecations:
+  - |
+    Since certificates and CA distribution are now handled with PKI role,
+    variable ``openstack_host_ca_location`` has been deprecated and removed.
