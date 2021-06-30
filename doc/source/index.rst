@@ -10,22 +10,35 @@ configuration of an OpenStack environment.
 Documentation for each of the following releases is available.
 
 
+Xena: Under Development
+~~~~~~~~~~~~~~~~~~~~~~~
+
+OpenStack-Ansible Xena is currently in development.
+
+.. toctree::
+   :maxdepth: 1
+
+   Deployment guide <https://docs.openstack.org/project-deploy-guide/openstack-ansible/latest/>
+   Release notes <https://docs.openstack.org/releasenotes/openstack-ansible/unreleased.html>
+   admin/index
+   user/index
+   contributor/contributing
+   contributor/index
+   reference/index
+
+
 Wallaby: Maintained
 ~~~~~~~~~~~~~~~~~~~
 
 OpenStack-Ansible Wallaby series was first released with the 23.0.0 tag on
 02 July 2021.
 
-.. toctree::
-   :maxdepth: 1
+* `OpenStack-Ansible Wallaby Documentation`_
 
-   Deployment guide <https://docs.openstack.org/project-deploy-guide/openstack-ansible/wallaby/>
-   Release notes <https://docs.openstack.org/releasenotes/openstack-ansible/wallaby.html>
-   admin/index
-   user/index
-   contributor/contributing
-   contributor/index
-   reference/index
+* `OpenStack-Ansible Wallaby series release notes`_
+
+.. _OpenStack-Ansible Wallaby Documentation: https://docs.openstack.org/openstack-ansible/wallaby/
+.. _OpenStack-Ansible Wallaby series release notes: https://docs.openstack.org/releasenotes/openstack-ansible/wallaby.html
 
 
 Victoria: Maintained
