@@ -33,8 +33,8 @@ import yaml
 # Variables to override
 target_name = 'openstack-ansible'
 description = 'OpenStack-Ansible deploys OpenStack environments using Ansible.'
-previous_series_name = 'victoria'
-current_series_name = 'wallaby'
+previous_series_name = 'wallaby'
+current_series_name = 'xena'
 
 # General information about the project.
 author = 'OpenStack-Ansible Contributors'
