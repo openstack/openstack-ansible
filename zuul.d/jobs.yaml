@@ -78,7 +78,6 @@
       - name: openstack/openstack-ansible-os_neutron
       - name: openstack/openstack-ansible-os_nova
       - name: openstack/openstack-ansible-os_octavia
-      - name: openstack/openstack-ansible-os_panko
       - name: openstack/openstack-ansible-os_placement
       - name: openstack/openstack-ansible-os_rally
       - name: openstack/openstack-ansible-os_sahara
@@ -101,8 +100,6 @@
       - name: openstack/ansible-role-pki
       # OpenStack service repos - listed here to make cached repos available in CI
       - name: openstack/requirements
-      # OpenStack service repos - listed here as the corresponding OSA role cannot do distro install
-      - name: openstack/panko
 
 - job:
     name: openstack-ansible-deploy-aio
@@ -147,7 +144,6 @@
       - name: openstack/openstack-ansible-os_neutron
       - name: openstack/openstack-ansible-os_nova
       - name: openstack/openstack-ansible-os_octavia
-      - name: openstack/openstack-ansible-os_panko
       - name: openstack/openstack-ansible-os_placement
       - name: openstack/openstack-ansible-os_rally
       - name: openstack/openstack-ansible-os_sahara
@@ -214,7 +210,6 @@
       - name: openstack/trove
       - name: openstack/trove-dashboard
       - name: openstack/octavia
-      - name: openstack/panko
       - name: openstack/placement
       - name: openstack/tacker
       - name: openstack/octavia-dashboard

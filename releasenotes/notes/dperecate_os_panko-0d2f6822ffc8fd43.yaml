@@ -1,0 +1,7 @@
+---
+deprecations:
+  - |
+    With the retirement of upstram Panko project, os_panko role has been
+    deprecated. Panko service API endpoint will be removed during upgrade.
+    If you want to preserve Panko API working, you should override
+    haproxy_panko_api_service.
