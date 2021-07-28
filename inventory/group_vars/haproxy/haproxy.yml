@@ -239,6 +239,7 @@ haproxy_letsencrypt_service:
   haproxy_backend_nodes: "{{ groups['haproxy_all'] }}"
   backend_rise: 1
   backend_fall: 5
+  interval: 4000
   haproxy_bind:
     - 127.0.0.1
   haproxy_port: "{{ haproxy_ssl_letsencrypt_certbot_backend_port }}"
