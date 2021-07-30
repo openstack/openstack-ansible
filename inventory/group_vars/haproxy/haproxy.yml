@@ -318,8 +318,8 @@ haproxy_nova_api_metadata_service:
   haproxy_backend_nodes: "{{ groups['nova_api_metadata'] | default([]) }}"
   haproxy_bind: "{{ [internal_lb_vip_address] }}"
   haproxy_port: 8775
-  haproxy_ssl: "{{ haproxy_ssl_all_vips }}"
-  haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
+  haproxy_ssl: "{{ (neutron_plugin_type == 'ml2.calico') | ternary(False, haproxy_ssl_all_vips) }}"
+  haproxy_ssl_all_vips: "{{ (neutron_plugin_type == 'm2.calico') | ternary(False, haproxy_ssl_all_vips) }}"
   haproxy_balance_type: http
   haproxy_backend_options:
     - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
