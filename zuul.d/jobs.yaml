@@ -74,12 +74,6 @@
     vars:
       ansible_package: "file://{{ ansible_user_dir }}/src/github.com/ansible/ansible"
 
-# debian
-- job:
-    name: openstack-ansible-deploy-aio_metal-debian-stable
-    parent: openstack-ansible-deploy-aio
-    nodeset: debian-stable
-
 # ubuntu
 - job:
     name: openstack-ansible-deploy-aio_lxc-ubuntu-bionic
@@ -205,17 +199,6 @@
     parent: openstack-ansible-deploy-aio
     nodeset: centos-7
     timeout: 10800
-
-# debian
-- job:
-    name: openstack-ansible-deploy-aio_telemetry_metal-debian-stable
-    parent: openstack-ansible-deploy-aio
-    nodeset: debian-stable
-
-- job:
-    name: openstack-ansible-deploy-aio_lxc-debian-stable
-    parent: openstack-ansible-deploy-aio
-    nodeset: debian-stable
 
 # opensuse
 - job:
