@@ -149,7 +149,7 @@
             - "not 'is in use' in item.msg"
 
         - name: Store facts to see if everything is ok
-          openstack.cloud.os_networks_facts:
+          openstack.cloud.networks_info:
             cloud: default
             interface: internal
             verify: no
@@ -313,19 +313,20 @@
             volume: "{{ cinder_volumes[0]['name'] }}"
 
         - name: Get server facts
-          openstack.cloud.os_server_facts:
+          openstack.cloud.server_info:
             cloud: default
             interface: internal
             verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
             server: "{{ nova_vm.name }}"
+          register: openstack_servers_result
 
         - name: Show server facts
           debug:
-            var: openstack_servers
+            var: openstack_servers_result.openstack_servers
 
         - name: Discover the healthcheck vm floating IP
           set_fact:
-            _floating_ip: "{{ openstack_servers | json_query(_query) }}"
+            _floating_ip: "{{ openstack_servers_result.openstack_servers | json_query(_query) }}"
           vars:
             _query: "[?name == '{{ nova_vm.name }}'].addresses.{{ nova_vm.network }}[] | [?contains(*,'floating')].addr"
 

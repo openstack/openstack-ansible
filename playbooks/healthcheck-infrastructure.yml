@@ -24,7 +24,7 @@
   hosts: all_containers[0]:physical_hosts[0]
   gather_facts: yes
   vars:
-    repo_requirements_file: "os-releases/{{ openstack_release }}/{{ os_distro_version }}/requirements_constraints.txt"
+    repo_requirements_file: "os-releases/{{ openstack_release }}/{{ os_distro_version }}/"
   tasks:
     - name: Check the upper constraint on each repo server
       uri:
@@ -85,7 +85,7 @@
     # Repo release path points to the internal LB vip
     - name: Check the presence of upper constraints on your repos and check load balancing
       uri:
-        url: "{{ repo_release_path }}/requirements_constraints.txt"
+        url: "{{ repo_release_path }}/"
   tags:
     - healthcheck
     - healthcheck-repo-use
@@ -194,7 +194,7 @@
         dest: "{{ venv_path }}/rabbitmq-test.py"
         mode: 0755
     - name: Connect to rabbitmq
-      command: "{{ venv_path }}/bin/python2 {{ venv_path }}/rabbitmq-test.py {{ hostvars[groups['rabbitmq_all'][0]]['container_address'] }}"
+      command: "{{ venv_path }}/bin/python {{ venv_path }}/rabbitmq-test.py {{ hostvars[groups['rabbitmq_all'][0]]['container_address'] }}"
   tags:
     - healthcheck
     - healthcheck-rabbitmq-install
