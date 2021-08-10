@@ -1,0 +1,8 @@
+---
+fixes:
+  - |
+    This release addresses an issue when upgrading from Ubuntu Bionic to
+    Ubuntu Focal during the Victoria release cycle. By default the same
+    RabbitMQ version will now be installed for both Bionic and Focal to avoid
+    a downgrade from being attempted. It is strongly recommended to upgrade
+    to this release before attempting an upgrade to Ubuntu Focal.
