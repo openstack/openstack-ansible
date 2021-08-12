@@ -45,7 +45,7 @@ bootstrap_host_scenarios_expanded: |-
   {%   set _ = scenario_list.extend(['heat'])  %}
   {% endif %}
   {% if 'telemetry' in bootstrap_host_scenarios %}
-  {%   set _ = scenario_list.extend(['aodh', 'ceilometer', 'gnocchi', 'panko']) %}
+  {%   set _ = scenario_list.extend(['aodh', 'ceilometer', 'gnocchi']) %}
   {% endif %}
   {% if 'translations' in bootstrap_host_scenarios %}
   {%   set _ = scenario_list.extend(['designate', 'heat', 'magnum', 'sahara', 'swift', 'trove']) %}

@@ -426,18 +426,10 @@ haproxy_ovn_ovsdb_service:
     - tcpka
   haproxy_service_enabled: "{{ (neutron_plugin_type == 'ml2.ovn') and (groups['neutron_ovn_northd'] is defined and groups['neutron_ovn_northd'] | length > 0) }}"
 
+# TODO(noonedeadpunk): Remove that in Y release
 haproxy_panko_api_service:
   haproxy_service_name: panko_api
-  haproxy_backend_nodes: "{{ groups['panko_api'] | default([]) }}"
-  haproxy_ssl: "{{ haproxy_ssl }}"
-  haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
-  haproxy_port: 8777
-  haproxy_balance_type: http
-  haproxy_backend_options:
-    - "forwardfor"
-    - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
-    - "httplog"
-  haproxy_service_enabled: "{{ groups['panko_all'] is defined and groups['panko_all'] | length > 0 }}"
+  state: absent
 
 haproxy_placement_service:
   haproxy_service_name: placement
