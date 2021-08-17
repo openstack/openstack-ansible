@@ -139,7 +139,7 @@
         - name: Clone git repos (parallel)
           git_requirements:
             default_path: "{{ role_path_default }}"
-            default_depth: 20
+            default_depth: "{{ role_clone_default_depth }}"
             default_version: "master"
             repo_info: "{{ clone_roles }}"
             retries: "{{ git_clone_retries }}"
@@ -153,7 +153,7 @@
             dest: "{{ item.path | default(role_path_default) }}/{{ item.name | default(item.src | basename) }}"
             version: "{{ item.version | default('master') }}"
             refspec: "{{ item.refspec | default(omit) }}"
-            depth: "{{ item.depth | default('20') }}"
+            depth: "{{ item.depth | default(role_clone_default_depth| default(omit)) }}"
             update: true
             force: true
           with_items: "{{ clone_roles }}"
@@ -172,3 +172,4 @@
     user_role_path: "{{ lookup('env', 'OSA_CONFIG_DIR') | default('/etc/openstack_deploy', true) ~ '/' ~ (user_role_file|default('')) }}"
     git_clone_retries: 2
     git_clone_retry_delay: 5
+    role_clone_default_depth: 20

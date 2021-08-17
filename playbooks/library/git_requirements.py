@@ -25,6 +25,7 @@ options:
         "version" - git version to checkout
         "refspec" - git refspec to checkout
         "depth" - clone depth level
+        "shallow_since" - get repo history starting from that date
         "force" - require git clone uses "--force"
   default_path:
     description:
@@ -46,7 +47,13 @@ options:
   default_depth:
     description:
       Default clone depth (int) in case not specified
-      on an individual repo basis. Defaults to 10.
+      on an individual repo basis. Defaults to None.
+      Not required.
+  default_shallow_since:
+    description:
+      Default shallow date (str) strating from which
+      git history will be fetched. Defaults to None.
+      Has prescedence over depth.
       Not required.
   retries:
      description:
@@ -84,12 +91,17 @@ def init_signal():
     signal.signal(signal.SIGINT, signal.SIG_IGN)
 
 
-def check_out_version(repo, version, pull=False, force=False,
-                      refspec=None, tag=False, depth=10):
-    try:
-        repo.git.fetch(tags=tag, force=force, refspec=refspec, depth=depth)
-    except Exception as e:
-        return ["Failed to fetch %s\n%s" % (repo.working_dir, str(e))]
+def check_out_version(repo, version, pull=False, fetch=True, force=False,
+                      refspec=None, tag=False, depth=None,
+                      shallow_since=None):
+    if fetch:
+        try:
+            if shallow_since:
+                depth = None
+            repo.git.fetch(tags=tag, force=force, refspec=refspec,
+                           depth=depth, shallow_since=shallow_since)
+        except Exception as e:
+            return ["Failed to fetch %s\n%s" % (repo.working_dir, str(e))]
 
     try:
         repo.git.checkout(version, force=force)
@@ -164,14 +176,16 @@ def pull_role(info):
             fail = check_out_version(repo, required_version, pull=True,
                                      force=config["force"],
                                      refspec=role["refspec"],
-                                     depth=role["depth"])
+                                     depth=role["depth"],
+                                     shallow_since=role["shallow_since"])
 
         # If we have a hash then reset it to
         elif version_hash:
             fail = check_out_version(repo, required_version,
                                      force=config["force"],
                                      refspec=role["refspec"],
-                                     depth=role["depth"])
+                                     depth=role["depth"],
+                                     shallow_since=role["shallow_since"])
         else:
             # describe can fail in some cases so be careful:
             try:
@@ -186,27 +200,37 @@ def pull_role(info):
                                          force=config["force"],
                                          refspec=role["refspec"],
                                          depth=role["depth"],
+                                         shallow_since=role["shallow_since"],
                                          tag=True)
 
     else:
         try:
             # If we have a hash id then treat this a little differently
+            shallow_since = role.get('shallow_since')
+            if shallow_since:
+                depth = None
+            else:
+                depth = role.get('depth')
+
             if version_hash:
-                git.Repo.clone_from(role["src"], role["dest"],
-                                    branch='master',
-                                    no_single_branch=True,
-                                    depth=role["depth"])
-                repo = get_repo(role["dest"])
+                repo = git.Repo.clone_from(role["src"], role["dest"],
+                                           branch='master',
+                                           no_single_branch=True,
+                                           depth=depth,
+                                           shallow_since=shallow_since,)
                 if not repo:
                     return False  # go to next role
                 fail = check_out_version(repo, required_version,
                                          force=config["force"],
                                          refspec=role["refspec"],
-                                         depth=role["depth"])
+                                         depth=depth,
+                                         fetch=False,
+                                         shallow_since=shallow_since,)
             else:
                 git.Repo.clone_from(role["src"], role["dest"],
                                     branch=required_version,
-                                    depth=role["depth"],
+                                    depth=depth,
+                                    shallow_since=shallow_since,
                                     no_single_branch=True)
                 fail = []
 
@@ -242,7 +266,10 @@ def main():
                             "default": None},
         "default_depth": {"required": False,
                           "type": "int",
-                          "default": 10},
+                          "default": None},
+        "default_shallow_since": {"required": False,
+                                  "type": str,
+                                  "default": None},
         "retries": {"required": False,
                     "type": "int",
                     "default": 1},
@@ -265,6 +292,7 @@ def main():
     defaults = {
         "path": module.params["default_path"],
         "depth": module.params["default_depth"],
+        "shallow_since": module.params["default_shallow_since"],
         "version": module.params["default_version"],
         "refspec": module.params["default_refspec"]
     }
@@ -277,7 +305,7 @@ def main():
 
     # Set up defaults
     for repo in git_repos:
-        for key in ["path", "refspec", "version", "depth"]:
+        for key in ["path", "refspec", "version", "depth", "shallow_since"]:
             set_default(repo, key, defaults)
         if "name" not in repo.keys():
             repo["name"] = os.path.basename(repo["src"])
