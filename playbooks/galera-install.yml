@@ -22,7 +22,7 @@
 - name: Install galera server
   hosts: galera_all
   gather_facts: false
-  serial: 1
+  serial: "{{ galera_serial | default(1) }}"
   user: root
   pre_tasks:
     - include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"

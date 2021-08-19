@@ -22,7 +22,7 @@
 - name: haproxy base config
   hosts: haproxy
   gather_facts: false
-  serial: "50%"
+  serial: "{{ haproxy_serial | default('50%') }}"
   user: root
   pre_tasks:
     - include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"

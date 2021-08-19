@@ -22,6 +22,7 @@
 - name: Install the ceilometer components
   hosts: ceilometer_all
   gather_facts: false
+  serial: "{{ ceilometer_serial | default(['1','100%']) }}"
   user: root
   vars_files:
     - "defaults/repo_packages/openstack_services.yml"

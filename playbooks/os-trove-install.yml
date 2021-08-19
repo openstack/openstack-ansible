@@ -25,6 +25,7 @@
 - name: Install trove server
   hosts: trove_all
   gather_facts: false
+  serial: "{{ trove_serial | default(['1','100%']) }}"
   user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
   vars_files:

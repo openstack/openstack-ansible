@@ -22,6 +22,7 @@
 - name: Setup repo servers
   hosts: repo_all
   gather_facts: false
+  serial: "{{ repo_serial | default(['1','100%']) }}"
   user: root
   pre_tasks:
     - name: End playbook

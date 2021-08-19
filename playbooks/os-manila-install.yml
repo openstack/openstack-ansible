@@ -19,6 +19,7 @@
 - name: Gather manila facts
   hosts: manila_all
   gather_facts: "{{ osa_gather_facts | default(True) }}"
+  serial: "{{ manila_serial | default(['1','100%']) }}"
   tags:
     - always
 

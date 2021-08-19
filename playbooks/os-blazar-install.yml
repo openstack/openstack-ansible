@@ -22,6 +22,7 @@
 - name: Install blazar components
   hosts: blazar_all
   gather_facts: false
+  serial: "{{ blazar_serial | default(['1','100%']) }}"
   environment: "{{ deployment_environment_variables | default({}) }}"
   user: root
   vars_files:

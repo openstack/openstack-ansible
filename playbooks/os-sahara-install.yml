@@ -20,6 +20,7 @@
 - name: Install sahara server
   hosts: sahara_all
   gather_facts: "{{ osa_gather_facts | default(True) }}"
+  serial: "{{ sahara_serial | default(['1','100%']) }}"
   user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
   vars_files:

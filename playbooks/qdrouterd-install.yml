@@ -21,7 +21,7 @@
 
 - name: Create and configure qdrouterd container
   hosts: "{{ qdrouterd_host_group | default('qdrouterd_all') }}"
-  serial: 1
+  serial: "{{ qdrouterd_serial | default(1) }}"
   gather_facts: false
   user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
