@@ -19,12 +19,12 @@
   tags:
     - always
 
-- name: Galera container config
+- name: Install galera server
   hosts: galera_all
   gather_facts: false
   serial: 1
   user: root
-  tasks:
+  pre_tasks:
     - include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       when: not is_metal
       vars:
@@ -34,15 +34,6 @@
     - include_tasks: common-tasks/unbound-clients.yml
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
-  environment: "{{ deployment_environment_variables | default({}) }}"
-  tags:
-    - galera
-
-- name: Install galera server
-  hosts: galera_all
-  gather_facts: false
-  serial: 1
-  user: root
   roles:
     - role: haproxy_endpoints
       haproxy_state: disabled
