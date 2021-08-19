@@ -17,13 +17,11 @@
     check:
       jobs:
         - openstack-ansible-varstest-aio
-        - openstack-tox-docs:
-            voting: false
+        - openstack-tox-docs
     gate:
       jobs:
         - openstack-ansible-varstest-aio
-        - openstack-tox-docs:
-            voting: false
+        - openstack-tox-docs
     periodic:
       jobs:
         - openstack-ansible-deploy-translations-ubuntu-bionic
