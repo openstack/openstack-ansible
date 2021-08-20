@@ -103,6 +103,8 @@
       - name: openstack/requirements
       # OpenStack service repos - listed here as the corresponding OSA role cannot do distro install
       - name: openstack/panko
+      # Murano distro deployment does need access to valid git repo anyway
+      - name: openstack/murano
 
 - job:
     name: openstack-ansible-deploy-aio
