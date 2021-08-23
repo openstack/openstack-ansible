@@ -19,7 +19,7 @@
   tags:
     - neutron
   tasks:
-    - include: common-tasks/dynamic-grouping.yml
+    - import_tasks: common-tasks/dynamic-grouping.yml
       vars:
         src_group: "nova_compute"
         dest_group: "neutron_l3_agent, neutron_metadata_agent"
@@ -28,7 +28,7 @@
 
 
 - name: Install neutron server
-  include: common-playbooks/neutron.yml
+  import_playbook: common-playbooks/neutron.yml
   vars:
     neutron_hosts: "neutron_server"
     neutron_serial: "{{ neutron_server_serial | default(['1', '100%']) }}"
@@ -36,7 +36,7 @@
 
 
 - name: Install neutron L2 agents
-  include: common-playbooks/neutron.yml
+  import_playbook: common-playbooks/neutron.yml
   vars:
     neutron_hosts: "neutron_linuxbridge_agent:neutron_openvswitch_agent:!neutron_server"
     neutron_serial: "{{ neutron_agent_serial | default('50%') }}"
@@ -44,7 +44,7 @@
 
 
 - name: Install all other neutron agents
-  include: common-playbooks/neutron.yml
+  import_playbook: common-playbooks/neutron.yml
   vars:
     neutron_hosts: "neutron_all:!neutron_linuxbridge_agent:!neutron_openvswitch_agent:!neutron_server"
     neutron_serial: "{{ neutron_other_serial | default('1') }}"

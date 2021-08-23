@@ -151,7 +151,7 @@
     # In order to ensure that the service restart does not
     # cause an unexpected outage, we drain the load balancer
     # back end for this container.
-    - include: common-tasks/haproxy-endpoint-manage.yml
+    - include_tasks: common-tasks/haproxy-endpoint-manage.yml
       vars:
         haproxy_backend: glance_api-back
         haproxy_state: disabled
@@ -161,7 +161,7 @@
         - "groups['glance_api'] | length > 1"
 
     - name: Execute glance service restart
-      include: common-tasks/restart-service.yml
+      include_tasks: common-tasks/restart-service.yml
       vars:
         service_name: "glance-api"
         service_action: "restarted"
@@ -173,7 +173,7 @@
     # Now that service restart is done, we can set
     # the load balancer back end for this container
     # to available again.
-    - include: common-tasks/haproxy-endpoint-manage.yml
+    - include_tasks: common-tasks/haproxy-endpoint-manage.yml
       vars:
         haproxy_backend: glance_api-back
         haproxy_state: enabled
