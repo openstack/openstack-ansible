@@ -56,7 +56,7 @@
     name: openstack-ansible-upgrade-infra_lxc-jobs
     check:
       jobs:
-        - openstack-ansible-upgrade-infra_lxc-centos-8:
+        - openstack-ansible-upgrade-infra_lxc-centos-8-stream:
             voting: false
         - openstack-ansible-upgrade-infra_lxc-ubuntu-focal
     gate:
@@ -67,7 +67,7 @@
     name: openstack-ansible-upgrade-aio_metal-jobs
     check:
       jobs:
-        - openstack-ansible-upgrade-aio_metal-centos-8:
+        - openstack-ansible-upgrade-aio_metal-centos-8-stream:
             voting: false
         - openstack-ansible-upgrade-aio_metal-ubuntu-focal
     gate:
@@ -169,7 +169,7 @@
         - openstack-ansible-deploy-aio_metal-centos-8-stream
         - openstack-ansible-deploy-aio_metal-ubuntu-bionic
         - openstack-ansible-deploy-aio_metal-ubuntu-focal
-        - openstack-ansible-upgrade-aio_metal-centos-8:
+        - openstack-ansible-upgrade-aio_metal-centos-8-stream:
             voting: false
         - openstack-ansible-upgrade-aio_metal-ubuntu-focal
     gate:
