@@ -19,9 +19,6 @@ cinder_service_backup_program_enabled: "{{ hostvars['localhost']['cinder_service
 # These are here rather than in cinder_all because
 # both the os_ceilometer and os_cinder roles require them
 
-# The address used to listen for communications
-cinder_management_address: "{{ ansible_host }}"
-
 # If there are Swift hosts in the environment, then use it as the default Glance store
 # This is specifically duplicated from glance_all for the cinder_glance_api_version
 # setting below.
