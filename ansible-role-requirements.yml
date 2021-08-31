@@ -16,7 +16,7 @@
 - name: galera_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-galera_server
-  version: e2643a1a142679dfb8c38e67dc5c6c0749c31647
+  version: 1180c38dc300d251e39b0717d6283c5a100ecbe4
   trackbranch: stable/wallaby
 - name: ceph_client
   scm: git
@@ -56,7 +56,7 @@
 - name: os_keystone
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_keystone
-  version: be639d940786620a67f3be85d4757c7663e12014
+  version: bba8f0bb592174df3ab1c05b333c1c50e2461cd5
   trackbranch: stable/wallaby
 - name: openstack_openrc
   scm: git
@@ -151,12 +151,12 @@
 - name: os_murano
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_murano
-  version: d45e5f918a48fff2f1427f5100f6bc4521e1ffbb
+  version: 38a11fdb1b01682d2d3d0bd6dd81bfbba8d6cbad
   trackbranch: stable/wallaby
 - name: os_neutron
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_neutron
-  version: 29e5fbf252074bd8cefb875911d88f58af9cb205
+  version: fa05df954185bb9d3682612d396ec2f8b5000c28
   trackbranch: stable/wallaby
 - name: os_nova
   scm: git
@@ -166,7 +166,7 @@
 - name: os_octavia
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_octavia
-  version: 19bf040b67f03111cb205cb41bf03b5f5f2c205c
+  version: 99c246e80963f13bf6c21f0e53200a6fb793c21d
   trackbranch: stable/wallaby
 - name: os_panko
   scm: git
@@ -231,7 +231,7 @@
 - name: rabbitmq_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-rabbitmq_server
-  version: 87a3f4fa3a50a3a2959cf841deb03c8aea5f32fc
+  version: 5a22d53bff67a1697e09070246679d0d385c5bd9
   trackbranch: stable/wallaby
 - name: repo_server
   scm: git
@@ -251,7 +251,7 @@
 - name: sshd
   scm: git
   src: https://github.com/willshersystems/ansible-sshd
-  version: c4db22f16dd59e61881c4ff026e2804a170446a1
+  version: b1fe667432e3076dd1075a670829550f22480030
   trackbranch: master
 - name: bird
   scm: git
@@ -276,9 +276,9 @@
 - name: ceph-ansible
   scm: git
   src: https://github.com/ceph/ceph-ansible
-  version: d7edc71fd557d18531c90b803159b7d526156c1c
+  version: d054864366a4f4e351dfdccd914e4065faa4b7d4
   trackbranch: stable-5.0
-  shallow_since: "2021-07-27"
+  shallow_since: '2021-08-27'
 - name: opendaylight
   scm: git
   src: https://github.com/opendaylight/integration-packaging-ansible-opendaylight
@@ -312,7 +312,7 @@
 - name: python_venv_build
   src: https://opendev.org/openstack/ansible-role-python_venv_build
   scm: git
-  version: 0e735c4f8f0442588482bd60c2307f9e7023fe3b
+  version: a54e13cb4b846459e434f15ea09fe5c93887883e
   trackbranch: stable/wallaby
 - name: uwsgi
   src: https://opendev.org/openstack/ansible-role-uwsgi
