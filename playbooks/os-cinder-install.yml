@@ -14,7 +14,7 @@
 # limitations under the License.
 
 - name: Install cinder scheduler services
-  include: common-playbooks/cinder.yml
+  import_playbook: common-playbooks/cinder.yml
   vars:
     cinder_hosts: "cinder_scheduler:!cinder_api"
     cinder_serial: "{{ cinder_scheduler_serial | default(['1', '100%']) }}"
@@ -22,7 +22,7 @@
 
 
 - name: Install cinder volume services
-  include: common-playbooks/cinder.yml
+  import_playbook: common-playbooks/cinder.yml
   vars:
     cinder_hosts: "cinder_volume:!cinder_scheduler:!cinder_api"
     cinder_serial: "{{ cinder_backend_serial | default(['1', '100%']) }}"
@@ -30,7 +30,7 @@
 
 
 - name: Install cinder backup services
-  include: common-playbooks/cinder.yml
+  import_playbook: common-playbooks/cinder.yml
   vars:
     cinder_hosts: "cinder_backup:!cinder_volume:!cinder_scheduler:!cinder_api"
     cinder_serial: "{{ cinder_backend_serial | default(['1', '100%']) }}"
@@ -38,7 +38,7 @@
 
 
 - name: Install cinder API services
-  include: common-playbooks/cinder.yml
+  import_playbook: common-playbooks/cinder.yml
   vars:
     cinder_hosts: "cinder_api"
     cinder_serial: "{{ cinder_api_serial | default(['1', '100%']) }}"
@@ -107,7 +107,7 @@
     - cinder
   tasks:
     - name: Execute cinder service reload
-      include: common-tasks/restart-service.yml
+      include_tasks: common-tasks/restart-service.yml
       vars:
         service_name: "{{ item.name }}"
         service_action: "{{ item.action }}"
@@ -137,7 +137,7 @@
     # In order to ensure that the service restart does not
     # cause an unexpected outage, we drain the load balancer
     # back end for this container.
-    - include: common-tasks/haproxy-endpoint-manage.yml
+    - include_tasks: common-tasks/haproxy-endpoint-manage.yml
       vars:
         haproxy_state: disabled
       when:
@@ -146,7 +146,7 @@
         - "groups['cinder_api'] | length > 1"
 
     - name: Execute cinder service restart
-      include: common-tasks/restart-service.yml
+      include_tasks: common-tasks/restart-service.yml
       vars:
         service_name: "cinder-api"
         service_action: "restarted"
@@ -158,7 +158,7 @@
     # Now that service restart is done, we can set
     # the load balancer back end for this container
     # to available again.
-    - include: common-tasks/haproxy-endpoint-manage.yml
+    - include_tasks: common-tasks/haproxy-endpoint-manage.yml
       vars:
         haproxy_state: enabled
       when: "groups['cinder_api'] | length > 1"
