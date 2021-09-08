@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    MariaDB now uses TLS encryption by default. Certificate will be issued
+    and signed with internal CA using PKI role.
+    Deployers can disable encrypting MariaDB connections by setting
+    ``galera_use_ssl: false`` in their user_variables.yml
+    Client certificates could be still provided and they will be distributed
+    with PKI role as well.
