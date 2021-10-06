@@ -20,8 +20,8 @@
         (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_release'] == 'focal') or
         (ansible_facts['os_family'] == 'RedHat' and ansible_facts['distribution_major_version'] == '8')
     msg: >-
-      The only supported platforms for this release are Debian Bullseye,
-      Ubuntu 20.04 (Focal), and CentOS 8 Stream
+          The only supported platforms for this release are Debian 11 (Bullseye),
+          Ubuntu 20.04 LTS (Focal), CentOS 8 derivatives such as Rocky Linux, and CentOS 8 Stream.
   when: (check_operating_system | default(True))| bool
   tags:
     - check-operating-system

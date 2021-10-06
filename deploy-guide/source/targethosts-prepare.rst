@@ -14,6 +14,7 @@ target host:
 * Ubuntu server 20.04 (Focal Fossa) LTS 64-bit
 * Debian 10 64-bit
 * Centos 8 Stream 64-bit
+  * Derivitives: Rocky Linux
 
 Configure at least one network interface to access the Internet or
 suitable local repositories.
