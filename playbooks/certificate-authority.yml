@@ -24,5 +24,5 @@
         tasks_from: main_ca.yml
       vars:
         pki_dir: "{{ openstack_pki_dir }}"
-        pki_create_ca: "{{ openstack_pki_authorities is defined | bool }}"
+        pki_create_ca: "{{ openstack_pki_authorities | default([]) | length > 0 }}"
         pki_authorities: "{{ openstack_pki_authorities }}"
