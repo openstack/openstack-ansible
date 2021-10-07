@@ -14,6 +14,9 @@
 # limitations under the License.
 
 component_skel:
+  ironic_neutron_agent:
+    belongs_to:
+      - neutron_all
   neutron_agent:
     belongs_to:
       - neutron_all
@@ -54,6 +57,7 @@ container_skel:
       - network_containers
       - network-agent_containers
     contains:
+      - ironic_neutron_agent
       - neutron_agent
       - neutron_bgp_dragent
       - neutron_dhcp_agent
