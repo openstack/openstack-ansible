@@ -22,6 +22,7 @@
 - name: Install murano components
   hosts: murano_all
   gather_facts: false
+  serial: "{{ murano_serial | default(['1','100%']) }}"
   environment: "{{ deployment_environment_variables | default({}) }}"
   user: root
   vars_files:

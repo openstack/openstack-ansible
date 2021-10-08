@@ -21,7 +21,7 @@
 
 - name: Create and configure rabbitmq container
   hosts: "{{ rabbitmq_host_group | default('rabbitmq_all') }}"
-  serial: 1
+  serial: "{{ rabbitmq_serial | default('20%') }}"
   gather_facts: false
   user: root
   pre_tasks:
@@ -56,7 +56,7 @@
 - name: Install rabbitmq server
   hosts: "{{ rabbitmq_host_group | default('rabbitmq_all') }}"
   gather_facts: false
-  serial: 20%
+  serial: "{{ rabbitmq_serial | default('20%') }}"
   user: root
   roles:
     - role: "rabbitmq_server"

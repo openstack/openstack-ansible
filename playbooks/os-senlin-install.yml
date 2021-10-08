@@ -22,6 +22,7 @@
 - name: Install senlin services
   hosts: senlin_all
   gather_facts: false
+  serial: "{{ senlin_serial | default(['1','100%']) }}"
   user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
   vars_files:

@@ -22,6 +22,7 @@
 - name: Install etcd server cluster
   hosts: etcd
   gather_facts: false
+  serial: "{{ etcd_serial | default(1) }}"
   user: root
   pre_tasks:
     - include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"

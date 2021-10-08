@@ -22,6 +22,7 @@
 - name: Install heat server
   hosts: heat_all
   gather_facts: false
+  serial: "{{ heat_serial | default(['1','100%']) }}"
   user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:

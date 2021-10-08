@@ -22,6 +22,7 @@
 - name: Install unbound DNS resolvers
   hosts: unbound
   gather_facts: false
+  serial: "{{ unbound_serial | default(['1','100%']) }}"
   user: root
   pre_tasks:
     - include_tasks: common-tasks/os-log-dir-setup.yml
