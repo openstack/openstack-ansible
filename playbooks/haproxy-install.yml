@@ -43,12 +43,6 @@
        - "item.when | bool"
       tags:
         - haproxy-config  # this tag is present because the task is ONLY a config task
-    - name: "Create haproxy certificates"
-      include_role:
-        name: pki
-        tasks_from: main_certs.yml
-      vars:
-        pki_search_certificates_pattern: "pki_certificates_haproxy"
   roles:
     - role: "keepalived"
       when: haproxy_use_keepalived | bool
