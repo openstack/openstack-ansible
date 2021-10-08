@@ -275,6 +275,7 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'ironic-inspector_containers',
         'ironic-inspector_hosts',
         'ironic_inspector_container',
+        'ironic_neutron_agent',
         'key-manager_containers',
         'key-manager_hosts',
         'key-manager_all',
