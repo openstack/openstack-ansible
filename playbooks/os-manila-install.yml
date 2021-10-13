@@ -44,7 +44,7 @@
     # the load balancer back end for this container.
     - include_tasks: common-tasks/haproxy-endpoint-manage.yml
       vars:
-        haproxy_backend: manila_api-back
+        haproxy_backend: manila-back
         haproxy_state: disabled
       when:
         - "'manila_api' in group_names"
@@ -63,7 +63,7 @@
     # to available again.
     - include_tasks: common-tasks/haproxy-endpoint-manage.yml
       vars:
-        haproxy_backend: manila_api-back
+        haproxy_backend: manila-back
         haproxy_state: enabled
       when:
         - "'manila_api' in group_names"
