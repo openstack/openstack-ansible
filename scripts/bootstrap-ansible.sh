@@ -126,6 +126,13 @@ UPPER_CONSTRAINTS_PROTO=$([ "$PYTHON_VERSION" == $(echo -e "$PYTHON_VERSION\n2.7
 # Set the location of the constraints to use for all pip installations
 export UPPER_CONSTRAINTS_FILE=${UPPER_CONSTRAINTS_FILE:-"$UPPER_CONSTRAINTS_PROTO://opendev.org/openstack/requirements/raw/$(awk '/requirements_git_install_branch:/ {print $2}' playbooks/defaults/repo_packages/openstack_services.yml)/upper-constraints.txt"}
 
+# Define a location for a local copy of upper constraints and download it with curl
+UPPER_CONSTRAINTS_LOCAL_FILE=/opt/ansible-runtime-venv-constraints.txt
+curl -L -o ${UPPER_CONSTRAINTS_LOCAL_FILE} ${UPPER_CONSTRAINTS_FILE}
+
+# Use the local copy for pip rather than have pip attempt (and fail due to outdated CA store) to download it itself
+export UPPER_CONSTRAINTS_FILE=${UPPER_CONSTRAINTS_LOCAL_FILE}
+
 if [[ -z "${SKIP_OSA_RUNTIME_VENV_BUILD+defined}" ]]; then
     build_ansible_runtime_venv
 fi
