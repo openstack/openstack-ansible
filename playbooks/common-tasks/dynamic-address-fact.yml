@@ -16,10 +16,12 @@
 - name: Gathering facts for {{ network_address }} interface on metal hosts
   setup:
     gather_subset: "!all,network"
-    filter: "{{ dynamic_address_gather_filter | default(('ansible_' ~ container_networks[network_address]['bridge']) | replace('-','_')) }}"
+    filter: "{{ dynamic_address_gather_filter | default(('ansible_' ~ default_network_interface_name) | replace('-','_')) }}"
+  vars:
+    default_network_interface_name: "{{ container_networks[network_address]['bridge'] | default }}"
   when:
     - is_metal
-    - (dynamic_address_gather_filter is defined) or (container_networks[network_address] is defined and container_networks[network_address]['bridge'] is defined)
+    - (dynamic_address_gather_filter is defined) or (default_network_interface_name | length > 0)
 
 - name: Set IP to use for {{ network_address }}
   set_fact: "{{ network_address }}={{ hostvars[inventory_hostname] | json_query(query) }}"
