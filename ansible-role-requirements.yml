@@ -16,7 +16,7 @@
 - name: galera_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-galera_server
-  version: 1180c38dc300d251e39b0717d6283c5a100ecbe4
+  version: ca842d800b9d07d992b0457eb7596a58e610536e
   trackbranch: stable/wallaby
 - name: ceph_client
   scm: git
@@ -26,12 +26,12 @@
 - name: haproxy_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-haproxy_server
-  version: d49c53dcf0c9e4b86ca3ff9ecb4ec7fa67f3b58c
+  version: 00441b7108752683b0984c3ee427fb1d6c78c357
   trackbranch: stable/wallaby
 - name: keepalived
   scm: git
   src: https://github.com/evrardjp/ansible-keepalived
-  version: b5fe49d98601f62055365645df47ef1bae30ee74
+  version: 78fcf28f2c7be772d16740e8154c21a78a19e775
   trackbranch: master
 - name: lxc_container_create
   scm: git
@@ -206,7 +206,7 @@
 - name: os_tempest
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_tempest
-  version: 42f33d8cae55c7e6c361564010e0651703bc3ac5
+  version: bd399b80e9de12452f1bee620bc60a69c142bf40
   trackbranch: stable/wallaby
 - name: os_trove
   scm: git
@@ -251,12 +251,12 @@
 - name: sshd
   scm: git
   src: https://github.com/willshersystems/ansible-sshd
-  version: b1fe667432e3076dd1075a670829550f22480030
+  version: 57c54e5268d9c09ab31b1357558cdcaa68116015
   trackbranch: master
 - name: bird
   scm: git
   src: https://github.com/logan2211/ansible-bird
-  version: 9e5a7d7fc8b72ad4aa73280a7638b0554cf20d5c
+  version: 904e55d56f82f36e3e9e9fbc5b3bd932a1151f7b
   trackbranch: master
 - name: etcd
   scm: git
@@ -276,9 +276,9 @@
 - name: ceph-ansible
   scm: git
   src: https://github.com/ceph/ceph-ansible
-  version: c8841cdf4182b51edb7bcec1396e0ade472346af
+  version: 4271670a839ccd72f2a5b52e01feefa4d9ab383e
   trackbranch: stable-5.0
-  shallow_since: '2021-09-08'
+  shallow_since: '2021-10-20'
 - name: opendaylight
   scm: git
   src: https://github.com/opendaylight/integration-packaging-ansible-opendaylight
