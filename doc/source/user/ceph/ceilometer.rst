@@ -25,7 +25,6 @@ user_variables.yml file:
         - libvirt-python
         - PyMySQL
         - pymongo
-        - python-ceilometerclient
         - python-memcached
         - tooz
         - warlock
