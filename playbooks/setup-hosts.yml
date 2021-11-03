@@ -14,6 +14,7 @@
 # limitations under the License.
 
 - import_playbook: certificate-authority.yml
+- import_playbook: certificate-generate.yml
 - import_playbook: openstack-hosts-setup.yml
 - import_playbook: containers-deploy.yml
 - import_playbook: security-hardening.yml
