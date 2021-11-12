@@ -94,6 +94,53 @@ following ways:
 
      haproxy_pki_regen_cert: true
 
+Generating and regenerating self-signed user certificates
+---------------------------------------------------------
+
+Self-signed user certificates are generated but not installed for services
+outside of Openstack ansible. These user certificates are signed by the same
+self-signed certificate authority as is used by openstack services
+but are intended to be used by user applications.
+
+To create user certificates, define a variable with the prefix
+``user_pki_certificates_`` in the ``/etc/openstack_deploy/user_variables.yml``
+file.
+
+Example
+
+.. code-block:: yaml
+
+   user_pki_certificates_example:
+      - name: "example"
+        provider: ownca
+        cn: "example.com"
+        san: "DNS:example.com,IP:x.x.x.x"
+        signed_by: "{{ openstack_pki_service_intermediate_cert_name }}"
+        key_usage:
+          - digitalSignature
+          - keyAgreement
+        extended_key_usage:
+          - serverAuth
+
+To generate a new self-signed certificate for a service, you must set
+the ``user_pki_regen_cert`` variable to true in one of the
+following ways:
+
+* To force a self-signed certificate to regenerate, you can pass the variable
+  to ``openstack-ansible`` on the command line:
+
+  .. code-block:: shell-session
+
+     # openstack-ansible -e "user_pki_regen_cert=true" certificate-generate.yml
+
+* To force a self-signed certificate to regenerate with every playbook run,
+  set the ``user_pki_regen_cert`` variable to ``true`` in the
+  ``/etc/openstack_deploy/user_variables.yml`` file:
+
+  .. code-block:: yaml
+
+     user_pki_regen_cert: true
+
 
 User-provided certificates
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
