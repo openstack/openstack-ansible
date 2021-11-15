@@ -115,6 +115,7 @@
           {{ config | to_yaml }}
       when:
         - placement_migrate_flag | default(False)
+        - groups['compute-infra_hosts']
         - not ('placement-infra_hosts' in groups and groups['placement-infra_hosts'])
 
     - name: Set placement service is_metal property
