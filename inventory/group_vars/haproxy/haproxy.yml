@@ -37,6 +37,17 @@ haproxy_security_txt_acl:
     rule: "path_end /security.txt"
     backend_name: keystone_service
 
+# Variables to set security headers used by browsers
+haproxy_security_headers_max_age: 31536000
+# To override the CSP used by a specific service define a variable haproxy_<service name>_csp
+haproxy_security_headers_csp: "http-response set-header Content-Security-Policy \"default-src 'self'; frame-ancestors 'none'; form-action 'self'; upgrade-insecure-requests; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; child-src 'self' {{ external_lb_vip_address }}:{{ nova_console_port }}; frame-src 'self' {{ external_lb_vip_address }}:{{ nova_console_port }};\""
+# To disable security headers set to []
+haproxy_security_headers:
+  - "http-response set-header Strict-Transport-Security \"max-age={{ haproxy_security_headers_max_age }}; includeSubDomains;\""
+  - 'http-response set-header X-Content-Type-Options "nosniff"'
+  - 'http-response set-header Referrer-Policy "same-origin"'
+  - 'http-response set-header Permissions-Policy "accelerometer=(), ambient-light-sensor=(), autoplay=(), battery=(), camera=(), cross-origin-isolated=(), display-capture=(), document-domain=(), encrypted-media=(), execution-while-not-rendered=(), execution-while-out-of-viewport=(), fullscreen=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), navigation-override=(self), payment=(), picture-in-picture=(), publickey-credentials-get=(), screen-wake-lock=(), sync-xhr=(), usb=(), web-share=(), xr-spatial-tracking=(), clipboard-read=(self), clipboard-write=(self), gamepad=(), speaker-selection=()"'
+
 haproxy_adjutant_api_service:
   haproxy_service_name: adjutant_api
   haproxy_backend_nodes: "{{ groups['adjutant_api'] | default([]) }}"
@@ -197,6 +208,7 @@ haproxy_horizon_service:
   haproxy_redirect_scheme: "{{ (haproxy_ssl_letsencrypt_enable | bool and haproxy_ssl | bool) | ternary('https if !{ ssl_fc } !{ path_beg /.well-known/acme-challenge/ }', 'https if !{ ssl_fc }') }}"
   haproxy_frontend_acls: "{{ (haproxy_ssl_letsencrypt_enable | bool and haproxy_ssl | bool) | ternary(haproxy_ssl_letsencrypt_acl, {}) }}"
   haproxy_acls: "{{ keystone_security_txt_content is defined | ternary(haproxy_security_txt_acl, {}) }}"
+  haproxy_raw: "{{ (haproxy_ssl | bool and haproxy_security_headers is defined) | ternary( haproxy_security_headers + [ haproxy_horizon_csp | default(haproxy_security_headers_csp)], []) }}"
 
 haproxy_ironic_api_service:
   haproxy_service_name: ironic_api

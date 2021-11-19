@@ -1,0 +1,19 @@
+---
+security:
+  - |
+    The following security headers were added to the haproxy Horizon service:
+    `strict-transport-security`, `x-content-type-options`, `referrer-policy`
+    and `content-security-policy`.
+    Care should be taken when deploying the `strict-transport-security` header,
+    as this header implements Trust on First Use security, meaning that
+    after a browser first visits the page the browser will enforce the use of
+    HTTPS until the max age time has expired.
+    For the time being the `strict-transport-security` `preload` token which
+    indicates that you are happy to have your site included in the HSTS preload
+    list that is built into browsers has been excluded.
+    The headers can be disabled by setting `haproxy_security_headers: []` and
+    the CSP (Content Security Policy) for Horizon can be overridden to support
+    things like federated login by setting `haproxy_horizon_csp`.
+    There is the option to extend to all haproxy services in the future, but as
+    the headers are only used by browsers there maybe limited benefit to doing
+    this other than for keystone and console services.
