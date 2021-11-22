@@ -194,6 +194,13 @@ ensuring that the containers are restarted in a controlled fashion.
 
     # openstack-ansible "${SCRIPTS_PATH}/upgrade-utilities/galera-cluster-rolling-restart.yml"
 
+During upgrade from S->T nova may fail with DB migrations because of the insufficient
+size of the table type.
+
+.. code-block:: console
+
+    # openstack-ansible "${SCRIPTS_PATH}/upgrade-utilities/galera-row-format-switch.yml"
+
 Upgrade OpenStack
 ~~~~~~~~~~~~~~~~~
 
