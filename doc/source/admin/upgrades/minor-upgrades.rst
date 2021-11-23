@@ -49,7 +49,7 @@ A minor upgrade typically requires the following steps:
 
    .. code-block:: console
 
-      # openstack-ansible setup-hosts.yml
+      # openstack-ansible setup-hosts.yml -e package_state=latest
 
 #. Update the infrastructure:
 
@@ -62,7 +62,7 @@ A minor upgrade typically requires the following steps:
 
    .. code-block:: console
 
-      # openstack-ansible setup-openstack.yml
+      # openstack-ansible setup-openstack.yml -e package_state=latest
 
 .. note::
 
