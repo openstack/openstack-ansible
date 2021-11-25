@@ -387,44 +387,20 @@ haproxy_opendaylight_websocket_service:
   haproxy_allowlist_networks: "{{ haproxy_opendaylight_allowlist_networks }}"
   haproxy_service_enabled: "{{ neutron_plugin_type == 'ml2.opendaylight' }}"
 
+# TODO(jamesdenton): Remove that in Z release
 haproxy_ovn_northbound_service:
   haproxy_service_name: neutron_ovn_northd_northbound
-  haproxy_backend_nodes: "{{ (groups['neutron_ovn_northd'] | default([]))[:1] }}" # list expected
-  haproxy_backup_nodes: "{{ (groups['neutron_ovn_northd'] | default([]))[1:] }}"
-  haproxy_port: 6641
-  haproxy_bind: "{{ [internal_lb_vip_address] }}"
-  haproxy_balance_type: tcp
-  haproxy_timeout_client: 90m
-  haproxy_timeout_server: 90m
-  haproxy_backend_options:
-    - tcpka
-  haproxy_service_enabled: "{{ (neutron_plugin_type == 'ml2.ovn') and (groups['neutron_ovn_northd'] is defined and groups['neutron_ovn_northd'] | length > 0) }}"
+  state: absent
 
+# TODO(jamesdenton): Remove that in Z release
 haproxy_ovn_southbound_service:
   haproxy_service_name: neutron_ovn_northd_southbound
-  haproxy_backend_nodes: "{{ (groups['neutron_ovn_northd'] | default([]))[:1] }}"
-  haproxy_backup_nodes: "{{ (groups['neutron_ovn_northd'] | default([]))[1:] }}"
-  haproxy_port: 6642
-  haproxy_bind: "{{ [internal_lb_vip_address] }}"
-  haproxy_balance_type: tcp
-  haproxy_timeout_client: 90m
-  haproxy_timeout_server: 90m
-  haproxy_backend_options:
-    - tcpka
-  haproxy_service_enabled: "{{ (neutron_plugin_type == 'ml2.ovn') and (groups['neutron_ovn_northd'] is defined and groups['neutron_ovn_northd'] | length > 0) }}"
+  state: absent
 
+# TODO(jamesdenton): Remove that in Z release
 haproxy_ovn_ovsdb_service:
   haproxy_service_name: neutron_ovn_ovsdb_server
-  haproxy_backend_nodes: "{{ (groups['neutron_ovn_northd'] | default([]))[:1] }}"
-  haproxy_backup_nodes: "{{ (groups['neutron_ovn_northd'] | default([]))[1:] }}"
-  haproxy_port: 6640
-  haproxy_bind: "{{ [internal_lb_vip_address] }}"
-  haproxy_balance_type: tcp
-  haproxy_timeout_client: 90m
-  haproxy_timeout_server: 90m
-  haproxy_backend_options:
-    - tcpka
-  haproxy_service_enabled: "{{ (neutron_plugin_type == 'ml2.ovn') and (groups['neutron_ovn_northd'] is defined and groups['neutron_ovn_northd'] | length > 0) }}"
+  state: absent
 
 # TODO(noonedeadpunk): Remove that in Y release
 haproxy_panko_api_service:
@@ -584,9 +560,6 @@ haproxy_default_services:
   - service: "{{ haproxy_octavia_service }}"
   - service: "{{ haproxy_opendaylight_neutron_service }}"
   - service: "{{ haproxy_opendaylight_websocket_service }}"
-  - service: "{{ haproxy_ovn_northbound_service }}"
-  - service: "{{ haproxy_ovn_southbound_service }}"
-  - service: "{{ haproxy_ovn_ovsdb_service }}"
   - service: "{{ haproxy_panko_api_service }}"
   - service: "{{ haproxy_placement_service }}"
   - service: "{{ haproxy_rabbitmq_service }}"
