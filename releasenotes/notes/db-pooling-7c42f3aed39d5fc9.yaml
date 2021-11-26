@@ -1,0 +1,2 @@
+upgrade:
+  - We have changed default values for variables related to database connection pooling. For some services(like nova) default pool sizes will be significantly lower, we have also decreased default connection_recycle_time to 10 minutes. It should not cause any issues, but we recommended to double check these values, especially for large environments.
