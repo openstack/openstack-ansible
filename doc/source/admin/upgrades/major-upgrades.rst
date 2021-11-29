@@ -179,7 +179,7 @@ Once CA is generated, we can proceed with standard OpenStack upgrade steps:
 
 .. code-block:: console
 
-    # openstack-ansible setup-hosts.yml --limit '!galera_all:!rabbitmq_all'
+    # openstack-ansible setup-hosts.yml --limit '!galera_all:!rabbitmq_all' -e package_state=latest
 
 This command is the same setting up hosts on a new installation. The
 ``galera_all`` and ``rabbitmq_all`` host groups are excluded to prevent
@@ -201,7 +201,7 @@ ensure that rabbitmq and mariadb are upgraded, we pass the appropriate flags.
 
 .. code-block:: console
 
-    # openstack-ansible setup-infrastructure.yml -e 'galera_upgrade=true' -e 'rabbitmq_upgrade=true'
+    # openstack-ansible setup-infrastructure.yml -e 'galera_upgrade=true' -e 'rabbitmq_upgrade=true' -e package_state=latest
 
 With this complete, we can now restart the mariadb containers one at a time,
 ensuring that each is started, responding, and synchronized with the other
@@ -220,4 +220,4 @@ We can now go ahead with the upgrade of all the OpenStack components.
 
 .. code-block:: console
 
-    # openstack-ansible setup-openstack.yml
+    # openstack-ansible setup-openstack.yml -e package_state=latest

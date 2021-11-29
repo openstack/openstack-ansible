@@ -34,11 +34,7 @@ ssh_delay: 5
 management_address: "{{ container_address }}"
 openstack_service_bind_address: "{{ management_address }}"
 
-# Set the package install state for distribution packages
-# Options are 'present' and 'latest'.
-# NOTE(mhayden): Allowing CentOS and openSUSE to use package_state=present should give
-# gate jobs a better chance to finish and expose more issues to fix.
-package_state: "{{ (ansible_facts['pkg_mgr'] in ['dnf', 'zypper']) | ternary('present', 'latest') }}"
+package_state: "present"
 
 # Set "/var/log" to be a bind mount to the physical host.
 default_bind_mount_logs: true

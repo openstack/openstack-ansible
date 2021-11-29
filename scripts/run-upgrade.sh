@@ -173,15 +173,15 @@ function main {
         # we don't want to trigger container restarts for galera and rabbit
         # but as there will be no hosts available for metal deployments,
         # as a fallback option we just run setup-hosts.yml without any arguments
-        RUN_TASKS+=("setup-hosts.yml --limit '!galera_all:!rabbitmq_all' && \
+        RUN_TASKS+=("setup-hosts.yml --limit '!galera_all:!rabbitmq_all' -e package_state=latest && \
                      openstack-ansible setup-hosts.yml -e 'lxc_container_allow_restarts=false' --limit 'galera_all:rabbitmq_all' || \
-                     openstack-ansible setup-hosts.yml")
+                     openstack-ansible setup-hosts.yml -e package_state=latest")
         # upgrade infrastructure
-        RUN_TASKS+=("setup-infrastructure.yml -e 'galera_upgrade=true' -e 'rabbitmq_upgrade=true'")
+        RUN_TASKS+=("setup-infrastructure.yml -e 'galera_upgrade=true' -e 'rabbitmq_upgrade=true' -e package_state=latest")
         # explicitly perform controlled galera cluster restart with new lxc config
         RUN_TASKS+=("${SCRIPTS_PATH}/upgrade-utilities/galera-cluster-rolling-restart.yml")
         # upgrade openstack
-        RUN_TASKS+=("setup-openstack.yml")
+        RUN_TASKS+=("setup-openstack.yml -e package_state=latest")
         # Run the tasks in order
         for item in ${!RUN_TASKS[@]}; do
           echo "### NOW RUNNING: ${RUN_TASKS[$item]}"
