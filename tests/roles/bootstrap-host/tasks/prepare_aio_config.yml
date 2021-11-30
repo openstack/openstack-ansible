@@ -28,7 +28,7 @@
   with_items: "{{ bootstrap_host_scenarios_expanded }}"
 
 - name: Deploy user conf.d configuration
-  config_template:
+  openstack.config_template.config_template:
     src: "{{ bootstrap_host_aio_config_path }}/conf.d/{{ item.item }}.yml.aio"
     dest: "/etc/openstack_deploy/conf.d/{{ item.item }}.yml"
     config_overrides: "{{ item.item.override | default({}) }}"
@@ -42,7 +42,7 @@
     - deploy-confd
 
 - name: Deploy openstack_user_config
-  config_template:
+  openstack.config_template.config_template:
     src: "{{ bootstrap_host_aio_config_path }}/openstack_user_config.yml.aio.j2"
     dest: "/etc/openstack_deploy/openstack_user_config.yml"
     config_overrides: "{{ openstack_user_config_overrides | default({}) }}"
@@ -52,7 +52,7 @@
     - deploy-openstack-user-config
 
 - name: Deploy user_secrets file
-  config_template:
+  openstack.config_template.config_template:
     src: "{{ bootstrap_host_aio_config_path }}/user_secrets.yml"
     dest: "/etc/openstack_deploy/{{ bootstrap_host_user_secrets_filename }}"
     config_overrides: "{{ user_secrets_overrides | default({}) }}"
@@ -127,7 +127,7 @@
   when: ansible_facts['os_family'] | lower == 'redhat'
 
 - name: Set the user_variables
-  config_template:
+  openstack.config_template.config_template:
     src: "{{ bootstrap_user_variables_template }}"
     dest: "/etc/openstack_deploy/{{ bootstrap_host_user_variables_filename }}"
     config_overrides: "{{ user_variables_overrides | default({}) }}"
@@ -141,7 +141,7 @@
     - "lookup('env', 'http_proxy')|length > 0"
 
 - name: Drop the extra user_variables files for this scenario
-  config_template:
+  openstack.config_template.config_template:
     src: "{{ item.src }}"
     dest: "/etc/openstack_deploy/{{ item.dest }}"
     config_overrides: "{{ item.config_overrides | default({}) }}"
