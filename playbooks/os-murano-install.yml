@@ -25,6 +25,7 @@
   environment: "{{ deployment_environment_variables | default({}) }}"
   user: root
   vars_files:
+    - "defaults/repo_packages/openstack_services.yml"
     - "defaults/{{ install_method }}_install.yml"
   tags:
     - murano
