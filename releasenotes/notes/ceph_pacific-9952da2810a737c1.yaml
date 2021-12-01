@@ -1,0 +1,12 @@
+---
+features:
+  - |
+    Ceph-ansible has been switched to version 6.0 and Ceph Pacific is used
+    by default.
+issues:
+  - |
+    There's a `known issue <https://tracker.ceph.com/issues/53062>`_ with
+    upgrade to Ceph Pacific release prior to version 16.2.7.
+    Please, make sure that 16.2.7 or later has been released before performing
+    Ceph upgrade. Otherwise, override ``ceph_stable_release: octopus`` in your
+    user_variables.yml
