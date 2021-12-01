@@ -54,6 +54,8 @@ systemd_utils_distro_prefix:
 
 systemd_utils_prefix: "{{ systemd_utils_distro_prefix[ansible_facts['pkg_mgr']] }}"
 
+openstack_lock_dir: "/run/lock"
+
 # Ensure that the package state matches the global setting
 rsyslog_client_package_state: "{{ package_state }}"
 # At this time there's no suitable package available for systemd-journal-remote/gateway
