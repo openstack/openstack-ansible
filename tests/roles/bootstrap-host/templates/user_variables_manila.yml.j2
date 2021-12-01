@@ -28,8 +28,8 @@ tempest_flavors:
     vcpus: 1
   - name: manila-service-flavor
     id: 100
-    ram: 256
-    disk: 3
+    ram: 320
+    disk: 5
     vcpus: 1
 
 tempest_test_includelist:
@@ -62,6 +62,8 @@ tempest_images:
   - url: "http://tarballs.openstack.org/manila-image-elements/images/manila-service-image-master.qcow2"
     format: "qcow2"
     name: "manila-service-image"
+
+nova_console_type: disabled
 
 manila_backends:
   cephfsnfs1:
