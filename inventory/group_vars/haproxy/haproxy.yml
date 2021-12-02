@@ -203,7 +203,7 @@ haproxy_horizon_service:
   haproxy_balance_type: http
   haproxy_balance_alg: source
   haproxy_backend_options:
-    - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+    - "httpchk HEAD /auth/login/ HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
   haproxy_service_enabled: "{{ groups['horizon_all'] is defined and groups['horizon_all'] | length > 0 }}"
   haproxy_redirect_scheme: "{{ (haproxy_ssl_letsencrypt_enable | bool and haproxy_ssl | bool) | ternary('https if !{ ssl_fc } !{ path_beg /.well-known/acme-challenge/ }', 'https if !{ ssl_fc }') }}"
   haproxy_frontend_acls: "{{ (haproxy_ssl_letsencrypt_enable | bool and haproxy_ssl | bool) | ternary(haproxy_ssl_letsencrypt_acl, {}) }}"
