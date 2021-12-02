@@ -364,7 +364,7 @@ haproxy_nova_console_service:
   haproxy_balance_alg: source
   haproxy_backend_options: "{{ haproxy_nova_console_http_mode | ternary(['httpchk HEAD ' + nova_console_path + ' HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck'], []) }}"
   haproxy_backend_httpcheck_options: "{{ haproxy_nova_console_http_mode | ternary(['expect status 200'], []) }}"
-  haproxy_service_enabled: "{{ groups['nova_console'] is defined and groups['nova_console'] | length > 0 }}"
+  haproxy_service_enabled: "{{ groups['nova_console'] is defined and groups['nova_console'] | length > 0 and nova_console_type != 'disabled' }}"
 
 haproxy_octavia_service:
   haproxy_service_name: octavia

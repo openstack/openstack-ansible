@@ -29,6 +29,10 @@ nova_consoles:
   serial:
     port: "{{ nova_serialconsoleproxy_port | default('6083') }}"
     path: "/"
+  disabled:
+    port: 0
+    path: ""
+
 nova_console_type: "{{ (ansible_architecture == 'aarch64') | ternary('serialconsole', 'novnc') }}"
 nova_console_port: "{{ nova_consoles[nova_console_type]['port'] }}"
 nova_console_path: "{{ nova_consoles[nova_console_type]['path'] }}"
