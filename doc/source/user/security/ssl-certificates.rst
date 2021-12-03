@@ -202,25 +202,34 @@ the preceding configuration variables with `horizon`, `haproxy`, or `keystone`,
 and then run the playbook for that service to deploy user-provided certificates
 to those services.
 
-LetsEncrypt certificates
-~~~~~~~~~~~~~~~~~~~~~~~~
+Certbot certificates
+~~~~~~~~~~~~~~~~~~~~
 
-The HAProxy ansible role supports using LetsEncrypt to automatically deploy
+The HAProxy ansible role supports using certbot to automatically deploy
 trusted SSL certificates for the public endpoint. Each HAProxy server will
-individually request a LetsEncrypt certificate.
+individually request a SSL certificate using certbot.
+
+Certbot defaults to using LetsEncrypt as the Certificate Authority, other
+Certificate Authorities can be used by setting the
+``haproxy_ssl_letsencrypt_certbot_server`` variable in the
+``/etc/openstack_deploy/user_variables.yml`` file:
+
+.. code-block:: yaml
+
+   haproxy_ssl_letsencrypt_certbot_server: "https://acme-staging-v02.api.letsencrypt.org/directory"
 
 The http-01 type challenge is used by certbot to deploy certificates so
-it is required that the public endpoint is accessible directly on the
-internet.
+it is required that the public endpoint is accessible directly by the
+Certificate Authority.
 
-Deployment of certificates using LetsEncrypt has been validated for
+Deployment of certificates using certbot has been validated for
 openstack-ansible using Ubuntu Bionic. Other distributions should work
 but are not tested.
 
-To deploy certificates with LetsEncrypt, add the following to
+To deploy certificates with certbot, add the following to
 ``/etc/openstack_deploy/user_variables.yml`` to enable the
-letsencrypt function in the haproxy ansible role, and to
-create a new backend service called ``letsencrypt`` to service
+certbot function in the haproxy ansible role, and to
+create a new backend service called ``certbot`` to service
 http-01 challenge requests.
 
 .. code-block:: shell-session
@@ -253,3 +262,107 @@ backend is certbot on the haproxy host:
         haproxy_backend_port: 80
         haproxy_backend_options:
           - "httpchk HEAD /"                                   # request to use for health check for the example service
+
+TLS for Haproxy Internal VIP
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+As well as load balancing public endpoints, haproxy is also used to load balance
+internal connections.
+
+By default, OpenStack-Ansible does not secure connections to the internal VIP.
+To enable this you must set the following variables in the
+``/etc/openstack_deploy/user_variables.yml`` file:
+
+.. code-block:: yaml
+
+   openstack_service_adminuri_proto: https
+   openstack_service_internaluri_proto: https
+
+   haproxy_ssl_all_vips: true
+
+Run all playbooks to configure haproxy and openstack services.
+
+When enabled haproxy will use the same TLS certificate on all interfaces
+(internal and external). It is not currently possible in OpenStack-Ansible to
+use different self-signed or user-provided TLS certificates on different haproxy
+interfaces.
+
+The only way to use a different TLS certificates on the internal and external
+VIP is to use certbot.
+
+Enabling TLS on the internal VIP for existing deployments will cause some
+downtime, this is because haproxy only listens on a single well known port for
+each OpenStack service and OpenStack services are configured to use http or
+https. This means once haproxy is updated to only accept HTTPS connections, the
+OpenStack services will stop working until they are updated to use HTTPS.
+
+For this reason it is recommended that TLS for haproxy internal VIP on existing
+deployments is deployed at the same time as enabling TLS for Haproxy backends,
+as this may also cause downtime. For new deployments this should be enabled from
+the start.
+
+TLS for Haproxy Backends
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Securing the internal communications from haproxy to backend services is
+currently work in progress.
+
+TLS for Live Migrations
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Live migration of VM's using SSH is deprecated and the `OpenStack Nova Docs`_
+recommends using the more secure native TLS method supported by QEMU. The
+default live migration method used by OpenStack-Ansible has been updated to
+use TLS migrations.
+
+.. _OpenStack Nova Docs: https://docs.openstack.org/nova/latest/admin/secure-live-migration-with-qemu-native-tls.html
+
+QEMU-native TLS requires all compute hosts to accept TCP connections on
+port 16514 and port range 49152 to 49261.
+
+It is not possible to have a mixed estate of some compute nodes using SSH and
+some using TLS for live migrations, as this would prevent live migrations
+between the compute nodes.
+
+There are no issues enabling TLS live migration during an OpenStack upgrade, as
+long as you do not need to live migrate instances during the upgrade. If you
+you need to live migrate instances during an upgrade, enable TLS live migrations
+before or after the upgrade.
+
+To force the use of SSH instead of TLS for live migrations you must set the
+``nova_libvirtd_listen_tls`` variable to ``0`` in the
+``/etc/openstack_deploy/user_variables.yml`` file:
+
+.. code-block:: yaml
+
+   nova_libvirtd_listen_tls: 0
+
+TLS for VNC
+~~~~~~~~~~~
+
+When using VNC for console access there are 3 connections to secure, client to
+haproxy, haproxy to noVNC Proxy and noVNC Proxy to Compute nodes. The `OpenStack
+Nova Docs for remote console access`_ cover console security in much more
+detail.
+
+.. _OpenStack Nova Docs for remote console access: https://docs.openstack.org/nova/latest/admin/remote-console-access.html#vnc-proxy-security
+
+In OpenStack-Ansible TLS to haproxy is configured in haproxy, TLS to noVNC is
+not currently enabled and TLS to Compute nodes is enabled by default.
+
+To help with the transition from unencrypted VNC to VeNCrypt,
+initially noVNC proxy auth scheme allows for both encrypted and
+unencrypted sessions using the variable `nova_vencrypt_auth_scheme`. This will
+be restricted to VeNCrypt only in future versions of OpenStack-Ansible.
+
+.. code-block:: yaml
+
+   nova_vencrypt_auth_scheme: "vencrypt,none"
+
+To not encrypt data from noVNC proxy to Compute nodes you must set the
+``nova_qemu_vnc_tls`` variable to ``0`` in the
+``/etc/openstack_deploy/user_variables.yml`` file:
+
+.. code-block:: yaml
+
+   nova_qemu_vnc_tls: 0
