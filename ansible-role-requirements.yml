@@ -11,12 +11,12 @@
 - name: config_template
   scm: git
   src: https://opendev.org/openstack/ansible-config_template
-  version: 8a9b9622d5225177891bf0fa14b4b37b8c5fb379
+  version: 7422a0941b8aa29eebe45c192844a27c25c216ef
   trackbranch: master
 - name: galera_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-galera_server
-  version: ca842d800b9d07d992b0457eb7596a58e610536e
+  version: 65d462703cfaa84c16f41eb12f86cd415dbbcc15
   trackbranch: stable/wallaby
 - name: ceph_client
   scm: git
@@ -26,7 +26,7 @@
 - name: haproxy_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-haproxy_server
-  version: 00441b7108752683b0984c3ee427fb1d6c78c357
+  version: 18bcb0f2ebd7b8c5852556ebcedc1f430103127d
   trackbranch: stable/wallaby
 - name: keepalived
   scm: git
@@ -41,7 +41,7 @@
 - name: lxc_hosts
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-lxc_hosts
-  version: 9dae89e3c23a2206ff08819592664f5ba17f0cb6
+  version: 939d3222a84935e6302ec933628bc83cf0290125
   trackbranch: stable/wallaby
 - name: memcached_server
   scm: git
@@ -51,7 +51,7 @@
 - name: openstack_hosts
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-openstack_hosts
-  version: 4923bc834ffa5c8cb99b87f267f2669f4004229f
+  version: 6fcba602b634bd505c45afdb5e6ad2983df72cf0
   trackbranch: stable/wallaby
 - name: os_keystone
   scm: git
@@ -111,7 +111,7 @@
 - name: os_gnocchi
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_gnocchi
-  version: 9e409492ff11895363b6eb6d0771d277975786a9
+  version: 09d669b9f2605635ef46b433d2d084f1b46a6628
   trackbranch: stable/wallaby
 - name: os_heat
   scm: git
@@ -151,7 +151,7 @@
 - name: os_murano
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_murano
-  version: 38a11fdb1b01682d2d3d0bd6dd81bfbba8d6cbad
+  version: e865acfc794634ca989e22df9ba81f33efcff6a2
   trackbranch: stable/wallaby
 - name: os_neutron
   scm: git
@@ -166,7 +166,7 @@
 - name: os_octavia
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_octavia
-  version: 99c246e80963f13bf6c21f0e53200a6fb793c21d
+  version: 29287119f58fadf5f0122fa8f023b9d92d2636c9
   trackbranch: stable/wallaby
 - name: os_panko
   scm: git
@@ -251,7 +251,7 @@
 - name: sshd
   scm: git
   src: https://github.com/willshersystems/ansible-sshd
-  version: 57c54e5268d9c09ab31b1357558cdcaa68116015
+  version: 214df35c0bee77b5d69f49c2da269251d451b28f
   trackbranch: master
 - name: bird
   scm: git
@@ -276,9 +276,9 @@
 - name: ceph-ansible
   scm: git
   src: https://github.com/ceph/ceph-ansible
-  version: 4271670a839ccd72f2a5b52e01feefa4d9ab383e
+  version: 8f26939da49691e035dde0cea0c2e2d3ee7c40f3
   trackbranch: stable-5.0
-  shallow_since: '2021-10-20'
+  shallow_since: '2021-12-01'
 - name: opendaylight
   scm: git
   src: https://github.com/opendaylight/integration-packaging-ansible-opendaylight
