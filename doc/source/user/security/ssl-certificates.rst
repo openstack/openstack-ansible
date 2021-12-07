@@ -222,8 +222,8 @@ The http-01 type challenge is used by certbot to deploy certificates so
 it is required that the public endpoint is accessible directly by the
 Certificate Authority.
 
-Deployment of certificates using certbot has been validated for
-openstack-ansible using Ubuntu Bionic. Other distributions should work
+Deployment of certificates using LetsEncrypt has been validated for
+openstack-ansible using Ubuntu Focal. Other distributions should work
 but are not tested.
 
 To deploy certificates with certbot, add the following to

@@ -31,17 +31,6 @@ Vagrant.configure(2) do |config|
   # Configure the disk size.
   disk_size = "60GB"
 
-  config.vm.define "ubuntu1804" do |bionic|
-    bionic.vm.box = "ubuntu/bionic64"
-    bionic.disksize.size = disk_size
-    config.vm.provision "shell",
-      privileged: true,
-      inline: <<-SHELL
-          cd /vagrant
-          ./scripts/gate-check-commit.sh
-      SHELL
-  end
-
   config.vm.define "opensuse423" do |leap423|
     leap423.disksize.size = disk_size
     leap423.vm.box = "opensuse/openSUSE-42.3-x86_64"

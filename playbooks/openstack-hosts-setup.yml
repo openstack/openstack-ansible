@@ -54,17 +54,11 @@
       assert:
         that:
           - (ansible_facts['distribution'] == 'Debian' and ansible_facts['distribution_release'] == 'bullseye') or
-            (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_release'] == 'bionic') or
             (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_release'] == 'focal') or
             (ansible_facts['os_family'] == 'RedHat' and ansible_facts['distribution_major_version'] == '8')
         msg: >
           The only supported platforms for this release are Debian 11 (Bullseye),
-          Ubuntu 18.04 LTS (Bionic), Ubuntu 20.04 LTS (Focal), CentOS 8 and CentOS 8 Stream.
-    - name: Check for a supported path
-      assert:
-        that:
-          - not (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_release'] == 'bionic' and install_method == 'distro')
-        msg: Distro installation path is not supported for this release for Ubuntu 18.04 (bionic)
+          Ubuntu 20.04 LTS (Focal), CentOS 8 and CentOS 8 Stream.
   roles:
     - role: "openstack_hosts"
   vars_files:

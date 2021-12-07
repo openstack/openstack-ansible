@@ -116,7 +116,7 @@ the OpenStack API and dashboard, as an administrator.
       |  1 | nova-conductor   | aio1-nova-conductor-container-5482ff27 | internal | enabled | up    | 2018-02-14T15:34:42.000000 |
       |  2 | nova-scheduler   | aio1-nova-scheduler-container-0b594e89 | internal | enabled | up    | 2018-02-14T15:34:47.000000 |
       |  5 | nova-consoleauth | aio1-nova-console-container-835ca240   | internal | enabled | up    | 2018-02-14T15:34:47.000000 |
-      |  6 | nova-compute     | ubuntu-bionic                          | nova     | enabled | up    | 2018-02-14T15:34:42.000000 |
+      |  6 | nova-compute     | ubuntu-focal                           | nova     | enabled | up    | 2018-02-14T15:34:42.000000 |
       +----+------------------+----------------------------------------+----------+---------+-------+----------------------------+
 
 #. Run an OpenStack command to ensure the networking services are
@@ -130,7 +130,7 @@ the OpenStack API and dashboard, as an administrator.
       | ID                                   | Agent Type           | Host                                   | Availability Zone | Alive | State | Binary                    |
       +--------------------------------------+----------------------+----------------------------------------+-------------------+-------+-------+---------------------------+
       | 262b29fe-e60e-44b0-ae3c-065565f8deb7 | Metering agent       | aio1-neutron-agents-container-2b0569d5 | None              | :-)   | UP    | neutron-metering-agent    |
-      | 41135f7f-9e6c-4122-b6b3-d131bfaae53e | Linux bridge agent   | ubuntu-bionic                          | None              | :-)   | UP    | neutron-linuxbridge-agent |
+      | 41135f7f-9e6c-4122-b6b3-d131bfaae53e | Linux bridge agent   | ubuntu-focal                           | None              | :-)   | UP    | neutron-linuxbridge-agent |
       | 615d12a8-e738-490a-8552-2a03c8544b51 | Metadata agent       | aio1-neutron-agents-container-2b0569d5 | None              | :-)   | UP    | neutron-metadata-agent    |
       | 99b2abd3-a330-4ca7-b524-ed176c10b31c | DHCP agent           | aio1-neutron-agents-container-2b0569d5 | nova              | :-)   | UP    | neutron-dhcp-agent        |
       | e0139a26-fbf7-4cee-a37f-90940dc5851f | Linux bridge agent   | aio1-neutron-agents-container-2b0569d5 | None              | :-)   | UP    | neutron-linuxbridge-agent |

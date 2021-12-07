@@ -24,12 +24,12 @@
         - openstack-tox-docs
     periodic:
       jobs:
-        - openstack-ansible-deploy-translations-ubuntu-bionic
+        - openstack-ansible-deploy-translations-ubuntu-focal
     experimental:
       jobs:
-        - openstack-ansible-deploy-aio_qdrouterd-ubuntu-bionic
-        - openstack-ansible-deploy_with_ansible_devel-aio-ubuntu-bionic
-        - openstack-ansible-deploy_with_ansible_next-aio-ubuntu-bionic
+        - openstack-ansible-deploy-aio_qdrouterd-ubuntu-focal
+        - openstack-ansible-deploy_with_ansible_devel-aio-ubuntu-focal
+        - openstack-ansible-deploy_with_ansible_next-aio-ubuntu-focal
 
 - project-template:
     name: openstack-ansible-deploy-aio_lxc-jobs
@@ -155,7 +155,6 @@
         - openstack-ansible-deploy-aio_metal-debian-bullseye
         - openstack-ansible-deploy-aio_metal-centos-8
         - openstack-ansible-deploy-aio_metal-centos-8-stream
-        - openstack-ansible-deploy-aio_metal-ubuntu-bionic
         - openstack-ansible-deploy-aio_metal-ubuntu-focal
         - openstack-ansible-upgrade-aio_metal-centos-8-stream:
             voting: false
@@ -165,7 +164,6 @@
         - openstack-ansible-deploy-aio_metal-debian-bullseye
         - openstack-ansible-deploy-aio_metal-centos-8
         - openstack-ansible-deploy-aio_metal-centos-8-stream
-        - openstack-ansible-deploy-aio_metal-ubuntu-bionic
         - openstack-ansible-deploy-aio_metal-ubuntu-focal
 
 - project-template:
