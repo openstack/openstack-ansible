@@ -121,16 +121,7 @@ version.
 
 .. note::
    The |current_release_formal_name| release is only compatible with
-   Debian 11 (bullseye), Ubuntu 20.04 (Focal Fossa), CentOS 8 and
-   CentOS 8 Stream.
-
-.. warning::
-   The announcement of early end-of-life for CentOS 8 and the migration
-   to CentOS Stream leaves OpenStack-Ansible currently un-installable on
-   CentOS Stream. A number of critical dependencies are taken from the
-   EPEL repository and currently these will not install onto a CentOS
-   Stream host. Careful consideration should be given to the life-cycle
-   of any new deployments on CentOS 8.
+   Debian 11 (bullseye), Ubuntu 20.04 (Focal Fossa) and CentOS 8 Stream.
 
 The next step is to bootstrap Ansible and the Ansible roles for the
 development environment.
