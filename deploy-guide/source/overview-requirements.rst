@@ -6,8 +6,6 @@ following minimum requirements:
 
 * Debian
 
-  * Debian 10 (buster)
-
   * Debian 11 (bullseye)
 
   * Linux kernel version ``4.9.0-0-amd64`` or later is required.
