@@ -1,0 +1,99 @@
+---
+# Copyright 2021, City Network International AB
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Create sparse NFS volume
+  command: "truncate -s {{ bootstrap_host_loopback_nfs_size }}G /openstack/nfs.img"
+  args:
+    creates: /openstack/nfs.img
+  tags:
+    - nfs-file-create
+
+- name: Format the NFS file
+  filesystem:
+    fstype: xfs
+    dev: /openstack/nfs.img
+    opts: "{{ bootstrap_host_format_options['xfs'] | default(omit) }}"
+  tags:
+    - nfs-format-file
+
+- name: Run the systemd mount role
+  include_role:
+    name: systemd_mount
+  vars:
+    systemd_mounts:
+      - what: "/openstack/nfs.img"
+        where: "/srv/nfs"
+        options: "loop,{{ bootstrap_host_data_mount_options['xfs'] }}"
+        type: "xfs"
+        state: 'started'
+        enabled: true
+  tags:
+    - nfs-config
+
+- name: Install NFS packages
+  package:
+    name: "{{ nfs_package }}"
+    state: present
+
+- name: create the system group for nfs
+  group:
+    name: "nfs-user"
+    gid: "10000"
+    state: "present"
+    system: "yes"
+
+- name: Create the system user for nfs
+  user:
+    name: "nfs-user"
+    uid: "10000"
+    group: "nfs-user"
+    comment: "nfs-user"
+    shell: "/bin/false"
+    system: "yes"
+    createhome: "yes"
+    home: "/srv/nfs"
+
+- name: Create base directories
+  file:
+    path: "{{ item }}"
+    state: "directory"
+    owner: "nfs-user"
+    group: "nfs-user"
+  with_items:
+    - "/srv/nfs/glance"
+
+- name: Create exports file
+  lineinfile:
+    path: /etc/exports
+    line: '{{ item }} {{ storage_range }}.0/{{ netmask }}(rw,sync,no_subtree_check,insecure,all_squash,anonuid=10000,anongid=10000)'
+    owner: root
+    group: root
+    mode: 0644
+    create: yes
+  with_items:
+    - "/srv/nfs/glance"
+  register: nfs_exportfs
+
+- name: Restart nfs-server
+  systemd:
+    daemon_reload: yes
+    name: "nfs-server"
+    enabled: "yes"
+    state: "restarted"
+  when:
+    - nfs_exportfs  is changed
+
+- name: Export NFS
+  command: exportfs -rav

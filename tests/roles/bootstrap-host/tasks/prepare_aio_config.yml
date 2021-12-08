@@ -167,6 +167,9 @@
     - src: user_variables_murano.yml.j2
       dest: user_variables_murano.yml
       condition: "{{ 'murano' in bootstrap_host_scenarios_expanded }}"
+    - src: user_variables_nfs.yml.j2
+      dest: user_variables_nfs.yml
+      condition: "{{ 'nfs' in bootstrap_host_scenarios_expanded }}"
     - src: user_variables_calico.yml.j2
       dest: user_variables_calico.yml
       condition: "{{ 'calico' in bootstrap_host_scenarios_expanded }}"
