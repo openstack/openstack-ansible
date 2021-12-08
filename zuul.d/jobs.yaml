@@ -203,6 +203,11 @@
     nodeset: ubuntu-focal
 
 - job:
+    name: openstack-ansible-deploy-aio_nfs-ubuntu-focal
+    parent: openstack-ansible-deploy-aio
+    nodeset: ubuntu-focal
+
+- job:
     name: openstack-ansible-deploy-aio_proxy-ubuntu-focal
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-focal

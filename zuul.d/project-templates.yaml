@@ -141,6 +141,15 @@
       jobs: []
 
 - project-template:
+    name: openstack-ansible-deploy-nfs-jobs
+    check:
+      jobs:
+        - openstack-ansible-deploy-aio_nfs-ubuntu-focal
+    gate:
+      jobs:
+        - openstack-ansible-deploy-aio_nfs-ubuntu-focal
+
+- project-template:
     name: openstack-ansible-deploy-ceph-jobs
     check:
       jobs:

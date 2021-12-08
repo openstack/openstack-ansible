@@ -146,6 +146,13 @@
   tags:
     - prepare-ceph
 
+# Prepare the NFS server and loopback disks
+- include: prepare_nfs.yml
+  when:
+    - bootstrap_host_nfs | bool
+  tags:
+    - prepare-nfs
+
 # Ensure hostname/ip is consistent with inventory
 - include: prepare_hostname.yml
   tags:

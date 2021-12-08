@@ -86,6 +86,11 @@ bootstrap_host_loopback_zfs: yes
 # Size of the zfs loopback disk in gigabytes (GB).
 bootstrap_host_loopback_zfs_size: 1024
 #
+# Boolean option to deploy the loopback disk for nfs
+bootstrap_host_nfs: "{{ 'nfs' in bootstrap_host_scenarios_expanded }}"
+# Size of the nfs loopback disk in gigabytes (GB).
+bootstrap_host_loopback_nfs_size: 1024
+#
 # Boolean option to deploy the OSD loopback disks and cluster UUID for Ceph
 bootstrap_host_ceph: "{{ 'ceph' in bootstrap_host_scenarios_expanded }}"
 # Size of the Ceph OSD loopbacks
