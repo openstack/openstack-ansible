@@ -21,16 +21,21 @@
   tasks:
     - name: Ensure the default collections directory exists
       file:
-        path: "{{ collection_path_default }}"
+        path: "{{ collection_path_default }}/ansible_collections"
         state: directory
+        recurse: yes
 
     - name: Read the list of user collections
       set_fact:
         user_collection_names: "{{ user_collections.collections | default([]) | map(attribute='name') | list }}"
 
+    - name: Get Zuul cloned repos path in CI
+      set_fact:
+        zuul_src_path: "{{ lookup('env', 'ZUUL_SRC_PATH') }}"
+
     - name: Generate a list of required collections excluding user overridden collections
       set_fact:
-         galaxy_collections_list : "{{ galaxy_collections_list + [ item ] }}"
+        galaxy_collections_list : "{{ (galaxy_collections_list | default([])) + [ item ] }}"
       when:
         - item.name not in user_collection_names
       with_items: "{{ required_collections.collections }}"
@@ -42,13 +47,35 @@
       when:
         - user_collections.collections is defined
 
+    - name: Check the Zuul src dir for cloned roles
+      stat:
+        path: "{{ zuul_src_path }}/{{ item.name.split('/')[-3:] | join('/') }}"
+        get_attributes: no
+        get_checksum: no
+        get_mime: no
+      register: zuul_collections
+      with_items: "{{ galaxy_collections_list }}"
+
+    - name: Override paths for zuul hosted collections in CI
+      vars:
+        zuul_item:
+          name: "git+file://{{ zuul_src_path }}/{{ item.item.name.split('/')[-3:] | join('/') }}"
+          version: "{{ item.item.version }}"
+          type: "{{ item.item.type | default('') }}"
+      set_fact:
+        galaxy_collections_list_ci: "{{ galaxy_collections_list_ci | default([]) + [ (item.stat.exists | ternary(zuul_item, item.item)) ] }}"
+      with_items: "{{ zuul_collections.results }}"
+
     - name: Create temporary file for galaxy collection requirements
       tempfile:
       register: collection_requirements_tmpfile
 
     - name: Copy content into galaxy collection requirements temporary file
+      vars:
+        content_var:
+          collections: "{{ galaxy_collections_list_ci }}"
       copy:
-        content: "{{ galaxy_collections | to_nice_yaml }}"
+        content: "{{ content_var | to_nice_yaml }}"
         dest: "{{ collection_requirements_tmpfile.path }}"
 
     - name: Install collection requirements with ansible galaxy
@@ -70,9 +97,6 @@
         state: absent
 
   vars:
-    galaxy_collections_list: []
-    galaxy_collections:
-      collections: "{{ galaxy_collections_list }}"
     collections_file: "{{ playbook_dir }}/../ansible-collection-requirements.yml"
     required_collections: "{{ lookup('file', collections_file) | from_yaml }}"
     collection_path_default: '/etc/ansible/'
