@@ -23,6 +23,7 @@
     install_methods:
       - distro
       - source
+    zuul_user_vars_file: "{{ ansible_env.HOME }}/osa-job-vars.yml"
   tasks:
     - name: Dynamically create scenario if not set
       set_fact:
@@ -110,3 +111,13 @@
         src: osa-gate-scenario.yml.j2
         dest: "{{ zuul.executor.work_root }}/osa-gate-scenario.yml"
       delegate_to: localhost
+
+    # Other playbooks can consume this vars file to access the
+    # Zuul job variables, see https://zuul-ci.org/docs/zuul/reference/jobs.html#user-jobs-job-variables
+    - name: Record the zuul user job variables for future use by embedded ansible
+      vars:
+        zuul_helper_var:
+          zuul: "{{ zuul }}"
+      template:
+        src: osa-job-vars.yml.j2
+        dest: "{{ zuul_user_vars_file }}"
