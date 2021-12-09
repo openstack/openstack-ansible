@@ -1,0 +1,16 @@
+---
+features:
+  - |
+    Enable VeNCrypt authentication scheme from noVNC proxy to compute nodes.
+    When using HTTPS, the TLS encryption only applies to data between the
+    tenant user and proxy server. To provide protection from the noVNC proxy
+    to the Compute Nodes, it is necessary to enable the VeNCrypt
+    authentication scheme for VNC.
+
+    A pre-existing PKI (Public Key Infrastructure) setup is
+    required.
+
+    Initially to help with the transition from unencrypted VNC to
+    VeNCrypt, compute nodes auth scheme allows for both encrypted and
+    unencrypted sessions using the variable `nova_vencrypt_auth_scheme`,
+    this will be removed in future releases.

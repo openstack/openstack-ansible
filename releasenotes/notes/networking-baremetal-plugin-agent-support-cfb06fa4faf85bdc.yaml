@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Support for the networking-baremetal mechanism driver and agent has been implemented.
+    The ironic-neutron-agent is a neutron agent that populates the host to physical network
+    mapping for baremetal nodes in neutron. Neutron uses this to calculate the segment to
+    host mapping information. This feature may be enabled by adding ``ml2.baremetal``
+    to the ``neutron_plugin_types`` list in ``/etc/openstack_deploy/user_variables.yml``.

@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    Added variable `horizon_policy_overrides` which allows to customize horizon
+    specific policies. As we don't want to carry and maintain horizon policies
+    with OSA, they're retrieved from horizon hosts and adjusted in-place,
+    which means that they won't rollback in case you just remove override.
+    `horizon_policy_overrides` has also non-standart format, as it's nested
+    dictionary, where 1st level key represents service which policy needs to
+    be overriden, and it's value is normal policy override format.

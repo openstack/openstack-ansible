@@ -1,0 +1,16 @@
+---
+deprecations:
+  - |
+    We removed multiple web server support for keystone and left only Apache
+    since nginx is missing features required for federation setup.
+    With this change following variables are deprecated and have no effect:
+
+      * keystone_web_server
+      * keystone_centos_nginx_mirror
+      * keystone_centos_nginx_key
+      * keystone_nginx_access_log_format_combined
+      * keystone_nginx_access_log_format_extras
+      * keystone_nginx_ports
+      * keystone_nginx_extra_conf
+
+    Nginx web server will be removed and replaced with Apache during upgrade.

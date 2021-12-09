@@ -1,0 +1,13 @@
+---
+features:
+  - |
+    Nova now defaults to to using the "QEMU-native TLS" feature
+    for live migrations, rather than the deprecated SSH method.
+    A pre-existing PKI (Public Key Infrastructure) setup is
+    required.
+
+    QEMU-native TLS requires all compute hosts to accept TCP connections on
+    port 16514 and port range 49152 to 49261.
+
+    More information can be found here:
+    https://docs.openstack.org/nova/latest/admin/secure-live-migration-with-qemu-native-tls.html
