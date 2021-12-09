@@ -1,0 +1,10 @@
+---
+upgrade:
+  - |
+    For Ubuntu Focal (20.04) with minor upgrade UCA repo will be added.
+    Deployments using ``distro`` install method will result in major
+    OpenStack version upgrade.
+fixes:
+  - |
+    Ubuntu Cloud Archive (UCA) repo has not been added properly for Ubuntu 20.04
+    setups.
