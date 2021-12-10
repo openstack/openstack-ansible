@@ -75,23 +75,6 @@
       tags:
         - update-secrets
 
-    # TODO(jonher): Remove after W cycle
-    - name: Add Cloudkitty secrets to user_secrets if defined elsewhere
-      lineinfile:
-        dest: "{{ openstack_config_dir }}/user_secrets.yml"
-        regexp: "^{{ item.key }}"
-        line: "{{ item.key }}: {{ item.value }}"
-      loop:
-        - { key: "cloudkitty_container_mysql_password", value: "{{ cloudkitty_container_mysql_password | default([]) }}" }
-        - { key: "cloudkitty_service_password", value: "{{ cloudkitty_service_password | default([]) }}" }
-        - { key: "cloudkitty_oslomsg_rpc_password", value: "{{ cloudkitty_oslomsg_rpc_password | default([]) }}" }
-        - { key: "cloudkitty_oslomsg_notify_password", value: "{{ cloudkitty_oslomsg_notify_password | default([]) }}" }
-      when:
-        - item.value
-        - not (user_secrets.stdout | regex_search('((^|\n)' ~ item.key ~ ')'))
-      tags:
-        - update-secrets
-
     - name: Add missing secrets
       lineinfile:
         dest: "{{ openstack_config_dir }}/user_secrets.yml"
@@ -99,17 +82,6 @@
       with_items: "{{ new_secrets.stdout_lines }}"
       when:
         - not (user_secrets.stdout | regex_search('((^|\n)' ~ item ~ ')'))
-      tags:
-        - update-secrets
-
-    # TODO(noonedeadpunk): Remove after W cycle
-    - name: Define Designate pool id
-      lineinfile:
-        dest: "{{ openstack_config_dir }}/user_secrets.yml"
-        regexp: "^designate_pool_uuid"
-        line: "designate_pool_uuid: {{ designate_pool_uuid | default('794ccc2c-d751-44fe-b57f-8894c9f5c842') }}"
-      when:
-        - not (user_secrets.stdout | regex_search('((^|\n)designate_pool_uuid)'))
       tags:
         - update-secrets
 

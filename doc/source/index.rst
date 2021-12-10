@@ -10,22 +10,35 @@ configuration of an OpenStack environment.
 Documentation for each of the following releases is available.
 
 
+Yoga: Under Development
+~~~~~~~~~~~~~~~~~~~~~~~
+
+OpenStack-Ansible Yoga is currently in development.
+
+.. toctree::
+   :maxdepth: 1
+
+   Deployment guide <https://docs.openstack.org/project-deploy-guide/openstack-ansible/latest/>
+   Release notes <https://docs.openstack.org/releasenotes/openstack-ansible/unreleased.html>
+   admin/index
+   user/index
+   contributor/contributing
+   contributor/index
+   reference/index
+
+
 Xena: Maintained
 ~~~~~~~~~~~~~~~~
 
 OpenStack-Ansible Xena series was first released with the 24.0.0 tag on
 10 December 2021.
 
-.. toctree::
-   :maxdepth: 1
+* `OpenStack-Ansible Xena Documentation`_
 
-   Deployment guide <https://docs.openstack.org/project-deploy-guide/openstack-ansible/xena/>
-   Release notes <https://docs.openstack.org/releasenotes/openstack-ansible/xena.html>
-   admin/index
-   user/index
-   contributor/contributing
-   contributor/index
-   reference/index
+* `OpenStack-Ansible Xena series release notes`_
+
+.. _OpenStack-Ansible Xena Documentation: https://docs.openstack.org/openstack-ansible/xena/
+.. _OpenStack-Ansible Xena series release notes: https://docs.openstack.org/releasenotes/openstack-ansible/xena.html
 
 
 Wallaby: Maintained
