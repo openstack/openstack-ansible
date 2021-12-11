@@ -1,0 +1,9 @@
+---
+
+deprecations:
+  - |
+    Variable ``systemd_lock_path`` has been dropped and has no effect now.
+    In order to customize lock dir path please use ``systemd_lock_dir``.
+    Please keep in mind, that for ``systemd_lock_dir`` you don't need to
+    provide full path like it was with ``systemd_lock_path`` since service
+    name is added to the end of the path.

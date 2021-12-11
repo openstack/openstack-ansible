@@ -1,0 +1,12 @@
+---
+features:
+  - |
+    Added variables ``systemd_run_dir`` and ``systemd_lock_dir`` that allows
+    to control run and lock path for directories that will be used by systemd
+    services. Variables should not include service name since it will be added
+    by default at the end of the provided path.
+    These variables could be also defined as keys inside ``systemd_services``
+    and this will have prescedence over default behaviour.
+  - |
+    Default run path for systemd services has been changed to ``/run`` and
+    lock path to ``/run/lock``.

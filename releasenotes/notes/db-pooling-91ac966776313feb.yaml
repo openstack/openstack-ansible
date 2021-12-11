@@ -1,0 +1,7 @@
+---
+deprecations:
+  - |
+    For consistency reasons, ``neutron_db_pool_size`` was deprecated in favor of
+    ``neutron_db_max_pool_size`` which is in a standardized format used in other
+    repositories.
+    However, it will be supported until Yoga release.

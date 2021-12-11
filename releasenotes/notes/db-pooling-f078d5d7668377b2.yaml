@@ -1,0 +1,11 @@
+---
+deprecations:
+  - |
+    For consistency reasons, the following variables were deprecated in favor of
+    the new ones in a standardized format used in other repositories.
+    ``keystone_database_pool_timeout`` -> ``keystone_db_pool_timeout``
+    ``keystone_database_max_pool_size`` -> ``keystone_db_max_pool_size``
+    ``keystone_database_idle_timeout`` -> ``keystone_db_connection_recycle_time``
+    However, they will be supported until next Yoga release.
+  - |
+    ``keystone_database_min_pool_size`` was deprecated as it's deprecated in oslo.db

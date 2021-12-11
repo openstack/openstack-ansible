@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixed inconsistency in ``haproxy_frontend_raw`` key naming between
+    documentation and service template. Previously, template generation
+    was expecting ``haproxy_raw`` instead of the ``haproxy_frontend_raw``.

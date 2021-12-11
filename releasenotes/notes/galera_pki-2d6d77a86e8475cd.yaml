@@ -1,0 +1,34 @@
+---
+features:
+  - |
+    Galera role now leverages PKI role for creation and distribution of the
+    certificates and certificate authorities.
+    This introduces bunch of new variables which controls CA and certificates
+    generation details.
+    If user SSL certificates are provided - they would be used instead of
+    the generated ones.
+
+    The following new variables were introduced:
+
+    - galera_ssl_verify
+    - galera_pki_dir
+    - galera_pki_create_ca
+    - galera_pki_regen_ca
+    - galera_pki_certificates
+    - galera_pki_regen_cert
+    - galera_pki_authorities
+    - galera_pki_install_ca
+    - galera_pki_keys_path
+    - galera_pki_certs_path
+    - galera_pki_intermediate_cert_name
+    - galera_pki_intermediate_cert_path
+    - galera_pki_install_certificates
+
+deprecations:
+  - |
+    Following variables were removed in favor of PKI ones
+    and have no effect anymore:
+
+    - galera_ssl_self_signed_regen
+    - galera_ssl_self_signed_subject
+    - galera_ssl_ca_self_signed_subject

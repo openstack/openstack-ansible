@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    For deployers using Keystone as an OIDC-based Service Provider there has
+    been a spelling fix for the OIDCScope setting. Please use
+    ``keystone_sp.trusted_idp_list.0.oidc_scope`` instead of
+    ``keystone_sp.trusted_idp_list.0.idc_scope``.
