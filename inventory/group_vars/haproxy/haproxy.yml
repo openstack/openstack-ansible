@@ -208,7 +208,7 @@ haproxy_horizon_service:
   haproxy_redirect_scheme: "{{ (haproxy_ssl_letsencrypt_enable | bool and haproxy_ssl | bool) | ternary('https if !{ ssl_fc } !{ path_beg /.well-known/acme-challenge/ }', 'https if !{ ssl_fc }') }}"
   haproxy_frontend_acls: "{{ (haproxy_ssl_letsencrypt_enable | bool and haproxy_ssl | bool) | ternary(haproxy_ssl_letsencrypt_acl, {}) }}"
   haproxy_acls: "{{ keystone_security_txt_content is defined | ternary(haproxy_security_txt_acl, {}) }}"
-  haproxy_raw: "{{ (haproxy_ssl | bool and haproxy_security_headers is defined) | ternary( haproxy_security_headers + [ haproxy_horizon_csp | default(haproxy_security_headers_csp)], []) }}"
+  haproxy_frontend_raw: "{{ (haproxy_ssl | bool and haproxy_security_headers is defined) | ternary( haproxy_security_headers + [ haproxy_horizon_csp | default(haproxy_security_headers_csp)], []) }}"
 
 haproxy_ironic_api_service:
   haproxy_service_name: ironic_api
