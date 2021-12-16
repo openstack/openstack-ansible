@@ -11,4 +11,6 @@ For understanding security design, please see
 :ref:`security-design`.
 
 .. include:: ssl-certificates.rst
+.. include:: security-headers.rst
+.. include:: security-txt.rst
 .. include:: hardening.rst
