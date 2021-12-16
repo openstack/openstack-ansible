@@ -68,7 +68,6 @@ function build_ansible_runtime_venv {
 
     # The vars used to prepare the Ansible runtime venv
     PIP_OPTS+=" --constraint global-requirement-pins.txt"
-    PIP_OPTS+=" --constraint ${TOX_CONSTRAINTS_FILE}"
 
     # When executing the installation, we want to specify all our options on the CLI,
     # making sure to completely ignore any config already on the host. This is to
@@ -77,10 +76,10 @@ function build_ansible_runtime_venv {
     # use --isolated so that the config file is ignored.
 
     # Upgrade pip setuptools and wheel to the appropriate version
-    ${PIP_COMMAND} install --isolated ${PIP_OPTS} --upgrade pip setuptools wheel
+    ${PIP_COMMAND} install --isolated ${PIP_OPTS} --constraint ${TOX_CONSTRAINTS_FILE} --upgrade pip setuptools wheel
 
     # Install ansible and the other required packages
-    ${PIP_COMMAND} install --isolated ${PIP_OPTS} -r requirements.txt ${ANSIBLE_PACKAGE}
+    ${PIP_COMMAND} install --isolated ${PIP_OPTS} --constraint ${TOX_CONSTRAINTS_FILE} -r requirements.txt ${ANSIBLE_PACKAGE}
 
     # Install our osa_toolkit code from the current checkout
     $PIP_COMMAND install -e .
@@ -206,7 +205,7 @@ function setup_ara {
   # This is added *here* instead of bootstrap-ansible so it's used for CI purposes only.
   # PIP_COMMAND and PIP_OPTS are exported by the bootstrap-ansible script.
   # PIP_OPTS contains the whole set of constraints that need to be applied.
-  ${PIP_COMMAND} install --isolated ${PIP_OPTS} "ara[server]" "dynaconf<3.1.3"
+  ${PIP_COMMAND} install --isolated ${PIP_OPTS} "ara[server]"
 }
 
 function run_dstat {
