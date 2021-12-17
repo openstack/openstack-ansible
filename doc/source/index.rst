@@ -69,8 +69,8 @@ OpenStack-Ansible Victoria series was first released with the 22.0.0 tag on
 .. _OpenStack-Ansible Victoria series release notes: https://docs.openstack.org/releasenotes/openstack-ansible/victoria.html
 
 
-Ussuri: Maintained
-~~~~~~~~~~~~~~~~~~
+Ussuri: Extended Maintenance
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 OpenStack-Ansible Ussuri series was first released with the 21.0.0 tag on
 14 August 2020.
@@ -83,8 +83,8 @@ OpenStack-Ansible Ussuri series was first released with the 21.0.0 tag on
 .. _OpenStack-Ansible Ussuri series release notes: https://docs.openstack.org/releasenotes/openstack-ansible/ussuri.html
 
 
-Train: Maintained
-~~~~~~~~~~~~~~~~~
+Train: Extended Maintenance
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 OpenStack-Ansible Train series was first released with the 20.0.0 tag on
 16 December 2019.
