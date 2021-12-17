@@ -121,8 +121,8 @@ version.
 
 .. note::
    The |current_release_formal_name| release is only compatible with
-   Debian 11 (bullseye), Ubuntu 18.04 (Bionic Beaver),
-   Ubuntu 20.04 (Focal Fossa), CentOS 8 and CentOS 8 Stream.
+   Debian 11 (bullseye), Ubuntu 20.04 (Focal Fossa), CentOS 8 and
+   CentOS 8 Stream.
 
 .. warning::
    The announcement of early end-of-life for CentOS 8 and the migration

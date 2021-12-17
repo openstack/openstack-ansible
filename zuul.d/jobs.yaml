@@ -225,7 +225,7 @@
 - job:
     name: openstack-ansible-varstest-aio
     parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-bionic
+    nodeset: ubuntu-focal
 
 # Running linters check
 - job:
@@ -237,9 +237,9 @@
 # Experimental job for checking our AIO can deploy with
 # a different ansible version
 - job:
-    name: openstack-ansible-deploy_with_ansible_devel-aio-ubuntu-bionic
+    name: openstack-ansible-deploy_with_ansible_devel-aio-ubuntu-focal
     parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-bionic
+    nodeset: ubuntu-focal
     branches: ^(devel|master)$
     required-projects:
       - name: github.com/ansible/ansible
@@ -250,9 +250,9 @@
 # Experimental job for checking our AIO can deploy with
 # a different ansible version
 - job:
-    name: openstack-ansible-deploy_with_ansible_next-aio-ubuntu-bionic
+    name: openstack-ansible-deploy_with_ansible_next-aio-ubuntu-focal
     parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-bionic
+    nodeset: ubuntu-focal
     branches: ^(devel|master)$
     required-projects:
       - name: github.com/ansible/ansible
@@ -339,64 +339,15 @@
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-focal
 
-# ubuntu bionic
 - job:
-    name: openstack-ansible-deploy-aio_lxc-ubuntu-bionic
+    name: openstack-ansible-deploy-aio_qdrouterd-ubuntu-focal
     parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-bionic
+    nodeset: ubuntu-focal
 
 - job:
-    name: openstack-ansible-deploy-aio_ceph-ubuntu-bionic
+    name: openstack-ansible-deploy-translations-ubuntu-focal
     parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-bionic
-
-- job:
-    name: openstack-ansible-deploy-aio_proxy-ubuntu-bionic
-    parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-bionic
-
-- job:
-    name: openstack-ansible-deploy-aio_metal-ubuntu-bionic
-    parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-bionic
-
-- job:
-    name: openstack-ansible-deploy-aio_telemetry_metal-ubuntu-bionic
-    parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-bionic
-
-- job:
-    name: openstack-ansible-upgrade-aio_lxc-ubuntu-bionic
-    parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-bionic
-    timeout: 10800
-
-- job:
-    name: openstack-ansible-upgrade-aio_metal-ubuntu-bionic
-    parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-bionic
-    timeout: 10800
-
-- job:
-    name: openstack-ansible-upgrade-aio_ceph-ubuntu-bionic
-    parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-bionic
-    timeout: 10800
-
-- job:
-    name: openstack-ansible-deploy-aio_octavia-ubuntu-bionic
-    parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-bionic
-
-- job:
-    name: openstack-ansible-deploy-aio_qdrouterd-ubuntu-bionic
-    parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-bionic
-
-- job:
-    name: openstack-ansible-deploy-translations-ubuntu-bionic
-    parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-bionic
+    nodeset: ubuntu-focal
 
 # centos 8 stream
 - job:

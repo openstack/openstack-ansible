@@ -12,8 +12,6 @@ following minimum requirements:
 
 * Ubuntu
 
-  * Ubuntu 18.04 LTS (Bionic Beaver)
-
   * Ubuntu 20.04 LTS (Focal Fossa)
 
   * Linux kernel version ``4.15.0-0-generic`` or later is required.
