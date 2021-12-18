@@ -23,7 +23,7 @@
     - bootstrap_host_data_disk_device_detect | bool
 
 # Before we do anything, check the minimum requirements
-- include: check-requirements.yml
+- import_tasks: check-requirements.yml
   tags:
     - check-requirements
 
@@ -41,7 +41,7 @@
     - always
 
 - name: Gather nodepool variables
-  include: gather_nodepool_vars.yml
+  import_tasks: gather_nodepool_vars.yml
 
 - name: Create the required directories
   file:
@@ -52,16 +52,20 @@
   tags:
     - create-directories
 
-- include: install_packages.yml
+- import_tasks: install_packages.yml
   tags:
     - install-packages
 
 # Prepare the data disk, if one is provided
-- include: prepare_data_disk.yml
+- include_tasks: prepare_data_disk.yml
   when:
     - bootstrap_host_data_disk_device != None
+  args:
+    apply:
+      tags:
+        - prepare-data-disk
   tags:
-    - prepare-data-disk
+    - always
 
 # Symlink host repos to /openstack/src to match the lxc continer bind mount
 # NOTE(jrosser) this must happen *after* prepare_data_disk as /openstack may remounted
@@ -75,100 +79,143 @@
 
 # Prepare the swap space loopback disk
 # This is only necessary if there isn't swap already
-- include: prepare_loopback_swap.yml
-  static: no
+- include_tasks: prepare_loopback_swap.yml
   when:
     - bootstrap_host_loopback_swap | bool
     - ansible_facts['swaptotal_mb'] < 1
+  args:
+    apply:
+      tags:
+        - prepare-loopback
   tags:
-    - prepare-loopback
+    - always
 
 # Prepare the zfs storage loopback disk
-- include: prepare_loopback_zfs.yml
+- include_tasks: prepare_loopback_zfs.yml
   when:
     - bootstrap_host_loopback_zfs | bool
     - bootstrap_host_data_disk_device == None
     - lxc_container_backing_store == 'zfs'
+  args:
+    apply:
+      tags:
+        - prepare-loopback
   tags:
-    - prepare-loopback
+    - always
 
 # Prepare the btrfs storage loopback disk
-- include: prepare_loopback_btrfs.yml
+- include_tasks: prepare_loopback_btrfs.yml
   when:
     - bootstrap_host_loopback_btrfs | bool
     - bootstrap_host_data_disk_device == None
     - lxc_container_backing_store == 'btrfs'
+  args:
+    apply:
+      tags:
+        - prepare-loopback
   tags:
-    - prepare-loopback
+    - always
 
 # Prepare the Cinder LVM VG loopback disk
 # This is only necessary if bootstrap_host_loopback_cinder is set to yes
-- include: prepare_loopback_cinder.yml
+- include_tasks: prepare_loopback_cinder.yml
   when:
     - bootstrap_host_loopback_cinder | bool
+  args:
+    apply:
+      tags:
+        - prepare-loopback
   tags:
-    - prepare-loopback
+    - always
 
 # Prepare the Nova instance storage loopback disk
-- include: prepare_loopback_nova.yml
+- include_tasks: prepare_loopback_nova.yml
   when:
     - bootstrap_host_loopback_nova | bool
+  args:
+    apply:
+      tags:
+        - prepare-loopback
   tags:
-    - prepare-loopback
+    - always
 
 # Prepare the Swift data storage loopback disks
-- include: prepare_loopback_swift.yml
+- include_tasks: prepare_loopback_swift.yml
   when:
     - bootstrap_host_loopback_swift | bool
+  args:
+    apply:
+      tags:
+        - prepare-loopback
   tags:
-    - prepare-loopback
+    - always
 
 # Prepare the Manila data storage loopback disks
-- include: prepare_loopback_manila.yml
+- include_tasks: prepare_loopback_manila.yml
   when:
     - bootstrap_host_loopback_manila | bool
+  args:
+    apply:
+      tags:
+        - prepare-loopback
   tags:
-    - prepare-loopback
+    - always
 
 # Prepare the Ceph cluster UUID and loopback disks
-- include: prepare_ceph.yml
+- include_tasks: prepare_ceph.yml
   when:
     - bootstrap_host_ceph | bool
+  args:
+    apply:
+      tags:
+        - prepare-ceph
   tags:
-    - prepare-ceph
+    - always
 
 # Prepare the NFS server and loopback disks
-- include: prepare_nfs.yml
+- include_tasks: prepare_nfs.yml
   when:
     - bootstrap_host_nfs | bool
+  args:
+    apply:
+      tags:
+        - prepare-nfs
   tags:
-    - prepare-nfs
+    - always
 
 # Ensure hostname/ip is consistent with inventory
-- include: prepare_hostname.yml
+- import_tasks: prepare_hostname.yml
   tags:
     - prepare-hostname
 
 # Prepare the network interfaces
-- include: prepare_networking.yml
+- import_tasks: prepare_networking.yml
   tags:
     - prepare-networking
 
 # Ensure that there are both private and public ssh keys for root
-- include: prepare_ssh_keys.yml
+- import_tasks: prepare_ssh_keys.yml
   tags:
     - prepare-ssh-keys
 
 # Prepare local squid proxy
-- include: prepare_squid.yml
+- include_tasks: prepare_squid.yml
   when:
     - "'proxy' in bootstrap_host_scenarios_expanded"
+  args:
+    apply:
+      tags:
+        - prepare-squid
   tags:
-    - prepare-squid
+    - always
 
 # Put the OpenStack-Ansible configuration for an All-In-One on the host
-- include: prepare_aio_config.yml
+- include_tasks: prepare_aio_config.yml
   when:
     - bootstrap_host_aio_config | bool
+  args:
+    apply:
+      tags:
+        - prepare-aio-config
   tags:
-    - prepare-aio-config
+    - always
