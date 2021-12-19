@@ -64,7 +64,7 @@ function build_ansible_runtime_venv {
     # - Ubuntu Xenial has 15.0.1, holding pip 8.1.1, setuptools 20.3, wheel 0.29
     #   See also: https://packages.ubuntu.com/xenial/python-virtualenv
 
-    python3 -m venv /opt/ansible-runtime --clear
+    ${PYTHON_EXEC_PATH} -m venv /opt/ansible-runtime --clear
 
     # The vars used to prepare the Ansible runtime venv
     PIP_OPTS+=" --constraint global-requirement-pins.txt"
@@ -91,9 +91,9 @@ function build_ansible_runtime_venv {
     fi
 
     # Add SELinux support to the venv
-    if [ -d "/usr/lib64/python3.6/site-packages/selinux/" ]; then
-      rsync -avX /usr/lib64/python3.6/site-packages/selinux/ /opt/ansible-runtime/lib64/python3.6/site-packages/selinux/
-      rsync -avX /usr/lib64/python3.6/site-packages/_selinux.cpython-36m-x86_64-linux-gnu.so /opt/ansible-runtime/lib64/python3.6/site-packages/
+    if [ -d "/usr/lib64/python3.8/site-packages/selinux/" ]; then
+      rsync -avX /usr/lib64/python3.8/site-packages/selinux/ /opt/ansible-runtime/lib64/python3.8/site-packages/selinux/
+      rsync -avX /usr/lib64/python3.8/site-packages/_selinux.cpython-36m-x86_64-linux-gnu.so /opt/ansible-runtime/lib64/python3.8/site-packages/
     fi
 }
 
