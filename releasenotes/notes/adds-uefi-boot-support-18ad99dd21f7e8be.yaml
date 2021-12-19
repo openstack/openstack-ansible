@@ -1,0 +1,7 @@
+---
+features:
+  - UEFI boot support has been added. To migrate from Legacy BIOS mode,
+    define `boot_mode:uefi` as a capability for baremetal nodes that support
+    UEFI. In addition, corresponding flavor(s) will need to be created or
+    modified to include `boot_mode:uefi` as a capability for scheduling to
+    occur against UEFI nodes.

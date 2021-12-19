@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    The ``provider_networks`` library has been updated to support the
+    definition of bond member interfaces that can automatically be added as
+    bond ports to OVS provider bridges setup during a deployment. This
+    feature is currently limited to DPDK-based deployments. To activate this
+    feature, add the ``network_bond_interfaces`` key to the respective provider
+    network definition in ``openstack_user_config.yml``. For more information,
+    refer to the latest Open vSwitch w/ DPDK deployment guide.
