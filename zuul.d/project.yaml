@@ -14,25 +14,4 @@
 
 - project:
     templates:
-      - check-requirements
       - publish-openstack-sphinx-docs
-      - deploy-guide-jobs
-      - release-notes-jobs
-    check:
-      jobs:
-        - openstack-ansible-linters
-        - openstack-ansible-deploy-aio-ubuntu-xenial:
-            voting: false
-        - openstack-ansible-deploy-ceph-ubuntu-xenial:
-            voting: false
-    experimental:
-      jobs:
-        - openstack-ansible-deploy-aio-centos-7
-        - openstack-ansible-deploy-ceph-centos-7
-    gate:
-      jobs:
-        - openstack-ansible-linters
-        - openstack-ansible-deploy-aio-ubuntu-xenial:
-            voting: false
-        - openstack-ansible-deploy-ceph-ubuntu-xenial:
-            voting: false
