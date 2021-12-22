@@ -347,8 +347,14 @@ detail.
 
 .. _OpenStack Nova Docs for remote console access: https://docs.openstack.org/nova/latest/admin/remote-console-access.html#vnc-proxy-security
 
-In OpenStack-Ansible TLS to haproxy is configured in haproxy, TLS to noVNC is
-not currently enabled and TLS to Compute nodes is enabled by default.
+In OpenStack-Ansible TLS to haproxy is configured in haproxy, TLS from
+haproxy to noVNC is not currently enabled and TLS from nVNC to Compute nodes
+is enabled by default.
+
+Changes will not apply to any existing running guests on the compute node,
+so this configuration should be done before launching any instances. For
+existing deployments it is recommended that you migrate instances off the
+compute node before enabling.
 
 To help with the transition from unencrypted VNC to VeNCrypt,
 initially noVNC proxy auth scheme allows for both encrypted and
