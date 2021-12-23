@@ -77,7 +77,7 @@ case ${DISTRO_ID} in
           python3 python3-devel libselinux-python3 \
           systemd-devel pkgconf \
           openssl-devel libffi-devel \
-          python3-virtualenv rsync wget
+          rsync wget
         ;;
     ubuntu|debian)
         apt-get update
@@ -86,19 +86,16 @@ case ${DISTRO_ID} in
           python3 python3-dev \
           libssl-dev libffi-dev \
           libsystemd-dev pkg-config \
-          python3-apt virtualenv \
+          python3-apt python3-venv \
           python3-minimal wget
         ;;
     opensuse*)
         zypper -n install -l git-core curl autoconf gcc gcc-c++ \
             netcat-openbsd python python-xml python-devel gcc \
-            libffi-devel libopenssl-devel python-setuptools python-virtualenv \
+            libffi-devel libopenssl-devel python-setuptools \
             patterns-devel-python-devel_python3
         ;;
 esac
-
-# Ensure that our shell knows about the new virtualenv
-hash -r virtualenv
 
 # Load nodepool PIP mirror settings
 load_nodepool_pip_opts
