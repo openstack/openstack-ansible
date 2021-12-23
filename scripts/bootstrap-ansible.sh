@@ -74,10 +74,11 @@ case ${DISTRO_ID} in
     centos|rhel)
         dnf -y install \
           git curl autoconf gcc gcc-c++ nc \
-          python3 python3-devel libselinux-python3 \
+          python38 python38-devel libselinux-python3 \
           systemd-devel pkgconf \
           openssl-devel libffi-devel \
           rsync wget
+        PYTHON_EXEC_PATH="$(which python3.8)"
         ;;
     ubuntu|debian)
         apt-get update
