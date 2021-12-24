@@ -24,42 +24,50 @@ needed in an environment, it is possible to create additional nodes.
 
       infra_hosts:
       [...]
-      NEW_infra<node-ID>:
-        ip: 10.17.136.32
-      NEW_infra<node-ID2>:
-        ip: 10.17.136.33
+        infra<node-ID>:
+          ip: 10.17.136.32
 
 #. Change to playbook folder on the deployment host.
 
    .. code:: console
 
-      # cd /opt/openstack-ansible/playbooks
+      # cd /opt/openstack-ansible
 
-#. Update the inventory to add new hosts. Make sure new rsyslog
-   container names are updated. Send the updated results to ``dev/null``.
-
-   .. code:: console
-
-      # /opt/openstack-ansible/inventory/dynamic_inventory.py > /dev/null
-
-#. Create the ``/root/add_host.limit`` file, which contains all new node
-   host names and their containers. Add **localhost** to the list of
-   hosts to be able to access deployment host facts.
+#. To prepare new hosts and deploy containers on them run ``setup-hosts.yml``
+   playbook with the ``limit`` argument.
 
    .. code:: console
 
-      localhost
-      NEW_infra<node-ID>
-      NEW_infra<node-ID2>
-      NEW_infra<node-ID>_containers
-      NEW_infra<node-ID2>_containers
+      # openstack-ansible playbooks/setup-hosts.yml --limit localhost,infra<node-ID>,infra<node-ID>-host_containers
 
-#. Run the ``setup-everything.yml`` playbook with the
-   ``limit`` argument.
+#. Next we need to expand galera/rabbitmq clusters, which is done during
+   ``setup-infrastructure.yml``. So we will run this playbook without limits.
+
+   .. warning::
+
+     Make sure that containers from new infra host *does not* appear in inventory
+     as first one for groups ``galera_all``, ``rabbitmq_all`` and ``repo_all``.
+     You can varify that with ad-hoc commands:
+
+     .. code:: console
+
+       # ansible -m debug -a "var=groups['galera_all'][0]" localhost
+       # ansible -m debug -a "var=groups['rabbitmq_all'][0]" localhost
+       # ansible -m debug -a "var=groups['repo_all'][0]" localhost
+
 
    .. code:: console
 
-      # openstack-ansible setup-everything.yml --limit @/root/add_host.limit
+      # openstack-ansible playbooks/setup-infrastructure.yml -e galera_force_bootstrap=true
+
+#. Once infrastructure playboks are done, it's turn of openstack services to be
+   deployed. Most of the services are fine to be ran with limits, but some,
+   like keystone, are not. So we run keystone playbook separately from all others:
+
+   .. code:: console
+
+      # openstack-ansible playbooks/os-keystone-install.yml
+      # openstack-ansible playbooks/setup-openstack.yml --limit '!keystone_all',localhost,infra<node-ID>,infra<node-ID>-host_containers
 
 
 Test new infra nodes
