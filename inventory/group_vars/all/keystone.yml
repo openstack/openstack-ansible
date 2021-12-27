@@ -40,3 +40,6 @@ keystone_service_publicuri_insecure: False
 
 keystone_service_publicuri: "{{ keystone_service_publicuri_proto }}://{{ external_lb_vip_address }}:{{ keystone_service_port }}"
 keystone_service_publicurl: "{{ keystone_service_publicuri }}/v3"
+
+# NOTE(noonedeadpunk): Drop variable after Y release. Placed for upgrade purposes only
+openstack_service_token_roles_required: False
