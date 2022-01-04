@@ -1,5 +1,6 @@
 ---
 cidr_networks:
+  bmaas: 172.29.228.0/22
   lbaas: 172.29.232.0/22
   dbaas: 172.29.252.0/22
   container: 172.29.236.0/22
@@ -13,6 +14,9 @@ cidr_networks:
 #   - 2x2.11 -> 49 : available for container interface ip auto-allocation in LXC deploys
 #   - 2x2.50 -? 2x5.254 : available for neutron allocation
 used_ips:
+  - "172.29.228.1,172.29.228.10"
+  - "172.29.229.50,172.29.231.255"
+  - "172.29.228.100"
   - "172.29.232.1,172.29.232.10"
   - "172.29.232.50,172.29.235.255"
   - "172.29.252.1,172.29.252.10"
@@ -77,6 +81,16 @@ global_overrides:
           - octavia-worker
           - octavia-housekeeping
           - octavia-health-manager
+    - network:
+        container_bridge: "br-bmaas"
+        container_type: "veth"
+        container_interface: "eth15"
+        host_bind_override: "eth15"
+        ip_from_q: "bmaas"
+        type: "flat"
+        net_name: "bmaas"
+        group_binds:
+          - ironic_inspector
     - network:
         container_bridge: "br-vlan"
         container_type: "veth"
