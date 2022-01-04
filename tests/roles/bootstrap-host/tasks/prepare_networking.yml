@@ -62,6 +62,9 @@
       - NetDev:
           Name: dummy-lbaas
           Kind: dummy
+      - NetDev:
+          Name: dummy-bmaas
+          Kind: dummy
 
       - NetDev:
           Name: br-mgmt
@@ -81,6 +84,9 @@
       - NetDev:
           Name: br-lbaas
           Kind: bridge
+      - NetDev:
+          Name: br-bmaas
+          Kind: bridge
 
       - NetDev:
           Name: br-vlan-veth
@@ -97,6 +103,11 @@
           Kind: veth
         Peer:
           Name: eth14
+      - NetDev:
+          Name: br-bmaas-veth
+          Kind: veth
+        Peer:
+          Name: eth15
 
     systemd_networks:
 
@@ -136,6 +147,16 @@
       - interface: "br-lbaas-veth"
         bridge: "br-lbaas"
         mtu: 9000
+
+      - interface: "dummy-bmaas"
+        bridge: "br-bmaas"
+        mtu: 1500
+      - interface: "br-bmaas"
+        address: "172.29.228.100"
+        netmask: "255.255.252.0"
+      - interface: "br-bmaas-veth"
+        bridge: "br-bmaas"
+        mtu: 1500
 
       - interface: "dummy-vxlan"
         bridge: "br-vxlan"
@@ -179,6 +200,7 @@
     - 172.29.252.100  # br-dbaas
     - 172.29.232.100  # br-lbaas
     - 172.29.240.100  # br-vxlan
+    - 172.29.228.100  # br-bmaas
 
 - name: Run the systemd service role
   include_role:
@@ -202,6 +224,7 @@
           - "-{{ bootstrap_host_ethtool_path }} -K br-vlan gso off sg off tso off tx off"
           - "-{{ bootstrap_host_ethtool_path }} -K br-dbaas gso off sg off tso off tx off"
           - "-{{ bootstrap_host_ethtool_path }} -K br-lbaas gso off sg off tso off tx off"
+          - "-{{ bootstrap_host_ethtool_path }} -K br-bmaas gso off sg off tso off tx off"
           - "-{{ bootstrap_host_ip_path }} link set eth12 up"
           - "-{{ bootstrap_host_ip_path }} link set br-vlan-veth up"
           - "-{{ bootstrap_host_ethtool_path }} -K eth12 gso off sg off tso off tx off"
@@ -211,6 +234,9 @@
           - "-{{ bootstrap_host_ip_path }} link set eth14 up"
           - "-{{ bootstrap_host_ip_path }} link set br-lbaas-veth up"
           - "-{{ bootstrap_host_ethtool_path }} -K eth14 gso off sg off tso off tx off"
+          - "-{{ bootstrap_host_ip_path }} link set eth15 up"
+          - "-{{ bootstrap_host_ip_path }} link set br-bmaas-veth up"
+          - "-{{ bootstrap_host_ethtool_path }} -K eth15 gso off sg off tso off tx off"
         execstops:
           - "{{ bootstrap_host_iptables_path }} -t nat -D POSTROUTING -o {{ bootstrap_host_public_interface }} -j MASQUERADE"
         enabled: yes

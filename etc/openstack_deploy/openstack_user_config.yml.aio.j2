@@ -1,5 +1,8 @@
 ---
 cidr_networks:
+{% if 'ironic' in bootstrap_host_scenarios_expanded %}
+  bmaas: 172.29.228.0/22
+{% endif %}
 {% if 'trove' in bootstrap_host_scenarios_expanded %}
   dbaas: 172.29.252.0/22
 {% endif %}
@@ -11,6 +14,11 @@ cidr_networks:
   storage: 172.29.244.0/22
 
 used_ips:
+{% if 'ironic' in bootstrap_host_scenarios_expanded %}
+  - "172.29.228.1,172.29.228.10"
+  - "172.29.229.50,172.29.231.255"
+  - "172.29.228.100"
+{% endif %}
 {% if 'trove' in bootstrap_host_scenarios_expanded %}
   - "172.29.252.1,172.29.252.10"
   - "172.29.252.50,172.29.255.255"
@@ -115,6 +123,18 @@ global_overrides:
           - octavia-worker
           - octavia-housekeeping
           - octavia-health-manager
+{% endif %}
+{% if 'ironic' in bootstrap_host_scenarios_expanded %}
+    - network:
+        container_bridge: "br-bmaas"
+        container_type: "veth"
+        container_interface: "eth15"
+        host_bind_override: "eth15"
+        ip_from_q: "bmaas"
+        type: "flat"
+        net_name: "bmaas"
+        group_binds:
+          - ironic_inspector
 {% endif %}
 {% if 'ovn' in bootstrap_host_scenarios_expanded %}
     - network:
