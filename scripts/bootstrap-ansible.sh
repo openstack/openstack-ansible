@@ -64,29 +64,50 @@ ssh_key_create
 # Determine the distribution which the host is running on
 determine_distro
 
+# Install the python interpreters
+case ${DISTRO_ID} in
+    rocky)
+        dnf -y install python38 python38-devel libselinux-python3
+        PYTHON_EXEC_PATH="$(which python3.8)"
+        OSA_ANSIBLE_PYTHON_INTERPRETER="/usr/bin/python3"
+        ;;
+    centos|rhel)
+        case ${DISTRO_VERSION_ID} in
+            8)
+                dnf -y install python38 python38-devel libselinux-python3
+                PYTHON_EXEC_PATH="$(which python3.8)"
+                ;;
+            9)
+                dnf -y install python3 python3-devel libselinux-python3
+                PYTHON_EXEC_PATH="$(which python3)"
+                ;;
+        esac
+        ;;
+    ubuntu|debian)
+        apt-get update
+        DEBIAN_FRONTEND=noninteractive apt-get -y install \
+          python3 python3-dev \
+          python3-minimal python3-apt \
+          python3-venv\
+        ;;
+esac
+
 # Install the base packages
 case ${DISTRO_ID} in
     rocky|centos|rhel)
         dnf -y install \
           git curl autoconf gcc gcc-c++ nc \
-          python38 python38-devel libselinux-python3 \
           systemd-devel pkgconf \
           openssl-devel libffi-devel \
           rsync wget
-          if [[ ${DISTRO_ID} == "rocky" ]]; then
-            OSA_ANSIBLE_PYTHON_INTERPRETER="/usr/bin/python3"
-          fi
-        PYTHON_EXEC_PATH="$(which python3.8)"
         ;;
     ubuntu|debian)
         apt-get update
         DEBIAN_FRONTEND=noninteractive apt-get -y install \
           git-core curl gcc netcat \
-          python3 python3-dev \
           libssl-dev libffi-dev \
           libsystemd-dev pkg-config \
-          python3-apt python3-venv \
-          python3-minimal wget
+          wget
         ;;
 esac
 
