@@ -393,3 +393,29 @@ To do this, you use the following configuration entry in the
    ``<service>_<filename>_<file extension>_overrides``. For example, the variable
    name used in this example to define a meter exclusion in the ``pipeline.yml`` file
    for the Telemetry service (ceilometer) is ``ceilometer_pipeline_yaml_overrides``.
+
+Overriding OpenStack upper constraints
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Each OpenStack release uses an ``upper-constraints.txt`` file to define the
+maximum permitted version of each Python package. In some cases it may be
+necessary to override this file, for example when your local deployment needs
+to take advantage of a bug fix. Care should be taken when modifying this file
+as OpenStack services may not have been tested against more recent package
+versions.
+
+To override the upper constraints for a deployment, clone the OpenStack
+requirements git repository, either storing it as a fork at a URL of your
+choice, or within the local filesystem of the host you are using to deploy
+OpenStack Ansible from. Once cloned, switch to the branch which matches the
+name of your deployed OpenStack version, and modify the upper constraints as
+required.
+
+Next, edit your ``/etc/openstack_deploy/user_variables.yml`` file to indicate
+the path to the requirements git repository, and the git hash of the commit
+containing your changes using the ``requirements_git_repo`` and
+``requirements_git_install_branch`` variables. When using the local
+filesystem, the ``requirements_git_repo`` should start with ``file://``.
+
+Finally, run the ``repo-install.yml`` playbook to upload these modified
+constraints to your repo host(s).
