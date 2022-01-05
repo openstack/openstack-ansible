@@ -21,6 +21,8 @@ tempest_test_excludelist:
     reason: This test requires direct access to the Docker daemon API on localhost
   - test: zun_tempest_plugin.tests.tempest.api.test_capsules.TestCapsule.test_create_capsule_full
     reason: This test repeatedly fails in CI in particular for Ubuntu Focal
+  - test: zun_tempest_plugin.tests.tempest.api.test_containers.TestContainer.test_run_container_with_cinder_volume_dynamic_created
+    reason: Cinder volume error
 
 tempest_tempest_conf_overrides:
   container_service:
