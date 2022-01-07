@@ -30,7 +30,7 @@
     - name: Gather additional facts for monitor_address_block
       include_tasks: "common-tasks/gather-hardware-facts.yml"
       vars:
-        deployment_extra_facts_filter: "ansible_all_ipv[4,6]_addresses"
+        deployment_extra_facts_filter: "ansible_all_ipv[4|6]_addresses"
         deployment_extra_facts_subset: "!all,network"
       when: monitor_address_block is defined
       tags:
