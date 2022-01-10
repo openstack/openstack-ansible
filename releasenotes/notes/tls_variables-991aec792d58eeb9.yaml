@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    A new 'ssl_cipher_suite_tls13' variable is added for global control of
+    TLS v1.3 cipher suites.
+deprecations:
+  - |
+    The variable 'ssl_cipher_suite' is deprecated in favour of
+    'ssl_cipher_suite_tls12' which will continue to manage configuration of
+    ciphers for TLS v1.2 and earlier.
