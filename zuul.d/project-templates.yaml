@@ -54,9 +54,6 @@
       jobs:
         - openstack-ansible-deploy-aio_lxc-ubuntu-bionic
         - openstack-ansible-upgrade-aio_lxc-ubuntu-bionic
-    experimental:
-      jobs:
-        - openstack-ansible-deploy-aio_lxc-opensuse-15
 
 - project-template:
     name: openstack-ansible-deploy-aio_distro_lxc-jobs
@@ -64,7 +61,6 @@
       jobs:
         - openstack-ansible-deploy-aio_distro_lxc-centos-7
         - openstack-ansible-deploy-aio_distro_lxc-centos-8
-        - openstack-ansible-deploy-aio_distro_lxc-opensuse-15
         - openstack-ansible-deploy-aio_distro_lxc-ubuntu-bionic
 
 - project-template:
@@ -86,9 +82,6 @@
         - openstack-ansible-deploy-aio_metal-centos-8
         - openstack-ansible-deploy-aio_metal-ubuntu-bionic
         - openstack-ansible-deploy-aio_metal-ubuntu-focal
-    experimental:
-      jobs:
-        - openstack-ansible-deploy-aio_metal-opensuse-15
 
 - project-template:
     name: openstack-ansible-deploy-aio_telemetry_metal-jobs
@@ -102,9 +95,6 @@
         - openstack-ansible-deploy-aio_telemetry_metal-centos-7
         - openstack-ansible-deploy-aio_telemetry_metal-debian-buster
         - openstack-ansible-deploy-aio_telemetry_metal-ubuntu-bionic
-    experimental:
-      jobs:
-        - openstack-ansible-deploy-aio_telemetry_metal-opensuse-15
 
 - project-template:
     name: openstack-ansible-deploy-aio_distro_metal-jobs
@@ -120,17 +110,12 @@
         - openstack-ansible-deploy-aio_distro_metal-centos-8
         - openstack-ansible-deploy-aio_distro_metal-ubuntu-bionic
         - openstack-ansible-deploy-aio_distro_metal-ubuntu-focal
-    experimental:
-      jobs:
-        - openstack-ansible-deploy-aio_distro_metal-opensuse-15
 
 - project-template:
     name: openstack-ansible-deploy-aio_nspawn-jobs
     check:
       jobs:
         - openstack-ansible-deploy-aio_nspawn-centos-7:
-            voting: false
-        - openstack-ansible-deploy-aio_nspawn-opensuse-15:
             voting: false
         - openstack-ansible-deploy-aio_nspawn-ubuntu-bionic:
             voting: false
@@ -160,9 +145,6 @@
 
 - project-template:
     name: openstack-ansible-deploy-distro_ceph-jobs
-    experimental:
-      jobs:
-        - openstack-ansible-deploy-aio_distro_ceph-opensuse-15
 
 - project-template:
     name: openstack-ansible-linters-jobs
