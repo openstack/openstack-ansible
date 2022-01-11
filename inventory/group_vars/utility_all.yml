@@ -28,19 +28,14 @@ utility_venv_bin: "/openstack/venvs/utility-{{ openstack_release }}/bin"
 
 # Distribution packages to be installed into the utility container
 utility_distro_packages:
-  - git
   - bash-completion
   - "{{ (ansible_pkg_mgr == 'apt') | ternary('debianutils', 'which') }}"
 
 # Distribution packages needed for the utility pip package wheel build
-_utility_devel_distro_packages_debian:
-  - gcc
-  - python3-dev
+_utility_devel_distro_packages_debian: []
 
 _utility_devel_distro_packages_redhat:
-  - gcc
   - libselinux-python3
-  - python36-devel
 
 utility_devel_distro_packages: "{{ (ansible_facts['os_family'] == 'RedHat') | ternary(_utility_devel_distro_packages_redhat, _utility_devel_distro_packages_debian) }}"
 
