@@ -53,7 +53,7 @@
       tags:
         - crontab
   vars:
-    galera_server_id: "{{ inventory_hostname | string_2_int }}"
+    galera_server_id: "{{ inventory_hostname | openstack.osa.string_2_int }}"
     galera_wsrep_node_name: "{{ container_name | default(inventory_hostname) }}"
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:

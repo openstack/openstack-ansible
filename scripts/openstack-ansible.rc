@@ -26,13 +26,10 @@ export ANSIBLE_ROLES_PATH="${ANSIBLE_ROLES_PATH:-/etc/ansible/roles:OSA_PLAYBOOK
 export ANSIBLE_COLLECTIONS_PATHS="${ANSIBLE_COLLECTIONS_PATHS:-/etc/ansible}"
 export ANSIBLE_COLLECTIONS_PATH="${ANSIBLE_COLLECTIONS_PATH:-/etc/ansible}"
 
-export ANSIBLE_LIBRARY="${ANSIBLE_LIBRARY:-OSA_PLAYBOOK_PATH/library:/etc/ansible/roles/plugins/library:/etc/ansible/roles/ceph-ansible/library}"
-export ANSIBLE_LOOKUP_PLUGINS="${ANSIBLE_LOOKUP_PLUGINS:-/etc/ansible/roles/plugins/lookup}"
-export ANSIBLE_FILTER_PLUGINS="${ANSIBLE_FILTER_PLUGINS:-/etc/ansible/roles/plugins/filter:/etc/ansible/roles/ceph-ansible/plugins/filter}"
-export ANSIBLE_ACTION_PLUGINS="${ANSIBLE_ACTION_PLUGINS:-/etc/ansible/roles/plugins/action:/etc/ansible/roles/ceph-ansible/plugins/actions}"
-export ANSIBLE_CALLBACK_PLUGINS="${ANSIBLE_CALLBACK_PLUGINS:-/etc/ansible/roles/plugins/callback:/etc/ansible/roles/ceph-ansible/plugins/callback}"
-export ANSIBLE_TEST_PLUGINS="${ANSIBLE_TEST_PLUGINS:-/etc/ansible/roles/plugins/test}"
-export ANSIBLE_VARS_PLUGINS="${ANSIBLE_VARS_PLUGINS:-/etc/ansible/roles/plugins/vars_plugins}"
+export ANSIBLE_LIBRARY="${ANSIBLE_LIBRARY:-OSA_PLAYBOOK_PATH/library:/etc/ansible/roles/ceph-ansible/library}"
+export ANSIBLE_FILTER_PLUGINS="${ANSIBLE_FILTER_PLUGINS:-/etc/ansible/roles/ceph-ansible/plugins/filter}"
+export ANSIBLE_ACTION_PLUGINS="${ANSIBLE_ACTION_PLUGINS:-/etc/ansible/roles/ceph-ansible/plugins/actions}"
+export ANSIBLE_CALLBACK_PLUGINS="${ANSIBLE_CALLBACK_PLUGINS:-/etc/ansible/roles/ceph-ansible/plugins/callback}"
 export ANSIBLE_MODULE_UTILS="${ANSIBLE_MODULE_UTILS:-/etc/ansible/roles/ceph-ansible/module_utils}"
 
 export ANSIBLE_GATHERING="${ANSIBLE_GATHERING:-smart}"
@@ -50,14 +47,13 @@ fi
 
 export ANSIBLE_HOST_KEY_CHECKING="${ANSIBLE_HOST_KEY_CHECKING:-False}"
 export ANSIBLE_TIMEOUT="${ANSIBLE_TIMEOUT:-5}"
-export ANSIBLE_TRANSPORT="${ANSIBLE_TRANSPORT:-ssh}"
+export ANSIBLE_TRANSPORT="${ANSIBLE_TRANSPORT:-openstack.osa.ssh}"
 export ANSIBLE_SSH_PIPELINING="${ANSIBLE_SSH_PIPELINING:-True}"
 export ANSIBLE_SSH_RETRIES="${ANSIBLE_SSH_RETRIES:-5}"
 export ANSIBLE_PIPELINING="${ANSIBLE_SSH_PIPELINING}"
 export ANSIBLE_FORKS="${ANSIBLE_FORKS:-OSA_ANSIBLE_FORKS}"
 
-export ANSIBLE_STRATEGY_PLUGINS="${ANSIBLE_STRATEGY_PLUGINS:-/etc/ansible/roles/plugins/strategy}"
-export ANSIBLE_CONNECTION_PLUGINS="${ANSIBLE_CONNECTION_PLUGINS:-/etc/ansible/roles/plugins/connection}"
+export ANSIBLE_STRATEGY="${ANSIBLE_STRATEGY:-openstack.osa.linear}"
 
 export ANSIBLE_FORCE_HANDLERS="${ANSIBLE_FORCE_HANDLERS:-True}"
 export ANSIBLE_PYTHON_INTERPRETER="${ANSIBLE_PYTHON_INTERPRETER:-OSA_ANSIBLE_PYTHON_INTERPRETER}"

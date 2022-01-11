@@ -161,9 +161,18 @@ function main {
       tar zcf ${source_series_backup_file} /etc/openstack_deploy /etc/ansible/ /usr/local/bin/openstack-ansible.rc
     fi
 
-    # ANSIBLE_INVENTORY may be set to a previous/incorrect location. To
-    # ensure this is not the case, we unset the environment variable.
+    # Environment variables may be set to a previous/incorrect location.
+    # To ensure this is not the case, we unset the environment variable.
     unset ANSIBLE_INVENTORY
+
+    # TODO(noonedeadpunk): Remove after Y release
+    unset ANSIBLE_LIBRARY
+    unset ANSIBLE_FILTER_PLUGINS
+    unset ANSIBLE_ACTION_PLUGINS
+    unset ANSIBLE_CALLBACK_PLUGINS
+    unset ANSIBLE_TRANSPORT
+    unset ANSIBLE_STRATEGY_PLUGINS
+    unset ANSIBLE_CONNECTION_PLUGINS
 
     bootstrap_ansible
 
