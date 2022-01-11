@@ -116,8 +116,7 @@ if [[ "${ACTION}" == "varstest" ]]; then
 elif [[ "${ACTION}" == "linters" ]]; then
   pushd "${OSA_CLONE_DIR}"
     # Install linter tools
-    # TODO(noonedeadpunk): Drop rich with ansible-lint bump, bug closed with https://github.com/ansible-community/ansible-lint/pull/1797
-    ${PIP_COMMAND} install --isolated ${PIP_OPTS} -r ${OSA_CLONE_DIR}/test-requirements.txt 'rich>=9.5.1,<11.0.0'
+    ${PIP_COMMAND} install --isolated ${PIP_OPTS} -r ${OSA_CLONE_DIR}/test-requirements.txt
     # Disable Ansible color output
     export ANSIBLE_NOCOLOR=1
     # Create ansible logging directory
