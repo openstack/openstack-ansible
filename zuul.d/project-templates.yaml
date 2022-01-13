@@ -24,9 +24,6 @@
         - openstack-ansible-linters
         - openstack-ansible-varstest-aio
         - openstack-tox-docs
-    periodic:
-      jobs:
-        - openstack-ansible-deploy-translations-ubuntu-bionic
     experimental:
       jobs:
         - openstack-ansible-deploy-aio_nspawn-ubuntu-bionic
@@ -48,10 +45,6 @@
         - openstack-ansible-deploy-aio_lxc-debian-buster
         - openstack-ansible-deploy-aio_lxc-ubuntu-bionic
         - openstack-ansible-deploy-aio_lxc-ubuntu-focal
-    periodic:
-      jobs:
-        - openstack-ansible-deploy-aio_lxc-ubuntu-bionic
-        - openstack-ansible-upgrade-aio_lxc-ubuntu-bionic
 
 - project-template:
     name: openstack-ansible-deploy-aio_distro_lxc-jobs
@@ -121,9 +114,6 @@
       jobs:
         - openstack-ansible-deploy-aio_ceph-ubuntu-focal
     gate:
-      jobs:
-        - openstack-ansible-deploy-aio_ceph-ubuntu-focal
-    periodic:
       jobs:
         - openstack-ansible-deploy-aio_ceph-ubuntu-focal
 
