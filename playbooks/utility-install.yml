@@ -34,6 +34,13 @@
   tags:
     - utility
   handlers:
+    - name: Ensure bash completions directory is present
+      file:
+        path: "/etc/bash_completion.d"
+        state: "directory"
+        mode: "0755"
+      listen:
+        - "venv changed"
     - name: Create openstack client bash_completion script
       shell: >-
         openstack complete > /etc/bash_completion.d/openstack_client
