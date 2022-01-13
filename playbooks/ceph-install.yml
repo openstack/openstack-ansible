@@ -98,7 +98,7 @@
     - role: ceph-mgr
       tags:
         - skip_ansible_lint
-    - role: system_crontab_coordination
+    - role: openstack.osa.system_crontab_coordination
       tags:
         - crontab
 
@@ -157,7 +157,7 @@
     - role: ceph-osd
       tags:
         - skip_ansible_lint
-    - role: system_crontab_coordination
+    - role: openstack.osa.system_crontab_coordination
       tags:
         - crontab
 
@@ -212,7 +212,7 @@
     - role: ceph-mds
       tags:
         - skip_ansible_lint
-    - role: "system_crontab_coordination"
+    - role: "openstack.osa.system_crontab_coordination"
       tags:
         - "system-crontab-coordination"
   vars:
