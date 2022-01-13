@@ -18,8 +18,6 @@ following minimum requirements:
 
 * CentOS
 
-  * Centos 8
-
   * Centos 8 Stream
 
   * Linux kernel version ``3.10.0`` or later.

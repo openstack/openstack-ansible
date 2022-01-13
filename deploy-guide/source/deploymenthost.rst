@@ -28,7 +28,6 @@ hosts:
 
 * `Ubuntu server 20.04 (Focal Fossa) LTS 64-bit <http://releases.ubuntu.com/20.04/>`_
 * `Debian 11 (Bullseye) LTS 64-bit <https://www.debian.org/distrib/>`_
-* `Centos 8 64-bit <http://isoredirect.centos.org/centos/8/isos/x86_64/>`_
 * `Centos 8 Stream 64-bit <http://isoredirect.centos.org/centos/8-stream/isos/x86_64/>`_
 
 Configure at least one network interface to access the Internet or suitable
