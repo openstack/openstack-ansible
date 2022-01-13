@@ -30,17 +30,6 @@
           when:
             - ansible_distribution_release in ['bionic', 'focal']
 
-        # NOTE(noonedeadpunk): Added until CentOS 8.3 released because of the bug:
-        # https://bugzilla.redhat.com/show_bug.cgi?id=1777718
-        - name: Set umask to 022
-          lineinfile:
-            path: /etc/login.defs
-            regexp: "^UMASK"
-            line: "UMASK 022"
-          when:
-            - ansible_os_family | lower == 'redhat'
-            - ansible_distribution_major_version is version('8', '=')
-
     - name: Remove package blacklist for yum/dnf
       lineinfile:
         dest: "{{ (ansible_pkg_mgr == 'dnf') | ternary('/etc/dnf/dnf.conf', '/etc/yum.conf') }}"
