@@ -39,14 +39,12 @@
     check:
       jobs:
         - openstack-ansible-deploy-aio_lxc-centos-7
-        - openstack-ansible-deploy-aio_lxc-centos-8
         - openstack-ansible-deploy-aio_lxc-debian-buster
         - openstack-ansible-deploy-aio_lxc-ubuntu-bionic
         - openstack-ansible-deploy-aio_lxc-ubuntu-focal
     gate:
       jobs:
         - openstack-ansible-deploy-aio_lxc-centos-7
-        - openstack-ansible-deploy-aio_lxc-centos-8
         - openstack-ansible-deploy-aio_lxc-debian-buster
         - openstack-ansible-deploy-aio_lxc-ubuntu-bionic
         - openstack-ansible-deploy-aio_lxc-ubuntu-focal
@@ -60,7 +58,6 @@
     experimental:
       jobs:
         - openstack-ansible-deploy-aio_distro_lxc-centos-7
-        - openstack-ansible-deploy-aio_distro_lxc-centos-8
         - openstack-ansible-deploy-aio_distro_lxc-ubuntu-bionic
 
 - project-template:
@@ -69,7 +66,6 @@
       jobs:
         - openstack-ansible-deploy-aio_metal-debian-buster
         - openstack-ansible-deploy-aio_metal-centos-7
-        - openstack-ansible-deploy-aio_metal-centos-8
         - openstack-ansible-deploy-aio_metal-ubuntu-bionic
         - openstack-ansible-deploy-aio_metal-ubuntu-focal
         - openstack-ansible-upgrade-aio_metal-centos-7:
@@ -79,7 +75,6 @@
       jobs:
         - openstack-ansible-deploy-aio_metal-debian-buster
         - openstack-ansible-deploy-aio_metal-centos-7
-        - openstack-ansible-deploy-aio_metal-centos-8
         - openstack-ansible-deploy-aio_metal-ubuntu-bionic
         - openstack-ansible-deploy-aio_metal-ubuntu-focal
 
@@ -101,13 +96,11 @@
     check:
       jobs:
         - openstack-ansible-deploy-aio_distro_metal-centos-7
-        - openstack-ansible-deploy-aio_distro_metal-centos-8
         - openstack-ansible-deploy-aio_distro_metal-ubuntu-bionic
         - openstack-ansible-deploy-aio_distro_metal-ubuntu-focal
     gate:
       jobs:
         - openstack-ansible-deploy-aio_distro_metal-centos-7
-        - openstack-ansible-deploy-aio_distro_metal-centos-8
         - openstack-ansible-deploy-aio_distro_metal-ubuntu-bionic
         - openstack-ansible-deploy-aio_distro_metal-ubuntu-focal
 

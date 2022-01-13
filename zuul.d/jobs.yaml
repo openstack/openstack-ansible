@@ -353,59 +353,6 @@
     nodeset: centos-7
     timeout: 10800
 
-# centos 8
-- job:
-    name: openstack-ansible-deploy-aio_lxc-centos-8
-    parent: openstack-ansible-deploy-aio
-    nodeset: centos-8
-
-- job:
-    name: openstack-ansible-deploy-aio_distro_lxc-centos-8
-    parent: openstack-ansible-deploy-aio
-    nodeset: centos-8
-
-- job:
-    name: openstack-ansible-deploy-aio_ceph-centos-8
-    parent: openstack-ansible-deploy-aio
-    nodeset: centos-8
-
-- job:
-    name: openstack-ansible-deploy-aio_distro_ceph-centos-8
-    parent: openstack-ansible-deploy-aio
-    nodeset: centos-8
-
-- job:
-    name: openstack-ansible-upgrade-aio_lxc-centos-8
-    parent: openstack-ansible-deploy-aio
-    nodeset: centos-8
-    timeout: 10800
-
-- job:
-    name: openstack-ansible-deploy-aio_metal-centos-8
-    parent: openstack-ansible-deploy-aio
-    nodeset: centos-8
-
-- job:
-    name: openstack-ansible-deploy-aio_telemetry_metal-centos-8
-    parent: openstack-ansible-deploy-aio
-    nodeset: centos-8
-
-- job:
-    name: openstack-ansible-deploy-aio_distro_metal-centos-8
-    parent: openstack-ansible-deploy-aio
-    nodeset: centos-8
-
-- job:
-    name: openstack-ansible-deploy-aio_nspawn-centos-8
-    parent: openstack-ansible-deploy-aio
-    nodeset: centos-8
-
-- job:
-    name: openstack-ansible-upgrade-aio_ceph-centos-8
-    parent: openstack-ansible-deploy-aio
-    nodeset: centos-8
-    timeout: 10800
-
 # debian
 - job:
     name: openstack-ansible-deploy-aio_telemetry_metal-debian-buster
