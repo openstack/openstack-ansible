@@ -137,7 +137,7 @@
     - name: Clone git repos
       block:
         - name: Clone git repos (parallel)
-          git_requirements:
+          openstack.osa.git_requirements:
             default_path: "{{ role_path_default }}"
             default_depth: "{{ role_clone_default_depth }}"
             default_version: "master"
