@@ -11,7 +11,7 @@
 - name: galera_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-galera_server
-  version: 76bdc362428d436e7dc3f5c3b15a5d815781dc9f
+  version: 26207223415c412f5b7a2c91e17c56a2d013e75c
   trackbranch: stable/xena
 - name: ceph_client
   scm: git
@@ -21,7 +21,7 @@
 - name: haproxy_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-haproxy_server
-  version: 3abcf462648c70a685ad5e0fefd2ea77ed2ab505
+  version: ee3fc2ad04f94374a6a711263cf67447ea705684
   trackbranch: stable/xena
 - name: keepalived
   scm: git
@@ -101,7 +101,7 @@
 - name: os_glance
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_glance
-  version: f47a5475d1e46d4b4fd6f8f1741406cc2660d0d0
+  version: b5305adfcef6956036f90262e5cf42cc6fd59be4
   trackbranch: stable/xena
 - name: os_gnocchi
   scm: git
@@ -151,12 +151,12 @@
 - name: os_neutron
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_neutron
-  version: ab4ec0a94cdc613f5c7339a80a3f10d477fbbb43
+  version: 0362c51f8f1f627f57a3fada34d60eb919e4c261
   trackbranch: stable/xena
 - name: os_nova
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_nova
-  version: 2b74d92657f0983da7abfd6634c753ff3aaad1e2
+  version: a87e3eec2581aeab7ad2603b4476945219af0f9a
   trackbranch: stable/xena
 - name: os_octavia
   scm: git
@@ -186,7 +186,7 @@
 - name: os_swift
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_swift
-  version: a7b33376201de2b1bca5ffd0e27f22673bc12689
+  version: 9a75a8b235dda49ed7eb54d71abf8bcef5dadd6e
   trackbranch: stable/xena
 - name: os_tacker
   scm: git
@@ -196,7 +196,7 @@
 - name: os_tempest
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_tempest
-  version: 40509100f3e8bd1858cf50726313cb3a935c183b
+  version: 88b36985380e5ab592ab7a8d19a5c92f97661d13
   trackbranch: stable/xena
 - name: os_trove
   scm: git
@@ -206,7 +206,7 @@
 - name: os_zun
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_zun
-  version: 1c9a9367506588b2a5fbe65068dea7e7c25c1573
+  version: 1295de6563744947562010792a944a7d4c1f898e
   trackbranch: stable/xena
 - name: plugins
   scm: git
@@ -266,9 +266,9 @@
 - name: ceph-ansible
   scm: git
   src: https://github.com/ceph/ceph-ansible
-  version: 9f04949ba0ed029fffe455283bd583e124e4d2fd
+  version: 29763efdc3b5800f47de48fcb96633ade2817779
   trackbranch: stable-6.0
-  shallow_since: '2021-12-14'
+  shallow_since: '2022-01-18'
 - name: opendaylight
   scm: git
   src: https://github.com/opendaylight/integration-packaging-ansible-opendaylight
@@ -302,12 +302,12 @@
 - name: python_venv_build
   src: https://opendev.org/openstack/ansible-role-python_venv_build
   scm: git
-  version: 568011364df031eab8547c553cac29985acac4f0
+  version: e7ba92f997adb2c17f432c7653b468262bdf132d
   trackbranch: stable/xena
 - name: uwsgi
   src: https://opendev.org/openstack/ansible-role-uwsgi
   scm: git
-  version: 805b4675a25aaa79e8670f6228355ed982252c15
+  version: 4b690977984b8735c17a04a7e84f6b32235cce7d
   trackbranch: stable/xena
 - name: pki
   src: https://opendev.org/openstack/ansible-role-pki

@@ -1,0 +1,15 @@
+---
+issues:
+  - |
+    In the Xena release, TLS for VNC is enabled by default, for existing
+    deployments this will prevent console access to existing virtual machines,
+    as this configuration change does not apply to existing virtual machines.
+    Virtual machines created after the configuration change are not affected.
+
+    The virtual machines will run correctly, but your are not able to access
+    them via the console. There are three possible solutions to enable console
+    access for existing virtual machines; disable TLS for VNC, restart the
+    virtual machine or live migrate the virtual machine.
+
+    TLS for VNC can be disabled by setting ``nova_qemu_vnc_tls`` variable to
+    ``0`` in the ``/etc/openstack_deploy/user_variables.yml`` file.
