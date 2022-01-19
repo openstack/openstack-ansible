@@ -157,7 +157,7 @@
       nova_management_address: "{{ container_address }}"
       nova_cinder_rbd_inuse: "{{ hostvars['localhost']['nova_cinder_rbd_inuse'] | default(False) }}"
 
-    - role: "system_crontab_coordination"
+    - role: "openstack.osa.system_crontab_coordination"
       tags:
         - crontab
 

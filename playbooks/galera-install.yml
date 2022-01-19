@@ -49,7 +49,7 @@
     - role: haproxy_endpoints
       haproxy_state: enabled
       when: "groups['haproxy'] | default([]) | length > 0"
-    - role: "system_crontab_coordination"
+    - role: "openstack.osa.system_crontab_coordination"
       tags:
         - crontab
   vars:

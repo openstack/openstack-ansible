@@ -55,7 +55,6 @@ export OSA_CLONE_DIR="$(pwd)"
 # Set the variable to the role file to be the absolute path
 ANSIBLE_ROLE_FILE="$(readlink -f "${ANSIBLE_ROLE_FILE}")"
 OSA_INVENTORY_PATH="$(readlink -f inventory)"
-OSA_PLAYBOOK_PATH="$(readlink -f playbooks)"
 OSA_ANSIBLE_PYTHON_INTERPRETER="auto"
 
 # Create the ssh dir if needed
@@ -155,7 +154,6 @@ popd
 
 # Write the OSA Ansible rc file
 sed "s|OSA_INVENTORY_PATH|${OSA_INVENTORY_PATH}|g" scripts/openstack-ansible.rc > /usr/local/bin/openstack-ansible.rc
-sed -i "s|OSA_PLAYBOOK_PATH|${OSA_PLAYBOOK_PATH}|g" /usr/local/bin/openstack-ansible.rc
 sed -i "s|OSA_ANSIBLE_PYTHON_INTERPRETER|${OSA_ANSIBLE_PYTHON_INTERPRETER}|g" /usr/local/bin/openstack-ansible.rc
 sed -i "s|OSA_ANSIBLE_FORKS|${ANSIBLE_FORKS}|g" /usr/local/bin/openstack-ansible.rc
 

@@ -118,7 +118,7 @@
     - role: "os_cinder"
       cinder_storage_address: "{{ storage_address }}"
 
-    - role: "system_crontab_coordination"
+    - role: "openstack.osa.system_crontab_coordination"
       tags:
         - crontab
 
