@@ -13,9 +13,82 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# TODO(evrardjp): Remove this file from stable branches to allow the latest tempest
-# release to be used instead, when a PyPI published version of tempest contains
-# https://github.com/openstack/tempest/commit/7d2b636a30057ed8db8cfd4fe2248f509b3570f1#diff-5c9acbc10dc9d27b47985cd74ab100f6
 tempest_git_repo: https://opendev.org/openstack/tempest
-tempest_git_install_branch: c545cb1c7c14d36d2bc65a55ec13e0c6cd095425  # HEAD as of 19.01.2022
+tempest_git_install_branch: eb860bca57b27da4f1b33de06763abd5fb784afb # HEAD as of 24.01.2022
 tempest_git_track_branch: master
+
+tempest_plugin_barbican_git_repo: https://opendev.org/openstack/barbican-tempest-plugin
+tempest_plugin_barbican_git_install_branch: 2f208f0eac1f6b2457e7245b028dd3be58143862 # HEAD as of 24.01.2022
+tempest_plugin_barbican_git_track_branch: master
+
+tempest_plugin_cinder_git_repo: https://opendev.org/openstack/cinder-tempest-plugin
+tempest_plugin_cinder_git_install_branch: fc98b2866ec894bce8a79fc647ac601e5c39df49 # HEAD as of 24.01.2022
+tempest_plugin_cinder_git_track_branch: master
+
+tempest_plugin_cloudkitty_git_repo: https://opendev.org/openstack/cloudkitty-tempest-plugin
+tempest_plugin_cloudkitty_git_install_branch: b1117d5d5930e7128167b69389e85040070903b4 # HEAD as of 24.01.2022
+tempest_plugin_cloudkitty_git_track_branch: master
+
+tempest_plugin_designate_git_repo: https://opendev.org/openstack/designate-tempest-plugin
+tempest_plugin_designate_git_install_branch: e97ec918f170391854c986c0ae777c18afc0df77 # HEAD as of 24.01.2022
+tempest_plugin_designate_git_track_branch: master
+
+tempest_plugin_heat_git_repo: https://opendev.org/openstack/heat-tempest-plugin
+tempest_plugin_heat_git_install_branch: ba43685c131d6387779ed35f5bf61fc86667a728 # HEAD as of 24.01.2022
+tempest_plugin_heat_git_track_branch: master
+
+tempest_plugin_ironic_git_repo: https://opendev.org/openstack/ironic-tempest-plugin
+tempest_plugin_ironic_git_install_branch: 3d2de82b3e08b348732156ab95a492cd40022e17 # HEAD as of 24.01.2022
+tempest_plugin_ironic_git_track_branch: master
+
+tempest_plugin_keystone_git_repo: https://opendev.org/openstack/keystone-tempest-plugin
+tempest_plugin_keystone_git_install_branch: f57af91f9a97a822d2deee1fd32857ad4571d210 # HEAD as of 24.01.2022
+tempest_plugin_keystone_git_track_branch: master
+
+tempest_plugin_magnum_git_repo: https://opendev.org/openstack/magnum-tempest-plugin
+tempest_plugin_magnum_git_install_branch: 9b9eacfa515db07874b6489a9ce1785965d684fb # HEAD as of 24.01.2022
+tempest_plugin_magnum_git_track_branch: master
+
+tempest_plugin_manila_git_repo: https://opendev.org/openstack/manila-tempest-plugin
+tempest_plugin_manila_git_install_branch: 73e0b6fdc450b7539bf6a97349f5774177ffb24a # HEAD as of 24.01.2022
+tempest_plugin_manila_git_track_branch: master
+
+tempest_plugin_murano_git_repo: https://opendev.org/openstack/murano-tempest-plugin
+tempest_plugin_murano_git_install_branch: e3ff4504b590a7b170cd0dd5406909afeafd3f55 # HEAD as of 24.01.2022
+tempest_plugin_murano_git_track_branch: master
+
+tempest_plugin_neutron_git_repo: https://opendev.org/openstack/neutron-tempest-plugin
+tempest_plugin_neutron_git_install_branch: d48e1d709cef66413f5ec006bab0b15697d5b253 # HEAD as of 24.01.2022
+tempest_plugin_neutron_git_track_branch: master
+
+tempest_plugin_novajoin_git_repo: https://opendev.org/x/novajoin-tempest-plugin
+tempest_plugin_novajoin_git_install_branch: b2e548518a8893562ed111fe66f5937603f5ec5d # HEAD as of 24.01.2022
+tempest_plugin_novajoin_git_track_branch: master
+
+tempest_plugin_octavia_git_repo: https://opendev.org/openstack/octavia-tempest-plugin
+tempest_plugin_octavia_git_install_branch: 7de0490e79a450a3fabe3188bf7a9af16c554c2d # HEAD as of 24.01.2022
+tempest_plugin_octavia_git_track_branch: master
+
+tempest_plugin_senlin_git_repo: https://opendev.org/openstack/senlin-tempest-plugin
+tempest_plugin_senlin_git_install_branch: f300314aa3bc78bd00fbb1a7cb6f38c7372451f4 # HEAD as of 24.01.2022
+tempest_plugin_senlin_git_track_branch: master
+
+tempest_plugin_sahara_git_repo: https://opendev.org/openstack/sahara-tests
+tempest_plugin_sahara_git_install_branch: 98063d3fd93ce77cb3ecbbd33868bbe5dd3a6865 # HEAD as of 24.01.2022
+tempest_plugin_sahara_git_track_branch: master
+
+tempest_plugin_telemetry_git_repo: https://opendev.org/openstack/telemetry-tempest-plugin
+tempest_plugin_telemetry_git_install_branch: 6cd5f0274d73bb7a1024f99f609fd74907674f65 # HEAD as of 24.01.2022
+tempest_plugin_telemetry_git_track_branch: master
+
+tempest_plugin_trove_git_repo: https://opendev.org/openstack/trove-tempest-plugin
+tempest_plugin_trove_git_install_branch: 5de39645ed4c5f12526863d1546769dce74fcb08 # HEAD as of 24.01.2022
+tempest_plugin_trove_git_track_branch: master
+
+tempest_plugin_zaqar_git_repo: https://opendev.org/openstack/zaqar-tempest-plugin
+tempest_plugin_zaqar_git_install_branch: 3813c99e501a1f67a9cbde751cf71747a61f6786 # HEAD as of 24.01.2022
+tempest_plugin_zaqar_git_track_branch: master
+
+tempest_plugin_zun_git_repo: https://opendev.org/openstack/zun-tempest-plugin
+tempest_plugin_zun_git_install_branch: 6d2529583bc32bcb84e447d5524af1c900cc2845 # HEAD as of 24.01.2022
+tempest_plugin_zun_git_track_branch: master
