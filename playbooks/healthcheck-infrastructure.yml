@@ -104,7 +104,7 @@
     ansible_python_interpreter: "{{ openstack_service_setup_host_python_interpreter | default(ansible_facts['python']['executable']) }}"
   tasks:
     - name: Get openstack client config
-      openstack.cloud.os_client_config:
+      openstack.cloud.config:
     - name: Show openstack client config
       debug:
         var: openstack.clouds
