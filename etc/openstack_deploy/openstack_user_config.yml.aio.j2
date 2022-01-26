@@ -215,7 +215,6 @@ shared-infra_hosts:
       galera_container: 3
       memcached_container: 3
       rabbit_mq_container: 3
-      repo_container: 3
 {% endif %}
 
 repo-infra_hosts:
@@ -223,5 +222,9 @@ repo-infra_hosts:
 {% if bootstrap_host_install_method == 'distro' %}
     affinity:
       repo_container: 0
+{% endif %}
+{% if 'infra' in bootstrap_host_scenarios_expanded %}
+    affinity:
+      repo_container: 3
 {% endif %}
     ip: 172.29.236.100
