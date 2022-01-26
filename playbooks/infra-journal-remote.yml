@@ -29,14 +29,6 @@
         name: systemd-journald
         state: restarted
   pre_tasks:
-    # At this time there's no suitable package available for systemd-journal-remote/gateway
-    # When installing on SUSE 42.x. For now this playbook will omit suse when the package
-    # manager is "zypper". When a suitable package is available on SUSE this should be removed.
-    - name: Omit suse from this playbook
-      meta: end_play
-      when:
-        - ansible_facts['pkg_mgr'] == 'zypper'
-
     - name: Skip playbook if log_hosts group is empty
       meta: end_play
       when:
@@ -104,7 +96,7 @@
           enabled: "{{ (ansible_host != systemd_journal_remote_target) | ternary('no', 'yes') }}"
           state: "{{ (ansible_host != systemd_journal_remote_target) | ternary('stopped', 'started') }}"
           execstarts: >-
-            {{ systemd_utils_prefix }}/systemd-journal-remote
+            /lib/systemd/systemd-journal-remote
             --listen-http=-3
             --split-mode=host
             --compress
@@ -118,7 +110,7 @@
           enabled: "{{ (ansible_host == systemd_journal_remote_target) | ternary('no', 'yes') }}"
           state: "{{ (ansible_host == systemd_journal_remote_target) | ternary('stopped', 'started') }}"
           execstarts: >-
-            {{ systemd_utils_prefix }}/systemd-journal-upload
+            /lib/systemd/systemd-journal-upload
             --save-state
             --merge
             --url=http://{{ systemd_journal_remote_target }}:19532

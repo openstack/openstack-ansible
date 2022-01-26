@@ -217,9 +217,6 @@ function run_dstat {
           apt-get update
           DEBIAN_FRONTEND=noninteractive apt-get -y install dstat
           ;;
-      opensuse)
-          zypper -n install -l dstat
-          ;;
     esac
 
     # https://stackoverflow.com/a/20338327 executing in ()& decouples the dstat
@@ -334,7 +331,7 @@ function get_instance_info {
 
   determine_distro
   case ${DISTRO_ID} in
-      centos|rhel|fedora|opensuse)
+      centos|rhel)
           rpm -qa | sort > \
             "/openstack/log/instance-info/host_packages_info_${TS}.log" || true
           ;;

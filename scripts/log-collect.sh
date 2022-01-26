@@ -82,30 +82,15 @@ function repo_information {
     [[ "${1}" != "host" ]] && lxc_cmd="lxc-attach --name ${1} --" || lxc_cmd=""
     echo "Collecting list of installed packages and enabled repositories for \"${1}\""
     # Redhat package debugging
-    if eval sudo ${lxc_cmd} which yum &>/dev/null || eval sudo ${lxc_cmd} which dnf &>/dev/null; then
-        # Prefer dnf over yum for CentOS.
-        eval sudo ${lxc_cmd} which dnf &>/dev/null && RHT_PKG_MGR='dnf' || RHT_PKG_MGR='yum'
-        eval sudo ${lxc_cmd} $RHT_PKG_MGR repolist -v > "${WORKING_DIR}/logs/redhat-rpm-repolist-${1}-${TS}.txt" || true
-        eval sudo ${lxc_cmd} $RHT_PKG_MGR list installed > "${WORKING_DIR}/logs/redhat-rpm-list-installed-${1}-${TS}.txt" || true
-
-    # SUSE package debugging
-    elif eval sudo ${lxc_cmd} which zypper &>/dev/null; then
-        eval sudo ${lxc_cmd} zypper lr -d > "${WORKING_DIR}/logs/suse-zypper-repolist-${1}-${TS}.txt" || true
-        eval sudo ${lxc_cmd} zypper --disable-repositories pa -i > "${WORKING_DIR}/logs/suse-zypper-list-installed-${1}-${TS}.txt" || true
+    if eval sudo ${lxc_cmd} which dnf &>/dev/null; then
+        eval sudo ${lxc_cmd} dnf repolist -v > "${WORKING_DIR}/logs/redhat-rpm-repolist-${1}-${TS}.txt" || true
+        eval sudo ${lxc_cmd} dnf list installed > "${WORKING_DIR}/logs/redhat-rpm-list-installed-${1}-${TS}.txt" || true
 
     # Ubuntu package debugging
     elif eval sudo ${lxc_cmd} which apt-get &> /dev/null; then
         eval sudo ${lxc_cmd} apt-cache policy | grep http | awk '{print $1" "$2" "$3}' | sort -u > "${WORKING_DIR}/logs/ubuntu-apt-repolist-${1}-${TS}.txt" || true
         eval sudo ${lxc_cmd} apt list --installed > "${WORKING_DIR}/logs/ubuntu-apt-list-installed-${1}-${TS}.txt" || true
-
-    # Gentoo package debugging
-    elif eval sudo ${lxc_cmd} which emerge &> /dev/null; then
-        # list installed packages
-        eval sudo ${lxc_cmd} equery list "*" > "${WORKING_DIR}/logs/gentoo-portage-list-installed-${1}-${TS}.txt" || true
-        # list only packages called for install (not dependancies)
-        eval sudo ${lxc_cmd} cat /var/lib/portage/world > "${WORKING_DIR}/logs/gentoo-portage-list-manual-installed-${1}-${TS}.txt" || true
     fi
-
 }
 
 function store_artifacts {

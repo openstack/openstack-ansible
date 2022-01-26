@@ -118,18 +118,10 @@ bootstrap_host_network_utils:
     iptables: /sbin/iptables
     ethtool: /sbin/ethtool
     ip: /sbin/ip
-  yum:
-    iptables: /usr/sbin/iptables
-    ethtool: /usr/sbin/ethtool
-    ip: /usr/sbin/ip
   dnf:
     iptables: /usr/sbin/iptables
     ethtool: /usr/sbin/ethtool
     ip: /usr/sbin/ip
-  zypper:
-    iptables: /usr/sbin/iptables
-    ethtool: /sbin/ethtool
-    ip: /sbin/ip
 #
 bootstrap_host_iptables_path: "{{ bootstrap_host_network_utils[ansible_facts['pkg_mgr']]['iptables'] }}"
 bootstrap_host_ethtool_path: "{{ bootstrap_host_network_utils[ansible_facts['pkg_mgr']]['ethtool'] }}"
