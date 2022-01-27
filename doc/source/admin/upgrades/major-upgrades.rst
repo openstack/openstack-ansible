@@ -156,20 +156,15 @@ Upgrade hosts
 
 Before installing the infrastructure and OpenStack, update the host machines.
 
-With the introduction of the PKI ansible role, OSA now manages its own Certificate
-Authority (CA) when self-signed certificates are used. Before proceeding
-with the upgrade, you will need to override ``openstack_pki_authorities``
-and ``openstack_pki_service_intermediate_cert_name`` in your user_variables.
-Otherwise, sample authorities will be generated for root and intermediate
-certificates and all self-signed certificates generated later will be
-signed with them.
-
 .. warning::
 
     Usage of non-trusted certificates for RabbitMQ is not possible
     due to requirements of newer ``amqp`` versions.
 
-To generate new CA, you will need to run the following command:
+The internal certificate authority must be updated for the upgraded
+release version. This does not regenerate or alter any existing CA certificates.
+New certificate chains may be generated at this stage to cover
+additional parts of the deployment secured using TLS in upgraded release.
 
 .. code-block:: console
 
