@@ -208,6 +208,7 @@ senlin_wsgi_processes: 1
 lxc_net_address: 10.255.255.1
 lxc_net_netmask: 255.255.255.0
 lxc_net_dhcp_range: 10.255.255.2,10.255.255.253
+lxc_net_mtu: {{ hostvars[inventory_hostname]['ansible_' ~ bootstrap_host_public_interface]['mtu'] | default(1500) }}
 
 {% if nodepool_vars is defined and nodepool_vars.NODEPOOL_LXC_IMAGE_PROXY is defined %}
 ## images.linuxcontainers.org reverse proxy
