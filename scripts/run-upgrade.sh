@@ -166,13 +166,7 @@ function main {
     unset ANSIBLE_INVENTORY
 
     # TODO(noonedeadpunk): Remove after Y release
-    unset ANSIBLE_LIBRARY
-    unset ANSIBLE_FILTER_PLUGINS
-    unset ANSIBLE_ACTION_PLUGINS
-    unset ANSIBLE_CALLBACK_PLUGINS
-    unset ANSIBLE_TRANSPORT
-    unset ANSIBLE_STRATEGY_PLUGINS
-    unset ANSIBLE_CONNECTION_PLUGINS
+    source ${SCRIPTS_PATH}/upgrade-utilities/unset-ansible-env.rc
 
     bootstrap_ansible
 
