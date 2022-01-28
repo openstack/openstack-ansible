@@ -9,7 +9,7 @@ intended for deployers.
 .. note::
 
    If you want to do a quick proof of concept of OpenStack, read the
-   `All-In-One quickstart Guide <https://docs.openstack.org/openstack-ansible/latest/user/aio/quickstart.html>`_
+   :dev_docs:`All-In-One quickstart Guide <user/aio/quickstart.html>`
    instead of this document. This document is a walkthrough of a deploy
    using OpenStack-Ansible, with all its configurability.
 
