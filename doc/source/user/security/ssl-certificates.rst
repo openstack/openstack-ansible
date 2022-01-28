@@ -72,7 +72,7 @@ Generating and regenerating self-signed certificates
 Self-signed certificates are generated for each service during the first
 run of the playbook.
 
-To generate a new self-signed certificate for a service, you must set
+To regenerate a new self-signed certificate for a service, you must set
 the ``<servicename>_pki_regen_cert`` variable to true in one of the
 following ways:
 
@@ -102,7 +102,7 @@ outside of Openstack ansible. These user certificates are signed by the same
 self-signed certificate authority as is used by openstack services
 but are intended to be used by user applications.
 
-To create user certificates, define a variable with the prefix
+To generate user certificates, define a variable with the prefix
 ``user_pki_certificates_`` in the ``/etc/openstack_deploy/user_variables.yml``
 file.
 
@@ -122,7 +122,13 @@ Example
         extended_key_usage:
           - serverAuth
 
-To generate a new self-signed certificate for a service, you must set
+Generate the certificate with the following command:
+
+.. code-block:: shell-session
+
+   # openstack-ansible certificate-generate.yml
+
+To regenerate a new self-signed certificate for a service, you must set
 the ``user_pki_regen_cert`` variable to true in one of the
 following ways:
 
