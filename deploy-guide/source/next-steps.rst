@@ -8,11 +8,11 @@ is working, here is what you can do next:
 Operate OpenStack-Ansible
 =========================
 
-Review our `Operations guide <https://docs.openstack.org/openstack-ansible/latest/admin/index.html>`_
+Review our :dev_docs:`Operations guide <admin/index.html>`
 to learn about verifying your environment in more detail, and creating your first networks, images, and instances.
 
 Contribute to OpenStack-Ansible
 ===============================
 
-Review our `Contributors guide <https://docs.openstack.org/openstack-ansible/latest/contributor/index.html>`_
+Review our :dev_docs:`Contributors guide <contributor/index.html>`
 to learn about contributing to OpenStack-Ansible.

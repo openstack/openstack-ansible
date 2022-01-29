@@ -6,8 +6,7 @@ Overview
 
    For essential background reading to help understand the service and storage
    architecture, please read
-   `OpenStack-Ansible Architecture in its reference guide
-   <https://docs.openstack.org/openstack-ansible/latest/reference/architecture/index.html>`_
+   :dev_docs:`OpenStack-Ansible Architecture in its reference guide <reference/architecture/index.html>`
    If you'd like to understand when OpenStack-Ansible would be a good fit for your
    organisation, please read the appendix
    ":ref:`app-aboutosa`".
