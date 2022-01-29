@@ -31,172 +31,172 @@
 
 ## Global Requirements
 requirements_git_repo: https://git.openstack.org/openstack/requirements
-requirements_git_install_branch: a50ddeafe4506ef4f85bc0d935525aaeb83121f1 # HEAD as of 20.10.2019
+requirements_git_install_branch: e0cb0c20b07a14a6ef1fd60f36c4e95f2964dc21 # HEAD as of 29.01.2022
 requirements_git_track_branch: stable/pike
 
 
 ## Aodh service
 aodh_git_repo: https://git.openstack.org/openstack/aodh
-aodh_git_install_branch: 7fa169888735387b26b72af7fc76b93388547031  # HEAD as of 20.10.2019
+aodh_git_install_branch: 7fa169888735387b26b72af7fc76b93388547031  # HEAD as of 29.01.2022
 aodh_git_project_group: aodh_all
 aodh_git_track_branch: stable/pike
 
 
 ## Barbican service
 barbican_git_repo: https://git.openstack.org/openstack/barbican
-barbican_git_install_branch: 18c147e04424df6dcf474bce6387be9da73ecb8d  # HEAD as of 20.10.2019
+barbican_git_install_branch: 18c147e04424df6dcf474bce6387be9da73ecb8d  # HEAD as of 29.01.2022
 barbican_git_project_group: barbican_all
 barbican_git_track_branch: stable/pike
 
 
 ## Ceilometer service
 ceilometer_git_repo: https://git.openstack.org/openstack/ceilometer
-ceilometer_git_install_branch: 4a82ac59f86132fc72b2792dc23b1ab1ca698ce3  # HEAD as of 20.10.2019
+ceilometer_git_install_branch: 4a82ac59f86132fc72b2792dc23b1ab1ca698ce3  # HEAD as of 29.01.2022
 ceilometer_git_project_group: ceilometer_all
 ceilometer_git_track_branch: stable/pike
 
 
 ## Cinder service
 cinder_git_repo: https://git.openstack.org/openstack/cinder
-cinder_git_install_branch: ac00b4badbe73a9236f35709c41b4f83de76c485  # HEAD as of 20.10.2019
+cinder_git_install_branch: pike-eol  # HEAD as of 20.10.2019
 cinder_git_project_group: cinder_all
-cinder_git_track_branch: stable/pike
+cinder_git_track_branch: None
 
 
 ## Designate service
 designate_git_repo: https://git.openstack.org/openstack/designate
-designate_git_install_branch: 9466dd1dd274ad40d390d8fde1f9f79043466f60  # HEAD as of 20.10.2019
+designate_git_install_branch: 9466dd1dd274ad40d390d8fde1f9f79043466f60  # HEAD as of 29.01.2022
 designate_git_project_group: designate_all
 designate_git_track_branch: stable/pike
 
 
 ## Horizon Designate dashboard plugin
 designate_dashboard_git_repo: https://git.openstack.org/openstack/designate-dashboard
-designate_dashboard_git_install_branch: 9e0e2b77b3b3cba4aa578699e4e43d36a3bc8451  # HEAD as of 20.10.2019
+designate_dashboard_git_install_branch: 0ca56f97e6e2bab0d9f363f730d1d02dd7f288c9  # HEAD as of 29.01.2022
 designate_dashboard_git_project_group: horizon_all
 designate_dashboard_git_track_branch: stable/pike
 
 
 ## Dragonflow service
 dragonflow_git_repo: https://git.openstack.org/openstack/dragonflow
-dragonflow_git_install_branch: b078fa6a49e6ccba9cab8873375eaaaf5aecd1b1  # HEAD as of 20.10.2019
+dragonflow_git_install_branch: b078fa6a49e6ccba9cab8873375eaaaf5aecd1b1  # HEAD as of 29.01.2022
 dragonflow_git_project_group: neutron_all
 dragonflow_git_track_branch: stable/pike
 
 
 ## Glance service
 glance_git_repo: https://git.openstack.org/openstack/glance
-glance_git_install_branch: f30376911218296b7051bbb2be7202a6263a7497  # HEAD as of 20.10.2019
+glance_git_install_branch: f30376911218296b7051bbb2be7202a6263a7497  # HEAD as of 29.01.2022
 glance_git_project_group: glance_all
 glance_git_track_branch: stable/pike
 
 
 ## Heat service
 heat_git_repo: https://git.openstack.org/openstack/heat
-heat_git_install_branch: 12c721c21c6a499f9b13e05d0873e44155f843f6  # HEAD as of 20.10.2019
+heat_git_install_branch: pike-eol
 heat_git_project_group: heat_all
-heat_git_track_branch: stable/pike
+heat_git_track_branch: None
 
 
 ## Horizon service
 horizon_git_repo: https://git.openstack.org/openstack/horizon
-horizon_git_install_branch: 2987358035e588fe7e4db2aab24a41a10b57ead4  # HEAD as of 20.10.2019
+horizon_git_install_branch: pike-eol
 horizon_git_project_group: horizon_all
-horizon_git_track_branch: stable/pike
+horizon_git_track_branch: None
 
 ## Horizon Ironic dashboard plugin
 ironic_dashboard_git_repo: https://git.openstack.org/openstack/ironic-ui
-ironic_dashboard_git_install_branch: 97ebb7c915476b8b39292502675c2c03e9aa9994  # HEAD as of 20.10.2019
+ironic_dashboard_git_install_branch: 97ebb7c915476b8b39292502675c2c03e9aa9994  # HEAD as of 29.01.2022
 ironic_dashboard_git_project_group: horizon_all
 ironic_dashboard_git_track_branch: stable/pike
 
 ## Horizon Magnum dashboard plugin
 magnum_dashboard_git_repo: https://git.openstack.org/openstack/magnum-ui
-magnum_dashboard_git_install_branch: b5c7863bff3a8371b33a4a84e7a075a81d881cce  # HEAD as of 20.10.2019
+magnum_dashboard_git_install_branch: b5c7863bff3a8371b33a4a84e7a075a81d881cce  # HEAD as of 29.01.2022
 magnum_dashboard_git_project_group: horizon_all
 magnum_dashboard_git_track_branch: stable/pike
 
 ## Horizon LBaaS dashboard plugin
 neutron_lbaas_dashboard_git_repo: https://git.openstack.org/openstack/neutron-lbaas-dashboard
-neutron_lbaas_dashboard_git_install_branch: 8e87ca636468ce1ea26fd612909aadd4556923d3  # HEAD as of 20.10.2019
+neutron_lbaas_dashboard_git_install_branch: 8e87ca636468ce1ea26fd612909aadd4556923d3  # HEAD as of 29.01.2022
 neutron_lbaas_dashboard_git_project_group: horizon_all
 neutron_lbaas_dashboard_git_track_branch: stable/pike
 
 ## Horizon Sahara dashboard plugin
 sahara_dashboard_git_repo: https://git.openstack.org/openstack/sahara-dashboard
-sahara_dashboard_git_install_branch: 22d56111e13a9073b3e4c69639af5d528ad4aa80 # HEAD as of 20.10.2019
+sahara_dashboard_git_install_branch: pike-eol # HEAD as of 20.10.2019
 sahara_dashboard_git_project_group: horizon_all
-sahara_dashboard_git_track_branch: stable/pike
+sahara_dashboard_git_track_branch: None
 
 ## Keystone service
 keystone_git_repo: https://git.openstack.org/openstack/keystone
-keystone_git_install_branch: 5ba1b6ace597e9ce5fd25edac874c73abfabf743  # HEAD as of 20.10.2019
+keystone_git_install_branch: a405e4b71d7de31e81a01f07e02f189650eb66fe  # HEAD as of 29.01.2022
 keystone_git_project_group: keystone_all
 keystone_git_track_branch: stable/pike
 
 
 ## Neutron service
 neutron_git_repo: https://git.openstack.org/openstack/neutron
-neutron_git_install_branch: 586119e04718e998ae5517d7f0519e46d8f6f723  # HEAD as of 20.10.2019
+neutron_git_install_branch: 0579045a9ee1c4f246aeeeae0552c6bb9dc4a4d7  # HEAD as of 29.01.2022
 neutron_git_project_group: neutron_all
 neutron_git_track_branch: stable/pike
 
 neutron_lbaas_git_repo: https://git.openstack.org/openstack/neutron-lbaas
-neutron_lbaas_git_install_branch: 9ee7379c9920b8ec6bb65bfb9624689805de9731  # HEAD as of 20.10.2019
+neutron_lbaas_git_install_branch: 9ee7379c9920b8ec6bb65bfb9624689805de9731  # HEAD as of 29.01.2022
 neutron_lbaas_git_project_group: neutron_all
 neutron_lbaas_git_track_branch: stable/pike
 
 neutron_vpnaas_git_repo: https://git.openstack.org/openstack/neutron-vpnaas
-neutron_vpnaas_git_install_branch: e7b0c52ef8ce0915dd06bbfb660e0d9a94aeb8ac  # HEAD as of 20.10.2019
+neutron_vpnaas_git_install_branch: pike-eol
 neutron_vpnaas_git_project_group: neutron_all
-neutron_vpnaas_git_track_branch: stable/pike
+neutron_vpnaas_git_track_branch: None
 
 neutron_fwaas_git_repo: https://git.openstack.org/openstack/neutron-fwaas
-neutron_fwaas_git_install_branch: efcb94bc42eafd2c438942cfaa80381950242cd7  # HEAD as of 20.10.2019
+neutron_fwaas_git_install_branch: efcb94bc42eafd2c438942cfaa80381950242cd7  # HEAD as of 29.01.2022
 neutron_fwaas_git_project_group: neutron_all
 neutron_fwaas_git_track_branch: stable/pike
 
 neutron_dynamic_routing_git_repo: https://git.openstack.org/openstack/neutron-dynamic-routing
-neutron_dynamic_routing_git_install_branch: 02388ecc432a606eeb149d0686071943e9fd459d  # HEAD as of 20.10.2019
+neutron_dynamic_routing_git_install_branch: 02388ecc432a606eeb149d0686071943e9fd459d  # HEAD as of 29.01.2022
 neutron_dynamic_routing_git_project_group: neutron_all
 neutron_dynamic_routing_git_track_branch: stable/pike
 
 networking_calico_git_repo: https://git.openstack.org/openstack/networking-calico
-networking_calico_git_install_branch: 79bdf4995d102833d23479180350216fc59e4b94  # HEAD as of 20.10.2019
+networking_calico_git_install_branch: f1551c8cff66339377d72394b47d16d9bf16d980  # HEAD as of 29.01.2022
 networking_calico_git_project_group: neutron_all
 networking_calico_git_track_branch: master
 
 ## Nova service
 nova_git_repo: https://git.openstack.org/openstack/nova
-nova_git_install_branch: 6e2ec5c5a397b508cddb646e865b6f4d2132f1d6  # HEAD as of 20.10.2019
+nova_git_install_branch: 2ed1664b12cf67cecb1d858b10d901b674a8149f  # HEAD as of 29.01.2022
 nova_git_project_group: nova_all
 nova_git_track_branch: stable/pike
 
 
 ## PowerVM Virt Driver
 nova_powervm_git_repo: https://git.openstack.org/openstack/nova-powervm
-nova_powervm_git_install_branch: 4be1e1a09f48399fc6f56b9516f1b6d8f244270c  # HEAD as of 20.10.2019
+nova_powervm_git_install_branch: 4be1e1a09f48399fc6f56b9516f1b6d8f244270c  # HEAD as of 29.01.2022
 nova_powervm_git_project_group: nova_all
 nova_powervm_git_track_branch: stable/pike
 
 
 ## LXD Virt Driver
 nova_lxd_git_repo: https://git.openstack.org/openstack/nova-lxd
-nova_lxd_git_install_branch: fde6e82e5ed0272f7e43ec47b1dc82b5501cfdb4  # HEAD as of 20.10.2019
+nova_lxd_git_install_branch: fde6e82e5ed0272f7e43ec47b1dc82b5501cfdb4  # HEAD as of 29.01.2022
 nova_lxd_git_project_group: nova_all
 nova_lxd_git_track_branch: stable/pike
 
 
 ## Sahara service
 sahara_git_repo: https://git.openstack.org/openstack/sahara
-sahara_git_install_branch: 5a871901f6b8801e41eb014ce2d5ac21134d977f # HEAD as of 20.10.2019
+sahara_git_install_branch: pike-eol
 sahara_git_project_group: sahara_all
-sahara_git_track_branch: stable/pike
+sahara_git_track_branch: None
 
 
 ## Swift service
 swift_git_repo: https://git.openstack.org/openstack/swift
-swift_git_install_branch: 1dd0e1ca4b1a18743f2d20cbf958114293400178 # HEAD as of 20.10.2019
+swift_git_install_branch: eac5643380dc38142500b81079f5055967c016ba # HEAD as of 29.01.2022
 swift_git_project_group: swift_all
 swift_git_track_branch: stable/pike
 
@@ -210,34 +210,33 @@ swift_swift3_git_track_branch: None
 
 ## Ironic service
 ironic_git_repo: https://git.openstack.org/openstack/ironic
-ironic_git_install_branch: 43c54ec5cac82777e95c709e8c5b5366bccd6326  # HEAD as of 20.10.2019
+ironic_git_install_branch: 24e8dbbd3f28df7fb51b54611bc065bd1e2913f1  # HEAD as of 29.01.2022
 ironic_git_project_group: ironic_all
 ironic_git_track_branch: stable/pike
 
 ## Magnum service
 magnum_git_repo: https://git.openstack.org/openstack/magnum
-magnum_git_install_branch: 0cfdd98b8d043ec894e44e134c5e43017999b292  # HEAD as of 20.10.2019
+magnum_git_install_branch: 0cfdd98b8d043ec894e44e134c5e43017999b292  # HEAD as of 29.01.2022
 magnum_git_project_group: magnum_all
 magnum_git_track_branch: stable/pike
 
 ## Trove service
 trove_git_repo: https://git.openstack.org/openstack/trove
-trove_git_install_branch: 2c3314215f55445a3f75ba001ae060a3acb1cfc8 # HEAD as of 20.10.2019
+trove_git_install_branch: 08027d0ff997c02cb8ee4cd2ececd43b2712857e # HEAD as of 29.01.2022
 trove_git_project_group: trove_all
 trove_git_track_branch: stable/pike
 
 ## Horizon Trove dashboard plugin
 trove_dashboard_git_repo: https://git.openstack.org/openstack/trove-dashboard
-trove_dashboard_git_install_branch: d198007df597604bfc14fd4a6862f4184661c540 # HEAD as of 20.10.2019
+trove_dashboard_git_install_branch: d198007df597604bfc14fd4a6862f4184661c540 # HEAD as of 29.01.2022
 trove_dashboard_git_project_group: horizon_all
 trove_dashboard_git_track_branch: stable/pike
 
 ## Octavia service
 octavia_git_repo: https://git.openstack.org/openstack/octavia
-octavia_git_install_branch: 2976a7f0f109e17930db8a61136526ead44ea7e5  # HEAD as of 20.10.2019
+octavia_git_install_branch: pike-eol
 octavia_git_project_group: octavia_all
-octavia_git_track_branch: stable/pike
-
+octavia_git_track_branch: None
 ## Molteniron service
 molteniron_git_repo: https://git.openstack.org/openstack/molteniron
 molteniron_git_install_branch: 094276cda77d814d07ad885e7d63de8d1243750a # FROZEN HEAD of "master" as of 22.08.2018

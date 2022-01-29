@@ -1,38 +1,38 @@
 - name: ansible-hardening
   scm: git
   src: https://git.openstack.org/openstack/ansible-hardening
-  version: 72ac0ad58642528bf7bccde799f7456a1079ab68
-  trackbranch: stable/pike
+  version: pike-eol
+  trackbranch:
 - name: apt_package_pinning
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-apt_package_pinning
-  version: 92843a2b6d193d36a50823c086b16afb0d70cd8d
-  trackbranch: stable/pike
+  version: pike-eol
+  trackbranch:
 - name: pip_install
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-pip_install
-  version: d72772b4aefab352eeb7f6f25764059b15ecedfb
-  trackbranch: stable/pike
+  version: pike-eol
+  trackbranch:
 - name: galera_client
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-galera_client
-  version: 3674d03d97b5cf65fa07b0325bc06397953b3585
-  trackbranch: stable/pike
+  version: pike-eol
+  trackbranch:
 - name: galera_server
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-galera_server
-  version: 1f8992758b54eaa8b9967e94332584660c7dca92
-  trackbranch: stable/pike
+  version: pike-eol
+  trackbranch:
 - name: ceph_client
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-ceph_client
-  version: 54c67bc17e78c68922604088a0634b0eec2f8f9b
-  trackbranch: stable/pike
+  version: pike-eol
+  trackbranch:
 - name: haproxy_server
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-haproxy_server
-  version: 6cb02e317cf723686e99e4985770d23bcac0c898
-  trackbranch: stable/pike
+  version: pike-eol
+  trackbranch:
 - name: keepalived
   scm: git
   src: https://github.com/evrardjp/ansible-keepalived
@@ -41,163 +41,163 @@
 - name: lxc_container_create
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-lxc_container_create
-  version: be247ba507ccbfec6c71e964ea35dc450f9708b9
-  trackbranch: stable/pike
+  version: pike-eol
+  trackbranch:
 - name: lxc_hosts
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-lxc_hosts
-  version: eda0e0d8c035932568cb70619712aa2f6237647c
-  trackbranch: stable/pike
+  version: pike-eol
+  trackbranch:
 - name: memcached_server
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-memcached_server
-  version: 28b28d54316a2c56fe5b5035236438a7aa3e8fdd
-  trackbranch: stable/pike
+  version: pike-eol
+  trackbranch:
 - name: openstack_hosts
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-openstack_hosts
-  version: 0168d5b607cb5ae34684b0835432a6f51d43b88e
-  trackbranch: stable/pike
+  version: pike-eol
+  trackbranch:
 - name: os_keystone
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_keystone
-  version: fb078647cb81433f8136281d5d83ce953e8fa175
-  trackbranch: stable/pike
+  version: pike-eol
+  trackbranch:
 - name: openstack_openrc
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-openstack_openrc
-  version: 7640644df40b32fa7007251def780558a134808d
-  trackbranch: stable/pike
+  version: pike-eol
+  trackbranch:
 - name: os_aodh
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_aodh
-  version: fae312554e964c570b79097807cb282da2273c23
-  trackbranch: stable/pike
+  version: pike-eol
+  trackbranch:
 - name: os_barbican
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_barbican
-  version: ccedad4fc7200907d9f6993cbaafbb151573c379
-  trackbranch: stable/pike
+  version: pike-eol
+  trackbranch:
 - name: os_ceilometer
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_ceilometer
-  version: 0f97d64e5b4c2fd7d1dbd87a0f30a11d045f7e4e
-  trackbranch: stable/pike
+  version: pike-eol
+  trackbranch:
 - name: os_cinder
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_cinder
-  version: b8c07ccbe929adb4da6125a32a0523c52f70c90b
-  trackbranch: stable/pike
+  version: pike-eol
+  trackbranch:
 - name: os_designate
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_designate
-  version: 5276faa18427171fc1e6530acb1e0a8ab0f8bed1
-  trackbranch: stable/pike
+  version: pike-eol
+  trackbranch:
 - name: os_glance
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_glance
-  version: cf5c79a760e711e7fd47ed960b2577e2104cf768
-  trackbranch: stable/pike
+  version: pike-eol
+  trackbranch:
 - name: os_gnocchi
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_gnocchi
-  version: 3ce8acdd1637992c8c9abdd82f05c2069eea04c4
-  trackbranch: stable/pike
+  version: pike-eol
+  trackbranch:
 - name: os_heat
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_heat
-  version: e0b2623245d2d935fc8d2d7a8c901a5eff3d32c3
-  trackbranch: stable/pike
+  version: pike-eol
+  trackbranch:
 - name: os_horizon
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_horizon
-  version: 7248c8acdf453e0393b730817660479c0cc180f1
-  trackbranch: stable/pike
+  version: pike-eol
+  trackbranch:
 - name: os_ironic
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_ironic
-  version: 57cc3e8bcdc8b67d2646aa036848ac7a0b4dc56d
-  trackbranch: stable/pike
+  version: pike-eol
+  trackbranch:
 - name: os_magnum
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_magnum
-  version: 6cfced89d58f47c5057cd7122746a4c063252278
-  trackbranch: stable/pike
+  version: pike-eol
+  trackbranch:
 - name: os_molteniron
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_molteniron
-  version: 05021cac2a76f5a860a8297ccaf617845672e1dd
-  trackbranch: stable/pike
+  version: pike-eol
+  trackbranch:
 - name: os_neutron
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_neutron
-  version: ee662941d5db670f358b4e09e7df731d799e6884
-  trackbranch: stable/pike
+  version: pike-eol
+  trackbranch:
 - name: os_nova
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_nova
-  version: 8904b23a051d24cd4ef6ed7b5a33efe42ba3186b
-  trackbranch: stable/pike
+  version: pike-eol
+  trackbranch:
 - name: os_octavia
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_octavia
-  version: 7f98b2cc6e138e3d532c88b09460e4a6870ec844
-  trackbranch: stable/pike
+  version: pike-eol
+  trackbranch:
 - name: os_rally
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_rally
-  version: 09beb352c9d17108c0841e1bab38b2855e2ea3b7
-  trackbranch: stable/pike
+  version: pike-eol
+  trackbranch:
 - name: os_sahara
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_sahara
-  version: cc7849bd0ecfee4a8907f71a91313c66427a3ce3
-  trackbranch: stable/pike
+  version: pike-eol
+  trackbranch:
 - name: os_swift
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_swift
-  version: 30155d70aa659e6177b79244f69e5839d1f6e550
-  trackbranch: stable/pike
+  version: pike-eol
+  trackbranch:
 - name: os_tempest
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_tempest
-  version: 7e7626f152bc8c6bd5fcc71d0fa4e5fd64dfe516
-  trackbranch: stable/pike
+  version: pike-eol
+  trackbranch:
 - name: os_trove
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-os_trove
-  version: 9c83e785e2c7f87f5a437b0fcb76462fa3a8e7f1
-  trackbranch: stable/pike
+  version: pike-eol
+  trackbranch:
 - name: plugins
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-plugins
-  version: 86567389c10f02038e0f020c0d6cb326a771fbac
-  trackbranch: stable/pike
+  version: pike-eol
+  trackbranch:
 - name: rabbitmq_server
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-rabbitmq_server
-  version: 71f737efc55c7589ec47ba3520539fe0fd0be1b9
-  trackbranch: stable/pike
+  version: pike-eol
+  trackbranch:
 - name: repo_build
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-repo_build
-  version: 857f2eb12a0bc35c9e5c1a513965018d806e5c96
-  trackbranch: stable/pike
+  version: pike-eol
+  trackbranch:
 - name: repo_server
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-repo_server
-  version: e0996d29ddef9537c46616ab3053e3502207c030
-  trackbranch: stable/pike
+  version: pike-eol
+  trackbranch:
 - name: rsyslog_client
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-rsyslog_client
-  version: 895560c9603626c243185dbf6540b7bc14412908
-  trackbranch: stable/pike
+  version: pike-eol
+  trackbranch:
 - name: rsyslog_server
   scm: git
   src: https://git.openstack.org/openstack/openstack-ansible-rsyslog_server
-  version: 2c2dfceec20042c97bbad6a4a52034bca2136d56
-  trackbranch: stable/pike
+  version: pike-eol
+  trackbranch:
 - name: sshd
   scm: git
   src: https://github.com/willshersystems/ansible-sshd
