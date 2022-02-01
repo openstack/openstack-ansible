@@ -82,7 +82,6 @@ Before you begin, we recommend upgrading your system packages and kernel.
 
    .. parsed-literal::
 
-       # dnf install \https://repos.fedorapeople.org/repos/openstack/openstack-|rdo_series|/rdo-release-|rdo_series|.el8.rpm
        # dnf install git chrony openssh-server python3-devel sudo
        # dnf group install "Development Tools"
 
