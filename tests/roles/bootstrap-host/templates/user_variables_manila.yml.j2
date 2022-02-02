@@ -37,6 +37,10 @@ tempest_test_includelist:
 
 tempest_tempest_conf_overrides:
   share:
+    # The first version of manila api which supports microversions
+    min_api_microversion: "2.0"
+    # Set this to the highest microversion supported by the openstack release
+    max_api_microversion: "2.67"
     run_consistency_group_tests: False
     run_snapshot_tests: False
     capability_snapshot_support: True
