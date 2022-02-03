@@ -28,8 +28,8 @@ tempest_flavors:
     vcpus: 1
   - name: manila-service-flavor
     id: 100
-    ram: 256
-    disk: 3
+    ram: 320
+    disk: 5
     vcpus: 1
 
 tempest_test_whitelist:
@@ -57,6 +57,7 @@ tempest_tempest_conf_overrides:
     image_with_share_tools: manila-service-image
     image_password: manila
     endpoint_type: internalURL
+    max_api_microversion: 2.57
 
 tempest_images:
   - url: "https://download.cirros-cloud.net/0.5.1/cirros-0.5.1-x86_64-disk.img"
