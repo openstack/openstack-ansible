@@ -19,10 +19,6 @@ neutron_plugin_base:
 
 neutron_ml2_drivers_type: "geneve,vlan,flat"
 
-tempest_plugins:
-  - name: neutron-tempest-plugin
-    repo: https://opendev.org/openstack/neutron-tempest-plugin
-    branch: master
 tempest_test_includelist:
   - "neutron_tempest_plugin.api.test_networks*"
   - "tempest.scenario.test_network_basic_ops.TestNetworkBasicOps.test_network_basic_ops"
