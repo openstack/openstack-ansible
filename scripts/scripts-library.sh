@@ -87,12 +87,6 @@ function build_ansible_runtime_venv {
     if [[ -e /etc/ci/mirror_info.sh ]]; then
       ${PIP_COMMAND} install --isolated ${PIP_OPTS} systemd-python
     fi
-
-    # Add SELinux support to the venv
-    if [ -d "/usr/lib64/python3.8/site-packages/selinux/" ]; then
-      rsync -avX /usr/lib64/python3.8/site-packages/selinux/ /opt/ansible-runtime/lib64/python3.8/site-packages/selinux/
-      rsync -avX /usr/lib64/python3.8/site-packages/_selinux.cpython-36m-x86_64-linux-gnu.so /opt/ansible-runtime/lib64/python3.8/site-packages/
-    fi
 }
 
 # If in OpenStack-Infra, set some vars to use the mirror when bootstrapping Ansible
