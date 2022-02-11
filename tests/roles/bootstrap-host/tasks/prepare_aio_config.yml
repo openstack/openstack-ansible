@@ -99,17 +99,6 @@
       when:
         - cache_timeout is not defined
 
-    # This is a very dirty hack due to images.linuxcontainers.org
-    # constantly failing to resolve in openstack-infra.
-    - name: Implement hard-coded hosts entries for consistently failing name
-      lineinfile:
-        path: "/etc/hosts"
-        line: "{{ item }}"
-        state: present
-      with_items:
-        - "91.189.91.21 images.linuxcontainers.org us.images.linuxcontainers.org"
-        - "91.189.88.37 images.linuxcontainers.org uk.images.linuxcontainers.org"
-
 # NOTE(mhayden): The OpenStack CI images for CentOS recently set SELinux to
 # Enforcing mode by default. While I am normally a supporter of this change,
 # the SELinux policy work for CentOS is not done yet.
