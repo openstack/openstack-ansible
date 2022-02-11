@@ -91,7 +91,7 @@
           data: lv-{{ d | basename }}
       {% endfor %}
       cinder_backends:
-        "RBD":
+        "rbd_volumes":
           volume_driver: cinder.volume.drivers.rbd.RBDDriver
           rbd_pool: volumes
           rbd_ceph_conf: /etc/ceph/ceph.conf

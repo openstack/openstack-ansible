@@ -28,7 +28,7 @@ glance_rbd_store_pool: images
 nova_libvirt_images_rbd_pool: vms
 
 cinder_backends:
-  RBD:
+  rbd_volumes:
     volume_driver: cinder.volume.drivers.rbd.RBDDriver
     rbd_pool: volumes
     rbd_ceph_conf: /etc/ceph/ceph.conf
