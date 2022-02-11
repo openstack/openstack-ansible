@@ -21,7 +21,7 @@ ssl_protocol: "ALL -SSLv2 -SSLv3 -TLSv1 -TLSv1.1"
 ssl_cipher_suite: "ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:RSA+AESGCM:RSA+AES:!aNULL:!MD5:!DSS"
 
 #variables used in OSA roles which call the PKI role
-openstack_pki_dir: "/etc/openstack_deploy/pki"
+openstack_pki_dir: "{{ openstack_config_dir }}/pki"
 openstack_pki_service_intermediate_cert_name: "ExampleCorpIntermediate"
 
 openstack_pki_service_intermediate_cert_path: "{{ openstack_pki_dir ~ '/roots/' ~ openstack_pki_service_intermediate_cert_name ~ '/certs/' ~ openstack_pki_service_intermediate_cert_name ~ '.crt' }}"

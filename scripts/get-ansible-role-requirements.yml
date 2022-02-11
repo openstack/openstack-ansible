@@ -102,12 +102,12 @@
 
         - name: Ensure overrides directory exists
           file:
-            path: '/etc/openstack_deploy'
+            path: "{{ config_dir }}"
             state: directory
 
         - name: Create overrides for openstack_services git repos to use local cache
           blockinfile:
-            path: '/etc/openstack_deploy/user_variables_zuulrepos.yml'
+            path: "{{ config_dir }}/user_variables_zuulrepos.yml"
             block: "{{ service_git_repos | join('\n') }}"
             create: yes
 
@@ -164,12 +164,13 @@
 
   vars:
     ansible_python_interpreter: "/opt/ansible-runtime/bin/python"
+    config_dir: "{{ lookup('env', 'OSA_CONFIG_DIR') | default('/etc/openstack_deploy', true) }}"
     required_roles: "{{ lookup('file', role_file) | from_yaml }}"
     openstack_services_file: "{{ playbook_dir }}/../playbooks/defaults/repo_packages/openstack_services.yml"
     role_file: "{{ playbook_dir }}/../ansible-role-requirements.yml"
     role_path_default: '/etc/ansible/roles'
     user_roles: "{{ lookup('file', user_role_path, errors='ignore')|default([], true) | from_yaml }}"
-    user_role_path: "{{ lookup('env', 'OSA_CONFIG_DIR') | default('/etc/openstack_deploy', true) ~ '/' ~ (user_role_file|default('')) }}"
+    user_role_path: "{{ config_dir ~ '/' ~ (user_role_file|default('')) }}"
     git_clone_retries: 2
     git_clone_retry_delay: 5
     role_clone_default_depth: 20
