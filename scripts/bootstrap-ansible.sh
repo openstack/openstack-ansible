@@ -176,7 +176,7 @@ if [ -f "${ANSIBLE_ROLE_FILE}" ] && [[ -z "${SKIP_OSA_ROLE_CLONE+defined}" ]]; t
     export ANSIBLE_FILTER_PLUGINS="/dev/null"
     export ANSIBLE_ACTION_PLUGINS="/dev/null"
     export ANSIBLE_CALLBACK_PLUGINS="/dev/null"
-    export ANSIBLE_CALLBACK_WHITELIST="/dev/null"
+    export ANSIBLE_CALLBACKS_ENABLED="/dev/null"
     export ANSIBLE_TEST_PLUGINS="/dev/null"
     export ANSIBLE_VARS_PLUGINS="/dev/null"
     export ANSIBLE_STRATEGY_PLUGINS="/dev/null"
@@ -196,7 +196,7 @@ if [ -f "${ANSIBLE_ROLE_FILE}" ] && [[ -z "${SKIP_OSA_ROLE_CLONE+defined}" ]]; t
     unset ANSIBLE_FILTER_PLUGINS
     unset ANSIBLE_ACTION_PLUGINS
     unset ANSIBLE_CALLBACK_PLUGINS
-    unset ANSIBLE_CALLBACK_WHITELIST
+    unset ANSIBLE_CALLBACKS_ENABLED
     unset ANSIBLE_TEST_PLUGINS
     unset ANSIBLE_VARS_PLUGINS
     unset ANSIBLE_STRATEGY_PLUGINS
