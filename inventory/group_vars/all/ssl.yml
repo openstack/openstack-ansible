@@ -22,7 +22,7 @@ ssl_cipher_suite_tls12: "{{ ssl_cipher_suite | default('ECDH+AESGCM:DH+AESGCM:EC
 ssl_cipher_suite_tls13: "TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256"
 
 #variables used in OSA roles which call the PKI role
-openstack_pki_dir: "/etc/openstack_deploy/pki"
+openstack_pki_dir: "{{ openstack_config_dir }}/pki"
 openstack_pki_service_intermediate_cert_name: "ExampleCorpIntermediate"
 
 openstack_pki_service_intermediate_cert_path: "{{ openstack_pki_dir ~ '/roots/' ~ openstack_pki_service_intermediate_cert_name ~ '/certs/' ~ openstack_pki_service_intermediate_cert_name ~ '.crt' }}"
