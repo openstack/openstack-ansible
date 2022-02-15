@@ -60,14 +60,6 @@
   user: root
   roles:
     - role: "rabbitmq_server"
-
-  post_tasks:
-    - include_tasks: "common-tasks/rsyslog-client.yml"
-      vars:
-        rsyslog_client_log_rotate_file: rabbitmq_log_rotate
-        rsyslog_client_log_dir: "/var/log/rabbitmq"
-        rsyslog_client_config_name: "99-rabbitmq-rsyslog-client.conf"
-
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - rabbitmq
