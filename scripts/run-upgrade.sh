@@ -36,6 +36,9 @@ export SOURCE_SERIES="victoria"
 # The expected target series name
 export TARGET_SERIES="wallaby"
 
+# The expected OSA config dir
+export OSA_CONFIG_DIR="${OSA_CONFIG_DIR:-/etc/openstack_deploy}"
+
 ## Functions -----------------------------------------------------------------
 
 function run_lock {
@@ -44,7 +47,7 @@ function run_lock {
   run_item="$2"
   hashed_run_item=($(echo $run_item | md5sum))
 
-  upgrade_marker="/etc/openstack_deploy/upgrade-${TARGET_SERIES}/$hashed_run_item.complete"
+  upgrade_marker="${OSA_CONFIG_DIR}/upgrade-${TARGET_SERIES}/$hashed_run_item.complete"
 
   if [ ! -f "$upgrade_marker" ];then
     # note(sigmavirus24): use eval so that we properly turn strings like
@@ -85,24 +88,24 @@ function run_lock {
 }
 
 function check_for_current {
-    if [[ ! -d "/etc/openstack_deploy" ]]; then
+    if [[ ! -d "${OSA_CONFIG_DIR}" ]]; then
       echo "--------------ERROR--------------"
-      echo "/etc/openstack_deploy directory not found."
+      echo "${OSA_CONFIG_DIR} directory not found."
       echo "It appears you do not have a current environment installed."
       exit 2
     fi
 }
 
 function create_working_dir {
-    if [ ! -d  "/etc/openstack_deploy/upgrade-${TARGET_SERIES}" ]; then
-        mkdir -p "/etc/openstack_deploy/upgrade-${TARGET_SERIES}"
+    if [ ! -d  "${OSA_CONFIG_DIR}/upgrade-${TARGET_SERIES}" ]; then
+        mkdir -p "${OSA_CONFIG_DIR}/upgrade-${TARGET_SERIES}"
     fi
 }
 
 function bootstrap_ansible {
-    if [ ! -f "/etc/openstack_deploy/upgrade-${TARGET_SERIES}/bootstrap-ansible.complete" ]; then
+    if [ ! -f "${OSA_CONFIG_DIR}/upgrade-${TARGET_SERIES}/bootstrap-ansible.complete" ]; then
       "${SCRIPTS_PATH}/bootstrap-ansible.sh"
-      touch /etc/openstack_deploy/upgrade-${TARGET_SERIES}/bootstrap-ansible.complete
+      touch ${OSA_CONFIG_DIR}/upgrade-${TARGET_SERIES}/bootstrap-ansible.complete
     else
       echo "Ansible has been bootstrapped for ${TARGET_SERIES} already, skipping..."
     fi
@@ -158,7 +161,7 @@ function main {
     # Backup source series artifacts
     source_series_backup_file="/openstack/backup-openstack-ansible-${SOURCE_SERIES}.tar.gz"
     if [[ ! -e ${source_series_backup_file} ]]; then
-      tar zcf ${source_series_backup_file} /etc/openstack_deploy /etc/ansible/ /usr/local/bin/openstack-ansible.rc
+      tar zcf ${source_series_backup_file} ${OSA_CONFIG_DIR} /etc/ansible/ /usr/local/bin/openstack-ansible.rc
     fi
 
     # ANSIBLE_INVENTORY may be set to a previous/incorrect location. To
