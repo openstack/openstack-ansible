@@ -109,7 +109,7 @@ TOX_CONSTRAINTS_SHA=$(awk '/requirements_git_install_branch:/ {print $2}' playbo
 
 # if we are in CI, grab the u-c file from the locally cached repo, otherwise download
 TOX_CONSTRAINTS_PATH="/opt/ansible-runtime-constraints-${TOX_CONSTRAINTS_SHA}.txt"
-if [[ -z "${ZUUL_SRC_PATH+defined}" ]]; then
+if [[ -z "${ZUUL_SRC_PATH+defined}" || ! -d "${ZUUL_SRC_PATH:-''}" ]]; then
   wget ${TOX_CONSTRAINTS_FILE:-"https://opendev.org/openstack/requirements/raw/${TOX_CONSTRAINTS_SHA}/upper-constraints.txt"} -O ${TOX_CONSTRAINTS_PATH}
 else
   git --git-dir=${ZUUL_SRC_PATH}/opendev.org/openstack/requirements/.git show ${TOX_CONSTRAINTS_SHA}:upper-constraints.txt > ${TOX_CONSTRAINTS_PATH}

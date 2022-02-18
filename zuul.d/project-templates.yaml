@@ -17,10 +17,12 @@
     check:
       jobs:
         - openstack-ansible-varstest-aio
+        - openstack-ansible-shastest-metal
         - openstack-tox-docs
     gate:
       jobs:
         - openstack-ansible-varstest-aio
+        - openstack-ansible-shastest-metal
         - openstack-tox-docs
     periodic:
       jobs:
