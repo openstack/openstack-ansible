@@ -40,7 +40,7 @@ export ANSIBLE_LOG_DIR="/openstack/log/ansible-logging"
 export SCENARIO=${1:-"aio_lxc"}
 
 # Set the action base on the second CLI parameter
-# Actions available: [ 'deploy', 'upgrade', 'varstest', 'linters' ]
+# Actions available: [ 'deploy', 'upgrade', 'varstest', 'shastest', 'linters' ]
 export ACTION=${2:-"deploy"}
 
 # Set the installation method for the OpenStack services
@@ -105,13 +105,17 @@ if which iptables; then
 fi
 
 # Bootstrap an AIO
-if [[ -z "${SKIP_OSA_BOOTSTRAP_AIO+defined}" && "${ACTION}" != "linters" ]]; then
+if [[ -z "${SKIP_OSA_BOOTSTRAP_AIO+defined}" && "${ACTION}" != "linters" &&  "${ACTION}" != "shastest" ]]; then
     source "${OSA_CLONE_DIR}/scripts/bootstrap-aio.sh"
 fi
 
 if [[ "${ACTION}" == "varstest" ]]; then
   pushd "${OSA_CLONE_DIR}/tests"
       openstack-ansible test-vars-overrides.yml
+  popd
+elif [[ "${ACTION}" == "shastest" ]]; then
+  pushd "${OSA_CLONE_DIR}/tests"
+      openstack-ansible test-upstream-shas.yml
   popd
 elif [[ "${ACTION}" == "linters" ]]; then
   pushd "${OSA_CLONE_DIR}"
