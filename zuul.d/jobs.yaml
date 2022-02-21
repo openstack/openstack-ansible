@@ -35,6 +35,9 @@
       - ^setup\.(cfg|py)$
       - ^tox.ini$
       - ^Vagrantfile
+    vars:
+      #disable powertools/highavailabity for centos, do not install debian/ubuntu backports repo config
+      configure_mirrors_extra_repos: False
 
 - job:
     name: openstack-ansible-deploy-aio-distro
