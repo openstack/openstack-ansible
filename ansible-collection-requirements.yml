@@ -1,32 +1,34 @@
+---
+
 collections:
-  - name: https://opendev.org/openstack/ansible-collections-openstack
-    version: 1.5.3
-    type: git
-  - name: https://opendev.org/openstack/ansible-config_template
-    version: 1.2.1
-    type: git
-  - name: https://github.com/ansible-collections/community.general
-    version: 4.0.1
-    type: git
-  - name: https://github.com/ansible-collections/community.rabbitmq
-    version: 1.1.0
-    type: git
-  - name: https://github.com/ansible-collections/community.mysql
-    version: 2.3.1
-    type: git
-  - name: https://github.com/ansible-collections/community.crypto
-    version: 1.9.5
-    type: git
-  - name: https://github.com/ansible-collections/ansible.posix
-    version: 1.3.0
-    type: git
-  # NOTE(noonedeadpunk): needs version in galaxy.yml to pull from git
-  - name: ansible.netcommon
-    version: 2.5.1
-    source: https://galaxy.ansible.com
-  - name: openvswitch.openvswitch
-    version: 2.0.2
-    source: https://galaxy.ansible.com
-  - name: https://opendev.org/openstack/openstack-ansible-plugins
-    version: master
-    type: git
+- name: https://opendev.org/openstack/ansible-collections-openstack
+  version: 1.7.0
+  type: git
+- name: https://opendev.org/openstack/ansible-config_template
+  version: 1.2.1
+  type: git
+- name: https://opendev.org/openstack/openstack-ansible-plugins
+  version: master
+  type: git
+- name: https://github.com/ansible-collections/community.general
+  version: 4.5.0
+  type: git
+- name: https://github.com/ansible-collections/community.rabbitmq
+  version: 1.1.0
+  type: git
+- name: https://github.com/ansible-collections/community.mysql
+  version: 3.1.1
+  type: git
+- name: https://github.com/ansible-collections/community.crypto
+  version: 2.2.2
+  type: git
+- name: https://github.com/ansible-collections/ansible.posix
+  version: 1.3.0
+  type: git
+# NOTE(noonedeadpunk): needs version in galaxy.yml to pull from git
+- name: ansible.netcommon
+  version: 2.5.1
+  source: https://galaxy.ansible.com
+- name: openvswitch.openvswitch
+  version: 2.1.0
+  source: https://galaxy.ansible.com
