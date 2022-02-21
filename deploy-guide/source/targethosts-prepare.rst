@@ -18,6 +18,12 @@ target host:
 Configure at least one network interface to access the Internet or
 suitable local repositories.
 
+Some distributions add an extraneous entry in the ``/etc/hosts`` file that
+resolves the actual hostname to another loopback IP address such as
+``127.0.1.1``. You must comment out or remove this entry to prevent name
+resolution problems. **Do not remove the 127.0.0.1 entry.**
+This step is especially important for `metal` deployments.
+
 We recommend adding the Secure Shell (SSH) server packages to the
 installation on target hosts that do not have local (console) access.
 
