@@ -1,6 +1,6 @@
 ---
 
-### HEAD as of 19.01.2022 ###
+### HEAD as of 22.02.2022 ###
 
 - name: ansible-hardening
   scm: git
@@ -15,7 +15,7 @@
 - name: galera_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-galera_server
-  version: 26207223415c412f5b7a2c91e17c56a2d013e75c
+  version: 3089c556441a7a841223e1a65bbf932b0a19b380
   trackbranch: stable/xena
 - name: ceph_client
   scm: git
@@ -30,17 +30,17 @@
 - name: keepalived
   scm: git
   src: https://github.com/evrardjp/ansible-keepalived
-  version: 78fcf28f2c7be772d16740e8154c21a78a19e775
+  version: 59de04acdde21aa2b5e43de6f4ad865d1bde33db
   trackbranch: master
 - name: lxc_container_create
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-lxc_container_create
-  version: 4d756978fe5e032e1fc1003a86258ce5e832b9e8
+  version: e68754dc009059f9dc7fdd394eef327082ca384a
   trackbranch: stable/xena
 - name: lxc_hosts
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-lxc_hosts
-  version: d65aa506d09275089950cf4e55b3836a9938046d
+  version: 86ef148408777a315a4d9f3b33aa83d39c254440
   trackbranch: stable/xena
 - name: memcached_server
   scm: git
@@ -50,12 +50,12 @@
 - name: openstack_hosts
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-openstack_hosts
-  version: 3ecdf98aab2a4a4603fdb5732f3cd05676b91702
+  version: 2d0d290e770f33745e7ceefde4a96e35d5e5b153
   trackbranch: stable/xena
 - name: os_keystone
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_keystone
-  version: 8fab446dec67dfa75ac953ccaee8e2f011c401ae
+  version: fbad6161cb1872e5b8bf89c00019f56ac68224fb
   trackbranch: stable/xena
 - name: openstack_openrc
   scm: git
@@ -70,7 +70,7 @@
 - name: os_aodh
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_aodh
-  version: 609c4c0676fb231706a5b4090a4e250383422297
+  version: 13e27f9b9ff409cb9bee1cf390be66d1ca82afbd
   trackbranch: stable/xena
 - name: os_barbican
   scm: git
@@ -90,7 +90,7 @@
 - name: os_cinder
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_cinder
-  version: 9d525d4129b7953af133e82f2bd1c74f8b77c61e
+  version: 36bfe7806c8980012319347232b9430bfcaeb5f9
   trackbranch: stable/xena
 - name: os_cloudkitty
   scm: git
@@ -120,7 +120,7 @@
 - name: os_horizon
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_horizon
-  version: 639d8ae1cca47ed0ca32d11d74e08bed6d422cea
+  version: c7b20a13cd1885b267a857453d7aee492b075697
   trackbranch: stable/xena
 - name: os_ironic
   scm: git
@@ -160,7 +160,7 @@
 - name: os_nova
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_nova
-  version: a87e3eec2581aeab7ad2603b4476945219af0f9a
+  version: bd8c799a72c3185b421cb1f1952b1556457565c4
   trackbranch: stable/xena
 - name: os_octavia
   scm: git
@@ -200,7 +200,7 @@
 - name: os_tempest
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_tempest
-  version: 88b36985380e5ab592ab7a8d19a5c92f97661d13
+  version: 993f03403c86f9f7e0c56aee9d394f18c6475db2
   trackbranch: stable/xena
 - name: os_trove
   scm: git
@@ -220,7 +220,7 @@
 - name: qdrouterd
   scm: git
   src: https://opendev.org/openstack/ansible-role-qdrouterd
-  version: d7bc864c5596fe2249cf0c06caa0e05ab885ad4d
+  version: f1e4809fdad87664acea4bdfaaab6dfc253f44c2
   trackbranch: stable/xena
 - name: rabbitmq_server
   scm: git
@@ -230,7 +230,7 @@
 - name: repo_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-repo_server
-  version: 6573c7f512aedbc0c3ced88e9bc8d25d24559dcc
+  version: 20f01a5d8840ae664deebda54d3525b385b38331
   trackbranch: stable/xena
 - name: rsyslog_client
   scm: git
@@ -245,7 +245,7 @@
 - name: sshd
   scm: git
   src: https://github.com/willshersystems/ansible-sshd
-  version: 214df35c0bee77b5d69f49c2da269251d451b28f
+  version: 59a3cb190f7913e32b044dc2733cfe7e46c4c99a
   trackbranch: master
 - name: bird
   scm: git
@@ -270,9 +270,9 @@
 - name: ceph-ansible
   scm: git
   src: https://github.com/ceph/ceph-ansible
-  version: 29763efdc3b5800f47de48fcb96633ade2817779
+  version: 8096e4f4ceaeedd4e22a92f8e51ad985c7644468
   trackbranch: stable-6.0
-  shallow_since: '2022-01-18'
+  shallow_since: '2022-02-21'
 - name: opendaylight
   scm: git
   src: https://github.com/opendaylight/integration-packaging-ansible-opendaylight
@@ -306,7 +306,7 @@
 - name: python_venv_build
   src: https://opendev.org/openstack/ansible-role-python_venv_build
   scm: git
-  version: e7ba92f997adb2c17f432c7653b468262bdf132d
+  version: aac3b6f7725ccb61d65cb1125ce98f8748f26ed3
   trackbranch: stable/xena
 - name: uwsgi
   src: https://opendev.org/openstack/ansible-role-uwsgi
