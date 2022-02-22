@@ -1,6 +1,6 @@
 ---
 
-### HEAD as of 19.01.2022 ###
+### HEAD as of 22.02.2022 ###
 
 - name: ansible-hardening
   scm: git
@@ -15,12 +15,12 @@
 - name: config_template
   scm: git
   src: https://opendev.org/openstack/ansible-config_template
-  version: 7422a0941b8aa29eebe45c192844a27c25c216ef
+  version: bd7543a73681f16e20d5562291b8f545fc4fb904
   trackbranch: master
 - name: galera_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-galera_server
-  version: c74c86e8a6afaae40135fc06e77d7012485b4257
+  version: 661d1379d954791c2af8f78199f8d2b17201ac72
   trackbranch: stable/wallaby
 - name: ceph_client
   scm: git
@@ -35,17 +35,17 @@
 - name: keepalived
   scm: git
   src: https://github.com/evrardjp/ansible-keepalived
-  version: 78fcf28f2c7be772d16740e8154c21a78a19e775
+  version: 59de04acdde21aa2b5e43de6f4ad865d1bde33db
   trackbranch: master
 - name: lxc_container_create
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-lxc_container_create
-  version: 412455c8529d38445fb4dbfe635845b1bdb3af23
+  version: 35cd4ab6f5f6749d84fff4ca3dfe35fe06cffaae
   trackbranch: stable/wallaby
 - name: lxc_hosts
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-lxc_hosts
-  version: 939d3222a84935e6302ec933628bc83cf0290125
+  version: b57db77442c1a6354b0a43cee667f595e5f4a915
   trackbranch: stable/wallaby
 - name: memcached_server
   scm: git
@@ -55,12 +55,12 @@
 - name: openstack_hosts
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-openstack_hosts
-  version: 8c314e42cfaabf62b1f421341cafcf74f7d95d5f
+  version: e75b7a6f1ae880815d0c37c173508fed4bf7ce9c
   trackbranch: stable/wallaby
 - name: os_keystone
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_keystone
-  version: 0c7359379121e5b30078198196d45d0253735d59
+  version: 0b14a997193d19bb93cd8cb4592e8f1a7cd5959a
   trackbranch: stable/wallaby
 - name: openstack_openrc
   scm: git
@@ -125,7 +125,7 @@
 - name: os_horizon
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_horizon
-  version: 6e331b16ea65d402ca7d6e5ac91a259232a199b5
+  version: 7a9d3fbe712a316c5d36c57c91970d51f39d7881
   trackbranch: stable/wallaby
 - name: os_ironic
   scm: git
@@ -160,7 +160,7 @@
 - name: os_neutron
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_neutron
-  version: ec63e39b4017412fa423d43102d860bb976647bc
+  version: c997e3dc2f789e64e89dd5219c0ff2794ab37d9b
   trackbranch: stable/wallaby
 - name: os_nova
   scm: git
@@ -230,7 +230,7 @@
 - name: qdrouterd
   scm: git
   src: https://opendev.org/openstack/ansible-role-qdrouterd
-  version: 1c06fe38f0aaa251e50c321bdb2f7cb8c5391d17
+  version: dae22fa4e0b68185ca1c081e00bc7e732f166af7
   trackbranch: stable/wallaby
 - name: rabbitmq_server
   scm: git
@@ -240,7 +240,7 @@
 - name: repo_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-repo_server
-  version: 2a5ae448bc9c26c36eb02e1050b9b2ffe7aa4f08
+  version: c3e111780a3941eb27a7e5a61a3f389b8bb58c87
   trackbranch: stable/wallaby
 - name: rsyslog_client
   scm: git
@@ -255,7 +255,7 @@
 - name: sshd
   scm: git
   src: https://github.com/willshersystems/ansible-sshd
-  version: 214df35c0bee77b5d69f49c2da269251d451b28f
+  version: 59a3cb190f7913e32b044dc2733cfe7e46c4c99a
   trackbranch: master
 - name: bird
   scm: git
@@ -280,9 +280,9 @@
 - name: ceph-ansible
   scm: git
   src: https://github.com/ceph/ceph-ansible
-  version: 000e93f608cd6c07ffa8d0dc76092d6234682ea8
+  version: d7878363509b34950609adba47c975d9e26366f2
   trackbranch: stable-5.0
-  shallow_since: '2022-01-18'
+  shallow_since: '2022-02-21'
 - name: opendaylight
   scm: git
   src: https://github.com/opendaylight/integration-packaging-ansible-opendaylight
@@ -316,7 +316,7 @@
 - name: python_venv_build
   src: https://opendev.org/openstack/ansible-role-python_venv_build
   scm: git
-  version: 5c29b66811270abb788a2e7822b7202d936ac601
+  version: 3a86515670239aa403a40d0d19b7660a4dd41dd0
   trackbranch: stable/wallaby
 - name: uwsgi
   src: https://opendev.org/openstack/ansible-role-uwsgi
