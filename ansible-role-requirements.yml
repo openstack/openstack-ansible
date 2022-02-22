@@ -1,6 +1,6 @@
 ---
 
-### HEAD as of 19.01.2022 ###
+### HEAD as of 22.02.2022 ###
 
 - name: ansible-hardening
   scm: git
@@ -15,7 +15,7 @@
 - name: config_template
   scm: git
   src: https://opendev.org/openstack/ansible-config_template
-  version: 7422a0941b8aa29eebe45c192844a27c25c216ef
+  version: bd7543a73681f16e20d5562291b8f545fc4fb904
   trackbranch: master
 - name: galera_server
   scm: git
@@ -35,17 +35,17 @@
 - name: keepalived
   scm: git
   src: https://github.com/evrardjp/ansible-keepalived
-  version: 78fcf28f2c7be772d16740e8154c21a78a19e775
+  version: 59de04acdde21aa2b5e43de6f4ad865d1bde33db
   trackbranch: master
 - name: lxc_container_create
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-lxc_container_create
-  version: 7103e22832956eaa973b714bf2019232f5c77728
+  version: ca18916930b05575e44279d8a11e08345f9581f4
   trackbranch: stable/victoria
 - name: lxc_hosts
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-lxc_hosts
-  version: 51eca809d2330ca707953d5fdfd308175f738331
+  version: de4b2ebeb83c647ba0d6d0fcc75347665ee7b684
   trackbranch: stable/victoria
 - name: memcached_server
   scm: git
@@ -60,7 +60,7 @@
 - name: os_keystone
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_keystone
-  version: 9df7d79a8123f4e35b89eed9476962f0327de2b4
+  version: 526a3b6e89f1d4eee9065517180d677cd5410d55
   trackbranch: stable/victoria
 - name: openstack_openrc
   scm: git
@@ -75,7 +75,7 @@
 - name: os_aodh
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_aodh
-  version: ce54f4e17da776bcba8ff8d5193e9e219a905a64
+  version: 94d96f6cb9f97df9fdf445b29e8a456fed0f202a
   trackbranch: stable/victoria
 - name: os_barbican
   scm: git
@@ -125,7 +125,7 @@
 - name: os_horizon
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_horizon
-  version: 3f91d9bad5261f9dc444dfb145a160b35ae39e70
+  version: 5fa89bc5d4805bfbca380f18c5d2c0edbb67e453
   trackbranch: stable/victoria
 - name: os_ironic
   scm: git
@@ -140,7 +140,7 @@
 - name: os_manila
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_manila
-  version: cb6695ab30e58f71965d46dc0d9118aab7994381
+  version: b74ea053b839e2bc4fdcbf495c756dd5202568a1
   trackbranch: stable/victoria
 - name: os_masakari
   scm: git
@@ -160,7 +160,7 @@
 - name: os_neutron
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_neutron
-  version: af9f3b2257b5284a169360d8c92044dd6a53a1c3
+  version: c9e64bd5745c1e9732d7d737f93e6b56bec4bb42
   trackbranch: stable/victoria
 - name: os_nova
   scm: git
@@ -210,7 +210,7 @@
 - name: os_tempest
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_tempest
-  version: 06add17f32a65904b9f075dbd808f02b7eb6f9e5
+  version: 253cfb1f81252e18fa83e8aceebc909bc50857b8
   trackbranch: stable/victoria
 - name: os_trove
   scm: git
@@ -230,7 +230,7 @@
 - name: qdrouterd
   scm: git
   src: https://opendev.org/openstack/ansible-role-qdrouterd
-  version: c0a96656f1c38dcf7c4097106c466b4e4ced5f1c
+  version: 16e63a72369911609d4c110586617ddc76fc6c9d
   trackbranch: stable/victoria
 - name: rabbitmq_server
   scm: git
@@ -240,7 +240,7 @@
 - name: repo_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-repo_server
-  version: fb58f9ce11f75541dd04337a7912949c77ca32f4
+  version: 3c03d344f0a1d05bd11e51cb69b6c254c59834a3
   trackbranch: stable/victoria
 - name: rsyslog_client
   scm: git
@@ -280,7 +280,7 @@
 - name: ceph-ansible
   scm: git
   src: https://github.com/ceph/ceph-ansible
-  version: 000e93f608cd6c07ffa8d0dc76092d6234682ea8
+  version: d7878363509b34950609adba47c975d9e26366f2
   trackbranch: stable-5.0
   depth: 50
 - name: opendaylight
@@ -306,7 +306,7 @@
 - name: nspawn_hosts
   src: https://opendev.org/openstack/openstack-ansible-nspawn_hosts
   scm: git
-  version: 48cf2a5154863935396c41ada08b6fa14fe21cd3
+  version: bac30481b4523356ba636b1e2ce2d68b4a7b6a86
   trackbranch: stable/victoria
 - name: systemd_service
   src: https://opendev.org/openstack/ansible-role-systemd_service
@@ -326,7 +326,7 @@
 - name: python_venv_build
   src: https://opendev.org/openstack/ansible-role-python_venv_build
   scm: git
-  version: 7e3459b29dd30dde489a3f1e1085a6706ad387cb
+  version: 7ba45768a8bab4c758116d04d3c37d2ac179cf90
   trackbranch: stable/victoria
 - name: uwsgi
   src: https://opendev.org/openstack/ansible-role-uwsgi
