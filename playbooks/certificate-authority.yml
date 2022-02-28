@@ -25,4 +25,5 @@
       vars:
         pki_dir: "{{ openstack_pki_dir }}"
         pki_create_ca: "{{ openstack_pki_authorities | default([]) | length > 0 }}"
+        pki_regen_ca: "{{ openstack_pki_regen_ca }}"
         pki_authorities: "{{ openstack_pki_authorities }}"
