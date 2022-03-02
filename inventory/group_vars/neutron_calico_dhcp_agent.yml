@@ -35,8 +35,8 @@ bird_bgp_ipv6_peer_ip: >-
         and ansible_facts['default_ipv6']['prefix'] is defined %}
   {{
      ((ansible_facts['default_ipv6']['address'] ~ '/' ~ ansible_facts['default_ipv6']['prefix']) |
-     ipaddr('network') ~ '/' ~ ansible_facts['default_ipv6']['prefix']
-     ) | ipaddr('net') | ipaddr(1) | ipaddr('address')
+     ansible.utils.ipaddr('network') ~ '/' ~ ansible_facts['default_ipv6']['prefix']
+     ) | ansible.utils.ipaddr('net') | ansible.utils.ipaddr(1) | ansible.utils.ipaddr('address')
   }}
   {% endif %}
 

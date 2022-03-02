@@ -63,7 +63,7 @@
     - name: Check your internal network is using private ips
       assert:
         that:
-          - internal_lb_vip_address | ipaddr('private')
+          - internal_lb_vip_address | ansible.utils.ipaddr('private')
 
 # Test openstack_hosts role
 - name: Playbook for role testing
