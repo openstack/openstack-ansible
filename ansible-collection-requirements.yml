@@ -14,10 +14,10 @@ collections:
   - name: https://github.com/ansible-collections/community.crypto
     version: 1.2.0
     type: git
-  - name: https://github.com/ansible-collections/ansible.netcommon
-    version: 2.5.1
-    type: git
   # NOTE(noonedeadpunk): needs version in galaxy.yml to pull from git
+  - name: ansible.netcommon
+    version: 2.5.1
+    source: https://galaxy.ansible.com
   - name: openvswitch.openvswitch
     version: 1.0.5
     source: https://galaxy.ansible.com
