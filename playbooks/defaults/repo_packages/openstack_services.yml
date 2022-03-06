@@ -28,11 +28,11 @@
 ### Before this is shipped all of these services should have a tag set as the branch,
 ### or have a comment / reason attached to them as to why a tag can not work.
 
-### HEAD as of 19.01.2022 ###
+### HEAD as of 22.02.2022 ###
 
 ## Global Requirements
 requirements_git_repo: https://opendev.org/openstack/requirements
-requirements_git_install_branch: 0e67f1d4bee22d1d2d56ec24fe3282c9a5a7ffd2
+requirements_git_install_branch: 3d141ae5509c80c8e5d44dc2a939d082db559b69
 requirements_git_track_branch: stable/wallaby
 
 ## Adjutant service
@@ -53,7 +53,7 @@ aodh_git_track_branch: stable/wallaby
 
 ## Barbican service
 barbican_git_repo: https://opendev.org/openstack/barbican
-barbican_git_install_branch: ea7451e32caa7863d6e511a39a508e54c60113a7
+barbican_git_install_branch: 0b4532125a6ab133fd547cb38c76487a492f2127
 barbican_git_track_branch: stable/wallaby
 
 
@@ -65,13 +65,13 @@ barbican_dashboard_git_track_branch: master
 
 ## Ceilometer service
 ceilometer_git_repo: https://opendev.org/openstack/ceilometer
-ceilometer_git_install_branch: 8fd515773bc98309dc9c9a5b1f1363f2f98a85f8
+ceilometer_git_install_branch: 2569c9948ed43cc9611c7c88faa5ecabf765c275
 ceilometer_git_track_branch: stable/wallaby
 
 
 ## Cinder service
 cinder_git_repo: https://opendev.org/openstack/cinder
-cinder_git_install_branch: b86da5d4073d9c50aed90c4d6ae6884138be6b06
+cinder_git_install_branch: 0a6d43a7c2ef65be748690a00ee4c294add0c87c
 cinder_git_track_branch: stable/wallaby
 
 
@@ -89,19 +89,19 @@ cloudkitty_dashboard_git_track_branch: stable/wallaby
 
 ## Designate service
 designate_git_repo: https://opendev.org/openstack/designate
-designate_git_install_branch: 04a6d3156ae6be9bbb3b50d618694af0e15352e7
+designate_git_install_branch: 63d6672befb2225d844388fe43f857b0f3dbb8b6
 designate_git_track_branch: stable/wallaby
 
 
 ## Horizon Designate dashboard plugin
 designate_dashboard_git_repo: https://opendev.org/openstack/designate-dashboard
-designate_dashboard_git_install_branch: a65ea0165cd5b511ed23c36382b1a29d8d41df6d
+designate_dashboard_git_install_branch: b445ef611365a7d4333d2d8501e450124b1bfb55
 designate_dashboard_git_track_branch: stable/wallaby
 
 
 ## Glance service
 glance_git_repo: https://opendev.org/openstack/glance
-glance_git_install_branch: 8499efd3205d84eff35ed4ed157685313d9e3fb7
+glance_git_install_branch: b1d635c287f950b15df207455d64d97228963e5f
 glance_git_track_branch: stable/wallaby
 
 
@@ -150,13 +150,13 @@ keystone_git_track_branch: stable/wallaby
 
 ## Manila service
 manila_git_repo: https://opendev.org/openstack/manila
-manila_git_install_branch: f7376849929511b251f3668f91639bda3d9ec885
+manila_git_install_branch: e1e9670cfbf0069c95cfc777d8abdd9c2c379950
 manila_git_track_branch: stable/wallaby
 
 
 ## Neutron service
 neutron_git_repo: https://opendev.org/openstack/neutron
-neutron_git_install_branch: 2f376b9431cd705aee651a5cf48962d158a6af73
+neutron_git_install_branch: 2fde7362180129657c99b6c10629417ceb311f11
 neutron_git_track_branch: stable/wallaby
 
 neutron_vpnaas_git_repo: https://opendev.org/openstack/neutron-vpnaas
@@ -194,12 +194,12 @@ networking_nsx_git_install_branch: 0253265f75f63d5619b30f16a6b64459dec79d82
 networking_nsx_git_track_branch: master
 
 networking_nsxlib_git_repo: https://opendev.org/x/vmware-nsxlib
-networking_nsxlib_git_install_branch: 72985fb9054e94ddece9784f23fe84d13795575b
+networking_nsxlib_git_install_branch: cfe4ed8e274d9322065a1a6f2c8bd8c74f6ca81f
 networking_nsxlib_git_track_branch: master
 
 ## Nova service
 nova_git_repo: https://opendev.org/openstack/nova
-nova_git_install_branch: 94f17be190cce060ba8afcafbade4247b27b86f0
+nova_git_install_branch: 57bf72bed2e82e1ad714897a9aef5d6b07f78de7
 nova_git_track_branch: stable/wallaby
 
 
@@ -217,13 +217,13 @@ senlin_git_track_branch: stable/wallaby
 
 ## Swift service
 swift_git_repo: https://opendev.org/openstack/swift
-swift_git_install_branch: a25a936c4fd4486d66c434715f0cb8a6f404885d
+swift_git_install_branch: fdba5ef59c88a0182a3b68ab96e4c0b9e4aa9c78
 swift_git_track_branch: stable/wallaby
 
 
 ## Ironic service
 ironic_git_repo: https://opendev.org/openstack/ironic
-ironic_git_install_branch: 685a41bb8e6af4f4c0fa01fad74060f9084936ec
+ironic_git_install_branch: d21144fd2d40f147800f812f48d7c285b1296b99
 ironic_git_track_branch: stable/wallaby
 
 
@@ -275,7 +275,7 @@ trove_dashboard_git_track_branch: stable/wallaby
 
 ## Octavia service
 octavia_git_repo: https://opendev.org/openstack/octavia
-octavia_git_install_branch: a5d94247d15b028c57d8f6f9dbbd2daf0adb34d8
+octavia_git_install_branch: d14cc33b7bc98f1d62f40cdf9233122e4a3dfbdc
 octavia_git_track_branch: stable/wallaby
 
 
@@ -299,7 +299,7 @@ tacker_git_track_branch: stable/wallaby
 
 ## Horizon Octavia dashboard plugin
 octavia_dashboard_git_repo: https://opendev.org/openstack/octavia-dashboard
-octavia_dashboard_git_install_branch: b4c76b96868dd22d5d1f306ac01129eb882e2d74
+octavia_dashboard_git_install_branch: fc24b8495f9abcd59d6548e36993740c08346dd7
 octavia_dashboard_git_track_branch: stable/wallaby
 
 
