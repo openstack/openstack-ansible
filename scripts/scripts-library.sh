@@ -204,7 +204,7 @@ function setup_ara {
 function run_dstat {
   if [ "$GATE_EXIT_RUN_DSTAT" == true ]; then
     case ${DISTRO_ID} in
-      centos|rhel)
+      rocky|centos|rhel)
           dnf -y install dstat
           ;;
       ubuntu)
@@ -250,7 +250,7 @@ function log_instance_info {
           apt-get update
           DEBIAN_FRONTEND=noninteractive apt-get -y install iproute2 net-tools
           ;;
-      centos|rhel)
+      rocky|centos|rhel)
           dnf -y install iproute
           ;;
   esac
@@ -325,7 +325,7 @@ function get_instance_info {
 
   determine_distro
   case ${DISTRO_ID} in
-      centos|rhel)
+      rocky|rhel)
           rpm -qa | sort > \
             "/openstack/log/instance-info/host_packages_info_${TS}.log" || true
           ;;

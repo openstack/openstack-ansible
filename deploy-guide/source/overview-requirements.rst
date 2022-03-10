@@ -20,6 +20,8 @@ following minimum requirements:
 
   * Centos 8 Stream
 
+  * Rocky Linux 8
+
   * Linux kernel version ``3.10.0`` or later.
 
 * Secure Shell (SSH) client and server that support public key

@@ -473,6 +473,149 @@
     nodeset: centos-8-stream
     timeout: 10800
 
+# rocky linux 8
+#
+- job:
+    name: openstack-ansible-deploy-aio_lxc-rockylinux-8
+    parent: openstack-ansible-deploy-aio
+    nodeset:
+      nodes:
+        - label: rockylinux-8
+          name: rockylinux-8
+
+- job:
+    name: openstack-ansible-deploy-infra_lxc-rockylinux-8
+    parent: openstack-ansible-deploy-aio-infra
+    nodeset:
+      nodes:
+        - label: rockylinux-8
+          name: rockylinux-8
+
+- job:
+    name: openstack-ansible-deploy-hosts_distro_lxc-rockylinux-8
+    parent: openstack-ansible-deploy-aio-hosts
+    nodeset:
+      nodes:
+        - label: rockylinux-8
+          name: rockylinux-8
+
+- job:
+    name: openstack-ansible-deploy-hosts_lxc-rockylinux-8
+    parent: openstack-ansible-deploy-aio-hosts
+    nodeset:
+      nodes:
+        - label: rockylinux-8
+          name: rockylinux-8
+
+- job:
+    name: openstack-ansible-deploy-hosts_metal-rockylinux-8
+    parent: openstack-ansible-deploy-aio-hosts
+    nodeset:
+      nodes:
+        - label: rockylinux-8
+          name: rockylinux-8
+
+- job:
+    name: openstack-ansible-deploy-aio_distro_lxc-rockylinux-8
+    parent: openstack-ansible-deploy-aio-distro
+    nodeset:
+      nodes:
+        - label: rockylinux-8
+          name: rockylinux-8
+
+- job:
+    name: openstack-ansible-deploy-aio_ceph-rockylinux-8
+    parent: openstack-ansible-deploy-aio
+    nodeset:
+      nodes:
+        - label: rockylinux-8
+          name: rockylinux-8
+
+- job:
+    name: openstack-ansible-deploy-aio_nfs-rockylinux-8
+    parent: openstack-ansible-deploy-aio
+    nodeset:
+      nodes:
+        - label: rockylinux-8
+          name: rockylinux-8
+
+- job:
+    name: openstack-ansible-deploy-aio_distro_ceph-rockylinux-8
+    parent: openstack-ansible-deploy-aio-distro
+    nodeset:
+      nodes:
+        - label: rockylinux-8
+          name: rockylinux-8
+
+- job:
+    name: openstack-ansible-upgrade-aio_lxc-rockylinux-8
+    parent: openstack-ansible-deploy-aio
+    nodeset:
+      nodes:
+        - label: rockylinux-8
+          name: rockylinux-8
+    timeout: 10800
+
+- job:
+    name: openstack-ansible-upgrade-infra_lxc-rockylinux-8
+    parent: openstack-ansible-deploy-aio-infra
+    nodeset:
+      nodes:
+        - label: rockylinux-8
+          name: rockylinux-8
+    timeout: 10800
+
+- job:
+    name: openstack-ansible-deploy-aio_metal-rockylinux-8
+    parent: openstack-ansible-deploy-aio
+    nodeset:
+      nodes:
+        - label: rockylinux-8
+          name: rockylinux-8
+
+- job:
+    name: openstack-ansible-deploy-aio_telemetry_metal-rockylinux-8
+    parent: openstack-ansible-deploy-aio
+    nodeset:
+      nodes:
+        - label: rockylinux-8
+          name: rockylinux-8
+
+- job:
+    name: openstack-ansible-deploy-aio_distro_metal-rockylinux-8
+    parent: openstack-ansible-deploy-aio-distro
+    nodeset:
+      nodes:
+        - label: rockylinux-8
+          name: rockylinux-8
+    voting: false
+
+- job:
+    name: openstack-ansible-deploy-aio_nspawn-rockylinux-8
+    parent: openstack-ansible-deploy-aio
+    nodeset:
+      nodes:
+        - label: rockylinux-8
+          name: rockylinux-8
+
+- job:
+    name: openstack-ansible-upgrade-aio_ceph-rockylinux-8
+    parent: openstack-ansible-deploy-aio
+    nodeset:
+      nodes:
+        - label: rockylinux-8
+          name: rockylinux-8
+    timeout: 10800
+
+- job:
+    name: openstack-ansible-upgrade-aio_metal-rockylinux-8
+    parent: openstack-ansible-deploy-aio
+    nodeset:
+      nodes:
+        - label: rockylinux-8
+          name: rockylinux-8
+    timeout: 10800
+ 
 # debian bullseye
 
 - job:

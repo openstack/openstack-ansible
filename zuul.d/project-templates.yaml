@@ -39,11 +39,13 @@
       jobs:
         - openstack-ansible-deploy-aio_lxc-centos-8-stream
         - openstack-ansible-deploy-aio_lxc-debian-bullseye
+        - openstack-ansible-deploy-aio_lxc-rockylinux-8
         - openstack-ansible-deploy-aio_lxc-ubuntu-focal
     gate:
       jobs:
         - openstack-ansible-deploy-aio_lxc-centos-8-stream
         - openstack-ansible-deploy-aio_lxc-debian-bullseye
+        - openstack-ansible-deploy-aio_lxc-rockylinux-8
         - openstack-ansible-deploy-aio_lxc-ubuntu-focal
     periodic:
       jobs:
@@ -78,11 +80,13 @@
       jobs:
         - openstack-ansible-deploy-infra_lxc-centos-8-stream
         - openstack-ansible-deploy-infra_lxc-debian-bullseye
+        - openstack-ansible-deploy-infra_lxc-rockylinux-8
         - openstack-ansible-deploy-infra_lxc-ubuntu-focal
     gate:
       jobs:
         - openstack-ansible-deploy-infra_lxc-centos-8-stream
         - openstack-ansible-deploy-infra_lxc-debian-bullseye
+        - openstack-ansible-deploy-infra_lxc-rockylinux-8
         - openstack-ansible-deploy-infra_lxc-ubuntu-focal
     periodic:
       jobs:
@@ -94,11 +98,13 @@
       jobs:
         - openstack-ansible-deploy-hosts_lxc-centos-8-stream
         - openstack-ansible-deploy-hosts_lxc-debian-bullseye
+        - openstack-ansible-deploy-hosts_lxc-rockylinux-8
         - openstack-ansible-deploy-hosts_lxc-ubuntu-focal
     gate:
       jobs:
         - openstack-ansible-deploy-hosts_lxc-centos-8-stream
         - openstack-ansible-deploy-hosts_lxc-debian-bullseye
+        - openstack-ansible-deploy-hosts_lxc-rockylinux-8
         - openstack-ansible-deploy-hosts_lxc-ubuntu-focal
     periodic:
       jobs:
@@ -110,11 +116,13 @@
       jobs:
         - openstack-ansible-deploy-hosts_metal-centos-8-stream
         - openstack-ansible-deploy-hosts_metal-debian-bullseye
+        - openstack-ansible-deploy-hosts_metal-rockylinux-8
         - openstack-ansible-deploy-hosts_metal-ubuntu-focal
     gate:
       jobs:
         - openstack-ansible-deploy-hosts_metal-centos-8-stream
         - openstack-ansible-deploy-hosts_metal-debian-bullseye
+        - openstack-ansible-deploy-hosts_metal-rockylinux-8
         - openstack-ansible-deploy-hosts_metal-ubuntu-focal
     periodic:
       jobs:
@@ -139,6 +147,7 @@
       jobs:
         - openstack-ansible-deploy-aio_distro_lxc-centos-8-stream
         - openstack-ansible-deploy-aio_distro_lxc-debian-bullseye
+        - openstack-ansible-deploy-aio_distro_lxc-rockylinux-8
         - openstack-ansible-deploy-aio_distro_lxc-ubuntu-focal
 
 - project-template:
@@ -148,6 +157,7 @@
         - openstack-ansible-deploy-aio_metal-debian-bullseye
         - openstack-ansible-deploy-aio_metal-centos-8-stream
         - openstack-ansible-deploy-aio_metal-ubuntu-focal
+        - openstack-ansible-deploy-aio_metal-rockylinux-8
         - openstack-ansible-upgrade-aio_metal-centos-8-stream:
             voting: false
         - openstack-ansible-upgrade-aio_metal-ubuntu-focal
@@ -156,6 +166,7 @@
         - openstack-ansible-deploy-aio_metal-debian-bullseye
         - openstack-ansible-deploy-aio_metal-centos-8-stream
         - openstack-ansible-deploy-aio_metal-ubuntu-focal
+        - openstack-ansible-deploy-aio_metal-rockylinux-8
 
 - project-template:
     name: openstack-ansible-deploy-aio_telemetry_metal-jobs
@@ -163,11 +174,13 @@
       jobs:
         - openstack-ansible-deploy-aio_telemetry_metal-centos-8-stream
         - openstack-ansible-deploy-aio_telemetry_metal-debian-bullseye
+        - openstack-ansible-deploy-aio_telemetry_metal-rockylinux-8
         - openstack-ansible-deploy-aio_telemetry_metal-ubuntu-focal
     gate:
       jobs:
         - openstack-ansible-deploy-aio_telemetry_metal-centos-8-stream
         - openstack-ansible-deploy-aio_telemetry_metal-debian-bullseye
+        - openstack-ansible-deploy-aio_telemetry_metal-rockylinux-8
         - openstack-ansible-deploy-aio_telemetry_metal-ubuntu-focal
 
 - project-template:

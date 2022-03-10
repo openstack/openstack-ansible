@@ -70,13 +70,16 @@ determine_distro
 
 # Install the base packages
 case ${DISTRO_ID} in
-    centos|rhel)
+    rocky|centos|rhel)
         dnf -y install \
           git curl autoconf gcc gcc-c++ nc \
           python38 python38-devel libselinux-python3 \
           systemd-devel pkgconf \
           openssl-devel libffi-devel \
           rsync wget
+          if [[ ${DISTRO_ID} == "rocky" ]]; then
+            OSA_ANSIBLE_PYTHON_INTERPRETER="/usr/bin/python3"
+          fi
         PYTHON_EXEC_PATH="$(which python3.8)"
         ;;
     ubuntu|debian)
