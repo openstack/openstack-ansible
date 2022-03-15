@@ -60,3 +60,49 @@ do several actions in ``openstack_user_config.yml``.
                   address: 10.0.20.100
                   netmask: 255.255.255.0
                   gateway: 10.0.20.1
+
+
+Using SR-IOV interfaces in containers
+=====================================
+
+For some deployments it might be required to passthrough devices directly to
+containers, for example, when SR-IOV is used or devices can't be bridged
+(ie with `IPoIB <https://www.kernel.org/doc/html/latest/infiniband/ipoib.html>`)
+
+You would need to manually map physical interfaces to specific containers.
+This also assumes, that same interface name is present on all containers and
+it is consistent and present before LXC startup.
+
+Below as an example we will try using IB interfaces for storage network
+and pass them inside containers that require storage connectivity.
+For that you need describe connections in ``provider_networks``
+inside `openstack_user_config.yml` configuration:
+
+    .. code-block:: yaml
+
+      global_overrides:
+        provider_networks:
+          - network:
+              container_bridge: "ib1"
+              container_type: "phys"
+              container_interface: "ib1"
+              ip_from_q: "storage"
+              type: "raw"
+              group_binds:
+                - cinder_volume
+          - network:
+              container_bridge: "ib3"
+              container_type: "phys"
+              container_interface: "ib3"
+              ip_from_q: "storage"
+              type: "raw"
+              group_binds:
+               - glance_api
+          - network:
+              container_bridge: "ib5"
+              container_type: "phys"
+              container_interface: "ib5"
+              ip_from_q: "storage"
+              type: "raw"
+              group_binds:
+                - gnocchi_api
