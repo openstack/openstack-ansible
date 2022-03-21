@@ -1,5 +1,5 @@
 ---
-# Copyright 2014, Rackspace US, Inc.
+# Copyright 2022, BBC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,9 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- import_playbook: certificate-authority.yml
-- import_playbook: certificate-ssh-authority.yml
-- import_playbook: certificate-generate.yml
-- import_playbook: openstack-hosts-setup.yml
-- import_playbook: containers-deploy.yml
-- import_playbook: security-hardening.yml
+
+#the name for the SSH signing key
+openstack_ssh_signing_key: "OpenStack-Ansible-SSH-Signing-Key"
+
+#override the setup host with this variable
+#when not defined the default is 'localhost'
+#openstack_ssh_keypairs_setup_host: 'my-ssh-setup-host'
+
+#directory on the ssh setup host to store ssh keypairs
+openstack_ssh_keypairs_dir: "{{ openstack_config_dir }}/ssh_keypairs"
+
+#SSH signing key authority to create on the ssh setup host
+openstack_ssh_keypairs_authorities:
+  - name: "{{ openstack_ssh_signing_key }}"
+
