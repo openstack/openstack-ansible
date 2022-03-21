@@ -232,6 +232,17 @@
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-bionic
 
+# Ensuring SHAs are valid
+- job:
+    name: openstack-ansible-shastest-metal
+    parent: openstack-ansible-deploy
+    nodeset: ubuntu-focal
+    irrelevant-files: []
+    files:
+      - ^ansible-collection-requirements\.yml
+      - ^ansible-role-requirements\.yml
+      - ^playbooks\/defaults\/repo_packages\/.*\.yml
+
 # Running linters check
 - job:
     name: openstack-ansible-linters-ubuntu-focal

@@ -30,7 +30,7 @@
       environment:
         # ZUUL_SRC_PATH is used by tests/get-ansible-role-requirements to
         # where the CI provided git sources were cloned.
-        ZUUL_SRC_PATH: "{{ _zuul_src_path }}"
+        ZUUL_SRC_PATH: "{{ (action != 'shastest') | ternary(_zuul_src_path, '') }}"
         ANSIBLE_PACKAGE: "{{ ansible_package | default('') }}"
         SETUP_ARA: 'true'
       when: action != 'upgrade'
@@ -51,3 +51,4 @@
       when:
         - action != 'upgrade'
         - action != 'linters'
+        - action != 'shastest'
