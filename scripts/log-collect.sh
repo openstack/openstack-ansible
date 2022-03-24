@@ -51,6 +51,7 @@ COMMON_ETC_LOG_NAMES="apt \
     memcached \
     mongodb \
     my.cnf \
+    mysql \
     mariadb \
     netplan \
     network \
