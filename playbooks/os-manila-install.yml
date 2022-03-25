@@ -36,6 +36,10 @@
   pre_tasks:
     - name: Gather additional facts
       include_tasks: "common-tasks/gather-hardware-facts.yml"
+      args:
+        apply:
+          tags:
+            - always
       tags:
         - always
 

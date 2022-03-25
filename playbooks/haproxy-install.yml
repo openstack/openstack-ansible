@@ -16,6 +16,10 @@
 - name: Gather haproxy facts
   hosts: haproxy
   gather_facts: "{{ osa_gather_facts | default(True) }}"
+  tasks:
+    - name: Gather additional facts
+      include_tasks: "common-tasks/gather-hardware-facts.yml"
+      when: osa_gather_facts | default(True)
   tags:
     - always
 
@@ -25,10 +29,6 @@
   serial: "{{ haproxy_serial | default('50%') }}"
   user: root
   pre_tasks:
-    - name: Gather additional facts
-      include_tasks: "common-tasks/gather-hardware-facts.yml"
-      tags:
-        - always
     - include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       when: not is_metal
     - include_tasks: common-tasks/unbound-clients.yml
