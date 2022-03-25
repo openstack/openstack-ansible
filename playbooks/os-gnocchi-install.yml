@@ -16,6 +16,10 @@
 - name: Gather gnocchi facts
   hosts: gnocchi_all
   gather_facts: "{{ osa_gather_facts | default(True) }}"
+  tasks:
+    - name: Gather additional facts
+      include_tasks: "common-tasks/gather-hardware-facts.yml"
+      when: osa_gather_facts | default(True)
   tags:
     - always
 
@@ -32,11 +36,6 @@
   tags:
     - gnocchi
   pre_tasks:
-    - name: Gather additional facts
-      include_tasks: "common-tasks/gather-hardware-facts.yml"
-      tags:
-        - always
-
     - include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       vars:
         list_of_bind_mounts: "{{ gnocchi_container_bind_mounts }}"

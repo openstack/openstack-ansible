@@ -16,6 +16,10 @@
 - name: Gather ceilometer facts
   hosts: ceilometer_all
   gather_facts: "{{ osa_gather_facts | default(True) }}"
+  tasks:
+    - name: Gather additional facts
+      include_tasks: "common-tasks/gather-hardware-facts.yml"
+      when: osa_gather_facts | default(True)
   tags:
     - always
 
@@ -28,11 +32,6 @@
     - "defaults/repo_packages/openstack_services.yml"
     - "defaults/{{ install_method }}_install.yml"
   pre_tasks:
-    - name: Gather additional facts
-      include_tasks: "common-tasks/gather-hardware-facts.yml"
-      tags:
-        - always
-
     - include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       when: not is_metal
 
