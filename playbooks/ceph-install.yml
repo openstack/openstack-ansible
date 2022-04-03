@@ -33,6 +33,10 @@
         deployment_extra_facts_filter: "ansible_all_ipv[4|6]_addresses"
         deployment_extra_facts_subset: "!all,network"
       when: monitor_address_block is defined
+      args:
+        apply:
+          tags:
+            - always
       tags:
         - always
 
@@ -42,6 +46,10 @@
         deployment_extra_facts_filter: "{{ 'ansible_' ~ monitor_interface | replace('-','_') }}"
         deployment_extra_facts_subset: "!all,network"
       when: monitor_interface is defined
+      args:
+        apply:
+          tags:
+            - always
       tags:
         - always
 
@@ -50,6 +58,10 @@
       vars:
         deployment_extra_facts_filter: "ansible_memtotal*"
         deployment_extra_facts_subset: "!all,hardware"
+      args:
+        apply:
+          tags:
+            - always
       tags:
         - always
 
@@ -133,6 +145,10 @@
       vars:
         deployment_extra_facts_filter: "ansible_memtotal*"
         deployment_extra_facts_subset: "!all,hardware"
+      args:
+        apply:
+          tags:
+            - always
       tags:
         - always
 
@@ -191,6 +207,10 @@
       vars:
         deployment_extra_facts_filter: "ansible_memtotal*"
         deployment_extra_facts_subset: "!all,hardware"
+      args:
+        apply:
+          tags:
+            - always
       tags:
         - always
   roles:

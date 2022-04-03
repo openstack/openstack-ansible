@@ -17,6 +17,10 @@
 - name: Gather cloudkitty facts
   hosts: cloudkitty_all
   gather_facts: "{{ osa_gather_facts | default(True) }}"
+  tasks:
+    - name: Gather additional facts
+      include_tasks: "common-tasks/gather-hardware-facts.yml"
+      when: osa_gather_facts | default(True)
   tags:
     - always
 
@@ -32,11 +36,6 @@
   tags:
     - cloudkitty
   pre_tasks:
-    - name: Gather additional facts
-      include_tasks: "common-tasks/gather-hardware-facts.yml"
-      tags:
-        - always
-
     # In order to ensure that any container, software or
     # config file changes which causes a container/service
     # restart do not cause an unexpected outage, we drain
