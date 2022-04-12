@@ -1,9 +1,8 @@
 ---
 
 glance_default_store: file
-glance_nfs_client:
-  - server: "172.29.244.100"
-    remote_path: "/srv/nfs/glance"
-    local_path: "/var/lib/glance/images"
+glance_remote_client:
+  - what: "172.29.244.100:/srv/nfs/glance"
+    where: "/var/lib/glance/images"
     type: "nfs"
     options: "_netdev,auto"
