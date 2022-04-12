@@ -1,0 +1,26 @@
+---
+features:
+  - |
+    The mechanism used previously to syncronise repo server contents between
+    highly available sets of repo servers in a multinode deployment (lsyncd
+    and rsync over ssh) is removed and replaced with a shared filesystem
+    mount. This permits much easier support for multi operating system and
+    multi processor architectures in the deployment when building and serving
+    python wheels using the repo server. The default deployment will run a
+    glusterfs server in each repo server host, and mount the glusterfs
+    fileystem at /var/www/repo using the system_mount ansible role. If a
+    deployment wishes to use an alternative external shared filesystem, the
+    new variable `openstack_repo_server_enable_glusterfs` can be set to `false`
+    and alternative mounts created by overriding the new `repo_server_systemd_mounts`
+    variable. It is mandatory to use some type of shared filesystem for the
+    repo server in all deployments.
+upgrade:
+  - |
+    The repo server hosts will stop and uninstall existing lsyncd and rsync
+    services from the repo server hosts. This functionality will be replaced
+    by default with a glusterfs shared filesystem. If a deployment uses a
+    firewall on the control plane, the rules should be updated to allow the
+    glusterfs traffic between the repo server hosts. Alternative external shared
+    filesystems (eg NFS, cephfs, others) may be used if required and the new
+    variables `repo_server_systemd_mounts` and `openstack_repo_server_enable_glusterfs`
+    allow a deployment to override the default use of glusterfs.
