@@ -34,7 +34,9 @@ rabbitmq_policies:
 galera_client_package_state: "{{ package_state }}"
 galera_address: "{{ internal_lb_vip_address }}"
 galera_root_user: "admin"
-galera_use_ssl: True
+
+# Disable SSL for CentOS distro path due to https://bugzilla.redhat.com/show_bug.cgi?id=2074555
+galera_use_ssl: "{{ not (ansible_facts['os_family'] | lower == 'redhat' and  install_method == 'distro') }}"
 
 ## Memcached options
 memcached_port: 11211
