@@ -26,20 +26,21 @@ the same multiport network card for the same bonded interface, because a
 network card failure affects both of the physical network interfaces used by
 the bond.
 
-Linux bridges
-~~~~~~~~~~~~~
+Linux bridges/switches
+~~~~~~~~~~~~~~~~~~~~~~
 
 The combination of containers and flexible deployment options requires
-implementation of advanced Linux networking features, such as bridges and
-namespaces.
+implementation of advanced Linux networking features, such as bridges,
+switches and namespaces.
 
-* Bridges provide layer 2 connectivity (similar to switches) among
+* Bridges/switches provide layer 2 connectivity (similar to switches) among
   physical, logical, and virtual network interfaces within a host. After
-  a bridge is created, the network interfaces are virtually plugged in to
-  it.
+  a bridge/switch is created, the network interfaces are virtually plugged
+  in to it.
 
-  OpenStack-Ansible uses bridges to connect physical and logical network
-  interfaces on the host to virtual network interfaces within containers.
+  OpenStack-Ansible can use linux bridges or openvswitches to connect
+  physical and logical network interfaces on the host to virtual network
+  interfaces within containers.
 
 * Namespaces provide logically separate layer 3 environments (similar to
   routers) within a host. Namespaces use virtual interfaces to connect

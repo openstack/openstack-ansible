@@ -527,7 +527,7 @@ def skel_load(skeleton, inventory):
 
 
 def network_entry(is_metal, interface,
-                  bridge=None, net_type=None, net_mtu=None):
+                  bridge=None, bridge_type=None, net_type=None, net_mtu=None):
     """Return a network entry for a container."""
 
     # TODO(cloudnull) After a few releases this conditional should be
@@ -542,6 +542,9 @@ def network_entry(is_metal, interface,
     if bridge:
         _network['bridge'] = bridge
 
+    if bridge_type:
+        _network['bridge_type'] = bridge_type
+
     if net_type:
         _network['type'] = net_type
 
@@ -552,9 +555,9 @@ def network_entry(is_metal, interface,
 
 
 def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
-                             bridge, net_type, net_mtu, user_config,
-                             is_container_address, static_routes, gateway,
-                             reference_group, address_prefix):
+                             bridge, bridge_type, net_type, net_mtu,
+                             user_config, is_container_address, static_routes,
+                             gateway, reference_group, address_prefix):
     """Process additional ip adds and append then to hosts as needed.
 
     If the host is found to be "is_metal" it will be marked as "on_metal"
@@ -588,6 +591,7 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
                 netmask,
                 interface,
                 bridge,
+                bridge_type,
                 net_type,
                 net_mtu,
                 user_config,
@@ -640,6 +644,7 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
             is_metal,
             interface,
             bridge,
+            bridge_type,
             net_type,
             net_mtu
         )
@@ -766,6 +771,7 @@ def container_skel_load(container_skel, inventory, config):
                     netmask=netmask,
                     interface=p_net.get('container_interface'),
                     bridge=p_net.get('container_bridge'),
+                    bridge_type=p_net.get('container_bridge_type'),
                     net_type=p_net.get('container_type'),
                     net_mtu=p_net.get('container_mtu'),
                     user_config=config,

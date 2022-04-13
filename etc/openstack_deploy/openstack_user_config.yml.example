@@ -138,6 +138,11 @@
 #       Name of unique bridge on target hosts to use for this network. Typical
 #       values include 'br-mgmt', 'br-storage', 'br-vlan', 'br-vxlan', etc.
 #
+#       Option: container_bridge_type (optional, string)
+#       Type of container_bridge on target hosts. This option should only set
+#       to "openvswitch" when the container_bridge is set up with openvswitch.
+#       The default value is undefined, which means bridge type is linux bridge.
+#
 #       Option: container_interface (required, string)
 #       Name of unique interface in containers to use for this network.
 #       Typical values include 'eth1', 'eth2', etc. This option is OPTIONAL
