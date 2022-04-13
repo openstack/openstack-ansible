@@ -17,7 +17,16 @@
   hosts: all[0]
   vars_files:
     - "{{ zuul.executor.work_root }}/osa-gate-scenario.yml"
+  vars:
+    _zuul_src_path: "{{ ansible_user_dir }}/src"
   tasks:
+    - name: Mark OSA repository as safe
+      become: yes
+      become_user: root
+      git_config:
+        name: safe.directory
+        scope: global
+        value: "{{ _zuul_src_path }}/opendev.org/openstack/openstack-ansible"
     - name: Run bootstrap-ansible script
       become: yes
       become_user: root
