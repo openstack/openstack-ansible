@@ -114,6 +114,8 @@
             return_content: yes
           register: _abs_reqs
           run_once: true
+          check_mode: false
+          ignore_errors: "{{ ansible_check_mode }}"
           tags:
             - always
 
