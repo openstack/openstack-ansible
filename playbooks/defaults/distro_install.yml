@@ -23,50 +23,8 @@
 # post deployment actions such as the playbooks/os-{cinder,keystone,nova}-install.yml
 # playbooks.
 #
-almanach_install_method: distro
-aodh_install_method: distro
-barbican_install_method: distro
-blazar_install_method: distro
-ceilometer_install_method: distro
-cinder_install_method: distro
-cinder_bin: /usr/bin
-cloudkitty_install_method: distro
-designate_install_method: distro
-glance_install_method: distro
-glance_bin: /usr/bin
-gnocchi_install_method: distro
-heat_install_method: distro
-horizon_install_method: distro
-ironic_install_method: distro
-karbor_install_method: distro
-keystone_install_method: distro
+
 keystone_bin: /usr/bin
-magnum_install_method: distro
-masakari_install_method: distro
-mistral_install_method: distro
-murano_install_method: distro
-monasca_install_method: distro
-monasca-agent_install_method: distro
-monasca-ui_install_method: distro
-neutron_install_method: distro
-neutron_bin: /usr/bin
-nova_install_method: distro
-nova_bin: /usr/bin
-octavia_install_method: distro
-octavia_bin: /usr/bin
-placement_install_method: distro
-rally_install_method: distro
-sahara_install_method: distro
-searchlight_install_method: distro
-senlin_install_method: distro
-swift_install_method: distro
-tacker_install_method: distro
-tempest_install_method: distro
-tempest_bin: /usr/bin
-trove_install_method: distro
-watcher_install_method: distro
-zaqar_install_method: distro
-zun_install_method: distro
 
 ## Delegate all database setup tasks to the utility host, and use the utility venv python interpreter
 openstack_db_setup_host: "{{ groups['utility_all'][0] }}"
