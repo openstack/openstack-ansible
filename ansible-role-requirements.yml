@@ -1,330 +1,394 @@
 ---
 
-### HEAD as of 22.02.2022 ###
+### HEAD as of 20.04.2022 ###
 
 - name: ansible-hardening
   scm: git
   src: https://opendev.org/openstack/ansible-hardening
   version: 141c98dbeecb37b736762f32534072873f662cdf
   trackbranch: stable/wallaby
+  shallow_since: '2021-06-28'
 - name: apt_package_pinning
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-apt_package_pinning
   version: b3bdbeb22401fa2cf14a7c73c015fc6032605d0a
   trackbranch: stable/wallaby
+  shallow_since: '2021-06-30'
 - name: config_template
   scm: git
   src: https://opendev.org/openstack/ansible-config_template
-  version: bd7543a73681f16e20d5562291b8f545fc4fb904
+  version: 5070371eddc644384f57b472b49a79d3adbe573f
   trackbranch: master
+  shallow_since: '2022-04-10'
 - name: galera_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-galera_server
   version: 661d1379d954791c2af8f78199f8d2b17201ac72
   trackbranch: stable/wallaby
+  shallow_since: '2022-02-14'
 - name: ceph_client
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-ceph_client
   version: 141b37fdd103bb65710e40e24859bf85d499b5fe
   trackbranch: stable/wallaby
+  shallow_since: '2021-07-15'
 - name: haproxy_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-haproxy_server
   version: d9fa4351db64dd3c7fe45414a3170732d09f041c
   trackbranch: stable/wallaby
+  shallow_since: '2021-12-23'
 - name: keepalived
   scm: git
   src: https://github.com/evrardjp/ansible-keepalived
   version: 59de04acdde21aa2b5e43de6f4ad865d1bde33db
   trackbranch: master
+  shallow_since: '2022-01-27'
 - name: lxc_container_create
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-lxc_container_create
   version: 35cd4ab6f5f6749d84fff4ca3dfe35fe06cffaae
   trackbranch: stable/wallaby
+  shallow_since: '2022-02-01'
 - name: lxc_hosts
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-lxc_hosts
   version: b57db77442c1a6354b0a43cee667f595e5f4a915
   trackbranch: stable/wallaby
+  shallow_since: '2022-02-07'
 - name: memcached_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-memcached_server
   version: 866db1969d6e9edfb0ce54f5fc7f893ad48d43d8
   trackbranch: stable/wallaby
+  shallow_since: '2021-06-28'
 - name: openstack_hosts
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-openstack_hosts
-  version: e75b7a6f1ae880815d0c37c173508fed4bf7ce9c
+  version: eefdc4a3af05120669065930efddf1cddc954d6b
   trackbranch: stable/wallaby
+  shallow_since: '2022-04-03'
 - name: os_keystone
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_keystone
   version: 0b14a997193d19bb93cd8cb4592e8f1a7cd5959a
   trackbranch: stable/wallaby
+  shallow_since: '2022-02-03'
 - name: openstack_openrc
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-openstack_openrc
   version: 52e249cfe5f83d44dfcb512548a40775b955826e
   trackbranch: stable/wallaby
+  shallow_since: '2021-06-28'
 - name: os_adjutant
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_adjutant
   version: c8ee47b3a9c9a6a69bcedc196c1183d9b9f2249b
   trackbranch: stable/wallaby
+  shallow_since: '2021-06-28'
 - name: os_aodh
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_aodh
   version: c8b97900948b9c04f1ffc55cc367c4f0adbb0042
   trackbranch: stable/wallaby
+  shallow_since: '2021-06-28'
 - name: os_barbican
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_barbican
   version: 302178f9a5b8d91c0f9c3b391455b579dd09f10c
   trackbranch: stable/wallaby
+  shallow_since: '2021-06-28'
 - name: os_blazar
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_blazar
   version: 114460a935e2d74ee29a87ecca65b76a33937b92
   trackbranch: stable/wallaby
+  shallow_since: '2021-06-28'
 - name: os_ceilometer
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_ceilometer
   version: 87fdc3a17a211a3f896dc20c6090021bfa5c10ef
   trackbranch: stable/wallaby
+  shallow_since: '2021-07-15'
 - name: os_cinder
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_cinder
-  version: d412e1b7015a482d30d1b1fe5052c947a25ce880
+  version: 5e8e7720e7516b60a0c552c552ca9e35a89cff45
   trackbranch: stable/wallaby
+  shallow_since: '2022-04-15'
 - name: os_cloudkitty
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_cloudkitty
   version: 47e95e86449979b7cd4cdcfd9a77bb93a0bc90a9
   trackbranch: stable/wallaby
+  shallow_since: '2021-06-28'
 - name: os_designate
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_designate
   version: 319e00295bd1d91865a22c7c78b289ed15c55f68
   trackbranch: stable/wallaby
+  shallow_since: '2021-06-28'
 - name: os_glance
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_glance
   version: da4651a7dde34b29aa1d421ee250127c394cb6f6
   trackbranch: stable/wallaby
+  shallow_since: '2022-01-12'
 - name: os_gnocchi
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_gnocchi
   version: a33a5b02b9f8ce9c456ab7f2c731ad2be506f2e6
   trackbranch: stable/wallaby
+  shallow_since: '2021-12-22'
 - name: os_heat
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_heat
   version: 0061c0a3f6ae2cbcd20ac8105093ced9ad54310c
   trackbranch: stable/wallaby
+  shallow_since: '2021-06-28'
 - name: os_horizon
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_horizon
-  version: 7a9d3fbe712a316c5d36c57c91970d51f39d7881
+  version: cafa4a358fa5363af7abe39366a34543c6aca7df
   trackbranch: stable/wallaby
+  shallow_since: '2022-03-09'
 - name: os_ironic
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_ironic
   version: 570879e85f44bdf06dcce3a4edbefb986e282653
   trackbranch: stable/wallaby
+  shallow_since: '2021-06-28'
 - name: os_magnum
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_magnum
   version: 176d814e74a7c132763393b4c52f9e6f75535007
   trackbranch: stable/wallaby
+  shallow_since: '2021-06-28'
 - name: os_manila
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_manila
   version: 616458635adf0d8399d5371f72d250e2043cc1df
   trackbranch: stable/wallaby
+  shallow_since: '2021-06-28'
 - name: os_masakari
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_masakari
   version: 95093ace1379c2cf22e4d4834f65d7c4ebbca91d
   trackbranch: stable/wallaby
+  shallow_since: '2021-06-28'
 - name: os_mistral
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_mistral
   version: fce6170874c229e1f03bda4c9435c72aca63333e
   trackbranch: stable/wallaby
+  shallow_since: '2021-06-28'
 - name: os_murano
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_murano
   version: e865acfc794634ca989e22df9ba81f33efcff6a2
   trackbranch: stable/wallaby
+  shallow_since: '2021-11-21'
 - name: os_neutron
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_neutron
-  version: c997e3dc2f789e64e89dd5219c0ff2794ab37d9b
+  version: 713ae64c49cb145eac3a445127210c5e8784aed6
   trackbranch: stable/wallaby
+  shallow_since: '2022-03-15'
 - name: os_nova
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_nova
-  version: 5a1a798e4ca5923e8ae8ada9f277879b9117bbef
+  version: 80683028366cb5ff895fda3d95fac14c4b5dfc62
   trackbranch: stable/wallaby
+  shallow_since: '2022-04-03'
 - name: os_octavia
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_octavia
   version: 29287119f58fadf5f0122fa8f023b9d92d2636c9
   trackbranch: stable/wallaby
+  shallow_since: '2021-12-01'
 - name: os_panko
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_panko
   version: e25d1a7d16c74d6d87ad4d8f1a3242982deca2ec
   trackbranch: stable/wallaby
+  shallow_since: '2021-06-28'
 - name: os_placement
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_placement
   version: 26886e42afa2f63078a4bc221470cb7f1cede054
   trackbranch: stable/wallaby
+  shallow_since: '2021-06-28'
 - name: os_rally
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_rally
   version: 882079ac4034571c618dfb56037d1400a609050d
   trackbranch: stable/wallaby
+  shallow_since: '2021-12-22'
 - name: os_sahara
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_sahara
   version: 72d1b4d4b7004a611c3886e5c7993c3bde5c13a6
   trackbranch: stable/wallaby
+  shallow_since: '2021-06-28'
 - name: os_senlin
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_senlin
   version: 5d90bfe91ce2eb5c2dda39bc2a352673d6b25253
   trackbranch: stable/wallaby
+  shallow_since: '2021-06-28'
 - name: os_swift
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_swift
   version: 2e5b9ca11aaece1755ac882fbe475d0471ca0b5f
   trackbranch: stable/wallaby
+  shallow_since: '2021-06-28'
 - name: os_tacker
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_tacker
   version: 69761c1f542184af553fc65754557ce470f9c0ff
   trackbranch: stable/wallaby
+  shallow_since: '2021-06-28'
 - name: os_tempest
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_tempest
-  version: bd399b80e9de12452f1bee620bc60a69c142bf40
+  version: 1869a9f138bcbbdbb53f2686cd567f71e073472d
   trackbranch: stable/wallaby
+  shallow_since: '2022-04-03'
 - name: os_trove
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_trove
   version: 307b1b08c3f84c40adb5e5a87d1f9c6c7d7c1c60
   trackbranch: stable/wallaby
+  shallow_since: '2021-06-28'
 - name: os_zun
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_zun
   version: 6100acfd33cbcd3a31ace6f66573073bb5f098a1
   trackbranch: stable/wallaby
+  shallow_since: '2021-06-28'
 - name: plugins
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-plugins
   version: ebad60dbca320b031f2d49db3a6d1a0f820ded69
   trackbranch: stable/wallaby
+  shallow_since: '2021-07-01'
 - name: qdrouterd
   scm: git
   src: https://opendev.org/openstack/ansible-role-qdrouterd
   version: dae22fa4e0b68185ca1c081e00bc7e732f166af7
   trackbranch: stable/wallaby
+  shallow_since: '2022-01-20'
 - name: rabbitmq_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-rabbitmq_server
-  version: 5a22d53bff67a1697e09070246679d0d385c5bd9
+  version: 282f56b573de0c7eead53636545bdbe167c264ee
   trackbranch: stable/wallaby
+  shallow_since: '2022-04-03'
 - name: repo_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-repo_server
   version: c3e111780a3941eb27a7e5a61a3f389b8bb58c87
   trackbranch: stable/wallaby
+  shallow_since: '2022-02-10'
 - name: rsyslog_client
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-rsyslog_client
   version: 91ee683e978fd35cf2a6a8190ee5258edce20fd6
   trackbranch: stable/wallaby
+  shallow_since: '2021-06-28'
 - name: rsyslog_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-rsyslog_server
   version: d747ea6feb5fa093839409d4f8e4b248b56495d2
   trackbranch: stable/wallaby
+  shallow_since: '2021-06-30'
 - name: sshd
   scm: git
   src: https://github.com/willshersystems/ansible-sshd
-  version: 59a3cb190f7913e32b044dc2733cfe7e46c4c99a
+  version: 2ba5bfee852aec5f699bf1c53193f7935beed825
   trackbranch: master
+  shallow_since: '2022-04-18'
 - name: bird
   scm: git
   src: https://github.com/logan2211/ansible-bird
   version: 904e55d56f82f36e3e9e9fbc5b3bd932a1151f7b
   trackbranch: master
+  shallow_since: '2021-09-12'
 - name: etcd
   scm: git
   src: https://github.com/logan2211/ansible-etcd
   version: ab9861e35c23342fa30c703d29e370da590ea582
   trackbranch: master
+  shallow_since: '2020-05-11'
 - name: unbound
   scm: git
   src: https://github.com/logan2211/ansible-unbound
   version: f8e2d8a89ddb9352d5748332a5f3a33ed33f66ab
   trackbranch: master
+  shallow_since: '2019-03-21'
 - name: resolvconf
   scm: git
   src: https://github.com/logan2211/ansible-resolvconf
   version: f7f694b3dd4361e364dccb4ce94e6510727fca2f
   trackbranch: master
+  shallow_since: '2021-03-31'
 - name: ceph-ansible
   scm: git
   src: https://github.com/ceph/ceph-ansible
-  version: d7878363509b34950609adba47c975d9e26366f2
+  version: f224782326834a4450173056658c6e08c30903f6
   trackbranch: stable-5.0
-  shallow_since: '2022-02-21'
+  shallow_since: '2022-04-13'
 - name: opendaylight
   scm: git
   src: https://github.com/opendaylight/integration-packaging-ansible-opendaylight
   version: 4a9217ed0fe9078152435daaa2d3f45b81021b3a
   trackbranch: master
+  shallow_since: '2019-09-14'
 - name: haproxy_endpoints
   scm: git
   src: https://github.com/logan2211/ansible-haproxy-endpoints
   version: 8e3a24a35beb16d717072dc83895c5a1f92689fb
   trackbranch: master
+  shallow_since: '2018-03-22'
 - name: pacemaker_corosync
   scm: git
   src: https://github.com/noonedeadpunk/ansible-pacemaker-corosync
   trackbranch: master
   version: 70d3c59efea4c3080fa66aeef75eadd0a032a83e
+  shallow_since: '2021-01-12'
 - name: systemd_service
   src: https://opendev.org/openstack/ansible-role-systemd_service
   scm: git
   version: a0b0a34b36faae19e1285026c61a5660af75b4a7
   trackbranch: stable/wallaby
+  shallow_since: '2021-06-30'
 - name: systemd_mount
   src: https://opendev.org/openstack/ansible-role-systemd_mount
   scm: git
   version: a4bbe239984e321511ce925f77dcc8f6bbb7202d
   trackbranch: stable/wallaby
+  shallow_since: '2021-07-01'
 - name: systemd_networkd
   src: https://opendev.org/openstack/ansible-role-systemd_networkd
   scm: git
   version: e9f71c8348cebcf63e50daff6cbf6444c29e0e56
   trackbranch: stable/wallaby
+  shallow_since: '2021-06-30'
 - name: python_venv_build
   src: https://opendev.org/openstack/ansible-role-python_venv_build
   scm: git
-  version: 3a86515670239aa403a40d0d19b7660a4dd41dd0
+  version: e7307f5d01db07cc504eb619654a0829c9d4e92c
   trackbranch: stable/wallaby
+  shallow_since: '2022-02-28'
 - name: uwsgi
   src: https://opendev.org/openstack/ansible-role-uwsgi
   scm: git
   version: d91a7bf8505e4d5ac01167084df97bc8b229cbd0
   trackbranch: stable/wallaby
+  shallow_since: '2021-06-28'
 - name: pki
   src: https://opendev.org/openstack/ansible-role-pki
   scm: git
   trackbranch: stable/wallaby
   version: 6085b72be2abd0b7ff60e195bd55c00a8393cef1
+  shallow_since: '2021-06-29'
