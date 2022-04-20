@@ -28,11 +28,11 @@
 ### Before this is shipped all of these services should have a tag set as the branch,
 ### or have a comment / reason attached to them as to why a tag can not work.
 
-### HEAD as of 22.02.2022 ###
+### HEAD as of 20.04.2022 ###
 
 ## Global Requirements
 requirements_git_repo: https://opendev.org/openstack/requirements
-requirements_git_install_branch: 8b422b75cbf4b2e2441a1baedd426c60116a964f
+requirements_git_install_branch: 0694e6e38cf53601c05a207353a4c1dc134a4ad2
 requirements_git_track_branch: stable/victoria
 
 ## Adjutant service
@@ -53,7 +53,7 @@ aodh_git_track_branch: stable/victoria
 
 ## Barbican service
 barbican_git_repo: https://opendev.org/openstack/barbican
-barbican_git_install_branch: 797f4c8e8ec0df20e9a4053cdcd0da92108197b4
+barbican_git_install_branch: bdb53f47621c0eb4b49b28e976041781bca6b1ff
 barbican_git_track_branch: stable/victoria
 
 
@@ -77,7 +77,7 @@ cinder_git_track_branch: stable/victoria
 
 ## Cloudkitty service
 cloudkitty_git_repo: https://opendev.org/openstack/cloudkitty
-cloudkitty_git_install_branch: 28f8bd4a73672bde2ecb3ccbe73f148a0706185b
+cloudkitty_git_install_branch: f9e710c7713c1a3756052433f18cb8bb939e8a18
 cloudkitty_git_track_branch: stable/victoria
 
 
@@ -89,7 +89,7 @@ cloudkitty_dashboard_git_track_branch: stable/victoria
 
 ## Designate service
 designate_git_repo: https://opendev.org/openstack/designate
-designate_git_install_branch: 6d1479a8d998c5ecaeef1671de47323bbfc6fefc
+designate_git_install_branch: eee0fcbee357c7f09b16de31cc68f23b765f4462
 designate_git_track_branch: stable/victoria
 
 
@@ -107,7 +107,7 @@ glance_git_track_branch: stable/victoria
 
 ## Heat service
 heat_git_repo: https://opendev.org/openstack/heat
-heat_git_install_branch: cbe9be5e7625d374fc6cfbb63b7e3ef5335bf330
+heat_git_install_branch: 576e1d6f6247f633606b0f67fa0bb72274e1194a
 heat_git_track_branch: stable/victoria
 
 ## Horizon Heat dashboard plugin
@@ -117,7 +117,7 @@ heat_dashboard_git_track_branch: stable/victoria
 
 ## Horizon service
 horizon_git_repo: https://opendev.org/openstack/horizon
-horizon_git_install_branch: 7a5432de8d68eab5772dd3a23951d0953ba99ddb
+horizon_git_install_branch: c9ebeb1fa3de5ead102fef2027c8e5320c3038e1
 horizon_git_track_branch: stable/victoria
 
 ## Horizon Ironic dashboard plugin
@@ -150,13 +150,13 @@ keystone_git_track_branch: stable/victoria
 
 ## Manila service
 manila_git_repo: https://opendev.org/openstack/manila
-manila_git_install_branch: aa2a64c34ec8089c1b38b967a3d0af6df8dd7640
+manila_git_install_branch: 0f337b5d338a378aebb8e2f168c4042f5fb6bbd1
 manila_git_track_branch: stable/victoria
 
 
 ## Neutron service
 neutron_git_repo: https://opendev.org/openstack/neutron
-neutron_git_install_branch: e081288753303684edf2355e33452a6aeb0010ff
+neutron_git_install_branch: 4070861450cc8f8ec85256fa4bac9b5b3aaa0e3f
 neutron_git_track_branch: stable/victoria
 
 neutron_vpnaas_git_repo: https://opendev.org/openstack/neutron-vpnaas
@@ -178,7 +178,7 @@ networking_odl_git_install_branch: 111d006643ae805d3d1e2dcaf7cf0890d9e203f2
 networking_odl_git_track_branch: stable/victoria
 
 networking_bgpvpn_git_repo: https://opendev.org/openstack/networking-bgpvpn
-networking_bgpvpn_git_install_branch: 3bf3c084fa8b57e4010c2dfe7d78fe121f3cebce
+networking_bgpvpn_git_install_branch: 3f5f7051a58930905147b5471845e76fc8345b32
 networking_bgpvpn_git_track_branch: stable/victoria
 
 networking_sfc_git_repo: https://opendev.org/openstack/networking-sfc
@@ -194,18 +194,18 @@ networking_nsx_git_install_branch: 0cbcab8fd88d067de947bc2bec383b2c3b0a84dc
 networking_nsx_git_track_branch: stable/victoria
 
 networking_nsxlib_git_repo: https://opendev.org/x/vmware-nsxlib
-networking_nsxlib_git_install_branch: a52f9e0c6eb0b674ec42d8c3dae6ef7bf9131d6b
+networking_nsxlib_git_install_branch: 4a469023af3d2e1b29295d3628258a3230d36133
 networking_nsxlib_git_track_branch: stable/victoria
 
 ## Nova service
 nova_git_repo: https://opendev.org/openstack/nova
-nova_git_install_branch: 9b3d69c18525c4308ffd3dbb619c6ed8789eb9f0
+nova_git_install_branch: b5b57c4669da07c3ee4c53d290e6ac4819bf4e15
 nova_git_track_branch: stable/victoria
 
 
 ## Sahara service
 sahara_git_repo: https://opendev.org/openstack/sahara
-sahara_git_install_branch: 44ac39ad4d58c41dfa591e4873fcfc84102850d6
+sahara_git_install_branch: 95a84e03586d4f191347c752bcbd6bf25c78411b
 sahara_git_track_branch: stable/victoria
 
 
@@ -217,13 +217,13 @@ senlin_git_track_branch: stable/victoria
 
 ## Swift service
 swift_git_repo: https://opendev.org/openstack/swift
-swift_git_install_branch: f53500522ae52df3c07bdcf775d11b9adccc817c
+swift_git_install_branch: f1c110be5ea58230da6974fa3ea6a1d523df1def
 swift_git_track_branch: stable/victoria
 
 
 ## Ironic service
 ironic_git_repo: https://opendev.org/openstack/ironic
-ironic_git_install_branch: a58cd13eaa63bd068cb30f9d445f93b5ff6d1ab4
+ironic_git_install_branch: 6e640b336e1d08fd0404431871d046d9b4bc0c3d
 ironic_git_track_branch: stable/victoria
 
 
@@ -275,7 +275,7 @@ trove_dashboard_git_track_branch: stable/victoria
 
 ## Octavia service
 octavia_git_repo: https://opendev.org/openstack/octavia
-octavia_git_install_branch: 64c792c225a510f8c27a5aa27ea5dae261e0b76c
+octavia_git_install_branch: 5a54e1cb7bfd61cb66df6605df8c135c50cb5dbb
 octavia_git_track_branch: stable/victoria
 
 
@@ -299,13 +299,13 @@ tacker_git_track_branch: stable/victoria
 
 ## Horizon Octavia dashboard plugin
 octavia_dashboard_git_repo: https://opendev.org/openstack/octavia-dashboard
-octavia_dashboard_git_install_branch: 96cdde26e7e25305839f09516fd67fa707e5be54
+octavia_dashboard_git_install_branch: 28ea78031dd6a1ebbeafd01556b6ef8b9c547c97
 octavia_dashboard_git_track_branch: stable/victoria
 
 
 ## Blazar service
 blazar_git_repo: https://opendev.org/openstack/blazar
-blazar_git_install_branch: 6fc1d3cb85c4c0d6d30a899d881df4aac081718e
+blazar_git_install_branch: d4be86d8c44274bb29ca9e69f66913d0daac26c7
 blazar_git_track_branch: stable/victoria
 
 ## Blazar Nova Service
