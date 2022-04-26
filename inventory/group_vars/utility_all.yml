@@ -66,9 +66,6 @@ cinder_service_backup_program_enabled: "{{ hostvars['localhost']['cinder_service
 # Tempest settings
 #
 
-# If cinder has a backup service enabled, make sure that Tempest tests it
-tempest_volume_backup_enabled: "{{ cinder_service_backup_program_enabled | bool }}"
-
 tempest_log_dir: /var/log/utility
 
 # This sets the tempest group to the utility group
@@ -97,6 +94,3 @@ tempest_test_includelist:
   - "{{ (tempest_service_available_nova | bool) | ternary('tempest.scenario.test_server_basic_ops', '') }}"
   - "{{ (tempest_service_available_swift | bool) | ternary('tempest.scenario.test_object_storage_basic_ops', '') }}"
   - "{{ (tempest_volume_multi_backend_enabled | bool) | ternary('tempest.api.volume.admin.test_multi_backend', '') }}"
-  # TODO(evrardjp): Bring this back when upstream is fixed
-  # (revert of https://github.com/openstack/cinder/commit/737c50b4ea54e2e63d6e3fe8a73d22b393df4205)
-  #  - "{{ (tempest_volume_backup_enabled | bool) | ternary('tempest.api.volume.admin.test_volumes_backup', '') }}"
