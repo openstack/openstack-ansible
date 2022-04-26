@@ -266,9 +266,11 @@ openstack_user_kernel_options:
 
 openstack_hosts_package_state: latest
 
+{% if bootstrap_host_action == 'deploy' %}
 openstack_service_adminuri_proto: https
 openstack_service_internaluri_proto: https
 haproxy_ssl_all_vips: true
+{% endif %}
 
 {% if 'octavia' in bootstrap_host_scenarios_expanded %}
 # Enable Octavia V2 API/standalone
