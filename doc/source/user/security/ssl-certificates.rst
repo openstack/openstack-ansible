@@ -29,6 +29,14 @@ manage and install self-signed and user provided certificates.
 
 .. _ansible_role_pki: https://opendev.org/openstack/ansible-role-pki
 
+.. note::
+
+   The openstack-ansible example configurations are designed to be minimal
+   examples and in test or development use-cases will set ``external_lb_vip_address``
+   to the IP address of the haproxy external endpoint. For a production
+   deployment it is advised to set ``external_lb_vip_address`` to be
+   the FQDN which resolves via DNS to the IP of the external endpoint.
+
 Self-signed certificates
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
