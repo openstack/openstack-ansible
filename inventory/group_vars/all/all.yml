@@ -57,6 +57,7 @@ repo_server_port: 8181
 
 ## Default installation method for OpenStack services
 install_method: "source"
+service_install_method: "{{ install_method }}"
 
 ## DNS resolution (resolvconf) options
 #Group containing resolvers to configure
