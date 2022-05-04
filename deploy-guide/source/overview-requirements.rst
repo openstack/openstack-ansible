@@ -12,6 +12,8 @@ following minimum requirements:
 
 * Ubuntu
 
+  * Ubuntu 22.04 LTS (Jammy Jellyfish) (Experimental support in Yoga release)
+
   * Ubuntu 20.04 LTS (Focal Fossa)
 
   * Linux kernel version ``4.15.0-0-generic`` or later is required.

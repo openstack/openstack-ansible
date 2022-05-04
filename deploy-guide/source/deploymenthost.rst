@@ -26,6 +26,7 @@ Install the operating system
 Install one of the following supported operating systems on the deployment
 hosts:
 
+* `Ubuntu server 22.04 (Jammy Jellyfish) LTS 64-bit <http://releases.ubuntu.com/22.04/>`_
 * `Ubuntu server 20.04 (Focal Fossa) LTS 64-bit <http://releases.ubuntu.com/20.04/>`_
 * `Debian 11 (Bullseye) LTS 64-bit <https://www.debian.org/distrib/>`_
 * `Centos 8 Stream 64-bit <http://isoredirect.centos.org/centos/8-stream/isos/x86_64/>`_
