@@ -20,5 +20,7 @@ In CI we test upgrades from N to N+1 releases and only for source deployments.
 Below you will find the support matrix of Operating Systems for
 OpenStack-Ansible releases.
 
+Operating systems with experimental support are marked with ``E`` in the table.
+
 .. raw:: html
     :file: os-compatibility-matrix.html
