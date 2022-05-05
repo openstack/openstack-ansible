@@ -24,7 +24,7 @@
   hosts: all_containers[0]:physical_hosts[0]
   gather_facts: yes
   vars:
-    repo_requirements_file: "repo_sync_complete"
+    repo_requirements_file: "{{ 'constraints/upper_constraints_' ~ requirements_git_install_branch ~ '.txt' }}"
   tasks:
     - name: Check the repo sync file on each repo server
       uri:
