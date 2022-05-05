@@ -30,6 +30,10 @@
   tags:
     - rally
   pre_tasks:
+    - name: End playbook
+      meta: end_play
+      when:
+        - (not (rally_install | default(false)) | bool)
     - include_tasks: common-tasks/unbound-clients.yml
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
