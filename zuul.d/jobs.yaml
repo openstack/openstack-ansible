@@ -260,6 +260,18 @@
       - ^ansible-role-requirements\.yml
       - ^playbooks\/defaults\/repo_packages\/.*\.yml
 
+# Ensuring clustering and healthcheck-infrastructure playbook is valid
+- job:
+    name: openstack-ansible-deploy-infra_lxc-validate
+    parent: openstack-ansible-deploy-infra_lxc-ubuntu-focal
+    files:
+      - ^playbooks\/galera-install.yml
+      - ^playbooks\/rabbitmq-install.yml
+      - ^playbooks\/memcached-install.yml
+      - ^playbooks\/healthcheck-infrastructure.yml
+      - ^playbooks\/repo-install.yml
+      - ^playbooks\/haproxy-install.yml
+
 # Running linters check
 - job:
     name: openstack-ansible-linters-ubuntu-focal

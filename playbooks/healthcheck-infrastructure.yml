@@ -23,6 +23,8 @@
 - name: Ensure all repo-servers are built and are accessible by hosts.
   hosts: all_containers[0]:physical_hosts[0]
   gather_facts: yes
+  vars_files:
+    - "defaults/repo_packages/openstack_services.yml"
   vars:
     repo_requirements_file: "{{ 'constraints/upper_constraints_' ~ requirements_git_install_branch ~ '.txt' }}"
   tasks:
