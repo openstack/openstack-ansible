@@ -60,11 +60,6 @@ OSA_ANSIBLE_PYTHON_INTERPRETER="auto"
 # Create the ssh dir if needed
 ssh_key_create
 
-# Deal with pre-release debian bullseye
-if grep bullseye /etc/os-release; then
-  echo "VERSION_ID=11" >> /etc/os-release
-fi
-
 # Determine the distribution which the host is running on
 determine_distro
 
