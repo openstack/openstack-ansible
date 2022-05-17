@@ -118,6 +118,8 @@
       vars:
         zuul_helper_var:
           zuul: "{{ zuul }}"
+        zuul_site_mirror_info_helper_var:
+          zuul_site_mirror_info: "{{ zuul_site_mirror_info | default({}) }}"
       template:
         src: osa-job-vars.yml.j2
         dest: "{{ zuul_user_vars_file }}"
