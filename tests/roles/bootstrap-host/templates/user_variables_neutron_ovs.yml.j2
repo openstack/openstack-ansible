@@ -21,3 +21,6 @@ tempest_test_includelist:
 tempest_private_net_provider_type: vxlan
 tempest_network_ping_gateway: True
 tempest_public_net_physical_name: vlan
+tempest_tempest_conf_overrides:
+  network-feature-enabled:
+    api_extensions: agent,allowed-address-pairs,binding,dhcp_agent_scheduler,ext-gw-mode,external-net,extra_dhcp_opt,extra_dhcp_optagent,extraroute,l3_agent_scheduler,metering,provider,quotas,router,security-group,service-type,subnet_allocation
