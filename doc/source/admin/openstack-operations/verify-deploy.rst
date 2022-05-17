@@ -45,9 +45,10 @@ the OpenStack API and dashboard, as an administrator.
       +----------------------------------+--------------------+
 
 #. With a web browser, access the Dashboard using the external load
-   balancer IP address. This is defined by the ``external_lb_vip_address``
-   option in the ``/etc/openstack_deploy/openstack_user_config.yml``
-   file. The dashboard uses HTTPS on port 443.
+   balancer domain name or IP address. This is defined by the
+   ``external_lb_vip_address`` option in the
+   ``/etc/openstack_deploy/openstack_user_config.yml`` file.
+   The dashboard uses HTTPS on port 443.
 
 #. Authenticate using the username ``admin`` and password defined by
    the ``keystone_auth_admin_password`` option in the
