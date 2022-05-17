@@ -63,8 +63,9 @@ Verifying the Dashboard (horizon)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #. With a web browser, access the Dashboard by using the external load
-   balancer IP address defined by the ``external_lb_vip_address`` option
-   in the ``/etc/openstack_deploy/openstack_user_config.yml`` file. The
+   balancer domain name or IP address defined by the
+   ``external_lb_vip_address`` option in the
+   ``/etc/openstack_deploy/openstack_user_config.yml`` file. The
    Dashboard uses HTTPS on port 443.
 
 #. Authenticate by using the ``admin`` user name and the password defined by
