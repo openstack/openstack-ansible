@@ -102,7 +102,7 @@
 # a mechanism to override other options defined in the playbook structure.
 #
 #   Option: internal_lb_vip_address (required, string)
-#   Load balancer VIP for the following items:
+#   Load balancer VIP (or valid FQDN) for the following items:
 #
 #   - Local package repository
 #   - Galera SQL database cluster
@@ -113,7 +113,7 @@
 #   - Instance metadata
 #
 #   Option: external_lb_vip_address (required, string)
-#   Load balancer VIP for the following items:
+#   Load balancer VIP (or valid FQDN) for the following items:
 #
 #   - Public API endpoints for all OpenStack services
 #   - Horizon
