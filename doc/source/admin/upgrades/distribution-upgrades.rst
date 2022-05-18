@@ -94,10 +94,6 @@ Pre-Requisites
       and can visit https://admin:password@external_lb_vip_address:1936/ and read
       'Statistics Report for pid # on infrastructure_host'
 
-   *  repo_container
-
-      Check all your repo_containers and look for /etc/lsyncd/lsyncd.conf.lua
-
 Warnings
 ========
 

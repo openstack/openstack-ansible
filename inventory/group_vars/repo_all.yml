@@ -15,3 +15,21 @@
 
 # Ensure that the package state matches the global setting
 repo_server_package_state: "{{ package_state }}"
+
+# Transition to shared filesystem, disable lsyncd deployment
+repo_server_enable_sync_manager: False
+
+# Repo container default list of bind mounts
+repo_container_bind_mounts:
+  - bind_dir_path: "/var/lib/glusterd"
+    mount_path: "/openstack/glusterd/{{inventory_hostname }}"
+
+# Enable glusterfs mount
+repo_server_systemd_mounts:
+  - what: "{{ ansible_hostname }}:gfs-repo"
+    where: "/var/www/repo"
+    type: glusterfs
+    state: 'started'
+    enabled: true
+    
+openstack_repo_server_enable_glusterfs: True

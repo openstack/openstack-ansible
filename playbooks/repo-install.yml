@@ -32,14 +32,34 @@
 
     - include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       vars:
-        list_of_bind_mounts:
-          - mount_path: "/openstack/{{ inventory_hostname }}"
-            bind_dir_path: "/var/www"
+        list_of_bind_mounts: "{{ repo_container_bind_mounts }}"
       when: not is_metal
 
     - include_tasks: common-tasks/unbound-clients.yml
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
+  environment: "{{ deployment_environment_variables | default({}) }}"
+
+- name: Setup repo server gluster cluster
+  hosts: repo_all
+  gather_facts: false
+  user: root
+  tasks:
+    - name: Create gluster cluster
+      include_role:
+        name: openstack.osa.glusterfs
+      vars:
+        glusterfs_server_group_name: "repo_all"
+        glusterfs_server_volume_name: "gfs-repo"
+      when:
+        - openstack_repo_server_enable_glusterfs | default(False)
+  environment: "{{ deployment_environment_variables | default({}) }}"
+
+- name: Setup repo servers
+  hosts: repo_all
+  gather_facts: false
+  serial: "{{ repo_serial | default(['1','100%']) }}"
+  user: root
   roles:
     - role: "repo_server"
 
@@ -51,13 +71,8 @@
         rsyslog_client_log_files: "{{ rsyslog_var.log_files | default([]) }}"
         rsyslog_client_config_name: "{{ rsyslog_var.config_name }}"
       with_items:
-        - log_rotate_file: lsyncd_log_rotate
-          log_dir: "/var/log/lsyncd"
-          config_name: "99-lsyncd-rsyslog-client.conf"
         - log_rotate_file: repo_nginx_log_rotate
           log_dir: "/var/log/nginx"
-          log_files:
-            - /var/log/rsyncd.log
           config_name: "99-repo-nginx-rsyslog-client.conf"
       loop_control:
         loop_var: rsyslog_var
