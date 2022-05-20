@@ -5,12 +5,12 @@
 - name: ansible-hardening
   scm: git
   src: https://opendev.org/openstack/ansible-hardening
-  version: 0a482d106fe47a0f3d6f7457922aff5a70170580
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: apt_package_pinning
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-apt_package_pinning
-  version: d8482c9aabc7988952f55e69b8280ee47f30e261
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: config_template
   scm: git
@@ -20,17 +20,17 @@
 - name: galera_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-galera_server
-  version: 6a0c2fc9798f64a36de6676fbdca44ca81eea6cb
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: ceph_client
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-ceph_client
-  version: 82e43fd53c89303a7477189e6914bbb0c78fbe9c
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: haproxy_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-haproxy_server
-  version: 7aef92403c7e73f850b4f110acd0b568bf26f82e
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: keepalived
   scm: git
@@ -40,217 +40,217 @@
 - name: lxc_container_create
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-lxc_container_create
-  version: ca18916930b05575e44279d8a11e08345f9581f4
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: lxc_hosts
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-lxc_hosts
-  version: de4b2ebeb83c647ba0d6d0fcc75347665ee7b684
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: memcached_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-memcached_server
-  version: 678684d6c20fb9666b6be2ff36e5818870aa9911
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: openstack_hosts
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-openstack_hosts
-  version: 88f5ca0e752c3ceaa5e332fdbd48898ce8334dcb
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: os_keystone
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_keystone
-  version: 526a3b6e89f1d4eee9065517180d677cd5410d55
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: openstack_openrc
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-openstack_openrc
-  version: 93d61ed35f43b95edc81b1e6120e1ceb653fef28
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: os_adjutant
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_adjutant
-  version: 0b87fd0e49e3b87bf5e05e968b8424db6fc0b8f1
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: os_aodh
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_aodh
-  version: 94d96f6cb9f97df9fdf445b29e8a456fed0f202a
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: os_barbican
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_barbican
-  version: 59df1e9b9f63c8dcdafc5a60de3ad960a947d703
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: os_blazar
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_blazar
-  version: 0a30b71acb6c12900cf5f7fe593b208b71320229
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: os_ceilometer
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_ceilometer
-  version: cba352ed4a689e534a33a6d717701172f89693be
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: os_cinder
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_cinder
-  version: 374708f98bc5347494b900fa6248e15e2e4dafbc
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: os_cloudkitty
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_cloudkitty
-  version: 1eaa626c62cba3b2414f44a2b161ce33dc16dee7
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: os_designate
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_designate
-  version: 474d30c6c97f6a275b76f5122df2bbd9f48d75cf
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: os_glance
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_glance
-  version: 084b6b4d9dfca5002e48d8d66b5d9a5332883739
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: os_gnocchi
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_gnocchi
-  version: 61e63ffb546a5786a5b2d20eb54b85758f3a0780
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: os_heat
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_heat
-  version: 04255738dc3c2505b375bb3889e30e16076278db
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: os_horizon
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_horizon
-  version: 4f09e96558f2dbc4dc76f65e215f0b6218dc000e
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: os_ironic
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_ironic
-  version: 0db26861b2a20b27320ec37a5d3ca5dd6e8638e9
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: os_magnum
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_magnum
-  version: 387a3e243f730bd84156db3d4a55ebcf2f8cdf15
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: os_manila
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_manila
-  version: b74ea053b839e2bc4fdcbf495c756dd5202568a1
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: os_masakari
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_masakari
-  version: 42167284f700b70dac06c1c30220b31fdffd160f
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: os_mistral
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_mistral
-  version: d32abdf26fa6898f54b1265a9ad299742237af95
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: os_murano
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_murano
-  version: 2e084ae35b4ac541cab9417623d31599bcaff863
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: os_neutron
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_neutron
-  version: c9e64bd5745c1e9732d7d737f93e6b56bec4bb42
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: os_nova
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_nova
-  version: 71bd664fbb85891612ea1a1d5a1f442a8919c9f9
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: os_octavia
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_octavia
-  version: 6fb63e341f99eb022e9d770dc934a964b538308f
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: os_panko
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_panko
-  version: dfb635b7f7a82ccbe23c45a281dda12c222ce663
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: os_placement
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_placement
-  version: ea5cd354f81bb67633db497c0c08f3f8a57819bf
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: os_rally
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_rally
-  version: c8641b1ba19b05e26488a93cf4b6a6c04ae25d72
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: os_sahara
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_sahara
-  version: 5642211b88bf127c38c73419e84da0515c39389b
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: os_senlin
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_senlin
-  version: 58a8e42ecf68b371e57c7a02055faf2f1da14e28
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: os_swift
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_swift
-  version: 7c1e3547190fb2c9294b47499646ee04e20b600e
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: os_tacker
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_tacker
-  version: 69a60888fdde3afd53ff1e693817a1396c48434e
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: os_tempest
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_tempest
-  version: 1b21bac0c04de529b2dc4cd278958afa3dfc39c6
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: os_trove
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_trove
-  version: 769b6d213cb9bf10059ef8c466cd56121ad16a58
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: os_zun
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_zun
-  version: ff62eb3e2b32c9eb68c61d8270ff4fe9944a6f29
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: plugins
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-plugins
-  version: 478c2a72b742417c352ce97a4fed1d6f92c62012
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: qdrouterd
   scm: git
   src: https://opendev.org/openstack/ansible-role-qdrouterd
-  version: 16e63a72369911609d4c110586617ddc76fc6c9d
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: rabbitmq_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-rabbitmq_server
-  version: 911f6a7bf86aa856ebad8af063fceba4a299c1ad
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: repo_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-repo_server
-  version: 3c03d344f0a1d05bd11e51cb69b6c254c59834a3
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: rsyslog_client
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-rsyslog_client
-  version: 36cff3fb06f85d4128603ae062cfe8d0bf5448a5
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: rsyslog_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-rsyslog_server
-  version: b17c63988d933589d2bc46ee60553a0bfae490ee
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: sshd
   scm: git
@@ -301,35 +301,35 @@
 - name: nspawn_container_create
   src: https://opendev.org/openstack/openstack-ansible-nspawn_container_create
   scm: git
-  version: ec28ed03c5090eb513c6eaeca06c8ea099f517ea
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: nspawn_hosts
   src: https://opendev.org/openstack/openstack-ansible-nspawn_hosts
   scm: git
-  version: bac30481b4523356ba636b1e2ce2d68b4a7b6a86
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: systemd_service
   src: https://opendev.org/openstack/ansible-role-systemd_service
   scm: git
-  version: 038850a4e696b0fa7007f1ad5f563acc39d93ddc
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: systemd_mount
   src: https://opendev.org/openstack/ansible-role-systemd_mount
   scm: git
-  version: 257c5869c9d339b82278238331d0564b6596dcce
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: systemd_networkd
   src: https://opendev.org/openstack/ansible-role-systemd_networkd
   scm: git
-  version: 81201a9c2f379758a5072f172ad2376301b5af1c
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: python_venv_build
   src: https://opendev.org/openstack/ansible-role-python_venv_build
   scm: git
-  version: 7ba45768a8bab4c758116d04d3c37d2ac179cf90
+  version: stable/victoria
   trackbranch: stable/victoria
 - name: uwsgi
   src: https://opendev.org/openstack/ansible-role-uwsgi
   scm: git
-  version: 8feb8110641d5443cf7aed47c1426e0e2104b077
+  version: stable/victoria
   trackbranch: stable/victoria
