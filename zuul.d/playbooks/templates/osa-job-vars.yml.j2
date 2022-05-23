@@ -1,2 +1,8 @@
 ---
 {{ zuul_helper_var | to_nice_yaml(indent=2) }}
+
+zuul_site_mirror_fqdn: {{ zuul_site_mirror_fqdn | default('') }}
+
+zuul_site_local_mirror_host: {{ zuul_site_local_mirror_host | default('') }}
+
+{{ zuul_site_mirror_info_helper_var | to_nice_yaml(indent=2) }}
