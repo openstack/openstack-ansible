@@ -18,56 +18,10 @@
   gather_facts: True
   user: root
   roles:
-    - role: "sshd"
     - role: "bootstrap-host"
   vars_files:
     - "{{ playbook_dir }}/../playbooks/defaults/repo_packages/openstack_services.yml"
   environment: "{{ deployment_environment_variables | default({}) }}"
-  vars:
-    sftp_subsystem:
-        'apt': 'sftp /usr/lib/openssh/sftp-server'
-        'dnf': 'sftp /usr/libexec/openssh/sftp-server'
-    sshd:
-      ListenAddress:
-        - 0.0.0.0
-        - '::'
-      Port: 22
-      Protocol: 2
-      HostKey:
-        - "/etc/ssh/ssh_host_rsa_key"
-        - "/etc/ssh/ssh_host_ecdsa_key"
-        - "/etc/ssh/ssh_host_ed25519_key"
-      UsePrivilegeSeparation: yes
-      KeyRegenerationInterval: 3600
-      ServerKeyBits: 1024
-      SyslogFacility: "AUTH"
-      LogLevel: "INFO"
-      LoginGraceTime: 120
-      StrictModes: yes
-      RSAAuthentication: yes
-      PubkeyAuthentication: yes
-      IgnoreRhosts: yes
-      RhostsRSAAuthentication: no
-      HostbasedAuthentication: no
-      PermitEmptyPasswords: no
-      PermitRootLogin: yes
-      ChallengeResponseAuthentication: no
-      PasswordAuthentication: no
-      X11DisplayOffset: 10
-      PrintMotd: no
-      PrintLastLog: no
-      TCPKeepAlive: yes
-      AcceptEnv: "LANG LC_*"
-      Subsystem: "{{ sftp_subsystem[ansible_facts['pkg_mgr']] }}"
-      UsePAM: yes
-      UseDNS: no
-      X11Forwarding: no
-      Compression: yes
-      CompressionLevel: 6
-      MaxSessions: 100
-      MaxStartups: "100:100:100"
-      GSSAPIAuthentication: no
-      GSSAPICleanupCredentials: no
   pre_tasks:
     - name: Run setup module
       setup:
@@ -75,6 +29,15 @@
           - network
           - hardware
           - virtual
+    - name: Ensure sshd is installed
+      package:
+        name: openssh-server
+        state: present
+    - name: Ensure sshd is running
+      service:
+        name: sshd
+        state: started
+        enabled: yes
   post_tasks:
     - name: Check that new network interfaces are up
       assert:
