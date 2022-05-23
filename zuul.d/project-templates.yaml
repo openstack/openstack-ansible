@@ -238,6 +238,27 @@
         - openstack-ansible-linters-ubuntu-focal
 
 - project-template:
+    name: openstack-ansible-lxc-backingstore-jobs
+    check:
+      jobs:
+        - openstack-ansible-deploy-hosts_lxc_zfs-ubuntu-focal
+        - openstack-ansible-deploy-hosts_lxc_btrfs-ubuntu-focal
+        - openstack-ansible-deploy-hosts_lxc_overlayfs-ubuntu-focal
+        - openstack-ansible-deploy-hosts_lxc_btrfs-debian-bullseye
+        - openstack-ansible-deploy-hosts_lxc_overlayfs-debian-bullseye
+        - openstack-ansible-deploy-hosts_lxc_overlayfs-rockylinux-8
+        - openstack-ansible-deploy-hosts_lxc_overlayfs-centos-8-stream
+    gate:
+      jobs:
+        - openstack-ansible-deploy-hosts_lxc_zfs-ubuntu-focal
+        - openstack-ansible-deploy-hosts_lxc_btrfs-ubuntu-focal
+        - openstack-ansible-deploy-hosts_lxc_overlayfs-ubuntu-focal
+        - openstack-ansible-deploy-hosts_lxc_btrfs-debian-bullseye
+        - openstack-ansible-deploy-hosts_lxc_overlayfs-debian-bullseye
+        - openstack-ansible-deploy-hosts_lxc_overlayfs-rockylinux-8
+        - openstack-ansible-deploy-hosts_lxc_overlayfs-centos-8-stream
+
+- project-template:
     name: openstack-ansible-deploy-guide-jobs
     description: |
       Build the deploy-guide document and publish the result
