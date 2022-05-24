@@ -255,6 +255,9 @@ lxc_container_cache_files_from_host:
   - /etc/pip.conf
 # Disable chronyd in OpenStack CI
 security_rhel7_enable_chrony: no
+# Add chacha20-poly1305@openssh.com to the default list of ciphers during
+# gate runs to increase SSH throughput for Ansible
+security_sshd_cipher_list: 'aes128-ctr,aes192-ctr,aes256-ctr,chacha20-poly1305@openssh.com'
 # The location where images are downloaded in openstack-infra
 tempest_image_dir: "/opt/cache/files"
 {% endif %}
