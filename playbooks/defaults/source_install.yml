@@ -36,4 +36,4 @@ openstack_db_setup_host: "{{ openstack_service_setup_host }}"
 openstack_db_setup_python_interpreter: "{{ openstack_service_setup_host_python_interpreter }}"
 
 # Locally cached copy on the repo server for the OpenStack upper-constraints.txt
-requirements_git_url: "{{ openstack_repo_url ~ '/constraints/upper_constraints_' ~ requirements_git_install_branch ~ '.txt' }}"
+requirements_git_url: "{{ openstack_repo_url }}/constraints/upper_constraints_cached.txt"
