@@ -89,7 +89,7 @@
     # Repo release path points to the internal LB vip
     - name: Check the presence of upper constraints on your repos and check load balancing
       uri:
-        url: "{{ repo_release_path }}/"
+        url: "{{ openstack_repo_url }}/constraints/upper_constraints_cached.txt"
   tags:
     - healthcheck
     - healthcheck-repo-use
