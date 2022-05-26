@@ -54,6 +54,7 @@ export OSA_CLONE_DIR="$(pwd)"
 
 # Set the variable to the role file to be the absolute path
 ANSIBLE_ROLE_FILE="$(readlink -f "${ANSIBLE_ROLE_FILE}")"
+ANSIBLE_COLLECTION_FILE="$(readlink -f "${ANSIBLE_COLLECTION_FILE}")"
 OSA_INVENTORY_PATH="$(readlink -f inventory)"
 OSA_ANSIBLE_PYTHON_INTERPRETER="auto"
 
