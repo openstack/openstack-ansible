@@ -1,6 +1,6 @@
 ---
 
-### HEAD as of 20.04.2022 ###
+### HEAD as of 27.05.2022 ###
 
 - name: ansible-hardening
   scm: git
@@ -17,9 +17,9 @@
 - name: config_template
   scm: git
   src: https://opendev.org/openstack/ansible-config_template
-  version: 5070371eddc644384f57b472b49a79d3adbe573f
+  version: 78e7f22caa79a19ecfed9d4e378bd0d261a93a11
   trackbranch: master
-  shallow_since: '2022-04-10'
+  shallow_since: '2022-04-14'
 - name: galera_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-galera_server
@@ -29,9 +29,9 @@
 - name: ceph_client
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-ceph_client
-  version: 141b37fdd103bb65710e40e24859bf85d499b5fe
+  version: 71b4c59e57caf487fec23b33c341aaaaeff745cd
   trackbranch: stable/wallaby
-  shallow_since: '2021-07-15'
+  shallow_since: '2022-05-23'
 - name: haproxy_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-haproxy_server
@@ -41,15 +41,15 @@
 - name: keepalived
   scm: git
   src: https://github.com/evrardjp/ansible-keepalived
-  version: 59de04acdde21aa2b5e43de6f4ad865d1bde33db
+  version: 0c9625bcc90104c72581af07bcb2e654fef14215
   trackbranch: master
-  shallow_since: '2022-01-27'
+  shallow_since: '2022-05-03'
 - name: lxc_container_create
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-lxc_container_create
-  version: 35cd4ab6f5f6749d84fff4ca3dfe35fe06cffaae
+  version: dc2db26be5ae6c263adcea831fc71220a6edcfcc
   trackbranch: stable/wallaby
-  shallow_since: '2022-02-01'
+  shallow_since: '2022-04-27'
 - name: lxc_hosts
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-lxc_hosts
@@ -71,9 +71,9 @@
 - name: os_keystone
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_keystone
-  version: 0b14a997193d19bb93cd8cb4592e8f1a7cd5959a
+  version: e8086edc4fe9753f55dbe43dfd1261dcede4b6bc
   trackbranch: stable/wallaby
-  shallow_since: '2022-02-03'
+  shallow_since: '2022-05-23'
 - name: openstack_openrc
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-openstack_openrc
@@ -203,9 +203,9 @@
 - name: os_octavia
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_octavia
-  version: 29287119f58fadf5f0122fa8f023b9d92d2636c9
+  version: 4a6e1fdbfe707e705d4967dcc6bd67449444c694
   trackbranch: stable/wallaby
-  shallow_since: '2021-12-01'
+  shallow_since: '2022-05-22'
 - name: os_panko
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_panko
@@ -287,9 +287,9 @@
 - name: repo_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-repo_server
-  version: c3e111780a3941eb27a7e5a61a3f389b8bb58c87
+  version: 185ac4e2ae5bd15b1ee429ddbc46a72ba28fb725
   trackbranch: stable/wallaby
-  shallow_since: '2022-02-10'
+  shallow_since: '2022-04-04'
 - name: rsyslog_client
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-rsyslog_client
@@ -305,9 +305,9 @@
 - name: sshd
   scm: git
   src: https://github.com/willshersystems/ansible-sshd
-  version: 2ba5bfee852aec5f699bf1c53193f7935beed825
+  version: 753073f4d6928526c21e8f24050c30318cd51068
   trackbranch: master
-  shallow_since: '2022-04-18'
+  shallow_since: '2022-05-09'
 - name: bird
   scm: git
   src: https://github.com/logan2211/ansible-bird
@@ -335,9 +335,9 @@
 - name: ceph-ansible
   scm: git
   src: https://github.com/ceph/ceph-ansible
-  version: f224782326834a4450173056658c6e08c30903f6
+  version: 4d2855414e6bcdf49414b88319fdaab854b8a7f5
   trackbranch: stable-5.0
-  shallow_since: '2022-04-13'
+  shallow_since: '2022-04-20'
 - name: opendaylight
   scm: git
   src: https://github.com/opendaylight/integration-packaging-ansible-opendaylight
@@ -390,5 +390,5 @@
   src: https://opendev.org/openstack/ansible-role-pki
   scm: git
   trackbranch: stable/wallaby
-  version: 6085b72be2abd0b7ff60e195bd55c00a8393cef1
-  shallow_since: '2021-06-29'
+  version: 20c3db45bb3474d273937d7444cf72e74b370ba6
+  shallow_since: '2022-05-17'
