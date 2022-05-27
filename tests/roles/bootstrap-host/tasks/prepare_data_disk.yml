@@ -77,8 +77,8 @@
     opts: "{{ bootstrap_host_format_options[bootstrap_host_data_disk2_fs] | default(omit) }}"
   when:
     - bootstrap_host_data_disk_device_force | bool
-    - lxc_container_backing_store != 'lvm'
-    - lxc_container_backing_store != 'zfs'
+    - _lxc_container_backing_store != 'lvm'
+    - _lxc_container_backing_store != 'zfs'
   tags:
     - format-data-partitions
 
@@ -108,8 +108,8 @@
         state: 'started'
         enabled: true
   when:
-    - lxc_container_backing_store != 'lvm'
-    - lxc_container_backing_store != 'zfs'
+    - _lxc_container_backing_store != 'lvm'
+    - _lxc_container_backing_store != 'zfs'
   tags:
     - data-config
 
@@ -119,13 +119,13 @@
     creates: /pool
   when:
     - bootstrap_host_data_disk_device_force | bool
-    - lxc_container_backing_store == 'zfs'
+    - _lxc_container_backing_store == 'zfs'
 
 - name: Create the ZFS pool/lxc volume
   shell: "(zfs list | grep lxc) || zfs create -o mountpoint=/var/lib/lxc pool/lxc"
   when:
     - bootstrap_host_data_disk_device_force | bool
-    - lxc_container_backing_store == 'zfs'
+    - _lxc_container_backing_store == 'zfs'
   tags:
     - skip_ansible_lint
 
@@ -134,7 +134,7 @@
   args:
     creates: "/openstack/lxc.pvcreate"
   when:
-    - lxc_container_backing_store == 'lvm'
+    - _lxc_container_backing_store == 'lvm'
   tags:
     - skip_ansible_lint
     - data-config
@@ -143,7 +143,7 @@
   command: "pvscan"
   changed_when: false
   when:
-    - lxc_container_backing_store == 'lvm'
+    - _lxc_container_backing_store == 'lvm'
   tags:
     - cinder-lvm-pv
 
@@ -152,6 +152,6 @@
     vg: lxc
     pvs: "/dev/{{ _bootstrap_host_data_disk_device }}2"
   when:
-    - lxc_container_backing_store == 'lvm'
+    - _lxc_container_backing_store == 'lvm'
   tags:
     - data-config

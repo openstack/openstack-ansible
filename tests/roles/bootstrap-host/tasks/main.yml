@@ -95,7 +95,7 @@
   when:
     - bootstrap_host_loopback_zfs | bool
     - bootstrap_host_data_disk_device == None
-    - lxc_container_backing_store == 'zfs'
+    - _lxc_container_backing_store == 'zfs'
   args:
     apply:
       tags:
@@ -108,7 +108,7 @@
   when:
     - bootstrap_host_loopback_btrfs | bool
     - bootstrap_host_data_disk_device == None
-    - lxc_container_backing_store == 'btrfs'
+    - _lxc_container_backing_store == 'btrfs'
   args:
     apply:
       tags:

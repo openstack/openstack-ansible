@@ -229,9 +229,10 @@ lxc_image_cache_server_mirrors:
 cache_timeout: {{ cache_timeout }}
 {% endif %}
 
-# The container backing store is set to 'machinectl' to speed up the
-# AIO build time. Options are: [machinectl, overlayfs, btrfs, zfs, dir, lvm]
-lxc_container_backing_store: "{{ lxc_container_backing_store }}"
+lxc_container_backing_store: {{ _lxc_container_backing_store }}
+{% if _lxc_container_backing_store == 'zfs' %}
+lxc_container_zfs_root_name: "osa-test-pool/lxc"
+{% endif %}
 
 # bind mount the zuul repos into the containers
 lxc_container_bind_mounts:

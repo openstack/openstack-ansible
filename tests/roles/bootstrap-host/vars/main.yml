@@ -15,6 +15,22 @@
 
 bootstrap_host_scenarios: "{{ (bootstrap_host_scenario.split('_') | reject('equalto', '')) | list }}"
 
+_lxc_container_backing_store: |-
+  {% if 'zfs' in bootstrap_host_scenarios %}
+  {%   set store = 'zfs' %}
+  {% elif 'btrfs' in bootstrap_host_scenarios %}
+  {%   set store = 'btrfs' %}
+  {% elif 'dir' in bootstrap_host_scenarios %}
+  {%   set store = 'dir' %}
+  {% elif 'lvm' in bootstrap_host_scenarios %}
+  {%   set store = 'lvm' %}
+  {% elif 'overlayfs' in bootstrap_host_scenarios %}
+  {%   set store = 'overlayfs' %}
+  {% else %}
+  {%   set store = 'dir' %}
+  {% endif %}
+  {{ store }}
+
 # Expand the scenario list to include specific services that are being deployed
 # as part of the scenario
 bootstrap_host_scenarios_expanded: |-
