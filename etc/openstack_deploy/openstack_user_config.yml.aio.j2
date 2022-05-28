@@ -206,6 +206,17 @@ global_overrides:
           - manila_share
           - swift_proxy
 
+# keystone
+identity_hosts:
+  aio1:
+    ip: 172.29.236.100
+{% if 'keystone' in bootstrap_host_scenarios %}
+#   NOTE (jrosser) this ensures that we deploy 3 keystone containers
+#   during the os_keystone role test to validate ssh keys and fernet key sync
+    affinity:
+      keystone_container: 3
+{% endif %}
+
 # galera, memcache, rabbitmq, utility
 shared-infra_hosts:
   aio1:
