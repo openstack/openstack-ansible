@@ -33,7 +33,6 @@ function define_tasks {
     RUN_TASKS+=("${OSA_REPO_PATH}/playbooks/setup-hosts.yml --limit ${HOSTS}")
     RUN_TASKS+=("${OSA_REPO_PATH}/playbooks/setup-openstack.yml --limit ${HOSTS}")
     RUN_TASKS+=("${OSA_REPO_PATH}/playbooks/unbound-install.yml --tags unbound-config")
-    RUN_TASKS+=("${OSA_REPO_PATH}/playbooks/os-nova-install.yml --tags nova-key --limit nova_compute")
 
     if [[ ! -z ${POST_OSA_TASKS} ]]; then
         if [ "${BASH_VERSINFO[0]}" -ge 4 ] && [ "${BASH_VERSINFO[1]}" -ge 4 ]; then

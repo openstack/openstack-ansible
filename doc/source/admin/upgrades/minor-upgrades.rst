@@ -86,8 +86,7 @@ To update only a single Compute host, run the following command:
 
 .. code-block:: console
 
-   # openstack-ansible os-nova-install.yml --limit <node-name> \
-       --skip-tags 'nova-key'
+   # openstack-ansible os-nova-install.yml --limit <node-name>
 
 .. note::
 
