@@ -38,6 +38,17 @@
   tags:
     - always
 
+- name: Pre-service deployment
+  hosts: keystone_all
+  gather_facts: false
+  tasks:
+    - name: "Pre-service deployment tasks from os_keystone role"
+      include_role:
+        name: os_keystone
+        tasks_from: main_pre.yml
+  tags:
+    - keystone
+
 - name: Installation and setup of Keystone
   hosts: keystone_all
   serial: "{{ keystone_serial | default(['1', '100%']) }}"
