@@ -409,6 +409,97 @@
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-focal
 
+# centos 9 stream
+- job:
+    name: openstack-ansible-deploy-aio_lxc-centos-9-stream
+    parent: openstack-ansible-deploy-aio
+    nodeset: centos-9-stream
+
+- job:
+    name: openstack-ansible-deploy-infra_lxc-centos-9-stream
+    parent: openstack-ansible-deploy-aio
+    nodeset: centos-9-stream
+
+- job:
+    name: openstack-ansible-deploy-hosts_distro_lxc-centos-9-stream
+    parent: openstack-ansible-deploy-aio
+    nodeset: centos-9-stream
+
+- job:
+    name: openstack-ansible-deploy-hosts_lxc-centos-9-stream
+    parent: openstack-ansible-deploy-aio
+    nodeset: centos-9-stream
+
+- job:
+    name: openstack-ansible-deploy-hosts_metal-centos-9-stream
+    parent: openstack-ansible-deploy-aio
+    nodeset: centos-9-stream
+
+- job:
+    name: openstack-ansible-deploy-aio_distro_lxc-centos-9-stream
+    parent: openstack-ansible-deploy-aio-distro
+    nodeset: centos-9-stream
+
+- job:
+    name: openstack-ansible-deploy-aio_ceph-centos-9-stream
+    parent: openstack-ansible-deploy-aio
+    nodeset: centos-9-stream
+
+- job:
+    name: openstack-ansible-deploy-aio_nfs-centos-9-stream
+    parent: openstack-ansible-deploy-aio
+    nodeset: centos-9-stream
+
+- job:
+    name: openstack-ansible-deploy-aio_distro_ceph-centos-9-stream
+    parent: openstack-ansible-deploy-aio-distro
+    nodeset: centos-9-stream
+
+- job:
+    name: openstack-ansible-upgrade-aio_lxc-centos-9-stream
+    parent: openstack-ansible-deploy-aio
+    nodeset: centos-9-stream
+    timeout: 10800
+
+- job:
+    name: openstack-ansible-upgrade-infra_lxc-centos-9-stream
+    parent: openstack-ansible-deploy-aio
+    nodeset: centos-9-stream
+    timeout: 10800
+
+- job:
+    name: openstack-ansible-deploy-aio_metal-centos-9-stream
+    parent: openstack-ansible-deploy-aio
+    nodeset: centos-9-stream
+
+- job:
+    name: openstack-ansible-deploy-aio_telemetry_metal-centos-9-stream
+    parent: openstack-ansible-deploy-aio
+    nodeset: centos-9-stream
+
+- job:
+    name: openstack-ansible-deploy-aio_distro_metal-centos-9-stream
+    parent: openstack-ansible-deploy-aio-distro
+    nodeset: centos-9-stream
+    voting: false
+
+- job:
+    name: openstack-ansible-deploy-aio_nspawn-centos-9-stream
+    parent: openstack-ansible-deploy-aio
+    nodeset: centos-9-stream
+
+- job:
+    name: openstack-ansible-upgrade-aio_ceph-centos-9-stream
+    parent: openstack-ansible-deploy-aio
+    nodeset: centos-9-stream
+    timeout: 10800
+
+- job:
+    name: openstack-ansible-upgrade-aio_metal-centos-9-stream
+    parent: openstack-ansible-deploy-aio
+    nodeset: centos-9-stream
+    timeout: 10800
+
 # centos 8 stream
 - job:
     name: openstack-ansible-deploy-aio_lxc-centos-8-stream

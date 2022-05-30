@@ -77,8 +77,8 @@
       vars:
         nodepool_overrides:
           uca_apt_repo_url: "{{ nodepool_vars.NODEPOOL_UCA_MIRROR }}"
-          openstack_hosts_centos_mirror_url: "{{ nodepool_vars.NODEPOOL_CENTOS_MIRROR }}"
-          centos_epel_mirror: "{{ nodepool_vars.NODEPOOL_EPEL_MIRROR }}"
+          openstack_hosts_centos_mirror_url: "{{ (ansible_facts['distribution_major_version'] < '9') | ternary(nodepool_vars.NODEPOOL_CENTOS_MIRROR, 'http://mirror.centos.org/centos') }}"
+          centos_epel_mirror: "{{ (ansible_facts['distribution_major_version'] < '9') | ternary(nodepool_vars.NODEPOOL_EPEL_MIRROR, 'http://download.fedoraproject.org/pub/epel') }}"
           galera_repo_host: "{{ nodepool_vars.NODEPOOL_MIRROR_HOST }}:8080"
           nova_virt_type: 'qemu'
           # NOTE(jrosser)

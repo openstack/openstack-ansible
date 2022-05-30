@@ -103,6 +103,7 @@ function determine_distro {
     source /etc/os-release 2>/dev/null
     export DISTRO_ID="${ID}"
     export DISTRO_NAME="${NAME}"
+    export DISTRO_VERSION_ID=${VERSION_ID}
 }
 
 function ssh_key_create {
