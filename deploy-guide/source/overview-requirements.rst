@@ -22,6 +22,8 @@ following minimum requirements:
 
   * Centos 8 Stream
 
+  * Centos 9 Stream
+
   * Rocky Linux 8
 
   * Linux kernel version ``3.10.0`` or later.
@@ -32,7 +34,7 @@ following minimum requirements:
 * Network Time Protocol (NTP) client for time synchronization (such as
   ``ntpd`` or ``chronyd``)
 
-* Python 3.6.*x* or 3.7.*x*
+* Python 3.6.*x* or 3.8.*x*
 
 * en_US.UTF-8 as the locale
 
