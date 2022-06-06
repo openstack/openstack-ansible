@@ -1,0 +1,12 @@
+---
+features:
+  - |
+    A new variable ``centos_mirror_url`` is introduced to the openstack_hosts
+    role to allow a single deployment wide variable to control the location
+    of the centos package mirror.
+upgrade:
+  - |
+    Existing use of the variable ``openstack_hosts_centos_mirror_url`` will
+    continue to work as in previous releases, but the new variable
+    ``centos_mirror_url`` can be used to define the mirror location for the
+    whole deployment.

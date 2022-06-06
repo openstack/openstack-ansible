@@ -1,0 +1,7 @@
+---
+features:
+  - Introduced new variable ``cinder_volume_usage_audit_send_actions_enabled``
+    to allow the deployer to disable the send actions option in
+    cinder-volume-usage-audit service unit. To have lowest possible 
+    footprint, the default value would be true to not change the behaviour 
+    of the cinder-volume-usage-audit in existing deployments.

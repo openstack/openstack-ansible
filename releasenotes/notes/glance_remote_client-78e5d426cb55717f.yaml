@@ -1,0 +1,13 @@
+---
+features:
+deprecations:
+  - |
+    Variable ``glance_nfs_local_directory`` has been renamed to
+    ``glance_images_local_directory`` to better reflect purpose of
+    the variable. ``glance_nfs_local_directory`` remains for backwards
+    compatability but will be removed in Zed release.
+  - |
+    Variable ``glance_nfs_client`` has been replaced with
+    ``glance_remote_client``. New variable has new keys for defining mounts
+    to cover wider range of supported filesystems.
+    Compatability for ``glance_nfs_client`` has been kept until Zed release.

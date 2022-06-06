@@ -1,0 +1,7 @@
+---
+upgrade:
+  - |
+    Keystone now uses common uwsgi role for uWSGI deployment. Along with that
+    variable ``keystone_services`` has been extended with required arguments
+    for uWSGI. If you override this variable locally make sure to update it's
+    structure accordingly.

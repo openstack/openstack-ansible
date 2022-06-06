@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    Added variable ``rabbitmq_manage_hosts_entries`` that controls if
+    rabbitmq_server role will attempt to adjust /etc/hosts file
+fixes:
+  - |
+    Do not duplicate records in /etc/hosts file by rabbitmq role when hosts
+    file is already managed by OSA.

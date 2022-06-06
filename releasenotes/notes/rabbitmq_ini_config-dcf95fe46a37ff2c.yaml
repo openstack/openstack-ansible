@@ -1,0 +1,15 @@
+---
+features:
+  - |
+    New variables that provide better control over RabbitMQ management
+    interface have been implemented:
+
+    * rabbitmq_management_bind_tcp_port
+    * rabbitmq_management_bind_tls_port
+    * rabbitmq_management_ssl
+
+upgrade:
+  - |
+    RabbitMQ was migrated to the new-style config, which resides in
+    ``/etc/rabbitmq/rabbitmq.conf``. Old config ``rabbitmq.config`` will be
+    removed during upgrade.

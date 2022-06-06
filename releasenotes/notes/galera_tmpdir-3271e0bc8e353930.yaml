@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    New variables ``galera_tmp_dir`` and ``galera_ignore_db_dirs`` were
+    implemented to control path to tmp dir and what directories should be
+    ignored when listing databases.
+upgrade:
+  - |
+    If you have database named as ``#tmp`` you should change ``galera_tmp_dir``
+    path and adjust ``galera_ignore_db_dirs`` or rename database.

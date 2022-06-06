@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    The HAProxy role now supports TLS v1.3 by default, alongside TLS v1.2.
+deprecations:
+  - |
+    The variable 'haproxy_ssl_cipher_suite' is deprecated in favour of
+    'haproxy_ssl_cipher_suite_tls12' which will continue to manage
+    configuration of ciphers for TLS v1.2 and earlier.

@@ -1,0 +1,18 @@
+---
+features:
+  - |
+    Implemented possibility to natively define ``gnocchi_incoming_driver``
+    separately from ``gnocchi_storage_driver``. Default behaviour is that
+    ``[incoming]`` is left unconfigured which means ``[storage]`` is used
+    when gnocchi_incoming_driver and gnocchi_storage_driver are equal.
+    Role will install incoming driver dependencies if required.
+
+    To implement that following variables introduced:
+
+    * gnocchi_storage_file_basepath
+    * gnocchi_storage_swift_container_prefix
+    * gnocchi_incoming_driver
+    * gnocchi_incoming_file_basepath
+    * gnocchi_incoming_swift_container_prefix
+    * gnocchi_ceph_incoming_pool
+    * gnocchi_ceph_incoming_username

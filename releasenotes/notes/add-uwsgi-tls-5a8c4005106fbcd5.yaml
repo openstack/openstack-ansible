@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Added variable `uwsgi_tls` which when added to a `uwsgi_services` item
+    enables TLS for that service. `uwsgi_tls` is a dict and should contain 2
+    keys `crt` and `key`, which define the path to the certificate and its
+    corresponding key respectively. The certificate file should contain any
+    intermediate certificates required by a client to verify trust.
