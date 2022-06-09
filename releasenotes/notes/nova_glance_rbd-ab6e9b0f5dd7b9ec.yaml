@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    New variables ``nova_glance_rbd_inuse`` and ``nova_glance_images_rbd_pool`` have
+    been implemented that allows deployer to easily configure nova to retrieve glance
+    images from RBD directly, if nova uses local storage for ephemeral drives.

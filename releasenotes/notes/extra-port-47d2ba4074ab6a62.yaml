@@ -1,0 +1,9 @@
+---
+upgrade:
+  - |
+    Galera will now additionally listen on port 3307 by default, with this port
+    being used by the monitoring user to check cluster status. Ensure that any
+    firewall rules permit access to this port before upgrading. If an
+    'extra_port' was already configured, ensure that any conflicting
+    configuration is removed and set your preferred values via
+    'galera_monitoring_port' and 'galera_monitoring_max_connections'.

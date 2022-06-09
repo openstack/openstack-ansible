@@ -1,0 +1,9 @@
+---
+
+features:
+  - |
+    Functionality of ``venv_rebuild`` has been adjusted to the correct scope.
+    Now setting this variable to true will not trigger wheels rebuild -
+    it will just remove and re-create your virtualenv.
+    If you want to rebuild wheels, a new variable ``venv_wheels_rebuild`` has
+    been implemented.

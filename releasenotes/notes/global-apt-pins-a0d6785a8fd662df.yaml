@@ -1,0 +1,20 @@
+---
+features:
+  - |
+    A new variable `openstack_hosts_apt_pinned_packages` is added which allows
+    deployment wide apt pins to be defined in user_variables. The variable defaults
+    to pinning the UCA repository to a priority lower than the Ubuntu repositories for
+    any binary packages generated from the ceph source package. The intention is to
+    ensure that Ceph packages are always installed from the Ubuntu repositories, or
+    alternatively the official ceph repositories if the ceph_client role is run later
+    against a host. The ceph packages for a particular openstack release may not be the
+    same version as those expected by the rest of openstack-ansible so this change ensures
+    consistency in the deployed ceph version.
+upgrade:
+  - |
+    The new variable `openstack_hosts_apt_pinned_packages` is added to the openstack_hosts
+    ansible role and sets the value of `apt_pinned_packages` for the apt_package_pinning
+    role run as a dependancy of the openstack_hosts role. Existing use of the
+    `apt_pinned_packages` variable by deployers in user_variables should be reviewed
+    to ensure that those  pins are applied by the intended ansible roles, and swapped
+    to this new variable if necessary.

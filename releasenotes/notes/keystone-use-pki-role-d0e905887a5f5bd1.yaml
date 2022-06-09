@@ -1,0 +1,13 @@
+---
+upgrade:
+  - |
+    The keystone installation now uses ansible-role-pki to create and install
+    a server certificate for Apache when keystone_ssl is true. The same role
+    is also used to create a CA certificate and key for SAML federation when
+    keystone_idp is populated by the deployer. For an existing keystone SAML
+    setup the certificate and key will be re-created which may be undesirable,
+    unless the existing ones are first copied to the relevant directories in
+    ``/etc/openstack_deploy/pki/roots`` on the deploy host. The variables
+    ``keystone_ssl_self_signed_regen`` and ``keystone_ssl_self_signed_subject``
+    are removed and are replaced with equivalent functionality via the new
+    ``keystone_pki_*`` variables.

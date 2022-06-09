@@ -1,0 +1,5 @@
+---
+features:
+  - Implemented variables ``tempest_public_net_create``, ``tempest_private_net_create``, ``tempest_router_create``, ``tempest_images_create``, ``tempest_flavors_create``, ``tempest_projects_create`` which allow to skip creating specific resources.
+upgrade:
+  - Changed default value for ``tempest_projects`` variable. Now this list contains only one element 'tempest'. Previously it was 'demo' and 'alt_demo' which was quite confusing. 

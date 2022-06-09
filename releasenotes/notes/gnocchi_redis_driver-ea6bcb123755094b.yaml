@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    Variables ``gnocchi_storage_redis_url`` and ``gnocchi_incoming_redis_url``
+    were added to manage redis connection if it's picked as an storage/incoming
+    driver.
+    Default value is redis://localhost:6379/
+    Please mention, that OpenStack-Ansible does not provide isntallation of
+    Redis as of today.

@@ -1,0 +1,8 @@
+---
+upgrade:
+  - |
+    The use of the nginx package repository on RedHat derived operating
+    systems is no longer required as there is a new enough version of the
+    nginx package in the standard distro repos now. The variables
+    ``repo_centos_nginx_mirror`` and ``repo_centos_nginx_key`` are removed from
+    the repo_server role and no longer have any effect.
