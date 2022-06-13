@@ -355,30 +355,27 @@ image_hosts:
     ip: 172.29.236.11
     container_vars:
       limit_container_types: glance
-      glance_nfs_client:
-        - server: "172.29.244.15"
-          remote_path: "/images"
-          local_path: "/var/lib/glance/images"
+      glance_remote_client:
+        - what: "172.29.244.15:/images"
+          where: "/var/lib/glance/images"
           type: "nfs"
           options: "_netdev,auto"
   infra2:
     ip: 172.29.236.12
     container_vars:
       limit_container_types: glance
-      glance_nfs_client:
-        - server: "172.29.244.15"
-          remote_path: "/images"
-          local_path: "/var/lib/glance/images"
+      glance_remote_client:
+        - what: "172.29.244.15:/images"
+          where: "/var/lib/glance/images"
           type: "nfs"
           options: "_netdev,auto"
   infra3:
     ip: 172.29.236.13
     container_vars:
       limit_container_types: glance
-      glance_nfs_client:
-        - server: "172.29.244.15"
-          remote_path: "/images"
-          local_path: "/var/lib/glance/images"
+      glance_remote_client:
+        - what: "172.29.244.15:/images"
+          where: "/var/lib/glance/images"
           type: "nfs"
           options: "_netdev,auto"
 
