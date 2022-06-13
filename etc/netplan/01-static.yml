@@ -48,6 +48,7 @@ network:
             interfaces:
             - bond0.20
             mtu: 9000
+            openvswitch: {}
         br-vxlan:
             addresses:
             - 172.29.240.10/22
