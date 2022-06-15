@@ -48,6 +48,7 @@ COMMON_ETC_LOG_NAMES="apt \
     gitconfig \
     haproxy \
     httpd \
+    ironic-inspector \
     memcached \
     mongodb \
     my.cnf \
