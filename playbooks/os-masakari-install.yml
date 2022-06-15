@@ -16,6 +16,8 @@
 - name: Gather masakari facts
   hosts: masakari_all
   gather_facts: "{{ osa_gather_facts | default(True) }}"
+  vars:
+    pacemaker_corosync_ring_interface: "{{ masakari_monitor_corosync_multicast_interface }}"
   tasks:
     - name: Gather additional facts
       include_tasks: "common-tasks/gather-hardware-facts.yml"
