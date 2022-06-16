@@ -34,6 +34,17 @@
     - ansible_facts['os_family'] == 'RedHat'
     - firewalld_check.rc == 0
 
+- name: Disable NetworkManager
+  become: True
+  service:
+    name: NetworkManager
+    state: stopped
+    enabled: no
+    masked: yes
+  when:
+    - ansible_facts['os_family'] == 'RedHat'
+    - ansible_facts['distribution_major_version'] == '9'
+
 - name: Run the systemd-networkd role
   include_role:
     name: systemd_networkd
