@@ -82,8 +82,13 @@ def demux_one_journal(j):
     j_dir = j_dir + '/' + j['name']
     d_dir = d_dir + '/deprecations/' + j['name']
 
+    # Create regular logs directory
     if not os.path.isdir(j_dir):
         os.makedirs(j_dir)
+
+    # Create deperecations directory
+    if not os.path.isdir(d_dir):
+        os.makedirs(d_dir)
 
     output_files = {}
 
@@ -111,10 +116,21 @@ def demux_one_journal(j):
             continue
 
         d_filename = d_dir + s_name
-        if not os.path.isdir(d_dir):
-            os.makedirs(d_dir)
-            with open(d_filename, 'a') as d:
-                d.write(unit + ' ' + message + "\n")
+        if d_filename not in output_files:
+            output_files[d_filename] = open(d_filename, 'w')
+        output_files[d_filename].write(unit + ' ' + message + "\n")
+
+    for fd in output_files.values():
+        fd.close()
+
+    # We created directories regardless if they needed or not. We should drop empty ones.
+    empty_dirs = set([j_dir, d_dir]) - set([os.path.dirname(fn) for fn in output_files.keys()])
+
+    for e_dir in empty_dirs:
+        try:
+            os.rmdir(e_dir)
+        except OSError:
+            continue
 
     print(''.join(['    Written ' + k + '\n' for k in output_files.keys()]))
 
@@ -144,7 +160,7 @@ if len(sys.argv) > 2:
 else:
   common_log_names = []
 
-service_names = common_log_names + get_ansible_role_names()
+service_names = set(common_log_names + get_ansible_role_names())
 print("Service names to search for " + str(service_names))
 
 if os.getenv('WORKING_DIR') is not None:
