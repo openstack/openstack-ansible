@@ -180,6 +180,10 @@ trove_wsgi_threads: 1
 trove_wsgi_processes_max: 2
 trove_wsgi_processes: 1
 
+## Magnum
+magnum_wsgi_processes: 1
+magnum_conductor_workers: 1
+
 ## Octavia
 {% if 'metal' in bootstrap_host_scenarios %}
 # TODO(mnaser): The Octavia role relies on gathering IPs of hosts in the
