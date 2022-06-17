@@ -49,54 +49,48 @@ keystone_httpd_mpm_max_spare_threads: 2
 keystone_httpd_mpm_thread_limit: 15
 keystone_httpd_mpm_thread_child: 5
 keystone_wsgi_threads: 1
-keystone_wsgi_processes_max: 2
+keystone_wsgi_processes: 1
 
 ## Barbican
-barbican_wsgi_processes: 2
+barbican_wsgi_processes: 1
 barbican_wsgi_threads: 1
 
 ## Cinder
-cinder_wsgi_processes_max: 2
+cinder_wsgi_processes: 1
 cinder_wsgi_threads: 1
 cinder_wsgi_buffer_size: 16384
-cinder_osapi_volume_workers_max: 2
+cinder_osapi_volume_workers_max: 1
 
 ## cloudkitty
-cloudkitty_wsgi_processes_max: 2
+cloudkitty_wsgi_processes: 1
 cloudkitty_wsgi_threads: 1
 
 ## Glance
-glance_api_threads_max: 2
 glance_api_threads: 1
 glance_api_workers: 1
 glance_wsgi_threads: 1
-glance_wsgi_processes_max: 2
-glance_wsgi_processes: 2
+glance_wsgi_processes: 1
 
 ## Placement
 placement_wsgi_threads: 1
-placement_wsgi_processes_max: 2
-placement_wsgi_processes: 2
+placement_wsgi_processes: 1
 placement_wsgi_buffer_size: 16384
 
 ## Manila
-manila_wsgi_processes_max: 2
-manila_wsgi_processes: 2
+manila_wsgi_processes: 1
 manila_wsgi_threads: 1
 manila_osapi_share_workers: 2
 manila_wsgi_buffer_size: 65535
 
 ## mistral
-mistral_wsgi_processes_max: 2
+mistral_wsgi_processes: 1
 mistral_wsgi_threads: 1
 
 ## Nova
 nova_reserved_host_memory_mb: 256
 nova_wsgi_threads: 1
-nova_wsgi_processes_max: 2
-nova_wsgi_processes: 2
+nova_wsgi_processes: 1
 nova_wsgi_buffer_size: 16384
-nova_api_threads_max: 2
 nova_api_threads: 1
 nova_osapi_compute_workers: 1
 nova_conductor_workers: 1
@@ -107,45 +101,37 @@ nova_scheduler_workers: 1
 neutron_rpc_workers: 1
 neutron_metadata_workers: 1
 neutron_api_workers: 1
-neutron_api_threads_max: 2
 neutron_api_threads: 2
 neutron_num_sync_threads: 1
-neutron_wsgi_processes: 2
+neutron_wsgi_processes: 1
 
 ## Octavia
 octavia_wsgi_threads: 1
-octavia_wsgi_processes_max: 2
-octavia_wsgi_processes: 2
+octavia_wsgi_processes: 1
 octavia_wsgi_buffer_size: 16384
 octavia_management_net_subnet_cidr: 172.29.232.0/22
 octavia_management_net_subnet_allocation_pools: "172.29.232.50-172.29.235.254"
 
 ## Heat
 heat_api_workers: 1
-heat_api_threads_max: 2
 heat_api_threads: 1
 heat_wsgi_threads: 1
-heat_wsgi_processes_max: 2
 heat_wsgi_processes: 1
 heat_wsgi_buffer_size: 16384
 
 ## Horizon
 horizon_wsgi_processes: 1
 horizon_wsgi_threads: 1
-horizon_wsgi_threads_max: 2
 
 ## Ceilometer
-ceilometer_notification_workers_max: 2
 ceilometer_notification_workers: 1
 
 ## AODH
 aodh_wsgi_threads: 1
-aodh_wsgi_processes_max: 2
 aodh_wsgi_processes: 1
 
 ## Gnocchi
 gnocchi_wsgi_threads: 1
-gnocchi_wsgi_processes_max: 2
 gnocchi_wsgi_processes: 1
 
 ## Swift
@@ -155,29 +141,23 @@ swift_object_replicator_workers: 1
 swift_account_server_workers: 1
 swift_container_server_workers: 1
 swift_object_server_workers: 1
-swift_proxy_server_workers_max: 2
 swift_proxy_server_workers_not_capped: 1
 swift_proxy_server_workers_capped: 1
 swift_proxy_server_workers: 1
 
 ## Ironic
 ironic_wsgi_threads: 1
-ironic_wsgi_processes_max: 2
 ironic_wsgi_processes: 1
 
 ## Ironic  Inspector
 ironic_inspector_wsgi_threads: 1
-ironic_inspector_wsgi_processes_max: 2
 ironic_inspector_wsgi_processes: 1
 
 ## Trove
-trove_api_workers_max: 2
 trove_service_net_setup: true
 trove_api_workers: 1
-trove_conductor_workers_max: 2
 trove_conductor_workers: 1
 trove_wsgi_threads: 1
-trove_wsgi_processes_max: 2
 trove_wsgi_processes: 1
 
 ## Magnum
@@ -195,19 +175,15 @@ octavia_hm_hosts: 172.29.232.100 # br-lbaas IP
 {% endif %}
 
 ## Sahara
-sahara_api_workers_max: 2
 sahara_api_workers: 1
 sahara_wsgi_threads: 1
-sahara_wsgi_processes_max: 2
-sahara_wsgi_processes: 2
+sahara_wsgi_processes: 1
 sahara_wsgi_buffer_size: 16384
 
 ## Zun
 zun_api_threads: 1
-zun_api_threads_max: 2
 zun_wsgi_threads: 1
-zun_wsgi_processes_max: 2
-zun_wsgi_processes: 2
+zun_wsgi_processes: 1
 
 ## Senlin
 senlin_api_threads: 1
