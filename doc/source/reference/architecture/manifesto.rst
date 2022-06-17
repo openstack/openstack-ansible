@@ -34,7 +34,7 @@ instead of unique protocols that require remote daemons or agents.
 
 Ansible uses playbooks written in the YAML language for orchestration.
 For more information, see `Ansible - Intro to
-Playbooks <https://docs.ansible.com/playbooks_intro.html>`_.
+Playbooks <https://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html>`_.
 
 Ansible is a simple yet powerful orchestration tool that is ideally
 equipped for deploying OpenStack-powered clouds. The declarative nature of
