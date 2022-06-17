@@ -14,7 +14,7 @@
 # limitations under the License.
 
 - name: Set haproxy service state
-  haproxy:
+  community.general.haproxy:
     socket: /var/run/haproxy.stat
     backend: "{{ haproxy_backend | default(omit) }}"
     host: "{{ inventory_hostname }}"
