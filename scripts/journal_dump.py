@@ -108,9 +108,11 @@ def demux_one_journal(j):
         s_name = '/' + unit + '.journal-' + timestamp + '.log'
         j_filename = j_dir + s_name
         message = str(entry['MESSAGE'])
+        message_time = str(entry['__REALTIME_TIMESTAMP'])
+        result_message = f"{message_time} {unit} {message}\n"
         if j_filename not in output_files:
             output_files[j_filename] = open(j_filename, 'w')
-        output_files[j_filename].write(unit + ' ' + message + '\n')
+        output_files[j_filename].write(result_message)
 
         if 'eprecat' not in message:
             continue
@@ -118,7 +120,7 @@ def demux_one_journal(j):
         d_filename = d_dir + s_name
         if d_filename not in output_files:
             output_files[d_filename] = open(d_filename, 'w')
-        output_files[d_filename].write(unit + ' ' + message + "\n")
+        output_files[d_filename].write(result_message)
 
     for fd in output_files.values():
         fd.close()
