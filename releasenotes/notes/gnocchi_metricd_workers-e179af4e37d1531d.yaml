@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Implemented variable ``gnocchi_metricd_workers`` that is designed to
+    controll amount of gnocchi-metricd workers spawned. By default it is
+    equal to number of CPU cores, but no more than 16 workers.
+

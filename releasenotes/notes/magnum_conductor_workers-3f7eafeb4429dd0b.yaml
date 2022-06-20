@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Implemented variable ``magnum_conductor_workers`` that is designed to
+    controll amount of magnum-conductor workers spawned. By default it is
+    equal to number of CPU cores, but no more then 16 workers.

@@ -13,7 +13,7 @@ Documentation for each of the following releases is available.
 Yoga: Under Development
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible Yoga is currently in development.
+OpenStack-Ansible Yoga is currently in Release Candidate.
 
 .. toctree::
    :maxdepth: 1

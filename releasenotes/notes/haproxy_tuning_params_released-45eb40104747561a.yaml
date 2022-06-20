@@ -1,0 +1,20 @@
+---
+upgrade:
+  - |
+    If you have defined ``haproxy_tuning_params`` in your deployment, make sure
+    that before upgrade all keys are valid haproxy options. For example,
+    instead of ``chksize: 16384`` you should set ``tune.chksize: 16384``.
+    Otherwise invalid config will be generated and haproxy will fail on
+    startup.
+    No upgrade scripts are provided for this change as well as no backwards
+    compatability.
+other:
+  - |
+    Restriction on parameters that can be passed to ``haproxy_tuning_params``
+    has been released. This means, that any tuning parameter can be passed in
+    key/value format.
+fixes:
+  - |
+    By default we increase ``tune.maxrewrite`` as otherwise while using CSP
+    headers, their size could exceed allowed buffer.
+    Also deployers can override this value if needed.

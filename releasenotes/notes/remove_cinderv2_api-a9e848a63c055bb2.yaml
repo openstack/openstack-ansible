@@ -1,0 +1,6 @@
+---
+upgrade:
+  - |
+    Cinder v2 API is now fully removed from Cinder service.
+    With that os_cinder role ensures v2 endpoint is not present anymore in
+    the catalog and remove endpoints if they're present.
