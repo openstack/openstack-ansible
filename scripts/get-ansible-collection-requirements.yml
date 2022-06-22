@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Clone the role ansible-role-requirements
+- name: Clone collections ansible-collection-requirements
   hosts: localhost
   connection: local
   user: root
@@ -47,7 +47,7 @@
       when:
         - user_collections.collections is defined
 
-    - name: Check the Zuul src dir for cloned roles
+    - name: Check the Zuul src dir for cloned collections
       stat:
         path: "{{ zuul_src_path }}/{{ item.name.split('/')[-3:] | join('/') }}"
         get_attributes: no
