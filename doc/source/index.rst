@@ -9,9 +9,8 @@ configuration of an OpenStack environment.
 
 Documentation for each of the following releases is available.
 
-
-Yoga: Under Development
-~~~~~~~~~~~~~~~~~~~~~~~
+Zed: Under Development
+~~~~~~~~~~~~~~~~~~~~~~
 
 OpenStack-Ansible Yoga is currently in Release Candidate.
 
@@ -25,6 +24,19 @@ OpenStack-Ansible Yoga is currently in Release Candidate.
    contributor/contributing
    contributor/index
    reference/index
+
+Yoga: Maintained
+~~~~~~~~~~~~~~~~
+
+OpenStack-Ansible Yoga series was first released with the 25.0.0 tag on
+27 June 2022.
+
+* `OpenStack-Ansible Yoga Documentation`_
+
+* `OpenStack-Ansible Yoga series release notes`_
+
+.. _OpenStack-Ansible Yoga Documentation: https://docs.openstack.org/openstack-ansible/yoga/
+.. _OpenStack-Ansible Yoga series release notes: https://docs.openstack.org/releasenotes/openstack-ansible/yoga.html
 
 
 Xena: Maintained

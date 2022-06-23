@@ -49,7 +49,7 @@ export INSTALL_METHOD=${3:-"source"}
 # Set the source branch for upgrade tests
 # Be sure to change this whenever a new stable branch
 # is created. The checkout must always be N-1.
-export UPGRADE_SOURCE_BRANCH=${UPGRADE_SOURCE_BRANCH:-'stable/xena'}
+export UPGRADE_SOURCE_BRANCH=${UPGRADE_SOURCE_BRANCH:-'stable/yoga'}
 
 # enable the ARA callback plugin
 export SETUP_ARA=${SETUP_ARA:-true}

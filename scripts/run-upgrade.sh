@@ -31,10 +31,10 @@ export SCRIPTS_PATH="$(dirname "$(readlink -f "${0}")")"
 export MAIN_PATH="$(dirname "${SCRIPTS_PATH}")"
 
 # The expected source series name
-export SOURCE_SERIES="xena"
+export SOURCE_SERIES="yoga"
 
 # The expected target series name
-export TARGET_SERIES="yoga"
+export TARGET_SERIES="zed"
 
 # The expected OSA config dir
 export OSA_CONFIG_DIR="${OSA_CONFIG_DIR:-/etc/openstack_deploy}"
