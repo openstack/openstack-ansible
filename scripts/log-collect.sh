@@ -178,7 +178,7 @@ if [[ "$ARA_REPORT_TYPE" == "html" ]]; then
 fi
 
 # Store the ara sqlite database in the openstack-ci expected path
-store_artifacts "${TESTING_HOME}/.ara/ansible.sqlite" "${WORKING_DIR}/logs/ara-report/"
+store_artifacts "${TESTING_HOME}/.ara/server/ansible.sqlite" "${WORKING_DIR}/logs/ara-report/"
 
 # Store netstat report
 store_artifacts /tmp/listening_port_report.txt "${WORKING_DIR}/logs/host"

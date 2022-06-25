@@ -151,6 +151,9 @@
       - ^setup\.(cfg|py)$
       - ^tox.ini$
       - ^Vagrantfile
+    vars:
+      #disable generation of ARA html report to reduce log upload time
+      ara_report_type: database
 
 # Ensuring overrides work
 - job:
