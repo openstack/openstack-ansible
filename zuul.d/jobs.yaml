@@ -39,6 +39,8 @@
     vars:
       #disable powertools/highavailabity for centos, do not install debian/ubuntu backports repo config
       configure_mirrors_extra_repos: False
+      #disable generation of ARA html report to reduce log upload time
+      ara_report_type: database
 
 - job:
     name: openstack-ansible-deploy-aio-distro
