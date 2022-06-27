@@ -26,6 +26,7 @@
     post-run:
       - zuul.d/playbooks/post.yml
     timeout: 10800
+    post-timeout: 10800
     irrelevant-files:
       - ^\.git.*
       - ^.*\.(example|md|rst)$
