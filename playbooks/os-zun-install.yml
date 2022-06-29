@@ -23,6 +23,19 @@
   tags:
     - always
 
+- name: Install etcd cluster
+  hosts: zun_api
+  gather_facts: false
+  serial: "{{ etcd_serial | default('100%') }}"
+  roles:
+    - role: "etcd"
+      vars:
+        etcd_cluster_group: "zun_api"
+        etcd_install_type: server
+  tags:
+    - zun-install
+    - etcd-server
+
 - name: Install the zun components
   hosts: zun_all
   gather_facts: false
