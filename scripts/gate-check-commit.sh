@@ -63,7 +63,7 @@ export SETUP_ARA=${SETUP_ARA:-true}
 if [[ "${ACTION}" == "upgrade" ]]; then
     # Store the target SHA/branch
     export UPGRADE_TARGET_BRANCH=$(git rev-parse HEAD)
-    export OPENSTACK_SETUP_EXTRA_ARGS="-e tempest_install=no -e tempest_run=no"
+    export OPENSTACK_SETUP_EXTRA_ARGS="-e tempest_install=no -e tempest_run=no -e rally_install=no"
     export ANSIBLE_GATHER_SUBSET="network,hardware,virtual"
 
     # Now checkout the source SHA/branch
