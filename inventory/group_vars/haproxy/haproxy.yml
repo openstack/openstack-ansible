@@ -31,6 +31,7 @@ haproxy_galera_allowlist_networks: "{{ haproxy_allowlist_networks }}"
 haproxy_nova_metadata_allowlist_networks: "{{ haproxy_allowlist_networks }}"
 haproxy_rabbitmq_management_allowlist_networks: "{{ haproxy_allowlist_networks }}"
 haproxy_opendaylight_allowlist_networks: "{{ haproxy_allowlist_networks }}"
+haproxy_stick_table_allowlist_networks: "{{ haproxy_allowlist_networks }}"
 
 haproxy_security_txt_acl:
   keystone-security-txt-acl:
@@ -49,6 +50,27 @@ haproxy_security_headers:
   - 'http-response set-header X-Content-Type-Options "nosniff"'
   - 'http-response set-header Referrer-Policy "same-origin"'
   - 'http-response set-header Permissions-Policy "accelerometer=(), ambient-light-sensor=(), autoplay=(), battery=(), camera=(), cross-origin-isolated=(), display-capture=(), document-domain=(), encrypted-media=(), execution-while-not-rendered=(), execution-while-out-of-viewport=(), fullscreen=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), navigation-override=(self), payment=(), picture-in-picture=(), publickey-credentials-get=(), screen-wake-lock=(), sync-xhr=(), usb=(), web-share=(), xr-spatial-tracking=(), clipboard-read=(self), clipboard-write=(self), gamepad=(), speaker-selection=()"'
+
+# haproxy default stick table
+# returns 429 when more than 20 4xx responses per 10 second window
+# from external IP addresses. Override as necessary.
+openstack_haproxy_stick_table:
+  - "stick-table  type ipv6  size 256k  expire 10s  store http_err_rate(10s)"
+  - "http-request track-sc0 src"
+  - "http-request deny deny_status 429 if { sc_http_err_rate(0) gt 20 } !{ src {{haproxy_stick_table_allowlist_networks | join(' } !{ src ') }} }"
+
+# apply the stick table as default for all backends
+haproxy_stick_table: "{{ openstack_haproxy_stick_table }}"
+
+# special haproxy stick table for horizon
+# returns 429 when more than 20 calls to /auth per 10 second window
+# returns 429 when more than 20 4xx responses per 10 second window
+# from external IP addresses. Override as necessary.
+openstack_haproxy_horizon_stick_table:
+  - "stick-table  type ipv6  size 256k  expire 10s  store http_req_rate(10s),http_err_rate(10s)"
+  - "http-request track-sc0 src"
+  - "http-request deny deny_status 429 if { sc_http_req_rate(0) gt 20 } { path_beg /auth } !{ src {{haproxy_stick_table_allowlist_networks | join(' } !{ src ') }} }"
+  - "http-request deny deny_status 429 if { sc_http_err_rate(0) gt 20 } !{ src {{haproxy_stick_table_allowlist_networks | join(' } !{ src ') }} }"
 
 haproxy_adjutant_api_service:
   haproxy_service_name: adjutant_api
@@ -211,6 +233,7 @@ haproxy_horizon_service:
   haproxy_frontend_acls: "{{ (haproxy_ssl_letsencrypt_enable | bool and haproxy_ssl | bool) | ternary(haproxy_ssl_letsencrypt_acl, {}) }}"
   haproxy_acls: "{{ keystone_security_txt_content is defined | ternary(haproxy_security_txt_acl, {}) }}"
   haproxy_frontend_raw: "{{ (haproxy_ssl | bool and haproxy_security_headers is defined) | ternary( haproxy_security_headers + [ haproxy_horizon_csp | default(haproxy_security_headers_csp)], []) }}"
+  haproxy_stick_table: "{{ openstack_haproxy_horizon_stick_table }}"
 
 haproxy_ironic_api_service:
   haproxy_service_name: ironic_api
