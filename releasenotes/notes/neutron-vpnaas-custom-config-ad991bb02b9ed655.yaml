@@ -1,0 +1,33 @@
+---
+features:
+  - |
+    Neutron VPN as a Service (VPNaaS) with customized configuration files
+    can now be defined with the variable ``neutron_vpnaas_custom_config``.
+    deployers should define ``neutron_vpnaas_custom_config`` in 'user_variables.yml'.
+    Example:
+
+    .. code-block:: yaml
+
+      neutron_vpnaas_custom_config:
+        - src: "/etc/openstack_deploy/strongswan/strongswan.conf.template"
+          dest: "{{ neutron_conf_dir }}/strongswan.conf.template"
+        - src: "/etc/openstack_deploy/strongswan/strongswan.d"
+          dest: "/etc/strongswan.d"
+        - src: "/etc/openstack_deploy/{{ neutron_vpnaas_distro_packages }}/ipsec.conf.template"
+          dest: "{{ neutron_conf_dir }}/ipsec.conf.template"
+        - src: "/etc/openstack_deploy/{{ neutron_vpnaas_distro_packages }}/ipsec.secret.template"
+          dest: "{{ neutron_conf_dir }}/ipsec.secret.template"
+
+    We should be also define ``neutron_l3_agent_ini_overrides`` in 'user_variables.yml'
+    to tell ``l3_agent`` use the new config file.
+    Example:
+
+    .. code-block:: yaml
+
+      neutron_l3_agent_ini_overrides:
+        ipsec:
+          enable_detailed_logging: True
+        strongswan:
+          strongswan_config_template : "{{ neutron_conf_dir }}/strongswan.conf.template"
+        openswan:
+          ipsec_config_template:  "{{ neutron_conf_dir }}/ipsec.conf.template"
