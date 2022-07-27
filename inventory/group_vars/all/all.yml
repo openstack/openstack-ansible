@@ -137,3 +137,6 @@ repo_service_user_name: nginx
 repo_service_group_name: www-data
 venv_build_host_user_name: "{{ repo_service_user_name }}"
 venv_build_host_group_name: "{{ repo_service_group_name }}"
+
+# Set RabbitMQ management UI to use TLS
+rabbitmq_management_ssl: true
