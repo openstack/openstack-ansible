@@ -14,7 +14,7 @@
 # limitations under the License.
 
 - name: Gather zun facts
-  hosts: zun
+  hosts: zun_all
   gather_facts: "{{ osa_gather_facts | default(True) }}"
   tasks:
     - name: Gather additional facts
