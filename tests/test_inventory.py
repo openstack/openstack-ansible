@@ -46,7 +46,6 @@ USER_CONFIG_FILE = path.join(TARGET_DIR, 'openstack_user_config.yml')
 # They should be cleaned up between each test.
 CLEANUP = [
     'openstack_inventory.json',
-    'openstack_hostnames_ips.yml',
     'backup_openstack_inventory.tar'
 ]
 

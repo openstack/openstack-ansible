@@ -1081,19 +1081,6 @@ def _check_all_conf_groups_present(config, environment):
     return retval
 
 
-def _collect_hostnames(inventory):
-
-    # Generate a list of all hosts and their used IP addresses
-    hostnames_ips = {}
-    for _host, _vars in inventory['_meta']['hostvars'].items():
-        host_hash = hostnames_ips[_host] = {}
-        for _key, _value in _vars.items():
-            if _key.endswith('address') or _key == 'ansible_host':
-                host_hash[_key] = _value
-
-    return hostnames_ips
-
-
 def _prepare_debug_logger():
     log_fmt = "%(lineno)d - %(funcName)s: %(message)s"
     logging.basicConfig(format=log_fmt, filename='inventory.log')
@@ -1211,10 +1198,6 @@ def main(config=None, check=False, debug=False, environment=None, **kwargs):
     if check:
         if _check_all_conf_groups_present(user_defined_config, environment):
             return 'Configuration ok!'
-
-    # Save a list of all hosts and their given IP addresses
-    hostnames_ips = _collect_hostnames(inventory)
-    filesys.write_hostnames(config, hostnames_ips)
 
     if logger.isEnabledFor(logging.DEBUG):
         num_hosts = len(inventory['_meta']['hostvars'])

@@ -187,32 +187,6 @@ def _get_backup_name(basename):
     return '{}-{}.json'.format(basename, utctime)
 
 
-def write_hostnames(save_path, hostnames_ips):
-    """Write a list of all hosts and their given IP addresses
-
-    NOTE: the file is saved in json format to a file with the name
-    ``openstack_hostnames_ips.yml``
-
-    :param save_path: path to save the file to, will use default location if
-        None or an invalid path is provided
-    :param hostnames_ips: the list of all hosts and their IP addresses
-    """
-
-    file_path = dir_find(save_path)
-    hostnames_ip_file = os.path.join(file_path, 'openstack_hostnames_ips.yml')
-
-    with open(hostnames_ip_file, 'wb') as f:
-        f.write(
-            ('# This file is managed by openstack-ansible. No manual edits.\n'
-             + json.dumps(
-                 hostnames_ips,
-                 indent=4,
-                 separators=(',', ': '),
-                 sort_keys=True
-             )).encode('ascii')
-        )
-
-
 def _load_from_json(filename, preferred_path=None, raise_if_missing=True):
     """Return a dictionary found in json format in a given file
 
