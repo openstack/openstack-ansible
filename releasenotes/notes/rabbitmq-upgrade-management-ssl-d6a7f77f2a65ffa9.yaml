@@ -1,0 +1,7 @@
+---
+upgrade:
+  - |
+    The RabbitMQ management interface surfaced via HAProxy defaults to using
+    TLS from the Yoga release. Note that when using TLS the default port
+    switches from 15672 to 15671. TLS can be disabled if required by adjusting
+    'rabbitmq_management_ssl'.
