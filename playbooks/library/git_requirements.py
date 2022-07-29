@@ -214,7 +214,6 @@ def pull_role(info):
 
             if version_hash:
                 repo = git.Repo.clone_from(role["src"], role["dest"],
-                                           branch='master',
                                            no_single_branch=True,
                                            depth=depth,
                                            shallow_since=shallow_since,)
