@@ -1,0 +1,14 @@
+---
+upgrade:
+  - |
+    Erlang version is changed from ``24.1-1`` to ``24.1.3-1``. Depending on
+    when deployment was done, that could be different minor releases. This
+    means that your erlang version might be either minorly upgraded or
+    downgraded. This should not lead to incompatabilities with RabbitMQ
+    in any scenario.
+fixes:
+  - |
+    Fixed Erlang installation from Cloudsmith repository for CentOS 8 Stream
+    by adjusting version that will be installed.
+  - |
+    Erlang version is now synced between Ubuntu/Debian and CentOS 8 Stream.
