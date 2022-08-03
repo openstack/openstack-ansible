@@ -176,7 +176,6 @@ function main {
     pushd ${MAIN_PATH}/playbooks
         RUN_TASKS+=("${SCRIPTS_PATH}/upgrade-utilities/deploy-config-changes.yml")
         RUN_TASKS+=("${SCRIPTS_PATH}/upgrade-utilities/define-octavia-certificate-vars.yml")
-        RUN_TASKS+=("certificate-authority.yml")
         RUN_TASKS+=("certificate-ssh-authority.yml")
         # we don't want to trigger container restarts for galera and rabbit
         # but as there will be no hosts available for metal deployments,
