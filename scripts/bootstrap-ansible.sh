@@ -67,9 +67,17 @@ determine_distro
 # Install the python interpreters
 case ${DISTRO_ID} in
     rocky)
-        dnf -y install python38 python38-devel libselinux-python3
-        PYTHON_EXEC_PATH="$(which python3.8)"
-        OSA_ANSIBLE_PYTHON_INTERPRETER="/usr/bin/python3"
+        case ${DISTRO_VERSION_ID} in
+            8)
+                dnf -y install python38 python38-devel libselinux-python3
+                PYTHON_EXEC_PATH="$(which python3.8)"
+                OSA_ANSIBLE_PYTHON_INTERPRETER="/usr/bin/python3"
+                ;;
+            9)
+                dnf -y install python3 python3-devel libselinux-python3
+                PYTHON_EXEC_PATH="$(which python3)"
+                ;;
+        esac
         ;;
     centos|rhel)
         case ${DISTRO_VERSION_ID} in
