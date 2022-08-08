@@ -146,9 +146,8 @@ def _parse_belongs_to(key, belongs_to, inventory):
 
 
 def _build_container_hosts(container_affinity, container_hosts, type_and_name,
-                           inventory, host_type, container_type,
-                           container_host_type, physical_host_type, config,
-                           properties, assignment):
+                           inventory, host_type, container_host_type,
+                           physical_host_type, config, properties, assignment):
     """Add in all of the host associations into inventory.
 
     This will add in all of the hosts into the inventory based on the given
@@ -159,7 +158,6 @@ def _build_container_hosts(container_affinity, container_hosts, type_and_name,
     :param type_and_name: ``str`` Combined name of host and container name
     :param inventory: ``dict``  Living dictionary of inventory
     :param host_type: ``str``  Name of the host type
-    :param container_type: ``str``  Type of container
     :param container_host_type: ``str`` Type of host
     :param physical_host_type: ``str``  Name of physical host group
     :param config: ``dict``  User defined information
@@ -180,7 +178,6 @@ def _build_container_hosts(container_affinity, container_hosts, type_and_name,
 
         if existing_count < container_affinity:
             hostvars = inventory['_meta']['hostvars']
-            container_mapping = inventory[container_type]['children']
             address = None
 
             if is_metal is False:
@@ -213,10 +210,6 @@ def _build_container_hosts(container_affinity, container_hosts, type_and_name,
                 container_host_name = host_type
                 host_type_config = config[physical_host_type][host_type]
                 address = host_type_config.get('ip')
-
-            # Create a host types containers group and append it to inventory
-            host_type_containers = '{}-host_containers'.format(host_type)
-            du.append_if(array=container_mapping, item=host_type_containers)
 
             hostvars_options.update({
                 'ansible_host': address,
@@ -408,7 +401,6 @@ def _add_container_hosts(assignment, config, container_name, container_type,
             type_and_name,
             inventory,
             host_type,
-            container_type,
             container_host_type,
             physical_host_type,
             config,
@@ -722,6 +714,14 @@ def container_skel_load(container_skel, inventory, config):
     for key, value in container_skel.items():
         contains_in = value.get('contains', False)
         belongs_to_in = value.get('belongs_to', False)
+
+        if belongs_to_in:
+            _parse_belongs_to(
+                key,
+                belongs_to=value['belongs_to'],
+                inventory=inventory
+            )
+
         if contains_in or belongs_to_in:
             for assignment in value['contains']:
                 for container_type in value['belongs_to']:
