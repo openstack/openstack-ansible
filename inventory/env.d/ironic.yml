@@ -44,8 +44,6 @@ container_skel:
       - ironic_compute
       - nova_compute
       - nova_scheduler
-      - neutron_linuxbridge_agent
-      - neutron_openvswitch_agent
     properties:
       is_metal: false
   ironic_inspector_container:
