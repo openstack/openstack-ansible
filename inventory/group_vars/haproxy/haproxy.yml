@@ -435,9 +435,11 @@ haproxy_placement_service:
 haproxy_rabbitmq_service:
   haproxy_service_name: rabbitmq_mgmt
   haproxy_backend_nodes: "{{ groups['rabbitmq'] | default([]) }}"
-  haproxy_ssl: False
+  haproxy_ssl: "{{ rabbitmq_management_ssl | bool }}"
+  haproxy_backend_ssl: "{{ rabbitmq_management_ssl | bool }}"
+  haproxy_backend_ca: False
   haproxy_bind: "{{ [internal_lb_vip_address] }}"
-  haproxy_port: 15672
+  haproxy_port: "{{ (rabbitmq_management_ssl | bool) | ternary(15671, 15672) }}"
   haproxy_balance_type: http
   haproxy_backend_options:
     - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
