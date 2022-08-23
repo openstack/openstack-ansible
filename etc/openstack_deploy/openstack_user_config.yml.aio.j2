@@ -134,6 +134,7 @@ global_overrides:
         type: "flat"
         net_name: "bmaas"
         group_binds:
+          - ironic_api
           - ironic_inspector
 {% endif %}
 {% if 'ovn' in bootstrap_host_scenarios_expanded %}
