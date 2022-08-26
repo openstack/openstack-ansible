@@ -168,6 +168,8 @@ haproxy_galera_service:
   haproxy_timeout_server: 5000s
   haproxy_backend_options:
     - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+  haproxy_backend_server_options:
+    - "send-proxy-v2"
   haproxy_allowlist_networks: "{{ haproxy_galera_allowlist_networks }}"
   haproxy_service_enabled: "{{ groups['galera_all'] is defined and groups['galera_all'] | length > 0 }}"
 

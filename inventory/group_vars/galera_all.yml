@@ -38,6 +38,16 @@ galera_monitoring_allowed_source: >-
       | join(' ') ~ ' 127.0.0.1'
   }}
 
+# Accept PROXY protocol information from the load balancers
+# See https://mariadb.com/kb/en/proxy-protocol-support for details
+galera_server_proxy_protocol_networks: >-
+  {{
+    groups['haproxy']
+      | map('extract', hostvars, 'ansible_host')
+      | list
+      | join(',') ~ ', localhost, ::1'
+  }}
+
 # Galera sessions are long lived, so if we do endpoint maintenance we will
 # force kill the sessions to force a failover to the active endpoint.
 haproxy_shutdown_sessions: yes
