@@ -153,10 +153,11 @@
             cloud: default
             interface: internal
             verify: no
+          register: openstack_networks
 
         - name: Show networks
           debug:
-            var: openstack_networks
+            var: openstack_networks.networks
 
         - name: Ensure subnet exists
           openstack.cloud.subnet:
