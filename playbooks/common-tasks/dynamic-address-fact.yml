@@ -22,6 +22,9 @@
   when:
     - is_metal
     - (dynamic_address_gather_filter is defined) or (default_network_interface_name | length > 0)
+  tags:
+    - common-address
+    - always
 
 - name: Set IP to use for {{ network_address }}
   set_fact: "{{ network_address }}={{ hostvars[inventory_hostname] | json_query(query) }}"
