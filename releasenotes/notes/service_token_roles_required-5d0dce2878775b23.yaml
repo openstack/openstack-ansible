@@ -1,0 +1,8 @@
+---
+upgrade:
+  - |
+    Since Yoga release ``service`` role is being assigned to all service users.
+    Though, service_token_roles_required was set to ``False`` for upgrade
+    purposes. Now ``service_token_roles_required`` is set to ``True`` by
+    default. If you still want to preserve old behaviour, you can define
+    ``openstack_service_token_roles_required: False`` in your user_variables.
