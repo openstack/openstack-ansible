@@ -829,3 +829,99 @@
     name: openstack-ansible-deploy-hosts_lxc_overlayfs-debian-bullseye
     parent: openstack-ansible-deploy-aio
     nodeset: debian-bullseye
+
+# rocky linux 9
+- job:
+    name: openstack-ansible-deploy-aio_lxc-rockylinux-9
+    parent: openstack-ansible-deploy-aio
+    nodeset: rockylinux-9
+
+- job:
+    name: openstack-ansible-deploy-infra_lxc-rockylinux-9
+    parent: openstack-ansible-deploy-aio
+    nodeset: rockylinux-9
+
+- job:
+    name: openstack-ansible-deploy-hosts_distro_lxc-rockylinux-9
+    parent: openstack-ansible-deploy-aio
+    nodeset: rockylinux-9
+
+- job:
+    name: openstack-ansible-deploy-hosts_lxc-rockylinux-9
+    parent: openstack-ansible-deploy-aio
+    nodeset: rockylinux-9
+
+- job:
+    name: openstack-ansible-deploy-hosts_metal-rockylinux-9
+    parent: openstack-ansible-deploy-aio
+    nodeset: rockylinux-9
+
+- job:
+    name: openstack-ansible-deploy-aio_distro_lxc-rockylinux-9
+    parent: openstack-ansible-deploy-aio-distro
+    nodeset: rockylinux-9
+
+- job:
+    name: openstack-ansible-deploy-aio_ceph-rockylinux-9
+    parent: openstack-ansible-deploy-aio
+    nodeset: rockylinux-9
+
+- job:
+    name: openstack-ansible-deploy-aio_nfs-rockylinux-9
+    parent: openstack-ansible-deploy-aio
+    nodeset: rockylinux-9
+
+- job:
+    name: openstack-ansible-deploy-aio_distro_ceph-rockylinux-9
+    parent: openstack-ansible-deploy-aio-distro
+    nodeset: rockylinux-9
+
+- job:
+    name: openstack-ansible-upgrade-aio_lxc-rockylinux-9
+    parent: openstack-ansible-deploy-aio
+    nodeset: rockylinux-9
+    timeout: 10800
+
+- job:
+    name: openstack-ansible-upgrade-infra_lxc-rockylinux-9
+    parent: openstack-ansible-deploy-aio
+    nodeset: rockylinux-9
+    timeout: 10800
+
+- job:
+    name: openstack-ansible-deploy-aio_metal-rockylinux-9
+    parent: openstack-ansible-deploy-aio
+    nodeset: rockylinux-9
+
+- job:
+    name: openstack-ansible-deploy-aio_telemetry_metal-rockylinux-9
+    parent: openstack-ansible-deploy-aio
+    nodeset: rockylinux-9
+
+- job:
+    name: openstack-ansible-deploy-aio_distro_metal-rockylinux-9
+    parent: openstack-ansible-deploy-aio-distro
+    nodeset: rockylinux-9
+    voting: false
+
+- job:
+    name: openstack-ansible-deploy-aio_nspawn-rockylinux-9
+    parent: openstack-ansible-deploy-aio
+    nodeset: rockylinux-9
+
+- job:
+    name: openstack-ansible-upgrade-aio_ceph-rockylinux-9
+    parent: openstack-ansible-deploy-aio
+    nodeset: rockylinux-9
+    timeout: 10800
+
+- job:
+    name: openstack-ansible-upgrade-aio_metal-rockylinux-9
+    parent: openstack-ansible-deploy-aio
+    nodeset: rockylinux-9
+    timeout: 10800
+
+- job:
+    name: openstack-ansible-deploy-hosts_lxc_overlayfs-rockylinux-9
+    parent: openstack-ansible-deploy-aio
+    nodeset: rockylinux-9

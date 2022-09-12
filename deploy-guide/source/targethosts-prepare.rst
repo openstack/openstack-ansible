@@ -17,6 +17,7 @@ target host:
 * Centos 8 Stream 64-bit
   * Derivitives: Rocky Linux
 * Centos 9 Stream 64-bit
+   * Derivitives: Rocky Linux
 
 Configure at least one network interface to access the Internet or
 suitable local repositories.
@@ -92,8 +93,8 @@ Configure Ubuntu
 #. Reboot the host to activate the changes and use the new kernel.
 
 
-Configure CentOS
-~~~~~~~~~~~~~~~~
+Configure CentOS / Rocky
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 #. Upgrade the system packages and kernel:
 

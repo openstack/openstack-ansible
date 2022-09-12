@@ -60,8 +60,8 @@
             (ansible_facts['os_family'] == 'RedHat' and ansible_facts['distribution_major_version'] == '9')
         msg: >
           The only supported platforms for this release are Debian 11 (Bullseye),
-          Ubuntu 20.04 LTS (Focal), Ubuntu 22.04 (Yammy) CentOS 8 derivatives such
-          as Rocky Linux, CentOS 8 Stream and CentOS 9 Stream.
+          Ubuntu 20.04 LTS (Focal), Ubuntu 22.04 (Yammy), CentOS 8 Stream, CentOS 9 Stream
+          and their derivatives such as Rocky Linux.
   roles:
     - role: "openstack_hosts"
   vars_files:

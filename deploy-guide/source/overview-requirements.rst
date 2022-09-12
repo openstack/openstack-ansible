@@ -26,6 +26,8 @@ following minimum requirements:
 
   * Rocky Linux 8
 
+  * Rocky Linux 9
+
   * Linux kernel version ``3.10.0`` or later.
 
 * Secure Shell (SSH) client and server that support public key

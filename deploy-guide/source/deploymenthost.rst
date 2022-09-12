@@ -32,6 +32,7 @@ hosts:
 * `Centos 8 Stream 64-bit <http://isoredirect.centos.org/centos/8-stream/isos/x86_64/>`_
 * `Centos 9 Stream 64-bit <https://mirrors.centos.org/mirrorlist?path=/9-stream/BaseOS/x86_64/iso/>`_
 * `Rocky Linux 8 64-bit <http://dl.rockylinux.org/pub/rocky/8/isos/x86_64/>`_
+* `Rocky Linux 9 64-bit <https://mirrors.rockylinux.org/mirrorlist?path=/pub/rocky/9.0/isos/>`_
 
 Configure at least one network interface to access the Internet or suitable
 local repositories.
@@ -66,8 +67,8 @@ Before you begin, we recommend upgrading your system packages and kernel.
 
 #. Configure NTP to synchronize with a suitable time source.
 
-Configure CentOS
-~~~~~~~~~~~~~~~~
+Configure CentOS / Rocky
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 Install additional software packages and configure Network Time Protocol (NTP).
 Before you begin, we recommend upgrading your system packages and kernel.
