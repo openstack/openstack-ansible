@@ -15,6 +15,7 @@ target host:
 * Ubuntu server 20.04 (Focal Fossa) LTS 64-bit
 * Debian 11 64-bit
 * Centos 9 Stream 64-bit
+* Rocky Linux 9 64-bit
 
 Configure at least one network interface to access the Internet or
 suitable local repositories.
@@ -90,8 +91,8 @@ Configure Ubuntu
 #. Reboot the host to activate the changes and use the new kernel.
 
 
-Configure CentOS
-~~~~~~~~~~~~~~~~
+Configure CentOS / Rocky
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 #. Upgrade the system packages and kernel:
 

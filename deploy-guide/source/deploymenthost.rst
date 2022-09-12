@@ -30,6 +30,7 @@ hosts:
 * `Ubuntu server 20.04 (Focal Fossa) LTS 64-bit <http://releases.ubuntu.com/20.04/>`_
 * `Debian 11 (Bullseye) LTS 64-bit <https://www.debian.org/distrib/>`_
 * `Centos 9 Stream 64-bit <https://mirrors.centos.org/mirrorlist?path=/9-stream/BaseOS/x86_64/iso/>`_
+* `Rocky Linux 9 64-bit <https://mirrors.rockylinux.org/mirrorlist?path=/pub/rocky/9.0/isos/>`_
 
 Configure at least one network interface to access the Internet or suitable
 local repositories.
@@ -64,8 +65,8 @@ Before you begin, we recommend upgrading your system packages and kernel.
 
 #. Configure NTP to synchronize with a suitable time source.
 
-Configure CentOS
-~~~~~~~~~~~~~~~~
+Configure CentOS / Rocky
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 Install additional software packages and configure Network Time Protocol (NTP).
 Before you begin, we recommend upgrading your system packages and kernel.
