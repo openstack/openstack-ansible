@@ -23,6 +23,7 @@ keepalived_internal_ping_address: "{{ keepalived_ping_address }}"
 keepalived_global_defs:
   - "enable_script_security"
   - script_user root
+  - vrrp_version 3
 
 keepalived_scripts:
   haproxy_check_script:
@@ -59,7 +60,6 @@ _keepalived_default_instances:
     state: "{{ (groups['haproxy'].index(inventory_hostname) == 0) | ternary('MASTER', 'BACKUP') }}"
     virtual_router_id: "{{ haproxy_keepalived_external_virtual_router_id | default ('10') }}"
     priority: "{{ (groups['haproxy']|length-groups['haproxy'].index(inventory_hostname))*50 }}"
-    authentication_password: "{{ haproxy_keepalived_authentication_password }}"
     vips:
       - "{{ haproxy_keepalived_external_vip_cidr | default('169.254.1.1/24')  }} dev {{ haproxy_keepalived_external_interface | default(management_bridge) }}"
     track_scripts: "{{ keepalived_scripts | dict2items | json_query('[*].{name: key, instance: value.instance}') | rejectattr('instance', 'equalto', 'internal') | map(attribute='name') | list }}"
@@ -68,7 +68,6 @@ _keepalived_default_instances:
     state: "{{ (groups['haproxy'].index(inventory_hostname) == 0) | ternary('MASTER', 'BACKUP') }}"
     virtual_router_id: "{{ haproxy_keepalived_internal_virtual_router_id | default ('11') }}"
     priority: "{{ (groups['haproxy']|length-groups['haproxy'].index(inventory_hostname))*50 }}"
-    authentication_password: "{{ haproxy_keepalived_authentication_password }}"
     vips:
       - "{{ haproxy_keepalived_internal_vip_cidr | default('169.254.2.1/24') }} dev {{ haproxy_keepalived_internal_interface | default(management_bridge) }}"
     track_scripts: "{{ keepalived_scripts | dict2items | json_query('[*].{name: key, instance: value.instance}') | rejectattr('instance', 'equalto', 'external') | map(attribute='name') | list }}"
