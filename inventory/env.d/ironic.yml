@@ -35,8 +35,6 @@ container_skel:
     contains:
       - ironic_api
       - ironic_conductor
-    properties:
-      is_metal: true
   ironic_compute_container:
     belongs_to:
       - ironic-compute_containers
