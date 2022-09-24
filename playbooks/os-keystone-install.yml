@@ -22,6 +22,8 @@
 - name: Implement openrc/clouds.yaml on the designated service host
   hosts: "{{ openstack_service_setup_host | default('localhost') }}"
   gather_facts: "{{ osa_gather_facts | default(True) }}"
+  vars_files:
+    - "defaults/{{ install_method }}_install.yml"
   become: yes
   tags:
     - openrc
