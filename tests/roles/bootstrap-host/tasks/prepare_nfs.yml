@@ -73,6 +73,7 @@
     group: "nfs-user"
   with_items:
     - "/srv/nfs/glance"
+    - "/srv/nfs/cinder"
 
 - name: Create exports file
   lineinfile:
@@ -84,6 +85,7 @@
     create: yes
   with_items:
     - "/srv/nfs/glance"
+    - "/srv/nfs/cinder"
   register: nfs_exportfs
 
 - name: Restart nfs-server
