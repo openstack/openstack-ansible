@@ -89,8 +89,5 @@ tempest_test_includelist:
   - "tempest.api.identity.v3"
   - "{{ (tempest_service_available_ceilometer | bool) | ternary('tempest.api.telemetry', '') }}"
   - "{{ (tempest_service_available_heat | bool) | ternary('tempest.api.orchestration.stacks.test_non_empty_stack', '') }}"
-  # TODO(odyssey4me):
-  # Once the issue with this test is worked out, re-enable it.
-  #- "{{ (tempest_service_available_nova | bool) | ternary('tempest.scenario.test_minimum_basic', '') }}"
   - "{{ (tempest_service_available_nova | bool) | ternary('tempest.scenario.test_server_basic_ops', '') }}"
   - "{{ (tempest_service_available_swift | bool) | ternary('tempest.scenario.test_object_storage_basic_ops', '') }}"
