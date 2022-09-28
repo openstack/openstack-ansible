@@ -62,7 +62,7 @@ case ${ID,,} in
 esac
 
 # Install git so that we can clone the tests repo if git is not available
-which git &>/dev/null || eval sudo "${pkg_mgr_cmd}" git
+command -v git &>/dev/null || eval sudo "${pkg_mgr_cmd}" git
 
 # Clone the tests repo for access to the common test script
 if [[ ! -d "${COMMON_TESTS_PATH}" ]]; then
