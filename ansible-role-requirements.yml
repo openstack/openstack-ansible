@@ -1,6 +1,6 @@
 ---
 
-### HEAD as of 29.08.2022 ###
+### HEAD as of 28.09.2022 ###
 
 - name: ansible-hardening
   scm: git
@@ -17,9 +17,9 @@
 - name: config_template
   scm: git
   src: https://opendev.org/openstack/ansible-config_template
-  version: dae35c0bc329764bacfb47132f465d3cfbf70c2a
+  version: 2ccc59fa13c9834344d9c040cfa818b7d16f6800
   trackbranch: master
-  shallow_since: '2022-07-11'
+  shallow_since: '2022-09-27'
 - name: galera_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-galera_server
@@ -70,9 +70,9 @@
 - name: os_keystone
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_keystone
-  version: e8086edc4fe9753f55dbe43dfd1261dcede4b6bc
+  version: 67c45ef0f4275b54d3b72f621d3163a4f19cc506
   trackbranch: stable/wallaby
-  shallow_since: '2022-05-23'
+  shallow_since: '2022-09-13'
 - name: openstack_openrc
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-openstack_openrc
@@ -94,9 +94,9 @@
 - name: os_barbican
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_barbican
-  version: 302178f9a5b8d91c0f9c3b391455b579dd09f10c
+  version: 21a82561755df236d5ca3ba35d200ca95de851fb
   trackbranch: stable/wallaby
-  shallow_since: '2021-06-28'
+  shallow_since: '2022-09-13'
 - name: os_blazar
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_blazar
@@ -214,9 +214,9 @@
 - name: os_placement
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_placement
-  version: 26886e42afa2f63078a4bc221470cb7f1cede054
+  version: f8b256545bdf58cbc5657ce8dab2e82d3a52afe1
   trackbranch: stable/wallaby
-  shallow_since: '2021-06-28'
+  shallow_since: '2022-09-23'
 - name: os_rally
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_rally
@@ -304,9 +304,9 @@
 - name: sshd
   scm: git
   src: https://github.com/willshersystems/ansible-sshd
-  version: 1731328cc54ecd29d131e48177ae2bfa84038dc6
+  version: 1ae6284951b6aef0b2f5fb3d87f0d1a322d16e9b
   trackbranch: master
-  shallow_since: '2022-08-28'
+  shallow_since: '2022-09-26'
 - name: bird
   scm: git
   src: https://github.com/logan2211/ansible-bird

@@ -28,11 +28,11 @@
 ### Before this is shipped all of these services should have a tag set as the branch,
 ### or have a comment / reason attached to them as to why a tag can not work.
 
-### HEAD as of 29.08.2022 ###
+### HEAD as of 28.09.2022 ###
 
 ## Global Requirements
 requirements_git_repo: https://opendev.org/openstack/requirements
-requirements_git_install_branch: c6030e008c9b1639cfaee27f1f2bd321ada1f372
+requirements_git_install_branch: e24f09fbce6ffd2913c7c89993dce0c517e9c899
 requirements_git_track_branch: stable/wallaby
 
 ## Adjutant service
@@ -53,7 +53,7 @@ aodh_git_track_branch: stable/wallaby
 
 ## Barbican service
 barbican_git_repo: https://opendev.org/openstack/barbican
-barbican_git_install_branch: ee3f9ec696495601abc92507e27a0763ad9234f0
+barbican_git_install_branch: a1109c883319acb00c482b892534ef8200fe8060
 barbican_git_track_branch: stable/wallaby
 
 
@@ -89,13 +89,13 @@ cloudkitty_dashboard_git_track_branch: stable/wallaby
 
 ## Designate service
 designate_git_repo: https://opendev.org/openstack/designate
-designate_git_install_branch: bf634b829b370e9e66dbecd436b3d6592886c576
+designate_git_install_branch: 3f4847384d3e7c6bcb7f8d13ee62b0f9141c91fc
 designate_git_track_branch: stable/wallaby
 
 
 ## Horizon Designate dashboard plugin
 designate_dashboard_git_repo: https://opendev.org/openstack/designate-dashboard
-designate_dashboard_git_install_branch: b445ef611365a7d4333d2d8501e450124b1bfb55
+designate_dashboard_git_install_branch: aedd7ec53408961be11809728fee948cde4eb496
 designate_dashboard_git_track_branch: stable/wallaby
 
 
@@ -107,7 +107,7 @@ glance_git_track_branch: stable/wallaby
 
 ## Heat service
 heat_git_repo: https://opendev.org/openstack/heat
-heat_git_install_branch: d0e2ded71374cffab41499e75efb81782bf83ffa
+heat_git_install_branch: 9e91fa22c3cb9f93af08f7597cff2b6cc0065fda
 heat_git_track_branch: stable/wallaby
 
 ## Horizon Heat dashboard plugin
@@ -144,7 +144,7 @@ sahara_dashboard_git_track_branch: stable/wallaby
 
 ## Keystone service
 keystone_git_repo: https://opendev.org/openstack/keystone
-keystone_git_install_branch: 6c75b657352a86e50e63aec44d28784d8863df99
+keystone_git_install_branch: 7f5fb70904088b7227db3e427011127e6d7fc77d
 keystone_git_track_branch: stable/wallaby
 
 
@@ -156,7 +156,7 @@ manila_git_track_branch: stable/wallaby
 
 ## Neutron service
 neutron_git_repo: https://opendev.org/openstack/neutron
-neutron_git_install_branch: 35d073ac55e69704d1370b87f1a00a256d2520fd
+neutron_git_install_branch: 3b3316373028225622b4491c2288cc1260ff666e
 neutron_git_track_branch: stable/wallaby
 
 neutron_vpnaas_git_repo: https://opendev.org/openstack/neutron-vpnaas
@@ -165,7 +165,7 @@ neutron_vpnaas_git_track_branch: stable/wallaby
 
 
 neutron_dynamic_routing_git_repo: https://opendev.org/openstack/neutron-dynamic-routing
-neutron_dynamic_routing_git_install_branch: 5371d7157a53f73f7dc043ba5163852e517674d7
+neutron_dynamic_routing_git_install_branch: 035910e38c3b94ccd726981947f4389be1d7560a
 neutron_dynamic_routing_git_track_branch: stable/wallaby
 
 # Networking calico follows master
@@ -199,7 +199,7 @@ networking_nsxlib_git_track_branch: master
 
 ## Nova service
 nova_git_repo: https://opendev.org/openstack/nova
-nova_git_install_branch: 5e8f34ca380493bc2a57e0ad14eb7b4a431872b6
+nova_git_install_branch: a9e81626c5e9dac897759c5f66c7ae1b4efa3c6d
 nova_git_track_branch: stable/wallaby
 
 
@@ -223,29 +223,29 @@ swift_git_track_branch: stable/wallaby
 
 ## Ironic service
 ironic_git_repo: https://opendev.org/openstack/ironic
-ironic_git_install_branch: 35e20b62de1a867534d54de844496072ae291eac
+ironic_git_install_branch: a85d689453223530b8ec867078653f58311a7c90
 ironic_git_track_branch: stable/wallaby
 
 
 ## Ironic inspector service
 ironic_inspector_git_repo: https://opendev.org/openstack/ironic-inspector
-ironic_inspector_git_install_branch: 8f9707699f4809bac9e7c10484829ecd35de1b84
+ironic_inspector_git_install_branch: b52f9744cbff5b8c47faa6f07ddd4a336ac99936
 ironic_inspector_git_track_branch: stable/wallaby
 
 
 ## Magnum service
 magnum_git_repo: https://opendev.org/openstack/magnum
-magnum_git_install_branch: a35f48e4357bf5f2601fbdaf62d2074719db1dd9
+magnum_git_install_branch: 5f696dcf31397f798f2e703f6653e8be36e0dc19
 magnum_git_track_branch: stable/wallaby
 
 ## Masakari service
 masakari_git_repo: https://opendev.org/openstack/masakari
-masakari_git_install_branch: 6055e263bfb879b71f053aa6a155c8012c9c5056
+masakari_git_install_branch: e6c5d3e310d2d326d6dc1cbaa942423d03fc2b1a
 masakari_git_track_branch: stable/wallaby
 
 ## Masakari monitors services
 masakari_monitors_git_repo: https://opendev.org/openstack/masakari-monitors
-masakari_monitors_git_install_branch: 7135d3673f823967d19ad7f62d40ec6e8aedae48
+masakari_monitors_git_install_branch: 4bda2703f2ab27aa87ea41406f9670ddbfe9908f
 masakari_monitors_git_track_branch: stable/wallaby
 
 ## Mistral service
@@ -279,7 +279,7 @@ trove_dashboard_git_track_branch: stable/wallaby
 
 ## Octavia service
 octavia_git_repo: https://opendev.org/openstack/octavia
-octavia_git_install_branch: dde5c425f5305f28a91bc7ef4bd80feb074ff109
+octavia_git_install_branch: 7df2b04a348be311116ed23cf8dc4df2d5a18101
 octavia_git_track_branch: stable/wallaby
 
 
@@ -309,7 +309,7 @@ octavia_dashboard_git_track_branch: stable/wallaby
 
 ## Blazar service
 blazar_git_repo: https://opendev.org/openstack/blazar
-blazar_git_install_branch: 26ae0bb836abf7c0bcc898c7d550f2e5a2337d58
+blazar_git_install_branch: 95a3d4d821dfb8c4fe48aff7c59cd879df69810c
 blazar_git_track_branch: stable/wallaby
 
 ## Blazar Nova Service
