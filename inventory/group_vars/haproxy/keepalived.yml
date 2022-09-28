@@ -38,6 +38,7 @@ keepalived_scripts:
     src_check_script: "{{ playbook_dir }}/../scripts/keepalived_pingable_check.sh"
     interval: "{{ keepalived_ping_interval }}"
     instance: external
+    weight: -101
     fall: 2
     rise: 4
   pingable_check_script_internal:
@@ -46,6 +47,7 @@ keepalived_scripts:
     src_check_script: "{{ playbook_dir }}/../scripts/keepalived_pingable_check.sh"
     interval: "{{ keepalived_ping_interval }}"
     instance: internal
+    weight: -101
     fall: 2
     rise: 4
 
