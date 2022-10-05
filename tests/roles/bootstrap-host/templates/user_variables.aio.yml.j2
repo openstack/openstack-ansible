@@ -287,3 +287,16 @@ deployment_environment_variables:
 lxc_container_networks: {}
 {% endif %}
 
+{% if 'ceph' not in bootstrap_host_scenarios_expanded %}
+cinder_backends:
+  lvm:
+    volume_group: cinder-volumes
+    volume_driver: cinder.volume.drivers.lvm.LVMVolumeDriver
+    volume_backend_name: LVM_iSCSI
+    iscsi_ip_address: "172.29.236.100"
+    lvm_type: "thin"
+    extra_volume_types:
+      - low-iops
+      - high-iops
+      - ultra-high-iops
+{% endif %}
