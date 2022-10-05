@@ -287,7 +287,7 @@ deployment_environment_variables:
 lxc_container_networks: {}
 {% endif %}
 
-{% if 'ceph' not in bootstrap_host_scenarios_expanded %}
+{% if 'ceph' not in bootstrap_host_scenarios_expanded and 'nfs' not in bootstrap_host_scenarios_expanded %}
 cinder_backends:
   lvm:
     volume_group: cinder-volumes

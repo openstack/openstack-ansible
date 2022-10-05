@@ -6,3 +6,18 @@ glance_remote_client:
     where: "/var/lib/glance/images"
     type: "nfs"
     options: "_netdev,auto"
+cinder_default_volume_type: aio_nfs
+cinder_backends:
+  aio_nfs:
+    volume_backend_name: nfs
+    volume_driver: cinder.volume.drivers.nfs.NfsDriver
+    nfs_shares_config: /etc/cinder/nfs_shares
+    nfs_qcow2_volumes: true
+    nfs_mount_options: vers=4,nfsvers=4,noatime,rw,bg,intr,async,timeo=60
+    nfs_snapshot_support: true
+    nas_secure_file_operations: false
+    shares:
+      - ip: 172.29.244.100
+        share: /srv/nfs/cinder
+tempest_test_includelist:
+    - tempest.scenario.test_volume_boot_pattern.TestVolumeBootPattern.test_volume_boot_pattern
