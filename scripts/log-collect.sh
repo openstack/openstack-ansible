@@ -84,12 +84,12 @@ function repo_information {
     [[ "${1}" != "host" ]] && lxc_cmd="lxc-attach --name ${1} --" || lxc_cmd=""
     echo "Collecting list of installed packages and enabled repositories for \"${1}\""
     # Redhat package debugging
-    if eval sudo ${lxc_cmd} which dnf &>/dev/null; then
+    if eval sudo ${lxc_cmd} command -v dnf &>/dev/null; then
         eval sudo ${lxc_cmd} dnf repolist -v > "${WORKING_DIR}/logs/redhat-rpm-repolist-${1}-${TS}.txt" || true
         eval sudo ${lxc_cmd} dnf list installed > "${WORKING_DIR}/logs/redhat-rpm-list-installed-${1}-${TS}.txt" || true
 
     # Ubuntu package debugging
-    elif eval sudo ${lxc_cmd} which apt-get &> /dev/null; then
+    elif eval sudo ${lxc_cmd} command -v apt-get &> /dev/null; then
         eval sudo ${lxc_cmd} apt-cache policy | grep http | awk '{print $1" "$2" "$3}' | sort -u > "${WORKING_DIR}/logs/ubuntu-apt-repolist-${1}-${TS}.txt" || true
         eval sudo ${lxc_cmd} apt list --installed > "${WORKING_DIR}/logs/ubuntu-apt-list-installed-${1}-${TS}.txt" || true
     fi
@@ -171,7 +171,7 @@ done
 
 
 # Gather container etc artifacts
-if which lxc-ls &> /dev/null; then
+if command -v lxc-ls &> /dev/null; then
     for CONTAINER_NAME in $(sudo lxc-ls -1); do
         CONTAINER_PID=$(sudo lxc-info -p -n ${CONTAINER_NAME} | awk '{print $2}')
         ETC_DIR="/proc/${CONTAINER_PID}/root/etc"
@@ -213,7 +213,7 @@ env > "${WORKING_DIR}/logs/environment-${TS}.txt"  || true
 repo_information host
 
 # Record the active interface configs
-if which ethtool &> /dev/null; then
+if command -v ethtool &> /dev/null; then
     for interface in $(ip -o link | awk -F':' '{print $2}' | sed 's/@.*//g'); do
         echo "ethtool -k ${interface}"
         ethtool -k ${interface} > "${WORKING_DIR}/logs/ethtool-${interface}-${TS}-cfg.txt" || true

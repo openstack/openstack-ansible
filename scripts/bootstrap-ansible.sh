@@ -70,12 +70,12 @@ case ${DISTRO_ID} in
         case ${DISTRO_VERSION_ID} in
             8)
                 dnf -y install python38 python38-devel libselinux-python3
-                PYTHON_EXEC_PATH="$(which python3.8)"
+                PYTHON_EXEC_PATH="$(command -v python3.8)"
                 OSA_ANSIBLE_PYTHON_INTERPRETER="/usr/bin/python3"
                 ;;
             9|9.[0-9]*)
                 dnf -y install python3 python3-devel python3-libselinux
-                PYTHON_EXEC_PATH="$(which python3)"
+                PYTHON_EXEC_PATH="$(command -v python3)"
                 OSA_ANSIBLE_PYTHON_INTERPRETER="/usr/bin/python3"
                 ;;
         esac
@@ -84,11 +84,11 @@ case ${DISTRO_ID} in
         case ${DISTRO_VERSION_ID} in
             8)
                 dnf -y install python38 python38-devel libselinux-python3
-                PYTHON_EXEC_PATH="$(which python3.8)"
+                PYTHON_EXEC_PATH="$(command -v python3.8)"
                 ;;
             9)
                 dnf -y install python3 python3-devel libselinux-python3
-                PYTHON_EXEC_PATH="$(which python3)"
+                PYTHON_EXEC_PATH="$(command -v python3)"
                 ;;
         esac
         ;;

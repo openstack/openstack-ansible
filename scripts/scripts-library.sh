@@ -281,27 +281,27 @@ function get_repos_info {
 function get_instance_info {
   TS="$(date +"%H-%M-%S")"
   (cat /etc/resolv.conf && \
-    which systemd-resolve &> /dev/null && \
+    command -v systemd-resolve &> /dev/null && \
       systemd-resolve --statistics && \
         cat /etc/systemd/resolved.conf) > \
           "/openstack/log/instance-info/host_dns_info_${TS}.log" || true
-  if [ "$(which tracepath)" ]; then
+  if [ "$(command -v tracepath)" ]; then
     { tracepath "8.8.8.8" -m 5 2>/dev/null || tracepath "8.8.8.8"; } > \
       "/openstack/log/instance-info/host_tracepath_info_${TS}.log" || true
   fi
-  if [ "$(which tracepath6)" ]; then
+  if [ "$(command -v tracepath6)" ]; then
     { tracepath6 "2001:4860:4860::8888" -m 5 2>/dev/null || tracepath6 "2001:4860:4860::8888"; } >> \
       "/openstack/log/instance-info/host_tracepath_info_${TS}.log" || true
   fi
-  if [ "$(which lxc-ls)" ]; then
+  if [ "$(command -v lxc-ls)" ]; then
     lxc-ls --fancy > \
       "/openstack/log/instance-info/host_lxc_container_info_${TS}.log" || true
   fi
-  if [ "$(which lxc-checkconfig)" ]; then
+  if [ "$(command -v lxc-checkconfig)" ]; then
     lxc-checkconfig > \
       "/openstack/log/instance-info/host_lxc_config_info_${TS}.log" || true
   fi
-  if [ "$(which networkctl)" ]; then
+  if [ "$(command -v networkctl)" ]; then
     networkctl list > \
       "/openstack/log/instance-info/host_networkd_list_${TS}.log" || true
     networkctl status >> \
@@ -309,11 +309,11 @@ function get_instance_info {
     networkctl lldp >> \
       "/openstack/log/instance-info/host_networkd_lldp_${TS}.log" || true
   fi
-  if [ "$(which iptables)" ]; then
+  if [ "$(command -v iptables)" ]; then
     (iptables -vnL && iptables -t nat -vnL && iptables -t mangle -vnL) > \
       "/openstack/log/instance-info/host_firewall_info_${TS}.log" || true
   fi
-  if [ "$(which ansible)" ]; then
+  if [ "$(command -v ansible)" ]; then
     ANSIBLE_HOST_KEY_CHECKING=False \
       ansible -i "localhost," localhost -m setup > \
         "/openstack/log/instance-info/host_system_info_${TS}.log" || true
@@ -338,7 +338,7 @@ function get_instance_info {
 
   # Storage reports
   for dir_name in lxc machines; do
-    if [ "$(which btrfs)" ]; then
+    if [ "$(command -v btrfs)" ]; then
       btrfs filesystem usage /var/lib/${dir_name} 2>/dev/null > \
         "/openstack/log/instance-info/btrfs_${dir_name}_usage_${TS}.log" || true
       btrfs filesystem show /var/lib/${dir_name} 2>/dev/null > \
@@ -350,7 +350,7 @@ function get_instance_info {
     fi
   done
 
-  if [ "$(which zfs)" ]; then
+  if [ "$(command -v zfs)" ]; then
     zfs list > "/openstack/log/instance-info/zfs_lxc_${TS}.log" || true
   fi
 

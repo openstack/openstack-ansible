@@ -92,7 +92,7 @@ if [[ -z "${SKIP_OSA_BOOTSTRAP_AIO+defined}" ]]; then
 fi
 
 # Flush all the iptables rules set by openstack-infra
-if which iptables; then
+if command -v iptables; then
   iptables -F
   iptables -X
   iptables -t nat -F
