@@ -299,4 +299,9 @@ cinder_backends:
       - low-iops
       - high-iops
       - ultra-high-iops
+
+{%   if 'cinder' in bootstrap_host_scenarios %}
+tempest_test_includelist:
+  - tempest.scenario.test_minimum_basic.TestMinimumBasicScenario.test_minimum_basic_scenario
+{%   endif %}
 {% endif %}
