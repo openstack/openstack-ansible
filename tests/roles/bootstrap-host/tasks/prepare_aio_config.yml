@@ -83,12 +83,12 @@
           nova_virt_type: 'qemu'
           # NOTE(jrosser)
           # we only run ceph jobs on ubuntu in CI so this is sufficient
-          ceph_stable_repo: "http://{{ nodepool_vars.NODEPOOL_MIRROR_HOST }}/ceph-deb-octopus"
+          ceph_stable_repo: "http://{{ nodepool_vars.NODEPOOL_MIRROR_HOST }}/ceph-deb-quincy"
           # we must set the ceph repo seperatley for the ceph_client role
           ceph_apt_repos:
             ceph:
               state: "present"
-              repo: "deb http://{{ nodepool_vars.NODEPOOL_MIRROR_HOST }}/ceph-deb-octopus {{ ansible_facts['distribution_release'] }} main"
+              repo: "deb http://{{ nodepool_vars.NODEPOOL_MIRROR_HOST }}/ceph-deb-quincy {{ ansible_facts['distribution_release'] }} main"
       copy:
         dest: /etc/openstack_deploy/user_openstackci.yml
         content: "{{ nodepool_overrides | to_nice_yaml }}"
