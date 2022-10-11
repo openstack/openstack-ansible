@@ -27,6 +27,9 @@ component_skel:
   ironic_inspector:
     belongs_to:
       - ironic_all
+  ironic_console:
+    belongs_to:
+      - ironic_all
 
 container_skel:
   ironic_api_container:
@@ -40,6 +43,7 @@ container_skel:
       - ironic-compute_containers
     contains:
       - ironic_compute
+      - ironic_console
       - nova_compute
       - nova_scheduler
     properties:
