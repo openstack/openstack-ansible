@@ -10,8 +10,8 @@ intended for deployers.
 
    If you want to do a quick proof of concept of OpenStack, read the
    :dev_docs:`All-In-One quickstart Guide <user/aio/quickstart.html>`
-   instead of this document. This document is a walkthrough of a deploy
-   using OpenStack-Ansible, with all its configurability.
+   instead of this document. This document is a walkthrough of a
+   deployment using OpenStack-Ansible, with all of its configurability.
 
 
 Contents:

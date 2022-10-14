@@ -1,7 +1,7 @@
 Software requirements
 ~~~~~~~~~~~~~~~~~~~~~
 
-Ensure that all hosts within an OpenStack-Ansible (OSA) environment meet the
+Ensure that all hosts within the OpenStack-Ansible (OSA) environment meet the
 following minimum requirements:
 
 * Debian
