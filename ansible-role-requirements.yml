@@ -1,6 +1,6 @@
 ---
 
-### HEAD as of 28.09.2022 ###
+### HEAD as of 17.10.2022 ###
 
 - name: ansible-hardening
   scm: git
@@ -17,9 +17,9 @@
 - name: config_template
   scm: git
   src: https://opendev.org/openstack/ansible-config_template
-  version: 2ccc59fa13c9834344d9c040cfa818b7d16f6800
+  version: b5e0cb2331e75c7e6dbfb3cc40857951aef70212
   trackbranch: master
-  shallow_since: '2022-09-27'
+  shallow_since: '2022-10-11'
 - name: galera_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-galera_server
@@ -304,9 +304,9 @@
 - name: sshd
   scm: git
   src: https://github.com/willshersystems/ansible-sshd
-  version: 1ae6284951b6aef0b2f5fb3d87f0d1a322d16e9b
+  version: 43aac1b156ace3690583d96c319c74d51ec14ce2
   trackbranch: master
-  shallow_since: '2022-09-26'
+  shallow_since: '2022-10-09'
 - name: bird
   scm: git
   src: https://github.com/logan2211/ansible-bird
