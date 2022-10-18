@@ -1,16 +1,17 @@
 # Dmitriy Rabotyagov <noonedeadpunk@ya.ru>, 2019. #zanata
 # Andreas Jaeger <jaegerandi@gmail.com>, 2020. #zanata
 # Dmitriy Rabotyagov <noonedeadpunk@ya.ru>, 2020. #zanata
+# Dmitriy Rabotyagov <noonedeadpunk@ya.ru>, 2022. #zanata
 msgid ""
 msgstr ""
-"Project-Id-Version: openstack-ansible 24.1.0.dev221\n"
+"Project-Id-Version: openstack-ansible 25.1.0.dev94\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-27 20:22+0000\n"
+"POT-Creation-Date: 2022-10-17 14:13+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2020-05-12 06:36+0000\n"
-"Last-Translator: Andreas Jaeger <jaegerandi@gmail.com>\n"
+"PO-Revision-Date: 2022-10-17 04:05+0000\n"
+"Last-Translator: Dmitriy Rabotyagov <noonedeadpunk@ya.ru>\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
 "X-Generator: Zanata 4.3.3\n"
@@ -424,6 +425,17 @@ msgstr ""
 "Перед прочтением данного документа, пожалуйста, ознакомьтесь со следующим "
 "сценарием:"
 
+msgid ""
+"Before rebooting, in ``/etc/sysconfig/selinux``, make sure that "
+"``SELINUX=enforcing`` is changed to ``SELINUX=disabled``. SELinux enabled is "
+"not currently supported in OpenStack-Ansible for CentOS/Rocky/RHEL due to a "
+"lack of maintainers for the feature."
+msgstr ""
+"Перед перезагрузкой убедитесь, что в ``/etc/sysconfig/selinux`` параметр "
+"``SELINUX=enforcing`` установлен в значение ``SELINUX=disabled``. SELinux на "
+"данный момент не поддерживается в OpenStack-Ansible для CentOS/Rocky/RHEL из-"
+"за нехватки ресурсов для сопровождения данной возможности."
+
 msgid "Bootstrap Ansible and the required roles"
 msgstr "Начальная подготовка Ansible и требуемых ролей"
 
@@ -497,6 +509,9 @@ msgstr ""
 "Скрипт ``bootstrap-ansible.sh``, используемый для установки Ansible и "
 "зависимостей Ansible ролей на хосте развертывания, использует настройки "
 "прокси, заданные переменными окружения ``HTTPS_PROXY`` или ``HTTP_PROXY``."
+
+msgid "Configuring network interfaces"
+msgstr "Настройка сетевых интерфейсов"
 
 msgid "Considerations when proxying TLS traffic"
 msgstr "Важные моменты при проксировании TLS трафика"
@@ -893,6 +908,24 @@ msgstr ""
 "флаг монтирования:"
 
 msgid ""
+"If you are installing with limited connectivity, or you don't have default "
+"route set, you will need to define interface for outgoing connections "
+"manually"
+msgstr ""
+"Если вы производите установку с ограниченным соединение или маршрут по "
+"умолчанию отсутствует, вам будет нужно задать интерфейс для исходящих "
+"соединений вручную"
+
+msgid ""
+"If you are installing with limited connectivity, please review :ref:"
+"`Installing with limited connectivity <limited-connectivity>` before "
+"proceeding."
+msgstr ""
+"Если вы производите установку с ограниченным доступом к сети, пожалуйста "
+"посмотрите :ref:`Установка с ограниченным подключением <limited-"
+"connectivity>` перед тем, как продолжить."
+
+msgid ""
 "If your environment does not have ``eth0``, but instead has ``p1p1`` or some "
 "other interface name, ensure that all references to ``eth0`` in all "
 "configuration files are replaced with the appropriate name. The same applies "
@@ -1115,6 +1148,13 @@ msgstr ""
 "Схожие механизмы пакетов существуют и для других дистрибутивов Linux. Мы "
 "советуем зеркалировать репозитории, которые содержат данные пакеты."
 
+msgid ""
+"Mentioned below overrides are default ones and will be applied to `ceph-rgw` "
+"group"
+msgstr ""
+"Упомянутые ниже переопределения это значения по умолчанию, которые будут "
+"применены к группе `ceph-rgw`"
+
 msgid "Messaging transport"
 msgstr "Транспорт для обмена сообщениями"
 
@@ -1146,6 +1186,18 @@ msgstr "Сеть"
 
 msgid "Network CIDR/VLAN assignments"
 msgstr "Распределение сетевых CIDR/VLAN"
+
+msgid "Network Interface Layout - Multiple Bonds"
+msgstr "Схема сетевых интерфейсов - Несколько агрегаций"
+
+msgid "Network Interface Layout - Multiple Interfaces"
+msgstr "Схема сетевых интерфейсов - Несколько интерфейсов"
+
+msgid "Network Interface Layout - Single Bond"
+msgstr "Схема сетевых интерфейсов - Одна агрегация"
+
+msgid "Network Interface Layout - Single Interface"
+msgstr "Схема сетевых интерфейсов - Один интерфейс"
 
 msgid "Network architectures"
 msgstr "Сетевые архитектуры"
@@ -1246,6 +1298,13 @@ msgstr ""
 
 msgid "OpenStack Swift"
 msgstr "OpenStack Swift"
+
+msgid ""
+"OpenStack-Ansible allows `Ceph storage <https://ceph.io>`_ cluster "
+"integration in three ways:"
+msgstr ""
+"OpenStack-Ansible позволяет интегрировать кластер `Ceph <https://ceph.io>`_  "
+"3-мя различными способами:"
 
 msgid ""
 "OpenStack-Ansible gives you the option of deploying radosgw as a drop-in "
@@ -1419,6 +1478,9 @@ msgstr "Подготовка сервера"
 
 msgid "Production environment"
 msgstr "Рабочее окружение"
+
+msgid "Production environment host layout"
+msgstr "Схема серверов для рабочего окружения"
 
 msgid "Provider network groups"
 msgstr "Сетевые группы провайдера"
@@ -2039,6 +2101,15 @@ msgstr ""
 "развертывания для настройки HAProxy:"
 
 msgid ""
+"The |current_release_formal_name| release is only compatible with Debian 11 "
+"(bullseye), Ubuntu 20.04 (Focal Fossa), CentOS 9 Stream, and derivitives of "
+"CentOS Stream/RHEL such as Rocky Linux."
+msgstr ""
+"Текущий релиз |current_release_formal_name| совместим только с Debian 11 "
+"(bullseye), Ubuntu 20.04 (Focal Fossa), CentOS 9 Stream и другие RHEL "
+"производные, такие как Rocky Linux."
+
+msgid ""
 "Then, in `/etc/openstack_deploy/user_variables.yml`, configure the "
 "deployment to copy these files from the host into the container cache image."
 msgstr ""
@@ -2243,6 +2314,10 @@ msgstr ""
 msgid "Unreliable or low bandwidth external connectivity"
 msgstr "Ненадежное или медленное внешнее соединение"
 
+msgid "Upstream Ubuntu repositories to mirror for Ubuntu 20.04 LTS:"
+msgstr ""
+"Репозитории Ubuntu, зеркала которых необходимо иметь для Ubuntu 20.04 LTS:"
+
 msgid ""
 "Use the following process to deploy user-provided SSL certificates in "
 "OpenStack-Ansible:"
@@ -2443,6 +2518,12 @@ msgstr "compute1"
 
 msgid "compute2"
 msgstr "compute2"
+
+msgid "focal"
+msgstr "focal"
+
+msgid "focal-updates"
+msgstr "focal-updates"
 
 msgid "http://ubuntu-cloud.archive.canonical.com/ubuntu"
 msgstr "http://ubuntu-cloud.archive.canonical.com/ubuntu"
