@@ -65,14 +65,14 @@
         - openstack-ansible-deploy-aio_metal-ubuntu-bionic
         - openstack-ansible-upgrade-aio_metal-centos-7:
             voting: false
-        - openstack-ansible-upgrade-aio_metal-ubuntu-bionic
+        - openstack-ansible-upgrade-aio_metal-ubuntu-bionic:
+            voting: false
     gate:
       jobs:
         - openstack-ansible-deploy-aio_metal-debian-buster
         - openstack-ansible-deploy-aio_metal-centos-7
         - openstack-ansible-deploy-aio_metal-opensuse-15
         - openstack-ansible-deploy-aio_metal-ubuntu-bionic
-        - openstack-ansible-upgrade-aio_metal-ubuntu-bionic
 
 - project-template:
     name: openstack-ansible-deploy-aio_telemetry_metal-jobs
