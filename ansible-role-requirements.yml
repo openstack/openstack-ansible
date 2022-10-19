@@ -1,37 +1,37 @@
 - name: ansible-hardening
   scm: git
   src: https://opendev.org/openstack/ansible-hardening
-  version: fd9b8108f1944d2563a8047549e8a094d8c0bc3c
+  version: queens-eol
   trackbranch: stable/queens
 - name: apt_package_pinning
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-apt_package_pinning
-  version: 7d255395f9f6ba9ccef13d5910cdc6202e735481
+  version: queens-eol
   trackbranch: stable/queens
 - name: pip_install
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-pip_install
-  version: c8c4dbef7c8d133a891667c811c6b496936c4956
+  version: queens-eol
   trackbranch: stable/queens
 - name: galera_client
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-galera_client
-  version: 40a743c72d5e91be3354fdc55662b408b426ffd3
+  version: queens-eol
   trackbranch: stable/queens
 - name: galera_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-galera_server
-  version: 5e3e8327d5d709a70b1e105154299be59d2575e0
+  version: queens-eol
   trackbranch: stable/queens
 - name: ceph_client
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-ceph_client
-  version: 5c65525009133111a9714be2100c2f9df0f86524
+  version: queens-eol
   trackbranch: stable/queens
 - name: haproxy_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-haproxy_server
-  version: 2de976eb18951a9c416e7930c9f23e4601e5476b
+  version: queens-eol
   trackbranch: stable/queens
 - name: keepalived
   scm: git
@@ -41,67 +41,67 @@
 - name: lxc_container_create
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-lxc_container_create
-  version: 46c7c7005c36d24ac56d971ce75018b411201223
+  version: queens-eol
   trackbranch: stable/queens
 - name: lxc_hosts
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-lxc_hosts
-  version: c8095fc486252cae2b401e9ca2fe23b5f7d72dde
+  version: queens-eol
   trackbranch: stable/queens
 - name: memcached_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-memcached_server
-  version: 59c6ba2eaa940ca25d692284f3961f30219db8da
+  version: queens-eol
   trackbranch: stable/queens
 - name: openstack_hosts
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-openstack_hosts
-  version: 6cdcebe201aa9a2f5da0c11eeefeab74b428d2d0
+  version: queens-eol
   trackbranch: stable/queens
 - name: os_keystone
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_keystone
-  version: 30d7f6536cce7c6a150c8314df59223823741414
+  version: queens-eol
   trackbranch: stable/queens
 - name: openstack_openrc
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-openstack_openrc
-  version: 6ca9bbf5c7567c2952cd420afb851a81727be3a1
+  version: queens-eol
   trackbranch: stable/queens
 - name: os_aodh
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_aodh
-  version: 495212c9de2d1982850077bfe66eeb2501d06a09
+  version: queens-eol
   trackbranch: stable/queens
 - name: os_barbican
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_barbican
-  version: 7fc13cc5f53ef5025b292501d275e54bbeb61b5b
+  version: queens-eol
   trackbranch: stable/queens
 - name: os_ceilometer
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_ceilometer
-  version: 1b53ff193c4655fc8f12e95c0dcd6d7eccbcb589
+  version: queens-eol
   trackbranch: stable/queens
 - name: os_cinder
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_cinder
-  version: b180454346cc84dc2e70a14d95ba2ea5614928e8
+  version: queens-eol
   trackbranch: stable/queens
 - name: os_designate
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_designate
-  version: 2d166e07585987825773abe8aee977943f04e96d
+  version: queens-eol
   trackbranch: stable/queens
 - name: os_glance
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_glance
-  version: 7d9fb1d70c8b87c6c0a4a0abd9f8d734494c8f3f
+  version: queens-eol
   trackbranch: stable/queens
 - name: os_gnocchi
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_gnocchi
-  version: 51b558103ef9c90b19d1aea455ca3a121eb5dcf8
+  version: queens-eol
   trackbranch: stable/queens
 - name: os_heat
   scm: git
@@ -111,97 +111,97 @@
 - name: os_horizon
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_horizon
-  version: ad4e25720982d0c31f473296722f33505dbf78c9
+  version: queens-eol
   trackbranch: stable/queens
 - name: os_ironic
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_ironic
-  version: eeb89052bb574a2c25b607d8daed5143614fbc75
+  version: queens-eol
   trackbranch: stable/queens
 - name: os_magnum
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_magnum
-  version: 1de2442b348934281e28ef42f36941f229233b9c
+  version: queens-eol
   trackbranch: stable/queens
 - name: os_molteniron
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_molteniron
-  version: c0ecbab5257bb7295d22b5fc8b264688c156d6aa
+  version: queens-eol
   trackbranch: stable/queens
 - name: os_neutron
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_neutron
-  version: 5c41134b719710729b6d4eb75d2e0ff70eaf7fbd
+  version: queens-eol
   trackbranch: stable/queens
 - name: os_nova
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_nova
-  version: 2dae463c2c539089b623db704c0bee942a91bb29
+  version: queens-eol
   trackbranch: stable/queens
 - name: os_octavia
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_octavia
-  version: 195fc53264ce4b24a5789280e3b40683535d7d77
+  version: queens-eol
   trackbranch: stable/queens
 - name: os_rally
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_rally
-  version: a9ca6748d913b3bba0e5ba0c4bfdc9b4b08dcba7
+  version: queens-eol
   trackbranch: stable/queens
 - name: os_sahara
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_sahara
-  version: 0ada03961cc7efe5241ea6a34c105a6859fd8cfd
+  version: queens-eol
   trackbranch: stable/queens
 - name: os_swift
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_swift
-  version: 98624f55d28609576fdcbcec3a0a13849676542d
+  version: queens-eol
   trackbranch: stable/queens
 - name: os_tacker
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_tacker
-  version: 51b277159cca5e4076cc206cee56b12911b7d822
+  version: queens-eol
   trackbranch: stable/queens
 - name: os_tempest
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_tempest
-  version: e0a660ed30cf561508a5ced1eb6198710cf86139
+  version: queens-eol
   trackbranch: stable/queens
 - name: os_trove
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_trove
-  version: 8bced69d73ae39d5c5e51f733bcc4a27b4488807
+  version: queens-eol
   trackbranch: stable/queens
 - name: plugins
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-plugins
-  version: 8e57491ee5cda12effc2739a853c3dae2e9c3c62
+  version: queens-eol
   trackbranch: stable/queens
 - name: rabbitmq_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-rabbitmq_server
-  version: 7d038991c6d74d4eb7b0dac79fd7e535b697c5e3
+  version: queens-eol
   trackbranch: stable/queens
 - name: repo_build
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-repo_build
-  version: 28eb77b1053fc175823f570ce9fad131974c1ab8
+  version: queens-eol
   trackbranch: stable/queens
 - name: repo_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-repo_server
-  version: ea151abb64cb1eeca2e3e3c4905e1429b4e20295
+  version: queens-eol
   trackbranch: stable/queens
 - name: rsyslog_client
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-rsyslog_client
-  version: 4ac95b2d04897710593bec8a5c6249e883c17b02
+  version: queens-eol
   trackbranch: stable/queens
 - name: rsyslog_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-rsyslog_server
-  version: daf0e968d6e2be7ce8e767bd54ce38c39ccd6e3e
+  version: queens-eol
   trackbranch: stable/queens
 - name: sshd
   scm: git
