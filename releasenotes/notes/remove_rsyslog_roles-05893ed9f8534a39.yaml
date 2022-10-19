@@ -1,0 +1,13 @@
+---
+deprecations:
+  - |
+    Roles ``rsyslog_client`` and ``rsyslog_server`` are deprecated and removed
+    from OpenStack-Ansible. Since Train service were configured to save logs
+    in journald instead of regular log files. Journald from containers passed
+    to hosts, so you can read and manipulate logs from metal hosts. Journald
+    can be transformed and collected by many tools, including rsyslog.
+    At the same time rsyslog is not ideal as it stores data in plain text,
+    which is hard to index and search later, while journald has is
+    structured so logs can be consumed way more efficiently with other tools.
+    You can also check out our ELK role from `OPS repository <https://opendev.org/openstack/openstack-ansible-ops/src/branch/master/elk_metrics_7x>`_
+    as alternative.

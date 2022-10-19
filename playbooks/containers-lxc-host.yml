@@ -55,10 +55,3 @@
         state: "link"
   roles:
     - role: "lxc_hosts"
-
-  post_tasks:
-    - include_tasks: "common-tasks/rsyslog-client.yml"
-      vars:
-        rsyslog_client_log_rotate_file: lxc_log_rotate
-        rsyslog_client_log_dir: "/var/log/lxc"
-        rsyslog_client_config_name: "99-lxc-rsyslog-client.conf"

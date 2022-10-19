@@ -66,13 +66,6 @@
       tags:
         - "system-crontab-coordination"
 
-  post_tasks:
-    - include_tasks: "common-tasks/rsyslog-client.yml"
-      vars:
-        rsyslog_client_log_rotate_file: ceph_log_rotate
-        rsyslog_client_log_dir: "/var/log/ceph"
-        rsyslog_client_config_name: "99-ceph-rsyslog-client.conf"
-
   vars:
     is_metal: "{{ properties.is_metal|default(false) }}"
     radosgw_civetweb_port: "{{ radosgw_service_port }}"

@@ -43,13 +43,6 @@
       tags:
         - crontab
 
-  post_tasks:
-    - include_tasks: "common-tasks/rsyslog-client.yml"
-      vars:
-        rsyslog_client_log_rotate_file: utility_log_rotate
-        rsyslog_client_log_dir: "{{ tempest_log_dir }}"
-        rsyslog_client_config_name: "99-tempest-rsyslog-client.conf"
-
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - tempest

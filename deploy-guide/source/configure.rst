@@ -120,8 +120,6 @@ Infrastructure service roles
 
 - :role_docs:`repo_server`
 
-- :role_docs:`rsyslog_server`
-
 
 OpenStack service roles
 -----------------------
@@ -194,7 +192,6 @@ Other roles
 
 - :role_docs:`openstack_openrc`
 
-- :role_docs:`rsyslog_client`
 
 Configuring service credentials
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

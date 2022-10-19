@@ -68,12 +68,6 @@ OpenStack-Ansible deploys the following infrastructure components:
   OpenStack environment. It is set to automatically use the internal service
   endpoints.
 
-* Log aggregation host
-
-  A rsyslog service is optionally set up to receive rsyslog traffic from all
-  hosts and containers. You can replace rsyslog with any alternative log
-  receiver.
-
 * Unbound DNS container
 
   Containers running an `Unbound DNS`_ caching service can optionally be
