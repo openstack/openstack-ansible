@@ -1,0 +1,8 @@
+---
+issues:
+  - |
+    As of today ceph community repository (download.ceph.com) does not provide
+    packages for Ubuntu 22.04 (Jammy). Based on that OpenStack-Ansible does
+    install ceph packages from distro-provided repositories. Thus, you can not
+    control packages version that will be installed and ceph support should be
+    considered as experimental.
