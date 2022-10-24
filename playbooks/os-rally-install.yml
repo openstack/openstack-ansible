@@ -14,13 +14,13 @@
 # limitations under the License.
 
 - name: Gather rally facts
-  hosts: utility_all
+  hosts: utility_all[0]
   gather_facts: "{{ osa_gather_facts | default(True) }}"
   tags:
     - always
 
 - name: Installation and setup of Rally
-  hosts: utility_all
+  hosts: utility_all[0]
   gather_facts: false
   user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
