@@ -223,3 +223,38 @@ We can now go ahead with the upgrade of all the OpenStack components.
 .. code-block:: console
 
     # openstack-ansible setup-openstack.yml -e package_state=latest
+
+Upgrade Ceph
+~~~~~~~~~~~~
+
+With each OpenStack-Ansible version we define default Ceph client version
+that will be installed on Glance/Cinder/Nova hosts and used by these services.
+If you want to preserve the previous version of the ceph client during an
+OpenStack-Ansible upgrade, you will need to override a variable
+``ceph_stable_release`` in your user_variables.yml
+
+If Ceph has been deployed as part of an OpenStack-Ansible deployment
+using the roles maintained by the `Ceph-Ansible`_ project you will also need
+to upgrade the Ceph version. Each OpenStack-Ansible release is tested only with
+specific Ceph-Ansible release and Ceph upgrades are not checked in any
+Openstack-Ansible integration tests. So we do not test or guarantee an
+upgrade path for such deployments. In this case tests should be done in a
+lab environment before upgrading.
+
+.. warning::
+
+    Ceph related playbooks are included as part of ``setup-infrastructure.yml``
+    and ``setup-openstack.yml`` playbooks, so you should be cautious when
+    running them during OpenStack upgrades.
+    If you have ``upgrade_ceph_packages: true`` in your user variables or
+    provided ``-e upgrade_ceph_packages=true`` as argument and run
+    ``setup-infrastructure.yml`` this will result in Ceph package being upgraded
+    as well.
+
+In order to upgrade Ceph in the deployment you will need to run:
+
+.. code-block:: console
+
+     # openstack-ansible /etc/ansible/roles/ceph-ansible/infrastructure-playbooks/rolling_update.yml
+
+.. _Ceph-Ansible: https://github.com/ceph/ceph-ansible/
