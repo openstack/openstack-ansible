@@ -233,7 +233,7 @@ container back-end.
 
 .. code-block:: shell-session
 
-   # export SCENARIO='aio_lxc_barbican_ceph'
+   # export SCENARIO='aio_lxc_barbican_ceph_lxb'
    # scripts/bootstrap-aio.sh
 
 To add any global overrides, over and above the defaults for the applicable

@@ -14,4 +14,4 @@
 # limitations under the License.
 
 horizon_enable_cinder_backup: "{{ hostvars['localhost']['cinder_service_backup_program_enabled'] }}"
-horizon_enable_ha_router: "{{ neutron_plugin_type.split('.')[0] == 'ml2' and (groups['neutron_l3_agent'] | length >= 2) }}"
+horizon_enable_ha_router: "{{ groups['neutron_l3_agent'] | length >= 2 }}"

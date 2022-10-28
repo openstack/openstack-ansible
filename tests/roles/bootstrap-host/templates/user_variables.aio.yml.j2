@@ -28,6 +28,17 @@ install_method: "{{ bootstrap_host_install_method }}"
 tempest_public_subnet_cidr: "172.29.248.0/22"
 tempest_public_subnet_allocation_pools: "172.29.249.110-172.29.249.200"
 
+{% if _neutron_plugin_driver == 'ml2.ovn' %}
+tempest_private_net_provider_type: geneve
+{% else %}
+tempest_private_net_provider_type: vxlan
+{% endif %}
+{% if _neutron_plugin_driver == 'ml2.lxb' %}
+tempest_public_net_physical_name: flat
+{% else  %}
+tempest_public_net_physical_name: vlan
+{% endif %}
+
 ## Galera settings
 galera_monitoring_allowed_source: "0.0.0.0/0"
 # TODO(noonedeadpunk): This should be enabled, once we will re-work SSL part
@@ -104,6 +115,26 @@ neutron_api_workers: 1
 neutron_api_threads: 2
 neutron_num_sync_threads: 1
 neutron_wsgi_processes: 1
+
+neutron_plugin_type: "{{ _neutron_plugin_driver }}"
+
+{% if _neutron_plugin_driver != 'ml2.ovn' %}
+neutron_ml2_drivers_type: "flat,vlan,vxlan"
+
+neutron_plugin_base:
+  - router
+  - metering
+{% endif %}
+
+{% if 'neutron' in bootstrap_host_scenarios %}
+tempest_test_includelist:
+  - "neutron_tempest_plugin.api.test_networks*"
+  - "tempest.scenario.test_network_basic_ops.TestNetworkBasicOps.test_network_basic_ops"
+
+tempest_tempest_conf_overrides:
+  network-feature-enabled:
+    api_extensions: agent,allowed-address-pairs,binding,dhcp_agent_scheduler,ext-gw-mode,external-net,extra_dhcp_opt,extra_dhcp_optagent,extraroute,l3_agent_scheduler,metering,provider,quotas,router,security-group,service-type,subnet_allocation
+{% endif %}
 
 ## Octavia
 octavia_wsgi_threads: 1

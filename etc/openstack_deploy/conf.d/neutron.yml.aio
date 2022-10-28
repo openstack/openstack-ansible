@@ -1,5 +1,16 @@
 ---
+
 # neutron-server, neutron-agents
 network_hosts:
   aio1:
     ip: 172.29.236.100
+
+{% if _neutron_plugin_driver == 'ml2.ovn'  %}
+network-gateway_hosts:
+  aio1:
+    ip: 172.29.236.100
+
+network-northd_hosts:
+  aio1:
+    ip: 172.29.236.100
+{% endif %}

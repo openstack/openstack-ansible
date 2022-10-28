@@ -70,3 +70,15 @@ bootstrap_host_scenarios_expanded: |-
   {%   set _ = scenario_list.extend(['designate', 'heat', 'magnum', 'sahara', 'swift', 'trove']) %}
   {% endif %}
   {{ (scenario_list | unique) | sort }}
+
+_neutron_plugin_driver: |-
+  {% if 'lxb' in bootstrap_host_scenarios_expanded %}
+  {%   set plugin = 'ml2.lxb' %}
+  {% elif 'ovs' in bootstrap_host_scenarios_expanded %}
+  {%   set plugin = 'ml2.ovs' %}
+  {% elif 'calico' in bootstrap_host_scenarios_expanded %}
+  {%   set plugin = 'ml2.calico' %}
+  {% else %}
+  {%   set plugin = 'ml2.ovn' %}
+  {% endif %}
+  {{ plugin }}

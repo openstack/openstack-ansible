@@ -152,6 +152,12 @@ Please review the contents of the playbook for more information.
     # openstack-ansible "${SCRIPTS_PATH}/upgrade-utilities/deploy-config-changes.yml"
 
 
+Ensure that you have defined all required variables for current Neutron plugin
+
+.. code-block:: console
+
+    # openstack-ansible "${SCRIPTS_PATH}/upgrade-utilities/define-neutron-plugin.yml"
+
 Upgrade hosts
 ~~~~~~~~~~~~~
 

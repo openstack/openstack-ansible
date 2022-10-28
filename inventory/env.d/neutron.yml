@@ -47,6 +47,15 @@ component_skel:
   neutron_server:
     belongs_to:
       - neutron_all
+  neutron_ovn_controller:
+    belongs_to:
+      - neutron_all
+  neutron_ovn_gateway:
+    belongs_to:
+      - neutron_all
+  neutron_ovn_northd:
+    belongs_to:
+      - neutron_all
   opendaylight:
     belongs_to:
       - neutron_all
@@ -76,6 +85,19 @@ container_skel:
     contains:
       - neutron_server
       - opendaylight
+  neutron_ovn_gateway_container:
+    belongs_to:
+      - network-gateway_containers
+    contains:
+      - neutron_ovn_controller
+      - neutron_ovn_gateway
+    properties:
+      is_metal: true
+  neutron_ovn_northd_container:
+    belongs_to:
+      - network-northd_containers
+    contains:
+      - neutron_ovn_northd
 
 physical_skel:
   network_containers:
@@ -94,5 +116,17 @@ physical_skel:
     belongs_to:
       - all_containers
   network-infra_hosts:
+    belongs_to:
+      - hosts
+  network-gateway_containers:
+    belongs_to:
+      - all_containers
+  network-gateway_hosts:
+    belongs_to:
+      - hosts
+  network-northd_containers:
+    belongs_to:
+      - all_containers
+  network-northd_hosts:
     belongs_to:
       - hosts

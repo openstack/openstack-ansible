@@ -1,0 +1,43 @@
+---
+# Copyright 2022 City Network International AB
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Prepare Neutron configuration upgrade for deploying the new release
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  user: root
+  vars:
+    neutron_host_to_check: "{{ groups['neutron_all'][0] }}"
+  tasks:
+    - name: Define neutron variables for upgrade
+      lineinfile:
+        dest: "{{ openstack_config_dir }}/user_neutron_migration.yml"
+        line: "{{ item.line | to_nice_yaml }}"
+        state: present
+        create: true
+        mode: 0640
+      when: item.condition
+      with_items:
+        - line:
+            neutron_plugin_type: ml2.lxb
+          condition: "{{ 'neutron_plugin_type' not in hostvars[neutron_host_to_check] }}"
+        - line:
+            neutron_ml2_drivers_type: "flat,vlan,vxlan,local"
+          condition: "{{ 'neutron_ml2_drivers_type' not in hostvars[neutron_host_to_check] }}"
+        - line:
+            neutron_plugin_base:
+              - router
+              - metering
+          condition: "{{ 'neutron_plugin_base' not in hostvars[neutron_host_to_check] }}"

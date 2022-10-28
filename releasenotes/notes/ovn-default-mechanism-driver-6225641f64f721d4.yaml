@@ -1,0 +1,31 @@
+---
+prelude: >
+  Default neutron plugin has been switched from LinuxBridge to OVN.
+  This is effective for all new deployments. At the same time
+  OpenStack-Ansible does not provide any in-house tooling for completing
+  upgrade from ml2.lxb to ml2.ovn. Please, reffer to upgrade section for more
+  details on how to upgrade OpenStack-Ansible.
+
+upgrade:
+  - |
+    With marking ML2/LinuxBridge driver as 'Experimental' in the upstream
+    Neutron project OpenStack-Ansible has switched a default mechanism driver
+    to ML2/OVN.
+    In order to upgrade any existing deployment that was relying on defaults
+    to the new OpenStack-Ansible version you must ensure that following
+    variables are defined explicitly to ensure parity with existing
+    functionality:
+
+    .. code-block:: yaml
+
+      neutron_plugin_type: ml2.lxb
+      neutron_ml2_drivers_type: "flat,vlan,vxlan,local"
+      neutron_plugin_base:
+        - router
+        - metering
+
+    Failure to define any of these variables will result in playbook failures
+    and neutron misconfiguration.
+
+    We have covered this step with upgrade script that will create a
+    ``user_neutron_migration.yml`` file with assumed defaults.
