@@ -114,13 +114,6 @@
       tags:
         - crontab
 
-  post_tasks:
-    - include_tasks: "common-tasks/rsyslog-client.yml"
-      vars:
-        rsyslog_client_log_rotate_file: ceph_log_rotate
-        rsyslog_client_log_dir: "/var/log/ceph"
-        rsyslog_client_config_name: "99-ceph-rsyslog-client.conf"
-
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - ceph
@@ -176,13 +169,6 @@
     - role: openstack.osa.system_crontab_coordination
       tags:
         - crontab
-
-  post_tasks:
-    - include_tasks: "common-tasks/rsyslog-client.yml"
-      vars:
-        rsyslog_client_log_rotate_file: ceph_log_rotate
-        rsyslog_client_log_dir: "/var/log/ceph"
-        rsyslog_client_config_name: "99-ceph-rsyslog-client.conf"
 
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:

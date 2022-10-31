@@ -63,20 +63,6 @@
   roles:
     - role: "repo_server"
 
-  post_tasks:
-    - include_tasks: "common-tasks/rsyslog-client.yml"
-      vars:
-        rsyslog_client_log_rotate_file: "{{ rsyslog_var.log_rotate_file }}"
-        rsyslog_client_log_dir: "{{ rsyslog_var.log_dir }}"
-        rsyslog_client_log_files: "{{ rsyslog_var.log_files | default([]) }}"
-        rsyslog_client_config_name: "{{ rsyslog_var.config_name }}"
-      with_items:
-        - log_rotate_file: repo_nginx_log_rotate
-          log_dir: "/var/log/nginx"
-          config_name: "99-repo-nginx-rsyslog-client.conf"
-      loop_control:
-        loop_var: rsyslog_var
-
   vars_files:
     - defaults/repo_packages/openstack_services.yml
     - "defaults/{{ install_method }}_install.yml"

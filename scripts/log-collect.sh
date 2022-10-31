@@ -65,7 +65,6 @@ COMMON_ETC_LOG_NAMES="apt \
     rabbitmq \
     repo \
     resolv.conf \
-    rsyslog \
     sasl2 \
     ssh \
     sysconfig/network-scripts \

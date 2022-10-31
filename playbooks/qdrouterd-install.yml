@@ -51,10 +51,3 @@
     - qdrouterd
   roles:
     - role: "qdrouterd"
-
-  post_tasks:
-    - include_tasks: "common-tasks/rsyslog-client.yml"
-      vars:
-        rsyslog_client_log_rotate_file: qdrouterd_log_rotate
-        rsyslog_client_log_dir: "/var/log/qdrouterd"
-        rsyslog_client_config_name: "99-qdrouterd-rsyslog-client.conf"

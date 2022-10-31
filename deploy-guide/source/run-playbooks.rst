@@ -15,8 +15,8 @@ The installation process requires running three main playbooks:
   on target hosts.
 
 - The ``setup-infrastructure.yml`` Ansible infrastructure playbook installs
-  infrastructure services: Memcached, the repository server, Galera, RabbitMQ,
-  and rsyslog.
+  infrastructure services: Memcached, the repository server, Galera and
+  RabbitMQ.
 
 - The ``setup-openstack.yml`` OpenStack playbook installs OpenStack services,
   including Identity (keystone), Image (glance), Block Storage (cinder),

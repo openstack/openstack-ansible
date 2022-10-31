@@ -47,11 +47,6 @@ os_distro_version: "{{ (ansible_facts['distribution'] | lower) | replace(' ', '_
 
 openstack_lock_dir: "/run/lock"
 
-# Ensure that the package state matches the global setting
-rsyslog_client_package_state: "{{ package_state }}"
-rsyslog_client_enabled: False
-rsyslog_server_enabled: False
-
 # URL for the frozen internal openstack repo.
 repo_server_port: 8181
 
