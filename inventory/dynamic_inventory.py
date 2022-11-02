@@ -75,7 +75,11 @@ def args(arg_list):
     return vars(parser.parse_args(arg_list))
 
 
-if __name__ == '__main__':
+def main():
     all_args = args(sys.argv[1:])
     output = generate.main(**all_args)
     print(output)
+
+
+if __name__ == '__main__':
+    main()
