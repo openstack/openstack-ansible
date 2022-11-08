@@ -135,10 +135,9 @@ OpenStack-Ansible's Rocky series was first released with the 18.0.0 tag on
 .. _OpenStack-Ansible Rocky Documentation: https://docs.openstack.org/openstack-ansible/rocky/
 .. _OpenStack-Ansible Rocky series release notes: https://docs.openstack.org/releasenotes/openstack-ansible/rocky.html
 
-Queens: Extended Maintenance
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-OpenStack-Ansible's Queens series was first released with the 17.0.0 tag on
-14 March 2018.
+Queens: EOL (end-of-life)
+~~~~~~~~~~~~~~~~~~~~~~~~~
+OpenStack-Ansible's Queens series was EOL'd on 19 October 2022.
 
 * `OpenStack-Ansible Queens Documentation`_
 
@@ -147,11 +146,10 @@ OpenStack-Ansible's Queens series was first released with the 17.0.0 tag on
 .. _OpenStack-Ansible Queens Documentation: https://docs.openstack.org/openstack-ansible/queens/
 .. _OpenStack-Ansible Queens series release notes: https://docs.openstack.org/releasenotes/openstack-ansible/queens.html
 
-Pike: Extended Maintenance
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Pike: EOL (end-of-life)
+~~~~~~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible's Pike series was first released with the 16.0.0 tag on
-14 September 2017.
+OpenStack-Ansible's Pike series was EOL'd on 17 June 2022.
 
 * `OpenStack-Ansible Pike Documentation`_
 
@@ -160,11 +158,10 @@ OpenStack-Ansible's Pike series was first released with the 16.0.0 tag on
 .. _OpenStack-Ansible Pike Documentation: https://docs.openstack.org/openstack-ansible/pike/
 .. _OpenStack-Ansible Pike series release notes: https://docs.openstack.org/releasenotes/openstack-ansible/pike.html
 
-Ocata: Extended Maintenance
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Ocata: EOL (end-of-life)
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible's Ocata series was first released with the 15.0.0 tag on
-8 March 2017.
+OpenStack-Ansible's Ocata series was EOL'd on 21 December 2022.
 
 * `OpenStack-Ansible Ocata Documentation`_
 
