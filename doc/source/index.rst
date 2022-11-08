@@ -67,8 +67,8 @@ OpenStack-Ansible Wallaby series was first released with the 23.0.0 tag on
 .. _OpenStack-Ansible Wallaby series release notes: https://docs.openstack.org/releasenotes/openstack-ansible/wallaby.html
 
 
-Victoria: Maintained
-~~~~~~~~~~~~~~~~~~~~
+Victoria: Extended Maintenance
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 OpenStack-Ansible Victoria series was first released with the 22.0.0 tag on
 21 January 2021.
