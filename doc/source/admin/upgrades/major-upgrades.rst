@@ -151,12 +151,6 @@ Please review the contents of the playbook for more information.
 
     # openstack-ansible "${SCRIPTS_PATH}/upgrade-utilities/deploy-config-changes.yml"
 
-Update user_variables to set overrides for the location of any existing
-Ocatavia certificates.
-
-.. code-block:: console
-
-    # openstack-ansible "${SCRIPTS_PATH}/upgrade-utilities/define-octavia-certificate-vars.yml"
 
 Upgrade hosts
 ~~~~~~~~~~~~~
