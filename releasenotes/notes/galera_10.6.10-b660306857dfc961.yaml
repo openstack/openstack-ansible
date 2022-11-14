@@ -1,0 +1,9 @@
+---
+upgrade:
+  - |
+    Default MariaDB version is set to 10.6.10. When running minor upgrade
+    don't forget to provide ``-e galera_upgrade=true`` to openstack-ansible
+    command.
+    With that MariDB version installed for CentOS 9 Stream, Rocky 9 and Ubuntu
+    22.04 will switch from distro provided version to 10.6.10 installed from
+    MariaDB repository, which might be a major version upgrade.
