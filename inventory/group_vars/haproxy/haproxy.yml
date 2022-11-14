@@ -103,7 +103,7 @@ haproxy_barbican_service:
   haproxy_port: 9311
   haproxy_balance_type: http
   haproxy_backend_options:
-    - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+    - "httpchk GET /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
   haproxy_service_enabled: "{{ groups['barbican_api'] is defined and groups['barbican_api'] | length > 0 }}"
 
 haproxy_ceph_rgw_service:
@@ -128,7 +128,7 @@ haproxy_cinder_api_service:
   haproxy_port: 8776
   haproxy_balance_type: http
   haproxy_backend_options:
-    - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+    - "httpchk HEAD /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
   haproxy_service_enabled: "{{ groups['cinder_api'] is defined and groups['cinder_api'] | length > 0 }}"
 
 haproxy_cloudkitty_api_service:
@@ -140,7 +140,7 @@ haproxy_cloudkitty_api_service:
   haproxy_balance_type: http
   haproxy_balance_alg: source
   haproxy_backend_options:
-    - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+    - "httpchk GET /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
   haproxy_service_enabled: "{{ groups['cloudkitty_api'] is defined and groups['cloudkitty_api'] | length > 0 }}"
 
 haproxy_designate_api_service:
@@ -183,7 +183,7 @@ haproxy_glance_api_service:
   haproxy_balance_type: http
   haproxy_balance_alg: source
   haproxy_backend_options:
-    - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+    - "httpchk GET /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
   haproxy_service_enabled: "{{ groups['glance_api'] is defined and groups['glance_api'] | length > 0 }}"
 
 haproxy_gnocchi_service:
@@ -205,7 +205,7 @@ haproxy_heat_api_cfn_service:
   haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
   haproxy_balance_type: http
   haproxy_backend_options:
-    - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+    - "httpchk HEAD /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
   haproxy_service_enabled: "{{ groups['heat_api_cfn'] is defined and groups['heat_api_cfn'] | length > 0 }}"
 
 haproxy_heat_api_service:
@@ -216,7 +216,7 @@ haproxy_heat_api_service:
   haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
   haproxy_balance_type: http
   haproxy_backend_options:
-    - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+    - "httpchk HEAD /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
   haproxy_service_enabled: "{{ groups['heat_api'] is defined and groups['heat_api'] | length > 0 }}"
 
 haproxy_horizon_service:
@@ -246,7 +246,7 @@ haproxy_ironic_api_service:
   haproxy_port: 6385
   haproxy_balance_type: http
   haproxy_backend_options:
-    - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+    - "httpchk GET /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
   haproxy_service_enabled: "{{ groups['ironic_api'] is defined and groups['ironic_api'] | length > 0 }}"
 
 haproxy_ironic_inspector_service:
@@ -257,7 +257,7 @@ haproxy_ironic_inspector_service:
   haproxy_port: 5050
   haproxy_balance_type: http
   haproxy_backend_options:
-    - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+    - "httpchk GET /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
   haproxy_service_enabled: "{{ groups['ironic_inspector'] is defined and groups['ironic_inspector'] | length > 0 }}"
 
 haproxy_keystone_service:
@@ -268,7 +268,7 @@ haproxy_keystone_service:
   haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
   haproxy_balance_type: "http"
   haproxy_backend_options:
-    - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+    - "httpchk HEAD /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
   haproxy_service_enabled: "{{ groups['keystone_all'] is defined and groups['keystone_all'] | length > 0 }}"
 
 haproxy_letsencrypt_service:
@@ -291,7 +291,7 @@ haproxy_magnum_service:
   haproxy_port: 9511
   haproxy_balance_type: http
   haproxy_backend_options:
-    - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+    - "httpchk GET /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
   haproxy_service_enabled: "{{ groups['magnum_all'] is defined and groups['magnum_all'] | length > 0 }}"
 
 haproxy_manila_service:
@@ -302,7 +302,7 @@ haproxy_manila_service:
   haproxy_port: 8786
   haproxy_balance_type: http
   haproxy_backend_options:
-    - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+    - "httpchk HEAD /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
   haproxy_service_enabled: "{{ groups['manila_api'] is defined and groups['manila_api'] | length > 0 }}"
 
 haproxy_masakari_api_service:
@@ -348,7 +348,7 @@ haproxy_neutron_server_service:
   haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
   haproxy_balance_type: http
   haproxy_backend_options:
-    - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+    - "httpchk GET /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
   haproxy_service_enabled: "{{ groups['neutron_server'] is defined and groups['neutron_server'] | length > 0 }}"
 
 haproxy_nova_api_metadata_service:
@@ -402,7 +402,7 @@ haproxy_octavia_service:
   haproxy_port: 9876
   haproxy_balance_type: http
   haproxy_backend_options:
-    - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+    - "httpchk GET /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
   haproxy_service_enabled: "{{ groups['octavia_all'] is defined and groups['octavia_all'] | length > 0 }}"
 
 haproxy_opendaylight_neutron_service:
@@ -473,9 +473,7 @@ haproxy_sahara_api_service:
   haproxy_port: 8386
   haproxy_balance_type: http
   haproxy_backend_options:
-    - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
-  haproxy_backend_httpcheck_options:
-    - "expect rstatus 300|200"
+    - "httpchk GET /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
   haproxy_service_enabled: "{{ groups['sahara_api'] is defined and groups['sahara_api'] | length > 0 }}"
 
 haproxy_senlin_api_service:
@@ -533,7 +531,7 @@ haproxy_zun_api_service:
   haproxy_port: 9517
   haproxy_balance_type: http
   haproxy_backend_options:
-    - "httpchk GET /v1 HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+    - "httpchk GET /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
   haproxy_service_enabled: "{{ groups['zun_api'] is defined and groups['zun_api'] | length > 0 }}"
 
 haproxy_zun_console_service:
