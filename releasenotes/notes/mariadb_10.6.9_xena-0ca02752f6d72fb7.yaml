@@ -1,0 +1,7 @@
+---
+
+fixes:
+  - |
+    MariaDB version is been upgraded by default to 10.6.9 that fixes mariaback
+    incremental backup diskspace consumption - incremental backups were
+    containing also binlogs which was not needed.

@@ -1,6 +1,6 @@
 ---
 
-### HEAD as of 28.09.2022 ###
+### HEAD as of 14.11.2022 ###
 
 - name: ansible-hardening
   scm: git
@@ -17,9 +17,9 @@
 - name: galera_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-galera_server
-  version: 04224a4e2890cca15fe2ebd3ff30e21ae768d568
+  version: d65197c8696ca8dc1cbfd6af376494df56fea8ee
   trackbranch: stable/xena
-  shallow_since: '2022-07-18'
+  shallow_since: '2022-11-12'
 - name: ceph_client
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-ceph_client
@@ -271,7 +271,7 @@
   src: https://opendev.org/openstack/openstack-ansible-rabbitmq_server
   version: 567ce279db5862a5c163892636e932fd88f62486
   trackbranch: stable/xena
-  shallow_since: '2022-08-23'
+  shallow_since: '2022-10-03'
 - name: repo_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-repo_server
@@ -293,9 +293,9 @@
 - name: sshd
   scm: git
   src: https://github.com/willshersystems/ansible-sshd
-  version: 1ae6284951b6aef0b2f5fb3d87f0d1a322d16e9b
+  version: 43aac1b156ace3690583d96c319c74d51ec14ce2
   trackbranch: master
-  shallow_since: '2022-09-26'
+  shallow_since: '2022-10-09'
 - name: bird
   scm: git
   src: https://github.com/logan2211/ansible-bird
@@ -323,9 +323,9 @@
 - name: ceph-ansible
   scm: git
   src: https://github.com/ceph/ceph-ansible
-  version: 8b4f68e39c52c79c7d97bfb8506e2753e8fefba5
+  version: 470f63aebb1ec3fd524a5dbc8f83f2186eba96b7
   trackbranch: stable-6.0
-  shallow_since: '2022-09-19'
+  shallow_since: '2022-10-26'
 - name: opendaylight
   scm: git
   src: https://github.com/opendaylight/integration-packaging-ansible-opendaylight
