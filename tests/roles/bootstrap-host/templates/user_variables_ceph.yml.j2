@@ -16,8 +16,8 @@
 ## ceph-ansible AIO settings
 is_hci: true
 common_single_host_mode: true
-monitor_interface: "{{ ('metal' in bootstrap_host_scenarios_expanded) | ternary('br-mgmt', 'eth1') }}" # Management network in the AIO
-public_network: "{{ (mgmt_range ~ '.0/' ~ netmask) | ansible.utils.ipaddr('net') }}"
+monitor_interface: "{{ ('metal' in bootstrap_host_scenarios_expanded) | ternary('br-storage', 'eth2') }}" # Storage network in the AIO
+public_network: "{{ (storage_range ~ '.0/' ~ netmask) | ansible.utils.ipaddr('net') }}"
 journal_size: 100
 osd_scenario: collocated
 ceph_conf_overrides_custom:
