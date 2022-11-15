@@ -63,11 +63,26 @@ integration in three ways:
   No ssh access by openstack-ansible is required to the ceph cluster.
 * deploying a ceph cluster as part of the openstack-ansible deployment
   by using the roles maintained by the `Ceph-Ansible`_ project. Deployers
-  can enable the ``ceph-install`` playbook by adding hosts to the
-  ``ceph-mon_hosts``, ``ceph-osd_hosts`` and ``ceph-rgw_hosts`` groups in
-  ``openstack_user_config.yml``, and then configuring `Ceph-Ansible specific vars
+  can enable the ``ceph-install.yml`` playbook by adding hosts to the
+  ``ceph-mon_hosts`` and ``ceph-osd_hosts`` groups in
+  ``openstack_user_config.yml``. In order to enable ``ceph-rgw-install.yml``
+  playbook you need to add ``ceph-rgw_hosts`` in ``openstack_user_config.yml``.
+
+.. note::
+
+  Please mention, that RGW installation should be performed after deployment of
+  Keystone service.
+
+  Once groups are defined, you can proceed with configuring `Ceph-Ansible specific vars
   <https://github.com/ceph/ceph-ansible/blob/master/group_vars/all.yml.sample>`_
   in the OpenStack-Ansible ``user_variables.yml`` file.
+
+.. warning::
+
+  Deploying ceph cluster as part of openstack-ansible is not recommended since
+  ceph-ansible upgrade path is not tested or supported. This option is mainly
+  used for CI and AIO deployments to test and demonstrate a sample integration
+  of the software stack.
 
 .. _Ceph-Ansible: https://github.com/ceph/ceph-ansible/
 
