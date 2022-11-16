@@ -361,4 +361,39 @@
     - healthcheck-rabbitmq-install
     - healthcheck-teardown
 
+# Test zookeeper-install
+
+- name: Ensure coordination is running and accepting connections
+  hosts: utility_all[0]
+  tasks:
+    - name: Probing TCP connection to zookeeper
+      wait_for:
+        host: "{{ hostvars[item]['ansible_host'] }}"
+        port: "{{ coordination_port | default(2181) }}"
+      with_items: "{{ groups[coordination_host_group | default('zookeeper_all')] }}"
+
+- name: Ensure zookeeper is healthy
+  hosts: "zookeeper_all"
+  tasks:
+    - name: Esuring netcat is installed
+      package:
+        name: "{% if ansible_facts['os_family'] | lower == 'redhat' %}nmap-ncat{% else %}netcat-openbsd{% endif %}"
+        state: present
+
+    - name: Gathering zookeeper state
+      shell: "echo ruok | nc localhost {{ coordination_port | default(2181) }}"
+      register: zookeeper_ok
+      changed_when: false
+
+    - name: Gathering zookeeper rw/ro
+      shell: "echo isro | nc localhost {{ coordination_port | default(2181) }}"
+      register: zookeeper_ro
+      changed_when: false
+
+    - name: Check zookeeper results
+      assert:
+        that:
+          - "'imok' in zookeeper_ok.stdout"
+          - "'rw' in zookeeper_ro.stdout"
+
 # TODO: Other playbook's tests.

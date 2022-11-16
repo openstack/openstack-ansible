@@ -351,6 +351,25 @@
 #
 # --------
 #
+# Level: coordination_hosts (optional)
+# Some services, like cinder , octavia, gnocchi or designate require
+# coordination service to be present for some use-cases. As such service
+# Zookeeper is being used.
+#
+# Example:
+#
+# Define three hosts for zookeeper cluster:
+#
+# coordination_hosts:
+#   infra1:
+#     ip: 172.29.236.101
+#   infra2:
+#     ip: 172.29.236.102
+#   infra3:
+#     ip: 172.29.236.103
+#
+# --------
+#
 # Level: os-infra_hosts (required)
 # List of target hosts on which to deploy the glance API, nova API, heat API,
 # and horizon. Recommend three minimum target hosts for these services.

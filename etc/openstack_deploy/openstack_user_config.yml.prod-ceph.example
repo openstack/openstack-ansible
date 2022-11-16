@@ -105,6 +105,9 @@ ceph-osd_hosts:
 # galera, memcache, rabbitmq, utility
 shared-infra_hosts: *infrastructure_hosts
 
+# zookeeper
+coordination_hosts: *infrastructure_hosts
+
 # ceph-mon containers
 ceph-mon_hosts: *infrastructure_hosts
 
