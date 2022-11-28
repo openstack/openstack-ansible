@@ -55,6 +55,12 @@ if [[ "${PWD}" == *"${OSA_CLONE_ROOT}"* ]] || [ "${RUN_CMD}" == "openstack-ansib
      fi
   fi
 
+  OSA_USER_RC="${OSA_USER_RC:-${OSA_CONFIG_DIR}/user.rc}"
+
+  if [[ -f ${OSA_USER_RC} ]]; then
+    source ${OSA_USER_RC}
+  fi
+
   # Check whether there are any user configuration files
   if ls -1 ${OSA_CONFIG_DIR}/user_*.yml &> /dev/null; then
 

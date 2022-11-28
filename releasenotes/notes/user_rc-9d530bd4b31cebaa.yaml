@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Added possibility to source environment variables from a user file that
+    will have prescedence over all environemnt variables loaded after
+    openstack-ansible.rc and have prescedence over all variables defined there
+    By default path to the user file is ``/etc/openstack_deploy/user.rc``.
