@@ -13,7 +13,7 @@ cinder_backends:
     volume_driver: cinder.volume.drivers.nfs.NfsDriver
     nfs_shares_config: /etc/cinder/nfs_shares
     nfs_qcow2_volumes: true
-    nfs_mount_options: vers=4,nfsvers=4,noatime,rw,bg,intr,async,timeo=60
+    nfs_mount_options: nfsvers=4,noatime,rw,bg,intr,async,timeo=60
     nfs_snapshot_support: true
     nas_secure_file_operations: false
     shares:
