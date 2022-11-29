@@ -28,13 +28,14 @@ used_ips:
   - "172.29.247.1,172.29.247.50"
 
 global_overrides:
-  internal_lb_vip_address: internal-openstack.example.com
   #
-  # The below domain name must resolve to an IP address
-  # in the CIDR specified in haproxy_keepalived_external_vip_cidr.
+  # The below domains name must resolve to an IP address
+  # in the CIDR specified in haproxy_keepalived_external_vip_cidr and
+  # haproxy_keepalived_internal_vip_cidr.
   # If using different protocols (https/http) for the public/internal
   # endpoints the two addresses must be different.
   #
+  internal_lb_vip_address: internal-openstack.example.com
   external_lb_vip_address: openstack.example.com
   management_bridge: "br-mgmt"
   provider_networks:
