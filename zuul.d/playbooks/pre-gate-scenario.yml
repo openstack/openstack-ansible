@@ -48,6 +48,8 @@
           %}
           {%   elif zuul.project.short_name == 'ansible-hardening' %}
           {%     set role_service_name = 'hardening' %}
+          {%   elif zuul.project.short_name == 'openstack-ansible' %}
+          {%     set role_service_name = 'integrated' %}
           {%   endif %}
           {%   if role_service_name is defined %}
           {%     set _ = _scenario.append(role_service_name) %}
@@ -56,6 +58,9 @@
           {%       set _ = _scenario.append(scenario_map[role_service_name]) %}
           {%     endif %}
           {%   endif %}
+          {% endif %}
+          {% if zuul.job is match('^openstack-ansible-(deploy|upgrade)-([^-]+)-validate') %}
+          {%   set _ = _scenario.append('validate') %}
           {% endif %}
           {# If running linters we need to provide name of the role as a scenario w/o splitting #}
           {% if zuul.job is match('^openstack-ansible-linters-.*$') %}
