@@ -113,45 +113,51 @@
   tags:
     - data-config
 
-- name: Create the ZFS pool
-  command: zpool create pool "/dev/{{ _bootstrap_host_data_disk_device }}2"
-  args:
-    creates: /pool
-  when:
-    - bootstrap_host_data_disk_device_force | bool
-    - _lxc_container_backing_store == 'zfs'
+- name: Prepare disk drive as ZFS
+  when: _lxc_container_backing_store == 'zfs'
+  block:
+    - name: Install zfs packages
+      package:
+        name: "{{ packages_install_zfs }}"
+        state: present
+        update_cache: "{{ (ansible_facts['pkg_mgr'] == 'apt') | ternary('yes', omit) }}"
+      tags:
+        - install-packages
 
-- name: Create the ZFS pool/lxc volume
-  shell: "(zfs list | grep lxc) || zfs create -o mountpoint=/var/lib/lxc pool/lxc"
-  when:
-    - bootstrap_host_data_disk_device_force | bool
-    - _lxc_container_backing_store == 'zfs'
-  tags:
-    - skip_ansible_lint
+    - name: Create the ZFS pool
+      command: zpool create pool "/dev/{{ _bootstrap_host_data_disk_device }}2"
+      args:
+        creates: /pool
+      when:
+        - bootstrap_host_data_disk_device_force | bool
 
-- name: Make LVM physical volume on the cinder device
-  shell: "pvcreate /dev/{{ _bootstrap_host_data_disk_device }}2 && touch /openstack/lxc.pvcreate"
-  args:
-    creates: "/openstack/lxc.pvcreate"
-  when:
-    - _lxc_container_backing_store == 'lvm'
-  tags:
-    - skip_ansible_lint
-    - data-config
+    - name: Create the ZFS pool/lxc volume
+      shell: "(zfs list | grep lxc) || zfs create -o mountpoint=/var/lib/lxc pool/lxc"
+      when:
+        - bootstrap_host_data_disk_device_force | bool
+      tags:
+        - skip_ansible_lint
 
-- name: Run pvscan
-  command: "pvscan"
-  changed_when: false
-  when:
-    - _lxc_container_backing_store == 'lvm'
-  tags:
-    - cinder-lvm-pv
+- name: Prepare disk drive as LVM
+  when: _lxc_container_backing_store == 'lvm'
+  block:
+    - name: Make LVM physical volume on the cinder device
+      shell: "pvcreate /dev/{{ _bootstrap_host_data_disk_device }}2 && touch /openstack/lxc.pvcreate"
+      args:
+        creates: "/openstack/lxc.pvcreate"
+      tags:
+        - skip_ansible_lint
+        - data-config
 
-- name: Add cinder-volumes volume group
-  lvg:
-    vg: lxc
-    pvs: "/dev/{{ _bootstrap_host_data_disk_device }}2"
-  when:
-    - _lxc_container_backing_store == 'lvm'
-  tags:
-    - data-config
+    - name: Run pvscan
+      command: "pvscan"
+      changed_when: false
+      tags:
+        - cinder-lvm-pv
+
+    - name: Add cinder-volumes volume group
+      lvg:
+        vg: lxc
+        pvs: "/dev/{{ _bootstrap_host_data_disk_device }}2"
+      tags:
+        - data-config
