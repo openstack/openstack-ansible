@@ -14,6 +14,10 @@ neutron_plugin_type: ml2.ovs
 
 neutron_ml2_drivers_type: "vxlan,vlan,flat"
 
+neutron_plugin_base:
+  - router
+  - metering
+
 tempest_run_concurrency: 0
 tempest_test_includelist:
   - "neutron_tempest_plugin.api.test_networks*"
