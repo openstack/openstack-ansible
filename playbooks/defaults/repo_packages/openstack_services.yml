@@ -157,11 +157,6 @@ neutron_dynamic_routing_git_repo: "{{ openstack_opendev_base_url }}/openstack/ne
 neutron_dynamic_routing_git_install_branch: 8bee5cc07ef9b8eda02e4aec2dcca9bd5e8f5af5
 neutron_dynamic_routing_git_track_branch: master
 
-# Networking calico follows master
-networking_calico_git_repo: "{{ openstack_github_base_url }}/projectcalico/networking-calico"
-networking_calico_git_install_branch: 69ada593823daaecb997114e694522449839f131
-networking_calico_git_track_branch: release-v3.21
-
 networking_odl_git_repo: "{{ openstack_opendev_base_url }}/openstack/networking-odl"
 networking_odl_git_install_branch: eecb7125a630c5790852739b8bad0306f1b3aa59
 networking_odl_git_track_branch: master

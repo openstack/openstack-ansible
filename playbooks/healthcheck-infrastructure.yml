@@ -315,7 +315,7 @@
     - healthcheck-rabbitmq-install
 
 - name: Ensure all the usual openstack containers can connect to rabbit
-  hosts: all_containers:!etcd_all:!galera_all:!memcached:!haproxy:!rabbitmq_all:!unbound:!repo_all
+  hosts: all_containers:!galera_all:!memcached:!haproxy:!rabbitmq_all:!unbound:!repo_all
   gather_facts: no
   vars:
     venv_path: /tmp/rabbitmqtest

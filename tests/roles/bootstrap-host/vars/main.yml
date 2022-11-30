@@ -45,9 +45,6 @@ bootstrap_host_scenarios_expanded: |-
   {%   endif %}
   {% endif %}
   {# Service additions based on scenario presence #}
-  {% if 'calico' in bootstrap_host_scenarios %}
-  {%   set _ = scenario_list.extend(['etcd']) %}
-  {% endif %}
   {% if 'designate' in bootstrap_host_scenarios or ('validate' in bootstrap_host_scenarios and 'integrated' in bootstrap_host_scenarios) %}
   {%   set _ = scenario_list.extend(['zookeeper']) %}
   {% endif %}
@@ -76,8 +73,6 @@ _neutron_plugin_driver: |-
   {%   set plugin = 'ml2.lxb' %}
   {% elif 'ovs' in bootstrap_host_scenarios_expanded %}
   {%   set plugin = 'ml2.ovs' %}
-  {% elif 'calico' in bootstrap_host_scenarios_expanded %}
-  {%   set plugin = 'ml2.calico' %}
   {% else %}
   {%   set plugin = 'ml2.ovn' %}
   {% endif %}
