@@ -427,26 +427,6 @@ haproxy_opendaylight_websocket_service:
   haproxy_allowlist_networks: "{{ haproxy_opendaylight_allowlist_networks }}"
   haproxy_service_enabled: "{{ (neutron_plugin_type | default('ml2.ovn') == 'ml2.opendaylight') }}"
 
-# TODO(jamesdenton): Remove that in Z release
-haproxy_ovn_northbound_service:
-  haproxy_service_name: neutron_ovn_northd_northbound
-  state: absent
-
-# TODO(jamesdenton): Remove that in Z release
-haproxy_ovn_southbound_service:
-  haproxy_service_name: neutron_ovn_northd_southbound
-  state: absent
-
-# TODO(jamesdenton): Remove that in Z release
-haproxy_ovn_ovsdb_service:
-  haproxy_service_name: neutron_ovn_ovsdb_server
-  state: absent
-
-# TODO(noonedeadpunk): Remove that in Y release
-haproxy_panko_api_service:
-  haproxy_service_name: panko_api
-  state: absent
-
 haproxy_placement_service:
   haproxy_service_name: placement
   haproxy_backend_nodes: "{{ groups['placement_all'] | default([]) }}"
@@ -602,7 +582,6 @@ haproxy_default_services:
   - service: "{{ haproxy_octavia_service | combine(haproxy_octavia_service_overrides | default({})) }}"
   - service: "{{ haproxy_opendaylight_neutron_service | combine(haproxy_opendaylight_neutron_service_overrides | default({})) }}"
   - service: "{{ haproxy_opendaylight_websocket_service | combine(haproxy_opendaylight_websocket_service_overrides | default({})) }}"
-  - service: "{{ haproxy_panko_api_service | combine(haproxy_panko_api_service_overrides | default({})) }}"
   - service: "{{ haproxy_placement_service | combine(haproxy_placement_service_overrides | default({})) }}"
   - service: "{{ haproxy_rabbitmq_service | combine(haproxy_rabbitmq_service_overrides | default({})) }}"
   - service: "{{ haproxy_repo_service | combine(haproxy_repo_service_overrides | default({})) }}"
