@@ -29,12 +29,6 @@ GATE_EXIT_LOG_COPY="${GATE_EXIT_LOG_COPY:-false}"
 GATE_EXIT_LOG_GZIP="${GATE_EXIT_LOG_GZIP:-true}"
 GATE_EXIT_RUN_ARA="${GATE_EXIT_RUN_ARA:-true}"
 GATE_EXIT_RUN_DSTAT="${GATE_EXIT_RUN_DSTAT:-true}"
-# If this is a gate node from OpenStack-Infra Store all logs into the
-#  execution directory after gate run.
-if [[ -n "$ZUUL_PROJECT" ]]; then
-  GATE_EXIT_LOG_COPY=true
-fi
-
 
 # The default SSHD configuration has MaxSessions = 10. If a deployer changes
 #  their SSHD config, then the ANSIBLE_FORKS may be set to a higher number. We
@@ -159,12 +153,17 @@ function exit_state {
 
 function exit_success {
   set +x
+  if [ "$GATE_EXIT_RUN_DSTAT" == true ]; then
+    generate_dstat_charts || true
+  fi
   exit_state 0
 }
 
 function exit_fail {
   set +x
-  log_instance_info
+  if [ "$GATE_EXIT_RUN_DSTAT" == true ]; then
+    generate_dstat_charts || true
+  fi
   info_block "Error Info - $@"
   exit_state 1
 }
@@ -204,31 +203,26 @@ function setup_ara {
 
 function run_dstat {
   if [ "$GATE_EXIT_RUN_DSTAT" == true ]; then
-    case ${DISTRO_ID} in
-      rocky|centos|rhel)
-          dnf -y install dstat
-          ;;
-      ubuntu)
-          apt-get update
-          DEBIAN_FRONTEND=noninteractive apt-get -y install dstat
-          ;;
-    esac
+    if [[ ! -d /opt/dool ]]; then
+      git clone https://github.com/scottchiefbaker/dool /opt/dool
+      python3 /opt/dool/install.py
+    fi
 
     # https://stackoverflow.com/a/20338327 executing in ()& decouples the dstat
     # process from scripts-library to prevent hung builds if dstat fails to exit
     # for any reason.
-    (dstat -tcmsdn --top-cpu --top-mem --top-bio --nocolor --output /openstack/log/instance-info/dstat.csv \
+    (dool -tcmsdn --top-cpu --top-mem --top-bio --nocolor --output /openstack/log/instance-info/dstat.csv \
         < /dev/null > /openstack/log/instance-info/dstat.log 2>&1 &)
   fi
 }
 
 function generate_dstat_charts {
-  kill $(pgrep -f dstat)
+  kill $(pgrep -f dool)
   if [[ ! -d /opt/dstat_graph ]]; then
-    git clone https://github.com/Dabz/dstat_graph /opt/dstat_graph
+    git clone https://opendev.org/opendev/dstat_graph /opt/dstat_graph
   fi
   pushd /opt/dstat_graph
-    /usr/bin/env bash -e ./generate_page.sh /openstack/log/instance-info/dstat.csv >> /openstack/log/instance-info/dstat.html
+    /usr/bin/env bash -e ./generate_page.sh /openstack/log/instance-info/dstat.csv > /openstack/log/instance-info/dstat.html
   popd
 }
 
