@@ -1,0 +1,30 @@
+---
+
+features:
+  - |
+    Added ``zookepeer`` role which deploys zookeeper cluster that can be used
+    as a coordination driver for services like cinder, designate, octavia, etc.
+    For deployment you need to specify ``coordination_hosts`` in your conf.d
+    or openstack_user_config.yml and run ``zookeeper-install.yml`` playbook.
+  - |
+    Added following variables that are designed to control coordination
+    configuration. Reasonable defaults are set for services to work out of
+    the box.
+
+    * coordination_driver
+    * coordination_group
+    * coordination_client_ssl
+    * coordination_verify_cert
+    * coordination_port
+
+    Also each service that uses coordination have following variables defined:
+
+    * <service>_coordination_enable
+    * <service>_coordination_url
+
+upgrade:
+  - |
+    If you are using cinder in active/active mode (ie with Ceph backend), it's
+    highly recommended to define ``coordination_hosts`` before upgrade to
+    deploy zookeeper coordination cluster which is required for proper work
+    of cinder active/active mode.

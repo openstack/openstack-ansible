@@ -242,3 +242,13 @@ repo-infra_hosts:
       repo_container: 3
 {% endif %}
     ip: 172.29.236.100
+
+{% if 'zookeeper' in bootstrap_host_scenarios_expanded %}
+coordination_hosts:
+  aio1:
+    ip: 172.29.236.100
+{% if 'infra' in bootstrap_host_scenarios_expanded %}
+    affinity:
+      zookeeper_container: 3
+{% endif %}
+{% endif %}

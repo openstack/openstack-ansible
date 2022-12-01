@@ -73,6 +73,7 @@ COMMON_ETC_LOG_NAMES="apt \
     uwsgi \
     yum \
     yum.repos.d \
+    zookeeper \
     zypp"
 
 COMMON_ETC_LOG_NAMES+=" $(awk -F'os_' '/name.*os_.*/ {print $2}' $(dirname $(readlink -f ${BASH_SOURCE[0]}))/../ansible-role-requirements.yml | tr '\n' ' ')"
