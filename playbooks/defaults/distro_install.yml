@@ -25,6 +25,8 @@
 #
 
 keystone_bin: /usr/bin
+cinder_bin: /usr/bin
+nova_bin: /usr/bin
 
 ## Delegate all database setup tasks to the utility host, and use the utility venv python interpreter
 openstack_db_setup_host: "{{ groups['utility_all'][0] }}"
