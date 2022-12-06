@@ -26,7 +26,7 @@ nova_consoles:
   novnc:
     port: "{{ nova_novncproxy_port | default('6080') }}"
     path: "/vnc.html"
-  serial:
+  serialconsole:
     port: "{{ nova_serialconsoleproxy_port | default('6083') }}"
     path: "/"
   disabled:
