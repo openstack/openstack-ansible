@@ -19,8 +19,13 @@
   gather_facts: false
   user: root
   vars:
-    neutron_host_to_check: "{{ groups['neutron_all'][0] }}"
+    neutron_group: 'neutron_all'
+    neutron_host_to_check: "{{ groups[neutron_group][0] }}"
   tasks:
+    - name: End task if neutron is not deployed
+      meta: end_play
+      when: not groups[neutron_group]
+
     - name: Define neutron variables for upgrade
       lineinfile:
         dest: "{{ openstack_config_dir }}/user_neutron_migration.yml"
