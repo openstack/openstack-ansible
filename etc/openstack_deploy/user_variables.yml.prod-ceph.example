@@ -1,6 +1,8 @@
 ---
 # Because we have three haproxy nodes, we need
 # to one active LB IP, and we use keepalived for that.
+# These variables must be defined when external_lb_vip_address or
+# internal_lb_vip_address is set to FQDN.
 ## Load Balancer Configuration (haproxy/keepalived)
 haproxy_keepalived_external_vip_cidr: "<external_ip_address>/<netmask>"
 haproxy_keepalived_internal_vip_cidr: "172.29.236.9/32"
