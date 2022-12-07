@@ -309,7 +309,7 @@ function get_instance_info {
   fi
   if [ "$(command -v ansible)" ]; then
     ANSIBLE_HOST_KEY_CHECKING=False \
-      ansible -i "localhost," localhost -m setup > \
+      ansible -i "localhost," localhost -m setup -c local > \
         "/openstack/log/instance-info/host_system_info_${TS}.log" || true
   fi
   get_repos_info > \
