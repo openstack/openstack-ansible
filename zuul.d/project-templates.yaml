@@ -139,14 +139,10 @@
     check:
       jobs:
         - openstack-ansible-deploy-hosts_distro_lxc-centos-9-stream
-        - openstack-ansible-deploy-hosts_distro_lxc-rockylinux-9
-        - openstack-ansible-deploy-hosts_distro_lxc-debian-bullseye
         - openstack-ansible-deploy-hosts_distro_lxc-ubuntu-jammy
     gate:
       jobs:
         - openstack-ansible-deploy-hosts_distro_lxc-centos-9-stream
-        - openstack-ansible-deploy-hosts_distro_lxc-rockylinux-9
-        - openstack-ansible-deploy-hosts_distro_lxc-debian-bullseye
         - openstack-ansible-deploy-hosts_distro_lxc-ubuntu-jammy
 
 - project-template:
@@ -196,11 +192,11 @@
     check:
       jobs:
         - openstack-ansible-deploy-aio_distro_metal-centos-9-stream
-        - openstack-ansible-deploy-aio_distro_metal-rockylinux-9
         - openstack-ansible-deploy-aio_distro_metal-ubuntu-jammy
     experimental:
       jobs:
         - openstack-ansible-deploy-aio_distro_metal-debian-bullseye
+        - openstack-ansible-deploy-aio_distro_metal-rockylinux-9
 
 - project-template:
     name: openstack-ansible-deploy-nfs-jobs
