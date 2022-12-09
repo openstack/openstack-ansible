@@ -44,12 +44,12 @@ repo_nginx_threads: 2
 
 ## Keystone
 keystone_httpd_mpm_start_servers: 2
-keystone_httpd_mpm_min_spare_threads: 1
-keystone_httpd_mpm_max_spare_threads: 2
+keystone_httpd_mpm_min_spare_threads: 5
+keystone_httpd_mpm_max_spare_threads: 10
 keystone_httpd_mpm_thread_limit: 15
-keystone_httpd_mpm_thread_child: 5
-keystone_wsgi_threads: 1
-keystone_wsgi_processes: 1
+keystone_httpd_mpm_thread_child: 15
+keystone_wsgi_threads: 2
+keystone_wsgi_processes: 2
 
 ## Barbican
 barbican_wsgi_processes: 1
