@@ -111,15 +111,15 @@ global_overrides:
 {% endif %}
 {% if 'octavia' in bootstrap_host_scenarios_expanded %}
     - network:
-        container_bridge: "br-lbaas"
+        container_bridge: "br-octavia"
         container_type: "veth"
         container_interface: "eth14"
-        host_bind_override: "eth14"
+        network_interface: "eth14"
         ip_from_q: "lbaas"
         type: "flat"
         net_name: "lbaas"
         group_binds:
-          - neutron_linuxbridge_agent
+          - neutron_ovn_gateway
           - octavia-worker
           - octavia-housekeeping
           - octavia-health-manager
