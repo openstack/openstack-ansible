@@ -14,11 +14,8 @@
 # limitations under the License.
 
 cinder_bin: "/openstack/venvs/cinder-{{ venv_tag }}/bin"
-glance_bin: "/openstack/venvs/glance-{{ venv_tag }}/bin"
 keystone_bin: "/openstack/venvs/keystone-{{ venv_tag }}/bin"
 nova_bin: "/openstack/venvs/nova-{{ venv_tag }}/bin"
-octavia_bin: "/openstack/venvs/octavia-{{ venv_tag }}/bin"
-tempest_venv_bin: "/openstack/venvs/tempest-{{ venv_tag }}/bin"
 
 # URL for the frozen internal openstack repo.
 repo_release_path: "{{ openstack_repo_url }}/os-releases/{{ openstack_release }}/{{ os_distro_version }}"
