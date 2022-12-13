@@ -382,7 +382,7 @@ haproxy_nova_console_http_mode: "{{ not (nova_console_user_ssl_cert is defined
                                          and nova_console_user_ssl_key is defined) }}"
 haproxy_nova_console_service:
   haproxy_service_name: nova_console
-  haproxy_backend_nodes: "{{ groups['nova_console'] | default([]) + ((ironic_console_type == nova_console_type) | ternary(groups['ironic_console'], [])) }}"
+  haproxy_backend_nodes: "{{ groups['nova_console'] | default([]) + ((ironic_console_type == nova_console_type) | ternary(groups['ironic_console'] | default([]), [])) }}"
   haproxy_ssl: "{{ haproxy_ssl }}"
   haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
   haproxy_port: "{{ nova_console_port }}"
@@ -398,7 +398,7 @@ haproxy_nova_console_service:
 # nova-compute managed virtual machines
 haproxy_nova_ironic_console_service:
   haproxy_service_name: nova_ironic_console
-  haproxy_backend_nodes: "{{ groups['ironic_console'] }}"
+  haproxy_backend_nodes: "{{ groups['ironic_console'] | default([]) }}"
   haproxy_ssl: "{{ haproxy_ssl }}"
   haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
   haproxy_port: "{{ ironic_console_port }}"
