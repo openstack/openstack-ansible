@@ -101,12 +101,12 @@ global_overrides:
         container_bridge: "br-dbaas"
         container_type: "veth"
         container_interface: "eth13"
-        host_bind_override: "eth13"
+        network_interface: "eth13"
         ip_from_q: "dbaas"
         type: "flat"
         net_name: "dbaas-mgmt"
         group_binds:
-          - neutron_linuxbridge_agent
+          - neutron_ovn_gateway
           - rabbitmq
 {% endif %}
 {% if 'octavia' in bootstrap_host_scenarios_expanded %}
