@@ -1,12 +1,13 @@
-.. _container-networking:
+.. _metal-networking:
 
-Container networking
+Metal networking
 ====================
 
-OpenStack-Ansible deploys Linux containers (LXC) and uses Linux or Open
-vSwitch-based bridging between the container and the host interfaces to ensure
-that all traffic from containers flows over multiple host interfaces. All
-services in this deployment model use a *unique* IP address.
+OpenStack-Ansible supports deploying OpenStack and related services on "metal"
+as well as inside LXC containers. Python virtual environments (venvs) provide
+OpenStack service and Python library segregation, while other services such
+as Galera and RabbitMQ are co-located on the host. All services in this
+deployment model share the *same* IP address.
 
 This appendix describes how the interfaces are connected and how traffic flows.
 
@@ -26,8 +27,9 @@ In a typical production environment, physical network interfaces are combined
 in bonded pairs for better redundancy and throughput. Avoid using two ports on
 the same multiport network card for the same bonded interface, because a
 network card failure affects both of the physical network interfaces used by
-the bond. Single (bonded) interfaces are also a supported configuration, but
-will require the use of VLAN subinterfaces.
+the bond. Multiple bonded interfaces (ie. bond0, bond1) can be used to
+segregate traffic, if desired. Single (bonded) interfaces are also a supported
+configuration, but will require the use of VLAN subinterfaces.
 
 Linux Bridges/Switches
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -36,7 +38,7 @@ The combination of containers and flexible deployment options requires
 implementation of advanced Linux networking features, such as bridges,
 switches, and namespaces.
 
-* Bridges provide layer 2 connectivity (similar to physical switches) among
+* Bridges provide layer 2 connectivity (similar to switches) among
   physical, logical, and virtual network interfaces within a host. After
   a bridge/switch is created, the network interfaces are virtually plugged
   in to it.
@@ -53,38 +55,16 @@ switches, and namespaces.
   namespaces similar to patch cables connecting physical devices such as
   switches and routers.
 
-  Each container has a namespace that connects to the host namespace with
-  one or more ``veth`` pairs. Unless specified, the system generates
-  random names for ``veth`` pairs.
-
-The following image demonstrates how the container network interfaces are
-connected to the host's bridges and physical network interfaces:
-
-.. image:: ../figures/networkcomponents.drawio.png
-   :align: center
-
 Network diagrams
 ~~~~~~~~~~~~~~~~
 
-Hosts with services running in containers
------------------------------------------
+Hosts with services running on metal
+------------------------------------
 
 The following diagram shows how all of the interfaces and bridges interconnect
 to provide network connectivity to the OpenStack deployment:
 
-.. image:: ../figures/networkarch-container-external.drawio.png
-   :align: center
-
-The bridge ``lxcbr0`` is configured automatically and provides
-connectivity for the containers (via eth0) to the outside world, thanks to
-dnsmasq (dhcp/dns) + NAT.
-
-.. note::
-
-   If you require additional network configuration for your container interfaces
-   (like changing the routes on eth1 for routes on the management network),
-   please adapt your ``openstack_user_config.yml`` file.
-   See :ref:`openstack-user-config-reference` for more details.
+.. image:: ../figures/networkarch-metal-external.drawio.png
 
 Neutron traffic
 ---------------
@@ -103,13 +83,13 @@ a provider network name to a physical interface. These provider bridge mappings
 provide flexibility and abstract physical interface names when creating provider
 networks.
 
-LinuxBridge Example:
+**LinuxBridge Example**:
 
 .. code-block:: ini
 
     bridge_mappings = physnet1:bond1
 
-Open vSwitch/OVN Example:
+**Open vSwitch/OVN Example**:
 
 .. code-block:: ini
 
@@ -129,13 +109,6 @@ LinuxBridge agent for flat and vlan-based provider and tenant network traffic.
 The ``network_interface`` override is used for Open vSwitch and OVN-based deployments,
 and requires a physical interface name which will be connected to the provider bridge
 (ie. br-ex) for flat and vlan-based provider and tenant network traffic.
-
-.. note::
-
-    Previous versions of OpenStack-Ansible utilized a bridge named ``br-vlan`` for
-    flat and vlan-based provider and tenant network traffic. The ``br-vlan`` bridge
-    is a leftover of containerized Neutron agents and is no longer useful or
-    recommended.
 
 The following diagrams reflect the differences in the virtual network layout for
 supported network architectures.

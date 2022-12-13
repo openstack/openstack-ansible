@@ -16,4 +16,4 @@ was architected in this way.
    service-arch.rst
    storage-arch.rst
    container-networking.rst
-
+   metal-networking.rst
