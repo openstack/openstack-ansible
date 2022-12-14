@@ -1,0 +1,7 @@
+---
+deprecations:
+  - |
+    Variable ``nova_memcached_servers`` has been deprecated and replaced with
+    ``nova_cache_servers`` that defaults to ``memcached_servers``. For
+    backpwards compatability ``nova_memcached_servers`` is still respected
+    but will be removed in future releases.

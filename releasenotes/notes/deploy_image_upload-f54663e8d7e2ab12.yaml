@@ -1,0 +1,14 @@
+---
+features:
+  - |
+    The os_ironic ansible role can now upload the ironic deploy image
+    to glance. Several new variables are defined as ironic_deploy_image_*
+    which control this. It is possible to disable the upload to glance and
+    also to specify custom locations to stage the images from if required.
+upgrade:
+  - |
+    The variables ironic_inspector_ipa_initrd_name and ironic_inspector_ipa_initrd_name
+    are removed from the os_ironic role and more flexible functionality
+    is now provided with the ironic_deplo_image_* variables. Review any
+    overrides you have for the ironic service and adjust these new variables
+    if necessary.

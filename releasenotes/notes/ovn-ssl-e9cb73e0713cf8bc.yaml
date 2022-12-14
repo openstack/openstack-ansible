@@ -1,0 +1,11 @@
+---
+features:
+  - |
+    OVN is now protected via SSL. you can disable it via `neutron_ovn_ssl`. It
+    is not supported to switch from non-ssl to ssl.
+upgrade:
+  - |
+    OVN is now configured with SSL enabled by default, upgrading existing ovn
+    deployment is not tested. When upgrading it might be wise to set `neutron_ovn_ssl`
+    to `false` and manage the ssl configuration at a later stage.
+

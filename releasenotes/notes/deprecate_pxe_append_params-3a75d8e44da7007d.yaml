@@ -1,0 +1,8 @@
+---
+deprecations:
+  - |
+    The `pxe_append_params` configuration option has been deprecated by
+    Ironic and replaced with `kernel_append_params`. The corresponding
+    configuration override, `ironic_pxe_append_params`, has been replaced
+    by `ironic_kernel_append_params` but will continue to be supported
+    until a future undetermined release.

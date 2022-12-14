@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    You can configure options for dnsmasq by adding those to the newly
+    introduced ``neutron_dhcp_config_list`` list. This helps to configure e.g.
+    ``no-negcache`` to get around
+    https://bugs.launchpad.net/ubuntu/+source/dnsmasq/+bug/1974230.

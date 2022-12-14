@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    The lxc_hosts role now supports the ability to omit lxc network
+    interface deployment. The option `lxc_net_managed` is a Boolean
+    operator and defaults to **true**. When this option is set to
+    **false** the role will not deploy an interface file or attempt
+    to manage the state of the interface.

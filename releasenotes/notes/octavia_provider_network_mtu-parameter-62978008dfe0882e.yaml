@@ -1,0 +1,17 @@
+---
+features:
+  - |
+    A new parameter `octavia_provider_network_mtu` is added to set the
+    MTU to 1500 by default. This is important for deployments which
+    allow jumbo frames while setting the management to the standard
+    Ethernet MTU. The MTU can be still changed at any point during the
+    initial octavia deployment or with the
+    `openstack network set --mtu` command line.
+upgrade:
+  - |
+    A new parameter `octavia_provider_network_mtu` is added to set the
+    MTU to 1500 by default. This is important for deployments which
+    allow jumbo frames while setting the management to the standard
+    Ethernet MTU. The MTU can be still changed at any point during the
+    initial octavia deployment or with the
+    `openstack network set --mtu` command line.

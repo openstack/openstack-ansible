@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Added variable ``openstack_host_custom_hosts_records`` that allows
+    deployer to add custom records to /etc/hosts file. It's structure
+    a simple list where each element is a string wich should be placed
+    to /etc/hosts.

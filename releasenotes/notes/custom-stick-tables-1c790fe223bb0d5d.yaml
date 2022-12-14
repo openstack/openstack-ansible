@@ -1,0 +1,13 @@
+---
+features:
+  - |
+    A new variable ``haproxy_stick_table`` can be defined to apply a
+    customised stick-table to all backends on the loadbalancer. In addition,
+    ``haproxy_stick_table`` can be set in each service definition to have a
+    customised stick-table for a particular backend.
+upgrade:
+  - |
+    A default stick-table was previously applied to all backends by default
+    but did not have any specific purpose. This is now removed, and the variable
+    ``haproxy_stick_table`` should be used to supply a list of config lines
+    to be applied to each backend to control stick-table functionality.

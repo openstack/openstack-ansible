@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    With adding zookeeper as coordination backend Octavia will be configured
+    to use amphorav2 as default provider driver. This will result in creating
+    a new database and jobboard configuration. You can control database name
+    with variable ``octavia_galera_persistence_database`` and existing octavia
+    db user will be granted ALL permissions to that database.

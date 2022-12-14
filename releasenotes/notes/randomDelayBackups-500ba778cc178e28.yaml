@@ -1,0 +1,7 @@
+---
+features:
+  - Add parameters ``galera_mariadb_backups_full_randomized_delay_sec`` and
+    ``galera_mariadb_backups_incremental_randomized_delay_sec`` to run the
+    systemd timers for mariabackup with a randomized delay. This is useful if
+    backups are done of more than one node to avoid running it at the exact
+    same time.

@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    A new variable nova_ironic_console_type is added to enable the deployment
+    of one of the nova console proxies in the ironic_console ansible group.
+    The only supported setting at this time is `disabled` or `serialconsole`.
