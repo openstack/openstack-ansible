@@ -1,0 +1,15 @@
+---
+features:
+  - |
+    The keystone role now supports the option `keystone_use_uwsgi`, which will
+    allow deployers the ability to run keystone via uWSGI without needing the
+    apache webserver. When the `keystone_use_uwsgi` option is enabled, it will
+    setup the uWSGI process on port 5000.
+other:
+  - |
+    The keystone role can now has the ability to run a minimal uWSGI process
+    for keystone when the option `keystone_use_uwsgi` is set **true**. This
+    feature provides operators the ability to run a minimal install without
+    apache. While the minimal deployment is functional, it is not featureful.
+    Things like modshib and oath are not supported when running the minimal
+    setup.

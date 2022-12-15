@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    The ability to define trusted Cross-Site Request Forgery domains hsa been
+    added with the `horizon_ssl_csrf_trusted_origins` variable. The new variable
+    is a array of strings and when defined will render the django built-in
+    variable **CSRF_TRUSTED_ORIGINS**.
+
+    https://docs.djangoproject.com/en/4.1/ref/settings/#csrf-trusted-origins

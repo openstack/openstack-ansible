@@ -1,0 +1,16 @@
+---
+features:
+  - |
+    Add ``mistral_api_use_uwsgi`` which allows running mistral-api service
+    without uWSGI (set to `true` by default).
+upgrade:
+  - |
+    Along with ``mistral_api_use_uwsgi``, ``cron_trigger.enabled`` would be
+    set to `false` by default, disabling Cron Triggers on all existing
+    installations as per `suggestion <https://review.opendev.org/c/openstack/mistral/+/512520>`_.
+fixes:
+  - |
+    Mistral Cron Triggers do not create Workflow Executions, when mistral-api
+    service runs within uWSGI, so we introduce ``mistral_api_use_uwsgi``
+    which bounds Cron Trigger service status with Mistral API execution
+    environment.

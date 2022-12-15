@@ -1,0 +1,15 @@
+---
+features:
+  - |
+    Horizon now has the ability to run directly from uWSGI. To support
+    this feature the new Boolean variable `horizon_use_uwsgi` has
+    been added. The new variable, when set to **true**, will omit the
+    apache2 install process and instead run horizon from a uWSGI process
+    leveraging a systemd service file.
+other:
+  - |
+    When the option `horizon_use_uwsgi` is enabled, operators need
+    to be aware that not all horizon capabilities will be present. The
+    minimal uSGI process is just that, minimal, and not full featured.
+    If the deployment requires full featured capabilities, the apache
+    based deployment should remain enabled.

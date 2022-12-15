@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    New variables have been added to manage used cache backends:
+
+      * ``openstack_cache_backend``: defines driver, that will be used for
+        caching.
+        Default: oslo_cache.memcache_pool
+      * ``openstack_cache_backend_map``: maps selected backend to
+        the oslo driver that should be installed and configured for it.
