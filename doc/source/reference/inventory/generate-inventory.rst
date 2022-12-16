@@ -159,9 +159,9 @@ tox.ini file in that directory with following content:
   basepython = python3
   deps = -rhttps://opendev.org/openstack/openstack-ansible/raw/branch/master/requirements.txt
   install_command =
-      pip install -c https://releases.openstack.org/constraints/upper/master {packages} git+https://opendev.org/openstack/openstack-ansible@master
+      pip install -c https://releases.openstack.org/constraints/upper/master {packages} -e git+https://opendev.org/openstack/openstack-ansible@master\#egg=openstack-ansible
   commands =
-      osa-dynamic-inventory --config {toxinidir}
+      openstack-ansible-inventory --config {toxinidir}/openstack_deploy
 
 Then you can run a command to generate inventory using tox:
 
