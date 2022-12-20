@@ -28,7 +28,12 @@ ZUUL_PROJECT="${ZUUL_PROJECT:-}"
 GATE_EXIT_LOG_COPY="${GATE_EXIT_LOG_COPY:-false}"
 GATE_EXIT_LOG_GZIP="${GATE_EXIT_LOG_GZIP:-true}"
 GATE_EXIT_RUN_ARA="${GATE_EXIT_RUN_ARA:-true}"
-GATE_EXIT_RUN_DSTAT="${GATE_EXIT_RUN_DSTAT:-true}"
+
+if [ -z ${ZUUL_PROJECT} ]; then
+  GATE_EXIT_RUN_DSTAT="${GATE_EXIT_RUN_DSTAT:-false}"
+else
+  GATE_EXIT_RUN_DSTAT="${GATE_EXIT_RUN_DSTAT:-true}"
+fi
 
 # The default SSHD configuration has MaxSessions = 10. If a deployer changes
 #  their SSHD config, then the ANSIBLE_FORKS may be set to a higher number. We
