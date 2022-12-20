@@ -193,6 +193,8 @@ if [ -f "${ANSIBLE_ROLE_FILE}" ] && [[ -z "${SKIP_OSA_ROLE_CLONE+defined}" ]]; t
     export ANSIBLE_STRATEGY_PLUGINS="/dev/null"
     export ANSIBLE_CONFIG="none-ansible.cfg"
     export ANSIBLE_COLLECTIONS_PATH="/etc/ansible"
+    export ANSIBLE_TRANSPORT="smart"
+    export ANSIBLE_STRATEGY="linear"
 
     pushd scripts
       /opt/ansible-runtime/bin/ansible-playbook get-ansible-collection-requirements.yml \
@@ -213,6 +215,8 @@ if [ -f "${ANSIBLE_ROLE_FILE}" ] && [[ -z "${SKIP_OSA_ROLE_CLONE+defined}" ]]; t
     unset ANSIBLE_STRATEGY_PLUGINS
     unset ANSIBLE_CONFIG
     unset ANSIBLE_COLLECTIONS_PATH
+    unset ANSIBLE_TRANSPORT
+    unset ANSIBLE_STRATEGY
 fi
 
 echo "System is bootstrapped and ready for use."
