@@ -42,7 +42,7 @@
 
     - name: Append user collections to filtered required collections
       set_fact:
-        galaxy_collections_list: "{{ galaxy_collections_list + [ item ] }}"
+        galaxy_collections_list: "{{ (galaxy_collections_list | default([])) + [ item ] }}"
       with_items: "{{ user_collections.collections }}"
       when:
         - user_collections.collections is defined
