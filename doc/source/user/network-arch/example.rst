@@ -70,6 +70,64 @@ the ``etc/network`` and ``etc/netplan`` for ubuntu systems, and it is
 expected that these will need adjustment for the specific requirements
 of each deployment.
 
+If you want to delegate management of network bridges and interfaces to
+OpenStack-Ansible, you can define variables
+``openstack_hosts_systemd_networkd_devices`` and
+``openstack_hosts_systemd_networkd_networks`` in `group_vars/lxc_hosts`,
+for example:
+
+.. code-block:: yaml
+
+  openstack_hosts_systemd_networkd_devices:
+    - NetDev:
+        Name: vlan-mgmt
+        Kind: vlan
+      VLAN:
+        Id: 10
+    - NetDev:
+        Name: "{{ management_bridge }}"
+        Kind: bridge
+      Bridge:
+        ForwardDelaySec: 0
+        HelloTimeSec: 2
+        MaxAgeSec: 12
+        STP: off
+
+  openstack_hosts_systemd_networkd_networks:
+    - interface: "vlan-mgmt"
+      bridge: "{{ management_bridge }}"
+    - interface: "{{ management_bridge }}"
+      address: "{{ management_address }}"
+      netmask: "255.255.252.0"
+      gateway: "172.29.236.1"
+    - interface: "eth0"
+      vlan:
+        - "vlan-mgmt"
+      # NOTE: `05` is prefixed to filename to have precedence over netplan
+      filename: 05-lxc-net-eth0
+      address: "{{ ansible_facts['eth0']['ipv4']['address'] }}"
+      netmask: "{{ ansible_facts['eth0']['ipv4']['netmask'] }}"
+
+If you need to run some pre/post hooks for interfaces, you will need to
+configure a systemd service for that. It can be done using variable
+``openstack_hosts_systemd_services``, like that:
+
+.. code-block:: yaml
+
+  openstack_hosts_systemd_services:
+    - service_name: "{{ management_bridge }}-hook"
+      state: started
+      enabled: yes
+      service_type: oneshot
+      execstarts:
+        - /bin/bash -c "/bin/echo 'management bridge is available'"
+      config_overrides:
+        Unit:
+          Wants: network-online.target
+          After: "{{ sys-subsystem-net-devices-{{ management_bridge }}.device }}"
+          BindsTo: "{{ sys-subsystem-net-devices-{{ management_bridge }}.device }}"
+
+
 Single interface or bond
 ------------------------
 
