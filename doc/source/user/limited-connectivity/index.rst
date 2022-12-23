@@ -98,12 +98,11 @@ components such as Galera and Ceph.
 
 Example repositories to mirror (Ubuntu target hosts):
 
-- https://download.ceph.com/debian-luminous/
-- https://www.rabbitmq.com/debian
+- https://download.ceph.com/
 - http://ubuntu-cloud.archive.canonical.com/ubuntu
-- https://packages.erlang-solutions.com/ubuntu
-- https://mirror.rackspace.com/mariadb/repo/10.1/ubuntu
-- https://repo.percona.com/apt
+- https://dl.cloudsmith.io/public/rabbitmq/rabbitmq-erlang
+- https://dl.cloudsmith.io/public/rabbitmq/rabbitmq-server
+- http://downloads.mariadb.com/MariaDB
 
 These lists are intentionally not exhaustive and equivalents will be required
 for other Linux distributions. Consult the OpenStack-Ansible playbooks and role
@@ -113,11 +112,12 @@ override the repository location.
 LXC container images
 --------------------
 
-OpenStack-Ansible relies upon community built LXC images when building
-containers for OpenStack services. Deployers may choose to create, maintain,
-and host their own container images. Consult the
-``openstack-ansible-lxc_container_create`` role for details on configuration
-overrides for this scenario.
+OpenStack-Ansible builds LXC images using debootstrap or dnf depending on
+the distribution. In order to override the package  repository you
+might need to adjust some variables, like ``lxc_apt_mirror`` or completely
+override build command with ``lxc_hosts_container_build_command``
+Consult the ``openstack-ansible-lxc_hosts`` role for details on
+configuration overrides for this scenario.
 
 Source code repositories
 ------------------------
@@ -127,7 +127,10 @@ bootstrapping a deployment host. Deployers may wish to mirror the dependencies
 that are downloaded by the ``bootstrap-ansible.sh`` script.
 
 Deployers can configure the script to source Ansible from an alternate Git
-repository by setting the environment variable ``ANSIBLE_GIT_REPO``.
+repository by setting the environment variable ``ANSIBLE_GIT_REPO``. Also,
+during initial bootstrap you might need to define a custom URL for
+upper-constraints file that is part of `openstack/requirements` repository,
+using the TOX_CONSTRAINTS_FILE environment variable.
 
 Deployers can configure the script to source Ansible role dependencies from
 alternate locations by providing a custom role requirements file and specifying
@@ -248,15 +251,6 @@ Considerations when proxying TLS traffic
 Proxying TLS traffic often interferes with the clients ability to perform
 successful validation of the certificate chain. Various configuration
 variables exist within the OpenStack-Ansible playbooks and roles that allow a
-deployer to ignore these validation failures. Find an example
-``/etc/openstack_deploy/user_variables.yml`` configuration below:
-
-.. code-block:: yaml
-
-      pip_validate_certs: false
-      galera_package_download_validate_certs: false
-
-The list above is intentionally not exhaustive. Additional variables may exist
-within the project and will be named using the `*_validate_certs` pattern.
+deployer to ignore these validation failures.
 Disable certificate chain validation on a case by case basis and only after
 encountering failures that are known to only be caused by the proxy server(s).
