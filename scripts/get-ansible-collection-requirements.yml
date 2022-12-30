@@ -49,7 +49,7 @@
 
     - name: Check the Zuul src dir for cloned collections
       stat:
-        path: "{{ zuul_src_path }}/{{ item.name.split('/')[-3:] | join('/') }}"
+        path: "{{ zuul_src_path }}/{{ item.source.split('/')[-3:] | join('/') }}"
         get_attributes: no
         get_checksum: no
         get_mime: no
@@ -59,7 +59,8 @@
     - name: Override paths for zuul hosted collections in CI
       vars:
         zuul_item:
-          name: "git+file://{{ zuul_src_path }}/{{ item.item.name.split('/')[-3:] | join('/') }}"
+          name: "{{ item.item.name }}"
+          source: "git+file://{{ zuul_src_path }}/{{ item.item.source.split('/')[-3:] | join('/') }}"
           version: "{{ item.item.version }}"
           type: "{{ item.item.type | default('') }}"
       set_fact:
