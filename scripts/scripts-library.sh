@@ -198,6 +198,20 @@ function gate_job_exit_tasks {
   log_instance_info
 }
 
+function gate_log_requirements {
+  # ensure packages are installed to get instance info
+  determine_distro
+  case ${DISTRO_ID} in
+      ubuntu|debian)
+          apt-get update
+          DEBIAN_FRONTEND=noninteractive apt-get -y install iproute2 net-tools
+          ;;
+      rocky|centos|rhel)
+          dnf -y install iproute
+          ;;
+  esac
+}
+
 function setup_ara {
   # Install ARA and add it to the callback path provided by bootstrap-ansible.sh/openstack-ansible.rc
   # This is added *here* instead of bootstrap-ansible so it's used for CI purposes only.
