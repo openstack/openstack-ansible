@@ -125,14 +125,14 @@
         - install-packages
 
     - name: Create the ZFS pool
-      command: zpool create pool "/dev/{{ _bootstrap_host_data_disk_device }}2"
+      command: zpool create osa-test-pool "/dev/{{ _bootstrap_host_data_disk_device }}2"
       args:
-        creates: /pool
+        creates: /osa-test-pool
       when:
         - bootstrap_host_data_disk_device_force | bool
 
-    - name: Create the ZFS pool/lxc volume
-      shell: "(zfs list | grep lxc) || zfs create -o mountpoint=/var/lib/lxc pool/lxc"
+    - name: Create the ZFS osa-test-pool/lxc volume
+      shell: "(zfs list | grep lxc) || zfs create -o mountpoint=/var/lib/lxc osa-test-pool/lxc"
       when:
         - bootstrap_host_data_disk_device_force | bool
       tags:
