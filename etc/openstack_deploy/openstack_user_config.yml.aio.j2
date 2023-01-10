@@ -211,9 +211,11 @@ global_overrides:
 identity_hosts:
   aio1:
     ip: 172.29.236.100
-{% if 'keystone' in bootstrap_host_scenarios %}
+{% if 'keystone' in bootstrap_host_scenarios or 'infra' in bootstrap_host_scenarios %}
 #   NOTE (jrosser) this ensures that we deploy 3 keystone containers
 #   during the os_keystone role test to validate ssh keys and fernet key sync
+#   Also deploy 3 keystone containers for infra jobs as these are run
+#   for patches to the plugins repo containing the ssh key management role
     affinity:
       keystone_container: 3
 {% endif %}
