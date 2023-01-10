@@ -118,6 +118,9 @@ development team by performing one of the following recurring tasks:
   * Refresh static elements in roles. For example, update a specific version of
     the software packages.
 
+  * Update release-versioned components such as Octavia test ampohora image
+    and Ironic IPA image/kernel.
+
   * Bump ``ceph_stable_release`` to latest Ceph LTS release in the integrated
     OpenStack-Ansible repo, and inside the ``ceph_client`` role defaults.
 
