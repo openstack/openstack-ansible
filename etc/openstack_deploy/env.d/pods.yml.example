@@ -1,0 +1,44 @@
+---
+
+component_skel:
+  pod1_containers:
+    belongs_to:
+      - pod1_all
+  pod1_hosts:
+    belongs_to:
+      - pod1_all
+
+  pod2_containers:
+    belongs_to:
+      - pod2_all
+  pod2_hosts:
+    belongs_to:
+      - pod2_all
+
+  pod3_containers:
+    belongs_to:
+      - pod3_all
+  pod3_hosts:
+    belongs_to:
+      - pod3_all
+
+  pod4_containers:
+    belongs_to:
+      - pod3_all
+  pod4_hosts:
+    belongs_to:
+      - pod3_all
+
+container_skel:
+  pod1_containers:
+    properties:
+      is_nest: True
+  pod2_containers:
+    properties:
+      is_nest: True
+  pod3_containers:
+    properties:
+      is_nest: True
+  pod4_containers:
+    properties:
+      is_nest: True
