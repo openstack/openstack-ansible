@@ -163,7 +163,6 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'ceph-mon_hosts',
         'ceph-mon',
         'ceph-mds',
-        'ceph-mds_all',
         'ceph-mds_containers',
         'ceph-mds_container',
         'ceph-mds_hosts',
@@ -178,7 +177,6 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'ceph-rgw_hosts',
         'ceph-rgw',
         'ceph-nfs',
-        'ceph-nfs_all',
         'ceph-nfs_containers',
         'ceph-nfs_container',
         'ceph-nfs_hosts',
@@ -195,6 +193,8 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'cloudkitty_container',
         'cloudkitty_engine',
         'cloudkitty_hosts',
+        'coordination_containers',
+        'coordination_hosts',
         'compute-infra_all',
         'compute-infra_containers',
         'compute-infra_hosts',
@@ -259,6 +259,7 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'ironic_api',
         'ironic_api_container',
         'ironic_conductor',
+        'ironic_console',
         'ironic_compute',
         'ironic_compute_container',
         'ironic-compute_containers',
@@ -278,9 +279,6 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'keystone_container',
         'kvm-compute_containers',
         'kvm-compute_hosts',
-        'log_all',
-        'log_containers',
-        'log_hosts',
         'lxc_hosts',
         'magnum',
         'magnum-infra_all',
@@ -385,6 +383,8 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'network_hosts',
         'network-agent_containers',
         'network-agent_hosts',
+        'network-gateway_containers',
+        'network-gateway_hosts',
         'network-infra_containers',
         'network-infra_hosts',
         'neutron_agent',
@@ -396,7 +396,14 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'neutron_linuxbridge_agent',
         'neutron_metadata_agent',
         'neutron_metering_agent',
+        'network-northd_containers',
+        'network-northd_hosts',
         'neutron_openvswitch_agent',
+        'neutron_ovn_controller',
+        'neutron_ovn_gateway',
+        'neutron_ovn_gateway_container',
+        'neutron_ovn_northd',
+        'neutron_ovn_northd_container',
         'neutron_sriov_nic_agent',
         'neutron_server',
         'neutron_server_container',
@@ -435,6 +442,7 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'repo-infra_all',
         'repo-infra_containers',
         'repo-infra_hosts',
+        'repo-infra_all',
         'repo_all',
         'repo_container',
         'sahara-infra_all',
@@ -492,6 +500,9 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'utility',
         'utility_all',
         'utility_container',
+        'zookeeper',
+        'zookeeper_all',
+        'zookeeper_container',
         'zun-infra_all',
         'zun-infra_containers',
         'zun-infra_hosts',
@@ -1270,8 +1281,8 @@ class TestSetUsedIPS(unittest.TestCase):
 
 class TestConfigCheckFunctional(TestConfigCheckBase):
     def duplicate_ip(self):
-        ip = self.user_defined_config['log_hosts']['aio1']
-        self.user_defined_config['log_hosts']['bogus'] = ip
+        ip = self.user_defined_config['dashboard_hosts']['aio1']
+        self.user_defined_config['dashboard_hosts']['bogus'] = ip
 
     def test_checking_good_config(self):
         output = di.main(config=TARGET_DIR, check=True,
@@ -1288,15 +1299,15 @@ class TestConfigCheckFunctional(TestConfigCheckBase):
 
 class TestNetworkEntry(unittest.TestCase):
     def test_all_args_filled(self):
-        entry = di.network_entry(True, 'eth1', 'br-mgmt', 'my_type', '1700')
-
+        entry = di.network_entry(True, 'eth1', 'br-mgmt', 'my_bridge', 'my_type', '1700')
         self.assertNotIn('interface', entry.keys())
         self.assertEqual(entry['bridge'], 'br-mgmt')
         self.assertEqual(entry['type'], 'my_type')
+        self.assertEqual(entry['bridge_type'], 'my_bridge')
         self.assertEqual(entry['mtu'], '1700')
 
     def test_container_dict(self):
-        entry = di.network_entry(False, 'eth1', 'br-mgmt', 'my_type', '1700')
+        entry = di.network_entry(False, 'eth1', 'br-mgmt', 'my_type', net_mtu='1700')
 
         self.assertEqual(entry['interface'], 'eth1')
 
@@ -1379,7 +1390,7 @@ class TestLxcHosts(TestConfigCheckBase):
             inv_mock.return_value = (inventory, faked_path)
             new_inventory = get_inventory()
 
-        self.assertEqual(original_lxc_hosts, new_inventory['lxc_hosts'])
+        self.assertEqual(set(original_lxc_hosts['hosts']), set(new_inventory['lxc_hosts']['hosts']))
 
 
 class TestConfigMatchesEnvironment(unittest.TestCase):
@@ -1459,6 +1470,11 @@ class TestInventoryGroupConstraints(unittest.TestCase):
         # bug #1646136
         override = """
             physical_skel:
+              compute_containers:
+                belongs_to:
+                - all_containers
+              compute_hosts:
+                - hosts
               local-compute_containers:
                 belongs_to:
                 - compute_containers

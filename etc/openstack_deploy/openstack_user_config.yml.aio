@@ -31,7 +31,7 @@ used_ips:
   - "172.29.248.100"
 
 global_overrides:
-  internal_lb_vip_address: 172.29.236.100
+  internal_lb_vip_address: 172.29.236.101
   # The external IP is quoted simply to ensure that the .aio file can be used as input
   # dynamic inventory testing.
   external_lb_vip_address: "{{ bootstrap_host_public_address | default(ansible_facts['default_ipv4']['address']) }}"
@@ -129,10 +129,6 @@ shared-infra_hosts:
     ip: 172.29.236.100
 
 repo-infra_hosts:
-  aio1:
-    ip: 172.29.236.100
-
-log_hosts:
   aio1:
     ip: 172.29.236.100
 

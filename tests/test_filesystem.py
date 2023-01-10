@@ -90,7 +90,7 @@ class TestMultipleRuns(unittest.TestCase):
         self.assertIn('_meta', inv)
         # This test is basically just making sure we get more than
         # INVENTORY_SKEL populated, so we're not going to do deep testing
-        self.assertIn('log_hosts', inv)
+        self.assertIn('dashboard_hosts', inv)
 
     def tearDown(self):
         # Clean up here since get_inventory will not do it by design in

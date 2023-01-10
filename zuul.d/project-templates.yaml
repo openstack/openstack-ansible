@@ -18,12 +18,14 @@
       jobs:
         - openstack-ansible-varstest-aio
         - openstack-ansible-shastest-metal
+        - openstack-ansible-tox-inventory
         - openstack-ansible-deploy-infra_lxc-validate
         - openstack-tox-docs
     gate:
       jobs:
         - openstack-ansible-varstest-aio
         - openstack-ansible-shastest-metal
+        - openstack-ansible-tox-inventory
         - openstack-ansible-deploy-infra_lxc-validate
         - openstack-tox-docs
     periodic:
