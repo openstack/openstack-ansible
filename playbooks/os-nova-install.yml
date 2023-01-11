@@ -47,8 +47,8 @@
         filter: ansible_local
         gather_subset: "!all"
 
-    # This variable contains the values of the local fact set for the cinder
-    # venv tag for all hosts in the 'cinder_all' host group.
+    # This variable contains the values of the local fact set for the nova
+    # venv tag for all hosts in the 'nova_all' host group.
     - name: Gather software version list
       set_fact:
         nova_all_software_versions: "{{ (groups['nova_all'] | map('extract', hostvars, ['ansible_local', 'openstack_ansible', 'nova', 'venv_tag'])) | list }}"
