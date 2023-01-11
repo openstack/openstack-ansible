@@ -29,11 +29,11 @@
 ### or have a comment / reason attached to them as to why a tag can not work.
 
 
-### HEAD as of 14.11.2022 ###
+### HEAD as of 11.01.2023 ###
 
 ## Global Requirements
 requirements_git_repo: https://opendev.org/openstack/requirements
-requirements_git_install_branch: 43903b8757b8c1d45dcb97956be63581135845e0
+requirements_git_install_branch: ce4590a60086450e4b66c6b5d810c0bbb8258518
 requirements_git_track_branch: stable/xena
 
 ## Adjutant service
@@ -54,7 +54,7 @@ aodh_git_track_branch: stable/xena
 
 ## Barbican service
 barbican_git_repo: https://opendev.org/openstack/barbican
-barbican_git_install_branch: 3670a0a8bbe08501d634189ffbf187098fb25fc7
+barbican_git_install_branch: e32e2e421b00482d26f7e263855b0555ca8a94c5
 barbican_git_track_branch: stable/xena
 
 
@@ -66,13 +66,13 @@ barbican_dashboard_git_track_branch: master
 
 ## Ceilometer service
 ceilometer_git_repo: https://opendev.org/openstack/ceilometer
-ceilometer_git_install_branch: 0b2a9e31a2a1a29053ddaf545c986e169a0aefb7
+ceilometer_git_install_branch: f075c7013e49875f8989ec083b273061588b5c40
 ceilometer_git_track_branch: stable/xena
 
 
 ## Cinder service
 cinder_git_repo: https://opendev.org/openstack/cinder
-cinder_git_install_branch: d941ad28f5834bdb3c1413ca03046ac7bcf2c5fd
+cinder_git_install_branch: 4c7dbde4401aba24ee58f526fc98976580d64e62
 cinder_git_track_branch: stable/xena
 
 
@@ -102,13 +102,13 @@ designate_dashboard_git_track_branch: stable/xena
 
 ## Glance service
 glance_git_repo: https://opendev.org/openstack/glance
-glance_git_install_branch: 3cfbb69c017ed0e2c61f267829a3b79b073832f0
+glance_git_install_branch: e45a32d17e0a0a4a2e3de964647549d075e276ba
 glance_git_track_branch: stable/xena
 
 
 ## Heat service
 heat_git_repo: https://opendev.org/openstack/heat
-heat_git_install_branch: 782da94b34d17b2bf06ba8bf06f43c091c52266f
+heat_git_install_branch: c37ec5180cefbc992640bdb2e80ed67b92dc5664
 heat_git_track_branch: stable/xena
 
 ## Horizon Heat dashboard plugin
@@ -118,7 +118,7 @@ heat_dashboard_git_track_branch: stable/xena
 
 ## Horizon service
 horizon_git_repo: https://opendev.org/openstack/horizon
-horizon_git_install_branch: 0ad2f14e9c026eb23cb87a930c0d82342fff847a
+horizon_git_install_branch: a7f95784785408afdd2273de7aef33cee31793e1
 horizon_git_track_branch: stable/xena
 
 ## Horizon Ironic dashboard plugin
@@ -151,13 +151,13 @@ keystone_git_track_branch: stable/xena
 
 ## Manila service
 manila_git_repo: https://opendev.org/openstack/manila
-manila_git_install_branch: 32176292887567563b4c8dd5ed7158686992fa56
+manila_git_install_branch: 328af8b24f3d603526ecb829077c4d1c7df355ff
 manila_git_track_branch: stable/xena
 
 
 ## Neutron service
 neutron_git_repo: https://opendev.org/openstack/neutron
-neutron_git_install_branch: 67a97d7cdb16af962401fcd00b166d6afd4ec843
+neutron_git_install_branch: 8bd833185d2795f42fa3369321a3eba072d84a45
 neutron_git_track_branch: stable/xena
 
 neutron_vpnaas_git_repo: https://opendev.org/openstack/neutron-vpnaas
@@ -195,12 +195,12 @@ networking_nsx_git_install_branch: 0253265f75f63d5619b30f16a6b64459dec79d82
 networking_nsx_git_track_branch: master
 
 networking_nsxlib_git_repo: https://opendev.org/x/vmware-nsxlib
-networking_nsxlib_git_install_branch: 7b16449dabedb8524a61a372976e6792811fd026
+networking_nsxlib_git_install_branch: 44ac0a020a7db6b1842a61a5f3d4de229d03b37f
 networking_nsxlib_git_track_branch: master
 
 ## Nova service
 nova_git_repo: https://opendev.org/openstack/nova
-nova_git_install_branch: 853872152da038397d80db4d5a87a95a76142f14
+nova_git_install_branch: fe5aee061bd03631d9e9d1810eb698d0a29bf37b
 nova_git_track_branch: stable/xena
 
 
@@ -218,35 +218,35 @@ senlin_git_track_branch: stable/xena
 
 ## Swift service
 swift_git_repo: https://opendev.org/openstack/swift
-swift_git_install_branch: bb4f9e1908a4a09f1ec61a45f3e06e3ab6552333
+swift_git_install_branch: 8dcb7d5c91db1e7df3fb1a37139088fcfd5b3f9c
 swift_git_track_branch: stable/xena
 
 
 ## Ironic service
 ironic_git_repo: https://opendev.org/openstack/ironic
-ironic_git_install_branch: a26509b7ae942aa8377373f458129ac313f4d82f
+ironic_git_install_branch: 793b981320d9d5bd034397bffcfb949b55506027
 ironic_git_track_branch: stable/xena
 
 
 ## Ironic inspector service
 ironic_inspector_git_repo: https://opendev.org/openstack/ironic-inspector
-ironic_inspector_git_install_branch: befeb52ba4c5c4bf687a24456664368a86a819e4
+ironic_inspector_git_install_branch: 8493544c15525df0da09f512cd48639bd976fc53
 ironic_inspector_git_track_branch: stable/xena
 
 
 ## Magnum service
 magnum_git_repo: https://opendev.org/openstack/magnum
-magnum_git_install_branch: bbdb777378bb1a48f830f776fca5a24d16be9681
+magnum_git_install_branch: 8fd45eb92a86df50f6b3ef3bf659bd2340834111
 magnum_git_track_branch: stable/xena
 
 ## Masakari service
 masakari_git_repo: https://opendev.org/openstack/masakari
-masakari_git_install_branch: a5b7564f4453e7ec7df4021a852eb40b0bd631ca
+masakari_git_install_branch: c5e6334f892bbde9b2686cb65f0f44c98e4d2b8c
 masakari_git_track_branch: stable/xena
 
 ## Masakari monitors services
 masakari_monitors_git_repo: https://opendev.org/openstack/masakari-monitors
-masakari_monitors_git_install_branch: 98a5b71d1b0ca1de4675786d414f565bba517626
+masakari_monitors_git_install_branch: 63b344692cbc46620a7b04a78baf49dab1e68e20
 masakari_monitors_git_track_branch: stable/xena
 
 ## Mistral service
@@ -280,7 +280,7 @@ trove_dashboard_git_track_branch: stable/xena
 
 ## Octavia service
 octavia_git_repo: https://opendev.org/openstack/octavia
-octavia_git_install_branch: ef29fd9a622023b3517edd3546dc1a2f6991c696
+octavia_git_install_branch: c0b6f5c9ef07f777b10d952a70638c3e00e21c05
 octavia_git_track_branch: stable/xena
 
 
