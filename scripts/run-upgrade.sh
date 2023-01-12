@@ -184,11 +184,12 @@ function main {
                      openstack-ansible setup-hosts.yml -e 'lxc_container_allow_restarts=false' --limit 'galera_all:rabbitmq_all' || \
                      openstack-ansible setup-hosts.yml -e package_state=latest")
         # upgrade infrastructure
-        RUN_TASKS+=("setup-infrastructure.yml -e 'galera_upgrade=true' -e 'rabbitmq_upgrade=true' -e package_state=latest")
+        RUN_TASKS+=("setup-infrastructure.yml -e 'galera_upgrade=true' -e 'rabbitmq_upgrade=true' -e 'package_state=latest' --skip-tags haproxy-config")
         # explicitly perform controlled galera cluster restart with new lxc config
         RUN_TASKS+=("${SCRIPTS_PATH}/upgrade-utilities/galera-cluster-rolling-restart.yml")
         # upgrade openstack
         RUN_TASKS+=("setup-openstack.yml -e package_state=latest")
+        RUN_TASKS+=("haproxy-install.yml -e package_state=latest")
         # Run the tasks in order
         for item in ${!RUN_TASKS[@]}; do
           echo "### NOW RUNNING: ${RUN_TASKS[$item]}"
