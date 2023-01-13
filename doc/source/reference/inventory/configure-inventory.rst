@@ -340,3 +340,25 @@ To omit a component from a deployment, you can use one of several options:
   you specify the component to run directly on a host by using the ``is_metal``
   property, a container is created for this component.
 
+
+Having SSH network different from OpenStack Management network
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In some environments SSH network that is used to access nodes from deploy
+host and management network are different. In this case it's important that
+services were listening on correct network while ensure that Ansible use SSH
+network for accessing managed hosts. In these cases you can define
+``management_ip`` key while defining hosts in your ``openstack_user_config.yml``
+file.
+
+``management_ip`` will be used as ``management_address`` for the node, while
+``ip`` will be used as ``ansible_host`` for accessing node by SSH.
+
+Example:
+
+.. code-block:: yaml
+
+    shared-infra_hosts:
+      infra1:
+        ip: 192.168.0.101
+        management_ip: 172.29.236.101

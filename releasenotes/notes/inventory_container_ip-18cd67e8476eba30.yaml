@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    Added new ``management_ip`` option, that can be defined in conf.d or
+    openstack_user_config.yml files for hosts. It might be useful if SSH
+    network for accessing hosts differs from OpenStack management network.
+    Option ``management_ip`` should be set to an IP address that represents
+    management network on the host, while ``ip`` option remains to represent
+    SSH address that will be used to access host by Ansible.

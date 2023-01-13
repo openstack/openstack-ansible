@@ -443,7 +443,8 @@ def user_defined_setup(config, inventory):
 
                 hvs[_key].update({
                     'ansible_host': _value['ip'],
-                    'management_address': _value['ip'],
+                    'management_address': _value.get(
+                        'management_ip', _value['ip']),
                     'is_metal': True,
                     'physical_host_group': key
                 })
@@ -657,6 +658,7 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
                 if address:
                     network['address'] = address
 
+            ansible_host_address = networks[old_address]['address']
             network['netmask'] = netmask
 
         elif is_metal:
@@ -671,10 +673,14 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
                     phg = user_config[cphg][container_host]
                 else:
                     phg = user_config[cphg][physical_host]
-                network['address'] = phg['ip']
+                ansible_host_address = phg['ip']
+                network['address'] = phg.get(
+                    'management_ip', ansible_host_address)
+        else:
+            ansible_host_address = networks[old_address]['address']
 
         if is_management_address is True:
-            container['ansible_host'] = networks[old_address]['address']
+            container['ansible_host'] = ansible_host_address
 
         if is_management_address is True:
             container['management_address'] = networks[old_address]['address']
