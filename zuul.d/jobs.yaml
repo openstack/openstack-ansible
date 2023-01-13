@@ -111,6 +111,18 @@
       - name: openstack/keystone
 
 - job:
+    name: openstack-ansible-tox-inventory
+    parent: tox
+    description: |
+            Dynamic dynamic_inventory unit tests using tox
+    vars:
+      tox_envlist: inventory
+    files:
+        - ^osa_toolkit/.*$
+        - ^etc/openstack_deploy/.*$
+        - ^inventory/.*$
+
+- job:
     name: openstack-ansible-deploy-aio-infra
     parent: openstack-ansible-deploy
     description: |

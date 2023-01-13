@@ -16,12 +16,9 @@
 # (c) 2016, Nolan Brubaker <nolan.brubaker@rackspace.com>
 import glob
 import os
-from os import path
-import yaml
 
-CONFIGS_DIR = path.join(os.getcwd(), 'etc', 'openstack_deploy')
-AIO_CONFIG_FILE = path.join(CONFIGS_DIR, 'openstack_user_config.yml.aio')
-CONFD = path.join(CONFIGS_DIR, 'conf.d')
+import jinja2
+import yaml
 
 
 def make_example_config(aio_config_file, configs_dir):
@@ -31,11 +28,14 @@ def make_example_config(aio_config_file, configs_dir):
     :param configs_dir: ``str`` Directory containing independent conf.d files
     """
     config = {}
-
+    j2env = jinja2.Environment(loader=jinja2.BaseLoader,
+                               autoescape=jinja2.select_autoescape())
     files = glob.glob(os.path.join(configs_dir, '*.aio'))
     for file_name in files:
         with open(file_name, 'r') as f:
-            config.update(yaml.safe_load(f.read()))
+            template = j2env.from_string(f.read())
+            jinja_data = template.render()
+            config.update(yaml.safe_load(jinja_data))
 
     with open(aio_config_file, 'r') as f:
         config.update(yaml.safe_load(f.read()))

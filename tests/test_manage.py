@@ -86,14 +86,14 @@ class TestRemoveIpfunction(unittest.TestCase):
     def test_inventory_item_removed(self):
         inventory = self.inv
 
-        # Make sure we have log_hosts in the original inventory
-        self.assertIn('log_hosts', inventory)
+        # Make sure we have dashboard_hosts in the original inventory
+        self.assertIn('dashboard_hosts', inventory)
 
-        mi.remove_inventory_item("log_hosts", inventory)
-        mi.remove_inventory_item("log_hosts", inventory, TARGET_DIR)
+        mi.remove_inventory_item("dashboard_hosts", inventory)
+        mi.remove_inventory_item("dashboard_hosts", inventory, TARGET_DIR)
 
         # Now make sure it's gone
-        self.assertIn('log_hosts', inventory)
+        self.assertIn('dashboard_hosts', inventory)
 
     def test_metal_ips_kept(self):
         mi.remove_ip_addresses(self.inv)

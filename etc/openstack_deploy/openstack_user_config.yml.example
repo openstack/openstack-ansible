@@ -802,26 +802,6 @@
 #           filter_function: "share.size >= 0"
 #           goodness_function: "share.size >= 0"
 #
-# --------
-#
-# Level: log_hosts (optional)
-# List of target hosts on which to deploy logging services. Recommend
-# one minimum target host for this service.
-#
-#   Level: <value> (required, string)
-#   Hostname of a target host.
-#
-#     Option: ip (required, string)
-#     IP address of this target host, typically the IP address assigned to
-#     the management bridge.
-#
-# Example:
-#
-# Define a logging host:
-#
-# log_hosts:
-#   log1:
-#     ip: 172.29.236.171
 #
 # --------
 #
