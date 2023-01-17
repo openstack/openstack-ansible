@@ -109,6 +109,29 @@
       - name: openstack/murano
       # All deployment scenarios including infra need keystone
       - name: openstack/keystone
+      # Tempest plus plugins needed for ubuntu distro jobs
+      - name: openstack/tempest
+      - name: openstack/barbican-tempest-plugin
+      - name: openstack/cinder-tempest-plugin
+      - name: openstack/cloudkitty-tempest-plugin
+      - name: openstack/designate-tempest-plugin
+      - name: openstack/glance-tempest-plugin
+      - name: openstack/heat-tempest-plugin
+      - name: openstack/ironic-tempest-plugin
+      - name: openstack/keystone-tempest-plugin
+      - name: openstack/magnum-tempest-plugin
+      - name: openstack/manila-tempest-plugin
+      - name: openstack/murano-tempest-plugin
+      - name: openstack/neutron-tempest-plugin
+      - name: x/novajoin-tempest-plugin
+      - name: openstack/octavia-tempest-plugin
+      - name: openstack/senlin-tempest-plugin
+      - name: openstack/sahara-tests
+      - name: openstack/telemetry-tempest-plugin
+      - name: openstack/trove-tempest-plugin
+      - name: openstack/zaqar-tempest-plugin
+      - name: openstack/zun-tempest-plugin
+      - name: openstack/rally-openstack
 
 - job:
     name: openstack-ansible-tox-inventory
@@ -256,6 +279,29 @@
       - name: openstack/zun
       - name: openstack/kuryr-libnetwork
       - name: openstack/kuryr
+      # Tempest plus plugins
+      - name: openstack/tempest
+      - name: openstack/barbican-tempest-plugin
+      - name: openstack/cinder-tempest-plugin
+      - name: openstack/cloudkitty-tempest-plugin
+      - name: openstack/designate-tempest-plugin
+      - name: openstack/glance-tempest-plugin
+      - name: openstack/heat-tempest-plugin
+      - name: openstack/ironic-tempest-plugin
+      - name: openstack/keystone-tempest-plugin
+      - name: openstack/magnum-tempest-plugin
+      - name: openstack/manila-tempest-plugin
+      - name: openstack/murano-tempest-plugin
+      - name: openstack/neutron-tempest-plugin
+      - name: x/novajoin-tempest-plugin
+      - name: openstack/octavia-tempest-plugin
+      - name: openstack/senlin-tempest-plugin
+      - name: openstack/sahara-tests
+      - name: openstack/telemetry-tempest-plugin
+      - name: openstack/trove-tempest-plugin
+      - name: openstack/zaqar-tempest-plugin
+      - name: openstack/zun-tempest-plugin
+      - name: openstack/rally-openstack
 
 # Ensuring overrides work
 - job:
