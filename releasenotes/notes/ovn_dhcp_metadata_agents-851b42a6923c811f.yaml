@@ -1,0 +1,10 @@
+---
+
+fixes:
+  - |
+    Fixed issue where neutron-metadata-agent and neutron-dhcp-agent were
+    started on network_hosts for OVN scenario along with
+    neutron-ovn-metadata-agent. These services will be disabled and masked
+    for existing environments. Manual clean-up of systemd services and
+    correpsonsive neutron agents is still needed.
+    New deployments won't have these services deployed from the beginning.
