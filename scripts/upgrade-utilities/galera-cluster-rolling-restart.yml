@@ -53,7 +53,7 @@
     - name: Wait for mariadb port 3306 to be available
       wait_for:
         port: "3306"
-        host: "{{ ansible_host | default(ansible_ssh_host | default(inventory_hostname)) }}"
+        host: "{{ management_address | default(ansible_ssh_host | default(inventory_hostname)) }}"
       retries: 10
       delay: 10
       delegate_to: "{{ groups['utility_all'][0] }}"
