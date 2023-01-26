@@ -1,6 +1,6 @@
 ---
 
-### HEAD as of 11.01.2023 ###
+### HEAD as of 26.01.2023 ###
 
 - name: ansible-hardening
   scm: git
@@ -191,9 +191,9 @@
 - name: os_nova
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_nova
-  version: 577dfa9450ad52854533e189a78111f1ba93a9b4
+  version: abe9b6d9c5a78583b6b1283e5226f7079aa50d02
   trackbranch: stable/xena
-  shallow_since: '2022-05-17'
+  shallow_since: '2023-01-12'
 - name: os_octavia
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_octavia
@@ -293,9 +293,9 @@
 - name: sshd
   scm: git
   src: https://github.com/willshersystems/ansible-sshd
-  version: 788a3d86688eb85edc0f3e9d5a3a1842755fc079
+  version: 5c1f645e08ae4461c1c068eca38babdc72a2c93b
   trackbranch: master
-  shallow_since: '2022-12-27'
+  shallow_since: '2023-01-17'
 - name: bird
   scm: git
   src: https://github.com/logan2211/ansible-bird
@@ -323,9 +323,9 @@
 - name: ceph-ansible
   scm: git
   src: https://github.com/ceph/ceph-ansible
-  version: fb6098fa7c6dd97193607b8a624f14b88862cdf3
+  version: d3071d3a0f776634e74b673d1abfc7690c20e875
   trackbranch: stable-6.0
-  shallow_since: '2022-12-14'
+  shallow_since: '2023-01-15'
 - name: opendaylight
   scm: git
   src: https://github.com/opendaylight/integration-packaging-ansible-opendaylight
@@ -353,15 +353,15 @@
 - name: systemd_mount
   src: https://opendev.org/openstack/ansible-role-systemd_mount
   scm: git
-  version: 3d346f4c5d8918ad11f7d75ec87050fbd8b9974b
+  version: 9850f00be4d8ce9bdd8f280e4f433fb9a9617667
   trackbranch: stable/xena
-  shallow_since: '2022-12-28'
+  shallow_since: '2023-01-11'
 - name: systemd_networkd
   src: https://opendev.org/openstack/ansible-role-systemd_networkd
   scm: git
-  version: 4023023c50a02a94bd37d1bde918329c40a49c16
+  version: bbeca7f60c3c36c7baf36b2940a59f834f6aad8e
   trackbranch: stable/xena
-  shallow_since: '2022-12-28'
+  shallow_since: '2023-01-12'
 - name: python_venv_build
   src: https://opendev.org/openstack/ansible-role-python_venv_build
   scm: git
