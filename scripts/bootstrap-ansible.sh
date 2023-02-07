@@ -96,7 +96,7 @@ esac
 case ${DISTRO_ID} in
     rocky|centos|rhel)
         dnf -y install \
-          git curl autoconf gcc gcc-c++ nc \
+          git /usr/bin/curl autoconf gcc gcc-c++ nc \
           systemd-devel pkgconf \
           openssl-devel libffi-devel \
           rsync wget
