@@ -8,33 +8,25 @@ following minimum requirements:
 
   * Debian 11 (bullseye)
 
-  * Linux kernel version ``4.9.0-0-amd64`` or later is required.
-
 * Ubuntu
 
-  * Ubuntu 22.04 LTS (Jammy Jellyfish) (Experimental support in Yoga release)
+  * Ubuntu 22.04 LTS (Jammy Jellyfish)
+    *Note*: Due to the absence of community repos, Ceph packages will be
+    installed from the default repository which contains *only* Quincy
+    release.
 
   * Ubuntu 20.04 LTS (Focal Fossa)
 
-  * Linux kernel version ``4.15.0-0-generic`` or later is required.
-
 * CentOS
-
-  * Centos 8 Stream
 
   * Centos 9 Stream
 
   * Rocky Linux 9
 
-  * Linux kernel version ``3.10.0`` or later.
-
 * Secure Shell (SSH) client and server that support public key
   authentication
 
-* Network Time Protocol (NTP) client for time synchronization (such as
-  ``ntpd`` or ``chronyd``)
-
-* Python 3.6.*x* or 3.8.*x*
+* Python 3.8.*x* or 3.10.*x*
 
 * en_US.UTF-8 as the locale
 
@@ -111,19 +103,6 @@ container running on the host.
 
    Other technologies leveraging copy-on-write can be used to reduce
    the disk space requirements on machine containers.
-
-
-Logging hosts
--------------
-
-An OpenStack-Ansible deployment generates a significant amount of log
-information. Logs come from a variety of sources, including services running
-in containers, the containers themselves, and the physical hosts. Logging
-hosts need sufficient disk space to hold live and rotated (historical) log
-files. In addition, the storage performance must be able to keep pace with
-the log traffic coming from various hosts and containers within the OpenStack
-environment. Reserve a minimum of ``50 GB`` of disk space for storing logs on
-the logging hosts.
 
 
 Network recommendations
