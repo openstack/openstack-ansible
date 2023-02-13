@@ -29,6 +29,7 @@ rabbitmq_policies:
     pattern: '^(?!(amq\.)|(.*_fanout_)|(reply_)).*'
     priority: 0
     tags: "ha-mode=all"
+    state: "{{ (oslomsg_rabbit_quorum_queues | default(True)) | ternary('absent', 'present') }}"
 
 ## Galera options
 galera_client_package_state: "{{ package_state }}"

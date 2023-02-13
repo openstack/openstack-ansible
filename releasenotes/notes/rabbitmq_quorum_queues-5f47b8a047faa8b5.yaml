@@ -1,0 +1,25 @@
+---
+upgrade:
+  - |
+    During upgrade HA policy for RabbitMQ will be disabled and replaced with
+    usage of quorum queues which is a new and more efficient way to ensure
+    queues durability.
+
+    If you want to continue using HA queues instead of quorum queues, please
+    specify in your user_variables.yml:
+
+    .. code-block:: yaml
+
+      oslomsg_rabbit_quorum_queues: False
+
+    If ``oslomsg_rabbit_quorum_queues`` is enabled (default behaviour),
+    RabbitMQ vhosts will be re-created without leading ``/``. Ensure to
+    reflect these changes in your monitoring software if vhosts are not
+    auto-discovered.
+    Also changing vhost name will result in prolonged downtime for services,
+    as not re-configured yet backends will fail to connect to RabbitMQ until
+    restart.
+    It also might be worth to process upgrade with extra caution for some
+    serivices that are sensetive to RabbitMQ downtime or even disabling usage
+    of quorum queues for these services. Good examples of such services
+    are Trove or Neutron with ML2 LXB or ML2 OVS drivers.
