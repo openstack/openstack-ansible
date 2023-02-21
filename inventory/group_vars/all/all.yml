@@ -22,6 +22,12 @@ openstack_config_dir: "{{ lookup('env', 'OSA_CONFIG_DIR') | default('/etc/openst
 ## OpenStack Clone directory
 openstack_clone_root: "{{ (lookup('env', 'OSA_CLONE_ROOT') | default('/opt/openstack-ansible', true)) }}"
 
+## OpenDev base URL
+openstack_opendev_base_url: https://opendev.org
+
+## Github base URL
+openstack_github_base_url: https://github.com
+
 ## OpenStack service python version
 openstack_venv_python_executable: "python3"
 

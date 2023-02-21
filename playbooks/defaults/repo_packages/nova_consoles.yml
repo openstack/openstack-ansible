@@ -27,12 +27,12 @@
 ### HEAD as of 16.12.2022 ###
 
 ## NOVNC from source
-novncproxy_git_repo: https://github.com/novnc/noVNC
+novncproxy_git_repo: "{{ openstack_github_base_url }}/novnc/noVNC"
 novncproxy_git_install_branch: 4fb2d6c497dc2e307400ff581f9292758c709b40
 novncproxy_git_track_branch: master
 
 
 ## spice-html5 from source
-spicehtml5_git_repo: https://github.com/freedesktop/spice-html5
+spicehtml5_git_repo: "{{ openstack_github_base_url }}/freedesktop/spice-html5"
 spicehtml5_git_install_branch: 56ddb3005e39a9e76670fec9676e667d44167bf3
 spicehtml5_git_track_branch: master

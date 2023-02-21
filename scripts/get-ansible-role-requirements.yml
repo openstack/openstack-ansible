@@ -92,24 +92,16 @@
                                                    | select('match', 'opendev.org')
                                                    | list }}"
 
-        # Use the cached repos in the CI images rather than clone from opendev.org
-        - name: Generate list of openstack service repositories
-          set_fact:
-            service_git_repos: "{{ lookup('file', openstack_services_file).splitlines() |
-                                   select('contains', 'git_repo') |
-                                   select('contains', 'opendev.org') | list |
-                                   replace('https://', 'file:///openstack/src/') }}"
-
         - name: Ensure overrides directory exists
           file:
             path: "{{ config_dir }}"
             state: directory
 
-        - name: Create overrides for openstack_services git repos to use local cache
-          blockinfile:
-            path: "{{ config_dir }}/user_variables_zuulrepos.yml"
-            block: "{{ service_git_repos | join('\n') }}"
-            create: yes
+        - name: Create override for zuul git server to local repos
+          copy:
+            content: |
+              openstack_opendev_base_url: "file:///openstack/src/opendev.org"
+            dest: "{{ config_dir }}/user_variables_zuulrepos.yml"
 
       when:
         - "lookup('env', 'ZUUL_SRC_PATH') != ''"
@@ -166,7 +158,6 @@
     ansible_python_interpreter: "/opt/ansible-runtime/bin/python"
     config_dir: "{{ lookup('env', 'OSA_CONFIG_DIR') | default('/etc/openstack_deploy', true) }}"
     required_roles: "{{ lookup('file', role_file) | from_yaml }}"
-    openstack_services_file: "{{ playbook_dir }}/../playbooks/defaults/repo_packages/openstack_services.yml"
     role_file: "{{ playbook_dir }}/../ansible-role-requirements.yml"
     role_path_default: '/etc/ansible/roles'
     user_roles: "{{ lookup('file', user_role_path, errors='ignore')|default([], true) | from_yaml }}"
