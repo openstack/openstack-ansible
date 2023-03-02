@@ -1,0 +1,17 @@
+---
+features:
+  - |
+    The configuration for serving port 80/443 in haproxy was previously
+    associated with the Horizon service, but additional features such as
+    handling certificate issuance with certbot and serving security.txt
+    also need configuration in the same haproxy frontend. The existing
+    variable ``haproxy_horizon_service`` now only describes the haproxy
+    backend for horizon, and a new variable ``haproxy_base_service``
+    configures the haproxy frontend for any services using port 80/443.
+upgrades:
+  - |
+    Any existing overrides of ``haproxy_horizon_service`` should be
+    adjusted to account for this variable now only describing the haproxy
+    backend for horizon, and any overrides for LetsEncrypt, security.txt
+    or other customisation of the haproxy frontend for port 80/443
+    should be moved to ``haproxy_base_service`` or ``haproxy_base_service_overrides``.

@@ -74,6 +74,24 @@ openstack_haproxy_horizon_stick_table:
   - "http-request deny deny_status 429 if { sc_http_req_rate(0) gt 20 } { path_beg /auth } !{ src {{haproxy_stick_table_allowlist_networks | join(' } !{ src ') }} }"
   - "http-request deny deny_status 429 if { sc_http_err_rate(0) gt 20 } !{ src {{haproxy_stick_table_allowlist_networks | join(' } !{ src ') }} }"
 
+# haproxy 'base' frontend-only service that is used always deployed for port 80 redirect and 443
+# this potentially supports horizon dashboard, security.txt and certbot
+# plus any other user defined custom backend
+haproxy_base_service:
+  haproxy_service_name: base
+  haproxy_frontend_only: true
+  haproxy_ssl: "{{ haproxy_ssl }}"
+  haproxy_ssl_all_vips: true
+  haproxy_port: "{{ haproxy_ssl | ternary(443,80) }}"
+  haproxy_redirect_http_port: 80
+  haproxy_balance_type: http
+  haproxy_service_enabled: true
+  haproxy_redirect_scheme: "{{ (haproxy_ssl_letsencrypt_enable | bool and haproxy_ssl | bool) | ternary('https if !{ ssl_fc } !{ path_beg /.well-known/acme-challenge/ }', 'https if !{ ssl_fc }') }}"
+  haproxy_frontend_acls: "{{ (haproxy_ssl_letsencrypt_enable | bool and haproxy_ssl | bool) | ternary(haproxy_ssl_letsencrypt_acl, {}) }}"
+  haproxy_acls: "{{ keystone_security_txt_content is defined | ternary(haproxy_security_txt_acl, {}) }}"
+  haproxy_frontend_raw: "{{ (haproxy_ssl | bool and haproxy_security_headers is defined) | ternary( haproxy_security_headers + [ haproxy_horizon_csp | default(haproxy_security_headers_csp)], []) }}"
+  haproxy_default_backend: "{{ (groups['horizon_all'] | length > 0) | ternary('horizon', '') }}"
+
 haproxy_adjutant_api_service:
   haproxy_service_name: adjutant_api
   haproxy_backend_nodes: "{{ groups['adjutant_api'] | default([]) }}"
@@ -222,22 +240,15 @@ haproxy_heat_api_service:
   haproxy_service_enabled: "{{ groups['heat_api'] is defined and groups['heat_api'] | length > 0 }}"
 
 haproxy_horizon_service:
+  haproxy_backend_only: true    #only describe the backends, frontend is in `base`
   haproxy_service_name: horizon
   haproxy_backend_nodes: "{{ groups['horizon_all'] | default([]) }}"
-  haproxy_ssl: "{{ haproxy_ssl }}"
-  haproxy_ssl_all_vips: true
-  haproxy_port: "{{ haproxy_ssl | ternary(443,80) }}"
   haproxy_backend_port: 80
-  haproxy_redirect_http_port: 80
   haproxy_balance_type: http
   haproxy_balance_alg: source
   haproxy_backend_options:
     - "httpchk HEAD /auth/login/ HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
   haproxy_service_enabled: "{{ groups['horizon_all'] is defined and groups['horizon_all'] | length > 0 }}"
-  haproxy_redirect_scheme: "{{ (haproxy_ssl_letsencrypt_enable | bool and haproxy_ssl | bool) | ternary('https if !{ ssl_fc } !{ path_beg /.well-known/acme-challenge/ }', 'https if !{ ssl_fc }') }}"
-  haproxy_frontend_acls: "{{ (haproxy_ssl_letsencrypt_enable | bool and haproxy_ssl | bool) | ternary(haproxy_ssl_letsencrypt_acl, {}) }}"
-  haproxy_acls: "{{ keystone_security_txt_content is defined | ternary(haproxy_security_txt_acl, {}) }}"
-  haproxy_frontend_raw: "{{ (haproxy_ssl | bool and haproxy_security_headers is defined) | ternary( haproxy_security_headers + [ haproxy_horizon_csp | default(haproxy_security_headers_csp)], []) }}"
   haproxy_stick_table: "{{ openstack_haproxy_horizon_stick_table }}"
 
 haproxy_ironic_api_service:
@@ -572,6 +583,7 @@ haproxy_zun_console_service:
   haproxy_service_enabled: "{{ groups['zun_api'] is defined and groups['zun_api'] | length > 0 }}"
 
 haproxy_default_services:
+  - service: "{{ haproxy_base_service | combine(haproxy_base_service_overrides | default({})) }}"
   - service: "{{ haproxy_adjutant_api_service | combine(haproxy_adjutant_api_service_overrides | default({})) }}"
   - service: "{{ haproxy_aodh_api_service | combine(haproxy_aodh_api_service_overrides | default({})) }}"
   - service: "{{ haproxy_barbican_service | combine(haproxy_barbican_service_overrides | default({})) }}"
