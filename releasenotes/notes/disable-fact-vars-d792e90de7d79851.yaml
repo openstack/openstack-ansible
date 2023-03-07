@@ -1,0 +1,15 @@
+---
+features:
+  - |
+    Automatic generation of ``ansible_<variable>`` fact vars is now disabled
+    when using the ``openstack-ansible`` command. There is now less data to
+    pass to the target hosts when executing ansible modules. The same values
+    are now accessed as follows: ``ansible_facts['variable']``
+upgrade:
+  - |
+    Any external or 3rd party integrations with openstack-ansible that use
+    the ``openstack-ansible`` command line wrapper around ``ansible-playbook``
+    and access ansible facts via the ``ansible_<variable>`` pattern must be
+    refactored to access those variables as follows: ``ansible_facts['variable']``.
+    If this is not possible, the environment variable ``ANSIBLE_INJECT_FACT_VARS``
+    can be set to ``True`` to restore the previous behaviour.
