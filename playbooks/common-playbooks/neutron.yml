@@ -91,12 +91,6 @@
   roles:
     - role: "os_neutron"
 
-    - role: "bird"
-      when:
-        - "'neutron_calico_dhcp_agent' in group_names"
-      tags:
-        - bird
-
     - role: "openstack.osa.system_crontab_coordination"
       tags:
         - crontab

@@ -159,9 +159,6 @@
     - src: user_variables_nfs.yml.j2
       dest: user_variables_nfs.yml
       condition: "{{ 'nfs' in bootstrap_host_scenarios_expanded }}"
-    - src: user_variables_calico.yml.j2
-      dest: user_variables_calico.yml
-      condition: "{{ 'calico' in bootstrap_host_scenarios_expanded }}"
     - src: user_variables_zun.yml.j2
       dest: user_variables_zun.yml
       condition: "{{ 'zun' in bootstrap_host_scenarios_expanded }}"
@@ -187,13 +184,6 @@
     dest: "/etc/openstack_deploy/env.d/cinder-volume.yml"
   when:
     - "'ceph' in bootstrap_host_scenarios_expanded"
-
-- name: Copy modified env.d file for calico scenario
-  copy:
-    src: "{{ playbook_dir }}/../etc/openstack_deploy/env.d/calico.yml.example"
-    dest: "/etc/openstack_deploy/env.d/calico.yml"
-  when:
-    - "'calico' in bootstrap_host_scenarios_expanded"
 
 - name: Create vars override folders if we need to test them
   file:

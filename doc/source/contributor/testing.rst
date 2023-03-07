@@ -16,7 +16,7 @@ This folder contains at least the following files:
   by our shell script in our `tests repository`_.
 * ``inventory``. A static inventory for role testing.
   It's possible some roles have multiple inventories. See for example the
-  neutron role with its ``lxb_inventory``, ``calico_inventory``.
+  neutron role with its ``lxb_inventory``.
 * ``group_vars`` and ``host_vars``. These folders will hold override the
   necessary files for testing. For example, this is where you override
   the IP addresses, IP ranges, and ansible connection details.
@@ -175,14 +175,6 @@ To run a functional test of the role, execute:
 .. code-block:: bash
 
     ./run_tests.sh functional
-
-Some roles have extra tests, like neutron, defined in ``tox.ini``.
-
-To run a functional test named "calico", execute:
-
-.. code-block:: bash
-
-    ./run_tests.sh calico
 
 .. _integrate-new-role-with-aio:
 
