@@ -37,6 +37,7 @@ export ANSIBLE_GATHER_SUBSET="${ANSIBLE_GATHER_SUBSET:-!all,min}"
 export ANSIBLE_CACHE_PLUGIN="${ANSIBLE_CACHE_PLUGIN:-jsonfile}"
 export ANSIBLE_CACHE_PLUGIN_CONNECTION="${ANSIBLE_CACHE_PLUGIN_CONNECTION:-${OSA_CONFIG_DIR}/ansible_facts}"
 export ANSIBLE_CACHE_PLUGIN_TIMEOUT="${ANSIBLE_CACHE_PLUGIN_TIMEOUT:-86400}"
+export ANSIBLE_INJECT_FACT_VARS="${ANSIBLE_INJECT_FACT_VARS:-False}"
 
 if [[ "${ANSIBLE_CACHE_PLUGIN}" == "memcached" ]];then
   if ! echo stats | nc -w 1 $(echo ${ANSIBLE_CACHE_PLUGIN_CONNECTION}|awk -F',' '{print $1}'|sed 's/:/ /') > /dev/null; then

@@ -33,6 +33,6 @@ nova_consoles:
     port: 0
     path: ""
 
-nova_console_type: "{{ (ansible_architecture == 'aarch64') | ternary('serialconsole', 'novnc') }}"
+nova_console_type: "{{ (ansible_facts['architecture'] == 'aarch64') | ternary('serialconsole', 'novnc') }}"
 nova_console_port: "{{ nova_consoles[nova_console_type]['port'] }}"
 nova_console_path: "{{ nova_consoles[nova_console_type]['path'] }}"

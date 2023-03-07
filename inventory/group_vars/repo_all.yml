@@ -26,7 +26,7 @@ repo_container_bind_mounts:
 
 # Enable glusterfs mount
 repo_server_systemd_mounts:
-  - what: "{{ ansible_hostname }}:gfs-repo"
+  - what: "{{ ansible_facts['hostname'] }}:gfs-repo"
     where: "/var/www/repo"
     type: glusterfs
     state: 'started'
