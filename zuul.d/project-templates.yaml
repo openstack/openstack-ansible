@@ -20,6 +20,7 @@
         - openstack-ansible-shastest-metal
         - openstack-ansible-tox-inventory
         - openstack-ansible-deploy-infra_lxc-validate
+        - openstack-ansible-deploy-hosts_lxc-validate
         - openstack-tox-docs
     gate:
       jobs:
@@ -27,6 +28,7 @@
         - openstack-ansible-shastest-metal
         - openstack-ansible-tox-inventory
         - openstack-ansible-deploy-infra_lxc-validate
+        - openstack-ansible-deploy-hosts_lxc-validate
         - openstack-tox-docs
     periodic:
       jobs:

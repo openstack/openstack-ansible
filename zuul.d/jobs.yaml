@@ -320,6 +320,23 @@
       - ^ansible-role-requirements\.yml
       - ^playbooks\/defaults\/repo_packages\/.*\.yml
 
+# Ensuring hosts setup and healthcheck-hosts playbook is valid
+- job:
+    name: openstack-ansible-deploy-hosts_lxc-validate
+    parent: openstack-ansible-deploy-hosts_lxc-ubuntu-focal
+    files:
+      - ^playbooks\/healthcheck-hosts.yml
+      - ^playbooks\/lxc-containers-create.yml
+      - ^playbooks\/lxc-hosts-setup.yml
+      - ^playbooks\/containers-lxc-create.yml
+      - ^playbooks\/containers-lxc-host.yml
+      - ^playbooks\/certificate-authority.yml
+      - ^playbooks\/certificate-ssh-authority.yml
+      - ^playbooks\/containers-deploy.yml
+      - ^playbooks\/openstack-hosts-setup.yml
+      - ^playbooks\/setup-hosts.yml
+      - ^playbooks\/security-hardening.yml
+
 # Ensuring clustering and healthcheck-infrastructure playbook is valid
 - job:
     name: openstack-ansible-deploy-infra_lxc-validate
