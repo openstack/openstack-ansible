@@ -90,7 +90,12 @@ haproxy_base_service:
   haproxy_frontend_acls: "{{ (haproxy_ssl_letsencrypt_enable | bool and haproxy_ssl | bool) | ternary(haproxy_ssl_letsencrypt_acl, {}) }}"
   haproxy_acls: "{{ keystone_security_txt_content is defined | ternary(haproxy_security_txt_acl, {}) }}"
   haproxy_frontend_raw: "{{ (haproxy_ssl | bool and haproxy_security_headers is defined) | ternary( haproxy_security_headers + [ haproxy_horizon_csp | default(haproxy_security_headers_csp)], []) }}"
-  haproxy_default_backend: "{{ (groups['horizon_all'] | length > 0) | ternary('horizon', '') }}"
+  haproxy_maps:
+    - 'use_backend %[path,map_reg(/etc/haproxy/base_regex.map)]'
+  haproxy_map_entries:
+    - name: base_regex
+      entries:
+        - "#Regular expression map file - this comment is defined in the base frontend config"
 
 haproxy_adjutant_api_service:
   haproxy_service_name: adjutant_api
@@ -250,6 +255,11 @@ haproxy_horizon_service:
     - "httpchk HEAD /auth/login/ HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
   haproxy_service_enabled: "{{ groups['horizon_all'] is defined and groups['horizon_all'] | length > 0 }}"
   haproxy_stick_table: "{{ openstack_haproxy_horizon_stick_table }}"
+  haproxy_map_entries:
+    - name: base_regex
+      #match any requests to the horizon backend
+      entries:
+        - '.* horizon-back'
 
 haproxy_ironic_api_service:
   haproxy_service_name: ironic_api
