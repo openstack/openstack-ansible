@@ -1,0 +1,13 @@
+# Use the locally deployed Step-CA ACME server to configure the
+# certificate for the haproxy external VIP
+
+# SSL setup
+haproxy_ssl: true
+haproxy_ssl_letsencrypt_enable: True
+haproxy_ssl_letsencrypt_install_method: "distro"
+haproxy_ssl_letsencrypt_certbot_server: "https://127.0.0.1:8889/acme/acme-osa/directory"
+
+# openstack_hosts role should ensure that everthing trusts the Step-CA roots
+openstack_host_ca_certificates:
+  - name: StepCARoot.crt
+    src: /opt/step_ca_roots.pem

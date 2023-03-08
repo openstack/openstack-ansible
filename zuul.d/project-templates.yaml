@@ -90,12 +90,14 @@
         - openstack-ansible-deploy-infra_lxc-debian-bullseye
         - openstack-ansible-deploy-infra_lxc-ubuntu-focal
         - openstack-ansible-deploy-infra_lxc-ubuntu-jammy
+        - openstack-ansible-deploy-infra_lxc_stepca-ubuntu-jammy
     gate:
       jobs:
         - openstack-ansible-deploy-infra_lxc-centos-9-stream
         - openstack-ansible-deploy-infra_lxc-rockylinux-9
         - openstack-ansible-deploy-infra_lxc-debian-bullseye
         - openstack-ansible-deploy-infra_lxc-ubuntu-jammy
+        - openstack-ansible-deploy-infra_lxc_stepca-ubuntu-jammy
     periodic:
       jobs:
         - openstack-ansible-deploy-infra_lxc-ubuntu-jammy
@@ -224,6 +226,17 @@
     periodic:
       jobs:
         - openstack-ansible-deploy-aio_ceph-ubuntu-focal
+
+- project-template:
+    name: openstack-ansible-deploy-stepca-jobs
+    check:
+      jobs:
+        - openstack-ansible-deploy-aio_stepca-ubuntu-jammy
+        - openstack-ansible-deploy-aio_metal_stepca-ubuntu-jammy
+    gate:
+      jobs:
+        - openstack-ansible-deploy-aio_stepca-ubuntu-jammy
+        - openstack-ansible-deploy-aio_metal_stepca-ubuntu-jammy
 
 - project-template:
     name: openstack-ansible-deploy-proxy-jobs

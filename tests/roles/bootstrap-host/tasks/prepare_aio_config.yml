@@ -177,6 +177,9 @@
     - src: user_variables_sahara.yml.j2
       dest: user_variables_sahara.yml
       condition: "{{ 'sahara' in bootstrap_host_scenarios_expanded }}"
+    - src: user_variables_stepca.yml.j2
+      dest: user_variables_stepca.yml
+      condition: "{{ 'stepca' in bootstrap_host_scenarios_expanded }}"
 
 - name: Copy modified cinder-volume env.d file for ceph scenario
   copy:

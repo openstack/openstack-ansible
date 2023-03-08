@@ -406,6 +406,11 @@
     nodeset: ubuntu-jammy
 
 - job:
+    name: openstack-ansible-deploy-aio_stepca-ubuntu-jammy
+    parent: openstack-ansible-deploy-aio
+    nodeset: ubuntu-jammy
+
+- job:
     name: openstack-ansible-deploy-aio_metal-ubuntu-jammy
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-jammy
@@ -415,6 +420,11 @@
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-jammy
     timeout: 10800
+
+- job:
+    name: openstack-ansible-deploy-aio_metal_stepca-ubuntu-jammy
+    parent: openstack-ansible-deploy-aio
+    nodeset: ubuntu-jammy
 
 - job:
     name: openstack-ansible-upgrade-aio_lxc-ubuntu-jammy
@@ -430,6 +440,11 @@
 
 - job:
     name: openstack-ansible-deploy-infra_lxc-ubuntu-jammy
+    parent: openstack-ansible-deploy-aio-infra
+    nodeset: ubuntu-jammy
+
+- job:
+    name: openstack-ansible-deploy-infra_lxc_stepca-ubuntu-jammy
     parent: openstack-ansible-deploy-aio-infra
     nodeset: ubuntu-jammy
 
