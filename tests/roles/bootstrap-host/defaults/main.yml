@@ -199,3 +199,23 @@ bootstrap_host_data_disk2_path: '/var/lib/lxc'
 
 # Set the install method for the deployment. Options are ['source', 'distro']
 bootstrap_host_install_method: "{{ lookup('env', 'INSTALL_METHOD') | default('source', true)  }}"
+
+# step-ca
+step_ca_user: step
+step_ca_group: step
+step_ca_config_dir: "/etc/step-ca"
+step_ca_binary: /usr/bin/step-ca
+
+# CA Info
+step_ca_name: "My Certificate Authority"  # Name used in a self generated intermediate
+step_ca_dns_name:
+  - '127.0.0.1'
+step_ca_listen_address: ":8889"  # server bind address/port
+
+## TLS Cert Info
+step_ca_cert_expiry: "48"  # default number of hours till expiry
+step_ca_cert_org_unit: "My Team"  # Organisational Unit Name in Cert
+step_ca_cert_organisation: "My Organisation"  # Organisation Name in Cert
+step_ca_cert_country: "My Country"  # Country Name in Cert
+
+step_ca_intermediate_password: "changeme"

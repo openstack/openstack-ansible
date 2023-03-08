@@ -209,6 +209,19 @@
   tags:
     - always
 
+# Prepare local step-ca certificate authority
+- include_tasks: prepare_step_ca.yml
+  when:
+    - "'stepca' in bootstrap_host_scenarios_expanded"
+  args:
+    apply:
+      tags:
+        - prepare-step-ca
+  tags:
+    - always
+
+
+
 # Put the OpenStack-Ansible configuration for an All-In-One on the host
 - include_tasks: prepare_aio_config.yml
   when:

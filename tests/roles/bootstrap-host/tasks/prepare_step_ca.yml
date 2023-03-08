@@ -1,0 +1,119 @@
+---
+# Copyright 2023, BBC.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# This is packaged in ubuntu for Kinetic and later
+- name: Install step-ca packages
+  package:
+    deb: "{{ (ansible_facts['pkg_mgr'] == 'apt') | ternary(item, omit) }}"
+    name: "{{ (ansible_facts['pkg_mgr'] == 'dnf') | ternary(item, omit) }}"
+  with_items: "{{ step_ca_package_urls }}"
+
+- name: Ensure user is present
+  user:
+    name: "{{ step_ca_user }}"
+    state: present
+    create_home: yes
+    home: "{{ step_ca_config_dir }}"
+    system: yes
+    shell: /bin/bash
+
+- name: Ensure group is present
+  group:
+    name: "{{ step_ca_group }}"
+    state: present
+    system: yes
+
+- name: Set STEPPATH variable to point to config directory to allow CLI commands to work
+  lineinfile:
+    dest: /etc/environment
+    line: 'STEPPATH="{{ step_ca_config_dir }}"'
+    state: present
+
+- name: Ensure that the config and db directories exists
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ step_ca_user }}"
+    group: "{{ step_ca_group }}"
+    recurse: true
+  with_items:
+    - "{{ step_ca_config_dir }}"
+    - "{{ step_ca_config_dir }}/config"
+    - "{{ step_ca_config_dir }}/db"
+
+- name: Ensure that the intermediate key password file is created
+  copy:
+    content: "{{ step_ca_intermediate_password }}"
+    dest: "{{ step_ca_config_dir}}/config/password.txt"
+    mode: 0600
+    owner: "{{ step_ca_user }}"
+
+- name: Intialise Step-CA, only if config file doesn't exist
+  become: yes
+  become_user: "{{ step_ca_user }}"
+  command: >
+    step ca init
+      --name="{{ step_ca_name }}"
+      --dns="{{ step_ca_dns_name | join(',') }}"
+      --provisioner=delete-me
+      --password-file="{{ step_ca_config_dir}}/config/password.txt"
+      --address="{{ step_ca_listen_address }}"
+  args:
+    creates: "{{ step_ca_config_dir }}/config/ca.json"
+
+- name: Create systemd unit file
+  template:
+    src: step-ca.service.j2
+    dest: /etc/systemd/system/step-ca.service
+
+- name: Restart step-ca to use initial configuration
+  systemd:
+    name: step-ca
+    state: restarted
+    daemon_reload: true
+
+- name: Create Go Template for x509 Certificate
+  copy:
+    src: step_ca_x509_template.tpl
+    dest: "{{ step_ca_config_dir }}/templates/x509_template.tpl"
+    owner: "{{ step_ca_user }}"
+    group: "{{ step_ca_group }}"
+    mode: 0600
+
+- name: Check for ACME provisioner
+  become: yes
+  become_user: "{{ step_ca_user }}"
+  shell: 'step ca provisioner list | grep acme-osa'
+  failed_when: false
+  register: step_ca_find_provisioner
+
+- name: Create ACME provisioner
+  become: yes
+  become_user: "{{ step_ca_user }}"
+  command: >
+    step ca provisioner add acme-osa --type ACME
+  when: step_ca_find_provisioner.rc != 0
+
+- name: Restart step-ca to use the ACME provisioner
+  systemd:
+    name: step-ca
+    state: restarted
+  when: step_ca_find_provisioner.rc != 0
+
+- name: Retrieve the Root CA bundle from the CA server
+  get_url:
+    url: https://127.0.0.1:8889/roots.pem
+    validate_certs: false
+    dest: /opt/step_ca_roots.pem

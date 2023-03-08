@@ -46,3 +46,7 @@ rc_local: /etc/rc.local
 rc_local_insert_before: "^exit 0$"
 
 nfs_package: nfs-kernel-server
+
+step_ca_package_urls:
+  - 'https://github.com/smallstep/cli/releases/download/v0.23.4/step-cli_0.23.4_amd64.deb'
+  - 'https://github.com/smallstep/certificates/releases/download/v0.23.2/step-ca_0.23.2_amd64.deb'
