@@ -43,10 +43,19 @@ tempest_public_net_physical_name: vlan
 galera_monitoring_allowed_source: "0.0.0.0/0"
 # TODO(noonedeadpunk): This should be enabled, once we will re-work SSL part
 #galera_use_ssl: "{{ ('infra' in bootstrap_host_scenarios_expanded) }}"
-galera_innodb_buffer_pool_size: 16M
 galera_innodb_log_buffer_size: 4M
 galera_wsrep_provider_options:
  - { option: "gcache.size", value: "4M" }
+
+galera_my_cnf_overrides:
+  mysqld:
+    read_buffer_size: '64K'
+    innodb_buffer_pool_size: '16M'
+    thread_stack: '192K'
+    thread_cache_size: '8'
+    tmp_table_size: '8M'
+    sort_buffer_size: '8M'
+    max_allowed_packet: '8M'
 
 ### Set workers for all services to optimise memory usage
 
