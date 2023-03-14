@@ -94,6 +94,21 @@ function repo_information {
     fi
 }
 
+function store_lxc_artifacts {
+    # Store known artifacts only if they exist. If the target directory does
+    # exist, it will be created.
+    # USAGE: store_lxc_artifacts <container_name> /change/to/dir pattern/to/collect /path/to/store
+    CONTAINER_PID=$(sudo lxc-info -p -n ${1} | awk '{print $2}')
+    CONTAINER_COLLECT="/proc/${CONTAINER_PID}/root/${2}/${3}"
+    if sudo test -e "${CONTAINER_COLLECT}"; then
+      if [[ ! -d "${4}" ]]; then
+          mkdir -vp "${4}"
+      fi
+      echo "Running container artifact sync on ${1} collecting ${3} from dir ${2} to ${4}"
+      sudo lxc-attach -q -n ${1} -- /bin/bash -c "tar --dereference -c -f - -C ${2} ${3} 2>/dev/null | cat" | tar -C ${4} -x 2>/dev/null
+    fi
+}
+
 function store_artifacts {
     # Store known artifacts only if they exist. If the target directory does
     # exist, it will be created.
@@ -153,46 +168,17 @@ store_artifacts /openstack/*repo*/repo/os-releases/*/*/*.txt "${WORKING_DIR}/rep
 # metal path
 store_artifacts /var/www/repo/os-releases/*/*/*.txt "${WORKING_DIR}/repo"
 
-# Gather host etc artifacts
-PIDS=()
-for service in ${COMMON_ETC_LOG_NAMES}; do
-    echo "Running collection for service ${service}"
-    store_artifacts "/etc/${service}" "${WORKING_DIR}/logs/etc/host/" &
-    pid=$!
-    PIDS[${pid}]=${pid}
-    pid=$!
-    PIDS[${pid}]=${pid}
-done
-echo "Waiting for host collection jobs to finish"
-for job_pid in ${!PIDS[@]}; do
-    wait ${PIDS[$job_pid]} || exit 99
-done
-
+# Gather container etc artifacts
+export -f store_artifacts
+IFS=' ' read -a ETC_LOG_NAMES <<< "$COMMON_ETC_LOG_NAMES"
+parallel store_artifacts /etc/{1} ${WORKING_DIR}/logs/etc/host ::: "${ETC_LOG_NAMES[@]}"
 
 # Gather container etc artifacts
+export -f store_lxc_artifacts
 if command -v lxc-ls &> /dev/null; then
-    for CONTAINER_NAME in $(sudo lxc-ls -1); do
-        CONTAINER_PID=$(sudo lxc-info -p -n ${CONTAINER_NAME} | awk '{print $2}')
-        ETC_DIR="/proc/${CONTAINER_PID}/root/etc"
-        LOG_DIR="/proc/${CONTAINER_PID}/root/var/log"
-        repo_information ${CONTAINER_NAME}
-        PIDS=()
-        for service in ${COMMON_ETC_LOG_NAMES}; do
-            echo "Running in container collection for service ${service}"
-            store_artifacts ${ETC_DIR}/${service} "${WORKING_DIR}/logs/etc/openstack/${CONTAINER_NAME}/" &
-            pid=$!
-            PIDS[${pid}]=${pid}
-            store_artifacts ${LOG_DIR}/${service} "${WORKING_DIR}/logs/openstack/${CONTAINER_NAME}/" &
-            pid=$!
-            PIDS[${pid}]=${pid}
-            pid=$!
-            PIDS[${pid}]=${pid}
-        done
-        echo "Waiting for container collection jobs for ${CONTAINER_NAME} to finish"
-        for job_pid in ${!PIDS[@]}; do
-            wait ${PIDS[$job_pid]} || exit 99
-        done
-    done
+  export CONTAINER_NAMES=$(sudo lxc-ls -1)
+  parallel store_lxc_artifacts {1} /etc/ {2} ${WORKING_DIR}/logs/etc/openstack/{1} ::: "${CONTAINER_NAMES[@]}" ::: "${ETC_LOG_NAMES[@]}"
+  parallel store_lxc_artifacts {1} /var/log/ {2} ${WORKING_DIR}/logs/openstack/{1} ::: "${CONTAINER_NAMES[@]}" ::: "${ETC_LOG_NAMES[@]}"
 fi
 
 # gather host and container journals and deprecation warnings

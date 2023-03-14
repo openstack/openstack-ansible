@@ -206,10 +206,12 @@ function gate_log_requirements {
   case ${DISTRO_ID} in
       ubuntu|debian)
           apt-get update
-          DEBIAN_FRONTEND=noninteractive apt-get -y install iproute2 net-tools
+          DEBIAN_FRONTEND=noninteractive apt-get -y install iproute2 net-tools parallel
           ;;
       rocky|centos|rhel)
-          dnf -y install iproute
+          dnf -y install epel-release
+          sed -i 's/\[epel\]/&\nincludepkgs=parallel/' /etc/yum.repos.d/epel.repo
+          dnf -y --enablerepo=epel install iproute parallel
           ;;
   esac
 }
