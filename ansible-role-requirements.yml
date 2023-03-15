@@ -1,6 +1,6 @@
 ---
 
-### HEAD as of 26.01.2023 ###
+### HEAD as of 15.03.2023 ###
 
 - name: ansible-hardening
   scm: git
@@ -29,9 +29,9 @@
 - name: haproxy_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-haproxy_server
-  version: 0a5279669967cdf34dda41559398c0afa4b60db0
+  version: dfac6bd2152c9eb84b1a7516486ed608c1a8fcc1
   trackbranch: stable/xena
-  shallow_since: '2022-12-28'
+  shallow_since: '2023-03-14'
 - name: keepalived
   scm: git
   src: https://github.com/evrardjp/ansible-keepalived
@@ -191,9 +191,9 @@
 - name: os_nova
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_nova
-  version: abe9b6d9c5a78583b6b1283e5226f7079aa50d02
+  version: ada7c4c1f0a90e14811bbd6abe97f10f18f0a9b5
   trackbranch: stable/xena
-  shallow_since: '2023-01-12'
+  shallow_since: '2023-02-26'
 - name: os_octavia
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_octavia
@@ -269,9 +269,9 @@
 - name: rabbitmq_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-rabbitmq_server
-  version: 5e37f866470e6a8a228582ff2002480eb4206958
+  version: f9c4d9e46d91824766ceab026b74c86442718b4e
   trackbranch: stable/xena
-  shallow_since: '2022-12-27'
+  shallow_since: '2023-03-06'
 - name: repo_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-repo_server
@@ -293,9 +293,9 @@
 - name: sshd
   scm: git
   src: https://github.com/willshersystems/ansible-sshd
-  version: 5c1f645e08ae4461c1c068eca38babdc72a2c93b
+  version: 806bab77201c0ba2c056609f13a6079f59456169
   trackbranch: master
-  shallow_since: '2023-01-17'
+  shallow_since: '2023-03-01'
 - name: bird
   scm: git
   src: https://github.com/logan2211/ansible-bird
@@ -323,9 +323,9 @@
 - name: ceph-ansible
   scm: git
   src: https://github.com/ceph/ceph-ansible
-  version: d3071d3a0f776634e74b673d1abfc7690c20e875
+  version: 1a10e189cb3ef0986c216c0ccaaaea58df1c27d2
   trackbranch: stable-6.0
-  shallow_since: '2023-01-15'
+  shallow_since: '2023-03-13'
 - name: opendaylight
   scm: git
   src: https://github.com/opendaylight/integration-packaging-ansible-opendaylight
@@ -365,9 +365,9 @@
 - name: python_venv_build
   src: https://opendev.org/openstack/ansible-role-python_venv_build
   scm: git
-  version: 012fc4bca204bca8a21cbe41ff5d072e56e70178
+  version: 7de7bdd416922c50e3bda08ee82f1cc4fb97045b
   trackbranch: stable/xena
-  shallow_since: '2022-12-28'
+  shallow_since: '2023-02-21'
 - name: uwsgi
   src: https://opendev.org/openstack/ansible-role-uwsgi
   scm: git
