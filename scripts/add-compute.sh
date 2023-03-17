@@ -49,7 +49,7 @@ function define_tasks {
 function run_tasks {
     set +e
     for item in ${!RUN_TASKS[@]}; do
-        eval "echo openstack-ansible ${RUN_TASKS[$item]}"
+        eval "openstack-ansible ${RUN_TASKS[$item]}"
         playbook_status="$?"
         if [[ ${playbook_status} -gt 0 ]]; then
             echo "*********************** failure ************************"
