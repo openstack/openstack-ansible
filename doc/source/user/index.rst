@@ -36,3 +36,4 @@ For in-depth technical information, see the
    source-overrides/index.rst
    prod/gnocchi_redis.rst
    messaging/messaging.rst
+   multiarch/multiarch.rst
