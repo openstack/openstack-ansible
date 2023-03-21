@@ -53,8 +53,8 @@ haproxy_security_headers_csp: >
   upgrade-insecure-requests;
   style-src 'self' 'unsafe-inline';
   script-src 'self' 'unsafe-inline' 'unsafe-eval';
-  child-src 'self' {{ external_lb_vip_address }}:{{ nova_console_port }};
-  frame-src 'self' {{ external_lb_vip_address }}:{{ nova_console_port }};
+  child-src 'self' {{ external_lb_vip_address }}:{{ nova_spice_html5proxy_base_port }} {{ external_lb_vip_address }}:{{ nova_novncproxy_port }} {{ external_lb_vip_address }}:{{ nova_serialconsoleproxy_port }};
+  frame-src 'self' {{ external_lb_vip_address }}:{{ nova_spice_html5proxy_base_port }} {{ external_lb_vip_address }}:{{ nova_novncproxy_port }} {{ external_lb_vip_address }}:{{ nova_serialconsoleproxy_port }};
   connect-src 'self' {{ external_lb_vip_address }}:* wss://{{ external_lb_vip_address }}:{{ ironic_console_port }};
   img-src 'self' data:;
   worker-src blob:;
@@ -412,33 +412,58 @@ haproxy_nova_api_compute_service:
 # on the nova console container it has to be run in TCP mode.
 haproxy_nova_console_http_mode: "{{ not (nova_console_user_ssl_cert is defined
                                          and nova_console_user_ssl_key is defined) }}"
-haproxy_nova_console_service:
-  haproxy_service_name: nova_console
-  haproxy_backend_nodes: "{{ groups['nova_console'] | default([]) + ((ironic_console_type == nova_console_type) | ternary(groups['ironic_console'] | default([]), [])) }}"
+
+haproxy_nova_spice_console_service:
+  haproxy_service_name: nova_spice_console
+  haproxy_backend_nodes: "{{ groups['nova_console'] | default([]) }}"
   haproxy_ssl: "{{ haproxy_ssl }}"
   haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
-  haproxy_port: "{{ nova_console_port }}"
+  haproxy_port: "{{ nova_spice_html5proxy_base_port | default('6082') }}"
   haproxy_balance_type: "{{ haproxy_nova_console_http_mode | ternary('http', 'tcp') }}"
   haproxy_timeout_client: 60m
   haproxy_timeout_server: 60m
   haproxy_balance_alg: source
-  haproxy_backend_options: "{{ haproxy_nova_console_http_mode | ternary(['httpchk HEAD ' + nova_console_path + ' HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck'], []) }}"
+  haproxy_backend_options: "{{ haproxy_nova_console_http_mode | ternary(['httpchk HEAD /spice_auto.html HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck'], []) }}"
   haproxy_backend_httpcheck_options: "{{ haproxy_nova_console_http_mode | ternary(['expect status 200'], []) }}"
-  haproxy_service_enabled: "{{ groups['nova_console'] is defined and groups['nova_console'] | length > 0 and nova_console_type != 'disabled' }}"
+  haproxy_service_enabled: "{{ groups['nova_console'] is defined and groups['nova_console'] | length > 0 and nova_console_type == 'spice' }}"
 
-# run a seperate service for the ironic nova console proxy when then console type is not the same as the one used by
-# nova-compute managed virtual machines
-haproxy_nova_ironic_console_service:
-  haproxy_service_name: nova_ironic_console
-  haproxy_backend_nodes: "{{ groups['ironic_console'] | default([]) }}"
+haproxy_nova_serial_console_service:
+  haproxy_service_name: nova_serial_console
+  haproxy_backend_nodes: "{{ groups['nova_console'] | default([]) + ((ironic_console_type == 'serialconsole') | ternary(groups['ironic_console'] | default([]), [])) }}"
   haproxy_ssl: "{{ haproxy_ssl }}"
   haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
-  haproxy_port: "{{ ironic_console_port }}"
-  haproxy_balance_type: http
+  haproxy_port: "{{ nova_serialconsoleproxy_port | default('6083') }}"
+  haproxy_balance_type: "{{ haproxy_nova_console_http_mode | ternary('http', 'tcp') }}"
+  haproxy_timeout_client: 60m
+  haproxy_timeout_server: 60m
   haproxy_balance_alg: source
-  haproxy_timeout_client: 10m   # see https://docs.openstack.org/ironic/latest/admin/console.html#configuring-ha
-  haproxy_timeout_server: 10m   # ditto
-  haproxy_service_enabled: "{{ groups['ironic_console'] is defined and groups['ironic_console'] | length > 0 and ironic_console_type != nova_console_type }}"
+  haproxy_backend_options: "{{ haproxy_nova_console_http_mode | ternary(['httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck'], []) }}"
+  haproxy_backend_httpcheck_options: "{{ haproxy_nova_console_http_mode | ternary(['expect status 200'], []) }}"
+  haproxy_service_enabled: "{{ (groups['nova_console'] is defined and groups['nova_console'] | length > 0 and nova_console_type == 'serial') or
+                               (groups['ironic_console'] is defined and groups['ironic_console'] | length > 0 and ironic_console_type == 'serial') }}"
+
+haproxy_nova_novnc_console_service:
+  haproxy_service_name: nova_novnc_console
+  haproxy_backend_nodes: "{{ groups['nova_console'] | default([]) }}"
+  haproxy_ssl: "{{ haproxy_ssl }}"
+  haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
+  haproxy_port: "{{ nova_novncproxy_port | default('6080') }}"
+  haproxy_balance_type: "{{ haproxy_nova_console_http_mode | ternary('http', 'tcp') }}"
+  haproxy_timeout_client: 60m
+  haproxy_timeout_server: 60m
+  haproxy_balance_alg: source
+  haproxy_backend_options: "{{ haproxy_nova_console_http_mode | ternary(['httpchk HEAD /vnc.html HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck'], []) }}"
+  haproxy_backend_httpcheck_options: "{{ haproxy_nova_console_http_mode | ternary(['expect status 200'], []) }}"
+  haproxy_service_enabled: "{{ groups['nova_console'] is defined and groups['nova_console'] | length > 0 and nova_console_type == 'novnc' }}"
+
+# NOTE(jrosser) Clean up legacy console haproxy configs from previous releases
+haproxy_nova_console_service:
+  haproxy_service_name: nova_console
+  haproxy_service_enabled: False
+
+haproxy_nova_ironic_console_service:
+  haproxy_service_name: nova_ironic_console
+  haproxy_service_enabled: False
 
 haproxy_octavia_service:
   haproxy_service_name: octavia
@@ -623,6 +648,9 @@ haproxy_default_services:
   - service: "{{ haproxy_neutron_server_service | combine(haproxy_neutron_server_service_overrides | default({})) }}"
   - service: "{{ haproxy_nova_api_metadata_service | combine(haproxy_nova_api_metadata_service_overrides | default({})) }}"
   - service: "{{ haproxy_nova_api_compute_service | combine(haproxy_nova_api_compute_service_overrides | default({})) }}"
+  - service: "{{ haproxy_nova_spice_console_service | combine(haproxy_nova_spice_console_service_overrides | default({})) }}"
+  - service: "{{ haproxy_nova_novnc_console_service | combine(haproxy_nova_novnc_console_service_overrides | default({})) }}"
+  - service: "{{ haproxy_nova_serial_console_service | combine(haproxy_nova_serial_console_service_overrides | default({})) }}"
   - service: "{{ haproxy_nova_console_service | combine(haproxy_nova_console_service_overrides | default({})) }}"
   - service: "{{ haproxy_nova_ironic_console_service | combine(haproxy_nova_ironic_console_service_overrides | default({})) }}"
   - service: "{{ haproxy_octavia_service | combine(haproxy_octavia_service_overrides | default({})) }}"

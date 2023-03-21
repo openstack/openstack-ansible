@@ -132,6 +132,6 @@ Security Policy to allow access to your authorisation server by overriding the
       upgrade-insecure-requests;
       style-src 'self' 'unsafe-inline';
       script-src 'self' 'unsafe-inline' 'unsafe-eval';
-      child-src 'self' {{ external_lb_vip_address }}:{{ nova_console_port }};
-      frame-src 'self' {{ external_lb_vip_address }}:{{ nova_console_port }};
+      child-src 'self' {{ external_lb_vip_address }}:{{ nova_spice_html5proxy_base_port }} {{ external_lb_vip_address }}:{{ nova_novncproxy_port }} {{ external_lb_vip_address }}:{{ nova_serialconsoleproxy_port }};
+      frame-src 'self' {{ external_lb_vip_address }}:{{ nova_spice_html5proxy_base_port }} {{ external_lb_vip_address }}:{{ nova_novncproxy_port }} {{ external_lb_vip_address }}:{{ nova_serialconsoleproxy_port }};
       "
