@@ -253,30 +253,6 @@ http-01 challenge requests.
     haproxy_ssl_letsencrypt_install_method: "distro"
     haproxy_ssl_letsencrypt_email: "email.address@example.com"
 
-
-If you don't have horizon deployed, you will need to define dummy service that
-will listen on 80 and 443 ports and will be used for acme-challenge, whose
-backend is certbot on the haproxy host:
-
-.. code-block:: shell-session
-
-  haproxy_extra_services:
-    # the external facing service which serves the apache test site, with a acl for LE requests
-    - service:
-        haproxy_service_name: certbot
-        haproxy_redirect_http_port: 80                         #redirect port 80 to port ssl
-        haproxy_redirect_scheme: "https if !{ ssl_fc } !{ path_beg /.well-known/acme-challenge/ }"   #redirect all non-ssl traffic to ssl except acme-challenge
-        haproxy_port: 443
-        haproxy_frontend_acls: "{{ haproxy_ssl_letsencrypt_acl }}"       #use a frontend ACL specify the backend to use for acme-challenge
-        haproxy_ssl: True
-        haproxy_backend_nodes:                                 #apache is running on locally on 127.0.0.1:80 serving a dummy site
-          - name: local-test-service
-            ip_addr: 127.0.0.1
-        haproxy_balance_type: http
-        haproxy_backend_port: 80
-        haproxy_backend_options:
-          - "httpchk HEAD /"                                   # request to use for health check for the example service
-
 TLS for Haproxy Internal VIP
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
