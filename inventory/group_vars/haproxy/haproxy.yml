@@ -538,6 +538,7 @@ haproxy_repo_service:
   haproxy_backend_nodes: "{{ groups['repo_all'] | default([]) }}"
   haproxy_bind: "{{ [internal_lb_vip_address] }}"
   haproxy_port: 8181
+  haproxy_ssl: "{{ haproxy_ssl_all_vips }}"
   haproxy_balance_type: http
   haproxy_backend_options:
     - "httpchk GET /constraints/upper_constraints_cached.txt HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
