@@ -22,7 +22,7 @@ repo_server_enable_sync_manager: False
 # Repo container default list of bind mounts
 repo_container_bind_mounts:
   - bind_dir_path: "/var/lib/glusterd"
-    mount_path: "/openstack/glusterd/{{inventory_hostname }}"
+    mount_path: "/openstack/glusterd/{{ inventory_hostname }}"
 
 # Enable glusterfs mount
 repo_server_systemd_mounts:
@@ -31,5 +31,21 @@ repo_server_systemd_mounts:
     type: glusterfs
     state: 'started'
     enabled: true
-    
+
 openstack_repo_server_enable_glusterfs: True
+
+haproxy_repo_service:
+  haproxy_service_name: repo_all
+  haproxy_backend_nodes: "{{ groups['repo_all'] | default([]) }}"
+  haproxy_bind: "{{ [internal_lb_vip_address] }}"
+  haproxy_port: 8181
+  haproxy_ssl: "{{ haproxy_ssl_all_vips }}"
+  haproxy_balance_type: http
+  haproxy_backend_options:
+    - "httpchk GET /constraints/upper_constraints_cached.txt HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+  haproxy_backend_httpcheck_options:
+    - "expect status 200"
+  haproxy_service_enabled: "{{ groups['repo_all'] is defined and groups['repo_all'] | length > 0 }}"
+
+repo_haproxy_services:
+  - "{{ haproxy_repo_service | combine(haproxy_repo_service_overrides | default({})) }}"

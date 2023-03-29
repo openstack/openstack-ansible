@@ -1,0 +1,48 @@
+---
+# Copyright 2023, Cleura AB
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+haproxy_ironic_allowlist_networks: "{{ haproxy_allowlist_networks }}"
+haproxy_ironic_inspector_allowlist_networks: "{{ haproxy_allowlist_networks }}"
+
+haproxy_ironic_api_service:
+  haproxy_service_name: ironic_api
+  haproxy_backend_nodes: "{{ groups['ironic_api'] | default([]) }}"
+  haproxy_ssl: "{{ haproxy_ssl }}"
+  haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
+  haproxy_port: 6385
+  haproxy_balance_type: http
+  haproxy_backend_options:
+    - "httpchk GET /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+  haproxy_backend_arguments:
+    - "http-request deny if { path_beg /v1/lookup } !{ src {{ haproxy_ironic_allowlist_networks | join(' } !{ src ') }} }"
+    - "http-request deny if { path_beg /v1/heartbeat } !{ src {{ haproxy_ironic_allowlist_networks | join(' } !{ src ') }} }"
+  haproxy_service_enabled: "{{ groups['ironic_api'] is defined and groups['ironic_api'] | length > 0 }}"
+
+haproxy_ironic_inspector_service:
+  haproxy_service_name: ironic_inspector
+  haproxy_backend_nodes: "{{ groups['ironic_inspector'] | default([]) }}"
+  haproxy_ssl: "{{ haproxy_ssl }}"
+  haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
+  haproxy_port: 5050
+  haproxy_balance_type: http
+  haproxy_backend_options:
+    - "httpchk GET /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+  haproxy_backend_arguments:
+    - "http-request deny if { path_beg /v1/continue } !{ src {{ haproxy_ironic_inspector_allowlist_networks | join(' } !{ src ') }} }"
+  haproxy_service_enabled: "{{ groups['ironic_inspector'] is defined and groups['ironic_inspector'] | length > 0 }}"
+
+ironic_haproxy_services:
+  - "{{ haproxy_ironic_api_service | combine(haproxy_ironic_api_service_overrides | default({})) }}"
+  - "{{ haproxy_ironic_inspector_service | combine(haproxy_ironic_inspector_service_overrides | default({})) }}"

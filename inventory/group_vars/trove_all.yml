@@ -14,3 +14,17 @@
 # limitations under the License.
 
 swift_proxy_port: "{{ hostvars['localhost']['swift_proxy_port'] }}"
+
+haproxy_trove_service:
+  haproxy_service_name: trove
+  haproxy_backend_nodes: "{{ groups['trove_api'] | default([]) }}"
+  haproxy_ssl: "{{ haproxy_ssl }}"
+  haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
+  haproxy_port: 8779
+  haproxy_balance_type: http
+  haproxy_backend_options:
+    - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+  haproxy_service_enabled: "{{ groups['trove_api'] is defined and groups['trove_api'] | length > 0 }}"
+
+trove_haproxy_services:
+  - "{{ haproxy_trove_service | combine(haproxy_trove_service_overrides | default({})) }}"

@@ -1,0 +1,29 @@
+---
+# Copyright 2023, Cleura AB
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+haproxy_adjutant_api_service:
+  haproxy_service_name: adjutant_api
+  haproxy_backend_nodes: "{{ groups['adjutant_api'] | default([]) }}"
+  haproxy_ssl: "{{ haproxy_ssl }}"
+  haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
+  haproxy_port: 5050
+  haproxy_balance_type: http
+  haproxy_balance_alg: source
+  haproxy_backend_options:
+    - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+  haproxy_service_enabled: "{{ groups['adjutant_api'] is defined and groups['adjutant_api'] | length > 0 }}"
+
+adjutant_haproxy_services:
+  - "{{ haproxy_adjutant_api_service | combine(haproxy_adjutant_api_service_overrides | default({})) }}"

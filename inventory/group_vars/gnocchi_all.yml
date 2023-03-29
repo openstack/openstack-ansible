@@ -17,3 +17,17 @@
 gnocchi_container_bind_mounts:
   - bind_dir_path: "/var/lib/gnocchi"
     mount_path: "/openstack/{{ inventory_hostname }}"
+
+haproxy_gnocchi_service:
+  haproxy_service_name: gnocchi
+  haproxy_backend_nodes: "{{ groups['gnocchi_all'] | default([]) }}"
+  haproxy_port: 8041
+  haproxy_ssl: "{{ haproxy_ssl }}"
+  haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
+  haproxy_balance_type: http
+  haproxy_backend_options:
+    - "httpchk GET /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+  haproxy_service_enabled: "{{ groups['gnocchi_all'] is defined and groups['gnocchi_all'] | length > 0 }}"
+
+gnocchi_haproxy_services:
+  - "{{ haproxy_gnocchi_service | combine(haproxy_gnocchi_service_overrides | default({})) }}"

@@ -32,3 +32,22 @@ rabbitmq_package_state: "{{ rabbitmq_upgrade | default(False) | bool | ternary('
 
 # Ensure that all rabbitmq containers get a fixed mac address
 lxc_container_fixed_mac: true
+
+haproxy_rabbitmq_management_allowlist_networks: "{{ haproxy_allowlist_networks }}"
+
+haproxy_rabbitmq_service:
+  haproxy_service_name: rabbitmq_mgmt
+  haproxy_backend_nodes: "{{ groups['rabbitmq'] | default([]) }}"
+  haproxy_ssl: "{{ rabbitmq_management_ssl | bool }}"
+  haproxy_backend_ssl: "{{ rabbitmq_management_ssl | bool }}"
+  haproxy_backend_ca: False
+  haproxy_bind: "{{ [internal_lb_vip_address] }}"
+  haproxy_port: "{{ (rabbitmq_management_ssl | bool) | ternary(15671, 15672) }}"
+  haproxy_balance_type: http
+  haproxy_backend_options:
+    - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+  haproxy_allowlist_networks: "{{ haproxy_rabbitmq_management_allowlist_networks }}"
+  haproxy_service_enabled: "{{ groups['rabbitmq'] is defined and groups['rabbitmq'] | length > 0 }}"
+
+rabbitmq_haproxy_services:
+  - "{{ haproxy_rabbitmq_service | combine(haproxy_rabbitmq_service_overrides | default({})) }}"

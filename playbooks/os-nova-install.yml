@@ -13,6 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- name: "Config haproxy service"
+  import_playbook: common-playbooks/haproxy-service-config.yml
+  vars:
+    service_group:
+      - nova_api_os_compute
+      - nova_api_metadata
+      - nova_console
+      - nova_ironic_console
+    service_variable: "nova_haproxy_services"
+  when: groups['nova_all'] | length > 0
+  tags:
+    - haproxy-service-config
+
 - name: Install nova-conductor services
   import_playbook: common-playbooks/nova.yml
   vars:

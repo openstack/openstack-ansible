@@ -1,0 +1,16 @@
+---
+features:
+  - |
+    Haproxy services are now configured separately at the beginning of each
+    service playbook.
+other:
+  - |
+    Haproxy service definitions(along with their overrides) are no longer
+    stored in haproxy group vars. They were moved to service variables,
+    so for example ``glance_haproxy_services`` are stored in glance_all
+    group variables.
+  - |
+    The structure of ``haproxy_default_services`` and
+    ``haproxy_extra_services`` was simplified.
+    Now it's just a list of dicts.
+    It has the same format as ``haproxy_service_configs``.
