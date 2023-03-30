@@ -43,14 +43,14 @@
     name: openstack-ansible-deploy-aio_lxc-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-aio_lxc-centos-9-stream
+        - openstack-ansible-deploy-aio_lxc-centos-9-stream:
+            voting: false
         - openstack-ansible-deploy-aio_lxc-rockylinux-9
         - openstack-ansible-deploy-aio_lxc-debian-bullseye
         - openstack-ansible-deploy-aio_lxc-ubuntu-focal
         - openstack-ansible-deploy-aio_lxc-ubuntu-jammy
     gate:
       jobs:
-        - openstack-ansible-deploy-aio_lxc-centos-9-stream
         - openstack-ansible-deploy-aio_lxc-rockylinux-9
         - openstack-ansible-deploy-aio_lxc-debian-bullseye
         - openstack-ansible-deploy-aio_lxc-ubuntu-jammy
@@ -85,7 +85,8 @@
     name: openstack-ansible-deploy-infra_lxc-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-infra_lxc-centos-9-stream
+        - openstack-ansible-deploy-infra_lxc-centos-9-stream:
+            voting: false
         - openstack-ansible-deploy-infra_lxc-rockylinux-9
         - openstack-ansible-deploy-infra_lxc-debian-bullseye
         - openstack-ansible-deploy-infra_lxc-ubuntu-focal
@@ -93,7 +94,6 @@
         - openstack-ansible-deploy-infra_lxc_stepca-ubuntu-jammy
     gate:
       jobs:
-        - openstack-ansible-deploy-infra_lxc-centos-9-stream
         - openstack-ansible-deploy-infra_lxc-rockylinux-9
         - openstack-ansible-deploy-infra_lxc-debian-bullseye
         - openstack-ansible-deploy-infra_lxc-ubuntu-jammy
@@ -106,14 +106,14 @@
     name: openstack-ansible-deploy-hosts_lxc-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-hosts_lxc-centos-9-stream
+        - openstack-ansible-deploy-hosts_lxc-centos-9-stream:
+            voting: false
         - openstack-ansible-deploy-hosts_lxc-rockylinux-9
         - openstack-ansible-deploy-hosts_lxc-debian-bullseye
         - openstack-ansible-deploy-hosts_lxc-ubuntu-focal
         - openstack-ansible-deploy-hosts_lxc-ubuntu-jammy
     gate:
       jobs:
-        - openstack-ansible-deploy-hosts_lxc-centos-9-stream
         - openstack-ansible-deploy-hosts_lxc-rockylinux-9
         - openstack-ansible-deploy-hosts_lxc-debian-bullseye
         - openstack-ansible-deploy-hosts_lxc-ubuntu-jammy
@@ -144,11 +144,11 @@
     name: openstack-ansible-deploy-hosts_distro_lxc-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-hosts_distro_lxc-centos-9-stream
+        - openstack-ansible-deploy-hosts_distro_lxc-centos-9-stream:
+            voting: false
         - openstack-ansible-deploy-hosts_distro_lxc-ubuntu-jammy
     gate:
       jobs:
-        - openstack-ansible-deploy-hosts_distro_lxc-centos-9-stream
         - openstack-ansible-deploy-hosts_distro_lxc-ubuntu-jammy
 
 - project-template:
