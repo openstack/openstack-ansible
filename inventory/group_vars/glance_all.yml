@@ -15,6 +15,8 @@
 
 # If there are Swift hosts in the environment, then use it as the default Glance store
 glance_default_store: "{{ ((groups['swift_all'] is defined) and (groups['swift_all'] | length > 0)) | ternary('swift', 'file') }}"
+glance_available_stores: "{{ [ glance_default_store ] + (glance_additional_stores | default([])) }}"
+glance_use_uwsgi: "{{ ('ceph' not in glance_available_stores) }}"
 
 # glance default list of bind mounts
 glance_container_bind_mounts:
@@ -33,6 +35,8 @@ haproxy_glance_api_service:
   haproxy_balance_alg: source
   haproxy_backend_options:
     - "httpchk GET /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+  haproxy_backend_ssl: "{{ (glance_use_uwsgi | default(True)) | ternary((glance_backend_ssl | default(openstack_service_backend_ssl)), False) }}"
+  haproxy_backend_ca: "{{ glance_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
   haproxy_service_enabled: "{{ groups['glance_api'] is defined and groups['glance_api'] | length > 0 }}"
 
 glance_haproxy_services:

@@ -27,6 +27,8 @@ haproxy_gnocchi_service:
   haproxy_balance_type: http
   haproxy_backend_options:
     - "httpchk GET /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+  haproxy_backend_ssl: "{{ gnocchi_backend_ssl | default(openstack_service_backend_ssl) }}"
+  haproxy_backend_ca: "{{ gnocchi_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
   haproxy_service_enabled: "{{ groups['gnocchi_all'] is defined and groups['gnocchi_all'] | length > 0 }}"
 
 gnocchi_haproxy_services:

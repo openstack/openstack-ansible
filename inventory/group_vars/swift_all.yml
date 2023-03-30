@@ -29,6 +29,11 @@ haproxy_swift_proxy_service:
   haproxy_balance_type: http
   haproxy_backend_options:
     - "httpchk GET /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+  # `openstack_service_backend_ssl` is not taken into account
+  # because TLS in swift-proxy is only for testing purposes:
+  # https://opendev.org/openstack/swift/src/commit/c78a5962b5f6c9e75f154cac924a226815236e98/etc/proxy-server.conf-sample
+  haproxy_backend_ssl: "{{ swift_backend_ssl | default(False) }}"
+  haproxy_backend_ca: "{{ swift_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
   haproxy_service_enabled: "{{ groups['swift_proxy'] is defined and groups['swift_proxy'] | length > 0 }}"
 
 swift_haproxy_services:

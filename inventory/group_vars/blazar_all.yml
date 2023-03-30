@@ -24,6 +24,8 @@ haproxy_blazar_api_service:
     - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
   haproxy_backend_httpcheck_options:
     - 'expect rstatus (200|401)'
+  haproxy_backend_ssl: "{{ blazar_backend_ssl | default(False) }}"
+  haproxy_backend_ca: "{{ openstack_haproxy_backend_ca | default(True) }}"
   haproxy_service_enabled: "{{ groups['blazar_api'] is defined and groups['blazar_api'] | length > 0 }}"
 
 blazar_haproxy_services:

@@ -24,6 +24,8 @@ haproxy_designate_api_service:
     - "forwardfor"
     - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
     - "httplog"
+  haproxy_backend_ssl: "{{ designate_backend_ssl | default(openstack_service_backend_ssl) }}"
+  haproxy_backend_ca: "{{ designate_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
   haproxy_service_enabled: "{{ groups['designate_api'] is defined and groups['designate_api'] | length > 0 }}"
 
 designate_haproxy_services:

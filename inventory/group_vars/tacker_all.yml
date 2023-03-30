@@ -24,6 +24,8 @@ haproxy_tacker_service:
     - "forwardfor"
     - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
     - "httplog"
+  haproxy_backend_ssl: "{{ tacker_backend_ssl | default(openstack_service_backend_ssl) }}"
+  haproxy_backend_ca: "{{ tacker_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
   haproxy_service_enabled: "{{ groups['tacker_all'] is defined and groups['tacker_all'] | length > 0 }}"
 
 tacker_haproxy_services:

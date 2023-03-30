@@ -70,6 +70,10 @@ openstack_host_manage_hosts_file: "{{ groups['unbound'] is not defined or groups
 ## Enable external SSL handling for general OpenStack services
 openstack_external_ssl: true
 
+## Control whether traffic between haproxy and service backends should
+## be encrypted.
+openstack_service_backend_ssl: False
+
 ## OpenStack global Endpoint Protos
 openstack_service_publicuri_proto: https
 openstack_service_adminuri_proto: http

@@ -24,6 +24,8 @@ haproxy_murano_service:
     - "httpchk GET /v1 HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
   haproxy_backend_httpcheck_options:
     - "expect status 401"
+  haproxy_backend_ssl: "{{ murano_backend_ssl | default(openstack_service_backend_ssl) }}"
+  haproxy_backend_ca: "{{ murano_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
   haproxy_service_enabled: "{{ groups['murano_all'] is defined and groups['murano_all'] | length > 0 }}"
 
 murano_haproxy_services:

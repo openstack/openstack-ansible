@@ -65,3 +65,6 @@ openstack_pki_authorities:
 #install the root CA certificate on all hosts and containers
 openstack_pki_install_ca:
  - name: "ExampleCorpRoot"
+
+# Subject Alternate Name(SAN) for certificates
+openstack_pki_san: "{{ 'DNS:' ~ ansible_facts['hostname'] ~ ',IP:' ~ management_address }}"

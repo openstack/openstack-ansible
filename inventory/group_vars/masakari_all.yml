@@ -22,6 +22,8 @@ haproxy_masakari_api_service:
   haproxy_balance_type: http
   haproxy_backend_options:
     - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+  haproxy_backend_ssl: "{{ masakari_backend_ssl | default(openstack_service_backend_ssl) }}"
+  haproxy_backend_ca: "{{ masakari_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
   haproxy_service_enabled: "{{ groups['masakari_api'] is defined and groups['masakari_api'] | length > 0 }}"
 
 masakari_haproxy_services:
