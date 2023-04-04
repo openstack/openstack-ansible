@@ -20,6 +20,11 @@ In CI we test upgrades from N to N+1 releases and only for source deployments.
 Below you will find the support matrix of Operating Systems for
 OpenStack-Ansible releases.
 
+.. note::
+
+    Compatability matrix for legacy releases of OpenStack-Ansible can be found
+    on this page: :ref:`compatibility-matrix-legacy`.
+
 Operating systems with experimental support are marked with ``E`` in the table.
 
 .. raw:: html
