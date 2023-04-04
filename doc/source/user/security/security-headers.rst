@@ -124,4 +124,14 @@ Security Policy to allow access to your authorisation server by overriding the
 
 .. code-block:: yaml
 
-    haproxy_horizon_csp: "http-response set-header Content-Security-Policy \"default-src 'self'; frame-ancestors 'self'; form-action 'self' {{ external_lb_vip_address }}:5000 <YOUR-AUTHORISATION-SERVER-ORIGIN>; upgrade-insecure-requests; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; child-src 'self' {{ external_lb_vip_address }}:{{ nova_console_port }}; frame-src 'self' {{ external_lb_vip_address }}:{{ nova_console_port }};\""
+    haproxy_horizon_csp: >
+      http-response set-header Content-Security-Policy "
+      default-src 'self';
+      frame-ancestors 'self';
+      form-action 'self' {{ external_lb_vip_address }}:5000 <YOUR-AUTHORISATION-SERVER-ORIGIN>;
+      upgrade-insecure-requests;
+      style-src 'self' 'unsafe-inline';
+      script-src 'self' 'unsafe-inline' 'unsafe-eval';
+      child-src 'self' {{ external_lb_vip_address }}:{{ nova_console_port }};
+      frame-src 'self' {{ external_lb_vip_address }}:{{ nova_console_port }};
+      "

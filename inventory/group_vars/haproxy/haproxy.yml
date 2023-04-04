@@ -45,7 +45,21 @@ haproxy_security_headers_max_age: 31536000
 # Set CSP headers to report only for testing
 haproxy_security_headers_csp_report_only: False
 # To override the CSP used by a specific service define a variable haproxy_<service name>_csp
-haproxy_security_headers_csp: "http-response set-header {{ haproxy_security_headers_csp_report_only | ternary('Content-Security-Policy-Report-Only', 'Content-Security-Policy') }} \"default-src 'self'; frame-ancestors 'none'; form-action 'self'; upgrade-insecure-requests; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; child-src 'self' {{ external_lb_vip_address }}:{{ nova_console_port }}; frame-src 'self' {{ external_lb_vip_address }}:{{ nova_console_port }}; connect-src 'self' {{ external_lb_vip_address }}:* wss://{{ external_lb_vip_address }}:{{ ironic_console_port }}; img-src 'self' data:; worker-src blob:;\""
+haproxy_security_headers_csp: >
+  http-response set-header {{ haproxy_security_headers_csp_report_only | ternary('Content-Security-Policy-Report-Only', 'Content-Security-Policy') }} "
+  default-src 'self';
+  frame-ancestors 'none';
+  form-action 'self';
+  upgrade-insecure-requests;
+  style-src 'self' 'unsafe-inline';
+  script-src 'self' 'unsafe-inline' 'unsafe-eval';
+  child-src 'self' {{ external_lb_vip_address }}:{{ nova_console_port }};
+  frame-src 'self' {{ external_lb_vip_address }}:{{ nova_console_port }};
+  connect-src 'self' {{ external_lb_vip_address }}:* wss://{{ external_lb_vip_address }}:{{ ironic_console_port }};
+  img-src 'self' data:;
+  worker-src blob:;
+  "
+
 # To disable security headers set to []
 haproxy_security_headers:
   - "http-response set-header Strict-Transport-Security \"max-age={{ haproxy_security_headers_max_age }}; includeSubDomains;\""
