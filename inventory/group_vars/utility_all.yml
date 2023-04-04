@@ -47,7 +47,7 @@ utility_distro_openstack_clients_packages:
     - python3-neutronclient
     - python3-novaclient
     - python3-openstackclient
-    - "{{ (ansible_os_family | lower == 'redhat') | ternary('python3-PyMySQL', 'python3-pymysql') }}"
+    - "{{ (ansible_facts['os_family'] | lower == 'redhat') | ternary('python3-PyMySQL', 'python3-pymysql') }}"
 
 # Python packages to be installed into the utility container
 utility_pip_packages:
