@@ -57,31 +57,31 @@
     periodic:
       jobs:
         - openstack-ansible-deploy-aio_lxc-ubuntu-jammy
-        - openstack-ansible-upgrade-aio_lxc-ubuntu-focal
+        - openstack-ansible-upgrade-aio_lxc-ubuntu-jammy
 
 - project-template:
     name: openstack-ansible-upgrade-infra_lxc-jobs
     check:
       jobs:
         - openstack-ansible-upgrade-infra_lxc-rockylinux-9
-        - openstack-ansible-upgrade-infra_lxc-ubuntu-focal
+        - openstack-ansible-upgrade-infra_lxc-ubuntu-jammy
         - openstack-ansible-upgrade_yoga-infra_lxc-ubuntu-focal
     gate:
       jobs:
         - openstack-ansible-upgrade-infra_lxc-rockylinux-9
-        - openstack-ansible-upgrade-infra_lxc-ubuntu-focal
+        - openstack-ansible-upgrade-infra_lxc-ubuntu-jammy
 
 - project-template:
     name: openstack-ansible-upgrade-aio_metal-jobs
     check:
       jobs:
         - openstack-ansible-upgrade-aio_metal-rockylinux-9
-        - openstack-ansible-upgrade-aio_metal-ubuntu-focal
+        - openstack-ansible-upgrade-aio_metal-ubuntu-jammy
         - openstack-ansible-upgrade_yoga-aio_metal-ubuntu-focal
     gate:
       jobs:
         - openstack-ansible-upgrade-aio_metal-rockylinux-9
-        - openstack-ansible-upgrade-aio_metal-ubuntu-focal
+        - openstack-ansible-upgrade-aio_metal-ubuntu-jammy
 
 - project-template:
     name: openstack-ansible-deploy-infra_lxc-jobs
@@ -167,7 +167,7 @@
         - openstack-ansible-deploy-aio_metal-ubuntu-focal
         - openstack-ansible-deploy-aio_metal-ubuntu-jammy
         - openstack-ansible-upgrade-aio_metal-rockylinux-9
-        - openstack-ansible-upgrade-aio_metal-ubuntu-focal
+        - openstack-ansible-upgrade-aio_metal-ubuntu-jammy
         - openstack-ansible-upgrade_yoga-aio_metal-ubuntu-focal
     gate:
       jobs:
