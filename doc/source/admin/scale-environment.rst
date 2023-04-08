@@ -40,6 +40,12 @@ needed in an environment, it is possible to create additional nodes.
 
       # openstack-ansible playbooks/setup-hosts.yml --limit localhost,infra<node-ID>,infra<node-ID>-host_containers
 
+#. In case you're relying on ``/etc/hosts`` content, you should also update it for all hosts
+
+   .. code:: console
+
+      # openstack-ansible openstack-hosts-setup.yml -e openstack_hosts_group=all --tags openstack_hosts-file
+
 #. Next we need to expand galera/rabbitmq clusters, which is done during
    ``setup-infrastructure.yml``. So we will run this playbook without limits.
 
@@ -108,6 +114,7 @@ cluster.
 
        # cd /opt/openstack-ansible/playbooks
        # openstack-ansible setup-hosts.yml --limit localhost,NEW_HOST_NAME
+       # openstack-ansible openstack-hosts-setup.yml -e openstack_hosts_group=nova_compute --tags openstack_hosts-file
        # openstack-ansible setup-openstack.yml --limit localhost,NEW_HOST_NAME
 
    Alternatively you can try using new compute nodes deployment script
