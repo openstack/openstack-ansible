@@ -9,9 +9,8 @@ legacy compatibility reasons the file might also be placed at "/security.txt".
 .. _IETF standard: https://datatracker.ietf.org/doc/html/draft-foudil-securitytxt
 
 In OpenStack-Ansible, ``security.txt`` is implemented in haproxy as all public
-endpoints reside behind it and the text file is hosted by keystone. It defaults
-to directing any request paths that end with ``/security.txt`` to the text
-file using an ACL rule in haproxy.
+endpoints reside behind it. It defaults to directing any request paths that
+end with ``/security.txt`` to the text file using an ACL rule in haproxy.
 
 Enabling security.txt
 ~~~~~~~~~~~~~~~~~~~~~
@@ -22,20 +21,14 @@ using OpenStack-Ansible:
 #. Write the contents of the ``security.txt`` file in accordance with the
    standard.
 #. Define the contents of ``security.txt`` in the variable
-   ``keystone_security_txt_content`` in the
+   ``haproxy_security_txt_content`` in the
    ``/etc/openstack_deploy/user_variables.yml`` file:
 
   .. code-block:: yaml
 
-    keystone_security_txt_content: |
+    haproxy_security_txt_content: |
         # This is my example security.txt file
         # Please see https://securitytxt.org/ for details of the specification of this file
-
-#. Update keystone
-
-  .. code-block:: shell-session
-
-    # openstack-ansible os-keystone-install.yml
 
 #. Update haproxy
 
@@ -50,5 +43,4 @@ In some cases you may need to change the haproxy ACL used to redirect requests
 to the ``security.txt`` file, such as adding extra domains.
 
 The haproxy ACL is updated by overriding the variable
-``haproxy_security_txt_acl`` in the
-``/etc/openstack_deploy/user_variables.yml`` file.
+``haproxy_map_entries`` inside ``haproxy_security_txt_service``.

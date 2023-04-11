@@ -1,0 +1,6 @@
+---
+upgrade:
+  - |
+    ``keystone_security_txt_content`` variable name has changed to
+    ``haproxy_security_txt_content``. Security.txt file is now served
+    directly from haproxy.
