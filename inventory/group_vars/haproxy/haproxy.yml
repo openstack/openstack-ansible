@@ -271,6 +271,7 @@ haproxy_horizon_service:
   haproxy_stick_table: "{{ openstack_haproxy_horizon_stick_table }}"
   haproxy_map_entries:
     - name: base_regex
+      order: 99
       #match any requests to the horizon backend
       entries:
         - '.* horizon-back'
