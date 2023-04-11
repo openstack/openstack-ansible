@@ -31,6 +31,7 @@ function define_tasks {
     fi
 
     RUN_TASKS+=("${OSA_REPO_PATH}/playbooks/setup-hosts.yml --limit ${HOSTS}")
+    RUN_TASKS+=("${OSA_REPO_PATH}/playbooks/openstack-hosts-setup.yml -e openstack_hosts_group=nova_compute --tags openstack_hosts-file")
     RUN_TASKS+=("${OSA_REPO_PATH}/playbooks/setup-openstack.yml --limit ${HOSTS}")
     RUN_TASKS+=("${OSA_REPO_PATH}/playbooks/unbound-install.yml --tags unbound-config")
 
