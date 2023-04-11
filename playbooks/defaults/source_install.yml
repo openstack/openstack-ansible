@@ -22,7 +22,8 @@ neutron_bin: "/openstack/venvs/neutron-{{ venv_tag }}/bin"
 repo_release_path: "{{ openstack_repo_url }}/os-releases/{{ openstack_release }}/{{ os_distro_version }}"
 
 ## OpenStack source options
-openstack_repo_url: "http://{{ internal_lb_vip_address }}:{{ repo_server_port }}"
+openstack_repo_protocol: "{{ openstack_service_internaluri_proto }}"
+openstack_repo_url: "{{ openstack_repo_protocol }}://{{ internal_lb_vip_address }}:{{ repo_server_port }}"
 openstack_repo_git_url: "git://{{ internal_lb_vip_address }}"
 
 ## Delegate all service setup tasks to the utility host, and use the utility venv python interpreter
