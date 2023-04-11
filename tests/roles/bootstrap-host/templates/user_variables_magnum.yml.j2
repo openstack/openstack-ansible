@@ -32,6 +32,7 @@ magnum_cluster_templates:
     network_driver: flannel
     volume_driver: cinder
     image_id: fedora-coreos-latest
+    floating_ip_enabled: false
     labels:
       kube_tag: v1.23.3-rancher1
       etcd_tag: 3.4.6
