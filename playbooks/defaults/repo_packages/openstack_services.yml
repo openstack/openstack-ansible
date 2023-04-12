@@ -31,32 +31,32 @@
 ### Before this is shipped all of these services should have a tag set as the branch,
 ### or have a comment / reason attached to them as to why a tag can not work.
 
-### HEAD as of 02.03.2023 ###
+### HEAD as of 22.03.2023 ###
 
 ## Global Requirements
 requirements_git_repo: "{{ openstack_opendev_base_url }}/openstack/requirements"
-requirements_git_install_branch: 4eb31299dcd912d55ec659319237bb4389ba12f1
-requirements_git_track_branch: master
+requirements_git_install_branch: 65245016de7cf2d1e585eeb1378aac6aa6d75de0
+requirements_git_track_branch: stable/2023.1
 
 ## Adjutant service
 adjutant_git_repo: "{{ openstack_opendev_base_url }}/openstack/adjutant"
 adjutant_git_install_branch: df8c3e4a8b70be8697ac46f0acec9169752b4698
-adjutant_git_track_branch: master
+adjutant_git_track_branch: stable/2023.1
 
 ## Adjutant dashboard plugin
 adjutant_dashboard_git_repo: "{{ openstack_opendev_base_url }}/openstack/adjutant-ui"
 adjutant_dashboard_git_install_branch: 6fa9478b154ba07e4c70aba6c8fa6cc65450fb42
-adjutant_dashboard_git_track_branch: master
+adjutant_dashboard_git_track_branch: stable/2023.1
 
 ## Aodh service
 aodh_git_repo: "{{ openstack_opendev_base_url }}/openstack/aodh"
-aodh_git_install_branch: aa91a3b6141dd3177d581c5517ae9fe37e75ab4c
-aodh_git_track_branch: master
+aodh_git_install_branch: ecbbd3078e2ee17f01eb4048770c851b864d9122
+aodh_git_track_branch: stable/2023.1
 
 ## Barbican service
 barbican_git_repo: "{{ openstack_opendev_base_url }}/openstack/barbican"
-barbican_git_install_branch: d318b9b99d83538c9897605db22af35c5866b0f0
-barbican_git_track_branch: master
+barbican_git_install_branch: b5c2f8385c17ac9e02cfb12bcff606788043961d
+barbican_git_track_branch: stable/2023.1
 
 ## Barbican dashboard plugin
 barbican_dashboard_git_repo: "{{ openstack_opendev_base_url }}//openstack/barbican-ui"
@@ -65,245 +65,245 @@ barbican_dashboard_git_track_branch: master
 
 ## Ceilometer service
 ceilometer_git_repo: "{{ openstack_opendev_base_url }}/openstack/ceilometer"
-ceilometer_git_install_branch: ccce41555008fcffc941c91d1d1090be6611a57e
-ceilometer_git_track_branch: master
+ceilometer_git_install_branch: 78c2459bdd981a5acab38a445f92d1bfec045cbd
+ceilometer_git_track_branch: stable/2023.1
 
 ## Cinder service
 cinder_git_repo: "{{ openstack_opendev_base_url }}/openstack/cinder"
-cinder_git_install_branch: a53ff6727a42a7730e27772b64cfd511194721e1
-cinder_git_track_branch: master
+cinder_git_install_branch: 24266a2107b7caffb9fc79769e298a84340d8ba8
+cinder_git_track_branch: stable/2023.1
 
 ## Cloudkitty service
 cloudkitty_git_repo: "{{ openstack_opendev_base_url }}/openstack/cloudkitty"
 cloudkitty_git_install_branch: 73d5543f15ec188fafa1562f4142edd41afbad5c
-cloudkitty_git_track_branch: master
+cloudkitty_git_track_branch: stable/2023.1
 
 ## Cloudkitty dashboard plugin
 cloudkitty_dashboard_git_repo: "{{ openstack_opendev_base_url }}/openstack/cloudkitty-dashboard"
 cloudkitty_dashboard_git_install_branch: 7cdee86bac20a38d191677eaefe94914cc5207f7
-cloudkitty_dashboard_git_track_branch: master
+cloudkitty_dashboard_git_track_branch: stable/2023.1
 
 ## Designate service
 designate_git_repo: "{{ openstack_opendev_base_url }}/openstack/designate"
-designate_git_install_branch: 8910a2014be52808cb3f4a42953b2176e852d0ad
-designate_git_track_branch: master
+designate_git_install_branch: bda31ec62c3eaa7fcdd25d69f97742744debf915
+designate_git_track_branch: stable/2023.1
 
 ## Horizon Designate dashboard plugin
 designate_dashboard_git_repo: "{{ openstack_opendev_base_url }}/openstack/designate-dashboard"
-designate_dashboard_git_install_branch: 2468623f1b0dde2385f27505113b8ec51f7e6c28
-designate_dashboard_git_track_branch: master
+designate_dashboard_git_install_branch: 7bc6a1fc3828d529df37b05f15a84dc8be4223b7
+designate_dashboard_git_track_branch: stable/2023.1
 
 ## Glance service
 glance_git_repo: "{{ openstack_opendev_base_url }}/openstack/glance"
-glance_git_install_branch: f0371614d5093463ede1b846227db6473f9ece82
-glance_git_track_branch: master
+glance_git_install_branch: 285021bdb0ea344f995508fabb8b4e2485f2cf3c
+glance_git_track_branch: stable/2023.1
 
 ## Heat service
 heat_git_repo: "{{ openstack_opendev_base_url }}/openstack/heat"
-heat_git_install_branch: 3ab94722750f71b36f702badb2ea7ed176d4c22c
-heat_git_track_branch: master
+heat_git_install_branch: 6a4c7b57b8383bef4a02fb485e781c4cbb2a03d8
+heat_git_track_branch: stable/2023.1
 
 ## Horizon Heat dashboard plugin
 heat_dashboard_git_repo: "{{ openstack_opendev_base_url }}/openstack/heat-dashboard"
-heat_dashboard_git_install_branch: fa9efec740b54cf05f6607098a4fbf13e5e58f8b
-heat_dashboard_git_track_branch: master
+heat_dashboard_git_install_branch: 007a7a5a3b338543dd6e3badd04967324e8f0e9b
+heat_dashboard_git_track_branch: stable/2023.1
 
 ## Horizon service
 horizon_git_repo: "{{ openstack_opendev_base_url }}/openstack/horizon"
-horizon_git_install_branch: d4b73ed1c415da84db2a67f2d24f465b604e1359
-horizon_git_track_branch: master
+horizon_git_install_branch: 3dd3d4ffe09b62569b187f2b0efb88dbfc1eddaf
+horizon_git_track_branch: stable/2023.1
 
 ## Horizon Ironic dashboard plugin
 ironic_dashboard_git_repo: "{{ openstack_opendev_base_url}}/openstack/ironic-ui"
-ironic_dashboard_git_install_branch: 676aef6bbfe886cfbc8f8cc617cd8a271b8e85b2
-ironic_dashboard_git_track_branch: master
+ironic_dashboard_git_install_branch: 2b93b84b90b2a5953a68bde6e9ee0d15df6e5e83
+ironic_dashboard_git_track_branch: stable/2023.1
 
 ## Horizon Magnum dashboard plugin
 magnum_dashboard_git_repo: "{{ openstack_opendev_base_url }}/openstack/magnum-ui"
 magnum_dashboard_git_install_branch: 452ca7da23f4489bc0dd25cfd031d4f1db04dfa6
-magnum_dashboard_git_track_branch: master
+magnum_dashboard_git_track_branch: stable/2023.1
 
 ## Horizon Masakari dashboard plugin
 masakari_dashboard_git_repo: "{{ openstack_opendev_base_url }}/openstack/masakari-dashboard"
-masakari_dashboard_git_install_branch: c1928878d0fefa79a080aeb34693b629f9f822fb
-masakari_dashboard_git_track_branch: master
+masakari_dashboard_git_install_branch: 8c7435371df311c8c362fa99007d0d76852d7d79
+masakari_dashboard_git_track_branch: stable/2023.1
 
 ## Horizon Sahara dashboard plugin
 sahara_dashboard_git_repo: "{{ openstack_opendev_base_url }}/openstack/sahara-dashboard"
-sahara_dashboard_git_install_branch: 2fbedc589de71681cb2010c6534fba13529047aa
-sahara_dashboard_git_track_branch: master
+sahara_dashboard_git_install_branch: 628ccfadc3922852fb02ad6c26f74ed8f77f7f75
+sahara_dashboard_git_track_branch: stable/2023.1
 
 ## Keystone service
 keystone_git_repo: "{{ openstack_opendev_base_url }}/openstack/keystone"
-keystone_git_install_branch: 909fe93fb15358c43420778d936b5648b96f9456
-keystone_git_track_branch: master
+keystone_git_install_branch: c08d97672dcd40f8d927f91e59049053cfe3b5e4
+keystone_git_track_branch: stable/2023.1
 
 ## Manila service
 manila_git_repo: "{{ openstack_opendev_base_url }}/openstack/manila"
-manila_git_install_branch: 51f75da64eb4878de9c656032790e4ed3579a3b8
-manila_git_track_branch: master
+manila_git_install_branch: f03e84ae6212ed80e3b1e56ff289cf13634e9a80
+manila_git_track_branch: stable/2023.1
 
 ## Neutron service
 neutron_git_repo: "{{ openstack_opendev_base_url }}/openstack/neutron"
-neutron_git_install_branch: 92766c85b642bdece24c629625bf80050882c797
-neutron_git_track_branch: master
+neutron_git_install_branch: f822742af06b4e0e7e9729ad600102258df0ddad
+neutron_git_track_branch: stable/2023.1
 
 neutron_vpnaas_git_repo: "{{ openstack_opendev_base_url }}/openstack/neutron-vpnaas"
-neutron_vpnaas_git_install_branch: 792f2c65ec34b63ae8037a5328b7622320c4e1c4
-neutron_vpnaas_git_track_branch: master
+neutron_vpnaas_git_install_branch: 6ed22d4d75112a19aabde2816694d94e44ca16a2
+neutron_vpnaas_git_track_branch: stable/2023.1
 
 
 neutron_dynamic_routing_git_repo: "{{ openstack_opendev_base_url }}/openstack/neutron-dynamic-routing"
-neutron_dynamic_routing_git_install_branch: d41c3f0749c12c28c4004b8a58a6d11cf9394dc1
-neutron_dynamic_routing_git_track_branch: master
+neutron_dynamic_routing_git_install_branch: 13e0d8a63dbdbd9e1a863144999794d4fc9af22d
+neutron_dynamic_routing_git_track_branch: stable/2023.1
 
 networking_odl_git_repo: "{{ openstack_opendev_base_url }}/openstack/networking-odl"
-networking_odl_git_install_branch: d8316e6f531e7568fdb9dca6fae89902eb566c40
-networking_odl_git_track_branch: master
+networking_odl_git_install_branch: 48936559c71606d5e43fba1ad4382d74110e7d01
+networking_odl_git_track_branch: stable/2023.1
 
 networking_bgpvpn_git_repo: "{{ openstack_opendev_base_url }}/openstack/networking-bgpvpn"
-networking_bgpvpn_git_install_branch: 902b82169db078bcd3765ce1115c11ab872c72a6
-networking_bgpvpn_git_track_branch: master
+networking_bgpvpn_git_install_branch: 039fdc096e0971b90a96ea07a2ef6e3196858594
+networking_bgpvpn_git_track_branch: stable/2023.1
 
 networking_sfc_git_repo: "{{ openstack_opendev_base_url }}/openstack/networking-sfc"
-networking_sfc_git_install_branch: f9fb840b72b87d67790d34d637f6b47d9ca93f7d
-networking_sfc_git_track_branch: master
+networking_sfc_git_install_branch: a93b4de04b0f1e34119ab306331b211c0c9dd815
+networking_sfc_git_track_branch: stable/2023.1
 
 networking_generic_switch_git_repo: "{{ openstack_opendev_base_url}}/openstack/networking-generic-switch"
-networking_generic_switch_git_install_branch: 1b715fd5cf387e186594417b30d17d5cfcd97ae7
-networking_generic_switch_git_track_branch: master
+networking_generic_switch_git_install_branch: 6dcc83c4bac921cbcfc37ece974287f095611883
+networking_generic_switch_git_track_branch: stable/2023.1
 
 networking_nsx_git_repo: "{{ openstack_opendev_base_url }}/x/vmware-nsx"
 networking_nsx_git_install_branch: 0253265f75f63d5619b30f16a6b64459dec79d82
 networking_nsx_git_track_branch: master
 
 networking_nsxlib_git_repo: "{{ openstack_opendev_base_url }}/x/vmware-nsxlib"
-networking_nsxlib_git_install_branch: d049dbc406adfb99e493d6cefaf71fa61064592e
+networking_nsxlib_git_install_branch: acb8f2d53fa12880fab548e21f15b0329c5f8eb5
 networking_nsxlib_git_track_branch: master
 
 networking_baremetal_git_repo: "{{ openstack_opendev_base_url }}/openstack/networking-baremetal"
-networking_baremetal_git_install_branch: 2cf7c04d7799f17e2d6f7ead0ecaa9c0e8426ad5
-networking_baremetal_git_track_branch: master
+networking_baremetal_git_install_branch: 1529ce98313336e2ef431bc1113139b790d1c92c
+networking_baremetal_git_track_branch: stable/2023.1
 
 ## Nova service
 nova_git_repo: "{{ openstack_opendev_base_url }}/openstack/nova"
-nova_git_install_branch: 6b0b009783770354f9387ae4d2d99fca05fb5acd
-nova_git_track_branch: master
+nova_git_install_branch: 47b6850bb1f3681e6af7d8248152a979bf5051d1
+nova_git_track_branch: stable/2023.1
 
 ## Sahara service
 sahara_git_repo: "{{ openstack_opendev_base_url }}/openstack/sahara"
 sahara_git_install_branch: 5e7258bcc8807493f08671be9b8f4f4c4232eb0a
-sahara_git_track_branch: master
+sahara_git_track_branch: stable/2023.1
 
 ## Senlin service
 senlin_git_repo: "{{ openstack_opendev_base_url }}/openstack/senlin"
-senlin_git_install_branch: d76152595f0fdd8bd69fe6e6336b1777d3365509
-senlin_git_track_branch: master
+senlin_git_install_branch: 22fd77946723e25e595676e61893c1f645709b2f
+senlin_git_track_branch: stable/2023.1
 
 ## Swift service
 swift_git_repo: "{{ openstack_opendev_base_url }}/openstack/swift"
-swift_git_install_branch: 2a90eadc0d20cef9833a0e7737f5c36becf46b3b
+swift_git_install_branch: 9a1bfb8975fb1315fb417161a2865b6bb4760415
 swift_git_track_branch: master
 
 ## Ironic service
 ironic_git_repo: "{{ openstack_opendev_base_url }}/openstack/ironic"
-ironic_git_install_branch: 63de82c3d3724d7989ffe119cc78d2aa9399aa77
-ironic_git_track_branch: master
+ironic_git_install_branch: 943604cb417914194331b8ce5916766b50553128
+ironic_git_track_branch: stable/2023.1
 
 ## Ironic inspector service
 ironic_inspector_git_repo: "{{ openstack_opendev_base_url }}/openstack/ironic-inspector"
-ironic_inspector_git_install_branch: 836ba11b9bc83232ffd8ee91b0a727216aa0861a
-ironic_inspector_git_track_branch: master
+ironic_inspector_git_install_branch: 8258f1e15a7d76063b26cdd20d4ef9b0ec8d643a
+ironic_inspector_git_track_branch: stable/2023.1
 
 ## Magnum service
 magnum_git_repo: "{{ openstack_opendev_base_url }}/openstack/magnum"
-magnum_git_install_branch: ab9fe94d5333edc6d269f7fe2b1cd32fe4a98d3a
-magnum_git_track_branch: master
+magnum_git_install_branch: 848c34a420aac00731447436c282e5c94d4e7b20
+magnum_git_track_branch: stable/2023.1
 
 ## Masakari service
 masakari_git_repo: "{{ openstack_opendev_base_url }}/openstack/masakari"
-masakari_git_install_branch: 3e1b85133a59ee68a3b18e47e7dc49ab30097e63
-masakari_git_track_branch: master
+masakari_git_install_branch: 72b6929271a38b87cf43489fd9ce28e35c41cedb
+masakari_git_track_branch: stable/2023.1
 
 ## Masakari monitors services
 masakari_monitors_git_repo: "{{ openstack_opendev_base_url }}/openstack/masakari-monitors"
-masakari_monitors_git_install_branch: cf646dfce2db86f01dd49349e1803da23de4ec85
-masakari_monitors_git_track_branch: master
+masakari_monitors_git_install_branch: 9192f777840a45a5bc14e261813004ecfc59cf45
+masakari_monitors_git_track_branch: stable/2023.1
 
 ## Mistral service
 mistral_git_repo: "{{ openstack_opendev_base_url }}/openstack/mistral"
-mistral_git_install_branch: 4289317a914cd2542a23ccc2f3cdcb0d7fd00676
-mistral_git_track_branch: master
+mistral_git_install_branch: af2b9c5cd8d3bca74f560491fb140809fc27931c
+mistral_git_track_branch: stable/2023.1
 
 mistral_extra_git_repo: "{{ openstack_opendev_base_url }}/openstack/mistral-extra"
 mistral_extra_git_install_branch: e0687d607319b796503859353b8f3ab1cc9aa9f5
-mistral_extra_git_track_branch: master
+mistral_extra_git_track_branch: stable/2023.1
 
 ## Murano service
 murano_git_repo: "{{ openstack_opendev_base_url }}/openstack/murano"
-murano_git_install_branch: ada28b3ac6e6c19688dc6fd6a19630d1cf5e0530
-murano_git_track_branch: master
+murano_git_install_branch: 19dc9648e1a760037b7a67a3ec169483b3bc0609
+murano_git_track_branch: stable/2023.1
 
 murano_dashboard_git_repo: "{{ openstack_opendev_base_url }}/openstack/murano-dashboard"
-murano_dashboard_git_install_branch: 5e73220a5f81adb9b59ab0711fecad23ddfd5a1b
-murano_dashboard_git_track_branch: master
+murano_dashboard_git_install_branch: 6c93b2ca8a840b1299ebf4b654f2ce041374f808
+murano_dashboard_git_track_branch: stable/2023.1
 
 ## Trove service
 trove_git_repo: "{{ openstack_opendev_base_url }}/openstack/trove"
-trove_git_install_branch: 2fbbb09d22039f672ef4a084617bff8748fba134
-trove_git_track_branch: master
+trove_git_install_branch: 8d54913b36fc3d8a80fb02f78dc541f0f08f763b
+trove_git_track_branch: stable/2023.1
 
 ## Horizon Trove dashboard plugin
 trove_dashboard_git_repo: "{{ openstack_opendev_base_url }}/openstack/trove-dashboard"
-trove_dashboard_git_install_branch: 8309206de77a2079193f64fb29669b2ef5594a46
-trove_dashboard_git_track_branch: master
+trove_dashboard_git_install_branch: aadf4a9ce2ed542e6b68e3c2f212fef9d9948b50
+trove_dashboard_git_track_branch: stable/2023.1
 
 ## Octavia service
 octavia_git_repo: "{{ openstack_opendev_base_url }}/openstack/octavia"
-octavia_git_install_branch: 3475a4b3c2b0614d4a6f1e51d6b08d3abcc5f7ca
-octavia_git_track_branch: master
+octavia_git_install_branch: 4486d2416f600df15df1b5c98a676f898e2b1d42
+octavia_git_track_branch: stable/2023.1
 
 ## Octavia OVN provider
 octavia_ovn_octavia_provider_git_repo: "{{ openstack_opendev_base_url }}/openstack/ovn-octavia-provider"
-octavia_ovn_octavia_provider_git_install_branch: 569c9c011a2cc9e5f041633dde4a47257e4d8565
-octavia_ovn_octavia_provider_git_track_branch: master
+octavia_ovn_octavia_provider_git_install_branch: b29211686375b7179641c8580264e11f85a63a24
+octavia_ovn_octavia_provider_git_track_branch: stable/2023.1
 
 ## Placement service
 placement_git_repo: "{{ openstack_opendev_base_url }}/openstack/placement"
-placement_git_install_branch: 9fa635bd60cff51effc7ae65e8562664ce7ce24c
-placement_git_track_branch: master
+placement_git_install_branch: b3652feea1855c9481c9441976379d9851c0c62f
+placement_git_track_branch: stable/2023.1
 
 ## Tacker service
 tacker_git_repo: "{{ openstack_opendev_base_url }}/openstack/tacker"
-tacker_git_install_branch: d457da69d96bfe0c3586abfb59797d51462a5806
-tacker_git_track_branch: master
+tacker_git_install_branch: 40a15b59455fdc6b34eecd641af514d32888a5a2
+tacker_git_track_branch: stable/2023.1
 
 ## Horizon Octavia dashboard plugin
 octavia_dashboard_git_repo: "{{ openstack_opendev_base_url }}/openstack/octavia-dashboard"
-octavia_dashboard_git_install_branch: d6bf1ed92d5d759414115e4ae010710666ea7751
-octavia_dashboard_git_track_branch: master
+octavia_dashboard_git_install_branch: d1a6dd8995c0fcd7333408eae4f38437f65ef9b8
+octavia_dashboard_git_track_branch: stable/2023.1
 
 ## Blazar service
 blazar_git_repo: "{{ openstack_opendev_base_url }}/openstack/blazar"
-blazar_git_install_branch: af4e4490dd880b152e4ea4ff0395b8b7d88627ca
-blazar_git_track_branch: master
+blazar_git_install_branch: 24ca97091bcb0d231af98276a6e80013a170d438
+blazar_git_track_branch: stable/2023.1
 
 ## Blazar Nova Service
 blazar_nova_git_repo: "{{ openstack_opendev_base_url }}/openstack/blazar-nova"
-blazar_nova_git_install_branch: 5579fb4728187e9bd3ffce2b396ea98c65fc9b42
-blazar_nova_git_track_branch: master
+blazar_nova_git_install_branch: bec9434e93ad1baf4a08eb0bd83ad8af83def93e
+blazar_nova_git_track_branch: stable/2023.1
 
 ## Zun service
 zun_git_repo: "{{ openstack_opendev_base_url }}/openstack/zun"
-zun_git_install_branch: c43f423530d32f6ac0c245b996642e7503b6b043
-zun_git_track_branch: master
+zun_git_install_branch: 6d4039bc7bc88ecd3caaeee33126ed85e8cf09f0
+zun_git_track_branch: stable/2023.1
 
 ## Zun kuryr service
 zun_kuryr_git_repo: "{{ openstack_opendev_base_url }}/openstack/kuryr-libnetwork"
-zun_kuryr_git_install_branch: 7fce4cd9251f29ede3659b41a8cbd099134be29f
-zun_kuryr_git_track_branch: master
+zun_kuryr_git_install_branch: a6628c266cb364ffddf3f15c2ccb1ee3ee474f44
+zun_kuryr_git_track_branch: stable/2023.1
 
 ## Zun kuryr library
 zun_kuryr_lib_git_repo: "{{ openstack_opendev_base_url }}/openstack/kuryr"
-zun_kuryr_lib_git_install_branch: deaf2f4f810afda8bb7fd8e6cd99be9a8b1ab264
-zun_kuryr_lib_git_track_branch: master
+zun_kuryr_lib_git_install_branch: 1616fda8d29814c106ab7a95c5661887516f825a
+zun_kuryr_lib_git_track_branch: stable/2023.1
