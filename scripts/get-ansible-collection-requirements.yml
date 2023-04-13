@@ -60,9 +60,8 @@
       vars:
         zuul_item:
           name: "{{ item.item.name }}"
-          source: "git+file://{{ zuul_src_path }}/{{ item.item.source.split('/')[-3:] | join('/') }}"
-          version: "{{ item.item.version }}"
-          type: "{{ item.item.type | default('') }}"
+          source: "{{ zuul_src_path }}/{{ item.item.source.split('/')[-3:] | join('/') }}"
+          type: "dir"
       set_fact:
         galaxy_collections_list_ci: "{{ galaxy_collections_list_ci | default([]) + [ (item.stat.exists | ternary(zuul_item, item.item)) ] }}"
       with_items: "{{ zuul_collections.results }}"
