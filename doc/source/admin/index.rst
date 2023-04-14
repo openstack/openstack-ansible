@@ -32,6 +32,7 @@ the major upgrades procedures.
    backup-restore.rst
    troubleshooting.rst
    upgrades/compatibility-matrix.rst
+   upgrades/compatibility-matrix-legacy.rst
    upgrades/minor-upgrades.rst
    upgrades/major-upgrades.rst
    upgrades/distribution-upgrades.rst
