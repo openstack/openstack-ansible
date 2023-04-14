@@ -1,6 +1,6 @@
 ---
 
-### HEAD as of 15.03.2023 ###
+### HEAD as of 14.04.2023 ###
 
 - name: ansible-hardening
   scm: git
@@ -17,9 +17,9 @@
 - name: galera_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-galera_server
-  version: 96d9f4586c6c3c800e0e7e229d731783bfa3aafe
+  version: 88e340a58ed906ae033238f4270a685601c343fc
   trackbranch: stable/xena
-  shallow_since: '2022-12-28'
+  shallow_since: '2023-04-03'
 - name: ceph_client
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-ceph_client
@@ -59,9 +59,9 @@
 - name: openstack_hosts
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-openstack_hosts
-  version: ec8dbb0958f1447aafee62f6d131fd90c783a852
+  version: 5d2b436d5a2bd2810a4d5e2ae2b892f45b59a0db
   trackbranch: stable/xena
-  shallow_since: '2022-12-28'
+  shallow_since: '2023-04-02'
 - name: os_keystone
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_keystone
@@ -269,9 +269,9 @@
 - name: rabbitmq_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-rabbitmq_server
-  version: f9c4d9e46d91824766ceab026b74c86442718b4e
+  version: 954ea7013054ed7fbed65006a02d5126716da0ea
   trackbranch: stable/xena
-  shallow_since: '2023-03-06'
+  shallow_since: '2023-04-12'
 - name: repo_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-repo_server
@@ -293,9 +293,9 @@
 - name: sshd
   scm: git
   src: https://github.com/willshersystems/ansible-sshd
-  version: 806bab77201c0ba2c056609f13a6079f59456169
+  version: e84617d70ed3c9e320ee7cc30619cdfe5e01b1a4
   trackbranch: master
-  shallow_since: '2023-03-01'
+  shallow_since: '2023-04-11'
 - name: bird
   scm: git
   src: https://github.com/logan2211/ansible-bird
@@ -323,9 +323,9 @@
 - name: ceph-ansible
   scm: git
   src: https://github.com/ceph/ceph-ansible
-  version: 1a10e189cb3ef0986c216c0ccaaaea58df1c27d2
+  version: 9f44aa21b08b042c22e4e5fd3eae47c64c4d5ba2
   trackbranch: stable-6.0
-  shallow_since: '2023-03-13'
+  shallow_since: '2023-04-10'
 - name: opendaylight
   scm: git
   src: https://github.com/opendaylight/integration-packaging-ansible-opendaylight
@@ -341,9 +341,9 @@
 - name: pacemaker_corosync
   scm: git
   src: https://github.com/noonedeadpunk/ansible-pacemaker-corosync
-  version: dacff1ed6ede207b8afcbfff5e990d875580893b
+  version: c4a492a248c89c0710489a0f0cd0f95546e6be26
   trackbranch: master
-  shallow_since: '2022-06-14'
+  shallow_since: '2023-04-10'
 - name: systemd_service
   src: https://opendev.org/openstack/ansible-role-systemd_service
   scm: git
