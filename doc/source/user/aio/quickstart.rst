@@ -274,6 +274,168 @@ Keystone service, execute:
    # cd /opt/openstack-ansible/playbooks
    # openstack-ansible os-keystone-install.yml
 
+Interacting with an AIO
+-----------------------
+
+Once an AIO has been deployed, you most likely want to interact with it. You
+can do this via the web interface or one of the many clients or libraries that
+exist for OpenStack.
+
+Using a GUI
+~~~~~~~~~~~
+
+The horizon web interface provides a graphical interface for interacting with
+the AIO deployment. By default, the horizon API is available on port 443 of the
+host (or port 80, if SSL certificate configuration was disabled). As such, to
+interact with horizon, simply browse to the IP of the host.
+
+.. note::
+
+   If the AIO was deployed in a cloud VM, you may need to configure security
+   groups or firewall rules to allow access to the HTTP(S) ports. For example,
+   if the AIO was deployed in an OpenStack VM, you can create and apply a
+   suitable security group for interacting with horizon like so:
+
+   .. code-block:: shell-session
+
+      $ openstack security group create http \
+          --description 'Allow HTTP and HTTPS access'
+      $ openstack security group rule create http \
+          --protocol tcp --dst-port 80 --remote-ip 0.0.0.0/0
+      $ openstack security group rule create http \
+          --protocol tcp --dst-port 443 --remote-ip 0.0.0.0/0
+      $ openstack server add security group $SERVER http
+
+   A list of service ports can be found in the `OpenStack Install Guide`__.
+
+   .. __: https://docs.openstack.org/install-guide/firewalls-default-ports.html
+
+This will present a login page. By default, OpenStack-Ansible create a user
+called ``admin``. The password will be the value of the
+``keystone_auth_admin_password`` variable. If you did not configure this
+variable, OpenStack-Ansible auto-generates one. You can view the configured
+password in the ``/etc/openstack_deploy/user_secrets.yml`` file.
+
+.. code-block:: shell-session
+
+   # grep admin_pass /etc/openstack_deploy/user_secrets.yml
+   heat_stack_domain_admin_password: <redacted>
+   keystone_auth_admin_password: <redacted>
+   radosgw_admin_password: <redacted>
+
+Using this username and password combination, log in to horizon.
+
+Using a client or library
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+There are a variety of clients and libraries available for interacting with an
+OpenStack deployment, including as `openstackclient`__, `openstacksdk`__, or
+`gophercloud`__. These are typically configured using either environment
+variables sourced from an ``openrc`` file or the newer ``clouds.yaml`` file.
+
+.. __: https://opendev.org/openstack/python-openstackclient
+.. __: https://opendev.org/openstack/openstacksdk
+.. __: https://opendev.org/openstack/gophercloud
+
+OpenStack-Ansible provides the ``openstack_openrc`` role for creating these
+configuration files as well as a number of utilities such as *openstackclient*.
+If the AIO deployment using the ``lxc`` scenario (the default), these will be
+availably in the utility container.
+
+.. code-block:: shell-session
+
+   $ lxc-attach -n `lxc-ls -1 | grep utility`
+
+   # ls /root/openrc
+   /root/openrc
+
+   # ls /root/.config/openstack/clouds.yaml
+   /root/.config/openstack/clouds.yaml
+
+   # export OS_CLOUD=default
+   # openstack project list -c Name -f value
+   service
+   admin
+
+Alternatively, if the AIO was deployed using the ``metal`` scenario, these
+files will be available on the host itself.
+
+.. code-block:: shell-session
+
+   # ls /root/openrc
+   /root/openrc
+
+   # ls /root/.config/openstack/clouds.yaml
+   /root/.config/openstack/clouds.yaml
+
+If you wish to access the AIO deployment from another host - perhaps your local
+workstation - you will need either an ``openrc`` file or ``clouds.yaml`` file.
+You can download an ``openrc`` file from horizon: simply click the User
+dropdown in the top-right corner and select *⭳ OpenStack RC file*.
+
+.. important::
+
+   You may be tempted to copy the ``openrc`` or ``clouds.yaml`` files created
+   by the ``openstack_openrc`` role. However, these files use the ``internal``
+   `interface`__ by default. This interface use the management network
+   (``172.29.236.0/22``) , which is not routable from outside the host. If you
+   wish to use these files, you will need to change the interface to
+   ``public``.
+
+   .. __: https://docs.openstack.org/keystone/latest/contributor/service-catalog.html#endpoints
+
+.. note::
+
+   If the AIO was deployed in a cloud VM, you may need to configure security
+   groups or firewall rules to allow access to the various sevice ports. For
+   example, if the AIO was deployed in an OpenStack VM, you can create and
+   apply a suitable security group for interacting the core services like so:
+
+   .. code-block:: shell-session
+
+      $ openstack security group create openstack-apis \
+          --description 'Allow access to various OpenStack services'
+      $ for port in 8774 8776 9292 9696 5000 8780; do
+          openstack security group rule create openstack-apis \
+            --protocol tcp --dst-port ${port}:${port} --remote-ip 0.0.0.0/0
+        done
+      $ openstack server add security group $SERVER openstack-apis
+
+   A list of service ports can be found in the `OpenStack Install Guide`__.
+
+   .. __: https://docs.openstack.org/install-guide/firewalls-default-ports.html
+
+.. note::
+
+   If you have enabled SSL certificate configuration (default), all services
+   will use self-signed certificates. While the host is configured to trust
+   these certificates, this is not the case for other hosts. This will result
+   in HTTPS errors when attempting to interact with the cloud. To resolve this
+   issue, you will need to manually configure certificates on other hosts or
+   ignore SSL issues. You can ignore SSL issue by setting ``verify: false`` in
+   the definition for your cloud in ``clouds.yaml``. For example::
+
+   .. code-block:: yaml
+
+      clouds:
+        aio:
+          # ...
+          verify: false
+
+   More information about SSL certificate configuration can be found in the
+   :doc:`security guide </user/security/ssl-certificates>`.
+
+Once one of these files have been created, you can use it to interact with your
+deployment using most standard clients and libraries. For example, to list
+available projects using *openstackclient*:
+
+.. code-block:: shell-session
+
+   $ export OS_CLOUD=aio
+   $ openstack project list -c Name -f value
+   service
+   admin
+
 Rebooting an AIO
 ----------------
 
