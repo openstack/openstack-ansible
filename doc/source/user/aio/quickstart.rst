@@ -412,8 +412,33 @@ dropdown in the top-right corner and select *⭳ OpenStack RC file*.
    these certificates, this is not the case for other hosts. This will result
    in HTTPS errors when attempting to interact with the cloud. To resolve this
    issue, you will need to manually configure certificates on other hosts or
-   ignore SSL issues. You can ignore SSL issue by setting ``verify: false`` in
-   the definition for your cloud in ``clouds.yaml``. For example::
+   ignore SSL issues. To use the self-signed certificate, first copy it to the
+   other hosts. The name and location of the generated certificate are
+   configured by the ``pki_authorities`` and ``pki_trust_store_location``
+   variables respectively, which are used by the ``pki`` role provided by
+   `ansible-role-pki`__. On an Ubuntu 22.04 host, these will default to
+   ``ExampleCorpRoot`` and ``/usr/local/share/ca-certificates``, respectively.
+   For example:
+
+   .. code-block:: shell-session
+
+      $ scp aio:/usr/local/share/ca-certificates/ExampleCorpRoot.crt ~/.config/openstack/aio.crt
+
+   .. __: https://opendev.org/openstack/ansible-role-pki
+
+   Once this is done, configure the ``cacert`` value in the the definition for
+   your cloud in ``clouds.yaml``. For example:
+
+   .. code-block:: yaml
+
+      clouds:
+        aio:
+          # ...
+          cacert: /home/<username>/.config/openstack/aio.crt
+
+   Alternatively, you can simply ignore SSL issues by setting ``verify: false``
+   in the definition for your cloud in ``clouds.yaml``. This will disable SSL
+   verification entirely for this cloud. For example:
 
    .. code-block:: yaml
 
@@ -421,6 +446,11 @@ dropdown in the top-right corner and select *⭳ OpenStack RC file*.
         aio:
           # ...
           verify: false
+
+   Finally, you can also opt to disable SSL certificate configuration during
+   initial deployment or opt to use an external certificate authority for
+   signing, such as Lets Encrypt. Both topics are outside the scope of this
+   document.
 
    More information about SSL certificate configuration can be found in the
    :doc:`security guide </user/security/ssl-certificates>`.
