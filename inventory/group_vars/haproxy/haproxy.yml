@@ -154,6 +154,17 @@ haproxy_barbican_service:
     - "httpchk GET /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
   haproxy_service_enabled: "{{ groups['barbican_api'] is defined and groups['barbican_api'] | length > 0 }}"
 
+haproxy_blazar_api_service:
+  haproxy_service_name: blazar_api
+  haproxy_backend_nodes: "{{ groups['blazar_api'] | default([]) }}"
+  haproxy_ssl: "{{ haproxy_ssl }}"
+  haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
+  haproxy_port: 1234
+  haproxy_balance_type: http
+  haproxy_backend_options:
+    - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+  haproxy_service_enabled: "{{ groups['blazar_api'] is defined and groups['blazar_api'] | length > 0 }}"
+
 haproxy_ceph_rgw_service:
   haproxy_service_name: ceph-rgw
   haproxy_backend_nodes: "{{ (groups['ceph-rgw'] is defined and groups['ceph-rgw'] | length > 0) | ternary(groups['ceph-rgw'], ceph_rgws) }}"
@@ -647,6 +658,7 @@ haproxy_default_services:
   - service: "{{ haproxy_adjutant_api_service | combine(haproxy_adjutant_api_service_overrides | default({})) }}"
   - service: "{{ haproxy_aodh_api_service | combine(haproxy_aodh_api_service_overrides | default({})) }}"
   - service: "{{ haproxy_barbican_service | combine(haproxy_barbican_service_overrides | default({})) }}"
+  - service: "{{ haproxy_blazar_api_service | combine(haproxy_blazar_api_service_overrides | default({})) }}"
   - service: "{{ haproxy_ceph_rgw_service | combine(haproxy_ceph_rgw_service_overrides | default({})) }}"
   - service: "{{ haproxy_cinder_api_service | combine(haproxy_cinder_api_service_overrides | default({})) }}"
   - service: "{{ haproxy_cloudkitty_api_service | combine(haproxy_cloudkitty_api_service_overrides | default({})) }}"
