@@ -163,6 +163,8 @@ haproxy_blazar_api_service:
   haproxy_balance_type: http
   haproxy_backend_options:
     - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+  haproxy_backend_httpcheck_options:
+    - 'expect rstatus (200|401)'
   haproxy_service_enabled: "{{ groups['blazar_api'] is defined and groups['blazar_api'] | length > 0 }}"
 
 haproxy_ceph_rgw_service:
