@@ -1559,5 +1559,62 @@ class TestL3ProviderNetworkConfig(TestConfigCheckBase):
         self.assertNotIn('management_address', aio1_container_networks)
 
 
+class TestNestsGroups(TestConfigCheckBase):
+    def setUp(self):
+        super(TestNestsGroups, self).setUp()
+        self.nest_env_path = path.join(TARGET_DIR, 'env.d/az.yml')
+        self._create_nest_env()
+        self.add_config_key('nest_hosts', {})
+        self.add_host('nest_hosts', 'aio1', '172.29.236.100')
+        self.add_host('nest_hosts', 'aio2', '172.29.236.101')
+        self.add_host('compute_hosts', 'aio2', '172.29.236.101')
+        self.write_config()
+        self.inventory = get_inventory()
+
+    def tearDown(self):
+        os.remove(self.nest_env_path)
+        os.rmdir(os.path.dirname(self.nest_env_path))
+
+    def _create_nest_env(self):
+        data = """
+            component_skel:
+              nest_containers:
+                belongs_to:
+                  - nest_all
+              nest_hosts:
+                belongs_to:
+                  - nest_all
+
+            container_skel:
+              nest_containers:
+                properties:
+                  is_nest: True
+        """
+        env = yaml.safe_load(data)
+        os.mkdir(os.path.dirname(self.nest_env_path))
+        with open(self.nest_env_path, 'w') as f:
+            f.write(yaml.safe_dump(env))
+
+    def test_nest_all_childrens(self):
+        nest_expected_children = set(['nest_containers', 'nest_hosts'])
+        nest_children = set(self.inventory['nest_all']['children'])
+        self.assertEqual(nest_expected_children, nest_children)
+
+    def test_nest_hosts(self):
+        nest_hosts_expected = set(['aio1', 'aio2'])
+        nest_hosts = set(self.inventory['nest_hosts']['hosts'])
+        self.assertEqual(nest_hosts_expected, nest_hosts)
+
+    def test_nest_containers(self):
+        host_containers_group = 'aio1-host_containers'
+        nest_containers_expected = set([host_containers_group])
+        nest_containers = set(self.inventory['nest_containers']['children'])
+        # Ensure we have only lxc_hosts in children
+        self.assertEqual(nest_containers_expected, nest_containers)
+        # Ensure that we have host-containers group generated
+        self.assertIn(host_containers_group, self.inventory)
+        # Ensure that host-containers group is not empty
+        self.assertTrue(len(self.inventory[host_containers_group]['hosts']) > 0)
+
 if __name__ == '__main__':
     unittest.main(catchbreak=True)
