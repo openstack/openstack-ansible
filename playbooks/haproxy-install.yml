@@ -47,13 +47,16 @@
        - "item.when | bool"
       tags:
         - haproxy-config  # this tag is present because the task is ONLY a config task
+
   roles:
     - role: "keepalived"
       when: haproxy_use_keepalived | bool
       tags:
         - keepalived
+
     - role: "haproxy_server"
-      haproxy_service_configs: "{{ haproxy_default_services + haproxy_extra_services|default([]) }}"
+      haproxy_service_configs: "{{ haproxy_default_services + haproxy_extra_services | default([]) }}"
+
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - haproxy-config

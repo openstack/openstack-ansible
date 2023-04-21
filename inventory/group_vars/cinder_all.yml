@@ -26,3 +26,17 @@ glance_default_store: "{{ ((groups['swift_all'] is defined) and (groups['swift_a
 
 # cinder_backend_lvm_inuse: True if current host has an lvm backend
 cinder_backend_lvm_inuse: '{{ (cinder_backends|default("")|to_json).find("cinder.volume.drivers.lvm.LVMVolumeDriver") != -1 }}'
+
+haproxy_cinder_api_service:
+  haproxy_service_name: cinder_api
+  haproxy_backend_nodes: "{{ groups['cinder_api'] | default([]) }}"
+  haproxy_ssl: "{{ haproxy_ssl }}"
+  haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
+  haproxy_port: 8776
+  haproxy_balance_type: http
+  haproxy_backend_options:
+    - "httpchk HEAD /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+  haproxy_service_enabled: "{{ groups['cinder_api'] is defined and groups['cinder_api'] | length > 0 }}"
+
+cinder_haproxy_services:
+  - "{{ haproxy_cinder_api_service | combine(haproxy_cinder_api_service_overrides | default({})) }}"

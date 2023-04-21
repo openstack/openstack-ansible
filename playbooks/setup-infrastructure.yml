@@ -14,8 +14,8 @@
 # limitations under the License.
 
 - import_playbook: unbound-install.yml
-- import_playbook: repo-install.yml
 - import_playbook: haproxy-install.yml
+- import_playbook: repo-install.yml
 - import_playbook: memcached-install.yml
 - import_playbook: galera-install.yml
 - import_playbook: qdrouterd-install.yml

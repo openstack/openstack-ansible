@@ -1,0 +1,28 @@
+---
+# Copyright 2023, Cleura AB
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+haproxy_mistral_service:
+  haproxy_service_name: mistral
+  haproxy_backend_nodes: "{{ groups['mistral_all'] | default([]) }}"
+  haproxy_ssl: "{{ haproxy_ssl }}"
+  haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
+  haproxy_port: 8989
+  haproxy_balance_type: http
+  haproxy_backend_options:
+    - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+  haproxy_service_enabled: "{{ groups['mistral_all'] is defined and groups['mistral_all'] | length > 0 }}"
+
+mistral_haproxy_services:
+  - "{{ haproxy_mistral_service | combine(haproxy_mistral_service_overrides | default({})) }}"

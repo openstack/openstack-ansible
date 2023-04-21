@@ -1,0 +1,41 @@
+---
+# Copyright 2023, Cleura AB
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Haproxy service configs are stored in service group vars
+# (for ex. `glance_haproxy_services` are stored in glance group vars).
+# This is because they may refer to other variables in this group that are not
+# used only for haproxy(like `glance_backend_ssl`).
+# Group haproxy_all does not have access to service group vars by default.
+# To solve this, haproxy_all hosts are temporarily added to `service_group`.
+# After haproxy is configured, refresh_inventory is triggered to restore the
+# original inventory state.
+
+- hosts: "{{ service_group }}"
+  gather_facts: false
+  run_once: true
+  tasks:
+    - name: "Temporarily copy haproxy_service_configs value from {{ service_group }} to haproxy_all"
+      add_host:
+        name: "{{ item }}"
+        haproxy_service_configs: "{{ hostvars[inventory_hostname][service_variable] }}"
+      with_items: "{{ groups['haproxy_all'] }}"
+
+- hosts: haproxy_all
+  serial: "{{ haproxy_serial | default('50%') }}"
+  tasks:
+    - name: Configure haproxy for the service
+      import_role:
+        name: haproxy_server
+        tasks_from: haproxy_service_config_external.yml

@@ -1,0 +1,45 @@
+---
+# Copyright 2023, Cleura AB
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+haproxy_zun_api_service:
+  haproxy_service_name: zun_api
+  haproxy_backend_nodes: "{{ groups['zun_api'] | default([]) }}"
+  haproxy_ssl: "{{ haproxy_ssl }}"
+  haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
+  haproxy_port: 9517
+  haproxy_balance_type: http
+  haproxy_backend_options:
+      - "httpchk GET /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+  haproxy_service_enabled: "{{ groups['zun_api'] is defined and groups['zun_api'] | length > 0 }}"
+
+haproxy_zun_console_service:
+  haproxy_service_name: zun_console
+  haproxy_backend_nodes: "{{ groups['zun_api'] | default([]) }}"
+  haproxy_ssl: "{{ haproxy_ssl }}"
+  haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
+  haproxy_port: 6784
+  haproxy_balance_type: http
+  haproxy_timeout_client: 60m
+  haproxy_timeout_server: 60m
+  haproxy_balance_alg: source
+  haproxy_backend_options:
+    - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+  haproxy_backend_httpcheck_options:
+    - "expect status 405"
+  haproxy_service_enabled: "{{ groups['zun_api'] is defined and groups['zun_api'] | length > 0 }}"
+
+zun_haproxy_services:
+  - "{{ haproxy_zun_api_service | combine(haproxy_zun_api_service_overrides | default({})) }}"
+  - "{{ haproxy_zun_console_service | combine(haproxy_zun_console_service_overrides | default({})) }}"

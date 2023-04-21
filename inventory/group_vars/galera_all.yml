@@ -51,3 +51,26 @@ galera_server_proxy_protocol_networks: >-
 # Galera sessions are long lived, so if we do endpoint maintenance we will
 # force kill the sessions to force a failover to the active endpoint.
 haproxy_shutdown_sessions: yes
+
+haproxy_galera_allowlist_networks: "{{ haproxy_allowlist_networks }}"
+
+haproxy_galera_service:
+  haproxy_service_name: galera
+  haproxy_backend_nodes: "{{ (groups['galera_all'] | default([]))[:1] }}"  # list expected
+  haproxy_backup_nodes: "{{ (groups['galera_all'] | default([]))[1:] }}"
+  haproxy_bind: "{{ [internal_lb_vip_address] }}"
+  haproxy_port: 3306
+  haproxy_check_port: 9200
+  haproxy_balance_type: tcp
+  haproxy_stick_table_enabled: False
+  haproxy_timeout_client: 5000s
+  haproxy_timeout_server: 5000s
+  haproxy_backend_options:
+    - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+  haproxy_backend_server_options:
+    - "send-proxy-v2"
+  haproxy_allowlist_networks: "{{ haproxy_galera_allowlist_networks }}"
+  haproxy_service_enabled: "{{ groups['galera_all'] is defined and groups['galera_all'] | length > 0 }}"
+
+galera_haproxy_services:
+  - "{{ haproxy_galera_service | combine(haproxy_galera_service_overrides | default({})) }}"

@@ -16,3 +16,29 @@
 # Only enable the heat cinder backups functionality if the cinder backup
 # service is enabled.
 heat_cinder_backups_enabled: "{{ hostvars['localhost']['cinder_service_backup_program_enabled'] }}"
+
+haproxy_heat_api_service:
+  haproxy_service_name: heat_api
+  haproxy_backend_nodes: "{{ groups['heat_api'] | default([]) }}"
+  haproxy_port: 8004
+  haproxy_ssl: "{{ haproxy_ssl }}"
+  haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
+  haproxy_balance_type: http
+  haproxy_backend_options:
+    - "httpchk HEAD /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+  haproxy_service_enabled: "{{ groups['heat_api'] is defined and groups['heat_api'] | length > 0 }}"
+
+haproxy_heat_api_cfn_service:
+  haproxy_service_name: heat_api_cfn
+  haproxy_backend_nodes: "{{ groups['heat_api_cfn'] | default([]) }}"
+  haproxy_port: 8000
+  haproxy_ssl: "{{ haproxy_ssl }}"
+  haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
+  haproxy_balance_type: http
+  haproxy_backend_options:
+    - "httpchk HEAD /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+  haproxy_service_enabled: "{{ groups['heat_api_cfn'] is defined and groups['heat_api_cfn'] | length > 0 }}"
+
+heat_haproxy_services:
+  - "{{ haproxy_heat_api_cfn_service | combine(haproxy_heat_api_cfn_service_overrides | default({})) }}"
+  - "{{ haproxy_heat_api_service | combine(haproxy_heat_api_service_overrides | default({})) }}"

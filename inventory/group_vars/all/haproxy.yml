@@ -1,0 +1,35 @@
+---
+# Copyright 2023, Cleura AB
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+haproxy_ssl: true
+haproxy_ssl_all_vips: false
+
+haproxy_allowlist_networks:
+  - 192.168.0.0/16
+  - 172.16.0.0/12
+  - 10.0.0.0/8
+
+haproxy_stick_table_allowlist_networks: "{{ haproxy_allowlist_networks }}"
+
+# haproxy default stick table
+# returns 429 when more than 20 4xx responses per 10 second window
+# from external IP addresses. Override as necessary.
+openstack_haproxy_stick_table:
+  - "stick-table  type ipv6  size 256k  expire 10s  store http_err_rate(10s)"
+  - "http-request track-sc0 src"
+  - "http-request deny deny_status 429 if { sc_http_err_rate(0) gt 20 } !{ src {{ haproxy_stick_table_allowlist_networks | join(' } !{ src ') }} }"
+
+# apply the stick table as default for all backends
+haproxy_stick_table: "{{ openstack_haproxy_stick_table }}"

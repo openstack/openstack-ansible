@@ -23,6 +23,15 @@
   tags:
     - always
 
+- name: Configure haproxy services
+  import_playbook: common-playbooks/haproxy-service-config.yml
+  vars:
+    service_group: ironic_api
+    service_variable: "ironic_haproxy_services"
+  when: groups[service_group] | length > 0
+  tags:
+    - haproxy-service-config
+
 - name: Installation and setup of Ironic
   hosts: ironic_all
   gather_facts: false
