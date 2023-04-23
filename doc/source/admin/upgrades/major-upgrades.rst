@@ -200,13 +200,10 @@ Upgrade infrastructure
 
 We can now go ahead with the upgrade of all the infrastructure components. To
 ensure that rabbitmq and mariadb are upgraded, we pass the appropriate flags.
-We also skip upgrading haproxy re-configuration at this step, since some
-services will become unavailable right after running haproxy role, which we
-want to avoid
 
 .. code-block:: console
 
-    # openstack-ansible setup-infrastructure.yml -e 'galera_upgrade=true' -e 'rabbitmq_upgrade=true' -e 'package_state=latest' --skip-tags haproxy-config
+    # openstack-ansible setup-infrastructure.yml -e 'galera_upgrade=true' -e 'rabbitmq_upgrade=true' -e package_state=latest
 
 With this complete, we can now restart the mariadb containers one at a time,
 ensuring that each is started, responding, and synchronized with the other
@@ -226,16 +223,6 @@ We can now go ahead with the upgrade of all the OpenStack components.
 .. code-block:: console
 
     # openstack-ansible setup-openstack.yml -e package_state=latest
-
-Run haproxy re-configuration
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Now, once all services are being re-configured, we can run haproxy
-role to apply new configuration for the backends
-
-.. code-block:: console
-
-    # openstack-ansible haproxy-install.yml -e package_state=latest
 
 Upgrade Ceph
 ~~~~~~~~~~~~
