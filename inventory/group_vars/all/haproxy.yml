@@ -31,5 +31,10 @@ openstack_haproxy_stick_table:
   - "http-request track-sc0 src"
   - "http-request deny deny_status 429 if { sc_http_err_rate(0) gt 20 } !{ src {{ haproxy_stick_table_allowlist_networks | join(' } !{ src ') }} }"
 
+# CA used by haproxy to verify backend certificate.
+# It can contain CA path or a boolean:
+# (true = use system CA, false = cert validation disabled)
+openstack_haproxy_backend_ca: True
+
 # apply the stick table as default for all backends
 haproxy_stick_table: "{{ openstack_haproxy_stick_table }}"

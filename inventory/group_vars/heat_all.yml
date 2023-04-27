@@ -26,6 +26,8 @@ haproxy_heat_api_service:
   haproxy_balance_type: http
   haproxy_backend_options:
     - "httpchk HEAD /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+  haproxy_backend_ssl: "{{ heat_backend_ssl | default(openstack_service_backend_ssl) }}"
+  haproxy_backend_ca: "{{ heat_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
   haproxy_service_enabled: "{{ groups['heat_api'] is defined and groups['heat_api'] | length > 0 }}"
 
 haproxy_heat_api_cfn_service:
@@ -37,6 +39,8 @@ haproxy_heat_api_cfn_service:
   haproxy_balance_type: http
   haproxy_backend_options:
     - "httpchk HEAD /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+  haproxy_backend_ssl: "{{ heat_backend_ssl | default(openstack_service_backend_ssl) }}"
+  haproxy_backend_ca: "{{ heat_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
   haproxy_service_enabled: "{{ groups['heat_api_cfn'] is defined and groups['heat_api_cfn'] | length > 0 }}"
 
 heat_haproxy_services:

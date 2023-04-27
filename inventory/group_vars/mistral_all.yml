@@ -22,6 +22,8 @@ haproxy_mistral_service:
   haproxy_balance_type: http
   haproxy_backend_options:
     - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+  haproxy_backend_ssl: "{{ mistral_backend_ssl | default(openstack_service_backend_ssl) }}"
+  haproxy_backend_ca: "{{ mistral_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
   haproxy_service_enabled: "{{ groups['mistral_all'] is defined and groups['mistral_all'] | length > 0 }}"
 
 mistral_haproxy_services:

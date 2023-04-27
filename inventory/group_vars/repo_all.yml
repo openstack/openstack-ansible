@@ -45,6 +45,8 @@ haproxy_repo_service:
     - "httpchk GET /constraints/upper_constraints_cached.txt HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
   haproxy_backend_httpcheck_options:
     - "expect status 200"
+  haproxy_backend_ssl: "{{ repo_backend_ssl | default(openstack_service_backend_ssl) }}"
+  haproxy_backend_ca: "{{ repo_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
   haproxy_service_enabled: "{{ groups['repo_all'] is defined and groups['repo_all'] | length > 0 }}"
 
 repo_haproxy_services:

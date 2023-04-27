@@ -23,6 +23,8 @@ haproxy_adjutant_api_service:
   haproxy_balance_alg: source
   haproxy_backend_options:
     - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+  haproxy_backend_ssl: "{{ adjutant_backend_ssl | default(openstack_service_backend_ssl) }}"
+  haproxy_backend_ca: "{{ adjutant_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
   haproxy_service_enabled: "{{ groups['adjutant_api'] is defined and groups['adjutant_api'] | length > 0 }}"
 
 adjutant_haproxy_services:

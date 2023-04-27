@@ -22,6 +22,8 @@ haproxy_manila_service:
   haproxy_balance_type: http
   haproxy_backend_options:
     - "httpchk HEAD /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+  haproxy_backend_ssl: "{{ manila_backend_ssl | default(openstack_service_backend_ssl) }}"
+  haproxy_backend_ca: "{{ manila_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
   haproxy_service_enabled: "{{ groups['manila_api'] is defined and groups['manila_api'] | length > 0 }}"
 
 manila_haproxy_services:

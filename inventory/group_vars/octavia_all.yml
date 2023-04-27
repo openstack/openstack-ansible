@@ -22,6 +22,8 @@ haproxy_octavia_service:
   haproxy_balance_type: http
   haproxy_backend_options:
     - "httpchk GET /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+  haproxy_backend_ssl: "{{ octavia_backend_ssl | default(openstack_service_backend_ssl) }}"
+  haproxy_backend_ca: "{{ octavia_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
   haproxy_service_enabled: "{{ groups['octavia_all'] is defined and groups['octavia_all'] | length > 0 }}"
 
 octavia_haproxy_services:

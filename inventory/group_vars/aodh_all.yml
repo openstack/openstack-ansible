@@ -22,6 +22,8 @@ haproxy_aodh_api_service:
   haproxy_balance_type: http
   haproxy_backend_options:
     - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+  haproxy_backend_ssl: "{{ aodh_backend_ssl | default(openstack_service_backend_ssl) }}"
+  haproxy_backend_ca: "{{ aodh_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
   haproxy_service_enabled: "{{ groups['aodh_api'] is defined and groups['aodh_api'] | length > 0 }}"
 
 aodh_haproxy_services:
