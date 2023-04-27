@@ -29,10 +29,10 @@ GATE_EXIT_LOG_COPY="${GATE_EXIT_LOG_COPY:-false}"
 GATE_EXIT_LOG_GZIP="${GATE_EXIT_LOG_GZIP:-true}"
 GATE_EXIT_RUN_ARA="${GATE_EXIT_RUN_ARA:-true}"
 
-if [ -z ${ZUUL_PROJECT} ]; then
-  GATE_EXIT_RUN_DSTAT="${GATE_EXIT_RUN_DSTAT:-false}"
-else
+if [ -v ZUUL_PROJECT ] || [ -v ZUUL_SRC_PATH ]; then
   GATE_EXIT_RUN_DSTAT="${GATE_EXIT_RUN_DSTAT:-true}"
+else
+  GATE_EXIT_RUN_DSTAT="${GATE_EXIT_RUN_DSTAT:-false}"
 fi
 
 # The default SSHD configuration has MaxSessions = 10. If a deployer changes
