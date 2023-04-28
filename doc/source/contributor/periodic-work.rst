@@ -43,9 +43,9 @@ Updating upstream SHAs
 The dependencies for OpenStack-Ansible are updated
 through the use of ``osa releases bump_upstream_shas``. This script
 updates the project's pinned SHAs, located in the
-`repo_packages folder`, based on their ``_git_track_branch`` value.
+``inventory/group_vars/<service_group>/source_git.yml`` file,
+based on their ``_git_track_branch`` value.
 
-.. _repo_packages folder: https://github.com/openstack/openstack-ansible/tree/master/playbooks/defaults/repo_packages
 
 Updating OpenStack-Ansible roles
 --------------------------------

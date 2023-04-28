@@ -47,7 +47,7 @@ Overriding other upstream projects source code
 
 All the upstream repositories used are defined in the
 ``openstack-ansible`` integrated repository, in the
-``playbooks/defaults/repo_packages`` folder.
+``inventory/group_vars/<service_group>/source_git.yml`` file.
 
 For example, if you want to override ``glance`` repository with your
 own, you need to define the following:
@@ -59,7 +59,7 @@ own, you need to define the following:
     glance_git_project_group: glance_all
 
 Please note, for this glance example, that you do not need to edit the
-``playbooks/defaults/repo_packages/openstack_services.yml`` file.
+``inventory/group_vars/glance_all/source_git.yml`` file.
 
 Instead, the usual overrides mechanism can take place, and you
 can define these 3 variables in a ``user_*.yml`` file.

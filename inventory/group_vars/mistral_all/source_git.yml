@@ -1,0 +1,25 @@
+---
+# Copyright 2023, Cleura AB
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+### HEAD as of 22.03.2023 ###
+
+## Mistral service
+mistral_git_repo: "{{ openstack_opendev_base_url }}/openstack/mistral"
+mistral_git_install_branch: af2b9c5cd8d3bca74f560491fb140809fc27931c
+mistral_git_track_branch: stable/2023.1
+
+mistral_extra_git_repo: "{{ openstack_opendev_base_url }}/openstack/mistral-extra"
+mistral_extra_git_install_branch: e0687d607319b796503859353b8f3ab1cc9aa9f5
+mistral_extra_git_track_branch: stable/2023.1

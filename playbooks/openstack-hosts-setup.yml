@@ -63,7 +63,6 @@
   roles:
     - role: "openstack_hosts"
   vars_files:
-    - defaults/repo_packages/openstack_services.yml
     - "defaults/{{ install_method }}_install.yml"
   post_tasks:
     - name: Ensure deploy host SSH connection is reset

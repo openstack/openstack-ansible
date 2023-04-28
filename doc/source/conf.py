@@ -59,7 +59,7 @@ else:
     upgrade_warning = "The upgrade is always under active development."
 
 CONF_PATH = os.path.dirname(os.path.realpath(__file__))
-GNOCCHI_DETAILS = '../../playbooks/defaults/repo_packages/gnocchi.yml'
+GNOCCHI_DETAILS = '../../inventory/group_vars/gnocchi_all/source_git.yml'
 with open(os.path.join(CONF_PATH, GNOCCHI_DETAILS), 'r') as fdesc:
     gnocchi_file_content = yaml.safe_load(fdesc)
     gnocchi_branch = gnocchi_file_content['gnocchi_git_track_branch']

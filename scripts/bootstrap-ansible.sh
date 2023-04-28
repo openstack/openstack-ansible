@@ -125,7 +125,7 @@ fi
 PYTHON_EXEC_PATH="${PYTHON_EXEC_PATH:-$(which python3)}"
 
 # Obtain the SHA of the upper-constraints to use for the ansible runtime venv
-TOX_CONSTRAINTS_SHA=$(awk '/requirements_git_install_branch:/ {print $2}' playbooks/defaults/repo_packages/openstack_services.yml)
+TOX_CONSTRAINTS_SHA=$(awk '/requirements_git_install_branch:/ {print $2}' inventory/group_vars/all/source_git.yml)
 
 # if we are in CI, grab the u-c file from the locally cached repo, otherwise download
 TOX_CONSTRAINTS_PATH="/opt/ansible-runtime-constraints-${TOX_CONSTRAINTS_SHA}.txt"

@@ -42,7 +42,6 @@
   serial: "{{ magnum_serial | default(['1','100%']) }}"
   environment: "{{ deployment_environment_variables | default({}) }}"
   vars_files:
-    - "defaults/repo_packages/openstack_services.yml"
     - "defaults/{{ install_method }}_install.yml"
   tags:
     - magnum

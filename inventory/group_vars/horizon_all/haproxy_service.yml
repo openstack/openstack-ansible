@@ -1,0 +1,47 @@
+---
+# Copyright 2023, Cleura AB
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# special haproxy stick table for horizon
+# returns 429 when more than 20 calls to /auth per 10 second window
+# returns 429 when more than 20 4xx responses per 10 second window
+# from external IP addresses. Override as necessary.
+openstack_haproxy_horizon_stick_table:
+  - "stick-table  type ipv6  size 256k  expire 10s  store http_req_rate(10s),http_err_rate(10s)"
+  - "http-request track-sc0 src"
+  - "http-request deny deny_status 429 if { sc_http_req_rate(0) gt 20 } { path_beg /auth } !{ src {{ haproxy_stick_table_allowlist_networks | join(' } !{ src ') }} }"
+  - "http-request deny deny_status 429 if { sc_http_err_rate(0) gt 20 } !{ src {{ haproxy_stick_table_allowlist_networks | join(' } !{ src ') }} }"
+
+haproxy_horizon_service:
+  haproxy_backend_only: true    #only describe the backends, frontend is in `base` via haproxy_all group vars
+  haproxy_service_name: horizon
+  haproxy_backend_nodes: "{{ groups['horizon_all'] | default([]) }}"
+  haproxy_backend_port: "{{ (horizon_backend_ssl | default(False)) | ternary(443, 80) }}"
+  haproxy_balance_type: http
+  haproxy_balance_alg: source
+  haproxy_backend_options:
+    - "httpchk HEAD /auth/login/ HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+  haproxy_service_enabled: "{{ groups['horizon_all'] is defined and groups['horizon_all'] | length > 0 }}"
+  haproxy_backend_ssl: "{{ horizon_backend_ssl | default(openstack_service_backend_ssl) }}"
+  haproxy_backend_ca: "{{ horizon_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
+  haproxy_stick_table: "{{ openstack_haproxy_horizon_stick_table }}"
+  haproxy_map_entries:
+    - name: base_regex
+      order: 99
+      #match any requests to the horizon backend
+      entries:
+        - '.* horizon-back'
+
+horizon_haproxy_services:
+  - "{{ haproxy_horizon_service | combine(haproxy_horizon_service_overrides | default({})) }}"
