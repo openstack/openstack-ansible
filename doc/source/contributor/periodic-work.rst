@@ -25,14 +25,14 @@ and lighter, over time.
 Now, all the functions are separated, and included into a branch
 independent tooling, `osa_cli_releases`.
 
-.. _osa_cli_releases: https://github.com/evrardjp/osa_cli_releases
+.. _osa_cli_releases: https://github.com/noonedeadpunk/osa_cli_releases
 
 You can install the latest version of this tooling by running:
 
 .. parsed-literal::
 
-   pip3 install -e git+https://github.com/evrardjp/osa-cli.git#egg=openstack_ansible_cli
-   pip3 install -e git+https://github.com/evrardjp/osa_cli_releases.git#egg=osa_cli_releases
+   pip3 install -e git+https://github.com/noonedeadpunk/osa-cli.git#egg=openstack_ansible_cli
+   pip3 install -e git+https://github.com/noonedeadpunk/osa_cli_releases.git#egg=osa_cli_releases
 
 This tooling can then be called using ``osa releases``.
 Each subcommand contains help by default.
