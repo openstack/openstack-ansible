@@ -30,8 +30,8 @@ export SCRIPTS_PATH="$(dirname "$(readlink -f "${0}")")"
 # The git checkout root path
 export MAIN_PATH="$(dirname "${SCRIPTS_PATH}")"
 
-# The expected source series name
-export SOURCE_SERIES="zed"
+# The expected source series names
+export SUPPORTED_SOURCE_SERIES=("yoga" "zed")
 
 # The expected target series name
 export TARGET_SERIES="2023.1"
@@ -123,20 +123,17 @@ function pre_flight {
 
     # Notify the user.
     echo -e "
-    This script will perform a ${SOURCE_SERIES^} to ${TARGET_SERIES^} upgrade.
+    This script will perform an upgrade from ${SOURCE_SERIES^}
+    to ${TARGET_SERIES^}.
+
     Once you start the upgrade there is no going back.
 
     Note that the upgrade targets impacting the data
     plane as little as possible, but assumes that the
     control plane can experience some down time.
 
-    This script executes a one-size-fits-all upgrade,
-    and given that the tests implemented for it are
-    not monitored as well as those for a greenfield
-    environment, the results may vary with each release.
-
     Please use it against a test environment with your
-    configurations to validate whether it suits your
+    configurations first to validate whether it suits your
     needs and does a suitable upgrade.
 
     Are you ready to perform this upgrade now?
@@ -151,9 +148,32 @@ function pre_flight {
     fi
 }
 
+function set_source_series {
+
+  if [ ${#SUPPORTED_SOURCE_SERIES[@]} -gt 1 ]; then
+    echo -e "
+    Upgrade to ${TARGET_SERIES^} is supported only from one of the following releases:
+    "
+    for release_id in ${!SUPPORTED_SOURCE_SERIES[@]}; do
+      option_id=${release_id}
+      echo -e "      $((++option_id)): ${SUPPORTED_SOURCE_SERIES[$release_id]^}"
+    done
+    echo -e ""
+    read -p '    Please specify the release to upgrade from [1]: ' SELECTED_OPTION
+    SOURCE_OPTION=${SELECTED_OPTION:-1}
+    export SOURCE_SERIES=${SUPPORTED_SOURCE_SERIES[$((--SOURCE_OPTION))]}
+
+  else
+    export SOURCE_SERIES=${SUPPORTED_SOURCE_SERIES[0]}
+  fi
+}
+
 ## Main ----------------------------------------------------------------------
 
 function main {
+    if [ -z "${SOURCE_SERIES+defined}" ]; then
+      set_source_series
+    fi
     pre_flight
     check_for_current
     create_working_dir
@@ -175,8 +195,10 @@ function main {
 
     pushd ${MAIN_PATH}/playbooks
         RUN_TASKS+=("${SCRIPTS_PATH}/upgrade-utilities/deploy-config-changes.yml")
-        RUN_TASKS+=("${SCRIPTS_PATH}/upgrade-utilities/define-neutron-plugin.yml")
-        RUN_TASKS+=("certificate-ssh-authority.yml")
+        if [[ "${SOURCE_SERIES}" == "yoga" ]]; then
+          RUN_TASKS+=("${SCRIPTS_PATH}/upgrade-utilities/define-neutron-plugin.yml")
+          RUN_TASKS+=("certificate-ssh-authority.yml")
+        fi
         # we don't want to trigger container restarts for galera and rabbit
         # but as there will be no hosts available for metal deployments,
         # as a fallback option we just run setup-hosts.yml without any arguments

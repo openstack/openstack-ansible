@@ -40,7 +40,7 @@
         ZUUL_SRC_PATH: "{{ (action != 'shastest') | ternary(_zuul_src_path, '') }}"
         ANSIBLE_PACKAGE: "{{ ansible_package | default('') }}"
         SETUP_ARA: 'true'
-      when: action != 'upgrade'
+      when: "'upgrade' not in action"
     - name: Run bootstrap-aio script
       become: yes
       become_user: root
@@ -56,6 +56,6 @@
         ACTION: "{{ action }}"
         INSTALL_METHOD: "{{ install_method }}"
       when:
-        - action != 'upgrade'
+        - "'upgrade' not in action"
         - action != 'linters'
         - action != 'shastest'

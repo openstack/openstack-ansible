@@ -46,11 +46,6 @@ export ACTION=${2:-"deploy"}
 # Set the installation method for the OpenStack services
 export INSTALL_METHOD=${3:-"source"}
 
-# Set the source branch for upgrade tests
-# Be sure to change this whenever a new stable branch
-# is created. The checkout must always be N-1.
-export UPGRADE_SOURCE_BRANCH=${UPGRADE_SOURCE_BRANCH:-'stable/yoga'}
-
 # enable the ARA callback plugin
 export SETUP_ARA=${SETUP_ARA:-true}
 
@@ -60,7 +55,14 @@ export SETUP_ARA=${SETUP_ARA:-true}
 # deployment.
 # This needs to be done before the first "source" to ensure
 # the correct functions are used for the branch.
-if [[ "${ACTION}" == "upgrade" ]]; then
+if [[ "${ACTION}" =~ "upgrade" ]]; then
+    # Set the source branch for upgrade tests
+    # Be sure to change this whenever a new stable branch
+    # is created.
+    UPGRADE_ACTION_ARRAY=(${ACTION//_/ })
+    export UPGRADE_SOURCE_RELEASE=${UPGRADE_ACTION_ARRAY[1]:-'zed'}
+    export UPGRADE_SOURCE_BRANCH=${UPGRADE_SOURCE_BRANCH:-stable/$UPGRADE_SOURCE_RELEASE}
+
     # Store the target SHA/branch
     export UPGRADE_TARGET_BRANCH=$(git rev-parse HEAD)
     export OPENSTACK_SETUP_EXTRA_ARGS="-e tempest_install=no -e tempest_run=no -e rally_install=no"
@@ -214,7 +216,7 @@ else
     # Log some data about the instance and the rest of the system
     log_instance_info
 
-    if [[ $SCENARIO =~ "infra" && $ACTION != "upgrade"  ]]; then
+    if [[ $SCENARIO =~ "infra" && ! $ACTION =~ "upgrade"  ]]; then
       # Verify our infra setup and do not continue with openstack part
       openstack-ansible healthcheck-infrastructure.yml -e osa_gather_facts=False
     fi
@@ -231,7 +233,7 @@ fi
 
 # If the action is to upgrade, then checkout the original SHA for
 # the checkout, and execute the upgrade.
-if [[ "${ACTION}" == "upgrade" ]]; then
+if [[ "${ACTION}" =~ "upgrade" ]]; then
 
     # Checkout the original HEAD we started with
     git checkout ${UPGRADE_TARGET_BRANCH}
@@ -263,7 +265,7 @@ if [[ "${ACTION}" == "upgrade" ]]; then
     # To execute the upgrade script we need to provide
     # an affirmative response to the warning that the
     # upgrade is irreversable.
-    echo 'YES' | bash "${OSA_CLONE_DIR}/scripts/run-upgrade.sh"
+    echo 'YES' | SOURCE_SERIES=${UPGRADE_SOURCE_RELEASE} bash "${OSA_CLONE_DIR}/scripts/run-upgrade.sh"
 
     if [[ $SCENARIO =~ "infra" ]]; then
       # TODO(noonedeadpunk): Remove after Y release
