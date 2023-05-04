@@ -17,6 +17,7 @@
   community.general.haproxy:
     socket: /var/run/haproxy.stat
     backend: "{{ haproxy_backend | default(omit) }}"
+    drain: "{{ haproxy_drain | default(False) }}"
     host: "{{ inventory_hostname }}"
     state: "{{ haproxy_state | default('enabled') }}"
     shutdown_sessions: "{{ haproxy_shutdown_sessions | default(False) | bool }}"
