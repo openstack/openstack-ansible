@@ -305,7 +305,7 @@ tempest_run_concurrency: 0
 deployment_environment_variables:
   http_proxy: http://172.29.236.100:3128/
   https_proxy: http://172.29.236.100:3128/
-  no_proxy: "localhost,127.0.0.1,172.29.236.100,{{ bootstrap_host_public_address | default(ansible_facts['default_ipv4']['address']) }}"
+  no_proxy: "localhost,127.0.0.1,172.29.236.100,172.29.236.101,{{ bootstrap_host_public_address | default(ansible_facts['default_ipv4']['address']) }}"
 
 # Remove eth0 from all container so there is no default route and everything
 # must go via the http proxy
