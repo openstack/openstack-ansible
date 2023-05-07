@@ -250,7 +250,6 @@ http-01 challenge requests.
 
     haproxy_ssl: true
     haproxy_ssl_letsencrypt_enable: True
-    haproxy_ssl_letsencrypt_install_method: "distro"
     haproxy_ssl_letsencrypt_email: "email.address@example.com"
 
 TLS for Haproxy Internal VIP
