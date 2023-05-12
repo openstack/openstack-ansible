@@ -293,8 +293,23 @@ the start.
 TLS for Haproxy Backends
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Securing the internal communications from haproxy to backend services is
-currently work in progress.
+Communication between haproxy and service backends can be encrypted. Currently
+it is disabled by default. It can be enabled for all services by setting the
+following variable:
+
+.. code-block:: yaml
+
+    openstack_service_backend_ssl: True
+
+There is also an option to enable it only for individual services:
+
+.. code-block:: yaml
+
+    keystone_backend_ssl: True
+    neutron_backend_ssl: True
+
+By default, self-signed certificates will be used to secure traffic but
+user-provided certificates are also supported.
 
 TLS for Live Migrations
 ~~~~~~~~~~~~~~~~~~~~~~~
