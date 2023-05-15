@@ -120,7 +120,7 @@
           - "'ebtables' in modules_content"
           - "'vm.swappiness' in sysctl_content"
           - "'172.29.236.100 {{ ansible_facts['fqdn'] }} {{ ansible_facts['hostname'] }}' in hosts_content"
-          - "'{{ hostvars[groups['galera_all'][0]]['container_address'] }} {{ hostvars[groups['galera_all'][0]]['ansible_facts']['hostname'] }}.openstack.local {{ hostvars[groups['galera_all'][0]]['ansible_facts']['hostname'] ~ ((hostvars[groups['galera_all'][0]]['ansible_facts']['hostname'] != groups['galera_all'][0]) | ternary(' ' ~ groups['galera_all'][0], '')) }}' in hosts_content"
+          - "'{{ hostvars[groups['galera_all'][0]]['management_address'] }} {{ hostvars[groups['galera_all'][0]]['ansible_facts']['hostname'] }}.openstack.local {{ hostvars[groups['galera_all'][0]]['ansible_facts']['hostname'] ~ ((hostvars[groups['galera_all'][0]]['ansible_facts']['hostname'] != groups['galera_all'][0]) | ternary(' ' ~ groups['galera_all'][0], '')) }}' in hosts_content"
           - "release_file.stat.exists"
           - "systat_file.stat.exists"
           - "'PATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' in environment_content"

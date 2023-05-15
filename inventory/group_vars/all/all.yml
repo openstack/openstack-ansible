@@ -37,7 +37,6 @@ debug: False
 ## SSH connection wait time
 ssh_delay: 5
 
-management_address: "{{ container_address }}"
 openstack_service_bind_address: "{{ management_address }}"
 
 package_state: "present"

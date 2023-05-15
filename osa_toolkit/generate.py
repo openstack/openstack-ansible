@@ -41,7 +41,7 @@ REQUIRED_HOSTVARS = [
     'properties',
     'ansible_host',
     'physical_host_group',
-    'container_address',
+    'management_address',
     'container_name',
     'container_networks',
     'physical_host',
@@ -73,7 +73,7 @@ class ProviderNetworkMisconfiguration(Exception):
         self.queue_name = queue_name
 
         error_msg = ("Provider network with queue '{queue}' "
-                     "requires 'is_container_address' "
+                     "requires 'is_management_address' "
                      "to be set to True.")
 
         self.message = error_msg.format(queue=self.queue_name)
@@ -213,7 +213,7 @@ def _build_container_hosts(container_affinity, container_hosts, type_and_name,
 
             hostvars_options.update({
                 'ansible_host': address,
-                'container_address': address,
+                'management_address': address,
                 'container_name': container_host_name,
                 'physical_host': host_type,
                 'physical_host_group': physical_host_type,
@@ -443,7 +443,7 @@ def user_defined_setup(config, inventory):
 
                 hvs[_key].update({
                     'ansible_host': _value['ip'],
-                    'container_address': _value['ip'],
+                    'management_address': _value['ip'],
                     'is_metal': True,
                     'physical_host_group': key
                 })
@@ -548,7 +548,7 @@ def network_entry(is_metal, interface,
 
 def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
                              bridge, bridge_type, net_type, net_mtu,
-                             user_config, is_container_address, static_routes,
+                             user_config, is_management_address, static_routes,
                              gateway, reference_group, address_prefix):
     """Process additional ip adds and append then to hosts as needed.
 
@@ -563,7 +563,7 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
     :param netmask: ``str`` netmask to use.
     :param interface: ``str`` interface name to set for the network.
     :param user_config: ``dict`` user defined configuration details.
-    :param is_container_address: ``bol`` set this address to container_address.
+    :param is_management_address: ``bool`` set address as management_address.
     :param static_routes: ``list`` List containing static route dicts.
     :param gateway: ``str`` gateway address to use in container
     :param reference_group: ``str`` group to filter membership of host against.
@@ -587,7 +587,7 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
                 net_type,
                 net_mtu,
                 user_config,
-                is_container_address,
+                is_management_address,
                 static_routes,
                 gateway,
                 reference_group,
@@ -662,7 +662,7 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
         elif is_metal:
             network = networks[old_address] = _network
             network['netmask'] = netmask
-            if is_container_address:
+            if is_management_address:
                 # Container physical host group
                 cphg = container.get('physical_host_group')
 
@@ -673,11 +673,11 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
                     phg = user_config[cphg][physical_host]
                 network['address'] = phg['ip']
 
-        if is_container_address is True:
+        if is_management_address is True:
             container['ansible_host'] = networks[old_address]['address']
 
-        if is_container_address is True:
-            container['container_address'] = networks[old_address]['address']
+        if is_management_address is True:
+            container['management_address'] = networks[old_address]['address']
 
         if gateway:
             # if specified, gateway address will be used for default route in
@@ -783,7 +783,9 @@ def container_skel_load(container_skel, inventory, config):
                 net_type=p_net.get('container_type'),
                 net_mtu=p_net.get('container_mtu'),
                 user_config=config,
-                is_container_address=p_net.get('is_container_address'),
+                is_management_address=p_net.get(
+                    'is_management_address', p_net.get('is_container_address')
+                ),
                 static_routes=p_net.get('static_routes'),
                 gateway=p_net.get('gateway'),
                 reference_group=p_net.get('reference_group'),
@@ -1048,7 +1050,9 @@ def _check_config_settings(cidr_networks, config, container_skel):
                     )
                 if (p_net.get('container_bridge') == overrides.get(
                         'management_bridge')):
-                    if not p_net.get('is_container_address'):
+                    if not p_net.get(
+                            'is_management_address',
+                            p_net.get('is_container_address')):
                         raise ProviderNetworkMisconfiguration(q_name)
 
     logger.debug("Provider network information OK")

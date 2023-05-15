@@ -147,7 +147,7 @@ Now you can set up Zookeeper as coordination backend for Gnocchi:
 
 .. code-block:: console
 
-    gnocchi_coordination_url: "zookeeper://{% for host in groups['zookeeper_all'] %}{{ hostvars[host]['container_address'] }}:2181{% if not loop.last %},{% endif %}{% endfor %}"
+    gnocchi_coordination_url: "zookeeper://{% for host in groups['zookeeper_all'] %}{{ hostvars[host]['management_address'] }}:2181{% if not loop.last %},{% endif %}{% endfor %}"
 
 You also have to install additional packages:
 

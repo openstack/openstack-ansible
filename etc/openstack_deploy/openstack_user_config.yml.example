@@ -180,7 +180,7 @@
 #       'container_interface'.
 #       (e.g., 'ip_from_q'_address and 'container_interface'_address)
 #
-#       Option: is_container_address (required, boolean)
+#       Option: is_management_address (required, boolean)
 #       If true, the load balancer uses this IP address to access services
 #       in the container. Only valid for networks with 'ip_from_q' option.
 #
@@ -251,8 +251,8 @@
 #         container_bridge: "br-mgmt"
 #         container_interface: "eth1"
 #         container_type: "veth"
-#         ip_from_q: "container"
-#         is_container_address: true
+#         ip_from_q: "management"
+#         is_management_address: true
 #     - network:
 #         group_binds:
 #           - glance_api

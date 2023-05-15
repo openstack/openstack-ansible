@@ -17,4 +17,4 @@
 # both the os_ceilometer and os_keystone roles require them
 
 # Hosts allowed to override remote IP with X-Forwarded-For
-keystone_set_real_ip_from: "{{ groups['haproxy'] | map('extract', hostvars, 'container_address') | list }}"
+keystone_set_real_ip_from: "{{ groups['haproxy'] | map('extract', hostvars, 'management_address') | list }}"

@@ -1,0 +1,11 @@
+---
+deprecations:
+  - |
+    Key ``is_container_address`` that is used for definition of the
+    `provider_networks` has been renamed to ``is_management_address``,
+    to avoid confusion for bare metal deployments. Backwards compatability was
+    kept.
+  - |
+    Variable ``container_address`` has been deprecated in favor of
+    ``management_address``. Variable ``management_address`` is available since
+    Victoria release and was defaulted to the value of ``container_address``.

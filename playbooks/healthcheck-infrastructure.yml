@@ -28,7 +28,7 @@
   tasks:
     - name: Check the repo sync file on each repo server
       uri:
-        url: "http://{{ hostvars[item]['container_address'] }}:{{ repo_server_port }}/{{ repo_requirements_file }}"
+        url: "http://{{ hostvars[item]['management_address'] }}:{{ repo_server_port }}/{{ repo_requirements_file }}"
       with_inventory_hostnames: "{{ groups['repo_all'] }}"
       when: install_method == 'source'
   tags:
@@ -129,7 +129,7 @@
         state: present
 
     - name: Connect to remote memcache servers (full mesh testing)
-      shell:  "echo stats | nc -w 3 {{ hostvars[memcached_host]['container_address'] }} {{ memcached_port }}"
+      shell:  "echo stats | nc -w 3 {{ hostvars[memcached_host]['management_address'] }} {{ memcached_port }}"
       changed_when: false
       register: memcache_stats
       with_items: "{{ groups['memcached'] }}"
@@ -335,7 +335,7 @@
         dest: "{{ venv_path }}/rabbitmq-test.py"
         mode: 0755
     - name: Connect to rabbitmq
-      command: "{{ venv_path }}/bin/python {{ venv_path }}/rabbitmq-test.py {{ hostvars[groups['rabbitmq_all'][0]]['container_address'] }}"
+      command: "{{ venv_path }}/bin/python {{ venv_path }}/rabbitmq-test.py {{ hostvars[groups['rabbitmq_all'][0]]['management_address'] }}"
       changed_when: false
   tags:
     - healthcheck

@@ -44,13 +44,13 @@ global_overrides:
         container_type: "veth"
         container_interface: "eth1"
         ip_from_q: "pod1_container"
-        address_prefix: "container"
+        address_prefix: "management"
         type: "raw"
         group_binds:
           - all_containers
           - hosts
         reference_group: "pod1_hosts"
-        is_container_address: true
+        is_management_address: true
         # Containers in pod1 need routes to the container networks of other pods
         static_routes:
           # Route to container networks
@@ -61,13 +61,13 @@ global_overrides:
         container_type: "veth"
         container_interface: "eth1"
         ip_from_q: "pod2_container"
-        address_prefix: "container"
+        address_prefix: "management"
         type: "raw"
         group_binds:
           - all_containers
           - hosts
         reference_group: "pod2_hosts"
-        is_container_address: true
+        is_management_address: true
         # Containers in pod2 need routes to the container networks of other pods
         static_routes:
           # Route to container networks
@@ -78,13 +78,13 @@ global_overrides:
         container_type: "veth"
         container_interface: "eth1"
         ip_from_q: "pod3_container"
-        address_prefix: "container"
+        address_prefix: "management"
         type: "raw"
         group_binds:
           - all_containers
           - hosts
         reference_group: "pod3_hosts"
-        is_container_address: true
+        is_management_address: true
         # Containers in pod3 need routes to the container networks of other pods
         static_routes:
           # Route to container networks
@@ -95,13 +95,13 @@ global_overrides:
         container_type: "veth"
         container_interface: "eth1"
         ip_from_q: "pod4_container"
-        address_prefix: "container"
+        address_prefix: "management"
         type: "raw"
         group_binds:
           - all_containers
           - hosts
         reference_group: "pod4_hosts"
-        is_container_address: true
+        is_management_address: true
         # Containers in pod4 need routes to the container networks of other pods
         static_routes:
           # Route to container networks
