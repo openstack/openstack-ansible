@@ -32,6 +32,10 @@
       vars:
         etcd_cluster_group: "zun_api"
         etcd_install_type: server
+        etcd_version: 3.3.27
+        etcd_download_checksum:
+          x86_64: 'sha256:f9058f93e2f40343fd0bbbfce39ddb8a7afd8b03be020b7decc040d897065ded'
+          aarch64: 'sha256:7230b769efef5ac60a856d755776076597da5082d7a5904ee33995f921df8d8d'
   tags:
     - zun-install
     - etcd-server
