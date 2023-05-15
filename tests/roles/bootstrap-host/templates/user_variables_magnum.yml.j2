@@ -33,12 +33,6 @@ magnum_cluster_templates:
     volume_driver: cinder
     image_id: fedora-coreos-latest
     floating_ip_enabled: false
-    labels:
-      kube_tag: v1.23.3-rancher1
-      etcd_tag: 3.4.6
-      kube_version: v1.23.3
-      boot_volume_size: 10
-      cloud_provider_tag: v1.23.1
 
 magnum_flavors:
   - name: s1.magnum
