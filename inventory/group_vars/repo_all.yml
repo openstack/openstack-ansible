@@ -16,9 +16,6 @@
 # Ensure that the package state matches the global setting
 repo_server_package_state: "{{ package_state }}"
 
-# Transition to shared filesystem, disable lsyncd deployment
-repo_server_enable_sync_manager: False
-
 # Repo container default list of bind mounts
 repo_container_bind_mounts:
   - bind_dir_path: "/var/lib/glusterd"
