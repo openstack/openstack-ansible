@@ -21,38 +21,36 @@
 # Test os-keystone-install.yml
 # Many parts of keystone testing is happening in playbooks already, as
 # we are using it for setting up all the other openstack services.
-- name: Test Keystone
+- name: Test OpenStack basic functionality
   gather_facts: no
-  hosts: localhost
+  hosts: utility_all[0]
+  vars:
+    ansible_python_interpreter: "{{ utility_venv_bin }}/python"
   vars_files:
     - defaults/healthchecks-vars.yml
   tasks:
-    - name: Authenticate to the cloud and retrieve the service catalog
-      openstack.cloud.auth:
-        cloud: default
-        interface: internal
-        verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
+    - name: Test keystone
+      block:
+        - name: Authenticate to the cloud and retrieve the service catalog
+          openstack.cloud.catalog_service_info:
+            cloud: default
+            interface: "{{ item }}"
+            verify: "{{ keystone_service_internaluri_insecure | ternary(false, true) }}"
+          with_items:
+            - internal
+            - public
+          register: service_catalog
 
-    - name: Show service catalog
-      debug:
-        var: service_catalog
-  tags:
-    - healthchecks
-    - healthchecks-keystone-install
+        - name: Show service catalog
+          debug:
+            var: service_catalog.results
+      tags:
+        - healthchecks
+        - healthchecks-keystone-install
 
 
-# Test os-barbican-install.yml
-# TO BE IMPLEMENTED -- there is no ansible module for that so cli might be needed.
-
-# Test os-glance-install.yml
-# If tempest is installed, this is tested anyway and can be skipped.
-- name: Test Glance
-  gather_facts: no
-  hosts: localhost
-  vars_files:
-    - defaults/healthchecks-vars.yml
-  tasks:
-    - block:
+    - name: Test Glance
+      block:
         - name: Image(s) download
           get_url:
             url: "{{ item.url }}"
@@ -82,18 +80,13 @@
       when:
         # No point of doing glance tests is glance isn't deployed.
         - "groups['glance_all'] | length > 0"
-  tags:
-    - healthchecks
-    - healthchecks-glance-install
+      tags:
+        - healthchecks
+        - healthchecks-glance-install
 
-# Test os-cinder-install.yml
-- name: Test cinder
-  gather_facts: no
-  hosts: localhost
-  vars_files:
-    - defaults/healthchecks-vars.yml
-  tasks:
-    - block:
+
+    - name: Test cinder
+      block:
         # This automatically waits for completion by default.
         # There is no module to check the current state of a creation, so we need to run
         # This synchronously
@@ -111,21 +104,13 @@
           with_items: "{{ cinder_volumes }}"
       when:
         - groups['cinder_all'] | length > 0
-  tags:
-    - healthchecks
-    - healthchecks-cinder-install
+      tags:
+        - healthchecks
+        - healthchecks-cinder-install
 
-# NOTE(evrardjp): This doesn't respect playbook order, as we'll need neutron tests to
-# run before nova tests
 
-# Test os-neutron-install.yml
-- name: Test neutron
-  gather_facts: no
-  hosts: localhost
-  vars_files:
-    - defaults/healthchecks-vars.yml
-  tasks:
-    - block:
+    - name: Test neutron
+      block:
         - name: Create networks
           openstack.cloud.network:
             cloud: default
@@ -190,19 +175,13 @@
           with_items: "{{ neutron_networks['private']['subnets'] }}"
       when:
         - "groups['neutron_all'] | length > 0"
-  tags:
-    - healthchecks
-    - healthchecks-neutron-install
+      tags:
+        - healthchecks
+        - healthchecks-neutron-install
 
-
-# Test os-heat-install.yml
-- name: Test heat
-  gather_facts: no
-  hosts: localhost
-  vars_files:
-    - defaults/healthchecks-vars.yml
-  tasks:
-    - block:
+    # Test os-heat-install.yml
+    - name: Test heat
+      block:
         - name: Fetch minimum heat stack
           get_url:
             url: "{{ heat_stack['source_url'] }}"
@@ -222,18 +201,14 @@
             parameters: "{{ heat_stack['parameters'] }}"
       when:
         - "groups['heat_all'] | length > 0"
-  tags:
-    - healthchecks
-    - healthchecks-heat-install
+      tags:
+        - healthchecks
+        - healthchecks-heat-install
 
-# Test os-nova-install.yml
-- name: Test nova
-  gather_facts: no
-  hosts: localhost
-  vars_files:
-    - defaults/healthchecks-vars.yml
-  tasks:
-    - block:
+
+    # Test os-nova-install.yml
+    - name: Test nova
+      block:
         - name: Create keypair for nova
           command: "ssh-keygen -b 2048 -t rsa -f {{ ssh_key }} -q -N ''"  # noqa no-changed-when
           args:
@@ -297,7 +272,7 @@
             floating_ip_pools: "{{ neutron_networks['public']['name'] }}"
             key_name: "healthcheck"
             # Ensure user_data is well passed.
-            user_data: |
+            userdata: |
               cp /etc/fstab /root/fstab
             security_groups:
               - default
@@ -336,24 +311,13 @@
       when:
         - "groups['nova_all'] | length > 0"
 
-  tags:
-    - healthchecks
-    - healthchecks-nova-install
+      tags:
+        - healthchecks
+        - healthchecks-nova-install
 
-# Test os-horizon-install.yml
-# TO BE IMPLEMENTED
-
-# Test os-designate-install.yml
-# TO BE IMPLEMENTED with os_recordset
-
-# Test os-swift-install.yml
-- name: Test swift
-  gather_facts: no
-  hosts: localhost
-  vars_files:
-    - defaults/healthchecks-vars.yml
-  tasks:
-    - block:
+    # Test os-swift-install.yml
+    - name: Test swift
+      block:
         - name: Store data in swift
           openstack.cloud.object:
             cloud: default
@@ -365,9 +329,18 @@
             filename: "{{ swift_object['filename'] }}"
       when:
         - "groups['swift_all'] | length > 0"
-  tags:
-    - healthchecks
-    - healthchecks-swift-install
+      tags:
+        - healthchecks
+        - healthchecks-swift-install
+
+# Test os-barbican-install.yml
+# TO BE IMPLEMENTED -- there is no ansible module for that so cli might be needed.
+
+# Test os-horizon-install.yml
+# TO BE IMPLEMENTED
+
+# Test os-designate-install.yml
+# TO BE IMPLEMENTED with os_recordset
 
 # Test os-gnocchi-install.yml
 # TO BE IMPLEMENTED
@@ -390,9 +363,6 @@
 # Test os-sahara-install.yml
 # TO BE IMPLEMENTED
 
-# Test os-molteniron-install.yml
-# TO BE IMPLEMENTED
-
 # Test os-octavia-install.yml
 # TO BE IMPLEMENTED
 
@@ -405,7 +375,9 @@
 # Teardown
 - name: Teardown
   gather_facts: no
-  hosts: localhost
+  hosts: utility_all[0]
+  vars:
+    ansible_python_interpreter: "{{ utility_venv_bin }}/python"
   vars_files:
     - defaults/healthchecks-vars.yml
   tasks:
