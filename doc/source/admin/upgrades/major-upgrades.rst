@@ -3,12 +3,15 @@ Major upgrades
 ==============
 
 This guide provides information about the upgrade process from
-|previous_release_formal_name| to |current_release_formal_name|
-for OpenStack-Ansible.
+|previous_release_formal_name| |previous_slurp_name| to
+|current_release_formal_name| for OpenStack-Ansible.
 
 .. note::
 
-   You can only upgrade between sequential releases.
+   You can upgrade between sequential releases or between releases
+   marked as `SLURP`_.
+
+.. _SLURP: https://releases.openstack.org/
 
 Introduction
 ============
@@ -31,15 +34,15 @@ Upgrading by using a script
 ===========================
 
 The |current_release_formal_name| release series of OpenStack-Ansible contains
-the code for migrating from |previous_release_formal_name| to
-|current_release_formal_name|.
+the code for migrating from |previous_release_formal_name|
+|previous_slurp_name| to |current_release_formal_name|.
 
 Running the upgrade script
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To upgrade from |previous_release_formal_name| to |current_release_formal_name|
-by using the upgrade script, perform the following steps in the
-``openstack-ansible`` directory:
+To upgrade from |previous_release_formal_name| |previous_slurp_name| to
+|current_release_formal_name| by using the upgrade script, perform the
+following steps in the ``openstack-ansible`` directory:
 
 #. Change directory to the repository clone root directory:
 

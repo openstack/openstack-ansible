@@ -33,8 +33,9 @@ import yaml
 # Variables to override
 target_name = 'openstack-ansible'
 description = 'OpenStack-Ansible deploys OpenStack environments using Ansible.'
-previous_series_name = 'yoga'
-current_series_name = 'zed'
+previous_series_name = 'zed'
+previous_slurp_name = 'yoga'
+current_series_name = '2023.1'
 
 # General information about the project.
 author = 'OpenStack-Ansible Contributors'
@@ -71,6 +72,11 @@ deploy_guide_prefix = ("https://docs.openstack.org/"
 dev_docs_prefix = ("https://docs.openstack.org/openstack-ansible/"
                    "{}/%s".format(current_series))
 
+if previous_slurp_name:
+    slurp_epilog = f"replace:: or {previous_slurp_name.capitalize()}"
+else:
+    slurp_epilog = "unicode:: U+200B"
+
 # Substitutions loader
 rst_epilog = """
 .. |current_release_git_branch_name| replace:: {current_release_git_branch_name}
@@ -80,12 +86,14 @@ rst_epilog = """
 .. |current_release_formal_name| replace:: {current_release_formal_name}
 .. |latest_tag| replace:: {latest_tag}
 .. |upgrade_warning| replace:: {upgrade_warning}
+.. |previous_slurp_name| {slurp_epilog}
 """.format(  # noqa: E501
     current_release_git_branch_name=branch,
     current_release_gnocchi_git_branch_name=gnocchi_branch,
     previous_series_name=previous_series_name,
     previous_release_formal_name=previous_series_name.capitalize(),
     current_release_formal_name=current_series_name.capitalize(),
+    slurp_epilog=slurp_epilog,
     latest_tag=latest_tag,
     upgrade_warning=upgrade_warning,
 )
