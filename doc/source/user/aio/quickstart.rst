@@ -121,7 +121,8 @@ version.
 
 .. note::
    The |current_release_formal_name| release is only compatible with
-   Debian 11 (bullseye), Ubuntu 20.04 (Focal Fossa), CentOS 9 Stream,
+   Debian 11 (bullseye), Ubuntu 20.04 (Focal Fossa),
+   Ubuntu 22.04 (Jammy Jellyfish), CentOS 9 Stream,
    and derivitives of CentOS Stream/RHEL such as Rocky Linux.
 
 The next step is to bootstrap Ansible and the Ansible roles for the
