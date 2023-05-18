@@ -31,10 +31,10 @@
           {% set _scenario = [] %}
           {# Add the scenarios based on the job name #}
           {# ex. openstack-ansible-deploy-$scenario1_$scenario2-$os #}
-          {% if zuul.job is match('^openstack-ansible-(deploy|upgrade)-([^-]+)-.*$') %}
+          {% if zuul.job is match('^openstack-ansible-(deploy|upgrade_?[a-z,0-9,.]*)-([^-]+)-.*$') %}
           {%   set _ = _scenario.extend(
                  (zuul.job |
-                  regex_replace('^openstack-ansible-[a-z]*-([^-]+)-.*$', '\\1')).split('_')
+                  regex_replace('^openstack-ansible-[a-z,0-9,.,_]*-([^-]+)-.*$', '\\1')).split('_')
                )
           %}
           {#   If testing a role, add the role service name to the scenario list #}
