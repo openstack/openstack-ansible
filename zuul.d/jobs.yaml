@@ -318,7 +318,7 @@
     files:
       - ^ansible-collection-requirements\.yml
       - ^ansible-role-requirements\.yml
-      - ^playbooks\/defaults\/repo_packages\/.*\.yml
+      - ^inventory\/group_vars\/*\/source_git\.yml
 
 # Ensuring hosts setup and healthcheck-hosts playbook is valid
 - job:

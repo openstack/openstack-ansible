@@ -21,7 +21,8 @@
   tasks:
     - name: Include repo_packages variables
       include_vars:
-        dir: "{{ playbook_dir }}/../playbooks/defaults/repo_packages"
+        dir: "{{ playbook_dir }}/../inventory/group_vars"
+        files_matching: source_git.yml
         ignore_unknown_extensions: True
         extensions:
           - 'yml'

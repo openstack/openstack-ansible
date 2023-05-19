@@ -1,0 +1,34 @@
+---
+# Copyright 2023, Cleura AB
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+haproxy_swift_proxy_service:
+  haproxy_service_name: swift_proxy
+  haproxy_backend_nodes: "{{ groups['swift_proxy'] | default([]) }}"
+  haproxy_ssl: "{{ haproxy_ssl }}"
+  haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
+  haproxy_balance_alg: source
+  haproxy_port: 8080
+  haproxy_balance_type: http
+  haproxy_backend_options:
+    - "httpchk GET /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+  # `openstack_service_backend_ssl` is not taken into account
+  # because TLS in swift-proxy is only for testing purposes:
+  # https://opendev.org/openstack/swift/src/commit/c78a5962b5f6c9e75f154cac924a226815236e98/etc/proxy-server.conf-sample
+  haproxy_backend_ssl: "{{ swift_backend_ssl | default(False) }}"
+  haproxy_backend_ca: "{{ swift_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
+  haproxy_service_enabled: "{{ groups['swift_proxy'] is defined and groups['swift_proxy'] | length > 0 }}"
+
+swift_haproxy_services:
+  - "{{ haproxy_swift_proxy_service | combine(haproxy_swift_proxy_service_overrides | default({})) }}"

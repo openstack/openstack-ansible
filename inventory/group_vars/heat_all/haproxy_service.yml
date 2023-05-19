@@ -1,0 +1,44 @@
+---
+# Copyright 2023, Cleura AB
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+haproxy_heat_api_service:
+  haproxy_service_name: heat_api
+  haproxy_backend_nodes: "{{ groups['heat_api'] | default([]) }}"
+  haproxy_port: 8004
+  haproxy_ssl: "{{ haproxy_ssl }}"
+  haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
+  haproxy_balance_type: http
+  haproxy_backend_options:
+    - "httpchk HEAD /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+  haproxy_backend_ssl: "{{ heat_backend_ssl | default(openstack_service_backend_ssl) }}"
+  haproxy_backend_ca: "{{ heat_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
+  haproxy_service_enabled: "{{ groups['heat_api'] is defined and groups['heat_api'] | length > 0 }}"
+
+haproxy_heat_api_cfn_service:
+  haproxy_service_name: heat_api_cfn
+  haproxy_backend_nodes: "{{ groups['heat_api_cfn'] | default([]) }}"
+  haproxy_port: 8000
+  haproxy_ssl: "{{ haproxy_ssl }}"
+  haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
+  haproxy_balance_type: http
+  haproxy_backend_options:
+    - "httpchk HEAD /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+  haproxy_backend_ssl: "{{ heat_backend_ssl | default(openstack_service_backend_ssl) }}"
+  haproxy_backend_ca: "{{ heat_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
+  haproxy_service_enabled: "{{ groups['heat_api_cfn'] is defined and groups['heat_api_cfn'] | length > 0 }}"
+
+heat_haproxy_services:
+  - "{{ haproxy_heat_api_cfn_service | combine(haproxy_heat_api_cfn_service_overrides | default({})) }}"
+  - "{{ haproxy_heat_api_service | combine(haproxy_heat_api_service_overrides | default({})) }}"

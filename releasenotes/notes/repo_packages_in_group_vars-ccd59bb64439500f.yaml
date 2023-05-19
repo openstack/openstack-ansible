@@ -1,0 +1,7 @@
+---
+other:
+  - |
+    SHA of services that are used during source install were moved from
+    `playbooks/defaults/repo_packages` folder to
+    `inventory/group_vars/<service_group>/source_git.yml` files that
+    correspond to each individual service.

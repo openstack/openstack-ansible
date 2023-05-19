@@ -19,8 +19,6 @@
   user: root
   roles:
     - role: "bootstrap-host"
-  vars_files:
-    - "{{ playbook_dir }}/../playbooks/defaults/repo_packages/openstack_services.yml"
   environment: "{{ deployment_environment_variables | default({}) }}"
   pre_tasks:
     - name: Run setup module

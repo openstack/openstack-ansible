@@ -211,11 +211,10 @@ Testing a new role with an AIO
 #. If your service is installed from source or relies on python packages which
    need to be installed from source, specify a repository for the source
    code of each requirement by adding a file to your deploy host under
-   ``playbooks/defaults/repo_packages`` in the OpenStack-Ansible source
-   repository and following the pattern of files currently in that directory.
-   You could also simply add an entry to an existing file there. Be sure to
-   run the ``repo-build.yml`` play later so that wheels for your packages will
-   be included in the repository infrastructure.
+   ``inventory/group_vars/<service_group>/source_git.yml`` in the
+   OpenStack-Ansible source repository and following the pattern of files
+   currently in that directory. You could also simply add an entry to an
+   existing file there.
 
 #. Make any required adjustments to the load balancer configuration
    (e.g. modify ``inventory/group_vars/all/haproxy.yml`` in the

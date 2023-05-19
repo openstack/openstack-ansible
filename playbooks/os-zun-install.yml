@@ -55,7 +55,6 @@
   serial: "{{ zun_serial | default(['1','100%']) }}"
   user: root
   vars_files:
-    - "defaults/repo_packages/openstack_services.yml"
     - "defaults/{{ install_method }}_install.yml"
   pre_tasks:
     # In order to ensure that any container, software or

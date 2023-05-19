@@ -41,7 +41,6 @@
   tags:
     - heat
   vars_files:
-    - defaults/repo_packages/openstack_services.yml
     - "defaults/{{ install_method }}_install.yml"
   pre_tasks:
     - include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"

@@ -1,0 +1,57 @@
+---
+# Copyright 2023, Cleura AB
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+### HEAD as of 22.03.2023 ###
+
+## Neutron service
+neutron_git_repo: "{{ openstack_opendev_base_url }}/openstack/neutron"
+neutron_git_install_branch: f822742af06b4e0e7e9729ad600102258df0ddad
+neutron_git_track_branch: stable/2023.1
+
+neutron_vpnaas_git_repo: "{{ openstack_opendev_base_url }}/openstack/neutron-vpnaas"
+neutron_vpnaas_git_install_branch: 6ed22d4d75112a19aabde2816694d94e44ca16a2
+neutron_vpnaas_git_track_branch: stable/2023.1
+
+neutron_dynamic_routing_git_repo: "{{ openstack_opendev_base_url }}/openstack/neutron-dynamic-routing"
+neutron_dynamic_routing_git_install_branch: 13e0d8a63dbdbd9e1a863144999794d4fc9af22d
+neutron_dynamic_routing_git_track_branch: stable/2023.1
+
+networking_odl_git_repo: "{{ openstack_opendev_base_url }}/openstack/networking-odl"
+networking_odl_git_install_branch: 48936559c71606d5e43fba1ad4382d74110e7d01
+networking_odl_git_track_branch: stable/2023.1
+
+networking_bgpvpn_git_repo: "{{ openstack_opendev_base_url }}/openstack/networking-bgpvpn"
+networking_bgpvpn_git_install_branch: 039fdc096e0971b90a96ea07a2ef6e3196858594
+networking_bgpvpn_git_track_branch: stable/2023.1
+
+networking_sfc_git_repo: "{{ openstack_opendev_base_url }}/openstack/networking-sfc"
+networking_sfc_git_install_branch: a93b4de04b0f1e34119ab306331b211c0c9dd815
+networking_sfc_git_track_branch: stable/2023.1
+
+networking_generic_switch_git_repo: "{{ openstack_opendev_base_url}}/openstack/networking-generic-switch"
+networking_generic_switch_git_install_branch: 6dcc83c4bac921cbcfc37ece974287f095611883
+networking_generic_switch_git_track_branch: stable/2023.1
+
+networking_nsx_git_repo: "{{ openstack_opendev_base_url }}/x/vmware-nsx"
+networking_nsx_git_install_branch: 0253265f75f63d5619b30f16a6b64459dec79d82
+networking_nsx_git_track_branch: master
+
+networking_nsxlib_git_repo: "{{ openstack_opendev_base_url }}/x/vmware-nsxlib"
+networking_nsxlib_git_install_branch: acb8f2d53fa12880fab548e21f15b0329c5f8eb5
+networking_nsxlib_git_track_branch: master
+
+networking_baremetal_git_repo: "{{ openstack_opendev_base_url }}/openstack/networking-baremetal"
+networking_baremetal_git_install_branch: 1529ce98313336e2ef431bc1113139b790d1c92c
+networking_baremetal_git_track_branch: stable/2023.1

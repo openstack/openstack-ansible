@@ -25,7 +25,6 @@
   gather_facts: false
   serial: "{{ lxc_hosts_serial | default(['100%']) }}"
   vars_files:
-    - defaults/repo_packages/openstack_services.yml
     - "defaults/{{ install_method }}_install.yml"
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
