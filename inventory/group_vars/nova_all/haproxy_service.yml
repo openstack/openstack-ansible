@@ -62,7 +62,7 @@ haproxy_nova_spice_console_service:
   haproxy_backend_httpcheck_options: "{{ haproxy_nova_console_http_mode | ternary(['expect status 200'], []) }}"
   haproxy_backend_ssl: "{{ nova_backend_ssl | default(openstack_service_backend_ssl) }}"
   haproxy_backend_ca: "{{ nova_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
-  haproxy_service_enabled: "{{ groups['nova_console'] is defined and groups['nova_console'] | length > 0 and nova_console_type != 'disabled' }}"
+  haproxy_service_enabled: "{{ groups['nova_console'] is defined and groups['nova_console'] | length > 0 and nova_console_type == 'spice' }}"
 
 haproxy_nova_serial_console_service:
   haproxy_service_name: nova_serial_console
