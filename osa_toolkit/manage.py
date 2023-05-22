@@ -305,7 +305,7 @@ def remove_ip_addresses(inventory, filepath=None):
         if variables.get('is_metal', False):
             continue
 
-        ip_vars = ['container_networks', 'container_address',
+        ip_vars = ['container_networks', 'management_address',
                    'ansible_host', 'ansible_ssh_host']
 
         # Don't raise a KeyError if the entries have already been removed.

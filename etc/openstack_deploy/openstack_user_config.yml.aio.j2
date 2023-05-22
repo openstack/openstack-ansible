@@ -9,7 +9,7 @@ cidr_networks:
 {% if 'octavia' in bootstrap_host_scenarios_expanded %}
   lbaas: 172.29.232.0/22
 {% endif %}
-  container: 172.29.236.0/22
+  management: 172.29.236.0/22
   tunnel: 172.29.240.0/22
   storage: 172.29.244.0/22
 
@@ -49,12 +49,12 @@ global_overrides:
         container_bridge: "br-mgmt"
         container_type: "veth"
         container_interface: "eth1"
-        ip_from_q: "container"
+        ip_from_q: "management"
         type: "raw"
         group_binds:
           - all_containers
           - hosts
-        is_container_address: true
+        is_management_address: true
         # define static routes to the neutron public IP ranges via br-mgmt
         # this is AIO specific and relies on the host forwarding to reach instance
         # floating ips using the br-mgmt interface as a gateway

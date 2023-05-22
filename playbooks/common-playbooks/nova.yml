@@ -79,7 +79,7 @@
     - name: Determine management bridge IP address
       include_tasks: ../common-tasks/dynamic-address-fact.yml
       vars:
-        network_address: "container_address"
+        network_address: "management_address"
       tags:
         - always
 
@@ -152,7 +152,7 @@
 
   roles:
     - role: "os_nova"
-      nova_management_address: "{{ container_address }}"
+      nova_management_address: "{{ management_address }}"
       nova_cinder_rbd_inuse: "{{ hostvars['localhost']['nova_cinder_rbd_inuse'] | default(False) }}"
 
     - role: "openstack.osa.system_crontab_coordination"

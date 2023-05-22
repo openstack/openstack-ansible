@@ -1,6 +1,6 @@
 ---
 cidr_networks: &cidr_networks
-  container: 172.29.236.0/22
+  management: 172.29.236.0/22
   tunnel: 172.29.240.0/22
   storage: 172.29.244.0/22
 
@@ -26,12 +26,12 @@ global_overrides:
         container_bridge: "br-mgmt"
         container_type: "veth"
         container_interface: "eth1"
-        ip_from_q: "container"
+        ip_from_q: "management"
         type: "raw"
         group_binds:
           - all_containers
           - hosts
-        is_container_address: true
+        is_management_address: true
     - network:
         container_bridge: "br-vxlan"
         container_type: "veth"

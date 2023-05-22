@@ -728,7 +728,7 @@ class TestConfigCheckBase(unittest.TestCase):
 
 class TestConfigChecks(TestConfigCheckBase):
     def test_missing_container_cidr_network(self):
-        self.delete_provider_network('container')
+        self.delete_provider_network('management')
         with self.assertRaises(SystemExit) as context:
             get_inventory()
         expectedLog = ("No container or management network specified in "
@@ -736,13 +736,13 @@ class TestConfigChecks(TestConfigCheckBase):
         self.assertEqual(str(context.exception), expectedLog)
 
     def test_management_network_malformed(self):
-        self.delete_provider_network_key('container', 'is_container_address')
+        self.delete_provider_network_key('management', 'is_management_address')
         self.write_config()
 
         with self.assertRaises(di.ProviderNetworkMisconfiguration) as context:
             get_inventory()
-        expectedLog = ("Provider network with queue 'container' "
-                       "requires 'is_container_address' "
+        expectedLog = ("Provider network with queue 'management' "
+                       "requires 'is_management_address' "
                        "to be set to True.")
         self.assertEqual(str(context.exception), expectedLog)
         self.restore_config()
@@ -866,7 +866,7 @@ class TestStaticRouteConfig(TestConfigCheckBase):
     def setUp(self):
         super(TestStaticRouteConfig, self).setUp()
         self.expectedMsg = ("Static route provider network with queue "
-                            "'container' needs both 'cidr' and 'gateway' "
+                            "'management' needs both 'cidr' and 'gateway' "
                             "values.")
 
     def add_static_route(self, q_name, route_dict):
@@ -882,12 +882,12 @@ class TestStaticRouteConfig(TestConfigCheckBase):
     def test_setting_static_route(self):
         route_dict = {'cidr': '10.176.0.0/12',
                       'gateway': '172.29.248.1'}
-        self.add_static_route('container', route_dict)
+        self.add_static_route('management', route_dict)
         inventory = get_inventory()
 
-        # Use aio1 and 'container_address' since they're known keys.
+        # Use aio1 and 'management_address' since they're known keys.
         hostvars = inventory['_meta']['hostvars']['aio1']
-        cont_add = hostvars['container_networks']['container_address']
+        cont_add = hostvars['container_networks']['management_address']
 
         self.assertIn('static_routes', cont_add)
 
@@ -897,7 +897,7 @@ class TestStaticRouteConfig(TestConfigCheckBase):
 
     def test_setting_bad_static_route_only_cidr(self):
         route_dict = {'cidr': '10.176.0.0/12'}
-        self.add_static_route('container', route_dict)
+        self.add_static_route('management', route_dict)
 
         with self.assertRaises(di.MissingStaticRouteInfo) as context:
             get_inventory()
@@ -908,7 +908,7 @@ class TestStaticRouteConfig(TestConfigCheckBase):
 
     def test_setting_bad_static_route_only_gateway(self):
         route_dict = {'gateway': '172.29.248.1'}
-        self.add_static_route('container', route_dict)
+        self.add_static_route('management', route_dict)
 
         with self.assertRaises(di.MissingStaticRouteInfo) as context:
             get_inventory()
@@ -920,7 +920,7 @@ class TestStaticRouteConfig(TestConfigCheckBase):
     def test_setting_bad_gateway_value(self):
         route_dict = {'cidr': '10.176.0.0/12',
                       'gateway': None}
-        self.add_static_route('container', route_dict)
+        self.add_static_route('management', route_dict)
 
         with self.assertRaises(di.MissingStaticRouteInfo) as context:
             get_inventory()
@@ -932,7 +932,7 @@ class TestStaticRouteConfig(TestConfigCheckBase):
     def test_setting_bad_cidr_value(self):
         route_dict = {'cidr': None,
                       'gateway': '172.29.248.1'}
-        self.add_static_route('container', route_dict)
+        self.add_static_route('management', route_dict)
 
         with self.assertRaises(di.MissingStaticRouteInfo) as context:
             get_inventory()
@@ -944,7 +944,7 @@ class TestStaticRouteConfig(TestConfigCheckBase):
     def test_setting_bad_cidr_gateway_value(self):
         route_dict = {'cidr': None,
                       'gateway': None}
-        self.add_static_route('container', route_dict)
+        self.add_static_route('management', route_dict)
 
         with self.assertRaises(di.MissingStaticRouteInfo) as context:
             get_inventory()
@@ -993,7 +993,7 @@ class TestGlobalOverridesConfigDeletion(TestConfigCheckBase):
         self.assertEqual('bar', self.inventory['all']['vars']['foo'])
 
     def test_container_cidr_key_retained(self):
-        user_cidr = self.user_defined_config['cidr_networks']['container']
+        user_cidr = self.user_defined_config['cidr_networks']['management']
         di._parse_global_variables(user_cidr, self.inventory,
                                    self.user_defined_config)
         self.assertIn('container_cidr', self.inventory['all']['vars'])
@@ -1533,9 +1533,9 @@ class TestInventoryGroupConstraints(unittest.TestCase):
 class TestL3ProviderNetworkConfig(TestConfigCheckBase):
     def setUp(self):
         super(TestL3ProviderNetworkConfig, self).setUp()
-        self.delete_provider_network('container')
+        self.delete_provider_network('management')
         self.add_provider_network('pod1_container', '172.29.236.0/22')
-        self.add_provider_network_key('container', 'ip_from_q',
+        self.add_provider_network_key('management', 'ip_from_q',
                                       'pod1_container')
         self.add_provider_network_key('pod1_container', 'address_prefix',
                                       'management')
