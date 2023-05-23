@@ -57,3 +57,4 @@ openstack_keys:
   - { name: client.gnocchi, caps: { mon: "profile rbd", osd: "profile rbd pool={{ openstack_gnocchi_pool.name }}"}, mode: "0600", }
   - { name: client.manila, caps: { mon: "allow r", mgr: "allow rw", osd: "allow rw pool={{ openstack_cephfs_data_pool.name }}"}, mode: "0600", }
   - { name: client.openstack, caps: { mon: "profile rbd", osd: "profile rbd pool={{ openstack_glance_pool.name }}, profile rbd pool={{ openstack_nova_pool.name }}, profile rbd pool={{ openstack_cinder_pool.name }}, profile rbd pool={{ openstack_cinder_backup_pool.name }}"}, mode: "0600" }
+  - { name: client.immutable-object-cache, caps: { mon: "allow r", osd: "profile rbd-read-only"}, mode: "0600" }
