@@ -13,11 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-### HEAD as of 22.03.2023 ###
+### HEAD as of 18.05.2023 ###
 
 ## Horizon service
 horizon_git_repo: "{{ openstack_opendev_base_url }}/openstack/horizon"
-horizon_git_install_branch: 3dd3d4ffe09b62569b187f2b0efb88dbfc1eddaf
+horizon_git_install_branch: c35d8f1c11ac283759ed2a5c1d4d19239002fb30
 horizon_git_track_branch: stable/2023.1
 
 ## Adjutant dashboard plugin
@@ -32,7 +32,7 @@ barbican_dashboard_git_track_branch: master
 
 ## Cloudkitty dashboard plugin
 cloudkitty_dashboard_git_repo: "{{ openstack_opendev_base_url }}/openstack/cloudkitty-dashboard"
-cloudkitty_dashboard_git_install_branch: 7cdee86bac20a38d191677eaefe94914cc5207f7
+cloudkitty_dashboard_git_install_branch: cdf1214d39949db242420f0e5a1403ab1be7a73f
 cloudkitty_dashboard_git_track_branch: stable/2023.1
 
 ## Horizon Designate dashboard plugin
@@ -52,7 +52,7 @@ ironic_dashboard_git_track_branch: stable/2023.1
 
 ## Horizon Magnum dashboard plugin
 magnum_dashboard_git_repo: "{{ openstack_opendev_base_url }}/openstack/magnum-ui"
-magnum_dashboard_git_install_branch: 452ca7da23f4489bc0dd25cfd031d4f1db04dfa6
+magnum_dashboard_git_install_branch: 7bdcf6017fa51859aab015f8db61fcaf4f719fc7
 magnum_dashboard_git_track_branch: stable/2023.1
 
 ## Horizon Masakari dashboard plugin
