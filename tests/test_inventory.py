@@ -717,8 +717,11 @@ class TestConfigCheckBase(unittest.TestCase):
         user_defined_config[group][hostname]['ip'] = ip
         self.write_config()
 
-    def add_host(self, group, host_name, ip):
+    def add_host(self, group, host_name, ip, management_ip=None):
         self.user_defined_config[group][host_name] = {'ip': ip}
+        if management_ip:
+            self.user_defined_config[group][host_name].update(
+                {'management_ip': management_ip})
         self.write_config()
 
     def tearDown(self):
@@ -1386,6 +1389,19 @@ class TestLxcHosts(TestConfigCheckBase):
             new_inventory = get_inventory()
 
         self.assertEqual(set(original_lxc_hosts['hosts']), set(new_inventory['lxc_hosts']['hosts']))
+
+    def test_lxc_host_management_ip(self):
+        """
+        If ssh network != mgmt network, management_ip should appear in
+        management_network, while ansible_host leave for SSH connection as is
+        """
+        ansible_host_address = '172.20.0.101'
+        management_address = '172.29.236.101'
+        self.add_host('shared-infra_hosts', 'aio2', ansible_host_address, management_address)
+        inventory = get_inventory()
+        hostvars = inventory['_meta']['hostvars']['aio2']
+        self.assertEqual(ansible_host_address, hostvars['ansible_host'])
+        self.assertEqual(management_address, hostvars['management_address'])
 
 
 class TestConfigMatchesEnvironment(unittest.TestCase):
