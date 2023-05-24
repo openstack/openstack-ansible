@@ -21,7 +21,7 @@
   vars:
     ansible_python_interpreter: >-
       {{ openstack_service_setup_host_python_interpreter |
-         default((openstack_service_setup_host | default('localhost') == 'localhost') | ternary(ansible_playbook_python, ansible_facts['python']['executable'])) }}
+         default((openstack_service_setup_host | default('localhost') == 'localhost') | ternary(ansible_playbook_python, ansible_facts['python']['executable'])) }}
   tags:
     - ceph-rgw
     - ceph-rgw-setup
