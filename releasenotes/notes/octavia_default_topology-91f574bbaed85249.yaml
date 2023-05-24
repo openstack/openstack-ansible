@@ -1,0 +1,8 @@
+---
+upgrade:
+  - |
+    Default values for variables ``octavia_loadbalancer_topology`` and
+    ``octavia_enable_anti_affinity`` has been switched to ``ACTIVE_STANDBY``
+    and ``True`` accordingly to reflect most reasonable production setup.
+    You can define these variables to their previous defaults if you want
+    to preserve behaviour.

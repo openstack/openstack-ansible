@@ -1,0 +1,15 @@
+---
+
+deprecations:
+  - |
+    Variables ``nova_network_type`` and ``nova_network_services`` have been
+    deptecated and will be silently ignored in the future.
+    Please, use ``nova_nova_conf_overrides`` if you need to define
+    ``ovs_bridge`` option for specific network drivers, like nsx or nuage.
+
+upgrade:
+  - |
+    If you're using NSX or Nuage network drivers, make sure you have replaced
+    definition of ``nova_network_type`` to appropriate
+    ``nova_nova_conf_overrides``. Please, consult with os_neutron
+    documenteation on the required overrides.

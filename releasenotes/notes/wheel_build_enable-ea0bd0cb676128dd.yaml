@@ -1,0 +1,7 @@
+---
+other:
+  - |
+    Default value of ``venv_wheel_build_enable`` has been changed. Now
+    wheels are built when there is at least a single host in
+    ``venv_build_group``.
+    Previously it was depending on the amount of hosts targeted for the play.

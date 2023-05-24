@@ -1,0 +1,7 @@
+---
+
+features:
+  - |
+    Added variable ``lxc_net_bridge_type`` that allows to control type for
+    lxcbr0: it can be set either to linuxbridge or openvswitch as of today.
+    Default value is linuxbridge that preserves previous behaviour.

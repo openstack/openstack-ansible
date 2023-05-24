@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    If the ``ironic_drivers_enabled`` variable from the os_ironic role includes
+    a driver which uses the ``ipmitool-socat`` console interface, that interface is
+    now enabled automatically in the ``ironic.conf`` ``enabled_console_interfaces``
+    config option. New variables ``ironic_socat_bind_address`` and
+    ``ironic_socat_port_range`` are added to support further customisation of the
+    serial console data flow.

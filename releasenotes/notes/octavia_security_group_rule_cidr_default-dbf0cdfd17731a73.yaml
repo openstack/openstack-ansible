@@ -1,0 +1,7 @@
+---
+upgrade:
+  - |
+    Default value for ``octavia_security_group_rule_cidr`` is changed and
+    defined to the CIDR of Octavia management network.
+    To preserve previous behaviour, please override the variable to
+    `0.0.0.0/0`.

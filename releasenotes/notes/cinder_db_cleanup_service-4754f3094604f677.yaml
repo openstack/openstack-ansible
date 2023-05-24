@@ -1,0 +1,12 @@
+---
+features:
+  - |
+    Added option to periodically clean-up deleted records from Cinder
+    database.
+    For this purpose a new service``cinder-purge-deleted`` was introduced.
+    It will be called periodically using corresponsive systemd timer on the
+    first cinder-api host.
+
+    By default this service is disabled/stopped and database cleanup
+    is not performed. You can enable this behaviour by defining variable
+    ``cinder_purge_deleted``.

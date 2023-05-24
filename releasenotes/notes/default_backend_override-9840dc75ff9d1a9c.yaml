@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    A new key ``haproxy_default_backend`` can be defined for each service
+    configured in the haproxy loadbalancer. Configuring this variable writes
+    a value for the ``default_backend`` directive into the config for the
+    service frontend. It can be useful to provide a specific default backend
+    as a fall-through option when other backends are selected using ACLs,
+    and to also allow the name of the default backend to be different from
+    ``haproxy_service_name``.

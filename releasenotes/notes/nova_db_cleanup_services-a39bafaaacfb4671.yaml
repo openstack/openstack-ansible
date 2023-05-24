@@ -1,0 +1,19 @@
+---
+features:
+  - |
+    Added option to periodically clean-up deleted records from Nova
+    database. Having a lot of records for the deleted instances affects
+    service performance.
+    With that 2 new services are being introduced: ``nova-archive-deleted``
+    and ``nova-purge-deleted`` that will be called periodically using
+    corresponsive systemd timers on the first nova-conductor host.
+
+    By default these services are disabled/stopped and database cleanup
+    is not performed. You can enable this behaviour by defining variables
+    ``nova_archive_deleted`` and ``nova_purge_deleted``.
+
+    Service ``nova-archive-deleted`` will execute
+    `nova-manage db archive_deleted_rows` while ``nova-archive-deleted``
+    will execute `nova-manage db purge`. Please correspond to nova-manage
+    documentation for more information on what these commands do:
+    https://docs.openstack.org/nova/latest/cli/nova-manage.html
