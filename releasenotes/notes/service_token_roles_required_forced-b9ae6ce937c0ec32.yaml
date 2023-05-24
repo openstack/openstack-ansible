@@ -1,0 +1,12 @@
+---
+upgrade:
+  - |
+    Due to OSSA-2023-003, value of ``openstack_service_token_roles_required``
+    has been changed to ``true``.
+    With that, major upgrades to Yoga release might struggle from prolonged
+    dowtimes.
+    Sensetive to API downtime environments can perform major upgrade to
+    any prior release with subsequent minor upgrade that will enable
+    ``openstack_service_token_roles_required`` and install safe versions
+    of services. Other way around would be to manually create and assign
+    ``service`` role to all "service" users.
