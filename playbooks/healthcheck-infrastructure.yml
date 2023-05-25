@@ -25,10 +25,12 @@
   gather_facts: yes
   vars:
     repo_requirements_file: "constraints/upper_constraints_cached.txt"
+  vars_files:
+    - "defaults/{{ install_method }}_install.yml"
   tasks:
     - name: Check the repo sync file on each repo server
       uri:
-        url: "http://{{ hostvars[item]['management_address'] }}:{{ repo_server_port }}/{{ repo_requirements_file }}"
+        url: "{{ openstack_repo_protocol }}://{{ hostvars[item]['management_address'] }}:{{ repo_server_port }}/{{ repo_requirements_file }}"
       with_inventory_hostnames: "{{ groups['repo_all'] }}"
       when: install_method == 'source'
   tags:
