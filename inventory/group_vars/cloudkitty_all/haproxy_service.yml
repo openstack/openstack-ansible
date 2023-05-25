@@ -25,6 +25,7 @@ haproxy_cloudkitty_api_service:
     - "httpchk GET /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
   haproxy_backend_ssl: "{{ cloudkitty_backend_ssl | default(openstack_service_backend_ssl) }}"
   haproxy_backend_ca: "{{ cloudkitty_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
+  haproxy_accept_both_protocols: "{{ cloudkitty_accept_both_protocols | default(openstack_service_accept_both_protocols) }}"
   haproxy_service_enabled: "{{ groups['cloudkitty_api'] is defined and groups['cloudkitty_api'] | length > 0 }}"
 
 cloudkitty_haproxy_services:

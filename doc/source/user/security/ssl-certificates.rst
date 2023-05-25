@@ -285,10 +285,9 @@ each OpenStack service and OpenStack services are configured to use http or
 https. This means once haproxy is updated to only accept HTTPS connections, the
 OpenStack services will stop working until they are updated to use HTTPS.
 
-For this reason it is recommended that TLS for haproxy internal VIP on existing
-deployments is deployed at the same time as enabling TLS for Haproxy backends,
-as this may also cause downtime. For new deployments this should be enabled from
-the start.
+To avoid downtime, it is recommended to enable
+``openstack_service_accept_both_protocols`` until all services are configured
+correctly. It allows haproxy frontends to listen on both HTTP and HTTPS.
 
 TLS for Haproxy Backends
 ~~~~~~~~~~~~~~~~~~~~~~~~

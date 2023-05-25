@@ -28,6 +28,7 @@ haproxy_swift_proxy_service:
   # https://opendev.org/openstack/swift/src/commit/c78a5962b5f6c9e75f154cac924a226815236e98/etc/proxy-server.conf-sample
   haproxy_backend_ssl: "{{ swift_backend_ssl | default(False) }}"
   haproxy_backend_ca: "{{ swift_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
+  haproxy_accept_both_protocols: "{{ swift_accept_both_protocols | default(openstack_service_accept_both_protocols) }}"
   haproxy_service_enabled: "{{ groups['swift_proxy'] is defined and groups['swift_proxy'] | length > 0 }}"
 
 swift_haproxy_services:
