@@ -1,0 +1,6 @@
+---
+deprecations:
+  - |
+    Variables ``horizon_ssl_self_signed_regen`` and
+    ``horizon_ssl_self_signed_subject`` are deprecated. Horizon role uses
+    ansible-role-pki now so they are no longer needed.

@@ -1,0 +1,11 @@
+---
+features:
+  - |
+    A new key `haproxy_map_entries` is now able to be configured for each
+    haproxy service definition to allow arbitrary entries to be placed in
+    any number of haproxy map files which may then be referenced in other
+    directives in the haproxy config file such as ``use_backend`` or
+    ``http-request``. The complete map files are constructed from the
+    fragments defined across all the service definitions and are assembled
+    into a complete map file in alphanumeric sort order, or optionally with
+    a user defined ordering.

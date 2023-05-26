@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    A new driver type ``no_driver`` is defined in the os_ironic role which
+    enables the ``no-console``, ``no-raid`` and ``no-inspect`` interfaces
+    in the ironic configuration. This driver is added to the defaults set of
+    drivers configured by the ironic ansible role.

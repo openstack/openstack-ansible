@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Added variables ``pki_handler_ca_changed``, ``pki_handler_cert_changed``
+    and ``pki_handler_cert_installed`` that control name of meta handlers which
+    role triggers when included. This might be useful if multiple roles that
+    leverage the pki role are inlcuded withing same playbook and you want to
+    have better control over handler execution.

@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    The variable ``uwsgi_bind_address`` can now be a single IP address
+    passed as a string, or a list of IP addresses passed in a yaml list
+    to the uwsgi role. This allows uwsgi to listen on a specific set of
+    IP addresses rather than just a single one.

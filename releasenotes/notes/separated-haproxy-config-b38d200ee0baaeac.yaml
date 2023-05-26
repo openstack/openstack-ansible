@@ -1,0 +1,8 @@
+---
+deprecations:
+  - |
+    ``haproxy_service_configs`` format was simplified.
+    Now it's just a list of dicts. Usage of ``service`` key
+    in ``haproxy_service_configs`` elements is deprecated and will be
+    removed in 2023.2 release.
+

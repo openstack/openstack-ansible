@@ -1,0 +1,23 @@
+---
+prelude: >
+    It is now possible to create and manage third-party services,
+    mount points and networks on hosts managed by OpenStack-Ansible.
+    This also inlcudes networks, that are required for OpenStack-Ansible
+    installation, like br-mgmt or br-storage.
+    In order to configure specific resources on selected set of hosts,
+    usage of group_vars or host_vars is appreciated.
+features:
+  - |
+    Added new varaibles that allow users to configure extra systemd
+    services, networks or mounts on openstack hosts. While services and
+    mounts can be configured on any targeted hosts, networks will be created
+    only on bare metal nodes. In order to configure extra networks in
+    containers please reffer to ``openstack_user_config.yml`` documentation.
+    A list of new variables that were added:
+
+      * openstack_hosts_systemd_mounts
+      * openstack_hosts_systemd_networkd_devices
+      * openstack_hosts_systemd_networkd_networks
+      * openstack_hosts_systemd_networkd_prefix
+      * openstack_hosts_systemd_services
+      * openstack_hosts_systemd_slice
