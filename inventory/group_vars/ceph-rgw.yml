@@ -17,3 +17,57 @@ ceph_conf_overrides_rgw:
     # rgw_enable_apis: 'swift, s3'
     # rgw_s3_auth_use_keystone: 'true'
 
+###
+### Backend TLS
+###
+
+# Ceph configuration options to enable TLS on ceph-rgw
+radosgw_frontend_ssl_certificate: "{{ ceph_rgw_backend_ssl is truthy | ternary(ceph_rgw_ssl_cert, '') }}"
+# Ceph-ansible requires to include private key in `radosgw_frontend_ssl_certificate`
+# which is not possible with ansible-role-pki.
+# That is why `ssl_private_key` is defined in `radosgw_frontend_options`.
+radosgw_frontend_options: "{{ ceph_rgw_backend_ssl is truthy | ternary('ssl_private_key=' + ceph_rgw_ssl_key, '') }}"
+
+# Define if communication between haproxy and service backends should be
+# encrypted with TLS.
+ceph_rgw_backend_ssl: "{{ openstack_service_backend_ssl | default(False) }}"
+
+# Storage location for SSL certificate authority
+ceph_rgw_pki_dir: "{{ openstack_pki_dir | default('/etc/openstack_deploy/pki') }}"
+
+# Delegated host for operating the certificate authority
+ceph_rgw_pki_setup_host: "{{ openstack_pki_setup_host | default('localhost') }}"
+
+# ceph_rgw server certificate
+ceph_rgw_pki_keys_path: "{{ ceph_rgw_pki_dir ~ '/certs/private/' }}"
+ceph_rgw_pki_certs_path: "{{ ceph_rgw_pki_dir ~ '/certs/certs/' }}"
+ceph_rgw_pki_intermediate_cert_name: "{{ openstack_pki_service_intermediate_cert_name | default('ExampleCorpIntermediate') }}"
+ceph_rgw_pki_regen_cert: ''
+ceph_rgw_pki_san: "{{ openstack_pki_san | default('DNS:' ~ ansible_facts['hostname'] ~ ',IP:' ~ management_address) }}"
+ceph_rgw_pki_certificates:
+  - name: "ceph_rgw_{{ ansible_facts['hostname'] }}"
+    provider: ownca
+    cn: "{{ ansible_facts['hostname'] }}"
+    san: "{{ ceph_rgw_pki_san }}"
+    signed_by: "{{ ceph_rgw_pki_intermediate_cert_name }}"
+
+# ceph_rgw destination files for SSL certificates
+ceph_rgw_ssl_cert: /etc/ceph/ceph-rgw.pem
+ceph_rgw_ssl_key: /etc/ceph/ceph-rgw.key
+
+# Installation details for SSL certificates
+ceph_rgw_pki_install_certificates:
+  - src: "{{ ceph_rgw_user_ssl_cert | default(ceph_rgw_pki_certs_path ~ 'ceph_rgw_' ~ ansible_facts['hostname'] ~ '-chain.crt') }}"
+    dest: "{{ ceph_rgw_ssl_cert }}"
+    owner: "ceph"
+    group: "ceph"
+    mode: "0644"
+  - src: "{{ ceph_rgw_user_ssl_key | default(ceph_rgw_pki_keys_path ~ 'ceph_rgw_' ~ ansible_facts['hostname'] ~ '.key.pem') }}"
+    dest: "{{ ceph_rgw_ssl_key }}"
+    owner: "ceph"
+    group: "ceph"
+    mode: "0600"
+
+# Define user-provided SSL certificates
+#ceph_rgw_user_ssl_cert: <path to cert on ansible deployment host>
+#ceph_rgw_user_ssl_key: <path to cert on ansible deployment host>
