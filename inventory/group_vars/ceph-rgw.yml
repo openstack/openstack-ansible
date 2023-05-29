@@ -12,10 +12,8 @@ ceph_conf_overrides_rgw:
     rgw_keystone_implicit_tenants: 'true'
     rgw_swift_account_in_url: 'true'
     rgw_swift_versioning_enabled: 'true'
-    rgw_enable_apis: swift
-    # For S3 support, update/add below rows
-    # rgw_enable_apis: 'swift, s3'
-    # rgw_s3_auth_use_keystone: 'true'
+    rgw_enable_apis: 'swift, s3'
+    rgw_s3_auth_use_keystone: 'true'
 
 ###
 ### Backend TLS
