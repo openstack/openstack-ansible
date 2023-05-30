@@ -58,7 +58,7 @@ haproxy_galera_service:
   haproxy_service_name: galera
   haproxy_backend_nodes: "{{ (groups['galera_all'] | default([]))[:1] }}"  # list expected
   haproxy_backup_nodes: "{{ (groups['galera_all'] | default([]))[1:] }}"
-  haproxy_bind: "{{ [internal_lb_vip_address] }}"
+  haproxy_bind: "{{ [haproxy_bind_internal_lb_vip_address | default(internal_lb_vip_address)] }}"
   haproxy_port: 3306
   haproxy_check_port: 9200
   haproxy_balance_type: tcp
