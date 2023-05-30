@@ -26,6 +26,7 @@ haproxy_tacker_service:
     - "httplog"
   haproxy_backend_ssl: "{{ tacker_backend_ssl | default(openstack_service_backend_ssl) }}"
   haproxy_backend_ca: "{{ tacker_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
+  haproxy_accept_both_protocols: "{{ tacker_accept_both_protocols | default(openstack_service_accept_both_protocols) }}"
   haproxy_service_enabled: "{{ groups['tacker_all'] is defined and groups['tacker_all'] | length > 0 }}"
 
 tacker_haproxy_services:

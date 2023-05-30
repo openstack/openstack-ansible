@@ -33,6 +33,7 @@ haproxy_nova_api_metadata_service:
   haproxy_allowlist_networks: "{{ haproxy_nova_metadata_allowlist_networks }}"
   haproxy_backend_ssl: "{{ nova_backend_ssl | default(openstack_service_backend_ssl) }}"
   haproxy_backend_ca: "{{ nova_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
+  haproxy_accept_both_protocols: "{{ nova_accept_both_protocols | default(openstack_service_accept_both_protocols) }}"
   haproxy_service_enabled: "{{ groups['nova_api_metadata'] is defined and groups['nova_api_metadata'] | length > 0 }}"
 
 haproxy_nova_api_compute_service:
@@ -46,6 +47,7 @@ haproxy_nova_api_compute_service:
     - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
   haproxy_backend_ssl: "{{ nova_backend_ssl | default(openstack_service_backend_ssl) }}"
   haproxy_backend_ca: "{{ nova_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
+  haproxy_accept_both_protocols: "{{ nova_accept_both_protocols | default(openstack_service_accept_both_protocols) }}"
   haproxy_service_enabled: "{{ groups['nova_api_os_compute'] is defined and groups['nova_api_os_compute'] | length > 0 }}"
 
 haproxy_nova_spice_console_service:
@@ -62,6 +64,7 @@ haproxy_nova_spice_console_service:
   haproxy_backend_httpcheck_options: "{{ haproxy_nova_console_http_mode | ternary(['expect status 200'], []) }}"
   haproxy_backend_ssl: "{{ nova_backend_ssl | default(openstack_service_backend_ssl) }}"
   haproxy_backend_ca: "{{ nova_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
+  haproxy_accept_both_protocols: "{{ nova_accept_both_protocols | default(openstack_service_accept_both_protocols) }}"
   haproxy_service_enabled: "{{ groups['nova_console'] is defined and groups['nova_console'] | length > 0 and nova_console_type == 'spice' }}"
 
 haproxy_nova_serial_console_service:
@@ -78,6 +81,7 @@ haproxy_nova_serial_console_service:
   haproxy_backend_httpcheck_options: "{{ haproxy_nova_console_http_mode | ternary(['expect status 200'], []) }}"
   haproxy_backend_ssl: "{{ nova_backend_ssl | default(openstack_service_backend_ssl) }}"
   haproxy_backend_ca: "{{ nova_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
+  haproxy_accept_both_protocols: "{{ nova_accept_both_protocols | default(openstack_service_accept_both_protocols) }}"
   haproxy_service_enabled: "{{ (groups['nova_console'] is defined and groups['nova_console'] | length > 0 and nova_console_type == 'serial') or
                                (groups['ironic_console'] is defined and groups['ironic_console'] | length > 0 and ironic_console_type == 'serial') }}"
 
@@ -95,6 +99,7 @@ haproxy_nova_novnc_console_service:
   haproxy_backend_httpcheck_options: "{{ haproxy_nova_console_http_mode | ternary(['expect status 200'], []) }}"
   haproxy_backend_ssl: "{{ nova_backend_ssl | default(openstack_service_backend_ssl) }}"
   haproxy_backend_ca: "{{ nova_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
+  haproxy_accept_both_protocols: "{{ nova_accept_both_protocols | default(openstack_service_accept_both_protocols) }}"
   haproxy_service_enabled: "{{ groups['nova_console'] is defined and groups['nova_console'] | length > 0 and nova_console_type == 'novnc' }}"
 
 # NOTE(jrosser) Clean up legacy console haproxy configs from previous releases

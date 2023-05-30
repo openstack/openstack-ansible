@@ -73,6 +73,9 @@ openstack_external_ssl: true
 ## be encrypted.
 openstack_service_backend_ssl: False
 
+## Allows haproxy frontend to accept both HTTP and HTTPS traffic.
+openstack_service_accept_both_protocols: False
+
 ## OpenStack global Endpoint Protos
 openstack_service_publicuri_proto: https
 openstack_service_adminuri_proto: http
