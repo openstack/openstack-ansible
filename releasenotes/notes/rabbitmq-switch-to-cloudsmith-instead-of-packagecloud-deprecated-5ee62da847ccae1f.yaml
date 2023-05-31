@@ -1,0 +1,11 @@
+---
+deprecations:
+  - |
+    RabbitMQ packages are no longer provided by PackageCloud due to the upstream
+    repository being no longer available after 2023-05-28. Installations will now
+    utilize a community mirror of CloudSmith repositories for rabbitmq and erlang.
+
+    https://github.com/rabbitmq/rabbitmq-server/discussions/8386
+fixes:
+  - |
+    https://bugs.launchpad.net/openstack-ansible/+bug/2021410
