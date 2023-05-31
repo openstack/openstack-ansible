@@ -9,10 +9,10 @@ configuration of an OpenStack environment.
 
 Documentation for each of the following releases is available.
 
-2023.1 (Antelope): Under Development
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2023.2 (Bobcat): Under Development
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible 2023.1 (Antelope) is currently Under Development.
+OpenStack-Ansible 2023.2 (Bobcat) is currently Under Development.
 
 .. toctree::
    :maxdepth: 1
@@ -24,6 +24,19 @@ OpenStack-Ansible 2023.1 (Antelope) is currently Under Development.
    contributor/contributing
    contributor/index
    reference/index
+
+2023.1 (Antelope): Maintained
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+OpenStack-Ansible 2023.1 (Antelope) was first released with the 27.0.0 tag on
+1 June 2023.
+
+* `OpenStack-Ansible 2023.1 Documentation`_
+
+* `OpenStack-Ansible 2023.1 series release notes`_
+
+.. _OpenStack-Ansible 2023.1 Documentation: https://docs.openstack.org/openstack-ansible/2023.1/
+.. _OpenStack-Ansible 2023.1 series release notes: https://docs.openstack.org/releasenotes/openstack-ansible/2023.1.html
 
 Zed: Maintained
 ~~~~~~~~~~~~~~~

@@ -155,12 +155,6 @@ Please review the contents of the playbook for more information.
     # openstack-ansible "${SCRIPTS_PATH}/upgrade-utilities/deploy-config-changes.yml"
 
 
-Ensure that you have defined all required variables for current Neutron plugin
-
-.. code-block:: console
-
-    # openstack-ansible "${SCRIPTS_PATH}/upgrade-utilities/define-neutron-plugin.yml"
-
 Upgrade hosts
 ~~~~~~~~~~~~~
 
@@ -171,16 +165,7 @@ Before installing the infrastructure and OpenStack, update the host machines.
     Usage of non-trusted certificates for RabbitMQ is not possible
     due to requirements of newer ``amqp`` versions.
 
-The SSH certificate authority must be updated for the upgraded release
-version. SSH certificates are used for nova live migration and keystone
-credential synchonrisation in the new release. This step ensures that
-the required CA is generated and available for other playbooks.
-
-.. code-block:: console
-
-    # openstack-ansible certificate-ssh-authority.yml
-
-Once CA is generated, we can proceed with standard OpenStack upgrade steps:
+After that you can proceed with standard OpenStack upgrade steps:
 
 .. code-block:: console
 

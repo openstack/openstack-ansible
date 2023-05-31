@@ -526,24 +526,6 @@
     nodeset: ubuntu-focal
 
 - job:
-    name: openstack-ansible-upgrade_yoga-aio_metal-ubuntu-focal
-    parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-focal
-    timeout: 10800
-
-- job:
-    name: openstack-ansible-upgrade_yoga-aio_lxc-ubuntu-focal
-    parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-focal
-    timeout: 10800
-
-- job:
-    name: openstack-ansible-upgrade_yoga-infra_lxc-ubuntu-focal
-    parent: openstack-ansible-deploy-aio-infra
-    nodeset: ubuntu-focal
-    timeout: 10800
-
-- job:
     name: openstack-ansible-deploy-infra_lxc-ubuntu-focal
     parent: openstack-ansible-deploy-aio-infra
     nodeset: ubuntu-focal
