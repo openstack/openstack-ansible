@@ -52,8 +52,8 @@ OpenStack-Ansible Yoga series was first released with the 25.0.0 tag on
 .. _OpenStack-Ansible Yoga series release notes: https://docs.openstack.org/releasenotes/openstack-ansible/yoga.html
 
 
-Xena: Maintained
-~~~~~~~~~~~~~~~~
+Xena: Extended Maintenance
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 OpenStack-Ansible Xena series was first released with the 24.0.0 tag on
 10 December 2021.
