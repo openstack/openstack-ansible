@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    Fixes the absence of ``libvirtd.service`` on compute nodes.
+    With CentOS upgrading the libvirt version to 9.3.0, they do not
+    install libvirt-deamon as a dependency to libvirt-deamon-kvm
+    anymore. libvirt-deamon is installed explicitly now.

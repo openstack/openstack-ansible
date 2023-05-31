@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Fixes incorrect definition of ceilometer ``polling_namespaces``, when
+    host is part of both central and compute groups (ie metal/aio scenario)
