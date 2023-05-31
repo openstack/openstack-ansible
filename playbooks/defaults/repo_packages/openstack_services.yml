@@ -28,11 +28,11 @@
 ### Before this is shipped all of these services should have a tag set as the branch,
 ### or have a comment / reason attached to them as to why a tag can not work.
 
-### HEAD as of 14.04.2023 ###
+### HEAD as of 31.05.2023 ###
 
 ## Global Requirements
 requirements_git_repo: https://opendev.org/openstack/requirements
-requirements_git_install_branch: 70106ea80ce77cc6425ca09790503ba03be14618
+requirements_git_install_branch: 263b5796e40512300e4379f47b91944f39938c9d
 requirements_git_track_branch: stable/yoga
 
 ## Adjutant service
@@ -65,13 +65,13 @@ barbican_dashboard_git_track_branch: master
 
 ## Ceilometer service
 ceilometer_git_repo: https://opendev.org/openstack/ceilometer
-ceilometer_git_install_branch: b583cbcaae71e629cb27eb2fa4f44d3889049e72
+ceilometer_git_install_branch: 82feb96ed324dca8cbf4773bbdf91eb9e33d7b67
 ceilometer_git_track_branch: stable/yoga
 
 
 ## Cinder service
 cinder_git_repo: https://opendev.org/openstack/cinder
-cinder_git_install_branch: d4535c77493a7b362091b962f42f2613dea65dbe
+cinder_git_install_branch: 92e8a3df46e77878d79575b67dc145004c4fb06a
 cinder_git_track_branch: stable/yoga
 
 
@@ -89,7 +89,7 @@ cloudkitty_dashboard_git_track_branch: stable/yoga
 
 ## Designate service
 designate_git_repo: https://opendev.org/openstack/designate
-designate_git_install_branch: f1981d057f08f9229eba2e8191dc06b22be1cffd
+designate_git_install_branch: bce24efbeff80ce3a572cc409e8ee5b843535a2d
 designate_git_track_branch: stable/yoga
 
 
@@ -101,7 +101,7 @@ designate_dashboard_git_track_branch: stable/yoga
 
 ## Glance service
 glance_git_repo: https://opendev.org/openstack/glance
-glance_git_install_branch: 641399fdd00966f0e6cedcaafffa787ac44dc7bd
+glance_git_install_branch: 357e5ba1bb3a3a28baf844db698d1bfeff7593c1
 glance_git_track_branch: stable/yoga
 
 
@@ -117,7 +117,7 @@ heat_dashboard_git_track_branch: stable/yoga
 
 ## Horizon service
 horizon_git_repo: https://opendev.org/openstack/horizon
-horizon_git_install_branch: c2c8e26b0fa2c96d98f250b4cf6dd9a31bf43168
+horizon_git_install_branch: f14a54262aa08bba65977262bdf8b8f57f717848
 horizon_git_track_branch: stable/yoga
 
 ## Horizon Ironic dashboard plugin
@@ -150,13 +150,13 @@ keystone_git_track_branch: stable/yoga
 
 ## Manila service
 manila_git_repo: https://opendev.org/openstack/manila
-manila_git_install_branch: 2fab8442f47dca784f115c8436189ea05d6361f3
+manila_git_install_branch: 3ba4d99288a372e5d9f7cf9f108399af92041553
 manila_git_track_branch: stable/yoga
 
 
 ## Neutron service
 neutron_git_repo: https://opendev.org/openstack/neutron
-neutron_git_install_branch: ce16399ef369a01e22653e61b6f077c795e74284
+neutron_git_install_branch: 0a590e57dac3640b5bfa3e6310045752b4d3783d
 neutron_git_track_branch: stable/yoga
 
 neutron_vpnaas_git_repo: https://opendev.org/openstack/neutron-vpnaas
@@ -186,7 +186,7 @@ networking_sfc_git_install_branch: 2d9e61daf20436354e668d76089f5a79baa938bd
 networking_sfc_git_track_branch: stable/yoga
 
 networking_generic_switch_git_repo: https://opendev.org/openstack/networking-generic-switch
-networking_generic_switch_git_install_branch: a5926116a3fa5fd0cdd74d4f5d97e1e54514f737
+networking_generic_switch_git_install_branch: 0359f31527bd103ed16a95df649392d5651ce229
 networking_generic_switch_git_track_branch: stable/yoga
 
 networking_nsx_git_repo: https://opendev.org/x/vmware-nsx
@@ -194,12 +194,12 @@ networking_nsx_git_install_branch: 0253265f75f63d5619b30f16a6b64459dec79d82
 networking_nsx_git_track_branch: master
 
 networking_nsxlib_git_repo: https://opendev.org/x/vmware-nsxlib
-networking_nsxlib_git_install_branch: 3a627ed498be8b81c90ec61b83194549127933f9
+networking_nsxlib_git_install_branch: 77688b9934fd61c7c1ada52da92252b12979bbee
 networking_nsxlib_git_track_branch: master
 
 ## Nova service
 nova_git_repo: https://opendev.org/openstack/nova
-nova_git_install_branch: f5b4125cbfbbcf7abaa9b1b5d6f5c4c562b9f261
+nova_git_install_branch: 8653767435d2a4414b1b053502cfe7dc21094e10
 nova_git_track_branch: stable/yoga
 
 
@@ -217,13 +217,13 @@ senlin_git_track_branch: stable/yoga
 
 ## Swift service
 swift_git_repo: https://opendev.org/openstack/swift
-swift_git_install_branch: ec29692d0ab9b5c90cbcc89c13a356b7a3dae3e3
+swift_git_install_branch: 005aeb8f79faf8a26f3aef2ffef14461d28a1389
 swift_git_track_branch: stable/yoga
 
 
 ## Ironic service
 ironic_git_repo: https://opendev.org/openstack/ironic
-ironic_git_install_branch: a32c00da948ca4f49188e946f0c77801b563a88b
+ironic_git_install_branch: a6bb3036615906787c08064d2c0906b7b3f7eab2
 ironic_git_track_branch: stable/yoga
 
 
@@ -279,7 +279,7 @@ trove_dashboard_git_track_branch: stable/yoga
 
 ## Octavia service
 octavia_git_repo: https://opendev.org/openstack/octavia
-octavia_git_install_branch: db22c0b9da5bd167e97ba021c22e9cf46488ea8d
+octavia_git_install_branch: 09e0beb66fc9a62fb507f764437b5c07866254a1
 octavia_git_track_branch: stable/yoga
 
 
