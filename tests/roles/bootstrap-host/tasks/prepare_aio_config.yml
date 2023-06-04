@@ -57,6 +57,7 @@
     dest: "/etc/openstack_deploy/{{ bootstrap_host_user_secrets_filename }}"
     config_overrides: "{{ user_secrets_overrides | default({}) }}"
     config_type: "yaml"
+    force: false
   tags:
     - deploy-user-secrets
 
