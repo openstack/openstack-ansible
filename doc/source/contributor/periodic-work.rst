@@ -51,7 +51,7 @@ Updating OpenStack-Ansible roles
 --------------------------------
 
 Updating the roles to their latest version per branch is done through
-``osa releases bump_roles $gitbranchname``.
+``osa releases bump_roles``.
 
 This can do multiple things:
 
@@ -62,6 +62,16 @@ This can do multiple things:
 
 Master doesn't get frozen, unless explicitly asked for it for release
 milestones, using the command ``osa releases freeze_roles_for_milestone``
+
+Updating required collections
+-----------------------------
+
+Updating collections to their latest version is done through
+``osa releases bump_collections``.
+
+Please note, that only collections with type `git` are supported.
+Ones, that are installed from Ansible Galaxy should be bumped manually.
+
 
 Check current pins status
 -------------------------
@@ -94,6 +104,66 @@ the `openstack-ansible` repository.
 .. _new_releases page: https://releases.openstack.org/reference/using.html#using-new-release-command
 
 
+Trasition releases to Extended Maintenance
+------------------------------------------
+
+With migrating a release to `Extended Maintenance`_ (EM) status no future
+releases of the release are possible. With that, a new tag <release>-em is
+created and it must be based on the latest numeric release.
+
+To transition a release to Extended Maintenance we need to:
+
+  * Wait until all upstream repositories will transition to EM
+
+  * Update OpenStack-Ansible roles normally
+
+  * Update ``<service>_git_install_branch`` to be ``<release>-em`` instead of
+    the SHA.
+
+  * Propose a new numeric release to ``openstack/releases`` repository
+
+  * Propose to create a ``<release>-em`` tag with the same SHA as previous
+    numeric release has.
+
+  * Once EM tag is created, switch ``version`` field in
+    ansible-role-requirements.yml to track ``stable/<release>``.
+
+  * Update ``index.rst`` for master branch to reflect support status of the
+    release
+
+.. _Extended Maintenance: https://docs.openstack.org/project-team-guide/stable-branches.html#extended-maintenance
+
+
+Trasition releases to End Of Life
+---------------------------------
+
+With releases reaching `End Of Life`_ (EOL), a new tag ``<release>-eol`` is
+created, after which branch will be deleted. Projects are free to EOL their
+branches anytime, after coordinated migration to EM is completed. Due to this
+we don't track ``stable/<release>`` branch for upstream services for EM, but
+only for our roles. At the same time there is a coordinated deadline, when all
+projects must EOL their old branches.
+
+
+To transition a release to End Of Life we need to:
+
+  * Create a <release>-eol tag for OpenStack-Ansible Roles
+
+  * Switch ansible-role-requirements.yml ``version`` field to <release>-eol tag
+    from stable/<release> branch.
+
+  * Wait for all projects to EOL
+
+  * Update ``<service>_git_install_branch`` variables to use <release>-eol tag
+    instead of SHAs.
+
+  * Create a <release>-eol tag for OpenStack-Ansible repository
+
+  * Update release support status in index.rst on the master branch.
+
+
+.. _End Of Life: https://docs.openstack.org/project-team-guide/stable-branches.html#end-of-life
+
 
 .. _cycle-checklist:
 
@@ -107,7 +177,10 @@ development team by performing one of the following recurring tasks:
 
   * Community goal acknowledgement.
 
-  * Update ``global-requirements-pins``
+  * Define supported platforms release will run on. Remove testing and support
+    for deprecated ones.
+
+  * Update ``global-requirements-pins``, upstream SHAs and required collections
 
 * By milestone 2:
 
@@ -131,28 +204,34 @@ development team by performing one of the following recurring tasks:
   * Check outstanding reviews and move to merge or abandon them if no longer
     valid.
 
-  * Update ``global-requirements-pins``
+  * Update ``global-requirements-pins``, upstream SHAs and required collections
 
 * By milestone 3:
 
   * Implement features
 
-  * Update ``global-requirements-pins``
+  * Update ``global-requirements-pins``, upstream SHAs and required collections
 
 * After milestone 3:
 
   * Feature freeze, bug fixes, and testing improvements.
 
-* After creating a new stable branch:
+  * Ansible version and collections freeze
 
-  * For all the repos, update the eventual static files refering
-    to master/previous branch name. The main documentation should
-    be updated to add the new branch. The #openstack-docs team
-    should also be updated, for linking the newly created
-    deployment-guide.
+* After a new stable branch is created for services:
 
-    Use the topic ``create-<branchname>`` (e.g: ``create-stein``)
-    for future reference.
+  * Update ``<service>_git_track_branch`` variables to match the new
+    branch name.
+
+  * Set all ``tempest_plugin_<service>_git_track_branch`` to None to
+    prevent SHA update for them.
+
+  * Update upstream SHAs
+
+* After coordinated OpenStack release, before OpenStack-Ansible release:
+
+  * Update release name in ``openstack_hosts`` repository. This will also bump
+    RDO and Ubuntu Cloud Archive repositories.
 
   * Branch all the independent repos that aren't part of the release
     in gerrit. See also the ``projects.yaml`` in the governance repo.
@@ -164,11 +243,47 @@ development team by performing one of the following recurring tasks:
     tooling/process may have evolved, so be aware that the changes
     needed may need to be adapted.
 
-* After official project release, before official OpenStack-Ansible release:
+  * Switch ``trackbranch`` in ansible-role-requirements.yml to the new branch
+    and update OpenStack-Ansible roles after that.
 
-  * Bump RDO and Ubuntu Cloud Archive repositories if they are ready on time.
+  * Add supported platforms for the release to ``os-compatibility-matrix.html``
 
 * Immediately after official OpenStack-Ansible release:
 
   * Send a thank you note to all the contributors through the mailing lists.
     They deserve it.
+
+  * Revert changes made to ansible-role-requirements.yml and
+    ``*_git_track_branch`` variables to track stable branch instead of master.
+    Update upstream SHAs.
+
+  * Reflect changes in documentation
+
+      * Create a patch to openstack-manuals and uncomment OpenStack-Ansible in
+        `www/project-data/<release>.yaml`.
+
+      * Update index page on master to mention release date of recently
+        released version as well as set its status to Maintained. With that
+        also add a new release that we are about to start working on.
+
+      * Update index page on stable branch to mention only the release in topic
+        rather all historical releases as well. Historical data should be
+        present only on master branch.
+
+      * Update upgrade scripts and documentation to keep track on supported
+        upgrade paths:
+
+        * For SLURP releases, define ``previous_slurp_name`` in
+          doc/source/conf.py. For non-SLURP - set it to ``False``.
+
+        * Update ``previous_series_name`` and ``current_series_name`` in
+          doc/source/conf.py and deploy-guide/source/conf.py
+
+        * Update ``UPGRADE_SOURCE_RELEASE`` in scripts/gate-check-commit.sh
+
+        * Update ``SUPPORTED_SOURCE_SERIES`` and ``TARGET_SERIES`` in
+          scripts/run-upgrade.sh. Also don't forget to cleanup irrelevant
+          upgrade scripts.
+
+        * Add/remove required for SLURP upgrade jobs. ACTION for such jobs
+          should be defined as ``upgrade_<release>``.
