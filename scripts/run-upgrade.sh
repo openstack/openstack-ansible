@@ -31,10 +31,10 @@ export SCRIPTS_PATH="$(dirname "$(readlink -f "${0}")")"
 export MAIN_PATH="$(dirname "${SCRIPTS_PATH}")"
 
 # The expected source series names
-export SUPPORTED_SOURCE_SERIES=("yoga" "zed")
+export SUPPORTED_SOURCE_SERIES=("2023.1")
 
 # The expected target series name
-export TARGET_SERIES="2023.1"
+export TARGET_SERIES="2023.2"
 
 # The expected OSA config dir
 export OSA_CONFIG_DIR="${OSA_CONFIG_DIR:-/etc/openstack_deploy}"
@@ -195,10 +195,6 @@ function main {
 
     pushd ${MAIN_PATH}/playbooks
         RUN_TASKS+=("${SCRIPTS_PATH}/upgrade-utilities/deploy-config-changes.yml")
-        if [[ "${SOURCE_SERIES}" == "yoga" ]]; then
-          RUN_TASKS+=("${SCRIPTS_PATH}/upgrade-utilities/define-neutron-plugin.yml")
-          RUN_TASKS+=("certificate-ssh-authority.yml")
-        fi
         # we don't want to trigger container restarts for galera and rabbit
         # but as there will be no hosts available for metal deployments,
         # as a fallback option we just run setup-hosts.yml without any arguments

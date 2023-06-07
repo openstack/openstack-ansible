@@ -65,7 +65,6 @@
       jobs:
         - openstack-ansible-upgrade-infra_lxc-rockylinux-9
         - openstack-ansible-upgrade-infra_lxc-ubuntu-jammy
-        - openstack-ansible-upgrade_yoga-infra_lxc-ubuntu-focal
     gate:
       jobs:
         - openstack-ansible-upgrade-infra_lxc-rockylinux-9
@@ -77,7 +76,6 @@
       jobs:
         - openstack-ansible-upgrade-aio_metal-rockylinux-9
         - openstack-ansible-upgrade-aio_metal-ubuntu-jammy
-        - openstack-ansible-upgrade_yoga-aio_metal-ubuntu-focal
     gate:
       jobs:
         - openstack-ansible-upgrade-aio_metal-rockylinux-9
@@ -174,7 +172,6 @@
         - openstack-ansible-deploy-aio_metal_tls-ubuntu-jammy
         - openstack-ansible-upgrade-aio_metal-rockylinux-9
         - openstack-ansible-upgrade-aio_metal-ubuntu-jammy
-        - openstack-ansible-upgrade_yoga-aio_metal-ubuntu-focal
     gate:
       jobs:
         - openstack-ansible-deploy-aio_metal-debian-bullseye
