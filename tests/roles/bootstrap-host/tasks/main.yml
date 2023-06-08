@@ -42,6 +42,8 @@
 
 - name: Gather nodepool variables
   import_tasks: gather_nodepool_vars.yml
+  tags:
+    - always
 
 - name: Create the required directories
   file:
