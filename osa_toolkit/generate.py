@@ -720,19 +720,35 @@ def container_skel_load(container_skel, inventory, config):
     logger.debug("Loading container skeleton")
 
     for key, value in container_skel.items():
-        contains_in = value.get('contains', False)
-        belongs_to_in = value.get('belongs_to', False)
-        if contains_in or belongs_to_in:
-            for assignment in value['contains']:
-                for container_type in value['belongs_to']:
-                    _add_container_hosts(
-                        assignment,
-                        config,
-                        key,
-                        container_type,
-                        inventory,
-                        value.get('properties', {})
-                    )
+        contains_in = value.get('contains', list())
+        belongs_to_in = value.get('belongs_to', list())
+        properties = value.get('properties', {})
+
+        if belongs_to_in:
+            _parse_belongs_to(
+                key,
+                belongs_to=value['belongs_to'],
+                inventory=inventory
+            )
+        if properties.get('is_nest', False):
+            physical_host_type = '{}_hosts'.format(key.split('_')[0])
+            for host_type in inventory[physical_host_type]['hosts']:
+                container_mapping = inventory[key]['children']
+                host_type_containers = '{}-host_containers'.format(host_type)
+                if host_type_containers in inventory:
+                    du.append_if(array=container_mapping,
+                                 item=host_type_containers)
+
+        for assignment in contains_in:
+            for container_type in belongs_to_in:
+                _add_container_hosts(
+                    assignment,
+                    config,
+                    key,
+                    container_type,
+                    inventory,
+                    properties
+                )
 
     cidr_networks = config.get('cidr_networks')
     provider_queues = {}
