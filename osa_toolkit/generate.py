@@ -733,54 +733,54 @@ def container_skel_load(container_skel, inventory, config):
                         inventory,
                         value.get('properties', {})
                     )
-    else:
-        cidr_networks = config.get('cidr_networks')
-        provider_queues = {}
-        for net_name in cidr_networks:
-            ip_q = ip.load_optional_q(
-                cidr_networks, cidr_name=net_name
+
+    cidr_networks = config.get('cidr_networks')
+    provider_queues = {}
+    for net_name in cidr_networks:
+        ip_q = ip.load_optional_q(
+            cidr_networks, cidr_name=net_name
+        )
+        provider_queues[net_name] = ip_q
+        if ip_q is not None:
+            net = netaddr.IPNetwork(cidr_networks.get(net_name))
+            q_netmask = '{}_netmask'.format(net_name)
+            provider_queues[q_netmask] = str(net.netmask)
+
+    overrides = config.get('global_overrides', dict())
+    # iterate over a list of provider_networks, var=pn
+    pns = overrides.get('provider_networks', list())
+    for pn in pns:
+        # p_net are the provider_network values
+        p_net = pn.get('network')
+        if not p_net:
+            continue
+
+        q_name = p_net.get('ip_from_q')
+        ip_from_q = provider_queues.get(q_name)
+        if ip_from_q:
+            netmask = provider_queues['{}_netmask'.format(q_name)]
+        else:
+            netmask = None
+
+        for group in p_net.get('group_binds', list()):
+            _add_additional_networks(
+                key=group,
+                inventory=inventory,
+                ip_q=ip_from_q,
+                q_name=q_name,
+                netmask=netmask,
+                interface=p_net.get('container_interface'),
+                bridge=p_net.get('container_bridge'),
+                bridge_type=p_net.get('container_bridge_type'),
+                net_type=p_net.get('container_type'),
+                net_mtu=p_net.get('container_mtu'),
+                user_config=config,
+                is_container_address=p_net.get('is_container_address'),
+                static_routes=p_net.get('static_routes'),
+                gateway=p_net.get('gateway'),
+                reference_group=p_net.get('reference_group'),
+                address_prefix=p_net.get('address_prefix')
             )
-            provider_queues[net_name] = ip_q
-            if ip_q is not None:
-                net = netaddr.IPNetwork(cidr_networks.get(net_name))
-                q_netmask = '{}_netmask'.format(net_name)
-                provider_queues[q_netmask] = str(net.netmask)
-
-        overrides = config.get('global_overrides', dict())
-        # iterate over a list of provider_networks, var=pn
-        pns = overrides.get('provider_networks', list())
-        for pn in pns:
-            # p_net are the provider_network values
-            p_net = pn.get('network')
-            if not p_net:
-                continue
-
-            q_name = p_net.get('ip_from_q')
-            ip_from_q = provider_queues.get(q_name)
-            if ip_from_q:
-                netmask = provider_queues['{}_netmask'.format(q_name)]
-            else:
-                netmask = None
-
-            for group in p_net.get('group_binds', list()):
-                _add_additional_networks(
-                    key=group,
-                    inventory=inventory,
-                    ip_q=ip_from_q,
-                    q_name=q_name,
-                    netmask=netmask,
-                    interface=p_net.get('container_interface'),
-                    bridge=p_net.get('container_bridge'),
-                    bridge_type=p_net.get('container_bridge_type'),
-                    net_type=p_net.get('container_type'),
-                    net_mtu=p_net.get('container_mtu'),
-                    user_config=config,
-                    is_container_address=p_net.get('is_container_address'),
-                    static_routes=p_net.get('static_routes'),
-                    gateway=p_net.get('gateway'),
-                    reference_group=p_net.get('reference_group'),
-                    address_prefix=p_net.get('address_prefix')
-                )
 
     populate_lxc_hosts(inventory)
 
