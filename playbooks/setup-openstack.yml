@@ -13,38 +13,100 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- import_playbook: os-keystone-install.yml
-- import_playbook: os-barbican-install.yml
-- import_playbook: os-placement-install.yml
-- import_playbook: os-glance-install.yml
-- import_playbook: os-cinder-install.yml
-- import_playbook: os-nova-install.yml
-- import_playbook: os-neutron-install.yml
-- import_playbook: os-heat-install.yml
-- import_playbook: os-horizon-install.yml
-- import_playbook: os-designate-install.yml
-- import_playbook: os-swift-install.yml
-- import_playbook: os-adjutant-install.yml
-- import_playbook: os-gnocchi-install.yml
-- import_playbook: os-ceilometer-install.yml
-- import_playbook: os-aodh-install.yml
-- import_playbook: os-cloudkitty-install.yml
-- import_playbook: os-ironic-install.yml
-- import_playbook: os-magnum-install.yml
-- import_playbook: os-trove-install.yml
-- import_playbook: os-sahara-install.yml
-- import_playbook: os-senlin-install.yml
-- import_playbook: os-octavia-install.yml
-- import_playbook: os-tacker-install.yml
-- import_playbook: os-blazar-install.yml
-- import_playbook: os-masakari-install.yml
-- import_playbook: os-manila-install.yml
-- import_playbook: os-mistral-install.yml
-- import_playbook: os-murano-install.yml
-- import_playbook: os-zun-install.yml
+- name: Importing os-keystone-install playbook
+  import_playbook: os-keystone-install.yml
+
+- name: Importing os-barbican-install playbook
+  import_playbook: os-barbican-install.yml
+
+- name: Importing  os-placement-install playbook
+  import_playbook: os-placement-install.yml
+
+- name: Importing os-glance-install playbook
+  import_playbook: os-glance-install.yml
+
+- name: Importing os-cinder-install playbook
+  import_playbook: os-cinder-install.yml
+
+- name: Importing os-nova-install playbook
+  import_playbook: os-nova-install.yml
+
+- name: Importing os-neutron-install playbook
+  import_playbook: os-neutron-install.yml
+
+- name: Importing os-heat-install playbook
+  import_playbook: os-heat-install.yml
+
+- name: Importing os-horizon-install playbook
+  import_playbook: os-horizon-install.yml
+
+- name: Importing os-designate-install playbook
+  import_playbook: os-designate-install.yml
+
+- name: Importing os-swift-install playbook
+  import_playbook: os-swift-install.yml
+
+- name: Importing os-adjutant-install playbook
+  import_playbook: os-adjutant-install.yml
+
+- name: Importing os-gnocchi-install playbook
+  import_playbook: os-gnocchi-install.yml
+
+- name: Importing os-ceilometer-install playbook
+  import_playbook: os-ceilometer-install.yml
+
+- name: Importing os-aodh-install playbook
+  import_playbook: os-aodh-install.yml
+
+- name: Importing os-cloudkitty-install playbook
+  import_playbook: os-cloudkitty-install.yml
+
+- name: Importing os-ironic-install playbook
+  import_playbook: os-ironic-install.yml
+
+- name: Importing os-magnum-install playbook
+  import_playbook: os-magnum-install.yml
+
+- name: Importing os-trove-install playbook
+  import_playbook: os-trove-install.yml
+
+- name: Importing os-sahara-install playbook
+  import_playbook: os-sahara-install.yml
+
+- name: Importing os-senlin-install playbook
+  import_playbook: os-senlin-install.yml
+
+- name: Importing os-octavia-install playbook
+  import_playbook: os-octavia-install.yml
+
+- name: Importing os-tacker-install playbook
+  import_playbook: os-tacker-install.yml
+
+- name: Importing os-blazar-install playbook
+  import_playbook: os-blazar-install.yml
+
+- name: Importing os-masakari-install playbook
+  import_playbook: os-masakari-install.yml
+
+- name: Importing os-manila-install playbook
+  import_playbook: os-manila-install.yml
+
+- name: Importing os-mistral-install playbook
+  import_playbook: os-mistral-install.yml
+
+- name: Importing os-murano-install playbook
+  import_playbook: os-murano-install.yml
+
+- name: Importing os-zun-install playbook
+  import_playbook: os-zun-install.yml
 
 # This is not an OpenStack service, but integrates with Keystone and must be
 # deployed afterward.
-- import_playbook: ceph-rgw-install.yml
-- import_playbook: os-tempest-install.yml
-- import_playbook: os-rally-install.yml
+- name: Importing ceph-rgw-install playbook
+  import_playbook: ceph-rgw-install.yml
+
+- name: Importing os-tempest-install playbook
+  import_playbook: os-tempest-install.yml
+
+- name: Importing os-rally-install playbook
+  import_playbook: os-rally-install.yml

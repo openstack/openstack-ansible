@@ -43,7 +43,8 @@
     # config file changes which causes a container/service
     # restart do not cause an unexpected outage, we drain
     # the load balancer back end for this container.
-    - include_tasks: ../common-tasks/haproxy-endpoint-manage.yml
+    - name: Disabling haproxy backends
+      include_tasks: ../common-tasks/haproxy-endpoint-manage.yml
       vars:
         haproxy_backend: "{{ backend_name }}-back"
         haproxy_state: disabled
@@ -64,7 +65,8 @@
         extra_container_config_no_restart:
           - "lxc.start.order=39"
 
-    - include_tasks: ../common-tasks/unbound-clients.yml
+    - name: Including unbound-clients tasks
+      include_tasks: ../common-tasks/unbound-clients.yml
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
 
@@ -85,7 +87,7 @@
       tags:
         - always
 
-    - name: Add net/tun device to the compute
+    - name: Add net/tun device to the compute # noqa: no-changed-when
       command: |
         lxc-device -n {{ container_name }} add /dev/net/tun /dev/net/tun
       delegate_to: "{{ physical_host }}"
@@ -137,7 +139,8 @@
     # Now that container changes are done, we can set
     # the load balancer back end for this container
     # to available again.
-    - include_tasks: ../common-tasks/haproxy-endpoint-manage.yml
+    - name: Enabling haproxy backends
+      include_tasks: ../common-tasks/haproxy-endpoint-manage.yml
       vars:
         haproxy_backend: "{{ backend_name }}-back"
         haproxy_state: enabled

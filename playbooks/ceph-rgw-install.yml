@@ -13,7 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- import_playbook: ceph-rgw-keystone-setup.yml
+- name: Importing ceph-rgw-keystone-setup playbook
+  import_playbook: ceph-rgw-keystone-setup.yml
   when: (groups[rgw_group_name] is defined and groups[rgw_group_name] | length > 0) or (ceph_rgws | length > 0)
 
 - name: Gather ceph-rgw facts
@@ -30,7 +31,8 @@
     - "defaults/{{ install_method }}_install.yml"
   pre_tasks:
 
-    - import_tasks: common-tasks/ceph-server.yml
+    - name: Importing ceph-server tasks
+      import_tasks: common-tasks/ceph-server.yml
 
     - name: Gather ceph-mon facts
       action: setup

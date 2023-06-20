@@ -29,7 +29,8 @@
     # config file changes which causes a container/service
     # restart do not cause an unexpected outage, we drain
     # the load balancer back end for this container.
-    - include_tasks: ../common-tasks/haproxy-endpoint-manage.yml
+    - name: Disabling haproxy backends
+      include_tasks: ../common-tasks/haproxy-endpoint-manage.yml
       vars:
         haproxy_backend: neutron_server-back
         haproxy_state: disabled
@@ -64,7 +65,8 @@
         - "not is_metal"
         - "'neutron_agent' not in group_names"
 
-    - include_tasks: ../common-tasks/unbound-clients.yml
+    - name: Including unbound-clients tasks
+      include_tasks: ../common-tasks/unbound-clients.yml
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
 
@@ -79,7 +81,8 @@
     # Now that container changes are done, we can set
     # the load balancer back end for this container
     # to available again.
-    - include_tasks: ../common-tasks/haproxy-endpoint-manage.yml
+    - name: Enabling haproxy backends
+      include_tasks: ../common-tasks/haproxy-endpoint-manage.yml
       vars:
         haproxy_backend: neutron_server-back
         haproxy_state: enabled

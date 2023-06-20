@@ -41,10 +41,12 @@
   tags:
     - sahara
   pre_tasks:
-    - include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
+    - name: Including container-setup tasks
+      include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       when: not is_metal
 
-    - include_tasks: common-tasks/unbound-clients.yml
+    - name: Including unbound-clients tasks
+      include_tasks: common-tasks/unbound-clients.yml
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
   roles:

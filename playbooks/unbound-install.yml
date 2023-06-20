@@ -25,8 +25,10 @@
   serial: "{{ unbound_serial | default(['1','100%']) }}"
   user: root
   pre_tasks:
-    - include_tasks: common-tasks/os-log-dir-setup.yml
-    - include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
+    - name: Including os-log-dir-setup tasks
+      include_tasks: common-tasks/os-log-dir-setup.yml
+    - name: Including container-setup tasks
+      include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       when: not is_metal
   roles:
     - role: "unbound"
@@ -42,7 +44,8 @@
     - "{{ openstack_host_group|default('hosts') }}"
   user: root
   tasks:
-    - include_tasks: common-tasks/unbound-clients.yml
+    - name: Including unbound-clients tasks
+      include_tasks: common-tasks/unbound-clients.yml
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
   environment: "{{ deployment_environment_variables | default({}) }}"

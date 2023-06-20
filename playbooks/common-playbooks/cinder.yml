@@ -29,7 +29,8 @@
     # config file changes which causes a container/service
     # restart do not cause an unexpected outage, we drain
     # the load balancer back end for this container.
-    - include_tasks: ../common-tasks/haproxy-endpoint-manage.yml
+    - name: Disabling haproxy backends
+      include_tasks: ../common-tasks/haproxy-endpoint-manage.yml
       vars:
         haproxy_backend: cinder_api-back
         haproxy_state: disabled
@@ -64,11 +65,12 @@
         - "not is_metal"
         - "not ( 'cinder_volume' in group_names and cinder_backend_lvm_inuse | bool )"
 
-    - include_tasks: ../common-tasks/unbound-clients.yml
+    - name: Including unbound-clients tasks
+      include_tasks: ../common-tasks/unbound-clients.yml
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
 
-    - name: Add volume group block device to cinder
+    - name: Add volume group block device to cinder # noqa: no-changed-when
       shell: |
         set -o pipefail
         {% if item.value.volume_group is defined %}
@@ -89,7 +91,7 @@
         - cinder_backend_lvm_inuse | bool
       delegate_to: "{{ physical_host }}"
 
-    - name: udevadm trigger
+    - name: Trigger udevadm # noqa: no-changed-when
       command: udevadm trigger
       delegate_to: "{{ physical_host }}"
       when: cinder_backend_lvm_inuse | bool
@@ -106,7 +108,8 @@
     # Now that container changes are done, we can set
     # the load balancer back end for this container
     # to available again.
-    - include_tasks: ../common-tasks/haproxy-endpoint-manage.yml
+    - name: Enabling haproxy backends
+      include_tasks: ../common-tasks/haproxy-endpoint-manage.yml
       vars:
         haproxy_backend: cinder_api-back
         haproxy_state: enabled

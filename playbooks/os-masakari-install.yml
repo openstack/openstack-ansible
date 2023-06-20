@@ -74,7 +74,8 @@
     # config file changes which causes a container/service
     # restart do not cause an unexpected outage, we drain
     # the load balancer back end for this container.
-    - include_tasks: common-tasks/haproxy-endpoint-manage.yml
+    - name: Disabling haproxy backends
+      include_tasks: common-tasks/haproxy-endpoint-manage.yml
       vars:
         haproxy_backend: masakari_api-back
         haproxy_state: disabled
@@ -82,10 +83,12 @@
         - "'masakari_api' in group_names"
         - "groups['masakari_api'] | length > 1"
 
-    - include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
+    - name: Including container-setup tasks
+      include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       when: not is_metal
 
-    - include_tasks: common-tasks/unbound-clients.yml
+    - name: Including unbound-clients tasks
+      include_tasks: common-tasks/unbound-clients.yml
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
 
@@ -96,7 +99,8 @@
     # Now that container changes are done, we can set
     # the load balancer back end for this container
     # to available again.
-    - include_tasks: common-tasks/haproxy-endpoint-manage.yml
+    - name: Enabling haproxy backends
+      include_tasks: common-tasks/haproxy-endpoint-manage.yml
       vars:
         haproxy_backend: masakari_api-back
         haproxy_state: enabled

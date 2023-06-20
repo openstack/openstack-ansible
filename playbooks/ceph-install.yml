@@ -65,7 +65,8 @@
       tags:
         - always
 
-    - import_tasks: common-tasks/ceph-server.yml
+    - name: Importing ceph-server tasks
+      import_tasks: common-tasks/ceph-server.yml
 
     - name: Create systemd service directory
       file:
@@ -84,6 +85,7 @@
         content: |
           [Service]
           PrivateDevices=false
+        mode: "0640"
       when:
         - ansible_facts['pkg_mgr'] == 'dnf'
         - ansible_facts['service_mgr'] == 'systemd'
@@ -145,7 +147,8 @@
       tags:
         - always
 
-    - import_tasks: common-tasks/ceph-server.yml
+    - name: Importing ceph-server tasks
+      import_tasks: common-tasks/ceph-server.yml
 
   roles:
     - role: ceph-defaults

@@ -38,7 +38,8 @@
   tags:
     - neutron
   tasks:
-    - import_tasks: common-tasks/dynamic-grouping.yml
+    - name: Importing dynamic-grouping tasks
+      import_tasks: common-tasks/dynamic-grouping.yml
       vars:
         src_group: "nova_compute"
         dest_group: "neutron_l3_agent, neutron_metadata_agent"

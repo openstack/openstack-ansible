@@ -23,15 +23,17 @@
   tags:
     - always
 
-- name: haproxy base config
+- name: HAProxy base config
   hosts: haproxy
   gather_facts: false
   serial: "{{ haproxy_serial | default('50%') }}"
   user: root
   pre_tasks:
-    - include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
+    - name: Including container-setup tasks
+      include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       when: not is_metal
-    - include_tasks: common-tasks/unbound-clients.yml
+    - name: Including unbound-clients tasks
+      include_tasks: common-tasks/unbound-clients.yml
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
     - name: Remove legacy haproxy configuration files
@@ -44,7 +46,7 @@
         - name: "heat_api_cloudwatch"
           when: "yes"
       when:
-       - "item.when | bool"
+        - "item.when | bool"
       tags:
         - haproxy-config  # this tag is present because the task is ONLY a config task
 
