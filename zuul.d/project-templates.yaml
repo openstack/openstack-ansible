@@ -32,12 +32,12 @@
         - openstack-tox-docs
     periodic:
       jobs:
-        - openstack-ansible-deploy-translations-ubuntu-focal
+        - openstack-ansible-deploy-translations-ubuntu-jammy
     experimental:
       jobs:
-        - openstack-ansible-deploy-aio_qdrouterd-ubuntu-focal
-        - openstack-ansible-deploy_with_ansible_devel-aio-ubuntu-focal
-        - openstack-ansible-deploy_with_ansible_next-aio-ubuntu-focal
+        - openstack-ansible-deploy-aio_qdrouterd-ubuntu-jammy
+        - openstack-ansible-deploy_with_ansible_devel-aio-ubuntu-jammy
+        - openstack-ansible-deploy_with_ansible_next-aio-ubuntu-jammy
 
 - project-template:
     name: openstack-ansible-deploy-aio_lxc-jobs
@@ -47,7 +47,6 @@
             voting: false
         - openstack-ansible-deploy-aio_lxc-rockylinux-9
         - openstack-ansible-deploy-aio_lxc-debian-bullseye
-        - openstack-ansible-deploy-aio_lxc-ubuntu-focal
         - openstack-ansible-deploy-aio_lxc-ubuntu-jammy
     gate:
       jobs:
@@ -90,7 +89,6 @@
         - openstack-ansible-deploy-infra_lxc-rockylinux-9
         - openstack-ansible-deploy-infra_lxc_tls-rockylinux-9
         - openstack-ansible-deploy-infra_lxc-debian-bullseye
-        - openstack-ansible-deploy-infra_lxc-ubuntu-focal
         - openstack-ansible-deploy-infra_lxc-ubuntu-jammy
         - openstack-ansible-deploy-infra_lxc_stepca-ubuntu-jammy
         - openstack-ansible-deploy-infra_lxc_tls-ubuntu-jammy
@@ -112,7 +110,6 @@
       jobs:
         - openstack-ansible-deploy-hosts_lxc-rockylinux-9
         - openstack-ansible-deploy-hosts_lxc-debian-bullseye
-        - openstack-ansible-deploy-hosts_lxc-ubuntu-focal
         - openstack-ansible-deploy-hosts_lxc-ubuntu-jammy
     gate:
       jobs:
@@ -129,7 +126,6 @@
       jobs:
         - openstack-ansible-deploy-hosts_metal-rockylinux-9
         - openstack-ansible-deploy-hosts_metal-debian-bullseye
-        - openstack-ansible-deploy-hosts_metal-ubuntu-focal
         - openstack-ansible-deploy-hosts_metal-ubuntu-jammy
     gate:
       jobs:
@@ -166,7 +162,6 @@
         - openstack-ansible-deploy-aio_metal-centos-9-stream:
             voting: false
         - openstack-ansible-deploy-aio_metal-rockylinux-9
-        - openstack-ansible-deploy-aio_metal-ubuntu-focal
         - openstack-ansible-deploy-aio_metal-ubuntu-jammy
         - openstack-ansible-deploy-aio_metal_tls-rockylinux-9
         - openstack-ansible-deploy-aio_metal_tls-ubuntu-jammy
@@ -188,7 +183,6 @@
             voting: false
         - openstack-ansible-deploy-aio_telemetry_metal-rockylinux-9
         - openstack-ansible-deploy-aio_telemetry_metal-debian-bullseye
-        - openstack-ansible-deploy-aio_telemetry_metal-ubuntu-focal
         - openstack-ansible-deploy-aio_telemetry_metal-ubuntu-jammy
     gate:
       jobs:
@@ -211,7 +205,6 @@
     name: openstack-ansible-deploy-nfs-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-aio_nfs-ubuntu-focal
         - openstack-ansible-deploy-aio_nfs-ubuntu-jammy
     gate:
       jobs:
@@ -221,14 +214,13 @@
     name: openstack-ansible-deploy-ceph-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-aio_ceph-ubuntu-focal
         - openstack-ansible-deploy-aio_ceph-ubuntu-jammy
     gate:
       jobs:
-        - openstack-ansible-deploy-aio_ceph-ubuntu-focal
+        - openstack-ansible-deploy-aio_ceph-ubuntu-jammy
     periodic:
       jobs:
-        - openstack-ansible-deploy-aio_ceph-ubuntu-focal
+        - openstack-ansible-deploy-aio_ceph-ubuntu-jammy
 
 - project-template:
     name: openstack-ansible-deploy-stepca-jobs
@@ -254,26 +246,26 @@
     name: openstack-ansible-linters-jobs
     check:
       jobs:
-        - openstack-ansible-linters-ubuntu-focal
+        - openstack-ansible-linters-ubuntu-jammy
     gate:
       jobs:
-        - openstack-ansible-linters-ubuntu-focal
+        - openstack-ansible-linters-ubuntu-jammy
 
 - project-template:
     name: openstack-ansible-lxc-backingstore-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-hosts_lxc_zfs-ubuntu-focal
-        - openstack-ansible-deploy-hosts_lxc_btrfs-ubuntu-focal
-        - openstack-ansible-deploy-hosts_lxc_overlayfs-ubuntu-focal
+        - openstack-ansible-deploy-hosts_lxc_zfs-ubuntu-jammy
+        - openstack-ansible-deploy-hosts_lxc_btrfs-ubuntu-jammy
+        - openstack-ansible-deploy-hosts_lxc_overlayfs-ubuntu-jammy
         - openstack-ansible-deploy-hosts_lxc_btrfs-debian-bullseye
         - openstack-ansible-deploy-hosts_lxc_overlayfs-debian-bullseye
         - openstack-ansible-deploy-hosts_lxc_overlayfs-rockylinux-9
     gate:
       jobs:
-        - openstack-ansible-deploy-hosts_lxc_zfs-ubuntu-focal
-        - openstack-ansible-deploy-hosts_lxc_btrfs-ubuntu-focal
-        - openstack-ansible-deploy-hosts_lxc_overlayfs-ubuntu-focal
+        - openstack-ansible-deploy-hosts_lxc_zfs-ubuntu-jammy
+        - openstack-ansible-deploy-hosts_lxc_btrfs-ubuntu-jammy
+        - openstack-ansible-deploy-hosts_lxc_overlayfs-ubuntu-jammy
         - openstack-ansible-deploy-hosts_lxc_btrfs-debian-bullseye
         - openstack-ansible-deploy-hosts_lxc_overlayfs-debian-bullseye
         - openstack-ansible-deploy-hosts_lxc_overlayfs-rockylinux-9

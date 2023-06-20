@@ -28,7 +28,7 @@
             regexp: 'https'
             replace: "http"
           when:
-            - ansible_facts['distribution_release'] in ['focal', 'jammy']
+            - ansible_facts['distribution_release'] in ['jammy']
 
     - name: Remove package excludes for yum/dnf
       lineinfile:
