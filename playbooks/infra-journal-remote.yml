@@ -22,7 +22,9 @@
 - name: Install Journal-Remote
   hosts: hosts
   gather_facts: false
-  roles:
-    - openstack.osa.journald_remote
+  tasks:
+    - name: Include journald-remote role
+      include_role:
+        name: openstack.osa.journald_remote
   tags:
     - journal-remote

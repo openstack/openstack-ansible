@@ -35,8 +35,10 @@
   gather_facts: false
   user: root
   pre_tasks:
-  roles:
-    - role: "ansible-hardening"
+  tasks:
+    - name: Include security hardening role
+      include_role:
+        name: "ansible-hardening"
       when: apply_security_hardening | bool
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
