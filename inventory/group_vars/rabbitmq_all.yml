@@ -44,8 +44,8 @@ haproxy_rabbitmq_service:
   haproxy_bind: "{{ [haproxy_bind_internal_lb_vip_address | default(internal_lb_vip_address)] }}"
   haproxy_port: "{{ (rabbitmq_management_ssl | bool) | ternary(15671, 15672) }}"
   haproxy_balance_type: http
-  haproxy_backend_options:
-    - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+  haproxy_backend_httpcheck_options:
+    - 'send hdr User-Agent "osa-haproxy-healthcheck" meth HEAD'
   haproxy_allowlist_networks: "{{ haproxy_rabbitmq_management_allowlist_networks }}"
   haproxy_service_enabled: "{{ groups['rabbitmq'] is defined and groups['rabbitmq'] | length > 0 }}"
 

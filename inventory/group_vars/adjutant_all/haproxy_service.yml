@@ -21,8 +21,8 @@ haproxy_adjutant_api_service:
   haproxy_port: 5050
   haproxy_balance_type: http
   haproxy_balance_alg: source
-  haproxy_backend_options:
-    - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+  haproxy_backend_httpcheck_options:
+    - 'send hdr User-Agent "osa-haproxy-healthcheck" meth GET'
   haproxy_backend_ssl: "{{ adjutant_backend_ssl | default(openstack_service_backend_ssl) }}"
   haproxy_backend_ca: "{{ adjutant_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
   haproxy_accept_both_protocols: "{{ adjutant_accept_both_protocols | default(openstack_service_accept_both_protocols) }}"

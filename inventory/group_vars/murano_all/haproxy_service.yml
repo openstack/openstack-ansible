@@ -20,8 +20,8 @@ haproxy_murano_service:
   haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
   haproxy_port: 8082
   haproxy_balance_type: http
-  haproxy_backend_options:
-    - "httpchk GET /v1 HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+  haproxy_backend_httpcheck_options:
+    - 'send hdr User-Agent "osa-haproxy-healthcheck" meth GET'
   haproxy_backend_httpcheck_options:
     - "expect status 401"
   haproxy_backend_ssl: "{{ murano_backend_ssl | default(openstack_service_backend_ssl) }}"

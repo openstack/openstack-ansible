@@ -22,8 +22,9 @@ haproxy_designate_api_service:
   haproxy_balance_type: http
   haproxy_backend_options:
     - "forwardfor"
-    - "httpchk GET / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
     - "httplog"
+  haproxy_backend_httpcheck_options:
+    - 'send hdr User-Agent "osa-haproxy-healthcheck" meth GET'
   haproxy_backend_ssl: "{{ designate_backend_ssl | default(openstack_service_backend_ssl) }}"
   haproxy_backend_ca: "{{ designate_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
   haproxy_accept_both_protocols: "{{ designate_accept_both_protocols | default(openstack_service_accept_both_protocols) }}"

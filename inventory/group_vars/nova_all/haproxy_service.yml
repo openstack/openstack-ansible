@@ -21,6 +21,8 @@ haproxy_nova_console_http_mode: "{{ not (nova_console_user_ssl_cert is defined
 
 haproxy_nova_metadata_allowlist_networks: "{{ haproxy_allowlist_networks }}"
 
+haproxy_nova_healthcheck_hdr: 'hdr User-Agent "osa-proxy-healthcheck"'
+
 haproxy_nova_api_metadata_service:
   haproxy_service_name: nova_api_metadata
   haproxy_backend_nodes: "{{ groups['nova_api_metadata'] | default([]) }}"
@@ -28,8 +30,8 @@ haproxy_nova_api_metadata_service:
   haproxy_port: 8775
   haproxy_ssl: "{{ haproxy_ssl_all_vips }}"
   haproxy_balance_type: http
-  haproxy_backend_options:
-    - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+  haproxy_backend_httpcheck_options:
+    - "{{ 'send ' ~ haproxy_nova_healthcheck_hdr ~  ' meth HEAD' }}"
   haproxy_allowlist_networks: "{{ haproxy_nova_metadata_allowlist_networks }}"
   haproxy_backend_ssl: "{{ nova_backend_ssl | default(openstack_service_backend_ssl) }}"
   haproxy_backend_ca: "{{ nova_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
@@ -43,8 +45,8 @@ haproxy_nova_api_compute_service:
   haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
   haproxy_port: 8774
   haproxy_balance_type: http
-  haproxy_backend_options:
-    - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+  haproxy_backend_httpcheck_options:
+    - "{{ 'send ' ~ haproxy_nova_healthcheck_hdr ~  ' meth HEAD' }}"
   haproxy_backend_ssl: "{{ nova_backend_ssl | default(openstack_service_backend_ssl) }}"
   haproxy_backend_ca: "{{ nova_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
   haproxy_accept_both_protocols: "{{ nova_accept_both_protocols | default(openstack_service_accept_both_protocols) }}"
@@ -60,8 +62,7 @@ haproxy_nova_spice_console_service:
   haproxy_timeout_client: 60m
   haproxy_timeout_server: 60m
   haproxy_balance_alg: source
-  haproxy_backend_options: "{{ haproxy_nova_console_http_mode | ternary(['httpchk HEAD /spice_auto.html HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck'], []) }}"
-  haproxy_backend_httpcheck_options: "{{ haproxy_nova_console_http_mode | ternary(['expect status 200'], []) }}"
+  haproxy_backend_httpcheck_options: "{{ haproxy_nova_console_http_mode | ternary(['expect status 200', 'send ' ~ haproxy_nova_healthcheck_hdr ~ 'meth HEAD uri /spice_auto.html'], []) }}"
   haproxy_backend_ssl: "{{ nova_backend_ssl | default(openstack_service_backend_ssl) }}"
   haproxy_backend_ca: "{{ nova_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
   haproxy_accept_both_protocols: "{{ nova_accept_both_protocols | default(openstack_service_accept_both_protocols) }}"
@@ -77,8 +78,7 @@ haproxy_nova_serial_console_service:
   haproxy_timeout_client: 60m
   haproxy_timeout_server: 60m
   haproxy_balance_alg: source
-  haproxy_backend_options: "{{ haproxy_nova_console_http_mode | ternary(['httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck'], []) }}"
-  haproxy_backend_httpcheck_options: "{{ haproxy_nova_console_http_mode | ternary(['expect status 405'], []) }}"
+  haproxy_backend_httpcheck_options: "{{ haproxy_nova_console_http_mode | ternary(['expect status 405', 'send ' ~ haproxy_nova_healthcheck_hdr ~ ' meth HEAD'], []) }}"
   haproxy_backend_ssl: "{{ nova_backend_ssl | default(openstack_service_backend_ssl) }}"
   haproxy_backend_ca: "{{ nova_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
   haproxy_accept_both_protocols: "{{ nova_accept_both_protocols | default(openstack_service_accept_both_protocols) }}"
@@ -95,8 +95,7 @@ haproxy_nova_novnc_console_service:
   haproxy_timeout_client: 60m
   haproxy_timeout_server: 60m
   haproxy_balance_alg: source
-  haproxy_backend_options: "{{ haproxy_nova_console_http_mode | ternary(['httpchk HEAD /vnc.html HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck'], []) }}"
-  haproxy_backend_httpcheck_options: "{{ haproxy_nova_console_http_mode | ternary(['expect status 200'], []) }}"
+  haproxy_backend_httpcheck_options: "{{ haproxy_nova_console_http_mode | ternary(['expect status 200', 'send ' ~ haproxy_nova_healthcheck_hdr ~ ' meth HEAD uri /vnc.html'], []) }}"
   haproxy_backend_ssl: "{{ nova_backend_ssl | default(openstack_service_backend_ssl) }}"
   haproxy_backend_ca: "{{ nova_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
   haproxy_accept_both_protocols: "{{ nova_accept_both_protocols | default(openstack_service_accept_both_protocols) }}"

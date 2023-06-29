@@ -65,8 +65,8 @@ haproxy_galera_service:
   haproxy_stick_table_enabled: False
   haproxy_timeout_client: 5000s
   haproxy_timeout_server: 5000s
-  haproxy_backend_options:
-    - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+  haproxy_backend_httpcheck_options:
+    - 'send hdr User-Agent "osa-haproxy-healthcheck" meth HEAD'
   haproxy_backend_server_options:
     - "send-proxy-v2"
   haproxy_allowlist_networks: "{{ haproxy_galera_allowlist_networks }}"

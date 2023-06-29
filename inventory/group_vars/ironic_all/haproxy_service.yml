@@ -23,8 +23,8 @@ haproxy_ironic_api_service:
   haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
   haproxy_port: 6385
   haproxy_balance_type: http
-  haproxy_backend_options:
-    - "httpchk GET /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+  haproxy_backend_httpcheck_options:
+    - 'send hdr User-Agent "osa-haproxy-healthcheck" meth GET'
   haproxy_backend_arguments:
     - "http-request deny if { path_beg /v1/lookup } !{ src {{ haproxy_ironic_allowlist_networks | join(' } !{ src ') }} }"
     - "http-request deny if { path_beg /v1/heartbeat } !{ src {{ haproxy_ironic_allowlist_networks | join(' } !{ src ') }} }"
@@ -40,8 +40,8 @@ haproxy_ironic_inspector_service:
   haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
   haproxy_port: 5050
   haproxy_balance_type: http
-  haproxy_backend_options:
-    - "httpchk GET /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+  haproxy_backend_httpcheck_options:
+    - 'send hdr User-Agent "osa-haproxy-healthcheck" meth GET'
   haproxy_backend_arguments:
     - "http-request deny if { path_beg /v1/continue } !{ src {{ haproxy_ironic_inspector_allowlist_networks | join(' } !{ src ') }} }"
   haproxy_backend_ssl: "{{ ironic_backend_ssl | default(openstack_service_backend_ssl) }}"

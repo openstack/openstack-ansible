@@ -20,8 +20,8 @@ haproxy_zun_api_service:
   haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
   haproxy_port: 9517
   haproxy_balance_type: http
-  haproxy_backend_options:
-      - "httpchk GET /healthcheck HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
+  haproxy_backend_httpcheck_options:
+    - 'send hdr User-Agent "osa-haproxy-healthcheck" meth GET'
   haproxy_backend_ssl: "{{ zun_backend_ssl | default(openstack_service_backend_ssl) }}"
   haproxy_backend_ca: "{{ zun_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
   haproxy_service_enabled: "{{ groups['zun_api'] is defined and groups['zun_api'] | length > 0 }}"
@@ -36,10 +36,10 @@ haproxy_zun_console_service:
   haproxy_timeout_client: 60m
   haproxy_timeout_server: 60m
   haproxy_balance_alg: source
-  haproxy_backend_options:
-    - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
   haproxy_backend_httpcheck_options:
     - "expect status 405"
+    - 'send hdr User-Agent "osa-haproxy-healthcheck" meth HEAD'
+
   # haproxy_backend_ssl disabled due to: https://bugs.launchpad.net/zun/+bug/2016917
   haproxy_backend_ssl: False
   haproxy_backend_ca: "{{ zun_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
