@@ -21,7 +21,7 @@ rabbitmq_use_ssl: True
 rabbitmq_servers: >-
   {{
     groups[rabbitmq_host_group]
-      | map('extract', hostvars, 'ansible_host')
+      | map('extract', hostvars, 'management_address')
       | list | join(',')
   }}
 rabbitmq_policies:
@@ -42,7 +42,7 @@ galera_use_ssl: "{{ not (ansible_facts['os_family'] | lower == 'redhat' and  ins
 memcached_port: 11211
 memcached_servers: >-
   {{
-    (groups['memcached'] | map('extract', hostvars, 'ansible_host') | list)
+    (groups['memcached'] | map('extract', hostvars, 'management_address') | list)
       | map('regex_replace', '(.+)' ,'\1:' ~ memcached_port)
       | list
       | join(',')
@@ -56,6 +56,6 @@ qdrouterd_use_ssl: False
 qdrouterd_servers: >-
   {{
     groups[qdrouterd_host_group]
-      | map('extract', hostvars, 'ansible_host')
+      | map('extract', hostvars, 'management_address')
       | list | join(',')
   }}

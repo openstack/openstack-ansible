@@ -169,7 +169,7 @@
       block:
         - name: Wait for cluster ready state
           command: |
-            mysql -h {{ ansible_host }} \
+            mysql -h {{ management_address }} \
                   -u "{{ galera_root_user | default('root') }}" \
                   -p"{{ galera_root_password }}" \
                   -e "show status like 'wsrep_incoming_addresses';" \
@@ -187,7 +187,7 @@
             state: restarted
         - name: Wait for cluster ready state
           command: |
-            mysql -h {{ ansible_host }} \
+            mysql -h {{ management_address }} \
                   -u "{{ galera_root_user | default('root') }}" \
                   -p"{{ galera_root_password }}" \
                   -e "show status like 'wsrep_incoming_addresses';" \
@@ -201,7 +201,7 @@
 
     - name: Check cluster local state
       command: |
-        mysql -h {{ ansible_host }} \
+        mysql -h {{ management_address }} \
               -u "{{ galera_root_user | default('root') }}" \
               -p"{{ galera_root_password }}" \
               -e "show status like 'wsrep_local_state_comment';" \
@@ -214,7 +214,7 @@
 
     - name: Check cluster evs state
       command: |
-        mysql -h {{ ansible_host }} \
+        mysql -h {{ management_address }} \
               -u "{{ galera_root_user | default('root') }}" \
               -p"{{ galera_root_password }}" \
               -e "show status like 'wsrep_evs_state';" \
@@ -235,7 +235,7 @@
       community.mysql.mysql_db:
         login_user: "{{ galera_root_user | default('root') }}"
         login_password: "{{ galera_root_password }}"
-        login_host: "{{ ansible_host }}"
+        login_host: "{{ management_address }}"
         name: "OSA-test"
         state: "present"
       when: inventory_hostname == groups['galera_all'][0]
@@ -246,7 +246,7 @@
       community.mysql.mysql_user:
         login_user: "{{ galera_root_user | default('root') }}"
         login_password: "{{ galera_root_password }}" # noqa no-log-password
-        login_host: "{{ ansible_host }}"
+        login_host: "{{ management_address }}"
         name: "osa-tester"
         password: "tester-secrete" # noqa no-log-password
         host: "{{ item }}"
@@ -271,7 +271,7 @@
       community.mysql.mysql_user:
         login_user: "{{ galera_root_user | default('root') }}"
         login_password: "{{ galera_root_password }}" # noqa no-log-password
-        login_host: "{{ ansible_host }}"
+        login_host: "{{ management_address }}"
         name: "osa-tester"
         state: "absent"
         host: "{{ item }}"
@@ -284,7 +284,7 @@
       community.mysql.mysql_db:
         login_user: "{{ galera_root_user | default('root') }}"
         login_password: "{{ galera_root_password }}" # noqa no-log-password
-        login_host: "{{ ansible_host }}"
+        login_host: "{{ management_address }}"
         name: "OSA-test"
         state: "absent"
       when: inventory_hostname == groups['galera_all'][0]
@@ -370,7 +370,7 @@
   tasks:
     - name: Probing TCP connection to zookeeper
       wait_for:
-        host: "{{ hostvars[item]['ansible_host'] }}"
+        host: "{{ hostvars[item]['management_address'] }}"
         port: "{{ coordination_port | default(2181) }}"
       with_items: "{{ groups[coordination_host_group | default('zookeeper_all')] }}"
 

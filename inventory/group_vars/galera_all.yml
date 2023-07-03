@@ -33,7 +33,7 @@ galera_disable_privatedevices: "{{ not is_metal }}"
 galera_monitoring_allowed_source: >-
   {{
     groups['galera_all'] | union(groups['haproxy'])
-      | map('extract', hostvars, 'ansible_host')
+      | map('extract', hostvars, 'management_address')
       | list
       | join(' ') ~ ' 127.0.0.1'
   }}
@@ -43,7 +43,7 @@ galera_monitoring_allowed_source: >-
 galera_server_proxy_protocol_networks: >-
   {{
     groups['haproxy']
-      | map('extract', hostvars, 'ansible_host')
+      | map('extract', hostvars, 'management_address')
       | list
       | join(',') ~ ', localhost, ::1'
   }}

@@ -28,7 +28,7 @@
       {%     set _prio = 50 %}
       {%   endif %}
       {%   set _ = _var.append({
-             'host': hostvars[host]['ansible_host'],
+             'host': hostvars[host]['management_address'],
              'priority': _prio
            })
       %}
