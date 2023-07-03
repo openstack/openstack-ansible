@@ -183,6 +183,9 @@
     - src: user_variables_tls.yml.j2
       dest: user_variables_tls.yml
       condition: "{{ 'tls' in bootstrap_host_scenarios_expanded }}"
+    - src: user_variables_tls-transition.yml.j2
+      dest: user_variables_tls-transition.yml
+      condition: "{{ 'tls-transition' in bootstrap_host_scenarios_expanded }}"
 
 - name: Copy modified cinder-volume env.d file for ceph scenario
   copy:
