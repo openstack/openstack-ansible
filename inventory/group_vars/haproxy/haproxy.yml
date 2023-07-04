@@ -138,7 +138,7 @@ haproxy_galera_service:
   haproxy_service_name: galera
   haproxy_backend_nodes: "{{ (groups['galera_all'] | default([]))[:1] }}"  # list expected
   haproxy_backup_nodes: "{{ (groups['galera_all'] | default([]))[1:] }}"
-  haproxy_bind: "{{ [internal_lb_vip_address] }}"
+  haproxy_bind: "{{ [haproxy_bind_internal_lb_vip_address | default(internal_lb_vip_address)] }}"
   haproxy_port: 3306
   haproxy_check_port: 9200
   haproxy_balance_type: tcp
@@ -328,7 +328,7 @@ haproxy_neutron_server_service:
 haproxy_nova_api_metadata_service:
   haproxy_service_name: nova_api_metadata
   haproxy_backend_nodes: "{{ groups['nova_api_metadata'] | default([]) }}"
-  haproxy_bind: "{{ [internal_lb_vip_address] }}"
+  haproxy_bind: "{{ [haproxy_bind_internal_lb_vip_address | default(internal_lb_vip_address)] }}"
   haproxy_port: 8775
   haproxy_ssl: "{{ (neutron_plugin_type == 'ml2.calico') | ternary(False, haproxy_ssl_all_vips) }}"
   haproxy_ssl_all_vips: "{{ (neutron_plugin_type == 'm2.calico') | ternary(False, haproxy_ssl_all_vips) }}"
@@ -382,7 +382,7 @@ haproxy_octavia_service:
 haproxy_opendaylight_neutron_service:
   haproxy_service_name: opendaylight-neutron
   haproxy_backend_nodes: "{{ groups['neutron_server'] | default([]) }}"
-  haproxy_bind: "{{ [internal_lb_vip_address] }}"
+  haproxy_bind: "{{ [haproxy_bind_internal_lb_vip_address | default(internal_lb_vip_address)] }}"
   haproxy_port: 8180
   haproxy_balance_type: tcp
   haproxy_timeout_client: 5000s
@@ -393,7 +393,7 @@ haproxy_opendaylight_neutron_service:
 haproxy_opendaylight_websocket_service:
   haproxy_service_name: opendaylight-websocket
   haproxy_backend_nodes: "{{ groups['neutron_server'] | default([]) }}"
-  haproxy_bind: "{{ [internal_lb_vip_address] }}"
+  haproxy_bind: "{{ [haproxy_bind_internal_lb_vip_address | default(internal_lb_vip_address)] }}"
   haproxy_port: 8185
   haproxy_balance_type: tcp
   haproxy_timeout_client: 5000s
@@ -438,7 +438,7 @@ haproxy_rabbitmq_service:
   haproxy_ssl: "{{ rabbitmq_management_ssl | bool }}"
   haproxy_backend_ssl: "{{ rabbitmq_management_ssl | bool }}"
   haproxy_backend_ca: False
-  haproxy_bind: "{{ [internal_lb_vip_address] }}"
+  haproxy_bind: "{{ [haproxy_bind_internal_lb_vip_address | default(internal_lb_vip_address)] }}"
   haproxy_port: "{{ (rabbitmq_management_ssl | bool) | ternary(15671, 15672) }}"
   haproxy_balance_type: http
   haproxy_backend_options:
@@ -449,7 +449,7 @@ haproxy_rabbitmq_service:
 haproxy_repo_service:
   haproxy_service_name: repo_all
   haproxy_backend_nodes: "{{ groups['repo_all'] | default([]) }}"
-  haproxy_bind: "{{ [internal_lb_vip_address] }}"
+  haproxy_bind: "{{ [haproxy_bind_internal_lb_vip_address | default(internal_lb_vip_address)] }}"
   haproxy_port: 8181
   haproxy_balance_type: http
   haproxy_backend_options:
