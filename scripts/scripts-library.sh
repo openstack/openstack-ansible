@@ -93,6 +93,8 @@ function load_nodepool_pip_opts {
     if [[ -e /etc/ci/mirror_info.sh ]]; then
         source /etc/ci/mirror_info.sh
         export PIP_OPTS="--index-url ${NODEPOOL_PYPI_MIRROR} --trusted-host ${NODEPOOL_MIRROR_HOST} --extra-index-url ${NODEPOOL_WHEEL_MIRROR}"
+    else
+        export PIP_OPTS=${PIP_OPTS:-""}
     fi
 }
 
