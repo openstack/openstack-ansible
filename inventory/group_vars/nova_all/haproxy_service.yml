@@ -24,7 +24,7 @@ haproxy_nova_metadata_allowlist_networks: "{{ haproxy_allowlist_networks }}"
 haproxy_nova_api_metadata_service:
   haproxy_service_name: nova_api_metadata
   haproxy_backend_nodes: "{{ groups['nova_api_metadata'] | default([]) }}"
-  haproxy_bind: "{{ [internal_lb_vip_address] }}"
+  haproxy_bind: "{{ [haproxy_bind_internal_lb_vip_address | default(internal_lb_vip_address)] }}"
   haproxy_port: 8775
   haproxy_ssl: "{{ haproxy_ssl_all_vips }}"
   haproxy_balance_type: http
