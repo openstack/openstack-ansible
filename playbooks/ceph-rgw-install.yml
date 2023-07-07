@@ -43,6 +43,26 @@
         - ceph-mon-facts
         - ceph-rgw
 
+    - name: Create and install SSL certificates
+      include_role:
+        name: pki
+        tasks_from: main_certs.yml
+        apply:
+          tags:
+            - ceph-rgw-config
+            - pki
+      vars:
+        pki_setup_host: "{{ ceph_rgw_pki_setup_host }}"
+        pki_dir: "{{ ceph_rgw_pki_dir }}"
+        pki_create_certificates: "{{ ceph_rgw_user_ssl_cert is not defined and ceph_rgw_user_ssl_key is not defined }}"
+        pki_regen_cert: "{{ ceph_rgw_pki_regen_cert }}"
+        pki_certificates: "{{ ceph_rgw_pki_certificates }}"
+        pki_install_certificates: "{{ ceph_rgw_pki_install_certificates }}"
+      when:
+        - ceph_rgw_backend_ssl
+      tags:
+        - always
+
   roles:
     - role: ceph-defaults
       tags:
