@@ -172,6 +172,14 @@ heat_wsgi_buffer_size: 16384
 horizon_wsgi_processes: 1
 horizon_wsgi_threads: 1
 
+## Skyline
+skyline_api_workers: 2
+{% if 'skyline' in bootstrap_host_scenarios_expanded and 'yarn' in bootstrap_host_scenarios_expanded %}
+{%   raw %}
+skyline_console_git_install_branch: "{{ skyline_git_track_branch }}"
+{%   endraw %}
+{% endif %}
+
 ## Ceilometer
 ceilometer_notification_workers: 1
 

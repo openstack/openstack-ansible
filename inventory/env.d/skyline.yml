@@ -1,0 +1,21 @@
+---
+component_skel:
+  skyline:
+    belongs_to:
+      - skyline_all
+
+container_skel:
+  skyline_container:
+    belongs_to:
+      - skyline_dashboard_containers
+      - os-infra_containers
+    contains:
+      - skyline
+
+physical_skel:
+  skyline_dashboard_containers:
+    belongs_to:
+      - all_containers
+  skyline_dashboard_hosts:
+    belongs_to:
+      - hosts
