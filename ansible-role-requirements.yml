@@ -20,9 +20,9 @@
 - name: ceph_client
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-ceph_client
-  version: fc1cce881722dad32b6eed452ca22e5a4aa273eb
+  version: 3bc73a8ab6d33fbee81aefb13b25b67e0ca42324
   trackbranch: stable/2023.1
-  shallow_since: '2023-05-23'
+  shallow_since: '2023-06-26'
 - name: haproxy_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-haproxy_server
@@ -104,9 +104,9 @@
 - name: os_cinder
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_cinder
-  version: 251778639170c8b7fef733a6ee3021c7bf6bdc85
+  version: 8f329dc21cb67c1647e03f45fa79c50d6feff5bb
   trackbranch: stable/2023.1
-  shallow_since: '2023-05-23'
+  shallow_since: '2023-06-26'
 - name: os_cloudkitty
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_cloudkitty
@@ -254,9 +254,9 @@
 - name: qdrouterd
   scm: git
   src: https://opendev.org/openstack/ansible-role-qdrouterd
-  version: master
-  trackbranch: master
-  shallow_since: '2022-12-12'
+  version: f9ee8629a3cb39500e5baf4f2384a4c5e0fc16ff
+  trackbranch: stable/2023.1
+  shallow_since: '2023-05-23'
 - name: rabbitmq_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-rabbitmq_server
@@ -272,39 +272,39 @@
 - name: etcd
   scm: git
   src: https://github.com/noonedeadpunk/ansible-etcd
-  version: master
+  version: de3b061e954d3259e0a48e2e55878f598ef3a9c1
   trackbranch: master
-  shallow_since: '2022-05-27'
+  shallow_since: '2023-04-11'
 - name: unbound
   scm: git
   src: https://github.com/noonedeadpunk/ansible-role-unbound
-  version: master
+  version: 26abb238925dec80707ef7e4b869b3c5e48d4f7b
   trackbranch: master
-  shallow_since: '2022-05-27'
+  shallow_since: '2023-02-09'
 - name: resolvconf
   scm: git
   src: https://github.com/logan2211/ansible-resolvconf
-  version: master
+  version: f7f694b3dd4361e364dccb4ce94e6510727fca2f
   trackbranch: master
   shallow_since: '2021-03-31'
 - name: ceph-ansible
   scm: git
   src: https://github.com/ceph/ceph-ansible
-  version: stable-7.0
+  version: 91c57b662df0618f9227edfb342bff278e323cc5
   trackbranch: stable-7.0
-  shallow_since: '2022-06-14'
+  shallow_since: '2023-06-28'
 - name: opendaylight
   scm: git
   src: https://github.com/opendaylight/integration-packaging-ansible-opendaylight
-  version: master
+  version: 4a9217ed0fe9078152435daaa2d3f45b81021b3a
   trackbranch: master
   shallow_since: '2019-09-14'
 - name: pacemaker_corosync
   scm: git
   src: https://github.com/noonedeadpunk/ansible-pacemaker-corosync
-  version: master
+  version: c4a492a248c89c0710489a0f0cd0f95546e6be26
   trackbranch: master
-  shallow_since: '2022-06-14'
+  shallow_since: '2023-04-10'
 - name: systemd_service
   src: https://opendev.org/openstack/ansible-role-systemd_service
   scm: git
