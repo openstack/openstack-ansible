@@ -56,7 +56,7 @@ if current_series == "latest":
 else:
   watermark = series_names = current_series.capitalize()
   git_cmd = ["git", "describe", "--abbrev=0", "--tags"]
-  latest_tag = subprocess.Popen(git_cmd,stdout=subprocess.PIPE).communicate()[0].strip('\n') 
+  latest_tag = "rocky-eol"
   branch = "stable/{}".format(current_series)
   upgrade_warning = "The upgrade is always under active development."
 

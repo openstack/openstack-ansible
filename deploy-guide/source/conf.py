@@ -53,7 +53,7 @@ if current_series == "latest":
 else:
   watermark = series_names = current_series.capitalize()
   git_cmd = ["git", "describe", "--abbrev=0", "--tags"]
-  latest_tag = subprocess.Popen(git_cmd,stdout=subprocess.PIPE).communicate()[0].strip('\n') 
+  latest_tag = "rocky-eol"
   rdo_series = current_series_name
   suse_series = current_series_name.capitalize()
 
