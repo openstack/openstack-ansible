@@ -13,25 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Gather neutron facts
-  hosts: "{{ neutron_hosts }}"
-  gather_facts: false
-  tags:
-    - always
-  tasks:
-    - name: Gather minimal facts for neutron
-      setup:
-        gather_subset:
-          - "!all"
-          - min
-      when: osa_gather_facts | default(True)
-
-    - name: Gather additional facts for neutron
-      setup:
-        gather_subset: "{{ neutron_gather_subset | default('processor_count') }}"
-        filter: "{{ neutron_gather_filter | default('ansible_processor*') }}"
-      when: osa_gather_facts | default(True)
-
 - name: Install neutron services
   hosts: "{{ neutron_hosts }}"
   serial: "{{ neutron_serial }}"
