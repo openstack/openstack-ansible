@@ -307,13 +307,13 @@
 - job:
     name: openstack-ansible-varstest-aio
     parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-focal
+    nodeset: ubuntu-jammy
 
 # Ensuring SHAs are valid
 - job:
     name: openstack-ansible-shastest-metal
     parent: openstack-ansible-deploy
-    nodeset: ubuntu-focal
+    nodeset: ubuntu-jammy
     irrelevant-files: []
     files:
       - ^ansible-collection-requirements\.yml
@@ -323,7 +323,7 @@
 # Ensuring hosts setup and healthcheck-hosts playbook is valid
 - job:
     name: openstack-ansible-deploy-hosts_lxc-validate
-    parent: openstack-ansible-deploy-hosts_lxc-ubuntu-focal
+    parent: openstack-ansible-deploy-hosts_lxc-ubuntu-jammy
     files:
       - ^playbooks\/healthcheck-hosts.yml
       - ^playbooks\/lxc-containers-create.yml
@@ -340,7 +340,7 @@
 # Ensuring clustering and healthcheck-infrastructure playbook is valid
 - job:
     name: openstack-ansible-deploy-infra_lxc-validate
-    parent: openstack-ansible-deploy-infra_lxc-ubuntu-focal
+    parent: openstack-ansible-deploy-infra_lxc-ubuntu-jammy
     files:
       - ^playbooks\/galera-install.yml
       - ^playbooks\/rabbitmq-install.yml
@@ -352,17 +352,17 @@
 
 # Running linters check
 - job:
-    name: openstack-ansible-linters-ubuntu-focal
+    name: openstack-ansible-linters-ubuntu-jammy
     parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-focal
+    nodeset: ubuntu-jammy
     irrelevant-files: []
 
 # Experimental job for checking our AIO can deploy with
 # a different ansible version
 - job:
-    name: openstack-ansible-deploy_with_ansible_devel-aio-ubuntu-focal
+    name: openstack-ansible-deploy_with_ansible_devel-aio-ubuntu-jammy
     parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-focal
+    nodeset: ubuntu-jammy
     branches: ^(devel|master)$
     required-projects:
       - name: github.com/ansible/ansible
@@ -373,9 +373,9 @@
 # Experimental job for checking our AIO can deploy with
 # a different ansible version
 - job:
-    name: openstack-ansible-deploy_with_ansible_next-aio-ubuntu-focal
+    name: openstack-ansible-deploy_with_ansible_next-aio-ubuntu-jammy
     parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-focal
+    nodeset: ubuntu-jammy
     branches: ^(devel|master)$
     required-projects:
       - name: github.com/ansible/ansible
@@ -499,76 +499,21 @@
     parent: openstack-ansible-deploy-aio-hosts
     nodeset: ubuntu-jammy
 
-# ubuntu focal
 - job:
-    name: openstack-ansible-deploy-aio_lxc-ubuntu-focal
+    name: openstack-ansible-deploy-hosts_lxc_zfs-ubuntu-jammy
     parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-focal
+    nodeset: ubuntu-jammy
 
 - job:
-    name: openstack-ansible-deploy-aio_ceph-ubuntu-focal
+    name: openstack-ansible-deploy-hosts_lxc_btrfs-ubuntu-jammy
     parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-focal
+    nodeset: ubuntu-jammy
 
 - job:
-    name: openstack-ansible-deploy-aio_nfs-ubuntu-focal
+    name: openstack-ansible-deploy-hosts_lxc_overlayfs-ubuntu-jammy
     parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-focal
+    nodeset: ubuntu-jammy
 
-- job:
-    name: openstack-ansible-deploy-aio_proxy-ubuntu-focal
-    parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-focal
-
-- job:
-    name: openstack-ansible-deploy-aio_metal-ubuntu-focal
-    parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-focal
-
-- job:
-    name: openstack-ansible-deploy-infra_lxc-ubuntu-focal
-    parent: openstack-ansible-deploy-aio-infra
-    nodeset: ubuntu-focal
-
-- job:
-    name: openstack-ansible-deploy-hosts_lxc-ubuntu-focal
-    parent: openstack-ansible-deploy-aio-hosts
-    nodeset: ubuntu-focal
-
-- job:
-    name: openstack-ansible-deploy-hosts_metal-ubuntu-focal
-    parent: openstack-ansible-deploy-aio-hosts
-    nodeset: ubuntu-focal
-
-- job:
-    name: openstack-ansible-deploy-aio_telemetry_metal-ubuntu-focal
-    parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-focal
-
-- job:
-    name: openstack-ansible-deploy-aio_qdrouterd-ubuntu-focal
-    parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-focal
-
-- job:
-    name: openstack-ansible-deploy-translations-ubuntu-focal
-    parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-focal
-
-- job:
-    name: openstack-ansible-deploy-hosts_lxc_zfs-ubuntu-focal
-    parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-focal
-
-- job:
-    name: openstack-ansible-deploy-hosts_lxc_btrfs-ubuntu-focal
-    parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-focal
-
-- job:
-    name: openstack-ansible-deploy-hosts_lxc_overlayfs-ubuntu-focal
-    parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-focal
 
 # centos 9 stream
 - job:

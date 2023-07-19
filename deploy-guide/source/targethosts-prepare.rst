@@ -11,11 +11,10 @@ Installing the operating system
 Install one of the following supported operating systems on the
 target host:
 
-* Ubuntu server 22.04 (Focal Fossa) LTS 64-bit
+* Ubuntu server 22.04 (Jammy Jellyfish) LTS 64-bit
   *Note*: Due to the absence of community repos, Ceph packages will be
   installed from the default repository which contains *only* Quincy
   release.
-* Ubuntu server 20.04 (Focal Fossa) LTS 64-bit
 * Debian 11 64-bit
 * Centos 9 Stream 64-bit
 * Rocky Linux 9 64-bit

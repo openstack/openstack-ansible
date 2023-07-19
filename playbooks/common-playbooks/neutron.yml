@@ -48,8 +48,8 @@
       include_tasks: "../common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       vars:
         list_of_bind_mounts:
-          - bind_dir_path: "{{ (ansible_facts['pkg_mgr'] == 'apt' and ansible_facts['distribution_release'] != 'focal') | ternary('/lib/modules', '/usr/lib/modules') }}"
-            mount_path: "{{ (ansible_facts['pkg_mgr'] == 'apt' and ansible_facts['distribution_release'] != 'focal') | ternary('/lib/modules', '/usr/lib/modules') }}"
+          - bind_dir_path: "{{ (ansible_facts['pkg_mgr'] == 'apt') | ternary('/lib/modules', '/usr/lib/modules') }}"
+            mount_path: "{{ (ansible_facts['pkg_mgr'] == 'apt') | ternary('/lib/modules', '/usr/lib/modules') }}"
         extra_container_config:
           - "lxc.cgroup.devices.allow=a *:* rmw"
         extra_container_config_no_restart:

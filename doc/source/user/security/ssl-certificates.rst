@@ -237,7 +237,7 @@ it is required that the public endpoint is accessible directly by the
 Certificate Authority.
 
 Deployment of certificates using LetsEncrypt has been validated for
-openstack-ansible using Ubuntu Focal. Other distributions should work
+openstack-ansible using Ubuntu Jammy. Other distributions should work
 but are not tested.
 
 To deploy certificates with certbot, add the following to

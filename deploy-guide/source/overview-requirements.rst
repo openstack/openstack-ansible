@@ -15,8 +15,6 @@ following minimum requirements:
     installed from the default repository which contains *only* Quincy
     release.
 
-  * Ubuntu 20.04 LTS (Focal Fossa)
-
 * CentOS
 
   * Centos 9 Stream
