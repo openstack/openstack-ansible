@@ -49,6 +49,9 @@ export INSTALL_METHOD=${3:-"source"}
 # enable the ARA callback plugin
 export SETUP_ARA=${SETUP_ARA:-true}
 
+# List of scenarios that update configuration files prior to the upgrade
+export SCENARIOS_WITH_CONFIG_UPDATE=("tls")
+
 ## Change branch for Upgrades ------------------------------------------------
 # If the action is to upgrade, then store the current SHA,
 # checkout the source SHA before executing the greenfield
@@ -262,6 +265,14 @@ if [[ "${ACTION}" =~ "upgrade" ]]; then
       # Doing symlinking here, as bootstrap role won't be called
       ln -s $ZUUL_SRC_PATH /openstack/src
     fi
+    # Update AIO config files for certain scenarios
+    for item in "${SCENARIOS_WITH_CONFIG_UPDATE[@]}"; do
+      if [[ "${SCENARIO}" =~ "${item}" ]]; then
+        export BOOTSTRAP_EXTRA_PARAMS="${BOOTSTRAP_EXTRA_PARAMS:-} -t prepare-aio-config"
+        "${OSA_CLONE_DIR}/scripts/bootstrap-aio.sh"
+        break
+      fi
+    done
     # To execute the upgrade script we need to provide
     # an affirmative response to the warning that the
     # upgrade is irreversable.
