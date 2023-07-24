@@ -58,7 +58,6 @@
     periodic:
       jobs:
         - openstack-ansible-deploy-aio_lxc-ubuntu-focal
-        - openstack-ansible-upgrade-aio_lxc-ubuntu-focal
 
 - project-template:
     name: openstack-ansible-upgrade-infra_lxc-jobs
@@ -66,10 +65,8 @@
       jobs:
         - openstack-ansible-upgrade-infra_lxc-centos-8-stream:
             voting: false
-        - openstack-ansible-upgrade-infra_lxc-ubuntu-focal
-    gate:
-      jobs:
-        - openstack-ansible-upgrade-infra_lxc-ubuntu-focal
+        - openstack-ansible-upgrade-infra_lxc-ubuntu-focal:
+            voting: false
 
 - project-template:
     name: openstack-ansible-upgrade-aio_metal-jobs
@@ -77,10 +74,8 @@
       jobs:
         - openstack-ansible-upgrade-aio_metal-centos-8-stream:
             voting: false
-        - openstack-ansible-upgrade-aio_metal-ubuntu-focal
-    gate:
-      jobs:
-        - openstack-ansible-upgrade-aio_metal-ubuntu-focal
+        - openstack-ansible-upgrade-aio_metal-ubuntu-focal:
+            voting: false
 
 - project-template:
     name: openstack-ansible-deploy-infra_lxc-jobs
@@ -183,7 +178,8 @@
         - openstack-ansible-deploy-aio_metal-rockylinux-8
         - openstack-ansible-upgrade-aio_metal-centos-8-stream:
             voting: false
-        - openstack-ansible-upgrade-aio_metal-ubuntu-focal
+        - openstack-ansible-upgrade-aio_metal-ubuntu-focal:
+            voting: false
     gate:
       jobs:
         - openstack-ansible-deploy-aio_metal-debian-bullseye
