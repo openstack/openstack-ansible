@@ -57,6 +57,34 @@
     - role: "haproxy_server"
       haproxy_service_configs: "{{ haproxy_default_services + haproxy_extra_services | default([]) }}"
 
+  post_tasks:
+    # NOTE(damiandabrowski): https://bugs.launchpad.net/openstack-ansible/+bug/2028944
+    - name: Avoid breaking horizon during Antelope upgrade
+      tags: haproxy-service-config
+      block:
+        - name: Check if horizon service is already deployed
+          stat:
+            path: /etc/haproxy/conf.d/horizon
+          register: _horizon_service_conf
+
+        - name: Check if haproxy maps for horizon are already configured
+          stat:
+            path: /etc/haproxy/map.conf.d/base_regex/99-horizon.map
+          register: _horizon_map_conf
+
+        # Horizon needs to be fixed only if its already deployed in an
+        # environment but appropriate map file is not created yet
+        - name: Configure horizon service
+          include_role:
+            name: haproxy_server
+            tasks_from: haproxy_service_config_external.yml
+          vars:
+            haproxy_service_configs: >-
+              {{ hostvars[groups['horizon_all'][0]]['horizon_haproxy_services'] }}
+          when:
+            - _horizon_service_conf.stat.exists
+            - not _horizon_map_conf.stat.exists
+
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - haproxy-config
