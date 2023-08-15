@@ -1,0 +1,63 @@
+---
+# Copyright 2023 Cleura AB
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- hosts: localhost
+  vars_files:
+    - "../../playbooks/defaults/{{ install_method | default('source') }}_install.yml"
+  tasks:
+    - name: Setting _member_ role as implied to member
+      delegate_to: "{{ openstack_service_setup_host }}"
+      vars:
+        ansible_python_interpreter: "{{ openstack_service_setup_host_python_interpreter }}"
+      block:
+        - name: Check if _member_ role exist
+          openstack.cloud.identity_role_info:
+            cloud: default
+            interface: internal
+            name: _member_
+          register: _member_role
+
+        - name: Get existing implied roles
+          command:
+            argv:
+              - "{{ openstack_service_setup_host_python_interpreter | dirname }}/openstack"
+              - --os-cloud
+              - default
+              - implied
+              - role
+              - list
+              - -f
+              - json
+          changed_when: false
+          register: _implied_role_list
+
+        - name: Imply "member" role by "_member_"
+          vars:
+            existing_implied_roles: "{{ _implied_role_list['stdout'] | from_json | map(attribute='Prior Role ID') }}"
+          command:
+            argv:
+              - "{{ openstack_service_setup_host_python_interpreter | dirname }}/openstack"
+              - --os-cloud
+              - default
+              - implied
+              - role
+              - create
+              - "{{ item['id'] }}"
+              - --implied-role
+              - member
+          changed_when: false
+          when:
+            - item['id'] not in existing_implied_roles
+          with_items: "{{ _member_role['roles'] }}"

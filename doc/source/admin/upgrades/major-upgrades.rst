@@ -221,6 +221,14 @@ ensuring that the containers are restarted in a controlled fashion.
 Upgrade OpenStack
 ~~~~~~~~~~~~~~~~~
 
+In 2023.1 policies has been adjusted to fully deprecate ``_member_`` role.
+If your environment still relying on this role, you can make ``_member_``
+role to imply ``member``. This can be done with the following upgrade playbook:
+
+.. code-block:: console
+
+    # openstack-ansible "${SCRIPTS_PATH}/upgrade-utilities/implied_member_role.yml"
+
 We can now go ahead with the upgrade of all the OpenStack components.
 
 .. code-block:: console

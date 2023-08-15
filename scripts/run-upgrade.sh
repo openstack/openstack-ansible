@@ -209,6 +209,8 @@ function main {
         RUN_TASKS+=("setup-infrastructure.yml -e 'galera_upgrade=true' -e 'rabbitmq_upgrade=true' -e package_state=latest")
         # explicitly perform controlled galera cluster restart with new lxc config
         RUN_TASKS+=("${SCRIPTS_PATH}/upgrade-utilities/galera-cluster-rolling-restart.yml")
+        # ensure that _member_ role implies member
+        RUN_TASKS+=("${SCRIPTS_PATH}/upgrade-utilities/implied_member_role.yml")
         # upgrade openstack
         RUN_TASKS+=("setup-openstack.yml -e package_state=latest")
         # Run the tasks in order
