@@ -145,7 +145,7 @@ elif [[ "${ACTION}" == "linters" ]]; then
     else
       ROLE_DIR="${OSA_CLONE_DIR}"
       ${VENV_BIN_DIR}/ansible-lint playbooks/ --exclude /etc/ansible/roles
-      ansible-playbook --syntax-check --list-tasks playbooks/setup-everything.yml
+      ansible-playbook --syntax-check --list-tasks playbooks/setup-everything.yml -e openstack_service_setup_host=utility_all
     fi
 
     # Run bashate
