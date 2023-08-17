@@ -8,7 +8,7 @@ ceph_conf_overrides_rgw:
     rgw_keystone_admin_password: "{{ radosgw_admin_password }}"
     rgw_keystone_admin_project: "{{ radosgw_admin_tenant }}"
     rgw_keystone_admin_domain: default
-    rgw_keystone_accepted_roles: 'member, _member_, admin, swiftoperator'
+    rgw_keystone_accepted_roles: 'member, admin, swiftoperator'
     rgw_keystone_implicit_tenants: 'true'
     rgw_swift_account_in_url: 'true'
     rgw_swift_versioning_enabled: 'true'
