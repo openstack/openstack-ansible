@@ -35,7 +35,7 @@ haproxy_security_headers_csp_report_only: False
 haproxy_security_headers_csp: >
   http-response set-header {{ haproxy_security_headers_csp_report_only | ternary('Content-Security-Policy-Report-Only', 'Content-Security-Policy') }} "
   default-src 'self';
-  frame-ancestors 'none';
+  frame-ancestors 'self';
   form-action 'self';
   upgrade-insecure-requests;
   style-src 'self' 'unsafe-inline';
