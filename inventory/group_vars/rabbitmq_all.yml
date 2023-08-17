@@ -41,7 +41,11 @@ haproxy_rabbitmq_service:
   haproxy_ssl: "{{ rabbitmq_management_ssl | bool }}"
   haproxy_backend_ssl: "{{ rabbitmq_management_ssl | bool }}"
   haproxy_backend_ca: False
-  haproxy_bind: "{{ [haproxy_bind_internal_lb_vip_address | default(internal_lb_vip_address)] }}"
+  haproxy_bind: >-
+    {{ [{
+          'address': haproxy_bind_internal_lb_vip_address | default(internal_lb_vip_address),
+          'interface': haproxy_bind_internal_lb_vip_interface | default('')
+    }] }}
   haproxy_port: "{{ (rabbitmq_management_ssl | bool) | ternary(15671, 15672) }}"
   haproxy_balance_type: http
   haproxy_backend_options:

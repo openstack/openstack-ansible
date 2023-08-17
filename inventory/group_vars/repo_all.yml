@@ -34,7 +34,11 @@ openstack_repo_server_enable_glusterfs: True
 haproxy_repo_service:
   haproxy_service_name: repo_all
   haproxy_backend_nodes: "{{ groups['repo_all'] | default([]) }}"
-  haproxy_bind: "{{ [haproxy_bind_internal_lb_vip_address | default(internal_lb_vip_address)] }}"
+  haproxy_bind: >-
+    {{ [{
+          'address': haproxy_bind_internal_lb_vip_address | default(internal_lb_vip_address),
+          'interface': haproxy_bind_internal_lb_vip_interface | default('')
+    }] }}
   haproxy_port: 8181
   haproxy_ssl: "{{ haproxy_ssl_all_vips }}"
   haproxy_balance_type: http
