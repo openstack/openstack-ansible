@@ -42,6 +42,8 @@
   with_items:
     - "{{ lxc_default_bind_mounts | default([]) }}"
     - "{{ list_of_bind_mounts | default([]) }}"
+  when:
+    - item.create | default('dir') == 'dir'
   delegate_to: "{{ physical_host }}"
   tags:
     - common-lxc
@@ -49,7 +51,7 @@
 - name: Add bind mount configuration to container
   lineinfile:
     dest: "/var/lib/lxc/{{ inventory_hostname }}/config"
-    line: "lxc.mount.entry = {{ item['mount_path'] }} {{ item['bind_dir_path'].lstrip('/') }} none bind,create=dir 0 0"
+    line: "lxc.mount.entry = {{ item['mount_path'] }} {{ item['bind_dir_path'].lstrip('/') }} none bind,create={{ item.create | default('dir') }} 0 0"
     insertbefore: "^lxc.mount.entry = .*\\s{{ item['bind_dir_path'].lstrip('/') | regex_replace('/', '\/') }}.*"
     backup: "true"
   with_items:
