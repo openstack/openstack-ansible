@@ -39,6 +39,15 @@ tempest_public_net_physical_name: flat
 tempest_public_net_physical_name: vlan
 {% endif %}
 
+# systemd-journald limitations
+openstack_hosts_journald_config:
+  RateLimitIntervalSec: 60
+  RateLimitBurst: 600
+  SystemMaxUse: 4G
+  RuntimeMaxUse: 2G
+  SystemMaxFileSize: 100M
+  RuntimeMaxFileSize: 100M
+
 ## Galera settings
 galera_monitoring_allowed_source: "0.0.0.0/0"
 # TODO(noonedeadpunk): This should be enabled, once we will re-work SSL part
