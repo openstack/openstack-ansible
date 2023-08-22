@@ -143,6 +143,22 @@ infrastructure hosts. To achieve this, implement
 
 .. literalinclude:: ../../../../etc/openstack_deploy/env.d/cinder-volume.yml.container.example
 
+You can also declare a custom group for each pod that will also include all
+containers from hosts that belong to this pod. This might be handy if you want
+to define some variable for all hosts in the pod using group_variables.
+
+For that create ``/etc/openstack_deploy/env.d/pod.yml`` with the following content:
+
+.. literalinclude:: ../../../../etc/openstack_deploy/env.d/pods.yml.example
+
+Above example will create following groups:
+
+   * ``podN_hosts`` which will contain only bare metal nodes
+   * ``podN_containers`` that will contain all containers that are spawned on
+      bare metal nodes, that are part of the pod.
+   * ``podN_all`` that will contain `podN_hosts` and `podN_containers` members
+
+
 User variables
 --------------
 

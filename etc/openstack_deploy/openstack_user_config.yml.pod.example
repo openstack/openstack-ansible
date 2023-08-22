@@ -269,54 +269,37 @@ global_overrides:
 ### Infrastructure
 ###
 
-pod1_hosts:
+pod1_hosts: &pod1
   infra1:
     ip: 172.29.236.10
-  log1:
-    ip: 172.29.236.11
 
-pod2_hosts:
+pod2_hosts: &pod2
   infra2:
     ip: 172.29.239.10
 
-pod3_hosts:
+pod3_hosts: &pod3
   infra3:
     ip: 172.29.242.10
 
-pod4_hosts:
+pod4_hosts: &pod4
   compute1:
     ip: 172.29.245.10
   compute2:
     ip: 172.29.245.11
 
 # galera, memcache, rabbitmq, utility
-shared-infra_hosts:
-  infra1:
-    ip: 172.29.236.10
-  infra2:
-    ip: 172.29.239.10
-  infra3:
-    ip: 172.29.242.10
+shared-infra_hosts: &controllers
+  <<: *pod1
+  <<: *pod2
+  <<: *pod3
 
 # repository (apt cache, python packages, etc)
-repo-infra_hosts:
-  infra1:
-    ip: 172.29.236.10
-  infra2:
-    ip: 172.29.239.10
-  infra3:
-    ip: 172.29.242.10
+repo-infra_hosts: *controllers
 
 # load balancer
 # Ideally the load balancer should not use the Infrastructure hosts.
 # Dedicated hardware is best for improved performance and security.
-haproxy_hosts:
-  infra1:
-    ip: 172.29.236.10
-  infra2:
-    ip: 172.29.239.10
-  infra3:
-    ip: 172.29.242.10
+haproxy_hosts: *controllers
 
 # rsyslog server
 log_hosts:
@@ -328,22 +311,10 @@ log_hosts:
 ###
 
 # keystone
-identity_hosts:
-  infra1:
-    ip: 172.29.236.10
-  infra2:
-    ip: 172.29.239.10
-  infra3:
-    ip: 172.29.242.10
+identity_hosts: *controllers
 
 # cinder api services
-storage-infra_hosts:
-  infra1:
-    ip: 172.29.236.10
-  infra2:
-    ip: 172.29.239.10
-  infra3:
-    ip: 172.29.242.10
+storage-infra_hosts: *controllers
 
 # glance
 # The settings here are repeated for each infra host.
@@ -380,81 +351,30 @@ image_hosts:
           options: "_netdev,auto"
 
 # nova api, conductor, etc services
-compute-infra_hosts:
-  infra1:
-    ip: 172.29.236.10
-  infra2:
-    ip: 172.29.239.10
-  infra3:
-    ip: 172.29.242.10
+compute-infra_hosts: *controllers
 
 # heat
-orchestration_hosts:
-  infra1:
-    ip: 172.29.236.10
-  infra2:
-    ip: 172.29.239.10
-  infra3:
-    ip: 172.29.242.10
+orchestration_hosts: *controllers
 
 # horizon
-dashboard_hosts:
-  infra1:
-    ip: 172.29.236.10
-  infra2:
-    ip: 172.29.239.10
-  infra3:
-    ip: 172.29.242.10
+dashboard_hosts: *controllers
 
 # neutron server, agents (L3, etc)
-network_hosts:
-  infra1:
-    ip: 172.29.236.10
-  infra2:
-    ip: 172.29.239.10
-  infra3:
-    ip: 172.29.242.10
+network_hosts: *controllers
 
 # ceilometer (telemetry data collection)
-metering-infra_hosts:
-  infra1:
-    ip: 172.29.236.10
-  infra2:
-    ip: 172.29.239.10
-  infra3:
-    ip: 172.29.242.10
+metering-infra_hosts: *controllers
 
 # aodh (telemetry alarm service)
-metering-alarm_hosts:
-  infra1:
-    ip: 172.29.236.10
-  infra2:
-    ip: 172.29.239.10
-  infra3:
-    ip: 172.29.242.10
-
+metering-alarm_hosts: *controllers
 # gnocchi (telemetry metrics storage)
-metrics_hosts:
-  infra1:
-    ip: 172.29.236.10
-  infra2:
-    ip: 172.29.239.10
-  infra3:
-    ip: 172.29.242.10
+metrics_hosts: *controllers
 
 # nova hypervisors
-compute_hosts:
-  compute1:
-    ip: 172.29.245.10
-  compute2:
-    ip: 172.29.245.11
+compute_hosts: *pod4
 
 # ceilometer compute agent (telemetry data collection)
-metering-compute_hosts:
-  compute1:
-    ip: 172.29.245.10
-  compute2:
-    ip: 172.29.245.11
+metering-compute_hosts: *pod4
 
 # cinder volume hosts (NFS-backed)
 # The settings here are repeated for each infra host.
