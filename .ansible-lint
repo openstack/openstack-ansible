@@ -1,9 +1,20 @@
+---
 skip_list:
-  - metadata
+  - fqcn
+  - yaml[truthy]
+  - key-order[task]
+  - run-once[task]
+  - var-naming[no-role-prefix]
 
 warn_list:
-  - risky-file-permissions
   - risky-shell-pipe
-  - unnamed-task
   - no-handler
-  - var-naming
+
+extra_vars:
+  nova_hosts: nova_all
+  nova_serial: 100%
+  neutron_hosts: neutron_all
+  neutron_serial: 100%
+  cinder_hosts: cinder_all
+  cinder_serial: 100%
+  service_group: haproxy_all

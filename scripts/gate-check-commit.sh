@@ -137,9 +137,6 @@ elif [[ "${ACTION}" == "linters" ]]; then
     # defining working directories
     VENV_BIN_DIR=$(dirname ${PIP_COMMAND})
 
-    # Due to ansible-lint bug, it can't run from venv without sourcing it
-    # https://github.com/ansible-community/ansible-lint/issues/1507
-    source ${VENV_BIN_DIR}/activate
     source /usr/local/bin/openstack-ansible.rc
     # Check if we have test playbook and running checks
     if [[ -f "/etc/ansible/roles/${SCENARIO}/examples/playbook.yml" ]]; then
@@ -170,7 +167,6 @@ elif [[ "${ACTION}" == "linters" ]]; then
       --exclude-dir doc \
       "${ROLE_DIR}" | xargs -r ${VENV_BIN_DIR}/flake8 --verbose
 
-    deactivate
   popd
 else
   pushd "${OSA_CLONE_DIR}/playbooks"
