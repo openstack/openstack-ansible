@@ -32,7 +32,11 @@ haproxy_neutron_server_service:
 haproxy_opendaylight_neutron_service:
   haproxy_service_name: opendaylight-neutron
   haproxy_backend_nodes: "{{ groups['neutron_server'] | default([]) }}"
-  haproxy_bind: "{{ [haproxy_bind_internal_lb_vip_address | default(internal_lb_vip_address)] }}"
+  haproxy_bind: >-
+    {{ [{
+          'address': haproxy_bind_internal_lb_vip_address | default(internal_lb_vip_address),
+          'interface': haproxy_bind_internal_lb_vip_interface | default('')
+    }] }}
   haproxy_port: 8180
   haproxy_balance_type: tcp
   haproxy_timeout_client: 5000s
@@ -43,7 +47,11 @@ haproxy_opendaylight_neutron_service:
 haproxy_opendaylight_websocket_service:
   haproxy_service_name: opendaylight-websocket
   haproxy_backend_nodes: "{{ groups['neutron_server'] | default([]) }}"
-  haproxy_bind: "{{ [haproxy_bind_internal_lb_vip_address | default(internal_lb_vip_address)] }}"
+  haproxy_bind: >-
+    {{ [{
+          'address': haproxy_bind_internal_lb_vip_address | default(internal_lb_vip_address),
+          'interface': haproxy_bind_internal_lb_vip_interface | default('')
+    }] }}
   haproxy_port: 8185
   haproxy_balance_type: tcp
   haproxy_timeout_client: 5000s
