@@ -78,7 +78,7 @@ haproxy_nova_serial_console_service:
   haproxy_timeout_server: 60m
   haproxy_balance_alg: source
   haproxy_backend_options: "{{ haproxy_nova_console_http_mode | ternary(['httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck'], []) }}"
-  haproxy_backend_httpcheck_options: "{{ haproxy_nova_console_http_mode | ternary(['expect status 200'], []) }}"
+  haproxy_backend_httpcheck_options: "{{ haproxy_nova_console_http_mode | ternary(['expect status 405'], []) }}"
   haproxy_backend_ssl: "{{ nova_backend_ssl | default(openstack_service_backend_ssl) }}"
   haproxy_backend_ca: "{{ nova_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
   haproxy_accept_both_protocols: "{{ nova_accept_both_protocols | default(openstack_service_accept_both_protocols) }}"
