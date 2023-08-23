@@ -150,6 +150,131 @@ following steps:
 
 .. _affinity:
 
+Adding virtual nest groups
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you want to create a custom group for arbitrary grouping of hosts and
+containers within these hosts but skip the generation of any new containers,
+you should use ``is_nest`` property under container_skel and skip defining
+``belongs_to`` structure. ``is_nest`` property will add host-containers as
+children to such a group.
+
+Example: Defining Availability Zones
+------------------------------------
+
+A good example of how ``is_nest`` property can be used is describing
+Availability Zones. As when operating multiple AZs it's handy to define
+AZ-specific variables, like AZ name, for all hosts in this AZ. And
+leveraging group_vars is best way of ensuring that all hosts that belong
+to same AZ have same configuration applied.
+
+Let's assume you have 3 controllers and each of them is placed
+in different Availability Zones. There is also a compute node in
+each Availability Zone. And we want each host or container that is placed
+physically in a specific AZ be part of it's own group (ie azN_all)
+
+In order to achieve that we need:
+
+#. Define host groups in conf.d or openstack_user_config.yml to assign hosts
+   accordingly to their Availability Zones:
+
+   .. code-block:: yaml
+
+     az1-infra_hosts: &infra_az1
+       az1-infra1:
+         ip: 172.39.123.11
+
+     az2-infra_hosts: &infra_az2
+       az2-infra2:
+         ip: 172.39.123.12
+
+     az3-infra_hosts: &infra_az3
+       az3-infra3:
+         ip: 172.39.123.13
+
+     shared-infra_hosts: &controllers
+       <<: *infra_az1
+       <<: *infra_az2
+       <<: *infra_az3
+
+     az1-compute_hosts: &computes_az1
+       az1-compute01:
+         ip: 172.39.123.100
+
+     az2-compute_hosts: &computes_az2
+       az2-compute01:
+         ip: 172.39.123.150
+
+     az3-compute_hosts: &computes_az3
+       az3-compute01:
+         ip: 172.39.123.200
+
+     compute_hosts:
+       <<: *computes_az1
+       <<: *computes_az2
+       <<: *computes_az3
+
+     az1_hosts:
+       <<: *computes_az1
+       <<: *infra_az1
+
+     az2_hosts:
+       <<: *computes_az2
+       <<: *infra_az2
+
+     az3_hosts:
+       <<: *computes_az3
+       <<: *infra_az3
+
+#. Create ``env.d/az.yml`` file that will leverage ``is_nest`` property and allow
+   all infra containers to be part of the AZ group as well
+
+   .. code-block:: yaml
+
+     component_skel:
+       az1_containers:
+         belongs_to:
+           - az1_all
+       az1_hosts:
+         belongs_to:
+           - az1_all
+
+       az2_containers:
+         belongs_to:
+           - az2_all
+       az2_hosts:
+         belongs_to:
+           - az2_all
+
+       az3_containers:
+         belongs_to:
+           - az3_all
+       az3_hosts:
+         belongs_to:
+           - az3_all
+
+     container_skel:
+       az1_containers:
+         properties:
+           is_nest: True
+       az2_containers:
+         properties:
+           is_nest: True
+       az3_containers:
+         properties:
+           is_nest: True
+
+#. Now you can leverage group_vars file to apply a variable to all
+   containers and bare metal hosts in AZ.
+   For example ``/etc/openstack_deploy/group_vars/az1_all.yml``:
+
+   .. code-block:: yaml
+
+     ---
+     az_name: az1
+     cinder_storage_availability_zone: "{{ az_name }}"
+
+
 Deploying 0 (or more than one) of component type per host
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
