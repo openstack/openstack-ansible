@@ -113,7 +113,7 @@ openrc_region_name: "{{ service_region }}"
 apply_security_hardening: true
 
 ## Ansible ssh configuration
-ansible_ssh_extra_args: >
+ansible_ssh_extra_args: >-
   -o UserKnownHostsFile=/dev/null
   -o StrictHostKeyChecking=no
   -o ServerAliveInterval=64
