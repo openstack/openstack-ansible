@@ -100,5 +100,6 @@
     collection_file: "{{ playbook_dir }}/../ansible-collection-requirements.yml"
     required_collections: "{{ lookup('file', collection_file) | from_yaml }}"
     collection_path_default: '/etc/ansible/'
+    user_collection_file: 'user-collection-requirements.yml'
     user_collections: "{{ lookup('file', user_collections_path, errors='ignore')|default([], true) | from_yaml }}"
-    user_collections_path: "{{ lookup('env', 'OSA_CONFIG_DIR') | default('/etc/openstack_deploy', true) ~ '/' ~ (user_collection_file|default('')) }}"
+    user_collections_path: "{{ lookup('env', 'OSA_CONFIG_DIR') | default('/etc/openstack_deploy', true) ~ '/' ~ user_collection_file }}"
