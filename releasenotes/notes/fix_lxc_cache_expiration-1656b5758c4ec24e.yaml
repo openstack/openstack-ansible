@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    Implemented variable ``lxc_image_cache_expiration`` that controlls for how
+    long cached LXC image will be valid. Default value is `1year`. Variable
+    format should be compatible with community.general.to_time_unit filter.
+fixes:
+  - |
+    LXC image cache expiration mechanism has being fixed. Previously LXC images were
+    valid forever.
