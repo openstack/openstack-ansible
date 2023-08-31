@@ -1,0 +1,23 @@
+---
+upgrade:
+  - |
+    CentOS/Rocky linux deployments will get major update of OVS version
+    from 2.17 to 3.1 and OVN from 22.12 to 23.03.
+    RDO has stopped building packages for previous OVS/OVN versions which
+    means they will not recieve any upstream bugfixes or security patches.
+
+    If you still want to preserve old versions of OVS/OVN, you can define
+    a following variable:
+
+    .. code-block:: yaml
+
+      openstack_hosts_package_repos:
+        - name: rdo-deps
+          file: rdo-deps
+          description: rdo-deps
+          baseurl: "{{ openstack_hosts_rdo_deps_url }}"
+          gpgcheck: no
+          module_hotfixes: yes
+          exclude:
+            - '*rdo-openvswitch*3.1*'
+            - '*rdo-ovn*3.1*'

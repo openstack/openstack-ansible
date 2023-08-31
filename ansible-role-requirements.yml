@@ -14,15 +14,15 @@
 - name: galera_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-galera_server
-  version: 0f343a83156bcd058da32cb8c7fe00d3ef77dfcf
+  version: 03ad7d6ace52cfef9976315d918b8f58e94d1539
   trackbranch: stable/zed
-  shallow_since: '2023-05-01'
+  shallow_since: '2023-07-19'
 - name: ceph_client
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-ceph_client
-  version: e1336af370356729cd95a54bc2586b71518da7d3
+  version: 0ad905fe963cbb6c453999613ef0572cdc808374
   trackbranch: stable/zed
-  shallow_since: '2023-04-13'
+  shallow_since: '2023-08-10'
 - name: haproxy_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-haproxy_server
@@ -44,9 +44,9 @@
 - name: lxc_hosts
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-lxc_hosts
-  version: 5b209f9db12c4e4294a5ef8966a3c441bac93ef4
+  version: 7e75a083d29e0cbf7033c0a8e4c4a6c24f0a08f5
   trackbranch: stable/zed
-  shallow_since: '2023-01-09'
+  shallow_since: '2023-08-21'
 - name: memcached_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-memcached_server
@@ -56,15 +56,15 @@
 - name: openstack_hosts
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-openstack_hosts
-  version: 93f0ee466a321d0a07ef1fcad934d1dc363c7430
+  version: c102a8f43ec48c8abd9c98c1fc1ef9f1402375ce
   trackbranch: stable/zed
-  shallow_since: '2023-04-02'
+  shallow_since: '2023-08-27'
 - name: os_keystone
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_keystone
-  version: 8ba7d2667d8e866fbf40db13ac32bec47431f17d
+  version: 545f554a0a94040cb7f506e66a0e99f957613284
   trackbranch: stable/zed
-  shallow_since: '2022-12-12'
+  shallow_since: '2023-08-21'
 - name: openstack_openrc
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-openstack_openrc
@@ -74,9 +74,9 @@
 - name: os_adjutant
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_adjutant
-  version: 90695cead961760cde246107edf852a8e32d6381
+  version: 11991dbb04ead7117624af4938757e810101ee61
   trackbranch: stable/zed
-  shallow_since: '2023-05-01'
+  shallow_since: '2023-08-15'
 - name: os_aodh
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_aodh
@@ -104,9 +104,9 @@
 - name: os_cinder
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_cinder
-  version: 254bde4b10ff1f08b1cada13fbaa629b9eae1627
+  version: f33184e470f1e1d80d1a05c6fd400fdcb2695fc5
   trackbranch: stable/zed
-  shallow_since: '2023-05-23'
+  shallow_since: '2023-06-27'
 - name: os_cloudkitty
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_cloudkitty
@@ -140,15 +140,15 @@
 - name: os_horizon
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_horizon
-  version: f7514573f51b0f75b5a336cdeaa3d368894377be
+  version: 65fb550c5c9d6d7ff04696756808bf31ff2bbbe2
   trackbranch: stable/zed
-  shallow_since: '2023-01-16'
+  shallow_since: '2023-08-22'
 - name: os_ironic
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_ironic
-  version: d0387370fca7cbc095dbb6f85caa4d332e80b003
+  version: b0073df5055d11b278d8e55b4ee542e60abf2f8e
   trackbranch: stable/zed
-  shallow_since: '2023-05-01'
+  shallow_since: '2023-08-21'
 - name: os_magnum
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_magnum
@@ -158,9 +158,9 @@
 - name: os_manila
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_manila
-  version: b6b4aabba0cf129fd987c3d95070ede2cb53d2e9
+  version: ed350049eec3dfc4f66aad7b4a31c639e91b7e17
   trackbranch: stable/zed
-  shallow_since: '2023-05-01'
+  shallow_since: '2023-07-23'
 - name: os_masakari
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_masakari
@@ -188,9 +188,9 @@
 - name: os_nova
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_nova
-  version: c2045ba40e10c3c8866102fc8cc07b322a503a86
+  version: e98e736e05eac6c1918b7b0b1c50c2c3d4a98f9e
   trackbranch: stable/zed
-  shallow_since: '2023-05-25'
+  shallow_since: '2023-08-21'
 - name: os_octavia
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_octavia
@@ -206,9 +206,9 @@
 - name: os_rally
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_rally
-  version: 1d8736769ea538ca25a2c5c45d2cfb9858231e1c
+  version: 6c3b52eeb09ab78e2b08e2adbf279e03f321b345
   trackbranch: stable/zed
-  shallow_since: '2022-12-12'
+  shallow_since: '2023-07-12'
 - name: os_sahara
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_sahara
@@ -218,9 +218,9 @@
 - name: os_senlin
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_senlin
-  version: 239ef906bd1b208e488ee0fa01b7ff5f320347e0
+  version: 2821d0b5cda97250d057e416d9c87878b24676ed
   trackbranch: stable/zed
-  shallow_since: '2022-12-27'
+  shallow_since: '2023-05-01'
 - name: os_swift
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_swift
@@ -320,9 +320,9 @@
 - name: systemd_mount
   src: https://opendev.org/openstack/ansible-role-systemd_mount
   scm: git
-  version: e422171a5e1de956dfd95f2b3181a9ad116b115a
+  version: abd397416ceb4b864ccf99816bb03f7562655ab6
   trackbranch: stable/zed
-  shallow_since: '2023-03-30'
+  shallow_since: '2023-07-24'
 - name: systemd_networkd
   src: https://opendev.org/openstack/ansible-role-systemd_networkd
   scm: git
