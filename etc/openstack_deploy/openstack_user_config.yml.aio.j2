@@ -111,7 +111,7 @@ global_overrides:
 {% endif %}
 {% if 'octavia' in bootstrap_host_scenarios_expanded %}
     - network:
-        container_bridge: "br-octavia"
+        container_bridge: "br-lbaas"
         container_type: "veth"
         container_interface: "eth14"
         network_interface: "eth14"
