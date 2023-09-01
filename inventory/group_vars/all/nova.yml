@@ -23,5 +23,7 @@ nova_spice_html5proxy_base_port: 6082
 nova_novncproxy_port: 6080
 nova_serialconsoleproxy_port: 6083
 
-# Default nova console type
-nova_console_type: "{{ (ansible_facts['architecture'] == 'aarch64') | ternary('serialconsole', 'novnc') }}"
+# Default nova console proxy types
+nova_console_proxy_types:
+  - "{{ nova_console_type | default((ansible_facts['architecture'] == 'aarch64') | ternary('serialconsole', 'novnc')) }}"
+  - "{{ ironic_console_type }}"

@@ -70,7 +70,7 @@ haproxy_nova_spice_console_service:
   haproxy_backend_ssl: "{{ nova_backend_ssl | default(openstack_service_backend_ssl) }}"
   haproxy_backend_ca: "{{ nova_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
   haproxy_accept_both_protocols: "{{ nova_accept_both_protocols | default(openstack_service_accept_both_protocols) }}"
-  haproxy_service_enabled: "{{ groups['nova_console'] is defined and groups['nova_console'] | length > 0 and nova_console_type == 'spice' }}"
+  haproxy_service_enabled: "{{ groups['nova_console'] is defined and groups['nova_console'] | length > 0 and 'spice' in nova_console_proxy_types }}"
 
 haproxy_nova_serial_console_service:
   haproxy_service_name: nova_serial_console
@@ -86,8 +86,8 @@ haproxy_nova_serial_console_service:
   haproxy_backend_ssl: "{{ nova_backend_ssl | default(openstack_service_backend_ssl) }}"
   haproxy_backend_ca: "{{ nova_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
   haproxy_accept_both_protocols: "{{ nova_accept_both_protocols | default(openstack_service_accept_both_protocols) }}"
-  haproxy_service_enabled: "{{ (groups['nova_console'] is defined and groups['nova_console'] | length > 0 and nova_console_type == 'serialconsole') or
-                               (groups['ironic_console'] is defined and groups['ironic_console'] | length > 0 and ironic_console_type == 'serialconsole') }}"
+  haproxy_service_enabled: "{{ (groups['nova_console'] is defined and groups['nova_console'] | length > 0 and 'serialconsole' in nova_console_proxy_types) or
+                               (groups['ironic_console'] is defined and groups['ironic_console'] | length > 0 and 'serialconsole' in nova_console_proxy_types) }}"
 
 haproxy_nova_novnc_console_service:
   haproxy_service_name: nova_novnc_console
@@ -103,7 +103,7 @@ haproxy_nova_novnc_console_service:
   haproxy_backend_ssl: "{{ nova_backend_ssl | default(openstack_service_backend_ssl) }}"
   haproxy_backend_ca: "{{ nova_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
   haproxy_accept_both_protocols: "{{ nova_accept_both_protocols | default(openstack_service_accept_both_protocols) }}"
-  haproxy_service_enabled: "{{ groups['nova_console'] is defined and groups['nova_console'] | length > 0 and nova_console_type == 'novnc' }}"
+  haproxy_service_enabled: "{{ groups['nova_console'] is defined and groups['nova_console'] | length > 0 and 'novnc' in nova_console_proxy_types }}"
 
 # NOTE(jrosser) Clean up legacy console haproxy configs from previous releases
 haproxy_nova_console_service:
