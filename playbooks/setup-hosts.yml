@@ -13,9 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- import_playbook: certificate-authority.yml
-- import_playbook: certificate-ssh-authority.yml
-- import_playbook: certificate-generate.yml
-- import_playbook: openstack-hosts-setup.yml
-- import_playbook: containers-deploy.yml
-- import_playbook: security-hardening.yml
+- name: Importing certificate-authority playbook
+  import_playbook: certificate-authority.yml
+
+- name: Importing certificate-ssh-authority playbook
+  import_playbook: certificate-ssh-authority.yml
+
+- name: Importing certificate-generate playbook
+  import_playbook: certificate-generate.yml
+
+- name: Importing openstack-hosts-setup playbook
+  import_playbook: openstack-hosts-setup.yml
+
+- name: Importing containers-deploy playbook
+  import_playbook: containers-deploy.yml
+
+- name: Importing security-hardening playbook
+  import_playbook: security-hardening.yml

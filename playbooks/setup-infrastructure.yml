@@ -13,20 +13,42 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- import_playbook: unbound-install.yml
-- import_playbook: haproxy-install.yml
-- import_playbook: repo-install.yml
-- import_playbook: memcached-install.yml
-- import_playbook: galera-install.yml
-- import_playbook: qdrouterd-install.yml
-- import_playbook: rabbitmq-install.yml
-- import_playbook: utility-install.yml
-- import_playbook: zookeeper-install.yml
-- import_playbook: ceph-install.yml
-- import_playbook: ceph-nfs-install.yml
+- name: Importing unbound-install playbook
+  import_playbook: unbound-install.yml
+
+- name: Importing haproxy-install playbook
+  import_playbook: haproxy-install.yml
+
+- name: Importing repo-install playbook
+  import_playbook: repo-install.yml
+
+- name: Importing memcached-install playbook
+  import_playbook: memcached-install.yml
+
+- name: Importing galera-install playbook
+  import_playbook: galera-install.yml
+
+- name: Importing qdrouterd-install playbook
+  import_playbook: qdrouterd-install.yml
+
+- name: Importing rabbitmq-install playbook
+  import_playbook: rabbitmq-install.yml
+
+- name: Importing utility-install playbook
+  import_playbook: utility-install.yml
+
+- name: Importing zookeeper-install playbook
+  import_playbook: zookeeper-install.yml
+
+- name: Importing ceph-install playbook
+  import_playbook: ceph-install.yml
+
+- name: Importing ceph-nfs-install playbook
+  import_playbook: ceph-nfs-install.yml
 
 # The journald-remote should be disabled by default until
 # https://github.com/systemd/systemd/issues/2376 has been
 # incorporated in current systemd packages
-- import_playbook: infra-journal-remote.yml
+- name: Importing infra-journal-remote playbook
+  import_playbook: infra-journal-remote.yml
   when: journald_remote_enabled | default (false) | bool

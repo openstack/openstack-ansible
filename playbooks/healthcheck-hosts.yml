@@ -53,6 +53,7 @@
       get_url:
         url: https://opendev.org/openstack/openstack-ansible/raw/ansible-role-requirements.yml
         dest: /tmp/osa-master-requirements
+        mode: "0600"
       environment: "{{ deployment_environment_variables | default({}) }}"
 
 # Test extra settings before setup-infrastructure
@@ -120,7 +121,7 @@
           - "'ebtables' in modules_content"
           - "'vm.swappiness' in sysctl_content"
           - "'172.29.236.100 {{ ansible_facts['fqdn'] }} {{ ansible_facts['hostname'] }}' in hosts_content"
-          - "'{{ hostvars[groups['galera_all'][0]]['management_address'] }} {{ hostvars[groups['galera_all'][0]]['ansible_facts']['hostname'] }}.openstack.local {{ hostvars[groups['galera_all'][0]]['ansible_facts']['hostname'] ~ ((hostvars[groups['galera_all'][0]]['ansible_facts']['hostname'] != groups['galera_all'][0]) | ternary(' ' ~ groups['galera_all'][0], '')) }}' in hosts_content"
+          - "'{{ hostvars[groups['galera_all'][0]]['management_address'] }} {{ hostvars[groups['galera_all'][0]]['ansible_facts']['hostname'] }}.openstack.local {{ hostvars[groups['galera_all'][0]]['ansible_facts']['hostname'] ~ ((hostvars[groups['galera_all'][0]]['ansible_facts']['hostname'] != groups['galera_all'][0]) | ternary(' ' ~ groups['galera_all'][0], '')) }}' in hosts_content" # noqa: yaml[line-length]
           - "release_file.stat.exists"
           - "systat_file.stat.exists"
           - "'PATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' in environment_content"

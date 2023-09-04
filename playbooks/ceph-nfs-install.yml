@@ -42,7 +42,7 @@
         path: /var/log/ganesha
         owner: root
         group: root
-        mode: 0755
+        mode: "0755"
         state: directory
   roles:
     - role: ceph-defaults

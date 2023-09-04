@@ -55,7 +55,8 @@
       changed_when: false
       when: groups['haproxy'] | length > 1
 
-    - package:
+    - name: Install netcat
+      package:
         name: "{% if ansible_facts['os_family'] | lower == 'redhat' %}nmap-ncat{% else %}netcat-openbsd{% endif %}"
         state: present
 
@@ -126,12 +127,13 @@
       delegate_facts: true
       with_items: "{{ groups['memcached'] }}"
 
-    - package:
+    - name: Install netcat
+      package:
         name: "{% if ansible_facts['os_family'] | lower == 'redhat' %}nmap-ncat{% else %}netcat-openbsd{% endif %}"
         state: present
 
     - name: Connect to remote memcache servers (full mesh testing)
-      shell:  "echo stats | nc -w 3 {{ hostvars[memcached_host]['management_address'] }} {{ memcached_port }}"
+      shell: "echo stats | nc -w 3 {{ hostvars[memcached_host]['management_address'] }} {{ memcached_port }}"
       changed_when: false
       register: memcache_stats
       with_items: "{{ groups['memcached'] }}"
@@ -265,6 +267,7 @@
               -u osa-tester \
               OSA-test \
               -e "SHOW TABLES;"
+      changed_when: false
       when: inventory_hostname == groups['galera_all'][-1]
 
     - name: Remove created user
@@ -335,7 +338,7 @@
       copy:
         src: "../scripts/rabbitmq-test.py"
         dest: "{{ venv_path }}/rabbitmq-test.py"
-        mode: 0755
+        mode: "0755"
     - name: Connect to rabbitmq
       command: "{{ venv_path }}/bin/python {{ venv_path }}/rabbitmq-test.py {{ hostvars[groups['rabbitmq_all'][0]]['management_address'] }}"
       changed_when: false

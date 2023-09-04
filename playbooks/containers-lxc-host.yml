@@ -38,8 +38,9 @@
       file:
         path: "/openstack/log"
         state: directory
+        mode: "0755"
     - name: Move the existing folder to the log aggregation parent
-      command: "mv /var/log/lxc /openstack/log/{{ inventory_hostname }}-lxc"
+      command: "mv /var/log/lxc /openstack/log/{{ inventory_hostname }}-lxc" # noqa: no-changed-when
       when:
         - _lxc_log_dir.stat.isdir is defined
         - _lxc_log_dir.stat.isdir | bool
@@ -47,6 +48,7 @@
       file:
         path: "/openstack/log/{{ inventory_hostname }}-lxc"
         state: directory
+        mode: "0755"
     - name: Create the LXC service log aggregation link
       file:
         src: "/openstack/log/{{ inventory_hostname }}-lxc"

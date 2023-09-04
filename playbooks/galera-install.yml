@@ -38,16 +38,19 @@
   serial: "{{ galera_serial | default(1) }}"
   user: root
   pre_tasks:
-    - include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
+    - name: Including container-setup tasks
+      include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       when: not is_metal
       vars:
         list_of_bind_mounts: "{{ galera_container_bind_mounts }}"
         extra_container_config_no_restart:
           - "lxc.start.order=10"
-    - include_tasks: common-tasks/unbound-clients.yml
+    - name: Including unbound-clients tasks
+      include_tasks: common-tasks/unbound-clients.yml
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
-    - include_tasks: common-tasks/haproxy-endpoint-manage.yml
+    - name: Disabling haproxy backends
+      include_tasks: common-tasks/haproxy-endpoint-manage.yml
       vars:
         haproxy_backend: galera-back
         haproxy_state: drain
@@ -62,7 +65,8 @@
       tags:
         - crontab
   post_tasks:
-    - include_tasks: common-tasks/haproxy-endpoint-manage.yml
+    - name: Enabling haproxy backends
+      include_tasks: common-tasks/haproxy-endpoint-manage.yml
       vars:
         haproxy_backend: galera-back
         haproxy_state: enabled

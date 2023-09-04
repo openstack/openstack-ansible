@@ -56,6 +56,7 @@
             url: "{{ item.url }}"
             dest: "{{ item.dest }}"
             checksum: "{{ item.checksum | default(omit) }}"
+            mode: "0640"
           with_items: "{{ glance_images }}"
           register: fetch_url
           until: fetch_url is success
@@ -98,7 +99,7 @@
             display_name: "{{ item.name }}"
             size: "{{ item.size }}"
             snapshot_id: "{{ item.snapshot_id | default(omit) }}"
-            timeout: "{{ item.timeout | default(600) }}" #By default it's 180 but that's low.
+            timeout: "{{ item.timeout | default(600) }}" # By default it's 180 but that's low.
             volume: "{{ item.volume | default(omit) }}"
             volume_type: "{{ item.volume_type | default(omit) }}"
           with_items: "{{ cinder_volumes }}"
@@ -125,7 +126,8 @@
           with_dict: "{{ neutron_networks }}"
           register: _create_net
 
-        - fail:
+        - name: Fail if network was not created successfully
+          fail:
             msg: "Creating network failure"
           with_items: "{{ _create_net.results }}"
           when:
@@ -155,7 +157,7 @@
             cidr: "{{ item[1].cidr }}"
             gateway_ip: "{{ item[1].gateway_ip | default(omit) }}"
             enable_dhcp: "{{ item[1].enable_dhcp | default(false) }}"
-            allocation_pool_start: "{{ item[1].allocation_pool_start  | default(omit) }}"
+            allocation_pool_start: "{{ item[1].allocation_pool_start | default(omit) }}"
             allocation_pool_end: "{{ item[1].allocation_pool_end | default(omit) }}"
             dns_nameservers: "{{ item[1].dns_nameservers | default([]) }}"
             project: "{{ item[0].project | default(omit) }}"
@@ -186,6 +188,7 @@
           get_url:
             url: "{{ heat_stack['source_url'] }}"
             dest: "{{ heat_stack['dest_file'] }}"
+            mode: "0640"
 
         - name: Create heat stack
           ignore_errors: True
@@ -307,6 +310,7 @@
 
         - name: Ensure connection to node works
           command: "scp -o StrictHostKeyChecking=no -i {{ ssh_key }} cirros@{{ _floating_ip[0] }}:/etc/fstab /tmp/fstab"
+          changed_when: false
 
       when:
         - "groups['nova_all'] | length > 0"
@@ -381,7 +385,8 @@
   vars_files:
     - defaults/healthchecks-vars.yml
   tasks:
-    - block:
+    - name: Teardown images tests
+      block:
         - name: Remove glance downloads
           file:
             state: absent
@@ -402,7 +407,8 @@
       tags:
         - healthchecks-teardown-glance
 
-    - block:
+    - name: Teardown volumes tests
+      block:
         - name: Detach volume if attached
           when: "groups['nova_all'] | length > 0"
           openstack.cloud.server_volume:
@@ -427,7 +433,8 @@
       tags:
         - healthchecks-teardown-cinder
 
-    - block:
+    - name: Teardown heat tests
+      block:
         - name: Remove heat downloads
           file:
             path: "{{ heat_stack['dest_file'] }}"
@@ -452,7 +459,8 @@
       tags:
         - healthchecks-teardown-heat
 
-    - block:
+    - name: Teardown nova tests
+      block:
         - name: Remove nova flavor
           openstack.cloud.compute_flavor:
             cloud: default
@@ -493,7 +501,8 @@
       tags:
         - healthchecks-teardown-nova
 
-    - block:
+    - name: Teardown swift tests
+      block:
         - name: Teardown swift data
           openstack.cloud.object:
             cloud: default

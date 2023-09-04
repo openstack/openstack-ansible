@@ -39,13 +39,15 @@
   vars_files:
     - "defaults/{{ install_method }}_install.yml"
   pre_tasks:
-    - include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
+    - name: Including container-setup tasks
+      include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       vars:
         extra_container_config_no_restart:
           - "lxc.start.order=39"
       when: not is_metal
 
-    - include_tasks: common-tasks/unbound-clients.yml
+    - name: Including unbound-clients tasks
+      include_tasks: common-tasks/unbound-clients.yml
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
 

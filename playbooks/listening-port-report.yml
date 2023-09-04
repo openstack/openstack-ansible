@@ -21,7 +21,7 @@
       register: listening_ports
       changed_when: false
 
-    - name: create report
+    - name: Create report
       copy:
         content: |
           {% for host in ansible_play_hosts %}
@@ -33,5 +33,6 @@
 
           {% endfor %}
         dest: /tmp/listening_port_report.txt
+        mode: "0640"
       delegate_to: localhost
       run_once: true

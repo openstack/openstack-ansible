@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#create a sorted resolver list with affinity toward unbound container(s)
-#on the same physical_host
+# create a sorted resolver list with affinity toward unbound container(s)
+# on the same physical_host
 - name: Apply resolver sorting
   set_fact:
     resolver_list: |-
@@ -51,7 +51,7 @@
     - resolver_list is defined
     - resolver_list | length > 0
 
-#rotate is only used when no physical_host affinity is defined
+# rotate is only used when no physical_host affinity is defined
 - name: Set resolver rotate when physical_host is not an unbound host
   set_fact:
     resolvconf_options:

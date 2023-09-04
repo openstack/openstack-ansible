@@ -49,7 +49,8 @@
       when:
         - force_containers_destroy | bool
 
-    - include_tasks: "common-tasks/remove_container_journal.yml"
+    - name: Including remove_container_journal tasks
+      include_tasks: "common-tasks/remove_container_journal.yml"
       vars:
         container_machine_id: "{{ ((_container_machine_id.content | default('bm9uZQo=')) | b64decode).strip() }}"
 

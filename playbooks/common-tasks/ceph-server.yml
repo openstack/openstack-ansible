@@ -22,7 +22,7 @@
   when:
     - hostvars['localhost']['resolvconf_enabled'] | bool
 
-#TODO: mgariepy, revisit to use include_role when https://github.com/ansible/ansible/issues/20077 is fixed
+# TODO: mgariepy, revisit to use include_role when https://github.com/ansible/ansible/issues/20077 is fixed
 - name: Ensure Ansible can work with SELinux
   package:
     name: libselinux-python3

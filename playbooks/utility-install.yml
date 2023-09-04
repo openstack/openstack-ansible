@@ -40,7 +40,7 @@
         mode: "0755"
       listen:
         - "venv changed"
-    - name: Create openstack client bash_completion script
+    - name: Create openstack client bash_completion script # noqa: no-changed-when
       shell: >-
         openstack complete > /etc/bash_completion.d/openstack_client
       args:
@@ -48,16 +48,19 @@
       listen:
         - "venv changed"
   pre_tasks:
-    - include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
+    - name: Including container-setup tasks
+      include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       when: not is_metal
 
-    - include_tasks: common-tasks/os-log-dir-setup.yml
+    - name: Including os-log-dir-setup tasks
+      include_tasks: common-tasks/os-log-dir-setup.yml
       vars:
         log_dirs:
           - src: "/openstack/log/{{ inventory_hostname }}-utility"
             dest: "/var/log/utility"
 
-    - include_tasks: common-tasks/unbound-clients.yml
+    - name: Including unbound-clients tasks
+      include_tasks: common-tasks/unbound-clients.yml
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
 
@@ -66,6 +69,7 @@
         dest: "/var/log/utility"
         state: "directory"
         force: "yes"
+        mode: "0755"
       when: not is_metal | bool
 
   roles:
@@ -98,7 +102,7 @@
       copy:
         content: "{{ utility_ssh_private_key }}"
         dest: /root/.ssh/id_rsa
-        mode: 0600
+        mode: "0600"
         owner: root
         group: root
       when: utility_ssh_private_key is defined
@@ -149,7 +153,7 @@
 
         - name: Create list of binaries to symlink
           set_fact:
-             _openstack_client_to_symlink: >-
+            _openstack_client_to_symlink: |-
               {%- set binary_list = [] %}
               {%- for l in _openstack_client_list %}
               {%-   set _ = binary_list.append(l | regex_replace('^(?:python-)?(\w*)(?:client)$', '\\1')) %}
