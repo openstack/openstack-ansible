@@ -27,7 +27,7 @@ tempest_flavors:
     disk: 5
     vcpus: 1
 
-tempest_test_includelist:
+tempest_test_includelist_ceph_manila:
   - manila_tempest_tests.tests.scenario.test_share_basic_ops.TestShareBasicOpsNFS.test_mount_share_one_vm
 
 tempest_tempest_conf_overrides_manila:
