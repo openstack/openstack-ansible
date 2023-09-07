@@ -43,6 +43,7 @@
 - name: Pre-service deployment
   hosts: keystone_all
   gather_facts: false
+  environment: "{{ deployment_environment_variables | default({}) }}"
   tasks:
     - name: "Pre-service deployment tasks from os_keystone role"
       include_role:
