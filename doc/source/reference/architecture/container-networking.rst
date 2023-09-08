@@ -140,6 +140,26 @@ and requires a physical interface name which will be connected to the provider b
 The following diagrams reflect the differences in the virtual network layout for
 supported network architectures.
 
+Open Virtual Network (OVN)
+..........................
+
+.. note::
+
+   The ML2/OVN (LXB) mechanism driver is deployed by default
+   as of the Zed release of OpenStack-Ansible.
+
+Networking Node
+***************
+
+.. image:: ../figures/networking-ovn-nn.drawio.png
+   :align: center
+
+Compute Node
+************
+
+.. image:: ../figures/networking-ovn-cn.drawio.png
+   :align: center
+
 LinuxBridge
 ...........
 
@@ -173,24 +193,4 @@ Compute Node
 ************
 
 .. image:: ../figures/networking-openvswitch-cn.drawio.png
-   :align: center
-
-Open Virtual Network (OVN)
-..........................
-
-.. note::
-
-   The ML2/OVN (LXB) mechanism driver is deployed by default
-   as of the Zed release of OpenStack-Ansible.
-
-Networking Node
-***************
-
-.. image:: ../figures/networking-ovn-nn.drawio.png
-   :align: center
-
-Compute Node
-************
-
-.. image:: ../figures/networking-ovn-cn.drawio.png
    :align: center
