@@ -104,7 +104,7 @@ case ${DISTRO_ID} in
     ubuntu|debian)
         apt-get update
         DEBIAN_FRONTEND=noninteractive apt-get -y install \
-          git-core curl gcc netcat \
+          git-core curl gcc \
           libssl-dev libffi-dev \
           libsystemd-dev pkg-config \
           wget
