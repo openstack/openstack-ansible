@@ -668,6 +668,63 @@
     parent: openstack-ansible-deploy-aio
     nodeset: debian-bullseye
 
+# debian bookworm
+
+- job:
+    name: openstack-ansible-deploy-aio_telemetry_metal-debian-bookworm
+    parent: openstack-ansible-deploy-aio
+    nodeset: debian-bookworm
+
+- job:
+    name: openstack-ansible-deploy-aio_lxc-debian-bookworm
+    parent: openstack-ansible-deploy-aio
+    nodeset: debian-bookworm
+
+- job:
+    name: openstack-ansible-deploy-infra_lxc-debian-bookworm
+    parent: openstack-ansible-deploy-aio-infra
+    nodeset: debian-bookworm
+
+- job:
+    name: openstack-ansible-deploy-hosts_lxc-debian-bookworm
+    parent: openstack-ansible-deploy-aio-hosts
+    nodeset: debian-bookworm
+
+- job:
+    name: openstack-ansible-deploy-hosts_distro_lxc-debian-bookworm
+    parent: openstack-ansible-deploy-aio-hosts
+    nodeset: debian-bookworm
+
+- job:
+    name: openstack-ansible-deploy-hosts_metal-debian-bookworm
+    parent: openstack-ansible-deploy-aio-hosts
+    nodeset: debian-bookworm
+
+- job:
+    name: openstack-ansible-deploy-aio_distro_lxc-debian-bookworm
+    parent: openstack-ansible-deploy-aio-distro
+    nodeset: debian-bookworm
+
+- job:
+    name: openstack-ansible-deploy-aio_metal-debian-bookworm
+    parent: openstack-ansible-deploy-aio
+    nodeset: debian-bookworm
+
+- job:
+    name: openstack-ansible-deploy-aio_distro_metal-debian-bookworm
+    parent: openstack-ansible-deploy-aio-distro
+    nodeset: debian-bookworm
+
+- job:
+    name: openstack-ansible-deploy-hosts_lxc_btrfs-debian-bookworm
+    parent: openstack-ansible-deploy-aio
+    nodeset: debian-bookworm
+
+- job:
+    name: openstack-ansible-deploy-hosts_lxc_overlayfs-debian-bookworm
+    parent: openstack-ansible-deploy-aio
+    nodeset: debian-bookworm
+
 # rocky linux 9
 - job:
     name: openstack-ansible-deploy-aio_lxc-rockylinux-9
