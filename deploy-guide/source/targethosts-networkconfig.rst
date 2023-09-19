@@ -25,8 +25,7 @@ Target hosts need to be configured with the following network bridges:
 
 For a detailed reference of how the host and container networking is
 implemented, refer to
-:dev_docs:`OpenStack-Ansible Reference Architecture, section Container
-Networking <reference/architecture/index.html>`.
+:dev_docs:`OpenStack-Ansible Reference Architecture, section Container Networking <reference/architecture/index.html>`.
 
 For use case examples, refer to
 :dev_docs:`User Guides <user/index.html>`.

@@ -110,87 +110,87 @@ about the available options.
 Infrastructure service roles
 ----------------------------
 
-- :role_docs:`galera_server`
+- :role_docs:`galera_server <galera_server>`
 
-- :role_docs:`haproxy_server`
+- :role_docs:`haproxy_server <haproxy_server>`
 
-- :role_docs:`memcached_server`
+- :role_docs:`memcached_server <memcached_server>`
 
-- :role_docs:`rabbitmq_server`
+- :role_docs:`rabbitmq_server <rabbitmq_server>`
 
-- :role_docs:`repo_server`
+- :role_docs:`repo_server <repo_server>`
 
 
 OpenStack service roles
 -----------------------
 
-- :role_docs:`os_adjutant`
+- :role_docs:`os_adjutant <os_adjutant>`
 
-- :role_docs:`os_aodh`
+- :role_docs:`os_aodh <os_aodh>`
 
-- :role_docs:`os_barbican`
+- :role_docs:`os_barbican <os_barbican>`
 
-- :role_docs:`os_ceilometer`
+- :role_docs:`os_ceilometer <os_ceilometer>`
 
-- :role_docs:`os_cinder`
+- :role_docs:`os_cinder <os_cinder>`
 
-- :role_docs:`os_designate`
+- :role_docs:`os_designate <os_designate>`
 
-- :role_docs:`os_glance`
+- :role_docs:`os_glance <os_glance>`
 
-- :role_docs:`os_gnocchi`
+- :role_docs:`os_gnocchi <os_gnocchi>`
 
-- :role_docs:`os_heat`
+- :role_docs:`os_heat <os_heat>`
 
-- :role_docs:`os_horizon`
+- :role_docs:`os_horizon <os_horizon>`
 
-- :role_docs:`os_ironic`
+- :role_docs:`os_ironic <os_ironic>`
 
-- :role_docs:`os_keystone`
+- :role_docs:`os_keystone <os_keystone>`
 
-- :role_docs:`os_magnum`
+- :role_docs:`os_magnum <os_magnum>`
 
-- :role_docs:`os_manila`
+- :role_docs:`os_manila <os_manila>`
 
-- :role_docs:`os_masakari`
+- :role_docs:`os_masakari <os_masakari>`
 
-- :role_docs:`os_neutron`
+- :role_docs:`os_neutron <os_neutron>`
 
-- :role_docs:`os_nova`
+- :role_docs:`os_nova <os_nova>`
 
-- :role_docs:`os_octavia`
+- :role_docs:`os_octavia <os_octavia>`
 
-- :role_docs:`os_rally`
+- :role_docs:`os_rally <os_rally>`
 
-- :role_docs:`os_sahara`
+- :role_docs:`os_sahara <os_sahara>`
 
-- :role_docs:`os_senlin`
+- :role_docs:`os_senlin <os_senlin>`
 
-- :role_docs:`os_swift`
+- :role_docs:`os_swift <os_swift>`
 
-- :role_docs:`os_tempest`
+- :role_docs:`os_tempest <os_tempest>`
 
-- :role_docs:`os_trove`
+- :role_docs:`os_trove <os_trove>`
 
 
 Other roles
 -----------
 
-- :role_docs:`apt_package_pinning`
+- :role_docs:`apt_package_pinning <apt_package_pinning>`
 
-- :role_docs:`ceph_client`
+- :role_docs:`ceph_client <ceph_client>`
 
-- :role_docs:`galera_client`
+- :role_docs:`galera_client <galera_client>`
 
-- :role_docs:`lxc_container_create`
+- :role_docs:`lxc_container_create <lxc_container_create>`
 
-- :role_docs:`lxc_hosts`
+- :role_docs:`lxc_hosts <lxc_hosts>`
 
-- :role_docs:`plugins`
+- :role_docs:`plugins <plugins>`
 
-- :role_docs:`openstack_hosts`
+- :role_docs:`openstack_hosts <openstack_hosts>`
 
-- :role_docs:`openstack_openrc`
+- :role_docs:`openstack_openrc <openstack_openrc>`
 
 
 Configuring service credentials
