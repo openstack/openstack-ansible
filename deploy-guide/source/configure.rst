@@ -110,6 +110,8 @@ about the available options.
 Infrastructure service roles
 ----------------------------
 
+- :ansible_role_docs:`PKI <pki>`
+
 - :role_docs:`galera_server <galera_server>`
 
 - :role_docs:`haproxy_server <haproxy_server>`
@@ -119,6 +121,8 @@ Infrastructure service roles
 - :role_docs:`rabbitmq_server <rabbitmq_server>`
 
 - :role_docs:`repo_server <repo_server>`
+
+- :ansible_role_docs:`Zookeeper <zookeeper>`
 
 
 OpenStack service roles
@@ -133,6 +137,8 @@ OpenStack service roles
 - :role_docs:`os_ceilometer <os_ceilometer>`
 
 - :role_docs:`os_cinder <os_cinder>`
+
+- :role_docs:`os_cloudkitty <os_cloudkitty>`
 
 - :role_docs:`os_designate <os_designate>`
 
@@ -154,11 +160,17 @@ OpenStack service roles
 
 - :role_docs:`os_masakari <os_masakari>`
 
+- :role_docs:`os_mistral <os_mistral>`
+
+- :role_docs:`os_murano <os_murano>`
+
 - :role_docs:`os_neutron <os_neutron>`
 
 - :role_docs:`os_nova <os_nova>`
 
 - :role_docs:`os_octavia <os_octavia>`
+
+- :role_docs:`os_placement <os_placement>`
 
 - :role_docs:`os_rally <os_rally>`
 
@@ -168,9 +180,13 @@ OpenStack service roles
 
 - :role_docs:`os_swift <os_swift>`
 
+- :role_docs:`os_tacker <os_tacker>`
+
 - :role_docs:`os_tempest <os_tempest>`
 
 - :role_docs:`os_trove <os_trove>`
+
+- :role_docs:`os_zun <os_zun>`
 
 
 Other roles
@@ -180,17 +196,27 @@ Other roles
 
 - :role_docs:`ceph_client <ceph_client>`
 
-- :role_docs:`galera_client <galera_client>`
-
 - :role_docs:`lxc_container_create <lxc_container_create>`
 
 - :role_docs:`lxc_hosts <lxc_hosts>`
 
-- :role_docs:`plugins <plugins>`
-
 - :role_docs:`openstack_hosts <openstack_hosts>`
 
 - :role_docs:`openstack_openrc <openstack_openrc>`
+
+- :role_docs:`plugins <plugins>`
+
+- :ansible_role_docs:`python_venv_build <python_venv_build>`
+
+- :ansible_role_docs:`systemd_service <systemd_service>`
+
+- :ansible_role_docs:`systemd_mount <systemd_mount>`
+
+- :ansible_role_docs:`systemd_networkd <systemd_networkd>`
+
+- :ansible_role_docs:`unbound <unbound>`
+
+- :ansible_role_docs:`uWSGI <uwsgi>`
 
 
 Configuring service credentials

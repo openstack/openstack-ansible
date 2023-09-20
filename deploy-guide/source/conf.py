@@ -60,6 +60,8 @@ dev_docs_prefix = ("https://docs.openstack.org/openstack-ansible/"
                    "{}/%s".format(current_series))
 role_docs_prefix = ("https://docs.openstack.org/openstack-ansible-"
                     "%s/{}".format(current_series))
+ansible_role_docs_prefix = ("https://docs.openstack.org/ansible-role-"
+                    "%s/{}".format(current_series))
 
 # Substitutions loader
 rst_epilog = """
@@ -73,7 +75,8 @@ rst_epilog = """
 # Format: Reference name: (string containing %s for substitution, linkname)
 extlinks = {'deploy_guide': (deploy_guide_prefix, ''),
             'dev_docs': (dev_docs_prefix, ''),
-            'role_docs': (role_docs_prefix, '')
+            'role_docs': (role_docs_prefix, ''),
+            'ansible_role_docs': (ansible_role_docs_prefix, '')
 }
 
 # If extensions (or modules to document with autodoc) are in another directory,
