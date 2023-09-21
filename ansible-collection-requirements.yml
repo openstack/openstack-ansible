@@ -1,10 +1,9 @@
 ---
-
 collections:
 - name: openstack.cloud
   source: https://opendev.org/openstack/ansible-collections-openstack
   type: git
-  version: 2.0.0
+  version: 2.1.0
 - name: openstack.config_template
   source: https://opendev.org/openstack/ansible-config_template
   type: git
@@ -16,7 +15,7 @@ collections:
 - name: community.general
   source: https://github.com/ansible-collections/community.general
   type: git
-  version: 6.5.0
+  version: 7.3.0
 - name: community.rabbitmq
   source: https://github.com/ansible-collections/community.rabbitmq
   type: git
@@ -24,29 +23,28 @@ collections:
 - name: community.mysql
   source: https://github.com/ansible-collections/community.mysql
   type: git
-  version: 3.6.0
+  version: 3.7.2
 - name: community.crypto
   source: https://github.com/ansible-collections/community.crypto
   type: git
-  version: 2.11.1
+  version: 2.15.1
 - name: ansible.posix
   source: https://github.com/ansible-collections/ansible.posix
   type: git
-  version: 1.5.1
+  version: 1.5.4
 - name: gluster.gluster
   source: https://github.com/gluster/gluster-ansible-collection
   type: git
   version: 1.0.2
-# NOTE(noonedeadpunk): needs version in galaxy.yml to pull from git
 - name: ansible.netcommon
-  source: https://galaxy.ansible.com
-  type: galaxy
-  version: 5.0.0
+  source: https://github.com/ansible-collections/ansible.netcommon
+  type: git
+  version: v5.2.0
 - name: ansible.utils
-  source: https://galaxy.ansible.com
-  type: galaxy
-  version: 2.9.0
+  source: https://github.com/ansible-collections/ansible.utils
+  type: git
+  version: v2.11.0
 - name: openvswitch.openvswitch
-  source: https://galaxy.ansible.com
-  type: galaxy
-  version: 2.1.0
+  source: https://github.com/ansible-collections/openvswitch.openvswitch
+  type: git
+  version: 2.1.1
