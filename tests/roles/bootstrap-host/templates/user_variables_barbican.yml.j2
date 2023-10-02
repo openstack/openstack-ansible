@@ -10,6 +10,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+tempest_tempest_conf_overrides_barbican:
+  key_manager:
+    min_microversion: '1.0'
+    max_microversion: latest
+
 tempest_test_includelist:
   - barbican_tempest_plugin.tests.api
 
