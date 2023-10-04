@@ -23,7 +23,9 @@ collections:
   # NOTE(noonedeadpunk): needs version in galaxy.yml to pull from git
   - name: ansible.netcommon
     version: 2.5.1
-    source: https://galaxy.ansible.com
+    source: https://github.com/ansible-collections/ansible.netcommon
+    type: git
   - name: openvswitch.openvswitch
     version: 2.0.2
-    source: https://galaxy.ansible.com
+    source: https://github.com/ansible-collections/openvswitch.openvswitch
+    type: git
