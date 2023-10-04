@@ -19,6 +19,14 @@
   tasks:
     - name: Gather additional facts
       include_tasks: "common-tasks/gather-hardware-facts.yml"
+      vars:
+        deployment_extra_facts_filter:
+          - "ansible_processor_*"
+          - ansible_default_ipv4
+        deployment_extra_facts_subset:
+          - '!all'
+          - hardware
+          - network
       when: osa_gather_facts | default(True)
   tags:
     - always
