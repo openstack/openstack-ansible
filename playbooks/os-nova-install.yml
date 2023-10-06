@@ -232,3 +232,18 @@
     - role: "openstack.osa.system_crontab_coordination"
       tags:
         - crontab
+
+- name: Finalize nova setup
+  hosts: nova_conductor[0]
+  gather_facts: false
+  user: root
+  environment: "{{ deployment_environment_variables | default({}) }}"
+  vars_files:
+    - "defaults/{{ install_method }}_install.yml"
+  tasks:
+    - name: Running db_post_setup tasks from the role
+      import_role:
+        name: os_nova
+        tasks_from: nova_db_post_setup.yml
+  tags:
+    - nova
