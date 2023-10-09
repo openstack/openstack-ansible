@@ -69,11 +69,20 @@
 
 # Symlink host repos to /openstack/src to match the lxc continer bind mount
 # NOTE(jrosser) this must happen *after* prepare_data_disk as /openstack may remounted
-- name: Symlink /openstack/src to /home/zuul/src
-  file:
-    src: "{{ lookup('env', 'ZUUL_SRC_PATH') }}"
-    dest: '/openstack/src'
-    state: link
+- name: Use on-disk repos for openstack services in CI
+  block:
+    - name: Symlink /openstack/src to /home/zuul/src
+      file:
+        src: "{{ lookup('env', 'ZUUL_SRC_PATH') }}"
+        dest: '/openstack/src'
+        state: link
+
+    - name: Create override for zuul git server to local repos
+      copy:
+        content: |
+          openstack_opendev_base_url: "file:///openstack/src/opendev.org"
+        dest: "/etc/openstack_deploy/user_variables_zuulrepos.yml"
+
   when:
     - "lookup('env', 'ZUUL_SRC_PATH') | length > 0"
 
