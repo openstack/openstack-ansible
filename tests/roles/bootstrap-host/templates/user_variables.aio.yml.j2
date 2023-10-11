@@ -153,7 +153,7 @@ tempest_test_includelist:
   - "neutron_tempest_plugin.api.test_networks*"
   - "tempest.scenario.test_network_basic_ops.TestNetworkBasicOps.test_network_basic_ops"
 
-tempest_tempest_conf_overrides:
+tempest_tempest_conf_overrides_neutron:
   network-feature-enabled:
     api_extensions: agent,allowed-address-pairs,binding,dhcp_agent_scheduler,ext-gw-mode,external-net,extra_dhcp_opt,extra_dhcp_optagent,extraroute,l3_agent_scheduler,metering,provider,quotas,router,security-group,service-type,subnet_allocation
 {% endif %}

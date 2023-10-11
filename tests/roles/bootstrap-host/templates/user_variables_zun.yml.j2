@@ -24,6 +24,6 @@ tempest_test_excludelist:
   - test: zun_tempest_plugin.tests.tempest.api.test_containers.TestContainer.test_run_container_with_cinder_volume_dynamic_created
     reason: Cinder volume error
 
-tempest_tempest_conf_overrides:
+tempest_tempest_conf_overrides_zun:
   container_service:
     min_microversion: 1.27

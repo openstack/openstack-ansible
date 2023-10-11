@@ -58,7 +58,7 @@ tempest_test_excludelist:
   - magnum_tempest_plugin.tests.api.v1.test_cluster.ClusterTest.test_create_cluster_with_nonexisting_flavor
   - magnum_tempest_plugin.tests.api.v1.test_cluster.ClusterTest.test_create_cluster_with_zero_nodes
 
-tempest_tempest_conf_overrides:
+tempest_tempest_conf_overrides_magnum:
   magnum:
     coe: kubernetes
     network_driver: flannel
