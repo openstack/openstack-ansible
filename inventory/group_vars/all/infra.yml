@@ -30,6 +30,11 @@ rabbitmq_policies:
     priority: 0
     tags: "ha-mode=all"
     state: "{{ (oslomsg_rabbit_quorum_queues | default(True)) | ternary('absent', 'present') }}"
+  - name: CQv2
+    pattern: '.*'
+    priority: 0
+    tags: "x-queue-version=2"
+    state: "{{ (oslomsg_rabbit_quorum_queues | default(True)) | ternary('absent', 'present') }}"
 
 ## Galera options
 galera_client_package_state: "{{ package_state }}"
