@@ -134,7 +134,35 @@ Single interface or bond
 OpenStack-Ansible supports the use of a single interface or set of bonded
 interfaces that carry traffic for OpenStack services as well as instances.
 
-The following diagram demonstrates hosts using a single interface:
+
+Open Virtual Network (OVN)
+++++++++++++++++++++++++++
+
+The following diagrams demonstrate hosts using a single bond with OVN.
+
+In the scenario below only Network node is connected to external network and
+computes do not have external connectivity, so routers are needed for external
+connectivity:
+
+.. image:: ../figures/network-arch-ovn-single-bond-gateway-drawio.png
+   :width: 100%
+   :alt: Network Interface Layout OVN - Gateway Nodes
+
+
+The following diagram demonstrates a compute node serving as an OVN gatway.
+It is connected to the public network, which enables to connect VMs to public
+networks not only through routers, but also directly:
+
+.. image:: ../figures/network-arch-ovn-single-bond-compute-drawio.png
+   :width: 100%
+   :alt: Network Interface Layout - Single Bond
+
+
+Open vSwitch and Linux Bridge
++++++++++++++++++++++++++++++
+
+The following diagram demonstrates hosts using a single interface for OVS and
+LinuxBridge Scenario:
 
 .. image:: ../figures/network-arch-single-interface.png
    :width: 100%
@@ -165,7 +193,34 @@ Multiple interfaces or bonds
 OpenStack-Ansible supports the use of a multiple interfaces or sets of bonded
 interfaces that carry traffic for OpenStack services and instances.
 
-The following diagram demonstrates hosts using multiple interfaces:
+Open Virtual Network (OVN)
+++++++++++++++++++++++++++
+
+The following diagrams demonstrate hosts using multiple bonds with OVN.
+
+In the scenario below only Network node is connected to external network and
+computes do not have external connectivity, so routers are needed for external
+connectivity:
+
+.. image:: ../figures/network-arch-ovn-multibond-gateway-drawio.png
+   :width: 100%
+   :alt: Network Interface Layout OVN - Gateway Nodes
+
+
+The following diagram demonstrates a compute node serving as an OVN gatway.
+It is connected to the public network, which enables to connect VMs to public
+networks not only through routers, but also directly:
+
+.. image:: ../figures/network-arch-ovn-multibond-compute-drawio.png
+   :width: 100%
+   :alt: Network Interface Layout - Multiple Bonds
+
+
+Open vSwitch and Linux Bridge
++++++++++++++++++++++++++++++
+
+The following diagram demonstrates hosts using multiple interfaces for OVS and
+LinuxBridge Scenario:
 
 .. image:: ../figures/network-arch-multiple-interfaces.png
    :width: 100%
