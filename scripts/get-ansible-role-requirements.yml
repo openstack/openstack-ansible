@@ -97,15 +97,10 @@
             path: "{{ config_dir }}"
             state: directory
 
-        - name: Create override for zuul git server to local repos
-          copy:
-            content: |
-              openstack_opendev_base_url: "file:///openstack/src/opendev.org"
-            dest: "{{ config_dir }}/user_variables_zuulrepos.yml"
-
       when:
         - "lookup('env', 'ZUUL_SRC_PATH') != ''"
         - "lookup('env', 'UPGRADE_TARGET_BRANCH') == ''"
+
     - name: Generate a list of user overridden roles
       set_fact:
         user_overridden_roles: "{{ user_roles | json_query('[*].name') }}"
