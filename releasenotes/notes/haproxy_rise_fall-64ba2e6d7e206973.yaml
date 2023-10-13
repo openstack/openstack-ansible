@@ -1,0 +1,8 @@
+---
+fixes:
+  - |
+    Variables ``haproxy_fall`` and ``haproxy_rise`` are now respected again
+    and will be used for defining amount of checks before haproxy will mark
+    backend as UP or DOWN. Keys ``backend_rise`` and ``haproxy_fall`` that are
+    set inside service definition are still respected and will have
+    prescedence over global ones.
