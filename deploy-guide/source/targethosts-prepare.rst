@@ -149,16 +149,6 @@ practices, see `GitHub's documentation about generating SSH keys`_.
 
 .. _GitHub's documentation about generating SSH keys: https://help.github.com/articles/generating-ssh-keys/
 
-.. important::
-
-   OpenStack-Ansible deployments require the presence of a
-   ``/root/.ssh/id_rsa.pub`` file on the deployment host.
-   The contents of this file is inserted into an
-   ``authorized_keys`` file for the containers, which is a
-   necessary step for the Ansible playbooks. You can
-   override this behavior by setting the
-   ``lxc_container_ssh_key`` variable to the public key for
-   the container.
 
 Configuring the storage
 =======================
