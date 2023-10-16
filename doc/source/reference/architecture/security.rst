@@ -108,6 +108,12 @@ the databases that they need to query.
 
 .. _principle of least privilege: https://en.wikipedia.org/wiki/Principle_of_least_privilege
 
+You can also run OpenStack-Ansible with non-root user by leveraging the
+`Ansible privilege escalation`_ method. For more details, please reffer to
+the :doc:`running as non-root </user/security/non-root>`.
+
+
+.. _Ansible privilege escalation: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_privilege_escalation.html
 .. _least-access-openstack-services:
 
 Securing network access to OpenStack services

@@ -14,3 +14,4 @@ For understanding security design, please see
 .. include:: security-headers.rst
 .. include:: security-txt.rst
 .. include:: hardening.rst
+.. include:: non-root.rst
