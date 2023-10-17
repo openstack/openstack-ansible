@@ -239,7 +239,7 @@
   user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
   vars_files:
-    - "../defaults/{{ install_method }}_install.yml"
+    - "defaults/{{ install_method }}_install.yml"
   tasks:
     - name: Running db_post_setup tasks from the role
       import_role:
