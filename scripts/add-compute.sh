@@ -52,7 +52,7 @@ function run_tasks {
     for item in ${!RUN_TASKS[@]}; do
         eval "openstack-ansible ${RUN_TASKS[$item]}"
         playbook_status="$?"
-        if [[ ${playbook_status} -gt 0 ]]; then
+        if [[ ${playbook_status} -ne 0 && ${playbook_status} -ne 4 ]]; then
             echo "*********************** failure ************************"
             echo "The compute deployment script has encountered a failure."
             echo "Failed on task \"${RUN_TASKS[$item]}\" with status $playbook_status"
