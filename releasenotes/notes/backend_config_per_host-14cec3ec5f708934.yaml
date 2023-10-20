@@ -1,0 +1,7 @@
+---
+features:
+  - HAProxy services that use backend nodes that are not
+    in the Ansible inventory can now have the ``backend_port``
+    specified in the list, along with ``name`` or ``ip_addr`` settings.
+    This allow to have the service bound to different port on different
+    backend servers.
