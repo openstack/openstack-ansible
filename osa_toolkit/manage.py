@@ -120,10 +120,6 @@ def get_all_groups(inventory):
     containers = {}
     for container_name in inventory['_meta']['hostvars'].keys():
 
-        # Skip the default group names since they're not helpful (like aio1).
-        if '_' not in container_name:
-            continue
-
         groups = get_groups_for_container(inventory, container_name)
         containers[container_name] = groups
 
