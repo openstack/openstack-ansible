@@ -101,7 +101,7 @@
   hosts: "{{ openstack_service_setup_host | default('localhost') }}"
   gather_facts: no
   vars_files:
-    - "defaults/{{ install_method }}_install.yml"
+    - "defaults/{{ install_method | default('source') }}_install.yml"
   vars:
     ansible_python_interpreter: "{{ openstack_service_setup_host_python_interpreter | default(ansible_facts['python']['executable']) }}"
   tasks:
