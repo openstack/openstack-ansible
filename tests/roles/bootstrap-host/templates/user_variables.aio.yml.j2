@@ -218,14 +218,8 @@ trove_wsgi_processes: 1
 magnum_wsgi_processes: 1
 magnum_conductor_workers: 1
 
-## Octavia
 {% if 'metal' in bootstrap_host_scenarios %}
-# TODO(mnaser): The Octavia role relies on gathering IPs of hosts in the
-#               LBaaS network and using those in the health manager pool
-#               IPs.  We don't store those IPs when running metal so we
-#               have to override it manually.  We should remove this and
-#               fix the role (or the inventory tool) eventually.
-octavia_hm_hosts: 172.29.232.100 # br-lbaas IP
+venv_wheel_build_enable: false
 {% endif %}
 
 ## Sahara
@@ -305,6 +299,7 @@ openstack_user_kernel_options:
 
 openstack_hosts_package_state: latest
 
+## Octavia
 {% if 'octavia' in bootstrap_host_scenarios_expanded %}
 # Enable Octavia V2 API/standalone
 octavia_v2: True
@@ -312,6 +307,14 @@ octavia_v2: True
 octavia_v1: False
 octavia_management_net_subnet_cidr: '172.29.232.0/22'
 tempest_run_concurrency: 0
+{%   if 'metal' in bootstrap_host_scenarios %}
+# TODO(mnaser): The Octavia role relies on gathering IPs of hosts in the
+#               LBaaS network and using those in the health manager pool
+#               IPs.  We don't store those IPs when running metal so we
+#               have to override it manually.  We should remove this and
+#               fix the role (or the inventory tool) eventually.
+octavia_hm_hosts: 172.29.232.100 # br-lbaas IP
+{%   endif %}
 {% endif %}
 
 {% if 'proxy' in bootstrap_host_scenarios_expanded %}
