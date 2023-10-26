@@ -112,9 +112,8 @@ haproxy_ceph_rgw_service:
   haproxy_balance_alg: source
   haproxy_port: "{{ radosgw_service_port | default(7980) }}"
   haproxy_balance_type: http
-  haproxy_backend_options:
-    - httpchk HEAD /
   haproxy_backend_httpcheck_options:
+    - send meth HEAD
     - expect rstatus 200|405
   # `openstack_service_backend_ssl` is not taken into account if ceph is installed independently.
   haproxy_backend_ssl: "{{ ceph_rgw_backend_ssl | default((groups['ceph-rgw'] is defined and groups['ceph-rgw'] | length > 0) | ternary(openstack_service_backend_ssl, False)) }}"
