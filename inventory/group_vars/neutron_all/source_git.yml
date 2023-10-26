@@ -13,45 +13,41 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-### HEAD as of 15.08.2023 ###
+### HEAD as of 05.10.2023 ###
 
 ## Neutron service
 neutron_git_repo: "{{ openstack_opendev_base_url }}/openstack/neutron"
-neutron_git_install_branch: 3cdfc03a2acefb9002e218f1f7a4696d32b7396d
-neutron_git_track_branch: master
+neutron_git_install_branch: 04e9b063ad526778ba80438fc851e03fa16e5085
+neutron_git_track_branch: stable/2023.2
 
 neutron_vpnaas_git_repo: "{{ openstack_opendev_base_url }}/openstack/neutron-vpnaas"
-neutron_vpnaas_git_install_branch: 68307808483b4c970a2b0c57d1f1aa3b4dcadc78
-neutron_vpnaas_git_track_branch: master
+neutron_vpnaas_git_install_branch: 5123b9168520083376df9d2d959640439e4a7d4b
+neutron_vpnaas_git_track_branch: stable/2023.2
 
 neutron_dynamic_routing_git_repo: "{{ openstack_opendev_base_url }}/openstack/neutron-dynamic-routing"
-neutron_dynamic_routing_git_install_branch: 2b75e2bfdc4e48bbe3e012767dcabf1c51b0dd03
-neutron_dynamic_routing_git_track_branch: master
-
-networking_odl_git_repo: "{{ openstack_opendev_base_url }}/openstack/networking-odl"
-networking_odl_git_install_branch: 517df91c9ef84b4e462e6cc9d70b7e14ad5a511c
-networking_odl_git_track_branch: master
+neutron_dynamic_routing_git_install_branch: 7218d9fc347c9f9775df2ce13fb4a2aae5ac5831
+neutron_dynamic_routing_git_track_branch: stable/2023.2
 
 networking_bgpvpn_git_repo: "{{ openstack_opendev_base_url }}/openstack/networking-bgpvpn"
-networking_bgpvpn_git_install_branch: fd5d5818e388d0357619be3090d5b6fe2029834f
-networking_bgpvpn_git_track_branch: master
+networking_bgpvpn_git_install_branch: a955fb7d17e34d4303ace8d5ee7441f6c5b7e310
+networking_bgpvpn_git_track_branch: stable/2023.2
 
 networking_sfc_git_repo: "{{ openstack_opendev_base_url }}/openstack/networking-sfc"
-networking_sfc_git_install_branch: 9c0823ceadac6abd7b643c350a5275b20e677568
-networking_sfc_git_track_branch: master
+networking_sfc_git_install_branch: 19568366d59b7deef3db03c3f8a00885f030cd48
+networking_sfc_git_track_branch: stable/2023.2
 
 networking_generic_switch_git_repo: "{{ openstack_opendev_base_url}}/openstack/networking-generic-switch"
-networking_generic_switch_git_install_branch: 5246705d24224d9c5cb6d9befd0542162c4ff737
-networking_generic_switch_git_track_branch: master
+networking_generic_switch_git_install_branch: c52e8a2a9d7f5714b3830fa804f9d7795424d4d6
+networking_generic_switch_git_track_branch: stable/2023.2
 
 networking_nsx_git_repo: "{{ openstack_opendev_base_url }}/x/vmware-nsx"
 networking_nsx_git_install_branch: 715cb5fc1174b9226f043e49ffd389add44f070a
 networking_nsx_git_track_branch: master
 
 networking_nsxlib_git_repo: "{{ openstack_opendev_base_url }}/x/vmware-nsxlib"
-networking_nsxlib_git_install_branch: 77688b9934fd61c7c1ada52da92252b12979bbee
+networking_nsxlib_git_install_branch: d73f0aeb76e1f5e052e5e161656aba6647d6b845
 networking_nsxlib_git_track_branch: master
 
 networking_baremetal_git_repo: "{{ openstack_opendev_base_url }}/openstack/networking-baremetal"
-networking_baremetal_git_install_branch: 639b0afd18d149e2368de718f4f23b6fee742a65
-networking_baremetal_git_track_branch: master
+networking_baremetal_git_install_branch: ef25f9c7b86f8a095c94a887a849414fbf29eee4
+networking_baremetal_git_track_branch: stable/2023.2

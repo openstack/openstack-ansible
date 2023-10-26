@@ -13,19 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-### HEAD as of 15.08.2023 ###
+### HEAD as of 05.10.2023 ###
 
 ## Zun service
 zun_git_repo: "{{ openstack_opendev_base_url }}/openstack/zun"
-zun_git_install_branch: 4fa358474ee337f27bfaf8b98e886cc8d10ada50
-zun_git_track_branch: master
+zun_git_install_branch: 9c240d27651361e7723d30ab231cf1b86d0a8642
+zun_git_track_branch: stable/2023.2
 
 ## Zun kuryr service
 zun_kuryr_git_repo: "{{ openstack_opendev_base_url }}/openstack/kuryr-libnetwork"
-zun_kuryr_git_install_branch: 3bce4281376615a1a5b3cc347670261155f4ea50
-zun_kuryr_git_track_branch: master
+zun_kuryr_git_install_branch: 7b010b1e1f4bf25cb355cc8fb8f73c9f0838b78b
+zun_kuryr_git_track_branch: stable/2023.2
 
 ## Zun kuryr library
 zun_kuryr_lib_git_repo: "{{ openstack_opendev_base_url }}/openstack/kuryr"
-zun_kuryr_lib_git_install_branch: bc7e8e329e8bc6b5c5bb747911c9444172e930da
-zun_kuryr_lib_git_track_branch: master
+zun_kuryr_lib_git_install_branch: dae01c22210e0000f35916efb5bb530b3717f9ef
+zun_kuryr_lib_git_track_branch: stable/2023.2
