@@ -1,0 +1,7 @@
+---
+other:
+  - |
+    The ``localhost`` target was explicitly added to OSA inventory due to bug
+    #2041717. As a result, the 'all' group now contains localhost, and
+    custom playbooks targeting 'all' may need adjustment, e.g.:
+    ``hosts: all:!localhost``
