@@ -18,17 +18,13 @@
   become: yes
   become_user: root
   tasks:
-
-    - name: Cleanup gate images
-      block:
-
-        - name: Switch apt source from https to http
-          replace:
-            path: /etc/apt/sources.list
-            regexp: 'https'
-            replace: "http"
-          when:
-            - ansible_facts['distribution_release'] in ['jammy']
+    - name: Switch apt source from https to http
+      replace:
+        path: /etc/apt/sources.list
+        regexp: 'https'
+        replace: "http"
+      when:
+        - ansible_facts['distribution_release'] in ['jammy']
 
     - name: Remove package excludes for yum/dnf
       lineinfile:
@@ -36,3 +32,38 @@
         regexp: "^exclude="
         state: absent
       when: ansible_pkg_mgr == 'dnf'
+
+    - name: Adjust ssh server configuration based on STIG requirements
+      vars:
+        sshd_settings:
+          - name: GSSAPIAuthentication
+            value: "no"
+          - name: KerberosAuthentication
+            value: "no"
+          - name: PasswordAuthentication
+            value: "no"
+      blockinfile:
+        dest: /etc/ssh/sshd_config
+        state: present
+        marker: "# {mark} MANAGED BY PRE-OSA step"
+        insertbefore: "BOF"
+        validate: '/usr/sbin/sshd -T -f %s'
+        block: |-
+          {% for option in sshd_settings %}
+          {{ option['name'] ~ ' ' ~ option['value'] }}
+          {% endfor %}
+      notify:
+        - Restart ssh
+
+    - name: Remove motd from pam.d
+      lineinfile:
+        path: /etc/pam.d/sshd
+        regexp: '^(session\s*optional\s*pam_motd.so.*)$'
+        line: '# \1'
+        backrefs: yes
+
+  handlers:
+    - name: Restart ssh
+      service:
+        name: "sshd"
+        state: restarted
