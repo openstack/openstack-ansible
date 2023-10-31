@@ -51,7 +51,6 @@ each of them with specific use cases, and different sets of practices.
      - * https://github.com/ceph/ceph-ansible
        * https://github.com/logan2211/ansible-resolvconf
        * https://github.com/willshersystems/ansible-sshd
-       * https://github.com/opendaylight/integration-packaging-ansible-opendaylight
        * https://github.com/evrardjp/ansible-keepalived
        * ...
      - OpenStack-Ansible is not re-inventing the wheel, and tries to
