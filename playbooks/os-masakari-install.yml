@@ -45,7 +45,7 @@
       tags: pacemaker-corosync
 
 - name: Configure haproxy services
-  import_playbook: common-playbooks/haproxy-service-config.yml
+  import_playbook: openstack.osa.haproxy_service_config
   vars:
     service_group: masakari_api
     service_variable: "masakari_haproxy_services"

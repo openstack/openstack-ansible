@@ -33,7 +33,7 @@
       when: osa_gather_facts | default(True)
 
 - name: "Config haproxy service"
-  import_playbook: common-playbooks/haproxy-service-config.yml
+  import_playbook: openstack.osa.haproxy_service_config
   vars:
     service_group:
       - nova_api_os_compute
