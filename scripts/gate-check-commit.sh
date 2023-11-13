@@ -83,8 +83,9 @@ fi
 info_block "Checking for required libraries." 2> /dev/null || source "${OSA_CLONE_DIR}/scripts/scripts-library.sh"
 
 ## Main ----------------------------------------------------------------------
-
 # Log some data about the instance and the rest of the system
+gate_log_requirements
+
 log_instance_info
 
 run_dstat || true
