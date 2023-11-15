@@ -15,8 +15,6 @@
 
 # If there are Swift hosts in the environment, then use it as the default Glance store
 glance_default_store: "{{ ((groups['swift_all'] is defined) and (groups['swift_all'] | length > 0)) | ternary('swift', 'file') }}"
-glance_available_stores: "{{ [ glance_default_store ] + (glance_additional_stores | default([])) }}"
-glance_use_uwsgi: "{{ ('ceph' not in glance_available_stores) }}"
 
 # glance default list of bind mounts
 glance_container_bind_mounts:
