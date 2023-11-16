@@ -1,18 +1,22 @@
 ---
+features:
+  - |
+    Added support for RabbitMQ quorum queues. Quorum queues are disabled
+    by default. Followingvariables were implemented to control the behaviour:
+
+      * oslomsg_rabbit_quorum_queues (default: false)
+      * oslomsg_rabbit_quorum_delivery_limit (default: 0)
+      * oslomsg_rabbit_quorum_max_memory_bytes (default: 0)
+
+    Simmilar variables were also implemented for each service, while variables
+    above aim to change behaviour globally.
 upgrade:
   - |
-    During upgrade HA policy for RabbitMQ will be disabled and replaced with
-    usage of quorum queues which is a new and more efficient way to ensure
-    queues durability.
+    In case deployer wants to switch into using RabbitMQ quorum queues instead
+    of traditional HA policies during OpenStack upgrade, they need to define
+    variable ``oslomsg_rabbit_quorum_queues: True`` in user_variables.yml.
 
-    If you want to continue using HA queues instead of quorum queues, please
-    specify in your user_variables.yml:
-
-    .. code-block:: yaml
-
-      oslomsg_rabbit_quorum_queues: False
-
-    If ``oslomsg_rabbit_quorum_queues`` is enabled (default behaviour),
+    If ``oslomsg_rabbit_quorum_queues`` is enabled,
     RabbitMQ vhosts will be re-created without leading ``/``. Ensure to
     reflect these changes in your monitoring software if vhosts are not
     auto-discovered.

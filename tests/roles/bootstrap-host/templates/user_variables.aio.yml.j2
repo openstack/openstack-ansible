@@ -349,3 +349,7 @@ tempest_test_includelist:
   - tempest.scenario.test_minimum_basic.TestMinimumBasicScenario.test_minimum_basic_scenario
 {%   endif %}
 {% endif %}
+
+{% if 'quorum' in bootstrap_host_scenarios_expanded %}
+oslomsg_rabbit_quorum_queues: True
+{% endif %}

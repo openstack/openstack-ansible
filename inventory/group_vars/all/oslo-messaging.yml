@@ -13,6 +13,8 @@
 # limitations under the License.
 
 ## Main
+oslomsg_rabbit_quorum_queues: False
+
 # RPC
 oslomsg_rpc_transport: "{{ (groups[qdrouterd_host_group] | length > 0) | ternary('amqp', 'rabbit') }}"
 oslomsg_rpc_port: "{{ (groups[qdrouterd_host_group] | length > 0) | ternary(qdrouterd_port, rabbitmq_port) }}"
