@@ -1,0 +1,13 @@
+---
+upgrade:
+  - |
+    Keystone OIDC parameter 'oidc_redirect_uri' is replaced with
+    'oidc_redirect_path'. This parameter no longer needs to be set explicitly
+    unless you run additional services which may collide with the default
+    on the same port as Keystone. Your OIDC provider may need to be updated
+    to reflect this change in redirect URI which defaults to the Keystone
+    public URL plus the path /oidc_redirect.
+fixes:
+  - |
+    Fixed OpenStack command line OIDC integration where Apache mod_auth_openidc
+    if >= v2.4.9 including on Ubuntu Jammy.
