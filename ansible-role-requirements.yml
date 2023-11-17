@@ -2,9 +2,9 @@
 - name: ansible-hardening
   scm: git
   src: https://opendev.org/openstack/ansible-hardening
-  version: 42b68b9ff7070f14f896ece1f242a522d1ba9559
+  version: 3d71c09393f4af27a6afdbf2877c3ad4fd3cac6b
   trackbranch: stable/2023.1
-  shallow_since: '2023-05-23'
+  shallow_since: '2023-10-25'
 - name: apt_package_pinning
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-apt_package_pinning
@@ -14,9 +14,9 @@
 - name: galera_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-galera_server
-  version: b5f4e4d737f4a2f8fc6ded3639904b7e429048d9
+  version: 265722b67ab24344c5f7de5d5781fa80c3d8234a
   trackbranch: stable/2023.1
-  shallow_since: '2023-09-24'
+  shallow_since: '2023-11-10'
 - name: ceph_client
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-ceph_client
@@ -26,9 +26,9 @@
 - name: haproxy_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-haproxy_server
-  version: c5541c93c273d5f6f698f3446ec804d72d52e85d
+  version: 3da6e55618cfc94d23e78034030aeda02b04eb91
   trackbranch: stable/2023.1
-  shallow_since: '2023-10-09'
+  shallow_since: '2023-10-29'
 - name: keepalived
   scm: git
   src: https://github.com/evrardjp/ansible-keepalived
@@ -64,7 +64,7 @@
   src: https://opendev.org/openstack/openstack-ansible-os_keystone
   version: 8e7f46b21dfc0fab450e201e2932cfb150496893
   trackbranch: stable/2023.1
-  shallow_since: '2023-10-09'
+  shallow_since: '2023-10-19'
 - name: openstack_openrc
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-openstack_openrc
@@ -122,15 +122,15 @@
 - name: os_glance
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_glance
-  version: 32f729b3674c2de9c5e3adaa9e09f3ac1e6f0c56
+  version: a5677359abd57731d1004286e520c10b7c86effc
   trackbranch: stable/2023.1
-  shallow_since: '2023-08-22'
+  shallow_since: '2023-11-08'
 - name: os_gnocchi
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_gnocchi
-  version: 50849989ed3612ebdf10c263f1dfce734b8c2a31
+  version: c8be8efd9f61ff037e4c9e72bcd832c91d66bc44
   trackbranch: stable/2023.1
-  shallow_since: '2023-08-20'
+  shallow_since: '2023-10-18'
 - name: os_heat
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_heat
@@ -146,15 +146,15 @@
 - name: os_ironic
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_ironic
-  version: babc07ed0f4e5ec23f1731e19900c56223fbadae
+  version: e3efda5d0be10b77db1f4ddf0fc5e600475cdf4e
   trackbranch: stable/2023.1
-  shallow_since: '2023-08-21'
+  shallow_since: '2023-11-05'
 - name: os_magnum
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_magnum
-  version: b0ec6ece1b1c82e78171f74fdc0401b44297f94e
+  version: 42796583184ced367598c67cec74a8577688e0fd
   trackbranch: stable/2023.1
-  shallow_since: '2023-08-22'
+  shallow_since: '2023-11-08'
 - name: os_manila
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_manila
@@ -188,15 +188,15 @@
 - name: os_nova
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_nova
-  version: f3eeb7a7f8d64583921beafdfc167f2dfeb89161
+  version: 278f6d3fc46f6c68d74554e1ea91588d0af8620d
   trackbranch: stable/2023.1
-  shallow_since: '2023-10-19'
+  shallow_since: '2023-11-09'
 - name: os_octavia
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_octavia
-  version: bf442c3993d907e221b4a38ced6e84bb2350822f
+  version: 978a643dfd8f698baf43a5ba7a58adade4e62e3e
   trackbranch: stable/2023.1
-  shallow_since: '2023-08-22'
+  shallow_since: '2023-10-22'
 - name: os_placement
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_placement
@@ -326,7 +326,7 @@
 - name: python_venv_build
   src: https://opendev.org/openstack/ansible-role-python_venv_build
   scm: git
-  version: ea43f4b7d7805b02d2a41eb9bbb9ea0a33de7a1b
+  version: 7ca65b91379f2b6e1086e03e33e623968093bac0
   trackbranch: stable/2023.1
   shallow_since: '2023-10-11'
 - name: uwsgi
