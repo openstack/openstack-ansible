@@ -11,7 +11,7 @@ Installing the operating system
 Install one of the following supported operating systems on the
 target host:
 
-* Ubuntu server 22.04 (Focal Fossa) LTS 64-bit (Experimental support in the Yoga release)
+* Ubuntu server 22.04 (Jammy Jellyfish) LTS 64-bit (Experimental support in the Yoga release)
 * Ubuntu server 20.04 (Focal Fossa) LTS 64-bit
 * Debian 11 64-bit
 * Centos 8 Stream 64-bit
