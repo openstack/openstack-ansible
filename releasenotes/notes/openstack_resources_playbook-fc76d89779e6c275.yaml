@@ -1,0 +1,18 @@
+---
+features:
+  - |
+    Added ``openstack-resources.yml`` playbook that aims to handle creation
+    and futher adjustment of OpenStack resources. It relies heavily on
+    Ansible collection for OpenStack. The main goal of the playbook to provide
+    a unified method of creating and managing common resources, like images,
+    flavors, compute aggregates, networks, etc.
+    Playbook can consume following variables, that are provided to simmilar
+    ones in ``openstack.osa.openstack_resources`` role:
+
+      * openstack_user_identity
+      * openstack_user_compute
+      * openstack_user_network
+      * openstack_user_image
+      * openstack_user_coe
+
+    Please reffer to the role documentation and examples for more details.
