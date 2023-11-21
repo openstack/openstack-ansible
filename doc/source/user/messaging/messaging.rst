@@ -87,7 +87,7 @@ to the rabbitmq server backend.
 
 .. literalinclude:: ../../../../inventory/group_vars/all/oslo-messaging.yml
    :language: yaml
-   :start-after: ## Main
+   :start-after: under the License.
 
 .. _oslo-messaging.yml: https://github.com/openstack/openstack-ansible/blob/master/inventory/group_vars/all/oslo-messaging.yml
 

@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Added new variable ``rabbitmq_queue_replication`` that allows to control
+    if any redundancy features (like quorum queues or classic mirrored queues)
+    will be used.
+    By default it is set to ``True``.
