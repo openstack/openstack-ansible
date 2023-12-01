@@ -33,7 +33,8 @@ rabbitmq_policies:
   - name: CQv2
     pattern: '.*'
     priority: 0
-    tags: "x-queue-version=2"
+    tags:
+      queue-version: 2
     state: "{{ (oslomsg_rabbit_quorum_queues | default(True)) | ternary('absent', 'present') }}"
 
 ## Galera options
