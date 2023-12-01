@@ -47,7 +47,7 @@
   shell: |
     set -o pipefail
     if [[ $(df -T / | tail -n 1 | awk '{print $2}') == "btrfs" ]]; then
-        btrfs fi usage --kbytes / | awk '/^.*Free / {print $3}'| sed 's/\..*//'
+        btrfs fi du -s --raw / 2>/dev/null | awk '/[0-9]/ {print $2*1024}'
     else
         df -BK / | awk '!/^Filesystem/ {print $4}' | sed 's/K//'
     fi
