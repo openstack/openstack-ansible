@@ -1,0 +1,6 @@
+---
+deprecations:
+  - |
+    SSHD and rsync are no longer installed or configured for all containers.
+    This also deprecates usage of ``lxc_container_ssh_key`` and variable
+    has no effect any longer.

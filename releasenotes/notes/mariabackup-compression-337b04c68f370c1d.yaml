@@ -1,0 +1,28 @@
+---
+features:
+  - |
+    Adds optional compression for backups created with mariabackup. Adds two
+    new CLI parameters to the mariabackup script that are used to enable
+    compression and to choose a compression tool.
+
+    * ``--compress=True|False``
+    * ``--compressor=<compressor>``
+
+    Also introduces new Ansible variables that control the above mentioned
+    parameters.
+
+    * ``galera_mariadb_backups_compress``
+    * ``galera_mariadb_backups_compressor``
+
+    Each backup archive is stored in a dedicated directory, alongside the
+    backup metadata.
+upgrade:
+  - |
+    Backup compression is disabled by default, so no changes need to be made
+    for existing deployments. Should compression be desired, set
+    ``galera_mariadb_backups_compress`` to ``True``. Choose a compression tool
+    with ``galera_mariadb_backups_compressor``, default is ``gzip``.
+others:
+  - |
+    Compressed backups cannot be prepared in advance, this step must be
+    manually carried out by the user before importing it into MariaDB.

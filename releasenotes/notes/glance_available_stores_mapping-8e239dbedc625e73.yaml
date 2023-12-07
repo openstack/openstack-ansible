@@ -1,0 +1,11 @@
+---
+
+upgrade:
+  - |
+    Default value of ``glance_available_stores`` has changed. Now it is
+    always should be represented as a list of mappings, where each item
+    has following keys:
+
+      * name (required)
+      * type (required)
+      * config (optional)

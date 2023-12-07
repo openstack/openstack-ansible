@@ -1,0 +1,22 @@
+---
+features:
+  - |
+    Added new keys ``haproxy_frontend_h2`` and ``haproxy_backend_h2``
+    per service definition to enable HTTP/2 for a specified service.
+
+    This also add new variables to control default behavoir for
+    frontends and backends:
+
+      * ``haproxy_frontend_h2: true``
+      * ``haproxy_backend_h2: false``
+
+    Please mention, that double stack of HTTP/1.1 and HTTP/2 is only available
+    for TLS protected frontends. In case frontend is just TCP
+    haproxy_frontend_h2 will be ignored.
+
+    At the same time ``haproxy_backend_h2`` will be respected regardless of
+    TLS/plain TCP configuration.
+upgrade:
+  - |
+    HTTP/2 is enabled by default for frontends that are covered with TLS.
+    You can disable this behaviour by setting ``haproxy_frontend_h2: false``

@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    It is now possible to use multiple variables with a specific prefix to
+    define the whole contents of the tempest test include/exclude lists.
+    Any variable from host/group or ansible extra-vars whose name is prefixed
+    with the value in the os_tempest role default `tempest_test_search_includelist_pattern`
+    or `tempest_test_search_excludelist_pattern` will be combined with the
+    existing `tempest_test_includelist` or `tempest_test_excludelist` variables
+    into a single include/exclude list.

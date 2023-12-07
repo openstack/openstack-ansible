@@ -1,0 +1,7 @@
+---
+upgrade:
+  - |
+    The variables `tempest_test_includelist_file_path` and `tempest_test_excludelist_file_path`
+    are renamed to `tempest_includelist_file_path` and `tempest_excludelist_file_path`.
+    Any overrides using these variables should be updated to account for the
+    new variable names.
