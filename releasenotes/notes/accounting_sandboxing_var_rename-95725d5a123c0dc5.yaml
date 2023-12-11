@@ -1,0 +1,22 @@
+---
+
+deprecations:
+  - |
+    In order to follow ansible naming conventions for variables,
+    following variables were renamed:
+
+      * systemd_TimeoutSec -> systemd_service_timeout_sec
+      * systemd_Restart -> systemd_service_restart
+      * systemd_RestartSec -> systemd_service_restart_sec
+      * systemd_CPUAccounting -> systemd_service_cpu_accounting
+      * systemd_BlockIOAccounting -> systemd_service_block_io_accounting
+      * systemd_MemoryAccounting -> systemd_service_memory_accounting
+      * systemd_TasksAccounting -> systemd_service_tasks_accounting
+      * systemd_PrivateTmp -> systemd_service_private_tmp
+      * systemd_PrivateDevices -> systemd_service_private_devices
+      * systemd_PrivateNetwork -> systemd_service_private_network
+      * systemd_PrivateUsers -> systemd_service_private_users
+
+    Old variable names were kept for backwards compatibility but will be
+    removed in next releases. It is highly adviced to use new variable
+    names in your deployments.

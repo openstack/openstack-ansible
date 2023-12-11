@@ -1,0 +1,8 @@
+---
+deprecations:
+  - |
+    ``nova_ram_weight_multiplier`` was deprecated. Multipliers should be
+    defined using ``nova_nova_conf_overrides``.
+    Please note that default value for ``nova_ram_weight_multiplier`` was
+    previously set to 5, while nova default is 1. This deprecation will
+    slightly change weighing behavior in OSA.

@@ -1,0 +1,7 @@
+---
+upgrade:
+  - |
+    The variable lxc_cache_map is removed as the lxc_hosts ansible role
+    has only been able to create containers matching the host architecture
+    and OS for several releases, and lxc_cache_map simply carried copies
+    of data from ansible_facts.

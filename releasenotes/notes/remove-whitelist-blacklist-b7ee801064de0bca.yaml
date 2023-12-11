@@ -1,0 +1,6 @@
+---
+upgrade:
+  - |
+    The previously deprecated variables `tempest_test_whitelist` and
+    `tempest_test_blacklist` are removed. The replacement include/exclude
+    lists should be used instead to define tempest tests to run.

@@ -9,10 +9,11 @@ configuration of an OpenStack environment.
 
 Documentation for each of the following releases is available.
 
-2023.2 (Bobcat): Under Development
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2023.2 (Bobcat): Maintained
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible 2023.2 (Bobcat) is currently Under Development.
+OpenStack-Ansible 2023.2 (Bobcat) was first released with the 28.0.0 tag on
+7 December 2023.
 
 .. toctree::
    :maxdepth: 1
