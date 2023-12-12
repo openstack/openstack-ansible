@@ -301,6 +301,7 @@
       jobs:
         - build-openstack-deploy-guide:
             files: &deploy-guide-triggers
+              - .gitreview
               - ^deploy-guide/.*
               - ansible-role-requirements.yml
               - bindep.txt
