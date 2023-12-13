@@ -63,7 +63,7 @@ if [[ "${ACTION}" =~ "upgrade" ]]; then
     # Be sure to change this whenever a new stable branch
     # is created.
     UPGRADE_ACTION_ARRAY=(${ACTION//_/ })
-    export UPGRADE_SOURCE_RELEASE=${UPGRADE_ACTION_ARRAY[1]:-'2023.1'}
+    export UPGRADE_SOURCE_RELEASE=${UPGRADE_ACTION_ARRAY[1]:-'2023.2'}
     export UPGRADE_SOURCE_BRANCH=${UPGRADE_SOURCE_BRANCH:-stable/$UPGRADE_SOURCE_RELEASE}
 
     # Store the target SHA/branch
