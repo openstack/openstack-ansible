@@ -7,6 +7,8 @@ configuration of an OpenStack environment.
 
 OpenStack-Ansible's Stein was first released with the 19.0.0 tag on 30 June 2019.
 
+This release has reached it's End Of Life.
+
 .. toctree::
    :maxdepth: 1
 
@@ -16,4 +18,3 @@ OpenStack-Ansible's Stein was first released with the 19.0.0 tag on 30 June 2019
    user/index
    contributor/index
    reference/index
-
