@@ -22,7 +22,6 @@ haproxy_blazar_api_service:
   haproxy_balance_type: http
   haproxy_backend_httpcheck_options:
     - 'send hdr User-Agent "osa-haproxy-healthcheck" meth HEAD'
-  haproxy_backend_httpcheck_options:
     - 'expect rstatus (200|401)'
   haproxy_backend_ssl: "{{ blazar_backend_ssl | default(openstack_service_backend_ssl) }}"
   haproxy_backend_ca: "{{ openstack_haproxy_backend_ca | default(True) }}"

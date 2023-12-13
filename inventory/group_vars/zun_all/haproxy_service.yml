@@ -37,8 +37,8 @@ haproxy_zun_console_service:
   haproxy_timeout_server: 60m
   haproxy_balance_alg: source
   haproxy_backend_httpcheck_options:
-    - "expect status 405"
     - 'send hdr User-Agent "osa-haproxy-healthcheck" meth HEAD'
+    - "expect status 405"
 
   # haproxy_backend_ssl disabled due to: https://bugs.launchpad.net/zun/+bug/2016917
   haproxy_backend_ssl: False
