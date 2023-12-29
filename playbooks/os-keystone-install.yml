@@ -81,7 +81,9 @@
       vars:
         haproxy_backend: "keystone_service-back"
         haproxy_state: disabled
-      when: "groups['keystone_all'] | length > 1"
+      when:
+        - "'keystone_all' in group_names"
+        - "groups['keystone_all'] | length > 1"
 
     - name: Configure container
       include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
@@ -110,7 +112,9 @@
       vars:
         haproxy_backend: "keystone_service-back"
         haproxy_state: enabled
-      when: "groups['keystone_all'] | length > 1"
+      when:
+        - "'keystone_all' in group_names"
+        - "groups['keystone_all'] | length > 1"
 
 # These facts are set against the deployment host to ensure that
 # they are fast to access. This is done in preference to setting
