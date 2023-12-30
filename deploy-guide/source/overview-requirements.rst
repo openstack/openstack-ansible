@@ -11,9 +11,6 @@ following minimum requirements:
 * Ubuntu
 
   * Ubuntu 22.04 LTS (Jammy Jellyfish)
-    *Note*: Due to the absence of community repos, Ceph packages will be
-    installed from the default repository which contains *only* Quincy
-    release.
 
 * CentOS
 
