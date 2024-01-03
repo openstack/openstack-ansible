@@ -10,6 +10,10 @@ configuration of an OpenStack environment.
 OpenStack-Ansible Train series was first released with the 20.0.0 tag on
 16 December 2019.
 
+.. warning::
+
+   This release has reached it's End Of Life.
+
 .. toctree::
    :maxdepth: 1
 
