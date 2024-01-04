@@ -1,0 +1,34 @@
+---
+
+issues:
+  - |
+    With recent changes to config_template module, it is not possible
+    anymore to have variables as dictionary keys in overrides. Example below
+    will not be renderred properly:
+
+    .. code-block:: yaml
+
+      config_overrides:
+        "{{ inventory_hostname }}":
+          cruel: world
+
+    This limitation boils down to Ansible design and will be true for any other
+    module as well.
+    In order to overcome it, you can transform the dictionary to a Jinja2 format:
+
+    .. code-block:: yaml
+
+      config_overrides: |-
+        {{
+          {
+            inventory_hostname: {
+              'cruel': 'world'
+            }
+          }
+        }}
+
+fixes:
+  - |
+    Fixes format of ``ceph_conf_overrides_rgw`` variable by converting override
+    dictionary to Jinja2 format to workaround Ansible limitation on usage of
+    variables as keys in dictionary.
