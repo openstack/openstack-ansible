@@ -60,10 +60,25 @@
   tags:
     - create-data-disk-partitions
 
+- name: Determine partition names
+  command: "lsblk /dev/{{ _bootstrap_host_data_disk_device }} -o NAME --noheadings --list"
+  register: data_disk_partitions
+  when:
+    - bootstrap_host_data_disk_device_force | bool
+  changed_when: false
+  tags:
+    - create-data-disk-partitions
+
+- name: Set bootstrap host data disk partitions fact
+  set_fact:
+    _bootstrap_host_data_partition_devices: "{{ data_disk_partitions.stdout_lines[1:] | list }}"
+  when:
+    - bootstrap_host_data_disk_device_force | bool
+
 - name: Format the partition 1
   filesystem:
     fstype: "{{ bootstrap_host_data_disk_fs_type }}"
-    dev: "/dev/{{ _bootstrap_host_data_disk_device }}1"
+    dev: "/dev/{{ _bootstrap_host_data_partition_devices[0] }}"
     opts: "{{ bootstrap_host_format_options[bootstrap_host_data_disk_fs_type] | default(omit) }}"
   when:
     - bootstrap_host_data_disk_device_force | bool
@@ -73,7 +88,7 @@
 - name: Format the partition 2
   filesystem:
     fstype: "{{ bootstrap_host_data_disk2_fs }}"
-    dev: "/dev/{{ _bootstrap_host_data_disk_device }}2"
+    dev: "/dev/{{ _bootstrap_host_data_partition_devices[1] }}"
     opts: "{{ bootstrap_host_format_options[bootstrap_host_data_disk2_fs] | default(omit) }}"
   when:
     - bootstrap_host_data_disk_device_force | bool
@@ -87,7 +102,7 @@
     name: systemd_mount
   vars:
     systemd_mounts:
-      - what: "/dev/{{ _bootstrap_host_data_disk_device }}1"
+      - what: "/dev/{{ _bootstrap_host_data_partition_devices[0] }}"
         where: "/openstack"
         type: "{{ bootstrap_host_data_disk_fs_type }}"
         options: "{{ bootstrap_host_data_mount_options[bootstrap_host_data_disk_fs_type] }}"
@@ -101,7 +116,7 @@
     name: systemd_mount
   vars:
     systemd_mounts:
-      - what: "/dev/{{ _bootstrap_host_data_disk_device }}2"
+      - what: "/dev/{{ _bootstrap_host_data_partition_devices[1] }}"
         where: "{{ bootstrap_host_data_disk2_path }}"
         type: "{{ bootstrap_host_data_disk2_fs }}"
         options: "{{ bootstrap_host_data_disk2_fs_mount_options }}"
@@ -125,7 +140,7 @@
         - install-packages
 
     - name: Create the ZFS pool
-      command: zpool create osa-test-pool "/dev/{{ _bootstrap_host_data_disk_device }}2"
+      command: zpool create osa-test-pool "/dev/{{ _bootstrap_host_data_partition_devices[1] }}"
       args:
         creates: /osa-test-pool
       when:
@@ -142,7 +157,7 @@
   when: _lxc_container_backing_store == 'lvm'
   block:
     - name: Make LVM physical volume on the cinder device
-      shell: "pvcreate /dev/{{ _bootstrap_host_data_disk_device }}2 && touch /openstack/lxc.pvcreate"
+      shell: "pvcreate /dev/{{ _bootstrap_host_data_partition_devices[1] }} && touch /openstack/lxc.pvcreate"
       args:
         creates: "/openstack/lxc.pvcreate"
       tags:
@@ -158,6 +173,6 @@
     - name: Add cinder-volumes volume group
       lvg:
         vg: lxc
-        pvs: "/dev/{{ _bootstrap_host_data_disk_device }}2"
+        pvs: "/dev/{{ _bootstrap_host_data_partition_devices[1] }}"
       tags:
         - data-config
