@@ -1,19 +1,23 @@
 ---
-ceph_conf_overrides_rgw:
-  "client.rgw.{{ hostvars[inventory_hostname]['ansible_facts']['hostname'] }}.rgw0":
-    # OpenStack integration with Keystone
-    rgw_keystone_url: "{{ keystone_service_adminuri }}"
-    rgw_keystone_api_version: 3
-    rgw_keystone_admin_user: "{{ radosgw_admin_user }}"
-    rgw_keystone_admin_password: "{{ radosgw_admin_password }}"
-    rgw_keystone_admin_project: "{{ radosgw_admin_tenant }}"
-    rgw_keystone_admin_domain: default
-    rgw_keystone_accepted_roles: 'member, admin, swiftoperator'
-    rgw_keystone_implicit_tenants: 'true'
-    rgw_swift_account_in_url: 'true'
-    rgw_swift_versioning_enabled: 'true'
-    rgw_enable_apis: 'swift, s3'
-    rgw_s3_auth_use_keystone: 'true'
+ceph_conf_overrides_rgw: |-
+  {{
+    {
+      'client.rgw.' ~ hostvars[inventory_hostname]['ansible_facts']['hostname'] ~ '.rgw0': {
+        'rgw_keystone_url': keystone_service_adminuri,
+        'rgw_keystone_api_version': 3,
+        'rgw_keystone_admin_user': radosgw_admin_user,
+        'rgw_keystone_admin_password': radosgw_admin_password,
+        'rgw_keystone_admin_project': radosgw_admin_tenant,
+        'rgw_keystone_admin_domain': 'default',
+        'rgw_keystone_accepted_roles': 'member, admin, swiftoperator',
+        'rgw_keystone_implicit_tenants': 'true',
+        'rgw_swift_account_in_url': 'true',
+        'rgw_swift_versioning_enabled': 'true',
+        'rgw_enable_apis': 'swift, s3',
+        'rgw_s3_auth_use_keystone': 'true'
+      }
+    }
+  }}
 
 ###
 ### Backend TLS
