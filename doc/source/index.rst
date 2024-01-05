@@ -121,11 +121,10 @@ OpenStack-Ansible Victoria series was first released with the 22.0.0 tag on
 .. _OpenStack-Ansible Victoria series release notes: https://docs.openstack.org/releasenotes/openstack-ansible/victoria.html
 
 
-Ussuri: Extended Maintenance
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Ussuri: EOL (end-of-life)
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible Ussuri series was first released with the 21.0.0 tag on
-14 August 2020.
+OpenStack-Ansible Ussuri series was EOL'd on 3 January 2024.
 
 * `OpenStack-Ansible Ussuri Documentation`_
 
@@ -135,11 +134,10 @@ OpenStack-Ansible Ussuri series was first released with the 21.0.0 tag on
 .. _OpenStack-Ansible Ussuri series release notes: https://docs.openstack.org/releasenotes/openstack-ansible/ussuri.html
 
 
-Train: Extended Maintenance
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Train: EOL (end-of-life)
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible Train series was first released with the 20.0.0 tag on
-16 December 2019.
+OpenStack-Ansible Train series was EOL'd on 3 January 2024.
 
 * `OpenStack-Ansible Train Documentation`_
 
@@ -148,11 +146,10 @@ OpenStack-Ansible Train series was first released with the 20.0.0 tag on
 .. _OpenStack-Ansible Train Documentation: https://docs.openstack.org/openstack-ansible/train/
 .. _OpenStack-Ansible Train series release notes: https://docs.openstack.org/releasenotes/openstack-ansible/train.html
 
-Stein: Extended Maintenance
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Stein: EOL (end-of-life)
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible's Stein series was first released with the 19.0.0 tag on
-30 June 2019.
+OpenStack-Ansible's Stein series was EOL'd on 14 December 2023.
 
 * `OpenStack-Ansible Stein Documentation`_
 
@@ -162,11 +159,10 @@ OpenStack-Ansible's Stein series was first released with the 19.0.0 tag on
 .. _OpenStack-Ansible Stein series release notes: https://docs.openstack.org/releasenotes/openstack-ansible/stein.html
 
 
-Rocky: Extended Maintenance
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Rocky: EOL (end-of-life)
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible's Rocky series was first released with the 18.0.0 tag on
-16 October 2018.
+OpenStack-Ansible's Rocky series was EOL'd on 11 July 2023.
 
 * `OpenStack-Ansible Rocky Documentation`_
 
