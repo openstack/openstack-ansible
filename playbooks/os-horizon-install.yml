@@ -43,6 +43,19 @@
   tags:
     - horizon
   pre_tasks:
+    # In order to ensure that any container, software or
+    # config file changes which causes a container/service
+    # restart do not cause an unexpected outage, we drain
+    # the load balancer back end for this container.
+    - name: Disabling haproxy backends
+      include_tasks: common-tasks/haproxy-endpoint-manage.yml
+      vars:
+        haproxy_backend: horizon-back
+        haproxy_state: disabled
+      when:
+        - "'horizon_all' in group_names"
+        - "groups['horizon_all'] | length > 1"
+
     - name: Including container-setup tasks
       include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       when: not is_metal
@@ -55,3 +68,16 @@
     - role: "openstack.osa.system_crontab_coordination"
       tags:
         - crontab
+
+  post_tasks:
+    # Now that container changes are done, we can set
+    # the load balancer back end for this container
+    # to available again.
+    - name: Enabling haproxy backends
+      include_tasks: common-tasks/haproxy-endpoint-manage.yml
+      vars:
+        haproxy_backend: horizon-back
+        haproxy_state: enabled
+      when:
+        - "'horizon_all' in group_names"
+        - "groups['horizon_all'] | length > 1"
