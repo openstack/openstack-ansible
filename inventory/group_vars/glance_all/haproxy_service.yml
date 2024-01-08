@@ -22,7 +22,7 @@ haproxy_glance_api_service:
   haproxy_balance_type: http
   haproxy_balance_alg: source
   haproxy_backend_httpcheck_options:
-    - 'send hdr User-Agent "osa-haproxy-healthcheck" meth GET'
+    - 'send hdr User-Agent "osa-haproxy-healthcheck" meth GET uri /healthcheck'
   haproxy_backend_ssl: "{{ (glance_use_uwsgi | default(True)) | ternary((glance_backend_ssl | default(openstack_service_backend_ssl)), False) }}"
   haproxy_backend_ca: "{{ glance_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
   haproxy_accept_both_protocols: "{{ glance_accept_both_protocols | default(openstack_service_accept_both_protocols) }}"
