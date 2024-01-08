@@ -13,7 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
+- name: Including container setup role
+  include_role:
+    name: "openstack.osa.{{ container_tech | default('lxc') }}_container_setup"
   when: not is_metal
   vars:
     list_of_bind_mounts: "{{ ceph_container_bind_mounts }}"

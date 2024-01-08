@@ -29,7 +29,8 @@
     - name: Including os-log-dir-setup tasks
       include_tasks: common-tasks/os-log-dir-setup.yml
     - name: Including container-setup tasks
-      include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
+      include_role:
+        name: "openstack.osa.{{ container_tech | default('lxc') }}_container_setup"
       when: not is_metal
       vars:
         list_of_bind_mounts: "{{ zookeeper_container_bind_mounts }}"
