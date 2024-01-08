@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-tempest_test_includelist:
+tempest_test_includelist_zun:
   - zun_tempest_plugin.tests.tempest.api
 
-tempest_test_excludelist:
+tempest_test_excludelist_zun:
   - test: zun_tempest_plugin.tests.tempest.api.test_containers.TestContainer.test_run_container_with_image_driver_glance
     reason: This test requires direct access to the Docker daemon API on localhost
   - test: zun_tempest_plugin.tests.tempest.api.test_capsules.TestCapsule.test_create_capsule_full

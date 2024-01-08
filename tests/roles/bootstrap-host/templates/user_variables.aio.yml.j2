@@ -149,7 +149,7 @@ neutron_plugin_base:
 {% endif %}
 
 {% if 'neutron' in bootstrap_host_scenarios %}
-tempest_test_includelist:
+tempest_test_includelist_neutron:
   - "neutron_tempest_plugin.api.test_networks*"
   - "tempest.scenario.test_network_basic_ops.TestNetworkBasicOps.test_network_basic_ops"
 
@@ -345,7 +345,7 @@ cinder_backends:
       - ultra-high-iops
 
 {%   if 'cinder' in bootstrap_host_scenarios %}
-tempest_test_includelist:
+tempest_test_includelist_cinder:
   - tempest.scenario.test_minimum_basic.TestMinimumBasicScenario.test_minimum_basic_scenario
 {%   endif %}
 {% endif %}

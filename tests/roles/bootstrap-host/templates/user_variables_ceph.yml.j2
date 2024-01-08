@@ -30,5 +30,7 @@ glance_default_store: rbd
 glance_rbd_store_pool: images
 nova_libvirt_images_rbd_pool: vms
 # NOTE(noonedeadpunk): ceph bug to track the issue https://tracker.ceph.com/issues/46295
-tempest_test_includelist:
+tempest_test_includelist_ceph:
     - tempest.scenario.test_volume_boot_pattern.TestVolumeBootPattern.test_volume_boot_pattern
+# NOTE(noonedeadpunk)L We want here to run _only_ this test as otherwise we might be short on memory
+tempest_test_search_includelist_pattern: tempest_test_includelist_ceph
