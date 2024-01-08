@@ -21,7 +21,7 @@ haproxy_zun_api_service:
   haproxy_port: 9517
   haproxy_balance_type: http
   haproxy_backend_httpcheck_options:
-    - 'send hdr User-Agent "osa-haproxy-healthcheck" meth GET'
+    - 'send hdr User-Agent "osa-haproxy-healthcheck" meth GET uri /healthcheck'
   haproxy_backend_ssl: "{{ zun_backend_ssl | default(openstack_service_backend_ssl) }}"
   haproxy_backend_ca: "{{ zun_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
   haproxy_service_enabled: "{{ groups['zun_api'] is defined and groups['zun_api'] | length > 0 }}"

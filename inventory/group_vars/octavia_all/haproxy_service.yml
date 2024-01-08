@@ -21,7 +21,7 @@ haproxy_octavia_service:
   haproxy_port: 9876
   haproxy_balance_type: http
   haproxy_backend_httpcheck_options:
-    - 'send hdr User-Agent "osa-haproxy-healthcheck" meth GET'
+    - 'send hdr User-Agent "osa-haproxy-healthcheck" meth GET uri /healthcheck'
   haproxy_backend_ssl: "{{ octavia_backend_ssl | default(openstack_service_backend_ssl) }}"
   haproxy_backend_ca: "{{ octavia_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
   haproxy_accept_both_protocols: "{{ octavia_accept_both_protocols | default(openstack_service_accept_both_protocols) }}"

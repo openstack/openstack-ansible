@@ -21,7 +21,7 @@ haproxy_barbican_service:
   haproxy_port: 9311
   haproxy_balance_type: http
   haproxy_backend_httpcheck_options:
-    - 'send hdr User-Agent "osa-haproxy-healthcheck" meth GET'
+    - 'send hdr User-Agent "osa-haproxy-healthcheck" meth GET uri /healthcheck'
   haproxy_backend_ssl: "{{ barbican_backend_ssl | default(openstack_service_backend_ssl) }}"
   haproxy_backend_ca: "{{ barbican_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
   haproxy_accept_both_protocols: "{{ barbican_accept_both_protocols | default(openstack_service_accept_both_protocols) }}"
