@@ -93,6 +93,19 @@ You can override location of the ``user-collection-requirements.yml`` by
 setting ``USER_COLLECTION_FILE`` environment variable before running the
 ``bootstrap-ansible.sh`` script.
 
+Installing extra Python packages inside Ansible virtualenv
+----------------------------------------------------------
+
+Some Ansible collections may require presence of specific Python libraries
+inside execution environment.
+In order to accomplish that deployer can create ``/etc/openstack_deploy/user-ansible-venv-requirements.txt``
+file with a list of Python libraries that should be installed inside virtual
+environment along with Ansible during ``bootstrap-ansible.sh`` execution.
+
+You can override the default path to ``user-ansible-venv-requirements.txt`` file
+with ``USER_ANSIBLE_REQUIREMENTS_FILE`` environment variable before running the
+``bootstrap-ansible.sh`` script.
+
 Maintaining local forks of ansible roles
 ----------------------------------------
 
