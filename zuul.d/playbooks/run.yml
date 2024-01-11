@@ -13,12 +13,19 @@
       args:
         chdir: "src/opendev.org/openstack/openstack-ansible"
         executable: /bin/bash
-      environment:
-        # NOTE(logan): ARA is already installed in the gate environment by the
-        # pre-osa-aio pre-run playbook
-        SETUP_ARA: false
-        # NOTE(logan): The project is bootstrapped in the pre playbook so the
-        # bootstrapping can be skipped here
-        SKIP_OSA_RUNTIME_VENV_BUILD: 1
-        SKIP_OSA_BOOTSTRAP_AIO: 1
-        SKIP_OSA_ROLE_CLONE: 1
+      vars:
+        skip_bootstrap:
+          # NOTE(logan): ARA is already installed in the gate environment by the
+          # pre-osa-aio pre-run playbook
+          SETUP_ARA: False
+          # NOTE(logan): The project is bootstrapped in the pre playbook so the
+          # bootstrapping can be skipped here
+          SKIP_OSA_RUNTIME_VENV_BUILD: 1
+          SKIP_OSA_BOOTSTRAP_AIO: 1
+          SKIP_OSA_ROLE_CLONE: 1
+        run_bootstrap:
+          # NOTE(jrosser)
+          # ZUUL_SRC_PATH is needed for bootstrap-ansible inside gate-check-commit.sh
+          # when pre playbook bootstrap is disabled
+          ZUUL_SRC_PATH: "{{ ansible_user_dir }}/src"
+      environment: "{{ (osa_pre_run_bootstrap | default(True)) | ternary(skip_bootstrap, run_bootstrap) }}"
