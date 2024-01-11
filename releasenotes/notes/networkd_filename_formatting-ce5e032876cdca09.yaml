@@ -1,0 +1,12 @@
+---
+
+deprecations:
+  - |
+    Variables controlling systemd-networkd default filename templating when one
+    is not supplied were deprecated and has no effect from now on.
+
+      * systemd_networkd_filename
+      * systemd_networkd_filename_alt
+
+    It is highly recommended to provide ``filename`` parameter explicitly
+    whenever you define ``systemd_netdevs`` or ``systemd_networks`` structures.

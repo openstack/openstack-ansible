@@ -1,0 +1,8 @@
+---
+fixes:
+  - |
+    After adding ``localhost`` to inventory explicitly this resulted in potential
+    FQDN change due to adding a record for localhost into managed block inside
+    ``/etc/hosts`` file.
+    This is now fixed and record for ``127.0.0.1`` will be removed from managed
+    by Ansible blocks inside /etc/hosts file.

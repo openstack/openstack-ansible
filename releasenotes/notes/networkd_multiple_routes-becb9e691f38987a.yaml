@@ -1,0 +1,11 @@
+---
+
+fixes:
+  - |
+    Multiple routes can be supplied to the systemd network and they will be
+    placed to a separate configuration file
+    `/etc/systemd/network/{{ filename }}.d/routes.conf`
+
+    Previously defining multiple routes will result in squashing them together
+    under same section name, while for them to work properly each descriped
+    route must be placed in it's own section.
