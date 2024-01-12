@@ -1,0 +1,13 @@
+---
+prelude: >
+    Naming convention for containers has changed in Ansible inventory
+    to match requirements defined by RFC1034.
+    From now on, all newly added containers will not have underscore (``_``)
+    symbol neither in their ``inventory_hostname`` nor in ``container_name``
+
+    This change does not touch or alter already existing containers in the
+    inventory.
+
+    In order to apply new naming convention for an existing environment you
+    need to delete containers on the host and from the inventory. After that
+    new container name will be generated and container can be created again.

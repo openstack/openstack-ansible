@@ -324,24 +324,26 @@ def _append_to_host_groups(inventory, container_type, assignment, host_type,
                             hdata[_keys] = options
 
 
-def _add_container_hosts(assignment, config, container_name, container_type,
+def _add_container_hosts(assignment, config, container_group, container_type,
                          inventory, properties):
     """Add a given container name and type to the hosts.
 
     :param assignment: ``str`` Name of container component target
     :param config: ``dict``  User defined information
-    :param container_name: ``str``  Name fo container
+    :param container_group: ``str``  Name of container group. Used for
+                            defining container name
     :param container_type: ``str``  Type of container
     :param inventory: ``dict``  Living dictionary of inventory
     :param properties: ``dict``  Dict of container properties
     """
     physical_host_type = '{}_hosts'.format(container_type.split('_')[0])
+    container_name = re.sub(r'_', '-', f'{container_group}')
     # If the physical host type is not in config return
     if physical_host_type not in config:
         return
 
     for host_type in inventory[physical_host_type]['hosts']:
-        container_hosts = inventory[container_name]['hosts']
+        container_hosts = inventory[container_group]['hosts']
 
         # If host_type is not in config do not append containers to it
         if host_type not in config[physical_host_type]:
@@ -358,11 +360,11 @@ def _add_container_hosts(assignment, config, container_name, container_type,
         if no_containers:
             properties['is_metal'] = True
 
-        container_affinity = affinity.get(container_name, 1)
+        container_affinity = affinity.get(container_group, 1)
         # Ensures that container names are not longer than 63
         # This section will ensure that we are not it by the following bug:
         # https://bugzilla.mindrot.org/show_bug.cgi?id=2239
-        type_and_name = '{}_{}'.format(host_type, container_name)
+        type_and_name = '{}-{}'.format(host_type, container_name)
         logger.debug("Generated container name %s", type_and_name)
         max_hostname_len = 52
         is_metal = properties.get('is_metal', False)
@@ -396,7 +398,7 @@ def _add_container_hosts(assignment, config, container_name, container_type,
             physical_host['container_types'] = container_host_type
 
         # Add all of the containers into the inventory
-        logger.debug("Building containers for host %s", container_name)
+        logger.debug("Building containers for host %s", container_group)
         _build_container_hosts(
             container_affinity,
             container_hosts,
