@@ -252,7 +252,11 @@ def _append_to_host_groups(inventory, container_type, assignment, host_type,
     :param host_type: ``str``  Name of the host type
     :param type_and_name: ``str`` Combined name of host and container name
     """
-    physical_group_type = '{}_all'.format(container_type.split('_')[0])
+    physical_group_type = re.sub(
+        r"(?P<group>.*)_(?P<type>.*)$",
+        r'\g<group>_all',
+        container_type
+    )
     if physical_group_type not in inventory:
         logger.debug("Added %s group to inventory", physical_group_type)
         inventory[physical_group_type] = {'hosts': []}
@@ -336,7 +340,11 @@ def _add_container_hosts(assignment, config, container_group, container_type,
     :param inventory: ``dict``  Living dictionary of inventory
     :param properties: ``dict``  Dict of container properties
     """
-    physical_host_type = '{}_hosts'.format(container_type.split('_')[0])
+    physical_host_type = re.sub(
+        r"(?P<group>.*)_(?P<type>.*)$",
+        r'\g<group>_hosts',
+        container_type
+    )
     container_name = re.sub(r'_', '-', f'{container_group}')
     # If the physical host type is not in config return
     if physical_host_type not in config:
@@ -733,7 +741,11 @@ def container_skel_load(container_skel, inventory, config):
                 inventory=inventory
             )
         if properties.get('is_nest', False):
-            physical_host_type = '{}_hosts'.format(key.split('_')[0])
+            physical_host_type = re.sub(
+                r"(?P<group>.*)_(?P<type>.*)$",
+                r'\g<group>_hosts',
+                key
+            )
             for host_type in inventory[physical_host_type]['hosts']:
                 container_mapping = inventory[key]['children']
                 host_type_containers = '{}-host_containers'.format(host_type)
