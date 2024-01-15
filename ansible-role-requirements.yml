@@ -20,15 +20,15 @@
 - name: ceph_client
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-ceph_client
-  version: c773943086655f155f5fe2f5f95e5e5a27e3ae62
+  version: 563c3b600a239f28792860beb4b0b6da0046b54d
   trackbranch: stable/2023.2
-  shallow_since: '2023-12-06'
+  shallow_since: '2024-01-07'
 - name: haproxy_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-haproxy_server
-  version: 5d44d7fa3876abff2ee8f22bfc266b5d5f7b0660
+  version: baf11a22fbf66ccd1cc95d60c3ea0c60a051decb
   trackbranch: stable/2023.2
-  shallow_since: '2023-12-06'
+  shallow_since: '2023-12-22'
 - name: keepalived
   scm: git
   src: https://github.com/evrardjp/ansible-keepalived
@@ -44,9 +44,9 @@
 - name: lxc_hosts
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-lxc_hosts
-  version: 58fe9567bca0d297c39e6911316cb9ba627c76bd
+  version: 555906e91dc2fdfd94757d993e4dc0d715c2a969
   trackbranch: stable/2023.2
-  shallow_since: '2023-12-06'
+  shallow_since: '2024-01-08'
 - name: memcached_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-memcached_server
@@ -56,9 +56,9 @@
 - name: openstack_hosts
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-openstack_hosts
-  version: 6f607e85fd1252187384169f2b6629da1f0567a6
+  version: 26f13a7a108dc1688b0369cf0526b45dc7b847cf
   trackbranch: stable/2023.2
-  shallow_since: '2023-12-06'
+  shallow_since: '2023-12-29'
 - name: os_keystone
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_keystone
@@ -104,9 +104,9 @@
 - name: os_cinder
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_cinder
-  version: 67957fbd383037e350549ee5550477ff1cd1537b
+  version: 7e33d2fbeb83f05ffeee249428d2d30999f4f9e2
   trackbranch: stable/2023.2
-  shallow_since: '2023-12-06'
+  shallow_since: '2023-12-14'
 - name: os_cloudkitty
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_cloudkitty
@@ -146,15 +146,15 @@
 - name: os_ironic
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_ironic
-  version: 44ab2cafc8c6a0f829adbbb8f4896f10717f6ab4
+  version: 1e3ee873391dfcf6fda4c4f56c6e87b64f552fe9
   trackbranch: stable/2023.2
-  shallow_since: '2023-12-06'
+  shallow_since: '2024-01-11'
 - name: os_magnum
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_magnum
-  version: 83be71e692e58a60277bcbf794abb16edcd91e68
+  version: 162e241ddde4aaf683a5b8305351e8480df3077b
   trackbranch: stable/2023.2
-  shallow_since: '2023-12-06'
+  shallow_since: '2024-01-02'
 - name: os_manila
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_manila
@@ -194,9 +194,9 @@
 - name: os_octavia
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_octavia
-  version: b43f61534143a1e05afcddcfa5058e655f30d725
+  version: 33401e63f3532f300ce0469e3d2ed08228a27d74
   trackbranch: stable/2023.2
-  shallow_since: '2023-12-06'
+  shallow_since: '2024-01-02'
 - name: os_placement
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_placement
@@ -292,7 +292,7 @@
   src: https://github.com/ceph/ceph-ansible
   version: b82a6ed1a7170c2445d477c567c181366d9ed944
   trackbranch: stable-7.0
-  shallow_since: '2022-06-14'
+  shallow_since: '2023-09-26'
 - name: pacemaker_corosync
   scm: git
   src: https://github.com/noonedeadpunk/ansible-pacemaker-corosync
@@ -314,9 +314,9 @@
 - name: systemd_networkd
   src: https://opendev.org/openstack/ansible-role-systemd_networkd
   scm: git
-  version: 3b845622c2cc2de90b29b84cab6152f0e1118376
+  version: a05e610cc53239f0c62dc0aae64d00f1d8e75be0
   trackbranch: stable/2023.2
-  shallow_since: '2023-12-06'
+  shallow_since: '2023-12-14'
 - name: python_venv_build
   src: https://opendev.org/openstack/ansible-role-python_venv_build
   scm: git
