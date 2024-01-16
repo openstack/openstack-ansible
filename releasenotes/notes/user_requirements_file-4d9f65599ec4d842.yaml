@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Implemented installation of extra Python packages inside Ansible virtual
+    environment. By default, extra requirements should be defined in
+    ``/etc/openstack_deploy/user-ansible-venv-requirements.txt`` file. Path to the
+    requirements file can be overriden using ``USER_ANSIBLE_REQUIREMENTS_FILE``
+    environment variable.

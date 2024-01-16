@@ -25,8 +25,9 @@ export HTTPS_PROXY=${HTTPS_PROXY:-""}
 export ANSIBLE_PACKAGE=${ANSIBLE_PACKAGE:-"ansible-core==2.15.5"}
 export ANSIBLE_ROLE_FILE=${ANSIBLE_ROLE_FILE:-"ansible-role-requirements.yml"}
 export ANSIBLE_COLLECTION_FILE=${ANSIBLE_COLLECTION_FILE:-"ansible-collection-requirements.yml"}
-export USER_ROLE_FILE=${USER_ROLE_FILE:-"user-role-requirements.yml"}
 export USER_COLLECTION_FILE=${USER_COLLECTION_FILE:-"user-collection-requirements.yml"}
+export USER_ANSIBLE_REQUIREMENTS_FILE=${USER_ANSIBLE_REQUIREMENTS_FILE:-"${OSA_CONFIG_DIR:-/etc/openstack_deploy}/user-ansible-venv-requirements.txt"}
+export USER_ROLE_FILE=${USER_ROLE_FILE:-"user-role-requirements.yml"}
 export SSH_DIR=${SSH_DIR:-"/root/.ssh"}
 export DEBIAN_FRONTEND=${DEBIAN_FRONTEND:-"noninteractive"}
 # check whether to install the ARA callback plugin
@@ -120,6 +121,10 @@ if [ -n "$HTTPS_PROXY" ]; then
 
 elif [ -n "$HTTP_PROXY" ]; then
   PIP_OPTS+="--proxy $HTTP_PROXY"
+fi
+
+if [ -f "${USER_ANSIBLE_REQUIREMENTS_FILE}" ]; then
+  PIP_OPTS+="--requirement $USER_ANSIBLE_REQUIREMENTS_FILE"
 fi
 
 PYTHON_EXEC_PATH="${PYTHON_EXEC_PATH:-$(which python3)}"
