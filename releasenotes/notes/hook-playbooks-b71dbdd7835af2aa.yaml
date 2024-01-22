@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    New variables are added to allow a user defined playbooks to be specified
+    that run pre and post the existing code in setup-hosts, setup-infrastructure
+    and setup-openstack. OpenStack-Ansible deployments may be extended and
+    have additional user defined functions added using these hooks, which
+    will have full access to the OSA inventory and host variables.

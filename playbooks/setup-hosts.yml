@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- name: Importing pre hook playbook
+  import_playbook: "{{ pre_setup_hosts_hook | default('hook-dummy.yml') }}"
+
 - name: Importing certificate-authority playbook
   import_playbook: certificate-authority.yml
 
@@ -30,3 +33,6 @@
 
 - name: Importing security-hardening playbook
   import_playbook: security-hardening.yml
+
+- name: Importing post hook playbook
+  import_playbook: "{{ post_setup_hosts_hook | default('hook-dummy.yml') }}"
