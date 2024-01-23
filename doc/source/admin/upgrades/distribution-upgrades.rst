@@ -142,6 +142,12 @@ Deploying Infrastructure Hosts
 
    for each API or service instance you wish to disable.
 
+   You can also use a playbook from `OPS repository`_ like this:
+
+   .. code:: console
+
+      openstack-ansible set-haproxy-backends-state.yml -e hostname=<infrahost> -e backend_state=disabled
+
    Or if you've enabled haproxy_stats as described above, you can visit
    https://admin:password@external_lb_vip_address:1936/ and select them and
    'Set state to MAINT'
@@ -170,11 +176,46 @@ Deploying Infrastructure Hosts
          rabbitmqctl cluster_status
          rabbitmqctl forget_cluster_node rabbit@removed_host_rabbitmq_container
 
-#. If it is NOT a 'primary', install everything on the new host
+#. Do generic preparation of reinstalled host
 
    .. code:: console
 
       openstack-ansible setup-hosts.yml --limit localhost,reinstalled_host*
+
+#. This step should be executed when you are re-configuring one of haproxy
+   hosts
+
+   Since configuration of haproxy backends happens during individual service
+   provisioning, we need to ensure that all backends are configured before
+   enabling keepalived to select this host.
+
+   Commands below will configure all required backends on haproxy nodes:
+
+   .. code:: console
+
+      openstack-ansible haproxy-install.yml --limit localhost,reinstalled_host --skip-tags keepalived
+      openstack-ansible repo-install.yml --tags haproxy-service-config
+      openstack-ansible galera-install.yml --tags haproxy-service-config
+      openstack-ansible rabbitmq-install.yml --tags haproxy-service-config
+      openstack-ansible setup-openstack.yml --tags haproxy-service-config
+
+   Once this is done, you can deploy keepalived again:
+
+   .. code:: console
+
+      openstack-ansible haproxy-install.yml --tags keepalived --limit localhost,reinstalled_host
+
+   After that you might want to ensure that "local" backends remain disabled.
+   You can also use a playbook from `OPS repository`_ for this:
+
+   .. code:: console
+
+      openstack-ansible set-haproxy-backends-state.yml -e hostname=<infrahost> -e backend_state=disabled --limit reinstalled_host
+
+#. If it is NOT a 'primary', install everything on the new host
+
+   .. code:: console
+
       openstack-ansible setup-infrastructure.yml --limit localhost,repo_all,rabbitmq_all,reinstalled_host*
       openstack-ansible setup-openstack.yml --limit localhost,keystone_all,reinstalled_host*
 
@@ -182,56 +223,52 @@ Deploying Infrastructure Hosts
 
 #. If it IS a 'primary', do these steps
 
-   .. code:: console
+   #. Temporarily set your primary Galera in MAINT in HAProxy
 
-      openstack-ansible setup-hosts.yml --limit localhost,reinstalled_host*
+      .. code:: console
 
-   Temporarily set your primary Galera in MAINT in HAProxy
+         openstack-ansible galera-install.yml --limit localhost,reinstalled_host*
 
-   .. code:: console
+      Note that at this point, the Ansible role will have taken the primary Galera
+      out of MAINT in HAProxy. You may wish to temporarily put it back into MAINT
+      until you are sure it is working correctly.
 
-      openstack-ansible galera-install.yml --limit localhost,reinstalled_host*
+      You'll now have mariadb running, but it's not synced info from the
+      non-primaries. To fix this we ssh to the primary Galera, and restart the
+      mariadb.service and verify everything is in order.
 
-   Note that at this point, the Ansible role will have taken the primary Galera
-   out of MAINT in HAProxy. You may wish to temporarily put it back into MAINT
-   until you are sure it is working correctly.
+      .. code:: console
 
-   You'll now have mariadb running, but it's not synced info from the
-   non-primaries. To fix this we ssh to the primary Galera, and restart the
-   mariadb.service and verify everything is in order.
+         systemctl restart mariadb.service
+         mysql
+         mysql> SHOW STATUS LIKE "wsrep_cluster_%";
+         mysql> SHOW DATABASES;
 
-   .. code:: console
+      Everything should be sync'ed and in order now. You can take your
+      primary Galera from MAINT to READY
 
-      systemctl restart mariadb.service
-      mysql
-      mysql> SHOW STATUS LIKE "wsrep_cluster_%";
-      mysql> SHOW DATABASES;
+   #. We can move on to RabbitMQ primary
 
-   Everything should be sync'ed and in order now. You can take your
-   primary Galera from MAINT to READY
+      .. code:: console
 
-   We can move on to RabbitMQ primary
+         openstack-ansible rabbitmq-install.yml
 
-   .. code:: console
+      The RabbitMQ primary will also be in a cluster of it's own. You will need to
+      fix this by running these commands on the primary.
 
-      openstack-ansible rabbitmq-install.yml
+      .. code:: console
 
-   The RabbitMQ primary will also be in a cluster of it's own. You will need to
-   fix this by running these commands on the primary.
+         rabbitmqctl stop_app
+         rabbitmqctl join_cluster rabbit@some_operational_rabbitmq_container
+         rabbitmqctl start_app
+         rabbitmqctl cluster_status
 
-   .. code:: console
+   #. Everything should now be in a working state and we can finish it off with
 
-      rabbitmqctl stop_app
-      rabbitmqctl join_cluster rabbit@some_operational_rabbitmq_container
-      rabbitmqctl start_app
-      rabbitmqctl cluster_status
+      .. code:: console
 
-   Everything should now be in a working state and we can finish it off with
-
-   .. code:: console
-
-      openstack-ansible setup-infrastructure.yml --limit localhost,repo_all,rabbitmq_all,reinstalled_host*
-      openstack-ansible setup-openstack.yml --limit localhost,keystone_all,reinstalled_host*
+         openstack-ansible setup-infrastructure.yml --limit localhost,repo_all,rabbitmq_all,reinstalled_host*
+         openstack-ansible setup-openstack.yml --limit localhost,keystone_all,reinstalled_host*
 
 #. Adjust HAProxy status
 
@@ -241,6 +278,13 @@ Deploying Infrastructure Hosts
    For the 'repo' host, it is important that the freshly installed hosts are
    set to READY in HAProxy, and any which remain on the old operating system
    are set to 'MAINT'.
+
+   You can also use a playbook from `OPS repository`_ to re-enable all backends from the host:
+
+   .. code:: console
+
+      openstack-ansible set-haproxy-backends-state.yml -e hostname=<infrahost> -e backend_state=enabled
+
 
 Deploying Compute & Network Hosts
 =================================
@@ -275,3 +319,5 @@ Deploying Compute & Network Hosts
    Additionally, BGP speakers (used for IPv6) had to be re-initialised from the
    command line. These steps were necessary before reinstalling further network
    nodes to prevent HA Router interruptions.
+
+.. _OPS repository: https://opendev.org/openstack/openstack-ansible-ops/src/branch/master/ansible_tools/playbooks/set-haproxy-backends-state.yml
