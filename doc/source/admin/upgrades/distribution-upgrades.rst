@@ -223,18 +223,35 @@ Deploying Infrastructure Hosts
 
 #. If it IS a 'primary', do these steps
 
-   #. Temporarily set your primary Galera in MAINT in HAProxy
+   #. Temporarily set your primary Galera in MAINT in HAProxy.
+
+      In order to prevent role from making your primary Galera
+      as UP in haproxy, create an empty file ``/var/tmp/clustercheck.disabled``
+      . You can do this with ad-hoc:
 
       .. code:: console
 
-         openstack-ansible galera-install.yml --limit localhost,reinstalled_host*
+         cd /opt/openstack-ansible
+         ansible -m file -a "path=/var/tmp/clustercheck.disabled state=touch" 'reinstalled-host*:&galera_all'
 
-      Note that at this point, the Ansible role will have taken the primary Galera
-      out of MAINT in HAProxy. You may wish to temporarily put it back into MAINT
-      until you are sure it is working correctly.
+      Once it's done you can run playbook to install MariaDB to the destination
 
-      You'll now have mariadb running, but it's not synced info from the
-      non-primaries. To fix this we ssh to the primary Galera, and restart the
+      .. code:: console
+
+         openstack-ansible galera-install.yml --limit localhost,reinstalled_host* -e galera_server_bootstrap_node="{{ groups['galera_all'][-1] }}"
+
+      You'll now have mariadb running, and it should be synced with
+      non-primaries.
+
+      To check that verify MariaDB cluster status by executing from
+      host running primary MariaDB following command:
+
+      .. code:: console
+
+         mysql -e 'SHOW STATUS LIKE "wsrep_cluster_%";'
+
+
+      In case node is not getting synced you might need to restart the
       mariadb.service and verify everything is in order.
 
       .. code:: console
@@ -244,24 +261,18 @@ Deploying Infrastructure Hosts
          mysql> SHOW STATUS LIKE "wsrep_cluster_%";
          mysql> SHOW DATABASES;
 
-      Everything should be sync'ed and in order now. You can take your
-      primary Galera from MAINT to READY
+      Once MariaDB cluster is healthy you can remove the file that disables
+      backend from being used by HAProxy.
+
+      .. code:: console
+
+         ansible -m file -a "path=/var/tmp/clustercheck.disabled state=absent" 'reinstalled-host_containers:&galera_all'
 
    #. We can move on to RabbitMQ primary
 
       .. code:: console
 
-         openstack-ansible rabbitmq-install.yml
-
-      The RabbitMQ primary will also be in a cluster of it's own. You will need to
-      fix this by running these commands on the primary.
-
-      .. code:: console
-
-         rabbitmqctl stop_app
-         rabbitmqctl join_cluster rabbit@some_operational_rabbitmq_container
-         rabbitmqctl start_app
-         rabbitmqctl cluster_status
+         openstack-ansible rabbitmq-install.yml -e rabbitmq_primary_cluster_node="{{ hostvars[groups['rabbitmq_all'][-1]]['ansible_facts']['hostname'] }}"
 
    #. Everything should now be in a working state and we can finish it off with
 
