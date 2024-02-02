@@ -17,10 +17,11 @@ magnum_glance_images:
   - name: fedora-coreos-latest
     disk_format: qcow2
     image_format: bare
-    public: true
-    file: https://builds.coreos.fedoraproject.org/prod/streams/stable/builds/35.20220424.3.0/x86_64/fedora-coreos-35.20220424.3.0-openstack.x86_64.qcow2.xz
-    distro: "fedora-coreos"
-    checksum: "sha256:55e1741989ee38fb023528bfc9038f6362cae472aeb724add02309e47aa6acbd"
+    visibility: public
+    url: https://builds.coreos.fedoraproject.org/prod/streams/stable/builds/38.20230806.3.0/x86_64/fedora-coreos-38.20230806.3.0-openstack.x86_64.qcow2.xz
+    properties:
+      os_distro: "fedora-coreos"
+    checksum: "da359b10f9aa165c4f81e6cd9ca5f81b"
 
 magnum_cluster_templates:
   - name: k8s
