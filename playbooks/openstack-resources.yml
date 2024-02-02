@@ -1,0 +1,29 @@
+---
+# Copyright 2023, Cleura AB.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Create requested OpenStack Resources
+  hosts: "{{ openstack_service_setup_host | default('localhost') }}"
+  vars_files:
+    - "defaults/{{ install_method | default('source') }}_install.yml"
+  tasks:
+    - name: Include openstack_resources role
+      ansible.builtin.include_role:
+        name: openstack.osa.openstack_resources
+      vars:
+        openstack_resources_identity: "{{ openstack_user_identity | default({}) }}"
+        openstack_resources_compute: "{{ openstack_user_compute | default({}) }}"
+        openstack_resources_network: "{{ openstack_user_network | default({}) }}"
+        openstack_resources_image: "{{ openstack_user_image | default({}) }}"
+        openstack_resources_coe: "{{ openstack_user_coe | default({}) }}"
