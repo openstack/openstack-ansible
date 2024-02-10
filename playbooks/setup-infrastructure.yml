@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- name: Importing pre hook playbook
+  import_playbook: "{{ pre_setup_infrastructure_hook | default('hook-dummy.yml') }}"
+
 - name: Importing unbound-install playbook
   import_playbook: unbound-install.yml
 
@@ -52,3 +55,6 @@
 - name: Importing infra-journal-remote playbook
   import_playbook: infra-journal-remote.yml
   when: journald_remote_enabled | default (false) | bool
+
+- name: Importing post hook playbook
+  import_playbook: "{{ post_setup_infrastructure_hook | default('hook-dummy.yml') }}"
