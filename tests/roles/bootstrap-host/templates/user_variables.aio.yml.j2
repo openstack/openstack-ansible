@@ -285,12 +285,6 @@ security_rhel7_enable_chrony: no
 tempest_image_dir: "/opt/cache/files"
 {% endif %}
 
-# For testing purposes in public clouds, we need to ignore these
-# services when trying to do a reload of nova services.
-nova_service_negate:
-  - "nova-agent.service"
-  - "nova-resetnetwork.service"
-
 # Set all the distros to the same value: a "quiet" print
 # of kernel log messages.
 openstack_user_kernel_options:
