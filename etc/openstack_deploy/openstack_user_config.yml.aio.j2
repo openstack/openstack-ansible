@@ -145,13 +145,13 @@ global_overrides:
         network_interface: "eth12"
         type: "vlan"
         range: "101:200,301:400"
-        net_name: "vlan"
+        net_name: "physnet1"
         group_binds:
           - neutron_openvswitch_agent
     - network:
         container_bridge: "br-provider"
         container_type: "veth"
-        net_name: "vlan"
+        net_name: "physnet1"
         type: "flat"
         group_binds:
           - neutron_openvswitch_agent
@@ -162,7 +162,7 @@ global_overrides:
         container_interface: "eth12"
         host_bind_override: "eth12"
         type: "flat"
-        net_name: "flat"
+        net_name: "physnet1"
         group_binds:
           - neutron_linuxbridge_agent
     - network:
@@ -171,7 +171,7 @@ global_overrides:
         container_interface: "eth11"
         type: "vlan"
         range: "101:200,301:400"
-        net_name: "vlan"
+        net_name: "physnet1"
         group_binds:
           - neutron_linuxbridge_agent
 {% else %}
@@ -180,13 +180,13 @@ global_overrides:
         network_interface: "eth12"
         type: "vlan"
         range: "101:200,301:400"
-        net_name: "vlan"
+        net_name: "physnet1"
         group_binds:
           - neutron_ovn_gateway
     - network:
         container_bridge: "br-provider"
         container_type: "veth"
-        net_name: "vlan"
+        net_name: "physnet1"
         type: "flat"
         group_binds:
           - neutron_ovn_gateway

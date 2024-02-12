@@ -34,7 +34,7 @@ public_dns_servers:
 
 neutron_networks:
   public:
-    name: "{{ tempest_public_net_name | default('public') }}"
+    name: "{{ tempest_public_net_name | default('physnet1') }}"
     shared: True
     external: True
     pn_type: "{{ tempest_public_net_provider_type | default('flat') }}"
