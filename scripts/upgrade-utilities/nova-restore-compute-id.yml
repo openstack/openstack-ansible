@@ -1,0 +1,44 @@
+---
+- name: Ensuring that compute node has UUID state defined
+  hosts: nova_compute
+  vars:
+    nova_compute_id_file: /var/lib/nova/compute_id
+  handlers:
+
+    - name: Restart nova
+      ansible.builtin.service:
+        name: nova-compute
+        state: restarted
+
+  tasks:
+
+    - name: Checking if compute file exist
+      ansible.builtin.stat:
+        path: "{{ nova_compute_id_file }}"
+      register: _compute_id_status
+
+    - name: Get list of existing hypervisors  # noqa: run-once[task]
+      ansible.builtin.command: openstack --os-cloud default hypervisor list -f json -c ID -c "Hypervisor Hostname"
+      run_once: true
+      delegate_to: "{{ groups['utility_all'][0] }}"
+      register: nova_hypervisors
+      changed_when: false
+
+    - name: Get node UUID if needed
+      when: not _compute_id_status.stat.exists
+      block:
+
+        - name: Register hypervisors fact
+          ansible.builtin.set_fact:
+            nova_hv: "{{ nova_hypervisors.stdout | from_json | selectattr('Hypervisor Hostname', 'eq', ansible_facts['nodename']) }}"
+
+        - name: Place node UUID to the expected location
+          ansible.builtin.copy:
+            dest: "{{ nova_compute_id_file }}"
+            content: >
+              {{ nova_hv[0]['ID'] }}
+            owner: nova
+            group: nova
+            mode: "0640"
+          when: nova_hv
+          notify: Restart nova
