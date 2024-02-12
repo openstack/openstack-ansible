@@ -76,7 +76,9 @@
     check:
       jobs:
         - openstack-ansible-upgrade-aio_metal-rockylinux-9
+        - openstack-ansible-upgrade_2023.1-aio_metal-rockylinux-9
         - openstack-ansible-upgrade-aio_metal-ubuntu-jammy
+        - openstack-ansible-upgrade_2023.1-aio_metal-ubuntu-jammy
     gate:
       jobs:
         - openstack-ansible-upgrade-aio_metal-rockylinux-9
@@ -176,7 +178,9 @@
         - openstack-ansible-deploy-aio_metal_tls-ubuntu-jammy
         - openstack-ansible-deploy-aio_metal_quorum-ubuntu-jammy
         - openstack-ansible-upgrade-aio_metal-rockylinux-9
+        - openstack-ansible-upgrade_2023.1-aio_metal-rockylinux-9
         - openstack-ansible-upgrade-aio_metal-ubuntu-jammy
+        - openstack-ansible-upgrade_2023.1-aio_metal-ubuntu-jammy
         - openstack-ansible-upgrade-aio_metal_tls-rockylinux-9
         - openstack-ansible-upgrade-aio_metal_tls-ubuntu-jammy
 
