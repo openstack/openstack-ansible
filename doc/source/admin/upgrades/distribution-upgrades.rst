@@ -7,8 +7,9 @@ release to the next.
 
 .. note::
 
-   This guide was written when upgrading from Ubuntu Bionic to Focal during the
-   Victoria release cycle.
+   This guide was last updated when upgrading from Ubuntu Focal to Jammy during
+   the Antelope (2023.1) release. For earlier releases please see other
+   versions of the guide.
 
 Introduction
 ============
@@ -35,6 +36,10 @@ hosts/containers. At least one 'repo' host should be upgraded before you
 upgrade any API hosts/containers. The last 'repo' host to be upgraded should be
 the 'primary', and should not be carried out until after the final service
 which does not support '--limit' is upgraded.
+
+If you have a multi-architecture deployment, then at least one 'repo' host of
+each architecture will need to be upgraded before upgrading any other hosts
+which use that architecture.
 
 If this order is adapted, it will be necessary to restore some files to the
 'repo' host from a backup part-way through the process. This will be necessary
@@ -94,6 +99,15 @@ Pre-Requisites
       and can visit https://admin:password@external_lb_vip_address:1936/ and read
       'Statistics Report for pid # on infrastructure_host'
 
+*  Ensure RabbitMQ is running with all feature flags enabled to avoid conflicts
+   when re-installing nodes. If any are listed as disabled then enable them via
+   the console on one of the nodes:
+
+   .. code:: console
+
+      rabbitmqctl list_feature_flags
+      rabbitmqctl enable_feature_flag all
+
 Warnings
 ========
 
@@ -134,7 +148,7 @@ Deploying Infrastructure Hosts
 
    .. code:: console
 
-      openstack-ansible set-haproxy-backends-state.yml -e hostname=<infrahost> -e backend_state=disabled
+      openstack-ansible set-haproxy-backends-state.yml -e hostname=reinstalled_host -e backend_state=disabled
 
    Or if you've enabled haproxy_stats as described above, you can visit
    https://admin:password@external_lb_vip_address:1936/ and select them and
@@ -163,6 +177,19 @@ Deploying Infrastructure Hosts
 
          rabbitmqctl cluster_status
          rabbitmqctl forget_cluster_node rabbit@removed_host_rabbitmq_container
+
+   #. If GlusterFS was running on this host (repo nodes)
+
+      We forget it by running these commands on another repo host. Note that we
+      have to tell Gluster we are intentionally reducing the number of
+      replicas. 'N' should be set to the number of repo servers minus 1.
+      Existing gluster peer names can be found using the 'gluster peer status'
+      command.
+
+      .. code:: console
+
+         gluster volume remove-brick gfs-repo replica N removed_host_gluster_peer:/gluster/bricks/1 force
+         gluster peer detach removed_host_gluster_peer
 
 #. Do generic preparation of reinstalled host
 
@@ -198,7 +225,7 @@ Deploying Infrastructure Hosts
 
    .. code:: console
 
-      openstack-ansible set-haproxy-backends-state.yml -e hostname=<infrahost> -e backend_state=disabled --limit reinstalled_host
+      openstack-ansible set-haproxy-backends-state.yml -e hostname=reinstalled_host -e backend_state=disabled --limit reinstalled_host
 
 #. If it is NOT a 'primary', install everything on the new host
 
@@ -271,7 +298,7 @@ Deploying Infrastructure Hosts
 
    .. code:: console
 
-      openstack-ansible set-haproxy-backends-state.yml -e hostname=<infrahost> -e backend_state=enabled
+      openstack-ansible set-haproxy-backends-state.yml -e hostname=reinstalled_host -e backend_state=enabled
 
 
 Deploying Compute & Network Hosts
@@ -300,12 +327,16 @@ Deploying Compute & Network Hosts
 
    (* because we need to include containers in the limit)
 
-.. note::
+#. Re-instate compute node hypervisor UUIDs
 
-   During this upgrade cycle it was noted that network nodes required a restart
-   to bring some tenant interfaces online after running setup-openstack.
-   Additionally, BGP speakers (used for IPv6) had to be re-initialised from the
-   command line. These steps were necessary before reinstalling further network
-   nodes to prevent HA Router interruptions.
+   Compute nodes should have their UUID stored in the file
+   '/var/lib/nova/compute_id' and the 'nova-compute' service restarted. UUIDs
+   can be found from the command line'openstack hypervisor list'.
+
+   Alternatively, the following Ansible can be used to automate these actions:
+
+   .. code:: console
+
+      openstack-ansible ../scripts/upgrade-utilities/nova-restore-compute-id.yml --limit reinstalled_host
 
 .. _OPS repository: https://opendev.org/openstack/openstack-ansible-ops/src/branch/master/ansible_tools/playbooks/set-haproxy-backends-state.yml
