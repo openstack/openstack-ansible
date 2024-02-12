@@ -117,18 +117,6 @@ Warnings
 Deploying Infrastructure Hosts
 ==============================
 
-#. Drain RabbitMQ connections (optional)
-
-   In order to cleanly hand over connections from one member of the RabbitMQ
-   cluster to another, the instance being reinstalled should be drained.
-   This can be achieved by running the following from the instance to be
-   reinstalled and waiting for the RabbitMQ admin interface to indicate that
-   socket descriptors have reduced to zero.
-
-   .. code:: console
-
-      rabbitmq-upgrade drain
-
 #. Disable HAProxy back ends (optional)
 
    If you wish to minimise error states in HAProxy, services on hosts which are
