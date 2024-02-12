@@ -306,7 +306,6 @@ octavia_v2: True
 # Disable Octavia V1 API
 octavia_v1: False
 octavia_management_net_subnet_cidr: '172.29.232.0/22'
-tempest_run_concurrency: 0
 {%   if 'metal' in bootstrap_host_scenarios %}
 # TODO(mnaser): The Octavia role relies on gathering IPs of hosts in the
 #               LBaaS network and using those in the health manager pool
