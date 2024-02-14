@@ -289,6 +289,12 @@ Deploying Infrastructure Hosts
 
          openstack-ansible rabbitmq-install.yml -e rabbitmq_primary_cluster_node="{{ hostvars[groups['rabbitmq_all'][-1]]['ansible_facts']['hostname'] }}"
 
+   #. Now the repo host primary
+
+      .. code:: console
+
+         openstack-ansible repo-install.yml -e glusterfs_bootstrap_node="{{ groups['repo_all'][-1] }}"
+
    #. Everything should now be in a working state and we can finish it off with
 
       .. code:: console
