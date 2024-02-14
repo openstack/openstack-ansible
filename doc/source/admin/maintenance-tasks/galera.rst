@@ -149,14 +149,23 @@ one of the nodes.
 Galera cluster recovery
 -----------------------
 
-Run the ``galera-install`` playbook using the ``galera-bootstrap`` tag
+Run the ``galera-install`` playbook using the ``galera_force_bootstrap`` variable
 to automatically recover a node or an entire environment.
 
 #. Run the following Ansible command to show the failed nodes:
 
    .. code-block:: shell-session
 
-       # openstack-ansible galera-install.yml --tags galera-bootstrap
+       # openstack-ansible galera-install.yml -e galera_force_bootstrap=True --tags galera_server-config
+
+You can additionally define a different bootstrap node through
+``galera_server_bootstrap_node`` variable, in case current bootstrap node is in
+desynced/broken state. You can check what node is currently selected for
+bootstrap using this ad-hoc:
+
+   .. code-block:: shell-session
+
+       root@aio1:/opt/openstack-ansible# ansible -m debug -a var="groups['galera_all'][0]" localhost
 
 The cluster comes back online after completion of this command. If this
 fails, please review `restarting the cluster`_ and `recovering the primary
