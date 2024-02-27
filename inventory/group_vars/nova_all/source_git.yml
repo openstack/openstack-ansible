@@ -23,11 +23,11 @@
 ##   * All items with this file should be separated by `name_` note that the name of the
 ##     package should be one long name with no additional `_` separating it.
 
-### HEAD as of 19.01.2024 ###
+### HEAD as of 27.02.2024 ###
 
 ## NOVNC from source
 novncproxy_git_repo: "{{ openstack_github_base_url }}/novnc/noVNC"
-novncproxy_git_install_branch: fca48df85d394b2c1e9d26ed6e9d10d33db9f4f4
+novncproxy_git_install_branch: 786aba602f617bdc88536c82c35f3ccf6b173468
 novncproxy_git_track_branch: master
 
 ## spice-html5 from source
@@ -37,5 +37,5 @@ spicehtml5_git_track_branch: master
 
 ## Nova service
 nova_git_repo: "{{ openstack_opendev_base_url }}/openstack/nova"
-nova_git_install_branch: 087c372a8e67d8cd3234ce4e530393ddb55b9445
+nova_git_install_branch: 326a41b3b3e3d8ff8b2518f252615dd48930ec46
 nova_git_track_branch: master
