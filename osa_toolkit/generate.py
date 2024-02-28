@@ -22,6 +22,7 @@ import netaddr
 from osa_toolkit import dictutils as du
 from osa_toolkit import filesystem as filesys
 from osa_toolkit import ip
+import re
 import uuid
 import warnings
 
@@ -171,7 +172,8 @@ def _build_container_hosts(container_affinity, container_hosts, type_and_name,
 
     for make_container in range(container_affinity):
         for i in container_hosts:
-            if '{}-'.format(type_and_name) in i:
+            sub_item = re.sub(r'[_-]', '[_-]', f'{type_and_name}-')
+            if re.match(sub_item, i):
                 du.append_if(array=container_list, item=i)
 
         existing_count = len(list(set(container_list)))
