@@ -240,6 +240,7 @@
         login_host: "{{ management_address }}"
         name: "OSA-test"
         state: "present"
+        check_hostname: true
       when: inventory_hostname == groups['galera_all'][0]
       tags:
         - skip_ansible_lint
@@ -254,6 +255,7 @@
         host: "{{ item }}"
         state: "present"
         priv: "OSA-test.*:ALL"
+        check_hostname: true
       with_items:
         - "localhost"
         - "%"
@@ -278,6 +280,7 @@
         name: "osa-tester"
         state: "absent"
         host: "{{ item }}"
+        check_hostname: true
       with_items:
         - "localhost"
         - "%"
@@ -290,6 +293,7 @@
         login_host: "{{ management_address }}"
         name: "OSA-test"
         state: "absent"
+        check_hostname: true
       when: inventory_hostname == groups['galera_all'][0]
       tags:
         - skip_ansible_lint
