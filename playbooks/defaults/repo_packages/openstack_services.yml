@@ -28,11 +28,11 @@
 ### Before this is shipped all of these services should have a tag set as the branch,
 ### or have a comment / reason attached to them as to why a tag can not work.
 
-### HEAD as of 11.01.2024 ###
+### HEAD as of 05.03.2024 ###
 
 ## Global Requirements
 requirements_git_repo: https://opendev.org/openstack/requirements
-requirements_git_install_branch: ce23ac59f84228b1747c22311992169cf827cff9
+requirements_git_install_branch: 6c7a236da8e3db710247499f3bb94e702e6c22d2
 requirements_git_track_branch: stable/zed
 
 ## Adjutant service
@@ -47,7 +47,7 @@ adjutant_dashboard_git_track_branch: stable/zed
 
 ## Aodh service
 aodh_git_repo: https://opendev.org/openstack/aodh
-aodh_git_install_branch: 6d4fb04e36610d208e5ab6a32b25ebfbd1a2e590
+aodh_git_install_branch: 6c23448f0c4a2a9a52344aa935a1b28020e6e70d
 aodh_git_track_branch: stable/zed
 
 
@@ -71,13 +71,13 @@ ceilometer_git_track_branch: stable/zed
 
 ## Cinder service
 cinder_git_repo: https://opendev.org/openstack/cinder
-cinder_git_install_branch: 011e6549259c0433ceb594d8083f6c838d964311
+cinder_git_install_branch: bd2d192c6b76961ec665d922694a21b1f38a0f16
 cinder_git_track_branch: stable/zed
 
 
 ## Cloudkitty service
 cloudkitty_git_repo: https://opendev.org/openstack/cloudkitty
-cloudkitty_git_install_branch: 56ec4f19a10eb9769b3144e3c4682595b53af4ab
+cloudkitty_git_install_branch: 2b0adbcd55007d4e08c1878b3c1ca96733c1effd
 cloudkitty_git_track_branch: stable/zed
 
 
@@ -107,7 +107,7 @@ glance_git_track_branch: stable/zed
 
 ## Heat service
 heat_git_repo: https://opendev.org/openstack/heat
-heat_git_install_branch: a2b70a93658ecd2774f22c63a394c5629aefdbe7
+heat_git_install_branch: d3948706a3ff28d0160157f76f1e18244a8dad5c
 heat_git_track_branch: stable/zed
 
 ## Horizon Heat dashboard plugin
@@ -117,7 +117,7 @@ heat_dashboard_git_track_branch: stable/zed
 
 ## Horizon service
 horizon_git_repo: https://opendev.org/openstack/horizon
-horizon_git_install_branch: b1a26caae888b7f75720046c22838a90a228f2ac
+horizon_git_install_branch: 8e624332831ec0a2638f917327abf971a407cf64
 horizon_git_track_branch: stable/zed
 
 ## Horizon Ironic dashboard plugin
@@ -150,13 +150,13 @@ keystone_git_track_branch: stable/zed
 
 ## Manila service
 manila_git_repo: https://opendev.org/openstack/manila
-manila_git_install_branch: 91e61299eab4497e38bd7a64e3365041a4d658fc
+manila_git_install_branch: c0fc23a39f87629b59fae7bbf46f70e3e1b459cd
 manila_git_track_branch: stable/zed
 
 
 ## Neutron service
 neutron_git_repo: https://opendev.org/openstack/neutron
-neutron_git_install_branch: 222c997022392561c2de2cb493f0f5214eb20dfc
+neutron_git_install_branch: d253552ad26f4920ea9f1f53e5435f291f391790
 neutron_git_track_branch: stable/zed
 
 neutron_vpnaas_git_repo: https://opendev.org/openstack/neutron-vpnaas
@@ -194,7 +194,7 @@ networking_nsx_git_install_branch: 715cb5fc1174b9226f043e49ffd389add44f070a
 networking_nsx_git_track_branch: master
 
 networking_nsxlib_git_repo: https://opendev.org/x/vmware-nsxlib
-networking_nsxlib_git_install_branch: 5d408a01f85b18466b4034d2c38c582b79d2f604
+networking_nsxlib_git_install_branch: 82f6f63fee6ee9dc38ce5a93f1f09891b7852aef
 networking_nsxlib_git_track_branch: master
 
 networking_baremetal_git_repo: https://opendev.org/openstack/networking-baremetal
@@ -203,7 +203,7 @@ networking_baremetal_git_track_branch: stable/zed
 
 ## Nova service
 nova_git_repo: https://opendev.org/openstack/nova
-nova_git_install_branch: 3ada047b2729ef7e0875f267ee330bcc33174758
+nova_git_install_branch: cac2e8b72b19eabe7cb20dc184bbdf7f6ee89833
 nova_git_track_branch: stable/zed
 
 
@@ -233,13 +233,13 @@ ironic_git_track_branch: stable/zed
 
 ## Ironic inspector service
 ironic_inspector_git_repo: https://opendev.org/openstack/ironic-inspector
-ironic_inspector_git_install_branch: 9ea9f611c1f7ef57f62dc08c2fa23e10f7b919bd
+ironic_inspector_git_install_branch: ea0d0c6e286b15d6eda70bdbdfc2a8c67d7e895d
 ironic_inspector_git_track_branch: stable/zed
 
 
 ## Magnum service
 magnum_git_repo: https://opendev.org/openstack/magnum
-magnum_git_install_branch: c671d8baf9d6f4705a1b832ae2d96980e5a58db6
+magnum_git_install_branch: 0ee979099a01ae2c8b1b5d6757897a8993e4e34c
 magnum_git_track_branch: stable/zed
 
 ## Masakari service
@@ -254,7 +254,7 @@ masakari_monitors_git_track_branch: stable/zed
 
 ## Mistral service
 mistral_git_repo: https://opendev.org/openstack/mistral
-mistral_git_install_branch: b450848a3eb6996a886f31d347f899af16c939a9
+mistral_git_install_branch: 0958cb23666122fee11e440a7596234b96bf9ddf
 mistral_git_track_branch: stable/zed
 
 mistral_extra_git_repo: https://opendev.org/openstack/mistral-extra
@@ -272,7 +272,7 @@ murano_dashboard_git_track_branch: stable/zed
 
 ## Trove service
 trove_git_repo: https://opendev.org/openstack/trove
-trove_git_install_branch: c8579f514357f83b7b786f0389780cebdb453224
+trove_git_install_branch: 99c7a9666738bb897e2bd5009c92b5c8ba2746cd
 trove_git_track_branch: stable/zed
 
 ## Horizon Trove dashboard plugin
@@ -283,7 +283,7 @@ trove_dashboard_git_track_branch: stable/zed
 
 ## Octavia service
 octavia_git_repo: https://opendev.org/openstack/octavia
-octavia_git_install_branch: 07c33fec4578e2529a2a5fc8fad4cde929597849
+octavia_git_install_branch: 000b577f3e9c9ff7cb893e9f6e635753017a78c6
 octavia_git_track_branch: stable/zed
 
 
@@ -307,7 +307,7 @@ octavia_dashboard_git_track_branch: stable/zed
 
 ## Blazar service
 blazar_git_repo: https://opendev.org/openstack/blazar
-blazar_git_install_branch: f4a01481c995702492f5acb086b8267aac5577bf
+blazar_git_install_branch: b826d6dcf72948bdf8ede9c246014b8e60e6c169
 blazar_git_track_branch: stable/zed
 
 ## Blazar Nova Service
