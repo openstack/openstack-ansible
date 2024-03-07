@@ -49,7 +49,9 @@ export INSTALL_METHOD=${3:-"source"}
 # Set the source branch for upgrade tests
 # Be sure to change this whenever a new stable branch
 # is created. The checkout must always be N-1.
-export UPGRADE_SOURCE_BRANCH=${UPGRADE_SOURCE_BRANCH:-'stable/yoga'}
+export UPGRADE_SOURCE_RELEASE=yoga
+export UPGRADE_SOURCE_BRANCH_PREFIX=$(git branch -r | grep $UPGRADE_SOURCE_RELEASE | cut -d '/' -f 2)
+export UPGRADE_SOURCE_BRANCH=${UPGRADE_SOURCE_BRANCH:-$UPGRADE_SOURCE_BRANCH_PREFIX/$UPGRADE_SOURCE_RELEASE}
 
 # enable the ARA callback plugin
 export SETUP_ARA=${SETUP_ARA:-true}
