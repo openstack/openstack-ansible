@@ -33,11 +33,7 @@ tempest_private_net_provider_type: geneve
 {% else %}
 tempest_private_net_provider_type: vxlan
 {% endif %}
-{% if _neutron_plugin_driver == 'ml2.lxb' %}
-tempest_public_net_physical_name: flat
-{% else  %}
-tempest_public_net_physical_name: vlan
-{% endif %}
+tempest_public_net_physical_name: 'physnet1'
 
 # systemd-journald limitations
 openstack_hosts_journald_config:
