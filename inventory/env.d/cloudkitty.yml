@@ -10,15 +10,15 @@ component_skel:
 container_skel:
   cloudkitty_container:
     belongs_to:
-      - cloudkitty_containers
+      - rating_containers
     contains:
       - cloudkitty_api
       - cloudkitty_engine
 
 physical_skel:
-  cloudkitty_containers:
+  rating_containers:
     belongs_to:
       - all_containers
-  cloudkitty_hosts:
+  rating_hosts:
     belongs_to:
       - hosts
