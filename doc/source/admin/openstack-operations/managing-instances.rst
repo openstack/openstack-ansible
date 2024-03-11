@@ -237,22 +237,15 @@ such as cloud-init, to gain access to instance metadata. This is
 an alternative way of accessing the Nova EC2-style Metadata.
 
 To allow live migration of Nova instances, this forced provisioning
-of the config (CD-ROM) drive needs either be turned off, or the format of
+of the config (CD-ROM) drive needs to either be turned off, or the format of
 the configuration drive needs to be changed to a disk format like vfat, a
 format which both Linux and Windows instances can access.
 
 This work around is required for all Libvirt versions prior 1.2.17.
 
-To turn off the forced provisioning of the config drive, add the following
+To turn off the forced provisioning of and change the format of the
+configuration drive to a hard disk style format, add the following
 override to the ``/etc/openstack_deploy/user_variables.yml`` file:
-
-.. code-block:: yaml
-
-   nova_force_config_drive: False
-
-To change the format of the configuration drive, to a hard disk style format,
-use the following configuration inside the same
-``/etc/openstack_deploy/user_variables.yml`` file:
 
 .. code-block:: yaml
 
