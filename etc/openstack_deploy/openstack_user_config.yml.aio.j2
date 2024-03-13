@@ -162,6 +162,7 @@ global_overrides:
         container_interface: "eth12"
         host_bind_override: "eth12"
         type: "flat"
+        # ensure that public network is consistently physnet1 between OVS / OVN and Linuxbridge
         net_name: "physnet1"
         group_binds:
           - neutron_linuxbridge_agent
@@ -171,7 +172,8 @@ global_overrides:
         container_interface: "eth11"
         type: "vlan"
         range: "101:200,301:400"
-        net_name: "physnet1"
+        # special case for project networks - cannot re-use the physnet1 label with Linuxbridge
+        net_name: "physnet2"
         group_binds:
           - neutron_linuxbridge_agent
 {% else %}
