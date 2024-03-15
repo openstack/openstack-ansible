@@ -38,11 +38,9 @@
     name: openstack-ansible-deploy-aio_lxc-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-aio_lxc-debian-buster
         - openstack-ansible-deploy-aio_lxc-ubuntu-focal
     gate:
       jobs:
-        - openstack-ansible-deploy-aio_lxc-debian-buster
         - openstack-ansible-deploy-aio_lxc-ubuntu-focal
     periodic:
       jobs:
@@ -62,11 +60,9 @@
     name: openstack-ansible-deploy-infra_lxc-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-infra_lxc-debian-buster
         - openstack-ansible-deploy-infra_lxc-ubuntu-focal
     gate:
       jobs:
-        - openstack-ansible-deploy-infra_lxc-debian-buster
         - openstack-ansible-deploy-infra_lxc-ubuntu-focal
     periodic:
       jobs:
@@ -76,20 +72,17 @@
     name: openstack-ansible-deploy-aio_distro_lxc-jobs
     experimental:
       jobs:
-        - openstack-ansible-deploy-aio_distro_lxc-debian-buster
         - openstack-ansible-deploy-aio_distro_lxc-ubuntu-focal
 
 - project-template:
     name: openstack-ansible-deploy-aio_metal-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-aio_metal-debian-buster
         - openstack-ansible-deploy-aio_metal-ubuntu-bionic
         - openstack-ansible-deploy-aio_metal-ubuntu-focal
         - openstack-ansible-upgrade-aio_metal-ubuntu-focal
     gate:
       jobs:
-        - openstack-ansible-deploy-aio_metal-debian-buster
         - openstack-ansible-deploy-aio_metal-ubuntu-bionic
         - openstack-ansible-deploy-aio_metal-ubuntu-focal
 
@@ -97,11 +90,9 @@
     name: openstack-ansible-deploy-aio_telemetry_metal-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-aio_telemetry_metal-debian-buster
         - openstack-ansible-deploy-aio_telemetry_metal-ubuntu-focal
     gate:
       jobs:
-        - openstack-ansible-deploy-aio_telemetry_metal-debian-buster
         - openstack-ansible-deploy-aio_telemetry_metal-ubuntu-focal
 
 - project-template:
@@ -112,9 +103,6 @@
     gate:
       jobs:
         - openstack-ansible-deploy-aio_distro_metal-ubuntu-focal
-    experimental:
-      jobs:
-        - openstack-ansible-deploy-aio_distro_metal-debian-buster
 
 - project-template:
     name: openstack-ansible-deploy-aio_nspawn-jobs
@@ -187,3 +175,10 @@
       jobs:
         - promote-deploy-guide:
             files: *deploy-guide-triggers
+
+- project-template:
+    name: openstack-ansible-deploy-distro_ceph-jobs
+    check:
+      jobs:
+        - noop
+
