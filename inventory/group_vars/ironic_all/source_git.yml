@@ -13,14 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-### HEAD as of 27.02.2024 ###
+### HEAD as of 25.03.2024 ###
 
 ## Ironic service
 ironic_git_repo: "{{ openstack_opendev_base_url }}/openstack/ironic"
-ironic_git_install_branch: 50ced3a3fab28af50951d39bbb76e561818aee44
-ironic_git_track_branch: master
+ironic_git_install_branch: 31c6de0982fbdb87cbc98cc3e28c56f7e44d366e
+ironic_git_track_branch: stable/2024.1
 
 ## Ironic inspector service
 ironic_inspector_git_repo: "{{ openstack_opendev_base_url }}/openstack/ironic-inspector"
-ironic_inspector_git_install_branch: 8659bff73dfe3e4d40376504ed25a55b39c88d33
-ironic_inspector_git_track_branch: master
+ironic_inspector_git_install_branch: 5f72b87702843ffdae03795c1bd5b925a316d74e
+ironic_inspector_git_track_branch: stable/2024.1
