@@ -111,6 +111,19 @@
         - openstack-ansible-deploy-infra_lxc-ubuntu-jammy
 
 - project-template:
+    name: openstack-ansible-deploy-infra_distro_lxc-jobs
+    check:
+      jobs:
+        - openstack-ansible-deploy-infra_distro_lxc-rockylinux-9
+        - openstack-ansible-deploy-infra_distro_lxc-debian-bookworm
+        - openstack-ansible-deploy-infra_distro_lxc-ubuntu-jammy
+    gate:
+      jobs:
+        - openstack-ansible-deploy-infra_distro_lxc-rockylinux-9
+        - openstack-ansible-deploy-infra_distro_lxc-debian-bookworm
+        - openstack-ansible-deploy-infra_distro_lxc-ubuntu-jammy
+
+- project-template:
     name: openstack-ansible-deploy-hosts_lxc-jobs
     check:
       jobs:

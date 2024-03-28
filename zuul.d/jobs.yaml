@@ -524,6 +524,11 @@
     nodeset: ubuntu-jammy
 
 - job:
+    name: openstack-ansible-deploy-infra_distro_lxc-ubuntu-jammy
+    parent: openstack-ansible-deploy-aio-infra
+    nodeset: ubuntu-jammy
+
+- job:
     name: openstack-ansible-deploy-hosts_distro_lxc-ubuntu-jammy
     parent: openstack-ansible-deploy-aio-hosts
     nodeset: ubuntu-jammy
@@ -720,6 +725,11 @@
     nodeset: debian-bookworm
 
 - job:
+    name: openstack-ansible-deploy-infra_distro_lxc-debian-bookworm
+    parent: openstack-ansible-deploy-aio-infra
+    nodeset: debian-bookworm
+
+- job:
     name: openstack-ansible-deploy-hosts_distro_lxc-debian-bookworm
     parent: openstack-ansible-deploy-aio-hosts
     nodeset: debian-bookworm
@@ -763,6 +773,11 @@
 - job:
     name: openstack-ansible-deploy-infra_lxc-rockylinux-9
     parent: openstack-ansible-deploy-aio
+    nodeset: rockylinux-9
+
+- job:
+    name: openstack-ansible-deploy-infra_distro_lxc-rockylinux-9
+    parent: openstack-ansible-deploy-aio-infra
     nodeset: rockylinux-9
 
 - job:

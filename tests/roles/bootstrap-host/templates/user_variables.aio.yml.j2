@@ -23,6 +23,12 @@ debug: True
 
 ## Installation method for OpenStack services
 install_method: "{{ bootstrap_host_install_method }}"
+{% if bootstrap_host_install_method == 'distro' %}
+galera_install_method: distro
+# TODO: Uncomment that when galera patch lands to avoid circular dependency
+# rabbitmq_install_method: distro
+ceph_pkg_source: distro
+{% endif %}
 
 ## Tempest settings
 tempest_public_subnet_cidr: "172.29.248.0/22"
