@@ -126,3 +126,13 @@ haproxy_default_services:
   - "{{ haproxy_base_service | combine(haproxy_base_service_overrides | default({})) }}"
   - "{{ haproxy_letsencrypt_service | combine(haproxy_letsencrypt_service_overrides | default({})) }}"
   - "{{ haproxy_ceph_rgw_service | combine(haproxy_ceph_rgw_service_overrides | default({})) }}"
+
+# ensure correct facts are gathered in haproxy play
+# to determine the network gateway to use in keepalived track script
+deployment_extra_facts_filter:
+  - "ansible_processor_*"
+  - ansible_default_ipv4
+deployment_extra_facts_subset:
+  - '!all'
+  - hardware
+  - network
