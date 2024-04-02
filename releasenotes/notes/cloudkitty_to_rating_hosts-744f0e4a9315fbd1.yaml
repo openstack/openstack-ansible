@@ -1,0 +1,17 @@
+---
+
+upgrade:
+  - |
+    Ensure that in openstack_user_config.yml / conf.d ``cloudkitty_hosts`` are
+    replaced with ``rating_hosts``.
+    For deployments with LXC containers: after upgrade is completed make sure
+    that Cloudkitty is not running on your LXC hosts anymore, after which you
+    should be able to remove LXC hosts from cloudkitty_all group in inventory.
+
+fixes:
+  - |
+    Due to issue in env.d defenition for Cloudkitty, service was installed not
+    only inside LXC containers, but also to all LXC hosts, which was not
+    intended. This was fixed in env.d definition for the service, and it
+    was renamed from ``cloudkitty_hosts`` to ``rating_hosts``, which should be
+    reflected in your ``openstack_user_config.yml`` or conf.d files.
