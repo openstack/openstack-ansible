@@ -57,7 +57,8 @@
         - "groups['gnocchi_all'] | length > 1"
 
     - name: Including container-setup tasks
-      include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
+      include_role:
+        name: "openstack.osa.{{ container_tech | default('lxc') }}_container_setup"
       vars:
         list_of_bind_mounts: "{{ gnocchi_container_bind_mounts }}"
       when:

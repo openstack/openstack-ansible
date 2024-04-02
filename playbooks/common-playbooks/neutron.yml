@@ -46,7 +46,8 @@
         - always
 
     - name: Configure container (neutron-agent)
-      include_tasks: "../common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
+      include_role:
+        name: "openstack.osa.{{ container_tech | default('lxc') }}_container_setup"
       vars:
         list_of_bind_mounts:
           - bind_dir_path: "{{ (ansible_facts['pkg_mgr'] == 'apt') | ternary('/lib/modules', '/usr/lib/modules') }}"
@@ -60,7 +61,8 @@
         - "'neutron_agent' in group_names"
 
     - name: Configure container (other services)
-      include_tasks: "../common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
+      include_role:
+        name: "openstack.osa.{{ container_tech | default('lxc') }}_container_setup"
       when:
         - "not is_metal"
         - "'neutron_agent' not in group_names"

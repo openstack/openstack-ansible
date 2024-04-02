@@ -90,7 +90,8 @@
         - "nova_console"
 
     - name: Configure container
-      include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
+      include_role:
+        name: "openstack.osa.{{ container_tech | default('lxc') }}_container_setup"
       when: not is_metal
       vars:
         extra_container_config_no_restart:
@@ -157,7 +158,8 @@
         - always
 
     - name: Configure container
-      include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
+      include_role:
+        name: "openstack.osa.{{ container_tech | default('lxc') }}_container_setup"
       when: not is_metal
       vars:
         extra_container_config_no_restart:

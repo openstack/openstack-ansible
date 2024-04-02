@@ -60,7 +60,8 @@
         - "groups['trove_api'] | length > 1"
 
     - name: Including container-setup tasks
-      include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
+      include_role:
+        name: "openstack.osa.{{ container_tech | default('lxc') }}_container_setup"
       when: not is_metal
 
     - name: Including unbound-clients tasks
