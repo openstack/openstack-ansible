@@ -11,9 +11,9 @@ Using these extension points, deployers can provide a more 'opinionated'
 installation of OpenStack that may include their own software.
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
 
    using-overrides
+   extending-osa
    extra-python-software
    extra-networks
-   extending-osa
