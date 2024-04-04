@@ -74,24 +74,55 @@ the location of a YAML file which ansible-galaxy can consume,
 specifying which roles to download and install.
 The default value for this is ``ansible-role-requirements.yml``.
 
-You can override the ansible-role-requirement file used by defining
+To completely override the ansible-role-requirement file you can define
 the environment variable ``ANSIBLE_ROLE_FILE`` before running the
-``bootstrap-ansible.sh`` script.
+``bootstrap-ansible.sh`` script. With this approach it is now the
+responsibility of the deployer to maintain appropriate versions pins
+of the ansible roles if an upgrade is required.
 
-It is now the responsibility of the deployer to maintain appropriate
-versions pins of the ansible roles if an upgrade is required.
+If you want to extend or just partially override content of the
+``ansible-role-requirements.yml`` file you can create a new config file
+which path defaults to ``/etc/openstack_deploy/user-role-requirements.yml``.
+This path can be overriden with another environment variable
+``USER_ROLE_FILE`` which is expected to be relative to ``OSA_CONFIG_DIR``
+(/etc/openstack_deploy) folder.
 
-Adding new collections in your OpenStack-Ansible installation
--------------------------------------------------------------
+This file is in the same format as ``ansible-role-requirements.yml`` and can be
+used to add new roles or selectively override existing ones. New roles
+listed in ``user-role-requirements.yml`` will be merged with those
+in ``ansible-role-requirements.yml``, and roles with matching ``name`` key
+will override those in ``ansible-role-requirements.yml``. In case when
+``src`` key is not defined bootstrap script will skip cloning such roles.
+
+It is easy for a deployer to keep this file under their own version
+control and out of the openstack-ansible tree.
+
+
+Adding new or overriding collections in your OpenStack-Ansible installation
+---------------------------------------------------------------------------
+
+Alike to roles, collections for installation are stored in
+`ansible-collection-requirements`_ file. Path to this file can be overriden
+through ``ANSIBLE_COLLECTION_FILE`` environmental variable.
 
 The Victoria release of openstack-ansible adds an optional new config
 file which defaults to
-``/etc/openstack_deploy/user-collection-requirements.yml``. It should be
-in the native format of the ansible-galaxy requirements file and can be
-used to add new collections to the deploy host.
+``/etc/openstack_deploy/user-collection-requirements.yml``.
+
+It should be in the native format of the ansible-galaxy requirements file
+and can be used to add new collections to the deploy host or override versions
+or source for collections defined in ``ansible-collection-requirements``.
+
+``user-collection-requirements`` will be merged with
+``ansible-collection-requirements`` using collection ``name`` as a key.
+In case ``source`` is not defined in ``user-collection-requirements``,
+collection installation will be skipped. This way you can skip installation
+of unwanted collections.
+
 You can override location of the ``user-collection-requirements.yml`` by
 setting ``USER_COLLECTION_FILE`` environment variable before running the
-``bootstrap-ansible.sh`` script.
+``bootstrap-ansible.sh`` script. Though it is expected to be relative to
+``OSA_CONFIG_DIR`` (/etc/openstack_deploy) folder.
 
 Installing extra Python packages inside Ansible virtualenv
 ----------------------------------------------------------
@@ -106,25 +137,8 @@ You can override the default path to ``user-ansible-venv-requirements.txt`` file
 with ``USER_ANSIBLE_REQUIREMENTS_FILE`` environment variable before running the
 ``bootstrap-ansible.sh`` script.
 
-Maintaining local forks of ansible roles
-----------------------------------------
-
-The Train release of openstack-ansible adds an optional new config file
-which defaults to ``/etc/openstack_deploy/user-role-requirements.yml``.
-It is in the same format as ``ansible-role-requirements.yml`` and can be
-used to add new roles or selectively override existing ones. New roles
-listed in ``user-role-requirements.yml`` will be merged with those
-in ``ansible-role-requirements.yml``, and roles with matching names
-will override those in ``ansible-role-requirements.yml``. It is easy
-for a deployer to keep this file under their own version control and out
-of the openstack-ansible tree.
-
-
-This allows a deployer to
-either add new ansible roles, or override the location or SHA of
-existing individual roles without replacing the original file
-entirely. It is also straightforward to include the
 
 .. _ansible-role-requirements: https://opendev.org/openstack/openstack-ansible/src/ansible-role-requirements.yml
+.. _ansible-collection-requirements: https://opendev.org/openstack/openstack-ansible/src/ansible-collection-requirements.yml
 
 .. _ansible-galaxy: https://docs.ansible.com/ansible/latest/galaxy/user_guide.html#install-multiple-collections-with-a-requirements-file

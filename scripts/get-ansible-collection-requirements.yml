@@ -46,6 +46,7 @@
       with_items: "{{ user_collections.collections }}"
       when:
         - user_collections.collections is defined
+        - "'source' in item"
 
     - name: Check the Zuul src dir for cloned collections
       stat:
