@@ -1170,8 +1170,11 @@ def main(config=None, check=False, debug=False, environment=None, **kwargs):
                 continue
             q_name = p_net.get('ip_from_q')
             if q_name and q_name in cidr_networks:
-                if (p_net.get('address_prefix') in ('container',
-                                                    'management')):
+                addr_prefix = p_net.get('address_prefix')
+                is_mgmt = p_net.get(
+                    'is_management_address', p_net.get('is_container_address')
+                )
+                if (addr_prefix in ('container', 'management') or is_mgmt):
                     if user_cidr is None:
                         user_cidr = []
                     user_cidr.append(cidr_networks[q_name])
