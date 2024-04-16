@@ -38,11 +38,7 @@ bootstrap_host_scenarios_expanded: |-
   {% set scenario_list = bootstrap_host_scenarios + ['keystone', 'haproxy'] %}
   {% if ['aio', 'translations'] | intersect(bootstrap_host_scenarios) | length > 0 %}
   {#   Base services deployed with aio and translations scenarios #}
-  {%   set _ = scenario_list.extend(['cinder', 'glance', 'neutron', 'nova', 'placement']) %}
-  {%   if 'metal' not in bootstrap_host_scenarios %}
-  {#     Horizon is a base service in container jobs #}
-  {%     set _ = scenario_list.append('horizon') %}
-  {%   endif %}
+  {%   set _ = scenario_list.extend(['cinder', 'glance', 'neutron', 'nova', 'placement', 'horizon']) %}
   {% endif %}
   {# Service additions based on scenario presence #}
   {% if 'designate' in bootstrap_host_scenarios or ('validate' in bootstrap_host_scenarios and 'integrated' in bootstrap_host_scenarios) %}
