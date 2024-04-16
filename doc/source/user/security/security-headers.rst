@@ -135,3 +135,9 @@ Security Policy to allow access to your authorisation server by overriding the
       child-src 'self' {{ external_lb_vip_address }}:{{ nova_spice_html5proxy_base_port }} {{ external_lb_vip_address }}:{{ nova_novncproxy_port }} {{ external_lb_vip_address }}:{{ nova_serialconsoleproxy_port }};
       frame-src 'self' {{ external_lb_vip_address }}:{{ nova_spice_html5proxy_base_port }} {{ external_lb_vip_address }}:{{ nova_novncproxy_port }} {{ external_lb_vip_address }}:{{ nova_serialconsoleproxy_port }};
       "
+
+It is also possible to set specific security headers for skyline.
+
+.. code-block:: yaml
+
+    haproxy_skyline_csp: ...

@@ -1,0 +1,20 @@
+---
+prelude: >
+  Added support to deploy Skyline dashboard.
+
+features:
+  - |
+    OpenStack-Ansible can now be used to deploy Skyline, an alternantive
+    dashboard. New example files have been added to `env.d` and `conf.d`
+    to support the Skyline infrastructure, and a playbook named
+    `os-skyline-install.yml` has been added to deploy the API and console
+    service.
+other:
+  - |
+    When Skyline is deployed with the built-in HAProxy server it will, by
+    default, listen on port 80 when ssl is disabled and port 443 when ssl
+    is enabled. Skyline backend in it's term will listen on port 9999.
+
+    When Skyline is attempted to be deployed with Horizon, Skyline will
+    take precedence by serving on port 80/443. In the meanwhile Horizon
+    will be available in "subdirectory" ``/horizon``.

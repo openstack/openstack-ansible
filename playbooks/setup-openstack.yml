@@ -108,6 +108,9 @@
 - name: Importing ceph-rgw-install playbook
   import_playbook: ceph-rgw-install.yml
 
+- name: Importing os-skyline-install playbook
+  import_playbook: os-skyline-install.yml
+
 - name: Importing os-tempest-install playbook
   import_playbook: os-tempest-install.yml
 

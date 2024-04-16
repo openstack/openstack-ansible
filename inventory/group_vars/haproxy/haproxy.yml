@@ -82,7 +82,12 @@ haproxy_base_service:
   haproxy_service_enabled: true
   haproxy_redirect_scheme: "{{ (haproxy_ssl_letsencrypt_enable | bool and haproxy_ssl | bool) | ternary('https if !{ ssl_fc } !{ path_beg /.well-known/acme-challenge/ }', 'https if !{ ssl_fc }') }}"
   haproxy_frontend_acls: "{{ (haproxy_ssl_letsencrypt_enable | bool and haproxy_ssl | bool) | ternary(haproxy_ssl_letsencrypt_acl, {}) }}"
-  haproxy_frontend_raw: "{{ (haproxy_ssl | bool and haproxy_security_headers is defined) | ternary( haproxy_security_headers + [ haproxy_horizon_csp | default(haproxy_security_headers_csp)], []) }}"
+  haproxy_frontend_raw: >-
+    {{
+      (haproxy_ssl | bool and haproxy_security_headers is defined) | ternary(
+        haproxy_security_headers + [ haproxy_horizon_csp | default(haproxy_security_headers_csp)] + [haproxy_skyline_csp | default('')],
+        [])
+    }}
   haproxy_maps:
     - 'use_backend %[path,map_reg(/etc/haproxy/base_regex.map)]'
   haproxy_map_entries:
