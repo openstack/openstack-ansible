@@ -1,0 +1,7 @@
+---
+upgrade:
+  - |
+    When using RabbitMQ in a high availability cluster (non-quorum queues),
+    transient 'reply\_' queues are now included in the HA policy where they
+    previously were not. Note that this will increase the load on the RabbitMQ
+    cluster, particularly for deployments with large numbers of compute nodes.
