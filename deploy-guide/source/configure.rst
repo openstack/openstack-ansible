@@ -162,8 +162,6 @@ OpenStack service roles
 
 - :role_docs:`os_mistral <os_mistral>`
 
-- :role_docs:`os_murano <os_murano>`
-
 - :role_docs:`os_neutron <os_neutron>`
 
 - :role_docs:`os_nova <os_nova>`
@@ -173,10 +171,6 @@ OpenStack service roles
 - :role_docs:`os_placement <os_placement>`
 
 - :role_docs:`os_rally <os_rally>`
-
-- :role_docs:`os_sahara <os_sahara>`
-
-- :role_docs:`os_senlin <os_senlin>`
 
 - :role_docs:`os_swift <os_swift>`
 

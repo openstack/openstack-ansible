@@ -43,7 +43,6 @@ utility_devel_distro_packages: "{{ (ansible_facts['os_family'] == 'RedHat') | te
 utility_distro_openstack_clients_packages:
     - python3-keystoneclient
     - python3-cinderclient
-    - python3-muranoclient
     - python3-neutronclient
     - python3-novaclient
     - python3-openstackclient
