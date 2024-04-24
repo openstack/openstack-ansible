@@ -32,4 +32,4 @@ tempest_tempest_conf_overrides_octavia:
     member_role: '"Member"'
     test_with_ipv6: false
     endpoint_type: internalURL
-    provider: amphorav2
+    provider: "{{ ('ovnprovider' in bootstrap_host_scenarios_expanded) | ternary('ovn', 'amphorav2') }}"
