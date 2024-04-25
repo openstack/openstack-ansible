@@ -347,6 +347,12 @@ tempest_test_includelist_cinder:
 {%   endif %}
 {% endif %}
 
+{% if 'glance' in bootstrap_host_scenarios and 'cinderstore' in bootstrap_host_scenarios_expanded %}
+glance_default_store:
+  name: cinder
+  type: cinder
+{% endif %}
+
 {% if 'quorum' in bootstrap_host_scenarios_expanded %}
 oslomsg_rabbit_quorum_queues: True
 {% endif %}
