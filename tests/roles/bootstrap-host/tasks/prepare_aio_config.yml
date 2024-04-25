@@ -84,12 +84,14 @@
           nova_virt_type: 'qemu'
           # NOTE(jrosser)
           # we only run ceph jobs on ubuntu in CI so this is sufficient
-          ceph_stable_repo: "http://{{ nodepool_vars.NODEPOOL_MIRROR_HOST }}/ceph-deb-quincy"
+          # NOTE(jrosser)
+          # re-enable these local CI repos when the reef release is mirrored
+          #ceph_stable_repo: "http://{{ nodepool_vars.NODEPOOL_MIRROR_HOST }}/ceph-deb-reef"
           # we must set the ceph repo seperatley for the ceph_client role
-          ceph_apt_repos:
-            ceph:
-              state: "present"
-              repo: "deb http://{{ nodepool_vars.NODEPOOL_MIRROR_HOST }}/ceph-deb-quincy {{ ansible_facts['distribution_release'] }} main"
+          #ceph_apt_repos:
+          #  ceph:
+          #    state: "present"
+          #    repo: "deb http://{{ nodepool_vars.NODEPOOL_MIRROR_HOST }}/ceph-deb-reef {{ ansible_facts['distribution_release'] }} main"
       copy:
         dest: /etc/openstack_deploy/user_openstackci.yml
         content: "{{ nodepool_overrides | to_nice_yaml }}"
