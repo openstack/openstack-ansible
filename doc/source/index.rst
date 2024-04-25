@@ -65,11 +65,10 @@ OpenStack-Ansible Zed series was first released with the 26.0.0 tag on
 .. _OpenStack-Ansible Zed Documentation: https://docs.openstack.org/openstack-ansible/zed/
 .. _OpenStack-Ansible Zed series release notes: https://docs.openstack.org/releasenotes/openstack-ansible/zed.html
 
-Yoga: Maintained
-~~~~~~~~~~~~~~~~
+Yoga: EOM (end-of-maintenance)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible Yoga series was first released with the 25.0.0 tag on
-27 June 2022.
+OpenStack-Ansible Yoga series was EOM-ed on February 8, 2024.
 
 * `OpenStack-Ansible Yoga Documentation`_
 
@@ -79,11 +78,10 @@ OpenStack-Ansible Yoga series was first released with the 25.0.0 tag on
 .. _OpenStack-Ansible Yoga series release notes: https://docs.openstack.org/releasenotes/openstack-ansible/yoga.html
 
 
-Xena: Extended Maintenance
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Xena: EOM (end-of-maintenance)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible Xena series was first released with the 24.0.0 tag on
-10 December 2021.
+OpenStack-Ansible Xena series was EOM-ed on April 12, 2024.
 
 * `OpenStack-Ansible Xena Documentation`_
 
@@ -93,11 +91,10 @@ OpenStack-Ansible Xena series was first released with the 24.0.0 tag on
 .. _OpenStack-Ansible Xena series release notes: https://docs.openstack.org/releasenotes/openstack-ansible/xena.html
 
 
-Wallaby: Extended Maintenance
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Wallaby: EOM (end-of-maintenance)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible Wallaby series was first released with the 23.0.0 tag on
-02 July 2021.
+OpenStack-Ansible Wallaby series was EOM-ed on April 12, 2024.
 
 * `OpenStack-Ansible Wallaby Documentation`_
 
@@ -107,11 +104,10 @@ OpenStack-Ansible Wallaby series was first released with the 23.0.0 tag on
 .. _OpenStack-Ansible Wallaby series release notes: https://docs.openstack.org/releasenotes/openstack-ansible/wallaby.html
 
 
-Victoria: Extended Maintenance
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Victoria: EOM (end-of-maintenance)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible Victoria series was first released with the 22.0.0 tag on
-21 January 2021.
+OpenStack-Ansible Victoria series was EOM-ed on April 12, 2024.
 
 * `OpenStack-Ansible Victoria Documentation`_
 
