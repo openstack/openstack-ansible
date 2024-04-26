@@ -25,8 +25,7 @@ debug: True
 install_method: "{{ bootstrap_host_install_method }}"
 {% if bootstrap_host_install_method == 'distro' %}
 galera_install_method: distro
-# TODO: Uncomment that when galera patch lands to avoid circular dependency
-# rabbitmq_install_method: distro
+rabbitmq_install_method: distro
 ceph_pkg_source: distro
 {% endif %}
 
