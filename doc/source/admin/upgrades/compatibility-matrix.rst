@@ -15,7 +15,8 @@ However, we do try to provide ``upgrade`` releases where we support both new
 and old Operating System versions, providing deployers the ability to
 properly upgrade their deployments to the new Operating System release.
 
-In CI we test upgrades from N to N+1 releases and only for source deployments.
+In CI we test upgrades between releases only for ``source`` deployments. This
+also includes CI testing of upgrade path between SLURP releases.
 
 Below you will find the support matrix of Operating Systems for
 OpenStack-Ansible releases.
