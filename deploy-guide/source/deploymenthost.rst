@@ -28,6 +28,7 @@ hosts:
 
 * `Ubuntu server 22.04 (Jammy Jellyfish) LTS 64-bit <http://releases.ubuntu.com/22.04/>`_
 * `Debian 11 (Bullseye) LTS 64-bit <https://www.debian.org/distrib/>`_
+* `Debian 12 (Bookworm) LTS 64-bit <https://www.debian.org/distrib/>`_
 * `Centos 9 Stream 64-bit <https://mirrors.centos.org/mirrorlist?path=/9-stream/BaseOS/x86_64/iso/>`_
 * `Rocky Linux 9 64-bit <https://mirrors.rockylinux.org/mirrorlist?path=/pub/rocky/9.0/isos/>`_
 
