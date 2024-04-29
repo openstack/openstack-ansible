@@ -166,6 +166,37 @@ Install the source and dependencies for the deployment host.
 
        # scripts/bootstrap-ansible.sh
 
+Configure Docker with Debian
+============================
+
+It is an alternative realization of deploy host configuration which includes usage of the Docker
+container as the deploy host.
+
+This is also neither supported nor tested in CI, so you should use it at your own risk.
+
+Before you begin, we recommend upgrading your Docker host system packages and kernel.
+
+#. Prepare your OpenStack Ansible Dockerfile
+
+   .. parsed-literal::
+
+       FROM debian:12
+       RUN apt-get update && apt-get install -y git python3-dev openssh-client openssh-server sudo virtualenv iptables libffi-dev  coreutils curl linux-headers-$(dpkg --print-architecture)
+       RUN git clone -b |latest_tag| \https://git.openstack.org/openstack/openstack-ansible /opt/openstack-ansible
+       WORKDIR /opt/openstack-ansible
+       RUN /opt/openstack-ansible/scripts/bootstrap-ansible.sh
+       ENTRYPOINT ["bash"]
+
+#. Build and run your deploy host container
+
+   .. parsed-literal::
+
+       # docker build . -t openstack-ansible:|latest_tag|
+       # docker run -dit --name osa-deploy openstack-ansible:|latest_tag|
+       # docker exec -it osa-deploy bash
+
+#. Configure NTP to synchronize with a suitable time source on the Docker host.
+
 
 Configure Docker with Alpine
 ============================
