@@ -7,6 +7,7 @@ following minimum requirements:
 * Debian
 
   * Debian 11 (bullseye)
+  * Debian 12 (bookworm)
 
 * Ubuntu
 

@@ -13,6 +13,7 @@ target host:
 
 * Ubuntu server 22.04 (Jammy Jellyfish) LTS 64-bit
 * Debian 11 64-bit
+* Debian 12 64-bit
 * Centos 9 Stream 64-bit
 * Rocky Linux 9 64-bit
 
