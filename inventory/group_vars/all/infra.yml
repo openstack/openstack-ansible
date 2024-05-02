@@ -32,7 +32,7 @@ oslomsg_rabbit_quorum_queues: False
 
 rabbitmq_policies:
   - name: "HA"
-    pattern: '^(?!(amq\.)|(.*_fanout_)|(reply_)).*'
+    pattern: '^(?!(amq\.)|(.*_fanout_)).*'
     priority: 0
     tags: "ha-mode=all"
     state: "{{ (oslomsg_rabbit_quorum_queues | default(True) or not rabbitmq_queue_replication) | ternary('absent', 'present') }}"
