@@ -22,13 +22,13 @@ osd_group_name: ceph-osd
 rgw_group_name: ceph-rgw
 mds_group_name: ceph-mds
 nfs_group_name: ceph-nfs
-ceph_origin: "{{ (ansible_facts['distribution'] | lower == 'ubuntu' and ansible_facts['distribution_version'] | lower == '22.04') | ternary('distro', 'repository') }}"
-ceph_pkg_source: "{{ (ansible_facts['distribution'] | lower == 'ubuntu' and ansible_facts['distribution_version'] | lower == '22.04') | ternary('distro', 'ceph') }}"
+ceph_origin: repository
+ceph_pkg_source: ceph
 ceph_repository: community
 # The _stable_release var is used by both the OSA ceph_client role and the
 # ceph-ansible roles. It is defaulted in ceph_client but set here to keep the
 # OSA/ceph-ansible integrations in sync.
-ceph_stable_release: quincy
+ceph_stable_release: reef
 fetch_directory: "{{ openstack_config_dir }}/ceph-fetch/"
 # tries to create /var/log/ceph as a directory and fails if the log link already
 # exists. we handle the log dir creation so this is not something we need
