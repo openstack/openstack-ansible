@@ -1,0 +1,8 @@
+---
+
+fixes:
+  - |
+    Fixes user-collection-requirements bootstrap process, when defied by
+    deployer collection uses "git+file" as a source scheme. Previously
+    an unexpected version of collection could get installed when using
+    "git+file" scheme.
