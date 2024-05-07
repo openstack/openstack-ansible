@@ -26,7 +26,7 @@ rabbitmq_servers: >-
   }}
 rabbitmq_policies:
   - name: "HA"
-    pattern: '^(?!(amq\.)|(.*_fanout_)|(reply_)).*'
+    pattern: '^(?!(amq\.)|(.*_fanout_)).*'
     priority: 0
     tags: "ha-mode=all"
 
