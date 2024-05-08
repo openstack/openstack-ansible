@@ -40,8 +40,6 @@
   environment: "{{ deployment_environment_variables | default({}) }}"
   vars_files:
     - "defaults/{{ install_method }}_install.yml"
-  tags:
-    - glance
   pre_tasks:
     # In order to ensure that any container, software or
     # config file changes which causes a container/service
@@ -55,6 +53,8 @@
       when:
         - "'glance_api' in group_names"
         - "groups['glance_api'] | length > 1"
+      tags:
+        - always
 
     - name: Configure container (local storage bind mount from host)
       include_role:
@@ -96,3 +96,5 @@
       when:
         - "'glance_api' in group_names"
         - "groups['glance_api'] | length > 1"
+      tags:
+        - always

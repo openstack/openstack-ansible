@@ -40,8 +40,6 @@
   environment: "{{ deployment_environment_variables | default({}) }}"
   vars_files:
     - "defaults/{{ install_method }}_install.yml"
-  tags:
-    - adjutant
   pre_tasks:
     # In order to ensure that any container, software or
     # config file changes which causes a container/service
@@ -55,6 +53,8 @@
       when:
         - "'adjutant_api' in group_names"
         - "groups['adjutant_api'] | length > 1"
+      tags:
+        - always
 
     - name: Including unbound-clients tasks
       include_tasks: common-tasks/unbound-clients.yml
@@ -76,3 +76,5 @@
       when:
         - "'adjutant_api' in group_names"
         - "groups['adjutant_api'] | length > 1"
+      tags:
+        - always

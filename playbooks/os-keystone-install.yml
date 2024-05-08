@@ -49,8 +49,6 @@
       include_role:
         name: os_keystone
         tasks_from: main_pre.yml
-  tags:
-    - keystone
 
 - name: Configure haproxy services
   import_playbook: openstack.osa.haproxy_service_config
@@ -69,8 +67,6 @@
   environment: "{{ deployment_environment_variables | default({}) }}"
   vars_files:
     - "defaults/{{ install_method }}_install.yml"
-  tags:
-    - keystone
   pre_tasks:
     # In order to ensure that any container, software or
     # config file changes which causes a container/service
@@ -84,6 +80,8 @@
       when:
         - "'keystone_all' in group_names"
         - "groups['keystone_all'] | length > 1"
+      tags:
+        - always
 
     - name: Configure container
       include_role:
@@ -116,6 +114,8 @@
       when:
         - "'keystone_all' in group_names"
         - "groups['keystone_all'] | length > 1"
+      tags:
+        - always
 
 # These facts are set against the deployment host to ensure that
 # they are fast to access. This is done in preference to setting
@@ -128,8 +128,6 @@
   environment: "{{ deployment_environment_variables | default({}) }}"
   vars_files:
     - "defaults/{{ install_method }}_install.yml"
-  tags:
-    - keystone
   tasks:
     - name: Refresh local facts
       setup:
@@ -194,8 +192,6 @@
   environment: "{{ deployment_environment_variables | default({}) }}"
   vars_files:
     - "defaults/{{ install_method }}_install.yml"
-  tags:
-    - keystone
   tasks:
     - name: "Post configure SP/IDP"
       include_role:

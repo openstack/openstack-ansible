@@ -39,8 +39,6 @@
   environment: "{{ deployment_environment_variables | default({}) }}"
   vars_files:
     - "defaults/{{ install_method }}_install.yml"
-  tags:
-    - manila
   pre_tasks:
     - name: Gather additional facts
       include_tasks: "common-tasks/gather-hardware-facts.yml"
@@ -63,6 +61,8 @@
       when:
         - "'manila_api' in group_names"
         - "groups['manila_api'] | length > 1"
+      tags:
+        - always
 
     - name: Including unbound-clients tasks
       include_tasks: common-tasks/unbound-clients.yml
@@ -84,6 +84,8 @@
       when:
         - "'manila_api' in group_names"
         - "groups['manila_api'] | length > 1"
+      tags:
+        - always
 
 - name: Install manila data services
   hosts: manila_data:manila_share
@@ -92,8 +94,6 @@
   environment: "{{ deployment_environment_variables | default({}) }}"
   vars_files:
     - "defaults/{{ install_method }}_install.yml"
-  tags:
-    - manila
 
   pre_tasks:
     - name: Including unbound-clients tasks

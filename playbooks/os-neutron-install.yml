@@ -35,8 +35,6 @@
 - name: Configure Neutron dynamic host groupings
   hosts: localhost
   gather_facts: no
-  tags:
-    - neutron
   tasks:
     - name: Importing dynamic-grouping tasks
       import_tasks: common-tasks/dynamic-grouping.yml

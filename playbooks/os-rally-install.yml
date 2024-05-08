@@ -26,8 +26,6 @@
   environment: "{{ deployment_environment_variables | default({}) }}"
   vars_files:
     - "defaults/{{ install_method }}_install.yml"
-  tags:
-    - rally
   pre_tasks:
     - name: End playbook
       meta: end_play

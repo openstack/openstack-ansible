@@ -57,8 +57,6 @@
       swift_do_setup: True
       swift_do_sync: True
   environment: "{{ deployment_environment_variables | default({}) }}"
-  tags:
-    - swift
 
 - name: Installation and setup of Swift
   hosts: swift_all
@@ -69,5 +67,3 @@
       tags:
         - crontab
   environment: "{{ deployment_environment_variables | default({}) }}"
-  tags:
-    - swift

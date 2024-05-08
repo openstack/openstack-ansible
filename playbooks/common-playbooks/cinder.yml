@@ -21,8 +21,6 @@
   environment: "{{ deployment_environment_variables | default({}) }}"
   vars_files:
     - "../defaults/{{ install_method }}_install.yml"
-  tags:
-    - cinder
   pre_tasks:
 
     # In order to ensure that any container, software or
@@ -37,6 +35,8 @@
       when:
         - "'cinder_api' in group_names"
         - "groups['cinder_api'] | length > 1"
+      tags:
+        - always
 
     - name: Determine storage bridge IP address
       include_tasks: ../common-tasks/dynamic-address-fact.yml
@@ -118,3 +118,5 @@
       when:
         - "'cinder_api' in group_names"
         - "groups['cinder_api'] | length > 1"
+      tags:
+        - always

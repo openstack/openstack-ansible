@@ -53,8 +53,6 @@
   environment: "{{ deployment_environment_variables | default({}) }}"
   vars_files:
     - "defaults/{{ install_method }}_install.yml"
-  tags:
-    - nova
   pre_tasks:
     # Enable execution of ceph_client on the nova compute hosts if cinder RBD
     # backends are used. This is necessary to ensure that volume-backed Nova
@@ -88,6 +86,8 @@
         - "nova_api_metadata"
         - "nova_api_os_compute"
         - "nova_console"
+      tags:
+        - always
 
     - name: Configure container
       include_role:
@@ -129,6 +129,8 @@
         - "nova_api_metadata"
         - "nova_api_os_compute"
         - "nova_console"
+      tags:
+        - always
 
 
 - name: Install nova compute services
@@ -139,8 +141,6 @@
   environment: "{{ deployment_environment_variables | default({}) }}"
   vars_files:
     - "defaults/{{ install_method }}_install.yml"
-  tags:
-    - nova
   pre_tasks:
     # Enable execution of ceph_client on the nova compute hosts if cinder RBD
     # backends are used. This is necessary to ensure that volume-backed Nova
@@ -247,5 +247,3 @@
       import_role:
         name: os_nova
         tasks_from: nova_db_post_setup.yml
-  tags:
-    - nova

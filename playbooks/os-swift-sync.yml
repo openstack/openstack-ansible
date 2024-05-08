@@ -26,5 +26,3 @@
       swift_do_setup: False
       swift_do_sync: True
   environment: "{{ deployment_environment_variables | default({}) }}"
-  tags:
-    - swift

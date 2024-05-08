@@ -21,8 +21,6 @@
   environment: "{{ deployment_environment_variables | default({}) }}"
   vars_files:
     - "../defaults/{{ install_method }}_install.yml"
-  tags:
-    - neutron
   pre_tasks:
 
     # In order to ensure that any container, software or
@@ -37,6 +35,8 @@
       when:
         - "'neutron_server' in group_names"
         - "groups['neutron_server'] | length > 1"
+      tags:
+        - always
 
     - name: Determine tunnel bridge IP address
       include_tasks: ../common-tasks/dynamic-address-fact.yml
@@ -91,3 +91,5 @@
       when:
         - "'neutron_server' in group_names"
         - "groups['neutron_server'] | length > 1"
+      tags:
+        - always

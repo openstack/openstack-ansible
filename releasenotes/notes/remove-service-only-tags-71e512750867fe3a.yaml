@@ -1,0 +1,7 @@
+---
+other:
+  - |
+    Tags matching service names have been removed from os-<service>-install.yml
+    playbooks. For example 'nova', 'neutron', 'cinder' etc. These tags were
+    only useful in conjunction with setup-openstack.yml, but were found to have
+    unexpected behaviour, potentially causing important tasks to be skipped.

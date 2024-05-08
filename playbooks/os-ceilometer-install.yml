@@ -44,5 +44,3 @@
     - role: "os_ceilometer"
 
   environment: "{{ deployment_environment_variables | default({}) }}"
-  tags:
-    - ceilometer

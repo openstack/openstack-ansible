@@ -42,5 +42,3 @@
         - crontab
 
   environment: "{{ deployment_environment_variables | default({}) }}"
-  tags:
-    - tempest

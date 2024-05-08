@@ -40,8 +40,6 @@
   environment: "{{ deployment_environment_variables | default({}) }}"
   vars_files:
     - "defaults/{{ install_method }}_install.yml"
-  tags:
-    - tacker
   pre_tasks:
     # In order to ensure that any container, software or
     # config file changes which causes a container/service

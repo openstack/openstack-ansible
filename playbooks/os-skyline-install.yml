@@ -40,8 +40,6 @@
   user: root
   vars_files:
     - "defaults/{{ install_method }}_install.yml"
-  tags:
-    - skyline
   pre_tasks:
     - name: Including container-setup tasks
       include_role:

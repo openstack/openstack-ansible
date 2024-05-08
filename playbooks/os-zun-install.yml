@@ -69,6 +69,8 @@
       when:
         - "'zun_api' in group_names"
         - "groups['zun_api'] | length > 1"
+      tags:
+        - always
 
     - name: Including container-setup tasks
       include_role:
@@ -95,7 +97,7 @@
       when:
         - "'zun_api' in group_names"
         - "groups['zun_api'] | length > 1"
+      tags:
+        - always
 
   environment: "{{ deployment_environment_variables | default({}) }}"
-  tags:
-    - zun
