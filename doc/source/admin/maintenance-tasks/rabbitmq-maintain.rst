@@ -217,3 +217,27 @@ multi-node cluster are:
   bootable again.
 
 Consult the rabbitmqctl manpage for more information.
+
+Migrate between HA and Quorum queues
+------------------------------------
+
+In the 2024.1 (Caracal) release OpenStack Ansible switches to use RabbitMQ
+Quorum Queues by default, rather than the legacy High Availability classic
+queues. Migration to Quorum Queues can be performed at upgrade time, but may
+result in extended control plane downtime as this requires all OpenStack
+services to be restarted with their new configuration.
+
+In order to speed up the migration, the following playbooks can be run to
+migrate either to or from Quorum Queues, whilst skipping package install and
+other configuration tasks. These tasks are available from the 2024.1 release
+onwards.
+
+   .. code-block:: console
+
+      $ openstack-ansible rabbitmq-install.yml --tags rabbitmq-config
+      $ openstack-ansible setup-openstack.yml --tags common-mq,post-install
+
+In order to take advantage of these steps, we suggest setting
+`oslomsg_rabbit_quorum_queues` to False before upgrading to 2024.1. Then, once
+you have upgraded, set `oslomsg_rabbit_quorum_queues` back to the default of
+True and run the playbooks above.
