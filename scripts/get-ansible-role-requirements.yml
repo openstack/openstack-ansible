@@ -119,7 +119,7 @@
 
     - name: Append user overridden roles
       set_fact:
-        clone_roles: "{{ (clone_roles | default([])) + user_roles }}"
+        clone_roles: "{{ (clone_roles | default([])) + user_roles | rejectattr('src', 'undefined') }}"
 
     - name: Clone git repos
       block:
