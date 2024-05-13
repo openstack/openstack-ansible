@@ -48,6 +48,7 @@ COMMON_ETC_LOG_NAMES="apt \
     haproxy \
     httpd \
     ironic-inspector \
+    kubelet \
     memcached \
     mongodb \
     my.cnf \
