@@ -73,12 +73,6 @@
 - name: Importing os-trove-install playbook
   import_playbook: os-trove-install.yml
 
-- name: Importing os-sahara-install playbook
-  import_playbook: os-sahara-install.yml
-
-- name: Importing os-senlin-install playbook
-  import_playbook: os-senlin-install.yml
-
 - name: Importing os-octavia-install playbook
   import_playbook: os-octavia-install.yml
 
@@ -96,9 +90,6 @@
 
 - name: Importing os-mistral-install playbook
   import_playbook: os-mistral-install.yml
-
-- name: Importing os-murano-install playbook
-  import_playbook: os-murano-install.yml
 
 - name: Importing os-zun-install playbook
   import_playbook: os-zun-install.yml

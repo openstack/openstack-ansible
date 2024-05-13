@@ -1,0 +1,33 @@
+---
+
+upgrade:
+  - |
+    Services, that were makred as Inactive (Murano, Senlin, Sahara) will not be
+    upgraded as they were not released for 2024.1 (Caracal).
+    In order to keep managing these services on older versions you will need to
+    do following actions:
+
+    * Create file /etc/openstack_deploy/user-role-requirements.yml with following content:
+
+      .. code-block:: yaml
+
+        - name: os_<service>
+          scm: git
+          src: https://opendev.org/openstack/openstack-ansible-os_<service>
+          version: master
+          trackbranch: master
+
+    * Playbooks for managing services can be found inside role examples, ie: ``/etc/ansible/roles/os_<service>/examples/playbook.yml``
+
+    * Services will remain in your previously generated inventory until you explicitly remove them.
+
+deprecations:
+  - |
+    Following roles are not going to be part of 2024.1 release due to services
+    being trafered to `Inactive state <https://governance.openstack.org/tc/reference/emerging-technology-and-inactive-projects.html#current-inactive-projects>`_:
+    - Murano
+    - Senlin
+    - Sahara
+
+    Playbooks for managing these services were also removed out of the tree
+    and can be found only under specific role `examples` folder.
