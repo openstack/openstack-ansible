@@ -124,6 +124,36 @@ setting ``USER_COLLECTION_FILE`` environment variable before running the
 ``bootstrap-ansible.sh`` script. Though it is expected to be relative to
 ``OSA_CONFIG_DIR`` (/etc/openstack_deploy) folder.
 
+Calling extra playbooks during the deployment
+---------------------------------------------
+
+If you install some additional deployment functionality as either a
+collection or a git repository on the deploy host, it is possible
+to automatically include extra playbooks at certain points during
+the deployment.
+
+The points where a hook exists to call an external playbook are as
+follows:
+
+ * ``pre_setup_hosts_hook``
+ * ``post_setup_hosts_hook``
+ * ``pre_setup_infrastructure_hook``
+ * ``post_setup_infrastructure_hook``
+ * ``pre_setup_openstack_hook``
+ * ``post_setup_openstack_hook``
+
+The hook variables should be configured in a suitable user_variables
+file. An example calling a playbook from a collection (installed
+using user-collection-requirements.yml) :
+
+.. code-block:: bash
+
+  pre_setup_hosts_hook: custom.collection.playbook
+
+Installing extra playbooks using collections, and referencing the
+playbook with its FQCN is the most robust approach to including
+additional user defined playbooks.
+
 Installing extra Python packages inside Ansible virtualenv
 ----------------------------------------------------------
 
