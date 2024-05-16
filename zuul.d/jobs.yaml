@@ -105,8 +105,6 @@
       - name: openstack/ansible-role-zookeeper
       # OpenStack service repos - listed here to make cached repos available in CI
       - name: openstack/requirements
-      # Murano distro deployment does need access to valid git repo anyway
-      - name: openstack/murano
       # All deployment scenarios including infra need keystone
       - name: openstack/keystone
       # Tempest plus plugins needed for ubuntu distro jobs
@@ -122,12 +120,9 @@
       - name: openstack/keystone-tempest-plugin
       - name: openstack/magnum-tempest-plugin
       - name: openstack/manila-tempest-plugin
-      - name: openstack/murano-tempest-plugin
       - name: openstack/neutron-tempest-plugin
       - name: x/novajoin-tempest-plugin
       - name: openstack/octavia-tempest-plugin
-      - name: openstack/senlin-tempest-plugin
-      - name: openstack/sahara-tests
       - name: openstack/telemetry-tempest-plugin
       - name: openstack/trove-tempest-plugin
       - name: openstack/zaqar-tempest-plugin
@@ -245,10 +240,8 @@
       - name: openstack/magnum-ui
       - name: openstack/masakari-dashboard
       - name: openstack/neutron-fwaas-dashboard
-      - name: openstack/sahara-dashboard
       - name: openstack/keystone
       - name: openstack/manila
-      - name: openstack/murano
       - name: openstack/neutron
       - name: openstack/neutron-vpnaas
       - name: openstack/neutron-fwaas
@@ -260,8 +253,6 @@
       - name: openstack/nova
       - name: openstack/ovn-bgp-agent
       - name: openstack/ovn-octavia-provider
-      - name: openstack/sahara
-      - name: openstack/senlin
       - name: openstack/skyline-apiserver
       - name: openstack/skyline-console
       - name: openstack/swift
@@ -272,7 +263,6 @@
       - name: openstack/masakari-monitors
       - name: openstack/mistral
       - name: openstack/mistral-extra
-      - name: openstack/murano
       - name: openstack/trove
       - name: openstack/trove-dashboard
       - name: openstack/octavia
@@ -297,12 +287,9 @@
       - name: openstack/keystone-tempest-plugin
       - name: openstack/magnum-tempest-plugin
       - name: openstack/manila-tempest-plugin
-      - name: openstack/murano-tempest-plugin
       - name: openstack/neutron-tempest-plugin
       - name: x/novajoin-tempest-plugin
       - name: openstack/octavia-tempest-plugin
-      - name: openstack/senlin-tempest-plugin
-      - name: openstack/sahara-tests
       - name: openstack/telemetry-tempest-plugin
       - name: openstack/trove-tempest-plugin
       - name: openstack/zaqar-tempest-plugin
