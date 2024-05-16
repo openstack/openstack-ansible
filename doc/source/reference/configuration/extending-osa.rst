@@ -1,5 +1,5 @@
-Using OpenStack-Ansible within your project
-===========================================
+Extending OpenStack-Ansible with additional Ansible content
+===========================================================
 
 Including OpenStack-Ansible in your project
 -------------------------------------------
