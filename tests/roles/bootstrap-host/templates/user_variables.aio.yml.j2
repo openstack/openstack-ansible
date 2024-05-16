@@ -358,8 +358,8 @@ glance_default_store:
   type: cinder
 {% endif %}
 
-{% if 'quorum' in bootstrap_host_scenarios_expanded %}
-oslomsg_rabbit_quorum_queues: True
+{% if 'haqueues' in bootstrap_host_scenarios_expanded %}
+oslomsg_rabbit_quorum_queues: False
 {% endif %}
 
 # NOTE(jrosser) nested virt is not usable in general in opendev.org CI jobs,

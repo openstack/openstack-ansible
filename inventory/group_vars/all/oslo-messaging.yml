@@ -12,6 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Quorum Queues
+oslomsg_rabbit_quorum_queues: "{{ rabbitmq_queue_replication }}"
+# NOTE(noonedeadpunk): Disabled due to broken behaviour for metal setups
+#                      See https://bugs.launchpad.net/oslo.messaging/+bug/2065922
+oslomsg_rabbit_queue_manager: False
+
 # RPC
 oslomsg_rpc_transport: "{{ (groups[qdrouterd_host_group] | length > 0) | ternary('amqp', 'rabbit') }}"
 oslomsg_rpc_port: "{{ (groups[qdrouterd_host_group] | length > 0) | ternary(qdrouterd_port, rabbitmq_port) }}"

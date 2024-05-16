@@ -155,6 +155,19 @@ Please review the contents of the playbook for more information.
     # openstack-ansible "${SCRIPTS_PATH}/upgrade-utilities/deploy-config-changes.yml"
 
 
+.. note::
+
+    With upgrade to 2024.1 (Caracal) release usage of RabbitMQ Quorum Queues
+    is enabled by default. Migration to usage of Quorum Queues results
+    in prolonged downtime for services during upgrade.
+
+    To reduce downtime you might want to set
+    ``oslomsg_rabbit_quorum_queues: false`` at this point and migrate to
+    Quorum Queues usage after OpenStack upgrade is done.
+
+    Please, check `RabbitMQ maintenance <https://docs.openstack.org/openstack-ansible/latest/admin/maintenance-tasks.html#migrate-between-ha-and-quorum-queues>`_
+    for more information about switching between Quourum and HA Queues.
+
 Upgrade hosts
 ~~~~~~~~~~~~~
 

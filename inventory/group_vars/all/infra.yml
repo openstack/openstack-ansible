@@ -28,7 +28,6 @@ rabbitmq_servers: >-
 # If you do not want to use neither quorum queues nor classic mirror queues,
 # set rabbitmq_queue_replication to False
 rabbitmq_queue_replication: True
-oslomsg_rabbit_quorum_queues: False
 
 rabbitmq_policies:
   - name: "HA"
@@ -41,7 +40,11 @@ rabbitmq_policies:
     priority: 0
     tags:
       queue-version: 2
-    state: "{{ (oslomsg_rabbit_quorum_queues | default(True) or not rabbitmq_queue_replication) | ternary('present', 'absent') }}"
+    state: >-
+      {{
+        ((oslomsg_rabbit_quorum_queues | default(True) or not rabbitmq_queue_replication) and rabbitmq_install_method | default('') != 'distro'
+          ) | ternary('present', 'absent')
+      }}
 
 ## Galera options
 galera_client_package_state: "{{ package_state }}"
