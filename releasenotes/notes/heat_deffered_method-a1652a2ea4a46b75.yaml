@@ -1,0 +1,9 @@
+---
+
+deprecations:
+  - |
+    Variable ``heat_deferred_auth_method`` has been deprecated and has no
+    effect.
+    Default behaviour is to use trusts as deferred method, and that is the
+    only working option as of today.
+    Usage of password is broken with keystonev3 and should not be used.

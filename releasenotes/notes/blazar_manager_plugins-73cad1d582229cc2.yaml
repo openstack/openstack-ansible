@@ -1,0 +1,11 @@
+---
+
+features:
+  - |
+    Implements variable ``blazar_manager_plugins`` that allows to configure
+    list of enabled plugins for Blazar.
+upgrade:
+  - |
+    Floating IP plugin for Blazar (virtual.floatingip.plugin) is now enabled
+    by default. Use ``blazar_manager_plugins`` variable to change the list of
+    enabled plugins if needed.

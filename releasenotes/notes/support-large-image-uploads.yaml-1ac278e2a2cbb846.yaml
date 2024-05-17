@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    A new override, `skyline_client_max_body_size`, has been introduced to
+    support large image uploads via the Skyline dashboard. The default value
+    of 1100M supports upstream Ubuntu and Rocky Linux images, but can be
+    increased to support larger images or decreased to encourage the use
+    of the CLI.

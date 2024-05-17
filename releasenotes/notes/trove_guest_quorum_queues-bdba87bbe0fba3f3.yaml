@@ -1,0 +1,21 @@
+---
+features:
+  - |
+    Trove role introduced variables to independently configure RPC/Notification
+    communication for Guest Agent:
+    - trove_guest_oslomsg_rabbit_quorum_queues
+    - trove_guest_oslomsg_rpc_port
+    - trove_guest_oslomsg_rpc_userid
+    - trove_guest_oslomsg_rpc_password
+    - trove_guest_oslomsg_rpc_vhost
+upgrade:
+  - |
+    It is highly recommended to explicitly disable
+    ``trove_guest_oslomsg_rabbit_quorum_queues`` during upgrade in case
+    ``oslomsg_rabbit_quorum_queues: True``, which is default behaviour
+    since 2024.1 (Caracal).
+    Migration to Quorum queues for Trove Guestagent is not supported and
+    might be troublesome, as already spawned agents will not reload
+    configuration.
+    New deployments though may utilize quorum queues from the very
+    beginning safely.

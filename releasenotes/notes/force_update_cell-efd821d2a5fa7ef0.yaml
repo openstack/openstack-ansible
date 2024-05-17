@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Added variable ``nova_cell_force_update`` that can be set to
+    True during runtime to force update cell records.
+    This might be useful in case of password rotation for DB users
+    for cell0 or any other changes in connection configuration.

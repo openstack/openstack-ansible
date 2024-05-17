@@ -1,0 +1,11 @@
+---
+features:
+  - |
+    Added extra variables to allow control Blazar integration with Nova:
+
+      * ``nova_blazar_enabled`` (bool) - Control if Blazar integration should
+        be configured
+      * ``nova_blazar_scheduler_filters`` (list) - Extra filters that will be
+        enabled in Nova scheduler
+      * ``nova_blazar_pip_packages`` (list) - Extra Python packages that will
+        be installed on Nova scheduler hosts

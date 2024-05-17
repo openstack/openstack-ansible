@@ -1,0 +1,12 @@
+---
+features:
+  - |
+    Added extra variables to Neutron role for Availability Zones configuration:
+
+      * ``neutron_default_availability_zones`` - defines a list of AZs where
+        l3/dhcp agents or OVN routers/ports will be scheduled to when hint is
+        not provided in a request to Neutron API.
+      * ``neutron_availability_zone`` - Availability Zone of the current
+        component. It is recommended to leverage group/host_vars for setting
+        this variable.
+        For OVN this variable can contain multiple values spearated by colon.

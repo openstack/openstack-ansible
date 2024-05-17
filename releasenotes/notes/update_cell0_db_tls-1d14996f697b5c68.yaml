@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    Due to missing parameter Nova cell0 used to be configured to not use
+    TLS for MySQL communication even when ``nova_galera_use_ssl`` was
+    explicitly enabled.
+    It is fixed now and cell0 should be updated on the next playbook run.

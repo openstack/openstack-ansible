@@ -13,11 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-### HEAD as of 25.03.2024 ###
+### HEAD as of 17.05.2024 ###
 
 ## Horizon service
 horizon_git_repo: "{{ openstack_opendev_base_url }}/openstack/horizon"
-horizon_git_install_branch: e415e8dad60c67d502f9cb0c257c95794f8603cf
+horizon_git_install_branch: dcaf0cc51fe998ca6de89a82a3cdadd26131830b
 horizon_git_track_branch: stable/2024.1
 
 ## Adjutant dashboard plugin
@@ -52,7 +52,7 @@ ironic_dashboard_git_track_branch: stable/2024.1
 
 ## Horizon Magnum dashboard plugin
 magnum_dashboard_git_repo: "{{ openstack_opendev_base_url }}/openstack/magnum-ui"
-magnum_dashboard_git_install_branch: 4267bae387ddcf3a50c179f90e63f551477564af
+magnum_dashboard_git_install_branch: e79a2177c8645ba50093896832626d5663c43931
 magnum_dashboard_git_track_branch: stable/2024.1
 
 ## Horizon Masakari dashboard plugin
@@ -62,12 +62,12 @@ masakari_dashboard_git_track_branch: stable/2024.1
 
 ## Horizon Murano dashboard plugin
 murano_dashboard_git_repo: "{{ openstack_opendev_base_url }}/openstack/murano-dashboard"
-murano_dashboard_git_install_branch: d291ca4a0364dc249d5dba37a6d3b21873b65eca
+murano_dashboard_git_install_branch: 529ca498a78e5aab50c266e46ecb1b5de96a8674
 murano_dashboard_git_track_branch: master
 
 ## Horizon Sahara dashboard plugin
 sahara_dashboard_git_repo: "{{ openstack_opendev_base_url }}/openstack/sahara-dashboard"
-sahara_dashboard_git_install_branch: 744efb4fc5a547d827797b6110f5ab9668e8abb8
+sahara_dashboard_git_install_branch: af37b9efbf0d122d31579d9fc1b6a7b8457435bd
 sahara_dashboard_git_track_branch: master
 
 ## Horizon Trove dashboard plugin

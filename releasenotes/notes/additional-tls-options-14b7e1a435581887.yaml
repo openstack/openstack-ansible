@@ -1,0 +1,9 @@
+---
+upgrade:
+  - |
+    Additional variables are available when MariaDB is configured to use TLS,
+    enabled by setting ``galera_use_ssl`` to ``true``.
+    ``galera_require_secure_transport`` to require that all client connections
+    are encrypted, defaulting to false.
+    ``galera_tls_version`` to provide a list of accepted TLS protocols,
+    defaulting to 'TLSv1.2,TLSv1.3'.
