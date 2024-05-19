@@ -1,0 +1,43 @@
+---
+prelude: >
+    RabbitMQ Quorum Queues are enabled by default along with other significant
+    improvements to oslo.messaging, like Queue Manager, Transient Queues to
+    use Quorum, usage of Stream Queues for fanout. You can check more details
+    for these options in `oslo.messaging release notes <https://docs.openstack.org/releasenotes/oslo.messaging/2024.1.html>`_
+features:
+  - |
+    Implemented new variables to control new oslo.messaging behaviour:
+
+    - oslomsg_rabbit_stream_fanout: Enabled if ``oslomsg_rabbit_quorum_queues``
+      is also set to `True`
+    - oslomsg_rabbit_transient_quorum_queues: Enabled if ``oslomsg_rabbit_stream_fanout``
+      is `True`
+    - oslomsg_rabbit_qos_prefetch_count: Must be set to a positive value if
+      ``oslomsg_rabbit_stream_fanout`` is `True`
+    - oslomsg_rabbit_queue_manager: Disabled by default. It is recommended to
+      enable only for containerized deployments.
+      Please check `oslo.messaging bug report <https://bugs.launchpad.net/oslo.messaging/+bug/2065922>`_
+      for more details of why it should not be used for metal deployments.
+
+    Each service also has corresponsive variables prefixed with service name, like
+    ``<service>_oslomsg_rabbit_stream_fanout`` to control them separately.
+upgrade:
+  - |
+    With enablement of RabbitMQ Quorum Queues by default, all vhosts will
+    be re-created and re-named without leading slash ('/'). For instance,
+    `/nova` vhost will be renamed to `nova`. This might affect configured
+    monitoring alert rules or statistics gathering.
+
+    Renaming process will also lead for prolonged downtime of services
+    during upgrade which will last from vhost renaming until service role
+    execution completition. This might be especially important for services
+    like Nova and Neutron where role runtime may take a while to cover all
+    hosts.
+
+    You can disable usage of Quorum Queues and use previous default of HA
+    Queues by defining ``oslomsg_rabbit_quorum_queues: False`` in your
+    user_variables.yml
+
+    Please check `RabbitMQ maintenance <https://docs.openstack.org/openstack-ansible/latest/admin/maintenance-tasks.html#migrate-between-ha-and-quorum-queues>`_
+    documentation for more infromation on how to switch between these 2 modes
+    with reduced downtime.
