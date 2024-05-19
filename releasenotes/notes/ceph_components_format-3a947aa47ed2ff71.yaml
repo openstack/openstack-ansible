@@ -1,0 +1,13 @@
+---
+
+deprecations:
+  - |
+    Format of ``client`` key inside ``ceph_extra_components`` variable has been
+    deprecated in favor of a mapping with one required attribute ``name``.
+    Having ``client`` key defined as a simple list is kept for backwards compatibility
+    but will be removed in future releases.
+
+fixes:
+  - |
+    Backwards compatibility of ``client`` key inside ``ceph_extra_components`` variable
+    has been fixed to support both a list and a list of mappings.

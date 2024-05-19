@@ -1,0 +1,12 @@
+---
+upgrade:
+  - |
+    For deployments with ``nova_backend_ssl: True`` TLS certificates for
+    Nova API backends will be re-generated during upgrade. From now on they
+    will be suffixed with `_api`.
+fixes:
+  - |
+    PKI role idempotence has been fixed for the ``metal`` scenario when
+    nova-compute was placed on the same hosts as nova-api.
+    Previously, certificates were re-generated each run due to non-unique
+    names.

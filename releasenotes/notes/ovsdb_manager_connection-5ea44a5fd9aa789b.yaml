@@ -1,0 +1,17 @@
+---
+features:
+  - |
+    Added new variables to os_neutron role that allow to adjust connection
+    to OVS manager:
+
+      * ``neutron_ovsdb_manager_host``: defaults to 127.0.0.1
+      * ``neutron_ovsdb_manager_port``: defaults to 6640
+      * ``neutron_ovsdb_manager_proto``: defaults to tcp
+      * ``neutron_ovsdb_manager_connection``: Combines proto, host and port
+        into a valid connection string for neutron plugins.
+
+deprecations:
+  - |
+    Variable ``neutron_ovs_socket_path`` has been deprecated and will be
+    silently ignored. Please use ``neutron_ovsdb_manager_connection`` in
+    order to override connection to OVS.

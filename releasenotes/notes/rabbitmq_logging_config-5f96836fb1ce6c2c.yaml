@@ -1,0 +1,9 @@
+---
+
+features:
+  - |
+    Add the abbility to configure the logging options with the variable
+    ``rabbitmq_log`` of the rabbitmq-server using key-value pairs. The
+    default values for journald (true) and file (false) are keept but
+    more options (see https://www.rabbitmq.com/logging.html) can be
+    configured now.
