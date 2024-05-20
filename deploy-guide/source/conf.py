@@ -39,7 +39,7 @@ current_series_name = '2023.2'
 author = 'OpenStack-Ansible Contributors'
 category = 'Miscellaneous'
 copyright = '2014-2023, OpenStack-Ansible Contributors'
-title = 'OpenStack-Ansible Documentation'
+title = 'OpenStack-Ansible Deploy Guide'
 
 # Smart variable replacements with what we can. The openstackdocstheme has
 # no stable interface though. This works with 1.20.
