@@ -106,8 +106,6 @@
       - name: openstack/ansible-role-pki
       # OpenStack service repos - listed here to make cached repos available in CI
       - name: openstack/requirements
-      # Murano distro deployment does need access to valid git repo anyway
-      - name: openstack/murano
       # All deployment scenarios including infra need keystone
       - name: openstack/keystone
 
@@ -211,21 +209,15 @@
       - name: openstack/magnum-ui
       - name: openstack/masakari-dashboard
       - name: openstack/neutron-fwaas-dashboard
-      - name: openstack/sahara-dashboard
       - name: openstack/keystone
       - name: openstack/manila
-      - name: openstack/murano
       - name: openstack/neutron
       - name: openstack/neutron-vpnaas
       - name: openstack/neutron-fwaas
       - name: openstack/neutron-dynamic-routing
-      - name: openstack/networking-odl
-      - name: openstack/networking-ovn
       - name: openstack/networking-bgpvpn
       - name: openstack/networking-sfc
       - name: openstack/nova
-      - name: openstack/sahara
-      - name: openstack/senlin
       - name: openstack/swift
       - name: openstack/ironic
       - name: openstack/ironic-inspector
@@ -234,7 +226,6 @@
       - name: openstack/masakari-monitors
       - name: openstack/mistral
       - name: openstack/mistral-extra
-      - name: openstack/murano
       - name: openstack/trove
       - name: openstack/trove-dashboard
       - name: openstack/octavia
