@@ -54,13 +54,17 @@ tempest_tempest_conf_overrides_manila:
     endpoint_type: internalURL
 
 tempest_images:
-  - url: "https://download.cirros-cloud.net/0.5.1/cirros-0.5.1-x86_64-disk.img"
-    checksum: "sha256:c4110030e2edf06db87f5b6e4efc27300977683d53f040996d15dcc0ad49bb5a"
+  - url: "https://download.cirros-cloud.net/0.6.2/cirros-0.6.2-x86_64-disk.img"
+    checksum: "c8fc807773e5354afe61636071771906"
     format: "qcow2"
     name: "cirros"
+    visibility: community
+    tags:
+      - managed_by_tempest
   - url: "http://tarballs.openstack.org/manila-image-elements/images/manila-service-image-master.qcow2"
     format: "qcow2"
     name: "manila-service-image"
+    visibility: public
 
 nova_console_type: disabled
 
