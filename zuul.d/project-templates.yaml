@@ -316,20 +316,10 @@
       using a promote job.
     check:
       jobs:
-        - build-openstack-deploy-guide:
-            files: &deploy-guide-triggers
-              - .gitreview
-              - ^deploy-guide/.*
-              - ansible-role-requirements.yml
-              - bindep.txt
-              - doc/requirements.txt
-              - test-requirements.txt
-              - tox.ini
+        - openstack-ansible-build-openstack-deploy-guide
     gate:
       jobs:
-        - build-openstack-deploy-guide:
-            files: *deploy-guide-triggers
+        - openstack-ansible-build-openstack-deploy-guide
     promote:
       jobs:
-        - promote-deploy-guide:
-            files: *deploy-guide-triggers
+        - openstack-ansible-build-openstack-deploy-guide

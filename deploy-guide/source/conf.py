@@ -248,14 +248,17 @@ latex_elements = {
     # 'pointsize': '10pt',
 
     # Additional stuff for the LaTeX preamble.
-    # 'preamble': '',
+    'preamble': r'''
+        \setcounter{tocdepth}{3}
+        \let\cleardoublepage=\clearpage
+    ''',
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, target_name + '.tex',
+    (master_doc, 'deploy-guide-' + target_name + '.tex',
      title, author, 'manual'),
 ]
 
