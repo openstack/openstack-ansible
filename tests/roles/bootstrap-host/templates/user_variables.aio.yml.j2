@@ -353,3 +353,8 @@ tempest_test_includelist:
 {% if 'quorum' in bootstrap_host_scenarios_expanded %}
 oslomsg_rabbit_quorum_queues: True
 {% endif %}
+
+{% if nodepool_dir.stat.exists %}
+openstack_hosts_git_safe_directories:
+ - "*"
+{% endif %}
