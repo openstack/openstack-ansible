@@ -346,3 +346,8 @@ tempest_test_includelist:
   - tempest.scenario.test_minimum_basic.TestMinimumBasicScenario.test_minimum_basic_scenario
 {%   endif %}
 {% endif %}
+
+{% if nodepool_dir.stat.exists %}
+openstack_hosts_git_safe_directories:
+ - "*"
+{% endif %}
