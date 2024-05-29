@@ -372,3 +372,8 @@ nova_virt_type: kvm
 {% elif (('qemu' in bootstrap_host_scenarios_expanded) or nodepool_dir.stat.exists) %}
 nova_virt_type: qemu
 {% endif %}
+
+{% if nodepool_dir.stat.exists %}
+openstack_hosts_git_safe_directories:
+ - "*"
+{% endif %}
