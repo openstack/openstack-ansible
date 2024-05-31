@@ -14,10 +14,8 @@ features:
       is `True`
     - oslomsg_rabbit_qos_prefetch_count: Must be set to a positive value if
       ``oslomsg_rabbit_stream_fanout`` is `True`
-    - oslomsg_rabbit_queue_manager: Disabled by default. It is recommended to
-      enable only for containerized deployments.
-      Please check `oslo.messaging bug report <https://bugs.launchpad.net/oslo.messaging/+bug/2065922>`_
-      for more details of why it should not be used for metal deployments.
+    - oslomsg_rabbit_queue_manager: Enabled if ``oslomsg_rabbit_quorum_queues``
+      is also set to `True`
 
     Each service also has corresponsive variables prefixed with service name, like
     ``<service>_oslomsg_rabbit_stream_fanout`` to control them separately.
