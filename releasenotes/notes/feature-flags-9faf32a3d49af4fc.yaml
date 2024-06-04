@@ -1,0 +1,6 @@
+---
+upgrade:
+  - |
+    Support is added to enable all stable RabbitMQ feature flags by default.
+    This happens automatically post upgrade, and avoids compatibility issues
+    which could occur when installing a new version of RabbitMQ.
