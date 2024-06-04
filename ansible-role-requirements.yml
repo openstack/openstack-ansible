@@ -5,36 +5,84 @@
   version: master
   trackbranch: master
   shallow_since: '2024-03-27'
+- name: frrouting
+  scm: git
+  src: https://opendev.org/openstack/ansible-role-frrouting
+  version: master
+  trackbranch: master
+  shallow_since: '2024-05-02'
+- name: pki
+  src: https://opendev.org/openstack/ansible-role-pki
+  scm: git
+  version: master
+  trackbranch: master
+  shallow_since: '2023-10-24'
+- name: python_venv_build
+  src: https://opendev.org/openstack/ansible-role-python_venv_build
+  scm: git
+  version: master
+  trackbranch: master
+  shallow_since: '2024-04-30'
+- name: qdrouterd
+  scm: git
+  src: https://opendev.org/openstack/ansible-role-qdrouterd
+  version: master
+  trackbranch: master
+  shallow_since: '2023-07-11'
+- name: systemd_mount
+  src: https://opendev.org/openstack/ansible-role-systemd_mount
+  scm: git
+  version: master
+  trackbranch: master
+  shallow_since: '2023-07-23'
+- name: systemd_networkd
+  src: https://opendev.org/openstack/ansible-role-systemd_networkd
+  scm: git
+  version: master
+  trackbranch: master
+  shallow_since: '2024-02-12'
+- name: systemd_service
+  src: https://opendev.org/openstack/ansible-role-systemd_service
+  scm: git
+  version: master
+  trackbranch: master
+  shallow_since: '2023-12-06'
+- name: uwsgi
+  src: https://opendev.org/openstack/ansible-role-uwsgi
+  scm: git
+  version: master
+  trackbranch: master
+  shallow_since: '2024-05-06'
+- name: zookeeper
+  src: https://opendev.org/openstack/ansible-role-zookeeper
+  scm: git
+  version: master
+  trackbranch: master
+  shallow_since: '2023-10-25'
 - name: apt_package_pinning
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-apt_package_pinning
   version: master
   trackbranch: master
   shallow_since: '2023-08-21'
-- name: galera_server
-  scm: git
-  src: https://opendev.org/openstack/openstack-ansible-galera_server
-  version: master
-  trackbranch: master
-  shallow_since: '2024-05-13'
 - name: ceph_client
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-ceph_client
   version: master
   trackbranch: master
   shallow_since: '2024-05-12'
+- name: galera_server
+  scm: git
+  src: https://opendev.org/openstack/openstack-ansible-galera_server
+  version: master
+  trackbranch: master
+  shallow_since: '2024-05-13'
 - name: haproxy_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-haproxy_server
   version: master
   trackbranch: master
   shallow_since: '2024-04-09'
-- name: keepalived
-  scm: git
-  src: https://github.com/evrardjp/ansible-keepalived
-  version: master
-  trackbranch: master
-  shallow_since: '2023-05-18'
 - name: lxc_container_create
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-lxc_container_create
@@ -59,12 +107,6 @@
   version: master
   trackbranch: master
   shallow_since: '2024-05-03'
-- name: os_keystone
-  scm: git
-  src: https://opendev.org/openstack/openstack-ansible-os_keystone
-  version: master
-  trackbranch: master
-  shallow_since: '2024-05-14'
 - name: openstack_openrc
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-openstack_openrc
@@ -149,6 +191,12 @@
   version: master
   trackbranch: master
   shallow_since: '2024-05-15'
+- name: os_keystone
+  scm: git
+  src: https://opendev.org/openstack/openstack-ansible-os_keystone
+  version: master
+  trackbranch: master
+  shallow_since: '2024-05-14'
 - name: os_magnum
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_magnum
@@ -203,15 +251,15 @@
   version: master
   trackbranch: master
   shallow_since: '2023-07-13'
-- name: os_swift
-  scm: git
-  src: https://opendev.org/openstack/openstack-ansible-os_swift
-  version: master
-  trackbranch: master
-  shallow_since: '2024-05-14'
 - name: os_skyline
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_skyline
+  version: master
+  trackbranch: master
+  shallow_since: '2024-05-14'
+- name: os_swift
+  scm: git
+  src: https://opendev.org/openstack/openstack-ansible-os_swift
   version: master
   trackbranch: master
   shallow_since: '2024-05-14'
@@ -239,18 +287,6 @@
   version: master
   trackbranch: master
   shallow_since: '2024-05-09'
-- name: frrouting
-  scm: git
-  src: https://opendev.org/openstack/ansible-role-frrouting
-  version: master
-  trackbranch: master
-  shallow_since: '2024-05-02'
-- name: qdrouterd
-  scm: git
-  src: https://opendev.org/openstack/ansible-role-qdrouterd
-  version: master
-  trackbranch: master
-  shallow_since: '2023-07-11'
 - name: rabbitmq_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-rabbitmq_server
@@ -263,75 +299,40 @@
   version: master
   trackbranch: master
   shallow_since: '2024-04-16'
+# External dependencies
 - name: etcd
   scm: git
   src: https://github.com/noonedeadpunk/ansible-etcd
   version: master
   trackbranch: master
   shallow_since: '2023-04-11'
-- name: unbound
+- name: keepalived
   scm: git
-  src: https://github.com/noonedeadpunk/ansible-role-unbound
+  src: https://github.com/evrardjp/ansible-keepalived
   version: master
   trackbranch: master
-  shallow_since: '2023-02-09'
-- name: resolvconf
-  scm: git
-  src: https://github.com/logan2211/ansible-resolvconf
-  version: master
-  trackbranch: master
-  shallow_since: '2021-03-31'
-- name: ceph-ansible
-  scm: git
-  src: https://github.com/ceph/ceph-ansible
-  version: stable-7.0
-  trackbranch: stable-7.0
-  shallow_since: '2024-05-15'
+  shallow_since: '2023-05-18'
 - name: pacemaker_corosync
   scm: git
   src: https://github.com/noonedeadpunk/ansible-pacemaker-corosync
   version: master
   trackbranch: master
   shallow_since: '2023-10-19'
-- name: systemd_service
-  src: https://opendev.org/openstack/ansible-role-systemd_service
+- name: resolvconf
   scm: git
+  src: https://github.com/logan2211/ansible-resolvconf
   version: master
   trackbranch: master
-  shallow_since: '2023-12-06'
-- name: systemd_mount
-  src: https://opendev.org/openstack/ansible-role-systemd_mount
+  shallow_since: '2021-03-31'
+- name: unbound
   scm: git
+  src: https://github.com/noonedeadpunk/ansible-role-unbound
   version: master
   trackbranch: master
-  shallow_since: '2023-07-23'
-- name: systemd_networkd
-  src: https://opendev.org/openstack/ansible-role-systemd_networkd
+  shallow_since: '2023-02-09'
+- name: ceph-ansible
   scm: git
-  version: master
-  trackbranch: master
-  shallow_since: '2024-02-12'
-- name: python_venv_build
-  src: https://opendev.org/openstack/ansible-role-python_venv_build
-  scm: git
-  version: master
-  trackbranch: master
-  shallow_since: '2024-04-30'
-- name: uwsgi
-  src: https://opendev.org/openstack/ansible-role-uwsgi
-  scm: git
-  version: master
-  trackbranch: master
-  shallow_since: '2024-05-06'
-- name: pki
-  src: https://opendev.org/openstack/ansible-role-pki
-  scm: git
-  version: master
-  trackbranch: master
-  shallow_since: '2023-10-24'
-- name: zookeeper
-  src: https://opendev.org/openstack/ansible-role-zookeeper
-  scm: git
-  version: master
-  trackbranch: master
-  shallow_since: '2023-10-25'
+  src: https://github.com/ceph/ceph-ansible
+  version: stable-7.0
+  trackbranch: stable-7.0
+  shallow_since: '2024-05-15'
