@@ -42,6 +42,19 @@
   tags:
     - rabbitmq
 
+# Stable feature flags must be enabled pre-upgrade
+# https://www.rabbitmq.com/docs/feature-flags#version-compatibility
+- name: Enable stable feature flags pre-upgrade
+  hosts: "{{ rabbitmq_host_group | default('rabbitmq_all') }}[0]"
+  gather_facts: false
+  user: root
+  tasks:
+    - name: Running feature flags tasks from the role
+      import_role:
+        name: rabbitmq_server
+        tasks_from: rabbitmq_feature_flags.yml
+      when: rabbitmq_upgrade | default(false) | bool
+
 # The cluster must be stopped when doing major/minor upgrades
 # http://www.rabbitmq.com/clustering.html#upgrading
 - name: Stop RabbitMQ nodes that are not the upgrader
