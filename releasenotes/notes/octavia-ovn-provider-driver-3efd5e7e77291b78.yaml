@@ -1,0 +1,13 @@
+---
+features:
+  - |
+    A new parameter, `octavia_ovn_enabled`, is added to support the
+    Octavia OVN provider driver. The Octavia OVN provider driver
+    is an alternative to amphora and uses built-in support for
+    load balancing withing OVN/OVS. The `ml2.ovn` Neutron plugin
+    is required for this functionality. The OVN provider can be used
+    during load balancer creation by specifying the `--provider ovn`
+    argument for the `openstack loadbalancer create` command.
+  - |
+    Added new variable ``octavia_enabled_provider_agents`` that allows
+    to enable Provider Agents for Octavia.
