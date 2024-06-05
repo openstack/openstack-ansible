@@ -121,8 +121,7 @@ version.
 
 .. note::
    The |current_release_formal_name| release is only compatible with
-   Debian 11 (bullseye), Debian 12 (bookworm),
-   Ubuntu 22.04 (Jammy Jellyfish), CentOS 9 Stream,
+   Debian 12 (bookworm), Ubuntu 22.04 (Jammy Jellyfish), CentOS 9 Stream,
    and derivitives of CentOS Stream/RHEL such as Rocky Linux.
 
 The next step is to bootstrap Ansible and the Ansible roles for the
