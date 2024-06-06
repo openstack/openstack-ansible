@@ -44,6 +44,11 @@ haproxy_horizon_service:
       #match any requests to the horizon backend
       entries:
         - "{{ horizon_webroot }} horizon-back"
+    # NOTE(noonedeadpunk): This is needed only for upgrade purposes
+    #                      from 2023.1 and 2023.2
+    - name: base_regex
+      order: 99
+      state: absent
 
 horizon_haproxy_services:
   - "{{ haproxy_horizon_service | combine(haproxy_horizon_service_overrides | default({})) }}"
