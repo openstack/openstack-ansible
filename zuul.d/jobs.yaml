@@ -414,12 +414,6 @@
     timeout: 10800
 
 - job:
-    name: openstack-ansible-upgrade_2023.1-aio_metal-ubuntu-jammy
-    parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-jammy
-    timeout: 10800
-
-- job:
     name: openstack-ansible-deploy-aio_metal_stepca-ubuntu-jammy
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-jammy
@@ -858,12 +852,6 @@
 
 - job:
     name: openstack-ansible-upgrade-aio_metal-rockylinux-9
-    parent: openstack-ansible-deploy-aio
-    nodeset: rockylinux-9
-    timeout: 10800
-
-- job:
-    name: openstack-ansible-upgrade_2023.1-aio_metal-rockylinux-9
     parent: openstack-ansible-deploy-aio
     nodeset: rockylinux-9
     timeout: 10800
