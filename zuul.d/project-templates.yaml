@@ -316,10 +316,32 @@
       using a promote job.
     check:
       jobs:
-        - openstack-ansible-build-openstack-deploy-guide
+        # NOTE(noonedeadpunk): We do not create a child job, since `promote-deploy-guide`
+        # is a final job and can not be parented. With that, it does define
+        # `download_artifact_job` which is expected to contain name of job where artifacts
+        # were produced and defaults to `build-openstack-deploy-guide`. So to avoid
+        # defining file trigger list in different files separately, it makes sense to
+        # pass these and vars to jobs themselves.
+        - build-openstack-deploy-guide:
+            files: &deploy-guide-triggers
+              - .gitreview
+              - ^deploy-guide/.*
+              - ansible-role-requirements.yml
+              - bindep.txt
+              - doc/requirements.txt
+              - test-requirements.txt
+              - tox.ini
+            vars: &deploy-guide-vars
+              tox_pdf_envlist: deploy-guide-pdf-docs
+              tox_skip_pdf: false
+              sphinx_pdf_files:
+                - "deploy-guide-{{ zuul.project.short_name }}.pdf"
     gate:
       jobs:
-        - openstack-ansible-build-openstack-deploy-guide
+        - build-openstack-deploy-guide:
+            files: *deploy-guide-triggers
+            vars: *deploy-guide-vars
     promote:
       jobs:
-        - openstack-ansible-build-openstack-deploy-guide
+        - promote-deploy-guide:
+            files: *deploy-guide-triggers

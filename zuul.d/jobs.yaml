@@ -312,25 +312,6 @@
       - ^ansible-role-requirements\.yml
       - ^inventory\/group_vars\/*\/source_git\.yml
 
-# Deploy guide job
-
-- job:
-    name: openstack-ansible-build-openstack-deploy-guide
-    parent: build-openstack-deploy-guide
-    files:
-      - .gitreview
-      - ^deploy-guide/.*
-      - ansible-role-requirements.yml
-      - bindep.txt
-      - doc/requirements.txt
-      - test-requirements.txt
-      - tox.ini
-    vars:
-      tox_pdf_envlist: deploy-guide-pdf-docs
-      tox_skip_pdf: false
-      sphinx_pdf_files:
-        - "deploy-guide-{{ zuul.project.short_name }}.pdf"
-
 # Ensuring hosts setup and healthcheck-hosts playbook is valid
 - job:
     name: openstack-ansible-deploy-hosts_lxc-validate
