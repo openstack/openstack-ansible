@@ -32,13 +32,13 @@ import openstackdocstheme
 # Variables to override
 target_name = 'openstack-ansible'
 description = 'OpenStack-Ansible deploys OpenStack environments using Ansible.'
-previous_series_name = '2023.1'
-current_series_name = '2023.2'
+previous_series_name = '2023.2'
+current_series_name = '2024.1'
 
 # General information about the project.
 author = 'OpenStack-Ansible Contributors'
 category = 'Miscellaneous'
-copyright = '2014-2023, OpenStack-Ansible Contributors'
+copyright = '2014-2024, OpenStack-Ansible Contributors'
 title = 'OpenStack-Ansible Deploy Guide'
 
 # Smart variable replacements with what we can. The openstackdocstheme has
