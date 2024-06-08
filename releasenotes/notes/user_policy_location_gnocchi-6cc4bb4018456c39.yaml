@@ -1,0 +1,6 @@
+---
+upgrade:
+  - |
+    Default value of ``gnocchi_policy_default_file_path`` has changed to search
+    for ``policy.yaml`` file under ``/etc/openstack_deploy/gnocchi/`` folder.
+    Please ensure, that you use YAML format instead of JSON for the file.

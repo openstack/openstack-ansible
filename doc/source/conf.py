@@ -40,7 +40,7 @@ current_series_name = '2024.1'
 # General information about the project.
 author = 'OpenStack-Ansible Contributors'
 category = 'Miscellaneous'
-copyright = '2014-2018, OpenStack-Ansible Contributors'
+copyright = '2014-2024, OpenStack-Ansible Contributors'
 title = 'OpenStack-Ansible Documentation'
 
 # Smart variable replacements with what we can. The openstackdocstheme has
