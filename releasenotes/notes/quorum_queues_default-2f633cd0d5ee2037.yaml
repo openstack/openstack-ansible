@@ -14,8 +14,9 @@ features:
       is `True`
     - oslomsg_rabbit_qos_prefetch_count: Must be set to a positive value if
       ``oslomsg_rabbit_stream_fanout`` is `True`
-    - oslomsg_rabbit_queue_manager: Enabled if ``oslomsg_rabbit_quorum_queues``
-      is also set to `True`
+    - oslomsg_rabbit_queue_manager: Disabled by default. There is a known issue
+      of missing [oslo_concurrency]/lock_path defenition in some service configs,
+      which is required for QManager SHM locking process.
 
     Each service also has corresponsive variables prefixed with service name, like
     ``<service>_oslomsg_rabbit_stream_fanout`` to control them separately.

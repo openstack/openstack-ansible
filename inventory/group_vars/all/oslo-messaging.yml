@@ -15,6 +15,9 @@
 # Quorum Queues
 oslomsg_rabbit_quorum_queues: "{{ rabbitmq_queue_replication }}"
 
+# NOTE(noonedeadpunk): Disabled due to missing oslo.concurrency lock_path defenition
+#                      for services
+oslomsg_rabbit_queue_manager: False
 
 # RPC
 oslomsg_rpc_transport: "{{ (groups[qdrouterd_host_group] | length > 0) | ternary('amqp', 'rabbit') }}"
