@@ -12,9 +12,9 @@ following minimum requirements:
 
   * Ubuntu 22.04 LTS (Jammy Jellyfish)
 
-* CentOS
+* CentOS based
 
-  * Centos 9 Stream
+  * CentOS Stream 9
 
   * Rocky Linux 9
 

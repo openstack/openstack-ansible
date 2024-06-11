@@ -2,9 +2,9 @@
 OpenStack-Ansible Deployment Guide
 ==================================
 
-This guide provides instructions for performing an OpenStack-Ansible
-installation in a test environment and a production environment, and is
-intended for deployers.
+This guide provides instructions for deployers to use to perform an
+OpenStack-Ansible installation in either a test environment or a
+production environment.
 
 .. note::
 
