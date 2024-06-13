@@ -47,3 +47,33 @@ libntirpc_stable_deb_repo: http://ppa.launchpad.net/nfs-ganesha/libntirpc-5/ubun
 ntp_service_enabled: False
 
 dashboard_enabled: True
+
+openstack_glance_pool:
+  name: "images"
+  application: "rbd"
+openstack_cinder_pool:
+  name: "volumes"
+  application: "rbd"
+openstack_nova_pool:
+  name: "vms"
+  application: "rbd"
+openstack_cinder_backup_pool:
+  name: "backups"
+  application: "rbd"
+openstack_gnocchi_pool:
+  name: "metrics"
+  application: "rbd"
+openstack_cephfs_data_pool:
+  name: "manila_data"
+  application: "cephfs"
+openstack_cephfs_metadata_pool:
+  name: "manila_metadata"
+  application: "cephfs"
+openstack_pools:
+  - "{{ openstack_glance_pool }}"
+  - "{{ openstack_cinder_pool }}"
+  - "{{ openstack_nova_pool }}"
+  - "{{ openstack_cinder_backup_pool }}"
+  - "{{ openstack_gnocchi_pool }}"
+  - "{{ openstack_cephfs_data_pool }}"
+  - "{{ openstack_cephfs_metadata_pool }}"

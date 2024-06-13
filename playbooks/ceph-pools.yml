@@ -1,0 +1,61 @@
+- name: Create ceph pools
+  hosts: "{{ groups['ceph-mon'][0] | default([]) }}"
+  user: root
+  gather_facts: false
+  vars:
+    is_metal: "{{ properties.is_metal|default(false) }}"
+  vars_files:
+    - "defaults/{{ install_method }}_install.yml"
+  roles:
+    - role: ceph-defaults
+      tags:
+        - skip_ansible_lint
+  tasks:
+    - name: Create openstack pool(s)
+      ceph_pool:
+        name: "{{ item.name }}"
+        cluster: "{{ cluster }}"
+        pg_num: "{{ item.pg_num | default(omit) }}"
+        pgp_num: "{{ item.pgp_num | default(omit) }}"
+        size: "{{ item.size | default(omit) }}"
+        min_size: "{{ item.min_size | default(omit) }}"
+        pool_type: "{{ item.type | default('replicated') }}"
+        rule_name: "{{ item.rule_name | default(omit) }}"
+        erasure_profile: "{{ item.erasure_profile | default(omit) }}"
+        pg_autoscale_mode: "{{ item.pg_autoscale_mode | default(omit) }}"
+        target_size_ratio: "{{ item.target_size_ratio | default(omit) }}"
+        application: "{{ item.application | default(omit) }}"
+      with_items: "{{ openstack_pools }}"
+
+    - name: Generate keys
+      ceph_key:
+        name: "{{ item.name }}"
+        caps: "{{ item.caps }}"
+        secret: "{{ item.key | default('') }}"
+        cluster: "{{ cluster }}"
+        mode: "{{ item.mode | default(ceph_keyring_permissions) }}"
+      with_items: "{{ openstack_keys }}"
+      no_log: "{{ no_log_on_ceph_key_tasks }}"
+
+    - name: Get keys from monitors
+      ceph_key:
+        name: "{{ item.name }}"
+        cluster: "{{ cluster }}"
+        output_format: plain
+        state: info
+      register: _osp_keys
+      with_items: "{{ openstack_keys }}"
+      no_log: "{{ no_log_on_ceph_key_tasks }}"
+
+    - name: Distribute ceph keys to all mons
+      ansible.builtin.copy:
+        dest: "/etc/ceph/{{ cluster }}.{{ item.0.item.name }}.keyring"
+        content: "{{ item.0.stdout + '\n' }}"
+        owner: 'ceph'
+        group: 'ceph'
+        mode: "{{ item.0.item.mode | default(ceph_keyring_permissions) }}"
+      with_nested:
+        - "{{ _osp_keys.results }}"
+        - "{{ groups['ceph-mon'] }}"
+      delegate_to: "{{ item.1 }}"
+      no_log: "{{ no_log_on_ceph_key_tasks }}"

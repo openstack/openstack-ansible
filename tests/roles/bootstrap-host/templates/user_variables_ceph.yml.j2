@@ -15,7 +15,6 @@
 
 ## ceph-ansible AIO settings
 is_hci: true
-common_single_host_mode: true
 monitor_interface: "{{ ('metal' in bootstrap_host_scenarios_expanded) | ternary('br-storage', 'eth2') }}" # Storage network in the AIO
 public_network: "{{ (storage_range ~ '.0/' ~ netmask) | ansible.utils.ipaddr('net') }}"
 journal_size: 100
@@ -23,6 +22,7 @@ osd_scenario: collocated
 ceph_conf_overrides_custom:
   global:
     mon_max_pg_per_osd: 500
+    osd_crush_chooseleaf_type: 0
 openstack_config: true # Ceph ansible automatically creates pools & keys
 cinder_default_volume_type: aio_ceph
 glance_ceph_client: glance
