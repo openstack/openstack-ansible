@@ -43,6 +43,7 @@ COMMON_ETC_LOG_NAMES="apt \
     ceph \
     dnf \
     etcd \
+    exports \
     ganesha \
     gitconfig \
     haproxy \
