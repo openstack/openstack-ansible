@@ -49,10 +49,16 @@
       when:
         - force_containers_destroy | bool
 
-    - name: Including remove_container_journal tasks
-      include_tasks: "common-tasks/remove_container_journal.yml"
+    - name: Destroy container journal directories
       vars:
         container_machine_id: "{{ ((_container_machine_id.content | default('bm9uZQo=')) | b64decode).strip() }}"
+      file:
+        path: "/var/log/journal/{{ container_machine_id }}"
+        state: "absent"
+      delegate_to: "{{ physical_host }}"
+      when:
+        - not _container_machine_id is failed
+        - force_containers_destroy | bool
 
     - name: Destroy container service directories
       file:
