@@ -15,9 +15,13 @@
 
 - name: Create requested OpenStack Resources
   hosts: "{{ openstack_service_setup_host | default('localhost') }}"
-  vars_files:
-    - "defaults/{{ install_method | default('source') }}_install.yml"
   tasks:
+    - name: Setup installation variables
+      include_role:
+        name: openstack.osa.install_defaults
+        defaults_from: "{{ install_method }}"
+        public: true
+
     - name: Include openstack_resources role
       ansible.builtin.include_role:
         name: openstack.osa.openstack_resources

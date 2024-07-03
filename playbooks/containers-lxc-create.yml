@@ -16,9 +16,13 @@
 - name: Set lxc containers group
   hosts: "{{ container_group | default('all_containers') }}"
   gather_facts: false
-  vars_files:
-    - "defaults/{{ install_method }}_install.yml"
   tasks:
+    - name: Setup installation variables
+      include_role:
+        name: openstack.osa.install_defaults
+        defaults_from: "{{ install_method }}"
+        public: true
+
     - name: Add hosts to dynamic inventory group
       group_by:
         key: lxc_containers
@@ -39,11 +43,15 @@
   hosts: all_lxc_containers
   user: root
   gather_facts: false
-  vars_files:
-    - "defaults/{{ install_method }}_install.yml"
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - lxc-containers-create
+  pre_tasks:
+    - name: Setup installation variables
+      include_role:
+        name: openstack.osa.install_defaults
+        defaults_from: "{{ install_method }}"
+        public: true
   roles:
     - role: "lxc_container_create"
   post_tasks:
@@ -67,11 +75,15 @@
   hosts: all_lxc_containers
   user: root
   gather_facts: false
-  vars_files:
-    - "defaults/{{ install_method }}_install.yml"
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - lxc-containers-create
+  pre_tasks:
+    - name: Setup installation variables
+      include_role:
+        name: openstack.osa.install_defaults
+        defaults_from: "{{ install_method }}"
+        public: true
   roles:
     - role: "openstack_hosts"
       is_container: true

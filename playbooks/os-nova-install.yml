@@ -51,9 +51,13 @@
   gather_facts: false
   user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
-  vars_files:
-    - "defaults/{{ install_method }}_install.yml"
   pre_tasks:
+    - name: Setup installation variables
+      include_role:
+        name: openstack.osa.install_defaults
+        defaults_from: "{{ install_method }}"
+        public: true
+
     # Enable execution of ceph_client on the nova compute hosts if cinder RBD
     # backends are used. This is necessary to ensure that volume-backed Nova
     # instances can function when RBD is the volume backend.
@@ -139,9 +143,13 @@
   gather_facts: false
   user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
-  vars_files:
-    - "defaults/{{ install_method }}_install.yml"
   pre_tasks:
+    - name: Setup installation variables
+      include_role:
+        name: openstack.osa.install_defaults
+        defaults_from: "{{ install_method }}"
+        public: true
+
     # Enable execution of ceph_client on the nova compute hosts if cinder RBD
     # backends are used. This is necessary to ensure that volume-backed Nova
     # instances can function when RBD is the volume backend.
@@ -240,9 +248,13 @@
   gather_facts: false
   user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
-  vars_files:
-    - "defaults/{{ install_method }}_install.yml"
   tasks:
+    - name: Setup installation variables
+      include_role:
+        name: openstack.osa.install_defaults
+        defaults_from: "{{ install_method }}"
+        public: true
+
     - name: Running db_post_setup tasks from the role
       import_role:
         name: os_nova

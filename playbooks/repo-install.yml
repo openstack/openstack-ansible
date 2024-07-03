@@ -72,10 +72,14 @@
   gather_facts: false
   serial: "{{ repo_serial | default(['1','100%']) }}"
   user: root
+  pre_tasks:
+    - name: Setup installation variables
+      include_role:
+        name: openstack.osa.install_defaults
+        defaults_from: "{{ install_method }}"
+        public: true
   roles:
     - role: "repo_server"
-  vars_files:
-    - "defaults/{{ install_method }}_install.yml"
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - repo-server

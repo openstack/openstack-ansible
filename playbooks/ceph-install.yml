@@ -23,9 +23,12 @@
   hosts: ceph-mon
   user: root
   gather_facts: false
-  vars_files:
-    - "defaults/{{ install_method }}_install.yml"
   pre_tasks:
+    - name: Setup installation variables
+      include_role:
+        name: openstack.osa.install_defaults
+        defaults_from: "{{ install_method }}"
+        public: true
 
     - name: Gather additional facts for monitor_address_block
       include_tasks: "common-tasks/gather-hardware-facts.yml"
@@ -131,9 +134,12 @@
   hosts: ceph-osd
   user: root
   gather_facts: false
-  vars_files:
-    - "defaults/{{ install_method }}_install.yml"
   pre_tasks:
+    - name: Setup installation variables
+      include_role:
+        name: openstack.osa.install_defaults
+        defaults_from: "{{ install_method }}"
+        public: true
 
     - name: Gather memory facts
       include_tasks: "common-tasks/gather-hardware-facts.yml"
@@ -188,9 +194,13 @@
   hosts: ceph-mds
   gather_facts: false
   user: root
-  vars_files:
-    - "defaults/{{ install_method }}_install.yml"
   pre_tasks:
+    - name: Setup installation variables
+      include_role:
+        name: openstack.osa.install_defaults
+        defaults_from: "{{ install_method }}"
+        public: true
+
     - name: Gather memory facts
       include_tasks: "common-tasks/gather-hardware-facts.yml"
       vars:

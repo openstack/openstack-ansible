@@ -22,11 +22,15 @@
 - name: Implement openrc/clouds.yaml on the designated service host
   hosts: "{{ openstack_service_setup_host | default('localhost') }}"
   gather_facts: "{{ osa_gather_facts | default(True) }}"
-  vars_files:
-    - "defaults/{{ install_method | default('source') }}_install.yml"
   become: yes
   tags:
     - openrc
+  pre_tasks:
+    - name: Setup installation variables
+      include_role:
+        name: openstack.osa.install_defaults
+        defaults_from: "{{ install_method }}"
+        public: true
   roles:
     - role: "openstack_openrc"
 
@@ -65,9 +69,13 @@
   gather_facts: false
   user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
-  vars_files:
-    - "defaults/{{ install_method }}_install.yml"
   pre_tasks:
+    - name: Setup installation variables
+      include_role:
+        name: openstack.osa.install_defaults
+        defaults_from: "{{ install_method }}"
+        public: true
+
     # In order to ensure that any container, software or
     # config file changes which causes a container/service
     # restart do not cause an unexpected outage, we drain
@@ -126,9 +134,13 @@
   gather_facts: no
   user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
-  vars_files:
-    - "defaults/{{ install_method }}_install.yml"
   tasks:
+    - name: Setup installation variables
+      include_role:
+        name: openstack.osa.install_defaults
+        defaults_from: "{{ install_method }}"
+        public: true
+
     - name: Refresh local facts
       setup:
         filter: ansible_local
@@ -190,9 +202,13 @@
   gather_facts: no
   user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
-  vars_files:
-    - "defaults/{{ install_method }}_install.yml"
   tasks:
+    - name: Setup installation variables
+      include_role:
+        name: openstack.osa.install_defaults
+        defaults_from: "{{ install_method }}"
+        public: true
+
     - name: "Post configure SP/IDP"
       include_role:
         name: os_keystone
