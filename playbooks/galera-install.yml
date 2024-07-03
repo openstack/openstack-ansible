@@ -51,7 +51,8 @@
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
     - name: Disabling haproxy backends
-      include_tasks: common-tasks/haproxy-endpoint-manage.yml
+      include_role:
+        name: openstack.osa.haproxy_endpoint_manage
       vars:
         haproxy_backend: galera-back
         haproxy_state: drain
@@ -67,7 +68,8 @@
         - crontab
   post_tasks:
     - name: Enabling haproxy backends
-      include_tasks: common-tasks/haproxy-endpoint-manage.yml
+      include_role:
+        name: openstack.osa.haproxy_endpoint_manage
       vars:
         haproxy_backend: galera-back
         haproxy_state: enabled

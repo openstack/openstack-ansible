@@ -49,7 +49,8 @@
     # restart do not cause an unexpected outage, we drain
     # the load balancer back end for this container.
     - name: Disabling haproxy backends
-      include_tasks: common-tasks/haproxy-endpoint-manage.yml
+      include_role:
+        name: openstack.osa.haproxy_endpoint_manage
       vars:
         haproxy_backend: heat_api-back
         haproxy_state: disabled
@@ -79,7 +80,8 @@
     # the load balancer back end for this container
     # to available again.
     - name: Enabling haproxy backends
-      include_tasks: common-tasks/haproxy-endpoint-manage.yml
+      include_role:
+        name: openstack.osa.haproxy_endpoint_manage
       vars:
         haproxy_backend: heat_api-back
         haproxy_state: enabled
