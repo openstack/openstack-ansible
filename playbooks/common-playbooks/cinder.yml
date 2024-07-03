@@ -39,7 +39,8 @@
         - always
 
     - name: Determine storage bridge IP address
-      include_tasks: ../common-tasks/dynamic-address-fact.yml
+      include_role:
+        name: openstack.osa.dynamic_address_fact
       vars:
         network_address: "storage_address"
       tags:
