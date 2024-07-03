@@ -21,7 +21,8 @@
   gather_facts: "{{ osa_gather_facts | default(True) }}"
   tasks:
     - name: Gather additional facts
-      include_tasks: "common-tasks/gather-hardware-facts.yml"
+      include_role:
+        name: openstack.osa.gather_extra_facts
       when: osa_gather_facts | default(True)
   tags:
     - always
