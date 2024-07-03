@@ -25,8 +25,6 @@
   serial: "{{ unbound_serial | default(['1','100%']) }}"
   user: root
   pre_tasks:
-    - name: Including os-log-dir-setup tasks
-      include_tasks: common-tasks/os-log-dir-setup.yml
     - name: Including container-setup tasks
       include_role:
         name: "openstack.osa.{{ container_tech | default('lxc') }}_container_setup"

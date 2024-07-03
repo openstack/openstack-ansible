@@ -53,13 +53,6 @@
         name: "openstack.osa.{{ container_tech | default('lxc') }}_container_setup"
       when: not is_metal
 
-    - name: Including os-log-dir-setup tasks
-      include_tasks: common-tasks/os-log-dir-setup.yml
-      vars:
-        log_dirs:
-          - src: "/openstack/log/{{ inventory_hostname }}-utility"
-            dest: "/var/log/utility"
-
     - name: Including unbound-clients tasks
       include_tasks: common-tasks/unbound-clients.yml
       when:
