@@ -1,0 +1,8 @@
+---
+deprecations:
+  - |
+    The variable ``keystone_external_ssl`` was deprecated and is no longer used.
+    You still can control if communication between HAProxy and Keystone should
+    be covered with TLS through ``keystone_backend_ssl`` or
+    ``haproxy_ssl``/``haproxy_ssl_all_vips`` for communication between clients
+    and HAProxy on frontend.
