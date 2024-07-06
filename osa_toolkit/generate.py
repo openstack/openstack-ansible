@@ -128,6 +128,22 @@ class GroupConflict(Exception):
     pass
 
 
+def _hosts_in_group(group, inventory):
+    """Generator that flattens nested inventory data.
+
+    :param group: The group name for which to find hosts for.
+    :param inventory: An dictionary representing the inventory data.
+
+    :yields: Each host found in the inventory structure within the group.
+    """
+    inv = inventory.get(group)
+    for host in inv.get("hosts", list()):
+        yield host
+
+    for child in inv.get("children", list()):
+        yield from _hosts_in_group(child, inventory)
+
+
 def _parse_belongs_to(key, belongs_to, inventory):
     """Parse all items in a `belongs_to` list.
 
@@ -628,7 +644,7 @@ def _add_additional_networks(key, inventory, ip_q, q_name, netmask, interface,
 
         physical_host = container.get('physical_host')
         if (reference_group and physical_host
-                not in inventory.get(reference_group).get('hosts')):
+                not in _hosts_in_group(reference_group, inventory)):
             continue
 
         # TODO(cloudnull) after a few releases this should be removed.
