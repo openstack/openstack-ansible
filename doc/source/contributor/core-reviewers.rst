@@ -57,10 +57,65 @@ Code Merge Responsibilities
 ---------------------------
 
 While everyone is encouraged to review changes, members of the core reviewer
-team have the ability to +2/-2 and +W changes to these repositories. This is
+team have the ability to set +2/-2 on the Code-Review (CR) label as well as +1
+on Workflow (+W) changes to these repositories. This is
 an extra level of responsibility not to be taken lightly. Correctly merging
 code requires not only understanding the code itself, but also how the code
 affects things like documentation, testing, upgrade impacts and interactions
 with other projects. It also means you pay attention to release milestones and
 understand if a patch you are merging is marked for the release, especially
 critical during the feature freeze.
+
+Code Merge Policies
+-------------------
+
+Below you will find general policies on the Code-Review process and when a patch
+may be considered as ready for merge and when to +W.
+
+It is the responsibility of the Core Reviewer, who reviews the change last, to
+set the +W label once a change passes the policy. Also, before setting +W please
+make sure that all dependant patches (marked with ``Depends-On`` in a commit
+message) are already merged to avoid unnecessary rechecks or case dependant
+patch(s) will fail in the gates.
+
+All changes can be split into multiple categories and a slightly different
+policy may apply for each category.
+
+
+New features, blueprints, design changes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* Minimum 2 Core Reviewers, excluding the patch owner, voted +2 on Code-Review
+  label
+* Voted Code-Reviewers should be representing minimum 2 different organizations
+  or be unaffiliated for diversity reasons
+
+Bug fixes, version bumps
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+* Minimum 2 Core Reviewers, excluding the patch owner, voted +2 on Code-Review
+  label
+* It is allowed for all voted Core Reviewers to be affilated with the same
+  organization
+
+Automated (bot) changes
+~~~~~~~~~~~~~~~~~~~~~~~
+
+* Minimum 1 Core Reviewer, excluding the patch owner, voted +2 on Code-Review
+  label
+
+
+Backports to stable branches
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* Minimum 2 Core Reviewers, *including* the patch owner, voted +2 on
+  Code-Review label.
+* It is allowed for all voted Core Reviewers to be affilated with the same
+  organization
+
+
+Backports to unmaintained branches
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* Minimum 1 Core Reviewer, excluding the patch owner, voted +2 on Code-Review
+  label
