@@ -75,8 +75,10 @@
   block:
     - name: Configure the OpenStack-Infra mirrors
       vars:
+        _ubuntu_vars:
+          apt_repo_url: "{{ nodepool_vars.NODEPOOL_UCA_MIRROR }}"
+        _ubuntu_conditional_vars: "{{ (ansible_facts['distribution'] == 'Ubuntu') | ternary(_ubuntu_vars, {}) }}"
         nodepool_overrides:
-          uca_apt_repo_url: "{{ nodepool_vars.NODEPOOL_UCA_MIRROR }}"
           openstack_hosts_centos_mirror_url: "{{ nodepool_vars.NODEPOOL_CENTOS_MIRROR }}"
           centos_epel_mirror: "{{ nodepool_vars.NODEPOOL_EPEL_MIRROR }}"
           galera_repo_host: "{{ nodepool_vars.NODEPOOL_MIRROR_HOST }}:8080"
@@ -91,7 +93,7 @@
               repo: "deb http://{{ nodepool_vars.NODEPOOL_MIRROR_HOST }}/ceph-deb-quincy {{ ansible_facts['distribution_release'] }} main"
       copy:
         dest: /etc/openstack_deploy/user_openstackci.yml
-        content: "{{ nodepool_overrides | to_nice_yaml }}"
+        content: "{{ (nodepool_overrides | combine(_ubuntu_conditional_vars)) | to_nice_yaml }}"
 
     - name: Set the package cache timeout to 60 mins in OpenStack-CI
       set_fact:
