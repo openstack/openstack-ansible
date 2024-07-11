@@ -46,6 +46,9 @@
 - name: Importing ceph-install playbook
   import_playbook: ceph-install.yml
 
+- name: Importing ceph-pools playbook
+  import_playbook: ceph-pools.yml
+
 - name: Importing ceph-nfs-install playbook
   import_playbook: ceph-nfs-install.yml
 

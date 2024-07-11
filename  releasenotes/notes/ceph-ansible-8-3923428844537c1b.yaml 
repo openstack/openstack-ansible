@@ -1,0 +1,19 @@
+---
+features:
+  - |
+    The external dependancy ceph-ansible is upgraded to version 8.0 and
+    brings in significant changes within the ceph-ansible project. Deployers
+    using OpenStack-Ansible are reminded that the ceph-ansible integration
+    with OSA is primarily a test fixture and production deployments should
+    ideally deploy an independant ceph cluster. The upgrade between releases
+    of ceph-ansible is not tested by the OpenStack-Ansible project.
+upgrade:
+  - |
+    The external dependancy ceph-ansible is upgraded to version 8.0 and
+    brings in significant changes within the ceph-ansible project.
+    Any deployments with important data held in a ceph cluster deployed
+    using the OpenStack-Ansible integration with ceph-ansible should
+    independantly verify that upstream changes in ceph-ansible result
+    in a successful upgrade. This could undertaken in a test or staging
+    environment. The upgrade between releases of ceph-ansible is not
+    tested by the OpenStack-Ansible project.

@@ -1,8 +1,9 @@
 ---
+ceph_rgw_client_name: "client.rgw.{{ rgw_zone | default('default') }}.{{ hostvars[inventory_hostname]['ansible_facts']['hostname']}}.rgw0"
 ceph_conf_overrides_rgw: |-
   {{
     {
-      'client.rgw.' ~ hostvars[inventory_hostname]['ansible_facts']['hostname'] ~ '.rgw0': {
+      ceph_rgw_client_name: {
         'rgw_keystone_url': keystone_service_adminuri,
         'rgw_keystone_api_version': 3,
         'rgw_keystone_admin_user': radosgw_admin_user,

@@ -15,7 +15,11 @@
 
 - name: Gather ceph-mon facts
   hosts: ceph-mon
-  gather_facts: "{{ osa_gather_facts | default(True) }}"
+  gather_facts: false
+  tasks:
+    - name: Refresh all_addresses facts
+      setup:
+        gather_subset: "all_ipv4_addresses,all_ipv6_addresses"
   tags:
     - always
 
