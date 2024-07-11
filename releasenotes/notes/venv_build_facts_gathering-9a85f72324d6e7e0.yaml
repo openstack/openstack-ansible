@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Python wheels build no longer fails in case of issues with a repo host
+    and should succeed as long as there at least one reachable repo host
+    with matching Distro/Version/Architecture.
