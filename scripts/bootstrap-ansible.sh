@@ -22,7 +22,7 @@ set -e -u -x
 export HTTP_PROXY=${HTTP_PROXY:-""}
 export HTTPS_PROXY=${HTTPS_PROXY:-""}
 # The Ansible version used for testing
-export ANSIBLE_PACKAGE=${ANSIBLE_PACKAGE:-"ansible-core==2.15.9"}
+export ANSIBLE_PACKAGE=${ANSIBLE_PACKAGE:-"ansible-core==2.17.1"}
 export ANSIBLE_ROLE_FILE=${ANSIBLE_ROLE_FILE:-"ansible-role-requirements.yml"}
 export ANSIBLE_COLLECTION_FILE=${ANSIBLE_COLLECTION_FILE:-"ansible-collection-requirements.yml"}
 export USER_COLLECTION_FILE=${USER_COLLECTION_FILE:-"user-collection-requirements.yml"}
@@ -70,8 +70,8 @@ case ${DISTRO_ID} in
     rocky)
         case ${DISTRO_VERSION_ID} in
             9|9.[0-9]*)
-                dnf -y install python3 python3-devel python3-libselinux
-                PYTHON_EXEC_PATH="$(command -v python3)"
+                dnf -y install python3.12 python3.12-pip python3.12-devel python3 python3-devel python3-libselinux
+                PYTHON_EXEC_PATH="$(command -v python3.12)"
                 OSA_ANSIBLE_PYTHON_INTERPRETER="/usr/bin/python3"
                 ;;
         esac
@@ -79,8 +79,9 @@ case ${DISTRO_ID} in
     centos|rhel)
         case ${DISTRO_VERSION_ID} in
             9)
-                dnf -y install python3 python3-devel libselinux-python3
-                PYTHON_EXEC_PATH="$(command -v python3)"
+                dnf -y install python3.12 python3.12-pip python3.12-devel python3 python3-devel libselinux-python3
+                PYTHON_EXEC_PATH="$(command -v python3.12)"
+                OSA_ANSIBLE_PYTHON_INTERPRETER="/usr/bin/python3"
                 ;;
         esac
         ;;
