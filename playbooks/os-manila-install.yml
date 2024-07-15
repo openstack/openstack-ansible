@@ -37,9 +37,13 @@
   gather_facts: false
   user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
-  vars_files:
-    - "defaults/{{ install_method }}_install.yml"
   pre_tasks:
+    - name: Setup installation variables
+      include_role:
+        name: openstack.osa.install_defaults
+        defaults_from: "{{ install_method }}"
+        public: true
+
     - name: Gather additional facts
       include_tasks: "common-tasks/gather-hardware-facts.yml"
       args:
@@ -92,10 +96,14 @@
   gather_facts: false
   user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
-  vars_files:
-    - "defaults/{{ install_method }}_install.yml"
 
   pre_tasks:
+    - name: Setup installation variables
+      include_role:
+        name: openstack.osa.install_defaults
+        defaults_from: "{{ install_method }}"
+        public: true
+
     - name: Including unbound-clients tasks
       include_tasks: common-tasks/unbound-clients.yml
       when:

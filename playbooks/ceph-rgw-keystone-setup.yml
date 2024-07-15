@@ -16,8 +16,6 @@
 - name: Configure keystone for radosgw
   hosts: "{{ openstack_service_setup_host | default('localhost') }}"
   user: root
-  vars_files:
-    - "defaults/{{ install_method | default('source') }}_install.yml"
   vars:
     ansible_python_interpreter: >-
       {{ openstack_service_setup_host_python_interpreter |
@@ -28,6 +26,11 @@
     - ceph-rgw-setup
     - rgw-service-add
   tasks:
+    - name: Setup installation variables
+      import_role:
+        name: openstack.osa.install_defaults
+        defaults_from: "{{ install_method | default('source') }}"
+
     - name: Add service to the keystone service catalog
       openstack.cloud.catalog_service:
         cloud: default

@@ -27,9 +27,12 @@
   hosts: ceph-rgw
   gather_facts: false
   user: root
-  vars_files:
-    - "defaults/{{ install_method }}_install.yml"
   pre_tasks:
+    - name: Setup installation variables
+      include_role:
+        name: openstack.osa.install_defaults
+        defaults_from: "{{ install_method }}"
+        public: true
 
     - name: Importing ceph-server tasks
       import_tasks: common-tasks/ceph-server.yml

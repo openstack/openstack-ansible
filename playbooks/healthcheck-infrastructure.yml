@@ -25,9 +25,13 @@
   gather_facts: yes
   vars:
     repo_requirements_file: "constraints/upper_constraints_cached.txt"
-  vars_files:
-    - "defaults/{{ install_method }}_install.yml"
   tasks:
+    - name: Setup installation variables
+      include_role:
+        name: openstack.osa.install_defaults
+        defaults_from: "{{ install_method }}"
+        public: true
+
     - name: Check the repo sync file on each repo server
       uri:
         url: "{{ openstack_repo_protocol }}://{{ hostvars[item]['management_address'] }}:{{ repo_server_port }}/{{ repo_requirements_file }}"
@@ -86,9 +90,15 @@
   serial:
     - 3
     - 100%
-  vars_files:
-    - defaults/source_install.yml
   tasks:
+    - name: Setup installation variables
+      include_role:
+        name: openstack.osa.install_defaults
+        defaults_from: "{{ install_method }}"
+        public: true
+      vars:
+        install_method: 'source'
+
     # Repo release path points to the internal LB vip
     - name: Check the presence of upper constraints on your repos and check load balancing
       uri:
@@ -101,10 +111,13 @@
 - name: Ensure the service setup host is ready to run openstack calls
   hosts: "{{ openstack_service_setup_host | default('localhost') }}"
   gather_facts: no
-  vars_files:
-    - "defaults/{{ install_method | default('source') }}_install.yml"
   vars:
     ansible_python_interpreter: "{{ openstack_service_setup_host_python_interpreter | default(ansible_facts['python']['executable']) }}"
+  pre_tasks:
+    - name: Setup installation variables
+      import_role:
+        name: openstack.osa.install_defaults
+        defaults_from: "{{ install_method | default('source') }}"
   tasks:
     - name: Get openstack client config
       openstack.cloud.config:
@@ -328,9 +341,12 @@
   gather_facts: no
   vars:
     venv_path: /tmp/rabbitmqtest
-  vars_files:
-    - "defaults/{{ install_method }}_install.yml"
   post_tasks:
+    - name: Setup installation variables
+      include_role:
+        name: openstack.osa.install_defaults
+        defaults_from: "{{ install_method }}"
+        public: true
     - name: Generate venv for rabbitmq testing
       include_role:
         name: "python_venv_build"

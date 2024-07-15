@@ -50,6 +50,12 @@
   gather_facts: false
   user: root
   pre_tasks:
+    - name: Setup installation variables
+      include_role:
+        name: openstack.osa.install_defaults
+        defaults_from: "{{ install_method }}"
+        public: true
+
     - name: Check for a supported Operating System
       assert:
         that:
@@ -61,8 +67,6 @@
           Ubuntu 22.04 (Jammy), CentOS 9 Stream, and Rocky Linux 9.
   roles:
     - role: "openstack_hosts"
-  vars_files:
-    - "defaults/{{ install_method }}_install.yml"
   post_tasks:
     - name: Ensure deploy host SSH connection is reset
       meta: reset_connection
