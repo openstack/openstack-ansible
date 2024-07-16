@@ -36,8 +36,13 @@
   hosts: localhost
   gather_facts: no
   tasks:
-    - name: Importing dynamic-grouping tasks
-      import_tasks: common-tasks/dynamic-grouping.yml
+    - name: Add hosts to dynamic inventory group
+      add_host:
+        group: "{{ dest_group }}"
+        name: "{{ item }}"
+      with_items: "{{ groups[src_group] }}"
+      when:
+        - "group_when | default(True)"
       vars:
         src_group: "nova_compute"
         dest_group: "neutron_l3_agent, neutron_metadata_agent"
