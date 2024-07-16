@@ -140,7 +140,7 @@ deployment_extra_facts_subset: hardware
 deployment_extra_facts_filter: ansible_processor_*
 
 # Set permissions for repo server and files built on it
-repo_service_user_name: nginx
+repo_service_user_name: www-data
 repo_service_group_name: www-data
 venv_build_host_user_name: "{{ repo_service_user_name }}"
 venv_build_host_group_name: "{{ repo_service_group_name }}"
