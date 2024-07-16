@@ -13,7 +13,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Import container hosts playbook
-  import_playbook: "containers-lxc-host.yml"
-- name: Import containers create playbook
-  import_playbook: "containers-lxc-create.yml"
+- name: Import containers_deploy playbook
+  import_playbook: openstack.osa.containers_deploy
