@@ -51,6 +51,7 @@ COMMON_ETC_LOG_NAMES="apt \
     ironic-inspector \
     iscsi \
     kubelet \
+    letsencrypt \
     memcached \
     mongodb \
     my.cnf \
