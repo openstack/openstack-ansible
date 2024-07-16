@@ -13,39 +13,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Gather unbound facts
-  hosts: unbound
-  gather_facts: "{{ osa_gather_facts | default(True) }}"
-  tags:
-    - always
-
-- name: Install unbound DNS resolvers
-  hosts: unbound
-  gather_facts: false
-  serial: "{{ unbound_serial | default(['1','100%']) }}"
-  user: root
-  pre_tasks:
-    - name: Including container-setup tasks
-      include_role:
-        name: "openstack.osa.{{ container_tech | default('lxc') }}_container_setup"
-      when: not is_metal
-  roles:
-    - role: "unbound"
-      tags:
-        - unbound_server
-    - role: "openstack.osa.system_crontab_coordination"
-      tags:
-        - "system-crontab-coordination"
-
-- name: Install unbound DNS resolver client configurations
-  hosts:
-    - "!unbound"
-    - "{{ openstack_host_group|default('hosts') }}"
-  user: root
-  tasks:
-    - name: Including unbound-clients tasks
-      include_role:
-        name: openstack.osa.unbound_clients
-      when:
-        - hostvars['localhost']['resolvconf_enabled'] | bool
-  environment: "{{ deployment_environment_variables | default({}) }}"
+- name: Importing unbound playbook
+  import_playbook: openstack.osa.unbound
