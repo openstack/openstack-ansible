@@ -69,6 +69,7 @@ COMMON_ETC_LOG_NAMES="apt \
     resolv.conf \
     sasl2 \
     ssh \
+    step-ca \
     sysconfig/network-scripts \
     sysconfig/network \
     systemd \
