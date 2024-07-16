@@ -42,7 +42,8 @@
         - always
 
     - name: Determine tunnel bridge IP address
-      include_tasks: ../common-tasks/dynamic-address-fact.yml
+      include_role:
+        name: openstack.osa.dynamic_address_fact
       vars:
         network_address: "tunnel_address"
       tags:
