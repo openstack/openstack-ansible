@@ -32,8 +32,12 @@
         name: openssh-server
         state: present
     - name: Ensure sshd is running
+      vars:
+        _ssh_service_name:
+          redhat: sshd
+          debian: ssh
       service:
-        name: sshd
+        name: "{{ _ssh_service_name[ansible_facts['os_family'] | lower] }}"
         state: started
         enabled: yes
   post_tasks:
