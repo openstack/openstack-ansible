@@ -805,7 +805,7 @@
 #
 # --------
 #
-# Level: haproxy_hosts (optional)
+# Level: load_balancer_hosts (optional)
 # List of target hosts on which to deploy HAProxy. Recommend at least one
 # target host for this service if hardware load balancers are not being
 # used.
@@ -825,7 +825,7 @@
 # While HAProxy can be used as a virtual load balancer, it is recommended to use
 # a physical load balancer in a production environment.
 #
-# haproxy_hosts:
+# load_balancer_hosts:
 #   lb1:
 #     ip: 172.29.236.100
 #   lb2:

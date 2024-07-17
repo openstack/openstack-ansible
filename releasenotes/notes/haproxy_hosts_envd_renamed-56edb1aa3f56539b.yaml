@@ -1,0 +1,16 @@
+---
+
+upgrade:
+  - |
+    Group name for HAProxy destination hosts in `openstack_user_config.yml``
+    was renamed from ``haproxy_hosts`` to ``load_balancer_hosts``.
+    While backwards compatability is kept, it is recommended to replace
+    defenition with the new group during the upgrade.
+deprecations:
+  - |
+    Usage of ``haproxy_hosts`` in `openstack_user_config.yml`` has been
+    deprecated in favor of ``load_balancer_hosts``.
+fixes:
+  - |
+    ``haproxy_all`` group is no longer populated with bare metal hosts in
+    case of installing haproxy/keepalived inside LXC containers.

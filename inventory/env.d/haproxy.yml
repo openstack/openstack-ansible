@@ -23,12 +23,19 @@ container_skel:
   haproxy_container:
     belongs_to:
       - haproxy_containers
+      - load_balancer_containers
     contains:
       - haproxy
     properties:
       is_metal: true
 
 physical_skel:
+  load_balancer_containers:
+    belongs_to:
+      - all_containers
+  load_balancer_hosts:
+    belongs_to:
+      - hosts
   haproxy_containers:
     belongs_to:
       - all_containers

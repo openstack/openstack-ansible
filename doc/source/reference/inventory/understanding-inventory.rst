@@ -39,7 +39,7 @@ Ansible group mappings. These groups map to the physical
 hosts.
 
 The ``haproxy.yml.example`` file in the ``conf.d/`` directory provides
-a simple example of defining a host group (``haproxy_hosts``) with two hosts
+a simple example of defining a host group (``load_balancer_hosts``) with two hosts
 (``infra1`` and ``infra2``).
 
 The ``swift.yml.example`` file provides a more complex example. Here, host

@@ -149,7 +149,7 @@ repo-infra_hosts:
 # load balancer
 # Ideally the load balancer should not use the Infrastructure hosts.
 # Dedicated hardware is best for improved performance and security.
-haproxy_hosts:
+load_balancer_hosts:
   infra1:
     ip: 172.29.236.11
   infra2:

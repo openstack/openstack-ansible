@@ -300,7 +300,7 @@ repo-infra_hosts: *controllers
 # load balancer
 # Ideally the load balancer should not use the Infrastructure hosts.
 # Dedicated hardware is best for improved performance and security.
-haproxy_hosts: *controllers
+load_balancer_hosts: *controllers
 
 ###
 ### OpenStack
