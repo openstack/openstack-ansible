@@ -53,6 +53,9 @@
     - name: Disabling haproxy backends
       include_role:
         name: openstack.osa.haproxy_endpoint_manage
+        apply:
+          tags:
+            - always
       vars:
         haproxy_backend: galera-back
         haproxy_state: drain
@@ -70,6 +73,9 @@
     - name: Enabling haproxy backends
       include_role:
         name: openstack.osa.haproxy_endpoint_manage
+        apply:
+          tags:
+            - always
       vars:
         haproxy_backend: galera-back
         haproxy_state: enabled
