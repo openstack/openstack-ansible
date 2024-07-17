@@ -45,7 +45,9 @@
   vars:
     service_group: zun_api
     service_variable: "zun_haproxy_services"
-  when: groups[service_group] | length > 0
+  when:
+    - groups[service_group] | length > 0
+    - groups['haproxy'] | length > 0
   tags:
     - haproxy-service-config
 

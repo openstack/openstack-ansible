@@ -28,7 +28,9 @@
   vars:
     service_group: manila_api
     service_variable: "manila_haproxy_services"
-  when: groups[service_group] | length > 0
+  when:
+    - groups[service_group] | length > 0
+    - groups['haproxy'] | length > 0
   tags:
     - haproxy-service-config
 

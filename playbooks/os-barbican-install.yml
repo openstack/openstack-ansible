@@ -28,7 +28,9 @@
   vars:
     service_group: barbican_api
     service_variable: "barbican_haproxy_services"
-  when: groups[service_group] | length > 0
+  when:
+    - groups[service_group] | length > 0
+    - groups['haproxy'] | length > 0
   tags:
     - haproxy-service-config
 

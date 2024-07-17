@@ -28,7 +28,9 @@
   vars:
     service_group: skyline_all
     service_variable: "skyline_haproxy_services"
-  when: groups[service_group]
+  when:
+    - groups[service_group] | length > 0
+    - groups['haproxy'] | length > 0
   tags:
     - haproxy-service-config
 
