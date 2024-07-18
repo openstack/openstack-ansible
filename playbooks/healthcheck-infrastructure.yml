@@ -91,18 +91,20 @@
     - 3
     - 100%
   tasks:
-    - name: Setup installation variables
-      include_role:
-        name: openstack.osa.install_defaults
-        defaults_from: "{{ install_method }}"
-        public: true
-      vars:
-        install_method: 'source'
+    - name: Run check only for source method
+      when:
+        - install_method == 'source'
+      block:
+        - name: Setup installation variables
+          include_role:
+            name: openstack.osa.install_defaults
+            defaults_from: "{{ install_method }}"
+            public: true
 
-    # Repo release path points to the internal LB vip
-    - name: Check the presence of upper constraints on your repos and check load balancing
-      uri:
-        url: "{{ openstack_repo_url }}/constraints/upper_constraints_cached.txt"
+        # Repo release path points to the internal LB vip
+        - name: Check the presence of upper constraints on your repos and check load balancing
+          uri:
+            url: "{{ openstack_repo_url }}/constraints/upper_constraints_cached.txt"
   tags:
     - healthcheck
     - healthcheck-repo-use
