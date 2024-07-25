@@ -77,6 +77,7 @@
         - "/openstack/{{ container_name }}"
         - "/openstack/backup/{{ container_name }}"
         - "/openstack/log/{{ container_name }}"
+        - "/openstack/glusterd/{{ container_name }}"
         - "/var/log/lxc/lxc-{{ container_name }}.log"
       delegate_to: "{{ physical_host }}"
       when:
