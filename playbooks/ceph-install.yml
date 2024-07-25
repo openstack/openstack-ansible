@@ -29,6 +29,11 @@
         name: openstack.osa.install_defaults
         defaults_from: "{{ install_method }}"
         public: true
+        apply:
+          tags:
+            - always
+      tags:
+        - always
 
     - name: Gather additional facts for monitor_address_block
       include_tasks: "common-tasks/gather-hardware-facts.yml"
@@ -140,6 +145,11 @@
         name: openstack.osa.install_defaults
         defaults_from: "{{ install_method }}"
         public: true
+        apply:
+          tags:
+            - always
+      tags:
+        - always
 
     - name: Gather memory facts
       include_tasks: "common-tasks/gather-hardware-facts.yml"
@@ -200,6 +210,11 @@
         name: openstack.osa.install_defaults
         defaults_from: "{{ install_method }}"
         public: true
+        apply:
+          tags:
+            - always
+      tags:
+        - always
 
     - name: Gather memory facts
       include_tasks: "common-tasks/gather-hardware-facts.yml"
