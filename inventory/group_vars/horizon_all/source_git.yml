@@ -13,16 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-### HEAD as of 05.07.2024 ###
+### HEAD as of 26.07.2024 ###
 
 ## Horizon service
 horizon_git_repo: "{{ openstack_opendev_base_url }}/openstack/horizon"
-horizon_git_install_branch: b204df05bcb498abef41cec71df40ffc88fcbbbc
+horizon_git_install_branch: e3f83c0ef6fb82c762b76f7d87d9d59fc280ecc0
 horizon_git_track_branch: master
 
 ## Adjutant dashboard plugin
 adjutant_dashboard_git_repo: "{{ openstack_opendev_base_url }}/openstack/adjutant-ui"
-adjutant_dashboard_git_install_branch: 2bea2114fb234bf25f62a5fb041e5829e29d375c
+adjutant_dashboard_git_install_branch: bab31ad14dbf75019abf3132363910614865b23e
 adjutant_dashboard_git_track_branch: master
 
 ## Barbican dashboard plugin
@@ -42,7 +42,7 @@ designate_dashboard_git_track_branch: master
 
 ## Horizon Heat dashboard plugin
 heat_dashboard_git_repo: "{{ openstack_opendev_base_url }}/openstack/heat-dashboard"
-heat_dashboard_git_install_branch: d5608779e16a96f7eb8ccfedd1fbe9f33d5b8a7b
+heat_dashboard_git_install_branch: 3070b2c8d5cc6e070df01233ec50b32ea987d92d
 heat_dashboard_git_track_branch: master
 
 ## Horizon Ironic dashboard plugin
