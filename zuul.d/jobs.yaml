@@ -334,13 +334,14 @@
     name: openstack-ansible-deploy-infra_lxc-validate
     parent: openstack-ansible-deploy-infra_lxc-ubuntu-jammy
     files:
-      - ^playbooks\/galera-install.yml
-      - ^playbooks\/rabbitmq-install.yml
-      - ^playbooks\/memcached-install.yml
-      - ^playbooks\/healthcheck-infrastructure.yml
-      - ^playbooks\/repo-install.yml
-      - ^playbooks\/haproxy-install.yml
-      - ^playbooks\/zookeeper-install.yml
+      - ^playbooks\/galera(-install)?\.yml
+      - ^playbooks\/rabbitmq(-install)?\.yml
+      - ^playbooks\/memcached(-install)?\.yml
+      - ^playbooks\/healthcheck-infrastructure\.yml
+      - ^playbooks\/repo(-install|_server)\.yml
+      - ^playbooks\/haproxy(-install)?\.yml
+      - ^playbooks\/utility(-install|_host)\.yml
+      - ^playbooks\/zookeeper-(-install)?\.yml
 
 # Running linters check
 - job:

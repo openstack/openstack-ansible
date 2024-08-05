@@ -50,6 +50,8 @@
           {%     set role_service_name = 'hardening' %}
           {%   elif zuul.project.short_name == 'openstack-ansible' %}
           {%     set role_service_name = 'integrated' %}
+          {%   elif zuul.project.short_name == 'openstack-ansible-plugins' %}
+          {%     set role_service_name = 'plugins' %}
           {%   endif %}
           {%   if role_service_name is defined %}
           {%     set _ = _scenario.append(role_service_name) %}
