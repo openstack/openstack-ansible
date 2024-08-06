@@ -30,7 +30,8 @@
     haveged_enabled: false
   pre_tasks:
     - name: Gather additional facts
-      include_tasks: "common-tasks/gather-hardware-facts.yml"
+      include_role:
+        name: openstack.osa.gather_extra_facts
       vars:
         deployment_extra_facts_filter: "{{ 'ansible_' ~ pacemaker_corosync_ring_interface | replace('-','_') }}"
         deployment_extra_facts_subset: "!all,network"
@@ -66,7 +67,8 @@
         public: true
 
     - name: Gather additional facts
-      include_tasks: "common-tasks/gather-hardware-facts.yml"
+      include_role:
+        name: openstack.osa.gather_extra_facts
       args:
         apply:
           tags:

@@ -35,7 +35,8 @@
         public: true
 
     - name: Gather additional facts for monitor_address_block
-      include_tasks: "common-tasks/gather-hardware-facts.yml"
+      include_role:
+        name: openstack.osa.gather_extra_facts
       vars:
         deployment_extra_facts_filter: "ansible_all_ipv[4|6]_addresses"
         deployment_extra_facts_subset: "!all,network"
@@ -48,7 +49,8 @@
         - always
 
     - name: Gather additional facts for monitor_interface
-      include_tasks: "common-tasks/gather-hardware-facts.yml"
+      include_role:
+        name: openstack.osa.gather_extra_facts
       vars:
         deployment_extra_facts_filter: "{{ 'ansible_' ~ monitor_interface | replace('-','_') }}"
         deployment_extra_facts_subset: "!all,network"
@@ -61,7 +63,8 @@
         - always
 
     - name: Gather memory facts
-      include_tasks: "common-tasks/gather-hardware-facts.yml"
+      include_role:
+        name: openstack.osa.gather_extra_facts
       vars:
         deployment_extra_facts_filter: "ansible_memtotal*"
         deployment_extra_facts_subset: "!all,hardware"
@@ -146,7 +149,8 @@
         public: true
 
     - name: Gather memory facts
-      include_tasks: "common-tasks/gather-hardware-facts.yml"
+      include_role:
+        name: openstack.osa.gather_extra_facts
       vars:
         deployment_extra_facts_filter: "ansible_memtotal*"
         deployment_extra_facts_subset: "!all,hardware"
@@ -206,7 +210,8 @@
         public: true
 
     - name: Gather memory facts
-      include_tasks: "common-tasks/gather-hardware-facts.yml"
+      include_role:
+        name: openstack.osa.gather_extra_facts
       vars:
         deployment_extra_facts_filter: "ansible_memtotal*"
         deployment_extra_facts_subset: "!all,hardware"
