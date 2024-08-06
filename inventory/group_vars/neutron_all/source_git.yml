@@ -13,11 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-### HEAD as of 11.07.2024 ###
+### HEAD as of 06.08.2024 ###
 
 ## Neutron service
 neutron_git_repo: "{{ openstack_opendev_base_url }}/openstack/neutron"
-neutron_git_install_branch: 4387386ca8a4b368102379bea69048ecfe650081
+neutron_git_install_branch: 7654856eeaabde5d2ec043295d29db6c085bd0bb
 neutron_git_track_branch: stable/2023.1
 
 neutron_vpnaas_git_repo: "{{ openstack_opendev_base_url }}/openstack/neutron-vpnaas"
@@ -49,7 +49,7 @@ networking_nsx_git_install_branch: 715cb5fc1174b9226f043e49ffd389add44f070a
 networking_nsx_git_track_branch: master
 
 networking_nsxlib_git_repo: "{{ openstack_opendev_base_url }}/x/vmware-nsxlib"
-networking_nsxlib_git_install_branch: 0a75bd5669e77df5e4c216c2deea48035b2f9fe2
+networking_nsxlib_git_install_branch: 1fa9910c1ba096d0e1c26fb9f3be417958c95d75
 networking_nsxlib_git_track_branch: master
 
 networking_baremetal_git_repo: "{{ openstack_opendev_base_url }}/openstack/networking-baremetal"
