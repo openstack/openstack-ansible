@@ -1,0 +1,8 @@
+---
+other:
+  - |
+    In order to align with oslo.messaging `reverted default <https://review.opendev.org/c/openstack/oslo.messaging/+/852251>`_
+    of ``heartbeat_in_pthread`` value we remove own logic of
+    handling the value based on host groups.
+    You still can use ``oslomsg_heartbeat_in_pthread`` or specific role
+    variables to alter the behaviour.
