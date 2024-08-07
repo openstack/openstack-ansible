@@ -35,7 +35,8 @@
         name: "openstack.osa.{{ container_tech | default('lxc') }}_container_setup"
       when: not is_metal
     - name: Including unbound-clients tasks
-      include_tasks: common-tasks/unbound-clients.yml
+      include_role:
+        name: openstack.osa.unbound_clients
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
     - name: Remove legacy haproxy configuration files

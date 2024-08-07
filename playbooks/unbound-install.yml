@@ -44,7 +44,8 @@
   user: root
   tasks:
     - name: Including unbound-clients tasks
-      include_tasks: common-tasks/unbound-clients.yml
+      include_role:
+        name: openstack.osa.unbound_clients
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
   environment: "{{ deployment_environment_variables | default({}) }}"

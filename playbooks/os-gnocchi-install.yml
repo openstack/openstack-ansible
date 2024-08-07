@@ -70,7 +70,8 @@
         - (gnocchi_storage_driver | default('file')) != "file"
 
     - name: Including unbound-clients tasks
-      include_tasks: common-tasks/unbound-clients.yml
+      include_role:
+        name: openstack.osa.unbound_clients
       when:
         - hostvars['localhost']['resolvconf_enabled'] | bool
   roles:
