@@ -72,6 +72,27 @@
   environment: "{{ deployment_environment_variables | default({}) }}"
   tags:
     - lxc-containers-create
+  pre_tasks:
+    - name: Check for a supported Operating System
+      assert:
+        that:
+          - (ansible_facts['distribution'] == 'Debian' and ansible_facts['distribution_release'] == 'bullseye') or
+            (ansible_facts['distribution'] == 'Debian' and ansible_facts['distribution_release'] == 'bookworm') or
+            (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_release'] == 'jammy') or
+            (ansible_facts['os_family'] == 'RedHat' and ansible_facts['distribution_major_version'] == '9')
+        msg: >
+          The only supported platforms for this release are Debian 11 (Bullseye), Debian 12 (Bookworm)
+          Ubuntu 22.04 (Jammy), CentOS 9 Stream, and Rocky Linux 9.
+    - name: Setup installation variables
+      include_role:
+        name: openstack.osa.install_defaults
+        defaults_from: "{{ install_method }}"
+        public: true
+        apply:
+          tags:
+            - always
+      tags:
+        - always
   roles:
     - role: "openstack_hosts"
       is_container: true
