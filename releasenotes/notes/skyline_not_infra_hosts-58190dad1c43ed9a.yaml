@@ -1,0 +1,11 @@
+---
+fixes:
+  - |
+    Skyline is not getting installed anymore by default as part of
+    ``os-infra_hosts``, which might result in unwanted dashboard changes
+    during OpenStack upgrade process.
+other:
+  - |
+    Skyline was removed from being assigned to ``os-infra_hosts``. If you want
+    to install Skyline as your dashboard, you need to define
+    ``skyline_dashboard_hosts`` explicitly.
