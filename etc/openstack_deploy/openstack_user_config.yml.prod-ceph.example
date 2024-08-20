@@ -123,7 +123,7 @@ repo-infra_hosts: *infrastructure_hosts
 # load balancer
 # Ideally the load balancer should not use the Infrastructure hosts.
 # Dedicated hardware is best for improved performance and security.
-haproxy_hosts: *infrastructure_hosts
+load_balancer_hosts: *infrastructure_hosts
 
 ###
 ### OpenStack

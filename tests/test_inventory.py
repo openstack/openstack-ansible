@@ -233,6 +233,9 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'haproxy_container',
         'haproxy_containers',
         'haproxy_hosts',
+        'load_balancer_containers',
+        'load_balancer_hosts',
+        'load_balancer_all',
         'heat_all',
         'heat_api',
         'heat_api_cfn',
@@ -789,7 +792,7 @@ class TestConfigChecks(TestConfigCheckBase):
         self.assertEqual(context.exception.new_host, 'host2')
 
     def test_two_hosts_same_ip_externally(self):
-        self.set_new_hostname(self.user_defined_config, "haproxy_hosts",
+        self.set_new_hostname(self.user_defined_config, "load_balancer_hosts",
                               "aio1", "hap")
         with self.assertRaises(di.MultipleHostsWithOneIPError) as context:
             get_inventory()
@@ -801,7 +804,7 @@ class TestConfigChecks(TestConfigCheckBase):
     def test_one_host_two_ips_externally(self):
         # haproxy chosen because it was last in the config file as of
         # writing
-        self.set_new_ip(self.user_defined_config, 'haproxy_hosts', 'aio1',
+        self.set_new_ip(self.user_defined_config, 'load_balancer_hosts', 'aio1',
                         '172.29.236.101')
         with self.assertRaises(di.MultipleIpForHostError) as context:
             get_inventory()
